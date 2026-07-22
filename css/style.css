@@ -3,23 +3,34 @@
 /* ========================= */
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
+
 
 html {
-    height: 100%;
+    height:100%;
 }
 
+
 body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f8f5ef;
-    color: #222;
+
+    min-height:100vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+    font-family:Arial, Helvetica, sans-serif;
+
+    background:#f8f5ef;
+
+    color:#222;
+
 }
+
+
 
 
 /* ========================= */
@@ -28,42 +39,50 @@ body {
 
 nav {
 
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+    position:sticky;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: nowrap;
+    top:0;
 
-    gap: 18px;
+    z-index:1000;
 
-    padding: 15px;
+    display:flex;
 
-    background: #f8f5ef;
+    justify-content:center;
 
-    border-bottom: 1px solid rgba(0,0,0,.1);
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:14px;
+
+    padding:15px 10px;
+
+    background:#f8f5ef;
+
+    border-bottom:1px solid rgba(0,0,0,.1);
 
 }
 
 
+
 nav a {
 
-    color: #222;
+    color:#222;
 
-    text-decoration: none;
+    text-decoration:none;
 
-    font-weight: bold;
+    font-weight:bold;
 
-    white-space: nowrap;
+    white-space:nowrap;
+
+    font-size:16px;
 
 }
 
 
 nav a:hover {
 
-    color: #d4af37;
+    color:#d4af37;
 
 }
 
@@ -76,54 +95,58 @@ nav a:hover {
 
 .landing {
 
-    flex: 1;
+    flex:1;
 
-    display: flex;
+    display:flex;
 
-    flex-direction: column;
+    flex-direction:column;
 
-    align-items: center;
+    align-items:center;
 
-    text-align: center;
+    text-align:center;
 
-    padding: 35px 30px 20px;
+    padding:35px 30px 20px;
 
 }
+
 
 
 .logo {
 
-    width: 340px;
+    width:340px;
 
-    max-width: 85%;
+    max-width:85%;
 
-    margin-bottom: 20px;
+    margin-bottom:20px;
 
 }
+
 
 
 h1 {
 
-    font-size: 2.8rem;
+    font-size:2.8rem;
 
-    margin-bottom: 12px;
+    margin-bottom:12px;
 
 }
+
 
 
 .undertitel {
 
-    font-size: 1.2rem;
+    font-size:1.2rem;
 
-    max-width: 550px;
+    max-width:550px;
 
-    line-height: 1.6;
+    line-height:1.6;
 
-    color: #666;
+    color:#666;
 
-    margin-bottom: 25px;
+    margin-bottom:25px;
 
 }
+
 
 
 
@@ -134,41 +157,42 @@ h1 {
 
 .knappar {
 
-    display: flex;
+    display:flex;
 
-    flex-wrap: wrap;
+    flex-wrap:wrap;
 
-    justify-content: center;
+    justify-content:center;
 
-    gap: 12px;
+    gap:12px;
 
 }
 
 
 .knappar a {
 
-    background: #d4af37;
+    background:#d4af37;
 
-    color: #222;
+    color:#222;
 
-    padding: 16px 28px;
+    padding:16px 28px;
 
-    text-decoration: none;
+    text-decoration:none;
 
-    font-weight: bold;
+    font-weight:bold;
 
-    border-radius: 50px;
+    border-radius:50px;
 
 }
 
 
 .knappar a:hover {
 
-    background: #222;
+    background:#222;
 
-    color: white;
+    color:white;
 
 }
+
 
 
 
@@ -179,33 +203,34 @@ h1 {
 
 .intro {
 
-    padding: 45px 25px;
+    padding:45px 25px;
 
-    max-width: 800px;
+    max-width:800px;
 
-    margin: auto;
+    margin:auto;
 
 }
 
 
 .intro h2 {
 
-    text-align: center;
+    text-align:center;
 
-    margin-bottom: 20px;
+    margin-bottom:20px;
 
 }
 
 
 .intro p {
 
-    text-align: center;
+    text-align:center;
 
-    line-height: 1.8;
+    line-height:1.8;
 
-    margin-bottom: 15px;
+    margin-bottom:15px;
 
 }
+
 
 
 
@@ -216,22 +241,23 @@ h1 {
 
 .page-header {
 
-    text-align: center;
+    text-align:center;
 
-    padding: 35px 20px;
+    padding:35px 20px;
 
 }
 
 
 .logo-small {
 
-    width: 260px;
+    width:260px;
 
-    max-width: 90%;
+    max-width:90%;
 
-    margin-bottom: 20px;
+    margin-bottom:20px;
 
 }
+
 
 
 
@@ -242,9 +268,9 @@ h1 {
 
 .gallery {
 
-    display: grid;
+    display:grid;
 
-    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 
     gap:20px;
 
@@ -257,6 +283,7 @@ h1 {
     padding:20px;
 
 }
+
 
 
 .gallery img {
@@ -274,6 +301,7 @@ h1 {
     box-shadow:0 8px 20px rgba(0,0,0,.15);
 
 }
+
 
 
 
@@ -325,6 +353,7 @@ h1 {
 }
 
 
+
 .prev,
 .next {
 
@@ -342,13 +371,19 @@ h1 {
 
 
 .prev {
+
     left:30px;
+
 }
 
 
 .next {
+
     right:30px;
+
 }
+
+
 
 
 
@@ -372,6 +407,7 @@ h1 {
 }
 
 
+
 .kontakt section {
 
     background:#f7f2e8;
@@ -385,11 +421,13 @@ h1 {
 }
 
 
+
 .kontakt p {
 
     line-height:1.8;
 
 }
+
 
 
 
@@ -413,54 +451,6 @@ h1 {
 }
 
 
-
-/* ========================= */
-/* FOOTER                    */
-/* ========================= */
-
-
-footer {
-
-    margin-top:auto;
-
-    width:100%;
-
-    background:#222;
-
-    color:white;
-
-    text-align:center;
-
-    padding:25px;
-
-}
-
-
-.sociala {
-
-    margin-top:20px;
-
-}
-
-
-.sociala a {
-
-    color:white;
-
-    font-size:32px;
-
-    margin:0 12px;
-
-    text-decoration:none;
-
-}
-
-
-.sociala a:hover {
-
-    color:#d4af37;
-
-}
 
 
 
@@ -498,6 +488,101 @@ footer {
 
 
 
+
+/* ========================= */
+/* FOOTER                    */
+/* ========================= */
+
+
+footer {
+
+    margin-top:auto;
+
+    width:100%;
+
+    background:#222;
+
+    color:white;
+
+    text-align:center;
+
+    padding:25px;
+
+}
+
+
+
+.sociala {
+
+    margin-top:20px;
+
+}
+
+
+
+.sociala a {
+
+    color:white;
+
+    font-size:32px;
+
+    margin:0 12px;
+
+    text-decoration:none;
+
+}
+
+
+
+.sociala a:hover {
+
+    color:#d4af37;
+
+}
+
+
+
+
+/* ========================= */
+/* MOBIL                     */
+/* ========================= */
+
+
+@media(max-width:600px){
+
+
+nav {
+
+    gap:10px;
+
+}
+
+
+nav a {
+
+    font-size:14px;
+
+}
+
+
+h1 {
+
+    font-size:2.2rem;
+
+}
+
+
+.logo {
+
+    width:280px;
+
+}
+
+
+}
+
+
+
 /* ========================= */
 /* DATOR                     */
 /* ========================= */
@@ -505,24 +590,26 @@ footer {
 
 @media(min-width:900px){
 
-    .logo {
 
-        width:420px;
+.logo {
 
-    }
+    width:420px;
 
-
-    h1 {
-
-        font-size:4rem;
-
-    }
+}
 
 
-    .undertitel {
+h1 {
 
-        font-size:1.4rem;
+    font-size:4rem;
 
-    }
+}
+
+
+.undertitel {
+
+    font-size:1.4rem;
+
+}
+
 
 }
