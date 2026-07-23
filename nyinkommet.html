@@ -3,112 +3,113 @@
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Nyinkommet | Container 13 Vintage</title>
+    <title>Nyinkommet | Container 13 Vintage</title>
 
-<link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
-
 <body>
 
+    <!-- Gemensam meny -->
+    <div id="site-header"></div>
 
 
-<div id="site-header"></div>
+    <header class="page-header">
 
+        <a href="index.html">
 
+            <img src="bilder/logotyp/logo.png"
+                class="logo-small"
+                alt="Container 13 Vintage">
 
+        </a>
 
+        <h1>Nyinkommet</h1>
 
+        <p>
+            Senaste vintagefynden i butiken
+        </p>
 
+    </header>
 
-<header class="page-header">
 
+    <main>
 
-<a href="index.html">
+        <section
+            id="nyGallery"
+            class="gallery">
 
-<img src="bilder/logotyp/logo.png"
-class="logo-small"
-alt="Container 13 Vintage">
+            <p class="gallery-status">
+                Hämtar bilder...
+            </p>
 
-</a>
+        </section>
 
+    </main>
 
-<h1>Nyinkommet</h1>
 
+    <!-- Lightbox -->
 
-<p>
-Senaste vintagefynden i butiken
-</p>
+    <div
+        id="lightbox"
+        class="lightbox"
+        aria-hidden="true">
 
+        <button
+            id="close"
+            class="lightbox-close"
+            type="button">
 
-</header>
+            &times;
 
+        </button>
 
+        <button
+            class="prev"
+            type="button">
 
+            &#10094;
 
+        </button>
 
+        <img
+            id="lightboxImage"
+            alt="Nyinkommet">
 
+        <button
+            class="next"
+            type="button">
 
-<main>
+            &#10095;
 
+        </button>
 
-<section id="nyGallery" class="gallery">
+    </div>
 
-</section>
 
+    <!-- Gemensam footer -->
 
-</main>
+    <div id="site-footer"></div>
 
 
+    <!-- Firebase -->
 
+    <script
+        type="module"
+        src="js/layout.js">
+    </script>
 
-
-
-
-<div id="lightbox" class="lightbox">
-
-
-<span id="close">&times;</span>
-
-
-<img id="lightboxImage" alt="Nyinkommet">
-
-
-<div class="prev">&#10094;</div>
-
-
-<div class="next">&#10095;</div>
-
-
-</div>
-
-
-
-
-
-
-
-<div id="site-footer"></div>
-
-
-
-
-
-
-
-<script src="js/nyinkommet.js"></script>
-
-<script src="js/script.js"></script>
-
-
-
-<script type="module" src="js/layout.js"></script>
+    <script
+        type="module"
+        src="js/nyinkommet.js">
+    </script>
 
 </body>
 
