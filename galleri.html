@@ -2,115 +2,133 @@
 <html lang="sv">
 
 <head>
+  <meta charset="UTF-8">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-<title>Butiken | Container 13 Vintage</title>
+  <meta
+    name="description"
+    content="Se bilder från Container 13 Vintage."
+  >
 
-<link rel="stylesheet" href="css/style.css">
+  <title>Butiken | Container 13 Vintage</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
 
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
 </head>
-
 
 <body>
 
-
-
-<div id="site-header"></div>
-
-
-
-
-
-
-
-<header class="page-header">
-
-
-<a href="index.html">
-
-<img src="bilder/logotyp/logo.png"
-class="logo-small"
-alt="Container 13 Vintage">
-
-</a>
-
-
-
-<h1>Butiken</h1>
-
-
-
-<p>
-Bilder från Container 13 Vintage
-</p>
-
-
-</header>
-
-
-
-
-
-
-
-<main>
-
-
-<div id="gallery" class="gallery">
-
-</div>
-
-
-</main>
-
-
-
-
-
-
-
-<div id="lightbox" class="lightbox">
-
-
-<span id="close">&times;</span>
-
-
-<img id="lightboxImage" alt="Bild från butiken">
-
-
-<div class="prev">&#10094;</div>
-
-
-<div class="next">&#10095;</div>
-
-
-</div>
-
-
-
-
-
-
-
-<div id="site-footer"></div>
-
-
-
-
-
-
-
-<script src="js/bilder.js"></script>
-
-<script src="js/script.js"></script>
-
-
-
-<script type="module" src="js/layout.js"></script>
+  <!-- Gemensam navigation och statusrad -->
+  <div id="site-header"></div>
+
+
+  <header class="page-header">
+
+    <a
+      href="index.html"
+      aria-label="Gå till startsidan"
+    >
+      <img
+        src="bilder/logotyp/logo.png"
+        class="logo-small"
+        alt="Container 13 Vintage"
+      >
+    </a>
+
+    <h1>Butiken</h1>
+
+    <p>
+      Bilder från Container 13 Vintage
+    </p>
+
+  </header>
+
+
+  <main>
+
+    <div
+      id="gallery"
+      class="gallery"
+      aria-live="polite"
+      aria-busy="true"
+    >
+      <p class="gallery-status">
+        Hämtar bilder...
+      </p>
+    </div>
+
+  </main>
+
+
+  <!-- Förstorad bild -->
+  <div
+    id="lightbox"
+    class="lightbox"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Förstorad bild"
+    aria-hidden="true"
+  >
+
+    <button
+      id="close"
+      class="lightbox-close"
+      type="button"
+      aria-label="Stäng bildvisningen"
+    >
+      &times;
+    </button>
+
+    <button
+      class="prev"
+      type="button"
+      aria-label="Visa föregående bild"
+    >
+      &#10094;
+    </button>
+
+    <img
+      id="lightboxImage"
+      alt="Förstorad bild från Container 13 Vintage"
+    >
+
+    <button
+      class="next"
+      type="button"
+      aria-label="Visa nästa bild"
+    >
+      &#10095;
+    </button>
+
+  </div>
+
+
+  <!-- Gemensam sidfot -->
+  <div id="site-footer"></div>
+
+
+  <!-- Gemensam meny, statusrad och sidfot -->
+  <script
+    type="module"
+    src="js/layout.js"
+  ></script>
+
+  <!-- Hämtar bilder från Firebase -->
+  <script
+    type="module"
+    src="js/galleri.js"
+  ></script>
 
 </body>
 
