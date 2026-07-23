@@ -1,0 +1,2800 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Container13 Adminpanel</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --sidebar-background: #20262b;
+      --sidebar-background-dark: #191e22;
+      --sidebar-text: #f5f5f5;
+      --sidebar-muted: #b8bec3;
+
+      --page-background: #f5f3ef;
+      --card-background: #ffffff;
+      --row-background: #fbfaf8;
+      --input-background: #ffffff;
+      --input-disabled: #f1efec;
+
+      --text: #202428;
+      --muted: #656565;
+      --border: #d8d4ce;
+      --border-light: #e8e4de;
+
+      --accent: #b78b55;
+      --accent-dark: #936b3d;
+      --accent-light: #d5b283;
+
+      --success-background: #edf7ee;
+      --success-border: #6baa73;
+      --success-text: #255f2e;
+
+      --error-background: #fff0f0;
+      --error-border: #c97373;
+      --error-text: #8a2626;
+    }
+
+    html {
+      background-color: var(--page-background);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background-color: var(--page-background);
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .admin-layout {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 250px minmax(0, 1fr);
+    }
+
+    /* SIDOMENY */
+
+    .sidebar {
+      min-height: 100vh;
+      padding: 32px 20px 24px;
+      display: flex;
+      flex-direction: column;
+      color: var(--sidebar-text);
+      background:
+        linear-gradient(
+          180deg,
+          var(--sidebar-background),
+          var(--sidebar-background-dark)
+        );
+      border-right: 1px solid #30373d;
+    }
+
+    .brand {
+      margin: 0;
+      font-size: 27px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .admin-label {
+      margin: 8px 0 38px;
+      color: var(--accent-light);
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .navigation {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .navigation button {
+      width: 100%;
+      padding: 14px 15px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      text-align: left;
+      color: var(--sidebar-text);
+      background-color: transparent;
+      transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .navigation button:hover:not(:disabled) {
+      border-color: #545c62;
+      background-color: #2b3237;
+    }
+
+    .navigation button.active {
+      border-color: #a78359;
+      background:
+        linear-gradient(
+          90deg,
+          #9c7950,
+          #7e6548
+        );
+    }
+
+    .navigation button:disabled {
+      cursor: not-allowed;
+      color: #adb2b6;
+      opacity: 0.62;
+    }
+
+    .menu-icon {
+      width: 25px;
+      flex: 0 0 25px;
+      text-align: center;
+      font-size: 21px;
+    }
+
+    .logout-button {
+      margin-top: auto;
+      padding: 13px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 11px;
+      border: 1px solid var(--accent);
+      border-radius: 7px;
+      color: var(--accent-light);
+      background-color: transparent;
+      font-weight: bold;
+      transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+    }
+
+    .logout-button:hover {
+      color: #ffffff;
+      background-color: rgba(183, 139, 85, 0.18);
+    }
+
+    /* HUVUDINNEHÅLL */
+
+    .main-area {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-content {
+      width: 100%;
+      max-width: 1250px;
+      margin: 0 auto;
+      padding: 32px 34px 40px;
+      flex: 1;
+    }
+
+    .topbar {
+      margin-bottom: 25px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 25px;
+    }
+
+    .page-title {
+      margin: 0 0 8px;
+      font-size: 36px;
+      line-height: 1.1;
+    }
+
+    .page-description {
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .account-area {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .user-email {
+      color: var(--text);
+      font-size: 15px;
+      text-align: right;
+      word-break: break-word;
+    }
+
+    .top-logout-button {
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      background-color: #ffffff;
+      font-size: 23px;
+    }
+
+    .top-logout-button:hover {
+      border-color: var(--accent);
+      background-color: #faf6f0;
+    }
+
+    .content-section {
+      display: none;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    .card {
+      width: 100%;
+      padding: 30px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background-color: var(--card-background);
+      box-shadow: 0 8px 28px rgba(42, 37, 30, 0.06);
+    }
+
+    .card-header {
+      padding-bottom: 23px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .card h2 {
+      margin: 0 0 9px;
+      font-size: 27px;
+    }
+
+    .card-introduction {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    /* ÖPPETTIDER */
+
+    .opening-hours-list {
+      padding-top: 14px;
+      display: grid;
+      gap: 11px;
+    }
+
+    .day-row {
+      min-height: 92px;
+      padding: 17px;
+      display: grid;
+      grid-template-columns:
+        minmax(105px, 0.8fr)
+        minmax(110px, 0.75fr)
+        minmax(330px, 2fr);
+      align-items: center;
+      gap: 18px;
+      border: 1px solid var(--border-light);
+      border-radius: 9px;
+      background-color: var(--row-background);
+    }
+
+    .day-name {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .closed-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .closed-checkbox {
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      accent-color: #31363a;
+      cursor: pointer;
+    }
+
+    .time-controls {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: minmax(125px, 1fr) auto minmax(125px, 1fr);
+      align-items: center;
+      gap: 12px;
+    }
+
+    .time-wrapper {
+      width: 100%;
+      min-width: 0;
+      padding: 11px 13px;
+      border: 1px solid #c8c4be;
+      border-radius: 7px;
+      background-color: var(--input-background);
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .time-wrapper:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(183, 139, 85, 0.13);
+    }
+
+    .time-wrapper.disabled {
+      border-color: #ddd9d3;
+      background-color: var(--input-disabled);
+    }
+
+    input[type="time"] {
+      display: block;
+      width: 100%;
+      min-width: 0;
+      padding: 0;
+      border: 0;
+      outline: 0;
+      color: var(--text);
+      background-color: transparent;
+      font-size: 16px;
+    }
+
+    input[type="time"]:disabled {
+      cursor: not-allowed;
+      color: #a7a39e;
+      opacity: 1;
+    }
+
+    .time-separator {
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    /* KNAPPAR OCH MEDDELANDEN */
+
+    .actions {
+      margin-top: 17px;
+      padding-top: 20px;
+      display: grid;
+      grid-template-columns: auto minmax(250px, 1fr);
+      align-items: center;
+      gap: 18px;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .save-button {
+      min-width: 220px;
+      padding: 14px 23px;
+      border: 1px solid var(--accent-dark);
+      border-radius: 7px;
+      color: #ffffff;
+      background:
+        linear-gradient(
+          135deg,
+          var(--accent-light),
+          var(--accent)
+        );
+      font-weight: bold;
+      box-shadow: 0 5px 14px rgba(126, 89, 49, 0.16);
+    }
+
+    .save-button:hover {
+      background:
+        linear-gradient(
+          135deg,
+          #c99f6b,
+          var(--accent-dark)
+        );
+    }
+
+    .save-button:disabled {
+      cursor: wait;
+      opacity: 0.65;
+    }
+
+    .message {
+      display: none;
+      min-height: 50px;
+      padding: 13px 16px;
+      align-items: center;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      font-size: 15px;
+    }
+
+    .message.success {
+      display: flex;
+      color: var(--success-text);
+      border-color: var(--success-border);
+      background-color: var(--success-background);
+    }
+
+    .message.error {
+      display: flex;
+      color: var(--error-text);
+      border-color: var(--error-border);
+      background-color: var(--error-background);
+    }
+
+    /* INFORMATIONSRAD */
+
+    .information-form {
+      padding-top: 22px;
+      display: grid;
+      gap: 20px;
+    }
+
+    .information-toggle {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .information-toggle input {
+      width: 21px;
+      height: 21px;
+      margin: 0;
+      accent-color: var(--accent-dark);
+    }
+
+    .field-group {
+      display: grid;
+      gap: 9px;
+    }
+
+    .field-label {
+      font-weight: bold;
+    }
+
+    .information-message-input {
+      width: 100%;
+      min-height: 120px;
+      padding: 14px 15px;
+      resize: vertical;
+      border: 1px solid #c8c4be;
+      border-radius: 7px;
+      outline: 0;
+      color: var(--text);
+      background-color: var(--input-background);
+      font: inherit;
+      line-height: 1.5;
+    }
+
+    .information-message-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(183, 139, 85, 0.13);
+    }
+
+    .information-message-input:disabled {
+      cursor: not-allowed;
+      color: #8d8984;
+      background-color: var(--input-disabled);
+    }
+
+    .field-help {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .information-preview {
+      padding: 15px 17px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background-color: var(--row-background);
+    }
+
+    .information-preview-title {
+      margin: 0 0 8px;
+      font-size: 14px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: var(--muted);
+    }
+
+    .information-preview-text {
+      margin: 0;
+      line-height: 1.5;
+    }
+
+
+    /* NYINKOMMET */
+
+    .image-admin-form {
+      padding-top: 22px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .image-upload-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    .file-input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #c8c4be;
+      border-radius: 7px;
+      background-color: var(--input-background);
+    }
+
+    .text-input {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+      border: 1px solid #c8c4be;
+      border-radius: 7px;
+      outline: 0;
+      color: var(--text);
+      background-color: var(--input-background);
+    }
+
+    .text-input:focus,
+    .file-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(183, 139, 85, 0.13);
+    }
+
+    .upload-preview {
+      display: none;
+      max-width: 260px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background-color: var(--row-background);
+    }
+
+    .upload-preview.visible {
+      display: block;
+    }
+
+    .upload-preview img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+    }
+
+    .image-admin-list {
+      margin-top: 25px;
+      padding-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .image-admin-empty {
+      grid-column: 1 / -1;
+      margin: 0;
+      padding: 28px 20px;
+      color: var(--muted);
+      text-align: center;
+      border: 1px dashed var(--border);
+      border-radius: 9px;
+      background-color: var(--row-background);
+    }
+
+    .image-admin-item {
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background-color: #ffffff;
+    }
+
+    .image-admin-item img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      background-color: #eeeae4;
+    }
+
+    .image-admin-item-content {
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .image-admin-title {
+      margin: 0;
+      min-height: 20px;
+      font-weight: bold;
+      word-break: break-word;
+    }
+
+    .delete-image-button {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1px solid #b86060;
+      border-radius: 7px;
+      color: #8a2626;
+      background-color: #fff4f4;
+      font-weight: bold;
+    }
+
+    .delete-image-button:hover {
+      color: #ffffff;
+      background-color: #a84242;
+    }
+
+    .delete-image-button:disabled {
+      cursor: wait;
+      opacity: 0.65;
+    }
+
+    @media (max-width: 900px) {
+      .image-admin-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .image-upload-grid,
+      .image-admin-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* SIDFOT */
+
+    .footer {
+      padding: 20px 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      color: #d0d4d6;
+      background:
+        linear-gradient(
+          90deg,
+          var(--sidebar-background),
+          var(--sidebar-background-dark)
+        );
+      border-top: 1px solid #3a4146;
+      font-size: 14px;
+    }
+
+    .footer-brand {
+      color: var(--accent-light);
+    }
+
+    .footer-divider {
+      margin: 0 14px;
+      color: #848b90;
+    }
+
+    .footer-right {
+      color: #aeb4b7;
+      text-align: right;
+    }
+
+    /* LADDNING */
+
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      background-color: var(--sidebar-background-dark);
+      font-size: 17px;
+    }
+
+    .loading-screen.hidden {
+      display: none;
+    }
+
+    /* MOBIL */
+
+    @media (max-width: 900px) {
+      .admin-layout {
+        display: block;
+      }
+
+      .sidebar {
+        min-height: auto;
+        padding: 20px;
+        border-right: 0;
+        border-bottom: 1px solid #3a4146;
+      }
+
+      .admin-label {
+        margin-bottom: 22px;
+      }
+
+      .navigation {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .logout-button {
+        margin-top: 20px;
+      }
+
+      .main-content {
+        padding: 26px 20px 35px;
+      }
+
+      .day-row {
+        grid-template-columns: 125px 120px minmax(280px, 1fr);
+      }
+
+      .footer {
+        padding: 18px 20px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .account-area {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .user-email {
+        text-align: left;
+      }
+
+      .card {
+        padding: 22px 16px;
+      }
+
+      .day-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .time-controls {
+        grid-column: 1 / -1;
+      }
+
+      .actions {
+        grid-template-columns: 1fr;
+      }
+
+      .save-button {
+        width: 100%;
+      }
+
+      .footer {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .footer-right {
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .navigation {
+        grid-template-columns: 1fr;
+      }
+
+      .brand {
+        font-size: 24px;
+      }
+
+      .page-title {
+        font-size: 30px;
+      }
+
+      .day-row {
+        grid-template-columns: 1fr;
+      }
+
+      .time-controls {
+        grid-column: auto;
+        grid-template-columns: 1fr;
+      }
+
+      .time-separator {
+        display: none;
+      }
+
+      .footer-divider {
+        display: none;
+      }
+
+      .footer-brand,
+      .footer-label {
+        display: block;
+      }
+
+      .footer-label {
+        margin-top: 5px;
+      }
+    }
+      /* Tydligare och större sidomeny */
+
+.admin-layout {
+  grid-template-columns: 300px minmax(0, 1fr);
+}
+
+.sidebar {
+  padding: 36px 24px 28px;
+}
+
+.brand {
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+}
+
+.admin-label {
+  margin: 10px 0 42px;
+  color: #e0b678;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.navigation {
+  gap: 12px;
+}
+
+.navigation button {
+  min-height: 62px;
+  padding: 16px 18px;
+  gap: 15px;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.navigation button:disabled {
+  color: #f1f1f1;
+  opacity: 0.82;
+}
+
+.navigation button.active {
+  color: #ffffff;
+  border-color: #d4a25e;
+  background: linear-gradient(
+    90deg,
+    #c29252,
+    #a47742
+  );
+}
+
+.menu-icon {
+  width: 32px;
+  flex-basis: 32px;
+  color: #ffffff;
+  font-size: 27px;
+}
+
+.logout-button {
+  min-height: 60px;
+  padding: 15px 18px;
+  color: #efbd78;
+  border-color: #d7a45f;
+  font-size: 18px;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    padding: 24px 20px;
+  }
+
+  .navigation button {
+    min-height: 56px;
+    font-size: 17px;
+  }
+}
+  </style>
+</head>
+
+<body>
+  <div id="loading-screen" class="loading-screen">
+    Kontrollerar inloggning...
+  </div>
+
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <h1 class="brand">Container13</h1>
+      <p class="admin-label">Adminpanel</p>
+
+      <nav class="navigation" aria-label="Adminmeny">
+        <button type="button" disabled>
+          <span class="menu-icon">⌂</span>
+          <span>Dashboard</span>
+        </button>
+
+        <button
+          id="opening-hours-menu"
+          class="active"
+          type="button"
+        >
+          <span class="menu-icon">◷</span>
+          <span>Öppettider</span>
+        </button>
+
+        <button
+          id="information-menu"
+          type="button"
+        >
+          <span class="menu-icon">📢</span>
+          <span>Informationsrad</span>
+        </button>
+
+        <button type="button" disabled>
+          <span class="menu-icon">▣</span>
+          <span>Avvikande tider</span>
+        </button>
+
+        <button
+          id="new-arrivals-menu"
+          type="button"
+        >
+          <span class="menu-icon">☆</span>
+          <span>Nyinkommet</span>
+        </button>
+
+        <button
+          id="gallery-menu"
+          type="button"
+        >
+          <span class="menu-icon">▧</span>
+          <span>Galleri</span>
+        </button>
+
+        <button type="button" disabled>
+          <span class="menu-icon">⚙</span>
+          <span>Inställningar</span>
+        </button>
+      </nav>
+
+      <button
+        id="logout-button"
+        class="logout-button"
+        type="button"
+      >
+        <span aria-hidden="true">↪</span>
+        <span>Logga ut</span>
+      </button>
+    </aside>
+
+    <div class="main-area">
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <h2 class="page-title">Öppettider</h2>
+
+            <p class="page-description">
+              Ändra butikens ordinarie öppettider.
+            </p>
+          </div>
+
+          <div class="account-area">
+            <div id="user-email" class="user-email"></div>
+
+            <button
+              id="top-logout-button"
+              class="top-logout-button"
+              type="button"
+              aria-label="Logga ut"
+              title="Logga ut"
+            >
+              ↪
+            </button>
+          </div>
+        </header>
+
+        <section
+          id="opening-hours-section"
+          class="content-section active"
+        >
+          <div class="card">
+            <div class="card-header">
+              <h2>Ordinarie öppettider</h2>
+
+              <p class="card-introduction">
+                Markera Stängt för dagar då butiken inte har öppet.
+              </p>
+            </div>
+
+            <div
+              id="opening-hours-list"
+              class="opening-hours-list"
+            ></div>
+
+            <div class="actions">
+              <button
+                id="save-button"
+                class="save-button"
+                type="button"
+              >
+                Spara öppettider
+              </button>
+
+              <div
+                id="message"
+                class="message"
+                role="status"
+                aria-live="polite"
+              ></div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="information-section"
+          class="content-section"
+        >
+          <div class="card">
+            <div class="card-header">
+              <h2>Informationsrad</h2>
+
+              <p class="card-introduction">
+                Visa ett kort extra meddelande tillsammans med butikens öppetstatus.
+              </p>
+            </div>
+
+            <div class="information-form">
+              <label class="information-toggle">
+                <input
+                  id="information-enabled"
+                  type="checkbox"
+                >
+
+                <span>Visa extra meddelande på hemsidan</span>
+              </label>
+
+              <div class="field-group">
+                <label
+                  class="field-label"
+                  for="information-message"
+                >
+                  Meddelande
+                </label>
+
+                <textarea
+                  id="information-message"
+                  class="information-message-input"
+                  maxlength="180"
+                  placeholder="Exempel: Nya fotbollströjor har kommit in!"
+                  disabled
+                ></textarea>
+
+                <p class="field-help">
+                  Högst 180 tecken. Meddelandet visas bara när kryssrutan är markerad.
+                </p>
+              </div>
+
+              <div class="information-preview">
+                <p class="information-preview-title">Förhandsvisning</p>
+                <p
+                  id="information-preview-text"
+                  class="information-preview-text"
+                >
+                  Inget extra meddelande visas.
+                </p>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button
+                id="save-information-button"
+                class="save-button"
+                type="button"
+              >
+                Spara informationsrad
+              </button>
+
+              <div
+                id="information-message-status"
+                class="message"
+                role="status"
+                aria-live="polite"
+              ></div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="new-arrivals-section"
+          class="content-section"
+        >
+          <div class="card">
+            <div class="card-header">
+              <h2>Nyinkommet</h2>
+
+              <p class="card-introduction">
+                Ladda upp bilder som ska visas på sidan Nyinkommet.
+                De senast uppladdade visas först.
+              </p>
+            </div>
+
+            <div class="image-admin-form">
+              <div class="image-upload-grid">
+                <div class="field-group">
+                  <label
+                    class="field-label"
+                    for="new-arrival-image"
+                  >
+                    Välj bild
+                  </label>
+
+                  <input
+                    id="new-arrival-image"
+                    class="file-input"
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                  >
+
+                  <p class="field-help">
+                    Tillåtna format: JPG, PNG och WebP. Högst 8 MB.
+                  </p>
+                </div>
+
+                <div class="field-group">
+                  <label
+                    class="field-label"
+                    for="new-arrival-title"
+                  >
+                    Titel eller beskrivning
+                  </label>
+
+                  <input
+                    id="new-arrival-title"
+                    class="text-input"
+                    type="text"
+                    maxlength="80"
+                    placeholder="Exempel: Levi's 501"
+                  >
+
+                  <p class="field-help">
+                    Frivilligt. Högst 80 tecken.
+                  </p>
+                </div>
+              </div>
+
+              <div
+                id="new-arrival-preview"
+                class="upload-preview"
+              >
+                <img
+                  id="new-arrival-preview-image"
+                  alt="Förhandsvisning av vald bild"
+                >
+              </div>
+            </div>
+
+            <div class="actions">
+              <button
+                id="upload-new-arrival-button"
+                class="save-button"
+                type="button"
+              >
+                Ladda upp bild
+              </button>
+
+              <div
+                id="new-arrival-message"
+                class="message"
+                role="status"
+                aria-live="polite"
+              ></div>
+            </div>
+
+            <div
+              id="new-arrivals-list"
+              class="image-admin-list"
+            >
+              <p class="image-admin-empty">
+                Bilderna laddas...
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="gallery-section"
+          class="content-section"
+        >
+          <div class="card">
+            <div class="card-header">
+              <h2>Galleri – Butiken</h2>
+
+              <p class="card-introduction">
+                Ladda upp bilder från butiken. De senast uppladdade visas först.
+              </p>
+            </div>
+
+            <div class="image-admin-form">
+              <div class="image-upload-grid">
+                <div class="field-group">
+                  <label
+                    class="field-label"
+                    for="gallery-image"
+                  >
+                    Välj bild
+                  </label>
+
+                  <input
+                    id="gallery-image"
+                    class="file-input"
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                  >
+
+                  <p class="field-help">
+                    Tillåtna format: JPG, PNG och WebP. Högst 8 MB.
+                  </p>
+                </div>
+
+                <div class="field-group">
+                  <label
+                    class="field-label"
+                    for="gallery-title"
+                  >
+                    Titel eller beskrivning
+                  </label>
+
+                  <input
+                    id="gallery-title"
+                    class="text-input"
+                    type="text"
+                    maxlength="80"
+                    placeholder="Exempel: Jeansavdelningen"
+                  >
+
+                  <p class="field-help">
+                    Frivilligt. Högst 80 tecken.
+                  </p>
+                </div>
+              </div>
+
+              <div
+                id="gallery-preview"
+                class="upload-preview"
+              >
+                <img
+                  id="gallery-preview-image"
+                  alt="Förhandsvisning av vald galleribild"
+                >
+              </div>
+            </div>
+
+            <div class="actions">
+              <button
+                id="upload-gallery-button"
+                class="save-button"
+                type="button"
+              >
+                Ladda upp bild
+              </button>
+
+              <div
+                id="gallery-message"
+                class="message"
+                role="status"
+                aria-live="polite"
+              ></div>
+            </div>
+
+            <div
+              id="gallery-list"
+              class="image-admin-list"
+            >
+              <p class="image-admin-empty">
+                Bilderna laddas...
+              </p>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <footer class="footer">
+        <div>
+          <span class="footer-brand">
+            Container13 Vintage
+          </span>
+
+          <span class="footer-divider">|</span>
+
+          <span class="footer-label">
+            Adminpanel
+          </span>
+        </div>
+
+        <div class="footer-right">
+          © 2026 Container13. Alla rättigheter förbehållna.
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from
+      "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signOut
+    } from
+      "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+    import {
+      addDoc,
+      collection,
+      deleteDoc,
+      doc,
+      getDoc,
+      getDocs,
+      getFirestore,
+      orderBy,
+      query,
+      serverTimestamp,
+      setDoc
+    } from
+      "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+    import {
+      deleteObject,
+      getDownloadURL,
+      getStorage,
+      ref,
+      uploadBytes
+    } from
+      "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw",
+      authDomain: "container13-87c1a.firebaseapp.com",
+      projectId: "container13-87c1a",
+      storageBucket: "container13-87c1a.firebasestorage.app",
+      messagingSenderId: "936924614149",
+      appId: "1:936924614149:web:2b74d823951538fa2b166c",
+      measurementId: "G-PSHRGK4JJC"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const database = getFirestore(app);
+    const storage = getStorage(app);
+
+    const loadingScreen =
+      document.getElementById("loading-screen");
+
+    const userEmail =
+      document.getElementById("user-email");
+
+    const logoutButton =
+      document.getElementById("logout-button");
+
+    const topLogoutButton =
+      document.getElementById("top-logout-button");
+
+    const saveButton =
+      document.getElementById("save-button");
+
+    const message =
+      document.getElementById("message");
+
+    const openingHoursList =
+      document.getElementById("opening-hours-list");
+
+    const openingHoursMenu =
+      document.getElementById("opening-hours-menu");
+
+    const informationMenu =
+      document.getElementById("information-menu");
+
+    const openingHoursSection =
+      document.getElementById("opening-hours-section");
+
+    const informationSection =
+      document.getElementById("information-section");
+
+    const pageTitle =
+      document.querySelector(".page-title");
+
+    const pageDescription =
+      document.querySelector(".page-description");
+
+    const informationEnabled =
+      document.getElementById("information-enabled");
+
+    const informationMessageInput =
+      document.getElementById("information-message");
+
+    const informationPreviewText =
+      document.getElementById("information-preview-text");
+
+    const saveInformationButton =
+      document.getElementById("save-information-button");
+
+    const informationMessageStatus =
+      document.getElementById("information-message-status");
+
+    const newArrivalsMenu =
+      document.getElementById("new-arrivals-menu");
+
+    const newArrivalsSection =
+      document.getElementById("new-arrivals-section");
+
+    const newArrivalImageInput =
+      document.getElementById("new-arrival-image");
+
+    const newArrivalTitleInput =
+      document.getElementById("new-arrival-title");
+
+    const newArrivalPreview =
+      document.getElementById("new-arrival-preview");
+
+    const newArrivalPreviewImage =
+      document.getElementById("new-arrival-preview-image");
+
+    const uploadNewArrivalButton =
+      document.getElementById("upload-new-arrival-button");
+
+    const newArrivalMessage =
+      document.getElementById("new-arrival-message");
+
+    const newArrivalsList =
+      document.getElementById("new-arrivals-list");
+
+    const galleryMenu =
+      document.getElementById("gallery-menu");
+
+    const gallerySection =
+      document.getElementById("gallery-section");
+
+    const galleryImageInput =
+      document.getElementById("gallery-image");
+
+    const galleryTitleInput =
+      document.getElementById("gallery-title");
+
+    const galleryPreview =
+      document.getElementById("gallery-preview");
+
+    const galleryPreviewImage =
+      document.getElementById("gallery-preview-image");
+
+    const uploadGalleryButton =
+      document.getElementById("upload-gallery-button");
+
+    const galleryMessage =
+      document.getElementById("gallery-message");
+
+    const galleryList =
+      document.getElementById("gallery-list");
+
+    const days = [
+      {
+        id: "monday",
+        name: "Måndag",
+        closed: true,
+        open: "10:00",
+        close: "18:00"
+      },
+      {
+        id: "tuesday",
+        name: "Tisdag",
+        closed: true,
+        open: "10:00",
+        close: "18:00"
+      },
+      {
+        id: "wednesday",
+        name: "Onsdag",
+        closed: true,
+        open: "10:00",
+        close: "18:00"
+      },
+      {
+        id: "thursday",
+        name: "Torsdag",
+        closed: false,
+        open: "12:00",
+        close: "17:00"
+      },
+      {
+        id: "friday",
+        name: "Fredag",
+        closed: false,
+        open: "12:00",
+        close: "17:00"
+      },
+      {
+        id: "saturday",
+        name: "Lördag",
+        closed: false,
+        open: "11:00",
+        close: "16:00"
+      },
+      {
+        id: "sunday",
+        name: "Söndag",
+        closed: false,
+        open: "11:00",
+        close: "16:00"
+      }
+    ];
+
+    function showMessage(text, type) {
+      const icon = type === "success" ? "✓" : "⚠";
+
+      message.textContent = `${icon} ${text}`;
+      message.className = `message ${type}`;
+    }
+
+    function clearMessage() {
+      message.textContent = "";
+      message.className = "message";
+    }
+
+    function updateTimeWrapperState(
+      openTime,
+      closeTime,
+      closed
+    ) {
+      const openWrapper =
+        openTime.closest(".time-wrapper");
+
+      const closeWrapper =
+        closeTime.closest(".time-wrapper");
+
+      openWrapper.classList.toggle("disabled", closed);
+      closeWrapper.classList.toggle("disabled", closed);
+    }
+
+    function createDayRow(day) {
+      const row = document.createElement("div");
+
+      row.className = "day-row";
+      row.dataset.day = day.id;
+
+      row.innerHTML = `
+        <div class="day-name">${day.name}</div>
+
+        <label class="closed-control">
+          <input
+            class="closed-checkbox"
+            type="checkbox"
+            ${day.closed ? "checked" : ""}
+          >
+
+          <span>Stängt</span>
+        </label>
+
+        <div class="time-controls">
+          <div
+            class="time-wrapper
+            ${day.closed ? "disabled" : ""}"
+          >
+            <input
+              class="open-time"
+              type="time"
+              value="${day.open}"
+              aria-label="${day.name} öppnar"
+              ${day.closed ? "disabled" : ""}
+            >
+          </div>
+
+          <span class="time-separator">till</span>
+
+          <div
+            class="time-wrapper
+            ${day.closed ? "disabled" : ""}"
+          >
+            <input
+              class="close-time"
+              type="time"
+              value="${day.close}"
+              aria-label="${day.name} stänger"
+              ${day.closed ? "disabled" : ""}
+            >
+          </div>
+        </div>
+      `;
+
+      const closedCheckbox =
+        row.querySelector(".closed-checkbox");
+
+      const openTime =
+        row.querySelector(".open-time");
+
+      const closeTime =
+        row.querySelector(".close-time");
+
+      closedCheckbox.addEventListener("change", () => {
+        const closed = closedCheckbox.checked;
+
+        openTime.disabled = closed;
+        closeTime.disabled = closed;
+
+        updateTimeWrapperState(
+          openTime,
+          closeTime,
+          closed
+        );
+
+        clearMessage();
+      });
+
+      openTime.addEventListener("change", clearMessage);
+      closeTime.addEventListener("change", clearMessage);
+
+      return row;
+    }
+
+    function renderOpeningHours(openingHours = {}) {
+      openingHoursList.innerHTML = "";
+
+      days.forEach((defaultDay) => {
+        const savedDay =
+          openingHours[defaultDay.id] || {};
+
+        const day = {
+          ...defaultDay,
+          ...savedDay
+        };
+
+        openingHoursList.appendChild(
+          createDayRow(day)
+        );
+      });
+    }
+
+    function collectOpeningHours() {
+      const openingHours = {};
+
+      const rows =
+        openingHoursList.querySelectorAll(".day-row");
+
+      rows.forEach((row) => {
+        const dayId = row.dataset.day;
+
+        const closed =
+          row.querySelector(
+            ".closed-checkbox"
+          ).checked;
+
+        const open =
+          row.querySelector(".open-time").value;
+
+        const close =
+          row.querySelector(".close-time").value;
+
+        openingHours[dayId] = {
+          closed,
+          open,
+          close
+        };
+      });
+
+      return openingHours;
+    }
+
+    function validateOpeningHours(openingHours) {
+      for (const day of days) {
+        const values = openingHours[day.id];
+
+        if (values.closed) {
+          continue;
+        }
+
+        if (!values.open || !values.close) {
+          return `${day.name} saknar en öppnings- eller stängningstid.`;
+        }
+
+        if (values.open >= values.close) {
+          return `${day.name}: stängningstiden måste vara senare än öppningstiden.`;
+        }
+      }
+
+      return "";
+    }
+
+    function showInformationStatus(text, type) {
+      const icon = type === "success" ? "✓" : "⚠";
+
+      informationMessageStatus.textContent = `${icon} ${text}`;
+      informationMessageStatus.className = `message ${type}`;
+    }
+
+    function clearInformationStatus() {
+      informationMessageStatus.textContent = "";
+      informationMessageStatus.className = "message";
+    }
+
+    function updateInformationPreview() {
+      const enabled = informationEnabled.checked;
+      const text = informationMessageInput.value.trim();
+
+      informationMessageInput.disabled = !enabled;
+
+      if (!enabled) {
+        informationPreviewText.textContent =
+          "Inget extra meddelande visas.";
+        return;
+      }
+
+      informationPreviewText.textContent = text
+        ? `📢 ${text}`
+        : "Skriv ett meddelande för att se förhandsvisningen.";
+    }
+
+    function showSection(sectionName) {
+      const showOpeningHours =
+        sectionName === "opening-hours";
+
+      const showInformation =
+        sectionName === "information";
+
+      const showNewArrivals =
+        sectionName === "new-arrivals";
+
+      const showGallery =
+        sectionName === "gallery";
+
+      openingHoursSection.classList.toggle(
+        "active",
+        showOpeningHours
+      );
+
+      informationSection.classList.toggle(
+        "active",
+        showInformation
+      );
+
+      newArrivalsSection.classList.toggle(
+        "active",
+        showNewArrivals
+      );
+
+      gallerySection.classList.toggle(
+        "active",
+        showGallery
+      );
+
+      openingHoursMenu.classList.toggle(
+        "active",
+        showOpeningHours
+      );
+
+      informationMenu.classList.toggle(
+        "active",
+        showInformation
+      );
+
+      newArrivalsMenu.classList.toggle(
+        "active",
+        showNewArrivals
+      );
+
+      galleryMenu.classList.toggle(
+        "active",
+        showGallery
+      );
+
+      if (showOpeningHours) {
+        pageTitle.textContent = "Öppettider";
+        pageDescription.textContent =
+          "Ändra butikens ordinarie öppettider.";
+      }
+
+      if (showInformation) {
+        pageTitle.textContent = "Informationsrad";
+        pageDescription.textContent =
+          "Hantera det extra meddelandet som visas på hemsidan.";
+      }
+
+      if (showNewArrivals) {
+        pageTitle.textContent = "Nyinkommet";
+        pageDescription.textContent =
+          "Ladda upp och ta bort bilder på nyinkomna varor.";
+      }
+
+      if (showGallery) {
+        pageTitle.textContent = "Galleri";
+        pageDescription.textContent =
+          "Ladda upp och ta bort bilder från butiken.";
+      }
+    }
+
+    async function loadInformationBar() {
+      clearInformationStatus();
+
+      try {
+        const documentReference =
+          doc(
+            database,
+            "settings",
+            "informationBar"
+          );
+
+        const documentSnapshot =
+          await getDoc(documentReference);
+
+        if (documentSnapshot.exists()) {
+          const data = documentSnapshot.data();
+
+          informationEnabled.checked =
+            data.enabled === true;
+
+          informationMessageInput.value =
+            data.message || "";
+        } else {
+          informationEnabled.checked = false;
+          informationMessageInput.value = "";
+        }
+
+        updateInformationPreview();
+      } catch (error) {
+        console.error(
+          "Kunde inte hämta informationsraden:",
+          error
+        );
+
+        updateInformationPreview();
+
+        showInformationStatus(
+          "Informationsraden kunde inte hämtas. Firestores säkerhetsregler behöver kontrolleras.",
+          "error"
+        );
+      }
+    }
+
+    async function saveInformationBar() {
+      clearInformationStatus();
+
+      const enabled = informationEnabled.checked;
+      const informationText =
+        informationMessageInput.value.trim();
+
+      if (enabled && !informationText) {
+        showInformationStatus(
+          "Skriv ett meddelande eller avmarkera kryssrutan.",
+          "error"
+        );
+        return;
+      }
+
+      if (!auth.currentUser) {
+        showInformationStatus(
+          "Du är inte längre inloggad. Logga in igen.",
+          "error"
+        );
+        return;
+      }
+
+      saveInformationButton.disabled = true;
+      saveInformationButton.textContent = "Sparar...";
+
+      try {
+        const documentReference =
+          doc(
+            database,
+            "settings",
+            "informationBar"
+          );
+
+        await setDoc(
+          documentReference,
+          {
+            enabled,
+            message: informationText,
+            updatedAt: serverTimestamp(),
+            updatedBy:
+              auth.currentUser.email || ""
+          },
+          {
+            merge: true
+          }
+        );
+
+        showInformationStatus(
+          "Informationsraden har sparats.",
+          "success"
+        );
+      } catch (error) {
+        console.error(
+          "Kunde inte spara informationsraden:",
+          error
+        );
+
+        showInformationStatus(
+          "Det gick inte att spara. Firestores säkerhetsregler behöver kontrolleras.",
+          "error"
+        );
+      } finally {
+        saveInformationButton.disabled = false;
+        saveInformationButton.textContent =
+          "Spara informationsrad";
+      }
+    }
+
+
+    function showNewArrivalStatus(text, type) {
+      const icon = type === "success" ? "✓" : "⚠";
+
+      newArrivalMessage.textContent = `${icon} ${text}`;
+      newArrivalMessage.className = `message ${type}`;
+    }
+
+    function clearNewArrivalStatus() {
+      newArrivalMessage.textContent = "";
+      newArrivalMessage.className = "message";
+    }
+
+    function resetNewArrivalForm() {
+      newArrivalImageInput.value = "";
+      newArrivalTitleInput.value = "";
+      newArrivalPreviewImage.removeAttribute("src");
+      newArrivalPreview.classList.remove("visible");
+    }
+
+    function createSafeFileName(fileName) {
+      const extension =
+        fileName.includes(".")
+          ? fileName.split(".").pop().toLowerCase()
+          : "jpg";
+
+      const randomPart =
+        Math.random().toString(36).slice(2, 10);
+
+      return `${Date.now()}-${randomPart}.${extension}`;
+    }
+
+    function renderNewArrivals(items) {
+      newArrivalsList.innerHTML = "";
+
+      if (items.length === 0) {
+        newArrivalsList.innerHTML = `
+          <p class="image-admin-empty">
+            Inga bilder har laddats upp ännu.
+          </p>
+        `;
+
+        return;
+      }
+
+      items.forEach((item) => {
+        const article =
+          document.createElement("article");
+
+        article.className = "image-admin-item";
+
+        const image =
+          document.createElement("img");
+
+        image.src = item.imageUrl;
+        image.alt =
+          item.title || "Nyinkommet hos Container13";
+        image.loading = "lazy";
+
+        const content =
+          document.createElement("div");
+
+        content.className =
+          "image-admin-item-content";
+
+        const title =
+          document.createElement("p");
+
+        title.className =
+          "image-admin-title";
+
+        title.textContent =
+          item.title || "Ingen titel";
+
+        const deleteButton =
+          document.createElement("button");
+
+        deleteButton.className =
+          "delete-image-button";
+
+        deleteButton.type = "button";
+        deleteButton.textContent = "Ta bort bild";
+
+        deleteButton.addEventListener(
+          "click",
+          async () => {
+            const confirmed =
+              window.confirm(
+                "Vill du ta bort den här bilden?"
+              );
+
+            if (!confirmed) {
+              return;
+            }
+
+            deleteButton.disabled = true;
+            deleteButton.textContent = "Tar bort...";
+
+            try {
+              if (item.storagePath) {
+                const storageReference =
+                  ref(storage, item.storagePath);
+
+                await deleteObject(storageReference);
+              }
+
+              await deleteDoc(
+                doc(database, "gallery", item.id)
+              );
+
+              showNewArrivalStatus(
+                "Bilden har tagits bort.",
+                "success"
+              );
+
+              await loadNewArrivals();
+            } catch (error) {
+              console.error(
+                "Kunde inte ta bort bilden:",
+                error
+              );
+
+              showNewArrivalStatus(
+                "Det gick inte att ta bort bilden.",
+                "error"
+              );
+
+              deleteButton.disabled = false;
+              deleteButton.textContent =
+                "Ta bort bild";
+            }
+          }
+        );
+
+        content.appendChild(title);
+        content.appendChild(deleteButton);
+
+        article.appendChild(image);
+        article.appendChild(content);
+
+        newArrivalsList.appendChild(article);
+      });
+    }
+
+    async function loadNewArrivals() {
+      try {
+        const galleryQuery =
+          query(
+            collection(database, "gallery"),
+            orderBy("createdAt", "desc")
+          );
+
+        const snapshot =
+          await getDocs(galleryQuery);
+
+        const items =
+          snapshot.docs
+            .map((galleryDocument) => ({
+              id: galleryDocument.id,
+              ...galleryDocument.data()
+            }))
+            .filter(
+              (item) =>
+                item.category === "nyinkommet"
+            );
+
+        renderNewArrivals(items);
+      } catch (error) {
+        console.error(
+          "Kunde inte hämta Nyinkommet:",
+          error
+        );
+
+        newArrivalsList.innerHTML = `
+          <p class="image-admin-empty">
+            Bilderna kunde inte hämtas.
+            Kontrollera Firestores säkerhetsregler.
+          </p>
+        `;
+      }
+    }
+
+    async function uploadNewArrival() {
+      clearNewArrivalStatus();
+
+      const file =
+        newArrivalImageInput.files[0];
+
+      const title =
+        newArrivalTitleInput.value.trim();
+
+      if (!file) {
+        showNewArrivalStatus(
+          "Välj en bild först.",
+          "error"
+        );
+        return;
+      }
+
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+      ];
+
+      if (!allowedTypes.includes(file.type)) {
+        showNewArrivalStatus(
+          "Bilden måste vara JPG, PNG eller WebP.",
+          "error"
+        );
+        return;
+      }
+
+      const maximumFileSize =
+        8 * 1024 * 1024;
+
+      if (file.size > maximumFileSize) {
+        showNewArrivalStatus(
+          "Bilden är större än 8 MB.",
+          "error"
+        );
+        return;
+      }
+
+      if (!auth.currentUser) {
+        showNewArrivalStatus(
+          "Du är inte längre inloggad. Logga in igen.",
+          "error"
+        );
+        return;
+      }
+
+      uploadNewArrivalButton.disabled = true;
+      uploadNewArrivalButton.textContent =
+        "Laddar upp...";
+
+      try {
+        const safeFileName =
+          createSafeFileName(file.name);
+
+        const storagePath =
+          `nyinkommet/${safeFileName}`;
+
+        const storageReference =
+          ref(storage, storagePath);
+
+        await uploadBytes(
+          storageReference,
+          file,
+          {
+            contentType: file.type
+          }
+        );
+
+        const imageUrl =
+          await getDownloadURL(storageReference);
+
+        await addDoc(
+          collection(database, "gallery"),
+          {
+            category: "nyinkommet",
+            imageUrl,
+            storagePath,
+            title,
+            createdAt: serverTimestamp(),
+            createdBy:
+              auth.currentUser.email || ""
+          }
+        );
+
+        resetNewArrivalForm();
+
+        showNewArrivalStatus(
+          "Bilden har laddats upp.",
+          "success"
+        );
+
+        await loadNewArrivals();
+      } catch (error) {
+        console.error(
+          "Kunde inte ladda upp bilden:",
+          error
+        );
+
+        showNewArrivalStatus(
+          "Uppladdningen misslyckades. Firebase Storage eller säkerhetsreglerna behöver kontrolleras.",
+          "error"
+        );
+      } finally {
+        uploadNewArrivalButton.disabled = false;
+        uploadNewArrivalButton.textContent =
+          "Ladda upp bild";
+      }
+    }
+
+
+    function showGalleryStatus(text, type) {
+      const icon = type === "success" ? "✓" : "⚠";
+
+      galleryMessage.textContent = `${icon} ${text}`;
+      galleryMessage.className = `message ${type}`;
+    }
+
+    function clearGalleryStatus() {
+      galleryMessage.textContent = "";
+      galleryMessage.className = "message";
+    }
+
+    function resetGalleryForm() {
+      galleryImageInput.value = "";
+      galleryTitleInput.value = "";
+      galleryPreviewImage.removeAttribute("src");
+      galleryPreview.classList.remove("visible");
+    }
+
+    function renderGallery(items) {
+      galleryList.innerHTML = "";
+
+      if (items.length === 0) {
+        galleryList.innerHTML = `
+          <p class="image-admin-empty">
+            Inga galleribilder har laddats upp ännu.
+          </p>
+        `;
+
+        return;
+      }
+
+      items.forEach((item) => {
+        const article =
+          document.createElement("article");
+
+        article.className = "image-admin-item";
+
+        const image =
+          document.createElement("img");
+
+        image.src = item.imageUrl;
+        image.alt =
+          item.title || "Bild från Container13";
+        image.loading = "lazy";
+
+        const content =
+          document.createElement("div");
+
+        content.className =
+          "image-admin-item-content";
+
+        const title =
+          document.createElement("p");
+
+        title.className =
+          "image-admin-title";
+
+        title.textContent =
+          item.title || "Ingen titel";
+
+        const deleteButton =
+          document.createElement("button");
+
+        deleteButton.className =
+          "delete-image-button";
+
+        deleteButton.type = "button";
+        deleteButton.textContent = "Ta bort bild";
+
+        deleteButton.addEventListener(
+          "click",
+          async () => {
+            const confirmed =
+              window.confirm(
+                "Vill du ta bort den här galleribilden?"
+              );
+
+            if (!confirmed) {
+              return;
+            }
+
+            deleteButton.disabled = true;
+            deleteButton.textContent = "Tar bort...";
+
+            try {
+              if (item.storagePath) {
+                const storageReference =
+                  ref(storage, item.storagePath);
+
+                await deleteObject(storageReference);
+              }
+
+              await deleteDoc(
+                doc(database, "gallery", item.id)
+              );
+
+              showGalleryStatus(
+                "Bilden har tagits bort.",
+                "success"
+              );
+
+              await loadGallery();
+            } catch (error) {
+              console.error(
+                "Kunde inte ta bort galleribilden:",
+                error
+              );
+
+              showGalleryStatus(
+                "Det gick inte att ta bort bilden.",
+                "error"
+              );
+
+              deleteButton.disabled = false;
+              deleteButton.textContent =
+                "Ta bort bild";
+            }
+          }
+        );
+
+        content.appendChild(title);
+        content.appendChild(deleteButton);
+
+        article.appendChild(image);
+        article.appendChild(content);
+
+        galleryList.appendChild(article);
+      });
+    }
+
+    async function loadGallery() {
+      try {
+        const galleryQuery =
+          query(
+            collection(database, "gallery"),
+            orderBy("createdAt", "desc")
+          );
+
+        const snapshot =
+          await getDocs(galleryQuery);
+
+        const items =
+          snapshot.docs
+            .map((galleryDocument) => ({
+              id: galleryDocument.id,
+              ...galleryDocument.data()
+            }))
+            .filter(
+              (item) =>
+                item.category === "galleri"
+            );
+
+        renderGallery(items);
+      } catch (error) {
+        console.error(
+          "Kunde inte hämta Galleri:",
+          error
+        );
+
+        galleryList.innerHTML = `
+          <p class="image-admin-empty">
+            Galleribilderna kunde inte hämtas.
+            Kontrollera Firestores säkerhetsregler.
+          </p>
+        `;
+      }
+    }
+
+    async function uploadGalleryImage() {
+      clearGalleryStatus();
+
+      const file =
+        galleryImageInput.files[0];
+
+      const title =
+        galleryTitleInput.value.trim();
+
+      if (!file) {
+        showGalleryStatus(
+          "Välj en bild först.",
+          "error"
+        );
+        return;
+      }
+
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+      ];
+
+      if (!allowedTypes.includes(file.type)) {
+        showGalleryStatus(
+          "Bilden måste vara JPG, PNG eller WebP.",
+          "error"
+        );
+        return;
+      }
+
+      const maximumFileSize =
+        8 * 1024 * 1024;
+
+      if (file.size > maximumFileSize) {
+        showGalleryStatus(
+          "Bilden är större än 8 MB.",
+          "error"
+        );
+        return;
+      }
+
+      if (!auth.currentUser) {
+        showGalleryStatus(
+          "Du är inte längre inloggad. Logga in igen.",
+          "error"
+        );
+        return;
+      }
+
+      uploadGalleryButton.disabled = true;
+      uploadGalleryButton.textContent =
+        "Laddar upp...";
+
+      try {
+        const safeFileName =
+          createSafeFileName(file.name);
+
+        const storagePath =
+          `galleri/${safeFileName}`;
+
+        const storageReference =
+          ref(storage, storagePath);
+
+        await uploadBytes(
+          storageReference,
+          file,
+          {
+            contentType: file.type
+          }
+        );
+
+        const imageUrl =
+          await getDownloadURL(storageReference);
+
+        await addDoc(
+          collection(database, "gallery"),
+          {
+            category: "galleri",
+            imageUrl,
+            storagePath,
+            title,
+            createdAt: serverTimestamp(),
+            createdBy:
+              auth.currentUser.email || ""
+          }
+        );
+
+        resetGalleryForm();
+
+        showGalleryStatus(
+          "Galleribilden har laddats upp.",
+          "success"
+        );
+
+        await loadGallery();
+      } catch (error) {
+        console.error(
+          "Kunde inte ladda upp galleribilden:",
+          error
+        );
+
+        showGalleryStatus(
+          "Uppladdningen misslyckades. Kontrollera Storage-reglerna.",
+          "error"
+        );
+      } finally {
+        uploadGalleryButton.disabled = false;
+        uploadGalleryButton.textContent =
+          "Ladda upp bild";
+      }
+    }
+
+    async function loadOpeningHours() {
+      clearMessage();
+
+      try {
+        const documentReference =
+          doc(
+            database,
+            "settings",
+            "openingHours"
+          );
+
+        const documentSnapshot =
+          await getDoc(documentReference);
+
+        if (documentSnapshot.exists()) {
+          renderOpeningHours(
+            documentSnapshot.data().days || {}
+          );
+        } else {
+          renderOpeningHours();
+        }
+      } catch (error) {
+        console.error(
+          "Kunde inte hämta öppettider:",
+          error
+        );
+
+        renderOpeningHours();
+
+        showMessage(
+          "Öppettiderna kunde inte hämtas. Firestores säkerhetsregler behöver kontrolleras.",
+          "error"
+        );
+      }
+    }
+
+    async function saveOpeningHours() {
+      clearMessage();
+
+      const openingHours =
+        collectOpeningHours();
+
+      const validationError =
+        validateOpeningHours(openingHours);
+
+      if (validationError) {
+        showMessage(validationError, "error");
+        return;
+      }
+
+      if (!auth.currentUser) {
+        showMessage(
+          "Du är inte längre inloggad. Logga in igen.",
+          "error"
+        );
+
+        return;
+      }
+
+      saveButton.disabled = true;
+      saveButton.textContent = "Sparar...";
+
+      try {
+        const documentReference =
+          doc(
+            database,
+            "settings",
+            "openingHours"
+          );
+
+        await setDoc(
+          documentReference,
+          {
+            days: openingHours,
+            updatedAt: serverTimestamp(),
+            updatedBy:
+              auth.currentUser.email || ""
+          },
+          {
+            merge: true
+          }
+        );
+
+        showMessage(
+          "Öppettiderna har sparats.",
+          "success"
+        );
+      } catch (error) {
+        console.error(
+          "Kunde inte spara öppettider:",
+          error
+        );
+
+        showMessage(
+          "Det gick inte att spara. Firestores säkerhetsregler behöver ställas in.",
+          "error"
+        );
+      } finally {
+        saveButton.disabled = false;
+        saveButton.textContent =
+          "Spara öppettider";
+      }
+    }
+
+    async function logOutAdministrator() {
+      clearMessage();
+
+      try {
+        await signOut(auth);
+
+        window.location.replace(
+          "./index.html"
+        );
+      } catch (error) {
+        console.error(
+          "Kunde inte logga ut:",
+          error
+        );
+
+        showMessage(
+          "Det gick inte att logga ut. Försök igen.",
+          "error"
+        );
+      }
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.replace(
+          "./index.html"
+        );
+
+        return;
+      }
+
+      userEmail.textContent =
+        user.email || "Administratör";
+
+      await Promise.all([
+        loadOpeningHours(),
+        loadInformationBar(),
+        loadNewArrivals(),
+        loadGallery()
+      ]);
+
+      loadingScreen.classList.add("hidden");
+    });
+
+    saveButton.addEventListener(
+      "click",
+      saveOpeningHours
+    );
+
+    saveInformationButton.addEventListener(
+      "click",
+      saveInformationBar
+    );
+
+    openingHoursMenu.addEventListener(
+      "click",
+      () => showSection("opening-hours")
+    );
+
+    informationMenu.addEventListener(
+      "click",
+      () => showSection("information")
+    );
+
+    galleryMenu.addEventListener(
+      "click",
+      () => showSection("gallery")
+    );
+
+    uploadGalleryButton.addEventListener(
+      "click",
+      uploadGalleryImage
+    );
+
+    galleryImageInput.addEventListener(
+      "change",
+      () => {
+        clearGalleryStatus();
+
+        const file =
+          galleryImageInput.files[0];
+
+        if (!file) {
+          galleryPreviewImage.removeAttribute("src");
+          galleryPreview.classList.remove("visible");
+          return;
+        }
+
+        const previewUrl =
+          URL.createObjectURL(file);
+
+        galleryPreviewImage.src =
+          previewUrl;
+
+        galleryPreview.classList.add("visible");
+
+        galleryPreviewImage.onload = () => {
+          URL.revokeObjectURL(previewUrl);
+        };
+      }
+    );
+
+    newArrivalsMenu.addEventListener(
+      "click",
+      () => showSection("new-arrivals")
+    );
+
+    uploadNewArrivalButton.addEventListener(
+      "click",
+      uploadNewArrival
+    );
+
+    newArrivalImageInput.addEventListener(
+      "change",
+      () => {
+        clearNewArrivalStatus();
+
+        const file =
+          newArrivalImageInput.files[0];
+
+        if (!file) {
+          newArrivalPreviewImage.removeAttribute("src");
+          newArrivalPreview.classList.remove("visible");
+          return;
+        }
+
+        const previewUrl =
+          URL.createObjectURL(file);
+
+        newArrivalPreviewImage.src =
+          previewUrl;
+
+        newArrivalPreview.classList.add("visible");
+
+        newArrivalPreviewImage.onload = () => {
+          URL.revokeObjectURL(previewUrl);
+        };
+      }
+    );
+
+    informationEnabled.addEventListener(
+      "change",
+      () => {
+        clearInformationStatus();
+        updateInformationPreview();
+      }
+    );
+
+    informationMessageInput.addEventListener(
+      "input",
+      () => {
+        clearInformationStatus();
+        updateInformationPreview();
+      }
+    );
+
+    logoutButton.addEventListener(
+      "click",
+      logOutAdministrator
+    );
+
+    topLogoutButton.addEventListener(
+      "click",
+      logOutAdministrator
+    );
+  </script>
+</body>
+</html>

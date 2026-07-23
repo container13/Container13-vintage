@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Container13 Admin</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #f5f5f5;
+      background:
+        linear-gradient(
+          rgba(0, 0, 0, 0.72),
+          rgba(0, 0, 0, 0.82)
+        ),
+        #191919;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 430px;
+      padding: 38px 30px;
+      border: 1px solid #444;
+      border-radius: 14px;
+      background-color: #252525;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+    }
+
+    .logo {
+      margin: 0 0 8px;
+      text-align: center;
+      font-size: 34px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      margin: 0 0 30px;
+      text-align: center;
+      color: #bdbdbd;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #666;
+      border-radius: 7px;
+      outline: none;
+      font-size: 16px;
+      color: #ffffff;
+      background-color: #171717;
+    }
+
+    input:focus {
+      border-color: #ffffff;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: 0;
+      border-radius: 7px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #111111;
+      background-color: #ffffff;
+    }
+
+    button:hover {
+      background-color: #dddddd;
+    }
+
+    button:disabled {
+      cursor: wait;
+      opacity: 0.65;
+    }
+
+    .message {
+      display: none;
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 7px;
+      text-align: center;
+    }
+
+    .message.error {
+      display: block;
+      color: #ffd8d8;
+      background-color: #6d2020;
+    }
+
+    .message.success {
+      display: block;
+      color: #dfffe4;
+      background-color: #235d2e;
+    }
+
+    .footer-text {
+      margin: 25px 0 0;
+      text-align: center;
+      font-size: 13px;
+      color: #8e8e8e;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="login-container">
+    <h1 class="logo">Container13</h1>
+    <p class="subtitle">Administratörsinloggning</p>
+
+    <form id="login-form">
+      <div class="form-group">
+        <label for="email">E-postadress</label>
+
+        <input
+          id="email"
+          name="email"
+          type="email"
+          autocomplete="username"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">Lösenord</label>
+
+        <input
+          id="password"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          required
+        >
+      </div>
+
+      <button id="login-button" type="submit">
+        Logga in
+      </button>
+
+      <div
+        id="message"
+        class="message"
+        role="status"
+        aria-live="polite"
+      ></div>
+    </form>
+
+    <p class="footer-text">
+      Endast för behöriga administratörer
+    </p>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from
+      "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signInWithEmailAndPassword
+    } from
+      "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw",
+      authDomain: "container13-87c1a.firebaseapp.com",
+      projectId: "container13-87c1a",
+      storageBucket: "container13-87c1a.firebasestorage.app",
+      messagingSenderId: "936924614149",
+      appId: "1:936924614149:web:2b74d823951538fa2b166c",
+      measurementId: "G-PSHRGK4JJC"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const loginForm = document.getElementById("login-form");
+    const loginButton = document.getElementById("login-button");
+    const message = document.getElementById("message");
+
+    function showMessage(text, type) {
+      message.textContent = text;
+      message.className = `message ${type}`;
+    }
+
+    function clearMessage() {
+      message.textContent = "";
+      message.className = "message";
+    }
+
+    function getSwedishErrorMessage(errorCode) {
+      switch (errorCode) {
+        case "auth/invalid-email":
+          return "E-postadressen är inte korrekt.";
+
+        case "auth/invalid-credential":
+        case "auth/user-not-found":
+        case "auth/wrong-password":
+          return "Fel e-postadress eller lösenord.";
+
+        case "auth/too-many-requests":
+          return "För många försök. Vänta en stund och försök igen.";
+
+        case "auth/network-request-failed":
+          return "Nätverksfel. Kontrollera internetanslutningen.";
+
+        default:
+          return "Inloggningen misslyckades. Försök igen.";
+      }
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.location.replace("./panel.html");
+      }
+    });
+
+    loginForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      clearMessage();
+
+      const email = document
+        .getElementById("email")
+        .value
+        .trim();
+
+      const password = document
+        .getElementById("password")
+        .value;
+
+      loginButton.disabled = true;
+      loginButton.textContent = "Loggar in...";
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch (error) {
+        showMessage(
+          getSwedishErrorMessage(error.code),
+          "error"
+        );
+
+        loginButton.disabled = false;
+        loginButton.textContent = "Logga in";
+      }
+    });
+  </script>
+</body>
+</html>
