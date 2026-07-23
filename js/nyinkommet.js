@@ -1,172 +1,158 @@
 import { db, storage } from "./firebase.js";
 
 import {
-  collection,
-  getDocs
+    collection,
+    getDocs
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 import {
-  ref,
-  getDownloadURL
+    ref,
+    getDownloadURL
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
 
 
-const gallery = document.getElementById("nyGallery");
-
-const lightbox = document.getElementById("lightbox");
-const lightboxImage = document.getElementById("lightboxImage");
-
-const closeButton = document.getElementById("close");
-const previousButton = document.querySelector(".prev");
-const nextButton = document.querySelector(".next");
-
-let images = [];
-let current = 0;
+document.addEventListener("DOMContentLoaded", () => {
+    loadNyinkommet();
+});
 
 
+async function loadNyinkommet() {
 
-async function getImageUrl(url) {
+    const gallery = document.getElementById("nyGallery");
 
-    if (!url) return "";
-
-    if (url.startsWith("https://")) {
-        return url;
+    if (!gallery) {
+        console.error('Elementet "nyGallery" saknas.');
+        return;
     }
 
-    if (url.startsWith("gs://")) {
+    gallery.innerHTML = "<p>Hämtar bilder från Firebase...</p>";
 
-        const path = url.replace(
-            "gs://container13-87c1a.firebasestorage.app/",
-            ""
+    try {
+
+        const snapshot = await getDocs(
+            collection(db, "gallery")
         );
 
-        return await getDownloadURL(
-            ref(storage, path)
-        );
-
-    }
-
-    return url;
-
-}
+        let images = snapshot.docs
+            .map((doc) => ({
+                id: doc.id,
+                ...doc.data()
+            }))
+            .filter((item) => item.category === "nyinkommet");
 
 
+        if (images.length === 0) {
 
-function openLightbox(index){
+            gallery.innerHTML =
+                `<p>Firestore svarade, men inget dokument har category = nyinkommet.</p>`;
 
-    current=index;
-
-    lightbox.style.display="flex";
-
-    lightboxImage.src=images[index].imageUrl;
-
-}
-
-
-
-function closeLightbox(){
-
-    lightbox.style.display="none";
-
-}
-
-
-
-async function loadGallery(){
-
-    gallery.innerHTML="<p>Hämtar bilder...</p>";
-
-    try{
-
-        const snapshot=await getDocs(collection(db,"gallery"));
-
-        let docs=snapshot.docs
-            .map(doc=>doc.data())
-            .filter(item=>item.category==="nyinkommet");
-
-        docs.sort((a,b)=>{
-
-            const ta=a.createdAt?.seconds||0;
-            const tb=b.createdAt?.seconds||0;
-
-            return tb-ta;
-
-        });
-
-        docs=docs.slice(0,4);
-
-        for(const item of docs){
-
-            item.imageUrl=await getImageUrl(item.imageUrl);
-
-        }
-
-        images=docs;
-
-        gallery.innerHTML="";
-
-        if(images.length===0){
-
-            gallery.innerHTML="<p>Inga bilder.</p>";
             return;
-
         }
 
-        images.forEach((item,index)=>{
 
-            const img=document.createElement("img");
+        images.sort((a, b) => {
 
-            img.src=item.imageUrl;
+            const timeA = a.createdAt?.seconds || 0;
+            const timeB = b.createdAt?.seconds || 0;
 
-            img.alt="Nyinkommet";
-
-            img.loading="lazy";
-
-            img.onclick=()=>{
-
-                openLightbox(index);
-
-            };
-
-            gallery.appendChild(img);
-
+            return timeB - timeA;
         });
 
-    }
 
-    catch(error){
+        images = images.slice(0, 4);
+
+        gallery.innerHTML = "";
+
+
+        for (const item of images) {
+
+            if (!item.imageUrl) {
+
+                const message = document.createElement("p");
+
+                message.textContent =
+                    `Dokumentet ${item.id} saknar imageUrl.`;
+
+                gallery.appendChild(message);
+
+                continue;
+            }
+
+
+            let imageUrl = item.imageUrl;
+
+
+            try {
+
+                if (imageUrl.startsWith("gs://")) {
+
+                    const storageReference = ref(
+                        storage,
+                        imageUrl
+                    );
+
+                    imageUrl = await getDownloadURL(
+                        storageReference
+                    );
+                }
+
+            } catch (storageError) {
+
+                const message = document.createElement("p");
+
+                message.textContent =
+                    `Storage-fel: ${storageError.message}`;
+
+                gallery.appendChild(message);
+
+                console.error(storageError);
+
+                continue;
+            }
+
+
+            const image = document.createElement("img");
+
+            image.src = imageUrl;
+            image.alt = "Nyinkommet";
+            image.loading = "lazy";
+
+
+            image.addEventListener("load", () => {
+
+                console.log(
+                    "Bilden laddades:",
+                    imageUrl
+                );
+            });
+
+
+            image.addEventListener("error", () => {
+
+                image.remove();
+
+                const message = document.createElement("p");
+
+                message.textContent =
+                    `Bildadressen hittades, men bilden kunde inte visas: ${imageUrl}`;
+
+                gallery.appendChild(message);
+
+                console.error(
+                    "Bilden kunde inte visas:",
+                    imageUrl
+                );
+            });
+
+
+            gallery.appendChild(image);
+        }
+
+    } catch (error) {
 
         console.error(error);
 
-        gallery.innerHTML="<p>Kunde inte hämta bilder.</p>";
-
+        gallery.innerHTML =
+            `<p>Firestore-fel: ${error.message}</p>`;
     }
-
 }
-
-
-
-closeButton?.addEventListener("click",closeLightbox);
-
-previousButton?.addEventListener("click",()=>{
-
-    current--;
-
-    if(current<0) current=images.length-1;
-
-    lightboxImage.src=images[current].imageUrl;
-
-});
-
-nextButton?.addEventListener("click",()=>{
-
-    current++;
-
-    if(current>=images.length) current=0;
-
-    lightboxImage.src=images[current].imageUrl;
-
-});
-
-
-loadGallery();
