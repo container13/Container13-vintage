@@ -1,238 +1,121 @@
-// Nyinkommet galleri
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-const nyGallery = document.getElementById("nyGallery");
+  <title>Nyinkommet | Container 13 Vintage</title>
 
-if (nyGallery) {
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+</head>
 
+<body>
 
-const bilder = [
+  <div id="site-header"></div>
 
-"vara1.png",
-"vara2.png"
 
-];
+  <header class="page-header">
 
+    <a
+      href="index.html"
+      aria-label="Gå till startsidan"
+    >
+      <img
+        src="bilder/logotyp/logo.png"
+        class="logo-small"
+        alt="Container 13 Vintage"
+      >
+    </a>
 
-bilder.forEach((bild,index)=>{
+    <h1>Nyinkommet</h1>
 
+    <p>
+      Senaste vintagefynden i butiken
+    </p>
 
-const img = document.createElement("img");
+  </header>
 
-img.src = "bilder/nyinkommet/" + bild;
 
-img.alt = "Nyinkommet Container 13";
+  <main>
 
-img.dataset.index = index;
+    <section
+      id="nyGallery"
+      class="gallery"
+      aria-live="polite"
+    >
+      <p class="gallery-status">
+        Hämtar bilder...
+      </p>
+    </section>
 
-nyGallery.appendChild(img);
+  </main>
 
 
-});
+  <div
+    id="lightbox"
+    class="lightbox"
+    aria-hidden="true"
+  >
 
+    <button
+      id="close"
+      class="lightbox-close"
+      type="button"
+      aria-label="Stäng bildvisningen"
+    >
+      &times;
+    </button>
 
+    <img
+      id="lightboxImage"
+      alt="Nyinkommet"
+    >
 
-const lightbox = document.getElementById("lightbox");
-const lightboxImage = document.getElementById("lightboxImage");
+    <button
+      class="prev"
+      type="button"
+      aria-label="Föregående bild"
+    >
+      &#10094;
+    </button>
 
-const closeBtn = document.getElementById("close");
-const prevBtn = document.querySelector(".prev");
-const nextBtn = document.querySelector(".next");
+    <button
+      class="next"
+      type="button"
+      aria-label="Nästa bild"
+    >
+      &#10095;
+    </button>
 
+  </div>
 
-let aktuellBild = 0;
-let startX = 0;
 
+  <div id="site-footer"></div>
 
 
-// Visa bild
+  <script
+    type="module"
+    src="js/layout.js"
+  ></script>
 
-function visaBild(index){
+  <script
+    type="module"
+    src="js/nyinkommet.js"
+  ></script>
 
-    aktuellBild = index;
+</body>
 
-    lightboxImage.src = "bilder/nyinkommet/" + bilder[index];
-
-    lightbox.style.display = "flex";
-
-    setTimeout(()=>{
-
-        lightbox.classList.add("show");
-
-    },10);
-
-}
-
-
-
-// Stäng bild
-
-function stangBild(){
-
-    lightbox.classList.remove("show");
-
-    setTimeout(()=>{
-
-        lightbox.style.display = "none";
-
-    },200);
-
-}
-
-
-
-// Klick på bild
-
-nyGallery.addEventListener("click",function(e){
-
-
-if(e.target.tagName==="IMG"){
-
-    visaBild(Number(e.target.dataset.index));
-
-}
-
-
-});
-
-
-
-// X
-
-closeBtn.onclick=function(){
-
-stangBild();
-
-};
-
-
-
-// Klick utanför
-
-lightbox.addEventListener("click",function(e){
-
-if(e.target===lightbox){
-
-    stangBild();
-
-}
-
-});
-
-
-
-// Nästa
-
-nextBtn.onclick=function(){
-
-
-aktuellBild++;
-
-
-if(aktuellBild>=bilder.length){
-
-    aktuellBild=0;
-
-}
-
-
-visaBild(aktuellBild);
-
-
-};
-
-
-
-// Föregående
-
-prevBtn.onclick=function(){
-
-
-aktuellBild--;
-
-
-if(aktuellBild<0){
-
-    aktuellBild=bilder.length-1;
-
-}
-
-
-visaBild(aktuellBild);
-
-
-};
-
-
-
-// Tangentbord
-
-document.addEventListener("keydown",function(e){
-
-
-if(lightbox.style.display==="flex"){
-
-
-if(e.key==="Escape"){
-
-    stangBild();
-
-}
-
-
-if(e.key==="ArrowRight"){
-
-    nextBtn.click();
-
-}
-
-
-if(e.key==="ArrowLeft"){
-
-    prevBtn.click();
-
-}
-
-
-}
-
-
-});
-
-
-
-// Svep mobil
-
-lightbox.addEventListener("touchstart",function(e){
-
-startX=e.changedTouches[0].screenX;
-
-});
-
-
-
-lightbox.addEventListener("touchend",function(e){
-
-
-let slutX=e.changedTouches[0].screenX;
-
-
-if(startX-slutX>50){
-
-    nextBtn.click();
-
-}
-
-
-
-if(slutX-startX>50){
-
-    prevBtn.click();
-
-}
-
-
-
-});
-
-
-}
+</html>
