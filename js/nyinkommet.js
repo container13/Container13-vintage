@@ -1,121 +1,172 @@
-<!DOCTYPE html>
-<html lang="sv">
+import { db, storage } from "./firebase.js";
 
-<head>
-  <meta charset="UTF-8">
+import {
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>Nyinkommet | Container 13 Vintage</title>
-
-  <link
-    rel="stylesheet"
-    href="css/style.css"
-  >
-
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-  >
-</head>
-
-<body>
-
-  <div id="site-header"></div>
+import {
+  ref,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
 
 
-  <header class="page-header">
+const gallery = document.getElementById("nyGallery");
 
-    <a
-      href="index.html"
-      aria-label="Gå till startsidan"
-    >
-      <img
-        src="bilder/logotyp/logo.png"
-        class="logo-small"
-        alt="Container 13 Vintage"
-      >
-    </a>
+const lightbox = document.getElementById("lightbox");
+const lightboxImage = document.getElementById("lightboxImage");
 
-    <h1>Nyinkommet</h1>
+const closeButton = document.getElementById("close");
+const previousButton = document.querySelector(".prev");
+const nextButton = document.querySelector(".next");
 
-    <p>
-      Senaste vintagefynden i butiken
-    </p>
-
-  </header>
+let images = [];
+let current = 0;
 
 
-  <main>
 
-    <section
-      id="nyGallery"
-      class="gallery"
-      aria-live="polite"
-    >
-      <p class="gallery-status">
-        Hämtar bilder...
-      </p>
-    </section>
+async function getImageUrl(url) {
 
-  </main>
+    if (!url) return "";
 
+    if (url.startsWith("https://")) {
+        return url;
+    }
 
-  <div
-    id="lightbox"
-    class="lightbox"
-    aria-hidden="true"
-  >
+    if (url.startsWith("gs://")) {
 
-    <button
-      id="close"
-      class="lightbox-close"
-      type="button"
-      aria-label="Stäng bildvisningen"
-    >
-      &times;
-    </button>
+        const path = url.replace(
+            "gs://container13-87c1a.firebasestorage.app/",
+            ""
+        );
 
-    <img
-      id="lightboxImage"
-      alt="Nyinkommet"
-    >
+        return await getDownloadURL(
+            ref(storage, path)
+        );
 
-    <button
-      class="prev"
-      type="button"
-      aria-label="Föregående bild"
-    >
-      &#10094;
-    </button>
+    }
 
-    <button
-      class="next"
-      type="button"
-      aria-label="Nästa bild"
-    >
-      &#10095;
-    </button>
+    return url;
 
-  </div>
+}
 
 
-  <div id="site-footer"></div>
+
+function openLightbox(index){
+
+    current=index;
+
+    lightbox.style.display="flex";
+
+    lightboxImage.src=images[index].imageUrl;
+
+}
 
 
-  <script
-    type="module"
-    src="js/layout.js"
-  ></script>
 
-  <script
-    type="module"
-    src="js/nyinkommet.js"
-  ></script>
+function closeLightbox(){
 
-</body>
+    lightbox.style.display="none";
 
-</html>
+}
+
+
+
+async function loadGallery(){
+
+    gallery.innerHTML="<p>Hämtar bilder...</p>";
+
+    try{
+
+        const snapshot=await getDocs(collection(db,"gallery"));
+
+        let docs=snapshot.docs
+            .map(doc=>doc.data())
+            .filter(item=>item.category==="nyinkommet");
+
+        docs.sort((a,b)=>{
+
+            const ta=a.createdAt?.seconds||0;
+            const tb=b.createdAt?.seconds||0;
+
+            return tb-ta;
+
+        });
+
+        docs=docs.slice(0,4);
+
+        for(const item of docs){
+
+            item.imageUrl=await getImageUrl(item.imageUrl);
+
+        }
+
+        images=docs;
+
+        gallery.innerHTML="";
+
+        if(images.length===0){
+
+            gallery.innerHTML="<p>Inga bilder.</p>";
+            return;
+
+        }
+
+        images.forEach((item,index)=>{
+
+            const img=document.createElement("img");
+
+            img.src=item.imageUrl;
+
+            img.alt="Nyinkommet";
+
+            img.loading="lazy";
+
+            img.onclick=()=>{
+
+                openLightbox(index);
+
+            };
+
+            gallery.appendChild(img);
+
+        });
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        gallery.innerHTML="<p>Kunde inte hämta bilder.</p>";
+
+    }
+
+}
+
+
+
+closeButton?.addEventListener("click",closeLightbox);
+
+previousButton?.addEventListener("click",()=>{
+
+    current--;
+
+    if(current<0) current=images.length-1;
+
+    lightboxImage.src=images[current].imageUrl;
+
+});
+
+nextButton?.addEventListener("click",()=>{
+
+    current++;
+
+    if(current>=images.length) current=0;
+
+    lightboxImage.src=images[current].imageUrl;
+
+});
+
+
+loadGallery();
