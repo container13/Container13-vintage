@@ -1208,7 +1208,7 @@
       <p class="admin-label">Adminpanel</p>
 
       <nav class="navigation" aria-label="Adminmeny">
-        <button id="dashboard-menu" class="active" type="button">
+        <button id="dashboard-menu" class="active" type="button" data-admin-section="dashboard" aria-controls="dashboard-section">
           <span class="menu-icon">⌂</span>
           <span>Dashboard</span>
         </button>
@@ -1281,7 +1281,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 4.2</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 4.2.1</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -3656,7 +3656,21 @@
       saveInformationBar
     );
 
-    dashboardMenu.addEventListener("click", () => showSection("dashboard"));
+    // Robust navigering till Dashboard. Event delegation gör att knappen fungerar
+    // även om panelens innehåll uppdateras eller ett annat klicklager fångar barnet.
+    document.querySelector(".navigation").addEventListener("click", (event) => {
+      const dashboardButton = event.target.closest("#dashboard-menu");
+      if (!dashboardButton) return;
+      event.preventDefault();
+      showSection("dashboard");
+    });
+
+    dashboardMenu.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        showSection("dashboard");
+      }
+    });
 
     document.querySelectorAll("[data-dashboard-target]").forEach((button) => {
       button.addEventListener("click", () => showSection(button.dataset.dashboardTarget));
