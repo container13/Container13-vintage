@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { doc, getDoc, getFirestore } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { collection, doc, getDoc, getDocs, getFirestore } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw",
@@ -19,6 +19,8 @@ const openingStatusText = document.getElementById("opening-status-text");
 const informationDivider = document.getElementById("information-divider");
 const informationMessage = document.getElementById("information-message");
 const informationMessageText = document.getElementById("information-message-text");
+const newArrivalsNotice = document.getElementById("new-arrivals-notice");
+const newArrivalsNoticeText = document.getElementById("new-arrivals-notice-text");
 
 const dayOrder = [
   "sunday",
@@ -147,6 +149,70 @@ function renderInformationBar(data) {
   informationMessageText.textContent = shouldShow ? message : "";
 }
 
+function galleryValue(item, keys) {
+  for (const key of keys) {
+    if (item && item[key] !== undefined && item[key] !== null) {
+      return item[key];
+    }
+  }
+  return null;
+}
+
+function galleryCategory(item) {
+  return String(galleryValue(item, ["category", "type", "section"]) || "")
+    .trim()
+    .toLowerCase();
+}
+
+function galleryDate(item, documentDate) {
+  const raw = galleryValue(item, ["createdAt", "uploadedAt", "date"]);
+
+  if (raw && typeof raw.toDate === "function") {
+    return raw.toDate();
+  }
+
+  if (raw && typeof raw.seconds === "number") {
+    return new Date(raw.seconds * 1000);
+  }
+
+  const parsed = new Date(raw || documentDate || "");
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+async function loadNewArrivalsNotice() {
+  if (!newArrivalsNotice || !newArrivalsNoticeText) {
+    return;
+  }
+
+  try {
+    const snapshot = await getDocs(collection(database, "gallery"));
+    const now = Date.now();
+    const fortyEightHours = 48 * 60 * 60 * 1000;
+
+    const recentCount = snapshot.docs.reduce((count, galleryDocument) => {
+      const data = galleryDocument.data();
+      const date = galleryDate(data, galleryDocument.createTime);
+      const isNewArrival = galleryCategory(data) === "nyinkommet";
+      const isRecent = date && now - date.getTime() >= 0 && now - date.getTime() <= fortyEightHours;
+
+      return count + (isNewArrival && isRecent ? 1 : 0);
+    }, 0);
+
+    if (recentCount === 0) {
+      newArrivalsNotice.hidden = true;
+      return;
+    }
+
+    newArrivalsNoticeText.textContent = recentCount === 1
+      ? "Ett nytt plagg har kommit in – se nyinkommet"
+      : `${recentCount} nya plagg har kommit in – se nyinkommet`;
+    newArrivalsNotice.hidden = false;
+  } catch (error) {
+    console.error("Kunde inte hämta notisen om nya plagg:", error);
+    newArrivalsNotice.hidden = true;
+  }
+}
+
 async function loadStatusBar() {
   try {
     const [openingHoursSnapshot, informationSnapshot] = await Promise.all([
@@ -174,6 +240,7 @@ async function loadStatusBar() {
 
 if (storeStatus && openingStatusText) {
   loadStatusBar();
+  loadNewArrivalsNotice();
 
   setInterval(() => {
     if (savedOpeningHours) {
