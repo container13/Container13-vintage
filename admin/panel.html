@@ -2572,6 +2572,63 @@
       }
     }
 
+    /*
+      Behåller högst åtta butiksbilder.
+      De äldsta tas bort både från Firebase Storage
+      och från Firestore efter en ny uppladdning.
+    */
+    async function enforceGalleryLimit() {
+      const maximumGalleryImages = 8;
+
+      const galleryQuery =
+        query(
+          collection(database, "gallery"),
+          orderBy("createdAt", "desc")
+        );
+
+      const snapshot =
+        await getDocs(galleryQuery);
+
+      const galleryItems =
+        snapshot.docs
+          .map((galleryDocument) => ({
+            id: galleryDocument.id,
+            ...galleryDocument.data()
+          }))
+          .filter(
+            (item) =>
+              item.category === "galleri"
+          );
+
+      const oldItems =
+        galleryItems.slice(maximumGalleryImages);
+
+      for (const item of oldItems) {
+        if (item.storagePath) {
+          try {
+            await deleteObject(
+              ref(storage, item.storagePath)
+            );
+          } catch (storageError) {
+            /*
+              Om filen redan saknas fortsätter vi och
+              tar bort posten ur Firestore ändå.
+            */
+            console.warn(
+              "Kunde inte ta bort den gamla bildfilen:",
+              storageError
+            );
+          }
+        }
+
+        await deleteDoc(
+          doc(database, "gallery", item.id)
+        );
+      }
+
+      return oldItems.length;
+    }
+
     async function uploadGalleryImage() {
       clearGalleryStatus();
 
@@ -2665,10 +2722,15 @@
           }
         );
 
+        const removedImages =
+          await enforceGalleryLimit();
+
         resetGalleryForm();
 
         showGalleryStatus(
-          "Galleribilden har laddats upp.",
+          removedImages > 0
+            ? "Galleribilden har laddats upp. Den äldsta bilden togs bort automatiskt."
+            : "Galleribilden har laddats upp.",
           "success"
         );
 
