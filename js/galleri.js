@@ -15,37 +15,37 @@
   let currentIndex = 0;
   let touchStartX = 0;
 
-  function firestoreValue(value) {
+  function val(value) {
     if (!value || typeof value !== "object") return null;
     if ("stringValue" in value) return value.stringValue;
     if ("booleanValue" in value) return value.booleanValue;
     if ("integerValue" in value) return Number(value.integerValue);
     if ("doubleValue" in value) return Number(value.doubleValue);
     if ("timestampValue" in value) return value.timestampValue;
-    if (value.mapValue) return firestoreFields(value.mapValue.fields || {});
-    if (value.arrayValue) return (value.arrayValue.values || []).map(firestoreValue);
+    if (value.mapValue) return fields(value.mapValue.fields || {});
+    if (value.arrayValue) return (value.arrayValue.values || []).map(val);
     return null;
   }
 
-  function firestoreFields(fields) {
+  function fields(source) {
     const result = {};
-    Object.entries(fields || {}).forEach(([key, value]) => {
-      result[key] = firestoreValue(value);
+    Object.entries(source || {}).forEach(([key, value]) => {
+      result[key] = val(value);
     });
     return result;
   }
 
   function imageUrl(item) {
-    return item.imageUrl || item.url || item.downloadURL || item.downloadUrl || "";
+    return String(item.imageUrl || item.url || item.downloadURL || item.downloadUrl || "").trim();
   }
 
   function category(item) {
-    return String(item.category || item.type || item.section || "").toLowerCase();
+    return String(item.category || item.type || item.section || "").trim().toLowerCase();
   }
 
-  function createdTime(item) {
-    const value = item.createdAt || item.uploadedAt || item.date || "";
-    const parsed = Date.parse(value);
+  function time(item) {
+    const raw = item.createdAt || item.uploadedAt || item.date || item.documentCreatedAt || "";
+    const parsed = new Date(raw).getTime();
     return Number.isFinite(parsed) ? parsed : 0;
   }
 
@@ -61,7 +61,7 @@
     currentIndex = index;
     showCurrentImage();
     lightbox.style.display = "flex";
-    requestAnimationFrame(() => lightbox.classList.add("show", "active"));
+    lightbox.classList.add("show", "active");
     lightbox.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
   }
@@ -70,11 +70,8 @@
     if (!lightbox) return;
     lightbox.classList.remove("show", "active");
     lightbox.setAttribute("aria-hidden", "true");
+    lightbox.style.display = "none";
     document.body.style.overflow = "";
-    setTimeout(() => {
-      lightbox.style.display = "none";
-      lightboxImage?.removeAttribute("src");
-    }, 200);
   }
 
   function previousImage() {
@@ -91,42 +88,44 @@
 
   function render(items) {
     if (!gallery) return;
+
     images = items;
     gallery.innerHTML = "";
     gallery.setAttribute("aria-busy", "false");
 
-    if (!images.length) {
+    if (!items.length) {
       gallery.innerHTML = '<p class="gallery-status">Det finns inga butiksbilder ännu.</p>';
       return;
     }
 
-    images.forEach((item, index) => {
-      const wrapper = document.createElement("div");
-      wrapper.className = "gallery-image-shell image-card-loading";
+    items.forEach((item, index) => {
+      // Samma kortstruktur som på Nyinkommet.
+      const figure = document.createElement("figure");
+      figure.className = "gallery-item nyinkommet-kort galleri-kort image-card-loading";
+
+      const imageButton = document.createElement("button");
+      imageButton.className = "nyinkommet-bildknapp";
+      imageButton.type = "button";
+      imageButton.setAttribute(
+        "aria-label",
+        item.title ? `Öppna ${item.title} i stort format` : "Öppna bilden i stort format"
+      );
+      imageButton.addEventListener("click", () => openLightbox(index));
 
       const image = document.createElement("img");
       image.src = imageUrl(item);
       image.alt = item.title || "Bild från Container 13 Vintage";
       image.loading = "lazy";
       image.decoding = "async";
-      image.tabIndex = 0;
-
       image.addEventListener("load", () => {
-        wrapper.classList.remove("image-card-loading");
-        wrapper.classList.add("image-card-loaded");
+        figure.classList.remove("image-card-loading");
+        figure.classList.add("image-card-loaded");
       });
+      image.addEventListener("error", () => figure.remove());
 
-      image.addEventListener("click", () => openLightbox(index));
-      image.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          openLightbox(index);
-        }
-      });
-
-      image.addEventListener("error", () => wrapper.remove());
-      wrapper.appendChild(image);
-      gallery.appendChild(wrapper);
+      imageButton.appendChild(image);
+      figure.appendChild(imageButton);
+      gallery.appendChild(figure);
     });
   }
 
@@ -137,22 +136,20 @@
     try {
       const url = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/gallery?pageSize=100&key=${API_KEY}`;
       const response = await fetch(url, { cache: "no-store" });
+      if (!response.ok) throw new Error(`Firestore svarade ${response.status}`);
 
-      if (!response.ok) {
-        throw new Error(`Firestore svarade ${response.status}`);
-      }
-
-      const data = await response.json();
-      const allItems = (data.documents || []).map((document) => ({
+      const json = await response.json();
+      const all = (json.documents || []).map((document) => ({
         id: document.name?.split("/").pop() || "",
-        ...firestoreFields(document.fields || {})
+        documentCreatedAt: document.createTime || "",
+        ...fields(document.fields || {})
       }));
 
-      const galleryItems = allItems
+      const selected = all
         .filter((item) => category(item) === "galleri" && imageUrl(item))
-        .sort((a, b) => createdTime(b) - createdTime(a));
+        .sort((a, b) => time(b) - time(a));
 
-      render(galleryItems);
+      render(selected);
     } catch (error) {
       console.error("Kunde inte hämta galleriet:", error);
       gallery.setAttribute("aria-busy", "false");
@@ -173,15 +170,18 @@
   lightbox?.addEventListener("click", (event) => {
     if (event.target === lightbox) closeLightbox();
   });
+
   document.addEventListener("keydown", (event) => {
     if (!lightbox?.classList.contains("active")) return;
     if (event.key === "Escape") closeLightbox();
     if (event.key === "ArrowLeft") previousImage();
     if (event.key === "ArrowRight") nextImage();
   });
+
   lightbox?.addEventListener("touchstart", (event) => {
     touchStartX = event.changedTouches[0].screenX;
   }, { passive: true });
+
   lightbox?.addEventListener("touchend", (event) => {
     const endX = event.changedTouches[0].screenX;
     if (touchStartX - endX > 50) nextImage();
