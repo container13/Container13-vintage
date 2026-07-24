@@ -59,7 +59,10 @@
       if(!response.ok)throw new Error(`Firestore svarade ${response.status}`);
       const json=await response.json();
       const all=(json.documents||[]).map(d=>({id:d.name?.split('/').pop(),...fields(d.fields||{})}));
-      const selected=all.filter(item=>category(item)==="galleri" && imageUrl(item)).sort((a,b)=>time(b)-time(a));
+      const selected=all
+        .filter(item=>category(item)==="galleri" && imageUrl(item))
+        .sort((a,b)=>time(b)-time(a))
+        .slice(0,8);
       render(selected);
     }catch(error){ console.error(error); gallery.innerHTML=`<p class="gallery-status">Bilderna kunde inte hämtas (${error.message}).</p>`; }
   }
