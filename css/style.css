@@ -338,3 +338,73 @@ main > #nyGallery.gallery {
     max-width: 340px !important;
   }
 }
+
+/* ========================= */
+/* NYINKOMMET – KORTDESIGN 2.1 */
+/* ========================= */
+#nyGallery .nyinkommet-kort {
+  overflow: hidden;
+  border: 1px solid rgba(154, 122, 24, 0.16);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+  transition: transform 0.24s ease, box-shadow 0.24s ease;
+}
+
+#nyGallery .nyinkommet-bildknapp {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: #eee9df;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+#nyGallery .nyinkommet-bildknapp img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 0;
+  box-shadow: none;
+  transition: transform 0.28s ease;
+}
+
+#nyGallery .nyinkommet-bildknapp:focus-visible {
+  outline: 3px solid #9a7a18;
+  outline-offset: -3px;
+}
+
+#nyGallery .nyinkommet-info {
+  min-height: 83px;
+  padding: 15px 16px 17px;
+  text-align: left;
+}
+
+#nyGallery .nyinkommet-titel {
+  margin: 0 0 7px;
+  color: #222;
+  font-size: 1rem;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+#nyGallery .nyinkommet-datum {
+  margin: 0;
+  color: #9a7a18;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #nyGallery .nyinkommet-kort:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 13px 30px rgba(0, 0, 0, 0.14);
+  }
+
+  #nyGallery .nyinkommet-kort:hover .nyinkommet-bildknapp img {
+    transform: scale(1.045);
+  }
+}
