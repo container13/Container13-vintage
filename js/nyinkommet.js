@@ -118,7 +118,7 @@
 
     items.forEach((item, index) => {
       const figure = document.createElement("figure");
-      figure.className = "gallery-item nyinkommet-kort";
+      figure.className = "gallery-item nyinkommet-kort image-card-loading";
 
       const imageButton = document.createElement("button");
       imageButton.className = "nyinkommet-bildknapp";
@@ -131,6 +131,10 @@
       img.alt = item.title || "Bild från Container 13 Vintage";
       img.loading = "lazy";
       img.decoding = "async";
+      img.addEventListener("load", () => {
+        figure.classList.remove("image-card-loading");
+        figure.classList.add("image-card-loaded");
+      });
       img.addEventListener("error", () => figure.remove());
 
       const caption = document.createElement("figcaption");

@@ -82,7 +82,7 @@
 
     items.forEach((item) => {
       const link = document.createElement("a");
-      link.className = "senaste-nytt-kort";
+      link.className = "senaste-nytt-kort image-card-loading";
       link.href = "nyinkommet.html";
       link.setAttribute("aria-label", item.title ? `${item.title} – se allt nyinkommet` : "Se allt nyinkommet");
 
@@ -94,6 +94,10 @@
       image.alt = item.title || "Nyinkommet hos Container 13 Vintage";
       image.loading = "lazy";
       image.decoding = "async";
+      image.addEventListener("load", () => {
+        link.classList.remove("image-card-loading");
+        link.classList.add("image-card-loaded");
+      });
       image.addEventListener("error", () => {
         link.remove();
         if (!grid.querySelector(".senaste-nytt-kort")) showMessage("Bilderna kunde inte visas just nu.");
