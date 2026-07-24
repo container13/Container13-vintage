@@ -150,7 +150,7 @@
 
       const date = document.createElement("p");
       date.className = "nyinkommet-datum";
-      date.textContent = relativeDateText(item);
+      date.textContent = `◷ ${relativeDateText(item)}`;
 
       imageButton.appendChild(img);
       caption.appendChild(date);
