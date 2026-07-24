@@ -535,6 +535,26 @@
       gap: 18px;
     }
 
+
+    .multi-title-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .multi-title-item {
+      display: grid;
+      gap: 6px;
+      padding: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.45);
+    }
+
+    .multi-title-item .field-help {
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+
     .image-upload-grid {
       display: grid;
       grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
@@ -1156,7 +1176,7 @@
 
               <p class="card-introduction">
                 Ladda upp bilder som ska visas på sidan Nyinkommet.
-                De senast uppladdade visas först.
+                De senast uppladdade visas först. Bilder äldre än 7 dagar städas automatiskt när adminpanelen öppnas eller när nya bilder laddas upp.
               </p>
             </div>
 
@@ -1175,32 +1195,19 @@
                     class="file-input"
                     type="file"
                     accept="image/jpeg,image/png,image/webp"
+                    multiple
                   >
 
                   <p class="field-help">
-                    Tillåtna format: JPG, PNG och WebP. Högst 8 MB.
+                    Du kan välja flera bilder samtidigt. JPG, PNG och WebP, högst 8 MB per bild.
                   </p>
                 </div>
 
                 <div class="field-group">
-                  <label
-                    class="field-label"
-                    for="new-arrival-title"
-                  >
-                    Titel eller beskrivning
-                  </label>
-
-                  <input
-                    id="new-arrival-title"
-                    class="text-input"
-                    type="text"
-                    maxlength="80"
-                    placeholder="Exempel: Levi's 501"
-                  >
-
-                  <p class="field-help">
-                    Frivilligt. Högst 80 tecken.
-                  </p>
+                  <span class="field-label">Titlar eller beskrivningar</span>
+                  <div id="new-arrival-titles" class="multi-title-list">
+                    <p class="field-help">Välj en eller flera bilder så visas ett titelfält för varje bild.</p>
+                  </div>
                 </div>
               </div>
 
@@ -1221,7 +1228,7 @@
                 class="save-button"
                 type="button"
               >
-                Ladda upp bild
+                Ladda upp valda bilder
               </button>
 
               <div
@@ -1271,32 +1278,19 @@
                     class="file-input"
                     type="file"
                     accept="image/jpeg,image/png,image/webp"
+                    multiple
                   >
 
                   <p class="field-help">
-                    Tillåtna format: JPG, PNG och WebP. Högst 8 MB.
+                    Du kan välja flera bilder samtidigt. JPG, PNG och WebP, högst 8 MB per bild.
                   </p>
                 </div>
 
                 <div class="field-group">
-                  <label
-                    class="field-label"
-                    for="gallery-title"
-                  >
-                    Titel eller beskrivning
-                  </label>
-
-                  <input
-                    id="gallery-title"
-                    class="text-input"
-                    type="text"
-                    maxlength="80"
-                    placeholder="Exempel: Jeansavdelningen"
-                  >
-
-                  <p class="field-help">
-                    Frivilligt. Högst 80 tecken.
-                  </p>
+                  <span class="field-label">Titlar eller beskrivningar</span>
+                  <div id="gallery-titles" class="multi-title-list">
+                    <p class="field-help">Välj en eller flera bilder så visas ett titelfält för varje bild.</p>
+                  </div>
                 </div>
               </div>
 
@@ -1317,7 +1311,7 @@
                 class="save-button"
                 type="button"
               >
-                Ladda upp bild
+                Ladda upp valda bilder
               </button>
 
               <div
@@ -1474,8 +1468,8 @@
     const newArrivalImageInput =
       document.getElementById("new-arrival-image");
 
-    const newArrivalTitleInput =
-      document.getElementById("new-arrival-title");
+    const newArrivalTitles =
+      document.getElementById("new-arrival-titles");
 
     const newArrivalPreview =
       document.getElementById("new-arrival-preview");
@@ -1501,8 +1495,8 @@
     const galleryImageInput =
       document.getElementById("gallery-image");
 
-    const galleryTitleInput =
-      document.getElementById("gallery-title");
+    const galleryTitles =
+      document.getElementById("gallery-titles");
 
     const galleryPreview =
       document.getElementById("gallery-preview");
@@ -1980,7 +1974,7 @@
 
     function resetNewArrivalForm() {
       newArrivalImageInput.value = "";
-      newArrivalTitleInput.value = "";
+      newArrivalTitles.innerHTML = '<p class="field-help">Välj en eller flera bilder så visas ett titelfält för varje bild.</p>';
       newArrivalPreviewImage.removeAttribute("src");
       newArrivalPreview.classList.remove("visible");
     }
@@ -2092,6 +2086,87 @@
       } finally {
         URL.revokeObjectURL(objectUrl);
       }
+    }
+
+    function renderTitleInputs(files, container, prefix) {
+      container.innerHTML = "";
+
+      if (files.length === 0) {
+        container.innerHTML = '<p class="field-help">Välj en eller flera bilder så visas ett titelfält för varje bild.</p>';
+        return;
+      }
+
+      files.forEach((file, index) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "multi-title-item";
+
+        const label = document.createElement("label");
+        label.className = "field-help";
+        label.htmlFor = `${prefix}-title-${index}`;
+        label.textContent = file.name;
+
+        const input = document.createElement("input");
+        input.id = `${prefix}-title-${index}`;
+        input.className = "text-input multi-title-input";
+        input.type = "text";
+        input.maxLength = 80;
+        input.placeholder = "Titel eller beskrivning (frivilligt)";
+        input.dataset.fileIndex = String(index);
+
+        wrapper.appendChild(label);
+        wrapper.appendChild(input);
+        container.appendChild(wrapper);
+      });
+    }
+
+    function getTitles(container, numberOfFiles) {
+      const titles = new Array(numberOfFiles).fill("");
+
+      container.querySelectorAll(".multi-title-input").forEach((input) => {
+        const index = Number(input.dataset.fileIndex);
+        if (Number.isInteger(index) && index >= 0 && index < numberOfFiles) {
+          titles[index] = input.value.trim();
+        }
+      });
+
+      return titles;
+    }
+
+    function timestampToMilliseconds(value) {
+      if (!value) return 0;
+      if (typeof value.toMillis === "function") return value.toMillis();
+      if (typeof value.seconds === "number") return value.seconds * 1000;
+      if (typeof value._seconds === "number") return value._seconds * 1000;
+      const parsed = Date.parse(value);
+      return Number.isNaN(parsed) ? 0 : parsed;
+    }
+
+    async function deleteGalleryItemCompletely(item) {
+      if (item.storagePath) {
+        try {
+          await deleteObject(ref(storage, item.storagePath));
+        } catch (storageError) {
+          console.warn("Bildfilen kunde inte tas bort eller saknades redan:", storageError);
+        }
+      }
+
+      await deleteDoc(doc(database, "gallery", item.id));
+    }
+
+    async function removeExpiredNewArrivals() {
+      const sevenDays = 7 * 24 * 60 * 60 * 1000;
+      const cutoff = Date.now() - sevenDays;
+      const snapshot = await getDocs(query(collection(database, "gallery"), orderBy("createdAt", "desc")));
+
+      const expiredItems = snapshot.docs
+        .map((galleryDocument) => ({ id: galleryDocument.id, ...galleryDocument.data() }))
+        .filter((item) => item.category === "nyinkommet" && timestampToMilliseconds(item.createdAt) > 0 && timestampToMilliseconds(item.createdAt) < cutoff);
+
+      for (const item of expiredItems) {
+        await deleteGalleryItemCompletely(item);
+      }
+
+      return expiredItems.length;
     }
 
     function hasUsableImageUrl(item) {
@@ -2273,118 +2348,80 @@
     async function uploadNewArrival() {
       clearNewArrivalStatus();
 
-      const file =
-        newArrivalImageInput.files[0];
+      const files = Array.from(newArrivalImageInput.files || []);
+      const titles = getTitles(newArrivalTitles, files.length);
 
-      const title =
-        newArrivalTitleInput.value.trim();
-
-      if (!file) {
-        showNewArrivalStatus(
-          "Välj en bild först.",
-          "error"
-        );
+      if (files.length === 0) {
+        showNewArrivalStatus("Välj minst en bild först.", "error");
         return;
       }
 
-      const allowedTypes = [
-        "image/jpeg",
-        "image/png",
-        "image/webp"
-      ];
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+      const maximumFileSize = 8 * 1024 * 1024;
+      const invalidType = files.find((file) => !allowedTypes.includes(file.type));
+      const tooLarge = files.find((file) => file.size > maximumFileSize);
 
-      if (!allowedTypes.includes(file.type)) {
-        showNewArrivalStatus(
-          "Bilden måste vara JPG, PNG eller WebP.",
-          "error"
-        );
+      if (invalidType) {
+        showNewArrivalStatus(`${invalidType.name} måste vara JPG, PNG eller WebP.`, "error");
         return;
       }
 
-      const maximumFileSize =
-        8 * 1024 * 1024;
-
-      if (file.size > maximumFileSize) {
-        showNewArrivalStatus(
-          "Bilden är större än 8 MB.",
-          "error"
-        );
+      if (tooLarge) {
+        showNewArrivalStatus(`${tooLarge.name} är större än 8 MB.`, "error");
         return;
       }
 
       if (!auth.currentUser) {
-        showNewArrivalStatus(
-          "Du är inte längre inloggad. Logga in igen.",
-          "error"
-        );
+        showNewArrivalStatus("Du är inte längre inloggad. Logga in igen.", "error");
         return;
       }
 
       uploadNewArrivalButton.disabled = true;
-      uploadNewArrivalButton.textContent =
-        "Laddar upp...";
+      let uploaded = 0;
+      let failed = 0;
 
       try {
-        const normalizedFile =
-          await normalizeImageFile(file);
+        const removedBeforeUpload = await removeExpiredNewArrivals();
 
-        const safeFileName =
-          createSafeFileName(
-            normalizedFile.name
-          );
+        for (let index = 0; index < files.length; index += 1) {
+          uploadNewArrivalButton.textContent = `Laddar upp ${index + 1} av ${files.length}...`;
 
-        const storagePath =
-          `nyinkommet/${safeFileName}`;
+          try {
+            const normalizedFile = await normalizeImageFile(files[index]);
+            const safeFileName = createSafeFileName(normalizedFile.name);
+            const storagePath = `nyinkommet/${Date.now()}-${index}-${safeFileName}`;
+            const storageReference = ref(storage, storagePath);
 
-        const storageReference =
-          ref(storage, storagePath);
+            await uploadBytes(storageReference, normalizedFile, { contentType: "image/jpeg" });
+            const imageUrl = await getDownloadURL(storageReference);
 
-        await uploadBytes(
-          storageReference,
-          normalizedFile,
-          {
-            contentType: "image/jpeg"
+            await addDoc(collection(database, "gallery"), {
+              category: "nyinkommet",
+              imageUrl,
+              storagePath,
+              title: titles[index],
+              createdAt: serverTimestamp(),
+              createdBy: auth.currentUser.email || ""
+            });
+
+            uploaded += 1;
+          } catch (fileError) {
+            failed += 1;
+            console.error(`Kunde inte ladda upp ${files[index].name}:`, fileError);
           }
-        );
-
-        const imageUrl =
-          await getDownloadURL(storageReference);
-
-        await addDoc(
-          collection(database, "gallery"),
-          {
-            category: "nyinkommet",
-            imageUrl,
-            storagePath,
-            title,
-            createdAt: serverTimestamp(),
-            createdBy:
-              auth.currentUser.email || ""
-          }
-        );
+        }
 
         resetNewArrivalForm();
-
-        showNewArrivalStatus(
-          "Bilden har laddats upp.",
-          "success"
-        );
-
+        const cleanupText = removedBeforeUpload > 0 ? ` ${removedBeforeUpload} bild(er) äldre än 7 dagar togs bort.` : "";
+        const failureText = failed > 0 ? ` ${failed} bild(er) misslyckades.` : "";
+        showNewArrivalStatus(`${uploaded} bild(er) har laddats upp.${cleanupText}${failureText}`, failed > 0 ? "error" : "success");
         await loadNewArrivals();
       } catch (error) {
-        console.error(
-          "Kunde inte ladda upp bilden:",
-          error
-        );
-
-        showNewArrivalStatus(
-          "Uppladdningen misslyckades. Firebase Storage eller säkerhetsreglerna behöver kontrolleras.",
-          "error"
-        );
+        console.error("Kunde inte slutföra uppladdningen:", error);
+        showNewArrivalStatus("Uppladdningen misslyckades. Firebase Storage eller säkerhetsreglerna behöver kontrolleras.", "error");
       } finally {
         uploadNewArrivalButton.disabled = false;
-        uploadNewArrivalButton.textContent =
-          "Ladda upp bild";
+        uploadNewArrivalButton.textContent = "Ladda upp valda bilder";
       }
     }
 
@@ -2403,7 +2440,7 @@
 
     function resetGalleryForm() {
       galleryImageInput.value = "";
-      galleryTitleInput.value = "";
+      galleryTitles.innerHTML = '<p class="field-help">Välj en eller flera bilder så visas ett titelfält för varje bild.</p>';
       galleryPreviewImage.removeAttribute("src");
       galleryPreview.classList.remove("visible");
     }
@@ -2632,123 +2669,79 @@
     async function uploadGalleryImage() {
       clearGalleryStatus();
 
-      const file =
-        galleryImageInput.files[0];
+      const files = Array.from(galleryImageInput.files || []);
+      const titles = getTitles(galleryTitles, files.length);
 
-      const title =
-        galleryTitleInput.value.trim();
-
-      if (!file) {
-        showGalleryStatus(
-          "Välj en bild först.",
-          "error"
-        );
+      if (files.length === 0) {
+        showGalleryStatus("Välj minst en bild först.", "error");
         return;
       }
 
-      const allowedTypes = [
-        "image/jpeg",
-        "image/png",
-        "image/webp"
-      ];
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+      const maximumFileSize = 8 * 1024 * 1024;
+      const invalidType = files.find((file) => !allowedTypes.includes(file.type));
+      const tooLarge = files.find((file) => file.size > maximumFileSize);
 
-      if (!allowedTypes.includes(file.type)) {
-        showGalleryStatus(
-          "Bilden måste vara JPG, PNG eller WebP.",
-          "error"
-        );
+      if (invalidType) {
+        showGalleryStatus(`${invalidType.name} måste vara JPG, PNG eller WebP.`, "error");
         return;
       }
 
-      const maximumFileSize =
-        8 * 1024 * 1024;
-
-      if (file.size > maximumFileSize) {
-        showGalleryStatus(
-          "Bilden är större än 8 MB.",
-          "error"
-        );
+      if (tooLarge) {
+        showGalleryStatus(`${tooLarge.name} är större än 8 MB.`, "error");
         return;
       }
 
       if (!auth.currentUser) {
-        showGalleryStatus(
-          "Du är inte längre inloggad. Logga in igen.",
-          "error"
-        );
+        showGalleryStatus("Du är inte längre inloggad. Logga in igen.", "error");
         return;
       }
 
       uploadGalleryButton.disabled = true;
-      uploadGalleryButton.textContent =
-        "Laddar upp...";
+      let uploaded = 0;
+      let failed = 0;
 
       try {
-        const normalizedFile =
-          await normalizeImageFile(file);
+        for (let index = 0; index < files.length; index += 1) {
+          uploadGalleryButton.textContent = `Laddar upp ${index + 1} av ${files.length}...`;
 
-        const safeFileName =
-          createSafeFileName(
-            normalizedFile.name
-          );
+          try {
+            const normalizedFile = await normalizeImageFile(files[index]);
+            const safeFileName = createSafeFileName(normalizedFile.name);
+            const storagePath = `galleri/${Date.now()}-${index}-${safeFileName}`;
+            const storageReference = ref(storage, storagePath);
 
-        const storagePath =
-          `galleri/${safeFileName}`;
+            await uploadBytes(storageReference, normalizedFile, { contentType: "image/jpeg" });
+            const imageUrl = await getDownloadURL(storageReference);
 
-        const storageReference =
-          ref(storage, storagePath);
+            await addDoc(collection(database, "gallery"), {
+              category: "galleri",
+              imageUrl,
+              storagePath,
+              title: titles[index],
+              createdAt: serverTimestamp(),
+              createdBy: auth.currentUser.email || ""
+            });
 
-        await uploadBytes(
-          storageReference,
-          normalizedFile,
-          {
-            contentType: "image/jpeg"
+            uploaded += 1;
+          } catch (fileError) {
+            failed += 1;
+            console.error(`Kunde inte ladda upp ${files[index].name}:`, fileError);
           }
-        );
+        }
 
-        const imageUrl =
-          await getDownloadURL(storageReference);
-
-        await addDoc(
-          collection(database, "gallery"),
-          {
-            category: "galleri",
-            imageUrl,
-            storagePath,
-            title,
-            createdAt: serverTimestamp(),
-            createdBy:
-              auth.currentUser.email || ""
-          }
-        );
-
-        const removedImages =
-          await enforceGalleryLimit();
-
+        const removedImages = await enforceGalleryLimit();
         resetGalleryForm();
-
-        showGalleryStatus(
-          removedImages > 0
-            ? "Galleribilden har laddats upp. Den äldsta bilden togs bort automatiskt."
-            : "Galleribilden har laddats upp.",
-          "success"
-        );
-
+        const removalText = removedImages > 0 ? ` ${removedImages} äldre bild(er) togs bort så att endast de 8 senaste finns kvar.` : "";
+        const failureText = failed > 0 ? ` ${failed} bild(er) misslyckades.` : "";
+        showGalleryStatus(`${uploaded} bild(er) har laddats upp.${removalText}${failureText}`, failed > 0 ? "error" : "success");
         await loadGallery();
       } catch (error) {
-        console.error(
-          "Kunde inte ladda upp galleribilden:",
-          error
-        );
-
-        showGalleryStatus(
-          "Uppladdningen misslyckades. Kontrollera Storage-reglerna.",
-          "error"
-        );
+        console.error("Kunde inte slutföra galleriuppladdningen:", error);
+        showGalleryStatus("Uppladdningen misslyckades. Kontrollera Storage-reglerna.", "error");
       } finally {
         uploadGalleryButton.disabled = false;
-        uploadGalleryButton.textContent =
-          "Ladda upp bild";
+        uploadGalleryButton.textContent = "Ladda upp valda bilder";
       }
     }
 
@@ -2890,6 +2883,12 @@
       userEmail.textContent =
         user.email || "Administratör";
 
+      try {
+        await removeExpiredNewArrivals();
+      } catch (cleanupError) {
+        console.warn("Automatisk städning av Nyinkommet kunde inte slutföras:", cleanupError);
+      }
+
       await Promise.all([
         loadOpeningHours(),
         loadInformationBar(),
@@ -2934,9 +2933,9 @@
       "change",
       () => {
         clearGalleryStatus();
-
-        const file =
-          galleryImageInput.files[0];
+        const files = Array.from(galleryImageInput.files || []);
+        renderTitleInputs(files, galleryTitles, "gallery");
+        const file = files[0];
 
         if (!file) {
           galleryPreviewImage.removeAttribute("src");
@@ -2944,17 +2943,10 @@
           return;
         }
 
-        const previewUrl =
-          URL.createObjectURL(file);
-
-        galleryPreviewImage.src =
-          previewUrl;
-
+        const previewUrl = URL.createObjectURL(file);
+        galleryPreviewImage.src = previewUrl;
         galleryPreview.classList.add("visible");
-
-        galleryPreviewImage.onload = () => {
-          URL.revokeObjectURL(previewUrl);
-        };
+        galleryPreviewImage.onload = () => URL.revokeObjectURL(previewUrl);
       }
     );
 
@@ -2972,9 +2964,9 @@
       "change",
       () => {
         clearNewArrivalStatus();
-
-        const file =
-          newArrivalImageInput.files[0];
+        const files = Array.from(newArrivalImageInput.files || []);
+        renderTitleInputs(files, newArrivalTitles, "new-arrival");
+        const file = files[0];
 
         if (!file) {
           newArrivalPreviewImage.removeAttribute("src");
@@ -2982,17 +2974,10 @@
           return;
         }
 
-        const previewUrl =
-          URL.createObjectURL(file);
-
-        newArrivalPreviewImage.src =
-          previewUrl;
-
+        const previewUrl = URL.createObjectURL(file);
+        newArrivalPreviewImage.src = previewUrl;
         newArrivalPreview.classList.add("visible");
-
-        newArrivalPreviewImage.onload = () => {
-          URL.revokeObjectURL(previewUrl);
-        };
+        newArrivalPreviewImage.onload = () => URL.revokeObjectURL(previewUrl);
       }
     );
 
