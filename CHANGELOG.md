@@ -43,3 +43,9 @@ Version 4.0.0 ska se ut och fungera som den godkända version 3.6.1. Syftet är 
 ## Version 4.3.1
 - Rättar navigeringen till Inställningar i adminpanelen.
 - Lägger till robust klickhantering och tangentbordsstöd för menyvalet.
+
+## Version 5.0 – Admin som webbapp
+- Adminpanelen kan läggas på mobilens hemskärm med egen Container13-ikon.
+- Öppnas i fristående app-läge utan vanlig webbläsarram när plattformen stöder det.
+- Manifest, Apple-inställningar och service worker har lagts till.
+- Grundfiler cachas för snabbare start och enklare återöppning.

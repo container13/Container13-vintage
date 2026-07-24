@@ -1,0 +1,11 @@
+CONTAINER13 ADMIN – LÄGG PÅ HEMSKÄRMEN
+
+1. Ladda upp hela projektet till GitHub som vanligt.
+2. Öppna admin/index.html i Safari på din iPhone.
+3. Tryck på Dela-knappen.
+4. Välj "Lägg till på hemskärmen".
+5. Kontrollera namnet "C13 Admin" och tryck på Lägg till.
+
+Du får nu en Container13-ikon på hemskärmen. När du öppnar den startar adminpanelen i ett mer app-liknande läge.
+
+Efter en ny uppladdning kan du behöva stänga adminappen helt och öppna den igen för att se den senaste versionen.
