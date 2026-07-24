@@ -637,3 +637,23 @@ main > #nyGallery.gallery {
     transition: none;
   }
 }
+
+
+/* Version 3.4 – samma datumrad på Nyinkommet som på startsidan */
+#nyGallery .nyinkommet-info {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+}
+
+#nyGallery .nyinkommet-titel {
+  margin: 0;
+}
+
+#nyGallery .nyinkommet-datum {
+  margin: 0;
+  color: #9a7a18;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  font-weight: 600;
+}
