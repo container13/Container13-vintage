@@ -48,6 +48,7 @@ const dayNames = {
 };
 
 let savedOpeningHours = null;
+let savedSpecialHours = {};
 
 function timeToMinutes(time) {
   if (typeof time !== "string" || !/^\d{2}:\d{2}$/.test(time)) {
@@ -83,55 +84,65 @@ function getSwedishDateParts() {
     lördag: "saturday"
   };
 
+  const dateParts = new Intl.DateTimeFormat("sv-SE", {
+    timeZone: "Europe/Stockholm", year: "numeric", month: "2-digit", day: "2-digit"
+  }).formatToParts(new Date());
+  const dateValues = {};
+  for (const part of dateParts) dateValues[part.type] = part.value;
   return {
     dayId: weekdayMap[(values.weekday || "").toLowerCase()],
-    currentMinutes: (Number(values.hour) * 60) + Number(values.minute)
+    currentMinutes: (Number(values.hour) * 60) + Number(values.minute),
+    dateKey: `${dateValues.year}-${dateValues.month}-${dateValues.day}`
   };
 }
 
-function findNextOpening(days, currentDayId) {
-  const currentIndex = dayOrder.indexOf(currentDayId);
+function dateKeyWithOffset(dateKey, offset) {
+  const [year, month, day] = dateKey.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day + offset, 12));
+  return `${date.getUTCFullYear()}-${String(date.getUTCMonth()+1).padStart(2,"0")}-${String(date.getUTCDate()).padStart(2,"0")}`;
+}
 
-  for (let offset = 1; offset <= 7; offset += 1) {
-    const dayId = dayOrder[(currentIndex + offset) % 7];
-    const values = days[dayId];
+function weekdayIdForDateKey(dateKey) {
+  const [year, month, day] = dateKey.split("-").map(Number);
+  return dayOrder[new Date(Date.UTC(year, month - 1, day, 12)).getUTCDay()];
+}
 
+function effectiveHoursForDate(days, dateKey) {
+  return savedSpecialHours[dateKey] || days[weekdayIdForDateKey(dateKey)] || null;
+}
+
+function findNextOpening(days, currentDateKey) {
+  for (let offset = 1; offset <= 14; offset += 1) {
+    const dateKey = dateKeyWithOffset(currentDateKey, offset);
+    const values = effectiveHoursForDate(days, dateKey);
     if (values && values.closed !== true && values.open) {
-      return { dayId, open: values.open };
+      return { dateKey, dayId: weekdayIdForDateKey(dateKey), open: values.open };
     }
   }
-
   return null;
 }
 
 function createOpeningStatus(days) {
-  const { dayId, currentMinutes } = getSwedishDateParts();
-  const today = days[dayId];
+  const { currentMinutes, dateKey } = getSwedishDateParts();
+  const today = effectiveHoursForDate(days, dateKey);
 
   if (today && today.closed !== true && today.open && today.close) {
     const openMinutes = timeToMinutes(today.open);
     const closeMinutes = timeToMinutes(today.close);
-
     if (openMinutes !== null && closeMinutes !== null) {
       if (currentMinutes >= openMinutes && currentMinutes < closeMinutes) {
         return { isOpen: true, text: `Öppet nu · stänger ${today.close}` };
       }
-
       if (currentMinutes < openMinutes) {
         return { isOpen: false, text: `Stängt · öppnar idag ${today.open}` };
       }
     }
   }
 
-  const nextOpening = findNextOpening(days, dayId);
-
+  const nextOpening = findNextOpening(days, dateKey);
   if (nextOpening) {
-    return {
-      isOpen: false,
-      text: `Stängt · öppnar ${dayNames[nextOpening.dayId]} ${nextOpening.open}`
-    };
+    return { isOpen: false, text: `Stängt · öppnar ${dayNames[nextOpening.dayId]} ${nextOpening.open}` };
   }
-
   return { isOpen: false, text: "Stängt" };
 }
 
@@ -237,10 +248,15 @@ async function loadNewArrivalsNotice() {
 
 async function loadStatusBar() {
   try {
-    const [openingHoursSnapshot, informationSnapshot] = await Promise.all([
+    const [openingHoursSnapshot, informationSnapshot, specialHoursSnapshot] = await Promise.all([
       getDoc(doc(database, "settings", "openingHours")),
-      getDoc(doc(database, "settings", "informationBar"))
+      getDoc(doc(database, "settings", "informationBar")),
+      getDoc(doc(database, "settings", "specialOpeningHours"))
     ]);
+
+    savedSpecialHours = specialHoursSnapshot.exists()
+      ? (specialHoursSnapshot.data().entries || {})
+      : {};
 
     if (openingHoursSnapshot.exists()) {
       savedOpeningHours = openingHoursSnapshot.data().days || {};

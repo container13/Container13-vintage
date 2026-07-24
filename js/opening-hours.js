@@ -47,14 +47,43 @@
     if (!list) return;
     list.innerHTML = "<p>Hämtar öppettider...</p>";
     const url = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/settings/openingHours?key=${API_KEY}`;
+    const specialUrl = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/settings/specialOpeningHours?key=${API_KEY}`;
     try {
-      const response = await fetch(url, { cache: "no-store" });
+      const [response, specialResponse] = await Promise.all([
+        fetch(url, { cache: "no-store" }),
+        fetch(specialUrl, { cache: "no-store" })
+      ]);
       if (!response.ok) throw new Error(`Firestore svarade ${response.status}`);
       const documentData = await response.json();
       const data = firestoreFields(documentData.fields || {});
       const savedDays = data.days || data.openingHours || data.hours || {};
       list.innerHTML = "";
       dayNames.forEach(([name, key]) => list.appendChild(row(name, savedDays[key] || {})));
+
+      if (specialResponse.ok) {
+        const specialDocument = await specialResponse.json();
+        const specialData = firestoreFields(specialDocument.fields || {});
+        const entries = specialData.entries || {};
+        const today = new Intl.DateTimeFormat("sv-SE", {
+          timeZone: "Europe/Stockholm", year: "numeric", month: "2-digit", day: "2-digit"
+        }).format(new Date()).replace(/\//g, "-");
+        const upcoming = Object.entries(entries)
+          .filter(([dateKey]) => dateKey >= today)
+          .sort(([a], [b]) => a.localeCompare(b))
+          .slice(0, 8);
+        if (upcoming.length) {
+          const heading = document.createElement("h3");
+          heading.className = "avvikande-rubrik";
+          heading.textContent = "Avvikande öppettider";
+          list.appendChild(heading);
+          upcoming.forEach(([dateKey, values]) => {
+            const [year, month, day] = dateKey.split("-").map(Number);
+            const name = new Intl.DateTimeFormat("sv-SE", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })
+              .format(new Date(Date.UTC(year, month - 1, day, 12)));
+            list.appendChild(row(name, values));
+          });
+        }
+      }
     } catch (error) {
       console.error("Kunde inte hämta öppettider:", error);
       list.innerHTML = `<p>Öppettiderna kunde inte hämtas (${error.message}).</p>`;

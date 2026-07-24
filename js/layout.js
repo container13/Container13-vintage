@@ -36,7 +36,7 @@ async function initializeLayout() {
     ]);
 
     markCurrentPage();
-    await import("./status.js");
+    await import("./status.js?v=3.6.0");
   } catch (error) {
     console.error("Kunde inte ladda sidans gemensamma delar:", error);
   }
