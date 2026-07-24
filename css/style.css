@@ -695,3 +695,31 @@ main > #nyGallery.gallery {
 #nyGallery .nyinkommet-kort.image-card-loading {
   min-height: 378px;
 }
+
+
+/* Version 3.4.4 – samma mjuka hover-effekt i Butiken som i Nyinkommet */
+.gallery-image-shell {
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.gallery-image-shell img {
+  transition: transform 0.28s ease, opacity 0.28s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #gallery .gallery-image-shell:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+  }
+
+  #gallery .gallery-image-shell:hover img {
+    transform: scale(1.045);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-image-shell,
+  .gallery-image-shell img {
+    transition: none;
+  }
+}
