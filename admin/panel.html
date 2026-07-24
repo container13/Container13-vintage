@@ -1136,6 +1136,11 @@
           <span>Galleri</span>
         </button>
 
+        <button id="trash-menu" type="button">
+          <span class="menu-icon">🗑</span>
+          <span>Papperskorg</span>
+        </button>
+
         <button type="button" disabled>
           <span class="menu-icon">⚙</span>
           <span>Inställningar</span>
@@ -1157,7 +1162,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Öppettider</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 3.6.1</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 4.1</small>
 
             <p class="page-description">
               Ändra butikens ordinarie öppettider.
@@ -1416,6 +1421,23 @@
                 Bilderna laddas...
               </p>
             </div>
+          </div>
+        </section>
+
+        <section
+          id="trash-section"
+          class="content-section"
+        >
+          <div class="card">
+            <div class="section-header">
+              <div>
+                <h3>Papperskorg</h3>
+                <p>Bilder sparas här i högst 2 dagar innan de raderas permanent.</p>
+              </div>
+              <button id="empty-trash-button" class="delete-image-button" type="button">Töm papperskorgen</button>
+            </div>
+            <div id="trash-message" class="message" aria-live="polite"></div>
+            <div id="trash-list" class="image-admin-list"></div>
           </div>
         </section>
 
@@ -1699,6 +1721,12 @@
 
     const galleryList =
       document.getElementById("gallery-list");
+
+    const trashMenu = document.getElementById("trash-menu");
+    const trashSection = document.getElementById("trash-section");
+    const trashList = document.getElementById("trash-list");
+    const trashMessage = document.getElementById("trash-message");
+    const emptyTrashButton = document.getElementById("empty-trash-button");
 
     const days = [
       {
@@ -2069,6 +2097,9 @@
       const showGallery =
         sectionName === "gallery";
 
+      const showTrash =
+        sectionName === "trash";
+
       openingHoursSection.classList.toggle(
         "active",
         showOpeningHours
@@ -2094,6 +2125,11 @@
         showGallery
       );
 
+      trashSection.classList.toggle(
+        "active",
+        showTrash
+      );
+
       openingHoursMenu.classList.toggle(
         "active",
         showOpeningHours
@@ -2117,6 +2153,11 @@
       galleryMenu.classList.toggle(
         "active",
         showGallery
+      );
+
+      trashMenu.classList.toggle(
+        "active",
+        showTrash
       );
 
       if (showOpeningHours) {
@@ -2147,6 +2188,13 @@
         pageTitle.textContent = "Galleri";
         pageDescription.textContent =
           "Ladda upp och ta bort bilder från butiken.";
+      }
+
+      if (showTrash) {
+        pageTitle.textContent = "Papperskorg";
+        pageDescription.textContent =
+          "Återställ bilder eller radera dem permanent inom 2 dagar.";
+        loadTrash();
       }
     }
 
@@ -2564,19 +2612,10 @@
             deleteButton.textContent = "Tar bort...";
 
             try {
-              if (item.storagePath) {
-                const storageReference =
-                  ref(storage, item.storagePath);
-
-                await deleteObject(storageReference);
-              }
-
-              await deleteDoc(
-                doc(database, "gallery", item.id)
-              );
+              await moveToTrash(item);
 
               showNewArrivalStatus(
-                "Bilden har tagits bort.",
+                "Bilden har flyttats till papperskorgen.",
                 "success"
               );
 
@@ -2729,6 +2768,167 @@
     }
 
 
+    function showTrashStatus(text, type = "success") {
+      const icon = type === "success" ? "✓" : "⚠";
+      trashMessage.textContent = `${icon} ${text}`;
+      trashMessage.className = `message ${type}`;
+    }
+
+    function clearTrashStatus() {
+      trashMessage.textContent = "";
+      trashMessage.className = "message";
+    }
+
+    function millisecondsFromValue(value) {
+      if (!value) return 0;
+      if (typeof value.toMillis === "function") return value.toMillis();
+      if (value instanceof Date) return value.getTime();
+      if (typeof value.seconds === "number") return value.seconds * 1000;
+      const parsed = new Date(value).getTime();
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    async function moveToTrash(item) {
+      const deletedAt = new Date();
+      const expiresAt = new Date(deletedAt.getTime() + 48 * 60 * 60 * 1000);
+      const trashReference = doc(collection(database, "trash"));
+      await setDoc(trashReference, {
+        originalId: item.id,
+        category: item.category || "gallery",
+        imageUrl: item.imageUrl || "",
+        storagePath: item.storagePath || "",
+        title: item.title || "",
+        createdAt: item.createdAt || null,
+        createdBy: item.createdBy || "",
+        deletedAt,
+        expiresAt
+      });
+      await deleteDoc(doc(database, "gallery", item.id));
+    }
+
+    async function permanentlyDeleteTrashItem(item) {
+      if (item.storagePath) {
+        try {
+          await deleteObject(ref(storage, item.storagePath));
+        } catch (error) {
+          if (error?.code !== "storage/object-not-found") throw error;
+        }
+      }
+      await deleteDoc(doc(database, "trash", item.id));
+    }
+
+    async function cleanupExpiredTrash() {
+      const snapshot = await getDocs(collection(database, "trash"));
+      const now = Date.now();
+      const expired = snapshot.docs
+        .map((trashDocument) => ({ id: trashDocument.id, ...trashDocument.data() }))
+        .filter((item) => millisecondsFromValue(item.expiresAt) <= now);
+      for (const item of expired) await permanentlyDeleteTrashItem(item);
+      return expired.length;
+    }
+
+    function renderTrash(items) {
+      trashList.innerHTML = "";
+      if (items.length === 0) {
+        trashList.innerHTML = '<p class="image-admin-empty">Papperskorgen är tom.</p>';
+        return;
+      }
+      items.forEach((item) => {
+        const article = document.createElement("article");
+        article.className = "image-admin-item";
+        const image = document.createElement("img");
+        image.src = item.imageUrl || "";
+        image.alt = item.title || "Borttagen bild";
+        image.loading = "lazy";
+        const content = document.createElement("div");
+        content.className = "image-admin-item-content";
+        const title = document.createElement("p");
+        title.className = "image-admin-title";
+        title.textContent = item.title || "Ingen titel";
+        const remaining = document.createElement("p");
+        remaining.className = "field-help";
+        const hours = Math.max(0, Math.ceil((millisecondsFromValue(item.expiresAt) - Date.now()) / 3600000));
+        remaining.textContent = `Raderas automatiskt om cirka ${hours} tim.`;
+        const restoreButton = document.createElement("button");
+        restoreButton.className = "save-button";
+        restoreButton.type = "button";
+        restoreButton.textContent = "Återställ";
+        const permanentButton = document.createElement("button");
+        permanentButton.className = "delete-image-button";
+        permanentButton.type = "button";
+        permanentButton.textContent = "Radera permanent";
+        restoreButton.addEventListener("click", async () => {
+          restoreButton.disabled = true;
+          try {
+            const originalId = item.originalId || item.id;
+            await setDoc(doc(database, "gallery", originalId), {
+              category: item.category || "gallery",
+              imageUrl: item.imageUrl || "",
+              storagePath: item.storagePath || "",
+              title: item.title || "",
+              createdAt: item.createdAt || serverTimestamp(),
+              createdBy: item.createdBy || ""
+            });
+            await deleteDoc(doc(database, "trash", item.id));
+            showTrashStatus("Bilden har återställts.");
+            await Promise.all([loadTrash(), loadNewArrivals(), loadGallery()]);
+          } catch (error) {
+            console.error("Kunde inte återställa bilden:", error);
+            showTrashStatus("Det gick inte att återställa bilden.", "error");
+            restoreButton.disabled = false;
+          }
+        });
+        permanentButton.addEventListener("click", async () => {
+          if (!window.confirm("Radera bilden permanent? Det går inte att ångra.")) return;
+          permanentButton.disabled = true;
+          try {
+            await permanentlyDeleteTrashItem(item);
+            showTrashStatus("Bilden har raderats permanent.");
+            await loadTrash();
+          } catch (error) {
+            console.error("Kunde inte radera bilden permanent:", error);
+            showTrashStatus("Det gick inte att radera bilden permanent.", "error");
+            permanentButton.disabled = false;
+          }
+        });
+        content.append(title, remaining, restoreButton, permanentButton);
+        article.append(image, content);
+        trashList.appendChild(article);
+      });
+    }
+
+    async function loadTrash() {
+      clearTrashStatus();
+      try {
+        const removed = await cleanupExpiredTrash();
+        const snapshot = await getDocs(query(collection(database, "trash"), orderBy("deletedAt", "desc")));
+        const items = snapshot.docs.map((trashDocument) => ({ id: trashDocument.id, ...trashDocument.data() }));
+        renderTrash(items);
+        if (removed > 0) showTrashStatus(`${removed} utgången bild(er) raderades permanent.`);
+      } catch (error) {
+        console.error("Kunde inte hämta papperskorgen:", error);
+        trashList.innerHTML = '<p class="image-admin-empty">Papperskorgen kunde inte hämtas. Kontrollera Firestores regler för samlingen trash.</p>';
+      }
+    }
+
+    async function emptyTrash() {
+      if (!window.confirm("Töm hela papperskorgen permanent? Det går inte att ångra.")) return;
+      emptyTrashButton.disabled = true;
+      try {
+        const snapshot = await getDocs(collection(database, "trash"));
+        for (const trashDocument of snapshot.docs) {
+          await permanentlyDeleteTrashItem({ id: trashDocument.id, ...trashDocument.data() });
+        }
+        showTrashStatus("Papperskorgen har tömts.");
+        await loadTrash();
+      } catch (error) {
+        console.error("Kunde inte tömma papperskorgen:", error);
+        showTrashStatus("Det gick inte att tömma papperskorgen.", "error");
+      } finally {
+        emptyTrashButton.disabled = false;
+      }
+    }
+
     function showGalleryStatus(text, type) {
       const icon = type === "success" ? "✓" : "⚠";
 
@@ -2829,19 +3029,10 @@
             deleteButton.textContent = "Tar bort...";
 
             try {
-              if (item.storagePath) {
-                const storageReference =
-                  ref(storage, item.storagePath);
-
-                await deleteObject(storageReference);
-              }
-
-              await deleteDoc(
-                doc(database, "gallery", item.id)
-              );
+              await moveToTrash(item);
 
               showGalleryStatus(
-                "Bilden har tagits bort.",
+                "Bilden har flyttats till papperskorgen.",
                 "success"
               );
 
@@ -3198,7 +3389,8 @@
         loadInformationBar(),
         loadSpecialHours(),
         loadNewArrivals(),
-        loadGallery()
+        loadGallery(),
+        loadTrash()
       ]);
 
       loadingScreen.classList.add("hidden");
@@ -3240,6 +3432,16 @@
     galleryMenu.addEventListener(
       "click",
       () => showSection("gallery")
+    );
+
+    trashMenu.addEventListener(
+      "click",
+      () => showSection("trash")
+    );
+
+    emptyTrashButton.addEventListener(
+      "click",
+      emptyTrash
     );
 
     uploadGalleryButton.addEventListener(
