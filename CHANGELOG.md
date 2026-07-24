@@ -28,3 +28,7 @@ Version 4.0.0 ska se ut och fungera som den godkända version 3.6.1. Syftet är 
 - Statistik för Galleri, Nyinkommet och Papperskorg.
 - Status för informationsrad och butikens öppet/stängt-läge.
 - Nästa avvikande öppettid och snabbknappar till vanliga funktioner.
+
+## Version 4.2.1
+- Rättar navigeringen så att Dashboard alltid är klickbar från vänstermenyn.
+- Lägger till tangentbordsstöd för Dashboard-knappen.
