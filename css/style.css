@@ -824,3 +824,91 @@ main > #nyGallery.gallery {
   transform: scale(1.055) !important;
   filter: brightness(1.02);
 }
+
+/* =========================================================
+   VERSION 3.5.0 – BUTIKEN ANVÄNDER EXAKT SAMMA BILDKORT
+   SOM NYINKOMMET
+   ========================================================= */
+#gallery .gallery-item.nyinkommet-kort.galleri-kort {
+  display: block !important;
+  width: 100% !important;
+  max-width: 300px !important;
+  aspect-ratio: auto !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(154, 122, 24, 0.16) !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10) !important;
+  transform: translateY(0) !important;
+  transition: transform 0.24s ease, box-shadow 0.24s ease !important;
+  clip-path: none !important;
+  -webkit-clip-path: none !important;
+  contain: none !important;
+  isolation: auto !important;
+}
+
+#gallery .galleri-kort .nyinkommet-bildknapp {
+  display: block !important;
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #eee9df !important;
+  cursor: pointer !important;
+  overflow: hidden !important;
+}
+
+#gallery .galleri-kort .nyinkommet-bildknapp img,
+#gallery .galleri-kort:hover .nyinkommet-bildknapp img,
+#gallery .galleri-kort:focus-within .nyinkommet-bildknapp img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  aspect-ratio: auto !important;
+  object-fit: cover !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  transform: scale(1) !important;
+  transform-origin: center center !important;
+  transition: transform 0.28s ease, opacity 0.28s ease !important;
+}
+
+#gallery .galleri-kort .nyinkommet-bildknapp:focus-visible {
+  outline: 3px solid #9a7a18;
+  outline-offset: -3px;
+}
+
+#gallery .galleri-kort.image-card-loading {
+  min-height: 300px !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #gallery .gallery-item.nyinkommet-kort.galleri-kort:hover,
+  #gallery .gallery-item.nyinkommet-kort.galleri-kort:focus-within {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 13px 30px rgba(0, 0, 0, 0.14) !important;
+  }
+
+  #gallery .galleri-kort:hover .nyinkommet-bildknapp img,
+  #gallery .galleri-kort:focus-within .nyinkommet-bildknapp img {
+    transform: scale(1.045) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  #gallery .gallery-item.nyinkommet-kort.galleri-kort {
+    max-width: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #gallery .gallery-item.nyinkommet-kort.galleri-kort,
+  #gallery .galleri-kort .nyinkommet-bildknapp img {
+    transition: none !important;
+  }
+}
