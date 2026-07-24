@@ -1074,6 +1074,126 @@
         height: 125px;
       }
     }
+
+
+    /* DASHBOARD – VERSION 4.2 */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .dashboard-stat {
+      min-height: 145px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--card-background);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.045);
+    }
+
+    .dashboard-stat-icon {
+      display: block;
+      margin-bottom: 16px;
+      font-size: 27px;
+    }
+
+    .dashboard-stat-value {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 31px;
+      line-height: 1;
+      font-weight: 800;
+    }
+
+    .dashboard-stat-label {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .dashboard-panels {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(300px, .75fr);
+      gap: 18px;
+    }
+
+    .dashboard-panel {
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--card-background);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.04);
+    }
+
+    .dashboard-panel h3 {
+      margin: 0 0 18px;
+      font-size: 21px;
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .quick-action {
+      min-height: 66px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--text);
+      background: var(--row-background);
+      font-weight: 700;
+      text-align: left;
+    }
+
+    .quick-action:hover {
+      border-color: var(--accent);
+      background: #faf6f0;
+    }
+
+    .dashboard-detail-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .dashboard-detail {
+      padding: 13px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .dashboard-detail:last-child { border-bottom: 0; }
+    .dashboard-detail span:first-child { color: var(--muted); }
+    .dashboard-detail strong { text-align: right; }
+
+    .dashboard-version {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: right;
+    }
+
+    @media (max-width: 1150px) {
+      .dashboard-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 850px) {
+      .dashboard-panels { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 650px) {
+      .dashboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .quick-actions { grid-template-columns: 1fr; }
+    }
+
 </style>
 </head>
 
@@ -1088,14 +1208,13 @@
       <p class="admin-label">Adminpanel</p>
 
       <nav class="navigation" aria-label="Adminmeny">
-        <button type="button" disabled>
+        <button id="dashboard-menu" class="active" type="button">
           <span class="menu-icon">⌂</span>
           <span>Dashboard</span>
         </button>
 
         <button
           id="opening-hours-menu"
-          class="active"
           type="button"
         >
           <span class="menu-icon">◷</span>
@@ -1161,11 +1280,11 @@
       <main class="main-content">
         <header class="topbar">
           <div>
-            <h2 class="page-title">Öppettider</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 4.1</small>
+            <h2 class="page-title">Dashboard</h2>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 4.2</small>
 
             <p class="page-description">
-              Ändra butikens ordinarie öppettider.
+              Överblick över webbplatsen och de viktigaste funktionerna.
             </p>
           </div>
 
@@ -1184,9 +1303,61 @@
           </div>
         </header>
 
+        <section id="dashboard-section" class="content-section active">
+          <div class="dashboard-grid" aria-live="polite">
+            <article class="dashboard-stat">
+              <span class="dashboard-stat-icon">▧</span>
+              <strong id="dashboard-gallery-count" class="dashboard-stat-value">–</strong>
+              <span class="dashboard-stat-label">Bilder i Galleri</span>
+            </article>
+            <article class="dashboard-stat">
+              <span class="dashboard-stat-icon">☆</span>
+              <strong id="dashboard-new-count" class="dashboard-stat-value">–</strong>
+              <span class="dashboard-stat-label">Bilder i Nyinkommet</span>
+            </article>
+            <article class="dashboard-stat">
+              <span class="dashboard-stat-icon">🗑</span>
+              <strong id="dashboard-trash-count" class="dashboard-stat-value">–</strong>
+              <span class="dashboard-stat-label">I papperskorgen</span>
+            </article>
+            <article class="dashboard-stat">
+              <span class="dashboard-stat-icon">📢</span>
+              <strong id="dashboard-info-state" class="dashboard-stat-value" style="font-size:24px;">–</strong>
+              <span class="dashboard-stat-label">Informationsrad</span>
+            </article>
+            <article class="dashboard-stat">
+              <span class="dashboard-stat-icon">◷</span>
+              <strong id="dashboard-store-state" class="dashboard-stat-value" style="font-size:24px;">–</strong>
+              <span class="dashboard-stat-label">Butiken just nu</span>
+            </article>
+          </div>
+
+          <div class="dashboard-panels">
+            <section class="dashboard-panel">
+              <h3>Snabbåtgärder</h3>
+              <div class="quick-actions">
+                <button class="quick-action" type="button" data-dashboard-target="new-arrivals"><span>＋</span> Ladda upp till Nyinkommet</button>
+                <button class="quick-action" type="button" data-dashboard-target="gallery"><span>▧</span> Ladda upp till Galleri</button>
+                <button class="quick-action" type="button" data-dashboard-target="opening-hours"><span>◷</span> Ändra öppettider</button>
+                <button class="quick-action" type="button" data-dashboard-target="trash"><span>🗑</span> Öppna papperskorgen</button>
+              </div>
+            </section>
+
+            <section class="dashboard-panel">
+              <h3>Butiksinformation</h3>
+              <div class="dashboard-detail-list">
+                <div class="dashboard-detail"><span>Nästa avvikande tid</span><strong id="dashboard-next-special">–</strong></div>
+                <div class="dashboard-detail"><span>Inloggad som</span><strong id="dashboard-user">–</strong></div>
+                <div class="dashboard-detail"><span>Papperskorg</span><strong>Automatisk rensning efter 2 dagar</strong></div>
+              </div>
+              <p class="dashboard-version">Container13 Adminpanel · Version 4.2</p>
+            </section>
+          </div>
+        </section>
+
         <section
           id="opening-hours-section"
-          class="content-section active"
+          class="content-section"
         >
           <div class="card">
             <div class="card-header">
@@ -1616,6 +1787,16 @@
 
     const openingHoursList =
       document.getElementById("opening-hours-list");
+
+    const dashboardMenu = document.getElementById("dashboard-menu");
+    const dashboardSection = document.getElementById("dashboard-section");
+    const dashboardGalleryCount = document.getElementById("dashboard-gallery-count");
+    const dashboardNewCount = document.getElementById("dashboard-new-count");
+    const dashboardTrashCount = document.getElementById("dashboard-trash-count");
+    const dashboardInfoState = document.getElementById("dashboard-info-state");
+    const dashboardStoreState = document.getElementById("dashboard-store-state");
+    const dashboardNextSpecial = document.getElementById("dashboard-next-special");
+    const dashboardUser = document.getElementById("dashboard-user");
 
     const openingHoursMenu =
       document.getElementById("opening-hours-menu");
@@ -2082,6 +2263,7 @@
     }
 
     function showSection(sectionName) {
+      const showDashboard = sectionName === "dashboard";
       const showOpeningHours =
         sectionName === "opening-hours";
 
@@ -2099,6 +2281,8 @@
 
       const showTrash =
         sectionName === "trash";
+
+      dashboardSection.classList.toggle("active", showDashboard);
 
       openingHoursSection.classList.toggle(
         "active",
@@ -2130,6 +2314,8 @@
         showTrash
       );
 
+      dashboardMenu.classList.toggle("active", showDashboard);
+
       openingHoursMenu.classList.toggle(
         "active",
         showOpeningHours
@@ -2159,6 +2345,12 @@
         "active",
         showTrash
       );
+
+      if (showDashboard) {
+        pageTitle.textContent = "Dashboard";
+        pageDescription.textContent = "Överblick över webbplatsen och de viktigaste funktionerna.";
+        loadDashboard();
+      }
 
       if (showOpeningHours) {
         pageTitle.textContent = "Öppettider";
@@ -2195,6 +2387,63 @@
         pageDescription.textContent =
           "Återställ bilder eller radera dem permanent inom 2 dagar.";
         loadTrash();
+      }
+    }
+
+    function stockholmDateKey(date = new Date()) {
+      return new Intl.DateTimeFormat("sv-SE", {
+        timeZone: "Europe/Stockholm", year: "numeric", month: "2-digit", day: "2-digit"
+      }).format(date).split("-").reverse().join("-");
+    }
+
+    function currentStoreState(openingDays, specialEntries) {
+      const now = new Date();
+      const stockholmParts = new Intl.DateTimeFormat("sv-SE", {
+        timeZone: "Europe/Stockholm", weekday: "long", hour: "2-digit", minute: "2-digit", hour12: false
+      }).formatToParts(now);
+      const weekday = stockholmParts.find((part) => part.type === "weekday")?.value?.toLowerCase() || "";
+      const hour = stockholmParts.find((part) => part.type === "hour")?.value || "00";
+      const minute = stockholmParts.find((part) => part.type === "minute")?.value || "00";
+      const time = `${hour}:${minute}`;
+      const dateKey = stockholmDateKey(now);
+      const dayMap = { måndag: "monday", tisdag: "tuesday", onsdag: "wednesday", torsdag: "thursday", fredag: "friday", lördag: "saturday", söndag: "sunday" };
+      const schedule = specialEntries?.[dateKey] || openingDays?.[dayMap[weekday]];
+      if (!schedule || schedule.closed) return "Stängt";
+      return time >= schedule.open && time < schedule.close ? "Öppet" : "Stängt";
+    }
+
+    async function loadDashboard() {
+      try {
+        const [gallerySnapshot, trashSnapshot, infoSnapshot, specialSnapshot, hoursSnapshot] = await Promise.all([
+          getDocs(collection(database, "gallery")),
+          getDocs(collection(database, "trash")),
+          getDoc(doc(database, "settings", "informationBar")),
+          getDoc(doc(database, "settings", "specialOpeningHours")),
+          getDoc(doc(database, "settings", "openingHours"))
+        ]);
+        const galleryItems = gallerySnapshot.docs.map((entry) => entry.data());
+        dashboardNewCount.textContent = String(galleryItems.filter((item) => item.category === "nyinkommet").length);
+        dashboardGalleryCount.textContent = String(galleryItems.filter((item) => item.category !== "nyinkommet").length);
+        dashboardTrashCount.textContent = String(trashSnapshot.size);
+        dashboardInfoState.textContent = infoSnapshot.exists() && infoSnapshot.data().enabled === true ? "Aktiv" : "Inaktiv";
+        const special = specialSnapshot.exists() ? (specialSnapshot.data().entries || {}) : {};
+        const hours = hoursSnapshot.exists() ? (hoursSnapshot.data().days || {}) : {};
+        dashboardStoreState.textContent = currentStoreState(hours, special);
+        const today = stockholmDateKey();
+        const nextEntry = Object.entries(special).filter(([date]) => date >= today).sort(([a], [b]) => a.localeCompare(b))[0];
+        if (nextEntry) {
+          const [date, value] = nextEntry;
+          dashboardNextSpecial.textContent = `${formatSpecialDate(date)} – ${value.closed ? "Stängt" : `${value.open}–${value.close}`}`;
+        } else {
+          dashboardNextSpecial.textContent = "Ingen kommande avvikelse";
+        }
+        dashboardUser.textContent = auth.currentUser?.email || "Administratör";
+      } catch (error) {
+        console.error("Kunde inte ladda dashboard:", error);
+        [dashboardGalleryCount, dashboardNewCount, dashboardTrashCount].forEach((element) => element.textContent = "–");
+        dashboardInfoState.textContent = "Kunde inte hämtas";
+        dashboardStoreState.textContent = "Kunde inte hämtas";
+        dashboardNextSpecial.textContent = "Kunde inte hämtas";
       }
     }
 
@@ -3390,7 +3639,8 @@
         loadSpecialHours(),
         loadNewArrivals(),
         loadGallery(),
-        loadTrash()
+        loadTrash(),
+        loadDashboard()
       ]);
 
       loadingScreen.classList.add("hidden");
@@ -3405,6 +3655,12 @@
       "click",
       saveInformationBar
     );
+
+    dashboardMenu.addEventListener("click", () => showSection("dashboard"));
+
+    document.querySelectorAll("[data-dashboard-target]").forEach((button) => {
+      button.addEventListener("click", () => showSection(button.dataset.dashboardTarget));
+    });
 
     openingHoursMenu.addEventListener(
       "click",
