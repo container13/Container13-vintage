@@ -657,3 +657,41 @@ main > #nyGallery.gallery {
   line-height: 1.35;
   font-weight: 600;
 }
+
+/* Version 3.4.1 – FIX: bildkortet får plats för titel och datum */
+#nyGallery .gallery-item.nyinkommet-kort {
+  aspect-ratio: auto !important;
+  overflow: hidden !important;
+}
+
+#nyGallery .nyinkommet-bildknapp {
+  aspect-ratio: 1 / 1;
+  min-height: 0;
+}
+
+#nyGallery .nyinkommet-bildknapp img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+#nyGallery .nyinkommet-info {
+  display: block !important;
+  min-height: 78px;
+  padding: 13px 15px 15px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+#nyGallery .nyinkommet-titel + .nyinkommet-datum {
+  margin-top: 7px;
+}
+
+#nyGallery .nyinkommet-datum {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1;
+}
+
+#nyGallery .nyinkommet-kort.image-card-loading {
+  min-height: 378px;
+}
