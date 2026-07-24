@@ -21,3 +21,10 @@ Version 4.0.0 ska se ut och fungera som den godkända version 3.6.1. Syftet är 
 - Papperskorg för bilder från Nyinkommet och Galleri.
 - Återställning och permanent radering.
 - Automatisk rensning efter 48 timmar när adminpanelen öppnas.
+
+
+## Version 4.2
+- Dashboard visas som startsida efter inloggning.
+- Statistik för Galleri, Nyinkommet och Papperskorg.
+- Status för informationsrad och butikens öppet/stängt-läge.
+- Nästa avvikande öppettid och snabbknappar till vanliga funktioner.
