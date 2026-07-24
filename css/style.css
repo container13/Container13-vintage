@@ -912,3 +912,11 @@ main > #nyGallery.gallery {
     transition: none !important;
   }
 }
+
+
+/* Avvikande öppettider */
+.avvikande-rubrik {
+  margin: 28px 0 10px;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
