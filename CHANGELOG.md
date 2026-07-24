@@ -32,3 +32,10 @@ Version 4.0.0 ska se ut och fungera som den godkända version 3.6.1. Syftet är 
 ## Version 4.2.1
 - Rättar navigeringen så att Dashboard alltid är klickbar från vänstermenyn.
 - Lägger till tangentbordsstöd för Dashboard-knappen.
+
+
+## Version 4.3
+- Klickbar sida för Inställningar i adminpanelen.
+- Kontaktuppgifter, sociala länkar och copyright kan ändras utan kod.
+- Valbar lagringstid för papperskorgen mellan 1 och 7 dagar.
+- Kontakt, Hitta hit och sidfoten hämtar automatiskt sparade uppgifter från Firestore.
