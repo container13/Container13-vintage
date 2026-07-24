@@ -1495,6 +1495,13 @@
     const galleryImageInput =
       document.getElementById("gallery-image");
 
+    /*
+      Sparar valda galleribilder i en separat kö. Då kan flera
+      bilder väljas på en gång eller läggas till i flera omgångar
+      innan uppladdningsknappen används.
+    */
+    let selectedGalleryFiles = [];
+
     const galleryTitles =
       document.getElementById("gallery-titles");
 
@@ -2439,6 +2446,7 @@
     }
 
     function resetGalleryForm() {
+      selectedGalleryFiles = [];
       galleryImageInput.value = "";
       galleryTitles.innerHTML = '<p class="field-help">Välj en eller flera bilder så visas ett titelfält för varje bild.</p>';
       galleryPreviewImage.removeAttribute("src");
@@ -2669,7 +2677,7 @@
     async function uploadGalleryImage() {
       clearGalleryStatus();
 
-      const files = Array.from(galleryImageInput.files || []);
+      const files = [...selectedGalleryFiles];
       const titles = getTitles(galleryTitles, files.length);
 
       if (files.length === 0) {
@@ -2933,9 +2941,35 @@
       "change",
       () => {
         clearGalleryStatus();
-        const files = Array.from(galleryImageInput.files || []);
-        renderTitleInputs(files, galleryTitles, "gallery");
-        const file = files[0];
+
+        const newlySelectedFiles =
+          Array.from(galleryImageInput.files || []);
+
+        /*
+          Lägg till de nya filerna i kön i stället för att ersätta
+          tidigare val. Det fungerar även i filväljare där man bara
+          kan markera en bild åt gången.
+        */
+        newlySelectedFiles.forEach((file) => {
+          const alreadySelected = selectedGalleryFiles.some(
+            (selectedFile) =>
+              selectedFile.name === file.name &&
+              selectedFile.size === file.size &&
+              selectedFile.lastModified === file.lastModified
+          );
+
+          if (!alreadySelected) {
+            selectedGalleryFiles.push(file);
+          }
+        });
+
+        renderTitleInputs(
+          selectedGalleryFiles,
+          galleryTitles,
+          "gallery"
+        );
+
+        const file = selectedGalleryFiles[0];
 
         if (!file) {
           galleryPreviewImage.removeAttribute("src");
@@ -2946,7 +2980,16 @@
         const previewUrl = URL.createObjectURL(file);
         galleryPreviewImage.src = previewUrl;
         galleryPreview.classList.add("visible");
-        galleryPreviewImage.onload = () => URL.revokeObjectURL(previewUrl);
+        galleryPreviewImage.onload = () =>
+          URL.revokeObjectURL(previewUrl);
+
+        showGalleryStatus(
+          `${selectedGalleryFiles.length} bild(er) valda. Du kan välja fler innan du laddar upp.`,
+          "success"
+        );
+
+        /* Gör det möjligt att välja samma fil igen efter återställning. */
+        galleryImageInput.value = "";
       }
     );
 
