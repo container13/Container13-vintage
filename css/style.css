@@ -445,3 +445,119 @@ main > #nyGallery.gallery {
     text-align: center;
   }
 }
+
+/* =========================================================
+   VERSION 2.4.3 – FÖRBÄTTRAD LIGHTBOX FÖR BILDER
+   ========================================================= */
+.lightbox {
+  padding: 42px 86px;
+  box-sizing: border-box;
+}
+
+.lightbox img,
+#lightboxImage {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(78vw, 1100px);
+  max-height: 82vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 14px 42px rgba(0, 0, 0, 0.45);
+}
+
+.lightbox .prev,
+.lightbox .next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 76px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  color: #fff;
+  background: rgba(20, 20, 20, 0.66);
+  font-size: 42px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.lightbox .prev:hover,
+.lightbox .next:hover {
+  background: rgba(212, 175, 55, 0.92);
+}
+
+.lightbox .prev {
+  left: 22px;
+}
+
+.lightbox .next {
+  right: 22px;
+}
+
+.lightbox #close,
+.lightbox .lightbox-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 18px;
+  right: 22px;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(20, 20, 20, 0.72);
+  font-size: 36px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.lightbox #close:hover,
+.lightbox .lightbox-close:hover {
+  color: #222;
+  background: #d4af37;
+}
+
+@media (max-width: 700px) {
+  .lightbox {
+    padding: 68px 54px 42px;
+  }
+
+  .lightbox img,
+  #lightboxImage {
+    max-width: calc(100vw - 112px);
+    max-height: 76vh;
+    border-radius: 6px;
+  }
+
+  .lightbox .prev,
+  .lightbox .next {
+    width: 42px;
+    height: 62px;
+    border-radius: 8px;
+    font-size: 32px;
+  }
+
+  .lightbox .prev {
+    left: 6px;
+  }
+
+  .lightbox .next {
+    right: 6px;
+  }
+
+  .lightbox #close,
+  .lightbox .lightbox-close {
+    top: 12px;
+    right: 12px;
+    width: 42px;
+    height: 42px;
+    font-size: 32px;
+  }
+}
