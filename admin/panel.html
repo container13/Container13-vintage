@@ -823,6 +823,60 @@
       }
     }
 
+    .special-hours-form {
+      display: grid;
+      gap: 20px;
+    }
+
+    .special-hours-fields {
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) minmax(160px, .8fr) minmax(160px, .8fr);
+      gap: 16px;
+      align-items: end;
+    }
+
+    .special-closed-label {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      font-weight: 700;
+      min-height: 46px;
+    }
+
+    .special-hours-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .special-hours-item {
+      display: grid;
+      grid-template-columns: minmax(130px, .8fr) minmax(180px, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+      padding: 16px;
+      border: 1px solid #ded8cc;
+      border-radius: 12px;
+      background: #fbfaf7;
+    }
+
+    .special-hours-date { font-weight: 800; }
+    .special-hours-value { color: #4c4a45; }
+    .special-delete-button {
+      border: 1px solid #c9bfb0;
+      background: #fff;
+      border-radius: 9px;
+      padding: 9px 13px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .special-delete-button:hover { background: #f4eee6; }
+
+    @media (max-width: 720px) {
+      .special-hours-fields, .special-hours-item { grid-template-columns: 1fr; }
+      .special-delete-button { justify-self: start; }
+    }
+
     @media (max-width: 480px) {
       .navigation {
         grid-template-columns: 1fr;
@@ -1053,7 +1107,10 @@
           <span>Informationsrad</span>
         </button>
 
-        <button type="button" disabled>
+        <button
+          id="special-hours-menu"
+          type="button"
+        >
           <span class="menu-icon">▣</span>
           <span>Avvikande tider</span>
         </button>
@@ -1224,6 +1281,51 @@
                 aria-live="polite"
               ></div>
             </div>
+          </div>
+        </section>
+
+        <section
+          id="special-hours-section"
+          class="content-section"
+        >
+          <div class="card">
+            <div class="card-header">
+              <h2>Avvikande öppettider</h2>
+              <p class="card-introduction">
+                Lägg in en särskild öppettid för ett visst datum. Den ersätter automatiskt den ordinarie tiden den dagen.
+              </p>
+            </div>
+
+            <div class="special-hours-form">
+              <div class="special-hours-fields">
+                <div class="field-group">
+                  <label class="field-label" for="special-date">Datum</label>
+                  <input id="special-date" type="date">
+                </div>
+                <div class="field-group">
+                  <label class="field-label" for="special-open">Öppnar</label>
+                  <input id="special-open" type="time" value="11:00">
+                </div>
+                <div class="field-group">
+                  <label class="field-label" for="special-close">Stänger</label>
+                  <input id="special-close" type="time" value="16:00">
+                </div>
+              </div>
+
+              <label class="special-closed-label">
+                <input id="special-closed" type="checkbox">
+                <span>Stängt hela dagen</span>
+              </label>
+
+              <div class="actions">
+                <button id="save-special-hours-button" class="save-button" type="button">
+                  Lägg till avvikande tid
+                </button>
+                <div id="special-hours-message" class="message" role="status" aria-live="polite"></div>
+              </div>
+            </div>
+
+            <div id="special-hours-list" class="special-hours-list"></div>
           </div>
         </section>
 
@@ -1498,6 +1600,17 @@
 
     const informationSection =
       document.getElementById("information-section");
+
+    const specialHoursMenu = document.getElementById("special-hours-menu");
+    const specialHoursSection = document.getElementById("special-hours-section");
+    const specialDateInput = document.getElementById("special-date");
+    const specialOpenInput = document.getElementById("special-open");
+    const specialCloseInput = document.getElementById("special-close");
+    const specialClosedInput = document.getElementById("special-closed");
+    const saveSpecialHoursButton = document.getElementById("save-special-hours-button");
+    const specialHoursMessage = document.getElementById("special-hours-message");
+    const specialHoursList = document.getElementById("special-hours-list");
+    let specialHoursEntries = {};
 
     const pageTitle =
       document.querySelector(".page-title");
@@ -1837,12 +1950,112 @@
         : "Skriv ett meddelande för att se förhandsvisningen.";
     }
 
+    function showSpecialHoursStatus(text, type) {
+      const icon = type === "success" ? "✓" : "⚠";
+      specialHoursMessage.textContent = `${icon} ${text}`;
+      specialHoursMessage.className = `message ${type}`;
+    }
+
+    function clearSpecialHoursStatus() {
+      specialHoursMessage.textContent = "";
+      specialHoursMessage.className = "message";
+    }
+
+    function formatSpecialDate(dateKey) {
+      const [year, month, day] = dateKey.split("-").map(Number);
+      return new Intl.DateTimeFormat("sv-SE", {
+        weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "Europe/Stockholm"
+      }).format(new Date(Date.UTC(year, month - 1, day, 12)));
+    }
+
+    function renderSpecialHours() {
+      specialHoursList.innerHTML = "";
+      const entries = Object.entries(specialHoursEntries || {}).sort(([a], [b]) => a.localeCompare(b));
+      if (!entries.length) {
+        specialHoursList.innerHTML = '<p class="card-introduction">Inga avvikande tider är inlagda.</p>';
+        return;
+      }
+      entries.forEach(([dateKey, values]) => {
+        const item = document.createElement("div");
+        item.className = "special-hours-item";
+        const date = document.createElement("div");
+        date.className = "special-hours-date";
+        date.textContent = formatSpecialDate(dateKey);
+        const value = document.createElement("div");
+        value.className = "special-hours-value";
+        value.textContent = values.closed === true ? "Stängt" : `${values.open} – ${values.close}`;
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "special-delete-button";
+        button.textContent = "Ta bort";
+        button.addEventListener("click", async () => {
+          delete specialHoursEntries[dateKey];
+          await persistSpecialHours("Den avvikande tiden har tagits bort.");
+        });
+        item.append(date, value, button);
+        specialHoursList.appendChild(item);
+      });
+    }
+
+    async function loadSpecialHours() {
+      clearSpecialHoursStatus();
+      try {
+        const snapshot = await getDoc(doc(database, "settings", "specialOpeningHours"));
+        specialHoursEntries = snapshot.exists() ? (snapshot.data().entries || {}) : {};
+        renderSpecialHours();
+      } catch (error) {
+        console.error("Kunde inte hämta avvikande tider:", error);
+        specialHoursEntries = {};
+        renderSpecialHours();
+        showSpecialHoursStatus("Avvikande tider kunde inte hämtas.", "error");
+      }
+    }
+
+    async function persistSpecialHours(successText) {
+      if (!auth.currentUser) {
+        showSpecialHoursStatus("Du är inte längre inloggad.", "error");
+        return;
+      }
+      saveSpecialHoursButton.disabled = true;
+      try {
+        await setDoc(doc(database, "settings", "specialOpeningHours"), {
+          entries: specialHoursEntries,
+          updatedAt: serverTimestamp(),
+          updatedBy: auth.currentUser.email || ""
+        }, { merge: true });
+        renderSpecialHours();
+        showSpecialHoursStatus(successText, "success");
+      } catch (error) {
+        console.error("Kunde inte spara avvikande tider:", error);
+        showSpecialHoursStatus("Det gick inte att spara den avvikande tiden.", "error");
+      } finally {
+        saveSpecialHoursButton.disabled = false;
+      }
+    }
+
+    async function saveSpecialHours() {
+      clearSpecialHoursStatus();
+      const dateKey = specialDateInput.value;
+      const closed = specialClosedInput.checked;
+      const open = specialOpenInput.value;
+      const close = specialCloseInput.value;
+      if (!dateKey) { showSpecialHoursStatus("Välj ett datum.", "error"); return; }
+      if (!closed && (!open || !close)) { showSpecialHoursStatus("Ange både öppnings- och stängningstid.", "error"); return; }
+      if (!closed && open >= close) { showSpecialHoursStatus("Stängningstiden måste vara senare än öppningstiden.", "error"); return; }
+      specialHoursEntries[dateKey] = { closed, open: closed ? "" : open, close: closed ? "" : close };
+      await persistSpecialHours("Den avvikande tiden har sparats.");
+      specialDateInput.value = "";
+    }
+
     function showSection(sectionName) {
       const showOpeningHours =
         sectionName === "opening-hours";
 
       const showInformation =
         sectionName === "information";
+
+      const showSpecialHours =
+        sectionName === "special-hours";
 
       const showNewArrivals =
         sectionName === "new-arrivals";
@@ -1858,6 +2071,11 @@
       informationSection.classList.toggle(
         "active",
         showInformation
+      );
+
+      specialHoursSection.classList.toggle(
+        "active",
+        showSpecialHours
       );
 
       newArrivalsSection.classList.toggle(
@@ -1878,6 +2096,11 @@
       informationMenu.classList.toggle(
         "active",
         showInformation
+      );
+
+      specialHoursMenu.classList.toggle(
+        "active",
+        showSpecialHours
       );
 
       newArrivalsMenu.classList.toggle(
@@ -2961,6 +3184,7 @@
       await Promise.all([
         loadOpeningHours(),
         loadInformationBar(),
+        loadSpecialHours(),
         loadNewArrivals(),
         loadGallery()
       ]);
@@ -2987,6 +3211,19 @@
       "click",
       () => showSection("information")
     );
+
+    specialHoursMenu.addEventListener(
+      "click",
+      () => showSection("special-hours")
+    );
+
+    saveSpecialHoursButton.addEventListener("click", saveSpecialHours);
+    specialClosedInput.addEventListener("change", () => {
+      const closed = specialClosedInput.checked;
+      specialOpenInput.disabled = closed;
+      specialCloseInput.disabled = closed;
+      clearSpecialHoursStatus();
+    });
 
     galleryMenu.addEventListener(
       "click",
