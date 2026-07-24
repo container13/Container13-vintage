@@ -1,5 +1,18 @@
-import { db } from "./firebase.js";
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw",
+  authDomain: "container13-87c1a.firebaseapp.com",
+  projectId: "container13-87c1a",
+  storageBucket: "container13-87c1a.firebasestorage.app",
+  messagingSenderId: "936924614149",
+  appId: "1:936924614149:web:2b74d823951538fa2b166c",
+  measurementId: "G-PSHRGK4JJC"
+};
+
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const gallery = document.getElementById("gallery");
 const lightbox = document.getElementById("lightbox");

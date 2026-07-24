@@ -1,6 +1,18 @@
-import { db } from "./firebase.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw",
+  authDomain: "container13-87c1a.firebaseapp.com",
+  projectId: "container13-87c1a",
+  storageBucket: "container13-87c1a.firebasestorage.app",
+  messagingSenderId: "936924614149",
+  appId: "1:936924614149:web:2b74d823951538fa2b166c",
+  measurementId: "G-PSHRGK4JJC"
+};
+
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const db = getFirestore(app);
 const list = document.getElementById("oppettider-lista");
 
 const days = [
@@ -23,14 +35,11 @@ function renderRow(dayName, values = {}) {
 
   const time = document.createElement("span");
   time.className = "oppettider-tid";
-
-  if (values.closed === true) {
-    time.textContent = "Stängt";
-  } else if (values.open && values.close) {
-    time.textContent = `${values.open}–${values.close}`;
-  } else {
-    time.textContent = "Ej angivet";
-  }
+  time.textContent = values.closed === true
+    ? "Stängt"
+    : values.open && values.close
+      ? `${values.open}–${values.close}`
+      : "Ej angivet";
 
   row.append(day, time);
   return row;
@@ -38,7 +47,6 @@ function renderRow(dayName, values = {}) {
 
 async function loadOpeningHours() {
   if (!list) return;
-
   list.innerHTML = "<p>Hämtar öppettider...</p>";
 
   try {
@@ -49,9 +57,7 @@ async function loadOpeningHours() {
       return;
     }
 
-    const data = snapshot.data();
-    const savedDays = data.days || {};
-
+    const savedDays = snapshot.data().days || {};
     list.innerHTML = "";
     days.forEach(([name, key]) => list.appendChild(renderRow(name, savedDays[key])));
   } catch (error) {
