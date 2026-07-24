@@ -12,6 +12,92 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
+
+<style>
+/* Förfinad startsida – påverkar endast index.html */
+.landing {
+  min-height: auto;
+  padding: 48px 20px 72px;
+}
+
+.landing .logo {
+  width: min(390px, 82vw);
+  margin-bottom: 32px;
+}
+
+.landing h1 {
+  margin: 0 0 14px;
+  font-size: clamp(2.4rem, 5vw, 4.2rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.landing .undertitel {
+  max-width: 720px;
+  margin: 0 auto 30px;
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  line-height: 1.55;
+}
+
+.landing .knappar {
+  margin-top: 0;
+}
+
+.intro {
+  width: min(820px, calc(100% - 40px));
+  margin: 0 auto 72px;
+  padding: 38px 46px;
+  background: rgba(255, 255, 255, 0.52);
+  border: 1px solid rgba(154, 122, 24, 0.2);
+  border-radius: 18px;
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.055);
+}
+
+.intro h2 {
+  margin-top: 0;
+  margin-bottom: 18px;
+  font-size: clamp(1.55rem, 2.8vw, 2rem);
+}
+
+.intro p {
+  max-width: 690px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+@media (max-width: 700px) {
+  .landing {
+    padding: 34px 18px 52px;
+  }
+
+  .landing .logo {
+    width: min(320px, 86vw);
+    margin-bottom: 24px;
+  }
+
+  .landing h1 {
+    margin-bottom: 12px;
+  }
+
+  .landing .undertitel {
+    margin-bottom: 26px;
+  }
+
+  .intro {
+    width: min(92%, 820px);
+    margin-bottom: 48px;
+    padding: 28px 22px;
+    border-radius: 14px;
+  }
+
+  .intro p {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+}
+</style>
+
 </head>
 
 
