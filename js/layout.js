@@ -36,6 +36,8 @@ async function initializeLayout() {
     ]);
 
     markCurrentPage();
+    const settingsModule = await import("./site-settings.js?v=4.3.0");
+    await settingsModule.applySiteSettings();
     await import("./status.js?v=3.6.0");
   } catch (error) {
     console.error("Kunde inte ladda sidans gemensamma delar:", error);
