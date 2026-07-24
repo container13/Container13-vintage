@@ -8,45 +8,69 @@
 
   if (!grid || !section) return;
 
-  function firestoreValue(value) {
+  function valueFromFirestore(value) {
     if (!value || typeof value !== "object") return null;
     if ("stringValue" in value) return value.stringValue;
     if ("booleanValue" in value) return value.booleanValue;
     if ("integerValue" in value) return Number(value.integerValue);
     if ("doubleValue" in value) return Number(value.doubleValue);
     if ("timestampValue" in value) return value.timestampValue;
-    if (value.mapValue) return firestoreFields(value.mapValue.fields || {});
-    if (value.arrayValue) return (value.arrayValue.values || []).map(firestoreValue);
+    if (value.mapValue) return fieldsFromFirestore(value.mapValue.fields || {});
+    if (value.arrayValue) {
+      return (value.arrayValue.values || []).map(valueFromFirestore);
+    }
     return null;
   }
 
-  function firestoreFields(fields) {
-    const item = {};
+  function fieldsFromFirestore(fields) {
+    const result = {};
     Object.entries(fields || {}).forEach(([key, value]) => {
-      item[key] = firestoreValue(value);
+      result[key] = valueFromFirestore(value);
     });
-    return item;
+    return result;
   }
 
-  function imageUrl(item) {
-    return item.imageUrl || item.url || item.downloadURL || item.downloadUrl || "";
+  function getImageUrl(item) {
+    return String(
+      item.imageUrl ||
+      item.url ||
+      item.downloadURL ||
+      item.downloadUrl ||
+      ""
+    ).trim();
   }
 
-  function category(item) {
-    return String(item.category || item.type || item.section || "").toLowerCase();
+  function getCategory(item) {
+    return String(
+      item.category || item.type || item.section || ""
+    ).trim().toLowerCase();
   }
 
-  function timestamp(item) {
-    const value = item.createdAt || item.uploadedAt || item.date || item.documentCreatedAt || "";
+  function getTime(item) {
+    const value =
+      item.createdAt ||
+      item.uploadedAt ||
+      item.date ||
+      item.documentCreatedAt ||
+      "";
+
     const parsed = Date.parse(value);
     return Number.isFinite(parsed) ? parsed : 0;
+  }
+
+  function showMessage(text) {
+    grid.innerHTML = "";
+    const message = document.createElement("p");
+    message.className = "senaste-nytt-status";
+    message.textContent = text;
+    grid.appendChild(message);
   }
 
   function render(items) {
     grid.innerHTML = "";
 
     if (!items.length) {
-      section.hidden = true;
+      showMessage("Det finns inga bilder under Nyinkommet ännu.");
       return;
     }
 
@@ -54,14 +78,25 @@
       const link = document.createElement("a");
       link.className = "senaste-nytt-kort";
       link.href = "nyinkommet.html";
-      link.setAttribute("aria-label", item.title ? `${item.title} – se allt nyinkommet` : "Se allt nyinkommet");
+      link.setAttribute(
+        "aria-label",
+        item.title
+          ? `${item.title} – se allt nyinkommet`
+          : "Se allt nyinkommet"
+      );
 
       const image = document.createElement("img");
-      image.src = imageUrl(item);
+      image.src = getImageUrl(item);
       image.alt = item.title || "Nyinkommet hos Container 13 Vintage";
       image.loading = "lazy";
       image.decoding = "async";
-      image.addEventListener("error", () => link.remove());
+
+      image.addEventListener("error", () => {
+        link.remove();
+        if (!grid.querySelector(".senaste-nytt-kort")) {
+          showMessage("Bilderna kunde inte visas just nu.");
+        }
+      });
 
       link.appendChild(image);
       grid.appendChild(link);
@@ -69,8 +104,13 @@
   }
 
   async function loadLatest() {
+    showMessage("Hämtar de senaste bilderna...");
+
     try {
-      const endpoint = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/gallery?pageSize=100&key=${API_KEY}`;
+      const endpoint =
+        `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}` +
+        `/databases/(default)/documents/gallery?pageSize=100&key=${API_KEY}`;
+
       const response = await fetch(endpoint, { cache: "no-store" });
 
       if (!response.ok) {
@@ -78,21 +118,23 @@
       }
 
       const data = await response.json();
-      const items = (data.documents || []).map((document) => ({
-        id: document.name?.split("/").pop(),
-        documentCreatedAt: document.createTime,
-        ...firestoreFields(document.fields || {})
+      const allItems = (data.documents || []).map((document) => ({
+        id: document.name?.split("/").pop() || "",
+        documentCreatedAt: document.createTime || "",
+        ...fieldsFromFirestore(document.fields || {})
       }));
 
-      const latest = items
-        .filter((item) => category(item) === "nyinkommet" && imageUrl(item))
-        .sort((a, b) => timestamp(b) - timestamp(a))
+      const latest = allItems
+        .filter((item) =>
+          getCategory(item) === "nyinkommet" && getImageUrl(item)
+        )
+        .sort((a, b) => getTime(b) - getTime(a))
         .slice(0, 4);
 
       render(latest);
     } catch (error) {
       console.error("Kunde inte hämta senaste nyinkommet:", error);
-      section.hidden = true;
+      showMessage("De senaste bilderna kunde inte hämtas just nu.");
     }
   }
 
