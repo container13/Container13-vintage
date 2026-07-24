@@ -758,3 +758,31 @@ main > #nyGallery.gallery {
     transition: none;
   }
 }
+
+/* Version 3.4.6 – jämna rundade hörn i Butiken */
+#gallery .gallery-item {
+  aspect-ratio: auto !important;
+  overflow: visible !important;
+  border-radius: 14px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+#gallery .gallery-image-shell {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 14px !important;
+  background: #ece8e1;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.10);
+  isolation: isolate;
+}
+
+#gallery .gallery-image-shell img {
+  border-radius: 14px !important;
+}
+
+#gallery .gallery-image-shell:hover,
+#gallery .gallery-image-shell:focus-within {
+  border-radius: 14px !important;
+}
