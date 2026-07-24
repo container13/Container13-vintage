@@ -111,63 +111,7 @@
   display: inline-flex;
 }
 
-/* ========================= */ /* STARTSIDA */ /* ========================= */ .landing { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 35px 30px 20px; } .logo { width: 340px; max-width: 85%; margin-bottom: 20px; } h1 { font-size: 2.8rem; margin-bottom: 12px; } h2 { margin-bottom: 18px; } .undertitel { max-width: 550px; margin-bottom: 25px; color: #666; font-size: 1.2rem; line-height: 1.6; } /* ========================= */ /* KNAPPAR */ /* ========================= */ .knappar { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; } .knappar a { padding: 16px 28px; color: #222; background: #d4af37; text-decoration: none; font-weight: bold; border-radius: 50px; transition: background 0.2s ease, color 0.2s ease; } .knappar a:hover { color: white; background: #222; } /* ========================= */ /* INTRO */ /* ========================= */ .intro { max-width: 800px; margin: auto; padding: 45px 25px; } .intro h2 { text-align: center; margin-bottom: 20px; } .intro p { text-align: center; line-height: 1.8; margin-bottom: 15px; } /* ========================= */ /* UNDERSIDOR */ /* ========================= */ .page-header { text-align: center; padding: 35px 20px; } .page-header p { color: #666; line-height: 1.6; } .logo-small { width: 260px; max-width: 90%; margin-bottom: 20px; } /* ========================= */ /* GALLERI */ /* ========================= */
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 300px));
-  justify-content: center;
-  gap: 18px;
-  width: 100%;
-  max-width: 1300px;
-  margin: 30px auto;
-  padding: 20px;
-}
-
-.gallery img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: 10px;
-  cursor: pointer;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.gallery img:hover {
-  transform: scale(1.02);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
-}
-
-.gallery-status {
-  grid-column: 1 / -1;
-  text-align: center;
-  color: #666;
-  padding: 30px 15px;
-}
-
-@media (max-width: 1050px) {
-  .gallery {
-    grid-template-columns: repeat(3, minmax(0, 300px));
-  }
-}
-
-@media (max-width: 760px) {
-  .gallery {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    margin: 15px auto 25px;
-    padding: 12px;
-  }
-}
-
-@media (max-width: 420px) {
-  .gallery {
-    grid-template-columns: 1fr;
-    max-width: 340px;
-  }
-}
-/* ========================= */ /* LIGHTBOX */ /* ========================= */ .lightbox { display: none; position: fixed; inset: 0; justify-content: center; align-items: center; background: rgba(0, 0, 0, 0.95); z-index: 9999; } .lightbox img { max-width: 90%; max-height: 90%; } #close { position: absolute; top: 25px; right: 40px; color: white; font-size: 45px; cursor: pointer; } .prev, .next { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 60px; cursor: pointer; } .prev { left: 30px; } .next { right: 30px; } /* ========================= */ /* KONTAKT */ /* ========================= */ .kontakt { max-width: 900px; width: 100%; margin: 30px auto; padding: 20px; text-align: center; } .kontakt section { margin-bottom: 25px; padding: 30px; background: #f7f2e8; border-radius: 12px; } .kontakt p { line-height: 1.8; } .kontakt a { color: #222; text-decoration: none; } .kontakt a:hover { color: #9a7a18; text-decoration: underline; } /* ========================= */ /* ÖPPETTIDER */ /* ========================= */ .oppettider { width: 100%; max-width: 430px; margin: 20px auto; } .oppettid-rad { display: grid; grid-template-columns: minmax(105px, 1fr) auto; align-items: center; column-gap: 10px; min-height: 40px; padding: 8px 6px; border-bottom: 1px solid rgba(0, 0, 0, 0.12); } .oppettid-rad:first-child { border-top: 1px solid rgba(0, 0, 0, 0.12); } .oppettid-dag { font-weight: bold; text-align: left; } .oppettid-tid { text-align: right; white-space: nowrap; } .oppettider-information { max-width: 550px; margin: 16px auto 0; color: #666; font-size: 0.9rem; line-height: 1.6; } /* ========================= */ /* GATUVY */ /* ========================= */ .gatuvy { display: block; width: 100%; max-width: 900px; margin: 20px auto; border-radius: 12px; } /* ========================= */ /* KARTKNAPP */ /* ========================= */ .knapp-karta { display: inline-block; padding: 15px 25px; color: #222; background: #d4af37; text-decoration: none; font-weight: bold; border-radius: 50px; transition: background 0.2s ease, color 0.2s ease; } .knapp-karta:hover { color: white; background: #222; } /* ========================= */ /* FOOTER */ /* ========================= */ footer { width: 100%; margin-top: auto; padding: 25px; color: white; background: #222; text-align: center; } .sociala { margin-top: 20px; } .sociala a { margin: 0 12px; color: white; font-size: 32px; text-decoration: none; } .sociala a:hover { color: #d4af37; } /* ========================= */ /* MOBIL */ /* ========================= */ @media (max-width: 600px) {
+/* ========================= */ /* STARTSIDA */ /* ========================= */ .landing { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 35px 30px 20px; } .logo { width: 340px; max-width: 85%; margin-bottom: 20px; } h1 { font-size: 2.8rem; margin-bottom: 12px; } h2 { margin-bottom: 18px; } .undertitel { max-width: 550px; margin-bottom: 25px; color: #666; font-size: 1.2rem; line-height: 1.6; } /* ========================= */ /* KNAPPAR */ /* ========================= */ .knappar { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; } .knappar a { padding: 16px 28px; color: #222; background: #d4af37; text-decoration: none; font-weight: bold; border-radius: 50px; transition: background 0.2s ease, color 0.2s ease; } .knappar a:hover { color: white; background: #222; } /* ========================= */ /* INTRO */ /* ========================= */ .intro { max-width: 800px; margin: auto; padding: 45px 25px; } .intro h2 { text-align: center; margin-bottom: 20px; } .intro p { text-align: center; line-height: 1.8; margin-bottom: 15px; } /* ========================= */ /* UNDERSIDOR */ /* ========================= */ .page-header { text-align: center; padding: 35px 20px; } .page-header p { color: #666; line-height: 1.6; } .logo-small { width: 260px; max-width: 90%; margin-bottom: 20px; } /* ========================= */ /* GALLERI */ /* ========================= */ .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 1300px; width: 100%; margin: 30px auto; padding: 20px; } .gallery img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; cursor: pointer; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); } /* ========================= */ /* LIGHTBOX */ /* ========================= */ .lightbox { display: none; position: fixed; inset: 0; justify-content: center; align-items: center; background: rgba(0, 0, 0, 0.95); z-index: 9999; } .lightbox img { max-width: 90%; max-height: 90%; } #close { position: absolute; top: 25px; right: 40px; color: white; font-size: 45px; cursor: pointer; } .prev, .next { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 60px; cursor: pointer; } .prev { left: 30px; } .next { right: 30px; } /* ========================= */ /* KONTAKT */ /* ========================= */ .kontakt { max-width: 900px; width: 100%; margin: 30px auto; padding: 20px; text-align: center; } .kontakt section { margin-bottom: 25px; padding: 30px; background: #f7f2e8; border-radius: 12px; } .kontakt p { line-height: 1.8; } .kontakt a { color: #222; text-decoration: none; } .kontakt a:hover { color: #9a7a18; text-decoration: underline; } /* ========================= */ /* ÖPPETTIDER */ /* ========================= */ .oppettider { width: 100%; max-width: 430px; margin: 20px auto; } .oppettid-rad { display: grid; grid-template-columns: minmax(105px, 1fr) auto; align-items: center; column-gap: 10px; min-height: 40px; padding: 8px 6px; border-bottom: 1px solid rgba(0, 0, 0, 0.12); } .oppettid-rad:first-child { border-top: 1px solid rgba(0, 0, 0, 0.12); } .oppettid-dag { font-weight: bold; text-align: left; } .oppettid-tid { text-align: right; white-space: nowrap; } .oppettider-information { max-width: 550px; margin: 16px auto 0; color: #666; font-size: 0.9rem; line-height: 1.6; } /* ========================= */ /* GATUVY */ /* ========================= */ .gatuvy { display: block; width: 100%; max-width: 900px; margin: 20px auto; border-radius: 12px; } /* ========================= */ /* KARTKNAPP */ /* ========================= */ .knapp-karta { display: inline-block; padding: 15px 25px; color: #222; background: #d4af37; text-decoration: none; font-weight: bold; border-radius: 50px; transition: background 0.2s ease, color 0.2s ease; } .knapp-karta:hover { color: white; background: #222; } /* ========================= */ /* FOOTER */ /* ========================= */ footer { width: 100%; margin-top: auto; padding: 25px; color: white; background: #222; text-align: center; } .sociala { margin-top: 20px; } .sociala a { margin: 0 12px; color: white; font-size: 32px; text-decoration: none; } .sociala a:hover { color: #d4af37; } /* ========================= */ /* MOBIL */ /* ========================= */ @media (max-width: 600px) {
   .sidhuvud nav {
     padding: 10px 8px;
   }
@@ -306,4 +250,91 @@ footer p {
 
 .designer:hover {
     color: #e0bf69;
+}
+
+/* =========================================================
+   RESPONSIVT FIREBASE-GALLERI – FIX 4
+   Dessa regler ligger sist för att vinna över äldre regler.
+========================================================= */
+main > .gallery,
+main > #gallery.gallery,
+main > #nyGallery.gallery {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 300px)) !important;
+  justify-content: center !important;
+  align-items: start !important;
+  gap: 18px !important;
+  width: min(100%, 1300px) !important;
+  max-width: 1300px !important;
+  margin: 20px auto 50px !important;
+  padding: 20px !important;
+}
+
+.gallery .gallery-item {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 1 / 1;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #eee9df;
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.14);
+}
+
+.gallery .gallery-item img,
+#gallery .gallery-item img,
+#nyGallery .gallery-item img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  aspect-ratio: auto !important;
+  object-fit: cover !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  transition: transform 0.25s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .gallery .gallery-item:hover img {
+    transform: scale(1.035);
+  }
+}
+
+.gallery .gallery-status {
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+@media (max-width: 1050px) {
+  main > .gallery,
+  main > #gallery.gallery,
+  main > #nyGallery.gallery {
+    grid-template-columns: repeat(3, minmax(0, 300px)) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  main > .gallery,
+  main > #gallery.gallery,
+  main > #nyGallery.gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    padding: 12px !important;
+  }
+
+  .gallery .gallery-item {
+    max-width: none;
+  }
+}
+
+@media (max-width: 390px) {
+  main > .gallery,
+  main > #gallery.gallery,
+  main > #nyGallery.gallery {
+    grid-template-columns: 1fr !important;
+    max-width: 340px !important;
+  }
 }
