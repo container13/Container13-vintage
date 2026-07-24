@@ -16,3 +16,8 @@
 ### Ingen avsiktlig visuell förändring
 
 Version 4.0.0 ska se ut och fungera som den godkända version 3.6.1. Syftet är att skapa en renare och säkrare grund inför kommande funktioner.
+
+## Version 4.1
+- Papperskorg för bilder från Nyinkommet och Galleri.
+- Återställning och permanent radering.
+- Automatisk rensning efter 48 timmar när adminpanelen öppnas.
