@@ -1,3 +1,11 @@
+# Version 5.1 – separata hemskärmsikoner
+
+- Kundwebbplatsen heter **Container13** på hemskärmen.
+- Adminpanelen heter **C13 Admin** på hemskärmen.
+- Kundwebbplats och adminpanel har tydligt olika ikoner.
+- Separata manifest, startadresser och PWA-identiteter används.
+- Adminikonen har mörk bakgrund och tydlig ADMIN-märkning.
+
 # Ändringslogg
 
 ## Version 4.0.0
