@@ -1293,7 +1293,7 @@
           <span>Papperskorg</span>
         </button>
 
-        <button id="settings-menu" type="button">
+        <button id="settings-menu" type="button" data-admin-section="settings" aria-controls="settings-section">
           <span class="menu-icon">⚙</span>
           <span>Inställningar</span>
         </button>
@@ -1314,7 +1314,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 4.3</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 4.3.1</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -1383,7 +1383,7 @@
                 <div class="dashboard-detail"><span>Inloggad som</span><strong id="dashboard-user">–</strong></div>
                 <div class="dashboard-detail"><span>Papperskorg</span><strong id="dashboard-trash-retention">Automatisk rensning efter 2 dagar</strong></div>
               </div>
-              <p class="dashboard-version">Container13 Adminpanel · Version 4.3</p>
+              <p class="dashboard-version">Container13 Adminpanel · Version 4.3.1</p>
             </section>
           </div>
         </section>
@@ -3893,10 +3893,10 @@
     // Robust navigering till Dashboard. Event delegation gör att knappen fungerar
     // även om panelens innehåll uppdateras eller ett annat klicklager fångar barnet.
     document.querySelector(".navigation").addEventListener("click", (event) => {
-      const dashboardButton = event.target.closest("#dashboard-menu");
-      if (!dashboardButton) return;
+      const menuButton = event.target.closest("button[data-admin-section]");
+      if (!menuButton) return;
       event.preventDefault();
-      showSection("dashboard");
+      showSection(menuButton.dataset.adminSection);
     });
 
     dashboardMenu.addEventListener("keydown", (event) => {
@@ -3943,10 +3943,19 @@
       () => showSection("trash")
     );
 
-    settingsMenu.addEventListener(
-      "click",
-      () => showSection("settings")
-    );
+    // Robust navigering till Inställningar. Både direkt klick och delegerat klick
+    // används så att menyvalet fungerar även om ett barn-element träffas.
+    settingsMenu.addEventListener("click", (event) => {
+      event.preventDefault();
+      showSection("settings");
+    });
+
+    settingsMenu.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        showSection("settings");
+      }
+    });
 
     saveSettingsButton.addEventListener(
       "click",
