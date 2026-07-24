@@ -538,75 +538,27 @@
 
     .multi-title-list {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
+      gap: 12px;
     }
 
     .multi-title-item {
-      min-width: 0;
-      padding: 12px;
       display: grid;
-      grid-template-columns: 92px minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 12px;
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      background: var(--row-background);
-    }
-
-    .multi-title-thumbnail {
-      width: 92px;
-      height: 92px;
-      display: block;
-      object-fit: cover;
-      border: 1px solid var(--border-light);
-      border-radius: 8px;
-      background: #eeeae4;
-    }
-
-    .multi-title-fields {
-      min-width: 0;
-      display: grid;
-      gap: 8px;
+      gap: 6px;
+      padding: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.45);
     }
 
     .multi-title-item .field-help {
       margin: 0;
       overflow-wrap: anywhere;
-      font-weight: bold;
-    }
-
-    .remove-selected-image {
-      width: 38px;
-      height: 38px;
-      padding: 0;
-      display: grid;
-      place-items: center;
-      border: 1px solid #c98282;
-      border-radius: 8px;
-      color: #8a2626;
-      background: #fff4f4;
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    .remove-selected-image:hover {
-      color: #ffffff;
-      background: #a84242;
     }
 
     .image-upload-grid {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
       gap: 18px;
-    }
-
-    .image-upload-grid > .field-group:last-child {
-      min-width: 0;
-    }
-
-    .upload-preview {
-      display: none !important;
     }
 
     .file-input {
@@ -658,8 +610,8 @@
       margin-top: 25px;
       padding-top: 24px;
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
       border-top: 1px solid var(--border-light);
     }
 
@@ -684,7 +636,7 @@
     .image-admin-item img {
       display: block;
       width: 100%;
-      aspect-ratio: 1 / 1;
+      aspect-ratio: 4 / 5;
       object-fit: cover;
       background-color: #eeeae4;
     }
@@ -722,12 +674,6 @@
       opacity: 0.65;
     }
 
-    @media (max-width: 1050px) {
-      .multi-title-list {
-        grid-template-columns: 1fr;
-      }
-    }
-
     @media (max-width: 900px) {
       .image-admin-list {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -736,35 +682,8 @@
 
     @media (max-width: 720px) {
       .image-upload-grid,
-      .image-admin-list,
-      .multi-title-list {
+      .image-admin-list {
         grid-template-columns: 1fr;
-      }
-
-      .multi-title-item {
-        grid-template-columns: 76px minmax(0, 1fr) auto;
-      }
-
-      .multi-title-thumbnail {
-        width: 76px;
-        height: 76px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .multi-title-item {
-        grid-template-columns: 68px minmax(0, 1fr);
-      }
-
-      .multi-title-thumbnail {
-        width: 68px;
-        height: 68px;
-      }
-
-      .remove-selected-image {
-        grid-column: 1 / -1;
-        width: 100%;
-        height: 40px;
       }
     }
 
@@ -1037,7 +956,68 @@
       font-weight: bold;
     }
 
-  </style>
+  
+
+    /* VERSION 3.2 – KOMPAKT BILDBIBLIOTEK I ADMINPANELEN */
+    .image-admin-list {
+      grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+      gap: 12px;
+    }
+
+    .image-admin-item {
+      border-radius: 8px;
+    }
+
+    .image-admin-item img {
+      width: 100%;
+      height: 145px;
+      aspect-ratio: auto;
+      object-fit: cover;
+    }
+
+    .image-admin-item-content {
+      padding: 9px;
+      gap: 8px;
+    }
+
+    .image-admin-title {
+      min-height: 18px;
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .delete-image-button {
+      padding: 8px 9px;
+      font-size: 13px;
+    }
+
+    .image-admin-item-error::before {
+      min-height: 145px;
+      padding: 12px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .image-admin-list {
+        grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+      }
+
+      .image-admin-item img {
+        height: 135px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .image-admin-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .image-admin-item img {
+        height: 125px;
+      }
+    }
+</style>
 </head>
 
 <body>
@@ -1285,7 +1265,7 @@
                 </div>
 
                 <div class="field-group">
-                  <span class="field-label">Valda bilder och titlar</span>
+                  <span class="field-label">Titlar eller beskrivningar</span>
                   <div id="new-arrival-titles" class="multi-title-list">
                     <p class="field-help">Välj en eller flera bilder så visas ett titelfält för varje bild.</p>
                   </div>
@@ -1368,7 +1348,7 @@
                 </div>
 
                 <div class="field-group">
-                  <span class="field-label">Valda bilder och titlar</span>
+                  <span class="field-label">Titlar eller beskrivningar</span>
                   <div id="gallery-titles" class="multi-title-list">
                     <p class="field-help">Välj en eller flera bilder så visas ett titelfält för varje bild.</p>
                   </div>
@@ -1575,12 +1555,6 @@
 
     const galleryImageInput =
       document.getElementById("gallery-image");
-
-    /*
-      Separata köer gör att flera bilder kan väljas i en eller flera
-      omgångar. Varje fil behåller sin egen titel tills uppladdningen.
-    */
-    let selectedNewArrivalFiles = [];
 
     /*
       Sparar valda galleribilder i en separat kö. Då kan flera
@@ -2067,7 +2041,6 @@
     }
 
     function resetNewArrivalForm() {
-      selectedNewArrivalFiles = [];
       newArrivalImageInput.value = "";
       newArrivalTitles.innerHTML = '<p class="field-help">Välj en eller flera bilder så visas ett titelfält för varje bild.</p>';
       newArrivalPreviewImage.removeAttribute("src");
@@ -2187,25 +2160,13 @@
       container.innerHTML = "";
 
       if (files.length === 0) {
-        container.innerHTML = '<p class="field-help">Välj en eller flera bilder så visas en miniatyr och ett titelfält för varje bild.</p>';
+        container.innerHTML = '<p class="field-help">Välj en eller flera bilder så visas ett titelfält för varje bild.</p>';
         return;
       }
 
       files.forEach((file, index) => {
         const wrapper = document.createElement("div");
         wrapper.className = "multi-title-item";
-
-        const thumbnail = document.createElement("img");
-        thumbnail.className = "multi-title-thumbnail";
-        thumbnail.alt = `Förhandsvisning av ${file.name}`;
-
-        const previewUrl = URL.createObjectURL(file);
-        thumbnail.src = previewUrl;
-        thumbnail.addEventListener("load", () => URL.revokeObjectURL(previewUrl), { once: true });
-        thumbnail.addEventListener("error", () => URL.revokeObjectURL(previewUrl), { once: true });
-
-        const fields = document.createElement("div");
-        fields.className = "multi-title-fields";
 
         const label = document.createElement("label");
         label.className = "field-help";
@@ -2219,34 +2180,9 @@
         input.maxLength = 80;
         input.placeholder = "Titel eller beskrivning (frivilligt)";
         input.dataset.fileIndex = String(index);
-        input.value = file.container13Title || "";
-        input.addEventListener("input", () => {
-          file.container13Title = input.value;
-        });
 
-        const removeButton = document.createElement("button");
-        removeButton.className = "remove-selected-image";
-        removeButton.type = "button";
-        removeButton.textContent = "×";
-        removeButton.title = `Ta bort ${file.name} från uppladdningen`;
-        removeButton.setAttribute("aria-label", `Ta bort ${file.name} från uppladdningen`);
-        removeButton.addEventListener("click", () => {
-          if (prefix === "gallery") {
-            selectedGalleryFiles.splice(index, 1);
-            renderTitleInputs(selectedGalleryFiles, galleryTitles, "gallery");
-            showGalleryStatus(`${selectedGalleryFiles.length} bild(er) valda.`, "success");
-          } else {
-            selectedNewArrivalFiles.splice(index, 1);
-            renderTitleInputs(selectedNewArrivalFiles, newArrivalTitles, "new-arrival");
-            showNewArrivalStatus(`${selectedNewArrivalFiles.length} bild(er) valda.`, "success");
-          }
-        });
-
-        fields.appendChild(label);
-        fields.appendChild(input);
-        wrapper.appendChild(thumbnail);
-        wrapper.appendChild(fields);
-        wrapper.appendChild(removeButton);
+        wrapper.appendChild(label);
+        wrapper.appendChild(input);
         container.appendChild(wrapper);
       });
     }
@@ -2480,7 +2416,7 @@
     async function uploadNewArrival() {
       clearNewArrivalStatus();
 
-      const files = [...selectedNewArrivalFiles];
+      const files = Array.from(newArrivalImageInput.files || []);
       const titles = getTitles(newArrivalTitles, files.length);
 
       if (files.length === 0) {
@@ -3094,6 +3030,20 @@
           "gallery"
         );
 
+        const file = selectedGalleryFiles[0];
+
+        if (!file) {
+          galleryPreviewImage.removeAttribute("src");
+          galleryPreview.classList.remove("visible");
+          return;
+        }
+
+        const previewUrl = URL.createObjectURL(file);
+        galleryPreviewImage.src = previewUrl;
+        galleryPreview.classList.add("visible");
+        galleryPreviewImage.onload = () =>
+          URL.revokeObjectURL(previewUrl);
+
         showGalleryStatus(
           `${selectedGalleryFiles.length} bild(er) valda. Du kan välja fler innan du laddar upp.`,
           "success"
@@ -3118,35 +3068,20 @@
       "change",
       () => {
         clearNewArrivalStatus();
+        const files = Array.from(newArrivalImageInput.files || []);
+        renderTitleInputs(files, newArrivalTitles, "new-arrival");
+        const file = files[0];
 
-        const newlySelectedFiles =
-          Array.from(newArrivalImageInput.files || []);
+        if (!file) {
+          newArrivalPreviewImage.removeAttribute("src");
+          newArrivalPreview.classList.remove("visible");
+          return;
+        }
 
-        newlySelectedFiles.forEach((file) => {
-          const alreadySelected = selectedNewArrivalFiles.some(
-            (selectedFile) =>
-              selectedFile.name === file.name &&
-              selectedFile.size === file.size &&
-              selectedFile.lastModified === file.lastModified
-          );
-
-          if (!alreadySelected) {
-            selectedNewArrivalFiles.push(file);
-          }
-        });
-
-        renderTitleInputs(
-          selectedNewArrivalFiles,
-          newArrivalTitles,
-          "new-arrival"
-        );
-
-        showNewArrivalStatus(
-          `${selectedNewArrivalFiles.length} bild(er) valda. Du kan välja fler innan du laddar upp.`,
-          "success"
-        );
-
-        newArrivalImageInput.value = "";
+        const previewUrl = URL.createObjectURL(file);
+        newArrivalPreviewImage.src = previewUrl;
+        newArrivalPreview.classList.add("visible");
+        newArrivalPreviewImage.onload = () => URL.revokeObjectURL(previewUrl);
       }
     );
 
