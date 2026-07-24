@@ -786,3 +786,41 @@ main > #nyGallery.gallery {
 #gallery .gallery-image-shell:focus-within {
   border-radius: 14px !important;
 }
+
+/* Version 3.4.7 – definitiv fix för hörn och hover i Butiken */
+#gallery .gallery-image-shell,
+#gallery .gallery-image-shell:hover,
+#gallery .gallery-image-shell:focus-within {
+  position: relative !important;
+  overflow: hidden !important;
+  border-radius: 14px !important;
+  clip-path: inset(0 round 14px);
+  -webkit-clip-path: inset(0 round 14px);
+  contain: paint;
+  background: transparent !important;
+  transform: none !important;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.10) !important;
+}
+
+#gallery .gallery-image-shell::before,
+#gallery .gallery-image-shell::after {
+  border-radius: inherit !important;
+  clip-path: inset(0 round 14px);
+  -webkit-clip-path: inset(0 round 14px);
+}
+
+#gallery .gallery-image-shell img,
+#gallery .gallery-image-shell:hover img,
+#gallery .gallery-image-shell:focus-within img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
+  transform-origin: center center;
+}
+
+#gallery .gallery-image-shell:hover img,
+#gallery .gallery-image-shell:focus-within img {
+  transform: scale(1.055) !important;
+  filter: brightness(1.02);
+}
