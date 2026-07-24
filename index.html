@@ -128,13 +128,21 @@
 
 .senaste-nytt-kort {
   display: block;
-  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(154, 122, 24, 0.16);
+  border-radius: 14px;
+  color: #222;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+  text-align: left;
+  text-decoration: none;
+  transition: transform 0.24s ease, box-shadow 0.24s ease;
+}
+
+.senaste-nytt-bild {
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  border-radius: 14px;
   background: #eee9df;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.13);
-  text-decoration: none;
 }
 
 .senaste-nytt-kort img {
@@ -143,6 +151,26 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.28s ease;
+}
+
+.senaste-nytt-info {
+  min-height: 83px;
+  padding: 15px 16px 17px;
+}
+
+.senaste-nytt-titel {
+  margin: 0 0 7px;
+  font-size: 1rem;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.senaste-nytt-datum {
+  margin: 0;
+  color: #9a7a18;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  font-weight: 600;
 }
 
 .senaste-nytt-kort:focus-visible {
@@ -175,6 +203,11 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .senaste-nytt-kort:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 13px 30px rgba(0, 0, 0, 0.14);
+  }
+
   .senaste-nytt-kort:hover img {
     transform: scale(1.045);
   }
@@ -339,7 +372,7 @@ inspireras.
 
 
 <script type="module" src="js/layout.js"></script>
-<script defer src="js/senaste-nytt.js?v=20260724-2"></script>
+<script defer src="js/senaste-nytt.js?v=20260724-21"></script>
 
 </body>
 
