@@ -1,27 +1,26 @@
 # Container 13 Vintage
 
-**Projektversion:** 2.0 – gemensam grundstruktur  
-**Status:** Lokal utveckling. Publik testversion finns på GitHub Pages.
+**Projektversion:** 4.0.0  
+**Basversion:** 3.6.1, som bekräftats fungera felfritt.
 
-## Projektets syfte
+## Webbplatsen
 
-Container 13 Vintage är en mobilanpassad webbplats för butiken Container 13 Vintage i Hudiksvall.
+Projektet är en mobilanpassad webbplats för Container 13 Vintage med:
 
-Webbplatsen innehåller:
+- startsida med de fyra senaste Nyinkommet-bilderna
+- butiksgalleri med högst åtta bilder
+- Nyinkommet med titel och relativt datum
+- kontakt och ordinarie öppettider
+- avvikande öppettider
+- informationsrad
+- gemensam header, statusrad och footer
+- Firebase/Firestore-baserad adminpanel
+- lightbox, skeleton loading och responsiv bildlayout
 
-- startsida
-- butiksgalleri
-- sidan Nyinkommet
-- kontakt och öppettider
-- vägbeskrivning
-- gemensam header och footer
-- öppet-/stängtstatus från Firebase
-- administratörspanel
-
-## Mappstruktur
+## Aktiv mappstruktur
 
 ```text
-Container13/
+Container13-vintage-main/
 ├── index.html
 ├── galleri.html
 ├── nyinkommet.html
@@ -31,204 +30,46 @@ Container13/
 │   ├── header.html
 │   └── footer.html
 ├── css/
-│   ├── style.css
-│   └── style_old*.css
+│   └── style.css
 ├── js/
+│   ├── firebase.js
 │   ├── layout.js
 │   ├── status.js
 │   ├── opening-hours.js
-│   ├── firebase.js
-│   ├── bilder.js
-│   ├── script.js
+│   ├── senaste-nytt.js
+│   ├── galleri.js
 │   └── nyinkommet.js
+├── admin/
+│   ├── index.html
+│   ├── panel.html
+│   └── oppettider.js
 ├── bilder/
-│   ├── galleri/
-│   ├── logotyp/
-│   └── nyinkommet/
-└── admin/
+├── backup/
+│   └── legacy-js/
+├── docs/
+│   └── TESTLISTA-V4.md
+├── VERSION.txt
+└── CHANGELOG.md
 ```
 
-## Gemensam header och footer
+## Viktiga aktiva filer
 
-Alla publika sidor innehåller:
+- `js/layout.js` laddar gemensam header och footer.
+- `js/status.js` hanterar öppet/stängt, informationsrad och avvikande tider i statusen.
+- `js/opening-hours.js` visar öppettider på kontaktsidan.
+- `js/senaste-nytt.js` visar de fyra senaste bilderna på startsidan.
+- `js/galleri.js` hämtar butiksgalleriet från Firebase.
+- `js/nyinkommet.js` hämtar Nyinkommet från Firebase.
+- `admin/panel.html` innehåller adminpanelens funktioner.
 
-```html
-<div id="site-header"></div>
-<div id="site-footer"></div>
-<script type="module" src="js/layout.js"></script>
-```
+## Säkerhetskopierade äldre filer
 
-`js/layout.js` hämtar:
+`backup/legacy-js/` innehåller äldre JavaScript som inte längre länkas från webbplatsen. De ligger kvar som reserv men laddas inte av de publika sidorna.
 
-- `includes/header.html`
-- `includes/footer.html`
+## Lokal testning
 
-Efter att headern har laddats startar `layout.js` även `js/status.js`.
+Header och footer laddas med `fetch()`. Sidorna bör därför testas via GitHub Pages eller en lokal webbserver, inte genom att dubbelklicka på HTML-filer med en `file://`-adress.
 
-### Viktigt vid lokal testning
+## Version 4.0.0
 
-Den gemensamma headern och footern hämtas med `fetch()`.
-
-Därför fungerar de inte när en HTML-fil öppnas direkt via:
-
-```text
-file://
-```
-
-Projektet måste öppnas via en webbserver, exempelvis:
-
-- GitHub Pages
-- Firebase Hosting
-- en lokal webbserver med en `http://localhost`-adress
-
-## JavaScript-filer
-
-### `js/layout.js`
-
-Laddar den gemensamma headern och footern, markerar den aktiva menysidan och startar `status.js`.
-
-### `js/status.js`
-
-Hämtar öppettider och informationsrad från Firebase/Firestore och uppdaterar statusraden i headern.
-
-Headern måste innehålla följande ID:n:
-
-- `store-status`
-- `opening-status-text`
-- `information-divider`
-- `information-message`
-- `information-message-text`
-
-### `js/opening-hours.js`
-
-Används på `kontakt.html` och visar hela listan med öppettider i elementet:
-
-```html
-<div id="oppettider-lista"></div>
-```
-
-### `js/firebase.js`
-
-Innehåller Firebase-konfigurationen som används av `opening-hours.js`.
-
-### `js/bilder.js`
-
-Innehåller filnamnen för bilderna i butiksgalleriet.
-
-Den används tillsammans med `js/script.js` på `galleri.html`.
-
-### `js/script.js`
-
-Bygger butiksgalleriet och styr dess lightbox, pilar, tangentbord och svepning.
-
-### `js/nyinkommet.js`
-
-Bygger det nuvarande lokala Nyinkommet-galleriet och styr dess lightbox.
-
-## CSS
-
-### `css/style.css`
-
-Detta är webbplatsens aktiva CSS-fil och används av samtliga publika HTML-sidor.
-
-### `css/style_old.css` till `css/style_old4.css`
-
-Dessa filer är äldre säkerhetskopior. Ingen av de publika HTML-sidorna länkar till dem.
-
-De kan flyttas till en separat reservmapp eller tas bort först efter att version 2.0 har testats och godkänts på GitHub Pages.
-
-## Bilder
-
-### `bilder/galleri/`
-
-Innehåller bilderna som används på sidan Butiken.
-
-### `bilder/nyinkommet/`
-
-Innehåller de lokala bilder som för närvarande används av `nyinkommet.js`.
-
-### `bilder/logotyp/`
-
-Innehåller webbplatsens logotyp och tillhörande originalbild.
-
-### Bilder i roten av `bilder/`
-
-Det finns flera gatuvybilder, varav två verkar vara identiska kopior:
-
-- `gatuvy.png`
-- `gatuvy (1).png`
-
-De ska inte raderas förrän vi har bekräftat vilken fil `hittahit.html` använder.
-
-## Adminpanelen
-
-Adminpanelen ligger i `admin/` och ska inte länkas från den publika navigeringen.
-
-Den används för bland annat:
-
-- inloggning
-- öppettider
-- informationsrad
-- galleri och bildhantering
-
-Adminpanelen fungerar separat från den gemensamma publika headern och footern.
-
-## Filer som inte ska ändras utan kontroll
-
-Följande filer påverkar flera sidor eller Firebase-funktioner:
-
-- `includes/header.html`
-- `includes/footer.html`
-- `js/layout.js`
-- `js/status.js`
-- `js/firebase.js`
-- `admin/panel.html`
-- `admin/oppettider.js`
-
-Ta alltid en säkerhetskopia innan större ändringar.
-
-## Kontrollerad städplan
-
-### Steg 1 – klart
-
-- Projektets filer inventerade.
-- Gemensam header och footer dokumenterade.
-- Aktiva CSS- och JavaScript-filer identifierade.
-
-### Steg 2 – nästa
-
-- Ladda upp version 2.0 till GitHub.
-- Kontrollera alla fem publika sidor via GitHub Pages.
-- Kontrollera meny, footer, statusrad och öppettider.
-
-### Steg 3 – efter godkänt test
-
-- Flytta eller radera `style_old*.css`.
-- Kontrollera och ta bort dubbletten av gatuvybilden.
-- Kontrollera om lokala Nyinkommet-bilder ska ersättas helt av Firebase.
-- Optimera stora PNG-bilder för snabbare laddning.
-
-## Testlista för GitHub Pages
-
-Kontrollera följande på dator och mobil:
-
-- [ ] Header visas på alla fem sidor.
-- [ ] Rätt menylänk markeras som aktiv.
-- [ ] Statusraden visar öppet eller stängt.
-- [ ] Informationsmeddelandet visas när det är aktiverat.
-- [ ] Footer visas på alla fem sidor.
-- [ ] Butiksgalleriet fungerar.
-- [ ] Nyinkommet fungerar.
-- [ ] Öppettider visas på kontaktsidan.
-- [ ] Kartan och vägbeskrivningen fungerar.
-- [ ] Alla sociala länkar öppnas korrekt.
-
-## Ändringslogg
-
-### Version 2.0
-
-- Gemensam header via `includes/header.html`.
-- Gemensam footer via `includes/footer.html`.
-- Gemensam inläsning via `js/layout.js`.
-- Statusraden körs via `js/status.js`.
-- Projektstruktur och testförfarande dokumenterade.
+Den här versionen är en städ- och stabiliseringsversion. Den ska inte ändra webbplatsens utseende eller fungerande funktioner. Se `CHANGELOG.md` och `docs/TESTLISTA-V4.md`.

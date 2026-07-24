@@ -1,0 +1,7 @@
+VERSION 4.0.0
+
+Rekommenderat: använd hela projektpaketet och ladda upp innehållet från mappen Container13-vintage-main.
+
+Patchpaketet innehåller endast dokumentation, uppdaterade publika HTML-filer och reservkopior av äldre JavaScript.
+
+Viktigt: ta bort js/bilder.js och js/script.js från GitHub efter uppladdningen. De används inte längre och finns sparade i backup/legacy-js/.
