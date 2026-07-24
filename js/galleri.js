@@ -34,7 +34,21 @@
   function render(items){
     images=items; gallery.innerHTML="";
     if(!items.length){ gallery.innerHTML='<p class="gallery-status">Det finns inga butiksbilder ännu.</p>'; return; }
-    items.forEach((item,index)=>{ const img=document.createElement("img"); img.src=imageUrl(item); img.alt=item.title||"Bild från Container 13 Vintage"; img.loading="lazy"; img.addEventListener("click",()=>open(index)); img.addEventListener("error",()=>img.remove()); gallery.appendChild(img); });
+    items.forEach((item, index) => {
+      const figure = document.createElement("figure");
+      figure.className = "gallery-item";
+
+      const img = document.createElement("img");
+      img.src = imageUrl(item);
+      img.alt = item.title || "Bild från Container 13 Vintage";
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.addEventListener("click", () => open(index));
+      img.addEventListener("error", () => figure.remove());
+
+      figure.appendChild(img);
+      gallery.appendChild(figure);
+    });
   }
   async function load(){
     if(!gallery)return;
