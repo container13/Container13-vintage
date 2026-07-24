@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { collection, doc, getDoc, getDocs, getFirestore } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { doc, getDoc, getFirestore } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw",
@@ -19,8 +19,13 @@ const openingStatusText = document.getElementById("opening-status-text");
 const informationDivider = document.getElementById("information-divider");
 const informationMessage = document.getElementById("information-message");
 const informationMessageText = document.getElementById("information-message-text");
+const newArrivalsDivider = document.getElementById("new-arrivals-divider");
 const newArrivalsNotice = document.getElementById("new-arrivals-notice");
 const newArrivalsNoticeText = document.getElementById("new-arrivals-notice-text");
+
+const PROJECT_ID = "container13-87c1a";
+const API_KEY = "AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw";
+const NEW_ARRIVAL_WINDOW_HOURS = 48;
 
 const dayOrder = [
   "sunday",
@@ -149,67 +154,84 @@ function renderInformationBar(data) {
   informationMessageText.textContent = shouldShow ? message : "";
 }
 
-function galleryValue(item, keys) {
-  for (const key of keys) {
-    if (item && item[key] !== undefined && item[key] !== null) {
-      return item[key];
-    }
-  }
+
+function firestoreValue(value) {
+  if (!value || typeof value !== "object") return null;
+  if ("stringValue" in value) return value.stringValue;
+  if ("booleanValue" in value) return value.booleanValue;
+  if ("integerValue" in value) return Number(value.integerValue);
+  if ("doubleValue" in value) return Number(value.doubleValue);
+  if ("timestampValue" in value) return value.timestampValue;
+  if (value.mapValue) return firestoreFields(value.mapValue.fields || {});
+  if (value.arrayValue) return (value.arrayValue.values || []).map(firestoreValue);
   return null;
 }
 
-function galleryCategory(item) {
-  return String(galleryValue(item, ["category", "type", "section"]) || "")
-    .trim()
-    .toLowerCase();
+function firestoreFields(source) {
+  const result = {};
+  Object.entries(source || {}).forEach(([key, value]) => {
+    result[key] = firestoreValue(value);
+  });
+  return result;
 }
 
-function galleryDate(item, documentDate) {
-  const raw = galleryValue(item, ["createdAt", "uploadedAt", "date"]);
+function galleryCategory(item) {
+  return String(item.category || item.type || item.section || "").trim().toLowerCase();
+}
 
-  if (raw && typeof raw.toDate === "function") {
-    return raw.toDate();
-  }
+function galleryImageUrl(item) {
+  return String(item.imageUrl || item.url || item.downloadURL || item.downloadUrl || "").trim();
+}
 
-  if (raw && typeof raw.seconds === "number") {
-    return new Date(raw.seconds * 1000);
-  }
-
-  const parsed = new Date(raw || documentDate || "");
+function galleryDate(item) {
+  const raw = item.createdAt || item.uploadedAt || item.date || item.documentCreatedAt || "";
+  const parsed = new Date(raw);
   return Number.isNaN(parsed.getTime()) ? null : parsed;
 }
 
-async function loadNewArrivalsNotice() {
-  if (!newArrivalsNotice || !newArrivalsNoticeText) {
+function renderNewArrivalsNotice(count) {
+  if (!newArrivalsNotice || !newArrivalsNoticeText || !newArrivalsDivider) return;
+
+  const shouldShow = count > 0;
+  newArrivalsNotice.hidden = !shouldShow;
+  newArrivalsNotice.classList.toggle("synlig", shouldShow);
+  newArrivalsDivider.hidden = !shouldShow;
+
+  if (!shouldShow) {
+    newArrivalsNoticeText.textContent = "";
     return;
   }
 
+  newArrivalsNoticeText.textContent = count === 1
+    ? "1 nytt plagg har kommit in – se nyinkommet"
+    : `${count} nya plagg har kommit in – se nyinkommet`;
+}
+
+async function loadNewArrivalsNotice() {
+  if (!newArrivalsNotice) return;
+
   try {
-    const snapshot = await getDocs(collection(database, "gallery"));
-    const now = Date.now();
-    const fortyEightHours = 48 * 60 * 60 * 1000;
+    const url = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/gallery?pageSize=100&key=${API_KEY}`;
+    const response = await fetch(url, { cache: "no-store" });
+    if (!response.ok) throw new Error(`Firestore svarade ${response.status}`);
 
-    const recentCount = snapshot.docs.reduce((count, galleryDocument) => {
-      const data = galleryDocument.data();
-      const date = galleryDate(data, galleryDocument.createTime);
-      const isNewArrival = galleryCategory(data) === "nyinkommet";
-      const isRecent = date && now - date.getTime() >= 0 && now - date.getTime() <= fortyEightHours;
+    const json = await response.json();
+    const cutoff = Date.now() - (NEW_ARRIVAL_WINDOW_HOURS * 60 * 60 * 1000);
+    const count = (json.documents || [])
+      .map((document) => ({
+        documentCreatedAt: document.createTime || "",
+        ...firestoreFields(document.fields || {})
+      }))
+      .filter((item) => galleryCategory(item) === "nyinkommet" && galleryImageUrl(item))
+      .filter((item) => {
+        const date = galleryDate(item);
+        return date && date.getTime() >= cutoff;
+      }).length;
 
-      return count + (isNewArrival && isRecent ? 1 : 0);
-    }, 0);
-
-    if (recentCount === 0) {
-      newArrivalsNotice.hidden = true;
-      return;
-    }
-
-    newArrivalsNoticeText.textContent = recentCount === 1
-      ? "Ett nytt plagg har kommit in – se nyinkommet"
-      : `${recentCount} nya plagg har kommit in – se nyinkommet`;
-    newArrivalsNotice.hidden = false;
+    renderNewArrivalsNotice(count);
   } catch (error) {
     console.error("Kunde inte hämta notisen om nya plagg:", error);
-    newArrivalsNotice.hidden = true;
+    renderNewArrivalsNotice(0);
   }
 }
 
