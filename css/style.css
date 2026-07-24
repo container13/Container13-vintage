@@ -723,3 +723,38 @@ main > #nyGallery.gallery {
     transition: none;
   }
 }
+
+
+/* Version 3.4.5 – säker hover-effekt för Butiken */
+#gallery .gallery-image-shell {
+  position: relative;
+  overflow: hidden;
+  transform: translateY(0);
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.10);
+  transition: transform 0.30s ease, box-shadow 0.30s ease;
+}
+
+#gallery .gallery-image-shell img {
+  transform: scale(1);
+  transition: transform 0.38s ease, filter 0.30s ease, opacity 0.28s ease;
+  will-change: transform;
+}
+
+#gallery .gallery-image-shell:hover,
+#gallery .gallery-image-shell:focus-within {
+  transform: translateY(-7px);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.22);
+}
+
+#gallery .gallery-image-shell:hover img,
+#gallery .gallery-image-shell:focus-within img {
+  transform: scale(1.075);
+  filter: brightness(1.03);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #gallery .gallery-image-shell,
+  #gallery .gallery-image-shell img {
+    transition: none;
+  }
+}
