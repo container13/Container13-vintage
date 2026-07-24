@@ -912,26 +912,3 @@ main > #nyGallery.gallery {
     transition: none !important;
   }
 }
-
-
-/* Avvikande öppettider */
-.avvikande-rubrik {
-  margin: 28px 0 10px;
-  font-size: 1.15rem;
-  font-weight: 800;
-}
-
-
-/* Avvikande öppettider – version 3.6.1 */
-.avvikande-oppettider {
-  margin-top: 26px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(0,0,0,.12);
-}
-.avvikande-oppettider h3 {
-  margin: 0 0 12px;
-  font-size: 1.1rem;
-}
-#avvikande-oppettider-lista .oppettid-rad {
-  margin-bottom: 8px;
-}
