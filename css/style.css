@@ -561,3 +561,79 @@ main > #nyGallery.gallery {
     font-size: 32px;
   }
 }
+
+/* Version 3.3 – skeleton loading för bildkort */
+.image-card-loading {
+  position: relative;
+  overflow: hidden;
+  background: #ece8e1;
+}
+
+.image-card-loading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 20%,
+    rgba(255, 255, 255, 0.65) 50%,
+    rgba(255, 255, 255, 0) 80%
+  );
+  transform: translateX(-100%);
+  animation: container13-skeleton 1.25s ease-in-out infinite;
+}
+
+.image-card-loading img,
+.image-card-loading .nyinkommet-info,
+.image-card-loading .senaste-nytt-info {
+  opacity: 0;
+}
+
+.image-card-loaded img,
+.image-card-loaded .nyinkommet-info,
+.image-card-loaded .senaste-nytt-info {
+  opacity: 1;
+  transition: opacity 0.28s ease;
+}
+
+.nyinkommet-kort.image-card-loading,
+.senaste-nytt-kort.image-card-loading {
+  min-height: 360px;
+}
+
+.gallery-image-shell {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: inherit;
+  background: #ece8e1;
+}
+
+.gallery-image-shell img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+@keyframes container13-skeleton {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image-card-loading::after {
+    animation: none;
+  }
+
+  .image-card-loaded img,
+  .image-card-loaded .nyinkommet-info,
+  .image-card-loaded .senaste-nytt-info {
+    transition: none;
+  }
+}
