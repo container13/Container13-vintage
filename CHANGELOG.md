@@ -39,3 +39,7 @@ Version 4.0.0 ska se ut och fungera som den godkända version 3.6.1. Syftet är 
 - Kontaktuppgifter, sociala länkar och copyright kan ändras utan kod.
 - Valbar lagringstid för papperskorgen mellan 1 och 7 dagar.
 - Kontakt, Hitta hit och sidfoten hämtar automatiskt sparade uppgifter från Firestore.
+
+## Version 4.3.1
+- Rättar navigeringen till Inställningar i adminpanelen.
+- Lägger till robust klickhantering och tangentbordsstöd för menyvalet.
