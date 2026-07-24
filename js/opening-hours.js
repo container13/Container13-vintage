@@ -4,6 +4,7 @@
   const PROJECT_ID = "container13-87c1a";
   const API_KEY = "AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw";
   const list = document.getElementById("oppettider-lista");
+  const specialList = document.getElementById("avvikande-oppettider-lista");
 
   const dayNames = [
     ["Måndag", "monday"], ["Tisdag", "tuesday"], ["Onsdag", "wednesday"],
@@ -60,6 +61,7 @@
       list.innerHTML = "";
       dayNames.forEach(([name, key]) => list.appendChild(row(name, savedDays[key] || {})));
 
+      if (specialList) specialList.innerHTML = "<p>Inga kommande avvikande öppettider är inlagda.</p>";
       if (specialResponse.ok) {
         const specialDocument = await specialResponse.json();
         const specialData = firestoreFields(specialDocument.fields || {});
@@ -71,17 +73,18 @@
           .filter(([dateKey]) => dateKey >= today)
           .sort(([a], [b]) => a.localeCompare(b))
           .slice(0, 8);
-        if (upcoming.length) {
-          const heading = document.createElement("h3");
-          heading.className = "avvikande-rubrik";
-          heading.textContent = "Avvikande öppettider";
-          list.appendChild(heading);
-          upcoming.forEach(([dateKey, values]) => {
-            const [year, month, day] = dateKey.split("-").map(Number);
-            const name = new Intl.DateTimeFormat("sv-SE", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })
-              .format(new Date(Date.UTC(year, month - 1, day, 12)));
-            list.appendChild(row(name, values));
-          });
+        if (specialList) {
+          specialList.innerHTML = "";
+          if (!upcoming.length) {
+            specialList.innerHTML = "<p>Inga kommande avvikande öppettider är inlagda.</p>";
+          } else {
+            upcoming.forEach(([dateKey, values]) => {
+              const [year, month, day] = dateKey.split("-").map(Number);
+              const name = new Intl.DateTimeFormat("sv-SE", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })
+                .format(new Date(Date.UTC(year, month - 1, day, 12)));
+              specialList.appendChild(row(name, values));
+            });
+          }
         }
       }
     } catch (error) {
