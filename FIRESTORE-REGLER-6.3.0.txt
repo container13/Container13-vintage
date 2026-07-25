@@ -1,0 +1,50 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /settings/{document} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    match /gallery/{document} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    match /trash/{document} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Webbplatsen får bara skapa anonyma sidvisningshändelser.
+    // Endast inloggad administratör får läsa statistiken.
+    match /analytics_events/{eventId} {
+      allow create: if request.auth == null
+        && request.resource.data.keys().hasOnly([
+          "visitorId", "sessionId", "date", "page", "path",
+          "deviceType", "pwa", "createdAt"
+        ])
+        && request.resource.data.visitorId is string
+        && request.resource.data.visitorId.size() <= 80
+        && request.resource.data.sessionId is string
+        && request.resource.data.sessionId.size() <= 80
+        && request.resource.data.date is string
+        && request.resource.data.date.size() == 10
+        && request.resource.data.page is string
+        && request.resource.data.page.size() <= 40
+        && request.resource.data.path is string
+        && request.resource.data.path.size() <= 120
+        && request.resource.data.deviceType in ["mobil", "surfplatta", "dator"]
+        && request.resource.data.pwa is bool
+        && request.resource.data.createdAt == request.time;
+
+      allow read, delete: if request.auth != null;
+      allow update: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
