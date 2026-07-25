@@ -1,5 +1,11 @@
 # Ändringslogg
 
+## Version 6.3.3
+
+- Förstorar startsidans logotyp från 420 px till 560 px på skärmar från 900 px.
+- Mobilstorleken lämnas oförändrad.
+- Uppdaterar startsidans CSS-cacheversion så att ändringen syns direkt.
+
 ## Version 6.3.2
 
 - Återställer ett tydligt mellanrum mellan ordinarie öppettider och rubriken Avvikande öppettider.
