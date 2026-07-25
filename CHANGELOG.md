@@ -1,3 +1,13 @@
+# Version 6.0
+
+- Stor Ta foto-knapp direkt på Dashboard.
+- Kamera och förhandsvisning för Nyinkommet.
+- Ta om bild innan publicering.
+- Ta nästa foto efter publicering.
+- Ångra senaste uppladdningen till papperskorgen.
+- Valbart snabbfotoläge i Inställningar.
+- Dashboard visar dagens antal och senaste uppladdning.
+
 # Version 5.1 – separata hemskärmsikoner
 
 - Kundwebbplatsen heter **Container13** på hemskärmen.
@@ -57,10 +67,3 @@ Version 4.0.0 ska se ut och fungera som den godkända version 3.6.1. Syftet är 
 - Öppnas i fristående app-läge utan vanlig webbläsarram när plattformen stöder det.
 - Manifest, Apple-inställningar och service worker har lagts till.
 - Grundfiler cachas för snabbare start och enklare återöppning.
-
-
-## Version 5.2 – Direkt kamerauppladdning
-- Ny knapp **Ta foto direkt** under Nyinkommet i adminpanelen.
-- På mobil öppnas den bakre kameran direkt när enheten stöder det.
-- Fotot förhandsvisas och kan få en titel innan det laddas upp.
-- Vanlig uppladdning från bildbiblioteket och uppladdning av flera bilder fungerar fortfarande.
