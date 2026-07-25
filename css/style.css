@@ -913,11 +913,13 @@ main > #nyGallery.gallery {
   }
 }
 
-
-/* ===== Version 5.1.1 - Luft före avvikande öppettider ===== */
-.avvikande-oppettider{
-    margin-top:32px;
+/* ========================= */
+/* AVVIKANDE ÖPPETTIDER      */
+/* ========================= */
+.avvikande-oppettider {
+  padding-top: 32px;
 }
-.avvikande-oppettider h3{
-    margin:0 0 16px;
+
+.avvikande-oppettider h3 {
+  margin: 0 0 16px;
 }
