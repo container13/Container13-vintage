@@ -2017,6 +2017,14 @@
               </label>
             </div>
 
+            <div class="settings-subcard">
+              <h3>Hemskärmsapp för besökare</h3>
+              <label class="quick-mode-setting">
+                <input id="setting-show-pwa-install-prompt" type="checkbox" checked>
+                <span><strong>Visa ”Lägg till på hemskärmen”</strong><br><small>Visas från besökarens andra mobilbesök. Om rutan stängs visas den igen tidigast efter 30 dagar.</small></span>
+              </label>
+            </div>
+
             <label class="quick-mode-setting">
               <input id="setting-quick-photo-mode" type="checkbox">
               <span><strong>Snabbfotoläge</strong><br><small>När en bild publicerats öppnas kameran igen automatiskt.</small></span>
@@ -2274,6 +2282,7 @@
     const settingCopyright = document.getElementById("setting-copyright");
     const settingQuickPhotoMode = document.getElementById("setting-quick-photo-mode");
     const settingSaveMobileCopy = document.getElementById("setting-save-mobile-copy");
+    const settingShowPwaInstallPrompt = document.getElementById("setting-show-pwa-install-prompt");
     const retentionRadios = Array.from(document.querySelectorAll('input[name="new-arrivals-retention"]'));
     const customRetentionRow = document.getElementById("custom-retention-row");
     const settingNewArrivalsCustomDays = document.getElementById("setting-new-arrivals-custom-days");
@@ -2649,7 +2658,8 @@
       copyright: "© 2026 Container 13 Vintage",
       trashDays: 2,
       newArrivalsRetentionMode: "days",
-      newArrivalsRetentionDays: 7
+      newArrivalsRetentionDays: 7,
+      showPwaInstallPrompt: true
     };
 
     function showSettingsStatus(text, type) {
@@ -2729,6 +2739,7 @@
       settingInstagram.value = data.instagram || "";
       settingTiktok.value = data.tiktok || "";
       settingCopyright.value = data.copyright || "";
+      settingShowPwaInstallPrompt.checked = data.showPwaInstallPrompt !== false;
       trashRetentionDays = Math.min(7, Math.max(1, Number(data.trashDays) || 2));
       settingTrashDays.value = String(trashRetentionDays);
       setRetentionForm(data);
@@ -2772,6 +2783,7 @@
         trashDays: Math.min(7, Math.max(1, Number(settingTrashDays.value) || 2)),
         newArrivalsRetentionMode: retention.mode,
         newArrivalsRetentionDays: retention.mode === "manual" ? 0 : retention.days,
+        showPwaInstallPrompt: settingShowPwaInstallPrompt.checked,
         updatedAt: serverTimestamp(),
         updatedBy: auth.currentUser.email || ""
       };
