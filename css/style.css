@@ -177,6 +177,16 @@
   margin-bottom: 12px;
 }
 
+#avvikande-oppettider-lista {
+  width: 100%;
+  max-width: 458px;
+  margin: 0 auto;
+}
+
+#avvikande-oppettider-lista .oppettid-rad {
+  padding: 10px 6px;
+}
+
 .oppettider-rad {
   display: flex;
   justify-content: space-between;
