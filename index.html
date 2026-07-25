@@ -25,16 +25,15 @@
   const introKey = "c13StarIntroShown";
 
   try {
-    const cameFromContainer13 =
-      document.referrer &&
-      new URL(document.referrer).origin === window.location.origin;
+    const forceIntro =
+      new URLSearchParams(window.location.search).get("star") === "1";
     const introAlreadyShown = sessionStorage.getItem(introKey) === "true";
     const reducedMotion =
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     sessionStorage.setItem(introKey, "true");
 
-    if (!cameFromContainer13 && !introAlreadyShown && !reducedMotion) {
+    if (forceIntro || (!introAlreadyShown && !reducedMotion)) {
       document.documentElement.classList.add("star-intro-active");
     }
   } catch (_) {
@@ -66,19 +65,7 @@ html.star-intro-active .star-intro {
 }
 
 .star-intro-star {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: star-intro-reveal 1.35s cubic-bezier(0.65, 0, 0.25, 1) forwards;
-}
-
-@keyframes star-intro-reveal {
-  from {
-    transform: scale(0.01);
-  }
-
-  to {
-    transform: scale(32);
-  }
+  transform-origin: 50px 50px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -325,7 +312,15 @@ html.star-intro-active .star-intro {
   focusable="false"
 >
   <defs>
-    <mask id="star-intro-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+    <mask
+      id="star-intro-mask"
+      maskUnits="userSpaceOnUse"
+      x="0"
+      y="0"
+      width="100"
+      height="100"
+      style="mask-type: luminance"
+    >
       <rect x="0" y="0" width="100" height="100" fill="#fff"></rect>
       <polygon
         class="star-intro-star"
@@ -472,7 +467,7 @@ inspireras.
 
 
 
-<script type="module" src="js/layout.js?v=4.0.0"></script>
+<script type="module" src="js/layout.js?v=6.4.1"></script>
 <script defer src="js/senaste-nytt.js?v=6.2.1"></script>
 <script type="module" src="js/analytics.js?v=6.3.0"></script>
 
@@ -488,6 +483,7 @@ inspireras.
   }
 
   let removed = false;
+  const duration = 1350;
 
   const finishIntro = () => {
     if (removed) return;
@@ -496,8 +492,42 @@ inspireras.
     intro.remove();
   };
 
-  star?.addEventListener("animationend", finishIntro, { once: true });
-  window.setTimeout(finishIntro, 1800);
+  if (!star) {
+    finishIntro();
+    return;
+  }
+
+  star.setAttribute(
+    "transform",
+    "translate(50 50) scale(0.01) translate(-50 -50)"
+  );
+
+  let startTime = null;
+
+  const animateStar = (time) => {
+    if (startTime === null) startTime = time;
+
+    const progress = Math.min(1, (time - startTime) / duration);
+    const easedProgress =
+      progress < 0.5
+        ? 4 * progress * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+    const scale = 0.01 + easedProgress * 36;
+
+    star.setAttribute(
+      "transform",
+      `translate(50 50) scale(${scale}) translate(-50 -50)`
+    );
+
+    if (progress < 1) {
+      window.requestAnimationFrame(animateStar);
+    } else {
+      window.setTimeout(finishIntro, 80);
+    }
+  };
+
+  window.requestAnimationFrame(animateStar);
+  window.setTimeout(finishIntro, 2000);
 })();
 </script>
 

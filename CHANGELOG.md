@@ -1,5 +1,13 @@
 # Ändringslogg
 
+## Version 6.4.1
+
+- Byter till en JavaScript-styrd SVG-mask för stabilare stjärnöppning.
+- Tar bort den osäkra kontrollen av föregående webbadress.
+- Låter Hem-länkarna markera att stjärnan inte ska visas.
+- Lägger till testadressen `?star=1`, som alltid visar animationen.
+- Uppdaterar cacheversionen för den gemensamma layoutfilen.
+
 ## Version 6.4.0
 
 - Lägger till en helsvart stjärnöppning på startsidan.
