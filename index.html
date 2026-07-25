@@ -43,7 +43,7 @@
 </script>
 
 <style>
-/* Stjärnöppning – svart skärm som öppnas genom en växande stjärna */
+/* Stjärnöppning – visas bara vid det första besöket i fliken */
 html.star-intro-active {
   overflow: hidden;
 }
@@ -52,7 +52,7 @@ html.star-intro-active {
   display: none;
   position: fixed;
   inset: 0;
-  z-index: 40000;
+  z-index: 50000;
   width: 100vw;
   height: 100vh;
   pointer-events: none;
@@ -94,7 +94,7 @@ html.star-intro-active .star-intro {
 .landing .undertitel {
   max-width: 720px;
   margin: 0 auto 30px;
-  font-size: clamp(1.05rem, 2vw, 3rem);
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
   line-height: 1.55;
 }
 
@@ -220,7 +220,7 @@ html.star-intro-active .star-intro {
 .senaste-nytt-titel {
   margin: 0 0 7px;
   font-size: 1rem;
-  line-height: 3;
+  line-height: 1.35;
   font-weight: 700;
 }
 
@@ -228,7 +228,7 @@ html.star-intro-active .star-intro {
   margin: 0;
   color: #9a7a18;
   font-size: 0.9rem;
-  line-height: 3;
+  line-height: 1.35;
   font-weight: 600;
 }
 
@@ -448,34 +448,24 @@ inspireras.
     return;
   }
 
-  let finished = false;
   const blackPause = 250;
   const duration = 1250;
+
   let animationFrame = 0;
   let startTimer = 0;
   let fallbackTimer = 0;
+  let finished = false;
 
-  const finishIntro = () => {
-    if (finished) return;
-    finished = true;
-    cancelAnimationFrame(animationFrame);
-    clearTimeout(startTimer);
-    clearTimeout(fallbackTimer);
-    canvas.hidden = true;
-    root.classList.remove("star-intro-active");
-    canvas.remove();
-  };
-
-  const resizeCanvas = () => {
+  function resizeCanvas() {
     const dpr = Math.max(1, window.devicePixelRatio || 1);
     canvas.width = Math.round(window.innerWidth * dpr);
     canvas.height = Math.round(window.innerHeight * dpr);
-    canvas.style.width = `${window.innerWidth}px`;
-    canvas.style.height = `${window.innerHeight}px`;
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  };
+  }
 
-  const drawStar = (cx, cy, outerRadius, innerRadius) => {
+  function drawStar(cx, cy, outerRadius, innerRadius) {
     ctx.beginPath();
 
     for (let i = 0; i < 10; i += 1) {
@@ -493,26 +483,26 @@ inspireras.
 
     ctx.closePath();
     ctx.fill();
-  };
+  }
 
-  const drawFrame = (radius) => {
+  function drawFrame(radius) {
     ctx.globalCompositeOperation = "source-over";
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
     ctx.fillStyle = "#000";
     ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
     ctx.globalCompositeOperation = "destination-out";
     ctx.fillStyle = "#000";
-    drawStar(
-      window.innerWidth / 2,
-      window.innerHeight / 2,
-      radius,
-      radius * 0.46
-    );
-    ctx.globalCompositeOperation = "source-over";
-  };
 
-  const easeInFaster = (progress) => {
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+    drawStar(cx, cy, radius, radius * 0.46);
+
+    ctx.globalCompositeOperation = "source-over";
+  }
+
+  function easeInFaster(progress) {
     const slowPhaseEnd = 0.34;
     const visibleStarSize = 0.07;
 
@@ -527,7 +517,18 @@ inspireras.
       0.18 * fastProgress + 0.82 * Math.pow(fastProgress, 2.2);
 
     return visibleStarSize + (1 - visibleStarSize) * accelerated;
-  };
+  }
+
+  function finishIntro() {
+    if (finished) return;
+    finished = true;
+    cancelAnimationFrame(animationFrame);
+    clearTimeout(startTimer);
+    clearTimeout(fallbackTimer);
+    canvas.hidden = true;
+    root.classList.remove("star-intro-active");
+    canvas.remove();
+  }
 
   resizeCanvas();
   canvas.hidden = false;
@@ -542,10 +543,10 @@ inspireras.
   startTimer = window.setTimeout(() => {
     let startedAt = null;
 
-    const animate = (time) => {
-      if (startedAt === null) startedAt = time;
+    function animate(now) {
+      if (startedAt === null) startedAt = now;
 
-      const progress = Math.min(1, (time - startedAt) / duration);
+      const progress = Math.min(1, (now - startedAt) / duration);
       const eased = easeInFaster(progress);
       const startRadius = 8;
       const radius =
@@ -558,7 +559,7 @@ inspireras.
       } else {
         finishIntro();
       }
-    };
+    }
 
     animationFrame = requestAnimationFrame(animate);
   }, blackPause);
@@ -567,8 +568,6 @@ inspireras.
     finishIntro,
     blackPause + duration + 500
   );
-
-  window.addEventListener("resize", resizeCanvas, { once: true });
 })();
 </script>
 
