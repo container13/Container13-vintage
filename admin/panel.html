@@ -1383,7 +1383,27 @@
       .settings-grid .full-width { grid-column: auto; }
     }
 
-</style>
+
+    .settings-subcard {
+      margin-top: 24px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fbfaf8;
+    }
+    .settings-subcard h3 { margin: 0 0 8px; font-size: 20px; }
+    .settings-subcard > p { margin: 0 0 18px; color: var(--muted); line-height: 1.55; }
+    .retention-options { display: grid; gap: 10px; }
+    .retention-option { display: flex; gap: 10px; align-items: center; cursor: pointer; }
+    .custom-days-row { margin: 10px 0 0 28px; max-width: 210px; }
+    .custom-days-row[hidden] { display: none; }
+    .custom-days-row input { width: 100%; }
+    .setting-summary { margin-top: 18px; padding: 14px 16px; border-radius: 8px; background: #f1ece5; font-weight: 700; }
+    .preview-result { margin-top: 14px; min-height: 24px; color: var(--text); }
+    .secondary-button { padding: 11px 16px; border: 1px solid var(--border); border-radius: 8px; background: white; cursor: pointer; font-weight: 700; }
+    .secondary-button:hover { border-color: var(--accent); }
+
+  </style>
 
   <script src="./pwa.js" defer></script>
 
@@ -1473,7 +1493,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.0</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.1</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -1555,7 +1575,7 @@
                 <div class="dashboard-detail"><span>Inloggad som</span><strong id="dashboard-user">–</strong></div>
                 <div class="dashboard-detail"><span>Papperskorg</span><strong id="dashboard-trash-retention">Automatisk rensning efter 2 dagar</strong></div>
               </div>
-              <p class="dashboard-version">Container13 Adminpanel · Version 6.0</p>
+              <p class="dashboard-version">Container13 Adminpanel · Version 6.1</p>
             </section>
           </div>
         </section>
@@ -1726,7 +1746,7 @@
 
               <p class="card-introduction">
                 Ladda upp bilder som ska visas på sidan Nyinkommet.
-                De senast uppladdade visas först. Bilder äldre än 7 dagar städas automatiskt när adminpanelen öppnas eller när nya bilder laddas upp.
+                De senast uppladdade visas först. Bilder visas i upp till den tid du valt och döljs därefter automatiskt.
               </p>
             </div>
 
@@ -1966,6 +1986,35 @@
                 <label class="field-label" for="setting-copyright">Copyright-text</label>
                 <input id="setting-copyright" type="text" maxlength="120">
               </div>
+            </div>
+
+            <div class="settings-subcard">
+              <h3>Nyinkommet visas i</h3>
+              <p>Välj hur länge bilder ska synas på webbplatsen.</p>
+              <div class="retention-options">
+                <label class="retention-option"><input type="radio" name="new-arrivals-retention" value="7"> <span>7 dagar</span></label>
+                <label class="retention-option"><input type="radio" name="new-arrivals-retention" value="14"> <span>14 dagar</span></label>
+                <label class="retention-option"><input type="radio" name="new-arrivals-retention" value="30"> <span>30 dagar</span></label>
+                <label class="retention-option"><input type="radio" name="new-arrivals-retention" value="custom"> <span>Valfritt antal dagar</span></label>
+                <div id="custom-retention-row" class="custom-days-row" hidden>
+                  <label class="field-label" for="setting-new-arrivals-custom-days">Antal dagar (1–30)</label>
+                  <input id="setting-new-arrivals-custom-days" type="number" min="1" max="30" step="1" inputmode="numeric" value="7">
+                </div>
+                <label class="retention-option"><input type="radio" name="new-arrivals-retention" value="manual"> <span>Tills jag tar bort bilden manuellt</span></label>
+              </div>
+              <div id="new-arrivals-current-setting" class="setting-summary">Aktuell inställning: 7 dagar</div>
+              <div style="margin-top:14px">
+                <button id="preview-new-arrivals-button" class="secondary-button" type="button">👁 Förhandsgranska Nyinkommet</button>
+              </div>
+              <div id="new-arrivals-preview-result" class="preview-result" role="status" aria-live="polite"></div>
+            </div>
+
+            <div class="settings-subcard">
+              <h3>Kamera</h3>
+              <label class="quick-mode-setting">
+                <input id="setting-save-mobile-copy" type="checkbox">
+                <span><strong>Spara även en kopia på mobilen</strong><br><small>Efter publicering försöker webbläsaren ladda ner en kopia. Var den hamnar styrs av telefonen och webbläsaren.</small></span>
+              </label>
             </div>
 
             <label class="quick-mode-setting">
@@ -2224,6 +2273,14 @@
     const settingTrashDays = document.getElementById("setting-trash-days");
     const settingCopyright = document.getElementById("setting-copyright");
     const settingQuickPhotoMode = document.getElementById("setting-quick-photo-mode");
+    const settingSaveMobileCopy = document.getElementById("setting-save-mobile-copy");
+    const retentionRadios = Array.from(document.querySelectorAll('input[name="new-arrivals-retention"]'));
+    const customRetentionRow = document.getElementById("custom-retention-row");
+    const settingNewArrivalsCustomDays = document.getElementById("setting-new-arrivals-custom-days");
+    const newArrivalsCurrentSetting = document.getElementById("new-arrivals-current-setting");
+    const previewNewArrivalsButton = document.getElementById("preview-new-arrivals-button");
+    const newArrivalsPreviewResult = document.getElementById("new-arrivals-preview-result");
+    let currentNewArrivalsRetention = { mode: "days", days: 7 };
     let trashRetentionDays = 2;
 
     const days = [
@@ -2590,13 +2647,74 @@
       instagram: "https://www.instagram.com/container.13",
       tiktok: "https://www.tiktok.com/@container.13",
       copyright: "© 2026 Container 13 Vintage",
-      trashDays: 2
+      trashDays: 2,
+      newArrivalsRetentionMode: "days",
+      newArrivalsRetentionDays: 7
     };
 
     function showSettingsStatus(text, type) {
       const icon = type === "success" ? "✓" : "⚠";
       settingsMessage.textContent = `${icon} ${text}`;
       settingsMessage.className = `message ${type}`;
+    }
+
+    function clampRetentionDays(value) {
+      const parsed = Number(value);
+      if (!Number.isInteger(parsed)) return 7;
+      return Math.min(30, Math.max(1, parsed));
+    }
+
+    function selectedRetention() {
+      const selected = retentionRadios.find((radio) => radio.checked)?.value || "7";
+      if (selected === "manual") return { mode: "manual", days: 0 };
+      if (selected === "custom") return { mode: "days", days: clampRetentionDays(settingNewArrivalsCustomDays.value) };
+      return { mode: "days", days: clampRetentionDays(selected) };
+    }
+
+    function updateRetentionUi() {
+      const selectedValue = retentionRadios.find((radio) => radio.checked)?.value || "7";
+      customRetentionRow.hidden = selectedValue !== "custom";
+      const retention = selectedRetention();
+      currentNewArrivalsRetention = retention;
+      newArrivalsCurrentSetting.textContent = retention.mode === "manual"
+        ? "Aktuell inställning: Manuell borttagning"
+        : `Aktuell inställning: ${retention.days} dagar`;
+      newArrivalsPreviewResult.textContent = "";
+    }
+
+    function setRetentionForm(data) {
+      const mode = data.newArrivalsRetentionMode === "manual" ? "manual" : "days";
+      const days = clampRetentionDays(data.newArrivalsRetentionDays);
+      let radioValue = mode === "manual" ? "manual" : ([7, 14, 30].includes(days) ? String(days) : "custom");
+      const radio = retentionRadios.find((item) => item.value === radioValue);
+      if (radio) radio.checked = true;
+      settingNewArrivalsCustomDays.value = String(days);
+      updateRetentionUi();
+    }
+
+    async function previewNewArrivalsRetention() {
+      previewNewArrivalsButton.disabled = true;
+      newArrivalsPreviewResult.textContent = "Räknar bilder...";
+      try {
+        const snapshot = await getDocs(query(collection(database, "gallery"), orderBy("createdAt", "desc")));
+        const items = snapshot.docs.map((d) => d.data()).filter((item) => item.category === "nyinkommet");
+        const retention = selectedRetention();
+        if (retention.mode === "manual") {
+          newArrivalsPreviewResult.textContent = `${items.length} bild(er) kommer att visas. Inga döljs automatiskt.`;
+          return;
+        }
+        const cutoff = Date.now() - retention.days * 86400000;
+        const visible = items.filter((item) => {
+          const ms = timestampToMilliseconds(item.createdAt);
+          return ms === 0 || ms >= cutoff;
+        }).length;
+        newArrivalsPreviewResult.textContent = `${visible} bild(er) kommer att visas. ${items.length - visible} bild(er) kommer att döljas.`;
+      } catch (error) {
+        console.error("Kunde inte förhandsgranska Nyinkommet:", error);
+        newArrivalsPreviewResult.textContent = "Förhandsgranskningen kunde inte göras just nu.";
+      } finally {
+        previewNewArrivalsButton.disabled = false;
+      }
     }
 
     function fillSettingsForm(values) {
@@ -2613,10 +2731,12 @@
       settingCopyright.value = data.copyright || "";
       trashRetentionDays = Math.min(7, Math.max(1, Number(data.trashDays) || 2));
       settingTrashDays.value = String(trashRetentionDays);
+      setRetentionForm(data);
     }
 
     async function loadSiteSettings() {
       settingQuickPhotoMode.checked = localStorage.getItem("c13QuickPhotoMode") === "true";
+      settingSaveMobileCopy.checked = localStorage.getItem("c13SaveMobileCopy") === "true";
       settingsMessage.textContent = "";
       settingsMessage.className = "message";
       try {
@@ -2631,10 +2751,13 @@
 
     async function saveSiteSettings() {
       localStorage.setItem("c13QuickPhotoMode", String(settingQuickPhotoMode.checked));
+      localStorage.setItem("c13SaveMobileCopy", String(settingSaveMobileCopy.checked));
       if (!auth.currentUser) {
         showSettingsStatus("Du är inte längre inloggad.", "error");
         return;
       }
+      const retention = selectedRetention();
+      settingNewArrivalsCustomDays.value = String(retention.days || 7);
       const values = {
         storeName: settingStoreName.value.trim(),
         city: settingCity.value.trim(),
@@ -2647,6 +2770,8 @@
         tiktok: settingTiktok.value.trim(),
         copyright: settingCopyright.value.trim(),
         trashDays: Math.min(7, Math.max(1, Number(settingTrashDays.value) || 2)),
+        newArrivalsRetentionMode: retention.mode,
+        newArrivalsRetentionDays: retention.mode === "manual" ? 0 : retention.days,
         updatedAt: serverTimestamp(),
         updatedBy: auth.currentUser.email || ""
       };
@@ -3192,18 +3317,26 @@
     }
 
     async function removeExpiredNewArrivals() {
-      const sevenDays = 7 * 24 * 60 * 60 * 1000;
-      const cutoff = Date.now() - sevenDays;
+      let retention = currentNewArrivalsRetention;
+      try {
+        const settingsSnapshot = await getDoc(doc(database, "settings", "site"));
+        if (settingsSnapshot.exists()) {
+          const data = settingsSnapshot.data();
+          retention = data.newArrivalsRetentionMode === "manual"
+            ? { mode: "manual", days: 0 }
+            : { mode: "days", days: clampRetentionDays(data.newArrivalsRetentionDays) };
+        }
+      } catch (error) {
+        console.warn("Kunde inte läsa visningstiden. 7 dagar används.", error);
+        retention = { mode: "days", days: 7 };
+      }
+      if (retention.mode === "manual") return 0;
+      const cutoff = Date.now() - retention.days * 24 * 60 * 60 * 1000;
       const snapshot = await getDocs(query(collection(database, "gallery"), orderBy("createdAt", "desc")));
-
       const expiredItems = snapshot.docs
         .map((galleryDocument) => ({ id: galleryDocument.id, ...galleryDocument.data() }))
         .filter((item) => item.category === "nyinkommet" && timestampToMilliseconds(item.createdAt) > 0 && timestampToMilliseconds(item.createdAt) < cutoff);
-
-      for (const item of expiredItems) {
-        await deleteGalleryItemCompletely(item);
-      }
-
+      for (const item of expiredItems) await deleteGalleryItemCompletely(item);
       return expiredItems.length;
     }
 
@@ -3374,6 +3507,22 @@
       }
     }
 
+    function saveCopyOnMobile(file) {
+      if (localStorage.getItem("c13SaveMobileCopy") !== "true") return;
+      try {
+        const url = URL.createObjectURL(file);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `container13-${Date.now()}.jpg`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.setTimeout(() => URL.revokeObjectURL(url), 1500);
+      } catch (error) {
+        console.warn("Kopian kunde inte sparas automatiskt på mobilen.", error);
+      }
+    }
+
     async function uploadNewArrival() {
       clearNewArrivalStatus();
 
@@ -3433,6 +3582,8 @@
               createdBy: auth.currentUser.email || ""
             });
 
+            saveCopyOnMobile(normalizedFile);
+
             lastUploadedNewArrival = {
               id: uploadedDocument.id,
               category: "nyinkommet",
@@ -3450,7 +3601,7 @@
         }
 
         resetNewArrivalForm();
-        const cleanupText = removedBeforeUpload > 0 ? ` ${removedBeforeUpload} bild(er) äldre än 7 dagar togs bort.` : "";
+        const cleanupText = removedBeforeUpload > 0 ? ` ${removedBeforeUpload} utgången bild(er) togs bort.` : "";
         const failureText = failed > 0 ? ` ${failed} bild(er) misslyckades.` : "";
         showNewArrivalStatus(`${uploaded} bild(er) har laddats upp.${cleanupText}${failureText}`, failed > 0 ? "error" : "success");
         await loadNewArrivals();
@@ -4176,6 +4327,13 @@
         showSection("settings");
       }
     });
+
+    retentionRadios.forEach((radio) => radio.addEventListener("change", updateRetentionUi));
+    settingNewArrivalsCustomDays.addEventListener("change", () => {
+      settingNewArrivalsCustomDays.value = String(clampRetentionDays(settingNewArrivalsCustomDays.value));
+      updateRetentionUi();
+    });
+    previewNewArrivalsButton.addEventListener("click", previewNewArrivalsRetention);
 
     saveSettingsButton.addEventListener(
       "click",
