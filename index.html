@@ -33,11 +33,16 @@
 
     sessionStorage.setItem(introKey, "true");
 
+    if (forceIntro) {
+      document.documentElement.classList.add("star-intro-force");
+    }
+
     if (forceIntro || (!introAlreadyShown && !reducedMotion)) {
       document.documentElement.classList.add("star-intro-active");
     }
   } catch (_) {
     document.documentElement.classList.remove("star-intro-active");
+    document.documentElement.classList.remove("star-intro-force");
   }
 })();
 </script>
@@ -68,7 +73,7 @@ html.star-intro-active .star-intro {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .star-intro {
+  html:not(.star-intro-force) .star-intro {
     display: none !important;
   }
 }
@@ -527,6 +532,7 @@ inspireras.
     clearTimeout(fallbackTimer);
     canvas.hidden = true;
     root.classList.remove("star-intro-active");
+    root.classList.remove("star-intro-force");
     canvas.remove();
   }
 
