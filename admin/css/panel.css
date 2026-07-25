@@ -893,3 +893,49 @@
     padding: 16px;
   }
 }
+
+/* Version 5.2 – direkt kamerauppladdning till Nyinkommet */
+.camera-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.camera-upload-actions {
+  margin-top: 12px;
+}
+
+.camera-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid #9a7a18;
+  border-radius: 10px;
+  background: #fffaf0;
+  color: #29251c;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.camera-button:hover,
+.camera-button:focus-visible {
+  background: #f4ead1;
+  outline: 2px solid transparent;
+}
+
+@media (max-width: 640px) {
+  .camera-button {
+    width: 100%;
+  }
+}
