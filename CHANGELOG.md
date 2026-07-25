@@ -1,5 +1,11 @@
 # Ändringslogg
 
+## Version 6.3.4
+
+- Gör listan med avvikande öppettider kompakt och centrerad.
+- Drar ihop avståndet mellan datum och öppettid eller Stängt.
+- Uppdaterar kontaktsidans CSS-cacheversion.
+
 ## Version 6.3.3
 
 - Förstorar startsidans logotyp från 420 px till 560 px på skärmar från 900 px.
