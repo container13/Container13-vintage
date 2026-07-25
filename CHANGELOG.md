@@ -1,3 +1,13 @@
+# Ändringslogg
+
+## Version 6.1.0
+
+- Valbar visningstid för Nyinkommet: 7, 14, 30, valfritt 1–30 dagar eller manuell borttagning.
+- Publika sidan och startsidan filtrerar bilder efter vald tid.
+- Förhandsgranskning visar hur många bilder som visas respektive döljs.
+- Ny kamerainställning som försöker ladda ner en kopia till mobilen efter publicering.
+- Standard är 7 dagar och kopia på mobilen är avstängd.
+
 # Version 5.1 – separata hemskärmsikoner
 
 - Kundwebbplatsen heter **Container13** på hemskärmen.
@@ -58,7 +68,7 @@ Version 4.0.0 ska se ut och fungera som den godkända version 3.6.1. Syftet är 
 - Manifest, Apple-inställningar och service worker har lagts till.
 - Grundfiler cachas för snabbare start och enklare återöppning.
 
-## Version 6.0
+## Version 6.1
 - Stor kameraknapp direkt på adminpanelens Dashboard.
 - Kamera och bildbibliotek kan öppnas direkt från Dashboard.
 - Förhandsvisning och möjlighet att ta om bilden före publicering.
