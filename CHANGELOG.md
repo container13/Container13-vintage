@@ -1,5 +1,14 @@
 # Ändringslogg
 
+## Version 6.3.6
+
+- Ger Butiken, Nyinkommet, Kontakt och Hitta hit samma stora logotyp som startsidan på dator.
+- Minskar det visuella mellanrummet mellan logotypen och rubriken på dator.
+- Behåller den godkända mobilstorleken på logotypen.
+- Anpassar text och knappar i adminpanelens papperskorg till de kompakta bildkorten.
+- Rättar Återställ-knappens gamla minsta bredd så att knapparna inte kapas.
+- Uppdaterar CSS-cacheversionen på samtliga publika sidor.
+
 ## Version 6.3.5
 
 - Förstorar startsidans logotyp från 560 px till 680 px på dator.
