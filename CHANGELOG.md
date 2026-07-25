@@ -1,5 +1,16 @@
 # Ändringslogg
 
+## Version 6.2.0
+
+- Smart ruta för ”Lägg till på hemskärmen” på mobiler.
+- Visas först från besökarens andra besök.
+- Android använder webbläsarens installationsdialog när den är tillgänglig.
+- iPhone visar instruktioner för Dela → Lägg till på hemskärmen.
+- Om rutan stängs visas den igen tidigast efter 30 dagar.
+- Rutan visas inte när webbplatsen redan körs som installerad PWA.
+- Ny inställning i adminpanelen för att slå funktionen av eller på.
+- Bekräftelse visas efter lyckad installation på plattformar som skickar installationshändelsen.
+
 ## Version 6.1.0
 
 - Valbar visningstid för Nyinkommet: 7, 14, 30, valfritt 1–30 dagar eller manuell borttagning.
