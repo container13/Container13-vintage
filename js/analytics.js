@@ -1,129 +1,87 @@
-import { app } from "./firebase.js";
+import { db } from "./firebase.js";
 import {
-  doc,
-  getFirestore,
-  increment,
-  serverTimestamp,
-  setDoc
+  addDoc,
+  collection,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-const database = getFirestore(app);
-const VISITOR_KEY = "c13_analytics_visitor_id";
-const DAILY_KEY_PREFIX = "c13_analytics_seen_";
+const VISITOR_KEY = "container13_visitor_id";
+const SESSION_KEY = "container13_session_id";
 
-function createVisitorId() {
-  if (window.crypto?.randomUUID) return window.crypto.randomUUID();
-  return `c13-${Date.now()}-${Math.random().toString(36).slice(2, 12)}`;
+function randomId(prefix) {
+  if (globalThis.crypto?.randomUUID) {
+    return `${prefix}_${crypto.randomUUID()}`;
+  }
+  return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2)}`;
 }
 
-function getVisitorId() {
+function storedId(key, prefix, storage) {
   try {
-    let visitorId = localStorage.getItem(VISITOR_KEY);
-    if (!visitorId) {
-      visitorId = createVisitorId();
-      localStorage.setItem(VISITOR_KEY, visitorId);
+    let value = storage.getItem(key);
+    if (!value) {
+      value = randomId(prefix);
+      storage.setItem(key, value);
     }
-    return visitorId;
-  } catch (_) {
-    return createVisitorId();
+    return value;
+  } catch {
+    return randomId(prefix);
   }
 }
 
-function stockholmDateKey(date = new Date()) {
-  const parts = new Intl.DateTimeFormat("sv-SE", {
+function stockholmDate() {
+  return new Intl.DateTimeFormat("sv-SE", {
     timeZone: "Europe/Stockholm",
     year: "numeric",
     month: "2-digit",
     day: "2-digit"
-  }).formatToParts(date);
-  const value = Object.fromEntries(parts.map((part) => [part.type, part.value]));
-  return `${value.year}-${value.month}-${value.day}`;
+  }).format(new Date());
 }
 
-function deviceType() {
-  const ua = navigator.userAgent || "";
-  if (/iPad|Tablet|Android(?!.*Mobile)/i.test(ua)) return "surfplatta";
-  if (/Mobi|iPhone|Android/i.test(ua)) return "mobil";
-  return "dator";
-}
-
-function platformName() {
-  const ua = navigator.userAgent || "";
-  if (/iPhone|iPad|iPod/i.test(ua)) return "iPhone/iPad";
-  if (/Android/i.test(ua)) return "Android";
-  if (/Windows/i.test(ua)) return "Windows";
-  if (/Macintosh|Mac OS X/i.test(ua)) return "Mac";
-  if (/CrOS/i.test(ua)) return "Chromebook";
-  return "Övrigt";
-}
-
-function isInstalledPwa() {
-  return window.matchMedia?.("(display-mode: standalone)").matches === true ||
-    window.navigator.standalone === true;
-}
-
-function currentPage() {
+function pageName() {
   const file = location.pathname.split("/").filter(Boolean).pop() || "index.html";
-  const labels = {
+  const names = {
     "index.html": "Hem",
     "galleri.html": "Butiken",
     "nyinkommet.html": "Nyinkommet",
     "kontakt.html": "Kontakt",
     "hittahit.html": "Hitta hit"
   };
-  return labels[file] || file.replace(/\.html$/i, "") || "Hem";
+  return names[file] || file.replace(/\.html$/i, "") || "Hem";
 }
 
-function safePageKey(name) {
-  return name.toLowerCase().replace(/[^a-z0-9åäö]+/gi, "-").replace(/^-|-$/g, "") || "okand";
+function deviceType() {
+  const width = Math.min(screen.width || innerWidth, innerWidth || screen.width);
+  if (width <= 767) return "mobil";
+  if (width <= 1100) return "surfplatta";
+  return "dator";
 }
 
-async function registerVisit() {
-  const visitorId = getVisitorId();
-  const dateKey = stockholmDateKey();
-  const pageName = currentPage();
-  const pageKey = safePageKey(pageName);
-  let firstToday = false;
+function runsAsPwa() {
+  return matchMedia("(display-mode: standalone)").matches ||
+    navigator.standalone === true;
+}
+
+async function registerPageView() {
+  if (navigator.doNotTrack === "1") return;
+
+  const visitorId = storedId(VISITOR_KEY, "visitor", localStorage);
+  const sessionId = storedId(SESSION_KEY, "session", sessionStorage);
 
   try {
-    const dailyStorageKey = `${DAILY_KEY_PREFIX}${dateKey}`;
-    firstToday = localStorage.getItem(dailyStorageKey) !== visitorId;
-    if (firstToday) localStorage.setItem(dailyStorageKey, visitorId);
-  } catch (_) {
-    firstToday = true;
-  }
-
-  const visitorReference = doc(database, "analytics_visitors", visitorId);
-  const dayReference = doc(database, "analytics_days", dateKey);
-
-  const visitorData = {
-    lastSeenAt: serverTimestamp(),
-    lastPage: pageName,
-    deviceType: deviceType(),
-    platform: platformName(),
-    installedPwa: isInstalledPwa(),
-    visitCount: increment(1)
-  };
-
-  const dayData = {
-    date: dateKey,
-    updatedAt: serverTimestamp(),
-    pageViews: increment(1),
-    pages: { [pageKey]: increment(1) }
-  };
-
-  if (firstToday) {
-    dayData.uniqueVisitors = increment(1);
-  }
-
-  try {
-    await Promise.all([
-      setDoc(visitorReference, visitorData, { merge: true }),
-      setDoc(dayReference, dayData, { merge: true })
-    ]);
+    await addDoc(collection(db, "analytics_events"), {
+      visitorId,
+      sessionId,
+      date: stockholmDate(),
+      page: pageName(),
+      path: location.pathname.slice(0, 120),
+      deviceType: deviceType(),
+      pwa: runsAsPwa(),
+      createdAt: serverTimestamp()
+    });
   } catch (error) {
-    console.warn("Besöksstatistiken kunde inte sparas:", error);
+    // Statistik får aldrig störa webbplatsens vanliga funktioner.
+    console.warn("Besöksstatistik kunde inte registreras.", error);
   }
 }
 
-registerVisit();
+registerPageView();
