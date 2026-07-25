@@ -1,8 +1,19 @@
-## 6.2.1
-- Rättade hämtningen av de fyra senaste bilderna på startsidan.
-- Rättade visningstidsinställningen för Nyinkommet på startsidan.
-
 # Ändringslogg
+
+## Version 6.3.1
+
+- Bygger besöksstatistiken ovanpå den bekräftat fungerande version 6.2.1.
+- Behåller rättningen som visar de fyra senaste Nyinkommet-bilderna på startsidan.
+- Rättar cacheversionerna så att webbläsaren hämtar den nya JavaScript-koden.
+
+## Version 6.3.0
+
+- Anonym besöksstatistik på webbplatsens fem publika sidor.
+- Unika besökare totalt, idag och senaste 7 dagarna i Dashboard.
+- Totala sidvisningar och antal besökare som använt hemskärmsappen.
+- Lista över mest besökta sidor.
+- Ingen lagring av namn, e-postadress eller exakt position.
+- Ny fil med Firestore-regler för statistik.
 
 ## Version 6.1.0
 
