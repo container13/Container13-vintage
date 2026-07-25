@@ -43,7 +43,7 @@
 </script>
 
 <style>
-/* Stjärnöppning – visas bara vid det första besöket i fliken */
+/* Stjärnöppning – svart skärm som öppnas genom en växande stjärna */
 html.star-intro-active,
 html.star-intro-active body {
   overflow: hidden;
@@ -55,17 +55,31 @@ html.star-intro-active body {
   position: fixed;
   inset: 0;
   z-index: 40000;
-  width: 100%;
-  height: 100%;
   pointer-events: none;
+  background: #000;
 }
 
 html.star-intro-active .star-intro {
   display: block;
 }
 
-.star-intro-star {
-  transform-origin: 50px 50px;
+.star-intro-reveal {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(#000, #000);
+  clip-path: polygon(
+    50% 48%,
+    50.7% 49.2%,
+    52% 49.2%,
+    51% 50%,
+    51.4% 51.3%,
+    50% 50.5%,
+    48.6% 51.3%,
+    49% 50%,
+    48% 49.2%,
+    49.3% 49.2%
+  );
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -303,41 +317,9 @@ html.star-intro-active .star-intro {
 
 <body>
 
-<svg
-  id="star-intro"
-  class="star-intro"
-  viewBox="0 0 100 100"
-  preserveAspectRatio="xMidYMid slice"
-  aria-hidden="true"
-  focusable="false"
->
-  <defs>
-    <mask
-      id="star-intro-mask"
-      maskUnits="userSpaceOnUse"
-      x="0"
-      y="0"
-      width="100"
-      height="100"
-      style="mask-type: luminance"
-    >
-      <rect x="0" y="0" width="100" height="100" fill="#fff"></rect>
-      <polygon
-        class="star-intro-star"
-        points="50,4 60.8,35.1 93.7,35.8 67.5,55.7 77,87.2 50,68.5 23,87.2 32.5,55.7 6.3,35.8 39.2,35.1"
-        fill="#000"
-      ></polygon>
-    </mask>
-  </defs>
-  <rect
-    x="0"
-    y="0"
-    width="100"
-    height="100"
-    fill="#000"
-    mask="url(#star-intro-mask)"
-  ></rect>
-</svg>
+<div id="star-intro" class="star-intro" aria-hidden="true">
+  <div class="star-intro-reveal"></div>
+</div>
 
 
 
@@ -475,59 +457,189 @@ inspireras.
 (() => {
   const root = document.documentElement;
   const intro = document.getElementById("star-intro");
-  const star = intro?.querySelector(".star-intro-star");
+  const reveal = intro?.querySelector(".star-intro-reveal");
 
-  if (!root.classList.contains("star-intro-active") || !intro) {
+  if (!root.classList.contains("star-intro-active") || !intro || !reveal) {
     intro?.remove();
+    root.classList.remove("star-intro-active");
     return;
   }
 
-  let removed = false;
-  const duration = 3000;
+  let finished = false;
+  const duration = 4200;
+  const startScale = 0.015;
+  const endScale = 22;
+
+  const starPoints = [
+    [50, 4],
+    [60.8, 35.1],
+    [93.7, 35.8],
+    [67.5, 55.7],
+    [77, 87.2],
+    [50, 68.5],
+    [23, 87.2],
+    [32.5, 55.7],
+    [6.3, 35.8],
+    [39.2, 35.1]
+  ];
+
+  const makePolygon = (scale) => {
+    const points = starPoints.map(([x, y]) => {
+      const sx = 50 + (x - 50) * scale;
+      const sy = 50 + (y - 50) * scale;
+      return `${sx}% ${sy}%`;
+    });
+    return `polygon(${points.join(",")})`;
+  };
 
   const finishIntro = () => {
-    if (removed) return;
-    removed = true;
+    if (finished) return;
+    finished = true;
     root.classList.remove("star-intro-active");
     intro.remove();
   };
 
-  if (!star) {
-    finishIntro();
-    return;
-  }
+  let startedAt = null;
 
-  star.setAttribute(
-    "transform",
-    "translate(50 50) scale(0.01) translate(-50 -50)"
-  );
+  const animate = (time) => {
+    if (startedAt === null) startedAt = time;
 
-  let startTime = null;
-
-  const animateStar = (time) => {
-    if (startTime === null) startTime = time;
-
-    const progress = Math.min(1, (time - startTime) / duration);
-    const easedProgress =
+    const progress = Math.min(1, (time - startedAt) / duration);
+    const eased =
       progress < 0.5
         ? 4 * progress * progress * progress
         : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-    const scale = 0.01 + easedProgress * 36;
 
+    const scale = startScale + (endScale - startScale) * eased;
+
+    reveal.style.clipPath = makePolygon(scale);
+    reveal.style.background = "transparent";
+    intro.style.background = "#000";
+    intro.style.webkitMaskImage = `linear-gradient(#000,#000)`;
+    intro.style.maskImage = `linear-gradient(#000,#000)`;
+
+    intro.style.setProperty("--star-clip", makePolygon(scale));
+
+    // Black overlay with a transparent star-shaped hole.
+    intro.style.background = "#000";
+    intro.style.clipPath = "none";
+    reveal.style.position = "absolute";
+    reveal.style.inset = "0";
+    reveal.style.background = "#000";
+    reveal.style.clipPath = `polygon(
+      0% 0%,
+      100% 0%,
+      100% 100%,
+      0% 100%,
+      0% 0%,
+      ${makePolygon(scale).replace("polygon(", "").replace(")", "")}
+    )`;
+
+    // Use even-odd capable SVG-style path via CSS mask fallback.
+    const star = makePolygon(scale);
+    reveal.style.clipPath = star;
+    reveal.style.background = "transparent";
+
+    intro.style.background = "#000";
+    intro.style.webkitMask =
+      `linear-gradient(#000 0 0), linear-gradient(#000 0 0)`;
+    intro.style.webkitMaskComposite = "xor";
+    intro.style.maskComposite = "exclude";
+
+    reveal.style.background = "#000";
+    reveal.style.webkitClipPath = star;
+    reveal.style.clipPath = star;
+
+    // Invert approach: show the page only inside the star by making
+    // the black overlay transparent in that area through mask-composite.
+    intro.style.webkitMaskImage =
+      `linear-gradient(#000 0 0), ${star.replace("polygon", "linear-gradient")}`;
+    intro.style.webkitMaskImage = "none";
+
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      setTimeout(finishIntro, 80);
+    }
+  };
+
+  // Robust implementation using an SVG mask generated in CSS-free DOM.
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("viewBox", "0 0 100 100");
+  svg.setAttribute("preserveAspectRatio", "xMidYMid slice");
+  svg.style.position = "absolute";
+  svg.style.inset = "0";
+  svg.style.width = "100%";
+  svg.style.height = "100%";
+
+  const defs = document.createElementNS(svgNS, "defs");
+  const mask = document.createElementNS(svgNS, "mask");
+  mask.setAttribute("id", "starRevealMask");
+  mask.setAttribute("maskUnits", "userSpaceOnUse");
+  mask.setAttribute("x", "0");
+  mask.setAttribute("y", "0");
+  mask.setAttribute("width", "100");
+  mask.setAttribute("height", "100");
+
+  const white = document.createElementNS(svgNS, "rect");
+  white.setAttribute("x", "0");
+  white.setAttribute("y", "0");
+  white.setAttribute("width", "100");
+  white.setAttribute("height", "100");
+  white.setAttribute("fill", "white");
+
+  const star = document.createElementNS(svgNS, "polygon");
+  star.setAttribute(
+    "points",
+    "50,4 60.8,35.1 93.7,35.8 67.5,55.7 77,87.2 50,68.5 23,87.2 32.5,55.7 6.3,35.8 39.2,35.1"
+  );
+  star.setAttribute("fill", "black");
+  star.setAttribute("transform", "translate(50 50) scale(0.015) translate(-50 -50)");
+
+  mask.appendChild(white);
+  mask.appendChild(star);
+  defs.appendChild(mask);
+
+  const black = document.createElementNS(svgNS, "rect");
+  black.setAttribute("x", "0");
+  black.setAttribute("y", "0");
+  black.setAttribute("width", "100");
+  black.setAttribute("height", "100");
+  black.setAttribute("fill", "black");
+  black.setAttribute("mask", "url(#starRevealMask)");
+
+  svg.appendChild(defs);
+  svg.appendChild(black);
+  intro.innerHTML = "";
+  intro.appendChild(svg);
+
+  let svgStart = null;
+
+  const animateSvg = (time) => {
+    if (svgStart === null) svgStart = time;
+
+    const progress = Math.min(1, (time - svgStart) / duration);
+    const eased =
+      progress < 0.5
+        ? 4 * progress * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+    const scale = startScale + (endScale - startScale) * eased;
     star.setAttribute(
       "transform",
       `translate(50 50) scale(${scale}) translate(-50 -50)`
     );
 
     if (progress < 1) {
-      window.requestAnimationFrame(animateStar);
+      requestAnimationFrame(animateSvg);
     } else {
-      window.setTimeout(finishIntro, 80);
+      setTimeout(finishIntro, 80);
     }
   };
 
-  window.requestAnimationFrame(animateStar);
-  window.setTimeout(finishIntro, 2000);
+  requestAnimationFrame(animateSvg);
+  setTimeout(finishIntro, duration + 500);
 })();
 </script>
 
