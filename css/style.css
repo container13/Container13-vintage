@@ -145,7 +145,7 @@
   .informations-meddelande.synlig {
     width: 100%;
     justify-content: center;
-  } .landing { padding: 30px 18px 20px; } h1 { font-size: 2.2rem; } .kontakt { padding: 12px; } .kontakt section { padding: 25px 18px; } .oppettider { max-width: 360px; } .oppettid-rad { grid-template-columns: minmax(95px, 1fr) auto; column-gap: 8px; min-height: 38px; padding: 7px 4px; } .oppettid-dag, .oppettid-tid { font-size: 0.95rem; } .prev, .next { font-size: 42px; } .prev { left: 12px; } .next { right: 12px; } #close { top: 15px; right: 20px; font-size: 40px; } } /* ========================= */ /* DATOR */ /* ========================= */ @media (min-width: 900px) { .logo { width: 420px; } h1 { font-size: 4rem; } .undertitel { font-size: 1.4rem; } }
+  } .landing { padding: 30px 18px 20px; } h1 { font-size: 2.2rem; } .kontakt { padding: 12px; } .kontakt section { padding: 25px 18px; } .oppettider { max-width: 360px; } .oppettid-rad { grid-template-columns: minmax(95px, 1fr) auto; column-gap: 8px; min-height: 38px; padding: 7px 4px; } .oppettid-dag, .oppettid-tid { font-size: 0.95rem; } .prev, .next { font-size: 42px; } .prev { left: 12px; } .next { right: 12px; } #close { top: 15px; right: 20px; font-size: 40px; } } /* ========================= */ /* DATOR */ /* ========================= */ @media (min-width: 900px) { .logo { width: 560px; } h1 { font-size: 4rem; } .undertitel { font-size: 1.4rem; } }
 /* Öppettider på startsidan */
 
 .oppettider-sektion {
