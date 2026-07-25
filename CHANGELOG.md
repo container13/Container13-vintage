@@ -1,5 +1,11 @@
 # Ändringslogg
 
+## Version 6.3.7
+
+- Lägger loggstorleken direkt i Butiken, Nyinkommet, Kontakt och Hitta hit.
+- Gör loggändringen oberoende av en äldre cachad CSS-fil.
+- Höjer CSS-cacheversionen på alla publika sidor.
+
 ## Version 6.3.6
 
 - Ger Butiken, Nyinkommet, Kontakt och Hitta hit samma stora logotyp som startsidan på dator.
