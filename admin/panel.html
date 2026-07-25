@@ -1189,6 +1189,64 @@
       text-align: right;
     }
 
+
+    .analytics-heading {
+      margin: 8px 0 14px;
+      font-size: 22px;
+    }
+
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .analytics-pages {
+      margin-bottom: 22px;
+    }
+
+    .analytics-page-row {
+      display: grid;
+      grid-template-columns: minmax(110px, 1fr) minmax(130px, 3fr) auto;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .analytics-page-row:last-child { border-bottom: 0; }
+
+    .analytics-bar {
+      height: 10px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: var(--input-disabled);
+    }
+
+    .analytics-bar span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--accent);
+    }
+
+    .analytics-note {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 1150px) {
+      .analytics-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 650px) {
+      .analytics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .analytics-page-row { grid-template-columns: 95px minmax(80px, 1fr) auto; gap: 9px; }
+    }
+
     @media (max-width: 1150px) {
       .dashboard-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
@@ -1544,6 +1602,43 @@
             </article>
           </div>
 
+          <h2 class="analytics-heading">Besöksstatistik</h2>
+          <div class="analytics-grid" aria-live="polite">
+            <article class="dashboard-stat">
+              <span class="dashboard-stat-icon">👥</span>
+              <strong id="analytics-total-visitors" class="dashboard-stat-value">–</strong>
+              <span class="dashboard-stat-label">Unika besökare totalt</span>
+            </article>
+            <article class="dashboard-stat">
+              <span class="dashboard-stat-icon">📅</span>
+              <strong id="analytics-today-visitors" class="dashboard-stat-value">–</strong>
+              <span class="dashboard-stat-label">Unika besökare idag</span>
+            </article>
+            <article class="dashboard-stat">
+              <span class="dashboard-stat-icon">🔥</span>
+              <strong id="analytics-week-visitors" class="dashboard-stat-value">–</strong>
+              <span class="dashboard-stat-label">Besökare senaste 7 dagarna</span>
+            </article>
+            <article class="dashboard-stat">
+              <span class="dashboard-stat-icon">👀</span>
+              <strong id="analytics-pageviews" class="dashboard-stat-value">–</strong>
+              <span class="dashboard-stat-label">Sidvisningar totalt</span>
+            </article>
+            <article class="dashboard-stat">
+              <span class="dashboard-stat-icon">📱</span>
+              <strong id="analytics-pwa-users" class="dashboard-stat-value">–</strong>
+              <span class="dashboard-stat-label">Använt hemskärmsappen</span>
+            </article>
+          </div>
+
+          <section class="dashboard-panel analytics-pages">
+            <h3>Mest besökta sidor</h3>
+            <div id="analytics-pages-list">
+              <p class="image-admin-empty">Statistiken laddas...</p>
+            </div>
+            <p class="analytics-note">En unik besökare motsvarar en webbläsare eller enhet. Samma person kan räknas igen efter byte av enhet eller rensning av webbplatsdata.</p>
+          </section>
+
           <section class="camera-hero" aria-label="Snabbfoto">
             <input id="dashboard-camera-input" type="file" accept="image/*" capture="environment" hidden>
             <button id="dashboard-camera-button" class="camera-primary-button" type="button">
@@ -1575,7 +1670,7 @@
                 <div class="dashboard-detail"><span>Inloggad som</span><strong id="dashboard-user">–</strong></div>
                 <div class="dashboard-detail"><span>Papperskorg</span><strong id="dashboard-trash-retention">Automatisk rensning efter 2 dagar</strong></div>
               </div>
-              <p class="dashboard-version">Container13 Adminpanel · Version 6.1</p>
+              <p class="dashboard-version">Container13 Adminpanel · Version 6.3</p>
             </section>
           </div>
         </section>
@@ -2017,14 +2112,6 @@
               </label>
             </div>
 
-            <div class="settings-subcard">
-              <h3>Hemskärmsapp för besökare</h3>
-              <label class="quick-mode-setting">
-                <input id="setting-show-pwa-install-prompt" type="checkbox" checked>
-                <span><strong>Visa ”Lägg till på hemskärmen”</strong><br><small>Visas från besökarens andra mobilbesök. Om rutan stängs visas den igen tidigast efter 30 dagar.</small></span>
-              </label>
-            </div>
-
             <label class="quick-mode-setting">
               <input id="setting-quick-photo-mode" type="checkbox">
               <span><strong>Snabbfotoläge</strong><br><small>När en bild publicerats öppnas kameran igen automatiskt.</small></span>
@@ -2142,6 +2229,12 @@
     const dashboardNextSpecial = document.getElementById("dashboard-next-special");
     const dashboardUser = document.getElementById("dashboard-user");
     const dashboardTrashRetention = document.getElementById("dashboard-trash-retention");
+    const analyticsTotalVisitors = document.getElementById("analytics-total-visitors");
+    const analyticsTodayVisitors = document.getElementById("analytics-today-visitors");
+    const analyticsWeekVisitors = document.getElementById("analytics-week-visitors");
+    const analyticsPageviews = document.getElementById("analytics-pageviews");
+    const analyticsPwaUsers = document.getElementById("analytics-pwa-users");
+    const analyticsPagesList = document.getElementById("analytics-pages-list");
 
     const openingHoursMenu =
       document.getElementById("opening-hours-menu");
@@ -2282,7 +2375,6 @@
     const settingCopyright = document.getElementById("setting-copyright");
     const settingQuickPhotoMode = document.getElementById("setting-quick-photo-mode");
     const settingSaveMobileCopy = document.getElementById("setting-save-mobile-copy");
-    const settingShowPwaInstallPrompt = document.getElementById("setting-show-pwa-install-prompt");
     const retentionRadios = Array.from(document.querySelectorAll('input[name="new-arrivals-retention"]'));
     const customRetentionRow = document.getElementById("custom-retention-row");
     const settingNewArrivalsCustomDays = document.getElementById("setting-new-arrivals-custom-days");
@@ -2658,8 +2750,7 @@
       copyright: "© 2026 Container 13 Vintage",
       trashDays: 2,
       newArrivalsRetentionMode: "days",
-      newArrivalsRetentionDays: 7,
-      showPwaInstallPrompt: true
+      newArrivalsRetentionDays: 7
     };
 
     function showSettingsStatus(text, type) {
@@ -2739,7 +2830,6 @@
       settingInstagram.value = data.instagram || "";
       settingTiktok.value = data.tiktok || "";
       settingCopyright.value = data.copyright || "";
-      settingShowPwaInstallPrompt.checked = data.showPwaInstallPrompt !== false;
       trashRetentionDays = Math.min(7, Math.max(1, Number(data.trashDays) || 2));
       settingTrashDays.value = String(trashRetentionDays);
       setRetentionForm(data);
@@ -2783,7 +2873,6 @@
         trashDays: Math.min(7, Math.max(1, Number(settingTrashDays.value) || 2)),
         newArrivalsRetentionMode: retention.mode,
         newArrivalsRetentionDays: retention.mode === "manual" ? 0 : retention.days,
-        showPwaInstallPrompt: settingShowPwaInstallPrompt.checked,
         updatedAt: serverTimestamp(),
         updatedBy: auth.currentUser.email || ""
       };
@@ -2975,7 +3064,81 @@
       return time >= schedule.open && time < schedule.close ? "Öppet" : "Stängt";
     }
 
+    function analyticsDateKeys(days) {
+      const keys = [];
+      for (let index = 0; index < days; index += 1) {
+        const date = new Date();
+        date.setDate(date.getDate() - index);
+        keys.push(stockholmDateKey(date));
+      }
+      return keys;
+    }
+
+    function renderAnalyticsPages(pageCounts) {
+      const labels = {
+        hem: "Hem",
+        butiken: "Butiken",
+        nyinkommet: "Nyinkommet",
+        kontakt: "Kontakt",
+        "hitta-hit": "Hitta hit"
+      };
+      const rows = Object.entries(pageCounts)
+        .sort(([, first], [, second]) => second - first)
+        .slice(0, 8);
+
+      if (!rows.length) {
+        analyticsPagesList.innerHTML = '<p class="image-admin-empty">Ingen besöksstatistik har samlats in ännu.</p>';
+        return;
+      }
+
+      const maximum = Math.max(...rows.map(([, value]) => value), 1);
+      analyticsPagesList.innerHTML = rows.map(([key, value]) => {
+        const width = Math.max(4, Math.round((value / maximum) * 100));
+        const label = labels[key] || key.replace(/-/g, " ");
+        return `<div class="analytics-page-row"><strong>${escapeHtml(label)}</strong><div class="analytics-bar" aria-hidden="true"><span style="width:${width}%"></span></div><span>${value}</span></div>`;
+      }).join("");
+    }
+
+    async function loadAnalyticsDashboard() {
+      try {
+        const [visitorsSnapshot, daysSnapshot] = await Promise.all([
+          getDocs(collection(database, "analytics_visitors")),
+          getDocs(collection(database, "analytics_days"))
+        ]);
+
+        const visitors = visitorsSnapshot.docs.map((entry) => entry.data());
+        const days = daysSnapshot.docs.map((entry) => ({ id: entry.id, ...entry.data() }));
+        const todayKey = stockholmDateKey();
+        const weekKeys = new Set(analyticsDateKeys(7));
+        const today = days.find((entry) => entry.id === todayKey) || {};
+        const weekVisitors = days
+          .filter((entry) => weekKeys.has(entry.id))
+          .reduce((sum, entry) => sum + (Number(entry.uniqueVisitors) || 0), 0);
+        const pageViews = days.reduce((sum, entry) => sum + (Number(entry.pageViews) || 0), 0);
+        const pageCounts = {};
+
+        days.forEach((entry) => {
+          Object.entries(entry.pages || {}).forEach(([page, count]) => {
+            pageCounts[page] = (pageCounts[page] || 0) + (Number(count) || 0);
+          });
+        });
+
+        analyticsTotalVisitors.textContent = String(visitors.length);
+        analyticsTodayVisitors.textContent = String(Number(today.uniqueVisitors) || 0);
+        analyticsWeekVisitors.textContent = String(weekVisitors);
+        analyticsPageviews.textContent = String(pageViews);
+        analyticsPwaUsers.textContent = String(visitors.filter((visitor) => visitor.installedPwa === true).length);
+        renderAnalyticsPages(pageCounts);
+      } catch (error) {
+        console.error("Kunde inte ladda besöksstatistik:", error);
+        [analyticsTotalVisitors, analyticsTodayVisitors, analyticsWeekVisitors, analyticsPageviews, analyticsPwaUsers]
+          .forEach((element) => { element.textContent = "–"; });
+        analyticsPagesList.innerHTML = '<p class="image-admin-empty">Statistiken kunde inte hämtas. Kontrollera Firestores regler enligt FIRESTORE-STATISTIK-REGLER.txt.</p>';
+      }
+    }
+
     async function loadDashboard() {
+      loadAnalyticsDashboard();
       try {
         const dashboardGallerySnapshot = await getDocs(query(collection(database, "gallery"), orderBy("createdAt", "desc")));
         const dashboardItems = dashboardGallerySnapshot.docs.map((item) => ({ id: item.id, ...item.data() }));
