@@ -1204,6 +1204,80 @@
 
 
     /* INSTÄLLNINGAR */
+    /* VERSION 6.0 – SNABBFOTO */
+    .camera-hero {
+      margin-bottom: 18px;
+      padding: 0;
+      overflow: hidden;
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      background: linear-gradient(135deg, #fffaf2, #f3e5d1);
+    }
+    .camera-primary-button {
+      width: 100%;
+      min-height: 132px;
+      padding: 24px;
+      border: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      font-weight: 800;
+      text-align: center;
+    }
+    .camera-primary-button:hover { filter: brightness(1.04); }
+    .camera-primary-icon { font-size: 42px; line-height: 1; }
+    .camera-primary-title { font-size: 27px; letter-spacing: .5px; }
+    .camera-primary-subtitle { font-size: 14px; font-weight: 600; opacity: .9; }
+    .camera-status-row {
+      padding: 14px 18px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      background: #fff;
+    }
+    .camera-status-item { display:flex; justify-content:space-between; gap:10px; }
+    .camera-status-item span { color: var(--muted); }
+    .photo-actions {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      gap: 10px;
+      flex-wrap: wrap;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--row-background);
+    }
+    .photo-actions.visible { display:flex; }
+    .secondary-action-button,
+    .danger-action-button {
+      padding: 12px 16px;
+      border-radius: 7px;
+      font-weight: 700;
+    }
+    .secondary-action-button { border:1px solid var(--accent); color:var(--accent-dark); background:#fff; }
+    .danger-action-button { border:1px solid #b45a5a; color:#8a2626; background:#fff6f6; }
+    .quick-mode-setting {
+      margin-top: 18px;
+      padding: 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--row-background);
+    }
+    .quick-mode-setting input { margin-top: 3px; transform: scale(1.25); }
+    @media (max-width: 700px) {
+      .camera-primary-button { min-height: 150px; }
+      .camera-primary-title { font-size: 30px; }
+      .camera-status-row { grid-template-columns: 1fr; }
+      .photo-actions > button { width:100%; }
+    }
+
     .settings-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1231,87 +1305,82 @@
       line-height: 1.55;
     }
     @media (max-width: 720px) {
-      .settings-grid { grid-template-columns: 1fr; }
-      .settings-grid .full-width { grid-column: auto; }
+      /* VERSION 6.0 – SNABBFOTO */
+    .camera-hero {
+      margin-bottom: 18px;
+      padding: 0;
+      overflow: hidden;
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      background: linear-gradient(135deg, #fffaf2, #f3e5d1);
     }
-
-
-
-    /* VERSION 6.0 – SNABBFOTO */
-    .photo-hero {
-      margin-bottom: 22px;
-      padding: 24px;
-      border: 1px solid #9b7448;
-      border-radius: 16px;
-      background: linear-gradient(135deg, #b98b55, #8f673b);
-      box-shadow: 0 14px 30px rgba(78, 54, 30, 0.18);
-      color: #fff;
-    }
-    .photo-hero-button {
+    .camera-primary-button {
       width: 100%;
-      min-height: 112px;
+      min-height: 132px;
+      padding: 24px;
+      border: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      border: 2px solid rgba(255,255,255,.75);
-      border-radius: 13px;
-      background: rgba(255,255,255,.12);
       color: #fff;
-      font-weight: 900;
-      font-size: 30px;
-      letter-spacing: .5px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      font-weight: 800;
+      text-align: center;
     }
-    .photo-hero-button span { font-size: 40px; }
-    .photo-hero-button small { font-size: 14px; font-weight: 600; letter-spacing: 0; opacity: .9; }
-    .photo-hero-button:hover { background: rgba(255,255,255,.2); }
-    .photo-dashboard-status {
-      margin-top: 14px;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-    .photo-dashboard-status div {
-      padding: 12px 14px;
-      border-radius: 10px;
-      background: rgba(24,20,15,.2);
-    }
-    .photo-dashboard-status span { display:block; font-size:12px; opacity:.82; }
-    .photo-dashboard-status strong { display:block; margin-top:4px; font-size:16px; }
-    .camera-actions {
-      margin: 16px 0 0;
+    .camera-primary-button:hover { filter: brightness(1.04); }
+    .camera-primary-icon { font-size: 42px; line-height: 1; }
+    .camera-primary-title { font-size: 27px; letter-spacing: .5px; }
+    .camera-primary-subtitle { font-size: 14px; font-weight: 600; opacity: .9; }
+    .camera-status-row {
+      padding: 14px 18px;
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
+      background: #fff;
     }
-    .camera-button, .retake-button, .undo-upload-button {
-      min-height: 52px;
+    .camera-status-item { display:flex; justify-content:space-between; gap:10px; }
+    .camera-status-item span { color: var(--muted); }
+    .photo-actions {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      gap: 10px;
+      flex-wrap: wrap;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--row-background);
+    }
+    .photo-actions.visible { display:flex; }
+    .secondary-action-button,
+    .danger-action-button {
       padding: 12px 16px;
-      border-radius: 9px;
-      font-weight: 800;
+      border-radius: 7px;
+      font-weight: 700;
     }
-    .camera-button { border: 1px solid var(--accent-dark); color:#fff; background:var(--accent-dark); }
-    .retake-button { border:1px solid var(--border); color:var(--text); background:#fff; }
-    .undo-upload-button { border:1px solid #b16868; color:#8a2626; background:#fff4f4; }
-    .post-upload-actions { display:none; margin-top:16px; gap:10px; grid-template-columns:repeat(3,minmax(0,1fr)); }
-    .post-upload-actions.visible { display:grid; }
-    .quick-photo-setting {
-      padding: 16px;
-      display:flex;
-      align-items:flex-start;
-      gap:12px;
-      border:1px solid var(--border-light);
-      border-radius:9px;
-      background:var(--row-background);
+    .secondary-action-button { border:1px solid var(--accent); color:var(--accent-dark); background:#fff; }
+    .danger-action-button { border:1px solid #b45a5a; color:#8a2626; background:#fff6f6; }
+    .quick-mode-setting {
+      margin-top: 18px;
+      padding: 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--row-background);
     }
-    .quick-photo-setting input { width:22px; height:22px; margin-top:1px; }
-    .quick-photo-setting strong, .quick-photo-setting span { display:block; }
-    .quick-photo-setting span { margin-top:4px; color:var(--muted); font-size:14px; line-height:1.4; }
-    @media (max-width:650px) {
-      .photo-hero { padding:14px; }
-      .photo-hero-button { min-height:104px; font-size:26px; }
-      .photo-dashboard-status, .camera-actions, .post-upload-actions { grid-template-columns:1fr; }
+    .quick-mode-setting input { margin-top: 3px; transform: scale(1.25); }
+    @media (max-width: 700px) {
+      .camera-primary-button { min-height: 150px; }
+      .camera-primary-title { font-size: 30px; }
+      .camera-status-row { grid-template-columns: 1fr; }
+      .photo-actions > button { width:100%; }
+    }
+
+    .settings-grid { grid-template-columns: 1fr; }
+      .settings-grid .full-width { grid-column: auto; }
     }
 
 </style>
@@ -1404,7 +1473,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 4.3.1</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.0</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -1427,19 +1496,6 @@
         </header>
 
         <section id="dashboard-section" class="content-section active">
-          <div class="photo-hero">
-            <button id="dashboard-camera-button" class="photo-hero-button" type="button">
-              <span>📸</span>
-              TA FOTO
-              <small>Fotografera och publicera direkt till Nyinkommet</small>
-            </button>
-            <input id="dashboard-camera-input" type="file" accept="image/*" capture="environment" hidden>
-            <div class="photo-dashboard-status">
-              <div><span>Uppladdade idag</span><strong id="dashboard-today-uploads">0 bilder</strong></div>
-              <div><span>Senaste uppladdning</span><strong id="dashboard-latest-upload">Ingen idag</strong></div>
-            </div>
-          </div>
-
           <div class="dashboard-grid" aria-live="polite">
             <article class="dashboard-stat">
               <span class="dashboard-stat-icon">▧</span>
@@ -1468,11 +1524,24 @@
             </article>
           </div>
 
+          <section class="camera-hero" aria-label="Snabbfoto">
+            <input id="dashboard-camera-input" type="file" accept="image/*" capture="environment" hidden>
+            <button id="dashboard-camera-button" class="camera-primary-button" type="button">
+              <span class="camera-primary-icon">📸</span>
+              <span class="camera-primary-title">TA FOTO</span>
+              <span class="camera-primary-subtitle">Fotografera och lägg upp ett nytt fynd</span>
+            </button>
+            <div class="camera-status-row">
+              <div class="camera-status-item"><span>Uppladdade idag</span><strong id="dashboard-today-count">–</strong></div>
+              <div class="camera-status-item"><span>Senaste uppladdning</span><strong id="dashboard-latest-upload">–</strong></div>
+            </div>
+          </section>
+
           <div class="dashboard-panels">
             <section class="dashboard-panel">
               <h3>Snabbåtgärder</h3>
               <div class="quick-actions">
-                <button id="dashboard-library-button" class="quick-action" type="button" data-dashboard-target="new-arrivals"><span>🖼️</span> Välj från bildbibliotek</button>
+                <button id="dashboard-library-button" class="quick-action" type="button"><span>🖼️</span> Välj från bildbibliotek</button>
                 <button class="quick-action" type="button" data-dashboard-target="gallery"><span>▧</span> Ladda upp till Galleri</button>
                 <button class="quick-action" type="button" data-dashboard-target="opening-hours"><span>◷</span> Ändra öppettider</button>
                 <button class="quick-action" type="button" data-dashboard-target="trash"><span>🗑</span> Öppna papperskorgen</button>
@@ -1682,11 +1751,6 @@
                   <p class="field-help">
                     Du kan välja flera bilder samtidigt. JPG, PNG och WebP, högst 8 MB per bild.
                   </p>
-                  <input id="new-arrival-camera" type="file" accept="image/*" capture="environment" hidden>
-                  <div class="camera-actions">
-                    <button id="take-photo-button" class="camera-button" type="button">📸 Ta foto</button>
-                    <button id="retake-photo-button" class="retake-button" type="button" hidden>🔄 Ta om bilden</button>
-                  </div>
                 </div>
 
                 <div class="field-group">
@@ -1724,11 +1788,11 @@
                 aria-live="polite"
               ></div>
             </div>
-
-            <div id="post-upload-actions" class="post-upload-actions">
-              <button id="next-photo-button" class="camera-button" type="button">📸 Ta nästa foto</button>
-              <button id="undo-last-upload-button" class="undo-upload-button" type="button">↩ Ångra senaste uppladdningen</button>
-              <button id="back-dashboard-button" class="retake-button" type="button">⌂ Till Dashboard</button>
+            <div id="photo-followup-actions" class="photo-actions" aria-live="polite">
+              <button id="retake-photo-button" class="secondary-action-button" type="button">📷 Ta om bilden</button>
+              <button id="next-photo-button" class="secondary-action-button" type="button">📸 Ta nästa foto</button>
+              <button id="undo-last-upload-button" class="danger-action-button" type="button">↩ Ångra senaste uppladdningen</button>
+              <button id="back-dashboard-button" class="secondary-action-button" type="button">🏠 Till Dashboard</button>
             </div>
 
             <div
@@ -1898,15 +1962,16 @@
                   <option value="7">7 dagar</option>
                 </select>
               </div>
-              <label class="quick-photo-setting full-width">
-                <input id="setting-quick-photo" type="checkbox">
-                <span><strong>Snabbfotoläge</strong><span>När en bild har publicerats öppnas kameran automatiskt igen.</span></span>
-              </label>
               <div class="field-group full-width">
                 <label class="field-label" for="setting-copyright">Copyright-text</label>
                 <input id="setting-copyright" type="text" maxlength="120">
               </div>
             </div>
+
+            <label class="quick-mode-setting">
+              <input id="setting-quick-photo-mode" type="checkbox">
+              <span><strong>Snabbfotoläge</strong><br><small>När en bild publicerats öppnas kameran igen automatiskt.</small></span>
+            </label>
 
             <p class="settings-note">Kontaktuppgifterna och länkarna används automatiskt på Kontakt, Hitta hit och i sidfoten. Papperskorgens val gäller för bilder som tas bort efter att inställningen sparats.</p>
 
@@ -2020,10 +2085,6 @@
     const dashboardNextSpecial = document.getElementById("dashboard-next-special");
     const dashboardUser = document.getElementById("dashboard-user");
     const dashboardTrashRetention = document.getElementById("dashboard-trash-retention");
-    const dashboardCameraButton = document.getElementById("dashboard-camera-button");
-    const dashboardCameraInput = document.getElementById("dashboard-camera-input");
-    const dashboardTodayUploads = document.getElementById("dashboard-today-uploads");
-    const dashboardLatestUpload = document.getElementById("dashboard-latest-upload");
 
     const openingHoursMenu =
       document.getElementById("opening-hours-menu");
@@ -2077,14 +2138,6 @@
 
     const newArrivalImageInput =
       document.getElementById("new-arrival-image");
-    const newArrivalCameraInput = document.getElementById("new-arrival-camera");
-    const takePhotoButton = document.getElementById("take-photo-button");
-    const retakePhotoButton = document.getElementById("retake-photo-button");
-    const postUploadActions = document.getElementById("post-upload-actions");
-    const nextPhotoButton = document.getElementById("next-photo-button");
-    const undoLastUploadButton = document.getElementById("undo-last-upload-button");
-    const backDashboardButton = document.getElementById("back-dashboard-button");
-    let lastUploadedItem = null;
 
     const newArrivalTitles =
       document.getElementById("new-arrival-titles");
@@ -2103,6 +2156,17 @@
 
     const newArrivalsList =
       document.getElementById("new-arrivals-list");
+    const dashboardCameraButton = document.getElementById("dashboard-camera-button");
+    const dashboardCameraInput = document.getElementById("dashboard-camera-input");
+    const dashboardLibraryButton = document.getElementById("dashboard-library-button");
+    const dashboardTodayCount = document.getElementById("dashboard-today-count");
+    const dashboardLatestUpload = document.getElementById("dashboard-latest-upload");
+    const photoFollowupActions = document.getElementById("photo-followup-actions");
+    const retakePhotoButton = document.getElementById("retake-photo-button");
+    const nextPhotoButton = document.getElementById("next-photo-button");
+    const undoLastUploadButton = document.getElementById("undo-last-upload-button");
+    const backDashboardButton = document.getElementById("back-dashboard-button");
+    let lastUploadedNewArrival = null;
 
     const galleryMenu =
       document.getElementById("gallery-menu");
@@ -2159,9 +2223,8 @@
     const settingTiktok = document.getElementById("setting-tiktok");
     const settingTrashDays = document.getElementById("setting-trash-days");
     const settingCopyright = document.getElementById("setting-copyright");
-    const settingQuickPhoto = document.getElementById("setting-quick-photo");
+    const settingQuickPhotoMode = document.getElementById("setting-quick-photo-mode");
     let trashRetentionDays = 2;
-    let quickPhotoMode = false;
 
     const days = [
       {
@@ -2527,8 +2590,7 @@
       instagram: "https://www.instagram.com/container.13",
       tiktok: "https://www.tiktok.com/@container.13",
       copyright: "© 2026 Container 13 Vintage",
-      trashDays: 2,
-      quickPhotoMode: false
+      trashDays: 2
     };
 
     function showSettingsStatus(text, type) {
@@ -2549,13 +2611,12 @@
       settingInstagram.value = data.instagram || "";
       settingTiktok.value = data.tiktok || "";
       settingCopyright.value = data.copyright || "";
-      quickPhotoMode = data.quickPhotoMode === true;
-      settingQuickPhoto.checked = quickPhotoMode;
       trashRetentionDays = Math.min(7, Math.max(1, Number(data.trashDays) || 2));
       settingTrashDays.value = String(trashRetentionDays);
     }
 
     async function loadSiteSettings() {
+      settingQuickPhotoMode.checked = localStorage.getItem("c13QuickPhotoMode") === "true";
       settingsMessage.textContent = "";
       settingsMessage.className = "message";
       try {
@@ -2569,6 +2630,7 @@
     }
 
     async function saveSiteSettings() {
+      localStorage.setItem("c13QuickPhotoMode", String(settingQuickPhotoMode.checked));
       if (!auth.currentUser) {
         showSettingsStatus("Du är inte längre inloggad.", "error");
         return;
@@ -2585,7 +2647,6 @@
         tiktok: settingTiktok.value.trim(),
         copyright: settingCopyright.value.trim(),
         trashDays: Math.min(7, Math.max(1, Number(settingTrashDays.value) || 2)),
-        quickPhotoMode: settingQuickPhoto.checked,
         updatedAt: serverTimestamp(),
         updatedBy: auth.currentUser.email || ""
       };
@@ -2597,7 +2658,6 @@
       try {
         await setDoc(doc(database, "settings", "site"), values, { merge: true });
         trashRetentionDays = values.trashDays;
-        quickPhotoMode = values.quickPhotoMode;
         showSettingsStatus("Inställningarna har sparats.", "success");
         await loadDashboard();
       } catch (error) {
@@ -2780,6 +2840,14 @@
 
     async function loadDashboard() {
       try {
+        const dashboardGallerySnapshot = await getDocs(query(collection(database, "gallery"), orderBy("createdAt", "desc")));
+        const dashboardItems = dashboardGallerySnapshot.docs.map((item) => ({ id: item.id, ...item.data() }));
+        const todayStart = new Date();
+        todayStart.setHours(0, 0, 0, 0);
+        const todaysNewArrivals = dashboardItems.filter((item) => item.category === "nyinkommet" && timestampToMilliseconds(item.createdAt) >= todayStart.getTime());
+        dashboardTodayCount.textContent = String(todaysNewArrivals.length);
+        const latestNewArrival = dashboardItems.find((item) => item.category === "nyinkommet");
+        dashboardLatestUpload.textContent = latestNewArrival ? (latestNewArrival.title || "Utan titel") : "Ingen ännu";
         const [gallerySnapshot, trashSnapshot, infoSnapshot, specialSnapshot, hoursSnapshot, siteSnapshot] = await Promise.all([
           getDocs(collection(database, "gallery")),
           getDocs(collection(database, "trash")),
@@ -2808,14 +2876,6 @@
           dashboardNextSpecial.textContent = "Ingen kommande avvikelse";
         }
         dashboardUser.textContent = auth.currentUser?.email || "Administratör";
-        const todayStart = new Date();
-        todayStart.setHours(0, 0, 0, 0);
-        const todaysItems = gallerySnapshot.docs
-          .map((entry) => ({ id: entry.id, ...entry.data() }))
-          .filter((item) => item.category === "nyinkommet" && timestampToMilliseconds(item.createdAt) >= todayStart.getTime())
-          .sort((a, b) => timestampToMilliseconds(b.createdAt) - timestampToMilliseconds(a.createdAt));
-        dashboardTodayUploads.textContent = `${todaysItems.length} ${todaysItems.length === 1 ? "bild" : "bilder"}`;
-        dashboardLatestUpload.textContent = todaysItems[0]?.title || (todaysItems[0] ? "Utan titel" : "Ingen idag");
       } catch (error) {
         console.error("Kunde inte ladda dashboard:", error);
         [dashboardGalleryCount, dashboardNewCount, dashboardTrashCount].forEach((element) => element.textContent = "–");
@@ -2955,7 +3015,6 @@
       newArrivalTitles.innerHTML = '<p class="field-help">Välj en eller flera bilder så visas ett titelfält för varje bild.</p>';
       newArrivalPreviewImage.removeAttribute("src");
       newArrivalPreview.classList.remove("visible");
-      retakePhotoButton.hidden = true;
     }
 
     function createSafeFileName(fileName) {
@@ -3374,7 +3433,7 @@
               createdBy: auth.currentUser.email || ""
             });
 
-            lastUploadedItem = {
+            lastUploadedNewArrival = {
               id: uploadedDocument.id,
               category: "nyinkommet",
               imageUrl,
@@ -3394,10 +3453,12 @@
         const cleanupText = removedBeforeUpload > 0 ? ` ${removedBeforeUpload} bild(er) äldre än 7 dagar togs bort.` : "";
         const failureText = failed > 0 ? ` ${failed} bild(er) misslyckades.` : "";
         showNewArrivalStatus(`${uploaded} bild(er) har laddats upp.${cleanupText}${failureText}`, failed > 0 ? "error" : "success");
-        if (uploaded > 0) postUploadActions.classList.add("visible");
-        await Promise.all([loadNewArrivals(), loadDashboard()]);
-        if (uploaded > 0 && quickPhotoMode) {
-          window.setTimeout(() => newArrivalCameraInput.click(), 350);
+        await loadNewArrivals();
+        await loadDashboard();
+        photoFollowupActions.classList.add("visible");
+        undoLastUploadButton.disabled = !lastUploadedNewArrival;
+        if (uploaded > 0 && localStorage.getItem("c13QuickPhotoMode") === "true") {
+          window.setTimeout(() => dashboardCameraInput.click(), 350);
         }
       } catch (error) {
         console.error("Kunde inte slutföra uppladdningen:", error);
@@ -4065,41 +4126,6 @@
       }
     });
 
-    function applySinglePhotoFile(file) {
-      if (!file) return;
-      const transfer = new DataTransfer();
-      transfer.items.add(file);
-      newArrivalImageInput.files = transfer.files;
-      renderTitleInputs([file], newArrivalTitles, "new-arrival");
-      const previewUrl = URL.createObjectURL(file);
-      newArrivalPreviewImage.src = previewUrl;
-      newArrivalPreview.classList.add("visible");
-      retakePhotoButton.hidden = false;
-      newArrivalPreviewImage.onload = () => URL.revokeObjectURL(previewUrl);
-      postUploadActions.classList.remove("visible");
-      clearNewArrivalStatus();
-    }
-
-    async function undoLastUpload() {
-      if (!lastUploadedItem) {
-        showNewArrivalStatus("Det finns ingen ny uppladdning att ångra.", "error");
-        return;
-      }
-      undoLastUploadButton.disabled = true;
-      try {
-        await moveToTrash(lastUploadedItem);
-        lastUploadedItem = null;
-        postUploadActions.classList.remove("visible");
-        showNewArrivalStatus("Senaste uppladdningen har flyttats till papperskorgen.", "success");
-        await Promise.all([loadNewArrivals(), loadDashboard()]);
-      } catch (error) {
-        console.error("Kunde inte ångra senaste uppladdningen:", error);
-        showNewArrivalStatus("Det gick inte att ångra uppladdningen.", "error");
-      } finally {
-        undoLastUploadButton.disabled = false;
-      }
-    }
-
     document.querySelectorAll("[data-dashboard-target]").forEach((button) => {
       button.addEventListener("click", () => showSection(button.dataset.dashboardTarget));
     });
@@ -4222,25 +4248,6 @@
       }
     );
 
-    dashboardCameraButton.addEventListener("click", () => dashboardCameraInput.click());
-    dashboardCameraInput.addEventListener("change", () => {
-      const file = dashboardCameraInput.files?.[0];
-      if (!file) return;
-      showSection("new-arrivals");
-      applySinglePhotoFile(file);
-      dashboardCameraInput.value = "";
-    });
-    takePhotoButton.addEventListener("click", () => newArrivalCameraInput.click());
-    retakePhotoButton.addEventListener("click", () => newArrivalCameraInput.click());
-    nextPhotoButton.addEventListener("click", () => newArrivalCameraInput.click());
-    backDashboardButton.addEventListener("click", () => showSection("dashboard"));
-    undoLastUploadButton.addEventListener("click", undoLastUpload);
-    newArrivalCameraInput.addEventListener("change", () => {
-      const file = newArrivalCameraInput.files?.[0];
-      applySinglePhotoFile(file);
-      newArrivalCameraInput.value = "";
-    });
-
     newArrivalsMenu.addEventListener(
       "click",
       () => showSection("new-arrivals")
@@ -4250,6 +4257,46 @@
       "click",
       uploadNewArrival
     );
+
+    function transferDashboardPhotoToUpload(file) {
+      if (!file) return;
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(file);
+      newArrivalImageInput.files = dataTransfer.files;
+      newArrivalImageInput.dispatchEvent(new Event("change", { bubbles: true }));
+      photoFollowupActions.classList.add("visible");
+      undoLastUploadButton.disabled = !lastUploadedNewArrival;
+      showSection("new-arrivals");
+      window.setTimeout(() => newArrivalTitles.querySelector("input")?.focus(), 150);
+    }
+
+    dashboardCameraButton.addEventListener("click", () => dashboardCameraInput.click());
+    dashboardCameraInput.addEventListener("change", () => {
+      transferDashboardPhotoToUpload(dashboardCameraInput.files?.[0]);
+      dashboardCameraInput.value = "";
+    });
+    dashboardLibraryButton.addEventListener("click", () => {
+      showSection("new-arrivals");
+      window.setTimeout(() => newArrivalImageInput.click(), 100);
+    });
+    retakePhotoButton.addEventListener("click", () => dashboardCameraInput.click());
+    nextPhotoButton.addEventListener("click", () => dashboardCameraInput.click());
+    backDashboardButton.addEventListener("click", () => showSection("dashboard"));
+    undoLastUploadButton.addEventListener("click", async () => {
+      if (!lastUploadedNewArrival) return;
+      if (!window.confirm("Flytta den senast uppladdade bilden till papperskorgen?")) return;
+      undoLastUploadButton.disabled = true;
+      try {
+        await moveToTrash(lastUploadedNewArrival);
+        lastUploadedNewArrival = null;
+        showNewArrivalStatus("Senaste uppladdningen har flyttats till papperskorgen.", "success");
+        await Promise.all([loadNewArrivals(), loadTrash(), loadDashboard()]);
+      } catch (error) {
+        console.error("Kunde inte ångra senaste uppladdningen:", error);
+        showNewArrivalStatus("Det gick inte att ångra uppladdningen.", "error");
+        undoLastUploadButton.disabled = false;
+      }
+    });
 
     newArrivalImageInput.addEventListener(
       "change",
@@ -4262,15 +4309,12 @@
         if (!file) {
           newArrivalPreviewImage.removeAttribute("src");
           newArrivalPreview.classList.remove("visible");
-          retakePhotoButton.hidden = true;
           return;
         }
 
         const previewUrl = URL.createObjectURL(file);
         newArrivalPreviewImage.src = previewUrl;
         newArrivalPreview.classList.add("visible");
-        retakePhotoButton.hidden = files.length !== 1;
-        postUploadActions.classList.remove("visible");
         newArrivalPreviewImage.onload = () => URL.revokeObjectURL(previewUrl);
       }
     );
