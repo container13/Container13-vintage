@@ -1587,8 +1587,23 @@
                     multiple
                   >
 
+                  <input
+                    id="new-arrival-camera"
+                    class="camera-file-input"
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                  >
+
+                  <div class="camera-upload-actions">
+                    <label class="camera-button" for="new-arrival-camera">
+                      <span aria-hidden="true">📷</span>
+                      Ta foto direkt
+                    </label>
+                  </div>
+
                   <p class="field-help">
-                    Du kan välja flera bilder samtidigt. JPG, PNG och WebP, högst 8 MB per bild.
+                    Tryck på <strong>Ta foto direkt</strong> för att öppna mobilens bakre kamera, eller välj flera bilder från bildbiblioteket ovan. Högst 8 MB per bild.
                   </p>
                 </div>
 
@@ -1966,6 +1981,11 @@
 
     const newArrivalImageInput =
       document.getElementById("new-arrival-image");
+
+    const newArrivalCameraInput =
+      document.getElementById("new-arrival-camera");
+
+    let newArrivalSelectedFiles = [];
 
     const newArrivalTitles =
       document.getElementById("new-arrival-titles");
@@ -2818,6 +2838,8 @@
 
     function resetNewArrivalForm() {
       newArrivalImageInput.value = "";
+      newArrivalCameraInput.value = "";
+      newArrivalSelectedFiles = [];
       newArrivalTitles.innerHTML = '<p class="field-help">Välj en eller flera bilder så visas ett titelfält för varje bild.</p>';
       newArrivalPreviewImage.removeAttribute("src");
       newArrivalPreview.classList.remove("visible");
@@ -3183,7 +3205,7 @@
     async function uploadNewArrival() {
       clearNewArrivalStatus();
 
-      const files = Array.from(newArrivalImageInput.files || []);
+      const files = [...newArrivalSelectedFiles];
       const titles = getTitles(newArrivalTitles, files.length);
 
       if (files.length === 0) {
@@ -4049,24 +4071,45 @@
       uploadNewArrival
     );
 
+    function showNewArrivalSelection(files) {
+      newArrivalSelectedFiles = Array.from(files || []);
+      renderTitleInputs(newArrivalSelectedFiles, newArrivalTitles, "new-arrival");
+      const file = newArrivalSelectedFiles[0];
+
+      if (!file) {
+        newArrivalPreviewImage.removeAttribute("src");
+        newArrivalPreview.classList.remove("visible");
+        return;
+      }
+
+      const previewUrl = URL.createObjectURL(file);
+      newArrivalPreviewImage.src = previewUrl;
+      newArrivalPreview.classList.add("visible");
+      newArrivalPreviewImage.onload = () => URL.revokeObjectURL(previewUrl);
+    }
+
     newArrivalImageInput.addEventListener(
       "change",
       () => {
         clearNewArrivalStatus();
-        const files = Array.from(newArrivalImageInput.files || []);
-        renderTitleInputs(files, newArrivalTitles, "new-arrival");
-        const file = files[0];
+        newArrivalCameraInput.value = "";
+        showNewArrivalSelection(newArrivalImageInput.files);
+      }
+    );
 
-        if (!file) {
-          newArrivalPreviewImage.removeAttribute("src");
-          newArrivalPreview.classList.remove("visible");
-          return;
+    newArrivalCameraInput.addEventListener(
+      "change",
+      () => {
+        clearNewArrivalStatus();
+        newArrivalImageInput.value = "";
+        showNewArrivalSelection(newArrivalCameraInput.files);
+
+        if (newArrivalSelectedFiles.length > 0) {
+          showNewArrivalStatus(
+            "Fotot är klart. Lägg till en titel om du vill och tryck sedan på Ladda upp valda bilder.",
+            "success"
+          );
         }
-
-        const previewUrl = URL.createObjectURL(file);
-        newArrivalPreviewImage.src = previewUrl;
-        newArrivalPreview.classList.add("visible");
-        newArrivalPreviewImage.onload = () => URL.revokeObjectURL(previewUrl);
       }
     );
 
