@@ -1189,64 +1189,6 @@
       text-align: right;
     }
 
-
-    .analytics-heading {
-      margin: 8px 0 14px;
-      font-size: 22px;
-    }
-
-    .analytics-grid {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 16px;
-      margin-bottom: 22px;
-    }
-
-    .analytics-pages {
-      margin-bottom: 22px;
-    }
-
-    .analytics-page-row {
-      display: grid;
-      grid-template-columns: minmax(110px, 1fr) minmax(130px, 3fr) auto;
-      align-items: center;
-      gap: 14px;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    .analytics-page-row:last-child { border-bottom: 0; }
-
-    .analytics-bar {
-      height: 10px;
-      overflow: hidden;
-      border-radius: 999px;
-      background: var(--input-disabled);
-    }
-
-    .analytics-bar span {
-      display: block;
-      height: 100%;
-      border-radius: inherit;
-      background: var(--accent);
-    }
-
-    .analytics-note {
-      margin: 14px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
-    @media (max-width: 1150px) {
-      .analytics-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    }
-
-    @media (max-width: 650px) {
-      .analytics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .analytics-page-row { grid-template-columns: 95px minmax(80px, 1fr) auto; gap: 9px; }
-    }
-
     @media (max-width: 1150px) {
       .dashboard-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
@@ -1551,7 +1493,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.1</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.3.0</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -1600,44 +1542,27 @@
               <strong id="dashboard-store-state" class="dashboard-stat-value" style="font-size:24px;">–</strong>
               <span class="dashboard-stat-label">Butiken just nu</span>
             </article>
-          </div>
-
-          <h2 class="analytics-heading">Besöksstatistik</h2>
-          <div class="analytics-grid" aria-live="polite">
+            <article class="dashboard-stat">
+              <span class="dashboard-stat-icon">👁</span>
+              <strong id="dashboard-views-today" class="dashboard-stat-value">–</strong>
+              <span class="dashboard-stat-label">Sidvisningar idag</span>
+            </article>
             <article class="dashboard-stat">
               <span class="dashboard-stat-icon">👥</span>
-              <strong id="analytics-total-visitors" class="dashboard-stat-value">–</strong>
-              <span class="dashboard-stat-label">Unika besökare totalt</span>
+              <strong id="dashboard-visitors-today" class="dashboard-stat-value">–</strong>
+              <span class="dashboard-stat-label">Besökare idag</span>
             </article>
             <article class="dashboard-stat">
               <span class="dashboard-stat-icon">📅</span>
-              <strong id="analytics-today-visitors" class="dashboard-stat-value">–</strong>
-              <span class="dashboard-stat-label">Unika besökare idag</span>
+              <strong id="dashboard-views-week" class="dashboard-stat-value">–</strong>
+              <span class="dashboard-stat-label">Sidvisningar 7 dagar</span>
             </article>
             <article class="dashboard-stat">
               <span class="dashboard-stat-icon">🔥</span>
-              <strong id="analytics-week-visitors" class="dashboard-stat-value">–</strong>
-              <span class="dashboard-stat-label">Besökare senaste 7 dagarna</span>
-            </article>
-            <article class="dashboard-stat">
-              <span class="dashboard-stat-icon">👀</span>
-              <strong id="analytics-pageviews" class="dashboard-stat-value">–</strong>
-              <span class="dashboard-stat-label">Sidvisningar totalt</span>
-            </article>
-            <article class="dashboard-stat">
-              <span class="dashboard-stat-icon">📱</span>
-              <strong id="analytics-pwa-users" class="dashboard-stat-value">–</strong>
-              <span class="dashboard-stat-label">Använt hemskärmsappen</span>
+              <strong id="dashboard-top-page" class="dashboard-stat-value" style="font-size:21px;">–</strong>
+              <span class="dashboard-stat-label">Mest besökt 7 dagar</span>
             </article>
           </div>
-
-          <section class="dashboard-panel analytics-pages">
-            <h3>Mest besökta sidor</h3>
-            <div id="analytics-pages-list">
-              <p class="image-admin-empty">Statistiken laddas...</p>
-            </div>
-            <p class="analytics-note">En unik besökare motsvarar en webbläsare eller enhet. Samma person kan räknas igen efter byte av enhet eller rensning av webbplatsdata.</p>
-          </section>
 
           <section class="camera-hero" aria-label="Snabbfoto">
             <input id="dashboard-camera-input" type="file" accept="image/*" capture="environment" hidden>
@@ -1670,7 +1595,7 @@
                 <div class="dashboard-detail"><span>Inloggad som</span><strong id="dashboard-user">–</strong></div>
                 <div class="dashboard-detail"><span>Papperskorg</span><strong id="dashboard-trash-retention">Automatisk rensning efter 2 dagar</strong></div>
               </div>
-              <p class="dashboard-version">Container13 Adminpanel · Version 6.3</p>
+              <p class="dashboard-version">Container13 Adminpanel · Version 6.3.0</p>
             </section>
           </div>
         </section>
@@ -2229,12 +2154,10 @@
     const dashboardNextSpecial = document.getElementById("dashboard-next-special");
     const dashboardUser = document.getElementById("dashboard-user");
     const dashboardTrashRetention = document.getElementById("dashboard-trash-retention");
-    const analyticsTotalVisitors = document.getElementById("analytics-total-visitors");
-    const analyticsTodayVisitors = document.getElementById("analytics-today-visitors");
-    const analyticsWeekVisitors = document.getElementById("analytics-week-visitors");
-    const analyticsPageviews = document.getElementById("analytics-pageviews");
-    const analyticsPwaUsers = document.getElementById("analytics-pwa-users");
-    const analyticsPagesList = document.getElementById("analytics-pages-list");
+    const dashboardViewsToday = document.getElementById("dashboard-views-today");
+    const dashboardVisitorsToday = document.getElementById("dashboard-visitors-today");
+    const dashboardViewsWeek = document.getElementById("dashboard-views-week");
+    const dashboardTopPage = document.getElementById("dashboard-top-page");
 
     const openingHoursMenu =
       document.getElementById("opening-hours-menu");
@@ -3064,76 +2987,52 @@
       return time >= schedule.open && time < schedule.close ? "Öppet" : "Stängt";
     }
 
-    function analyticsDateKeys(days) {
-      const keys = [];
-      for (let index = 0; index < days; index += 1) {
-        const date = new Date();
-        date.setDate(date.getDate() - index);
-        keys.push(stockholmDateKey(date));
+    function analyticsDateKey(date = new Date()) {
+      return new Intl.DateTimeFormat("sv-SE", {
+        timeZone: "Europe/Stockholm",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).format(date);
+    }
+
+    function dateKeysForLastDays(days) {
+      const keys = new Set();
+      const now = new Date();
+      for (let offset = 0; offset < days; offset += 1) {
+        const date = new Date(now);
+        date.setDate(now.getDate() - offset);
+        keys.add(analyticsDateKey(date));
       }
       return keys;
     }
 
-    function renderAnalyticsPages(pageCounts) {
-      const labels = {
-        hem: "Hem",
-        butiken: "Butiken",
-        nyinkommet: "Nyinkommet",
-        kontakt: "Kontakt",
-        "hitta-hit": "Hitta hit"
-      };
-      const rows = Object.entries(pageCounts)
-        .sort(([, first], [, second]) => second - first)
-        .slice(0, 8);
-
-      if (!rows.length) {
-        analyticsPagesList.innerHTML = '<p class="image-admin-empty">Ingen besöksstatistik har samlats in ännu.</p>';
-        return;
-      }
-
-      const maximum = Math.max(...rows.map(([, value]) => value), 1);
-      analyticsPagesList.innerHTML = rows.map(([key, value]) => {
-        const width = Math.max(4, Math.round((value / maximum) * 100));
-        const label = labels[key] || key.replace(/-/g, " ");
-        return `<div class="analytics-page-row"><strong>${escapeHtml(label)}</strong><div class="analytics-bar" aria-hidden="true"><span style="width:${width}%"></span></div><span>${value}</span></div>`;
-      }).join("");
-    }
-
     async function loadAnalyticsDashboard() {
       try {
-        const [visitorsSnapshot, daysSnapshot] = await Promise.all([
-          getDocs(collection(database, "analytics_visitors")),
-          getDocs(collection(database, "analytics_days"))
-        ]);
+        const snapshot = await getDocs(collection(database, "analytics_events"));
+        const events = snapshot.docs.map((entry) => entry.data());
+        const today = analyticsDateKey();
+        const weekKeys = dateKeysForLastDays(7);
+        const todayEvents = events.filter((event) => event.date === today);
+        const weekEvents = events.filter((event) => weekKeys.has(event.date));
+        const uniqueToday = new Set(todayEvents.map((event) => event.visitorId).filter(Boolean));
+        const pageCounts = weekEvents.reduce((counts, event) => {
+          const page = event.page || "Okänd sida";
+          counts[page] = (counts[page] || 0) + 1;
+          return counts;
+        }, {});
+        const topPage = Object.entries(pageCounts).sort((a, b) => b[1] - a[1])[0];
 
-        const visitors = visitorsSnapshot.docs.map((entry) => entry.data());
-        const days = daysSnapshot.docs.map((entry) => ({ id: entry.id, ...entry.data() }));
-        const todayKey = stockholmDateKey();
-        const weekKeys = new Set(analyticsDateKeys(7));
-        const today = days.find((entry) => entry.id === todayKey) || {};
-        const weekVisitors = days
-          .filter((entry) => weekKeys.has(entry.id))
-          .reduce((sum, entry) => sum + (Number(entry.uniqueVisitors) || 0), 0);
-        const pageViews = days.reduce((sum, entry) => sum + (Number(entry.pageViews) || 0), 0);
-        const pageCounts = {};
-
-        days.forEach((entry) => {
-          Object.entries(entry.pages || {}).forEach(([page, count]) => {
-            pageCounts[page] = (pageCounts[page] || 0) + (Number(count) || 0);
-          });
-        });
-
-        analyticsTotalVisitors.textContent = String(visitors.length);
-        analyticsTodayVisitors.textContent = String(Number(today.uniqueVisitors) || 0);
-        analyticsWeekVisitors.textContent = String(weekVisitors);
-        analyticsPageviews.textContent = String(pageViews);
-        analyticsPwaUsers.textContent = String(visitors.filter((visitor) => visitor.installedPwa === true).length);
-        renderAnalyticsPages(pageCounts);
+        dashboardViewsToday.textContent = String(todayEvents.length);
+        dashboardVisitorsToday.textContent = String(uniqueToday.size);
+        dashboardViewsWeek.textContent = String(weekEvents.length);
+        dashboardTopPage.textContent = topPage ? `${topPage[0]} (${topPage[1]})` : "Ingen data ännu";
       } catch (error) {
-        console.error("Kunde inte ladda besöksstatistik:", error);
-        [analyticsTotalVisitors, analyticsTodayVisitors, analyticsWeekVisitors, analyticsPageviews, analyticsPwaUsers]
-          .forEach((element) => { element.textContent = "–"; });
-        analyticsPagesList.innerHTML = '<p class="image-admin-empty">Statistiken kunde inte hämtas. Kontrollera Firestores regler enligt FIRESTORE-STATISTIK-REGLER.txt.</p>';
+        console.error("Kunde inte läsa besöksstatistik:", error);
+        dashboardViewsToday.textContent = "–";
+        dashboardVisitorsToday.textContent = "–";
+        dashboardViewsWeek.textContent = "–";
+        dashboardTopPage.textContent = "Aktivera regler";
       }
     }
 
