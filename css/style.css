@@ -912,14 +912,3 @@ main > #nyGallery.gallery {
     transition: none !important;
   }
 }
-
-/* ========================= */
-/* AVVIKANDE ÖPPETTIDER      */
-/* ========================= */
-.avvikande-oppettider {
-  padding-top: 32px;
-}
-
-.avvikande-oppettider h3 {
-  margin: 0 0 16px;
-}
