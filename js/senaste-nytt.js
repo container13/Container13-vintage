@@ -67,7 +67,6 @@
 
   async function getRetentionSetting() {
     try {
-      const retention = await getRetentionSetting();
       const endpoint = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/settings/site?key=${API_KEY}`;
       const response = await fetch(endpoint, { cache: "no-store" });
       if (!response.ok) return { mode: "days", days: 7 };
@@ -153,6 +152,7 @@
   async function loadLatest() {
     showMessage("Hämtar de senaste bilderna...");
     try {
+      const retention = await getRetentionSetting();
       const endpoint = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/gallery?pageSize=100&key=${API_KEY}`;
       const response = await fetch(endpoint, { cache: "no-store" });
       if (!response.ok) throw new Error(`Firestore svarade ${response.status}`);
