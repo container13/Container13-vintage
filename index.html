@@ -20,8 +20,73 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
+<script>
+(() => {
+  const introKey = "c13StarIntroShown";
+
+  try {
+    const cameFromContainer13 =
+      document.referrer &&
+      new URL(document.referrer).origin === window.location.origin;
+    const introAlreadyShown = sessionStorage.getItem(introKey) === "true";
+    const reducedMotion =
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    sessionStorage.setItem(introKey, "true");
+
+    if (!cameFromContainer13 && !introAlreadyShown && !reducedMotion) {
+      document.documentElement.classList.add("star-intro-active");
+    }
+  } catch (_) {
+    document.documentElement.classList.remove("star-intro-active");
+  }
+})();
+</script>
 
 <style>
+/* Stjärnöppning – visas bara vid det första besöket i fliken */
+html.star-intro-active,
+html.star-intro-active body {
+  overflow: hidden;
+  background: #000;
+}
+
+.star-intro {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+html.star-intro-active .star-intro {
+  display: block;
+}
+
+.star-intro-star {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: star-intro-reveal 1.35s cubic-bezier(0.65, 0, 0.25, 1) forwards;
+}
+
+@keyframes star-intro-reveal {
+  from {
+    transform: scale(0.01);
+  }
+
+  to {
+    transform: scale(32);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .star-intro {
+    display: none !important;
+  }
+}
+
 /* Förfinad startsida – påverkar endast index.html */
 .landing {
   min-height: auto;
@@ -251,6 +316,34 @@
 
 <body>
 
+<svg
+  id="star-intro"
+  class="star-intro"
+  viewBox="0 0 100 100"
+  preserveAspectRatio="xMidYMid slice"
+  aria-hidden="true"
+  focusable="false"
+>
+  <defs>
+    <mask id="star-intro-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+      <rect x="0" y="0" width="100" height="100" fill="#fff"></rect>
+      <polygon
+        class="star-intro-star"
+        points="50,4 60.8,35.1 93.7,35.8 67.5,55.7 77,87.2 50,68.5 23,87.2 32.5,55.7 6.3,35.8 39.2,35.1"
+        fill="#000"
+      ></polygon>
+    </mask>
+  </defs>
+  <rect
+    x="0"
+    y="0"
+    width="100"
+    height="100"
+    fill="#000"
+    mask="url(#star-intro-mask)"
+  ></rect>
+</svg>
+
 
 
 <div id="site-header"></div>
@@ -383,6 +476,30 @@ inspireras.
 <script defer src="js/senaste-nytt.js?v=6.2.1"></script>
 <script type="module" src="js/analytics.js?v=6.3.0"></script>
 
+<script>
+(() => {
+  const root = document.documentElement;
+  const intro = document.getElementById("star-intro");
+  const star = intro?.querySelector(".star-intro-star");
+
+  if (!root.classList.contains("star-intro-active") || !intro) {
+    intro?.remove();
+    return;
+  }
+
+  let removed = false;
+
+  const finishIntro = () => {
+    if (removed) return;
+    removed = true;
+    root.classList.remove("star-intro-active");
+    intro.remove();
+  };
+
+  star?.addEventListener("animationend", finishIntro, { once: true });
+  window.setTimeout(finishIntro, 1800);
+})();
+</script>
 
   <script src="pwa.js" defer></script>
 </body>

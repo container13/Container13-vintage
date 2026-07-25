@@ -1,5 +1,13 @@
 # Ändringslogg
 
+## Version 6.4.0
+
+- Lägger till en helsvart stjärnöppning på startsidan.
+- Webbplatsen avslöjas genom en växande femuddig stjärna.
+- Animationen visas bara vid första öppningen i den aktuella fliken.
+- Klick på Hem från en annan Container13-sida visar startsidan direkt.
+- Besökare som föredrar reducerad rörelse får ingen animation.
+
 ## Version 6.3.7
 
 - Lägger loggstorleken direkt i Butiken, Nyinkommet, Kontakt och Hitta hit.
