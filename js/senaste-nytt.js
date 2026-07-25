@@ -65,6 +65,31 @@
     return `Nyinkommen ${date.toLocaleDateString("sv-SE", options)}`;
   }
 
+  async function getRetentionSetting() {
+    try {
+      const retention = await getRetentionSetting();
+      const endpoint = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/settings/site?key=${API_KEY}`;
+      const response = await fetch(endpoint, { cache: "no-store" });
+      if (!response.ok) return { mode: "days", days: 7 };
+      const data = await response.json();
+      const settings = fieldsFromFirestore(data.fields || {});
+      if (settings.newArrivalsRetentionMode === "manual") return { mode: "manual", days: 0 };
+      const parsed = Number(settings.newArrivalsRetentionDays);
+      const days = Number.isInteger(parsed) ? Math.min(30, Math.max(1, parsed)) : 7;
+      return { mode: "days", days };
+    } catch (error) {
+      console.warn("Visningstiden kunde inte hämtas. 7 dagar används.", error);
+      return { mode: "days", days: 7 };
+    }
+  }
+
+  function withinRetention(item, retention) {
+    if (retention.mode === "manual") return true;
+    const date = getDate(item);
+    if (!date) return true;
+    return date.getTime() >= Date.now() - retention.days * 86400000;
+  }
+
   function showMessage(text) {
     grid.innerHTML = "";
     const message = document.createElement("p");
@@ -138,7 +163,7 @@
         ...fieldsFromFirestore(document.fields || {})
       }));
       const latest = allItems
-        .filter((item) => getCategory(item) === "nyinkommet" && getImageUrl(item))
+        .filter((item) => getCategory(item) === "nyinkommet" && getImageUrl(item) && withinRetention(item, retention))
         .sort((a, b) => getTime(b) - getTime(a))
         .slice(0, 4);
       render(latest);

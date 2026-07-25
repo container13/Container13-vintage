@@ -107,6 +107,30 @@
     }
   }
 
+  async function getRetentionSetting() {
+    try {
+      const endpoint = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/settings/site?key=${API_KEY}`;
+      const response = await fetch(endpoint, { cache: "no-store" });
+      if (!response.ok) return { mode: "days", days: 7 };
+      const data = await response.json();
+      const settings = fields(data.fields || {});
+      if (settings.newArrivalsRetentionMode === "manual") return { mode: "manual", days: 0 };
+      const parsed = Number(settings.newArrivalsRetentionDays);
+      const days = Number.isInteger(parsed) ? Math.min(30, Math.max(1, parsed)) : 7;
+      return { mode: "days", days };
+    } catch (error) {
+      console.warn("Visningstiden kunde inte hämtas. 7 dagar används.", error);
+      return { mode: "days", days: 7 };
+    }
+  }
+
+  function withinRetention(item, retention) {
+    if (retention.mode === "manual") return true;
+    const date = itemDate(item);
+    if (!date) return true;
+    return date.getTime() >= Date.now() - retention.days * 86400000;
+  }
+
   function render(items) {
     images = items;
     gallery.innerHTML = "";
@@ -163,6 +187,7 @@
     if (!gallery) return;
     gallery.innerHTML = '<p class="gallery-status">Hämtar bilder...</p>';
     try {
+      const retention = await getRetentionSetting();
       const url = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/gallery?pageSize=100&key=${API_KEY}`;
       const response = await fetch(url, { cache: "no-store" });
       if (!response.ok) throw new Error(`Firestore svarade ${response.status}`);
@@ -173,7 +198,7 @@
         ...fields(document.fields || {})
       }));
       const selected = all
-        .filter((item) => category(item) === "nyinkommet" && imageUrl(item))
+        .filter((item) => category(item) === "nyinkommet" && imageUrl(item) && withinRetention(item, retention))
         .sort((a, b) => time(b) - time(a));
       render(selected);
     } catch (error) {
