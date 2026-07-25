@@ -1,0 +1,13 @@
+CONTAINER13 VERSION 6.0 – ENDAST UPPDATERADE FILER
+
+Ladda upp filerna till samma platser i GitHub och ersätt de gamla:
+
+admin/panel.html
+admin/sw.js
+VERSION.txt
+CHANGELOG.md
+
+Viktigt efter uppladdning:
+1. Vänta tills GitHub Pages har publicerat ändringen.
+2. Stäng C13 Admin helt och öppna den igen.
+3. Om den gamla dashboarden fortfarande visas, uppdatera sidan eller ta bort och lägg tillbaka adminappen på hemskärmen. Service worker-cachen är ändrad från v5 till v6.
