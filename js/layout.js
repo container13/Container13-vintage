@@ -28,6 +28,29 @@ function markCurrentPage() {
   });
 }
 
+function rememberHomeNavigation() {
+  document.addEventListener("click", (event) => {
+    const link = event.target.closest("a");
+
+    if (!link) return;
+
+    try {
+      const destination = new URL(link.href, window.location.href);
+      const destinationPage =
+        destination.pathname.split("/").pop() || "index.html";
+
+      if (
+        destination.origin === window.location.origin &&
+        destinationPage === "index.html"
+      ) {
+        sessionStorage.setItem("c13StarIntroShown", "true");
+      }
+    } catch (_) {
+      // Navigeringen ska fortsätta även om lagringen inte är tillgänglig.
+    }
+  });
+}
+
 async function initializeLayout() {
   try {
     await Promise.all([
@@ -44,4 +67,5 @@ async function initializeLayout() {
   }
 }
 
+rememberHomeNavigation();
 initializeLayout();
