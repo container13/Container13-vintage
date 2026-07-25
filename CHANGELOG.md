@@ -1,10 +1,15 @@
 # Ändringslogg
 
+## Version 6.3.2
+
+- Återställer ett tydligt mellanrum mellan ordinarie öppettider och rubriken Avvikande öppettider.
+- Uppdaterar cacheversionen på kontaktsidan så att den nya stilen hämtas direkt.
+
 ## Version 6.3.1
 
-- Bygger besöksstatistiken ovanpå den bekräftat fungerande version 6.2.1.
-- Behåller rättningen som visar de fyra senaste Nyinkommet-bilderna på startsidan.
-- Rättar cacheversionerna så att webbläsaren hämtar den nya JavaScript-koden.
+- Nytt dashboardkort: **Öppnat från hemskärmen**.
+- Kortet räknar unika enheter som faktiskt har öppnat Container13 i installerat appläge.
+- Bygger vidare på den bekräftat fungerande besöksstatistiken i version 6.3.0.
 
 ## Version 6.3.0
 
