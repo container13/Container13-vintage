@@ -169,6 +169,14 @@
   box-shadow: 0 12px 32px rgba(30, 24, 18, 0.08);
 }
 
+.avvikande-oppettider {
+  margin-top: 36px;
+}
+
+.avvikande-oppettider h3 {
+  margin-bottom: 12px;
+}
+
 .oppettider-rad {
   display: flex;
   justify-content: space-between;
