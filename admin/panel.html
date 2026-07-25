@@ -1493,7 +1493,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.3.0</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.3.1</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -1562,6 +1562,11 @@
               <strong id="dashboard-top-page" class="dashboard-stat-value" style="font-size:21px;">–</strong>
               <span class="dashboard-stat-label">Mest besökt 7 dagar</span>
             </article>
+            <article class="dashboard-stat">
+              <span class="dashboard-stat-icon">📱</span>
+              <strong id="dashboard-home-screen-users" class="dashboard-stat-value">–</strong>
+              <span class="dashboard-stat-label">Öppnat från hemskärmen</span>
+            </article>
           </div>
 
           <section class="camera-hero" aria-label="Snabbfoto">
@@ -1595,7 +1600,7 @@
                 <div class="dashboard-detail"><span>Inloggad som</span><strong id="dashboard-user">–</strong></div>
                 <div class="dashboard-detail"><span>Papperskorg</span><strong id="dashboard-trash-retention">Automatisk rensning efter 2 dagar</strong></div>
               </div>
-              <p class="dashboard-version">Container13 Adminpanel · Version 6.3.0</p>
+              <p class="dashboard-version">Container13 Adminpanel · Version 6.3.1</p>
             </section>
           </div>
         </section>
@@ -2158,6 +2163,7 @@
     const dashboardVisitorsToday = document.getElementById("dashboard-visitors-today");
     const dashboardViewsWeek = document.getElementById("dashboard-views-week");
     const dashboardTopPage = document.getElementById("dashboard-top-page");
+    const dashboardHomeScreenUsers = document.getElementById("dashboard-home-screen-users");
 
     const openingHoursMenu =
       document.getElementById("opening-hours-menu");
@@ -3016,6 +3022,12 @@
         const todayEvents = events.filter((event) => event.date === today);
         const weekEvents = events.filter((event) => weekKeys.has(event.date));
         const uniqueToday = new Set(todayEvents.map((event) => event.visitorId).filter(Boolean));
+        const uniqueHomeScreenUsers = new Set(
+          events
+            .filter((event) => event.pwa === true)
+            .map((event) => event.visitorId)
+            .filter(Boolean)
+        );
         const pageCounts = weekEvents.reduce((counts, event) => {
           const page = event.page || "Okänd sida";
           counts[page] = (counts[page] || 0) + 1;
@@ -3027,12 +3039,14 @@
         dashboardVisitorsToday.textContent = String(uniqueToday.size);
         dashboardViewsWeek.textContent = String(weekEvents.length);
         dashboardTopPage.textContent = topPage ? `${topPage[0]} (${topPage[1]})` : "Ingen data ännu";
+        dashboardHomeScreenUsers.textContent = String(uniqueHomeScreenUsers.size);
       } catch (error) {
         console.error("Kunde inte läsa besöksstatistik:", error);
         dashboardViewsToday.textContent = "–";
         dashboardVisitorsToday.textContent = "–";
         dashboardViewsWeek.textContent = "–";
         dashboardTopPage.textContent = "Aktivera regler";
+        dashboardHomeScreenUsers.textContent = "–";
       }
     }
 
