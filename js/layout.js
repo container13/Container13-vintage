@@ -60,7 +60,7 @@ async function initializeLayout() {
 
     markCurrentPage();
     const statusTask = import("./status.js?v=3.7.0");
-    const settingsTask = import("./site-settings.js?v=4.4.0")
+    const settingsTask = import("./site-settings.js?v=6.8.0")
       .then((settingsModule) => settingsModule.applySiteSettings());
     const themeTask = import("./theme-controls.js?v=1.0.0");
 

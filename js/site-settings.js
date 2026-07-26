@@ -16,6 +16,13 @@ const defaults = {
   postalCity: "824 32 Hudiksvall", phone: "072-527 02 35", email: "alvinbrisvag@outlook.com",
   facebook: "https://www.facebook.com/61590920005705", instagram: "https://www.instagram.com/container.13",
   tiktok: "https://www.tiktok.com/@container.13", copyright: "© 2026 Container 13 Vintage",
+  showSpotify: true,
+  spotifyPlaylists: [{
+    id: "spotify-1NJmcRHooRh6wvHi9F0qlL",
+    name: "Container 13 – vår spellista",
+    url: "https://open.spotify.com/playlist/1NJmcRHooRh6wvHi9F0qlL"
+  }],
+  activeSpotifyPlaylistId: "spotify-1NJmcRHooRh6wvHi9F0qlL",
   logoMode: "patina", customLogoUrl: "", customLogoStoragePath: "",
   introAnimationMode: "classic", introBackgroundColor: "#000000", introStarColor: "#d4af37",
   introInitialDurationMs: 500, introRevealDurationMs: 1000,
@@ -62,6 +69,21 @@ export async function applySiteSettings() {
     const phone = document.getElementById("site-phone-link"); if (phone) phone.href = `tel:${String(data.phone || "").replace(/[^+\d]/g, "")}`;
     const email = document.getElementById("site-email-link"); if (email) email.href = `mailto:${data.email || ""}`;
     link("site-facebook", data.facebook); link("site-instagram", data.instagram); link("site-tiktok", data.tiktok);
+    const spotify = document.getElementById("site-spotify");
+    if (spotify) {
+      const playlists = Array.isArray(data.spotifyPlaylists) ? data.spotifyPlaylists : [];
+      const activePlaylist = playlists.find((playlist) =>
+        playlist?.id === data.activeSpotifyPlaylistId && playlist?.url
+      ) || playlists.find((playlist) => playlist?.url) || defaults.spotifyPlaylists[0];
+      if (data.showSpotify !== false && activePlaylist?.url) {
+        spotify.href = activePlaylist.url;
+        spotify.hidden = false;
+        spotify.title = `Lyssna på ${activePlaylist.name || "vår Spotify-spellista"}`;
+        spotify.setAttribute("aria-label", `Lyssna på ${activePlaylist.name || "vår Spotify-spellista"} på Spotify`);
+      } else {
+        spotify.hidden = true;
+      }
+    }
     const map = document.getElementById("site-map"); if (map) map.src = `https://www.google.com/maps?q=${encodeURIComponent(`${data.address} ${data.city}`)}&output=embed`;
     const directions = document.getElementById("site-directions"); if (directions) directions.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${data.address} ${data.city}`)}`;
   } catch (error) { console.warn("Kunde inte hämta webbplatsens inställningar:", error); }
