@@ -1,5 +1,11 @@
 # Ändringslogg
 
+## Version 6.7.10
+
+- Tar bort den synliga rubriken ”Tema” i footern.
+- Minskar footerns övre utfyllnad och avståndet före sociala medier-ikonerna.
+- Behåller den kompakta temaväljaren och dess hoverbeskrivningar.
+
 ## Version 6.7.9
 
 - Tar bort den dubblerade butiks- och ortsraden över footerns ikoner.
