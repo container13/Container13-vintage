@@ -154,7 +154,7 @@
 <body>
   <main class="preview-page">
     <div class="preview-badge">FÖRHANDSVISNING · INTE AKTIVERAD</div>
-    <img class="preview-logo" src="bilder/logotyp/logo.png" alt="Container 13 Vintage">
+    <img id="preview-logo" class="preview-logo" src="bilder/logotyp/logo-patina.png" alt="Container 13 Vintage">
     <h1>Startanimation</h1>
     <p>Det här är en tillfällig förhandsvisning. Inga inställningar sparas från den här sidan.</p>
     <div id="preview-summary" class="preview-summary"></div>
@@ -188,6 +188,18 @@
   <script>
   (() => {
     const params = new URLSearchParams(window.location.search);
+    const previewLogo = document.getElementById("preview-logo");
+    const requestedLogo = params.get("logo");
+    if (requestedLogo) {
+      try {
+        const logoUrl = new URL(requestedLogo, window.location.href);
+        if (["http:", "https:", "blob:"].includes(logoUrl.protocol)) {
+          previewLogo.src = logoUrl.href;
+        }
+      } catch (_) {
+        // Standardlogotypen används om länken inte är giltig.
+      }
+    }
     const validColor = (value, fallback) =>
       /^#[0-9a-f]{6}$/i.test(String(value || "")) ? value : fallback;
     const clampSeconds = (value, fallback, minimum) => {

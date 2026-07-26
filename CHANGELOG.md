@@ -1,5 +1,24 @@
 # Ändringslogg
 
+## Version 6.7.1
+
+- Kopplar webbplatsens logotyp till adminpanelens inställningar.
+- Lägger till valen Patina, Ren tryckerilogotyp, Tidigare logotyp och Egen uppladdad.
+- Använder samma aktiva logotyp på startsidan, undersidorna och animationsförhandsvisningen.
+- Laddar upp egna logotyper till Firebase Storage utan att skriva över de inbyggda filerna.
+- Känner igen en tidigare uppladdad logotyp som sparats med äldre fältnamn.
+- Använder Patina som standard när inget tidigare logotypval finns.
+
+## Version 6.7.0
+
+- Lägger till besökarstyrt ljust, mörkt och automatiskt tema.
+- Sparar besökarens temaval lokalt och använder det direkt vid nästa besök.
+- Anpassar header, informationsrad, innehållskort, öppettider, galleri och footer till mörkt tema.
+- Lägger till Container 13:s Spotify-spellista i footern.
+- Byter till en ny högupplöst logotyp från tryckeriets vektororiginal.
+- Ger webb-logotypen en försiktig patina och mörk kontur.
+- Behåller både den rena tryckeriversionen och den tidigare logotypen som reserv.
+
 ## Version 6.6.8
 
 - Reserverar headerns och informationsradens höjd innan innehållet har laddats.
