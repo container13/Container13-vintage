@@ -1,5 +1,13 @@
 # Ändringslogg
 
+## Version 6.6.3
+
+- Lägger till redigerbara tider direkt på förhandsvisningssidan.
+- Testaren kan ändra krymptid eller väntetid och stjärnöppningens tid.
+- Kör testet igen använder de nya testvärdena omedelbart.
+- Återställ tider återgår till värdena som skickades från adminpanelen.
+- Testvärdena sparas eller aktiveras inte automatiskt.
+
 ## Version 6.6.2
 
 - Förfinar bildanimationen till en sammanhängande tvåstegseffekt.
