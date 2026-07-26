@@ -43,6 +43,7 @@ function pageName() {
     "index.html": "Hem",
     "galleri.html": "Butiken",
     "nyinkommet.html": "Nyinkommet",
+    "omoss.html": "Om oss",
     "kontakt.html": "Kontakt",
     "hittahit.html": "Hitta hit"
   };
