@@ -334,7 +334,7 @@ html.star-intro-active.star-intro-mobile-mode .star-intro-mobile {
   focusable="false"
 >
   <path
-    id="star-intro-mobile-overlay"
+    id="star-intro-mobile-path"
     fill="#000"
     fill-rule="evenodd"
     clip-rule="evenodd"
@@ -479,13 +479,13 @@ inspireras.
   const canvas = document.getElementById("star-intro");
   const ctx = canvas?.getContext("2d");
   const mobileSvg = document.getElementById("star-intro-mobile");
-  const mobileOverlay =
-    document.getElementById("star-intro-mobile-overlay");
+  const mobilePath =
+    document.getElementById("star-intro-mobile-path");
   const useMobileSvg =
     root.classList.contains("star-intro-mobile-mode");
 
   const canvasReady = canvas && ctx;
-  const mobileSvgReady = mobileSvg && mobileOverlay;
+  const mobileSvgReady = mobileSvg && mobilePath;
 
   if (
     !root.classList.contains("star-intro-active") ||
@@ -499,8 +499,8 @@ inspireras.
     return;
   }
 
-  const blackPause = 250;
-  const duration = 1250;
+  const blackPause = 500;
+  const duration = 1000;
 
   let animationFrame = 0;
   let startTimer = 0;
@@ -521,9 +521,6 @@ inspireras.
     const height = window.innerHeight;
 
     mobileSvg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-    mobileSvg.setAttribute("preserveAspectRatio", "none");
-    mobileSvg.style.width = width + "px";
-    mobileSvg.style.height = height + "px";
   }
 
   function drawStar(cx, cy, outerRadius, innerRadius) {
@@ -568,42 +565,25 @@ inspireras.
     const height = window.innerHeight;
     const cx = window.innerWidth / 2;
     const cy = window.innerHeight / 2;
-    const starPoints = [];
+    const points = [];
 
     for (let i = 0; i < 10; i += 1) {
       const angle = -Math.PI / 2 + i * Math.PI / 5;
       const pointRadius = i % 2 === 0 ? radius : radius * 0.46;
       const x = cx + Math.cos(angle) * pointRadius;
       const y = cy + Math.sin(angle) * pointRadius;
-      starPoints.push(`${x} ${y}`);
+      points.push(`${x} ${y}`);
     }
 
-    /*
-     * Ytterrektangeln är den svarta ytan. Stjärnan är en andra delbana.
-     * evenodd gör stjärnan till ett verkligt hål utan canvas eller SVG-mask.
-     */
-    mobileOverlay.setAttribute(
+    mobilePath.setAttribute(
       "d",
       `M 0 0 H ${width} V ${height} H 0 Z ` +
-      `M ${starPoints.join(" L ")} Z`
+        `M ${points.join(" L ")} Z`
     );
   }
 
-  function easeInFaster(progress) {
-    const slowPhaseEnd = 0.34;
-    const visibleStarSize = 0.07;
-
-    if (progress <= slowPhaseEnd) {
-      const slowProgress = progress / slowPhaseEnd;
-      return visibleStarSize * Math.pow(slowProgress, 1.1);
-    }
-
-    const fastProgress =
-      (progress - slowPhaseEnd) / (1 - slowPhaseEnd);
-    const accelerated =
-      0.18 * fastProgress + 0.82 * Math.pow(fastProgress, 2.2);
-
-    return visibleStarSize + (1 - visibleStarSize) * accelerated;
+  function easeStar(progress) {
+    return Math.pow(progress, 1.35);
   }
 
   function finishIntro() {
@@ -647,7 +627,7 @@ inspireras.
       if (startedAt === null) startedAt = now;
 
       const progress = Math.min(1, (now - startedAt) / duration);
-      const eased = easeInFaster(progress);
+      const eased = easeStar(progress);
       const startRadius = 8;
       const radius =
         startRadius + (maxRadius - startRadius) * eased;

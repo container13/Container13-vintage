@@ -1,5 +1,12 @@
 # Ändringslogg
 
+## Version 6.4.2
+
+- Byter mobilens SVG-mask mot en stabil SVG-bana med `evenodd`.
+- Visar svart skärm i 0,5 sekunder.
+- Öppnar stjärnan på 1 sekund med jämnare rörelse.
+- Behåller den fungerande canvas-animationen på dator.
+
 ## Version 6.4.1
 
 - Byter till en JavaScript-styrd SVG-mask för stabilare stjärnöppning.
