@@ -1333,6 +1333,74 @@
       color: var(--muted);
       line-height: 1.55;
     }
+    @media (min-width: 1050px) {
+      #settings-section .card {
+        padding: 22px 24px;
+      }
+      #settings-section .card-header {
+        padding-bottom: 14px;
+      }
+      #settings-section .card h2 {
+        margin-bottom: 5px;
+        font-size: 24px;
+      }
+      #settings-section .card-introduction {
+        font-size: 15px;
+      }
+      #settings-section .settings-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px 14px;
+        padding-top: 14px;
+      }
+      #settings-section .settings-grid .desktop-span-2 {
+        grid-column: span 2;
+      }
+      #settings-section .settings-grid .field-group {
+        gap: 5px;
+      }
+      #settings-section .settings-grid .field-label {
+        font-size: 14px;
+      }
+      #settings-section .settings-grid input,
+      #settings-section .settings-grid select {
+        min-height: 40px;
+        padding: 8px 11px;
+        font-size: 14px;
+      }
+      #settings-section .settings-subcard {
+        margin-top: 16px;
+        padding: 16px 18px;
+      }
+      #settings-section .settings-subcard h3 {
+        margin-bottom: 5px;
+        font-size: 18px;
+      }
+      #settings-section .settings-subcard > p {
+        margin-bottom: 12px;
+        font-size: 14px;
+      }
+      #settings-section .spotify-editor {
+        gap: 11px;
+      }
+      #settings-section .spotify-add-grid {
+        gap: 9px;
+      }
+      #settings-section .spotify-add-grid input {
+        min-height: 40px;
+        padding: 8px 11px;
+      }
+      #settings-section .spotify-playlist-row {
+        padding: 9px 12px;
+      }
+      #settings-section .quick-mode-setting {
+        margin-top: 10px;
+        padding: 10px 12px;
+      }
+      #settings-section .settings-note {
+        margin-top: 14px;
+        padding: 10px 13px;
+      }
+    }
     @media (max-width: 720px) {
       /* VERSION 6.0 – SNABBFOTO */
     .camera-hero {
@@ -2048,7 +2116,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.8.1</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.8.2</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -2670,7 +2738,7 @@
                 <label class="field-label" for="setting-city">Ort</label>
                 <input id="setting-city" type="text" maxlength="80">
               </div>
-              <div class="field-group full-width">
+              <div class="field-group full-width desktop-span-2">
                 <label class="field-label" for="setting-address">Adress</label>
                 <input id="setting-address" type="text" maxlength="120">
               </div>
@@ -2682,7 +2750,7 @@
                 <label class="field-label" for="setting-phone">Telefonnummer</label>
                 <input id="setting-phone" type="tel" maxlength="40">
               </div>
-              <div class="field-group full-width">
+              <div class="field-group full-width desktop-span-2">
                 <label class="field-label" for="setting-email">E-post</label>
                 <input id="setting-email" type="email" maxlength="120">
               </div>
