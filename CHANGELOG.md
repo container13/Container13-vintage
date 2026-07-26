@@ -1,5 +1,12 @@
 # Ändringslogg
 
+## Version 6.5.4
+
+- Visar separat vilken animation som är aktiv på hemsidan.
+- Visar när formuläret innehåller ett val som ännu inte är aktiverat.
+- Lägger till en egen knapp för att aktivera animationen direkt i animationssektionen.
+- Aktiveringsknappen sparar endast animationens val, färger och tider.
+
 ## Version 6.5.3
 
 - Markerar de utprovade originaltiderna med guldram och tydlig text.
