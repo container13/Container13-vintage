@@ -1,5 +1,12 @@
 # Ändringslogg
 
+## Version 6.6.7
+
+- Komprimerar Startanimationens panel ytterligare för att rymmas på en vanlig PC-skärm.
+- Kortar alternativkorten och minskar sektionernas mellanrum.
+- Gör färg- och tidsfälten försiktigt lägre.
+- Behåller textstorlek, funktioner och tydliga klickytor.
+
 ## Version 6.6.6
 
 - Gör Startanimationens huvudinnehåll ungefär 10–15 procent kompaktare.
