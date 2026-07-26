@@ -497,6 +497,7 @@ inspireras.
     backgroundColor: "#000000",
     starColor: "#d4af37",
     initialDuration: 500,
+    pauseDuration: 0,
     revealDuration: 1000,
     imageUrl: DEFAULT_INTRO_DESKTOP_IMAGE,
     imageFit: "cover"
@@ -589,6 +590,16 @@ inspireras.
             firestoreNumber(
               fields.introInitialDurationMs,
               defaultIntroSettings.initialDuration
+            )
+          )
+        ),
+        pauseDuration: Math.min(
+          5000,
+          Math.max(
+            0,
+            firestoreNumber(
+              fields.introPauseDurationMs,
+              defaultIntroSettings.pauseDuration
             )
           )
         ),
@@ -883,12 +894,18 @@ inspireras.
       if (progress < 1 && introSettings.initialDuration > 0) {
         animationFrame = requestAnimationFrame(shrink);
       } else {
-        if (useMobileSvg) {
-          drawMobileRevealFrame(0);
-        } else {
-          drawRevealFrame(0);
-        }
-        animationFrame = requestAnimationFrame(runReveal);
+        const continueToReveal = () => {
+          if (useMobileSvg) {
+            drawMobileRevealFrame(0);
+          } else {
+            drawRevealFrame(0);
+          }
+          animationFrame = requestAnimationFrame(runReveal);
+        };
+        startTimer = window.setTimeout(
+          continueToReveal,
+          introSettings.pauseDuration
+        );
       }
     }
 
@@ -918,6 +935,7 @@ inspireras.
     fallbackTimer = window.setTimeout(
       finishIntro,
       introSettings.initialDuration +
+        introSettings.pauseDuration +
         introSettings.revealDuration +
         2000
     );

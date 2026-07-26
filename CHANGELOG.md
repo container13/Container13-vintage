@@ -1,5 +1,12 @@
 # Ändringslogg
 
+## Version 6.7.6
+
+- Lägger till valbar paus mellan guldstjärnans krympning och stjärnöppningen.
+- Pausen är 0 sekunder som standard och kan ställas mellan 0 och 5 sekunder.
+- Visar pausinställningen både i adminpanelen och på förhandsvisningssidan.
+- Aktivering från förhandsvisningen sparar även den testade paustiden.
+
 ## Version 6.7.5
 
 - Visar korrekt panelversion i adminpanelen.
