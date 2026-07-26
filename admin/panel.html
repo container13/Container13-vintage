@@ -1428,6 +1428,20 @@
     .custom-days-row[hidden] { display: none; }
     .custom-days-row input { width: 100%; }
     .setting-summary { margin-top: 18px; padding: 14px 16px; border-radius: 8px; background: #f1ece5; font-weight: 700; }
+    .active-animation-summary {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border: 2px solid #3f8a55;
+      border-radius: 8px;
+      background: #eef8f0;
+      font-weight: 800;
+    }
+    .animation-change-note {
+      margin-top: 10px;
+      color: #9a6500;
+      font-weight: 800;
+    }
+    .animation-change-note.saved { color: #3f7250; }
     .preview-result { margin-top: 14px; min-height: 24px; color: var(--text); }
     .secondary-button { padding: 11px 16px; border: 1px solid var(--border); border-radius: 8px; background: white; cursor: pointer; font-weight: 700; }
     .secondary-button:hover { border-color: var(--accent); }
@@ -1566,7 +1580,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.5.3</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.5.4</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -1673,7 +1687,7 @@
                 <div class="dashboard-detail"><span>Inloggad som</span><strong id="dashboard-user">–</strong></div>
                 <div class="dashboard-detail"><span>Papperskorg</span><strong id="dashboard-trash-retention">Automatisk rensning efter 2 dagar</strong></div>
               </div>
-              <p class="dashboard-version">Container13 Adminpanel · Version 6.5.3</p>
+              <p class="dashboard-version">Container13 Adminpanel · Version 6.5.4</p>
             </section>
           </div>
         </section>
@@ -2124,8 +2138,14 @@
                 </div>
               </div>
 
+              <div id="intro-animation-active-setting" class="active-animation-summary">
+                ✓ Aktiv på hemsidan: Klassisk stjärnöppning
+              </div>
               <div id="intro-animation-current-setting" class="setting-summary">
-                Aktuell inställning: Klassisk stjärnöppning
+                Valt i formuläret: Klassisk stjärnöppning
+              </div>
+              <div id="intro-animation-change-note" class="animation-change-note saved">
+                Detta val är redan aktivt.
               </div>
               <div class="animation-action-row">
                 <button id="preview-intro-animation-button" class="secondary-button" type="button">
@@ -2134,7 +2154,11 @@
                 <button id="reset-intro-animation-times-button" class="secondary-button" type="button">
                   ↺ Återställ utprovade tider
                 </button>
+                <button id="activate-intro-animation-button" class="save-button" type="button">
+                  Aktivera animationen på hemsidan
+                </button>
               </div>
+              <div id="intro-animation-action-message" class="message" role="status" aria-live="polite"></div>
             </div>
 
             <div class="settings-subcard">
@@ -2438,9 +2462,13 @@
     const settingIntroRevealSeconds = document.getElementById("setting-intro-reveal-seconds");
     const introInitialOriginalNote = document.getElementById("intro-initial-original-note");
     const introRevealOriginalNote = document.getElementById("intro-reveal-original-note");
+    const introAnimationActiveSetting = document.getElementById("intro-animation-active-setting");
     const introAnimationCurrentSetting = document.getElementById("intro-animation-current-setting");
+    const introAnimationChangeNote = document.getElementById("intro-animation-change-note");
     const previewIntroAnimationButton = document.getElementById("preview-intro-animation-button");
     const resetIntroAnimationTimesButton = document.getElementById("reset-intro-animation-times-button");
+    const activateIntroAnimationButton = document.getElementById("activate-intro-animation-button");
+    const introAnimationActionMessage = document.getElementById("intro-animation-action-message");
     const retentionRadios = Array.from(document.querySelectorAll('input[name="new-arrivals-retention"]'));
     const customRetentionRow = document.getElementById("custom-retention-row");
     const settingNewArrivalsCustomDays = document.getElementById("setting-new-arrivals-custom-days");
@@ -2823,6 +2851,13 @@
       introInitialDurationMs: 500,
       introRevealDurationMs: 1000
     };
+    let activeIntroAnimationSettings = {
+      introAnimationMode: defaultSiteSettings.introAnimationMode,
+      introBackgroundColor: defaultSiteSettings.introBackgroundColor,
+      introStarColor: defaultSiteSettings.introStarColor,
+      introInitialDurationMs: defaultSiteSettings.introInitialDurationMs,
+      introRevealDurationMs: defaultSiteSettings.introRevealDurationMs
+    };
 
     function showSettingsStatus(text, type) {
       const icon = type === "success" ? "✓" : "⚠";
@@ -2846,6 +2881,48 @@
       return /^#[0-9a-f]{6}$/i.test(String(value || "")) ? value : fallback;
     }
 
+    function normalizedIntroAnimationSettings(data) {
+      return {
+        introAnimationMode: ["classic", "gold", "none"].includes(data.introAnimationMode)
+          ? data.introAnimationMode
+          : "classic",
+        introBackgroundColor: normalizeAnimationColor(data.introBackgroundColor, "#000000"),
+        introStarColor: normalizeAnimationColor(data.introStarColor, "#d4af37"),
+        introInitialDurationMs: Math.round(
+          clampAnimationSeconds(Number(data.introInitialDurationMs) / 1000, 0.5, 0) * 1000
+        ),
+        introRevealDurationMs: Math.round(
+          clampAnimationSeconds(Number(data.introRevealDurationMs) / 1000, 1, 0.2) * 1000
+        )
+      };
+    }
+
+    function getIntroAnimationFormValues() {
+      return normalizedIntroAnimationSettings({
+        introAnimationMode: settingIntroAnimationMode.value,
+        introBackgroundColor: settingIntroBackgroundColor.value,
+        introStarColor: settingIntroStarColor.value,
+        introInitialDurationMs: Number(settingIntroInitialSeconds.value) * 1000,
+        introRevealDurationMs: Number(settingIntroRevealSeconds.value) * 1000
+      });
+    }
+
+    function introAnimationDescription(values) {
+      if (values.introAnimationMode === "none") return "Ingen animation";
+      const name = values.introAnimationMode === "gold"
+        ? "Krympande guldstjärna + stjärnöppning"
+        : "Klassisk stjärnöppning";
+      return `${name} · ${values.introInitialDurationMs / 1000} s + ${values.introRevealDurationMs / 1000} s`;
+    }
+
+    function introAnimationSettingsMatch(first, second) {
+      return first.introAnimationMode === second.introAnimationMode
+        && first.introBackgroundColor === second.introBackgroundColor
+        && first.introStarColor === second.introStarColor
+        && first.introInitialDurationMs === second.introInitialDurationMs
+        && first.introRevealDurationMs === second.introRevealDurationMs;
+    }
+
     function updateOriginalTimeMarkers() {
       const initialIsOriginal = Math.abs(Number(settingIntroInitialSeconds.value) - 0.5) < 0.001;
       const revealIsOriginal = Math.abs(Number(settingIntroRevealSeconds.value) - 1) < 0.001;
@@ -2866,33 +2943,62 @@
         ? "Guldstjärnans krymptid (sekunder)"
         : "Svart väntetid (sekunder)";
       updateOriginalTimeMarkers();
-
-      if (mode === "none") {
-        introAnimationCurrentSetting.textContent = "Aktuell inställning: Ingen animation";
-        return;
-      }
-
-      const initialSeconds = clampAnimationSeconds(
-        settingIntroInitialSeconds.value,
-        0.5,
-        0
-      );
-      const revealSeconds = clampAnimationSeconds(
-        settingIntroRevealSeconds.value,
-        1,
-        0.2
-      );
-      const name = mode === "gold"
-        ? "Krympande guldstjärna + stjärnöppning"
-        : "Klassisk stjärnöppning";
+      const formValues = getIntroAnimationFormValues();
+      const matchesActive = introAnimationSettingsMatch(formValues, activeIntroAnimationSettings);
+      introAnimationActiveSetting.textContent =
+        `✓ Aktiv på hemsidan: ${introAnimationDescription(activeIntroAnimationSettings)}`;
       introAnimationCurrentSetting.textContent =
-        `Aktuell inställning: ${name} · ${initialSeconds} s + ${revealSeconds} s`;
+        `Valt i formuläret: ${introAnimationDescription(formValues)}`;
+      introAnimationChangeNote.textContent = matchesActive
+        ? "Detta val är redan aktivt."
+        : "Du har valt en ändring som ännu inte är aktiverad.";
+      introAnimationChangeNote.classList.toggle("saved", matchesActive);
+      activateIntroAnimationButton.disabled = matchesActive;
+      activateIntroAnimationButton.textContent = matchesActive
+        ? "Animationen är aktiv"
+        : "Aktivera animationen på hemsidan";
     }
 
     function resetIntroAnimationTimes() {
       settingIntroInitialSeconds.value = "0.5";
       settingIntroRevealSeconds.value = "1";
+      introAnimationActionMessage.textContent = "";
+      introAnimationActionMessage.className = "message";
       updateAnimationSettingsUi();
+    }
+
+    function handleIntroAnimationFormChange() {
+      introAnimationActionMessage.textContent = "";
+      introAnimationActionMessage.className = "message";
+      updateAnimationSettingsUi();
+    }
+
+    async function activateIntroAnimation() {
+      if (!auth.currentUser) {
+        introAnimationActionMessage.textContent = "⚠ Du är inte längre inloggad.";
+        introAnimationActionMessage.className = "message error";
+        return;
+      }
+      const values = getIntroAnimationFormValues();
+      activateIntroAnimationButton.disabled = true;
+      introAnimationActionMessage.textContent = "Aktiverar animationen...";
+      introAnimationActionMessage.className = "message";
+      try {
+        await setDoc(doc(database, "settings", "site"), {
+          ...values,
+          updatedAt: serverTimestamp(),
+          updatedBy: auth.currentUser.email || ""
+        }, { merge: true });
+        activeIntroAnimationSettings = { ...values };
+        updateAnimationSettingsUi();
+        introAnimationActionMessage.textContent = "✓ Animationen är nu aktiv på hemsidan.";
+        introAnimationActionMessage.className = "message success";
+      } catch (error) {
+        console.error("Kunde inte aktivera animationen:", error);
+        introAnimationActionMessage.textContent = "⚠ Det gick inte att aktivera animationen.";
+        introAnimationActionMessage.className = "message error";
+        updateAnimationSettingsUi();
+      }
     }
 
     function setAnimationForm(data) {
@@ -2997,6 +3103,7 @@
 
     function fillSettingsForm(values) {
       const data = { ...defaultSiteSettings, ...(values || {}) };
+      activeIntroAnimationSettings = normalizedIntroAnimationSettings(data);
       settingStoreName.value = data.storeName || "";
       settingCity.value = data.city || "";
       settingAddress.value = data.address || "";
@@ -3087,6 +3194,8 @@
       try {
         await setDoc(doc(database, "settings", "site"), values, { merge: true });
         trashRetentionDays = values.trashDays;
+        activeIntroAnimationSettings = normalizedIntroAnimationSettings(values);
+        updateAnimationSettingsUi();
         showSettingsStatus("Inställningarna har sparats.", "success");
         await loadDashboard();
       } catch (error) {
@@ -4698,9 +4807,12 @@
     previewNewArrivalsButton.addEventListener("click", previewNewArrivalsRetention);
     previewIntroAnimationButton.addEventListener("click", previewIntroAnimation);
     resetIntroAnimationTimesButton.addEventListener("click", resetIntroAnimationTimes);
-    settingIntroAnimationMode.addEventListener("change", updateAnimationSettingsUi);
-    settingIntroInitialSeconds.addEventListener("input", updateAnimationSettingsUi);
-    settingIntroRevealSeconds.addEventListener("input", updateAnimationSettingsUi);
+    activateIntroAnimationButton.addEventListener("click", activateIntroAnimation);
+    settingIntroAnimationMode.addEventListener("change", handleIntroAnimationFormChange);
+    settingIntroBackgroundColor.addEventListener("input", handleIntroAnimationFormChange);
+    settingIntroStarColor.addEventListener("input", handleIntroAnimationFormChange);
+    settingIntroInitialSeconds.addEventListener("input", handleIntroAnimationFormChange);
+    settingIntroRevealSeconds.addEventListener("input", handleIntroAnimationFormChange);
 
     saveSettingsButton.addEventListener(
       "click",
