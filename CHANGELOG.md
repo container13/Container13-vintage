@@ -1,5 +1,12 @@
 # Ändringslogg
 
+## Version 6.6.6
+
+- Gör Startanimationens huvudinnehåll ungefär 10–15 procent kompaktare.
+- Minskar alternativkortens höjd och inre marginaler.
+- Minskar mellanrummen mellan färg-, hastighets- och bildsektionerna.
+- Behåller samma textstorlek, funktioner och tydliga klickytor.
+
 ## Version 6.6.5
 
 - Ger Bakgrundsbild och Bildanpassning samma visuella höjd.
