@@ -23,6 +23,15 @@
 <script>
 (() => {
   const introKey = "c13StarIntroShown";
+  const introSettingsUrl =
+    "https://firestore.googleapis.com/v1/projects/container13-87c1a/databases/(default)/documents/settings/site?key=AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw";
+
+  window.c13IntroSettingsPromise = fetch(
+    introSettingsUrl,
+    { cache: "no-store" }
+  )
+    .then((response) => response.ok ? response.json() : null)
+    .catch(() => null);
 
   try {
     const forceIntro =
@@ -67,7 +76,7 @@ html.star-intro-active {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  background: #000;
+  background: var(--star-intro-background, #000);
 }
 
 html.star-intro-active .star-intro {
@@ -475,6 +484,15 @@ inspireras.
 
 <script>
 (() => {
+  const SETTINGS_URL =
+    "https://firestore.googleapis.com/v1/projects/container13-87c1a/databases/(default)/documents/settings/site?key=AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw";
+  const defaultIntroSettings = {
+    mode: "classic",
+    backgroundColor: "#000000",
+    starColor: "#d4af37",
+    initialDuration: 500,
+    revealDuration: 1000
+  };
   const root = document.documentElement;
   const canvas = document.getElementById("star-intro");
   const ctx = canvas?.getContext("2d");
@@ -499,13 +517,87 @@ inspireras.
     return;
   }
 
-  const blackPause = 500;
-  const duration = 1000;
-
   let animationFrame = 0;
   let startTimer = 0;
   let fallbackTimer = 0;
   let finished = false;
+  let introSettings = { ...defaultIntroSettings };
+
+  function firestoreString(field, fallback) {
+    return typeof field?.stringValue === "string"
+      ? field.stringValue
+      : fallback;
+  }
+
+  function firestoreNumber(field, fallback) {
+    const raw = field?.integerValue ?? field?.doubleValue;
+    const parsed = Number(raw);
+    return Number.isFinite(parsed) ? parsed : fallback;
+  }
+
+  function validColor(value, fallback) {
+    return /^#[0-9a-f]{6}$/i.test(String(value || ""))
+      ? value
+      : fallback;
+  }
+
+  async function loadIntroSettings() {
+    try {
+      const json = await (
+        window.c13IntroSettingsPromise ||
+        fetch(SETTINGS_URL, { cache: "no-store" })
+          .then((response) => response.ok ? response.json() : null)
+      );
+      if (!json) return { ...defaultIntroSettings };
+      const fields = json.fields || {};
+      const mode = firestoreString(
+        fields.introAnimationMode,
+        defaultIntroSettings.mode
+      );
+
+      return {
+        mode: ["classic", "gold", "none"].includes(mode)
+          ? mode
+          : defaultIntroSettings.mode,
+        backgroundColor: validColor(
+          firestoreString(
+            fields.introBackgroundColor,
+            defaultIntroSettings.backgroundColor
+          ),
+          defaultIntroSettings.backgroundColor
+        ),
+        starColor: validColor(
+          firestoreString(
+            fields.introStarColor,
+            defaultIntroSettings.starColor
+          ),
+          defaultIntroSettings.starColor
+        ),
+        initialDuration: Math.min(
+          5000,
+          Math.max(
+            0,
+            firestoreNumber(
+              fields.introInitialDurationMs,
+              defaultIntroSettings.initialDuration
+            )
+          )
+        ),
+        revealDuration: Math.min(
+          5000,
+          Math.max(
+            200,
+            firestoreNumber(
+              fields.introRevealDurationMs,
+              defaultIntroSettings.revealDuration
+            )
+          )
+        )
+      };
+    } catch (_) {
+      return { ...defaultIntroSettings };
+    }
+  }
 
   function resizeCanvas() {
     const dpr = Math.max(1, window.devicePixelRatio || 1);
@@ -543,15 +635,15 @@ inspireras.
     ctx.fill();
   }
 
-  function drawFrame(radius) {
+  function drawRevealFrame(radius) {
     ctx.globalCompositeOperation = "source-over";
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-    ctx.fillStyle = "#000";
+    ctx.fillStyle = introSettings.backgroundColor;
     ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
     ctx.globalCompositeOperation = "destination-out";
-    ctx.fillStyle = "#000";
+    ctx.fillStyle = introSettings.backgroundColor;
 
     const cx = window.innerWidth / 2;
     const cy = window.innerHeight / 2;
@@ -560,9 +652,21 @@ inspireras.
     ctx.globalCompositeOperation = "source-over";
   }
 
-  function drawMobileFrame(radius) {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+  function drawGoldFrame(radius) {
+    ctx.globalCompositeOperation = "source-over";
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    ctx.fillStyle = introSettings.backgroundColor;
+    ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    ctx.fillStyle = introSettings.starColor;
+    drawStar(
+      window.innerWidth / 2,
+      window.innerHeight / 2,
+      radius,
+      radius * 0.46
+    );
+  }
+
+  function starPoints(radius) {
     const cx = window.innerWidth / 2;
     const cy = window.innerHeight / 2;
     const points = [];
@@ -575,11 +679,30 @@ inspireras.
       points.push(`${x} ${y}`);
     }
 
+    return points;
+  }
+
+  function drawMobileRevealFrame(radius) {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const points = starPoints(radius);
+
     mobilePath.setAttribute(
       "d",
       `M 0 0 H ${width} V ${height} H 0 Z ` +
         `M ${points.join(" L ")} Z`
     );
+    mobilePath.setAttribute("fill", introSettings.backgroundColor);
+    mobileSvg.style.background = "transparent";
+  }
+
+  function drawMobileGoldFrame(radius) {
+    mobilePath.setAttribute(
+      "d",
+      `M ${starPoints(radius).join(" L ")} Z`
+    );
+    mobilePath.setAttribute("fill", introSettings.starColor);
+    mobileSvg.style.background = introSettings.backgroundColor;
   }
 
   function easeStar(progress) {
@@ -601,44 +724,45 @@ inspireras.
     mobileSvg.remove();
   }
 
-  if (useMobileSvg) {
-    canvas.remove();
-    resizeMobileSvg();
-    mobileSvg.hidden = false;
-    drawMobileFrame(0);
-    mobileSvg.style.background = "transparent";
-  } else {
-    mobileSvg.remove();
-    resizeCanvas();
-    canvas.hidden = false;
-    drawFrame(0);
-    canvas.style.background = "transparent";
+  function prepareLayer() {
+    if (useMobileSvg) {
+      canvas.remove();
+      resizeMobileSvg();
+      mobileSvg.hidden = false;
+    } else {
+      mobileSvg.remove();
+      resizeCanvas();
+      canvas.hidden = false;
+      canvas.style.background = "transparent";
+    }
   }
 
-  const maxRadius = Math.hypot(
-    window.innerWidth / 2,
-    window.innerHeight / 2
-  ) * 2.25;
-
-  startTimer = window.setTimeout(() => {
+  function runReveal() {
+    const maxRadius = Math.hypot(
+      window.innerWidth / 2,
+      window.innerHeight / 2
+    ) * 2.25;
     let startedAt = null;
 
     function animate(now) {
       if (startedAt === null) startedAt = now;
 
-      const progress = Math.min(1, (now - startedAt) / duration);
+      const progress = Math.min(
+        1,
+        (now - startedAt) / introSettings.revealDuration
+      );
       const eased = easeStar(progress);
       const startRadius = 8;
       const radius =
         startRadius + (maxRadius - startRadius) * eased;
 
       if (useMobileSvg) {
-        drawMobileFrame(radius);
+        drawMobileRevealFrame(radius);
       } else {
-        drawFrame(radius);
+        drawRevealFrame(radius);
       }
 
-      if (progress < 0.985) {
+      if (progress < 1) {
         animationFrame = requestAnimationFrame(animate);
       } else {
         finishIntro();
@@ -646,12 +770,92 @@ inspireras.
     }
 
     animationFrame = requestAnimationFrame(animate);
-  }, blackPause);
+  }
 
-  fallbackTimer = window.setTimeout(
-    finishIntro,
-    blackPause + duration + 500
-  );
+  function runClassicIntro() {
+    if (useMobileSvg) {
+      drawMobileRevealFrame(0);
+    } else {
+      drawRevealFrame(0);
+    }
+
+    startTimer = window.setTimeout(
+      runReveal,
+      introSettings.initialDuration
+    );
+  }
+
+  function runGoldIntro() {
+    const diagonal = Math.hypot(
+      window.innerWidth / 2,
+      window.innerHeight / 2
+    );
+    const startingRadius = (diagonal / 0.46) * 1.2;
+    let startedAt = null;
+
+    if (useMobileSvg) {
+      drawMobileGoldFrame(startingRadius);
+    } else {
+      drawGoldFrame(startingRadius);
+    }
+
+    function shrink(now) {
+      if (startedAt === null) startedAt = now;
+      const duration = Math.max(1, introSettings.initialDuration);
+      const progress = Math.min(1, (now - startedAt) / duration);
+      const smooth = progress * progress * (3 - 2 * progress);
+      const radius = startingRadius * (1 - smooth);
+
+      if (useMobileSvg) {
+        drawMobileGoldFrame(radius);
+      } else {
+        drawGoldFrame(radius);
+      }
+
+      if (progress < 1 && introSettings.initialDuration > 0) {
+        animationFrame = requestAnimationFrame(shrink);
+      } else {
+        if (useMobileSvg) {
+          drawMobileRevealFrame(0);
+        } else {
+          drawRevealFrame(0);
+        }
+        animationFrame = requestAnimationFrame(runReveal);
+      }
+    }
+
+    animationFrame = requestAnimationFrame(shrink);
+  }
+
+  async function startIntro() {
+    introSettings = await loadIntroSettings();
+
+    if (introSettings.mode === "none") {
+      finishIntro();
+      return;
+    }
+
+    prepareLayer();
+    document.documentElement.style.setProperty(
+      "--star-intro-background",
+      introSettings.backgroundColor
+    );
+
+    fallbackTimer = window.setTimeout(
+      finishIntro,
+      introSettings.initialDuration +
+        introSettings.revealDuration +
+        2000
+    );
+
+    if (introSettings.mode === "gold") {
+      runGoldIntro();
+    } else {
+      runClassicIntro();
+    }
+  }
+
+  startIntro().catch(finishIntro);
 })();
 </script>
 

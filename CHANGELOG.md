@@ -1,5 +1,20 @@
 # Ändringslogg
 
+## Version 6.5.1
+
+- Lägger till knappen Förhandsgranska animation i adminpanelen.
+- Öppnar en mobilvänlig testsida med formulärets aktuella, även osparade, värden.
+- Förhandsgranskningen sparar ingenting och påverkar inte den aktiva hemsidan.
+- Animationen kan köras igen direkt på testsidan.
+
+## Version 6.5.0
+
+- Lägger till val av startanimation i adminpanelen.
+- Erbjuder Klassisk stjärnöppning, Krympande guldstjärna och Ingen animation.
+- Låter administratören välja bakgrundsfärg och stjärnfärg.
+- Låter administratören ändra inledande tid och stjärnöppningens tid.
+- Hämtar animationsinställningarna tidigt från Firestore på startsidan.
+
 ## Version 6.4.2
 
 - Byter mobilens SVG-mask mot en stabil SVG-bana med `evenodd`.
