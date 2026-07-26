@@ -17,7 +17,8 @@ const defaults = {
   facebook: "https://www.facebook.com/61590920005705", instagram: "https://www.instagram.com/container.13",
   tiktok: "https://www.tiktok.com/@container.13", copyright: "© 2026 Container 13 Vintage",
   introAnimationMode: "classic", introBackgroundColor: "#000000", introStarColor: "#d4af37",
-  introInitialDurationMs: 500, introRevealDurationMs: 1000
+  introInitialDurationMs: 500, introRevealDurationMs: 1000,
+  introImageUrl: "", introImageStoragePath: "", introImageFit: "cover"
 };
 
 function text(id, value) { const el = document.getElementById(id); if (el) el.textContent = value || ""; }
