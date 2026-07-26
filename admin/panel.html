@@ -1700,6 +1700,16 @@
     .animation-editor .original-time-note {
       margin-top: 4px;
     }
+    .animation-timing-grid .field-label {
+      display: flex;
+      align-items: flex-end;
+      min-height: 38px;
+      line-height: 1.25;
+    }
+    .original-time-note.changed {
+      color: var(--muted);
+      font-weight: 700;
+    }
     .animation-editor .setting-summary {
       margin-top: 10px;
       padding: 10px 14px;
@@ -1757,13 +1767,26 @@
       min-height: 48px;
     }
     .intro-image-preview {
-      grid-column: 1 / -1;
+      margin-bottom: 14px;
       padding: 14px;
       border: 1px solid var(--border);
       border-radius: 10px;
       background: var(--row-background);
     }
     .intro-image-preview[hidden] { display: none; }
+    .intro-image-preview-heading {
+      display: grid;
+      gap: 3px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .intro-image-preview-heading strong {
+      font-size: 16px;
+    }
+    .intro-image-preview-heading small {
+      color: var(--muted);
+      line-height: 1.4;
+    }
     .intro-image-preview img {
       display: block;
       width: min(100%, 520px);
@@ -1920,7 +1943,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.7.7</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.7.8</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -2480,6 +2503,14 @@
                     <h3>Bakgrundsbild</h3>
                   </div>
                 </div>
+                <div id="intro-image-preview" class="intro-image-preview" hidden>
+                  <div class="intro-image-preview-heading">
+                    <strong id="intro-image-preview-title">Förvald bakgrundsbild</strong>
+                    <small id="intro-image-preview-description">Second Hand-bilden växlar automatiskt mellan dator och mobil.</small>
+                  </div>
+                  <img id="intro-image-preview-image" alt="Vald bakgrundsbild för startanimationen">
+                  <button id="remove-intro-image-button" class="secondary-button" type="button">Återställ till förvald bild</button>
+                </div>
                 <div class="intro-image-fields">
                   <div class="field-group">
                     <label class="intro-image-dropzone" for="setting-intro-image-file">
@@ -2488,7 +2519,7 @@
                       <small>JPG, PNG eller WebP · högst 8 MB</small>
                     </label>
                     <input id="setting-intro-image-file" class="visually-hidden" type="file" accept="image/jpeg,image/png,image/webp">
-                    <small class="field-help">Second Hand-bilden är förvald och växlar automatiskt mellan dator och mobil. En egen bild ersätter förvalet.</small>
+                    <small class="field-help">Välj en egen bild om du vill ersätta förvalet ovan.</small>
                   </div>
                   <div class="field-group intro-image-fit-field">
                     <div class="intro-image-fit-panel">
@@ -2499,10 +2530,6 @@
                       </select>
                     </div>
                     <small class="field-help">Bestäm om bilden ska beskäras eller visas helt.</small>
-                  </div>
-                  <div id="intro-image-preview" class="intro-image-preview" hidden>
-                    <img id="intro-image-preview-image" alt="Vald bakgrundsbild för startanimationen">
-                    <button id="remove-intro-image-button" class="secondary-button" type="button">Ta bort vald bild</button>
                   </div>
                 </div>
               </section>
@@ -2975,6 +3002,8 @@
     const settingIntroImageFit = document.getElementById("setting-intro-image-fit");
     const introImagePreview = document.getElementById("intro-image-preview");
     const introImagePreviewImage = document.getElementById("intro-image-preview-image");
+    const introImagePreviewTitle = document.getElementById("intro-image-preview-title");
+    const introImagePreviewDescription = document.getElementById("intro-image-preview-description");
     const removeIntroImageButton = document.getElementById("remove-intro-image-button");
     const settingIntroBackgroundColor = document.getElementById("setting-intro-background-color");
     const settingIntroStarColor = document.getElementById("setting-intro-star-color");
@@ -3557,9 +3586,21 @@
       settingIntroInitialSeconds.classList.toggle("original-time-value", initialIsOriginal);
       settingIntroPauseSeconds.classList.toggle("original-time-value", pauseIsOriginal);
       settingIntroRevealSeconds.classList.toggle("original-time-value", revealIsOriginal);
-      introInitialOriginalNote.hidden = !initialIsOriginal;
-      introPauseOriginalNote.hidden = !pauseIsOriginal;
-      introRevealOriginalNote.hidden = !revealIsOriginal;
+      introInitialOriginalNote.hidden = false;
+      introPauseOriginalNote.hidden = false;
+      introRevealOriginalNote.hidden = false;
+      introInitialOriginalNote.textContent = initialIsOriginal
+        ? "✓ Originaltid: 0,5 s"
+        : "Originaltid: 0,5 s";
+      introPauseOriginalNote.textContent = pauseIsOriginal
+        ? "✓ Originaltid: 0 s"
+        : "Originaltid: 0 s";
+      introRevealOriginalNote.textContent = revealIsOriginal
+        ? "✓ Originaltid: 1,0 s"
+        : "Originaltid: 1,0 s";
+      introInitialOriginalNote.classList.toggle("changed", !initialIsOriginal);
+      introPauseOriginalNote.classList.toggle("changed", !pauseIsOriginal);
+      introRevealOriginalNote.classList.toggle("changed", !revealIsOriginal);
     }
 
     function updateAnimationSettingsUi() {
@@ -3626,14 +3667,26 @@
 
     function renderIntroImagePreview() {
       const source = introImageObjectUrl || formIntroImageUrl;
+      const usesBuiltInPreset =
+        !introImageObjectUrl
+        && source === "bilder/animation/startanimation-second-hand-desktop.webp";
       introImagePreview.hidden = !source;
       if (source) {
+        introImagePreviewTitle.textContent = usesBuiltInPreset
+          ? "Förvald bakgrundsbild"
+          : "Vald egen bakgrundsbild";
+        introImagePreviewDescription.textContent = usesBuiltInPreset
+          ? "Second Hand-bilden växlar automatiskt mellan dator och mobil."
+          : "Den egna bilden används på både dator och mobil.";
+        removeIntroImageButton.hidden = usesBuiltInPreset;
         introImagePreviewImage.src =
-          source === "bilder/animation/startanimation-second-hand-desktop.webp"
+          usesBuiltInPreset
             ? new URL("../" + source, window.location.href).href
             : source;
+      } else {
+        removeIntroImageButton.hidden = true;
+        introImagePreviewImage.removeAttribute("src");
       }
-      else introImagePreviewImage.removeAttribute("src");
     }
 
     function clearSelectedIntroImage() {
