@@ -333,17 +333,12 @@ html.star-intro-active.star-intro-mobile-mode .star-intro-mobile {
   aria-hidden="true"
   focusable="false"
 >
-  <defs>
-    <mask id="star-intro-mobile-mask" maskUnits="userSpaceOnUse">
-      <rect id="star-intro-mobile-mask-bg" fill="#fff"></rect>
-      <polygon id="star-intro-mobile-star" fill="#000"></polygon>
-    </mask>
-  </defs>
-  <rect
-    id="star-intro-mobile-cover"
+  <path
+    id="star-intro-mobile-overlay"
     fill="#000"
-    mask="url(#star-intro-mobile-mask)"
-  ></rect>
+    fill-rule="evenodd"
+    clip-rule="evenodd"
+  ></path>
 </svg>
 
 
@@ -484,23 +479,13 @@ inspireras.
   const canvas = document.getElementById("star-intro");
   const ctx = canvas?.getContext("2d");
   const mobileSvg = document.getElementById("star-intro-mobile");
-  const mobileMask = document.getElementById("star-intro-mobile-mask");
-  const mobileMaskBackground =
-    document.getElementById("star-intro-mobile-mask-bg");
-  const mobileStar =
-    document.getElementById("star-intro-mobile-star");
-  const mobileCover =
-    document.getElementById("star-intro-mobile-cover");
+  const mobileOverlay =
+    document.getElementById("star-intro-mobile-overlay");
   const useMobileSvg =
     root.classList.contains("star-intro-mobile-mode");
 
   const canvasReady = canvas && ctx;
-  const mobileSvgReady =
-    mobileSvg &&
-    mobileMask &&
-    mobileMaskBackground &&
-    mobileStar &&
-    mobileCover;
+  const mobileSvgReady = mobileSvg && mobileOverlay;
 
   if (
     !root.classList.contains("star-intro-active") ||
@@ -536,29 +521,9 @@ inspireras.
     const height = window.innerHeight;
 
     mobileSvg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-    mobileMask.setAttribute("x", "0");
-    mobileMask.setAttribute("y", "0");
-    mobileMask.setAttribute("width", String(width));
-    mobileMask.setAttribute("height", String(height));
-
-    for (const rect of [mobileMaskBackground, mobileCover]) {
-      rect.setAttribute("x", "0");
-      rect.setAttribute("y", "0");
-      rect.setAttribute("width", String(width));
-      rect.setAttribute("height", String(height));
-    }
-
-    const points = [];
-
-    for (let i = 0; i < 10; i += 1) {
-      const angle = -Math.PI / 2 + i * Math.PI / 5;
-      const radius = i % 2 === 0 ? 1 : 0.46;
-      points.push(
-        `${Math.cos(angle) * radius},${Math.sin(angle) * radius}`
-      );
-    }
-
-    mobileStar.setAttribute("points", points.join(" "));
+    mobileSvg.setAttribute("preserveAspectRatio", "none");
+    mobileSvg.style.width = width + "px";
+    mobileSvg.style.height = height + "px";
   }
 
   function drawStar(cx, cy, outerRadius, innerRadius) {
@@ -599,12 +564,28 @@ inspireras.
   }
 
   function drawMobileFrame(radius) {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
     const cx = window.innerWidth / 2;
     const cy = window.innerHeight / 2;
+    const starPoints = [];
 
-    mobileStar.setAttribute(
-      "transform",
-      `translate(${cx} ${cy}) scale(${radius})`
+    for (let i = 0; i < 10; i += 1) {
+      const angle = -Math.PI / 2 + i * Math.PI / 5;
+      const pointRadius = i % 2 === 0 ? radius : radius * 0.46;
+      const x = cx + Math.cos(angle) * pointRadius;
+      const y = cy + Math.sin(angle) * pointRadius;
+      starPoints.push(`${x} ${y}`);
+    }
+
+    /*
+     * Ytterrektangeln är den svarta ytan. Stjärnan är en andra delbana.
+     * evenodd gör stjärnan till ett verkligt hål utan canvas eller SVG-mask.
+     */
+    mobileOverlay.setAttribute(
+      "d",
+      `M 0 0 H ${width} V ${height} H 0 Z ` +
+      `M ${starPoints.join(" L ")} Z`
     );
   }
 
