@@ -4,6 +4,14 @@
   display: none !important;
 }
 
+/* Behåll logotypens originalproportioner på samtliga publika sidor. */
+[data-site-logo] {
+  display: block;
+  height: auto !important;
+  aspect-ratio: auto !important;
+  object-fit: contain !important;
+}
+
 /* MENY OCH STATUSRAD */
 /* ========================= */
 
