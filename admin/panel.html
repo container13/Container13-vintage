@@ -1431,6 +1431,31 @@
     .preview-result { margin-top: 14px; min-height: 24px; color: var(--text); }
     .secondary-button { padding: 11px 16px; border: 1px solid var(--border); border-radius: 8px; background: white; cursor: pointer; font-weight: 700; }
     .secondary-button:hover { border-color: var(--accent); }
+    .animation-settings-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .animation-settings-grid .full-width { grid-column: 1 / -1; }
+    .animation-settings-grid input,
+    .animation-settings-grid select {
+      width: 100%;
+      min-height: 46px;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--input-background);
+      color: var(--text);
+    }
+    .animation-settings-grid input[type="color"] {
+      padding: 4px;
+      cursor: pointer;
+    }
+    .animation-setting-hidden { display: none !important; }
+    @media (max-width: 720px) {
+      .animation-settings-grid { grid-template-columns: 1fr; }
+      .animation-settings-grid .full-width { grid-column: auto; }
+    }
 
   </style>
 
@@ -1522,7 +1547,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.3.5</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.5.1</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -1629,7 +1654,7 @@
                 <div class="dashboard-detail"><span>Inloggad som</span><strong id="dashboard-user">–</strong></div>
                 <div class="dashboard-detail"><span>Papperskorg</span><strong id="dashboard-trash-retention">Automatisk rensning efter 2 dagar</strong></div>
               </div>
-              <p class="dashboard-version">Container13 Adminpanel · Version 6.3.5</p>
+              <p class="dashboard-version">Container13 Adminpanel · Version 6.5.1</p>
             </section>
           </div>
         </section>
@@ -2043,6 +2068,52 @@
             </div>
 
             <div class="settings-subcard">
+              <h3>Startanimation</h3>
+              <p>Välj hur startsidan ska öppnas och anpassa färger och tider.</p>
+
+              <div class="animation-settings-grid">
+                <div class="field-group full-width">
+                  <label class="field-label" for="setting-intro-animation-mode">Animation</label>
+                  <select id="setting-intro-animation-mode">
+                    <option value="classic">Klassisk stjärnöppning</option>
+                    <option value="gold">Krympande guldstjärna + stjärnöppning</option>
+                    <option value="none">Ingen animation</option>
+                  </select>
+                </div>
+
+                <div id="animation-settings-fields" class="field-group full-width">
+                  <div class="animation-settings-grid">
+                    <div class="field-group">
+                      <label class="field-label" for="setting-intro-background-color">Bakgrundsfärg</label>
+                      <input id="setting-intro-background-color" type="color" value="#000000">
+                    </div>
+                    <div id="intro-gold-color-field" class="field-group">
+                      <label class="field-label" for="setting-intro-star-color">Stjärnfärg</label>
+                      <input id="setting-intro-star-color" type="color" value="#d4af37">
+                    </div>
+                    <div class="field-group">
+                      <label id="intro-initial-time-label" class="field-label" for="setting-intro-initial-seconds">Svart väntetid (sekunder)</label>
+                      <input id="setting-intro-initial-seconds" type="number" min="0" max="5" step="0.1" inputmode="decimal" value="0.5">
+                    </div>
+                    <div class="field-group">
+                      <label class="field-label" for="setting-intro-reveal-seconds">Stjärnöppning (sekunder)</label>
+                      <input id="setting-intro-reveal-seconds" type="number" min="0.2" max="5" step="0.1" inputmode="decimal" value="1">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="intro-animation-current-setting" class="setting-summary">
+                Aktuell inställning: Klassisk stjärnöppning
+              </div>
+              <div style="margin-top:14px">
+                <button id="preview-intro-animation-button" class="secondary-button" type="button">
+                  ★ Förhandsgranska animation
+                </button>
+              </div>
+            </div>
+
+            <div class="settings-subcard">
               <h3>Nyinkommet visas i</h3>
               <p>Välj hur länge bilder ska synas på webbplatsen.</p>
               <div class="retention-options">
@@ -2333,6 +2404,16 @@
     const settingCopyright = document.getElementById("setting-copyright");
     const settingQuickPhotoMode = document.getElementById("setting-quick-photo-mode");
     const settingSaveMobileCopy = document.getElementById("setting-save-mobile-copy");
+    const settingIntroAnimationMode = document.getElementById("setting-intro-animation-mode");
+    const animationSettingsFields = document.getElementById("animation-settings-fields");
+    const introGoldColorField = document.getElementById("intro-gold-color-field");
+    const settingIntroBackgroundColor = document.getElementById("setting-intro-background-color");
+    const settingIntroStarColor = document.getElementById("setting-intro-star-color");
+    const introInitialTimeLabel = document.getElementById("intro-initial-time-label");
+    const settingIntroInitialSeconds = document.getElementById("setting-intro-initial-seconds");
+    const settingIntroRevealSeconds = document.getElementById("setting-intro-reveal-seconds");
+    const introAnimationCurrentSetting = document.getElementById("intro-animation-current-setting");
+    const previewIntroAnimationButton = document.getElementById("preview-intro-animation-button");
     const retentionRadios = Array.from(document.querySelectorAll('input[name="new-arrivals-retention"]'));
     const customRetentionRow = document.getElementById("custom-retention-row");
     const settingNewArrivalsCustomDays = document.getElementById("setting-new-arrivals-custom-days");
@@ -2708,7 +2789,12 @@
       copyright: "© 2026 Container 13 Vintage",
       trashDays: 2,
       newArrivalsRetentionMode: "days",
-      newArrivalsRetentionDays: 7
+      newArrivalsRetentionDays: 7,
+      introAnimationMode: "classic",
+      introBackgroundColor: "#000000",
+      introStarColor: "#d4af37",
+      introInitialDurationMs: 500,
+      introRevealDurationMs: 1000
     };
 
     function showSettingsStatus(text, type) {
@@ -2721,6 +2807,96 @@
       const parsed = Number(value);
       if (!Number.isInteger(parsed)) return 7;
       return Math.min(30, Math.max(1, parsed));
+    }
+
+    function clampAnimationSeconds(value, fallback, minimum) {
+      const parsed = Number(value);
+      if (!Number.isFinite(parsed)) return fallback;
+      return Math.min(5, Math.max(minimum, Math.round(parsed * 10) / 10));
+    }
+
+    function normalizeAnimationColor(value, fallback) {
+      return /^#[0-9a-f]{6}$/i.test(String(value || "")) ? value : fallback;
+    }
+
+    function updateAnimationSettingsUi() {
+      const mode = ["classic", "gold", "none"].includes(settingIntroAnimationMode.value)
+        ? settingIntroAnimationMode.value
+        : "classic";
+      const disabled = mode === "none";
+      animationSettingsFields.classList.toggle("animation-setting-hidden", disabled);
+      introGoldColorField.classList.toggle("animation-setting-hidden", mode !== "gold");
+      introInitialTimeLabel.textContent = mode === "gold"
+        ? "Guldstjärnans krymptid (sekunder)"
+        : "Svart väntetid (sekunder)";
+
+      if (mode === "none") {
+        introAnimationCurrentSetting.textContent = "Aktuell inställning: Ingen animation";
+        return;
+      }
+
+      const initialSeconds = clampAnimationSeconds(
+        settingIntroInitialSeconds.value,
+        0.5,
+        0
+      );
+      const revealSeconds = clampAnimationSeconds(
+        settingIntroRevealSeconds.value,
+        1,
+        0.2
+      );
+      const name = mode === "gold"
+        ? "Krympande guldstjärna + stjärnöppning"
+        : "Klassisk stjärnöppning";
+      introAnimationCurrentSetting.textContent =
+        `Aktuell inställning: ${name} · ${initialSeconds} s + ${revealSeconds} s`;
+    }
+
+    function setAnimationForm(data) {
+      settingIntroAnimationMode.value = ["classic", "gold", "none"].includes(data.introAnimationMode)
+        ? data.introAnimationMode
+        : "classic";
+      settingIntroBackgroundColor.value = normalizeAnimationColor(
+        data.introBackgroundColor,
+        "#000000"
+      );
+      settingIntroStarColor.value = normalizeAnimationColor(
+        data.introStarColor,
+        "#d4af37"
+      );
+      settingIntroInitialSeconds.value = String(
+        clampAnimationSeconds(Number(data.introInitialDurationMs) / 1000, 0.5, 0)
+      );
+      settingIntroRevealSeconds.value = String(
+        clampAnimationSeconds(Number(data.introRevealDurationMs) / 1000, 1, 0.2)
+      );
+      updateAnimationSettingsUi();
+    }
+
+    function previewIntroAnimation() {
+      const initialSeconds = clampAnimationSeconds(
+        settingIntroInitialSeconds.value,
+        0.5,
+        0
+      );
+      const revealSeconds = clampAnimationSeconds(
+        settingIntroRevealSeconds.value,
+        1,
+        0.2
+      );
+      const previewUrl = new URL("../animation-test.html", window.location.href);
+      previewUrl.searchParams.set("mode", settingIntroAnimationMode.value);
+      previewUrl.searchParams.set(
+        "background",
+        normalizeAnimationColor(settingIntroBackgroundColor.value, "#000000")
+      );
+      previewUrl.searchParams.set(
+        "star",
+        normalizeAnimationColor(settingIntroStarColor.value, "#d4af37")
+      );
+      previewUrl.searchParams.set("initial", String(initialSeconds));
+      previewUrl.searchParams.set("reveal", String(revealSeconds));
+      window.open(previewUrl.href, "_blank", "noopener");
     }
 
     function selectedRetention() {
@@ -2791,6 +2967,7 @@
       trashRetentionDays = Math.min(7, Math.max(1, Number(data.trashDays) || 2));
       settingTrashDays.value = String(trashRetentionDays);
       setRetentionForm(data);
+      setAnimationForm(data);
     }
 
     async function loadSiteSettings() {
@@ -2816,7 +2993,19 @@
         return;
       }
       const retention = selectedRetention();
+      const introInitialSeconds = clampAnimationSeconds(
+        settingIntroInitialSeconds.value,
+        0.5,
+        0
+      );
+      const introRevealSeconds = clampAnimationSeconds(
+        settingIntroRevealSeconds.value,
+        1,
+        0.2
+      );
       settingNewArrivalsCustomDays.value = String(retention.days || 7);
+      settingIntroInitialSeconds.value = String(introInitialSeconds);
+      settingIntroRevealSeconds.value = String(introRevealSeconds);
       const values = {
         storeName: settingStoreName.value.trim(),
         city: settingCity.value.trim(),
@@ -2831,6 +3020,19 @@
         trashDays: Math.min(7, Math.max(1, Number(settingTrashDays.value) || 2)),
         newArrivalsRetentionMode: retention.mode,
         newArrivalsRetentionDays: retention.mode === "manual" ? 0 : retention.days,
+        introAnimationMode: ["classic", "gold", "none"].includes(settingIntroAnimationMode.value)
+          ? settingIntroAnimationMode.value
+          : "classic",
+        introBackgroundColor: normalizeAnimationColor(
+          settingIntroBackgroundColor.value,
+          "#000000"
+        ),
+        introStarColor: normalizeAnimationColor(
+          settingIntroStarColor.value,
+          "#d4af37"
+        ),
+        introInitialDurationMs: Math.round(introInitialSeconds * 1000),
+        introRevealDurationMs: Math.round(introRevealSeconds * 1000),
         updatedAt: serverTimestamp(),
         updatedBy: auth.currentUser.email || ""
       };
@@ -4451,6 +4653,10 @@
       updateRetentionUi();
     });
     previewNewArrivalsButton.addEventListener("click", previewNewArrivalsRetention);
+    previewIntroAnimationButton.addEventListener("click", previewIntroAnimation);
+    settingIntroAnimationMode.addEventListener("change", updateAnimationSettingsUi);
+    settingIntroInitialSeconds.addEventListener("input", updateAnimationSettingsUi);
+    settingIntroRevealSeconds.addEventListener("input", updateAnimationSettingsUi);
 
     saveSettingsButton.addEventListener(
       "click",
