@@ -1,5 +1,11 @@
 # Ändringslogg
 
+## Version 6.8.2
+
+- Gör dashboardens inställningssida mer kompakt på dator.
+- Visar butiksuppgifterna i fyra kolumner på breda skärmar.
+- Minskar fälthöjd, mellanrum och utfyllnad utan att påverka mobilläget.
+
 ## Version 6.8.1
 
 - Minskar det stora mellanrummet före adresskortet på Hitta hit.
