@@ -1451,6 +1451,25 @@
       padding: 4px;
       cursor: pointer;
     }
+    .animation-settings-grid input.original-time-value {
+      border-color: #b58b00;
+      background: #fff7d6;
+      box-shadow: 0 0 0 2px rgba(212, 175, 55, .24);
+    }
+    .original-time-note {
+      display: block;
+      margin-top: 7px;
+      color: #876700;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .original-time-note[hidden] { display: none; }
+    .animation-action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
     .animation-setting-hidden { display: none !important; }
     @media (max-width: 720px) {
       .animation-settings-grid { grid-template-columns: 1fr; }
@@ -1547,7 +1566,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.5.2</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.5.3</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -1654,7 +1673,7 @@
                 <div class="dashboard-detail"><span>Inloggad som</span><strong id="dashboard-user">–</strong></div>
                 <div class="dashboard-detail"><span>Papperskorg</span><strong id="dashboard-trash-retention">Automatisk rensning efter 2 dagar</strong></div>
               </div>
-              <p class="dashboard-version">Container13 Adminpanel · Version 6.5.2</p>
+              <p class="dashboard-version">Container13 Adminpanel · Version 6.5.3</p>
             </section>
           </div>
         </section>
@@ -2094,10 +2113,12 @@
                     <div class="field-group">
                       <label id="intro-initial-time-label" class="field-label" for="setting-intro-initial-seconds">Svart väntetid (sekunder)</label>
                       <input id="setting-intro-initial-seconds" type="number" min="0" max="5" step="0.1" inputmode="decimal" value="0.5">
+                      <small id="intro-initial-original-note" class="original-time-note">✓ Utprovad originaltid: 0,5 s</small>
                     </div>
                     <div class="field-group">
                       <label class="field-label" for="setting-intro-reveal-seconds">Stjärnöppning (sekunder)</label>
                       <input id="setting-intro-reveal-seconds" type="number" min="0.2" max="5" step="0.1" inputmode="decimal" value="1">
+                      <small id="intro-reveal-original-note" class="original-time-note">✓ Utprovad originaltid: 1,0 s</small>
                     </div>
                   </div>
                 </div>
@@ -2106,9 +2127,12 @@
               <div id="intro-animation-current-setting" class="setting-summary">
                 Aktuell inställning: Klassisk stjärnöppning
               </div>
-              <div style="margin-top:14px">
+              <div class="animation-action-row">
                 <button id="preview-intro-animation-button" class="secondary-button" type="button">
                   ★ Förhandsgranska animation
+                </button>
+                <button id="reset-intro-animation-times-button" class="secondary-button" type="button">
+                  ↺ Återställ utprovade tider
                 </button>
               </div>
             </div>
@@ -2412,8 +2436,11 @@
     const introInitialTimeLabel = document.getElementById("intro-initial-time-label");
     const settingIntroInitialSeconds = document.getElementById("setting-intro-initial-seconds");
     const settingIntroRevealSeconds = document.getElementById("setting-intro-reveal-seconds");
+    const introInitialOriginalNote = document.getElementById("intro-initial-original-note");
+    const introRevealOriginalNote = document.getElementById("intro-reveal-original-note");
     const introAnimationCurrentSetting = document.getElementById("intro-animation-current-setting");
     const previewIntroAnimationButton = document.getElementById("preview-intro-animation-button");
+    const resetIntroAnimationTimesButton = document.getElementById("reset-intro-animation-times-button");
     const retentionRadios = Array.from(document.querySelectorAll('input[name="new-arrivals-retention"]'));
     const customRetentionRow = document.getElementById("custom-retention-row");
     const settingNewArrivalsCustomDays = document.getElementById("setting-new-arrivals-custom-days");
@@ -2819,6 +2846,15 @@
       return /^#[0-9a-f]{6}$/i.test(String(value || "")) ? value : fallback;
     }
 
+    function updateOriginalTimeMarkers() {
+      const initialIsOriginal = Math.abs(Number(settingIntroInitialSeconds.value) - 0.5) < 0.001;
+      const revealIsOriginal = Math.abs(Number(settingIntroRevealSeconds.value) - 1) < 0.001;
+      settingIntroInitialSeconds.classList.toggle("original-time-value", initialIsOriginal);
+      settingIntroRevealSeconds.classList.toggle("original-time-value", revealIsOriginal);
+      introInitialOriginalNote.hidden = !initialIsOriginal;
+      introRevealOriginalNote.hidden = !revealIsOriginal;
+    }
+
     function updateAnimationSettingsUi() {
       const mode = ["classic", "gold", "none"].includes(settingIntroAnimationMode.value)
         ? settingIntroAnimationMode.value
@@ -2829,6 +2865,7 @@
       introInitialTimeLabel.textContent = mode === "gold"
         ? "Guldstjärnans krymptid (sekunder)"
         : "Svart väntetid (sekunder)";
+      updateOriginalTimeMarkers();
 
       if (mode === "none") {
         introAnimationCurrentSetting.textContent = "Aktuell inställning: Ingen animation";
@@ -2850,6 +2887,12 @@
         : "Klassisk stjärnöppning";
       introAnimationCurrentSetting.textContent =
         `Aktuell inställning: ${name} · ${initialSeconds} s + ${revealSeconds} s`;
+    }
+
+    function resetIntroAnimationTimes() {
+      settingIntroInitialSeconds.value = "0.5";
+      settingIntroRevealSeconds.value = "1";
+      updateAnimationSettingsUi();
     }
 
     function setAnimationForm(data) {
@@ -4654,6 +4697,7 @@
     });
     previewNewArrivalsButton.addEventListener("click", previewNewArrivalsRetention);
     previewIntroAnimationButton.addEventListener("click", previewIntroAnimation);
+    resetIntroAnimationTimesButton.addEventListener("click", resetIntroAnimationTimes);
     settingIntroAnimationMode.addEventListener("change", updateAnimationSettingsUi);
     settingIntroInitialSeconds.addEventListener("input", updateAnimationSettingsUi);
     settingIntroRevealSeconds.addEventListener("input", updateAnimationSettingsUi);
