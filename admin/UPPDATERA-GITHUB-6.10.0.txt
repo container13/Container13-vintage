@@ -1,0 +1,24 @@
+CONTAINER13 – UPPDATERA TILL VERSION 6.10.0
+
+Alternativ 1: Endast ändrade filer
+----------------------------------
+Ladda upp innehållet i ZIP-filen med samma mappstruktur som i GitHub.
+Godkänn att befintliga filer ersätts.
+
+Filen omoss.html är ny och ska ligga i projektets rot, bredvid index.html.
+
+Alternativ 2: Komplett version
+------------------------------
+Ladda upp hela innehållet och ersätt projektets befintliga filer.
+
+Efter uppladdningen
+-------------------
+1. Vänta tills GitHub Pages har publicerat klart.
+2. Öppna adminpanelen och gå till Inställningar > Om oss.
+3. Välj en textversion.
+4. Redigera texten om du vill.
+5. Använd Förhandsgranska.
+6. Markera Visa Om oss på hemsidan.
+7. Tryck på Spara och aktivera Om oss.
+
+Om Om oss inte är aktiverad visas inte länken i webbplatsens huvudmeny.
