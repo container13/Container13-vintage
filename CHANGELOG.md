@@ -1,5 +1,13 @@
 # Ändringslogg
 
+## Version 6.8.0
+
+- Lägger till hantering av flera Spotify-spellistor i dashboardens Inställningar.
+- Gör det möjligt att lägga till, välja, provöppna och ta bort spellistor.
+- Visar tydligt vilken spellista som är aktiv.
+- Lägger till ett val för att visa eller dölja Spotifyikonen.
+- Kopplar footerns Spotifyikon automatiskt till den aktiva spellistan.
+
 ## Version 6.7.10
 
 - Tar bort den synliga rubriken ”Tema” i footern.
