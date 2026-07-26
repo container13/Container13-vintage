@@ -1615,6 +1615,23 @@
     .intro-image-dropzone small {
       color: var(--muted);
     }
+    .intro-image-fit-panel {
+      display: grid;
+      align-content: center;
+      gap: 10px;
+      min-height: 145px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+    }
+    .intro-image-fit-panel .field-label {
+      margin: 0;
+    }
+    .intro-image-fit-panel select {
+      width: 100%;
+      min-height: 48px;
+    }
     .intro-image-preview {
       grid-column: 1 / -1;
       padding: 14px;
@@ -1633,10 +1650,35 @@
       background: #111;
     }
     .animation-setting-hidden { display: none !important; }
+    .camera-settings-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .camera-settings-grid .quick-mode-setting {
+      min-height: 86px;
+      margin-top: 0;
+      align-items: flex-start;
+    }
+
+    /* Något kompaktare öppettider, med oförändrade klickytor. */
+    .opening-hours-list {
+      gap: 8px;
+      padding-top: 12px;
+    }
+    .day-row {
+      min-height: 78px;
+      padding: 13px 16px;
+      gap: 14px;
+    }
+    .time-wrapper {
+      padding: 9px 11px;
+    }
     @media (max-width: 720px) {
       .animation-settings-grid { grid-template-columns: 1fr; }
       .animation-settings-grid .full-width { grid-column: auto; }
       .intro-image-fields { grid-template-columns: 1fr; }
+      .camera-settings-grid { grid-template-columns: 1fr; }
       .animation-mode-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .animation-section-heading {
         align-items: flex-start;
@@ -1753,7 +1795,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.6.4</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.6.5</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -1860,7 +1902,7 @@
                 <div class="dashboard-detail"><span>Inloggad som</span><strong id="dashboard-user">–</strong></div>
                 <div class="dashboard-detail"><span>Papperskorg</span><strong id="dashboard-trash-retention">Automatisk rensning efter 2 dagar</strong></div>
               </div>
-              <p class="dashboard-version">Container13 Adminpanel · Version 6.6.4</p>
+              <p class="dashboard-version">Container13 Adminpanel · Version 6.6.5</p>
             </section>
           </div>
         </section>
@@ -2318,12 +2360,15 @@
                     <input id="setting-intro-image-file" class="visually-hidden" type="file" accept="image/jpeg,image/png,image/webp">
                     <small class="field-help">JPG, PNG eller WebP. Bilden komprimeras automatiskt före uppladdning.</small>
                   </div>
-                  <div class="field-group">
-                    <label class="field-label" for="setting-intro-image-fit">Bildanpassning</label>
-                    <select id="setting-intro-image-fit">
-                      <option value="cover">Fyll skärmen</option>
-                      <option value="contain">Visa hela bilden</option>
-                    </select>
+                  <div class="field-group intro-image-fit-field">
+                    <div class="intro-image-fit-panel">
+                      <label class="field-label" for="setting-intro-image-fit">Bildanpassning</label>
+                      <select id="setting-intro-image-fit">
+                        <option value="cover">Fyll skärmen</option>
+                        <option value="contain">Visa hela bilden</option>
+                      </select>
+                    </div>
+                    <small class="field-help">Bestäm om bilden ska beskäras eller visas helt.</small>
                   </div>
                   <div id="intro-image-preview" class="intro-image-preview" hidden>
                     <img id="intro-image-preview-image" alt="Vald bakgrundsbild för startanimationen">
@@ -2449,16 +2494,17 @@
 
             <div class="settings-subcard">
               <h3>Kamera</h3>
-              <label class="quick-mode-setting">
-                <input id="setting-save-mobile-copy" type="checkbox">
-                <span><strong>Spara även en kopia på mobilen</strong><br><small>Efter publicering försöker webbläsaren ladda ner en kopia. Var den hamnar styrs av telefonen och webbläsaren.</small></span>
-              </label>
+              <div class="camera-settings-grid">
+                <label class="quick-mode-setting">
+                  <input id="setting-save-mobile-copy" type="checkbox">
+                  <span><strong>Spara även en kopia på mobilen</strong><br><small>Efter publicering försöker webbläsaren ladda ner en kopia. Var den hamnar styrs av telefonen och webbläsaren.</small></span>
+                </label>
+                <label class="quick-mode-setting">
+                  <input id="setting-quick-photo-mode" type="checkbox">
+                  <span><strong>Snabbfotoläge</strong><br><small>När en bild publicerats öppnas kameran igen automatiskt.</small></span>
+                </label>
+              </div>
             </div>
-
-            <label class="quick-mode-setting">
-              <input id="setting-quick-photo-mode" type="checkbox">
-              <span><strong>Snabbfotoläge</strong><br><small>När en bild publicerats öppnas kameran igen automatiskt.</small></span>
-            </label>
 
             <p class="settings-note">Kontaktuppgifterna och länkarna används automatiskt på Kontakt, Hitta hit och i sidfoten. Papperskorgens val gäller för bilder som tas bort efter att inställningen sparats.</p>
 
