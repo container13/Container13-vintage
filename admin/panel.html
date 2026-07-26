@@ -1429,7 +1429,7 @@
     .custom-days-row input { width: 100%; }
     .setting-summary { margin-top: 18px; padding: 14px 16px; border-radius: 8px; background: #f1ece5; font-weight: 700; }
     .active-animation-summary {
-      margin-top: 18px;
+      margin: 0 0 22px;
       padding: 14px 16px;
       border: 2px solid #3f8a55;
       border-radius: 8px;
@@ -1442,6 +1442,17 @@
       font-weight: 800;
     }
     .animation-change-note.saved { color: #3f7250; }
+    .visually-hidden {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
     .preview-result { margin-top: 14px; min-height: 24px; color: var(--text); }
     .secondary-button { padding: 11px 16px; border: 1px solid var(--border); border-radius: 8px; background: white; cursor: pointer; font-weight: 700; }
     .secondary-button:hover { border-color: var(--accent); }
@@ -1451,6 +1462,7 @@
       gap: 16px;
     }
     .animation-settings-grid .full-width { grid-column: 1 / -1; }
+    .animation-settings-grid.single-column { grid-template-columns: 1fr; }
     .animation-settings-grid input,
     .animation-settings-grid select {
       width: 100%;
@@ -1481,16 +1493,127 @@
     .animation-action-row {
       display: flex;
       flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
       gap: 10px;
-      margin-top: 14px;
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+    .animation-action-row .save-button {
+      min-width: 270px;
+    }
+    .animation-editor .card-header {
+      margin-bottom: 18px;
+    }
+    .animation-editor-section {
+      margin-top: 18px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fbfaf8;
+    }
+    .animation-section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .animation-section-heading > div {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .animation-section-heading h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+    .animation-step {
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #222;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 900;
+    }
+    .compact-button {
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+    .animation-mode-cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .animation-mode-card {
+      display: grid;
+      align-content: start;
+      gap: 6px;
+      min-height: 132px;
+      padding: 16px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+    }
+    .animation-mode-card:hover {
+      border-color: #c39a29;
+      background: #fffcf1;
+    }
+    .animation-mode-card.selected {
+      border-color: #b58b00;
+      background: #fff7d6;
+      box-shadow: 0 0 0 2px rgba(212, 175, 55, .18);
+    }
+    .animation-mode-card:focus-visible {
+      outline: 3px solid rgba(181, 139, 0, .35);
+      outline-offset: 2px;
+    }
+    .animation-mode-icon {
+      font-size: 25px;
+      line-height: 1;
+      color: #9a7400;
+    }
+    .animation-mode-card strong {
+      font-size: 15px;
+    }
+    .animation-mode-card small {
+      color: var(--muted);
+      line-height: 1.35;
     }
     .intro-image-fields {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(180px, .55fr);
       gap: 16px;
-      margin-top: 18px;
-      padding-top: 18px;
-      border-top: 1px solid var(--border);
+      margin-top: 0;
+    }
+    .intro-image-dropzone {
+      display: grid;
+      place-items: center;
+      min-height: 145px;
+      padding: 20px;
+      border: 2px dashed #c3aa63;
+      border-radius: 12px;
+      background: #fffdf7;
+      text-align: center;
+      cursor: pointer;
+    }
+    .intro-image-dropzone:hover {
+      border-color: #9a7400;
+      background: #fff7d6;
+    }
+    .intro-image-dropzone-icon {
+      font-size: 30px;
+      color: #9a7400;
+    }
+    .intro-image-dropzone small {
+      color: var(--muted);
     }
     .intro-image-preview {
       grid-column: 1 / -1;
@@ -1514,6 +1637,25 @@
       .animation-settings-grid { grid-template-columns: 1fr; }
       .animation-settings-grid .full-width { grid-column: auto; }
       .intro-image-fields { grid-template-columns: 1fr; }
+      .animation-mode-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .animation-section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .animation-action-row {
+        align-items: stretch;
+        flex-direction: column;
+      }
+      .animation-action-row button,
+      .animation-action-row .save-button {
+        width: 100%;
+        min-width: 0;
+      }
+    }
+    @media (max-width: 430px) {
+      .animation-mode-cards { grid-template-columns: 1fr; }
+      .animation-mode-card { min-height: 0; }
+      .animation-editor-section { padding: 15px; }
     }
 
   </style>
@@ -1611,7 +1753,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.6.0</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.6.1</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -1718,7 +1860,7 @@
                 <div class="dashboard-detail"><span>Inloggad som</span><strong id="dashboard-user">–</strong></div>
                 <div class="dashboard-detail"><span>Papperskorg</span><strong id="dashboard-trash-retention">Automatisk rensning efter 2 dagar</strong></div>
               </div>
-              <p class="dashboard-version">Container13 Adminpanel · Version 6.6.0</p>
+              <p class="dashboard-version">Container13 Adminpanel · Version 6.6.1</p>
             </section>
           </div>
         </section>
@@ -2070,25 +2212,62 @@
         </section>
 
         <section id="animation-section" class="content-section">
-          <div class="card">
+          <div class="card animation-editor">
             <div class="card-header">
-              <h2>Startanimation</h2>
+              <h2>Utforma startanimationen</h2>
               <p class="card-introduction">Välj animation, bild, färger och tider. Förhandsgranska innan du aktiverar den på hemsidan.</p>
             </div>
 
-            <div class="animation-settings-grid">
-              <div class="field-group full-width">
-                <label class="field-label" for="setting-intro-animation-mode">Animation</label>
-                <select id="setting-intro-animation-mode">
+            <div id="intro-animation-active-setting" class="active-animation-summary">
+              ✓ Aktiv på hemsidan: Klassisk stjärnöppning
+            </div>
+
+            <section class="animation-editor-section">
+              <div class="animation-section-heading">
+                <div>
+                  <span class="animation-step">1</span>
+                  <h3>Välj animation</h3>
+                </div>
+              </div>
+              <select id="setting-intro-animation-mode" class="visually-hidden" aria-label="Animation">
                   <option value="classic">Klassisk stjärnöppning</option>
                   <option value="gold">Krympande guldstjärna + stjärnöppning</option>
                   <option value="image">Stjärnöppning med bakgrundsbild</option>
                   <option value="none">Ingen animation</option>
-                </select>
+              </select>
+              <div class="animation-mode-cards" role="group" aria-label="Välj startanimation">
+                <button class="animation-mode-card" type="button" data-intro-mode="classic">
+                  <span class="animation-mode-icon">☆</span>
+                  <strong>Klassisk</strong>
+                  <small>Stjärnan öppnar hemsidan</small>
+                </button>
+                <button class="animation-mode-card" type="button" data-intro-mode="gold">
+                  <span class="animation-mode-icon">★</span>
+                  <strong>Guldstjärna</strong>
+                  <small>Krymper och öppnar hemsidan</small>
+                </button>
+                <button class="animation-mode-card" type="button" data-intro-mode="image">
+                  <span class="animation-mode-icon">▧</span>
+                  <strong>Bakgrundsbild</strong>
+                  <small>En bild öppnas med stjärnan</small>
+                </button>
+                <button class="animation-mode-card" type="button" data-intro-mode="none">
+                  <span class="animation-mode-icon">○</span>
+                  <strong>Ingen animation</strong>
+                  <small>Visa hemsidan direkt</small>
+                </button>
               </div>
+            </section>
 
-              <div id="animation-settings-fields" class="field-group full-width">
-                <div class="animation-settings-grid">
+            <div id="animation-settings-fields">
+              <section class="animation-editor-section">
+                <div class="animation-section-heading">
+                  <div>
+                    <span class="animation-step">2</span>
+                    <h3>Färger</h3>
+                  </div>
+                </div>
+                <div id="intro-color-grid" class="animation-settings-grid">
                   <div class="field-group">
                     <label class="field-label" for="setting-intro-background-color">Reserv- och bakgrundsfärg</label>
                     <input id="setting-intro-background-color" type="color" value="#000000">
@@ -2097,6 +2276,18 @@
                     <label class="field-label" for="setting-intro-star-color">Stjärnfärg</label>
                     <input id="setting-intro-star-color" type="color" value="#d4af37">
                   </div>
+                </div>
+              </section>
+
+              <section class="animation-editor-section">
+                <div class="animation-section-heading">
+                  <div>
+                    <span class="animation-step">3</span>
+                    <h3>Hastighet</h3>
+                  </div>
+                  <button id="reset-intro-animation-times-button" class="secondary-button compact-button" type="button">↺ Återställ originaltider</button>
+                </div>
+                <div class="animation-settings-grid">
                   <div class="field-group">
                     <label id="intro-initial-time-label" class="field-label" for="setting-intro-initial-seconds">Svart väntetid (sekunder)</label>
                     <input id="setting-intro-initial-seconds" type="number" min="0" max="5" step="0.1" inputmode="decimal" value="0.5">
@@ -2108,11 +2299,23 @@
                     <small id="intro-reveal-original-note" class="original-time-note">✓ Utprovad originaltid: 1,0 s</small>
                   </div>
                 </div>
+              </section>
 
-                <div id="intro-image-fields" class="intro-image-fields animation-setting-hidden">
+              <section id="intro-image-fields" class="animation-editor-section animation-setting-hidden">
+                <div class="animation-section-heading">
+                  <div>
+                    <span class="animation-step">4</span>
+                    <h3>Bakgrundsbild</h3>
+                  </div>
+                </div>
+                <div class="intro-image-fields">
                   <div class="field-group">
-                    <label class="field-label" for="setting-intro-image-file">Bakgrundsbild</label>
-                    <input id="setting-intro-image-file" class="file-input" type="file" accept="image/jpeg,image/png,image/webp">
+                    <label class="intro-image-dropzone" for="setting-intro-image-file">
+                      <span class="intro-image-dropzone-icon">＋</span>
+                      <strong>Välj bakgrundsbild</strong>
+                      <small>JPG, PNG eller WebP · högst 8 MB</small>
+                    </label>
+                    <input id="setting-intro-image-file" class="visually-hidden" type="file" accept="image/jpeg,image/png,image/webp">
                     <small class="field-help">JPG, PNG eller WebP. Bilden komprimeras automatiskt före uppladdning.</small>
                   </div>
                   <div class="field-group">
@@ -2127,12 +2330,9 @@
                     <button id="remove-intro-image-button" class="secondary-button" type="button">Ta bort vald bild</button>
                   </div>
                 </div>
-              </div>
+              </section>
             </div>
 
-            <div id="intro-animation-active-setting" class="active-animation-summary">
-              ✓ Aktiv på hemsidan: Klassisk stjärnöppning
-            </div>
             <div id="intro-animation-current-setting" class="setting-summary">
               Valt i formuläret: Klassisk stjärnöppning
             </div>
@@ -2141,7 +2341,6 @@
             </div>
             <div class="animation-action-row">
               <button id="preview-intro-animation-button" class="secondary-button" type="button">★ Förhandsgranska animation</button>
-              <button id="reset-intro-animation-times-button" class="secondary-button" type="button">↺ Återställ utprovade tider</button>
               <button id="activate-intro-animation-button" class="save-button" type="button">Aktivera animationen på hemsidan</button>
             </div>
             <div id="intro-animation-action-message" class="message" role="status" aria-live="polite"></div>
@@ -2524,6 +2723,8 @@
     const settingIntroModeQuick = document.getElementById("setting-intro-mode-quick");
     const openAnimationSettingsButton = document.getElementById("open-animation-settings-button");
     const animationSettingsFields = document.getElementById("animation-settings-fields");
+    const animationModeCards = Array.from(document.querySelectorAll("[data-intro-mode]"));
+    const introColorGrid = document.getElementById("intro-color-grid");
     const introGoldColorField = document.getElementById("intro-gold-color-field");
     const introImageFields = document.getElementById("intro-image-fields");
     const settingIntroImageFile = document.getElementById("setting-intro-image-file");
@@ -3051,8 +3252,14 @@
       const disabled = mode === "none";
       animationSettingsFields.classList.toggle("animation-setting-hidden", disabled);
       introGoldColorField.classList.toggle("animation-setting-hidden", mode !== "gold");
+      introColorGrid.classList.toggle("single-column", mode !== "gold");
       introImageFields.classList.toggle("animation-setting-hidden", mode !== "image");
       settingIntroModeQuick.value = mode;
+      animationModeCards.forEach((card) => {
+        const selected = card.dataset.introMode === mode;
+        card.classList.toggle("selected", selected);
+        card.setAttribute("aria-pressed", String(selected));
+      });
       introInitialTimeLabel.textContent = mode === "gold"
         ? "Guldstjärnans krymptid (sekunder)"
         : mode === "image"
@@ -5014,6 +5221,12 @@
     resetIntroAnimationTimesButton.addEventListener("click", resetIntroAnimationTimes);
     activateIntroAnimationButton.addEventListener("click", activateIntroAnimation);
     settingIntroAnimationMode.addEventListener("change", handleIntroAnimationFormChange);
+    animationModeCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        settingIntroAnimationMode.value = card.dataset.introMode;
+        handleIntroAnimationFormChange();
+      });
+    });
     settingIntroModeQuick.addEventListener("change", () => {
       settingIntroAnimationMode.value = settingIntroModeQuick.value;
       handleIntroAnimationFormChange();
