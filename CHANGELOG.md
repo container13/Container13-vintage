@@ -1,5 +1,11 @@
 # Ändringslogg
 
+## Version 6.7.7
+
+- Rättar förvalet när Firestore innehåller en gammal inaktiv animationsbild.
+- Second Hand-bilden väljs nu när den aktiva animationen inte redan är en bildanimation.
+- Behåller en uttryckligen aktiverad egen bild oförändrad.
+
 ## Version 6.7.6
 
 - Lägger till valbar paus mellan guldstjärnans krympning och stjärnöppningen.
