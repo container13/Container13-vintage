@@ -1,0 +1,5 @@
+Radera följande oanvända fil från GitHub:
+
+admin/style.css
+
+Filen länkas inte från adminpanelen och behövs inte längre.

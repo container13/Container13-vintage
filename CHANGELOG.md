@@ -1,5 +1,11 @@
 # Ändringslogg
 
+## Version 6.9.2
+
+- Tar bort den oanvända filen `admin/style.css`.
+- Rensar duplicerad kamera- och inställnings-CSS i adminpanelen.
+- Behåller samma desktop- och mobilvärden efter städningen.
+
 ## Version 6.9.1
 
 - Minskar det stora mellanrummet mellan Kontakt-rubriken och kontaktkortet.
