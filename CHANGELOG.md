@@ -1,5 +1,11 @@
 # Ändringslogg
 
+## Version 6.7.5
+
+- Visar korrekt panelversion i adminpanelen.
+- Uppdaterar webbplatsens och adminpanelens cacheversion.
+- Säkerställer att den inbyggda responsiva Second Hand-bilden visas som förval.
+
 ## Version 6.7.4
 
 - Lägger in en särskild Second Hand-bakgrund för dator och en för mobil.
