@@ -1,5 +1,15 @@
 # Ändringslogg
 
+## Version 6.6.0
+
+- Ger Startanimation en egen flik i dashboarden.
+- Lägger till fyra val: klassisk, krympande guldstjärna, bakgrundsbild och ingen animation.
+- Låter administratören ladda upp en komprimerad bakgrundsbild.
+- Erbjuder bildlägena Fyll skärmen och Visa hela bilden.
+- Visar uppladdad bild och stödjer förhandsgranskning innan aktivering.
+- Behåller reservfärg om bilden inte kan laddas.
+- Förenklar valet under vanliga Inställningar.
+
 ## Version 6.5.4
 
 - Visar separat vilken animation som är aktiv på hemsidan.

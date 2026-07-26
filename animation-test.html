@@ -130,13 +130,15 @@
 
     const requestedMode = params.get("mode");
     const settings = {
-      mode: ["classic", "gold", "none"].includes(requestedMode)
+      mode: ["classic", "gold", "image", "none"].includes(requestedMode)
         ? requestedMode
         : "classic",
       backgroundColor: validColor(params.get("background"), "#000000"),
       starColor: validColor(params.get("star"), "#d4af37"),
       initialDuration: clampSeconds(params.get("initial"), 0.5, 0) * 1000,
-      revealDuration: clampSeconds(params.get("reveal"), 1, 0.2) * 1000
+      revealDuration: clampSeconds(params.get("reveal"), 1, 0.2) * 1000,
+      imageUrl: params.get("image") || "",
+      imageFit: params.get("fit") === "contain" ? "contain" : "cover"
     };
 
     const overlay = document.getElementById("animation-overlay");
@@ -148,10 +150,13 @@
     let startTimer = 0;
     let fallbackTimer = 0;
     let runNumber = 0;
+    const previewImage = new Image();
+    let previewImageReady = false;
 
     const modeNames = {
       classic: "Klassisk stjärnöppning",
       gold: "Krympande guldstjärna + stjärnöppning",
+      image: "Stjärnöppning med bakgrundsbild",
       none: "Ingen animation"
     };
 
@@ -179,6 +184,20 @@
       context.clearRect(0, 0, width, height);
       context.fillStyle = settings.backgroundColor;
       context.fillRect(0, 0, width, height);
+      if (settings.mode === "image" && previewImageReady) {
+        const scale = settings.imageFit === "contain"
+          ? Math.min(width / previewImage.naturalWidth, height / previewImage.naturalHeight)
+          : Math.max(width / previewImage.naturalWidth, height / previewImage.naturalHeight);
+        const drawWidth = previewImage.naturalWidth * scale;
+        const drawHeight = previewImage.naturalHeight * scale;
+        context.drawImage(
+          previewImage,
+          (width - drawWidth) / 2,
+          (height - drawHeight) / 2,
+          drawWidth,
+          drawHeight
+        );
+      }
       context.globalCompositeOperation = "destination-out";
       drawStar(width, height, radius);
       context.fill();
@@ -295,7 +314,19 @@
       if (!window.closed) window.history.back();
     });
 
-    runPreview();
+    if (settings.mode === "image" && settings.imageUrl) {
+      previewImage.onload = () => {
+        previewImageReady = true;
+        runPreview();
+      };
+      previewImage.onerror = () => {
+        summary.textContent += " · Bilden kunde inte laddas, reservfärgen visas";
+        runPreview();
+      };
+      previewImage.src = settings.imageUrl;
+    } else {
+      runPreview();
+    }
   })();
   </script>
 </body>

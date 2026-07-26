@@ -1,4 +1,4 @@
-const CACHE_NAME = 'container13-site-v6.5.4';
+const CACHE_NAME = 'container13-site-v6.6.0';
 const APP_SHELL = ['./', './index.html', './animation-test.html', './css/style.css', './js/analytics.js', './icons/icon-192.png'];
 self.addEventListener('install', event => { event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL))); self.skipWaiting(); });
 self.addEventListener('activate', event => { event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE_NAME && k.startsWith('container13-site-')).map(k => caches.delete(k))))); self.clients.claim(); });

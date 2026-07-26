@@ -491,7 +491,9 @@ inspireras.
     backgroundColor: "#000000",
     starColor: "#d4af37",
     initialDuration: 500,
-    revealDuration: 1000
+    revealDuration: 1000,
+    imageUrl: "",
+    imageFit: "cover"
   };
   const root = document.documentElement;
   const canvas = document.getElementById("star-intro");
@@ -499,7 +501,7 @@ inspireras.
   const mobileSvg = document.getElementById("star-intro-mobile");
   const mobilePath =
     document.getElementById("star-intro-mobile-path");
-  const useMobileSvg =
+  let useMobileSvg =
     root.classList.contains("star-intro-mobile-mode");
 
   const canvasReady = canvas && ctx;
@@ -522,6 +524,7 @@ inspireras.
   let fallbackTimer = 0;
   let finished = false;
   let introSettings = { ...defaultIntroSettings };
+  let introImage = null;
 
   function firestoreString(field, fallback) {
     return typeof field?.stringValue === "string"
@@ -556,7 +559,7 @@ inspireras.
       );
 
       return {
-        mode: ["classic", "gold", "none"].includes(mode)
+        mode: ["classic", "gold", "image", "none"].includes(mode)
           ? mode
           : defaultIntroSettings.mode,
         backgroundColor: validColor(
@@ -592,7 +595,14 @@ inspireras.
               defaultIntroSettings.revealDuration
             )
           )
-        )
+        ),
+        imageUrl: firestoreString(
+          fields.introImageUrl,
+          defaultIntroSettings.imageUrl
+        ),
+        imageFit: firestoreString(fields.introImageFit, "cover") === "contain"
+          ? "contain"
+          : "cover"
       };
     } catch (_) {
       return { ...defaultIntroSettings };
@@ -600,7 +610,7 @@ inspireras.
   }
 
   function resizeCanvas() {
-    const dpr = Math.max(1, window.devicePixelRatio || 1);
+    const dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
     canvas.width = Math.round(window.innerWidth * dpr);
     canvas.height = Math.round(window.innerHeight * dpr);
     canvas.style.width = window.innerWidth + "px";
@@ -635,12 +645,31 @@ inspireras.
     ctx.fill();
   }
 
+  function drawIntroImage() {
+    if (!introImage) return;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const scale = introSettings.imageFit === "contain"
+      ? Math.min(width / introImage.naturalWidth, height / introImage.naturalHeight)
+      : Math.max(width / introImage.naturalWidth, height / introImage.naturalHeight);
+    const drawWidth = introImage.naturalWidth * scale;
+    const drawHeight = introImage.naturalHeight * scale;
+    ctx.drawImage(
+      introImage,
+      (width - drawWidth) / 2,
+      (height - drawHeight) / 2,
+      drawWidth,
+      drawHeight
+    );
+  }
+
   function drawRevealFrame(radius) {
     ctx.globalCompositeOperation = "source-over";
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
     ctx.fillStyle = introSettings.backgroundColor;
     ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    if (introSettings.mode === "image") drawIntroImage();
 
     ctx.globalCompositeOperation = "destination-out";
     ctx.fillStyle = introSettings.backgroundColor;
@@ -735,6 +764,24 @@ inspireras.
       canvas.hidden = false;
       canvas.style.background = "transparent";
     }
+  }
+
+  async function loadIntroImage() {
+    if (introSettings.mode !== "image" || !introSettings.imageUrl) return;
+    await new Promise((resolve) => {
+      const image = new Image();
+      const timer = window.setTimeout(resolve, 3000);
+      image.onload = () => {
+        clearTimeout(timer);
+        introImage = image;
+        resolve();
+      };
+      image.onerror = () => {
+        clearTimeout(timer);
+        resolve();
+      };
+      image.src = introSettings.imageUrl;
+    });
   }
 
   function runReveal() {
@@ -833,6 +880,12 @@ inspireras.
     if (introSettings.mode === "none") {
       finishIntro();
       return;
+    }
+
+    if (introSettings.mode === "image") {
+      useMobileSvg = false;
+      root.classList.remove("star-intro-mobile-mode");
+      await loadIntroImage();
     }
 
     prepareLayer();
