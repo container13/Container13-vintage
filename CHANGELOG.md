@@ -1,5 +1,13 @@
 # Ändringslogg
 
+## Version 6.6.8
+
+- Reserverar headerns och informationsradens höjd innan innehållet har laddats.
+- Låter hela den gemensamma headern stanna kvar vid skrollning.
+- Visar senast sparad öppettidsstatus direkt och uppdaterar Firestore i bakgrunden.
+- Laddar statusraden parallellt med webbplatsens övriga inställningar.
+- Motverkar att sidans innehåll skjuts ned när öppettider och nyinkommet-notis visas.
+
 ## Version 6.6.7
 
 - Komprimerar Startanimationens panel ytterligare för att rymmas på en vanlig PC-skärm.
