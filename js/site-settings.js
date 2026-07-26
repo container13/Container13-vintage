@@ -16,6 +16,7 @@ const defaults = {
   postalCity: "824 32 Hudiksvall", phone: "072-527 02 35", email: "alvinbrisvag@outlook.com",
   facebook: "https://www.facebook.com/61590920005705", instagram: "https://www.instagram.com/container.13",
   tiktok: "https://www.tiktok.com/@container.13", copyright: "© 2026 Container 13 Vintage",
+  logoMode: "patina", customLogoUrl: "", customLogoStoragePath: "",
   introAnimationMode: "classic", introBackgroundColor: "#000000", introStarColor: "#d4af37",
   introInitialDurationMs: 500, introRevealDurationMs: 1000,
   introImageUrl: "", introImageStoragePath: "", introImageFit: "cover"
@@ -24,14 +25,40 @@ const defaults = {
 function text(id, value) { const el = document.getElementById(id); if (el) el.textContent = value || ""; }
 function link(id, value) { const el = document.getElementById(id); if (!el) return; if (value) { el.href = value; el.hidden = false; } else el.hidden = true; }
 
+const builtInLogoSources = {
+  patina: "bilder/logotyp/logo-patina.png",
+  clean: "bilder/logotyp/logo-tryckeri-ren.png",
+  legacy: "bilder/logotyp/logo.png"
+};
+
+function siteLogoSource(data) {
+  if (data.logoMode === "custom" && (data.customLogoUrl || data.logoUrl)) {
+    return data.customLogoUrl || data.logoUrl;
+  }
+
+  return builtInLogoSources[data.logoMode] || builtInLogoSources.patina;
+}
+
 export async function applySiteSettings() {
   try {
     const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
     const snapshot = await getDoc(doc(getFirestore(app), "settings", "site"));
-    const data = { ...defaults, ...(snapshot.exists() ? snapshot.data() : {}) };
+    const savedData = snapshot.exists() ? snapshot.data() : {};
+    const data = { ...defaults, ...savedData };
+    if (
+      !["patina", "clean", "legacy", "custom"].includes(savedData.logoMode)
+      && typeof savedData.logoUrl === "string"
+      && savedData.logoUrl
+    ) {
+      data.logoMode = "custom";
+      data.customLogoUrl = savedData.logoUrl;
+    }
     text("site-store-name", data.storeName); text("site-city", data.city); text("site-address", data.address);
     text("site-postal-city", data.postalCity); text("site-phone", data.phone); text("site-email", data.email);
     text("site-copyright", data.copyright);
+    document.querySelectorAll("[data-site-logo]").forEach((image) => {
+      image.src = siteLogoSource(data);
+    });
     const phone = document.getElementById("site-phone-link"); if (phone) phone.href = `tel:${String(data.phone || "").replace(/[^+\d]/g, "")}`;
     const email = document.getElementById("site-email-link"); if (email) email.href = `mailto:${data.email || ""}`;
     link("site-facebook", data.facebook); link("site-instagram", data.instagram); link("site-tiktok", data.tiktok);

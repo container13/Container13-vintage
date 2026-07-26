@@ -59,9 +59,12 @@ async function initializeLayout() {
     ]);
 
     markCurrentPage();
-    const settingsModule = await import("./site-settings.js?v=4.3.0");
-    await settingsModule.applySiteSettings();
-    await import("./status.js?v=3.6.0");
+    const statusTask = import("./status.js?v=3.7.0");
+    const settingsTask = import("./site-settings.js?v=4.4.0")
+      .then((settingsModule) => settingsModule.applySiteSettings());
+    const themeTask = import("./theme-controls.js?v=1.0.0");
+
+    await Promise.allSettled([statusTask, settingsTask, themeTask]);
   } catch (error) {
     console.error("Kunde inte ladda sidans gemensamma delar:", error);
   }
