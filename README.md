@@ -1,7 +1,7 @@
 # Container 13 Vintage
 
-**Projektversion:** 4.0.0  
-**Basversion:** 3.6.1, som bekräftats fungera felfritt.
+**Projektversion:** 6.9.0  
+**Basversion:** 6.8.2
 
 ## Webbplatsen
 
@@ -15,6 +15,10 @@ Projektet är en mobilanpassad webbplats för Container 13 Vintage med:
 - informationsrad
 - gemensam header, statusrad och footer
 - Firebase/Firestore-baserad adminpanel
+- valbar startanimation och animationsförhandsvisning
+- besökarens val mellan automatiskt, ljust och mörkt tema
+- valbara Spotify-spellistor från adminpanelen
+- PWA-stöd för webbplats och adminpanel
 - lightbox, skeleton loading och responsiv bildlayout
 
 ## Aktiv mappstruktur
@@ -38,16 +42,17 @@ Container13-vintage-main/
 │   ├── opening-hours.js
 │   ├── senaste-nytt.js
 │   ├── galleri.js
-│   └── nyinkommet.js
+│   ├── nyinkommet.js
+│   ├── site-settings.js
+│   ├── theme-init.js
+│   └── theme-controls.js
 ├── admin/
 │   ├── index.html
 │   ├── panel.html
-│   └── oppettider.js
+│   ├── sw.js
+│   └── manifest.webmanifest
 ├── bilder/
-├── backup/
-│   └── legacy-js/
 ├── docs/
-│   └── TESTLISTA-V4.md
 ├── VERSION.txt
 └── CHANGELOG.md
 ```
@@ -60,16 +65,17 @@ Container13-vintage-main/
 - `js/senaste-nytt.js` visar de fyra senaste bilderna på startsidan.
 - `js/galleri.js` hämtar butiksgalleriet från Firebase.
 - `js/nyinkommet.js` hämtar Nyinkommet från Firebase.
+- `js/site-settings.js` applicerar logotyp, kontaktuppgifter, sociala länkar och Spotify.
 - `admin/panel.html` innehåller adminpanelens funktioner.
 
-## Säkerhetskopierade äldre filer
+## Bilder
 
-`backup/legacy-js/` innehåller äldre JavaScript som inte längre länkas från webbplatsen. De ligger kvar som reserv men laddas inte av de publika sidorna.
+Galleri och Nyinkommet hämtas från Firestore/Firebase Storage. Gamla lokala exempelbilder ingår därför inte längre. Gatuvy-bilderna använder WebP för snabbare laddning.
 
 ## Lokal testning
 
 Header och footer laddas med `fetch()`. Sidorna bör därför testas via GitHub Pages eller en lokal webbserver, inte genom att dubbelklicka på HTML-filer med en `file://`-adress.
 
-## Version 4.0.0
+## Version 6.9.0
 
-Den här versionen är en städ- och stabiliseringsversion. Den ska inte ändra webbplatsens utseende eller fungerande funktioner. Se `CHANGELOG.md` och `docs/TESTLISTA-V4.md`.
+Den här versionen är en städ- och optimeringsversion. Den ändrar inte webbplatsens avsedda utseende eller funktioner. Se `CHANGELOG.md`.

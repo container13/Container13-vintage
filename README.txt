@@ -1,16 +1,14 @@
-CONTAINER13 VERSION 4.3 – INSTÄLLNINGAR
+CONTAINER13 VERSION 6.9.0
 
-Ersätt filerna med samma namn och samma mappar i projektet.
+Det här är den städade kompletta projektversionen.
 
-Nytt:
-- Inställningar är klickbar i adminpanelen.
-- Butiksnamn, adress, telefon, e-post och sociala länkar kan sparas.
-- Copyright-text kan ändras.
-- Papperskorgens lagringstid kan väljas mellan 1 och 7 dagar.
-- Kontakt, Hitta hit och sidfoten använder de sparade uppgifterna.
+Version 6.9.0:
+- tar bort gamla arkiv och frikopplade filer
+- tar bort lokala exempelbilder som inte längre används
+- optimerar Gatuvy-bilderna
+- behåller webbplatsens och adminpanelens nuvarande funktioner
 
-Firestore-reglerna behöver inte ändras eftersom settings redan tillåter
-skrivning för inloggad administratör och läsning för webbplatsen.
+Firestore-reglerna behöver inte ändras.
 
 Ladda om adminpanelen med Ctrl + F5 efter uppladdning.
-Panelen ska visa Panelversion 4.3.
+Panelen ska visa Panelversion 6.9.0.

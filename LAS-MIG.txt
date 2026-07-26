@@ -1,13 +1,19 @@
-CONTAINER13 VERSION 6.0 – ENDAST UPPDATERADE FILER
+CONTAINER13 VERSION 6.9.0 – ENDAST UPPDATERADE FILER
 
 Ladda upp filerna till samma platser i GitHub och ersätt de gamla:
 
+hittahit.html
+bilder/gatuvy.webp
+bilder/gatuvy2.webp
+sw.js
 admin/panel.html
 admin/sw.js
 VERSION.txt
 CHANGELOG.md
+CHANGELOG-6.9.0.md
 
 Viktigt efter uppladdning:
 1. Vänta tills GitHub Pages har publicerat ändringen.
 2. Stäng C13 Admin helt och öppna den igen.
-3. Om den gamla dashboarden fortfarande visas, uppdatera sidan eller ta bort och lägg tillbaka adminappen på hemskärmen. Service worker-cachen är ändrad från v5 till v6.
+3. Om den gamla versionen fortfarande visas, uppdatera sidan med Ctrl + F5.
+4. Det lilla paketet kan inte ta bort gamla filer från GitHub. Den kompletta versionen är därför bäst för hela städningen.

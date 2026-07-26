@@ -1,5 +1,12 @@
 # Ändringslogg
 
+## Version 6.9.0
+
+- Tar bort gamla arkiv, frikopplad kod och oanvända exempelbilder.
+- Ersätter de stora Gatuvy-PNG-filerna med optimerade WebP-bilder.
+- Minskar projektets storlek från cirka 40 MB till cirka 2,5 MB.
+- Uppdaterar dokumentation, panelversion och cacheversioner.
+
 ## Version 6.8.2
 
 - Gör dashboardens inställningssida mer kompakt på dator.
