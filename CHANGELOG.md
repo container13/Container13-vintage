@@ -1,5 +1,11 @@
 # Ändringslogg
 
+## Version 6.8.1
+
+- Minskar det stora mellanrummet före adresskortet på Hitta hit.
+- Gör dashboardens statistikkort, fotoknapp och informationspaneler mer kompakta.
+- Behåller mobilens tydliga knapp- och textstorlekar.
+
 ## Version 6.8.0
 
 - Lägger till hantering av flera Spotify-spellistor i dashboardens Inställningar.
