@@ -15,7 +15,9 @@ const defaults = {
   storeName: "Container 13 Vintage", city: "Hudiksvall", address: "Marknadsgatan 1A",
   postalCity: "824 32 Hudiksvall", phone: "072-527 02 35", email: "alvinbrisvag@outlook.com",
   facebook: "https://www.facebook.com/61590920005705", instagram: "https://www.instagram.com/container.13",
-  tiktok: "https://www.tiktok.com/@container.13", copyright: "© 2026 Container 13 Vintage"
+  tiktok: "https://www.tiktok.com/@container.13", copyright: "© 2026 Container 13 Vintage",
+  introAnimationMode: "classic", introBackgroundColor: "#000000", introStarColor: "#d4af37",
+  introInitialDurationMs: 500, introRevealDurationMs: 1000
 };
 
 function text(id, value) { const el = document.getElementById(id); if (el) el.textContent = value || ""; }
