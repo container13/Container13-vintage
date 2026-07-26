@@ -1,5 +1,12 @@
 # Ändringslogg
 
+## Version 6.6.5
+
+- Ger Bakgrundsbild och Bildanpassning samma visuella höjd.
+- Samlar Spara kopia på mobilen och Snabbfotoläge i samma kamerablock.
+- Visar kameravalen i två jämna kolumner på dator och staplade på mobil.
+- Gör öppettidsrader och tidsfält försiktigt mer kompakta.
+
 ## Version 6.6.4
 
 - Lägger till Aktivera på hemsidan direkt på förhandsvisningssidan.
