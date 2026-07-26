@@ -1555,6 +1555,9 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 16px;
     }
+    .animation-settings-grid.animation-timing-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
     .animation-settings-grid .full-width { grid-column: 1 / -1; }
     .animation-settings-grid.single-column { grid-template-columns: 1fr; }
     .animation-settings-grid input,
@@ -1797,6 +1800,7 @@
     }
     @media (max-width: 720px) {
       .animation-settings-grid { grid-template-columns: 1fr; }
+      .animation-settings-grid.animation-timing-grid { grid-template-columns: 1fr; }
       .animation-settings-grid .full-width { grid-column: auto; }
       .intro-image-fields { grid-template-columns: 1fr; }
       .camera-settings-grid { grid-template-columns: 1fr; }
@@ -1916,7 +1920,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.7.5</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.7.6</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -2450,11 +2454,16 @@
                   </div>
                   <button id="reset-intro-animation-times-button" class="secondary-button compact-button" type="button">↺ Återställ originaltider</button>
                 </div>
-                <div class="animation-settings-grid">
+                <div class="animation-settings-grid animation-timing-grid">
                   <div class="field-group">
                     <label id="intro-initial-time-label" class="field-label" for="setting-intro-initial-seconds">Svart väntetid (sekunder)</label>
                     <input id="setting-intro-initial-seconds" type="number" min="0" max="5" step="0.1" inputmode="decimal" value="0.5">
                     <small id="intro-initial-original-note" class="original-time-note">✓ Utprovad originaltid: 0,5 s</small>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label" for="setting-intro-pause-seconds">Paus före öppning (sekunder)</label>
+                    <input id="setting-intro-pause-seconds" type="number" min="0" max="5" step="0.1" inputmode="decimal" value="0">
+                    <small id="intro-pause-original-note" class="original-time-note">✓ Originaltid: 0 s</small>
                   </div>
                   <div class="field-group">
                     <label class="field-label" for="setting-intro-reveal-seconds">Stjärnöppning (sekunder)</label>
@@ -2971,8 +2980,10 @@
     const settingIntroStarColor = document.getElementById("setting-intro-star-color");
     const introInitialTimeLabel = document.getElementById("intro-initial-time-label");
     const settingIntroInitialSeconds = document.getElementById("setting-intro-initial-seconds");
+    const settingIntroPauseSeconds = document.getElementById("setting-intro-pause-seconds");
     const settingIntroRevealSeconds = document.getElementById("setting-intro-reveal-seconds");
     const introInitialOriginalNote = document.getElementById("intro-initial-original-note");
+    const introPauseOriginalNote = document.getElementById("intro-pause-original-note");
     const introRevealOriginalNote = document.getElementById("intro-reveal-original-note");
     const introAnimationActiveSetting = document.getElementById("intro-animation-active-setting");
     const introAnimationCurrentSetting = document.getElementById("intro-animation-current-setting");
@@ -3373,6 +3384,7 @@
       introBackgroundColor: "#000000",
       introStarColor: "#d4af37",
       introInitialDurationMs: 500,
+      introPauseDurationMs: 0,
       introRevealDurationMs: 1000,
       introImageUrl: "bilder/animation/startanimation-second-hand-desktop.webp",
       introImageStoragePath: "",
@@ -3383,6 +3395,7 @@
       introBackgroundColor: defaultSiteSettings.introBackgroundColor,
       introStarColor: defaultSiteSettings.introStarColor,
       introInitialDurationMs: defaultSiteSettings.introInitialDurationMs,
+      introPauseDurationMs: defaultSiteSettings.introPauseDurationMs,
       introRevealDurationMs: defaultSiteSettings.introRevealDurationMs,
       introImageUrl: defaultSiteSettings.introImageUrl,
       introImageStoragePath: defaultSiteSettings.introImageStoragePath,
@@ -3471,6 +3484,9 @@
         introInitialDurationMs: Math.round(
           clampAnimationSeconds(Number(data.introInitialDurationMs) / 1000, 0.5, 0) * 1000
         ),
+        introPauseDurationMs: Math.round(
+          clampAnimationSeconds(Number(data.introPauseDurationMs) / 1000, 0, 0) * 1000
+        ),
         introRevealDurationMs: Math.round(
           clampAnimationSeconds(Number(data.introRevealDurationMs) / 1000, 1, 0.2) * 1000
         ),
@@ -3489,6 +3505,7 @@
         introBackgroundColor: settingIntroBackgroundColor.value,
         introStarColor: settingIntroStarColor.value,
         introInitialDurationMs: Number(settingIntroInitialSeconds.value) * 1000,
+        introPauseDurationMs: Number(settingIntroPauseSeconds.value) * 1000,
         introRevealDurationMs: Number(settingIntroRevealSeconds.value) * 1000,
         introImageUrl: mode === "image"
           ? formIntroImageUrl
@@ -3505,12 +3522,12 @@
     function introAnimationDescription(values) {
       if (values.introAnimationMode === "none") return "Ingen animation";
       if (values.introAnimationMode === "image") {
-        return `Stjärnöppning med bakgrundsbild · ${values.introInitialDurationMs / 1000} s + ${values.introRevealDurationMs / 1000} s`;
+        return `Stjärnöppning med bakgrundsbild · ${values.introInitialDurationMs / 1000} s + paus ${values.introPauseDurationMs / 1000} s + ${values.introRevealDurationMs / 1000} s`;
       }
       const name = values.introAnimationMode === "gold"
         ? "Krympande guldstjärna + stjärnöppning"
         : "Klassisk stjärnöppning";
-      return `${name} · ${values.introInitialDurationMs / 1000} s + ${values.introRevealDurationMs / 1000} s`;
+      return `${name} · ${values.introInitialDurationMs / 1000} s + paus ${values.introPauseDurationMs / 1000} s + ${values.introRevealDurationMs / 1000} s`;
     }
 
     function introAnimationSettingsMatch(first, second) {
@@ -3519,6 +3536,7 @@
       if (
         first.introBackgroundColor !== second.introBackgroundColor
         || first.introInitialDurationMs !== second.introInitialDurationMs
+        || first.introPauseDurationMs !== second.introPauseDurationMs
         || first.introRevealDurationMs !== second.introRevealDurationMs
       ) return false;
       if (first.introAnimationMode === "gold") {
@@ -3534,10 +3552,13 @@
 
     function updateOriginalTimeMarkers() {
       const initialIsOriginal = Math.abs(Number(settingIntroInitialSeconds.value) - 0.5) < 0.001;
+      const pauseIsOriginal = Math.abs(Number(settingIntroPauseSeconds.value)) < 0.001;
       const revealIsOriginal = Math.abs(Number(settingIntroRevealSeconds.value) - 1) < 0.001;
       settingIntroInitialSeconds.classList.toggle("original-time-value", initialIsOriginal);
+      settingIntroPauseSeconds.classList.toggle("original-time-value", pauseIsOriginal);
       settingIntroRevealSeconds.classList.toggle("original-time-value", revealIsOriginal);
       introInitialOriginalNote.hidden = !initialIsOriginal;
+      introPauseOriginalNote.hidden = !pauseIsOriginal;
       introRevealOriginalNote.hidden = !revealIsOriginal;
     }
 
@@ -3590,6 +3611,7 @@
 
     function resetIntroAnimationTimes() {
       settingIntroInitialSeconds.value = "0.5";
+      settingIntroPauseSeconds.value = "0";
       settingIntroRevealSeconds.value = "1";
       introAnimationActionMessage.textContent = "";
       introAnimationActionMessage.className = "message";
@@ -3723,6 +3745,9 @@
       settingIntroInitialSeconds.value = String(
         clampAnimationSeconds(Number(data.introInitialDurationMs) / 1000, 0.5, 0)
       );
+      settingIntroPauseSeconds.value = String(
+        clampAnimationSeconds(Number(data.introPauseDurationMs) / 1000, 0, 0)
+      );
       settingIntroRevealSeconds.value = String(
         clampAnimationSeconds(Number(data.introRevealDurationMs) / 1000, 1, 0.2)
       );
@@ -3752,6 +3777,11 @@
         1,
         0.2
       );
+      const pauseSeconds = clampAnimationSeconds(
+        settingIntroPauseSeconds.value,
+        0,
+        0
+      );
       const previewUrl = new URL("../animation-test.html", window.location.href);
       previewUrl.searchParams.set("mode", settingIntroAnimationMode.value);
       previewUrl.searchParams.set(
@@ -3763,6 +3793,7 @@
         normalizeAnimationColor(settingIntroStarColor.value, "#d4af37")
       );
       previewUrl.searchParams.set("initial", String(initialSeconds));
+      previewUrl.searchParams.set("pause", String(pauseSeconds));
       previewUrl.searchParams.set("reveal", String(revealSeconds));
       const logoSource = currentLogoSource();
       if (logoSource) previewUrl.searchParams.set("logo", logoSource);
@@ -5635,6 +5666,7 @@
     settingIntroBackgroundColor.addEventListener("input", handleIntroAnimationFormChange);
     settingIntroStarColor.addEventListener("input", handleIntroAnimationFormChange);
     settingIntroInitialSeconds.addEventListener("input", handleIntroAnimationFormChange);
+    settingIntroPauseSeconds.addEventListener("input", handleIntroAnimationFormChange);
     settingIntroRevealSeconds.addEventListener("input", handleIntroAnimationFormChange);
     settingIntroImageFit.addEventListener("change", handleIntroAnimationFormChange);
     settingIntroImageFile.addEventListener("change", selectIntroImage);
@@ -5649,6 +5681,9 @@
 
       settingIntroInitialSeconds.value = String(
         clampAnimationSeconds(data.initialSeconds, 0.5, 0)
+      );
+      settingIntroPauseSeconds.value = String(
+        clampAnimationSeconds(data.pauseSeconds, 0, 0)
       );
       settingIntroRevealSeconds.value = String(
         clampAnimationSeconds(data.revealSeconds, 1, 0.2)
