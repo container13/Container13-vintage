@@ -1,5 +1,12 @@
 # Ändringslogg
 
+## Version 6.7.9
+
+- Tar bort den dubblerade butiks- och ortsraden över footerns ikoner.
+- Visar Spotify utan efterföljande text.
+- Gör temaväljaren mindre med tre symbolknappar.
+- Lägger till hoverbeskrivningar och tillgängliga etiketter för temavalet.
+
 ## Version 6.7.8
 
 - Jämnar ut tidsfälten och visar originaltiden under samtliga fält.
