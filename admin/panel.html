@@ -1753,7 +1753,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.6.1</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.6.2</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -1860,7 +1860,7 @@
                 <div class="dashboard-detail"><span>Inloggad som</span><strong id="dashboard-user">–</strong></div>
                 <div class="dashboard-detail"><span>Papperskorg</span><strong id="dashboard-trash-retention">Automatisk rensning efter 2 dagar</strong></div>
               </div>
-              <p class="dashboard-version">Container13 Adminpanel · Version 6.6.1</p>
+              <p class="dashboard-version">Container13 Adminpanel · Version 6.6.2</p>
             </section>
           </div>
         </section>
@@ -2249,7 +2249,7 @@
                 <button class="animation-mode-card" type="button" data-intro-mode="image">
                   <span class="animation-mode-icon">▧</span>
                   <strong>Bakgrundsbild</strong>
-                  <small>En bild öppnas med stjärnan</small>
+                  <small>Guldstjärnan krymper över bilden</small>
                 </button>
                 <button class="animation-mode-card" type="button" data-intro-mode="none">
                   <span class="animation-mode-icon">○</span>
@@ -3231,7 +3231,8 @@
       }
       if (first.introAnimationMode === "image") {
         return first.introImageUrl === second.introImageUrl
-          && first.introImageFit === second.introImageFit;
+          && first.introImageFit === second.introImageFit
+          && first.introStarColor === second.introStarColor;
       }
       return true;
     }
@@ -3251,8 +3252,14 @@
         : "classic";
       const disabled = mode === "none";
       animationSettingsFields.classList.toggle("animation-setting-hidden", disabled);
-      introGoldColorField.classList.toggle("animation-setting-hidden", mode !== "gold");
-      introColorGrid.classList.toggle("single-column", mode !== "gold");
+      introGoldColorField.classList.toggle(
+        "animation-setting-hidden",
+        mode !== "gold" && mode !== "image"
+      );
+      introColorGrid.classList.toggle(
+        "single-column",
+        mode !== "gold" && mode !== "image"
+      );
       introImageFields.classList.toggle("animation-setting-hidden", mode !== "image");
       settingIntroModeQuick.value = mode;
       animationModeCards.forEach((card) => {
@@ -3260,10 +3267,8 @@
         card.classList.toggle("selected", selected);
         card.setAttribute("aria-pressed", String(selected));
       });
-      introInitialTimeLabel.textContent = mode === "gold"
+      introInitialTimeLabel.textContent = mode === "gold" || mode === "image"
         ? "Guldstjärnans krymptid (sekunder)"
-        : mode === "image"
-          ? "Bildens väntetid (sekunder)"
         : "Svart väntetid (sekunder)";
       updateOriginalTimeMarkers();
       const formValues = getIntroAnimationFormValues();
