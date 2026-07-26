@@ -110,19 +110,12 @@
     </div>
   </main>
 
-  <svg
+  <canvas
     id="animation-overlay"
     class="animation-overlay"
     aria-hidden="true"
-    focusable="false"
     hidden
-  >
-    <path
-      id="animation-path"
-      fill-rule="evenodd"
-      clip-rule="evenodd"
-    ></path>
-  </svg>
+  ></canvas>
 
   <script>
   (() => {
@@ -147,7 +140,7 @@
     };
 
     const overlay = document.getElementById("animation-overlay");
-    const path = document.getElementById("animation-path");
+    const context = overlay.getContext("2d");
     const summary = document.getElementById("preview-summary");
     const runButton = document.getElementById("run-preview-button");
     const closeButton = document.getElementById("close-preview-button");
@@ -166,27 +159,40 @@
       ? modeNames.none
       : `${modeNames[settings.mode]} · ${settings.initialDuration / 1000} s + ${settings.revealDuration / 1000} s`;
 
-    function starShape(width, height, radius) {
+    function drawStar(width, height, radius) {
       const cx = width / 2;
       const cy = height / 2;
-      const points = [];
-
+      context.beginPath();
       for (let index = 0; index < 10; index += 1) {
         const angle = -Math.PI / 2 + index * Math.PI / 5;
         const pointRadius = index % 2 === 0 ? radius : radius * 0.46;
-        points.push(
-          `${cx + Math.cos(angle) * pointRadius} ${cy + Math.sin(angle) * pointRadius}`
-        );
+        const x = cx + Math.cos(angle) * pointRadius;
+        const y = cy + Math.sin(angle) * pointRadius;
+        if (index === 0) context.moveTo(x, y);
+        else context.lineTo(x, y);
       }
-
-      return `M ${points.join(" L ")} Z`;
+      context.closePath();
     }
 
-    function starCutout(width, height, radius) {
-      return (
-        `M 0 0 H ${width} V ${height} H 0 Z ` +
-        starShape(width, height, radius)
-      );
+    function paintReveal(width, height, radius) {
+      context.globalCompositeOperation = "source-over";
+      context.clearRect(0, 0, width, height);
+      context.fillStyle = settings.backgroundColor;
+      context.fillRect(0, 0, width, height);
+      context.globalCompositeOperation = "destination-out";
+      drawStar(width, height, radius);
+      context.fill();
+      context.globalCompositeOperation = "source-over";
+    }
+
+    function paintGold(width, height, radius) {
+      context.globalCompositeOperation = "source-over";
+      context.clearRect(0, 0, width, height);
+      context.fillStyle = settings.backgroundColor;
+      context.fillRect(0, 0, width, height);
+      context.fillStyle = settings.starColor;
+      drawStar(width, height, radius);
+      context.fill();
     }
 
     function stopAnimation() {
@@ -215,12 +221,14 @@
 
       const width = window.innerWidth;
       const height = window.innerHeight;
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
       const diagonal = Math.hypot(width / 2, height / 2);
       const revealRadius = diagonal * 2.25;
       const goldRadius = (diagonal / 0.46) * 1.2;
 
-      overlay.setAttribute("viewBox", `0 0 ${width} ${height}`);
-      overlay.setAttribute("preserveAspectRatio", "none");
+      overlay.width = Math.round(width * pixelRatio);
+      overlay.height = Math.round(height * pixelRatio);
+      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
       overlay.hidden = false;
 
       const reveal = () => {
@@ -236,9 +244,7 @@
           const eased = Math.pow(progress, 1.35);
           const radius = 6 + (revealRadius - 6) * eased;
 
-          overlay.style.background = "transparent";
-          path.setAttribute("fill", settings.backgroundColor);
-          path.setAttribute("d", starCutout(width, height, radius));
+          paintReveal(width, height, radius);
 
           if (progress < 1) {
             animationFrame = requestAnimationFrame(animateReveal);
@@ -252,9 +258,7 @@
 
       if (settings.mode === "gold") {
         let startedAt = null;
-        overlay.style.background = settings.backgroundColor;
-        path.setAttribute("fill", settings.starColor);
-        path.setAttribute("d", starShape(width, height, goldRadius));
+        paintGold(width, height, goldRadius);
 
         const shrinkGold = (now) => {
           if (currentRun !== runNumber) return;
@@ -263,23 +267,19 @@
           const progress = Math.min(1, (now - startedAt) / duration);
           const smooth = progress * progress * (3 - 2 * progress);
           const radius = goldRadius * (1 - smooth);
-          path.setAttribute("d", starShape(width, height, radius));
+          paintGold(width, height, radius);
 
           if (progress < 1 && settings.initialDuration > 0) {
             animationFrame = requestAnimationFrame(shrinkGold);
           } else {
-            overlay.style.background = "transparent";
-            path.setAttribute("fill", settings.backgroundColor);
-            path.setAttribute("d", starCutout(width, height, 0));
+            paintReveal(width, height, 0);
             reveal();
           }
         };
 
         animationFrame = requestAnimationFrame(shrinkGold);
       } else {
-        overlay.style.background = "transparent";
-        path.setAttribute("fill", settings.backgroundColor);
-        path.setAttribute("d", starCutout(width, height, 0));
+        paintReveal(width, height, 0);
         startTimer = window.setTimeout(reveal, settings.initialDuration);
       }
 

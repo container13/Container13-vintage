@@ -1,5 +1,10 @@
 # Ändringslogg
 
+## Version 6.5.2
+
+- Byter förhandsvisningens SVG-ritning mot stabil canvas-ritning.
+- Rättar felet där knappen Kör testet igen inte visade någon animation i Chrome.
+
 ## Version 6.5.1
 
 - Lägger till knappen Förhandsgranska animation i adminpanelen.
