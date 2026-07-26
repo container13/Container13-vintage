@@ -993,34 +993,28 @@ main > #nyGallery.gallery {
 .sociala .spotify-footer-link {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
   font-size: 1.8rem;
-}
-
-.sociala .spotify-footer-link span {
-  font-size: 0.92rem;
-  font-weight: 700;
 }
 
 .theme-picker {
   display: grid;
   justify-items: center;
-  gap: 9px;
-  margin: 18px auto 4px;
+  gap: 6px;
+  margin: 14px auto 2px;
 }
 
 .theme-picker-title {
   color: #d8d2c8;
-  font-size: 0.84rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .theme-picker-options {
   display: inline-flex;
-  gap: 5px;
-  padding: 4px;
+  gap: 2px;
+  padding: 3px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.06);
@@ -1029,15 +1023,16 @@ main > #nyGallery.gallery {
 .theme-picker button {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  min-height: 34px;
-  padding: 6px 11px;
+  justify-content: center;
+  width: 36px;
+  min-height: 32px;
+  padding: 5px;
   border: 0;
   border-radius: 999px;
   color: #ded8ce;
   background: transparent;
   font: inherit;
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
 }
@@ -1164,17 +1159,17 @@ html[data-theme="dark"] footer {
   }
 
   .sociala .spotify-footer-link {
-    width: 100%;
+    width: auto;
     justify-content: center;
-    margin-top: 2px;
+    margin-top: 0;
   }
 
   .theme-picker-options {
-    width: min(100%, 300px);
+    width: auto;
   }
 
   .theme-picker button {
-    flex: 1;
+    flex: 0 0 36px;
     justify-content: center;
   }
 }
