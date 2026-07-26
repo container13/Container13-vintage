@@ -1,5 +1,20 @@
 # Ändringslogg
 
+## Version 6.7.4
+
+- Lägger in en särskild Second Hand-bakgrund för dator och en för mobil.
+- Väljer automatiskt rätt bild efter skärmens format.
+- Använder Second Hand-bakgrunden som förvald bild i startanimationen.
+- Gör bildanimationen till standard när inga tidigare sparade inställningar finns.
+- Behåller möjligheten att ladda upp och aktivera en egen bakgrundsbild.
+
+## Version 6.7.3
+
+- Gör patinalogotypen tydligare sliten med fler repor, färgskav och oregelbundna märken.
+- Behåller tryckerilogotypens gula färg, mörka kontur och läsbara bokstavsformer.
+- Ger hela logotypen transparent bakgrund och jämna marginaler.
+- Säkerställer att varken vänstra C:et eller högra 3:an kapas.
+
 ## Version 6.7.2
 
 - Tar bort den gamla logotypens negativa marginal på dator.

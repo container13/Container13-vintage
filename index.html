@@ -17,7 +17,7 @@
 
 <title>Container 13 Vintage</title>
 
-<link rel="stylesheet" href="css/style.css?v=6.7.2">
+<link rel="stylesheet" href="css/style.css?v=6.7.4">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
@@ -480,7 +480,7 @@ inspireras.
 
 
 
-<script type="module" src="js/layout.js?v=6.7.2"></script>
+<script type="module" src="js/layout.js?v=6.7.4"></script>
 <script defer src="js/senaste-nytt.js?v=6.2.1"></script>
 <script type="module" src="js/analytics.js?v=6.3.0"></script>
 
@@ -488,13 +488,17 @@ inspireras.
 (() => {
   const SETTINGS_URL =
     "https://firestore.googleapis.com/v1/projects/container13-87c1a/databases/(default)/documents/settings/site?key=AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw";
+  const DEFAULT_INTRO_DESKTOP_IMAGE =
+    "bilder/animation/startanimation-second-hand-desktop.webp";
+  const DEFAULT_INTRO_MOBILE_IMAGE =
+    "bilder/animation/startanimation-second-hand-mobile.webp";
   const defaultIntroSettings = {
-    mode: "classic",
+    mode: "image",
     backgroundColor: "#000000",
     starColor: "#d4af37",
     initialDuration: 500,
     revealDuration: 1000,
-    imageUrl: "",
+    imageUrl: DEFAULT_INTRO_DESKTOP_IMAGE,
     imageFit: "cover"
   };
   const root = document.documentElement;
@@ -770,7 +774,7 @@ inspireras.
   }
 
   async function loadIntroImage() {
-    if (introSettings.mode !== "image" || !introSettings.imageUrl) return;
+    if (introSettings.mode !== "image") return;
     await new Promise((resolve) => {
       const image = new Image();
       const timer = window.setTimeout(resolve, 3000);
@@ -783,7 +787,21 @@ inspireras.
         clearTimeout(timer);
         resolve();
       };
-      image.src = introSettings.imageUrl;
+      const savedSource =
+        introSettings.imageUrl || DEFAULT_INTRO_DESKTOP_IMAGE;
+      const useResponsivePreset =
+        savedSource === DEFAULT_INTRO_DESKTOP_IMAGE
+        || savedSource.endsWith(
+          "/bilder/animation/startanimation-second-hand-desktop.webp"
+        );
+      const source = useResponsivePreset
+        ? (
+          window.matchMedia("(orientation: portrait), (max-width: 700px)").matches
+            ? DEFAULT_INTRO_MOBILE_IMAGE
+            : DEFAULT_INTRO_DESKTOP_IMAGE
+        )
+        : savedSource;
+      image.src = new URL(source, document.baseURI).href;
     });
   }
 

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'container13-site-v6.7.2';
+const CACHE_NAME = 'container13-site-v6.7.4';
 const APP_SHELL = [
   './',
   './index.html',
@@ -11,6 +11,8 @@ const APP_SHELL = [
   './js/theme-init.js',
   './js/theme-controls.js',
   './bilder/logotyp/logo-patina.png',
+  './bilder/animation/startanimation-second-hand-desktop.webp',
+  './bilder/animation/startanimation-second-hand-mobile.webp',
   './icons/icon-192.png'
 ];
 self.addEventListener('install', event => { event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL))); self.skipWaiting(); });

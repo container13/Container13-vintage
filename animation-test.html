@@ -209,15 +209,31 @@
     };
 
     const requestedMode = params.get("mode");
+    const defaultDesktopImage =
+      "bilder/animation/startanimation-second-hand-desktop.webp";
+    const defaultMobileImage =
+      "bilder/animation/startanimation-second-hand-mobile.webp";
+    const requestedImage = params.get("image") || defaultDesktopImage;
+    const responsivePreset =
+      requestedImage === defaultDesktopImage
+      || requestedImage.endsWith(
+        "/bilder/animation/startanimation-second-hand-desktop.webp"
+      );
     const settings = {
       mode: ["classic", "gold", "image", "none"].includes(requestedMode)
         ? requestedMode
-        : "classic",
+        : "image",
       backgroundColor: validColor(params.get("background"), "#000000"),
       starColor: validColor(params.get("star"), "#d4af37"),
       initialDuration: clampSeconds(params.get("initial"), 0.5, 0) * 1000,
       revealDuration: clampSeconds(params.get("reveal"), 1, 0.2) * 1000,
-      imageUrl: params.get("image") || "",
+      imageUrl: responsivePreset
+        ? (
+          window.matchMedia("(orientation: portrait), (max-width: 700px)").matches
+            ? defaultMobileImage
+            : defaultDesktopImage
+        )
+        : requestedImage,
       imageFit: params.get("fit") === "contain" ? "contain" : "cover"
     };
 
@@ -499,7 +515,7 @@
         summary.textContent += " · Bilden kunde inte laddas, reservfärgen visas";
         runPreview();
       };
-      previewImage.src = settings.imageUrl;
+      previewImage.src = new URL(settings.imageUrl, document.baseURI).href;
     } else {
       runPreview();
     }
