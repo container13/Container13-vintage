@@ -1300,13 +1300,6 @@
       background: var(--row-background);
     }
     .quick-mode-setting input { margin-top: 3px; transform: scale(1.25); }
-    @media (max-width: 700px) {
-      .camera-primary-button { min-height: 150px; }
-      .camera-primary-title { font-size: 30px; }
-      .camera-status-row { grid-template-columns: 1fr; }
-      .photo-actions > button { width:100%; }
-    }
-
     .settings-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1402,82 +1395,25 @@
       }
     }
     @media (max-width: 720px) {
-      /* VERSION 6.0 – SNABBFOTO */
-    .camera-hero {
-      margin-bottom: 18px;
-      padding: 0;
-      overflow: hidden;
-      border: 1px solid var(--accent);
-      border-radius: 12px;
-      background: linear-gradient(135deg, #fffaf2, #f3e5d1);
+      .camera-hero { margin-bottom: 18px; }
+      .camera-primary-button {
+        min-height: 132px;
+        padding: 24px;
+        gap: 8px;
+      }
+      .camera-primary-icon { font-size: 42px; }
+      .camera-primary-title { font-size: 27px; }
+      .camera-primary-subtitle { font-size: 14px; }
+      .camera-status-row { padding: 14px 18px; }
+      .settings-grid { grid-template-columns: 1fr; }
+      .settings-grid .full-width { grid-column: auto; }
     }
-    .camera-primary-button {
-      width: 100%;
-      min-height: 132px;
-      padding: 24px;
-      border: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      color: #fff;
-      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-      font-weight: 800;
-      text-align: center;
-    }
-    .camera-primary-button:hover { filter: brightness(1.04); }
-    .camera-primary-icon { font-size: 42px; line-height: 1; }
-    .camera-primary-title { font-size: 27px; letter-spacing: .5px; }
-    .camera-primary-subtitle { font-size: 14px; font-weight: 600; opacity: .9; }
-    .camera-status-row {
-      padding: 14px 18px;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      background: #fff;
-    }
-    .camera-status-item { display:flex; justify-content:space-between; gap:10px; }
-    .camera-status-item span { color: var(--muted); }
-    .photo-actions {
-      display: none;
-      margin-top: 14px;
-      padding: 14px;
-      gap: 10px;
-      flex-wrap: wrap;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: var(--row-background);
-    }
-    .photo-actions.visible { display:flex; }
-    .secondary-action-button,
-    .danger-action-button {
-      padding: 12px 16px;
-      border-radius: 7px;
-      font-weight: 700;
-    }
-    .secondary-action-button { border:1px solid var(--accent); color:var(--accent-dark); background:#fff; }
-    .danger-action-button { border:1px solid #b45a5a; color:#8a2626; background:#fff6f6; }
-    .quick-mode-setting {
-      margin-top: 18px;
-      padding: 14px;
-      display: flex;
-      align-items: flex-start;
-      gap: 11px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--row-background);
-    }
-    .quick-mode-setting input { margin-top: 3px; transform: scale(1.25); }
+
     @media (max-width: 700px) {
       .camera-primary-button { min-height: 150px; }
       .camera-primary-title { font-size: 30px; }
       .camera-status-row { grid-template-columns: 1fr; }
       .photo-actions > button { width:100%; }
-    }
-
-    .settings-grid { grid-template-columns: 1fr; }
-      .settings-grid .full-width { grid-column: auto; }
     }
 
 
@@ -2116,7 +2052,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.9.1</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.9.2</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
