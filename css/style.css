@@ -951,7 +951,7 @@ main > #nyGallery.gallery {
   display: block;
   width: min(680px, 82vw);
   max-width: none;
-  margin: 0 auto -50px;
+  margin: 0 auto 18px;
 }
 
 .page-header h1 {
@@ -966,5 +966,215 @@ main > #nyGallery.gallery {
   .page-header .logo-small {
     width: min(320px, 86vw);
     margin-bottom: 24px;
+  }
+}
+
+/* =========================================================
+   VERSION 6.7.0 - BESÖKARENS TEMA, SPOTIFY OCH NY LOGOTYP
+   ========================================================= */
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.sociala {
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.sociala .spotify-footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.8rem;
+}
+
+.sociala .spotify-footer-link span {
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.theme-picker {
+  display: grid;
+  justify-items: center;
+  gap: 9px;
+  margin: 18px auto 4px;
+}
+
+.theme-picker-title {
+  color: #d8d2c8;
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.theme-picker-options {
+  display: inline-flex;
+  gap: 5px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.theme-picker button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 34px;
+  padding: 6px 11px;
+  border: 0;
+  border-radius: 999px;
+  color: #ded8ce;
+  background: transparent;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.theme-picker button:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.10);
+}
+
+.theme-picker button.selected {
+  color: #211d16;
+  background: #d4af37;
+}
+
+.theme-picker button:focus-visible {
+  outline: 2px solid #f0cf65;
+  outline-offset: 2px;
+}
+
+html[data-theme="dark"] body {
+  color: #f2ede4;
+  background: #171614;
+}
+
+html[data-theme="dark"] .sidhuvud,
+html[data-theme="dark"] .sidhuvud nav,
+html[data-theme="dark"] .oppet-status {
+  background: #1d1b18;
+}
+
+html[data-theme="dark"] .sidhuvud {
+  border-bottom-color: rgba(212, 175, 55, 0.42);
+}
+
+html[data-theme="dark"] .sidhuvud nav {
+  border-bottom-color: rgba(212, 175, 55, 0.24);
+}
+
+html[data-theme="dark"] .sidhuvud nav a,
+html[data-theme="dark"] .oppet-status-text {
+  color: #f4efe6;
+}
+
+html[data-theme="dark"] .sidhuvud nav a:hover,
+html[data-theme="dark"] .sidhuvud nav a[aria-current="page"] {
+  color: #e1bd45;
+}
+
+html[data-theme="dark"] .informations-meddelande,
+html[data-theme="dark"] .nya-plagg-notis {
+  color: #e0bd50;
+}
+
+html[data-theme="dark"] .undertitel,
+html[data-theme="dark"] .page-header p,
+html[data-theme="dark"] .oppettider-information,
+html[data-theme="dark"] .senaste-nytt-rubrik p,
+html[data-theme="dark"] .senaste-nytt-status,
+html[data-theme="dark"] .gallery-status {
+  color: #c8c0b4;
+}
+
+html[data-theme="dark"] .intro,
+html[data-theme="dark"] .kontakt section,
+html[data-theme="dark"] .oppettider-lista {
+  color: #f2ede4;
+  background: #24211d;
+  border-color: rgba(212, 175, 55, 0.25);
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.22);
+}
+
+html[data-theme="dark"] .kontakt a {
+  color: #f2ede4;
+}
+
+html[data-theme="dark"] .kontakt a:hover {
+  color: #e1bd45;
+}
+
+html[data-theme="dark"] .oppettider-rad,
+html[data-theme="dark"] .oppettid-rad {
+  border-color: rgba(255, 255, 255, 0.13);
+}
+
+html[data-theme="dark"] .senaste-nytt-kort,
+html[data-theme="dark"] #nyGallery .nyinkommet-kort,
+html[data-theme="dark"] #gallery .gallery-item.nyinkommet-kort.galleri-kort {
+  color: #f2ede4 !important;
+  background: #26231f !important;
+  border-color: rgba(212, 175, 55, 0.25) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.30) !important;
+}
+
+html[data-theme="dark"] #nyGallery .nyinkommet-info {
+  color: #f2ede4;
+  background: #26231f;
+}
+
+html[data-theme="dark"] #nyGallery .nyinkommet-titel {
+  color: #f2ede4;
+}
+
+html[data-theme="dark"] .senaste-nytt-bild,
+html[data-theme="dark"] #nyGallery .nyinkommet-bildknapp,
+html[data-theme="dark"] #gallery .galleri-kort .nyinkommet-bildknapp,
+html[data-theme="dark"] .gallery-image-shell,
+html[data-theme="dark"] .image-card-loading {
+  background: #302c27 !important;
+}
+
+html[data-theme="dark"] .senaste-nytt-datum,
+html[data-theme="dark"] #nyGallery .nyinkommet-datum {
+  color: #e0bd50;
+}
+
+html[data-theme="dark"] footer {
+  color: #f5f1ea;
+  background: #0e0d0c;
+}
+
+@media (max-width: 520px) {
+  .sociala {
+    gap: 18px;
+  }
+
+  .sociala .spotify-footer-link {
+    width: 100%;
+    justify-content: center;
+    margin-top: 2px;
+  }
+
+  .theme-picker-options {
+    width: min(100%, 300px);
+  }
+
+  .theme-picker button {
+    flex: 1;
+    justify-content: center;
   }
 }
