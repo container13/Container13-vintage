@@ -1426,6 +1426,85 @@
     }
     .settings-subcard h3 { margin: 0 0 8px; font-size: 20px; }
     .settings-subcard > p { margin: 0 0 18px; color: var(--muted); line-height: 1.55; }
+    .about-settings-editor {
+      display: grid;
+      gap: 16px;
+    }
+    .about-visibility { margin: 0; }
+    .about-variant-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .about-variant-card {
+      position: relative;
+      display: block;
+      cursor: pointer;
+    }
+    .about-variant-card input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .about-variant-card > span {
+      display: grid;
+      align-content: start;
+      gap: 5px;
+      min-height: 96px;
+      padding: 14px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      transition: border-color .18s ease, background .18s ease;
+    }
+    .about-variant-card:hover > span {
+      border-color: #c39a29;
+      background: #fffcf1;
+    }
+    .about-variant-card input:checked + span {
+      border-color: #b58b00;
+      background: #fff7d6;
+      box-shadow: 0 0 0 2px rgba(212, 175, 55, .16);
+    }
+    .about-variant-card input:focus-visible + span {
+      outline: 3px solid rgba(181, 139, 0, .35);
+      outline-offset: 2px;
+    }
+    .about-variant-card small {
+      color: var(--muted);
+      line-height: 1.35;
+    }
+    .about-text-editor {
+      display: grid;
+      gap: 13px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--row-background);
+    }
+    .about-text-editor textarea {
+      width: 100%;
+      min-height: 190px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: #fff;
+      color: var(--text);
+      font: inherit;
+      line-height: 1.55;
+      resize: vertical;
+    }
+    .about-text-editor textarea:focus {
+      border-color: var(--accent);
+      outline: 2px solid rgba(212, 175, 55, .2);
+    }
+    .about-action-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .about-action-row .save-button { margin-left: auto; }
     .spotify-editor {
       display: grid;
       gap: 16px;
@@ -1521,6 +1600,17 @@
       margin-top: 0;
     }
     @media (max-width: 760px) {
+      .about-variant-grid { grid-template-columns: 1fr; }
+      .about-variant-card > span { min-height: 0; }
+      .about-action-row {
+        align-items: stretch;
+        flex-direction: column;
+      }
+      .about-action-row button,
+      .about-action-row .save-button {
+        width: 100%;
+        margin-left: 0;
+      }
       .spotify-add-grid { grid-template-columns: 1fr; }
       .spotify-add-grid > button { width: 100%; }
       .spotify-playlist-row {
@@ -2052,7 +2142,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.9.2</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.10.0</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -2720,6 +2810,68 @@
               </div>
             </div>
 
+            <div class="settings-subcard about-settings-editor">
+              <h3>Om oss</h3>
+              <p>Välj en av tre texter, ändra den om du vill och förhandsgranska innan den visas på hemsidan.</p>
+
+              <label class="quick-mode-setting about-visibility">
+                <input id="setting-about-enabled" type="checkbox">
+                <span>
+                  <strong>Visa Om oss på hemsidan</strong><br>
+                  <small>När valet stängs av döljs även Om oss i huvudmenyn.</small>
+                </span>
+              </label>
+
+              <div class="about-variant-grid" role="radiogroup" aria-label="Välj text till Om oss">
+                <label class="about-variant-card">
+                  <input type="radio" name="about-variant" value="personal">
+                  <span>
+                    <strong>1. Kort och personlig</strong>
+                    <small>Varm, enkel och lågmäld.</small>
+                  </span>
+                </label>
+
+                <label class="about-variant-card">
+                  <input type="radio" name="about-variant" value="story">
+                  <span>
+                    <strong>2. Berättande</strong>
+                    <small>Mer om Holma Market och butikens början.</small>
+                  </span>
+                </label>
+
+                <label class="about-variant-card">
+                  <input type="radio" name="about-variant" value="energy">
+                  <span>
+                    <strong>3. Driv och personlighet</strong>
+                    <small>Fotboll, kläder, sömnad och nyfikenhet.</small>
+                  </span>
+                </label>
+              </div>
+
+              <div class="about-text-editor">
+                <div class="field-group">
+                  <label class="field-label" for="setting-about-heading">Rubrik</label>
+                  <input id="setting-about-heading" type="text" maxlength="140">
+                </div>
+
+                <div class="field-group">
+                  <label class="field-label" for="setting-about-body">Text</label>
+                  <textarea id="setting-about-body" rows="9" maxlength="5000"></textarea>
+                  <small class="field-help">Lämna en tom rad mellan styckena.</small>
+                </div>
+
+                <div id="about-active-setting" class="setting-summary">Om oss är inte aktiverad.</div>
+
+                <div class="about-action-row">
+                  <button id="reset-about-text-button" class="secondary-button" type="button">↺ Återställ den här texten</button>
+                  <button id="preview-about-button" class="secondary-button" type="button">👁 Förhandsgranska</button>
+                  <button id="save-about-settings-button" class="save-button" type="button">Spara och aktivera Om oss</button>
+                </div>
+
+                <div id="about-settings-message" class="message" role="status" aria-live="polite"></div>
+              </div>
+            </div>
+
             <div class="settings-subcard">
               <h3>Spotify-spellistor</h3>
               <p>Lägg till flera spellistor och välj vilken Spotifyikonen i footern ska öppna.</p>
@@ -3121,6 +3273,15 @@
     const settingFacebook = document.getElementById("setting-facebook");
     const settingInstagram = document.getElementById("setting-instagram");
     const settingTiktok = document.getElementById("setting-tiktok");
+    const settingAboutEnabled = document.getElementById("setting-about-enabled");
+    const aboutVariantRadios = Array.from(document.querySelectorAll('input[name="about-variant"]'));
+    const settingAboutHeading = document.getElementById("setting-about-heading");
+    const settingAboutBody = document.getElementById("setting-about-body");
+    const aboutActiveSetting = document.getElementById("about-active-setting");
+    const resetAboutTextButton = document.getElementById("reset-about-text-button");
+    const previewAboutButton = document.getElementById("preview-about-button");
+    const saveAboutSettingsButton = document.getElementById("save-about-settings-button");
+    const aboutSettingsMessage = document.getElementById("about-settings-message");
     const settingShowSpotify = document.getElementById("setting-show-spotify");
     const spotifyPlaylistList = document.getElementById("spotify-playlist-list");
     const settingSpotifyName = document.getElementById("setting-spotify-name");
@@ -3538,6 +3699,33 @@
       specialDateInput.value = "";
     }
 
+    const defaultAboutTexts = {
+      personal: {
+        heading: "Hej! Det är vi som har Container 13.",
+        body: `Vi heter Alvin Brisvåg och Cornelia Åström. Container 13 började med att vi sålde second hand-kläder på nätet och via Holma Market, samtidigt som vi åkte runt på loppisar. Efter ett tag ville vi prova att öppna en liten butik här i Hudiksvall.
+
+Vi tycker särskilt mycket om äldre jeans, fotbollströjor, boots och andra plagg som känns lite mer personliga. Ibland lagar eller syr vi om sådant som fortfarande har mycket kvar att ge.
+
+Butiken fylls på efter hand med sådant vi själva gillar och hittar. Det är egentligen inte krångligare än så. Vi försöker bara skapa en butik som vi själva gärna skulle besöka.`
+      },
+      story: {
+        heading: "Från nätförsäljning till en liten butik i Hudiksvall",
+        body: `Container 13 drivs av Alvin Brisvåg och Cornelia Åström. Det började med second hand-försäljning på nätet och via Holma Market, men efter många loppisrundor och ett växande klädintresse ville vi prova att skapa något eget.
+
+I butiken samlar vi sådant vi själva tycker om: framför allt äldre jeans, fotbollströjor, boots och accessoarer. Vi gillar plagg som redan har en historia, och försöker laga eller sy om sådant som fortfarande har mycket kvar att ge.
+
+Sortimentet växer fram efter hand beroende på vad vi hittar. Förhoppningen är helt enkelt att Container 13 ska vara ett trevligt ställe att titta in på och kanske hitta något man inte såg någon annanstans.`
+      },
+      energy: {
+        heading: "Nya mål, gamla jeans och mycket nyfikenhet",
+        body: `Container 13 har vuxit fram ur flera intressen som fått mötas: fotboll, äldre kläder, sömnad och jakten på bra loppisfynd. Alvin spelar fotboll i Hudiksvalls FF och driver butiken tillsammans med Cornelia.
+
+Det som började med försäljning på nätet och via Holma Market blev till slut en egen butik på Marknadsgatan. Här finns äldre jeans, fotbollströjor, boots och andra saker som vi själva fastnat för.
+
+Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och försöker ha roligt under tiden.`
+      }
+    };
+
     const defaultSiteSettings = {
       storeName: "Container 13 Vintage",
       city: "Hudiksvall",
@@ -3555,6 +3743,9 @@
         url: "https://open.spotify.com/playlist/1NJmcRHooRh6wvHi9F0qlL"
       }],
       activeSpotifyPlaylistId: "spotify-1NJmcRHooRh6wvHi9F0qlL",
+      aboutEnabled: false,
+      aboutVariant: "personal",
+      aboutTexts: defaultAboutTexts,
       copyright: "© 2026 Container 13 Vintage",
       logoMode: "patina",
       customLogoUrl: "",
@@ -3574,6 +3765,103 @@
     };
     let spotifyPlaylists = [];
     let activeSpotifyPlaylistId = "";
+    let aboutEditorVariant = "personal";
+    let aboutTextsDraft = {};
+    let activeAboutSettings = {
+      enabled: false,
+      variant: "personal"
+    };
+
+    function cloneDefaultAboutTexts() {
+      return Object.fromEntries(
+        Object.entries(defaultAboutTexts).map(([key, value]) => [
+          key,
+          { heading: value.heading, body: value.body }
+        ])
+      );
+    }
+
+    function normalizeAboutTexts(value) {
+      const source = value && typeof value === "object" ? value : {};
+      return Object.fromEntries(
+        Object.entries(defaultAboutTexts).map(([key, fallback]) => {
+          const item = source[key] && typeof source[key] === "object" ? source[key] : {};
+          return [key, {
+            heading: String(item.heading || fallback.heading).slice(0, 140),
+            body: String(item.body || fallback.body).slice(0, 5000)
+          }];
+        })
+      );
+    }
+
+    function selectedAboutVariant() {
+      return aboutVariantRadios.find((radio) => radio.checked)?.value || "personal";
+    }
+
+    function storeAboutEditorDraft(variant = aboutEditorVariant) {
+      if (!aboutTextsDraft[variant]) return;
+      aboutTextsDraft[variant] = {
+        heading: settingAboutHeading.value.trim(),
+        body: settingAboutBody.value.trim()
+      };
+    }
+
+    function showAboutStatus(text, type = "") {
+      aboutSettingsMessage.textContent = text;
+      aboutSettingsMessage.className = type ? `message ${type}` : "message";
+    }
+
+    function updateAboutActiveSummary() {
+      const labels = {
+        personal: "Kort och personlig",
+        story: "Berättande",
+        energy: "Driv och personlighet"
+      };
+      aboutActiveSetting.textContent = activeAboutSettings.enabled
+        ? `✓ Aktiv på hemsidan: ${labels[activeAboutSettings.variant] || labels.personal}`
+        : "Om oss är inte aktiverad på hemsidan.";
+      aboutActiveSetting.classList.toggle("active", activeAboutSettings.enabled);
+      saveAboutSettingsButton.textContent = settingAboutEnabled.checked
+        ? "Spara och aktivera Om oss"
+        : "Spara och dölj Om oss";
+    }
+
+    function renderAboutEditor() {
+      const variant = selectedAboutVariant();
+      aboutEditorVariant = variant;
+      const value = aboutTextsDraft[variant] || defaultAboutTexts[variant];
+      settingAboutHeading.value = value.heading;
+      settingAboutBody.value = value.body;
+      showAboutStatus("");
+      updateAboutActiveSummary();
+    }
+
+    function resetSelectedAboutText() {
+      const variant = selectedAboutVariant();
+      aboutTextsDraft[variant] = {
+        heading: defaultAboutTexts[variant].heading,
+        body: defaultAboutTexts[variant].body
+      };
+      renderAboutEditor();
+      showAboutStatus("Originaltexten för det valda alternativet är återställd. Spara för att aktivera ändringen.", "success");
+    }
+
+    function previewAboutPage() {
+      storeAboutEditorDraft();
+      const variant = selectedAboutVariant();
+      const selected = aboutTextsDraft[variant];
+      if (!selected.heading || !selected.body) {
+        showAboutStatus("Fyll i både rubrik och text före förhandsgranskningen.", "error");
+        return;
+      }
+      localStorage.setItem("c13AboutPreview", JSON.stringify({
+        aboutEnabled: true,
+        aboutVariant: variant,
+        aboutTexts: aboutTextsDraft
+      }));
+      window.open("../omoss.html?about-preview=1", "_blank");
+    }
+
     let activeIntroAnimationSettings = {
       introAnimationMode: defaultSiteSettings.introAnimationMode,
       introBackgroundColor: defaultSiteSettings.introBackgroundColor,
@@ -4222,6 +4510,18 @@
       settingFacebook.value = data.facebook || "";
       settingInstagram.value = data.instagram || "";
       settingTiktok.value = data.tiktok || "";
+      settingAboutEnabled.checked = data.aboutEnabled === true;
+      aboutTextsDraft = normalizeAboutTexts(data.aboutTexts);
+      aboutEditorVariant = ["personal", "story", "energy"].includes(data.aboutVariant)
+        ? data.aboutVariant
+        : "personal";
+      activeAboutSettings = {
+        enabled: data.aboutEnabled === true,
+        variant: aboutEditorVariant
+      };
+      const aboutRadio = aboutVariantRadios.find((radio) => radio.value === aboutEditorVariant);
+      if (aboutRadio) aboutRadio.checked = true;
+      renderAboutEditor();
       settingShowSpotify.checked = data.showSpotify !== false;
       spotifyPlaylists = normalizeSpotifyPlaylists(
         Array.isArray(savedData.spotifyPlaylists)
@@ -4292,6 +4592,7 @@
     async function saveSiteSettings() {
       localStorage.setItem("c13QuickPhotoMode", String(settingQuickPhotoMode.checked));
       localStorage.setItem("c13SaveMobileCopy", String(settingSaveMobileCopy.checked));
+      storeAboutEditorDraft();
       if (!auth.currentUser) {
         showSettingsStatus("Du är inte längre inloggad.", "error");
         return;
@@ -4314,6 +4615,13 @@
         showSettingsStatus("Välj en egen logotyp eller välj någon av de inbyggda.", "error");
         return;
       }
+      const aboutVariant = selectedAboutVariant();
+      const selectedAboutText = aboutTextsDraft[aboutVariant];
+      if (!selectedAboutText?.heading || !selectedAboutText?.body) {
+        showSettingsStatus("Fyll i både rubrik och text för det valda Om oss-alternativet.", "error");
+        showAboutStatus("Fyll i både rubrik och text.", "error");
+        return;
+      }
       const values = {
         storeName: settingStoreName.value.trim(),
         city: settingCity.value.trim(),
@@ -4324,6 +4632,9 @@
         facebook: settingFacebook.value.trim(),
         instagram: settingInstagram.value.trim(),
         tiktok: settingTiktok.value.trim(),
+        aboutEnabled: settingAboutEnabled.checked,
+        aboutVariant,
+        aboutTexts: normalizeAboutTexts(aboutTextsDraft),
         showSpotify: settingShowSpotify.checked,
         spotifyPlaylists: spotifyPlaylists.map(({ id, name, url }) => ({ id, name, url })),
         activeSpotifyPlaylistId,
@@ -4344,6 +4655,7 @@
         return;
       }
       saveSettingsButton.disabled = true;
+      saveAboutSettingsButton.disabled = true;
       try {
         const previousCustomLogoStoragePath = formCustomLogoStoragePath;
         if (selectedCustomLogoFile && logoMode === "custom") {
@@ -4358,6 +4670,18 @@
           values.customLogoStoragePath = storagePath;
         }
         await setDoc(doc(database, "settings", "site"), values, { merge: true });
+        activeAboutSettings = {
+          enabled: values.aboutEnabled,
+          variant: values.aboutVariant
+        };
+        aboutTextsDraft = normalizeAboutTexts(values.aboutTexts);
+        updateAboutActiveSummary();
+        showAboutStatus(
+          values.aboutEnabled
+            ? "Om oss har sparats och är aktiv på hemsidan."
+            : "Om oss har sparats och är dold på hemsidan.",
+          "success"
+        );
         if (
           selectedCustomLogoFile
           && logoMode === "custom"
@@ -4385,6 +4709,7 @@
         showSettingsStatus("Det gick inte att spara inställningarna.", "error");
       } finally {
         saveSettingsButton.disabled = false;
+        saveAboutSettingsButton.disabled = false;
       }
     }
 
@@ -6025,6 +6350,18 @@
       });
     });
     settingCustomLogoFile.addEventListener("change", selectCustomLogo);
+    aboutVariantRadios.forEach((radio) => {
+      radio.addEventListener("change", () => {
+        storeAboutEditorDraft(aboutEditorVariant);
+        renderAboutEditor();
+      });
+    });
+    settingAboutEnabled.addEventListener("change", updateAboutActiveSummary);
+    settingAboutHeading.addEventListener("input", () => showAboutStatus(""));
+    settingAboutBody.addEventListener("input", () => showAboutStatus(""));
+    resetAboutTextButton.addEventListener("click", resetSelectedAboutText);
+    previewAboutButton.addEventListener("click", previewAboutPage);
+    saveAboutSettingsButton.addEventListener("click", saveSiteSettings);
     addSpotifyPlaylistButton.addEventListener("click", addSpotifyPlaylist);
     settingSpotifyUrl.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
