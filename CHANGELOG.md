@@ -1,5 +1,13 @@
 # Ändringslogg
 
+## Version 6.6.4
+
+- Lägger till Aktivera på hemsidan direkt på förhandsvisningssidan.
+- Skickar de testade tiderna tillbaka till den inloggade adminpanelen.
+- Adminpanelen aktiverar sedan hela animationen, inklusive eventuell uppladdad bild.
+- Visar bekräftelse eller fel direkt på förhandsvisningen.
+- Skyddar aktiveringen med en unik engångskod för varje öppnad förhandsvisning.
+
 ## Version 6.6.3
 
 - Lägger till redigerbara tider direkt på förhandsvisningssidan.

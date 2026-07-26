@@ -119,6 +119,18 @@
       border: 1px solid #cfc6b9;
       background: #fff;
     }
+    button.activate {
+      background: #2f7d47;
+      color: #fff;
+    }
+    button[hidden] { display: none; }
+    .preview-activation-status {
+      min-height: 24px;
+      margin: 14px auto 0;
+      color: #2f6b42;
+      font-size: 14px;
+      font-weight: 800;
+    }
     @media (max-width: 520px) {
       .preview-times { grid-template-columns: 1fr; }
       .preview-time-help { grid-column: auto; }
@@ -160,8 +172,10 @@
     <div class="preview-actions">
       <button id="run-preview-button" type="button">Kör testet igen</button>
       <button id="reset-preview-times-button" class="secondary" type="button">Återställ tider</button>
+      <button id="activate-preview-button" class="activate" type="button" hidden>Aktivera på hemsidan</button>
       <button id="close-preview-button" class="secondary" type="button">Stäng förhandsvisning</button>
     </div>
+    <div id="preview-activation-status" class="preview-activation-status" role="status" aria-live="polite"></div>
   </main>
 
   <canvas
@@ -204,7 +218,9 @@
     const revealInput = document.getElementById("preview-reveal-seconds");
     const runButton = document.getElementById("run-preview-button");
     const resetButton = document.getElementById("reset-preview-times-button");
+    const activateButton = document.getElementById("activate-preview-button");
     const closeButton = document.getElementById("close-preview-button");
+    const activationStatus = document.getElementById("preview-activation-status");
     let animationFrame = 0;
     let startTimer = 0;
     let fallbackTimer = 0;
@@ -215,6 +231,7 @@
       initialDuration: settings.initialDuration,
       revealDuration: settings.revealDuration
     };
+    const previewToken = params.get("previewToken") || "";
 
     const modeNames = {
       classic: "Klassisk stjärnöppning",
@@ -225,6 +242,7 @@
 
     timesPanel.hidden = settings.mode === "none";
     resetButton.hidden = settings.mode === "none";
+    activateButton.hidden = !window.opener || !previewToken;
     initialLabel.textContent = settings.mode === "gold" || settings.mode === "image"
       ? "Guldstjärnans krymptid (sekunder)"
       : "Svart väntetid (sekunder)";
@@ -427,6 +445,33 @@
       revealInput.value = String(settings.revealDuration / 1000);
       updateSummary();
       runPreview();
+    });
+    activateButton.addEventListener("click", () => {
+      readPreviewTimes();
+      activateButton.disabled = true;
+      activateButton.textContent = "Aktiverar...";
+      activationStatus.textContent = "Skickar de testade inställningarna till adminpanelen.";
+      window.opener.postMessage({
+        type: "c13-activate-intro-preview",
+        previewToken,
+        initialSeconds: settings.initialDuration / 1000,
+        revealSeconds: settings.revealDuration / 1000
+      }, window.location.origin);
+    });
+    window.addEventListener("message", (event) => {
+      if (
+        event.origin !== window.location.origin
+        || event.data?.type !== "c13-activate-intro-result"
+        || event.data?.previewToken !== previewToken
+      ) return;
+      if (event.data.success) {
+        activateButton.textContent = "✓ Aktiverad på hemsidan";
+        activationStatus.textContent = "Animationen och de testade tiderna är nu aktiva.";
+      } else {
+        activateButton.disabled = false;
+        activateButton.textContent = "Aktivera på hemsidan";
+        activationStatus.textContent = "Aktiveringen misslyckades. Gå tillbaka till adminpanelen och försök igen.";
+      }
     });
     closeButton.addEventListener("click", () => {
       window.close();
