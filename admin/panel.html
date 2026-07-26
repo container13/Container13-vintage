@@ -1484,10 +1484,36 @@
       gap: 10px;
       margin-top: 14px;
     }
+    .intro-image-fields {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(180px, .55fr);
+      gap: 16px;
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+    .intro-image-preview {
+      grid-column: 1 / -1;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--row-background);
+    }
+    .intro-image-preview[hidden] { display: none; }
+    .intro-image-preview img {
+      display: block;
+      width: min(100%, 520px);
+      max-height: 330px;
+      margin: 0 auto 12px;
+      border-radius: 8px;
+      object-fit: contain;
+      background: #111;
+    }
     .animation-setting-hidden { display: none !important; }
     @media (max-width: 720px) {
       .animation-settings-grid { grid-template-columns: 1fr; }
       .animation-settings-grid .full-width { grid-column: auto; }
+      .intro-image-fields { grid-template-columns: 1fr; }
     }
 
   </style>
@@ -1559,6 +1585,11 @@
           <span>Papperskorg</span>
         </button>
 
+        <button id="animation-menu" type="button" data-admin-section="animation" aria-controls="animation-section">
+          <span class="menu-icon">★</span>
+          <span>Startanimation</span>
+        </button>
+
         <button id="settings-menu" type="button" data-admin-section="settings" aria-controls="settings-section">
           <span class="menu-icon">⚙</span>
           <span>Inställningar</span>
@@ -1580,7 +1611,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.5.4</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.6.0</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -1687,7 +1718,7 @@
                 <div class="dashboard-detail"><span>Inloggad som</span><strong id="dashboard-user">–</strong></div>
                 <div class="dashboard-detail"><span>Papperskorg</span><strong id="dashboard-trash-retention">Automatisk rensning efter 2 dagar</strong></div>
               </div>
-              <p class="dashboard-version">Container13 Adminpanel · Version 6.5.4</p>
+              <p class="dashboard-version">Container13 Adminpanel · Version 6.6.0</p>
             </section>
           </div>
         </section>
@@ -2038,6 +2069,85 @@
           </div>
         </section>
 
+        <section id="animation-section" class="content-section">
+          <div class="card">
+            <div class="card-header">
+              <h2>Startanimation</h2>
+              <p class="card-introduction">Välj animation, bild, färger och tider. Förhandsgranska innan du aktiverar den på hemsidan.</p>
+            </div>
+
+            <div class="animation-settings-grid">
+              <div class="field-group full-width">
+                <label class="field-label" for="setting-intro-animation-mode">Animation</label>
+                <select id="setting-intro-animation-mode">
+                  <option value="classic">Klassisk stjärnöppning</option>
+                  <option value="gold">Krympande guldstjärna + stjärnöppning</option>
+                  <option value="image">Stjärnöppning med bakgrundsbild</option>
+                  <option value="none">Ingen animation</option>
+                </select>
+              </div>
+
+              <div id="animation-settings-fields" class="field-group full-width">
+                <div class="animation-settings-grid">
+                  <div class="field-group">
+                    <label class="field-label" for="setting-intro-background-color">Reserv- och bakgrundsfärg</label>
+                    <input id="setting-intro-background-color" type="color" value="#000000">
+                  </div>
+                  <div id="intro-gold-color-field" class="field-group">
+                    <label class="field-label" for="setting-intro-star-color">Stjärnfärg</label>
+                    <input id="setting-intro-star-color" type="color" value="#d4af37">
+                  </div>
+                  <div class="field-group">
+                    <label id="intro-initial-time-label" class="field-label" for="setting-intro-initial-seconds">Svart väntetid (sekunder)</label>
+                    <input id="setting-intro-initial-seconds" type="number" min="0" max="5" step="0.1" inputmode="decimal" value="0.5">
+                    <small id="intro-initial-original-note" class="original-time-note">✓ Utprovad originaltid: 0,5 s</small>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label" for="setting-intro-reveal-seconds">Stjärnöppning (sekunder)</label>
+                    <input id="setting-intro-reveal-seconds" type="number" min="0.2" max="5" step="0.1" inputmode="decimal" value="1">
+                    <small id="intro-reveal-original-note" class="original-time-note">✓ Utprovad originaltid: 1,0 s</small>
+                  </div>
+                </div>
+
+                <div id="intro-image-fields" class="intro-image-fields animation-setting-hidden">
+                  <div class="field-group">
+                    <label class="field-label" for="setting-intro-image-file">Bakgrundsbild</label>
+                    <input id="setting-intro-image-file" class="file-input" type="file" accept="image/jpeg,image/png,image/webp">
+                    <small class="field-help">JPG, PNG eller WebP. Bilden komprimeras automatiskt före uppladdning.</small>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label" for="setting-intro-image-fit">Bildanpassning</label>
+                    <select id="setting-intro-image-fit">
+                      <option value="cover">Fyll skärmen</option>
+                      <option value="contain">Visa hela bilden</option>
+                    </select>
+                  </div>
+                  <div id="intro-image-preview" class="intro-image-preview" hidden>
+                    <img id="intro-image-preview-image" alt="Vald bakgrundsbild för startanimationen">
+                    <button id="remove-intro-image-button" class="secondary-button" type="button">Ta bort vald bild</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="intro-animation-active-setting" class="active-animation-summary">
+              ✓ Aktiv på hemsidan: Klassisk stjärnöppning
+            </div>
+            <div id="intro-animation-current-setting" class="setting-summary">
+              Valt i formuläret: Klassisk stjärnöppning
+            </div>
+            <div id="intro-animation-change-note" class="animation-change-note saved">
+              Detta val är redan aktivt.
+            </div>
+            <div class="animation-action-row">
+              <button id="preview-intro-animation-button" class="secondary-button" type="button">★ Förhandsgranska animation</button>
+              <button id="reset-intro-animation-times-button" class="secondary-button" type="button">↺ Återställ utprovade tider</button>
+              <button id="activate-intro-animation-button" class="save-button" type="button">Aktivera animationen på hemsidan</button>
+            </div>
+            <div id="intro-animation-action-message" class="message" role="status" aria-live="polite"></div>
+          </div>
+        </section>
+
         <section id="settings-section" class="content-section">
           <div class="card">
             <div class="card-header">
@@ -2102,63 +2212,19 @@
 
             <div class="settings-subcard">
               <h3>Startanimation</h3>
-              <p>Välj hur startsidan ska öppnas och anpassa färger och tider.</p>
-
-              <div class="animation-settings-grid">
-                <div class="field-group full-width">
-                  <label class="field-label" for="setting-intro-animation-mode">Animation</label>
-                  <select id="setting-intro-animation-mode">
-                    <option value="classic">Klassisk stjärnöppning</option>
-                    <option value="gold">Krympande guldstjärna + stjärnöppning</option>
-                    <option value="none">Ingen animation</option>
-                  </select>
-                </div>
-
-                <div id="animation-settings-fields" class="field-group full-width">
-                  <div class="animation-settings-grid">
-                    <div class="field-group">
-                      <label class="field-label" for="setting-intro-background-color">Bakgrundsfärg</label>
-                      <input id="setting-intro-background-color" type="color" value="#000000">
-                    </div>
-                    <div id="intro-gold-color-field" class="field-group">
-                      <label class="field-label" for="setting-intro-star-color">Stjärnfärg</label>
-                      <input id="setting-intro-star-color" type="color" value="#d4af37">
-                    </div>
-                    <div class="field-group">
-                      <label id="intro-initial-time-label" class="field-label" for="setting-intro-initial-seconds">Svart väntetid (sekunder)</label>
-                      <input id="setting-intro-initial-seconds" type="number" min="0" max="5" step="0.1" inputmode="decimal" value="0.5">
-                      <small id="intro-initial-original-note" class="original-time-note">✓ Utprovad originaltid: 0,5 s</small>
-                    </div>
-                    <div class="field-group">
-                      <label class="field-label" for="setting-intro-reveal-seconds">Stjärnöppning (sekunder)</label>
-                      <input id="setting-intro-reveal-seconds" type="number" min="0.2" max="5" step="0.1" inputmode="decimal" value="1">
-                      <small id="intro-reveal-original-note" class="original-time-note">✓ Utprovad originaltid: 1,0 s</small>
-                    </div>
-                  </div>
-                </div>
+              <p>Välj ett av de fyra alternativen. Bild, färger, tider och förhandsgranskning finns i den egna fliken Startanimation.</p>
+              <div class="field-group">
+                <label class="field-label" for="setting-intro-mode-quick">Animation</label>
+                <select id="setting-intro-mode-quick">
+                  <option value="classic">Klassisk stjärnöppning</option>
+                  <option value="gold">Krympande guldstjärna + stjärnöppning</option>
+                  <option value="image">Stjärnöppning med bakgrundsbild</option>
+                  <option value="none">Ingen animation</option>
+                </select>
               </div>
-
-              <div id="intro-animation-active-setting" class="active-animation-summary">
-                ✓ Aktiv på hemsidan: Klassisk stjärnöppning
+              <div style="margin-top:14px">
+                <button id="open-animation-settings-button" class="secondary-button" type="button">Öppna Startanimation</button>
               </div>
-              <div id="intro-animation-current-setting" class="setting-summary">
-                Valt i formuläret: Klassisk stjärnöppning
-              </div>
-              <div id="intro-animation-change-note" class="animation-change-note saved">
-                Detta val är redan aktivt.
-              </div>
-              <div class="animation-action-row">
-                <button id="preview-intro-animation-button" class="secondary-button" type="button">
-                  ★ Förhandsgranska animation
-                </button>
-                <button id="reset-intro-animation-times-button" class="secondary-button" type="button">
-                  ↺ Återställ utprovade tider
-                </button>
-                <button id="activate-intro-animation-button" class="save-button" type="button">
-                  Aktivera animationen på hemsidan
-                </button>
-              </div>
-              <div id="intro-animation-action-message" class="message" role="status" aria-live="polite"></div>
             </div>
 
             <div class="settings-subcard">
@@ -2437,6 +2503,8 @@
 
     const settingsMenu = document.getElementById("settings-menu");
     const settingsSection = document.getElementById("settings-section");
+    const animationMenu = document.getElementById("animation-menu");
+    const animationSection = document.getElementById("animation-section");
     const saveSettingsButton = document.getElementById("save-settings-button");
     const settingsMessage = document.getElementById("settings-message");
     const settingStoreName = document.getElementById("setting-store-name");
@@ -2453,8 +2521,16 @@
     const settingQuickPhotoMode = document.getElementById("setting-quick-photo-mode");
     const settingSaveMobileCopy = document.getElementById("setting-save-mobile-copy");
     const settingIntroAnimationMode = document.getElementById("setting-intro-animation-mode");
+    const settingIntroModeQuick = document.getElementById("setting-intro-mode-quick");
+    const openAnimationSettingsButton = document.getElementById("open-animation-settings-button");
     const animationSettingsFields = document.getElementById("animation-settings-fields");
     const introGoldColorField = document.getElementById("intro-gold-color-field");
+    const introImageFields = document.getElementById("intro-image-fields");
+    const settingIntroImageFile = document.getElementById("setting-intro-image-file");
+    const settingIntroImageFit = document.getElementById("setting-intro-image-fit");
+    const introImagePreview = document.getElementById("intro-image-preview");
+    const introImagePreviewImage = document.getElementById("intro-image-preview-image");
+    const removeIntroImageButton = document.getElementById("remove-intro-image-button");
     const settingIntroBackgroundColor = document.getElementById("setting-intro-background-color");
     const settingIntroStarColor = document.getElementById("setting-intro-star-color");
     const introInitialTimeLabel = document.getElementById("intro-initial-time-label");
@@ -2477,6 +2553,10 @@
     const newArrivalsPreviewResult = document.getElementById("new-arrivals-preview-result");
     let currentNewArrivalsRetention = { mode: "days", days: 7 };
     let trashRetentionDays = 2;
+    let selectedIntroImageFile = null;
+    let introImageObjectUrl = "";
+    let formIntroImageUrl = "";
+    let formIntroImageStoragePath = "";
 
     const days = [
       {
@@ -2849,14 +2929,20 @@
       introBackgroundColor: "#000000",
       introStarColor: "#d4af37",
       introInitialDurationMs: 500,
-      introRevealDurationMs: 1000
+      introRevealDurationMs: 1000,
+      introImageUrl: "",
+      introImageStoragePath: "",
+      introImageFit: "cover"
     };
     let activeIntroAnimationSettings = {
       introAnimationMode: defaultSiteSettings.introAnimationMode,
       introBackgroundColor: defaultSiteSettings.introBackgroundColor,
       introStarColor: defaultSiteSettings.introStarColor,
       introInitialDurationMs: defaultSiteSettings.introInitialDurationMs,
-      introRevealDurationMs: defaultSiteSettings.introRevealDurationMs
+      introRevealDurationMs: defaultSiteSettings.introRevealDurationMs,
+      introImageUrl: defaultSiteSettings.introImageUrl,
+      introImageStoragePath: defaultSiteSettings.introImageStoragePath,
+      introImageFit: defaultSiteSettings.introImageFit
     };
 
     function showSettingsStatus(text, type) {
@@ -2883,7 +2969,7 @@
 
     function normalizedIntroAnimationSettings(data) {
       return {
-        introAnimationMode: ["classic", "gold", "none"].includes(data.introAnimationMode)
+        introAnimationMode: ["classic", "gold", "image", "none"].includes(data.introAnimationMode)
           ? data.introAnimationMode
           : "classic",
         introBackgroundColor: normalizeAnimationColor(data.introBackgroundColor, "#000000"),
@@ -2893,22 +2979,38 @@
         ),
         introRevealDurationMs: Math.round(
           clampAnimationSeconds(Number(data.introRevealDurationMs) / 1000, 1, 0.2) * 1000
-        )
+        ),
+        introImageUrl: typeof data.introImageUrl === "string" ? data.introImageUrl : "",
+        introImageStoragePath: typeof data.introImageStoragePath === "string" ? data.introImageStoragePath : "",
+        introImageFit: data.introImageFit === "contain" ? "contain" : "cover"
       };
     }
 
     function getIntroAnimationFormValues() {
+      const mode = settingIntroAnimationMode.value;
       return normalizedIntroAnimationSettings({
-        introAnimationMode: settingIntroAnimationMode.value,
+        introAnimationMode: mode,
         introBackgroundColor: settingIntroBackgroundColor.value,
         introStarColor: settingIntroStarColor.value,
         introInitialDurationMs: Number(settingIntroInitialSeconds.value) * 1000,
-        introRevealDurationMs: Number(settingIntroRevealSeconds.value) * 1000
+        introRevealDurationMs: Number(settingIntroRevealSeconds.value) * 1000,
+        introImageUrl: mode === "image"
+          ? formIntroImageUrl
+          : activeIntroAnimationSettings.introImageUrl,
+        introImageStoragePath: mode === "image"
+          ? formIntroImageStoragePath
+          : activeIntroAnimationSettings.introImageStoragePath,
+        introImageFit: mode === "image"
+          ? settingIntroImageFit.value
+          : activeIntroAnimationSettings.introImageFit
       });
     }
 
     function introAnimationDescription(values) {
       if (values.introAnimationMode === "none") return "Ingen animation";
+      if (values.introAnimationMode === "image") {
+        return `Stjärnöppning med bakgrundsbild · ${values.introInitialDurationMs / 1000} s + ${values.introRevealDurationMs / 1000} s`;
+      }
       const name = values.introAnimationMode === "gold"
         ? "Krympande guldstjärna + stjärnöppning"
         : "Klassisk stjärnöppning";
@@ -2916,11 +3018,21 @@
     }
 
     function introAnimationSettingsMatch(first, second) {
-      return first.introAnimationMode === second.introAnimationMode
-        && first.introBackgroundColor === second.introBackgroundColor
-        && first.introStarColor === second.introStarColor
-        && first.introInitialDurationMs === second.introInitialDurationMs
-        && first.introRevealDurationMs === second.introRevealDurationMs;
+      if (first.introAnimationMode !== second.introAnimationMode) return false;
+      if (first.introAnimationMode === "none") return true;
+      if (
+        first.introBackgroundColor !== second.introBackgroundColor
+        || first.introInitialDurationMs !== second.introInitialDurationMs
+        || first.introRevealDurationMs !== second.introRevealDurationMs
+      ) return false;
+      if (first.introAnimationMode === "gold") {
+        return first.introStarColor === second.introStarColor;
+      }
+      if (first.introAnimationMode === "image") {
+        return first.introImageUrl === second.introImageUrl
+          && first.introImageFit === second.introImageFit;
+      }
+      return true;
     }
 
     function updateOriginalTimeMarkers() {
@@ -2933,14 +3045,18 @@
     }
 
     function updateAnimationSettingsUi() {
-      const mode = ["classic", "gold", "none"].includes(settingIntroAnimationMode.value)
+      const mode = ["classic", "gold", "image", "none"].includes(settingIntroAnimationMode.value)
         ? settingIntroAnimationMode.value
         : "classic";
       const disabled = mode === "none";
       animationSettingsFields.classList.toggle("animation-setting-hidden", disabled);
       introGoldColorField.classList.toggle("animation-setting-hidden", mode !== "gold");
+      introImageFields.classList.toggle("animation-setting-hidden", mode !== "image");
+      settingIntroModeQuick.value = mode;
       introInitialTimeLabel.textContent = mode === "gold"
         ? "Guldstjärnans krymptid (sekunder)"
+        : mode === "image"
+          ? "Bildens väntetid (sekunder)"
         : "Svart väntetid (sekunder)";
       updateOriginalTimeMarkers();
       const formValues = getIntroAnimationFormValues();
@@ -2973,23 +3089,92 @@
       updateAnimationSettingsUi();
     }
 
+    function renderIntroImagePreview() {
+      const source = introImageObjectUrl || formIntroImageUrl;
+      introImagePreview.hidden = !source;
+      if (source) introImagePreviewImage.src = source;
+      else introImagePreviewImage.removeAttribute("src");
+    }
+
+    function clearSelectedIntroImage() {
+      if (introImageObjectUrl) URL.revokeObjectURL(introImageObjectUrl);
+      introImageObjectUrl = "";
+      selectedIntroImageFile = null;
+      formIntroImageUrl = "";
+      formIntroImageStoragePath = "";
+      settingIntroImageFile.value = "";
+      renderIntroImagePreview();
+      handleIntroAnimationFormChange();
+    }
+
+    function selectIntroImage() {
+      const file = settingIntroImageFile.files?.[0] || null;
+      if (!file) return;
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+      if (!allowedTypes.includes(file.type) || file.size > 8 * 1024 * 1024) {
+        introAnimationActionMessage.textContent = "⚠ Bilden måste vara JPG, PNG eller WebP och högst 8 MB.";
+        introAnimationActionMessage.className = "message error";
+        settingIntroImageFile.value = "";
+        return;
+      }
+      if (introImageObjectUrl) URL.revokeObjectURL(introImageObjectUrl);
+      selectedIntroImageFile = file;
+      introImageObjectUrl = URL.createObjectURL(file);
+      formIntroImageUrl = introImageObjectUrl;
+      formIntroImageStoragePath = "";
+      renderIntroImagePreview();
+      handleIntroAnimationFormChange();
+    }
+
     async function activateIntroAnimation() {
       if (!auth.currentUser) {
         introAnimationActionMessage.textContent = "⚠ Du är inte längre inloggad.";
         introAnimationActionMessage.className = "message error";
         return;
       }
-      const values = getIntroAnimationFormValues();
+      let values = getIntroAnimationFormValues();
+      if (values.introAnimationMode === "image" && !formIntroImageUrl) {
+        introAnimationActionMessage.textContent = "⚠ Välj en bakgrundsbild innan du aktiverar bildanimationen.";
+        introAnimationActionMessage.className = "message error";
+        return;
+      }
       activateIntroAnimationButton.disabled = true;
       introAnimationActionMessage.textContent = "Aktiverar animationen...";
       introAnimationActionMessage.className = "message";
       try {
+        const previousStoragePath = activeIntroAnimationSettings.introImageStoragePath;
+        if (values.introAnimationMode === "image" && selectedIntroImageFile) {
+          introAnimationActionMessage.textContent = "Laddar upp och aktiverar bilden...";
+          const normalizedFile = await normalizeImageFile(selectedIntroImageFile, 1600, 0.84);
+          const safeFileName = createSafeFileName(normalizedFile.name);
+          const storagePath = `galleri/startanimation-${Date.now()}-${safeFileName}`;
+          const storageReference = ref(storage, storagePath);
+          await uploadBytes(storageReference, normalizedFile, { contentType: "image/jpeg" });
+          const imageUrl = await getDownloadURL(storageReference);
+          values = { ...values, introImageUrl: imageUrl, introImageStoragePath: storagePath };
+        }
         await setDoc(doc(database, "settings", "site"), {
           ...values,
           updatedAt: serverTimestamp(),
           updatedBy: auth.currentUser.email || ""
         }, { merge: true });
+        if (
+          previousStoragePath
+          && previousStoragePath !== values.introImageStoragePath
+          && selectedIntroImageFile
+        ) {
+          deleteObject(ref(storage, previousStoragePath)).catch((error) => {
+            console.warn("Den tidigare animationsbilden kunde inte tas bort:", error);
+          });
+        }
         activeIntroAnimationSettings = { ...values };
+        formIntroImageUrl = values.introImageUrl;
+        formIntroImageStoragePath = values.introImageStoragePath;
+        selectedIntroImageFile = null;
+        if (introImageObjectUrl) URL.revokeObjectURL(introImageObjectUrl);
+        introImageObjectUrl = "";
+        settingIntroImageFile.value = "";
+        renderIntroImagePreview();
         updateAnimationSettingsUi();
         introAnimationActionMessage.textContent = "✓ Animationen är nu aktiv på hemsidan.";
         introAnimationActionMessage.className = "message success";
@@ -3002,9 +3187,10 @@
     }
 
     function setAnimationForm(data) {
-      settingIntroAnimationMode.value = ["classic", "gold", "none"].includes(data.introAnimationMode)
+      settingIntroAnimationMode.value = ["classic", "gold", "image", "none"].includes(data.introAnimationMode)
         ? data.introAnimationMode
         : "classic";
+      settingIntroModeQuick.value = settingIntroAnimationMode.value;
       settingIntroBackgroundColor.value = normalizeAnimationColor(
         data.introBackgroundColor,
         "#000000"
@@ -3019,6 +3205,16 @@
       settingIntroRevealSeconds.value = String(
         clampAnimationSeconds(Number(data.introRevealDurationMs) / 1000, 1, 0.2)
       );
+      settingIntroImageFit.value = data.introImageFit === "contain" ? "contain" : "cover";
+      formIntroImageUrl = typeof data.introImageUrl === "string" ? data.introImageUrl : "";
+      formIntroImageStoragePath = typeof data.introImageStoragePath === "string"
+        ? data.introImageStoragePath
+        : "";
+      selectedIntroImageFile = null;
+      if (introImageObjectUrl) URL.revokeObjectURL(introImageObjectUrl);
+      introImageObjectUrl = "";
+      settingIntroImageFile.value = "";
+      renderIntroImagePreview();
       updateAnimationSettingsUi();
     }
 
@@ -3045,6 +3241,15 @@
       );
       previewUrl.searchParams.set("initial", String(initialSeconds));
       previewUrl.searchParams.set("reveal", String(revealSeconds));
+      if (settingIntroAnimationMode.value === "image") {
+        if (!formIntroImageUrl) {
+          introAnimationActionMessage.textContent = "⚠ Välj en bakgrundsbild före förhandsgranskningen.";
+          introAnimationActionMessage.className = "message error";
+          return;
+        }
+        previewUrl.searchParams.set("image", formIntroImageUrl);
+        previewUrl.searchParams.set("fit", settingIntroImageFit.value);
+      }
       window.open(previewUrl.href, "_blank", "noopener");
     }
 
@@ -3143,19 +3348,14 @@
         return;
       }
       const retention = selectedRetention();
-      const introInitialSeconds = clampAnimationSeconds(
-        settingIntroInitialSeconds.value,
-        0.5,
-        0
-      );
-      const introRevealSeconds = clampAnimationSeconds(
-        settingIntroRevealSeconds.value,
-        1,
-        0.2
-      );
       settingNewArrivalsCustomDays.value = String(retention.days || 7);
-      settingIntroInitialSeconds.value = String(introInitialSeconds);
-      settingIntroRevealSeconds.value = String(introRevealSeconds);
+      const quickAnimationMode = ["classic", "gold", "image", "none"].includes(settingIntroModeQuick.value)
+        ? settingIntroModeQuick.value
+        : "classic";
+      if (quickAnimationMode === "image" && !activeIntroAnimationSettings.introImageUrl) {
+        showSettingsStatus("Ladda först upp en bild under Startanimation.", "error");
+        return;
+      }
       const values = {
         storeName: settingStoreName.value.trim(),
         city: settingCity.value.trim(),
@@ -3170,19 +3370,8 @@
         trashDays: Math.min(7, Math.max(1, Number(settingTrashDays.value) || 2)),
         newArrivalsRetentionMode: retention.mode,
         newArrivalsRetentionDays: retention.mode === "manual" ? 0 : retention.days,
-        introAnimationMode: ["classic", "gold", "none"].includes(settingIntroAnimationMode.value)
-          ? settingIntroAnimationMode.value
-          : "classic",
-        introBackgroundColor: normalizeAnimationColor(
-          settingIntroBackgroundColor.value,
-          "#000000"
-        ),
-        introStarColor: normalizeAnimationColor(
-          settingIntroStarColor.value,
-          "#d4af37"
-        ),
-        introInitialDurationMs: Math.round(introInitialSeconds * 1000),
-        introRevealDurationMs: Math.round(introRevealSeconds * 1000),
+        ...activeIntroAnimationSettings,
+        introAnimationMode: quickAnimationMode,
         updatedAt: serverTimestamp(),
         updatedBy: auth.currentUser.email || ""
       };
@@ -3228,6 +3417,8 @@
 
       const showSettings =
         sectionName === "settings";
+      const showAnimation =
+        sectionName === "animation";
 
       dashboardSection.classList.toggle("active", showDashboard);
 
@@ -3265,6 +3456,10 @@
         "active",
         showSettings
       );
+      animationSection.classList.toggle(
+        "active",
+        showAnimation
+      );
 
       dashboardMenu.classList.toggle("active", showDashboard);
 
@@ -3301,6 +3496,10 @@
       settingsMenu.classList.toggle(
         "active",
         showSettings
+      );
+      animationMenu.classList.toggle(
+        "active",
+        showAnimation
       );
 
       if (showDashboard) {
@@ -3351,6 +3550,12 @@
         pageDescription.textContent =
           "Hantera butikens uppgifter och webbplatsens allmänna inställningar.";
         loadSiteSettings();
+      }
+
+      if (showAnimation) {
+        pageTitle.textContent = "Startanimation";
+        pageDescription.textContent =
+          "Välj, förhandsgranska och aktivera startsidans animation.";
       }
     }
 
@@ -3631,7 +3836,7 @@
       Det förebygger tomma bildrutor från mobilbilder med ovanliga
       format, färgprofiler eller filändelser.
     */
-    async function normalizeImageFile(file) {
+    async function normalizeImageFile(file, maximumDimension = 2400, jpegQuality = 0.9) {
       const objectUrl = URL.createObjectURL(file);
 
       try {
@@ -3648,7 +3853,6 @@
           image.src = objectUrl;
         });
 
-        const maximumDimension = 2400;
         const scale = Math.min(
           1,
           maximumDimension /
@@ -3706,7 +3910,7 @@
                 }
               },
               "image/jpeg",
-              0.9
+              jpegQuality
             );
           });
 
@@ -4798,6 +5002,7 @@
         showSection("settings");
       }
     });
+    openAnimationSettingsButton.addEventListener("click", () => showSection("animation"));
 
     retentionRadios.forEach((radio) => radio.addEventListener("change", updateRetentionUi));
     settingNewArrivalsCustomDays.addEventListener("change", () => {
@@ -4809,10 +5014,17 @@
     resetIntroAnimationTimesButton.addEventListener("click", resetIntroAnimationTimes);
     activateIntroAnimationButton.addEventListener("click", activateIntroAnimation);
     settingIntroAnimationMode.addEventListener("change", handleIntroAnimationFormChange);
+    settingIntroModeQuick.addEventListener("change", () => {
+      settingIntroAnimationMode.value = settingIntroModeQuick.value;
+      handleIntroAnimationFormChange();
+    });
     settingIntroBackgroundColor.addEventListener("input", handleIntroAnimationFormChange);
     settingIntroStarColor.addEventListener("input", handleIntroAnimationFormChange);
     settingIntroInitialSeconds.addEventListener("input", handleIntroAnimationFormChange);
     settingIntroRevealSeconds.addEventListener("input", handleIntroAnimationFormChange);
+    settingIntroImageFit.addEventListener("change", handleIntroAnimationFormChange);
+    settingIntroImageFile.addEventListener("change", selectIntroImage);
+    removeIntroImageButton.addEventListener("click", clearSelectedIntroImage);
 
     saveSettingsButton.addEventListener(
       "click",
