@@ -1,4 +1,4 @@
-const CACHE_NAME = "container13-admin-v6.8.2";
+const CACHE_NAME = "container13-admin-v6.9.0";
 const APP_SHELL = [
   "./",
   "./index.html",
