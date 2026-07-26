@@ -1,5 +1,11 @@
 # Ändringslogg
 
+## Version 6.5.3
+
+- Markerar de utprovade originaltiderna med guldram och tydlig text.
+- Tar bort markeringen direkt när tiden ändras.
+- Lägger till knappen Återställ utprovade tider för 0,5 s + 1,0 s.
+
 ## Version 6.5.2
 
 - Byter förhandsvisningens SVG-ritning mot stabil canvas-ritning.
