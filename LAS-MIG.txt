@@ -1,19 +1,17 @@
-CONTAINER13 VERSION 6.9.0 – ENDAST UPPDATERADE FILER
+CONTAINER13 – OM OSS 6.10.1
 
-Ladda upp filerna till samma platser i GitHub och ersätt de gamla:
+Detta paket innehåller hela Om oss-funktionen och rättningen som gör
+att menylänken verkligen döljs när Om oss stängs av i adminpanelen.
 
-hittahit.html
-bilder/gatuvy.webp
-bilder/gatuvy2.webp
-sw.js
-admin/panel.html
-admin/sw.js
-VERSION.txt
-CHANGELOG.md
-CHANGELOG-6.9.0.md
+LADDA UPP TILL GITHUB
 
-Viktigt efter uppladdning:
-1. Vänta tills GitHub Pages har publicerat ändringen.
-2. Stäng C13 Admin helt och öppna den igen.
-3. Om den gamla versionen fortfarande visas, uppdatera sidan med Ctrl + F5.
-4. Det lilla paketet kan inte ta bort gamla filer från GitHub. Den kompletta versionen är därför bäst för hela städningen.
+1. Öppna repositoryt Container13-vintage på GitHub.
+2. Välj Add file > Upload files.
+3. Dra in INNEHÅLLET i mappen Container13-vintage-om-oss-6.10.1.
+4. Behåll samma mappstruktur och ersätt befintliga filer.
+5. Filen omoss.html ska ligga i roten bredvid index.html.
+6. Spara ändringen och vänta tills GitHub Pages är färdig.
+7. Uppdatera hemsidan med Ctrl + F5.
+
+Admininställningen är redan sparad i Firestore. Om Om oss är inställd
+som dold behöver du därför inte dölja sidan på nytt efter uppladdningen.

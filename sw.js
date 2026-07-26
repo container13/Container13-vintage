@@ -1,8 +1,9 @@
-const CACHE_NAME = 'container13-site-v6.9.1';
+const CACHE_NAME = 'container13-site-v6.10.0';
 const APP_SHELL = [
   './',
   './index.html',
   './animation-test.html',
+  './omoss.html',
   './css/style.css',
   './includes/header.html',
   './includes/footer.html',
