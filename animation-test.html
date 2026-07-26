@@ -209,6 +209,20 @@
       context.clearRect(0, 0, width, height);
       context.fillStyle = settings.backgroundColor;
       context.fillRect(0, 0, width, height);
+      if (settings.mode === "image" && previewImageReady) {
+        const scale = settings.imageFit === "contain"
+          ? Math.min(width / previewImage.naturalWidth, height / previewImage.naturalHeight)
+          : Math.max(width / previewImage.naturalWidth, height / previewImage.naturalHeight);
+        const drawWidth = previewImage.naturalWidth * scale;
+        const drawHeight = previewImage.naturalHeight * scale;
+        context.drawImage(
+          previewImage,
+          (width - drawWidth) / 2,
+          (height - drawHeight) / 2,
+          drawWidth,
+          drawHeight
+        );
+      }
       context.fillStyle = settings.starColor;
       drawStar(width, height, radius);
       context.fill();
@@ -275,7 +289,7 @@
         animationFrame = requestAnimationFrame(animateReveal);
       };
 
-      if (settings.mode === "gold") {
+      if (settings.mode === "gold" || settings.mode === "image") {
         let startedAt = null;
         paintGold(width, height, goldRadius);
 

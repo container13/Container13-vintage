@@ -686,6 +686,7 @@ inspireras.
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     ctx.fillStyle = introSettings.backgroundColor;
     ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    if (introSettings.mode === "image") drawIntroImage();
     ctx.fillStyle = introSettings.starColor;
     drawStar(
       window.innerWidth / 2,
@@ -901,7 +902,7 @@ inspireras.
         2000
     );
 
-    if (introSettings.mode === "gold") {
+    if (introSettings.mode === "gold" || introSettings.mode === "image") {
       runGoldIntro();
     } else {
       runClassicIntro();

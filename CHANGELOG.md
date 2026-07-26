@@ -1,5 +1,13 @@
 # Ändringslogg
 
+## Version 6.6.2
+
+- Förfinar bildanimationen till en sammanhängande tvåstegseffekt.
+- En stor guldstjärna täcker först skärmen och krymper över bakgrundsbilden.
+- När guldstjärnan försvunnit öppnas bilden med en växande genomskinlig stjärna.
+- Hemsidan visas under öppningen och bilden försvinner.
+- Stjärnfärgen kan även väljas för bildalternativet.
+
 ## Version 6.6.1
 
 - Rätar upp färg-, tids- och bildfälten i separata jämna sektioner.
