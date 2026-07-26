@@ -1753,7 +1753,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.6.3</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.6.4</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -1860,7 +1860,7 @@
                 <div class="dashboard-detail"><span>Inloggad som</span><strong id="dashboard-user">–</strong></div>
                 <div class="dashboard-detail"><span>Papperskorg</span><strong id="dashboard-trash-retention">Automatisk rensning efter 2 dagar</strong></div>
               </div>
-              <p class="dashboard-version">Container13 Adminpanel · Version 6.6.3</p>
+              <p class="dashboard-version">Container13 Adminpanel · Version 6.6.4</p>
             </section>
           </div>
         </section>
@@ -2758,6 +2758,7 @@
     let introImageObjectUrl = "";
     let formIntroImageUrl = "";
     let formIntroImageStoragePath = "";
+    const activeIntroPreviewTokens = new Set();
 
     const days = [
       {
@@ -3342,13 +3343,13 @@
       if (!auth.currentUser) {
         introAnimationActionMessage.textContent = "⚠ Du är inte längre inloggad.";
         introAnimationActionMessage.className = "message error";
-        return;
+        return false;
       }
       let values = getIntroAnimationFormValues();
       if (values.introAnimationMode === "image" && !formIntroImageUrl) {
         introAnimationActionMessage.textContent = "⚠ Välj en bakgrundsbild innan du aktiverar bildanimationen.";
         introAnimationActionMessage.className = "message error";
-        return;
+        return false;
       }
       activateIntroAnimationButton.disabled = true;
       introAnimationActionMessage.textContent = "Aktiverar animationen...";
@@ -3390,11 +3391,13 @@
         updateAnimationSettingsUi();
         introAnimationActionMessage.textContent = "✓ Animationen är nu aktiv på hemsidan.";
         introAnimationActionMessage.className = "message success";
+        return true;
       } catch (error) {
         console.error("Kunde inte aktivera animationen:", error);
         introAnimationActionMessage.textContent = "⚠ Det gick inte att aktivera animationen.";
         introAnimationActionMessage.className = "message error";
         updateAnimationSettingsUi();
+        return false;
       }
     }
 
@@ -3462,7 +3465,17 @@
         previewUrl.searchParams.set("image", formIntroImageUrl);
         previewUrl.searchParams.set("fit", settingIntroImageFit.value);
       }
-      window.open(previewUrl.href, "_blank", "noopener");
+      const previewToken = globalThis.crypto?.randomUUID
+        ? globalThis.crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      activeIntroPreviewTokens.add(previewToken);
+      previewUrl.searchParams.set("previewToken", previewToken);
+      const previewWindow = window.open(previewUrl.href, "_blank");
+      if (!previewWindow) {
+        activeIntroPreviewTokens.delete(previewToken);
+        introAnimationActionMessage.textContent = "⚠ Webbläsaren blockerade förhandsvisningen.";
+        introAnimationActionMessage.className = "message error";
+      }
     }
 
     function selectedRetention() {
@@ -5243,6 +5256,34 @@
     settingIntroImageFit.addEventListener("change", handleIntroAnimationFormChange);
     settingIntroImageFile.addEventListener("change", selectIntroImage);
     removeIntroImageButton.addEventListener("click", clearSelectedIntroImage);
+    window.addEventListener("message", async (event) => {
+      const data = event.data;
+      if (
+        event.origin !== window.location.origin
+        || data?.type !== "c13-activate-intro-preview"
+        || !activeIntroPreviewTokens.has(data.previewToken)
+      ) return;
+
+      settingIntroInitialSeconds.value = String(
+        clampAnimationSeconds(data.initialSeconds, 0.5, 0)
+      );
+      settingIntroRevealSeconds.value = String(
+        clampAnimationSeconds(data.revealSeconds, 1, 0.2)
+      );
+      handleIntroAnimationFormChange();
+      const success = await activateIntroAnimation();
+      if (success) activeIntroPreviewTokens.delete(data.previewToken);
+
+      try {
+        event.source?.postMessage({
+          type: "c13-activate-intro-result",
+          previewToken: data.previewToken,
+          success
+        }, event.origin);
+      } catch (error) {
+        console.warn("Kunde inte skicka aktiveringssvaret till förhandsvisningen:", error);
+      }
+    });
 
     saveSettingsButton.addEventListener(
       "click",
