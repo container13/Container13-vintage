@@ -1422,6 +1422,100 @@
     }
     .settings-subcard h3 { margin: 0 0 8px; font-size: 20px; }
     .settings-subcard > p { margin: 0 0 18px; color: var(--muted); line-height: 1.55; }
+    .logo-choice-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .logo-choice {
+      position: relative;
+      display: grid;
+      grid-template-rows: 86px auto;
+      gap: 10px;
+      min-width: 0;
+      padding: 12px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      cursor: pointer;
+    }
+    .logo-choice:has(input:checked) {
+      border-color: #b58b00;
+      background: #fff7d6;
+      box-shadow: 0 0 0 2px rgba(212, 175, 55, .18);
+    }
+    .logo-choice input {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+    .logo-choice-preview {
+      display: grid;
+      place-items: center;
+      min-width: 0;
+      padding: 8px;
+      overflow: hidden;
+      border-radius: 7px;
+      background:
+        linear-gradient(45deg, #eee 25%, transparent 25%),
+        linear-gradient(-45deg, #eee 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #eee 75%),
+        linear-gradient(-45deg, transparent 75%, #eee 75%),
+        #fff;
+      background-size: 16px 16px;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+    }
+    .logo-choice-preview img {
+      display: block;
+      width: 100%;
+      max-height: 66px;
+      object-fit: contain;
+    }
+    .logo-choice-placeholder {
+      color: #8a6a00;
+      font-size: 28px;
+      font-weight: 900;
+    }
+    .logo-choice-copy {
+      display: grid;
+      gap: 3px;
+      padding-left: 22px;
+    }
+    .logo-choice-copy strong { font-size: 14px; }
+    .logo-choice-copy small { color: var(--muted); line-height: 1.3; }
+    .custom-logo-fields {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(220px, .6fr);
+      gap: 16px;
+      align-items: end;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .custom-logo-fields[hidden] { display: none; }
+    .custom-logo-preview {
+      display: grid;
+      place-items: center;
+      min-height: 90px;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #f7f4ee;
+    }
+    .custom-logo-preview img {
+      display: block;
+      width: 100%;
+      max-height: 80px;
+      object-fit: contain;
+    }
+    .custom-logo-preview span { color: var(--muted); font-size: 13px; }
+    @media (max-width: 900px) {
+      .logo-choice-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 600px) {
+      .logo-choice-grid,
+      .custom-logo-fields { grid-template-columns: 1fr; }
+    }
     .retention-options { display: grid; gap: 10px; }
     .retention-option { display: flex; gap: 10px; align-items: center; cursor: pointer; }
     .custom-days-row { margin: 10px 0 0 28px; max-width: 210px; }
@@ -1822,7 +1916,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.6.8</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.7.1</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -1929,7 +2023,7 @@
                 <div class="dashboard-detail"><span>Inloggad som</span><strong id="dashboard-user">–</strong></div>
                 <div class="dashboard-detail"><span>Papperskorg</span><strong id="dashboard-trash-retention">Automatisk rensning efter 2 dagar</strong></div>
               </div>
-              <p class="dashboard-version">Container13 Adminpanel · Version 6.6.8</p>
+              <p class="dashboard-version">Container13 Adminpanel · Version 6.7.1</p>
             </section>
           </div>
         </section>
@@ -2423,7 +2517,7 @@
           <div class="card">
             <div class="card-header">
               <h2>Webbplatsens inställningar</h2>
-              <p class="card-introduction">Ändra butikens kontaktuppgifter, sociala länkar och papperskorgens lagringstid.</p>
+              <p class="card-introduction">Ändra logotyp, kontaktuppgifter, sociala länkar och webbplatsens övriga val.</p>
             </div>
 
             <div class="settings-grid">
@@ -2482,6 +2576,69 @@
             </div>
 
             <div class="settings-subcard">
+              <h3>Webbplatsens logotyp</h3>
+              <p>Välj samma logotyp för startsidan, undersidorna och animationsförhandsvisningen.</p>
+
+              <div class="logo-choice-grid" role="radiogroup" aria-label="Välj webbplatsens logotyp">
+                <label class="logo-choice">
+                  <input type="radio" name="site-logo-mode" value="patina">
+                  <span class="logo-choice-preview">
+                    <img src="../bilder/logotyp/logo-patina.png" alt="">
+                  </span>
+                  <span class="logo-choice-copy">
+                    <strong>Patina</strong>
+                    <small>Försiktigt sliten och mörkt konturerad</small>
+                  </span>
+                </label>
+
+                <label class="logo-choice">
+                  <input type="radio" name="site-logo-mode" value="clean">
+                  <span class="logo-choice-preview">
+                    <img src="../bilder/logotyp/logo-tryckeri-ren.png" alt="">
+                  </span>
+                  <span class="logo-choice-copy">
+                    <strong>Ren tryckerilogotyp</strong>
+                    <small>Gul originalform utan patina</small>
+                  </span>
+                </label>
+
+                <label class="logo-choice">
+                  <input type="radio" name="site-logo-mode" value="legacy">
+                  <span class="logo-choice-preview">
+                    <img src="../bilder/logotyp/logo.png" alt="">
+                  </span>
+                  <span class="logo-choice-copy">
+                    <strong>Tidigare logotyp</strong>
+                    <small>Webbplatsens föregående version</small>
+                  </span>
+                </label>
+
+                <label class="logo-choice">
+                  <input type="radio" name="site-logo-mode" value="custom">
+                  <span class="logo-choice-preview">
+                    <span class="logo-choice-placeholder" aria-hidden="true">＋</span>
+                  </span>
+                  <span class="logo-choice-copy">
+                    <strong>Egen uppladdad</strong>
+                    <small>PNG, JPG eller WebP</small>
+                  </span>
+                </label>
+              </div>
+
+              <div id="custom-logo-fields" class="custom-logo-fields" hidden>
+                <div class="field-group">
+                  <label class="field-label" for="setting-custom-logo-file">Välj egen logotyp</label>
+                  <input id="setting-custom-logo-file" type="file" accept="image/png,image/jpeg,image/webp">
+                  <small class="field-help">Högst 8 MB. PNG med genomskinlig bakgrund rekommenderas.</small>
+                </div>
+                <div id="custom-logo-preview" class="custom-logo-preview">
+                  <img id="custom-logo-preview-image" alt="Förhandsvisning av egen logotyp" hidden>
+                  <span id="custom-logo-preview-empty">Ingen egen logotyp uppladdad</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-subcard">
               <h3>Startanimation</h3>
               <p>Välj ett av de fyra alternativen. Bild, färger, tider och förhandsgranskning finns i den egna fliken Startanimation.</p>
               <div class="field-group">
@@ -2533,7 +2690,7 @@
               </div>
             </div>
 
-            <p class="settings-note">Kontaktuppgifterna och länkarna används automatiskt på Kontakt, Hitta hit och i sidfoten. Papperskorgens val gäller för bilder som tas bort efter att inställningen sparats.</p>
+            <p class="settings-note">Logotypen används automatiskt på startsidan, undersidorna och i animationsförhandsvisningen. Kontaktuppgifterna och länkarna används på Kontakt, Hitta hit och i sidfoten.</p>
 
             <div class="actions">
               <button id="save-settings-button" class="save-button" type="button">Spara inställningar</button>
@@ -2790,6 +2947,11 @@
     const settingTiktok = document.getElementById("setting-tiktok");
     const settingTrashDays = document.getElementById("setting-trash-days");
     const settingCopyright = document.getElementById("setting-copyright");
+    const logoModeRadios = Array.from(document.querySelectorAll('input[name="site-logo-mode"]'));
+    const customLogoFields = document.getElementById("custom-logo-fields");
+    const settingCustomLogoFile = document.getElementById("setting-custom-logo-file");
+    const customLogoPreviewImage = document.getElementById("custom-logo-preview-image");
+    const customLogoPreviewEmpty = document.getElementById("custom-logo-preview-empty");
     const settingQuickPhotoMode = document.getElementById("setting-quick-photo-mode");
     const settingSaveMobileCopy = document.getElementById("setting-save-mobile-copy");
     const settingIntroAnimationMode = document.getElementById("setting-intro-animation-mode");
@@ -2827,6 +2989,10 @@
     const newArrivalsPreviewResult = document.getElementById("new-arrivals-preview-result");
     let currentNewArrivalsRetention = { mode: "days", days: 7 };
     let trashRetentionDays = 2;
+    let selectedCustomLogoFile = null;
+    let customLogoObjectUrl = "";
+    let formCustomLogoUrl = "";
+    let formCustomLogoStoragePath = "";
     let selectedIntroImageFile = null;
     let introImageObjectUrl = "";
     let formIntroImageUrl = "";
@@ -3197,6 +3363,9 @@
       instagram: "https://www.instagram.com/container.13",
       tiktok: "https://www.tiktok.com/@container.13",
       copyright: "© 2026 Container 13 Vintage",
+      logoMode: "patina",
+      customLogoUrl: "",
+      customLogoStoragePath: "",
       trashDays: 2,
       newArrivalsRetentionMode: "days",
       newArrivalsRetentionDays: 7,
@@ -3240,6 +3409,54 @@
 
     function normalizeAnimationColor(value, fallback) {
       return /^#[0-9a-f]{6}$/i.test(String(value || "")) ? value : fallback;
+    }
+
+    const builtInLogoSources = {
+      patina: "../bilder/logotyp/logo-patina.png",
+      clean: "../bilder/logotyp/logo-tryckeri-ren.png",
+      legacy: "../bilder/logotyp/logo.png"
+    };
+
+    function selectedLogoMode() {
+      const value = logoModeRadios.find((radio) => radio.checked)?.value;
+      return ["patina", "clean", "legacy", "custom"].includes(value) ? value : "patina";
+    }
+
+    function currentLogoSource() {
+      const mode = selectedLogoMode();
+      if (mode === "custom") {
+        return customLogoObjectUrl || formCustomLogoUrl || "";
+      }
+      return new URL(builtInLogoSources[mode] || builtInLogoSources.patina, window.location.href).href;
+    }
+
+    function renderCustomLogoUi() {
+      const isCustom = selectedLogoMode() === "custom";
+      customLogoFields.hidden = !isCustom;
+      const source = customLogoObjectUrl || formCustomLogoUrl;
+      customLogoPreviewImage.hidden = !source;
+      customLogoPreviewEmpty.hidden = Boolean(source);
+      if (source) customLogoPreviewImage.src = source;
+      else customLogoPreviewImage.removeAttribute("src");
+    }
+
+    function selectCustomLogo() {
+      const file = settingCustomLogoFile.files?.[0] || null;
+      if (!file) return;
+      const allowedTypes = ["image/png", "image/jpeg", "image/webp"];
+      if (!allowedTypes.includes(file.type) || file.size > 8 * 1024 * 1024) {
+        showSettingsStatus("Logotypen måste vara PNG, JPG eller WebP och högst 8 MB.", "error");
+        settingCustomLogoFile.value = "";
+        return;
+      }
+      if (customLogoObjectUrl) URL.revokeObjectURL(customLogoObjectUrl);
+      selectedCustomLogoFile = file;
+      customLogoObjectUrl = URL.createObjectURL(file);
+      const customRadio = logoModeRadios.find((radio) => radio.value === "custom");
+      if (customRadio) customRadio.checked = true;
+      renderCustomLogoUi();
+      settingsMessage.textContent = "";
+      settingsMessage.className = "message";
     }
 
     function normalizedIntroAnimationSettings(data) {
@@ -3529,6 +3746,8 @@
       );
       previewUrl.searchParams.set("initial", String(initialSeconds));
       previewUrl.searchParams.set("reveal", String(revealSeconds));
+      const logoSource = currentLogoSource();
+      if (logoSource) previewUrl.searchParams.set("logo", logoSource);
       if (settingIntroAnimationMode.value === "image") {
         if (!formIntroImageUrl) {
           introAnimationActionMessage.textContent = "⚠ Välj en bakgrundsbild före förhandsgranskningen.";
@@ -3605,7 +3824,8 @@
     }
 
     function fillSettingsForm(values) {
-      const data = { ...defaultSiteSettings, ...(values || {}) };
+      const savedData = values || {};
+      const data = { ...defaultSiteSettings, ...savedData };
       activeIntroAnimationSettings = normalizedIntroAnimationSettings(data);
       settingStoreName.value = data.storeName || "";
       settingCity.value = data.city || "";
@@ -3617,6 +3837,23 @@
       settingInstagram.value = data.instagram || "";
       settingTiktok.value = data.tiktok || "";
       settingCopyright.value = data.copyright || "";
+      const oldCustomLogoUrl = typeof savedData.logoUrl === "string" ? savedData.logoUrl : "";
+      const logoMode = ["patina", "clean", "legacy", "custom"].includes(savedData.logoMode)
+        ? savedData.logoMode
+        : (oldCustomLogoUrl ? "custom" : "patina");
+      const logoRadio = logoModeRadios.find((radio) => radio.value === logoMode);
+      if (logoRadio) logoRadio.checked = true;
+      formCustomLogoUrl = typeof data.customLogoUrl === "string" && data.customLogoUrl
+        ? data.customLogoUrl
+        : oldCustomLogoUrl;
+      formCustomLogoStoragePath = typeof data.customLogoStoragePath === "string" && data.customLogoStoragePath
+        ? data.customLogoStoragePath
+        : (typeof savedData.logoStoragePath === "string" ? savedData.logoStoragePath : "");
+      selectedCustomLogoFile = null;
+      if (customLogoObjectUrl) URL.revokeObjectURL(customLogoObjectUrl);
+      customLogoObjectUrl = "";
+      settingCustomLogoFile.value = "";
+      renderCustomLogoUi();
       trashRetentionDays = Math.min(7, Math.max(1, Number(data.trashDays) || 2));
       settingTrashDays.value = String(trashRetentionDays);
       setRetentionForm(data);
@@ -3654,6 +3891,11 @@
         showSettingsStatus("Ladda först upp en bild under Startanimation.", "error");
         return;
       }
+      const logoMode = selectedLogoMode();
+      if (logoMode === "custom" && !selectedCustomLogoFile && !formCustomLogoUrl) {
+        showSettingsStatus("Välj en egen logotyp eller välj någon av de inbyggda.", "error");
+        return;
+      }
       const values = {
         storeName: settingStoreName.value.trim(),
         city: settingCity.value.trim(),
@@ -3665,6 +3907,9 @@
         instagram: settingInstagram.value.trim(),
         tiktok: settingTiktok.value.trim(),
         copyright: settingCopyright.value.trim(),
+        logoMode,
+        customLogoUrl: formCustomLogoUrl,
+        customLogoStoragePath: formCustomLogoStoragePath,
         trashDays: Math.min(7, Math.max(1, Number(settingTrashDays.value) || 2)),
         newArrivalsRetentionMode: retention.mode,
         newArrivalsRetentionDays: retention.mode === "manual" ? 0 : retention.days,
@@ -3679,7 +3924,36 @@
       }
       saveSettingsButton.disabled = true;
       try {
+        const previousCustomLogoStoragePath = formCustomLogoStoragePath;
+        if (selectedCustomLogoFile && logoMode === "custom") {
+          showSettingsStatus("Laddar upp logotypen...", "success");
+          const safeFileName = createSafeFileName(selectedCustomLogoFile.name);
+          const storagePath = `galleri/branding-logo-${safeFileName}`;
+          const storageReference = ref(storage, storagePath);
+          await uploadBytes(storageReference, selectedCustomLogoFile, {
+            contentType: selectedCustomLogoFile.type
+          });
+          values.customLogoUrl = await getDownloadURL(storageReference);
+          values.customLogoStoragePath = storagePath;
+        }
         await setDoc(doc(database, "settings", "site"), values, { merge: true });
+        if (
+          selectedCustomLogoFile
+          && logoMode === "custom"
+          && previousCustomLogoStoragePath
+          && previousCustomLogoStoragePath !== values.customLogoStoragePath
+        ) {
+          deleteObject(ref(storage, previousCustomLogoStoragePath)).catch((error) => {
+            console.warn("Den tidigare egna logotypen kunde inte tas bort:", error);
+          });
+        }
+        formCustomLogoUrl = values.customLogoUrl;
+        formCustomLogoStoragePath = values.customLogoStoragePath;
+        selectedCustomLogoFile = null;
+        if (customLogoObjectUrl) URL.revokeObjectURL(customLogoObjectUrl);
+        customLogoObjectUrl = "";
+        settingCustomLogoFile.value = "";
+        renderCustomLogoUi();
         trashRetentionDays = values.trashDays;
         activeIntroAnimationSettings = normalizedIntroAnimationSettings(values);
         updateAnimationSettingsUi();
@@ -5322,6 +5596,14 @@
       settingIntroAnimationMode.value = settingIntroModeQuick.value;
       handleIntroAnimationFormChange();
     });
+    logoModeRadios.forEach((radio) => {
+      radio.addEventListener("change", () => {
+        renderCustomLogoUi();
+        settingsMessage.textContent = "";
+        settingsMessage.className = "message";
+      });
+    });
+    settingCustomLogoFile.addEventListener("change", selectCustomLogo);
     settingIntroBackgroundColor.addEventListener("input", handleIntroAnimationFormChange);
     settingIntroStarColor.addEventListener("input", handleIntroAnimationFormChange);
     settingIntroInitialSeconds.addEventListener("input", handleIntroAnimationFormChange);
