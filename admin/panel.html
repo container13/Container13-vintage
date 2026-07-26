@@ -1920,7 +1920,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.7.6</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.7.7</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -3905,8 +3905,12 @@
       trashRetentionDays = Math.min(7, Math.max(1, Number(data.trashDays) || 2));
       settingTrashDays.value = String(trashRetentionDays);
       setRetentionForm(data);
+      const hasActiveSavedImage =
+        savedData.introAnimationMode === "image"
+        && typeof savedData.introImageUrl === "string"
+        && savedData.introImageUrl;
       const animationFormData =
-        typeof savedData.introImageUrl === "string" && savedData.introImageUrl
+        hasActiveSavedImage
           ? data
           : {
             ...data,
