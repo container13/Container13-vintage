@@ -1422,6 +1422,111 @@
     }
     .settings-subcard h3 { margin: 0 0 8px; font-size: 20px; }
     .settings-subcard > p { margin: 0 0 18px; color: var(--muted); line-height: 1.55; }
+    .spotify-editor {
+      display: grid;
+      gap: 16px;
+    }
+    .spotify-add-grid {
+      display: grid;
+      grid-template-columns: minmax(180px, .8fr) minmax(260px, 1.4fr) auto;
+      gap: 12px;
+      align-items: end;
+    }
+    .spotify-add-grid .field-group { margin: 0; }
+    .spotify-add-grid input {
+      width: 100%;
+      min-height: 46px;
+      padding: 11px 13px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--input-background);
+      color: var(--text);
+    }
+    .spotify-list {
+      display: grid;
+      gap: 10px;
+    }
+    .spotify-list-empty {
+      margin: 0;
+      padding: 16px;
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      text-align: center;
+    }
+    .spotify-playlist-row {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 13px 14px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: #fff;
+    }
+    .spotify-playlist-row.active {
+      border-color: #259646;
+      background: #f1fbf4;
+      box-shadow: 0 0 0 1px rgba(37, 150, 70, .12);
+    }
+    .spotify-playlist-radio { transform: scale(1.25); }
+    .spotify-playlist-copy {
+      min-width: 0;
+      display: grid;
+      gap: 3px;
+    }
+    .spotify-playlist-copy strong {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .spotify-playlist-copy small {
+      overflow: hidden;
+      color: var(--muted);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .spotify-active-label {
+      color: #23773b;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .spotify-playlist-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .spotify-playlist-actions a,
+    .spotify-playlist-actions button {
+      min-height: 36px;
+      padding: 7px 11px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      color: var(--text);
+      background: #fff;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .spotify-playlist-actions button:hover,
+    .spotify-playlist-actions a:hover { border-color: var(--accent); }
+    .spotify-visibility {
+      margin-top: 0;
+    }
+    @media (max-width: 760px) {
+      .spotify-add-grid { grid-template-columns: 1fr; }
+      .spotify-add-grid > button { width: 100%; }
+      .spotify-playlist-row {
+        grid-template-columns: auto minmax(0, 1fr);
+      }
+      .spotify-playlist-actions {
+        grid-column: 1 / -1;
+        padding-left: 29px;
+      }
+    }
     .logo-choice-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1943,7 +2048,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.7.10</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.8.0</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -2612,6 +2717,37 @@
             </div>
 
             <div class="settings-subcard">
+              <h3>Spotify-spellistor</h3>
+              <p>Lägg till flera spellistor och välj vilken Spotifyikonen i footern ska öppna.</p>
+
+              <div class="spotify-editor">
+                <label class="quick-mode-setting spotify-visibility">
+                  <input id="setting-show-spotify" type="checkbox">
+                  <span>
+                    <strong>Visa Spotifyikonen i footern</strong><br>
+                    <small>Den aktiva spellistan öppnas när besökaren trycker på ikonen.</small>
+                  </span>
+                </label>
+
+                <div id="spotify-playlist-list" class="spotify-list" aria-live="polite"></div>
+
+                <div class="spotify-add-grid">
+                  <div class="field-group">
+                    <label class="field-label" for="setting-spotify-name">Namn</label>
+                    <input id="setting-spotify-name" type="text" maxlength="80" placeholder="Till exempel Sommar i butiken">
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label" for="setting-spotify-url">Spotify-länk</label>
+                    <input id="setting-spotify-url" type="url" inputmode="url" placeholder="https://open.spotify.com/playlist/...">
+                  </div>
+                  <button id="add-spotify-playlist-button" class="secondary-button" type="button">＋ Lägg till</button>
+                </div>
+
+                <div id="spotify-playlist-message" class="message" role="status" aria-live="polite"></div>
+              </div>
+            </div>
+
+            <div class="settings-subcard">
               <h3>Webbplatsens logotyp</h3>
               <p>Välj samma logotyp för startsidan, undersidorna och animationsförhandsvisningen.</p>
 
@@ -2981,6 +3117,12 @@
     const settingFacebook = document.getElementById("setting-facebook");
     const settingInstagram = document.getElementById("setting-instagram");
     const settingTiktok = document.getElementById("setting-tiktok");
+    const settingShowSpotify = document.getElementById("setting-show-spotify");
+    const spotifyPlaylistList = document.getElementById("spotify-playlist-list");
+    const settingSpotifyName = document.getElementById("setting-spotify-name");
+    const settingSpotifyUrl = document.getElementById("setting-spotify-url");
+    const addSpotifyPlaylistButton = document.getElementById("add-spotify-playlist-button");
+    const spotifyPlaylistMessage = document.getElementById("spotify-playlist-message");
     const settingTrashDays = document.getElementById("setting-trash-days");
     const settingCopyright = document.getElementById("setting-copyright");
     const logoModeRadios = Array.from(document.querySelectorAll('input[name="site-logo-mode"]'));
@@ -3402,6 +3544,13 @@
       facebook: "https://www.facebook.com/61590920005705",
       instagram: "https://www.instagram.com/container.13",
       tiktok: "https://www.tiktok.com/@container.13",
+      showSpotify: true,
+      spotifyPlaylists: [{
+        id: "spotify-1NJmcRHooRh6wvHi9F0qlL",
+        name: "Container 13 – vår spellista",
+        url: "https://open.spotify.com/playlist/1NJmcRHooRh6wvHi9F0qlL"
+      }],
+      activeSpotifyPlaylistId: "spotify-1NJmcRHooRh6wvHi9F0qlL",
       copyright: "© 2026 Container 13 Vintage",
       logoMode: "patina",
       customLogoUrl: "",
@@ -3419,6 +3568,8 @@
       introImageStoragePath: "",
       introImageFit: "cover"
     };
+    let spotifyPlaylists = [];
+    let activeSpotifyPlaylistId = "";
     let activeIntroAnimationSettings = {
       introAnimationMode: defaultSiteSettings.introAnimationMode,
       introBackgroundColor: defaultSiteSettings.introBackgroundColor,
@@ -3435,6 +3586,136 @@
       const icon = type === "success" ? "✓" : "⚠";
       settingsMessage.textContent = `${icon} ${text}`;
       settingsMessage.className = `message ${type}`;
+    }
+
+    function showSpotifyStatus(text, type = "") {
+      spotifyPlaylistMessage.textContent = text;
+      spotifyPlaylistMessage.className = type ? `message ${type}` : "message";
+    }
+
+    function normalizeSpotifyPlaylistUrl(value) {
+      const input = String(value || "").trim();
+      if (!input) return "";
+      const uriMatch = input.match(/^spotify:playlist:([a-z0-9]+)$/i);
+      if (uriMatch) return `https://open.spotify.com/playlist/${uriMatch[1]}`;
+      try {
+        const parsed = new URL(input);
+        const match = parsed.pathname.match(/^\/playlist\/([a-z0-9]+)\/?$/i);
+        if (parsed.hostname !== "open.spotify.com" || !match) return "";
+        return `https://open.spotify.com/playlist/${match[1]}`;
+      } catch (_) {
+        return "";
+      }
+    }
+
+    function spotifyPlaylistId(url) {
+      const match = String(url || "").match(/\/playlist\/([a-z0-9]+)/i);
+      return match ? `spotify-${match[1]}` : "";
+    }
+
+    function normalizeSpotifyPlaylists(values) {
+      const source = Array.isArray(values) ? values : [];
+      const normalized = [];
+      source.forEach((item, index) => {
+        const url = normalizeSpotifyPlaylistUrl(item?.url);
+        const id = spotifyPlaylistId(url);
+        if (!url || !id || normalized.some((playlist) => playlist.id === id)) return;
+        normalized.push({
+          id,
+          name: String(item?.name || `Spotify-spellista ${index + 1}`).trim().slice(0, 80),
+          url
+        });
+      });
+      return normalized;
+    }
+
+    function renderSpotifyPlaylists() {
+      spotifyPlaylistList.innerHTML = "";
+      if (!spotifyPlaylists.length) {
+        const empty = document.createElement("p");
+        empty.className = "spotify-list-empty";
+        empty.textContent = "Ingen spellista har lagts till ännu.";
+        spotifyPlaylistList.append(empty);
+        return;
+      }
+
+      spotifyPlaylists.forEach((playlist) => {
+        const row = document.createElement("div");
+        const isActive = playlist.id === activeSpotifyPlaylistId;
+        row.className = `spotify-playlist-row${isActive ? " active" : ""}`;
+
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "active-spotify-playlist";
+        radio.value = playlist.id;
+        radio.checked = isActive;
+        radio.className = "spotify-playlist-radio";
+        radio.setAttribute("aria-label", `Aktivera ${playlist.name}`);
+        radio.addEventListener("change", () => {
+          activeSpotifyPlaylistId = playlist.id;
+          renderSpotifyPlaylists();
+          showSpotifyStatus("Valet aktiveras när du sparar inställningarna.");
+        });
+
+        const copy = document.createElement("div");
+        copy.className = "spotify-playlist-copy";
+        const name = document.createElement("strong");
+        name.textContent = playlist.name;
+        const url = document.createElement("small");
+        url.textContent = playlist.url;
+        copy.append(name);
+        if (isActive) {
+          const activeLabel = document.createElement("span");
+          activeLabel.className = "spotify-active-label";
+          activeLabel.textContent = "Aktiv spellista";
+          copy.append(activeLabel);
+        }
+        copy.append(url);
+
+        const actions = document.createElement("div");
+        actions.className = "spotify-playlist-actions";
+        const testLink = document.createElement("a");
+        testLink.href = playlist.url;
+        testLink.target = "_blank";
+        testLink.rel = "noopener noreferrer";
+        testLink.textContent = "Provöppna";
+        const removeButton = document.createElement("button");
+        removeButton.type = "button";
+        removeButton.textContent = "Ta bort";
+        removeButton.addEventListener("click", () => {
+          spotifyPlaylists = spotifyPlaylists.filter((item) => item.id !== playlist.id);
+          if (activeSpotifyPlaylistId === playlist.id) {
+            activeSpotifyPlaylistId = spotifyPlaylists[0]?.id || "";
+          }
+          renderSpotifyPlaylists();
+          showSpotifyStatus("Spellistan tas bort när du sparar inställningarna.");
+        });
+        actions.append(testLink, removeButton);
+        row.append(radio, copy, actions);
+        spotifyPlaylistList.append(row);
+      });
+    }
+
+    function addSpotifyPlaylist() {
+      const url = normalizeSpotifyPlaylistUrl(settingSpotifyUrl.value);
+      if (!url) {
+        showSpotifyStatus("Klistra in en giltig Spotify-spellista.", "error");
+        settingSpotifyUrl.focus();
+        return;
+      }
+      const id = spotifyPlaylistId(url);
+      if (spotifyPlaylists.some((playlist) => playlist.id === id)) {
+        showSpotifyStatus("Den spellistan finns redan i listan.", "error");
+        return;
+      }
+      const name = settingSpotifyName.value.trim()
+        || `Spotify-spellista ${spotifyPlaylists.length + 1}`;
+      spotifyPlaylists.push({ id, name: name.slice(0, 80), url });
+      activeSpotifyPlaylistId = id;
+      settingSpotifyName.value = "";
+      settingSpotifyUrl.value = "";
+      renderSpotifyPlaylists();
+      showSpotifyStatus("Spellistan är tillagd och vald. Spara inställningarna för att aktivera den.", "success");
     }
 
     function clampRetentionDays(value) {
@@ -3937,6 +4218,19 @@
       settingFacebook.value = data.facebook || "";
       settingInstagram.value = data.instagram || "";
       settingTiktok.value = data.tiktok || "";
+      settingShowSpotify.checked = data.showSpotify !== false;
+      spotifyPlaylists = normalizeSpotifyPlaylists(
+        Array.isArray(savedData.spotifyPlaylists)
+          ? savedData.spotifyPlaylists
+          : defaultSiteSettings.spotifyPlaylists
+      );
+      activeSpotifyPlaylistId = spotifyPlaylists.some(
+        (playlist) => playlist.id === data.activeSpotifyPlaylistId
+      )
+        ? data.activeSpotifyPlaylistId
+        : (spotifyPlaylists[0]?.id || "");
+      renderSpotifyPlaylists();
+      showSpotifyStatus("");
       settingCopyright.value = data.copyright || "";
       const oldCustomLogoUrl = typeof savedData.logoUrl === "string" ? savedData.logoUrl : "";
       const logoMode = ["patina", "clean", "legacy", "custom"].includes(savedData.logoMode)
@@ -4007,6 +4301,10 @@
         showSettingsStatus("Ladda först upp en bild under Startanimation.", "error");
         return;
       }
+      if (settingShowSpotify.checked && !spotifyPlaylists.length) {
+        showSettingsStatus("Lägg till en spellista eller dölj Spotifyikonen.", "error");
+        return;
+      }
       const logoMode = selectedLogoMode();
       if (logoMode === "custom" && !selectedCustomLogoFile && !formCustomLogoUrl) {
         showSettingsStatus("Välj en egen logotyp eller välj någon av de inbyggda.", "error");
@@ -4022,6 +4320,9 @@
         facebook: settingFacebook.value.trim(),
         instagram: settingInstagram.value.trim(),
         tiktok: settingTiktok.value.trim(),
+        showSpotify: settingShowSpotify.checked,
+        spotifyPlaylists: spotifyPlaylists.map(({ id, name, url }) => ({ id, name, url })),
+        activeSpotifyPlaylistId,
         copyright: settingCopyright.value.trim(),
         logoMode,
         customLogoUrl: formCustomLogoUrl,
@@ -5720,6 +6021,13 @@
       });
     });
     settingCustomLogoFile.addEventListener("change", selectCustomLogo);
+    addSpotifyPlaylistButton.addEventListener("click", addSpotifyPlaylist);
+    settingSpotifyUrl.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        addSpotifyPlaylist();
+      }
+    });
     settingIntroBackgroundColor.addEventListener("input", handleIntroAnimationFormChange);
     settingIntroStarColor.addEventListener("input", handleIntroAnimationFormChange);
     settingIntroInitialSeconds.addEventListener("input", handleIntroAnimationFormChange);
