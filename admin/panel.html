@@ -1916,7 +1916,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.7.2</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.7.5</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -2475,11 +2475,11 @@
                   <div class="field-group">
                     <label class="intro-image-dropzone" for="setting-intro-image-file">
                       <span class="intro-image-dropzone-icon">＋</span>
-                      <strong>Välj bakgrundsbild</strong>
+                      <strong>Välj en annan bakgrundsbild</strong>
                       <small>JPG, PNG eller WebP · högst 8 MB</small>
                     </label>
                     <input id="setting-intro-image-file" class="visually-hidden" type="file" accept="image/jpeg,image/png,image/webp">
-                    <small class="field-help">JPG, PNG eller WebP. Bilden komprimeras automatiskt före uppladdning.</small>
+                    <small class="field-help">Second Hand-bilden är förvald och växlar automatiskt mellan dator och mobil. En egen bild ersätter förvalet.</small>
                   </div>
                   <div class="field-group intro-image-fit-field">
                     <div class="intro-image-fit-panel">
@@ -3369,12 +3369,12 @@
       trashDays: 2,
       newArrivalsRetentionMode: "days",
       newArrivalsRetentionDays: 7,
-      introAnimationMode: "classic",
+      introAnimationMode: "image",
       introBackgroundColor: "#000000",
       introStarColor: "#d4af37",
       introInitialDurationMs: 500,
       introRevealDurationMs: 1000,
-      introImageUrl: "",
+      introImageUrl: "bilder/animation/startanimation-second-hand-desktop.webp",
       introImageStoragePath: "",
       introImageFit: "cover"
     };
@@ -3460,10 +3460,12 @@
     }
 
     function normalizedIntroAnimationSettings(data) {
+      const defaultIntroImageUrl =
+        "bilder/animation/startanimation-second-hand-desktop.webp";
       return {
         introAnimationMode: ["classic", "gold", "image", "none"].includes(data.introAnimationMode)
           ? data.introAnimationMode
-          : "classic",
+          : "image",
         introBackgroundColor: normalizeAnimationColor(data.introBackgroundColor, "#000000"),
         introStarColor: normalizeAnimationColor(data.introStarColor, "#d4af37"),
         introInitialDurationMs: Math.round(
@@ -3472,7 +3474,9 @@
         introRevealDurationMs: Math.round(
           clampAnimationSeconds(Number(data.introRevealDurationMs) / 1000, 1, 0.2) * 1000
         ),
-        introImageUrl: typeof data.introImageUrl === "string" ? data.introImageUrl : "",
+        introImageUrl: typeof data.introImageUrl === "string" && data.introImageUrl
+          ? data.introImageUrl
+          : defaultIntroImageUrl,
         introImageStoragePath: typeof data.introImageStoragePath === "string" ? data.introImageStoragePath : "",
         introImageFit: data.introImageFit === "contain" ? "contain" : "cover"
       };
@@ -3540,7 +3544,13 @@
     function updateAnimationSettingsUi() {
       const mode = ["classic", "gold", "image", "none"].includes(settingIntroAnimationMode.value)
         ? settingIntroAnimationMode.value
-        : "classic";
+        : "image";
+      if (mode === "image" && !formIntroImageUrl) {
+        formIntroImageUrl =
+          "bilder/animation/startanimation-second-hand-desktop.webp";
+        formIntroImageStoragePath = "";
+        renderIntroImagePreview();
+      }
       const disabled = mode === "none";
       animationSettingsFields.classList.toggle("animation-setting-hidden", disabled);
       introGoldColorField.classList.toggle(
@@ -3595,7 +3605,12 @@
     function renderIntroImagePreview() {
       const source = introImageObjectUrl || formIntroImageUrl;
       introImagePreview.hidden = !source;
-      if (source) introImagePreviewImage.src = source;
+      if (source) {
+        introImagePreviewImage.src =
+          source === "bilder/animation/startanimation-second-hand-desktop.webp"
+            ? new URL("../" + source, window.location.href).href
+            : source;
+      }
       else introImagePreviewImage.removeAttribute("src");
     }
 
@@ -3603,7 +3618,8 @@
       if (introImageObjectUrl) URL.revokeObjectURL(introImageObjectUrl);
       introImageObjectUrl = "";
       selectedIntroImageFile = null;
-      formIntroImageUrl = "";
+      formIntroImageUrl =
+        "bilder/animation/startanimation-second-hand-desktop.webp";
       formIntroImageStoragePath = "";
       settingIntroImageFile.value = "";
       renderIntroImagePreview();
@@ -3694,7 +3710,7 @@
     function setAnimationForm(data) {
       settingIntroAnimationMode.value = ["classic", "gold", "image", "none"].includes(data.introAnimationMode)
         ? data.introAnimationMode
-        : "classic";
+        : "image";
       settingIntroModeQuick.value = settingIntroAnimationMode.value;
       settingIntroBackgroundColor.value = normalizeAnimationColor(
         data.introBackgroundColor,
@@ -3711,7 +3727,9 @@
         clampAnimationSeconds(Number(data.introRevealDurationMs) / 1000, 1, 0.2)
       );
       settingIntroImageFit.value = data.introImageFit === "contain" ? "contain" : "cover";
-      formIntroImageUrl = typeof data.introImageUrl === "string" ? data.introImageUrl : "";
+      formIntroImageUrl = typeof data.introImageUrl === "string" && data.introImageUrl
+        ? data.introImageUrl
+        : "bilder/animation/startanimation-second-hand-desktop.webp";
       formIntroImageStoragePath = typeof data.introImageStoragePath === "string"
         ? data.introImageStoragePath
         : "";
@@ -3749,12 +3767,11 @@
       const logoSource = currentLogoSource();
       if (logoSource) previewUrl.searchParams.set("logo", logoSource);
       if (settingIntroAnimationMode.value === "image") {
-        if (!formIntroImageUrl) {
-          introAnimationActionMessage.textContent = "⚠ Välj en bakgrundsbild före förhandsgranskningen.";
-          introAnimationActionMessage.className = "message error";
-          return;
-        }
-        previewUrl.searchParams.set("image", formIntroImageUrl);
+        const previewImageSource =
+          formIntroImageUrl === "bilder/animation/startanimation-second-hand-desktop.webp"
+            ? new URL("../" + formIntroImageUrl, window.location.href).href
+            : formIntroImageUrl;
+        previewUrl.searchParams.set("image", previewImageSource);
         previewUrl.searchParams.set("fit", settingIntroImageFit.value);
       }
       const previewToken = globalThis.crypto?.randomUUID
@@ -3857,7 +3874,18 @@
       trashRetentionDays = Math.min(7, Math.max(1, Number(data.trashDays) || 2));
       settingTrashDays.value = String(trashRetentionDays);
       setRetentionForm(data);
-      setAnimationForm(data);
+      const animationFormData =
+        typeof savedData.introImageUrl === "string" && savedData.introImageUrl
+          ? data
+          : {
+            ...data,
+            introAnimationMode: "image",
+            introImageUrl:
+              "bilder/animation/startanimation-second-hand-desktop.webp",
+            introImageStoragePath: "",
+            introImageFit: "cover"
+          };
+      setAnimationForm(animationFormData);
     }
 
     async function loadSiteSettings() {
