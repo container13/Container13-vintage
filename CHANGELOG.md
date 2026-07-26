@@ -1,5 +1,12 @@
 # Ändringslogg
 
+## Version 6.7.8
+
+- Jämnar ut tidsfälten och visar originaltiden under samtliga fält.
+- Behåller originalvärdena synliga även när tiderna har ändrats.
+- Flyttar den valda bakgrundsbilden högst upp i bildsektionen.
+- Märker Second Hand-bilden tydligt som förvald och placerar bildbytet under förhandsbilden.
+
 ## Version 6.7.7
 
 - Rättar förvalet när Firestore innehåller en gammal inaktiv animationsbild.
