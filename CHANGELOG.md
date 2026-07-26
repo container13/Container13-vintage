@@ -1,5 +1,10 @@
 # Ändringslogg
 
+## Version 6.9.1
+
+- Minskar det stora mellanrummet mellan Kontakt-rubriken och kontaktkortet.
+- Begränsar ändringen till Kontaktsidan på dator och mobil.
+
 ## Version 6.9.0
 
 - Tar bort gamla arkiv, frikopplad kod och oanvända exempelbilder.
