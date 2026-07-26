@@ -1,5 +1,12 @@
 # Ändringslogg
 
+## Version 6.7.2
+
+- Tar bort den gamla logotypens negativa marginal på dator.
+- Anpassar startsidan och samtliga undersidor till den tätt beskurna tryckerilogotypen.
+- Hindrar sidrubriken från att hamna ovanpå logotypen.
+- Ger logotypen ett normalt, jämnt mellanrum före rubriken.
+
 ## Version 6.7.1
 
 - Kopplar webbplatsens logotyp till adminpanelens inställningar.
