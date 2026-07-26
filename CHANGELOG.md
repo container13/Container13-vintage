@@ -1,5 +1,13 @@
 # Ändringslogg
 
+## Version 6.6.1
+
+- Rätar upp färg-, tids- och bildfälten i separata jämna sektioner.
+- Ersätter animationsrullistan på huvudsidan med fyra tydliga alternativkort.
+- Flyttar aktiv status högst upp.
+- Förbättrar bilduppladdningen med en större valyta.
+- Förfinar knappordning och mobilanpassning utan att ändra animationsfunktionen.
+
 ## Version 6.6.0
 
 - Ger Startanimation en egen flik i dashboarden.
