@@ -52,21 +52,34 @@ function rememberHomeNavigation() {
 }
 
 async function initializeLayout() {
+  const headerTask = loadHtml("site-header", "includes/header.html");
+  const footerTask = loadHtml("site-footer", "includes/footer.html");
+  const settingsModuleTask = import("./site-settings.js?v=6.10.29");
+
   try {
-    await Promise.all([
-      loadHtml("site-header", "includes/header.html"),
-      loadHtml("site-footer", "includes/footer.html")
-    ]);
-
+    await headerTask;
     markCurrentPage();
-    const statusTask = import("./status.js?v=3.8.0");
-    const settingsTask = import("./site-settings.js?v=6.10.0")
-      .then((settingsModule) => settingsModule.applySiteSettings());
-    const themeTask = import("./theme-controls.js?v=2.0.0");
-
-    await Promise.allSettled([statusTask, settingsTask, themeTask]);
+    import("./status.js?v=3.9.0").catch((error) => {
+      console.error("Kunde inte starta statusraden:", error);
+    });
   } catch (error) {
-    console.error("Kunde inte ladda sidans gemensamma delar:", error);
+    console.error("Kunde inte ladda sidans header:", error);
+  }
+
+  try {
+    await footerTask;
+    import("./theme-controls.js?v=2.0.0").catch((error) => {
+      console.error("Kunde inte starta temaväljaren:", error);
+    });
+  } catch (error) {
+    console.error("Kunde inte ladda sidans footer:", error);
+  }
+
+  try {
+    const settingsModule = await settingsModuleTask;
+    await settingsModule.applySiteSettings();
+  } catch (error) {
+    console.error("Kunde inte använda webbplatsens inställningar:", error);
   }
 }
 

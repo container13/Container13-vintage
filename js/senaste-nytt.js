@@ -1,3 +1,5 @@
+import { getSiteSettings } from "./site-data.js?v=1.0.0";
+
 (() => {
   "use strict";
 
@@ -67,11 +69,7 @@
 
   async function getRetentionSetting() {
     try {
-      const endpoint = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/settings/site?key=${API_KEY}`;
-      const response = await fetch(endpoint, { cache: "no-store" });
-      if (!response.ok) return { mode: "days", days: 7 };
-      const data = await response.json();
-      const settings = fieldsFromFirestore(data.fields || {});
+      const settings = await getSiteSettings();
       if (settings.newArrivalsRetentionMode === "manual") return { mode: "manual", days: 0 };
       const parsed = Number(settings.newArrivalsRetentionDays);
       const days = Number.isInteger(parsed) ? Math.min(30, Math.max(1, parsed)) : 7;

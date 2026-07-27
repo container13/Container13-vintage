@@ -1,5 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { getApps, initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import { doc, getDoc, getFirestore } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { getSiteSettings } from "./site-data.js?v=1.0.0";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw",
@@ -11,7 +12,7 @@ const firebaseConfig = {
   measurementId: "G-PSHRGK4JJC"
 };
 
-const app = initializeApp(firebaseConfig);
+const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 const database = getFirestore(app);
 
 const storeStatus = document.getElementById("store-status");
@@ -245,10 +246,9 @@ async function loadNewArrivalsNotice() {
 
   try {
     const galleryUrl = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/gallery?pageSize=100&key=${API_KEY}`;
-    const settingsUrl = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/settings/site?key=${API_KEY}`;
-    const [galleryResponse, settingsResponse] = await Promise.all([
+    const [galleryResponse, settings] = await Promise.all([
       fetch(galleryUrl, { cache: "no-store" }),
-      fetch(settingsUrl, { cache: "no-store" })
+      getSiteSettings()
     ]);
 
     if (!galleryResponse.ok) {
@@ -256,8 +256,6 @@ async function loadNewArrivalsNotice() {
     }
 
     const galleryJson = await galleryResponse.json();
-    const settingsJson = settingsResponse.ok ? await settingsResponse.json() : null;
-    const settings = settingsJson ? firestoreFields(settingsJson.fields || {}) : null;
     const retention = newArrivalsRetention(settings);
 
     const count = (galleryJson.documents || [])

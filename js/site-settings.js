@@ -1,15 +1,4 @@
-import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { doc, getDoc, getFirestore } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw",
-  authDomain: "container13-87c1a.firebaseapp.com",
-  projectId: "container13-87c1a",
-  storageBucket: "container13-87c1a.firebasestorage.app",
-  messagingSenderId: "936924614149",
-  appId: "1:936924614149:web:2b74d823951538fa2b166c",
-  measurementId: "G-PSHRGK4JJC"
-};
+import { getSiteSettings } from "./site-data.js?v=1.0.0";
 
 const defaultAboutTexts = {
   personal: {
@@ -125,7 +114,7 @@ function applyAboutSettings(data, isPreview = false) {
 }
 
 const builtInLogoSources = {
-  patina: "bilder/logotyp/logo-patina.png",
+  patina: "bilder/logotyp/logo-patina.webp",
   clean: "bilder/logotyp/logo-tryckeri-ren.png",
   legacy: "bilder/logotyp/logo.png"
 };
@@ -141,11 +130,7 @@ function siteLogoSource(data) {
 export async function applySiteSettings() {
   try {
     const previewData = aboutPreviewSettings();
-    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
-    const snapshot = previewData
-      ? null
-      : await getDoc(doc(getFirestore(app), "settings", "site"));
-    const savedData = previewData || (snapshot?.exists() ? snapshot.data() : {});
+    const savedData = previewData || await getSiteSettings();
     const data = { ...defaults, ...savedData };
     if (
       !["patina", "clean", "legacy", "custom"].includes(savedData.logoMode)
