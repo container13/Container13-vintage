@@ -1,32 +1,39 @@
-const themeButtons = Array.from(document.querySelectorAll("[data-theme-choice]"));
+const themeToggle = document.getElementById("footer-theme-toggle");
 const themeStatus = document.getElementById("theme-choice-status");
 
-const choiceLabels = {
-  auto: "Automatiskt tema",
-  light: "Ljust tema",
-  dark: "Mörkt tema"
-};
+function getActiveTheme() {
+  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+}
 
-function updateThemeControls() {
-  const choice = window.Container13Theme?.getChoice?.() || "auto";
+function updateThemeToggle() {
+  if (!themeToggle) return;
 
-  themeButtons.forEach((button) => {
-    const isSelected = button.dataset.themeChoice === choice;
-    button.classList.toggle("selected", isSelected);
-    button.setAttribute("aria-pressed", String(isSelected));
-  });
+  const activeTheme = getActiveTheme();
+  const nextTheme = activeTheme === "dark" ? "light" : "dark";
+  const icon = themeToggle.querySelector("i");
+
+  if (icon) {
+    icon.className = activeTheme === "dark" ? "fas fa-moon" : "fas fa-sun";
+  }
+
+  const actionLabel =
+    nextTheme === "dark" ? "Byt till mörkt tema" : "Byt till ljust tema";
+
+  themeToggle.title = actionLabel;
+  themeToggle.setAttribute("aria-label", actionLabel);
+  themeToggle.dataset.activeTheme = activeTheme;
 
   if (themeStatus) {
-    themeStatus.textContent = `Valt: ${choiceLabels[choice] || choiceLabels.auto}`;
+    themeStatus.textContent =
+      activeTheme === "dark" ? "Mörkt tema är aktivt" : "Ljust tema är aktivt";
   }
 }
 
-themeButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    window.Container13Theme?.setChoice?.(button.dataset.themeChoice);
-    updateThemeControls();
-  });
+themeToggle?.addEventListener("click", () => {
+  const nextTheme = getActiveTheme() === "dark" ? "light" : "dark";
+  window.Container13Theme?.setChoice?.(nextTheme);
+  updateThemeToggle();
 });
 
-window.addEventListener("container13themechange", updateThemeControls);
-updateThemeControls();
+window.addEventListener("container13themechange", updateThemeToggle);
+updateThemeToggle();
