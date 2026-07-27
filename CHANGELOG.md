@@ -1,5 +1,23 @@
 # Ändringslogg
 
+## Version 6.10.33 – Visuell bildinventering
+
+### Vad som har ändrats
+
+- Visar samtliga hittade bilder med miniatyr, kategori och optimeringsstatus.
+- Inventerar Nyinkommet, Butiken, egen logotyp och egen startanimationsbild.
+- Visar både redan optimerade WebP-bilder och äldre bilder.
+- Låter administratören välja varje bild separat före konvertering.
+- Förhindrar att optimeringen startas innan analysen är klar och minst en bild har valts.
+- Behåller det separata valet att spara eller radera originalfiler.
+
+### Tekniskt berörda filer
+
+- `admin/panel.html`
+- `admin/sw.js`
+- `admin/CHANGELOG.md`
+- `admin/VERSION.txt`
+
 ## Version 6.10.32 – Verktyg för äldre bilder
 
 ### Vad som har ändrats
