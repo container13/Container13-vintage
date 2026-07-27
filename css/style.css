@@ -241,6 +241,16 @@
     gap: 15px;
   }
 }
+
+/* =========================================================
+   VERSION 6.10.9 - KORREKT PROPORTION PÅ GATUVY
+   ========================================================= */
+
+.gatuvy {
+  height: auto !important;
+  aspect-ratio: auto !important;
+  object-fit: contain;
+}
 /* ===========================
    FOOTER
 =========================== */
