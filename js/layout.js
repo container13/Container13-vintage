@@ -43,7 +43,7 @@ function rememberHomeNavigation() {
         destination.origin === window.location.origin &&
         destinationPage === "index.html"
       ) {
-        sessionStorage.setItem("c13SkipNextIntro", "true");
+        sessionStorage.setItem("c13StarIntroShown", "true");
       }
     } catch (_) {
       // Navigeringen ska fortsätta även om lagringen inte är tillgänglig.
