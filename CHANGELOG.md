@@ -1,5 +1,24 @@
 # Ändringslogg
 
+## Version 6.10.26 – Samma introduktionsstorlek
+
+### Vad som har ändrats
+
+- Ger texten direkt under H1 på Butiken, Nyinkommet, Om oss, Kontakt och Hitta hit exakt samma responsiva storlek som texten under logotypen på startsidan.
+- Anpassningen gäller både mobil och dator.
+- Behåller samtliga H1-rubriker och övrig sidtext oförändrade.
+- Uppdaterar CSS-cacheversionen på alla publika sidor.
+
+### Tekniskt berörda filer
+
+- `css/style.css`
+- `index.html`
+- `galleri.html`
+- `nyinkommet.html`
+- `omoss.html`
+- `kontakt.html`
+- `hittahit.html`
+
 ## Version 6.10.25 – Rubriker och introduktionstexter
 
 ### Vad som har ändrats
