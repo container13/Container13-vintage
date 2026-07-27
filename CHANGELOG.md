@@ -1,5 +1,25 @@
 # Ändringslogg
 
+## Version 6.10.30 – Footer utan reserverat tomrum
+
+### Vad som har ändrats
+
+- Tar bort den fasta reserveringen av footerns höjd.
+- Footern placeras åter naturligt efter sidans innehåll utan ett förskapat tomrum.
+- Behåller övriga laddningsförbättringar från version 6.10.29.
+- Uppdaterar CSS- och PWA-cacheversionen.
+
+### Tekniskt berörda filer
+
+- `css/style.css`
+- `index.html`
+- `galleri.html`
+- `nyinkommet.html`
+- `omoss.html`
+- `kontakt.html`
+- `hittahit.html`
+- `sw.js`
+
 ## Version 6.10.29 – Snabbare laddning på mobil
 
 ### Vad som har ändrats
