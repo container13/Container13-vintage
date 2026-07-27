@@ -1,5 +1,18 @@
 # Ändringslogg
 
+## Version 6.10.27 – Samma logotypstorlek på Om oss
+
+### Vad som har ändrats
+
+- Tar bort Om oss-sidans avvikande mobilbredd på 220 pixlar.
+- Låter Om oss använda samma gemensamma responsiva logotypstorlek som övriga undersidor på mobil.
+- Behåller Om oss-sidans övriga mobilanpassning och mellanrum.
+
+### Tekniskt berörda filer
+
+- `css/style.css`
+- `omoss.html`
+
 ## Version 6.10.26 – Samma introduktionsstorlek
 
 ### Vad som har ändrats
