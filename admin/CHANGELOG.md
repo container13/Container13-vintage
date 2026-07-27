@@ -1,5 +1,14 @@
 # Ändringslogg
 
+## Version 6.10.1
+
+- Skalar automatiskt ned nya Nyinkommet- och Butiken-bilder till högst 1600 pixlar.
+- Konverterar nya uppladdningar till WebP med 84 procents kvalitet.
+- Sparar korrekt filändelse och innehållstyp för WebP-filer.
+- Behåller stöd för befintliga JPEG-, PNG- och WebP-bilder.
+- Använder samma optimering för egna startanimationsbilder.
+- Uppdaterar adminpanelens cache och synliga versionsnummer.
+
 ## Version 6.10.0
 
 - Ny mobilanpassad Om oss-sida.

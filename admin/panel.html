@@ -2143,7 +2143,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.10.0</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.10.1</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -4317,7 +4317,9 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
           const safeFileName = createSafeFileName(normalizedFile.name);
           const storagePath = `galleri/startanimation-${Date.now()}-${safeFileName}`;
           const storageReference = ref(storage, storagePath);
-          await uploadBytes(storageReference, normalizedFile, { contentType: "image/jpeg" });
+          await uploadBytes(storageReference, normalizedFile, {
+            contentType: normalizedFile.type
+          });
           const imageUrl = await getDownloadURL(storageReference);
           values = { ...values, introImageUrl: imageUrl, introImageStoragePath: storagePath };
         }
@@ -5151,11 +5153,11 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
 
 
     /*
-      Gör om den valda bilden till en vanlig JPEG innan uppladdning.
+      Skalar ned den valda bilden och gör om den till WebP före uppladdning.
       Det förebygger tomma bildrutor från mobilbilder med ovanliga
-      format, färgprofiler eller filändelser.
+      format, färgprofiler eller filändelser och håller filstorleken nere.
     */
-    async function normalizeImageFile(file, maximumDimension = 2400, jpegQuality = 0.9) {
+    async function normalizeImageFile(file, maximumDimension = 1600, imageQuality = 0.84) {
       const objectUrl = URL.createObjectURL(file);
 
       try {
@@ -5228,16 +5230,25 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
                   );
                 }
               },
-              "image/jpeg",
-              jpegQuality
+              "image/webp",
+              imageQuality
             );
           });
 
+        const outputType =
+          blob.type === "image/webp"
+            ? "image/webp"
+            : blob.type || "image/jpeg";
+        const outputName =
+          outputType === "image/webp"
+            ? "container13-bild.webp"
+            : "container13-bild.jpg";
+
         return new File(
           [blob],
-          "container13-bild.jpg",
+          outputName,
           {
-            type: "image/jpeg"
+            type: outputType
           }
         );
       } finally {
@@ -5564,7 +5575,9 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
             const storagePath = `nyinkommet/${Date.now()}-${index}-${safeFileName}`;
             const storageReference = ref(storage, storagePath);
 
-            await uploadBytes(storageReference, normalizedFile, { contentType: "image/jpeg" });
+            await uploadBytes(storageReference, normalizedFile, {
+              contentType: normalizedFile.type
+            });
             const imageUrl = await getDownloadURL(storageReference);
 
             const uploadedDocument = await addDoc(collection(database, "gallery"), {
@@ -6053,7 +6066,9 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
             const storagePath = `galleri/${Date.now()}-${index}-${safeFileName}`;
             const storageReference = ref(storage, storagePath);
 
-            await uploadBytes(storageReference, normalizedFile, { contentType: "image/jpeg" });
+            await uploadBytes(storageReference, normalizedFile, {
+              contentType: normalizedFile.type
+            });
             const imageUrl = await getDownloadURL(storageReference);
 
             await addDoc(collection(database, "gallery"), {
