@@ -1,5 +1,17 @@
 # Ändringslogg
 
+## Version 6.10.3
+
+- Visar en komplett bildinventering med miniatyrer innan någon optimering startas.
+- Delar upp resultatet i Nyinkommet, Butiken, egen logotyp och egen startanimationsbild.
+- Visar om varje bild redan är WebP eller kan optimeras.
+- Lägger till en separat kryssruta för varje bild som kan optimeras.
+- Markerar äldre bilder som standard men låter administratören välja exakt vilka som ska bearbetas.
+- Låser konverteringsknappen tills analysen är klar och minst en bild har valts.
+- Uppdaterar även logotypens och startanimationens inställningar efter lyckad konvertering.
+- Behåller valet att spara eller radera originalbilderna.
+- Uppdaterar adminpanelens cache och synliga versionsnummer.
+
 ## Version 6.10.2
 
 - Lägger till ett val under Inställningar som visar eller döljer verktyget för äldre bilder.
