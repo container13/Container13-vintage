@@ -1,5 +1,19 @@
 # Ändringslogg
 
+## Version 6.10.13 – Googlekartan anpassad för mobil
+
+### Vad som har ändrats
+
+- Ger Googlekartan samma breda proportioner som Gatuvyn på mobil.
+- Tar bort kartans tidigare fasta mobilhöjd, som gjorde kartan onödigt hög och smal.
+- Behåller kartans nuvarande storlek och utseende på dator.
+- Rundar kartans hörn på mobilen så att den följer Gatuvyns form.
+
+### Tekniskt berörda filer
+
+- `hittahit.html`
+- `css/style.css`
+
 ## Version 6.10.12 – Samtliga mobillänkar på en rad
 
 ### Vad som har ändrats
