@@ -1009,49 +1009,36 @@ main > #nyGallery.gallery {
   font-size: 1.8rem;
 }
 
-.theme-picker {
-  display: grid;
-  justify-items: center;
-  margin: 8px auto 0;
+.footer-theme-divider {
+  width: 1px;
+  height: 30px;
+  margin-left: 4px;
+  background: rgba(255, 255, 255, 0.22);
 }
 
-.theme-picker-options {
-  display: inline-flex;
-  gap: 2px;
-  padding: 3px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.theme-picker button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  min-height: 32px;
-  padding: 5px;
+.footer-theme-toggle {
+  display: inline-grid;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  place-items: center;
   border: 0;
-  border-radius: 999px;
-  color: #ded8ce;
+  border-radius: 50%;
+  color: #fff;
   background: transparent;
   font: inherit;
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 1.65rem;
   cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
 }
 
-.theme-picker button:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.10);
+.footer-theme-toggle:hover {
+  color: #d4af37;
+  background: rgba(255, 255, 255, 0.07);
+  transform: translateY(-3px);
 }
 
-.theme-picker button.selected {
-  color: #211d16;
-  background: #d4af37;
-}
-
-.theme-picker button:focus-visible {
+.footer-theme-toggle:focus-visible {
   outline: 2px solid #f0cf65;
   outline-offset: 2px;
 }
@@ -1762,13 +1749,15 @@ html[data-theme="dark"] .about-feature-link {
     margin-top: 0;
   }
 
-  .theme-picker-options {
-    width: auto;
+  .footer-theme-divider {
+    height: 26px;
+    margin-left: 0;
   }
 
-  .theme-picker button {
-    flex: 0 0 36px;
-    justify-content: center;
+  .footer-theme-toggle {
+    width: 38px;
+    height: 38px;
+    font-size: 1.5rem;
   }
 }
 
