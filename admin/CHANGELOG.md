@@ -1,5 +1,26 @@
 # Ändringslogg
 
+## Version 6.10.5
+
+- Visar om varje optimerad bild fortfarande har ett original sparat.
+- Lägger till knappen Ta bort sparat original på varje berörd bild.
+- Lägger till Ta bort alla verifierade original för samlad städning.
+- Hämtar aktuell bildpost från servern och verifierar WebP-bilden före varje radering.
+- Raderar aldrig ett original om WebP-bilden inte kan verifieras.
+- Tar bort originalreferensen först efter att lagringsfilen har raderats.
+- Behåller ett tydligt resultatmeddelande efter att bildlistan har uppdaterats.
+- Uppdaterar adminpanelens cache och synliga versionsnummer.
+
+## Version 6.10.4
+
+- Tvingar bildanalysen att läsa aktuella bildposter direkt från servern.
+- Känner igen redan optimerade bilder genom format, tidsmarkering, originalreferens, filändelse och lagringssökväg.
+- Kontrollerar varje vald bild mot servern igen omedelbart före konverteringen.
+- Hoppar säkert över bilder som redan har optimerats även om en gammal analyslista ligger kvar.
+- Förhindrar att den första originalreferensen skrivs över vid en senare körning.
+- Visar hur många redan optimerade bilder som säkerhetsspärren hoppade över.
+- Uppdaterar adminpanelens cache och synliga versionsnummer.
+
 ## Version 6.10.3
 
 - Visar en komplett bildinventering med miniatyrer innan någon optimering startas.
