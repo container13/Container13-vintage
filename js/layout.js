@@ -28,53 +28,6 @@ function markCurrentPage() {
   });
 }
 
-function initializeMobileMenu() {
-  const toggle = document.getElementById("mobile-menu-toggle");
-  const navigation = document.getElementById("main-navigation");
-
-  if (!toggle || !navigation) {
-    return;
-  }
-
-  const setMenuOpen = (isOpen) => {
-    navigation.classList.toggle("oppen", isOpen);
-    toggle.setAttribute("aria-expanded", String(isOpen));
-    toggle.setAttribute("aria-label", isOpen ? "Stäng meny" : "Öppna meny");
-
-    const icon = toggle.querySelector("i");
-    if (icon) {
-      icon.classList.toggle("fa-bars", !isOpen);
-      icon.classList.toggle("fa-times", isOpen);
-    }
-  };
-
-  toggle.addEventListener("click", () => {
-    setMenuOpen(toggle.getAttribute("aria-expanded") !== "true");
-  });
-
-  navigation.addEventListener("click", (event) => {
-    if (event.target.closest("a")) {
-      setMenuOpen(false);
-    }
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      setMenuOpen(false);
-      toggle.focus();
-    }
-  });
-}
-
-function placeScrollableNotices() {
-  const headerHost = document.getElementById("site-header");
-  const notices = headerHost?.querySelector(".site-notiser");
-
-  if (headerHost && notices) {
-    headerHost.insertAdjacentElement("afterend", notices);
-  }
-}
-
 function rememberHomeNavigation() {
   document.addEventListener("click", (event) => {
     const link = event.target.closest("a");
@@ -106,8 +59,6 @@ async function initializeLayout() {
     ]);
 
     markCurrentPage();
-    placeScrollableNotices();
-    initializeMobileMenu();
     const statusTask = import("./status.js?v=3.7.0");
     const settingsTask = import("./site-settings.js?v=6.10.0")
       .then((settingsModule) => settingsModule.applySiteSettings());
