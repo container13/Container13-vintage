@@ -1,5 +1,24 @@
 # Ändringslogg
 
+## Version 6.10.12 – Samtliga mobillänkar på en rad
+
+### Vad som har ändrats
+
+- Samlar mobilens samtliga navigeringslänkar på en enda kompakt rad.
+- Ersätter ordet ”Hem” med en tydlig husikon.
+- Visar de kortare mobilnamnen ”Butik”, ”Nytt” och ”Hitta”.
+- Behåller ”Om oss” och ”Kontakt” som text för att länkarna ska vara lätta att förstå.
+- Fördelar länkarna automatiskt över hela skärmbredden. Om ”Om oss” döljs i adminpanelen fördelas de fem återstående länkarna jämnt utan tomrum.
+- Tar bort den stora bakgrundsplattan från den aktiva länken och använder endast guldtext med en diskret linje.
+- Behåller de fullständiga länktexterna i datorversionen.
+- Headern med navigering, öppettidsstatus och Nyinkommet-notis ligger fortsatt kvar vid scrollning.
+
+### Tekniskt berörda filer
+
+- `includes/header.html`
+- `css/style.css`
+- De sex publika HTML-sidorna, där CSS-versionen har uppdaterats för säker omladdning på mobilen.
+
 ## Version 6.10.11 – Synliga mobillänkar och sammanhållen status
 
 ### Vad som har ändrats
