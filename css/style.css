@@ -301,6 +301,16 @@
    FOOTER
 =========================== */
 
+#site-footer {
+    width: 100%;
+    min-height: 146px;
+    margin-top: auto;
+}
+
+#site-footer > footer {
+    min-height: 146px;
+}
+
 footer {
     background: #111;
     color: #f5f5f5;
