@@ -6,6 +6,8 @@ const CACHE_KEY = "c13GalleryDataCacheV1";
 const CACHE_MAX_AGE = 24 * 60 * 60 * 1000;
 
 let freshGalleryPromise = null;
+let latestFreshData = null;
+let latestFreshAt = 0;
 
 function validPayload(value) {
   return value && typeof value === "object" && Array.isArray(value.documents);
@@ -44,6 +46,10 @@ export function getCachedGalleryData() {
 }
 
 export function fetchFreshGalleryData() {
+  if (latestFreshData && Date.now() - latestFreshAt < 30000) {
+    return Promise.resolve(latestFreshData);
+  }
+
   if (!freshGalleryPromise) {
     freshGalleryPromise = fetch(GALLERY_URL, { cache: "no-store" })
       .then((response) => {
@@ -54,6 +60,8 @@ export function fetchFreshGalleryData() {
       })
       .then((data) => {
         const normalized = validPayload(data) ? data : { documents: [] };
+        latestFreshData = normalized;
+        latestFreshAt = Date.now();
         storeGallery(normalized);
         return normalized;
       })

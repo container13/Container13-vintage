@@ -1,7 +1,7 @@
 import {
   fetchFreshGalleryData,
   getCachedGalleryData
-} from "./gallery-data.js?v=1.0.0";
+} from "./gallery-data.js?v=1.1.0";
 
 (() => {
   "use strict";
