@@ -1,5 +1,23 @@
 # Ändringslogg
 
+## Version 6.10.32 – Verktyg för äldre bilder
+
+### Vad som har ändrats
+
+- Lägger till ett aktiveringsbart optimeringsverktyg under adminpanelens Inställningar.
+- Verktyget analyserar och konverterar befintliga Nyinkommet- och Butiken-bilder till WebP.
+- Varje ny bild verifieras innan den kopplas till webbplatsen.
+- Titel, datum och övriga bilddata behålls.
+- Administratören väljer om originalbilderna ska sparas eller raderas.
+- Originalen är förvalda att sparas och raderas aldrig innan den nya bilden har verifierats.
+
+### Tekniskt berörda filer
+
+- `admin/panel.html`
+- `admin/sw.js`
+- `admin/CHANGELOG.md`
+- `admin/VERSION.txt`
+
 ## Version 6.10.31 – WebP från adminpanelen
 
 ### Vad som har ändrats
