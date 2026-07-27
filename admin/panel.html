@@ -2149,7 +2149,7 @@
 
   </style>
 
-  <script src="./pwa.js?v=6.10.38" defer></script>
+  <script src="./pwa.js?v=6.10.39" defer></script>
 
 </head>
 
@@ -2242,7 +2242,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.10.8</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.10.9</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -3143,6 +3143,7 @@
                   <button id="analyze-images-button" class="secondary-button" type="button">Analysera äldre bilder</button>
                   <button id="optimize-images-button" class="save-button" type="button" disabled>Optimera bilderna</button>
                   <button id="delete-all-originals-button" class="secondary-button" type="button" disabled>Ta bort alla verifierade original</button>
+                  <button id="enable-image-cache-button" class="secondary-button" type="button">Aktivera snabb bildcache</button>
                 </div>
                 <progress id="image-optimizer-progress" value="0" max="1" hidden style="width:100%;margin-top:14px"></progress>
                 <div id="image-optimizer-message" class="message" role="status" aria-live="polite"></div>
@@ -3215,6 +3216,7 @@
       getDownloadURL,
       getStorage,
       ref,
+      updateMetadata,
       uploadBytes,
       uploadBytesResumable
     } from
@@ -3438,6 +3440,7 @@
     const analyzeImagesButton = document.getElementById("analyze-images-button");
     const optimizeImagesButton = document.getElementById("optimize-images-button");
     const deleteAllOriginalsButton = document.getElementById("delete-all-originals-button");
+    const enableImageCacheButton = document.getElementById("enable-image-cache-button");
     const imageOptimizerProgress = document.getElementById("image-optimizer-progress");
     const imageOptimizerMessage = document.getElementById("image-optimizer-message");
     const imageOptimizerSummary = document.getElementById("image-optimizer-summary");
@@ -4464,7 +4467,8 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
           const storagePath = `galleri/startanimation-${Date.now()}-${safeFileName}`;
           const storageReference = ref(storage, storagePath);
           await uploadBytes(storageReference, normalizedFile, {
-            contentType: normalizedFile.type
+            contentType: normalizedFile.type,
+            cacheControl: "public, max-age=31536000, immutable"
           });
           const imageUrl = await getDownloadURL(storageReference);
           values = { ...values, introImageUrl: imageUrl, introImageStoragePath: storagePath };
@@ -4815,7 +4819,8 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
           const storagePath = `galleri/branding-logo-${safeFileName}`;
           const storageReference = ref(storage, storagePath);
           await uploadBytes(storageReference, selectedCustomLogoFile, {
-            contentType: selectedCustomLogoFile.type
+            contentType: selectedCustomLogoFile.type,
+            cacheControl: "public, max-age=31536000, immutable"
           });
           values.customLogoUrl = await getDownloadURL(storageReference);
           values.customLogoStoragePath = storagePath;
@@ -5546,7 +5551,10 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
       const uploadTask = uploadBytesResumable(
         storageReference,
         file,
-        { contentType: "image/webp" }
+        {
+          contentType: "image/webp",
+          cacheControl: "public, max-age=31536000, immutable"
+        }
       );
       return new Promise((resolve, reject) => {
         const timeoutId = window.setTimeout(() => {
@@ -5566,6 +5574,87 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
           }
         );
       });
+    }
+
+    async function enableFastImageCache() {
+      if (!auth.currentUser) {
+        showImageOptimizerStatus("Du är inte längre inloggad. Logga in igen.", "error");
+        return;
+      }
+
+      enableImageCacheButton.disabled = true;
+      settingShowImageOptimizer.disabled = true;
+      showImageOptimizerStatus("Hämtar bildlistan...", "progress");
+
+      try {
+        const inventory = await getImageOptimizationInventory();
+        const uniquePaths = [...new Set(
+          inventory
+            .flatMap((item) => [item.storagePath, item.originalStoragePath])
+            .map((path) => String(path || "").trim())
+            .filter(Boolean)
+        )];
+
+        if (!uniquePaths.length) {
+          showImageOptimizerStatus(
+            "Inga bilder med sparad Storage-sökväg hittades. Inget ändrades.",
+            "error"
+          );
+          return;
+        }
+
+        imageOptimizerProgress.hidden = false;
+        imageOptimizerProgress.max = uniquePaths.length;
+        imageOptimizerProgress.value = 0;
+
+        let updated = 0;
+        let missing = 0;
+        const failures = [];
+
+        for (let index = 0; index < uniquePaths.length; index += 1) {
+          const storagePath = uniquePaths[index];
+          showImageOptimizerStatus(
+            `Bild ${index + 1} av ${uniquePaths.length}: aktiverar snabb cache...`,
+            "progress"
+          );
+          try {
+            await withTimeout(
+              updateMetadata(ref(storage, storagePath), {
+                cacheControl: "public, max-age=31536000, immutable"
+              }),
+              15000,
+              "Cacheuppdateringen"
+            );
+            updated += 1;
+          } catch (error) {
+            if (error?.code === "storage/object-not-found") {
+              missing += 1;
+            } else {
+              failures.push(`${storagePath}: ${error?.message || error?.code || "okänt fel"}`);
+            }
+          } finally {
+            imageOptimizerProgress.value = index + 1;
+          }
+        }
+
+        const missingText = missing ? ` ${missing} saknade filer hoppades över.` : "";
+        const failureText = failures.length
+          ? ` ${failures.length} misslyckades. ${failures.slice(0, 2).join(" | ")}`
+          : "";
+        showImageOptimizerStatus(
+          `${updated} bilder fick snabb cache.${missingText}${failureText}`,
+          failures.length ? "error" : "success"
+        );
+      } catch (error) {
+        console.error("Kunde inte aktivera snabb bildcache:", error);
+        showImageOptimizerStatus(
+          `Cacheinställningen kunde inte uppdateras: ${error?.message || "okänt fel"}`,
+          "error"
+        );
+      } finally {
+        enableImageCacheButton.disabled = false;
+        settingShowImageOptimizer.disabled = false;
+      }
     }
 
     async function getOriginalImageBlob(item) {
@@ -6433,7 +6522,8 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
             const storageReference = ref(storage, storagePath);
 
             await uploadBytes(storageReference, normalizedFile, {
-              contentType: normalizedFile.type
+              contentType: normalizedFile.type,
+              cacheControl: "public, max-age=31536000, immutable"
             });
             const imageUrl = await getDownloadURL(storageReference);
 
@@ -6924,7 +7014,8 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
             const storageReference = ref(storage, storagePath);
 
             await uploadBytes(storageReference, normalizedFile, {
-              contentType: normalizedFile.type
+              contentType: normalizedFile.type,
+              cacheControl: "public, max-age=31536000, immutable"
             });
             const imageUrl = await getDownloadURL(storageReference);
 
@@ -7320,6 +7411,8 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
         true
       );
     });
+
+    enableImageCacheButton.addEventListener("click", enableFastImageCache);
 
     emptyTrashButton.addEventListener(
       "click",
