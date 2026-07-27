@@ -60,7 +60,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Container13">
 
-<link rel="stylesheet" href="css/style.css?v=6.10.26">
+<link rel="stylesheet" href="css/style.css?v=6.10.29">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
@@ -455,7 +455,7 @@ html.star-intro-active.star-intro-mobile-mode .star-intro-mobile {
 <section class="landing">
 
 
-<img src="bilder/logotyp/logo-patina.png"
+<img src="bilder/logotyp/logo-patina.webp"
 data-site-logo
 alt="Container 13 Vintage"
 class="logo">
@@ -608,14 +608,12 @@ varmt välkommen att även titta in hos oss.
 
 
 
-<script type="module" src="js/layout.js?v=6.10.24"></script>
-<script defer src="js/senaste-nytt.js?v=6.2.1"></script>
+<script type="module" src="js/layout.js?v=6.10.29"></script>
+<script type="module" src="js/senaste-nytt.js?v=6.3.0"></script>
 <script type="module" src="js/analytics.js?v=6.3.0"></script>
 
 <script>
 (() => {
-  const SETTINGS_URL =
-    "https://firestore.googleapis.com/v1/projects/container13-87c1a/databases/(default)/documents/settings/site?key=AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw";
   const DEFAULT_INTRO_DESKTOP_IMAGE =
     "bilder/animation/startanimation-second-hand-desktop.webp";
   const DEFAULT_INTRO_MOBILE_IMAGE =
@@ -685,8 +683,7 @@ varmt välkommen att även titta in hos oss.
         (root.classList.contains("star-intro-force")
           ? window.c13IntroFreshSettingsPromise
           : window.c13IntroSettingsPromise) ||
-        fetch(SETTINGS_URL, { cache: "no-store" })
-          .then((response) => response.ok ? response.json() : null);
+        Promise.resolve(null);
 
       const json = await Promise.race([
         request,
@@ -1094,7 +1091,7 @@ varmt välkommen att även titta in hos oss.
 })();
 </script>
 
-  <script src="pwa.js" defer></script>
+  <script src="pwa.js?v=6.10.29" defer></script>
 </body>
 
 </html>

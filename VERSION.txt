@@ -1,4 +1,4 @@
 Container13
 Version SEO 2.0
 Byggdatum 2026-07-27
-Basversion 6.10.28 / admin 6.10.0
+Basversion 6.10.29 / admin 6.10.0

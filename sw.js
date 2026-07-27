@@ -1,4 +1,4 @@
-const CACHE_NAME = 'container13-site-v6.10.28';
+const CACHE_NAME = 'container13-site-v6.10.29';
 const APP_SHELL = [
   './',
   './index.html',
@@ -16,7 +16,7 @@ const APP_SHELL = [
   './js/layout.js',
   './js/theme-init.js',
   './js/theme-controls.js',
-  './bilder/logotyp/logo-patina.png',
+  './bilder/logotyp/logo-patina.webp',
   './bilder/animation/startanimation-second-hand-desktop.webp',
   './bilder/animation/startanimation-second-hand-mobile.webp',
   './icons/icon-192.png'

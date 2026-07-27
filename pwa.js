@@ -3,11 +3,7 @@
   const SESSION_KEY = "c13PwaVisitRegistered";
   const DISMISSED_KEY = "c13PwaPromptDismissedUntil";
   const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
-  const SETTINGS_URL = "https://firestore.googleapis.com/v1/projects/container13-87c1a/databases/(default)/documents/settings/site";
-
   let deferredInstallPrompt = null;
-  let hiddenAt = 0;
-  let reloadingForUpdate = false;
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
@@ -15,33 +11,8 @@
         .register("./sw.js", { updateViaCache: "none" })
         .then((registration) => {
           registration.update().catch(() => {});
-
-          document.addEventListener("visibilitychange", () => {
-            if (document.visibilityState === "hidden") {
-              hiddenAt = Date.now();
-              return;
-            }
-
-            registration.update().catch(() => {});
-
-            if (hiddenAt && Date.now() - hiddenAt >= 60 * 1000) {
-              window.location.reload();
-            }
-          });
-
-          window.addEventListener("pageshow", (event) => {
-            if (event.persisted) {
-              window.location.reload();
-            }
-          });
         })
         .catch(() => {});
-
-      navigator.serviceWorker.addEventListener("controllerchange", () => {
-        if (reloadingForUpdate) return;
-        reloadingForUpdate = true;
-        window.location.reload();
-      });
     });
   }
 
@@ -74,10 +45,13 @@
 
   async function promptIsEnabled() {
     try {
-      const response = await fetch(SETTINGS_URL, { cache: "no-store" });
-      if (!response.ok) return true;
-      const json = await response.json();
-      return firestoreBoolean(json?.fields?.showPwaInstallPrompt, true);
+      const { getRawSiteSettings } =
+        await import("./js/site-data.js?v=1.0.0");
+      const settings = await getRawSiteSettings();
+      return firestoreBoolean(
+        settings?.fields?.showPwaInstallPrompt,
+        true
+      );
     } catch (_) {
       return true;
     }

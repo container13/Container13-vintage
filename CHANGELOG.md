@@ -1,5 +1,35 @@
 # Ändringslogg
 
+## Version 6.10.29 – Snabbare laddning på mobil
+
+### Vad som har ändrats
+
+- Tar bort automatiska sidomladdningar vid service worker-uppdatering, återgång från bakgrunden och återställning från webbläsarens sidcache.
+- Laddar header och footer parallellt och startar statusraden direkt när headern är klar.
+- Delar webbplatsinställningarna mellan statusrad, Nyinkommet, startsida, PWA och övriga sidinställningar så samma Firebase-dokument inte hämtas flera gånger.
+- Byter den publika logotypen till en responsivt nedskalad WebP på cirka 68 kB i stället för PNG-filen på cirka 641 kB.
+- Reserverar footerns höjd från första renderingen för att minska layoutförflyttningar.
+- Uppdaterar PWA-cachen.
+
+### Tekniskt berörda filer
+
+- `pwa.js`
+- `sw.js`
+- `css/style.css`
+- `js/layout.js`
+- `js/site-data.js`
+- `js/site-settings.js`
+- `js/status.js`
+- `js/senaste-nytt.js`
+- `js/nyinkommet.js`
+- `bilder/logotyp/logo-patina.webp`
+- `index.html`
+- `galleri.html`
+- `nyinkommet.html`
+- `omoss.html`
+- `kontakt.html`
+- `hittahit.html`
+
 ## Version 6.10.28 – Snabb start utan animation
 
 ### Vad som har ändrats
