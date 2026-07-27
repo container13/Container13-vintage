@@ -2143,7 +2143,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.10.1</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.10.2</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -3019,6 +3019,34 @@
               </div>
             </div>
 
+            <div class="settings-subcard">
+              <h3>Verktyg för äldre bilder</h3>
+              <label class="quick-mode-setting">
+                <input id="setting-show-image-optimizer" type="checkbox">
+                <span>
+                  <strong>Visa verktyget för bildoptimering</strong><br>
+                  <small>Aktiverar ett manuellt verktyg för äldre bilder. Inget ändras automatiskt.</small>
+                </span>
+              </label>
+
+              <div id="image-optimizer-tool" hidden>
+                <p>Verktyget skapar WebP-kopior av äldre bilder från Nyinkommet och Butiken. Bildens titel och datum behålls. Du väljer själv om originalfilen ska sparas.</p>
+                <label class="quick-mode-setting">
+                  <input id="keep-original-images" type="checkbox" checked>
+                  <span>
+                    <strong>Behåll originalbilder som säkerhetskopior</strong><br>
+                    <small>Avmarkera endast om originalen ska raderas efter att de nya WebP-bilderna har verifierats.</small>
+                  </span>
+                </label>
+                <div class="actions">
+                  <button id="analyze-images-button" class="secondary-button" type="button">Analysera äldre bilder</button>
+                  <button id="optimize-images-button" class="save-button" type="button" disabled>Optimera bilderna</button>
+                </div>
+                <progress id="image-optimizer-progress" value="0" max="1" hidden style="width:100%;margin-top:14px"></progress>
+                <div id="image-optimizer-message" class="message" role="status" aria-live="polite"></div>
+              </div>
+            </div>
+
             <p class="settings-note">Logotypen används automatiskt på startsidan, undersidorna och i animationsförhandsvisningen. Kontaktuppgifterna och länkarna används på Kontakt, Hitta hit och i sidfoten.</p>
 
             <div class="actions">
@@ -3298,6 +3326,14 @@
     const customLogoPreviewEmpty = document.getElementById("custom-logo-preview-empty");
     const settingQuickPhotoMode = document.getElementById("setting-quick-photo-mode");
     const settingSaveMobileCopy = document.getElementById("setting-save-mobile-copy");
+    const settingShowImageOptimizer = document.getElementById("setting-show-image-optimizer");
+    const imageOptimizerTool = document.getElementById("image-optimizer-tool");
+    const analyzeImagesButton = document.getElementById("analyze-images-button");
+    const optimizeImagesButton = document.getElementById("optimize-images-button");
+    const imageOptimizerProgress = document.getElementById("image-optimizer-progress");
+    const imageOptimizerMessage = document.getElementById("image-optimizer-message");
+    const keepOriginalImages = document.getElementById("keep-original-images");
+    let imageOptimizationCandidates = [];
     const settingIntroAnimationMode = document.getElementById("setting-intro-animation-mode");
     const settingIntroModeQuick = document.getElementById("setting-intro-mode-quick");
     const openAnimationSettingsButton = document.getElementById("open-animation-settings-button");
@@ -3751,6 +3787,7 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
       logoMode: "patina",
       customLogoUrl: "",
       customLogoStoragePath: "",
+      showImageOptimizationTool: false,
       trashDays: 2,
       newArrivalsRetentionMode: "days",
       newArrivalsRetentionDays: 7,
@@ -4513,6 +4550,8 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
       settingFacebook.value = data.facebook || "";
       settingInstagram.value = data.instagram || "";
       settingTiktok.value = data.tiktok || "";
+      settingShowImageOptimizer.checked = data.showImageOptimizationTool === true;
+      imageOptimizerTool.hidden = !settingShowImageOptimizer.checked;
       settingAboutEnabled.checked = data.aboutEnabled === true;
       aboutTextsDraft = normalizeAboutTexts(data.aboutTexts);
       aboutEditorVariant = ["personal", "story", "energy"].includes(data.aboutVariant)
@@ -4645,6 +4684,7 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
         logoMode,
         customLogoUrl: formCustomLogoUrl,
         customLogoStoragePath: formCustomLogoStoragePath,
+        showImageOptimizationTool: settingShowImageOptimizer.checked,
         trashDays: Math.min(7, Math.max(1, Number(settingTrashDays.value) || 2)),
         newArrivalsRetentionMode: retention.mode,
         newArrivalsRetentionDays: retention.mode === "manual" ? 0 : retention.days,
@@ -5254,6 +5294,189 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
       } finally {
         URL.revokeObjectURL(objectUrl);
       }
+    }
+
+    function isAlreadyOptimizedImage(item) {
+      const storagePath = String(item.storagePath || "").toLowerCase();
+      const imageUrl = String(item.imageUrl || "").toLowerCase();
+      return (
+        item.optimizedFormat === "webp"
+        || storagePath.endsWith(".webp")
+        || /\.webp(?:\?|$)/i.test(imageUrl)
+      );
+    }
+
+    async function getImageOptimizationCandidates() {
+      const snapshot = await getDocs(collection(database, "gallery"));
+      return snapshot.docs
+        .map((galleryDocument) => ({
+          id: galleryDocument.id,
+          ...galleryDocument.data()
+        }))
+        .filter((item) =>
+          ["nyinkommet", "galleri"].includes(item.category)
+          && hasUsableImageUrl(item)
+          && !isAlreadyOptimizedImage(item)
+        );
+    }
+
+    function verifyRemoteImage(imageUrl) {
+      return new Promise((resolve, reject) => {
+        const image = new Image();
+        const timeout = window.setTimeout(() => {
+          image.src = "";
+          reject(new Error("Tidsgränsen för bildkontrollen passerades."));
+        }, 15000);
+        image.onload = () => {
+          window.clearTimeout(timeout);
+          resolve();
+        };
+        image.onerror = () => {
+          window.clearTimeout(timeout);
+          reject(new Error("Den nya bilden kunde inte verifieras."));
+        };
+        image.src = imageUrl;
+      });
+    }
+
+    function showImageOptimizerStatus(text, type = "") {
+      imageOptimizerMessage.textContent = text;
+      imageOptimizerMessage.className = type ? `message ${type}` : "message";
+    }
+
+    async function analyzeImagesForOptimization() {
+      if (!auth.currentUser) {
+        showImageOptimizerStatus("Du är inte längre inloggad.", "error");
+        return;
+      }
+      analyzeImagesButton.disabled = true;
+      optimizeImagesButton.disabled = true;
+      showImageOptimizerStatus("Analyserar bildbiblioteket...");
+      try {
+        imageOptimizationCandidates = await getImageOptimizationCandidates();
+        if (!imageOptimizationCandidates.length) {
+          showImageOptimizerStatus("Alla bilder är redan optimerade som WebP.", "success");
+          return;
+        }
+        const newArrivals = imageOptimizationCandidates.filter(
+          (item) => item.category === "nyinkommet"
+        ).length;
+        const galleryImages = imageOptimizationCandidates.length - newArrivals;
+        showImageOptimizerStatus(
+          `${imageOptimizationCandidates.length} äldre bilder kan optimeras: ${newArrivals} från Nyinkommet och ${galleryImages} från Butiken.`
+        );
+        optimizeImagesButton.disabled = false;
+      } catch (error) {
+        console.error("Kunde inte analysera äldre bilder:", error);
+        showImageOptimizerStatus("Bildanalysen kunde inte genomföras.", "error");
+      } finally {
+        analyzeImagesButton.disabled = false;
+      }
+    }
+
+    async function optimizeExistingImages() {
+      if (!auth.currentUser || !imageOptimizationCandidates.length) return;
+      const keepOriginals = keepOriginalImages.checked;
+      const confirmation = window.confirm(
+        keepOriginals
+          ? `Optimera ${imageOptimizationCandidates.length} bilder och behåll originalen som säkerhetskopior?`
+          : `Optimera ${imageOptimizationCandidates.length} bilder och radera originalen efter verifiering? Detta går inte att ångra.`
+      );
+      if (!confirmation) return;
+
+      analyzeImagesButton.disabled = true;
+      optimizeImagesButton.disabled = true;
+      settingShowImageOptimizer.disabled = true;
+      keepOriginalImages.disabled = true;
+      imageOptimizerProgress.hidden = false;
+      imageOptimizerProgress.max = imageOptimizationCandidates.length;
+      imageOptimizerProgress.value = 0;
+
+      let optimized = 0;
+      let failed = 0;
+      let originalsNotDeleted = 0;
+
+      for (let index = 0; index < imageOptimizationCandidates.length; index += 1) {
+        const item = imageOptimizationCandidates[index];
+        let newStorageReference = null;
+        showImageOptimizerStatus(
+          `Optimerar bild ${index + 1} av ${imageOptimizationCandidates.length}...`
+        );
+        try {
+          const response = await fetch(item.imageUrl, { cache: "no-store" });
+          if (!response.ok) throw new Error(`Bildhämtningen svarade ${response.status}.`);
+          const sourceBlob = await response.blob();
+          const sourceFile = new File(
+            [sourceBlob],
+            `aldre-bild-${item.id}`,
+            { type: sourceBlob.type || "image/jpeg" }
+          );
+          const optimizedFile = await normalizeImageFile(sourceFile);
+          if (optimizedFile.type !== "image/webp") {
+            throw new Error("Webbläsaren kunde inte skapa WebP.");
+          }
+
+          const folder = item.category === "nyinkommet" ? "nyinkommet" : "galleri";
+          const newStoragePath = `${folder}/optimerad-${item.id}-${Date.now()}.webp`;
+          newStorageReference = ref(storage, newStoragePath);
+          await uploadBytes(newStorageReference, optimizedFile, {
+            contentType: "image/webp"
+          });
+          const newImageUrl = await getDownloadURL(newStorageReference);
+          await verifyRemoteImage(newImageUrl);
+
+          const updatedValues = {
+            imageUrl: newImageUrl,
+            storagePath: newStoragePath,
+            optimizedFormat: "webp",
+            optimizedAt: serverTimestamp(),
+            originalImageKept: keepOriginals
+          };
+          if (keepOriginals) {
+            updatedValues.originalImageUrl = item.imageUrl;
+            updatedValues.originalStoragePath = item.storagePath || "";
+          }
+          await setDoc(
+            doc(database, "gallery", item.id),
+            updatedValues,
+            { merge: true }
+          );
+
+          if (!keepOriginals && item.storagePath && item.storagePath !== newStoragePath) {
+            try {
+              await deleteObject(ref(storage, item.storagePath));
+            } catch (deleteError) {
+              originalsNotDeleted += 1;
+              console.warn("Originalbilden kunde inte tas bort:", deleteError);
+            }
+          } else if (!keepOriginals && !item.storagePath) {
+            originalsNotDeleted += 1;
+          }
+          optimized += 1;
+          newStorageReference = null;
+        } catch (error) {
+          failed += 1;
+          console.error(`Kunde inte optimera bild ${item.id}:`, error);
+          if (newStorageReference) {
+            deleteObject(newStorageReference).catch(() => {});
+          }
+        } finally {
+          imageOptimizerProgress.value = index + 1;
+        }
+      }
+
+      imageOptimizationCandidates = [];
+      analyzeImagesButton.disabled = false;
+      settingShowImageOptimizer.disabled = false;
+      keepOriginalImages.disabled = false;
+      const details = originalsNotDeleted
+        ? ` ${originalsNotDeleted} original kunde inte raderas och lämnades därför kvar.`
+        : "";
+      showImageOptimizerStatus(
+        `${optimized} bilder optimerades. ${failed} misslyckades.${details}`,
+        failed || originalsNotDeleted ? "error" : "success"
+      );
+      await Promise.all([loadGallery(), loadNewArrivals()]);
     }
 
     function renderTitleInputs(files, container, prefix) {
@@ -6428,6 +6651,28 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
     saveSettingsButton.addEventListener(
       "click",
       saveSiteSettings
+    );
+
+    settingShowImageOptimizer.addEventListener("change", () => {
+      imageOptimizerTool.hidden = !settingShowImageOptimizer.checked;
+      imageOptimizationCandidates = [];
+      optimizeImagesButton.disabled = true;
+      imageOptimizerProgress.hidden = true;
+      showImageOptimizerStatus(
+        settingShowImageOptimizer.checked
+          ? "Spara inställningarna om verktyget ska vara tillgängligt nästa gång."
+          : ""
+      );
+    });
+
+    analyzeImagesButton.addEventListener(
+      "click",
+      analyzeImagesForOptimization
+    );
+
+    optimizeImagesButton.addEventListener(
+      "click",
+      optimizeExistingImages
     );
 
     emptyTrashButton.addEventListener(

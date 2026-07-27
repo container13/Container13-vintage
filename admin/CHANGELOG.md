@@ -1,5 +1,16 @@
 # Ändringslogg
 
+## Version 6.10.2
+
+- Lägger till ett val under Inställningar som visar eller döljer verktyget för äldre bilder.
+- Analyserar hur många äldre Nyinkommet- och Butiken-bilder som kan optimeras.
+- Konverterar bilderna en i taget till WebP och verifierar varje ny bild före uppdatering.
+- Behåller bildens titel, datum och övriga information.
+- Lägger till ett separat val för att behålla eller radera originalbilderna.
+- Behåller original som standard och raderar dem endast efter lyckad verifiering när användaren uttryckligen valt det.
+- Visar löpande förlopp och sammanfattar lyckade, misslyckade och ej raderade original.
+- Uppdaterar adminpanelens cache och synliga versionsnummer.
+
 ## Version 6.10.1
 
 - Skalar automatiskt ned nya Nyinkommet- och Butiken-bilder till högst 1600 pixlar.
