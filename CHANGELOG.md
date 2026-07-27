@@ -1,5 +1,22 @@
 # Ändringslogg
 
+## Version 6.10.28 – Snabb start utan animation
+
+### Vad som har ändrats
+
+- Sparar den senast hämtade animationsinställningen lokalt i besökarens webbläsare.
+- Visar startsidan direkt när det senast kända läget är Ingen animation.
+- Begränsar väntan på Firebase till högst 0,9 sekunder när ingen lokal inställning ännu finns.
+- Använder Ingen animation som säker reserv om inställningen inte kan hämtas snabbt.
+- Hämtar fortfarande en färsk inställning i bakgrunden så senare ändringar slår igenom.
+- Behåller en uttrycklig animationstestning med `?star=1`.
+- Uppdaterar PWA-cachen.
+
+### Tekniskt berörda filer
+
+- `index.html`
+- `sw.js`
+
 ## Version 6.10.27 – Samma logotypstorlek på Om oss
 
 ### Vad som har ändrats

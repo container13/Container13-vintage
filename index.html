@@ -67,15 +67,48 @@
 <script>
 (() => {
   const introKey = "c13StarIntroShown";
+  const introSettingsCacheKey = "c13IntroSettingsCache";
   const introSettingsUrl =
     "https://firestore.googleapis.com/v1/projects/container13-87c1a/databases/(default)/documents/settings/site?key=AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw";
 
-  window.c13IntroSettingsPromise = fetch(
+  let cachedIntroSettings = null;
+
+  try {
+    cachedIntroSettings = JSON.parse(
+      localStorage.getItem(introSettingsCacheKey) || "null"
+    );
+  } catch (_) {
+    cachedIntroSettings = null;
+  }
+
+  const freshIntroSettingsPromise = fetch(
     introSettingsUrl,
     { cache: "no-store" }
   )
     .then((response) => response.ok ? response.json() : null)
+    .then((settings) => {
+      if (settings) {
+        try {
+          localStorage.setItem(
+            introSettingsCacheKey,
+            JSON.stringify(settings)
+          );
+        } catch (_) {
+          // Inställningen fungerar även om lokal lagring är blockerad.
+        }
+      }
+
+      return settings;
+    })
     .catch(() => null);
+
+  window.c13IntroFreshSettingsPromise =
+    freshIntroSettingsPromise;
+
+  window.c13IntroSettingsPromise =
+    cachedIntroSettings
+      ? Promise.resolve(cachedIntroSettings)
+      : freshIntroSettingsPromise;
 
   try {
     const forceIntro =
@@ -83,6 +116,10 @@
     const introAlreadyShown = sessionStorage.getItem(introKey) === "true";
     const reducedMotion =
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const cachedIntroMode =
+      cachedIntroSettings?.fields?.introAnimationMode?.stringValue || "";
+    const animationKnownToBeDisabled =
+      cachedIntroMode === "none";
 
     sessionStorage.setItem(introKey, "true");
 
@@ -96,7 +133,12 @@
       document.documentElement.classList.add("star-intro-mobile-mode");
     }
 
-    if (forceIntro || (!introAlreadyShown && !reducedMotion)) {
+    if (
+      forceIntro ||
+      (!introAlreadyShown &&
+        !reducedMotion &&
+        !animationKnownToBeDisabled)
+    ) {
       document.documentElement.classList.add("star-intro-active");
     }
   } catch (_) {
@@ -639,12 +681,27 @@ varmt välkommen att även titta in hos oss.
 
   async function loadIntroSettings() {
     try {
-      const json = await (
-        window.c13IntroSettingsPromise ||
+      const request =
+        (root.classList.contains("star-intro-force")
+          ? window.c13IntroFreshSettingsPromise
+          : window.c13IntroSettingsPromise) ||
         fetch(SETTINGS_URL, { cache: "no-store" })
-          .then((response) => response.ok ? response.json() : null)
-      );
-      if (!json) return { ...defaultIntroSettings };
+          .then((response) => response.ok ? response.json() : null);
+
+      const json = await Promise.race([
+        request,
+        new Promise((resolve) => {
+          window.setTimeout(() => resolve(null), 900);
+        })
+      ]);
+
+      if (!json) {
+        return {
+          ...defaultIntroSettings,
+          mode: "none"
+        };
+      }
+
       const fields = json.fields || {};
       const mode = firestoreString(
         fields.introAnimationMode,
