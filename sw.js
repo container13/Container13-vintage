@@ -1,4 +1,4 @@
-const CACHE_NAME = 'container13-site-v6.10.30';
+const CACHE_NAME = 'container13-site-v6.10.42';
 const APP_SHELL = [
   './',
   './index.html',
@@ -14,6 +14,15 @@ const APP_SHELL = [
   './pwa.js',
   './js/analytics.js',
   './js/layout.js',
+  './js/gallery-data.js',
+  './js/settings-data.js',
+  './js/site-data.js',
+  './js/site-settings.js',
+  './js/status.js',
+  './js/galleri.js',
+  './js/nyinkommet.js',
+  './js/senaste-nytt.js',
+  './js/opening-hours.js',
   './js/theme-init.js',
   './js/theme-controls.js',
   './bilder/logotyp/logo-patina.webp',
@@ -57,24 +66,35 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      fetch(request, { cache: 'no-store' })
+        .then((response) => {
+          if (response.ok && response.type === 'basic') {
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, response.clone()));
+          }
+          return response;
+        })
+        .catch(async () => {
+          const cached = await caches.match(request, { ignoreSearch: true });
+          return cached || caches.match('./index.html');
+        })
+    );
+    return;
+  }
+
   event.respondWith(
-    fetch(request, { cache: 'no-store' })
-      .then((response) => {
-        if (response.ok && response.type === 'basic') {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-        }
-        return response;
-      })
-      .catch(async () => {
-        const cached = await caches.match(request, { ignoreSearch: true });
-        if (cached) return cached;
+    caches.match(request, { ignoreSearch: true }).then((cached) => {
+      const refresh = fetch(request, { cache: 'no-cache' })
+        .then((response) => {
+          if (response.ok && response.type === 'basic') {
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, response.clone()));
+          }
+          return response;
+        })
+        .catch(() => cached || Response.error());
 
-        if (request.mode === 'navigate') {
-          return caches.match('./index.html');
-        }
-
-        return Response.error();
-      })
+      return cached || refresh;
+    })
   );
 });
