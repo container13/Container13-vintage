@@ -1,5 +1,23 @@
 # Ändringslogg
 
+## Version 6.10.10 – Kompakt header och mobilmeny
+
+### Vad som har ändrats
+
+- Mobilens långa navigeringsrad har ersatts med en kompakt rad med namnet Container 13 och en tydlig menyknapp.
+- Menyknappen öppnar sidlänkarna i två jämna kolumner, visar vilken sida som är aktiv och kan stängas med knappen, en sidlänk eller Escape.
+- Öppettiden ligger kvar i den fasta headern så att butikens aktuella status alltid är synlig.
+- Information och notisen om nya plagg ligger nu under den fasta headern och scrollar med sidans innehåll. Därmed tar headern betydligt mindre plats på mobilen.
+- Datorversionens vanliga navigeringslänkar och samtliga befintliga destinationer är oförändrade.
+- Mobilmenyn har anpassats till både ljust och mörkt tema samt fått tillgängliga etiketter och tydlig tangentbordsfokus.
+
+### Tekniskt berörda filer
+
+- `includes/header.html`
+- `js/layout.js`
+- `css/style.css`
+- De sex publika HTML-sidorna, där versionsnumret för de gemensamma resurserna har uppdaterats.
+
 ## Version 6.9.2
 
 - Tar bort den oanvända filen `admin/style.css`.
