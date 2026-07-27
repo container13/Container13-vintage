@@ -1,5 +1,24 @@
 # Ändringslogg
 
+## Version 6.10.14 – Startanimation vid entré och appstart
+
+### Vad som har ändrats
+
+- Visar den befintliga startanimationen när någon öppnar `container13.se` direkt eller kommer från en annan webbplats.
+- Visar alltid animationen när den installerade webappen startas från sin ikon och leder därefter till startsidan.
+- Undviker att spela animationen igen när besökaren klickar på Hem inne på webbplatsen.
+- Undviker onödiga omspelningar vid vanlig omladdning samt navigering med bakåt- och framåtknapparna.
+- Behåller besökarens inställning för minskad rörelse, även vid appstart. Endast en uttryckligen framtvingad förhandsvisning kan åsidosätta den.
+- Uppdaterar webappens startadress och cacheversion så att mobiler hämtar det nya beteendet.
+
+### Tekniskt berörda filer
+
+- `index.html`
+- `js/layout.js`
+- `manifest.webmanifest`
+- `sw.js`
+- De övriga fem publika HTML-sidorna, där versionsnumret för `layout.js` har uppdaterats.
+
 ## Version 6.10.13 – Googlekartan anpassad för mobil
 
 ### Vad som har ändrats

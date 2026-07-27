@@ -3,9 +3,12 @@
   "short_name": "Container13",
   "description": "Container 13 Vintage – vintage, second hand och begagnade kläder i Hudiksvall.",
   "lang": "sv-SE",
-  "start_url": "/",
+  "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
   "orientation": "portrait-primary",
   "background_color": "#f8f5ef",
   "theme_color": "#f8f5ef",
