@@ -1,5 +1,23 @@
 # Ändringslogg
 
+## Version 6.10.11 – Synliga mobillänkar och sammanhållen status
+
+### Vad som har ändrats
+
+- Tar bort den fällbara mobilmenyn och raden med texten ”Container 13”.
+- Visar åter alla sex sidlänkar direkt i mobilheadern.
+- Fördelar länkarna jämnt i tre kolumner och två rader så att ingen länk hamnar ensam.
+- Behåller öppettidsstatus, informationsmeddelanden och Nyinkommet-notisen i samma fasta statusdel.
+- Hela headern, inklusive länkar och statusinformation, ligger kvar högst upp när besökaren scrollar.
+- Datorversionens utseende och navigering är oförändrade.
+
+### Tekniskt berörda filer
+
+- `includes/header.html`
+- `js/layout.js`
+- `css/style.css`
+- De sex publika HTML-sidorna, där resursversionen har uppdaterats för säker omladdning även på mobilen.
+
 ## Version 6.10.10 – Kompakt header och mobilmeny
 
 ### Vad som har ändrats
