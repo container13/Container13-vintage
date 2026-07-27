@@ -1019,6 +1019,34 @@ varmt välkommen att även titta in hos oss.
     animationFrame = requestAnimationFrame(shrink);
   }
 
+  async function waitForMobileFirstPaint() {
+    const isMobileOrInstalledApp =
+      window.matchMedia("(hover: none), (pointer: coarse)").matches ||
+      window.matchMedia("(display-mode: standalone)").matches ||
+      window.navigator.standalone === true;
+
+    if (!isMobileOrInstalledApp) return;
+
+    if (document.visibilityState !== "visible") {
+      await new Promise((resolve) => {
+        const onVisible = () => {
+          if (document.visibilityState !== "visible") return;
+          document.removeEventListener("visibilitychange", onVisible);
+          resolve();
+        };
+        document.addEventListener("visibilitychange", onVisible);
+      });
+    }
+
+    await new Promise((resolve) => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          window.setTimeout(resolve, 180);
+        });
+      });
+    });
+  }
+
   async function startIntro() {
     introSettings = await loadIntroSettings();
 
@@ -1038,6 +1066,8 @@ varmt välkommen att även titta in hos oss.
       "--star-intro-background",
       introSettings.backgroundColor
     );
+
+    await waitForMobileFirstPaint();
 
     fallbackTimer = window.setTimeout(
       finishIntro,

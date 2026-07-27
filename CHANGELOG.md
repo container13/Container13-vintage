@@ -1,5 +1,21 @@
 # Ändringslogg
 
+## Version 6.10.19 – Synlig mobilanimation efter appstart
+
+### Vad som har ändrats
+
+- Förbereder startanimationens inställningar och bild innan rörelsen börjar.
+- Väntar på att webappen verkligen är synlig på mobilen.
+- Väntar ytterligare två renderade bildrutor och en kort säkerhetsmarginal innan stjärnöppningen startar.
+- Förhindrar därmed att iPhone spelar animationen bakom sin egen startbild så att besökaren bara ser svart och sedan startsidan.
+- Lämnar datorns animationsstart oförändrad.
+- Uppdaterar webbplatsens cache för den nya mobilstarten.
+
+### Tekniskt berörda filer
+
+- `index.html`
+- `sw.js`
+
 ## Version 6.10.18 – Aktivitetsmätning och borttagen dubbelanimation
 
 ### Vad som har ändrats
