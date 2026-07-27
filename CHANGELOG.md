@@ -1,5 +1,24 @@
 # Ändringslogg
 
+## Version 6.10.18 – Aktivitetsmätning och borttagen dubbelanimation
+
+### Vad som har ändrats
+
+- Ersätter beroendet av iOS stängningssignaler med en löpande aktivitetsmätning varannan sekund.
+- Upptäcker att webappen varit inaktiv minst 10 sekunder även när iPhone endast fryser den öppna sidan.
+- Skickar en återupptagen webapp till startsidan och spelar startanimationen.
+- Visar animationen direkt när en ny eller återställd fristående webapp laddar startsidan.
+- Märker automatiska omladdningar efter en service worker-uppdatering så att animationen inte kan spelas två gånger.
+- Tar bort reservomladdningen av aktuell sida i den installerade webappen, vilken tidigare syntes utan att animationen startade.
+- Versionsmärker den nya PWA-koden på samtliga publika sidor och uppdaterar cachen.
+
+### Tekniskt berörda filer
+
+- `pwa.js`
+- `index.html`
+- `sw.js`
+- De övriga fem publika HTML-sidorna.
+
 ## Version 6.10.17 – Stabil återupptagning på iPhone
 
 ### Vad som har ändrats

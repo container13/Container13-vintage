@@ -4,7 +4,9 @@
   const DISMISSED_KEY = "c13PwaPromptDismissedUntil";
   const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
   const RESUME_INTRO_DELAY = 10 * 1000;
-  const RESUME_HIDDEN_KEY = "c13PwaHiddenAt";
+  const LAST_ACTIVE_KEY = "c13PwaLastActiveAt";
+  const SKIP_INTRO_KEY = "c13SkipNextIntro";
+  const ACTIVE_HEARTBEAT_INTERVAL = 2 * 1000;
   const SETTINGS_URL = "https://firestore.googleapis.com/v1/projects/container13-87c1a/databases/(default)/documents/settings/site";
 
   let deferredInstallPrompt = null;
@@ -12,42 +14,55 @@
   let reloadingForUpdate = false;
   let resumeNavigationStarted = false;
   let serviceWorkerRegistration = null;
+  const scriptStartedAt = Date.now();
 
-  function rememberAppWasHidden() {
-    hiddenAt = Date.now();
-
-    if (!isInstalled()) return;
-
+  function readLastActive() {
     try {
-      localStorage.setItem(RESUME_HIDDEN_KEY, String(hiddenAt));
+      return Number(localStorage.getItem(LAST_ACTIVE_KEY)) || 0;
     } catch (_) {
-      // Tidsstämpeln i minnet används om lagringen inte är tillgänglig.
+      return 0;
     }
   }
 
-  function hiddenSince() {
-    let storedHiddenAt = 0;
-
+  function writeLastActive(timestamp = Date.now()) {
+    if (!isInstalled()) return;
     try {
-      storedHiddenAt = Number(localStorage.getItem(RESUME_HIDDEN_KEY)) || 0;
-      localStorage.removeItem(RESUME_HIDDEN_KEY);
+      localStorage.setItem(LAST_ACTIVE_KEY, String(timestamp));
     } catch (_) {
-      storedHiddenAt = 0;
+      // Återupptagningen fungerar fortfarande via sidans synlighetshändelser.
     }
+  }
 
-    const value = Math.max(hiddenAt, storedHiddenAt);
-    hiddenAt = 0;
-    return value;
+  function rememberAppWasHidden() {
+    hiddenAt = Date.now();
+    writeLastActive(hiddenAt);
   }
 
   function resumeInstalledApp() {
     if (!isInstalled() || resumeNavigationStarted) return false;
 
-    const hiddenTimestamp = hiddenSince();
-    if (!hiddenTimestamp) return false;
+    const lastActive = readLastActive();
+    if (!lastActive) {
+      writeLastActive();
+      return false;
+    }
 
-    const hiddenDuration = Date.now() - hiddenTimestamp;
-    if (hiddenDuration < RESUME_INTRO_DELAY) return false;
+    const inactiveDuration = Date.now() - lastActive;
+    if (inactiveDuration < RESUME_INTRO_DELAY) {
+      writeLastActive();
+      return false;
+    }
+
+    const currentPage =
+      window.location.pathname.split("/").pop() || "index.html";
+    const freshIndexDocument =
+      currentPage === "index.html" &&
+      Date.now() - scriptStartedAt < 3000;
+
+    if (freshIndexDocument) {
+      writeLastActive();
+      return false;
+    }
 
     resumeNavigationStarted = true;
     const homeUrl = new URL("./", window.location.href);
@@ -62,14 +77,16 @@
 
     if (resumeInstalledApp()) return;
 
-    const hiddenTimestamp = hiddenSince();
     if (
       !isInstalled() &&
-      hiddenTimestamp &&
-      Date.now() - hiddenTimestamp >= 60 * 1000
+      hiddenAt &&
+      Date.now() - hiddenAt >= 60 * 1000
     ) {
       window.location.reload();
+      return;
     }
+
+    hiddenAt = 0;
   }
 
   document.addEventListener("visibilitychange", () => {
@@ -85,8 +102,13 @@
   window.addEventListener("focus", handleAppVisible);
   window.addEventListener("pageshow", (event) => {
     if (resumeInstalledApp()) return;
-    if (event.persisted) window.location.reload();
+    if (event.persisted && !isInstalled()) window.location.reload();
   });
+
+  window.setInterval(() => {
+    if (document.visibilityState !== "visible" || !isInstalled()) return;
+    if (!resumeInstalledApp()) writeLastActive();
+  }, ACTIVE_HEARTBEAT_INTERVAL);
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
@@ -101,6 +123,11 @@
       navigator.serviceWorker.addEventListener("controllerchange", () => {
         if (reloadingForUpdate) return;
         reloadingForUpdate = true;
+        try {
+          sessionStorage.setItem(SKIP_INTRO_KEY, "true");
+        } catch (_) {
+          // Omladdningen får fortsätta även om sessionslagring saknas.
+        }
         window.location.reload();
       });
     });
