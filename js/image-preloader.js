@@ -23,6 +23,7 @@ function connectionIsTooSlow() {
 function firestoreValue(value) {
   if (!value || typeof value !== "object") return null;
   if ("stringValue" in value) return value.stringValue;
+  if ("timestampValue" in value) return value.timestampValue;
   if (value.mapValue) return firestoreFields(value.mapValue.fields || {});
   return null;
 }
@@ -61,6 +62,26 @@ function imageUrls(data) {
     );
 }
 
+function latestNewArrivalUrls(data) {
+  return (data?.documents || [])
+    .map((document) => ({
+      documentCreatedAt: document.createTime || "",
+      ...firestoreFields(document.fields || {})
+    }))
+    .filter((item) =>
+      String(item.category || "").toLowerCase() === "nyinkommet" &&
+      item.imageUrl
+    )
+    .sort((first, second) => {
+      const firstTime = Date.parse(first.createdAt || first.documentCreatedAt || "") || 0;
+      const secondTime = Date.parse(second.createdAt || second.documentCreatedAt || "") || 0;
+      return secondTime - firstTime;
+    })
+    .slice(0, 4)
+    .map((item) => String(item.imageUrl).trim())
+    .filter(Boolean);
+}
+
 function preloadImage(url) {
   if (preloadedUrls.has(url)) return Promise.resolve();
   preloadedUrls.add(url);
@@ -69,6 +90,7 @@ function preloadImage(url) {
     const image = new Image();
     activePreloads.add(image);
     image.decoding = "async";
+    image.fetchPriority = "low";
     image.onload = image.onerror = () => {
       activePreloads.delete(image);
       resolve();
@@ -81,6 +103,20 @@ async function preloadInPairs(urls) {
   for (let index = 0; index < urls.length; index += 2) {
     await Promise.all(urls.slice(index, index + 2).map(preloadImage));
   }
+}
+
+async function preloadLatestNewArrivals() {
+  if (connectionIsTooSlow()) return;
+
+  const cached = getCachedGalleryData();
+  if (cached) {
+    await preloadInPairs(latestNewArrivalUrls(cached));
+  }
+
+  try {
+    const fresh = await fetchFreshGalleryData();
+    await preloadInPairs(latestNewArrivalUrls(fresh));
+  } catch (_) {}
 }
 
 async function startPreloading() {
@@ -100,7 +136,19 @@ async function startPreloading() {
 }
 
 function schedulePreloading() {
+  const animationWasActive =
+    document.documentElement.classList.contains("star-intro-active");
+  let pageLoaded = document.readyState === "complete";
+  let introFinished = !animationWasActive;
+  let remainingStarted = false;
+
+  if (animationWasActive) {
+    window.setTimeout(preloadLatestNewArrivals, 350);
+  }
+
   const begin = () => {
+    if (!pageLoaded || !introFinished || remainingStarted) return;
+    remainingStarted = true;
     if ("requestIdleCallback" in window) {
       window.requestIdleCallback(() => startPreloading(), { timeout: 2500 });
     } else {
@@ -108,11 +156,22 @@ function schedulePreloading() {
     }
   };
 
-  if (document.readyState === "complete") {
+  window.addEventListener("c13-intro-finished", () => {
+    introFinished = true;
     begin();
-  } else {
-    window.addEventListener("load", begin, { once: true });
+  }, { once: true });
+
+  if (!pageLoaded) {
+    window.addEventListener("load", () => {
+      pageLoaded = true;
+      if (!document.documentElement.classList.contains("star-intro-active")) {
+        introFinished = true;
+      }
+      begin();
+    }, { once: true });
   }
+
+  begin();
 }
 
 schedulePreloading();
