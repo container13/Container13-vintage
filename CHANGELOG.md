@@ -1,5 +1,22 @@
 # Ändringslogg
 
+## Version 6.10.17 – Stabil återupptagning på iPhone
+
+### Vad som har ändrats
+
+- Flyttar kontrollen för återupptagning utanför service worker-registreringen så att den kan köras även när iOS fryser webappen.
+- Sparar tidpunkten då webappen lämnas beständigt i mobilen i stället för enbart i sidans tillfälliga minne.
+- Kontrollerar återkomsten via synlighet, fokus och iOS sidåterställning för bättre tillförlitlighet.
+- Leder till startsidan och spelar startanimationen när webappen återkommer efter minst 10 sekunder.
+- Behåller kortare appväxlingar utan animation.
+- Versionsmärker `pwa.js` på samtliga publika sidor och uppdaterar cachen så att den nya koden verkligen hämtas.
+
+### Tekniskt berörda filer
+
+- `pwa.js`
+- `sw.js`
+- De sex publika HTML-sidorna.
+
 ## Version 6.10.16 – Animation även vid omladdning
 
 ### Vad som har ändrats

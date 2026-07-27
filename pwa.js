@@ -3,37 +3,98 @@
   const SESSION_KEY = "c13PwaVisitRegistered";
   const DISMISSED_KEY = "c13PwaPromptDismissedUntil";
   const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
+  const RESUME_INTRO_DELAY = 10 * 1000;
+  const RESUME_HIDDEN_KEY = "c13PwaHiddenAt";
   const SETTINGS_URL = "https://firestore.googleapis.com/v1/projects/container13-87c1a/databases/(default)/documents/settings/site";
 
   let deferredInstallPrompt = null;
   let hiddenAt = 0;
   let reloadingForUpdate = false;
+  let resumeNavigationStarted = false;
+  let serviceWorkerRegistration = null;
+
+  function rememberAppWasHidden() {
+    hiddenAt = Date.now();
+
+    if (!isInstalled()) return;
+
+    try {
+      localStorage.setItem(RESUME_HIDDEN_KEY, String(hiddenAt));
+    } catch (_) {
+      // Tidsstämpeln i minnet används om lagringen inte är tillgänglig.
+    }
+  }
+
+  function hiddenSince() {
+    let storedHiddenAt = 0;
+
+    try {
+      storedHiddenAt = Number(localStorage.getItem(RESUME_HIDDEN_KEY)) || 0;
+      localStorage.removeItem(RESUME_HIDDEN_KEY);
+    } catch (_) {
+      storedHiddenAt = 0;
+    }
+
+    const value = Math.max(hiddenAt, storedHiddenAt);
+    hiddenAt = 0;
+    return value;
+  }
+
+  function resumeInstalledApp() {
+    if (!isInstalled() || resumeNavigationStarted) return false;
+
+    const hiddenTimestamp = hiddenSince();
+    if (!hiddenTimestamp) return false;
+
+    const hiddenDuration = Date.now() - hiddenTimestamp;
+    if (hiddenDuration < RESUME_INTRO_DELAY) return false;
+
+    resumeNavigationStarted = true;
+    const homeUrl = new URL("./", window.location.href);
+    homeUrl.searchParams.set("source", "pwa");
+    homeUrl.searchParams.set("resume", String(Date.now()));
+    window.location.replace(homeUrl.href);
+    return true;
+  }
+
+  function handleAppVisible() {
+    serviceWorkerRegistration?.update().catch(() => {});
+
+    if (resumeInstalledApp()) return;
+
+    const hiddenTimestamp = hiddenSince();
+    if (
+      !isInstalled() &&
+      hiddenTimestamp &&
+      Date.now() - hiddenTimestamp >= 60 * 1000
+    ) {
+      window.location.reload();
+    }
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") {
+      rememberAppWasHidden();
+      return;
+    }
+
+    handleAppVisible();
+  });
+
+  window.addEventListener("pagehide", rememberAppWasHidden);
+  window.addEventListener("focus", handleAppVisible);
+  window.addEventListener("pageshow", (event) => {
+    if (resumeInstalledApp()) return;
+    if (event.persisted) window.location.reload();
+  });
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
       navigator.serviceWorker
         .register("./sw.js", { updateViaCache: "none" })
         .then((registration) => {
+          serviceWorkerRegistration = registration;
           registration.update().catch(() => {});
-
-          document.addEventListener("visibilitychange", () => {
-            if (document.visibilityState === "hidden") {
-              hiddenAt = Date.now();
-              return;
-            }
-
-            registration.update().catch(() => {});
-
-            if (hiddenAt && Date.now() - hiddenAt >= 60 * 1000) {
-              window.location.reload();
-            }
-          });
-
-          window.addEventListener("pageshow", (event) => {
-            if (event.persisted) {
-              window.location.reload();
-            }
-          });
         })
         .catch(() => {});
 
