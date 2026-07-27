@@ -1038,11 +1038,9 @@ main > #nyGallery.gallery {
   }
 }
 
-/* VERSION 6.10.25 – TYDLIGARE INTRODUKTIONSTEXT PÅ DATOR */
-@media (min-width: 701px) {
-  .page-header h1 + p {
-    font-size: 1.15rem;
-  }
+/* VERSION 6.10.26 – SAMMA INTRODUKTIONSSTORLEK SOM PÅ STARTSIDAN */
+.page-header h1 + p {
+  font-size: clamp(1.15rem, 2.2vw, 1.5rem);
 }
 
 /* =========================================================
