@@ -1,5 +1,21 @@
 # Ändringslogg
 
+## Version 6.10.31 – WebP från adminpanelen
+
+### Vad som har ändrats
+
+- Skalar nya bilder från adminpanelen till högst 1600 pixlar.
+- Konverterar nya bilder för Nyinkommet och Butiken till WebP med 84 procents kvalitet.
+- Använder samma WebP-optimering för egna startanimationsbilder.
+- Behåller alla befintliga bilder och full bakåtkompatibilitet med JPEG och PNG.
+
+### Tekniskt berörda filer
+
+- `admin/panel.html`
+- `admin/sw.js`
+- `admin/CHANGELOG.md`
+- `admin/VERSION.txt`
+
 ## Version 6.10.30 – Footer utan reserverat tomrum
 
 ### Vad som har ändrats
