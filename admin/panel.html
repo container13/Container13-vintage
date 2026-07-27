@@ -557,26 +557,40 @@
 
     .multi-title-list {
       display: grid;
-      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 14px;
     }
 
     .multi-title-item {
       display: grid;
-      gap: 6px;
-      padding: 10px;
+      align-content: start;
+      gap: 8px;
+      padding: 9px;
       border: 1px solid rgba(0, 0, 0, 0.12);
       border-radius: 10px;
       background: rgba(255, 255, 255, 0.45);
     }
 
+    .multi-title-thumbnail {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: 7px;
+      background: #ece8e1;
+    }
+
     .multi-title-item .field-help {
       margin: 0;
-      overflow-wrap: anywhere;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .image-upload-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1fr);
       gap: 18px;
     }
 
@@ -606,7 +620,7 @@
     }
 
     .upload-preview {
-      display: none;
+      display: none !important;
       max-width: 260px;
       overflow: hidden;
       border: 1px solid var(--border);
@@ -2149,7 +2163,7 @@
 
   </style>
 
-  <script src="./pwa.js?v=6.10.39" defer></script>
+  <script src="./pwa.js?v=6.10.40" defer></script>
 
 </head>
 
@@ -2242,7 +2256,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.10.9</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.10.10</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -3118,38 +3132,6 @@
               </div>
             </div>
 
-            <div class="settings-subcard">
-              <h3>Verktyg för äldre bilder</h3>
-              <label class="quick-mode-setting">
-                  <input id="setting-show-image-optimizer" type="checkbox">
-                  <span>
-                    <strong>Visa verktyget för bildoptimering</strong><br>
-                    <small>Aktiverar verktyget endast för den här sessionen. Det är avstängt nästa gång adminpanelen öppnas.</small>
-                </span>
-              </label>
-
-              <div id="image-optimizer-tool" hidden>
-                <p>Verktyget skapar WebP-kopior av äldre bilder från Nyinkommet och Butiken. Bildens titel och datum behålls. Du väljer själv om originalfilen ska sparas.</p>
-                <label class="quick-mode-setting">
-                  <input id="keep-original-images" type="checkbox" checked>
-                  <span>
-                    <strong>Behåll originalbilder som säkerhetskopior</strong><br>
-                    <small>Avmarkera endast om originalen ska raderas efter att de nya WebP-bilderna har verifierats.</small>
-                  </span>
-                </label>
-                <div id="image-optimizer-summary" class="image-optimizer-summary" hidden></div>
-                <div id="image-optimizer-list" class="image-optimizer-list" hidden></div>
-                <div class="actions">
-                  <button id="analyze-images-button" class="secondary-button" type="button">Analysera äldre bilder</button>
-                  <button id="optimize-images-button" class="save-button" type="button" disabled>Optimera bilderna</button>
-                  <button id="delete-all-originals-button" class="secondary-button" type="button" disabled>Ta bort alla verifierade original</button>
-                  <button id="enable-image-cache-button" class="secondary-button" type="button">Aktivera snabb bildcache</button>
-                </div>
-                <progress id="image-optimizer-progress" value="0" max="1" hidden style="width:100%;margin-top:14px"></progress>
-                <div id="image-optimizer-message" class="message" role="status" aria-live="polite"></div>
-              </div>
-            </div>
-
             <p class="settings-note">Logotypen används automatiskt på startsidan, undersidorna och i animationsförhandsvisningen. Kontaktuppgifterna och länkarna används på Kontakt, Hitta hit och i sidfoten.</p>
 
             <div class="actions">
@@ -3216,7 +3198,6 @@
       getDownloadURL,
       getStorage,
       ref,
-      updateMetadata,
       uploadBytes,
       uploadBytesResumable
     } from
@@ -3435,17 +3416,6 @@
     const customLogoPreviewEmpty = document.getElementById("custom-logo-preview-empty");
     const settingQuickPhotoMode = document.getElementById("setting-quick-photo-mode");
     const settingSaveMobileCopy = document.getElementById("setting-save-mobile-copy");
-    const settingShowImageOptimizer = document.getElementById("setting-show-image-optimizer");
-    const imageOptimizerTool = document.getElementById("image-optimizer-tool");
-    const analyzeImagesButton = document.getElementById("analyze-images-button");
-    const optimizeImagesButton = document.getElementById("optimize-images-button");
-    const deleteAllOriginalsButton = document.getElementById("delete-all-originals-button");
-    const enableImageCacheButton = document.getElementById("enable-image-cache-button");
-    const imageOptimizerProgress = document.getElementById("image-optimizer-progress");
-    const imageOptimizerMessage = document.getElementById("image-optimizer-message");
-    const imageOptimizerSummary = document.getElementById("image-optimizer-summary");
-    const imageOptimizerList = document.getElementById("image-optimizer-list");
-    const keepOriginalImages = document.getElementById("keep-original-images");
     let imageOptimizationItems = [];
     const settingIntroAnimationMode = document.getElementById("setting-intro-animation-mode");
     const settingIntroModeQuick = document.getElementById("setting-intro-mode-quick");
@@ -4663,8 +4633,6 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
       settingFacebook.value = data.facebook || "";
       settingInstagram.value = data.instagram || "";
       settingTiktok.value = data.tiktok || "";
-      settingShowImageOptimizer.checked = false;
-      imageOptimizerTool.hidden = true;
       settingAboutEnabled.checked = data.aboutEnabled === true;
       aboutTextsDraft = normalizeAboutTexts(data.aboutTexts);
       aboutEditorVariant = ["personal", "story", "energy"].includes(data.aboutVariant)
@@ -6214,6 +6182,22 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
         const wrapper = document.createElement("div");
         wrapper.className = "multi-title-item";
 
+        const thumbnail = document.createElement("img");
+        thumbnail.className = "multi-title-thumbnail";
+        thumbnail.alt = "";
+        const thumbnailUrl = URL.createObjectURL(file);
+        thumbnail.src = thumbnailUrl;
+        thumbnail.addEventListener(
+          "load",
+          () => URL.revokeObjectURL(thumbnailUrl),
+          { once: true }
+        );
+        thumbnail.addEventListener(
+          "error",
+          () => URL.revokeObjectURL(thumbnailUrl),
+          { once: true }
+        );
+
         const label = document.createElement("label");
         label.className = "field-help";
         label.htmlFor = `${prefix}-title-${index}`;
@@ -6227,8 +6211,7 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
         input.placeholder = "Titel eller beskrivning (frivilligt)";
         input.dataset.fileIndex = String(index);
 
-        wrapper.appendChild(label);
-        wrapper.appendChild(input);
+        wrapper.append(thumbnail, label, input);
         container.appendChild(wrapper);
       });
     }
@@ -7377,42 +7360,6 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
       "click",
       saveSiteSettings
     );
-
-    settingShowImageOptimizer.addEventListener("change", () => {
-      imageOptimizerTool.hidden = !settingShowImageOptimizer.checked;
-      imageOptimizationItems = [];
-      optimizeImagesButton.disabled = true;
-      deleteAllOriginalsButton.disabled = true;
-      optimizeImagesButton.textContent = "Optimera bilderna";
-      imageOptimizerProgress.hidden = true;
-      imageOptimizerSummary.hidden = true;
-      imageOptimizerList.hidden = true;
-      imageOptimizerList.innerHTML = "";
-      showImageOptimizerStatus(
-        settingShowImageOptimizer.checked
-          ? "Verktyget är tillfälligt aktiverat för den här sessionen."
-          : ""
-      );
-    });
-
-    analyzeImagesButton.addEventListener(
-      "click",
-      analyzeImagesForOptimization
-    );
-
-    optimizeImagesButton.addEventListener(
-      "click",
-      optimizeExistingImages
-    );
-
-    deleteAllOriginalsButton.addEventListener("click", () => {
-      deleteSavedOriginals(
-        imageOptimizationItems.filter(hasSavedOriginal),
-        true
-      );
-    });
-
-    enableImageCacheButton.addEventListener("click", enableFastImageCache);
 
     emptyTrashButton.addEventListener(
       "click",
