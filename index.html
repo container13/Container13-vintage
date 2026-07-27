@@ -127,6 +127,19 @@ html.star-intro-active {
   overflow: hidden;
 }
 
+html.star-intro-active::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 49999;
+  background: var(--star-intro-background, #000);
+  pointer-events: none;
+}
+
+html.star-intro-active.star-intro-frame-ready::before {
+  display: none;
+}
+
 .star-intro {
   display: none;
   position: fixed;
@@ -874,6 +887,7 @@ varmt välkommen att även titta in hos oss.
     root.classList.remove("star-intro-active");
     root.classList.remove("star-intro-force");
     root.classList.remove("star-intro-mobile-mode");
+    root.classList.remove("star-intro-frame-ready");
     canvas.remove();
     mobileSvg.remove();
   }
@@ -964,6 +978,7 @@ varmt välkommen att även titta in hos oss.
     } else {
       drawRevealFrame(0);
     }
+    root.classList.add("star-intro-frame-ready");
 
     startTimer = window.setTimeout(
       runReveal,
@@ -984,6 +999,7 @@ varmt välkommen att även titta in hos oss.
     } else {
       drawGoldFrame(startingRadius);
     }
+    root.classList.add("star-intro-frame-ready");
 
     function shrink(now) {
       if (startedAt === null) startedAt = now;

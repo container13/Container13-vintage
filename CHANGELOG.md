@@ -1,5 +1,21 @@
 # Ändringslogg
 
+## Version 6.10.20 – Svart täcklager före första animationsbilden
+
+### Vad som har ändrats
+
+- Visar ett separat svart täcklager omedelbart när startanimationen aktiveras.
+- Behåller täcklagret medan inställningar och animationsbild laddas.
+- Tar bort täcklagret först när stjärnanimationens första riktiga bildruta är färdigritad.
+- Förhindrar därmed att startsidan hinner synas före animationen på mobilen.
+- Tar bort täcklagret säkert även om animationen avslutas via reservfunktionen.
+- Uppdaterar webbplatsens cache för det nya startlagret.
+
+### Tekniskt berörda filer
+
+- `index.html`
+- `sw.js`
+
 ## Version 6.10.19 – Synlig mobilanimation efter appstart
 
 ### Vad som har ändrats
