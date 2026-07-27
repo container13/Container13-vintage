@@ -1,5 +1,31 @@
 # Ändringslogg
 
+## Version 6.10.23 – Återställning av startanimationen
+
+### Vad som har ändrats
+
+- Återställer webbplatsens PWA- och animationsfiler till det fungerande läget i version 6.10.13.
+- Tar bort försöken att spela startanimationen varje gång den installerade webbappen öppnas eller återupptas.
+- Tar bort aktivitetsmätningen, tidsgränsen och omdirigeringen till startsidan efter att appen varit i bakgrunden.
+- Återställer startadressen till webbplatsens vanliga startsida utan särskilda PWA-parametrar.
+- Återställer startskärmens ursprungliga ljusbeige färg.
+- Startanimationen visas åter endast första gången i den aktuella webbläsarfliken eller sessionen, samt när den uttryckligen testas med `?star=1`.
+- Behåller alla förbättringar som var färdiga till och med version 6.10.13, inklusive mobilheadern och Googlekartans mobilstorlek.
+- Uppdaterar webbplatsens cache så att återställningen hämtas på besökarnas enheter.
+
+### Tekniskt berörda filer
+
+- `index.html`
+- `manifest.webmanifest`
+- `pwa.js`
+- `sw.js`
+- `js/layout.js`
+- `galleri.html`
+- `hittahit.html`
+- `kontakt.html`
+- `nyinkommet.html`
+- `omoss.html`
+
 ## Version 6.10.22 – Startfärg anpassad efter animation
 
 ### Vad som har ändrats

@@ -54,7 +54,7 @@
 
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<meta name="theme-color" content="#d4af37">
+<meta name="theme-color" content="#f8f5ef">
 <script src="js/theme-init.js?v=1.0.0"></script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -66,53 +66,25 @@
 
 <script>
 (() => {
-  const skipIntroKey = "c13SkipNextIntro";
-  const introModeKey = "c13IntroMode";
-  const validIntroModes = ["classic", "gold", "image", "none"];
+  const introKey = "c13StarIntroShown";
   const introSettingsUrl =
     "https://firestore.googleapis.com/v1/projects/container13-87c1a/databases/(default)/documents/settings/site?key=AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw";
-  let cachedIntroMode = "image";
-
-  try {
-    const savedMode = localStorage.getItem(introModeKey);
-    if (validIntroModes.includes(savedMode)) {
-      cachedIntroMode = savedMode;
-    }
-  } catch (_) {}
 
   window.c13IntroSettingsPromise = fetch(
     introSettingsUrl,
     { cache: "no-store" }
   )
     .then((response) => response.ok ? response.json() : null)
-    .then((json) => {
-      const fetchedMode =
-        json?.fields?.introAnimationMode?.stringValue;
-      if (validIntroModes.includes(fetchedMode)) {
-        try {
-          localStorage.setItem(introModeKey, fetchedMode);
-        } catch (_) {}
-      }
-      return json;
-    })
     .catch(() => null);
 
   try {
-    const parameters = new URLSearchParams(window.location.search);
-    const forceIntro = parameters.get("star") === "1";
-    const pwaLaunch = parameters.get("source") === "pwa";
-    const standaloneLaunch =
-      window.matchMedia("(display-mode: standalone)").matches ||
-      window.navigator.standalone === true;
-    const skipInternalIntro =
-      sessionStorage.getItem(skipIntroKey) === "true";
-    const navigationType =
-      performance.getEntriesByType("navigation")[0]?.type || "navigate";
-    const isHistoryNavigation = navigationType === "back_forward";
+    const forceIntro =
+      new URLSearchParams(window.location.search).get("star") === "1";
+    const introAlreadyShown = sessionStorage.getItem(introKey) === "true";
     const reducedMotion =
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    sessionStorage.removeItem(skipIntroKey);
+    sessionStorage.setItem(introKey, "true");
 
     if (forceIntro) {
       document.documentElement.classList.add("star-intro-force");
@@ -124,29 +96,12 @@
       document.documentElement.classList.add("star-intro-mobile-mode");
     }
 
-    if (
-      forceIntro ||
-      (
-        !skipInternalIntro &&
-        cachedIntroMode !== "none" &&
-        (pwaLaunch || standaloneLaunch || !isHistoryNavigation) &&
-        !reducedMotion
-      )
-    ) {
+    if (forceIntro || (!introAlreadyShown && !reducedMotion)) {
       document.documentElement.classList.add("star-intro-active");
-      if (
-        cachedIntroMode === "gold" ||
-        cachedIntroMode === "image"
-      ) {
-        document.documentElement.classList.add(
-          "star-intro-gold-start"
-        );
-      }
     }
   } catch (_) {
     document.documentElement.classList.remove("star-intro-active");
     document.documentElement.classList.remove("star-intro-force");
-    document.documentElement.classList.remove("star-intro-gold-start");
   }
 })();
 </script>
@@ -155,23 +110,6 @@
 /* Stjärnöppning – visas bara vid det första besöket i fliken */
 html.star-intro-active {
   overflow: hidden;
-}
-
-html.star-intro-active::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 49999;
-  background: #000;
-  pointer-events: none;
-}
-
-html.star-intro-active.star-intro-gold-start::before {
-  background: #d4af37;
-}
-
-html.star-intro-active.star-intro-frame-ready::before {
-  display: none;
 }
 
 .star-intro {
@@ -634,7 +572,7 @@ varmt välkommen att även titta in hos oss.
 
 
 
-<script type="module" src="js/layout.js?v=6.10.14"></script>
+<script type="module" src="js/layout.js?v=6.10.11"></script>
 <script defer src="js/senaste-nytt.js?v=6.2.1"></script>
 <script type="module" src="js/analytics.js?v=6.3.0"></script>
 
@@ -677,7 +615,6 @@ varmt välkommen att även titta in hos oss.
     root.classList.remove("star-intro-active");
     root.classList.remove("star-intro-force");
     root.classList.remove("star-intro-mobile-mode");
-    root.classList.remove("star-intro-gold-start");
     return;
   }
 
@@ -922,8 +859,6 @@ varmt välkommen att även titta in hos oss.
     root.classList.remove("star-intro-active");
     root.classList.remove("star-intro-force");
     root.classList.remove("star-intro-mobile-mode");
-    root.classList.remove("star-intro-frame-ready");
-    root.classList.remove("star-intro-gold-start");
     canvas.remove();
     mobileSvg.remove();
   }
@@ -1014,7 +949,6 @@ varmt välkommen att även titta in hos oss.
     } else {
       drawRevealFrame(0);
     }
-    root.classList.add("star-intro-frame-ready");
 
     startTimer = window.setTimeout(
       runReveal,
@@ -1035,7 +969,6 @@ varmt välkommen att även titta in hos oss.
     } else {
       drawGoldFrame(startingRadius);
     }
-    root.classList.add("star-intro-frame-ready");
 
     function shrink(now) {
       if (startedAt === null) startedAt = now;
@@ -1071,34 +1004,6 @@ varmt välkommen att även titta in hos oss.
     animationFrame = requestAnimationFrame(shrink);
   }
 
-  async function waitForMobileFirstPaint() {
-    const isMobileOrInstalledApp =
-      window.matchMedia("(hover: none), (pointer: coarse)").matches ||
-      window.matchMedia("(display-mode: standalone)").matches ||
-      window.navigator.standalone === true;
-
-    if (!isMobileOrInstalledApp) return;
-
-    if (document.visibilityState !== "visible") {
-      await new Promise((resolve) => {
-        const onVisible = () => {
-          if (document.visibilityState !== "visible") return;
-          document.removeEventListener("visibilitychange", onVisible);
-          resolve();
-        };
-        document.addEventListener("visibilitychange", onVisible);
-      });
-    }
-
-    await new Promise((resolve) => {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          window.setTimeout(resolve, 180);
-        });
-      });
-    });
-  }
-
   async function startIntro() {
     introSettings = await loadIntroSettings();
 
@@ -1106,12 +1011,6 @@ varmt välkommen att även titta in hos oss.
       finishIntro();
       return;
     }
-
-    root.classList.toggle(
-      "star-intro-gold-start",
-      introSettings.mode === "gold" ||
-        introSettings.mode === "image"
-    );
 
     if (introSettings.mode === "image") {
       useMobileSvg = false;
@@ -1124,8 +1023,6 @@ varmt välkommen att även titta in hos oss.
       "--star-intro-background",
       introSettings.backgroundColor
     );
-
-    await waitForMobileFirstPaint();
 
     fallbackTimer = window.setTimeout(
       finishIntro,
@@ -1146,7 +1043,7 @@ varmt välkommen att även titta in hos oss.
 })();
 </script>
 
-  <script src="pwa.js?v=6.10.18" defer></script>
+  <script src="pwa.js" defer></script>
 </body>
 
 </html>

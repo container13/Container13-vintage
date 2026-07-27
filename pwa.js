@@ -3,131 +3,43 @@
   const SESSION_KEY = "c13PwaVisitRegistered";
   const DISMISSED_KEY = "c13PwaPromptDismissedUntil";
   const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
-  const RESUME_INTRO_DELAY = 10 * 1000;
-  const LAST_ACTIVE_KEY = "c13PwaLastActiveAt";
-  const SKIP_INTRO_KEY = "c13SkipNextIntro";
-  const ACTIVE_HEARTBEAT_INTERVAL = 2 * 1000;
   const SETTINGS_URL = "https://firestore.googleapis.com/v1/projects/container13-87c1a/databases/(default)/documents/settings/site";
 
   let deferredInstallPrompt = null;
   let hiddenAt = 0;
   let reloadingForUpdate = false;
-  let resumeNavigationStarted = false;
-  let serviceWorkerRegistration = null;
-  const scriptStartedAt = Date.now();
-
-  function readLastActive() {
-    try {
-      return Number(localStorage.getItem(LAST_ACTIVE_KEY)) || 0;
-    } catch (_) {
-      return 0;
-    }
-  }
-
-  function writeLastActive(timestamp = Date.now()) {
-    if (!isInstalled()) return;
-    try {
-      localStorage.setItem(LAST_ACTIVE_KEY, String(timestamp));
-    } catch (_) {
-      // Återupptagningen fungerar fortfarande via sidans synlighetshändelser.
-    }
-  }
-
-  function rememberAppWasHidden() {
-    hiddenAt = Date.now();
-    writeLastActive(hiddenAt);
-  }
-
-  function resumeInstalledApp() {
-    if (!isInstalled() || resumeNavigationStarted) return false;
-
-    const lastActive = readLastActive();
-    if (!lastActive) {
-      writeLastActive();
-      return false;
-    }
-
-    const inactiveDuration = Date.now() - lastActive;
-    if (inactiveDuration < RESUME_INTRO_DELAY) {
-      writeLastActive();
-      return false;
-    }
-
-    const currentPage =
-      window.location.pathname.split("/").pop() || "index.html";
-    const freshIndexDocument =
-      currentPage === "index.html" &&
-      Date.now() - scriptStartedAt < 3000;
-
-    if (freshIndexDocument) {
-      writeLastActive();
-      return false;
-    }
-
-    resumeNavigationStarted = true;
-    const homeUrl = new URL("./", window.location.href);
-    homeUrl.searchParams.set("source", "pwa");
-    homeUrl.searchParams.set("resume", String(Date.now()));
-    window.location.replace(homeUrl.href);
-    return true;
-  }
-
-  function handleAppVisible() {
-    serviceWorkerRegistration?.update().catch(() => {});
-
-    if (resumeInstalledApp()) return;
-
-    if (
-      !isInstalled() &&
-      hiddenAt &&
-      Date.now() - hiddenAt >= 60 * 1000
-    ) {
-      window.location.reload();
-      return;
-    }
-
-    hiddenAt = 0;
-  }
-
-  document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "hidden") {
-      rememberAppWasHidden();
-      return;
-    }
-
-    handleAppVisible();
-  });
-
-  window.addEventListener("pagehide", rememberAppWasHidden);
-  window.addEventListener("focus", handleAppVisible);
-  window.addEventListener("pageshow", (event) => {
-    if (resumeInstalledApp()) return;
-    if (event.persisted && !isInstalled()) window.location.reload();
-  });
-
-  window.setInterval(() => {
-    if (document.visibilityState !== "visible" || !isInstalled()) return;
-    if (!resumeInstalledApp()) writeLastActive();
-  }, ACTIVE_HEARTBEAT_INTERVAL);
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
       navigator.serviceWorker
         .register("./sw.js", { updateViaCache: "none" })
         .then((registration) => {
-          serviceWorkerRegistration = registration;
           registration.update().catch(() => {});
+
+          document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "hidden") {
+              hiddenAt = Date.now();
+              return;
+            }
+
+            registration.update().catch(() => {});
+
+            if (hiddenAt && Date.now() - hiddenAt >= 60 * 1000) {
+              window.location.reload();
+            }
+          });
+
+          window.addEventListener("pageshow", (event) => {
+            if (event.persisted) {
+              window.location.reload();
+            }
+          });
         })
         .catch(() => {});
 
       navigator.serviceWorker.addEventListener("controllerchange", () => {
         if (reloadingForUpdate) return;
         reloadingForUpdate = true;
-        try {
-          sessionStorage.setItem(SKIP_INTRO_KEY, "true");
-        } catch (_) {
-          // Omladdningen får fortsätta även om sessionslagring saknas.
-        }
         window.location.reload();
       });
     });
