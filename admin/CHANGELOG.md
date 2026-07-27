@@ -1,5 +1,24 @@
 # Ändringslogg
 
+## Version 6.10.7
+
+- Versionsmärker adminpanelens HTML-, PWA- och service worker-laddning.
+- Tvingar service workern att söka efter uppdateringar utan mellanliggande cache.
+- Hämtar adminpanelens navigationer med `no-store`.
+- Laddar om adminpanelen en gång när en ny service worker tar över.
+- Skickar inloggade administratörer till den versionsmärkta paneladressen.
+- Säkerställer att den nya sessionsbaserade bildoptimeringen och detaljerade feltexten verkligen laddas.
+
+## Version 6.10.6
+
+- Låter bildoptimeringsverktyget vara avstängt varje gång adminpanelen öppnas.
+- Aktiveringen gäller endast den aktuella sessionen och sparas inte som webbplatsinställning.
+- Hämtar äldre bilder direkt från Firebase Storage via deras lagringssökväg.
+- Använder den publika bildlänken som reserv om Storage-hämtningen misslyckas.
+- Visar den faktiska felorsaken när en bild inte kan hämtas, konverteras, laddas upp eller uppdateras.
+- Behåller tidigare säkerhetskontroller mot dubbeloptimering och felaktig originalradering.
+- Uppdaterar adminpanelens cache och synliga versionsnummer.
+
 ## Version 6.10.5
 
 - Visar om varje optimerad bild fortfarande har ett original sparat.

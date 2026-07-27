@@ -2142,7 +2142,7 @@
 
   </style>
 
-  <script src="./pwa.js" defer></script>
+  <script src="./pwa.js?v=6.10.37" defer></script>
 
 </head>
 
@@ -2235,7 +2235,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.10.5</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.10.7</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -3114,10 +3114,10 @@
             <div class="settings-subcard">
               <h3>Verktyg för äldre bilder</h3>
               <label class="quick-mode-setting">
-                <input id="setting-show-image-optimizer" type="checkbox">
-                <span>
-                  <strong>Visa verktyget för bildoptimering</strong><br>
-                  <small>Aktiverar ett manuellt verktyg för äldre bilder. Inget ändras automatiskt.</small>
+                  <input id="setting-show-image-optimizer" type="checkbox">
+                  <span>
+                    <strong>Visa verktyget för bildoptimering</strong><br>
+                    <small>Aktiverar verktyget endast för den här sessionen. Det är avstängt nästa gång adminpanelen öppnas.</small>
                 </span>
               </label>
 
@@ -3204,6 +3204,7 @@
 
     import {
       deleteObject,
+      getBlob,
       getDownloadURL,
       getStorage,
       ref,
@@ -3888,7 +3889,6 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
       logoMode: "patina",
       customLogoUrl: "",
       customLogoStoragePath: "",
-      showImageOptimizationTool: false,
       trashDays: 2,
       newArrivalsRetentionMode: "days",
       newArrivalsRetentionDays: 7,
@@ -4651,8 +4651,8 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
       settingFacebook.value = data.facebook || "";
       settingInstagram.value = data.instagram || "";
       settingTiktok.value = data.tiktok || "";
-      settingShowImageOptimizer.checked = data.showImageOptimizationTool === true;
-      imageOptimizerTool.hidden = !settingShowImageOptimizer.checked;
+      settingShowImageOptimizer.checked = false;
+      imageOptimizerTool.hidden = true;
       settingAboutEnabled.checked = data.aboutEnabled === true;
       aboutTextsDraft = normalizeAboutTexts(data.aboutTexts);
       aboutEditorVariant = ["personal", "story", "energy"].includes(data.aboutVariant)
@@ -4785,7 +4785,6 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
         logoMode,
         customLogoUrl: formCustomLogoUrl,
         customLogoStoragePath: formCustomLogoStoragePath,
-        showImageOptimizationTool: settingShowImageOptimizer.checked,
         trashDays: Math.min(7, Math.max(1, Number(settingTrashDays.value) || 2)),
         newArrivalsRetentionMode: retention.mode,
         newArrivalsRetentionDays: retention.mode === "manual" ? 0 : retention.days,
@@ -5510,6 +5509,38 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
       });
     }
 
+    async function getOriginalImageBlob(item) {
+      let storageError = null;
+      if (item.storagePath) {
+        try {
+          return await getBlob(
+            ref(storage, item.storagePath),
+            12 * 1024 * 1024
+          );
+        } catch (error) {
+          storageError = error;
+          console.warn("Direkthämtningen från Storage misslyckades:", error);
+        }
+      }
+
+      try {
+        const response = await fetch(item.imageUrl, {
+          cache: "no-store",
+          mode: "cors"
+        });
+        if (!response.ok) {
+          throw new Error(`webblänken svarade ${response.status}`);
+        }
+        return await response.blob();
+      } catch (linkError) {
+        const storageDetail = storageError?.code || storageError?.message || "ingen lagringssökväg";
+        const linkDetail = linkError?.message || "okänt fel";
+        throw new Error(
+          `Originalbilden kunde inte hämtas. Storage: ${storageDetail}. Webblänk: ${linkDetail}.`
+        );
+      }
+    }
+
     function showImageOptimizerStatus(text, type = "") {
       imageOptimizerMessage.textContent = text;
       imageOptimizerMessage.className = type ? `message ${type}` : "message";
@@ -5891,6 +5922,7 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
       let failed = 0;
       let originalsNotDeleted = 0;
       let alreadySkipped = 0;
+      const failureMessages = [];
 
       for (let index = 0; index < selectedItems.length; index += 1) {
         const item = selectedItems[index];
@@ -5903,9 +5935,7 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
             alreadySkipped += 1;
             continue;
           }
-          const response = await fetch(item.imageUrl, { cache: "no-store" });
-          if (!response.ok) throw new Error(`Bildhämtningen svarade ${response.status}.`);
-          const sourceBlob = await response.blob();
+          const sourceBlob = await getOriginalImageBlob(item);
           const sourceFile = new File(
             [sourceBlob],
             `aldre-bild-${item.id}`,
@@ -5945,6 +5975,9 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
           newStorageReference = null;
         } catch (error) {
           failed += 1;
+          failureMessages.push(
+            `${item.categoryLabel}: ${error?.message || "okänt fel"}`
+          );
           console.error(`Kunde inte optimera bild ${item.id}:`, error);
           if (newStorageReference) {
             deleteObject(newStorageReference).catch(() => {});
@@ -5963,8 +5996,11 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
       const skippedDetails = alreadySkipped
         ? ` ${alreadySkipped} redan optimerade bilder hoppades över.`
         : "";
+      const failureDetails = failureMessages.length
+        ? ` Fel: ${failureMessages.slice(0, 3).join(" | ")}`
+        : "";
       const resultText =
-        `${optimized} bilder optimerades. ${failed} misslyckades.${details}${skippedDetails} Listan har uppdaterats.`;
+        `${optimized} bilder optimerades. ${failed} misslyckades.${details}${skippedDetails}${failureDetails} Listan har uppdaterats.`;
       const resultType = failed || originalsNotDeleted ? "error" : "success";
       await Promise.all([loadGallery(), loadNewArrivals()]);
       await analyzeImagesForOptimization();
@@ -7157,7 +7193,7 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
       imageOptimizerList.innerHTML = "";
       showImageOptimizerStatus(
         settingShowImageOptimizer.checked
-          ? "Spara inställningarna om verktyget ska vara tillgängligt nästa gång."
+          ? "Verktyget är tillfälligt aktiverat för den här sessionen."
           : ""
       );
     });
