@@ -25,7 +25,7 @@ const newArrivalsNoticeText = document.getElementById("new-arrivals-notice-text"
 
 const PROJECT_ID = "container13-87c1a";
 const API_KEY = "AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw";
-const NEW_ARRIVAL_WINDOW_HOURS = 48;
+const DEFAULT_NEW_ARRIVAL_RETENTION_DAYS = 7;
 
 const dayOrder = [
   "sunday",
@@ -200,6 +200,28 @@ function galleryDate(item) {
   return Number.isNaN(parsed.getTime()) ? null : parsed;
 }
 
+function newArrivalsRetention(settings) {
+  if (settings && settings.newArrivalsRetentionMode === "manual") {
+    return { mode: "manual", days: 0 };
+  }
+
+  const parsedDays = Number(settings && settings.newArrivalsRetentionDays);
+  const days = Number.isInteger(parsedDays)
+    ? Math.min(30, Math.max(1, parsedDays))
+    : DEFAULT_NEW_ARRIVAL_RETENTION_DAYS;
+
+  return { mode: "days", days };
+}
+
+function isWithinNewArrivalsRetention(item, retention) {
+  if (retention.mode === "manual") return true;
+
+  const date = galleryDate(item);
+  if (!date) return true;
+
+  return date.getTime() >= Date.now() - (retention.days * 24 * 60 * 60 * 1000);
+}
+
 function renderNewArrivalsNotice(count) {
   if (!newArrivalsNotice || !newArrivalsNoticeText || !newArrivalsDivider) return;
 
@@ -222,22 +244,30 @@ async function loadNewArrivalsNotice() {
   if (!newArrivalsNotice) return;
 
   try {
-    const url = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/gallery?pageSize=100&key=${API_KEY}`;
-    const response = await fetch(url, { cache: "no-store" });
-    if (!response.ok) throw new Error(`Firestore svarade ${response.status}`);
+    const galleryUrl = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/gallery?pageSize=100&key=${API_KEY}`;
+    const settingsUrl = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/settings/site?key=${API_KEY}`;
+    const [galleryResponse, settingsResponse] = await Promise.all([
+      fetch(galleryUrl, { cache: "no-store" }),
+      fetch(settingsUrl, { cache: "no-store" })
+    ]);
 
-    const json = await response.json();
-    const cutoff = Date.now() - (NEW_ARRIVAL_WINDOW_HOURS * 60 * 60 * 1000);
-    const count = (json.documents || [])
+    if (!galleryResponse.ok) {
+      throw new Error(`Firestore svarade ${galleryResponse.status}`);
+    }
+
+    const galleryJson = await galleryResponse.json();
+    const settingsJson = settingsResponse.ok ? await settingsResponse.json() : null;
+    const settings = settingsJson ? firestoreFields(settingsJson.fields || {}) : null;
+    const retention = newArrivalsRetention(settings);
+
+    const count = (galleryJson.documents || [])
       .map((document) => ({
         documentCreatedAt: document.createTime || "",
         ...firestoreFields(document.fields || {})
       }))
       .filter((item) => galleryCategory(item) === "nyinkommet" && galleryImageUrl(item))
-      .filter((item) => {
-        const date = galleryDate(item);
-        return date && date.getTime() >= cutoff;
-      }).length;
+      .filter((item) => isWithinNewArrivalsRetention(item, retention))
+      .length;
 
     renderNewArrivalsNotice(count);
   } catch (error) {

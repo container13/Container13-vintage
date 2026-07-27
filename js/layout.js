@@ -59,7 +59,7 @@ async function initializeLayout() {
     ]);
 
     markCurrentPage();
-    const statusTask = import("./status.js?v=3.7.0");
+    const statusTask = import("./status.js?v=3.8.0");
     const settingsTask = import("./site-settings.js?v=6.10.0")
       .then((settingsModule) => settingsModule.applySiteSettings());
     const themeTask = import("./theme-controls.js?v=2.0.0");
