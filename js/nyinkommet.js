@@ -1,4 +1,8 @@
-import { getSiteSettings } from "./site-data.js?v=1.0.0";
+import { getSiteSettings } from "./site-data.js?v=1.1.0";
+import {
+  fetchFreshGalleryData,
+  getCachedGalleryData
+} from "./gallery-data.js?v=1.0.0";
 
 (() => {
   "use strict";
@@ -183,13 +187,13 @@ import { getSiteSettings } from "./site-data.js?v=1.0.0";
 
   async function load() {
     if (!gallery) return;
-    gallery.innerHTML = '<p class="gallery-status">Hämtar bilder...</p>';
-    try {
-      const retention = await getRetentionSetting();
-      const url = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/gallery?pageSize=100&key=${API_KEY}`;
-      const response = await fetch(url, { cache: "no-store" });
-      if (!response.ok) throw new Error(`Firestore svarade ${response.status}`);
-      const json = await response.json();
+    const cached = getCachedGalleryData();
+    if (!cached) {
+      gallery.innerHTML = '<p class="gallery-status">Hämtar bilder...</p>';
+    }
+
+    const retention = await getRetentionSetting();
+    const renderGalleryData = (json) => {
       const all = (json.documents || []).map((document) => ({
         id: document.name?.split("/").pop() || "",
         documentCreatedAt: document.createTime || "",
@@ -199,9 +203,20 @@ import { getSiteSettings } from "./site-data.js?v=1.0.0";
         .filter((item) => category(item) === "nyinkommet" && imageUrl(item) && withinRetention(item, retention))
         .sort((a, b) => time(b) - time(a));
       render(selected);
+    };
+
+    if (cached) {
+      renderGalleryData(cached);
+    }
+
+    try {
+      const fresh = await fetchFreshGalleryData();
+      renderGalleryData(fresh);
     } catch (error) {
       console.error(error);
-      gallery.innerHTML = `<p class="gallery-status">Bilderna kunde inte hämtas (${error.message}).</p>`;
+      if (!cached) {
+        gallery.innerHTML = `<p class="gallery-status">Bilderna kunde inte hämtas (${error.message}).</p>`;
+      }
     }
   }
 

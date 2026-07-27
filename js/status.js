@@ -1,19 +1,12 @@
-import { getApps, initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { doc, getDoc, getFirestore } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-import { getSiteSettings } from "./site-data.js?v=1.0.0";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw",
-  authDomain: "container13-87c1a.firebaseapp.com",
-  projectId: "container13-87c1a",
-  storageBucket: "container13-87c1a.firebasestorage.app",
-  messagingSenderId: "936924614149",
-  appId: "1:936924614149:web:2b74d823951538fa2b166c",
-  measurementId: "G-PSHRGK4JJC"
-};
-
-const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
-const database = getFirestore(app);
+import { getSiteSettings } from "./site-data.js?v=1.1.0";
+import {
+  fetchFreshGalleryData,
+  getCachedGalleryData
+} from "./gallery-data.js?v=1.0.0";
+import {
+  fetchFreshSettingDocument,
+  getCachedSettingDocument
+} from "./settings-data.js?v=1.0.0";
 
 const storeStatus = document.getElementById("store-status");
 const openingStatusText = document.getElementById("opening-status-text");
@@ -244,20 +237,9 @@ function renderNewArrivalsNotice(count) {
 async function loadNewArrivalsNotice() {
   if (!newArrivalsNotice) return;
 
-  try {
-    const galleryUrl = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/gallery?pageSize=100&key=${API_KEY}`;
-    const [galleryResponse, settings] = await Promise.all([
-      fetch(galleryUrl, { cache: "no-store" }),
-      getSiteSettings()
-    ]);
-
-    if (!galleryResponse.ok) {
-      throw new Error(`Firestore svarade ${galleryResponse.status}`);
-    }
-
-    const galleryJson = await galleryResponse.json();
-    const retention = newArrivalsRetention(settings);
-
+  const settings = await getSiteSettings();
+  const retention = newArrivalsRetention(settings);
+  const renderGalleryData = (galleryJson) => {
     const count = (galleryJson.documents || [])
       .map((document) => ({
         documentCreatedAt: document.createTime || "",
@@ -268,39 +250,72 @@ async function loadNewArrivalsNotice() {
       .length;
 
     renderNewArrivalsNotice(count);
+  };
+
+  const cached = getCachedGalleryData();
+  if (cached) {
+    renderGalleryData(cached);
+  }
+
+  try {
+    const fresh = await fetchFreshGalleryData();
+    renderGalleryData(fresh);
   } catch (error) {
     console.error("Kunde inte hämta notisen om nya plagg:", error);
-    renderNewArrivalsNotice(0);
+    if (!cached) {
+      renderNewArrivalsNotice(0);
+    }
   }
 }
 
 async function loadStatusBar() {
-  try {
-    const [openingHoursSnapshot, informationSnapshot, specialHoursSnapshot] = await Promise.all([
-      getDoc(doc(database, "settings", "openingHours")),
-      getDoc(doc(database, "settings", "informationBar")),
-      getDoc(doc(database, "settings", "specialOpeningHours"))
-    ]);
+  const renderDocuments = (openingDocument, informationDocument, specialDocument) => {
+    const openingData = openingDocument
+      ? firestoreFields(openingDocument.fields || {})
+      : null;
+    const informationData = informationDocument
+      ? firestoreFields(informationDocument.fields || {})
+      : null;
+    const specialData = specialDocument
+      ? firestoreFields(specialDocument.fields || {})
+      : null;
 
-    savedSpecialHours = specialHoursSnapshot.exists()
-      ? (specialHoursSnapshot.data().entries || {})
-      : {};
+    savedSpecialHours = specialData?.entries || {};
 
-    if (openingHoursSnapshot.exists()) {
-      savedOpeningHours = openingHoursSnapshot.data().days || {};
+    if (openingData) {
+      savedOpeningHours = openingData.days || {};
       renderOpeningStatus(savedOpeningHours);
     } else {
       openingStatusText.textContent = "Öppettider saknas";
       storeStatus.classList.add("synlig", "ar-stangd");
     }
 
-    renderInformationBar(
-      informationSnapshot.exists() ? informationSnapshot.data() : null
-    );
+    renderInformationBar(informationData);
+  };
+
+  const cachedDocuments = [
+    getCachedSettingDocument("openingHours"),
+    getCachedSettingDocument("informationBar"),
+    getCachedSettingDocument("specialOpeningHours")
+  ];
+
+  if (cachedDocuments.some(Boolean)) {
+    renderDocuments(...cachedDocuments);
+  }
+
+  try {
+    const freshDocuments = await Promise.all([
+      fetchFreshSettingDocument("openingHours"),
+      fetchFreshSettingDocument("informationBar"),
+      fetchFreshSettingDocument("specialOpeningHours")
+    ]);
+    renderDocuments(...freshDocuments);
   } catch (error) {
     console.error("Kunde inte hämta statusraden:", error);
-    openingStatusText.textContent = "Se aktuella öppettider på kontaktsidan";
-    storeStatus.classList.add("synlig", "ar-stangd");
+    if (!cachedDocuments.some(Boolean)) {
+      openingStatusText.textContent = "Se aktuella öppettider på kontaktsidan";
+      storeStatus.classList.add("synlig", "ar-stangd");
+    }
   }
 }
 

@@ -1,4 +1,4 @@
-import { getSiteSettings } from "./site-data.js?v=1.0.0";
+import { getSiteSettings } from "./site-data.js?v=1.1.0";
 
 const defaultAboutTexts = {
   personal: {

@@ -1,3 +1,8 @@
+import {
+  fetchFreshSettingDocument,
+  getCachedSettingDocument
+} from "./settings-data.js?v=1.0.0";
+
 (() => {
   "use strict";
 
@@ -46,24 +51,15 @@
 
   async function load() {
     if (!list) return;
-    list.innerHTML = "<p>Hämtar öppettider...</p>";
-    const url = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/settings/openingHours?key=${API_KEY}`;
-    const specialUrl = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/settings/specialOpeningHours?key=${API_KEY}`;
-    try {
-      const [response, specialResponse] = await Promise.all([
-        fetch(url, { cache: "no-store" }),
-        fetch(specialUrl, { cache: "no-store" })
-      ]);
-      if (!response.ok) throw new Error(`Firestore svarade ${response.status}`);
-      const documentData = await response.json();
+    const renderDocuments = (documentData, specialDocument) => {
+      if (!documentData) return;
       const data = firestoreFields(documentData.fields || {});
       const savedDays = data.days || data.openingHours || data.hours || {};
       list.innerHTML = "";
       dayNames.forEach(([name, key]) => list.appendChild(row(name, savedDays[key] || {})));
 
       if (specialList) specialList.innerHTML = "<p>Inga kommande avvikande öppettider är inlagda.</p>";
-      if (specialResponse.ok) {
-        const specialDocument = await specialResponse.json();
+      if (specialDocument) {
         const specialData = firestoreFields(specialDocument.fields || {});
         const entries = specialData.entries || {};
         const today = new Intl.DateTimeFormat("sv-SE", {
@@ -87,9 +83,30 @@
           }
         }
       }
+    };
+
+    const cachedDocuments = [
+      getCachedSettingDocument("openingHours"),
+      getCachedSettingDocument("specialOpeningHours")
+    ];
+
+    if (cachedDocuments[0]) {
+      renderDocuments(...cachedDocuments);
+    } else {
+      list.innerHTML = "<p>Hämtar öppettider...</p>";
+    }
+
+    try {
+      const freshDocuments = await Promise.all([
+        fetchFreshSettingDocument("openingHours"),
+        fetchFreshSettingDocument("specialOpeningHours")
+      ]);
+      renderDocuments(...freshDocuments);
     } catch (error) {
       console.error("Kunde inte hämta öppettider:", error);
-      list.innerHTML = `<p>Öppettiderna kunde inte hämtas (${error.message}).</p>`;
+      if (!cachedDocuments[0]) {
+        list.innerHTML = `<p>Öppettiderna kunde inte hämtas (${error.message}).</p>`;
+      }
     }
   }
 

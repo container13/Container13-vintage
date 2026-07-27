@@ -1,3 +1,8 @@
+import {
+  fetchFreshGalleryData,
+  getCachedGalleryData
+} from "./gallery-data.js?v=1.0.0";
+
 (() => {
   "use strict";
 
@@ -131,14 +136,12 @@
 
   async function loadGallery() {
     if (!gallery) return;
-    gallery.innerHTML = '<p class="gallery-status">Hämtar bilder...</p>';
+    const cached = getCachedGalleryData();
+    if (!cached) {
+      gallery.innerHTML = '<p class="gallery-status">Hämtar bilder...</p>';
+    }
 
-    try {
-      const url = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/gallery?pageSize=100&key=${API_KEY}`;
-      const response = await fetch(url, { cache: "no-store" });
-      if (!response.ok) throw new Error(`Firestore svarade ${response.status}`);
-
-      const json = await response.json();
+    const renderGalleryData = (json) => {
       const all = (json.documents || []).map((document) => ({
         id: document.name?.split("/").pop() || "",
         documentCreatedAt: document.createTime || "",
@@ -150,10 +153,21 @@
         .sort((a, b) => time(b) - time(a));
 
       render(selected);
+    };
+
+    if (cached) {
+      renderGalleryData(cached);
+    }
+
+    try {
+      const fresh = await fetchFreshGalleryData();
+      renderGalleryData(fresh);
     } catch (error) {
       console.error("Kunde inte hämta galleriet:", error);
-      gallery.setAttribute("aria-busy", "false");
-      gallery.innerHTML = `<p class="gallery-status">Bilderna kunde inte hämtas just nu (${error.message}).</p>`;
+      if (!cached) {
+        gallery.setAttribute("aria-busy", "false");
+        gallery.innerHTML = `<p class="gallery-status">Bilderna kunde inte hämtas just nu (${error.message}).</p>`;
+      }
     }
   }
 

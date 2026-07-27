@@ -1,4 +1,8 @@
-import { getSiteSettings } from "./site-data.js?v=1.0.0";
+import { getSiteSettings } from "./site-data.js?v=1.1.0";
+import {
+  fetchFreshGalleryData,
+  getCachedGalleryData
+} from "./gallery-data.js?v=1.0.0";
 
 (() => {
   "use strict";
@@ -148,13 +152,13 @@ import { getSiteSettings } from "./site-data.js?v=1.0.0";
   }
 
   async function loadLatest() {
-    showMessage("Hämtar de senaste bilderna...");
-    try {
-      const retention = await getRetentionSetting();
-      const endpoint = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/gallery?pageSize=100&key=${API_KEY}`;
-      const response = await fetch(endpoint, { cache: "no-store" });
-      if (!response.ok) throw new Error(`Firestore svarade ${response.status}`);
-      const data = await response.json();
+    const cached = getCachedGalleryData();
+    if (!cached) {
+      showMessage("Hämtar de senaste bilderna...");
+    }
+
+    const retention = await getRetentionSetting();
+    const renderGalleryData = (data) => {
       const allItems = (data.documents || []).map((document) => ({
         id: document.name?.split("/").pop() || "",
         documentCreatedAt: document.createTime || "",
@@ -165,9 +169,20 @@ import { getSiteSettings } from "./site-data.js?v=1.0.0";
         .sort((a, b) => getTime(b) - getTime(a))
         .slice(0, 4);
       render(latest);
+    };
+
+    if (cached) {
+      renderGalleryData(cached);
+    }
+
+    try {
+      const fresh = await fetchFreshGalleryData();
+      renderGalleryData(fresh);
     } catch (error) {
       console.error("Kunde inte hämta senaste nyinkommet:", error);
-      showMessage("De senaste bilderna kunde inte hämtas just nu.");
+      if (!cached) {
+        showMessage("De senaste bilderna kunde inte hämtas just nu.");
+      }
     }
   }
 

@@ -54,12 +54,12 @@ function rememberHomeNavigation() {
 async function initializeLayout() {
   const headerTask = loadHtml("site-header", "includes/header.html");
   const footerTask = loadHtml("site-footer", "includes/footer.html");
-  const settingsModuleTask = import("./site-settings.js?v=6.10.29");
+  const settingsModuleTask = import("./site-settings.js?v=6.10.42");
 
   try {
     await headerTask;
     markCurrentPage();
-    import("./status.js?v=3.9.0").catch((error) => {
+    import("./status.js?v=4.0.0").catch((error) => {
       console.error("Kunde inte starta statusraden:", error);
     });
   } catch (error) {

@@ -2,6 +2,8 @@ const PROJECT_ID = "container13-87c1a";
 const API_KEY = "AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw";
 const SITE_SETTINGS_URL =
   `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/settings/site?key=${API_KEY}`;
+const SITE_SETTINGS_CACHE_KEY = "c13SiteSettingsCacheV1";
+const SITE_SETTINGS_CACHE_MAX_AGE = 24 * 60 * 60 * 1000;
 
 let rawSettingsPromise = null;
 
@@ -32,14 +34,63 @@ function fieldsFromFirestore(fields) {
 function fetchRawSettings() {
   return fetch(SITE_SETTINGS_URL, { cache: "no-store" })
     .then((response) => response.ok ? response.json() : null)
+    .then((raw) => {
+      if (raw) {
+        try {
+          localStorage.setItem(SITE_SETTINGS_CACHE_KEY, JSON.stringify({
+            savedAt: Date.now(),
+            data: raw
+          }));
+        } catch (_) {
+          // Inställningarna fungerar även utan lokal lagring.
+        }
+      }
+      return raw;
+    })
     .catch(() => null);
+}
+
+function cachedRawSettings() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(SITE_SETTINGS_CACHE_KEY) || "null");
+    if (
+      !stored ||
+      typeof stored.savedAt !== "number" ||
+      Date.now() - stored.savedAt > SITE_SETTINGS_CACHE_MAX_AGE ||
+      !stored.data ||
+      typeof stored.data !== "object"
+    ) {
+      return null;
+    }
+    return stored.data;
+  } catch (_) {
+    return null;
+  }
 }
 
 export function getRawSiteSettings() {
   if (!rawSettingsPromise) {
-    rawSettingsPromise =
-      window.c13IntroSettingsPromise ||
-      fetchRawSettings();
+    if (window.c13IntroSettingsPromise) {
+      rawSettingsPromise = window.c13IntroSettingsPromise.then((raw) => {
+        if (raw) {
+          try {
+            localStorage.setItem(SITE_SETTINGS_CACHE_KEY, JSON.stringify({
+              savedAt: Date.now(),
+              data: raw
+            }));
+          } catch (_) {}
+        }
+        return raw;
+      });
+    } else {
+      const cached = cachedRawSettings();
+      if (cached) {
+        rawSettingsPromise = Promise.resolve(cached);
+        fetchRawSettings();
+      } else {
+        rawSettingsPromise = fetchRawSettings();
+      }
+    }
   }
 
   return rawSettingsPromise;
