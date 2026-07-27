@@ -29,10 +29,6 @@
   border-bottom: 1px solid rgba(154, 122, 24, 0.35);
 }
 
-.mobilmeny-rad {
-  display: none;
-}
-
 .sidhuvud nav {
   position: static;
   padding: 15px;
@@ -72,33 +68,6 @@
 }
 
 .oppet-status-innehall {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 7px 14px;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.site-notiser {
-  width: 100%;
-  padding: 9px 18px 10px;
-  background: #f8f5ef;
-  border-bottom: 1px solid rgba(154, 122, 24, 0.35);
-}
-
-.site-notiser:not(:has(.informations-meddelande.synlig, .nya-plagg-notis.synlig)) {
-  display: none;
-}
-
-.site-notiser .informations-avdelare:first-child,
-.site-notiser .informations-meddelande:not(.synlig) + .informations-avdelare {
-  display: none;
-}
-
-.site-notiser-innehall {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -162,57 +131,19 @@
 }
 
 /* ========================= */ /* STARTSIDA */ /* ========================= */ .landing { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 35px 30px 20px; } .logo { width: 340px; max-width: 85%; margin-bottom: 20px; } h1 { font-size: 2.8rem; margin-bottom: 12px; } h2 { margin-bottom: 18px; } .undertitel { max-width: 550px; margin-bottom: 25px; color: #666; font-size: 1.2rem; line-height: 1.6; } /* ========================= */ /* KNAPPAR */ /* ========================= */ .knappar { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; } .knappar a { padding: 16px 28px; color: #222; background: #d4af37; text-decoration: none; font-weight: bold; border-radius: 50px; transition: background 0.2s ease, color 0.2s ease; } .knappar a:hover { color: white; background: #222; } /* ========================= */ /* INTRO */ /* ========================= */ .intro { max-width: 800px; margin: auto; padding: 45px 25px; } .intro h2 { text-align: center; margin-bottom: 20px; } .intro p { text-align: center; line-height: 1.8; margin-bottom: 15px; } /* ========================= */ /* UNDERSIDOR */ /* ========================= */ .page-header { text-align: center; padding: 35px 20px; } .page-header p { color: #666; line-height: 1.6; } .logo-small { width: 260px; max-width: 90%; margin-bottom: 20px; } /* ========================= */ /* GALLERI */ /* ========================= */ .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 1300px; width: 100%; margin: 30px auto; padding: 20px; } .gallery img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; cursor: pointer; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); } /* ========================= */ /* LIGHTBOX */ /* ========================= */ .lightbox { display: none; position: fixed; inset: 0; justify-content: center; align-items: center; background: rgba(0, 0, 0, 0.95); z-index: 9999; } .lightbox img { max-width: 90%; max-height: 90%; } #close { position: absolute; top: 25px; right: 40px; color: white; font-size: 45px; cursor: pointer; } .prev, .next { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 60px; cursor: pointer; } .prev { left: 30px; } .next { right: 30px; } /* ========================= */ /* KONTAKT */ /* ========================= */ .kontakt { max-width: 900px; width: 100%; margin: 30px auto; padding: 20px; text-align: center; } .kontakt section { margin-bottom: 25px; padding: 30px; background: #f7f2e8; border-radius: 12px; } .kontakt p { line-height: 1.8; } .kontakt a { color: #222; text-decoration: none; } .kontakt a:hover { color: #9a7a18; text-decoration: underline; } /* ========================= */ /* ÖPPETTIDER */ /* ========================= */ .oppettider { width: 100%; max-width: 430px; margin: 20px auto; } .oppettid-rad { display: grid; grid-template-columns: minmax(105px, 1fr) auto; align-items: center; column-gap: 10px; min-height: 40px; padding: 8px 6px; border-bottom: 1px solid rgba(0, 0, 0, 0.12); } .oppettid-rad:first-child { border-top: 1px solid rgba(0, 0, 0, 0.12); } .oppettid-dag { font-weight: bold; text-align: left; } .oppettid-tid { text-align: right; white-space: nowrap; } .oppettider-information { max-width: 550px; margin: 16px auto 0; color: #666; font-size: 0.9rem; line-height: 1.6; } /* ========================= */ /* GATUVY */ /* ========================= */ .gatuvy { display: block; width: 100%; max-width: 900px; margin: 20px auto; border-radius: 12px; } /* ========================= */ /* KARTKNAPP */ /* ========================= */ .knapp-karta { display: inline-block; padding: 15px 25px; color: #222; background: #d4af37; text-decoration: none; font-weight: bold; border-radius: 50px; transition: background 0.2s ease, color 0.2s ease; } .knapp-karta:hover { color: white; background: #222; } /* ========================= */ /* FOOTER */ /* ========================= */ footer { width: 100%; margin-top: auto; padding: 25px; color: white; background: #222; text-align: center; } .sociala { margin-top: 20px; } .sociala a { margin: 0 12px; color: white; font-size: 32px; text-decoration: none; } .sociala a:hover { color: #d4af37; } /* ========================= */ /* MOBIL */ /* ========================= */ @media (max-width: 600px) {
-  .mobilmeny-rad {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 54px;
-    padding: 7px 16px;
-  }
-
-  .mobilmeny-namn {
-    color: #222;
-    font-size: 1.08rem;
-    font-weight: 800;
-  }
-
-  .mobilmeny-knapp {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    padding: 0;
-    color: #222;
-    background: transparent;
-    border: 1px solid rgba(154, 122, 24, 0.55);
-    border-radius: 50%;
-    font-size: 1.1rem;
-    cursor: pointer;
-  }
-
-  .mobilmeny-knapp:focus-visible {
-    outline: 2px solid #9a7a18;
-    outline-offset: 2px;
-  }
-
   .sidhuvud nav {
-    display: none;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 4px;
-    padding: 7px 10px 11px;
-    text-align: left;
-  }
-
-  .sidhuvud nav.oppen {
     display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2px 4px;
+    padding: 8px 7px;
+    text-align: center;
   }
 
   .sidhuvud nav a {
     margin: 0;
-    padding: 10px 12px;
-    border-radius: 8px;
-    font-size: 0.94rem;
+    padding: 7px 3px;
+    border-radius: 6px;
+    font-size: 0.82rem;
   }
 
   .sidhuvud nav a:hover,
@@ -246,14 +177,6 @@
   .informations-meddelande.synlig {
     width: 100%;
     justify-content: center;
-  }
-
-  .site-notiser {
-    padding: 9px 12px 10px;
-  }
-
-  .site-notiser-innehall {
-    gap: 6px;
   }
 
   .landing { padding: 30px 18px 20px; } h1 { font-size: 2.2rem; } .kontakt { padding: 12px; } .kontakt section { padding: 25px 18px; } .oppettider { max-width: 360px; } .oppettid-rad { grid-template-columns: minmax(95px, 1fr) auto; column-gap: 8px; min-height: 38px; padding: 7px 4px; } .oppettid-dag, .oppettid-tid { font-size: 0.95rem; } .prev, .next { font-size: 42px; } .prev { left: 12px; } .next { right: 12px; } #close { top: 15px; right: 20px; font-size: 40px; } } /* ========================= */ /* DATOR */ /* ========================= */ @media (min-width: 900px) { .logo { width: 680px; } h1 { font-size: 4rem; } .undertitel { font-size: 1.4rem; } }
@@ -1147,8 +1070,7 @@ html[data-theme="dark"] body {
 
 html[data-theme="dark"] .sidhuvud,
 html[data-theme="dark"] .sidhuvud nav,
-html[data-theme="dark"] .oppet-status,
-html[data-theme="dark"] .site-notiser {
+html[data-theme="dark"] .oppet-status {
   background: #1d1b18;
 }
 
@@ -1161,9 +1083,7 @@ html[data-theme="dark"] .sidhuvud nav {
 }
 
 html[data-theme="dark"] .sidhuvud nav a,
-html[data-theme="dark"] .oppet-status-text,
-html[data-theme="dark"] .mobilmeny-namn,
-html[data-theme="dark"] .mobilmeny-knapp {
+html[data-theme="dark"] .oppet-status-text {
   color: #f4efe6;
 }
 
