@@ -571,6 +571,36 @@
       background: rgba(255, 255, 255, 0.45);
     }
 
+    .multi-title-card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .multi-title-card-header .field-help {
+      flex: 1;
+    }
+
+    .remove-selected-image-button {
+      flex: 0 0 auto;
+      padding: 6px 9px;
+      border: 1px solid #c95f58;
+      border-radius: 7px;
+      color: #9f2922;
+      background: #fff;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .remove-selected-image-button:hover,
+    .remove-selected-image-button:focus-visible {
+      color: #fff;
+      background: #b93e36;
+      outline: none;
+    }
+
     .multi-title-thumbnail {
       display: block;
       width: 100%;
@@ -2163,7 +2193,7 @@
 
   </style>
 
-  <script src="./pwa.js?v=6.10.40" defer></script>
+  <script src="./pwa.js?v=6.10.41" defer></script>
 
 </head>
 
@@ -2256,7 +2286,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.10.10</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.10.11</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -6170,7 +6200,13 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
       showImageOptimizerStatus(resultText, resultType);
     }
 
-    function renderTitleInputs(files, container, prefix) {
+    function renderTitleInputs(
+      files,
+      container,
+      prefix,
+      onRemove = null,
+      initialTitles = []
+    ) {
       container.innerHTML = "";
 
       if (files.length === 0) {
@@ -6203,6 +6239,22 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
         label.htmlFor = `${prefix}-title-${index}`;
         label.textContent = file.name;
 
+        const cardHeader = document.createElement("div");
+        cardHeader.className = "multi-title-card-header";
+        cardHeader.appendChild(label);
+
+        if (typeof onRemove === "function") {
+          const removeButton = document.createElement("button");
+          removeButton.className = "remove-selected-image-button";
+          removeButton.type = "button";
+          removeButton.textContent = "Ta bort";
+          removeButton.setAttribute("aria-label", `Ta bort ${file.name}`);
+          removeButton.addEventListener("click", () => {
+            onRemove(index, getTitles(container, files.length));
+          });
+          cardHeader.appendChild(removeButton);
+        }
+
         const input = document.createElement("input");
         input.id = `${prefix}-title-${index}`;
         input.className = "text-input multi-title-input";
@@ -6210,8 +6262,9 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
         input.maxLength = 80;
         input.placeholder = "Titel eller beskrivning (frivilligt)";
         input.dataset.fileIndex = String(index);
+        input.value = String(initialTitles[index] || "");
 
-        wrapper.append(thumbnail, label, input);
+        wrapper.append(thumbnail, cardHeader, input);
         container.appendChild(wrapper);
       });
     }
@@ -7371,6 +7424,31 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
       uploadGalleryImage
     );
 
+    function removeSelectedGalleryImage(index, titles) {
+      selectedGalleryFiles.splice(index, 1);
+      const remainingTitles = [...titles];
+      remainingTitles.splice(index, 1);
+      renderTitleInputs(
+        selectedGalleryFiles,
+        galleryTitles,
+        "gallery",
+        removeSelectedGalleryImage,
+        remainingTitles
+      );
+
+      if (!selectedGalleryFiles.length) {
+        galleryPreviewImage.removeAttribute("src");
+        galleryPreview.classList.remove("visible");
+        showGalleryStatus("Alla valda bilder har tagits bort.");
+        return;
+      }
+
+      showGalleryStatus(
+        `${selectedGalleryFiles.length} bild(er) valda. Du kan välja fler innan du laddar upp.`,
+        "success"
+      );
+    }
+
     galleryImageInput.addEventListener(
       "change",
       () => {
@@ -7400,7 +7478,8 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
         renderTitleInputs(
           selectedGalleryFiles,
           galleryTitles,
-          "gallery"
+          "gallery",
+          removeSelectedGalleryImage
         );
 
         const file = selectedGalleryFiles[0];
@@ -7477,12 +7556,48 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
       }
     });
 
+    function removeSelectedNewArrivalImage(index, titles) {
+      const remainingFiles = Array.from(newArrivalImageInput.files || []);
+      remainingFiles.splice(index, 1);
+      const remainingTitles = [...titles];
+      remainingTitles.splice(index, 1);
+
+      const dataTransfer = new DataTransfer();
+      remainingFiles.forEach((file) => dataTransfer.items.add(file));
+      newArrivalImageInput.files = dataTransfer.files;
+
+      renderTitleInputs(
+        remainingFiles,
+        newArrivalTitles,
+        "new-arrival",
+        removeSelectedNewArrivalImage,
+        remainingTitles
+      );
+
+      if (!remainingFiles.length) {
+        newArrivalPreviewImage.removeAttribute("src");
+        newArrivalPreview.classList.remove("visible");
+        showNewArrivalStatus("Alla valda bilder har tagits bort.");
+        return;
+      }
+
+      showNewArrivalStatus(
+        `${remainingFiles.length} bild(er) valda. Du kan ta bort en bild innan uppladdning.`,
+        "success"
+      );
+    }
+
     newArrivalImageInput.addEventListener(
       "change",
       () => {
         clearNewArrivalStatus();
         const files = Array.from(newArrivalImageInput.files || []);
-        renderTitleInputs(files, newArrivalTitles, "new-arrival");
+        renderTitleInputs(
+          files,
+          newArrivalTitles,
+          "new-arrival",
+          removeSelectedNewArrivalImage
+        );
         const file = files[0];
 
         if (!file) {
