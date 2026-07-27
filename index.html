@@ -85,8 +85,7 @@
       sessionStorage.getItem(skipIntroKey) === "true";
     const navigationType =
       performance.getEntriesByType("navigation")[0]?.type || "navigate";
-    const isReloadOrHistory =
-      navigationType === "reload" || navigationType === "back_forward";
+    const isHistoryNavigation = navigationType === "back_forward";
     const reducedMotion =
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -105,7 +104,7 @@
     if (
       forceIntro ||
       (
-        (pwaLaunch || (!skipInternalIntro && !isReloadOrHistory)) &&
+        (pwaLaunch || (!skipInternalIntro && !isHistoryNavigation)) &&
         !reducedMotion
       )
     ) {

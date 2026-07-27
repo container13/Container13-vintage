@@ -1,5 +1,35 @@
 # Ändringslogg
 
+## Version 6.10.16 – Animation även vid omladdning
+
+### Vad som har ändrats
+
+- Visar startanimationen när startsidan laddas om på dator eller mobil.
+- Täcker därmed även fallet där besökaren skriver `container13.se` i adressfältet trots att startsidan redan är öppen.
+- Behåller interna Hem-klick samt bakåt- och framåtnavigering utan ny animation.
+- Respekterar fortsatt besökarens inställning för minskad rörelse.
+- Uppdaterar webbplatsens cache så att det nya beteendet hämtas.
+
+### Tekniskt berörda filer
+
+- `index.html`
+- `sw.js`
+
+## Version 6.10.15 – Animation när webappen återupptas
+
+### Vad som har ändrats
+
+- Upptäcker när den installerade webappen återkommer från mobilens bakgrund.
+- Har appen varit i bakgrunden minst 10 sekunder öppnas startsidan och startanimationen spelas.
+- Kortare växlingar mellan appar lämnas orörda så att animationen inte blir påträngande.
+- Vanliga webbläsarbesök påverkas inte av återupptagningsfunktionen.
+- Uppdaterar webappens cache så att den nya startlogiken hämtas på mobilen.
+
+### Tekniskt berörda filer
+
+- `pwa.js`
+- `sw.js`
+
 ## Version 6.10.14 – Startanimation vid entré och appstart
 
 ### Vad som har ändrats
