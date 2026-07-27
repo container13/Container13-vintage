@@ -6,10 +6,42 @@
   const SETTINGS_URL = "https://firestore.googleapis.com/v1/projects/container13-87c1a/databases/(default)/documents/settings/site";
 
   let deferredInstallPrompt = null;
+  let hiddenAt = 0;
+  let reloadingForUpdate = false;
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js").catch(() => {});
+      navigator.serviceWorker
+        .register("./sw.js", { updateViaCache: "none" })
+        .then((registration) => {
+          registration.update().catch(() => {});
+
+          document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "hidden") {
+              hiddenAt = Date.now();
+              return;
+            }
+
+            registration.update().catch(() => {});
+
+            if (hiddenAt && Date.now() - hiddenAt >= 60 * 1000) {
+              window.location.reload();
+            }
+          });
+
+          window.addEventListener("pageshow", (event) => {
+            if (event.persisted) {
+              window.location.reload();
+            }
+          });
+        })
+        .catch(() => {});
+
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (reloadingForUpdate) return;
+        reloadingForUpdate = true;
+        window.location.reload();
+      });
     });
   }
 
