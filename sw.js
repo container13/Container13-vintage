@@ -1,57 +1,80 @@
-const CACHE_NAME = "container13-admin-v6.10.8";
+const CACHE_NAME = 'container13-site-v6.10.30';
 const APP_SHELL = [
-  "./",
-  "./index.html",
-  "./panel.html?v=6.10.38",
-  "./pwa.js?v=6.10.38",
-  "./manifest.webmanifest",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png",
-  "./icons/apple-touch-icon.png"
+  './',
+  './index.html',
+  './animation-test.html',
+  './omoss.html',
+  './galleri.html',
+  './nyinkommet.html',
+  './kontakt.html',
+  './hittahit.html',
+  './css/style.css',
+  './includes/header.html',
+  './includes/footer.html',
+  './pwa.js',
+  './js/analytics.js',
+  './js/layout.js',
+  './js/theme-init.js',
+  './js/theme-controls.js',
+  './bilder/logotyp/logo-patina.webp',
+  './bilder/animation/startanimation-second-hand-desktop.webp',
+  './bilder/animation/startanimation-second-hand-mobile.webp',
+  './icons/icon-192.png'
 ];
 
-self.addEventListener("install", (event) => {
+self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL))
+    caches.open(CACHE_NAME).then(async (cache) => {
+      await Promise.all(
+        APP_SHELL.map(async (url) => {
+          const response = await fetch(new Request(url, { cache: 'reload' }));
+          if (response.ok) {
+            await cache.put(url, response);
+          }
+        })
+      );
+    })
   );
   self.skipWaiting();
 });
 
-self.addEventListener("activate", (event) => {
+self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)))
-    )
+    caches.keys()
+      .then((keys) => Promise.all(
+        keys
+          .filter((key) => key !== CACHE_NAME && key.startsWith('container13-site-'))
+          .map((key) => caches.delete(key))
+      ))
+      .then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-self.addEventListener("fetch", (event) => {
-  if (event.request.method !== "GET") return;
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  if (request.method !== 'GET') return;
 
-  const requestUrl = new URL(event.request.url);
-  if (requestUrl.origin !== self.location.origin) return;
-
-  if (event.request.mode === "navigate") {
-    event.respondWith(
-      fetch(event.request, { cache: "no-store" })
-        .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-          return response;
-        })
-        .catch(() => caches.match(event.request).then((cached) => cached || caches.match("./index.html")))
-    );
-    return;
-  }
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
 
   event.respondWith(
-    caches.match(event.request).then((cached) =>
-      cached || fetch(event.request).then((response) => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+    fetch(request, { cache: 'no-store' })
+      .then((response) => {
+        if (response.ok && response.type === 'basic') {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+        }
         return response;
       })
-    )
+      .catch(async () => {
+        const cached = await caches.match(request, { ignoreSearch: true });
+        if (cached) return cached;
+
+        if (request.mode === 'navigate') {
+          return caches.match('./index.html');
+        }
+
+        return Response.error();
+      })
   );
 });
