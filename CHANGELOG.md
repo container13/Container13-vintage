@@ -1,5 +1,47 @@
 # Ändringslogg
 
+## Version 6.10.25 – Rubriker och introduktionstexter
+
+### Vad som har ändrats
+
+- Tar bort den dubblerade H1-rubriken ”Container 13 Vintage” från startsidan.
+- Förstorar introduktionstexten direkt under startsidans logotyp.
+- Behåller H1-rubrikerna på Butiken, Nyinkommet, Om oss, Kontakt och Hitta hit.
+- Förstorar texten direkt under H1 på undersidorna i datorläge.
+- Lämnar undersidornas textstorlek på mobil oförändrad.
+- Behåller version 6.10.24:s rättning av Nyinkommet-notisen i den gemensamma headern.
+
+### Tekniskt berörda filer
+
+- `index.html`
+- `galleri.html`
+- `nyinkommet.html`
+- `omoss.html`
+- `kontakt.html`
+- `hittahit.html`
+- `css/style.css`
+
+## Version 6.10.24 – Nyinkommet tillbaka i headern
+
+### Vad som har ändrats
+
+- Återställer den automatiska Nyinkommet-notisen i den gemensamma, fixerade headern på alla publika sidor.
+- Låter notisen följa samma visningstid som Nyinkommet-sidan: 7, 14, 30, valfritt antal dagar eller tills manuell borttagning.
+- Tar bort den separata hårdkodade 48-timmarsgränsen som gjorde att fyra fortfarande aktiva plagg försvann ur headern.
+- Behåller öppet-/stängtstatusen och den manuella informationsraden oförändrade.
+- Uppdaterar cacheversionen på samtliga sex publika sidor.
+
+### Tekniskt berörda filer
+
+- `js/status.js`
+- `js/layout.js`
+- `index.html`
+- `galleri.html`
+- `nyinkommet.html`
+- `omoss.html`
+- `kontakt.html`
+- `hittahit.html`
+
 ## Version 6.10.23 – Återställning av startanimationen
 
 ### Vad som har ändrats
