@@ -1,511 +1,92 @@
 # Ändringslogg
 
-## Version 6.10.37 – Säker adminuppdatering
-
-### Vad som har ändrats
-
-- Förhindrar att adminpanelens gamla HTML ligger kvar efter en uppdatering.
-- Versionsmärker panel, PWA-fil och service worker.
-- Hämtar alltid adminnavigationer utan webbläsarcache.
-- Aktiverar och visar version 6.10.36:s nya bildhämtning och detaljerade felrapportering.
-
-### Tekniskt berörda filer
-
-- `admin/index.html`
-- `admin/panel.html`
-- `admin/pwa.js`
-- `admin/sw.js`
-- `admin/CHANGELOG.md`
-- `admin/VERSION.txt`
-
-## Version 6.10.36 – Robust bildhämtning och tydliga fel
-
-### Vad som har ändrats
-
-- Bildoptimeringsverktyget är alltid avstängt när adminpanelen öppnas.
-- Verktyget aktiveras endast tillfälligt för den aktuella sessionen.
-- Äldre bilder hämtas i första hand direkt från Firebase Storage.
-- Den befintliga bildlänken används som reserv.
-- Det exakta felet visas om en bild inte kan optimeras.
-
-### Tekniskt berörda filer
-
-- `admin/panel.html`
-- `admin/sw.js`
-- `admin/CHANGELOG.md`
-- `admin/VERSION.txt`
-
-## Version 6.10.35 – Radera sparade original
-
-### Vad som har ändrats
-
-- Visar vilka optimerade bilder som har ett original kvar som säkerhetskopia.
-- Låter administratören ta bort originalet för en enskild bild.
-- Lägger till ett val för att ta bort alla verifierade original.
-- Verifierar alltid den aktiva WebP-bilden omedelbart före radering.
-- Behåller WebP-bilden, titel, datum och övrig information.
-- Visar ett bestående resultat efter städningen.
-
-### Tekniskt berörda filer
-
-- `admin/panel.html`
-- `admin/sw.js`
-- `admin/CHANGELOG.md`
-- `admin/VERSION.txt`
-
-## Version 6.10.34 – Skydd mot dubbel bildoptimering
-
-### Vad som har ändrats
-
-- Hämtar alltid en färsk bildinventering direkt från Firestore-servern.
-- Identifierar tidigare optimering genom flera oberoende markeringar.
-- Gör en extra serverkontroll precis före varje bild konverteras.
-- Hoppar över redan optimerade bilder även om verktyget visar en gammal lista.
-- Skyddar den ursprungliga säkerhetskopians referens från att skrivas över.
-
-### Tekniskt berörda filer
-
-- `admin/panel.html`
-- `admin/sw.js`
-- `admin/CHANGELOG.md`
-- `admin/VERSION.txt`
-
-## Version 6.10.33 – Visuell bildinventering
-
-### Vad som har ändrats
-
-- Visar samtliga hittade bilder med miniatyr, kategori och optimeringsstatus.
-- Inventerar Nyinkommet, Butiken, egen logotyp och egen startanimationsbild.
-- Visar både redan optimerade WebP-bilder och äldre bilder.
-- Låter administratören välja varje bild separat före konvertering.
-- Förhindrar att optimeringen startas innan analysen är klar och minst en bild har valts.
-- Behåller det separata valet att spara eller radera originalfiler.
-
-### Tekniskt berörda filer
-
-- `admin/panel.html`
-- `admin/sw.js`
-- `admin/CHANGELOG.md`
-- `admin/VERSION.txt`
-
-## Version 6.10.32 – Verktyg för äldre bilder
-
-### Vad som har ändrats
-
-- Lägger till ett aktiveringsbart optimeringsverktyg under adminpanelens Inställningar.
-- Verktyget analyserar och konverterar befintliga Nyinkommet- och Butiken-bilder till WebP.
-- Varje ny bild verifieras innan den kopplas till webbplatsen.
-- Titel, datum och övriga bilddata behålls.
-- Administratören väljer om originalbilderna ska sparas eller raderas.
-- Originalen är förvalda att sparas och raderas aldrig innan den nya bilden har verifierats.
-
-### Tekniskt berörda filer
-
-- `admin/panel.html`
-- `admin/sw.js`
-- `admin/CHANGELOG.md`
-- `admin/VERSION.txt`
-
-## Version 6.10.31 – WebP från adminpanelen
-
-### Vad som har ändrats
-
-- Skalar nya bilder från adminpanelen till högst 1600 pixlar.
-- Konverterar nya bilder för Nyinkommet och Butiken till WebP med 84 procents kvalitet.
-- Använder samma WebP-optimering för egna startanimationsbilder.
-- Behåller alla befintliga bilder och full bakåtkompatibilitet med JPEG och PNG.
-
-### Tekniskt berörda filer
-
-- `admin/panel.html`
-- `admin/sw.js`
-- `admin/CHANGELOG.md`
-- `admin/VERSION.txt`
-
-## Version 6.10.30 – Footer utan reserverat tomrum
-
-### Vad som har ändrats
-
-- Tar bort den fasta reserveringen av footerns höjd.
-- Footern placeras åter naturligt efter sidans innehåll utan ett förskapat tomrum.
-- Behåller övriga laddningsförbättringar från version 6.10.29.
-- Uppdaterar CSS- och PWA-cacheversionen.
-
-### Tekniskt berörda filer
-
-- `css/style.css`
-- `index.html`
-- `galleri.html`
-- `nyinkommet.html`
-- `omoss.html`
-- `kontakt.html`
-- `hittahit.html`
-- `sw.js`
-
-## Version 6.10.29 – Snabbare laddning på mobil
-
-### Vad som har ändrats
-
-- Tar bort automatiska sidomladdningar vid service worker-uppdatering, återgång från bakgrunden och återställning från webbläsarens sidcache.
-- Laddar header och footer parallellt och startar statusraden direkt när headern är klar.
-- Delar webbplatsinställningarna mellan statusrad, Nyinkommet, startsida, PWA och övriga sidinställningar så samma Firebase-dokument inte hämtas flera gånger.
-- Byter den publika logotypen till en responsivt nedskalad WebP på cirka 68 kB i stället för PNG-filen på cirka 641 kB.
-- Reserverar footerns höjd från första renderingen för att minska layoutförflyttningar.
-- Uppdaterar PWA-cachen.
-
-### Tekniskt berörda filer
-
-- `pwa.js`
-- `sw.js`
-- `css/style.css`
-- `js/layout.js`
-- `js/site-data.js`
-- `js/site-settings.js`
-- `js/status.js`
-- `js/senaste-nytt.js`
-- `js/nyinkommet.js`
-- `bilder/logotyp/logo-patina.webp`
-- `index.html`
-- `galleri.html`
-- `nyinkommet.html`
-- `omoss.html`
-- `kontakt.html`
-- `hittahit.html`
-
-## Version 6.10.28 – Snabb start utan animation
-
-### Vad som har ändrats
-
-- Sparar den senast hämtade animationsinställningen lokalt i besökarens webbläsare.
-- Visar startsidan direkt när det senast kända läget är Ingen animation.
-- Begränsar väntan på Firebase till högst 0,9 sekunder när ingen lokal inställning ännu finns.
-- Använder Ingen animation som säker reserv om inställningen inte kan hämtas snabbt.
-- Hämtar fortfarande en färsk inställning i bakgrunden så senare ändringar slår igenom.
-- Behåller en uttrycklig animationstestning med `?star=1`.
-- Uppdaterar PWA-cachen.
-
-### Tekniskt berörda filer
-
-- `index.html`
-- `sw.js`
-
-## Version 6.10.27 – Samma logotypstorlek på Om oss
-
-### Vad som har ändrats
-
-- Tar bort Om oss-sidans avvikande mobilbredd på 220 pixlar.
-- Låter Om oss använda samma gemensamma responsiva logotypstorlek som övriga undersidor på mobil.
-- Behåller Om oss-sidans övriga mobilanpassning och mellanrum.
-
-### Tekniskt berörda filer
-
-- `css/style.css`
-- `omoss.html`
-
-## Version 6.10.26 – Samma introduktionsstorlek
-
-### Vad som har ändrats
-
-- Ger texten direkt under H1 på Butiken, Nyinkommet, Om oss, Kontakt och Hitta hit exakt samma responsiva storlek som texten under logotypen på startsidan.
-- Anpassningen gäller både mobil och dator.
-- Behåller samtliga H1-rubriker och övrig sidtext oförändrade.
-- Uppdaterar CSS-cacheversionen på alla publika sidor.
-
-### Tekniskt berörda filer
-
-- `css/style.css`
-- `index.html`
-- `galleri.html`
-- `nyinkommet.html`
-- `omoss.html`
-- `kontakt.html`
-- `hittahit.html`
-
-## Version 6.10.25 – Rubriker och introduktionstexter
-
-### Vad som har ändrats
-
-- Tar bort den dubblerade H1-rubriken ”Container 13 Vintage” från startsidan.
-- Förstorar introduktionstexten direkt under startsidans logotyp.
-- Behåller H1-rubrikerna på Butiken, Nyinkommet, Om oss, Kontakt och Hitta hit.
-- Förstorar texten direkt under H1 på undersidorna i datorläge.
-- Lämnar undersidornas textstorlek på mobil oförändrad.
-- Behåller version 6.10.24:s rättning av Nyinkommet-notisen i den gemensamma headern.
-
-### Tekniskt berörda filer
-
-- `index.html`
-- `galleri.html`
-- `nyinkommet.html`
-- `omoss.html`
-- `kontakt.html`
-- `hittahit.html`
-- `css/style.css`
-
-## Version 6.10.24 – Nyinkommet tillbaka i headern
-
-### Vad som har ändrats
-
-- Återställer den automatiska Nyinkommet-notisen i den gemensamma, fixerade headern på alla publika sidor.
-- Låter notisen följa samma visningstid som Nyinkommet-sidan: 7, 14, 30, valfritt antal dagar eller tills manuell borttagning.
-- Tar bort den separata hårdkodade 48-timmarsgränsen som gjorde att fyra fortfarande aktiva plagg försvann ur headern.
-- Behåller öppet-/stängtstatusen och den manuella informationsraden oförändrade.
-- Uppdaterar cacheversionen på samtliga sex publika sidor.
-
-### Tekniskt berörda filer
-
-- `js/status.js`
-- `js/layout.js`
-- `index.html`
-- `galleri.html`
-- `nyinkommet.html`
-- `omoss.html`
-- `kontakt.html`
-- `hittahit.html`
-
-## Version 6.10.23 – Återställning av startanimationen
-
-### Vad som har ändrats
-
-- Återställer webbplatsens PWA- och animationsfiler till det fungerande läget i version 6.10.13.
-- Tar bort försöken att spela startanimationen varje gång den installerade webbappen öppnas eller återupptas.
-- Tar bort aktivitetsmätningen, tidsgränsen och omdirigeringen till startsidan efter att appen varit i bakgrunden.
-- Återställer startadressen till webbplatsens vanliga startsida utan särskilda PWA-parametrar.
-- Återställer startskärmens ursprungliga ljusbeige färg.
-- Startanimationen visas åter endast första gången i den aktuella webbläsarfliken eller sessionen, samt när den uttryckligen testas med `?star=1`.
-- Behåller alla förbättringar som var färdiga till och med version 6.10.13, inklusive mobilheadern och Googlekartans mobilstorlek.
-- Uppdaterar webbplatsens cache så att återställningen hämtas på besökarnas enheter.
-
-### Tekniskt berörda filer
-
-- `index.html`
-- `manifest.webmanifest`
-- `pwa.js`
-- `sw.js`
-- `js/layout.js`
-- `galleri.html`
-- `hittahit.html`
-- `kontakt.html`
-- `nyinkommet.html`
-- `omoss.html`
-
-## Version 6.10.22 – Startfärg anpassad efter animation
-
-### Vad som har ändrats
-
-- Begränsar den gula appstarten till animationslägena Bild/patina och Guldstjärna.
-- Låter Klassisk stjärnöppning behålla sin svarta start så att den inte blinkar mellan gult och svart.
-- Sparar senast hämtade animationsläge lokalt så att rätt startfärg kan visas omedelbart vid nästa appstart.
-- Tar bort det gula startlagret när Ingen animation är valt.
-- Kontrollerar det aktuella animationsläget mot webbplatsens inställningar innan den riktiga animationen startar.
-- Uppdaterar webbplatsens cache för den villkorade startfärgen.
-
-### Tekniskt berörda filer
-
-- `index.html`
-- `sw.js`
-
-## Version 6.10.21 – Gul appstart före animationen
-
-### Vad som har ändrats
-
-- Byter webbappens startfärg från ljusbeige till samma guldfärg som används i stjärnanimationen.
-- Visar ett omedelbart guldfärgat täcklager medan iPhone startar webbappen och animationen förbereds.
-- Låter täcklagret övergå direkt till animationens helgula första bildruta utan ett svart mellanläge.
-- Behåller resten av animationen oförändrad: den gula stjärnan krymper och visar loggan och patinan innan startsidan öppnas.
-- Uppdaterar webbplatsens cache så att den nya startfärgen hämtas.
-
-### Tekniskt berörda filer
-
-- `index.html`
-- `manifest.webmanifest`
-- `sw.js`
-
-## Version 6.10.20 – Svart täcklager före första animationsbilden
-
-### Vad som har ändrats
-
-- Visar ett separat svart täcklager omedelbart när startanimationen aktiveras.
-- Behåller täcklagret medan inställningar och animationsbild laddas.
-- Tar bort täcklagret först när stjärnanimationens första riktiga bildruta är färdigritad.
-- Förhindrar därmed att startsidan hinner synas före animationen på mobilen.
-- Tar bort täcklagret säkert även om animationen avslutas via reservfunktionen.
-- Uppdaterar webbplatsens cache för det nya startlagret.
-
-### Tekniskt berörda filer
-
-- `index.html`
-- `sw.js`
-
-## Version 6.10.19 – Synlig mobilanimation efter appstart
-
-### Vad som har ändrats
-
-- Förbereder startanimationens inställningar och bild innan rörelsen börjar.
-- Väntar på att webappen verkligen är synlig på mobilen.
-- Väntar ytterligare två renderade bildrutor och en kort säkerhetsmarginal innan stjärnöppningen startar.
-- Förhindrar därmed att iPhone spelar animationen bakom sin egen startbild så att besökaren bara ser svart och sedan startsidan.
-- Lämnar datorns animationsstart oförändrad.
-- Uppdaterar webbplatsens cache för den nya mobilstarten.
-
-### Tekniskt berörda filer
-
-- `index.html`
-- `sw.js`
-
-## Version 6.10.18 – Aktivitetsmätning och borttagen dubbelanimation
-
-### Vad som har ändrats
-
-- Ersätter beroendet av iOS stängningssignaler med en löpande aktivitetsmätning varannan sekund.
-- Upptäcker att webappen varit inaktiv minst 10 sekunder även när iPhone endast fryser den öppna sidan.
-- Skickar en återupptagen webapp till startsidan och spelar startanimationen.
-- Visar animationen direkt när en ny eller återställd fristående webapp laddar startsidan.
-- Märker automatiska omladdningar efter en service worker-uppdatering så att animationen inte kan spelas två gånger.
-- Tar bort reservomladdningen av aktuell sida i den installerade webappen, vilken tidigare syntes utan att animationen startade.
-- Versionsmärker den nya PWA-koden på samtliga publika sidor och uppdaterar cachen.
-
-### Tekniskt berörda filer
-
-- `pwa.js`
-- `index.html`
-- `sw.js`
-- De övriga fem publika HTML-sidorna.
-
-## Version 6.10.17 – Stabil återupptagning på iPhone
-
-### Vad som har ändrats
-
-- Flyttar kontrollen för återupptagning utanför service worker-registreringen så att den kan köras även när iOS fryser webappen.
-- Sparar tidpunkten då webappen lämnas beständigt i mobilen i stället för enbart i sidans tillfälliga minne.
-- Kontrollerar återkomsten via synlighet, fokus och iOS sidåterställning för bättre tillförlitlighet.
-- Leder till startsidan och spelar startanimationen när webappen återkommer efter minst 10 sekunder.
-- Behåller kortare appväxlingar utan animation.
-- Versionsmärker `pwa.js` på samtliga publika sidor och uppdaterar cachen så att den nya koden verkligen hämtas.
-
-### Tekniskt berörda filer
-
-- `pwa.js`
-- `sw.js`
-- De sex publika HTML-sidorna.
-
-## Version 6.10.16 – Animation även vid omladdning
-
-### Vad som har ändrats
-
-- Visar startanimationen när startsidan laddas om på dator eller mobil.
-- Täcker därmed även fallet där besökaren skriver `container13.se` i adressfältet trots att startsidan redan är öppen.
-- Behåller interna Hem-klick samt bakåt- och framåtnavigering utan ny animation.
-- Respekterar fortsatt besökarens inställning för minskad rörelse.
-- Uppdaterar webbplatsens cache så att det nya beteendet hämtas.
-
-### Tekniskt berörda filer
-
-- `index.html`
-- `sw.js`
-
-## Version 6.10.15 – Animation när webappen återupptas
-
-### Vad som har ändrats
-
-- Upptäcker när den installerade webappen återkommer från mobilens bakgrund.
-- Har appen varit i bakgrunden minst 10 sekunder öppnas startsidan och startanimationen spelas.
-- Kortare växlingar mellan appar lämnas orörda så att animationen inte blir påträngande.
-- Vanliga webbläsarbesök påverkas inte av återupptagningsfunktionen.
-- Uppdaterar webappens cache så att den nya startlogiken hämtas på mobilen.
-
-### Tekniskt berörda filer
-
-- `pwa.js`
-- `sw.js`
-
-## Version 6.10.14 – Startanimation vid entré och appstart
-
-### Vad som har ändrats
-
-- Visar den befintliga startanimationen när någon öppnar `container13.se` direkt eller kommer från en annan webbplats.
-- Visar alltid animationen när den installerade webappen startas från sin ikon och leder därefter till startsidan.
-- Undviker att spela animationen igen när besökaren klickar på Hem inne på webbplatsen.
-- Undviker onödiga omspelningar vid vanlig omladdning samt navigering med bakåt- och framåtknapparna.
-- Behåller besökarens inställning för minskad rörelse, även vid appstart. Endast en uttryckligen framtvingad förhandsvisning kan åsidosätta den.
-- Uppdaterar webappens startadress och cacheversion så att mobiler hämtar det nya beteendet.
-
-### Tekniskt berörda filer
-
-- `index.html`
-- `js/layout.js`
-- `manifest.webmanifest`
-- `sw.js`
-- De övriga fem publika HTML-sidorna, där versionsnumret för `layout.js` har uppdaterats.
-
-## Version 6.10.13 – Googlekartan anpassad för mobil
-
-### Vad som har ändrats
-
-- Ger Googlekartan samma breda proportioner som Gatuvyn på mobil.
-- Tar bort kartans tidigare fasta mobilhöjd, som gjorde kartan onödigt hög och smal.
-- Behåller kartans nuvarande storlek och utseende på dator.
-- Rundar kartans hörn på mobilen så att den följer Gatuvyns form.
-
-### Tekniskt berörda filer
-
-- `hittahit.html`
-- `css/style.css`
-
-## Version 6.10.12 – Samtliga mobillänkar på en rad
-
-### Vad som har ändrats
-
-- Samlar mobilens samtliga navigeringslänkar på en enda kompakt rad.
-- Ersätter ordet ”Hem” med en tydlig husikon.
-- Visar de kortare mobilnamnen ”Butik”, ”Nytt” och ”Hitta”.
-- Behåller ”Om oss” och ”Kontakt” som text för att länkarna ska vara lätta att förstå.
-- Fördelar länkarna automatiskt över hela skärmbredden. Om ”Om oss” döljs i adminpanelen fördelas de fem återstående länkarna jämnt utan tomrum.
-- Tar bort den stora bakgrundsplattan från den aktiva länken och använder endast guldtext med en diskret linje.
-- Behåller de fullständiga länktexterna i datorversionen.
-- Headern med navigering, öppettidsstatus och Nyinkommet-notis ligger fortsatt kvar vid scrollning.
-
-### Tekniskt berörda filer
-
-- `includes/header.html`
-- `css/style.css`
-- De sex publika HTML-sidorna, där CSS-versionen har uppdaterats för säker omladdning på mobilen.
-
-## Version 6.10.11 – Synliga mobillänkar och sammanhållen status
-
-### Vad som har ändrats
-
-- Tar bort den fällbara mobilmenyn och raden med texten ”Container 13”.
-- Visar åter alla sex sidlänkar direkt i mobilheadern.
-- Fördelar länkarna jämnt i tre kolumner och två rader så att ingen länk hamnar ensam.
-- Behåller öppettidsstatus, informationsmeddelanden och Nyinkommet-notisen i samma fasta statusdel.
-- Hela headern, inklusive länkar och statusinformation, ligger kvar högst upp när besökaren scrollar.
-- Datorversionens utseende och navigering är oförändrade.
-
-### Tekniskt berörda filer
-
-- `includes/header.html`
-- `js/layout.js`
-- `css/style.css`
-- De sex publika HTML-sidorna, där resursversionen har uppdaterats för säker omladdning även på mobilen.
-
-## Version 6.10.10 – Kompakt header och mobilmeny
-
-### Vad som har ändrats
-
-- Mobilens långa navigeringsrad har ersatts med en kompakt rad med namnet Container 13 och en tydlig menyknapp.
-- Menyknappen öppnar sidlänkarna i två jämna kolumner, visar vilken sida som är aktiv och kan stängas med knappen, en sidlänk eller Escape.
-- Öppettiden ligger kvar i den fasta headern så att butikens aktuella status alltid är synlig.
-- Information och notisen om nya plagg ligger nu under den fasta headern och scrollar med sidans innehåll. Därmed tar headern betydligt mindre plats på mobilen.
-- Datorversionens vanliga navigeringslänkar och samtliga befintliga destinationer är oförändrade.
-- Mobilmenyn har anpassats till både ljust och mörkt tema samt fått tillgängliga etiketter och tydlig tangentbordsfokus.
-
-### Tekniskt berörda filer
-
-- `includes/header.html`
-- `js/layout.js`
-- `css/style.css`
-- De sex publika HTML-sidorna, där versionsnumret för de gemensamma resurserna har uppdaterats.
+## Version 6.10.8
+
+- Visar det aktuella bearbetningssteget under hela optimeringen.
+- Lägger tidsgränser på serverkontroll, Storage-hämtning, reservhämtning, bildläsning, WebP-konvertering, uppladdning, länkning och Firestore-sparning.
+- Avbryter en uppladdning som överskrider tidsgränsen.
+- Säkerställer att ett fastnat steg blir ett tydligt fel i stället för en låst panel.
+- Visar även pågående bildanalys och instruktionen efter analysen.
+- Behåller versionsmärkt admincache.
+
+## Version 6.10.7
+
+- Versionsmärker adminpanelens HTML-, PWA- och service worker-laddning.
+- Tvingar service workern att söka efter uppdateringar utan mellanliggande cache.
+- Hämtar adminpanelens navigationer med `no-store`.
+- Laddar om adminpanelen en gång när en ny service worker tar över.
+- Skickar inloggade administratörer till den versionsmärkta paneladressen.
+- Säkerställer att den nya sessionsbaserade bildoptimeringen och detaljerade feltexten verkligen laddas.
+
+## Version 6.10.6
+
+- Låter bildoptimeringsverktyget vara avstängt varje gång adminpanelen öppnas.
+- Aktiveringen gäller endast den aktuella sessionen och sparas inte som webbplatsinställning.
+- Hämtar äldre bilder direkt från Firebase Storage via deras lagringssökväg.
+- Använder den publika bildlänken som reserv om Storage-hämtningen misslyckas.
+- Visar den faktiska felorsaken när en bild inte kan hämtas, konverteras, laddas upp eller uppdateras.
+- Behåller tidigare säkerhetskontroller mot dubbeloptimering och felaktig originalradering.
+- Uppdaterar adminpanelens cache och synliga versionsnummer.
+
+## Version 6.10.5
+
+- Visar om varje optimerad bild fortfarande har ett original sparat.
+- Lägger till knappen Ta bort sparat original på varje berörd bild.
+- Lägger till Ta bort alla verifierade original för samlad städning.
+- Hämtar aktuell bildpost från servern och verifierar WebP-bilden före varje radering.
+- Raderar aldrig ett original om WebP-bilden inte kan verifieras.
+- Tar bort originalreferensen först efter att lagringsfilen har raderats.
+- Behåller ett tydligt resultatmeddelande efter att bildlistan har uppdaterats.
+- Uppdaterar adminpanelens cache och synliga versionsnummer.
+
+## Version 6.10.4
+
+- Tvingar bildanalysen att läsa aktuella bildposter direkt från servern.
+- Känner igen redan optimerade bilder genom format, tidsmarkering, originalreferens, filändelse och lagringssökväg.
+- Kontrollerar varje vald bild mot servern igen omedelbart före konverteringen.
+- Hoppar säkert över bilder som redan har optimerats även om en gammal analyslista ligger kvar.
+- Förhindrar att den första originalreferensen skrivs över vid en senare körning.
+- Visar hur många redan optimerade bilder som säkerhetsspärren hoppade över.
+- Uppdaterar adminpanelens cache och synliga versionsnummer.
+
+## Version 6.10.3
+
+- Visar en komplett bildinventering med miniatyrer innan någon optimering startas.
+- Delar upp resultatet i Nyinkommet, Butiken, egen logotyp och egen startanimationsbild.
+- Visar om varje bild redan är WebP eller kan optimeras.
+- Lägger till en separat kryssruta för varje bild som kan optimeras.
+- Markerar äldre bilder som standard men låter administratören välja exakt vilka som ska bearbetas.
+- Låser konverteringsknappen tills analysen är klar och minst en bild har valts.
+- Uppdaterar även logotypens och startanimationens inställningar efter lyckad konvertering.
+- Behåller valet att spara eller radera originalbilderna.
+- Uppdaterar adminpanelens cache och synliga versionsnummer.
+
+## Version 6.10.2
+
+- Lägger till ett val under Inställningar som visar eller döljer verktyget för äldre bilder.
+- Analyserar hur många äldre Nyinkommet- och Butiken-bilder som kan optimeras.
+- Konverterar bilderna en i taget till WebP och verifierar varje ny bild före uppdatering.
+- Behåller bildens titel, datum och övriga information.
+- Lägger till ett separat val för att behålla eller radera originalbilderna.
+- Behåller original som standard och raderar dem endast efter lyckad verifiering när användaren uttryckligen valt det.
+- Visar löpande förlopp och sammanfattar lyckade, misslyckade och ej raderade original.
+- Uppdaterar adminpanelens cache och synliga versionsnummer.
+
+## Version 6.10.1
+
+- Skalar automatiskt ned nya Nyinkommet- och Butiken-bilder till högst 1600 pixlar.
+- Konverterar nya uppladdningar till WebP med 84 procents kvalitet.
+- Sparar korrekt filändelse och innehållstyp för WebP-filer.
+- Behåller stöd för befintliga JPEG-, PNG- och WebP-bilder.
+- Använder samma optimering för egna startanimationsbilder.
+- Uppdaterar adminpanelens cache och synliga versionsnummer.
+
+## Version 6.10.0
+
+- Ny mobilanpassad Om oss-sida.
+- Länkar till HT-reportaget och Instagram-filmen.
+- Om oss tillagd i navigation, statistik och offline-cache.
+- Tre redigerbara textalternativ, förhandsgranskning samt visa/dölj i adminpanelen.
 
 ## Version 6.9.2
 

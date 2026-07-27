@@ -453,6 +453,13 @@
       background-color: var(--error-background);
     }
 
+    .message.progress {
+      display: flex;
+      color: #3f3426;
+      border-color: #cfb98e;
+      background-color: #fff8e9;
+    }
+
     /* INFORMATIONSRAD */
 
     .information-form {
@@ -2142,7 +2149,7 @@
 
   </style>
 
-  <script src="./pwa.js" defer></script>
+  <script src="./pwa.js?v=6.10.38" defer></script>
 
 </head>
 
@@ -2235,7 +2242,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.10.6</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.10.8</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -3208,7 +3215,8 @@
       getDownloadURL,
       getStorage,
       ref,
-      uploadBytes
+      uploadBytes,
+      uploadBytesResumable
     } from
       "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
 
@@ -5304,13 +5312,26 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
         const image = new Image();
 
         await new Promise((resolve, reject) => {
-          image.onload = resolve;
-          image.onerror = () =>
+          const timeoutId = window.setTimeout(() => {
+            image.src = "";
+            reject(
+              new Error(
+                "Webbläsaren tog för lång tid på sig att läsa bilden."
+              )
+            );
+          }, 15000);
+          image.onload = () => {
+            window.clearTimeout(timeoutId);
+            resolve();
+          };
+          image.onerror = () => {
+            window.clearTimeout(timeoutId);
             reject(
               new Error(
                 "Webbläsaren kunde inte läsa den valda bilden."
               )
             );
+          };
           image.src = objectUrl;
         });
 
@@ -5509,13 +5530,55 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
       });
     }
 
+    function withTimeout(promise, milliseconds, description) {
+      let timeoutId = 0;
+      const timeoutPromise = new Promise((_, reject) => {
+        timeoutId = window.setTimeout(() => {
+          reject(new Error(`${description} tog längre än ${Math.round(milliseconds / 1000)} sekunder.`));
+        }, milliseconds);
+      });
+      return Promise.race([promise, timeoutPromise]).finally(() => {
+        window.clearTimeout(timeoutId);
+      });
+    }
+
+    function uploadOptimizedImage(storageReference, file) {
+      const uploadTask = uploadBytesResumable(
+        storageReference,
+        file,
+        { contentType: "image/webp" }
+      );
+      return new Promise((resolve, reject) => {
+        const timeoutId = window.setTimeout(() => {
+          uploadTask.cancel();
+          reject(new Error("Uppladdningen tog längre än 45 sekunder och avbröts."));
+        }, 45000);
+        uploadTask.on(
+          "state_changed",
+          () => {},
+          (error) => {
+            window.clearTimeout(timeoutId);
+            reject(error);
+          },
+          () => {
+            window.clearTimeout(timeoutId);
+            resolve(uploadTask.snapshot);
+          }
+        );
+      });
+    }
+
     async function getOriginalImageBlob(item) {
       let storageError = null;
       if (item.storagePath) {
         try {
-          return await getBlob(
-            ref(storage, item.storagePath),
-            12 * 1024 * 1024
+          return await withTimeout(
+            getBlob(
+              ref(storage, item.storagePath),
+              12 * 1024 * 1024
+            ),
+            15000,
+            "Hämtningen från Firebase Storage"
           );
         } catch (error) {
           storageError = error;
@@ -5524,10 +5587,14 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
       }
 
       try {
+        const controller = new AbortController();
+        const timeoutId = window.setTimeout(() => controller.abort(), 15000);
         const response = await fetch(item.imageUrl, {
           cache: "no-store",
-          mode: "cors"
+          mode: "cors",
+          signal: controller.signal
         });
+        window.clearTimeout(timeoutId);
         if (!response.ok) {
           throw new Error(`webblänken svarade ${response.status}`);
         }
@@ -5663,9 +5730,13 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
       deleteAllOriginalsButton.disabled = true;
       imageOptimizerSummary.hidden = true;
       imageOptimizerList.hidden = true;
-      showImageOptimizerStatus("Analyserar bildbiblioteket...");
+      showImageOptimizerStatus("Analyserar bildbiblioteket...", "progress");
       try {
-        imageOptimizationItems = await getImageOptimizationInventory();
+        imageOptimizationItems = await withTimeout(
+          getImageOptimizationInventory(),
+          20000,
+          "Bildanalysen"
+        );
         if (!imageOptimizationItems.length) {
           showImageOptimizerStatus("Inga uppladdade bilder hittades.", "error");
           return;
@@ -5676,7 +5747,7 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
           remaining
             ? "Välj bilderna som ska optimeras och kontrollera miniatyrerna innan du fortsätter."
             : "Alla hittade bilder är redan optimerade som WebP.",
-          remaining ? "" : "success"
+          remaining ? "progress" : "success"
         );
       } catch (error) {
         console.error("Kunde inte analysera äldre bilder:", error);
@@ -5928,20 +5999,37 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
         const item = selectedItems[index];
         let newStorageReference = null;
         showImageOptimizerStatus(
-          `Optimerar bild ${index + 1} av ${selectedItems.length}: ${item.categoryLabel}...`
+          `Bild ${index + 1} av ${selectedItems.length}: kontrollerar aktuell status...`,
+          "progress"
         );
         try {
-          if (await imageIsOptimizedOnServer(item)) {
+          if (await withTimeout(
+            imageIsOptimizedOnServer(item),
+            15000,
+            "Serverkontrollen"
+          )) {
             alreadySkipped += 1;
             continue;
           }
+          showImageOptimizerStatus(
+            `Bild ${index + 1} av ${selectedItems.length}: hämtar originalbilden...`,
+            "progress"
+          );
           const sourceBlob = await getOriginalImageBlob(item);
           const sourceFile = new File(
             [sourceBlob],
             `aldre-bild-${item.id}`,
             { type: sourceBlob.type || "image/jpeg" }
           );
-          const optimizedFile = await normalizeImageFile(sourceFile);
+          showImageOptimizerStatus(
+            `Bild ${index + 1} av ${selectedItems.length}: konverterar till WebP...`,
+            "progress"
+          );
+          const optimizedFile = await withTimeout(
+            normalizeImageFile(sourceFile),
+            20000,
+            "WebP-konverteringen"
+          );
           if (optimizedFile.type !== "image/webp") {
             throw new Error("Webbläsaren kunde inte skapa WebP.");
           }
@@ -5949,17 +6037,35 @@ Vi lär oss fortfarande längs vägen, fyller på när vi hittar något bra och 
           const folder = item.category === "nyinkommet" ? "nyinkommet" : "galleri";
           const newStoragePath = `${folder}/optimerad-${item.id}-${Date.now()}.webp`;
           newStorageReference = ref(storage, newStoragePath);
-          await uploadBytes(newStorageReference, optimizedFile, {
-            contentType: "image/webp"
-          });
-          const newImageUrl = await getDownloadURL(newStorageReference);
+          showImageOptimizerStatus(
+            `Bild ${index + 1} av ${selectedItems.length}: laddar upp WebP-bilden...`,
+            "progress"
+          );
+          await uploadOptimizedImage(newStorageReference, optimizedFile);
+          const newImageUrl = await withTimeout(
+            getDownloadURL(newStorageReference),
+            15000,
+            "Hämtningen av den nya bildlänken"
+          );
+          showImageOptimizerStatus(
+            `Bild ${index + 1} av ${selectedItems.length}: verifierar den nya bilden...`,
+            "progress"
+          );
           await verifyRemoteImage(newImageUrl);
 
-          await updateOptimizedImageReference(item, {
-            imageUrl: newImageUrl,
-            storagePath: newStoragePath,
-            keepOriginal: keepOriginals
-          });
+          showImageOptimizerStatus(
+            `Bild ${index + 1} av ${selectedItems.length}: sparar den nya bildposten...`,
+            "progress"
+          );
+          await withTimeout(
+            updateOptimizedImageReference(item, {
+              imageUrl: newImageUrl,
+              storagePath: newStoragePath,
+              keepOriginal: keepOriginals
+            }),
+            20000,
+            "Sparningen i Firestore"
+          );
 
           if (!keepOriginals && item.storagePath && item.storagePath !== newStoragePath) {
             try {

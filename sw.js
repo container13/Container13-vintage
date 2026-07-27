@@ -1,8 +1,9 @@
-const CACHE_NAME = "container13-admin-v6.10.6";
+const CACHE_NAME = "container13-admin-v6.10.8";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./panel.html",
+  "./panel.html?v=6.10.38",
+  "./pwa.js?v=6.10.38",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
@@ -33,7 +34,7 @@ self.addEventListener("fetch", (event) => {
 
   if (event.request.mode === "navigate") {
     event.respondWith(
-      fetch(event.request)
+      fetch(event.request, { cache: "no-store" })
         .then((response) => {
           const copy = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
