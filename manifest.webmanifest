@@ -10,8 +10,8 @@
     "client_mode": "navigate-existing"
   },
   "orientation": "portrait-primary",
-  "background_color": "#f8f5ef",
-  "theme_color": "#f8f5ef",
+  "background_color": "#d4af37",
+  "theme_color": "#d4af37",
   "icons": [
     {
       "src": "./icons/icon-192.png",

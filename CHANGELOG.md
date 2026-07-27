@@ -1,5 +1,37 @@
 # Ändringslogg
 
+## Version 6.10.22 – Startfärg anpassad efter animation
+
+### Vad som har ändrats
+
+- Begränsar den gula appstarten till animationslägena Bild/patina och Guldstjärna.
+- Låter Klassisk stjärnöppning behålla sin svarta start så att den inte blinkar mellan gult och svart.
+- Sparar senast hämtade animationsläge lokalt så att rätt startfärg kan visas omedelbart vid nästa appstart.
+- Tar bort det gula startlagret när Ingen animation är valt.
+- Kontrollerar det aktuella animationsläget mot webbplatsens inställningar innan den riktiga animationen startar.
+- Uppdaterar webbplatsens cache för den villkorade startfärgen.
+
+### Tekniskt berörda filer
+
+- `index.html`
+- `sw.js`
+
+## Version 6.10.21 – Gul appstart före animationen
+
+### Vad som har ändrats
+
+- Byter webbappens startfärg från ljusbeige till samma guldfärg som används i stjärnanimationen.
+- Visar ett omedelbart guldfärgat täcklager medan iPhone startar webbappen och animationen förbereds.
+- Låter täcklagret övergå direkt till animationens helgula första bildruta utan ett svart mellanläge.
+- Behåller resten av animationen oförändrad: den gula stjärnan krymper och visar loggan och patinan innan startsidan öppnas.
+- Uppdaterar webbplatsens cache så att den nya startfärgen hämtas.
+
+### Tekniskt berörda filer
+
+- `index.html`
+- `manifest.webmanifest`
+- `sw.js`
+
 ## Version 6.10.20 – Svart täcklager före första animationsbilden
 
 ### Vad som har ändrats
