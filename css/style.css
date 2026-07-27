@@ -1038,6 +1038,13 @@ main > #nyGallery.gallery {
   }
 }
 
+/* VERSION 6.10.25 – TYDLIGARE INTRODUKTIONSTEXT PÅ DATOR */
+@media (min-width: 701px) {
+  .page-header h1 + p {
+    font-size: 1.15rem;
+  }
+}
+
 /* =========================================================
    VERSION 6.7.0 - BESÖKARENS TEMA, SPOTIFY OCH NY LOGOTYP
    ========================================================= */
