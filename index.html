@@ -174,6 +174,7 @@ html.star-intro-image-wait::before {
   z-index: 50000;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   pointer-events: none;
   background: transparent;
 }
@@ -674,6 +675,21 @@ varmt välkommen att även titta in hos oss.
   let finished = false;
   let introSettings = { ...defaultIntroSettings };
   let introImage = null;
+  let introViewportWidth = window.innerWidth;
+  let introViewportHeight = window.innerHeight;
+
+  function updateIntroViewport() {
+    introViewportWidth = Math.ceil(Math.max(
+      window.innerWidth || 0,
+      document.documentElement.clientWidth || 0,
+      window.visualViewport?.width || 0
+    ));
+    introViewportHeight = Math.ceil(Math.max(
+      window.innerHeight || 0,
+      document.documentElement.clientHeight || 0,
+      window.visualViewport?.height || 0
+    ));
+  }
 
   function firestoreString(field, fallback) {
     return typeof field?.stringValue === "string"
@@ -783,17 +799,19 @@ varmt välkommen att även titta in hos oss.
   }
 
   function resizeCanvas() {
+    updateIntroViewport();
     const dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
-    canvas.width = Math.round(window.innerWidth * dpr);
-    canvas.height = Math.round(window.innerHeight * dpr);
-    canvas.style.width = window.innerWidth + "px";
-    canvas.style.height = window.innerHeight + "px";
+    canvas.width = Math.round(introViewportWidth * dpr);
+    canvas.height = Math.round(introViewportHeight * dpr);
+    canvas.style.width = introViewportWidth + "px";
+    canvas.style.height = introViewportHeight + "px";
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
   function resizeMobileSvg() {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    updateIntroViewport();
+    const width = introViewportWidth;
+    const height = introViewportHeight;
 
     mobileSvg.setAttribute("viewBox", `0 0 ${width} ${height}`);
   }
@@ -820,8 +838,8 @@ varmt välkommen att även titta in hos oss.
 
   function drawIntroImage() {
     if (!introImage) return;
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const width = introViewportWidth;
+    const height = introViewportHeight;
     const scale = introSettings.imageFit === "contain"
       ? Math.min(width / introImage.naturalWidth, height / introImage.naturalHeight)
       : Math.max(width / introImage.naturalWidth, height / introImage.naturalHeight);
@@ -838,17 +856,17 @@ varmt välkommen att även titta in hos oss.
 
   function drawRevealFrame(radius) {
     ctx.globalCompositeOperation = "source-over";
-    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    ctx.clearRect(0, 0, introViewportWidth, introViewportHeight);
 
     ctx.fillStyle = introSettings.backgroundColor;
-    ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    ctx.fillRect(0, 0, introViewportWidth, introViewportHeight);
     if (introSettings.mode === "image") drawIntroImage();
 
     ctx.globalCompositeOperation = "destination-out";
     ctx.fillStyle = introSettings.backgroundColor;
 
-    const cx = window.innerWidth / 2;
-    const cy = window.innerHeight / 2;
+    const cx = introViewportWidth / 2;
+    const cy = introViewportHeight / 2;
     drawStar(cx, cy, radius, radius * 0.46);
 
     ctx.globalCompositeOperation = "source-over";
@@ -856,22 +874,22 @@ varmt välkommen att även titta in hos oss.
 
   function drawGoldFrame(radius) {
     ctx.globalCompositeOperation = "source-over";
-    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    ctx.clearRect(0, 0, introViewportWidth, introViewportHeight);
     ctx.fillStyle = introSettings.backgroundColor;
-    ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    ctx.fillRect(0, 0, introViewportWidth, introViewportHeight);
     if (introSettings.mode === "image") drawIntroImage();
     ctx.fillStyle = introSettings.starColor;
     drawStar(
-      window.innerWidth / 2,
-      window.innerHeight / 2,
+      introViewportWidth / 2,
+      introViewportHeight / 2,
       radius,
       radius * 0.46
     );
   }
 
   function starPoints(radius) {
-    const cx = window.innerWidth / 2;
-    const cy = window.innerHeight / 2;
+    const cx = introViewportWidth / 2;
+    const cy = introViewportHeight / 2;
     const points = [];
 
     for (let i = 0; i < 10; i += 1) {
@@ -886,8 +904,8 @@ varmt välkommen att även titta in hos oss.
   }
 
   function drawMobileRevealFrame(radius) {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const width = introViewportWidth;
+    const height = introViewportHeight;
     const points = starPoints(radius);
 
     mobilePath.setAttribute(
@@ -983,8 +1001,8 @@ varmt välkommen att även titta in hos oss.
 
   function runReveal() {
     const maxRadius = Math.hypot(
-      window.innerWidth / 2,
-      window.innerHeight / 2
+      introViewportWidth / 2,
+      introViewportHeight / 2
     ) * 2.25;
     let startedAt = null;
 
@@ -1031,8 +1049,8 @@ varmt välkommen att även titta in hos oss.
 
   function runGoldIntro() {
     const diagonal = Math.hypot(
-      window.innerWidth / 2,
-      window.innerHeight / 2
+      introViewportWidth / 2,
+      introViewportHeight / 2
     );
     const startingRadius = (diagonal / 0.46) * 1.2;
     let startedAt = null;
@@ -1124,7 +1142,7 @@ varmt välkommen att även titta in hos oss.
 })();
 </script>
 
-  <script src="pwa.js?v=6.10.47" defer></script>
+  <script src="pwa.js?v=6.10.48" defer></script>
 </body>
 
 </html>

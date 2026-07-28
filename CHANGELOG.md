@@ -901,6 +901,12 @@ Version 4.0.0 ska se ut och fungera som den godkända version 3.6.1. Syftet är 
 - Valbart snabbfotoläge under Inställningar.
 - Dashboard visar dagens antal uppladdningar och den senaste uppladdningen.
 - Administrationsappens service worker-cache uppdaterad till v6.
+# Version 6.10.48
+
+- Startanimationens lager följer mobilens dynamiska viewporthöjd.
+- Canvas och SVG använder samma skärmmått som det täckande animationslagret.
+- Förhindrar att startsidan syns som en remsa i nederkant under animationen.
+
 # Version 6.10.47
 
 - De fyra senaste Nyinkommet-bilderna förladdas även under bildanimationens svarta vänteläge.
