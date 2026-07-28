@@ -901,6 +901,12 @@ Version 4.0.0 ska se ut och fungera som den godkända version 3.6.1. Syftet är 
 - Valbart snabbfotoläge under Inställningar.
 - Dashboard visar dagens antal uppladdningar och den senaste uppladdningen.
 - Administrationsappens service worker-cache uppdaterad till v6.
+# Version 6.10.51
+
+- Ersätter den fixerade mobilövertäckningen som iOS klippte vid viewportens nederkant.
+- Ett dokumentbaserat svart skydd täcker nu innehållet bakom iPhones genomskinliga webbläsarmeny.
+- Gäller samtliga tre startanimationer utan att ändra deras rörelse eller storlek.
+
 # Version 6.10.50
 
 - Lägger till mobil övertäckning under den rapporterade viewporten för webbläsare med genomskinlig nederkant.

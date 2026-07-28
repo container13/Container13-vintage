@@ -183,6 +183,22 @@ html.star-intro-active.star-intro-mobile-mode .star-intro-mobile {
   display: block;
 }
 
+.star-intro-browser-bottom-shield {
+  display: none;
+  position: absolute;
+  top: calc(100dvh - 2px);
+  left: 0;
+  z-index: 50001;
+  width: 100%;
+  height: 320px;
+  pointer-events: none;
+  background: var(--star-intro-background, #000);
+}
+
+html.star-intro-active .star-intro-browser-bottom-shield {
+  display: block;
+}
+
 .star-intro[hidden] {
   display: none !important;
 }
@@ -442,15 +458,12 @@ html.star-intro-active.star-intro-mobile-mode .star-intro-mobile {
     fill-rule="evenodd"
     clip-rule="evenodd"
   ></path>
-  <rect
-    id="star-intro-mobile-bottom-cover"
-    x="0"
-    y="0"
-    width="0"
-    height="0"
-    fill="#000"
-  ></rect>
 </svg>
+
+<div
+  class="star-intro-browser-bottom-shield"
+  aria-hidden="true"
+></div>
 
 
 
@@ -645,8 +658,6 @@ varmt välkommen att även titta in hos oss.
   const mobileSvg = document.getElementById("star-intro-mobile");
   const mobilePath =
     document.getElementById("star-intro-mobile-path");
-  const mobileBottomCover =
-    document.getElementById("star-intro-mobile-bottom-cover");
   let useMobileSvg =
     root.classList.contains("star-intro-mobile-mode");
 
@@ -676,8 +687,6 @@ varmt välkommen att även titta in hos oss.
   let layerPrepared = false;
   let introViewportWidth = window.innerWidth;
   let introViewportHeight = window.innerHeight;
-  let introBottomOverscan = 0;
-  let introCoverHeight = window.innerHeight;
 
   function updateIntroViewport() {
     introViewportWidth = Math.ceil(Math.max(
@@ -690,16 +699,6 @@ varmt välkommen att även titta in hos oss.
       document.documentElement.clientHeight || 0,
       window.visualViewport?.height || 0
     ));
-    const mobileLike =
-      window.matchMedia("(hover: none), (pointer: coarse)").matches;
-    const browserChromeGap = Math.max(
-      0,
-      (window.screen?.height || 0) - introViewportHeight
-    );
-    introBottomOverscan = mobileLike
-      ? Math.min(240, Math.max(120, browserChromeGap))
-      : 0;
-    introCoverHeight = introViewportHeight + introBottomOverscan;
   }
 
   function firestoreString(field, fallback) {
@@ -813,24 +812,20 @@ varmt välkommen att även titta in hos oss.
     updateIntroViewport();
     const dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
     canvas.width = Math.round(introViewportWidth * dpr);
-    canvas.height = Math.round(introCoverHeight * dpr);
+    canvas.height = Math.round(introViewportHeight * dpr);
     canvas.style.width = introViewportWidth + "px";
-    canvas.style.height = introCoverHeight + "px";
+    canvas.style.height = introViewportHeight + "px";
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
   function resizeMobileSvg() {
     updateIntroViewport();
     const width = introViewportWidth;
-    const height = introCoverHeight;
+    const height = introViewportHeight;
 
     mobileSvg.setAttribute("viewBox", `0 0 ${width} ${height}`);
     mobileSvg.style.width = width + "px";
     mobileSvg.style.height = height + "px";
-    mobileBottomCover.setAttribute("x", "0");
-    mobileBottomCover.setAttribute("y", String(introViewportHeight));
-    mobileBottomCover.setAttribute("width", String(width));
-    mobileBottomCover.setAttribute("height", String(introBottomOverscan));
   }
 
   function drawStar(cx, cy, outerRadius, innerRadius) {
@@ -873,10 +868,10 @@ varmt välkommen att även titta in hos oss.
 
   function drawRevealFrame(radius) {
     ctx.globalCompositeOperation = "source-over";
-    ctx.clearRect(0, 0, introViewportWidth, introCoverHeight);
+    ctx.clearRect(0, 0, introViewportWidth, introViewportHeight);
 
     ctx.fillStyle = introSettings.backgroundColor;
-    ctx.fillRect(0, 0, introViewportWidth, introCoverHeight);
+    ctx.fillRect(0, 0, introViewportWidth, introViewportHeight);
     if (introSettings.mode === "image") drawIntroImage();
 
     ctx.globalCompositeOperation = "destination-out";
@@ -887,20 +882,13 @@ varmt välkommen att även titta in hos oss.
     drawStar(cx, cy, radius, radius * 0.46);
 
     ctx.globalCompositeOperation = "source-over";
-    ctx.fillStyle = introSettings.backgroundColor;
-    ctx.fillRect(
-      0,
-      introViewportHeight,
-      introViewportWidth,
-      introBottomOverscan
-    );
   }
 
   function drawGoldFrame(radius) {
     ctx.globalCompositeOperation = "source-over";
-    ctx.clearRect(0, 0, introViewportWidth, introCoverHeight);
+    ctx.clearRect(0, 0, introViewportWidth, introViewportHeight);
     ctx.fillStyle = introSettings.backgroundColor;
-    ctx.fillRect(0, 0, introViewportWidth, introCoverHeight);
+    ctx.fillRect(0, 0, introViewportWidth, introViewportHeight);
     if (introSettings.mode === "image") drawIntroImage();
     ctx.fillStyle = introSettings.starColor;
     drawStar(
@@ -929,7 +917,7 @@ varmt välkommen att även titta in hos oss.
 
   function drawMobileRevealFrame(radius) {
     const width = introViewportWidth;
-    const height = introCoverHeight;
+    const height = introViewportHeight;
     const points = starPoints(radius);
 
     mobilePath.setAttribute(
@@ -938,7 +926,6 @@ varmt välkommen att även titta in hos oss.
         `M ${points.join(" L ")} Z`
     );
     mobilePath.setAttribute("fill", introSettings.backgroundColor);
-    mobileBottomCover.setAttribute("fill", introSettings.backgroundColor);
     mobileSvg.style.background = "transparent";
   }
 
@@ -948,7 +935,6 @@ varmt välkommen att även titta in hos oss.
       `M ${starPoints(radius).join(" L ")} Z`
     );
     mobilePath.setAttribute("fill", introSettings.starColor);
-    mobileBottomCover.setAttribute("fill", introSettings.backgroundColor);
     mobileSvg.style.background = introSettings.backgroundColor;
   }
 
@@ -1136,9 +1122,9 @@ varmt välkommen att även titta in hos oss.
       prepareLayer();
       layerPrepared = true;
       ctx.globalCompositeOperation = "source-over";
-      ctx.clearRect(0, 0, introViewportWidth, introCoverHeight);
+      ctx.clearRect(0, 0, introViewportWidth, introViewportHeight);
       ctx.fillStyle = introSettings.backgroundColor;
-      ctx.fillRect(0, 0, introViewportWidth, introCoverHeight);
+      ctx.fillRect(0, 0, introViewportWidth, introViewportHeight);
       root.classList.add("star-intro-active");
       const imageReady = await loadIntroImage();
       if (!imageReady) {
@@ -1177,7 +1163,7 @@ varmt välkommen att även titta in hos oss.
 })();
 </script>
 
-  <script src="pwa.js?v=6.10.50" defer></script>
+  <script src="pwa.js?v=6.10.51" defer></script>
 </body>
 
 </html>
