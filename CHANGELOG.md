@@ -901,6 +901,12 @@ Version 4.0.0 ska se ut och fungera som den godkända version 3.6.1. Syftet är 
 - Valbart snabbfotoläge under Inställningar.
 - Dashboard visar dagens antal uppladdningar och den senaste uppladdningen.
 - Administrationsappens service worker-cache uppdaterad till v6.
+# Version 6.10.49
+
+- Tar bort det separata svarta väntelagret som kunde bli en för liten ruta på mobil.
+- Samma helskärmscanvas som kör bildanimationen visar nu svart medan bilden laddas.
+- Väntan och animationen använder därmed exakt samma dynamiska mobilmått.
+
 # Version 6.10.48
 
 - Startanimationens lager följer mobilens dynamiska viewporthöjd.

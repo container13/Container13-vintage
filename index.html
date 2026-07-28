@@ -155,18 +155,6 @@ html.star-intro-active {
   overflow: hidden;
 }
 
-html.star-intro-image-wait {
-  overflow: hidden;
-}
-
-html.star-intro-image-wait::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 49999;
-  background: #000;
-}
-
 .star-intro {
   display: none;
   position: fixed;
@@ -675,6 +663,7 @@ varmt välkommen att även titta in hos oss.
   let finished = false;
   let introSettings = { ...defaultIntroSettings };
   let introImage = null;
+  let layerPrepared = false;
   let introViewportWidth = window.innerWidth;
   let introViewportHeight = window.innerHeight;
 
@@ -1107,6 +1096,13 @@ varmt välkommen att även titta in hos oss.
       useMobileSvg = false;
       root.classList.remove("star-intro-mobile-mode");
       root.classList.add("star-intro-image-wait");
+      prepareLayer();
+      layerPrepared = true;
+      ctx.globalCompositeOperation = "source-over";
+      ctx.clearRect(0, 0, introViewportWidth, introViewportHeight);
+      ctx.fillStyle = introSettings.backgroundColor;
+      ctx.fillRect(0, 0, introViewportWidth, introViewportHeight);
+      root.classList.add("star-intro-active");
       const imageReady = await loadIntroImage();
       if (!imageReady) {
         finishIntro();
@@ -1114,7 +1110,9 @@ varmt välkommen att även titta in hos oss.
       }
     }
 
-    prepareLayer();
+    if (!layerPrepared) {
+      prepareLayer();
+    }
     document.documentElement.style.setProperty(
       "--star-intro-background",
       introSettings.backgroundColor
@@ -1142,7 +1140,7 @@ varmt välkommen att även titta in hos oss.
 })();
 </script>
 
-  <script src="pwa.js?v=6.10.48" defer></script>
+  <script src="pwa.js?v=6.10.49" defer></script>
 </body>
 
 </html>
