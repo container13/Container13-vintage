@@ -1,9 +1,9 @@
-const CACHE_NAME = "container13-admin-v6.10.11";
+const CACHE_NAME = "container13-admin-v6.10.52";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./panel.html?v=6.10.41",
-  "./pwa.js?v=6.10.41",
+  "./panel.html?v=6.10.52",
+  "./pwa.js?v=6.10.52",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
   "./icons/icon-512.png",

@@ -1,5 +1,11 @@
 # Ändringslogg
 
+## Version 6.10.52
+
+- Synkroniserar adminpanelens versionsfil, synliga versionsnummer och PWA-cache.
+- Tar bort brutna kopior av publika sidor som inte används av adminpanelen.
+- Tar bort felaktiga 1-byte-filer och tomma adminresursmappar.
+
 ## Version 6.10.7
 
 - Versionsmärker adminpanelens HTML-, PWA- och service worker-laddning.
