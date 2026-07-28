@@ -136,8 +136,11 @@ async function startPreloading() {
 }
 
 function schedulePreloading() {
-  const animationWasActive =
-    document.documentElement.classList.contains("star-intro-active");
+  const introIsInProgress = () =>
+    document.documentElement.classList.contains("star-intro-active") ||
+    document.documentElement.classList.contains("star-intro-pending") ||
+    document.documentElement.classList.contains("star-intro-image-wait");
+  const animationWasActive = introIsInProgress();
   let pageLoaded = document.readyState === "complete";
   let introFinished = !animationWasActive;
   let remainingStarted = false;
@@ -164,7 +167,7 @@ function schedulePreloading() {
   if (!pageLoaded) {
     window.addEventListener("load", () => {
       pageLoaded = true;
-      if (!document.documentElement.classList.contains("star-intro-active")) {
+      if (!introIsInProgress()) {
         introFinished = true;
       }
       begin();
