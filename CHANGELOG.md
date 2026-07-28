@@ -901,6 +901,12 @@ Version 4.0.0 ska se ut och fungera som den godkända version 3.6.1. Syftet är 
 - Valbart snabbfotoläge under Inställningar.
 - Dashboard visar dagens antal uppladdningar och den senaste uppladdningen.
 - Administrationsappens service worker-cache uppdaterad till v6.
+# Version 6.10.50
+
+- Lägger till mobil övertäckning under den rapporterade viewporten för webbläsare med genomskinlig nederkant.
+- Hindrar startsidan från att synas bakom iPhones nedre webbläsarmeny.
+- Samma korrigering används av klassisk stjärna, guldstjärna och bildanimation.
+
 # Version 6.10.49
 
 - Tar bort det separata svarta väntelagret som kunde bli en för liten ruta på mobil.
