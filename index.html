@@ -139,10 +139,11 @@
         !reducedMotion &&
         !animationKnownToBeDisabled)
     ) {
-      document.documentElement.classList.add("star-intro-active");
+      document.documentElement.classList.add("star-intro-pending");
     }
   } catch (_) {
     document.documentElement.classList.remove("star-intro-active");
+    document.documentElement.classList.remove("star-intro-pending");
     document.documentElement.classList.remove("star-intro-force");
   }
 })();
@@ -162,7 +163,7 @@ html.star-intro-active {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  background: var(--star-intro-background, #000);
+  background: transparent;
 }
 
 html.star-intro-active .star-intro {
@@ -642,12 +643,13 @@ varmt välkommen att även titta in hos oss.
   const mobileSvgReady = mobileSvg && mobilePath;
 
   if (
-    !root.classList.contains("star-intro-active") ||
+    !root.classList.contains("star-intro-pending") ||
     (useMobileSvg ? !mobileSvgReady : !canvasReady)
   ) {
     canvas?.remove();
     mobileSvg?.remove();
     root.classList.remove("star-intro-active");
+    root.classList.remove("star-intro-pending");
     root.classList.remove("star-intro-force");
     root.classList.remove("star-intro-mobile-mode");
     return;
@@ -906,6 +908,7 @@ varmt välkommen att även titta in hos oss.
     canvas.hidden = true;
     mobileSvg.hidden = true;
     root.classList.remove("star-intro-active");
+    root.classList.remove("star-intro-pending");
     root.classList.remove("star-intro-force");
     root.classList.remove("star-intro-mobile-mode");
     canvas.remove();
@@ -927,18 +930,24 @@ varmt välkommen att även titta in hos oss.
   }
 
   async function loadIntroImage() {
-    if (introSettings.mode !== "image") return;
-    await new Promise((resolve) => {
+    if (introSettings.mode !== "image") return true;
+    return new Promise((resolve) => {
       const image = new Image();
-      const timer = window.setTimeout(resolve, 3000);
+      let settled = false;
+      const finish = (loaded) => {
+        if (settled) return;
+        settled = true;
+        resolve(loaded);
+      };
+      const timer = window.setTimeout(() => finish(false), 800);
       image.onload = () => {
         clearTimeout(timer);
         introImage = image;
-        resolve();
+        finish(true);
       };
       image.onerror = () => {
         clearTimeout(timer);
-        resolve();
+        finish(false);
       };
       const savedSource =
         introSettings.imageUrl || DEFAULT_INTRO_DESKTOP_IMAGE;
@@ -1065,7 +1074,11 @@ varmt välkommen att även titta in hos oss.
     if (introSettings.mode === "image") {
       useMobileSvg = false;
       root.classList.remove("star-intro-mobile-mode");
-      await loadIntroImage();
+      const imageReady = await loadIntroImage();
+      if (!imageReady) {
+        finishIntro();
+        return;
+      }
     }
 
     prepareLayer();
@@ -1087,13 +1100,15 @@ varmt välkommen att även titta in hos oss.
     } else {
       runClassicIntro();
     }
+
+    root.classList.add("star-intro-active");
   }
 
   startIntro().catch(finishIntro);
 })();
 </script>
 
-  <script src="pwa.js?v=6.10.44" defer></script>
+  <script src="pwa.js?v=6.10.45" defer></script>
 </body>
 
 </html>
