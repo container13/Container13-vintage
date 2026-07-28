@@ -155,6 +155,18 @@ html.star-intro-active {
   overflow: hidden;
 }
 
+html.star-intro-image-wait {
+  overflow: hidden;
+}
+
+html.star-intro-image-wait::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 49999;
+  background: #000;
+}
+
 .star-intro {
   display: none;
   position: fixed;
@@ -611,7 +623,7 @@ varmt välkommen att även titta in hos oss.
 
 <script type="module" src="js/layout.js?v=6.10.42"></script>
 <script type="module" src="js/senaste-nytt.js?v=6.4.0"></script>
-<script type="module" src="js/image-preloader.js?v=1.1.0"></script>
+<script type="module" src="js/image-preloader.js?v=1.2.0"></script>
 <script type="module" src="js/analytics.js?v=6.3.0"></script>
 
 <script>
@@ -650,6 +662,7 @@ varmt välkommen att även titta in hos oss.
     mobileSvg?.remove();
     root.classList.remove("star-intro-active");
     root.classList.remove("star-intro-pending");
+    root.classList.remove("star-intro-image-wait");
     root.classList.remove("star-intro-force");
     root.classList.remove("star-intro-mobile-mode");
     return;
@@ -909,6 +922,7 @@ varmt välkommen att även titta in hos oss.
     mobileSvg.hidden = true;
     root.classList.remove("star-intro-active");
     root.classList.remove("star-intro-pending");
+    root.classList.remove("star-intro-image-wait");
     root.classList.remove("star-intro-force");
     root.classList.remove("star-intro-mobile-mode");
     canvas.remove();
@@ -939,7 +953,7 @@ varmt välkommen att även titta in hos oss.
         settled = true;
         resolve(loaded);
       };
-      const timer = window.setTimeout(() => finish(false), 800);
+      const timer = window.setTimeout(() => finish(false), 5000);
       image.onload = () => {
         clearTimeout(timer);
         introImage = image;
@@ -1074,6 +1088,7 @@ varmt välkommen att även titta in hos oss.
     if (introSettings.mode === "image") {
       useMobileSvg = false;
       root.classList.remove("star-intro-mobile-mode");
+      root.classList.add("star-intro-image-wait");
       const imageReady = await loadIntroImage();
       if (!imageReady) {
         finishIntro();
@@ -1102,13 +1117,14 @@ varmt välkommen att även titta in hos oss.
     }
 
     root.classList.add("star-intro-active");
+    root.classList.remove("star-intro-image-wait");
   }
 
   startIntro().catch(finishIntro);
 })();
 </script>
 
-  <script src="pwa.js?v=6.10.45" defer></script>
+  <script src="pwa.js?v=6.10.47" defer></script>
 </body>
 
 </html>

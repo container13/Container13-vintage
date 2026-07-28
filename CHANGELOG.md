@@ -901,6 +901,18 @@ Version 4.0.0 ska se ut och fungera som den godkända version 3.6.1. Syftet är 
 - Valbart snabbfotoläge under Inställningar.
 - Dashboard visar dagens antal uppladdningar och den senaste uppladdningen.
 - Administrationsappens service worker-cache uppdaterad till v6.
+# Version 6.10.47
+
+- De fyra senaste Nyinkommet-bilderna förladdas även under bildanimationens svarta vänteläge.
+- Förladdningen fortsätter under själva startanimationen.
+- Övriga galleri- och Nyinkommet-bilder förladdas först efter att sidan och animationen är klara.
+
+# Version 6.10.46
+
+- Bildanimationen visar svart bakgrund medan animationsbilden laddas.
+- Hemsidan visas först när bilden är klar och animationen kan börja.
+- Övriga animationslägen får inget extra svart väntelager.
+
 # Version 6.10.45
 
 - Tar bort det svarta helskärmslagret medan startanimationens inställningar laddas.
