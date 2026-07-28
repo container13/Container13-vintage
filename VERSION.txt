@@ -1,4 +1,4 @@
 Container13
-Version 6.10.8
-Byggdatum 2026-07-27
-Basversion 6.10.38
+Version 6.10.52
+Byggdatum 2026-07-28
+Basversion 6.10.51

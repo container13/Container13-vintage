@@ -1,5 +1,29 @@
 # Ändringslogg
 
+## Version 6.10.52 – Samlad versionshantering och säker filstädning
+
+### Vad som har ändrats
+
+- Samlar webbplatsens och adminpanelens versionsnummer till 6.10.52.
+- Uppdaterar versionsfiler, PWA-registreringar, service worker-cache och synlig panelversion samtidigt.
+- Tar bort felaktiga 1-byte-filer med namnet `download`.
+- Tar bort brutna kopior av publika sidor som låg kvar under `admin/`.
+- Tar bort tomma reserv-, dokumentations- och adminresursmappar.
+- Behåller äldre ändringsloggar som projekthistorik och `animation-test.html` eftersom adminpanelen använder den.
+
+### Tekniskt berörda filer
+
+- Samtliga sex publika HTML-sidor
+- `VERSION.txt`
+- `pwa.js`
+- `sw.js`
+- `admin/index.html`
+- `admin/panel.html`
+- `admin/VERSION.txt`
+- `admin/pwa.js`
+- `admin/sw.js`
+- `admin/CHANGELOG.md`
+
 ## Version 6.10.38 – Tidsgränser i bildoptimeringen
 
 ### Vad som har ändrats
