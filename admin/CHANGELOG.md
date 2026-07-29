@@ -1,5 +1,12 @@
 # Ändringslogg
 
+## Version 6.10.53
+
+- Gör adminpanelen användbar i smala datorfönster utan horisontell rullning.
+- Komprimerar sidomenyn mellan 901 och 1150 pixlar.
+- Låter breda kort, formulär och knappgrupper brytas till fler rader.
+- Anpassar samtliga adminsektioner som delade samma layoutproblem.
+
 ## Version 6.10.52
 
 - Synkroniserar adminpanelens versionsfil, synliga versionsnummer och PWA-cache.

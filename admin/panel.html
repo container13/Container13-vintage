@@ -2191,9 +2191,173 @@
       .animation-editor-section { padding: 15px; }
     }
 
+    /* VERSION 6.10.53 – SMALT DATORFÖNSTER
+       Behåll sidomenyn, men ge formulären plats och låt breda grupper brytas. */
+    html,
+    body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    @media (min-width: 901px) and (max-width: 1150px) {
+      .admin-layout {
+        grid-template-columns: 220px minmax(0, 1fr);
+      }
+
+      .sidebar {
+        padding: 26px 14px 22px;
+      }
+
+      .brand {
+        font-size: 25px;
+        letter-spacing: 1.8px;
+      }
+
+      .admin-label {
+        margin: 8px 0 26px;
+        font-size: 14px;
+      }
+
+      .navigation {
+        gap: 7px;
+      }
+
+      .navigation button {
+        min-height: 50px;
+        padding: 11px 10px;
+        gap: 8px;
+        font-size: 15px;
+      }
+
+      .menu-icon {
+        width: 25px;
+        flex-basis: 25px;
+        font-size: 21px;
+      }
+
+      .logout-button {
+        min-height: 50px;
+        padding: 11px 12px;
+        font-size: 16px;
+      }
+
+      .main-content {
+        padding: 26px 22px 34px;
+      }
+
+      .topbar {
+        gap: 14px;
+      }
+
+      .page-title {
+        font-size: 32px;
+      }
+
+      .account-area {
+        min-width: 0;
+      }
+
+      .user-email {
+        max-width: 180px;
+        overflow-wrap: anywhere;
+        font-size: 14px;
+      }
+
+      .card {
+        padding: 24px 20px;
+      }
+
+      .dashboard-panels {
+        grid-template-columns: 1fr;
+      }
+
+      .day-row {
+        grid-template-columns:
+          minmax(80px, .65fr)
+          minmax(95px, .7fr)
+          minmax(0, 1.8fr);
+        gap: 10px;
+      }
+
+      .time-controls {
+        grid-template-columns:
+          minmax(92px, 1fr)
+          auto
+          minmax(92px, 1fr);
+        gap: 7px;
+      }
+
+      .special-hours-fields {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .special-hours-fields > :first-child {
+        grid-column: 1 / -1;
+      }
+
+      .animation-mode-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .animation-settings-grid.animation-timing-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .animation-timing-grid > :last-child {
+        grid-column: 1 / -1;
+      }
+
+      .intro-image-fields {
+        grid-template-columns: 1fr;
+      }
+
+      .about-variant-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-variant-card > span {
+        min-height: 0;
+      }
+
+      .about-action-row .save-button {
+        margin-left: 0;
+      }
+
+      .spotify-add-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .spotify-add-grid > button {
+        grid-column: 1 / -1;
+        justify-self: start;
+      }
+
+      .spotify-playlist-row {
+        grid-template-columns: auto minmax(0, 1fr);
+      }
+
+      .spotify-playlist-actions {
+        grid-column: 1 / -1;
+        padding-left: 29px;
+      }
+
+      .logo-choice-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .camera-settings-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer {
+        padding-right: 22px;
+        padding-left: 22px;
+      }
+    }
+
   </style>
 
-  <script src="./pwa.js?v=6.10.52" defer></script>
+  <script src="./pwa.js?v=6.10.53" defer></script>
 
 </head>
 
@@ -2286,7 +2450,7 @@
         <header class="topbar">
           <div>
             <h2 class="page-title">Dashboard</h2>
-            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.10.52</small>
+            <small style="display:block;margin-top:4px;color:#777;font-weight:700;">Panelversion 6.10.53</small>
 
             <p class="page-description">
               Överblick över webbplatsen och de viktigaste funktionerna.
@@ -2393,7 +2557,7 @@
                 <div class="dashboard-detail"><span>Inloggad som</span><strong id="dashboard-user">–</strong></div>
                 <div class="dashboard-detail"><span>Papperskorg</span><strong id="dashboard-trash-retention">Automatisk rensning efter 2 dagar</strong></div>
               </div>
-              <p class="dashboard-version">Container13 Adminpanel · Version 6.10.52</p>
+              <p class="dashboard-version">Container13 Adminpanel · Version 6.10.53</p>
             </section>
           </div>
         </section>
