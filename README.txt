@@ -1,8 +1,8 @@
-CONTAINER13 VERSION 6.10.52
+CONTAINER13 VERSION 6.10.53
 
 Det här är den städade kompletta projektversionen.
 
-Version 6.10.52:
+Version 6.10.53:
 - synkroniserar alla aktiva versionsuppgifter
 - tar bort verifierat oanvända skräpfiler och brutna adminkopior
 - behåller äldre ändringsloggar som projekthistorik
@@ -11,4 +11,4 @@ Version 6.10.52:
 Firestore-reglerna behöver inte ändras.
 
 Ladda om adminpanelen med Ctrl + F5 efter uppladdning.
-Panelen ska visa Panelversion 6.10.52.
+Panelen ska visa Panelversion 6.10.53.

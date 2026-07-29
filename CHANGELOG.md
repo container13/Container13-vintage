@@ -1,5 +1,16 @@
 # Ändringslogg
 
+## Version 6.10.53 – Responsiv adminpanel i smalt datorfönster
+
+### Vad som har ändrats
+
+- Lägger till ett särskilt layoutläge för datorfönster mellan 901 och 1150 pixlar.
+- Minskar sidomenyns bredd och behåller tydliga menytexter.
+- Staplar dashboardpaneler och breda inställningsgrupper när utrymmet blir trångt.
+- Anpassar öppettider, avvikande tider, startanimation, Spotify, logotypval och kameraalternativ.
+- Förhindrar horisontell överströmning och förbättrar radbrytningen av kontots e-postadress.
+- Lämnar den fullstora datorlayouten och mobilens befintliga layout oförändrade.
+
 ## Version 6.10.52 – Samlad versionshantering och säker filstädning
 
 ### Vad som har ändrats

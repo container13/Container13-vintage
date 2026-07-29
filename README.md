@@ -1,6 +1,6 @@
 # Container 13 Vintage
 
-**Projektversion:** 6.10.52  
+**Projektversion:** 6.10.53  
 **Basversion:** 6.10.51
 
 ## Webbplatsen
@@ -76,6 +76,6 @@ Galleri och Nyinkommet hämtas från Firestore/Firebase Storage. Gamla lokala ex
 
 Header och footer laddas med `fetch()`. Sidorna bör därför testas via GitHub Pages eller en lokal webbserver, inte genom att dubbelklicka på HTML-filer med en `file://`-adress.
 
-## Version 6.10.52
+## Version 6.10.53
 
 Den här versionen synkroniserar projektets versionsuppgifter och tar bort verifierat oanvända filer. Den ändrar inte webbplatsens avsedda utseende eller funktioner. Se `CHANGELOG.md`.
