@@ -1,7 +1,0 @@
-VERSION 6.9.0
-
-Rekommenderat: använd hela projektpaketet och ladda upp innehållet från mappen Container13-vintage-main.
-
-Patchpaketet innehåller ändrade och nya filer, men kan inte automatiskt ta bort gamla filer från GitHub.
-
-För full städning är det enklast att använda den kompletta versionen eller följa listan över borttagna filer i `CHANGELOG-6.9.0.md`.
