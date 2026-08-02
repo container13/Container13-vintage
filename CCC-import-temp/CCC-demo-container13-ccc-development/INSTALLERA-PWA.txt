@@ -1,0 +1,16 @@
+CONTAINER13 VERSION 5.1 – HEMSKÄRMSIKONER
+
+KUNDHEMSIDAN
+1. Öppna webbplatsens startsida i Safari.
+2. Tryck Dela.
+3. Välj Lägg till på hemskärmen.
+4. Namnet blir Container13.
+
+ADMINPANELEN
+1. Öppna /admin/ i Safari.
+2. Tryck Dela.
+3. Välj Lägg till på hemskärmen.
+4. Namnet blir C13 Admin.
+
+VIKTIGT
+Har du redan gamla ikoner på hemskärmen ska du först ta bort dem och sedan lägga till dem på nytt. iPhone sparar annars det gamla namnet och den gamla ikonen.

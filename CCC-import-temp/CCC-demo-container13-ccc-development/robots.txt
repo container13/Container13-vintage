@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /backup/
+Disallow: /docs/
+Disallow: /includes/
+Disallow: /animation-test.html
+Disallow: /CHANGELOG
+Disallow: /FIRESTORE
+Disallow: /INSTALLERA
+Disallow: /TA-BORT
+Disallow: /UPPDATERA
+
+Sitemap: https://container13.se/sitemap.xml

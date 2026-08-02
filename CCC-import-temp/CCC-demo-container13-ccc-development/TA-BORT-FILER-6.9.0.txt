@@ -1,0 +1,36 @@
+FILER SOM KAN TAS BORT FRÅN GITHUB I VERSION 6.9.0
+
+Viktigast:
+Archive.txt
+bilder/gatuvy.png
+bilder/gatuvy2.png
+
+Gamla lokala exempelbilder:
+bilder/galleri/butik1.png
+bilder/galleri/butik2.png
+bilder/galleri/butik3.png
+bilder/galleri/butik4.png
+bilder/galleri/butik5.png
+bilder/galleri/butik6.png
+bilder/galleri/butik7.png
+bilder/galleri/butik8.png
+bilder/nyinkommet/vara1.png
+bilder/nyinkommet/vara2.png
+
+Verifierat oanvänd kod och restfiler:
+admin/css/panel.css
+admin/style.css
+admin/js/galleri.js
+admin/js/layout.js
+admin/js/status.js
+admin/oppettider.js
+js/script.js
+js/bilder.js
+backup/legacy/script.js
+backup/legacy/bilder.js
+admin/download
+icons/download
+includes/download
+js/download
+
+Tomma reservmappar och .gitkeep-filer kan ligga kvar utan att påverka webbplatsen.

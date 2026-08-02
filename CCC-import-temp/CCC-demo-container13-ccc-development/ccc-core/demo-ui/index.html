@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<title>CCC Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="dashboard">
+  <h1>CCC Dashboard</h1>
+  <p class="company">Container13</p>
+
+  <section class="card">
+    <h2>Configuration</h2>
+
+    <label>Status</label>
+    <div class="status">🟢 Aktiv</div>
+
+    <label>Tema</label>
+    <select id="theme">
+      <option value="light">Ljust</option>
+      <option value="dark">Mörkt</option>
+    </select>
+
+    <button id="save">Spara ändringar</button>
+
+    <p id="message"></p>
+  </section>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
