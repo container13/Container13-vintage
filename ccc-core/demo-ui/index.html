@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <header class="app-header">
 <div class="brand">CCC</div>
 <button id="themeToggle" class="theme-toggle">◐</button>
@@ -15,37 +14,63 @@
 
 <main class="app-shell">
 
-<section id="resultView" class="view active">
+<section id="welcomeView" class="view active">
+<div class="card">
+<h1>Välkommen till CCC</h1>
+<p>Gör ditt företag enklare.<br>Din digitala assistent för småföretagare.</p>
+<button class="primary" onclick="showView('loginView')">Logga in</button>
+<button class="secondary" onclick="showView('onboardingView')">Skapa nytt företag</button>
+</div>
+</section>
+
+<section id="loginView" class="view">
+<div class="card">
+<h1>Logga in</h1>
+<label>E-post</label>
+<input>
+<label>Lösenord</label>
+<input type="password">
+<button class="primary">Logga in</button>
+<button class="text-button" onclick="showView('welcomeView')">Tillbaka</button>
+</div>
+</section>
+
+<section id="onboardingView" class="view">
+<div class="card">
+<h1>Kom igång med CCC</h1>
+<p>Vi hjälper dig att hitta dina företagsuppgifter.</p>
+<label>Person- eller organisationsnummer</label>
+<input placeholder="Ange uppgift">
+<p class="hint">Skriv med eller utan bindestreck.</p>
+<button class="primary" onclick="showView('resultView')">Hämta uppgifter</button>
+<div class="divider"></div>
+<p>Vill du testa CCC först utan att ange uppgifter?</p>
+<button class="secondary" onclick="showView('resultView')">Skapa testkonto</button>
+<button class="text-button" onclick="showView('welcomeView')">Tillbaka</button>
+</div>
+</section>
+
+<section id="resultView" class="view">
 <div class="card">
 <h1>Vi hittade dina uppgifter</h1>
-
 <p>Kontrollera uppgifterna och komplettera om du vill.</p>
-
 <label>Företagsnamn</label>
 <input value="Container13 Test">
-
 <label>Kontaktperson</label>
 <input value="Test User">
-
 <label>E-post</label>
 <input value="test@ccc.local">
 
-<button class="secondary" onclick="toggleMore()">
-Lägg till fler uppgifter ▾
-</button>
+<button class="secondary" onclick="toggleMore()">Lägg till fler uppgifter ▾</button>
 
 <div id="moreFields" class="extra hidden">
-
 <h2>Kontakt</h2>
 <label>Telefon</label>
 <input placeholder="Telefon">
-
 <label>Adress</label>
 <input placeholder="Adress">
 
-
 <h2>Digital närvaro</h2>
-
 <label><input type="checkbox"> Hemsida</label>
 <label><input type="checkbox"> Facebook</label>
 <label><input type="checkbox"> Instagram</label>
@@ -53,23 +78,18 @@ Lägg till fler uppgifter ▾
 <label><input type="checkbox"> LinkedIn</label>
 <label><input type="checkbox"> Google företagsprofil</label>
 
-
 <h2>Företagsprofil</h2>
-
 <label><input type="checkbox"> Beskrivning</label>
 <label><input type="checkbox"> Logotyp</label>
 <label><input type="checkbox"> Bilder</label>
 <label><input type="checkbox"> Bransch</label>
-
 </div>
 
 <button class="primary">Fortsätt</button>
-
 </div>
 </section>
 
 </main>
-
 <script src="app.js"></script>
 </body>
 </html>
