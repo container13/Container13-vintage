@@ -7,35 +7,83 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <header class="app-header">
-<div class="logo">CCC</div>
-<button id="themeToggle" class="theme-btn">◐</button>
+  <div class="brand">CCC</div>
+  <button id="themeToggle" class="theme-toggle" aria-label="Byt tema">◐</button>
 </header>
-<main class="app">
+
+<main class="app-shell">
+
 <section id="welcomeView" class="view active">
-<h1>Välkommen till CCC</h1>
-<p>Gör ditt företag enklare.<br>Din digitala assistent för småföretagare.</p>
-<button onclick="showView('loginView')">Logga in</button>
-<button class="secondary" onclick="showView('registerView')">Skapa nytt företag</button>
+  <div class="card">
+    <h1>Välkommen till CCC</h1>
+    <p>
+      Gör ditt företag enklare.<br>
+      Din digitala assistent för småföretagare.
+    </p>
+
+    <button class="primary" onclick="showView('loginView')">
+      Logga in
+    </button>
+
+    <button class="secondary" onclick="showView('registerView')">
+      Skapa nytt företag
+    </button>
+  </div>
 </section>
+
 <section id="loginView" class="view">
-<h1>Logga in</h1>
-<input placeholder="E-post">
-<input placeholder="Lösenord" type="password">
-<button>Logga in</button>
-<button class="link" onclick="showView('welcomeView')">Tillbaka</button>
+  <div class="card">
+    <h1>Logga in</h1>
+
+    <label>E-post</label>
+    <input type="email">
+
+    <label>Lösenord</label>
+    <input type="password">
+
+    <button class="primary">
+      Logga in
+    </button>
+
+    <button class="text-button" onclick="showView('welcomeView')">
+      Tillbaka
+    </button>
+  </div>
 </section>
+
 <section id="registerView" class="view">
-<h1>Skapa ditt företag</h1>
-<input placeholder="Företagsnamn">
-<input placeholder="Organisationsnummer">
-<input placeholder="Kontaktperson">
-<input placeholder="E-post">
-<input placeholder="Lösenord" type="password">
-<button>Skapa konto</button>
-<button class="link" onclick="showView('welcomeView')">Tillbaka</button>
+  <div class="card">
+    <h1>Skapa ditt företag</h1>
+
+    <label>Företagsnamn</label>
+    <input id="companyName">
+
+    <label>Organisationsnummer</label>
+    <input id="organizationNumber">
+
+    <label>Kontaktperson</label>
+    <input id="contactName">
+
+    <label>E-post</label>
+    <input type="email">
+
+    <label>Lösenord</label>
+    <input type="password">
+
+    <button class="primary">
+      Skapa konto
+    </button>
+
+    <button class="text-button" onclick="showView('welcomeView')">
+      Tillbaka
+    </button>
+  </div>
 </section>
+
 </main>
+
 <script src="app.js"></script>
 </body>
 </html>
