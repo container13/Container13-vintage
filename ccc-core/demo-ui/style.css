@@ -1,102 +1,76 @@
 
 :root{
- --bg:#0b0b0b;
- --card:#181818;
+ --bg:#090909;
+ --card:#151515;
+ --gold:#e5b84b;
  --text:#fff;
- --muted:#b5b5b5;
- --accent:#e9b949;
+ --muted:#b8b8b8;
 }
 *{box-sizing:border-box}
 body{
  margin:0;
  min-height:100vh;
- background:radial-gradient(circle at top right,#30220b,#0b0b0b 45%);
- color:var(--text);
- font-family:Arial,Helvetica,sans-serif;
  display:flex;
  align-items:center;
  justify-content:center;
-}
-.wrapper{
- width:100%;
- max-width:900px;
- padding:24px;
-}
-.header{
- display:flex;
- justify-content:space-between;
- align-items:center;
- margin-bottom:25px;
-}
-.logo{
- font-size:42px;
- font-weight:800;
- color:var(--accent);
-}
-.steps{
- color:var(--muted);
+ background:radial-gradient(circle at 50% 20%,#30230b,#090909 45%);
+ color:var(--text);
+ font-family:Arial,Helvetica,sans-serif;
 }
 .card{
- background:rgba(30,30,30,.95);
- border-radius:28px;
+ width:min(520px,90vw);
  padding:45px 35px;
- max-width:620px;
- margin:auto;
- box-shadow:0 20px 60px rgba(0,0,0,.4);
+ text-align:center;
 }
-.step{
- color:var(--accent);
- font-size:14px;
- margin-bottom:15px;
+.logo{
+ font-size:64px;
+ font-weight:900;
+ letter-spacing:4px;
+ color:var(--gold);
+ margin-bottom:25px;
 }
 h1{
  font-size:36px;
- margin:0 0 15px;
+ margin:0 0 10px;
 }
-h2{
- font-size:28px;
+.tagline{
+ font-size:20px;
+ color:var(--gold);
+ font-weight:bold;
 }
 p{
  font-size:18px;
  line-height:1.5;
  color:var(--muted);
 }
-input{
- width:100%;
- padding:18px;
- font-size:18px;
- border-radius:14px;
- border:1px solid #555;
- background:#111;
- color:#fff;
- margin:20px 0;
-}
 button{
  width:100%;
- min-height:55px;
- border-radius:15px;
- border:0;
- font-size:18px;
+ min-height:58px;
  margin-top:14px;
+ border-radius:16px;
+ font-size:18px;
  cursor:pointer;
+ border:1px solid #444;
 }
 .primary{
- background:var(--accent);
+ background:var(--gold);
  color:#111;
  font-weight:bold;
+ border:0;
 }
 .secondary{
- background:#333;
+ background:#171717;
  color:white;
 }
 a{text-decoration:none}
-@media(max-width:600px){
- .wrapper{padding:15px}
- .logo{font-size:34px}
- .card{
-  min-height:60vh;
-  padding:35px 22px;
- }
- h1{font-size:30px}
- p{font-size:17px}
+.info{
+ margin-top:25px;
+ padding:20px;
+ background:#111;
+ border-radius:16px;
+ display:none;
+ text-align:left;
+}
+.info:target{
+ display:block;
 }
