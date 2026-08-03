@@ -8,9 +8,10 @@ h1{text-align:center}
 p{text-align:center;line-height:1.5}
 label{display:block;margin-top:14px}
 input{width:100%;padding:14px;border:1px solid #ccc;border-radius:10px;font-size:1rem}
-input:disabled{background:#eee}
 button{width:100%;padding:14px;margin-top:14px;border-radius:10px;font-size:1rem}
 .primary{background:#222;color:#fff;border:0}
 .secondary{background:#fff;border:1px solid #aaa}
+.text-button{background:transparent;border:0}
 .view[hidden]{display:none}
-.summary{margin-top:20px}
+.hint{font-size:.9rem;color:#666}
+.info-box{padding:10px 0}

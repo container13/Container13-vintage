@@ -15,28 +15,56 @@
 
 <main class="app-shell">
 
-<section id="confirmView" class="view">
+<section id="welcomeView" class="view">
+<div class="card">
+<h1>Välkommen till CCC</h1>
+<p>Gör ditt företag enklare.<br>Din digitala assistent för småföretagare.</p>
+<button class="primary" onclick="showView('loginView')">Logga in</button>
+<button class="secondary" onclick="showView('onboardingView')">Skapa nytt företag</button>
+</div>
+</section>
+
+<section id="loginView" class="view" hidden>
+<div class="card">
+<h1>Logga in</h1>
+<label>E-post</label>
+<input>
+<label>Lösenord</label>
+<input type="password">
+<button class="primary">Logga in</button>
+<button class="text-button" onclick="showView('welcomeView')">Tillbaka</button>
+</div>
+</section>
+
+<section id="onboardingView" class="view" hidden>
+<div class="card">
+<h1>Kom igång med CCC</h1>
+<p>Vi hjälper dig att hitta dina företagsuppgifter.</p>
+
+<label>Person- eller organisationsnummer</label>
+<input placeholder="Ange uppgift">
+
+<p class="hint">Skriv med eller utan bindestreck.</p>
+
+<button class="primary" onclick="showView('foundView')">Hämta uppgifter</button>
+<button class="text-button" onclick="showView('welcomeView')">Tillbaka</button>
+</div>
+</section>
+
+<section id="foundView" class="view" hidden>
 <div class="card">
 <h1>Vi hittade dina uppgifter 👍</h1>
+<p>Kontrollera att allt stämmer innan du fortsätter.</p>
 
-<p>Kontrollera uppgifterna innan du fortsätter.</p>
+<div class="info-box">
+<p><strong>🔒 Person- eller organisationsnummer</strong><br>556123-4567</p>
+<p><strong>Företag</strong><br>Container13 Test</p>
+<p><strong>Kontaktperson</strong><br>Test User</p>
+<p><strong>E-post</strong><br>test@ccc.local</p>
+</div>
 
-<label>Person- eller organisationsnummer 🔒</label>
-<input value="556123-4567" disabled>
-
-<label>Företagsnamn</label>
-<input value="Container13 Test">
-
-<label>Kontaktperson</label>
-<input value="Test User">
-
-<label>E-post</label>
-<input value="test@ccc.local">
-
-<div class="buttons">
 <button class="secondary" onclick="showView('editView')">Komplettera uppgifter</button>
 <button class="primary" onclick="showView('summaryView')">Spara och fortsätt</button>
-</div>
 </div>
 </section>
 
@@ -72,16 +100,13 @@
 <section id="summaryView" class="view" hidden>
 <div class="card">
 <h1>Dina uppgifter</h1>
-
 <p>Här ser du allt CCC har hittat och det du själv lagt till.</p>
 
-<div class="summary">
-<p><strong>Organisationsnummer 🔒</strong><br>556123-4567</p>
-<p><strong>Företagsnamn</strong><br>Container13 Test</p>
+<div class="info-box">
+<p><strong>🔒 Organisationsnummer</strong><br>556123-4567</p>
+<p><strong>Företag</strong><br>Container13 Test</p>
 <p><strong>Kontaktperson</strong><br>Test User</p>
 <p><strong>E-post</strong><br>test@ccc.local</p>
-<p><strong>Telefon</strong><br>Ej angivet</p>
-<p><strong>Digital närvaro</strong><br>Instagram, Facebook</p>
 </div>
 
 <button class="secondary" onclick="showView('editView')">Ändra uppgifter</button>
