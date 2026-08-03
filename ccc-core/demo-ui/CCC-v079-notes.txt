@@ -1,0 +1,6 @@
+CCC v0.7.9 - verksamhetsbekräftelse
+
+Nästa steg:
+- CCC föreslår verksamhet
+- användaren bekräftar eller ändrar
+- därefter byggs personlig startvy
