@@ -1,8 +1,7 @@
 
 :root{
  --bg:#090909;
- --card:#151515;
- --gold:#e5b84b;
+ --gold:#e6b94f;
  --text:#fff;
  --muted:#b8b8b8;
 }
@@ -11,66 +10,91 @@ body{
  margin:0;
  min-height:100vh;
  display:flex;
- align-items:center;
  justify-content:center;
- background:radial-gradient(circle at 50% 20%,#30230b,#090909 45%);
+ align-items:center;
+ background:radial-gradient(circle at top,#30230b,#090909 45%);
  color:var(--text);
  font-family:Arial,Helvetica,sans-serif;
 }
-.card{
- width:min(520px,90vw);
- padding:45px 35px;
+.page{
+ width:min(560px,92vw);
  text-align:center;
+ padding:30px 20px;
 }
 .logo{
  font-size:64px;
  font-weight:900;
- letter-spacing:4px;
+ letter-spacing:5px;
  color:var(--gold);
- margin-bottom:25px;
+ margin-bottom:5px;
+}
+.motto{
+ color:var(--gold);
+ font-size:16px;
+ margin-bottom:35px;
+}
+.steps{
+ display:flex;
+ justify-content:center;
+ gap:12px;
+ margin-bottom:30px;
+}
+.step{
+ width:34px;
+ height:34px;
+ border-radius:50%;
+ border:2px solid #555;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ color:#aaa;
+}
+.active{
+ background:var(--gold);
+ color:#111;
+ border-color:var(--gold);
+}
+.card{
+ text-align:center;
 }
 h1{
- font-size:36px;
- margin:0 0 10px;
-}
-.tagline{
- font-size:20px;
- color:var(--gold);
- font-weight:bold;
+ font-size:34px;
+ margin-bottom:15px;
 }
 p{
  font-size:18px;
  line-height:1.5;
  color:var(--muted);
 }
+input{
+ width:100%;
+ padding:18px;
+ border-radius:14px;
+ border:1px solid #555;
+ background:#111;
+ color:white;
+ font-size:18px;
+ margin:20px 0;
+}
 button{
  width:100%;
- min-height:58px;
- margin-top:14px;
- border-radius:16px;
+ min-height:56px;
+ border-radius:15px;
+ margin-top:12px;
  font-size:18px;
- cursor:pointer;
- border:1px solid #444;
+ border:0;
 }
 .primary{
  background:var(--gold);
  color:#111;
  font-weight:bold;
- border:0;
 }
 .secondary{
  background:#171717;
  color:white;
+ border:1px solid #444;
 }
-a{text-decoration:none}
-.info{
- margin-top:25px;
- padding:20px;
- background:#111;
- border-radius:16px;
- display:none;
- text-align:left;
-}
-.info:target{
- display:block;
+.safe{
+ margin-top:20px;
+ color:#aaa;
 }
