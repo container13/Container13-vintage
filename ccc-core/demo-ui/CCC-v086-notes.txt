@@ -1,0 +1,8 @@
+CCC v0.8.6 - Din CCC är klar
+
+Nästa UI-steg:
+- Byt välkomstlagret från Välkommen in till Din CCC är klar 🎉
+- Tydlig skillnad mellan:
+  1. Vi lär känna ditt företag (analys/bekräftelse)
+  2. Din CCC är klar (arbetsyta skapad)
+- Därefter öppnas verksamhetsanpassad arbetsyta.
