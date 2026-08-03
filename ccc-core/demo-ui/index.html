@@ -16,70 +16,58 @@
 <main class="app-shell">
 
 <section id="welcomeView" class="view active">
-  <div class="card">
-    <h1>Välkommen till CCC</h1>
-    <p>
-      Gör ditt företag enklare.<br>
-      Din digitala assistent för småföretagare.
-    </p>
+<div class="card">
+<h1>Välkommen till CCC</h1>
+<p>Gör ditt företag enklare.<br>Din digitala assistent för småföretagare.</p>
 
-    <button class="primary" onclick="showView('loginView')">
-      Logga in
-    </button>
-
-    <button class="secondary" onclick="showView('registerView')">
-      Skapa nytt företag
-    </button>
-  </div>
+<button class="primary" onclick="showView('loginView')">Logga in</button>
+<button class="secondary" onclick="showView('onboardingView')">Skapa nytt företag</button>
+</div>
 </section>
 
 <section id="loginView" class="view">
-  <div class="card">
-    <h1>Logga in</h1>
+<div class="card">
+<h1>Logga in</h1>
 
-    <label>E-post</label>
-    <input type="email">
+<label>E-post</label>
+<input type="email">
 
-    <label>Lösenord</label>
-    <input type="password">
+<label>Lösenord</label>
+<input type="password">
 
-    <button class="primary">
-      Logga in
-    </button>
-
-    <button class="text-button" onclick="showView('welcomeView')">
-      Tillbaka
-    </button>
-  </div>
+<button class="primary">Logga in</button>
+<button class="text-button" onclick="showView('welcomeView')">Tillbaka</button>
+</div>
 </section>
 
-<section id="registerView" class="view">
-  <div class="card">
-    <h1>Skapa ditt företag</h1>
+<section id="onboardingView" class="view">
+<div class="card">
+<h1>Kom igång med CCC</h1>
 
-    <label>Företagsnamn</label>
-    <input id="companyName">
+<p>
+Vi hjälper dig att hitta dina företagsuppgifter.
+</p>
 
-    <label>Organisationsnummer</label>
-    <input id="organizationNumber">
+<label>Personnummer eller organisationsnummer</label>
+<input id="identifier" placeholder="Ange uppgift">
 
-    <label>Kontaktperson</label>
-    <input id="contactName">
+<button class="primary">
+Hämta uppgifter
+</button>
 
-    <label>E-post</label>
-    <input type="email">
+<div class="divider"></div>
 
-    <label>Lösenord</label>
-    <input type="password">
+<p>Vill du testa CCC först utan att ange uppgifter?</p>
 
-    <button class="primary">
-      Skapa konto
-    </button>
+<button class="secondary">
+Skapa testkonto
+</button>
 
-    <button class="text-button" onclick="showView('welcomeView')">
-      Tillbaka
-    </button>
-  </div>
+<button class="text-button" onclick="showView('welcomeView')">
+Tillbaka
+</button>
+
+</div>
 </section>
 
 </main>

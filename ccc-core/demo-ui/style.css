@@ -1,102 +1,103 @@
-* {
- box-sizing: border-box;
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f4f4f4;
+color:#222;
 }
 
-body {
- margin:0;
- min-height:100vh;
- font-family:Arial,sans-serif;
- background:#f4f4f4;
- color:#222;
+.app-header{
+height:60px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 20px;
+background:#fff;
+border-bottom:1px solid #ddd;
 }
 
-.app-header {
- height:60px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- padding:0 20px;
- background:#fff;
- border-bottom:1px solid #ddd;
+.brand{
+font-size:1.4rem;
+font-weight:700;
 }
 
-.brand {
- font-size:1.4rem;
- font-weight:700;
+.theme-toggle{
+border:0;
+background:transparent;
+font-size:1.2rem;
 }
 
-.theme-toggle {
- border:0;
- background:transparent;
- font-size:1.2rem;
- cursor:pointer;
+.app-shell{
+max-width:480px;
+margin:auto;
+padding:30px 20px;
 }
 
-.app-shell {
- max-width:480px;
- margin:0 auto;
- padding:30px 20px;
+.view{
+display:none;
 }
 
-.view {
- display:none;
+.view.active{
+display:block;
 }
 
-.view.active {
- display:block;
+.card{
+background:#fff;
+border-radius:16px;
+padding:28px;
+box-shadow:0 2px 10px rgba(0,0,0,.08);
 }
 
-.card {
- background:#fff;
- border-radius:16px;
- padding:28px;
- box-shadow:0 2px 10px rgba(0,0,0,0.08);
+h1{
+margin-top:0;
 }
 
-h1 {
- margin-top:0;
+p{
+line-height:1.5;
 }
 
-p {
- line-height:1.6;
+label{
+display:block;
+margin-top:15px;
+margin-bottom:6px;
 }
 
-label {
- display:block;
- margin-top:14px;
- margin-bottom:5px;
- font-size:.9rem;
+input{
+width:100%;
+padding:14px;
+border:1px solid #ccc;
+border-radius:10px;
+font-size:1rem;
 }
 
-input {
- width:100%;
- padding:14px;
- border-radius:10px;
- border:1px solid #ccc;
- font-size:1rem;
+button{
+width:100%;
+padding:14px;
+margin-top:14px;
+border-radius:10px;
+font-size:1rem;
+cursor:pointer;
 }
 
-button {
- width:100%;
- padding:14px;
- margin-top:14px;
- border-radius:10px;
- font-size:1rem;
- cursor:pointer;
+.primary{
+background:#222;
+color:#fff;
+border:0;
 }
 
-.primary {
- border:0;
- background:#222;
- color:#fff;
+.secondary{
+background:#fff;
+border:1px solid #aaa;
 }
 
-.secondary {
- background:#fff;
- border:1px solid #aaa;
+.text-button{
+background:transparent;
+border:0;
 }
 
-.text-button {
- background:transparent;
- border:0;
+.divider{
+height:1px;
+background:#ddd;
+margin:25px 0;
 }
