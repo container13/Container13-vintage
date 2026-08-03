@@ -1,41 +1,119 @@
-/* CCC v0.7.3 - mobile overflow fix */
+*{box-sizing:border-box}
 
-html, body {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
+html,body{
+width:100%;
+max-width:100%;
+overflow-x:hidden;
 }
 
-* {
-    box-sizing: border-box;
-}
-
-img,
-input,
-button,
-.card,
-.app-shell,
-.header-inner {
-    max-width: 100%;
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f4f4f4;
+color:#222;
 }
 
 .app-header{
-    width:100%;
-    overflow:hidden;
+height:54px;
+background:#fff;
+border-bottom:1px solid #ddd;
+width:100%;
 }
 
 .header-inner{
-    width:100%;
+height:100%;
+max-width:1100px;
+margin:auto;
+padding:0 16px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+}
+
+.brand{font-size:1.15rem;font-weight:700}
+
+.theme-toggle{
+width:auto;
+padding:4px 8px;
+margin:0;
+border:0;
+background:none;
 }
 
 .app-shell{
-    width:100%;
+width:100%;
+max-width:520px;
+margin:auto;
+padding:20px 14px;
 }
 
-button{
-    box-sizing:border-box;
+.view{display:none}
+.view.active{display:block}
+
+.card{
+width:100%;
+background:#fff;
+border-radius:14px;
+padding:22px 18px;
+box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+h1{
+font-size:1.45rem;
+margin:0 0 16px;
+text-align:center;
+}
+
+p{
+font-size:.95rem;
+line-height:1.45;
+text-align:center;
+}
+
+label{
+display:block;
+margin-top:12px;
+font-size:.9rem;
+}
+
+input,button{
+max-width:100%;
 }
 
 input{
-    box-sizing:border-box;
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:9px;
+font-size:1rem;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:12px;
+border-radius:9px;
+font-size:.95rem;
+}
+
+.primary{background:#222;color:#fff;border:0}
+.secondary{background:#fff;border:1px solid #aaa}
+.text{background:none;border:0}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-top:18px;
+}
+
+.grid button{
+min-height:82px;
+background:#fff;
+border:1px solid #ccc;
+}
+
+@media(min-width:700px){
+.app-shell{padding-top:40px}
+.card{padding:28px}
 }
