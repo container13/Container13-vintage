@@ -1,0 +1,12 @@
+Headerändring v0.6.5:
+
+Byt headern till:
+
+<header class="app-header">
+  <div class="header-inner">
+    <div class="brand">CCC</div>
+    <button class="theme-toggle">◐</button>
+  </div>
+</header>
+
+Övriga filer behålls från v0.6.4.
