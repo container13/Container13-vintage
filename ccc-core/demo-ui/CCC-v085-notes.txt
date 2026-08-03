@@ -1,0 +1,6 @@
+CCC v0.8.5
+
+- Välkommen in är första steget efter verksamhetsbekräftelse.
+- Din CCC börjar använda företagsprofil/verksamhet.
+- Container13 testas som första butikprofil.
+- Dashboard är förberedd för framtida verksamhetstyper.
