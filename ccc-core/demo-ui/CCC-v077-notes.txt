@@ -1,0 +1,7 @@
+CCC v0.7.7 - Företagsprofil
+
+Ny grund:
+- CCC identifierar företaget innan dashboard
+- verksamhet styr framtida arbetsyta
+- användaren kan bekräfta eller ändra
+- Container13 är första exempelprofilen
