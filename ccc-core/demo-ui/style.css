@@ -1,60 +1,102 @@
 
 :root{
-  --bg:#111;
-  --card:#202020;
-  --text:#fff;
-  --muted:#bdbdbd;
-  --button:#fff;
-  --buttonText:#111;
+ --bg:#0b0b0b;
+ --card:#181818;
+ --text:#fff;
+ --muted:#b5b5b5;
+ --accent:#e9b949;
 }
 *{box-sizing:border-box}
 body{
-  margin:0;
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
+ margin:0;
+ min-height:100vh;
+ background:radial-gradient(circle at top right,#30220b,#0b0b0b 45%);
+ color:var(--text);
+ font-family:Arial,Helvetica,sans-serif;
+ display:flex;
+ align-items:center;
+ justify-content:center;
 }
-.ccc-card{
-  width:min(430px,90vw);
-  background:var(--card);
-  border-radius:24px;
-  padding:35px 28px;
-  text-align:center;
+.wrapper{
+ width:100%;
+ max-width:900px;
+ padding:24px;
+}
+.header{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:25px;
 }
 .logo{
-  font-size:42px;
-  font-weight:700;
+ font-size:42px;
+ font-weight:800;
+ color:var(--accent);
 }
-.subtitle{
-  color:var(--muted);
+.steps{
+ color:var(--muted);
+}
+.card{
+ background:rgba(30,30,30,.95);
+ border-radius:28px;
+ padding:45px 35px;
+ max-width:620px;
+ margin:auto;
+ box-shadow:0 20px 60px rgba(0,0,0,.4);
 }
 .step{
-  margin-top:20px;
-  font-size:13px;
-  color:var(--muted);
+ color:var(--accent);
+ font-size:14px;
+ margin-bottom:15px;
+}
+h1{
+ font-size:36px;
+ margin:0 0 15px;
+}
+h2{
+ font-size:28px;
+}
+p{
+ font-size:18px;
+ line-height:1.5;
+ color:var(--muted);
+}
+input{
+ width:100%;
+ padding:18px;
+ font-size:18px;
+ border-radius:14px;
+ border:1px solid #555;
+ background:#111;
+ color:#fff;
+ margin:20px 0;
 }
 button{
-  width:100%;
-  padding:15px;
-  margin-top:12px;
-  border:0;
-  border-radius:14px;
-  font-size:16px;
+ width:100%;
+ min-height:55px;
+ border-radius:15px;
+ border:0;
+ font-size:18px;
+ margin-top:14px;
+ cursor:pointer;
 }
 .primary{
-  background:var(--button);
-  color:var(--buttonText);
+ background:var(--accent);
+ color:#111;
+ font-weight:bold;
 }
 .secondary{
-  background:#333;
-  color:#fff;
+ background:#333;
+ color:white;
 }
-.info{
-  text-align:left;
-  line-height:1.6;
-  margin-top:20px;
+a{text-decoration:none}
+@media(max-width:600px){
+ .wrapper{padding:15px}
+ .logo{font-size:34px}
+ .card{
+  min-height:60vh;
+  padding:35px 22px;
+ }
+ h1{font-size:30px}
+ p{font-size:17px}
 }
