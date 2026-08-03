@@ -1,8 +1,8 @@
-CCC v0.7.2
-Layoutjustering:
-- mobil först
-- mindre kort
-- mindre padding
-- kompaktare knappar
-- bättre användning av skärmen
-- behåller funktionellt flöde från v0.7.1
+CCC v0.7.3
+Mobil overflow-fix.
+
+Ändring:
+- förhindrar horisontell scroll
+- säkerställer att containers håller sig inom viewport
+- ingen funktionell ändring
+- ingen designändring
