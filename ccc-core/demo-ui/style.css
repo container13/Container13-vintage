@@ -1,19 +1,93 @@
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f4f4f4;color:#222}
-.app-header{height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:#fff;border-bottom:1px solid #ddd}
-.brand{font-size:1.4rem;font-weight:700}
-.theme-toggle{border:0;background:transparent;font-size:1.2rem}
-.app-shell{max-width:480px;margin:auto;padding:30px 20px}
-.view{display:none}
-.view.active{display:block}
-.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
-h1{text-align:center;margin-top:0}
-.card>p{text-align:center;line-height:1.5}
-label{display:block;margin-top:15px;margin-bottom:6px}
-input{width:100%;padding:14px;border:1px solid #ccc;border-radius:10px;font-size:1rem}
-button{width:100%;padding:14px;margin-top:14px;border-radius:10px;font-size:1rem;cursor:pointer}
-.primary{background:#222;color:#fff;border:0}
-.secondary{background:#fff;border:1px solid #aaa}
-.text-button{background:transparent;border:0}
-.hint{font-size:.9rem;color:#666}
-.divider{height:1px;background:#ddd;margin:25px 0}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f4f4f4;
+color:#222;
+}
+
+.app-header{
+height:60px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:0 20px;
+background:#fff;
+border-bottom:1px solid #ddd;
+}
+
+.brand{
+font-size:1.4rem;
+font-weight:700;
+}
+
+.theme-toggle{
+border:0;
+background:transparent;
+font-size:1.2rem;
+}
+
+.app-shell{
+max-width:480px;
+margin:auto;
+padding:30px 20px;
+}
+
+.card{
+background:#fff;
+border-radius:16px;
+padding:28px;
+box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
+h1,h2{
+text-align:center;
+}
+
+p{
+text-align:center;
+line-height:1.5;
+}
+
+label{
+display:block;
+margin-top:12px;
+}
+
+input:not([type="checkbox"]){
+width:100%;
+padding:14px;
+border:1px solid #ccc;
+border-radius:10px;
+font-size:1rem;
+}
+
+button{
+width:100%;
+padding:14px;
+margin-top:14px;
+border-radius:10px;
+font-size:1rem;
+}
+
+.primary{
+background:#222;
+color:#fff;
+border:0;
+}
+
+.secondary{
+background:#fff;
+border:1px solid #aaa;
+}
+
+.extra{
+margin-top:20px;
+padding-top:10px;
+border-top:1px solid #ddd;
+}
+
+.hidden{
+display:none;
+}
