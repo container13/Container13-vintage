@@ -1,0 +1,6 @@
+CCC v0.8.4
+
+Ny onboarding-del:
+Verksamhetsbekräftelse -> Välkommen in -> Din CCC
+
+Första gången får användaren en tydlig introduktion innan arbetsytan.
