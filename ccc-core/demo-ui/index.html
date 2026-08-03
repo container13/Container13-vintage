@@ -9,32 +9,104 @@
 <body>
 
 <header class="app-header">
-<div class="header-inner">
-<div class="brand">CCC</div>
-<button class="theme-toggle">◐</button>
-</div>
+  <div class="header-inner">
+    <div class="brand">CCC</div>
+    <button class="theme-toggle">◐</button>
+  </div>
 </header>
 
 <main class="app-shell">
 
-<section class="view active">
+<section id="welcome" class="view active">
+<div class="card">
+<h1>Välkommen till CCC</h1>
+<p>Gör ditt företag enklare.<br>Din digitala assistent för småföretagare.</p>
+<button class="primary" onclick="show('login')">Logga in</button>
+<button class="secondary" onclick="show('identify')">Skapa nytt företag</button>
+</div>
+</section>
+
+<section id="login" class="view">
+<div class="card">
+<h1>Logga in</h1>
+<label>E-post</label>
+<input>
+<label>Lösenord</label>
+<input type="password">
+<button class="primary">Logga in</button>
+<button class="text" onclick="show('welcome')">Tillbaka</button>
+</div>
+</section>
+
+<section id="identify" class="view">
+<div class="card">
+<h1>Kom igång med CCC</h1>
+<p>Vi hjälper dig hitta dina företagsuppgifter.</p>
+<label>Person- eller organisationsnummer</label>
+<input placeholder="Ange uppgift">
+<p class="hint">Skriv med eller utan bindestreck.</p>
+<button class="primary" onclick="show('found')">Hämta uppgifter</button>
+</div>
+</section>
+
+<section id="found" class="view">
+<div class="card">
+<h1>Vi hittade dina uppgifter 👍</h1>
+<p>Kontrollera uppgifterna innan du fortsätter.</p>
+<div class="info">
+<p><b>🔒 Organisationsnummer</b><br>556123-4567</p>
+<p><b>Företag</b><br>Container13 Test</p>
+<p><b>Kontaktperson</b><br>Test User</p>
+<p><b>E-post</b><br>test@ccc.local</p>
+</div>
+<button class="secondary" onclick="show('edit')">Komplettera uppgifter</button>
+<button class="primary" onclick="show('dashboard')">Spara och fortsätt</button>
+</div>
+</section>
+
+<section id="edit" class="view">
+<div class="card">
+<h1>Komplettera uppgifter</h1>
+<label>Telefon</label><input>
+<label>Adress</label><input>
+<label>Hemsida</label><input>
+<label>Instagram</label><input>
+<label>Facebook</label><input>
+<button class="primary" onclick="show('summary')">Spara ändringar</button>
+</div>
+</section>
+
+<section id="summary" class="view">
+<div class="card">
+<h1>Dina uppgifter</h1>
+<p>Kontrollera allt innan CCC skapas.</p>
+<div class="info">
+<p><b>🔒 Organisationsnummer</b><br>556123-4567</p>
+<p><b>Företag</b><br>Container13 Test</p>
+<p><b>Kontaktperson</b><br>Test User</p>
+</div>
+<button class="secondary" onclick="show('edit')">Ändra uppgifter</button>
+<button class="primary" onclick="show('dashboard')">Spara och fortsätt</button>
+</div>
+</section>
+
+<section id="dashboard" class="view">
 <div class="card">
 <h1>Din CCC</h1>
-<p>Välkommen tillbaka till din digitala assistent.</p>
-
-<div class="dashboard-grid">
-<button class="dash">📸<br>Ta foto</button>
-<button class="dash">➕<br>Nytt plagg</button>
-<button class="dash">📢<br>Marknadsför</button>
-<button class="dash">🔔<br>Bevakningar</button>
-<button class="dash">📊<br>Statistik</button>
-<button class="dash">⚙️<br>Inställningar</button>
+<p>Din digitala assistent för företaget.</p>
+<div class="grid">
+<button>📸<br>Ta foto</button>
+<button>➕<br>Nytt plagg</button>
+<button>📢<br>Marknadsför</button>
+<button>🔔<br>Bevakningar</button>
+<button>📊<br>Statistik</button>
+<button>⚙️<br>Inställningar</button>
 </div>
-
 </div>
 </section>
 
 </main>
 
+<script src="app.js"></script>
 </body>
 </html>
