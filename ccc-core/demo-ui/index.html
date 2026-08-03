@@ -2,32 +2,40 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>CCC Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCC</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="dashboard">
-  <h1>CCC Dashboard</h1>
-  <p class="company">Container13</p>
-
-  <section class="card">
-    <h2>Configuration</h2>
-
-    <label>Status</label>
-    <div class="status">🟢 Aktiv</div>
-
-    <label>Tema</label>
-    <select id="theme">
-      <option value="light">Ljust</option>
-      <option value="dark">Mörkt</option>
-    </select>
-
-    <button id="save">Spara ändringar</button>
-
-    <p id="message"></p>
-  </section>
-</div>
-
+<header class="app-header">
+<div class="logo">CCC</div>
+<button id="themeToggle" class="theme-btn">◐</button>
+</header>
+<main class="app">
+<section id="welcomeView" class="view active">
+<h1>Välkommen till CCC</h1>
+<p>Gör ditt företag enklare.<br>Din digitala assistent för småföretagare.</p>
+<button onclick="showView('loginView')">Logga in</button>
+<button class="secondary" onclick="showView('registerView')">Skapa nytt företag</button>
+</section>
+<section id="loginView" class="view">
+<h1>Logga in</h1>
+<input placeholder="E-post">
+<input placeholder="Lösenord" type="password">
+<button>Logga in</button>
+<button class="link" onclick="showView('welcomeView')">Tillbaka</button>
+</section>
+<section id="registerView" class="view">
+<h1>Skapa ditt företag</h1>
+<input placeholder="Företagsnamn">
+<input placeholder="Organisationsnummer">
+<input placeholder="Kontaktperson">
+<input placeholder="E-post">
+<input placeholder="Lösenord" type="password">
+<button>Skapa konto</button>
+<button class="link" onclick="showView('welcomeView')">Tillbaka</button>
+</section>
+</main>
 <script src="app.js"></script>
 </body>
 </html>

@@ -1,7 +1,1 @@
-const saveButton = document.getElementById("save");
-const theme = document.getElementById("theme");
-const message = document.getElementById("message");
-
-saveButton.addEventListener("click", () => {
-  message.textContent = "Configuration sparad (demo)";
-});
+function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(id).classList.add('active');}document.getElementById('themeToggle').onclick=()=>document.body.classList.toggle('dark');
