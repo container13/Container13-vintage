@@ -9,103 +9,32 @@
 <body>
 
 <header class="app-header">
+<div class="header-inner">
 <div class="brand">CCC</div>
 <button class="theme-toggle">◐</button>
+</div>
 </header>
 
 <main class="app-shell">
 
-<section id="welcomeView" class="view active">
+<section class="view active">
 <div class="card">
-<h1>Välkommen till CCC</h1>
-<p>Gör ditt företag enklare.<br>Din digitala assistent för småföretagare.</p>
-<button class="primary" onclick="showView('loginView')">Logga in</button>
-<button class="secondary" onclick="showView('onboardingView')">Skapa nytt företag</button>
-</div>
-</section>
+<h1>Din CCC</h1>
+<p>Välkommen tillbaka till din digitala assistent.</p>
 
-<section id="loginView" class="view">
-<div class="card">
-<h1>Logga in</h1>
-<label>E-post</label>
-<input type="email">
-<label>Lösenord</label>
-<input type="password">
-<button class="primary">Logga in</button>
-<button class="text-button" onclick="showView('welcomeView')">Tillbaka</button>
-</div>
-</section>
-
-<section id="onboardingView" class="view">
-<div class="card">
-<h1>Kom igång med CCC</h1>
-<p>Vi hjälper dig att hitta dina företagsuppgifter.</p>
-<label>Person- eller organisationsnummer</label>
-<input placeholder="Ange uppgift">
-<p class="hint">Skriv med eller utan bindestreck.</p>
-<button class="primary" onclick="showView('foundView')">Hämta uppgifter</button>
-<button class="text-button" onclick="showView('welcomeView')">Tillbaka</button>
-</div>
-</section>
-
-<section id="foundView" class="view">
-<div class="card">
-<h1>Vi hittade dina uppgifter 👍</h1>
-<p>Kontrollera att allt stämmer innan du fortsätter.</p>
-
-<div class="info-box">
-<p><strong>🔒 Person- eller organisationsnummer</strong><br>556123-4567</p>
-<p><strong>Företag</strong><br>Container13 Test</p>
-<p><strong>Kontaktperson</strong><br>Test User</p>
-<p><strong>E-post</strong><br>test@ccc.local</p>
+<div class="dashboard-grid">
+<button class="dash">📸<br>Ta foto</button>
+<button class="dash">➕<br>Nytt plagg</button>
+<button class="dash">📢<br>Marknadsför</button>
+<button class="dash">🔔<br>Bevakningar</button>
+<button class="dash">📊<br>Statistik</button>
+<button class="dash">⚙️<br>Inställningar</button>
 </div>
 
-<button class="secondary" onclick="showView('editView')">Komplettera uppgifter</button>
-<button class="primary" onclick="showView('summaryView')">Spara och fortsätt</button>
-</div>
-</section>
-
-<section id="editView" class="view">
-<div class="card">
-<h1>Komplettera uppgifter</h1>
-<label>Företagsnamn</label>
-<input value="Container13 Test">
-<label>Kontaktperson</label>
-<input value="Test User">
-<label>Telefon</label>
-<input placeholder="Telefon">
-<label>Adress</label>
-<input placeholder="Adress">
-<label>Hemsida</label>
-<input placeholder="Hemsida">
-<label>Instagram</label>
-<input placeholder="Instagram">
-<label>Facebook</label>
-<input placeholder="Facebook">
-
-<button class="primary" onclick="showView('summaryView')">Spara ändringar</button>
-</div>
-</section>
-
-<section id="summaryView" class="view">
-<div class="card">
-<h1>Dina uppgifter</h1>
-<p>Här ser du allt CCC har hittat och det du själv lagt till.</p>
-
-<div class="info-box">
-<p><strong>🔒 Organisationsnummer</strong><br>556123-4567</p>
-<p><strong>Företag</strong><br>Container13 Test</p>
-<p><strong>Kontaktperson</strong><br>Test User</p>
-<p><strong>E-post</strong><br>test@ccc.local</p>
-</div>
-
-<button class="secondary" onclick="showView('editView')">Ändra uppgifter</button>
-<button class="primary">Spara och fortsätt</button>
 </div>
 </section>
 
 </main>
 
-<script src="app.js"></script>
 </body>
 </html>
