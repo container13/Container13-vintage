@@ -1,0 +1,6 @@
+CCC v0.8.7
+
+Kodändring:
+- Tydligare övergång från onboarding till färdig arbetsyta.
+- Din CCC är klar 🎉 ersätter generell välkomstkänsla.
+- Nästa steg är verksamhetsstyrd arbetsyta.
