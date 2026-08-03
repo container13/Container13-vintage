@@ -1,0 +1,5 @@
+CCC v0.8.3
+Fix:
+- Direkt godkännande av verksamhet går till Välkommen/Din CCC.
+- Kontrollvyn används inte i normalflödet.
+- Kontrollvyn sparas för ändringar/kompletteringar.
