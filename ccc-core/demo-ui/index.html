@@ -10,7 +10,7 @@
 
 <header class="app-header">
   <div class="brand">CCC</div>
-  <button id="themeToggle" class="theme-toggle" aria-label="Byt tema">◐</button>
+  <button id="themeToggle" class="theme-toggle">◐</button>
 </header>
 
 <main class="app-shell">
@@ -28,7 +28,6 @@
 <section id="loginView" class="view">
 <div class="card">
 <h1>Logga in</h1>
-
 <label>E-post</label>
 <input type="email">
 
@@ -43,24 +42,20 @@
 <section id="onboardingView" class="view">
 <div class="card">
 <h1>Kom igång med CCC</h1>
-
-<p>
-Vi hjälper dig att hitta dina företagsuppgifter.
-</p>
+<p>Vi hjälper dig att hitta dina företagsuppgifter.</p>
 
 <label>Person- eller organisationsnummer</label>
 <input id="identifier" placeholder="Ange uppgift">
 
 <p class="hint">Skriv med eller utan bindestreck.</p>
 
-<button class="primary">Hämta uppgifter</button>
+<button class="primary" onclick="lookupDemo()">Hämta uppgifter</button>
 
 <div class="divider"></div>
 
 <p>Vill du testa CCC först utan att ange uppgifter?</p>
 
-<button class="secondary">Skapa testkonto</button>
-
+<button class="secondary" onclick="createTestAccount()">Skapa testkonto</button>
 <button class="text-button" onclick="showView('welcomeView')">Tillbaka</button>
 </div>
 </section>
@@ -68,16 +63,15 @@ Vi hjälper dig att hitta dina företagsuppgifter.
 <section id="resultView" class="view">
 <div class="card">
 <h1>Vi hittade dina uppgifter</h1>
-<p>Här visas framtida företagsinformation som CCC hämtar.</p>
 
 <label>Företagsnamn</label>
-<input>
+<input id="companyName">
 
 <label>Kontaktperson</label>
-<input>
+<input id="contactName">
 
 <label>E-post</label>
-<input>
+<input id="email">
 
 <button class="primary">Fortsätt</button>
 </div>
