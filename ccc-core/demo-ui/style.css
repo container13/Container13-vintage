@@ -40,8 +40,7 @@ body{
  margin-bottom:30px;
 }
 .step{
- width:34px;
- height:34px;
+ width:34px;height:34px;
  border-radius:50%;
  border:2px solid #555;
  display:flex;
@@ -54,12 +53,9 @@ body{
  color:#111;
  border-color:var(--gold);
 }
-.card{
- text-align:center;
-}
 h1{
  font-size:34px;
- margin-bottom:15px;
+ margin:0 0 15px;
 }
 p{
  font-size:18px;
