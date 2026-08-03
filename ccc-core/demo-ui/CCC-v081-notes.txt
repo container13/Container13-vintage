@@ -1,0 +1,6 @@
+CCC v0.8.1 - v0.8.2 UX correction
+
+Sammanslagning:
+- "Vi lär känna ditt företag" och "Vi tror att du driver" blev en vy.
+- Verksamhetsbekräftelse sker en gång.
+- Kontrollvyn används efter kompletteringar.
