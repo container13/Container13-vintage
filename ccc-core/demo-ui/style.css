@@ -1,14 +1,81 @@
 
-/* använder befintlig CCC v1.6-stil - lägg denna fil tillsammans med övriga filer */
+:root{
+ --bg:#090909;
+ --gold:#e6b94f;
+ --text:#fff;
+ --muted:#b8b8b8;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;
+ min-height:100vh;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ background:radial-gradient(circle at top,#30230b,#090909 45%);
+ color:var(--text);
+ font-family:Arial,Helvetica,sans-serif;
+}
+.page{
+ width:min(560px,92vw);
+ text-align:center;
+ padding:30px 20px;
+}
+.logo{
+ font-size:64px;
+ font-weight:900;
+ letter-spacing:5px;
+ color:var(--gold);
+ margin-bottom:5px;
+}
+.motto{
+ color:var(--gold);
+ font-size:16px;
+ margin-bottom:35px;
+}
+.steps{
+ display:flex;
+ justify-content:center;
+ gap:12px;
+ margin-bottom:30px;
+}
+.step{
+ width:34px;
+ height:34px;
+ border-radius:50%;
+ border:2px solid #555;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ color:#aaa;
+}
+.step.active{
+ background:var(--gold);
+ color:#111;
+ border-color:var(--gold);
+}
+h1{
+ font-size:34px;
+ margin:0 0 15px;
+}
+p{
+ font-size:18px;
+ line-height:1.5;
+ color:var(--muted);
+}
 input{
  width:100%;
  padding:18px;
  border-radius:14px;
  border:1px solid #555;
  background:#111;
- color:white;
+ color:#fff;
  font-size:18px;
  margin:20px 0;
+}
+input::placeholder{
+ color:#aaa;
+ opacity:1;
 }
 button{
  width:100%;
@@ -17,6 +84,19 @@ button{
  margin-top:12px;
  font-size:18px;
  border:0;
+ cursor:pointer;
 }
-.primary{background:#e6b94f;color:#111;font-weight:bold;}
-.secondary{background:#171717;color:white;border:1px solid #444;}
+.primary{
+ background:var(--gold);
+ color:#111;
+ font-weight:bold;
+}
+.secondary{
+ background:#171717;
+ color:white;
+ border:1px solid #444;
+}
+.safe{
+ margin-top:20px;
+ color:#aaa;
+}
