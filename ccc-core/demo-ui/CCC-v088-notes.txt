@@ -1,0 +1,5 @@
+CCC v0.8.8
+Tydlig övergång:
+- onboarding ska kännas avslutad
+- Din CCC är klar ska ha egen visuell identitet
+- nästa steg är arbetsytan

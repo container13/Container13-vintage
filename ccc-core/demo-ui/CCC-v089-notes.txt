@@ -1,0 +1,10 @@
+CCC v0.8.9 - login to dashboard flow
+
+Mål:
+- Ny användare:
+  onboarding -> Din CCC är klar -> Öppna min CCC -> Dashboard
+
+- Befintlig användare:
+  login -> Dashboard direkt
+
+Dashboard blir nästa arbetsyta efter autentisering.
