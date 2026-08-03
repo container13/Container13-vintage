@@ -1,5 +1,10 @@
 function showView(id){
-document.querySelectorAll('.view').forEach(v=>v.hidden=true);
-document.getElementById(id).hidden=false;
+document.querySelectorAll('.view').forEach(v=>{
+v.classList.remove('active');
+});
+document.getElementById(id).classList.add('active');
 }
-showView('welcomeView');
+
+document.querySelector('.theme-toggle').onclick=()=>{
+document.body.classList.toggle('dark');
+};
