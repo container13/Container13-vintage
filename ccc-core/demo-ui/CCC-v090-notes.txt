@@ -1,0 +1,6 @@
+CCC v0.9.0
+
+Riktig övergång:
+- onboarding-läge och arbetsyta ska kännas som två olika miljöer
+- Din CCC är klar får egen vy
+- nästa steg: koppla login direkt till dashboard för färdiga användare
