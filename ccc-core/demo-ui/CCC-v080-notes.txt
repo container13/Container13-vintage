@@ -1,0 +1,11 @@
+CCC v0.8.0 - onboarding flow correction
+
+Flöde:
+Identifiering
+-> Företagsprofil/verksamhet
+-> Komplettering vid behov
+-> Kontrollera uppgifter
+-> Skapa CCC
+-> Välkommen in
+
+Mellanvyn används som slutlig kontroll efter ändringar.
