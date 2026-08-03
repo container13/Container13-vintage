@@ -7,14 +7,15 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <header class="app-header">
-<div class="brand">CCC</div>
-<button id="themeToggle" class="theme-toggle">◐</button>
+  <div class="brand">CCC</div>
+  <button id="themeToggle" class="theme-toggle">◐</button>
 </header>
 
 <main class="app-shell">
 
-<section id="welcomeView" class="view active">
+<section id="welcomeView" class="view">
 <div class="card">
 <h1>Välkommen till CCC</h1>
 <p>Gör ditt företag enklare.<br>Din digitala assistent för småföretagare.</p>
@@ -23,11 +24,11 @@
 </div>
 </section>
 
-<section id="loginView" class="view">
+<section id="loginView" class="view" hidden>
 <div class="card">
 <h1>Logga in</h1>
 <label>E-post</label>
-<input>
+<input type="email">
 <label>Lösenord</label>
 <input type="password">
 <button class="primary">Logga in</button>
@@ -35,7 +36,7 @@
 </div>
 </section>
 
-<section id="onboardingView" class="view">
+<section id="onboardingView" class="view" hidden>
 <div class="card">
 <h1>Kom igång med CCC</h1>
 <p>Vi hjälper dig att hitta dina företagsuppgifter.</p>
@@ -50,23 +51,27 @@
 </div>
 </section>
 
-<section id="resultView" class="view">
+<section id="resultView" class="view" hidden>
 <div class="card">
 <h1>Vi hittade dina uppgifter</h1>
 <p>Kontrollera uppgifterna och komplettera om du vill.</p>
+
 <label>Företagsnamn</label>
 <input value="Container13 Test">
+
 <label>Kontaktperson</label>
 <input value="Test User">
+
 <label>E-post</label>
 <input value="test@ccc.local">
 
 <button class="secondary" onclick="toggleMore()">Lägg till fler uppgifter ▾</button>
 
-<div id="moreFields" class="extra hidden">
+<div id="moreFields" class="extra" hidden>
 <h2>Kontakt</h2>
 <label>Telefon</label>
 <input placeholder="Telefon">
+
 <label>Adress</label>
 <input placeholder="Adress">
 
@@ -90,6 +95,7 @@
 </section>
 
 </main>
+
 <script src="app.js"></script>
 </body>
 </html>

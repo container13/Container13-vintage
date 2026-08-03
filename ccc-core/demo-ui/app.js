@@ -1,8 +1,17 @@
-function showView(id){
-document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-document.getElementById(id).classList.add('active');
+function showView(viewId){
+document.querySelectorAll('.view').forEach(view=>{
+view.hidden = true;
+});
+document.getElementById(viewId).hidden = false;
 }
+
 function toggleMore(){
-document.getElementById('moreFields').classList.toggle('hidden');
+document.getElementById('moreFields').hidden =
+!document.getElementById('moreFields').hidden;
 }
-document.getElementById('themeToggle').onclick=()=>document.body.classList.toggle('dark');
+
+showView('welcomeView');
+
+document.getElementById('themeToggle').onclick=()=>{
+document.body.classList.toggle('dark');
+};
