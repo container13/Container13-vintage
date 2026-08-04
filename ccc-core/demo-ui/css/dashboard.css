@@ -1,90 +1,76 @@
 :root{
- --bg:#f6f3ec;
- --card:#ffffff;
- --gold:#c89b3c;
- --text:#222;
- --muted:#666;
+--bg:#f7f3ea;
+--card:#fff;
+--gold:#c89b3c;
+--text:#222;
+--muted:#666;
 }
-
 *{box-sizing:border-box}
-
 body{
- margin:0;
- min-height:100vh;
- background:var(--bg);
- color:var(--text);
- font-family:Arial, sans-serif;
+margin:0;
+min-height:100vh;
+background:var(--bg);
+color:var(--text);
+font-family:Arial,sans-serif;
 }
-
 .workspace{
- width:min(900px,94vw);
- margin:auto;
- padding:30px 20px;
+width:min(960px,92vw);
+margin:auto;
+padding:42px 20px;
 }
-
 .topbar{
- display:flex;
- justify-content:space-between;
- align-items:center;
+display:flex;
+justify-content:space-between;
+align-items:center;
 }
-
 .logo{
- font-size:56px;
- font-weight:900;
- letter-spacing:5px;
- color:var(--gold);
+font-size:52px;
+font-weight:900;
+letter-spacing:5px;
+color:var(--gold);
 }
-
-.icons{
- font-size:24px;
+.icons{font-size:22px}
+.workspace-head{margin-top:28px}
+.workspace-head h1{font-size:34px;margin:0 0 8px}
+.workspace-head p{color:var(--muted)}
+.hero{
+margin:42px 0 24px;
 }
-
-.company{
- margin-top:35px;
+.hero h2{font-size:28px;margin-bottom:8px}
+.hero p{color:var(--muted)}
+.quick-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:18px;
 }
-
-.company p{
- color:var(--muted);
+.quick-grid button,.summary button{
+background:var(--card);
+border:1px solid #eee;
+border-radius:22px;
+padding:28px;
+box-shadow:0 8px 25px rgba(0,0,0,.07);
+cursor:pointer;
+color:var(--text);
 }
-
-.welcome{
- margin:40px 0 20px;
+.quick-grid strong{
+display:block;
+font-size:34px;
+margin-bottom:12px;
 }
-
-.actions{
- display:grid;
- grid-template-columns:repeat(2,1fr);
- gap:18px;
+.quick-grid span{
+display:block;
+font-size:20px;
+font-weight:bold;
 }
-
-.actions button,.bottom button{
- background:var(--card);
- border:0;
- border-radius:22px;
- box-shadow:0 8px 25px rgba(0,0,0,.08);
- min-height:130px;
- font-size:34px;
- cursor:pointer;
+.quick-grid small{
+display:block;
+margin-top:8px;
+color:var(--muted);
 }
-
-.actions span{
- display:block;
- font-size:18px;
- margin-top:12px;
-}
-
-.bottom{
- display:grid;
- grid-template-columns:1fr 1fr;
- gap:18px;
- margin-top:25px;
-}
-
-.bottom button{
- min-height:60px;
- font-size:17px;
-}
-
+.summary{margin-top:28px}
+.summary div{display:flex;gap:15px}
+.summary button{flex:1;padding:16px}
 @media(max-width:600px){
- .logo{font-size:44px}
+.workspace{width:100%;padding:24px 16px}
+.quick-grid{grid-template-columns:1fr}
 }
