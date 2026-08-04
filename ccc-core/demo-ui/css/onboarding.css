@@ -1,0 +1,23 @@
+
+/* CCC onboarding styles */
+.steps{
+ display:flex;
+ justify-content:center;
+ gap:12px;
+ margin-bottom:30px;
+}
+.step{
+ width:34px;
+ height:34px;
+ border-radius:50%;
+ border:2px solid #555;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ color:#aaa;
+}
+.active{
+ background:#e6b94f;
+ color:#111;
+ border-color:#e6b94f;
+}
