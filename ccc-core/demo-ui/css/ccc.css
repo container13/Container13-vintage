@@ -1,11 +1,10 @@
 
-*{box-sizing:border-box}
-body{margin:0;background:#f7f4ee;color:#222;font-family:Arial,sans-serif}
-.page{max-width:520px;margin:auto;padding:28px 18px;text-align:center}
-.top{display:flex;justify-content:center;align-items:center;position:relative}
-.profile{position:absolute;right:0;border:0;background:white;border-radius:50%;font-size:22px;padding:10px}
-.workspace{font-size:18px;margin-bottom:30px}
-.card{display:block;background:white;border-radius:18px;padding:22px;margin:14px 0;text-decoration:none;color:#222;font-size:18px}
-.menu{display:none;position:absolute;right:18px;top:70px;background:white;border-radius:16px;padding:18px;text-align:left;box-shadow:0 5px 20px #0002;z-index:5}
-.menu a{display:block;padding:10px;text-decoration:none;color:#222}
+body{margin:0;background:#f7f4ee;font-family:Arial;color:#222}
+.page{max-width:520px;margin:auto;padding:40px 18px;text-align:center}
+.input{width:100%;padding:16px;margin:8px 0;border-radius:16px;border:1px solid #ccc}
+.password{position:relative}
+.password button{position:absolute;right:8px;top:15px}
+.login,.card{display:block;width:100%;padding:18px;margin:14px 0;border-radius:16px;border:0;text-decoration:none;background:#c79b45;color:white}
+.card{background:white;color:#222}
+.menu{display:none;position:absolute;right:20px;background:white;padding:18px;border-radius:16px}
 .menu.show{display:block}
