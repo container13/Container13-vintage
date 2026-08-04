@@ -4,6 +4,9 @@ body{margin:0;background:#f7f4ee;color:#222;font-family:Arial,sans-serif}
 .page{max-width:520px;margin:auto;padding:32px 18px;text-align:center}
 h1{font-size:38px}
 input{width:100%;padding:16px;margin:8px 0;border-radius:14px;border:1px solid #ccc}
+.password{display:flex;gap:8px}
+.password button{border:0;border-radius:14px;background:white;padding:0 18px}
 .action,.card,.small,.upload{display:block;background:white;padding:18px;border-radius:16px;margin:14px 0;text-decoration:none;color:#222}
+.primary{background:#c79b45;color:white}
 .upload{border:2px dashed #c79b45}
 .workspace{font-size:18px}
