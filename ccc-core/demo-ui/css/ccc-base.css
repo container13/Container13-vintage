@@ -1,14 +1,5 @@
-:root{
---bg:#f6f3ed;
---card:#fff;
---text:#222;
---muted:#666;
---accent:#b78b55;
-}
+:root{--bg:#f6f3ed;--card:#fff;--text:#222;--accent:#b78b55;--muted:#666}
 *{box-sizing:border-box}
-body{
-margin:0;
-background:var(--bg);
-color:var(--text);
-font-family:Arial,Helvetica,sans-serif;
-}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
+button,.primary,.secondary{font:inherit;cursor:pointer}
+.page{width:min(100%,600px);margin:auto;padding:24px 16px;text-align:center}
