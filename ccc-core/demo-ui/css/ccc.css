@@ -1,11 +1,8 @@
 
-*{box-sizing:border-box}
-body{margin:0;background:#f7f4ee;color:#222;font-family:Arial,sans-serif}
-.page{max-width:520px;margin:auto;padding:32px 18px;text-align:center}
-input{width:100%;padding:16px;margin:8px 0;border-radius:14px;border:1px solid #ccc}
-.password{display:flex;gap:8px}
-.password input{flex:1}
-.password button{border:0;background:white;border-radius:14px}
-.action,.small{display:block;background:white;padding:18px;border-radius:16px;margin:14px 0;text-decoration:none;color:#222}
-.primary{background:#c79b45;color:white}
-.workspace{font-size:18px}
+body{margin:0;background:#f7f4ee;color:#222;font-family:Arial}
+.page{max-width:520px;margin:auto;padding:50px 18px;text-align:center}
+.input{width:100%;padding:17px;border-radius:16px;border:1px solid #ccc;margin:8px 0;font-size:16px}
+.password{position:relative}
+.password button{position:absolute;right:8px;top:16px;border:0;background:white;border-radius:10px}
+.login{display:block;background:#c79b45;color:white;padding:18px;border-radius:16px;margin-top:22px;text-decoration:none}
+.forgot{display:block;margin-top:18px;color:#555}
