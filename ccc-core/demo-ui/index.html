@@ -1,11 +1,35 @@
-<!doctype html><html lang='sv'><head><meta charset='utf-8'><link rel='stylesheet' href='style.css'></head><body>
-<div class="page">
-<div class="logo">CCC</div>
-<div class="motto">Muskelkraft med små medel.</div>
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<title>CCC Dashboard</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/core.css">
+<link rel="stylesheet" href="css/onboarding.css">
+</head>
+<body>
+<div class="dashboard">
+  <h1>CCC Dashboard</h1>
+  <p class="company">Container13</p>
 
-<h1>CCC gör det enklare.</h1>
-<p>Din digitala assistent som hjälper dig skapa struktur, tid och kontroll över det viktiga.</p>
-<a href="onboarding.html"><button class="primary">🚀 Kom igång →</button></a>
-<button class="secondary">↪ Logga in</button>
-<button class="secondary">ⓘ Varför CCC?</button>
-</div></body></html>
+  <section class="card">
+    <h2>Configuration</h2>
+
+    <label>Status</label>
+    <div class="status">🟢 Aktiv</div>
+
+    <label>Tema</label>
+    <select id="theme">
+      <option value="light">Ljust</option>
+      <option value="dark">Mörkt</option>
+    </select>
+
+    <button id="save">Spara ändringar</button>
+
+    <p id="message"></p>
+  </section>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
