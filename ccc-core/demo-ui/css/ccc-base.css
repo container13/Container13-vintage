@@ -2,7 +2,6 @@
 body{margin:0;background:#f7f4ee;color:#222;font-family:Arial,sans-serif}
 .page{max-width:520px;margin:auto;padding:40px 18px;text-align:center}
 h1{font-size:38px}
-.btn{display:block;width:100%;padding:16px;border-radius:16px;margin:14px 0;text-decoration:none;border:0;background:white;color:#222;font-size:16px}
+.btn{display:block;width:100%;padding:16px;border-radius:16px;margin:14px 0;text-decoration:none;background:white;color:#222}
 .primary{background:#c79b45;color:white}
 input{width:100%;padding:16px;border-radius:14px;border:1px solid #bbb;font-size:16px}
-.card{background:white;border-radius:18px;padding:20px;text-align:left}
