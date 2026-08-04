@@ -1,0 +1,28 @@
+/* CCC Dashboard - egen arbetsyta CSS */
+/* Byggs separat från onboarding */
+
+.workspace{
+  width:min(760px,92vw);
+  margin:auto;
+  padding:30px 20px;
+}
+
+.app-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:35px;
+}
+
+.header-actions{
+  font-size:24px;
+}
+
+.dashboard-grid{
+  display:grid;
+  gap:16px;
+}
+
+.dashboard-card{
+  min-height:90px;
+}
