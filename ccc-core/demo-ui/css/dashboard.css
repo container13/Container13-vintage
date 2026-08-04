@@ -1,30 +1,75 @@
-.workspace{
- width:min(760px,92vw);
- padding:30px 20px;
+.dashboard{
+ width:min(900px,94vw);
+ padding:25px;
 }
 
-.app-header{
+.dashboard-header{
  display:flex;
  justify-content:space-between;
  align-items:center;
- margin-bottom:35px;
+ margin-bottom:30px;
 }
 
-.header-actions{
+.actions{
+ display:flex;
+ gap:14px;
  font-size:24px;
- color:var(--gold);
 }
 
 .company{
- border-bottom:1px solid #333;
  padding-bottom:20px;
+ border-bottom:1px solid #333;
 }
 
 .welcome{
- margin:35px 0;
+ margin:35px 0 20px;
 }
 
-.dashboard-grid{
+.quick-actions{
  display:grid;
- gap:16px;
+ grid-template-columns:repeat(2,1fr);
+ gap:18px;
+}
+
+.action-card{
+ min-height:130px;
+ background:#171717;
+ border:1px solid #333;
+ border-radius:22px;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ gap:12px;
+ color:white;
+ text-decoration:none;
+ font-size:20px;
+}
+
+.action-card strong{
+ font-size:38px;
+}
+
+.bottom-actions{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:15px;
+ margin-top:25px;
+}
+
+.bottom-actions button{
+ background:#171717;
+ color:white;
+ border:1px solid #444;
+ min-height:55px;
+ border-radius:15px;
+}
+
+@media(max-width:600px){
+ .quick-actions{
+  grid-template-columns:1fr 1fr;
+ }
+ .dashboard{
+  padding:20px 15px;
+ }
 }
