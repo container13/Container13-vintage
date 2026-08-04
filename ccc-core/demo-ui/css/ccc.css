@@ -5,6 +5,7 @@ body{margin:0;background:#f7f4ee;color:#222;font-family:Arial,sans-serif}
 input{width:100%;padding:16px;margin:8px 0;border-radius:14px;border:1px solid #ccc}
 .password{display:flex;gap:8px}
 .password input{flex:1}
-.password button{border:0;background:white;border-radius:14px;padding:0 18px}
+.password button{border:0;background:white;border-radius:14px}
 .action,.small{display:block;background:white;padding:18px;border-radius:16px;margin:14px 0;text-decoration:none;color:#222}
 .primary{background:#c79b45;color:white}
+.workspace{font-size:18px}
