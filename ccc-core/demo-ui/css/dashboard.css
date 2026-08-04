@@ -1,1 +1,30 @@
-/* CCC dashboard styles */
+.workspace{
+ width:min(760px,92vw);
+ padding:30px 20px;
+}
+
+.app-header{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:35px;
+}
+
+.header-actions{
+ font-size:24px;
+ color:var(--gold);
+}
+
+.company{
+ border-bottom:1px solid #333;
+ padding-bottom:20px;
+}
+
+.welcome{
+ margin:35px 0;
+}
+
+.dashboard-grid{
+ display:grid;
+ gap:16px;
+}
