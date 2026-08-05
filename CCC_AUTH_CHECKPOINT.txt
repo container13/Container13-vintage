@@ -1,0 +1,14 @@
+CCC Auth checkpoint
+
+Testat:
+- Firebase login OK
+- Fel lösenord OK
+- Glömt lösenord OK
+
+Kvar att verifiera:
+- Tomma fält
+- Session/refresh
+- Direkt dashboard utan login
+
+Design:
+Glömt lösenord ska vara synlig från start som diskret länk.
