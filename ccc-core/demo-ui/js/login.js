@@ -10,6 +10,7 @@ const togglePassword = document.getElementById("togglePassword");
 let lastPasswordValue = password.value;
 let lastUserPasswordInputAt = 0;
 let autofillCheckTimer;
+let autofillWatchTimer;
 const rememberedEmailKey = "ccc:last-successful-login-email";
 
 function getRememberedEmail() {
@@ -63,24 +64,48 @@ function checkForAutofilledPassword() {
   const valueChanged = password.value !== lastPasswordValue;
   const changedByRecentTyping = Date.now() - lastUserPasswordInputAt < 250;
 
-  if (valueChanged && !changedByRecentTyping) {
+  // Chrome kan fylla lösenord utan att skicka input/change.
+  // Därför kompletterar vi även när ett lösenord finns och e-postadressen
+  // fortfarande bara är början av den senast lyckade adressen.
+  if (password.value && !changedByRecentTyping) {
     completeRememberedEmailAfterPasswordAutofill();
+  }
 
-    if (password.type === "text") {
-      hidePassword();
-    }
+  if (valueChanged && !changedByRecentTyping && password.type === "text") {
+    hidePassword();
   }
 
   lastPasswordValue = password.value;
 }
 
+function stopAutofillWatch() {
+  clearInterval(autofillWatchTimer);
+  autofillWatchTimer = undefined;
+}
+
+function startAutofillWatch() {
+  stopAutofillWatch();
+
+  const startedAt = Date.now();
+
+  // Bevaka en kort stund medan Chromes lösenordsmeny används.
+  // Detta fångar även autofyll som inte avfyrar vanliga DOM-event.
+  autofillWatchTimer = setInterval(() => {
+    checkForAutofilledPassword();
+
+    if (Date.now() - startedAt >= 5000) {
+      stopAutofillWatch();
+    }
+  }, 100);
+}
+
 function scheduleAutofillCheck() {
   clearTimeout(autofillCheckTimer);
 
-  // Chrome kan fylla lösenordet strax efter e-postfältet.
-  [0, 60, 180].forEach((delay) => {
-    autofillCheckTimer = setTimeout(checkForAutofilledPassword, delay);
-  });
+  autofillCheckTimer = setTimeout(checkForAutofilledPassword, 0);
+  setTimeout(checkForAutofilledPassword, 80);
+  setTimeout(checkForAutofilledPassword, 250);
+  startAutofillWatch();
 }
 
 hidePassword();
@@ -108,6 +133,9 @@ password.addEventListener("input", (event) => {
 email.addEventListener("input", scheduleAutofillCheck);
 email.addEventListener("change", scheduleAutofillCheck);
 password.addEventListener("change", checkForAutofilledPassword);
+password.addEventListener("focus", startAutofillWatch);
+password.addEventListener("pointerdown", startAutofillWatch);
+password.addEventListener("click", startAutofillWatch);
 
 // Återställ alltid säkert läge när sidan återkommer från cache eller bakgrund.
 window.addEventListener("pageshow", () => {
@@ -146,6 +174,7 @@ async function login() {
   try {
     await signInWithEmailAndPassword(auth, email.value, password.value);
     rememberEmail(email.value);
+    stopAutofillWatch();
     location.href = "dashboard.html";
   } catch (e) {
     hidePassword();
