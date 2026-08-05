@@ -1,3 +1,16 @@
+==================================================
+VIKTIGASTE REGELN
+==================================================
+
+Mycket snack och lite verkstad vill vi inte ha.
+
+- Prioritera att lösa uppgiften framför långa förklaringar.
+- Undvik upprepningar.
+- Beskriv planen kort och genomför sedan arbetet.
+- Resonera bara så mycket som behövs.
+- Leverera resultat.
+
+
 CCC arbetsinstruktioner
 
 Senaste beslut:
