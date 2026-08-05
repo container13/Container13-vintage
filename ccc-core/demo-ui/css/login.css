@@ -70,3 +70,6 @@ input{
 }
 
 #resetPassword{border:0;background:none;cursor:pointer;padding:0;}
+
+
+.forgot-password{display:block;width:fit-content;margin:16px auto 0;text-align:center;}
