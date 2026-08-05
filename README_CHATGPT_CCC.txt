@@ -11,6 +11,29 @@ Mycket snack och lite verkstad vill vi inte ha.
 - Leverera resultat.
 
 
+==================================================
+LEVERANSKONTROLL
+==================================================
+
+En leverans är inte klar förrän innehållet är kontrollerat.
+
+- Det som utlovats ska faktiskt finnas med.
+- Alla ändrade filer ska finnas i ZIP:en med endast ändrade filer.
+- Komplett ZIP ska innehålla samma ändringar.
+- Filstruktur och sökvägar ska vara korrekta.
+- Versionsnummer och cachebrytning ska uppdateras när det behövs.
+
+Kontrollera först. Leverera sedan.
+
+==================================================
+LEVERANSSTANDARD
+==================================================
+
+- Leverera normalt en komplett projekt-ZIP och en ZIP med endast ändrade filer.
+- ZIP:en med ändrade filer ska spegla projektets mappstruktur.
+- Varje levererad mapp ska även innehålla README_FOLDER.txt för enklare filöverföring.
+
+
 CCC arbetsinstruktioner
 
 Senaste beslut:
@@ -34,3 +57,9 @@ Dashboard/designbeslut 2026-08-05:
 - Permanent CCC-header på alla framtida vyer: CCC med gloria som hemknapp, direkt temaväxling och användarknapp.
 - Startvyn prioriterar Ta foto, Nytt plagg och Mer.
 - Dashboardens grundvy ska normalt rymmas utan sidscroll på mobil; innehållsrika moduler får egen paginering eller kontrollerad scroll.
+
+Dashboard/designbeslut 2026-08-05 – komplettering:
+- Mobilens dashboard ska vara låst i höjd och inte kunna dras upp eller ned när innehållet ryms.
+- Text och tryckytor i mobilens primära kort ska vara tydligt stora.
+- På stor skärm ska CCC-loggan vara stor och centrerad; tema och användare ska ligga längst ut till höger.
+- Desktopkorten får använda betydligt mer yta och större innehåll än mobilkorten.
