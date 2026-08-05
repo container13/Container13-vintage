@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f7f7f9">
 <title>CCC Dashboard</title>
-<link rel="stylesheet" href="css/dashboard.css?v=1.1">
+<link rel="stylesheet" href="css/dashboard.css?v=1.2">
 </head>
 <body>
 <div class="app-shell">
@@ -47,19 +47,19 @@
       </div>
 
       <nav class="primary-actions" aria-label="Primära val">
-        <a class="action-card action-photo" href="nyinkommet.html?action=camera">
+        <button id="addImagesBtn" class="action-card action-photo" type="button">
           <span class="action-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M4 8h3l1.4-2h7.2L17 8h3v11H4V8Zm8 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/></svg>
           </span>
-          <span class="action-copy"><strong>Ta foto</strong><small>Ta bilder på nya plagg</small></span>
+          <span class="action-copy"><strong>Lägg till bilder</strong><small>Ta foto eller välj befintliga bilder</small></span>
           <span class="action-arrow" aria-hidden="true">›</span>
-        </a>
+        </button>
 
-        <a class="action-card action-item" href="nyinkommet.html?action=new">
+        <a class="action-card action-item" href="publicera.html">
           <span class="action-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/></svg>
           </span>
-          <span class="action-copy"><strong>Nytt plagg</strong><small>Lägg till ett nytt plagg</small></span>
+          <span class="action-copy"><strong>Publicera</strong><small>Välj bilder och publiceringskanaler</small></span>
           <span class="action-arrow" aria-hidden="true">›</span>
         </a>
 
@@ -71,6 +71,45 @@
           <span class="action-arrow" aria-hidden="true">›</span>
         </button>
       </nav>
+    </section>
+
+
+    <section id="addImagesView" class="dashboard-view" aria-labelledby="addImagesTitle" hidden>
+      <div class="subview-heading">
+        <button id="backFromImagesBtn" class="back-button" type="button" aria-label="Tillbaka">‹</button>
+        <div><h1 id="addImagesTitle">Lägg till bilder</h1><p>Välj hur bilderna ska läggas till</p></div>
+      </div>
+
+      <div class="primary-actions" aria-label="Sätt att lägga till bilder">
+        <button id="cameraChoiceBtn" class="action-card action-photo" type="button">
+          <span class="action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 8h3l1.4-2h7.2L17 8h3v11H4V8Zm8 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/></svg>
+          </span>
+          <span class="action-copy"><strong>Ta foto</strong><small>Öppna kameran och fotografera</small></span>
+          <span class="action-arrow" aria-hidden="true">›</span>
+        </button>
+
+        <button id="albumChoiceBtn" class="action-card action-item" type="button">
+          <span class="action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4V5Zm3 11 3.5-4 2.5 3 2-2 2 3H7Zm9-7h.01"/></svg>
+          </span>
+          <span class="action-copy"><strong>Välj från album</strong><small>Välj en eller flera sparade bilder</small></span>
+          <span class="action-arrow" aria-hidden="true">›</span>
+        </button>
+
+        <button id="filesChoiceBtn" class="action-card action-more" type="button">
+          <span class="action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 7h7l2 2h9v10H3V7Z"/></svg>
+          </span>
+          <span class="action-copy"><strong>Välj filer</strong><small>Hämta bilder från enheten</small></span>
+          <span class="action-arrow" aria-hidden="true">›</span>
+        </button>
+      </div>
+
+      <p id="imageSelectionStatus" class="selection-status" role="status" aria-live="polite" hidden></p>
+      <input id="cameraInput" class="visually-hidden" type="file" accept="image/*" capture="environment">
+      <input id="albumInput" class="visually-hidden" type="file" accept="image/*" multiple>
+      <input id="filesInput" class="visually-hidden" type="file" accept="image/*" multiple>
     </section>
 
     <section id="moreView" class="dashboard-view" aria-labelledby="moreTitle" hidden>
@@ -111,6 +150,6 @@
   </div>
 </div>
 
-<script type="module" src="js/app.js?v=1.0"></script>
+<script type="module" src="js/app.js?v=1.2"></script>
 </body>
 </html>
