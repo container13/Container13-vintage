@@ -10,7 +10,7 @@ document.getElementById("togglePassword").onclick = () => {
   password.type = password.type === "password" ? "text" : "password";
 };
 
-document.getElementById("loginButton").onclick = async () => {
+async function login() {
   message.textContent = "";
 
   if (!email.value) {
@@ -29,7 +29,19 @@ document.getElementById("loginButton").onclick = async () => {
   } catch (e) {
     message.textContent = "Fel e-post eller lösenord. Försök igen.";
   }
-};
+}
+
+document.getElementById("loginButton").onclick = login;
+
+// Tillåt Enter för att logga in
+[email, password].forEach((field) => {
+  field.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      login();
+    }
+  });
+});
 
 resetButton.onclick = async () => {
   message.textContent = "";
