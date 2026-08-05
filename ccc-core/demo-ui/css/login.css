@@ -68,3 +68,5 @@ input{
  text-decoration:none;
  font-size:14px;
 }
+
+#resetPassword{border:0;background:none;cursor:pointer;padding:0;}
