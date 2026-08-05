@@ -55,7 +55,7 @@ Dashboard/designbeslut 2026-08-05:
 - Högst tre primära val per vy.
 - Små dagliga vyer byts inom dashboarden; större arbetsflöden kan vara egna sidor.
 - Permanent CCC-header på alla framtida vyer: CCC med gloria som hemknapp, direkt temaväxling och användarknapp.
-- Startvyn prioriterar Ta foto, Nytt plagg och Mer.
+- Startvyn prioriterar Lägg till bilder, Publicera och Mer.
 - Dashboardens grundvy ska normalt rymmas utan sidscroll på mobil; innehållsrika moduler får egen paginering eller kontrollerad scroll.
 
 Dashboard/designbeslut 2026-08-05 – komplettering:
@@ -63,3 +63,9 @@ Dashboard/designbeslut 2026-08-05 – komplettering:
 - Text och tryckytor i mobilens primära kort ska vara tydligt stora.
 - På stor skärm ska CCC-loggan vara stor och centrerad; tema och användare ska ligga längst ut till höger.
 - Desktopkorten får använda betydligt mer yta och större innehåll än mobilkorten.
+
+Dashboard/arbetsflödesbeslut 2026-08-05:
+- Lägg till bilder samlar både kamera, album och filval i samma vy.
+- Bilder ska först hamna i en framtida Inkorg/utkast och inte publiceras automatiskt.
+- Publicera ska senare låta användaren välja bilder, text och anslutna publiceringskanaler.
+- Anslutning av webbplats, Instagram, Facebook, Google Företagsprofil och andra kanaler hör hemma under Inställningar.
