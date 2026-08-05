@@ -219,3 +219,41 @@ button{color:inherit}
   .image-meta strong{font-size:19px}.image-meta small{font-size:15px}
   .detail-form{max-width:760px;margin:0 auto}
 }
+
+
+/* Dashboard Mobile 1.4 – Mina bilder */
+#addImagesView .primary-actions{gap:18px}
+#addImagesView .action-card{min-height:96px;padding-top:14px;padding-bottom:14px}
+#addImagesView .action-copy{gap:0}
+#addImagesView .action-copy strong{font-size:23px}
+
+.images-grid{grid-template-columns:1fr;gap:10px}
+.image-card{min-height:92px;border-radius:18px;overflow:visible}
+.image-open{display:grid;grid-template-columns:84px minmax(0,1fr);align-items:center;min-height:92px;padding:8px 54px 8px 8px}
+.image-thumb{width:84px;height:76px;aspect-ratio:auto;border-radius:13px;object-fit:cover}
+.image-meta{padding:6px 8px 6px 14px;align-content:center}
+.image-meta strong{font-size:17px}
+.image-meta small{font-size:14px}
+.image-select-wrap{left:auto;right:12px;top:50%;transform:translateY(-50%);box-shadow:none;background:transparent}
+
+@media (max-width:480px){
+  #addImagesView{padding-top:2px}
+  #addImagesView .subview-heading{margin-bottom:18px}
+  #addImagesView .primary-actions{grid-template-rows:repeat(3,minmax(86px,1fr));gap:15px}
+  #addImagesView .action-card{grid-template-columns:58px 1fr auto;border-radius:21px;padding:12px 15px}
+  #addImagesView .action-icon{width:58px;height:58px}
+  #addImagesView .action-icon svg{width:29px;height:29px}
+  #addImagesView .action-copy strong{font-size:22px}
+  .images-grid{padding-bottom:4px}
+}
+
+@media (min-width:760px){
+  #addImagesView .primary-actions{grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+  #addImagesView .action-card{min-height:240px}
+  #addImagesView .action-copy strong{font-size:32px}
+  .images-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .image-open{grid-template-columns:110px minmax(0,1fr);min-height:118px;padding:10px 60px 10px 10px}
+  .image-thumb{width:110px;height:98px}
+  .image-meta strong{font-size:20px}
+  .image-meta small{font-size:16px}
+}
