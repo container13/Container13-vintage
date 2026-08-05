@@ -11,11 +11,11 @@
 <h1>CCC</h1>
 <p>Välkommen tillbaka</p>
 
-<form id="loginForm">
-<input id="email" type="email" placeholder="E-post">
+<form id="loginForm" autocomplete="on">
+<input id="email" name="username" type="email" placeholder="E-post" autocomplete="username" inputmode="email" autocapitalize="none" spellcheck="false">
 
 <div class="password-wrap">
-<input id="password" type="password" placeholder="Lösenord">
+<input id="password" name="password" type="password" placeholder="Lösenord" autocomplete="current-password">
 <button id="togglePassword" type="button">👁</button>
 </div>
 
