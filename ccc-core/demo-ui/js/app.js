@@ -114,7 +114,7 @@ albumChoiceBtn?.addEventListener("click",()=>albumInput?.click());
 filesChoiceBtn?.addEventListener("click",()=>filesInput?.click());
 
 function imageLabel(item){
-  return item.title?.trim() || "Namnlös bild";
+  return item.title?.trim() || "Namnlös";
 }
 
 function selectedItems(){
@@ -147,7 +147,7 @@ function renderImages(){
       </label>
       <button class="image-open" type="button">
         <img class="image-thumb" src="${item.url}" alt="${imageLabel(item)}">
-        <span class="image-meta"><strong>${imageLabel(item)}</strong><small>${item.title?"Sparad":"Tryck för att fylla i"}</small></span>
+        <span class="image-meta"><strong>${imageLabel(item)}</strong><small>${item.title?"Klar":"Komplettera"}</small></span>
       </button>`;
     card.querySelector(".image-select")?.addEventListener("change",(event)=>{
       item.selected=event.target.checked;
