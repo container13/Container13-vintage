@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f7f7f9">
 <title>CCC Dashboard</title>
-<link rel="stylesheet" href="css/dashboard.css?v=1.2">
+<link rel="stylesheet" href="css/dashboard.css?v=1.3">
 </head>
 <body>
 <div class="app-shell">
@@ -112,6 +112,47 @@
       <input id="filesInput" class="visually-hidden" type="file" accept="image/*" multiple>
     </section>
 
+    <section id="imagesView" class="dashboard-view images-view" aria-labelledby="imagesTitle" hidden>
+      <div class="subview-heading images-heading">
+        <button id="backFromGalleryBtn" class="back-button" type="button" aria-label="Tillbaka">‹</button>
+        <div><h1 id="imagesTitle">Bilder</h1><p id="imagesCount">0 bilder</p></div>
+      </div>
+
+      <div id="imagesEmpty" class="empty-state">
+        <div class="empty-icon" aria-hidden="true">▧</div>
+        <h2>Inga bilder ännu</h2>
+        <p>Lägg till bilder med kameran, albumet eller filer.</p>
+        <button id="emptyAddBtn" class="button-primary empty-add" type="button">Lägg till bilder</button>
+      </div>
+
+      <div id="imagesContent" class="images-content" hidden>
+        <div class="images-toolbar">
+          <label class="select-all"><input id="selectAllImages" type="checkbox"> <span>Markera alla</span></label>
+          <span id="selectedCount">0 markerade</span>
+        </div>
+        <div id="imagesGrid" class="images-grid" aria-live="polite"></div>
+        <button id="publishSelectedBtn" class="publish-bar" type="button" disabled>Publicera</button>
+      </div>
+    </section>
+
+    <section id="imageDetailView" class="dashboard-view detail-view" aria-labelledby="imageDetailTitle" hidden>
+      <div class="subview-heading">
+        <button id="backFromDetailBtn" class="back-button" type="button" aria-label="Tillbaka">‹</button>
+        <div><h1 id="imageDetailTitle">Bild</h1><p>Fyll i det viktigaste</p></div>
+      </div>
+      <form id="imageDetailForm" class="detail-form">
+        <img id="detailPreview" class="detail-preview" alt="Vald bild">
+        <label>Titel<input id="detailTitle" name="title" type="text" placeholder="Till exempel Levi's 501"></label>
+        <label>Märke<input id="detailBrand" name="brand" type="text" placeholder="Till exempel Levi's"></label>
+        <div class="detail-row">
+          <label>Storlek<input id="detailSize" name="size" type="text" placeholder="M"></label>
+          <label>Pris<input id="detailPrice" name="price" type="text" inputmode="numeric" placeholder="499"></label>
+        </div>
+        <label>Beskrivning<textarea id="detailDescription" name="description" rows="4" placeholder="Kort beskrivning"></textarea></label>
+        <button class="button-primary detail-save" type="submit">Spara</button>
+      </form>
+    </section>
+
     <section id="moreView" class="dashboard-view" aria-labelledby="moreTitle" hidden>
       <div class="subview-heading">
         <button id="backBtn" class="back-button" type="button" aria-label="Tillbaka">‹</button>
@@ -150,6 +191,6 @@
   </div>
 </div>
 
-<script type="module" src="js/app.js?v=1.2"></script>
+<script type="module" src="js/app.js?v=1.3"></script>
 </body>
 </html>
