@@ -34,7 +34,31 @@ async function login() {
 
 document.getElementById("loginButton").onclick = login;
 
-password.form?.addEventListener("submit", (e) => { e.preventDefault(); login(); });
+document.getElementById("loginForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  if (!email.value) {
+    email.focus();
+    message.textContent = "Fyll i din e-postadress.";
+    return;
+  }
+
+  if (!password.value) {
+    password.focus();
+    message.textContent = "Fyll i ditt lösenord.";
+    return;
+  }
+
+  login();
+});
+
+// Chrome/Edge autofill kan ändra lösenordstyp efter laddning.
+// Håll lösenord dolt tills användaren själv trycker på ögat.
+window.setTimeout(() => {
+  if (password.type !== "text") {
+    password.type = "password";
+  }
+}, 500);
 
 resetButton.onclick = async () => {
   message.textContent = "";
