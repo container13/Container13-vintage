@@ -69,3 +69,10 @@ Dashboard/arbetsflödesbeslut 2026-08-05:
 - Bilder ska först hamna i en framtida Inkorg/utkast och inte publiceras automatiskt.
 - Publicera ska senare låta användaren välja bilder, text och anslutna publiceringskanaler.
 - Anslutning av webbplats, Instagram, Facebook, Google Företagsprofil och andra kanaler hör hemma under Inställningar.
+
+Dashboard/arbetsflödesbeslut 2026-08-05 – Bilder:
+- Benämningen ska vara "Bilder", inte Inkorg eller Album, eftersom den ska förstås direkt utan fackord.
+- Flödet är Lägg till bilder → Bilder → Publicera.
+- Bilder-vyn visar antal bilder, markering, Markera alla och Publicera.
+- Tryck på en bild öppnar en enkel detaljvy med titel, märke, storlek, pris och beskrivning.
+- Enkelhet och omedelbar begriplighet prioriteras framför intern systemterminologi.
