@@ -63,10 +63,12 @@ input{
 }
 .forgot{
  display:block;
- margin-top:18px;
+ width:fit-content;
+ margin:18px auto 0;
  color:#555;
  text-decoration:none;
  font-size:14px;
+ text-align:center;
 }
 
 #resetPassword{border:0;background:none;cursor:pointer;padding:0;}
