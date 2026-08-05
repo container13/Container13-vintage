@@ -1,0 +1,40 @@
+body{
+margin:0;
+background:#f7f1e8;
+font-family:Arial,sans-serif;
+color:#222;
+}
+.login-card{
+max-width:420px;
+margin:60px auto;
+padding:35px 22px;
+text-align:center;
+background:#fff;
+border-radius:24px;
+}
+input{
+width:100%;
+padding:16px;
+margin:8px 0;
+border-radius:14px;
+border:1px solid #ccc;
+font-size:16px;
+}
+.password-wrap{position:relative}
+.password-wrap button{
+position:absolute;
+right:8px;
+top:16px;
+border:0;
+background:white;
+}
+#loginButton{
+width:100%;
+padding:17px;
+margin-top:18px;
+border:0;
+border-radius:16px;
+background:#b98a3b;
+color:white;
+font-size:17px;
+}
