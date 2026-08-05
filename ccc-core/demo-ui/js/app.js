@@ -14,9 +14,19 @@ const dialog=document.getElementById("logoutDialog");
 const cancel=document.getElementById("cancelLogout");
 const confirm=document.getElementById("confirmLogout");
 const moreBtn=document.getElementById("moreBtn");
+const addImagesBtn=document.getElementById("addImagesBtn");
 const backBtn=document.getElementById("backBtn");
+const backFromImagesBtn=document.getElementById("backFromImagesBtn");
 const homeView=document.getElementById("homeView");
+const addImagesView=document.getElementById("addImagesView");
 const moreView=document.getElementById("moreView");
+const cameraChoiceBtn=document.getElementById("cameraChoiceBtn");
+const albumChoiceBtn=document.getElementById("albumChoiceBtn");
+const filesChoiceBtn=document.getElementById("filesChoiceBtn");
+const cameraInput=document.getElementById("cameraInput");
+const albumInput=document.getElementById("albumInput");
+const filesInput=document.getElementById("filesInput");
+const imageSelectionStatus=document.getElementById("imageSelectionStatus");
 
 function setMenu(open){
   menu.hidden=!open;
@@ -64,13 +74,30 @@ applyTheme(savedTheme || (preferredDark?"dark":"light"));
 themeBtn?.addEventListener("click",()=>applyTheme(root.dataset.theme==="dark"?"light":"dark"));
 
 function showView(view){
-  const showMore=view==="more";
-  homeView.hidden=showMore;
-  moreView.hidden=!showMore;
-  window.scrollTo({top:0,behavior:"smooth"});
+  homeView.hidden=view!=="home";
+  addImagesView.hidden=view!=="images";
+  moreView.hidden=view!=="more";
 }
 moreBtn?.addEventListener("click",()=>showView("more"));
+addImagesBtn?.addEventListener("click",()=>showView("images"));
 backBtn?.addEventListener("click",()=>showView("home"));
+backFromImagesBtn?.addEventListener("click",()=>showView("home"));
+
+cameraChoiceBtn?.addEventListener("click",()=>cameraInput?.click());
+albumChoiceBtn?.addEventListener("click",()=>albumInput?.click());
+filesChoiceBtn?.addEventListener("click",()=>filesInput?.click());
+
+function reportSelectedImages(input){
+  const count=input?.files?.length || 0;
+  if(!count || !imageSelectionStatus) return;
+  imageSelectionStatus.textContent=count===1
+    ? "1 bild vald – nästa steg blir Inkorgen."
+    : `${count} bilder valda – nästa steg blir Inkorgen.`;
+  imageSelectionStatus.hidden=false;
+}
+[cameraInput,albumInput,filesInput].forEach((input)=>{
+  input?.addEventListener("change",()=>reportSelectedImages(input));
+});
 
 function updateGreeting(){
   const hour=new Date().getHours();
