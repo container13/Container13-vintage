@@ -84,6 +84,13 @@ button{color:inherit}
 .action-copy small{font-size:15px;color:var(--muted)}
 .action-arrow{font-size:36px;line-height:1;color:var(--text);opacity:.9}
 
+
+.selection-status{
+  margin:16px 2px 0;padding:13px 16px;border:1px solid var(--border);border-radius:15px;
+  background:var(--surface);color:var(--muted);font-weight:650;text-align:center
+}
+.selection-status[hidden],.visually-hidden{display:none!important}
+
 .back-button{width:48px;height:48px;border-radius:50%;border:1px solid var(--border);background:var(--surface);font-size:34px;line-height:1;cursor:pointer}
 .action-neutral .action-icon{color:var(--gold);background:color-mix(in srgb,var(--gold) 12%,var(--surface))}
 .action-neutral strong{color:var(--text)}
