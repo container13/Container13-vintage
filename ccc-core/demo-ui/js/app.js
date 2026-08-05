@@ -13,7 +13,7 @@ const cancel=document.getElementById("cancelLogout");
 const confirm=document.getElementById("confirmLogout");
 
 profileBtn?.addEventListener("click",()=>menu.classList.toggle("show"));
-logout?.addEventListener("click",()=>dialog.classList.add("show"));
+logout?.addEventListener("click",()=>{ menu.classList.remove("show"); dialog.classList.add("show"); });
 cancel?.addEventListener("click",()=>dialog.classList.remove("show"));
 
 confirm?.addEventListener("click",async()=>{

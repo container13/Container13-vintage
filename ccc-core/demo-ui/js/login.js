@@ -27,21 +27,14 @@ async function login() {
     await signInWithEmailAndPassword(auth, email.value, password.value);
     location.href = "dashboard.html";
   } catch (e) {
+    password.type = "password";
     message.textContent = "Fel e-post eller lösenord. Försök igen.";
   }
 }
 
 document.getElementById("loginButton").onclick = login;
 
-// Tillåt Enter för att logga in
-[email, password].forEach((field) => {
-  field.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      login();
-    }
-  });
-});
+password.form?.addEventListener("submit", (e) => { e.preventDefault(); login(); });
 
 resetButton.onclick = async () => {
   message.textContent = "";
