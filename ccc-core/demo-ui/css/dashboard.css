@@ -50,7 +50,7 @@ body{
  right:25px;
  top:90px;
  background:white;
- padding:15px;
+ padding:18px;
  border-radius:16px;
  box-shadow:0 8px 25px rgba(0,0,0,.15);
  z-index:5;
@@ -59,7 +59,7 @@ body{
 .menu a,.menu button{
  display:block;
  width:100%;
- padding:10px;
+ padding:14px;
  border:0;
  background:none;
  text-decoration:none;
@@ -96,3 +96,6 @@ body{
  color:white;
  margin:5px;
 }
+
+.menu a:hover,.menu button:hover,.cards a:hover,.profile:hover,.dialog-box button:hover{filter:brightness(.95);transform:translateY(-1px);}
+@media(max-width:600px){.menu{left:20px;right:20px;top:85px;padding:20px;border-radius:22px}.menu a,.menu button{font-size:18px;padding:16px}.dialog-box{width:calc(100vw - 40px);padding:28px}.profile{width:48px;height:48px}}
