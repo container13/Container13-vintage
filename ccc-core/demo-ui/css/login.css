@@ -1,40 +1,7 @@
-body{
-margin:0;
-background:#f7f1e8;
-font-family:Arial,sans-serif;
-color:#222;
-}
-.login-card{
-max-width:420px;
-margin:60px auto;
-padding:35px 22px;
-text-align:center;
-background:#fff;
-border-radius:24px;
-}
-input{
-width:100%;
-padding:16px;
-margin:8px 0;
-border-radius:14px;
-border:1px solid #ccc;
-font-size:16px;
-}
-.password-wrap{position:relative}
-.password-wrap button{
-position:absolute;
-right:8px;
-top:16px;
-border:0;
-background:white;
-}
-#loginButton{
-width:100%;
-padding:17px;
-margin-top:18px;
-border:0;
-border-radius:16px;
-background:#b98a3b;
-color:white;
-font-size:17px;
-}
+body{margin:0;background:#f7f4ee;color:#222;font-family:Arial,sans-serif}
+.login-card{max-width:520px;margin:auto;padding:40px 18px;text-align:center}
+.top{display:flex;justify-content:center;align-items:center}
+.profile{position:absolute;right:25px;border:0;background:white;border-radius:50%;padding:10px;font-size:20px}
+.workspace{font-size:18px;margin-bottom:30px}
+.cards a{display:block;background:white;border-radius:18px;padding:20px;margin:14px 0;text-decoration:none;color:#222;font-size:18px}
+button{cursor:pointer}
