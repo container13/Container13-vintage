@@ -10,6 +10,40 @@ const togglePassword = document.getElementById("togglePassword");
 let lastPasswordValue = password.value;
 let lastUserPasswordInputAt = 0;
 let autofillCheckTimer;
+const rememberedEmailKey = "ccc:last-successful-login-email";
+
+function getRememberedEmail() {
+  try {
+    return (localStorage.getItem(rememberedEmailKey) || "").trim();
+  } catch {
+    return "";
+  }
+}
+
+function rememberEmail(value) {
+  const normalized = value.trim();
+
+  if (!normalized || !normalized.includes("@")) return;
+
+  try {
+    localStorage.setItem(rememberedEmailKey, normalized);
+  } catch {
+    // Inloggningen ska fungera även om lokal lagring är blockerad.
+  }
+}
+
+function completeRememberedEmailAfterPasswordAutofill() {
+  const rememberedEmail = getRememberedEmail();
+  const currentEmail = email.value.trim();
+
+  if (!rememberedEmail || !currentEmail || currentEmail === rememberedEmail) return;
+
+  if (rememberedEmail.toLowerCase().startsWith(currentEmail.toLowerCase())) {
+    email.value = rememberedEmail;
+    email.dispatchEvent(new Event("input", { bubbles: true }));
+    email.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+}
 
 function hidePassword() {
   password.type = "password";
@@ -29,8 +63,12 @@ function checkForAutofilledPassword() {
   const valueChanged = password.value !== lastPasswordValue;
   const changedByRecentTyping = Date.now() - lastUserPasswordInputAt < 250;
 
-  if (valueChanged && password.type === "text" && !changedByRecentTyping) {
-    hidePassword();
+  if (valueChanged && !changedByRecentTyping) {
+    completeRememberedEmailAfterPasswordAutofill();
+
+    if (password.type === "text") {
+      hidePassword();
+    }
   }
 
   lastPasswordValue = password.value;
@@ -55,8 +93,12 @@ password.addEventListener("beforeinput", () => {
 password.addEventListener("input", (event) => {
   const looksLikeAutofill = event.inputType == null || event.inputType === "insertReplacementText";
 
-  if (password.type === "text" && looksLikeAutofill) {
-    hidePassword();
+  if (looksLikeAutofill) {
+    completeRememberedEmailAfterPasswordAutofill();
+
+    if (password.type === "text") {
+      hidePassword();
+    }
   }
 
   lastPasswordValue = password.value;
@@ -103,6 +145,7 @@ async function login() {
 
   try {
     await signInWithEmailAndPassword(auth, email.value, password.value);
+    rememberEmail(email.value);
     location.href = "dashboard.html";
   } catch (e) {
     hidePassword();
