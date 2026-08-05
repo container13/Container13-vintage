@@ -1,8 +1,35 @@
 <!doctype html>
-<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CCC Dashboard</title><link rel="stylesheet" href="css/login.css"></head>
-<body><main class="login-card">
-<header class="top"><h1>CCC</h1><button id="logout" class="profile">👤</button></header>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CCC Dashboard</title>
+<link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+<main class="login-card">
+<header class="top">
+<h1>CCC</h1>
+<button id="profileBtn" class="profile">👤</button>
+</header>
+
 <p class="workspace">Container13 Vintage</p>
+
+<div id="profileMenu" class="menu">
+<a href="#">⚙️ Konto</a>
+<a href="#">🔒 Säkerhet</a>
+<button id="logout">🚪 Logga ut</button>
+</div>
+
+<div id="logoutDialog" class="dialog">
+<div class="dialog-box">
+<h3>Logga ut?</h3>
+<p>Är du säker på att du vill logga ut från CCC?</p>
+<button id="cancelLogout">Avbryt</button>
+<button id="confirmLogout">Logga ut</button>
+</div>
+</div>
+
 <div class="cards">
 <a href="nyinkommet.html">📸<br>Nyinkommet</a>
 <a href="butiken.html">🏪<br>Butiken</a>
@@ -10,4 +37,7 @@
 <a href="publicera.html">📢<br>Publicera</a>
 <a href="statistik.html">📊<br>Statistik</a>
 </div>
-</main><script type="module" src="js/app.js"></script></body></html>
+</main>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
