@@ -391,3 +391,102 @@ button{color:inherit}
   .publish-bar{flex:0 0 auto;min-height:50px;margin-top:0}
   .empty-state{flex:1 1 auto;min-height:0;height:auto}
 }
+
+/* CCC Local Workspace 1.3 – mobilfix för Mina bilder */
+#imagesEmpty[hidden],
+#imagesContent[hidden],
+.dashboard-view[hidden]{
+  display:none !important;
+}
+
+@media (max-width:480px){
+  .images-view{
+    padding-bottom:0;
+  }
+
+  .images-heading{
+    grid-template-columns:46px minmax(0,1fr) auto;
+    gap:9px;
+    margin:0 0 12px;
+  }
+
+  .images-heading h1{
+    font-size:clamp(29px,8vw,36px);
+    line-height:1.05;
+  }
+
+  .images-heading p{
+    margin-top:4px;
+    font-size:15px;
+  }
+
+  .mini-add-button{
+    position:static;
+    align-self:center;
+    min-height:42px;
+    padding:0 12px;
+    white-space:nowrap;
+    z-index:auto;
+  }
+
+  .images-content{
+    gap:12px;
+    overflow:hidden;
+  }
+
+  .images-toolbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    min-height:42px;
+    padding:2px 4px 6px;
+    border-bottom:1px solid color-mix(in srgb,var(--muted) 18%,transparent);
+  }
+
+  .select-all{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    min-width:0;
+    font-size:15px;
+    white-space:nowrap;
+  }
+
+  .select-all input,
+  .image-select{
+    width:23px;
+    height:23px;
+    flex:0 0 auto;
+  }
+
+  #selectedCount{
+    flex:0 0 auto;
+    font-size:14px;
+    white-space:nowrap;
+  }
+
+  .images-grid{
+    padding:2px 2px 88px;
+    scroll-padding-bottom:88px;
+  }
+
+  .image-card{
+    min-height:104px;
+    margin-bottom:10px;
+  }
+
+  .publish-bar{
+    position:relative;
+    z-index:2;
+    min-height:52px;
+    margin:0;
+    box-shadow:0 -10px 24px color-mix(in srgb,var(--bg) 78%,transparent);
+  }
+
+  .empty-state{
+    flex:1 1 auto;
+    min-height:0;
+    padding:24px 18px;
+  }
+}
