@@ -282,3 +282,24 @@ button{color:inherit}
   .camera-session-view{grid-template-rows:auto minmax(0,1fr)}
   .camera-session-card{min-height:0;height:100%}
 }
+
+/* CCC Local Workspace 1.0 */
+.mini-add-button{
+  margin-left:auto;border:1px solid var(--border);background:var(--surface);color:var(--text);
+  min-height:42px;padding:0 14px;border-radius:13px;font-weight:800;cursor:pointer;white-space:nowrap
+}
+.camera-session-actions{display:grid;gap:11px;width:min(100%,420px);margin:0 auto}
+.camera-session-actions .button-primary,.camera-session-actions .button-secondary{
+  min-height:52px;border-radius:15px;border:1px solid var(--border);font-weight:800;cursor:pointer
+}
+.camera-session-actions .button-primary{background:var(--gold);color:#171108;border-color:transparent}
+.camera-session-actions .button-secondary{background:var(--surface);color:var(--text)}
+.camera-session-actions .button-secondary:disabled{opacity:.4;cursor:not-allowed}
+.button-link{border:0;background:transparent;color:var(--muted);font-weight:750;min-height:44px;cursor:pointer}
+.camera-session-card p{max-width:330px;margin-left:auto;margin-right:auto}
+.images-heading{align-items:center}
+@media (max-width:480px){
+  .images-heading{grid-template-columns:auto minmax(0,1fr) auto}
+  .mini-add-button{font-size:14px;padding:0 12px}
+  .camera-session-card{padding:22px 18px}
+}
