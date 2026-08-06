@@ -303,3 +303,14 @@ button{color:inherit}
   .mini-add-button{font-size:14px;padding:0 12px}
   .camera-session-card{padding:22px 18px}
 }
+
+
+/* CCC Local Workspace 1.1 – rent kameraflöde */
+.camera-options{display:none!important}
+.camera-session-card{min-height:0}
+.camera-session-actions{gap:12px}
+.camera-session-actions .button-link{margin-top:2px}
+@media (max-width:480px){
+  #addImagesView .primary-actions{align-content:center}
+  .camera-session-card{height:auto;align-self:center;padding:24px 18px}
+}
