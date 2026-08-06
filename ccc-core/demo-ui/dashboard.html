@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f7f7f9">
 <title>CCC Dashboard</title>
-<link rel="stylesheet" href="css/dashboard.css?v=1.4">
+<link rel="stylesheet" href="css/dashboard.css?v=1.5">
 </head>
 <body>
 <div class="app-shell">
@@ -106,10 +106,39 @@
         </button>
       </div>
 
+      <div class="camera-options" aria-label="Kamerainställningar">
+        <label class="setting-toggle">
+          <span><strong>Snabbfotoläge</strong><small>Öppna kameran igen efter varje bild</small></span>
+          <input id="quickPhotoToggle" type="checkbox">
+        </label>
+        <label class="setting-toggle">
+          <span><strong>Spara kopia på mobilen</strong><small>CCC försöker hämta en kopia efter varje foto</small></span>
+          <input id="saveCopyToggle" type="checkbox">
+        </label>
+      </div>
+
       <p id="imageSelectionStatus" class="selection-status" role="status" aria-live="polite" hidden></p>
       <input id="cameraInput" class="visually-hidden" type="file" accept="image/*" capture="environment">
       <input id="albumInput" class="visually-hidden" type="file" accept="image/*" multiple>
       <input id="filesInput" class="visually-hidden" type="file" accept="image/*" multiple>
+    </section>
+
+
+    <section id="cameraSessionView" class="dashboard-view camera-session-view" aria-labelledby="cameraSessionTitle" hidden>
+      <div class="subview-heading">
+        <button id="backFromCameraSessionBtn" class="back-button" type="button" aria-label="Tillbaka">‹</button>
+        <div><h1 id="cameraSessionTitle">Ta bilder</h1><p id="cameraSessionCount">0 bilder tagna</p></div>
+      </div>
+
+      <div class="camera-session-card">
+        <div class="camera-session-icon" aria-hidden="true">✓</div>
+        <h2 id="cameraSessionMessage">Bild tillagd</h2>
+        <p>Fortsätt fotografera eller gå vidare till Mina bilder.</p>
+        <div class="camera-session-actions">
+          <button id="takeNextPhotoBtn" class="button-primary" type="button">Ta nästa foto</button>
+          <button id="finishCameraSessionBtn" class="button-secondary" type="button">Klar</button>
+        </div>
+      </div>
     </section>
 
     <section id="imagesView" class="dashboard-view images-view" aria-labelledby="imagesTitle" hidden>
@@ -191,6 +220,6 @@
   </div>
 </div>
 
-<script type="module" src="js/app.js?v=1.4"></script>
+<script type="module" src="js/app.js?v=1.5"></script>
 </body>
 </html>
