@@ -83,3 +83,14 @@ Dashboard/arbetsflödesbeslut 2026-08-06 – kamera:
 - Snabbfotoläge och Spara kopia på mobilen ska vara tydliga val som sparas lokalt.
 - Bilder från CCC ska alltid hamna i Mina bilder och aldrig publiceras automatiskt.
 - Benämningen i flödet är Mina bilder.
+- Kamerafunktionen ska följa fungerande C13-admin-flöde. Spara kopia på mobilen är avstängt som standard och aktiveras endast uttryckligen av användaren.
+
+
+Dashboard/arbetsflödesbeslut 2026-08-06 – Lokal arbetsyta:
+- Mina bilder är en lokal arbetsyta på användarens enhet.
+- Originalbilder och bildinformation sparas lokalt i IndexedDB tills användaren väljer att publicera.
+- Firebase ska inte användas som mellanlager för opublicerade bilder.
+- Mina bilder visar små WebP-miniatyrer för snabb och resurssnål scroll.
+- Originalbilden används först när en bild öppnas eller en publiceringsversion ska skapas.
+- Kameraflödet ska erbjuda Ta nästa foto, Välj från album, Ångra senaste, Klar – Mina bilder och Till startsidan.
+- Arbetsvyer som Mina bilder får scrolla; dashboardens startvy ska normalt inte scrolla när innehållet ryms.
