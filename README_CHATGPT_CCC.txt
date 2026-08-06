@@ -80,7 +80,7 @@ Dashboard/arbetsflödesbeslut 2026-08-05 – Bilder:
 Dashboard/arbetsflödesbeslut 2026-08-06 – kamera:
 - Kameraflödet ska återanvända fungerande idéer från C13-admin.
 - Efter ett foto ska användaren kunna välja Ta nästa foto eller Klar.
-- Snabbfotoläge och Spara kopia på mobilen ska vara tydliga val som sparas lokalt.
+- Snabbfotoläge och Spara kopia på mobilen ska inte ligga i vyn Lägg till bilder; sådana val hör hemma under Inställningar.
 - Bilder från CCC ska alltid hamna i Mina bilder och aldrig publiceras automatiskt.
 - Benämningen i flödet är Mina bilder.
 - Kamerafunktionen ska följa fungerande C13-admin-flöde. Spara kopia på mobilen är avstängt som standard och aktiveras endast uttryckligen av användaren.
@@ -94,3 +94,20 @@ Dashboard/arbetsflödesbeslut 2026-08-06 – Lokal arbetsyta:
 - Originalbilden används först när en bild öppnas eller en publiceringsversion ska skapas.
 - Kameraflödet ska erbjuda Ta nästa foto, Välj från album, Ångra senaste, Klar – Mina bilder och Till startsidan.
 - Arbetsvyer som Mina bilder får scrolla; dashboardens startvy ska normalt inte scrolla när innehållet ryms.
+
+Dashboard/arbetsflödesbeslut 2026-08-06 – rent kameraflöde:
+- Vyn Lägg till bilder ska endast visa Ta foto, Välj från album och Välj filer.
+- Efter taget foto visas en enkel meny med Ta nästa foto, Välj från album, Ångra senaste, Klar och Till startsidan.
+- Gamla sparade val får inte automatiskt öppna kameran igen eller försöka spara en kopia på enheten.
+- Klar går till Mina bilder.
+
+CCC Local Workspace 1.2
+- Efter-foto-rutan är kompakt på mobil.
+- Mina bilder har separata områden för rubrik, verktyg, scrollbar bildlista och publiceringsknapp.
+- Vyernas scrolläge återställs vid navigering.
+
+
+CCC Local Workspace 1.3
+- Mina bilder visar aldrig tomläget när lokala bilder finns.
+- Rubrik, Lägg till-knapp, markeringsrad, bildlista och Publicera hålls visuellt åtskilda på mobil.
+- Bildlistan har säker nederkant så sista kortet inte hamnar bakom Publicera.
