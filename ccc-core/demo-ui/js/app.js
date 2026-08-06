@@ -30,8 +30,6 @@ const cameraInput=document.getElementById("cameraInput");
 const albumInput=document.getElementById("albumInput");
 const filesInput=document.getElementById("filesInput");
 const imageSelectionStatus=document.getElementById("imageSelectionStatus");
-const quickPhotoToggle=document.getElementById("quickPhotoToggle");
-const saveCopyToggle=document.getElementById("saveCopyToggle");
 const cameraSessionCount=document.getElementById("cameraSessionCount");
 const cameraSessionMessage=document.getElementById("cameraSessionMessage");
 const takeNextPhotoBtn=document.getElementById("takeNextPhotoBtn");
@@ -210,13 +208,6 @@ backFromGalleryBtn?.addEventListener("click",()=>showView("home"));
 backFromDetailBtn?.addEventListener("click",()=>showView("images"));
 emptyAddBtn?.addEventListener("click",()=>showView("add"));
 
-const quickPhotoSaved=localStorage.getItem("ccc-quick-photo");
-const saveCopySaved=localStorage.getItem("ccc-save-photo-copy");
-if(quickPhotoToggle) quickPhotoToggle.checked=quickPhotoSaved==="true";
-if(saveCopyToggle) saveCopyToggle.checked=saveCopySaved==="true";
-quickPhotoToggle?.addEventListener("change",()=>localStorage.setItem("ccc-quick-photo",String(quickPhotoToggle.checked)));
-saveCopyToggle?.addEventListener("change",()=>localStorage.setItem("ccc-save-photo-copy",String(saveCopyToggle.checked)));
-
 function openCamera(){ cameraInput?.click(); }
 cameraChoiceBtn?.addEventListener("click",()=>{
   cameraSessionAdded=0;
@@ -273,22 +264,6 @@ function renderImages(){
   updateSelectionUi();
 }
 
-function trySavePhotoCopy(file){
-  if(!saveCopyToggle?.checked) return;
-  try{
-    const url=URL.createObjectURL(file);
-    const link=document.createElement("a");
-    link.href=url;
-    link.download=file.name || `ccc-foto-${Date.now()}.jpg`;
-    document.body.append(link);
-    link.click();
-    link.remove();
-    setTimeout(()=>URL.revokeObjectURL(url),1500);
-  }catch(error){
-    console.warn("Kunde inte spara kopia på enheten",error);
-  }
-}
-
 function updateCameraSession(){
   if(cameraSessionCount) cameraSessionCount.textContent=cameraSessionAdded===1?"1 bild tagen":`${cameraSessionAdded} bilder tagna`;
   if(cameraSessionMessage) cameraSessionMessage.textContent=cameraSessionAdded===1?"Bild sparad lokalt":"Bilder sparade lokalt";
@@ -321,10 +296,8 @@ async function addFiles(files,source="files"){
   renderImages();
   if(source==="camera"){
     cameraSessionAdded+=added.length;
-    selected.forEach(trySavePhotoCopy);
     updateCameraSession();
     showView("camera");
-    if(quickPhotoToggle?.checked) setTimeout(()=>openCamera(),250);
     return;
   }
   if(imageSelectionStatus){
