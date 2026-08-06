@@ -76,3 +76,10 @@ Dashboard/arbetsflödesbeslut 2026-08-05 – Bilder:
 - Bilder-vyn visar antal bilder, markering, Markera alla och Publicera.
 - Tryck på en bild öppnar en enkel detaljvy med titel, märke, storlek, pris och beskrivning.
 - Enkelhet och omedelbar begriplighet prioriteras framför intern systemterminologi.
+
+Dashboard/arbetsflödesbeslut 2026-08-06 – kamera:
+- Kameraflödet ska återanvända fungerande idéer från C13-admin.
+- Efter ett foto ska användaren kunna välja Ta nästa foto eller Klar.
+- Snabbfotoläge och Spara kopia på mobilen ska vara tydliga val som sparas lokalt.
+- Bilder från CCC ska alltid hamna i Mina bilder och aldrig publiceras automatiskt.
+- Benämningen i flödet är Mina bilder.
