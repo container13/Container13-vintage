@@ -257,3 +257,28 @@ button{color:inherit}
   .image-meta strong{font-size:20px}
   .image-meta small{font-size:16px}
 }
+
+/* Dashboard Mobile 1.5 – kameraflöde */
+.camera-options{display:grid;gap:10px;margin-top:18px}
+.setting-toggle{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 16px;border:1px solid var(--border);border-radius:17px;background:var(--surface)}
+.setting-toggle span{display:grid;gap:3px}
+.setting-toggle strong{font-size:16px}
+.setting-toggle small{font-size:13px;color:var(--muted);line-height:1.35}
+.setting-toggle input{appearance:none;width:48px;height:28px;border-radius:999px;background:color-mix(in srgb,var(--muted) 28%,transparent);position:relative;flex:0 0 auto;cursor:pointer;transition:.2s ease}
+.setting-toggle input::after{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.2);transition:.2s ease}
+.setting-toggle input:checked{background:var(--gold)}
+.setting-toggle input:checked::after{transform:translateX(20px)}
+.camera-session-card{min-height:360px;display:grid;place-items:center;align-content:center;text-align:center;padding:30px 22px;border:1px solid var(--border);border-radius:26px;background:var(--surface);box-shadow:var(--shadow)}
+.camera-session-icon{display:grid;place-items:center;width:78px;height:78px;border-radius:50%;background:color-mix(in srgb,var(--gold) 20%,var(--surface));color:var(--gold);font-size:42px;font-weight:900}
+.camera-session-card h2{margin:18px 0 6px;font-size:27px}
+.camera-session-card p{margin:0 0 26px;color:var(--muted);max-width:320px;line-height:1.5}
+.camera-session-actions{display:grid;gap:12px;width:min(100%,360px)}
+.camera-session-actions button{min-height:56px;border-radius:17px;font-size:18px;font-weight:800;cursor:pointer}
+.camera-session-actions .button-primary{border:0}
+.camera-session-actions .button-secondary{border:1px solid var(--border);background:var(--surface)}
+@media (max-width:480px){
+  .camera-options{margin-top:14px}
+  .setting-toggle{padding:12px 14px}
+  .camera-session-view{grid-template-rows:auto minmax(0,1fr)}
+  .camera-session-card{min-height:0;height:100%}
+}
