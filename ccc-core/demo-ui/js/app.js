@@ -36,6 +36,10 @@ const cameraSessionCount=document.getElementById("cameraSessionCount");
 const cameraSessionMessage=document.getElementById("cameraSessionMessage");
 const takeNextPhotoBtn=document.getElementById("takeNextPhotoBtn");
 const finishCameraSessionBtn=document.getElementById("finishCameraSessionBtn");
+const sessionAlbumBtn=document.getElementById("sessionAlbumBtn");
+const undoLastImageBtn=document.getElementById("undoLastImageBtn");
+const cameraToHomeBtn=document.getElementById("cameraToHomeBtn");
+const addMoreImagesBtn=document.getElementById("addMoreImagesBtn");
 const backFromCameraSessionBtn=document.getElementById("backFromCameraSessionBtn");
 const backFromGalleryBtn=document.getElementById("backFromGalleryBtn");
 const backFromDetailBtn=document.getElementById("backFromDetailBtn");
@@ -56,6 +60,93 @@ const detailPrice=document.getElementById("detailPrice");
 const detailDescription=document.getElementById("detailDescription");
 let imageItems=[];
 let activeImageId=null;
+let lastAddedIds=[];
+const objectUrls=new Set();
+const DB_NAME="ccc-local-workspace";
+const DB_VERSION=1;
+const STORE_NAME="images";
+
+function openLocalDb(){
+  return new Promise((resolve,reject)=>{
+    const request=indexedDB.open(DB_NAME,DB_VERSION);
+    request.onupgradeneeded=()=>{
+      const db=request.result;
+      if(!db.objectStoreNames.contains(STORE_NAME)){
+        const store=db.createObjectStore(STORE_NAME,{keyPath:"id"});
+        store.createIndex("createdAt","createdAt");
+      }
+    };
+    request.onsuccess=()=>resolve(request.result);
+    request.onerror=()=>reject(request.error);
+  });
+}
+
+async function dbRequest(mode,operation){
+  const db=await openLocalDb();
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction(STORE_NAME,mode);
+    const store=tx.objectStore(STORE_NAME);
+    const request=operation(store);
+    request.onsuccess=()=>resolve(request.result);
+    request.onerror=()=>reject(request.error);
+    tx.oncomplete=()=>db.close();
+    tx.onerror=()=>{db.close();reject(tx.error);};
+  });
+}
+
+const saveLocalItem=(item)=>dbRequest("readwrite",(store)=>store.put(item));
+const deleteLocalItem=(id)=>dbRequest("readwrite",(store)=>store.delete(id));
+const getAllLocalItems=()=>dbRequest("readonly",(store)=>store.getAll());
+
+function makeObjectUrl(blob){
+  const url=URL.createObjectURL(blob);
+  objectUrls.add(url);
+  return url;
+}
+
+function revokeItemUrls(item){
+  [item?.url,item?.fullUrl].forEach((url)=>{
+    if(url && objectUrls.has(url)){URL.revokeObjectURL(url);objectUrls.delete(url);}
+  });
+}
+
+async function createThumbnail(file,maxSize=360,quality=.78){
+  let bitmap;
+  try{
+    bitmap=await createImageBitmap(file);
+    const scale=Math.min(1,maxSize/Math.max(bitmap.width,bitmap.height));
+    const width=Math.max(1,Math.round(bitmap.width*scale));
+    const height=Math.max(1,Math.round(bitmap.height*scale));
+    const canvas=document.createElement("canvas");
+    canvas.width=width;canvas.height=height;
+    const ctx=canvas.getContext("2d",{alpha:false});
+    ctx.drawImage(bitmap,0,0,width,height);
+    bitmap.close?.();
+    const blob=await new Promise((resolve)=>canvas.toBlob(resolve,"image/webp",quality));
+    return blob || file;
+  }catch(error){
+    console.warn("Kunde inte skapa WebP-miniatyr",error);
+    bitmap?.close?.();
+    return file;
+  }
+}
+
+function hydrateItem(record){
+  return {...record,selected:false,url:makeObjectUrl(record.thumbnailBlob || record.originalBlob)};
+}
+
+async function loadLocalWorkspace(){
+  try{
+    const records=await getAllLocalItems();
+    records.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+    imageItems.forEach(revokeItemUrls);
+    imageItems=records.map(hydrateItem);
+    renderImages();
+  }catch(error){
+    console.error("Kunde inte läsa lokal arbetsyta",error);
+    if(imageSelectionStatus){imageSelectionStatus.textContent="Kunde inte läsa lokala bilder.";imageSelectionStatus.hidden=false;}
+  }
+}
 let cameraSessionAdded=0;
 
 function setMenu(open){
@@ -122,13 +213,15 @@ emptyAddBtn?.addEventListener("click",()=>showView("add"));
 const quickPhotoSaved=localStorage.getItem("ccc-quick-photo");
 const saveCopySaved=localStorage.getItem("ccc-save-photo-copy");
 if(quickPhotoToggle) quickPhotoToggle.checked=quickPhotoSaved==="true";
-if(saveCopyToggle) saveCopyToggle.checked=saveCopySaved!=="false";
+if(saveCopyToggle) saveCopyToggle.checked=saveCopySaved==="true";
 quickPhotoToggle?.addEventListener("change",()=>localStorage.setItem("ccc-quick-photo",String(quickPhotoToggle.checked)));
 saveCopyToggle?.addEventListener("change",()=>localStorage.setItem("ccc-save-photo-copy",String(saveCopyToggle.checked)));
 
 function openCamera(){ cameraInput?.click(); }
 cameraChoiceBtn?.addEventListener("click",()=>{
   cameraSessionAdded=0;
+  lastAddedIds=[];
+  updateCameraSession();
   openCamera();
 });
 albumChoiceBtn?.addEventListener("click",()=>albumInput?.click());
@@ -154,7 +247,7 @@ function updateSelectionUi(){
 
 function renderImages(){
   const count=imageItems.length;
-  if(imagesCount) imagesCount.textContent=count===1?"1 bild":`${count} bilder`;
+  if(imagesCount) imagesCount.textContent=count===1?"1 lokal bild":`${count} lokala bilder`;
   if(imagesEmpty) imagesEmpty.hidden=count>0;
   if(imagesContent) imagesContent.hidden=count===0;
   if(!imagesGrid) return;
@@ -198,48 +291,78 @@ function trySavePhotoCopy(file){
 
 function updateCameraSession(){
   if(cameraSessionCount) cameraSessionCount.textContent=cameraSessionAdded===1?"1 bild tagen":`${cameraSessionAdded} bilder tagna`;
-  if(cameraSessionMessage) cameraSessionMessage.textContent=cameraSessionAdded===1?"Bild tillagd":"Bilder tillagda";
+  if(cameraSessionMessage) cameraSessionMessage.textContent=cameraSessionAdded===1?"Bild sparad lokalt":"Bilder sparade lokalt";
+  if(undoLastImageBtn) undoLastImageBtn.disabled=lastAddedIds.length===0;
 }
 
-function addFiles(files,source="files"){
+async function addFiles(files,source="files"){
   const selected=[...(files||[])].filter((file)=>file.type.startsWith("image/"));
-  selected.forEach((file)=>imageItems.push({
-    id:crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`,
-    file,
-    url:URL.createObjectURL(file),
-    selected:false,
-    title:"",brand:"",size:"",price:"",description:""
-  }));
   if(!selected.length) return;
+  const added=[];
+  if(imageSelectionStatus){imageSelectionStatus.textContent="Bearbetar bilder lokalt…";imageSelectionStatus.hidden=false;}
+  for(const file of selected){
+    const id=crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`;
+    const thumbnailBlob=await createThumbnail(file);
+    const record={
+      id,
+      originalBlob:file,
+      thumbnailBlob,
+      originalName:file.name || `ccc-bild-${Date.now()}`,
+      originalType:file.type || "image/jpeg",
+      createdAt:Date.now()+added.length,
+      title:"",brand:"",size:"",price:"",description:""
+    };
+    await saveLocalItem(record);
+    const item=hydrateItem(record);
+    imageItems.unshift(item);
+    added.push(item);
+  }
+  lastAddedIds=added.map((item)=>item.id);
+  renderImages();
   if(source==="camera"){
-    cameraSessionAdded+=selected.length;
+    cameraSessionAdded+=added.length;
     selected.forEach(trySavePhotoCopy);
     updateCameraSession();
-    renderImages();
     showView("camera");
-    if(quickPhotoToggle?.checked){
-      setTimeout(()=>openCamera(),250);
-    }
+    if(quickPhotoToggle?.checked) setTimeout(()=>openCamera(),250);
     return;
   }
   if(imageSelectionStatus){
-    imageSelectionStatus.textContent=selected.length===1?"1 bild tillagd.":`${selected.length} bilder tillagda.`;
+    imageSelectionStatus.textContent=added.length===1?"1 bild sparad lokalt.":`${added.length} bilder sparade lokalt.`;
     imageSelectionStatus.hidden=false;
   }
-  renderImages();
   showView("images");
 }
 
 [cameraInput,albumInput,filesInput].forEach((input)=>{
-  input?.addEventListener("change",()=>{
-    addFiles(input.files,input===cameraInput?"camera":input===albumInput?"album":"files");
+  input?.addEventListener("change",async()=>{
+    try{await addFiles(input.files,input===cameraInput?"camera":input===albumInput?"album":"files");}
+    catch(error){console.error(error);alert("Bilderna kunde inte sparas lokalt.");}
     input.value="";
   });
 });
 
 takeNextPhotoBtn?.addEventListener("click",openCamera);
+sessionAlbumBtn?.addEventListener("click",()=>albumInput?.click());
 finishCameraSessionBtn?.addEventListener("click",()=>showView("images"));
 backFromCameraSessionBtn?.addEventListener("click",()=>showView("add"));
+cameraToHomeBtn?.addEventListener("click",()=>showView("home"));
+addMoreImagesBtn?.addEventListener("click",()=>showView("add"));
+
+undoLastImageBtn?.addEventListener("click",async()=>{
+  const id=lastAddedIds.pop();
+  if(!id) return;
+  const index=imageItems.findIndex((item)=>item.id===id);
+  if(index>=0){
+    const [item]=imageItems.splice(index,1);
+    revokeItemUrls(item);
+  }
+  await deleteLocalItem(id);
+  cameraSessionAdded=Math.max(0,cameraSessionAdded-1);
+  updateCameraSession();
+  renderImages();
+  undoLastImageBtn.disabled=lastAddedIds.length===0;
+});
 
 selectAllImages?.addEventListener("change",()=>{
   imageItems.forEach((item)=>{item.selected=selectAllImages.checked;});
@@ -250,7 +373,8 @@ function openImageDetail(id){
   const item=imageItems.find((entry)=>entry.id===id);
   if(!item) return;
   activeImageId=id;
-  detailPreview.src=item.url;
+  if(!item.fullUrl) item.fullUrl=makeObjectUrl(item.originalBlob || item.thumbnailBlob);
+  detailPreview.src=item.fullUrl;
   detailTitle.value=item.title;
   detailBrand.value=item.brand;
   detailSize.value=item.size;
@@ -268,6 +392,15 @@ imageDetailForm?.addEventListener("submit",(event)=>{
   item.size=detailSize.value.trim();
   item.price=detailPrice.value.trim();
   item.description=detailDescription.value.trim();
+  saveLocalItem({
+    id:item.id,
+    originalBlob:item.originalBlob,
+    thumbnailBlob:item.thumbnailBlob,
+    originalName:item.originalName,
+    originalType:item.originalType,
+    createdAt:item.createdAt,
+    title:item.title,brand:item.brand,size:item.size,price:item.price,description:item.description
+  }).catch((error)=>console.error("Kunde inte spara bildinformationen",error));
   renderImages();
   showView("images");
 });
@@ -277,7 +410,7 @@ publishSelectedBtn?.addEventListener("click",()=>{
   window.location.href="publicera.html";
 });
 
-renderImages();
+loadLocalWorkspace();
 
 function updateGreeting(){
   const hour=new Date().getHours();
