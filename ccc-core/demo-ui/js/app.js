@@ -199,6 +199,10 @@ function showView(view){
   imageDetailView.hidden=view!=="detail";
   moreView.hidden=view!=="more";
   cameraSessionView.hidden=view!=="camera";
+
+  // Varje vy börjar rent högst upp. Intern scroll i Mina bilder återställs också.
+  dashboardMain?.scrollTo?.({top:0,left:0,behavior:"instant"});
+  imagesGrid?.scrollTo?.({top:0,left:0,behavior:"instant"});
 }
 moreBtn?.addEventListener("click",()=>showView("more"));
 addImagesBtn?.addEventListener("click",()=>showView("add"));
