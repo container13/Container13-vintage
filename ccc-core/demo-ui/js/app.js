@@ -22,6 +22,7 @@ const addImagesView=document.getElementById("addImagesView");
 const moreView=document.getElementById("moreView");
 const imagesView=document.getElementById("imagesView");
 const imageDetailView=document.getElementById("imageDetailView");
+const cameraSessionView=document.getElementById("cameraSessionView");
 const cameraChoiceBtn=document.getElementById("cameraChoiceBtn");
 const albumChoiceBtn=document.getElementById("albumChoiceBtn");
 const filesChoiceBtn=document.getElementById("filesChoiceBtn");
@@ -29,6 +30,13 @@ const cameraInput=document.getElementById("cameraInput");
 const albumInput=document.getElementById("albumInput");
 const filesInput=document.getElementById("filesInput");
 const imageSelectionStatus=document.getElementById("imageSelectionStatus");
+const quickPhotoToggle=document.getElementById("quickPhotoToggle");
+const saveCopyToggle=document.getElementById("saveCopyToggle");
+const cameraSessionCount=document.getElementById("cameraSessionCount");
+const cameraSessionMessage=document.getElementById("cameraSessionMessage");
+const takeNextPhotoBtn=document.getElementById("takeNextPhotoBtn");
+const finishCameraSessionBtn=document.getElementById("finishCameraSessionBtn");
+const backFromCameraSessionBtn=document.getElementById("backFromCameraSessionBtn");
 const backFromGalleryBtn=document.getElementById("backFromGalleryBtn");
 const backFromDetailBtn=document.getElementById("backFromDetailBtn");
 const emptyAddBtn=document.getElementById("emptyAddBtn");
@@ -48,6 +56,7 @@ const detailPrice=document.getElementById("detailPrice");
 const detailDescription=document.getElementById("detailDescription");
 let imageItems=[];
 let activeImageId=null;
+let cameraSessionAdded=0;
 
 function setMenu(open){
   menu.hidden=!open;
@@ -100,6 +109,7 @@ function showView(view){
   imagesView.hidden=view!=="images";
   imageDetailView.hidden=view!=="detail";
   moreView.hidden=view!=="more";
+  cameraSessionView.hidden=view!=="camera";
 }
 moreBtn?.addEventListener("click",()=>showView("more"));
 addImagesBtn?.addEventListener("click",()=>showView("add"));
@@ -109,7 +119,18 @@ backFromGalleryBtn?.addEventListener("click",()=>showView("home"));
 backFromDetailBtn?.addEventListener("click",()=>showView("images"));
 emptyAddBtn?.addEventListener("click",()=>showView("add"));
 
-cameraChoiceBtn?.addEventListener("click",()=>cameraInput?.click());
+const quickPhotoSaved=localStorage.getItem("ccc-quick-photo");
+const saveCopySaved=localStorage.getItem("ccc-save-photo-copy");
+if(quickPhotoToggle) quickPhotoToggle.checked=quickPhotoSaved==="true";
+if(saveCopyToggle) saveCopyToggle.checked=saveCopySaved!=="false";
+quickPhotoToggle?.addEventListener("change",()=>localStorage.setItem("ccc-quick-photo",String(quickPhotoToggle.checked)));
+saveCopyToggle?.addEventListener("change",()=>localStorage.setItem("ccc-save-photo-copy",String(saveCopyToggle.checked)));
+
+function openCamera(){ cameraInput?.click(); }
+cameraChoiceBtn?.addEventListener("click",()=>{
+  cameraSessionAdded=0;
+  openCamera();
+});
 albumChoiceBtn?.addEventListener("click",()=>albumInput?.click());
 filesChoiceBtn?.addEventListener("click",()=>filesInput?.click());
 
@@ -159,7 +180,28 @@ function renderImages(){
   updateSelectionUi();
 }
 
-function addFiles(files){
+function trySavePhotoCopy(file){
+  if(!saveCopyToggle?.checked) return;
+  try{
+    const url=URL.createObjectURL(file);
+    const link=document.createElement("a");
+    link.href=url;
+    link.download=file.name || `ccc-foto-${Date.now()}.jpg`;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+  }catch(error){
+    console.warn("Kunde inte spara kopia på enheten",error);
+  }
+}
+
+function updateCameraSession(){
+  if(cameraSessionCount) cameraSessionCount.textContent=cameraSessionAdded===1?"1 bild tagen":`${cameraSessionAdded} bilder tagna`;
+  if(cameraSessionMessage) cameraSessionMessage.textContent=cameraSessionAdded===1?"Bild tillagd":"Bilder tillagda";
+}
+
+function addFiles(files,source="files"){
   const selected=[...(files||[])].filter((file)=>file.type.startsWith("image/"));
   selected.forEach((file)=>imageItems.push({
     id:crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`,
@@ -169,6 +211,17 @@ function addFiles(files){
     title:"",brand:"",size:"",price:"",description:""
   }));
   if(!selected.length) return;
+  if(source==="camera"){
+    cameraSessionAdded+=selected.length;
+    selected.forEach(trySavePhotoCopy);
+    updateCameraSession();
+    renderImages();
+    showView("camera");
+    if(quickPhotoToggle?.checked){
+      setTimeout(()=>openCamera(),250);
+    }
+    return;
+  }
   if(imageSelectionStatus){
     imageSelectionStatus.textContent=selected.length===1?"1 bild tillagd.":`${selected.length} bilder tillagda.`;
     imageSelectionStatus.hidden=false;
@@ -179,10 +232,14 @@ function addFiles(files){
 
 [cameraInput,albumInput,filesInput].forEach((input)=>{
   input?.addEventListener("change",()=>{
-    addFiles(input.files);
+    addFiles(input.files,input===cameraInput?"camera":input===albumInput?"album":"files");
     input.value="";
   });
 });
+
+takeNextPhotoBtn?.addEventListener("click",openCamera);
+finishCameraSessionBtn?.addEventListener("click",()=>showView("images"));
+backFromCameraSessionBtn?.addEventListener("click",()=>showView("add"));
 
 selectAllImages?.addEventListener("change",()=>{
   imageItems.forEach((item)=>{item.selected=selectAllImages.checked;});
