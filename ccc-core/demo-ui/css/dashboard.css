@@ -314,3 +314,80 @@ button{color:inherit}
   #addImagesView .primary-actions{align-content:center}
   .camera-session-card{height:auto;align-self:center;padding:24px 18px}
 }
+
+
+/* CCC Local Workspace 1.2 – kompakt mobilflöde */
+@media (max-width:480px){
+  .camera-session-view{
+    display:grid;
+    grid-template-rows:auto minmax(0,1fr);
+    min-height:0;
+  }
+  .camera-session-card{
+    align-self:start;
+    width:100%;
+    max-height:100%;
+    overflow:auto;
+    display:block;
+    text-align:center;
+    padding:16px 14px 14px;
+    border-radius:20px;
+    box-shadow:0 10px 28px rgba(31,42,68,.07);
+  }
+  .camera-session-icon{
+    width:52px;
+    height:52px;
+    margin:0 auto;
+    font-size:29px;
+  }
+  .camera-session-card h2{margin:10px 0 3px;font-size:21px}
+  .camera-session-card p{margin:0 0 13px;font-size:14px;line-height:1.35}
+  .camera-session-actions{gap:8px;width:100%}
+  .camera-session-actions button,
+  .camera-session-actions .button-primary,
+  .camera-session-actions .button-secondary{
+    min-height:45px;
+    border-radius:13px;
+    font-size:16px;
+  }
+  .camera-session-actions .button-link{min-height:38px;font-size:14px}
+
+  .images-view{
+    display:flex;
+    flex-direction:column;
+    height:100%;
+    min-height:0;
+    overflow:hidden;
+  }
+  .images-heading{
+    flex:0 0 auto;
+    display:grid;
+    grid-template-columns:48px minmax(0,1fr) auto;
+    align-items:center;
+    gap:10px;
+    margin:2px 1px 12px;
+  }
+  .images-heading>div{min-width:0}
+  .images-heading h1,.images-heading p{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mini-add-button{min-height:40px;padding:0 11px;font-size:13px;border-radius:12px}
+  .images-content{
+    flex:1 1 auto;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    overflow:hidden;
+  }
+  .images-toolbar{flex:0 0 auto;min-height:34px;padding:0 2px}
+  .images-grid{
+    flex:1 1 auto;
+    min-height:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    padding:1px 2px 8px;
+  }
+  .publish-bar{flex:0 0 auto;min-height:50px;margin-top:0}
+  .empty-state{flex:1 1 auto;min-height:0;height:auto}
+}
