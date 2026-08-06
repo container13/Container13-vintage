@@ -12,5 +12,5 @@ Kvar att verifiera:
 
 Design:
 Glömt lösenord ska vara synlig från start som diskret länk.
-idag problem med github, kör powershell, löst nu enligt github
+idag problem med github, kör powershell, löst nu enligt github, ff fel
 
