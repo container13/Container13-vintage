@@ -3,18 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#f7f7f9">
-  <title>CCC Vision v1.8</title>
+  <meta name="theme-color" content="#111111">
+  <title>CCC Vision v1.8.1</title>
   <link rel="stylesheet" href="product-lab.css">
 </head>
 <body>
-  <header class="app-header" aria-label="CCC Vision">
-    <a class="brand" href="../demo-ui/dashboard.html" aria-label="CCC – till dashboard">
-      <span class="brand-halo" aria-hidden="true">✦</span>
-      <span class="brand-word">CCC</span>
-      <span class="brand-module">Vision</span>
-    </a>
-    <button id="resetBtn" class="icon-button reset-button" type="button" aria-label="Börja om" title="Börja om">↻</button>
+  <header class="app-header">
+    <div>
+      <p class="brand">CCC Vision</p>
+      <p class="subtitle">Fota. Få ett förslag. Du bestämmer.</p>
+    </div>
+    <button id="resetBtn" class="icon-button" type="button" aria-label="Börja om">↻</button>
   </header>
 
   <main class="app-shell">
@@ -27,8 +26,8 @@
         <span id="imageCount" class="pill">0 bilder</span>
       </div>
 
-      <label class="main-camera" id="mainCameraLabel">
-        <input id="mainImage" type="file" accept="image/*" capture="environment">
+      <div class="main-camera" id="mainCameraLabel">
+        <input id="mainImage" type="file" accept="image/*">
         <img id="mainPreview" alt="Förhandsvisning av varan" hidden>
         <span class="camera-content">
           <span class="camera-icon">📸</span>
@@ -36,7 +35,7 @@
           <small>En tydlig bild av hela varan räcker oftast</small>
         </span>
         <button class="remove-image" type="button" data-clear="mainImage" aria-label="Ta bort huvudbild" hidden>×</button>
-      </label>
+      </div>
 
       <button id="morePhotosBtn" class="quiet-button" type="button" aria-expanded="false">+ Berätta mer med fler bilder</button>
 
@@ -59,9 +58,15 @@
         <p class="photo-limit">Max tre bilder totalt.</p>
       </div>
 
-      <div class="start-choice" aria-label="Välj hur du vill testa Vision">
-        <button id="ownItemBtn" class="secondary-button" type="button">📸 Min egen vara</button>
+      <div class="start-choice" aria-label="Välj hur du vill lägga till en vara">
+        <button id="cameraBtn" class="secondary-button" type="button">📸 Ta foto</button>
+        <button id="albumBtn" class="secondary-button" type="button">🖼️ Kamerarulle</button>
         <button id="demoToggleBtn" class="secondary-button" type="button" aria-expanded="false">🎮 Prova demo</button>
+      </div>
+      <input id="albumInput" class="visually-hidden" type="file" accept="image/*" multiple>
+
+      <div id="photoReadyActions" class="photo-ready-actions" hidden>
+        <button id="usePhotoBtn" class="primary-button" type="button">Använd bild</button>
       </div>
 
       <div id="demoPanel" class="demo-panel" hidden>
@@ -82,16 +87,15 @@
         </div>
       </div>
 
-      <p class="privacy-note">Vision förbereder förslaget automatiskt i bakgrunden. Allt i prototypen stannar på den här enheten.</p>
-
-      <div id="captureActions" class="capture-actions" hidden>
-        <button id="captureContinueBtn" class="primary-button" type="button">Använd bild</button>
-      </div>
+      <p class="privacy-note">Vision förbereder förslaget i bakgrunden så fort en bild finns. Allt i prototypen stannar på den här enheten.</p>
     </section>
 
-    <section id="visionCard" class="card result-card stage-card" hidden aria-label="Vision-förslag">
-      <div class="card-heading compact-heading clean-result-heading">
-        <p class="step-label">2 · Vision</p>
+    <section id="visionCard" class="card result-card stage-card" hidden aria-labelledby="visionTitle">
+      <div class="card-heading compact-heading">
+        <div>
+          <p class="step-label">2 · Förslag</p>
+          <h2 id="visionTitle">Förslag</h2>
+        </div>
         <span id="confidencePill" class="pill success">Ganska säker</span>
       </div>
 
@@ -243,6 +247,26 @@
       <p id="previewMessage" class="message" aria-live="polite"></p>
     </section>
   </main>
+
+  <section id="cameraOverlay" class="camera-overlay" hidden aria-label="CCC kamera">
+    <div class="camera-topbar">
+      <button id="cameraCloseBtn" class="camera-icon-btn" type="button" aria-label="Stäng kameran">×</button>
+      <strong>Ta foto</strong>
+      <span></span>
+    </div>
+    <div class="camera-viewfinder">
+      <video id="cameraVideo" autoplay playsinline muted></video>
+      <img id="cameraStill" alt="Förhandsvisning av taget foto" hidden>
+    </div>
+    <div id="cameraLiveActions" class="camera-actions">
+      <button id="cameraCaptureBtn" class="camera-shutter" type="button" aria-label="Ta foto"><span></span></button>
+    </div>
+    <div id="cameraReviewActions" class="camera-review-actions" hidden>
+      <button id="cameraRetakeBtn" class="secondary-button" type="button">Ta om</button>
+      <button id="cameraUseBtn" class="primary-button" type="button">Använd bild</button>
+    </div>
+    <canvas id="cameraCanvas" hidden></canvas>
+  </section>
 
   <script src="demo-data.js"></script>
   <script src="product-lab.js"></script>
