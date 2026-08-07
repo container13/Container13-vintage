@@ -12,6 +12,36 @@
   let trashStack = [];
   let saveTimer;
 
+
+  // CCC gemensamt skal: samma tema och profilmeny som dashboarden
+  const rootElement = document.documentElement;
+  const themeButton = $("#themeBtn");
+  const profileButton = $("#profileBtn");
+  const profileMenu = $("#profileMenu");
+
+  function applyCccTheme(theme) {
+    rootElement.dataset.theme = theme;
+    localStorage.setItem("ccc-theme", theme);
+    themeButton?.setAttribute("aria-pressed", String(theme === "dark"));
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", theme === "dark" ? "#11141b" : "#f7f7f9");
+  }
+
+  function setProfileMenu(open) {
+    if (!profileMenu) return;
+    profileMenu.hidden = !open;
+    profileButton?.setAttribute("aria-expanded", String(open));
+  }
+
+  const savedCccTheme = localStorage.getItem("ccc-theme");
+  const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)").matches;
+  applyCccTheme(savedCccTheme || (prefersDark ? "dark" : "light"));
+  themeButton?.addEventListener("click", () => applyCccTheme(rootElement.dataset.theme === "dark" ? "light" : "dark"));
+  profileButton?.addEventListener("click", (event) => { event.stopPropagation(); setProfileMenu(profileMenu?.hidden ?? true); });
+  document.addEventListener("click", (event) => {
+    if (profileMenu && !profileMenu.hidden && !profileMenu.contains(event.target) && event.target !== profileButton) setProfileMenu(false);
+  });
+  document.addEventListener("keydown", (event) => { if (event.key === "Escape") setProfileMenu(false); });
+
   const uid = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   const currentItem = () => batchItems[currentIndex] || null;
   const currentDemo = () => {

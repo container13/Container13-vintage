@@ -1282,3 +1282,90 @@ body{position:fixed;inset:0;background:var(--bg);font-family:Inter,ui-sans-serif
 /* v2.2: avslutningsvyn ger alltid en tydlig väg tillbaka till CCC */
 .done-actions { display: grid; gap: 10px; width: 100%; max-width: 360px; margin: 18px auto 0; }
 .done-dashboard-link { display: grid; place-items: center; text-decoration: none; }
+
+
+/* =========================================================
+   CCC Vision v2.3 – designsynk med dashboard / CCC shared shell
+   Endast visuellt skal. Kamera-, Vision- och local-first-logik oförändrad.
+   ========================================================= */
+:root{
+  --bg:var(--ccc-bg,#f7f7f9);
+  --surface:var(--ccc-surface,#fff);
+  --surface-2:#f1f3f7;
+  --border:var(--ccc-border,rgba(23,32,51,.08));
+  --text:var(--ccc-text,#172033);
+  --muted:var(--ccc-muted,#667085);
+  --gold:var(--ccc-gold,#c99b39);
+  --gold-soft:#e5c777;
+  --shadow:var(--ccc-shadow,0 16px 40px rgba(31,42,68,.08));
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:var(--ccc-bg,#11141b);
+  --surface:var(--ccc-surface,#1a1f2a);
+  --surface-2:#222936;
+  --border:var(--ccc-border,rgba(255,255,255,.09));
+  --text:var(--ccc-text,#f5f7fb);
+  --muted:var(--ccc-muted,#aab2c0);
+  --gold:var(--ccc-gold,#ddb45b);
+  --gold-soft:#e9ca83;
+  --shadow:var(--ccc-shadow,0 18px 44px rgba(0,0,0,.3));
+  --success:#1e5a36;
+  color-scheme:dark;
+}
+body{background:var(--bg);transition:background .2s ease,color .2s ease}
+
+/* Shared header får styra höjd och placering – samma som dashboard */
+.app-header.ccc-header{
+  position:sticky;top:0;height:var(--ccc-header-height);min-height:var(--ccc-header-height);
+  padding:env(safe-area-inset-top) 22px 0;border:0;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)
+}
+.app-header .ccc-brand{display:inline-flex}
+.app-header .brand-halo{height:21px;font-size:25px;color:var(--gold)}
+.app-header .brand-word{font-family:Georgia,"Times New Roman",serif;font-size:39px;font-weight:400;letter-spacing:.04em;color:var(--gold)}
+.app-header .header-actions{position:absolute;right:22px;bottom:18px;display:flex;gap:10px}
+.app-header .icon-button{position:static;width:48px;height:48px;border:1px solid var(--border);border-radius:50%;background:var(--surface);color:var(--text);box-shadow:0 8px 20px rgba(31,42,68,.08)}
+.profile-menu{color:var(--text)}
+
+.app-shell{height:calc(100dvh - var(--ccc-header-height));background:var(--bg)}
+.card,.stage-card.is-active,.stage-card:not([hidden]){border-color:var(--border);background:var(--surface);box-shadow:0 12px 30px rgba(31,42,68,.055)}
+.card{border-radius:25px}
+.module-kicker{margin:0 0 5px;color:var(--gold);font-size:12px;font-weight:850;letter-spacing:.04em}
+.module-kicker span{color:var(--muted);font-size:10px}
+.capture-head-tools{display:flex;align-items:center;gap:7px}
+.reset-flow-button{width:36px;height:36px;border:1px solid var(--border);border-radius:50%;background:var(--surface-2);color:var(--muted);font-size:19px;line-height:1}
+.reset-flow-button:active{transform:scale(.95)}
+
+.primary-button{border:1px solid transparent;background:var(--gold);color:#16120a;border-radius:14px;font-weight:800}
+.secondary-button{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:14px;font-weight:750}
+.quiet-button,.quiet-inline{color:color-mix(in srgb,var(--gold) 82%,var(--text))}
+.main-camera{border-radius:25px;border-color:var(--border);background:linear-gradient(105deg,rgba(230,239,255,.95),var(--surface) 72%)}
+:root[data-theme="dark"] .main-camera{background:linear-gradient(105deg,#17253c,var(--surface) 72%)}
+.vision-summary,.correction-box,.preview-card,input,textarea,select,.compact-options,.store-product-preview,.edit-product-context,.price-quick-button{background:var(--surface-2);border-color:var(--border);color:var(--text)}
+.preview-card p{color:var(--text)}
+.store-product-preview>img,.product-thumbnail,.demo-card img{background:color-mix(in srgb,var(--text) 8%,var(--surface))}
+.undo-toast{background:var(--surface);color:var(--text);box-shadow:var(--shadow)}
+.trash-button{color:var(--text);background:var(--surface-2)}
+
+@media(max-width:480px){
+  .app-header.ccc-header{height:var(--ccc-header-height);min-height:var(--ccc-header-height);padding-inline:16px}
+  .app-header .brand-word{font-size:35px}
+  .app-header .brand-halo{height:21px;font-size:25px}
+  .app-header .header-actions{right:16px;bottom:14px;gap:8px}
+  .app-header .icon-button{width:44px;height:44px}
+  .app-shell{height:calc(100dvh - var(--ccc-header-height));padding:8px 16px calc(12px + env(safe-area-inset-bottom))}
+}
+@media(max-height:700px) and (max-width:480px){
+  /* Behåll samma headerhöjd som dashboard även på kortare telefoner. */
+  .app-header.ccc-header{height:var(--ccc-header-height);min-height:var(--ccc-header-height)}
+  .app-shell{height:calc(100dvh - var(--ccc-header-height))}
+}
+@media(min-width:760px){
+  .app-header.ccc-header{height:var(--ccc-header-height);min-height:var(--ccc-header-height);padding-left:48px;padding-right:48px}
+  .app-header .brand-halo{font-size:38px;height:31px}
+  .app-header .brand-word{font-size:78px;letter-spacing:.055em}
+  .app-header .header-actions{right:48px;bottom:42px;gap:14px}
+  .app-header .icon-button{width:58px;height:58px}
+  .app-shell{height:min(790px,calc(100dvh - var(--ccc-header-height) - 8px))}
+}
