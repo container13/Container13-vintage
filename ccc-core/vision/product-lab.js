@@ -15,6 +15,8 @@
   let saveTimer;
   let visionTimer;
   let visionRun = 0;
+  let visionState = "idle";
+  let continueWhenReady = false;
 
   function showStage(stageId) {
     ["captureCard", "visionCard", "editCard", "previewCard"].forEach((id) => {
@@ -36,6 +38,21 @@
     $("#visionHint").textContent = count > 1
       ? "De extra bilderna hjälper mig att berätta lite mer."
       : "Ett foto räcker oftast. Du bestämmer om du vill lägga till mer.";
+
+    const actions = $("#captureActions");
+    if (actions) actions.hidden = count === 0;
+    if (count === 0) setCaptureContinueState("idle");
+  }
+
+  function setCaptureContinueState(state) {
+    visionState = state;
+    const button = $("#captureContinueBtn");
+    if (!button) return;
+    button.disabled = false;
+    button.classList.toggle("is-ready", state === "ready");
+    if (state === "ready") button.textContent = "Använd bild ✓";
+    else if (state === "waiting") button.textContent = "Förbereder…";
+    else button.textContent = "Använd bild";
   }
 
   function revokeUrl(inputId) {
@@ -85,15 +102,27 @@
       $("#mainCameraLabel .remove-image").hidden = true;
       $$(".demo-card").forEach((card) => card.classList.remove("is-active"));
       updateImageState();
+      if (!selectedImageCount()) {
+        clearTimeout(visionTimer);
+        ++visionRun;
+        continueWhenReady = false;
+        setCaptureContinueState("idle");
+      }
       return;
     }
     previewImage(...pair);
+    if (!selectedImageCount()) {
+      clearTimeout(visionTimer);
+      ++visionRun;
+      continueWhenReady = false;
+      setCaptureContinueState("idle");
+    }
   }
 
   imagePairs.forEach(([inputId, previewId]) => {
     $("#" + inputId).addEventListener("change", () => {
       previewImage(inputId, previewId);
-      if (inputId === "mainImage" && $("#" + inputId).files?.length) {
+      if ($("#" + inputId).files?.length && selectedImageCount()) {
         scheduleVision();
       }
     });
@@ -107,8 +136,10 @@
     });
   });
 
-  function scheduleVision(delay = 250) {
+  function scheduleVision(delay = 120) {
     clearTimeout(visionTimer);
+    continueWhenReady = false;
+    setCaptureContinueState("running");
     visionTimer = setTimeout(() => runVision(), delay);
   }
 
@@ -135,22 +166,12 @@
     if (!selectedImageCount()) return;
 
     const runId = ++visionRun;
-    showStage("captureCard");
-    $("#analysisProgress").hidden = false;
+    setCaptureContinueState("running");
 
-    const messages = [
-      "Bilden är mottagen.",
-      "Vision tittar på varan.",
-      "Förbereder ett kort förslag."
-    ];
-
-    for (const text of messages) {
-      if (runId !== visionRun) return;
-      $("#progressText").textContent = text;
-      await new Promise((resolve) => setTimeout(resolve, 520));
-    }
-
+    // v1.8: simulera arbetet utan popup eller vänteläge på skärmen.
+    await new Promise((resolve) => setTimeout(resolve, 1050));
     if (runId !== visionRun) return;
+
     const demo = window.CCC_VISION_DEMOS?.[activeDemoKey] || window.CCC_VISION_DEMO;
     $("#summaryTitle").textContent = demo.summaryTitle;
     $("#summaryBrand").textContent = demo.summaryBrand;
@@ -158,8 +179,22 @@
     $("#confidencePill").textContent = selectedImageCount() > 1 ? "Säkerheten är hög" : demo.confidence;
 
     syncProductContext();
-    $("#analysisProgress").hidden = true;
-    showStage("visionCard");
+    setCaptureContinueState("ready");
+
+    if (continueWhenReady) {
+      continueWhenReady = false;
+      showStage("visionCard");
+    }
+  }
+
+  function continueFromCapture() {
+    if (!selectedImageCount()) return;
+    if (visionState === "ready") {
+      showStage("visionCard");
+      return;
+    }
+    continueWhenReady = true;
+    setCaptureContinueState("waiting");
   }
 
   function populateForm() {
@@ -438,6 +473,7 @@
     $("#mainImage").click();
   }
 
+  $("#captureContinueBtn").addEventListener("click", continueFromCapture);
   $("#ownItemBtn").addEventListener("click", openOwnItemPicker);
   $("#morePhotosBtn").addEventListener("click", toggleMorePhotos);
   $("#demoToggleBtn").addEventListener("click", toggleDemoPanel);

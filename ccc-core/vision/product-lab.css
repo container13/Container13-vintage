@@ -1327,3 +1327,35 @@ input:focus,textarea:focus,select:focus {
   .icon-button { right: 34px; bottom: 28px; width: 52px; height: 52px; }
   .app-shell { width: min(500px,calc(100% - 40px)); margin-top: 18px; }
 }
+
+
+/* =========================================================
+   CCC Vision v1.8 – Vision arbetar i bakgrunden
+   Ingen analys-popup. Resultatet visas först när användaren
+   väljer att gå vidare, och överflödig förklarande text tas bort.
+   ========================================================= */
+#analysisProgress { display: none !important; }
+.capture-actions {
+  display: grid;
+  margin-top: 8px;
+}
+.capture-actions[hidden] { display: none !important; }
+#captureContinueBtn {
+  transition: transform .16s ease, box-shadow .16s ease, background .2s ease;
+}
+#captureContinueBtn.is-ready {
+  box-shadow: 0 9px 24px rgba(201,155,57,.22);
+}
+.clean-result-heading {
+  align-items: center;
+  margin-bottom: 8px;
+}
+.clean-result-heading .step-label { margin: 0; }
+#visionCard .vision-summary { margin-top: 0; }
+
+@media (max-width: 480px) {
+  #captureCard {
+    grid-template-rows: auto minmax(0,1fr) auto auto auto;
+  }
+  #captureCard .capture-actions { margin-top: 4px; }
+}

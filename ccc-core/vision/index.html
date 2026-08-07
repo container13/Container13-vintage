@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#f7f7f9">
-  <title>CCC Vision v1.7</title>
+  <title>CCC Vision v1.8</title>
   <link rel="stylesheet" href="product-lab.css">
 </head>
 <body>
@@ -82,23 +82,16 @@
         </div>
       </div>
 
-      <p class="privacy-note">Vision börjar automatiskt när en bild har valts. Allt i prototypen stannar på den här enheten.</p>
+      <p class="privacy-note">Vision förbereder förslaget automatiskt i bakgrunden. Allt i prototypen stannar på den här enheten.</p>
 
-      <div id="analysisProgress" class="progress-box" hidden aria-live="polite">
-        <span class="spinner" aria-hidden="true"></span>
-        <div>
-          <strong>Vision hjälper…</strong>
-          <p id="progressText">Tittar på bilden.</p>
-        </div>
+      <div id="captureActions" class="capture-actions" hidden>
+        <button id="captureContinueBtn" class="primary-button" type="button">Använd bild</button>
       </div>
     </section>
 
-    <section id="visionCard" class="card result-card stage-card" hidden aria-labelledby="visionTitle">
-      <div class="card-heading compact-heading">
-        <div>
-          <p class="step-label">2 · Förslag</p>
-          <h2 id="visionTitle">Jag tror att det här är:</h2>
-        </div>
+    <section id="visionCard" class="card result-card stage-card" hidden aria-label="Vision-förslag">
+      <div class="card-heading compact-heading clean-result-heading">
+        <p class="step-label">2 · Vision</p>
         <span id="confidencePill" class="pill success">Ganska säker</span>
       </div>
 
