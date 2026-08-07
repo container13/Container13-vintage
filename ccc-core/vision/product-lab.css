@@ -1101,3 +1101,229 @@ body {
     height: min(var(--mobile-stage-height), calc(100dvh - 84px));
   }
 }
+
+/* =========================================================
+   CCC Vision v1.7 – visuellt språk från demo-ui
+   Funktionell Vision-logik är orörd. Detta block är endast UI.
+   ========================================================= */
+:root {
+  color-scheme: light;
+  --bg: #f7f7f9;
+  --surface: #ffffff;
+  --surface-2: #f8f9fb;
+  --border: rgba(23,32,51,.09);
+  --text: #172033;
+  --muted: #667085;
+  --gold: #c99b39;
+  --gold-soft: #e5c472;
+  --success: #21804c;
+  --danger: #b54747;
+  --radius: 24px;
+  --shadow: 0 16px 40px rgba(31,42,68,.08);
+  --vision-header-height: 112px;
+}
+
+html, body { min-height: 100%; }
+body {
+  min-height: 100dvh;
+  color: var(--text);
+  background: var(--bg);
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  height: var(--vision-header-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: env(safe-area-inset-top) 18px 0;
+  border-bottom: 0;
+  background: color-mix(in srgb,var(--bg) 90%,transparent);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+.brand {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin: 0;
+  color: var(--gold);
+  text-decoration: none;
+  line-height: 1;
+}
+.brand-halo {
+  height: 18px;
+  font-size: 22px;
+  filter: drop-shadow(0 4px 10px rgba(201,155,57,.22));
+}
+.brand-word {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 37px;
+  letter-spacing: .045em;
+}
+.brand-module {
+  margin-top: 3px;
+  color: var(--muted);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+.subtitle { display: none; }
+.icon-button {
+  position: absolute;
+  right: 16px;
+  bottom: 13px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text);
+  background: var(--surface);
+  box-shadow: 0 8px 20px rgba(31,42,68,.08);
+  font-size: 1.25rem;
+}
+.icon-button:active { transform: scale(.96); }
+
+.app-shell {
+  width: min(calc(100% - 24px), 520px);
+  margin: 8px auto calc(20px + env(safe-area-inset-bottom));
+  gap: 10px;
+}
+.card {
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.card-heading { margin-bottom: 13px; }
+.step-label {
+  color: var(--gold);
+  font-size: .72rem;
+  letter-spacing: .1em;
+}
+h1,h2 { color: var(--text); letter-spacing: -.025em; }
+.pill {
+  color: var(--muted);
+  background: #f1f3f6;
+  border: 1px solid var(--border);
+}
+.pill.success { color: #166534; background: #e8f5ec; border-color: rgba(33,128,76,.12); }
+
+.main-camera {
+  min-height: 238px;
+  border: 1.5px dashed rgba(201,155,57,.5);
+  border-radius: 22px;
+  background: linear-gradient(145deg,#fffaf0,#f7f7f9);
+}
+.main-camera.has-image::after {
+  color: #172033;
+  background: rgba(255,255,255,.92);
+  border: 1px solid var(--border);
+  box-shadow: 0 7px 16px rgba(31,42,68,.12);
+}
+.camera-icon { font-size: 2.45rem; }
+.camera-content strong { color: var(--text); }
+.camera-content small { max-width: 270px; }
+
+.primary-button,.secondary-button {
+  min-height: 52px;
+  border-radius: 15px;
+  font-weight: 800;
+}
+.primary-button {
+  border: 0;
+  color: #16120a;
+  background: var(--gold);
+  box-shadow: 0 8px 20px rgba(201,155,57,.16);
+}
+.secondary-button {
+  border: 1px solid var(--border);
+  color: var(--text);
+  background: var(--surface);
+}
+.primary-button:active,.secondary-button:active { transform: scale(.985); }
+.quiet-button { color: #8a681f; }
+
+.more-photo-panel,.demo-panel,.correction-box,.preview-card,
+.edit-product-context,.store-product-preview,.compact-options,
+.vision-summary,.channel-row label {
+  border-color: var(--border);
+  background: var(--surface-2);
+}
+.mini-camera,.demo-card,.choice-grid button {
+  border-color: var(--border);
+  color: var(--text);
+  background: var(--surface);
+}
+.demo-card.is-active { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(201,155,57,.14); }
+.mini-camera span { background: rgba(23,32,51,.74); }
+.remove-image { background: rgba(23,32,51,.82); }
+
+.progress-box {
+  border-color: rgba(201,155,57,.22);
+  background: #fff9ea;
+}
+.spinner { border-color: rgba(23,32,51,.12); border-top-color: var(--gold); }
+.vision-summary strong { color: var(--text); }
+
+input,textarea,select {
+  border-color: var(--border);
+  color: var(--text);
+  background: #fff;
+}
+input:focus,textarea:focus,select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201,155,57,.13);
+}
+.price-quick-button { border-color: rgba(201,155,57,.28) !important; background: #fff9ea !important; }
+.preview-price { color: #8a681f !important; }
+.channel-row input { accent-color: var(--gold); }
+.message { color: var(--success); }
+
+/* Vision ska på telefon kännas som samma appskal som demo-ui. */
+@media (max-width: 480px) {
+  :root { --vision-header-height: 102px; }
+  html,body { width:100%; height:100%; overflow:hidden; overscroll-behavior:none; }
+  body { position:fixed; inset:0; }
+  .app-header { padding-inline: 16px; }
+  .brand-word { font-size: 35px; }
+  .brand-halo { font-size: 20px; height: 16px; }
+  .brand-module { font-size: 10px; }
+  .app-shell {
+    width: 100%;
+    height: calc(100dvh - var(--vision-header-height));
+    min-height: 0;
+    margin: 0;
+    padding: 7px 12px calc(10px + env(safe-area-inset-bottom));
+    overflow: hidden;
+  }
+  .stage-card {
+    width: 100%;
+    max-width: 430px;
+    height: 100%;
+    min-height: 0;
+    margin: 0 auto;
+    border-radius: 23px;
+  }
+  .card { box-shadow: 0 10px 28px rgba(31,42,68,.06); }
+  .main-camera { min-height: 0; }
+}
+
+@media (min-width: 760px) {
+  :root { --vision-header-height: 150px; }
+  .brand-halo { font-size: 31px; height: 25px; }
+  .brand-word { font-size: 60px; }
+  .brand-module { font-size: 12px; }
+  .icon-button { right: 34px; bottom: 28px; width: 52px; height: 52px; }
+  .app-shell { width: min(500px,calc(100% - 40px)); margin-top: 18px; }
+}
