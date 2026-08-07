@@ -205,7 +205,7 @@ function showView(view){
   imagesGrid?.scrollTo?.({top:0,left:0,behavior:"instant"});
 }
 moreBtn?.addEventListener("click",()=>showView("more"));
-addImagesBtn?.addEventListener("click",()=>showView("add"));
+addImagesBtn?.addEventListener("click",()=>{ window.location.href="../vision/index.html"; });
 backBtn?.addEventListener("click",()=>showView("home"));
 backFromImagesBtn?.addEventListener("click",()=>showView("home"));
 backFromGalleryBtn?.addEventListener("click",()=>showView("home"));
