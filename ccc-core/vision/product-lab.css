@@ -1278,3 +1278,7 @@ body{position:fixed;inset:0;background:var(--bg);font-family:Inter,ui-sans-serif
   .vision-review-actions { grid-template-columns: 44px 1fr; }
   .vision-review-actions #useSuggestionBtn { grid-column: 1 / -1; }
 }
+
+/* v2.2: avslutningsvyn ger alltid en tydlig väg tillbaka till CCC */
+.done-actions { display: grid; gap: 10px; width: 100%; max-width: 360px; margin: 18px auto 0; }
+.done-dashboard-link { display: grid; place-items: center; text-decoration: none; }

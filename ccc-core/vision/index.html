@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#111111">
-  <title>CCC Vision v2.1</title>
+  <title>CCC Vision v2.2</title>
   <link rel="stylesheet" href="product-lab.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
       <span class="brand-halo" aria-hidden="true">✦</span>
       <span class="brand-word">CCC</span>
     </a>
-    <div class="vision-name">Vision <span class="vision-version">v2.1</span></div>
+    <div class="vision-name">Vision <span class="vision-version">v2.2</span></div>
     <button id="resetBtn" class="icon-button" type="button" aria-label="Börja om">↻</button>
   </header>
 
@@ -190,7 +190,10 @@
       <div class="done-icon" aria-hidden="true">✓</div>
       <h2 id="seriesDoneTitle">Alla plagg klara</h2>
       <p id="seriesDoneText" class="vision-hint">Produkterna är godkända lokalt på den här enheten.</p>
-      <button id="newSeriesBtn" class="primary-button" type="button">Fota fler plagg</button>
+      <div class="done-actions">
+        <button id="newSeriesBtn" class="primary-button" type="button">Fota fler plagg</button>
+        <a class="secondary-button done-dashboard-link" href="../demo-ui/dashboard.html">Till dashboard</a>
+      </div>
     </section>
 
     <section id="previewCard" class="card preview-stage stage-card" hidden aria-labelledby="previewTitle">
