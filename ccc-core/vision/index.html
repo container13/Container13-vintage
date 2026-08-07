@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111111">
+  <title>CCC Vision v1.6</title>
+  <link rel="stylesheet" href="product-lab.css">
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="brand">CCC Vision</p>
+      <p class="subtitle">Fota. Få ett förslag. Du bestämmer.</p>
+    </div>
+    <button id="resetBtn" class="icon-button" type="button" aria-label="Börja om">↻</button>
+  </header>
+
+  <main class="app-shell">
+    <section id="captureCard" class="card capture-card stage-card is-active" aria-labelledby="captureTitle">
+      <div class="card-heading">
+        <div>
+          <p class="step-label">1 · Foto</p>
+          <h1 id="captureTitle">Visa varan</h1>
+        </div>
+        <span id="imageCount" class="pill">0 bilder</span>
+      </div>
+
+      <label class="main-camera" id="mainCameraLabel">
+        <input id="mainImage" type="file" accept="image/*" capture="environment">
+        <img id="mainPreview" alt="Förhandsvisning av varan" hidden>
+        <span class="camera-content">
+          <span class="camera-icon">📸</span>
+          <strong>Ta ett foto</strong>
+          <small>En tydlig bild av hela varan räcker oftast</small>
+        </span>
+        <button class="remove-image" type="button" data-clear="mainImage" aria-label="Ta bort huvudbild" hidden>×</button>
+      </label>
+
+      <button id="morePhotosBtn" class="quiet-button" type="button" aria-expanded="false">+ Berätta mer med fler bilder</button>
+
+      <div id="morePhotosPanel" class="more-photo-panel" hidden>
+        <p class="more-photo-intro">För ett speciellt plagg kan du lägga till:</p>
+        <div class="extra-grid two-photos">
+          <label class="mini-camera">
+            <input id="detailImage1" type="file" accept="image/*" capture="environment">
+            <img id="detailPreview1" alt="Bild på lappen" hidden>
+            <span>🏷️ Lapp</span>
+            <button class="remove-image" type="button" data-clear="detailImage1" aria-label="Ta bort bild på lappen" hidden>×</button>
+          </label>
+          <label class="mini-camera">
+            <input id="detailImage2" type="file" accept="image/*" capture="environment">
+            <img id="detailPreview2" alt="Bild på baksidan" hidden>
+            <span>↩️ Baksida</span>
+            <button class="remove-image" type="button" data-clear="detailImage2" aria-label="Ta bort bild på baksidan" hidden>×</button>
+          </label>
+        </div>
+        <p class="photo-limit">Max tre bilder totalt.</p>
+      </div>
+
+      <div class="start-choice" aria-label="Välj hur du vill testa Vision">
+        <button id="ownItemBtn" class="secondary-button" type="button">📸 Min egen vara</button>
+        <button id="demoToggleBtn" class="secondary-button" type="button" aria-expanded="false">🎮 Prova demo</button>
+      </div>
+
+      <div id="demoPanel" class="demo-panel" hidden>
+        <p>Välj en testvara</p>
+        <div class="demo-grid">
+          <button type="button" class="demo-card" data-demo="arsenal">
+            <img src="demo/arsenal.svg" alt="Illustrerad Arsenaltröja">
+            <span>Arsenaltröja</span>
+          </button>
+          <button type="button" class="demo-card" data-demo="levis">
+            <img src="demo/levis.svg" alt="Illustrerade Levi’s 501-jeans">
+            <span>Levi’s 501</span>
+          </button>
+          <button type="button" class="demo-card" data-demo="adidas">
+            <img src="demo/adidas.svg" alt="Illustrerad Adidasjacka">
+            <span>Adidasjacka</span>
+          </button>
+        </div>
+      </div>
+
+      <p class="privacy-note">Vision börjar automatiskt när en bild har valts. Allt i prototypen stannar på den här enheten.</p>
+
+      <div id="analysisProgress" class="progress-box" hidden aria-live="polite">
+        <span class="spinner" aria-hidden="true"></span>
+        <div>
+          <strong>Vision hjälper…</strong>
+          <p id="progressText">Tittar på bilden.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="visionCard" class="card result-card stage-card" hidden aria-labelledby="visionTitle">
+      <div class="card-heading compact-heading">
+        <div>
+          <p class="step-label">2 · Förslag</p>
+          <h2 id="visionTitle">Jag tror att det här är:</h2>
+        </div>
+        <span id="confidencePill" class="pill success">Ganska säker</span>
+      </div>
+
+      <div class="vision-summary product-context">
+        <img id="visionThumbnail" class="product-thumbnail" alt="Miniatyr av varan">
+        <div class="product-context-copy">
+          <strong id="summaryTitle">Arsenal fotbollströja</strong>
+          <span id="summaryBrand">Nike</span>
+          <span id="summarySeason">Troligen 2003/04</span>
+        </div>
+      </div>
+
+      <p id="visionHint" class="vision-hint">Vill du bli säkrare kan du lägga till en bild på etiketten.</p>
+
+      <button id="backToPhotoBtn" class="quiet-button back-button" type="button">← Tillbaka till foto</button>
+
+      <div class="button-pair">
+        <button id="useSuggestionBtn" class="primary-button" type="button">Använd förslaget</button>
+        <button id="wrongSuggestionBtn" class="secondary-button" type="button">Stämmer inte</button>
+      </div>
+
+      <div id="correctionBox" class="correction-box" hidden>
+        <p>Vad vill du rätta?</p>
+        <div class="choice-grid">
+          <button type="button" data-focus="category">Kategori</button>
+          <button type="button" data-focus="brand">Märke / klubb</button>
+          <button type="button" data-focus="season">År / säsong</button>
+          <button type="button" data-focus="description">Annat</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="editCard" class="card stage-card compact-edit-stage" hidden aria-labelledby="editTitle">
+      <div class="fixed-stage-head compact-edit-head">
+        <div>
+          <p class="step-label">3 · Redigera</p>
+          <h2 id="editTitle">Gör förslaget klart</h2>
+        </div>
+        <span id="draftState" class="pill">Redigerbart</span>
+      </div>
+
+      <div class="edit-product-context compact-product-card mini-context">
+        <img id="editThumbnail" class="product-thumbnail" alt="Miniatyr av varan">
+        <div><strong id="editContextTitle">Vald vara</strong><span>Samma produkt genom hela flödet.</span></div>
+      </div>
+
+      <form id="productForm" class="compact-edit-form">
+        <label class="title-field">
+          <span>Rubrik</span>
+          <input id="title" type="text" autocomplete="off" maxlength="100">
+          <small class="field-help"><span id="titleCount">0</span>/100</small>
+        </label>
+
+        <div class="price-row">
+          <label>
+            <span>Pris</span>
+            <div class="price-input"><input id="price" type="number" min="0" inputmode="numeric" placeholder="0"><span>kr</span></div>
+          </label>
+          <button id="usePriceSuggestionBtn" class="price-quick-button" type="button">
+            <small>Vision föreslår</small>
+            <strong id="priceSuggestion">795 kr</strong>
+          </button>
+        </div>
+
+        <label class="compact-description-field">
+          <span>Beskrivning</span>
+          <textarea id="description" rows="3" maxlength="800"></textarea>
+          <small class="field-help"><span id="descriptionCount">0</span>/800</small>
+        </label>
+
+        <div class="compact-extras-row">
+          <details class="compact-options">
+            <summary>Frivilliga tillägg</summary>
+            <div class="option-content">
+              <p id="factSuggestionText">Den här modellen förknippas med Arsenals Invincibles-säsong.</p>
+              <button id="addFactBtn" class="secondary-button compact-action" type="button">Lägg till “Visste du”</button>
+              <button id="addNewConditionBtn" class="quiet-inline" type="button">+ Lägg till “Nyskick”</button>
+            </div>
+          </details>
+
+          <details class="compact-options">
+            <summary>Fler uppgifter</summary>
+            <div class="two-column extra-fields">
+              <label><span>Kategori</span><input id="category" type="text" autocomplete="off"></label>
+              <label><span>Märke / klubb</span><input id="brand" type="text" autocomplete="off"></label>
+              <label><span>År / säsong</span><input id="season" type="text" autocomplete="off"></label>
+              <label><span>Tillverkare</span><input id="manufacturer" type="text"></label>
+              <label><span>Storlek</span><input id="size" type="text"></label>
+              <label><span>Färg</span><input id="color" type="text"></label>
+            </div>
+          </details>
+        </div>
+      </form>
+
+      <div class="fixed-stage-actions compact-edit-actions">
+        <button id="backToSuggestionBtn" class="secondary-button" type="button">Tillbaka</button>
+        <button id="previewBtn" class="primary-button" type="button">Förhandsgranska</button>
+      </div>
+      <p id="message" class="message" aria-live="polite"></p>
+    </section>
+
+    <section id="previewCard" class="card preview-stage stage-card" hidden aria-labelledby="previewTitle">
+      <div class="card-heading">
+        <div>
+          <p class="step-label">5 · Förhandsgranska</p>
+          <h2 id="previewTitle">Så här blir produkten</h2>
+        </div>
+        <span class="pill success">Klar att välja kanal</span>
+      </div>
+
+      <article class="store-product-preview">
+        <img id="previewThumbnail" alt="Produktbild i förhandsvisningen">
+        <div class="store-product-copy">
+          <h3 id="previewProductTitle">Produktnamn</h3>
+          <p id="previewProductPrice" class="preview-price">Pris saknas</p>
+          <p id="previewProductDescription">Beskrivning saknas.</p>
+        </div>
+      </article>
+
+      <div class="publish-choice preview-publish-choice">
+        <p>Förbered för</p>
+        <div class="channel-row">
+          <label><input id="channelWeb" type="checkbox" checked> Hemsidan</label>
+          <label><input id="channelInstagram" type="checkbox" checked> Instagram</label>
+          <label><input id="channelFacebook" type="checkbox" checked> Facebook</label>
+        </div>
+      </div>
+
+      <details id="previewDetails" class="text-previews">
+        <summary>Visa färdiga texter</summary>
+        <div class="preview-stack">
+          <article id="webPreviewCard" class="preview-card">
+            <div class="preview-heading"><strong>Hemsidan</strong><button type="button" data-copy="webPreview">Kopiera</button></div>
+            <p id="webPreview"></p>
+          </article>
+          <article id="instagramPreviewCard" class="preview-card">
+            <div class="preview-heading"><strong>Instagram</strong><button type="button" data-copy="instagramPreview">Kopiera</button></div>
+            <p id="instagramPreview"></p>
+          </article>
+          <article id="facebookPreviewCard" class="preview-card">
+            <div class="preview-heading"><strong>Facebook</strong><button type="button" data-copy="facebookPreview">Kopiera</button></div>
+            <p id="facebookPreview"></p>
+          </article>
+        </div>
+      </details>
+
+      <button id="backToEditBtn" class="quiet-button back-button" type="button">← Tillbaka och redigera</button>
+      <button id="approveBtn" class="primary-button full-action" type="button">Godkänn</button>
+      <p id="previewMessage" class="message" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script src="demo-data.js"></script>
+  <script src="product-lab.js"></script>
+</body>
+</html>
