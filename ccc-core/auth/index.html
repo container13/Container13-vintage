@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090909">
+<title>CCC – Logga in</title>
+<link rel="stylesheet" href="auth.css?v=2.4">
+</head>
+<body>
+<main class="auth-shell">
+  <section class="login-card" aria-labelledby="loginTitle">
+    <div class="auth-brand brand ccc-brand-mark">
+      <span class="brand-halo" aria-hidden="true">✦</span>
+      <h1 id="loginTitle" class="brand-word">CCC</h1>
+    </div>
+    <p class="auth-welcome">Välkommen tillbaka</p>
+    <form id="loginForm" autocomplete="on">
+      <input id="email" name="username" type="email" placeholder="E-post" autocomplete="username" inputmode="email" autocapitalize="none" spellcheck="false">
+      <div class="password-wrap">
+        <input id="password" name="password" type="password" placeholder="Lösenord" autocomplete="current-password">
+        <button id="togglePassword" type="button" aria-label="Visa lösenord">👁</button>
+      </div>
+      <button id="loginButton" class="login-button">Logga in</button>
+      <button id="resetPassword" class="forgot" type="button">Glömt lösenord?</button>
+      <p id="message" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+</main>
+<div id="loginSuccess" class="login-success" hidden aria-live="polite">
+  <span class="success-check">✓</span>
+  <strong>Välkommen in</strong>
+  <small>CCC startar arbetsytan…</small>
+</div>
+<script src="../version.js?v=2.4.1"></script>
+<script type="module" src="auth.js?v=2.4"></script>
+</body>
+</html>
