@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#111111">
-  <title>CCC Vision v1.9</title>
+  <title>CCC Vision v2.0</title>
   <link rel="stylesheet" href="product-lab.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
       <span class="brand-halo" aria-hidden="true">✦</span>
       <span class="brand-word">CCC</span>
     </a>
-    <div class="vision-name">Vision <span class="vision-version">v1.9</span></div>
+    <div class="vision-name">Vision <span class="vision-version">v2.0</span></div>
     <button id="resetBtn" class="icon-button" type="button" aria-label="Börja om">↻</button>
   </header>
 
@@ -22,21 +22,21 @@
       <div class="card-heading capture-heading">
         <div>
           <p class="step-label">1 · Foto</p>
-          <h1 id="captureTitle">Visa varan</h1>
+          <h1 id="captureTitle">Ta en bildserie</h1>
         </div>
-        <span id="imageCount" class="pill">0 bilder</span>
+        <span id="imageCount" class="pill">0 plagg</span>
       </div>
 
       <button id="startCameraBtn" class="main-camera camera-trigger" type="button" aria-label="Ta ett foto">
         <img id="mainPreview" alt="Förhandsvisning av varan" hidden>
         <span class="camera-content">
           <span class="camera-icon" aria-hidden="true">📸</span>
-          <strong>Ta ett foto</strong>
-          <small>En tydlig bild räcker oftast</small>
+          <strong>Ta första fotot</strong>
+          <small>Ett foto per plagg · avsluta när du vill</small>
         </span>
       </button>
 
-      <button id="galleryBtn" class="gallery-link" type="button">▧ Välj från bilder</button>
+      <button id="galleryBtn" class="gallery-link" type="button">▧ Välj flera bilder från kamerarullen</button>
       <input id="galleryInput" class="visually-hidden" type="file" accept="image/*" multiple>
       <input id="cameraFallbackInput" class="visually-hidden" type="file" accept="image/*" capture="environment">
       <input id="detailImage1" class="visually-hidden" type="file" accept="image/*">
@@ -44,13 +44,9 @@
       <img id="detailPreview1" alt="Extra bild 1" hidden>
       <img id="detailPreview2" alt="Extra bild 2" hidden>
 
-      <div id="selectedStrip" class="selected-strip" hidden aria-label="Valda bilder">
-        <div class="selected-thumb"><img id="stripMain" alt="Huvudbild"><span>Fram</span></div>
-        <div class="selected-thumb" id="stripExtra1Wrap" hidden><img id="stripExtra1" alt="Extra bild"><span>Lapp</span></div>
-        <div class="selected-thumb" id="stripExtra2Wrap" hidden><img id="stripExtra2" alt="Extra bild"><span>Bak</span></div>
-      </div>
+      <div id="batchStrip" class="batch-strip" hidden aria-label="Bildserie"></div>
 
-      <button id="showSuggestionBtn" class="primary-button capture-next" type="button" hidden>Visa förslag</button>
+      <button id="showSuggestionBtn" class="primary-button capture-next" type="button" hidden>Granska bildserien</button>
 
       <details class="demo-details">
         <summary>Prova demo</summary>
@@ -78,9 +74,10 @@
       <div id="cameraLiveActions" class="camera-controls">
         <button id="shutterBtn" class="shutter-button" type="button" aria-label="Ta foto"><span></span></button>
       </div>
-      <div id="cameraReviewActions" class="camera-review-actions" hidden>
+      <div id="cameraReviewActions" class="camera-review-actions series-review-actions" hidden>
         <button id="retakeBtn" class="secondary-button" type="button">Ta om</button>
-        <button id="usePhotoBtn" class="primary-button" type="button">Använd bild</button>
+        <button id="nextPhotoBtn" class="secondary-button" type="button">Nästa plagg</button>
+        <button id="usePhotoBtn" class="primary-button" type="button">Klar</button>
       </div>
     </div>
 
@@ -90,7 +87,7 @@
           <p class="step-label">2 · Förslag</p>
           <h2 id="visionTitle">Förslag</h2>
         </div>
-        <span id="confidencePill" class="pill success">Ganska säker</span>
+        <div class="result-pills"><span id="batchProgress" class="pill">1 av 1</span><span id="confidencePill" class="pill success">Ganska säker</span></div>
       </div>
 
       <div class="vision-summary product-context">
@@ -102,13 +99,14 @@
         </div>
       </div>
 
-      <p id="visionHint" class="vision-hint">Vill du bli säkrare kan du lägga till en bild på etiketten.</p>
+      <p id="visionHint" class="vision-hint">Ett foto räcker oftast.</p>
+      <input id="sameGarmentInput" class="visually-hidden" type="file" accept="image/*" multiple>
+      <button id="addSameGarmentBtn" class="quiet-button same-garment-button" type="button">＋ Fler bilder på samma plagg</button>
 
-      <button id="backToPhotoBtn" class="quiet-button back-button" type="button">← Tillbaka till foto</button>
-
-      <div class="button-pair">
-        <button id="useSuggestionBtn" class="primary-button" type="button">Använd förslaget</button>
-        <button id="wrongSuggestionBtn" class="secondary-button" type="button">Stämmer inte</button>
+      <div class="vision-review-actions">
+        <button id="trashCurrentBtn" class="trash-button" type="button" aria-label="Lägg i papperskorgen">🗑</button>
+        <button id="wrongSuggestionBtn" class="secondary-button" type="button">Ändra</button>
+        <button id="useSuggestionBtn" class="primary-button" type="button">Godkänn & nästa</button>
       </div>
 
       <div id="correctionBox" class="correction-box" hidden>
@@ -186,9 +184,17 @@
 
       <div class="fixed-stage-actions compact-edit-actions">
         <button id="backToSuggestionBtn" class="secondary-button" type="button">Tillbaka</button>
-        <button id="previewBtn" class="primary-button" type="button">Förhandsgranska</button>
+        <button id="previewBtn" class="primary-button" type="button">Spara & nästa</button>
       </div>
       <p id="message" class="message" aria-live="polite"></p>
+    </section>
+
+    <section id="seriesDoneCard" class="card stage-card series-done-card" hidden aria-labelledby="seriesDoneTitle">
+      <div class="done-icon" aria-hidden="true">✓</div>
+      <p class="step-label">Bildserie klar</p>
+      <h2 id="seriesDoneTitle">Alla förslag är genomgångna</h2>
+      <p id="seriesDoneText" class="vision-hint">Produkterna är godkända lokalt på den här enheten.</p>
+      <button id="newSeriesBtn" class="primary-button" type="button">Ta en ny bildserie</button>
     </section>
 
     <section id="previewCard" class="card preview-stage stage-card" hidden aria-labelledby="previewTitle">
@@ -241,6 +247,7 @@
       <p id="previewMessage" class="message" aria-live="polite"></p>
     </section>
   </main>
+  <div id="undoToast" class="undo-toast" hidden><span>Flyttad till papperskorgen</span><button id="undoTrashBtn" type="button">Ångra</button></div>
 
   <script src="demo-data.js"></script>
   <script src="product-lab.js"></script>

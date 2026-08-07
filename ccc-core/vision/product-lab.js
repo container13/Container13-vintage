@@ -1,113 +1,100 @@
 (() => {
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
-
   const fieldIds = ["title", "category", "brand", "season", "price", "manufacturer", "size", "color", "description"];
-  let activeDemoKey = "arsenal";
-  let demoImageActive = false;
-  let objectUrls = new Map();
-  let saveTimer;
-  let visionTimer;
-  let visionRun = 0;
-  let visionReady = false;
-  let visionPromise = null;
-  let pendingVisionResult = null;
+  const demoKeys = ["arsenal", "levis", "adidas"];
+
   let cameraStream = null;
   let stagedCameraFile = null;
-  let selectedFiles = [];
+  let stagedItem = null;
+  let batchItems = [];
+  let currentIndex = 0;
+  let trashStack = [];
+  let saveTimer;
+
+  const uid = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const currentItem = () => batchItems[currentIndex] || null;
+  const currentDemo = () => {
+    const item = currentItem();
+    const key = item?.demoKey || "arsenal";
+    return window.CCC_VISION_DEMOS?.[key] || window.CCC_VISION_DEMO;
+  };
 
   function showStage(stageId) {
-    ["captureCard", "visionCard", "editCard", "previewCard"].forEach((id) => {
+    ["captureCard", "visionCard", "editCard", "previewCard", "seriesDoneCard"].forEach((id) => {
       const card = $("#" + id);
+      if (!card) return;
       card.hidden = id !== stageId;
       card.classList.toggle("is-active", id === stageId);
     });
   }
 
-  function selectedImageCount() {
-    return selectedFiles.length || (demoImageActive ? 1 : 0);
+  function fileUrl(file) {
+    return URL.createObjectURL(file);
   }
 
-  function updateImageState() {
-    const count = selectedImageCount();
-    $("#imageCount").textContent = `${count} ${count === 1 ? "bild" : "bilder"}`;
-    $("#visionHint").textContent = count > 1
-      ? "De extra bilderna hjälper Vision att berätta lite mer."
-      : "Ett foto räcker oftast.";
-    $("#selectedStrip").hidden = count === 0;
+  function createBatchItem(file, index) {
+    const item = {
+      id: uid(),
+      file,
+      previewUrl: fileUrl(file),
+      extraFiles: [],
+      extraUrls: [],
+      demoKey: demoKeys[index % demoKeys.length],
+      visionReady: false,
+      visionResult: null,
+      approved: false,
+      editedFields: null,
+      analysisPromise: null
+    };
+    startSilentAnalysis(item);
+    return item;
   }
 
-  function revokeObjectUrls() {
-    objectUrls.forEach((url) => URL.revokeObjectURL(url));
-    objectUrls.clear();
-  }
-
-  function setPreviewFiles(files) {
-    revokeObjectUrls();
-    selectedFiles = files.slice(0, 3);
-    demoImageActive = false;
-    const ids = [["mainPreview","stripMain"],["detailPreview1","stripExtra1"],["detailPreview2","stripExtra2"]];
-    ids.forEach(([previewId, stripId], index) => {
-      const file = selectedFiles[index];
-      const preview = $("#" + previewId);
-      const strip = $("#" + stripId);
-      const wrap = index === 0 ? null : $(index === 1 ? "#stripExtra1Wrap" : "#stripExtra2Wrap");
-      if (!file) {
-        preview.hidden = true; preview.removeAttribute("src");
-        if (wrap) wrap.hidden = true;
-        return;
-      }
-      const url = URL.createObjectURL(file);
-      objectUrls.set(index, url);
-      preview.src = url; preview.hidden = false;
-      strip.src = url;
-      if (wrap) wrap.hidden = false;
-    });
-    $("#startCameraBtn").classList.toggle("has-image", selectedFiles.length > 0);
-    updateImageState();
-    syncProductContext();
-  }
-
-  function beginVisionInBackground(delay = 1500) {
-    clearTimeout(visionTimer);
-    const runId = ++visionRun;
-    visionReady = false;
-    pendingVisionResult = null;
-    $("#showSuggestionBtn").hidden = true;
-    visionPromise = new Promise((resolve) => {
-      visionTimer = setTimeout(() => {
-        if (runId !== visionRun) return resolve(false);
-        const demo = window.CCC_VISION_DEMOS?.[activeDemoKey] || window.CCC_VISION_DEMO;
-        pendingVisionResult = demo;
-        visionReady = true;
-        $("#showSuggestionBtn").textContent = "Visa förslag ✓";
-        $("#showSuggestionBtn").hidden = false;
-        resolve(true);
+  function startSilentAnalysis(item) {
+    item.visionReady = false;
+    const delay = 650 + Math.floor(Math.random() * 450);
+    item.analysisPromise = new Promise((resolve) => {
+      setTimeout(() => {
+        item.visionResult = window.CCC_VISION_DEMOS?.[item.demoKey] || window.CCC_VISION_DEMO;
+        item.visionReady = true;
+        resolve(item.visionResult);
       }, delay);
     });
-    return visionPromise;
+    return item.analysisPromise;
   }
 
-  async function applyVisionResult() {
-    if (!selectedImageCount()) return;
-    if (!visionReady && visionPromise) {
-      $("#showSuggestionBtn").hidden = false;
-      $("#showSuggestionBtn").textContent = "Förbereder…";
-      $("#showSuggestionBtn").disabled = true;
-      await visionPromise;
-      $("#showSuggestionBtn").disabled = false;
-    }
-    const demo = pendingVisionResult || window.CCC_VISION_DEMOS?.[activeDemoKey] || window.CCC_VISION_DEMO;
-    $("#summaryTitle").textContent = demo.summaryTitle;
-    $("#summaryBrand").textContent = demo.summaryBrand;
-    $("#summarySeason").textContent = demo.summarySeason;
-    $("#confidencePill").textContent = selectedImageCount() > 1 ? "Säkerheten är hög" : demo.confidence;
-    syncProductContext();
-    showStage("visionCard");
+  function updateBatchStrip() {
+    const strip = $("#batchStrip");
+    strip.innerHTML = "";
+    batchItems.forEach((item, index) => {
+      const wrap = document.createElement("div");
+      wrap.className = "batch-thumb";
+      if (index === currentIndex && !$("#visionCard").hidden) wrap.classList.add("is-current");
+      const img = document.createElement("img");
+      img.src = item.previewUrl;
+      img.alt = `Plagg ${index + 1}`;
+      const num = document.createElement("span");
+      num.textContent = index + 1;
+      wrap.append(img, num);
+      strip.appendChild(wrap);
+    });
+    strip.hidden = batchItems.length === 0;
+    $("#imageCount").textContent = `${batchItems.length} ${batchItems.length === 1 ? "plagg" : "plagg"}`;
+    $("#showSuggestionBtn").hidden = batchItems.length === 0;
+  }
+
+  function resetCaptureVisual() {
+    const preview = $("#mainPreview");
+    preview.hidden = true;
+    preview.removeAttribute("src");
+    $("#startCameraBtn").classList.remove("has-image");
+    $("#startCameraBtn .camera-content strong").textContent = batchItems.length ? "Fortsätt fotografera" : "Ta första fotot";
   }
 
   async function startCamera() {
     stagedCameraFile = null;
+    stagedItem = null;
     $("#cameraReview").hidden = true;
     $("#cameraVideo").hidden = false;
     $("#cameraLiveActions").hidden = false;
@@ -146,175 +133,242 @@
     canvas.toBlob((blob) => {
       if (!blob) return;
       stagedCameraFile = new File([blob], `ccc-vision-${Date.now()}.jpg`, { type: "image/jpeg" });
-      const reviewUrl = URL.createObjectURL(blob);
+      stagedItem = createBatchItem(stagedCameraFile, batchItems.length);
+      const reviewUrl = stagedItem.previewUrl;
       $("#cameraReview").src = reviewUrl;
-      $("#cameraReview").dataset.tempUrl = reviewUrl;
       $("#cameraReview").hidden = false;
       $("#cameraVideo").hidden = true;
       $("#cameraLiveActions").hidden = true;
       $("#cameraReviewActions").hidden = false;
-      // Vision börjar NU, innan användaren trycker Använd bild.
-      selectedFiles = [stagedCameraFile];
-      beginVisionInBackground();
-      $("#usePhotoBtn").textContent = "Använd bild";
-      visionPromise?.then((ok) => { if (ok && stagedCameraFile) $("#usePhotoBtn").textContent = "Använd bild ✓"; });
+      // Vision arbetar redan tyst på stagedItem här.
     }, "image/jpeg", .9);
   }
 
   function retakePhoto() {
-    ++visionRun;
-    visionReady = false;
-    pendingVisionResult = null;
+    if (stagedItem?.previewUrl) URL.revokeObjectURL(stagedItem.previewUrl);
     stagedCameraFile = null;
-    const review = $("#cameraReview");
-    if (review.dataset.tempUrl) URL.revokeObjectURL(review.dataset.tempUrl);
-    review.removeAttribute("src"); review.hidden = true;
+    stagedItem = null;
+    $("#cameraReview").removeAttribute("src");
+    $("#cameraReview").hidden = true;
     $("#cameraVideo").hidden = false;
     $("#cameraLiveActions").hidden = false;
     $("#cameraReviewActions").hidden = true;
   }
 
-  async function useCameraPhoto() {
-    if (!stagedCameraFile) return;
-    const file = stagedCameraFile;
-    setPreviewFiles([file]);
-    // setPreviewFiles nollställer demo men inte den pågående analysen; starta bara om ifall den inte finns.
-    if (!visionPromise) beginVisionInBackground();
+  function commitStagedItem() {
+    if (!stagedItem) return false;
+    batchItems.push(stagedItem);
+    stagedItem = null;
+    stagedCameraFile = null;
+    updateBatchStrip();
+    return true;
+  }
+
+  function nextPhoto() {
+    if (!commitStagedItem()) return;
+    $("#cameraReview").removeAttribute("src");
+    $("#cameraReview").hidden = true;
+    $("#cameraVideo").hidden = false;
+    $("#cameraLiveActions").hidden = false;
+    $("#cameraReviewActions").hidden = true;
+  }
+
+  async function finishCameraSeries() {
+    commitStagedItem();
     closeCamera();
-    await applyVisionResult();
+    resetCaptureVisual();
+    if (batchItems.length) await openReview(0);
+  }
+
+  function handleFallbackCamera(fileList) {
+    const files = [...fileList].filter((f) => f.type.startsWith("image/"));
+    if (!files.length) return;
+    files.forEach((file) => batchItems.push(createBatchItem(file, batchItems.length)));
+    updateBatchStrip();
+    resetCaptureVisual();
+    openReview(0);
   }
 
   function handleGalleryFiles(fileList) {
-    const files = [...fileList].filter((file) => file.type.startsWith("image/")).slice(0, 3);
+    const files = [...fileList].filter((file) => file.type.startsWith("image/"));
     if (!files.length) return;
-    setPreviewFiles(files);
-    // Så fort bildväljaren lämnar tillbaka 1–3 bilder börjar Vision direkt.
-    beginVisionInBackground(files.length > 1 ? 1100 : 1400);
-    $("#showSuggestionBtn").hidden = false;
-    $("#showSuggestionBtn").textContent = "Visa förslag";
+    files.forEach((file) => batchItems.push(createBatchItem(file, batchItems.length)));
+    updateBatchStrip();
+    resetCaptureVisual();
+    // Bildväljaren är nu stängd: CCC har redan börjat tänka på alla bilder.
+    openReview(0);
+    $("#galleryInput").value = "";
   }
 
-  function syncProductContext() {
-    const source = $("#mainPreview").getAttribute("src") || "";
-    ["visionThumbnail", "editThumbnail", "previewThumbnail"].forEach((id) => {
-      const image = $("#" + id);
-      if (!image) return;
-      if (source) {
-        image.src = source;
-        image.hidden = false;
-      } else {
-        image.removeAttribute("src");
-        image.hidden = true;
-      }
-    });
-    const demo = window.CCC_VISION_DEMOS?.[activeDemoKey] || window.CCC_VISION_DEMO;
-    if ($("#editContextTitle")) {
-      $("#editContextTitle").textContent = demo?.summaryTitle || "Vald vara";
+  async function openReview(index) {
+    if (!batchItems.length) {
+      showStage("captureCard");
+      return;
     }
+    currentIndex = Math.max(0, Math.min(index, batchItems.length - 1));
+    const item = currentItem();
+    if (!item.visionReady) await item.analysisPromise;
+    const demo = item.visionResult || currentDemo();
+    window.CCC_VISION_DEMO = demo;
+    $("#summaryTitle").textContent = demo.summaryTitle;
+    $("#summaryBrand").textContent = demo.summaryBrand;
+    $("#summarySeason").textContent = demo.summarySeason;
+    $("#confidencePill").textContent = item.extraFiles.length ? "Säkerheten är hög" : demo.confidence;
+    $("#batchProgress").textContent = `${currentIndex + 1} av ${batchItems.length}`;
+    $("#visionThumbnail").src = item.previewUrl;
+    $("#visionThumbnail").hidden = false;
+    $("#visionHint").textContent = item.extraFiles.length
+      ? `${item.extraFiles.length + 1} bilder används för det här plagget.`
+      : "Vill du visa mer av just det här plagget kan du lägga till fler bilder.";
+    $("#correctionBox").hidden = true;
+    updateBatchStrip();
+    showStage("visionCard");
   }
 
-  async function runVision() { return applyVisionResult(); }
+  function moveToNextItem() {
+    const next = batchItems.findIndex((item, index) => index > currentIndex && !item.approved);
+    if (next >= 0) return openReview(next);
+    const earlier = batchItems.findIndex((item) => !item.approved);
+    if (earlier >= 0) return openReview(earlier);
+    finishBatch();
+  }
 
-  function populateForm() {
-    const fields = (window.CCC_VISION_DEMOS?.[activeDemoKey] || window.CCC_VISION_DEMO).fields;
-    fieldIds.forEach((id) => {
-      if (fields[id] !== undefined) $("#" + id).value = fields[id];
-    });
+  function approveCurrent() {
+    const item = currentItem();
+    if (!item) return;
+    item.approved = true;
+    if (!item.editedFields) item.editedFields = { ...currentDemo().fields };
+    moveToNextItem();
+  }
+
+  function populateFormFromItem() {
+    const item = currentItem();
+    const fields = item?.editedFields || currentDemo().fields;
+    fieldIds.forEach((id) => { if (fields[id] !== undefined) $("#" + id).value = fields[id]; });
+    $("#editThumbnail").src = item.previewUrl;
+    $("#editThumbnail").hidden = false;
+    $("#editContextTitle").textContent = currentDemo().summaryTitle;
     updateCounters();
     updateTextPreviews();
     updateSmartSuggestions();
   }
 
-  function useSuggestion() {
-    populateForm();
-    syncProductContext();
-    $("#correctionBox").hidden = true;
-    saveDraft(false);
+  function editCurrent() {
+    populateFormFromItem();
     showStage("editCard");
   }
 
-  function showCorrection() {
-    $("#correctionBox").hidden = !$("#correctionBox").hidden;
+  function saveEditedAndNext() {
+    const item = currentItem();
+    if (!item) return;
+    item.editedFields = Object.fromEntries(fieldIds.map((id) => [id, $("#" + id).value]));
+    item.approved = true;
+    saveBatchMetadata();
+    moveToNextItem();
   }
 
-  function focusCorrection(fieldId) {
-    if ($("#editCard").hidden) populateForm();
-    showStage("editCard");
-    requestAnimationFrame(() => {
-      const field = $("#" + fieldId);
-      field.scrollIntoView({ behavior: "smooth", block: "center" });
-      setTimeout(() => field.focus(), 350);
+  function addSameGarmentFiles(fileList) {
+    const item = currentItem();
+    if (!item) return;
+    const available = Math.max(0, 2 - item.extraFiles.length);
+    const files = [...fileList].filter((f) => f.type.startsWith("image/")).slice(0, available);
+    files.forEach((file) => {
+      item.extraFiles.push(file);
+      item.extraUrls.push(fileUrl(file));
     });
+    if (files.length) {
+      startSilentAnalysis(item);
+      item.analysisPromise.then(() => openReview(currentIndex));
+    }
+    $("#sameGarmentInput").value = "";
+  }
+
+  function trashCurrent() {
+    if (!batchItems.length) return;
+    const [removed] = batchItems.splice(currentIndex, 1);
+    trashStack.push({ item: removed, index: currentIndex });
+    showUndoToast();
+    updateBatchStrip();
+    if (!batchItems.length) {
+      showStage("captureCard");
+      return;
+    }
+    openReview(Math.min(currentIndex, batchItems.length - 1));
+  }
+
+  function showUndoToast() {
+    const toast = $("#undoToast");
+    toast.hidden = false;
+    clearTimeout(showUndoToast.timer);
+    showUndoToast.timer = setTimeout(() => { toast.hidden = true; }, 5000);
+  }
+
+  function undoTrash() {
+    const last = trashStack.pop();
+    if (!last) return;
+    batchItems.splice(Math.min(last.index, batchItems.length), 0, last.item);
+    $("#undoToast").hidden = true;
+    updateBatchStrip();
+    openReview(Math.min(last.index, batchItems.length - 1));
+  }
+
+  function finishBatch() {
+    const approved = batchItems.filter((item) => item.approved).length;
+    $("#seriesDoneText").textContent = `${approved} ${approved === 1 ? "produkt är" : "produkter är"} godkända lokalt. Inget har skickats till Firebase.`;
+    saveBatchMetadata();
+    showStage("seriesDoneCard");
+  }
+
+  function newSeries() {
+    batchItems.forEach((item) => {
+      if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
+      item.extraUrls?.forEach((url) => URL.revokeObjectURL(url));
+    });
+    batchItems = [];
+    currentIndex = 0;
+    trashStack = [];
+    localStorage.removeItem("ccc-vision-batch-meta");
+    updateBatchStrip();
+    resetCaptureVisual();
+    showStage("captureCard");
+  }
+
+  function saveBatchMetadata() {
+    const meta = batchItems.map((item) => ({
+      id: item.id,
+      demoKey: item.demoKey,
+      approved: item.approved,
+      extraImageCount: item.extraFiles.length,
+      fields: item.editedFields
+    }));
+    localStorage.setItem("ccc-vision-batch-meta", JSON.stringify({ savedAt: new Date().toISOString(), items: meta }));
   }
 
   function draftPayload() {
     return {
       savedAt: new Date().toISOString(),
       fields: Object.fromEntries(fieldIds.map((id) => [id, $("#" + id).value])),
-      demoItem: activeDemoKey,
-      channels: {
-        web: $("#channelWeb").checked,
-        instagram: $("#channelInstagram").checked,
-        facebook: $("#channelFacebook").checked
-      }
+      demoItem: currentItem()?.demoKey || "arsenal"
     };
-  }
-
-  function setDraftState(text) {
-    $("#draftState").textContent = text;
   }
 
   function saveDraft(showMessage = true) {
     localStorage.setItem("ccc-vision-draft", JSON.stringify(draftPayload()));
-    setDraftState("Sparat lokalt");
+    if ($("#draftState")) $("#draftState").textContent = "Sparat lokalt";
     if (showMessage) setMessage("Utkast sparat på den här enheten.");
   }
 
   function scheduleSave() {
-    setDraftState("Ändringar…");
+    if ($("#draftState")) $("#draftState").textContent = "Ändringar…";
     clearTimeout(saveTimer);
     saveTimer = setTimeout(() => saveDraft(false), 450);
   }
 
-  function loadDraft() {
-    try {
-      const raw = localStorage.getItem("ccc-vision-draft");
-      if (!raw) return;
-      const draft = JSON.parse(raw);
-      if (!draft?.fields) return;
-      fieldIds.forEach((id) => {
-        if (draft.fields[id] !== undefined) $("#" + id).value = draft.fields[id];
-      });
-      if (draft.demoItem && window.CCC_VISION_DEMOS?.[draft.demoItem]) {
-        activeDemoKey = draft.demoItem;
-        window.CCC_VISION_DEMO = window.CCC_VISION_DEMOS[draft.demoItem];
-      }
-      if (draft.channels) {
-        $("#channelWeb").checked = draft.channels.web !== false;
-        $("#channelInstagram").checked = draft.channels.instagram !== false;
-        $("#channelFacebook").checked = draft.channels.facebook !== false;
-      }
-      setDraftState("Sparat utkast finns");
-      updateCounters();
-      updateTextPreviews();
-    } catch (error) {
-      console.warn("Kunde inte läsa lokalt utkast", error);
-    }
-  }
-
-  function setMessage(text) {
-    ["message", "previewMessage"].forEach((id) => { const el = $("#" + id); if (el) el.textContent = text; });
-    clearTimeout(setMessage.timer);
-    setMessage.timer = setTimeout(() => { ["message", "previewMessage"].forEach((id) => { const el = $("#" + id); if (el) el.textContent = ""; }); }, 3500);
-  }
+  function clean(value) { return value.trim(); }
 
   function updateCounters() {
     $("#titleCount").textContent = $("#title").value.length;
     $("#descriptionCount").textContent = $("#description").value.length;
-  }
-
-  function clean(value) {
-    return value.trim();
   }
 
   function updateTextPreviews() {
@@ -323,62 +377,20 @@
     const price = clean($("#price").value);
     const size = clean($("#size").value);
     const meta = [size && `Storlek ${size}`, price && `${price} kr`].filter(Boolean).join(" · ");
-
     $("#webPreview").textContent = [title, description, meta].filter(Boolean).join("\n\n");
     $("#instagramPreview").textContent = `Nyinkommet ✨\n\n${title}\n${description}${meta ? `\n\n${meta}` : ""}\n\n#container13 #vintage #secondhand`;
     $("#facebookPreview").textContent = `Nyinkommet hos Container 13: ${title}. ${description}${price ? ` Pris: ${price} kr.` : ""}`;
-
-    $("#webPreviewCard").hidden = !$("#channelWeb").checked;
-    $("#instagramPreviewCard").hidden = !$("#channelInstagram").checked;
-    $("#facebookPreviewCard").hidden = !$("#channelFacebook").checked;
-  }
-
-  async function copyPreview(targetId) {
-    const text = $("#" + targetId).textContent;
-    try {
-      await navigator.clipboard.writeText(text);
-      setMessage("Texten kopierades.");
-    } catch {
-      const area = document.createElement("textarea");
-      area.value = text;
-      document.body.appendChild(area);
-      area.select();
-      document.execCommand("copy");
-      area.remove();
-      setMessage("Texten kopierades.");
-    }
-  }
-
-  function currentDemo() {
-    return window.CCC_VISION_DEMOS?.[activeDemoKey] || window.CCC_VISION_DEMO;
   }
 
   function updateSmartSuggestions() {
     const demo = currentDemo();
-    const suggested = demo?.priceSuggestion || 795;
-    $("#priceSuggestion").textContent = `${suggested} kr`;
+    $("#priceSuggestion").textContent = `${demo?.priceSuggestion || 795} kr`;
     $("#factSuggestionText").textContent = demo?.fact || "Ett kort extra fakta kan läggas till om du vill.";
-    updateReadyState();
-  }
-
-  function updateReadyState() {
-    const title = clean($("#title").value);
-    const description = clean($("#description").value);
-    const price = clean($("#price").value);
-    const state = $("#readyState");
-    if (!state) return;
-    if (!title) { state.textContent = "Det saknas en rubrik."; state.classList.remove("is-ready"); return; }
-    if (!description) { state.textContent = "Det saknas en beskrivning."; state.classList.remove("is-ready"); return; }
-    if (!price) { state.textContent = "Det saknas bara pris."; state.classList.remove("is-ready"); return; }
-    state.textContent = "✓ Klar att förhandsgranska";
-    state.classList.add("is-ready");
   }
 
   function usePriceSuggestion() {
-    const demo = currentDemo();
-    $("#price").value = demo?.priceSuggestion || 795;
+    $("#price").value = currentDemo()?.priceSuggestion || 795;
     updateTextPreviews();
-    updateReadyState();
     scheduleSave();
   }
 
@@ -388,7 +400,6 @@
     area.value = `${area.value.trim()}${area.value.trim() ? "\n\n" : ""}${text}`;
     updateCounters();
     updateTextPreviews();
-    updateReadyState();
     scheduleSave();
   }
 
@@ -405,126 +416,77 @@
     $("#addNewConditionBtn").disabled = true;
   }
 
-  function showPreview() {
-    if (!clean($("#title").value)) {
-      setMessage("Lägg till en rubrik först.");
-      $("#title").focus();
-      return;
-    }
-    if (!clean($("#description").value)) {
-      setMessage("Lägg till en beskrivning först.");
-      $("#description").focus();
-      return;
-    }
-    updateTextPreviews();
-    $("#previewProductTitle").textContent = clean($("#title").value);
-    $("#previewProductDescription").textContent = clean($("#description").value);
-    const price = clean($("#price").value);
-    $("#previewProductPrice").textContent = price ? `${price} kr` : "Pris saknas";
-    syncProductContext();
-    saveDraft(false);
-    showStage("previewCard");
+  function setMessage(text) {
+    ["message", "previewMessage"].forEach((id) => { const el = $("#" + id); if (el) el.textContent = text; });
   }
 
-  function approve() {
-    if (!clean($("#title").value)) {
-      setMessage("Lägg till en rubrik först.");
-      $("#title").focus();
-      return;
-    }
-    if (!clean($("#description").value)) {
-      setMessage("Lägg till en beskrivning först.");
-      $("#description").focus();
-      return;
-    }
-    saveDraft(false);
-    setMessage("Godkänt lokalt. Publicering kopplas in senare.");
-  }
-
-  function resetAll() {
-    if (!confirm("Börja om och ta bort det lokala utkastet?")) return;
-    localStorage.removeItem("ccc-vision-draft");
-    objectUrls.forEach((url) => URL.revokeObjectURL(url));
-    location.reload();
+  async function copyPreview(targetId) {
+    const text = $("#" + targetId).textContent;
+    try { await navigator.clipboard.writeText(text); setMessage("Texten kopierades."); } catch {}
   }
 
   function chooseDemo(key) {
     const demo = window.CCC_VISION_DEMOS?.[key];
     if (!demo) return;
-    activeDemoKey = key;
-    demoImageActive = true;
-    selectedFiles = [];
-    window.CCC_VISION_DEMO = demo;
-    revokeObjectUrls();
-    const preview = $("#mainPreview");
-    preview.src = `demo/${key}.svg`;
-    preview.hidden = false;
-    $("#stripMain").src = `demo/${key}.svg`;
-    $("#selectedStrip").hidden = false;
-    $("#stripExtra1Wrap").hidden = true;
-    $("#stripExtra2Wrap").hidden = true;
-    $("#startCameraBtn").classList.add("has-image");
-    syncProductContext();
-    updateSmartSuggestions();
-    $$(".demo-card").forEach((card) => card.classList.toggle("is-active", card.dataset.demo === key));
-    updateImageState();
-    beginVisionInBackground(700);
-    $("#showSuggestionBtn").hidden = false;
-    $("#showSuggestionBtn").textContent = "Visa förslag";
+    const svgPath = `demo/${key}.svg`;
+    fetch(svgPath).then((r) => r.blob()).then((blob) => {
+      const file = new File([blob], `${key}.svg`, { type: "image/svg+xml" });
+      const item = createBatchItem(file, batchItems.length);
+      item.demoKey = key;
+      startSilentAnalysis(item);
+      batchItems.push(item);
+      updateBatchStrip();
+      openReview(batchItems.length - 1);
+    });
   }
 
+  function resetAll() {
+    if (!confirm("Börja om och ta bort lokala utkast?")) return;
+    newSeries();
+    localStorage.removeItem("ccc-vision-draft");
+  }
+
+  // Kamera / bildserie
   $("#startCameraBtn").addEventListener("click", startCamera);
   $("#galleryBtn").addEventListener("click", () => $("#galleryInput").click());
   $("#galleryInput").addEventListener("change", (event) => handleGalleryFiles(event.target.files));
-  $("#cameraFallbackInput").addEventListener("change", (event) => {
-    const files = [...event.target.files];
-    if (files.length) { setPreviewFiles(files); beginVisionInBackground(); $("#showSuggestionBtn").hidden = false; }
-  });
+  $("#cameraFallbackInput").addEventListener("change", (event) => handleFallbackCamera(event.target.files));
   $("#closeCameraBtn").addEventListener("click", closeCamera);
   $("#shutterBtn").addEventListener("click", captureFrame);
   $("#retakeBtn").addEventListener("click", retakePhoto);
-  $("#usePhotoBtn").addEventListener("click", useCameraPhoto);
-  $("#showSuggestionBtn").addEventListener("click", applyVisionResult);
-  $$("[data-demo]").forEach((button) => button.addEventListener("click", () => chooseDemo(button.dataset.demo)));
+  $("#nextPhotoBtn").addEventListener("click", nextPhoto);
+  $("#usePhotoBtn").addEventListener("click", finishCameraSeries);
+  $("#showSuggestionBtn").addEventListener("click", () => openReview(0));
 
-  $("#useSuggestionBtn").addEventListener("click", useSuggestion);
-  $("#backToPhotoBtn").addEventListener("click", () => showStage("captureCard"));
-  $("#backToSuggestionBtn").addEventListener("click", () => showStage("visionCard"));
-  $("#backToEditBtn").addEventListener("click", () => showStage("editCard"));
-  $("#previewBtn").addEventListener("click", showPreview);
-  $("#wrongSuggestionBtn").addEventListener("click", showCorrection);
+  // Granskning
+  $("#useSuggestionBtn").addEventListener("click", approveCurrent);
+  $("#wrongSuggestionBtn").addEventListener("click", editCurrent);
+  $("#addSameGarmentBtn").addEventListener("click", () => $("#sameGarmentInput").click());
+  $("#sameGarmentInput").addEventListener("change", (event) => addSameGarmentFiles(event.target.files));
+  $("#trashCurrentBtn").addEventListener("click", trashCurrent);
+  $("#undoTrashBtn").addEventListener("click", undoTrash);
+  $("#backToSuggestionBtn").addEventListener("click", () => openReview(currentIndex));
+  $("#previewBtn").addEventListener("click", saveEditedAndNext);
+  $("#newSeriesBtn").addEventListener("click", newSeries);
+
+  // Existerande extrafunktioner
   $("#usePriceSuggestionBtn").addEventListener("click", usePriceSuggestion);
   $("#addFactBtn").addEventListener("click", addFact);
   $("#addNewConditionBtn").addEventListener("click", addNewCondition);
-  $("#approveBtn").addEventListener("click", approve);
   $("#resetBtn").addEventListener("click", resetAll);
+  $$('[data-copy]').forEach((button) => button.addEventListener("click", () => copyPreview(button.dataset.copy)));
+  $$('[data-demo]').forEach((button) => button.addEventListener("click", () => chooseDemo(button.dataset.demo)));
 
-  $$('[data-focus]').forEach((button) => {
-    button.addEventListener("click", () => focusCorrection(button.dataset.focus));
+  fieldIds.forEach((id) => {
+    $("#" + id).addEventListener("input", () => { updateCounters(); updateTextPreviews(); scheduleSave(); });
   });
 
-  $$('[data-copy]').forEach((button) => {
-    button.addEventListener("click", () => copyPreview(button.dataset.copy));
-  });
+  // Gamla preview-knappar finns kvar i HTML men används inte i bildserieflödet.
+  if ($("#backToEditBtn")) $("#backToEditBtn").addEventListener("click", () => showStage("editCard"));
+  if ($("#approveBtn")) $("#approveBtn").addEventListener("click", finishBatch);
 
-  [...fieldIds, "channelWeb", "channelInstagram", "channelFacebook"].forEach((id) => {
-    $("#" + id).addEventListener("input", () => {
-      updateCounters();
-      updateTextPreviews();
-      updateReadyState();
-      scheduleSave();
-    });
-    $("#" + id).addEventListener("change", () => {
-      updateTextPreviews();
-      updateReadyState();
-      scheduleSave();
-    });
-  });
-
-  loadDraft();
   showStage("captureCard");
-  updateImageState();
+  updateBatchStrip();
   updateCounters();
   updateTextPreviews();
-  updateSmartSuggestions();
 })();
