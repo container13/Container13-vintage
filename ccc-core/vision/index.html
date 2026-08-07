@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#111111">
-  <title>CCC Vision v2.0</title>
+  <title>CCC Vision v2.1</title>
   <link rel="stylesheet" href="product-lab.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
       <span class="brand-halo" aria-hidden="true">✦</span>
       <span class="brand-word">CCC</span>
     </a>
-    <div class="vision-name">Vision <span class="vision-version">v2.0</span></div>
+    <div class="vision-name">Vision <span class="vision-version">v2.1</span></div>
     <button id="resetBtn" class="icon-button" type="button" aria-label="Börja om">↻</button>
   </header>
 
@@ -21,8 +21,7 @@
     <section id="captureCard" class="card capture-card stage-card is-active" aria-labelledby="captureTitle">
       <div class="card-heading capture-heading">
         <div>
-          <p class="step-label">1 · Foto</p>
-          <h1 id="captureTitle">Ta en bildserie</h1>
+          <h1 id="captureTitle">Fota plagg</h1>
         </div>
         <span id="imageCount" class="pill">0 plagg</span>
       </div>
@@ -31,8 +30,8 @@
         <img id="mainPreview" alt="Förhandsvisning av varan" hidden>
         <span class="camera-content">
           <span class="camera-icon" aria-hidden="true">📸</span>
-          <strong>Ta första fotot</strong>
-          <small>Ett foto per plagg · avsluta när du vill</small>
+          <strong>Börja fota</strong>
+          <small>Ett foto per plagg – avsluta när du vill</small>
         </span>
       </button>
 
@@ -44,9 +43,9 @@
       <img id="detailPreview1" alt="Extra bild 1" hidden>
       <img id="detailPreview2" alt="Extra bild 2" hidden>
 
-      <div id="batchStrip" class="batch-strip" hidden aria-label="Bildserie"></div>
+      <div id="batchStrip" class="batch-strip" hidden aria-label="Fotograferade plagg"></div>
 
-      <button id="showSuggestionBtn" class="primary-button capture-next" type="button" hidden>Granska bildserien</button>
+      <button id="showSuggestionBtn" class="primary-button capture-next" type="button" hidden>Granska plaggen</button>
 
       <details class="demo-details">
         <summary>Prova demo</summary>
@@ -84,7 +83,6 @@
     <section id="visionCard" class="card result-card stage-card" hidden aria-labelledby="visionTitle">
       <div class="card-heading compact-heading">
         <div>
-          <p class="step-label">2 · Förslag</p>
           <h2 id="visionTitle">Förslag</h2>
         </div>
         <div class="result-pills"><span id="batchProgress" class="pill">1 av 1</span><span id="confidencePill" class="pill success">Ganska säker</span></div>
@@ -123,7 +121,6 @@
     <section id="editCard" class="card stage-card compact-edit-stage" hidden aria-labelledby="editTitle">
       <div class="fixed-stage-head compact-edit-head">
         <div>
-          <p class="step-label">3 · Redigera</p>
           <h2 id="editTitle">Gör förslaget klart</h2>
         </div>
         <span id="draftState" class="pill">Redigerbart</span>
@@ -191,16 +188,14 @@
 
     <section id="seriesDoneCard" class="card stage-card series-done-card" hidden aria-labelledby="seriesDoneTitle">
       <div class="done-icon" aria-hidden="true">✓</div>
-      <p class="step-label">Bildserie klar</p>
-      <h2 id="seriesDoneTitle">Alla förslag är genomgångna</h2>
+      <h2 id="seriesDoneTitle">Alla plagg klara</h2>
       <p id="seriesDoneText" class="vision-hint">Produkterna är godkända lokalt på den här enheten.</p>
-      <button id="newSeriesBtn" class="primary-button" type="button">Ta en ny bildserie</button>
+      <button id="newSeriesBtn" class="primary-button" type="button">Fota fler plagg</button>
     </section>
 
     <section id="previewCard" class="card preview-stage stage-card" hidden aria-labelledby="previewTitle">
       <div class="card-heading">
         <div>
-          <p class="step-label">5 · Förhandsgranska</p>
           <h2 id="previewTitle">Så här blir produkten</h2>
         </div>
         <span class="pill success">Klar att välja kanal</span>

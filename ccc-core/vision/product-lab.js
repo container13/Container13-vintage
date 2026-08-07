@@ -89,7 +89,7 @@
     preview.hidden = true;
     preview.removeAttribute("src");
     $("#startCameraBtn").classList.remove("has-image");
-    $("#startCameraBtn .camera-content strong").textContent = batchItems.length ? "Fortsätt fotografera" : "Ta första fotot";
+    $("#startCameraBtn .camera-content strong").textContent = batchItems.length ? "Fota nästa plagg" : "Börja fota";
   }
 
   async function startCamera() {
@@ -446,7 +446,7 @@
     localStorage.removeItem("ccc-vision-draft");
   }
 
-  // Kamera / bildserie
+  // Kamera / fotograferingsflöde
   $("#startCameraBtn").addEventListener("click", startCamera);
   $("#galleryBtn").addEventListener("click", () => $("#galleryInput").click());
   $("#galleryInput").addEventListener("change", (event) => handleGalleryFiles(event.target.files));
@@ -481,7 +481,7 @@
     $("#" + id).addEventListener("input", () => { updateCounters(); updateTextPreviews(); scheduleSave(); });
   });
 
-  // Gamla preview-knappar finns kvar i HTML men används inte i bildserieflödet.
+  // Gamla preview-knappar finns kvar i HTML men används inte i fotograferingsflödet.
   if ($("#backToEditBtn")) $("#backToEditBtn").addEventListener("click", () => showStage("editCard"));
   if ($("#approveBtn")) $("#approveBtn").addEventListener("click", finishBatch);
 
