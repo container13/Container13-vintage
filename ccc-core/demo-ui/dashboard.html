@@ -6,29 +6,30 @@
 <meta name="theme-color" content="#f7f7f9">
 <title>CCC Dashboard</title>
 <link rel="stylesheet" href="css/dashboard.css?v=2.3">
+<link rel="stylesheet" href="css/ccc-ui.css?v=2.3">
 </head>
 <body>
 <div class="app-shell">
-  <header class="app-header" aria-label="CCC-huvudmeny">
-    <a class="brand" href="dashboard.html" aria-label="CCC – till startsidan">
-      <span class="brand-halo" aria-hidden="true">✦</span>
-      <span class="brand-word">CCC</span>
+  <header class="app-header ccc-header" aria-label="CCC-huvudmeny">
+    <a class="brand ccc-brand-mark" href="dashboard.html" aria-label="CCC – till startsidan">
+      <span class="brand-halo ccc-brand-halo" aria-hidden="true">✦</span>
+      <span class="brand-word ccc-brand-word">CCC</span>
     </a>
 
-    <div class="header-actions">
-      <button id="themeBtn" class="icon-button" type="button" aria-label="Växla tema" aria-pressed="false">
-        <svg class="icon icon-theme" viewBox="0 0 24 24" aria-hidden="true">
+    <div class="header-actions ccc-header-actions">
+      <button id="themeBtn" class="icon-button ccc-icon-button" type="button" aria-label="Växla tema" aria-pressed="false">
+        <svg class="icon icon-theme ccc-icon ccc-icon-theme" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M12 3a9 9 0 1 0 9 9c0-.4 0-.8-.1-1.2A7 7 0 0 1 13.2 3H12Z"/>
         </svg>
       </button>
-      <button id="profileBtn" class="icon-button" type="button" aria-label="Öppna användarmeny" aria-expanded="false">
-        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+      <button id="profileBtn" class="icon-button ccc-icon-button" type="button" aria-label="Öppna användarmeny" aria-expanded="false">
+        <svg class="icon ccc-icon" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm7 8a7 7 0 0 0-14 0"/>
         </svg>
       </button>
     </div>
 
-    <div id="profileMenu" class="profile-menu" hidden>
+    <div id="profileMenu" class="profile-menu ccc-profile-menu" hidden>
       <p class="profile-name">Magnus Johansson</p>
       <a href="konto.html">Min profil</a>
       <a href="installningar.html">Inställningar</a>
