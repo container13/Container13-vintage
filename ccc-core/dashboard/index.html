@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f7f7f9">
-<title>CCC Dashboard v2.4.1</title>
+<title>CCC Dashboard v2.4.2</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-<link rel="stylesheet" href="dashboard.css?v=2.4">
+<link rel="stylesheet" href="dashboard.css?v=2.4.2">
 </head>
 <body>
 <div class="app-shell">
@@ -38,15 +38,7 @@
   </header>
 
   <main class="dashboard" id="dashboardMain">
-    <section id="homeView" class="dashboard-view is-active" aria-labelledby="welcomeTitle">
-      <div class="welcome">
-        <span id="greetingIcon" class="greeting-icon" aria-hidden="true">☀</span>
-        <div>
-          <h1 id="welcomeTitle"><span id="greetingText">Hej</span>, Magnus.</h1>
-          <p>Vad vill du göra idag?</p>
-        </div>
-      </div>
-
+    <section id="homeView" class="dashboard-view is-active" aria-label="Dashboard">
       <nav class="primary-actions" aria-label="Primära val">
         <button id="addImagesBtn" class="action-card action-photo" type="button">
           <span class="action-icon" aria-hidden="true">
@@ -214,7 +206,7 @@
   </div>
 </div>
 
-<script src="../version.js?v=2.4.1"></script>
-<script type="module" src="dashboard.js?v=2.4"></script>
+<script src="../version.js?v=2.4.2"></script>
+<script type="module" src="dashboard.js?v=2.4.2"></script>
 </body>
 </html>
