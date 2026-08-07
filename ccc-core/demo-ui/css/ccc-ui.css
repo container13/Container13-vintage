@@ -1,4 +1,4 @@
-/* CCC shared UI shell v2.3
+/* CCC shared UI shell v2.3.1
    Gemensamt visuellt skal för dashboard och moduler. */
 :root{
   --ccc-bg:#f7f7f9;
@@ -72,4 +72,16 @@
   .ccc-icon-button{width:58px;height:58px}
   .ccc-icon{width:27px;height:27px}
   .ccc-profile-menu{right:48px;top:calc(var(--ccc-header-height) - 18px)}
+}
+
+.ccc-global-version{
+  display:block;margin-top:4px;color:var(--ccc-muted);font:700 10px/1 Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  letter-spacing:.04em;opacity:.8;
+}
+.ccc-floating-version{
+  position:fixed;left:8px;bottom:calc(6px + env(safe-area-inset-bottom));z-index:9999;
+  padding:4px 7px;border:1px solid var(--ccc-border);border-radius:999px;
+  background:color-mix(in srgb,var(--ccc-surface) 88%,transparent);color:var(--ccc-muted);
+  font:700 10px/1 Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  pointer-events:none;backdrop-filter:blur(8px);
 }
