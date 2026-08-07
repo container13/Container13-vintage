@@ -1,0 +1,592 @@
+/* CCC shared UI shell v2.3.1
+   Gemensamt visuellt skal för dashboard och moduler. */
+:root{
+  --ccc-bg:#f7f7f9;
+  --ccc-surface:#ffffff;
+  --ccc-text:#172033;
+  --ccc-muted:#667085;
+  --ccc-gold:#c99b39;
+  --ccc-border:rgba(23,32,51,.08);
+  --ccc-shadow:0 16px 40px rgba(31,42,68,.08);
+  --ccc-header-height:132px;
+}
+:root[data-theme="dark"]{
+  --ccc-bg:#11141b;
+  --ccc-surface:#1a1f2a;
+  --ccc-text:#f5f7fb;
+  --ccc-muted:#aab2c0;
+  --ccc-gold:#ddb45b;
+  --ccc-border:rgba(255,255,255,.09);
+  --ccc-shadow:0 18px 44px rgba(0,0,0,.3);
+}
+.ccc-header{
+  position:sticky;top:0;z-index:40;height:var(--ccc-header-height);
+  display:flex;align-items:center;justify-content:center;
+  padding:env(safe-area-inset-top) 22px 0;
+  border:0;
+  background:color-mix(in srgb,var(--ccc-bg) 88%,transparent);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+}
+.ccc-brand-mark{
+  position:relative;display:inline-flex;flex-direction:column;align-items:center;
+  text-decoration:none;color:var(--ccc-gold);line-height:1;
+}
+.ccc-brand-halo{font-size:25px;height:21px;color:var(--ccc-gold);filter:drop-shadow(0 4px 10px rgba(201,155,57,.22))}
+.ccc-brand-word{font-family:Georgia,"Times New Roman",serif;font-size:39px;font-weight:400;letter-spacing:.04em;color:var(--ccc-gold)}
+.ccc-header-actions{position:absolute;right:22px;bottom:18px;display:flex;gap:10px}
+.ccc-icon-button{
+  width:48px;height:48px;border:1px solid var(--ccc-border);border-radius:50%;
+  background:var(--ccc-surface);color:var(--ccc-text);display:grid;place-items:center;
+  box-shadow:0 8px 20px rgba(31,42,68,.08);cursor:pointer;
+}
+.ccc-icon-button:active{transform:scale(.96)}
+.ccc-icon{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ccc-icon-theme{stroke:var(--ccc-gold)}
+.ccc-profile-menu{
+  position:absolute;right:20px;top:calc(var(--ccc-header-height) - 2px);
+  width:min(270px,calc(100vw - 40px));padding:14px;
+  background:var(--ccc-surface);border:1px solid var(--ccc-border);border-radius:20px;
+  box-shadow:var(--ccc-shadow);color:var(--ccc-text);
+}
+.ccc-profile-menu[hidden]{display:none}
+.ccc-profile-menu .profile-name{margin:2px 10px 10px;font-weight:750}
+.ccc-profile-menu a,.ccc-profile-menu button{
+  display:block;width:100%;border:0;background:transparent;color:var(--ccc-text);
+  text-align:left;text-decoration:none;padding:13px 12px;border-radius:12px;cursor:pointer;
+}
+.ccc-profile-menu a:hover,.ccc-profile-menu button:hover{background:color-mix(in srgb,var(--ccc-text) 6%,transparent)}
+@media(max-width:480px){
+  :root{--ccc-header-height:105px}
+  .ccc-header{padding-inline:16px}
+  .ccc-header-actions{right:16px;bottom:14px;gap:8px}
+  .ccc-icon-button{width:44px;height:44px}
+  .ccc-brand-word{font-size:35px}
+  .ccc-profile-menu{max-height:calc(100dvh - var(--ccc-header-height) - 12px);overflow:auto}
+}
+@media(min-width:760px){
+  :root{--ccc-header-height:168px}
+  .ccc-header{padding-left:48px;padding-right:48px}
+  .ccc-brand-halo{font-size:38px;height:31px}
+  .ccc-brand-word{font-size:78px;letter-spacing:.055em}
+  .ccc-header-actions{right:48px;bottom:42px;gap:14px}
+  .ccc-icon-button{width:58px;height:58px}
+  .ccc-icon{width:27px;height:27px}
+  .ccc-profile-menu{right:48px;top:calc(var(--ccc-header-height) - 18px)}
+}
+
+.ccc-global-version{
+  display:block;margin-top:4px;color:var(--ccc-muted);font:700 10px/1 Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  letter-spacing:.04em;opacity:.8;
+}
+.ccc-floating-version{
+  position:fixed;left:8px;bottom:calc(6px + env(safe-area-inset-bottom));z-index:9999;
+  padding:4px 7px;border:1px solid var(--ccc-border);border-radius:999px;
+  background:color-mix(in srgb,var(--ccc-surface) 88%,transparent);color:var(--ccc-muted);
+  font:700 10px/1 Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  pointer-events:none;backdrop-filter:blur(8px);
+}
+
+:root{
+  color-scheme:light;
+  --bg:#f7f7f9;
+  --surface:#ffffff;
+  --text:#172033;
+  --muted:#667085;
+  --gold:#c99b39;
+  --border:rgba(23,32,51,.08);
+  --shadow:0 16px 40px rgba(31,42,68,.08);
+  --header-height:132px;
+}
+
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#11141b;
+  --surface:#1a1f2a;
+  --text:#f5f7fb;
+  --muted:#aab2c0;
+  --gold:#ddb45b;
+  --border:rgba(255,255,255,.09);
+  --shadow:0 18px 44px rgba(0,0,0,.3);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{background:var(--bg);color:var(--text);transition:background .2s ease,color .2s ease}
+button,a{font:inherit;-webkit-tap-highlight-color:transparent}
+button{color:inherit}
+
+.app-shell{min-height:100dvh;max-width:1600px;margin:0 auto;background:var(--bg)}
+.app-header{
+  position:sticky;top:0;z-index:20;height:var(--header-height);
+  display:flex;align-items:center;justify-content:center;
+  padding:env(safe-area-inset-top) 22px 0;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)
+}
+.brand{position:relative;display:inline-flex;flex-direction:column;align-items:center;text-decoration:none;color:var(--gold);line-height:1}
+.brand-halo{font-size:25px;height:21px;filter:drop-shadow(0 4px 10px rgba(201,155,57,.22))}
+.brand-word{font-family:Georgia,"Times New Roman",serif;font-size:39px;letter-spacing:.04em}
+.header-actions{position:absolute;right:22px;bottom:18px;display:flex;gap:10px}
+.icon-button{width:48px;height:48px;border:1px solid var(--border);border-radius:50%;background:var(--surface);display:grid;place-items:center;box-shadow:0 8px 20px rgba(31,42,68,.08);cursor:pointer}
+.icon-button:active{transform:scale(.96)}
+.icon{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.icon-theme{stroke:var(--gold)}
+
+.profile-menu{position:absolute;right:20px;top:calc(var(--header-height) - 2px);width:min(270px,calc(100vw - 40px));padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow)}
+.profile-menu[hidden]{display:none}
+.profile-name{margin:2px 10px 10px;font-weight:750}
+.profile-menu a,.profile-menu button{display:block;width:100%;border:0;background:transparent;color:var(--text);text-align:left;text-decoration:none;padding:13px 12px;border-radius:12px;cursor:pointer}
+.profile-menu a:hover,.profile-menu button:hover{background:color-mix(in srgb,var(--text) 6%,transparent)}
+
+.dashboard{padding:18px 20px calc(24px + env(safe-area-inset-bottom))}
+.dashboard-view{width:min(100%,720px);margin:0 auto}
+.dashboard-view[hidden]{display:none}
+.welcome,.subview-heading{display:flex;align-items:center;gap:15px;margin:7px 2px 24px}
+.greeting-icon{display:grid;place-items:center;width:45px;height:45px;color:var(--gold);font-size:34px}
+.welcome h1,.subview-heading h1{margin:0;font-size:clamp(25px,6.8vw,34px);line-height:1.12;letter-spacing:-.03em}
+.welcome p,.subview-heading p{margin:6px 0 0;color:var(--muted);font-size:17px}
+
+.primary-actions{display:grid;gap:14px}
+.action-card{
+  width:100%;min-height:118px;padding:18px 18px 18px 16px;
+  display:grid;grid-template-columns:68px 1fr auto;align-items:center;gap:16px;
+  border:1px solid var(--border);border-radius:25px;text-align:left;text-decoration:none;color:var(--text);
+  background:var(--surface);box-shadow:0 12px 30px rgba(31,42,68,.055);cursor:pointer;
+  transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease
+}
+.action-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.action-card:active{transform:scale(.985)}
+.action-photo{background:linear-gradient(105deg,rgba(230,239,255,.95),var(--surface) 72%)}
+.action-item{background:linear-gradient(105deg,rgba(231,247,237,.95),var(--surface) 72%)}
+.action-more{background:linear-gradient(105deg,rgba(241,236,253,.95),var(--surface) 72%)}
+:root[data-theme="dark"] .action-photo{background:linear-gradient(105deg,#17253c,var(--surface) 72%)}
+:root[data-theme="dark"] .action-item{background:linear-gradient(105deg,#173126,var(--surface) 72%)}
+:root[data-theme="dark"] .action-more{background:linear-gradient(105deg,#28203c,var(--surface) 72%)}
+.action-icon{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;font-size:30px;background:color-mix(in srgb,var(--surface) 55%,transparent)}
+.action-icon svg{width:33px;height:33px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.action-photo .action-icon,.action-photo strong{color:#1f5da8}
+.action-item .action-icon,.action-item strong{color:#21804c}
+.action-more .action-icon,.action-more strong{color:#5a39a1}
+.action-copy{min-width:0;display:flex;flex-direction:column;gap:7px}
+.action-copy strong{font-size:24px;line-height:1.05;letter-spacing:-.02em}
+.action-copy small{font-size:15px;color:var(--muted)}
+.action-arrow{font-size:36px;line-height:1;color:var(--text);opacity:.9}
+
+
+.selection-status{
+  margin:16px 2px 0;padding:13px 16px;border:1px solid var(--border);border-radius:15px;
+  background:var(--surface);color:var(--muted);font-weight:650;text-align:center
+}
+.selection-status[hidden],.visually-hidden{display:none!important}
+
+.back-button{width:48px;height:48px;border-radius:50%;border:1px solid var(--border);background:var(--surface);font-size:34px;line-height:1;cursor:pointer}
+.action-neutral .action-icon{color:var(--gold);background:color-mix(in srgb,var(--gold) 12%,var(--surface))}
+.action-neutral strong{color:var(--text)}
+
+.dialog{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:20px;background:rgba(10,15,25,.45);backdrop-filter:blur(5px)}
+.dialog[hidden]{display:none}
+.dialog-box{width:min(100%,390px);padding:26px;background:var(--surface);border-radius:24px;box-shadow:var(--shadow)}
+.dialog-box h2{margin:0 0 8px}.dialog-box p{margin:0 0 22px;color:var(--muted)}
+.dialog-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dialog-actions button{min-height:48px;border-radius:14px;border:1px solid var(--border);cursor:pointer}
+.button-secondary{background:transparent}.button-primary{background:var(--gold);color:#16120a;border-color:transparent!important;font-weight:750}
+
+@media (max-width:480px){
+  :root{--header-height:105px}
+  html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
+  body{position:fixed;inset:0}
+  .app-shell{width:100%;height:100dvh;min-height:0;overflow:hidden}
+  .app-header{padding-inline:16px}
+  .header-actions{right:16px;bottom:14px;gap:8px}
+  .icon-button{width:44px;height:44px}
+  .brand-word{font-size:35px}
+  .dashboard{
+    height:calc(100dvh - var(--header-height));
+    min-height:0;
+    padding:8px 16px calc(12px + env(safe-area-inset-bottom));
+    overflow:hidden;
+    overscroll-behavior:none;
+    touch-action:manipulation
+  }
+  .dashboard-view{height:100%;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr)}
+  .dashboard-view[hidden]{display:none}
+  .welcome,.subview-heading{margin:2px 1px 14px;gap:12px}
+  .greeting-icon{width:39px;height:39px;font-size:30px}
+  .welcome h1,.subview-heading h1{font-size:26px}
+  .welcome p,.subview-heading p{font-size:16px;margin-top:4px}
+  .primary-actions{min-height:0;display:grid;grid-template-rows:repeat(3,minmax(0,1fr));gap:11px}
+  .action-card{
+    min-height:0;
+    height:100%;
+    padding:clamp(13px,2.1dvh,18px) 15px;
+    grid-template-columns:clamp(60px,9dvh,72px) 1fr auto;
+    gap:14px;
+    border-radius:23px
+  }
+  .action-icon{width:clamp(60px,9dvh,72px);height:clamp(60px,9dvh,72px)}
+  .action-icon svg{width:clamp(30px,4.5dvh,37px);height:clamp(30px,4.5dvh,37px)}
+  .action-copy{gap:6px}
+  .action-copy strong{font-size:clamp(23px,3.2dvh,27px)}
+  .action-copy small{font-size:clamp(15px,2dvh,17px);line-height:1.2}
+  .action-arrow{font-size:34px}
+  .profile-menu{max-height:calc(100dvh - var(--header-height) - 12px);overflow:auto}
+}
+
+@media (min-width:760px){
+  :root{--header-height:168px}
+  .app-header{justify-content:center;padding-left:48px;padding-right:48px}
+  .brand-halo{font-size:38px;height:31px}
+  .brand-word{font-size:78px;letter-spacing:.055em}
+  .header-actions{right:48px;bottom:42px;gap:14px}
+  .icon-button{width:58px;height:58px}
+  .icon{width:27px;height:27px}
+  .profile-menu{right:48px;top:calc(var(--header-height) - 18px)}
+  .dashboard{padding:42px 52px 72px}
+  .dashboard-view{max-width:1380px}
+  .primary-actions{grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+  .action-card{
+    min-height:320px;
+    grid-template-columns:1fr;
+    grid-template-rows:auto auto auto;
+    text-align:center;
+    justify-items:center;
+    padding:40px 30px;
+    border-radius:32px
+  }
+  .action-icon{width:112px;height:112px;font-size:42px}
+  .action-icon svg{width:50px;height:50px}
+  .action-copy{align-items:center;gap:12px}
+  .action-copy strong{font-size:36px}
+  .action-copy small{font-size:20px}
+  .action-arrow{display:none}
+  .welcome,.subview-heading{margin-bottom:38px}
+  .welcome h1,.subview-heading h1{font-size:42px}
+  .welcome p,.subview-heading p{font-size:20px}
+  .greeting-icon{width:58px;height:58px;font-size:44px}
+}
+
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* Bilder 1.0 */
+.images-view,.detail-view{min-height:0}
+.images-content{display:grid;gap:14px;min-height:0}
+.images-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--muted);font-size:15px}
+.select-all{display:flex;align-items:center;gap:9px;font-weight:700;color:var(--text);cursor:pointer}
+.select-all input,.image-select{width:22px;height:22px;accent-color:var(--gold)}
+.images-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;min-height:0}
+.image-card{position:relative;border:1px solid var(--border);border-radius:20px;background:var(--surface);overflow:hidden;box-shadow:0 10px 26px rgba(31,42,68,.055)}
+.image-open{display:block;width:100%;padding:0;border:0;background:transparent;cursor:pointer;text-align:left;color:inherit}
+.image-thumb{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;background:color-mix(in srgb,var(--text) 5%,var(--surface))}
+.image-meta{padding:11px 12px 13px;display:grid;gap:4px}
+.image-meta strong{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.image-meta small{color:var(--muted);font-size:13px}
+.image-select-wrap{position:absolute;top:9px;left:9px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--surface) 90%,transparent);box-shadow:0 5px 16px rgba(0,0,0,.12)}
+.publish-bar{min-height:54px;border:0;border-radius:16px;background:var(--gold);color:#171108;font-weight:800;font-size:18px;cursor:pointer}
+.publish-bar:disabled{opacity:.45;cursor:not-allowed}
+.empty-state{min-height:360px;border:1px dashed color-mix(in srgb,var(--muted) 35%,transparent);border-radius:26px;display:grid;place-items:center;align-content:center;text-align:center;padding:28px;background:color-mix(in srgb,var(--surface) 70%,transparent)}
+.empty-state h2{margin:12px 0 4px}.empty-state p{margin:0 0 22px;color:var(--muted);max-width:310px}
+.empty-icon{font-size:54px;color:var(--gold)}
+.empty-add{border:0;min-height:48px;padding:0 22px;border-radius:14px;cursor:pointer}
+.detail-form{display:grid;gap:16px;padding-bottom:20px}
+.detail-preview{width:100%;max-height:330px;object-fit:contain;border-radius:22px;background:color-mix(in srgb,var(--text) 5%,var(--surface));border:1px solid var(--border)}
+.detail-form label{display:grid;gap:7px;font-weight:750}
+.detail-form input,.detail-form textarea{width:100%;border:1px solid var(--border);border-radius:14px;background:var(--surface);color:var(--text);padding:14px 15px;font:inherit;outline:none}
+.detail-form input:focus,.detail-form textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 18%,transparent)}
+.detail-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.detail-save{border:0;min-height:54px;border-radius:16px;font-size:18px;cursor:pointer}
+
+@media (max-width:480px){
+  .images-view,.detail-view{grid-template-rows:auto minmax(0,1fr)}
+  .images-content{grid-template-rows:auto minmax(0,1fr) auto;overflow:hidden}
+  .images-grid{overflow:auto;overscroll-behavior:contain;padding-right:2px;align-content:start}
+  .empty-state{min-height:0;height:100%}
+  .detail-form{overflow:auto;overscroll-behavior:contain;padding-right:2px}
+}
+@media (min-width:760px){
+  .images-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+  .image-meta strong{font-size:19px}.image-meta small{font-size:15px}
+  .detail-form{max-width:760px;margin:0 auto}
+}
+
+
+/* Dashboard Mobile 1.4 – Mina bilder */
+#addImagesView .primary-actions{gap:18px}
+#addImagesView .action-card{min-height:96px;padding-top:14px;padding-bottom:14px}
+#addImagesView .action-copy{gap:0}
+#addImagesView .action-copy strong{font-size:23px}
+
+.images-grid{grid-template-columns:1fr;gap:10px}
+.image-card{min-height:92px;border-radius:18px;overflow:visible}
+.image-open{display:grid;grid-template-columns:84px minmax(0,1fr);align-items:center;min-height:92px;padding:8px 54px 8px 8px}
+.image-thumb{width:84px;height:76px;aspect-ratio:auto;border-radius:13px;object-fit:cover}
+.image-meta{padding:6px 8px 6px 14px;align-content:center}
+.image-meta strong{font-size:17px}
+.image-meta small{font-size:14px}
+.image-select-wrap{left:auto;right:12px;top:50%;transform:translateY(-50%);box-shadow:none;background:transparent}
+
+@media (max-width:480px){
+  #addImagesView{padding-top:2px}
+  #addImagesView .subview-heading{margin-bottom:18px}
+  #addImagesView .primary-actions{grid-template-rows:repeat(3,minmax(86px,1fr));gap:15px}
+  #addImagesView .action-card{grid-template-columns:58px 1fr auto;border-radius:21px;padding:12px 15px}
+  #addImagesView .action-icon{width:58px;height:58px}
+  #addImagesView .action-icon svg{width:29px;height:29px}
+  #addImagesView .action-copy strong{font-size:22px}
+  .images-grid{padding-bottom:4px}
+}
+
+@media (min-width:760px){
+  #addImagesView .primary-actions{grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+  #addImagesView .action-card{min-height:240px}
+  #addImagesView .action-copy strong{font-size:32px}
+  .images-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .image-open{grid-template-columns:110px minmax(0,1fr);min-height:118px;padding:10px 60px 10px 10px}
+  .image-thumb{width:110px;height:98px}
+  .image-meta strong{font-size:20px}
+  .image-meta small{font-size:16px}
+}
+
+/* Dashboard Mobile 1.5 – kameraflöde */
+.camera-options{display:grid;gap:10px;margin-top:18px}
+.setting-toggle{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 16px;border:1px solid var(--border);border-radius:17px;background:var(--surface)}
+.setting-toggle span{display:grid;gap:3px}
+.setting-toggle strong{font-size:16px}
+.setting-toggle small{font-size:13px;color:var(--muted);line-height:1.35}
+.setting-toggle input{appearance:none;width:48px;height:28px;border-radius:999px;background:color-mix(in srgb,var(--muted) 28%,transparent);position:relative;flex:0 0 auto;cursor:pointer;transition:.2s ease}
+.setting-toggle input::after{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.2);transition:.2s ease}
+.setting-toggle input:checked{background:var(--gold)}
+.setting-toggle input:checked::after{transform:translateX(20px)}
+.camera-session-card{min-height:360px;display:grid;place-items:center;align-content:center;text-align:center;padding:30px 22px;border:1px solid var(--border);border-radius:26px;background:var(--surface);box-shadow:var(--shadow)}
+.camera-session-icon{display:grid;place-items:center;width:78px;height:78px;border-radius:50%;background:color-mix(in srgb,var(--gold) 20%,var(--surface));color:var(--gold);font-size:42px;font-weight:900}
+.camera-session-card h2{margin:18px 0 6px;font-size:27px}
+.camera-session-card p{margin:0 0 26px;color:var(--muted);max-width:320px;line-height:1.5}
+.camera-session-actions{display:grid;gap:12px;width:min(100%,360px)}
+.camera-session-actions button{min-height:56px;border-radius:17px;font-size:18px;font-weight:800;cursor:pointer}
+.camera-session-actions .button-primary{border:0}
+.camera-session-actions .button-secondary{border:1px solid var(--border);background:var(--surface)}
+@media (max-width:480px){
+  .camera-options{margin-top:14px}
+  .setting-toggle{padding:12px 14px}
+  .camera-session-view{grid-template-rows:auto minmax(0,1fr)}
+  .camera-session-card{min-height:0;height:100%}
+}
+
+/* CCC Local Workspace 1.0 */
+.mini-add-button{
+  margin-left:auto;border:1px solid var(--border);background:var(--surface);color:var(--text);
+  min-height:42px;padding:0 14px;border-radius:13px;font-weight:800;cursor:pointer;white-space:nowrap
+}
+.camera-session-actions{display:grid;gap:11px;width:min(100%,420px);margin:0 auto}
+.camera-session-actions .button-primary,.camera-session-actions .button-secondary{
+  min-height:52px;border-radius:15px;border:1px solid var(--border);font-weight:800;cursor:pointer
+}
+.camera-session-actions .button-primary{background:var(--gold);color:#171108;border-color:transparent}
+.camera-session-actions .button-secondary{background:var(--surface);color:var(--text)}
+.camera-session-actions .button-secondary:disabled{opacity:.4;cursor:not-allowed}
+.button-link{border:0;background:transparent;color:var(--muted);font-weight:750;min-height:44px;cursor:pointer}
+.camera-session-card p{max-width:330px;margin-left:auto;margin-right:auto}
+.images-heading{align-items:center}
+@media (max-width:480px){
+  .images-heading{grid-template-columns:auto minmax(0,1fr) auto}
+  .mini-add-button{font-size:14px;padding:0 12px}
+  .camera-session-card{padding:22px 18px}
+}
+
+
+/* CCC Local Workspace 1.1 – rent kameraflöde */
+.camera-options{display:none!important}
+.camera-session-card{min-height:0}
+.camera-session-actions{gap:12px}
+.camera-session-actions .button-link{margin-top:2px}
+@media (max-width:480px){
+  #addImagesView .primary-actions{align-content:center}
+  .camera-session-card{height:auto;align-self:center;padding:24px 18px}
+}
+
+
+/* CCC Local Workspace 1.2 – kompakt mobilflöde */
+@media (max-width:480px){
+  .camera-session-view{
+    display:grid;
+    grid-template-rows:auto minmax(0,1fr);
+    min-height:0;
+  }
+  .camera-session-card{
+    align-self:start;
+    width:100%;
+    max-height:100%;
+    overflow:auto;
+    display:block;
+    text-align:center;
+    padding:16px 14px 14px;
+    border-radius:20px;
+    box-shadow:0 10px 28px rgba(31,42,68,.07);
+  }
+  .camera-session-icon{
+    width:52px;
+    height:52px;
+    margin:0 auto;
+    font-size:29px;
+  }
+  .camera-session-card h2{margin:10px 0 3px;font-size:21px}
+  .camera-session-card p{margin:0 0 13px;font-size:14px;line-height:1.35}
+  .camera-session-actions{gap:8px;width:100%}
+  .camera-session-actions button,
+  .camera-session-actions .button-primary,
+  .camera-session-actions .button-secondary{
+    min-height:45px;
+    border-radius:13px;
+    font-size:16px;
+  }
+  .camera-session-actions .button-link{min-height:38px;font-size:14px}
+
+  .images-view{
+    display:flex;
+    flex-direction:column;
+    height:100%;
+    min-height:0;
+    overflow:hidden;
+  }
+  .images-heading{
+    flex:0 0 auto;
+    display:grid;
+    grid-template-columns:48px minmax(0,1fr) auto;
+    align-items:center;
+    gap:10px;
+    margin:2px 1px 12px;
+  }
+  .images-heading>div{min-width:0}
+  .images-heading h1,.images-heading p{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mini-add-button{min-height:40px;padding:0 11px;font-size:13px;border-radius:12px}
+  .images-content{
+    flex:1 1 auto;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    overflow:hidden;
+  }
+  .images-toolbar{flex:0 0 auto;min-height:34px;padding:0 2px}
+  .images-grid{
+    flex:1 1 auto;
+    min-height:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    padding:1px 2px 8px;
+  }
+  .publish-bar{flex:0 0 auto;min-height:50px;margin-top:0}
+  .empty-state{flex:1 1 auto;min-height:0;height:auto}
+}
+
+/* CCC Local Workspace 1.3 – mobilfix för Mina bilder */
+#imagesEmpty[hidden],
+#imagesContent[hidden],
+.dashboard-view[hidden]{
+  display:none !important;
+}
+
+@media (max-width:480px){
+  .images-view{
+    padding-bottom:0;
+  }
+
+  .images-heading{
+    grid-template-columns:46px minmax(0,1fr) auto;
+    gap:9px;
+    margin:0 0 12px;
+  }
+
+  .images-heading h1{
+    font-size:clamp(29px,8vw,36px);
+    line-height:1.05;
+  }
+
+  .images-heading p{
+    margin-top:4px;
+    font-size:15px;
+  }
+
+  .mini-add-button{
+    position:static;
+    align-self:center;
+    min-height:42px;
+    padding:0 12px;
+    white-space:nowrap;
+    z-index:auto;
+  }
+
+  .images-content{
+    gap:12px;
+    overflow:hidden;
+  }
+
+  .images-toolbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    min-height:42px;
+    padding:2px 4px 6px;
+    border-bottom:1px solid color-mix(in srgb,var(--muted) 18%,transparent);
+  }
+
+  .select-all{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    min-width:0;
+    font-size:15px;
+    white-space:nowrap;
+  }
+
+  .select-all input,
+  .image-select{
+    width:23px;
+    height:23px;
+    flex:0 0 auto;
+  }
+
+  #selectedCount{
+    flex:0 0 auto;
+    font-size:14px;
+    white-space:nowrap;
+  }
+
+  .images-grid{
+    padding:2px 2px 88px;
+    scroll-padding-bottom:88px;
+  }
+
+  .image-card{
+    min-height:104px;
+    margin-bottom:10px;
+  }
+
+  .publish-bar{
+    position:relative;
+    z-index:2;
+    min-height:52px;
+    margin:0;
+    box-shadow:0 -10px 24px color-mix(in srgb,var(--bg) 78%,transparent);
+  }
+
+  .empty-state{
+    flex:1 1 auto;
+    min-height:0;
+    padding:24px 18px;
+  }
+}
+
+/* v2.4: robust app-shell + tydlig övergång in i arbetsytan */
+html,body,.app-shell{background:var(--bg)!important}
+html{min-height:100%;min-height:100dvh}
+body{min-height:100dvh}
+@supports(padding:max(0px)){body{padding-top:0;padding-bottom:0}}
+.workspace-arrival .app-header{animation:cccHeaderWake .42s ease both}
+.workspace-arrival .welcome{animation:cccWorkspaceIn .46s .08s ease both}
+.workspace-arrival .primary-actions>.action-card{animation:cccWorkspaceIn .42s ease both}
+.workspace-arrival .primary-actions>.action-card:nth-child(1){animation-delay:.14s}.workspace-arrival .primary-actions>.action-card:nth-child(2){animation-delay:.20s}.workspace-arrival .primary-actions>.action-card:nth-child(3){animation-delay:.26s}
+@keyframes cccHeaderWake{from{opacity:.2;transform:translateY(-12px)}to{opacity:1;transform:none}}
+@keyframes cccWorkspaceIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
