@@ -106,7 +106,7 @@ async function login() {
     const success = document.getElementById("loginSuccess");
     if (success) success.hidden = false;
     sessionStorage.setItem("ccc-enter-workspace", "1");
-    setTimeout(() => { location.href = "../dashboard/index.html"; }, 620);
+    setTimeout(() => { location.href = "../dashboard/index.html"; }, 560);
   } catch (e) {
     hidePassword();
     message.textContent = "Fel e-post eller lösenord. Försök igen.";
