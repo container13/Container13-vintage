@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#f7f7f9">
-  <title>CCC Vision v2.5.4</title>
+  <title>CCC Vision v2.5.5</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-  <link rel="stylesheet" href="vision.css?v=2.5.4">
+  <link rel="stylesheet" href="vision.css?v=2.5.5">
 </head>
 <body>
   <header class="app-header ccc-header" aria-label="CCC-huvudmeny">
@@ -181,12 +181,34 @@
         </label>
 
         <div class="compact-extras-row">
-          <details class="compact-options">
+          <details id="optionalExtras" class="compact-options optional-extras">
             <summary>Frivilliga tillägg</summary>
-            <div class="option-content">
-              <p id="factSuggestionText">Den här modellen förknippas med Arsenals Invincibles-säsong.</p>
-              <button id="addFactBtn" class="secondary-button compact-action" type="button">Lägg till “Visste du”</button>
-              <button id="addNewConditionBtn" class="quiet-inline" type="button">+ Lägg till “Nyskick”</button>
+            <div class="option-content optional-extras-content">
+              <div class="optional-extras-heading">
+                <div>
+                  <strong>Frivilliga tillägg</strong>
+                  <span>Välj bara det du vill lägga till i beskrivningen.</span>
+                </div>
+                <button id="closeOptionalExtrasBtn" class="dialog-close-button" type="button" aria-label="Stäng">×</button>
+              </div>
+
+              <div class="optional-extra-card">
+                <span class="optional-extra-label">Visste du?</span>
+                <p class="optional-extra-help">Det här stycket läggs sist i produktbeskrivningen:</p>
+                <blockquote id="factSuggestionPreview" class="optional-extra-preview">Den här modellen förknippas med Arsenals Invincibles-säsong.</blockquote>
+                <button id="addFactBtn" class="secondary-button compact-action" type="button">Lägg till i beskrivningen</button>
+              </div>
+
+              <div class="optional-extra-card optional-extra-card--compact">
+                <span class="optional-extra-label">Nyskick</span>
+                <p class="optional-extra-help">Lägger till “Nyskick.” sist i produktbeskrivningen.</p>
+                <button id="addNewConditionBtn" class="secondary-button compact-action" type="button">Lägg till i beskrivningen</button>
+              </div>
+
+              <div class="optional-extras-actions">
+                <button id="cancelOptionalExtrasBtn" class="secondary-button" type="button">Avbryt</button>
+                <button id="doneOptionalExtrasBtn" class="primary-button" type="button">Klar</button>
+              </div>
             </div>
           </details>
 
@@ -272,8 +294,8 @@
   </main>
   <div id="undoToast" class="undo-toast" hidden><span>Flyttad till papperskorgen</span><button id="undoTrashBtn" type="button">Ångra</button></div>
 
-  <script src="../version.js?v=2.5.4"></script>
-  <script src="demo-data.js?v=2.5.4"></script>
-  <script src="product-lab.js?v=2.5.4"></script>
+  <script src="../version.js?v=2.5.5"></script>
+  <script src="demo-data.js?v=2.5.5"></script>
+  <script src="product-lab.js?v=2.5.5"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@ Syfte
 -----
 Vision hjälper användaren från foto till ett färdigt, redigerbart produktförslag. Arbetsflödet prioriteras före AI-tekniken.
 
-Aktuellt – v2.5.4
+Aktuellt – v2.5.5
 ------------------
 - Dashboard öppnar Vision direkt.
 - Första Vision-skärmen har tre tydliga kort: Ta ett foto, Välj från kamerarullen och Tillbaka.
@@ -47,3 +47,11 @@ v2.5.4
 - Tillbaka har tydligare ikon och hjälptext men lägre visuell tyngd.
 - Papperskorgens Ångra-toast är lägre, ligger ovanför nederkanten/navigeringen och försvinner snabbare.
 - Slutvyn använder användarspråk: “Klart!”, “X plagg är klara att publiceras.” och “Till startsidan”. Firebase nämns inte i användargränssnittet.
+
+v2.5.5
+- Frivilliga tillägg förklarar nu exakt vad som läggs till och var det hamnar.
+- “Visste du?” visar förhandsvisning och läggs uttryckligen sist i produktbeskrivningen.
+- “Nyskick” förklaras som ett tillägg sist i produktbeskrivningen.
+- Frivilliga tillägg har tydliga vägar ut: Stäng, Avbryt och Klar.
+- Vision-startens tre val har fått större ytor och större ikoner efter mobiltest; foto störst, kamerarulle näst störst, Tillbaka minst.
+- Papperskorgens Ångra-toast flyttas högre så den inte täcker granskningsknapparna.

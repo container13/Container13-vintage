@@ -417,7 +417,9 @@
   function updateSmartSuggestions() {
     const demo = currentDemo();
     $("#priceSuggestion").textContent = `${demo?.priceSuggestion || 795} kr`;
-    $("#factSuggestionText").textContent = demo?.fact || "Ett kort extra fakta kan läggas till om du vill.";
+    const fact = demo?.fact || "Ett kort extra fakta kan läggas till om du vill.";
+    const preview = $("#factSuggestionPreview");
+    if (preview) preview.textContent = fact;
   }
 
   function usePriceSuggestion() {
@@ -437,15 +439,20 @@
 
   function addFact() {
     const fact = currentDemo()?.fact;
-    if (fact) appendToDescription(fact);
-    $("#addFactBtn").textContent = "Tillagt ✓";
+    if (fact) appendToDescription(`Visste du? ${fact}`);
+    $("#addFactBtn").textContent = "Tillagt i beskrivningen ✓";
     $("#addFactBtn").disabled = true;
   }
 
   function addNewCondition() {
     appendToDescription("Nyskick.");
-    $("#addNewConditionBtn").textContent = "Nyskick tillagt ✓";
+    $("#addNewConditionBtn").textContent = "Tillagt i beskrivningen ✓";
     $("#addNewConditionBtn").disabled = true;
+  }
+
+  function closeOptionalExtras() {
+    const details = $("#optionalExtras");
+    if (details) details.open = false;
   }
 
   function setMessage(text) {
@@ -514,6 +521,9 @@
   $("#usePriceSuggestionBtn").addEventListener("click", usePriceSuggestion);
   $("#addFactBtn").addEventListener("click", addFact);
   $("#addNewConditionBtn").addEventListener("click", addNewCondition);
+  $("#closeOptionalExtrasBtn")?.addEventListener("click", closeOptionalExtras);
+  $("#cancelOptionalExtrasBtn")?.addEventListener("click", closeOptionalExtras);
+  $("#doneOptionalExtrasBtn")?.addEventListener("click", closeOptionalExtras);
   $("#resetBtn").addEventListener("click", resetAll);
   $$('[data-copy]').forEach((button) => button.addEventListener("click", () => copyPreview(button.dataset.copy)));
   $$('[data-demo]').forEach((button) => button.addEventListener("click", () => chooseDemo(button.dataset.demo)));
