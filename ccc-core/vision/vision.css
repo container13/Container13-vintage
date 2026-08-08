@@ -1464,3 +1464,31 @@ body{min-height:100dvh}
 .vision-shell{min-height:calc(100dvh - var(--ccc-header-height));padding-bottom:calc(18px + env(safe-area-inset-bottom))}
 .capture-heading-tools-only{justify-content:flex-end;margin-bottom:12px}.capture-heading-tools-only>.visually-hidden{display:none!important}
 @media(max-width:480px){html,body{height:100%;overflow:hidden}.vision-shell{height:calc(100dvh - var(--ccc-header-height));min-height:0;overflow:hidden}.stage-card.is-active{max-height:100%;overflow:auto;overscroll-behavior:contain}}
+
+
+/* v2.5.1: ren Vision-start – foto, kamerarulle, tillbaka. */
+.vision-back-link {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  min-height: 40px;
+  padding: 8px 14px;
+  margin: 0 auto;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  border-radius: 12px;
+}
+.vision-back-link:hover,
+.vision-back-link:focus-visible {
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  outline: none;
+}
+#captureCard .capture-head-tools:has(#imageCount[hidden]) {
+  min-height: 0;
+}
+#captureCard .capture-heading-tools-only:has(#imageCount[hidden]) {
+  display: none;
+}

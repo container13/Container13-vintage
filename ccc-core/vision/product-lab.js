@@ -111,6 +111,8 @@
     });
     strip.hidden = batchItems.length === 0;
     $("#imageCount").textContent = `${batchItems.length} ${batchItems.length === 1 ? "plagg" : "plagg"}`;
+    $("#imageCount").hidden = batchItems.length === 0;
+    $("#resetBtn").hidden = batchItems.length === 0;
     $("#showSuggestionBtn").hidden = batchItems.length === 0;
   }
 
@@ -119,7 +121,7 @@
     preview.hidden = true;
     preview.removeAttribute("src");
     $("#startCameraBtn").classList.remove("has-image");
-    $("#startCameraBtn .camera-content strong").textContent = batchItems.length ? "Fota nästa plagg" : "Börja fota";
+    $("#startCameraBtn .camera-content strong").textContent = batchItems.length ? "Fota nästa plagg" : "Ta ett foto";
   }
 
   async function startCamera() {
@@ -471,14 +473,23 @@
   }
 
   function resetAll() {
-    if (!confirm("Börja om och ta bort lokala utkast?")) return;
+    if (!confirm("Vill du börja om? Bilder och utkast i den här Vision-sessionen tas bort.")) return;
     newSeries();
     localStorage.removeItem("ccc-vision-draft");
+  }
+
+  function goBackFromVision() {
+    if (batchItems.length || stagedItem) {
+      const leave = confirm("Vill du lämna Vision? Bilderna i den här omgången tas bort.");
+      if (!leave) return;
+    }
+    window.location.href = "../dashboard/index.html";
   }
 
   // Kamera / fotograferingsflöde
   $("#startCameraBtn").addEventListener("click", startCamera);
   $("#galleryBtn").addEventListener("click", () => $("#galleryInput").click());
+  $("#backBtn").addEventListener("click", goBackFromVision);
   $("#galleryInput").addEventListener("change", (event) => handleGalleryFiles(event.target.files));
   $("#cameraFallbackInput").addEventListener("change", (event) => handleFallbackCamera(event.target.files));
   $("#closeCameraBtn").addEventListener("click", closeCamera);

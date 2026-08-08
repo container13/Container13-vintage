@@ -5,9 +5,14 @@ Syfte
 -----
 Vision hjälper användaren från foto till ett färdigt, redigerbart produktförslag. Arbetsflödet prioriteras före AI-tekniken.
 
-Aktuellt – v2.5.0
+Aktuellt – v2.5.1
 ------------------
 - Dashboard öppnar Vision direkt.
+- Första Vision-skärmen har tre tydliga vägar: stor fotoyta, Välj bilder från kamerarullen och ← Tillbaka.
+- Den stora fotoytan är själva kameraknappen; ingen separat Börja fota-knapp används.
+- ← Tillbaka går direkt till dashboard om inget arbete påbörjats. Finns bilder i aktuell omgång frågar CCC innan Vision lämnas.
+- Reset-pilen visas först när det faktiskt finns ett påbörjat Vision-utkast och använder enkel text: Börja om.
+- Demo-val visas inte längre på den vanliga första Vision-skärmen.
 - Ett foto per plagg är standard.
 - CCC förbereder förslag tyst i bakgrunden medan användaren fortsätter fotografera.
 - Kamerarulle kan ge flera plagg; varje vald bild behandlas som ett plagg.
