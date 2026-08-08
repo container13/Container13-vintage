@@ -1549,3 +1549,27 @@ body{min-height:100dvh}
   #captureCard .vision-action-icon { font-size: 1.8rem; }
   #captureCard .vision-action-icon--back { font-size: 1.55rem; }
 }
+
+/* v2.5.3: tydligare storlekshierarki på Vision-starten.
+   Foto är störst, kamerarullen nästa, Tillbaka minst. */
+#captureCard:has(#imageCount[hidden]) {
+  grid-template-rows: auto minmax(150px, 1fr) 104px 62px auto;
+}
+#captureCard:has(#imageCount[hidden]) .main-camera {
+  min-height: 150px;
+}
+#captureCard:has(#imageCount[hidden]) .vision-action-card--gallery {
+  min-height: 0;
+  height: 104px;
+}
+#captureCard:has(#imageCount[hidden]) .vision-action-card--back {
+  min-height: 0;
+  height: 62px;
+}
+@media (min-width: 481px) {
+  #captureCard:has(#imageCount[hidden]) {
+    grid-template-rows: auto minmax(190px, 1fr) 116px 70px auto;
+  }
+  #captureCard:has(#imageCount[hidden]) .vision-action-card--gallery { height: 116px; }
+  #captureCard:has(#imageCount[hidden]) .vision-action-card--back { height: 70px; }
+}

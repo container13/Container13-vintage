@@ -32,3 +32,10 @@ Vision ska använda samma CCC-skal som dashboarden. Versionsnumret visas via ../
 Nästa
 -----
 Finputs av kamera/design, därefter Firebase för relevant runtime/metadata och återupptagning – utan att göra Firebase till mellanlager för opublicerade råbilder.
+
+v2.5.3
+- Justerad storlekshierarki på Vision-starten efter mobiltest.
+- "Ta ett foto" är tydligt största ytan.
+- "Välj från kamerarullen" är näst störst.
+- "Tillbaka" är minst och tydligt navigation.
+- Målet är fortsatt att hela startvyn ska rymmas utan scroll på mobil.
