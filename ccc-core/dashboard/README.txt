@@ -29,3 +29,7 @@ v2.5.11
 - Arbetsytan visar endast “ARBETSYTA”.
 - Underraden är medvetet tom tills vi hittar en text som faktiskt tillför något.
 - Samma reserverade höjd behålls som i Vision så modulmarkörerna fortsätter ligga i samma rytm.
+
+
+v2.6.0
+- Gemensamt CCC-versionsnummer uppdaterat till 2.6.0 i samband med riktig Vision AI-koppling. Arbetsytans funktioner är oförändrade.
