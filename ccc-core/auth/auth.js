@@ -1,5 +1,11 @@
 import { auth } from "./firebase.js";
-import { signInWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import {
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  setPersistence,
+  browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 const email = document.getElementById("email");
 const password = document.getElementById("password");
@@ -10,6 +16,8 @@ const togglePassword = document.getElementById("togglePassword");
 let lastPasswordValue = password.value;
 let lastUserPasswordInputAt = 0;
 let autofillCheckTimer;
+let loginInProgress = false;
+let authBootResolved = false;
 
 function hidePassword() {
   password.type = "password";
@@ -102,12 +110,15 @@ async function login() {
   }
 
   try {
+    loginInProgress = true;
+    await setPersistence(auth, browserLocalPersistence);
     await signInWithEmailAndPassword(auth, email.value, password.value);
     const success = document.getElementById("loginSuccess");
     if (success) success.hidden = false;
     sessionStorage.setItem("ccc-enter-workspace", "1");
     setTimeout(() => { location.href = "../dashboard/index.html"; }, 560);
   } catch (e) {
+    loginInProgress = false;
     hidePassword();
     message.textContent = "Fel e-post eller lösenord. Försök igen.";
   }
@@ -144,6 +155,14 @@ resetButton.onclick = async () => {
   }
 };
 
-onAuthStateChanged(auth, (user) => {
-  if (user) { }
+onAuthStateChanged(auth, async (user) => {
+  authBootResolved = true;
+  if (!user) document.body.classList.remove("auth-checking");
+  if (user && !loginInProgress) {
+    // Redan inloggad: auth-vyn ska inte bli ett extra steg.
+    location.replace("../dashboard/index.html");
+  }
 });
+
+// Fail-safe: visa formuläret även om auth-kontrollen skulle dröja.
+setTimeout(() => { if (!authBootResolved) document.body.classList.remove("auth-checking"); }, 1200);
