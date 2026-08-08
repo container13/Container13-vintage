@@ -5,7 +5,7 @@ Syfte
 -----
 Vision hjälper användaren från foto till ett färdigt, redigerbart produktförslag. Arbetsflödet prioriteras före AI-tekniken.
 
-Aktuellt – v2.6.0
+Aktuellt – v2.6.1
 ------------------
 - Dashboard öppnar Vision direkt.
 - Första Vision-skärmen har tre fristående kort direkt på CCC-bakgrunden: Ta ett foto, Välj från enheten och Tillbaka.
@@ -100,7 +100,7 @@ v2.5.10 – centrerad modulidentitet
 - Inga ändringar av Vision-flöde, kamera eller kortfunktioner.
 
 
-v2.6.0 – riktig AI förberedd
+v2.6.1 – riktig AI förberedd
 - `vision-ai.js` läser och komprimerar en till tre bilder för analys utan att ersätta originalfilerna.
 - `vision-ai-config.js` håller endast endpoint-konfiguration; inga hemligheter får finnas där.
 - `cloudflare-worker.js` är serverdelen som anropar OpenAI Responses API och returnerar ett strukturerat produktförslag.
@@ -108,3 +108,11 @@ v2.6.0 – riktig AI förberedd
 - Standardmodell i Worker är `gpt-5.6-terra`, men kan bytas med miljövariabeln `OPENAI_MODEL`.
 - Om AI inte är ansluten eller testanropet misslyckas fortsätter prototypen i demo, och förslagsvyn markerar att det är testläge.
 - Högerpilen på Vision-kortet “Tillbaka” är borttagen; endast vänsterpilen visas.
+
+
+v2.6.1 – första livekopplingen till CCC Vision API
+- Vision-klienten pekar nu på `https://ccc-vision-api.mangaj73.workers.dev`.
+- Klientens requestformat är synkat med den deployade Workern (`image` i stället för `images`).
+- Worker-svaret `{ ok, product }` översätts till CCC Visions befintliga fält utan att UI-flödet ändras.
+- Första live-testet använder en bild per plagg; stöd för extra analysbilder kan läggas tillbaka när basflödet är verifierat.
+- Bilderna är fortsatt local-first; endast en komprimerad analyskopia skickas till Workern/OpenAI.

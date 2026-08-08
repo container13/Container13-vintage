@@ -43,26 +43,31 @@
 
   function normalize(result) {
     if (!result || typeof result !== "object") throw new Error("Vision gav inget användbart svar.");
-    const fields = result.fields || {};
+
+    // Worker v1 returnerar { ok: true, product: {...} }.
+    const product = result.product && typeof result.product === "object" ? result.product : result;
     const clean = (value, fallback = "") => typeof value === "string" ? value.trim() : fallback;
+    const price = Number(product.suggested_price_sek);
+    const confidenceMap = { high: "Säkerheten är hög", medium: "Ganska säker", low: "Lite osäker" };
+
     return {
-      label: clean(result.label, "AI-analys"),
-      summaryTitle: clean(result.summaryTitle, "Plagg"),
-      summaryBrand: clean(result.summaryBrand, "Märke ej säkert"),
-      summarySeason: clean(result.summarySeason, "År/säsong ej säkert"),
-      confidence: clean(result.confidence, "Lite osäker"),
-      priceSuggestion: Number.isFinite(Number(result.priceSuggestion)) ? Number(result.priceSuggestion) : 0,
-      fact: clean(result.fact),
+      label: "AI-analys",
+      summaryTitle: clean(product.title, "Plagg"),
+      summaryBrand: clean(product.brand, "Märke ej säkert"),
+      summarySeason: clean(product.year_or_season, "År/säsong ej säkert"),
+      confidence: confidenceMap[product.confidence] || "Lite osäker",
+      priceSuggestion: Number.isFinite(price) ? price : 0,
+      fact: clean(product.fun_fact),
       fields: {
-        title: clean(fields.title),
-        category: clean(fields.category),
-        brand: clean(fields.brand),
-        season: clean(fields.season),
-        price: clean(fields.price),
-        manufacturer: clean(fields.manufacturer),
-        size: clean(fields.size),
-        color: clean(fields.color),
-        description: clean(fields.description)
+        title: clean(product.title),
+        category: clean(product.category),
+        brand: clean(product.brand),
+        season: clean(product.year_or_season),
+        price: Number.isFinite(price) ? String(price) : "",
+        manufacturer: clean(product.team_or_subject),
+        size: clean(product.size),
+        color: clean(product.color),
+        description: clean(product.description)
       }
     };
   }
@@ -82,12 +87,12 @@
       const response = await fetch(config.endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ images, locale: "sv-SE" }),
+        body: JSON.stringify({ image: images[0], locale: "sv-SE" }),
         signal: controller.signal
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload?.error || `Vision kunde inte analysera bilden (${response.status}).`);
-      return normalize(payload.result || payload);
+      return normalize(payload);
     } finally {
       clearTimeout(timer);
     }
