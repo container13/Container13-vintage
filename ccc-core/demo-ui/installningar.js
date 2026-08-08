@@ -1,10 +1,9 @@
 (() => {
   const defaults = {
     "ccc-vision-ai-auto": true,
-    "ccc-vision-show-cost": true,
     "ccc-vision-learn-edits": true
   };
-  const map = { visionAiAuto: "ccc-vision-ai-auto", visionShowCost: "ccc-vision-show-cost", visionLearnEdits: "ccc-vision-learn-edits" };
+  const map = { visionAiAuto: "ccc-vision-ai-auto", visionLearnEdits: "ccc-vision-learn-edits" };
   const read = (key) => { const value = localStorage.getItem(key); return value === null ? defaults[key] : value === "true"; };
   let timer;
   Object.entries(map).forEach(([id,key]) => {
