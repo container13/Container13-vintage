@@ -100,9 +100,13 @@
       if (item.analysisMode === "ai") {
         try {
           console.info("[CCC Vision] AI-analys startar", { itemId: item.id, files: files.length });
-          item.visionResult = await window.CCC_VISION_AI.analyze(files);
+          const aiResponse = await window.CCC_VISION_AI.analyze(files);
+          item.visionResult = aiResponse.result || aiResponse;
+          item.aiUsage = aiResponse.usage || null;
           item.visionReady = true;
-          console.info("[CCC Vision] AI-analys klar", { itemId: item.id });
+          window.CCC_VISION_KNOWLEDGE?.metric?.({ type: "ai_analysis", itemId: item.id, usage: item.aiUsage, model: aiResponse.model || "" }).catch(() => {});
+          updateBatchStrip();
+          console.info("[CCC Vision] AI-analys klar", { itemId: item.id, usage: item.aiUsage });
           return item.visionResult;
         } catch (error) {
           console.error("[CCC Vision] AI-fel – demo används som fallback", error);
@@ -117,31 +121,63 @@
       await new Promise((resolve) => setTimeout(resolve, 650 + Math.floor(Math.random() * 450)));
       item.visionResult = window.CCC_VISION_DEMOS?.[item.demoKey] || window.CCC_VISION_DEMO;
       item.visionReady = true;
+      updateBatchStrip();
       return item.visionResult;
     })();
     return item.analysisPromise;
+  }
+
+  function updateWorkspaceState() {
+    const status = $("#visionWorkStatus");
+    const statusText = $("#visionWorkStatusText");
+    const review = $("#showSuggestionBtn");
+    const addDetail = $("#addToSelectedBtn");
+    if (!batchItems.length) {
+      if (status) status.hidden = true;
+      if (addDetail) addDetail.hidden = true;
+      if (review) { review.hidden = true; review.disabled = true; }
+      return;
+    }
+    if (status) status.hidden = false;
+    if (addDetail) addDetail.hidden = false;
+    const ready = batchItems.filter((item) => item.visionReady).length;
+    const working = batchItems.length - ready;
+    if (statusText) statusText.textContent = working
+      ? `${ready} av ${batchItems.length} klara – du kan fortsätta fotografera medan CCC arbetar.`
+      : `${batchItems.length} av ${batchItems.length} klara – förslagen är redo att granskas.`;
+    if (review) {
+      review.hidden = false;
+      review.disabled = ready === 0;
+      review.textContent = ready === 0 ? "CCC analyserar…" : (working ? `Granska ${ready} klara` : "Visa förslag");
+    }
   }
 
   function updateBatchStrip() {
     const strip = $("#batchStrip");
     strip.innerHTML = "";
     batchItems.forEach((item, index) => {
-      const wrap = document.createElement("div");
+      const wrap = document.createElement("button");
+      wrap.type = "button";
       wrap.className = "batch-thumb";
-      if (index === currentIndex && !$("#visionCard").hidden) wrap.classList.add("is-current");
+      if (index === currentIndex) wrap.classList.add("is-selected");
+      wrap.setAttribute("aria-label", `Plagg ${index + 1}${item.visionReady ? ", analys klar" : ", analyseras"}`);
       const img = document.createElement("img");
       img.src = item.previewUrl;
       img.alt = `Plagg ${index + 1}`;
       const num = document.createElement("span");
       num.textContent = index + 1;
-      wrap.append(img, num);
+      const state = document.createElement("span");
+      state.className = "thumb-status";
+      state.textContent = item.visionReady ? "✓" : "●";
+      wrap.addEventListener("click", () => { currentIndex = index; updateBatchStrip(); });
+      wrap.append(img, num, state);
       strip.appendChild(wrap);
     });
     strip.hidden = batchItems.length === 0;
-    $("#imageCount").textContent = `${batchItems.length} ${batchItems.length === 1 ? "plagg" : "plagg"}`;
+    $("#imageCount").textContent = `${batchItems.length} plagg`;
     $("#imageCount").hidden = batchItems.length === 0;
     $("#resetBtn").hidden = batchItems.length === 0;
-    $("#showSuggestionBtn").hidden = batchItems.length === 0;
+    updateWorkspaceState();
   }
 
   function resetCaptureVisual() {
@@ -237,7 +273,8 @@
     commitStagedItem();
     closeCamera();
     resetCaptureVisual();
-    if (batchItems.length) await openReview(0);
+    updateBatchStrip();
+    showStage("captureCard");
   }
 
   function handleFallbackCamera(fileList) {
@@ -246,7 +283,7 @@
     files.forEach((file) => batchItems.push(createBatchItem(file, batchItems.length)));
     updateBatchStrip();
     resetCaptureVisual();
-    openReview(0);
+    showStage("captureCard");
   }
 
   function handleGalleryFiles(fileList) {
@@ -255,8 +292,8 @@
     files.forEach((file) => batchItems.push(createBatchItem(file, batchItems.length)));
     updateBatchStrip();
     resetCaptureVisual();
-    // Bildväljaren är nu stängd: CCC har redan börjat tänka på alla bilder.
-    openReview(0);
+    // Bildväljaren är nu stängd: CCC arbetar i bakgrunden medan användaren kan fortsätta.
+    showStage("captureCard");
     $("#galleryInput").value = "";
   }
 
@@ -302,11 +339,28 @@
     finishBatch();
   }
 
+  function rememberApprovedItem(item) {
+    const fields = item?.editedFields || item?.visionResult?.fields;
+    if (!fields) return;
+    const subject = (fields.manufacturer || fields.brand || "").trim();
+    const season = (fields.season || "").trim();
+    if (!subject || !season) return;
+    const key = `${subject.toLowerCase()}::${season.toLowerCase()}`;
+    window.CCC_VISION_KNOWLEDGE?.remember?.({
+      key, subject, season,
+      brand: fields.brand || "",
+      category: fields.category || "",
+      source: item.editedFields ? "user-confirmed" : "ai-confirmed",
+      confidence: item.visionResult?.confidence || ""
+    }).then(() => window.CCC_VISION_KNOWLEDGE?.metric?.({ type: "knowledge_saved", key })).catch(() => {});
+  }
+
   function approveCurrent() {
     const item = currentItem();
     if (!item) return;
     item.approved = true;
     if (!item.editedFields) item.editedFields = { ...currentDemo().fields };
+    rememberApprovedItem(item);
     moveToNextItem();
   }
 
@@ -332,6 +386,7 @@
     if (!item) return;
     item.editedFields = Object.fromEntries(fieldIds.map((id) => [id, $("#" + id).value]));
     item.approved = true;
+    rememberApprovedItem(item);
     saveBatchMetadata();
     moveToNextItem();
   }
@@ -347,7 +402,10 @@
     });
     if (files.length) {
       startSilentAnalysis(item);
-      item.analysisPromise.then(() => openReview(currentIndex));
+      item.analysisPromise.then(() => {
+        if (!$("#captureCard").hidden) updateBatchStrip();
+        else openReview(currentIndex);
+      });
     }
     $("#sameGarmentInput").value = "";
   }
@@ -543,7 +601,11 @@
   $("#retakeBtn").addEventListener("click", retakePhoto);
   $("#nextPhotoBtn").addEventListener("click", nextPhoto);
   $("#usePhotoBtn").addEventListener("click", finishCameraSeries);
-  $("#showSuggestionBtn").addEventListener("click", () => openReview(0));
+  $("#showSuggestionBtn").addEventListener("click", () => {
+    const firstReady = batchItems.findIndex((item) => item.visionReady && !item.approved);
+    if (firstReady >= 0) openReview(firstReady);
+  });
+  $("#addToSelectedBtn")?.addEventListener("click", () => $("#sameGarmentInput").click());
 
   // Granskning
   $("#useSuggestionBtn").addEventListener("click", approveCurrent);

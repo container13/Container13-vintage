@@ -125,7 +125,7 @@ export default {
 
     try {
       const result = JSON.parse(outputText);
-      return json({ result }, 200, origin);
+      return json({ result, usage: data.usage || null, model: data.model || env.OPENAI_MODEL || "" }, 200, origin);
     } catch {
       return json({ error: "AI-svaret kunde inte läsas." }, 502, origin);
     }

@@ -113,7 +113,7 @@
           "Accept": "application/json"
         },
         cache: "no-store",
-        body: JSON.stringify({ image: images[0], locale: "sv-SE" }),
+        body: JSON.stringify({ images, locale: "sv-SE" }),
         signal: controller.signal
       });
 
@@ -133,7 +133,11 @@
       }
 
       try {
-        return normalize(payload);
+        return {
+          result: normalize(payload.result || payload.product || payload),
+          usage: payload.usage || null,
+          model: payload.model || ""
+        };
       } catch (error) {
         console.error("[CCC Vision] Kunde inte tolka AI-svaret", error, payload);
         throw makeVisionError("AI-svaret hade oväntat format.", "AI_BAD_RESPONSE", error?.message || String(error), response.status);

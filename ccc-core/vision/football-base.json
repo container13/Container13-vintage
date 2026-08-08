@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "name": "CCC Football Base Knowledge",
+  "startsFromYear": 1986,
+  "policy": "Klubbar kvalificeras permanent om de någon gång spelat i landets högsta serie från 1986 och framåt. Landslag ingår separat. Äldre kunskap får läggas till och tas inte bort.",
+  "clubs": [
+    {"id":"arsenal","name":"Arsenal","country":"England","qualified":true,"source":"seed"},
+    {"id":"liverpool","name":"Liverpool","country":"England","qualified":true,"source":"seed"},
+    {"id":"manchester-united","name":"Manchester United","country":"England","qualified":true,"source":"seed"},
+    {"id":"aik","name":"AIK","country":"Sverige","qualified":true,"source":"seed"},
+    {"id":"djurgarden","name":"Djurgårdens IF","country":"Sverige","qualified":true,"source":"seed"}
+  ],
+  "nationalTeams": [
+    {"id":"sweden","name":"Sverige","country":"Sverige","source":"seed"},
+    {"id":"brazil","name":"Brasilien","country":"Brasilien","source":"seed"},
+    {"id":"england","name":"England","country":"England","source":"seed"},
+    {"id":"italy","name":"Italien","country":"Italien","source":"seed"}
+  ]
+}
