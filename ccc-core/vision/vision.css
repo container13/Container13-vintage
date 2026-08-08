@@ -1492,3 +1492,60 @@ body{min-height:100dvh}
 #captureCard .capture-heading-tools-only:has(#imageCount[hidden]) {
   display: none;
 }
+
+
+/* v2.5.2: tre tydliga startkort med visuell hierarki. */
+#captureCard .vision-action-card {
+  width: 100%;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 7px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  color: var(--text);
+  background: linear-gradient(105deg, color-mix(in srgb, var(--gold) 4%, var(--surface-2)), var(--surface) 74%);
+  box-shadow: 0 8px 24px rgba(31,42,68,.05);
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+  transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease, background .14s ease;
+}
+:root[data-theme="dark"] #captureCard .vision-action-card {
+  background: linear-gradient(105deg, #17202f, var(--surface) 74%);
+}
+#captureCard .vision-action-card:active { transform: scale(.992); }
+#captureCard .vision-action-card:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--gold) 28%, transparent);
+  outline-offset: 2px;
+}
+#captureCard .vision-action-card--gallery {
+  min-height: 112px;
+}
+#captureCard .vision-action-card--back {
+  min-height: 72px;
+  border-color: color-mix(in srgb, var(--border) 72%, transparent);
+  background: color-mix(in srgb, var(--surface-2) 72%, transparent);
+  box-shadow: none;
+  color: var(--muted);
+}
+#captureCard .vision-action-card--back:hover,
+#captureCard .vision-action-card--back:focus-visible { color: var(--text); }
+#captureCard .vision-action-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+#captureCard .vision-action-icon--back {
+  font-size: 1.75rem;
+  font-weight: 900;
+}
+#captureCard .vision-action-card strong {
+  font-size: 1rem;
+  line-height: 1.2;
+}
+@media (max-width:480px) {
+  #captureCard .vision-action-card--gallery { min-height: 96px; }
+  #captureCard .vision-action-card--back { min-height: 60px; }
+  #captureCard .vision-action-icon { font-size: 1.8rem; }
+  #captureCard .vision-action-icon--back { font-size: 1.55rem; }
+}

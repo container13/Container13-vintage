@@ -5,10 +5,11 @@ Syfte
 -----
 Vision hjälper användaren från foto till ett färdigt, redigerbart produktförslag. Arbetsflödet prioriteras före AI-tekniken.
 
-Aktuellt – v2.5.1
+Aktuellt – v2.5.2
 ------------------
 - Dashboard öppnar Vision direkt.
-- Första Vision-skärmen har tre tydliga vägar: stor fotoyta, Välj bilder från kamerarullen och ← Tillbaka.
+- Första Vision-skärmen har tre tydliga kort: Ta ett foto, Välj från kamerarullen och Tillbaka.
+- Ta ett foto är största/primära kortet. Kamerarullen använder samma designspråk men lägre visuell tyngd. Tillbaka är ett mindre navigationskort.
 - Den stora fotoytan är själva kameraknappen; ingen separat Börja fota-knapp används.
 - ← Tillbaka går direkt till dashboard om inget arbete påbörjats. Finns bilder i aktuell omgång frågar CCC innan Vision lämnas.
 - Reset-pilen visas först när det faktiskt finns ett påbörjat Vision-utkast och använder enkel text: Börja om.
