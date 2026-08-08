@@ -208,3 +208,9 @@ v2.7.15 DEBUG
 - Tillfällig kostnadsdiagnostik visas direkt på huvudraden i kostnadsrutan.
 - Visar usage JA/NEJ, input/output/total tokens och modell efter nästa AI-analys.
 - Ingen AI-, Worker- eller flödeslogik ändrad.
+
+
+v2.7.16
+- Fixar kostnadsrutan för kameraflödet: om AI hinner bli klar innan "Klar" trycks uppdateras kostnaden när plagget läggs till i sessionen.
+- Kostnadsrutan visar åter Session, Idag och Senaste AI-analys i stället för DEBUG-raden.
+- Senaste analysen visar input/output-token för verifiering medan 6 decimaler behålls under kostnadstestet.

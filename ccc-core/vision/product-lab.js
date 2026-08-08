@@ -329,6 +329,10 @@
     stagedItem = null;
     stagedCameraFile = null;
     updateBatchStrip();
+    // Kamerans AI-analys kan bli färdig redan innan användaren trycker Klar.
+    // När plagget först nu läggs i batchItems måste kostnadsrutan uppdateras igen,
+    // annars står den kvar på "väntar på AI-analys" trots att usage redan finns.
+    refreshCostUi();
     return true;
   }
 
@@ -681,44 +685,23 @@
     const visible = visionSettings().showCost;
     button.hidden = !visible;
     if (!visible) { $("#visionCostPopover")?.setAttribute("hidden", ""); return; }
-    const sessionSek = batchItems.reduce((sum, item) => sum + Number(item.aiCostSek || 0), 0);
-    const latestAiItem = [...batchItems].reverse().find((item) => item.aiUsage || item.aiModel || item.visionReady);
 
-    // v2.7.15 TEMP DEBUG: visa tokenkedjan direkt på huvudraden så den inte kan missas.
+    const aiItems = batchItems.filter((item) => item.aiUsage || item.aiModel || Number(item.aiCostSek || 0) > 0);
+    const latestAiItem = aiItems.length ? aiItems[aiItems.length - 1] : null;
+    const sessionSek = aiItems.reduce((sum, item) => sum + Number(item.aiCostSek || 0), 0);
+
     const sessionCostEl = $("#visionSessionCost");
-    if (sessionCostEl) {
-      if (!latestAiItem) {
-        sessionCostEl.textContent = `DEBUG v2.7.15 · väntar på AI-analys`;
-      } else {
-        const u = latestAiItem.aiUsage || {};
-        const input = u.input_tokens ?? u.inputTokens ?? u.prompt_tokens ?? u.promptTokens ?? null;
-        const output = u.output_tokens ?? u.outputTokens ?? u.completion_tokens ?? u.completionTokens ?? null;
-        const total = u.total_tokens ?? u.totalTokens ?? null;
-        const model = latestAiItem.aiModel || "saknas";
-        sessionCostEl.textContent = `DEBUG v2.7.15 · usage ${latestAiItem.aiUsage ? "JA" : "NEJ"} · input ${input ?? "?"} · output ${output ?? "?"}${total != null ? ` · total ${total}` : ""} · modell ${model} · ${formatSek(sessionSek)}`;
-      }
-    }
+    if (sessionCostEl) sessionCostEl.textContent = `Session: ${formatSek(sessionSek)} · ${aiItems.length} analyser`;
 
-    const debug = $("#visionCostDebug");
-    if (debug) {
+    const details = $("#visionCostDebug");
+    if (details) {
       if (!latestAiItem) {
-        debug.textContent = "Diagnostik: väntar på nästa AI-analys.";
+        details.textContent = "Ingen AI-analys registrerad i den här sessionen ännu.";
       } else {
         const usage = latestAiItem.aiUsage || {};
-        const inputTokens = usage.input_tokens ?? usage.inputTokens ?? usage.prompt_tokens ?? usage.promptTokens ?? null;
-        const outputTokens = usage.output_tokens ?? usage.outputTokens ?? usage.completion_tokens ?? usage.completionTokens ?? null;
-        const totalTokens = usage.total_tokens ?? usage.totalTokens ?? null;
-        const model = latestAiItem.aiModel || "modell saknas";
-        const usageState = latestAiItem.aiUsage ? "usage mottagen" : "usage saknas";
-        debug.textContent = `Diagnostik: ${usageState} · modell ${model} · input ${inputTokens ?? "?"} · output ${outputTokens ?? "?"}${totalTokens != null ? ` · total ${totalTokens}` : ""}`;
-        console.info("[CCC Vision] Kostnadsdiagnostik", {
-          model,
-          usage: latestAiItem.aiUsage || null,
-          inputTokens,
-          outputTokens,
-          totalTokens,
-          estimatedSek: Number(latestAiItem.aiCostSek || 0)
-        });
+        const inputTokens = usage.input_tokens ?? usage.inputTokens ?? usage.prompt_tokens ?? usage.promptTokens ?? 0;
+        const outputTokens = usage.output_tokens ?? usage.outputTokens ?? usage.completion_tokens ?? usage.completionTokens ?? 0;
+        details.textContent = `Senaste: ${formatSek(latestAiItem.aiCostSek || 0)} · input ${inputTokens} · output ${outputTokens}`;
       }
     }
 
