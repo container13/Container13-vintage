@@ -2400,3 +2400,21 @@ body{min-height:100dvh}
   .app-header .icon-button .icon,.app-header .icon-button svg{width:19px!important;height:19px!important}
   .app-header .ccc-header-back svg{width:18px!important;height:18px!important}
 }
+
+
+/* v2.7.9 – renare miniatyrhjälp + långsam analys utan för tidig timeout */
+.batch-help {
+  margin: 10px 0 6px;
+  text-align: center;
+  font-size: .86rem;
+  opacity: .72;
+}
+.analysis-slow-note {
+  margin: 4px 0 8px;
+  text-align: center;
+  font-size: .82rem;
+  opacity: .78;
+}
+
+
+/* v2.7.10 – AI arbetar tyst i bakgrunden; användaren kan redigera direkt under analys. */

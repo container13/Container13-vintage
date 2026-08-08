@@ -178,3 +178,18 @@ v2.7.7
 - Återställde start-/arbetsytans layout efter att imageCount-elementet tagits bort; CSS använder nu batchStrip som verklig tillståndskälla.
 - Gjorde headerns tre mobilikoner mindre så bakåt, tema och profil ryms utan att trycka sönder helheten.
 - Behåller stoppljus, klickbara miniatyrer och bakåtnavigering.
+
+
+v2.7.9
+- Dubbel text under miniatyrer ersatt med gemensam hjälptext ovanför.
+- AI-timeout höjd från 45 till 90 sekunder; inga automatiska omförsök.
+- Efter 15 sekunder visas diskret information om att analysen tar längre tid medan samma anrop fortsätter.
+
+
+v2.7.10
+- Tog bort texten om att analysen tar längre tid; stoppljuset är enda normala statusindikatorn.
+- AI-timeout ligger kvar på 90 sekunder och inget automatiskt dubbelanrop görs.
+- Miniatyrer går nu att öppna även medan AI analyserar.
+- Under pågående analys öppnas manuell redigering direkt så användaren kan arbeta vidare utan att vänta.
+- Användarens manuella ändringar sparas separat och skrivs inte över när AI-resultatet kommer tillbaka.
+- Tillbaka från manuell redigering under pågående analys går tillbaka till arbetsytan utan att avbryta analysen.

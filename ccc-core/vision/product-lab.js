@@ -104,7 +104,7 @@
           item.visionResult = aiResponse.result || aiResponse;
           item.aiUsage = aiResponse.usage || null;
           item.visionReady = true;
-          window.CCC_VISION_KNOWLEDGE?.metric?.({ type: "ai_analysis", itemId: item.id, usage: item.aiUsage, model: aiResponse.model || "" }).catch(() => {});
+                window.CCC_VISION_KNOWLEDGE?.metric?.({ type: "ai_analysis", itemId: item.id, usage: item.aiUsage, model: aiResponse.model || "" }).catch(() => {});
           updateBatchStrip();
           console.info("[CCC Vision] AI-analys klar", { itemId: item.id, usage: item.aiUsage });
           return item.visionResult;
@@ -114,14 +114,14 @@
           item.analysisErrorCode = error?.code || "AI_UNKNOWN";
           item.analysisHttpStatus = Number(error?.status) || 0;
           item.analysisMode = "demo";
-        }
+              }
       }
 
       // Säkert demoläge tills AI-endpointen är ansluten, eller om testanropet misslyckas.
       await new Promise((resolve) => setTimeout(resolve, 650 + Math.floor(Math.random() * 450)));
       item.visionResult = window.CCC_VISION_DEMOS?.[item.demoKey] || window.CCC_VISION_DEMO;
       item.visionReady = true;
-      updateBatchStrip();
+        updateBatchStrip();
       return item.visionResult;
     })();
     return item.analysisPromise;
@@ -168,18 +168,20 @@
       state.className = `thumb-status ${item.visionReady ? "is-ready" : "is-working"}`;
       state.textContent = item.visionReady ? "✓" : "";
       state.setAttribute("aria-hidden", "true");
-      wrap.addEventListener("click", (event) => {
-        const wasSelected = index === currentIndex;
+      wrap.addEventListener("click", () => {
         currentIndex = index;
         updateBatchStrip();
-        // Ett andra tryck på en redan markerad, färdiganalyserad miniatyr öppnar just dess förslag.
-        // Första trycket markerar plagget så att användaren fortfarande kan komplettera det med fler bilder.
-        if (wasSelected && item.visionReady && event.detail > 0) openReview(index);
+        // Miniatyren är alltid användbar. Är AI klar visas förslaget.
+        // Pågår analysen öppnas manuell redigering direkt utan att stoppa bakgrundsanalysen.
+        if (item.visionReady) openReview(index);
+        else editCurrent(true);
       });
       wrap.append(img, state);
       strip.appendChild(wrap);
     });
     strip.hidden = batchItems.length === 0;
+    const help = $("#batchHelp");
+    if (help) help.hidden = batchItems.length === 0;
     updateWorkspaceState();
   }
 
@@ -367,20 +369,29 @@
     moveToNextItem();
   }
 
-  function populateFormFromItem() {
+  function populateFormFromItem(allowWhileAnalyzing = false) {
     const item = currentItem();
-    const fields = item?.editedFields || currentDemo().fields;
-    fieldIds.forEach((id) => { if (fields[id] !== undefined) $("#" + id).value = fields[id]; });
+    if (!item) return;
+    const aiFields = item?.visionResult?.fields || {};
+    const fields = item?.editedFields || (item.visionReady ? aiFields : {});
+    fieldIds.forEach((id) => {
+      $("#" + id).value = fields[id] !== undefined ? fields[id] : "";
+    });
     $("#editThumbnail").src = item.previewUrl;
     $("#editThumbnail").hidden = false;
-    $("#editContextTitle").textContent = currentDemo().summaryTitle;
+    $("#editContextTitle").textContent = item.visionReady
+      ? (item.visionResult?.summaryTitle || "Redigera plagg")
+      : "Redigera medan CCC arbetar";
+    if (allowWhileAnalyzing && !item.visionReady && !item.editedFields) {
+      item.editedFields = Object.fromEntries(fieldIds.map((id) => [id, $("#" + id).value]));
+    }
     updateCounters();
     updateTextPreviews();
     updateSmartSuggestions();
   }
 
-  function editCurrent() {
-    populateFormFromItem();
+  function editCurrent(allowWhileAnalyzing = false) {
+    populateFormFromItem(allowWhileAnalyzing);
     showStage("editCard");
   }
 
@@ -592,7 +603,9 @@
       return;
     }
     if (!$("editCard")?.hidden) {
-      openReview(currentIndex);
+      const item = currentItem();
+      if (item?.visionReady) openReview(currentIndex);
+      else { showStage("captureCard"); updateBatchStrip(); }
       return;
     }
     if (!$("previewCard")?.hidden) {
@@ -653,7 +666,13 @@
   $$('[data-demo]').forEach((button) => button.addEventListener("click", () => chooseDemo(button.dataset.demo)));
 
   fieldIds.forEach((id) => {
-    $("#" + id).addEventListener("input", () => { updateCounters(); updateTextPreviews(); scheduleSave(); });
+    $("#" + id).addEventListener("input", () => {
+      const item = currentItem();
+      if (item) item.editedFields = Object.fromEntries(fieldIds.map((fieldId) => [fieldId, $("#" + fieldId).value]));
+      updateCounters();
+      updateTextPreviews();
+      scheduleSave();
+    });
   });
 
   // Gamla preview-knappar finns kvar i HTML men används inte i fotograferingsflödet.
