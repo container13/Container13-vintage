@@ -193,3 +193,12 @@ v2.7.10
 - Under pågående analys öppnas manuell redigering direkt så användaren kan arbeta vidare utan att vänta.
 - Användarens manuella ändringar sparas separat och skrivs inte över när AI-resultatet kommer tillbaka.
 - Tillbaka från manuell redigering under pågående analys går tillbaka till arbetsytan utan att avbryta analysen.
+
+
+v2.7.11
+- Vision använder nu explicit intern vy-state i stället för att gissa aktuell vy via hidden-element.
+- Headerns Tillbaka fungerar från första Vision-vyn: start → Dashboard.
+- Navigationskedjan är nu start → arbetsyta → förslag → redigering, med konsekvent ett steg tillbaka utan att börja om.
+- Från arbetsytan går Tillbaka till Vision-starten utan att radera den pågående sessionen.
+- Om en pågående session finns när man går tillbaka till Vision-starten visas "Fortsätt pågående arbete" så sessionen kan återupptas utan dataförlust.
+- Strukturen är avsedd som pilot för samma navigationsmönster i kommande CCC-moduler.

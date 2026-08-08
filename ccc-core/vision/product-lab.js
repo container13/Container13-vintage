@@ -11,6 +11,8 @@
   let currentIndex = 0;
   let trashStack = [];
   let saveTimer;
+  let visionView = "start";
+  let editReturnView = "suggestion";
 
 
   // CCC gemensamt skal: samma tema och profilmeny som dashboarden
@@ -57,13 +59,47 @@
     return window.CCC_VISION_DEMOS?.[key] || window.CCC_VISION_DEMO;
   };
 
-  function showStage(stageId) {
+  function showStage(stageId, viewName = null) {
     ["captureCard", "visionCard", "editCard", "previewCard", "seriesDoneCard"].forEach((id) => {
       const card = $("#" + id);
       if (!card) return;
       card.hidden = id !== stageId;
       card.classList.toggle("is-active", id === stageId);
     });
+    if (viewName) visionView = viewName;
+  }
+
+  function applyCaptureMode() {
+    if ($("#captureCard")?.hidden) return;
+    const hasSession = batchItems.length > 0;
+    const startMode = visionView === "start";
+    const resume = $("#resumeSessionBtn");
+    const strip = $("#batchStrip");
+    const help = $("#batchHelp");
+    const addDetail = $("#addToSelectedBtn");
+    const review = $("#showSuggestionBtn");
+
+    if (resume) resume.hidden = !(startMode && hasSession);
+    if (startMode) {
+      if (strip) strip.hidden = true;
+      if (help) help.hidden = true;
+      if (addDetail) addDetail.hidden = true;
+      if (review) review.hidden = true;
+    }
+    const cameraTitle = $("#startCameraBtn .camera-content strong");
+    if (cameraTitle) cameraTitle.textContent = startMode ? "Ta ett foto" : (hasSession ? "Fota nästa plagg" : "Ta ett foto");
+  }
+
+  function showVisionStart() {
+    showStage("captureCard", "start");
+    updateBatchStrip();
+    applyCaptureMode();
+  }
+
+  function showWorkspace() {
+    showStage("captureCard", batchItems.length ? "workspace" : "start");
+    updateBatchStrip();
+    applyCaptureMode();
   }
 
   function fileUrl(file) {
@@ -183,6 +219,7 @@
     const help = $("#batchHelp");
     if (help) help.hidden = batchItems.length === 0;
     updateWorkspaceState();
+    applyCaptureMode();
   }
 
   function resetCaptureVisual() {
@@ -279,7 +316,7 @@
     closeCamera();
     resetCaptureVisual();
     updateBatchStrip();
-    showStage("captureCard");
+    showWorkspace();
   }
 
   function handleFallbackCamera(fileList) {
@@ -288,7 +325,7 @@
     files.forEach((file) => batchItems.push(createBatchItem(file, batchItems.length)));
     updateBatchStrip();
     resetCaptureVisual();
-    showStage("captureCard");
+    showWorkspace();
   }
 
   function handleGalleryFiles(fileList) {
@@ -298,13 +335,13 @@
     updateBatchStrip();
     resetCaptureVisual();
     // Bildväljaren är nu stängd: CCC arbetar i bakgrunden medan användaren kan fortsätta.
-    showStage("captureCard");
+    showWorkspace();
     $("#galleryInput").value = "";
   }
 
   async function openReview(index) {
     if (!batchItems.length) {
-      showStage("captureCard");
+      showVisionStart();
       return;
     }
     currentIndex = Math.max(0, Math.min(index, batchItems.length - 1));
@@ -333,7 +370,7 @@
       : `${modeNote} Vill du visa mer av just det här plagget kan du lägga till fler bilder.`;
     $("#correctionBox").hidden = true;
     updateBatchStrip();
-    showStage("visionCard");
+    showStage("visionCard", "suggestion");
   }
 
   function moveToNextItem() {
@@ -391,8 +428,9 @@
   }
 
   function editCurrent(allowWhileAnalyzing = false) {
+    editReturnView = allowWhileAnalyzing && !currentItem()?.visionReady ? "workspace" : "suggestion";
     populateFormFromItem(allowWhileAnalyzing);
-    showStage("editCard");
+    showStage("editCard", "edit");
   }
 
   function saveEditedAndNext() {
@@ -431,7 +469,7 @@
     showUndoToast();
     updateBatchStrip();
     if (!batchItems.length) {
-      showStage("captureCard");
+      showVisionStart();
       return;
     }
     openReview(Math.min(currentIndex, batchItems.length - 1));
@@ -457,7 +495,7 @@
     const approved = batchItems.filter((item) => item.approved).length;
     $("#seriesDoneText").textContent = `${approved} ${approved === 1 ? "plagg är" : "plagg är"} ${approved === 1 ? "klart" : "klara"} att publiceras.`;
     saveBatchMetadata();
-    showStage("seriesDoneCard");
+    showStage("seriesDoneCard", "done");
   }
 
   function newSeries() {
@@ -471,7 +509,7 @@
     localStorage.removeItem("ccc-vision-batch-meta");
     updateBatchStrip();
     resetCaptureVisual();
-    showStage("captureCard");
+    showVisionStart();
   }
 
   function saveBatchMetadata() {
@@ -597,35 +635,32 @@
   }
 
   function goBackFromVision() {
-    if (!$("visionCard")?.hidden) {
-      showStage("captureCard");
-      updateBatchStrip();
-      return;
+    switch (visionView) {
+      case "edit":
+        if (editReturnView === "workspace") showWorkspace();
+        else openReview(currentIndex);
+        return;
+      case "suggestion":
+        showWorkspace();
+        return;
+      case "done":
+        showWorkspace();
+        return;
+      case "workspace":
+        // Ett steg bakåt inom modulen. Sessionen ligger kvar i minnet och kan återupptas.
+        showVisionStart();
+        return;
+      case "start":
+      default:
+        window.location.assign("../dashboard/index.html");
     }
-    if (!$("editCard")?.hidden) {
-      const item = currentItem();
-      if (item?.visionReady) openReview(currentIndex);
-      else { showStage("captureCard"); updateBatchStrip(); }
-      return;
-    }
-    if (!$("previewCard")?.hidden) {
-      showStage("editCard");
-      return;
-    }
-    if (!$("seriesDoneCard")?.hidden) {
-      showStage("captureCard");
-      updateBatchStrip();
-      return;
-    }
-    // Från Vision-start/arbetsytan går Tillbaka till Dashboard.
-    // Pågående lokala bilder raderas inte av bakåtknappen.
-    window.location.href = "../dashboard/index.html";
   }
 
   // Kamera / fotograferingsflöde
   $("#startCameraBtn").addEventListener("click", startCamera);
   $("#galleryBtn").addEventListener("click", () => $("#galleryInput").click());
   $("#headerBackBtn")?.addEventListener("click", goBackFromVision);
+  $("#resumeSessionBtn")?.addEventListener("click", showWorkspace);
   $("#galleryInput").addEventListener("change", (event) => handleGalleryFiles(event.target.files));
   $("#cameraFallbackInput").addEventListener("change", (event) => handleFallbackCamera(event.target.files));
   $("#closeCameraBtn").addEventListener("click", closeCamera);
@@ -676,11 +711,10 @@
   });
 
   // Gamla preview-knappar finns kvar i HTML men används inte i fotograferingsflödet.
-  if ($("#backToEditBtn")) $("#backToEditBtn").addEventListener("click", () => showStage("editCard"));
+  if ($("#backToEditBtn")) $("#backToEditBtn").addEventListener("click", () => showStage("editCard", "edit"));
   if ($("#approveBtn")) $("#approveBtn").addEventListener("click", finishBatch);
 
-  showStage("captureCard");
-  updateBatchStrip();
+  showVisionStart();
   updateCounters();
   updateTextPreviews();
 })();

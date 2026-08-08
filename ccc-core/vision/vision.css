@@ -2418,3 +2418,9 @@ body{min-height:100dvh}
 
 
 /* v2.7.10 – AI arbetar tyst i bakgrunden; användaren kan redigera direkt under analys. */
+
+/* v2.7.11 – tydlig modulnavigation med explicit vy-state. */
+.vision-resume-button{
+  width:100%;
+  margin-top:8px;
+}
