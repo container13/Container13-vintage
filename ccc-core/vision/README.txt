@@ -154,3 +154,12 @@ v2.7.4
 - Fullt grönt betyder alltid att analysen faktiskt är klar.
 - När analysen blir klar pulserar den gröna punkten tre gånger och visar därefter ett fast grönt ✓.
 - Ingen falsk 0–100 %-progress visas.
+
+
+v2.7.5
+- Fixade stoppljuset: v2.7.4-blocket hade råkat skrivas med bokstavliga \n-tecken och CSS-reglerna kunde därför inte tolkas korrekt.
+- Statuspunkten startar röd och morfar nu steglöst via orange, gul och gulgrön medan analysen pågår.
+- Fullt grönt används först när AI-resultatet verkligen är klart; då pulserar punkten tre gånger och visar ✓.
+- Huvudknappen används inte längre som statusrad: den heter Visa förslag även medan den är grå/inaktiv.
+- Om andra plagg redan är klara kan knappen i stället visa Granska X klara plagg.
+- Ingen ändring av AI- eller Cloudflare-logik.

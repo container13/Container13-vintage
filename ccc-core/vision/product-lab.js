@@ -142,12 +142,12 @@
       review.disabled = ready === 0;
       const selected = batchItems[currentIndex];
       const selectedReady = !!selected?.visionReady;
-      if (ready === 0) {
-        review.textContent = "CCC analyserar…";
-      } else if (selectedReady) {
-        review.textContent = "Visa förslag för markerat plagg";
-      } else {
+      if (selectedReady) {
+        review.textContent = "Visa förslag";
+      } else if (ready > 0) {
         review.textContent = `Granska ${ready} ${ready === 1 ? "klart plagg" : "klara plagg"}`;
+      } else {
+        review.textContent = "Visa förslag";
       }
     }
   }

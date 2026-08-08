@@ -2340,4 +2340,48 @@ body{min-height:100dvh}
   outline:2px solid var(--gold);
   outline-offset:3px;
 }
-\n\n/* v2.7.4 – enkelt stoppljus på varje plagg.\n   Färgen är en aktivitetsindikator, inte en påhittad procentmätare. */\n.batch-thumb .thumb-status{\n  left:auto;\n  right:5px;\n  top:5px;\n  bottom:auto;\n  width:16px;\n  min-width:16px;\n  height:16px;\n  padding:0;\n  border:2px solid rgba(255,255,255,.92);\n  border-radius:50%;\n  box-shadow:0 1px 5px rgba(0,0,0,.28);\n  font-size:10px;\n  line-height:1;\n  color:#fff;\n  z-index:2;\n}\n.batch-thumb .thumb-status.is-working{\n  background:#d92d20;\n  animation:cccTrafficMorph 7s cubic-bezier(.35,.05,.35,1) forwards;\n}\n@keyframes cccTrafficMorph{\n  0%{background:#d92d20}\n  24%{background:#ef6c24}\n  50%{background:#f4b52b}\n  72%{background:#e4d73c}\n  88%{background:#a9c94b}\n  100%{background:#8fbe4f}\n}\n.batch-thumb .thumb-status.is-ready{\n  background:#25a65a;\n  animation:cccReadyPulse .55s ease-in-out 3;\n}\n@keyframes cccReadyPulse{\n  0%,100%{transform:scale(1);box-shadow:0 1px 5px rgba(0,0,0,.28)}\n  50%{transform:scale(1.24);box-shadow:0 0 0 5px rgba(37,166,90,.18)}\n}\n@media (prefers-reduced-motion:reduce){\n  .batch-thumb .thumb-status.is-working{animation:none;background:#e4d73c}\n  .batch-thumb .thumb-status.is-ready{animation:none}\n}\n
+
+/* v2.7.5 – steglöst stoppljus på varje plagg.
+   Färgen visar aktivitet, inte en påhittad procentmätare. */
+.batch-thumb .thumb-status{
+  left:auto;
+  right:5px;
+  top:5px;
+  bottom:auto;
+  width:16px;
+  min-width:16px;
+  height:16px;
+  padding:0;
+  border:2px solid rgba(255,255,255,.92);
+  border-radius:50%;
+  box-shadow:0 1px 5px rgba(0,0,0,.28);
+  font-size:10px;
+  line-height:1;
+  color:#fff;
+  z-index:2;
+}
+.batch-thumb .thumb-status.is-working{
+  background:#d92d20;
+  animation:cccTrafficMorph 8s linear forwards;
+}
+@keyframes cccTrafficMorph{
+  0%{background-color:#d92d20}
+  20%{background-color:#e95420}
+  40%{background-color:#ef8b22}
+  60%{background-color:#f2c32b}
+  78%{background-color:#d8d93b}
+  92%{background-color:#a8ca48}
+  100%{background-color:#8ebc4d}
+}
+.batch-thumb .thumb-status.is-ready{
+  background:#25a65a;
+  animation:cccReadyPulse .55s ease-in-out 3;
+}
+@keyframes cccReadyPulse{
+  0%,100%{transform:scale(1);box-shadow:0 1px 5px rgba(0,0,0,.28)}
+  50%{transform:scale(1.24);box-shadow:0 0 0 5px rgba(37,166,90,.18)}
+}
+@media (prefers-reduced-motion:reduce){
+  .batch-thumb .thumb-status.is-working{animation:none;background:#ef8b22}
+  .batch-thumb .thumb-status.is-ready{animation:none}
+}
