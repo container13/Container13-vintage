@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
+  <rect width="800" height="800" fill="#151516"/>
+  <path d="M270 135h260l-35 520-95 0-20-285-20 285-95 0z" fill="#315b82" stroke="#d8caa8" stroke-width="12"/>
+  <path d="M275 145h250v120H275z" fill="#3f6c95"/>
+  <path d="M400 145v510" stroke="#d8caa8" stroke-width="8"/>
+  <path d="M300 190q45 65 90 0M500 190q-45 65-90 0" fill="none" stroke="#d8caa8" stroke-width="8"/>
+  <rect x="455" y="150" width="65" height="45" rx="4" fill="#b04a38"/>
+  <text x="400" y="720" text-anchor="middle" fill="#f3d28a" font-family="Arial,sans-serif" font-size="34" font-weight="700">LEVI'S 501 · DEMOBILD</text>
+</svg>

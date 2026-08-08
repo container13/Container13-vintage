@@ -458,7 +458,7 @@
   function chooseDemo(key) {
     const demo = window.CCC_VISION_DEMOS?.[key];
     if (!demo) return;
-    const svgPath = `demo/${key}.svg`;
+    const svgPath = `${key}.svg`;
     fetch(svgPath).then((r) => r.blob()).then((blob) => {
       const file = new File([blob], `${key}.svg`, { type: "image/svg+xml" });
       const item = createBatchItem(file, batchItems.length);
