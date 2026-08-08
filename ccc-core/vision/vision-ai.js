@@ -44,12 +44,39 @@
   function normalize(result) {
     if (!result || typeof result !== "object") throw new Error("Vision gav inget användbart svar.");
 
-    // Worker v1 returnerar { ok: true, product: {...} }.
+    // Stöd både äldre Worker-schema och CCC Vision v2.7+-schemat.
     const product = result.product && typeof result.product === "object" ? result.product : result;
-    const clean = (value, fallback = "") => typeof value === "string" ? value.trim() : fallback;
-    const price = Number(product.suggested_price_sek);
-    const confidenceMap = { high: "Säkerheten är hög", medium: "Ganska säker", low: "Lite osäker" };
+    const clean = (value, fallback = "") => typeof value === "string" && value.trim() ? value.trim() : fallback;
 
+    // Nya Workern returnerar redan samma struktur som UI:t använder.
+    if (product.summaryTitle || product.fields) {
+      const fields = product.fields && typeof product.fields === "object" ? product.fields : {};
+      const rawPrice = Number(product.priceSuggestion);
+      return {
+        label: clean(product.label, "AI-analys"),
+        summaryTitle: clean(product.summaryTitle, clean(fields.title, "Plagg")),
+        summaryBrand: clean(product.summaryBrand, clean(fields.brand, "Märke ej säkert")),
+        summarySeason: clean(product.summarySeason, clean(fields.season, "År/säsong ej säkert")),
+        confidence: clean(product.confidence, "Lite osäker"),
+        priceSuggestion: Number.isFinite(rawPrice) ? rawPrice : 0,
+        fact: clean(product.fact),
+        fields: {
+          title: clean(fields.title, clean(product.summaryTitle)),
+          category: clean(fields.category),
+          brand: clean(fields.brand, clean(product.summaryBrand)),
+          season: clean(fields.season, clean(product.summarySeason)),
+          price: clean(fields.price),
+          manufacturer: clean(fields.manufacturer),
+          size: clean(fields.size),
+          color: clean(fields.color),
+          description: clean(fields.description)
+        }
+      };
+    }
+
+    // Bakåtkompatibilitet med den första Worker-versionen.
+    const price = Number(product.suggested_price_sek);
+    const confidenceMap = { high: "Säker", medium: "Ganska säker", low: "Lite osäker" };
     return {
       label: "AI-analys",
       summaryTitle: clean(product.title, "Plagg"),

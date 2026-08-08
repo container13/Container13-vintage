@@ -124,3 +124,9 @@ v2.6.2 – diagnostik för riktig AI-koppling
 - AI-anrop använder cache: no-store och Accept: application/json.
 - Timeout, nätverksfel, HTTP-fel och felaktigt svar skiljs åt.
 - Demo finns kvar som fallback så flödet inte låser sig under utveckling.
+
+
+v2.7.1
+- Fixad frontend-mappning för nya Worker-svaret (summaryTitle/summaryBrand/summarySeason/fields).
+- Behåller bakåtkompatibilitet med äldre Worker-schema.
+- Ingen ändring av Vision-flödet i denna patch.
