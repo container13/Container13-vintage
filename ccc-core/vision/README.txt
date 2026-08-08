@@ -5,7 +5,7 @@ Syfte
 -----
 Vision hjälper användaren från foto till ett färdigt, redigerbart produktförslag. Arbetsflödet prioriteras före AI-tekniken.
 
-Aktuellt – v2.6.1
+Aktuellt – v2.6.2
 ------------------
 - Dashboard öppnar Vision direkt.
 - Första Vision-skärmen har tre fristående kort direkt på CCC-bakgrunden: Ta ett foto, Välj från enheten och Tillbaka.
@@ -116,3 +116,11 @@ v2.6.1 – första livekopplingen till CCC Vision API
 - Worker-svaret `{ ok, product }` översätts till CCC Visions befintliga fält utan att UI-flödet ändras.
 - Första live-testet använder en bild per plagg; stöd för extra analysbilder kan läggas tillbaka när basflödet är verifierat.
 - Bilderna är fortsatt local-first; endast en komprimerad analyskopia skickas till Workern/OpenAI.
+
+
+v2.6.2 – diagnostik för riktig AI-koppling
+- Visar nu verkligt AI-/HTTP-fel i Vision i stället för generella "AI ej ansluten".
+- Lägger tydliga console-loggar före bildförberedelse, före fetch, efter serversvar och vid fallback.
+- AI-anrop använder cache: no-store och Accept: application/json.
+- Timeout, nätverksfel, HTTP-fel och felaktigt svar skiljs åt.
+- Demo finns kvar som fallback så flödet inte låser sig under utveckling.

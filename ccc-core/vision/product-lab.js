@@ -92,17 +92,23 @@
     item.visionReady = false;
     item.analysisMode = window.CCC_VISION_AI?.configured?.() ? "ai" : "demo";
     item.analysisError = "";
+    item.analysisErrorCode = "";
+    item.analysisHttpStatus = 0;
     const files = [item.file, ...(item.extraFiles || [])].filter(Boolean).slice(0, 3);
 
     item.analysisPromise = (async () => {
       if (item.analysisMode === "ai") {
         try {
+          console.info("[CCC Vision] AI-analys startar", { itemId: item.id, files: files.length });
           item.visionResult = await window.CCC_VISION_AI.analyze(files);
           item.visionReady = true;
+          console.info("[CCC Vision] AI-analys klar", { itemId: item.id });
           return item.visionResult;
         } catch (error) {
-          console.warn("CCC Vision AI föll tillbaka till demo:", error);
+          console.error("[CCC Vision] AI-fel – demo används som fallback", error);
           item.analysisError = error?.message || "AI-analysen misslyckades.";
+          item.analysisErrorCode = error?.code || "AI_UNKNOWN";
+          item.analysisHttpStatus = Number(error?.status) || 0;
           item.analysisMode = "demo";
         }
       }
@@ -271,7 +277,15 @@
     $("#batchProgress").textContent = `${currentIndex + 1} av ${batchItems.length}`;
     $("#visionThumbnail").src = item.previewUrl;
     $("#visionThumbnail").hidden = false;
-    const modeNote = item.analysisMode === "ai" ? "CCC Vision analyserade bilden med AI." : "Testläge – AI är inte ansluten ännu.";
+    let modeNote;
+    if (item.analysisMode === "ai") {
+      modeNote = "CCC Vision analyserade bilden med AI.";
+    } else if (item.analysisError) {
+      const statusText = item.analysisHttpStatus ? ` (HTTP ${item.analysisHttpStatus})` : "";
+      modeNote = `AI-fel${statusText}: ${item.analysisError} Demo visas tills felet är löst.`;
+    } else {
+      modeNote = "Testläge – AI-endpoint är inte konfigurerad.";
+    }
     $("#visionHint").textContent = item.extraFiles.length
       ? `${item.extraFiles.length + 1} bilder används för det här plagget. ${modeNote}`
       : `${modeNote} Vill du visa mer av just det här plagget kan du lägga till fler bilder.`;

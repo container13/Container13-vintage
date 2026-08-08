@@ -72,27 +72,80 @@
     };
   }
 
+  function makeVisionError(message, code, details = "", status = 0) {
+    const error = new Error(message);
+    error.code = code;
+    error.details = details;
+    error.status = status;
+    return error;
+  }
+
   async function analyze(files) {
     if (!configured()) {
-      const error = new Error("CCC Vision AI är inte ansluten ännu.");
-      error.code = "AI_NOT_CONFIGURED";
-      throw error;
+      throw makeVisionError("AI-endpoint saknas.", "AI_NOT_CONFIGURED");
     }
+
     const imageFiles = [...(files || [])].filter(Boolean).slice(0, 3);
-    if (!imageFiles.length) throw new Error("Ingen bild att analysera.");
-    const images = await Promise.all(imageFiles.map(prepareImage));
+    if (!imageFiles.length) throw makeVisionError("Ingen bild att analysera.", "AI_NO_IMAGE");
+
+    console.info("[CCC Vision] Förbereder bild för AI", {
+      endpoint: config.endpoint,
+      files: imageFiles.length
+    });
+
+    let images;
+    try {
+      images = await Promise.all(imageFiles.map(prepareImage));
+    } catch (error) {
+      console.error("[CCC Vision] Bildförberedelse misslyckades", error);
+      throw makeVisionError("Kunde inte förbereda bilden för analys.", "AI_IMAGE_PREP", error?.message || String(error));
+    }
+
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), Number(config.timeoutMs) || 45000);
+
     try {
+      console.info("[CCC Vision] Skickar analysförfrågan", { endpoint: config.endpoint });
       const response = await fetch(config.endpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        cache: "no-store",
         body: JSON.stringify({ image: images[0], locale: "sv-SE" }),
         signal: controller.signal
       });
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(payload?.error || `Vision kunde inte analysera bilden (${response.status}).`);
-      return normalize(payload);
+
+      const raw = await response.text();
+      let payload = {};
+      try { payload = raw ? JSON.parse(raw) : {}; } catch (_) { payload = { raw }; }
+
+      console.info("[CCC Vision] Servern svarade", {
+        status: response.status,
+        ok: response.ok,
+        payload
+      });
+
+      if (!response.ok) {
+        const message = payload?.details || payload?.error || `Vision-servern svarade med HTTP ${response.status}.`;
+        throw makeVisionError(message, "AI_HTTP_ERROR", payload?.error || "", response.status);
+      }
+
+      try {
+        return normalize(payload);
+      } catch (error) {
+        console.error("[CCC Vision] Kunde inte tolka AI-svaret", error, payload);
+        throw makeVisionError("AI-svaret hade oväntat format.", "AI_BAD_RESPONSE", error?.message || String(error), response.status);
+      }
+    } catch (error) {
+      if (error?.name === "AbortError") {
+        console.error("[CCC Vision] Timeout efter", Number(config.timeoutMs) || 45000, "ms");
+        throw makeVisionError("AI-analysen tog för lång tid.", "AI_TIMEOUT");
+      }
+      if (error?.code) throw error;
+      console.error("[CCC Vision] Kunde inte nå Vision-servern", error);
+      throw makeVisionError("Kunde inte nå CCC Vision-servern.", "AI_NETWORK", error?.message || String(error));
     } finally {
       clearTimeout(timer);
     }

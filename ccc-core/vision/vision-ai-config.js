@@ -7,5 +7,6 @@ window.CCC_VISION_AI_CONFIG = {
   endpoint: "https://ccc-vision-api.mangaj73.workers.dev",
   timeoutMs: 45000,
   maxImageEdge: 1600,
-  jpegQuality: 0.84
+  jpegQuality: 0.84,
+  diagnostics: true
 };
