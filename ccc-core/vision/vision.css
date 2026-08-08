@@ -1486,10 +1486,10 @@ body{min-height:100dvh}
   background: color-mix(in srgb, var(--surface) 82%, transparent);
   outline: none;
 }
-#captureCard .capture-head-tools:has(#imageCount[hidden]) {
+#captureCard .capture-head-tools:has(#batchStrip[hidden]) {
   min-height: 0;
 }
-#captureCard .capture-heading-tools-only:has(#imageCount[hidden]) {
+#captureCard .capture-heading-tools-only:has(#batchStrip[hidden]) {
   display: none;
 }
 
@@ -1552,42 +1552,42 @@ body{min-height:100dvh}
 
 /* v2.5.3: tydligare storlekshierarki på Vision-starten.
    Foto är störst, kamerarullen nästa, Tillbaka minst. */
-#captureCard:has(#imageCount[hidden]) {
+#captureCard:has(#batchStrip[hidden]) {
   grid-template-rows: auto minmax(150px, 1fr) 104px 62px auto;
 }
-#captureCard:has(#imageCount[hidden]) .main-camera {
+#captureCard:has(#batchStrip[hidden]) .main-camera {
   min-height: 150px;
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--gallery {
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery {
   min-height: 0;
   height: 104px;
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--back {
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back {
   min-height: 0;
   height: 62px;
 }
 @media (min-width: 481px) {
-  #captureCard:has(#imageCount[hidden]) {
+  #captureCard:has(#batchStrip[hidden]) {
     grid-template-rows: auto minmax(190px, 1fr) 116px 70px auto;
   }
-  #captureCard:has(#imageCount[hidden]) .vision-action-card--gallery { height: 116px; }
-  #captureCard:has(#imageCount[hidden]) .vision-action-card--back { height: 70px; }
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery { height: 116px; }
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card--back { height: 70px; }
 }
 
 
 /* v2.5.4: Vision-start enligt mobiltest/mockup + kompakt toast/slutvy. */
-#captureCard:has(#imageCount[hidden]) {
+#captureCard:has(#batchStrip[hidden]) {
   grid-template-rows: auto minmax(190px, 1fr) 150px 86px auto;
   gap: 12px;
 }
-#captureCard:has(#imageCount[hidden]) .main-camera {
+#captureCard:has(#batchStrip[hidden]) .main-camera {
   min-height: 190px;
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--gallery {
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery {
   height: 150px;
   min-height: 150px;
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--back {
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back {
   height: 86px;
   min-height: 86px;
 }
@@ -1646,25 +1646,25 @@ body{min-height:100dvh}
 .done-dashboard-link { color: var(--text); }
 
 @media (max-width: 480px) {
-  #captureCard:has(#imageCount[hidden]) {
+  #captureCard:has(#batchStrip[hidden]) {
     grid-template-rows: auto minmax(175px, 1fr) 136px 78px auto;
     gap: 10px;
   }
-  #captureCard:has(#imageCount[hidden]) .main-camera { min-height: 175px; }
-  #captureCard:has(#imageCount[hidden]) .vision-action-card--gallery { height: 136px; min-height: 136px; }
-  #captureCard:has(#imageCount[hidden]) .vision-action-card--back { height: 78px; min-height: 78px; }
+  #captureCard:has(#batchStrip[hidden]) .main-camera { min-height: 175px; }
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery { height: 136px; min-height: 136px; }
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card--back { height: 78px; min-height: 78px; }
   #captureCard .vision-action-card--back { padding-inline: 16px; }
   .undo-toast { bottom: calc(76px + env(safe-area-inset-bottom)); }
 }
 
 @media (max-height: 760px) and (max-width: 480px) {
-  #captureCard:has(#imageCount[hidden]) {
+  #captureCard:has(#batchStrip[hidden]) {
     grid-template-rows: auto minmax(150px, 1fr) 118px 68px auto;
     gap: 8px;
   }
-  #captureCard:has(#imageCount[hidden]) .main-camera { min-height: 150px; }
-  #captureCard:has(#imageCount[hidden]) .vision-action-card--gallery { height: 118px; min-height: 118px; }
-  #captureCard:has(#imageCount[hidden]) .vision-action-card--back { height: 68px; min-height: 68px; }
+  #captureCard:has(#batchStrip[hidden]) .main-camera { min-height: 150px; }
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery { height: 118px; min-height: 118px; }
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card--back { height: 68px; min-height: 68px; }
   #captureCard .vision-action-copy small { font-size: .73rem; }
 }
 
@@ -1727,18 +1727,18 @@ body{min-height:100dvh}
 .extras-done { margin-top: auto; width: 100%; min-height: 52px; }
 
 /* Startvyn använder skärmen mer och ikonerna får mer tyngd. */
-#captureCard:has(#imageCount[hidden]) {
+#captureCard:has(#batchStrip[hidden]) {
   grid-template-rows: auto minmax(215px, 1fr) 158px 82px auto;
   gap: 10px;
 }
-#captureCard:has(#imageCount[hidden]) .main-camera { min-height: 215px; }
-#captureCard:has(#imageCount[hidden]) .camera-icon { font-size: 3.15rem; }
-#captureCard:has(#imageCount[hidden]) .camera-content strong { font-size: 1.35rem; }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--gallery { height: 158px; min-height: 158px; }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--gallery .vision-action-icon { font-size: 2.65rem; }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--gallery strong { font-size: 1.12rem; }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--back { height: 82px; min-height: 82px; }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--back .vision-action-icon--back { font-size: 2.05rem; }
+#captureCard:has(#batchStrip[hidden]) .main-camera { min-height: 215px; }
+#captureCard:has(#batchStrip[hidden]) .camera-icon { font-size: 3.15rem; }
+#captureCard:has(#batchStrip[hidden]) .camera-content strong { font-size: 1.35rem; }
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery { height: 158px; min-height: 158px; }
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery .vision-action-icon { font-size: 2.65rem; }
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery strong { font-size: 1.12rem; }
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back { height: 82px; min-height: 82px; }
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back .vision-action-icon--back { font-size: 2.05rem; }
 
 /* Toasten ska aldrig ligga ovanpå arbetsknapparna. */
 .undo-toast {
@@ -1748,13 +1748,13 @@ body{min-height:100dvh}
 }
 
 @media (max-width: 480px) {
-  #captureCard:has(#imageCount[hidden]) {
+  #captureCard:has(#batchStrip[hidden]) {
     grid-template-rows: auto minmax(195px, 1fr) 148px 78px auto;
     gap: 9px;
   }
-  #captureCard:has(#imageCount[hidden]) .main-camera { min-height: 195px; }
-  #captureCard:has(#imageCount[hidden]) .vision-action-card--gallery { height: 148px; min-height: 148px; }
-  #captureCard:has(#imageCount[hidden]) .vision-action-card--back { height: 78px; min-height: 78px; }
+  #captureCard:has(#batchStrip[hidden]) .main-camera { min-height: 195px; }
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery { height: 148px; min-height: 148px; }
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card--back { height: 78px; min-height: 78px; }
   .compact-extras-row .optional-extras[open] {
     inset: max(88px, env(safe-area-inset-top)) 8px max(86px, env(safe-area-inset-bottom));
   }
@@ -1762,105 +1762,105 @@ body{min-height:100dvh}
 }
 
 @media (max-height: 760px) and (max-width: 480px) {
-  #captureCard:has(#imageCount[hidden]) {
+  #captureCard:has(#batchStrip[hidden]) {
     grid-template-rows: auto minmax(165px, 1fr) 126px 68px auto;
     gap: 7px;
   }
-  #captureCard:has(#imageCount[hidden]) .main-camera { min-height: 165px; }
-  #captureCard:has(#imageCount[hidden]) .vision-action-card--gallery { height: 126px; min-height: 126px; }
-  #captureCard:has(#imageCount[hidden]) .vision-action-card--back { height: 68px; min-height: 68px; }
+  #captureCard:has(#batchStrip[hidden]) .main-camera { min-height: 165px; }
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery { height: 126px; min-height: 126px; }
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card--back { height: 68px; min-height: 68px; }
 }
 
 
 /* v2.5.6: Vision-start använder samma helskärmsprincip som Dashboard.
    Tre tydliga kort fyller arbetsytan; primärt, sekundärt, navigation. */
-#captureCard:has(#imageCount[hidden]) {
+#captureCard:has(#batchStrip[hidden]) {
   grid-template-rows: minmax(0, 1.14fr) minmax(0, .92fr) minmax(0, .54fr);
   gap: 11px;
   padding: 12px;
 }
-#captureCard:has(#imageCount[hidden]) .capture-heading-tools-only,
-#captureCard:has(#imageCount[hidden]) .privacy-note {
+#captureCard:has(#batchStrip[hidden]) .capture-heading-tools-only,
+#captureCard:has(#batchStrip[hidden]) .privacy-note {
   display: none;
 }
-#captureCard:has(#imageCount[hidden]) .main-camera,
-#captureCard:has(#imageCount[hidden]) .vision-action-card--gallery,
-#captureCard:has(#imageCount[hidden]) .vision-action-card--back {
+#captureCard:has(#batchStrip[hidden]) .main-camera,
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery,
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back {
   width: 100%;
   height: 100%;
   min-height: 0;
   margin: 0;
   border-radius: 23px;
 }
-#captureCard:has(#imageCount[hidden]) .main-camera {
+#captureCard:has(#batchStrip[hidden]) .main-camera {
   border-style: solid;
   border-width: 1px;
   border-color: color-mix(in srgb, #2467c8 48%, var(--border));
   background: linear-gradient(105deg, #172b49, var(--surface) 76%);
 }
-#captureCard:has(#imageCount[hidden]) .camera-content {
+#captureCard:has(#batchStrip[hidden]) .camera-content {
   padding: clamp(16px, 2.5dvh, 26px);
   gap: clamp(8px, 1.2dvh, 13px);
 }
-#captureCard:has(#imageCount[hidden]) .camera-icon {
+#captureCard:has(#batchStrip[hidden]) .camera-icon {
   font-size: clamp(3.5rem, 8dvh, 5rem);
 }
-#captureCard:has(#imageCount[hidden]) .camera-content strong {
+#captureCard:has(#batchStrip[hidden]) .camera-content strong {
   font-size: clamp(1.55rem, 3.3dvh, 2rem);
   color: #2c6fc5;
   letter-spacing: -.02em;
 }
-#captureCard:has(#imageCount[hidden]) .camera-content small {
+#captureCard:has(#batchStrip[hidden]) .camera-content small {
   font-size: clamp(.94rem, 2dvh, 1.08rem);
   line-height: 1.25;
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--gallery {
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery {
   background: linear-gradient(105deg, #163427, var(--surface) 76%);
   border-color: color-mix(in srgb, #269454 42%, var(--border));
   gap: clamp(8px, 1.1dvh, 12px);
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--gallery .vision-action-icon {
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery .vision-action-icon {
   font-size: clamp(3rem, 6.7dvh, 4.15rem);
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--gallery strong {
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery strong {
   font-size: clamp(1.38rem, 3dvh, 1.78rem);
   letter-spacing: -.02em;
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--gallery small {
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery small {
   font-size: clamp(.9rem, 1.85dvh, 1.02rem);
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--back {
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back {
   grid-template-columns: clamp(58px, 8dvh, 72px) minmax(0,1fr);
   padding: clamp(12px, 2dvh, 18px) clamp(18px, 4vw, 28px);
   background: linear-gradient(105deg, #202331, var(--surface) 78%);
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--back .vision-action-icon--back {
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back .vision-action-icon--back {
   font-size: clamp(2.6rem, 5.5dvh, 3.45rem);
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--back strong {
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back strong {
   font-size: clamp(1.28rem, 2.7dvh, 1.58rem);
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--back small {
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back small {
   font-size: clamp(.86rem, 1.7dvh, .98rem);
 }
 
 @media (max-height: 720px) and (max-width: 540px) {
-  #captureCard:has(#imageCount[hidden]) {
+  #captureCard:has(#batchStrip[hidden]) {
     grid-template-rows: minmax(0, 1.08fr) minmax(0, .88fr) minmax(0, .48fr);
     gap: 8px;
     padding: 9px;
   }
-  #captureCard:has(#imageCount[hidden]) .camera-icon { font-size: 3.2rem; }
-  #captureCard:has(#imageCount[hidden]) .camera-content strong { font-size: 1.4rem; }
-  #captureCard:has(#imageCount[hidden]) .vision-action-card--gallery .vision-action-icon { font-size: 2.7rem; }
-  #captureCard:has(#imageCount[hidden]) .vision-action-card--gallery strong { font-size: 1.25rem; }
+  #captureCard:has(#batchStrip[hidden]) .camera-icon { font-size: 3.2rem; }
+  #captureCard:has(#batchStrip[hidden]) .camera-content strong { font-size: 1.4rem; }
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery .vision-action-icon { font-size: 2.7rem; }
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery strong { font-size: 1.25rem; }
 }
 
 
 /* v2.5.7: Vision-starten ska använda Dashboard som visuellt facit.
    Startvalen ligger nu som fristående action-kort direkt på appbakgrunden,
    inte inuti en gemensam panel. */
-#captureCard:has(#imageCount[hidden]) {
+#captureCard:has(#batchStrip[hidden]) {
   width: 100%;
   height: 100%;
   min-height: 0;
@@ -1872,62 +1872,62 @@ body{min-height:100dvh}
   grid-template-rows: minmax(0, 1.05fr) minmax(0, .95fr) minmax(0, .64fr);
   gap: 11px;
 }
-#captureCard:has(#imageCount[hidden]) .main-camera,
-#captureCard:has(#imageCount[hidden]) .vision-action-card--gallery,
-#captureCard:has(#imageCount[hidden]) .vision-action-card--back {
+#captureCard:has(#batchStrip[hidden]) .main-camera,
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery,
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back {
   border-radius: 23px;
   box-shadow: 0 12px 30px rgba(31,42,68,.055);
   transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
 }
-#captureCard:has(#imageCount[hidden]) .main-camera:hover,
-#captureCard:has(#imageCount[hidden]) .vision-action-card--gallery:hover,
-#captureCard:has(#imageCount[hidden]) .vision-action-card--back:hover {
+#captureCard:has(#batchStrip[hidden]) .main-camera:hover,
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery:hover,
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow);
 }
-#captureCard:has(#imageCount[hidden]) .main-camera:active,
-#captureCard:has(#imageCount[hidden]) .vision-action-card--gallery:active,
-#captureCard:has(#imageCount[hidden]) .vision-action-card--back:active {
+#captureCard:has(#batchStrip[hidden]) .main-camera:active,
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery:active,
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back:active {
   transform: scale(.985);
 }
-#captureCard:has(#imageCount[hidden]) .main-camera {
+#captureCard:has(#batchStrip[hidden]) .main-camera {
   border: 1px solid var(--border);
   background: linear-gradient(105deg, rgba(230,239,255,.95), var(--surface) 72%);
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--gallery {
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery {
   border: 1px solid var(--border);
   background: linear-gradient(105deg, rgba(231,247,237,.95), var(--surface) 72%);
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--back {
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back {
   border: 1px solid var(--border);
   background: linear-gradient(105deg, rgba(241,236,253,.72), var(--surface) 76%);
 }
-:root[data-theme="dark"] #captureCard:has(#imageCount[hidden]) .main-camera {
+:root[data-theme="dark"] #captureCard:has(#batchStrip[hidden]) .main-camera {
   background: linear-gradient(105deg,#17253c,var(--surface) 72%);
 }
-:root[data-theme="dark"] #captureCard:has(#imageCount[hidden]) .vision-action-card--gallery {
+:root[data-theme="dark"] #captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery {
   background: linear-gradient(105deg,#173126,var(--surface) 72%);
 }
-:root[data-theme="dark"] #captureCard:has(#imageCount[hidden]) .vision-action-card--back {
+:root[data-theme="dark"] #captureCard:has(#batchStrip[hidden]) .vision-action-card--back {
   background: linear-gradient(105deg,#28203c,var(--surface) 72%);
 }
-#captureCard:has(#imageCount[hidden]) .camera-content,
-#captureCard:has(#imageCount[hidden]) .vision-action-card {
+#captureCard:has(#batchStrip[hidden]) .camera-content,
+#captureCard:has(#batchStrip[hidden]) .vision-action-card {
   text-align: center;
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--gallery,
-#captureCard:has(#imageCount[hidden]) .vision-action-card--back {
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery,
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back {
   grid-template-columns: 1fr;
   grid-template-rows: auto auto;
   justify-items: center;
   align-content: center;
   padding: clamp(16px,2.4dvh,24px) 20px;
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-copy {
+#captureCard:has(#batchStrip[hidden]) .vision-action-copy {
   align-items: center;
   gap: 6px;
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--gallery .vision-action-icon {
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery .vision-action-icon {
   width: clamp(66px,9dvh,78px);
   height: clamp(66px,9dvh,78px);
   display: grid;
@@ -1936,7 +1936,7 @@ body{min-height:100dvh}
   background: color-mix(in srgb,var(--surface) 55%,transparent);
   font-size: clamp(2.7rem,6.5dvh,3.8rem);
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--back .vision-action-icon--back {
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back .vision-action-icon--back {
   width: clamp(54px,7dvh,66px);
   height: clamp(54px,7dvh,66px);
   display: grid;
@@ -1945,14 +1945,14 @@ body{min-height:100dvh}
   background: color-mix(in srgb,var(--surface) 55%,transparent);
   font-size: clamp(2.2rem,5.3dvh,3rem);
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--gallery strong {
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery strong {
   color:#21804c;
 }
-#captureCard:has(#imageCount[hidden]) .vision-action-card--back strong {
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back strong {
   color:#5a39a1;
 }
-:root[data-theme="dark"] #captureCard:has(#imageCount[hidden]) .vision-action-card--gallery strong { color:#62c78b; }
-:root[data-theme="dark"] #captureCard:has(#imageCount[hidden]) .vision-action-card--back strong { color:#b498f0; }
+:root[data-theme="dark"] #captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery strong { color:#62c78b; }
+:root[data-theme="dark"] #captureCard:has(#batchStrip[hidden]) .vision-action-card--back strong { color:#b498f0; }
 
 @media (max-width:480px) {
   .vision-shell {
@@ -1963,29 +1963,29 @@ body{min-height:100dvh}
     padding: 8px 16px calc(12px + env(safe-area-inset-bottom));
     overflow: hidden;
   }
-  #captureCard:has(#imageCount[hidden]) {
+  #captureCard:has(#batchStrip[hidden]) {
     gap: 11px;
   }
 }
 
 @media (max-height:720px) and (max-width:480px) {
-  #captureCard:has(#imageCount[hidden]) {
+  #captureCard:has(#batchStrip[hidden]) {
     grid-template-rows: minmax(0,1fr) minmax(0,.9fr) minmax(0,.58fr);
     gap: 8px;
   }
-  #captureCard:has(#imageCount[hidden]) .camera-content small,
-  #captureCard:has(#imageCount[hidden]) .vision-action-card small {
+  #captureCard:has(#batchStrip[hidden]) .camera-content small,
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card small {
     font-size: .78rem;
   }
 }
 
 /* v2.5.8: försiktig Dashboard-synk av Vision-starten.
    Samma visuella språk – ingen ändring av flöde eller funktion. */
-#captureCard:has(#imageCount[hidden]) {
+#captureCard:has(#batchStrip[hidden]) {
   grid-template-rows: repeat(3,minmax(0,1fr));
   gap: 11px;
 }
-#captureCard:has(#imageCount[hidden]) .vision-dashboard-card {
+#captureCard:has(#batchStrip[hidden]) .vision-dashboard-card {
   width:100%;
   height:100%;
   min-height:0;
@@ -2001,28 +2001,28 @@ body{min-height:100dvh}
   box-shadow:0 12px 30px rgba(31,42,68,.055);
   overflow:hidden;
 }
-#captureCard:has(#imageCount[hidden]) .vision-dashboard-card--photo {
+#captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--photo {
   background:linear-gradient(105deg,rgba(230,239,255,.95),var(--surface) 72%);
 }
-#captureCard:has(#imageCount[hidden]) .vision-dashboard-card--gallery {
+#captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--gallery {
   background:linear-gradient(105deg,rgba(231,247,237,.95),var(--surface) 72%);
 }
-#captureCard:has(#imageCount[hidden]) .vision-dashboard-card--back {
+#captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--back {
   background:linear-gradient(105deg,rgba(241,236,253,.95),var(--surface) 72%);
 }
-:root[data-theme="dark"] #captureCard:has(#imageCount[hidden]) .vision-dashboard-card--photo {
+:root[data-theme="dark"] #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--photo {
   background:linear-gradient(105deg,#17253c,var(--surface) 72%);
 }
-:root[data-theme="dark"] #captureCard:has(#imageCount[hidden]) .vision-dashboard-card--gallery {
+:root[data-theme="dark"] #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--gallery {
   background:linear-gradient(105deg,#173126,var(--surface) 72%);
 }
-:root[data-theme="dark"] #captureCard:has(#imageCount[hidden]) .vision-dashboard-card--back {
+:root[data-theme="dark"] #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--back {
   background:linear-gradient(105deg,#28203c,var(--surface) 72%);
 }
-#captureCard:has(#imageCount[hidden]) .vision-dashboard-card .camera-content {
+#captureCard:has(#batchStrip[hidden]) .vision-dashboard-card .camera-content {
   display:contents;
 }
-#captureCard:has(#imageCount[hidden]) .vision-card-icon {
+#captureCard:has(#batchStrip[hidden]) .vision-card-icon {
   width:clamp(60px,9dvh,72px);
   height:clamp(60px,9dvh,72px);
   border-radius:50%;
@@ -2030,7 +2030,7 @@ body{min-height:100dvh}
   place-items:center;
   background:color-mix(in srgb,var(--surface) 55%,transparent);
 }
-#captureCard:has(#imageCount[hidden]) .vision-card-icon svg {
+#captureCard:has(#batchStrip[hidden]) .vision-card-icon svg {
   width:clamp(30px,4.5dvh,37px);
   height:clamp(30px,4.5dvh,37px);
   fill:none;
@@ -2039,7 +2039,7 @@ body{min-height:100dvh}
   stroke-linecap:round;
   stroke-linejoin:round;
 }
-#captureCard:has(#imageCount[hidden]) .vision-card-text {
+#captureCard:has(#batchStrip[hidden]) .vision-card-text {
   min-width:0;
   display:flex;
   flex-direction:column;
@@ -2047,34 +2047,34 @@ body{min-height:100dvh}
   gap:6px;
   text-align:left;
 }
-#captureCard:has(#imageCount[hidden]) .vision-card-text strong {
+#captureCard:has(#batchStrip[hidden]) .vision-card-text strong {
   font-size:clamp(23px,3.2dvh,27px);
   line-height:1.05;
   letter-spacing:-.02em;
 }
-#captureCard:has(#imageCount[hidden]) .vision-card-text small {
+#captureCard:has(#batchStrip[hidden]) .vision-card-text small {
   font-size:clamp(15px,2dvh,17px);
   line-height:1.2;
   color:var(--muted);
 }
-#captureCard:has(#imageCount[hidden]) .vision-card-arrow {
+#captureCard:has(#batchStrip[hidden]) .vision-card-arrow {
   font-size:34px;
   line-height:1;
   color:var(--text);
   opacity:.9;
 }
-#captureCard:has(#imageCount[hidden]) .vision-dashboard-card--photo .vision-card-icon,
-#captureCard:has(#imageCount[hidden]) .vision-dashboard-card--photo strong { color:#1f5da8; }
-#captureCard:has(#imageCount[hidden]) .vision-dashboard-card--gallery .vision-card-icon,
-#captureCard:has(#imageCount[hidden]) .vision-dashboard-card--gallery strong { color:#21804c; }
-#captureCard:has(#imageCount[hidden]) .vision-dashboard-card--back .vision-card-icon,
-#captureCard:has(#imageCount[hidden]) .vision-dashboard-card--back strong { color:#5a39a1; }
-:root[data-theme="dark"] #captureCard:has(#imageCount[hidden]) .vision-dashboard-card--photo .vision-card-icon,
-:root[data-theme="dark"] #captureCard:has(#imageCount[hidden]) .vision-dashboard-card--photo strong { color:#2e72c7; }
-:root[data-theme="dark"] #captureCard:has(#imageCount[hidden]) .vision-dashboard-card--gallery .vision-card-icon,
-:root[data-theme="dark"] #captureCard:has(#imageCount[hidden]) .vision-dashboard-card--gallery strong { color:#2aa35e; }
-:root[data-theme="dark"] #captureCard:has(#imageCount[hidden]) .vision-dashboard-card--back .vision-card-icon,
-:root[data-theme="dark"] #captureCard:has(#imageCount[hidden]) .vision-dashboard-card--back strong { color:#6f49c9; }
+#captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--photo .vision-card-icon,
+#captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--photo strong { color:#1f5da8; }
+#captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--gallery .vision-card-icon,
+#captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--gallery strong { color:#21804c; }
+#captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--back .vision-card-icon,
+#captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--back strong { color:#5a39a1; }
+:root[data-theme="dark"] #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--photo .vision-card-icon,
+:root[data-theme="dark"] #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--photo strong { color:#2e72c7; }
+:root[data-theme="dark"] #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--gallery .vision-card-icon,
+:root[data-theme="dark"] #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--gallery strong { color:#2aa35e; }
+:root[data-theme="dark"] #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--back .vision-card-icon,
+:root[data-theme="dark"] #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--back strong { color:#6f49c9; }
 
 @media(max-width:480px){
   :root{--ccc-header-height:105px!important}
@@ -2174,7 +2174,7 @@ body{min-height:100dvh}
 /* v2.7.2 – stabil arbetsyta medan Vision analyserar
    När minst ett plagg finns blir fångstvalen kompakta och arbetsdelen får egen scroll.
    Detta förhindrar att kort/text överlappar på mobil medan AI arbetar. */
-#captureCard:has(#imageCount:not([hidden])) {
+#captureCard:has(#batchStrip:not([hidden])) {
   display:grid;
   grid-template-rows:auto auto auto auto auto auto auto auto;
   align-content:start;
@@ -2184,10 +2184,10 @@ body{min-height:100dvh}
   -webkit-overflow-scrolling:touch;
   padding-bottom:14px;
 }
-#captureCard:has(#imageCount:not([hidden])) .capture-heading {
+#captureCard:has(#batchStrip:not([hidden])) .capture-heading {
   min-height:38px;
 }
-#captureCard:has(#imageCount:not([hidden])) .vision-dashboard-card {
+#captureCard:has(#batchStrip:not([hidden])) .vision-dashboard-card {
   width:100%;
   height:auto;
   min-height:72px;
@@ -2201,10 +2201,10 @@ body{min-height:100dvh}
   text-align:left;
   overflow:hidden;
 }
-#captureCard:has(#imageCount:not([hidden])) .vision-dashboard-card .camera-content {
+#captureCard:has(#batchStrip:not([hidden])) .vision-dashboard-card .camera-content {
   display:contents;
 }
-#captureCard:has(#imageCount:not([hidden])) .vision-card-icon {
+#captureCard:has(#batchStrip:not([hidden])) .vision-card-icon {
   width:50px;
   height:50px;
   display:grid;
@@ -2212,7 +2212,7 @@ body{min-height:100dvh}
   border-radius:50%;
   background:color-mix(in srgb,var(--surface) 58%,transparent);
 }
-#captureCard:has(#imageCount:not([hidden])) .vision-card-icon svg {
+#captureCard:has(#batchStrip:not([hidden])) .vision-card-icon svg {
   width:27px;
   height:27px;
   fill:none;
@@ -2221,7 +2221,7 @@ body{min-height:100dvh}
   stroke-linecap:round;
   stroke-linejoin:round;
 }
-#captureCard:has(#imageCount:not([hidden])) .vision-card-text {
+#captureCard:has(#batchStrip:not([hidden])) .vision-card-text {
   min-width:0;
   display:flex;
   flex-direction:column;
@@ -2229,14 +2229,14 @@ body{min-height:100dvh}
   gap:3px;
   text-align:left;
 }
-#captureCard:has(#imageCount:not([hidden])) .vision-card-text strong {
+#captureCard:has(#batchStrip:not([hidden])) .vision-card-text strong {
   display:block;
   width:100%;
   font-size:1.08rem;
   line-height:1.1;
   white-space:normal;
 }
-#captureCard:has(#imageCount:not([hidden])) .vision-card-text small {
+#captureCard:has(#batchStrip:not([hidden])) .vision-card-text small {
   display:block;
   width:100%;
   color:var(--muted);
@@ -2244,80 +2244,80 @@ body{min-height:100dvh}
   line-height:1.25;
   white-space:normal;
 }
-#captureCard:has(#imageCount:not([hidden])) .vision-card-arrow {
+#captureCard:has(#batchStrip:not([hidden])) .vision-card-arrow {
   font-size:28px;
   line-height:1;
 }
-#captureCard:has(#imageCount:not([hidden])) .main-camera {
+#captureCard:has(#batchStrip:not([hidden])) .main-camera {
   min-height:78px;
   height:auto;
   background:linear-gradient(105deg,rgba(230,239,255,.95),var(--surface) 72%);
 }
-:root[data-theme="dark"] #captureCard:has(#imageCount:not([hidden])) .main-camera {
+:root[data-theme="dark"] #captureCard:has(#batchStrip:not([hidden])) .main-camera {
   background:linear-gradient(105deg,#17253c,var(--surface) 72%);
 }
-#captureCard:has(#imageCount:not([hidden])) .vision-dashboard-card--gallery {
+#captureCard:has(#batchStrip:not([hidden])) .vision-dashboard-card--gallery {
   background:linear-gradient(105deg,rgba(231,247,237,.95),var(--surface) 72%);
 }
-:root[data-theme="dark"] #captureCard:has(#imageCount:not([hidden])) .vision-dashboard-card--gallery {
+:root[data-theme="dark"] #captureCard:has(#batchStrip:not([hidden])) .vision-dashboard-card--gallery {
   background:linear-gradient(105deg,#173126,var(--surface) 72%);
 }
-#captureCard:has(#imageCount:not([hidden])) .vision-dashboard-card--back {
+#captureCard:has(#batchStrip:not([hidden])) .vision-dashboard-card--back {
   min-height:62px;
   background:linear-gradient(105deg,rgba(241,236,253,.95),var(--surface) 72%);
 }
-:root[data-theme="dark"] #captureCard:has(#imageCount:not([hidden])) .vision-dashboard-card--back {
+:root[data-theme="dark"] #captureCard:has(#batchStrip:not([hidden])) .vision-dashboard-card--back {
   background:linear-gradient(105deg,#28203c,var(--surface) 72%);
 }
-#captureCard:has(#imageCount:not([hidden])) .vision-dashboard-card--back .vision-card-icon,
-#captureCard:has(#imageCount:not([hidden])) .vision-dashboard-card--back strong { color:#6f49c9; }
-#captureCard:has(#imageCount:not([hidden])) .vision-dashboard-card--gallery .vision-card-icon,
-#captureCard:has(#imageCount:not([hidden])) .vision-dashboard-card--gallery strong { color:#2aa35e; }
-#captureCard:has(#imageCount:not([hidden])) .vision-dashboard-card--photo .vision-card-icon,
-#captureCard:has(#imageCount:not([hidden])) .vision-dashboard-card--photo strong { color:#2e72c7; }
-#captureCard:has(#imageCount:not([hidden])) .vision-work-status {
+#captureCard:has(#batchStrip:not([hidden])) .vision-dashboard-card--back .vision-card-icon,
+#captureCard:has(#batchStrip:not([hidden])) .vision-dashboard-card--back strong { color:#6f49c9; }
+#captureCard:has(#batchStrip:not([hidden])) .vision-dashboard-card--gallery .vision-card-icon,
+#captureCard:has(#batchStrip:not([hidden])) .vision-dashboard-card--gallery strong { color:#2aa35e; }
+#captureCard:has(#batchStrip:not([hidden])) .vision-dashboard-card--photo .vision-card-icon,
+#captureCard:has(#batchStrip:not([hidden])) .vision-dashboard-card--photo strong { color:#2e72c7; }
+#captureCard:has(#batchStrip:not([hidden])) .vision-work-status {
   margin:2px 0 0;
 }
-#captureCard:has(#imageCount:not([hidden])) .batch-strip {
+#captureCard:has(#batchStrip:not([hidden])) .batch-strip {
   margin:2px 0 0;
   min-height:66px;
 }
-#captureCard:has(#imageCount:not([hidden])) .workspace-detail-button {
+#captureCard:has(#batchStrip:not([hidden])) .workspace-detail-button {
   margin:0;
   min-height:44px;
 }
-#captureCard:has(#imageCount:not([hidden])) .capture-next {
+#captureCard:has(#batchStrip:not([hidden])) .capture-next {
   margin:0;
   min-height:54px;
   flex:0 0 auto;
 }
-#captureCard:has(#imageCount:not([hidden])) .privacy-note {
+#captureCard:has(#batchStrip:not([hidden])) .privacy-note {
   margin:0;
   padding:0 4px 2px;
   line-height:1.3;
 }
 
 @media (max-width:480px) {
-  #captureCard:has(#imageCount:not([hidden])) {
+  #captureCard:has(#batchStrip:not([hidden])) {
     gap:9px;
     padding:12px;
   }
-  #captureCard:has(#imageCount:not([hidden])) .vision-dashboard-card {
+  #captureCard:has(#batchStrip:not([hidden])) .vision-dashboard-card {
     min-height:68px;
     grid-template-columns:46px minmax(0,1fr) auto;
     gap:10px;
     padding:10px 12px;
   }
-  #captureCard:has(#imageCount:not([hidden])) .vision-card-icon {
+  #captureCard:has(#batchStrip:not([hidden])) .vision-card-icon {
     width:46px;
     height:46px;
   }
-  #captureCard:has(#imageCount:not([hidden])) .vision-card-icon svg {
+  #captureCard:has(#batchStrip:not([hidden])) .vision-card-icon svg {
     width:25px;
     height:25px;
   }
-  #captureCard:has(#imageCount:not([hidden])) .vision-card-text strong { font-size:1rem; }
-  #captureCard:has(#imageCount:not([hidden])) .vision-card-text small { font-size:.76rem; }
+  #captureCard:has(#batchStrip:not([hidden])) .vision-card-text strong { font-size:1rem; }
+  #captureCard:has(#batchStrip:not([hidden])) .vision-card-text small { font-size:.76rem; }
 }
 
 /* v2.7.3 – valbara plaggminiatyrer */
@@ -2391,3 +2391,12 @@ body{min-height:100dvh}
 .ccc-header-back svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .batch-thumb > span:not(.thumb-status){display:none!important}
 .capture-heading-tools-only:has(.capture-head-tools:empty){display:none}
+
+
+/* v2.7.7 – återställ Vision-layout efter headernavigation + kompakt mobilheader */
+@media(max-width:480px){
+  .app-header .header-actions{right:12px!important;gap:6px!important}
+  .app-header .icon-button{width:36px!important;height:36px!important}
+  .app-header .icon-button .icon,.app-header .icon-button svg{width:19px!important;height:19px!important}
+  .app-header .ccc-header-back svg{width:18px!important;height:18px!important}
+}

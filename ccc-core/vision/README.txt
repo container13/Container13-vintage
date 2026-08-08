@@ -172,3 +172,9 @@ v2.7.6
 - Tillbaka från ett förslag går till alla miniatyrer utan att radera bilder eller analyser.
 - Tillbaka från redigering går till förslaget; från Vision-arbetsytan går den till Dashboard.
 - Den stora Tillbaka-rutan i fångstvyn togs bort.
+
+
+v2.7.7
+- Återställde start-/arbetsytans layout efter att imageCount-elementet tagits bort; CSS använder nu batchStrip som verklig tillståndskälla.
+- Gjorde headerns tre mobilikoner mindre så bakåt, tema och profil ryms utan att trycka sönder helheten.
+- Behåller stoppljus, klickbara miniatyrer och bakåtnavigering.
