@@ -14,6 +14,19 @@
   let visionView = "start";
   let editReturnView = "suggestion";
 
+  const VISION_SETTING_DEFAULTS = { aiAuto: true, showCost: true, learnEdits: true };
+  function readBoolSetting(key, fallback) {
+    const value = localStorage.getItem(key);
+    return value === null ? fallback : value === "true";
+  }
+  function visionSettings() {
+    return {
+      aiAuto: readBoolSetting("ccc-vision-ai-auto", VISION_SETTING_DEFAULTS.aiAuto),
+      showCost: readBoolSetting("ccc-vision-show-cost", VISION_SETTING_DEFAULTS.showCost),
+      learnEdits: readBoolSetting("ccc-vision-learn-edits", VISION_SETTING_DEFAULTS.learnEdits)
+    };
+  }
+
 
   // CCC gemensamt skal: samma tema och profilmeny som dashboarden
   const rootElement = document.documentElement;
@@ -39,7 +52,7 @@
   applyCccTheme(savedCccTheme || (prefersDark ? "dark" : "light"));
   const privacyNote = $("#privacyNote");
   if (privacyNote) {
-    privacyNote.textContent = window.CCC_VISION_AI?.configured?.()
+    privacyNote.textContent = window.CCC_VISION_AI?.configured?.() && visionSettings().aiAuto
       ? "Originalbilderna stannar på enheten. En komprimerad kopia skickas endast för analys."
       : "Originalbilderna stannar på den här enheten.";
   }
@@ -48,7 +61,8 @@
   document.addEventListener("click", (event) => {
     if (profileMenu && !profileMenu.hidden && !profileMenu.contains(event.target) && event.target !== profileButton) setProfileMenu(false);
   });
-  document.addEventListener("keydown", (event) => { if (event.key === "Escape") setProfileMenu(false); });
+  document.addEventListener("keydown", (event) => { if (event.key === "Escape") { setProfileMenu(false); const pop=$("#visionCostPopover"); if(pop) pop.hidden=true; } });
+  document.addEventListener("click", (event) => { const pop=$("#visionCostPopover"); const btn=$("#visionCostBtn"); if(pop && !pop.hidden && !pop.contains(event.target) && event.target !== btn){ pop.hidden=true; btn?.setAttribute("aria-expanded","false"); } });
 
   const uid = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   const currentItem = () => batchItems[currentIndex] || null;
@@ -124,13 +138,21 @@
     return item;
   }
 
-  function startSilentAnalysis(item) {
+  function startSilentAnalysis(item, forceAi = false) {
     item.visionReady = false;
-    item.analysisMode = window.CCC_VISION_AI?.configured?.() ? "ai" : "demo";
+    const aiAllowed = forceAi || visionSettings().aiAuto;
+    item.analysisMode = aiAllowed && window.CCC_VISION_AI?.configured?.() ? "ai" : (aiAllowed ? "demo" : "manual");
     item.analysisError = "";
     item.analysisErrorCode = "";
     item.analysisHttpStatus = 0;
     const files = [item.file, ...(item.extraFiles || [])].filter(Boolean).slice(0, 3);
+
+    if (item.analysisMode === "manual") {
+      item.analysisPromise = Promise.resolve(null);
+      item.visionReady = false;
+      updateBatchStrip();
+      return item.analysisPromise;
+    }
 
     item.analysisPromise = (async () => {
       if (item.analysisMode === "ai") {
@@ -139,8 +161,16 @@
           const aiResponse = await window.CCC_VISION_AI.analyze(files);
           item.visionResult = aiResponse.result || aiResponse;
           item.aiUsage = aiResponse.usage || null;
+          item.aiModel = aiResponse.model || "";
+          const estimated = window.CCC_VISION_KNOWLEDGE?.estimateCost?.(item.aiUsage, item.aiModel) || { usd: 0, sek: 0 };
+          item.aiCostUsd = Number(estimated.usd || 0);
+          item.aiCostSek = Number(estimated.sek || 0);
           item.visionReady = true;
-                window.CCC_VISION_KNOWLEDGE?.metric?.({ type: "ai_analysis", itemId: item.id, usage: item.aiUsage, model: aiResponse.model || "" }).catch(() => {});
+          window.CCC_VISION_KNOWLEDGE?.metric?.({
+            type: "ai_analysis", itemId: item.id, usage: item.aiUsage, model: item.aiModel,
+            estimatedUsd: item.aiCostUsd, estimatedSek: item.aiCostSek
+          }).catch(() => {});
+          refreshCostUi();
           updateBatchStrip();
           console.info("[CCC Vision] AI-analys klar", { itemId: item.id, usage: item.aiUsage });
           return item.visionResult;
@@ -196,12 +226,12 @@
       wrap.type = "button";
       wrap.className = "batch-thumb";
       if (index === currentIndex) wrap.classList.add("is-selected");
-      wrap.setAttribute("aria-label", `Plagg ${index + 1}${item.visionReady ? ", analys klar" : ", analyseras"}`);
+      wrap.setAttribute("aria-label", `Plagg ${index + 1}${item.visionReady ? ", analys klar" : item.analysisMode === "manual" ? ", ej AI-analyserat" : ", analyseras"}`);
       const img = document.createElement("img");
       img.src = item.previewUrl;
       img.alt = `Plagg ${index + 1}`;
       const state = document.createElement("span");
-      state.className = `thumb-status ${item.visionReady ? "is-ready" : "is-working"}`;
+      state.className = `thumb-status ${item.visionReady ? "is-ready" : item.analysisMode === "manual" ? "is-manual" : "is-working"}`;
       state.textContent = item.visionReady ? "✓" : "";
       state.setAttribute("aria-hidden", "true");
       wrap.addEventListener("click", () => {
@@ -382,6 +412,7 @@
   }
 
   function rememberApprovedItem(item) {
+    if (!visionSettings().learnEdits) return;
     const fields = item?.editedFields || item?.visionResult?.fields;
     if (!fields) return;
     const subject = (fields.manufacturer || fields.brand || "").trim();
@@ -425,6 +456,8 @@
     updateCounters();
     updateTextPreviews();
     updateSmartSuggestions();
+    const manualAi = $("#manualAiBtn");
+    if (manualAi) manualAi.hidden = item.visionReady || item.analysisMode !== "manual" || !window.CCC_VISION_AI?.configured?.();
   }
 
   function editCurrent(allowWhileAnalyzing = false) {
@@ -628,6 +661,41 @@
     });
   }
 
+  async function analyzeCurrentManually() {
+    const item = currentItem();
+    if (!item || item.visionReady) return;
+    const button = $("#manualAiBtn");
+    if (button) { button.disabled = true; button.textContent = "Analyserar…"; }
+    await startSilentAnalysis(item, true);
+    if (button) { button.disabled = false; button.textContent = "Analysera med AI"; button.hidden = !!item.visionReady; }
+    if (item.visionReady) openReview(currentIndex);
+  }
+
+  function formatSek(value) {
+    return `${Number(value || 0).toLocaleString("sv-SE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} kr`;
+  }
+
+  async function refreshCostUi() {
+    const button = $("#visionCostBtn");
+    if (!button) return;
+    const visible = visionSettings().showCost;
+    button.hidden = !visible;
+    if (!visible) { $("#visionCostPopover")?.setAttribute("hidden", ""); return; }
+    const sessionSek = batchItems.reduce((sum, item) => sum + Number(item.aiCostSek || 0), 0);
+    if ($("#visionSessionCost")) $("#visionSessionCost").textContent = `Den här sessionen: ${formatSek(sessionSek)}`;
+    try {
+      const start = new Date(); start.setHours(0,0,0,0);
+      const today = await window.CCC_VISION_KNOWLEDGE?.costSummarySince?.(start.toISOString());
+      if ($("#visionTodayCost")) $("#visionTodayCost").textContent = `Idag: ${formatSek(today?.sek || 0)} · ${today?.count || 0} analyser`;
+    } catch {}
+  }
+
+  function toggleCostPopover() {
+    const pop = $("#visionCostPopover"); const btn = $("#visionCostBtn"); if (!pop || !btn) return;
+    const open = pop.hidden; pop.hidden = !open; btn.setAttribute("aria-expanded", String(open));
+    if (open) refreshCostUi();
+  }
+
   function resetAll() {
     if (!confirm("Vill du börja om? Bilder och utkast i den här Vision-sessionen tas bort.")) return;
     newSeries();
@@ -678,6 +746,8 @@
     if (firstReady >= 0) openReview(firstReady);
   });
   $("#addToSelectedBtn")?.addEventListener("click", () => $("#sameGarmentInput").click());
+  $("#manualAiBtn")?.addEventListener("click", analyzeCurrentManually);
+  $("#visionCostBtn")?.addEventListener("click", (event) => { event.stopPropagation(); toggleCostPopover(); });
 
   // Granskning
   $("#useSuggestionBtn").addEventListener("click", approveCurrent);
@@ -715,6 +785,7 @@
   if ($("#approveBtn")) $("#approveBtn").addEventListener("click", finishBatch);
 
   showVisionStart();
+  refreshCostUi();
   updateCounters();
   updateTextPreviews();
 })();
