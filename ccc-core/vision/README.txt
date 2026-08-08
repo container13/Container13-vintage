@@ -163,3 +163,12 @@ v2.7.5
 - Huvudknappen används inte längre som statusrad: den heter Visa förslag även medan den är grå/inaktiv.
 - Om andra plagg redan är klara kan knappen i stället visa Granska X klara plagg.
 - Ingen ändring av AI- eller Cloudflare-logik.
+
+
+v2.7.6
+- Tog bort gula numrerade märken på miniatyrerna; stoppljuset är enda statusmarkören.
+- Tog bort texten X plagg i Vision-arbetsytan.
+- Lade Tillbaka i Vision-headern.
+- Tillbaka från ett förslag går till alla miniatyrer utan att radera bilder eller analyser.
+- Tillbaka från redigering går till förslaget; från Vision-arbetsytan går den till Dashboard.
+- Den stora Tillbaka-rutan i fångstvyn togs bort.

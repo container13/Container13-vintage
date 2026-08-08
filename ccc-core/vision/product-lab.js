@@ -164,8 +164,6 @@
       const img = document.createElement("img");
       img.src = item.previewUrl;
       img.alt = `Plagg ${index + 1}`;
-      const num = document.createElement("span");
-      num.textContent = index + 1;
       const state = document.createElement("span");
       state.className = `thumb-status ${item.visionReady ? "is-ready" : "is-working"}`;
       state.textContent = item.visionReady ? "✓" : "";
@@ -178,13 +176,10 @@
         // Första trycket markerar plagget så att användaren fortfarande kan komplettera det med fler bilder.
         if (wasSelected && item.visionReady && event.detail > 0) openReview(index);
       });
-      wrap.append(img, num, state);
+      wrap.append(img, state);
       strip.appendChild(wrap);
     });
     strip.hidden = batchItems.length === 0;
-    $("#imageCount").textContent = `${batchItems.length} plagg`;
-    $("#imageCount").hidden = batchItems.length === 0;
-    $("#resetBtn").hidden = batchItems.length === 0;
     updateWorkspaceState();
   }
 
@@ -591,17 +586,33 @@
   }
 
   function goBackFromVision() {
-    if (batchItems.length || stagedItem) {
-      const leave = confirm("Vill du lämna Vision? Bilderna i den här omgången tas bort.");
-      if (!leave) return;
+    if (!$("visionCard")?.hidden) {
+      showStage("captureCard");
+      updateBatchStrip();
+      return;
     }
+    if (!$("editCard")?.hidden) {
+      openReview(currentIndex);
+      return;
+    }
+    if (!$("previewCard")?.hidden) {
+      showStage("editCard");
+      return;
+    }
+    if (!$("seriesDoneCard")?.hidden) {
+      showStage("captureCard");
+      updateBatchStrip();
+      return;
+    }
+    // Från Vision-start/arbetsytan går Tillbaka till Dashboard.
+    // Pågående lokala bilder raderas inte av bakåtknappen.
     window.location.href = "../dashboard/index.html";
   }
 
   // Kamera / fotograferingsflöde
   $("#startCameraBtn").addEventListener("click", startCamera);
   $("#galleryBtn").addEventListener("click", () => $("#galleryInput").click());
-  $("#backBtn").addEventListener("click", goBackFromVision);
+  $("#headerBackBtn")?.addEventListener("click", goBackFromVision);
   $("#galleryInput").addEventListener("change", (event) => handleGalleryFiles(event.target.files));
   $("#cameraFallbackInput").addEventListener("change", (event) => handleFallbackCamera(event.target.files));
   $("#closeCameraBtn").addEventListener("click", closeCamera);
@@ -637,7 +648,7 @@
   $("#addNewConditionBtn").addEventListener("click", addNewCondition);
   $("#closeExtrasBtn")?.addEventListener("click", closeOptionalExtras);
   $("#extrasDoneBtn")?.addEventListener("click", closeOptionalExtras);
-  $("#resetBtn").addEventListener("click", resetAll);
+
   $$('[data-copy]').forEach((button) => button.addEventListener("click", () => copyPreview(button.dataset.copy)));
   $$('[data-demo]').forEach((button) => button.addEventListener("click", () => chooseDemo(button.dataset.demo)));
 

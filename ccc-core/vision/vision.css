@@ -2385,3 +2385,9 @@ body{min-height:100dvh}
   .batch-thumb .thumb-status.is-working{animation:none;background:#ef8b22}
   .batch-thumb .thumb-status.is-ready{animation:none}
 }
+
+
+/* v2.7.6 – gemensam bakåtnavigering i headern och renare miniatyrer */
+.ccc-header-back svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.batch-thumb > span:not(.thumb-status){display:none!important}
+.capture-heading-tools-only:has(.capture-head-tools:empty){display:none}
