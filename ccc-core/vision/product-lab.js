@@ -509,6 +509,10 @@
     item.approved = true;
     rememberApprovedItem(item);
     saveBatchMetadata();
+    if (editReturnView === "done") {
+      finishBatch();
+      return;
+    }
     moveToNextItem();
   }
 
@@ -560,25 +564,60 @@
     openReview(Math.min(last.index, batchItems.length - 1));
   }
 
+  function readyItemTitle(item, index) {
+    const fields = item?.editedFields || item?.visionResult?.fields || {};
+    return (fields.title || item?.visionResult?.summaryTitle || `Plagg ${index + 1}`).trim();
+  }
+
+  function renderReadyPublishList() {
+    const list = $("#readyPublishList");
+    if (!list) return;
+    list.innerHTML = "";
+    const ready = batchItems.map((item, index) => ({ item, index })).filter(({ item }) => item.approved);
+    ready.forEach(({ item, index }) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "ready-publish-item";
+      button.setAttribute("aria-label", `Öppna ${readyItemTitle(item, index)} för redigering`);
+      const img = document.createElement("img");
+      img.src = item.previewUrl;
+      img.alt = "";
+      const copy = document.createElement("span");
+      copy.className = "ready-publish-copy";
+      const title = document.createElement("strong");
+      title.textContent = readyItemTitle(item, index);
+      const status = document.createElement("small");
+      status.textContent = "✓ Klar";
+      copy.append(title, status);
+      const arrow = document.createElement("span");
+      arrow.className = "ready-publish-arrow";
+      arrow.setAttribute("aria-hidden", "true");
+      arrow.textContent = "›";
+      button.append(img, copy, arrow);
+      button.addEventListener("click", () => {
+        currentIndex = index;
+        editReturnView = "done";
+        populateFormFromItem();
+        showStage("editCard", "edit");
+      });
+      list.appendChild(button);
+    });
+    const publish = $("#publishReadyBtn");
+    if (publish) publish.textContent = `Publicera ${ready.length} ${ready.length === 1 ? "plagg" : "plagg"}`;
+  }
+
   function finishBatch() {
     const approved = batchItems.filter((item) => item.approved).length;
     $("#seriesDoneText").textContent = `${approved} ${approved === 1 ? "plagg är" : "plagg är"} ${approved === 1 ? "klart" : "klara"} att publiceras.`;
+    renderReadyPublishList();
     saveBatchMetadata();
     showStage("seriesDoneCard", "done");
   }
 
   function newSeries() {
-    batchItems.forEach((item) => {
-      if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
-      item.extraUrls?.forEach((url) => URL.revokeObjectURL(url));
-    });
-    batchItems = [];
-    currentIndex = 0;
-    trashStack = [];
-    localStorage.removeItem("ccc-vision-batch-meta");
-    updateBatchStrip();
+    // Behåll den färdiga publiceringskön och fortsätt fotografera i samma Vision-session.
     resetCaptureVisual();
-    showVisionStart();
+    showWorkspace();
   }
 
   function saveBatchMetadata() {
@@ -816,9 +855,17 @@
   $("#sameGarmentInput").addEventListener("change", (event) => addSameGarmentFiles(event.target.files));
   $("#trashCurrentBtn").addEventListener("click", trashCurrent);
   $("#undoTrashBtn").addEventListener("click", undoTrash);
-  $("#backToSuggestionBtn").addEventListener("click", () => openReview(currentIndex));
+  $("#backToSuggestionBtn").addEventListener("click", () => {
+    if (editReturnView === "done") { finishBatch(); return; }
+    openReview(currentIndex);
+  });
   $("#previewBtn").addEventListener("click", saveEditedAndNext);
   $("#newSeriesBtn").addEventListener("click", newSeries);
+  $("#publishReadyBtn")?.addEventListener("click", () => {
+    // Publicera-modulen kopplas hit när den är klar. Kön ligger kvar lokalt.
+    saveBatchMetadata();
+  });
+
 
   // Existerande extrafunktioner
   $("#usePriceSuggestionBtn").addEventListener("click", usePriceSuggestion);
