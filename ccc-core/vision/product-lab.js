@@ -35,6 +35,12 @@
   const savedCccTheme = localStorage.getItem("ccc-theme");
   const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)").matches;
   applyCccTheme(savedCccTheme || (prefersDark ? "dark" : "light"));
+  const privacyNote = $("#privacyNote");
+  if (privacyNote) {
+    privacyNote.textContent = window.CCC_VISION_AI?.configured?.()
+      ? "Originalbilderna stannar på enheten. En komprimerad kopia skickas endast för analys."
+      : "Originalbilderna stannar på den här enheten.";
+  }
   themeButton?.addEventListener("click", () => applyCccTheme(rootElement.dataset.theme === "dark" ? "light" : "dark"));
   profileButton?.addEventListener("click", (event) => { event.stopPropagation(); setProfileMenu(profileMenu?.hidden ?? true); });
   document.addEventListener("click", (event) => {
@@ -46,6 +52,7 @@
   const currentItem = () => batchItems[currentIndex] || null;
   const currentDemo = () => {
     const item = currentItem();
+    if (item?.visionResult) return item.visionResult;
     const key = item?.demoKey || "arsenal";
     return window.CCC_VISION_DEMOS?.[key] || window.CCC_VISION_DEMO;
   };
@@ -83,14 +90,29 @@
 
   function startSilentAnalysis(item) {
     item.visionReady = false;
-    const delay = 650 + Math.floor(Math.random() * 450);
-    item.analysisPromise = new Promise((resolve) => {
-      setTimeout(() => {
-        item.visionResult = window.CCC_VISION_DEMOS?.[item.demoKey] || window.CCC_VISION_DEMO;
-        item.visionReady = true;
-        resolve(item.visionResult);
-      }, delay);
-    });
+    item.analysisMode = window.CCC_VISION_AI?.configured?.() ? "ai" : "demo";
+    item.analysisError = "";
+    const files = [item.file, ...(item.extraFiles || [])].filter(Boolean).slice(0, 3);
+
+    item.analysisPromise = (async () => {
+      if (item.analysisMode === "ai") {
+        try {
+          item.visionResult = await window.CCC_VISION_AI.analyze(files);
+          item.visionReady = true;
+          return item.visionResult;
+        } catch (error) {
+          console.warn("CCC Vision AI föll tillbaka till demo:", error);
+          item.analysisError = error?.message || "AI-analysen misslyckades.";
+          item.analysisMode = "demo";
+        }
+      }
+
+      // Säkert demoläge tills AI-endpointen är ansluten, eller om testanropet misslyckas.
+      await new Promise((resolve) => setTimeout(resolve, 650 + Math.floor(Math.random() * 450)));
+      item.visionResult = window.CCC_VISION_DEMOS?.[item.demoKey] || window.CCC_VISION_DEMO;
+      item.visionReady = true;
+      return item.visionResult;
+    })();
     return item.analysisPromise;
   }
 
@@ -245,13 +267,14 @@
     $("#summaryTitle").textContent = demo.summaryTitle;
     $("#summaryBrand").textContent = demo.summaryBrand;
     $("#summarySeason").textContent = demo.summarySeason;
-    $("#confidencePill").textContent = item.extraFiles.length ? "Säkerheten är hög" : demo.confidence;
+    $("#confidencePill").textContent = item.extraFiles.length && item.analysisMode === "ai" ? "Säkerheten är hög" : demo.confidence;
     $("#batchProgress").textContent = `${currentIndex + 1} av ${batchItems.length}`;
     $("#visionThumbnail").src = item.previewUrl;
     $("#visionThumbnail").hidden = false;
+    const modeNote = item.analysisMode === "ai" ? "CCC Vision analyserade bilden med AI." : "Testläge – AI är inte ansluten ännu.";
     $("#visionHint").textContent = item.extraFiles.length
-      ? `${item.extraFiles.length + 1} bilder används för det här plagget.`
-      : "Vill du visa mer av just det här plagget kan du lägga till fler bilder.";
+      ? `${item.extraFiles.length + 1} bilder används för det här plagget. ${modeNote}`
+      : `${modeNote} Vill du visa mer av just det här plagget kan du lägga till fler bilder.`;
     $("#correctionBox").hidden = true;
     updateBatchStrip();
     showStage("visionCard");
@@ -416,14 +439,16 @@
 
   function updateSmartSuggestions() {
     const demo = currentDemo();
-    $("#priceSuggestion").textContent = `${demo?.priceSuggestion || 795} kr`;
-    const fact = demo?.fact || "Ett kort extra fakta kan läggas till om du vill.";
-    const preview = $("#factSuggestionPreview");
-    if (preview) preview.textContent = fact;
+    const priceSuggestion = Number(demo?.priceSuggestion || 0);
+    $("#priceSuggestion").textContent = priceSuggestion > 0 ? `${priceSuggestion} kr` : "Ingen prisbedömning";
+    $("#usePriceSuggestionBtn").disabled = priceSuggestion <= 0;
+    $("#factSuggestionText").textContent = demo?.fact || "Ett kort extra fakta kan läggas till om du vill.";
   }
 
   function usePriceSuggestion() {
-    $("#price").value = currentDemo()?.priceSuggestion || 795;
+    const suggestion = Number(currentDemo()?.priceSuggestion || 0);
+    if (suggestion <= 0) return;
+    $("#price").value = suggestion;
     updateTextPreviews();
     scheduleSave();
   }
@@ -439,7 +464,7 @@
 
   function addFact() {
     const fact = currentDemo()?.fact;
-    if (fact) appendToDescription(`Visste du? ${fact}`);
+    if (fact) appendToDescription(`Visste du?\n${fact}`);
     $("#addFactBtn").textContent = "Tillagt i beskrivningen ✓";
     $("#addFactBtn").disabled = true;
   }
@@ -451,7 +476,7 @@
   }
 
   function closeOptionalExtras() {
-    const details = $("#optionalExtras");
+    const details = $("#optionalExtrasDetails");
     if (details) details.open = false;
   }
 
@@ -521,9 +546,8 @@
   $("#usePriceSuggestionBtn").addEventListener("click", usePriceSuggestion);
   $("#addFactBtn").addEventListener("click", addFact);
   $("#addNewConditionBtn").addEventListener("click", addNewCondition);
-  $("#closeOptionalExtrasBtn")?.addEventListener("click", closeOptionalExtras);
-  $("#cancelOptionalExtrasBtn")?.addEventListener("click", closeOptionalExtras);
-  $("#doneOptionalExtrasBtn")?.addEventListener("click", closeOptionalExtras);
+  $("#closeExtrasBtn")?.addEventListener("click", closeOptionalExtras);
+  $("#extrasDoneBtn")?.addEventListener("click", closeOptionalExtras);
   $("#resetBtn").addEventListener("click", resetAll);
   $$('[data-copy]').forEach((button) => button.addEventListener("click", () => copyPreview(button.dataset.copy)));
   $$('[data-demo]').forEach((button) => button.addEventListener("click", () => chooseDemo(button.dataset.demo)));

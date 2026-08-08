@@ -5,7 +5,7 @@ Syfte
 -----
 Vision hjälper användaren från foto till ett färdigt, redigerbart produktförslag. Arbetsflödet prioriteras före AI-tekniken.
 
-Aktuellt – v2.5.9
+Aktuellt – v2.6.0
 ------------------
 - Dashboard öppnar Vision direkt.
 - Första Vision-skärmen har tre fristående kort direkt på CCC-bakgrunden: Ta ett foto, Välj från enheten och Tillbaka.
@@ -23,7 +23,9 @@ Aktuellt – v2.5.9
 - Extra bilder på samma plagg läggs bara till vid behov, högst två extra i nuvarande testflöde.
 - Slutvyn innehåller Alla plagg klara, Fota fler plagg och Till dashboard.
 - Bilderna är local-first. Råbilder laddas inte till Firebase som mellanlager.
-- Vision-resultaten är fortfarande simulerade; riktig AI kopplas in senare.
+- Vision kan nu använda riktig AI via en säker server/Cloudflare Worker. Om endpointen inte är konfigurerad faller den tillbaka till tydligt märkt demoläge.
+- Bilder är fortfarande local-first. För AI-analys skickas endast en till tre komprimerade analyskopior till AI-endpointen; originalbilderna sparas inte i Firebase eller Worker.
+- OpenAI API-nyckeln får aldrig läggas i Vision/HTML/JS som körs i webbläsaren.
 
 Design
 ------
@@ -31,7 +33,11 @@ Vision ska använda samma CCC-skal som dashboarden. Versionsnumret visas via ../
 
 Nästa
 -----
-Finputs av kamera/design, därefter Firebase för relevant runtime/metadata och återupptagning – utan att göra Firebase till mellanlager för opublicerade råbilder.
+1. Publicera `cloudflare-worker.js` som en Cloudflare Worker.
+2. Lägg `OPENAI_API_KEY` som Worker Secret och sätt `ALLOWED_ORIGINS` till den/de CCC-adresser som ska få anropa den.
+3. Skriv Worker-adressen i `vision-ai-config.js` under `endpoint`.
+4. Testa med en verklig tröja och finslipa prompt/resultat.
+5. Firebase tas därefter bara in där synk, konto eller publicering faktiskt kräver det – inte som mellanlager för råbilder.
 
 v2.5.3
 - Justerad storlekshierarki på Vision-starten efter mobiltest.
@@ -92,3 +98,13 @@ v2.5.10 – centrerad modulidentitet
 - “VISION” och “Foto & produktanalys” centreras.
 - Modulmarkören matchar Arbetsytans två-radersstruktur storleksmässigt.
 - Inga ändringar av Vision-flöde, kamera eller kortfunktioner.
+
+
+v2.6.0 – riktig AI förberedd
+- `vision-ai.js` läser och komprimerar en till tre bilder för analys utan att ersätta originalfilerna.
+- `vision-ai-config.js` håller endast endpoint-konfiguration; inga hemligheter får finnas där.
+- `cloudflare-worker.js` är serverdelen som anropar OpenAI Responses API och returnerar ett strukturerat produktförslag.
+- Worker-anropet använder `store: false`.
+- Standardmodell i Worker är `gpt-5.6-terra`, men kan bytas med miljövariabeln `OPENAI_MODEL`.
+- Om AI inte är ansluten eller testanropet misslyckas fortsätter prototypen i demo, och förslagsvyn markerar att det är testläge.
+- Högerpilen på Vision-kortet “Tillbaka” är borttagen; endast vänsterpilen visas.

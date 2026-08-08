@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#f7f7f9">
-  <title>CCC Vision v2.5.10</title>
+  <title>CCC Vision v2.6.0</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-  <link rel="stylesheet" href="vision.css?v=2.5.10">
+  <link rel="stylesheet" href="vision.css?v=2.6.0">
 </head>
 <body>
   <header class="app-header ccc-header" aria-label="CCC-huvudmeny">
@@ -74,7 +74,6 @@
           <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
         </span>
         <span class="vision-card-text"><strong>Tillbaka</strong><small>Återgå till föregående sida</small></span>
-        <span class="vision-card-arrow" aria-hidden="true">›</span>
       </button>
       <input id="galleryInput" class="visually-hidden" type="file" accept="image/*" multiple>
       <input id="cameraFallbackInput" class="visually-hidden" type="file" accept="image/*" capture="environment">
@@ -88,7 +87,7 @@
       <button id="showSuggestionBtn" class="primary-button capture-next" type="button" hidden>Granska plaggen</button>
 
 
-      <p class="privacy-note">Bilderna stannar lokalt i prototypen.</p>
+      <p id="privacyNote" class="privacy-note">Originalbilderna stannar på den här enheten.</p>
     </section>
 
     <div id="cameraOverlay" class="camera-overlay" hidden>
@@ -301,8 +300,10 @@
   </main>
   <div id="undoToast" class="undo-toast" hidden><span>Flyttad till papperskorgen</span><button id="undoTrashBtn" type="button">Ångra</button></div>
 
-  <script src="../version.js?v=2.5.6"></script>
-  <script src="demo-data.js?v=2.5.6"></script>
-  <script src="product-lab.js?v=2.5.6"></script>
+  <script src="../version.js?v=2.6.0"></script>
+  <script src="demo-data.js?v=2.6.0"></script>
+  <script src="vision-ai-config.js?v=2.6.0"></script>
+  <script src="vision-ai.js?v=2.6.0"></script>
+  <script src="product-lab.js?v=2.6.0"></script>
 </body>
 </html>
