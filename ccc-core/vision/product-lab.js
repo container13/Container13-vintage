@@ -672,7 +672,7 @@
   }
 
   function formatSek(value) {
-    return `${Number(value || 0).toLocaleString("sv-SE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} kr`;
+    return `${Number(value || 0).toLocaleString("sv-SE", { minimumFractionDigits: 6, maximumFractionDigits: 6 })} kr`;
   }
 
   async function refreshCostUi() {
