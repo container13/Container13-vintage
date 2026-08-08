@@ -121,3 +121,14 @@ CCC v2.7.0 – Vision arbetsyta + kunskapsbank grund
 - Fixat API-kontrakt: klient skickar images[] (1–3) som Workern kräver och läser Worker-resultat från result.
 - Worker returnerar OpenAI usage/model för framtida faktisk kostnadsberäkning.
 - OBS: cloudflare-worker.js måste deployas i Cloudflare Worker separat för att usage/model-ändringen ska bli aktiv.
+
+CCC Vision v2.7.6: header-bakåt, bort med plaggantal och gamla gula nummermarkörer.
+
+
+CCC v2.7.12 – Vision-inställningar och kostnad
+- Automatisk AI-analys kan slås av/på lokalt i Inställningar.
+- När automatisk AI är av görs inga AI-anrop utan aktivt val via "Analysera med AI".
+- AI-kostnad mäts från faktisk tokenanvändning och kan visas/döljas i Vision.
+- Kostnadsvisningen är ungefärlig i SEK; underlaget sparas lokalt i IndexedDB.
+- Lokalt lärande från godkännanden/rättningar kan slås av/på.
+- Nästa planerade steg: fylla CCC:s lokala/base football knowledge bank från 1986 och framåt, inkl. landslag.
