@@ -5,18 +5,18 @@ Syfte
 -----
 Vision hjälper användaren från foto till ett färdigt, redigerbart produktförslag. Arbetsflödet prioriteras före AI-tekniken.
 
-Aktuellt – v2.5.6
+Aktuellt – v2.5.7
 ------------------
 - Dashboard öppnar Vision direkt.
-- Första Vision-skärmen har tre tydliga kort: Ta ett foto, Välj från kamerarullen och Tillbaka.
-- Ta ett foto är största/primära kortet. Kamerarullen använder samma designspråk men lägre visuell tyngd. Tillbaka är ett mindre navigationskort.
+- Första Vision-skärmen har tre fristående kort direkt på CCC-bakgrunden: Ta ett foto, Välj från enheten och Tillbaka.
+- Ta ett foto är största/primära kortet. Välj från enheten är nästan lika stort. Tillbaka är ett mindre navigationskort.
 - Den stora fotoytan är själva kameraknappen; ingen separat Börja fota-knapp används.
 - ← Tillbaka går direkt till dashboard om inget arbete påbörjats. Finns bilder i aktuell omgång frågar CCC innan Vision lämnas.
 - Reset-pilen visas först när det faktiskt finns ett påbörjat Vision-utkast och använder enkel text: Börja om.
 - Demo-val visas inte längre på den vanliga första Vision-skärmen.
 - Ett foto per plagg är standard.
 - CCC förbereder förslag tyst i bakgrunden medan användaren fortsätter fotografera.
-- Kamerarulle kan ge flera plagg; varje vald bild behandlas som ett plagg.
+- Välj från enheten kan ge flera plagg; varje vald bild behandlas som ett plagg.
 - Efter fotograferingen granskas plaggen ett i taget.
 - Godkänn & nästa går vidare direkt.
 - Ändra öppnar kompakt redigering och Spara & nästa fortsätter.
@@ -64,3 +64,11 @@ v2.5.6
 - Ikoner och rubriker är större för bättre touch/premiumkänsla.
 - Startvyn ska fortfarande rymmas utan scroll på normal mobilhöjd.
 - Korrigerade ett CSS-radbrytningsfel från v2.5.5 så den versionens tillägg verkligen appliceras.
+
+
+v2.5.7
+- Vision-startens stora omslutande panel är borttagen; de tre valen ligger som fristående action-kort direkt på appbakgrunden, som i Dashboard.
+- "Välj från kamerarullen" heter nu "Välj från enheten" för att fungera på mobil, Chromebook och dator.
+- Hjälptexten är enhetsneutral: "Välj bilder som redan finns sparade".
+- Kortens färgtoner, radier, skuggor och mobilmarginaler följer Dashboard närmare.
+- Foto är primärt, Välj från enheten sekundärt och Tillbaka navigation.
