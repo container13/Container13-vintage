@@ -23,3 +23,9 @@ v2.5.10
 - Arbetsytan får samma två-raders modulidentitet som Vision.
 - Visar “ARBETSYTA” och “Välj vad du vill göra”, centrerat.
 - Samma storlek, rytm och placering som Vision-markören för tydlig men enhetlig navigation.
+
+
+v2.5.11
+- Arbetsytan visar endast “ARBETSYTA”.
+- Underraden är medvetet tom tills vi hittar en text som faktiskt tillför något.
+- Samma reserverade höjd behålls som i Vision så modulmarkörerna fortsätter ligga i samma rytm.

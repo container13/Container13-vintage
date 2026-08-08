@@ -637,6 +637,7 @@ body{min-height:100dvh}
   font-size:.75rem;
   line-height:1.2;
   font-weight:650;
+  min-height:.9em; /* reserverar andra raden tills vi hittar rätt text */
 }
 @media(max-width:480px){
   .dashboard-module-marker{width:calc(100vw - 32px);min-height:50px;margin-top:2px;padding:6px 2px 7px}
