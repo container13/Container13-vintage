@@ -111,3 +111,13 @@ CCC Local Workspace 1.3
 - Mina bilder visar aldrig tomläget när lokala bilder finns.
 - Rubrik, Lägg till-knapp, markeringsrad, bildlista och Publicera hålls visuellt åtskilda på mobil.
 - Bildlistan har säker nederkant så sista kortet inte hamnar bakom Publicera.
+
+CCC v2.7.0 – Vision arbetsyta + kunskapsbank grund
+- Efter Klar stannar användaren på Vision-arbetsytan medan analys körs i bakgrunden.
+- Miniatyr = ett plagg. Klick markerar plagg; "Komplettera markerat plagg" lägger extra bilder på just det plagget.
+- Visa förslag är grå/inaktiv tills minst ett resultat är klart; därefter kan färdiga plagg granskas medan övriga fortsätter analyseras.
+- IndexedDB-grund för lokal learned knowledge och Vision-mätvärden.
+- football-base.json seedar bankformatet; 1986 är startgräns, aldrig utrensningsgräns; landslag separat.
+- Fixat API-kontrakt: klient skickar images[] (1–3) som Workern kräver och läser Worker-resultat från result.
+- Worker returnerar OpenAI usage/model för framtida faktisk kostnadsberäkning.
+- OBS: cloudflare-worker.js måste deployas i Cloudflare Worker separat för att usage/model-ändringen ska bli aktiv.
