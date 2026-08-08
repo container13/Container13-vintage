@@ -683,6 +683,31 @@
     if (!visible) { $("#visionCostPopover")?.setAttribute("hidden", ""); return; }
     const sessionSek = batchItems.reduce((sum, item) => sum + Number(item.aiCostSek || 0), 0);
     if ($("#visionSessionCost")) $("#visionSessionCost").textContent = `Den här sessionen: ${formatSek(sessionSek)}`;
+
+    const latestAiItem = [...batchItems].reverse().find((item) => item.aiUsage || item.aiModel);
+    const debug = $("#visionCostDebug");
+    if (debug) {
+      if (!latestAiItem) {
+        debug.textContent = "Diagnostik: väntar på nästa AI-analys.";
+      } else {
+        const usage = latestAiItem.aiUsage || {};
+        const inputTokens = usage.input_tokens ?? usage.inputTokens ?? usage.prompt_tokens ?? usage.promptTokens ?? null;
+        const outputTokens = usage.output_tokens ?? usage.outputTokens ?? usage.completion_tokens ?? usage.completionTokens ?? null;
+        const totalTokens = usage.total_tokens ?? usage.totalTokens ?? null;
+        const model = latestAiItem.aiModel || "modell saknas";
+        const usageState = latestAiItem.aiUsage ? "usage mottagen" : "usage saknas";
+        debug.textContent = `Diagnostik: ${usageState} · modell ${model} · input ${inputTokens ?? "?"} · output ${outputTokens ?? "?"}${totalTokens != null ? ` · total ${totalTokens}` : ""}`;
+        console.info("[CCC Vision] Kostnadsdiagnostik", {
+          model,
+          usage: latestAiItem.aiUsage || null,
+          inputTokens,
+          outputTokens,
+          totalTokens,
+          estimatedSek: Number(latestAiItem.aiCostSek || 0)
+        });
+      }
+    }
+
     try {
       const start = new Date(); start.setHours(0,0,0,0);
       const today = await window.CCC_VISION_KNOWLEDGE?.costSummarySince?.(start.toISOString());
