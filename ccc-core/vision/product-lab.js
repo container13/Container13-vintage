@@ -14,7 +14,7 @@
   let visionView = "start";
   let editReturnView = "suggestion";
 
-  const VISION_SETTING_DEFAULTS = { aiAuto: true, showCost: true, learnEdits: true };
+  const VISION_SETTING_DEFAULTS = { aiAuto: true, learnEdits: true };
   function readBoolSetting(key, fallback) {
     const value = localStorage.getItem(key);
     return value === null ? fallback : value === "true";
@@ -22,9 +22,41 @@
   function visionSettings() {
     return {
       aiAuto: readBoolSetting("ccc-vision-ai-auto", VISION_SETTING_DEFAULTS.aiAuto),
-      showCost: readBoolSetting("ccc-vision-show-cost", VISION_SETTING_DEFAULTS.showCost),
       learnEdits: readBoolSetting("ccc-vision-learn-edits", VISION_SETTING_DEFAULTS.learnEdits)
     };
+  }
+
+  const visionSettingsButton = $("#visionSettingsBtn");
+  const visionSettingsOverlay = $("#visionSettingsOverlay");
+  const visionSettingsCloseButton = $("#visionSettingsCloseBtn");
+  const visionAiAutoSetting = $("#visionAiAutoSetting");
+  const visionLearnEditsSetting = $("#visionLearnEditsSetting");
+  let visionSettingsSavedTimer;
+
+  function syncVisionSettingsPanel() {
+    const settings = visionSettings();
+    if (visionAiAutoSetting) visionAiAutoSetting.checked = settings.aiAuto;
+    if (visionLearnEditsSetting) visionLearnEditsSetting.checked = settings.learnEdits;
+  }
+  function setVisionSettingsOpen(open) {
+    if (!visionSettingsOverlay) return;
+    if (open) syncVisionSettingsPanel();
+    visionSettingsOverlay.hidden = !open;
+    visionSettingsButton?.setAttribute("aria-expanded", String(open));
+  }
+  function saveVisionSetting(key, value) {
+    localStorage.setItem(key, String(value));
+    const saved = $("#visionSettingsSaved");
+    if (saved) {
+      saved.textContent = "Sparat ✓";
+      clearTimeout(visionSettingsSavedTimer);
+      visionSettingsSavedTimer = setTimeout(() => saved.textContent = "", 1200);
+    }
+    if (key === "ccc-vision-ai-auto" && privacyNote) {
+      privacyNote.textContent = window.CCC_VISION_AI?.configured?.() && value
+        ? "Originalbilderna stannar på enheten. En komprimerad kopia skickas endast för analys."
+        : "Originalbilderna stannar på den här enheten.";
+    }
   }
 
 
@@ -61,7 +93,7 @@
   document.addEventListener("click", (event) => {
     if (profileMenu && !profileMenu.hidden && !profileMenu.contains(event.target) && event.target !== profileButton) setProfileMenu(false);
   });
-  document.addEventListener("keydown", (event) => { if (event.key === "Escape") { setProfileMenu(false); const pop=$("#visionCostPopover"); if(pop) pop.hidden=true; } });
+  document.addEventListener("keydown", (event) => { if (event.key === "Escape") { setProfileMenu(false); setVisionSettingsOpen(false); const pop=$("#visionCostPopover"); if(pop) pop.hidden=true; } });
   document.addEventListener("click", (event) => { const pop=$("#visionCostPopover"); const btn=$("#visionCostBtn"); if(pop && !pop.hidden && !pop.contains(event.target) && event.target !== btn){ pop.hidden=true; btn?.setAttribute("aria-expanded","false"); } });
 
   const uid = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
@@ -745,6 +777,12 @@
         window.location.assign("../dashboard/index.html");
     }
   }
+
+  $("#visionSettingsBtn")?.addEventListener("click", () => setVisionSettingsOpen(true));
+  $("#visionSettingsCloseBtn")?.addEventListener("click", () => setVisionSettingsOpen(false));
+  $("#visionSettingsOverlay")?.addEventListener("click", (event) => { if (event.target === visionSettingsOverlay) setVisionSettingsOpen(false); });
+  $("#visionAiAutoSetting")?.addEventListener("change", (event) => saveVisionSetting("ccc-vision-ai-auto", event.target.checked));
+  $("#visionLearnEditsSetting")?.addEventListener("change", (event) => saveVisionSetting("ccc-vision-learn-edits", event.target.checked));
 
   // Kamera / fotograferingsflöde
   $("#startCameraBtn").addEventListener("click", startCamera);
