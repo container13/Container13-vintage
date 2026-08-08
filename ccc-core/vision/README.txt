@@ -72,3 +72,10 @@ v2.5.7
 - Hjälptexten är enhetsneutral: "Välj bilder som redan finns sparade".
 - Kortens färgtoner, radier, skuggor och mobilmarginaler följer Dashboard närmare.
 - Foto är primärt, Välj från enheten sekundärt och Tillbaka navigation.
+
+
+V2.5.8 – Dashboard-synk av Vision-start
+- Vision-startens tre val använder samma visuella uppbyggnad som Dashboard: diskret ikon till vänster, vänsterställd text och pil till höger.
+- Emojiikoner på startvyn ersatta av enkla linjeikoner i samma stil som Dashboard.
+- Kortens proportioner, avstånd och färghierarki synkas med Dashboard utan att ändra Vision-flödet.
+- Vision-headerns mobila placering låses till samma höjd/padding som Dashboard.
