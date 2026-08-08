@@ -2164,3 +2164,9 @@ body{min-height:100dvh}
     padding-top:4px;
   }
 }
+
+
+/* v2.5.10: modulrubriken centreras och matchar Arbetsyta rad för rad. */
+.vision-module-marker{align-items:center;text-align:center}
+.vision-module-kicker{justify-content:center}
+.vision-module-subtitle{padding-left:0}

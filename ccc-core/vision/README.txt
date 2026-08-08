@@ -86,3 +86,9 @@ v2.5.9 – Modulmarkör
 - Vision får en diskret modulmarkör direkt under headern: “VISION” och “Foto & produktanalys”.
 - Syftet är att användaren tydligt ska märka vybytet utan att Vision ser ut som en annan app.
 - Ingen ändring av Vision-flöde, kamera eller kortfunktioner.
+
+
+v2.5.10 – centrerad modulidentitet
+- “VISION” och “Foto & produktanalys” centreras.
+- Modulmarkören matchar Arbetsytans två-radersstruktur storleksmässigt.
+- Inga ändringar av Vision-flöde, kamera eller kortfunktioner.
