@@ -598,3 +598,53 @@ body{min-height:100dvh}
 @keyframes cccWakeGlow{0%{opacity:0}38%{opacity:1}100%{opacity:0}}
 @media(max-width:480px){#homeView{grid-template-rows:minmax(0,1fr);padding-top:4px}#homeView .primary-actions{height:100%}}
 @media(prefers-reduced-motion:reduce){.workspace-arrival .app-header,.workspace-arrival .primary-actions>.action-card,.workspace-arrival .app-shell,.workspace-arrival body::before{animation:none!important}}
+
+
+/* v2.5.10: gemensam två-raders modulidentitet för Arbetsyta/Vision. */
+.dashboard-module-marker {
+  width:min(calc(100vw - 32px),720px);
+  min-height:52px;
+  margin:6px auto 0;
+  padding:7px 3px 8px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  text-align:center;
+  border-bottom:1px solid color-mix(in srgb,var(--gold) 26%,transparent);
+}
+.dashboard-module-kicker {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  color:var(--gold);
+  font-size:.82rem;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:.12em;
+}
+.dashboard-module-dot {
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 10px color-mix(in srgb,var(--gold) 55%,transparent);
+}
+.dashboard-module-subtitle {
+  color:var(--muted);
+  font-size:.75rem;
+  line-height:1.2;
+  font-weight:650;
+}
+@media(max-width:480px){
+  .dashboard-module-marker{width:calc(100vw - 32px);min-height:50px;margin-top:2px;padding:6px 2px 7px}
+  .dashboard{height:calc(100dvh - var(--ccc-header-height) - 52px);min-height:0;padding-top:6px;overflow:hidden}
+  #homeView{height:100%;min-height:0}
+}
+@media(max-height:720px) and (max-width:480px){
+  .dashboard-module-marker{min-height:42px;padding-block:4px}
+  .dashboard-module-subtitle{font-size:.7rem}
+  .dashboard{height:calc(100dvh - var(--ccc-header-height) - 44px);padding-top:4px}
+}

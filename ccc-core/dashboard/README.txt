@@ -17,3 +17,9 @@ Aktuellt – v2.5.0
 Designregel
 -----------
 Dashboardens app-skal, header, logo/halo, temaknapp, profilknapp, ytor, radier, spacing och knappkänsla är facit för övriga CCC-moduler.
+
+
+v2.5.10
+- Arbetsytan får samma två-raders modulidentitet som Vision.
+- Visar “ARBETSYTA” och “Välj vad du vill göra”, centrerat.
+- Samma storlek, rytm och placering som Vision-markören för tydlig men enhetlig navigation.
