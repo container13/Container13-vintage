@@ -130,3 +130,11 @@ v2.7.1
 - Fixad frontend-mappning för nya Worker-svaret (summaryTitle/summaryBrand/summarySeason/fields).
 - Behåller bakåtkompatibilitet med äldre Worker-schema.
 - Ingen ändring av Vision-flödet i denna patch.
+
+
+v2.7.2
+- Ren UI-fix av Vision-arbetsytan under pågående AI-analys.
+- Fångstvalen blir kompakta när minst ett plagg finns och behåller ikon + rubrik + underrad utan överlapp.
+- Arbetsytan får egen vertikal scroll på mobil om innehållet inte ryms.
+- Status, miniatyrer, komplettering och Visa förslag ligger i separata stabila rader.
+- Ingen ändring av AI-logik, Worker eller analysflöde.
