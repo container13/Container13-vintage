@@ -5,7 +5,7 @@ Syfte
 -----
 Vision hjälper användaren från foto till ett färdigt, redigerbart produktförslag. Arbetsflödet prioriteras före AI-tekniken.
 
-Aktuellt – v2.5.5
+Aktuellt – v2.5.6
 ------------------
 - Dashboard öppnar Vision direkt.
 - Första Vision-skärmen har tre tydliga kort: Ta ett foto, Välj från kamerarullen och Tillbaka.
@@ -48,10 +48,19 @@ v2.5.4
 - Papperskorgens Ångra-toast är lägre, ligger ovanför nederkanten/navigeringen och försvinner snabbare.
 - Slutvyn använder användarspråk: “Klart!”, “X plagg är klara att publiceras.” och “Till startsidan”. Firebase nämns inte i användargränssnittet.
 
+
 v2.5.5
 - Frivilliga tillägg förklarar nu exakt vad som läggs till och var det hamnar.
-- “Visste du?” visar förhandsvisning och läggs uttryckligen sist i produktbeskrivningen.
-- “Nyskick” förklaras som ett tillägg sist i produktbeskrivningen.
-- Frivilliga tillägg har tydliga vägar ut: Stäng, Avbryt och Klar.
-- Vision-startens tre val har fått större ytor och större ikoner efter mobiltest; foto störst, kamerarulle näst störst, Tillbaka minst.
-- Papperskorgens Ångra-toast flyttas högre så den inte täcker granskningsknapparna.
+- “Visste du?” visas som en förhandsvisning och läggs sist i produktbeskrivningen först när användaren väljer “Lägg till i beskrivningen”.
+- “Nyskick” förklaras på samma sätt och läggs i nuvarande prototyp sist i beskrivningen.
+- Frivilliga tillägg har tydlig Stäng/Klar-väg så användaren aldrig fastnar i vyn.
+- Vision-startens tre val fyller skärmen bättre och använder större ikoner, med foto störst, kamerarullen näst störst och Tillbaka minst.
+- Papperskorgens Ångra-toast flyttad högre för att inte täcka arbetsknappar.
+
+
+v2.5.6
+- Vision-starten följer nu Dashboard-principen: tre stora kort fyller den tillgängliga mobilskärmen.
+- Foto är störst, kamerarullen näst störst och Tillbaka tydlig navigation.
+- Ikoner och rubriker är större för bättre touch/premiumkänsla.
+- Startvyn ska fortfarande rymmas utan scroll på normal mobilhöjd.
+- Korrigerade ett CSS-radbrytningsfel från v2.5.5 så den versionens tillägg verkligen appliceras.
