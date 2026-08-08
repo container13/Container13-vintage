@@ -138,3 +138,19 @@ v2.7.2
 - Arbetsytan får egen vertikal scroll på mobil om innehållet inte ryms.
 - Status, miniatyrer, komplettering och Visa förslag ligger i separata stabila rader.
 - Ingen ändring av AI-logik, Worker eller analysflöde.
+
+
+v2.7.3
+- Hela plaggminiatyren är klickyta (även själva bilden) och markerar valt plagg tydligt.
+- Ett andra tryck på redan markerad och färdiganalyserad miniatyr öppnar just det plaggets förslag.
+- Huvudknappen visar dynamiskt om den öppnar markerat plagg eller granskar färdiga plagg.
+- Komplettera markerat plagg fortsätter alltid att gälla vald miniatyr.
+
+
+v2.7.4
+- Tog bort den stora textstatusen ovanför miniatyrerna.
+- Varje plagg har nu ett enkelt stoppljus i miniatyrens hörn.
+- Punkten morfar mjukt röd → orange → gul → gulgrön medan CCC arbetar.
+- Fullt grönt betyder alltid att analysen faktiskt är klar.
+- När analysen blir klar pulserar den gröna punkten tre gånger och visar därefter ett fast grönt ✓.
+- Ingen falsk 0–100 %-progress visas.

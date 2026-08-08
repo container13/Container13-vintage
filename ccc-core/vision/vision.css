@@ -2319,3 +2319,25 @@ body{min-height:100dvh}
   #captureCard:has(#imageCount:not([hidden])) .vision-card-text strong { font-size:1rem; }
   #captureCard:has(#imageCount:not([hidden])) .vision-card-text small { font-size:.76rem; }
 }
+
+/* v2.7.3 – valbara plaggminiatyrer */
+.batch-thumb{
+  cursor:pointer;
+  touch-action:manipulation;
+  transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease;
+}
+.batch-thumb img{
+  pointer-events:none;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+.batch-thumb:active{transform:scale(.97)}
+.batch-thumb.is-selected{
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px rgba(215,173,89,.24);
+}
+.batch-thumb:focus-visible{
+  outline:2px solid var(--gold);
+  outline-offset:3px;
+}
+\n\n/* v2.7.4 – enkelt stoppljus på varje plagg.\n   Färgen är en aktivitetsindikator, inte en påhittad procentmätare. */\n.batch-thumb .thumb-status{\n  left:auto;\n  right:5px;\n  top:5px;\n  bottom:auto;\n  width:16px;\n  min-width:16px;\n  height:16px;\n  padding:0;\n  border:2px solid rgba(255,255,255,.92);\n  border-radius:50%;\n  box-shadow:0 1px 5px rgba(0,0,0,.28);\n  font-size:10px;\n  line-height:1;\n  color:#fff;\n  z-index:2;\n}\n.batch-thumb .thumb-status.is-working{\n  background:#d92d20;\n  animation:cccTrafficMorph 7s cubic-bezier(.35,.05,.35,1) forwards;\n}\n@keyframes cccTrafficMorph{\n  0%{background:#d92d20}\n  24%{background:#ef6c24}\n  50%{background:#f4b52b}\n  72%{background:#e4d73c}\n  88%{background:#a9c94b}\n  100%{background:#8fbe4f}\n}\n.batch-thumb .thumb-status.is-ready{\n  background:#25a65a;\n  animation:cccReadyPulse .55s ease-in-out 3;\n}\n@keyframes cccReadyPulse{\n  0%,100%{transform:scale(1);box-shadow:0 1px 5px rgba(0,0,0,.28)}\n  50%{transform:scale(1.24);box-shadow:0 0 0 5px rgba(37,166,90,.18)}\n}\n@media (prefers-reduced-motion:reduce){\n  .batch-thumb .thumb-status.is-working{animation:none;background:#e4d73c}\n  .batch-thumb .thumb-status.is-ready{animation:none}\n}\n

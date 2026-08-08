@@ -128,27 +128,27 @@
   }
 
   function updateWorkspaceState() {
-    const status = $("#visionWorkStatus");
-    const statusText = $("#visionWorkStatusText");
     const review = $("#showSuggestionBtn");
     const addDetail = $("#addToSelectedBtn");
     if (!batchItems.length) {
-      if (status) status.hidden = true;
       if (addDetail) addDetail.hidden = true;
       if (review) { review.hidden = true; review.disabled = true; }
       return;
     }
-    if (status) status.hidden = false;
     if (addDetail) addDetail.hidden = false;
     const ready = batchItems.filter((item) => item.visionReady).length;
-    const working = batchItems.length - ready;
-    if (statusText) statusText.textContent = working
-      ? `${ready} av ${batchItems.length} klara – du kan fortsätta fotografera medan CCC arbetar.`
-      : `${batchItems.length} av ${batchItems.length} klara – förslagen är redo att granskas.`;
     if (review) {
       review.hidden = false;
       review.disabled = ready === 0;
-      review.textContent = ready === 0 ? "CCC analyserar…" : (working ? `Granska ${ready} klara` : "Visa förslag");
+      const selected = batchItems[currentIndex];
+      const selectedReady = !!selected?.visionReady;
+      if (ready === 0) {
+        review.textContent = "CCC analyserar…";
+      } else if (selectedReady) {
+        review.textContent = "Visa förslag för markerat plagg";
+      } else {
+        review.textContent = `Granska ${ready} ${ready === 1 ? "klart plagg" : "klara plagg"}`;
+      }
     }
   }
 
@@ -167,9 +167,17 @@
       const num = document.createElement("span");
       num.textContent = index + 1;
       const state = document.createElement("span");
-      state.className = "thumb-status";
-      state.textContent = item.visionReady ? "✓" : "●";
-      wrap.addEventListener("click", () => { currentIndex = index; updateBatchStrip(); });
+      state.className = `thumb-status ${item.visionReady ? "is-ready" : "is-working"}`;
+      state.textContent = item.visionReady ? "✓" : "";
+      state.setAttribute("aria-hidden", "true");
+      wrap.addEventListener("click", (event) => {
+        const wasSelected = index === currentIndex;
+        currentIndex = index;
+        updateBatchStrip();
+        // Ett andra tryck på en redan markerad, färdiganalyserad miniatyr öppnar just dess förslag.
+        // Första trycket markerar plagget så att användaren fortfarande kan komplettera det med fler bilder.
+        if (wasSelected && item.visionReady && event.detail > 0) openReview(index);
+      });
       wrap.append(img, num, state);
       strip.appendChild(wrap);
     });
@@ -602,6 +610,11 @@
   $("#nextPhotoBtn").addEventListener("click", nextPhoto);
   $("#usePhotoBtn").addEventListener("click", finishCameraSeries);
   $("#showSuggestionBtn").addEventListener("click", () => {
+    const selected = batchItems[currentIndex];
+    if (selected?.visionReady) {
+      openReview(currentIndex);
+      return;
+    }
     const firstReady = batchItems.findIndex((item) => item.visionReady && !item.approved);
     if (firstReady >= 0) openReview(firstReady);
   });
