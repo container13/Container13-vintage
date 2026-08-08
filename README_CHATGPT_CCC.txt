@@ -132,3 +132,9 @@ CCC v2.7.12 – Vision-inställningar och kostnad
 - Kostnadsvisningen är ungefärlig i SEK; underlaget sparas lokalt i IndexedDB.
 - Lokalt lärande från godkännanden/rättningar kan slås av/på.
 - Nästa planerade steg: fylla CCC:s lokala/base football knowledge bank från 1986 och framåt, inkl. landslag.
+
+
+CCC v2.7.14 – kostnadsdiagnostik
+- Tillfällig diagnostik i Vision kostnadsruta visar om OpenAI usage mottas, modell samt input/output/total tokens.
+- Kostnadsvisning kvar med 6 decimaler under felsökningen.
+- Ingen AI-, Worker- eller flödeslogik ändrad.
