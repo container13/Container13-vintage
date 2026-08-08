@@ -21,3 +21,11 @@ Container13 fungerar som första referensimplementation.
 - En README per modulmapp. Samma README uppdateras löpande; nya versions-README skapas inte.
 - Gemensamma filer hålls minimala. `version.js` är gemensam versionskälla.
 
+
+## Navigationsprincip från v2.7.11
+
+- Varje modul ska hålla ett explicit internt vy-state i stället för att gissa aktuell vy via synliga/dolda element.
+- Headerns Tillbaka betyder alltid ett steg bakåt utan att radera pågående arbete.
+- Destruktiva funktioner som Börja om hålls separata från Tillbaka.
+- Vision är pilotmodul för detta mönster; kommande moduler ska kunna följa samma princip.
+- Vid varje release ska `ccc-core/version.js` uppdateras och cache-bumpen i berörda modulfiler verifieras.
