@@ -5,7 +5,7 @@ Syfte
 -----
 Vision hjälper användaren från foto till ett färdigt, redigerbart produktförslag. Arbetsflödet prioriteras före AI-tekniken.
 
-Aktuellt – v2.5.7
+Aktuellt – v2.5.9
 ------------------
 - Dashboard öppnar Vision direkt.
 - Första Vision-skärmen har tre fristående kort direkt på CCC-bakgrunden: Ta ett foto, Välj från enheten och Tillbaka.
@@ -79,3 +79,10 @@ V2.5.8 – Dashboard-synk av Vision-start
 - Emojiikoner på startvyn ersatta av enkla linjeikoner i samma stil som Dashboard.
 - Kortens proportioner, avstånd och färghierarki synkas med Dashboard utan att ändra Vision-flödet.
 - Vision-headerns mobila placering låses till samma höjd/padding som Dashboard.
+
+
+v2.5.9 – Modulmarkör
+- Dashboard och Vision behåller samma header och samma kortspråk.
+- Vision får en diskret modulmarkör direkt under headern: “VISION” och “Foto & produktanalys”.
+- Syftet är att användaren tydligt ska märka vybytet utan att Vision ser ut som en annan app.
+- Ingen ändring av Vision-flöde, kamera eller kortfunktioner.

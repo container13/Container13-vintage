@@ -2095,3 +2095,72 @@ body{min-height:100dvh}
     padding:8px 16px calc(12px + env(safe-area-inset-bottom));
   }
 }
+
+
+/* v2.5.9: tydlig modulidentitet utan att bryta Dashboard-formspråket. */
+.vision-module-marker {
+  width:min(calc(100vw - 32px),720px);
+  min-height:52px;
+  margin:6px auto 0;
+  padding:7px 3px 8px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:2px;
+  border-bottom:1px solid color-mix(in srgb,var(--gold) 26%,transparent);
+}
+.vision-module-kicker {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:var(--gold);
+  font-size:.82rem;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:.12em;
+}
+.vision-module-dot {
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 10px color-mix(in srgb,var(--gold) 55%,transparent);
+}
+.vision-module-subtitle {
+  padding-left:14px;
+  color:var(--muted);
+  font-size:.75rem;
+  line-height:1.2;
+  font-weight:650;
+}
+
+/* Markören tar sin egen lilla rad; arbetskortens uppbyggnad är oförändrad. */
+.vision-shell {
+  height:calc(100dvh - var(--ccc-header-height) - 58px);
+  margin-top:0;
+}
+
+@media (max-width:480px) {
+  .vision-module-marker {
+    width:calc(100vw - 32px);
+    min-height:50px;
+    margin-top:2px;
+    padding:6px 2px 7px;
+  }
+  .vision-shell {
+    height:calc(100dvh - var(--ccc-header-height) - 52px);
+    padding-top:6px;
+  }
+}
+
+@media (max-height:720px) and (max-width:480px) {
+  .vision-module-marker {
+    min-height:42px;
+    padding-block:4px;
+  }
+  .vision-module-subtitle { font-size:.7rem; }
+  .vision-shell {
+    height:calc(100dvh - var(--ccc-header-height) - 44px);
+    padding-top:4px;
+  }
+}
