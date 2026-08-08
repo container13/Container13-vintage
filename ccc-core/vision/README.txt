@@ -5,7 +5,7 @@ Syfte
 -----
 Vision hjälper användaren från foto till ett färdigt, redigerbart produktförslag. Arbetsflödet prioriteras före AI-tekniken.
 
-Aktuellt – v2.5.2
+Aktuellt – v2.5.4
 ------------------
 - Dashboard öppnar Vision direkt.
 - Första Vision-skärmen har tre tydliga kort: Ta ett foto, Välj från kamerarullen och Tillbaka.
@@ -39,3 +39,11 @@ v2.5.3
 - "Välj från kamerarullen" är näst störst.
 - "Tillbaka" är minst och tydligt navigation.
 - Målet är fortsatt att hela startvyn ska rymmas utan scroll på mobil.
+
+
+v2.5.4
+- Vision-starten finputsad efter mobiltest och godkänd mockup: foto störst, kamerarulle tydligt sekundärt kort, Tillbaka kompakt navigationskort.
+- Kamerarullen har ikon, rubrik och kort hjälptext.
+- Tillbaka har tydligare ikon och hjälptext men lägre visuell tyngd.
+- Papperskorgens Ångra-toast är lägre, ligger ovanför nederkanten/navigeringen och försvinner snabbare.
+- Slutvyn använder användarspråk: “Klart!”, “X plagg är klara att publiceras.” och “Till startsidan”. Firebase nämns inte i användargränssnittet.

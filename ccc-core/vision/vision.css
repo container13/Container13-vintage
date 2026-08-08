@@ -1573,3 +1573,97 @@ body{min-height:100dvh}
   #captureCard:has(#imageCount[hidden]) .vision-action-card--gallery { height: 116px; }
   #captureCard:has(#imageCount[hidden]) .vision-action-card--back { height: 70px; }
 }
+
+
+/* v2.5.4: Vision-start enligt mobiltest/mockup + kompakt toast/slutvy. */
+#captureCard:has(#imageCount[hidden]) {
+  grid-template-rows: auto minmax(190px, 1fr) 150px 86px auto;
+  gap: 12px;
+}
+#captureCard:has(#imageCount[hidden]) .main-camera {
+  min-height: 190px;
+}
+#captureCard:has(#imageCount[hidden]) .vision-action-card--gallery {
+  height: 150px;
+  min-height: 150px;
+}
+#captureCard:has(#imageCount[hidden]) .vision-action-card--back {
+  height: 86px;
+  min-height: 86px;
+}
+#captureCard .vision-action-copy {
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+}
+#captureCard .vision-action-copy small {
+  color: var(--muted);
+  font-size: .78rem;
+  line-height: 1.25;
+  font-weight: 650;
+}
+#captureCard .vision-action-card--gallery .vision-action-icon {
+  font-size: 2.15rem;
+}
+#captureCard .vision-action-card--gallery strong {
+  font-size: 1.04rem;
+}
+#captureCard .vision-action-card--back {
+  grid-template-columns: 46px minmax(0, 1fr);
+  place-items: center start;
+  align-content: center;
+  text-align: left;
+  padding: 12px 18px;
+}
+#captureCard .vision-action-card--back .vision-action-copy {
+  justify-items: start;
+}
+#captureCard .vision-action-card--back strong {
+  color: var(--gold-soft);
+  font-size: 1rem;
+}
+#captureCard .vision-action-card--back .vision-action-icon--back {
+  color: var(--gold-soft);
+  font-size: 1.8rem;
+}
+
+.undo-toast {
+  bottom: calc(84px + env(safe-area-inset-bottom));
+  width: min(420px, calc(100vw - 28px));
+  min-height: 52px;
+  padding: 8px 14px;
+  border-radius: 13px;
+  font-size: .86rem;
+}
+.undo-toast button {
+  min-height: 36px;
+  padding: 5px 4px 5px 10px;
+  font-size: .9rem;
+}
+
+.series-done-card #seriesDoneTitle { margin-bottom: 4px; }
+.series-done-card #seriesDoneText { margin: 0 auto; max-width: 340px; }
+.done-dashboard-link { color: var(--text); }
+
+@media (max-width: 480px) {
+  #captureCard:has(#imageCount[hidden]) {
+    grid-template-rows: auto minmax(175px, 1fr) 136px 78px auto;
+    gap: 10px;
+  }
+  #captureCard:has(#imageCount[hidden]) .main-camera { min-height: 175px; }
+  #captureCard:has(#imageCount[hidden]) .vision-action-card--gallery { height: 136px; min-height: 136px; }
+  #captureCard:has(#imageCount[hidden]) .vision-action-card--back { height: 78px; min-height: 78px; }
+  #captureCard .vision-action-card--back { padding-inline: 16px; }
+  .undo-toast { bottom: calc(76px + env(safe-area-inset-bottom)); }
+}
+
+@media (max-height: 760px) and (max-width: 480px) {
+  #captureCard:has(#imageCount[hidden]) {
+    grid-template-rows: auto minmax(150px, 1fr) 118px 68px auto;
+    gap: 8px;
+  }
+  #captureCard:has(#imageCount[hidden]) .main-camera { min-height: 150px; }
+  #captureCard:has(#imageCount[hidden]) .vision-action-card--gallery { height: 118px; min-height: 118px; }
+  #captureCard:has(#imageCount[hidden]) .vision-action-card--back { height: 68px; min-height: 68px; }
+  #captureCard .vision-action-copy small { font-size: .73rem; }
+}

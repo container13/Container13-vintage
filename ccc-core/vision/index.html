@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#f7f7f9">
-  <title>CCC Vision v2.5.2</title>
+  <title>CCC Vision v2.5.4</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-  <link rel="stylesheet" href="vision.css?v=2.5.2">
+  <link rel="stylesheet" href="vision.css?v=2.5.4">
 </head>
 <body>
   <header class="app-header ccc-header" aria-label="CCC-huvudmeny">
@@ -32,7 +32,7 @@
       <p class="profile-name">Magnus Johansson</p>
       <a href="../demo-ui/konto.html">Min profil</a>
       <a href="../demo-ui/installningar.html">Inställningar</a>
-      <a href="../dashboard/index.html">Till dashboard</a>
+      <a href="../dashboard/index.html">Till startsidan</a>
     </div>
   </header>
 
@@ -57,11 +57,17 @@
 
       <button id="galleryBtn" class="vision-action-card vision-action-card--gallery" type="button" aria-label="Välj bilder från kamerarullen">
         <span class="vision-action-icon" aria-hidden="true">🖼️</span>
-        <strong>Välj från kamerarullen</strong>
+        <span class="vision-action-copy">
+          <strong>Välj från kamerarullen</strong>
+          <small>Välj bilder som redan finns i din telefon</small>
+        </span>
       </button>
       <button id="backBtn" class="vision-action-card vision-action-card--back" type="button" aria-label="Tillbaka">
         <span class="vision-action-icon vision-action-icon--back" aria-hidden="true">←</span>
-        <strong>Tillbaka</strong>
+        <span class="vision-action-copy">
+          <strong>Tillbaka</strong>
+          <small>Återgå till föregående sida</small>
+        </span>
       </button>
       <input id="galleryInput" class="visually-hidden" type="file" accept="image/*" multiple>
       <input id="cameraFallbackInput" class="visually-hidden" type="file" accept="image/*" capture="environment">
@@ -207,11 +213,11 @@
 
     <section id="seriesDoneCard" class="card stage-card series-done-card" hidden aria-labelledby="seriesDoneTitle">
       <div class="done-icon" aria-hidden="true">✓</div>
-      <h2 id="seriesDoneTitle">Alla plagg klara</h2>
-      <p id="seriesDoneText" class="vision-hint">Produkterna är godkända lokalt på den här enheten.</p>
+      <h2 id="seriesDoneTitle">Klart!</h2>
+      <p id="seriesDoneText" class="vision-hint">Plaggen är klara att publiceras.</p>
       <div class="done-actions">
         <button id="newSeriesBtn" class="primary-button" type="button">Fota fler plagg</button>
-        <a class="secondary-button done-dashboard-link" href="../dashboard/index.html">Till dashboard</a>
+        <a class="secondary-button done-dashboard-link" href="../dashboard/index.html">Till startsidan</a>
       </div>
     </section>
 
@@ -266,8 +272,8 @@
   </main>
   <div id="undoToast" class="undo-toast" hidden><span>Flyttad till papperskorgen</span><button id="undoTrashBtn" type="button">Ångra</button></div>
 
-  <script src="../version.js?v=2.5.2"></script>
-  <script src="demo-data.js?v=2.5.1"></script>
-  <script src="product-lab.js?v=2.5.1"></script>
+  <script src="../version.js?v=2.5.4"></script>
+  <script src="demo-data.js?v=2.5.4"></script>
+  <script src="product-lab.js?v=2.5.4"></script>
 </body>
 </html>

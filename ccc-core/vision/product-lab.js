@@ -332,7 +332,7 @@
     const toast = $("#undoToast");
     toast.hidden = false;
     clearTimeout(showUndoToast.timer);
-    showUndoToast.timer = setTimeout(() => { toast.hidden = true; }, 5000);
+    showUndoToast.timer = setTimeout(() => { toast.hidden = true; }, 3500);
   }
 
   function undoTrash() {
@@ -346,7 +346,7 @@
 
   function finishBatch() {
     const approved = batchItems.filter((item) => item.approved).length;
-    $("#seriesDoneText").textContent = `${approved} ${approved === 1 ? "produkt är" : "produkter är"} godkända lokalt. Inget har skickats till Firebase.`;
+    $("#seriesDoneText").textContent = `${approved} ${approved === 1 ? "plagg är" : "plagg är"} ${approved === 1 ? "klart" : "klara"} att publiceras.`;
     saveBatchMetadata();
     showStage("seriesDoneCard");
   }
