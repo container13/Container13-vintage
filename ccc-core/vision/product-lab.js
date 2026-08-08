@@ -682,9 +682,23 @@
     button.hidden = !visible;
     if (!visible) { $("#visionCostPopover")?.setAttribute("hidden", ""); return; }
     const sessionSek = batchItems.reduce((sum, item) => sum + Number(item.aiCostSek || 0), 0);
-    if ($("#visionSessionCost")) $("#visionSessionCost").textContent = `Den här sessionen: ${formatSek(sessionSek)}`;
+    const latestAiItem = [...batchItems].reverse().find((item) => item.aiUsage || item.aiModel || item.visionReady);
 
-    const latestAiItem = [...batchItems].reverse().find((item) => item.aiUsage || item.aiModel);
+    // v2.7.15 TEMP DEBUG: visa tokenkedjan direkt på huvudraden så den inte kan missas.
+    const sessionCostEl = $("#visionSessionCost");
+    if (sessionCostEl) {
+      if (!latestAiItem) {
+        sessionCostEl.textContent = `DEBUG v2.7.15 · väntar på AI-analys`;
+      } else {
+        const u = latestAiItem.aiUsage || {};
+        const input = u.input_tokens ?? u.inputTokens ?? u.prompt_tokens ?? u.promptTokens ?? null;
+        const output = u.output_tokens ?? u.outputTokens ?? u.completion_tokens ?? u.completionTokens ?? null;
+        const total = u.total_tokens ?? u.totalTokens ?? null;
+        const model = latestAiItem.aiModel || "saknas";
+        sessionCostEl.textContent = `DEBUG v2.7.15 · usage ${latestAiItem.aiUsage ? "JA" : "NEJ"} · input ${input ?? "?"} · output ${output ?? "?"}${total != null ? ` · total ${total}` : ""} · modell ${model} · ${formatSek(sessionSek)}`;
+      }
+    }
+
     const debug = $("#visionCostDebug");
     if (debug) {
       if (!latestAiItem) {

@@ -202,3 +202,9 @@ v2.7.11
 - Från arbetsytan går Tillbaka till Vision-starten utan att radera den pågående sessionen.
 - Om en pågående session finns när man går tillbaka till Vision-starten visas "Fortsätt pågående arbete" så sessionen kan återupptas utan dataförlust.
 - Strukturen är avsedd som pilot för samma navigationsmönster i kommande CCC-moduler.
+
+
+v2.7.15 DEBUG
+- Tillfällig kostnadsdiagnostik visas direkt på huvudraden i kostnadsrutan.
+- Visar usage JA/NEJ, input/output/total tokens och modell efter nästa AI-analys.
+- Ingen AI-, Worker- eller flödeslogik ändrad.
