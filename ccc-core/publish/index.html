@@ -4,17 +4,31 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f7f7f9">
-<title>CCC Publicera v2.8.3</title>
+<title>CCC Publicera v2.8.5</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-<link rel="stylesheet" href="../dashboard/dashboard.css?v=2.8.2">
-<link rel="stylesheet" href="publish.css?v=2.8.2">
+<link rel="stylesheet" href="../dashboard/dashboard.css?v=2.8.5">
+<link rel="stylesheet" href="publish.css?v=2.8.5">
 </head>
 <body>
 <div class="app-shell publish-shell">
   <header class="app-header ccc-header">
     <a class="brand ccc-brand-mark" href="../dashboard/index.html" aria-label="Till dashboard"><span class="brand-halo ccc-brand-halo" aria-hidden="true"><span class="ccc-aura-arc"></span></span><span class="brand-word ccc-brand-word">CCC</span></a>
-    <div class="header-actions ccc-header-actions"><button id="themeBtn" class="icon-button ccc-icon-button" type="button" aria-label="Växla tema"><svg class="icon icon-theme ccc-icon ccc-icon-theme" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.4 0-.8-.1-1.2A7 7 0 0 1 13.2 3H12Z"/></svg></button></div>
+    <div class="header-actions ccc-header-actions">
+      <button id="themeBtn" class="icon-button ccc-icon-button" type="button" aria-label="Växla tema"><svg class="icon icon-theme ccc-icon ccc-icon-theme" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.4 0-.8-.1-1.2A7 7 0 0 1 13.2 3H12Z"/></svg></button>
+      <button id="profileBtn" class="icon-button ccc-icon-button" type="button" aria-label="Öppna användarmeny" aria-expanded="false"><svg class="icon ccc-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm7 8a7 7 0 0 0-14 0"/></svg></button>
+    </div>
+    <div id="profileMenu" class="profile-menu ccc-profile-menu" hidden>
+      <p class="profile-name">Magnus Johansson</p>
+      <a href="../profile/index.html">Min profil</a>
+      <a href="../settings/index.html">Inställningar</a>
+      <a href="../dashboard/index.html">Till startsidan</a>
+    </div>
   </header>
+
+  <div class="publish-module-marker" aria-label="Aktiv modul: Publicera">
+    <span class="publish-module-kicker"><span class="publish-module-dot" aria-hidden="true"></span>PUBLICERA</span>
+    <span class="publish-module-subtitle">Lokala utkast &amp; publicering</span>
+  </div>
 
   <main class="publish-main">
     <section id="gridView" class="publish-view">
@@ -43,8 +57,7 @@
       <p class="crop-note">WebP skapas lokalt först när du trycker Klar.</p>
     </section>
   </main>
-  <span class="ccc-floating-version">v2.8.3</span>
 </div>
-<script type="module" src="publish.js?v=2.8.2"></script>
+<script type="module" src="publish.js?v=2.8.5"></script>
 </body>
 </html>

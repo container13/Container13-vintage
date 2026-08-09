@@ -5,3 +5,24 @@
 .publish-shell .ccc-aura-arc{position:absolute;left:50%;bottom:0;width:72px;height:22px;transform:translateX(-50%);border-top:2px solid #e5b94f;border-radius:50% 50% 0 0/100% 100% 0 0;filter:drop-shadow(0 -2px 3px rgba(238,190,74,.55)) drop-shadow(0 -6px 8px rgba(231,178,53,.22))}
 .publish-shell .ccc-aura-arc::before{content:"";position:absolute;left:50%;top:-17px;width:88px;height:38px;transform:translateX(-50%);background:radial-gradient(ellipse at 50% 100%,rgba(255,213,93,.22) 0%,rgba(235,181,48,.10) 34%,rgba(224,165,31,.035) 56%,transparent 74%);filter:blur(5px);pointer-events:none}
 .publish-shell .ccc-aura-arc::after{content:"";position:absolute;left:50%;top:-9px;width:68px;height:20px;transform:translateX(-50%);background:radial-gradient(ellipse at 50% 100%,rgba(255,224,126,.28),rgba(229,176,49,.06) 52%,transparent 72%);filter:blur(3px);pointer-events:none}
+
+
+/* CCC v2.8.5 – Publicera använder samma shell som Dashboard/Vision. */
+.publish-shell{min-height:100dvh;height:100dvh}
+.publish-module-marker{
+  width:min(calc(100vw - 32px),720px);min-height:52px;margin:6px auto 0;padding:7px 3px 8px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center;
+  border-bottom:1px solid color-mix(in srgb,var(--ccc-gold) 26%,transparent)
+}
+.publish-module-kicker{display:flex;align-items:center;justify-content:center;gap:7px;color:var(--ccc-gold);font-size:.82rem;line-height:1;font-weight:900;letter-spacing:.12em}
+.publish-module-dot{width:7px;height:7px;border-radius:50%;background:var(--ccc-gold);box-shadow:0 0 10px color-mix(in srgb,var(--ccc-gold) 55%,transparent)}
+.publish-module-subtitle{color:var(--ccc-muted);font-size:.75rem;line-height:1.2;font-weight:650}
+.publish-main{height:calc(100dvh - var(--ccc-header-height) - 58px);padding-top:8px}
+@media(max-width:480px){
+ .publish-module-marker{width:calc(100vw - 32px);min-height:50px;margin-top:2px;padding:6px 2px 7px}
+ .publish-main{height:calc(100dvh - var(--ccc-header-height) - 52px);padding-top:6px}
+}
+@media(max-height:720px) and (max-width:480px){
+ .publish-module-marker{min-height:42px;padding-block:4px}.publish-module-subtitle{font-size:.7rem}
+ .publish-main{height:calc(100dvh - var(--ccc-header-height) - 44px);padding-top:4px}
+}
