@@ -2538,3 +2538,87 @@ body{min-height:100dvh}
   #captureCard:has(#batchStrip[hidden]) .vision-action-card--back .vision-action-icon{position:absolute;left:18px;font-size:30px;color:#c99b39}
   #captureCard:has(#batchStrip[hidden]) .vision-action-card--back .vision-action-copy strong{font-size:1.65rem;color:#5a39a1}
 }
+
+
+/* CCC v2.8.6 – tydligare hover + konsekvent Tillbaka-kort i Vision.
+   Hover gäller desktop/pekdon; touchlayout påverkas inte. */
+@media (hover:hover) and (pointer:fine) {
+  #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card {
+    transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease, filter .16s ease;
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card:hover {
+    transform:translateY(-5px);
+    border-color:color-mix(in srgb,var(--gold) 42%,var(--border));
+    box-shadow:0 20px 42px rgba(31,42,68,.14);
+    filter:saturate(1.05);
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card:focus-visible {
+    outline:3px solid color-mix(in srgb,var(--gold) 62%,transparent);
+    outline-offset:4px;
+  }
+}
+
+/* Tillbaka har samma informationshierarki som foto/galleri:
+   stor rubrik + liten förklaring, men pilen pekar vänster. */
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back {
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  align-items:center;
+  column-gap:18px;
+  text-align:left;
+}
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back .vision-action-icon {
+  position:static;
+  width:clamp(60px,9dvh,72px);
+  height:clamp(60px,9dvh,72px);
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:color-mix(in srgb,var(--surface) 55%,transparent);
+  color:#c99b39;
+  font-size:36px;
+  line-height:1;
+}
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back .vision-card-text {
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:6px;
+  text-align:left;
+}
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back .vision-card-text strong {
+  font-size:clamp(23px,3.2dvh,27px);
+  line-height:1.05;
+  letter-spacing:-.02em;
+  color:#5a39a1;
+}
+#captureCard:has(#batchStrip[hidden]) .vision-action-card--back .vision-card-text small {
+  font-size:clamp(15px,2dvh,17px);
+  line-height:1.2;
+  color:var(--muted);
+}
+
+/* Desktop: behåll dashboard-lika tre kort men vänsterställ Tillbaka-copy. */
+@media(min-width:760px){
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card--back {
+    display:grid;
+    grid-template-columns:72px minmax(0,1fr);
+    align-content:center;
+    justify-content:stretch;
+    padding-inline:18px;
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card--back .vision-action-icon {
+    width:72px;height:72px;
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card--back .vision-card-text {
+    align-items:flex-start;
+    text-align:left;
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card--back .vision-card-text strong {
+    font-size:1.65rem;
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card--back .vision-card-text small {
+    font-size:1rem;
+  }
+}
