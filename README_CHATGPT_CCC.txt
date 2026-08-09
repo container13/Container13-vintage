@@ -318,3 +318,18 @@ CCC v2.8.23 – central desktop-korthöjd från uppmätt Dashboard-facit (2026-0
 - Detta är den enda auktoritativa desktop-korthöjden framåt. Vill vi senare göra alla CCC-kort större/mindre ändras variabeln på ett enda ställe i `ccc-core/core.css`.
 - Ingen mobilgeometri ändras.
 - Vision-kostnadsvisningen behålls.
+
+CCC v2.8.24 – identisk modulheader och vertikal startposition (2026-08-09)
+- `ccc-module-marker` får nu en fast gemensam höjd i Core.
+- Kicker-raden, undertitel-raden och skiljelinjen har reserverade fasta rader i alla moduler.
+- Dashboard behåller tom undertitelplats under `ARBETSYTA`; Vision använder samma plats för `Foto & produktanalys`.
+- Därmed flyttas inte skiljelinjen eller action-korten när man växlar Dashboard ↔ Vision, vare sig på desktop eller mobil.
+- Ingen Vision-specifik pixel-flytt används; lösningen ligger centralt i `ccc-core/core.css`.
+- Desktop-korthöjden 368 px från v2.8.23 behålls.
+
+CCC v2.8.25 – samlad v2.8.24 + gemensam tema/profil-position (2026-08-09)
+- Innehåller v2.8.24-fixen med identisk fast modulheader, reserverad undertitelrad och gemensam skiljelinje.
+- Tema- och profilknapparna styrs nu centralt från `ccc-core/core.css` med högre specificitet än äldre modul-CSS.
+- Dashboard, Vision och Publicera får exakt samma right/bottom-position, gap, knappstorlek och ikonstorlek på desktop och mobil.
+- Visions äldre `.app-header .header-actions`-regler kan därmed inte längre flytta eller krympa tema/profil.
+- Vision-kugghjulet är fortsatt modulunikt och påverkas inte.
