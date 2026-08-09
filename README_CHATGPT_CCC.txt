@@ -366,3 +366,11 @@ CCC v2.8.29 – exakt samma gemensamma header-markup (2026-08-09)
 - Core äger wrapperns position; Vision-knapparna själva positioneras inte längre mot viewport/header.
 - Detta följer samma princip som löste action-korten: samma struktur + samma Core-komponent, inte tre imitationer.
 - Framtida ändring av logga/aura/tema/profil görs centralt i Core och samma headerstruktur används av alla moduler.
+
+CCC v2.8.30 – strukturell headerfix: samma yttre app-shell (2026-08-09)
+- Grundorsaken till att Vision-headern fortsatt avvek hittades i HTML-strukturen: Vision saknade helt Dashboard/Publiceras yttre `<div class="app-shell ccc-app-shell">`.
+- Därmed förankrades Vision-headerns absoluta kontroller mot en annan layoutbox trots identiska Core-regler.
+- Vision har nu samma yttre app-shell som Dashboard och Publicera; globala overlays ligger fortsatt utanför app-shell.
+- Dashboardens stylesheet-tag i `<head>` saknade ett avslutande `>` och är samtidigt korrigerad.
+- Detta följer samma lösning som action-korten: samma struktur först, sedan samma Core-regler.
+- Logga/aura, tema och profil fortsätter styras centralt från `ccc-core/core.css`.
