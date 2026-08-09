@@ -652,3 +652,11 @@ body{min-height:100dvh}
 
 /* v2.7.27 – CCC-loggan är alltid Hem/Dashboard */
 .ccc-home-link{cursor:pointer;-webkit-tap-highlight-color:transparent}
+
+
+/* CCC v2.8.5 – gemensam CCC-signatur: Vision-bågen är logofacit. */
+.ccc-brand-halo{position:relative;width:62px;height:20px;display:block;overflow:visible}
+.ccc-aura-arc{position:absolute;left:50%;bottom:0;width:72px;height:22px;transform:translateX(-50%);border-top:2px solid #e5b94f;border-radius:50% 50% 0 0/100% 100% 0 0;filter:drop-shadow(0 -2px 3px rgba(229,185,79,.55))}
+.ccc-aura-arc::before{content:"";position:absolute;left:50%;top:-17px;width:88px;height:38px;transform:translateX(-50%);background:radial-gradient(ellipse at 50% 100%,rgba(255,213,93,.22) 0%,rgba(235,181,49,.08) 48%,transparent 72%);pointer-events:none}
+.ccc-aura-arc::after{content:"";position:absolute;left:50%;top:-9px;width:68px;height:20px;transform:translateX(-50%);background:radial-gradient(ellipse at 50% 100%,rgba(255,224,126,.28),rgba(229,176,49,.05) 58%,transparent 75%);pointer-events:none}
+@media(max-width:480px){.ccc-brand-halo{width:58px;height:18px}.ccc-aura-arc{width:68px;height:20px}}
