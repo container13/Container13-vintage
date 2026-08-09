@@ -484,3 +484,8 @@ CCC v2.8.44 – PWA safe-area för logga + Auth brand-rensning (2026-08-10)
 - Auth hade fortfarande äldre egna regler för `.ccc-brand-word`, `.ccc-brand-halo` och `.ccc-aura-arc`; 2 sådana brandregler togs bort/neutraliserades.
 - Auth använder nu samma Core-styrda cCc-logga, mitten-C och aura som övriga CCC.
 - Permanent regel: modul-CSS får inte äga gemensam CCC-brandgeometri.
+
+CCC v2.8.45 – landscape finjustering (2026-08-10)
+- På mobil i landscape flyttas den gemensamma CCC-loggan 5 px nedåt.
+- Gemensamma huvudkort i landscape minskas 20 px på höjden.
+- Ändringen ligger i Core så nya moduler som använder CCC:s gemensamma header/kort ärver samma landscape-geometri.
