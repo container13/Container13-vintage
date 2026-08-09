@@ -1188,4 +1188,73 @@ body{
   background:var(--ccc-bg)!important;
 }
 
-/* CCC cache stamp: v2.8.42 */
+/* CCC v2.8.44 – iPhone standalone safe-area + Auth shared brand. */
+
+/* Auth använder samma visuella brandkomponent som övriga CCC, även utanför app-header. */
+.auth-brand.ccc-brand-mark .ccc-brand-word{
+  font-size:var(--ccc-brand-size-mobile)!important;
+  line-height:1!important;
+  margin:0!important;
+}
+.auth-brand.ccc-brand-mark .ccc-brand-halo{
+  width:108px!important;
+  height:20px!important;
+  margin:0 auto!important;
+}
+.auth-brand.ccc-brand-mark .ccc-aura-arc{
+  width:var(--ccc-aura-width-mobile)!important;
+  height:24px!important;
+  border-top-width:2px!important;
+}
+.auth-brand.ccc-brand-mark .ccc-aura-arc::before{
+  width:var(--ccc-aura-glow-width-mobile)!important;
+  height:44px!important;
+  top:-20px!important;
+}
+.auth-brand.ccc-brand-mark .ccc-aura-arc::after{
+  width:var(--ccc-aura-inner-width-mobile)!important;
+  height:24px!important;
+  top:-11px!important;
+}
+
+@media(min-width:760px){
+  .auth-brand.ccc-brand-mark .ccc-brand-word{
+    font-size:var(--ccc-brand-size-desktop)!important;
+  }
+  .auth-brand.ccc-brand-mark .ccc-brand-halo{
+    width:174px!important;
+    height:31px!important;
+  }
+}
+
+/* I installerad iPhone-PWA får logga/aura inte hamna under Dynamic Island/statusfältet. */
+@media (display-mode:standalone) and (max-width:480px){
+  :root{
+    --ccc-header-height:calc(132px + (env(safe-area-inset-top) * .55));
+  }
+
+  .app-header.ccc-header{
+    height:var(--ccc-header-height)!important;
+    min-height:var(--ccc-header-height)!important;
+    max-height:var(--ccc-header-height)!important;
+    padding-top:env(safe-area-inset-top)!important;
+    padding-left:16px!important;
+    padding-right:16px!important;
+    padding-bottom:0!important;
+    box-sizing:border-box!important;
+  }
+
+  .app-header.ccc-header > .ccc-brand-mark{
+    top:calc(50% + (env(safe-area-inset-top) * .22))!important;
+  }
+}
+
+/* Landscape har egen kompakt geometri men ska också respektera safe-area på notch-enheter. */
+@media (display-mode:standalone) and (orientation:landscape) and (max-height:540px) and (max-width:980px){
+  .app-header.ccc-header{
+    padding-left:max(18px,env(safe-area-inset-left))!important;
+    padding-right:max(18px,env(safe-area-inset-right))!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.44 */
