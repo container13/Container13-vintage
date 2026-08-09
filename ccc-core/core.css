@@ -294,4 +294,20 @@ button{color:inherit}
   }
 }
 
-/* CCC cache stamp: v2.8.20 */
+/* CCC v2.8.21 – action-grid ska vara en egen layoutnivå, som Dashboard-facitet. */
+@media(min-width:760px){
+  .ccc-action-grid{
+    width:720px!important;
+    max-width:720px!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:28px!important;
+    align-items:stretch!important;
+  }
+  .ccc-action-grid > .ccc-action-card{
+    height:320px!important;
+    min-height:320px!important;
+    max-height:none!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.21 */
