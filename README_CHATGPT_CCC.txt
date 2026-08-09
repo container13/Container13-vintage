@@ -176,3 +176,10 @@ CCC v2.8.4 – tydlig Tillbaka i Vision (2026-08-09)
 - De två framåtriktade rutorna behåller pil åt höger; Tillbaka har pil åt vänster.
 - Tillbaka leder explicit till Dashboard. CCC-loggan är fortfarande klickbar som extra genväg, men viktig navigation ska aldrig kräva att användaren känner till ett dolt loggbeteende.
 - Mobile-first: Tillbaka-rutan använder den redan förberedda kompakta kortdesignen i Vision och ligger under foto/kamerarulle.
+
+CCC v2.8.5 – gemensamt visuellt shell på mobil + desktop (2026-08-09)
+- Dashboard är fortsatt visuellt layoutfacit för CCC.
+- Vision-loggans guldbåge/aura är logofacit och används nu även på Dashboard.
+- Vision desktop görs mer kompakt och dashboardlik: tre tydliga arbetskort i samma samlade arbetsyta. Mobilflödet lämnas i huvudsak orört.
+- Publicera har fått full CCC-header med tema + profil, modulmarkör PUBLICERA och undertitel. Den gamla flytande versionsbrickan är borttagen.
+- Målet är inte desktop-pixelpolering nu, utan ett gemensamt skal så nya moduler inte behöver byggas om senare.
