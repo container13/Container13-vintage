@@ -1,4 +1,4 @@
-// CCC Core JS v1.0 — v2.8.14
+// CCC Core JS v1.0 — v2.8.16
 // Gemensamt beteende: tema, profilmeny och logout.
 
 const root=document.documentElement;
@@ -44,7 +44,7 @@ confirmLogout?.addEventListener("click",async()=>{
       import("https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js")
     ]);
     await signOut(auth);
-    window.location.href="./auth/index.html";
+    window.location.href=new URL("./auth/index.html",import.meta.url).href;
   }catch(error){
     console.error("CCC logout failed",error);
     confirmLogout.disabled=false;
