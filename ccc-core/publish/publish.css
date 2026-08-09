@@ -105,3 +105,71 @@
 .dialog-actions button{min-height:48px;border-radius:14px;border:1px solid var(--ccc-border,var(--border));cursor:pointer}
 .dialog .button-secondary{background:transparent;color:var(--ccc-text,var(--text))}
 .dialog .button-primary{background:var(--ccc-gold,var(--gold));color:#16120a;border-color:transparent!important;font-weight:750}
+
+
+/* CCC v2.8.8 – Publicera: exakt samma aura som Vision.
+   Ligger sist och överstyr äldre publish-shell-specifika auramått. */
+.publish-shell .ccc-brand-halo{
+  position:relative;
+  display:block;
+  overflow:visible;
+  width:58px;
+  height:18px;
+  margin-inline:auto;
+}
+.publish-shell .ccc-aura-arc{
+  position:absolute;
+  left:50%;
+  bottom:0;
+  width:68px;
+  height:20px;
+  transform:translateX(-50%);
+  border-top:2px solid #e5b94f;
+  border-radius:50% 50% 0 0/100% 100% 0 0;
+  filter:drop-shadow(0 -2px 3px rgba(238,190,74,.55)) drop-shadow(0 -6px 8px rgba(231,178,53,.18));
+}
+.publish-shell .ccc-aura-arc::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-17px;
+  width:88px;
+  height:38px;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse at 50% 100%,rgba(255,213,93,.22) 0%,rgba(235,181,48,.10) 34%,rgba(224,165,31,.035) 56%,transparent 74%);
+  filter:blur(4px);
+  pointer-events:none;
+}
+.publish-shell .ccc-aura-arc::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-9px;
+  width:68px;
+  height:20px;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse at 50% 100%,rgba(255,224,126,.28),rgba(229,176,49,.06) 52%,transparent 72%);
+  filter:blur(3px);
+  pointer-events:none;
+}
+@media(min-width:760px){
+  .publish-shell .ccc-brand-halo{
+    width:174px;
+    height:31px;
+  }
+  .publish-shell .ccc-aura-arc{
+    width:190px;
+    height:42px;
+    border-top-width:3px;
+  }
+  .publish-shell .ccc-aura-arc::before{
+    width:224px;
+    height:70px;
+    top:-33px;
+  }
+  .publish-shell .ccc-aura-arc::after{
+    width:184px;
+    height:38px;
+    top:-17px;
+  }
+}
