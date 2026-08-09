@@ -1257,4 +1257,20 @@ body{
   }
 }
 
-/* CCC cache stamp: v2.8.44 */
+/* CCC v2.8.45 – finjustering landscape mobil.
+   Gemensamt i Core: brand 5 px ned, huvudkort 20 px lägre. */
+@media (orientation:landscape) and (max-height:540px) and (max-width:980px){
+  .app-header.ccc-header > .ccc-brand-mark{
+    transform:translate(-50%,-50%) translateY(5px)!important;
+  }
+
+  .ccc-action-grid > .ccc-action-card,
+  .ccc-module-grid > .ccc-action-card,
+  .ccc-action-card{
+    height:calc(var(--ccc-card-height-landscape) - 20px)!important;
+    min-height:calc(var(--ccc-card-height-landscape) - 20px)!important;
+    max-height:calc(var(--ccc-card-height-landscape) - 20px)!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.45 */
