@@ -2622,3 +2622,82 @@ body{min-height:100dvh}
     font-size:1rem;
   }
 }
+
+
+/* CCC v2.8.7 – gemensam responsiv CCC-aura.
+   Mobil behåller den lilla bågen; desktop skalar över hela CCC-ordmärket. */
+.ccc-brand-halo{
+  position:relative;
+  display:block;
+  overflow:visible;
+  width:58px;
+  height:18px;
+  margin-inline:auto;
+}
+.ccc-aura-arc{
+  position:absolute;
+  left:50%;
+  bottom:0;
+  width:68px;
+  height:20px;
+  transform:translateX(-50%);
+  border-top:2px solid #e5b94f;
+  border-radius:50% 50% 0 0/100% 100% 0 0;
+  filter:drop-shadow(0 -2px 3px rgba(238,190,74,.55)) drop-shadow(0 -6px 8px rgba(231,178,53,.18));
+}
+.ccc-aura-arc::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-17px;
+  width:88px;
+  height:38px;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse at 50% 100%,rgba(255,213,93,.22) 0%,rgba(235,181,48,.10) 34%,rgba(224,165,31,.035) 56%,transparent 74%);
+  filter:blur(4px);
+  pointer-events:none;
+}
+.ccc-aura-arc::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-9px;
+  width:68px;
+  height:20px;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse at 50% 100%,rgba(255,224,126,.28),rgba(229,176,49,.06) 52%,transparent 72%);
+  filter:blur(3px);
+  pointer-events:none;
+}
+@media(min-width:760px){
+  .ccc-brand-halo{
+    width:174px;
+    height:31px;
+  }
+  .ccc-aura-arc{
+    width:190px;
+    height:42px;
+    border-top-width:3px;
+  }
+  .ccc-aura-arc::before{
+    width:224px;
+    height:70px;
+    top:-33px;
+  }
+  .ccc-aura-arc::after{
+    width:184px;
+    height:38px;
+    top:-17px;
+  }
+}
+
+
+/* CCC v2.8.7 – gemensam logout-dialog. */
+.dialog{position:fixed;inset:0;z-index:150;display:grid;place-items:center;padding:20px;background:rgba(10,15,25,.45);backdrop-filter:blur(5px)}
+.dialog[hidden]{display:none}
+.dialog-box{width:min(100%,390px);padding:26px;background:var(--ccc-surface,var(--surface));color:var(--ccc-text,var(--text));border:1px solid var(--ccc-border,var(--border));border-radius:24px;box-shadow:var(--ccc-shadow,var(--shadow))}
+.dialog-box h2{margin:0 0 8px}.dialog-box p{margin:0 0 22px;color:var(--ccc-muted,var(--muted))}
+.dialog-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dialog-actions button{min-height:48px;border-radius:14px;border:1px solid var(--ccc-border,var(--border));cursor:pointer}
+.dialog .button-secondary{background:transparent;color:var(--ccc-text,var(--text))}
+.dialog .button-primary{background:var(--ccc-gold,var(--gold));color:#16120a;border-color:transparent!important;font-weight:750}

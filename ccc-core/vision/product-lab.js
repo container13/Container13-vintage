@@ -98,6 +98,33 @@
     if (profileMenu && !profileMenu.hidden && !profileMenu.contains(event.target) && event.target !== profileButton) setProfileMenu(false);
   });
   document.addEventListener("keydown", (event) => { if (event.key === "Escape") { setProfileMenu(false); setVisionSettingsOpen(false); const pop=$("#visionCostPopover"); if(pop) pop.hidden=true; } });
+
+  const logoutButton = $("#logout");
+  const logoutDialog = $("#logoutDialog");
+  const cancelLogoutButton = $("#cancelLogout");
+  const confirmLogoutButton = $("#confirmLogout");
+  function setLogoutDialog(open) {
+    if (!logoutDialog) return;
+    logoutDialog.hidden = !open;
+  }
+  logoutButton?.addEventListener("click", () => { setProfileMenu(false); setLogoutDialog(true); });
+  cancelLogoutButton?.addEventListener("click", () => setLogoutDialog(false));
+  logoutDialog?.addEventListener("click", (event) => { if (event.target === logoutDialog) setLogoutDialog(false); });
+  confirmLogoutButton?.addEventListener("click", async () => {
+    confirmLogoutButton.disabled = true;
+    try {
+      const [{ auth }, { signOut }] = await Promise.all([
+        import("../auth/firebase.js"),
+        import("https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js")
+      ]);
+      await signOut(auth);
+      window.location.href = "../auth/index.html";
+    } catch (error) {
+      console.error("CCC logout failed", error);
+      confirmLogoutButton.disabled = false;
+    }
+  });
+
   document.addEventListener("click", (event) => { const pop=$("#visionCostPopover"); const btn=$("#visionCostBtn"); if(pop && !pop.hidden && !pop.contains(event.target) && event.target !== btn){ pop.hidden=true; btn?.setAttribute("aria-expanded","false"); } });
 
   const uid = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
