@@ -341,3 +341,11 @@ CCC v2.8.26 – hela headerboxen centraliserad i Core (2026-08-09)
 - Desktop: samma 48 px högerinset, 42 px botteninset, 14 px gap och 58 px knappar.
 - Mobil: samma 16 px högerinset, 14 px botteninset, 8 px gap och 44 px knappar.
 - v2.8.24 modulheaderfix och senare kort/kostnadsfixar behålls.
+
+CCC v2.8.27 – Vision CSS-städning / en källa för gemensam UI (2026-08-09)
+- Grundorsaken bakom både kort- och headeravvikelser var samma: Vision hade äldre egna CSS-regler som duplicerade och konkurrerade med Core.
+- `vision.css` rensas nu från delade headerregler för `.app-header.ccc-header`, `.header-actions/.ccc-header-actions`, CCC-brand/aura och gemensam ikonknappsgeometri.
+- Äldre Vision-startregler för gamla `vision-dashboard-card` / `vision-card-*`-klasser rensas där Core nu äger action-korten.
+- Vision behåller endast Vision-specifika headerkontroller (kugghjul/bakåt), kamera, analys, thumbnails, settings-paneler och arbetsflödeslayout.
+- `core.css` är ensam auktoritativ källa för gemensam CCC-header, logga/aura, tema/profil och action-card-geometri.
+- Regel framåt: när en komponent flyttas till Core ska motsvarande modul-CSS tas bort, inte överstyras med ytterligare `!important`.
