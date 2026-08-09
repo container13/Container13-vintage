@@ -1,0 +1,203 @@
+/* CCC Core UI v1.0 — v2.8.14
+   GEMENSAM GRUND FÖR ALLA CCC-MODULER.
+   Modul-CSS ska bara beskriva det som är unikt för modulen. */
+
+:root{
+  color-scheme:light;
+  --ccc-bg:#f7f7f9;
+  --ccc-surface:#fff;
+  --ccc-text:#172033;
+  --ccc-muted:#667085;
+  --ccc-gold:#c99b39;
+  --ccc-border:rgba(23,32,51,.08);
+  --ccc-shadow:0 16px 40px rgba(31,42,68,.08);
+  --ccc-header-height:132px;
+  --ccc-content-width:720px;
+  --ccc-card-gap:14px;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ccc-bg:#11141b;
+  --ccc-surface:#1a1f2a;
+  --ccc-text:#f5f7fb;
+  --ccc-muted:#aab2c0;
+  --ccc-gold:#ddb45b;
+  --ccc-border:rgba(255,255,255,.09);
+  --ccc-shadow:0 18px 44px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{background:var(--ccc-bg);color:var(--ccc-text)}
+button,a{font:inherit;-webkit-tap-highlight-color:transparent}
+button{color:inherit}
+
+/* ---------- Gemensamt appskal/header ---------- */
+.ccc-app-shell,.app-shell{min-height:100dvh;max-width:1600px;margin:0 auto;background:var(--ccc-bg)}
+.ccc-header{
+  position:sticky!important;top:0!important;z-index:40!important;height:var(--ccc-header-height)!important;
+  min-height:var(--ccc-header-height)!important;display:flex!important;align-items:center!important;justify-content:center!important;
+  padding:env(safe-area-inset-top) 22px 0!important;border:0!important;
+  background:color-mix(in srgb,var(--ccc-bg) 88%,transparent)!important;
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)
+}
+.ccc-brand-mark{
+  position:relative!important;display:inline-flex!important;flex-direction:column!important;align-items:center!important;
+  text-decoration:none!important;line-height:1!important;color:var(--ccc-gold)!important
+}
+.ccc-brand-word{font-family:Georgia,"Times New Roman",serif!important;font-size:39px!important;font-weight:400!important;letter-spacing:.04em!important;color:var(--ccc-gold)!important}
+.ccc-brand-halo{position:relative!important;display:block!important;overflow:visible!important;width:58px!important;height:18px!important;margin-inline:auto!important}
+.ccc-aura-arc{
+  position:absolute!important;left:50%!important;bottom:0!important;width:68px!important;height:20px!important;
+  transform:translateX(-50%)!important;border-top:2px solid #e5b94f!important;
+  border-radius:50% 50% 0 0/100% 100% 0 0!important;
+  filter:drop-shadow(0 -2px 3px rgba(238,190,74,.55)) drop-shadow(0 -6px 8px rgba(231,178,53,.18))!important
+}
+.ccc-aura-arc::before{
+  content:"";position:absolute;left:50%;top:-17px;width:88px;height:38px;transform:translateX(-50%);
+  background:radial-gradient(ellipse at 50% 100%,rgba(255,213,93,.22) 0%,rgba(235,181,48,.10) 34%,rgba(224,165,31,.035) 56%,transparent 74%);
+  filter:blur(4px);pointer-events:none
+}
+.ccc-aura-arc::after{
+  content:"";position:absolute;left:50%;top:-9px;width:68px;height:20px;transform:translateX(-50%);
+  background:radial-gradient(ellipse at 50% 100%,rgba(255,224,126,.28),rgba(229,176,49,.06) 52%,transparent 72%);
+  filter:blur(3px);pointer-events:none
+}
+.ccc-header-actions{position:absolute!important;right:22px!important;bottom:18px!important;display:flex!important;gap:10px!important}
+.ccc-icon-button{
+  position:static!important;width:48px!important;height:48px!important;border:1px solid var(--ccc-border)!important;
+  border-radius:50%!important;background:var(--ccc-surface)!important;display:grid!important;place-items:center!important;
+  box-shadow:0 8px 20px rgba(31,42,68,.08)!important;cursor:pointer!important
+}
+.ccc-icon-button:active{transform:scale(.96)}
+.ccc-icon{width:22px!important;height:22px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+.ccc-icon-theme{stroke:var(--ccc-gold)!important}
+
+/* ---------- Gemensam profilmeny ---------- */
+.ccc-profile-menu{
+  position:absolute!important;right:20px!important;top:calc(var(--ccc-header-height) - 2px)!important;z-index:60!important;
+  width:min(270px,calc(100vw - 40px))!important;padding:14px!important;background:var(--ccc-surface)!important;
+  border:1px solid var(--ccc-border)!important;border-radius:20px!important;box-shadow:var(--ccc-shadow)!important;color:var(--ccc-text)!important
+}
+.ccc-profile-menu[hidden]{display:none!important}
+.ccc-profile-menu .profile-name{margin:2px 10px 10px!important;font-weight:750!important}
+.ccc-profile-menu a,.ccc-profile-menu button{
+  display:block!important;width:100%!important;border:0!important;background:transparent!important;color:var(--ccc-text)!important;
+  text-align:left!important;text-decoration:none!important;padding:13px 12px!important;border-radius:12px!important;cursor:pointer!important
+}
+.ccc-profile-menu a:hover,.ccc-profile-menu button:hover{background:color-mix(in srgb,var(--ccc-text) 6%,transparent)!important}
+
+/* ---------- Gemensam modulrad ---------- */
+.ccc-module-marker{
+  width:min(calc(100vw - 32px),var(--ccc-content-width))!important;min-height:52px!important;margin:6px auto 0!important;
+  padding:7px 3px 8px!important;display:flex!important;flex-direction:column!important;align-items:center!important;
+  justify-content:center!important;gap:2px!important;text-align:center!important;
+  border-bottom:1px solid color-mix(in srgb,var(--ccc-gold) 26%,transparent)!important
+}
+.ccc-module-kicker{display:flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;color:var(--ccc-gold)!important;font-size:.82rem!important;line-height:1!important;font-weight:900!important;letter-spacing:.12em!important}
+.ccc-module-dot{width:7px!important;height:7px!important;border-radius:50%!important;background:var(--ccc-gold)!important;box-shadow:0 0 10px color-mix(in srgb,var(--ccc-gold) 55%,transparent)!important}
+.ccc-module-subtitle{padding-left:0!important;color:var(--ccc-muted)!important;font-size:.75rem!important;line-height:1.2!important;font-weight:650!important}
+
+/* ---------- Gemensam arbetsyta ---------- */
+.ccc-workspace{
+  width:min(100%,var(--ccc-content-width))!important;
+  margin:0 auto!important;
+  padding:18px 20px calc(24px + env(safe-area-inset-bottom))!important;
+}
+
+/* ---------- Gemensamma action-kort: Dashboard = facit ---------- */
+.ccc-action-grid{display:grid!important;gap:var(--ccc-card-gap)!important}
+.ccc-action-card{
+  width:100%!important;min-height:118px!important;padding:18px 18px 18px 16px!important;
+  display:grid!important;grid-template-columns:68px minmax(0,1fr) auto!important;align-items:center!important;gap:16px!important;
+  border:1px solid var(--ccc-border)!important;border-radius:25px!important;text-align:left!important;text-decoration:none!important;
+  color:var(--ccc-text)!important;background:var(--ccc-surface)!important;box-shadow:0 12px 30px rgba(31,42,68,.055)!important;
+  cursor:pointer!important;position:relative!important;overflow:hidden!important;
+  transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,filter .16s ease!important
+}
+.ccc-action-card:active{transform:scale(.985)}
+.ccc-action-card--blue{background:linear-gradient(105deg,rgba(230,239,255,.95),var(--ccc-surface) 72%)!important}
+.ccc-action-card--green{background:linear-gradient(105deg,rgba(231,247,237,.95),var(--ccc-surface) 72%)!important}
+.ccc-action-card--purple{background:linear-gradient(105deg,rgba(241,236,253,.95),var(--ccc-surface) 72%)!important}
+:root[data-theme="dark"] .ccc-action-card--blue{background:linear-gradient(105deg,#17253c,var(--ccc-surface) 72%)!important}
+:root[data-theme="dark"] .ccc-action-card--green{background:linear-gradient(105deg,#173126,var(--ccc-surface) 72%)!important}
+:root[data-theme="dark"] .ccc-action-card--purple{background:linear-gradient(105deg,#28203c,var(--ccc-surface) 72%)!important}
+.ccc-action-card .action-icon{
+  position:static!important;width:68px!important;height:68px!important;margin:0!important;border-radius:50%!important;
+  display:grid!important;place-items:center!important;background:color-mix(in srgb,var(--ccc-surface) 55%,transparent)!important
+}
+.ccc-action-card .action-icon svg{width:33px!important;height:33px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+.ccc-action-card--blue .action-icon,.ccc-action-card--blue .action-copy strong{color:#1f5da8!important}
+.ccc-action-card--green .action-icon,.ccc-action-card--green .action-copy strong{color:#21804c!important}
+.ccc-action-card--purple .action-icon,.ccc-action-card--purple .action-copy strong{color:#5a39a1!important}
+.ccc-action-card .action-copy{
+  position:static!important;min-width:0!important;width:auto!important;margin:0!important;display:flex!important;
+  flex-direction:column!important;align-items:flex-start!important;gap:7px!important;text-align:left!important
+}
+.ccc-action-card .action-copy strong{width:auto!important;margin:0!important;font-size:24px!important;line-height:1.05!important;letter-spacing:-.02em!important}
+.ccc-action-card .action-copy small{width:auto!important;margin:0!important;font-size:15px!important;line-height:1.28!important;color:var(--ccc-muted)!important}
+.ccc-action-card .action-arrow{position:static!important;margin:0!important;font-size:36px!important;line-height:1!important;color:var(--ccc-text)!important;opacity:.9!important}
+.ccc-action-card--back{padding-left:34px!important}
+.ccc-action-card--back .action-arrow{position:absolute!important;left:10px!important;right:auto!important;top:50%!important;transform:translateY(-50%)!important}
+
+@media (hover:hover) and (pointer:fine){
+  .ccc-action-card:hover{transform:translateY(-5px)!important;border-color:color-mix(in srgb,var(--ccc-gold) 42%,var(--ccc-border))!important;box-shadow:0 20px 42px rgba(31,42,68,.14)!important;filter:saturate(1.05)!important}
+  .ccc-action-card:focus-visible{outline:3px solid color-mix(in srgb,var(--ccc-gold) 62%,transparent)!important;outline-offset:4px!important}
+}
+
+/* ---------- Gemensam logout-dialog ---------- */
+.ccc-dialog{position:fixed!important;inset:0!important;z-index:150!important;display:grid!important;place-items:center!important;padding:20px!important;background:rgba(10,15,25,.45)!important;backdrop-filter:blur(5px)}
+.ccc-dialog[hidden]{display:none!important}
+.ccc-dialog-box{width:min(100%,390px)!important;padding:26px!important;background:var(--ccc-surface)!important;color:var(--ccc-text)!important;border:1px solid var(--ccc-border)!important;border-radius:24px!important;box-shadow:var(--ccc-shadow)!important}
+.ccc-dialog-box h2{margin:0 0 8px!important}.ccc-dialog-box p{margin:0 0 22px!important;color:var(--ccc-muted)!important}
+.ccc-dialog-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10px!important}
+.ccc-dialog-actions button{min-height:48px!important;border-radius:14px!important;border:1px solid var(--ccc-border)!important;cursor:pointer!important}
+.ccc-button-secondary{background:transparent!important;color:var(--ccc-text)!important}
+.ccc-button-primary{background:var(--ccc-gold)!important;color:#16120a!important;border-color:transparent!important;font-weight:750!important}
+
+@media(max-width:480px){
+  :root{--ccc-header-height:105px;--ccc-card-gap:14px}
+  html,body{width:100%;height:100%}
+  .ccc-header{padding-inline:16px!important}
+  .ccc-header-actions{right:16px!important;bottom:14px!important;gap:8px!important}
+  .ccc-icon-button{width:44px!important;height:44px!important}
+  .ccc-brand-word{font-size:35px!important}
+  .ccc-profile-menu{max-height:calc(100dvh - var(--ccc-header-height) - 12px)!important;overflow:auto!important}
+  .ccc-module-marker{width:calc(100vw - 32px)!important;min-height:50px!important;margin-top:2px!important;padding:6px 2px 7px!important}
+  .ccc-workspace{width:100%!important;padding:6px 16px calc(12px + env(safe-area-inset-bottom))!important}
+  .ccc-action-card{min-height:118px!important;padding:14px 16px!important;grid-template-columns:68px minmax(0,1fr) auto!important;gap:14px!important;border-radius:23px!important}
+  .ccc-action-card .action-icon{width:60px!important;height:60px!important}
+  .ccc-action-card .action-icon svg{width:30px!important;height:30px!important}
+  .ccc-action-card .action-copy strong{font-size:23px!important}
+  .ccc-action-card .action-copy small{font-size:15px!important}
+  .ccc-action-card .action-arrow{font-size:32px!important}
+  .ccc-action-card--back{padding-left:16px!important}
+  .ccc-action-card--back .action-arrow{display:none!important}
+}
+@media(min-width:760px){
+  :root{--ccc-header-height:168px;--ccc-card-gap:28px}
+  .ccc-header{padding-left:48px!important;padding-right:48px!important}
+  .ccc-brand-word{font-size:78px!important;letter-spacing:.055em!important}
+  .ccc-header-actions{right:48px!important;bottom:42px!important;gap:14px!important}
+  .ccc-icon-button{width:58px!important;height:58px!important}
+  .ccc-icon{width:27px!important;height:27px!important}
+  .ccc-profile-menu{right:48px!important;top:calc(var(--ccc-header-height) - 18px)!important}
+  .ccc-brand-halo{width:174px!important;height:31px!important}
+  .ccc-aura-arc{width:190px!important;height:42px!important;border-top-width:3px!important}
+  .ccc-aura-arc::before{width:224px!important;height:70px!important;top:-33px!important}
+  .ccc-aura-arc::after{width:184px!important;height:38px!important;top:-17px!important}
+  .ccc-workspace{width:var(--ccc-content-width)!important;max-width:var(--ccc-content-width)!important;padding:42px 0 72px!important}
+  .ccc-action-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:28px!important}
+  .ccc-action-card{
+    min-height:320px!important;height:auto!important;padding:40px 30px!important;
+    grid-template-columns:1fr!important;grid-template-rows:auto auto auto!important;
+    text-align:center!important;justify-items:center!important;border-radius:32px!important
+  }
+  .ccc-action-card .action-icon{width:112px!important;height:112px!important;grid-column:1!important}
+  .ccc-action-card .action-icon svg{width:50px!important;height:50px!important}
+  .ccc-action-card .action-copy{align-items:center!important;gap:12px!important;text-align:center!important;width:100%!important}
+  .ccc-action-card .action-copy strong{font-size:36px!important;text-align:center!important}
+  .ccc-action-card .action-copy small{font-size:20px!important;text-align:center!important}
+  .ccc-action-card .action-arrow{display:none!important}
+  .ccc-action-card--arrow-desktop .action-arrow{display:block!important;position:absolute!important;right:14px!important;top:50%!important;transform:translateY(-50%)!important;font-size:28px!important}
+  .ccc-action-card--back.ccc-action-card--arrow-desktop .action-arrow{right:auto!important;left:14px!important}
+}
