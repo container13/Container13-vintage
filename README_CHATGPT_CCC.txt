@@ -138,3 +138,16 @@ CCC v2.7.14 – kostnadsdiagnostik
 - Tillfällig diagnostik i Vision kostnadsruta visar om OpenAI usage mottas, modell samt input/output/total tokens.
 - Kostnadsvisning kvar med 6 decimaler under felsökningen.
 - Ingen AI-, Worker- eller flödeslogik ändrad.
+
+CCC v2.8.1 – Skapa och Publicera separeras (2026-08-09)
+- Grundregel: Skapa när du har tid. Publicera när du vill.
+- Vision skapar/godkänner produktutkast men beskär inte längre publiceringsbilden.
+- Godkänt Vision-plagg sparas lokalt i befintliga IndexedDB ccc-local-workspace/images med huvudbild + godkända fält.
+- Opublicerade bilder går inte via Firebase.
+- Ny modul ccc-core/publish: mobil först, visar lokala utkast som stora miniatyrer.
+- Tryck på miniatyr öppnar stor mobilanpassad bild; svep vänster/höger bläddrar mellan alla utkast.
+- Beskärning görs först i Publicera när användaren faktiskt vill göra bilden klar.
+- Publiceringsbild skapas lokalt som 1:1 WebP, max 1600 px, kvalitet 0.84. Originalet lämnas orört.
+- Dashboardens Publicera går till samma Publish-modul; Vision kan också gå dit från sin slutvy.
+- v2.8.1 publicerar ännu inte till Firebase/Container13: sista knappen markerar nästa integrationspunkt. Nästa steg är verklig publicering till Container13 Nyinkommet via befintligt C13-admin/Firebase-flöde.
+- Framtidsidéer (ej nu): återanvänd redan publicerade bilder samt CCC-genererade kollage/bildspel med användargodkännande.

@@ -1,2 +1,1 @@
-Denna mapp innehåller filer som hör till uppdateringen.
-Kopiera hela mappens innehåll till motsvarande plats i projektet och ersätt befintliga filer när du får frågan.
+Projektrot för Container13 + CCC. Se README_CHATGPT_CCC.txt för aktuell arbetsstatus.
