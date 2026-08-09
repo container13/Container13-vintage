@@ -262,3 +262,9 @@ CCC v2.8.16 – Vision ren Core-markup + central logout-länk (2026-08-09)
 - Första kamerakortets extra `camera-content`-wrapper tas bort; Vision-JS uppdateras till den gemensamma `action-copy`-strukturen.
 - Ingen ny Vision-specifik kortgeometri läggs till. `core.css` fortsätter vara ensam källa för gemensamma kortmått.
 - Logout i `core.js` använder nu `import.meta.url` för att alltid lösa `ccc-core/auth/index.html` korrekt oavsett om användaren är i Dashboard, Vision eller Publicera.
+
+CCC v2.8.17 – textpassning + stabil modulrad (2026-08-09)
+- Vision-startkorten använder en ny gemensam Core-variant `ccc-action-card--dense-copy` för längre rubriker/hjälptexter.
+- Varianten ändrar endast typografin, inte kortens gemensamma geometri.
+- Modulundertiteln reserverar nu alltid samma höjd även när texten är tom. Dashboardens ARBETSYTA hoppar därför inte i höjd när man byter till/från Vision på mobil.
+- Regeln ligger i `ccc-core/core.css` och kan återanvändas av framtida moduler med längre korttexter.
