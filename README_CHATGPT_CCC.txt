@@ -349,3 +349,12 @@ CCC v2.8.27 – Vision CSS-städning / en källa för gemensam UI (2026-08-09)
 - Vision behåller endast Vision-specifika headerkontroller (kugghjul/bakåt), kamera, analys, thumbnails, settings-paneler och arbetsflödeslayout.
 - `core.css` är ensam auktoritativ källa för gemensam CCC-header, logga/aura, tema/profil och action-card-geometri.
 - Regel framåt: när en komponent flyttas till Core ska motsvarande modul-CSS tas bort, inte överstyras med ytterligare `!important`.
+
+CCC v2.8.28 – central headergeometri enligt samma modell som kortfixen (2026-08-09)
+- Samma lösningsprincip som för action-korten används nu för headern: ett enda centralt måttsystem i `ccc-core/core.css`.
+- CCC-logga/aura förankras absolut i mitten av den gemensamma headerboxen och kan inte flyttas av modulens innehåll.
+- Tema + profil använder centrala Core-variabler för höger-/botteninset, knappstorlek och gap.
+- Desktopvariabler: right 48 px, bottom 42 px, knapp 58 px, gap 14 px, brand 78 px.
+- Mobilvariabler: right 16 px, bottom 14 px, knapp 44 px, gap 8 px, brand 35 px.
+- Vill vi senare ändra loggan eller tema/profil i hela CCC görs det på ett enda ställe i Core.
+- Vision-kugghjul/bakåt är fortsatt modulunika och påverkar inte brand/tema/profil.
