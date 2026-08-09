@@ -829,8 +829,35 @@
   $("#visionSettingsBtn")?.addEventListener("click", () => setVisionSettingsOpen(true));
   $("#visionSettingsCloseBtn")?.addEventListener("click", () => setVisionSettingsOpen(false));
 
+  async function renderKnowledgeList() {
+    const box = $("#visionKnowledgeList");
+    if (!box) return;
+    const rows = await window.CCC_VISION_KNOWLEDGE?.listKnowledge?.() || [];
+    if (!rows.length) {
+      box.innerHTML = '<p class="vision-knowledge-empty">CCC har inte lärt sig något lokalt ännu.</p>';
+      return;
+    }
+    box.innerHTML = rows.map((row) => {
+      const title = row.subject || row.brand || "Okänt objekt";
+      const details = [row.brand && row.brand !== title ? row.brand : "", row.category, row.season].filter(Boolean).join(" · ");
+      const source = row.source === "user-confirmed" ? "Lärt från din ändring" : "Godkänt av dig";
+      return `<div class="vision-knowledge-item"><strong>${escapeHtml(title)}</strong>${details ? `<small>${escapeHtml(details)}</small>` : ""}<small>${source}</small></div>`;
+    }).join("");
+  }
+
+  $("#visionShowKnowledgeBtn")?.addEventListener("click", async (event) => {
+    const box = $("#visionKnowledgeList");
+    if (!box) return;
+    const open = box.hidden;
+    box.hidden = !open;
+    event.currentTarget.setAttribute("aria-expanded", String(open));
+    event.currentTarget.textContent = open ? "Dölj vad CCC har lärt sig" : "Visa vad CCC har lärt sig";
+    if (open) await renderKnowledgeList();
+  });
+
   $("#visionClearKnowledgeBtn")?.addEventListener("click", async () => {
     await window.CCC_VISION_KNOWLEDGE?.clearKnowledge?.();
+    await renderKnowledgeList();
     const saved = $("#visionSettingsSaved");
     if (saved) saved.textContent = "Kunskapsbasen är rensad ✓";
   });

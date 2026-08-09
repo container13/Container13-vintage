@@ -82,6 +82,11 @@
     });
   }
 
+  async function listKnowledge() {
+    const rows = await getAll(KNOWLEDGE);
+    return rows.sort((a, b) => String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")));
+  }
+
   async function metricsSince(isoDate) {
     const from = new Date(isoDate).getTime();
     const rows = await getAll(METRICS);
@@ -118,5 +123,5 @@
     } catch { return null; }
   }
 
-  window.CCC_VISION_KNOWLEDGE = { remember, bestMatch, clearKnowledge, metric, loadBase, metricsSince, estimateCost, costSummarySince };
+  window.CCC_VISION_KNOWLEDGE = { remember, bestMatch, listKnowledge, clearKnowledge, metric, loadBase, metricsSince, estimateCost, costSummarySince };
 })();
