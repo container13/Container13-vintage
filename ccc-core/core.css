@@ -14,6 +14,7 @@
   --ccc-header-height:132px;
   --ccc-content-width:720px;
   --ccc-card-gap:14px;
+  --ccc-action-card-height-desktop:368px;
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
@@ -310,4 +311,15 @@ button{color:inherit}
   }
 }
 
-/* CCC cache stamp: v2.8.21 */
+/* CCC v2.8.23 – EN central desktop-höjd för CCC action-kort.
+   Uppmätt Dashboard-facit: ca 368 px renderad box.
+   Ändra bara --ccc-action-card-height-desktop i :root om alla PC-kort ska bli större/mindre. */
+@media(min-width:760px){
+  .ccc-action-grid > .ccc-action-card{
+    height:var(--ccc-action-card-height-desktop)!important;
+    min-height:var(--ccc-action-card-height-desktop)!important;
+    max-height:var(--ccc-action-card-height-desktop)!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.23 */
