@@ -2725,9 +2725,6 @@ body{min-height:100dvh}
 #captureCard:has(#batchStrip[hidden]) .ccc-action-card{
   margin:0!important;
 }
-#captureCard:has(#batchStrip[hidden]) .camera-content{
-  display:contents!important;
-}
 
 /* Kugghjulet är modulunikt, men ska inte påverka headerns centrum eller CCC-loggan. */
 #visionSettingsBtn{
@@ -2748,3 +2745,6 @@ body{min-height:100dvh}
     display:none!important;
   }
 }
+
+/* CCC v2.8.16 – Vision startkort använder ren Core-markup.
+   Inga lokala kortmått här; Core äger geometrin. */

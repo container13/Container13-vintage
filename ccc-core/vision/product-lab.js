@@ -118,7 +118,7 @@
       if (addDetail) addDetail.hidden = true;
       if (review) review.hidden = true;
     }
-    const cameraTitle = $("#startCameraBtn .camera-content strong");
+    const cameraTitle = $("#startCameraBtn .action-copy strong");
     if (cameraTitle) cameraTitle.textContent = startMode ? "Ta ett foto" : (hasSession ? "Fota nästa plagg" : "Ta ett foto");
   }
 
@@ -278,7 +278,7 @@
     preview.hidden = true;
     preview.removeAttribute("src");
     $("#startCameraBtn").classList.remove("has-image");
-    $("#startCameraBtn .camera-content strong").textContent = batchItems.length ? "Fota nästa plagg" : "Ta ett foto";
+    $("#startCameraBtn .action-copy strong").textContent = batchItems.length ? "Fota nästa plagg" : "Ta ett foto";
   }
 
   async function startCamera() {
