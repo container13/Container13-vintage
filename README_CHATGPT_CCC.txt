@@ -496,3 +496,9 @@ CCC v2.8.46 – gemensam kortbredd i mobil landscape (2026-08-10)
 - Dashboard, Vision och Publicera får därmed samma landscape-bredd och centrering.
 - Permanent regel för nya moduler i mobil landscape: börja med samma Core-styrda kortbredd, höjd, spacing och centrerade tre-kortsrad; avvik först när modulens innehåll faktiskt kräver det.
 - Denna regel gäller specifikt mobil landscape och ändrar inte portrait- eller desktopgeometrin.
+
+
+CCC v2.8.47 – landscape slutjustering (2026-08-10)
+- Loggan ytterligare 6 px ned från v2.8.46.
+- Korten ytterligare 20 px lägre från v2.8.46.
+- Endast mobil landscape påverkas; gemensamt via Core.
