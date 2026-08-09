@@ -2462,4 +2462,7 @@ body{min-height:100dvh}
    Shared header/logo/aura/theme/profile/action-card geometry lives ONLY in ../core.css.
    Vision CSS must only style Vision-specific controls and workflow content. */
 
-/* CCC cache stamp: v2.8.27 */
+/* CCC v2.8.28 – Vision får inte äga brand/tema/profil-geometri.
+   Dessa element positioneras enbart av ../core.css. */
+
+/* CCC cache stamp: v2.8.28 */
