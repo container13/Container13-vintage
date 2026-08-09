@@ -2514,3 +2514,27 @@ body{min-height:100dvh}
 
 /* v2.7.27 – CCC-loggan är alltid Hem/Dashboard */
 .ccc-home-link{cursor:pointer;-webkit-tap-highlight-color:transparent}
+
+
+/* CCC v2.8.5 – desktop följer Dashboardens kompakta arbetsyta.
+   Mobilens redan fungerande layout lämnas orörd. */
+@media(min-width:760px){
+  .vision-module-marker{width:min(calc(100vw - 96px),720px);margin-top:6px}
+  .vision-shell{width:min(calc(100vw - 96px),720px);height:calc(100dvh - var(--ccc-header-height) - 58px);padding:8px 0 18px}
+  #captureCard:has(#batchStrip[hidden]){
+    width:100%;height:auto;min-height:0;padding:0;border:0;background:transparent;box-shadow:none;
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;align-items:stretch;overflow:visible
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card{
+    min-width:0;width:100%;height:294px;min-height:294px;padding:26px 18px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+    border:1px solid var(--border);border-radius:25px;text-align:center;box-shadow:0 12px 30px rgba(31,42,68,.055)
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-card-text{align-items:center;text-align:center}
+  #captureCard:has(#batchStrip[hidden]) .vision-card-text strong{font-size:1.65rem}
+  #captureCard:has(#batchStrip[hidden]) .vision-card-text small{font-size:1rem;text-align:center}
+  #captureCard:has(#batchStrip[hidden]) .vision-card-arrow{position:absolute;right:14px;font-size:28px}
+  #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card{position:relative}
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card--back .vision-action-icon{position:absolute;left:18px;font-size:30px;color:#c99b39}
+  #captureCard:has(#batchStrip[hidden]) .vision-action-card--back .vision-action-copy strong{font-size:1.65rem;color:#5a39a1}
+}
