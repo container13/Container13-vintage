@@ -2828,3 +2828,125 @@ body{min-height:100dvh}
     font-size:28px;
   }
 }
+
+
+/* CCC v2.8.12 – Vision-starten följer Dashboard-komponenten utan lokala geometriavvikelser.
+   Dessa slutregler neutraliserar äldre Vision-layoutregler ENDAST när startvyn visas. */
+#captureCard:has(#batchStrip[hidden]){
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  padding:0!important;
+  overflow:visible!important;
+}
+#captureCard:has(#batchStrip[hidden]) .ccc-action-card{
+  width:100%!important;
+  margin:0!important;
+}
+#captureCard:has(#batchStrip[hidden]) .ccc-action-card .camera-content{
+  display:contents!important;
+}
+#captureCard:has(#batchStrip[hidden]) .ccc-action-card .action-icon{
+  position:static!important;
+  margin:0!important;
+}
+#captureCard:has(#batchStrip[hidden]) .ccc-action-card .action-copy{
+  position:static!important;
+  width:100%!important;
+  margin:0!important;
+}
+#captureCard:has(#batchStrip[hidden]) .ccc-action-card .action-copy strong,
+#captureCard:has(#batchStrip[hidden]) .ccc-action-card .action-copy small{
+  width:auto!important;
+  margin:0!important;
+}
+#captureCard:has(#batchStrip[hidden]) .ccc-action-card .action-arrow{
+  margin:0!important;
+}
+
+/* Desktop: samma kortgruppsbredd, gap och vertikala startnivå som Dashboard. */
+@media(min-width:760px){
+  .vision-shell{
+    width:min(100% - 104px,1380px)!important;
+    margin:0 auto!important;
+    padding:42px 52px 72px!important;
+    height:auto!important;
+    min-height:0!important;
+    overflow:visible!important;
+  }
+  #captureCard:has(#batchStrip[hidden]){
+    width:100%!important;
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:28px!important;
+    align-items:stretch!important;
+  }
+  #captureCard:has(#batchStrip[hidden]) .ccc-action-card{
+    min-height:320px!important;
+    height:auto!important;
+    padding:40px 30px!important;
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    grid-template-rows:112px minmax(76px,auto) minmax(50px,auto)!important;
+    justify-items:center!important;
+    align-content:center!important;
+    row-gap:12px!important;
+    text-align:center!important;
+    border-radius:32px!important;
+  }
+  #captureCard:has(#batchStrip[hidden]) .ccc-action-card .action-icon{
+    width:112px!important;
+    height:112px!important;
+    grid-column:1!important;
+    grid-row:1!important;
+    align-self:center!important;
+  }
+  #captureCard:has(#batchStrip[hidden]) .ccc-action-card .action-icon svg{
+    width:50px!important;
+    height:50px!important;
+  }
+  #captureCard:has(#batchStrip[hidden]) .ccc-action-card .action-copy{
+    grid-column:1!important;
+    grid-row:2 / span 2!important;
+    display:grid!important;
+    grid-template-rows:minmax(76px,auto) minmax(50px,auto)!important;
+    justify-items:center!important;
+    align-items:start!important;
+    gap:12px!important;
+    text-align:center!important;
+  }
+  #captureCard:has(#batchStrip[hidden]) .ccc-action-card .action-copy strong{
+    font-size:36px!important;
+    line-height:1.05!important;
+    align-self:end!important;
+    text-align:center!important;
+  }
+  #captureCard:has(#batchStrip[hidden]) .ccc-action-card .action-copy small{
+    font-size:20px!important;
+    line-height:1.28!important;
+    align-self:start!important;
+    text-align:center!important;
+  }
+  #captureCard:has(#batchStrip[hidden]) .ccc-action-card--arrow-desktop .action-arrow{
+    display:block!important;
+    position:absolute!important;
+    top:50%!important;
+    transform:translateY(-50%)!important;
+    font-size:28px!important;
+  }
+  #captureCard:has(#batchStrip[hidden]) .ccc-action-card--arrow-desktop:not(.ccc-action-card--back) .action-arrow{
+    right:14px!important;
+    left:auto!important;
+  }
+  #captureCard:has(#batchStrip[hidden]) .ccc-action-card--back.ccc-action-card--arrow-desktop .action-arrow{
+    left:14px!important;
+    right:auto!important;
+  }
+}
+
+/* Mobil: använd den gemensamma mobilgeometrin och dölj den lilla extra vänsterpilen. */
+@media(max-width:480px){
+  #captureCard:has(#batchStrip[hidden]) .ccc-action-card--back .action-arrow{
+    display:none!important;
+  }
+}
