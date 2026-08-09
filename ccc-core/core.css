@@ -231,3 +231,38 @@ button{color:inherit}
     height:auto!important;
   }
 }
+
+
+/* CCC v2.8.17 – stabil modulrad + gemensam variant för längre korttexter. */
+
+/* Alla moduler reserverar samma plats för undertiteln.
+   Tom undertitel (t.ex. Arbetsyta) ger därför ingen höjdförändring vid modulbyte. */
+.ccc-module-subtitle{
+  min-height:1.2em!important;
+  display:block!important;
+}
+
+/* Återanvändbar Core-variant när innehållet är längre än Dashboardens korttexter.
+   Geometrin ändras inte – bara typografin komprimeras lite. */
+@media(min-width:760px){
+  .ccc-action-card--dense-copy .action-copy{
+    gap:9px!important;
+  }
+  .ccc-action-card--dense-copy .action-copy strong{
+    font-size:30px!important;
+    line-height:1.04!important;
+  }
+  .ccc-action-card--dense-copy .action-copy small{
+    font-size:17px!important;
+    line-height:1.22!important;
+  }
+}
+@media(max-width:480px){
+  .ccc-action-card--dense-copy .action-copy strong{
+    font-size:22px!important;
+  }
+  .ccc-action-card--dense-copy .action-copy small{
+    font-size:14px!important;
+    line-height:1.2!important;
+  }
+}
