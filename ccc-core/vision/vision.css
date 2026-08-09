@@ -2478,4 +2478,13 @@ body{min-height:100dvh}
   transform:none!important;
 }
 
-/* CCC cache stamp: v2.8.29 */
+/* CCC v2.8.33 – startkamerakortets gamla mobilhöjder får inte konkurrera med Core. */
+@media(max-width:480px){
+  #captureCard:has(#batchStrip[hidden]) .main-camera.ccc-action-card{
+    height:100%!important;
+    min-height:0!important;
+    max-height:none!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.33 */
