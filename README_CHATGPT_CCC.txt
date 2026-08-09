@@ -443,3 +443,12 @@ CCC v2.8.39 – fullbreddslinje korrigerad (2026-08-10)
 - `width:100%` fyllde då gridspåret i stället för hela modulradens box.
 - Linjen är nu absolut positionerad med `left:0; right:0; bottom:0` och går därför verkligt kant-till-kant.
 - Regeln ligger centralt i Core och gäller Dashboard, Vision, Publicera och framtida moduler.
+
+CCC v2.8.40 – gemensamt landscape-läge (2026-08-10)
+- CCC får nu ett centralt landscape-läge för telefoner/små skärmar i `ccc-core/core.css`.
+- Permanent princip: `CCC-skalet är fast. Innehållet får scrolla vid behov.`
+- Vid landscape med låg skärmhöjd komprimeras header och modulrad centralt.
+- Dashboard, Vision och Publiceras tre huvudkort läggs sida vid sida och fyller återstående viewport utan sidscroll.
+- Logga/aura, tema/profil och Vision-verktyg får gemensamma landscape-positioner från Core.
+- Detalj-/arbetsvyer i Vision och Publicera får intern vertikal scroll när innehållet faktiskt kräver det.
+- Nya moduler ska automatiskt stödja portrait, landscape och desktop via Core från start; modul-CSS får bara komplettera med verkligt modulunikt landscape-innehåll.
