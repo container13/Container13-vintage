@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f7f7f9">
-<title>CCC Publicera v2.8.36</title>
+<title>CCC Publicera v2.8.37</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-<link rel="stylesheet" href="../dashboard/dashboard.css?v=2.8.36">
-<link rel="stylesheet" href="publish.css?v=2.8.36">
-<link rel="stylesheet" href="../core.css?v=2.8.36">
+<link rel="stylesheet" href="../dashboard/dashboard.css?v=2.8.37">
+<link rel="stylesheet" href="publish.css?v=2.8.37">
+<link rel="stylesheet" href="../core.css?v=2.8.37">
 </head>
 <body>
 <div class="app-shell ccc-app-shell publish-shell">
@@ -45,10 +45,35 @@
   </div>
 
   <main class="publish-main ccc-workspace">
-    <section id="gridView" class="publish-view">
-      <div class="publish-heading"><a class="publish-back" href="../dashboard/index.html" aria-label="Tillbaka">‹</a><div><h1>Publicera</h1><p id="draftCount">Lokala utkast</p></div></div>
+    <section id="startView" class="publish-view publish-start-view">
+      <div class="ccc-action-grid publish-start-grid">
+        <button id="draftsBtn" class="ccc-action-card ccc-action-card--blue" type="button">
+          <span class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6.5h6l1.6 2H20v9.5H4z"/><path d="M4 6.5V5h6l1.4 1.5"/></svg></span>
+          <span class="action-copy"><strong>Lokala utkast</strong><small id="startDraftCount">0 utkast</small></span>
+          <span class="action-arrow" aria-hidden="true">›</span>
+        </button>
+        <button id="publishedBtn" class="ccc-action-card ccc-action-card--green" type="button">
+          <span class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4 4L19 7"/><path d="M4 4h16v16H4z"/></svg></span>
+          <span class="action-copy"><strong>Publicerade</strong><small>Historik &amp; status</small></span>
+          <span class="action-arrow" aria-hidden="true">›</span>
+        </button>
+        <a class="ccc-action-card ccc-action-card--purple ccc-action-card--back" href="../dashboard/index.html">
+          <span class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></span>
+          <span class="action-copy"><strong>Tillbaka</strong><small>Till dashboard</small></span>
+          <span class="action-arrow" aria-hidden="true">‹</span>
+        </a>
+      </div>
+    </section>
+
+    <section id="gridView" class="publish-view" hidden>
+      <div class="publish-heading"><button id="gridBack" class="publish-back" type="button" aria-label="Tillbaka">‹</button><div><h1>Lokala utkast</h1><p id="draftCount">0 lokala utkast</p></div></div>
       <div id="emptyState" class="publish-empty" hidden><strong>Inget väntar på publicering</strong><span>Skapa ett plagg i Vision först.</span></div>
       <div id="draftGrid" class="draft-grid" aria-live="polite"></div>
+    </section>
+
+    <section id="publishedView" class="publish-view" hidden>
+      <div class="publish-heading"><button id="publishedBack" class="publish-back" type="button" aria-label="Tillbaka">‹</button><div><h1>Publicerade</h1><p>Historik &amp; status</p></div></div>
+      <div class="publish-empty"><strong>Ingen historik ännu</strong><span>Publicerade plagg kommer att visas här.</span></div>
     </section>
 
     <section id="detailView" class="publish-view" hidden>
@@ -84,8 +109,8 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.8.36"></script>
-<script type="module" src="../core.js?v=2.8.36"></script>
-  <script src="../version.js?v=2.8.36"></script>
+<script type="module" src="publish.js?v=2.8.37"></script>
+<script type="module" src="../core.js?v=2.8.37"></script>
+  <script src="../version.js?v=2.8.37"></script>
 </body>
 </html>

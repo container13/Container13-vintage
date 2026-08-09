@@ -213,3 +213,16 @@
 }
 
 /* CCC cache stamp: v2.8.31 */
+
+
+/* CCC v2.8.37 – Publicera startsida: samma tre Core-kort som Dashboard/Vision. */
+.publish-start-view{display:flex;align-items:flex-start;justify-content:center}
+.publish-start-grid{width:100%}
+@media(max-width:480px){
+  .publish-start-view{padding-top:0}
+  .publish-start-grid{width:100%}
+}
+@media(min-width:760px){
+  .publish-start-view{width:var(--ccc-content-width)!important;max-width:var(--ccc-content-width)!important}
+}
+/* CCC cache stamp: v2.8.37 */

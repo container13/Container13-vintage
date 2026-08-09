@@ -12,13 +12,17 @@ async function getAll(){const db=await openDb();return new Promise((resolve,reje
 async function put(record){const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(STORE_NAME,"readwrite");tx.objectStore(STORE_NAME).put(record);tx.oncomplete=()=>{db.close();resolve();};tx.onerror=()=>{db.close();reject(tx.error);};});}
 function url(blob){const u=URL.createObjectURL(blob);objectUrls.push(u);return u;}
 function title(item,index){return item.title?.trim()||item.fields?.title?.trim()||`Plagg ${index+1}`;}
-function show(view){["gridView","detailView","cropView"].forEach(id=>$("#"+id).hidden=id!==view);}
-function renderGrid(){const grid=$("#draftGrid");grid.replaceChildren();$("#draftCount").textContent=items.length===1?"1 lokalt utkast":`${items.length} lokala utkast`;$("#emptyState").hidden=items.length>0;grid.hidden=items.length===0;items.forEach((item,index)=>{const b=document.createElement("button");b.type="button";b.className="draft-card";b.setAttribute("aria-label",`Öppna ${title(item,index)}`);const img=document.createElement("img");img.src=item.thumbUrl;img.alt="";b.append(img);b.addEventListener("click",()=>openDetail(index));grid.append(b);});}
+function show(view){["startView","gridView","publishedView","detailView","cropView"].forEach(id=>$("#"+id).hidden=id!==view);}
+function renderGrid(){const grid=$("#draftGrid");grid.replaceChildren();$("#draftCount").textContent=items.length===1?"1 lokalt utkast":`${items.length} lokala utkast`;$("#startDraftCount").textContent=items.length===1?"1 utkast":`${items.length} utkast`;$("#emptyState").hidden=items.length>0;grid.hidden=items.length===0;items.forEach((item,index)=>{const b=document.createElement("button");b.type="button";b.className="draft-card";b.setAttribute("aria-label",`Öppna ${title(item,index)}`);const img=document.createElement("img");img.src=item.thumbUrl;img.alt="";b.append(img);b.addEventListener("click",()=>openDetail(index));grid.append(b);});}
 function openDetail(index){if(!items.length)return;activeIndex=(index+items.length)%items.length;const item=items[activeIndex];if(!item.fullUrl)item.fullUrl=url(item.publishBlob||item.originalBlob||item.thumbnailBlob);$("#detailImage").src=item.fullUrl;$("#detailTitle").textContent=title(item,activeIndex);$("#detailMeta").textContent=[item.brand,item.size&&`Storlek ${item.size}`,item.price&&`${item.price} kr`].filter(Boolean).join(" · ");$("#detailCounter").textContent=`${activeIndex+1} av ${items.length}`;$("#publishStatus").textContent=item.publishBlob?"Bilden är beskuren och klar som WebP.":"";show("detail");}
 function next(delta){openDetail(activeIndex+delta);}
 let touchStart=null;
 $("#swipeArea").addEventListener("pointerdown",e=>{touchStart={x:e.clientX,y:e.clientY};});
 $("#swipeArea").addEventListener("pointerup",e=>{if(!touchStart)return;const dx=e.clientX-touchStart.x,dy=e.clientY-touchStart.y;touchStart=null;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.25)next(dx<0?1:-1);});
+$("#draftsBtn").addEventListener("click",()=>show("gridView"));
+$("#publishedBtn").addEventListener("click",()=>show("publishedView"));
+$("#gridBack").addEventListener("click",()=>show("startView"));
+$("#publishedBack").addEventListener("click",()=>show("startView"));
 $("#detailBack").addEventListener("click",()=>show("gridView"));
 
 function loadImage(src){return new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=src;});}
@@ -33,5 +37,5 @@ $("#cropDone").addEventListener("click",async()=>{const item=items[activeIndex],
 
 $("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=items[activeIndex].publishBlob?"Nästa steg kopplar den här WebP-bilden till Container13.":"Beskär bilden först så skapas publicerings-WebP lokalt.";if(!items[activeIndex].publishBlob)openCrop();});
 
-(async()=>{try{const records=(await getAll()).filter(r=>r.readyToPublish!==false);records.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));items=records.map(r=>({...r,thumbUrl:url(r.thumbnailBlob||r.originalBlob)}));renderGrid();show("gridView");}catch(e){console.error(e);$("#emptyState").hidden=false;$("#emptyState").innerHTML="<strong>Kunde inte läsa lokala utkast</strong><span>Försök öppna Publicera igen.</span>";}})();
+(async()=>{try{const records=(await getAll()).filter(r=>r.readyToPublish!==false);records.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));items=records.map(r=>({...r,thumbUrl:url(r.thumbnailBlob||r.originalBlob)}));renderGrid();show("startView");}catch(e){console.error(e);$("#emptyState").hidden=false;$("#emptyState").innerHTML="<strong>Kunde inte läsa lokala utkast</strong><span>Försök öppna Publicera igen.</span>";}})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
