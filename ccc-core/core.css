@@ -276,4 +276,22 @@ button{color:inherit}
   }
 }
 
-/* CCC cache stamp: v2.8.19 */
+/* CCC v2.8.20 – Core äger även appskalets faktiska bredd.
+   Detta överstyr äldre modulregler som t.ex. Vision `.app-shell{width:430px}`. */
+.ccc-app-shell{
+  width:100%!important;
+  max-width:1600px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+@media(min-width:760px){
+  .ccc-app-shell{
+    width:100%!important;
+    min-width:0!important;
+    height:auto!important;
+    min-height:100dvh!important;
+    padding:0!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.20 */
