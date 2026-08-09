@@ -374,3 +374,17 @@ CCC v2.8.30 – strukturell headerfix: samma yttre app-shell (2026-08-09)
 - Dashboardens stylesheet-tag i `<head>` saknade ett avslutande `>` och är samtidigt korrigerad.
 - Detta följer samma lösning som action-korten: samma struktur först, sedan samma Core-regler.
 - Logga/aura, tema och profil fortsätter styras centralt från `ccc-core/core.css`.
+
+CCC v2.8.31 – Publicera utan onödig PC-scroll (2026-08-09)
+- Publiceras första PC-vy ska rymmas i viewporten och får inte skapa sidans vertikala scrollbar.
+- `publish-shell` låses till exakt 100dvh och yttre document-scroll stängs av på desktop.
+- `publish-main` räknas som återstående yta efter gemensam CCC-header + modulrad och får ingen egen överhöjd från Core-padding.
+- `gridView` är fast utan scroll. `detailView` och `cropView` får däremot intern vertikal scroll när deras faktiska innehåll kräver det.
+- Därmed ska Publiceras scrollbar försvinna i huvudvyn och headern ligga på samma horisontella position som Dashboard/Vision.
+
+CCC v2.8.32 – loggtest + v2.8.31 samlat (2026-08-09)
+- Innehåller Publicera-fixen från v2.8.31 eftersom den patchen ännu inte var uppladdad.
+- Gemensam CCC-brand markup delar nu upp de tre C:na i spans.
+- Mitten-C har klassen `ccc-brand-middle` och görs tillfälligt 1.34em stort via en enda regel i `ccc-core/core.css`.
+- Testmål: Dashboard, Vision och Publicera ska visa exakt samma större mitten-C. Om alla tre följer med är central loggstyrning verifierad.
+- Efter verifiering kan testutseendet återställas centralt utan att ändra varje modul.
