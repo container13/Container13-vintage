@@ -649,3 +649,6 @@ body{min-height:100dvh}
   .dashboard-module-subtitle{font-size:.7rem}
   .dashboard{height:calc(100dvh - var(--ccc-header-height) - 44px);padding-top:4px}
 }
+
+/* v2.7.27 – CCC-loggan är alltid Hem/Dashboard */
+.ccc-home-link{cursor:pointer;-webkit-tap-highlight-color:transparent}
