@@ -853,4 +853,22 @@ button{color:inherit}
   }
 }
 
-/* CCC cache stamp: v2.8.35 */
+/* CCC v2.8.36 – app-shell är en riktig Core-komponent på ALLA skärmstorlekar.
+   Kritisk regel: modul-CSS får inte lägga padding/bredd/höjd på ytterboxen.
+   Header och workspace mäts då från exakt samma viewportbox i alla moduler. */
+.app-shell.ccc-app-shell{
+  width:100%!important;
+  max-width:1600px!important;
+  min-width:0!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  max-height:100dvh!important;
+  margin:0 auto!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+  display:block!important;
+  overflow:hidden!important;
+  position:relative!important;
+}
+
+/* CCC cache stamp: v2.8.36 */
