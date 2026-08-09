@@ -303,3 +303,10 @@ CCC v2.8.21 – Vision-starten får samma strukturella grid som Dashboard (2026-
 - När bildflödet har startat blir wrappern `display: contents`, så Visions befintliga arbetsflöde behåller sin layout.
 - Core fortsätter äga 720 px desktop-grid, 28 px gap och 320 px action-korthöjd.
 - Vision-kostnadsvisningen från v2.8.19/v2.8.20 behålls.
+
+CCC v2.8.22 – Vision-kortens faktiska desktop-höjd låst mot Dashboard (2026-08-09)
+- Orsak: Vision-starten låg fortfarande inuti captureCard/stage-card, som har äldre egna höjd/layoutregler.
+- På desktop tas den extra layoutnivån bort med display:contents när Vision är i startläge.
+- Själva action-korten fortsätter styras centralt av ccc-core/core.css: 720px grid, 28px gap, 320px kort.
+- Textmängden i Vision får inte längre påverka kortens yttermått.
+- Mobilreglerna lämnas orörda.
