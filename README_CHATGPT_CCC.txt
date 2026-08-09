@@ -466,3 +466,13 @@ CCC v2.8.42 – PWA safe-area följer tema (2026-08-10)
 - iOS-webbappmetataggar läggs till, inklusive `black-translucent`, så appbakgrunden kan fortsätta bakom status/safe-area.
 - Dashboard, Vision, Publicera och Auth använder `viewport-fit=cover` och tidig temainitiering för att minska vit flash vid uppstart.
 - Auth safe-area använder också Core-temats bakgrund.
+
+CCC v2.8.43 – egen CCC-PWA, separerad från Container13 (2026-08-10)
+- Grundorsak hittad: CCC saknade eget manifest och egen service worker, medan Container13:s root-service-worker kunde kontrollera `/ccc-core/`.
+- Root-service-workern använder `ignoreSearch:true`, vilket kan göra att gamla CCC CSS/JS serveras trots nya `?v=`-suffix.
+- CCC får nu `ccc-core/manifest.webmanifest` med eget namn, scope `/ccc-core/`, `display: standalone`, `orientation: any` och mörk neutral PWA-startbakgrund.
+- CCC får egen `ccc-core/sw.js` med smalare scope. Den använder network-first och exakta request-URL:er; versionssuffix ignoreras inte.
+- `ccc-core/pwa.js` registrerar den dedikerade CCC-service-workern. Den smalare registreringen tar över `/ccc-core/` från Container13:s root-worker.
+- Auth, Dashboard, Vision och Publicera länkar nu CCC-manifestet och PWA-bootstrap.
+- Detta ska förhindra att gamla cacheade Core-filer gör att PWA-temat inte följer aktuell version.
+- Landscape tillåts även i manifestet (`orientation: any`).
