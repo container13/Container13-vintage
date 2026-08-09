@@ -476,3 +476,11 @@ CCC v2.8.43 – egen CCC-PWA, separerad från Container13 (2026-08-10)
 - Auth, Dashboard, Vision och Publicera länkar nu CCC-manifestet och PWA-bootstrap.
 - Detta ska förhindra att gamla cacheade Core-filer gör att PWA-temat inte följer aktuell version.
 - Landscape tillåts även i manifestet (`orientation: any`).
+
+CCC v2.8.44 – PWA safe-area för logga + Auth brand-rensning (2026-08-10)
+- iPhone standalone visade auran/loggans överkant bakom status-/kameraområdet.
+- Core-headern tar nu hänsyn till `env(safe-area-inset-top)` i installerad PWA och flyttar branden nedåt utan modulunika justeringar.
+- Landscape respekterar även vänster/höger safe-area.
+- Auth hade fortfarande äldre egna regler för `.ccc-brand-word`, `.ccc-brand-halo` och `.ccc-aura-arc`; 2 sådana brandregler togs bort/neutraliserades.
+- Auth använder nu samma Core-styrda cCc-logga, mitten-C och aura som övriga CCC.
+- Permanent regel: modul-CSS får inte äga gemensam CCC-brandgeometri.
