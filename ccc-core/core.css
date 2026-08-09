@@ -443,4 +443,98 @@ button{color:inherit}
   }
 }
 
-/* CCC cache stamp: v2.8.25 */
+/* CCC v2.8.26 – HELA headerns geometri ägs av Core.
+   Dubbelklass används medvetet för att slå äldre modulregler som
+   `.app-header.ccc-header{...!important}` i Vision. */
+.app-header.ccc-header{
+  position:sticky!important;
+  top:0!important;
+  left:0!important;
+  right:0!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  height:var(--ccc-header-height)!important;
+  min-height:var(--ccc-header-height)!important;
+  max-height:var(--ccc-header-height)!important;
+  margin:0!important;
+  padding:env(safe-area-inset-top) 22px 0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  box-sizing:border-box!important;
+  transform:none!important;
+}
+
+/* Tema + profil förankras mot exakt samma headerbox i varje modul. */
+.app-header.ccc-header > .header-actions.ccc-header-actions{
+  position:absolute!important;
+  right:22px!important;
+  left:auto!important;
+  top:auto!important;
+  bottom:18px!important;
+  width:auto!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:10px!important;
+  transform:none!important;
+}
+
+.app-header.ccc-header > .header-actions.ccc-header-actions > .icon-button.ccc-icon-button{
+  width:48px!important;
+  height:48px!important;
+  min-width:48px!important;
+  min-height:48px!important;
+  max-width:48px!important;
+  max-height:48px!important;
+  margin:0!important;
+  padding:0!important;
+}
+
+@media(max-width:480px){
+  .app-header.ccc-header{
+    padding:env(safe-area-inset-top) 16px 0!important;
+  }
+  .app-header.ccc-header > .header-actions.ccc-header-actions{
+    right:16px!important;
+    bottom:14px!important;
+    gap:8px!important;
+  }
+  .app-header.ccc-header > .header-actions.ccc-header-actions > .icon-button.ccc-icon-button{
+    width:44px!important;
+    height:44px!important;
+    min-width:44px!important;
+    min-height:44px!important;
+    max-width:44px!important;
+    max-height:44px!important;
+  }
+}
+
+@media(min-width:760px){
+  .app-header.ccc-header{
+    padding:env(safe-area-inset-top) 48px 0!important;
+  }
+  .app-header.ccc-header > .header-actions.ccc-header-actions{
+    right:48px!important;
+    bottom:42px!important;
+    gap:14px!important;
+  }
+  .app-header.ccc-header > .header-actions.ccc-header-actions > .icon-button.ccc-icon-button{
+    width:58px!important;
+    height:58px!important;
+    min-width:58px!important;
+    min-height:58px!important;
+    max-width:58px!important;
+    max-height:58px!important;
+  }
+  .app-header.ccc-header > .header-actions.ccc-header-actions > .icon-button.ccc-icon-button svg{
+    width:27px!important;
+    height:27px!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.26 */
