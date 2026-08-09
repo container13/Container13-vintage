@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f7f9">
+<title>CCC Publicera v2.8.1</title>
+<script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+<link rel="stylesheet" href="../dashboard/dashboard.css?v=2.8.1">
+<link rel="stylesheet" href="publish.css?v=2.8.1">
+</head>
+<body>
+<div class="app-shell publish-shell">
+  <header class="app-header ccc-header">
+    <a class="brand ccc-brand-mark" href="../dashboard/index.html" aria-label="Till dashboard"><span class="brand-halo ccc-brand-halo">✦</span><span class="brand-word ccc-brand-word">CCC</span></a>
+    <div class="header-actions ccc-header-actions"><button id="themeBtn" class="icon-button ccc-icon-button" type="button" aria-label="Växla tema"><svg class="icon icon-theme ccc-icon ccc-icon-theme" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.4 0-.8-.1-1.2A7 7 0 0 1 13.2 3H12Z"/></svg></button></div>
+  </header>
+
+  <main class="publish-main">
+    <section id="gridView" class="publish-view">
+      <div class="publish-heading"><a class="publish-back" href="../dashboard/index.html" aria-label="Tillbaka">‹</a><div><h1>Publicera</h1><p id="draftCount">Lokala utkast</p></div></div>
+      <div id="emptyState" class="publish-empty" hidden><strong>Inget väntar på publicering</strong><span>Skapa ett plagg i Vision först.</span></div>
+      <div id="draftGrid" class="draft-grid" aria-live="polite"></div>
+    </section>
+
+    <section id="detailView" class="publish-view" hidden>
+      <div class="detail-top"><button id="detailBack" class="publish-back" type="button" aria-label="Till miniatyrer">‹</button><div class="detail-counter" id="detailCounter"></div></div>
+      <div id="swipeArea" class="swipe-area">
+        <img id="detailImage" alt="Valt plagg">
+        <span class="swipe-hint left" aria-hidden="true">‹</span><span class="swipe-hint right" aria-hidden="true">›</span>
+      </div>
+      <div class="detail-copy"><strong id="detailTitle"></strong><span id="detailMeta"></span></div>
+      <div class="detail-actions"><button id="cropBtn" class="secondary-action" type="button">Beskär</button><button id="publishBtn" class="primary-action" type="button">Publicera till Container13</button></div>
+      <p id="publishStatus" class="publish-status" aria-live="polite"></p>
+    </section>
+
+    <section id="cropView" class="publish-view crop-view" hidden>
+      <div class="detail-top"><button id="cropBack" class="publish-back" type="button" aria-label="Tillbaka">‹</button><strong>Beskär</strong></div>
+      <p class="crop-help">Dra bilden och zooma vid behov.</p>
+      <div class="crop-box"><canvas id="cropCanvas" width="900" height="900"></canvas><span class="crop-border"></span></div>
+      <label class="zoom-control"><span>Zoom</span><input id="cropZoom" type="range" min="1" max="3" step="0.01" value="1"></label>
+      <div class="crop-actions"><button id="cropReset" class="secondary-action" type="button">Återställ</button><button id="cropDone" class="primary-action" type="button">Klar</button></div>
+      <p class="crop-note">WebP skapas lokalt först när du trycker Klar.</p>
+    </section>
+  </main>
+  <span class="ccc-floating-version">v2.8.1</span>
+</div>
+<script type="module" src="publish.js?v=2.8.1"></script>
+</body>
+</html>
