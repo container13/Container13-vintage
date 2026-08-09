@@ -397,3 +397,8 @@ CCC v2.8.33 – mobilstart: bredare aura + samma huvudkort Dashboard/Vision (202
 - Dashboard och Vision får samma beräknade mobila arbetsyta efter gemensam header + 58 px modulrad.
 - Visions gamla `main-camera`-minhöjder neutraliseras i startläget så kamera-kortet inte kan bli en annan storlek än de andra.
 - Regel framåt: huvudkort som ska fylla mobil arbetsyta använder Core-modifieraren i stället för egna modulmått.
+
+CCC v2.8.34 – mobil finjustering aura + Vision-bredd (2026-08-09)
+- Mobilauran från v2.8.33 minskad ett litet steg.
+- Vision-startens wrapper, grid och kort använder nu 100% av exakt samma 16px-paddade arbetsbredd som Dashboard på mobil.
+- Höjden från v2.8.33 behålls oförändrad.
