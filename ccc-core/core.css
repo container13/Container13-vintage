@@ -624,4 +624,26 @@ button{color:inherit}
   }
 }
 
-/* CCC cache stamp: v2.8.28 */
+/* CCC v2.8.29 – gemensam header-markup.
+   Modulunika headerverktyg ligger i en separat absolut wrapper och kan inte påverka
+   CCC-logga, aura, tema eller profil. */
+.ccc-module-header-tools{
+  position:absolute!important;
+  left:48px!important;
+  bottom:42px!important;
+  z-index:45!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  margin:0!important;
+  padding:0!important;
+}
+@media(max-width:480px){
+  .ccc-module-header-tools{
+    left:16px!important;
+    bottom:14px!important;
+    gap:8px!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.29 */
