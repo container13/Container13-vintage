@@ -37,6 +37,23 @@
   const visionLearnEditsSetting = $("#visionLearnEditsSetting");
   let visionSettingsSavedTimer;
 
+  const visionTotalCost = $("#visionTotalCost");
+
+  async function refreshVisionTotalCost() {
+    if (!visionTotalCost) return;
+    try {
+      const summary = await window.CCC_VISION_KNOWLEDGE?.costSummarySince?.("1970-01-01T00:00:00.000Z");
+      const sek = Number(summary?.sek || 0);
+      visionTotalCost.textContent = `${new Intl.NumberFormat("sv-SE", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(sek)} kr`;
+    } catch (error) {
+      console.warn("[CCC Vision] Kunde inte läsa total Vision-kostnad", error);
+      visionTotalCost.textContent = "0,00 kr";
+    }
+  }
+
   function syncVisionSettingsPanel() {
     const settings = visionSettings();
     if (visionAiAutoSetting) visionAiAutoSetting.checked = settings.aiAuto;
@@ -44,7 +61,10 @@
   }
   function setVisionSettingsOpen(open) {
     if (!visionSettingsOverlay) return;
-    if (open) syncVisionSettingsPanel();
+    if (open) {
+      syncVisionSettingsPanel();
+      refreshVisionTotalCost();
+    }
     visionSettingsOverlay.hidden = !open;
     visionSettingsButton?.setAttribute("aria-expanded", String(open));
   }

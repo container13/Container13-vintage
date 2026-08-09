@@ -2749,4 +2749,17 @@ body{min-height:100dvh}
 /* CCC v2.8.16 – Vision startkort använder ren Core-markup.
    Inga lokala kortmått här; Core äger geometrin. */
 
-/* CCC cache stamp: v2.8.18 */
+/* CCC v2.8.19 – enkel kostnadsrad i Vision-inställningar. */
+.vision-cost-row{
+  cursor:default;
+}
+.vision-total-cost{
+  flex:0 0 auto;
+  color:var(--gold);
+  font-size:1.05rem;
+  font-weight:900;
+  white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+}
+
+/* CCC cache stamp: v2.8.19 */
