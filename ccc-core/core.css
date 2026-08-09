@@ -537,4 +537,8 @@ button{color:inherit}
   }
 }
 
-/* CCC cache stamp: v2.8.26 */
+/* CCC v2.8.27 – Core ownership rule.
+   Shared header, brand/aura, theme/profile controls and common action-card geometry
+   are authoritative here. Module CSS must not duplicate these selectors. */
+
+/* CCC cache stamp: v2.8.27 */
