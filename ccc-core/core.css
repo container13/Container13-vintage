@@ -201,3 +201,33 @@ button{color:inherit}
   .ccc-action-card--arrow-desktop .action-arrow{display:block!important;position:absolute!important;right:14px!important;top:50%!important;transform:translateY(-50%)!important;font-size:28px!important}
   .ccc-action-card--back.ccc-action-card--arrow-desktop .action-arrow{right:auto!important;left:14px!important}
 }
+
+
+/* CCC v2.8.15 – låst gemensamt desktop-facit från Dashboard.
+   Alla moduler som använder .ccc-workspace + .ccc-action-grid får samma position och geometri. */
+@media(min-width:760px){
+  .ccc-module-marker{
+    width:720px!important;
+    max-width:720px!important;
+  }
+  .ccc-workspace{
+    width:720px!important;
+    max-width:720px!important;
+    margin:0 auto!important;
+    padding:42px 0 72px!important;
+  }
+  .ccc-action-grid{
+    width:720px!important;
+    max-width:720px!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:28px!important;
+    margin:0!important;
+  }
+  .ccc-action-card{
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    min-height:320px!important;
+    height:auto!important;
+  }
+}
