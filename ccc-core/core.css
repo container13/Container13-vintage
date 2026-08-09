@@ -25,9 +25,9 @@
   --ccc-header-action-gap-mobile:8px;
   --ccc-brand-size-desktop:78px;
   --ccc-brand-size-mobile:35px;
-  --ccc-aura-width-mobile:128px;
-  --ccc-aura-glow-width-mobile:152px;
-  --ccc-aura-inner-width-mobile:124px;
+  --ccc-aura-width-mobile:118px;
+  --ccc-aura-glow-width-mobile:142px;
+  --ccc-aura-inner-width-mobile:114px;
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
@@ -745,4 +745,36 @@ button{color:inherit}
   }
 }
 
-/* CCC cache stamp: v2.8.33 */
+/* CCC v2.8.34 – mobil finjustering.
+   Aura något smalare. Vision-startens kortbredd låses till samma arbetsbredd
+   som Dashboard: viewport minus 16 px på vardera sida. */
+@media(max-width:480px){
+  .app-header.ccc-header > .ccc-brand-mark .ccc-brand-halo{
+    width:108px!important;
+  }
+
+  .vision-shell.ccc-workspace{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    box-sizing:border-box!important;
+  }
+  #captureCard:has(#batchStrip[hidden]){
+    width:100%!important;
+    max-width:none!important;
+    box-sizing:border-box!important;
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-start-actions.ccc-action-grid--fill-mobile{
+    width:100%!important;
+    max-width:none!important;
+    box-sizing:border-box!important;
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-start-actions.ccc-action-grid--fill-mobile > .ccc-action-card{
+    width:100%!important;
+    max-width:none!important;
+    box-sizing:border-box!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.34 */
