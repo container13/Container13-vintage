@@ -1,4 +1,4 @@
-// CCC Core JS — v2.8.42
+// CCC Core JS — v2.8.43
 // Gemensamt beteende: tema, profilmeny och logout.
 
 const root=document.documentElement;
