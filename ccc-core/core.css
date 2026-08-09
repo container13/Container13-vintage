@@ -941,4 +941,22 @@ button{color:inherit}
   }
 }
 
-/* CCC cache stamp: v2.8.38 */
+/* CCC v2.8.39 – riktig fullbreddslinje under modulrubriken.
+   ::after tas ur gridflödet och förankras mot hela modulradens box. */
+.ccc-module-marker{
+  position:relative!important;
+}
+.ccc-module-marker::after{
+  content:""!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  width:auto!important;
+  height:1px!important;
+  display:block!important;
+  background:color-mix(in srgb,var(--ccc-gold) 26%,transparent)!important;
+  pointer-events:none!important;
+}
+
+/* CCC cache stamp: v2.8.39 */
