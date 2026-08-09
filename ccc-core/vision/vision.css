@@ -2701,3 +2701,130 @@ body{min-height:100dvh}
 .dialog-actions button{min-height:48px;border-radius:14px;border:1px solid var(--ccc-border,var(--border));cursor:pointer}
 .dialog .button-secondary{background:transparent;color:var(--ccc-text,var(--text))}
 .dialog .button-primary{background:var(--ccc-gold,var(--gold));color:#16120a;border-color:transparent!important;font-weight:750}
+
+
+/* CCC v2.8.10 – startkort i exakt samma linjesystem.
+   Regel: parallella handlingskort använder samma ikonrad, rubrikrad och hjälprad.
+   Framåt = liten pil höger. Bakåt = liten pil vänster. */
+#captureCard:has(#batchStrip[hidden]) .vision-dashboard-card{
+  position:relative;
+}
+#captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--back{
+  display:grid;
+  grid-template-columns:1fr;
+  justify-items:center;
+  align-content:center;
+  gap:18px;
+  text-align:center;
+}
+#captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--back .vision-card-icon--back{
+  width:clamp(60px,9dvh,72px);
+  height:clamp(60px,9dvh,72px);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:color-mix(in srgb,var(--surface) 55%,transparent);
+  color:#5a39a1;
+}
+#captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--back .vision-card-icon--back svg{
+  width:clamp(30px,4.5dvh,37px);
+  height:clamp(30px,4.5dvh,37px);
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+#captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--back .vision-card-text{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  text-align:center;
+}
+#captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--back .vision-card-text strong{
+  font-size:clamp(23px,3.2dvh,27px);
+  line-height:1.05;
+  letter-spacing:-.02em;
+  color:#5a39a1;
+}
+#captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--back .vision-card-text small{
+  font-size:clamp(15px,2dvh,17px);
+  line-height:1.2;
+  color:var(--muted);
+}
+#captureCard:has(#batchStrip[hidden]) .vision-card-arrow--back{
+  position:absolute;
+  left:12px;
+  right:auto;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:34px;
+  line-height:1;
+  color:var(--text);
+  opacity:.9;
+}
+
+/* Desktop: exakt samma vertikala nivåer i alla tre kort. */
+@media(min-width:760px){
+  #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card{
+    display:grid;
+    grid-template-rows:72px auto auto;
+    align-content:center;
+    justify-items:center;
+    row-gap:18px;
+    padding:26px 18px;
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card .vision-card-icon{
+    width:72px;
+    height:72px;
+    align-self:center;
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card .vision-card-text{
+    align-items:center;
+    text-align:center;
+    gap:7px;
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card .vision-card-text strong{
+    font-size:1.65rem;
+    line-height:1.05;
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card .vision-card-text small{
+    font-size:1rem;
+    line-height:1.25;
+    text-align:center;
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--back{
+    grid-template-columns:1fr;
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-card-arrow--back{
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:28px;
+  }
+}
+
+/* Mobil: samma princip, men behåll mobilens kompakta kortform. */
+@media(max-width:480px){
+  #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--back{
+    grid-template-columns:64px minmax(0,1fr);
+    justify-items:stretch;
+    align-items:center;
+    column-gap:14px;
+    text-align:left;
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--back .vision-card-icon--back{
+    width:60px;
+    height:60px;
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--back .vision-card-text{
+    align-items:flex-start;
+    text-align:left;
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--back .vision-card-arrow--back{
+    left:8px;
+    font-size:28px;
+  }
+}
