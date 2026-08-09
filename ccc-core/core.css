@@ -1292,4 +1292,20 @@ body{
   }
 }
 
-/* CCC cache stamp: v2.8.46 */
+/* CCC v2.8.47 – sista landscape-finjustering.
+   Ytterligare 6 px ned för loggan och ytterligare 20 px lägre kort än v2.8.46. */
+@media (orientation:landscape) and (max-height:540px) and (max-width:980px){
+  .app-header.ccc-header > .ccc-brand-mark{
+    transform:translate(-50%,-50%) translateY(11px)!important;
+  }
+
+  .ccc-action-grid > .ccc-action-card,
+  .ccc-module-grid > .ccc-action-card,
+  .ccc-action-card{
+    height:calc(var(--ccc-card-height-landscape) - 40px)!important;
+    min-height:calc(var(--ccc-card-height-landscape) - 40px)!important;
+    max-height:calc(var(--ccc-card-height-landscape) - 40px)!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.47 */
