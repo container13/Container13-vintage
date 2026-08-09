@@ -207,3 +207,10 @@ CCC v2.8.9 – Vision logout-fix (2026-08-09)
 - Vision hade Logga ut-knappen och JS-hanteringen, men den faktiska bekräftelsedialogen saknades i HTML.
 - Den saknade logout-dialogen är nu tillagd i Vision med samma beteende som Dashboard/Publicera.
 - Ingen annan funktionalitet eller layout ändrades i denna patch.
+
+CCC v2.8.10 – linjerade handlingskort / generell designregel (2026-08-09)
+- Vision-startens tre kort använder samma visuella struktur: ikonrad, rubrikrad och hjälprad ligger på samma nivå när korten jämförs.
+- Tillbaka-kortet har nu en stor vänsterpilsikon i samma ikonposition som kamera/galleri, plus en liten navigationspil vid vänsterkanten.
+- Framåtkort har liten navigationspil till höger; bakåtkort har liten navigationspil till vänster.
+- Generell CCC-regel: parallella action-kort inom samma vy ska linjera ikon, rubrik, hjälprad och övriga återkommande element. Skillnader ska uttrycka funktion/riktning, inte skapa slumpmässiga förskjutningar.
+- Regeln gäller alla nuvarande och framtida CCC-moduler.
