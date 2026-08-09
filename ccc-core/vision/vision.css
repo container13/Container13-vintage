@@ -2487,4 +2487,34 @@ body{min-height:100dvh}
   }
 }
 
-/* CCC cache stamp: v2.8.33 */
+/* CCC v2.8.35 – gamla Vision-startmått neutraliserade på mobil.
+   Core äger hela startkedjan. Endast Vision-funktion/stil får ligga kvar här. */
+@media(max-width:480px){
+  .vision-shell{
+    width:auto;
+    max-width:none;
+    margin:0;
+  }
+
+  #captureCard:has(#batchStrip[hidden]),
+  #captureCard:has(#batchStrip[hidden]) .vision-start-actions{
+    width:auto!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  #captureCard:has(#batchStrip[hidden]) .main-camera.ccc-action-card,
+  #captureCard:has(#batchStrip[hidden]) #galleryBtn.ccc-action-card,
+  #captureCard:has(#batchStrip[hidden]) #visionStartBackBtn.ccc-action-card{
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    height:100%!important;
+    min-height:0!important;
+    margin:0!important;
+    box-sizing:border-box!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.35 */
