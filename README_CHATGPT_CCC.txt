@@ -151,3 +151,14 @@ CCC v2.8.1 – Skapa och Publicera separeras (2026-08-09)
 - Dashboardens Publicera går till samma Publish-modul; Vision kan också gå dit från sin slutvy.
 - v2.8.1 publicerar ännu inte till Firebase/Container13: sista knappen markerar nästa integrationspunkt. Nästa steg är verklig publicering till Container13 Nyinkommet via befintligt C13-admin/Firebase-flöde.
 - Framtidsidéer (ej nu): återanvänd redan publicerade bilder samt CCC-genererade kollage/bildspel med användargodkännande.
+
+CCC v2.8.2 – demo-ui avvecklad (2026-08-09)
+- /ccc-core/demo-ui är borttagen ur den aktiva strukturen.
+- Aktiva moduler ligger nu i egna mappar: auth, dashboard, vision, publish, profile, settings, store och statistics.
+- Dashboard och Vision länkar inte längre till demo-ui.
+- Inställningar flyttad till /ccc-core/settings/ med den senaste aktiva versionen som grund.
+- Min profil ligger i /ccc-core/profile/.
+- Butiken ligger i /ccc-core/store/.
+- Statistik ligger i /ccc-core/statistics/.
+- Dashboardens äldre relativa publicera-länk är rättad till /ccc-core/publish/index.html.
+- Grundregel framåt: ingen ny aktiv CCC-funktion får läggas i demo-/testmappar.

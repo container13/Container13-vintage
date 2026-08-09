@@ -1,0 +1,13 @@
+CCC v2.8.2 – filer/mappar som ska tas bort från GitHub
+
+TA BORT HELA MAPPEN:
+ccc-core/demo-ui/
+
+TA OCKSÅ BORT dessa två gamla dubbletter i ccc-core-roten:
+ccc-core/installningar.html
+ccc-core/installningar.js
+
+VIKTIGT:
+Changed-files-ZIP kan lägga till/ersätta filer men kan inte automatiskt radera gamla filer på GitHub.
+Efter att v2.8.2-filerna är uppladdade ska ovanstående gamla filer tas bort.
+Den fulla v2.8.2-ZIP:en innehåller dem inte.
