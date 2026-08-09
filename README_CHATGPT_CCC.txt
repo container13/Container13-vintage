@@ -388,3 +388,12 @@ CCC v2.8.32 – loggtest + v2.8.31 samlat (2026-08-09)
 - Mitten-C har klassen `ccc-brand-middle` och görs tillfälligt 1.34em stort via en enda regel i `ccc-core/core.css`.
 - Testmål: Dashboard, Vision och Publicera ska visa exakt samma större mitten-C. Om alla tre följer med är central loggstyrning verifierad.
 - Efter verifiering kan testutseendet återställas centralt utan att ändra varje modul.
+
+CCC v2.8.33 – mobilstart: bredare aura + samma huvudkort Dashboard/Vision (2026-08-09)
+- Den nya större mitten-C-loggan från v2.8.32 behålls permanent.
+- Mobilauran breddas centralt i Core så den visuellt sträcker sig längre ut från loggan, närmare desktop-proportionen.
+- Dashboardens första tre kort och Vision-startens tre kort använder nu samma återanvändbara Core-klass `ccc-action-grid--fill-mobile`.
+- Klassen äger mobilgridens höjd, tre lika rader, gap och kortens fulla höjd.
+- Dashboard och Vision får samma beräknade mobila arbetsyta efter gemensam header + 58 px modulrad.
+- Visions gamla `main-camera`-minhöjder neutraliseras i startläget så kamera-kortet inte kan bli en annan storlek än de andra.
+- Regel framåt: huvudkort som ska fylla mobil arbetsyta använder Core-modifieraren i stället för egna modulmått.
