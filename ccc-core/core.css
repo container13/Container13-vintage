@@ -649,4 +649,24 @@ button{color:inherit}
 /* CCC v2.8.30 – app-shell är gemensam ytterbox.
    Headerns position ska jämföras inom samma .ccc-app-shell i alla moduler. */
 
-/* CCC cache stamp: v2.8.30 */
+/* CCC v2.8.32 – TEST av central loggstyrning.
+   Mitten-C görs tydligt större. Samma Core-regel ska slå igenom i alla moduler. */
+.ccc-brand-word{
+  display:inline-flex!important;
+  align-items:baseline!important;
+  justify-content:center!important;
+  gap:0!important;
+}
+.ccc-brand-word > span{
+  display:inline-block!important;
+  font:inherit!important;
+  line-height:1!important;
+}
+.ccc-brand-word > .ccc-brand-middle{
+  font-size:1.34em!important;
+  line-height:.82!important;
+  transform:translateY(.04em)!important;
+  transform-origin:center bottom!important;
+}
+
+/* CCC cache stamp: v2.8.32 */
