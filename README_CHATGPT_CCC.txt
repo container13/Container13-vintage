@@ -310,3 +310,11 @@ CCC v2.8.22 – Vision-kortens faktiska desktop-höjd låst mot Dashboard (2026-
 - Själva action-korten fortsätter styras centralt av ccc-core/core.css: 720px grid, 28px gap, 320px kort.
 - Textmängden i Vision får inte längre påverka kortens yttermått.
 - Mobilreglerna lämnas orörda.
+
+CCC v2.8.23 – central desktop-korthöjd från uppmätt Dashboard-facit (2026-08-09)
+- Skärmdumparna mättes direkt: Dashboard och Vision har redan samma kortbredd, men Dashboardens synliga kortbox är cirka 368 px hög medan Vision ligger omkring 320 px.
+- Core får nu variabeln `--ccc-action-card-height-desktop: 368px`.
+- Alla `.ccc-action-grid > .ccc-action-card` på desktop använder exakt denna variabel för `height`, `min-height` och `max-height`.
+- Detta är den enda auktoritativa desktop-korthöjden framåt. Vill vi senare göra alla CCC-kort större/mindre ändras variabeln på ett enda ställe i `ccc-core/core.css`.
+- Ingen mobilgeometri ändras.
+- Vision-kostnadsvisningen behålls.
