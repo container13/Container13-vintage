@@ -430,3 +430,10 @@ CCC v2.8.37 – Publicera startvy
 - Kort 3: Tillbaka till Dashboard.
 - Den tidigare dubbla rubriken/tomläget på startsidan är borttaget; utkastens tomläge visas först när Lokala utkast öppnas.
 - Befintlig detaljvy, beskärning och lokal IndexedDB-hantering är bevarad.
+
+CCC v2.8.38 – Publicera samma Core-kort + fullbred modul-linje (2026-08-10)
+- Publiceras startsida använder nu exakt samma Core-kedja som Dashboard/Vision: `ccc-mobile-home-view` -> `ccc-action-grid--fill-mobile` -> `ccc-action-card`.
+- Publiceras workspace ingår i samma centrala mobilregel för bredd, höjd, 16px sidpadding och overflow.
+- Lokala Publicera-regler för startvyns/gridens geometri tas bort; Core är ensam källa.
+- Den tunna linjen under modulrubriken går nu över hela appens bredd i Dashboard, Vision, Publicera och framtida moduler.
+- Permanent modulregel: nya moduler ska från start använda Core-kedjan för gemensam layout och får inte skapa egna kopior av workspace/grid/action-card-geometri.
