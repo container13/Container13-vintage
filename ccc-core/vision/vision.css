@@ -2456,4 +2456,16 @@ body{min-height:100dvh}
 /* CCC v2.8.36 – Vision äger inte längre .app-shell.
    Ytterboxen är en Core-komponent. Vision börjar först vid .vision-shell. */
 
-/* CCC cache stamp: v2.8.36 */
+/* CCC v2.8.40 – Vision-specifikt landscape:
+   bara arbetsflödesinnehåll; skal/header/grid ägs av Core. */
+@media (orientation:landscape) and (max-height:540px) and (max-width:980px){
+  #captureCard:has(#batchStrip:not([hidden])){
+    padding:10px!important;
+    gap:8px!important;
+  }
+  #captureCard:has(#batchStrip:not([hidden])) .main-camera{
+    min-height:72px!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.40 */
