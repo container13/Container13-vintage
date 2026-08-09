@@ -2762,4 +2762,27 @@ body{min-height:100dvh}
   font-variant-numeric:tabular-nums;
 }
 
-/* CCC cache stamp: v2.8.19 */
+/* CCC v2.8.21 – ren startgrid som i Dashboard.
+   #captureCard är stage/arbetskort. .vision-start-actions är action-grid.
+   Därmed kan gamla stage/card-regler inte krympa action-korten. */
+#captureCard:has(#batchStrip[hidden]){
+  display:block!important;
+}
+#captureCard:has(#batchStrip[hidden]) .vision-start-actions{
+  display:grid!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+}
+#captureCard:has(#batchStrip[hidden]) .vision-start-actions > .ccc-action-card{
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+}
+
+/* När ett bildflöde har startat ska wrappern inte skapa en extra layoutnivå. */
+#captureCard:has(#batchStrip:not([hidden])) .vision-start-actions{
+  display:contents!important;
+}
+
+/* CCC cache stamp: v2.8.21 */

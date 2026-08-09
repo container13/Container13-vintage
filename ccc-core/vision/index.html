@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#f7f7f9">
-  <title>CCC Vision v2.8.20</title>
+  <title>CCC Vision v2.8.21</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-  <link rel="stylesheet" href="vision.css?v=2.8.20">
-  <link rel="stylesheet" href="../core.css?v=2.8.20">
+  <link rel="stylesheet" href="vision.css?v=2.8.21">
+  <link rel="stylesheet" href="../core.css?v=2.8.21">
 </head>
 <body>
   <header class="app-header ccc-header" aria-label="CCC-huvudmeny">
@@ -50,13 +50,14 @@
   </div>
 
   <main class="vision-shell ccc-workspace">
-    <section id="captureCard" class="card capture-card stage-card is-active ccc-action-grid" aria-labelledby="captureTitle">
+    <section id="captureCard" class="card capture-card stage-card is-active" aria-labelledby="captureTitle">
       <div class="card-heading capture-heading capture-heading-tools-only">
         <div class="visually-hidden"><h1 id="captureTitle">CCC Vision</h1></div>
         <div class="capture-head-tools"></div>
       </div>
 
-      <button id="startCameraBtn" class="main-camera camera-trigger ccc-action-card ccc-action-card--blue ccc-action-card--arrow-desktop ccc-action-card--dense-copy" type="button" aria-label="Ta ett foto">
+      <nav class="vision-start-actions ccc-action-grid" aria-label="Vision startval">
+<button id="startCameraBtn" class="main-camera camera-trigger ccc-action-card ccc-action-card--blue ccc-action-card--arrow-desktop ccc-action-card--dense-copy" type="button" aria-label="Ta ett foto">
         <img id="mainPreview" alt="Förhandsvisning av varan" hidden>
         <span class="action-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24"><path d="M4 8h3l1.4-2h7.2L17 8h3v11H4V8Zm8 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/></svg>
@@ -80,6 +81,7 @@
         </span>
         <span class="action-copy"><strong>Tillbaka</strong><small>Till dashboard</small></span>
       </button>
+      </nav>
 
       <button id="resumeSessionBtn" class="quiet-button vision-resume-button" type="button" hidden>Fortsätt pågående arbete</button>
 
@@ -351,12 +353,12 @@
     </div>
   </div>
 
-  <script src="../version.js?v=2.8.20"></script>
-  <script src="demo-data.js?v=2.8.20"></script>
-  <script src="vision-ai-config.js?v=2.8.20"></script>
-  <script src="vision-ai.js?v=2.8.20"></script>
-  <script src="vision-knowledge.js?v=2.8.20"></script>
-  <script src="product-lab.js?v=2.8.20"></script>
-<script type="module" src="../core.js?v=2.8.20"></script>
+  <script src="../version.js?v=2.8.21"></script>
+  <script src="demo-data.js?v=2.8.21"></script>
+  <script src="vision-ai-config.js?v=2.8.21"></script>
+  <script src="vision-ai.js?v=2.8.21"></script>
+  <script src="vision-knowledge.js?v=2.8.21"></script>
+  <script src="product-lab.js?v=2.8.21"></script>
+<script type="module" src="../core.js?v=2.8.21"></script>
 </body>
 </html>
