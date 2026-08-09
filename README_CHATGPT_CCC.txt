@@ -489,3 +489,10 @@ CCC v2.8.45 – landscape finjustering (2026-08-10)
 - På mobil i landscape flyttas den gemensamma CCC-loggan 5 px nedåt.
 - Gemensamma huvudkort i landscape minskas 20 px på höjden.
 - Ändringen ligger i Core så nya moduler som använder CCC:s gemensamma header/kort ärver samma landscape-geometri.
+
+CCC v2.8.46 – gemensam kortbredd i mobil landscape (2026-08-10)
+- Vision används som visuell breddreferens för huvudkorten i mobil landscape.
+- Core begränsar den gemensamma tre-kortsgriden till 720 px och centrerar den.
+- Dashboard, Vision och Publicera får därmed samma landscape-bredd och centrering.
+- Permanent regel för nya moduler i mobil landscape: börja med samma Core-styrda kortbredd, höjd, spacing och centrerade tre-kortsrad; avvik först när modulens innehåll faktiskt kräver det.
+- Denna regel gäller specifikt mobil landscape och ändrar inte portrait- eller desktopgeometrin.
