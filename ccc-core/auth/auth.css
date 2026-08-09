@@ -19,3 +19,22 @@ form{display:grid;gap:11px;margin-top:18px}input{width:100%;min-height:52px;padd
 /* v2.5.0: dölj själva auth-kortet tills Firebase hunnit avgöra sessionen. */
 .auth-checking .auth-shell{visibility:hidden;opacity:0}
 .auth-shell{transition:opacity .16s ease}
+
+
+/* CCC v2.8.41 – Auth använder Core-loggan.
+   Auth får behålla placering/animering av auth-brand, men cCc-markering och aura ägs av ../core.css. */
+.auth-brand .ccc-brand-word{
+  font-size:48px!important;
+}
+@media(max-width:480px){
+  .auth-brand .ccc-brand-word{
+    font-size:46px!important;
+  }
+}
+
+/* CCC v2.8.42 – Auth/PWA safe-area använder samma temabakgrund som Core. */
+html,body,.auth-shell{
+  background:var(--ccc-bg)!important;
+}
+
+/* CCC cache stamp: v2.8.42 */
