@@ -221,3 +221,10 @@ CCC v2.8.11 – gemensam Action Card-komponent (2026-08-09)
 - Vision får endast lägga till innehåll, färg och riktning. Framåtkort kan visa liten pil höger; bakåtkort liten pil vänster utan att flytta ikon eller text.
 - Parallella action-kort ska ligga i linje: samma ikonrad, rubrikrad och hjälprad. Detta är en generell regel för alla nuvarande och framtida CCC-moduler.
 - Nya moduler ska återanvända `action-cards.css` i stället för att kopiera kort-CSS lokalt.
+
+CCC v2.8.12 – Vision/Dashboard exaktare kortsynk (2026-08-09)
+- Vision-startens tre kort flyttas ned till samma vertikala arbetsnivå som Dashboard på desktop.
+- Äldre Vision-CSS neutraliseras för startkorten så att den gemensamma action-card-geometrin inte längre kan förvrängas lokalt.
+- Desktop använder samma 3-kolumnsgap, korthöjd, ikonstorlek, rubriknivå och hjälprad som Dashboard.
+- På mobil döljs den lilla extra vänsterpilen i Tillbaka-kortet; den stora vänsterpilen i ikoncirkeln räcker.
+- Grundregel kvarstår: Dashboard är facit och parallella kort ska styras från gemensam komponent, inte lokal modulgeometri.
