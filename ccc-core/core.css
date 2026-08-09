@@ -25,6 +25,9 @@
   --ccc-header-action-gap-mobile:8px;
   --ccc-brand-size-desktop:78px;
   --ccc-brand-size-mobile:35px;
+  --ccc-aura-width-mobile:128px;
+  --ccc-aura-glow-width-mobile:152px;
+  --ccc-aura-inner-width-mobile:124px;
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
@@ -669,4 +672,77 @@ button{color:inherit}
   transform-origin:center bottom!important;
 }
 
-/* CCC cache stamp: v2.8.32 */
+/* CCC v2.8.33 – mobil: bredare aura + samma kortstorlek Dashboard/Vision. */
+
+/* Mobilauran får ungefär samma visuella utbredning runt loggan som på desktop. */
+@media(max-width:480px){
+  .app-header.ccc-header > .ccc-brand-mark .ccc-brand-halo{
+    width:116px!important;
+    height:20px!important;
+  }
+  .app-header.ccc-header > .ccc-brand-mark .ccc-aura-arc{
+    width:var(--ccc-aura-width-mobile)!important;
+    height:24px!important;
+    border-top-width:2px!important;
+  }
+  .app-header.ccc-header > .ccc-brand-mark .ccc-aura-arc::before{
+    width:var(--ccc-aura-glow-width-mobile)!important;
+    height:44px!important;
+    top:-20px!important;
+  }
+  .app-header.ccc-header > .ccc-brand-mark .ccc-aura-arc::after{
+    width:var(--ccc-aura-inner-width-mobile)!important;
+    height:24px!important;
+    top:-11px!important;
+  }
+
+  /* Gemensam mobilvariant för tre huvudkort som ska fylla arbetsytan.
+     Dashboard home och Vision start använder exakt samma klass och regler. */
+  .ccc-action-grid--fill-mobile{
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    grid-template-rows:repeat(3,minmax(0,1fr))!important;
+    gap:11px!important;
+    margin:0!important;
+    padding:0!important;
+    align-items:stretch!important;
+  }
+  .ccc-action-grid--fill-mobile > .ccc-action-card{
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    max-height:none!important;
+    align-self:stretch!important;
+  }
+
+  /* Samma tillgängliga arbetsyta i de moduler som använder huvudkorten. */
+  .dashboard.ccc-workspace,
+  .vision-shell.ccc-workspace{
+    height:calc(100dvh - var(--ccc-header-height) - 58px)!important;
+    min-height:0!important;
+    max-height:calc(100dvh - var(--ccc-header-height) - 58px)!important;
+    padding:4px 16px calc(12px + env(safe-area-inset-bottom))!important;
+    overflow:hidden!important;
+  }
+
+  /* Vision-startens stage får bara vara en genomskinlig bärare av den gemensamma griden. */
+  #captureCard:has(#batchStrip[hidden]){
+    height:100%!important;
+    min-height:0!important;
+    max-height:100%!important;
+    display:block!important;
+    padding:0!important;
+    border:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    overflow:hidden!important;
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-start-actions{
+    height:100%!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.33 */
