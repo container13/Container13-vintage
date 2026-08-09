@@ -1273,4 +1273,23 @@ body{
   }
 }
 
-/* CCC cache stamp: v2.8.45 */
+/* CCC v2.8.46 – standardbredd för mobil landscape.
+   Vision är breddreferens: Dashboard/Publicera och framtida moduler använder
+   samma centrerade tre-kortsrad via Core. */
+@media (orientation:landscape) and (max-height:540px) and (max-width:980px){
+  .ccc-action-grid--fill-mobile{
+    width:min(100%,720px)!important;
+    max-width:720px!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    justify-self:center!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+
+  .ccc-action-grid--fill-mobile > .ccc-action-card{
+    width:100%!important;
+    max-width:none!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.46 */
