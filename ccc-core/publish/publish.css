@@ -174,4 +174,42 @@
   }
 }
 
-/* CCC cache stamp: v2.8.18 */
+/* CCC v2.8.31 – Publicera: ingen sidscroll i första PC-vyn.
+   App-shell fyller viewporten exakt. Bara arbetsvyn får scrolla när innehållet faktiskt kräver det. */
+@media(min-width:760px){
+  html:has(.publish-shell),
+  body:has(.publish-shell){
+    height:100%;
+    overflow:hidden;
+  }
+  .publish-shell{
+    height:100dvh!important;
+    min-height:100dvh!important;
+    max-height:100dvh!important;
+    overflow:hidden!important;
+  }
+  .publish-main.ccc-workspace{
+    height:calc(100dvh - var(--ccc-header-height) - 62px)!important;
+    min-height:0!important;
+    max-height:calc(100dvh - var(--ccc-header-height) - 62px)!important;
+    padding:18px 0 20px!important;
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+  }
+  .publish-main.ccc-workspace > .publish-view{
+    max-height:100%!important;
+  }
+  /* Första vyn ska vara fast. Scroll aktiveras först i innehållsvyer som behöver den. */
+  #gridView{
+    height:100%!important;
+    overflow:hidden!important;
+  }
+  #detailView,
+  #cropView{
+    max-height:100%!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.31 */
