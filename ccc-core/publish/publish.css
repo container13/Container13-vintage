@@ -220,4 +220,15 @@
 /* CCC v2.8.38 – Publicera startlayout ägs av Core.
    Lokal CSS får inte sätta storlek/grid på publish-start-view eller publish-start-grid. */
 
-/* CCC cache stamp: v2.8.38 */
+/* CCC v2.8.40 – Publicera landscape:
+   startvyn är fast; detalj/beskärning får intern scroll vid behov. */
+@media (orientation:landscape) and (max-height:540px) and (max-width:980px){
+  #gridView,
+  #detailView,
+  #publishedView,
+  #cropView{
+    max-height:100%!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.40 */
