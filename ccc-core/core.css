@@ -646,4 +646,7 @@ button{color:inherit}
   }
 }
 
-/* CCC cache stamp: v2.8.29 */
+/* CCC v2.8.30 – app-shell är gemensam ytterbox.
+   Headerns position ska jämföras inom samma .ccc-app-shell i alla moduler. */
+
+/* CCC cache stamp: v2.8.30 */
