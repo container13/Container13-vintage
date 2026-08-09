@@ -437,3 +437,9 @@ CCC v2.8.38 – Publicera samma Core-kort + fullbred modul-linje (2026-08-10)
 - Lokala Publicera-regler för startvyns/gridens geometri tas bort; Core är ensam källa.
 - Den tunna linjen under modulrubriken går nu över hela appens bredd i Dashboard, Vision, Publicera och framtida moduler.
 - Permanent modulregel: nya moduler ska från start använda Core-kedjan för gemensam layout och får inte skapa egna kopior av workspace/grid/action-card-geometri.
+
+CCC v2.8.39 – fullbreddslinje korrigerad (2026-08-10)
+- Orsaken till att v2.8.38 inte syntes var att `ccc-module-marker::after` låg som grid-item.
+- `width:100%` fyllde då gridspåret i stället för hela modulradens box.
+- Linjen är nu absolut positionerad med `left:0; right:0; bottom:0` och går därför verkligt kant-till-kant.
+- Regeln ligger centralt i Core och gäller Dashboard, Vision, Publicera och framtida moduler.
