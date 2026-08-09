@@ -1,4 +1,4 @@
 (() => {
-  // v2.7.26: Den här sidan innehåller endast generella CCC-inställningar.
+  // v2.7.27: Den här sidan innehåller endast generella CCC-inställningar.
   // Modulspecifika inställningar ligger i respektive moduls kugghjul.
 })();
