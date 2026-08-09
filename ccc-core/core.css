@@ -322,4 +322,125 @@ button{color:inherit}
   }
 }
 
-/* CCC cache stamp: v2.8.23 */
+/* CCC v2.8.24 – fast modulhuvud i alla moduler.
+   Kicker + reserverad undertitel + skiljelinje har identisk höjd oavsett modul. */
+.ccc-module-marker{
+  height:62px!important;
+  min-height:62px!important;
+  max-height:62px!important;
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-rows:18px 18px 1px!important;
+  align-content:center!important;
+  justify-items:center!important;
+  row-gap:3px!important;
+  padding:6px 3px 5px!important;
+}
+.ccc-module-kicker{
+  height:18px!important;
+  min-height:18px!important;
+  line-height:18px!important;
+}
+.ccc-module-subtitle{
+  height:18px!important;
+  min-height:18px!important;
+  line-height:18px!important;
+  display:block!important;
+}
+.ccc-module-marker::after{
+  content:"";
+  display:block!important;
+  width:100%!important;
+  height:1px!important;
+  background:color-mix(in srgb,var(--ccc-gold) 26%,transparent)!important;
+}
+/* Undvik dubbel linje från äldre border-bottom-regel. */
+.ccc-module-marker{
+  border-bottom:0!important;
+}
+
+@media(max-width:480px){
+  .ccc-module-marker{
+    height:58px!important;
+    min-height:58px!important;
+    max-height:58px!important;
+    grid-template-rows:18px 18px 1px!important;
+    row-gap:2px!important;
+    padding:5px 2px 4px!important;
+  }
+}
+
+/* CCC v2.8.25 – tema + profil är en gemensam Core-komponent.
+   Högre specificitet än äldre modul-CSS så Dashboard/Vision/Publicera hamnar identiskt. */
+.ccc-header .ccc-header-actions{
+  position:absolute!important;
+  right:22px!important;
+  bottom:18px!important;
+  left:auto!important;
+  top:auto!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+}
+.ccc-header .ccc-header-actions .ccc-icon-button{
+  width:48px!important;
+  height:48px!important;
+  min-width:48px!important;
+  min-height:48px!important;
+  max-width:48px!important;
+  max-height:48px!important;
+  margin:0!important;
+  padding:0!important;
+}
+.ccc-header .ccc-header-actions .ccc-icon-button .ccc-icon,
+.ccc-header .ccc-header-actions .ccc-icon-button svg{
+  width:22px!important;
+  height:22px!important;
+}
+
+@media(max-width:480px){
+  .ccc-header .ccc-header-actions{
+    right:16px!important;
+    bottom:14px!important;
+    gap:8px!important;
+  }
+  .ccc-header .ccc-header-actions .ccc-icon-button{
+    width:44px!important;
+    height:44px!important;
+    min-width:44px!important;
+    min-height:44px!important;
+    max-width:44px!important;
+    max-height:44px!important;
+  }
+  .ccc-header .ccc-header-actions .ccc-icon-button .ccc-icon,
+  .ccc-header .ccc-header-actions .ccc-icon-button svg{
+    width:22px!important;
+    height:22px!important;
+  }
+}
+
+@media(min-width:760px){
+  .ccc-header .ccc-header-actions{
+    right:48px!important;
+    bottom:42px!important;
+    gap:14px!important;
+  }
+  .ccc-header .ccc-header-actions .ccc-icon-button{
+    width:58px!important;
+    height:58px!important;
+    min-width:58px!important;
+    min-height:58px!important;
+    max-width:58px!important;
+    max-height:58px!important;
+  }
+  .ccc-header .ccc-header-actions .ccc-icon-button .ccc-icon,
+  .ccc-header .ccc-header-actions .ccc-icon-button svg{
+    width:27px!important;
+    height:27px!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.25 */
