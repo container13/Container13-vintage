@@ -13,6 +13,10 @@
   let saveTimer;
   let visionView = "start";
   let editReturnView = "suggestion";
+  let cropReturnView = "suggestion";
+  let cropImage = null;
+  let cropState = null;
+  let cropPointer = null;
 
   const VISION_SETTING_DEFAULTS = { aiAuto: true, learnEdits: true };
   function readBoolSetting(key, fallback) {
@@ -173,7 +177,10 @@
       visionResult: null,
       approved: false,
       editedFields: null,
-      analysisPromise: null
+      analysisPromise: null,
+      publishFile: null,
+      publishUrl: null,
+      cropData: null
     };
     startSilentAnalysis(item);
     return item;
@@ -473,13 +480,80 @@
     }).then(() => window.CCC_VISION_KNOWLEDGE?.metric?.({ type: "knowledge_saved", key })).catch(() => {});
   }
 
-  function approveCurrent() {
+  function openWorkspaceDb() {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open("ccc-local-workspace", 1);
+      request.onupgradeneeded = () => {
+        const db = request.result;
+        if (!db.objectStoreNames.contains("images")) {
+          const store = db.createObjectStore("images", { keyPath: "id" });
+          store.createIndex("createdAt", "createdAt");
+        }
+      };
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  async function createVisionThumbnail(file, maxSize = 360, quality = .78) {
+    try {
+      const bitmap = await createImageBitmap(file);
+      const scale = Math.min(1, maxSize / Math.max(bitmap.width, bitmap.height));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+      canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+      canvas.getContext("2d", { alpha: false }).drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+      bitmap.close?.();
+      return await new Promise((resolve) => canvas.toBlob((blob) => resolve(blob || file), "image/webp", quality));
+    } catch (_) {
+      return file;
+    }
+  }
+
+  async function saveApprovedDraftLocally(item) {
+    if (!item?.file) return;
+    const fields = item.editedFields || item.visionResult?.fields || {};
+    const thumbnailBlob = await createVisionThumbnail(item.file);
+    const record = {
+      id: item.id,
+      originalBlob: item.file,
+      thumbnailBlob,
+      originalName: item.file.name || `ccc-${item.id}`,
+      originalType: item.file.type || "image/jpeg",
+      createdAt: item.createdAt || Date.now(),
+      source: "vision",
+      readyToPublish: true,
+      title: (fields.title || item.visionResult?.summaryTitle || "").trim(),
+      brand: (fields.brand || fields.manufacturer || "").trim(),
+      size: (fields.size || "").trim(),
+      price: (fields.price || "").trim(),
+      description: (fields.description || "").trim(),
+      fields
+    };
+    const db = await openWorkspaceDb();
+    await new Promise((resolve, reject) => {
+      const tx = db.transaction("images", "readwrite");
+      tx.objectStore("images").put(record);
+      tx.oncomplete = resolve;
+      tx.onerror = () => reject(tx.error);
+    });
+    db.close();
+  }
+
+  async function approveCurrent() {
     const item = currentItem();
     if (!item) return;
-    item.approved = true;
     if (!item.editedFields) item.editedFields = { ...currentDemo().fields };
     rememberApprovedItem(item);
-    moveToNextItem();
+    try {
+      await saveApprovedDraftLocally(item);
+      item.approved = true;
+      saveBatchMetadata();
+      moveToNextItem();
+    } catch (error) {
+      console.error("[CCC Vision] Utkast kunde inte sparas lokalt", error);
+      setMessage("Utkastet kunde inte sparas lokalt. Försök igen.");
+    }
   }
 
   function populateFormFromItem(allowWhileAnalyzing = false) {
@@ -511,18 +585,21 @@
     showStage("editCard", "edit");
   }
 
-  function saveEditedAndNext() {
+  async function saveEditedAndNext() {
     const item = currentItem();
     if (!item) return;
     item.editedFields = Object.fromEntries(fieldIds.map((id) => [id, $("#" + id).value]));
-    item.approved = true;
     rememberApprovedItem(item);
-    saveBatchMetadata();
-    if (editReturnView === "done") {
-      finishBatch();
-      return;
+    try {
+      await saveApprovedDraftLocally(item);
+      item.approved = true;
+      saveBatchMetadata();
+      if (editReturnView === "done") finishBatch();
+      else moveToNextItem();
+    } catch (error) {
+      console.error("[CCC Vision] Utkast kunde inte sparas lokalt", error);
+      setMessage("Utkastet kunde inte sparas lokalt. Försök igen.");
     }
-    moveToNextItem();
   }
 
   function addSameGarmentFiles(fileList) {
@@ -612,7 +689,7 @@
       list.appendChild(button);
     });
     const publish = $("#publishReadyBtn");
-    if (publish) publish.textContent = `Publicera ${ready.length} ${ready.length === 1 ? "plagg" : "plagg"}`;
+    if (publish) { publish.textContent = `Publicera ${ready.length} ${ready.length === 1 ? "plagg" : "plagg"}`; publish.disabled = ready.length === 0; }
   }
 
   function finishBatch() {
@@ -635,6 +712,7 @@
       demoKey: item.demoKey,
       approved: item.approved,
       extraImageCount: item.extraFiles.length,
+      publishReady: !!item.approved,
       fields: item.editedFields
     }));
     localStorage.setItem("ccc-vision-batch-meta", JSON.stringify({ savedAt: new Date().toISOString(), items: meta }));
@@ -810,6 +888,11 @@
         if (editReturnView === "workspace") showWorkspace();
         else openReview(currentIndex);
         return;
+      case "crop":
+        if (cropReturnView === "done") finishBatch();
+        else if (cropReturnView === "workspace") editCurrent(true);
+        else openReview(currentIndex);
+        return;
       case "suggestion":
         showWorkspace();
         return;
@@ -905,8 +988,8 @@
   $("#previewBtn").addEventListener("click", saveEditedAndNext);
   $("#newSeriesBtn").addEventListener("click", newSeries);
   $("#publishReadyBtn")?.addEventListener("click", () => {
-    // Publicera-modulen kopplas hit när den är klar. Kön ligger kvar lokalt.
     saveBatchMetadata();
+    window.location.href = "../publish/index.html";
   });
 
 
