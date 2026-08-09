@@ -909,6 +909,7 @@
     }
   }
 
+  $("#visionStartBackBtn")?.addEventListener("click", () => window.location.assign("../dashboard/index.html?v=2.8.4"));
   $("#visionSettingsBtn")?.addEventListener("click", () => setVisionSettingsOpen(true));
   $("#visionSettingsCloseBtn")?.addEventListener("click", () => setVisionSettingsOpen(false));
 
