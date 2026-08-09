@@ -235,3 +235,14 @@ CCC v2.8.13 – Vision desktop yttermått mot Dashboard-facit (2026-08-09)
 - Vertikala placeringen från v2.8.12 behålls.
 - Mobilregeln från v2.8.12 behålls: ingen liten extra vänsterpil i Tillbaka-kortet.
 - Dashboard ändras inte i denna patch.
+
+CCC v2.8.14 – CCC Core konsolidering (2026-08-09)
+- Nu agerar vi på arkitekturen innan fler moduler byggs.
+- Ny gemensam grund i `ccc-core/core.css` och `ccc-core/core.js`.
+- `core.css` äger gemensamt: färger/tokens, header, CCC-logga/aura, tema/profilskal, modulrad, arbetsbredd, action-kort, hover/focus och logout-dialog.
+- `core.js` äger gemensamt: tema, profilmeny och logout.
+- Dashboard, Vision och Publicera laddar samma core-filer. Modulmapparna behåller sin egen funktionslogik och modulunika layout.
+- Gemensam desktop-arbetsbredd är 720 px, hämtad från Dashboard-facitet; action-kort använder samma grid och mått därifrån.
+- `action-cards.css` tas bort som separat fil eftersom komponenten nu ingår i `core.css`.
+- Gamla dubbla tema/profil/logout-hanterare tas bort ur Dashboard/Vision/Publicera-JS för att undvika dubbelbindningar.
+- Regel framåt: gemensam CCC-design/UX ska först in i core; modul-CSS får inte kopiera eller överstyra kärngeometri utan ett verkligt modulbehov.

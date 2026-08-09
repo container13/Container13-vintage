@@ -1,0 +1,5 @@
+CCC v2.8.14 – ta bort gammal fil efter uppladdning:
+
+ccc-core/action-cards.css
+
+Kortkomponenten ligger nu i ccc-core/core.css.
