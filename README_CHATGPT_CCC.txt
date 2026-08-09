@@ -281,3 +281,10 @@ CCC v2.8.18 – konsekvent cache-busting (2026-08-09)
 - Visionens faktiska scriptfiler (`demo-data.js`, `vision-ai-config.js`, `vision-ai.js`, `vision-knowledge.js`, `product-lab.js`) är också cache-bustade till v2.8.18.
 - CSS-filerna har en faktisk v2.8.18 cache-stämpel i filinnehållet.
 - Syfte: det ska inte gå att visa v2.8.18 i sidan men samtidigt köra äldre CSS/JS från webbläsarcache.
+
+CCC v2.8.19 – Vision kortstorlek + total kostnad (2026-08-09)
+- Desktop-actionkort låses centralt i `core.css` till exakt 320 px höjd för alla moduler; Vision och Dashboard får därmed samma yttermått från samma regel.
+- Vision-inställningar visar nu endast `Total Vision-kostnad` i SEK med två decimaler.
+- Kostnaden hämtas från den redan befintliga lokala Vision-mätningen i `CCC_VISION_KNOWLEDGE.costSummarySince(...)`; ingen ny räknare skapas.
+- Totalen summerar all sparad AI-analyskostnad och uppdateras varje gång Vision-inställningar öppnas.
+- Detaljerad kostnadsstatistik lämnas till framtida Statistik-modul.
