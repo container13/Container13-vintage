@@ -421,3 +421,12 @@ CCC v2.8.36 – mobil rotfix: Core äger hela app-shell (2026-08-09)
 - Vision börjar layoutmässigt först vid `.vision-shell`; den yttre app-boxen får aldrig styras av modul-CSS.
 - Detta ska samtidigt korrigera både headerns tema/profil-position och startkortens mobilbredd.
 - Permanent regel: modul-CSS får inte definiera `.app-shell`, `.ccc-app-shell` eller gemensam header/workspace-geometri.
+
+
+CCC v2.8.37 – Publicera startvy
+- Publiceras första vy använder nu tre gemensamma Core-actionkort.
+- Kort 1: Lokala utkast med dynamiskt antal lokala utkast.
+- Kort 2: Publicerade, för historik/status; tom historik visas tills publiceringslogg kopplas in.
+- Kort 3: Tillbaka till Dashboard.
+- Den tidigare dubbla rubriken/tomläget på startsidan är borttaget; utkastens tomläge visas först när Lokala utkast öppnas.
+- Befintlig detaljvy, beskärning och lokal IndexedDB-hantering är bevarad.
