@@ -358,3 +358,11 @@ CCC v2.8.28 – central headergeometri enligt samma modell som kortfixen (2026-0
 - Mobilvariabler: right 16 px, bottom 14 px, knapp 44 px, gap 8 px, brand 35 px.
 - Vill vi senare ändra loggan eller tema/profil i hela CCC görs det på ett enda ställe i Core.
 - Vision-kugghjul/bakåt är fortsatt modulunika och påverkar inte brand/tema/profil.
+
+CCC v2.8.29 – exakt samma gemensamma header-markup (2026-08-09)
+- Dashboard-headerns faktiska markup är nu facit för den delade CCC-headern.
+- Vision och Publicera använder samma struktur för CCC-logga/aura, tema, profil och profilmeny.
+- Visionens kugghjul och kontext-bakåt ligger i en separat `ccc-module-header-tools`-wrapper och kan inte påverka den gemensamma headerns centrering eller högerkontroller.
+- Core äger wrapperns position; Vision-knapparna själva positioneras inte längre mot viewport/header.
+- Detta följer samma princip som löste action-korten: samma struktur + samma Core-komponent, inte tre imitationer.
+- Framtida ändring av logga/aura/tema/profil görs centralt i Core och samma headerstruktur används av alla moduler.
