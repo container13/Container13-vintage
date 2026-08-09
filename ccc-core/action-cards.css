@@ -1,0 +1,218 @@
+/* CCC Action Cards v1.0 — gemensam komponent
+   Dashboard är visuellt facit.
+   Denna fil laddas SIST av moduler som använder action-kort.
+   Modul-CSS får välja innehåll/färg/riktning men ska inte sätta egen geometri. */
+
+.ccc-action-card{
+  width:100%;
+  min-height:118px;
+  padding:18px 18px 18px 16px;
+  display:grid;
+  grid-template-columns:68px minmax(0,1fr) auto;
+  align-items:center;
+  gap:16px;
+  border:1px solid var(--ccc-border,var(--border));
+  border-radius:25px;
+  text-align:left;
+  text-decoration:none;
+  color:var(--ccc-text,var(--text));
+  background:var(--ccc-surface,var(--surface));
+  box-shadow:0 12px 30px rgba(31,42,68,.055);
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,filter .16s ease;
+}
+.ccc-action-card:active{transform:scale(.985)}
+
+.ccc-action-card--blue{
+  background:linear-gradient(105deg,rgba(230,239,255,.95),var(--ccc-surface,var(--surface)) 72%);
+}
+.ccc-action-card--green{
+  background:linear-gradient(105deg,rgba(231,247,237,.95),var(--ccc-surface,var(--surface)) 72%);
+}
+.ccc-action-card--purple{
+  background:linear-gradient(105deg,rgba(241,236,253,.95),var(--ccc-surface,var(--surface)) 72%);
+}
+:root[data-theme="dark"] .ccc-action-card--blue{
+  background:linear-gradient(105deg,#17253c,var(--ccc-surface,var(--surface)) 72%);
+}
+:root[data-theme="dark"] .ccc-action-card--green{
+  background:linear-gradient(105deg,#173126,var(--ccc-surface,var(--surface)) 72%);
+}
+:root[data-theme="dark"] .ccc-action-card--purple{
+  background:linear-gradient(105deg,#28203c,var(--ccc-surface,var(--surface)) 72%);
+}
+
+.ccc-action-card .action-icon{
+  width:68px;
+  height:68px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:color-mix(in srgb,var(--ccc-surface,var(--surface)) 55%,transparent);
+}
+.ccc-action-card .action-icon svg{
+  width:33px;
+  height:33px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.ccc-action-card--blue .action-icon,
+.ccc-action-card--blue .action-copy strong{color:#1f5da8}
+.ccc-action-card--green .action-icon,
+.ccc-action-card--green .action-copy strong{color:#21804c}
+.ccc-action-card--purple .action-icon,
+.ccc-action-card--purple .action-copy strong{color:#5a39a1}
+
+.ccc-action-card .action-copy{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:7px;
+}
+.ccc-action-card .action-copy strong{
+  font-size:24px;
+  line-height:1.05;
+  letter-spacing:-.02em;
+}
+.ccc-action-card .action-copy small{
+  font-size:15px;
+  line-height:1.28;
+  color:var(--ccc-muted,var(--muted));
+}
+.ccc-action-card .action-arrow{
+  font-size:36px;
+  line-height:1;
+  color:var(--ccc-text,var(--text));
+  opacity:.9;
+}
+
+/* Bakåtkort: samma komponent, men liten riktningspil på vänster sida. */
+.ccc-action-card--back{
+  padding-left:34px;
+}
+.ccc-action-card--back .action-arrow{
+  position:absolute;
+  left:10px;
+  top:50%;
+  transform:translateY(-50%);
+}
+.ccc-action-card--back .action-icon{
+  grid-column:1;
+}
+.ccc-action-card--back .action-copy{
+  grid-column:2;
+}
+
+/* Mus/desktop-feedback är identisk i alla moduler. */
+@media (hover:hover) and (pointer:fine){
+  .ccc-action-card:hover{
+    transform:translateY(-5px);
+    border-color:color-mix(in srgb,var(--ccc-gold,var(--gold)) 42%,var(--ccc-border,var(--border)));
+    box-shadow:0 20px 42px rgba(31,42,68,.14);
+    filter:saturate(1.05);
+  }
+  .ccc-action-card:focus-visible{
+    outline:3px solid color-mix(in srgb,var(--ccc-gold,var(--gold)) 62%,transparent);
+    outline-offset:4px;
+  }
+}
+
+/* Dashboard-facit på större skärm:
+   tre lika kort, och ikon/rubrik/hjälptext ligger på samma vertikala nivåer. */
+@media(min-width:760px){
+  .ccc-action-card{
+    min-height:320px;
+    padding:40px 30px;
+    grid-template-columns:1fr;
+    grid-template-rows:112px minmax(76px,auto) minmax(50px,auto);
+    justify-items:center;
+    align-content:center;
+    text-align:center;
+    row-gap:12px;
+    border-radius:32px;
+  }
+  .ccc-action-card .action-icon{
+    width:112px;
+    height:112px;
+    grid-column:1;
+    grid-row:1;
+    align-self:center;
+  }
+  .ccc-action-card .action-icon svg{
+    width:50px;
+    height:50px;
+  }
+  .ccc-action-card .action-copy{
+    grid-column:1;
+    grid-row:2 / span 2;
+    width:100%;
+    display:grid;
+    grid-template-rows:minmax(76px,auto) minmax(50px,auto);
+    justify-items:center;
+    align-items:start;
+    gap:12px;
+    text-align:center;
+  }
+  .ccc-action-card .action-copy strong{
+    font-size:36px;
+    line-height:1.05;
+    align-self:end;
+  }
+  .ccc-action-card .action-copy small{
+    font-size:20px;
+    line-height:1.28;
+    align-self:start;
+    text-align:center;
+  }
+  .ccc-action-card .action-arrow{
+    display:none;
+  }
+
+  /* Vision kan uttryckligen visa riktning även på desktop,
+     men pilen påverkar aldrig ikon/text-linjeringen. */
+  .ccc-action-card--arrow-desktop .action-arrow{
+    display:block;
+    position:absolute;
+    right:14px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:28px;
+  }
+  .ccc-action-card--back.ccc-action-card--arrow-desktop .action-arrow{
+    right:auto;
+    left:14px;
+  }
+  .ccc-action-card--back{
+    padding-left:30px;
+  }
+}
+
+/* Mobile-first: samma grundgeometri som Dashboard. */
+@media(max-width:480px){
+  .ccc-action-card{
+    min-height:118px;
+    padding:14px 16px;
+    grid-template-columns:68px minmax(0,1fr) auto;
+    gap:14px;
+    border-radius:23px;
+  }
+  .ccc-action-card .action-icon{
+    width:60px;
+    height:60px;
+  }
+  .ccc-action-card .action-icon svg{
+    width:30px;
+    height:30px;
+  }
+  .ccc-action-card .action-copy strong{font-size:23px}
+  .ccc-action-card .action-copy small{font-size:15px}
+  .ccc-action-card .action-arrow{font-size:32px}
+  .ccc-action-card--back{padding-left:32px}
+  .ccc-action-card--back .action-arrow{left:8px}
+}
