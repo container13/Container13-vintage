@@ -214,3 +214,10 @@ CCC v2.8.10 – linjerade handlingskort / generell designregel (2026-08-09)
 - Framåtkort har liten navigationspil till höger; bakåtkort har liten navigationspil till vänster.
 - Generell CCC-regel: parallella action-kort inom samma vy ska linjera ikon, rubrik, hjälprad och övriga återkommande element. Skillnader ska uttrycka funktion/riktning, inte skapa slumpmässiga förskjutningar.
 - Regeln gäller alla nuvarande och framtida CCC-moduler.
+
+CCC v2.8.11 – gemensam Action Card-komponent (2026-08-09)
+- Dashboard är fortfarande visuellt facit, men kortgeometrin är nu faktiskt delad i `ccc-core/action-cards.css`.
+- Dashboard och Vision laddar samma action-card-fil sist. Där styrs storlek, ikonposition, rubriknivå, hjälprad, hover/focus, rundning, skugga och mobil/desktop-geometri.
+- Vision får endast lägga till innehåll, färg och riktning. Framåtkort kan visa liten pil höger; bakåtkort liten pil vänster utan att flytta ikon eller text.
+- Parallella action-kort ska ligga i linje: samma ikonrad, rubrikrad och hjälprad. Detta är en generell regel för alla nuvarande och framtida CCC-moduler.
+- Nya moduler ska återanvända `action-cards.css` i stället för att kopiera kort-CSS lokalt.
