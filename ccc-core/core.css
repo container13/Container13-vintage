@@ -959,4 +959,213 @@ button{color:inherit}
   pointer-events:none!important;
 }
 
-/* CCC cache stamp: v2.8.39 */
+/* CCC v2.8.40 – gemensamt mobil-landscape-läge.
+   Princip: CCC-skalet är fast; innehåll får bara scrolla när det faktiskt krävs. */
+@media (orientation:landscape) and (max-height:540px) and (max-width:980px){
+  :root{
+    --ccc-header-height:78px;
+  }
+
+  html,body{
+    width:100%!important;
+    height:100%!important;
+    overflow:hidden!important;
+    overscroll-behavior:none!important;
+  }
+
+  .app-shell.ccc-app-shell{
+    width:100%!important;
+    height:100dvh!important;
+    min-height:100dvh!important;
+    max-height:100dvh!important;
+    overflow:hidden!important;
+  }
+
+  /* Kompakt gemensam header i landscape. */
+  .app-header.ccc-header{
+    height:var(--ccc-header-height)!important;
+    min-height:var(--ccc-header-height)!important;
+    max-height:var(--ccc-header-height)!important;
+    padding:0 18px!important;
+  }
+
+  .app-header.ccc-header > .ccc-brand-mark .ccc-brand-word{
+    font-size:42px!important;
+  }
+  .app-header.ccc-header > .ccc-brand-mark .ccc-brand-halo{
+    width:100px!important;
+    height:17px!important;
+  }
+  .app-header.ccc-header > .ccc-brand-mark .ccc-aura-arc{
+    width:112px!important;
+    height:20px!important;
+    border-top-width:2px!important;
+  }
+  .app-header.ccc-header > .ccc-brand-mark .ccc-aura-arc::before{
+    width:132px!important;
+    height:34px!important;
+    top:-15px!important;
+  }
+  .app-header.ccc-header > .ccc-brand-mark .ccc-aura-arc::after{
+    width:108px!important;
+    height:20px!important;
+    top:-9px!important;
+  }
+
+  .app-header.ccc-header > .header-actions.ccc-header-actions{
+    right:18px!important;
+    bottom:15px!important;
+    gap:8px!important;
+  }
+  .app-header.ccc-header > .header-actions.ccc-header-actions > .icon-button.ccc-icon-button{
+    width:42px!important;
+    height:42px!important;
+    min-width:42px!important;
+    min-height:42px!important;
+    max-width:42px!important;
+    max-height:42px!important;
+  }
+  .app-header.ccc-header > .header-actions.ccc-header-actions > .icon-button.ccc-icon-button svg{
+    width:21px!important;
+    height:21px!important;
+  }
+
+  .ccc-module-header-tools{
+    left:18px!important;
+    bottom:15px!important;
+    gap:8px!important;
+  }
+
+  /* Modulraden blir låg men behåller namn, undertitel och fullbreddslinje. */
+  .ccc-module-marker{
+    height:44px!important;
+    min-height:44px!important;
+    max-height:44px!important;
+    grid-template-rows:15px 15px 1px!important;
+    row-gap:1px!important;
+    padding:3px 2px 2px!important;
+  }
+  .ccc-module-kicker{
+    height:15px!important;
+    min-height:15px!important;
+    line-height:15px!important;
+    font-size:.72rem!important;
+  }
+  .ccc-module-subtitle{
+    height:15px!important;
+    min-height:15px!important;
+    line-height:15px!important;
+    font-size:.68rem!important;
+  }
+
+  /* Samma återstående arbetsyta i Dashboard, Vision och Publicera. */
+  .dashboard.ccc-workspace,
+  .vision-shell.ccc-workspace,
+  .publish-main.ccc-workspace{
+    width:100%!important;
+    max-width:none!important;
+    height:calc(100dvh - var(--ccc-header-height) - 44px)!important;
+    min-height:0!important;
+    max-height:calc(100dvh - var(--ccc-header-height) - 44px)!important;
+    margin:0!important;
+    padding:8px 16px 10px!important;
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+  }
+
+  .ccc-mobile-home-view,
+  #homeView,
+  .publish-start-view.ccc-mobile-home-view{
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:0!important;
+    display:grid!important;
+    grid-template-rows:minmax(0,1fr)!important;
+    overflow:hidden!important;
+  }
+
+  /* Huvudkort sida vid sida i landscape. */
+  .ccc-action-grid--fill-mobile{
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:0!important;
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    grid-template-rows:minmax(0,1fr)!important;
+    gap:14px!important;
+    align-items:stretch!important;
+  }
+
+  .ccc-action-grid--fill-mobile > .ccc-action-card{
+    width:100%!important;
+    height:100%!important;
+    min-width:0!important;
+    min-height:0!important;
+    max-width:none!important;
+    max-height:none!important;
+    padding:14px 16px!important;
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    grid-template-rows:auto auto!important;
+    justify-items:center!important;
+    align-content:center!important;
+    gap:10px!important;
+    text-align:center!important;
+    border-radius:22px!important;
+    overflow:hidden!important;
+  }
+
+  .ccc-action-grid--fill-mobile > .ccc-action-card .action-icon{
+    width:58px!important;
+    height:58px!important;
+    margin:0!important;
+  }
+  .ccc-action-grid--fill-mobile > .ccc-action-card .action-icon svg{
+    width:29px!important;
+    height:29px!important;
+  }
+  .ccc-action-grid--fill-mobile > .ccc-action-card .action-copy{
+    width:100%!important;
+    align-items:center!important;
+    gap:5px!important;
+    text-align:center!important;
+  }
+  .ccc-action-grid--fill-mobile > .ccc-action-card .action-copy strong{
+    font-size:19px!important;
+    line-height:1.05!important;
+    text-align:center!important;
+  }
+  .ccc-action-grid--fill-mobile > .ccc-action-card .action-copy small{
+    font-size:12px!important;
+    line-height:1.18!important;
+    text-align:center!important;
+  }
+  .ccc-action-grid--fill-mobile > .ccc-action-card .action-arrow{
+    display:none!important;
+  }
+
+  /* Start-stage får inte skapa en extra layoutnivå i landscape. */
+  #captureCard:has(#batchStrip[hidden]){
+    display:contents!important;
+  }
+
+  /* Innehållsvyer får intern scroll vid behov, inte hela CCC-skalet. */
+  .publish-main .publish-view:not(.publish-start-view),
+  #captureCard:has(#batchStrip:not([hidden])),
+  #visionCard,
+  #editCard,
+  #previewCard{
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior:contain!important;
+    -webkit-overflow-scrolling:touch;
+  }
+}
+
+/* CCC cache stamp: v2.8.40 */
