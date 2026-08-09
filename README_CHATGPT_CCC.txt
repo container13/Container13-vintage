@@ -295,3 +295,11 @@ CCC v2.8.20 – verklig orsak till mindre Vision-kort fixad (2026-08-09)
 - `core.css` äger nu även `.ccc-app-shell` med full bredd på desktop och överstyr gamla modulbredder centralt.
 - Dashboardens och Visions action-kort kan därmed använda exakt samma Core-grid i samma tillgängliga arbetsbredd.
 - Vision-kostnaden från v2.8.19 behålls oförändrad.
+
+CCC v2.8.21 – Vision-starten får samma strukturella grid som Dashboard (2026-08-09)
+- Grundorsaken till fortsatt lägre Vision-kort var att `#captureCard` både fungerade som stage/arbetskort och som action-grid.
+- Dashboard använder en separat ren `primary-actions`-grid; Vision gör nu motsvarande med `.vision-start-actions.c​cc-action-grid`.
+- De tre startkorten ligger i den nya wrappern. `#captureCard` är inte längre action-grid i startläget.
+- När bildflödet har startat blir wrappern `display: contents`, så Visions befintliga arbetsflöde behåller sin layout.
+- Core fortsätter äga 720 px desktop-grid, 28 px gap och 320 px action-korthöjd.
+- Vision-kostnadsvisningen från v2.8.19/v2.8.20 behålls.
