@@ -452,3 +452,17 @@ CCC v2.8.40 – gemensamt landscape-läge (2026-08-10)
 - Logga/aura, tema/profil och Vision-verktyg får gemensamma landscape-positioner från Core.
 - Detalj-/arbetsvyer i Vision och Publicera får intern vertikal scroll när innehållet faktiskt kräver det.
 - Nya moduler ska automatiskt stödja portrait, landscape och desktop via Core från start; modul-CSS får bara komplettera med verkligt modulunikt landscape-innehåll.
+
+CCC v2.8.41 – Auth använder gemensam cCc-logga (2026-08-10)
+- Auth laddar nu `ccc-core/core.css` och använder samma delade brand-markup som Dashboard, Vision och Publicera.
+- Den större mitten-C-loggan är därmed gemensam även på inloggningssidan.
+- Auran kommer från Core-komponenten; Auth behåller endast sin egen placering/animering av login-brand.
+- Framtida ändringar av den gemensamma CCC-loggan ska slå igenom även i Auth utan separat loggvariant.
+
+CCC v2.8.42 – PWA safe-area följer tema (2026-08-10)
+- Installerad webbapp ska inte visa vita remsor ovanför eller under CCC.
+- `html`, `body` och gemensam `ccc-app-shell` målas nu med `--ccc-bg`.
+- Core-temaväxlingen uppdaterar både `meta[name=theme-color]` och viewportens faktiska bakgrundsfärg.
+- iOS-webbappmetataggar läggs till, inklusive `black-translucent`, så appbakgrunden kan fortsätta bakom status/safe-area.
+- Dashboard, Vision, Publicera och Auth använder `viewport-fit=cover` och tidig temainitiering för att minska vit flash vid uppstart.
+- Auth safe-area använder också Core-temats bakgrund.
