@@ -871,4 +871,74 @@ button{color:inherit}
   position:relative!important;
 }
 
-/* CCC cache stamp: v2.8.36 */
+/* CCC v2.8.38 – Publicera använder samma mobilkedja + fullbred modul-linje. */
+
+/* Modulidentiteten behåller centrerad text men skiljelinjen går kant-till-kant. */
+.ccc-module-marker{
+  width:100%!important;
+  max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+}
+.ccc-module-marker::after{
+  width:100%!important;
+  max-width:none!important;
+}
+
+/* Alla tre huvudmoduler använder exakt samma mobila workspace-geometri. */
+@media(max-width:480px){
+  .dashboard.ccc-workspace,
+  .vision-shell.ccc-workspace,
+  .publish-main.ccc-workspace{
+    width:100%!important;
+    max-width:none!important;
+    height:calc(100dvh - var(--ccc-header-height) - 58px)!important;
+    min-height:0!important;
+    max-height:calc(100dvh - var(--ccc-header-height) - 58px)!important;
+    margin:0!important;
+    padding:4px 16px calc(12px + env(safe-area-inset-bottom))!important;
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+  }
+
+  .publish-start-view.ccc-mobile-home-view{
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:0!important;
+    display:grid!important;
+    grid-template-rows:minmax(0,1fr)!important;
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+  }
+
+  .publish-start-view.ccc-mobile-home-view > .ccc-action-grid--fill-mobile{
+    width:100%!important;
+    max-width:none!important;
+    height:100%!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    grid-template-rows:repeat(3,minmax(0,1fr))!important;
+    gap:11px!important;
+    align-items:stretch!important;
+    box-sizing:border-box!important;
+  }
+
+  .publish-start-view.ccc-mobile-home-view > .ccc-action-grid--fill-mobile > .ccc-action-card{
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    height:100%!important;
+    min-height:0!important;
+    margin:0!important;
+    align-self:stretch!important;
+    box-sizing:border-box!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.38 */
