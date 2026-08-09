@@ -50,6 +50,7 @@ const imagesCount=document.getElementById("imagesCount");
 const selectedCount=document.getElementById("selectedCount");
 const selectAllImages=document.getElementById("selectAllImages");
 const publishSelectedBtn=document.getElementById("publishSelectedBtn");
+const publishActionTitle=document.getElementById("publishActionTitle");
 const imageDetailForm=document.getElementById("imageDetailForm");
 const detailPreview=document.getElementById("detailPreview");
 const detailTitle=document.getElementById("detailTitle");
@@ -140,6 +141,8 @@ async function loadLocalWorkspace(){
     records.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
     imageItems.forEach(revokeItemUrls);
     imageItems=records.map(hydrateItem);
+    const waiting=records.filter((item)=>item.readyToPublish!==false).length;
+    if(publishActionTitle) publishActionTitle.textContent=waiting?`Publicera (${waiting})`:"Publicera";
     renderImages();
   }catch(error){
     console.error("Kunde inte läsa lokal arbetsyta",error);
