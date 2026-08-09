@@ -411,3 +411,13 @@ CCC v2.8.35 – mobilstruktur centraliserad, Dashboard = facit (2026-08-09)
 - Äldre Vision-startregler för width/max-width/margin/padding/min-height neutraliseras i startläge.
 - Permanent arkitekturregel: modul-CSS får inte återdefiniera gemensam header, workspace, home-view, action-grid eller action-card-geometri. Avvikelse ska ske via en uttrycklig namngiven modifierarklass i Core.
 - Den nya större mitten-C-loggan och mobilauran från v2.8.34 behålls.
+
+CCC v2.8.36 – mobil rotfix: Core äger hela app-shell (2026-08-09)
+- Inspektion visade den konkreta orsaken till både smalare Vision-kort och flyttad tema/profil på mobil.
+- `vision.css` innehöll 20 äldre separata `.app-shell`-regler med egna bredder, höjder, marginaler, gridlägen och framför allt padding.
+- Vision-headern och Vision-workspace låg därför i en annan faktisk innehållsbox än Dashboard trots samma Core-klasser.
+- Samtliga standalone `.app-shell`-regler tas bort ur `vision.css`.
+- `.app-shell.ccc-app-shell` ägs nu centralt av Core på ALLA breakpoints: 100% bredd, 100dvh höjd, padding 0, margin auto, border-box och overflow hidden.
+- Vision börjar layoutmässigt först vid `.vision-shell`; den yttre app-boxen får aldrig styras av modul-CSS.
+- Detta ska samtidigt korrigera både headerns tema/profil-position och startkortens mobilbredd.
+- Permanent regel: modul-CSS får inte definiera `.app-shell`, `.ccc-app-shell` eller gemensam header/workspace-geometri.
