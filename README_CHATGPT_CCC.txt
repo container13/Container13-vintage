@@ -190,3 +190,10 @@ CCC v2.8.6 – Vision UI-polish (2026-08-09)
 - "Tillbaka" får samma visuella hierarki som övriga val: stor vänsterställd rubrik och mindre förklarande text "Till dashboard".
 - Tillbaka-pilen ligger fortsatt till vänster för att signalera bakåtriktning; de två framåtvalen behåller pil åt höger.
 - Touch/mobile påverkas inte av hover-reglerna.
+
+CCC v2.8.7 – maxsynk header/profil/feedback (2026-08-09)
+- CCC-loggans guldbåge/aura skalar nu responsivt: mobil behåller den fungerande lilla bågen; desktop använder en betydligt bredare båge som täcker hela CCC-ordmärket.
+- Samma auraregler finns på Dashboard, Vision och Publicera.
+- Dashboardens hover/focus-feedback på huvudkorten synkas med Vision: tydligare lyft, skugga och markerad kant på desktop.
+- Vision och Publicera har nu "Logga ut" i profilmenyn, med samma bekräftelsedialog som Dashboard.
+- Mål: låsa Dashboard/Vision/Publicera som gemensamt CCC-shell innan resterande moduler byggs vidare.
