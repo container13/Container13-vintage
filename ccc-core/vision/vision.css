@@ -2950,3 +2950,49 @@ body{min-height:100dvh}
     display:none!important;
   }
 }
+
+
+/* CCC v2.8.13 – desktop: Vision använder Dashboard-facitets yttermått.
+   Behåller v2.8.12 intern linjering och vertikala nivå. */
+@media(min-width:760px){
+  .vision-shell{
+    width:576px!important;
+    max-width:576px!important;
+    padding:42px 0 72px!important;
+  }
+  #captureCard:has(#batchStrip[hidden]){
+    width:576px!important;
+    max-width:576px!important;
+    grid-template-columns:repeat(3,180px)!important;
+    gap:18px!important;
+    justify-content:center!important;
+  }
+  #captureCard:has(#batchStrip[hidden]) .ccc-action-card{
+    width:180px!important;
+    min-width:180px!important;
+    max-width:180px!important;
+    min-height:294px!important;
+    height:294px!important;
+    padding:32px 18px!important;
+    border-radius:26px!important;
+    grid-template-rows:84px minmax(70px,auto) minmax(48px,auto)!important;
+  }
+  #captureCard:has(#batchStrip[hidden]) .ccc-action-card .action-icon{
+    width:84px!important;
+    height:84px!important;
+  }
+  #captureCard:has(#batchStrip[hidden]) .ccc-action-card .action-icon svg{
+    width:40px!important;
+    height:40px!important;
+  }
+  #captureCard:has(#batchStrip[hidden]) .ccc-action-card .action-copy{
+    grid-template-rows:minmax(70px,auto) minmax(48px,auto)!important;
+    gap:8px!important;
+  }
+  #captureCard:has(#batchStrip[hidden]) .ccc-action-card .action-copy strong{
+    font-size:28px!important;
+  }
+  #captureCard:has(#batchStrip[hidden]) .ccc-action-card .action-copy small{
+    font-size:16px!important;
+  }
+}
