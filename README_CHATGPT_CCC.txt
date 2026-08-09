@@ -228,3 +228,10 @@ CCC v2.8.12 – Vision/Dashboard exaktare kortsynk (2026-08-09)
 - Desktop använder samma 3-kolumnsgap, korthöjd, ikonstorlek, rubriknivå och hjälprad som Dashboard.
 - På mobil döljs den lilla extra vänsterpilen i Tillbaka-kortet; den stora vänsterpilen i ikoncirkeln räcker.
 - Grundregel kvarstår: Dashboard är facit och parallella kort ska styras från gemensam komponent, inte lokal modulgeometri.
+
+CCC v2.8.13 – Vision desktop yttermått mot Dashboard-facit (2026-08-09)
+- Vision-startens desktopgrupp begränsas till samma kompakta bredd som Dashboard i stället för att fylla över 1000 px.
+- Tre kort är 180 px breda med kompakt höjd och gemensamt mellanrum; intern linjering från v2.8.12 behålls.
+- Vertikala placeringen från v2.8.12 behålls.
+- Mobilregeln från v2.8.12 behålls: ingen liten extra vänsterpil i Tillbaka-kortet.
+- Dashboard ändras inte i denna patch.
