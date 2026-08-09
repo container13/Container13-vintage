@@ -777,4 +777,80 @@ button{color:inherit}
   }
 }
 
-/* CCC cache stamp: v2.8.34 */
+/* CCC v2.8.35 – mobilstruktur: Dashboard är facit.
+   En gemensam kedja äger workspace -> home view -> action grid -> action cards.
+   Modul-CSS får inte återdefiniera bredd/padding/grid för denna kedja. */
+@media(max-width:480px){
+  .dashboard.ccc-workspace,
+  .vision-shell.ccc-workspace{
+    width:100%!important;
+    max-width:none!important;
+    height:calc(100dvh - var(--ccc-header-height) - 58px)!important;
+    min-height:0!important;
+    max-height:calc(100dvh - var(--ccc-header-height) - 58px)!important;
+    margin:0!important;
+    padding:4px 16px calc(12px + env(safe-area-inset-bottom))!important;
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+  }
+
+  .ccc-mobile-home-view,
+  #homeView{
+    width:100%!important;
+    max-width:none!important;
+    height:100%!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    display:grid!important;
+    grid-template-rows:minmax(0,1fr)!important;
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+  }
+
+  .ccc-mobile-home-view > .ccc-action-grid--fill-mobile,
+  #homeView > .ccc-action-grid--fill-mobile{
+    width:100%!important;
+    max-width:none!important;
+    height:100%!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    grid-template-rows:repeat(3,minmax(0,1fr))!important;
+    gap:11px!important;
+    align-items:stretch!important;
+    box-sizing:border-box!important;
+  }
+
+  .ccc-mobile-home-view > .ccc-action-grid--fill-mobile > .ccc-action-card,
+  #homeView > .ccc-action-grid--fill-mobile > .ccc-action-card{
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    height:100%!important;
+    min-height:0!important;
+    margin:0!important;
+    align-self:stretch!important;
+    box-sizing:border-box!important;
+    transform:none;
+  }
+
+  /* Vision-startens stage är endast funktionsbärare och får inte begränsa den gemensamma home-viewn. */
+  #captureCard:has(#batchStrip[hidden]){
+    display:contents!important;
+    width:auto!important;
+    max-width:none!important;
+    height:auto!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    overflow:visible!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.35 */
