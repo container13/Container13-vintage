@@ -183,3 +183,10 @@ CCC v2.8.5 – gemensamt visuellt shell på mobil + desktop (2026-08-09)
 - Vision desktop görs mer kompakt och dashboardlik: tre tydliga arbetskort i samma samlade arbetsyta. Mobilflödet lämnas i huvudsak orört.
 - Publicera har fått full CCC-header med tema + profil, modulmarkör PUBLICERA och undertitel. Den gamla flytande versionsbrickan är borttagen.
 - Målet är inte desktop-pixelpolering nu, utan ett gemensamt skal så nya moduler inte behöver byggas om senare.
+
+CCC v2.8.6 – Vision UI-polish (2026-08-09)
+- Vision-flikens versionsnummer synkas med aktuell build.
+- Desktop-hover förstärks på alla tre startkort: tydligare lyft, skugga och kant.
+- "Tillbaka" får samma visuella hierarki som övriga val: stor vänsterställd rubrik och mindre förklarande text "Till dashboard".
+- Tillbaka-pilen ligger fortsatt till vänster för att signalera bakåtriktning; de två framåtvalen behåller pil åt höger.
+- Touch/mobile påverkas inte av hover-reglerna.
