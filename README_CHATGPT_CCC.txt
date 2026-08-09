@@ -197,3 +197,13 @@ CCC v2.8.7 – maxsynk header/profil/feedback (2026-08-09)
 - Dashboardens hover/focus-feedback på huvudkorten synkas med Vision: tydligare lyft, skugga och markerad kant på desktop.
 - Vision och Publicera har nu "Logga ut" i profilmenyn, med samma bekräftelsedialog som Dashboard.
 - Mål: låsa Dashboard/Vision/Publicera som gemensamt CCC-shell innan resterande moduler byggs vidare.
+
+CCC v2.8.8 – Publicera aura-fix (2026-08-09)
+- Publicera hade äldre, mer specifika publish-shell-regler som överstyrde den gemensamma desktop-auran.
+- Publicera får nu exakt samma slutliga aurageometri som Vision: liten mobilbåge och bred desktopbåge över hela CCC-ordmärket.
+- Inga andra funktioner eller layouter ändrades i denna patch.
+
+CCC v2.8.9 – Vision logout-fix (2026-08-09)
+- Vision hade Logga ut-knappen och JS-hanteringen, men den faktiska bekräftelsedialogen saknades i HTML.
+- Den saknade logout-dialogen är nu tillagd i Vision med samma beteende som Dashboard/Publicera.
+- Ingen annan funktionalitet eller layout ändrades i denna patch.
