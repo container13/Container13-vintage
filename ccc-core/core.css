@@ -267,4 +267,13 @@ button{color:inherit}
   }
 }
 
-/* CCC cache stamp: v2.8.18 */
+/* CCC v2.8.19 – exakt samma desktop-kortmått i alla moduler. */
+@media(min-width:760px){
+  .ccc-action-grid > .ccc-action-card{
+    min-height:320px!important;
+    height:320px!important;
+    align-self:stretch!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.19 */
