@@ -268,3 +268,16 @@ CCC v2.8.17 – textpassning + stabil modulrad (2026-08-09)
 - Varianten ändrar endast typografin, inte kortens gemensamma geometri.
 - Modulundertiteln reserverar nu alltid samma höjd även när texten är tom. Dashboardens ARBETSYTA hoppar därför inte i höjd när man byter till/från Vision på mobil.
 - Regeln ligger i `ccc-core/core.css` och kan återanvändas av framtida moduler med längre korttexter.
+
+CCC v2.8.18 – korrigerad cache-busting (2026-08-09)
+- Dashboard, Vision och Publicera laddar nu samma `core.css?v=2.8.18`, `core.js?v=2.8.18` och `version.js?v=2.8.18`.
+- Publicera saknade tidigare en konsekvent `version.js`-referens; den är nu tillagd.
+- Modulernas egna CSS/JS-referenser är också normaliserade till v2.8.18.
+- Core och modul-CSS har dessutom fått en faktisk v2.8.18 cache-stämpel i filinnehållet.
+
+CCC v2.8.18 – konsekvent cache-busting (2026-08-09)
+- Dashboard, Vision och Publicera använder nu genomgående v2.8.18 i alla lokala CSS/JS-referenser.
+- Gemensamma `core.css`, `core.js` och `version.js` laddas med v2.8.18 på samtliga tre sidor.
+- Visionens faktiska scriptfiler (`demo-data.js`, `vision-ai-config.js`, `vision-ai.js`, `vision-knowledge.js`, `product-lab.js`) är också cache-bustade till v2.8.18.
+- CSS-filerna har en faktisk v2.8.18 cache-stämpel i filinnehållet.
+- Syfte: det ska inte gå att visa v2.8.18 i sidan men samtidigt köra äldre CSS/JS från webbläsarcache.
