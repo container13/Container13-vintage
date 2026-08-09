@@ -402,3 +402,12 @@ CCC v2.8.34 – mobil finjustering aura + Vision-bredd (2026-08-09)
 - Mobilauran från v2.8.33 minskad ett litet steg.
 - Vision-startens wrapper, grid och kort använder nu 100% av exakt samma 16px-paddade arbetsbredd som Dashboard på mobil.
 - Höjden från v2.8.33 behålls oförändrad.
+
+CCC v2.8.35 – mobilstruktur centraliserad, Dashboard = facit (2026-08-09)
+- För att undvika samma rundgång som på desktop centraliseras nu hela mobilkedjan: workspace -> home view -> action grid -> action card.
+- Dashboardens mobilstruktur är facit. Vision-starten får motsvarande `.ccc-mobile-home-view` runt sin gemensamma `ccc-action-grid--fill-mobile`.
+- Core äger bredd, höjd, sidpadding, gridrader, gap och kortens fulla storlek för gemensamma mobil-huvudvyer.
+- Vision `#captureCard` blir `display: contents` i startläge på mobil och får därmed inte fungera som extra breddbegränsande wrapper.
+- Äldre Vision-startregler för width/max-width/margin/padding/min-height neutraliseras i startläge.
+- Permanent arkitekturregel: modul-CSS får inte återdefiniera gemensam header, workspace, home-view, action-grid eller action-card-geometri. Avvikelse ska ske via en uttrycklig namngiven modifierarklass i Core.
+- Den nya större mitten-C-loggan och mobilauran från v2.8.34 behålls.
