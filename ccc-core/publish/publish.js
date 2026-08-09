@@ -1,28 +1,11 @@
 import { auth } from "../auth/firebase.js";
-import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 onAuthStateChanged(auth,(user)=>{if(!user)window.location.href="../auth/index.html";});
 
-const root=document.documentElement;
 const $=(s)=>document.querySelector(s);
 const DB_NAME="ccc-local-workspace", DB_VERSION=1, STORE_NAME="images";
 let items=[],activeIndex=0,objectUrls=[];
 let cropImage=null,cropState=null,pointer=null;
-
-function applyTheme(theme){root.dataset.theme=theme;localStorage.setItem("ccc-theme",theme);document.querySelector('meta[name="theme-color"]')?.setAttribute("content",theme==="dark"?"#11141b":"#f7f7f9");}
-applyTheme(localStorage.getItem("ccc-theme")||(matchMedia?.("(prefers-color-scheme: dark)").matches?"dark":"light"));
-$("#themeBtn")?.addEventListener("click",()=>applyTheme(root.dataset.theme==="dark"?"light":"dark"));
-const profileBtn=$("#profileBtn"), profileMenu=$("#profileMenu");
-profileBtn?.addEventListener("click",(e)=>{e.stopPropagation();const open=profileMenu?.hasAttribute("hidden");if(open){profileMenu.removeAttribute("hidden");profileBtn.setAttribute("aria-expanded","true");}else{profileMenu?.setAttribute("hidden","");profileBtn.setAttribute("aria-expanded","false");}});
-document.addEventListener("click",(e)=>{if(profileMenu&&!profileMenu.hasAttribute("hidden")&&!profileMenu.contains(e.target)&&e.target!==profileBtn){profileMenu.setAttribute("hidden","");profileBtn?.setAttribute("aria-expanded","false");}});
-
-const logoutBtn=$("#logout"), logoutDialog=$("#logoutDialog"), cancelLogout=$("#cancelLogout"), confirmLogout=$("#confirmLogout");
-function setLogoutDialog(open){if(!logoutDialog)return;logoutDialog.hidden=!open;}
-logoutBtn?.addEventListener("click",()=>{profileMenu?.setAttribute("hidden","");profileBtn?.setAttribute("aria-expanded","false");setLogoutDialog(true);});
-cancelLogout?.addEventListener("click",()=>setLogoutDialog(false));
-logoutDialog?.addEventListener("click",(e)=>{if(e.target===logoutDialog)setLogoutDialog(false);});
-confirmLogout?.addEventListener("click",async()=>{confirmLogout.disabled=true;try{await signOut(auth);window.location.href="../auth/index.html";}catch(error){console.error("CCC logout failed",error);confirmLogout.disabled=false;}});
-
-
 
 function openDb(){return new Promise((resolve,reject)=>{const r=indexedDB.open(DB_NAME,DB_VERSION);r.onupgradeneeded=()=>{const db=r.result;if(!db.objectStoreNames.contains(STORE_NAME)){const s=db.createObjectStore(STORE_NAME,{keyPath:"id"});s.createIndex("createdAt","createdAt");}};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
 async function getAll(){const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(STORE_NAME,"readonly"),r=tx.objectStore(STORE_NAME).getAll();r.onsuccess=()=>resolve(r.result||[]);r.onerror=()=>reject(r.error);tx.oncomplete=()=>db.close();});}

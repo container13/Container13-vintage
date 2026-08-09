@@ -4,13 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f7f7f9">
-<title>CCC Publicera v2.8.8</title>
+<title>CCC Publicera v2.8.14</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.8.8">
 <link rel="stylesheet" href="publish.css?v=2.8.8">
+<link rel="stylesheet" href="../core.css?v=2.8.14">
 </head>
 <body>
-<div class="app-shell publish-shell">
+<div class="app-shell ccc-app-shell publish-shell">
   <header class="app-header ccc-header">
     <a class="brand ccc-brand-mark" href="../dashboard/index.html" aria-label="Till dashboard"><span class="brand-halo ccc-brand-halo" aria-hidden="true"><span class="ccc-aura-arc"></span></span><span class="brand-word ccc-brand-word">CCC</span></a>
     <div class="header-actions ccc-header-actions">
@@ -26,12 +27,12 @@
     </div>
   </header>
 
-  <div class="publish-module-marker" aria-label="Aktiv modul: Publicera">
-    <span class="publish-module-kicker"><span class="publish-module-dot" aria-hidden="true"></span>PUBLICERA</span>
-    <span class="publish-module-subtitle">Lokala utkast &amp; publicering</span>
+  <div class="publish-module-marker ccc-module-marker" aria-label="Aktiv modul: Publicera">
+    <span class="publish-module-kicker ccc-module-kicker"><span class="publish-module-dot ccc-module-dot" aria-hidden="true"></span>PUBLICERA</span>
+    <span class="publish-module-subtitle ccc-module-subtitle">Lokala utkast &amp; publicering</span>
   </div>
 
-  <main class="publish-main">
+  <main class="publish-main ccc-workspace">
     <section id="gridView" class="publish-view">
       <div class="publish-heading"><a class="publish-back" href="../dashboard/index.html" aria-label="Tillbaka">‹</a><div><h1>Publicera</h1><p id="draftCount">Lokala utkast</p></div></div>
       <div id="emptyState" class="publish-empty" hidden><strong>Inget väntar på publicering</strong><span>Skapa ett plagg i Vision först.</span></div>
@@ -60,17 +61,18 @@
   </main>
 </div>
 
-<div id="logoutDialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="logoutTitle" hidden>
-  <div class="dialog-box">
+<div id="logoutDialog" class="dialog ccc-dialog" role="dialog" aria-modal="true" aria-labelledby="logoutTitle" hidden>
+  <div class="dialog-box ccc-dialog-box">
     <h2 id="logoutTitle">Logga ut?</h2>
     <p>Är du säker på att du vill logga ut från CCC?</p>
-    <div class="dialog-actions">
-      <button id="cancelLogout" class="button-secondary" type="button">Avbryt</button>
-      <button id="confirmLogout" class="button-primary" type="button">Logga ut</button>
+    <div class="dialog-actions ccc-dialog-actions">
+      <button id="cancelLogout" class="button-secondary ccc-button-secondary" type="button">Avbryt</button>
+      <button id="confirmLogout" class="button-primary ccc-button-primary" type="button">Logga ut</button>
     </div>
   </div>
 </div>
 
 <script type="module" src="publish.js?v=2.8.8"></script>
+<script type="module" src="../core.js?v=2.8.14"></script>
 </body>
 </html>
