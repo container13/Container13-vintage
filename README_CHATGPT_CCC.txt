@@ -255,3 +255,10 @@ CCC v2.8.15 – Vision följer Core/Dashboard utan egna desktopmått (2026-08-09
 - Vision-kugghjulet är modulunikt och placeras separat till vänster utan att påverka CCC-loggans centrering.
 - Mobil: den lilla extra vänsterpilen i Tillbaka-kortet är fortsatt dold.
 - Regel: inga nya modulunika px-mått för gemensam header/action-card-layout; sådant ska ändras i Core.
+
+CCC v2.8.16 – Vision ren Core-markup + central logout-länk (2026-08-09)
+- Vision-startens tre kort använder nu samma rena DOM-struktur som Dashboard: `action-icon` + `action-copy` + `action-arrow`.
+- Äldre Vision-specifika kortklasser tas bort från startkorten så gammal modul-CSS inte längre kan påverka deras geometri.
+- Första kamerakortets extra `camera-content`-wrapper tas bort; Vision-JS uppdateras till den gemensamma `action-copy`-strukturen.
+- Ingen ny Vision-specifik kortgeometri läggs till. `core.css` fortsätter vara ensam källa för gemensamma kortmått.
+- Logout i `core.js` använder nu `import.meta.url` för att alltid lösa `ccc-core/auth/index.html` korrekt oavsett om användaren är i Dashboard, Vision eller Publicera.
