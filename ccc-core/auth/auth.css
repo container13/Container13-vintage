@@ -2,18 +2,18 @@
 *{box-sizing:border-box}html,body{margin:0;width:100%;min-height:100%;background:#090909}body{min-height:100dvh;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);overflow:hidden}
 .auth-shell{min-height:100dvh;display:grid;place-items:center;padding:calc(22px + env(safe-area-inset-top)) 20px calc(22px + env(safe-area-inset-bottom));background:radial-gradient(circle at 50% 6%,#3a2b0d 0,#19140c 24%,#090909 58%)}
 .login-card{width:min(420px,100%);padding:22px 20px 22px;border:1px solid rgba(221,180,91,.18);border-radius:26px;background:rgba(17,17,17,.78);box-shadow:0 28px 70px rgba(0,0,0,.42);backdrop-filter:blur(14px);text-align:center}
-.auth-brand{display:inline-flex;flex-direction:column;align-items:center;color:var(--gold);line-height:1}.ccc-brand-halo{position:relative;width:62px;height:20px;display:block;overflow:visible}.ccc-aura-arc{position:absolute;left:50%;bottom:0;width:72px;height:22px;transform:translateX(-50%);border-top:2px solid #e5b94f;border-radius:50% 50% 0 0/100% 100% 0 0;filter:drop-shadow(0 -2px 3px rgba(238,190,74,.55)) drop-shadow(0 -6px 8px rgba(231,178,53,.22))}.ccc-aura-arc::before{content:"";position:absolute;left:50%;top:-17px;width:88px;height:38px;transform:translateX(-50%);background:radial-gradient(ellipse at 50% 100%,rgba(255,213,93,.22) 0%,rgba(235,181,48,.10) 34%,rgba(224,165,31,.035) 56%,transparent 74%);filter:blur(5px);pointer-events:none}.ccc-aura-arc::after{content:"";position:absolute;left:50%;top:-9px;width:68px;height:20px;transform:translateX(-50%);background:radial-gradient(ellipse at 50% 100%,rgba(255,224,126,.28),rgba(229,176,49,.06) 52%,transparent 72%);filter:blur(3px);pointer-events:none}.brand-word,.ccc-brand-word{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:48px;font-weight:700;letter-spacing:.04em;color:var(--gold)}.ccc-global-version{display:block;margin-top:5px;color:#a99f8a;font:700 10px/1 Inter,sans-serif;letter-spacing:.05em}
+.auth-brand{display:inline-flex;flex-direction:column;align-items:center;color:var(--gold);line-height:1}.ccc-global-version{display:block;margin-top:5px;color:#a99f8a;font:700 10px/1 Inter,sans-serif;letter-spacing:.05em}
 form{display:grid;gap:11px;margin-top:18px}input{width:100%;min-height:52px;padding:0 17px;border:1px solid #3c3932;border-radius:15px;background:#0e0e0e;color:#fff;font:inherit;font-size:16px;outline:none}input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(221,180,91,.13)}input::placeholder{color:#938d82}
 .password-wrap{position:relative}.password-wrap input{padding-right:54px}.password-wrap button{position:absolute;right:8px;top:6px;width:44px;height:44px;border:0;background:transparent;color:#d5ccba;font-size:20px;cursor:pointer}
 .login-button{width:100%;min-height:52px;margin-top:2px;border:0;border-radius:15px;background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:#171108;font:800 17px/1 Inter,sans-serif;cursor:pointer}.login-button:active{transform:scale(.985)}
 .forgot{justify-self:center;border:0;background:transparent;color:#aaa197;padding:6px 5px 2px;font:700 14px/1 Inter,sans-serif;cursor:pointer}#message{min-height:20px;margin:3px 0 0;color:#e29d9d;font-size:14px}
 .login-success{position:fixed;inset:0;z-index:50;display:grid;place-items:center;align-content:center;gap:12px;background:radial-gradient(circle at 50% 28%,#4a3510,#0b0b0b 58%);color:#fff;text-align:center;animation:successIn .3s ease both}.login-success[hidden]{display:none}.success-check{width:68px;height:68px;display:grid;place-items:center;border-radius:50%;background:var(--gold);color:#171108;font-size:35px;font-weight:900;box-shadow:0 0 0 12px rgba(221,180,91,.08)}.login-success strong{margin-top:8px;font:700 28px/1.1 Georgia,serif;color:var(--gold-soft)}.login-success small{color:#bdb5a7;font-size:15px}@keyframes successIn{from{opacity:0;transform:scale(1.02)}to{opacity:1;transform:none}}
-@media(max-height:600px){.login-card{padding:18px}.brand-word{font-size:43px}form{margin-top:13px;gap:9px}}
+@media(max-height:600px){.login-card{padding:18px}form{margin-top:13px;gap:9px}}
 
 .auth-divider{display:flex;align-items:center;gap:10px;height:8px;margin:0 4px}.auth-divider::before,.auth-divider::after{content:"";height:1px;flex:1;background:rgba(255,255,255,.11)}
 .create-account-button{display:grid;place-items:center;width:100%;min-height:50px;border:1px solid rgba(221,180,91,.32);border-radius:15px;background:rgba(221,180,91,.045);color:var(--gold-soft);font:750 16px/1 Inter,sans-serif;text-decoration:none;transition:background .16s ease,border-color .16s ease,transform .16s ease}.create-account-button:hover{background:rgba(221,180,91,.09);border-color:rgba(221,180,91,.48)}.create-account-button:active{transform:scale(.985)}
 .login-card{animation:authCardIn .42s cubic-bezier(.22,.8,.32,1) both}.auth-brand{animation:authBrandIn .5s .04s cubic-bezier(.22,.8,.32,1) both}@keyframes authCardIn{from{opacity:0;transform:translateY(10px) scale(.992)}to{opacity:1;transform:none}}@keyframes authBrandIn{from{opacity:.35;filter:blur(2px)}to{opacity:1;filter:none}}
-@media(max-width:480px){.auth-shell{padding-left:18px;padding-right:18px}.login-card{width:min(360px,100%);padding:20px 18px 20px}.brand-word{font-size:46px}form{margin-top:16px}}
+@media(max-width:480px){.auth-shell{padding-left:18px;padding-right:18px}.login-card{width:min(360px,100%);padding:20px 18px 20px}form{margin-top:16px}}
 @media(prefers-reduced-motion:reduce){.login-card,.auth-brand,.login-success{animation:none!important}}
 
 /* v2.5.0: dölj själva auth-kortet tills Firebase hunnit avgöra sessionen. */
@@ -23,13 +23,7 @@ form{display:grid;gap:11px;margin-top:18px}input{width:100%;min-height:52px;padd
 
 /* CCC v2.8.41 – Auth använder Core-loggan.
    Auth får behålla placering/animering av auth-brand, men cCc-markering och aura ägs av ../core.css. */
-.auth-brand .ccc-brand-word{
-  font-size:48px!important;
-}
 @media(max-width:480px){
-  .auth-brand .ccc-brand-word{
-    font-size:46px!important;
-  }
 }
 
 /* CCC v2.8.42 – Auth/PWA safe-area använder samma temabakgrund som Core. */
@@ -37,4 +31,7 @@ html,body,.auth-shell{
   background:var(--ccc-bg)!important;
 }
 
-/* CCC cache stamp: v2.8.42 */
+/* CCC v2.8.44 – Auth-brand ägs nu helt av Core.
+   Auth får endast placera/animera `.auth-brand`; cCc, aura och storlek får inte definieras här. */
+
+/* CCC cache stamp: v2.8.44 */
