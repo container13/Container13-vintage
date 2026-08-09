@@ -1168,4 +1168,24 @@ button{color:inherit}
   }
 }
 
-/* CCC cache stamp: v2.8.40 */
+/* CCC v2.8.42 – PWA/safe-area följer aktivt tema.
+   Ingen vit viewportyta ovanför/under appen i installerad webbapp. */
+html,
+body{
+  background:var(--ccc-bg)!important;
+}
+html{
+  min-height:100%;
+  min-height:100dvh;
+}
+body{
+  min-height:100%;
+  min-height:100dvh;
+}
+
+/* Appens ytterbox målar hela viewporten, även bakom iOS safe areas. */
+.app-shell.ccc-app-shell{
+  background:var(--ccc-bg)!important;
+}
+
+/* CCC cache stamp: v2.8.42 */

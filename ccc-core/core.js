@@ -1,4 +1,4 @@
-// CCC Core JS v1.0 — v2.8.16
+// CCC Core JS — v2.8.42
 // Gemensamt beteende: tema, profilmeny och logout.
 
 const root=document.documentElement;
@@ -8,7 +8,19 @@ function applyTheme(theme){
   root.dataset.theme=theme;
   localStorage.setItem("ccc-theme",theme);
   $("#themeBtn")?.setAttribute("aria-pressed",String(theme==="dark"));
-  document.querySelector('meta[name="theme-color"]')?.setAttribute("content",theme==="dark"?"#11141b":"#f7f7f9");
+
+  const themeColor=theme==="dark"?"#11141b":"#f7f7f9";
+  let metaTheme=document.querySelector('meta[name="theme-color"]');
+  if(!metaTheme){
+    metaTheme=document.createElement("meta");
+    metaTheme.name="theme-color";
+    document.head.appendChild(metaTheme);
+  }
+  metaTheme.setAttribute("content",themeColor);
+
+  /* iOS/PWA kan visa viewportens canvas i safe-area. Måla även den explicit. */
+  root.style.backgroundColor=themeColor;
+  if(document.body)document.body.style.backgroundColor=themeColor;
 }
 const savedTheme=localStorage.getItem("ccc-theme");
 const prefersDark=window.matchMedia?.("(prefers-color-scheme: dark)").matches;
