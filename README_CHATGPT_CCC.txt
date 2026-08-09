@@ -162,3 +162,17 @@ CCC v2.8.2 – demo-ui avvecklad (2026-08-09)
 - Statistik ligger i /ccc-core/statistics/.
 - Dashboardens äldre relativa publicera-länk är rättad till /ccc-core/publish/index.html.
 - Grundregel framåt: ingen ny aktiv CCC-funktion får läggas i demo-/testmappar.
+
+
+CCC v2.8.3 – Auth-logo + säker Publish-väg (2026-08-09)
+- Auth/inloggning använder nu samma CCC-logo med aura/halo som Vision, som är visuellt facit.
+- Dashboardens Publicera-länkar går explicit till ../publish/index.html?v=2.8.3 för att undvika att äldre cachad publiceringsvy återanvänds under test.
+- Dashboardens JS-redirect till Publicera använder samma versionssatta väg.
+- Publish-vyn har också samma Vision-aura i headern så den nya modulen visuellt känns igen.
+- Ingen publiceringslogik eller Firebase-funktion har ändrats i denna patch.
+
+CCC v2.8.4 – tydlig Tillbaka i Vision (2026-08-09)
+- Vision-starten har åter en egen tydlig tredje ruta: "Tillbaka".
+- De två framåtriktade rutorna behåller pil åt höger; Tillbaka har pil åt vänster.
+- Tillbaka leder explicit till Dashboard. CCC-loggan är fortfarande klickbar som extra genväg, men viktig navigation ska aldrig kräva att användaren känner till ett dolt loggbeteende.
+- Mobile-first: Tillbaka-rutan använder den redan förberedda kompakta kortdesignen i Vision och ligger under foto/kamerarulle.
