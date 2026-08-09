@@ -288,3 +288,10 @@ CCC v2.8.19 – Vision kortstorlek + total kostnad (2026-08-09)
 - Kostnaden hämtas från den redan befintliga lokala Vision-mätningen i `CCC_VISION_KNOWLEDGE.costSummarySince(...)`; ingen ny räknare skapas.
 - Totalen summerar all sparad AI-analyskostnad och uppdateras varje gång Vision-inställningar öppnas.
 - Detaljerad kostnadsstatistik lämnas till framtida Statistik-modul.
+
+CCC v2.8.20 – verklig orsak till mindre Vision-kort fixad (2026-08-09)
+- Grundfelet var inte längre kortens egna mått utan Visions äldre desktopregel `.app-shell{width:430px}`.
+- Den regeln begränsade hela Vision-modulen innan den gemensamma 720 px arbetsytan kunde användas.
+- `core.css` äger nu även `.ccc-app-shell` med full bredd på desktop och överstyr gamla modulbredder centralt.
+- Dashboardens och Visions action-kort kan därmed använda exakt samma Core-grid i samma tillgängliga arbetsbredd.
+- Vision-kostnaden från v2.8.19 behålls oförändrad.
