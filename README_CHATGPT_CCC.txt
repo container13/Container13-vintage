@@ -333,3 +333,11 @@ CCC v2.8.25 – samlad v2.8.24 + gemensam tema/profil-position (2026-08-09)
 - Dashboard, Vision och Publicera får exakt samma right/bottom-position, gap, knappstorlek och ikonstorlek på desktop och mobil.
 - Visions äldre `.app-header .header-actions`-regler kan därmed inte längre flytta eller krympa tema/profil.
 - Vision-kugghjulet är fortsatt modulunikt och påverkas inte.
+
+CCC v2.8.26 – hela headerboxen centraliserad i Core (2026-08-09)
+- Orsak hittad: Vision hade kvar `.app-header.ccc-header{...!important}` med annan padding än Dashboard.
+- Core styr nu med högre specificitet hela headerns bredd, höjd, padding, centrering och boxmodell.
+- Tema + profil förankras med direkt-child-selector mot exakt samma headerbox i Dashboard, Vision och Publicera.
+- Desktop: samma 48 px högerinset, 42 px botteninset, 14 px gap och 58 px knappar.
+- Mobil: samma 16 px högerinset, 14 px botteninset, 8 px gap och 44 px knappar.
+- v2.8.24 modulheaderfix och senare kort/kostnadsfixar behålls.
