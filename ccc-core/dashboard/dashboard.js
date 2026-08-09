@@ -388,7 +388,7 @@ imageDetailForm?.addEventListener("submit",(event)=>{
 
 publishSelectedBtn?.addEventListener("click",()=>{
   if(!selectedItems().length) return;
-  window.location.href="publicera.html";
+  window.location.href="../publish/index.html";
 });
 
 loadLocalWorkspace();
