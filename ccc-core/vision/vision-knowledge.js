@@ -47,6 +47,41 @@
     });
   }
 
+
+  function normalize(value) {
+    return String(value || "").trim().toLowerCase();
+  }
+
+  async function bestMatch(fields = {}) {
+    const rows = await getAll(KNOWLEDGE);
+    if (!rows.length) return null;
+    const brand = normalize(fields.brand);
+    const manufacturer = normalize(fields.manufacturer);
+    const category = normalize(fields.category);
+    const season = normalize(fields.season);
+    let best = null, bestScore = 0;
+    for (const row of rows) {
+      let score = 0;
+      const subject = normalize(row.subject);
+      if (brand && (normalize(row.brand) === brand || subject === brand)) score += 4;
+      if (manufacturer && subject === manufacturer) score += 4;
+      if (category && normalize(row.category) === category) score += 2;
+      if (season && normalize(row.season) === season) score += 2;
+      if (score > bestScore) { best = row; bestScore = score; }
+    }
+    return bestScore >= 4 ? { ...best, matchScore: bestScore } : null;
+  }
+
+  async function clearKnowledge() {
+    const db = await openDb();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(KNOWLEDGE, "readwrite");
+      tx.objectStore(KNOWLEDGE).clear();
+      tx.oncomplete = () => { db.close(); resolve(); };
+      tx.onerror = () => { db.close(); reject(tx.error); };
+    });
+  }
+
   async function metricsSince(isoDate) {
     const from = new Date(isoDate).getTime();
     const rows = await getAll(METRICS);
@@ -83,5 +118,5 @@
     } catch { return null; }
   }
 
-  window.CCC_VISION_KNOWLEDGE = { remember, metric, loadBase, metricsSince, estimateCost, costSummarySince };
+  window.CCC_VISION_KNOWLEDGE = { remember, bestMatch, clearKnowledge, metric, loadBase, metricsSince, estimateCost, costSummarySince };
 })();

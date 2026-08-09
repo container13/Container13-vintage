@@ -113,6 +113,15 @@
       card.classList.toggle("is-active", id === stageId);
     });
     if (viewName) visionView = viewName;
+    updateHeaderContext();
+  }
+
+  function updateHeaderContext() {
+    const settingsBtn = $("#visionSettingsBtn");
+    const backBtn = $("#headerBackBtn");
+    const isModuleHome = visionView === "start";
+    if (settingsBtn) settingsBtn.hidden = !isModuleHome;
+    if (backBtn) backBtn.hidden = isModuleHome;
   }
 
   function applyCaptureMode() {
@@ -191,7 +200,7 @@
         try {
           console.info("[CCC Vision] AI-analys startar", { itemId: item.id, files: files.length });
           const aiResponse = await window.CCC_VISION_AI.analyze(files);
-          item.visionResult = aiResponse.result || aiResponse;
+          item.visionResult = await applyLocalKnowledge(aiResponse.result || aiResponse);
           item.aiUsage = aiResponse.usage || null;
           item.aiModel = aiResponse.model || "";
           const estimated = window.CCC_VISION_KNOWLEDGE?.estimateCost?.(item.aiUsage, item.aiModel) || { usd: 0, sek: 0 };
@@ -217,7 +226,7 @@
 
       // Säkert demoläge tills AI-endpointen är ansluten, eller om testanropet misslyckas.
       await new Promise((resolve) => setTimeout(resolve, 650 + Math.floor(Math.random() * 450)));
-      item.visionResult = window.CCC_VISION_DEMOS?.[item.demoKey] || window.CCC_VISION_DEMO;
+      item.visionResult = await applyLocalKnowledge(window.CCC_VISION_DEMOS?.[item.demoKey] || window.CCC_VISION_DEMO);
       item.visionReady = true;
         updateBatchStrip();
       return item.visionResult;
@@ -819,6 +828,13 @@
 
   $("#visionSettingsBtn")?.addEventListener("click", () => setVisionSettingsOpen(true));
   $("#visionSettingsCloseBtn")?.addEventListener("click", () => setVisionSettingsOpen(false));
+
+  $("#visionClearKnowledgeBtn")?.addEventListener("click", async () => {
+    await window.CCC_VISION_KNOWLEDGE?.clearKnowledge?.();
+    const saved = $("#visionSettingsSaved");
+    if (saved) saved.textContent = "Kunskapsbasen är rensad ✓";
+  });
+
   $("#visionSettingsOverlay")?.addEventListener("click", (event) => { if (event.target === visionSettingsOverlay) setVisionSettingsOpen(false); });
   $("#visionAiAutoSetting")?.addEventListener("change", (event) => saveVisionSetting("ccc-vision-ai-auto", event.target.checked));
   $("#visionLearnEditsSetting")?.addEventListener("change", (event) => saveVisionSetting("ccc-vision-learn-edits", event.target.checked));
