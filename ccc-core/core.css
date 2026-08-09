@@ -15,6 +15,16 @@
   --ccc-content-width:720px;
   --ccc-card-gap:14px;
   --ccc-action-card-height-desktop:368px;
+  --ccc-header-action-right-desktop:48px;
+  --ccc-header-action-bottom-desktop:42px;
+  --ccc-header-action-size-desktop:58px;
+  --ccc-header-action-gap-desktop:14px;
+  --ccc-header-action-right-mobile:16px;
+  --ccc-header-action-bottom-mobile:14px;
+  --ccc-header-action-size-mobile:44px;
+  --ccc-header-action-gap-mobile:8px;
+  --ccc-brand-size-desktop:78px;
+  --ccc-brand-size-mobile:35px;
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
@@ -541,4 +551,77 @@ button{color:inherit}
    Shared header, brand/aura, theme/profile controls and common action-card geometry
    are authoritative here. Module CSS must not duplicate these selectors. */
 
-/* CCC cache stamp: v2.8.27 */
+/* CCC v2.8.28 – samma princip som löste action-korten:
+   en central geometri för logga/aura + tema/profil, oberoende av modulens gamla layout. */
+
+/* Brand förankras absolut i mitten av den gemensamma headerboxen. */
+.app-header.ccc-header > .ccc-brand-mark{
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  right:auto!important;
+  bottom:auto!important;
+  margin:0!important;
+  padding:0!important;
+  transform:translate(-50%,-50%)!important;
+  display:inline-flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.app-header.ccc-header > .ccc-brand-mark .ccc-brand-word{
+  font-size:var(--ccc-brand-size-mobile)!important;
+  line-height:1!important;
+  margin:0!important;
+}
+.app-header.ccc-header > .ccc-brand-mark .ccc-brand-halo{
+  width:58px!important;
+  height:18px!important;
+  margin:0 auto!important;
+}
+
+/* Tema + profil använder endast centrala Core-variabler. */
+.app-header.ccc-header > .header-actions.ccc-header-actions{
+  position:absolute!important;
+  right:var(--ccc-header-action-right-mobile)!important;
+  bottom:var(--ccc-header-action-bottom-mobile)!important;
+  left:auto!important;
+  top:auto!important;
+  gap:var(--ccc-header-action-gap-mobile)!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+}
+.app-header.ccc-header > .header-actions.ccc-header-actions > .icon-button.ccc-icon-button{
+  width:var(--ccc-header-action-size-mobile)!important;
+  height:var(--ccc-header-action-size-mobile)!important;
+  min-width:var(--ccc-header-action-size-mobile)!important;
+  min-height:var(--ccc-header-action-size-mobile)!important;
+  max-width:var(--ccc-header-action-size-mobile)!important;
+  max-height:var(--ccc-header-action-size-mobile)!important;
+}
+
+@media(min-width:760px){
+  .app-header.ccc-header > .ccc-brand-mark .ccc-brand-word{
+    font-size:var(--ccc-brand-size-desktop)!important;
+  }
+  .app-header.ccc-header > .ccc-brand-mark .ccc-brand-halo{
+    width:174px!important;
+    height:31px!important;
+  }
+  .app-header.ccc-header > .header-actions.ccc-header-actions{
+    right:var(--ccc-header-action-right-desktop)!important;
+    bottom:var(--ccc-header-action-bottom-desktop)!important;
+    gap:var(--ccc-header-action-gap-desktop)!important;
+  }
+  .app-header.ccc-header > .header-actions.ccc-header-actions > .icon-button.ccc-icon-button{
+    width:var(--ccc-header-action-size-desktop)!important;
+    height:var(--ccc-header-action-size-desktop)!important;
+    min-width:var(--ccc-header-action-size-desktop)!important;
+    min-height:var(--ccc-header-action-size-desktop)!important;
+    max-width:var(--ccc-header-action-size-desktop)!important;
+    max-height:var(--ccc-header-action-size-desktop)!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.28 */
