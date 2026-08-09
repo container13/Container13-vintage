@@ -246,3 +246,12 @@ CCC v2.8.14 – CCC Core konsolidering (2026-08-09)
 - `action-cards.css` tas bort som separat fil eftersom komponenten nu ingår i `core.css`.
 - Gamla dubbla tema/profil/logout-hanterare tas bort ur Dashboard/Vision/Publicera-JS för att undvika dubbelbindningar.
 - Regel framåt: gemensam CCC-design/UX ska först in i core; modul-CSS får inte kopiera eller överstyra kärngeometri utan ett verkligt modulbehov.
+
+CCC v2.8.15 – Vision följer Core/Dashboard utan egna desktopmått (2026-08-09)
+- Dashboard är fortsatt visuellt facit och ändras inte layoutmässigt.
+- `core.css` låser gemensam desktop-arbetsbredd, modulrad, 3-kortsgrid, gap och kortgeometri för alla moduler.
+- De ackumulerade Vision-specialblocken från v2.8.10/v2.8.12/v2.8.13 tas bort ur `vision.css`.
+- Vision-starten får bara en minimal reset som låter `core.css` styra geometri och placering.
+- Vision-kugghjulet är modulunikt och placeras separat till vänster utan att påverka CCC-loggans centrering.
+- Mobil: den lilla extra vänsterpilen i Tillbaka-kortet är fortsatt dold.
+- Regel: inga nya modulunika px-mått för gemensam header/action-card-layout; sådant ska ändras i Core.
