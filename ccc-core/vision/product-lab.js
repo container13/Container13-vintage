@@ -64,66 +64,12 @@
   }
 
 
-  // CCC gemensamt skal: samma tema och profilmeny som dashboarden
-  const rootElement = document.documentElement;
-  const themeButton = $("#themeBtn");
-  const profileButton = $("#profileBtn");
-  const profileMenu = $("#profileMenu");
-
-  function applyCccTheme(theme) {
-    rootElement.dataset.theme = theme;
-    localStorage.setItem("ccc-theme", theme);
-    themeButton?.setAttribute("aria-pressed", String(theme === "dark"));
-    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", theme === "dark" ? "#11141b" : "#f7f7f9");
-  }
-
-  function setProfileMenu(open) {
-    if (!profileMenu) return;
-    profileMenu.hidden = !open;
-    profileButton?.setAttribute("aria-expanded", String(open));
-  }
-
-  const savedCccTheme = localStorage.getItem("ccc-theme");
-  const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)").matches;
-  applyCccTheme(savedCccTheme || (prefersDark ? "dark" : "light"));
   const privacyNote = $("#privacyNote");
   if (privacyNote) {
     privacyNote.textContent = window.CCC_VISION_AI?.configured?.() && visionSettings().aiAuto
       ? "Originalbilderna stannar på enheten. En komprimerad kopia skickas endast för analys."
       : "Originalbilderna stannar på den här enheten.";
   }
-  themeButton?.addEventListener("click", () => applyCccTheme(rootElement.dataset.theme === "dark" ? "light" : "dark"));
-  profileButton?.addEventListener("click", (event) => { event.stopPropagation(); setProfileMenu(profileMenu?.hidden ?? true); });
-  document.addEventListener("click", (event) => {
-    if (profileMenu && !profileMenu.hidden && !profileMenu.contains(event.target) && event.target !== profileButton) setProfileMenu(false);
-  });
-  document.addEventListener("keydown", (event) => { if (event.key === "Escape") { setProfileMenu(false); setVisionSettingsOpen(false); const pop=$("#visionCostPopover"); if(pop) pop.hidden=true; } });
-
-  const logoutButton = $("#logout");
-  const logoutDialog = $("#logoutDialog");
-  const cancelLogoutButton = $("#cancelLogout");
-  const confirmLogoutButton = $("#confirmLogout");
-  function setLogoutDialog(open) {
-    if (!logoutDialog) return;
-    logoutDialog.hidden = !open;
-  }
-  logoutButton?.addEventListener("click", () => { setProfileMenu(false); setLogoutDialog(true); });
-  cancelLogoutButton?.addEventListener("click", () => setLogoutDialog(false));
-  logoutDialog?.addEventListener("click", (event) => { if (event.target === logoutDialog) setLogoutDialog(false); });
-  confirmLogoutButton?.addEventListener("click", async () => {
-    confirmLogoutButton.disabled = true;
-    try {
-      const [{ auth }, { signOut }] = await Promise.all([
-        import("../auth/firebase.js"),
-        import("https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js")
-      ]);
-      await signOut(auth);
-      window.location.href = "../auth/index.html";
-    } catch (error) {
-      console.error("CCC logout failed", error);
-      confirmLogoutButton.disabled = false;
-    }
-  });
 
   document.addEventListener("click", (event) => { const pop=$("#visionCostPopover"); const btn=$("#visionCostBtn"); if(pop && !pop.hidden && !pop.contains(event.target) && event.target !== btn){ pop.hidden=true; btn?.setAttribute("aria-expanded","false"); } });
 
