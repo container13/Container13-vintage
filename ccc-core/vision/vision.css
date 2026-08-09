@@ -2786,3 +2786,20 @@ body{min-height:100dvh}
 }
 
 /* CCC cache stamp: v2.8.21 */
+
+/* CCC v2.8.22 – Vision-starten får ingen egen stage-box på desktop.
+   Wrappern deltar inte i layouten; Core-gridens 320px-kort blir därför exakt
+   samma renderade höjd som Dashboard, oberoende av textmängd. */
+@media(min-width:760px){
+  #captureCard:has(#batchStrip[hidden]){
+    display:contents!important;
+  }
+  #captureCard:has(#batchStrip[hidden]) .vision-start-actions{
+    width:720px!important;
+    max-width:720px!important;
+    margin:0!important;
+    align-self:auto!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.22 */
