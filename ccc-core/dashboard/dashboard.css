@@ -660,3 +660,89 @@ body{min-height:100dvh}
 .ccc-aura-arc::before{content:"";position:absolute;left:50%;top:-17px;width:88px;height:38px;transform:translateX(-50%);background:radial-gradient(ellipse at 50% 100%,rgba(255,213,93,.22) 0%,rgba(235,181,49,.08) 48%,transparent 72%);pointer-events:none}
 .ccc-aura-arc::after{content:"";position:absolute;left:50%;top:-9px;width:68px;height:20px;transform:translateX(-50%);background:radial-gradient(ellipse at 50% 100%,rgba(255,224,126,.28),rgba(229,176,49,.05) 58%,transparent 75%);pointer-events:none}
 @media(max-width:480px){.ccc-brand-halo{width:58px;height:18px}.ccc-aura-arc{width:68px;height:20px}}
+
+
+/* CCC v2.8.7 – gemensam responsiv CCC-aura.
+   Mobil behåller den lilla bågen; desktop skalar över hela CCC-ordmärket. */
+.ccc-brand-halo{
+  position:relative;
+  display:block;
+  overflow:visible;
+  width:58px;
+  height:18px;
+  margin-inline:auto;
+}
+.ccc-aura-arc{
+  position:absolute;
+  left:50%;
+  bottom:0;
+  width:68px;
+  height:20px;
+  transform:translateX(-50%);
+  border-top:2px solid #e5b94f;
+  border-radius:50% 50% 0 0/100% 100% 0 0;
+  filter:drop-shadow(0 -2px 3px rgba(238,190,74,.55)) drop-shadow(0 -6px 8px rgba(231,178,53,.18));
+}
+.ccc-aura-arc::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-17px;
+  width:88px;
+  height:38px;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse at 50% 100%,rgba(255,213,93,.22) 0%,rgba(235,181,48,.10) 34%,rgba(224,165,31,.035) 56%,transparent 74%);
+  filter:blur(4px);
+  pointer-events:none;
+}
+.ccc-aura-arc::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-9px;
+  width:68px;
+  height:20px;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse at 50% 100%,rgba(255,224,126,.28),rgba(229,176,49,.06) 52%,transparent 72%);
+  filter:blur(3px);
+  pointer-events:none;
+}
+@media(min-width:760px){
+  .ccc-brand-halo{
+    width:174px;
+    height:31px;
+  }
+  .ccc-aura-arc{
+    width:190px;
+    height:42px;
+    border-top-width:3px;
+  }
+  .ccc-aura-arc::before{
+    width:224px;
+    height:70px;
+    top:-33px;
+  }
+  .ccc-aura-arc::after{
+    width:184px;
+    height:38px;
+    top:-17px;
+  }
+}
+
+
+/* CCC v2.8.7 – Dashboard-kort har samma tydliga desktop-feedback som Vision. */
+@media (hover:hover) and (pointer:fine){
+  .primary-actions .action-card{
+    transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,filter .16s ease;
+  }
+  .primary-actions .action-card:hover{
+    transform:translateY(-5px);
+    border-color:color-mix(in srgb,var(--ccc-gold) 42%,var(--ccc-border));
+    box-shadow:0 20px 42px rgba(31,42,68,.14);
+    filter:saturate(1.05);
+  }
+  .primary-actions .action-card:focus-visible{
+    outline:3px solid color-mix(in srgb,var(--ccc-gold) 62%,transparent);
+    outline-offset:4px;
+  }
+}
