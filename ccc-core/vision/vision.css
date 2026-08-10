@@ -2407,4 +2407,75 @@ body{min-height:100dvh}
 /* CCC v2.8.49 – headerhöjden är Core-only.
    Modul-CSS får aldrig definiera --ccc-header-height. */
 
-/* CCC cache stamp: v2.8.49 */
+/* CCC v2.8.50 – ren Vision-arbetsvy efter första plagget.
+   Startens tre stora kort hör bara till startläget. I aktiv serie används
+   miniatyrerna som huvudnavigation med två kompakta lägg-till-val. */
+.vision-start-actions[hidden]{
+  display:none!important;
+}
+.vision-workspace-toolbar{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:0 0 8px;
+}
+.vision-workspace-toolbar[hidden]{
+  display:none!important;
+}
+.vision-workspace-toolbar > strong{
+  font-size:.9rem;
+  white-space:nowrap;
+}
+.vision-workspace-add{
+  display:flex;
+  gap:7px;
+  margin-left:auto;
+}
+.vision-workspace-add button{
+  appearance:none;
+  border:1px solid var(--ccc-border,rgba(255,255,255,.13));
+  border-radius:999px;
+  background:var(--ccc-surface-soft,rgba(255,255,255,.04));
+  color:inherit;
+  min-height:38px;
+  padding:7px 11px;
+  font:inherit;
+  font-size:.78rem;
+  font-weight:800;
+}
+#captureCard:has(#batchStrip:not([hidden])) .batch-help{
+  margin:3px 0 2px;
+  text-align:left;
+}
+#captureCard:has(#batchStrip:not([hidden])) .batch-strip{
+  margin:0;
+}
+#captureCard:has(#batchStrip:not([hidden])) #showSuggestionBtn{
+  margin-top:8px;
+}
+#captureCard:has(#batchStrip:not([hidden])) #privacyNote{
+  margin-top:8px;
+  font-size:.72rem;
+  opacity:.58;
+}
+@media (max-width:480px) and (orientation:portrait){
+  #captureCard:has(#batchStrip:not([hidden])){
+    padding-top:12px!important;
+  }
+  .vision-workspace-toolbar{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:7px;
+  }
+  .vision-workspace-add{
+    width:100%;
+    margin-left:0;
+  }
+  .vision-workspace-add button{
+    flex:1 1 0;
+  }
+}
+
+/* CCC cache stamp: v2.8.50 */

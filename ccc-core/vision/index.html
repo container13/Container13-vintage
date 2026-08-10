@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#f7f7f9">
 <meta name="color-scheme" content="light dark">
-<link rel="manifest" href="../manifest.webmanifest?v=2.8.49">
+<link rel="manifest" href="../manifest.webmanifest?v=2.8.50">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>CCC Vision v2.8.49</title>
+  <title>CCC Vision v2.8.50</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-  <link rel="stylesheet" href="vision.css?v=2.8.49">
-  <link rel="stylesheet" href="../core.css?v=2.8.49">
+  <link rel="stylesheet" href="vision.css?v=2.8.50">
+  <link rel="stylesheet" href="../core.css?v=2.8.50">
 </head>
 <body>
 <div class="app-shell ccc-app-shell">
@@ -101,7 +101,14 @@
       <img id="detailPreview1" alt="Extra bild 1" hidden>
       <img id="detailPreview2" alt="Extra bild 2" hidden>
 
-      <p id="batchHelp" class="batch-help" hidden>Tryck på ett plagg för att visa eller ändra</p>
+      <div id="workspaceToolbar" class="vision-workspace-toolbar" hidden>
+        <strong id="workspaceCount">0 plagg</strong>
+        <div class="vision-workspace-add">
+          <button id="workspaceCameraBtn" type="button">＋ Fota plagg</button>
+          <button id="workspaceGalleryBtn" type="button">＋ Välj bilder</button>
+        </div>
+      </div>
+      <p id="batchHelp" class="batch-help" hidden>Välj ett plagg</p>
       <div id="batchStrip" class="batch-strip" hidden aria-label="Fotograferade plagg"></div>
       <button id="addToSelectedBtn" class="quiet-button workspace-detail-button" type="button" hidden>＋ Komplettera markerat plagg</button>
       <button id="showSuggestionBtn" class="primary-button capture-next" type="button" hidden disabled>Visa förslag</button>
@@ -363,13 +370,13 @@
     </div>
   </div>
 
-  <script src="../version.js?v=2.8.49"></script>
-  <script src="demo-data.js?v=2.8.49"></script>
-  <script src="vision-ai-config.js?v=2.8.49"></script>
-  <script src="vision-ai.js?v=2.8.49"></script>
-  <script src="vision-knowledge.js?v=2.8.49"></script>
-  <script src="product-lab.js?v=2.8.49"></script>
-<script type="module" src="../core.js?v=2.8.49"></script>
-<script src="../pwa.js?v=2.8.49" defer></script>
+  <script src="../version.js?v=2.8.50"></script>
+  <script src="demo-data.js?v=2.8.50"></script>
+  <script src="vision-ai-config.js?v=2.8.50"></script>
+  <script src="vision-ai.js?v=2.8.50"></script>
+  <script src="vision-knowledge.js?v=2.8.50"></script>
+  <script src="product-lab.js?v=2.8.50"></script>
+<script type="module" src="../core.js?v=2.8.50"></script>
+<script src="../pwa.js?v=2.8.50" defer></script>
 </body>
 </html>

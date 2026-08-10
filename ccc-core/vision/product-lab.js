@@ -130,8 +130,19 @@
     const help = $("#batchHelp");
     const addDetail = $("#addToSelectedBtn");
     const review = $("#showSuggestionBtn");
+    const startActions = document.querySelector(".vision-start-actions");
+    const workspaceToolbar = $("#workspaceToolbar");
+    const workspaceCount = $("#workspaceCount");
 
     if (resume) resume.hidden = !(startMode && hasSession);
+    if (startActions) startActions.hidden = !startMode;
+    if (workspaceToolbar) workspaceToolbar.hidden = startMode || !hasSession;
+    if (workspaceCount) {
+      const selectedNo = hasSession ? Math.min(currentIndex + 1, batchItems.length) : 0;
+      workspaceCount.textContent = hasSession
+        ? `${batchItems.length} ${batchItems.length === 1 ? "plagg" : "plagg"} · ${selectedNo} markerat`
+        : "0 plagg";
+    }
     if (startMode) {
       if (strip) strip.hidden = true;
       if (help) help.hidden = true;
@@ -242,7 +253,7 @@
       if (review) { review.hidden = true; review.disabled = true; }
       return;
     }
-    if (addDetail) addDetail.hidden = false;
+    if (addDetail) addDetail.hidden = true;
     const ready = batchItems.filter((item) => item.visionReady).length;
     if (review) {
       review.hidden = false;
@@ -955,6 +966,9 @@
   $("#retakeBtn").addEventListener("click", retakePhoto);
   $("#nextPhotoBtn").addEventListener("click", nextPhoto);
   $("#usePhotoBtn").addEventListener("click", finishCameraSeries);
+  $("#workspaceCameraBtn")?.addEventListener("click", () => $("#startCameraBtn")?.click());
+  $("#workspaceGalleryBtn")?.addEventListener("click", () => $("#galleryInput")?.click());
+
   $("#showSuggestionBtn").addEventListener("click", () => {
     const selected = batchItems[currentIndex];
     if (selected?.visionReady) {
@@ -1016,3 +1030,5 @@
   updateCounters();
   updateTextPreviews();
 })();
+
+/* CCC cache stamp: v2.8.50 */
