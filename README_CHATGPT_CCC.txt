@@ -870,6 +870,10 @@ CCC v2.8.94 – adaptiv X-centrering (2026-08-10)
 RC1 2.8.95
 - top inset heuristic
 
-
-v2.8.95 RC1
-- Added RC1 shoulder-lock helper placeholder.
+CCC v2.8.95 RC1 – paired collar/shoulder lock (2026-08-10)
+- Full project package built from the complete GitHub ZIP.
+- Crop baseline restored to the known-good v2.8.94 implementation before this change.
+- One crop change: paired upper-edge detection. If strong top-edge points occur on both sides of the subject at similar height, minY is extended upward slightly so a V-neck/collar is not discarded when its centre blends into the background.
+- Adaptiv X-centrering, zoom, 20 % crop padding, swipe, navigation, diagnostics and activeItemId are unchanged from v2.8.94.
+- Previous experimental RC1 topInset/low-contrast code is not included.
+- Root /version.js is preserved byte-for-byte from the complete GitHub ZIP.
