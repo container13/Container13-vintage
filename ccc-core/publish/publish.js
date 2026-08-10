@@ -128,7 +128,53 @@ $("#detailBack").addEventListener("click",()=>show("gridView"));
 function loadImage(src){return new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=src;});}
 function geometry(){if(!cropImage||!cropState)return null;const c=$("#cropCanvas"),base=Math.max(c.width/cropImage.naturalWidth,c.height/cropImage.naturalHeight),scale=base*cropState.zoom,w=cropImage.naturalWidth*scale,h=cropImage.naturalHeight*scale,lx=Math.max(0,(w-c.width)/2),ly=Math.max(0,(h-c.height)/2);cropState.x=Math.max(-lx,Math.min(lx,cropState.x));cropState.y=Math.max(-ly,Math.min(ly,cropState.y));return{c,scale,w,h};}
 function drawCrop(){const g=geometry();if(!g)return;const ctx=g.c.getContext("2d",{alpha:false});ctx.fillStyle="#111";ctx.fillRect(0,0,g.c.width,g.c.height);ctx.drawImage(cropImage,(g.c.width-g.w)/2+cropState.x,(g.c.height-g.h)/2+cropState.y,g.w,g.h);}
-async function openCrop(){const item=items[activeIndex];if(!item.fullUrl)item.fullUrl=item.thumbUrl||url(item.originalBlob||item.thumbnailBlob);cropImage=await loadImage(item.fullUrl);cropState=item.cropData?{...item.cropData}:{zoom:1,x:0,y:0};$("#cropZoom").value=String(cropState.zoom);$("#cropOriginalPreview").src=item.thumbUrl||item.fullUrl;drawCrop();show("cropView");}
+function smartCropSuggestion(image){
+  // Local, lightweight subject-saliency heuristic. No upload and no permanent edit.
+  const side=144,c=document.createElement("canvas"),ctx=c.getContext("2d",{willReadFrequently:true});
+  const ratio=image.naturalWidth/image.naturalHeight;
+  c.width=ratio>=1?side:Math.max(72,Math.round(side*ratio));
+  c.height=ratio>=1?Math.max(72,Math.round(side/ratio)):side;
+  ctx.drawImage(image,0,0,c.width,c.height);
+  const {data}=ctx.getImageData(0,0,c.width,c.height), pts=[];
+  let total=0,cx=0,cy=0;
+  for(let y=1;y<c.height-1;y+=2){for(let x=1;x<c.width-1;x+=2){
+    const i=(y*c.width+x)*4,r=data[i],g=data[i+1],b=data[i+2];
+    const max=Math.max(r,g,b),min=Math.min(r,g,b),sat=max-min;
+    const j=(y*c.width+x+1)*4,k=((y+1)*c.width+x)*4;
+    const edge=Math.abs(r-data[j])+Math.abs(g-data[j+1])+Math.abs(b-data[j+2])+Math.abs(r-data[k])+Math.abs(g-data[k+1])+Math.abs(b-data[k+2]);
+    const nx=x/c.width,ny=y/c.height,central=Math.exp(-(((nx-.46)/.34)**2+((ny-.47)/.38)**2));
+    const score=(sat*.72+Math.min(180,edge)*.42)*(.34+.66*central);
+    if(score>42){pts.push([x,y,score]);total+=score;cx+=x*score;cy+=y*score;}
+  }}
+  if(!total||pts.length<20)return {zoom:1,x:0,y:0};
+  cx/=total;cy/=total;
+  // Keep the salient cluster closest to the weighted subject center, rejecting remote page clutter.
+  const radius=Math.min(c.width,c.height)*.34, near=pts.filter(p=>Math.hypot(p[0]-cx,p[1]-cy)<=radius);
+  const use=near.length>15?near:pts;
+  let minX=c.width,maxX=0,minY=c.height,maxY=0;
+  use.forEach(p=>{minX=Math.min(minX,p[0]);maxX=Math.max(maxX,p[0]);minY=Math.min(minY,p[1]);maxY=Math.max(maxY,p[1]);});
+  const pad=.18*Math.max(maxX-minX,maxY-minY), box=Math.max(12,Math.max(maxX-minX,maxY-minY)+2*pad);
+  const subjectX=((minX+maxX)/2)/c.width*image.naturalWidth,subjectY=((minY+maxY)/2)/c.height*image.naturalHeight;
+  const subjectSize=box/Math.min(c.width,c.height)*Math.min(image.naturalWidth,image.naturalHeight);
+  const baseCrop=Math.min(image.naturalWidth,image.naturalHeight);
+  const zoom=Math.max(1,Math.min(2.65,baseCrop/Math.max(1,subjectSize)));
+  const canvas=$("#cropCanvas"),base=Math.max(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight),scale=base*zoom;
+  const x=(image.naturalWidth/2-subjectX)*scale,y=(image.naturalHeight/2-subjectY)*scale;
+  return {zoom,x,y};
+}
+async function openCrop(){
+  const item=items[activeIndex];
+  if(!item.fullUrl)item.fullUrl=item.thumbUrl||url(item.originalBlob||item.thumbnailBlob);
+  cropImage=await loadImage(item.fullUrl);
+  if(item.cropData){cropState={...item.cropData};}
+  else{
+    cropState=smartCropSuggestion(cropImage);
+    item.cropSuggestion={...cropState};
+  }
+  $("#cropZoom").value=String(cropState.zoom);
+  $("#cropOriginalPreview").src=item.thumbUrl||item.fullUrl;
+  drawCrop();show("cropView");
+}
 async function createOriginalWebP(item){
   const src=item.originalBlob||item.thumbnailBlob;
   if(!src)throw new Error("Originalbild saknas.");
@@ -164,7 +210,7 @@ $("#keepOriginalBtn").addEventListener("click",async()=>{
   }
   button.textContent=old;button.disabled=false;
 });
-$("#cropBack").addEventListener("click",()=>openDetail(activeIndex));$("#cropZoom").addEventListener("input",e=>{cropState.zoom=Number(e.target.value)||1;drawCrop();});$("#cropReset").addEventListener("click",()=>{cropState={zoom:1,x:0,y:0};$("#cropZoom").value="1";drawCrop();});
+$("#cropBack").addEventListener("click",()=>openDetail(activeIndex));$("#cropZoom").addEventListener("input",e=>{cropState.zoom=Number(e.target.value)||1;drawCrop();});$("#cropReset").addEventListener("click",()=>{const suggestion=items[activeIndex]?.cropSuggestion||smartCropSuggestion(cropImage);cropState={...suggestion};$("#cropZoom").value=String(cropState.zoom);drawCrop();});
 $("#cropCanvas").addEventListener("pointerdown",e=>{if(!cropState)return;e.currentTarget.setPointerCapture?.(e.pointerId);pointer={x:e.clientX,y:e.clientY,ox:cropState.x,oy:cropState.y};});
 $("#cropCanvas").addEventListener("pointermove",e=>{if(!pointer)return;const c=e.currentTarget,r=c.getBoundingClientRect();cropState.x=pointer.ox+(e.clientX-pointer.x)*(c.width/Math.max(1,r.width));cropState.y=pointer.oy+(e.clientY-pointer.y)*(c.height/Math.max(1,r.height));drawCrop();});
 ["pointerup","pointercancel"].forEach(n=>$("#cropCanvas").addEventListener(n,()=>pointer=null));
@@ -190,4 +236,4 @@ $("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=i
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-/* CCC cache stamp: v2.8.76 */
+/* CCC cache stamp: v2.8.77 */
