@@ -625,3 +625,10 @@ CCC v2.8.61 – Vision sparar original, Publicera äger bildbearbetningen (2026-
 - `Spara & tillbaka` går tillbaka direkt och sparar original + metadata i bakgrunden; ingen bildkonvertering kan längre blockera den vägen.
 - Beskärning/anpassning till plagget, slutlig storlek/upplösning och WebP-komprimering ska göras i Publicera-flödet när publiceringsbilden faktiskt förbereds.
 - Originalbilden förblir lokal och orörd tills dess.
+
+CCC v2.8.62 – papperskorg + renare manuellt redigeringsläge (2026-08-10)
+- Papperskorg tillagd vid plaggets miniatyr i redigeringsvyn.
+- Borttagning tar bort plagget ur den lokala fotosessionen, återgår till plaggöversikten och använder befintlig Ångra-funktion.
+- I AI-av/manuellt läge visas inte längre `Redigera medan CCC arbetar`; rubriken blir `Redigera plagg`.
+- Status-underraden döljs i manuellt läge.
+- `Analysera med AI` finns kvar som frivillt val när AI är tillgängligt.
