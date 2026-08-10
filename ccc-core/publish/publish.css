@@ -438,4 +438,9 @@
   }
 }
 
-/* CCC cache stamp: v2.8.79 */
+/* CCC v2.8.80 – hel-plagg-kontur före tajt centerbeskärning. */
+#cropView .crop-border{
+  box-shadow:0 0 0 1px rgba(232,190,82,.22);
+}
+
+/* CCC cache stamp: v2.8.80 */
