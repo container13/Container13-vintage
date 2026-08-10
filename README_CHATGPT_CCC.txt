@@ -669,3 +669,10 @@ CCC v2.8.66 – manuellt AI-resultat visas direkt (2026-08-10)
 - AI-knappen döljs när resultatet är klart.
 - Vid AI-fel visas feltexten i samma synliga statusrad i stället för i det dolda message-elementet.
 - Per-item-race-fixen från v2.8.65 är kvar: resultatet påverkar endast plagget som faktiskt analyserades.
+
+CCC v2.8.67 – kritisk fix: AI-resultatet stoppades av saknad funktion (2026-08-10)
+- Faktisk grundorsak hittad: `startSilentAnalysis()` anropade `applyLocalKnowledge(...)`, men funktionen fanns inte längre definierad i `product-lab.js`.
+- Följden var att ett lyckat manuellt AI-svar först kom tillbaka, därefter kastades `ReferenceError` innan `visionResult` kunde färdigställas. Fallbacken anropade samma saknade funktion och kunde därför inte heller ge resultat.
+- `applyLocalKnowledge()` är återinförd.
+- Den använder befintliga `CCC_VISION_KNOWLEDGE.bestMatch()` för att komplettera endast tomma fält; ett AI-resultat får alltid gå vidare även om kunskapslagret skulle ge fel.
+- Manuellt AI-resultat kan nu nå v2.8.66-flödet och fylla de tomma redigeringsfälten direkt.
