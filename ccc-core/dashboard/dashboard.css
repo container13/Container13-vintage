@@ -31,8 +31,6 @@
   position:relative;display:inline-flex;flex-direction:column;align-items:center;
   text-decoration:none;color:var(--ccc-gold);line-height:1;
 }
-.ccc-brand-halo{font-size:25px;height:21px;color:var(--ccc-gold);filter:drop-shadow(0 4px 10px rgba(201,155,57,.22))}
-.ccc-brand-word{font-family:Georgia,"Times New Roman",serif;font-size:39px;font-weight:400;letter-spacing:.04em;color:var(--ccc-gold)}
 .ccc-header-actions{position:absolute;right:22px;bottom:18px;display:flex;gap:10px}
 .ccc-icon-button{
   width:48px;height:48px;border:1px solid var(--ccc-border);border-radius:50%;
@@ -60,14 +58,11 @@
   .ccc-header{padding-inline:16px}
   .ccc-header-actions{right:16px;bottom:14px;gap:8px}
   .ccc-icon-button{width:44px;height:44px}
-  .ccc-brand-word{font-size:35px}
   .ccc-profile-menu{max-height:calc(100dvh - var(--ccc-header-height) - 12px);overflow:auto}
 }
 @media(min-width:760px){
   :root{--ccc-header-height:168px}
   .ccc-header{padding-left:48px;padding-right:48px}
-  .ccc-brand-halo{font-size:38px;height:31px}
-  .ccc-brand-word{font-size:78px;letter-spacing:.055em}
   .ccc-header-actions{right:48px;bottom:42px;gap:14px}
   .ccc-icon-button{width:58px;height:58px}
   .ccc-icon{width:27px;height:27px}
@@ -116,16 +111,7 @@ button,a{font:inherit;-webkit-tap-highlight-color:transparent}
 button{color:inherit}
 
 .app-shell{min-height:100dvh;max-width:1600px;margin:0 auto;background:var(--bg)}
-.app-header{
-  position:sticky;top:0;z-index:20;height:var(--header-height);
-  display:flex;align-items:center;justify-content:center;
-  padding:env(safe-area-inset-top) 22px 0;
-  background:color-mix(in srgb,var(--bg) 88%,transparent);
-  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)
-}
 .brand{position:relative;display:inline-flex;flex-direction:column;align-items:center;text-decoration:none;color:var(--gold);line-height:1}
-.brand-halo{font-size:25px;height:21px;filter:drop-shadow(0 4px 10px rgba(201,155,57,.22))}
-.brand-word{font-family:Georgia,"Times New Roman",serif;font-size:39px;letter-spacing:.04em}
 .header-actions{position:absolute;right:22px;bottom:18px;display:flex;gap:10px}
 .icon-button{width:48px;height:48px;border:1px solid var(--border);border-radius:50%;background:var(--surface);display:grid;place-items:center;box-shadow:0 8px 20px rgba(31,42,68,.08);cursor:pointer}
 .icon-button:active{transform:scale(.96)}
@@ -172,7 +158,6 @@ button{color:inherit}
 .action-copy small{font-size:15px;color:var(--muted)}
 .action-arrow{font-size:36px;line-height:1;color:var(--text);opacity:.9}
 
-
 .selection-status{
   margin:16px 2px 0;padding:13px 16px;border:1px solid var(--border);border-radius:15px;
   background:var(--surface);color:var(--muted);font-weight:650;text-align:center
@@ -196,10 +181,8 @@ button{color:inherit}
   html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
   body{position:fixed;inset:0}
   .app-shell{width:100%;height:100dvh;min-height:0;overflow:hidden}
-  .app-header{padding-inline:16px}
   .header-actions{right:16px;bottom:14px;gap:8px}
   .icon-button{width:44px;height:44px}
-  .brand-word{font-size:35px}
   .dashboard{
     height:calc(100dvh - var(--header-height));
     min-height:0;
@@ -234,9 +217,6 @@ button{color:inherit}
 
 @media (min-width:760px){
   :root{--header-height:168px}
-  .app-header{justify-content:center;padding-left:48px;padding-right:48px}
-  .brand-halo{font-size:38px;height:31px}
-  .brand-word{font-size:78px;letter-spacing:.055em}
   .header-actions{right:48px;bottom:42px;gap:14px}
   .icon-button{width:58px;height:58px}
   .icon{width:27px;height:27px}
@@ -307,7 +287,6 @@ button{color:inherit}
   .image-meta strong{font-size:19px}.image-meta small{font-size:15px}
   .detail-form{max-width:760px;margin:0 auto}
 }
-
 
 /* Dashboard Mobile 1.4 – Mina bilder */
 #addImagesView .primary-actions{gap:18px}
@@ -392,7 +371,6 @@ button{color:inherit}
   .camera-session-card{padding:22px 18px}
 }
 
-
 /* CCC Local Workspace 1.1 – rent kameraflöde */
 .camera-options{display:none!important}
 .camera-session-card{min-height:0}
@@ -402,7 +380,6 @@ button{color:inherit}
   #addImagesView .primary-actions{align-content:center}
   .camera-session-card{height:auto;align-self:center;padding:24px 18px}
 }
-
 
 /* CCC Local Workspace 1.2 – kompakt mobilflöde */
 @media (max-width:480px){
@@ -584,7 +561,6 @@ html,body,.app-shell{background:var(--bg)!important}
 html{min-height:100%;min-height:100dvh}
 body{min-height:100dvh}
 @supports(padding:max(0px)){body{padding-top:0;padding-bottom:0}}
-.workspace-arrival .app-header{animation:cccHeaderWake .42s ease both}
 .workspace-arrival .primary-actions>.action-card{animation:cccWorkspaceIn .42s ease both}
 .workspace-arrival .primary-actions>.action-card:nth-child(1){animation-delay:.14s}.workspace-arrival .primary-actions>.action-card:nth-child(2){animation-delay:.20s}.workspace-arrival .primary-actions>.action-card:nth-child(3){animation-delay:.26s}
 @keyframes cccHeaderWake{from{opacity:.2;transform:translateY(-12px)}to{opacity:1;transform:none}}
@@ -597,8 +573,7 @@ body{min-height:100dvh}
 @keyframes cccShellWake{from{opacity:.72;transform:translateY(5px)}to{opacity:1;transform:none}}
 @keyframes cccWakeGlow{0%{opacity:0}38%{opacity:1}100%{opacity:0}}
 @media(max-width:480px){#homeView{grid-template-rows:minmax(0,1fr);padding-top:4px}#homeView .primary-actions{height:100%}}
-@media(prefers-reduced-motion:reduce){.workspace-arrival .app-header,.workspace-arrival .primary-actions>.action-card,.workspace-arrival .app-shell,.workspace-arrival body::before{animation:none!important}}
-
+@media(prefers-reduced-motion:reduce){}
 
 /* v2.5.10: gemensam två-raders modulidentitet för Arbetsyta/Vision. */
 .dashboard-module-marker {
@@ -652,83 +627,9 @@ body{min-height:100dvh}
 
 /* v2.7.27 – CCC-loggan är alltid Hem/Dashboard */
 .ccc-home-link{cursor:pointer;-webkit-tap-highlight-color:transparent}
-
-
-/* CCC v2.8.5 – gemensam CCC-signatur: Vision-bågen är logofacit. */
-.ccc-brand-halo{position:relative;width:62px;height:20px;display:block;overflow:visible}
-.ccc-aura-arc{position:absolute;left:50%;bottom:0;width:72px;height:22px;transform:translateX(-50%);border-top:2px solid #e5b94f;border-radius:50% 50% 0 0/100% 100% 0 0;filter:drop-shadow(0 -2px 3px rgba(229,185,79,.55))}
-.ccc-aura-arc::before{content:"";position:absolute;left:50%;top:-17px;width:88px;height:38px;transform:translateX(-50%);background:radial-gradient(ellipse at 50% 100%,rgba(255,213,93,.22) 0%,rgba(235,181,49,.08) 48%,transparent 72%);pointer-events:none}
-.ccc-aura-arc::after{content:"";position:absolute;left:50%;top:-9px;width:68px;height:20px;transform:translateX(-50%);background:radial-gradient(ellipse at 50% 100%,rgba(255,224,126,.28),rgba(229,176,49,.05) 58%,transparent 75%);pointer-events:none}
-@media(max-width:480px){.ccc-brand-halo{width:58px;height:18px}.ccc-aura-arc{width:68px;height:20px}}
-
-
-/* CCC v2.8.7 – gemensam responsiv CCC-aura.
-   Mobil behåller den lilla bågen; desktop skalar över hela CCC-ordmärket. */
-.ccc-brand-halo{
-  position:relative;
-  display:block;
-  overflow:visible;
-  width:58px;
-  height:18px;
-  margin-inline:auto;
-}
-.ccc-aura-arc{
-  position:absolute;
-  left:50%;
-  bottom:0;
-  width:68px;
-  height:20px;
-  transform:translateX(-50%);
-  border-top:2px solid #e5b94f;
-  border-radius:50% 50% 0 0/100% 100% 0 0;
-  filter:drop-shadow(0 -2px 3px rgba(238,190,74,.55)) drop-shadow(0 -6px 8px rgba(231,178,53,.18));
-}
-.ccc-aura-arc::before{
-  content:"";
-  position:absolute;
-  left:50%;
-  top:-17px;
-  width:88px;
-  height:38px;
-  transform:translateX(-50%);
-  background:radial-gradient(ellipse at 50% 100%,rgba(255,213,93,.22) 0%,rgba(235,181,48,.10) 34%,rgba(224,165,31,.035) 56%,transparent 74%);
-  filter:blur(4px);
-  pointer-events:none;
-}
-.ccc-aura-arc::after{
-  content:"";
-  position:absolute;
-  left:50%;
-  top:-9px;
-  width:68px;
-  height:20px;
-  transform:translateX(-50%);
-  background:radial-gradient(ellipse at 50% 100%,rgba(255,224,126,.28),rgba(229,176,49,.06) 52%,transparent 72%);
-  filter:blur(3px);
-  pointer-events:none;
-}
+@media(max-width:480px){}
 @media(min-width:760px){
-  .ccc-brand-halo{
-    width:174px;
-    height:31px;
-  }
-  .ccc-aura-arc{
-    width:190px;
-    height:42px;
-    border-top-width:3px;
-  }
-  .ccc-aura-arc::before{
-    width:224px;
-    height:70px;
-    top:-33px;
-  }
-  .ccc-aura-arc::after{
-    width:184px;
-    height:38px;
-    top:-17px;
-  }
 }
-
 
 /* CCC v2.8.7 – Dashboard-kort har samma tydliga desktop-feedback som Vision. */
 @media (hover:hover) and (pointer:fine){
@@ -747,4 +648,7 @@ body{min-height:100dvh}
   }
 }
 
-/* CCC cache stamp: v2.8.18 */
+/* CCC v2.8.48 – gemensam header/brand ägs endast av Core.
+   Modulfilen får inte definiera .app-header, brand-word/halo eller CCC-aura-geometri. */
+
+/* CCC cache stamp: v2.8.48 */
