@@ -128,12 +128,47 @@ $("#detailBack").addEventListener("click",()=>show("gridView"));
 function loadImage(src){return new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=src;});}
 function geometry(){if(!cropImage||!cropState)return null;const c=$("#cropCanvas"),base=Math.max(c.width/cropImage.naturalWidth,c.height/cropImage.naturalHeight),scale=base*cropState.zoom,w=cropImage.naturalWidth*scale,h=cropImage.naturalHeight*scale,lx=Math.max(0,(w-c.width)/2),ly=Math.max(0,(h-c.height)/2);cropState.x=Math.max(-lx,Math.min(lx,cropState.x));cropState.y=Math.max(-ly,Math.min(ly,cropState.y));return{c,scale,w,h};}
 function drawCrop(){const g=geometry();if(!g)return;const ctx=g.c.getContext("2d",{alpha:false});ctx.fillStyle="#111";ctx.fillRect(0,0,g.c.width,g.c.height);ctx.drawImage(cropImage,(g.c.width-g.w)/2+cropState.x,(g.c.height-g.h)/2+cropState.y,g.w,g.h);}
-async function openCrop(){const item=items[activeIndex];if(!item.fullUrl)item.fullUrl=url(item.originalBlob||item.thumbnailBlob);cropImage=await loadImage(item.fullUrl);cropState=item.cropData?{...item.cropData}:{zoom:1,x:0,y:0};$("#cropZoom").value=String(cropState.zoom);drawCrop();show("cropView");}
-$("#cropBtn").addEventListener("click",openCrop);$("#cropBack").addEventListener("click",()=>openDetail(activeIndex));$("#cropZoom").addEventListener("input",e=>{cropState.zoom=Number(e.target.value)||1;drawCrop();});$("#cropReset").addEventListener("click",()=>{cropState={zoom:1,x:0,y:0};$("#cropZoom").value="1";drawCrop();});
+async function openCrop(){const item=items[activeIndex];if(!item.fullUrl)item.fullUrl=item.thumbUrl||url(item.originalBlob||item.thumbnailBlob);cropImage=await loadImage(item.fullUrl);cropState=item.cropData?{...item.cropData}:{zoom:1,x:0,y:0};$("#cropZoom").value=String(cropState.zoom);$("#cropOriginalPreview").src=item.thumbUrl||item.fullUrl;drawCrop();show("cropView");}
+async function createOriginalWebP(item){
+  const src=item.originalBlob||item.thumbnailBlob;
+  if(!src)throw new Error("Originalbild saknas.");
+  const sourceUrl=item.thumbUrl||await previewSrc(item);
+  const image=await loadImage(sourceUrl);
+  const maxSide=1600,scale=Math.min(1,maxSide/Math.max(image.naturalWidth,image.naturalHeight));
+  const out=document.createElement("canvas");
+  out.width=Math.max(1,Math.round(image.naturalWidth*scale));
+  out.height=Math.max(1,Math.round(image.naturalHeight*scale));
+  out.getContext("2d",{alpha:false}).drawImage(image,0,0,out.width,out.height);
+  return new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));
+}
+$("#cropBtn").addEventListener("click",openCrop);
+$("#keepOriginalBtn").addEventListener("click",async()=>{
+  const item=items[activeIndex];
+  if(!item)return;
+  const button=$("#keepOriginalBtn"),old=button.textContent;
+  button.disabled=true;button.textContent="Optimerar…";
+  try{
+    const blob=await createOriginalWebP(item);
+    item.publishBlob=blob;
+    item.cropData=null;
+    item.imageProcessingState="webp-original";
+    await put(persistenceRecord({...item,publishBlob:blob,cropData:null,imageProcessingState:item.imageProcessingState}));
+    if(item.fullUrl&&item.fullUrl.startsWith("blob:"))URL.revokeObjectURL(item.fullUrl);
+    item.fullUrl=url(blob);
+    openDetail(activeIndex);
+  }catch(error){
+    console.error("[CCC Publicera] Kunde inte optimera originalbilden",error);
+    button.textContent="Försök igen";
+    button.disabled=false;
+    return;
+  }
+  button.textContent=old;button.disabled=false;
+});
+$("#cropBack").addEventListener("click",()=>openDetail(activeIndex));$("#cropZoom").addEventListener("input",e=>{cropState.zoom=Number(e.target.value)||1;drawCrop();});$("#cropReset").addEventListener("click",()=>{cropState={zoom:1,x:0,y:0};$("#cropZoom").value="1";drawCrop();});
 $("#cropCanvas").addEventListener("pointerdown",e=>{if(!cropState)return;e.currentTarget.setPointerCapture?.(e.pointerId);pointer={x:e.clientX,y:e.clientY,ox:cropState.x,oy:cropState.y};});
 $("#cropCanvas").addEventListener("pointermove",e=>{if(!pointer)return;const c=e.currentTarget,r=c.getBoundingClientRect();cropState.x=pointer.ox+(e.clientX-pointer.x)*(c.width/Math.max(1,r.width));cropState.y=pointer.oy+(e.clientY-pointer.y)*(c.height/Math.max(1,r.height));drawCrop();});
 ["pointerup","pointercancel"].forEach(n=>$("#cropCanvas").addEventListener(n,()=>pointer=null));
-$("#cropDone").addEventListener("click",async()=>{const item=items[activeIndex],g=geometry();if(!item||!g)return;const sx=Math.max(0,((g.w-g.c.width)/2-cropState.x)/g.scale),sy=Math.max(0,((g.h-g.c.height)/2-cropState.y)/g.scale),size=Math.min(cropImage.naturalWidth-sx,cropImage.naturalHeight-sy,g.c.width/g.scale),outSize=Math.max(1,Math.min(1600,Math.round(size))),out=document.createElement("canvas");out.width=out.height=outSize;out.getContext("2d",{alpha:false}).drawImage(cropImage,sx,sy,size,size,0,0,outSize,outSize);const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));item.publishBlob=blob;item.cropData={...cropState};await put(persistenceRecord({...item,publishBlob:blob,cropData:item.cropData}));if(item.fullUrl){URL.revokeObjectURL(item.fullUrl);item.fullUrl=url(blob);}openDetail(activeIndex);});
+$("#cropDone").addEventListener("click",async()=>{const item=items[activeIndex],g=geometry();if(!item||!g)return;const sx=Math.max(0,((g.w-g.c.width)/2-cropState.x)/g.scale),sy=Math.max(0,((g.h-g.c.height)/2-cropState.y)/g.scale),size=Math.min(cropImage.naturalWidth-sx,cropImage.naturalHeight-sy,g.c.width/g.scale),outSize=Math.max(1,Math.min(1600,Math.round(size))),out=document.createElement("canvas");out.width=out.height=outSize;out.getContext("2d",{alpha:false}).drawImage(cropImage,sx,sy,size,size,0,0,outSize,outSize);const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));item.publishBlob=blob;item.cropData={...cropState};item.imageProcessingState="webp-cropped";await put(persistenceRecord({...item,publishBlob:blob,cropData:item.cropData,imageProcessingState:item.imageProcessingState}));if(item.fullUrl){URL.revokeObjectURL(item.fullUrl);item.fullUrl=url(blob);}openDetail(activeIndex);});
 
 $("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=items[activeIndex].publishBlob?"Nästa steg kopplar den här WebP-bilden till Container13.":"Beskär bilden först så skapas publicerings-WebP lokalt.";if(!items[activeIndex].publishBlob)openCrop();});
 
@@ -155,4 +190,4 @@ $("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=i
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-/* CCC cache stamp: v2.8.73 */
+/* CCC cache stamp: v2.8.74 */

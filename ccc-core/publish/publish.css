@@ -283,4 +283,14 @@
   margin:0!important;
 }
 
-/* CCC cache stamp: v2.8.73 */
+/* CCC v2.8.74 – valfri beskärning med synligt bortklippt område. */
+.crop-preview{position:relative;width:100%;max-width:620px;margin:0 auto;aspect-ratio:1/1;overflow:hidden;border-radius:22px;background:#0b0d12}
+.crop-preview>#cropOriginalPreview{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;filter:blur(5px);opacity:.42;transform:scale(1.02)}
+.crop-preview>.crop-box{position:absolute;inset:7%;width:auto;height:auto;aspect-ratio:1/1;margin:auto;z-index:2;background:transparent}
+.crop-preview .crop-box canvas{width:100%;height:100%;display:block}
+.crop-preview .crop-border{position:absolute;inset:0;border:3px solid rgba(232,190,82,.95);border-radius:10px;pointer-events:none}
+.crop-dim{position:absolute;inset:0;background:rgba(4,6,10,.25);pointer-events:none;z-index:1}
+.crop-choice-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.crop-accept{width:100%;margin-top:12px}
+
+/* CCC cache stamp: v2.8.74 */

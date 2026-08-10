@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f7f7f9">
 <meta name="color-scheme" content="light dark">
-<link rel="manifest" href="../manifest.webmanifest?v=2.8.73">
+<link rel="manifest" href="../manifest.webmanifest?v=2.8.74">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>CCC Publicera v2.8.73</title>
+<title>CCC Publicera v2.8.74</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-<link rel="stylesheet" href="../dashboard/dashboard.css?v=2.8.73">
-<link rel="stylesheet" href="publish.css?v=2.8.73">
-<link rel="stylesheet" href="../core.css?v=2.8.73">
+<link rel="stylesheet" href="../dashboard/dashboard.css?v=2.8.74">
+<link rel="stylesheet" href="publish.css?v=2.8.74">
+<link rel="stylesheet" href="../core.css?v=2.8.74">
 </head>
 <body>
 <div class="app-shell ccc-app-shell publish-shell">
@@ -93,11 +93,19 @@
 
     <section id="cropView" class="publish-view crop-view" hidden>
       <div class="detail-top"><button id="cropBack" class="publish-back" type="button" aria-label="Tillbaka">‹</button><strong>Beskär</strong></div>
-      <p class="crop-help">Dra bilden och zooma vid behov.</p>
-      <div class="crop-box"><canvas id="cropCanvas" width="900" height="900"></canvas><span class="crop-border"></span></div>
+      <p class="crop-help">CCC föreslår ett utsnitt. Det mörka området klipps bort. Dra bilden eller zooma om du vill ändra.</p>
+      <div class="crop-preview" id="cropPreview">
+        <img id="cropOriginalPreview" alt="" aria-hidden="true">
+        <div class="crop-dim crop-dim-top"></div><div class="crop-dim crop-dim-right"></div><div class="crop-dim crop-dim-bottom"></div><div class="crop-dim crop-dim-left"></div>
+        <div class="crop-box"><canvas id="cropCanvas" width="900" height="900"></canvas><span class="crop-border"></span></div>
+      </div>
       <label class="zoom-control"><span>Zoom</span><input id="cropZoom" type="range" min="1" max="3" step="0.01" value="1"></label>
-      <div class="crop-actions"><button id="cropReset" class="secondary-action" type="button">Återställ</button><button id="cropDone" class="primary-action" type="button">Klar</button></div>
-      <p class="crop-note">WebP skapas lokalt först när du trycker Klar.</p>
+      <div class="crop-choice-actions">
+        <button id="keepOriginalBtn" class="secondary-action" type="button">Behåll original</button>
+        <button id="cropReset" class="secondary-action" type="button">Återställ förslag</button>
+      </div>
+      <button id="cropDone" class="primary-action crop-accept" type="button">Godkänn beskärning</button>
+      <p class="crop-note">Originalbilden ändras aldrig. En optimerad WebP-kopia skapas först när du väljer.</p>
     </section>
   </main>
 </div>
@@ -113,9 +121,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.8.73"></script>
-<script type="module" src="../core.js?v=2.8.73"></script>
-  <script src="../version.js?v=2.8.73"></script>
-<script src="../pwa.js?v=2.8.73" defer></script>
+<script type="module" src="publish.js?v=2.8.74"></script>
+<script type="module" src="../core.js?v=2.8.74"></script>
+  <script src="../version.js?v=2.8.74"></script>
+<script src="../pwa.js?v=2.8.74" defer></script>
 </body>
 </html>
