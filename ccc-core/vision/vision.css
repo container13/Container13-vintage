@@ -8,7 +8,6 @@
   --ccc-gold:#c99b39;
   --ccc-border:rgba(23,32,51,.08);
   --ccc-shadow:0 16px 40px rgba(31,42,68,.08);
-  --ccc-header-height:132px;
 }
 :root[data-theme="dark"]{
   --ccc-bg:#11141b;
@@ -41,13 +40,13 @@
 }
 .ccc-profile-menu a:hover,.ccc-profile-menu button:hover{background:color-mix(in srgb,var(--ccc-text) 6%,transparent)}
 @media(max-width:480px){
-  :root{--ccc-header-height:105px}
+  :root{}
 .ccc-icon-button{width:44px;height:44px}
 
   .ccc-profile-menu{max-height:calc(100dvh - var(--ccc-header-height) - 12px);overflow:auto}
 }
 @media(min-width:760px){
-  :root{--ccc-header-height:168px}
+  :root{}
 .ccc-icon-button{width:58px;height:58px}
   .ccc-icon{width:27px;height:27px}
   .ccc-profile-menu{right:48px;top:calc(var(--ccc-header-height) - 18px)}
@@ -1743,7 +1742,7 @@ body{min-height:100dvh}
 :root[data-theme="dark"] #captureCard:has(#batchStrip[hidden]) .vision-dashboard-card--back strong { color:#6f49c9; }
 
 @media(max-width:480px){
-  :root{--ccc-header-height:105px!important}
+  :root{}
   .vision-shell{
     height:calc(100dvh - var(--ccc-header-height));
     margin:0 auto;
@@ -2405,4 +2404,7 @@ body{min-height:100dvh}
 /* CCC v2.8.48 – gemensam header/brand ägs endast av Core.
    Modulfilen får inte definiera .app-header, brand-word/halo eller CCC-aura-geometri. */
 
-/* CCC cache stamp: v2.8.48 */
+/* CCC v2.8.49 – headerhöjden är Core-only.
+   Modul-CSS får aldrig definiera --ccc-header-height. */
+
+/* CCC cache stamp: v2.8.49 */
