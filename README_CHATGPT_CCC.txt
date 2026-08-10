@@ -572,3 +572,20 @@ CCC v2.8.54 – spara och återuppta Vision-fotosession lokalt (2026-08-10)
 - Om en pågående AI-session sparats innan analysen blev klar kan analysen återstartas vid återupptagning när auto-AI fortfarande är aktivt.
 - När hela serien avslutas rensas den aktiva sessionsposten; godkända Publicera-utkast ligger kvar separat.
 - Local workspace-databasen uppgraderad från version 1 till 2; Publicera synkad till samma DB-version och skapar även `sessions`-store vid behov.
+
+CCC v2.8.55 – AI av: Spara & nästa får inte visa demo (2026-08-10)
+- Grundorsak: `moveToNextItem()` skickade alltid nästa plagg till `openReview()`.
+- Ett plagg i manuellt läge saknar Vision-resultat, och review-flödet kunde därför falla tillbaka på demodata.
+- Ny `openItemForWork()` väljer arbetsvy efter plaggets faktiska analysläge.
+- AI av + ej analyserat → tom manuell redigering direkt.
+- AI/färdigt förslag → ordinarie förslagsvy.
+- `openReview()` har dessutom en skyddsregel som stoppar demo-fallback om ett manuellt oanalys­erat plagg skulle skickas dit från någon annan väg.
+- Ingen AI startas automatiskt av `Spara & nästa` när Automatisk AI-analys är av.
+
+CCC v2.8.56 – Spara eller Spara & nästa (2026-08-10)
+- Innehåller v2.8.55-fixen: AI av får inte öppna demo-/AI-förslag för nästa plagg.
+- Redigeringsvyn har nu tre val: `Tillbaka`, `Spara`, `Spara & nästa`.
+- `Spara` sparar aktuellt plagg lokalt och stannar kvar på samma plagg.
+- `Spara & nästa` sparar och går vidare enligt befintligt flöde.
+- Efter `Spara` kan användaren fortsätta redigera, gå tillbaka, välja annat plagg eller pausa hela fotosessionen.
+- Aktiv Vision-session synkas lokalt efter Spara så återupptagning behåller senaste status.
