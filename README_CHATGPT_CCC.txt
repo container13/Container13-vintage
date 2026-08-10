@@ -857,3 +857,12 @@ CCC v2.8.93 – X-only optical centering (2026-08-10)
 - Zoom, Y-position, motivdetektion, crop-storlek och 20 % säkerhetspadding från v2.8.91 är oförändrade.
 - `Visa crop-data` från v2.8.92 finns kvar för jämförelse mot de fyra referenströjorna.
 - Alla senare stabilitetsfixar för activeItemId, rätt bild/text/crop, swipe och navigation är kvar.
+
+CCC v2.8.94 – adaptiv X-centrering (2026-08-10)
+- Bygger direkt på v2.8.93.
+- Endast X-centreringen ändras.
+- Horisontell motivförskjutning under 4 % lämnas orörd.
+- 4–8 % ger mild korrigering, 8–12 % medelstark korrigering och över 12 % starkare korrigering.
+- X-korrigeringen har ett hårt tak på 8,5 % av crop-bredden för att undvika överkorrigering.
+- Zoom, Y-position, crop-storlek, motivdetektion, 20 % ärm/säkerhetspadding och diagnostiken är oförändrade.
+- Alla stabilitetsfixar för activeItemId, swipe och navigation är kvar.
