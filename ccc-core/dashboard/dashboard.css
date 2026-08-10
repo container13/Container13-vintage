@@ -8,7 +8,6 @@
   --ccc-gold:#c99b39;
   --ccc-border:rgba(23,32,51,.08);
   --ccc-shadow:0 16px 40px rgba(31,42,68,.08);
-  --ccc-header-height:132px;
 }
 :root[data-theme="dark"]{
   --ccc-bg:#11141b;
@@ -54,14 +53,14 @@
 }
 .ccc-profile-menu a:hover,.ccc-profile-menu button:hover{background:color-mix(in srgb,var(--ccc-text) 6%,transparent)}
 @media(max-width:480px){
-  :root{--ccc-header-height:105px}
+  :root{}
   .ccc-header{padding-inline:16px}
   .ccc-header-actions{right:16px;bottom:14px;gap:8px}
   .ccc-icon-button{width:44px;height:44px}
   .ccc-profile-menu{max-height:calc(100dvh - var(--ccc-header-height) - 12px);overflow:auto}
 }
 @media(min-width:760px){
-  :root{--ccc-header-height:168px}
+  :root{}
   .ccc-header{padding-left:48px;padding-right:48px}
   .ccc-header-actions{right:48px;bottom:42px;gap:14px}
   .ccc-icon-button{width:58px;height:58px}
@@ -651,4 +650,7 @@ body{min-height:100dvh}
 /* CCC v2.8.48 – gemensam header/brand ägs endast av Core.
    Modulfilen får inte definiera .app-header, brand-word/halo eller CCC-aura-geometri. */
 
-/* CCC cache stamp: v2.8.48 */
+/* CCC v2.8.49 – headerhöjden är Core-only.
+   Modul-CSS får aldrig definiera --ccc-header-height. */
+
+/* CCC cache stamp: v2.8.49 */
