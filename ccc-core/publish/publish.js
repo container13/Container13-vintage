@@ -110,7 +110,7 @@ async function renderGrid(){
     grid.append(b);
   }
 }
-function openDetail(index){if(!items.length)return;activeIndex=(index+items.length)%items.length;const item=items[activeIndex];if(!item.fullUrl)item.fullUrl=item.thumbUrl||url(item.publishBlob||item.originalBlob||item.thumbnailBlob);$("#detailImage").src=item.fullUrl;$("#detailTitle").textContent=title(item,activeIndex);$("#detailMeta").textContent=[item.brand,item.size&&`Storlek ${item.size}`,item.price&&`${item.price} kr`].filter(Boolean).join(" · ");$("#detailCounter").textContent=`${activeIndex+1} av ${items.length}`;$("#publishStatus").textContent=item.publishBlob?"Bilden är beskuren och klar som WebP.":"";show("detail");}
+function openDetail(index){if(!items.length)return;activeIndex=(index+items.length)%items.length;const item=items[activeIndex];if(!item.fullUrl)item.fullUrl=item.thumbUrl||url(item.publishBlob||item.originalBlob||item.thumbnailBlob);$("#detailImage").src=item.fullUrl;$("#detailTitle").textContent=title(item,activeIndex);$("#detailMeta").textContent=[item.brand,item.size&&`Storlek ${item.size}`,item.price&&`${item.price} kr`].filter(Boolean).join(" · ");$("#detailCounter").textContent=`${activeIndex+1} av ${items.length}`;$("#publishStatus").textContent=item.publishBlob?"Bilden är beskuren och klar som WebP.":"";show("detailView");}
 function next(delta){openDetail(activeIndex+delta);}
 let touchStart=null;
 $("#swipeArea").addEventListener("pointerdown",e=>{touchStart={x:e.clientX,y:e.clientY};});
@@ -190,4 +190,4 @@ $("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=i
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-/* CCC cache stamp: v2.8.74 */
+/* CCC cache stamp: v2.8.75 */
