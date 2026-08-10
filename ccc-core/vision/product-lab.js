@@ -442,6 +442,14 @@
     }
     currentIndex = Math.max(0, Math.min(index, batchItems.length - 1));
     const item = currentItem();
+
+    if (!item.visionReady && item.analysisMode === "manual") {
+      editReturnView = "workspace";
+      populateFormFromItem(true);
+      showStage("editCard", "edit");
+      return;
+    }
+
     if (!item.visionReady) await item.analysisPromise;
     const demo = item.visionResult || currentDemo();
     window.CCC_VISION_DEMO = demo;
@@ -469,11 +477,28 @@
     showStage("visionCard", "suggestion");
   }
 
+  function openItemForWork(index) {
+    if (index < 0 || index >= batchItems.length) return;
+    currentIndex = index;
+    const item = currentItem();
+
+    /* AI av = manuell arbetsvy. Inga demo-/AI-förslag får visas automatiskt. */
+    if (!item.visionReady && item.analysisMode === "manual") {
+      editReturnView = "workspace";
+      populateFormFromItem(true);
+      showStage("editCard", "edit");
+      return;
+    }
+
+    /* AI på/pågående eller färdigt förslag använder ordinarie review-flöde. */
+    return openReview(index);
+  }
+
   function moveToNextItem() {
     const next = batchItems.findIndex((item, index) => index > currentIndex && !item.approved);
-    if (next >= 0) return openReview(next);
+    if (next >= 0) return openItemForWork(next);
     const earlier = batchItems.findIndex((item) => !item.approved);
-    if (earlier >= 0) return openReview(earlier);
+    if (earlier >= 0) return openItemForWork(earlier);
     finishBatch();
   }
 
@@ -756,20 +781,56 @@
     showStage("editCard", "edit");
   }
 
-  async function saveEditedAndNext() {
+  async function saveEditedCurrent({ advance = false } = {}) {
     const item = currentItem();
-    if (!item) return;
+    if (!item) return false;
+
     item.editedFields = Object.fromEntries(fieldIds.map((id) => [id, $("#" + id).value]));
     rememberApprovedItem(item);
+
     try {
       await saveApprovedDraftLocally(item);
       item.approved = true;
       saveBatchMetadata();
-      if (editReturnView === "done") finishBatch();
-      else moveToNextItem();
+
+      /* Håll även pausad fotosession synkad om användaren senare vill fortsätta. */
+      if (batchItems.length) {
+        saveVisionSessionLocally().catch((error) =>
+          console.warn("[CCC Vision] Kunde inte synka aktiv fotosession efter Spara", error)
+        );
+      }
+
+      if (advance) {
+        if (editReturnView === "done") finishBatch();
+        else moveToNextItem();
+      } else {
+        const state = $("#draftState");
+        if (state) state.textContent = "Sparat lokalt ✓";
+        setMessage("Plagget är sparat. Du kan fortsätta här eller välja ett annat plagg.");
+      }
+      return true;
     } catch (error) {
       console.error("[CCC Vision] Utkast kunde inte sparas lokalt", error);
       setMessage("Utkastet kunde inte sparas lokalt. Försök igen.");
+      return false;
+    }
+  }
+
+  async function saveEditedAndNext() {
+    return saveEditedCurrent({ advance: true });
+  }
+
+  async function saveEditedOnly() {
+    const button = $("#saveOnlyBtn");
+    if (button) {
+      button.disabled = true;
+      button.textContent = "Sparar…";
+    }
+    const saved = await saveEditedCurrent({ advance: false });
+    if (button) {
+      button.disabled = false;
+      button.textContent = saved ? "Sparat ✓" : "Spara";
+      if (saved) setTimeout(() => { button.textContent = "Spara"; }, 1200);
     }
   }
 
@@ -1195,6 +1256,7 @@
     if (editReturnView === "done") { finishBatch(); return; }
     openReview(currentIndex);
   });
+  $("#saveOnlyBtn")?.addEventListener("click", saveEditedOnly);
   $("#previewBtn").addEventListener("click", saveEditedAndNext);
   $("#newSeriesBtn").addEventListener("click", newSeries);
   $("#publishReadyBtn")?.addEventListener("click", () => {
@@ -1234,4 +1296,4 @@
   updateTextPreviews();
 })();
 
-/* CCC cache stamp: v2.8.54 */
+/* CCC cache stamp: v2.8.56 */

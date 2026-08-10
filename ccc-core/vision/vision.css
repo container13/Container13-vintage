@@ -2717,4 +2717,27 @@ body{min-height:100dvh}
   }
 }
 
-/* CCC cache stamp: v2.8.54 */
+/* CCC v2.8.56 – användaren väljer Spara eller Spara & nästa. */
+#editCard .compact-edit-actions.compact-edit-actions--three{
+  grid-template-columns:.72fr .72fr 1.18fr!important;
+  gap:6px!important;
+}
+#editCard .compact-edit-actions--three .save-only-button{
+  color:var(--ccc-gold,var(--gold))!important;
+}
+@media (orientation:portrait) and (max-width:480px){
+  #editCard .compact-edit-actions.compact-edit-actions--three{
+    grid-template-columns:.68fr .68fr 1.15fr!important;
+    gap:5px!important;
+  }
+  #editCard .compact-edit-actions--three .primary-button,
+  #editCard .compact-edit-actions--three .secondary-button{
+    min-width:0!important;
+    padding-left:6px!important;
+    padding-right:6px!important;
+    white-space:nowrap!important;
+    font-size:.78rem!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.56 */
