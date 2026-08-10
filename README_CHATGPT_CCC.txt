@@ -685,3 +685,8 @@ CCC v2.8.68 – originalbilder skrivs faktiskt bara en gång (2026-08-10)
 - Återställda sessioner markeras direkt som redan lagrade eftersom filerna precis lästs från `vision-files`.
 - `Spara och fortsätt senare` uppdaterar därför i normalfallet endast den lilla sessionsposten efter att kända filskrivningar är klara.
 - Vid lagringsfel visar knappen nu även feltypen, t.ex. `QuotaExceededError`, så nästa fel kan identifieras direkt.
+
+CCC v2.8.69 – Tillbaka under förslagsvyn (2026-08-10)
+- Förslagsvyn behåller raden: papperskorg, Ändra, Godkänn & nästa.
+- En separat diskret `← Tillbaka` ligger direkt under raden.
+- Tillbaka går till plaggets/sessionens workspace, samma destination som headerns bakåtpil från förslagsvyn.
