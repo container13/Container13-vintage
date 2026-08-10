@@ -738,3 +738,11 @@ CCC v2.8.76 – kompakt Publicera-detaljvy på mobil (2026-08-10)
 - Titel/meta och actions har kompaktare spacing/typografi.
 - `Beskär` har bytt namn till `Anpassa bild`, eftersom nästa vy även erbjuder `Behåll original`.
 - Swipe mellan utkast och v2.8.74-bildanpassningen är oförändrade.
+
+CCC v2.8.77 – motivstyrt beskärningsförslag i Publicera (2026-08-10)
+- Ersätter ren center-crop med en lokal motiv/saliency-analys som försöker hitta bildens huvudsakliga plagg/motiv.
+- Förslaget beräknar motivcentrum, zoom och luft runt motivet innan beskärningsvyn visas.
+- Analysen körs helt lokalt i webbläsaren och ändrar inte originalbilden.
+- `Återställ förslag` återgår nu till CCC:s motivstyrda förslag, inte till en generisk center-crop.
+- Användaren kan fortfarande dra, zooma, Behåll original eller Godkänn beskärning.
+- WebP skapas fortfarande först efter användarens val.
