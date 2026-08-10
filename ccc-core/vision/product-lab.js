@@ -184,8 +184,10 @@
       id: uid(),
       file,
       previewUrl: fileUrl(file),
+      originalFileKey: null,
       extraFiles: [],
       extraUrls: [],
+      extraFileKeys: [],
       demoKey: demoKeys[index % demoKeys.length],
       visionReady: false,
       visionResult: null,
@@ -196,6 +198,11 @@
       publishUrl: null,
       cropData: null
     };
+    item.originalFileKey = `${item.id}:main`;
+    putVisionSourceFile(item.originalFileKey, file).catch((error) => {
+      const detail = storageErrorDetails(error);
+      console.error("[CCC Vision] Originalbild kunde inte förlagras", detail, error);
+    });
     startSilentAnalysis(item);
     return item;
   }
@@ -536,7 +543,7 @@
 
   function openWorkspaceDb() {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open("ccc-local-workspace", 2);
+      const request = indexedDB.open("ccc-local-workspace", 3);
       request.onupgradeneeded = () => {
         const db = request.result;
         if (!db.objectStoreNames.contains("images")) {
@@ -546,10 +553,74 @@
         if (!db.objectStoreNames.contains("sessions")) {
           db.createObjectStore("sessions", { keyPath: "id" });
         }
+        if (!db.objectStoreNames.contains("vision-files")) {
+          const store = db.createObjectStore("vision-files", { keyPath: "id" });
+          store.createIndex("createdAt", "createdAt");
+        }
       };
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error);
+      request.onblocked = () => reject(new Error("IndexedDB-uppgraderingen blockerades av en annan öppen CCC-flik."));
     });
+  }
+
+  function storageErrorDetails(error) {
+    return {
+      name: error?.name || "UnknownError",
+      message: error?.message || String(error || "Okänt lagringsfel")
+    };
+  }
+
+  async function putVisionSourceFile(id, file) {
+    if (!id || !file) return;
+    const db = await openWorkspaceDb();
+    try {
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction("vision-files", "readwrite");
+        tx.objectStore("vision-files").put({
+          id,
+          blob: file,
+          name: file.name || `${id}.jpg`,
+          type: file.type || "image/jpeg",
+          createdAt: Date.now()
+        });
+        tx.oncomplete = resolve;
+        tx.onerror = () => reject(tx.error || new Error("Kunde inte spara originalbild."));
+        tx.onabort = () => reject(tx.error || new Error("Sparningen av originalbild avbröts."));
+      });
+    } finally {
+      db.close();
+    }
+  }
+
+  async function getVisionSourceFile(id) {
+    if (!id) return null;
+    const db = await openWorkspaceDb();
+    try {
+      const record = await new Promise((resolve, reject) => {
+        const tx = db.transaction("vision-files", "readonly");
+        const request = tx.objectStore("vision-files").get(id);
+        request.onsuccess = () => resolve(request.result || null);
+        request.onerror = () => reject(request.error);
+      });
+      return record ? sessionFile(record.blob, record.name, record.type) : null;
+    } finally {
+      db.close();
+    }
+  }
+
+  async function ensureItemSourceFiles(item) {
+    if (!item?.file) return;
+    item.originalFileKey ||= `${item.id}:main`;
+    await putVisionSourceFile(item.originalFileKey, item.file);
+
+    item.extraFileKeys ||= [];
+    for (let index = 0; index < (item.extraFiles || []).length; index += 1) {
+      const file = item.extraFiles[index];
+      const key = item.extraFileKeys[index] || `${item.id}:extra:${index + 1}`;
+      item.extraFileKeys[index] = key;
+      await putVisionSourceFile(key, file);
+    }
   }
 
   async function putVisionSessionRecord(record) {
@@ -559,7 +630,8 @@
         const tx = db.transaction("sessions", "readwrite");
         tx.objectStore("sessions").put(record);
         tx.oncomplete = resolve;
-        tx.onerror = () => reject(tx.error);
+        tx.onerror = () => reject(tx.error || new Error("Kunde inte spara sessionsdata."));
+        tx.onabort = () => reject(tx.error || new Error("Sessionssparningen avbröts."));
       });
     } finally {
       db.close();
@@ -607,14 +679,16 @@
 
   async function saveVisionSessionLocally() {
     if (!batchItems.length) return false;
+
+    /* Originalfiler sparas separat en gång. Sessionen innehåller bara referenser/metadata. */
+    for (const item of batchItems) {
+      await ensureItemSourceFiles(item);
+    }
+
     const items = batchItems.map((item) => ({
       id: item.id,
-      originalBlob: item.file,
-      originalName: item.file?.name || `ccc-${item.id}.jpg`,
-      originalType: item.file?.type || "image/jpeg",
-      extraBlobs: [...(item.extraFiles || [])],
-      extraNames: (item.extraFiles || []).map((file, index) => file?.name || `ccc-${item.id}-extra-${index + 1}.jpg`),
-      extraTypes: (item.extraFiles || []).map((file) => file?.type || "image/jpeg"),
+      originalFileKey: item.originalFileKey,
+      extraFileKeys: [...(item.extraFileKeys || [])],
       demoKey: item.demoKey,
       approved: !!item.approved,
       editedFields: item.editedFields || null,
@@ -627,13 +701,16 @@
       aiCostSek: Number(item.aiCostSek || 0),
       cropData: item.cropData || null
     }));
+
     const record = {
       id: "vision-active",
+      schemaVersion: 2,
       savedAt: new Date().toISOString(),
       currentIndex,
       count: items.length,
       items
     };
+
     await putVisionSessionRecord(record);
     savedSessionSummary = { count: items.length, savedAt: record.savedAt };
     saveBatchMetadata();
@@ -666,17 +743,45 @@
       (item.extraUrls || []).forEach((url) => URL.revokeObjectURL(url));
     });
 
-    batchItems = record.items.map((saved) => {
-      const file = sessionFile(saved.originalBlob, saved.originalName, saved.originalType);
-      const extraFiles = (saved.extraBlobs || []).map((blob, index) =>
-        sessionFile(blob, saved.extraNames?.[index], saved.extraTypes?.[index])
-      ).filter(Boolean);
-      return {
+    const restored = [];
+    for (const saved of record.items) {
+      /* v3: referenser till vision-files. v2 fallback: Blob låg direkt i sessionen. */
+      const originalKey = saved.originalFileKey || `${saved.id}:main`;
+      let file = saved.originalFileKey ? await getVisionSourceFile(saved.originalFileKey) : null;
+      if (!file && saved.originalBlob) {
+        file = sessionFile(saved.originalBlob, saved.originalName, saved.originalType);
+        await putVisionSourceFile(originalKey, file);
+      }
+      if (!file) {
+        console.warn("[CCC Vision] Saknar originalfil för sparat plagg", saved.id);
+        continue;
+      }
+
+      const extraFiles = [];
+      const extraKeys = [...(saved.extraFileKeys || [])];
+      if (extraKeys.length) {
+        for (const key of extraKeys) {
+          const extra = await getVisionSourceFile(key);
+          if (extra) extraFiles.push(extra);
+        }
+      } else if (saved.extraBlobs?.length) {
+        for (let index = 0; index < saved.extraBlobs.length; index += 1) {
+          const extra = sessionFile(saved.extraBlobs[index], saved.extraNames?.[index], saved.extraTypes?.[index]);
+          const key = `${saved.id}:extra:${index + 1}`;
+          await putVisionSourceFile(key, extra);
+          extraKeys.push(key);
+          extraFiles.push(extra);
+        }
+      }
+
+      restored.push({
         id: saved.id || uid(),
         file,
         previewUrl: fileUrl(file),
+        originalFileKey: originalKey,
         extraFiles,
         extraUrls: extraFiles.map(fileUrl),
+        extraFileKeys: extraKeys,
         demoKey: saved.demoKey || "arsenal",
         visionReady: !!saved.visionReady,
         visionResult: saved.visionResult || null,
@@ -691,11 +796,12 @@
         publishFile: null,
         publishUrl: null,
         cropData: saved.cropData || null
-      };
-    });
+      });
+    }
 
+    batchItems = restored;
     currentIndex = Math.min(Number(record.currentIndex || 0), Math.max(0, batchItems.length - 1));
-    savedSessionSummary = { count: batchItems.length, savedAt: record.savedAt };
+    savedSessionSummary = batchItems.length ? { count: batchItems.length, savedAt: record.savedAt } : null;
 
     batchItems.forEach((item) => {
       if (!item.visionReady && item.analysisMode !== "manual" && visionSettings().aiAuto) {
@@ -706,12 +812,15 @@
     showWorkspace();
   }
 
+
   async function saveApprovedDraftLocally(item) {
     if (!item?.file) return;
+    await ensureItemSourceFiles(item);
+
     const fields = item.editedFields || item.visionResult?.fields || {};
     const record = {
       id: item.id,
-      originalBlob: item.file,
+      originalFileKey: item.originalFileKey,
       originalName: item.file.name || `ccc-${item.id}`,
       originalType: item.file.type || "image/jpeg",
       createdAt: item.createdAt || Date.now(),
@@ -725,14 +834,19 @@
       description: (fields.description || "").trim(),
       fields
     };
+
     const db = await openWorkspaceDb();
-    await new Promise((resolve, reject) => {
-      const tx = db.transaction("images", "readwrite");
-      tx.objectStore("images").put(record);
-      tx.oncomplete = resolve;
-      tx.onerror = () => reject(tx.error);
-    });
-    db.close();
+    try {
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction("images", "readwrite");
+        tx.objectStore("images").put(record);
+        tx.oncomplete = resolve;
+        tx.onerror = () => reject(tx.error || new Error("Kunde inte spara Publicera-utkast."));
+        tx.onabort = () => reject(tx.error || new Error("Publicera-utkastets sparning avbröts."));
+      });
+    } finally {
+      db.close();
+    }
   }
 
   async function approveCurrent() {
@@ -856,8 +970,15 @@
     const available = Math.max(0, 2 - item.extraFiles.length);
     const files = [...fileList].filter((f) => f.type.startsWith("image/")).slice(0, available);
     files.forEach((file) => {
+      const key = `${item.id}:extra:${item.extraFiles.length + 1}`;
       item.extraFiles.push(file);
       item.extraUrls.push(fileUrl(file));
+      item.extraFileKeys ||= [];
+      item.extraFileKeys.push(key);
+      putVisionSourceFile(key, file).catch((error) => {
+        const detail = storageErrorDetails(error);
+        console.error("[CCC Vision] Extra originalbild kunde inte förlagras", detail, error);
+      });
     });
     if (files.length) {
       startSilentAnalysis(item);
@@ -1256,9 +1377,11 @@
         button.disabled = false;
       }, 650);
     } catch (error) {
-      console.error("[CCC Vision] Kunde inte spara fotosession", error);
+      const detail = storageErrorDetails(error);
+      console.error("[CCC Vision] Kunde inte spara fotosession", detail, error);
       button.textContent = "Kunde inte spara – försök igen";
       button.disabled = false;
+      setMessage(`Lagringsfel: ${detail.name}. ${detail.message}`);
     }
   });
   $("#galleryInput").addEventListener("change", (event) => handleGalleryFiles(event.target.files));
@@ -1332,4 +1455,4 @@
   updateTextPreviews();
 })();
 
-/* CCC cache stamp: v2.8.62 */
+/* CCC cache stamp: v2.8.63 */
