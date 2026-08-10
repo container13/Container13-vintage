@@ -2740,4 +2740,33 @@ body{min-height:100dvh}
   }
 }
 
-/* CCC cache stamp: v2.8.56 */
+/* CCC v2.8.57 – "Spara & tillbaka" återgår till Vision-arbetsvyn. */
+#editCard .compact-edit-actions.compact-edit-actions--three{
+  grid-template-columns:1.05fr .68fr 1.12fr!important;
+}
+@media (orientation:portrait) and (max-width:480px){
+  #editCard .compact-edit-actions.compact-edit-actions--three{
+    grid-template-columns:1.08fr .66fr 1.12fr!important;
+  }
+  #editCard .compact-edit-actions--three .secondary-button,
+  #editCard .compact-edit-actions--three .primary-button{
+    font-size:.74rem!important;
+  }
+}
+
+/* CCC v2.8.58 – bara två meningsfulla sparval i redigeringen. */
+#editCard .compact-edit-actions.compact-edit-actions--three{
+  grid-template-columns:1fr 1fr!important;
+  gap:6px!important;
+}
+@media (orientation:portrait) and (max-width:480px){
+  #editCard .compact-edit-actions.compact-edit-actions--three{
+    grid-template-columns:1fr 1fr!important;
+  }
+  #editCard .compact-edit-actions--three .secondary-button,
+  #editCard .compact-edit-actions--three .primary-button{
+    font-size:.78rem!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.58 */

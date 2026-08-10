@@ -820,18 +820,26 @@
     return saveEditedCurrent({ advance: true });
   }
 
-  async function saveEditedOnly() {
-    const button = $("#saveOnlyBtn");
+  async function saveEditedAndBack() {
+    const button = $("#backToSuggestionBtn");
     if (button) {
       button.disabled = true;
       button.textContent = "Sparar…";
     }
+
     const saved = await saveEditedCurrent({ advance: false });
+
     if (button) {
       button.disabled = false;
-      button.textContent = saved ? "Sparat ✓" : "Spara";
-      if (saved) setTimeout(() => { button.textContent = "Spara"; }, 1200);
+      button.textContent = "Spara & tillbaka";
     }
+
+    if (!saved) return;
+
+    /* Gå tillbaka till samma Vision-arbetsvy/miniatyrlista där plagget öppnades. */
+    showWorkspace();
+    updateBatchStrip();
+    applyCaptureMode();
   }
 
   function addSameGarmentFiles(fileList) {
@@ -1252,11 +1260,7 @@
   $("#sameGarmentInput").addEventListener("change", (event) => addSameGarmentFiles(event.target.files));
   $("#trashCurrentBtn").addEventListener("click", trashCurrent);
   $("#undoTrashBtn").addEventListener("click", undoTrash);
-  $("#backToSuggestionBtn").addEventListener("click", () => {
-    if (editReturnView === "done") { finishBatch(); return; }
-    openReview(currentIndex);
-  });
-  $("#saveOnlyBtn")?.addEventListener("click", saveEditedOnly);
+  $("#backToSuggestionBtn").addEventListener("click", saveEditedAndBack);
   $("#previewBtn").addEventListener("click", saveEditedAndNext);
   $("#newSeriesBtn").addEventListener("click", newSeries);
   $("#publishReadyBtn")?.addEventListener("click", () => {
@@ -1296,4 +1300,4 @@
   updateTextPreviews();
 })();
 
-/* CCC cache stamp: v2.8.56 */
+/* CCC cache stamp: v2.8.58 */
