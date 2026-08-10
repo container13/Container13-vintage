@@ -660,3 +660,12 @@ CCC v2.8.65 – manuell AI låst till rätt plagg (2026-08-10)
 - Analysresultatet öppnas automatiskt endast om samma plagg fortfarande är markerat när analysen blir klar.
 - Byter användaren till nästa bild under tiden visas den bildens egen manuella status och `Analysera med AI`; den startar inte AI automatiskt.
 - Den gemensamma AI-knappens text/disabled-läge uppdateras endast för aktuellt valt plagg.
+
+CCC v2.8.66 – manuellt AI-resultat visas direkt (2026-08-10)
+- Grundbrist: `Analysera med AI` startades i redigeringsvyn men resultatet försökte öppna separat förslagsvy; AI-fel skrevs dessutom till ett message-element som den kompakta mobil-CSS:en döljer.
+- Manuell AI stannar nu i redigeringsvyn.
+- När analysen blir klar fyller AI endast tomma formulärfält; värden användaren redan skrivit bevaras.
+- Statusraden vid plagget visar `AI-förslag klart – ändra det du vill`.
+- AI-knappen döljs när resultatet är klart.
+- Vid AI-fel visas feltexten i samma synliga statusrad i stället för i det dolda message-elementet.
+- Per-item-race-fixen från v2.8.65 är kvar: resultatet påverkar endast plagget som faktiskt analyserades.
