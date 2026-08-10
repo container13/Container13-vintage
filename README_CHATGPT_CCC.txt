@@ -756,3 +756,12 @@ CCC v2.8.78 – tajtare motivbeskärning + pinch-zoom + knappfix (2026-08-10)
 - `Återställ förslag` räknar fram CCC:s motivförslag igen.
 - Beskärningsvyn får intern scroll vid små skärmar och `Godkänn beskärning` har egen luft under bildytan så den inte hamnar bakom previewn.
 - Originalbilden förblir orörd; WebP skapas först efter användarens val.
+
+CCC v2.8.79 – balanserat motivförslag + stabil portrait-layout (2026-08-10)
+- v2.8.78 beskärde för aggressivt. Motivklustret är nu något större, fler ytterkanter behålls och säkerhetsmarginalen runt plagget ökas.
+- Zoomförstärkningen sänks och maxzoom för automatiskt förslag begränsas till 2.55.
+- Målet är hela plagget med lagom luft, inte extrem närbild.
+- Portrait-beskärningsvyn använder vanligt vertikalt dokumentflöde i stället för grid, så kontroller och knappar aldrig kan hamna bakom previewn.
+- Previewn begränsas till högst ca 46 % av viewport-höjden och behåller kvadratisk form.
+- `Godkänn beskärning`, `Behåll original`, `Återställ förslag` och zoomkontrollen ligger alltid efter bildytan och kan nås via intern scroll vid behov.
+- Pinch-zoom och drag från v2.8.78 finns kvar.
