@@ -6,6 +6,7 @@ const $=(s)=>document.querySelector(s);
 const DB_NAME="ccc-local-workspace", DB_VERSION=3, STORE_NAME="images", FILE_STORE="vision-files";
 let items=[],activeIndex=0,objectUrls=[];
 let cropImage=null,cropState=null,pointer=null;
+let activeItemId=null;
 const decodedImageCache=new Map();
 const MAX_DECODED_CACHE=3;
 
@@ -175,16 +176,19 @@ function setSwipeTransforms(offset=0,animate=false){
 }
 function syncSwipeNeighbors(){
   if(!items.length)return;
-  const current=items[activeIndex];
-  const currentSrc=current?.fullUrl||current?.thumbUrl||"";
-  $("#detailImage").src=currentSrc;
+  syncActiveIndexFromId();
+  const current=activeItem();
+  if(!current)return;
+  if(!current.fullUrl)current.fullUrl=current.thumbUrl||url(current.publishBlob||current.originalBlob||current.thumbnailBlob);
+  $("#detailImage").src=current.fullUrl;
   $("#detailPrevImage").src=itemImageSrc(activeIndex-1);
   $("#detailNextImage").src=itemImageSrc(activeIndex+1);
   setSwipeTransforms(0,false);
   preloadNeighbors(activeIndex);
 }
 function updateDetailCopy(){
-  const item=items[activeIndex];
+  syncActiveIndexFromId();
+  const item=activeItem();
   if(!item)return;
   $("#detailTitle").textContent=title(item,activeIndex);
   $("#detailMeta").textContent=[item.brand,item.size&&`Storlek ${item.size}`,item.price&&`${item.price} kr`].filter(Boolean).join(" · ");
@@ -194,6 +198,19 @@ function updateDetailCopy(){
 function itemIndexById(itemId){
   if(!itemId)return -1;
   return items.findIndex(item=>item?.id===itemId);
+}
+function activeItem(){
+  if(!items.length)return null;
+  if(activeItemId){
+    const byId=items.find(item=>item?.id===activeItemId);
+    if(byId)return byId;
+  }
+  return items[activeIndex]||null;
+}
+function syncActiveIndexFromId(){
+  if(!activeItemId)return;
+  const index=itemIndexById(activeItemId);
+  if(index>=0)activeIndex=index;
 }
 function openDetailById(itemId){
   const index=itemIndexById(itemId);
@@ -211,16 +228,18 @@ function openDetail(index){
   }
   swipeGesture=null;
   swipeAnimating=false;
+
   activeIndex=normalizedIndex(index);
   const item=items[activeIndex];
+  activeItemId=item?.id||null;
+  if(!item)return;
   if(!item.fullUrl)item.fullUrl=item.thumbUrl||url(item.publishBlob||item.originalBlob||item.thumbnailBlob);
 
-  /* Visa detaljvyn först. När den var hidden var swipeArea ~0 px bred,
-     vilket kunde placera nästa bild ovanpå den valda trots rätt item/text. */
   $("#detailImage").src=item.fullUrl;
   updateDetailCopy();
   show("detailView");
   requestAnimationFrame(()=>{
+    syncActiveIndexFromId();
     syncSwipeNeighbors();
     requestAnimationFrame(()=>setSwipeTransforms(0,false));
   });
@@ -302,8 +321,12 @@ function finishSwipe(e,cancelled=false){
   swipeCommitTimer=window.setTimeout(()=>{
     swipeCommitTimer=null;
     const resolvedIndex=itemIndexById(targetItemId);
-    if(resolvedIndex>=0)activeIndex=resolvedIndex;
-    const item=items[activeIndex];
+    if(resolvedIndex>=0){
+      activeIndex=resolvedIndex;
+      activeItemId=targetItemId;
+    }
+    const item=activeItem();
+    if(!item)return;
     if(!item.fullUrl)item.fullUrl=item.thumbUrl||url(item.publishBlob||item.originalBlob||item.thumbnailBlob);
     $("#detailImage").src=item.fullUrl;
     updateDetailCopy();
@@ -337,6 +360,7 @@ $("#detailBack").addEventListener("click",async()=>{
   $("#swipeArea")?.classList.remove("is-swiping");
   setSwipeTransforms(0,false);
   await renderGrid();
+  activeItemId=null;
   show("gridView");
 });
 
@@ -388,7 +412,7 @@ function smartCropSuggestion(image){
   const sideOffset=normalizedCenterX-.5;
   const absSideOffset=Math.abs(sideOffset);
   if(absSideOffset>.07){
-    const shift=Math.min(box*.13,(absSideOffset-.065)*box*.72+box*.03);
+    const shift=Math.min(box*.11,(absSideOffset-.065)*box*.64+box*.028);
     if(sideOffset<0){
       minX=Math.max(0,minX-shift);
       maxX=Math.max(minX+1,maxX-shift*.62);
@@ -398,19 +422,24 @@ function smartCropSuggestion(image){
     }
   }
 
+  const sleeveSafety=Math.max(2,(maxX-minX)*.035);
+  minX=Math.max(0,minX-sleeveSafety);
+  maxX=Math.min(c.width,maxX+sleeveSafety);
   const finalBox=Math.max(12,Math.max(maxX-minX,maxY-minY));
   const subjectX=((minX+maxX)/2)/c.width*image.naturalWidth,subjectY=((minY+maxY)/2)/c.height*image.naturalHeight;
   const subjectSize=finalBox/Math.min(c.width,c.height)*Math.min(image.naturalWidth,image.naturalHeight);
   const baseCrop=Math.min(image.naturalWidth,image.naturalHeight);
   const rawZoom=baseCrop/Math.max(1,subjectSize);
   // Balanced baseline: enough scale to remove surrounding clutter, while side-shift protects sleeves.
-  const zoom=Math.max(1,Math.min(2.08,rawZoom*.99));
+  const zoom=Math.max(1,Math.min(1.96,rawZoom*.965));
   const canvas=$("#cropCanvas"),base=Math.max(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight),scale=base*zoom;
   const x=(image.naturalWidth/2-subjectX)*scale,y=(image.naturalHeight/2-subjectY)*scale;
   return {zoom,x,y};
 }
 async function openCrop(){
-  const item=items[activeIndex];
+  syncActiveIndexFromId();
+  const item=activeItem();
+  if(!item)return;
   if(!item.fullUrl)item.fullUrl=item.thumbUrl||url(item.originalBlob||item.thumbnailBlob);
   cropImage=await loadImage(item.fullUrl);
   if(item.cropData){cropState={...item.cropData};}
@@ -436,7 +465,7 @@ async function createOriginalWebP(item){
 }
 $("#cropBtn").addEventListener("click",openCrop);
 $("#keepOriginalBtn").addEventListener("click",async()=>{
-  const item=items[activeIndex];
+  const item=activeItem();
   if(!item)return;
   const button=$("#keepOriginalBtn"),old=button.textContent;
   button.disabled=true;button.textContent="Optimerar…";
@@ -462,8 +491,9 @@ $("#cropBack").addEventListener("click",async()=>{
   cropState=null;
   pointer=null;
   await renderGrid();
+  activeItemId=null;
   show("gridView");
-});$("#cropZoom").addEventListener("input",e=>{cropState.zoom=Number(e.target.value)||1;drawCrop();});$("#cropReset").addEventListener("click",()=>{const suggestion=items[activeIndex]?.cropSuggestion||smartCropSuggestion(cropImage);cropState={...suggestion};$("#cropZoom").value=String(cropState.zoom);drawCrop();});
+});$("#cropZoom").addEventListener("input",e=>{cropState.zoom=Number(e.target.value)||1;drawCrop();});$("#cropReset").addEventListener("click",()=>{const suggestion=activeItem()?.cropSuggestion||smartCropSuggestion(cropImage);cropState={...suggestion};$("#cropZoom").value=String(cropState.zoom);drawCrop();});
 const cropPointers=new Map();
 let pinchStart=null;
 
@@ -530,9 +560,9 @@ function endCropPointer(e){
   pinchStart=null;
 }
 ["pointerup","pointercancel","lostpointercapture"].forEach(n=>$("#cropCanvas").addEventListener(n,endCropPointer));
-$("#cropDone").addEventListener("click",async()=>{const item=items[activeIndex],g=geometry();if(!item||!g)return;const sx=Math.max(0,((g.w-g.c.width)/2-cropState.x)/g.scale),sy=Math.max(0,((g.h-g.c.height)/2-cropState.y)/g.scale),size=Math.min(cropImage.naturalWidth-sx,cropImage.naturalHeight-sy,g.c.width/g.scale),outSize=Math.max(1,Math.min(1600,Math.round(size))),out=document.createElement("canvas");out.width=out.height=outSize;out.getContext("2d",{alpha:false}).drawImage(cropImage,sx,sy,size,size,0,0,outSize,outSize);const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));item.publishBlob=blob;item.cropData={...cropState};item.imageProcessingState="webp-cropped";await put(persistenceRecord({...item,publishBlob:blob,cropData:item.cropData,imageProcessingState:item.imageProcessingState}));if(item.fullUrl){URL.revokeObjectURL(item.fullUrl);item.fullUrl=url(blob);}openDetail(activeIndex);});
+$("#cropDone").addEventListener("click",async()=>{const item=activeItem(),g=geometry();if(!item||!g)return;const sx=Math.max(0,((g.w-g.c.width)/2-cropState.x)/g.scale),sy=Math.max(0,((g.h-g.c.height)/2-cropState.y)/g.scale),size=Math.min(cropImage.naturalWidth-sx,cropImage.naturalHeight-sy,g.c.width/g.scale),outSize=Math.max(1,Math.min(1600,Math.round(size))),out=document.createElement("canvas");out.width=out.height=outSize;out.getContext("2d",{alpha:false}).drawImage(cropImage,sx,sy,size,size,0,0,outSize,outSize);const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));item.publishBlob=blob;item.cropData={...cropState};item.imageProcessingState="webp-cropped";await put(persistenceRecord({...item,publishBlob:blob,cropData:item.cropData,imageProcessingState:item.imageProcessingState}));if(item.fullUrl){URL.revokeObjectURL(item.fullUrl);item.fullUrl=url(blob);}openDetail(activeIndex);});
 
-$("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=items[activeIndex].publishBlob?"Nästa steg kopplar den här WebP-bilden till Container13.":"Beskär bilden först så skapas publicerings-WebP lokalt.";if(!items[activeIndex].publishBlob)openCrop();});
+$("#publishBtn").addEventListener("click",()=>{const item=activeItem();if(!item)return;$("#publishStatus").textContent=item.publishBlob?"Nästa steg kopplar den här WebP-bilden till Container13.":"Beskär bilden först så skapas publicerings-WebP lokalt.";if(!item.publishBlob)openCrop();});
 
 (async()=>{try{
   let explicit=(await getAll()).filter(r=>r.readyToPublish!==false);
@@ -558,4 +588,4 @@ $("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=i
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-/* CCC cache stamp: v2.8.87 */
+/* CCC cache stamp: v2.8.88 */
