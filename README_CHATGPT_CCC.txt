@@ -529,3 +529,12 @@ CCC v2.8.49 – faktisk grundorsak för Vision-loggan i portrait (2026-08-10)
 - Borttaget ur vision.css: 4 deklarationer.
 - `--ccc-header-height` får nu endast definieras i `ccc-core/core.css`; moduler får bara läsa variabeln.
 - Detta gör headerhöjd, PWA safe-area och loggposition till verklig single-source.
+
+CCC v2.8.50 – förenklad Vision-arbetsvy (2026-08-10)
+- När minst ett plagg finns döljs startens tre stora actionkort i arbetsläget.
+- Aktiv serie visar i stället kompakt antal/markering samt `+ Fota plagg` och `+ Välj bilder`.
+- Miniatyrremsan är huvudnavigation mellan plagg.
+- Hjälptexten kortad till `Välj ett plagg`.
+- `Komplettera markerat plagg` tas bort från huvudytan; komplettering hör till det valda plaggets granskningsflöde.
+- `Visa förslag` behålls som primär handling för markerat/klart plagg.
+- Local-first-notisen behålls diskret längst ned.
