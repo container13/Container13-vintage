@@ -185,9 +185,13 @@
       file,
       previewUrl: fileUrl(file),
       originalFileKey: null,
+      originalFileStored: false,
+      originalFileSavePromise: null,
       extraFiles: [],
       extraUrls: [],
       extraFileKeys: [],
+      extraFileStored: [],
+      extraFileSavePromises: [],
       demoKey: demoKeys[index % demoKeys.length],
       visionReady: false,
       visionResult: null,
@@ -200,10 +204,20 @@
       cropData: null
     };
     item.originalFileKey = `${item.id}:main`;
-    putVisionSourceFile(item.originalFileKey, file).catch((error) => {
-      const detail = storageErrorDetails(error);
-      console.error("[CCC Vision] Originalbild kunde inte förlagras", detail, error);
-    });
+    item.originalFileSavePromise = putVisionSourceFile(item.originalFileKey, file)
+      .then(() => {
+        item.originalFileStored = true;
+        item.originalFileSavePromise = null;
+      })
+      .catch((error) => {
+        item.originalFileStored = false;
+        item.originalFileSavePromise = null;
+        const detail = storageErrorDetails(error);
+        console.error("[CCC Vision] Originalbild kunde inte förlagras", detail, error);
+        throw error;
+      });
+    /* Förlagringen får arbeta i bakgrunden; ensureItemSourceFiles avvaktar samma promise vid behov. */
+    item.originalFileSavePromise.catch(() => {});
     startSilentAnalysis(item);
     return item;
   }
@@ -656,15 +670,55 @@
 
   async function ensureItemSourceFiles(item) {
     if (!item?.file) return;
+
     item.originalFileKey ||= `${item.id}:main`;
-    await putVisionSourceFile(item.originalFileKey, item.file);
+
+    if (!item.originalFileStored) {
+      if (item.originalFileSavePromise) {
+        await item.originalFileSavePromise;
+      } else {
+        item.originalFileSavePromise = putVisionSourceFile(item.originalFileKey, item.file)
+          .then(() => {
+            item.originalFileStored = true;
+            item.originalFileSavePromise = null;
+          })
+          .catch((error) => {
+            item.originalFileStored = false;
+            item.originalFileSavePromise = null;
+            throw error;
+          });
+        await item.originalFileSavePromise;
+      }
+    }
 
     item.extraFileKeys ||= [];
+    item.extraFileStored ||= [];
+    item.extraFileSavePromises ||= [];
+
     for (let index = 0; index < (item.extraFiles || []).length; index += 1) {
+      if (item.extraFileStored[index]) continue;
+
       const file = item.extraFiles[index];
       const key = item.extraFileKeys[index] || `${item.id}:extra:${index + 1}`;
       item.extraFileKeys[index] = key;
-      await putVisionSourceFile(key, file);
+
+      if (item.extraFileSavePromises[index]) {
+        await item.extraFileSavePromises[index];
+        continue;
+      }
+
+      item.extraFileSavePromises[index] = putVisionSourceFile(key, file)
+        .then(() => {
+          item.extraFileStored[index] = true;
+          item.extraFileSavePromises[index] = null;
+        })
+        .catch((error) => {
+          item.extraFileStored[index] = false;
+          item.extraFileSavePromises[index] = null;
+          throw error;
+        });
+
+      await item.extraFileSavePromises[index];
     }
   }
 
@@ -725,7 +779,8 @@
   async function saveVisionSessionLocally() {
     if (!batchItems.length) return false;
 
-    /* Originalfiler sparas separat en gång. Sessionen innehåller bara referenser/metadata. */
+    /* Vänta bara in original som ännu inte hunnit förlagras.
+       Redan sparade original skrivs aldrig om när sessionsmetadata uppdateras. */
     for (const item of batchItems) {
       await ensureItemSourceFiles(item);
     }
@@ -824,9 +879,13 @@
         file,
         previewUrl: fileUrl(file),
         originalFileKey: originalKey,
+        originalFileStored: true,
+        originalFileSavePromise: null,
         extraFiles,
         extraUrls: extraFiles.map(fileUrl),
         extraFileKeys: extraKeys,
+        extraFileStored: extraFiles.map(() => true),
+        extraFileSavePromises: extraFiles.map(() => null),
         demoKey: saved.demoKey || "arsenal",
         visionReady: !!saved.visionReady,
         visionResult: saved.visionResult || null,
@@ -1033,11 +1092,24 @@
       item.extraFiles.push(file);
       item.extraUrls.push(fileUrl(file));
       item.extraFileKeys ||= [];
+      item.extraFileStored ||= [];
+      item.extraFileSavePromises ||= [];
       item.extraFileKeys.push(key);
-      putVisionSourceFile(key, file).catch((error) => {
-        const detail = storageErrorDetails(error);
-        console.error("[CCC Vision] Extra originalbild kunde inte förlagras", detail, error);
-      });
+      const extraIndex = item.extraFiles.length - 1;
+      item.extraFileStored[extraIndex] = false;
+      item.extraFileSavePromises[extraIndex] = putVisionSourceFile(key, file)
+        .then(() => {
+          item.extraFileStored[extraIndex] = true;
+          item.extraFileSavePromises[extraIndex] = null;
+        })
+        .catch((error) => {
+          item.extraFileStored[extraIndex] = false;
+          item.extraFileSavePromises[extraIndex] = null;
+          const detail = storageErrorDetails(error);
+          console.error("[CCC Vision] Extra originalbild kunde inte förlagras", detail, error);
+          throw error;
+        });
+      item.extraFileSavePromises[extraIndex].catch(() => {});
     });
     if (files.length) {
       startSilentAnalysis(item);
@@ -1489,6 +1561,7 @@
     const button = $("#saveSessionBtn");
     if (!batchItems.length || !button) return;
     button.disabled = true;
+    button.removeAttribute("title");
     const originalText = "Spara och fortsätt senare";
     button.textContent = "Sparar lokalt…";
     try {
@@ -1503,7 +1576,8 @@
     } catch (error) {
       const detail = storageErrorDetails(error);
       console.error("[CCC Vision] Kunde inte spara fotosession", detail, error);
-      button.textContent = "Kunde inte spara – försök igen";
+      button.textContent = `Kunde inte spara (${detail.name})`;
+      button.title = detail.message;
       button.disabled = false;
       setMessage(`Lagringsfel: ${detail.name}. ${detail.message}`);
     }
@@ -1579,4 +1653,4 @@
   updateTextPreviews();
 })();
 
-/* CCC cache stamp: v2.8.67 */
+/* CCC cache stamp: v2.8.68 */
