@@ -367,75 +367,239 @@ $("#detailBack").addEventListener("click",async()=>{
 function loadImage(src){return new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=src;});}
 function geometry(){if(!cropImage||!cropState)return null;const c=$("#cropCanvas"),base=Math.max(c.width/cropImage.naturalWidth,c.height/cropImage.naturalHeight),scale=base*cropState.zoom,w=cropImage.naturalWidth*scale,h=cropImage.naturalHeight*scale,lx=Math.max(0,(w-c.width)/2),ly=Math.max(0,(h-c.height)/2);cropState.x=Math.max(-lx,Math.min(lx,cropState.x));cropState.y=Math.max(-ly,Math.min(ly,cropState.y));return{c,scale,w,h};}
 function drawCrop(){const g=geometry();if(!g)return;const ctx=g.c.getContext("2d",{alpha:false});ctx.fillStyle="#111";ctx.fillRect(0,0,g.c.width,g.c.height);ctx.drawImage(cropImage,(g.c.width-g.w)/2+cropState.x,(g.c.height-g.h)/2+cropState.y,g.w,g.h);}
-function smartCropSuggestion(image){
-  // Local, lightweight subject-saliency heuristic. No upload and no permanent edit.
-  const side=144,c=document.createElement("canvas"),ctx=c.getContext("2d",{willReadFrequently:true});
+function difficultImageCropSuggestion(image){
+  /* Crop Engine 2.0
+     Pass A: build a safe garment box.
+     Pass B: trim background while preserving safety margins.
+     Entirely local; no image leaves the device. */
+
+  const side=180;
+  const c=document.createElement("canvas");
+  const ctx=c.getContext("2d",{willReadFrequently:true});
   const ratio=image.naturalWidth/image.naturalHeight;
-  c.width=ratio>=1?side:Math.max(72,Math.round(side*ratio));
-  c.height=ratio>=1?Math.max(72,Math.round(side/ratio)):side;
+  c.width=ratio>=1?side:Math.max(84,Math.round(side*ratio));
+  c.height=ratio>=1?Math.max(84,Math.round(side/ratio)):side;
   ctx.drawImage(image,0,0,c.width,c.height);
-  const {data}=ctx.getImageData(0,0,c.width,c.height), pts=[];
-  let total=0,cx=0,cy=0;
-  for(let y=1;y<c.height-1;y+=2){for(let x=1;x<c.width-1;x+=2){
-    const i=(y*c.width+x)*4,r=data[i],g=data[i+1],b=data[i+2];
-    const max=Math.max(r,g,b),min=Math.min(r,g,b),sat=max-min;
-    const j=(y*c.width+x+1)*4,k=((y+1)*c.width+x)*4;
-    const edge=Math.abs(r-data[j])+Math.abs(g-data[j+1])+Math.abs(b-data[j+2])+Math.abs(r-data[k])+Math.abs(g-data[k+1])+Math.abs(b-data[k+2]);
-    const nx=x/c.width,ny=y/c.height,central=Math.exp(-(((nx-.46)/.34)**2+((ny-.47)/.38)**2));
-    const score=(sat*.72+Math.min(180,edge)*.42)*(.34+.66*central);
-    if(score>42){pts.push([x,y,score]);total+=score;cx+=x*score;cy+=y*score;}
-  }}
-  if(!total||pts.length<20)return {zoom:1,x:0,y:0};
-  cx/=total;cy/=total;
-  // Keep a tighter salient cluster around the weighted subject center.
-  // v2.8.78 deliberately rejects more surrounding page/UI clutter and lets the garment fill more of the crop.
-  const radius=Math.min(c.width,c.height)*.31, near=pts.filter(p=>Math.hypot(p[0]-cx,p[1]-cy)<=radius);
-  const use=near.length>15?near:pts;
 
-  // Trim extreme saliency outliers instead of letting one remote edge enlarge the whole box.
-  const xs=use.map(p=>p[0]).sort((a,b)=>a-b), ys=use.map(p=>p[1]).sort((a,b)=>a-b);
-  const q=(arr,f)=>arr[Math.max(0,Math.min(arr.length-1,Math.floor((arr.length-1)*f)))];
-  let minX=q(xs,.05),maxX=q(xs,.95),minY=q(ys,.04),maxY=q(ys,.96);
+  const {data}=ctx.getImageData(0,0,c.width,c.height);
+  const w=c.width,h=c.height;
 
-  const span=Math.max(maxX-minX,maxY-minY);
-  const pad=.20*span;
-  minX=Math.max(0,minX-pad);maxX=Math.min(c.width,maxX+pad);
-  minY=Math.max(0,minY-pad);maxY=Math.min(c.height,maxY+pad);
+  const px=(x,y)=>{
+    const i=(y*w+x)*4;
+    return [data[i],data[i+1],data[i+2]];
+  };
+  const dist=(a,b)=>Math.abs(a[0]-b[0])+Math.abs(a[1]-b[1])+Math.abs(a[2]-b[2]);
 
-  const box=Math.max(12,Math.max(maxX-minX,maxY-minY));
-  const boxCenterX=(minX+maxX)/2;
-  const normalizedCenterX=boxCenterX/c.width;
+  // Estimate surrounding background from border median.
+  const border=[];
+  for(let x=0;x<w;x+=3){border.push(px(x,1),px(x,h-2));}
+  for(let y=0;y<h;y+=3){border.push(px(1,y),px(w-2,y));}
+  const median=arr=>{
+    const a=[...arr].sort((a,b)=>a-b);
+    return a[Math.floor(a.length/2)]||0;
+  };
+  const bg=[
+    median(border.map(p=>p[0])),
+    median(border.map(p=>p[1])),
+    median(border.map(p=>p[2]))
+  ];
 
-  // Football-shirt sleeve safety:
-  // Move the suggested crop toward the off-centre garment instead of only widening it.
-  // This protects the outer sleeve while trimming more clutter on the opposite side.
-  const sideOffset=normalizedCenterX-.5;
-  const absSideOffset=Math.abs(sideOffset);
-  if(absSideOffset>.07){
-    const shift=Math.min(box*.11,(absSideOffset-.065)*box*.64+box*.028);
-    if(sideOffset<0){
-      minX=Math.max(0,minX-shift);
-      maxX=Math.max(minX+1,maxX-shift*.62);
-    }else{
-      maxX=Math.min(c.width,maxX+shift);
-      minX=Math.min(maxX-1,minX+shift*.62);
+  // Foreground likelihood. Central weighting is deliberately mild:
+  // sleeves and off-centre shirts must survive.
+  const mask=new Uint8Array(w*h);
+  for(let y=1;y<h-1;y++){
+    for(let x=1;x<w-1;x++){
+      const p=px(x,y);
+      const mx=Math.max(...p),mn=Math.min(...p),sat=mx-mn;
+      const bgDist=dist(p,bg);
+      const edge=dist(p,px(x+1,y))+dist(p,px(x,y+1));
+      const nx=x/(w-1)-.5, ny=y/(h-1)-.5;
+      const central=Math.exp(-((nx/.58)**2+(ny/.60)**2));
+      const score=bgDist*.50+sat*.60+Math.min(edge,220)*.31+central*18;
+      if(score>76)mask[y*w+x]=1;
     }
   }
 
-  const sleeveSafety=Math.max(2,(maxX-minX)*.035);
-  minX=Math.max(0,minX-sleeveSafety);
-  maxX=Math.min(c.width,maxX+sleeveSafety);
-  const finalBox=Math.max(12,Math.max(maxX-minX,maxY-minY));
-  const subjectX=((minX+maxX)/2)/c.width*image.naturalWidth,subjectY=((minY+maxY)/2)/c.height*image.naturalHeight;
-  const subjectSize=finalBox/Math.min(c.width,c.height)*Math.min(image.naturalWidth,image.naturalHeight);
+  // Reconnect thin sleeves/edges.
+  const grown=new Uint8Array(w*h);
+  for(let y=2;y<h-2;y++){
+    for(let x=2;x<w-2;x++){
+      let hit=0;
+      for(let dy=-2;dy<=2&&!hit;dy++){
+        for(let dx=-2;dx<=2;dx++){
+          if(mask[(y+dy)*w+x+dx]){hit=1;break;}
+        }
+      }
+      if(hit)grown[y*w+x]=1;
+    }
+  }
+
+  // Connected components; prefer sizeable central-ish component.
+  const seen=new Uint8Array(w*h);
+  const dirs=[[1,0],[-1,0],[0,1],[0,-1]];
+  let best=null;
+
+  for(let y=2;y<h-2;y++){
+    for(let x=2;x<w-2;x++){
+      const seed=y*w+x;
+      if(!grown[seed]||seen[seed])continue;
+      const stack=[seed];
+      seen[seed]=1;
+      let count=0,minX=x,maxX=x,minY=y,maxY=y,sumX=0,sumY=0;
+
+      while(stack.length){
+        const p=stack.pop(),py=Math.floor(p/w),pxv=p-py*w;
+        count++;sumX+=pxv;sumY+=py;
+        minX=Math.min(minX,pxv);maxX=Math.max(maxX,pxv);
+        minY=Math.min(minY,py);maxY=Math.max(maxY,py);
+
+        for(const [dx,dy] of dirs){
+          const xx=pxv+dx,yy=py+dy;
+          if(xx<2||yy<2||xx>=w-2||yy>=h-2)continue;
+          const ni=yy*w+xx;
+          if(grown[ni]&&!seen[ni]){seen[ni]=1;stack.push(ni);}
+        }
+      }
+
+      if(count<34)continue;
+      const cx=sumX/count,cy=sumY/count;
+      const centrePenalty=Math.hypot(cx/w-.5,cy/h-.5);
+      const area=(maxX-minX+1)*(maxY-minY+1);
+      const fill=count/Math.max(1,area);
+      const score=count*(1.25-centrePenalty)*(.78+Math.min(.45,fill));
+      if(!best||score>best.score){
+        best={score,minX,maxX,minY,maxY,cx,cy,count};
+      }
+    }
+  }
+
+  if(!best)return {zoom:1,x:0,y:0};
+
+  /* PASS A — SAFE GARMENT BOX
+     Protect sleeves more than top/bottom. */
+  let minX=best.minX,maxX=best.maxX,minY=best.minY,maxY=best.maxY;
+  const garmentW=Math.max(1,maxX-minX);
+  const garmentH=Math.max(1,maxY-minY);
+
+  const safeX=Math.max(4,garmentW*.105);
+  const safeTop=Math.max(3,garmentH*.065);
+  const safeBottom=Math.max(3,garmentH*.075);
+
+  minX=Math.max(0,minX-safeX);
+  maxX=Math.min(w-1,maxX+safeX);
+  minY=Math.max(0,minY-safeTop);
+  maxY=Math.min(h-1,maxY+safeBottom);
+
+  /* PASS B — BACKGROUND TRIM
+     Work from the safe rectangle, not from a zoom target.
+     We only rebalance/trim spare space while preserving the protected box. */
+  const safeW=Math.max(1,maxX-minX);
+  const safeH=Math.max(1,maxY-minY);
+
+  // Horizontal balance: shift the crop toward the garment instead of widening it.
+  const safeCenterX=(minX+maxX)/2;
+  const frameCenterX=w/2;
+  const offX=(safeCenterX-frameCenterX)/w;
+  const trimShiftX=Math.sign(offX)*Math.min(safeW*.13,Math.abs(offX)*safeW*.72);
+
+  // Vertical optical balance: slightly favour chest/upper body without risking hem.
+  const safeCenterY=(minY+maxY)/2;
+  const frameCenterY=h/2;
+  const offY=(safeCenterY-frameCenterY)/h;
+  const trimShiftY=Math.sign(offY)*Math.min(safeH*.07,Math.abs(offY)*safeH*.38);
+
+  const subjectX=(safeCenterX-trimShiftX*.28)/w*image.naturalWidth;
+  const subjectY=(safeCenterY-trimShiftY*.22)/h*image.naturalHeight;
+
+  // Square must contain the complete protected garment box.
+  // Target fill capped around 86% to retain visible sleeve safety.
+  const protectedW=safeW/w*image.naturalWidth;
+  const protectedH=safeH/h*image.naturalHeight;
+  const needed=Math.max(protectedW,protectedH);
   const baseCrop=Math.min(image.naturalWidth,image.naturalHeight);
-  const rawZoom=baseCrop/Math.max(1,subjectSize);
-  // Balanced baseline: enough scale to remove surrounding clutter, while side-shift protects sleeves.
-  const zoom=Math.max(1,Math.min(1.96,rawZoom*.965));
-  const canvas=$("#cropCanvas"),base=Math.max(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight),scale=base*zoom;
-  const x=(image.naturalWidth/2-subjectX)*scale,y=(image.naturalHeight/2-subjectY)*scale;
+  let zoom=(baseCrop/Math.max(1,needed))*.86;
+  zoom=Math.max(1,Math.min(1.88,zoom));
+
+  const canvas=$("#cropCanvas");
+  const base=Math.max(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight);
+  const scale=base*zoom;
+  let x=(image.naturalWidth/2-subjectX)*scale;
+  let y=(image.naturalHeight/2-subjectY)*scale;
+
+  // Final safety check in crop-space: if detected garment would approach
+  // any edge below ~6%, reduce zoom until the safety floor is restored.
+  const cropSize=canvas.width;
+  const minMargin=cropSize*.06;
+  for(let tries=0;tries<5;tries++){
+    const currentScale=base*zoom;
+    const gx1=(minX/w*image.naturalWidth)*currentScale+(cropSize-image.naturalWidth*currentScale)/2+x;
+    const gx2=(maxX/w*image.naturalWidth)*currentScale+(cropSize-image.naturalWidth*currentScale)/2+x;
+    const gy1=(minY/h*image.naturalHeight)*currentScale+(cropSize-image.naturalHeight*currentScale)/2+y;
+    const gy2=(maxY/h*image.naturalHeight)*currentScale+(cropSize-image.naturalHeight*currentScale)/2+y;
+
+    if(gx1>=minMargin && cropSize-gx2>=minMargin &&
+       gy1>=minMargin && cropSize-gy2>=minMargin)break;
+
+    zoom=Math.max(1,zoom*.94);
+    const ns=base*zoom;
+    x=(image.naturalWidth/2-subjectX)*ns;
+    y=(image.naturalHeight/2-subjectY)*ns;
+  }
+
   return {zoom,x,y};
 }
+function imageNeedsMeaningfulCrop(image){
+  const c=document.createElement("canvas");
+  const ctx=c.getContext("2d",{willReadFrequently:true});
+  const maxSide=96,ratio=image.naturalWidth/image.naturalHeight;
+  c.width=ratio>=1?maxSide:Math.max(48,Math.round(maxSide*ratio));
+  c.height=ratio>=1?Math.max(48,Math.round(maxSide/ratio)):maxSide;
+  ctx.drawImage(image,0,0,c.width,c.height);
+
+  const {data}=ctx.getImageData(0,0,c.width,c.height);
+  let borderEdge=0,borderCount=0,interiorEdge=0,interiorCount=0;
+
+  const rgb=(x,y)=>{
+    const i=(y*c.width+x)*4;
+    return [data[i],data[i+1],data[i+2]];
+  };
+  const diff=(a,b)=>Math.abs(a[0]-b[0])+Math.abs(a[1]-b[1])+Math.abs(a[2]-b[2]);
+
+  for(let y=1;y<c.height-1;y+=2){
+    for(let x=1;x<c.width-1;x+=2){
+      const p=rgb(x,y),edge=diff(p,rgb(x+1,y))+diff(p,rgb(x,y+1));
+      const borderZone=x<c.width*.16||x>c.width*.84||y<c.height*.12||y>c.height*.88;
+      if(borderZone){borderEdge+=edge;borderCount++;}
+      else{interiorEdge+=edge;interiorCount++;}
+    }
+  }
+
+  const b=borderEdge/Math.max(1,borderCount);
+  const i=interiorEdge/Math.max(1,interiorCount);
+
+  /* A clean garment photo normally has quieter outer margins than screenshots,
+     collages and web pages. Only invoke stronger auto-crop when the borders
+     contain substantial competing structure. */
+  return b>i*.82 && b>42;
+}
+
+function smartCropSuggestion(image){
+  if(!imageNeedsMeaningfulCrop(image)){
+    /* Normal CCC camera photo: leave almost untouched.
+       Small neutral zoom only compensates for square preview geometry. */
+    return {zoom:1,x:0,y:0};
+  }
+
+  const suggestion=difficultImageCropSuggestion(image);
+
+  /* Extreme/reference images: CCC proposes, user finishes.
+     Hard safety rails stop automatic crop from becoming destructive. */
+  suggestion.zoom=Math.max(1,Math.min(1.88,suggestion.zoom||1));
+  suggestion.x*=.96;
+  suggestion.y*=.96;
+  return suggestion;
+}
+
 async function openCrop(){
   syncActiveIndexFromId();
   const item=activeItem();
@@ -449,6 +613,12 @@ async function openCrop(){
   }
   $("#cropZoom").value=String(cropState.zoom);
   $("#cropOriginalPreview").src=item.thumbUrl||item.fullUrl;
+  const help=$("#cropView .crop-help");
+  if(help){
+    help.textContent=imageNeedsMeaningfulCrop(cropImage)
+      ?"Svår bild: CCC skyddar först hela plagget och trimmar sedan bakgrunden. Dra eller nyp vid behov."
+      :"Bilden ser redan bra ut. CCC lämnar utsnittet i princip orört.";
+  }
   drawCrop();show("cropView");
 }
 async function createOriginalWebP(item){
@@ -588,4 +758,4 @@ $("#publishBtn").addEventListener("click",()=>{const item=activeItem();if(!item)
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-/* CCC cache stamp: v2.8.88 */
+/* CCC cache stamp: v2.8.90 */
