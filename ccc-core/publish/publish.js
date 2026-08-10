@@ -6,6 +6,8 @@ const $=(s)=>document.querySelector(s);
 const DB_NAME="ccc-local-workspace", DB_VERSION=3, STORE_NAME="images", FILE_STORE="vision-files";
 let items=[],activeIndex=0,objectUrls=[];
 let cropImage=null,cropState=null,pointer=null;
+const decodedImageCache=new Map();
+const MAX_DECODED_CACHE=3;
 
 function openDb(){return new Promise((resolve,reject)=>{const r=indexedDB.open(DB_NAME,DB_VERSION);r.onupgradeneeded=()=>{const db=r.result;if(!db.objectStoreNames.contains(STORE_NAME)){const s=db.createObjectStore(STORE_NAME,{keyPath:"id"});s.createIndex("createdAt","createdAt");}if(!db.objectStoreNames.contains("sessions"))db.createObjectStore("sessions",{keyPath:"id"});if(!db.objectStoreNames.contains(FILE_STORE)){const f=db.createObjectStore(FILE_STORE,{keyPath:"id"});f.createIndex("createdAt","createdAt");}};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);r.onblocked=()=>reject(new Error("IndexedDB-uppgraderingen blockerades av en annan öppen CCC-flik."));});}
 async function getAll(){const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(STORE_NAME,"readonly"),r=tx.objectStore(STORE_NAME).getAll();r.onsuccess=()=>resolve(r.result||[]);r.onerror=()=>reject(r.error);tx.oncomplete=()=>db.close();});}
@@ -49,6 +51,45 @@ async function previewSrc(record){
   const blob=record.thumbnailBlob||record.originalBlob||record.publishBlob;
   if(!blob)return "";
   try{return await dataUrl(blob);}catch(error){console.warn("[CCC Publicera] Data-URL misslyckades, använder blob-URL",error);return url(blob);}
+}
+function touchDecodedCache(key,image){
+  if(!key||!image)return image;
+  if(decodedImageCache.has(key))decodedImageCache.delete(key);
+  decodedImageCache.set(key,image);
+  while(decodedImageCache.size>MAX_DECODED_CACHE){
+    const oldest=decodedImageCache.keys().next().value;
+    decodedImageCache.delete(oldest);
+  }
+  return image;
+}
+async function preloadItem(index){
+  if(!items.length)return null;
+  const normalized=(index+items.length)%items.length;
+  const item=items[normalized];
+  if(!item)return null;
+  const key=item.id||String(normalized);
+  if(decodedImageCache.has(key)){
+    const cached=decodedImageCache.get(key);
+    touchDecodedCache(key,cached);
+    return cached;
+  }
+  const src=item.fullUrl||item.thumbUrl||await previewSrc(item);
+  if(!src)return null;
+  return new Promise(resolve=>{
+    const image=new Image();
+    image.decoding="async";
+    image.onload=()=>resolve(touchDecodedCache(key,image));
+    image.onerror=()=>resolve(null);
+    image.src=src;
+  });
+}
+function preloadNeighbors(index){
+  if(!items.length)return;
+  preloadItem(index).catch(()=>{});
+  if(items.length>1){
+    preloadItem(index-1).catch(()=>{});
+    preloadItem(index+1).catch(()=>{});
+  }
 }
 function title(item,index){return item.title?.trim()||item.fields?.title?.trim()||`Plagg ${index+1}`;}
 function resetViewScroll(view){
@@ -110,13 +151,14 @@ async function renderGrid(){
     grid.append(b);
   }
 }
-function openDetail(index){if(!items.length)return;activeIndex=(index+items.length)%items.length;const item=items[activeIndex];if(!item.fullUrl)item.fullUrl=item.thumbUrl||url(item.publishBlob||item.originalBlob||item.thumbnailBlob);$("#detailImage").src=item.fullUrl;$("#detailTitle").textContent=title(item,activeIndex);$("#detailMeta").textContent=[item.brand,item.size&&`Storlek ${item.size}`,item.price&&`${item.price} kr`].filter(Boolean).join(" · ");$("#detailCounter").textContent=`${activeIndex+1} av ${items.length}`;$("#publishStatus").textContent=item.publishBlob?"Bilden är beskuren och klar som WebP.":"";show("detailView");}
+function openDetail(index){if(!items.length)return;activeIndex=(index+items.length)%items.length;const item=items[activeIndex];if(!item.fullUrl)item.fullUrl=item.thumbUrl||url(item.publishBlob||item.originalBlob||item.thumbnailBlob);$("#detailImage").src=item.fullUrl;$("#detailTitle").textContent=title(item,activeIndex);$("#detailMeta").textContent=[item.brand,item.size&&`Storlek ${item.size}`,item.price&&`${item.price} kr`].filter(Boolean).join(" · ");$("#detailCounter").textContent=`${activeIndex+1} av ${items.length}`;$("#publishStatus").textContent=item.publishBlob?"Bilden är beskuren och klar som WebP.":"";preloadNeighbors(activeIndex);show("detailView");}
 function next(delta){openDetail(activeIndex+delta);}
 let touchStart=null;
 $("#swipeArea").addEventListener("pointerdown",e=>{touchStart={x:e.clientX,y:e.clientY};});
 $("#swipeArea").addEventListener("pointerup",e=>{if(!touchStart)return;const dx=e.clientX-touchStart.x,dy=e.clientY-touchStart.y;touchStart=null;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.25)next(dx<0?1:-1);});
 $("#draftsBtn").addEventListener("click",async()=>{
   await renderGrid();
+  preloadNeighbors(0);
   show("gridView");
   requestAnimationFrame(()=>$("#gridBack")?.focus({preventScroll:true}));
 });
@@ -129,134 +171,47 @@ function loadImage(src){return new Promise((resolve,reject)=>{const i=new Image(
 function geometry(){if(!cropImage||!cropState)return null;const c=$("#cropCanvas"),base=Math.max(c.width/cropImage.naturalWidth,c.height/cropImage.naturalHeight),scale=base*cropState.zoom,w=cropImage.naturalWidth*scale,h=cropImage.naturalHeight*scale,lx=Math.max(0,(w-c.width)/2),ly=Math.max(0,(h-c.height)/2);cropState.x=Math.max(-lx,Math.min(lx,cropState.x));cropState.y=Math.max(-ly,Math.min(ly,cropState.y));return{c,scale,w,h};}
 function drawCrop(){const g=geometry();if(!g)return;const ctx=g.c.getContext("2d",{alpha:false});ctx.fillStyle="#111";ctx.fillRect(0,0,g.c.width,g.c.height);ctx.drawImage(cropImage,(g.c.width-g.w)/2+cropState.x,(g.c.height-g.h)/2+cropState.y,g.w,g.h);}
 function smartCropSuggestion(image){
-  /* Local contour-oriented subject crop.
-     Goal: keep the whole garment silhouette, then add safety margin.
-     No upload, no permanent edit. */
-  const maxSide=180;
-  const sample=document.createElement("canvas");
-  const sctx=sample.getContext("2d",{willReadFrequently:true});
+  // Local, lightweight subject-saliency heuristic. No upload and no permanent edit.
+  const side=144,c=document.createElement("canvas"),ctx=c.getContext("2d",{willReadFrequently:true});
   const ratio=image.naturalWidth/image.naturalHeight;
-  sample.width=ratio>=1?maxSide:Math.max(84,Math.round(maxSide*ratio));
-  sample.height=ratio>=1?Math.max(84,Math.round(maxSide/ratio)):maxSide;
-  sctx.drawImage(image,0,0,sample.width,sample.height);
-
-  const {data}=sctx.getImageData(0,0,sample.width,sample.height);
-  const w=sample.width,h=sample.height;
-
-  const border=[];
-  const pushPixel=(x,y)=>{
-    const i=(y*w+x)*4;
-    border.push([data[i],data[i+1],data[i+2]]);
-  };
-  for(let x=0;x<w;x+=3){pushPixel(x,1);pushPixel(x,h-2);}
-  for(let y=0;y<h;y+=3){pushPixel(1,y);pushPixel(w-2,y);}
-  const median=(arr)=>{
-    const a=[...arr].sort((a,b)=>a-b);
-    return a[Math.floor(a.length/2)]||0;
-  };
-  const bg=[median(border.map(p=>p[0])),median(border.map(p=>p[1])),median(border.map(p=>p[2]))];
-
-  const mask=new Uint8Array(w*h);
-  const scoreAt=(x,y)=>{
-    const i=(y*w+x)*4,r=data[i],g=data[i+1],b=data[i+2];
+  c.width=ratio>=1?side:Math.max(72,Math.round(side*ratio));
+  c.height=ratio>=1?Math.max(72,Math.round(side/ratio)):side;
+  ctx.drawImage(image,0,0,c.width,c.height);
+  const {data}=ctx.getImageData(0,0,c.width,c.height), pts=[];
+  let total=0,cx=0,cy=0;
+  for(let y=1;y<c.height-1;y+=2){for(let x=1;x<c.width-1;x+=2){
+    const i=(y*c.width+x)*4,r=data[i],g=data[i+1],b=data[i+2];
     const max=Math.max(r,g,b),min=Math.min(r,g,b),sat=max-min;
-    const bgDist=Math.abs(r-bg[0])+Math.abs(g-bg[1])+Math.abs(b-bg[2]);
-    const xr=Math.min(w-1,x+1),yb=Math.min(h-1,y+1);
-    const j=(y*w+xr)*4,k=(yb*w+x)*4;
-    const edge=Math.abs(r-data[j])+Math.abs(g-data[j+1])+Math.abs(b-data[j+2])
-              +Math.abs(r-data[k])+Math.abs(g-data[k+1])+Math.abs(b-data[k+2]);
-    const nx=(x/(w-1))-.5,ny=(y/(h-1))-.48;
-    const central=Math.exp(-((nx/.46)**2+(ny/.50)**2));
-    return bgDist*.48 + sat*.70 + Math.min(edge,220)*.34 + central*34;
-  };
+    const j=(y*c.width+x+1)*4,k=((y+1)*c.width+x)*4;
+    const edge=Math.abs(r-data[j])+Math.abs(g-data[j+1])+Math.abs(b-data[j+2])+Math.abs(r-data[k])+Math.abs(g-data[k+1])+Math.abs(b-data[k+2]);
+    const nx=x/c.width,ny=y/c.height,central=Math.exp(-(((nx-.46)/.34)**2+((ny-.47)/.38)**2));
+    const score=(sat*.72+Math.min(180,edge)*.42)*(.34+.66*central);
+    if(score>42){pts.push([x,y,score]);total+=score;cx+=x*score;cy+=y*score;}
+  }}
+  if(!total||pts.length<20)return {zoom:1,x:0,y:0};
+  cx/=total;cy/=total;
+  // Keep a tighter salient cluster around the weighted subject center.
+  // v2.8.78 deliberately rejects more surrounding page/UI clutter and lets the garment fill more of the crop.
+  const radius=Math.min(c.width,c.height)*.30, near=pts.filter(p=>Math.hypot(p[0]-cx,p[1]-cy)<=radius);
+  const use=near.length>15?near:pts;
 
-  for(let y=1;y<h-1;y++){
-    for(let x=1;x<w-1;x++){
-      if(scoreAt(x,y)>82) mask[y*w+x]=1;
-    }
-  }
+  // Trim extreme saliency outliers instead of letting one remote edge enlarge the whole box.
+  const xs=use.map(p=>p[0]).sort((a,b)=>a-b), ys=use.map(p=>p[1]).sort((a,b)=>a-b);
+  const q=(arr,f)=>arr[Math.max(0,Math.min(arr.length-1,Math.floor((arr.length-1)*f)))];
+  let minX=q(xs,.05),maxX=q(xs,.95),minY=q(ys,.04),maxY=q(ys,.96);
 
-  // Reconnect sleeves and narrow garment edges before choosing the subject component.
-  const expanded=new Uint8Array(w*h);
-  for(let y=2;y<h-2;y++){
-    for(let x=2;x<w-2;x++){
-      let hit=0;
-      for(let dy=-2;dy<=2&&!hit;dy++){
-        for(let dx=-2;dx<=2;dx++){
-          if(mask[(y+dy)*w+x+dx]){hit=1;break;}
-        }
-      }
-      if(hit) expanded[y*w+x]=1;
-    }
-  }
+  const span=Math.max(maxX-minX,maxY-minY);
+  const pad=.14*span;
+  minX=Math.max(0,minX-pad);maxX=Math.min(c.width,maxX+pad);
+  minY=Math.max(0,minY-pad);maxY=Math.min(c.height,maxY+pad);
 
-  const seen=new Uint8Array(w*h);
-  let best=null;
-  const dirs=[[1,0],[-1,0],[0,1],[0,-1]];
-
-  for(let y=2;y<h-2;y++){
-    for(let x=2;x<w-2;x++){
-      const idx=y*w+x;
-      if(!expanded[idx]||seen[idx])continue;
-
-      const stack=[idx];
-      seen[idx]=1;
-      let count=0,minX=x,maxX=x,minY=y,maxY=y,sumX=0,sumY=0;
-
-      while(stack.length){
-        const p=stack.pop(),py=Math.floor(p/w),px=p-py*w;
-        count++;sumX+=px;sumY+=py;
-        minX=Math.min(minX,px);maxX=Math.max(maxX,px);
-        minY=Math.min(minY,py);maxY=Math.max(maxY,py);
-
-        for(const [dx,dy] of dirs){
-          const nx=px+dx,ny=py+dy;
-          if(nx<2||ny<2||nx>=w-2||ny>=h-2)continue;
-          const ni=ny*w+nx;
-          if(expanded[ni]&&!seen[ni]){seen[ni]=1;stack.push(ni);}
-        }
-      }
-
-      if(count<30)continue;
-      const cx=sumX/count,cy=sumY/count;
-      const centerDistance=Math.hypot((cx/w)-.5,(cy/h)-.48);
-      const area=(maxX-minX+1)*(maxY-minY+1);
-      const shapeFill=count/Math.max(1,area);
-      const score=count*(1.2-centerDistance)*(.75+Math.min(.55,shapeFill));
-      if(!best||score>best.score)best={score,count,minX,maxX,minY,maxY,cx,cy};
-    }
-  }
-
-  if(!best) return {zoom:1,x:0,y:0};
-
-  let {minX,maxX,minY,maxY}=best;
-  const bw=maxX-minX,bh=maxY-minY;
-
-  // Extra horizontal margin is intentional: sleeves must stay inside the suggested crop.
-  const padX=Math.max(4,bw*.18);
-  const padTop=Math.max(4,bh*.13);
-  const padBottom=Math.max(4,bh*.14);
-
-  minX=Math.max(0,minX-padX);
-  maxX=Math.min(w-1,maxX+padX);
-  minY=Math.max(0,minY-padTop);
-  maxY=Math.min(h-1,maxY+padBottom);
-
-  const subjectX=((minX+maxX)/2)/w*image.naturalWidth;
-  const subjectY=((minY+maxY)/2)/h*image.naturalHeight;
-  const subjectW=(maxX-minX)/w*image.naturalWidth;
-  const subjectH=(maxY-minY)/h*image.naturalHeight;
-
-  const needed=Math.max(subjectW,subjectH);
+  const box=Math.max(12,Math.max(maxX-minX,maxY-minY));
+  const subjectX=((minX+maxX)/2)/c.width*image.naturalWidth,subjectY=((minY+maxY)/2)/c.height*image.naturalHeight;
+  const subjectSize=box/Math.min(c.width,c.height)*Math.min(image.naturalWidth,image.naturalHeight);
   const baseCrop=Math.min(image.naturalWidth,image.naturalHeight);
-  const zoom=Math.max(1,Math.min(2.25,baseCrop/Math.max(1,needed)));
-
-  const canvas=$("#cropCanvas");
-  const base=Math.max(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight);
-  const scale=base*zoom;
-  const x=(image.naturalWidth/2-subjectX)*scale;
-  const y=(image.naturalHeight/2-subjectY)*scale;
-
+  const zoom=Math.max(1.05,Math.min(2.55,baseCrop/Math.max(1,subjectSize)*1.08));
+  const canvas=$("#cropCanvas"),base=Math.max(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight),scale=base*zoom;
+  const x=(image.naturalWidth/2-subjectX)*scale,y=(image.naturalHeight/2-subjectY)*scale;
   return {zoom,x,y};
 }
 async function openCrop(){
@@ -386,9 +341,15 @@ $("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=i
   explicit.forEach(r=>merged.set(r.id,{...(merged.get(r.id)||{}),...r}));
   let records=[...merged.values()].filter(r=>r.originalBlob||r.publishBlob||r.thumbnailBlob);
   records.sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
-  items=await Promise.all(records.map(async r=>({...r,thumbUrl:await previewSrc(r)})));
-  await renderGrid();
+  items=records.map(r=>({...r,thumbUrl:""}));
+  $("#startDraftCount").textContent=items.length===1?"1 utkast":`${items.length} utkast`;
   show("startView");
+
+  await Promise.all(items.map(async(item,index)=>{
+    item.thumbUrl=await previewSrc(item);
+    if(index===0)preloadNeighbors(0);
+  }));
+  await renderGrid();
 }catch(e){
   console.error("[CCC Publicera] Kunde inte läsa lokala utkast",{name:e?.name,message:e?.message},e);
   $("#emptyState").hidden=false;
@@ -396,4 +357,4 @@ $("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=i
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-/* CCC cache stamp: v2.8.80 */
+/* CCC cache stamp: v2.8.81 */
