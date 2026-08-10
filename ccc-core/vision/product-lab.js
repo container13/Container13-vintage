@@ -761,9 +761,12 @@
     });
     $("#editThumbnail").src = item.previewUrl;
     $("#editThumbnail").hidden = false;
+    const manualMode = item.analysisMode === "manual" && !item.visionReady;
     $("#editContextTitle").textContent = item.visionReady
       ? (item.visionResult?.summaryTitle || "Redigera plagg")
-      : "Redigera medan CCC arbetar";
+      : manualMode ? "Redigera plagg" : "Redigera medan CCC arbetar";
+    const contextSub = $("#editContextSub");
+    if (contextSub) contextSub.hidden = manualMode;
     if (allowWhileAnalyzing && !item.visionReady && !item.editedFields) {
       item.editedFields = Object.fromEntries(fieldIds.map((id) => [id, $("#" + id).value]));
     }
@@ -864,6 +867,29 @@
       });
     }
     $("#sameGarmentInput").value = "";
+  }
+
+  function trashCurrentFromEdit() {
+    if (!batchItems.length) return;
+    const removedIndex = currentIndex;
+    const [removed] = batchItems.splice(removedIndex, 1);
+    trashStack.push({ item: removed, index: removedIndex });
+    showUndoToast();
+
+    if (!batchItems.length) {
+      clearVisionSessionRecord().catch(() => {});
+      showVisionStart();
+      return;
+    }
+
+    currentIndex = Math.min(removedIndex, batchItems.length - 1);
+    saveBatchMetadata();
+    showWorkspace();
+    updateBatchStrip();
+    applyCaptureMode();
+    saveVisionSessionLocally().catch((error) =>
+      console.warn("[CCC Vision] Session kunde inte synkas efter borttagning", error)
+    );
   }
 
   function trashCurrent() {
@@ -1263,7 +1289,8 @@
   $("#wrongSuggestionBtn").addEventListener("click", editCurrent);
   $("#addSameGarmentBtn").addEventListener("click", () => $("#sameGarmentInput").click());
   $("#sameGarmentInput").addEventListener("change", (event) => addSameGarmentFiles(event.target.files));
-  $("#trashCurrentBtn").addEventListener("click", trashCurrent);
+  $("#trashCurrentBtn").addEventListener("click", trashCurrent); 
+  $("#editTrashBtn")?.addEventListener("click", trashCurrentFromEdit);
   $("#undoTrashBtn").addEventListener("click", undoTrash);
   $("#backToSuggestionBtn").addEventListener("click", saveEditedAndBack);
   $("#previewBtn").addEventListener("click", saveEditedAndNext);
@@ -1305,4 +1332,4 @@
   updateTextPreviews();
 })();
 
-/* CCC cache stamp: v2.8.61 */
+/* CCC cache stamp: v2.8.62 */

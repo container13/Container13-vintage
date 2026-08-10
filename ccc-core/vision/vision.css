@@ -2775,4 +2775,14 @@ body{min-height:100dvh}
   color:#17120a!important;
 }
 
-/* CCC cache stamp: v2.8.59 */
+/* CCC v2.8.62 – ren manuell redigering + papperskorg i redigeringsvyn. */
+#editCard .edit-product-context{position:relative!important;padding-right:58px!important}
+#editCard .edit-context-copy{min-width:0}
+#editCard .edit-trash-button{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  width:42px;height:42px;border-radius:50%;border:1px solid var(--line);
+  background:var(--panel-2);font-size:1.15rem;line-height:1;cursor:pointer;
+}
+#editCard .edit-trash-button:active{transform:translateY(-50%) scale(.96)}
+
+/* CCC cache stamp: v2.8.62 */
