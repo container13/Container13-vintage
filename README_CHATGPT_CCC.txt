@@ -731,3 +731,10 @@ CCC v2.8.75 – miniatyr öppnar rätt detaljvy i Publicera (2026-08-10)
 - `show()` gömde därför samtliga riktiga Publicera-vyer och UI föll visuellt tillbaka till skalet/startläget.
 - Anropet är korrigerat till `show("detailView")`.
 - v2.8.74-funktionerna för valfri beskärning, synligt bortklippt område och Behåll original ingår.
+
+CCC v2.8.76 – kompakt Publicera-detaljvy på mobil (2026-08-10)
+- Detaljbildens maxhöjd i portrait sänkt så titel och huvudknappar ryms på samma skärm.
+- Detaljvyn är en fast flex-kolumn utan onödig huvudscroll på normal mobilhöjd.
+- Titel/meta och actions har kompaktare spacing/typografi.
+- `Beskär` har bytt namn till `Anpassa bild`, eftersom nästa vy även erbjuder `Behåll original`.
+- Swipe mellan utkast och v2.8.74-bildanpassningen är oförändrade.
