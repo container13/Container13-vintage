@@ -538,3 +538,17 @@ CCC v2.8.50 – förenklad Vision-arbetsvy (2026-08-10)
 - `Komplettera markerat plagg` tas bort från huvudytan; komplettering hör till det valda plaggets granskningsflöde.
 - `Visa förslag` behålls som primär handling för markerat/klart plagg.
 - Local-first-notisen behålls diskret längst ned.
+
+CCC v2.8.51 – Vision gamla startkort bort ur arbetslayout (2026-08-10)
+- Grundorsak: v2.8.50 gömde `.vision-start-actions`, men äldre `:has()`-regler kunde fortfarande hålla startsektionen/layouten aktiv.
+- Hela startsektionen har nu id `visionStartHome`.
+- När Vision går till workspace sätts `visionStartHome.hidden = true`.
+- Core/legacy display-regler neutraliseras med `#visionStartHome[hidden]{display:none!important}`.
+- Arbetsvyn består därmed bara av kompakt plaggstatus, + Fota plagg, + Välj bilder, miniatyrer och Visa förslag.
+
+CCC v2.8.52 – Vision arbetsvy + manuell AI-layout (2026-08-10)
+- Innehåller v2.8.51-fixen där hela gamla tre-kortssektionen tas ur layouten i aktiv fotosession.
+- När Automatisk AI-analys är av behålls `Analysera med AI` som frivillig åtgärd för det valda plagget.
+- Redigeringsvyn har nu en uttrycklig egen grid-rad för AI-knappen.
+- AI-knappen är statisk i dokumentflödet och kan inte längre hamna bakom Rubrik-fältet.
+- När AI-knappen är dold tas raden bort naturligt utan att påverka formulärets geometri.
