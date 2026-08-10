@@ -1308,4 +1308,71 @@ body{
   }
 }
 
-/* CCC cache stamp: v2.8.47 */
+/* CCC v2.8.48 – EN källa för header/logga i mobil portrait.
+   Dashboard, Vision, Publicera och framtida moduler använder denna geometri. */
+@media (orientation:portrait) and (max-width:480px){
+  .app-header.ccc-header{
+    position:sticky!important;
+    top:0!important;
+    width:100%!important;
+    height:var(--ccc-header-height)!important;
+    min-height:var(--ccc-header-height)!important;
+    max-height:var(--ccc-header-height)!important;
+    margin:0!important;
+    box-sizing:border-box!important;
+  }
+
+  .app-header.ccc-header > .ccc-brand-mark{
+    position:absolute!important;
+    left:50%!important;
+    top:50%!important;
+    right:auto!important;
+    bottom:auto!important;
+    margin:0!important;
+    padding:0!important;
+    transform:translate(-50%,-50%)!important;
+  }
+
+  /* I installerad PWA läggs samma safe-area-förskjutning på alla moduler. */
+  @media (display-mode:standalone){
+    .app-header.ccc-header > .ccc-brand-mark{
+      top:calc(50% + (env(safe-area-inset-top) * .22))!important;
+    }
+  }
+}
+
+/* CCC v2.8.48 – portrait header single-source.
+   Gemensam mobil portrait-header och brandposition ägs endast här. */
+@media (orientation:portrait) and (max-width:480px){
+  .app-header.ccc-header{
+    position:sticky!important;
+    top:0!important;
+    left:0!important;
+    right:0!important;
+    width:100%!important;
+    height:var(--ccc-header-height)!important;
+    min-height:var(--ccc-header-height)!important;
+    max-height:var(--ccc-header-height)!important;
+    margin:0!important;
+    box-sizing:border-box!important;
+  }
+
+  .app-header.ccc-header > .ccc-brand-mark{
+    position:absolute!important;
+    left:50%!important;
+    top:50%!important;
+    right:auto!important;
+    bottom:auto!important;
+    margin:0!important;
+    padding:0!important;
+    transform:translate(-50%,-50%)!important;
+  }
+}
+
+@media (display-mode:standalone) and (orientation:portrait) and (max-width:480px){
+  .app-header.ccc-header > .ccc-brand-mark{
+    top:calc(50% + (env(safe-area-inset-top) * .22))!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.48 */
