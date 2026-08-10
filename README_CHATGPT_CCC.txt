@@ -712,3 +712,9 @@ CCC v2.8.72 – Publicera Lokala utkast: topposition + bildfix samlad (2026-08-1
 - Vid byte till `gridView` nollställs intern scroll och vyn scrollas till sin startposition.
 - Klick på `Lokala utkast` renderar gridden först och öppnar sedan vyn från toppen.
 - Fokus flyttas till bakåtknappen utan att orsaka scroll, vilket minskar risken att mobilwebbläsaren placerar rubriken längst ned.
+
+CCC v2.8.73 – städad Lokala utkast-vy (2026-08-10)
+- Falska tomstatusen `Inget väntar på publicering` döljs explicit när utkast finns.
+- `renderGrid()` styr både `hidden` och `display`, så äldre CSS kan inte lämna tomstatusen synlig.
+- Miniatyrgridden börjar direkt under rubrik/antal utan reserverad tomstatus-yta.
+- Vision → Publicera-dataflödet och v2.8.71-bildvisningen behålls oförändrade.
