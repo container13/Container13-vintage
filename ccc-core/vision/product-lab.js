@@ -265,17 +265,24 @@
     }
     if (addDetail) addDetail.hidden = true;
     const ready = batchItems.filter((item) => item.visionReady).length;
+    const selected = batchItems[currentIndex];
+    const manualSelected = !!selected && selected.analysisMode === "manual" && !selected.visionReady;
+
     if (review) {
-      review.hidden = false;
-      review.disabled = ready === 0;
-      const selected = batchItems[currentIndex];
-      const selectedReady = !!selected?.visionReady;
-      if (selectedReady) {
-        review.textContent = "Visa förslag";
-      } else if (ready > 0) {
-        review.textContent = `Granska ${ready} ${ready === 1 ? "klart plagg" : "klara plagg"}`;
+      if (manualSelected) {
+        review.hidden = true;
+        review.disabled = true;
       } else {
-        review.textContent = "Visa förslag";
+        review.hidden = false;
+        review.disabled = ready === 0;
+        const selectedReady = !!selected?.visionReady;
+        if (selectedReady) {
+          review.textContent = "Visa förslag";
+        } else if (ready > 0) {
+          review.textContent = `Granska ${ready} ${ready === 1 ? "klart plagg" : "klara plagg"}`;
+        } else {
+          review.textContent = "Visa förslag";
+        }
       }
     }
   }
@@ -293,14 +300,22 @@
       img.src = item.previewUrl;
       img.alt = `Plagg ${index + 1}`;
       const state = document.createElement("span");
-      state.className = `thumb-status ${item.visionReady ? "is-ready" : item.analysisMode === "manual" ? "is-manual" : "is-working"}`;
-      state.textContent = item.visionReady ? "✓" : "";
+      state.className = `thumb-status ${item.visionReady ? "is-ready" : item.analysisMode === "manual" ? (item.approved ? "is-saved" : "is-manual") : "is-working"}`;
+      state.textContent = item.visionReady || item.approved ? "✓" : "";
       state.setAttribute("aria-hidden", "true");
       wrap.addEventListener("click", () => {
         currentIndex = index;
         updateBatchStrip();
-        // Miniatyren är alltid användbar. Är AI klar visas förslaget.
-        // Pågår analysen öppnas manuell redigering direkt utan att stoppa bakgrundsanalysen.
+
+        /* Ett sparat manuellt plagg är fortfarande redigerbart.
+           approved betyder "sparat till Publicera", inte låst/färdigredigerat. */
+        if (item.analysisMode === "manual" && !item.visionReady) {
+          editReturnView = "workspace";
+          populateFormFromItem(true);
+          showStage("editCard", "edit");
+          return;
+        }
+
         if (item.visionReady) openReview(index);
         else editCurrent(true);
       });
@@ -836,7 +851,9 @@
 
     if (!saved) return;
 
-    /* Gå tillbaka till samma Vision-arbetsvy/miniatyrlista där plagget öppnades. */
+    /* Samma plagg kan sparas/ändras hur många gånger som helst.
+       IndexedDB put() använder samma item.id och uppdaterar posten. */
+    editReturnView = "workspace";
     showWorkspace();
     updateBatchStrip();
     applyCaptureMode();
@@ -1300,4 +1317,4 @@
   updateTextPreviews();
 })();
 
-/* CCC cache stamp: v2.8.58 */
+/* CCC cache stamp: v2.8.59 */

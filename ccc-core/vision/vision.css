@@ -2769,4 +2769,10 @@ body{min-height:100dvh}
   }
 }
 
-/* CCC cache stamp: v2.8.58 */
+/* CCC v2.8.59 – manuellt läge: inget "Visa förslag", sparade plagg är fortsatt redigerbara. */
+.batch-thumb .thumb-status.is-saved{
+  background:color-mix(in srgb,var(--ccc-gold,var(--gold)) 88%,#fff 12%)!important;
+  color:#17120a!important;
+}
+
+/* CCC cache stamp: v2.8.59 */
