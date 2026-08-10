@@ -773,3 +773,13 @@ CCC v2.8.81 – Publicera prestandagrund (2026-08-10)
 - När detaljvyn öppnas förladdas aktuell, föregående och nästa bild.
 - När Lokala utkast öppnas värms första bildgruppen upp direkt.
 - Ingen visuell redesign i denna version; fokus är snabbare öppning och grund för levande swipe.
+
+CCC v2.8.82 – levande swipe mellan plagg i Publicera (2026-08-10)
+- Detaljvyn har nu tre bildlager: föregående, aktuell och nästa bild.
+- Aktuell bild följer fingret horisontellt medan användaren drar.
+- Nästa/föregående bild kommer samtidigt in från rätt sida.
+- Svep under ca 26 % av bildbredden fjädrar tillbaka till aktuell bild.
+- Tillräckligt långt svep animerar färdigt på ca 260 ms och byter sedan aktivt plagg.
+- Vertikal gest lämnas fri för vanlig scroll.
+- v2.8.81:s cache/förladdning används för grannbilderna så animationen inte behöver vänta på bildinläsning.
+- Byggd fortsatt på v2.8.79:s stabila beskärningsbas.
