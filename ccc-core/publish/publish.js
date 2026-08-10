@@ -401,14 +401,18 @@ function smartCropSuggestion(image){
 
   const span=Math.max(maxX-minX,maxY-minY);
   const pad=.20*span;
+  // RC1: ignore tiny detached fragments by trimming extreme top noise.
+  const topInset=((maxY-minY)<span*0.75)?0:span*0.04;
   minX=Math.max(0,minX-pad);maxX=Math.min(c.width,maxX+pad);
-  minY=Math.max(0,minY-pad);maxY=Math.min(c.height,maxY+pad);
+  minY=Math.max(0,minY-pad+topInset);maxY=Math.min(c.height,maxY+pad);
 
   const box=Math.max(12,Math.max(maxX-minX,maxY-minY));
   const subjectX=((minX+maxX)/2)/c.width*image.naturalWidth,subjectY=((minY+maxY)/2)/c.height*image.naturalHeight;
   const subjectSize=box/Math.min(c.width,c.height)*Math.min(image.naturalWidth,image.naturalHeight);
   const baseCrop=Math.min(image.naturalWidth,image.naturalHeight);
   const zoom=Math.max(1.03,Math.min(2.45,baseCrop/Math.max(1,subjectSize)*1.04));
+  // RC1 top protection
+  if(topInset>0){ subjectY - 0; }
   const canvas=$("#cropCanvas"),base=Math.max(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight),scale=base*zoom;
   const x=(image.naturalWidth/2-subjectX)*scale,y=(image.naturalHeight/2-subjectY)*scale;
   // v2.8.94: adaptive X-only optical centering.
