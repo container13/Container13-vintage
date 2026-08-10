@@ -460,4 +460,27 @@
 #swipeArea .swipe-image-next{transform:translate3d(100%,0,0)}
 #swipeArea .swipe-hint{z-index:4}
 
-/* CCC cache stamp: v2.8.82 */
+/* CCC v2.8.83 – mjukare swipe + försiktig beskärningsfinputs. */
+#swipeArea .swipe-image{
+  transform-origin:center center;
+}
+@media (orientation:portrait) and (max-width:600px){
+  #cropView.publish-view{
+    display:block!important;
+    overflow-y:auto!important;
+    padding-bottom:calc(34px + env(safe-area-inset-bottom))!important;
+  }
+  #cropView .crop-preview{
+    width:min(100%,44dvh,500px)!important;
+    margin-bottom:14px!important;
+  }
+  #cropView .crop-accept{
+    display:block!important;
+    position:relative!important;
+    margin:14px auto 0!important;
+    min-height:54px!important;
+    z-index:3!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.83 */

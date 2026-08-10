@@ -165,7 +165,7 @@ function setSwipeTransforms(offset=0,animate=false){
   const width=Math.max(1,area.clientWidth);
   const prev=$("#detailPrevImage"),current=$("#detailImage"),nextImg=$("#detailNextImage");
   [prev,current,nextImg].forEach(img=>{
-    img.style.transition=animate?"transform 260ms cubic-bezier(.22,.72,.24,1)":"none";
+    img.style.transition=animate?"transform 340ms cubic-bezier(.18,.78,.22,1)":"none";
   });
   prev.style.transform=`translate3d(${offset-width}px,0,0)`;
   current.style.transform=`translate3d(${offset}px,0,0)`;
@@ -232,8 +232,10 @@ $("#swipeArea").addEventListener("pointermove",e=>{
 
   e.preventDefault();
   const width=Math.max(1,e.currentTarget.clientWidth);
-  // Mild resistance after one full image width.
-  const limited=Math.sign(dx)*Math.min(Math.abs(dx),width*1.08);
+  const raw=Math.min(Math.abs(dx),width*1.08);
+  // Slightly damped movement gives a softer gallery-like feel while still following the finger.
+  const softened=raw<=width*.72 ? raw*.94 : width*.676+(raw-width*.72)*.58;
+  const limited=Math.sign(dx)*softened;
   swipeGesture.dx=limited;
   setSwipeTransforms(limited,false);
 },{passive:false});
@@ -250,7 +252,7 @@ function finishSwipe(e,cancelled=false){
 
   const area=$("#swipeArea");
   const width=Math.max(1,area.clientWidth);
-  const threshold=width*.26;
+  const threshold=width*.23;
 
   if(Math.abs(gesture.dx)<threshold){
     setSwipeTransforms(0,true);
@@ -270,7 +272,7 @@ function finishSwipe(e,cancelled=false){
     updateDetailCopy();
     syncSwipeNeighbors();
     swipeAnimating=false;
-  },270);
+  },350);
 }
 
 $("#swipeArea").addEventListener("pointerup",e=>finishSwipe(e,false));
@@ -315,7 +317,7 @@ function smartCropSuggestion(image){
   cx/=total;cy/=total;
   // Keep a tighter salient cluster around the weighted subject center.
   // v2.8.78 deliberately rejects more surrounding page/UI clutter and lets the garment fill more of the crop.
-  const radius=Math.min(c.width,c.height)*.30, near=pts.filter(p=>Math.hypot(p[0]-cx,p[1]-cy)<=radius);
+  const radius=Math.min(c.width,c.height)*.31, near=pts.filter(p=>Math.hypot(p[0]-cx,p[1]-cy)<=radius);
   const use=near.length>15?near:pts;
 
   // Trim extreme saliency outliers instead of letting one remote edge enlarge the whole box.
@@ -324,7 +326,7 @@ function smartCropSuggestion(image){
   let minX=q(xs,.05),maxX=q(xs,.95),minY=q(ys,.04),maxY=q(ys,.96);
 
   const span=Math.max(maxX-minX,maxY-minY);
-  const pad=.14*span;
+  const pad=.16*span;
   minX=Math.max(0,minX-pad);maxX=Math.min(c.width,maxX+pad);
   minY=Math.max(0,minY-pad);maxY=Math.min(c.height,maxY+pad);
 
@@ -332,7 +334,7 @@ function smartCropSuggestion(image){
   const subjectX=((minX+maxX)/2)/c.width*image.naturalWidth,subjectY=((minY+maxY)/2)/c.height*image.naturalHeight;
   const subjectSize=box/Math.min(c.width,c.height)*Math.min(image.naturalWidth,image.naturalHeight);
   const baseCrop=Math.min(image.naturalWidth,image.naturalHeight);
-  const zoom=Math.max(1.05,Math.min(2.55,baseCrop/Math.max(1,subjectSize)*1.08));
+  const zoom=Math.max(1.03,Math.min(2.45,baseCrop/Math.max(1,subjectSize)*1.04));
   const canvas=$("#cropCanvas"),base=Math.max(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight),scale=base*zoom;
   const x=(image.naturalWidth/2-subjectX)*scale,y=(image.naturalHeight/2-subjectY)*scale;
   return {zoom,x,y};
@@ -480,4 +482,4 @@ $("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=i
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-/* CCC cache stamp: v2.8.82 */
+/* CCC cache stamp: v2.8.83 */
