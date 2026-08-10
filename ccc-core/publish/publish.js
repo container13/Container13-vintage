@@ -150,16 +150,16 @@ function smartCropSuggestion(image){
   cx/=total;cy/=total;
   // Keep a tighter salient cluster around the weighted subject center.
   // v2.8.78 deliberately rejects more surrounding page/UI clutter and lets the garment fill more of the crop.
-  const radius=Math.min(c.width,c.height)*.27, near=pts.filter(p=>Math.hypot(p[0]-cx,p[1]-cy)<=radius);
+  const radius=Math.min(c.width,c.height)*.30, near=pts.filter(p=>Math.hypot(p[0]-cx,p[1]-cy)<=radius);
   const use=near.length>15?near:pts;
 
   // Trim extreme saliency outliers instead of letting one remote edge enlarge the whole box.
   const xs=use.map(p=>p[0]).sort((a,b)=>a-b), ys=use.map(p=>p[1]).sort((a,b)=>a-b);
   const q=(arr,f)=>arr[Math.max(0,Math.min(arr.length-1,Math.floor((arr.length-1)*f)))];
-  let minX=q(xs,.08),maxX=q(xs,.92),minY=q(ys,.06),maxY=q(ys,.94);
+  let minX=q(xs,.05),maxX=q(xs,.95),minY=q(ys,.04),maxY=q(ys,.96);
 
   const span=Math.max(maxX-minX,maxY-minY);
-  const pad=.09*span;
+  const pad=.14*span;
   minX=Math.max(0,minX-pad);maxX=Math.min(c.width,maxX+pad);
   minY=Math.max(0,minY-pad);maxY=Math.min(c.height,maxY+pad);
 
@@ -167,7 +167,7 @@ function smartCropSuggestion(image){
   const subjectX=((minX+maxX)/2)/c.width*image.naturalWidth,subjectY=((minY+maxY)/2)/c.height*image.naturalHeight;
   const subjectSize=box/Math.min(c.width,c.height)*Math.min(image.naturalWidth,image.naturalHeight);
   const baseCrop=Math.min(image.naturalWidth,image.naturalHeight);
-  const zoom=Math.max(1.15,Math.min(3,baseCrop/Math.max(1,subjectSize)*1.22));
+  const zoom=Math.max(1.05,Math.min(2.55,baseCrop/Math.max(1,subjectSize)*1.08));
   const canvas=$("#cropCanvas"),base=Math.max(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight),scale=base*zoom;
   const x=(image.naturalWidth/2-subjectX)*scale,y=(image.naturalHeight/2-subjectY)*scale;
   return {zoom,x,y};
@@ -309,4 +309,4 @@ $("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=i
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-/* CCC cache stamp: v2.8.78 */
+/* CCC cache stamp: v2.8.79 */
