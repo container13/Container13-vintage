@@ -491,4 +491,22 @@
 #swipeArea.is-swiping .swipe-image-next{z-index:2}
 #swipeArea.is-swiping .swipe-image-current{z-index:2}
 
-/* CCC cache stamp: v2.8.91 */
+/* CCC v2.8.92 – crop diagnostics, dev only. */
+.crop-diag-toggle{
+  width:100%;
+  margin-top:10px;
+}
+.crop-diag{
+  white-space:pre-wrap;
+  margin:8px 0 0;
+  padding:10px 12px;
+  border-radius:12px;
+  background:rgba(0,0,0,.28);
+  font-size:11px;
+  line-height:1.45;
+  text-align:left;
+  overflow:auto;
+}
+.crop-diag[hidden]{display:none!important}
+
+/* CCC cache stamp: v2.8.92 */

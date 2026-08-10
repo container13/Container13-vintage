@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f7f7f9">
 <meta name="color-scheme" content="light dark">
-<link rel="manifest" href="../manifest.webmanifest?v=2.8.91">
+<link rel="manifest" href="../manifest.webmanifest?v=2.8.92">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>CCC Publicera v2.8.91</title>
+<title>CCC Publicera v2.8.92</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-<link rel="stylesheet" href="../dashboard/dashboard.css?v=2.8.91">
-<link rel="stylesheet" href="publish.css?v=2.8.91">
-<link rel="stylesheet" href="../core.css?v=2.8.91">
+<link rel="stylesheet" href="../dashboard/dashboard.css?v=2.8.92">
+<link rel="stylesheet" href="publish.css?v=2.8.92">
+<link rel="stylesheet" href="../core.css?v=2.8.92">
 </head>
 <body>
 <div class="app-shell ccc-app-shell publish-shell">
@@ -107,6 +107,8 @@
         <button id="cropReset" class="secondary-action" type="button">Återställ förslag</button>
       </div>
       <button id="cropDone" class="primary-action crop-accept" type="button">Godkänn beskärning</button>
+      <button id="cropDiagToggle" class="secondary-action crop-diag-toggle" type="button">Visa crop-data</button>
+      <pre id="cropDiag" class="crop-diag" hidden></pre>
       <p class="crop-note">Originalbilden ändras aldrig. En optimerad WebP-kopia skapas först när du väljer.</p>
     </section>
   </main>
@@ -123,9 +125,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.8.91"></script>
-<script type="module" src="../core.js?v=2.8.91"></script>
-  <script src="../version.js?v=2.8.91"></script>
-<script src="../pwa.js?v=2.8.91" defer></script>
+<script type="module" src="publish.js?v=2.8.92"></script>
+<script type="module" src="../core.js?v=2.8.92"></script>
+  <script src="../version.js?v=2.8.92"></script>
+<script src="../pwa.js?v=2.8.92" defer></script>
 </body>
 </html>

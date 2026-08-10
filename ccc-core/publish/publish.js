@@ -366,7 +366,9 @@ $("#detailBack").addEventListener("click",async()=>{
 
 function loadImage(src){return new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=src;});}
 function geometry(){if(!cropImage||!cropState)return null;const c=$("#cropCanvas"),base=Math.max(c.width/cropImage.naturalWidth,c.height/cropImage.naturalHeight),scale=base*cropState.zoom,w=cropImage.naturalWidth*scale,h=cropImage.naturalHeight*scale,lx=Math.max(0,(w-c.width)/2),ly=Math.max(0,(h-c.height)/2);cropState.x=Math.max(-lx,Math.min(lx,cropState.x));cropState.y=Math.max(-ly,Math.min(ly,cropState.y));return{c,scale,w,h};}
-function drawCrop(){const g=geometry();if(!g)return;const ctx=g.c.getContext("2d",{alpha:false});ctx.fillStyle="#111";ctx.fillRect(0,0,g.c.width,g.c.height);ctx.drawImage(cropImage,(g.c.width-g.w)/2+cropState.x,(g.c.height-g.h)/2+cropState.y,g.w,g.h);}
+function drawCrop(){const g=geometry();if(!g)return;const ctx=g.c.getContext("2d",{alpha:false});ctx.fillStyle="#111";ctx.fillRect(0,0,g.c.width,g.c.height);ctx.drawImage(cropImage,(g.c.width-g.w)/2+cropState.x,(g.c.height-g.h)/2+cropState.y,g.w,g.h);
+  renderCropDiagnostics();
+}
 function smartCropSuggestion(image){
   // Local, lightweight subject-saliency heuristic. No upload and no permanent edit.
   const side=144,c=document.createElement("canvas"),ctx=c.getContext("2d",{willReadFrequently:true});
@@ -411,6 +413,64 @@ function smartCropSuggestion(image){
   const x=(image.naturalWidth/2-subjectX)*scale,y=(image.naturalHeight/2-subjectY)*scale;
   return {zoom,x,y};
 }
+function calculateCropDiagnostics(){
+  if(!cropImage||!cropState)return null;
+  const canvas=$("#cropCanvas");
+  if(!canvas)return null;
+
+  const cw=canvas.width,ch=canvas.height;
+  const base=Math.max(cw/cropImage.naturalWidth,ch/cropImage.naturalHeight);
+  const scale=base*cropState.zoom;
+  const dw=cropImage.naturalWidth*scale;
+  const dh=cropImage.naturalHeight*scale;
+  const left=(cw-dw)/2+cropState.x;
+  const top=(ch-dh)/2+cropState.y;
+  const right=cw-(left+dw);
+  const bottom=ch-(top+dh);
+
+  const pct=v=>Math.round(v*10)/10;
+  const visibleW=Math.min(cw,left+dw)-Math.max(0,left);
+  const visibleH=Math.min(ch,top+dh)-Math.max(0,top);
+
+  return {
+    zoom:Math.round(cropState.zoom*100)/100,
+    x:Math.round(cropState.x),
+    y:Math.round(cropState.y),
+    sourceW:cropImage.naturalWidth,
+    sourceH:cropImage.naturalHeight,
+    imageFillW:pct(visibleW/cw*100),
+    imageFillH:pct(visibleH/ch*100),
+    leftMargin:pct(Math.max(0,left)/cw*100),
+    rightMargin:pct(Math.max(0,right)/cw*100),
+    topMargin:pct(Math.max(0,top)/ch*100),
+    bottomMargin:pct(Math.max(0,bottom)/ch*100)
+  };
+}
+
+function renderCropDiagnostics(){
+  const panel=$("#cropDiag");
+  if(!panel||panel.hidden)return;
+  const d=calculateCropDiagnostics();
+  if(!d){panel.textContent="Ingen crop-data tillgänglig.";return;}
+  const item=activeItem?.()||items[activeIndex];
+  panel.textContent=[
+    `Plagg: ${item?.title||item?.brand||item?.id||"okänt"}`,
+    `Källa: ${d.sourceW} × ${d.sourceH}px`,
+    ``,
+    `Zoom: ${d.zoom}×`,
+    `X: ${d.x}px`,
+    `Y: ${d.y}px`,
+    ``,
+    `Bild i crop – bredd: ${d.imageFillW}%`,
+    `Bild i crop – höjd: ${d.imageFillH}%`,
+    ``,
+    `Marginal vänster: ${d.leftMargin}%`,
+    `Marginal höger: ${d.rightMargin}%`,
+    `Marginal topp: ${d.topMargin}%`,
+    `Marginal botten: ${d.bottomMargin}%`
+  ].join("\\n");
+}
+
 async function openCrop(){
   syncActiveIndexFromId();
   const item=activeItem();
@@ -439,6 +499,14 @@ async function createOriginalWebP(item){
   return new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));
 }
 $("#cropBtn").addEventListener("click",openCrop);
+$("#cropDiagToggle").addEventListener("click",()=>{
+  const panel=$("#cropDiag");
+  const button=$("#cropDiagToggle");
+  panel.hidden=!panel.hidden;
+  button.textContent=panel.hidden?"Visa crop-data":"Dölj crop-data";
+  renderCropDiagnostics();
+});
+
 $("#keepOriginalBtn").addEventListener("click",async()=>{
   const item=activeItem();
   if(!item)return;
@@ -563,4 +631,4 @@ $("#publishBtn").addEventListener("click",()=>{const item=activeItem();if(!item)
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-/* CCC cache stamp: v2.8.91 */
+/* CCC cache stamp: v2.8.92 */
