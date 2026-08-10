@@ -147,7 +147,9 @@ async function renderGrid(){
     cap.className="draft-card-caption";
     cap.textContent=title(item,index);
     b.append(cap);
-    b.addEventListener("click",()=>openDetail(index));
+    const itemId=item.id;
+    b.dataset.itemId=itemId;
+    b.addEventListener("click",()=>openDetailById(itemId));
     grid.append(b);
   }
 }
@@ -185,6 +187,18 @@ function updateDetailCopy(){
   $("#detailMeta").textContent=[item.brand,item.size&&`Storlek ${item.size}`,item.price&&`${item.price} kr`].filter(Boolean).join(" · ");
   $("#detailCounter").textContent=`${activeIndex+1} av ${items.length}`;
   $("#publishStatus").textContent=item.publishBlob?"Bilden är beskuren och klar som WebP.":"";
+}
+function itemIndexById(itemId){
+  if(!itemId)return -1;
+  return items.findIndex(item=>item?.id===itemId);
+}
+function openDetailById(itemId){
+  const index=itemIndexById(itemId);
+  if(index<0){
+    console.warn("[CCC Publicera] Hittade inte utkastet som miniatyren pekade på",itemId);
+    return;
+  }
+  openDetail(index);
 }
 function openDetail(index){
   if(!items.length)return;
@@ -261,11 +275,14 @@ function finishSwipe(e,cancelled=false){
 
   const delta=gesture.dx<0?1:-1;
   const target=gesture.dx<0?-width:width;
+  const targetItem=items[normalizedIndex(activeIndex+delta)];
+  const targetItemId=targetItem?.id;
   swipeAnimating=true;
   setSwipeTransforms(target,true);
 
   window.setTimeout(()=>{
-    activeIndex=normalizedIndex(activeIndex+delta);
+    const resolvedIndex=itemIndexById(targetItemId);
+    if(resolvedIndex>=0)activeIndex=resolvedIndex;
     const item=items[activeIndex];
     if(!item.fullUrl)item.fullUrl=item.thumbUrl||url(item.publishBlob||item.originalBlob||item.thumbnailBlob);
     $("#detailImage").src=item.fullUrl;
@@ -290,7 +307,13 @@ $("#draftsBtn").addEventListener("click",async()=>{
 $("#publishedBtn").addEventListener("click",()=>show("publishedView"));
 $("#gridBack").addEventListener("click",()=>show("startView"));
 $("#publishedBack").addEventListener("click",()=>show("startView"));
-$("#detailBack").addEventListener("click",()=>show("gridView"));
+$("#detailBack").addEventListener("click",async()=>{
+  swipeGesture=null;
+  swipeAnimating=false;
+  setSwipeTransforms(0,false);
+  await renderGrid();
+  show("gridView");
+});
 
 function loadImage(src){return new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=src;});}
 function geometry(){if(!cropImage||!cropState)return null;const c=$("#cropCanvas"),base=Math.max(c.width/cropImage.naturalWidth,c.height/cropImage.naturalHeight),scale=base*cropState.zoom,w=cropImage.naturalWidth*scale,h=cropImage.naturalHeight*scale,lx=Math.max(0,(w-c.width)/2),ly=Math.max(0,(h-c.height)/2);cropState.x=Math.max(-lx,Math.min(lx,cropState.x));cropState.y=Math.max(-ly,Math.min(ly,cropState.y));return{c,scale,w,h};}
@@ -335,20 +358,26 @@ function smartCropSuggestion(image){
   const normalizedCenterX=boxCenterX/c.width;
 
   // Football-shirt sleeve safety:
-  // if the garment sits clearly to one side, give extra room on that same outer side.
-  const sideOffset=Math.abs(normalizedCenterX-.5);
-  const sideSafety=sideOffset>.08 ? Math.min(.12,(sideOffset-.08)*.65+.035) : 0;
-  if(normalizedCenterX<.42){
-    minX=Math.max(0,minX-box*sideSafety);
-  }else if(normalizedCenterX>.58){
-    maxX=Math.min(c.width,maxX+box*sideSafety);
+  // Move the suggested crop toward the off-centre garment instead of only widening it.
+  // This protects the outer sleeve while trimming more clutter on the opposite side.
+  const sideOffset=normalizedCenterX-.5;
+  const absSideOffset=Math.abs(sideOffset);
+  if(absSideOffset>.07){
+    const shift=Math.min(box*.14,(absSideOffset-.07)*box*.85+box*.035);
+    if(sideOffset<0){
+      minX=Math.max(0,minX-shift);
+      maxX=Math.max(minX+1,maxX-shift*.72);
+    }else{
+      maxX=Math.min(c.width,maxX+shift);
+      minX=Math.min(maxX-1,minX+shift*.72);
+    }
   }
 
   const finalBox=Math.max(12,Math.max(maxX-minX,maxY-minY));
   const subjectX=((minX+maxX)/2)/c.width*image.naturalWidth,subjectY=((minY+maxY)/2)/c.height*image.naturalHeight;
   const subjectSize=finalBox/Math.min(c.width,c.height)*Math.min(image.naturalWidth,image.naturalHeight);
   const baseCrop=Math.min(image.naturalWidth,image.naturalHeight);
-  const zoom=Math.max(1.03,Math.min(2.42,baseCrop/Math.max(1,subjectSize)*1.035));
+  const zoom=Math.max(1.02,Math.min(2.40,baseCrop/Math.max(1,subjectSize)*1.025));
   const canvas=$("#cropCanvas"),base=Math.max(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight),scale=base*zoom;
   const x=(image.naturalWidth/2-subjectX)*scale,y=(image.naturalHeight/2-subjectY)*scale;
   return {zoom,x,y};
@@ -496,4 +525,4 @@ $("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=i
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-/* CCC cache stamp: v2.8.84 */
+/* CCC cache stamp: v2.8.85 */
