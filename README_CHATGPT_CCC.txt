@@ -850,3 +850,10 @@ CCC v2.8.92 – crop diagnostics (2026-08-10)
 - Diagnostiken visar källa, zoom, X/Y-förskjutning, bildens fyllnadsgrad i crop-rutan samt vänster/höger/topp/botten-marginal.
 - Diagnostiken uppdateras live när användaren drar eller zoomar.
 - Syftet är att mäta de fyra referenströjorna innan nästa crop-parameter ändras.
+
+CCC v2.8.93 – X-only optical centering (2026-08-10)
+- Bygger exakt vidare på v2.8.92/v2.8.91 crop-baslinje.
+- Endast en crop-ändring: om det detekterade motivets centrum ligger mer än ca 4 % från bildens horisontella centrum får cropen en mild X-korrigering mot motivet.
+- Zoom, Y-position, motivdetektion, crop-storlek och 20 % säkerhetspadding från v2.8.91 är oförändrade.
+- `Visa crop-data` från v2.8.92 finns kvar för jämförelse mot de fyra referenströjorna.
+- Alla senare stabilitetsfixar för activeItemId, rätt bild/text/crop, swipe och navigation är kvar.
