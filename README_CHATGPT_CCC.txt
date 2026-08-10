@@ -676,3 +676,12 @@ CCC v2.8.67 – kritisk fix: AI-resultatet stoppades av saknad funktion (2026-08
 - `applyLocalKnowledge()` är återinförd.
 - Den använder befintliga `CCC_VISION_KNOWLEDGE.bestMatch()` för att komplettera endast tomma fält; ett AI-resultat får alltid gå vidare även om kunskapslagret skulle ge fel.
 - Manuellt AI-resultat kan nu nå v2.8.66-flödet och fylla de tomma redigeringsfälten direkt.
+
+CCC v2.8.68 – originalbilder skrivs faktiskt bara en gång (2026-08-10)
+- Felsökning efter `Kunde inte spara – försök igen` visade ett implementationsfel i v2.8.63: trots normaliserad databas körde `saveVisionSessionLocally()` fortfarande `put()` på varje originalfil vid varje sessionssparning.
+- Dessutom kunde sessionssparningen starta en ny `put()` samtidigt som den första bakgrundsförlagringen av samma foto fortfarande pågick.
+- Varje plagg har nu `originalFileStored` + `originalFileSavePromise`. Om originalet redan är sparat görs ingen ny skrivning; om första skrivningen pågår avvaktas exakt samma promise.
+- Extra bilder använder samma modell per bild.
+- Återställda sessioner markeras direkt som redan lagrade eftersom filerna precis lästs från `vision-files`.
+- `Spara och fortsätt senare` uppdaterar därför i normalfallet endast den lilla sessionsposten efter att kända filskrivningar är klara.
+- Vid lagringsfel visar knappen nu även feltypen, t.ex. `QuotaExceededError`, så nästa fel kan identifieras direkt.
