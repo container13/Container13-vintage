@@ -690,3 +690,11 @@ CCC v2.8.69 – Tillbaka under förslagsvyn (2026-08-10)
 - Förslagsvyn behåller raden: papperskorg, Ändra, Godkänn & nästa.
 - En separat diskret `← Tillbaka` ligger direkt under raden.
 - Tillbaka går till plaggets/sessionens workspace, samma destination som headerns bakåtpil från förslagsvyn.
+
+CCC v2.8.70 – Publicera läser Vision-sessionen direkt (2026-08-10)
+- Första riktiga Vision → Publicera-kopplingen.
+- Publicera läser både explicita poster i `images` och bilderna/metadata i den aktiva lokala Vision-sessionen.
+- Poster slås ihop på samma `item.id`, så ett redan godkänt Publicera-utkast dupliceras inte.
+- Vision-originalet hämtas från `vision-files` och lämnas oförändrat.
+- Ingen WebP skapas när Publicera öppnas. WebP/beskärning ligger fortsatt i Publicera och skapas först i bildbearbetningssteget.
+- Lokala utkast visar nu även titel/plaggnummer ovanpå miniatyren för enklare test.
