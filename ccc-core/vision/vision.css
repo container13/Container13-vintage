@@ -2478,4 +2478,38 @@ body{min-height:100dvh}
   }
 }
 
-/* CCC cache stamp: v2.8.50 */
+/* CCC v2.8.51 – arbetsläge: hela gamla startkortswrappern tas ur layouten. */
+#visionStartHome[hidden]{
+  display:none!important;
+}
+#captureCard:has(#batchStrip:not([hidden])) #visionStartHome{
+  display:none!important;
+}
+
+/* CCC v2.8.52 – manuell AI-knapp får egen rad i redigeringsvyn.
+   När auto-AI är av ska knappen finnas kvar men aldrig överlappa formulärfält. */
+#editCard.compact-edit-stage{
+  grid-template-rows:auto auto auto minmax(0,1fr) auto auto!important;
+}
+#editCard .manual-ai-button{
+  position:static!important;
+  inset:auto!important;
+  width:100%!important;
+  min-height:42px!important;
+  margin:0!important;
+  padding:8px 12px!important;
+  align-self:stretch!important;
+  justify-self:stretch!important;
+  z-index:auto!important;
+  text-align:center!important;
+}
+#editCard .manual-ai-button[hidden]{
+  display:none!important;
+}
+#editCard .compact-edit-form{
+  min-height:0!important;
+  position:relative!important;
+  z-index:0!important;
+}
+
+/* CCC cache stamp: v2.8.52 */

@@ -130,11 +130,13 @@
     const help = $("#batchHelp");
     const addDetail = $("#addToSelectedBtn");
     const review = $("#showSuggestionBtn");
+    const startHome = $("#visionStartHome");
     const startActions = document.querySelector(".vision-start-actions");
     const workspaceToolbar = $("#workspaceToolbar");
     const workspaceCount = $("#workspaceCount");
 
     if (resume) resume.hidden = !(startMode && hasSession);
+    if (startHome) startHome.hidden = !startMode;
     if (startActions) startActions.hidden = !startMode;
     if (workspaceToolbar) workspaceToolbar.hidden = startMode || !hasSession;
     if (workspaceCount) {
@@ -1031,4 +1033,4 @@
   updateTextPreviews();
 })();
 
-/* CCC cache stamp: v2.8.50 */
+/* CCC cache stamp: v2.8.52 */
