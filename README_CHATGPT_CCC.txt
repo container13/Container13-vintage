@@ -819,3 +819,11 @@ CCC v2.8.86 – swipe-race fix + försiktig crop-bas för jämförelsetest (2026
 - Beskärningen görs medvetet mer försiktig inför 4-bildstestet: större säkerhetsmarginal, lägre sidförskjutning och max automatisk zoom 1.85.
 - Auto-crop prioriterar nu hellre lite extra bakgrund än att kapa en ärm. Manuell drag/pinch finns kvar för sista justeringen.
 - Mjuk/tyngre swipe från v2.8.84/v2.8.85 behålls.
+
+CCC v2.8.87 – rätt detaljbild + direkt tillbaka + balanserad crop (2026-08-10)
+- Grundorsaken till `rätt text men fel bild` hittad: `syncSwipeNeighbors()` kördes medan `detailView` fortfarande var hidden. Swipe-ytans bredd blev då ~0 px och nästa/föregående lager kunde hamna nästan ovanpå aktuell bild.
+- `openDetail()` visar nu detaljvyn först och synkar swipe-lagren i nästa animation frame när verklig bredd finns.
+- Aktuell bild har explicit z-index över grannbilder när vyn är centrerad.
+- Crop-pilen går nu direkt tillbaka till `Lokala utkast`/miniatyrgridden, inte via detaljvyn.
+- Auto-crop backar från v2.8.86:s alltför lösa maxzoom: max 2.08 och nära neutral zoomfaktor.
+- Ärmskydd sker främst genom starkare asymmetrisk omcentrering mot plaggets sida, så motsatt sida kan tappa mer skräp utan att ytterärmen offras.
