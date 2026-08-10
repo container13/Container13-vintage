@@ -176,7 +176,6 @@ input:focus, textarea:focus, select:focus { border-color: var(--gold); box-shado
 [hidden] { display: none !important; }
 
 @media (min-width: 560px) {
-  .app-header { padding-inline: 24px; }
   .vision-shell { margin-top:20px;gap:16px; }
   .card { padding: 22px; }
   .button-pair { grid-template-columns: 1fr 1fr; }
@@ -206,7 +205,6 @@ input:focus, textarea:focus, select:focus { border-color: var(--gold); box-shado
 .preview-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 9px; }
 .preview-heading button { min-height: 38px; padding: 7px 11px; border: 1px solid var(--border); border-radius: 10px; color: var(--text); background: var(--surface-2); font-weight: 800; }
 .preview-card p { margin: 0; color: var(--text); white-space: pre-wrap; line-height: 1.5; font-size: .9rem; }
-
 
 .demo-picker {
   display: grid;
@@ -434,7 +432,6 @@ input:focus, textarea:focus, select:focus { border-color: var(--gold); box-shado
   .store-product-copy { align-self: center; padding: 22px; }
 }
 
-
 /* v1.1: små hjälpmedel utan extra obligatoriska steg */
 .price-suggestion {
   display: flex;
@@ -522,14 +519,12 @@ body { overflow: hidden; }
 #captureCard, #visionCard, #previewCard { overflow:auto; overscroll-behavior:contain; }
 
 @media (max-height: 700px) {
-  .app-header { padding-top:calc(9px + env(safe-area-inset-top)); padding-bottom:9px; }
   .subtitle { display:none; }
   .card { padding:13px; }
   h1,h2 { font-size:1.25rem; }
   input, textarea { min-height:46px; }
   .description-label textarea { height:28dvh; min-height:120px; }
 }
-
 
 /* v1.3: kompakta arbetsvyer utan onödigt tomrum eller normal scroll */
 body { overflow: hidden; }
@@ -662,18 +657,12 @@ body { overflow: hidden; }
   .compact-edit-actions .secondary-button { min-height: 44px; }
 }
 
-
 /* v1.4: riktig mobilskärmslayout – innehållet anpassas till höjden */
 :root { --mobile-app-width: 430px; }
 
 body {
   min-height: 100dvh;
   overflow: hidden;
-}
-
-.app-header {
-  min-height: 62px;
-  padding: calc(9px + env(safe-area-inset-top)) 12px 9px;
 }
 .brand { font-size: 1rem; }
 .subtitle { font-size: .76rem; }
@@ -795,7 +784,6 @@ h1, h2 { font-size: clamp(1.16rem, 4.7vw, 1.48rem); }
 }
 
 @media (max-height: 720px) {
-  .app-header { min-height: 54px; padding-top: calc(6px + env(safe-area-inset-top)); padding-bottom: 6px; }
   .subtitle { display: none; }
   .card { padding: 9px; }
   .main-camera { height: clamp(175px, 34dvh, 225px); }
@@ -808,7 +796,6 @@ h1, h2 { font-size: clamp(1.16rem, 4.7vw, 1.48rem); }
 @media (min-width: 700px) {
   body { background: radial-gradient(circle at top, #2b2519 0, var(--bg) 420px); }
   }
-
 
 /* v1.5: större mobilappskal – full mobilbredd på telefon och tydlig storlek vid desktoptest */
 :root { --mobile-app-width: 500px; }
@@ -917,11 +904,6 @@ h1, h2 {
 body {
   min-height: 100dvh;
   overflow: hidden;
-}
-
-.app-header {
-  min-height: 64px;
-  padding: calc(9px + env(safe-area-inset-top)) 14px 9px;
 }
 
 .stage-card.is-active,
@@ -1072,10 +1054,7 @@ body {
 
 /* Telefon: använd hela skärmen, inte ett litet centrerat desktopkort */
 @media (max-width: 540px) {
-  .app-header {
-    min-height: 60px;
-    padding-inline: 12px;
-  }
+  
   .stage-card.is-active,
   .stage-card:not([hidden]) {
     border-radius: 17px;
@@ -1085,7 +1064,7 @@ body {
 
 /* Kortare telefoner: minska bara luft och bild, inte text/tryckytor */
 @media (max-height: 700px) {
-  .app-header { min-height: 52px; }
+  
   #captureCard { grid-template-rows: auto minmax(165px, 1fr) auto auto; gap: 6px; }
   #captureCard .privacy-note { display: none; }
   #visionCard { gap: 8px; padding: 12px; }
@@ -1100,7 +1079,6 @@ body {
 @media (min-width: 700px) {
   }
 
-
 /* =========================================================
    CCC Vision v1.9 – äldre demoskal + tyst bakgrunds-Vision
    ========================================================= */
@@ -1114,14 +1092,7 @@ body {
 *{box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden}
 body{position:fixed;inset:0;background:var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text)}
-.app-header{
-  position:relative;top:auto;height:105px;min-height:105px;padding:10px 16px 12px;
-  display:flex;align-items:flex-end;justify-content:center;border:0;border-bottom:1px solid var(--border);
-  background:linear-gradient(180deg,#fff,var(--bg));backdrop-filter:none
-}
 .ccc-brand{position:relative;display:grid;place-items:center;color:inherit;text-decoration:none;line-height:1}
-.brand-halo{height:17px;color:var(--gold);font-size:22px;filter:drop-shadow(0 0 8px rgba(215,173,89,.45))}
-.brand-word{font-size:35px;font-weight:950;letter-spacing:.08em;color:var(--text)}
 .vision-name{position:absolute;left:16px;bottom:14px;color:var(--muted);font-weight:800;font-size:14px}
 .vision-version{font-size:11px;font-weight:800;color:var(--gold)}
 .card,.stage-card.is-active,.stage-card:not([hidden]){width:100%;height:100%;min-height:0;max-height:none;padding:14px;border:1px solid var(--border);border-radius:23px;background:var(--surface);box-shadow:0 10px 28px rgba(31,42,68,.055)}
@@ -1157,10 +1128,9 @@ body{position:fixed;inset:0;background:var(--bg);font-family:Inter,ui-sans-serif
 .camera-controls{min-height:110px;display:grid;place-items:center}.shutter-button{width:78px;height:78px;border-radius:50%;border:4px solid #fff;background:transparent;padding:6px}.shutter-button span{display:block;width:100%;height:100%;border-radius:50%;background:#fff}.shutter-button:active span{transform:scale(.9)}
 .camera-review-actions{display:grid;grid-template-columns:.8fr 1.2fr;gap:10px;padding:14px 4px 2px}.camera-review-actions button{min-height:56px;font-size:18px}
 
-@media (max-height:700px){
-  .app-header{height:86px;min-height:86px}.brand-word{font-size:31px}.vision-name,.app-header .icon-button{bottom:9px}.card{padding:11px}#captureCard{gap:6px}.gallery-link{min-height:38px}.selected-strip{min-height:50px}.selected-thumb{width:50px;height:50px}.privacy-note{display:none}
+@media (max-height:700px){.card{padding:11px}#captureCard{gap:6px}.gallery-link{min-height:38px}.selected-strip{min-height:50px}.selected-thumb{width:50px;height:50px}.privacy-note{display:none}
 }
-@media (min-width:700px){.app-header{height:112px;min-height:112px}.brand-word{font-size:42px}}
+@media (min-width:700px){}
 
 /* v1.9.1: keep native file inputs available to JS but invisible in UI */
 .visually-hidden {
@@ -1279,7 +1249,6 @@ body{position:fixed;inset:0;background:var(--bg);font-family:Inter,ui-sans-serif
 .done-actions { display: grid; gap: 10px; width: 100%; max-width: 360px; margin: 18px auto 0; }
 .done-dashboard-link { display: grid; place-items: center; text-decoration: none; }
 
-
 /* =========================================================
    CCC Vision v2.3 – designsynk med dashboard / CCC shared shell
    Endast visuellt skal. Kamera-, Vision- och local-first-logik oförändrad.
@@ -1311,10 +1280,6 @@ body{position:fixed;inset:0;background:var(--bg);font-family:Inter,ui-sans-serif
 }
 body{background:var(--bg);transition:background .2s ease,color .2s ease}
 
-.app-header .ccc-brand{display:inline-flex}
-.app-header .brand-halo{height:21px;font-size:25px;color:var(--gold)}
-.app-header .brand-word{font-family:Georgia,"Times New Roman",serif;font-size:39px;font-weight:400;letter-spacing:.04em;color:var(--gold)}
-
 .profile-menu{color:var(--text)}
 
 .card,.stage-card.is-active,.stage-card:not([hidden]){border-color:var(--border);background:var(--surface);box-shadow:0 12px 30px rgba(31,42,68,.055)}
@@ -1338,17 +1303,11 @@ body{background:var(--bg);transition:background .2s ease,color .2s ease}
 
 @media(max-width:480px){
 
-  .app-header .brand-word{font-size:35px}
-  .app-header .brand-halo{height:21px;font-size:25px}
-
 }
 @media(max-height:700px) and (max-width:480px){
 
   }
 @media(min-width:760px){
-
-  .app-header .brand-halo{font-size:38px;height:31px}
-  .app-header .brand-word{font-size:78px;letter-spacing:.055em}
 
 }
 
@@ -1364,11 +1323,9 @@ body{background:var(--bg);transition:background .2s ease,color .2s ease}
 /* v2.4: Vision använder samma app-shell som dashboard */
 html,body{margin:0;width:100%;min-height:100%;min-height:100dvh;background:var(--bg)!important}
 body{min-height:100dvh}
-.app-header{height:var(--ccc-header-height)!important}
 .vision-shell{min-height:calc(100dvh - var(--ccc-header-height));padding-bottom:calc(18px + env(safe-area-inset-bottom))}
 .capture-heading-tools-only{justify-content:flex-end;margin-bottom:12px}.capture-heading-tools-only>.visually-hidden{display:none!important}
 @media(max-width:480px){html,body{height:100%;overflow:hidden}.vision-shell{height:calc(100dvh - var(--ccc-header-height));min-height:0;overflow:hidden}.stage-card.is-active{max-height:100%;overflow:auto;overscroll-behavior:contain}}
-
 
 /* v2.5.1: ren Vision-start – foto, kamerarulle, tillbaka. */
 .vision-back-link {
@@ -1396,7 +1353,6 @@ body{min-height:100dvh}
 #captureCard .capture-heading-tools-only:has(#batchStrip[hidden]) {
   display: none;
 }
-
 
 /* v2.5.2: tre tydliga startkort med visuell hierarki. */
 #captureCard .vision-action-card {
@@ -1469,7 +1425,6 @@ body{min-height:100dvh}
   #captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery { height: 116px; }
   #captureCard:has(#batchStrip[hidden]) .vision-action-card--back { height: 70px; }
 }
-
 
 /* v2.5.4: Vision-start enligt mobiltest/mockup + kompakt toast/slutvy. */
 #captureCard:has(#batchStrip[hidden]) {
@@ -1555,7 +1510,6 @@ body{min-height:100dvh}
   #captureCard:has(#batchStrip[hidden]) .vision-action-card--back { height: 68px; min-height: 68px; }
   #captureCard .vision-action-copy small { font-size: .73rem; }
 }
-
 
 /* v2.5.5: tydligare frivilliga tillägg + fylligare Vision-start. */
 .compact-extras-row .optional-extras[open] {
@@ -1653,7 +1607,6 @@ body{min-height:100dvh}
   #captureCard:has(#batchStrip[hidden]) .vision-action-card--back { height: 68px; min-height: 68px; }
 }
 
-
 /* v2.5.6: Vision-start använder samma helskärmsprincip som Dashboard.
    Tre tydliga kort fyller arbetsytan; primärt, sekundärt, navigation. */
 #captureCard:has(#batchStrip[hidden]) {
@@ -1699,7 +1652,6 @@ body{min-height:100dvh}
   #captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery .vision-action-icon { font-size: 2.7rem; }
   #captureCard:has(#batchStrip[hidden]) .vision-action-card--gallery strong { font-size: 1.25rem; }
 }
-
 
 /* v2.5.7: Vision-starten ska använda Dashboard som visuellt facit.
    Startvalen ligger nu som fristående action-kort direkt på appbakgrunden,
@@ -1792,15 +1744,12 @@ body{min-height:100dvh}
 
 @media(max-width:480px){
   :root{--ccc-header-height:105px!important}
-
-.app-header .brand-word{font-size:35px!important}
   .vision-shell{
     height:calc(100dvh - var(--ccc-header-height));
     margin:0 auto;
     padding:8px 16px calc(12px + env(safe-area-inset-bottom));
   }
 }
-
 
 /* v2.5.9: tydlig modulidentitet utan att bryta Dashboard-formspråket. */
 .vision-module-marker {
@@ -1869,7 +1818,6 @@ body{min-height:100dvh}
     padding-top:4px;
   }
 }
-
 
 /* v2.5.10: modulrubriken centreras och matchar Arbetsyta rad för rad. */
 .vision-module-marker{align-items:center;text-align:center}
@@ -2091,20 +2039,16 @@ body{min-height:100dvh}
   .batch-thumb .thumb-status.is-ready{animation:none}
 }
 
-
 /* v2.7.6 – gemensam bakåtnavigering i headern och renare miniatyrer */
 .ccc-header-back svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .batch-thumb > span:not(.thumb-status){display:none!important}
 .capture-heading-tools-only:has(.capture-head-tools:empty){display:none}
 
-
 /* v2.7.7 – återställ Vision-layout efter headernavigation + kompakt mobilheader */
 @media(max-width:480px){
 
-.app-header .icon-button .icon,.app-header .icon-button svg{width:19px!important;height:19px!important}
-  .app-header .ccc-header-back svg{width:18px!important;height:18px!important}
+  
 }
-
 
 /* v2.7.9 – renare miniatyrhjälp + långsam analys utan för tidig timeout */
 .batch-help {
@@ -2120,7 +2064,6 @@ body{min-height:100dvh}
   opacity: .78;
 }
 
-
 /* v2.7.10 – AI arbetar tyst i bakgrunden; användaren kan redigera direkt under analys. */
 
 /* v2.7.11 – tydlig modulnavigation med explicit vy-state. */
@@ -2128,7 +2071,6 @@ body{min-height:100dvh}
   width:100%;
   margin-top:8px;
 }
-
 
 /* v2.7.12 – valbar AI-kostnad + manuell AI */
 .vision-module-marker{position:relative}
@@ -2212,7 +2154,6 @@ body{min-height:100dvh}
 /* v2.7.27 – CCC-loggan är alltid Hem/Dashboard */
 .ccc-home-link{cursor:pointer;-webkit-tap-highlight-color:transparent}
 
-
 /* CCC v2.8.5 – desktop följer Dashboardens kompakta arbetsyta.
    Mobilens redan fungerande layout lämnas orörd. */
 @media(min-width:760px){
@@ -2235,7 +2176,6 @@ body{min-height:100dvh}
   #captureCard:has(#batchStrip[hidden]) .vision-action-card--back .vision-action-icon{position:absolute;left:18px;font-size:30px;color:#c99b39}
   #captureCard:has(#batchStrip[hidden]) .vision-action-card--back .vision-action-copy strong{font-size:1.65rem;color:#5a39a1}
 }
-
 
 /* CCC v2.8.6 – tydligare hover + konsekvent Tillbaka-kort i Vision.
    Hover gäller desktop/pekdon; touchlayout påverkas inte. */
@@ -2285,7 +2225,6 @@ body{min-height:100dvh}
 
 }
 
-
 /* CCC v2.8.7 – gemensam logout-dialog. */
 .dialog{position:fixed;inset:0;z-index:150;display:grid;place-items:center;padding:20px;background:rgba(10,15,25,.45);backdrop-filter:blur(5px)}
 .dialog[hidden]{display:none}
@@ -2295,11 +2234,6 @@ body{min-height:100dvh}
 .dialog-actions button{min-height:48px;border-radius:14px;border:1px solid var(--ccc-border,var(--border));cursor:pointer}
 .dialog .button-secondary{background:transparent;color:var(--ccc-text,var(--text))}
 .dialog .button-primary{background:var(--ccc-gold,var(--gold));color:#16120a;border-color:transparent!important;font-weight:750}
-
-
-
-
-
 
 /* CCC v2.8.15 – Vision får inte överstyra CCC Core på startskärmen.
    Core äger header, arbetsbredd, grid, kortmått, ikon/text och desktopplacering. */
@@ -2468,4 +2402,7 @@ body{min-height:100dvh}
   }
 }
 
-/* CCC cache stamp: v2.8.40 */
+/* CCC v2.8.48 – gemensam header/brand ägs endast av Core.
+   Modulfilen får inte definiera .app-header, brand-word/halo eller CCC-aura-geometri. */
+
+/* CCC cache stamp: v2.8.48 */
