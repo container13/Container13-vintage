@@ -644,3 +644,19 @@ CCC v2.8.63 – normaliserad local-first-lagring för Vision/Publicera (2026-08-
 - Gamla v2-sessioner med Blob direkt i sessionen kan återställas och migreras automatiskt till `vision-files`.
 - Gamla Publicera-utkast som redan innehåller `originalBlob` fortsätter fungera.
 - `Spara och fortsätt senare` rapporterar nu IndexedDB-fel med `error.name` och `error.message` i konsol/meddelande i stället för enbart generisk feltext.
+
+CCC v2.8.64 – manuell `Analysera med AI` kan inte fastna permanent (2026-08-10)
+- Felsökning visade att nätverksanropet redan hade timeout, men stegen före fetch (FileReader, bilddekodning och skapandet av analyskopian) saknade timeout. På mobil kunde UI därför bli kvar på `Analyserar…` utan att fetch-timeouten någonsin startade.
+- FileReader och bilddekodning har nu 12 s timeout.
+- Analyskopian skapas asynkront via canvas.toBlob med 12 s timeout i stället för synkron toDataURL.
+- Hela AI-kedjan har dessutom en yttre säkerhetstimeout på 105 s.
+- `Analysera med AI` återställs alltid i `finally`, även vid oväntade fel, så knappen kan inte permanent låsas på `Analyserar…`.
+- Vid fel visas ett begripligt AI-fel och befintlig fallback-logik kan fortsätta.
+
+CCC v2.8.65 – manuell AI låst till rätt plagg (2026-08-10)
+- Grundorsak: `Analysera med AI` använde en gemensam DOM-knapp och efter await användes det föränderliga `currentIndex`. Om användaren bytte miniatyr medan analysen pågick kunde nästa plagg därför se ut att analysera eller få fel vy/status.
+- Varje plagg har nu egen `analysisInProgress`-status.
+- Manuell AI fångar plaggets stabila `item.id` när analysen startas.
+- Analysresultatet öppnas automatiskt endast om samma plagg fortfarande är markerat när analysen blir klar.
+- Byter användaren till nästa bild under tiden visas den bildens egen manuella status och `Analysera med AI`; den startar inte AI automatiskt.
+- Den gemensamma AI-knappens text/disabled-läge uppdateras endast för aktuellt valt plagg.
