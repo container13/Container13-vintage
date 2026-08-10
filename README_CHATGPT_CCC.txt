@@ -827,3 +827,12 @@ CCC v2.8.87 – rätt detaljbild + direkt tillbaka + balanserad crop (2026-08-10
 - Crop-pilen går nu direkt tillbaka till `Lokala utkast`/miniatyrgridden, inte via detaljvyn.
 - Auto-crop backar från v2.8.86:s alltför lösa maxzoom: max 2.08 och nära neutral zoomfaktor.
 - Ärmskydd sker främst genom starkare asymmetrisk omcentrering mot plaggets sida, så motsatt sida kan tappa mer skräp utan att ytterärmen offras.
+
+CCC v2.8.88 – single-source detail state + crop calibration (2026-08-10)
+- Detaljvyn har nu `activeItemId` som enda identitet för aktivt plagg.
+- Titel, metadata, huvudbild, swipe, crop, Behåll original och publiceringsstatus resolveras från samma aktiva item.
+- `activeIndex` synkas från `activeItemId` och används endast som positionsinformation i listan.
+- Swipe-commit uppdaterar item-id och index tillsammans; direkt miniatyrklick etablerar nytt aktivt item innan UI synkas.
+- Vid tillbaka till miniatyrgridden nollställs aktiv detaljidentitet.
+- Crop-algoritmen byts inte ut igen. v2.8.87-baslinjen kalibreras försiktigt: lägre max autozoom (1.96), mildare sidförskjutning och liten extra horisontell sleeve-safety.
+- Syftet med v2.8.88 är stabil grund inför de fyra fasta tröjtesterna, inte ny funktionalitet.
