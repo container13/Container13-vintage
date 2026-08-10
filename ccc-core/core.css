@@ -1375,4 +1375,8 @@ body{
   }
 }
 
-/* CCC cache stamp: v2.8.48 */
+/* CCC v2.8.49 – --ccc-header-height har EN ägare: Core.
+   Portrait, standalone/PWA, landscape och desktop får sina värden endast här.
+   Moduler ska använda var(--ccc-header-height), aldrig sätta variabeln själva. */
+
+/* CCC cache stamp: v2.8.49 */
