@@ -718,3 +718,10 @@ CCC v2.8.73 – städad Lokala utkast-vy (2026-08-10)
 - `renderGrid()` styr både `hidden` och `display`, så äldre CSS kan inte lämna tomstatusen synlig.
 - Miniatyrgridden börjar direkt under rubrik/antal utan reserverad tomstatus-yta.
 - Vision → Publicera-dataflödet och v2.8.71-bildvisningen behålls oförändrade.
+
+CCC v2.8.74 – valfri beskärning i Publicera (2026-08-10)
+- Beskärningsvyn visar CCC:s föreslagna kvadratiska utsnitt och hela originalet bakom som mörk/suddig referens.
+- Användaren kan dra/zooma och välja `Godkänn beskärning`.
+- Nytt val `Behåll original` hoppar över beskärningen men skapar ändå en max 1600 px WebP-kopia lokalt.
+- `Återställ förslag` återgår till CCC:s ursprungliga centrering.
+- Vision-originalet ändras aldrig. Publiceringskopian märks `webp-cropped` eller `webp-original`.
