@@ -632,3 +632,15 @@ CCC v2.8.62 – papperskorg + renare manuellt redigeringsläge (2026-08-10)
 - I AI-av/manuellt läge visas inte längre `Redigera medan CCC arbetar`; rubriken blir `Redigera plagg`.
 - Status-underraden döljs i manuellt läge.
 - `Analysera med AI` finns kvar som frivillt val när AI är tillgängligt.
+
+CCC v2.8.63 – normaliserad local-first-lagring för Vision/Publicera (2026-08-10)
+- Grundproblemet i v2.8.54–v2.8.62 åtgärdat: fotosessionen bäddar inte längre in alla originalbilder i en stor IndexedDB-post.
+- Databasen `ccc-local-workspace` uppgraderad till version 3 med separat store `vision-files`.
+- Varje originalbild sparas separat med stabil filnyckel (`<item-id>:main`); extra bilder får egna nycklar.
+- Vision-sessionen (`sessions`) innehåller bara små referenser och metadata: filnycklar, ordning, markerat plagg, redigeringar, AI-status/resultat och godkänd-status.
+- Publicera-utkast (`images`) innehåller också bara referens till originalbilden (`originalFileKey`) + publiceringsmetadata; originalet dupliceras inte där.
+- Publicera hydratiserar originalbilden från `vision-files` när utkastet öppnas.
+- När Publicera senare sparar crop/WebP tas den hydrerade `originalBlob` bort innan `images`-posten skrivs tillbaka, så originalet fortsätter lagras endast en gång.
+- Gamla v2-sessioner med Blob direkt i sessionen kan återställas och migreras automatiskt till `vision-files`.
+- Gamla Publicera-utkast som redan innehåller `originalBlob` fortsätter fungera.
+- `Spara och fortsätt senare` rapporterar nu IndexedDB-fel med `error.name` och `error.message` i konsol/meddelande i stället för enbart generisk feltext.
