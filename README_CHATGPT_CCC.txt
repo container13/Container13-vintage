@@ -698,3 +698,17 @@ CCC v2.8.70 – Publicera läser Vision-sessionen direkt (2026-08-10)
 - Vision-originalet hämtas från `vision-files` och lämnas oförändrat.
 - Ingen WebP skapas när Publicera öppnas. WebP/beskärning ligger fortsatt i Publicera och skapas först i bildbearbetningssteget.
 - Lokala utkast visar nu även titel/plaggnummer ovanpå miniatyren för enklare test.
+
+CCC v2.8.71 – Publicera visar lokala bilder robust på mobil/PWA (2026-08-10)
+- 4-utkast-räknaren i v2.8.70 visade att metadata/IndexedDB-kopplingen fungerade, men själva bildförhandsvisningen byggde på `URL.createObjectURL()` för persistenta Blob-filer.
+- Grid-miniatyrer skapas nu primärt som Data-URL från den lokala Blob-filen, vilket är robustare för lokala/persistenta bilder i iOS/PWA.
+- Detaljvyn återanvänder samma verifierade bildkälla.
+- Bildfel loggas med plagg-ID/MIME och gör ett enda fallback-försök.
+- Utkastskorten har minsta höjd så vi kan skilja ett renderingsfel från ett tomt grid.
+
+CCC v2.8.72 – Publicera Lokala utkast: topposition + bildfix samlad (2026-08-10)
+- Innehåller v2.8.71-fixen för robusta lokala bildförhandsvisningar.
+- `Lokala utkast`-vyn görs till en tydlig flex-kolumn där rubriken alltid ligger överst och miniatyrgridden fyller återstående yta.
+- Vid byte till `gridView` nollställs intern scroll och vyn scrollas till sin startposition.
+- Klick på `Lokala utkast` renderar gridden först och öppnar sedan vyn från toppen.
+- Fokus flyttas till bakåtknappen utan att orsaka scroll, vilket minskar risken att mobilwebbläsaren placerar rubriken längst ned.
