@@ -589,3 +589,16 @@ CCC v2.8.56 – Spara eller Spara & nästa (2026-08-10)
 - `Spara & nästa` sparar och går vidare enligt befintligt flöde.
 - Efter `Spara` kan användaren fortsätta redigera, gå tillbaka, välja annat plagg eller pausa hela fotosessionen.
 - Aktiv Vision-session synkas lokalt efter Spara så återupptagning behåller senaste status.
+
+CCC v2.8.57 – Spara & tillbaka (2026-08-10)
+- Redigeringsvyns gamla `Tillbaka` ersätts med `Spara & tillbaka`.
+- Knappen sparar aktuellt plagg lokalt via samma säkra save-path som `Spara`.
+- Efter lyckad sparning återgår Vision till arbetsvyn med miniatyrerna och samma fotosession.
+- `Spara` stannar kvar på aktuellt plagg.
+- `Spara & nästa` sparar och går vidare till nästa plagg.
+
+CCC v2.8.58 – förenklade sparval (2026-08-10)
+- Fristående `Spara` borttagen eftersom den sparade men stannade kvar på samma plagg utan tydlig nytta.
+- Redigeringsvyn har nu två tydliga val: `Spara & tillbaka` och `Spara & nästa`.
+- `Spara & tillbaka` sparar och återgår till Vision-arbetsvyn/miniatyrerna.
+- `Spara & nästa` sparar och öppnar nästa plagg.
