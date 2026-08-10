@@ -175,6 +175,9 @@ function setSwipeTransforms(offset=0,animate=false){
 }
 function syncSwipeNeighbors(){
   if(!items.length)return;
+  const current=items[activeIndex];
+  const currentSrc=current?.fullUrl||current?.thumbUrl||"";
+  $("#detailImage").src=currentSrc;
   $("#detailPrevImage").src=itemImageSrc(activeIndex-1);
   $("#detailNextImage").src=itemImageSrc(activeIndex+1);
   setSwipeTransforms(0,false);
@@ -202,6 +205,12 @@ function openDetailById(itemId){
 }
 function openDetail(index){
   if(!items.length)return;
+  if(swipeCommitTimer){
+    clearTimeout(swipeCommitTimer);
+    swipeCommitTimer=null;
+  }
+  swipeGesture=null;
+  swipeAnimating=false;
   activeIndex=normalizedIndex(index);
   const item=items[activeIndex];
   if(!item.fullUrl)item.fullUrl=item.thumbUrl||url(item.publishBlob||item.originalBlob||item.thumbnailBlob);
@@ -214,6 +223,7 @@ function next(delta){openDetail(activeIndex+delta);}
 
 let swipeGesture=null;
 let swipeAnimating=false;
+let swipeCommitTimer=null;
 
 $("#swipeArea").addEventListener("pointerdown",e=>{
   if(swipeAnimating||items.length<2)return;
@@ -280,7 +290,9 @@ function finishSwipe(e,cancelled=false){
   swipeAnimating=true;
   setSwipeTransforms(target,true);
 
-  window.setTimeout(()=>{
+  if(swipeCommitTimer)clearTimeout(swipeCommitTimer);
+  swipeCommitTimer=window.setTimeout(()=>{
+    swipeCommitTimer=null;
     const resolvedIndex=itemIndexById(targetItemId);
     if(resolvedIndex>=0)activeIndex=resolvedIndex;
     const item=items[activeIndex];
@@ -308,6 +320,10 @@ $("#publishedBtn").addEventListener("click",()=>show("publishedView"));
 $("#gridBack").addEventListener("click",()=>show("startView"));
 $("#publishedBack").addEventListener("click",()=>show("startView"));
 $("#detailBack").addEventListener("click",async()=>{
+  if(swipeCommitTimer){
+    clearTimeout(swipeCommitTimer);
+    swipeCommitTimer=null;
+  }
   swipeGesture=null;
   swipeAnimating=false;
   setSwipeTransforms(0,false);
@@ -349,7 +365,7 @@ function smartCropSuggestion(image){
   let minX=q(xs,.05),maxX=q(xs,.95),minY=q(ys,.04),maxY=q(ys,.96);
 
   const span=Math.max(maxX-minX,maxY-minY);
-  const pad=.16*span;
+  const pad=.20*span;
   minX=Math.max(0,minX-pad);maxX=Math.min(c.width,maxX+pad);
   minY=Math.max(0,minY-pad);maxY=Math.min(c.height,maxY+pad);
 
@@ -363,13 +379,13 @@ function smartCropSuggestion(image){
   const sideOffset=normalizedCenterX-.5;
   const absSideOffset=Math.abs(sideOffset);
   if(absSideOffset>.07){
-    const shift=Math.min(box*.14,(absSideOffset-.07)*box*.85+box*.035);
+    const shift=Math.min(box*.09,(absSideOffset-.07)*box*.55+box*.025);
     if(sideOffset<0){
       minX=Math.max(0,minX-shift);
-      maxX=Math.max(minX+1,maxX-shift*.72);
+      maxX=Math.max(minX+1,maxX-shift*.42);
     }else{
       maxX=Math.min(c.width,maxX+shift);
-      minX=Math.min(maxX-1,minX+shift*.72);
+      minX=Math.min(maxX-1,minX+shift*.42);
     }
   }
 
@@ -377,7 +393,9 @@ function smartCropSuggestion(image){
   const subjectX=((minX+maxX)/2)/c.width*image.naturalWidth,subjectY=((minY+maxY)/2)/c.height*image.naturalHeight;
   const subjectSize=finalBox/Math.min(c.width,c.height)*Math.min(image.naturalWidth,image.naturalHeight);
   const baseCrop=Math.min(image.naturalWidth,image.naturalHeight);
-  const zoom=Math.max(1.02,Math.min(2.40,baseCrop/Math.max(1,subjectSize)*1.025));
+  const rawZoom=baseCrop/Math.max(1,subjectSize);
+  // Conservative test baseline: CCC should prefer a little extra room over cutting a sleeve.
+  const zoom=Math.max(1,Math.min(1.85,rawZoom*.92));
   const canvas=$("#cropCanvas"),base=Math.max(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight),scale=base*zoom;
   const x=(image.naturalWidth/2-subjectX)*scale,y=(image.naturalHeight/2-subjectY)*scale;
   return {zoom,x,y};
@@ -525,4 +543,4 @@ $("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=i
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-/* CCC cache stamp: v2.8.85 */
+/* CCC cache stamp: v2.8.86 */
