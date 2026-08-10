@@ -400,22 +400,46 @@ function smartCropSuggestion(image){
   let minX=q(xs,.05),maxX=q(xs,.95),minY=q(ys,.04),maxY=q(ys,.96);
 
   const span=Math.max(maxX-minX,maxY-minY);
+
+  // v2.8.95 RC1: paired collar/shoulder lock.
+  // A V-neck / white neck opening can make the centre of the top edge disappear.
+  // If strong upper-edge points exist on BOTH sides of the subject at nearly the
+  // same height, treat them as one garment edge and keep that edge in the crop.
+  // This deliberately changes only minY; zoom/X/Y logic below remains unchanged.
+  const upperScoreFloor=54;
+  const shoulderReach=span*.46;
+  const innerGap=span*.035;
+  const upperWindow=minY+span*.12;
+  const leftUpper=use
+    .filter(p=>p[2]>=upperScoreFloor && p[0]>=cx-shoulderReach && p[0]<=cx-innerGap && p[1]<=upperWindow)
+    .map(p=>p[1]).sort((a,b)=>a-b);
+  const rightUpper=use
+    .filter(p=>p[2]>=upperScoreFloor && p[0]<=cx+shoulderReach && p[0]>=cx+innerGap && p[1]<=upperWindow)
+    .map(p=>p[1]).sort((a,b)=>a-b);
+
+  if(leftUpper.length>=2 && rightUpper.length>=2){
+    const leftTop=q(leftUpper,.12),rightTop=q(rightUpper,.12);
+    const pairedTolerance=span*.13;
+    if(Math.abs(leftTop-rightTop)<=pairedTolerance){
+      const pairedTop=Math.min(leftTop,rightTop);
+      if(pairedTop<minY){
+        minY=Math.max(0,pairedTop-span*.025);
+      }
+    }
+  }
+
   const pad=.20*span;
-  // RC1: ignore tiny detached fragments by trimming extreme top noise.
-  const topInset=((maxY-minY)<span*0.75)?0:span*0.04;
   minX=Math.max(0,minX-pad);maxX=Math.min(c.width,maxX+pad);
-  minY=Math.max(0,minY-pad+topInset);maxY=Math.min(c.height,maxY+pad);
+  minY=Math.max(0,minY-pad);maxY=Math.min(c.height,maxY+pad);
 
   const box=Math.max(12,Math.max(maxX-minX,maxY-minY));
   const subjectX=((minX+maxX)/2)/c.width*image.naturalWidth,subjectY=((minY+maxY)/2)/c.height*image.naturalHeight;
   const subjectSize=box/Math.min(c.width,c.height)*Math.min(image.naturalWidth,image.naturalHeight);
   const baseCrop=Math.min(image.naturalWidth,image.naturalHeight);
   const zoom=Math.max(1.03,Math.min(2.45,baseCrop/Math.max(1,subjectSize)*1.04));
-  // RC1 top protection
-  if(topInset>0){ subjectY - 0; }
   const canvas=$("#cropCanvas"),base=Math.max(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight),scale=base*zoom;
   const x=(image.naturalWidth/2-subjectX)*scale,y=(image.naturalHeight/2-subjectY)*scale;
-  // v2.8.94: adaptive X-only optical centering.
+  // v2.8.94 adaptive X-centering retained unchanged.
   // Small imbalances are ignored; stronger off-centre subjects receive gradually
   // more correction. Zoom, Y, crop size and sleeve padding remain untouched.
   const subjectOffset=(subjectX-image.naturalWidth/2)/Math.max(1,image.naturalWidth);
@@ -505,7 +529,7 @@ async function openCrop(){
   else{
     cropState=smartCropSuggestion(cropImage);
     item.cropSuggestion={...cropState};
-    console.debug("[CCC Publicera] crop v2.8.94 adaptive X-centering",{id:item.id,zoom:cropState.zoom,x:cropState.x,y:cropState.y});
+    console.debug("[CCC Publicera] crop v2.8.95 RC1 paired-collar lock",{id:item.id,zoom:cropState.zoom,x:cropState.x,y:cropState.y});
   }
   $("#cropZoom").value=String(cropState.zoom);
   $("#cropOriginalPreview").src=item.thumbUrl||item.fullUrl;
@@ -656,4 +680,4 @@ $("#publishBtn").addEventListener("click",()=>{const item=activeItem();if(!item)
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-/* CCC cache stamp: v2.8.94 */
+/* CCC cache stamp: v2.8.95 */
