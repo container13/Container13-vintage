@@ -346,4 +346,40 @@
   }
 }
 
-/* CCC cache stamp: v2.8.77 */
+/* CCC v2.8.78 – tajtare motivförslag, pinch-zoom och fri Godkänn-knapp. */
+#cropView{
+  overflow-y:auto!important;
+  overscroll-behavior:contain;
+  padding-bottom:calc(18px + env(safe-area-inset-bottom));
+}
+#cropView .crop-preview{
+  margin-bottom:18px!important;
+}
+#cropView .crop-accept{
+  display:block!important;
+  position:relative!important;
+  z-index:1!important;
+  margin:18px 0 0!important;
+  min-height:54px!important;
+}
+#cropView .crop-choice-actions{
+  margin-top:12px!important;
+}
+#cropView .crop-note{
+  margin-top:10px!important;
+  padding-bottom:8px;
+}
+#cropCanvas{
+  touch-action:none!important;
+}
+@media (orientation:portrait) and (max-width:600px){
+  #cropView .crop-preview{
+    width:min(100%,520px)!important;
+    max-height:48dvh;
+  }
+  #cropView .crop-help{
+    margin-bottom:10px!important;
+  }
+}
+
+/* CCC cache stamp: v2.8.78 */

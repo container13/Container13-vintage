@@ -148,16 +148,26 @@ function smartCropSuggestion(image){
   }}
   if(!total||pts.length<20)return {zoom:1,x:0,y:0};
   cx/=total;cy/=total;
-  // Keep the salient cluster closest to the weighted subject center, rejecting remote page clutter.
-  const radius=Math.min(c.width,c.height)*.34, near=pts.filter(p=>Math.hypot(p[0]-cx,p[1]-cy)<=radius);
+  // Keep a tighter salient cluster around the weighted subject center.
+  // v2.8.78 deliberately rejects more surrounding page/UI clutter and lets the garment fill more of the crop.
+  const radius=Math.min(c.width,c.height)*.27, near=pts.filter(p=>Math.hypot(p[0]-cx,p[1]-cy)<=radius);
   const use=near.length>15?near:pts;
-  let minX=c.width,maxX=0,minY=c.height,maxY=0;
-  use.forEach(p=>{minX=Math.min(minX,p[0]);maxX=Math.max(maxX,p[0]);minY=Math.min(minY,p[1]);maxY=Math.max(maxY,p[1]);});
-  const pad=.18*Math.max(maxX-minX,maxY-minY), box=Math.max(12,Math.max(maxX-minX,maxY-minY)+2*pad);
+
+  // Trim extreme saliency outliers instead of letting one remote edge enlarge the whole box.
+  const xs=use.map(p=>p[0]).sort((a,b)=>a-b), ys=use.map(p=>p[1]).sort((a,b)=>a-b);
+  const q=(arr,f)=>arr[Math.max(0,Math.min(arr.length-1,Math.floor((arr.length-1)*f)))];
+  let minX=q(xs,.08),maxX=q(xs,.92),minY=q(ys,.06),maxY=q(ys,.94);
+
+  const span=Math.max(maxX-minX,maxY-minY);
+  const pad=.09*span;
+  minX=Math.max(0,minX-pad);maxX=Math.min(c.width,maxX+pad);
+  minY=Math.max(0,minY-pad);maxY=Math.min(c.height,maxY+pad);
+
+  const box=Math.max(12,Math.max(maxX-minX,maxY-minY));
   const subjectX=((minX+maxX)/2)/c.width*image.naturalWidth,subjectY=((minY+maxY)/2)/c.height*image.naturalHeight;
   const subjectSize=box/Math.min(c.width,c.height)*Math.min(image.naturalWidth,image.naturalHeight);
   const baseCrop=Math.min(image.naturalWidth,image.naturalHeight);
-  const zoom=Math.max(1,Math.min(2.65,baseCrop/Math.max(1,subjectSize)));
+  const zoom=Math.max(1.15,Math.min(3,baseCrop/Math.max(1,subjectSize)*1.22));
   const canvas=$("#cropCanvas"),base=Math.max(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight),scale=base*zoom;
   const x=(image.naturalWidth/2-subjectX)*scale,y=(image.naturalHeight/2-subjectY)*scale;
   return {zoom,x,y};
@@ -211,9 +221,72 @@ $("#keepOriginalBtn").addEventListener("click",async()=>{
   button.textContent=old;button.disabled=false;
 });
 $("#cropBack").addEventListener("click",()=>openDetail(activeIndex));$("#cropZoom").addEventListener("input",e=>{cropState.zoom=Number(e.target.value)||1;drawCrop();});$("#cropReset").addEventListener("click",()=>{const suggestion=items[activeIndex]?.cropSuggestion||smartCropSuggestion(cropImage);cropState={...suggestion};$("#cropZoom").value=String(cropState.zoom);drawCrop();});
-$("#cropCanvas").addEventListener("pointerdown",e=>{if(!cropState)return;e.currentTarget.setPointerCapture?.(e.pointerId);pointer={x:e.clientX,y:e.clientY,ox:cropState.x,oy:cropState.y};});
-$("#cropCanvas").addEventListener("pointermove",e=>{if(!pointer)return;const c=e.currentTarget,r=c.getBoundingClientRect();cropState.x=pointer.ox+(e.clientX-pointer.x)*(c.width/Math.max(1,r.width));cropState.y=pointer.oy+(e.clientY-pointer.y)*(c.height/Math.max(1,r.height));drawCrop();});
-["pointerup","pointercancel"].forEach(n=>$("#cropCanvas").addEventListener(n,()=>pointer=null));
+const cropPointers=new Map();
+let pinchStart=null;
+
+function pointerDistance(a,b){return Math.hypot(a.x-b.x,a.y-b.y);}
+function pointerMid(a,b){return{x:(a.x+b.x)/2,y:(a.y+b.y)/2};}
+
+$("#cropCanvas").addEventListener("pointerdown",e=>{
+  if(!cropState)return;
+  e.preventDefault();
+  e.currentTarget.setPointerCapture?.(e.pointerId);
+  cropPointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+
+  if(cropPointers.size===1){
+    pointer={id:e.pointerId,x:e.clientX,y:e.clientY,ox:cropState.x,oy:cropState.y};
+    pinchStart=null;
+  }else if(cropPointers.size===2){
+    const [a,b]=[...cropPointers.values()];
+    pinchStart={
+      distance:Math.max(1,pointerDistance(a,b)),
+      zoom:cropState.zoom,
+      x:cropState.x,
+      y:cropState.y,
+      mid:pointerMid(a,b)
+    };
+    pointer=null;
+  }
+},{passive:false});
+
+$("#cropCanvas").addEventListener("pointermove",e=>{
+  if(!cropState||!cropPointers.has(e.pointerId))return;
+  e.preventDefault();
+  cropPointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  const c=e.currentTarget,r=c.getBoundingClientRect();
+  const canvasPerCssX=c.width/Math.max(1,r.width),canvasPerCssY=c.height/Math.max(1,r.height);
+
+  if(cropPointers.size>=2&&pinchStart){
+    const [a,b]=[...cropPointers.values()].slice(0,2);
+    const distance=Math.max(1,pointerDistance(a,b));
+    const mid=pointerMid(a,b);
+    const newZoom=Math.max(1,Math.min(3,pinchStart.zoom*(distance/pinchStart.distance)));
+    cropState.zoom=newZoom;
+    cropState.x=pinchStart.x+(mid.x-pinchStart.mid.x)*canvasPerCssX;
+    cropState.y=pinchStart.y+(mid.y-pinchStart.mid.y)*canvasPerCssY;
+    $("#cropZoom").value=String(newZoom);
+    drawCrop();
+    return;
+  }
+
+  if(pointer&&pointer.id===e.pointerId&&cropPointers.size===1){
+    cropState.x=pointer.ox+(e.clientX-pointer.x)*canvasPerCssX;
+    cropState.y=pointer.oy+(e.clientY-pointer.y)*canvasPerCssY;
+    drawCrop();
+  }
+},{passive:false});
+
+function endCropPointer(e){
+  cropPointers.delete(e.pointerId);
+  if(cropPointers.size===1){
+    const [id,p]=[...cropPointers.entries()][0];
+    pointer={id,x:p.x,y:p.y,ox:cropState?.x||0,oy:cropState?.y||0};
+  }else{
+    pointer=null;
+  }
+  pinchStart=null;
+}
+["pointerup","pointercancel","lostpointercapture"].forEach(n=>$("#cropCanvas").addEventListener(n,endCropPointer));
 $("#cropDone").addEventListener("click",async()=>{const item=items[activeIndex],g=geometry();if(!item||!g)return;const sx=Math.max(0,((g.w-g.c.width)/2-cropState.x)/g.scale),sy=Math.max(0,((g.h-g.c.height)/2-cropState.y)/g.scale),size=Math.min(cropImage.naturalWidth-sx,cropImage.naturalHeight-sy,g.c.width/g.scale),outSize=Math.max(1,Math.min(1600,Math.round(size))),out=document.createElement("canvas");out.width=out.height=outSize;out.getContext("2d",{alpha:false}).drawImage(cropImage,sx,sy,size,size,0,0,outSize,outSize);const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));item.publishBlob=blob;item.cropData={...cropState};item.imageProcessingState="webp-cropped";await put(persistenceRecord({...item,publishBlob:blob,cropData:item.cropData,imageProcessingState:item.imageProcessingState}));if(item.fullUrl){URL.revokeObjectURL(item.fullUrl);item.fullUrl=url(blob);}openDetail(activeIndex);});
 
 $("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=items[activeIndex].publishBlob?"Nästa steg kopplar den här WebP-bilden till Container13.":"Beskär bilden först så skapas publicerings-WebP lokalt.";if(!items[activeIndex].publishBlob)openCrop();});
@@ -236,4 +309,4 @@ $("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=i
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-/* CCC cache stamp: v2.8.77 */
+/* CCC cache stamp: v2.8.78 */
