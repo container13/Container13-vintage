@@ -783,3 +783,31 @@ CCC v2.8.82 – levande swipe mellan plagg i Publicera (2026-08-10)
 - Vertikal gest lämnas fri för vanlig scroll.
 - v2.8.81:s cache/förladdning används för grannbilderna så animationen inte behöver vänta på bildinläsning.
 - Byggd fortsatt på v2.8.79:s stabila beskärningsbas.
+
+CCC v2.8.83 – mjukare swipe + beskärningsfinputs (2026-08-10)
+- Levande swipe från v2.8.82 är kvar men avslut/återfjädring är mjukare: 340 ms och rundare easing.
+- Draget har lätt dämpning i ytterläget så övergången känns mindre mekanisk.
+- Swipe-tröskeln sänkt något till ca 23 % av bildbredden.
+- Beskärningen fortsätter på v2.8.79:s stabila heuristik, inte v2.8.80:s konturförsök.
+- Beskärningsförslaget har endast försiktig finputs: lite mer säkerhetsmarginal och något lägre automatisk zoom för att minska risken att ärmar kapas.
+- Portrait-previewn är marginellt mindre och Godkänn beskärning hålls tydligt i normalt vertikalt flöde under bilden.
+- Förladdning/cache från v2.8.81 är kvar.
+
+CCC v2.8.84 – tyngre swipe + sidberoende ärmsäkerhet (2026-08-10)
+- Swipe-animationen är nu 480 ms med mjukare inbromsning och mindre snärt.
+- Under själva draget följer bilden fingret nästan 1:1; motstånd kommer främst nära ytterläget.
+- Slutanimationen väntar 490 ms innan aktivt plagg byts, synkat med animationen.
+- Beskärningen bygger fortsatt på v2.8.83/v2.8.79-baslinjen som hittills fungerat bäst.
+- Ny sidberoende säkerhetsmarginal: om plaggets föreslagna motivcentrum ligger tydligt åt vänster/höger får samma yttersida extra horisontell luft.
+- Syftet är att minska risken att en fotbollströjas yttersta ärm kapas utan att ge alla centrerade plagg onödigt stor bakgrund.
+- Automatisk zoom sänks marginellt när säkerhetsmarginalen används.
+
+CCC v2.8.85 – stabil bildidentitet + asymmetrisk ärmsäkerhet (2026-08-10)
+- Miniatyrer öppnar nu utkast via stabilt `item.id` i stället för ett fångat numeriskt index.
+- Efter flera swipe och tillbaka till miniatyrerna renderas gridden om; klicket löser alltid aktuellt index från plaggets id.
+- Swipe låser också målplaggets id när animationen startar och löser indexet igen när animationen avslutas.
+- Detta förhindrar att fel bild kan öppnas efter en längre swipe-session.
+- Beskärningens ärmsäkerhet ändrad från symmetrisk extra marginal till asymmetrisk omcentrering.
+- Om plagget ligger åt vänster flyttas crop-förslaget vänster för att få med vänster ärm och samtidigt kapa mer skräp på höger sida; spegelvänt åt höger.
+- Automatisk zoom är marginellt försiktigare. Grundalgoritmen från v2.8.79/v2.8.83 behålls.
+- Den tyngre/mjukare swipen från v2.8.84 är kvar.
