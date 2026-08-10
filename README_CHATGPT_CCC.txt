@@ -843,3 +843,10 @@ CCC v2.8.91 – kontrollerad crop-rollback + en enda ändring (2026-08-10)
 - Endast en crop-ändring görs jämfört med v2.8.83: den befintliga säkerhetspaddingen ökas från 16 % till 20 % för lite mer luft kring ärmarna.
 - Ingen normal/svår-bild-klassificering, ingen tvåpassmotor och inga andra nya crop-regler finns med.
 - Syfte: testa en variabel i taget mot de fyra fasta fotbollströjorna.
+
+CCC v2.8.92 – crop diagnostics (2026-08-10)
+- Ingen ändring av crop-algoritmen jämfört med v2.8.91.
+- Ny utvecklingsknapp `Visa crop-data` i Anpassa bild.
+- Diagnostiken visar källa, zoom, X/Y-förskjutning, bildens fyllnadsgrad i crop-rutan samt vänster/höger/topp/botten-marginal.
+- Diagnostiken uppdateras live när användaren drar eller zoomar.
+- Syftet är att mäta de fyra referenströjorna innan nästa crop-parameter ändras.
