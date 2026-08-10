@@ -869,3 +869,7 @@ CCC v2.8.94 – adaptiv X-centrering (2026-08-10)
 
 RC1 2.8.95
 - top inset heuristic
+
+
+v2.8.95 RC1
+- Added RC1 shoulder-lock helper placeholder.
