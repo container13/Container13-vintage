@@ -17,6 +17,7 @@
   let cropImage = null;
   let cropState = null;
   let cropPointer = null;
+  let savedSessionSummary = null;
 
   const VISION_SETTING_DEFAULTS = { aiAuto: true, learnEdits: true };
   function readBoolSetting(key, fallback) {
@@ -130,12 +131,18 @@
     const help = $("#batchHelp");
     const addDetail = $("#addToSelectedBtn");
     const review = $("#showSuggestionBtn");
+    const saveSession = $("#saveSessionBtn");
     const startHome = $("#visionStartHome");
     const startActions = document.querySelector(".vision-start-actions");
     const workspaceToolbar = $("#workspaceToolbar");
     const workspaceCount = $("#workspaceCount");
 
-    if (resume) resume.hidden = !(startMode && hasSession);
+    const resumableCount = hasSession ? batchItems.length : Number(savedSessionSummary?.count || 0);
+    if (resume) {
+      resume.hidden = !(startMode && resumableCount > 0);
+      if (resumableCount > 0) resume.textContent = `Fortsätt fotosession – ${resumableCount} ${resumableCount === 1 ? "plagg" : "plagg"}`;
+    }
+    if (saveSession) saveSession.hidden = startMode || !hasSession;
     if (startHome) startHome.hidden = !startMode;
     if (startActions) startActions.hidden = !startMode;
     if (workspaceToolbar) workspaceToolbar.hidden = startMode || !hasSession;
@@ -150,6 +157,7 @@
       if (help) help.hidden = true;
       if (addDetail) addDetail.hidden = true;
       if (review) review.hidden = true;
+      if (saveSession) saveSession.hidden = true;
     }
     const cameraTitle = $("#startCameraBtn .action-copy strong");
     if (cameraTitle) cameraTitle.textContent = startMode ? "Ta ett foto" : (hasSession ? "Fota nästa plagg" : "Ta ett foto");
@@ -488,17 +496,174 @@
 
   function openWorkspaceDb() {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open("ccc-local-workspace", 1);
+      const request = indexedDB.open("ccc-local-workspace", 2);
       request.onupgradeneeded = () => {
         const db = request.result;
         if (!db.objectStoreNames.contains("images")) {
           const store = db.createObjectStore("images", { keyPath: "id" });
           store.createIndex("createdAt", "createdAt");
         }
+        if (!db.objectStoreNames.contains("sessions")) {
+          db.createObjectStore("sessions", { keyPath: "id" });
+        }
       };
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error);
     });
+  }
+
+  async function putVisionSessionRecord(record) {
+    const db = await openWorkspaceDb();
+    try {
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction("sessions", "readwrite");
+        tx.objectStore("sessions").put(record);
+        tx.oncomplete = resolve;
+        tx.onerror = () => reject(tx.error);
+      });
+    } finally {
+      db.close();
+    }
+  }
+
+  async function getVisionSessionRecord() {
+    const db = await openWorkspaceDb();
+    try {
+      return await new Promise((resolve, reject) => {
+        const tx = db.transaction("sessions", "readonly");
+        const request = tx.objectStore("sessions").get("vision-active");
+        request.onsuccess = () => resolve(request.result || null);
+        request.onerror = () => reject(request.error);
+      });
+    } finally {
+      db.close();
+    }
+  }
+
+  async function clearVisionSessionRecord() {
+    const db = await openWorkspaceDb();
+    try {
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction("sessions", "readwrite");
+        tx.objectStore("sessions").delete("vision-active");
+        tx.oncomplete = resolve;
+        tx.onerror = () => reject(tx.error);
+      });
+    } finally {
+      db.close();
+    }
+    savedSessionSummary = null;
+  }
+
+  function sessionFile(blob, name, type) {
+    if (!blob) return null;
+    try {
+      return new File([blob], name || `ccc-${uid()}.jpg`, { type: type || blob.type || "image/jpeg" });
+    } catch (_) {
+      blob.name = name || `ccc-${uid()}.jpg`;
+      return blob;
+    }
+  }
+
+  async function saveVisionSessionLocally() {
+    if (!batchItems.length) return false;
+    const items = batchItems.map((item) => ({
+      id: item.id,
+      originalBlob: item.file,
+      originalName: item.file?.name || `ccc-${item.id}.jpg`,
+      originalType: item.file?.type || "image/jpeg",
+      extraBlobs: [...(item.extraFiles || [])],
+      extraNames: (item.extraFiles || []).map((file, index) => file?.name || `ccc-${item.id}-extra-${index + 1}.jpg`),
+      extraTypes: (item.extraFiles || []).map((file) => file?.type || "image/jpeg"),
+      demoKey: item.demoKey,
+      approved: !!item.approved,
+      editedFields: item.editedFields || null,
+      visionReady: !!item.visionReady,
+      visionResult: item.visionResult || null,
+      analysisMode: item.analysisMode || "manual",
+      aiUsage: item.aiUsage || null,
+      aiModel: item.aiModel || "",
+      aiCostUsd: Number(item.aiCostUsd || 0),
+      aiCostSek: Number(item.aiCostSek || 0),
+      cropData: item.cropData || null
+    }));
+    const record = {
+      id: "vision-active",
+      savedAt: new Date().toISOString(),
+      currentIndex,
+      count: items.length,
+      items
+    };
+    await putVisionSessionRecord(record);
+    savedSessionSummary = { count: items.length, savedAt: record.savedAt };
+    saveBatchMetadata();
+    return true;
+  }
+
+  async function refreshSavedSessionSummary() {
+    try {
+      const record = await getVisionSessionRecord();
+      savedSessionSummary = record?.items?.length
+        ? { count: record.items.length, savedAt: record.savedAt }
+        : null;
+    } catch (error) {
+      console.warn("[CCC Vision] Kunde inte läsa sparad fotosession", error);
+      savedSessionSummary = null;
+    }
+    applyCaptureMode();
+  }
+
+  async function restoreSavedVisionSession() {
+    const record = await getVisionSessionRecord();
+    if (!record?.items?.length) {
+      savedSessionSummary = null;
+      showVisionStart();
+      return;
+    }
+
+    batchItems.forEach((item) => {
+      if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
+      (item.extraUrls || []).forEach((url) => URL.revokeObjectURL(url));
+    });
+
+    batchItems = record.items.map((saved) => {
+      const file = sessionFile(saved.originalBlob, saved.originalName, saved.originalType);
+      const extraFiles = (saved.extraBlobs || []).map((blob, index) =>
+        sessionFile(blob, saved.extraNames?.[index], saved.extraTypes?.[index])
+      ).filter(Boolean);
+      return {
+        id: saved.id || uid(),
+        file,
+        previewUrl: fileUrl(file),
+        extraFiles,
+        extraUrls: extraFiles.map(fileUrl),
+        demoKey: saved.demoKey || "arsenal",
+        visionReady: !!saved.visionReady,
+        visionResult: saved.visionResult || null,
+        approved: !!saved.approved,
+        editedFields: saved.editedFields || null,
+        analysisPromise: null,
+        analysisMode: saved.analysisMode || "manual",
+        aiUsage: saved.aiUsage || null,
+        aiModel: saved.aiModel || "",
+        aiCostUsd: Number(saved.aiCostUsd || 0),
+        aiCostSek: Number(saved.aiCostSek || 0),
+        publishFile: null,
+        publishUrl: null,
+        cropData: saved.cropData || null
+      };
+    });
+
+    currentIndex = Math.min(Number(record.currentIndex || 0), Math.max(0, batchItems.length - 1));
+    savedSessionSummary = { count: batchItems.length, savedAt: record.savedAt };
+
+    batchItems.forEach((item) => {
+      if (!item.visionReady && item.analysisMode !== "manual" && visionSettings().aiAuto) {
+        startSilentAnalysis(item, true);
+      }
+    });
+
+    showWorkspace();
   }
 
   async function createVisionThumbnail(file, maxSize = 360, quality = .78) {
@@ -699,6 +864,7 @@
   }
 
   function finishBatch() {
+    clearVisionSessionRecord().catch((error) => console.warn("[CCC Vision] Kunde inte rensa avslutad fotosession", error));
     const approved = batchItems.filter((item) => item.approved).length;
     $("#seriesDoneText").textContent = `${approved} ${approved === 1 ? "plagg är" : "plagg är"} ${approved === 1 ? "klart" : "klara"} att publiceras.`;
     renderReadyPublishList();
@@ -960,7 +1126,41 @@
   $("#startCameraBtn").addEventListener("click", startCamera);
   $("#galleryBtn").addEventListener("click", () => $("#galleryInput").click());
   $("#headerBackBtn")?.addEventListener("click", goBackFromVision);
-  $("#resumeSessionBtn")?.addEventListener("click", showWorkspace);
+  $("#resumeSessionBtn")?.addEventListener("click", async () => {
+    if (batchItems.length) showWorkspace();
+    else {
+      const button = $("#resumeSessionBtn");
+      if (button) { button.disabled = true; button.textContent = "Öppnar fotosession…"; }
+      try { await restoreSavedVisionSession(); }
+      catch (error) {
+        console.error("[CCC Vision] Kunde inte återställa fotosession", error);
+        if (button) button.textContent = "Kunde inte öppna fotosessionen";
+      } finally {
+        if (button) button.disabled = false;
+      }
+    }
+  });
+  $("#saveSessionBtn")?.addEventListener("click", async () => {
+    const button = $("#saveSessionBtn");
+    if (!batchItems.length || !button) return;
+    button.disabled = true;
+    const originalText = "Spara och fortsätt senare";
+    button.textContent = "Sparar lokalt…";
+    try {
+      await saveVisionSessionLocally();
+      button.textContent = "Sparat ✓";
+      setTimeout(() => {
+        showVisionStart();
+        applyCaptureMode();
+        button.textContent = originalText;
+        button.disabled = false;
+      }, 650);
+    } catch (error) {
+      console.error("[CCC Vision] Kunde inte spara fotosession", error);
+      button.textContent = "Kunde inte spara – försök igen";
+      button.disabled = false;
+    }
+  });
   $("#galleryInput").addEventListener("change", (event) => handleGalleryFiles(event.target.files));
   $("#cameraFallbackInput").addEventListener("change", (event) => handleFallbackCamera(event.target.files));
   $("#closeCameraBtn").addEventListener("click", closeCamera);
@@ -1028,9 +1228,10 @@
   if ($("#approveBtn")) $("#approveBtn").addEventListener("click", finishBatch);
 
   showVisionStart();
+  refreshSavedSessionSummary();
   refreshCostUi();
   updateCounters();
   updateTextPreviews();
 })();
 
-/* CCC cache stamp: v2.8.52 */
+/* CCC cache stamp: v2.8.54 */

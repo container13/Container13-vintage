@@ -2512,4 +2512,209 @@ body{min-height:100dvh}
   z-index:0!important;
 }
 
-/* CCC cache stamp: v2.8.52 */
+/* CCC v2.8.53 – kompakt scrollfri Vision-redigering i mobil portrait.
+   Prioritet: få hela kärnflödet på skärmen innan intern scroll används. */
+@media (orientation:portrait) and (max-width:480px){
+  #editCard.compact-edit-stage{
+    gap:5px!important;
+    padding:10px 12px!important;
+    grid-template-rows:auto auto auto minmax(0,1fr) auto!important;
+    align-content:start!important;
+    overflow:hidden!important;
+  }
+
+  #editCard .compact-edit-head{
+    min-height:34px!important;
+    margin:0!important;
+    align-items:center!important;
+  }
+  #editCard .compact-edit-head h2{
+    margin:0!important;
+    font-size:1.34rem!important;
+    line-height:1.05!important;
+  }
+  #editCard .compact-edit-head .pill{
+    min-height:30px!important;
+    padding:5px 10px!important;
+    font-size:.72rem!important;
+  }
+
+  #editCard .mini-context{
+    min-height:50px!important;
+    padding:6px 8px!important;
+    grid-template-columns:42px minmax(0,1fr)!important;
+    gap:8px!important;
+    border-radius:13px!important;
+  }
+  #editCard .mini-context .product-thumbnail{
+    width:42px!important;
+    height:42px!important;
+  }
+  #editCard .mini-context strong{
+    font-size:.84rem!important;
+    line-height:1.12!important;
+  }
+
+  #editCard .manual-ai-button{
+    min-height:34px!important;
+    padding:3px 8px!important;
+    margin:0!important;
+    font-size:.86rem!important;
+    line-height:1!important;
+  }
+
+  #editCard .compact-edit-form{
+    gap:4px!important;
+    min-height:0!important;
+  }
+  #editCard .compact-edit-form label{
+    gap:2px!important;
+  }
+  #editCard .compact-edit-form label > span{
+    font-size:.69rem!important;
+    line-height:1!important;
+  }
+  #editCard .compact-edit-form input,
+  #editCard .compact-edit-form textarea{
+    min-height:38px!important;
+    padding:6px 9px!important;
+    font-size:.88rem!important;
+    border-radius:12px!important;
+  }
+  #editCard .title-field input{
+    height:38px!important;
+  }
+  #editCard .compact-edit-form .field-help{
+    margin-top:-1px!important;
+    font-size:.67rem!important;
+    line-height:1!important;
+  }
+
+  #editCard .price-row{
+    gap:6px!important;
+  }
+  #editCard .price-input{
+    min-height:38px!important;
+  }
+  #editCard .price-input input{
+    height:38px!important;
+  }
+  #editCard .price-quick-button{
+    min-height:38px!important;
+    padding:5px 8px!important;
+  }
+  #editCard .price-quick-button small{
+    font-size:.62rem!important;
+    line-height:1!important;
+  }
+  #editCard .price-quick-button strong{
+    font-size:.86rem!important;
+    line-height:1.05!important;
+  }
+
+  #editCard .compact-description-field textarea{
+    height:62px!important;
+    min-height:62px!important;
+    resize:none!important;
+  }
+
+  #editCard .compact-extras-row{
+    gap:6px!important;
+  }
+  #editCard .compact-options > summary{
+    min-height:36px!important;
+    padding:7px 9px!important;
+    font-size:.72rem!important;
+    line-height:1.05!important;
+  }
+
+  #editCard .compact-edit-actions{
+    position:static!important;
+    margin:0!important;
+    gap:6px!important;
+    align-self:end!important;
+    grid-template-columns:.78fr 1.22fr!important;
+  }
+  #editCard .compact-edit-actions .primary-button,
+  #editCard .compact-edit-actions .secondary-button{
+    min-height:40px!important;
+    height:40px!important;
+    padding:7px 9px!important;
+    font-size:.86rem!important;
+  }
+
+  #editCard > .message{
+    display:none!important;
+  }
+}
+
+/* Extra kompakt på låga portrait-skärmar, utan att gömma funktioner. */
+@media (orientation:portrait) and (max-width:480px) and (max-height:760px){
+  #editCard.compact-edit-stage{
+    gap:4px!important;
+    padding:8px 10px!important;
+  }
+  #editCard .mini-context{
+    min-height:44px!important;
+    grid-template-columns:36px minmax(0,1fr)!important;
+    padding:4px 7px!important;
+  }
+  #editCard .mini-context .product-thumbnail{
+    width:36px!important;
+    height:36px!important;
+  }
+  #editCard .manual-ai-button{
+    min-height:30px!important;
+    font-size:.8rem!important;
+  }
+  #editCard .compact-description-field textarea{
+    height:54px!important;
+    min-height:54px!important;
+  }
+  #editCard .compact-options > summary{
+    min-height:32px!important;
+    padding:5px 8px!important;
+  }
+  #editCard .compact-edit-actions .primary-button,
+  #editCard .compact-edit-actions .secondary-button{
+    min-height:36px!important;
+    height:36px!important;
+  }
+}
+
+/* CCC v2.8.54 – lokal paus/återuppta för Vision-fotosessioner. */
+.vision-save-session-button{
+  width:100%;
+  min-height:42px;
+  margin:8px 0 0;
+  padding:8px 12px;
+  text-align:center;
+  border:1px solid var(--ccc-border,var(--border));
+  border-radius:14px;
+  color:var(--ccc-muted,var(--muted));
+  background:transparent;
+}
+.vision-save-session-button[hidden]{
+  display:none!important;
+}
+.vision-resume-button{
+  width:100%;
+  max-width:720px;
+  margin:10px auto 0;
+  min-height:46px;
+  padding:9px 14px;
+  text-align:center;
+  border:1px solid color-mix(in srgb,var(--ccc-gold,var(--gold)) 45%,transparent);
+  border-radius:14px;
+  color:var(--ccc-gold,var(--gold));
+  background:color-mix(in srgb,var(--ccc-gold,var(--gold)) 8%,transparent);
+}
+@media (orientation:portrait) and (max-width:480px){
+  #captureCard:has(#batchStrip:not([hidden])) .vision-save-session-button{
+    min-height:38px;
+    margin-top:6px;
+    font-size:.78rem;
+  }
+}
+
+/* CCC cache stamp: v2.8.54 */
