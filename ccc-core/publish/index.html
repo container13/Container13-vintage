@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f7f7f9">
 <meta name="color-scheme" content="light dark">
-<link rel="manifest" href="../manifest.webmanifest?v=2.8.81">
+<link rel="manifest" href="../manifest.webmanifest?v=2.8.82">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>CCC Publicera v2.8.81</title>
+<title>CCC Publicera v2.8.82</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-<link rel="stylesheet" href="../dashboard/dashboard.css?v=2.8.81">
-<link rel="stylesheet" href="publish.css?v=2.8.81">
-<link rel="stylesheet" href="../core.css?v=2.8.81">
+<link rel="stylesheet" href="../dashboard/dashboard.css?v=2.8.82">
+<link rel="stylesheet" href="publish.css?v=2.8.82">
+<link rel="stylesheet" href="../core.css?v=2.8.82">
 </head>
 <body>
 <div class="app-shell ccc-app-shell publish-shell">
@@ -83,7 +83,9 @@
     <section id="detailView" class="publish-view" hidden>
       <div class="detail-top"><button id="detailBack" class="publish-back" type="button" aria-label="Till miniatyrer">‹</button><div class="detail-counter" id="detailCounter"></div></div>
       <div id="swipeArea" class="swipe-area">
-        <img id="detailImage" alt="Valt plagg">
+        <img id="detailPrevImage" class="swipe-image swipe-image-prev" alt="" aria-hidden="true">
+        <img id="detailImage" class="swipe-image swipe-image-current" alt="Valt plagg">
+        <img id="detailNextImage" class="swipe-image swipe-image-next" alt="" aria-hidden="true">
         <span class="swipe-hint left" aria-hidden="true">‹</span><span class="swipe-hint right" aria-hidden="true">›</span>
       </div>
       <div class="detail-copy"><strong id="detailTitle"></strong><span id="detailMeta"></span></div>
@@ -121,9 +123,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.8.81"></script>
-<script type="module" src="../core.js?v=2.8.81"></script>
-  <script src="../version.js?v=2.8.81"></script>
-<script src="../pwa.js?v=2.8.81" defer></script>
+<script type="module" src="publish.js?v=2.8.82"></script>
+<script type="module" src="../core.js?v=2.8.82"></script>
+  <script src="../version.js?v=2.8.82"></script>
+<script src="../pwa.js?v=2.8.82" defer></script>
 </body>
 </html>

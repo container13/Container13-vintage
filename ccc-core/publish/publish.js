@@ -151,11 +151,134 @@ async function renderGrid(){
     grid.append(b);
   }
 }
-function openDetail(index){if(!items.length)return;activeIndex=(index+items.length)%items.length;const item=items[activeIndex];if(!item.fullUrl)item.fullUrl=item.thumbUrl||url(item.publishBlob||item.originalBlob||item.thumbnailBlob);$("#detailImage").src=item.fullUrl;$("#detailTitle").textContent=title(item,activeIndex);$("#detailMeta").textContent=[item.brand,item.size&&`Storlek ${item.size}`,item.price&&`${item.price} kr`].filter(Boolean).join(" · ");$("#detailCounter").textContent=`${activeIndex+1} av ${items.length}`;$("#publishStatus").textContent=item.publishBlob?"Bilden är beskuren och klar som WebP.":"";preloadNeighbors(activeIndex);show("detailView");}
+function normalizedIndex(index){
+  return items.length ? (index+items.length)%items.length : 0;
+}
+function itemImageSrc(index){
+  if(!items.length)return "";
+  const item=items[normalizedIndex(index)];
+  return item?.fullUrl||item?.thumbUrl||"";
+}
+function setSwipeTransforms(offset=0,animate=false){
+  const area=$("#swipeArea");
+  if(!area)return;
+  const width=Math.max(1,area.clientWidth);
+  const prev=$("#detailPrevImage"),current=$("#detailImage"),nextImg=$("#detailNextImage");
+  [prev,current,nextImg].forEach(img=>{
+    img.style.transition=animate?"transform 260ms cubic-bezier(.22,.72,.24,1)":"none";
+  });
+  prev.style.transform=`translate3d(${offset-width}px,0,0)`;
+  current.style.transform=`translate3d(${offset}px,0,0)`;
+  nextImg.style.transform=`translate3d(${offset+width}px,0,0)`;
+}
+function syncSwipeNeighbors(){
+  if(!items.length)return;
+  $("#detailPrevImage").src=itemImageSrc(activeIndex-1);
+  $("#detailNextImage").src=itemImageSrc(activeIndex+1);
+  setSwipeTransforms(0,false);
+  preloadNeighbors(activeIndex);
+}
+function updateDetailCopy(){
+  const item=items[activeIndex];
+  if(!item)return;
+  $("#detailTitle").textContent=title(item,activeIndex);
+  $("#detailMeta").textContent=[item.brand,item.size&&`Storlek ${item.size}`,item.price&&`${item.price} kr`].filter(Boolean).join(" · ");
+  $("#detailCounter").textContent=`${activeIndex+1} av ${items.length}`;
+  $("#publishStatus").textContent=item.publishBlob?"Bilden är beskuren och klar som WebP.":"";
+}
+function openDetail(index){
+  if(!items.length)return;
+  activeIndex=normalizedIndex(index);
+  const item=items[activeIndex];
+  if(!item.fullUrl)item.fullUrl=item.thumbUrl||url(item.publishBlob||item.originalBlob||item.thumbnailBlob);
+  $("#detailImage").src=item.fullUrl;
+  updateDetailCopy();
+  syncSwipeNeighbors();
+  show("detailView");
+}
 function next(delta){openDetail(activeIndex+delta);}
-let touchStart=null;
-$("#swipeArea").addEventListener("pointerdown",e=>{touchStart={x:e.clientX,y:e.clientY};});
-$("#swipeArea").addEventListener("pointerup",e=>{if(!touchStart)return;const dx=e.clientX-touchStart.x,dy=e.clientY-touchStart.y;touchStart=null;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.25)next(dx<0?1:-1);});
+
+let swipeGesture=null;
+let swipeAnimating=false;
+
+$("#swipeArea").addEventListener("pointerdown",e=>{
+  if(swipeAnimating||items.length<2)return;
+  if(e.pointerType==="mouse"&&e.button!==0)return;
+  const area=e.currentTarget;
+  area.setPointerCapture?.(e.pointerId);
+  swipeGesture={
+    id:e.pointerId,
+    startX:e.clientX,
+    startY:e.clientY,
+    dx:0,
+    horizontal:false
+  };
+  setSwipeTransforms(0,false);
+});
+
+$("#swipeArea").addEventListener("pointermove",e=>{
+  if(!swipeGesture||swipeGesture.id!==e.pointerId||swipeAnimating)return;
+  const dx=e.clientX-swipeGesture.startX;
+  const dy=e.clientY-swipeGesture.startY;
+
+  if(!swipeGesture.horizontal){
+    if(Math.abs(dx)<8&&Math.abs(dy)<8)return;
+    if(Math.abs(dy)>Math.abs(dx)*1.15){
+      swipeGesture=null;
+      return;
+    }
+    swipeGesture.horizontal=true;
+  }
+
+  e.preventDefault();
+  const width=Math.max(1,e.currentTarget.clientWidth);
+  // Mild resistance after one full image width.
+  const limited=Math.sign(dx)*Math.min(Math.abs(dx),width*1.08);
+  swipeGesture.dx=limited;
+  setSwipeTransforms(limited,false);
+},{passive:false});
+
+function finishSwipe(e,cancelled=false){
+  if(!swipeGesture||swipeGesture.id!==e.pointerId)return;
+  const gesture=swipeGesture;
+  swipeGesture=null;
+
+  if(!gesture.horizontal||cancelled){
+    setSwipeTransforms(0,true);
+    return;
+  }
+
+  const area=$("#swipeArea");
+  const width=Math.max(1,area.clientWidth);
+  const threshold=width*.26;
+
+  if(Math.abs(gesture.dx)<threshold){
+    setSwipeTransforms(0,true);
+    return;
+  }
+
+  const delta=gesture.dx<0?1:-1;
+  const target=gesture.dx<0?-width:width;
+  swipeAnimating=true;
+  setSwipeTransforms(target,true);
+
+  window.setTimeout(()=>{
+    activeIndex=normalizedIndex(activeIndex+delta);
+    const item=items[activeIndex];
+    if(!item.fullUrl)item.fullUrl=item.thumbUrl||url(item.publishBlob||item.originalBlob||item.thumbnailBlob);
+    $("#detailImage").src=item.fullUrl;
+    updateDetailCopy();
+    syncSwipeNeighbors();
+    swipeAnimating=false;
+  },270);
+}
+
+$("#swipeArea").addEventListener("pointerup",e=>finishSwipe(e,false));
+$("#swipeArea").addEventListener("pointercancel",e=>finishSwipe(e,true));
+$("#swipeArea").addEventListener("lostpointercapture",e=>{
+  if(swipeGesture?.id===e.pointerId)finishSwipe(e,true);
+});
+
 $("#draftsBtn").addEventListener("click",async()=>{
   await renderGrid();
   preloadNeighbors(0);
@@ -357,4 +480,4 @@ $("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=i
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-/* CCC cache stamp: v2.8.81 */
+/* CCC cache stamp: v2.8.82 */
