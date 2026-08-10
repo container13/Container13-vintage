@@ -602,3 +602,11 @@ CCC v2.8.58 – förenklade sparval (2026-08-10)
 - Redigeringsvyn har nu två tydliga val: `Spara & tillbaka` och `Spara & nästa`.
 - `Spara & tillbaka` sparar och återgår till Vision-arbetsvyn/miniatyrerna.
 - `Spara & nästa` sparar och öppnar nästa plagg.
+
+CCC v2.8.59 – manuellt Vision-läge städat + återredigering (2026-08-10)
+- När valt plagg körs i manuellt läge (`Automatisk AI-analys` av) döljs `Visa förslag` helt.
+- Manuella plagg öppnas direkt från miniatyren i redigeringsvyn.
+- `approved` betyder nu bara att plagget är sparat till Publicera; det låser inte plagget i Vision.
+- Ett redan sparat manuellt plagg kan öppnas, ändras och `Spara & tillbaka` hur många gånger som helst.
+- Samma `item.id` används vid IndexedDB `put()`, så senare sparning uppdaterar befintlig lokal Publicera-post i stället för att skapa en dubblett.
+- Sparade manuella plagg får en bock i miniatyren utan att markeras som AI-analyserade.
