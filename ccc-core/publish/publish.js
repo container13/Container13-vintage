@@ -214,10 +214,16 @@ function openDetail(index){
   activeIndex=normalizedIndex(index);
   const item=items[activeIndex];
   if(!item.fullUrl)item.fullUrl=item.thumbUrl||url(item.publishBlob||item.originalBlob||item.thumbnailBlob);
+
+  /* Visa detaljvyn först. När den var hidden var swipeArea ~0 px bred,
+     vilket kunde placera nästa bild ovanpå den valda trots rätt item/text. */
   $("#detailImage").src=item.fullUrl;
   updateDetailCopy();
-  syncSwipeNeighbors();
   show("detailView");
+  requestAnimationFrame(()=>{
+    syncSwipeNeighbors();
+    requestAnimationFrame(()=>setSwipeTransforms(0,false));
+  });
 }
 function next(delta){openDetail(activeIndex+delta);}
 
@@ -230,6 +236,7 @@ $("#swipeArea").addEventListener("pointerdown",e=>{
   if(e.pointerType==="mouse"&&e.button!==0)return;
   const area=e.currentTarget;
   area.setPointerCapture?.(e.pointerId);
+  e.currentTarget.classList.add("is-swiping");
   swipeGesture={
     id:e.pointerId,
     startX:e.clientX,
@@ -266,6 +273,7 @@ $("#swipeArea").addEventListener("pointermove",e=>{
 
 function finishSwipe(e,cancelled=false){
   if(!swipeGesture||swipeGesture.id!==e.pointerId)return;
+  $("#swipeArea")?.classList.remove("is-swiping");
   const gesture=swipeGesture;
   swipeGesture=null;
 
@@ -326,6 +334,7 @@ $("#detailBack").addEventListener("click",async()=>{
   }
   swipeGesture=null;
   swipeAnimating=false;
+  $("#swipeArea")?.classList.remove("is-swiping");
   setSwipeTransforms(0,false);
   await renderGrid();
   show("gridView");
@@ -379,13 +388,13 @@ function smartCropSuggestion(image){
   const sideOffset=normalizedCenterX-.5;
   const absSideOffset=Math.abs(sideOffset);
   if(absSideOffset>.07){
-    const shift=Math.min(box*.09,(absSideOffset-.07)*box*.55+box*.025);
+    const shift=Math.min(box*.13,(absSideOffset-.065)*box*.72+box*.03);
     if(sideOffset<0){
       minX=Math.max(0,minX-shift);
-      maxX=Math.max(minX+1,maxX-shift*.42);
+      maxX=Math.max(minX+1,maxX-shift*.62);
     }else{
       maxX=Math.min(c.width,maxX+shift);
-      minX=Math.min(maxX-1,minX+shift*.42);
+      minX=Math.min(maxX-1,minX+shift*.62);
     }
   }
 
@@ -394,8 +403,8 @@ function smartCropSuggestion(image){
   const subjectSize=finalBox/Math.min(c.width,c.height)*Math.min(image.naturalWidth,image.naturalHeight);
   const baseCrop=Math.min(image.naturalWidth,image.naturalHeight);
   const rawZoom=baseCrop/Math.max(1,subjectSize);
-  // Conservative test baseline: CCC should prefer a little extra room over cutting a sleeve.
-  const zoom=Math.max(1,Math.min(1.85,rawZoom*.92));
+  // Balanced baseline: enough scale to remove surrounding clutter, while side-shift protects sleeves.
+  const zoom=Math.max(1,Math.min(2.08,rawZoom*.99));
   const canvas=$("#cropCanvas"),base=Math.max(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight),scale=base*zoom;
   const x=(image.naturalWidth/2-subjectX)*scale,y=(image.naturalHeight/2-subjectY)*scale;
   return {zoom,x,y};
@@ -448,7 +457,13 @@ $("#keepOriginalBtn").addEventListener("click",async()=>{
   }
   button.textContent=old;button.disabled=false;
 });
-$("#cropBack").addEventListener("click",()=>openDetail(activeIndex));$("#cropZoom").addEventListener("input",e=>{cropState.zoom=Number(e.target.value)||1;drawCrop();});$("#cropReset").addEventListener("click",()=>{const suggestion=items[activeIndex]?.cropSuggestion||smartCropSuggestion(cropImage);cropState={...suggestion};$("#cropZoom").value=String(cropState.zoom);drawCrop();});
+$("#cropBack").addEventListener("click",async()=>{
+  cropImage=null;
+  cropState=null;
+  pointer=null;
+  await renderGrid();
+  show("gridView");
+});$("#cropZoom").addEventListener("input",e=>{cropState.zoom=Number(e.target.value)||1;drawCrop();});$("#cropReset").addEventListener("click",()=>{const suggestion=items[activeIndex]?.cropSuggestion||smartCropSuggestion(cropImage);cropState={...suggestion};$("#cropZoom").value=String(cropState.zoom);drawCrop();});
 const cropPointers=new Map();
 let pinchStart=null;
 
@@ -543,4 +558,4 @@ $("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=i
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-/* CCC cache stamp: v2.8.86 */
+/* CCC cache stamp: v2.8.87 */
