@@ -811,3 +811,11 @@ CCC v2.8.85 – stabil bildidentitet + asymmetrisk ärmsäkerhet (2026-08-10)
 - Om plagget ligger åt vänster flyttas crop-förslaget vänster för att få med vänster ärm och samtidigt kapa mer skräp på höger sida; spegelvänt åt höger.
 - Automatisk zoom är marginellt försiktigare. Grundalgoritmen från v2.8.79/v2.8.83 behålls.
 - Den tyngre/mjukare swipen från v2.8.84 är kvar.
+
+CCC v2.8.86 – swipe-race fix + försiktig crop-bas för jämförelsetest (2026-08-10)
+- Kvarvarande felbildsbugg identifierad som en race: en pågående swipe hade ett fördröjt commit-timeranrop som kunde köras efter att användaren gått tillbaka till miniatyrerna och klickat på ett nytt plagg.
+- Swipe-commit-timern spåras nu explicit och avbryts både vid `Tillbaka` och när ett plagg öppnas direkt från miniatyrerna.
+- `syncSwipeNeighbors()` hårdsynkar även aktuell huvudbild till det aktiva item-id:t.
+- Beskärningen görs medvetet mer försiktig inför 4-bildstestet: större säkerhetsmarginal, lägre sidförskjutning och max automatisk zoom 1.85.
+- Auto-crop prioriterar nu hellre lite extra bakgrund än att kapa en ärm. Manuell drag/pinch finns kvar för sista justeringen.
+- Mjuk/tyngre swipe från v2.8.84/v2.8.85 behålls.
