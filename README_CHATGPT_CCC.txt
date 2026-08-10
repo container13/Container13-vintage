@@ -520,3 +520,12 @@ CCC v2.8.48 – portrait header/logga single-source (2026-08-10)
 - Borttagna regler i denna slutkörning: dashboard.css 0 st, vision.css 0 st.
 - Mobil portrait-positionen för CCC-loggan och PWA safe-area-förskjutningen styrs nu endast från `ccc-core/core.css`.
 - Permanent regel: modul-CSS får inte definiera gemensam app-header, brand-word, brand-halo eller aura-geometri.
+
+CCC v2.8.49 – faktisk grundorsak för Vision-loggan i portrait (2026-08-10)
+- Grundorsaken hittad: `vision.css` hade kvar `--ccc-header-height:105px!important`, vilket blockerade Core:s standalone/PWA-safe-area-höjd.
+- Därför fick Vision en kortare faktisk header än Dashboard/Publicera trots samma brand-position i Core.
+- Alla modulägda `--ccc-header-height`-deklarationer är nu borttagna ur Dashboard och Vision.
+- Borttaget ur dashboard.css: 3 deklarationer.
+- Borttaget ur vision.css: 4 deklarationer.
+- `--ccc-header-height` får nu endast definieras i `ccc-core/core.css`; moduler får bara läsa variabeln.
+- Detta gör headerhöjd, PWA safe-area och loggposition till verklig single-source.
