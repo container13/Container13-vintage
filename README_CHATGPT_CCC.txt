@@ -610,3 +610,18 @@ CCC v2.8.59 – manuellt Vision-läge städat + återredigering (2026-08-10)
 - Ett redan sparat manuellt plagg kan öppnas, ändras och `Spara & tillbaka` hur många gånger som helst.
 - Samma `item.id` används vid IndexedDB `put()`, så senare sparning uppdaterar befintlig lokal Publicera-post i stället för att skapa en dubblett.
 - Sparade manuella plagg får en bock i miniatyren utan att markeras som AI-analyserade.
+
+CCC v2.8.60 – felsökning/fix Spara & tillbaka mobil (2026-08-10)
+- Grundorsak identifierad: `Spara & tillbaka` väntade på thumbnail/WebP-konvertering och IndexedDB innan navigation. På mobil kunde den asynkrona bildbearbetningen stanna/långdra och lämna knappen låst på `Sparar…`.
+- `Spara & tillbaka` läser nu formulärvärdena direkt, markerar plagget sparat och återgår omedelbart till Vision-arbetsvyn.
+- Själva bild-/IndexedDB-sparningen sker därefter i bakgrunden med samma item-id, så återredigering uppdaterar samma post.
+- Thumbnail-konverteringen har dessutom timeout/fallback: om WebP-konvertering inte svarar används originalfilen i stället för att låsa flödet.
+- `Visa förslag`-fixen från v2.8.59 är kvar: manuellt AI-av-läge visar ingen sådan knapp.
+
+CCC v2.8.61 – Vision sparar original, Publicera äger bildbearbetningen (2026-08-10)
+- Arkitekturen återställd till beslutad local-first-princip: Vision samlar foton, analys/redigering och metadata men förändrar inte originalbilden.
+- WebP-/thumbnail-konverteringen har tagits bort helt ur `saveApprovedDraftLocally()`.
+- Vision sparar `originalBlob` + metadata i IndexedDB och markerar posten `imageProcessingState: "original"`.
+- `Spara & tillbaka` går tillbaka direkt och sparar original + metadata i bakgrunden; ingen bildkonvertering kan längre blockera den vägen.
+- Beskärning/anpassning till plagget, slutlig storlek/upplösning och WebP-komprimering ska göras i Publicera-flödet när publiceringsbilden faktiskt förbereds.
+- Originalbilden förblir lokal och orörd tills dess.
