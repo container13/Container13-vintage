@@ -866,3 +866,6 @@ CCC v2.8.94 – adaptiv X-centrering (2026-08-10)
 - X-korrigeringen har ett hårt tak på 8,5 % av crop-bredden för att undvika överkorrigering.
 - Zoom, Y-position, crop-storlek, motivdetektion, 20 % ärm/säkerhetspadding och diagnostiken är oförändrade.
 - Alla stabilitetsfixar för activeItemId, swipe och navigation är kvar.
+
+RC1 2.8.95
+- top inset heuristic
