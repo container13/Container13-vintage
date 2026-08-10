@@ -706,33 +706,17 @@
     showWorkspace();
   }
 
-  async function createVisionThumbnail(file, maxSize = 360, quality = .78) {
-    try {
-      const bitmap = await createImageBitmap(file);
-      const scale = Math.min(1, maxSize / Math.max(bitmap.width, bitmap.height));
-      const canvas = document.createElement("canvas");
-      canvas.width = Math.max(1, Math.round(bitmap.width * scale));
-      canvas.height = Math.max(1, Math.round(bitmap.height * scale));
-      canvas.getContext("2d", { alpha: false }).drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-      bitmap.close?.();
-      return await new Promise((resolve) => canvas.toBlob((blob) => resolve(blob || file), "image/webp", quality));
-    } catch (_) {
-      return file;
-    }
-  }
-
   async function saveApprovedDraftLocally(item) {
     if (!item?.file) return;
     const fields = item.editedFields || item.visionResult?.fields || {};
-    const thumbnailBlob = await createVisionThumbnail(item.file);
     const record = {
       id: item.id,
       originalBlob: item.file,
-      thumbnailBlob,
       originalName: item.file.name || `ccc-${item.id}`,
       originalType: item.file.type || "image/jpeg",
       createdAt: item.createdAt || Date.now(),
       source: "vision",
+      imageProcessingState: "original",
       readyToPublish: true,
       title: (fields.title || item.visionResult?.summaryTitle || "").trim(),
       brand: (fields.brand || fields.manufacturer || "").trim(),
@@ -835,28 +819,32 @@
     return saveEditedCurrent({ advance: true });
   }
 
-  async function saveEditedAndBack() {
-    const button = $("#backToSuggestionBtn");
-    if (button) {
-      button.disabled = true;
-      button.textContent = "Sparar…";
-    }
+  function saveEditedAndBack() {
+    const item = currentItem();
+    if (!item) return;
 
-    const saved = await saveEditedCurrent({ advance: false });
+    /* Läs formuläret synkront medan redigeringsvyn fortfarande är aktiv. */
+    item.editedFields = Object.fromEntries(fieldIds.map((id) => [id, $("#" + id).value]));
+    item.approved = true;
+    rememberApprovedItem(item);
+    saveBatchMetadata();
 
-    if (button) {
-      button.disabled = false;
-      button.textContent = "Spara & tillbaka";
-    }
-
-    if (!saved) return;
-
-    /* Samma plagg kan sparas/ändras hur många gånger som helst.
-       IndexedDB put() använder samma item.id och uppdaterar posten. */
+    /* Navigation väntar inte på IndexedDB.
+       Vision behåller originalbilden; slutlig bildbearbetning hör hemma i Publicera. */
     editReturnView = "workspace";
     showWorkspace();
-    updateBatchStrip();
-    applyCaptureMode();
+
+    /* Spara original + metadata med samma item.id i bakgrunden.
+       put() uppdaterar befintlig post; ingen WebP skapas i Vision. */
+    saveApprovedDraftLocally(item)
+      .then(() => saveVisionSessionLocally())
+      .then(() => {
+        updateBatchStrip();
+      })
+      .catch((error) => {
+        console.error("[CCC Vision] Bakgrundssparning efter Spara & tillbaka misslyckades", error);
+        setMessage("Plagget kunde inte sparas lokalt. Öppna det igen och försök på nytt.");
+      });
   }
 
   function addSameGarmentFiles(fileList) {
@@ -1317,4 +1305,4 @@
   updateTextPreviews();
 })();
 
-/* CCC cache stamp: v2.8.59 */
+/* CCC cache stamp: v2.8.61 */
