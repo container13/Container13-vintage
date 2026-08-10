@@ -239,4 +239,32 @@
   text-shadow:0 1px 4px rgba(0,0,0,.8);pointer-events:none;
 }
 
-/* CCC cache stamp: v2.8.70 */
+/* CCC v2.8.71 – robusta lokala bildförhandsvisningar i iOS/PWA. */
+.draft-card{min-height:120px;background:var(--surface-2,var(--surface));}
+.draft-card img{position:relative;z-index:1;background:var(--surface-2,var(--surface));}
+
+/* CCC v2.8.72 – Lokala utkast öppnas alltid från toppen. */
+#gridView.publish-view{
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  overflow:hidden;
+}
+#gridView.publish-view[hidden]{display:none!important}
+#gridView .publish-heading{
+  flex:0 0 auto;
+  width:100%;
+  order:0;
+}
+#gridView .publish-empty,
+#gridView .draft-grid{
+  order:1;
+}
+#gridView .draft-grid{
+  flex:1 1 auto;
+  height:auto!important;
+  min-height:0;
+  overflow:auto;
+}
+
+/* CCC cache stamp: v2.8.72 */
