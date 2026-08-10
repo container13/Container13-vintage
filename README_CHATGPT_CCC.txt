@@ -746,3 +746,13 @@ CCC v2.8.77 – motivstyrt beskärningsförslag i Publicera (2026-08-10)
 - `Återställ förslag` återgår nu till CCC:s motivstyrda förslag, inte till en generisk center-crop.
 - Användaren kan fortfarande dra, zooma, Behåll original eller Godkänn beskärning.
 - WebP skapas fortfarande först efter användarens val.
+
+CCC v2.8.78 – tajtare motivbeskärning + pinch-zoom + knappfix (2026-08-10)
+- Motivförslaget använder en mindre central saliency-kluster och trimmar extrema utliggare, så webbsida/bakgrund runt plagget påverkar utsnittet mindre.
+- Säkerhetsmarginalen runt motivet har minskats och föreslagen zoom förstärkts, så plagget fyller större del av publiceringsbilden.
+- Mobil beskärning stöder nu riktig tvåfingers pinch-zoom på själva bilden.
+- Ett finger fortsätter flytta bilden.
+- Zoomreglaget synkas även när pinch används.
+- `Återställ förslag` räknar fram CCC:s motivförslag igen.
+- Beskärningsvyn får intern scroll vid små skärmar och `Godkänn beskärning` har egen luft under bildytan så den inte hamnar bakom previewn.
+- Originalbilden förblir orörd; WebP skapas först efter användarens val.
