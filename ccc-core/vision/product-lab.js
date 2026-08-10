@@ -208,6 +208,37 @@
     return item;
   }
 
+  async function applyLocalKnowledge(result) {
+    if (!result || typeof result !== "object") return result;
+
+    const enriched = {
+      ...result,
+      fields: { ...(result.fields || {}) }
+    };
+
+    try {
+      const match = await window.CCC_VISION_KNOWLEDGE?.bestMatch?.(enriched.fields);
+      if (!match) return enriched;
+
+      /* Lokal kunskap kompletterar endast tomma AI-fält. AI-resultatet skrivs aldrig bort. */
+      const learnedFields = match.fields && typeof match.fields === "object" ? match.fields : match;
+      fieldIds.forEach((id) => {
+        if (!String(enriched.fields[id] ?? "").trim() && String(learnedFields?.[id] ?? "").trim()) {
+          enriched.fields[id] = learnedFields[id];
+        }
+      });
+
+      if (!enriched.summaryTitle && enriched.fields.title) enriched.summaryTitle = enriched.fields.title;
+      if (!enriched.summaryBrand && enriched.fields.brand) enriched.summaryBrand = enriched.fields.brand;
+      if (!enriched.summarySeason && enriched.fields.season) enriched.summarySeason = enriched.fields.season;
+    } catch (error) {
+      /* Kunskapslagret får aldrig stoppa ett färdigt AI-resultat. */
+      console.warn("[CCC Vision] Lokal kunskap kunde inte komplettera resultatet", error);
+    }
+
+    return enriched;
+  }
+
   function startSilentAnalysis(item, forceAi = false) {
     item.visionReady = false;
     item.analysisInProgress = false;
@@ -1271,6 +1302,7 @@
 
       if (item.visionReady && item.visionResult?.fields) {
         const aiFields = item.visionResult.fields;
+        console.info("[CCC Vision] Manuellt AI-resultat visas", { itemId, fields: Object.keys(aiFields) });
 
         /* AI fyller tomma fält men skriver aldrig över något användaren redan matat in. */
         fieldIds.forEach((id) => {
@@ -1547,4 +1579,4 @@
   updateTextPreviews();
 })();
 
-/* CCC cache stamp: v2.8.66 */
+/* CCC cache stamp: v2.8.67 */
