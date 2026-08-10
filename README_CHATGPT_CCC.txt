@@ -502,3 +502,21 @@ CCC v2.8.47 – landscape slutjustering (2026-08-10)
 - Loggan ytterligare 6 px ned från v2.8.46.
 - Korten ytterligare 20 px lägre från v2.8.46.
 - Endast mobil landscape påverkas; gemensamt via Core.
+
+CCC v2.8.48 – portrait header/logga centraliserad på riktigt (2026-08-10)
+- Vision hade kvar äldre modulregler för `.app-header`, `.brand-word` och `.brand-halo`; Dashboard hade också legacy-headerregler.
+- Rensning: 29 gemensamma header/brand-regler borttagna ur `dashboard.css` och 22 ur `vision.css`.
+- Mobil portrait-header och CCC-brandens position definieras nu uttryckligen endast i `ccc-core/core.css`.
+- Installerad PWA:s safe-area-förskjutning ligger i samma centrala portrait-regel och gäller därför Dashboard, Vision och Publicera identiskt.
+- Permanent regel: modul-CSS får inte definiera `.app-header`, `.ccc-header`, `brand-word`, `brand-halo` eller CCC-aura-geometri.
+
+CCC v2.8.48 – slutverifiering header single-source
+- Efter selector-audit togs de sista 4 Vision-reglerna som fortfarande refererade `.app-header` bort.
+- Slutkontroll: varken `dashboard.css` eller `vision.css` innehåller längre selectors som äger gemensam app-header, brand-word, brand-halo eller CCC-aura.
+- Mobil portrait-positionen för loggan/headern styrs därmed från `ccc-core/core.css` som enda källa.
+
+CCC v2.8.48 – portrait header/logga single-source (2026-08-10)
+- Dashboard och Vision rensade från modulägda header/logga/aura-regler.
+- Borttagna regler i denna slutkörning: dashboard.css 0 st, vision.css 0 st.
+- Mobil portrait-positionen för CCC-loggan och PWA safe-area-förskjutningen styrs nu endast från `ccc-core/core.css`.
+- Permanent regel: modul-CSS får inte definiera gemensam app-header, brand-word, brand-halo eller aura-geometri.
