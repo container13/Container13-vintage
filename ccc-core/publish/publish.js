@@ -411,7 +411,16 @@ function smartCropSuggestion(image){
   const zoom=Math.max(1.03,Math.min(2.45,baseCrop/Math.max(1,subjectSize)*1.04));
   const canvas=$("#cropCanvas"),base=Math.max(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight),scale=base*zoom;
   const x=(image.naturalWidth/2-subjectX)*scale,y=(image.naturalHeight/2-subjectY)*scale;
-  return {zoom,x,y};
+  // v2.8.93: X-only optical centering.
+  // If the detected subject is clearly off-centre, shift the crop gently toward it.
+  // Zoom, Y-position, crop size and sleeve padding are deliberately untouched.
+  const subjectOffset=(subjectX-image.naturalWidth/2)/Math.max(1,image.naturalWidth);
+  const xCorrection=Math.abs(subjectOffset)>.04
+    ? -subjectOffset*canvas.width*.42
+    : 0;
+  const correctedX=x+xCorrection;
+
+  return {zoom,x:correctedX,y};
 }
 function calculateCropDiagnostics(){
   if(!cropImage||!cropState)return null;
@@ -481,6 +490,7 @@ async function openCrop(){
   else{
     cropState=smartCropSuggestion(cropImage);
     item.cropSuggestion={...cropState};
+    console.debug("[CCC Publicera] crop v2.8.93 X-centering",{id:item.id,zoom:cropState.zoom,x:cropState.x,y:cropState.y});
   }
   $("#cropZoom").value=String(cropState.zoom);
   $("#cropOriginalPreview").src=item.thumbUrl||item.fullUrl;
@@ -631,4 +641,4 @@ $("#publishBtn").addEventListener("click",()=>{const item=activeItem();if(!item)
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-/* CCC cache stamp: v2.8.92 */
+/* CCC cache stamp: v2.8.93 */
