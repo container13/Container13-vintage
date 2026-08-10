@@ -837,21 +837,9 @@ CCC v2.8.88 – single-source detail state + crop calibration (2026-08-10)
 - Crop-algoritmen byts inte ut igen. v2.8.87-baslinjen kalibreras försiktigt: lägre max autozoom (1.96), mildare sidförskjutning och liten extra horisontell sleeve-safety.
 - Syftet med v2.8.88 är stabil grund inför de fyra fasta tröjtesterna, inte ny funktionalitet.
 
-CCC v2.8.89 – crop only when needed (2026-08-10)
-- Ny huvudprincip i Publicera: normala produktbilder ska lämnas nästan orörda. Auto-crop ska inte skapa arbete som inte behövs.
-- En lätt lokal bildkontroll jämför struktur i bildens ytterkanter med centrum. Lugna ytterkanter behandlas som normal produktbild och får neutral crop (`zoom:1`, centrerad).
-- Bilder med mycket konkurrerande struktur i ytterkanterna, t.ex. screenshots/webbsidor/extrema testbilder, går vidare till den befintliga svårbildsheuristiken.
-- Svårbildsförslag får hårda säkerhetsräcken: max automatisk zoom 1.82 och reducerad automatisk förskjutning.
-- Crop-vyn visar om CCC bedömde bilden som redan bra eller som en svår bild där användaren förväntas göra sista justeringen.
-- activeItemId/single-source-state från v2.8.88 behålls.
-- Målet är att kommande riktiga foton ofta inte ska behöva beskäras alls, medan extrema testbilder fortfarande får ett användbart men försiktigt förslag.
-
-CCC v2.8.90 – Crop Engine 2.0 / tvåstegsbeskärning (2026-08-10)
-- Svåra bilder använder nu två tydliga pass i stället för en generell zoomheuristik.
-- Pass A: detektera motivkomponent och bygg en skyddad plaggbox med extra horisontell marginal för ärmar samt mindre topp/botten-marginal.
-- Pass B: trimma/rebalansera bakgrunden genom omcentrering, men den skyddade plaggboxen får inte offras.
-- Kvadratisk crop räknas från plaggboxens verkliga bredd/höjd och siktar på cirka 86 % maximal fyllnad.
-- Slutlig säkerhetskontroll kräver ungefär 6 % marginal runt den detekterade skyddade boxen. Om marginalen blir för liten zoomar CCC automatiskt ut stegvis.
-- Normalbildsregeln från v2.8.89 finns kvar: rena produktbilder lämnas i princip orörda.
-- v2.8.88:s single-source `activeItemId`, swipe och navigationsfixar behålls.
-- De fyra extrema fotbollströjebilderna används som kalibrerings-/regressionsunderlag före test på normalare plagg.
+CCC v2.8.91 – kontrollerad crop-rollback + en enda ändring (2026-08-10)
+- Alla senare stabilitetsfixar från v2.8.88 behålls: activeItemId/single-source detail state, rätt bild/text/crop, swipe, tillbaka till miniatyrer och cache.
+- Crop-algoritmen är återställd exakt till v2.8.83-baslinjen, som användaren bedömde som bäst hittills.
+- Endast en crop-ändring görs jämfört med v2.8.83: den befintliga säkerhetspaddingen ökas från 16 % till 20 % för lite mer luft kring ärmarna.
+- Ingen normal/svår-bild-klassificering, ingen tvåpassmotor och inga andra nya crop-regler finns med.
+- Syfte: testa en variabel i taget mot de fyra fasta fotbollströjorna.
