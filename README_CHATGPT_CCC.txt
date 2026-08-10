@@ -725,3 +725,9 @@ CCC v2.8.74 – valfri beskärning i Publicera (2026-08-10)
 - Nytt val `Behåll original` hoppar över beskärningen men skapar ändå en max 1600 px WebP-kopia lokalt.
 - `Återställ förslag` återgår till CCC:s ursprungliga centrering.
 - Vision-originalet ändras aldrig. Publiceringskopian märks `webp-cropped` eller `webp-original`.
+
+CCC v2.8.75 – miniatyr öppnar rätt detaljvy i Publicera (2026-08-10)
+- Grundorsak hittad: `openDetail()` anropade `show("detail")`, men den faktiska sektionens id är `detailView`.
+- `show()` gömde därför samtliga riktiga Publicera-vyer och UI föll visuellt tillbaka till skalet/startläget.
+- Anropet är korrigerat till `show("detailView")`.
+- v2.8.74-funktionerna för valfri beskärning, synligt bortklippt område och Behåll original ingår.
