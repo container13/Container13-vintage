@@ -68,11 +68,18 @@ function show(view){
 }
 async function renderGrid(){
   const grid=$("#draftGrid");
+  const empty=$("#emptyState");
   grid.replaceChildren();
   $("#draftCount").textContent=items.length===1?"1 lokalt utkast":`${items.length} lokala utkast`;
   $("#startDraftCount").textContent=items.length===1?"1 utkast":`${items.length} utkast`;
-  $("#emptyState").hidden=items.length>0;
-  grid.hidden=items.length===0;
+
+  const hasItems=items.length>0;
+  if(empty){
+    empty.hidden=hasItems;
+    empty.style.display=hasItems?"none":"grid";
+  }
+  grid.hidden=!hasItems;
+  grid.style.display=hasItems?"grid":"none";
 
   for(let index=0;index<items.length;index+=1){
     const item=items[index];
@@ -148,4 +155,4 @@ $("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=i
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-/* CCC cache stamp: v2.8.72 */
+/* CCC cache stamp: v2.8.73 */

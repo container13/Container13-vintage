@@ -267,4 +267,20 @@
   overflow:auto;
 }
 
-/* CCC cache stamp: v2.8.72 */
+/* CCC v2.8.73 – Lokala utkast: ingen falsk tomstatus, grid direkt under rubriken. */
+#gridView #emptyState[hidden]{
+  display:none!important;
+}
+#gridView .publish-heading{
+  margin:0!important;
+}
+#gridView .draft-grid{
+  margin-top:4px!important;
+  padding-top:0!important;
+  align-self:stretch;
+}
+#gridView .draft-card{
+  margin:0!important;
+}
+
+/* CCC cache stamp: v2.8.73 */
