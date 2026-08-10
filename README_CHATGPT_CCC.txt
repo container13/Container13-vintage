@@ -766,11 +766,10 @@ CCC v2.8.79 – balanserat motivförslag + stabil portrait-layout (2026-08-10)
 - `Godkänn beskärning`, `Behåll original`, `Återställ förslag` och zoomkontrollen ligger alltid efter bildytan och kan nås via intern scroll vid behov.
 - Pinch-zoom och drag från v2.8.78 finns kvar.
 
-CCC v2.8.80 – auto-crop utgår från hela plaggets kontur (2026-08-10)
-- Tidigare center/saliency-beskärning kunde kapa ärmar eftersom mittdelen vägde för tungt.
-- Ny lokal konturheuristik uppskattar bakgrund från bildens ytterkant och bygger foreground-mask från färgavstånd, mättnad och lokala kanter.
-- Masken expanderas för att återkoppla tunna delar och ärmar innan motivkomponenten väljs.
-- Bounding box byggs runt hela det sammanhängande motivet och får extra horisontell säkerhetsmarginal för ärmar.
-- Kvadratisk crop räknas fram så både plaggets bredd och höjd ryms innan zoom sätts.
-- Automatisk maxzoom är 2.25 för att prioritera komplett plagg framför tajt centerutsnitt.
-- Pinch-zoom, drag, Behåll original och v2.8.79:s stabila portrait-layout finns kvar.
+CCC v2.8.81 – Publicera prestandagrund (2026-08-10)
+- Byggd på v2.8.79:s stabila beskärnings/layout-bas; v2.8.80:s sämre auto-crop tas inte vidare.
+- Publicera visar antal utkast direkt och bygger förhandsvisningar i bakgrunden.
+- En liten decoded-image-cache håller aktuell + närmaste grannbilder redo (max 3).
+- När detaljvyn öppnas förladdas aktuell, föregående och nästa bild.
+- När Lokala utkast öppnas värms första bildgruppen upp direkt.
+- Ingen visuell redesign i denna version; fokus är snabbare öppning och grund för levande swipe.
