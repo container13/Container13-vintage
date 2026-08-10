@@ -552,3 +552,23 @@ CCC v2.8.52 – Vision arbetsvy + manuell AI-layout (2026-08-10)
 - Redigeringsvyn har nu en uttrycklig egen grid-rad för AI-knappen.
 - AI-knappen är statisk i dokumentflödet och kan inte längre hamna bakom Rubrik-fältet.
 - När AI-knappen är dold tas raden bort naturligt utan att påverka formulärets geometri.
+
+CCC v2.8.53 – kompakt Vision-redigering mobil portrait (2026-08-10)
+- Redigeringsvyn komprimeras vertikalt i mobil portrait i stället för att börja scrolla i onödan.
+- Statusrad/miniatyr, AI-knapp, Rubrik, Pris, Beskrivning och sekundära val har mindre höjd och tätare spacing.
+- Beskrivningsfältet är lägre men fortfarande tydligt redigerbart.
+- `Frivilliga tillägg` och `Fler uppgifter` får kompaktare summary-rader.
+- `Tillbaka` och `Spara & nästa` ligger i normal grid-flow och har reserverad plats längst ned; de ska inte överlappas av sekundärvalen.
+- Extra kompakt breakpoint används på portrait-skärmar under 760 px höjd.
+- Grundprincip: försök först få kärnflödet scrollfritt; intern scroll används först när innehållet faktiskt kräver det.
+
+CCC v2.8.54 – spara och återuppta Vision-fotosession lokalt (2026-08-10)
+- Aktiv Vision-session kan pausas med `Spara och fortsätt senare`.
+- Sessionen lagras lokalt i IndexedDB (`ccc-local-workspace`, store `sessions`) inklusive originalbilder, extra bilder, ordning, markerat plagg, redigeringar, AI-resultat/status och relevanta metadata.
+- Inget Firebase används för pausade Vision-sessioner.
+- När Vision öppnas igen visas t.ex. `Fortsätt fotosession – 7 plagg`.
+- Återupptagning återställer bilderna och arbetsläget från den lokala sessionen.
+- Funktionen gäller både Automatisk AI på och av.
+- Om en pågående AI-session sparats innan analysen blev klar kan analysen återstartas vid återupptagning när auto-AI fortfarande är aktivt.
+- När hela serien avslutas rensas den aktiva sessionsposten; godkända Publicera-utkast ligger kvar separat.
+- Local workspace-databasen uppgraderad från version 1 till 2; Publicera synkad till samma DB-version och skapar även `sessions`-store vid behov.
