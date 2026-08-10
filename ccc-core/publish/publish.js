@@ -165,7 +165,7 @@ function setSwipeTransforms(offset=0,animate=false){
   const width=Math.max(1,area.clientWidth);
   const prev=$("#detailPrevImage"),current=$("#detailImage"),nextImg=$("#detailNextImage");
   [prev,current,nextImg].forEach(img=>{
-    img.style.transition=animate?"transform 340ms cubic-bezier(.18,.78,.22,1)":"none";
+    img.style.transition=animate?"transform 480ms cubic-bezier(.16,.74,.18,1)":"none";
   });
   prev.style.transform=`translate3d(${offset-width}px,0,0)`;
   current.style.transform=`translate3d(${offset}px,0,0)`;
@@ -233,8 +233,8 @@ $("#swipeArea").addEventListener("pointermove",e=>{
   e.preventDefault();
   const width=Math.max(1,e.currentTarget.clientWidth);
   const raw=Math.min(Math.abs(dx),width*1.08);
-  // Slightly damped movement gives a softer gallery-like feel while still following the finger.
-  const softened=raw<=width*.72 ? raw*.94 : width*.676+(raw-width*.72)*.58;
+  // Follow the finger almost 1:1, with only gentle resistance near the outer edge.
+  const softened=raw<=width*.78 ? raw*.985 : width*.7683+(raw-width*.78)*.72;
   const limited=Math.sign(dx)*softened;
   swipeGesture.dx=limited;
   setSwipeTransforms(limited,false);
@@ -272,7 +272,7 @@ function finishSwipe(e,cancelled=false){
     updateDetailCopy();
     syncSwipeNeighbors();
     swipeAnimating=false;
-  },350);
+  },490);
 }
 
 $("#swipeArea").addEventListener("pointerup",e=>finishSwipe(e,false));
@@ -331,10 +331,24 @@ function smartCropSuggestion(image){
   minY=Math.max(0,minY-pad);maxY=Math.min(c.height,maxY+pad);
 
   const box=Math.max(12,Math.max(maxX-minX,maxY-minY));
+  const boxCenterX=(minX+maxX)/2;
+  const normalizedCenterX=boxCenterX/c.width;
+
+  // Football-shirt sleeve safety:
+  // if the garment sits clearly to one side, give extra room on that same outer side.
+  const sideOffset=Math.abs(normalizedCenterX-.5);
+  const sideSafety=sideOffset>.08 ? Math.min(.12,(sideOffset-.08)*.65+.035) : 0;
+  if(normalizedCenterX<.42){
+    minX=Math.max(0,minX-box*sideSafety);
+  }else if(normalizedCenterX>.58){
+    maxX=Math.min(c.width,maxX+box*sideSafety);
+  }
+
+  const finalBox=Math.max(12,Math.max(maxX-minX,maxY-minY));
   const subjectX=((minX+maxX)/2)/c.width*image.naturalWidth,subjectY=((minY+maxY)/2)/c.height*image.naturalHeight;
-  const subjectSize=box/Math.min(c.width,c.height)*Math.min(image.naturalWidth,image.naturalHeight);
+  const subjectSize=finalBox/Math.min(c.width,c.height)*Math.min(image.naturalWidth,image.naturalHeight);
   const baseCrop=Math.min(image.naturalWidth,image.naturalHeight);
-  const zoom=Math.max(1.03,Math.min(2.45,baseCrop/Math.max(1,subjectSize)*1.04));
+  const zoom=Math.max(1.03,Math.min(2.42,baseCrop/Math.max(1,subjectSize)*1.035));
   const canvas=$("#cropCanvas"),base=Math.max(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight),scale=base*zoom;
   const x=(image.naturalWidth/2-subjectX)*scale,y=(image.naturalHeight/2-subjectY)*scale;
   return {zoom,x,y};
@@ -482,4 +496,4 @@ $("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=i
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-/* CCC cache stamp: v2.8.83 */
+/* CCC cache stamp: v2.8.84 */
