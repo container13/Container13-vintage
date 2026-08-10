@@ -9,6 +9,36 @@ let cropImage=null,cropState=null,pointer=null;
 
 function openDb(){return new Promise((resolve,reject)=>{const r=indexedDB.open(DB_NAME,DB_VERSION);r.onupgradeneeded=()=>{const db=r.result;if(!db.objectStoreNames.contains(STORE_NAME)){const s=db.createObjectStore(STORE_NAME,{keyPath:"id"});s.createIndex("createdAt","createdAt");}if(!db.objectStoreNames.contains("sessions"))db.createObjectStore("sessions",{keyPath:"id"});if(!db.objectStoreNames.contains(FILE_STORE)){const f=db.createObjectStore(FILE_STORE,{keyPath:"id"});f.createIndex("createdAt","createdAt");}};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);r.onblocked=()=>reject(new Error("IndexedDB-uppgraderingen blockerades av en annan öppen CCC-flik."));});}
 async function getAll(){const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(STORE_NAME,"readonly"),r=tx.objectStore(STORE_NAME).getAll();r.onsuccess=()=>resolve(r.result||[]);r.onerror=()=>reject(r.error);tx.oncomplete=()=>db.close();});}
+async function getLatestVisionSession(){const db=await openDb();return new Promise((resolve,reject)=>{if(!db.objectStoreNames.contains("sessions")){db.close();resolve(null);return;}const tx=db.transaction("sessions","readonly"),r=tx.objectStore("sessions").get("active-vision-session");r.onsuccess=()=>resolve(r.result||null);r.onerror=()=>reject(r.error);tx.oncomplete=()=>db.close();});}
+async function visionSessionDrafts(){
+  const session=await getLatestVisionSession();
+  const savedItems=Array.isArray(session?.items)?session.items:[];
+  const drafts=[];
+  for(const saved of savedItems){
+    if(!saved?.id||!saved?.originalFileKey)continue;
+    const originalBlob=await getSourceFile(saved.originalFileKey);
+    if(!originalBlob)continue;
+    const fields=saved.editedFields||saved.visionResult?.fields||{};
+    drafts.push({
+      id:saved.id,
+      originalFileKey:saved.originalFileKey,
+      originalBlob,
+      createdAt:saved.createdAt||session.savedAt||Date.now(),
+      source:"vision-session",
+      imageProcessingState:"original",
+      readyToPublish:true,
+      approved:!!saved.approved,
+      title:String(fields.title||saved.visionResult?.summaryTitle||"").trim(),
+      brand:String(fields.brand||fields.manufacturer||saved.visionResult?.summaryBrand||"").trim(),
+      size:String(fields.size||"").trim(),
+      price:String(fields.price||"").trim(),
+      description:String(fields.description||"").trim(),
+      fields
+    });
+  }
+  return drafts;
+}
+
 async function put(record){const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(STORE_NAME,"readwrite");tx.objectStore(STORE_NAME).put(record);tx.oncomplete=()=>{db.close();resolve();};tx.onerror=()=>{db.close();reject(tx.error);};});}
 async function getSourceFile(key){if(!key)return null;const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(FILE_STORE,"readonly"),r=tx.objectStore(FILE_STORE).get(key);r.onsuccess=()=>resolve(r.result?.blob||null);r.onerror=()=>reject(r.error);tx.oncomplete=()=>db.close();});}
 async function hydrateOriginal(record){if(record.originalBlob||!record.originalFileKey)return record;const blob=await getSourceFile(record.originalFileKey);return blob?{...record,originalBlob:blob}:record;}
@@ -16,7 +46,7 @@ function persistenceRecord(item){const record={...item};delete record.thumbUrl;d
 function url(blob){const u=URL.createObjectURL(blob);objectUrls.push(u);return u;}
 function title(item,index){return item.title?.trim()||item.fields?.title?.trim()||`Plagg ${index+1}`;}
 function show(view){["startView","gridView","publishedView","detailView","cropView"].forEach(id=>$("#"+id).hidden=id!==view);}
-function renderGrid(){const grid=$("#draftGrid");grid.replaceChildren();$("#draftCount").textContent=items.length===1?"1 lokalt utkast":`${items.length} lokala utkast`;$("#startDraftCount").textContent=items.length===1?"1 utkast":`${items.length} utkast`;$("#emptyState").hidden=items.length>0;grid.hidden=items.length===0;items.forEach((item,index)=>{const b=document.createElement("button");b.type="button";b.className="draft-card";b.setAttribute("aria-label",`Öppna ${title(item,index)}`);const img=document.createElement("img");img.src=item.thumbUrl;img.alt="";b.append(img);b.addEventListener("click",()=>openDetail(index));grid.append(b);});}
+function renderGrid(){const grid=$("#draftGrid");grid.replaceChildren();$("#draftCount").textContent=items.length===1?"1 lokalt utkast":`${items.length} lokala utkast`;$("#startDraftCount").textContent=items.length===1?"1 utkast":`${items.length} utkast`;$("#emptyState").hidden=items.length>0;grid.hidden=items.length===0;items.forEach((item,index)=>{const b=document.createElement("button");b.type="button";b.className="draft-card";b.setAttribute("aria-label",`Öppna ${title(item,index)}`);const img=document.createElement("img");img.src=item.thumbUrl;img.alt="";b.append(img);const cap=document.createElement("span");cap.className="draft-card-caption";cap.textContent=title(item,index);b.append(cap);b.addEventListener("click",()=>openDetail(index));grid.append(b);});}
 function openDetail(index){if(!items.length)return;activeIndex=(index+items.length)%items.length;const item=items[activeIndex];if(!item.fullUrl)item.fullUrl=url(item.publishBlob||item.originalBlob||item.thumbnailBlob);$("#detailImage").src=item.fullUrl;$("#detailTitle").textContent=title(item,activeIndex);$("#detailMeta").textContent=[item.brand,item.size&&`Storlek ${item.size}`,item.price&&`${item.price} kr`].filter(Boolean).join(" · ");$("#detailCounter").textContent=`${activeIndex+1} av ${items.length}`;$("#publishStatus").textContent=item.publishBlob?"Bilden är beskuren och klar som WebP.":"";show("detail");}
 function next(delta){openDetail(activeIndex+delta);}
 let touchStart=null;
@@ -40,5 +70,22 @@ $("#cropDone").addEventListener("click",async()=>{const item=items[activeIndex],
 
 $("#publishBtn").addEventListener("click",()=>{$("#publishStatus").textContent=items[activeIndex].publishBlob?"Nästa steg kopplar den här WebP-bilden till Container13.":"Beskär bilden först så skapas publicerings-WebP lokalt.";if(!items[activeIndex].publishBlob)openCrop();});
 
-(async()=>{try{let records=(await getAll()).filter(r=>r.readyToPublish!==false);records=await Promise.all(records.map(hydrateOriginal));records=records.filter(r=>r.originalBlob||r.publishBlob||r.thumbnailBlob);records.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));items=records.map(r=>({...r,thumbUrl:url(r.thumbnailBlob||r.originalBlob||r.publishBlob)}));renderGrid();show("startView");}catch(e){console.error("[CCC Publicera] Kunde inte läsa lokala utkast",{name:e?.name,message:e?.message},e);$("#emptyState").hidden=false;$("#emptyState").innerHTML="<strong>Kunde inte läsa lokala utkast</strong><span>Försök öppna Publicera igen.</span>";}})();
+(async()=>{try{
+  let explicit=(await getAll()).filter(r=>r.readyToPublish!==false);
+  explicit=await Promise.all(explicit.map(hydrateOriginal));
+  const sessionDrafts=await visionSessionDrafts();
+  const merged=new Map(sessionDrafts.map(r=>[r.id,r]));
+  explicit.forEach(r=>merged.set(r.id,{...(merged.get(r.id)||{}),...r}));
+  let records=[...merged.values()].filter(r=>r.originalBlob||r.publishBlob||r.thumbnailBlob);
+  records.sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
+  items=records.map(r=>({...r,thumbUrl:url(r.thumbnailBlob||r.originalBlob||r.publishBlob)}));
+  renderGrid();
+  show("startView");
+}catch(e){
+  console.error("[CCC Publicera] Kunde inte läsa lokala utkast",{name:e?.name,message:e?.message},e);
+  $("#emptyState").hidden=false;
+  $("#emptyState").innerHTML="<strong>Kunde inte läsa lokala utkast</strong><span>Försök öppna Publicera igen.</span>";
+}})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
+
+/* CCC cache stamp: v2.8.70 */

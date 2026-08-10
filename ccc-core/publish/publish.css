@@ -231,4 +231,12 @@
   }
 }
 
-/* CCC cache stamp: v2.8.40 */
+/* CCC v2.8.70 – Vision-sessionens lokala bilder syns direkt som utkast i Publicera. */
+.draft-card-caption{
+  position:absolute;left:8px;right:8px;bottom:7px;z-index:2;
+  color:#fff;font-size:12px;font-weight:800;text-align:left;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  text-shadow:0 1px 4px rgba(0,0,0,.8);pointer-events:none;
+}
+
+/* CCC cache stamp: v2.8.70 */
