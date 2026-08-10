@@ -1543,6 +1543,7 @@
   $("#startCameraBtn").addEventListener("click", startCamera);
   $("#galleryBtn").addEventListener("click", () => $("#galleryInput").click());
   $("#headerBackBtn")?.addEventListener("click", goBackFromVision);
+  $("#reviewBackBtn")?.addEventListener("click", () => showWorkspace());
   $("#resumeSessionBtn")?.addEventListener("click", async () => {
     if (batchItems.length) showWorkspace();
     else {
@@ -1653,4 +1654,4 @@
   updateTextPreviews();
 })();
 
-/* CCC cache stamp: v2.8.68 */
+/* CCC cache stamp: v2.8.69 */
