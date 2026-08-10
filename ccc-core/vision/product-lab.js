@@ -895,7 +895,15 @@
       ? (item.visionResult?.summaryTitle || "Redigera plagg")
       : manualMode ? "Redigera plagg" : "Redigera medan CCC arbetar";
     const contextSub = $("#editContextSub");
-    if (contextSub) contextSub.hidden = manualMode;
+    if (contextSub) {
+      if (item.visionReady) {
+        contextSub.hidden = false;
+        contextSub.textContent = "AI-förslag klart – ändra det du vill.";
+      } else {
+        contextSub.hidden = manualMode;
+        contextSub.textContent = manualMode ? "" : "CCC arbetar med analysen…";
+      }
+    }
     if (allowWhileAnalyzing && !item.visionReady && !item.editedFields) {
       item.editedFields = Object.fromEntries(fieldIds.map((id) => [id, $("#" + id).value]));
     }
@@ -1243,29 +1251,64 @@
     const itemId = item.id;
     const startedIndex = currentIndex;
     const button = $("#manualAiBtn");
+    const contextSub = $("#editContextSub");
+
+    /* Spara det användaren redan skrivit innan AI-resultatet kommer. */
+    const userFields = Object.fromEntries(fieldIds.map((id) => [id, $("#" + id).value]));
 
     item.analysisInProgress = true;
     if (button) { button.disabled = true; button.textContent = "Analyserar…"; }
+    if (contextSub) {
+      contextSub.hidden = false;
+      contextSub.textContent = "CCC analyserar det här plagget…";
+    }
 
     try {
       await startSilentAnalysis(item, true);
 
-      /* Resultatet tillhör alltid samma plagg som startade analysen.
-         Byter användaren miniatyr under tiden får den nya bilden ingen AI-status. */
       const stillSelected = currentItem()?.id === itemId;
-      if (item.visionReady && stillSelected) {
-        openReview(batchItems.findIndex((candidate) => candidate.id === itemId));
-      } else if (item.analysisError && stillSelected) {
-        setMessage(`AI-fel: ${item.analysisError}`);
+      if (!stillSelected) return;
+
+      if (item.visionReady && item.visionResult?.fields) {
+        const aiFields = item.visionResult.fields;
+
+        /* AI fyller tomma fält men skriver aldrig över något användaren redan matat in. */
+        fieldIds.forEach((id) => {
+          const existing = String(userFields[id] ?? "").trim();
+          const suggestion = aiFields[id] ?? "";
+          $("#" + id).value = existing || suggestion;
+        });
+
+        item.editedFields = Object.fromEntries(fieldIds.map((id) => [id, $("#" + id).value]));
+        updateCounters();
+        updateTextPreviews();
+        updateSmartSuggestions();
+
+        $("#editContextTitle").textContent = item.visionResult.summaryTitle || "AI-förslag klart";
+        if (contextSub) {
+          contextSub.hidden = false;
+          contextSub.textContent = "AI-förslag klart – ändra det du vill.";
+        }
+
+        if (button) button.hidden = true;
+        saveBatchMetadata();
+      } else {
+        const message = item.analysisError || "AI-analysen gav inget användbart resultat.";
+        if (contextSub) {
+          contextSub.hidden = false;
+          contextSub.textContent = `AI-fel: ${message}`;
+        }
       }
     } catch (error) {
       const stillSelected = currentItem()?.id === itemId;
       console.error("[CCC Vision] Manuell AI-analys avbröts oväntat", { itemId, startedIndex }, error);
-      if (stillSelected) setMessage(`AI-fel: ${error?.message || "Analysen kunde inte slutföras."}`);
+      if (stillSelected && contextSub) {
+        contextSub.hidden = false;
+        contextSub.textContent = `AI-fel: ${error?.message || "Analysen kunde inte slutföras."}`;
+      }
     } finally {
       item.analysisInProgress = false;
 
-      /* Uppdatera den gemensamma DOM-knappen endast om samma plagg fortfarande är valt. */
       if (currentItem()?.id === itemId && button) {
         button.disabled = false;
         button.textContent = "Analysera med AI";
@@ -1504,4 +1547,4 @@
   updateTextPreviews();
 })();
 
-/* CCC cache stamp: v2.8.65 */
+/* CCC cache stamp: v2.8.66 */

@@ -2785,4 +2785,11 @@ body{min-height:100dvh}
 }
 #editCard .edit-trash-button:active{transform:translateY(-50%) scale(.96)}
 
-/* CCC cache stamp: v2.8.62 */
+/* CCC v2.8.66 – manuellt AI-resultat visas direkt i redigeringsvyn. */
+#editCard #editContextSub{
+  color:var(--muted);
+  font-size:.72rem;
+  line-height:1.15;
+}
+
+/* CCC cache stamp: v2.8.66 */
