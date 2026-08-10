@@ -191,6 +191,7 @@
       demoKey: demoKeys[index % demoKeys.length],
       visionReady: false,
       visionResult: null,
+      analysisInProgress: false,
       approved: false,
       editedFields: null,
       analysisPromise: null,
@@ -209,6 +210,7 @@
 
   function startSilentAnalysis(item, forceAi = false) {
     item.visionReady = false;
+    item.analysisInProgress = false;
     const aiAllowed = forceAi || visionSettings().aiAuto;
     item.analysisMode = aiAllowed && window.CCC_VISION_AI?.configured?.() ? "ai" : (aiAllowed ? "demo" : "manual");
     item.analysisError = "";
@@ -217,17 +219,26 @@
     const files = [item.file, ...(item.extraFiles || [])].filter(Boolean).slice(0, 3);
 
     if (item.analysisMode === "manual") {
+      item.analysisInProgress = false;
       item.analysisPromise = Promise.resolve(null);
       item.visionReady = false;
       updateBatchStrip();
       return item.analysisPromise;
     }
 
+    item.analysisInProgress = true;
     item.analysisPromise = (async () => {
       if (item.analysisMode === "ai") {
         try {
           console.info("[CCC Vision] AI-analys startar", { itemId: item.id, files: files.length });
-          const aiResponse = await window.CCC_VISION_AI.analyze(files);
+          const aiResponse = await Promise.race([
+            window.CCC_VISION_AI.analyze(files),
+            new Promise((_, reject) => setTimeout(() => {
+              const error = new Error("AI-analysen tog för lång tid och avbröts.");
+              error.code = "AI_TOTAL_TIMEOUT";
+              reject(error);
+            }, 105000))
+          ]);
           item.visionResult = await applyLocalKnowledge(aiResponse.result || aiResponse);
           item.aiUsage = aiResponse.usage || null;
           item.aiModel = aiResponse.model || "";
@@ -256,9 +267,12 @@
       await new Promise((resolve) => setTimeout(resolve, 650 + Math.floor(Math.random() * 450)));
       item.visionResult = await applyLocalKnowledge(window.CCC_VISION_DEMOS?.[item.demoKey] || window.CCC_VISION_DEMO);
       item.visionReady = true;
-        updateBatchStrip();
+      updateBatchStrip();
       return item.visionResult;
-    })();
+    })().finally(() => {
+      item.analysisInProgress = false;
+      updateBatchStrip();
+    });
     return item.analysisPromise;
   }
 
@@ -307,7 +321,7 @@
       img.src = item.previewUrl;
       img.alt = `Plagg ${index + 1}`;
       const state = document.createElement("span");
-      state.className = `thumb-status ${item.visionReady ? "is-ready" : item.analysisMode === "manual" ? (item.approved ? "is-saved" : "is-manual") : "is-working"}`;
+      state.className = `thumb-status ${item.visionReady ? "is-ready" : item.analysisInProgress ? "is-working" : item.analysisMode === "manual" ? (item.approved ? "is-saved" : "is-manual") : "is-working"}`;
       state.textContent = item.visionReady || item.approved ? "✓" : "";
       state.setAttribute("aria-hidden", "true");
       wrap.addEventListener("click", () => {
@@ -785,6 +799,7 @@
         demoKey: saved.demoKey || "arsenal",
         visionReady: !!saved.visionReady,
         visionResult: saved.visionResult || null,
+        analysisInProgress: false,
         approved: !!saved.approved,
         editedFields: saved.editedFields || null,
         analysisPromise: null,
@@ -888,7 +903,12 @@
     updateTextPreviews();
     updateSmartSuggestions();
     const manualAi = $("#manualAiBtn");
-    if (manualAi) manualAi.hidden = item.visionReady || item.analysisMode !== "manual" || !window.CCC_VISION_AI?.configured?.();
+    if (manualAi) {
+      const canManualAnalyze = !item.visionReady && item.analysisMode === "manual" && window.CCC_VISION_AI?.configured?.();
+      manualAi.hidden = !canManualAnalyze;
+      manualAi.disabled = !!item.analysisInProgress;
+      manualAi.textContent = item.analysisInProgress ? "Analyserar…" : "Analysera med AI";
+    }
   }
 
   function editCurrent(allowWhileAnalyzing = false) {
@@ -1218,12 +1238,41 @@
 
   async function analyzeCurrentManually() {
     const item = currentItem();
-    if (!item || item.visionReady) return;
+    if (!item || item.visionReady || item.analysisInProgress) return;
+
+    const itemId = item.id;
+    const startedIndex = currentIndex;
     const button = $("#manualAiBtn");
+
+    item.analysisInProgress = true;
     if (button) { button.disabled = true; button.textContent = "Analyserar…"; }
-    await startSilentAnalysis(item, true);
-    if (button) { button.disabled = false; button.textContent = "Analysera med AI"; button.hidden = !!item.visionReady; }
-    if (item.visionReady) openReview(currentIndex);
+
+    try {
+      await startSilentAnalysis(item, true);
+
+      /* Resultatet tillhör alltid samma plagg som startade analysen.
+         Byter användaren miniatyr under tiden får den nya bilden ingen AI-status. */
+      const stillSelected = currentItem()?.id === itemId;
+      if (item.visionReady && stillSelected) {
+        openReview(batchItems.findIndex((candidate) => candidate.id === itemId));
+      } else if (item.analysisError && stillSelected) {
+        setMessage(`AI-fel: ${item.analysisError}`);
+      }
+    } catch (error) {
+      const stillSelected = currentItem()?.id === itemId;
+      console.error("[CCC Vision] Manuell AI-analys avbröts oväntat", { itemId, startedIndex }, error);
+      if (stillSelected) setMessage(`AI-fel: ${error?.message || "Analysen kunde inte slutföras."}`);
+    } finally {
+      item.analysisInProgress = false;
+
+      /* Uppdatera den gemensamma DOM-knappen endast om samma plagg fortfarande är valt. */
+      if (currentItem()?.id === itemId && button) {
+        button.disabled = false;
+        button.textContent = "Analysera med AI";
+        button.hidden = !!item.visionReady;
+      }
+      updateBatchStrip();
+    }
   }
 
   function formatSek(value) {
@@ -1455,4 +1504,4 @@
   updateTextPreviews();
 })();
 
-/* CCC cache stamp: v2.8.63 */
+/* CCC cache stamp: v2.8.65 */
