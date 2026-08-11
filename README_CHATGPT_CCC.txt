@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.9.3
+CCC-version: 2.9.4
 Senaste stabila: 2.8.95 RC1 – Crop Engine 1.0
 Senaste checkpoint: 2026-08-11
 Nästa uppgift: Testa CCC Header Core på Dashboard, Vision och Publicera samt finjustera endast centrala core-variabler vid behov.
@@ -37,6 +37,15 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.9.4 – Header Back hotfix
+- Fixar centrala tillbaka-knappar i Publicera.
+- Orsak: gamla DOM-lyssnare för borttagna #detailBack och #cropBack låg kvar och stoppade publish.js med null.addEventListener innan CCC Header Core-eventen registrerades.
+- Gamla lokala back-lyssnare borttagna.
+- Tidigare cleanup-beteende för Detail och Crop flyttat till leavePublishDetail()/leavePublishCrop() och anropas av ccc:header-back.
+- CCC Header Core-geometri är oförändrad.
+- Crop Engine 1.0 är oförändrad.
+- Root /version.js är orörd.
+
 v2.9.3 – CCC Header Core
 - Ny central headerkomponent i /ccc-core/core.js + core.css.
 - En enda uppsättning CSS-variabler styr storlek, klickyta, spacing och vertikal placering för tillbaka, kugghjul, tema och profil.
