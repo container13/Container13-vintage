@@ -731,8 +731,9 @@ async function openCrop(){
   syncActiveIndexFromId();
   const item=activeItem();
   if(!item)return;
-  if(!item.fullUrl)item.fullUrl=item.thumbUrl||url(item.originalBlob||item.thumbnailBlob);
-  cropImage=await loadImage(item.fullUrl);
+  // Anpassning ska alltid utgå från Vision-originalet, aldrig från en redan beskuren WebP.
+  const originalSource=item.originalBlob?url(item.originalBlob):(item.thumbUrl||item.fullUrl);
+  cropImage=await loadImage(originalSource);
   if(item.cropData){cropState={...item.cropData};}
   else{
     cropState=smartCropSuggestion(cropImage);
@@ -804,7 +805,10 @@ $("#cropZoomOut")?.addEventListener("click",()=>stepCropZoom(-.05));
 $("#cropZoomIn")?.addEventListener("click",()=>stepCropZoom(.05));
 
 $("#cropReset").addEventListener("click",()=>{
-  const suggestion=activeItem()?.cropSuggestion||smartCropSuggestion(cropImage);
+  const item=activeItem();
+  if(!item)return;
+  const suggestion=item.cropSuggestion||smartCropSuggestion(cropImage);
+  item.cropSuggestion={...suggestion};
   cropState={...suggestion};
   $("#cropZoom").value=String(cropState.zoom);
   const zoomValue=$("#cropZoomValue");
@@ -869,8 +873,13 @@ $("#cropCanvas").addEventListener("pointermove",e=>{
 },{passive:false});
 
 function endCropPointer(e){
+  const wasPinching=cropPointers.size>=2;
   cropPointers.delete(e.pointerId);
-  if(cropPointers.size===1){
+  // Efter pinch får kvarvarande finger inte omedelbart bli ett nytt drag.
+  // Det tog tidigare över med en ny referenspunkt och upplevdes som ett hack/hopp.
+  if(wasPinching){
+    pointer=null;
+  }else if(cropPointers.size===1){
     const [id,p]=[...cropPointers.entries()][0];
     pointer={id,x:p.x,y:p.y,ox:cropState?.x||0,oy:cropState?.y||0};
   }else{
@@ -879,7 +888,7 @@ function endCropPointer(e){
   pinchStart=null;
 }
 ["pointerup","pointercancel","lostpointercapture"].forEach(n=>$("#cropCanvas").addEventListener(n,endCropPointer));
-$("#cropDone").addEventListener("click",async()=>{const item=activeItem(),g=geometry();if(!item||!g)return;const sx=Math.max(0,((g.w-g.c.width)/2-cropState.x)/g.scale),sy=Math.max(0,((g.h-g.c.height)/2-cropState.y)/g.scale),size=Math.min(cropImage.naturalWidth-sx,cropImage.naturalHeight-sy,g.c.width/g.scale),outSize=Math.max(1,Math.min(1600,Math.round(size))),out=document.createElement("canvas");out.width=out.height=outSize;out.getContext("2d",{alpha:false}).drawImage(cropImage,sx,sy,size,size,0,0,outSize,outSize);const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));item.publishBlob=blob;item.cropData={...cropState};item.imageProcessingState="webp-cropped";await put(persistenceRecord({...item,publishBlob:blob,cropData:item.cropData,imageProcessingState:item.imageProcessingState}));if(item.fullUrl){URL.revokeObjectURL(item.fullUrl);item.fullUrl=url(blob);}openDetail(activeIndex);});
+$("#cropDone").addEventListener("click",async()=>{const item=activeItem(),g=geometry();if(!item||!g)return;item.cropData={...cropState};const sx=Math.max(0,((g.w-g.c.width)/2-cropState.x)/g.scale),sy=Math.max(0,((g.h-g.c.height)/2-cropState.y)/g.scale),size=Math.min(cropImage.naturalWidth-sx,cropImage.naturalHeight-sy,g.c.width/g.scale),outSize=Math.max(1,Math.min(1600,Math.round(size))),out=document.createElement("canvas");out.width=out.height=outSize;out.getContext("2d",{alpha:false}).drawImage(cropImage,sx,sy,size,size,0,0,outSize,outSize);const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));item.publishBlob=blob;item.imageProcessingState="webp-cropped";await put(persistenceRecord({...item,publishBlob:blob,cropData:item.cropData,imageProcessingState:item.imageProcessingState}));if(item.fullUrl){URL.revokeObjectURL(item.fullUrl);item.fullUrl=url(blob);}openDetail(activeIndex);});
 
 $("#publishBtn").addEventListener("click",()=>{const item=activeItem();if(!item)return;$("#publishStatus").textContent=item.publishBlob?"Nästa steg kopplar den här WebP-bilden till Container13.":"Beskär bilden först så skapas publicerings-WebP lokalt.";if(!item.publishBlob)openCrop();});
 
@@ -974,4 +983,4 @@ document.addEventListener("ccc:header-settings",()=>{
 });
 document.addEventListener("ccc:core-ready",()=>setPublishHeader(currentPublishView),{once:true});
 
-/* CCC cache stamp: v2.9.11 */
+/* CCC cache stamp: v2.9.12 */

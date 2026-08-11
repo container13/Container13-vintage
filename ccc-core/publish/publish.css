@@ -767,3 +767,25 @@
 }
 
 /* CCC cache stamp: v2.9.3 */
+
+
+/* CCC v2.9.12 — tydligare och luftigare bildanpassning */
+#cropView .crop-actions-row{
+  grid-template-columns:1fr 1fr!important;
+  gap:12px!important;
+  margin-top:16px!important;
+}
+#cropView .crop-actions-row #cropDone{
+  grid-column:1 / -1;
+  margin-top:4px!important;
+}
+#cropView .crop-actions-row button{
+  min-height:52px!important;
+  padding:10px 8px!important;
+  white-space:normal!important;
+  line-height:1.2!important;
+}
+@media (max-height:720px){
+  #cropView .crop-actions-row{gap:9px!important;margin-top:11px!important}
+  #cropView .crop-actions-row button{min-height:46px!important;padding:8px 6px!important}
+}
