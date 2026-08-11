@@ -4,13 +4,16 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.9.0
+CCC-version: 2.9.4
 Senaste stabila: 2.8.95 RC1 – Crop Engine 1.0
 Senaste checkpoint: 2026-08-11
-Nästa uppgift: Testa Beskär-vyn v2.9.0 på mobil och finjustera endast layout vid behov.
+Nästa uppgift: Testa CCC Header Core på Dashboard, Vision och Publicera samt finjustera endast centrala core-variabler vid behov.
 
 ARBETSPRINCIPER
 ---------------
+- Headerns ikonstorlek, klickyta, spacing och position styrs endast i /ccc-core/core.css.
+- Tillbaka/kugghjul skapas och visas/döljs centralt av /ccc-core/core.js; moduler får inte pixel-positionera egna headerkontroller.
+- Dashboard visar varken tillbaka eller kugghjul. Modulstart visar kugghjul. Undervyer visar tillbaka + kugghjul.
 - Mobil först.
 - Dashboard är designfacit för CCC-moduler.
 - Local-first där det är praktiskt.
@@ -34,6 +37,29 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.9.4 – Header Back hotfix
+- Fixar centrala tillbaka-knappar i Publicera.
+- Orsak: gamla DOM-lyssnare för borttagna #detailBack och #cropBack låg kvar och stoppade publish.js med null.addEventListener innan CCC Header Core-eventen registrerades.
+- Gamla lokala back-lyssnare borttagna.
+- Tidigare cleanup-beteende för Detail och Crop flyttat till leavePublishDetail()/leavePublishCrop() och anropas av ccc:header-back.
+- CCC Header Core-geometri är oförändrad.
+- Crop Engine 1.0 är oförändrad.
+- Root /version.js är orörd.
+
+v2.9.3 – CCC Header Core
+- Ny central headerkomponent i /ccc-core/core.js + core.css.
+- En enda uppsättning CSS-variabler styr storlek, klickyta, spacing och vertikal placering för tillbaka, kugghjul, tema och profil.
+- Core skapar tillbaka- och kugghjulsknapparna; moduler styr endast show/hide via CCC_CORE.header.set().
+- Dashboard: inga vänsterkontroller.
+- Vision start: kugghjul. Vision undervyer: tillbaka + kugghjul.
+- Publicera start: kugghjul. Publicera undervyer: tillbaka + kugghjul.
+- Tema- och profilikoner standardiseras centralt.
+- Lokala fixed/pixel-hack för header tas bort från Publicera.
+- Förhandsgranskningens x av y ligger inne i bilden.
+- Publicera-vyer balanseras utan att module-CSS styr headerns geometri.
+- Crop Engine 1.0 är oförändrad.
+- Root /version.js är orörd och följer inte med i Changed-files ZIP.
+
 v2.9.0 – Beskär Layout
 - Hjälptext och synlig crop-data bort från Beskär-vyn.
 - Tillbaka-knappen placerad i headerområdet till vänster.
@@ -950,3 +976,11 @@ CCC v2.9.0 – Beskär Layout (2026-08-11)
 - Diskret zoomknapp öppnar [-] procent [+] för finjustering.
 - Original / Återställ / OK ligger på samma rad.
 - Root /version.js bevarad exakt från tidigare fulla projektpaket.
+
+
+CCC v2.9.5 – kompakt utkastgrid (2026-08-11)
+- Publicera > Lokala utkast visar nu rena miniatyrer utan titeltext.
+- Mobilvyn använder 4 x 4 miniatyrer, 16 utkast per sida.
+- Fler än 16 utkast delas upp i sidor som kan bytas med horisontell swipe; diskreta sidprickar visar aktuell sida.
+- Tryck på en miniatyr öppnar befintlig detaljvy där stor bild, titel/metadata och swipe mellan utkast finns kvar.
+- Ingen ändring av Vision-original, crop engine eller publiceringsbildens behandling.
