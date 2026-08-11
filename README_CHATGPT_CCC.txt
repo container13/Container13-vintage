@@ -1032,3 +1032,16 @@ CCC v2.9.10 – Publicera-start förenklad
 CCC v2.9.11
 - Fix: synliga vänster/höger-pilar i detaljvyn är nu riktiga interaktiva kontroller och använder samma openDetail/next-flöde som swipe.
 - Fix: långtrycks-snabbkoll använder en sammanhängande transform-animation tillbaka till miniatyren för att undvika slutligt hopp/hack.
+
+
+CCC v2.9.12 – sparad bildanpassning (2026-08-11)
+- Anpassa bild sparar zoom/position icke-destruktivt; Vision-originalet lämnas orört.
+- Knapparna heter Behåll hela bilden / Återställ anpassning / Spara anpassning och har luftigare layout.
+- Återställ anpassning återgår till CCC:s ursprungliga beskärningsförslag.
+
+CCC v2.9.13 – stabil detaljvy + fri utzoomning (2026-08-11)
+- Detaljvyn reserverar fasta zoner för bild, titel/metadata, åtgärdsknappar och status så pris eller varierande metadata inte flyttar knapparna vid swipe.
+- Synliga vänster/höger-pilar är klick-/touchbara ovanpå swipeytan och använder samma next/openDetail-flöde som swipe.
+- Anpassa bild tillåter utzoomning under cover-nivån utan att tvinga tillbaka zoom till 100 % när fingrarna släpps.
+- Miniatyrerna använder contain-visning och prioriterar sparad publiceringsbild när sådan finns, så de bättre speglar den sparade bildanpassningen.
+- README_CHATGPT_CCC åter ikapp med leveransregeln.
