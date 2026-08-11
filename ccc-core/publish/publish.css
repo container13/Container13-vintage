@@ -716,4 +716,163 @@
   #cropView .crop-actions-row button{min-height:48px!important}
 }
 
-/* CCC cache stamp: v2.9.1 */
+/* =========================================================
+   CCC v2.9.2 – Publicera layoutfix
+   ========================================================= */
+
+/* One shared header row. Left controls align exactly with theme/profile. */
+:root{
+  --ccc-header-control-top: 224px;
+  --ccc-header-left: 14px;
+  --ccc-header-gap: 10px;
+  --ccc-header-btn: 46px;
+}
+
+.ccc-view-header-back,
+#cropBack{
+  position:fixed!important;
+  top:var(--ccc-header-control-top)!important;
+  left:var(--ccc-header-left)!important;
+  width:var(--ccc-header-btn)!important;
+  height:var(--ccc-header-btn)!important;
+  z-index:1211!important;
+}
+
+#publishSettingsBtn{
+  position:fixed!important;
+  top:var(--ccc-header-control-top)!important;
+  left:calc(var(--ccc-header-left) + var(--ccc-header-btn) + var(--ccc-header-gap))!important;
+  width:var(--ccc-header-btn)!important;
+  height:var(--ccc-header-btn)!important;
+  z-index:1210!important;
+}
+
+/* Old in-content back buttons are hidden; header back is canonical. */
+#gridBack,
+#detailBack{
+  display:none!important;
+}
+
+/* Preview/detail counter inside image. */
+#detailView .detail-counter-badge{
+  position:absolute;
+  top:10px;
+  right:10px;
+  z-index:8;
+  padding:5px 9px;
+  border-radius:999px;
+  background:rgba(0,0,0,.58);
+  color:#fff;
+  font-size:12px;
+  line-height:1;
+  backdrop-filter:blur(4px);
+  pointer-events:none;
+}
+
+/* Ensure likely detail image wrapper can host badge. */
+#detailView .detail-image-wrap,
+#detailView .detail-image,
+#detailView .preview-image,
+#detailView .detail-media,
+#detailView .image-wrap{
+  position:relative;
+}
+
+/* Use more of the available height in Local drafts and Preview. */
+#gridView,
+#detailView{
+  min-height:calc(100dvh - 205px)!important;
+  padding-top:8px!important;
+  padding-bottom:max(12px,env(safe-area-inset-bottom))!important;
+}
+
+#gridView{
+  display:flex;
+  flex-direction:column;
+}
+
+#gridView .draft-grid,
+#gridView .drafts-grid,
+#gridView .local-drafts-grid,
+#gridView .publish-grid{
+  flex:1 1 auto;
+  align-content:space-between;
+  gap:14px!important;
+}
+
+#gridView .draft-card,
+#gridView .draft-item,
+#gridView .publish-card{
+  min-height:clamp(106px,14.5dvh,138px)!important;
+}
+
+/* Preview: give the image/content more of the empty lower area. */
+#detailView .detail-card,
+#detailView .preview-card,
+#detailView .publish-detail-card{
+  min-height:clamp(180px,25dvh,250px)!important;
+}
+
+#detailView .detail-image-wrap,
+#detailView .detail-image,
+#detailView .preview-image,
+#detailView .detail-media,
+#detailView .image-wrap{
+  min-height:clamp(220px,34dvh,340px)!important;
+}
+
+#detailView .detail-actions,
+#detailView .publish-actions{
+  margin-top:auto!important;
+  gap:10px!important;
+}
+
+#detailView .detail-actions button,
+#detailView .publish-actions button,
+#gridView .publish-actions button{
+  min-height:54px!important;
+  font-size:14px!important;
+  border-radius:15px!important;
+  font-weight:700!important;
+}
+
+/* Crop: move down from safe area and use freed vertical space. */
+#cropView.crop-view{
+  height:calc(100dvh - 205px)!important;
+  padding-top:10px!important;
+  padding-bottom:max(12px,env(safe-area-inset-bottom))!important;
+}
+#cropView .crop-preview{
+  width:min(94vw,60dvh,560px)!important;
+  max-height:60dvh!important;
+}
+#cropView .crop-actions-row button{
+  min-height:54px!important;
+}
+
+/* Small phones */
+@media (max-height:760px){
+  :root{
+    --ccc-header-control-top: 206px;
+    --ccc-header-btn: 44px;
+  }
+  #gridView,
+  #detailView,
+  #cropView.crop-view{
+    min-height:calc(100dvh - 190px)!important;
+    height:auto;
+  }
+  #cropView .crop-preview{
+    width:min(90vw,52dvh,480px)!important;
+    max-height:52dvh!important;
+  }
+  #detailView .detail-image-wrap,
+  #detailView .detail-image,
+  #detailView .preview-image,
+  #detailView .detail-media,
+  #detailView .image-wrap{
+    min-height:clamp(190px,30dvh,290px)!important;
+  }
+}
+
+/* CCC cache stamp: v2.9.2 */

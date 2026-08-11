@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f7f7f9">
 <meta name="color-scheme" content="light dark">
-<link rel="manifest" href="../manifest.webmanifest?v=2.9.1">
+<link rel="manifest" href="../manifest.webmanifest?v=2.9.2">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>CCC Publicera v2.9.1</title>
+<title>CCC Publicera v2.9.2</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-<link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.1">
-<link rel="stylesheet" href="publish.css?v=2.9.1">
-<link rel="stylesheet" href="../core.css?v=2.9.1">
+<link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.2">
+<link rel="stylesheet" href="publish.css?v=2.9.2">
+<link rel="stylesheet" href="../core.css?v=2.9.2">
 </head>
 <body>
 
@@ -72,6 +72,7 @@
     </section>
 
     <section id="gridView" class="publish-view" hidden>
+      <button id="gridHeaderBack" class="publish-back ccc-view-header-back" type="button" aria-label="Tillbaka"><svg class="ccc-nav-svg" aria-hidden="true"><use href="#ccc-i-back"></use></svg></button>
       <div class="publish-heading"><button id="gridBack" class="publish-back" type="button" aria-label="Tillbaka">‹</button><div><h1>Lokala utkast</h1><p id="draftCount">0 lokala utkast</p></div></div>
       <div id="emptyState" class="publish-empty" hidden><strong>Inget väntar på publicering</strong><span>Skapa ett plagg i Vision först.</span></div>
       <div id="draftGrid" class="draft-grid" aria-live="polite"></div>
@@ -84,10 +85,11 @@
 
     <section id="detailView" class="publish-view" hidden>
       <button id="detailHeaderBack" class="publish-back ccc-view-header-back" type="button" aria-label="Tillbaka"><svg class="ccc-nav-svg" aria-hidden="true"><use href="#ccc-i-back"></use></svg></button>
-      <div class="detail-top"><button id="detailBack" class="publish-back" type="button" aria-label="Till miniatyrer">‹</button><div class="detail-counter" id="detailCounter"></div></div>
+      <div class="detail-top"><button id="detailBack" class="publish-back" type="button" aria-label="Till miniatyrer">‹</button></div>
       <div id="swipeArea" class="swipe-area">
         <img id="detailPrevImage" class="swipe-image swipe-image-prev" alt="" aria-hidden="true">
         <img id="detailImage" class="swipe-image swipe-image-current" alt="Valt plagg">
+        <div class="detail-counter" id="detailCounter" class="detail-counter-badge"></div>
         <img id="detailNextImage" class="swipe-image swipe-image-next" alt="" aria-hidden="true">
         <span class="swipe-hint left" aria-hidden="true">‹</span><span class="swipe-hint right" aria-hidden="true">›</span>
       </div>
@@ -137,9 +139,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.9.1"></script>
-<script type="module" src="../core.js?v=2.9.1"></script>
-  <script src="../version.js?v=2.9.1"></script>
-<script src="../pwa.js?v=2.9.1" defer></script>
+<script type="module" src="publish.js?v=2.9.2"></script>
+<script type="module" src="../core.js?v=2.9.2"></script>
+  <script src="../version.js?v=2.9.2"></script>
+<script src="../pwa.js?v=2.9.2" defer></script>
 </body>
 </html>

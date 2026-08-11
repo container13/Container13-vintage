@@ -761,4 +761,8 @@ $("#publishSettingsBtn")?.addEventListener("click",()=>{
   if(existing && existing!==$("#publishSettingsBtn")) existing.click();
 });
 
-/* CCC cache stamp: v2.9.1 */
+$("#gridHeaderBack")?.addEventListener("click",()=>show("startView"));
+
+$("#detailHeaderBack")?.addEventListener("click",()=>show("gridView"));
+
+/* CCC cache stamp: v2.9.2 */
