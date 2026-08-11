@@ -115,11 +115,10 @@
   }
 
   function updateHeaderContext() {
-    const settingsBtn = $("#visionSettingsBtn");
-    const backBtn = $("#headerBackBtn");
     const isModuleHome = visionView === "start";
-    if (settingsBtn) settingsBtn.hidden = !isModuleHome;
-    if (backBtn) backBtn.hidden = isModuleHome;
+    const state={back:!isModuleHome,settings:true};
+    window.__CCC_HEADER_PENDING__=state;
+    window.CCC_CORE?.header?.set(state);
   }
 
   function applyCaptureMode() {
@@ -1499,7 +1498,7 @@
   }
 
   $("#visionStartBackBtn")?.addEventListener("click", () => window.location.assign("../dashboard/index.html?v=2.8.4"));
-  $("#visionSettingsBtn")?.addEventListener("click", () => setVisionSettingsOpen(true));
+  document.addEventListener("ccc:header-settings",()=>setVisionSettingsOpen(true));
   $("#visionSettingsCloseBtn")?.addEventListener("click", () => setVisionSettingsOpen(false));
 
   async function renderKnowledgeList() {
@@ -1539,10 +1538,11 @@
   $("#visionAiAutoSetting")?.addEventListener("change", (event) => saveVisionSetting("ccc-vision-ai-auto", event.target.checked));
   $("#visionLearnEditsSetting")?.addEventListener("change", (event) => saveVisionSetting("ccc-vision-learn-edits", event.target.checked));
 
+  document.addEventListener("ccc:core-ready",()=>updateHeaderContext(),{once:true});
   // Kamera / fotograferingsflöde
   $("#startCameraBtn").addEventListener("click", startCamera);
   $("#galleryBtn").addEventListener("click", () => $("#galleryInput").click());
-  $("#headerBackBtn")?.addEventListener("click", goBackFromVision);
+  document.addEventListener("ccc:header-back",goBackFromVision);
   $("#reviewBackBtn")?.addEventListener("click", () => showWorkspace());
   $("#resumeSessionBtn")?.addEventListener("click", async () => {
     if (batchItems.length) showWorkspace();
