@@ -1027,3 +1027,8 @@ CCC v2.9.10 – Publicera-start förenklad
 - Välj kanal har egen vy; Hemsidan/Container13 är första kanalen, fler kanaler senare.
 - Historik ersätter tidigare Publicerade.
 - Befintlig 3x3-grid, långtrycks-preview, fokusfix och cropflöde behållna.
+
+
+CCC v2.9.11
+- Fix: synliga vänster/höger-pilar i detaljvyn är nu riktiga interaktiva kontroller och använder samma openDetail/next-flöde som swipe.
+- Fix: långtrycks-snabbkoll använder en sammanhängande transform-animation tillbaka till miniatyren för att undvika slutligt hopp/hack.
