@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.9.1
+CCC-version: 2.9.2
 Senaste stabila: 2.8.95 RC1 – Crop Engine 1.0
 Senaste checkpoint: 2026-08-11
 Nästa uppgift: Testa Beskär-vyn v2.9.0 på mobil och finjustera endast layout vid behov.
@@ -35,6 +35,15 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.9.2 – Publicera layoutfix
+- Lokala utkast får tillbaka-pil i headern; gamla tillbaka-knappen i innehållet döljs.
+- Förhandsgranskning använder endast en tillbaka-pil i headern.
+- Bildräknaren flyttas in i förhandsgranskningsbilden.
+- Beskär-vyns tillbaka-pil flyttas ner till samma headerlinje som kugghjul, tema och profil.
+- Tomma ytor används till större kort, bildytor och knappar i Lokala utkast, Förhandsgranskning och Beskär.
+- Ingen funktionslogik eller Crop Engine 1.0 ändras.
+- Root /version.js är orörd och följer inte med i Changed-files ZIP.
+
 v2.9.1 – Publicera UI-balansering + headerstandard
 - Dashboard är facit för mobilhöjd och vertikal balans.
 - Publicera-undervyer får tillbaka-pil i headerns vänstersida i linje med tema/profil.
