@@ -4,14 +4,16 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.9.2
+CCC-version: 2.9.3
 Senaste stabila: 2.8.95 RC1 – Crop Engine 1.0
 Senaste checkpoint: 2026-08-11
-Nästa uppgift: Testa Beskär-vyn v2.9.0 på mobil och finjustera endast layout vid behov.
+Nästa uppgift: Testa CCC Header Core på Dashboard, Vision och Publicera samt finjustera endast centrala core-variabler vid behov.
 
 ARBETSPRINCIPER
 ---------------
-- Dashboard-vyn är facit för mobilhöjd och vertikal balans; andra CCC-vyer ska använda samma skärmyta utan onödig scroll.
+- Headerns ikonstorlek, klickyta, spacing och position styrs endast i /ccc-core/core.css.
+- Tillbaka/kugghjul skapas och visas/döljs centralt av /ccc-core/core.js; moduler får inte pixel-positionera egna headerkontroller.
+- Dashboard visar varken tillbaka eller kugghjul. Modulstart visar kugghjul. Undervyer visar tillbaka + kugghjul.
 - Mobil först.
 - Dashboard är designfacit för CCC-moduler.
 - Local-first där det är praktiskt.
@@ -35,24 +37,19 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
-v2.9.2 – Publicera layoutfix
-- Lokala utkast får tillbaka-pil i headern; gamla tillbaka-knappen i innehållet döljs.
-- Förhandsgranskning använder endast en tillbaka-pil i headern.
-- Bildräknaren flyttas in i förhandsgranskningsbilden.
-- Beskär-vyns tillbaka-pil flyttas ner till samma headerlinje som kugghjul, tema och profil.
-- Tomma ytor används till större kort, bildytor och knappar i Lokala utkast, Förhandsgranskning och Beskär.
-- Ingen funktionslogik eller Crop Engine 1.0 ändras.
-- Root /version.js är orörd och följer inte med i Changed-files ZIP.
-
-v2.9.1 – Publicera UI-balansering + headerstandard
-- Dashboard är facit för mobilhöjd och vertikal balans.
-- Publicera-undervyer får tillbaka-pil i headerns vänstersida i linje med tema/profil.
-- Modulens kugghjul ligger bredvid tillbaka-pilen.
-- Temaikon byts till halvfylld cirkel i gemensam outline-stil.
-- Profilikon byts till CircleUser-liknande outline-ikon.
-- Tomma ytor används till större kort, bildytor och större tryckvänliga knappar.
+v2.9.3 – CCC Header Core
+- Ny central headerkomponent i /ccc-core/core.js + core.css.
+- En enda uppsättning CSS-variabler styr storlek, klickyta, spacing och vertikal placering för tillbaka, kugghjul, tema och profil.
+- Core skapar tillbaka- och kugghjulsknapparna; moduler styr endast show/hide via CCC_CORE.header.set().
+- Dashboard: inga vänsterkontroller.
+- Vision start: kugghjul. Vision undervyer: tillbaka + kugghjul.
+- Publicera start: kugghjul. Publicera undervyer: tillbaka + kugghjul.
+- Tema- och profilikoner standardiseras centralt.
+- Lokala fixed/pixel-hack för header tas bort från Publicera.
+- Förhandsgranskningens x av y ligger inne i bilden.
+- Publicera-vyer balanseras utan att module-CSS styr headerns geometri.
 - Crop Engine 1.0 är oförändrad.
-- Root /version.js är orörd och är inte med i Changed-files ZIP.
+- Root /version.js är orörd och följer inte med i Changed-files ZIP.
 
 v2.9.0 – Beskär Layout
 - Hjälptext och synlig crop-data bort från Beskär-vyn.
