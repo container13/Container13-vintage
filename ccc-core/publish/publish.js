@@ -519,6 +519,36 @@ function renderCropDiagnostics(){
   ].join("\\n");
 }
 
+
+function updateCropCounter(){
+  const el=$("#cropCounter");
+  if(!el)return;
+  syncActiveIndexFromId();
+  el.textContent=`${activeIndex+1} av ${items.length}`;
+}
+
+function setCropZoom(nextZoom){
+  if(!cropState)return;
+  const z=Math.max(1,Math.min(3,Number(nextZoom)||1));
+  cropState.zoom=z;
+  const input=$("#cropZoom");
+  if(input)input.value=String(z);
+  const value=$("#cropZoomValue");
+  if(value)value.textContent=`${Math.round(z*100)} %`;
+  drawCrop();
+}
+
+function stepCropZoom(delta){
+  if(!cropState)return;
+  setCropZoom((cropState.zoom||1)+delta);
+}
+
+function cycleCropZoom(){
+  if(!cropState)return;
+  const z=cropState.zoom||1;
+  setCropZoom(z<1.15?1.30:z<1.55?1.80:1);
+}
+
 async function openCrop(){
   syncActiveIndexFromId();
   const item=activeItem();
@@ -532,6 +562,9 @@ async function openCrop(){
     console.debug("[CCC Publicera] crop v2.8.95 RC1 paired-collar lock",{id:item.id,zoom:cropState.zoom,x:cropState.x,y:cropState.y});
   }
   $("#cropZoom").value=String(cropState.zoom);
+  const zoomValue=$("#cropZoomValue");
+  if(zoomValue)zoomValue.textContent=`${Math.round(cropState.zoom*100)} %`;
+  updateCropCounter();
   $("#cropOriginalPreview").src=item.thumbUrl||item.fullUrl;
   drawCrop();show("cropView");
 }
@@ -548,13 +581,16 @@ async function createOriginalWebP(item){
   return new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));
 }
 $("#cropBtn").addEventListener("click",openCrop);
-$("#cropDiagToggle").addEventListener("click",()=>{
-  const panel=$("#cropDiag");
-  const button=$("#cropDiagToggle");
-  panel.hidden=!panel.hidden;
-  button.textContent=panel.hidden?"Visa crop-data":"Dölj crop-data";
-  renderCropDiagnostics();
-});
+const cropDiagToggle=$("#cropDiagToggle");
+if(cropDiagToggle){
+  cropDiagToggle.addEventListener("click",()=>{
+    const panel=$("#cropDiag");
+    if(!panel)return;
+    panel.hidden=!panel.hidden;
+    cropDiagToggle.textContent=panel.hidden?"Visa crop-data":"Dölj crop-data";
+    renderCropDiagnostics();
+  });
+}
 
 $("#keepOriginalBtn").addEventListener("click",async()=>{
   const item=activeItem();
@@ -585,7 +621,25 @@ $("#cropBack").addEventListener("click",async()=>{
   await renderGrid();
   activeItemId=null;
   show("gridView");
-});$("#cropZoom").addEventListener("input",e=>{cropState.zoom=Number(e.target.value)||1;drawCrop();});$("#cropReset").addEventListener("click",()=>{const suggestion=activeItem()?.cropSuggestion||smartCropSuggestion(cropImage);cropState={...suggestion};$("#cropZoom").value=String(cropState.zoom);drawCrop();});
+});
+const cropZoomInput=$("#cropZoom");
+if(cropZoomInput)cropZoomInput.addEventListener("input",e=>setCropZoom(Number(e.target.value)||1));
+
+$("#cropZoomToggle")?.addEventListener("click",()=>{
+  const controls=$("#cropZoomControls");
+  if(controls)controls.hidden=!controls.hidden;
+});
+$("#cropZoomOut")?.addEventListener("click",()=>stepCropZoom(-.05));
+$("#cropZoomIn")?.addEventListener("click",()=>stepCropZoom(.05));
+
+$("#cropReset").addEventListener("click",()=>{
+  const suggestion=activeItem()?.cropSuggestion||smartCropSuggestion(cropImage);
+  cropState={...suggestion};
+  $("#cropZoom").value=String(cropState.zoom);
+  const zoomValue=$("#cropZoomValue");
+  if(zoomValue)zoomValue.textContent=`${Math.round(cropState.zoom*100)} %`;
+  drawCrop();
+});
 const cropPointers=new Map();
 let pinchStart=null;
 
@@ -630,6 +684,8 @@ $("#cropCanvas").addEventListener("pointermove",e=>{
     cropState.x=pinchStart.x+(mid.x-pinchStart.mid.x)*canvasPerCssX;
     cropState.y=pinchStart.y+(mid.y-pinchStart.mid.y)*canvasPerCssY;
     $("#cropZoom").value=String(newZoom);
+    const zoomValue=$("#cropZoomValue");
+    if(zoomValue)zoomValue.textContent=`${Math.round(newZoom*100)} %`;
     drawCrop();
     return;
   }
@@ -680,4 +736,24 @@ $("#publishBtn").addEventListener("click",()=>{const item=activeItem();if(!item)
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-/* CCC cache stamp: v2.8.95 */
+const cropCanvasForDoubleTap=$("#cropCanvas");
+if(cropCanvasForDoubleTap){
+  cropCanvasForDoubleTap.addEventListener("dblclick",e=>{
+    e.preventDefault();
+    cycleCropZoom();
+  });
+  let cropLastTap=0;
+  cropCanvasForDoubleTap.addEventListener("touchend",e=>{
+    if(e.touches?.length)return;
+    const now=Date.now();
+    if(now-cropLastTap<320){
+      e.preventDefault();
+      cycleCropZoom();
+      cropLastTap=0;
+    }else{
+      cropLastTap=now;
+    }
+  },{passive:false});
+}
+
+/* CCC cache stamp: v2.9.0 */
