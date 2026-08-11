@@ -1380,3 +1380,85 @@ body{
    Moduler ska använda var(--ccc-header-height), aldrig sätta variabeln själva. */
 
 /* CCC cache stamp: v2.8.49 */
+
+
+/* =========================================================
+   CCC HEADER CORE v1 — v2.9.3
+   ENDA KÄLLAN för headerknapparnas storlek, position och spacing.
+   Moduler får INTE pixel-positionera tillbaka/kugghjul lokalt.
+   ========================================================= */
+:root{
+  --ccc-header-control-size:48px;
+  --ccc-header-icon-size:24px;
+  --ccc-header-control-gap:10px;
+  --ccc-header-side:22px;
+  --ccc-header-control-bottom:18px;
+}
+.ccc-header-left-tools{
+  position:absolute!important;
+  left:var(--ccc-header-side)!important;
+  bottom:var(--ccc-header-control-bottom)!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:var(--ccc-header-control-gap)!important;
+  z-index:45!important;
+}
+.ccc-header-actions{
+  right:var(--ccc-header-side)!important;
+  bottom:var(--ccc-header-control-bottom)!important;
+  gap:var(--ccc-header-control-gap)!important;
+}
+.ccc-header-control,
+.ccc-header .ccc-icon-button{
+  width:var(--ccc-header-control-size)!important;
+  height:var(--ccc-header-control-size)!important;
+  min-width:var(--ccc-header-control-size)!important;
+  min-height:var(--ccc-header-control-size)!important;
+  padding:0!important;
+  border:1px solid var(--ccc-border)!important;
+  border-radius:50%!important;
+  background:var(--ccc-surface)!important;
+  display:grid!important;
+  place-items:center!important;
+  box-shadow:0 8px 20px rgba(31,42,68,.08)!important;
+  cursor:pointer!important;
+}
+.ccc-header-control[hidden]{display:none!important}
+.ccc-header-control:active,
+.ccc-header .ccc-icon-button:active{transform:scale(.96)}
+.ccc-header-control svg,
+.ccc-header .ccc-icon-button svg{
+  width:var(--ccc-header-icon-size)!important;
+  height:var(--ccc-header-icon-size)!important;
+  display:block!important;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.ccc-header-control--theme svg .ccc-theme-fill{
+  fill:currentColor;
+  stroke:none;
+}
+.ccc-header-control--theme{color:var(--ccc-gold)!important}
+.ccc-header-control--settings{color:var(--ccc-text)!important}
+.ccc-header-control--back{color:var(--ccc-text)!important}
+
+/* Old module-local header tool wrappers must never position controls. */
+.ccc-module-header-tools,
+.vision-header-tools{
+  position:static!important;
+  inset:auto!important;
+}
+
+/* Mobile: same geometry everywhere, changed from ONE place only. */
+@media (max-width:760px){
+  :root{
+    --ccc-header-control-size:44px;
+    --ccc-header-icon-size:22px;
+    --ccc-header-control-gap:8px;
+    --ccc-header-side:16px;
+    --ccc-header-control-bottom:14px;
+  }
+}

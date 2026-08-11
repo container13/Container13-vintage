@@ -62,4 +62,76 @@ confirmLogout?.addEventListener("click",async()=>{
     confirmLogout.disabled=false;
   }
 });
-window.CCC_CORE={applyTheme,setProfileMenu,setLogoutDialog};
+
+
+// ==========================================================
+// CCC HEADER CORE v1 — v2.9.3
+// Centralt styrd header. Moduler bestämmer endast synlighet
+// och reagerar på events; geometri/ikoner ägs av core.css.
+// ==========================================================
+const CCC_HEADER_ICONS={
+  back:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>`,
+  settings:`<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.4"/><path d="M19.2 13.3a7.8 7.8 0 0 0 .1-1.3 7.8 7.8 0 0 0-.1-1.3l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-2.2-1.3L14.2 3h-4.4l-.4 2.4a7.6 7.6 0 0 0-2.2 1.3l-2.4-1-2 3.4 2 1.6A7.8 7.8 0 0 0 4.7 12c0 .44.04.87.1 1.3l-2 1.6 2 3.4 2.4-1a7.6 7.6 0 0 0 2.2 1.3l.4 2.4h4.4l.4-2.4a7.6 7.6 0 0 0 2.2-1.3l2.4 1 2-3.4-2-1.6Z"/></svg>`,
+  theme:`<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path class="ccc-theme-fill" d="M12 4a8 8 0 0 1 0 16Z"/></svg>`,
+  user:`<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="3"/><path d="M6.8 18c1.1-2.5 3-3.8 5.2-3.8s4.1 1.3 5.2 3.8"/></svg>`
+};
+
+function ensureCCCHeader(){
+  const header=document.querySelector(".ccc-header");
+  if(!header)return null;
+
+  let left=header.querySelector(".ccc-header-left-tools");
+  if(!left){
+    left=document.createElement("div");
+    left.className="ccc-header-left-tools";
+    left.innerHTML=`
+      <button id="cccHeaderBack" class="ccc-header-control ccc-header-control--back" type="button" aria-label="Tillbaka" hidden>${CCC_HEADER_ICONS.back}</button>
+      <button id="cccHeaderSettings" class="ccc-header-control ccc-header-control--settings" type="button" aria-label="Modulinställningar" hidden>${CCC_HEADER_ICONS.settings}</button>`;
+    header.appendChild(left);
+  }
+
+  const theme=$("#themeBtn");
+  if(theme){
+    theme.classList.add("ccc-header-control--theme");
+    theme.innerHTML=CCC_HEADER_ICONS.theme;
+  }
+  const profile=$("#profileBtn");
+  if(profile)profile.innerHTML=CCC_HEADER_ICONS.user;
+
+  const back=$("#cccHeaderBack");
+  const settings=$("#cccHeaderSettings");
+  if(back&&!back.dataset.cccBound){
+    back.dataset.cccBound="1";
+    back.addEventListener("click",()=>document.dispatchEvent(new CustomEvent("ccc:header-back")));
+  }
+  if(settings&&!settings.dataset.cccBound){
+    settings.dataset.cccBound="1";
+    settings.addEventListener("click",()=>document.dispatchEvent(new CustomEvent("ccc:header-settings")));
+  }
+  return {header,left,back,settings,theme,profile};
+}
+
+const CCCHeader={
+  state:{back:false,settings:false},
+  set(next={}){
+    const ui=ensureCCCHeader();
+    this.state={...this.state,...next};
+    if(ui?.back)ui.back.hidden=!this.state.back;
+    if(ui?.settings)ui.settings.hidden=!this.state.settings;
+    document.body?.classList.toggle("ccc-has-header-back",!!this.state.back);
+    document.body?.classList.toggle("ccc-has-header-settings",!!this.state.settings);
+    return {...this.state};
+  },
+  get(){return {...this.state}}
+};
+
+const initialHeader={
+  back:document.body?.dataset.cccHeaderBack==="true",
+  settings:document.body?.dataset.cccHeaderSettings==="true"
+};
+ensureCCCHeader();
+CCCHeader.set(window.__CCC_HEADER_PENDING__||initialHeader);
+
+
+window.CCC_CORE={applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader};
+document.dispatchEvent(new CustomEvent("ccc:core-ready",{detail:{header:CCCHeader}}));
