@@ -993,3 +993,13 @@ CCC v2.9.6 – 3x3 utkastgrid + fokusmarkering (2026-08-11)
 - Webbläsarens tillfälliga blå fokusram på bland annat Tillbaka-knappen döljs för touch/musklick.
 - Vid riktig tangentbordsnavigation används i stället en guldfärgad CCC-fokusmarkering.
 - Vision-original, crop engine och publiceringsbildens behandling är oförändrade.
+
+
+CCC v2.9.7 – långtryck snabbkoll i utkastgrid (2026-08-11)
+- Publicera > Lokala utkast behåller 3 x 3-grid och 9 utkast per sida.
+- Vanligt tryck på miniatyr öppnar detaljvyn som tidigare.
+- Håll fingret stilla på en miniatyr i ca 0,75 s för en snabb stor förhandsvisning ovanpå gridden.
+- Förhandsvisningen ligger kvar medan fingret hålls nere och krymper tillbaka snabbt när fingret släpps.
+- En rörelse över ca 12 px avbryter långtrycket så swipe mellan gridsidor inte blockeras.
+- Långtryck öppnar inte detaljvyn efteråt; webbläsarens native touch-callout/contextmeny blockeras på miniatyrerna.
+- Vision-original, crop engine, detalj-swipe och publiceringsbildens behandling är oförändrade.
