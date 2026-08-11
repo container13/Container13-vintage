@@ -8,6 +8,7 @@ const DB_NAME="ccc-local-workspace", DB_VERSION=3, STORE_NAME="images", FILE_STO
 let items=[],activeIndex=0,objectUrls=[];
 const DRAFTS_PER_PAGE=9;
 let draftPage=0,draftGridGesture=null;
+let draftPreviewGesture=null,draftPreviewSuppressClick=false;
 let cropImage=null,cropState=null,pointer=null;
 let activeItemId=null;
 const decodedImageCache=new Map();
@@ -126,8 +127,11 @@ function ensureDraftGridUi(){
   style.id="cccDraftGridCompactStyles";
   style.textContent=`
     #draftGrid.draft-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;touch-action:pan-y;overflow:hidden}
-    #draftGrid .draft-card{position:relative!important;aspect-ratio:1/1!important;min-width:0!important;min-height:0!important;border-radius:12px!important;overflow:hidden!important;padding:0!important;margin:0!important}
-    #draftGrid .draft-card img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}
+    #draftGrid .draft-card{position:relative!important;aspect-ratio:1/1!important;min-width:0!important;min-height:0!important;border-radius:12px!important;overflow:hidden!important;padding:0!important;margin:0!important;-webkit-touch-callout:none!important;user-select:none!important}
+    #draftGrid .draft-card img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;pointer-events:none!important;-webkit-user-drag:none!important;user-select:none!important}
+    .ccc-draft-preview-layer{position:fixed;inset:0;z-index:9999;pointer-events:none;background:rgba(5,7,12,.58);opacity:0;transition:opacity .16s ease}
+    .ccc-draft-preview-layer.is-open{opacity:1}
+    .ccc-draft-preview-image{position:fixed;z-index:10000;pointer-events:none;object-fit:contain;background:#0b0d13;border-radius:14px;box-shadow:0 18px 52px rgba(0,0,0,.55);will-change:left,top,width,height,border-radius;transition:left .18s ease,top .18s ease,width .18s ease,height .18s ease,border-radius .18s ease}
     #draftGrid .draft-card-caption{display:none!important}
     .ccc-draft-pager{display:flex;align-items:center;justify-content:center;gap:7px;margin:16px auto 4px;min-height:12px}
     .ccc-draft-page-dot{width:7px;height:7px;border:0;border-radius:999px;padding:0;background:rgba(210,214,225,.42)}
@@ -137,6 +141,78 @@ function ensureDraftGridUi(){
   `;
   document.head.append(style);
 }
+function clearDraftPreviewGesture(){
+  if(draftPreviewGesture?.timer)clearTimeout(draftPreviewGesture.timer);
+  draftPreviewGesture=null;
+}
+function closeDraftPreview(){
+  const g=draftPreviewGesture;
+  if(!g?.preview)return clearDraftPreviewGesture();
+  const {layer,preview,rect}=g.preview;
+  layer.classList.remove("is-open");
+  preview.style.left=`${rect.left}px`;
+  preview.style.top=`${rect.top}px`;
+  preview.style.width=`${rect.width}px`;
+  preview.style.height=`${rect.height}px`;
+  preview.style.borderRadius="12px";
+  window.setTimeout(()=>{layer.remove();preview.remove();},190);
+  draftPreviewGesture=null;
+}
+function openDraftPreview(button,img){
+  if(!draftPreviewGesture||draftPreviewGesture.button!==button)return;
+  const rect=button.getBoundingClientRect();
+  const layer=document.createElement("div");
+  layer.className="ccc-draft-preview-layer";
+  const preview=document.createElement("img");
+  preview.className="ccc-draft-preview-image";
+  preview.alt=img.alt||"Förhandsvisning";
+  preview.src=img.currentSrc||img.src;
+  preview.style.left=`${rect.left}px`;
+  preview.style.top=`${rect.top}px`;
+  preview.style.width=`${rect.width}px`;
+  preview.style.height=`${rect.height}px`;
+  document.body.append(layer,preview);
+  draftPreviewGesture.preview={layer,preview,rect};
+  draftPreviewGesture.longPressed=true;
+  draftPreviewSuppressClick=true;
+  requestAnimationFrame(()=>{
+    layer.classList.add("is-open");
+    const vw=window.innerWidth,vh=window.innerHeight;
+    const maxW=Math.min(vw-32,520);
+    const maxH=Math.min(vh-120,680);
+    const ratio=(img.naturalWidth&&img.naturalHeight)?img.naturalWidth/img.naturalHeight:1;
+    let w=maxW,h=w/ratio;
+    if(h>maxH){h=maxH;w=h*ratio;}
+    preview.style.left=`${Math.round((vw-w)/2)}px`;
+    preview.style.top=`${Math.round((vh-h)/2)}px`;
+    preview.style.width=`${Math.round(w)}px`;
+    preview.style.height=`${Math.round(h)}px`;
+    preview.style.borderRadius="16px";
+  });
+}
+function bindDraftPreview(button,img){
+  button.addEventListener("contextmenu",e=>e.preventDefault());
+  button.addEventListener("pointerdown",e=>{
+    if(e.pointerType==="mouse"&&e.button!==0)return;
+    clearDraftPreviewGesture();
+    draftPreviewGesture={button,id:e.pointerId,x:e.clientX,y:e.clientY,longPressed:false,preview:null,timer:null};
+    draftPreviewGesture.timer=window.setTimeout(()=>openDraftPreview(button,img),750);
+  });
+  button.addEventListener("pointermove",e=>{
+    const g=draftPreviewGesture;
+    if(!g||g.button!==button||g.id!==e.pointerId||g.longPressed)return;
+    if(Math.hypot(e.clientX-g.x,e.clientY-g.y)>12)clearDraftPreviewGesture();
+  });
+  const finish=e=>{
+    const g=draftPreviewGesture;
+    if(!g||g.button!==button||g.id!==e.pointerId)return;
+    if(g.longPressed)closeDraftPreview(); else clearDraftPreviewGesture();
+  };
+  button.addEventListener("pointerup",finish);
+  button.addEventListener("pointercancel",finish);
+  button.addEventListener("lostpointercapture",finish);
+}
+
 function renderDraftPager(){
   const grid=$("#draftGrid");
   if(!grid)return;
@@ -228,7 +304,16 @@ async function renderGrid(){
     b.append(cap);
     const itemId=item.id;
     b.dataset.itemId=itemId;
-    b.addEventListener("click",()=>openDetailById(itemId));
+    bindDraftPreview(b,img);
+    b.addEventListener("click",e=>{
+      if(draftPreviewSuppressClick){
+        draftPreviewSuppressClick=false;
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+      openDetailById(itemId);
+    });
     grid.append(b);
   }
   renderDraftPager();
