@@ -976,3 +976,20 @@ CCC v2.9.0 – Beskär Layout (2026-08-11)
 - Diskret zoomknapp öppnar [-] procent [+] för finjustering.
 - Original / Återställ / OK ligger på samma rad.
 - Root /version.js bevarad exakt från tidigare fulla projektpaket.
+
+
+CCC v2.9.5 – kompakt utkastgrid (2026-08-11)
+- Publicera > Lokala utkast visar nu rena miniatyrer utan titeltext.
+- Mobilvyn använder 4 x 4 miniatyrer, 16 utkast per sida.
+- Fler än 16 utkast delas upp i sidor som kan bytas med horisontell swipe; diskreta sidprickar visar aktuell sida.
+- Tryck på en miniatyr öppnar befintlig detaljvy där stor bild, titel/metadata och swipe mellan utkast finns kvar.
+- Ingen ändring av Vision-original, crop engine eller publiceringsbildens behandling.
+
+
+CCC v2.9.6 – 3x3 utkastgrid + fokusmarkering (2026-08-11)
+- Publicera > Lokala utkast använder nu 3 x 3 miniatyrer, 9 utkast per sida.
+- Fler än 9 utkast delas upp i swipebara sidor; sidprickarna är kvar.
+- Titeltext är fortsatt borttagen från miniatyrerna; titel/metadata visas i detaljvyn.
+- Webbläsarens tillfälliga blå fokusram på bland annat Tillbaka-knappen döljs för touch/musklick.
+- Vid riktig tangentbordsnavigation används i stället en guldfärgad CCC-fokusmarkering.
+- Vision-original, crop engine och publiceringsbildens behandling är oförändrade.
