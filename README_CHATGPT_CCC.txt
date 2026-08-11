@@ -4,13 +4,14 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.9.0
+CCC-version: 2.9.1
 Senaste stabila: 2.8.95 RC1 – Crop Engine 1.0
 Senaste checkpoint: 2026-08-11
 Nästa uppgift: Testa Beskär-vyn v2.9.0 på mobil och finjustera endast layout vid behov.
 
 ARBETSPRINCIPER
 ---------------
+- Dashboard-vyn är facit för mobilhöjd och vertikal balans; andra CCC-vyer ska använda samma skärmyta utan onödig scroll.
 - Mobil först.
 - Dashboard är designfacit för CCC-moduler.
 - Local-first där det är praktiskt.
@@ -34,6 +35,16 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.9.1 – Publicera UI-balansering + headerstandard
+- Dashboard är facit för mobilhöjd och vertikal balans.
+- Publicera-undervyer får tillbaka-pil i headerns vänstersida i linje med tema/profil.
+- Modulens kugghjul ligger bredvid tillbaka-pilen.
+- Temaikon byts till halvfylld cirkel i gemensam outline-stil.
+- Profilikon byts till CircleUser-liknande outline-ikon.
+- Tomma ytor används till större kort, bildytor och större tryckvänliga knappar.
+- Crop Engine 1.0 är oförändrad.
+- Root /version.js är orörd och är inte med i Changed-files ZIP.
+
 v2.9.0 – Beskär Layout
 - Hjälptext och synlig crop-data bort från Beskär-vyn.
 - Tillbaka-knappen placerad i headerområdet till vänster.
