@@ -8,13 +8,13 @@
 <link rel="manifest" href="../manifest.webmanifest?v=2.9.3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>CCC Publicera v2.9.3</title>
+<title>CCC Publicera v2.9.10</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
 <link rel="stylesheet" href="publish.css?v=2.9.3">
 <link rel="stylesheet" href="../core.css?v=2.9.3">
 </head>
-<body data-ccc-header-back="false" data-ccc-header-settings="true">
+<body data-ccc-header-back="true" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell publish-shell">
   <header class="app-header ccc-header">
     <a class="brand ccc-brand-mark ccc-home-link" href="../dashboard/index.html" aria-label="CCC – hem till Dashboard" title="Hem – Dashboard">
@@ -45,7 +45,7 @@
 
   <div class="publish-module-marker ccc-module-marker" aria-label="Aktiv modul: Publicera">
     <span class="publish-module-kicker ccc-module-kicker"><span class="publish-module-dot ccc-module-dot" aria-hidden="true"></span>PUBLICERA</span>
-    <span class="publish-module-subtitle ccc-module-subtitle">Lokala utkast &amp; publicering</span>
+    <span class="publish-module-subtitle ccc-module-subtitle">Förbered &amp; publicera</span>
   </div>
 
   <main class="publish-main ccc-workspace">
@@ -53,31 +53,36 @@
       <div class="ccc-action-grid ccc-action-grid--fill-mobile publish-start-grid">
         <button id="draftsBtn" class="ccc-action-card ccc-action-card--blue" type="button">
           <span class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6.5h6l1.6 2H20v9.5H4z"/><path d="M4 6.5V5h6l1.4 1.5"/></svg></span>
-          <span class="action-copy"><strong>Lokala utkast</strong><small id="startDraftCount">0 utkast</small></span>
+          <span class="action-copy"><strong>Förbered för publicering</strong><small id="startDraftCount">0 utkast</small></span>
           <span class="action-arrow" aria-hidden="true">›</span>
         </button>
-        <button id="publishedBtn" class="ccc-action-card ccc-action-card--green" type="button">
+        <button id="channelBtn" class="ccc-action-card ccc-action-card--green" type="button">
+          <span class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4v10"/><path d="m8 8 4-4 4 4"/><path d="M5 13v6h14v-6"/></svg></span>
+          <span class="action-copy"><strong>Välj kanal</strong><small>Välj var du vill publicera</small></span>
+          <span class="action-arrow" aria-hidden="true">›</span>
+        </button>
+        <button id="publishedBtn" class="ccc-action-card ccc-action-card--purple" type="button">
           <span class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4 4L19 7"/><path d="M4 4h16v16H4z"/></svg></span>
-          <span class="action-copy"><strong>Publicerade</strong><small>Historik &amp; status</small></span>
+          <span class="action-copy"><strong>Historik</strong><small>Se det du redan publicerat</small></span>
           <span class="action-arrow" aria-hidden="true">›</span>
         </button>
-        <a class="ccc-action-card ccc-action-card--purple ccc-action-card--back" href="../dashboard/index.html">
-          <span class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></span>
-          <span class="action-copy"><strong>Tillbaka</strong><small>Till dashboard</small></span>
-          <span class="action-arrow" aria-hidden="true">‹</span>
-        </a>
       </div>
     </section>
 
     <section id="gridView" class="publish-view" hidden>
-      <div class="publish-heading"><div><h1>Lokala utkast</h1><p id="draftCount">0 lokala utkast</p></div></div>
+      <div class="publish-heading"><div><h1>Förbered för publicering</h1><p id="draftCount">0 utkast</p></div></div>
       <div id="emptyState" class="publish-empty" hidden><strong>Inget väntar på publicering</strong><span>Skapa ett plagg i Vision först.</span></div>
       <div id="draftGrid" class="draft-grid" aria-live="polite"></div>
     </section>
 
+    <section id="channelView" class="publish-view" hidden>
+      <div class="publish-heading"><div><h1>Välj kanal</h1><p>Välj var du vill publicera</p></div></div>
+      <div class="publish-empty"><strong>Hemsidan</strong><span>Container13 är första publiceringskanalen. Fler kanaler läggs till senare.</span></div>
+    </section>
+
     <section id="publishedView" class="publish-view" hidden>
-      <div class="publish-heading"><div><h1>Publicerade</h1><p>Historik &amp; status</p></div></div>
-      <div class="publish-empty"><strong>Ingen historik ännu</strong><span>Publicerade plagg kommer att visas här.</span></div>
+      <div class="publish-heading"><div><h1>Historik</h1><p>Publicerat innehåll</p></div></div>
+      <div class="publish-empty"><strong>Ingen historik ännu</strong><span>Det du publicerar kommer att visas här.</span></div>
     </section>
 
     <section id="detailView" class="publish-view" hidden>

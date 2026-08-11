@@ -1,4 +1,4 @@
-window.__CCC_HEADER_PENDING__={back:false,settings:true};
+window.__CCC_HEADER_PENDING__={back:true,settings:true};
 import { auth } from "../auth/firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 onAuthStateChanged(auth,(user)=>{if(!user)window.location.href="../auth/index.html";});
@@ -106,13 +106,13 @@ function resetViewScroll(view){
 }
 let currentPublishView="startView";
 function setPublishHeader(view){
-  const state={back:view!=="startView",settings:true};
+  const state={back:true,settings:true};
   window.__CCC_HEADER_PENDING__=state;
   window.CCC_CORE?.header?.set(state);
 }
 function show(view){
   currentPublishView=view;
-  ["startView","gridView","publishedView","detailView","cropView"].forEach(id=>$("#"+id).hidden=id!==view);
+  ["startView","gridView","channelView","publishedView","detailView","cropView"].forEach(id=>$("#"+id).hidden=id!==view);
   setPublishHeader(view);
   requestAnimationFrame(()=>{
     resetViewScroll(view);
@@ -403,6 +403,7 @@ function openDetail(index){
   $("#detailImage").src=item.fullUrl;
   updateDetailCopy();
   show("detailView");
+  bindDetailArrowButtons();
   requestAnimationFrame(()=>{
     syncActiveIndexFromId();
     syncSwipeNeighbors();
@@ -410,6 +411,31 @@ function openDetail(index){
   });
 }
 function next(delta){openDetail(activeIndex+delta);}
+
+function bindDetailArrowButtons(){
+  const root=$("#detailView")||document;
+  const candidates=[...root.querySelectorAll("button,[role=button]")];
+  const bind=(button,delta)=>{
+    if(!button||button.dataset.cccDetailArrowBound)return;
+    button.dataset.cccDetailArrowBound="1";
+    button.addEventListener("click",e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      next(delta);
+    });
+  };
+  candidates.forEach(button=>{
+    const id=(button.id||"").toLowerCase();
+    const cls=(button.className||"").toString().toLowerCase();
+    const label=(button.getAttribute("aria-label")||button.textContent||"").trim().toLowerCase();
+    const inline=(button.getAttribute("onclick")||"").replace(/\s+/g,"").toLowerCase();
+    const prev=id.includes("prev")||cls.includes("prev")||/föregående|forregående|previous/.test(label)||inline.includes("next(-1)");
+    const nxt=id.includes("next")||cls.includes("next")||/nästa|nasta|next/.test(label)||inline.includes("next(1)")||inline.includes("next(+1)");
+    if(prev)bind(button,-1); else if(nxt)bind(button,1);
+  });
+}
+
+bindDetailArrowButtons();
 
 let swipeGesture=null;
 let swipeAnimating=false;
@@ -512,6 +538,7 @@ $("#draftsBtn").addEventListener("click",async()=>{
   show("gridView");
   requestAnimationFrame(()=>$("#cccHeaderBack")?.focus({preventScroll:true}));
 });
+$("#channelBtn").addEventListener("click",()=>show("channelView"));
 $("#publishedBtn").addEventListener("click",()=>show("publishedView"));
 
 
@@ -925,7 +952,11 @@ async function leavePublishCrop(){
 }
 
 document.addEventListener("ccc:header-back",async()=>{
-  if(currentPublishView==="gridView"||currentPublishView==="publishedView"){
+  if(currentPublishView==="startView"){
+    window.location.href="../dashboard/index.html";
+    return;
+  }
+  if(currentPublishView==="gridView"||currentPublishView==="channelView"||currentPublishView==="publishedView"){
     show("startView");
     return;
   }
