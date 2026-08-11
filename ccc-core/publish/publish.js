@@ -756,4 +756,9 @@ if(cropCanvasForDoubleTap){
   },{passive:false});
 }
 
-/* CCC cache stamp: v2.9.0 */
+$("#publishSettingsBtn")?.addEventListener("click",()=>{
+  const existing=$("#settingsBtn")||$("#moduleSettingsBtn");
+  if(existing && existing!==$("#publishSettingsBtn")) existing.click();
+});
+
+/* CCC cache stamp: v2.9.1 */

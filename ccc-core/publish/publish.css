@@ -661,4 +661,59 @@
   }
 }
 
-/* CCC cache stamp: v2.9.0 */
+/* CCC v2.9.1 – Publicera UI-balansering + headerstandard */
+.ccc-icon-defs{position:absolute;width:0;height:0;overflow:hidden}
+.ccc-nav-svg{width:24px;height:24px;display:block;color:currentColor}
+.ccc-header-icon,.ccc-view-header-back,#cropBack{
+  width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important;
+  padding:0!important;border-radius:999px!important;display:grid!important;place-items:center!important;
+}
+:root{--ccc-header-control-top:118px}
+#publishSettingsBtn{
+  position:fixed;top:var(--ccc-header-control-top);left:68px;z-index:1210;
+}
+.ccc-view-header-back,#cropBack{
+  position:fixed!important;top:var(--ccc-header-control-top)!important;left:14px!important;z-index:1211!important;
+}
+#cropView.crop-view{
+  height:calc(100dvh - 210px)!important;min-height:0!important;overflow:hidden!important;
+  gap:10px!important;padding:10px 0 max(12px,env(safe-area-inset-bottom))!important;
+}
+#cropView .crop-preview{
+  flex:1 1 auto!important;width:min(94vw,58dvh,540px)!important;max-height:58dvh!important;
+}
+#cropView .crop-actions-row{gap:10px!important}
+#cropView .crop-actions-row button{
+  min-height:54px!important;font-size:14px!important;font-weight:700!important;border-radius:15px!important;
+}
+#draftsView,
+#detailView{
+  min-height:calc(100dvh - 210px);padding-bottom:max(14px,env(safe-area-inset-bottom));
+}
+#draftsView .draft-card,
+#draftsView .draft-item,
+#draftsView .publish-card{
+  min-height:clamp(100px,14dvh,130px);
+}
+#detailView .detail-card,
+#detailView .preview-card,
+#detailView .publish-detail-card{
+  min-height:clamp(160px,23dvh,230px);
+}
+#detailView button,
+#draftsView button{
+  min-height:50px;
+}
+#publishSettingsBtn,#cropBack,#draftsHeaderBack,#detailHeaderBack{
+  color:var(--text-primary,#f5f5f5);
+  background:var(--surface-2,rgba(28,32,43,.92));
+  border:1px solid var(--border-color,rgba(255,255,255,.12));
+}
+@media (max-height:760px){
+  :root{--ccc-header-control-top:108px}
+  #cropView.crop-view{height:calc(100dvh - 196px)!important;gap:7px!important}
+  #cropView .crop-preview{width:min(90vw,51dvh,470px)!important}
+  #cropView .crop-actions-row button{min-height:48px!important}
+}
+
+/* CCC cache stamp: v2.9.1 */

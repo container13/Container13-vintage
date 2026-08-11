@@ -5,16 +5,25 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f7f7f9">
 <meta name="color-scheme" content="light dark">
-<link rel="manifest" href="../manifest.webmanifest?v=2.9.0">
+<link rel="manifest" href="../manifest.webmanifest?v=2.9.1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>CCC Publicera v2.9.0</title>
+<title>CCC Publicera v2.9.1</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-<link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.0">
-<link rel="stylesheet" href="publish.css?v=2.9.0">
-<link rel="stylesheet" href="../core.css?v=2.9.0">
+<link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.1">
+<link rel="stylesheet" href="publish.css?v=2.9.1">
+<link rel="stylesheet" href="../core.css?v=2.9.1">
 </head>
 <body>
+
+<svg class="ccc-icon-defs" aria-hidden="true" width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="ccc-i-back" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="ccc-i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M19.2 13.3a7.8 7.8 0 0 0 .1-1.3 7.8 7.8 0 0 0-.1-1.3l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-2.2-1.3L14.2 3h-4.4l-.4 2.4a7.6 7.6 0 0 0-2.2 1.3l-2.4-1-2 3.4 2 1.6A7.8 7.8 0 0 0 4.7 12c0 .44.04.87.1 1.3l-2 1.6 2 3.4 2.4-1a7.6 7.6 0 0 0 2.2 1.3l.4 2.4h4.4l.4-2.4a7.6 7.6 0 0 0 2.2-1.3l2.4 1 2-3.4-2-1.6Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+    <symbol id="ccc-i-theme" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor"/></symbol>
+    <symbol id="ccc-i-user" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6.8 18c1.1-2.5 3-3.8 5.2-3.8s4.1 1.3 5.2 3.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
 <div class="app-shell ccc-app-shell publish-shell">
   <header class="app-header ccc-header">
     <a class="brand ccc-brand-mark ccc-home-link" href="../dashboard/index.html" aria-label="CCC – hem till Dashboard" title="Hem – Dashboard">
@@ -23,16 +32,9 @@
     </a>
 
     <div class="header-actions ccc-header-actions">
-      <button id="themeBtn" class="icon-button ccc-icon-button" type="button" aria-label="Växla tema" aria-pressed="false">
-        <svg class="icon icon-theme ccc-icon ccc-icon-theme" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 3a9 9 0 1 0 9 9c0-.4 0-.8-.1-1.2A7 7 0 0 1 13.2 3H12Z"/>
-        </svg>
-      </button>
-      <button id="profileBtn" class="icon-button ccc-icon-button" type="button" aria-label="Öppna användarmeny" aria-expanded="false">
-        <svg class="icon ccc-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm7 8a7 7 0 0 0-14 0"/>
-        </svg>
-      </button>
+      <button id="publishSettingsBtn" class="ccc-header-icon ccc-module-settings" type="button" aria-label="Publicera-inställningar"><svg class="ccc-nav-svg" aria-hidden="true"><use href="#ccc-i-settings"></use></svg></button>
+        <button id="themeBtn" class="icon-button ccc-icon-button" type="button" aria-label="Växla tema" aria-pressed="false"><svg class="ccc-nav-svg" aria-hidden="true"><use href="#ccc-i-theme"></use></svg></button>
+      <button id="profileBtn" class="icon-button ccc-icon-button" type="button" aria-label="Öppna användarmeny" aria-expanded="false"><svg class="ccc-nav-svg" aria-hidden="true"><use href="#ccc-i-user"></use></svg></button>
     </div>
 
     <div id="profileMenu" class="profile-menu ccc-profile-menu" hidden>
@@ -81,6 +83,7 @@
     </section>
 
     <section id="detailView" class="publish-view" hidden>
+      <button id="detailHeaderBack" class="publish-back ccc-view-header-back" type="button" aria-label="Tillbaka"><svg class="ccc-nav-svg" aria-hidden="true"><use href="#ccc-i-back"></use></svg></button>
       <div class="detail-top"><button id="detailBack" class="publish-back" type="button" aria-label="Till miniatyrer">‹</button><div class="detail-counter" id="detailCounter"></div></div>
       <div id="swipeArea" class="swipe-area">
         <img id="detailPrevImage" class="swipe-image swipe-image-prev" alt="" aria-hidden="true">
@@ -94,7 +97,7 @@
     </section>
 
     <section id="cropView" class="publish-view crop-view" hidden>
-      <button id="cropBack" class="publish-back crop-header-back" type="button" aria-label="Till lokala utkast">‹</button>
+      <button id="cropBack" class="publish-back crop-header-back" type="button" aria-label="Till lokala utkast"><svg class="ccc-nav-svg" aria-hidden="true"><use href="#ccc-i-back"></use></svg></button>
 
       <div class="crop-preview" id="cropPreview">
         <img id="cropOriginalPreview" alt="" aria-hidden="true">
@@ -134,9 +137,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.9.0"></script>
-<script type="module" src="../core.js?v=2.9.0"></script>
-  <script src="../version.js?v=2.9.0"></script>
-<script src="../pwa.js?v=2.9.0" defer></script>
+<script type="module" src="publish.js?v=2.9.1"></script>
+<script type="module" src="../core.js?v=2.9.1"></script>
+  <script src="../version.js?v=2.9.1"></script>
+<script src="../pwa.js?v=2.9.1" defer></script>
 </body>
 </html>
