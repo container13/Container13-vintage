@@ -53,7 +53,7 @@ function persistenceRecord(item){const record={...item};delete record.thumbUrl;d
 function url(blob){const u=URL.createObjectURL(blob);objectUrls.push(u);return u;}
 function dataUrl(blob){return new Promise((resolve,reject)=>{if(!blob){resolve("");return;}const reader=new FileReader();reader.onload=()=>resolve(String(reader.result||""));reader.onerror=()=>reject(reader.error||new Error("Kunde inte läsa bildförhandsvisningen."));reader.readAsDataURL(blob);});}
 async function previewSrc(record){
-  const blob=record.thumbnailBlob||record.originalBlob||record.publishBlob;
+  const blob=record.publishBlob||record.thumbnailBlob||record.originalBlob;
   if(!blob)return "";
   try{return await dataUrl(blob);}catch(error){console.warn("[CCC Publicera] Data-URL misslyckades, använder blob-URL",error);return url(blob);}
 }
@@ -707,7 +707,7 @@ function updateCropCounter(){
 
 function setCropZoom(nextZoom){
   if(!cropState)return;
-  const z=Math.max(1,Math.min(3,Number(nextZoom)||1));
+  const z=Math.max(.35,Math.min(3,Number(nextZoom)||1));
   cropState.zoom=z;
   const input=$("#cropZoom");
   if(input)input.value=String(z);
@@ -983,4 +983,4 @@ document.addEventListener("ccc:header-settings",()=>{
 });
 document.addEventListener("ccc:core-ready",()=>setPublishHeader(currentPublishView),{once:true});
 
-/* CCC cache stamp: v2.9.12 */
+/* CCC cache stamp: v2.9.13 */

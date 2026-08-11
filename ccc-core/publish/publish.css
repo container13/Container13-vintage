@@ -789,3 +789,20 @@
   #cropView .crop-actions-row{gap:9px!important;margin-top:11px!important}
   #cropView .crop-actions-row button{min-height:46px!important;padding:8px 6px!important}
 }
+
+
+/* CCC v2.9.13 — stabil detaljlayout, klickbara pilar och fri utzoomning */
+#detailView .swipe-hint{pointer-events:auto!important;cursor:pointer;z-index:12;display:grid;place-items:center;width:48px;height:64px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+#detailView .swipe-hint.left{left:4px}
+#detailView .swipe-hint.right{right:4px}
+#detailView .detail-copy{box-sizing:border-box;min-height:58px!important;height:58px!important;max-height:58px!important;overflow:hidden;margin-top:10px!important;padding:8px 4px 6px!important;align-content:start}
+#detailView .detail-copy strong{display:block;min-height:20px;line-height:20px!important}
+#detailView .detail-copy span{display:block;min-height:18px;line-height:18px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#detailView .detail-actions{margin-top:8px!important;min-height:54px}
+#detailView .publish-status{box-sizing:border-box;height:22px!important;min-height:22px!important;max-height:22px!important;margin:6px 2px 0!important;overflow:hidden}
+#draftGrid .draft-card img{object-fit:contain!important;background:#111}
+@media (orientation:portrait) and (max-width:600px){
+ #detailView .detail-copy{min-height:54px!important;height:54px!important;max-height:54px!important;margin-top:8px!important;padding:7px 4px 5px!important}
+ #detailView .detail-actions{margin-top:6px!important}
+ #detailView .publish-status{height:20px!important;min-height:20px!important;max-height:20px!important}
+}
