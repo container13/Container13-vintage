@@ -354,22 +354,10 @@ $("#draftsBtn").addEventListener("click",async()=>{
   await renderGrid();
   preloadNeighbors(0);
   show("gridView");
-  requestAnimationFrame(()=>$("#gridBack")?.focus({preventScroll:true}));
+  requestAnimationFrame(()=>$("#cccHeaderBack")?.focus({preventScroll:true}));
 });
 $("#publishedBtn").addEventListener("click",()=>show("publishedView"));
-$("#detailBack").addEventListener("click",async()=>{
-  if(swipeCommitTimer){
-    clearTimeout(swipeCommitTimer);
-    swipeCommitTimer=null;
-  }
-  swipeGesture=null;
-  swipeAnimating=false;
-  $("#swipeArea")?.classList.remove("is-swiping");
-  setSwipeTransforms(0,false);
-  await renderGrid();
-  activeItemId=null;
-  show("gridView");
-});
+
 
 function loadImage(src){return new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=src;});}
 function geometry(){if(!cropImage||!cropState)return null;const c=$("#cropCanvas"),base=Math.max(c.width/cropImage.naturalWidth,c.height/cropImage.naturalHeight),scale=base*cropState.zoom,w=cropImage.naturalWidth*scale,h=cropImage.naturalHeight*scale,lx=Math.max(0,(w-c.width)/2),ly=Math.max(0,(h-c.height)/2);cropState.x=Math.max(-lx,Math.min(lx,cropState.x));cropState.y=Math.max(-ly,Math.min(ly,cropState.y));return{c,scale,w,h};}
@@ -621,14 +609,7 @@ $("#keepOriginalBtn").addEventListener("click",async()=>{
   }
   button.textContent=old;button.disabled=false;
 });
-$("#cropBack").addEventListener("click",async()=>{
-  cropImage=null;
-  cropState=null;
-  pointer=null;
-  await renderGrid();
-  activeItemId=null;
-  show("gridView");
-});
+
 const cropZoomInput=$("#cropZoom");
 if(cropZoomInput)cropZoomInput.addEventListener("input",e=>setCropZoom(Number(e.target.value)||1));
 
@@ -763,15 +744,47 @@ if(cropCanvasForDoubleTap){
   },{passive:false});
 }
 
-/* CCC cache stamp: v2.9.0 */
+async function leavePublishDetail(){
+  if(swipeCommitTimer){
+    clearTimeout(swipeCommitTimer);
+    swipeCommitTimer=null;
+  }
+  swipeGesture=null;
+  swipeAnimating=false;
+  $("#swipeArea")?.classList.remove("is-swiping");
+  setSwipeTransforms(0,false);
+  await renderGrid();
+  activeItemId=null;
+  show("gridView");
+}
 
 
-document.addEventListener("ccc:header-back",()=>{
-  if(currentPublishView==="gridView"||currentPublishView==="publishedView")return show("startView");
-  if(currentPublishView==="detailView")return show("gridView");
-  if(currentPublishView==="cropView")return show("detailView");
+async function leavePublishCrop(){
+  cropImage=null;
+  cropState=null;
+  pointer=null;
+  await renderGrid();
+  activeItemId=null;
+  show("gridView");
+}
+
+document.addEventListener("ccc:header-back",async()=>{
+  if(currentPublishView==="gridView"||currentPublishView==="publishedView"){
+    show("startView");
+    return;
+  }
+  if(currentPublishView==="detailView"){
+    await leavePublishDetail();
+    return;
+  }
+  if(currentPublishView==="cropView"){
+    await leavePublishCrop();
+    return;
+  }
 });
 document.addEventListener("ccc:header-settings",()=>{
   window.location.href="../settings/index.html?module=publish";
 });
 document.addEventListener("ccc:core-ready",()=>setPublishHeader(currentPublishView),{once:true});
+
+/* CCC cache stamp: v2.9.4 */
