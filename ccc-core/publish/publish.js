@@ -6,7 +6,7 @@ onAuthStateChanged(auth,(user)=>{if(!user)window.location.href="../auth/index.ht
 const $=(s)=>document.querySelector(s);
 const DB_NAME="ccc-local-workspace", DB_VERSION=3, STORE_NAME="images", FILE_STORE="vision-files";
 let items=[],activeIndex=0,objectUrls=[];
-const DRAFTS_PER_PAGE=16;
+const DRAFTS_PER_PAGE=9;
 let draftPage=0,draftGridGesture=null;
 let cropImage=null,cropState=null,pointer=null;
 let activeItemId=null;
@@ -125,13 +125,15 @@ function ensureDraftGridUi(){
   const style=document.createElement("style");
   style.id="cccDraftGridCompactStyles";
   style.textContent=`
-    #draftGrid.draft-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:8px!important;touch-action:pan-y;overflow:hidden}
+    #draftGrid.draft-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;touch-action:pan-y;overflow:hidden}
     #draftGrid .draft-card{position:relative!important;aspect-ratio:1/1!important;min-width:0!important;min-height:0!important;border-radius:12px!important;overflow:hidden!important;padding:0!important;margin:0!important}
     #draftGrid .draft-card img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}
     #draftGrid .draft-card-caption{display:none!important}
     .ccc-draft-pager{display:flex;align-items:center;justify-content:center;gap:7px;margin:16px auto 4px;min-height:12px}
     .ccc-draft-page-dot{width:7px;height:7px;border:0;border-radius:999px;padding:0;background:rgba(210,214,225,.42)}
     .ccc-draft-page-dot[aria-current="true"]{background:#e0b14b;transform:scale(1.18)}
+    button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:none!important;box-shadow:none!important}
+    button:focus-visible,a:focus-visible{outline:2px solid #e0b14b!important;outline-offset:3px!important}
   `;
   document.head.append(style);
 }
