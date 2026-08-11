@@ -1,4 +1,65 @@
 ==================================================
+README_CHATGPT_CCC.txt
+==================================================
+
+AKTUELL STATUS
+--------------
+CCC-version: 2.9.0
+Senaste stabila: 2.8.95 RC1 – Crop Engine 1.0
+Senaste checkpoint: 2026-08-11
+Nästa uppgift: Testa Beskär-vyn v2.9.0 på mobil och finjustera endast layout vid behov.
+
+ARBETSPRINCIPER
+---------------
+- Mobil först.
+- Dashboard är designfacit för CCC-moduler.
+- Local-first där det är praktiskt.
+- Kod före teori.
+- Små, verifierbara ändringar.
+- Full ZIP + Changed-files ZIP vid varje leverans.
+- Changed-files ZIP innehåller endast filer som faktiskt ändrats och behåller korrekt mappstruktur.
+- /version.js i projektroten är låst och ändras inte under CCC-utveckling.
+- CCC-versioner hanteras endast i /ccc-core/version.js.
+- README_CHATGPT_CCC.txt uppdateras vid varje version och fungerar som gemensam projektjournal/arbetsmanual.
+- Ingen bildgenerering under CCC-arbete om användaren inte uttryckligen ber om det.
+- Crop Engine 1.0 är fryst; nya crop-förbättringar ska baseras på verkliga Vision-bilder.
+
+CHECKPOINTS
+-----------
+2026-08-11
+- Crop Engine 1.0 fryst efter v2.8.95 RC1.
+- Beskär-vyn byggdes om i v2.9.0 för mobil utan scroll.
+- Ny standard för versionering och leverans är fastställd.
+- Root /version.js ska aldrig följa med i Changed-files vid normal CCC-utveckling.
+
+VERSIONSLOGG
+------------
+v2.9.0 – Beskär Layout
+- Hjälptext och synlig crop-data bort från Beskär-vyn.
+- Tillbaka-knappen placerad i headerområdet till vänster.
+- Bildräknaren visas inne i crop-bilden.
+- Zoom-slider borttagen.
+- Pinch och drag behålls.
+- Dubbeltryck växlar zoom 100 % → 130 % → 180 % → 100 %.
+- Diskret zoomknapp öppnar [-] procent [+] för finjustering.
+- Original / Återställ / OK ligger på samma rad.
+- Crop Engine 1.0 är funktionellt oförändrad.
+
+v2.8.95 RC1 – Crop Engine 1.0
+- Paired collar/shoulder lock förbättrade Zidane-fallet.
+- Adaptiv X-centrering och övrig crop-logik från v2.8.94 behölls.
+- Crop Engine 1.0 fryst efter test.
+
+ATT GÖRA
+---------
+- Testa v2.9.0 Beskär Layout på mobil.
+- Om layouten fungerar utan scroll: gå vidare till Publicera-flödet.
+- Skapa testkopia av nyinkommet.html under ccc-core för publiceringstester.
+
+
+ÄLDRE PROJEKTANTECKNINGAR
+-------------------------
+==================================================
 VIKTIGASTE REGELN
 ==================================================
 
@@ -877,3 +938,15 @@ CCC v2.8.95 RC1 – paired collar/shoulder lock (2026-08-10)
 - Adaptiv X-centrering, zoom, 20 % crop padding, swipe, navigation, diagnostics and activeItemId are unchanged from v2.8.94.
 - Previous experimental RC1 topInset/low-contrast code is not included.
 - Root /version.js is preserved byte-for-byte from the complete GitHub ZIP.
+
+CCC v2.9.0 – Beskär Layout (2026-08-11)
+- Crop Engine 1.0 från v2.8.95 RC1 är oförändrad.
+- Beskär-vyn komprimerad för mobil utan scroll.
+- Hjälptext, crop-note och synlig crop-data bort från vyn.
+- Tillbaka-knappen flyttad visuellt till headerns vänstersida.
+- Bildräknaren visas inne i crop-bilden.
+- Zoom-slidern borttagen. Pinch och drag kvar.
+- Dubbeltryck växlar zoom 100 % → 130 % → 180 % → 100 %.
+- Diskret zoomknapp öppnar [-] procent [+] för finjustering.
+- Original / Återställ / OK ligger på samma rad.
+- Root /version.js bevarad exakt från tidigare fulla projektpaket.
