@@ -1,3 +1,4 @@
+window.__CCC_HEADER_PENDING__={back:false,settings:true};
 import { auth } from "../auth/firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 onAuthStateChanged(auth,(user)=>{if(!user)window.location.href="../auth/index.html";});
@@ -100,8 +101,16 @@ function resetViewScroll(view){
   const scrollChild=el.querySelector(".draft-grid,.publish-scroll,.crop-view");
   if(scrollChild)try{scrollChild.scrollTop=0;}catch(_){}
 }
+let currentPublishView="startView";
+function setPublishHeader(view){
+  const state={back:view!=="startView",settings:true};
+  window.__CCC_HEADER_PENDING__=state;
+  window.CCC_CORE?.header?.set(state);
+}
 function show(view){
+  currentPublishView=view;
   ["startView","gridView","publishedView","detailView","cropView"].forEach(id=>$("#"+id).hidden=id!==view);
+  setPublishHeader(view);
   requestAnimationFrame(()=>{
     resetViewScroll(view);
     const active=$("#"+view);
@@ -348,8 +357,6 @@ $("#draftsBtn").addEventListener("click",async()=>{
   requestAnimationFrame(()=>$("#gridBack")?.focus({preventScroll:true}));
 });
 $("#publishedBtn").addEventListener("click",()=>show("publishedView"));
-$("#gridBack").addEventListener("click",()=>show("startView"));
-$("#publishedBack").addEventListener("click",()=>show("startView"));
 $("#detailBack").addEventListener("click",async()=>{
   if(swipeCommitTimer){
     clearTimeout(swipeCommitTimer);
@@ -756,13 +763,15 @@ if(cropCanvasForDoubleTap){
   },{passive:false});
 }
 
-$("#publishSettingsBtn")?.addEventListener("click",()=>{
-  const existing=$("#settingsBtn")||$("#moduleSettingsBtn");
-  if(existing && existing!==$("#publishSettingsBtn")) existing.click();
+/* CCC cache stamp: v2.9.0 */
+
+
+document.addEventListener("ccc:header-back",()=>{
+  if(currentPublishView==="gridView"||currentPublishView==="publishedView")return show("startView");
+  if(currentPublishView==="detailView")return show("gridView");
+  if(currentPublishView==="cropView")return show("detailView");
 });
-
-$("#gridHeaderBack")?.addEventListener("click",()=>show("startView"));
-
-$("#detailHeaderBack")?.addEventListener("click",()=>show("gridView"));
-
-/* CCC cache stamp: v2.9.2 */
+document.addEventListener("ccc:header-settings",()=>{
+  window.location.href="../settings/index.html?module=publish";
+});
+document.addEventListener("ccc:core-ready",()=>setPublishHeader(currentPublishView),{once:true});

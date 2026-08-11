@@ -661,218 +661,109 @@
   }
 }
 
-/* CCC v2.9.1 – Publicera UI-balansering + headerstandard */
-.ccc-icon-defs{position:absolute;width:0;height:0;overflow:hidden}
-.ccc-nav-svg{width:24px;height:24px;display:block;color:currentColor}
-.ccc-header-icon,.ccc-view-header-back,#cropBack{
-  width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important;
-  padding:0!important;border-radius:999px!important;display:grid!important;place-items:center!important;
-}
-:root{--ccc-header-control-top:118px}
-#publishSettingsBtn{
-  position:fixed;top:var(--ccc-header-control-top);left:68px;z-index:1210;
-}
-.ccc-view-header-back,#cropBack{
-  position:fixed!important;top:var(--ccc-header-control-top)!important;left:14px!important;z-index:1211!important;
-}
-#cropView.crop-view{
-  height:calc(100dvh - 210px)!important;min-height:0!important;overflow:hidden!important;
-  gap:10px!important;padding:10px 0 max(12px,env(safe-area-inset-bottom))!important;
-}
-#cropView .crop-preview{
-  flex:1 1 auto!important;width:min(94vw,58dvh,540px)!important;max-height:58dvh!important;
-}
-#cropView .crop-actions-row{gap:10px!important}
-#cropView .crop-actions-row button{
-  min-height:54px!important;font-size:14px!important;font-weight:700!important;border-radius:15px!important;
-}
-#draftsView,
-#detailView{
-  min-height:calc(100dvh - 210px);padding-bottom:max(14px,env(safe-area-inset-bottom));
-}
-#draftsView .draft-card,
-#draftsView .draft-item,
-#draftsView .publish-card{
-  min-height:clamp(100px,14dvh,130px);
-}
-#detailView .detail-card,
-#detailView .preview-card,
-#detailView .publish-detail-card{
-  min-height:clamp(160px,23dvh,230px);
-}
-#detailView button,
-#draftsView button{
-  min-height:50px;
-}
-#publishSettingsBtn,#cropBack,#draftsHeaderBack,#detailHeaderBack{
-  color:var(--text-primary,#f5f5f5);
-  background:var(--surface-2,rgba(28,32,43,.92));
-  border:1px solid var(--border-color,rgba(255,255,255,.12));
-}
-@media (max-height:760px){
-  :root{--ccc-header-control-top:108px}
-  #cropView.crop-view{height:calc(100dvh - 196px)!important;gap:7px!important}
-  #cropView .crop-preview{width:min(90vw,51dvh,470px)!important}
-  #cropView .crop-actions-row button{min-height:48px!important}
-}
+/* CCC cache stamp: v2.9.0 */
 
-/* =========================================================
-   CCC v2.9.2 – Publicera layoutfix
-   ========================================================= */
 
-/* One shared header row. Left controls align exactly with theme/profile. */
-:root{
-  --ccc-header-control-top: 224px;
-  --ccc-header-left: 14px;
-  --ccc-header-gap: 10px;
-  --ccc-header-btn: 46px;
+/* CCC v2.9.3 — Publicera layout under CCC Header Core.
+   No header positioning is allowed in module CSS. */
+.publish-view{
+  min-height:calc(100dvh - var(--ccc-header-height) - 78px);
 }
-
-.ccc-view-header-back,
-#cropBack{
-  position:fixed!important;
-  top:var(--ccc-header-control-top)!important;
-  left:var(--ccc-header-left)!important;
-  width:var(--ccc-header-btn)!important;
-  height:var(--ccc-header-btn)!important;
-  z-index:1211!important;
-}
-
-#publishSettingsBtn{
-  position:fixed!important;
-  top:var(--ccc-header-control-top)!important;
-  left:calc(var(--ccc-header-left) + var(--ccc-header-btn) + var(--ccc-header-gap))!important;
-  width:var(--ccc-header-btn)!important;
-  height:var(--ccc-header-btn)!important;
-  z-index:1210!important;
-}
-
-/* Old in-content back buttons are hidden; header back is canonical. */
-#gridBack,
-#detailBack{
-  display:none!important;
-}
-
-/* Preview/detail counter inside image. */
-#detailView .detail-counter-badge{
-  position:absolute;
-  top:10px;
-  right:10px;
-  z-index:8;
-  padding:5px 9px;
-  border-radius:999px;
-  background:rgba(0,0,0,.58);
-  color:#fff;
-  font-size:12px;
-  line-height:1;
-  backdrop-filter:blur(4px);
-  pointer-events:none;
-}
-
-/* Ensure likely detail image wrapper can host badge. */
-#detailView .detail-image-wrap,
-#detailView .detail-image,
-#detailView .preview-image,
-#detailView .detail-media,
-#detailView .image-wrap{
-  position:relative;
-}
-
-/* Use more of the available height in Local drafts and Preview. */
 #gridView,
-#detailView{
-  min-height:calc(100dvh - 205px)!important;
-  padding-top:8px!important;
-  padding-bottom:max(12px,env(safe-area-inset-bottom))!important;
-}
-
-#gridView{
+#publishedView,
+#detailView,
+#cropView{
   display:flex;
   flex-direction:column;
+  min-height:calc(100dvh - var(--ccc-header-height) - 78px);
+  padding-bottom:max(12px,env(safe-area-inset-bottom));
 }
+#gridView[hidden],
+#publishedView[hidden],
+#detailView[hidden],
+#cropView[hidden]{display:none!important}
 
-#gridView .draft-grid,
-#gridView .drafts-grid,
-#gridView .local-drafts-grid,
-#gridView .publish-grid{
+.publish-heading{
+  flex:0 0 auto;
+  min-height:58px;
+  margin:0 0 10px;
+  display:flex;
+  align-items:center;
+}
+.publish-heading h1{margin:0}
+.publish-heading p{margin:3px 0 0}
+
+#draftGrid{
   flex:1 1 auto;
-  align-content:space-between;
-  gap:14px!important;
+  align-content:start;
+  gap:14px;
 }
 
-#gridView .draft-card,
-#gridView .draft-item,
-#gridView .publish-card{
-  min-height:clamp(106px,14.5dvh,138px)!important;
+#detailView .swipe-area{
+  position:relative;
+  flex:1 1 auto;
+  min-height:clamp(300px,42dvh,470px);
+  max-height:48dvh;
+}
+.detail-counter-badge{
+  position:absolute!important;
+  top:10px!important;
+  right:10px!important;
+  z-index:10!important;
+  padding:5px 9px!important;
+  border-radius:999px!important;
+  background:rgba(0,0,0,.58)!important;
+  color:#fff!important;
+  font-size:12px!important;
+  line-height:1!important;
+  backdrop-filter:blur(4px);
+}
+#detailView .detail-copy{flex:0 0 auto;margin-top:10px}
+#detailView .detail-actions{
+  flex:0 0 auto;
+  margin-top:auto;
+  gap:10px;
+}
+#detailView .detail-actions button{
+  min-height:54px;
+  border-radius:15px;
+  font-weight:700;
 }
 
-/* Preview: give the image/content more of the empty lower area. */
-#detailView .detail-card,
-#detailView .preview-card,
-#detailView .publish-detail-card{
-  min-height:clamp(180px,25dvh,250px)!important;
-}
-
-#detailView .detail-image-wrap,
-#detailView .detail-image,
-#detailView .preview-image,
-#detailView .detail-media,
-#detailView .image-wrap{
-  min-height:clamp(220px,34dvh,340px)!important;
-}
-
-#detailView .detail-actions,
-#detailView .publish-actions{
-  margin-top:auto!important;
-  gap:10px!important;
-}
-
-#detailView .detail-actions button,
-#detailView .publish-actions button,
-#gridView .publish-actions button{
-  min-height:54px!important;
-  font-size:14px!important;
-  border-radius:15px!important;
-  font-weight:700!important;
-}
-
-/* Crop: move down from safe area and use freed vertical space. */
 #cropView.crop-view{
-  height:calc(100dvh - 205px)!important;
-  padding-top:10px!important;
-  padding-bottom:max(12px,env(safe-area-inset-bottom))!important;
+  overflow:hidden;
+  gap:10px;
 }
 #cropView .crop-preview{
-  width:min(94vw,60dvh,560px)!important;
-  max-height:60dvh!important;
+  flex:1 1 auto;
+  width:min(94vw,56dvh,540px);
+  max-height:56dvh;
+  margin:0 auto;
+}
+#cropView .crop-actions-row{
+  flex:0 0 auto;
+  gap:10px;
 }
 #cropView .crop-actions-row button{
-  min-height:54px!important;
+  min-height:54px;
+  font-size:14px;
+  font-weight:700;
+  border-radius:15px;
 }
 
-/* Small phones */
 @media (max-height:760px){
-  :root{
-    --ccc-header-control-top: 206px;
-    --ccc-header-btn: 44px;
-  }
-  #gridView,
-  #detailView,
-  #cropView.crop-view{
-    min-height:calc(100dvh - 190px)!important;
-    height:auto;
+  #detailView .swipe-area{
+    min-height:clamp(250px,36dvh,380px);
+    max-height:42dvh;
   }
   #cropView .crop-preview{
-    width:min(90vw,52dvh,480px)!important;
-    max-height:52dvh!important;
+    width:min(90vw,49dvh,470px);
+    max-height:49dvh;
   }
-  #detailView .detail-image-wrap,
-  #detailView .detail-image,
-  #detailView .preview-image,
-  #detailView .detail-media,
-  #detailView .image-wrap{
-    min-height:clamp(190px,30dvh,290px)!important;
+  #cropView .crop-actions-row button,
+  #detailView .detail-actions button{
+    min-height:48px;
   }
 }
 
-/* CCC cache stamp: v2.9.2 */
+/* CCC cache stamp: v2.9.3 */
