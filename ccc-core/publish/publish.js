@@ -6,6 +6,8 @@ onAuthStateChanged(auth,(user)=>{if(!user)window.location.href="../auth/index.ht
 const $=(s)=>document.querySelector(s);
 const DB_NAME="ccc-local-workspace", DB_VERSION=3, STORE_NAME="images", FILE_STORE="vision-files";
 let items=[],activeIndex=0,objectUrls=[];
+const DRAFTS_PER_PAGE=16;
+let draftPage=0,draftGridGesture=null;
 let cropImage=null,cropState=null,pointer=null;
 let activeItemId=null;
 const decodedImageCache=new Map();
@@ -117,9 +119,70 @@ function show(view){
     active?.scrollIntoView?.({block:"start",inline:"nearest"});
   });
 }
+
+function ensureDraftGridUi(){
+  if(document.getElementById("cccDraftGridCompactStyles"))return;
+  const style=document.createElement("style");
+  style.id="cccDraftGridCompactStyles";
+  style.textContent=`
+    #draftGrid.draft-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:8px!important;touch-action:pan-y;overflow:hidden}
+    #draftGrid .draft-card{position:relative!important;aspect-ratio:1/1!important;min-width:0!important;min-height:0!important;border-radius:12px!important;overflow:hidden!important;padding:0!important;margin:0!important}
+    #draftGrid .draft-card img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}
+    #draftGrid .draft-card-caption{display:none!important}
+    .ccc-draft-pager{display:flex;align-items:center;justify-content:center;gap:7px;margin:16px auto 4px;min-height:12px}
+    .ccc-draft-page-dot{width:7px;height:7px;border:0;border-radius:999px;padding:0;background:rgba(210,214,225,.42)}
+    .ccc-draft-page-dot[aria-current="true"]{background:#e0b14b;transform:scale(1.18)}
+  `;
+  document.head.append(style);
+}
+function renderDraftPager(){
+  const grid=$("#draftGrid");
+  if(!grid)return;
+  let pager=document.getElementById("draftPager");
+  if(!pager){
+    pager=document.createElement("div");
+    pager.id="draftPager";
+    pager.className="ccc-draft-pager";
+    pager.setAttribute("aria-label","Sidor med lokala utkast");
+    grid.insertAdjacentElement("afterend",pager);
+  }
+  pager.replaceChildren();
+  const pages=Math.ceil(items.length/DRAFTS_PER_PAGE);
+  pager.hidden=pages<=1;
+  for(let i=0;i<pages;i+=1){
+    const dot=document.createElement("button");
+    dot.type="button"; dot.className="ccc-draft-page-dot";
+    dot.setAttribute("aria-label",`Visa sida ${i+1} av ${pages}`);
+    dot.setAttribute("aria-current",String(i===draftPage));
+    dot.addEventListener("click",async()=>{draftPage=i;await renderGrid();});
+    pager.append(dot);
+  }
+}
+function bindDraftGridSwipe(){
+  const grid=$("#draftGrid");
+  if(!grid||grid.dataset.swipeBound)return;
+  grid.dataset.swipeBound="1";
+  grid.addEventListener("pointerdown",e=>{
+    if(Math.ceil(items.length/DRAFTS_PER_PAGE)<=1)return;
+    draftGridGesture={id:e.pointerId,x:e.clientX,y:e.clientY};
+  });
+  grid.addEventListener("pointerup",async e=>{
+    if(!draftGridGesture||draftGridGesture.id!==e.pointerId)return;
+    const g=draftGridGesture; draftGridGesture=null;
+    const dx=e.clientX-g.x,dy=e.clientY-g.y;
+    if(Math.abs(dx)<45||Math.abs(dx)<=Math.abs(dy)*1.15)return;
+    const pages=Math.ceil(items.length/DRAFTS_PER_PAGE);
+    const nextPage=Math.max(0,Math.min(pages-1,draftPage+(dx<0?1:-1)));
+    if(nextPage!==draftPage){draftPage=nextPage;await renderGrid();}
+  });
+  grid.addEventListener("pointercancel",()=>{draftGridGesture=null;});
+}
+
 async function renderGrid(){
   const grid=$("#draftGrid");
   const empty=$("#emptyState");
+  ensureDraftGridUi();
+  bindDraftGridSwipe();
   grid.replaceChildren();
   $("#draftCount").textContent=items.length===1?"1 lokalt utkast":`${items.length} lokala utkast`;
   $("#startDraftCount").textContent=items.length===1?"1 utkast":`${items.length} utkast`;
@@ -132,7 +195,11 @@ async function renderGrid(){
   grid.hidden=!hasItems;
   grid.style.display=hasItems?"grid":"none";
 
-  for(let index=0;index<items.length;index+=1){
+  const pages=Math.max(1,Math.ceil(items.length/DRAFTS_PER_PAGE));
+  draftPage=Math.max(0,Math.min(draftPage,pages-1));
+  const pageStart=draftPage*DRAFTS_PER_PAGE;
+  const pageEnd=Math.min(items.length,pageStart+DRAFTS_PER_PAGE);
+  for(let index=pageStart;index<pageEnd;index+=1){
     const item=items[index];
     const b=document.createElement("button");
     b.type="button";
@@ -162,6 +229,7 @@ async function renderGrid(){
     b.addEventListener("click",()=>openDetailById(itemId));
     grid.append(b);
   }
+  renderDraftPager();
 }
 function normalizedIndex(index){
   return items.length ? (index+items.length)%items.length : 0;
