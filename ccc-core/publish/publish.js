@@ -131,7 +131,7 @@ function ensureDraftGridUi(){
     #draftGrid .draft-card img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;pointer-events:none!important;-webkit-user-drag:none!important;-webkit-user-select:none!important;user-select:none!important;-webkit-tap-highlight-color:transparent!important}
     .ccc-draft-preview-layer{position:fixed;inset:0;z-index:9999;pointer-events:none;background:rgba(5,7,12,.58);opacity:0;transition:opacity .16s ease}
     .ccc-draft-preview-layer.is-open{opacity:1}
-    .ccc-draft-preview-image{position:fixed;z-index:10000;pointer-events:none;object-fit:contain;background:#0b0d13;border-radius:14px;box-shadow:0 18px 52px rgba(0,0,0,.55);will-change:left,top,width,height,border-radius;transition:left .32s cubic-bezier(.22,.7,.24,1),top .32s cubic-bezier(.22,.7,.24,1),width .32s cubic-bezier(.22,.7,.24,1),height .32s cubic-bezier(.22,.7,.24,1),border-radius .32s ease}
+    .ccc-draft-preview-image{position:fixed;z-index:10000;pointer-events:none;object-fit:contain;background:#0b0d13;border-radius:12px;box-shadow:0 18px 52px rgba(0,0,0,.55);transform-origin:center center;transform:translate3d(var(--ccc-preview-tx),var(--ccc-preview-ty),0) scale(var(--ccc-preview-sx),var(--ccc-preview-sy));will-change:transform,border-radius;transition:transform .36s cubic-bezier(.22,.7,.24,1),border-radius .36s ease}.ccc-draft-preview-image.is-open{transform:translate3d(0,0,0) scale(1,1);border-radius:16px}
     #draftGrid .draft-card-caption{display:none!important}
     .ccc-draft-pager{display:flex;align-items:center;justify-content:center;gap:7px;margin:16px auto 4px;min-height:12px}
     .ccc-draft-page-dot{width:7px;height:7px;border:0;border-radius:999px;padding:0;background:rgba(210,214,225,.42)}
@@ -148,48 +148,50 @@ function clearDraftPreviewGesture(){
 function closeDraftPreview(){
   const g=draftPreviewGesture;
   if(!g?.preview)return clearDraftPreviewGesture();
-  const {layer,preview,rect}=g.preview;
+  const {layer,preview}=g.preview;
   layer.classList.remove("is-open");
-  preview.style.left=`${rect.left}px`;
-  preview.style.top=`${rect.top}px`;
-  preview.style.width=`${rect.width}px`;
-  preview.style.height=`${rect.height}px`;
-  preview.style.borderRadius="12px";
-  preview.style.transition="left .22s ease,top .22s ease,width .22s ease,height .22s ease,border-radius .22s ease";
-  window.setTimeout(()=>{layer.remove();preview.remove();},240);
+  preview.classList.remove("is-open");
+  const cleanup=()=>{layer.remove();preview.remove();};
+  preview.addEventListener("transitionend",cleanup,{once:true});
+  window.setTimeout(cleanup,420);
   draftPreviewGesture=null;
 }
 function openDraftPreview(button,img){
   if(!draftPreviewGesture||draftPreviewGesture.button!==button)return;
   const rect=button.getBoundingClientRect();
+  const vw=window.innerWidth,vh=window.innerHeight;
+  const maxW=Math.min(vw-32,520),maxH=Math.min(vh-120,680);
+  const ratio=(img.naturalWidth&&img.naturalHeight)?img.naturalWidth/img.naturalHeight:1;
+  let w=maxW,h=w/ratio;
+  if(h>maxH){h=maxH;w=h*ratio;}
+  const targetLeft=Math.round((vw-w)/2),targetTop=Math.round((vh-h)/2);
   const layer=document.createElement("div");
   layer.className="ccc-draft-preview-layer";
   const preview=document.createElement("img");
   preview.className="ccc-draft-preview-image";
   preview.alt=img.alt||"Förhandsvisning";
   preview.src=img.currentSrc||img.src;
-  preview.style.left=`${rect.left}px`;
-  preview.style.top=`${rect.top}px`;
-  preview.style.width=`${rect.width}px`;
-  preview.style.height=`${rect.height}px`;
+  // Keep one fixed target geometry and animate only transform. This prevents the
+  // final one-frame snap seen when left/top/width/height were animated separately.
+  preview.style.left=`${targetLeft}px`;
+  preview.style.top=`${targetTop}px`;
+  preview.style.width=`${Math.round(w)}px`;
+  preview.style.height=`${Math.round(h)}px`;
+  const sx=rect.width/w,sy=rect.height/h;
+  const tx=rect.left-targetLeft+(rect.width-w)/2;
+  const ty=rect.top-targetTop+(rect.height-h)/2;
+  preview.style.setProperty("--ccc-preview-tx",`${tx}px`);
+  preview.style.setProperty("--ccc-preview-ty",`${ty}px`);
+  preview.style.setProperty("--ccc-preview-sx",String(sx));
+  preview.style.setProperty("--ccc-preview-sy",String(sy));
   document.body.append(layer,preview);
   draftPreviewGesture.preview={layer,preview,rect};
   draftPreviewGesture.longPressed=true;
   draftPreviewSuppressClick=true;
-  requestAnimationFrame(()=>{
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
     layer.classList.add("is-open");
-    const vw=window.innerWidth,vh=window.innerHeight;
-    const maxW=Math.min(vw-32,520);
-    const maxH=Math.min(vh-120,680);
-    const ratio=(img.naturalWidth&&img.naturalHeight)?img.naturalWidth/img.naturalHeight:1;
-    let w=maxW,h=w/ratio;
-    if(h>maxH){h=maxH;w=h*ratio;}
-    preview.style.left=`${Math.round((vw-w)/2)}px`;
-    preview.style.top=`${Math.round((vh-h)/2)}px`;
-    preview.style.width=`${Math.round(w)}px`;
-    preview.style.height=`${Math.round(h)}px`;
-    preview.style.borderRadius="16px";
-  });
+    preview.classList.add("is-open");
+  }));
 }
 function bindDraftPreview(button,img){
   button.addEventListener("contextmenu",e=>e.preventDefault());
@@ -414,27 +416,25 @@ function next(delta){openDetail(activeIndex+delta);}
 
 function bindDetailArrowButtons(){
   const root=$("#detailView")||document;
-  const candidates=[...root.querySelectorAll("button,[role=button]")];
-  const bind=(button,delta)=>{
-    if(!button||button.dataset.cccDetailArrowBound)return;
-    button.dataset.cccDetailArrowBound="1";
-    button.addEventListener("click",e=>{
+  const bind=(el,delta)=>{
+    if(!el||el.dataset.cccDetailArrowBound)return;
+    el.dataset.cccDetailArrowBound="1";
+    el.setAttribute("role","button");
+    el.setAttribute("tabindex","0");
+    const activate=e=>{
       e.preventDefault();
       e.stopPropagation();
       next(delta);
+    };
+    el.addEventListener("click",activate);
+    el.addEventListener("keydown",e=>{
+      if(e.key==="Enter"||e.key===" ")activate(e);
     });
   };
-  candidates.forEach(button=>{
-    const id=(button.id||"").toLowerCase();
-    const cls=(button.className||"").toString().toLowerCase();
-    const label=(button.getAttribute("aria-label")||button.textContent||"").trim().toLowerCase();
-    const inline=(button.getAttribute("onclick")||"").replace(/\s+/g,"").toLowerCase();
-    const prev=id.includes("prev")||cls.includes("prev")||/föregående|forregående|previous/.test(label)||inline.includes("next(-1)");
-    const nxt=id.includes("next")||cls.includes("next")||/nästa|nasta|next/.test(label)||inline.includes("next(1)")||inline.includes("next(+1)");
-    if(prev)bind(button,-1); else if(nxt)bind(button,1);
-  });
+  // The visible arrows are spans (.swipe-hint), not buttons. Bind them directly.
+  bind(root.querySelector(".swipe-hint.left"),-1);
+  bind(root.querySelector(".swipe-hint.right"),1);
 }
-
 bindDetailArrowButtons();
 
 let swipeGesture=null;
@@ -974,4 +974,4 @@ document.addEventListener("ccc:header-settings",()=>{
 });
 document.addEventListener("ccc:core-ready",()=>setPublishHeader(currentPublishView),{once:true});
 
-/* CCC cache stamp: v2.9.4 */
+/* CCC cache stamp: v2.9.11 */
