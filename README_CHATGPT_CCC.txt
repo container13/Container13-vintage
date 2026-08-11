@@ -1003,3 +1003,27 @@ CCC v2.9.7 – långtryck snabbkoll i utkastgrid (2026-08-11)
 - En rörelse över ca 12 px avbryter långtrycket så swipe mellan gridsidor inte blockeras.
 - Långtryck öppnar inte detaljvyn efteråt; webbläsarens native touch-callout/contextmeny blockeras på miniatyrerna.
 - Vision-original, crop engine, detalj-swipe och publiceringsbildens behandling är oförändrade.
+
+
+CCC v2.9.8 – mjukare snabbkoll + blåmarkering bort (2026-08-11)
+- Långtryckets stora förhandsvisning växer nu upp mjukare och lite långsammare (ca 0,32 s).
+- När fingret släpps krymper bilden tillbaka snabbt (ca 0,22 s).
+- WebKit/iOS/Chrome tap-highlight och text/bildmarkering blockeras på miniatyrkorten för att undvika blå markering vid långtryck.
+- Riktig tangentbordsfokus behåller CCC:s guldfärgade fokusindikering.
+- 3 x 3-grid, 0,75 s långtryck, swipe, detaljvy, Vision-original och crop engine är oförändrade.
+
+
+CCC v2.9.9 – pilnavigation i detalj/Anpassa bild (2026-08-11)
+- Fixar att vänster/höger-pilarna i bildens detaljvy inte bytte aktivt utkast trots att swipe fungerade.
+- Piltangenterna använder nu samma `next(delta)`/`openDetail()`-flöde som den fungerande swipe-navigationen, så bild, titel, metadata och activeItemId hålls synkade.
+- Bindningen känner igen befintliga föregående/nästa-knappar via id, klass, aria-label/text eller äldre inline-anrop och kräver ingen ändring av crop engine.
+- Swipe, 3 x 3-grid, långtrycks-preview, Vision-original och crop-beteende är oförändrade.
+
+
+CCC v2.9.10 – Publicera-start förenklad
+- v2.9.9 pilfix i Anpassa bild ingår.
+- Publicera-start: Förbered för publicering / Välj kanal / Historik.
+- Tillbaka-kortet borttaget. Headerns tillbaka-pil är aktiv även på startvyn och går där till Dashboard.
+- Välj kanal har egen vy; Hemsidan/Container13 är första kanalen, fler kanaler senare.
+- Historik ersätter tidigare Publicerade.
+- Befintlig 3x3-grid, långtrycks-preview, fokusfix och cropflöde behållna.
