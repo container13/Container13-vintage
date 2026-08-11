@@ -127,11 +127,11 @@ function ensureDraftGridUi(){
   style.id="cccDraftGridCompactStyles";
   style.textContent=`
     #draftGrid.draft-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;touch-action:pan-y;overflow:hidden}
-    #draftGrid .draft-card{position:relative!important;aspect-ratio:1/1!important;min-width:0!important;min-height:0!important;border-radius:12px!important;overflow:hidden!important;padding:0!important;margin:0!important;-webkit-touch-callout:none!important;user-select:none!important}
-    #draftGrid .draft-card img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;pointer-events:none!important;-webkit-user-drag:none!important;user-select:none!important}
+    #draftGrid .draft-card{position:relative!important;aspect-ratio:1/1!important;min-width:0!important;min-height:0!important;border-radius:12px!important;overflow:hidden!important;padding:0!important;margin:0!important;-webkit-touch-callout:none!important;-webkit-tap-highlight-color:transparent!important;-webkit-user-select:none!important;user-select:none!important;appearance:none!important;-webkit-appearance:none!important}
+    #draftGrid .draft-card img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;pointer-events:none!important;-webkit-user-drag:none!important;-webkit-user-select:none!important;user-select:none!important;-webkit-tap-highlight-color:transparent!important}
     .ccc-draft-preview-layer{position:fixed;inset:0;z-index:9999;pointer-events:none;background:rgba(5,7,12,.58);opacity:0;transition:opacity .16s ease}
     .ccc-draft-preview-layer.is-open{opacity:1}
-    .ccc-draft-preview-image{position:fixed;z-index:10000;pointer-events:none;object-fit:contain;background:#0b0d13;border-radius:14px;box-shadow:0 18px 52px rgba(0,0,0,.55);will-change:left,top,width,height,border-radius;transition:left .18s ease,top .18s ease,width .18s ease,height .18s ease,border-radius .18s ease}
+    .ccc-draft-preview-image{position:fixed;z-index:10000;pointer-events:none;object-fit:contain;background:#0b0d13;border-radius:14px;box-shadow:0 18px 52px rgba(0,0,0,.55);will-change:left,top,width,height,border-radius;transition:left .32s cubic-bezier(.22,.7,.24,1),top .32s cubic-bezier(.22,.7,.24,1),width .32s cubic-bezier(.22,.7,.24,1),height .32s cubic-bezier(.22,.7,.24,1),border-radius .32s ease}
     #draftGrid .draft-card-caption{display:none!important}
     .ccc-draft-pager{display:flex;align-items:center;justify-content:center;gap:7px;margin:16px auto 4px;min-height:12px}
     .ccc-draft-page-dot{width:7px;height:7px;border:0;border-radius:999px;padding:0;background:rgba(210,214,225,.42)}
@@ -155,7 +155,8 @@ function closeDraftPreview(){
   preview.style.width=`${rect.width}px`;
   preview.style.height=`${rect.height}px`;
   preview.style.borderRadius="12px";
-  window.setTimeout(()=>{layer.remove();preview.remove();},190);
+  preview.style.transition="left .22s ease,top .22s ease,width .22s ease,height .22s ease,border-radius .22s ease";
+  window.setTimeout(()=>{layer.remove();preview.remove();},240);
   draftPreviewGesture=null;
 }
 function openDraftPreview(button,img){
