@@ -708,7 +708,9 @@
 .detail-counter-badge{
   position:absolute!important;
   top:10px!important;
-  right:10px!important;
+  left:50%!important;
+  right:auto!important;
+  transform:translateX(-50%)!important;
   z-index:10!important;
   padding:5px 9px!important;
   border-radius:999px!important;
@@ -806,3 +808,5 @@
  #detailView .detail-actions{margin-top:6px!important}
  #detailView .publish-status{height:20px!important;min-height:20px!important;max-height:20px!important}
 }
+
+/* CCC v2.9.15 — detaljvyns bildräknare centrerad över bilden */
