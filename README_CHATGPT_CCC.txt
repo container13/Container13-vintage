@@ -4,10 +4,10 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.9.4
+CCC-version: 2.9.14
 Senaste stabila: 2.8.95 RC1 – Crop Engine 1.0
 Senaste checkpoint: 2026-08-11
-Nästa uppgift: Testa CCC Header Core på Dashboard, Vision och Publicera samt finjustera endast centrala core-variabler vid behov.
+Nästa uppgift: Testa v2.9.14 på verkliga lokala utkast: miniatyr och detaljvy ska visa naturligt bildläge redan före Anpassa bild.
 
 ARBETSPRINCIPER
 ---------------
@@ -1045,3 +1045,17 @@ CCC v2.9.13 – stabil detaljvy + fri utzoomning (2026-08-11)
 - Anpassa bild tillåter utzoomning under cover-nivån utan att tvinga tillbaka zoom till 100 % när fingrarna släpps.
 - Miniatyrerna använder contain-visning och prioriterar sparad publiceringsbild när sådan finns, så de bättre speglar den sparade bildanpassningen.
 - README_CHATGPT_CCC åter ikapp med leveransregeln.
+
+
+CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
+- Fixar fel där ett utkast med sparad publicerings-WebP kunde visas redan zoomat/beskuret i miniatyrgridden och detaljvyn.
+- Miniatyr och detaljvy prioriterar nu lokal thumbnail/originalbild för visning; sparad publishBlob används fortsatt som publiceringskopia och status.
+- Efter Spara anpassning återgår detaljvisningen till samma naturliga preview-källa i stället för att byta till den beskurna WebP-kopian.
+- Anpassa bild fortsätter att öppna Vision-originalet och Crop Engine 1.0 är oförändrad.
+- Root /version.js är orörd.
+
+
+## CCC v2.9.16 – 2026-08-17
+- Publicera detaljvy: bildräknaren (t.ex. “7 av 7”) flyttad till en egen centrerad position ovanför bildytan.
+- Samma placering används i normal detaljvy och i “Anpassa bild” så räknaren inte hoppar åt höger när bildytan ändrar storlek.
+- Pill-design, navigeringspilar och övrig detaljvy lämnas oförändrade.
