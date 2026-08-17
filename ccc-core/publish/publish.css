@@ -844,3 +844,35 @@
   backdrop-filter:blur(4px);
   pointer-events:none;
 }
+
+/* CCC v2.9.17 — enhetlig Publicera-arbetsyta.
+   Behåll Core-linjen under modulhuvudet, ta bort extra kant/kurva från
+   innehållsvyerna och låt detalj + bildanpassning använda samma bildbredd. */
+#gridView,
+#detailView,
+#cropView{
+  border:0!important;
+  border-radius:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+}
+
+/* Samma yttre bildgeometri i detaljvyn och Anpassa bild. */
+#detailView .swipe-area,
+#cropView .crop-preview{
+  width:100%!important;
+  max-width:none!important;
+  aspect-ratio:1 / 1!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  flex:0 0 auto!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+
+/* Cropens arbetsruta ligger kvar inuti samma fasta yttre bildyta. */
+#cropView .crop-box{
+  max-width:none!important;
+}

@@ -15,3 +15,8 @@ CCC Publish v2.9.16
 - Bildräknaren ligger i en egen centrerad rad ovanför bildytan i detaljvyn.
 - Samma fasta placering används i Anpassa bild, så räknaren inte hoppar åt höger när bildytan ändrar storlek.
 - Pill-design, pilar och övrig detaljfunktion är oförändrade.
+
+v2.9.17
+- Publicera: behåller den raka Core-skiljelinjen under modulhuvudet men tar bort extra kant/kurva i innehållsvyerna.
+- Detaljvyn och Anpassa bild använder nu samma yttre bildbredd/geometri så bildytan inte växer när man går in i anpassning.
+- Bildräknaren behåller den enhetliga centrerade placeringen ovanför bildytan från v2.9.16.
