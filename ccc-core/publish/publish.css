@@ -768,7 +768,7 @@
   }
 }
 
-/* CCC cache stamp: v2.9.3 */
+/* CCC cache stamp: v2.9.18 */
 
 
 /* CCC v2.9.12 — tydligare och luftigare bildanpassning */
@@ -875,4 +875,45 @@
 /* Cropens arbetsruta ligger kvar inuti samma fasta yttre bildyta. */
 #cropView .crop-box{
   max-width:none!important;
+}
+
+/* CCC v2.9.18 — låst gemensam bildyta + säker nederkant på mobil.
+   Bildytan dimensioneras av tillgänglig höjd, inte full viewportbredd,
+   så Anpassa bild/Spara anpassning matchar detaljvyn utan att trycka
+   knappar eller hjälp/status-text utanför skärmen. */
+#detailView .swipe-area,
+#cropView .crop-preview{
+  width:min(100%,42dvh,470px)!important;
+  height:auto!important;
+  aspect-ratio:1 / 1!important;
+  flex:0 0 auto!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+
+#detailView,
+#cropView{
+  box-sizing:border-box!important;
+  padding-bottom:max(18px,env(safe-area-inset-bottom))!important;
+}
+
+#detailView .publish-status{
+  flex:0 0 auto!important;
+  margin-bottom:max(4px,env(safe-area-inset-bottom))!important;
+}
+
+#cropView .crop-actions-row{
+  flex:0 0 auto!important;
+  padding-bottom:max(4px,env(safe-area-inset-bottom))!important;
+}
+
+@media (orientation:portrait) and (max-width:600px) and (max-height:760px){
+  #detailView .swipe-area,
+  #cropView .crop-preview{
+    width:min(100%,38dvh,410px)!important;
+  }
+  #detailView,
+  #cropView{
+    padding-bottom:max(14px,env(safe-area-inset-bottom))!important;
+  }
 }

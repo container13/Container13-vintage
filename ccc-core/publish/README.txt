@@ -20,3 +20,9 @@ v2.9.17
 - Publicera: behåller den raka Core-skiljelinjen under modulhuvudet men tar bort extra kant/kurva i innehållsvyerna.
 - Detaljvyn och Anpassa bild använder nu samma yttre bildbredd/geometri så bildytan inte växer när man går in i anpassning.
 - Bildräknaren behåller den enhetliga centrerade placeringen ovanför bildytan från v2.9.16.
+
+v2.9.18
+- Publicera: detaljvyn, Anpassa bild och vyn för att spara anpassningen använder samma höjdbegränsade kvadratiska bildyta.
+- Bildytan växer inte längre till full viewportbredd i Anpassa bild.
+- Nederdelen har reserverad safe-area/bottenmarginal så Spara anpassning och den lilla status-/hjälptexten under Anpassa bild inte kapas på mobil.
+- Bildräknarens centrerade placering från v2.9.16 lämnas oförändrad.
