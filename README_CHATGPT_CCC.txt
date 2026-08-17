@@ -1059,3 +1059,8 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Publicera detaljvy: bildräknaren (t.ex. “7 av 7”) flyttad till en egen centrerad position ovanför bildytan.
 - Samma placering används i normal detaljvy och i “Anpassa bild” så räknaren inte hoppar åt höger när bildytan ändrar storlek.
 - Pill-design, navigeringspilar och övrig detaljvy lämnas oförändrade.
+
+CCC v2.9.17 (2026-08-17)
+- Publicera: endast den raka Core-skiljelinjen under modulhuvudet ska synas; extra kant/kurva i Förbered/Detalj/Anpassa är borttagen.
+- Samma yttre bildyta används i detaljvyn och Anpassa bild. Crop-vyn ska inte växa jämfört med föregående vy.
+- Bildräknaren ligger fortsatt centrerad ovanför bildytan i båda lägena.
