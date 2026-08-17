@@ -9,3 +9,9 @@ Ingen Firebase-publicering är aktiverad i v2.8.1. Nästa integrationssteg är C
 CCC Publish v2.9.15
 - Bildräknaren i detaljvyn (t.ex. 7 av 7) är centrerad horisontellt över bilden.
 - Pilar, bildyta och övrig detaljlayout är oförändrade.
+
+
+CCC Publish v2.9.16
+- Bildräknaren ligger i en egen centrerad rad ovanför bildytan i detaljvyn.
+- Samma fasta placering används i Anpassa bild, så räknaren inte hoppar åt höger när bildytan ändrar storlek.
+- Pill-design, pilar och övrig detaljfunktion är oförändrade.

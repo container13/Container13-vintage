@@ -810,3 +810,37 @@
 }
 
 /* CCC v2.9.15 — detaljvyns bildräknare centrerad över bilden */
+
+
+/* CCC v2.9.16 — enhetlig bildräknare ovanför bildytan */
+#detailView .counter-slot,
+#cropView .counter-slot{
+  flex:0 0 34px!important;
+  min-height:34px!important;
+  height:34px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  margin:0!important;
+}
+#detailView .detail-top.counter-slot{height:34px!important;min-height:34px!important;}
+#cropView .crop-counter-slot{margin-bottom:0!important;}
+#detailView .counter-badge,
+#cropView .counter-badge{
+  position:static!important;
+  transform:none!important;
+  inset:auto!important;
+  z-index:auto!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:5px 9px!important;
+  border-radius:999px!important;
+  background:rgba(0,0,0,.58)!important;
+  color:#fff!important;
+  font-size:12px!important;
+  line-height:1!important;
+  backdrop-filter:blur(4px);
+  pointer-events:none;
+}
