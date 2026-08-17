@@ -6,7 +6,7 @@
 - Statistiken registrerar inte namn, e-postadress eller IP-adress.
 - Statistikfel stoppar aldrig webbplatsens övriga funktioner.
 
-## Ändrade filer
+## Ändrade filer.
 - admin/panel.html
 - index.html
 - galleri.html
