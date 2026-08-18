@@ -1,4 +1,1 @@
-(() => {
-  // v2.7.27: Den här sidan innehåller endast generella CCC-inställningar.
-  // Modulspecifika inställningar ligger i respektive moduls kugghjul.
-})();
+(()=>{const ek="ccc-help-tips-enabled",p="ccc-tip-count:",e=document.getElementById("helpTipsEnabled"),r=document.getElementById("resetHelpTips"),s=document.getElementById("tipsSaved");if(e){e.checked=localStorage.getItem(ek)!=="0";e.onchange=()=>{localStorage.setItem(ek,e.checked?"1":"0");if(s)s.textContent=e.checked?"Användningstips är aktiverade.":"Användningstips är avstängda.";};}r?.addEventListener("click",()=>{const ks=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith(p))ks.push(k)}ks.forEach(k=>localStorage.removeItem(k));localStorage.setItem(ek,"1");if(e)e.checked=true;if(s)s.textContent="Alla tips visas från början igen.";});})();
