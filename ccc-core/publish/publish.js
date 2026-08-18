@@ -11,6 +11,7 @@ let draftPage=0,draftGridGesture=null;
 let draftPreviewGesture=null,draftPreviewSuppressClick=false;
 let cropImage=null,cropState=null,pointer=null;
 let activeItemId=null;
+let recentlyAdaptedItemId=null;
 const decodedImageCache=new Map();
 const MAX_DECODED_CACHE=3;
 
@@ -121,7 +122,7 @@ function show(view){
   });
 }
 
-// CCC v2.9.23 – enhandsnavigation: vänsterkants-swipe = ett steg tillbaka.
+// CCC v2.9.24 – enhandsnavigation: vänsterkants-swipe = ett steg tillbaka.
 // Gesten aktiveras bara när den börjar nära vänsterkanten för att inte
 // konkurrera med swipe mellan plagg i detaljvyn.
 let edgeBackGesture=null;
@@ -130,8 +131,7 @@ const EDGE_BACK_TRIGGER_PX=72;
 const EDGE_BACK_MAX_VERTICAL_PX=56;
 
 function goBackOnePublishStep(){
-  if(currentPublishView==="cropView"){ openDetailById(activeItemId); return; }
-  if(currentPublishView==="detailView"){ show("gridView"); return; }
+  if(currentPublishView==="cropView"||currentPublishView==="detailView"){ show("gridView"); return; }
   if(currentPublishView==="gridView"||currentPublishView==="channelView"||currentPublishView==="publishedView"){ show("startView"); return; }
   // På startvyn finns inget internt Publicera-steg att backa till.
 }
@@ -341,6 +341,15 @@ async function renderGrid(){
       }
     });
     b.append(img);
+
+    if(item.imageProcessingState==="webp-cropped" && item.publishBlob){
+      const adaptedBadge=document.createElement("span");
+      adaptedBadge.className="draft-adapted-badge";
+      adaptedBadge.textContent="✓";
+      adaptedBadge.setAttribute("aria-label","Bilden har en sparad anpassning");
+      b.append(adaptedBadge);
+    }
+    if(item.id===recentlyAdaptedItemId)b.classList.add("just-adapted");
 
     const cap=document.createElement("span");
     cap.className="draft-card-caption";
@@ -779,7 +788,7 @@ async function openCrop(){
   syncActiveIndexFromId();
   const item=activeItem();
   if(!item)return;
-  // Anpassning ska alltid utgå från Vision-originalet, aldrig från en redan beskuren WebP.
+  // Vision-originalet används som bildkälla; sparad cropData återanvänds för fortsatt finjustering.
   const originalSource=item.originalBlob?url(item.originalBlob):(item.thumbUrl||item.fullUrl);
   cropImage=await loadImage(originalSource);
   if(item.cropData){cropState={...item.cropData};}
@@ -966,8 +975,19 @@ $("#cropDone").addEventListener("click",async()=>{
   if(item.publishUrl&&item.publishUrl.startsWith("blob:"))URL.revokeObjectURL(item.publishUrl);
   item.publishUrl=url(blob);
   item.thumbUrl=await previewSrc(item);
-  // Visa omedelbart den faktiskt sparade publiceringsbilden i detaljvyn för samma plagg.
-  openDetailById(savedItemId);
+  recentlyAdaptedItemId=savedItemId;
+  show("gridView");
+  await renderGrid();
+  requestAnimationFrame(()=>{
+    const card=document.querySelector(`.draft-card[data-item-id="${CSS.escape(savedItemId)}"]`);
+    card?.scrollIntoView?.({block:"nearest",inline:"nearest",behavior:"smooth"});
+  });
+  window.setTimeout(()=>{
+    if(recentlyAdaptedItemId===savedItemId){
+      recentlyAdaptedItemId=null;
+      document.querySelector(`.draft-card[data-item-id="${CSS.escape(savedItemId)}"]`)?.classList.remove("just-adapted");
+    }
+  },1600);
 });
 
 $("#publishBtn").addEventListener("click",()=>{const item=activeItem();if(!item)return;$("#publishStatus").textContent=item.publishBlob?"Nästa steg kopplar den här WebP-bilden till Container13.":"Beskär bilden först så skapas publicerings-WebP lokalt.";if(!item.publishBlob)openCrop();});
