@@ -122,7 +122,7 @@ function show(view){
   });
 }
 
-// CCC v2.9.24 – enhandsnavigation: vänsterkants-swipe = ett steg tillbaka.
+// CCC v2.9.25 – enhandsnavigation: vänsterkants-swipe = ett steg tillbaka.
 // Gesten aktiveras bara när den börjar nära vänsterkanten för att inte
 // konkurrera med swipe mellan plagg i detaljvyn.
 let edgeBackGesture=null;
@@ -130,9 +130,20 @@ const EDGE_BACK_START_PX=28;
 const EDGE_BACK_TRIGGER_PX=72;
 const EDGE_BACK_MAX_VERTICAL_PX=56;
 
+function visiblePublishView(){
+  const ids=["cropView","detailView","gridView","channelView","publishedView","startView"];
+  return ids.find(id=>{
+    const el=$("#"+id);
+    return el && !el.hidden && getComputedStyle(el).display!=="none";
+  }) || currentPublishView;
+}
+
 function goBackOnePublishStep(){
-  if(currentPublishView==="cropView"||currentPublishView==="detailView"){ show("gridView"); return; }
-  if(currentPublishView==="gridView"||currentPublishView==="channelView"||currentPublishView==="publishedView"){ show("startView"); return; }
+  const view=visiblePublishView();
+  if(view==="cropView"){ show("gridView"); return; }
+  if(view==="detailView"){ show("gridView"); return; }
+  if(view==="gridView"){ show("startView"); return; }
+  if(view==="channelView"||view==="publishedView"){ show("startView"); return; }
   // På startvyn finns inget internt Publicera-steg att backa till.
 }
 
@@ -153,6 +164,7 @@ document.addEventListener("pointermove",e=>{
   if(dx>=EDGE_BACK_TRIGGER_PX){
     g.done=true;
     goBackOnePublishStep();
+    // Behåll gesten låst tills fingret släpps så samma swipe aldrig kan backa två nivåer.
   }
 },{passive:true});
 
