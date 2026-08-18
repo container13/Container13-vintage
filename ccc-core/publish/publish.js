@@ -124,7 +124,7 @@ function show(view){
   });
 }
 
-// CCC v2.9.29 – egen back-swipe pausad.
+// CCC v2.9.32 – egen back-swipe pausad.
 // Enhandsnavigation testas i stället med fast tumvänligt nederfält.
 
 function ensureDraftGridUi(){
