@@ -1471,7 +1471,7 @@ body{
 
 
 /* ==========================================================
-   CCC FOOTER CORE v6 — v2.9.46
+   CCC FOOTER CORE v6 — v2.9.47
    SLUTGILTIG CENTRAL GEOMETRI:
    - body-fixed
    - viewport-fit=cover
@@ -1481,7 +1481,7 @@ body{
 :root{
   --ccc-footer-control-height:50px;
   --ccc-footer-side:16px;
-  --ccc-footer-physical-gap:4px;
+  --ccc-footer-physical-gap:-108px;
 }
 .ccc-core-footer{
   position:fixed!important;
@@ -1546,10 +1546,10 @@ body{
   font-size:11px!important;
 }
 
-/* CCC v2.9.46 – footer markeringsläge */
+/* CCC v2.9.47 – footer markeringsläge */
 .ccc-core-footer-selection{width:min(100%,720px);margin:0 auto;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;pointer-events:auto}.ccc-footer-cancel,.ccc-footer-delete{min-height:48px;border:1px solid var(--border,var(--ccc-border));border-radius:15px;background:var(--surface,var(--ccc-surface));color:var(--text,var(--ccc-text));padding:0 14px;font-weight:800}.ccc-footer-delete{color:#c73b3b}.ccc-footer-delete:disabled{opacity:.42}.ccc-footer-selection-count{text-align:center;color:var(--muted,var(--ccc-muted));font-size:12px;font-weight:800}
 
-/* CCC v2.9.46 – kontextverktyg i Core-footer */
+/* CCC v2.9.47 – kontextverktyg i Core-footer */
 .ccc-core-footer-tools{
   display:flex;
   align-items:flex-end;
@@ -1584,7 +1584,7 @@ body{
   color:var(--muted,var(--ccc-muted));
 }
 
-/* CCC v2.9.46 – Ångra radering i Core-footer */
+/* CCC v2.9.47 – Ångra radering i Core-footer */
 .ccc-core-footer-undo{
   width:min(100%,720px);
   margin:0 auto;
@@ -1612,7 +1612,7 @@ body{
 
 
 
-/* v2.9.46 – alla footerlägen delar exakt samma Core-zon */
+/* v2.9.47 – alla footerlägen delar exakt samma Core-zon */
 .ccc-core-footer-tools,
 .ccc-core-footer-selection,
 .ccc-core-footer-undo{
@@ -1621,7 +1621,7 @@ body{
   align-self:flex-end!important;
 }
 
-/* v2.9.46 – ett enda effektivt footerläge, sist i Core-kaskaden */
+/* v2.9.47 – ett enda effektivt footerläge, sist i Core-kaskaden */
 .ccc-core-footer-tools,
 .ccc-core-footer-selection,
 .ccc-core-footer-undo{
@@ -1635,7 +1635,7 @@ body{
 }
 
 /* ==========================================================
-   CCC HEADER/MODULRAD CANONICAL MOBILE — v2.9.46
+   CCC HEADER/MODULRAD CANONICAL MOBILE — v2.9.47
    Denna regel ligger sist och är enda effektiva mobila geometrin.
    Äldre regler ovan lämnas historiskt men kan inte vinna kaskaden.
    ========================================================== */
