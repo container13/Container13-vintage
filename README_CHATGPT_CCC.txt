@@ -4,10 +4,10 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.9.14
+CCC-version: 2.9.20
 Senaste stabila: 2.8.95 RC1 – Crop Engine 1.0
-Senaste checkpoint: 2026-08-11
-Nästa uppgift: Testa v2.9.14 på verkliga lokala utkast: miniatyr och detaljvy ska visa naturligt bildläge redan före Anpassa bild.
+Senaste checkpoint: 2026-08-18
+Nästa uppgift: Testa v2.9.20 på mobil: enhetlig kvadratisk slutbild, endast en linje under modulhuvudet, större/högre bildräknare och korrekt retur till samma plagg efter Spara anpassning.
 
 ARBETSPRINCIPER
 ---------------
@@ -37,6 +37,16 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.9.20 – Publicera: enhetlig slutbild + UI-städning
+- Bas: kompletta arbetskopian från ccc-demo-public-test som användaren tog med från jobbet.
+- Alla färdiga publicerings-WebP blir kvadratiska. Beskuren bild fyller kvadraten; Behåll hela bilden centreras i samma kvadratiska canvas utan beskärning.
+- Publicera-vyerna får inga extra border/pseudo-linjer under Core-linjen i modulhuvudet.
+- Bildräknaren flyttas 6 px upp och görs större (14 px text, större pill).
+- Spara anpassning återgår uttryckligen till detaljvyn för samma plagg-ID.
+- /ccc-core/version.js synkad till 2.9.20 och README_CHATGPT_CCC uppdaterad.
+- Changed-files ZIP innehåller README_CHATGPT_CCC.txt i projektroten samt /ccc-core/version.js tillsammans med övriga ändrade filer.
+- Root /version.js är fortsatt orörd.
+
 v2.9.4 – Header Back hotfix
 - Fixar centrala tillbaka-knappar i Publicera.
 - Orsak: gamla DOM-lyssnare för borttagna #detailBack och #cropBack låg kvar och stoppade publish.js med null.addEventListener innan CCC Header Core-eventen registrerades.
