@@ -26,3 +26,12 @@ v2.9.18
 - Bildytan växer inte längre till full viewportbredd i Anpassa bild.
 - Nederdelen har reserverad safe-area/bottenmarginal så Spara anpassning och den lilla status-/hjälptexten under Anpassa bild inte kapas på mobil.
 - Bildräknarens centrerade placering från v2.9.16 lämnas oförändrad.
+
+
+v2.9.20
+- Alla färdiga publiceringsbilder standardiseras till kvadratisk 1:1-canvas.
+- Beskuren bild fyller canvasen; Behåll hela bilden visar hela originalet centrerat i samma canvas utan beskärning.
+- Extra kant/pseudolinje under Core-linjen i Publicera-vyerna tas bort.
+- Bildräknaren flyttas upp 6 px och görs något större.
+- Spara anpassning återgår till detaljvyn för exakt samma plagg-ID.
+- README_CHATGPT_CCC.txt och ccc-core/version.js ska följa med Changed-files vid versionsleverans.

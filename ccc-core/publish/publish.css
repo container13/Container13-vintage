@@ -917,3 +917,49 @@
     padding-bottom:max(14px,env(safe-area-inset-bottom))!important;
   }
 }
+
+
+/* CCC v2.9.20 — enhetlig slutbild, ren modulavdelare och tydligare räknare. */
+/* Bara Core-linjen under modulrubriken ska synas. Inga extra kanter/pseudolinjer
+   får ligga direkt under den i Publicera-vyerna. */
+.publish-main.ccc-workspace,
+.publish-main.ccc-workspace > .publish-view{
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+#gridView::before,#gridView::after,
+#detailView::before,#detailView::after,
+#cropView::before,#cropView::after{
+  content:none!important;
+  display:none!important;
+}
+
+/* Bildräknaren ligger närmare modulens skiljelinje och är något större. */
+#detailView .counter-slot,
+#cropView .counter-slot{
+  flex-basis:30px!important;
+  min-height:30px!important;
+  height:30px!important;
+  transform:translateY(-6px)!important;
+  margin-bottom:-6px!important;
+}
+#detailView .detail-top.counter-slot{
+  min-height:30px!important;
+  height:30px!important;
+}
+#detailView .counter-badge,
+#cropView .counter-badge{
+  padding:6px 11px!important;
+  font-size:14px!important;
+  font-weight:800!important;
+}
+
+/* Färdig bildyta är kvadratisk i både detalj- och anpassningsvy. Själva
+   publicerings-WebP:n standardiseras samtidigt i publish.js. */
+#detailView .swipe-area,
+#cropView .crop-preview{
+  aspect-ratio:1 / 1!important;
+}
+
+/* CCC cache stamp: v2.9.20 */

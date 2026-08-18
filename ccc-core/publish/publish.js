@@ -752,11 +752,22 @@ async function createOriginalWebP(item){
   if(!src)throw new Error("Originalbild saknas.");
   const sourceUrl=item.thumbUrl||await previewSrc(item);
   const image=await loadImage(sourceUrl);
-  const maxSide=1600,scale=Math.min(1,maxSide/Math.max(image.naturalWidth,image.naturalHeight));
+
+  // v2.9.20: alla färdiga publiceringsbilder får samma kvadratiska canvas.
+  // "Behåll hela bilden" visar hela originalet centrerat utan beskärning;
+  // eventuell restyta blir samma mörka bakgrund som i Publicera.
+  const outSize=Math.max(1,Math.min(1600,Math.max(image.naturalWidth,image.naturalHeight)));
+  const scale=Math.min(outSize/image.naturalWidth,outSize/image.naturalHeight);
+  const drawW=Math.max(1,Math.round(image.naturalWidth*scale));
+  const drawH=Math.max(1,Math.round(image.naturalHeight*scale));
+  const dx=Math.round((outSize-drawW)/2);
+  const dy=Math.round((outSize-drawH)/2);
   const out=document.createElement("canvas");
-  out.width=Math.max(1,Math.round(image.naturalWidth*scale));
-  out.height=Math.max(1,Math.round(image.naturalHeight*scale));
-  out.getContext("2d",{alpha:false}).drawImage(image,0,0,out.width,out.height);
+  out.width=out.height=outSize;
+  const ctx=out.getContext("2d",{alpha:false});
+  ctx.fillStyle="#111";
+  ctx.fillRect(0,0,outSize,outSize);
+  ctx.drawImage(image,dx,dy,drawW,drawH);
   return new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));
 }
 $("#cropBtn").addEventListener("click",openCrop);
@@ -784,7 +795,7 @@ $("#keepOriginalBtn").addEventListener("click",async()=>{
     await put(persistenceRecord({...item,publishBlob:blob,cropData:null,imageProcessingState:item.imageProcessingState}));
     if(item.fullUrl&&item.fullUrl.startsWith("blob:"))URL.revokeObjectURL(item.fullUrl);
     item.fullUrl=url(blob);
-    openDetail(activeIndex);
+    openDetailById(item.id);
   }catch(error){
     console.error("[CCC Publicera] Kunde inte optimera originalbilden",error);
     button.textContent="Försök igen";
@@ -888,7 +899,27 @@ function endCropPointer(e){
   pinchStart=null;
 }
 ["pointerup","pointercancel","lostpointercapture"].forEach(n=>$("#cropCanvas").addEventListener(n,endCropPointer));
-$("#cropDone").addEventListener("click",async()=>{const item=activeItem(),g=geometry();if(!item||!g)return;item.cropData={...cropState};const sx=Math.max(0,((g.w-g.c.width)/2-cropState.x)/g.scale),sy=Math.max(0,((g.h-g.c.height)/2-cropState.y)/g.scale),size=Math.min(cropImage.naturalWidth-sx,cropImage.naturalHeight-sy,g.c.width/g.scale),outSize=Math.max(1,Math.min(1600,Math.round(size))),out=document.createElement("canvas");out.width=out.height=outSize;out.getContext("2d",{alpha:false}).drawImage(cropImage,sx,sy,size,size,0,0,outSize,outSize);const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));item.publishBlob=blob;item.imageProcessingState="webp-cropped";await put(persistenceRecord({...item,publishBlob:blob,cropData:item.cropData,imageProcessingState:item.imageProcessingState}));if(item.fullUrl){URL.revokeObjectURL(item.fullUrl);item.fullUrl="";}item.thumbUrl=await previewSrc(item);openDetail(activeIndex);});
+$("#cropDone").addEventListener("click",async()=>{
+  const item=activeItem(),g=geometry();
+  if(!item||!g)return;
+  const savedItemId=item.id;
+  item.cropData={...cropState};
+  const sx=Math.max(0,((g.w-g.c.width)/2-cropState.x)/g.scale);
+  const sy=Math.max(0,((g.h-g.c.height)/2-cropState.y)/g.scale);
+  const size=Math.min(cropImage.naturalWidth-sx,cropImage.naturalHeight-sy,g.c.width/g.scale);
+  const outSize=Math.max(1,Math.min(1600,Math.round(size)));
+  const out=document.createElement("canvas");
+  out.width=out.height=outSize;
+  out.getContext("2d",{alpha:false}).drawImage(cropImage,sx,sy,size,size,0,0,outSize,outSize);
+  const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));
+  item.publishBlob=blob;
+  item.imageProcessingState="webp-cropped";
+  await put(persistenceRecord({...item,publishBlob:blob,cropData:item.cropData,imageProcessingState:item.imageProcessingState}));
+  if(item.fullUrl){URL.revokeObjectURL(item.fullUrl);item.fullUrl="";}
+  item.thumbUrl=await previewSrc(item);
+  // Återgå alltid till detaljvyn för exakt samma plagg efter sparad anpassning.
+  openDetailById(savedItemId);
+});
 
 $("#publishBtn").addEventListener("click",()=>{const item=activeItem();if(!item)return;$("#publishStatus").textContent=item.publishBlob?"Nästa steg kopplar den här WebP-bilden till Container13.":"Beskär bilden först så skapas publicerings-WebP lokalt.";if(!item.publishBlob)openCrop();});
 
@@ -984,3 +1015,6 @@ document.addEventListener("ccc:header-settings",()=>{
 document.addEventListener("ccc:core-ready",()=>setPublishHeader(currentPublishView),{once:true});
 
 /* CCC cache stamp: v2.9.13 */
+
+
+/* CCC cache stamp: v2.9.20 */
