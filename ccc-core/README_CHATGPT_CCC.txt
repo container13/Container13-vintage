@@ -1126,3 +1126,14 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Safe-area hanteras separat så kontrollerna fortfarande ligger inom den synliga ytan.
 - Dashboardens tomma footer är fortsatt 0 px och påverkar inte arbetsytan.
 - Hjälp/Välj/Tillbaka och Ångra-radering från v2.9.38 behålls.
+
+
+## v2.9.40 – lägre footer, kontextuell hjälp och säker raderingsdialog
+- Core-footern flyttas tydligt längre ned: `bottom:-42px` i stället för `-18px`.
+- Publicera-starten visar ingen Hjälp-knapp; där är korten självförklarande. Hjälp visas endast i miniatyr-, detalj- och Anpassa bild-vyerna.
+- Hjälprutans Stäng-knapp har flyttats längre ned från hjälptexten och centrerats horisontellt.
+- Native `confirm()` för radering är borttagen.
+- Ny CCC-raderingsdialog visar exakt vilka bilder som är markerade som mini-miniatyrer innan borttagning.
+- Upp till fem mini-miniatyrer visas; vid fler visas `+N`.
+- Dialogen har tydliga `Avbryt` och `Ta bort`-knappar.
+- Ångra-radering i 8 sekunder från v2.9.38/v2.9.39 behålls efter bekräftad borttagning.
