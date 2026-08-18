@@ -13,7 +13,6 @@ let cropImage=null,cropState=null,pointer=null;
 let activeItemId=null;
 let recentlyAdaptedItemId=null;
 let draftSelectionMode=false;const selectedDraftIds=new Set();
-const CCC_TIPS_ENABLED_KEY="ccc-help-tips-enabled",CCC_TIP_PREFIX="ccc-tip-count:",CCC_TIP_LIMIT=3;
 const decodedImageCache=new Map();
 const MAX_DECODED_CACHE=3;
 
@@ -107,17 +106,17 @@ function resetViewScroll(view){
   const scrollChild=el.querySelector(".draft-grid,.publish-scroll,.crop-view");
   if(scrollChild)try{scrollChild.scrollTop=0;}catch(_){}
 }
-function tipsEnabled(){return localStorage.getItem(CCC_TIPS_ENABLED_KEY)!=="0";}function maybeShowTip(id,el){if(!el)return;if(!tipsEnabled()){el.hidden=true;return}const k=CCC_TIP_PREFIX+id,c=Number(localStorage.getItem(k)||0);if(c>=CCC_TIP_LIMIT){el.hidden=true;return}el.hidden=false;localStorage.setItem(k,String(c+1));}function showTipsForView(v){if(v==="gridView")maybeShowTip("publish-grid-gestures",$("#gridGestureTip"));if(v==="detailView")maybeShowTip("publish-detail-adapted",$("#detailAdaptTip"));if(v==="cropView")maybeShowTip("publish-crop-help",$("#cropHelpTip"));}
 let currentPublishView="startView";
 function setPublishHeader(view){
   const state={back:true,settings:true};
   window.__CCC_HEADER_PENDING__=state;
   window.CCC_CORE?.header?.set(state);
 }
-function show(view){if(view!=="gridView"&&draftSelectionMode){draftSelectionMode=false;selectedDraftIds.clear();$("#selectDraftsBtn")?.classList.remove("is-active");if($("#selectDraftsBtn"))$("#selectDraftsBtn").textContent="Välj";window.CCC_CORE?.footer?.showDefault?.();}
+function show(view){if(view!=="gridView"&&draftSelectionMode){draftSelectionMode=false;selectedDraftIds.clear();}
   currentPublishView=view;
   ["startView","gridView","channelView","publishedView","detailView","cropView"].forEach(id=>$("#"+id).hidden=id!==view);
-  setPublishHeader(view);showTipsForView(view);
+  setPublishHeader(view);
+  configureFooterForView(view);
   requestAnimationFrame(()=>{
     resetViewScroll(view);
     const active=$("#"+view);
@@ -321,7 +320,33 @@ function bindDraftGridSwipe(){
   grid.addEventListener("pointercancel",()=>{draftGridGesture=null;});
 }
 
-function updateSelectionFooter(){if(draftSelectionMode)window.CCC_CORE?.footer?.showSelection?.({count:selectedDraftIds.size,onDelete:confirmDeleteSelectedDrafts,onCancel:exitDraftSelection});else window.CCC_CORE?.footer?.showDefault?.();}function enterDraftSelection(){if(!items.length)return;draftSelectionMode=true;selectedDraftIds.clear();$("#selectDraftsBtn")?.classList.add("is-active");$("#selectDraftsBtn").textContent="Klar";updateSelectionFooter();renderGrid();}function exitDraftSelection(){draftSelectionMode=false;selectedDraftIds.clear();$("#selectDraftsBtn")?.classList.remove("is-active");if($("#selectDraftsBtn"))$("#selectDraftsBtn").textContent="Välj";updateSelectionFooter();renderGrid();}async function confirmDeleteSelectedDrafts(){const ids=[...selectedDraftIds];if(!ids.length)return;const msg=ids.length===1?"Ta bort det markerade utkastet?":`Ta bort ${ids.length} markerade utkast?`;if(!confirm(msg))return;await deleteDraftIds(ids);items=items.filter(i=>!selectedDraftIds.has(i.id));selectedDraftIds.clear();draftSelectionMode=false;$("#selectDraftsBtn")?.classList.remove("is-active");if($("#selectDraftsBtn"))$("#selectDraftsBtn").textContent="Välj";draftPage=Math.min(draftPage,Math.max(0,Math.ceil(items.length/DRAFTS_PER_PAGE)-1));updateSelectionFooter();await renderGrid();}
+
+function helpHtmlForView(view){
+  if(view==="gridView")return `
+    <div class="help-row"><strong>Tryck</strong><br>Öppna plagget.</div>
+    <div class="help-row"><strong>Långtryck</strong><br>Snabbzoom/förhandsvisning.</div>
+    <div class="help-row"><strong>Dubbeltryck</strong><br>Visa bilden tillfälligt i helskärm.</div>
+    <div class="help-row"><strong>Välj</strong><br>Markera en eller flera bilder för att ta bort dem.</div>`;
+  if(view==="detailView")return `<div class="help-row"><strong>Grön ✓</strong><br>Bilden har en sparad anpassning men kan ändras igen.</div><div class="help-row"><strong>Anpassa bild</strong><br>Öppna beskärning/zoom för den här bilden.</div>`;
+  if(view==="cropView")return `<div class="help-row"><strong>Anpassa bild</strong><br>Flytta och zooma tills utsnittet känns rätt.</div><div class="help-row"><strong>Spara anpassning</strong><br>Sparar bilden och återgår till miniatyrerna.</div>`;
+  return `<div class="help-row"><strong>Tillbaka</strong><br>Går till föregående steg.</div>`;
+}
+function openPublishHelp(){
+  const dlg=$("#publishHelpDialog"),body=$("#publishHelpBody");
+  if(!dlg||!body)return;
+  body.innerHTML=helpHtmlForView(currentPublishView);
+  dlg.hidden=false;
+}
+function closePublishHelp(){const dlg=$("#publishHelpDialog");if(dlg)dlg.hidden=true;}
+function configureFooterForView(view){
+  if(!window.CCC_CORE?.footer)return;
+  if(draftSelectionMode){updateSelectionFooter();return;}
+  const helpEnabled=localStorage.getItem("ccc-help-tips-enabled")!=="0";
+  const config={help:helpEnabled,onHelp:openPublishHelp};
+  if(view==="gridView")Object.assign(config,{select:true,onSelect:enterDraftSelection});
+  window.CCC_CORE.footer.setTools?.(config);
+}
+function updateSelectionFooter(){if(draftSelectionMode)window.CCC_CORE?.footer?.showSelection?.({count:selectedDraftIds.size,onDelete:confirmDeleteSelectedDrafts,onCancel:exitDraftSelection});else window.CCC_CORE?.footer?.showDefault?.();}function enterDraftSelection(){if(!items.length)return;draftSelectionMode=true;selectedDraftIds.clear();updateSelectionFooter();renderGrid();}function exitDraftSelection(){draftSelectionMode=false;selectedDraftIds.clear();configureFooterForView(currentPublishView);renderGrid();}async function confirmDeleteSelectedDrafts(){const ids=[...selectedDraftIds];if(!ids.length)return;const msg=ids.length===1?"Ta bort det markerade utkastet?":`Ta bort ${ids.length} markerade utkast?`;if(!confirm(msg))return;await deleteDraftIds(ids);items=items.filter(i=>!selectedDraftIds.has(i.id));selectedDraftIds.clear();draftSelectionMode=false;draftPage=Math.min(draftPage,Math.max(0,Math.ceil(items.length/DRAFTS_PER_PAGE)-1));configureFooterForView("gridView");await renderGrid();}
 async function renderGrid(){
   const grid=$("#draftGrid");
   const empty=$("#emptyState");
@@ -652,7 +677,6 @@ $("#swipeArea").addEventListener("lostpointercapture",e=>{
   if(swipeGesture?.id===e.pointerId)finishSwipe(e,true);
 });
 
-$("#selectDraftsBtn")?.addEventListener("click",()=>draftSelectionMode?exitDraftSelection():enterDraftSelection());
 $("#draftsBtn").addEventListener("click",async()=>{
   await renderGrid();
   preloadNeighbors(0);
@@ -1107,6 +1131,9 @@ async function leavePublishCrop(){
   show("gridView");
 }
 
+
+$("#closePublishHelp")?.addEventListener("click",closePublishHelp);
+$("#publishHelpDialog")?.addEventListener("click",e=>{if(e.target===$("#publishHelpDialog"))closePublishHelp();});
 
 document.addEventListener("ccc:header-back",async()=>{if(currentPublishView==="gridView"&&draftSelectionMode){exitDraftSelection();return;}
   if(currentPublishView==="startView"){

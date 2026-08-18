@@ -11,8 +11,8 @@
 <title>CCC Publicera v2.9.22</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.9.36">
-<link rel="stylesheet" href="../core.css?v=2.9.36">
+<link rel="stylesheet" href="publish.css?v=2.9.37">
+<link rel="stylesheet" href="../core.css?v=2.9.37">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell publish-shell">
@@ -70,8 +70,7 @@
     </section>
 
     <section id="gridView" class="publish-view" hidden>
-      <div class="publish-heading publish-heading-with-action"><div><h1>Förbered för publicering</h1><p id="draftCount">0 utkast</p></div><button id="selectDraftsBtn" class="publish-select-btn" type="button">Välj</button></div>
-      <div id="gridGestureTip" class="ccc-context-tip" hidden><strong>Tips</strong><span>Tryck för att öppna · håll inne för snabbzoom · dubbeltryck för helskärm. Välj används för att markera och ta bort.</span></div>
+      <div class="publish-heading"><div><h1>Förbered för publicering</h1><p id="draftCount">0 utkast</p></div></div>
       <div id="emptyState" class="publish-empty" hidden><strong>Inget väntar på publicering</strong><span>Skapa ett plagg i Vision först.</span></div>
       <div id="draftGrid" class="draft-grid" aria-live="polite"></div>
     </section>
@@ -94,7 +93,7 @@
         <img id="detailNextImage" class="swipe-image swipe-image-next" alt="" aria-hidden="true">
         <span class="swipe-hint left" aria-hidden="true">‹</span><span class="swipe-hint right" aria-hidden="true">›</span>
       </div>
-      <div class="detail-copy"><strong id="detailTitle"></strong><span id="detailMeta"></span></div><div id="detailAdaptTip" class="ccc-context-tip" hidden><strong>Tips</strong><span>En grön ✓ betyder sparad anpassning. Du kan alltid öppna Anpassa bild igen.</span></div>
+      <div class="detail-copy"><strong id="detailTitle"></strong><span id="detailMeta"></span></div>
       <div class="detail-actions"><button id="cropBtn" class="secondary-action" type="button">Anpassa bild</button><button id="publishBtn" class="primary-action" type="button">Publicera till Container13</button></div>
       <p id="publishStatus" class="publish-status" aria-live="polite"></p>
     </section>
@@ -118,7 +117,7 @@
 
       <input id="cropZoom" type="hidden" value="1">
 
-      <div id="cropHelpTip" class="ccc-context-tip" hidden><strong>Tips</strong><span>Flytta och zooma bilden tills utsnittet känns rätt. Spara anpassning tar dig tillbaka till miniatyrerna och markerar bilden som ändrad.</span></div><div class="crop-actions-row">
+      <div class="crop-actions-row">
         <button id="keepOriginalBtn" class="secondary-action" type="button">Behåll hela bilden</button>
         <button id="cropReset" class="secondary-action" type="button">Återställ anpassning</button>
         <button id="cropDone" class="primary-action crop-accept" type="button">Spara anpassning</button>
@@ -138,9 +137,21 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.9.36"></script>
-<script type="module" src="../core.js?v=2.9.36"></script>
-  <script src="../version.js?v=2.9.36"></script>
+<script type="module" src="publish.js?v=2.9.37"></script>
+<script type="module" src="../core.js?v=2.9.37"></script>
+  <script src="../version.js?v=2.9.37"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
+
+
+<div id="publishHelpDialog" class="dialog ccc-dialog" role="dialog" aria-modal="true" aria-labelledby="publishHelpTitle" hidden>
+  <div class="dialog-box ccc-dialog-box">
+    <h2 id="publishHelpTitle">Hjälp</h2>
+    <div id="publishHelpBody" class="publish-help-body"></div>
+    <div class="dialog-actions ccc-dialog-actions">
+      <button id="closePublishHelp" class="button-primary ccc-button-primary" type="button">Stäng</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
