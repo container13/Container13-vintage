@@ -1092,3 +1092,13 @@ CCC v2.9.17 (2026-08-17)
 - Statusen under knapparna skiljer nu på anpassad WebP och WebP i originalformat; originalbild får inte felaktigt beskrivas som beskuren.
 - Bildräknarens v2.9.21-layout lämnas orörd.
 - Changed-files ska fortsatt innehålla README_CHATGPT_CCC.txt i projektroten samt ccc-core/version.js och berörda modul-filer.
+
+
+## v2.9.23 – enhandsvänlig tillbaka-gest
+- Behåller den synliga tillbaka-pilen i headern.
+- Lägger till vänsterkants-swipe åt höger som "Tillbaka ett steg" i Publicera.
+- Gesten måste börja inom 28 px från vänsterkanten och förflyttas minst 72 px åt höger.
+- Vertikal rörelse över 56 px avbryter gesten.
+- Gesten är avsiktligt kantbunden för att inte krocka med den vanliga swipe-funktionen mellan plagg i detaljvyn.
+- Intern back-logik: Anpassa bild -> samma plaggs detaljvy, detaljvy -> Förbered-grid, grid/kanal/historik -> Publicera-start.
+- Changed-files ska fortsatt innehålla README_CHATGPT_CCC.txt i projektroten samt ccc-core/version.js och berörda modul-filer.
