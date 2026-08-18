@@ -1465,30 +1465,33 @@ body{
 
 
 /* ==========================================================
-   CCC FOOTER CORE v2 — v2.9.34
-   Permanent footer-yta. Dashboard har tom footer.
-   Footern överlagrar inte arbetsytans geometri med global padding.
+   CCC FOOTER CORE v3 — v2.9.35
+   Footern får aldrig maskera eller krympa arbetsytan.
+   Dashboard har en tom, osynlig footerstruktur.
    ========================================================== */
-:root{--ccc-footer-height:56px}
 .ccc-core-footer{
   position:fixed!important;
   left:0!important;
   right:0!important;
   bottom:0!important;
   z-index:1200!important;
-  min-height:calc(var(--ccc-footer-height) + env(safe-area-inset-bottom))!important;
   display:flex!important;
   align-items:flex-end!important;
   justify-content:flex-end!important;
-  padding:2px 16px max(0px,env(safe-area-inset-bottom))!important;
+  min-height:0!important;
+  height:auto!important;
+  padding:0 16px 6px!important;
   box-sizing:border-box!important;
-  background:var(--bg,var(--ccc-bg,#11141b))!important;
+  background:transparent!important;
   border:0!important;
   box-shadow:none!important;
   pointer-events:none!important;
 }
 .ccc-core-footer--empty{
-  min-height:calc(var(--ccc-footer-height) + env(safe-area-inset-bottom))!important;
+  height:0!important;
+  min-height:0!important;
+  padding:0!important;
+  overflow:hidden!important;
 }
 .ccc-core-footer-back{
   min-width:172px!important;
@@ -1529,8 +1532,4 @@ body{
   font-size:11px!important;
 }
 
-/* Ingen global padding på .ccc-workspace.
-   Arbetsytans proportioner ska vara samma som före footern. */
-body.ccc-has-core-footer .ccc-workspace{
-  padding-bottom:initial;
-}
+/* Viktigt: footern ändrar ALDRIG workspace-höjd, padding eller kortgeometri. */

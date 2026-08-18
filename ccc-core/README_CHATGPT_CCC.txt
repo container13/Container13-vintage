@@ -1075,3 +1075,13 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - `Spara anpassning` får extra avslutande scrollmån så hela knappen kan visas, inklusive rundad nederkant.
 - Tillbaka-knappen ligger så långt ned som Core-footerns safe-area tillåter.
 - Dashboard, Publicera och Vision använder `core.js/core.css?v=2.9.34` för att undvika gammal cache.
+
+
+## v2.9.35 – footer utan maskering eller ihoptryckning
+- Efter kontroll av IMG_1927–IMG_1929 är Core-footern ändrad så den inte längre har en ogenomskinlig fullbreddsyta som kan maskera nederdelen av Dashboard-kort, Historik eller `Spara anpassning`.
+- Footerbehållaren är nu transparent och påverkar aldrig `.ccc-workspace`-höjd, padding eller kortgeometri.
+- Dashboard behåller footerstrukturen men den är tom och 0 px hög, så Dashboard ska se exakt ut som före footerinförandet.
+- Tillbaka-knappen ligger fast längst ned till höger med endast 6 px bottenmarginal och flyttas därmed tydligt längre ned än tidigare safe-area-lyfta placering.
+- Publiceras tidigare kompensationsmarginaler på draft-grid, status och crop-actions är borttagna eftersom de kunde ge ojämn geometri.
+- Djupa detalj/crop-vyer får endast `scroll-padding-bottom`, vilket inte flyttar eller krymper deras synliga innehåll.
+- Back-logiken är oförändrad och använder samma `ccc:header-back` som headerpilen.
