@@ -1128,3 +1128,13 @@ CCC v2.9.17 (2026-08-17)
 - Gestkänsla, kantzon och trösklar från tidigare test lämnas orörda.
 - Bockar, studs/pop och bildanpassningslogik lämnas orörda.
 - Changed-files innehåller README_CHATGPT_CCC.txt i projektroten, ccc-core/version.js och ccc-core/publish/publish.js.
+
+
+## v2.9.27 – swipe-start flyttad från Safaris absoluta vänsterkant
+- Vänsterkants-swipen använder fortfarande exakt samma `ccc:header-back`-event som headerns tillbaka-pil.
+- Själva back-logiken är alltså oförändrad från v2.9.26.
+- Swipe får nu bara starta mellan 24 och 58 px från vänsterkanten.
+- Syftet är att undvika konflikt med Safaris egen historik-swipe som kan ta över allra längst ute vid skärmkanten.
+- Triggerlängd, vertikal tolerans och låsning tills fingret släpps är oförändrade.
+- Ingen ändring i bockar, studs/pop, bildanpassning eller bildräknare.
+- Changed-files innehåller README_CHATGPT_CCC.txt i projektroten, ccc-core/version.js och ccc-core/publish/publish.js.
