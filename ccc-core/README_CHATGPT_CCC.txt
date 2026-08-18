@@ -1094,3 +1094,16 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Kontexttips är CCC-standard: max tre visningar per tips-ID. Publicera har tips för miniatyrgester/Välj, detaljvy/anpassningsbock och Anpassa bild.
 - Inställningar → Hjälp & tips: Visa användningstips på/av och Visa alla tips igen. Dashboard/Publicera-start har inga tips; Vision gås igenom senare.
 - Mobilprincip: viktiga kommandon ska vara tumvänliga och dolda gester får inte vara enda vägen till viktiga funktioner.
+
+
+## v2.9.37 – footerdriven Hjälp/Välj och ren arbetsyta
+- Automatiska tipsrutor i Publicera är borttagna eftersom de tog plats och flyttade miniatyrerna.
+- Hjälp visas nu på begäran via `? Hjälp` i Core-footern. Hjälpen är kontextuell för aktuell vy och öppnas som overlay/dialog, så arbetsytans geometri påverkas inte.
+- `Välj` är flyttad från rubriken till footern i Publiceras miniatyrvy.
+- Normal footer i miniatyrvyn: `? Hjälp`, `Välj`, `Tillbaka`.
+- I markeringsläge växlar footern till `Avbryt`, antal markerade och `Ta bort`.
+- Bildgesterna är oförändrade: tryck = öppna, långtryck = snabbzoom, dubbeltryck = helskärm.
+- Grön ✓ betyder fortsatt sparad bildanpassning; markeringsläge använder separat gul markering.
+- Tillbaka-knappen är flyttad ännu längre ned: Core-footern har nu 0 px extra bottenpadding.
+- Inställningar → Hjälp & tips styr nu om `? Hjälp` ska visas i footern. Det tidigare tre-gångerssystemet för automatiska tips är pausat.
+- CCC-princip: arbetsytan ska hållas ren; kontextuella verktyg som Hjälp/Välj hör hemma i footern när de inte är en del av huvuduppgiften.

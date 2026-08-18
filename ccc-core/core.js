@@ -136,7 +136,7 @@ CCCHeader.set(window.__CCC_HEADER_PENDING__||initialHeader);
 
 
 // ==========================================================
-// CCC FOOTER CORE v2 — v2.9.36
+// CCC FOOTER CORE v2 — v2.9.37
 // Footern är en permanent del av CCC:s grundlayout.
 // Dashboard visar samma footer-yta men utan knapp/innehåll.
 // Moduler använder samma ccc:header-back-event som headerpilen.
@@ -186,13 +186,55 @@ function ensureCCCFooter(){
 }
 const CCCFooter={
   el:ensureCCCFooter(),
-  showDefault(){const f=this.el||ensureCCCFooter();f.querySelector(".ccc-core-footer-selection")?.remove();const b=f.querySelector("#cccCoreFooterBack");if(b)b.hidden=isCCCDashboard();},
+  toolConfig:null,
+  renderDefault(){
+    const footer=this.el||ensureCCCFooter();
+    footer.querySelector(".ccc-core-footer-selection")?.remove();
+    footer.querySelector(".ccc-core-footer-tools")?.remove();
+    const back=footer.querySelector("#cccCoreFooterBack");
+    if(back)back.hidden=isCCCDashboard();
+    if(this.toolConfig&&!isCCCDashboard()){
+      const tools=document.createElement("div");
+      tools.className="ccc-core-footer-tools";
+      if(this.toolConfig.help){
+        const help=document.createElement("button");
+        help.type="button";
+        help.className="ccc-core-footer-tool ccc-core-footer-help";
+        help.innerHTML='<span aria-hidden="true">?</span><small>Hjälp</small>';
+        help.addEventListener("click",()=>this.toolConfig?.onHelp?.());
+        tools.append(help);
+      }
+      if(this.toolConfig.select){
+        const select=document.createElement("button");
+        select.type="button";
+        select.className="ccc-core-footer-tool ccc-core-footer-select";
+        select.innerHTML='<span aria-hidden="true">✓</span><small>Välj</small>';
+        select.addEventListener("click",()=>this.toolConfig?.onSelect?.());
+        tools.append(select);
+      }
+      footer.insertBefore(tools,back||null);
+    }
+  },
+  showDefault(){this.renderDefault();},
+  setTools(config=null){this.toolConfig=config;this.renderDefault();},
+  clearTools(){this.toolConfig=null;this.renderDefault();},
   showSelection({count=0,onDelete,onCancel}={}){
-    const f=this.el||ensureCCCFooter(),b=f.querySelector("#cccCoreFooterBack");if(b)b.hidden=true;
-    let bar=f.querySelector(".ccc-core-footer-selection");
-    if(!bar){bar=document.createElement("div");bar.className="ccc-core-footer-selection";bar.innerHTML=`<button class="ccc-footer-cancel" type="button">Avbryt</button><span class="ccc-footer-selection-count" aria-live="polite"></span><button class="ccc-footer-delete" type="button" aria-label="Ta bort markerade">🗑 <span>Ta bort</span></button>`;f.appendChild(bar);}
+    const footer=this.el||ensureCCCFooter();
+    footer.querySelector(".ccc-core-footer-tools")?.remove();
+    const back=footer.querySelector("#cccCoreFooterBack");
+    if(back)back.hidden=true;
+    let bar=footer.querySelector(".ccc-core-footer-selection");
+    if(!bar){
+      bar=document.createElement("div");
+      bar.className="ccc-core-footer-selection";
+      bar.innerHTML=`<button class="ccc-footer-cancel" type="button">Avbryt</button><span class="ccc-footer-selection-count" aria-live="polite"></span><button class="ccc-footer-delete" type="button" aria-label="Ta bort markerade">🗑 <span>Ta bort</span></button>`;
+      footer.appendChild(bar);
+    }
     bar.querySelector(".ccc-footer-selection-count").textContent=`${count} markerad${count===1?"":"e"}`;
-    const d=bar.querySelector(".ccc-footer-delete");d.disabled=count<1;d.onclick=()=>onDelete?.();bar.querySelector(".ccc-footer-cancel").onclick=()=>onCancel?.();
+    const d=bar.querySelector(".ccc-footer-delete");
+    d.disabled=count<1;
+    d.onclick=()=>onDelete?.();
+    bar.querySelector(".ccc-footer-cancel").onclick=()=>onCancel?.();
   }
 };
 window.CCC_CORE={applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader,footer:CCCFooter};
