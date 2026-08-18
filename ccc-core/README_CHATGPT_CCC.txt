@@ -1199,9 +1199,10 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Detta är endast kalibrering av de två centrala Core-värdena; inga modulunika positioner införs.
 
 
-## v2.9.47 – endast global footerposition
-- Headern från v2.9.46 lämnas helt orörd.
-- Enda layoutändringen är den centrala Core-variabeln för footerposition.
-- `--ccc-footer-physical-gap` ändras från `4px` till `-108px` för att flytta hela footerlinjen ungefär 112 px längre ned på iPhone, i linje med den visuellt lediga ytan i v2.9.46.
-- `Tillbaka`, `? Hjälp`, `Välj`, markeringsläge och `Ångra` följer exakt samma nya nivå eftersom de delar samma Core-footer.
-- Inga modulunika footerregler eller ändringar av miniatyrer, arbetsyta eller header.
+## v2.9.48 – footer kalibrerad utan safe-area-matematik
+- v2.9.47 återkallas som footerexperiment eftersom den negativa offseten flyttade footern helt utanför den synliga ytan.
+- v2.9.48 bygger därför från v2.9.46, där footern var helt synlig och headern var korrekt.
+- Rotkalibreringen görs nu enklare: footern använder direkt `bottom:10px` i den enda centrala Core-regeln.
+- `env(safe-area-inset-bottom)` används inte längre för footerpositionen. Därmed slipper vi pendlingen mellan v2.9.45 (för långt ned) och v2.9.46 (för högt).
+- Headern är exakt oförändrad från v2.9.46.
+- `Tillbaka`, `? Hjälp`, `Välj`, markeringsläge och `Ångra` ärver samma `bottom:10px`.
