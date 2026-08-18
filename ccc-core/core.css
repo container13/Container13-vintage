@@ -1464,7 +1464,7 @@ body{
 
 
 /* ==========================================================
-   CCC FOOTER CORE v3 — v2.9.40
+   CCC FOOTER CORE v3 — v2.9.41
    Footern får aldrig maskera eller krympa arbetsytan.
    Dashboard har en tom, osynlig footerstruktur.
    ========================================================== */
@@ -1472,7 +1472,7 @@ body{
   position:fixed!important;
   left:0!important;
   right:0!important;
-  bottom:-42px!important;
+  bottom:-14px!important;
   z-index:1200!important;
   display:flex!important;
   align-items:flex-end!important;
@@ -1534,10 +1534,10 @@ body{
 
 /* Viktigt: footern ändrar ALDRIG workspace-höjd, padding eller kortgeometri. */
 
-/* CCC v2.9.40 – footer markeringsläge */
+/* CCC v2.9.41 – footer markeringsläge */
 .ccc-core-footer-selection{width:min(100%,720px);margin:0 auto;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;pointer-events:auto}.ccc-footer-cancel,.ccc-footer-delete{min-height:48px;border:1px solid var(--border,var(--ccc-border));border-radius:15px;background:var(--surface,var(--ccc-surface));color:var(--text,var(--ccc-text));padding:0 14px;font-weight:800}.ccc-footer-delete{color:#c73b3b}.ccc-footer-delete:disabled{opacity:.42}.ccc-footer-selection-count{text-align:center;color:var(--muted,var(--ccc-muted));font-size:12px;font-weight:800}
 
-/* CCC v2.9.40 – kontextverktyg i Core-footer */
+/* CCC v2.9.41 – kontextverktyg i Core-footer */
 .ccc-core-footer-tools{
   display:flex;
   align-items:flex-end;
@@ -1572,7 +1572,7 @@ body{
   color:var(--muted,var(--ccc-muted));
 }
 
-/* CCC v2.9.40 – Ångra radering i Core-footer */
+/* CCC v2.9.41 – Ångra radering i Core-footer */
 .ccc-core-footer-undo{
   width:min(100%,720px);
   margin:0 auto;
@@ -1598,7 +1598,7 @@ body{
   font-weight:900;
 }
 
-/* CCC v2.9.40 – synlig footer i iOS/PWA */
+/* CCC v2.9.41 – synlig footer i iOS/PWA */
 @supports (padding-bottom: env(safe-area-inset-bottom)){
   .ccc-core-footer:not(.ccc-core-footer--empty){
     padding-bottom:max(0px,calc(env(safe-area-inset-bottom) - 18px))!important;

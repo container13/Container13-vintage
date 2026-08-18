@@ -1137,3 +1137,10 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Upp till fem mini-miniatyrer visas; vid fler visas `+N`.
 - Dialogen har tydliga `Avbryt` och `Ta bort`-knappar.
 - Ångra-radering i 8 sekunder från v2.9.38/v2.9.39 behålls efter bekräftad borttagning.
+
+
+## v2.9.41 – footerposition finjusterad efter IMG_1938–IMG_1939
+- v2.9.40 placerade Core-footern för långt ned (`bottom:-42px`), vilket kapade nederdelen av `Tillbaka`, `? Hjälp` och `Välj` på iPhone.
+- Footern lyfts ca 28 px och använder nu `bottom:-14px`.
+- Målet är att behålla den tydligt lägre tumvänliga placeringen, men med hela knapparna synliga och en liten fri marginal under.
+- Ingen ändring av miniatyrstorlek, grid, hjälpruta, Välj/radera, mini-miniatyrer i raderingsdialogen eller Ångra-flödet.
