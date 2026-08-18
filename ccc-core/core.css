@@ -102,8 +102,8 @@ button{color:inherit}
 
 /* ---------- Gemensam modulrad ---------- */
 .ccc-module-marker{
-  width:min(calc(100vw - 32px),var(--ccc-content-width))!important;min-height:52px!important;margin:6px auto 0!important;
-  padding:7px 3px 8px!important;display:flex!important;flex-direction:column!important;align-items:center!important;
+  width:min(calc(100vw - 32px),var(--ccc-content-width))!important;min-height:48px!important;margin:0 auto!important;
+  padding:5px 3px 6px!important;display:flex!important;flex-direction:column!important;align-items:center!important;
   justify-content:center!important;gap:2px!important;text-align:center!important;
   border-bottom:1px solid color-mix(in srgb,var(--ccc-gold) 26%,transparent)!important
 }
@@ -1464,13 +1464,13 @@ body{
 
 
 /* ==========================================================
-   CCC FOOTER CORE v4 — v2.9.42
+   CCC FOOTER CORE v4 — v2.9.43
    EN enda footerzon för hela CCC.
    Placeringen ägs centralt av Core och följer iOS visualViewport.
    ========================================================== */
 :root{
   --ccc-footer-control-height:50px;
-  --ccc-footer-zone-height:62px;
+  --ccc-footer-zone-height:52px;
   --ccc-footer-side:16px;
   --ccc-footer-vv-top:0px;
   --ccc-footer-vv-height:100dvh;
@@ -1540,10 +1540,10 @@ body{
 
 /* Footern äger endast sin fasta Core-zon. Arbetsytornas geometri ändras inte här. */
 
-/* CCC v2.9.42 – footer markeringsläge */
+/* CCC v2.9.43 – footer markeringsläge */
 .ccc-core-footer-selection{width:min(100%,720px);margin:0 auto;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;pointer-events:auto}.ccc-footer-cancel,.ccc-footer-delete{min-height:48px;border:1px solid var(--border,var(--ccc-border));border-radius:15px;background:var(--surface,var(--ccc-surface));color:var(--text,var(--ccc-text));padding:0 14px;font-weight:800}.ccc-footer-delete{color:#c73b3b}.ccc-footer-delete:disabled{opacity:.42}.ccc-footer-selection-count{text-align:center;color:var(--muted,var(--ccc-muted));font-size:12px;font-weight:800}
 
-/* CCC v2.9.42 – kontextverktyg i Core-footer */
+/* CCC v2.9.43 – kontextverktyg i Core-footer */
 .ccc-core-footer-tools{
   display:flex;
   align-items:flex-end;
@@ -1578,7 +1578,7 @@ body{
   color:var(--muted,var(--ccc-muted));
 }
 
-/* CCC v2.9.42 – Ångra radering i Core-footer */
+/* CCC v2.9.43 – Ångra radering i Core-footer */
 .ccc-core-footer-undo{
   width:min(100%,720px);
   margin:0 auto;
@@ -1604,14 +1604,14 @@ body{
   font-weight:900;
 }
 
-/* CCC v2.9.42 – synlig footer i iOS/PWA */
+/* CCC v2.9.43 – synlig footer i iOS/PWA */
 @supports (padding-bottom: env(safe-area-inset-bottom)){
   .ccc-core-footer:not(.ccc-core-footer--empty){
     padding-bottom:max(0px,calc(env(safe-area-inset-bottom) - 18px))!important;
   }
 }
 
-/* v2.9.42 – alla footerlägen delar exakt samma Core-zon */
+/* v2.9.43 – alla footerlägen delar exakt samma Core-zon */
 .ccc-core-footer-tools,
 .ccc-core-footer-selection,
 .ccc-core-footer-undo{

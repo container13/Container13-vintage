@@ -136,7 +136,7 @@ CCCHeader.set(window.__CCC_HEADER_PENDING__||initialHeader);
 
 
 // ==========================================================
-// CCC FOOTER CORE v4 — v2.9.42
+// CCC FOOTER CORE v4 — v2.9.43
 // Footern är en permanent del av CCC:s grundlayout.
 // Dashboard visar samma footer-yta men utan knapp/innehåll.
 // Moduler använder samma ccc:header-back-event som headerpilen.
