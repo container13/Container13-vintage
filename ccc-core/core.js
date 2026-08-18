@@ -136,7 +136,7 @@ CCCHeader.set(window.__CCC_HEADER_PENDING__||initialHeader);
 
 
 // ==========================================================
-// CCC FOOTER CORE v2 — v2.9.39
+// CCC FOOTER CORE v4 — v2.9.42
 // Footern är en permanent del av CCC:s grundlayout.
 // Dashboard visar samma footer-yta men utan knapp/innehåll.
 // Moduler använder samma ccc:header-back-event som headerpilen.
@@ -144,6 +144,23 @@ CCCHeader.set(window.__CCC_HEADER_PENDING__||initialHeader);
 function isCCCDashboard(){
   return /\/ccc-core\/dashboard\/?(?:index\.html)?$/i.test(location.pathname);
 }
+
+
+function syncCCCFooterViewport(){
+  const vv=window.visualViewport;
+  const root=document.documentElement;
+  if(vv){
+    root.style.setProperty("--ccc-footer-vv-top",`${vv.offsetTop}px`);
+    root.style.setProperty("--ccc-footer-vv-height",`${vv.height}px`);
+  }else{
+    root.style.setProperty("--ccc-footer-vv-top","0px");
+    root.style.setProperty("--ccc-footer-vv-height",`${window.innerHeight}px`);
+  }
+}
+syncCCCFooterViewport();
+window.visualViewport?.addEventListener("resize",syncCCCFooterViewport,{passive:true});
+window.visualViewport?.addEventListener("scroll",syncCCCFooterViewport,{passive:true});
+window.addEventListener("resize",syncCCCFooterViewport,{passive:true});
 
 function ensureCCCFooter(){
   let footer=document.querySelector("#cccCoreFooter");

@@ -1144,3 +1144,13 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Footern lyfts ca 28 px och använder nu `bottom:-14px`.
 - Målet är att behålla den tydligt lägre tumvänliga placeringen, men med hela knapparna synliga och en liten fri marginal under.
 - Ingen ändring av miniatyrstorlek, grid, hjälpruta, Välj/radera, mini-miniatyrer i raderingsdialogen eller Ångra-flödet.
+
+
+## v2.9.42 – riktig global Core-footerzon
+- Footerplaceringen är ombyggd enligt CCC:s Core-princip: EN enda central geometri i `ccc-core`, inga vy-specifika `bottom`-värden.
+- Tidigare `bottom:-14/-18/-42` och transform-hack är borttagna.
+- Core använder nu `window.visualViewport` för att känna den faktiskt synliga iPhone/PWA-ytan och placerar footerzonen mot dess nederkant.
+- Alla footerlägen (`Tillbaka`, `? Hjälp`, `Välj`, markeringsläge, `Ångra`) använder samma Core-zon och samma vertikala nivå.
+- Dashboard har samma footerzon men den är osynlig/tom.
+- Footerzonen har central höjd `--ccc-footer-zone-height:62px` och kontrollhöjd `50px`. Framtida höjd/placering ändras på ett enda ställe i Core och slår igenom i hela CCC.
+- Arbetsytornas/miniatyrernas geometri ändras inte av denna fix.

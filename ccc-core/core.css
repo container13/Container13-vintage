@@ -1464,22 +1464,30 @@ body{
 
 
 /* ==========================================================
-   CCC FOOTER CORE v3 — v2.9.41
-   Footern får aldrig maskera eller krympa arbetsytan.
-   Dashboard har en tom, osynlig footerstruktur.
+   CCC FOOTER CORE v4 — v2.9.42
+   EN enda footerzon för hela CCC.
+   Placeringen ägs centralt av Core och följer iOS visualViewport.
    ========================================================== */
+:root{
+  --ccc-footer-control-height:50px;
+  --ccc-footer-zone-height:62px;
+  --ccc-footer-side:16px;
+  --ccc-footer-vv-top:0px;
+  --ccc-footer-vv-height:100dvh;
+}
 .ccc-core-footer{
   position:fixed!important;
   left:0!important;
   right:0!important;
-  bottom:-14px!important;
+  top:calc(var(--ccc-footer-vv-top) + var(--ccc-footer-vv-height) - var(--ccc-footer-zone-height))!important;
+  bottom:auto!important;
   z-index:1200!important;
+  height:var(--ccc-footer-zone-height)!important;
+  min-height:var(--ccc-footer-zone-height)!important;
   display:flex!important;
-  align-items:flex-end!important;
+  align-items:flex-start!important;
   justify-content:flex-end!important;
-  min-height:0!important;
-  height:auto!important;
-  padding:0 16px 0!important;
+  padding:0 var(--ccc-footer-side)!important;
   box-sizing:border-box!important;
   background:transparent!important;
   border:0!important;
@@ -1487,15 +1495,13 @@ body{
   pointer-events:none!important;
 }
 .ccc-core-footer--empty{
-  height:0!important;
-  min-height:0!important;
-  padding:0!important;
-  overflow:hidden!important;
-  transform:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
 }
 .ccc-core-footer-back{
   min-width:172px!important;
-  min-height:50px!important;
+  height:var(--ccc-footer-control-height)!important;
+  min-height:var(--ccc-footer-control-height)!important;
   display:flex!important;
   align-items:center!important;
   justify-content:flex-start!important;
@@ -1532,12 +1538,12 @@ body{
   font-size:11px!important;
 }
 
-/* Viktigt: footern ändrar ALDRIG workspace-höjd, padding eller kortgeometri. */
+/* Footern äger endast sin fasta Core-zon. Arbetsytornas geometri ändras inte här. */
 
-/* CCC v2.9.41 – footer markeringsläge */
+/* CCC v2.9.42 – footer markeringsläge */
 .ccc-core-footer-selection{width:min(100%,720px);margin:0 auto;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;pointer-events:auto}.ccc-footer-cancel,.ccc-footer-delete{min-height:48px;border:1px solid var(--border,var(--ccc-border));border-radius:15px;background:var(--surface,var(--ccc-surface));color:var(--text,var(--ccc-text));padding:0 14px;font-weight:800}.ccc-footer-delete{color:#c73b3b}.ccc-footer-delete:disabled{opacity:.42}.ccc-footer-selection-count{text-align:center;color:var(--muted,var(--ccc-muted));font-size:12px;font-weight:800}
 
-/* CCC v2.9.41 – kontextverktyg i Core-footer */
+/* CCC v2.9.42 – kontextverktyg i Core-footer */
 .ccc-core-footer-tools{
   display:flex;
   align-items:flex-end;
@@ -1572,7 +1578,7 @@ body{
   color:var(--muted,var(--ccc-muted));
 }
 
-/* CCC v2.9.41 – Ångra radering i Core-footer */
+/* CCC v2.9.42 – Ångra radering i Core-footer */
 .ccc-core-footer-undo{
   width:min(100%,720px);
   margin:0 auto;
@@ -1598,9 +1604,18 @@ body{
   font-weight:900;
 }
 
-/* CCC v2.9.41 – synlig footer i iOS/PWA */
+/* CCC v2.9.42 – synlig footer i iOS/PWA */
 @supports (padding-bottom: env(safe-area-inset-bottom)){
   .ccc-core-footer:not(.ccc-core-footer--empty){
     padding-bottom:max(0px,calc(env(safe-area-inset-bottom) - 18px))!important;
   }
+}
+
+/* v2.9.42 – alla footerlägen delar exakt samma Core-zon */
+.ccc-core-footer-tools,
+.ccc-core-footer-selection,
+.ccc-core-footer-undo{
+  height:var(--ccc-footer-control-height)!important;
+  min-height:var(--ccc-footer-control-height)!important;
+  align-self:flex-start!important;
 }
