@@ -121,6 +121,47 @@ function show(view){
   });
 }
 
+// CCC v2.9.23 – enhandsnavigation: vänsterkants-swipe = ett steg tillbaka.
+// Gesten aktiveras bara när den börjar nära vänsterkanten för att inte
+// konkurrera med swipe mellan plagg i detaljvyn.
+let edgeBackGesture=null;
+const EDGE_BACK_START_PX=28;
+const EDGE_BACK_TRIGGER_PX=72;
+const EDGE_BACK_MAX_VERTICAL_PX=56;
+
+function goBackOnePublishStep(){
+  if(currentPublishView==="cropView"){ openDetailById(activeItemId); return; }
+  if(currentPublishView==="detailView"){ show("gridView"); return; }
+  if(currentPublishView==="gridView"||currentPublishView==="channelView"||currentPublishView==="publishedView"){ show("startView"); return; }
+  // På startvyn finns inget internt Publicera-steg att backa till.
+}
+
+document.addEventListener("pointerdown",e=>{
+  if(e.pointerType==="mouse")return;
+  if(e.clientX>EDGE_BACK_START_PX)return;
+  edgeBackGesture={id:e.pointerId,x:e.clientX,y:e.clientY,done:false};
+},{passive:true});
+
+document.addEventListener("pointermove",e=>{
+  const g=edgeBackGesture;
+  if(!g||g.id!==e.pointerId||g.done)return;
+  const dx=e.clientX-g.x,dy=Math.abs(e.clientY-g.y);
+  if(dy>EDGE_BACK_MAX_VERTICAL_PX||dx<0){
+    edgeBackGesture=null;
+    return;
+  }
+  if(dx>=EDGE_BACK_TRIGGER_PX){
+    g.done=true;
+    goBackOnePublishStep();
+  }
+},{passive:true});
+
+["pointerup","pointercancel"].forEach(name=>{
+  document.addEventListener(name,e=>{
+    if(edgeBackGesture?.id===e.pointerId)edgeBackGesture=null;
+  },{passive:true});
+});
+
 function ensureDraftGridUi(){
   if(document.getElementById("cccDraftGridCompactStyles"))return;
   const style=document.createElement("style");
