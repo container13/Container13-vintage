@@ -1138,3 +1138,15 @@ CCC v2.9.17 (2026-08-17)
 - Triggerlängd, vertikal tolerans och låsning tills fingret släpps är oförändrade.
 - Ingen ändring i bockar, studs/pop, bildanpassning eller bildräknare.
 - Changed-files innehåller README_CHATGPT_CCC.txt i projektroten, ccc-core/version.js och ccc-core/publish/publish.js.
+
+
+## v2.9.28 – Safari-säker swipe-zon + dubbeltryck för snabb helskärmsvisning
+- CCC:s tillbaka-swipe använder fortfarande exakt samma `ccc:header-back`-event som headerns tillbaka-pil.
+- Swipe-startzonen flyttas längre in till 70–150 px från vänsterkanten för att lämna Safaris egen historik-gesture ifred.
+- Triggerlängd 72 px och vertikal tolerans 56 px är oförändrade.
+- Dubbeltryck på en miniatyr eller detaljbild öppnar bilden tillfälligt i helskärm mot mörk bakgrund.
+- Helskärmsbilden stängs automatiskt efter 2,5 sekunder eller direkt vid ett tryck.
+- Webbläsarens dubbeltryckszoom blockeras endast på CCC:s berörda bildytor via `touch-action: manipulation`; global pinch-/tillgänglighetszoom ändras inte.
+- På miniatyrer väntar CCC kort på ett eventuellt andra tryck innan vanligt enkeltryck öppnar detaljvyn, så dubbeltrycket inte hinner navigera bort.
+- Tidigare dubbeltrycks-zoom på cropCanvas är borttagen; beskärningszoom sker med crop-kontroller/pinch.
+- Bockar, studs/pop och sparlogik från tidigare versioner lämnas orörda.
