@@ -1150,3 +1150,15 @@ CCC v2.9.17 (2026-08-17)
 - På miniatyrer väntar CCC kort på ett eventuellt andra tryck innan vanligt enkeltryck öppnar detaljvyn, så dubbeltrycket inte hinner navigera bort.
 - Tidigare dubbeltrycks-zoom på cropCanvas är borttagen; beskärningszoom sker med crop-kontroller/pinch.
 - Bockar, studs/pop och sparlogik från tidigare versioner lämnas orörda.
+
+
+## v2.9.29 – tumvänlig Tillbaka-knapp i nederfält
+- CCC:s experimentella egna back-swipe i Publicera är borttagen/pausad för att undvika konflikt med Safaris historik-gesture.
+- Ett fast nederfält testas i Publiceras arbetsvyer.
+- Nederfältet visas efter Publicera-starten och innehåller en stor högerplacerad tryckyta: `← Tillbaka` med hjälpttexten `Till föregående steg`.
+- Hela knappen är tryckbar och placerad för höger tumme i detta första test.
+- Knappen skickar exakt samma `ccc:header-back`-event som headerns tillbaka-pil; ingen separat back-logik används.
+- Fältet tar hänsyn till iPhones safe-area och arbetsytan får extra nederpadding när fältet visas.
+- Headerns ordinarie tillbaka-pil behålls.
+- Dubbeltryck/quick-look från v2.9.28 samt bockar, studs/pop och bildanpassning lämnas orörda.
+- Om testet faller väl ut är nästa arkitektursteg en Core-komponent med valbar höger-/vänsterhänt placering.
