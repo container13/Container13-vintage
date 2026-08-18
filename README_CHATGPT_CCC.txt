@@ -1250,3 +1250,14 @@ CCC v2.9.17 (2026-08-17)
 - Tillbaka-knappen är flyttad ännu längre ned: Core-footern har nu 0 px extra bottenpadding.
 - Inställningar → Hjälp & tips styr nu om `? Hjälp` ska visas i footern. Det tidigare tre-gångerssystemet för automatiska tips är pausat.
 - CCC-princip: arbetsytan ska hållas ren; kontextuella verktyg som Hjälp/Välj hör hemma i footern när de inte är en del av huvuduppgiften.
+
+
+## v2.9.38 – stor footerförflyttning + Ångra raderat utkast
+- Footerplaceringen justeras nu på riktigt, inte med 2–4 px: hela Core-footern flyttas 72 px ned visuellt på arbetsvyer. Dashboardens tomma footer påverkas inte.
+- Syftet är att få samma naturliga luft efter sista stora kortet/arbetsknappen som mellan övriga CCC-kort, och att sluta ligga ovanpå Historik/Spara anpassning.
+- Footerverktygen `? Hjälp`, `Välj` och `Tillbaka` följer med samma förflyttning.
+- Radering av lokala utkast är nu tvåstegad: efter bekräftelse försvinner utkasten direkt ur gridden men permanent IndexedDB-radering väntar 8 sekunder.
+- Under de 8 sekunderna visar Core-footern `X utkast borttagna` + `Ångra`.
+- `Ångra` återställer bilderna till sina tidigare positioner i miniatyrgridden och permanent radering sker inte.
+- Om ingen ångrar inom 8 sekunder rensas Publicera/Vision-data permanent med befintlig delete-logik.
+- Om en ny radering görs innan föregående Ångra-period är slut slutförs den äldre raderingen först.
