@@ -136,17 +136,16 @@ CCCHeader.set(window.__CCC_HEADER_PENDING__||initialHeader);
 
 
 // ==========================================================
-// CCC FOOTER CORE v1 — v2.9.33
-// Global tumvänlig Tillbaka-footer på CCC:s arbetsvyer.
-// Dashboard undantas. Moduler med egen back-state använder
-// samma ccc:header-back-event som headerpilen.
+// CCC FOOTER CORE v2 — v2.9.34
+// Footern är en permanent del av CCC:s grundlayout.
+// Dashboard visar samma footer-yta men utan knapp/innehåll.
+// Moduler använder samma ccc:header-back-event som headerpilen.
 // ==========================================================
 function isCCCDashboard(){
   return /\/ccc-core\/dashboard\/?(?:index\.html)?$/i.test(location.pathname);
 }
 
 function ensureCCCFooter(){
-  if(isCCCDashboard())return null;
   let footer=document.querySelector("#cccCoreFooter");
   if(!footer){
     footer=document.createElement("footer");
@@ -163,17 +162,25 @@ function ensureCCCFooter(){
       </button>`;
     document.body.appendChild(footer);
   }
+
+  const dashboard=isCCCDashboard();
+  footer.classList.toggle("ccc-core-footer--empty",dashboard);
+
   const back=footer.querySelector("#cccCoreFooterBack");
-  if(back&&!back.dataset.cccBound){
-    back.dataset.cccBound="1";
-    back.addEventListener("click",()=>{
-      if(CCCHeader.state.back){
-        document.dispatchEvent(new CustomEvent("ccc:header-back"));
-      }else{
-        location.href=new URL("./dashboard/index.html",import.meta.url).href;
-      }
-    });
+  if(back){
+    back.hidden=dashboard;
+    if(!back.dataset.cccBound){
+      back.dataset.cccBound="1";
+      back.addEventListener("click",()=>{
+        if(CCCHeader.state.back){
+          document.dispatchEvent(new CustomEvent("ccc:header-back"));
+        }else{
+          location.href=new URL("./dashboard/index.html",import.meta.url).href;
+        }
+      });
+    }
   }
+
   document.body.classList.add("ccc-has-core-footer");
   return footer;
 }
