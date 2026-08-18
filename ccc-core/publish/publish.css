@@ -963,3 +963,37 @@
 }
 
 /* CCC cache stamp: v2.9.20 */
+
+/* CCC v2.9.22 — internvy-fix + sparad bild syns direkt.
+   Core använder !important för startvyns grid. Därför måste hidden också vara
+   !important, annars ligger startvyn kvar bakom internvyerna och ett rundat
+   kort kan läcka fram som ett extra streck under modulens riktiga linje. */
+#startView[hidden]{
+  display:none!important;
+}
+
+/* CCC cache stamp: v2.9.22 */
+
+/* CCC v2.9.22 – tydligt visuellt kvitto på sparad bildanpassning */
+#swipeArea{position:relative}
+.detail-adjusted-badge{
+  position:absolute;
+  top:14px;
+  right:14px;
+  z-index:8;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#2e9f55;
+  color:#fff;
+  font-size:24px;
+  font-weight:900;
+  line-height:1;
+  border:3px solid rgba(255,255,255,.92);
+  box-shadow:0 2px 8px rgba(0,0,0,.38);
+  pointer-events:none;
+}
+.detail-adjusted-badge[hidden]{display:none!important}

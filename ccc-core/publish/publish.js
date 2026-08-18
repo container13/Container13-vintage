@@ -53,7 +53,7 @@ function persistenceRecord(item){const record={...item};delete record.thumbUrl;d
 function url(blob){const u=URL.createObjectURL(blob);objectUrls.push(u);return u;}
 function dataUrl(blob){return new Promise((resolve,reject)=>{if(!blob){resolve("");return;}const reader=new FileReader();reader.onload=()=>resolve(String(reader.result||""));reader.onerror=()=>reject(reader.error||new Error("Kunde inte läsa bildförhandsvisningen."));reader.readAsDataURL(blob);});}
 async function previewSrc(record){
-  const blob=record.thumbnailBlob||record.originalBlob||record.publishBlob;
+  const blob=record.publishBlob||record.thumbnailBlob||record.originalBlob;
   if(!blob)return "";
   try{return await dataUrl(blob);}catch(error){console.warn("[CCC Publicera] Data-URL misslyckades, använder blob-URL",error);return url(blob);}
 }
@@ -327,7 +327,12 @@ function normalizedIndex(index){
 function itemImageSrc(index){
   if(!items.length)return "";
   const item=items[normalizedIndex(index)];
-  return item?.fullUrl||item?.thumbUrl||"";
+  if(!item)return "";
+  if(item.publishBlob){
+    if(!item.publishUrl)item.publishUrl=url(item.publishBlob);
+    return item.publishUrl;
+  }
+  return item.fullUrl||item.thumbUrl||"";
 }
 function setSwipeTransforms(offset=0,animate=false){
   const area=$("#swipeArea");
@@ -346,8 +351,7 @@ function syncSwipeNeighbors(){
   syncActiveIndexFromId();
   const current=activeItem();
   if(!current)return;
-  if(!current.fullUrl)current.fullUrl=current.thumbUrl||url(current.publishBlob||current.originalBlob||current.thumbnailBlob);
-  $("#detailImage").src=current.fullUrl;
+  $("#detailImage").src=itemImageSrc(activeIndex);
   $("#detailPrevImage").src=itemImageSrc(activeIndex-1);
   $("#detailNextImage").src=itemImageSrc(activeIndex+1);
   setSwipeTransforms(0,false);
@@ -360,7 +364,13 @@ function updateDetailCopy(){
   $("#detailTitle").textContent=title(item,activeIndex);
   $("#detailMeta").textContent=[item.brand,item.size&&`Storlek ${item.size}`,item.price&&`${item.price} kr`].filter(Boolean).join(" · ");
   $("#detailCounter").textContent=`${activeIndex+1} av ${items.length}`;
-  $("#publishStatus").textContent=item.publishBlob?"Bilden är beskuren och klar som WebP.":"";
+  const adjusted=item.imageProcessingState==="webp-cropped" && !!item.publishBlob;
+  const originalReady=item.imageProcessingState==="webp-original" && !!item.publishBlob;
+  const badge=$("#detailAdjustedBadge");
+  if(badge)badge.hidden=!adjusted;
+  $("#publishStatus").textContent=adjusted
+    ?"Bilden är anpassad och klar som WebP."
+    :(originalReady?"Bilden är klar som WebP i originalformat.":"");
 }
 function itemIndexById(itemId){
   if(!itemId)return -1;
@@ -400,9 +410,7 @@ function openDetail(index){
   const item=items[activeIndex];
   activeItemId=item?.id||null;
   if(!item)return;
-  if(!item.fullUrl)item.fullUrl=item.thumbUrl||url(item.publishBlob||item.originalBlob||item.thumbnailBlob);
-
-  $("#detailImage").src=item.fullUrl;
+  $("#detailImage").src=itemImageSrc(activeIndex);
   updateDetailCopy();
   show("detailView");
   bindDetailArrowButtons();
@@ -518,8 +526,7 @@ function finishSwipe(e,cancelled=false){
     }
     const item=activeItem();
     if(!item)return;
-    if(!item.fullUrl)item.fullUrl=item.thumbUrl||url(item.publishBlob||item.originalBlob||item.thumbnailBlob);
-    $("#detailImage").src=item.fullUrl;
+    $("#detailImage").src=itemImageSrc(activeIndex);
     updateDetailCopy();
     syncSwipeNeighbors();
     swipeAnimating=false;
@@ -793,8 +800,8 @@ $("#keepOriginalBtn").addEventListener("click",async()=>{
     item.cropData=null;
     item.imageProcessingState="webp-original";
     await put(persistenceRecord({...item,publishBlob:blob,cropData:null,imageProcessingState:item.imageProcessingState}));
-    if(item.fullUrl&&item.fullUrl.startsWith("blob:"))URL.revokeObjectURL(item.fullUrl);
-    item.fullUrl=url(blob);
+    if(item.publishUrl&&item.publishUrl.startsWith("blob:"))URL.revokeObjectURL(item.publishUrl);
+    item.publishUrl=url(blob);
     openDetailById(item.id);
   }catch(error){
     console.error("[CCC Publicera] Kunde inte optimera originalbilden",error);
@@ -915,9 +922,10 @@ $("#cropDone").addEventListener("click",async()=>{
   item.publishBlob=blob;
   item.imageProcessingState="webp-cropped";
   await put(persistenceRecord({...item,publishBlob:blob,cropData:item.cropData,imageProcessingState:item.imageProcessingState}));
-  if(item.fullUrl){URL.revokeObjectURL(item.fullUrl);item.fullUrl="";}
+  if(item.publishUrl&&item.publishUrl.startsWith("blob:"))URL.revokeObjectURL(item.publishUrl);
+  item.publishUrl=url(blob);
   item.thumbUrl=await previewSrc(item);
-  // Återgå alltid till detaljvyn för exakt samma plagg efter sparad anpassning.
+  // Visa omedelbart den faktiskt sparade publiceringsbilden i detaljvyn för samma plagg.
   openDetailById(savedItemId);
 });
 
