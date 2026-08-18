@@ -1340,3 +1340,11 @@ CCC v2.9.17 (2026-08-17)
 - Headerns kanoniska mobilregel justeras från `margin-top:-18px` till `-6px`. v2.9.45 lyfte hela modulraden så mycket att kickertexten (t.ex. VISION/PUBLICERA) gled in under den sticky headern.
 - Modulraden får samtidigt 48 px höjd i stället för 44 px så både kicker, undertitel och linje får plats utan att återgå till den gamla höga positionen.
 - Detta är endast kalibrering av de två centrala Core-värdena; inga modulunika positioner införs.
+
+
+## v2.9.47 – endast global footerposition
+- Headern från v2.9.46 lämnas helt orörd.
+- Enda layoutändringen är den centrala Core-variabeln för footerposition.
+- `--ccc-footer-physical-gap` ändras från `4px` till `-108px` för att flytta hela footerlinjen ungefär 112 px längre ned på iPhone, i linje med den visuellt lediga ytan i v2.9.46.
+- `Tillbaka`, `? Hjälp`, `Välj`, markeringsläge och `Ångra` följer exakt samma nya nivå eftersom de delar samma Core-footer.
+- Inga modulunika footerregler eller ändringar av miniatyrer, arbetsyta eller header.
