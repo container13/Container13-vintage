@@ -1206,3 +1206,9 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - `env(safe-area-inset-bottom)` används inte längre för footerpositionen. Därmed slipper vi pendlingen mellan v2.9.45 (för långt ned) och v2.9.46 (för högt).
 - Headern är exakt oförändrad från v2.9.46.
 - `Tillbaka`, `? Hjälp`, `Välj`, markeringsläge och `Ångra` ärver samma `bottom:10px`.
+
+
+## v2.9.49 – slutlig footerfinjustering
+- Enda layoutändringen från v2.9.48 är den globala Core-footerpositionen: `bottom:10px` → `bottom:2px`.
+- Footern sänks alltså 8 px på alla vyer.
+- Header, kort, arbetsytor och övrig geometri är helt oförändrade från v2.9.48.
