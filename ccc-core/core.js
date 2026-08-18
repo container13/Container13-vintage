@@ -136,7 +136,7 @@ CCCHeader.set(window.__CCC_HEADER_PENDING__||initialHeader);
 
 
 // ==========================================================
-// CCC FOOTER CORE v4 — v2.9.44
+// CCC FOOTER CORE v6 — v2.9.45
 // Footern är en permanent del av CCC:s grundlayout.
 // Dashboard visar samma footer-yta men utan knapp/innehåll.
 // Moduler använder samma ccc:header-back-event som headerpilen.
@@ -161,8 +161,7 @@ function ensureCCCFooter(){
           <small>Till föregående steg</small>
         </span>
       </button>`;
-    const shell=document.querySelector(".ccc-app-shell,.app-shell")||document.body;
-    shell.appendChild(footer);
+    document.body.appendChild(footer);
   }
 
   const dashboard=isCCCDashboard();
