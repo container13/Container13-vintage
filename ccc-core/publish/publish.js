@@ -114,6 +114,8 @@ function setPublishHeader(view){
 function show(view){
   currentPublishView=view;
   ["startView","gridView","channelView","publishedView","detailView","cropView"].forEach(id=>$("#"+id).hidden=id!==view);
+  const thumbBar=$("#publishThumbBar");
+  if(thumbBar)thumbBar.hidden=view==="startView";
   setPublishHeader(view);
   requestAnimationFrame(()=>{
     resetViewScroll(view);
@@ -122,47 +124,8 @@ function show(view){
   });
 }
 
-// CCC v2.9.28 – enhandsnavigation: vänsterkants-swipe = ett steg tillbaka.
-// Gesten aktiveras bara när den börjar nära vänsterkanten för att inte
-// konkurrera med swipe mellan plagg i detaljvyn.
-let edgeBackGesture=null;
-const EDGE_BACK_START_MIN_PX=70;
-const EDGE_BACK_START_MAX_PX=150;
-const EDGE_BACK_TRIGGER_PX=72;
-const EDGE_BACK_MAX_VERTICAL_PX=56;
-
-function goBackOnePublishStep(){
-  // Samma signal som headerns riktiga tillbaka-pil i ccc-core.
-  // Publicera-modulens befintliga ccc:header-back-lyssnare bestämmer exakt ett steg bakåt.
-  document.dispatchEvent(new CustomEvent("ccc:header-back"));
-}
-
-document.addEventListener("pointerdown",e=>{
-  if(e.pointerType==="mouse")return;
-  if(e.clientX<EDGE_BACK_START_MIN_PX || e.clientX>EDGE_BACK_START_MAX_PX)return;
-  edgeBackGesture={id:e.pointerId,x:e.clientX,y:e.clientY,done:false};
-},{passive:true});
-
-document.addEventListener("pointermove",e=>{
-  const g=edgeBackGesture;
-  if(!g||g.id!==e.pointerId||g.done)return;
-  const dx=e.clientX-g.x,dy=Math.abs(e.clientY-g.y);
-  if(dy>EDGE_BACK_MAX_VERTICAL_PX||dx<0){
-    edgeBackGesture=null;
-    return;
-  }
-  if(dx>=EDGE_BACK_TRIGGER_PX){
-    g.done=true;
-    goBackOnePublishStep();
-    // Behåll gesten låst tills fingret släpps så samma swipe aldrig kan backa två nivåer.
-  }
-},{passive:true});
-
-["pointerup","pointercancel"].forEach(name=>{
-  document.addEventListener(name,e=>{
-    if(edgeBackGesture?.id===e.pointerId)edgeBackGesture=null;
-  },{passive:true});
-});
+// CCC v2.9.29 – egen back-swipe pausad.
+// Enhandsnavigation testas i stället med fast tumvänligt nederfält.
 
 function ensureDraftGridUi(){
   if(document.getElementById("cccDraftGridCompactStyles"))return;
@@ -1142,6 +1105,10 @@ async function leavePublishCrop(){
   activeItemId=null;
   show("gridView");
 }
+
+$("#publishThumbBack")?.addEventListener("click",()=>{
+  document.dispatchEvent(new CustomEvent("ccc:header-back"));
+});
 
 document.addEventListener("ccc:header-back",async()=>{
   if(currentPublishView==="startView"){
