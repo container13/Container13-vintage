@@ -114,8 +114,6 @@ function setPublishHeader(view){
 function show(view){
   currentPublishView=view;
   ["startView","gridView","channelView","publishedView","detailView","cropView"].forEach(id=>$("#"+id).hidden=id!==view);
-  const thumbBar=$("#publishThumbBar");
-  if(thumbBar)thumbBar.hidden=view==="startView";
   setPublishHeader(view);
   requestAnimationFrame(()=>{
     resetViewScroll(view);
@@ -124,7 +122,7 @@ function show(view){
   });
 }
 
-// CCC v2.9.32 – egen back-swipe pausad.
+// CCC v2.9.33 – egen back-swipe pausad.
 // Enhandsnavigation testas i stället med fast tumvänligt nederfält.
 
 function ensureDraftGridUi(){
@@ -1106,9 +1104,6 @@ async function leavePublishCrop(){
   show("gridView");
 }
 
-$("#publishThumbBack")?.addEventListener("click",()=>{
-  document.dispatchEvent(new CustomEvent("ccc:header-back"));
-});
 
 document.addEventListener("ccc:header-back",async()=>{
   if(currentPublishView==="startView"){
