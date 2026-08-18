@@ -4,10 +4,10 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.9.20
+CCC-version: 2.9.21
 Senaste stabila: 2.8.95 RC1 – Crop Engine 1.0
 Senaste checkpoint: 2026-08-18
-Nästa uppgift: Testa v2.9.20 på mobil: enhetlig kvadratisk slutbild, endast en linje under modulhuvudet, större/högre bildräknare och korrekt retur till samma plagg efter Spara anpassning.
+Nästa uppgift: Testa v2.9.21 på mobil: extra rundat streck ska vara borta i Publicera-internvyer och Spara anpassning ska direkt visa den sparade beskärningen i detaljvyn.
 
 ARBETSPRINCIPER
 ---------------
@@ -37,6 +37,15 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.9.21 – Publicera: internvy + sparad anpassning syns direkt
+- Bas: v2.9.20.
+- Orsak till extra strecket identifierad: Core sätter startvyn till display:grid!important, medan hidden-regeln inte var important. Startvyn kunde därför ligga kvar bakom internvyer och ett rundat action-kort läckte fram visuellt under modulens riktiga skiljelinje.
+- Fix: #startView[hidden]{display:none!important}. Core-linjen lämnas orörd.
+- Fix: previewSrc prioriterar publishBlob före thumbnail/original så den sparade beskärningen visas direkt efter Spara anpassning.
+- Spara anpassning återgår fortfarande till detaljvyn för samma plagg-ID.
+- Bildräknaren från v2.9.20 lämnas orörd enligt mobiltest.
+- /ccc-core/version.js synkad till 2.9.21. Root /version.js är fortsatt orörd.
+
 v2.9.20 – Publicera: enhetlig slutbild + UI-städning
 - Bas: kompletta arbetskopian från ccc-demo-public-test som användaren tog med från jobbet.
 - Alla färdiga publicerings-WebP blir kvadratiska. Beskuren bild fyller kvadraten; Behåll hela bilden centreras i samma kvadratiska canvas utan beskärning.
@@ -1074,3 +1083,12 @@ CCC v2.9.17 (2026-08-17)
 - Publicera: endast den raka Core-skiljelinjen under modulhuvudet ska synas; extra kant/kurva i Förbered/Detalj/Anpassa är borttagen.
 - Samma yttre bildyta används i detaljvyn och Anpassa bild. Crop-vyn ska inte växa jämfört med föregående vy.
 - Bildräknaren ligger fortsatt centrerad ovanför bildytan i båda lägena.
+
+
+## v2.9.22 – sparad anpassning syns direkt
+- Efter "Spara anpassning" återgår Publicera till detaljvyn för exakt samma plagg.
+- Detaljvyn prioriterar alltid den sparade `publishBlob` när en sådan finns, så användaren ser den faktiska anpassade bilden direkt.
+- En grön cirkel med vit bock visas uppe till höger på bilden endast när `imageProcessingState` är `webp-cropped`.
+- Statusen under knapparna skiljer nu på anpassad WebP och WebP i originalformat; originalbild får inte felaktigt beskrivas som beskuren.
+- Bildräknarens v2.9.21-layout lämnas orörd.
+- Changed-files ska fortsatt innehålla README_CHATGPT_CCC.txt i projektroten samt ccc-core/version.js och berörda modul-filer.
