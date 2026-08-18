@@ -1030,18 +1030,11 @@
 
 
 
-/* CCC v2.9.34 – Core-footer utan ihoptryckt arbetsyta.
-   Extra scrollmån läggs bara efter innehållet, inte på workspace-geometrin. */
-#gridView .draft-grid{
-  padding-bottom:calc(76px + env(safe-area-inset-bottom))!important;
-}
+
+/* CCC v2.9.35 – footer-clearance utan att ändra synlig geometri.
+   Transparent footer + låg knapp gör att Dashboard/startkort och Spara anpassning
+   inte maskeras. Endast scroll-padding används för djupa arbetsvyer. */
 #detailView,
 #cropView{
-  scroll-padding-bottom:calc(76px + env(safe-area-inset-bottom));
-}
-#detailView .publish-status{
-  margin-bottom:calc(64px + env(safe-area-inset-bottom));
-}
-#cropView .crop-actions-row{
-  margin-bottom:calc(64px + env(safe-area-inset-bottom))!important;
+  scroll-padding-bottom:64px!important;
 }
