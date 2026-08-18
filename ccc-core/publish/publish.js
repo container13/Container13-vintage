@@ -13,6 +13,7 @@ let cropImage=null,cropState=null,pointer=null;
 let activeItemId=null;
 let recentlyAdaptedItemId=null;
 let draftSelectionMode=false;const selectedDraftIds=new Set();
+let pendingDraftDelete=null;
 const decodedImageCache=new Map();
 const MAX_DECODED_CACHE=3;
 
@@ -340,13 +341,73 @@ function openPublishHelp(){
 function closePublishHelp(){const dlg=$("#publishHelpDialog");if(dlg)dlg.hidden=true;}
 function configureFooterForView(view){
   if(!window.CCC_CORE?.footer)return;
+  if(view==="gridView"&&pendingDraftDelete){
+    window.CCC_CORE.footer.showUndo?.({count:pendingDraftDelete.ids.length,onUndo:undoPendingDraftDelete});
+    return;
+  }
   if(draftSelectionMode){updateSelectionFooter();return;}
   const helpEnabled=localStorage.getItem("ccc-help-tips-enabled")!=="0";
   const config={help:helpEnabled,onHelp:openPublishHelp};
   if(view==="gridView")Object.assign(config,{select:true,onSelect:enterDraftSelection});
   window.CCC_CORE.footer.setTools?.(config);
 }
-function updateSelectionFooter(){if(draftSelectionMode)window.CCC_CORE?.footer?.showSelection?.({count:selectedDraftIds.size,onDelete:confirmDeleteSelectedDrafts,onCancel:exitDraftSelection});else window.CCC_CORE?.footer?.showDefault?.();}function enterDraftSelection(){if(!items.length)return;draftSelectionMode=true;selectedDraftIds.clear();updateSelectionFooter();renderGrid();}function exitDraftSelection(){draftSelectionMode=false;selectedDraftIds.clear();configureFooterForView(currentPublishView);renderGrid();}async function confirmDeleteSelectedDrafts(){const ids=[...selectedDraftIds];if(!ids.length)return;const msg=ids.length===1?"Ta bort det markerade utkastet?":`Ta bort ${ids.length} markerade utkast?`;if(!confirm(msg))return;await deleteDraftIds(ids);items=items.filter(i=>!selectedDraftIds.has(i.id));selectedDraftIds.clear();draftSelectionMode=false;draftPage=Math.min(draftPage,Math.max(0,Math.ceil(items.length/DRAFTS_PER_PAGE)-1));configureFooterForView("gridView");await renderGrid();}
+function updateSelectionFooter(){if(draftSelectionMode)window.CCC_CORE?.footer?.showSelection?.({count:selectedDraftIds.size,onDelete:confirmDeleteSelectedDrafts,onCancel:exitDraftSelection});else window.CCC_CORE?.footer?.showDefault?.();}function enterDraftSelection(){if(!items.length)return;draftSelectionMode=true;selectedDraftIds.clear();updateSelectionFooter();renderGrid();}function exitDraftSelection(){draftSelectionMode=false;selectedDraftIds.clear();configureFooterForView(currentPublishView);renderGrid();}
+async function commitPendingDraftDelete(){
+  const pending=pendingDraftDelete;
+  if(!pending)return;
+  pendingDraftDelete=null;
+  clearTimeout(pending.timer);
+  try{await deleteDraftIds(pending.ids);}catch(err){console.warn("[CCC] permanent delete failed",err);}
+}
+function undoPendingDraftDelete(){
+  const pending=pendingDraftDelete;
+  if(!pending)return;
+  pendingDraftDelete=null;
+  clearTimeout(pending.timer);
+  const currentIds=new Set(items.map(i=>i.id));
+  const restored=[...items];
+  pending.removed
+    .slice()
+    .sort((a,b)=>a.index-b.index)
+    .forEach(({item,index})=>{
+      if(currentIds.has(item.id))return;
+      restored.splice(Math.min(index,restored.length),0,item);
+      currentIds.add(item.id);
+    });
+  items=restored;
+  window.CCC_CORE?.footer?.setTools?.({
+    help:localStorage.getItem("ccc-help-tips-enabled")!=="0",
+    onHelp:openPublishHelp,
+    select:true,
+    onSelect:enterDraftSelection
+  });
+  renderGrid();
+}
+async function confirmDeleteSelectedDrafts(){
+  const ids=[...selectedDraftIds];
+  if(!ids.length)return;
+  const msg=ids.length===1?"Ta bort det markerade utkastet?":`Ta bort ${ids.length} markerade utkast?`;
+  if(!confirm(msg))return;
+
+  // Om en tidigare radering fortfarande väntar på Ångra, slutför den först.
+  await commitPendingDraftDelete();
+
+  const wanted=new Set(ids);
+  const removed=items
+    .map((item,index)=>({item,index}))
+    .filter(({item})=>wanted.has(item.id));
+
+  items=items.filter(item=>!wanted.has(item.id));
+  selectedDraftIds.clear();
+  draftSelectionMode=false;
+  draftPage=Math.min(draftPage,Math.max(0,Math.ceil(items.length/DRAFTS_PER_PAGE)-1));
+
+  const timer=window.setTimeout(()=>{commitPendingDraftDelete();configureFooterForView("gridView");},8000);
+  pendingDraftDelete={ids,removed,timer};
+
+  window.CCC_CORE?.footer?.showUndo?.({count:ids.length,onUndo:undoPendingDraftDelete});
+  await renderGrid();
+}
 async function renderGrid(){
   const grid=$("#draftGrid");
   const empty=$("#emptyState");
