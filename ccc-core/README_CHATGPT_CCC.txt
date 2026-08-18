@@ -1053,3 +1053,14 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Efter Spara anpassning återgår detaljvisningen till samma naturliga preview-källa i stället för att byta till den beskurna WebP-kopian.
 - Anpassa bild fortsätter att öppna Vision-originalet och Crop Engine 1.0 är oförändrad.
 - Root /version.js är orörd.
+
+
+## v2.9.33 – global CCC-footer i Core
+- Publiceras lokala Tillbaka-fält är borttaget.
+- Ny global `CCC FOOTER CORE v1` skapas av `ccc-core/core.js` på alla moderna Core-arbetsvyer utom Dashboard.
+- Footern ligger konsekvent längst ned, högerjusterad för höger tumme och använder iPhones safe-area.
+- `Tillbaka / Till föregående steg` använder exakt samma `ccc:header-back` som headerpilen när modulens back-state är aktiv. På modulstart utan aktiv header-back går footerknappen till Dashboard.
+- Dashboard skapar ingen footer.
+- Core reserverar gemensam bottenyta på `.ccc-workspace`; detta rättar felet där `Spara anpassning` kunde klippas/hamna bakom nederfältet.
+- Publicera, Vision och Dashboard cache-bustar nu `core.css`/`core.js` till v2.9.33.
+- Nästa steg efter test är att låta äldre modulsidor som ännu inte använder Core-header/Core-CSS migrera till samma globala footer.

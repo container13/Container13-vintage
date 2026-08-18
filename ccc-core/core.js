@@ -133,5 +133,50 @@ ensureCCCHeader();
 CCCHeader.set(window.__CCC_HEADER_PENDING__||initialHeader);
 
 
-window.CCC_CORE={applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader};
+
+
+// ==========================================================
+// CCC FOOTER CORE v1 — v2.9.33
+// Global tumvänlig Tillbaka-footer på CCC:s arbetsvyer.
+// Dashboard undantas. Moduler med egen back-state använder
+// samma ccc:header-back-event som headerpilen.
+// ==========================================================
+function isCCCDashboard(){
+  return /\/ccc-core\/dashboard\/?(?:index\.html)?$/i.test(location.pathname);
+}
+
+function ensureCCCFooter(){
+  if(isCCCDashboard())return null;
+  let footer=document.querySelector("#cccCoreFooter");
+  if(!footer){
+    footer=document.createElement("footer");
+    footer.id="cccCoreFooter";
+    footer.className="ccc-core-footer";
+    footer.setAttribute("aria-label","Snabbnavigation");
+    footer.innerHTML=`
+      <button id="cccCoreFooterBack" class="ccc-core-footer-back" type="button">
+        <span class="ccc-core-footer-back-icon" aria-hidden="true">←</span>
+        <span class="ccc-core-footer-back-copy">
+          <strong>Tillbaka</strong>
+          <small>Till föregående steg</small>
+        </span>
+      </button>`;
+    document.body.appendChild(footer);
+  }
+  const back=footer.querySelector("#cccCoreFooterBack");
+  if(back&&!back.dataset.cccBound){
+    back.dataset.cccBound="1";
+    back.addEventListener("click",()=>{
+      if(CCCHeader.state.back){
+        document.dispatchEvent(new CustomEvent("ccc:header-back"));
+      }else{
+        location.href=new URL("./dashboard/index.html",import.meta.url).href;
+      }
+    });
+  }
+  document.body.classList.add("ccc-has-core-footer");
+  return footer;
+}
+
+window.CCC_CORE={applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader,footer:ensureCCCFooter()};
 document.dispatchEvent(new CustomEvent("ccc:core-ready",{detail:{header:CCCHeader}}));

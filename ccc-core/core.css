@@ -1462,3 +1462,42 @@ body{
     --ccc-header-control-bottom:14px;
   }
 }
+
+
+/* ==========================================================
+   CCC FOOTER CORE v1 — v2.9.33
+   Global tumvänlig footer. Dashboard skapar ingen footer.
+   ========================================================== */
+:root{--ccc-footer-height:58px}
+.ccc-core-footer{
+  position:fixed!important;
+  left:0!important;right:0!important;bottom:0!important;
+  z-index:1200!important;
+  min-height:calc(var(--ccc-footer-height) + env(safe-area-inset-bottom))!important;
+  display:flex!important;align-items:flex-end!important;justify-content:flex-end!important;
+  padding:4px 16px max(2px,env(safe-area-inset-bottom))!important;
+  box-sizing:border-box!important;
+  background:var(--bg,var(--ccc-bg,#11141b))!important;
+  border:0!important;box-shadow:none!important;
+}
+.ccc-core-footer-back{
+  min-width:172px!important;min-height:50px!important;
+  display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:9px!important;
+  padding:6px 13px 6px 11px!important;
+  border:1px solid var(--border,var(--ccc-border,#303643))!important;
+  border-radius:16px!important;
+  background:var(--surface,var(--ccc-surface,#1b202b))!important;
+  color:var(--text,var(--ccc-text,#f4f5f7))!important;
+  text-align:left!important;font:inherit!important;box-shadow:none!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+.ccc-core-footer-back:active{transform:translateY(1px) scale(.985)}
+.ccc-core-footer-back-icon{color:var(--gold,var(--ccc-gold,#e4b956))!important;font-size:26px!important;line-height:1!important;font-weight:800!important}
+.ccc-core-footer-back-copy{display:flex!important;flex-direction:column!important;align-items:flex-start!important;line-height:1.08!important}
+.ccc-core-footer-back-copy strong{font-size:15px!important;font-weight:800!important}
+.ccc-core-footer-back-copy small{margin-top:2px!important;color:var(--muted,var(--ccc-muted,#aeb4c2))!important;font-size:11px!important}
+/* Reservera riktig plats under ALLA Core-arbetsytor så knappar som
+   Spara anpassning aldrig kan hamna bakom eller klippas av footern. */
+body.ccc-has-core-footer .ccc-workspace{
+  padding-bottom:calc(var(--ccc-footer-height) + 18px + env(safe-area-inset-bottom))!important;
+}
