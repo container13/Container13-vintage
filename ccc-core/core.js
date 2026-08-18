@@ -136,7 +136,7 @@ CCCHeader.set(window.__CCC_HEADER_PENDING__||initialHeader);
 
 
 // ==========================================================
-// CCC FOOTER CORE v2 — v2.9.37
+// CCC FOOTER CORE v2 — v2.9.38
 // Footern är en permanent del av CCC:s grundlayout.
 // Dashboard visar samma footer-yta men utan knapp/innehåll.
 // Moduler använder samma ccc:header-back-event som headerpilen.
@@ -235,6 +235,22 @@ const CCCFooter={
     d.disabled=count<1;
     d.onclick=()=>onDelete?.();
     bar.querySelector(".ccc-footer-cancel").onclick=()=>onCancel?.();
+  },
+  showUndo({count=1,onUndo}={}){
+    const footer=this.el||ensureCCCFooter();
+    footer.querySelector(".ccc-core-footer-tools")?.remove();
+    footer.querySelector(".ccc-core-footer-selection")?.remove();
+    const back=footer.querySelector("#cccCoreFooterBack");
+    if(back)back.hidden=true;
+    let undo=footer.querySelector(".ccc-core-footer-undo");
+    if(!undo){
+      undo=document.createElement("div");
+      undo.className="ccc-core-footer-undo";
+      undo.innerHTML=`<span class="ccc-footer-undo-copy"></span><button class="ccc-footer-undo-btn" type="button">Ångra</button>`;
+      footer.appendChild(undo);
+    }
+    undo.querySelector(".ccc-footer-undo-copy").textContent=count===1?"1 utkast borttaget":`${count} utkast borttagna`;
+    undo.querySelector(".ccc-footer-undo-btn").onclick=()=>onUndo?.();
   }
 };
 window.CCC_CORE={applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader,footer:CCCFooter};
