@@ -136,7 +136,7 @@ CCCHeader.set(window.__CCC_HEADER_PENDING__||initialHeader);
 
 
 // ==========================================================
-// CCC FOOTER CORE v2 — v2.9.35
+// CCC FOOTER CORE v2 — v2.9.36
 // Footern är en permanent del av CCC:s grundlayout.
 // Dashboard visar samma footer-yta men utan knapp/innehåll.
 // Moduler använder samma ccc:header-back-event som headerpilen.
@@ -184,6 +184,16 @@ function ensureCCCFooter(){
   document.body.classList.add("ccc-has-core-footer");
   return footer;
 }
-
-window.CCC_CORE={applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader,footer:ensureCCCFooter()};
+const CCCFooter={
+  el:ensureCCCFooter(),
+  showDefault(){const f=this.el||ensureCCCFooter();f.querySelector(".ccc-core-footer-selection")?.remove();const b=f.querySelector("#cccCoreFooterBack");if(b)b.hidden=isCCCDashboard();},
+  showSelection({count=0,onDelete,onCancel}={}){
+    const f=this.el||ensureCCCFooter(),b=f.querySelector("#cccCoreFooterBack");if(b)b.hidden=true;
+    let bar=f.querySelector(".ccc-core-footer-selection");
+    if(!bar){bar=document.createElement("div");bar.className="ccc-core-footer-selection";bar.innerHTML=`<button class="ccc-footer-cancel" type="button">Avbryt</button><span class="ccc-footer-selection-count" aria-live="polite"></span><button class="ccc-footer-delete" type="button" aria-label="Ta bort markerade">🗑 <span>Ta bort</span></button>`;f.appendChild(bar);}
+    bar.querySelector(".ccc-footer-selection-count").textContent=`${count} markerad${count===1?"":"e"}`;
+    const d=bar.querySelector(".ccc-footer-delete");d.disabled=count<1;d.onclick=()=>onDelete?.();bar.querySelector(".ccc-footer-cancel").onclick=()=>onCancel?.();
+  }
+};
+window.CCC_CORE={applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader,footer:CCCFooter};
 document.dispatchEvent(new CustomEvent("ccc:core-ready",{detail:{header:CCCHeader}}));

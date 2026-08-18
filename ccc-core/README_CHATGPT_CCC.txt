@@ -1085,3 +1085,12 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Publiceras tidigare kompensationsmarginaler på draft-grid, status och crop-actions är borttagna eftersom de kunde ge ojämn geometri.
 - Djupa detalj/crop-vyer får endast `scroll-padding-bottom`, vilket inte flyttar eller krymper deras synliga innehåll.
 - Back-logiken är oförändrad och använder samma `ccc:header-back` som headerpilen.
+
+## v2.9.36 – footer, Välj/radera och kontexttips
+- Core-footern är gemensam CCC-standard. Dashboard har tom footer utan ändrad arbetsyta. Tillbaka ligger ännu lägre (2 px) och använder samma back-event som headerpilen.
+- Publicera: tryck=miniatyr öppnas, långtryck=snabbzoom, dubbeltryck=helskärm. Gesterna behålls.
+- Separat Välj-läge för markering/radering. Flerval stöds; footern visar Avbryt, antal markerade och Ta bort. Radering bekräftas och rensar lokal Publicera/Vision-data.
+- Grön ✓ betyder endast sparad bildanpassning; markering använder separat gul markering.
+- Kontexttips är CCC-standard: max tre visningar per tips-ID. Publicera har tips för miniatyrgester/Välj, detaljvy/anpassningsbock och Anpassa bild.
+- Inställningar → Hjälp & tips: Visa användningstips på/av och Visa alla tips igen. Dashboard/Publicera-start har inga tips; Vision gås igenom senare.
+- Mobilprincip: viktiga kommandon ska vara tumvänliga och dolda gester får inte vara enda vägen till viktiga funktioner.
