@@ -1162,3 +1162,12 @@ CCC v2.9.17 (2026-08-17)
 - Headerns ordinarie tillbaka-pil behålls.
 - Dubbeltryck/quick-look från v2.9.28 samt bockar, studs/pop och bildanpassning lämnas orörda.
 - Om testet faller väl ut är nästa arkitektursteg en Core-komponent med valbar höger-/vänsterhänt placering.
+
+
+## v2.9.30 – visuellt putsat nederfält
+- Nederfältet i Publicera har flyttats närmare nederkanten och fått mindre vertikal luft.
+- Tillbaka-knappen använder nu samma visuella språk som övriga CCC-kontroller: `var(--surface)`, `var(--border)`, `var(--text)` och guldfärgad pil.
+- Fältet är lägre och mindre dominerande men behåller stor tumvänlig tryckyta.
+- Safe-area för iPhone respekteras fortsatt.
+- Back-logiken är helt oförändrad och använder samma `ccc:header-back` som headerpilen.
+- Dubbeltryck/quick-look, gröna bockar, studs/pop och bildanpassning lämnas orörda.
