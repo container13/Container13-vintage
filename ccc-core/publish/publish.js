@@ -347,7 +347,7 @@ function configureFooterForView(view){
   }
   if(draftSelectionMode){updateSelectionFooter();return;}
   const helpEnabled=localStorage.getItem("ccc-help-tips-enabled")!=="0";
-  const config={help:helpEnabled,onHelp:openPublishHelp};
+  const config={help:helpEnabled && ["gridView","detailView","cropView"].includes(view),onHelp:openPublishHelp};
   if(view==="gridView")Object.assign(config,{select:true,onSelect:enterDraftSelection});
   window.CCC_CORE.footer.setTools?.(config);
 }
@@ -383,11 +383,49 @@ function undoPendingDraftDelete(){
   });
   renderGrid();
 }
+
+function selectedDeletePreviewItems(ids){
+  const wanted=new Set(ids);
+  return items.filter(item=>wanted.has(item.id));
+}
+function askDeleteDraftConfirmation(ids){
+  const dlg=$("#deleteDraftDialog"),thumbs=$("#deleteDraftThumbs"),text=$("#deleteDraftText");
+  if(!dlg||!thumbs||!text)return Promise.resolve(false);
+  const selected=selectedDeletePreviewItems(ids);
+  text.textContent=ids.length===1?"Kontrollera bilden innan du tar bort utkastet.":`Kontrollera de ${ids.length} markerade bilderna innan du tar bort dem.`;
+  thumbs.replaceChildren();
+  selected.slice(0,5).forEach((item,index)=>{
+    const wrap=document.createElement("div");
+    wrap.className="delete-draft-thumb";
+    const img=document.createElement("img");
+    img.alt=`Markerad bild ${index+1}`;
+    img.src=itemImageSrc(items.indexOf(item))||item.imageUrl||item.url||"";
+    wrap.append(img);
+    thumbs.append(wrap);
+  });
+  if(selected.length>5){
+    const more=document.createElement("div");
+    more.className="delete-draft-more";
+    more.textContent=`+${selected.length-5}`;
+    thumbs.append(more);
+  }
+  $("#deleteDraftTitle").textContent=ids.length===1?"Ta bort markerat utkast?":`Ta bort ${ids.length} markerade utkast?`;
+  dlg.hidden=false;
+  return new Promise(resolve=>{
+    const close=result=>{
+      dlg.hidden=true;
+      $("#confirmDeleteDrafts").onclick=null;
+      $("#cancelDeleteDrafts").onclick=null;
+      resolve(result);
+    };
+    $("#confirmDeleteDrafts").onclick=()=>close(true);
+    $("#cancelDeleteDrafts").onclick=()=>close(false);
+  });
+}
 async function confirmDeleteSelectedDrafts(){
   const ids=[...selectedDraftIds];
   if(!ids.length)return;
-  const msg=ids.length===1?"Ta bort det markerade utkastet?":`Ta bort ${ids.length} markerade utkast?`;
-  if(!confirm(msg))return;
+  if(!(await askDeleteDraftConfirmation(ids)))return;
 
   // Om en tidigare radering fortfarande väntar på Ångra, slutför den först.
   await commitPendingDraftDelete();
@@ -1193,6 +1231,7 @@ async function leavePublishCrop(){
 }
 
 
+$("#deleteDraftDialog")?.addEventListener("click",e=>{if(e.target===$("#deleteDraftDialog"))$("#cancelDeleteDrafts")?.click();});
 $("#closePublishHelp")?.addEventListener("click",closePublishHelp);
 $("#publishHelpDialog")?.addEventListener("click",e=>{if(e.target===$("#publishHelpDialog"))closePublishHelp();});
 

@@ -11,8 +11,8 @@
 <title>CCC Publicera v2.9.22</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.9.39">
-<link rel="stylesheet" href="../core.css?v=2.9.39">
+<link rel="stylesheet" href="publish.css?v=2.9.40">
+<link rel="stylesheet" href="../core.css?v=2.9.40">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell publish-shell">
@@ -137,9 +137,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.9.39"></script>
-<script type="module" src="../core.js?v=2.9.39"></script>
-  <script src="../version.js?v=2.9.39"></script>
+<script type="module" src="publish.js?v=2.9.40"></script>
+<script type="module" src="../core.js?v=2.9.40"></script>
+  <script src="../version.js?v=2.9.40"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 
@@ -149,6 +149,19 @@
     <div id="publishHelpBody" class="publish-help-body"></div>
     <div class="dialog-actions ccc-dialog-actions">
       <button id="closePublishHelp" class="button-primary ccc-button-primary" type="button">Stäng</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="deleteDraftDialog" class="dialog ccc-dialog" role="dialog" aria-modal="true" aria-labelledby="deleteDraftTitle" hidden>
+  <div class="dialog-box ccc-dialog-box delete-draft-box">
+    <h2 id="deleteDraftTitle">Ta bort markerade utkast?</h2>
+    <p id="deleteDraftText" class="delete-draft-text"></p>
+    <div id="deleteDraftThumbs" class="delete-draft-thumbs" aria-label="Markerade bilder"></div>
+    <div class="dialog-actions ccc-dialog-actions delete-draft-actions">
+      <button id="cancelDeleteDrafts" class="button-secondary ccc-button-secondary" type="button">Avbryt</button>
+      <button id="confirmDeleteDrafts" class="button-primary ccc-button-primary delete-draft-confirm" type="button">Ta bort</button>
     </div>
   </div>
 </div>

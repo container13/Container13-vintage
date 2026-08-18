@@ -1069,3 +1069,46 @@
 }
 #draftGrid .draft-card.is-selected .draft-select-mark{background:var(--gold);color:#111}
 #draftGrid .draft-card.is-selected::after{border-color:var(--gold)}
+
+/* CCC v2.9.40 – putsad hjälpruta */
+#publishHelpDialog .ccc-dialog-actions{
+  margin-top:22px!important;
+  display:flex!important;
+  justify-content:center!important;
+}
+#publishHelpDialog #closePublishHelp{
+  width:auto!important;
+  min-width:132px!important;
+  min-height:46px!important;
+  margin:0 auto!important;
+  padding-inline:28px!important;
+}
+
+/* CCC v2.9.40 – egen raderingsbekräftelse med mini-miniatyrer */
+.delete-draft-box{width:min(92vw,460px)!important}
+.delete-draft-text{margin:4px 0 14px;color:var(--muted);text-align:center}
+.delete-draft-thumbs{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px;
+  min-height:62px;
+  margin:2px auto 18px;
+}
+.delete-draft-thumb{
+  width:56px;
+  height:56px;
+  border-radius:12px;
+  overflow:hidden;
+  border:2px solid var(--gold);
+  background:var(--surface);
+  box-shadow:0 4px 12px rgba(0,0,0,.18);
+}
+.delete-draft-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.delete-draft-more{
+  width:56px;height:56px;border-radius:12px;display:grid;place-items:center;
+  border:1px solid var(--border);background:var(--surface);color:var(--muted);font-weight:900;
+}
+.delete-draft-actions{margin-top:4px!important}
+.delete-draft-confirm{background:#b83a3a!important;color:#fff!important}
