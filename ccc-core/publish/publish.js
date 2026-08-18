@@ -122,34 +122,24 @@ function show(view){
   });
 }
 
-// CCC v2.9.25 – enhandsnavigation: vänsterkants-swipe = ett steg tillbaka.
+// CCC v2.9.28 – enhandsnavigation: vänsterkants-swipe = ett steg tillbaka.
 // Gesten aktiveras bara när den börjar nära vänsterkanten för att inte
 // konkurrera med swipe mellan plagg i detaljvyn.
 let edgeBackGesture=null;
-const EDGE_BACK_START_PX=28;
+const EDGE_BACK_START_MIN_PX=70;
+const EDGE_BACK_START_MAX_PX=150;
 const EDGE_BACK_TRIGGER_PX=72;
 const EDGE_BACK_MAX_VERTICAL_PX=56;
 
-function visiblePublishView(){
-  const ids=["cropView","detailView","gridView","channelView","publishedView","startView"];
-  return ids.find(id=>{
-    const el=$("#"+id);
-    return el && !el.hidden && getComputedStyle(el).display!=="none";
-  }) || currentPublishView;
-}
-
 function goBackOnePublishStep(){
-  const view=visiblePublishView();
-  if(view==="cropView"){ show("gridView"); return; }
-  if(view==="detailView"){ show("gridView"); return; }
-  if(view==="gridView"){ show("startView"); return; }
-  if(view==="channelView"||view==="publishedView"){ show("startView"); return; }
-  // På startvyn finns inget internt Publicera-steg att backa till.
+  // Samma signal som headerns riktiga tillbaka-pil i ccc-core.
+  // Publicera-modulens befintliga ccc:header-back-lyssnare bestämmer exakt ett steg bakåt.
+  document.dispatchEvent(new CustomEvent("ccc:header-back"));
 }
 
 document.addEventListener("pointerdown",e=>{
   if(e.pointerType==="mouse")return;
-  if(e.clientX>EDGE_BACK_START_PX)return;
+  if(e.clientX<EDGE_BACK_START_MIN_PX || e.clientX>EDGE_BACK_START_MAX_PX)return;
   edgeBackGesture={id:e.pointerId,x:e.clientX,y:e.clientY,done:false};
 },{passive:true});
 
@@ -246,6 +236,59 @@ function openDraftPreview(button,img){
     preview.classList.add("is-open");
   }));
 }
+
+let quickLookTimer=null;
+function closeImageQuickLook(){
+  if(quickLookTimer){clearTimeout(quickLookTimer);quickLookTimer=null;}
+  document.querySelector(".ccc-image-quicklook")?.remove();
+}
+function openImageQuickLook(src,alt="Bild"){
+  if(!src)return;
+  closeImageQuickLook();
+  const overlay=document.createElement("div");
+  overlay.className="ccc-image-quicklook";
+  overlay.setAttribute("role","dialog");
+  overlay.setAttribute("aria-label","Tillfällig helskärmsvisning");
+  const image=document.createElement("img");
+  image.src=src;
+  image.alt=alt;
+  overlay.append(image);
+  overlay.addEventListener("click",closeImageQuickLook,{once:true});
+  document.body.append(overlay);
+  requestAnimationFrame(()=>overlay.classList.add("is-open"));
+  quickLookTimer=window.setTimeout(closeImageQuickLook,2500);
+}
+
+function bindDetailDoubleTapQuickLook(){
+  const area=$("#swipeArea");
+  if(!area||area.dataset.quickLookBound)return;
+  area.dataset.quickLookBound="1";
+  let tap=null,lastTapAt=0;
+  area.addEventListener("pointerdown",e=>{
+    if(e.pointerType==="mouse"&&e.button!==0)return;
+    tap={id:e.pointerId,x:e.clientX,y:e.clientY,t:performance.now(),moved:false};
+  },{passive:true});
+  area.addEventListener("pointermove",e=>{
+    if(!tap||tap.id!==e.pointerId)return;
+    if(Math.hypot(e.clientX-tap.x,e.clientY-tap.y)>12)tap.moved=true;
+  },{passive:true});
+  area.addEventListener("pointerup",e=>{
+    if(!tap||tap.id!==e.pointerId)return;
+    const now=performance.now();
+    const isTap=!tap.moved && now-tap.t<360;
+    tap=null;
+    if(!isTap)return;
+    if(now-lastTapAt<330){
+      lastTapAt=0;
+      e.preventDefault();
+      openImageQuickLook($("#detailImage")?.src,$("#detailImage")?.alt||"Bild");
+    }else{
+      lastTapAt=now;
+    }
+  },{passive:false});
+  area.addEventListener("pointercancel",()=>{tap=null;},{passive:true});
+}
+
 function bindDraftPreview(button,img){
   button.addEventListener("contextmenu",e=>e.preventDefault());
   button.addEventListener("pointerdown",e=>{
@@ -268,6 +311,8 @@ function bindDraftPreview(button,img){
   button.addEventListener("pointercancel",finish);
   button.addEventListener("lostpointercapture",finish);
 }
+
+bindDetailDoubleTapQuickLook();
 
 function renderDraftPager(){
   const grid=$("#draftGrid");
@@ -370,7 +415,50 @@ async function renderGrid(){
     const itemId=item.id;
     b.dataset.itemId=itemId;
     bindDraftPreview(b,img);
+
+    let thumbTap=null,thumbLastTapAt=0,thumbSingleTimer=null,lastTouchHandledAt=0;
+    b.addEventListener("pointerdown",e=>{
+      if(e.pointerType!=="touch"&&e.pointerType!=="pen")return;
+      thumbTap={id:e.pointerId,x:e.clientX,y:e.clientY,t:performance.now(),moved:false};
+    },{passive:true});
+    b.addEventListener("pointermove",e=>{
+      if(!thumbTap||thumbTap.id!==e.pointerId)return;
+      if(Math.hypot(e.clientX-thumbTap.x,e.clientY-thumbTap.y)>12)thumbTap.moved=true;
+    },{passive:true});
+    b.addEventListener("pointerup",e=>{
+      if(!thumbTap||thumbTap.id!==e.pointerId)return;
+      const now=performance.now();
+      const isTap=!thumbTap.moved && now-thumbTap.t<360;
+      thumbTap=null;
+      if(!isTap)return;
+      lastTouchHandledAt=Date.now();
+      e.preventDefault();
+      if(draftPreviewSuppressClick){
+        draftPreviewSuppressClick=false;
+        if(thumbSingleTimer){clearTimeout(thumbSingleTimer);thumbSingleTimer=null;}
+        return;
+      }
+      if(now-thumbLastTapAt<330){
+        thumbLastTapAt=0;
+        if(thumbSingleTimer){clearTimeout(thumbSingleTimer);thumbSingleTimer=null;}
+        openImageQuickLook(itemImageSrc(index)||img.src,title(item,index));
+      }else{
+        thumbLastTapAt=now;
+        if(thumbSingleTimer)clearTimeout(thumbSingleTimer);
+        thumbSingleTimer=window.setTimeout(()=>{
+          thumbSingleTimer=null;
+          openDetailById(itemId);
+        },340);
+      }
+    },{passive:false});
+    b.addEventListener("pointercancel",()=>{thumbTap=null;},{passive:true});
+
     b.addEventListener("click",e=>{
+      if(Date.now()-lastTouchHandledAt<700){
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
       if(draftPreviewSuppressClick){
         draftPreviewSuppressClick=false;
         e.preventDefault();
@@ -1028,25 +1116,8 @@ $("#publishBtn").addEventListener("click",()=>{const item=activeItem();if(!item)
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
-const cropCanvasForDoubleTap=$("#cropCanvas");
-if(cropCanvasForDoubleTap){
-  cropCanvasForDoubleTap.addEventListener("dblclick",e=>{
-    e.preventDefault();
-    cycleCropZoom();
-  });
-  let cropLastTap=0;
-  cropCanvasForDoubleTap.addEventListener("touchend",e=>{
-    if(e.touches?.length)return;
-    const now=Date.now();
-    if(now-cropLastTap<320){
-      e.preventDefault();
-      cycleCropZoom();
-      cropLastTap=0;
-    }else{
-      cropLastTap=now;
-    }
-  },{passive:false});
-}
+// Dubbeltryck på beskärningsytan används inte längre för zoom.
+// Zoom styrs enbart av de explicita crop-kontrollerna/pinch.
 
 async function leavePublishDetail(){
   if(swipeCommitTimer){
