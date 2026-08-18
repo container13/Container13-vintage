@@ -1207,3 +1207,24 @@ CCC v2.9.17 (2026-08-17)
 - Core reserverar gemensam bottenyta på `.ccc-workspace`; detta rättar felet där `Spara anpassning` kunde klippas/hamna bakom nederfältet.
 - Publicera, Vision och Dashboard cache-bustar nu `core.css`/`core.js` till v2.9.33.
 - Nästa steg efter test är att låta äldre modulsidor som ännu inte använder Core-header/Core-CSS migrera till samma globala footer.
+
+
+## v2.9.34 – footer som permanent Core-del utan ihoptryckt arbetsyta
+- CCC-footern skapas nu även på Dashboard. Dashboard visar en tom footer i nuläget.
+- Övriga moduler visar samma Core-footer med tumvänlig Tillbaka-knapp.
+- Footern ligger fast längst ner och använder samma bakgrund som arbetsytan.
+- Den globala `padding-bottom` på `.ccc-workspace` från v2.9.33 är borttagen; footern får inte längre krympa eller trycka ihop Dashboard/Publicera/Vision.
+- Publiceras miniatyrer behåller sin normala geometri. Extra utrymme läggs bara som scrollmån efter innehållet så sista raden och åtgärdsknappar kan komma ovanför footern utan att bilderna pressas ihop.
+- `Spara anpassning` får extra avslutande scrollmån så hela knappen kan visas, inklusive rundad nederkant.
+- Tillbaka-knappen ligger så långt ned som Core-footerns safe-area tillåter.
+- Dashboard, Publicera och Vision använder `core.js/core.css?v=2.9.34` för att undvika gammal cache.
+
+
+## v2.9.35 – footer utan maskering eller ihoptryckning
+- Efter kontroll av IMG_1927–IMG_1929 är Core-footern ändrad så den inte längre har en ogenomskinlig fullbreddsyta som kan maskera nederdelen av Dashboard-kort, Historik eller `Spara anpassning`.
+- Footerbehållaren är nu transparent och påverkar aldrig `.ccc-workspace`-höjd, padding eller kortgeometri.
+- Dashboard behåller footerstrukturen men den är tom och 0 px hög, så Dashboard ska se exakt ut som före footerinförandet.
+- Tillbaka-knappen ligger fast längst ned till höger med endast 6 px bottenmarginal och flyttas därmed tydligt längre ned än tidigare safe-area-lyfta placering.
+- Publiceras tidigare kompensationsmarginaler på draft-grid, status och crop-actions är borttagna eftersom de kunde ge ojämn geometri.
+- Djupa detalj/crop-vyer får endast `scroll-padding-bottom`, vilket inte flyttar eller krymper deras synliga innehåll.
+- Back-logiken är oförändrad och använder samma `ccc:header-back` som headerpilen.
