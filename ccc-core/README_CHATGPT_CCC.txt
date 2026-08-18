@@ -1187,3 +1187,13 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Headerproblemet berodde också på kaskaden: flera senare `.ccc-module-marker`-regler med `!important`, bland annat mobilregeln med `margin-top:2px`, skrev över den tidigare Core-ändringen.
 - v2.9.45 lägger den kanoniska mobila modulradsgeometrin SIST i `core.css`, så den vinner över samtliga äldre regler: 44 px hög och `margin-top:-18px`.
 - Detta är en korrigering av CSS-kaskaden, inte ännu en blind pixeljustering.
+
+
+## v2.9.46 – kalibrering efter verifierad v2.9.45 på iPhone
+- v2.9.45 bekräftade att den nya Core-kaskaden verkligen styr layouten.
+- Footern hamnade då för långt ned eftersom safe-area subtraherades från `bottom`. Det gjorde att nästan hela 50 px-knappen hamnade under den synliga ytan.
+- Core använder nu `bottom: calc(env(safe-area-inset-bottom) + 4px)`. Safe-area läggs alltså TILL, så hela footerknappen ligger synlig strax ovanför iPhones nederkant.
+- Samma footerformel gäller `Tillbaka`, `? Hjälp`, `Välj`, markeringsläge och `Ångra`.
+- Headerns kanoniska mobilregel justeras från `margin-top:-18px` till `-6px`. v2.9.45 lyfte hela modulraden så mycket att kickertexten (t.ex. VISION/PUBLICERA) gled in under den sticky headern.
+- Modulraden får samtidigt 48 px höjd i stället för 44 px så både kicker, undertitel och linje får plats utan att återgå till den gamla höga positionen.
+- Detta är endast kalibrering av de två centrala Core-värdena; inga modulunika positioner införs.
