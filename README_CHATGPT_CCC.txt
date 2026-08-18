@@ -4,10 +4,10 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.9.4
+CCC-version: 2.9.21
 Senaste stabila: 2.8.95 RC1 – Crop Engine 1.0
-Senaste checkpoint: 2026-08-11
-Nästa uppgift: Testa CCC Header Core på Dashboard, Vision och Publicera samt finjustera endast centrala core-variabler vid behov.
+Senaste checkpoint: 2026-08-18
+Nästa uppgift: Testa v2.9.21 på mobil: extra rundat streck ska vara borta i Publicera-internvyer och Spara anpassning ska direkt visa den sparade beskärningen i detaljvyn.
 
 ARBETSPRINCIPER
 ---------------
@@ -37,6 +37,25 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.9.21 – Publicera: internvy + sparad anpassning syns direkt
+- Bas: v2.9.20.
+- Orsak till extra strecket identifierad: Core sätter startvyn till display:grid!important, medan hidden-regeln inte var important. Startvyn kunde därför ligga kvar bakom internvyer och ett rundat action-kort läckte fram visuellt under modulens riktiga skiljelinje.
+- Fix: #startView[hidden]{display:none!important}. Core-linjen lämnas orörd.
+- Fix: previewSrc prioriterar publishBlob före thumbnail/original så den sparade beskärningen visas direkt efter Spara anpassning.
+- Spara anpassning återgår fortfarande till detaljvyn för samma plagg-ID.
+- Bildräknaren från v2.9.20 lämnas orörd enligt mobiltest.
+- /ccc-core/version.js synkad till 2.9.21. Root /version.js är fortsatt orörd.
+
+v2.9.20 – Publicera: enhetlig slutbild + UI-städning
+- Bas: kompletta arbetskopian från ccc-demo-public-test som användaren tog med från jobbet.
+- Alla färdiga publicerings-WebP blir kvadratiska. Beskuren bild fyller kvadraten; Behåll hela bilden centreras i samma kvadratiska canvas utan beskärning.
+- Publicera-vyerna får inga extra border/pseudo-linjer under Core-linjen i modulhuvudet.
+- Bildräknaren flyttas 6 px upp och görs större (14 px text, större pill).
+- Spara anpassning återgår uttryckligen till detaljvyn för samma plagg-ID.
+- /ccc-core/version.js synkad till 2.9.20 och README_CHATGPT_CCC uppdaterad.
+- Changed-files ZIP innehåller README_CHATGPT_CCC.txt i projektroten samt /ccc-core/version.js tillsammans med övriga ändrade filer.
+- Root /version.js är fortsatt orörd.
+
 v2.9.4 – Header Back hotfix
 - Fixar centrala tillbaka-knappar i Publicera.
 - Orsak: gamla DOM-lyssnare för borttagna #detailBack och #cropBack låg kvar och stoppade publish.js med null.addEventListener innan CCC Header Core-eventen registrerades.
@@ -984,3 +1003,162 @@ CCC v2.9.5 – kompakt utkastgrid (2026-08-11)
 - Fler än 16 utkast delas upp i sidor som kan bytas med horisontell swipe; diskreta sidprickar visar aktuell sida.
 - Tryck på en miniatyr öppnar befintlig detaljvy där stor bild, titel/metadata och swipe mellan utkast finns kvar.
 - Ingen ändring av Vision-original, crop engine eller publiceringsbildens behandling.
+
+
+CCC v2.9.6 – 3x3 utkastgrid + fokusmarkering (2026-08-11)
+- Publicera > Lokala utkast använder nu 3 x 3 miniatyrer, 9 utkast per sida.
+- Fler än 9 utkast delas upp i swipebara sidor; sidprickarna är kvar.
+- Titeltext är fortsatt borttagen från miniatyrerna; titel/metadata visas i detaljvyn.
+- Webbläsarens tillfälliga blå fokusram på bland annat Tillbaka-knappen döljs för touch/musklick.
+- Vid riktig tangentbordsnavigation används i stället en guldfärgad CCC-fokusmarkering.
+- Vision-original, crop engine och publiceringsbildens behandling är oförändrade.
+
+
+CCC v2.9.7 – långtryck snabbkoll i utkastgrid (2026-08-11)
+- Publicera > Lokala utkast behåller 3 x 3-grid och 9 utkast per sida.
+- Vanligt tryck på miniatyr öppnar detaljvyn som tidigare.
+- Håll fingret stilla på en miniatyr i ca 0,75 s för en snabb stor förhandsvisning ovanpå gridden.
+- Förhandsvisningen ligger kvar medan fingret hålls nere och krymper tillbaka snabbt när fingret släpps.
+- En rörelse över ca 12 px avbryter långtrycket så swipe mellan gridsidor inte blockeras.
+- Långtryck öppnar inte detaljvyn efteråt; webbläsarens native touch-callout/contextmeny blockeras på miniatyrerna.
+- Vision-original, crop engine, detalj-swipe och publiceringsbildens behandling är oförändrade.
+
+
+CCC v2.9.8 – mjukare snabbkoll + blåmarkering bort (2026-08-11)
+- Långtryckets stora förhandsvisning växer nu upp mjukare och lite långsammare (ca 0,32 s).
+- När fingret släpps krymper bilden tillbaka snabbt (ca 0,22 s).
+- WebKit/iOS/Chrome tap-highlight och text/bildmarkering blockeras på miniatyrkorten för att undvika blå markering vid långtryck.
+- Riktig tangentbordsfokus behåller CCC:s guldfärgade fokusindikering.
+- 3 x 3-grid, 0,75 s långtryck, swipe, detaljvy, Vision-original och crop engine är oförändrade.
+
+
+CCC v2.9.9 – pilnavigation i detalj/Anpassa bild (2026-08-11)
+- Fixar att vänster/höger-pilarna i bildens detaljvy inte bytte aktivt utkast trots att swipe fungerade.
+- Piltangenterna använder nu samma `next(delta)`/`openDetail()`-flöde som den fungerande swipe-navigationen, så bild, titel, metadata och activeItemId hålls synkade.
+- Bindningen känner igen befintliga föregående/nästa-knappar via id, klass, aria-label/text eller äldre inline-anrop och kräver ingen ändring av crop engine.
+- Swipe, 3 x 3-grid, långtrycks-preview, Vision-original och crop-beteende är oförändrade.
+
+
+CCC v2.9.10 – Publicera-start förenklad
+- v2.9.9 pilfix i Anpassa bild ingår.
+- Publicera-start: Förbered för publicering / Välj kanal / Historik.
+- Tillbaka-kortet borttaget. Headerns tillbaka-pil är aktiv även på startvyn och går där till Dashboard.
+- Välj kanal har egen vy; Hemsidan/Container13 är första kanalen, fler kanaler senare.
+- Historik ersätter tidigare Publicerade.
+- Befintlig 3x3-grid, långtrycks-preview, fokusfix och cropflöde behållna.
+
+
+CCC v2.9.11
+- Fix: synliga vänster/höger-pilar i detaljvyn är nu riktiga interaktiva kontroller och använder samma openDetail/next-flöde som swipe.
+- Fix: långtrycks-snabbkoll använder en sammanhängande transform-animation tillbaka till miniatyren för att undvika slutligt hopp/hack.
+
+
+CCC v2.9.12 – sparad bildanpassning (2026-08-11)
+- Anpassa bild sparar zoom/position icke-destruktivt; Vision-originalet lämnas orört.
+- Knapparna heter Behåll hela bilden / Återställ anpassning / Spara anpassning och har luftigare layout.
+- Återställ anpassning återgår till CCC:s ursprungliga beskärningsförslag.
+
+CCC v2.9.13 – stabil detaljvy + fri utzoomning (2026-08-11)
+- Detaljvyn reserverar fasta zoner för bild, titel/metadata, åtgärdsknappar och status så pris eller varierande metadata inte flyttar knapparna vid swipe.
+- Synliga vänster/höger-pilar är klick-/touchbara ovanpå swipeytan och använder samma next/openDetail-flöde som swipe.
+- Anpassa bild tillåter utzoomning under cover-nivån utan att tvinga tillbaka zoom till 100 % när fingrarna släpps.
+- Miniatyrerna använder contain-visning och prioriterar sparad publiceringsbild när sådan finns, så de bättre speglar den sparade bildanpassningen.
+- README_CHATGPT_CCC åter ikapp med leveransregeln.
+
+
+CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
+- Fixar fel där ett utkast med sparad publicerings-WebP kunde visas redan zoomat/beskuret i miniatyrgridden och detaljvyn.
+- Miniatyr och detaljvy prioriterar nu lokal thumbnail/originalbild för visning; sparad publishBlob används fortsatt som publiceringskopia och status.
+- Efter Spara anpassning återgår detaljvisningen till samma naturliga preview-källa i stället för att byta till den beskurna WebP-kopian.
+- Anpassa bild fortsätter att öppna Vision-originalet och Crop Engine 1.0 är oförändrad.
+- Root /version.js är orörd.
+
+
+## CCC v2.9.16 – 2026-08-17
+- Publicera detaljvy: bildräknaren (t.ex. “7 av 7”) flyttad till en egen centrerad position ovanför bildytan.
+- Samma placering används i normal detaljvy och i “Anpassa bild” så räknaren inte hoppar åt höger när bildytan ändrar storlek.
+- Pill-design, navigeringspilar och övrig detaljvy lämnas oförändrade.
+
+CCC v2.9.17 (2026-08-17)
+- Publicera: endast den raka Core-skiljelinjen under modulhuvudet ska synas; extra kant/kurva i Förbered/Detalj/Anpassa är borttagen.
+- Samma yttre bildyta används i detaljvyn och Anpassa bild. Crop-vyn ska inte växa jämfört med föregående vy.
+- Bildräknaren ligger fortsatt centrerad ovanför bildytan i båda lägena.
+
+
+## v2.9.22 – sparad anpassning syns direkt
+- Efter "Spara anpassning" återgår Publicera till detaljvyn för exakt samma plagg.
+- Detaljvyn prioriterar alltid den sparade `publishBlob` när en sådan finns, så användaren ser den faktiska anpassade bilden direkt.
+- En grön cirkel med vit bock visas uppe till höger på bilden endast när `imageProcessingState` är `webp-cropped`.
+- Statusen under knapparna skiljer nu på anpassad WebP och WebP i originalformat; originalbild får inte felaktigt beskrivas som beskuren.
+- Bildräknarens v2.9.21-layout lämnas orörd.
+- Changed-files ska fortsatt innehålla README_CHATGPT_CCC.txt i projektroten samt ccc-core/version.js och berörda modul-filer.
+
+
+## v2.9.23 – enhandsvänlig tillbaka-gest
+- Behåller den synliga tillbaka-pilen i headern.
+- Lägger till vänsterkants-swipe åt höger som "Tillbaka ett steg" i Publicera.
+- Gesten måste börja inom 28 px från vänsterkanten och förflyttas minst 72 px åt höger.
+- Vertikal rörelse över 56 px avbryter gesten.
+- Gesten är avsiktligt kantbunden för att inte krocka med den vanliga swipe-funktionen mellan plagg i detaljvyn.
+- Intern back-logik: Anpassa bild -> samma plaggs detaljvy, detaljvy -> Förbered-grid, grid/kanal/historik -> Publicera-start.
+- Changed-files ska fortsatt innehålla README_CHATGPT_CCC.txt i projektroten samt ccc-core/version.js och berörda modul-filer.
+\n\n## v2.9.24 – miniatyrerna som nav efter bildanpassning
+- Spara anpassning går direkt tillbaka till miniatyrvyn och den nyss ändrade miniatyren gör en kort pop/studs.
+- Sparad beskärning markeras med permanent grön rund bock på miniatyren.
+- Bocken betyder sparad anpassning, inte låsning; bilden kan öppnas och anpassas igen.
+- Vid återöppning används Vision-originalet tillsammans med senast sparad cropData för fortsatt finjustering.
+- Vänsterkants-swipe från detaljvy och Anpassa bild går till miniatyrerna; gestens trösklar är oförändrade.
+
+
+## v2.9.25 – korrigerad vänsterkants-swipe i Publicera
+- Själva swipe-känslan/trösklarna från v2.9.23 behålls.
+- Back-destinationen avgörs nu från den faktiskt synliga Publicera-vyn, inte bara intern `currentPublishView`.
+- Detaljvyn (`Anpassa bild`-knappen synlig) -> miniatyrerna.
+- Anpassa bild/crop-vyn -> miniatyrerna.
+- Miniatyrerna -> Publicera-menyn.
+- Samma fysiska swipe låses efter första back-triggern tills fingret släpps, så den kan inte backa två nivåer.
+- Bockar, studs/pop och sparlogik från v2.9.24 lämnas orörda.
+- Changed-files innehåller README_CHATGPT_CCC.txt i projektroten, ccc-core/version.js och berörd Publicera-fil.
+
+
+## v2.9.26 – swipe använder exakt samma tillbaka-kod som headern
+- Den egna manuella view-mappningen för vänsterkants-swipe är borttagen.
+- När swipe-tröskeln nås skickas nu exakt samma `ccc:header-back`-event som `cccHeaderBack` i Core skickar vid klick.
+- Därmed använder swipe Publicera-modulens redan befintliga header-back-logik: crop/detalj -> miniatyrer, miniatyrer/kanal/historik -> Publicera-start, Publicera-start -> Dashboard.
+- Gestkänsla, kantzon och trösklar från tidigare test lämnas orörda.
+- Bockar, studs/pop och bildanpassningslogik lämnas orörda.
+- Changed-files innehåller README_CHATGPT_CCC.txt i projektroten, ccc-core/version.js och ccc-core/publish/publish.js.
+
+
+## v2.9.27 – swipe-start flyttad från Safaris absoluta vänsterkant
+- Vänsterkants-swipen använder fortfarande exakt samma `ccc:header-back`-event som headerns tillbaka-pil.
+- Själva back-logiken är alltså oförändrad från v2.9.26.
+- Swipe får nu bara starta mellan 24 och 58 px från vänsterkanten.
+- Syftet är att undvika konflikt med Safaris egen historik-swipe som kan ta över allra längst ute vid skärmkanten.
+- Triggerlängd, vertikal tolerans och låsning tills fingret släpps är oförändrade.
+- Ingen ändring i bockar, studs/pop, bildanpassning eller bildräknare.
+- Changed-files innehåller README_CHATGPT_CCC.txt i projektroten, ccc-core/version.js och ccc-core/publish/publish.js.
+
+
+## v2.9.28 – Safari-säker swipe-zon + dubbeltryck för snabb helskärmsvisning
+- CCC:s tillbaka-swipe använder fortfarande exakt samma `ccc:header-back`-event som headerns tillbaka-pil.
+- Swipe-startzonen flyttas längre in till 70–150 px från vänsterkanten för att lämna Safaris egen historik-gesture ifred.
+- Triggerlängd 72 px och vertikal tolerans 56 px är oförändrade.
+- Dubbeltryck på en miniatyr eller detaljbild öppnar bilden tillfälligt i helskärm mot mörk bakgrund.
+- Helskärmsbilden stängs automatiskt efter 2,5 sekunder eller direkt vid ett tryck.
+- Webbläsarens dubbeltryckszoom blockeras endast på CCC:s berörda bildytor via `touch-action: manipulation`; global pinch-/tillgänglighetszoom ändras inte.
+- På miniatyrer väntar CCC kort på ett eventuellt andra tryck innan vanligt enkeltryck öppnar detaljvyn, så dubbeltrycket inte hinner navigera bort.
+- Tidigare dubbeltrycks-zoom på cropCanvas är borttagen; beskärningszoom sker med crop-kontroller/pinch.
+- Bockar, studs/pop och sparlogik från tidigare versioner lämnas orörda.
+
+
+## v2.9.29 – tumvänlig Tillbaka-knapp i nederfält
+- CCC:s experimentella egna back-swipe i Publicera är borttagen/pausad för att undvika konflikt med Safaris historik-gesture.
+- Ett fast nederfält testas i Publiceras arbetsvyer.
+- Nederfältet visas efter Publicera-starten och innehåller en stor högerplacerad tryckyta: `← Tillbaka` med hjälpttexten `Till föregående steg`.
+- Hela knappen är tryckbar och placerad för höger tumme i detta första test.
+- Knappen skickar exakt samma `ccc:header-back`-event som headerns tillbaka-pil; ingen separat back-logik används.
+- Fältet tar hänsyn till iPhones safe-area och arbetsytan får extra nederpadding när fältet visas.
+- Headerns ordinarie tillbaka-pil behålls.
+- Dubbeltryck/quick-look från v2.9.28 samt bockar, studs/pop och bildanpassning lämnas orörda.
+- Om testet faller väl ut är nästa arkitektursteg en Core-komponent med valbar höger-/vänsterhänt placering.
