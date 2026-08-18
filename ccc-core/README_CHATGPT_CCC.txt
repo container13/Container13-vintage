@@ -1118,3 +1118,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - `Ångra` återställer bilderna till sina tidigare positioner i miniatyrgridden och permanent radering sker inte.
 - Om ingen ångrar inom 8 sekunder rensas Publicera/Vision-data permanent med befintlig delete-logik.
 - Om en ny radering görs innan föregående Ångra-period är slut slutförs den äldre raderingen först.
+
+
+## v2.9.39 – återställd synlig Core-footer
+- v2.9.38 flyttade hela footern med `transform: translateY(72px)`, vilket på iOS/PWA kunde lägga den helt utanför den visuella viewporten. Den lösningen är borttagen.
+- Footern hålls nu synlig och placeras lågt med `bottom:-18px` i stället för transform.
+- Safe-area hanteras separat så kontrollerna fortfarande ligger inom den synliga ytan.
+- Dashboardens tomma footer är fortsatt 0 px och påverkar inte arbetsytan.
+- Hjälp/Välj/Tillbaka och Ångra-radering från v2.9.38 behålls.
