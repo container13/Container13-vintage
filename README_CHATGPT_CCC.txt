@@ -1102,3 +1102,20 @@ CCC v2.9.17 (2026-08-17)
 - Gesten är avsiktligt kantbunden för att inte krocka med den vanliga swipe-funktionen mellan plagg i detaljvyn.
 - Intern back-logik: Anpassa bild -> samma plaggs detaljvy, detaljvy -> Förbered-grid, grid/kanal/historik -> Publicera-start.
 - Changed-files ska fortsatt innehålla README_CHATGPT_CCC.txt i projektroten samt ccc-core/version.js och berörda modul-filer.
+\n\n## v2.9.24 – miniatyrerna som nav efter bildanpassning
+- Spara anpassning går direkt tillbaka till miniatyrvyn och den nyss ändrade miniatyren gör en kort pop/studs.
+- Sparad beskärning markeras med permanent grön rund bock på miniatyren.
+- Bocken betyder sparad anpassning, inte låsning; bilden kan öppnas och anpassas igen.
+- Vid återöppning används Vision-originalet tillsammans med senast sparad cropData för fortsatt finjustering.
+- Vänsterkants-swipe från detaljvy och Anpassa bild går till miniatyrerna; gestens trösklar är oförändrade.
+
+
+## v2.9.25 – korrigerad vänsterkants-swipe i Publicera
+- Själva swipe-känslan/trösklarna från v2.9.23 behålls.
+- Back-destinationen avgörs nu från den faktiskt synliga Publicera-vyn, inte bara intern `currentPublishView`.
+- Detaljvyn (`Anpassa bild`-knappen synlig) -> miniatyrerna.
+- Anpassa bild/crop-vyn -> miniatyrerna.
+- Miniatyrerna -> Publicera-menyn.
+- Samma fysiska swipe låses efter första back-triggern tills fingret släpps, så den kan inte backa två nivåer.
+- Bockar, studs/pop och sparlogik från v2.9.24 lämnas orörda.
+- Changed-files innehåller README_CHATGPT_CCC.txt i projektroten, ccc-core/version.js och berörd Publicera-fil.
