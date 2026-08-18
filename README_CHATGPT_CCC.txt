@@ -1119,3 +1119,12 @@ CCC v2.9.17 (2026-08-17)
 - Samma fysiska swipe låses efter första back-triggern tills fingret släpps, så den kan inte backa två nivåer.
 - Bockar, studs/pop och sparlogik från v2.9.24 lämnas orörda.
 - Changed-files innehåller README_CHATGPT_CCC.txt i projektroten, ccc-core/version.js och berörd Publicera-fil.
+
+
+## v2.9.26 – swipe använder exakt samma tillbaka-kod som headern
+- Den egna manuella view-mappningen för vänsterkants-swipe är borttagen.
+- När swipe-tröskeln nås skickas nu exakt samma `ccc:header-back`-event som `cccHeaderBack` i Core skickar vid klick.
+- Därmed använder swipe Publicera-modulens redan befintliga header-back-logik: crop/detalj -> miniatyrer, miniatyrer/kanal/historik -> Publicera-start, Publicera-start -> Dashboard.
+- Gestkänsla, kantzon och trösklar från tidigare test lämnas orörda.
+- Bockar, studs/pop och bildanpassningslogik lämnas orörda.
+- Changed-files innehåller README_CHATGPT_CCC.txt i projektroten, ccc-core/version.js och ccc-core/publish/publish.js.
