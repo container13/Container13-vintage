@@ -1164,3 +1164,16 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Den gemensamma modulraden i headern (`PUBLICERA/VISION/ARBETSYTA`, undertitel och linje) flyttas upp centralt: topmarginal 6→0 px, minhöjd 52→48 px och padding 7/8→5/6 px.
 - Resultatet ska ge mindre onödig luft under headerkontrollerna och samtidigt mer plats åt arbetsytan.
 - Ingen modul får en lokal footer- eller headerposition i denna version.
+
+
+## v2.9.44 – footer förankrad i CCC-appskalet + tydligare lyft av modulraden
+- v2.9.42–2.9.43 använde `visualViewport` som referens för footerpositionen. Det gav fortfarande fel faktisk nivå på iPhone/PWA.
+- `visualViewport`-lösningen är nu helt borttagen.
+- `.ccc-app-shell/.app-shell` är nu den enda centrala positioneringskontexten för footern.
+- Core skapar footern inne i appskalet, inte direkt under `body`.
+- Footern använder `position:absolute` och den centrala variabeln `--ccc-footer-bottom:8px`.
+- Alla footerlägen (`Tillbaka`, `? Hjälp`, `Välj`, markeringsläge, `Ångra`) använder exakt samma ankare och nedernivå.
+- Dashboard får samma Core-footerstruktur men den är tom/osynlig.
+- Inga negativa `bottom`-värden, transforms eller vy-/modulspecifika footerpositioner används.
+- Den gemensamma modulraden (`PUBLICERA/VISION/ARBETSYTA`, undertitel och linje) flyttas upp tydligt med `margin-top:-18px` i EN Core-regel.
+- Detta är nu den avsedda CCC-arkitekturen: gemensam header/footer-geometri ändras på ett enda ställe i Core.
