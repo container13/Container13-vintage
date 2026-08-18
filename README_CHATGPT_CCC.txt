@@ -1297,3 +1297,13 @@ CCC v2.9.17 (2026-08-17)
 - Dashboard har samma footerzon men den är osynlig/tom.
 - Footerzonen har central höjd `--ccc-footer-zone-height:62px` och kontrollhöjd `50px`. Framtida höjd/placering ändras på ett enda ställe i Core och slår igenom i hela CCC.
 - Arbetsytornas/miniatyrernas geometri ändras inte av denna fix.
+
+
+## v2.9.43 – central Core-justering av header och footer
+- Footer och header justeras nu endast i `ccc-core`, enligt CCC-principen att gemensamma element ska ändras på ett enda ställe.
+- Footerpositionen styrs fortsatt av en enda Core-variabel: `--ccc-footer-zone-height`.
+- Footerzonen sänks från 62 px till 52 px. Eftersom footerknapparna är 50 px höga ger det ca 2 px kvar till den synliga nederkanten i alla footerlägen.
+- `Tillbaka`, `? Hjälp`, `Välj`, markeringsläge och `Ångra` ärver exakt samma vertikala nivå.
+- Den gemensamma modulraden i headern (`PUBLICERA/VISION/ARBETSYTA`, undertitel och linje) flyttas upp centralt: topmarginal 6→0 px, minhöjd 52→48 px och padding 7/8→5/6 px.
+- Resultatet ska ge mindre onödig luft under headerkontrollerna och samtidigt mer plats åt arbetsytan.
+- Ingen modul får en lokal footer- eller headerposition i denna version.
