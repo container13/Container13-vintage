@@ -1196,3 +1196,14 @@ CCC v2.9.17 (2026-08-17)
 - En gemensam reserverad bottenyta i `.publish-main` hindrar innehåll/aktionsknappar från att kollidera med den fasta Tillbaka-knappen och ger jämnare vertikal rytm mellan vyerna.
 - Själva Tillbaka-knappen och dess `ccc:header-back`-funktion är oförändrade.
 - Quick-look, bildanpassning, gröna bockar och studs/pop är orörda.
+
+
+## v2.9.33 – global CCC-footer i Core
+- Publiceras lokala Tillbaka-fält är borttaget.
+- Ny global `CCC FOOTER CORE v1` skapas av `ccc-core/core.js` på alla moderna Core-arbetsvyer utom Dashboard.
+- Footern ligger konsekvent längst ned, högerjusterad för höger tumme och använder iPhones safe-area.
+- `Tillbaka / Till föregående steg` använder exakt samma `ccc:header-back` som headerpilen när modulens back-state är aktiv. På modulstart utan aktiv header-back går footerknappen till Dashboard.
+- Dashboard skapar ingen footer.
+- Core reserverar gemensam bottenyta på `.ccc-workspace`; detta rättar felet där `Spara anpassning` kunde klippas/hamna bakom nederfältet.
+- Publicera, Vision och Dashboard cache-bustar nu `core.css`/`core.js` till v2.9.33.
+- Nästa steg efter test är att låta äldre modulsidor som ännu inte använder Core-header/Core-CSS migrera till samma globala footer.
