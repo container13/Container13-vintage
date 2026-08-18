@@ -1029,3 +1029,19 @@
 }
 
 
+
+/* CCC v2.9.34 – Core-footer utan ihoptryckt arbetsyta.
+   Extra scrollmån läggs bara efter innehållet, inte på workspace-geometrin. */
+#gridView .draft-grid{
+  padding-bottom:calc(76px + env(safe-area-inset-bottom))!important;
+}
+#detailView,
+#cropView{
+  scroll-padding-bottom:calc(76px + env(safe-area-inset-bottom));
+}
+#detailView .publish-status{
+  margin-bottom:calc(64px + env(safe-area-inset-bottom));
+}
+#cropView .crop-actions-row{
+  margin-bottom:calc(64px + env(safe-area-inset-bottom))!important;
+}
