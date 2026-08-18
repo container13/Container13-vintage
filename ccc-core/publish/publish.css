@@ -1031,10 +1031,13 @@
 
 
 
-/* CCC v2.9.35 – footer-clearance utan att ändra synlig geometri.
+/* CCC v2.9.36 – footer-clearance utan att ändra synlig geometri.
    Transparent footer + låg knapp gör att Dashboard/startkort och Spara anpassning
    inte maskeras. Endast scroll-padding används för djupa arbetsvyer. */
 #detailView,
 #cropView{
   scroll-padding-bottom:64px!important;
 }
+
+/* CCC v2.9.36 – Välj/radera + tips */
+.publish-heading-with-action{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important}.publish-select-btn{flex:0 0 auto;min-width:68px;min-height:38px;padding:0 13px;border:1px solid var(--border);border-radius:13px;background:var(--surface);color:var(--gold);font-weight:850}.publish-select-btn.is-active{background:color-mix(in srgb,var(--gold) 14%,var(--surface))}#draftGrid .draft-card.is-selecting::after{content:"";position:absolute;inset:0;z-index:4;border:2px solid color-mix(in srgb,var(--gold) 72%,transparent);border-radius:12px;pointer-events:none}#draftGrid .draft-card .draft-select-mark{position:absolute;right:7px;top:7px;z-index:6;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;border:2px solid #fff;background:rgba(20,23,31,.72);color:#fff;font-size:15px;font-weight:900;pointer-events:none}#draftGrid .draft-card.is-selected .draft-select-mark{background:var(--gold);color:#111}#draftGrid .draft-card.is-selected::after{border-color:var(--gold)}.ccc-context-tip{width:100%;margin:8px 0 12px;padding:10px 12px;border:1px solid color-mix(in srgb,var(--gold) 26%,var(--border));border-radius:14px;background:color-mix(in srgb,var(--gold) 6%,var(--surface));font-size:12px;line-height:1.35}.ccc-context-tip[hidden]{display:none!important}.ccc-context-tip strong{display:block;color:var(--gold);margin-bottom:2px}.ccc-context-tip span{color:var(--muted)}

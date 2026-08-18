@@ -12,6 +12,8 @@ let draftPreviewGesture=null,draftPreviewSuppressClick=false;
 let cropImage=null,cropState=null,pointer=null;
 let activeItemId=null;
 let recentlyAdaptedItemId=null;
+let draftSelectionMode=false;const selectedDraftIds=new Set();
+const CCC_TIPS_ENABLED_KEY="ccc-help-tips-enabled",CCC_TIP_PREFIX="ccc-tip-count:",CCC_TIP_LIMIT=3;
 const decodedImageCache=new Map();
 const MAX_DECODED_CACHE=3;
 
@@ -47,7 +49,7 @@ async function visionSessionDrafts(){
   return drafts;
 }
 
-async function put(record){const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(STORE_NAME,"readwrite");tx.objectStore(STORE_NAME).put(record);tx.oncomplete=()=>{db.close();resolve();};tx.onerror=()=>{db.close();reject(tx.error);};});}
+async function put(record){const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(STORE_NAME,"readwrite");tx.objectStore(STORE_NAME).put(record);tx.oncomplete=()=>{db.close();resolve();};tx.onerror=()=>{db.close();reject(tx.error);};});}async function deleteDraftIds(ids){const wanted=new Set(ids);if(!wanted.size)return;const db=await openDb();await new Promise((resolve,reject)=>{const stores=[STORE_NAME,"sessions",FILE_STORE].filter(n=>db.objectStoreNames.contains(n)),tx=db.transaction(stores,"readwrite"),images=tx.objectStore(STORE_NAME);wanted.forEach(id=>images.delete(id));if(stores.includes("sessions")){const sessions=tx.objectStore("sessions"),req=sessions.get("active-vision-session");req.onsuccess=()=>{const s=req.result;if(!s||!Array.isArray(s.items))return;const removed=s.items.filter(i=>wanted.has(i.id));s.items=s.items.filter(i=>!wanted.has(i.id));s.savedAt=Date.now();sessions.put(s);if(stores.includes(FILE_STORE)){const files=tx.objectStore(FILE_STORE);removed.forEach(i=>{if(i.originalFileKey)files.delete(i.originalFileKey);});}};}tx.oncomplete=()=>{db.close();resolve()};tx.onerror=()=>{db.close();reject(tx.error)};tx.onabort=()=>{db.close();reject(tx.error||new Error("Kunde inte ta bort utkast."))};});}
 async function getSourceFile(key){if(!key)return null;const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(FILE_STORE,"readonly"),r=tx.objectStore(FILE_STORE).get(key);r.onsuccess=()=>resolve(r.result?.blob||null);r.onerror=()=>reject(r.error);tx.oncomplete=()=>db.close();});}
 async function hydrateOriginal(record){if(record.originalBlob||!record.originalFileKey)return record;const blob=await getSourceFile(record.originalFileKey);return blob?{...record,originalBlob:blob}:record;}
 function persistenceRecord(item){const record={...item};delete record.thumbUrl;delete record.fullUrl;if(record.originalFileKey)delete record.originalBlob;return record;}
@@ -105,16 +107,17 @@ function resetViewScroll(view){
   const scrollChild=el.querySelector(".draft-grid,.publish-scroll,.crop-view");
   if(scrollChild)try{scrollChild.scrollTop=0;}catch(_){}
 }
+function tipsEnabled(){return localStorage.getItem(CCC_TIPS_ENABLED_KEY)!=="0";}function maybeShowTip(id,el){if(!el)return;if(!tipsEnabled()){el.hidden=true;return}const k=CCC_TIP_PREFIX+id,c=Number(localStorage.getItem(k)||0);if(c>=CCC_TIP_LIMIT){el.hidden=true;return}el.hidden=false;localStorage.setItem(k,String(c+1));}function showTipsForView(v){if(v==="gridView")maybeShowTip("publish-grid-gestures",$("#gridGestureTip"));if(v==="detailView")maybeShowTip("publish-detail-adapted",$("#detailAdaptTip"));if(v==="cropView")maybeShowTip("publish-crop-help",$("#cropHelpTip"));}
 let currentPublishView="startView";
 function setPublishHeader(view){
   const state={back:true,settings:true};
   window.__CCC_HEADER_PENDING__=state;
   window.CCC_CORE?.header?.set(state);
 }
-function show(view){
+function show(view){if(view!=="gridView"&&draftSelectionMode){draftSelectionMode=false;selectedDraftIds.clear();$("#selectDraftsBtn")?.classList.remove("is-active");if($("#selectDraftsBtn"))$("#selectDraftsBtn").textContent="Välj";window.CCC_CORE?.footer?.showDefault?.();}
   currentPublishView=view;
   ["startView","gridView","channelView","publishedView","detailView","cropView"].forEach(id=>$("#"+id).hidden=id!==view);
-  setPublishHeader(view);
+  setPublishHeader(view);showTipsForView(view);
   requestAnimationFrame(()=>{
     resetViewScroll(view);
     const active=$("#"+view);
@@ -318,6 +321,7 @@ function bindDraftGridSwipe(){
   grid.addEventListener("pointercancel",()=>{draftGridGesture=null;});
 }
 
+function updateSelectionFooter(){if(draftSelectionMode)window.CCC_CORE?.footer?.showSelection?.({count:selectedDraftIds.size,onDelete:confirmDeleteSelectedDrafts,onCancel:exitDraftSelection});else window.CCC_CORE?.footer?.showDefault?.();}function enterDraftSelection(){if(!items.length)return;draftSelectionMode=true;selectedDraftIds.clear();$("#selectDraftsBtn")?.classList.add("is-active");$("#selectDraftsBtn").textContent="Klar";updateSelectionFooter();renderGrid();}function exitDraftSelection(){draftSelectionMode=false;selectedDraftIds.clear();$("#selectDraftsBtn")?.classList.remove("is-active");if($("#selectDraftsBtn"))$("#selectDraftsBtn").textContent="Välj";updateSelectionFooter();renderGrid();}async function confirmDeleteSelectedDrafts(){const ids=[...selectedDraftIds];if(!ids.length)return;const msg=ids.length===1?"Ta bort det markerade utkastet?":`Ta bort ${ids.length} markerade utkast?`;if(!confirm(msg))return;await deleteDraftIds(ids);items=items.filter(i=>!selectedDraftIds.has(i.id));selectedDraftIds.clear();draftSelectionMode=false;$("#selectDraftsBtn")?.classList.remove("is-active");if($("#selectDraftsBtn"))$("#selectDraftsBtn").textContent="Välj";draftPage=Math.min(draftPage,Math.max(0,Math.ceil(items.length/DRAFTS_PER_PAGE)-1));updateSelectionFooter();await renderGrid();}
 async function renderGrid(){
   const grid=$("#draftGrid");
   const empty=$("#emptyState");
@@ -374,8 +378,7 @@ async function renderGrid(){
     cap.textContent=title(item,index);
     b.append(cap);
     const itemId=item.id;
-    b.dataset.itemId=itemId;
-    bindDraftPreview(b,img);
+    b.dataset.itemId=itemId;if(draftSelectionMode){b.classList.add("is-selecting");if(selectedDraftIds.has(itemId))b.classList.add("is-selected");const mark=document.createElement("span");mark.className="draft-select-mark";mark.textContent=selectedDraftIds.has(itemId)?"✓":"";b.append(mark);}else bindDraftPreview(b,img);
 
     let thumbTap=null,thumbLastTapAt=0,thumbSingleTimer=null,lastTouchHandledAt=0;
     b.addEventListener("pointerdown",e=>{
@@ -392,8 +395,7 @@ async function renderGrid(){
       const isTap=!thumbTap.moved && now-thumbTap.t<360;
       thumbTap=null;
       if(!isTap)return;
-      lastTouchHandledAt=Date.now();
-      e.preventDefault();
+      lastTouchHandledAt=Date.now();e.preventDefault();if(draftSelectionMode){selectedDraftIds.has(itemId)?selectedDraftIds.delete(itemId):selectedDraftIds.add(itemId);updateSelectionFooter();renderGrid();return;}
       if(draftPreviewSuppressClick){
         draftPreviewSuppressClick=false;
         if(thumbSingleTimer){clearTimeout(thumbSingleTimer);thumbSingleTimer=null;}
@@ -414,7 +416,7 @@ async function renderGrid(){
     },{passive:false});
     b.addEventListener("pointercancel",()=>{thumbTap=null;},{passive:true});
 
-    b.addEventListener("click",e=>{
+    b.addEventListener("click",e=>{if(draftSelectionMode){e.preventDefault();e.stopPropagation();if(Date.now()-lastTouchHandledAt<700)return;selectedDraftIds.has(itemId)?selectedDraftIds.delete(itemId):selectedDraftIds.add(itemId);updateSelectionFooter();renderGrid();return;}
       if(Date.now()-lastTouchHandledAt<700){
         e.preventDefault();
         e.stopPropagation();
@@ -650,6 +652,7 @@ $("#swipeArea").addEventListener("lostpointercapture",e=>{
   if(swipeGesture?.id===e.pointerId)finishSwipe(e,true);
 });
 
+$("#selectDraftsBtn")?.addEventListener("click",()=>draftSelectionMode?exitDraftSelection():enterDraftSelection());
 $("#draftsBtn").addEventListener("click",async()=>{
   await renderGrid();
   preloadNeighbors(0);
@@ -1105,7 +1108,7 @@ async function leavePublishCrop(){
 }
 
 
-document.addEventListener("ccc:header-back",async()=>{
+document.addEventListener("ccc:header-back",async()=>{if(currentPublishView==="gridView"&&draftSelectionMode){exitDraftSelection();return;}
   if(currentPublishView==="startView"){
     window.location.href="../dashboard/index.html";
     return;
