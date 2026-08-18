@@ -1171,3 +1171,28 @@ CCC v2.9.17 (2026-08-17)
 - Safe-area för iPhone respekteras fortsatt.
 - Back-logiken är helt oförändrad och använder samma `ccc:header-back` som headerpilen.
 - Dubbeltryck/quick-look, gröna bockar, studs/pop och bildanpassning lämnas orörda.
+
+
+## v2.9.31 – sömlöst nederfält
+- Den visuella avgränsningslinjen ovanför tumknappen är borttagen.
+- Nederfältets gradient, blur och separata skugga är borttagna.
+- Hela nederfältet inklusive iPhones safe-area använder nu `var(--bg)`, samma grundbakgrund som arbetsytan.
+- Själva Tillbaka-knappen behåller CCC:s vanliga `var(--surface)`, `var(--border)`, textfärger och guldfärgade pil.
+- Målet är att nederdelen ska upplevas som en sammanhängande CCC-yta utan separat toolbar eller avvikande färgremsa längst ned.
+- Ingen navigations- eller bildfunktion är ändrad.
+
+
+### v2.9.31 – finjustering efter bildkontroll
+- Skärmbilderna IMG_1916–IMG_1918 visade att Tillbaka-knappens högra kant låg cirka 4 px längre ut än Publiceras ordinarie innehåll/aktionsknappar.
+- Nederfältets horisontella inset är därför ändrad från 12 px till 16 px.
+- Tillbaka-knappens högra kant linjerar nu med högra kanten på bl.a. `Publicera till Container13`, `Återställ anpassning` och `Spara anpassning`.
+- Ingen övrig geometri, färg eller funktion är ändrad.
+
+
+## v2.9.32 – enhetlig låg placering av tumknappen
+- Efter jämförelse av IMG_1916, IMG_1917 och IMG_1918 är Tillbaka-knappen låst till samma låga position i grid-, detalj- och Anpassa bild-vyn.
+- Knappen ligger fortsatt högerjusterad och linjerar med Publiceras ordinarie 16 px högermarginal.
+- Nederfältet har ingen linje, gradient, blur eller separat färg; hela safe-area använder arbetsytans `var(--bg)`.
+- En gemensam reserverad bottenyta i `.publish-main` hindrar innehåll/aktionsknappar från att kollidera med den fasta Tillbaka-knappen och ger jämnare vertikal rytm mellan vyerna.
+- Själva Tillbaka-knappen och dess `ccc:header-back`-funktion är oförändrade.
+- Quick-look, bildanpassning, gröna bockar och studs/pop är orörda.
