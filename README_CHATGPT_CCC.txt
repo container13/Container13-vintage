@@ -1320,3 +1320,13 @@ CCC v2.9.17 (2026-08-17)
 - Inga negativa `bottom`-värden, transforms eller vy-/modulspecifika footerpositioner används.
 - Den gemensamma modulraden (`PUBLICERA/VISION/ARBETSYTA`, undertitel och linje) flyttas upp tydligt med `margin-top:-18px` i EN Core-regel.
 - Detta är nu den avsedda CCC-arkitekturen: gemensam header/footer-geometri ändras på ett enda ställe i Core.
+
+
+## v2.9.45 – rotorsaken hittad och borttagen
+- Footerproblemet berodde på en äldre senare Core-regel: `@supports ... padding-bottom: env(safe-area-inset-bottom)`. Den lade tillbaka safe-area-padding på footern och flyttade knapparna uppåt, vilket motverkade våra footerjusteringar. Regeln är nu borttagen.
+- Footern skapas åter direkt under `body` och använder en enda `position:fixed` Core-geometri.
+- Safe-area används nu som faktisk nedåtriktad offset: `bottom: calc(2px - env(safe-area-inset-bottom))`. Ingen footer-padding används för safe-area.
+- `Tillbaka`, `? Hjälp`, `Välj`, markeringsläge och `Ångra` använder samma 50 px höga footerlinje och exakt samma nederposition.
+- Headerproblemet berodde också på kaskaden: flera senare `.ccc-module-marker`-regler med `!important`, bland annat mobilregeln med `margin-top:2px`, skrev över den tidigare Core-ändringen.
+- v2.9.45 lägger den kanoniska mobila modulradsgeometrin SIST i `core.css`, så den vinner över samtliga äldre regler: 44 px hög och `margin-top:-18px`.
+- Detta är en korrigering av CSS-kaskaden, inte ännu en blind pixeljustering.
