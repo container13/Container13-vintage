@@ -1179,12 +1179,17 @@ $("#cropDone").addEventListener("click",async()=>{
 
 $("#publishBtn").addEventListener("click",()=>{const item=activeItem();if(!item)return;$("#publishStatus").textContent=item.publishBlob?"Nästa steg kopplar den här WebP-bilden till Container13.":"Beskär bilden först så skapas publicerings-WebP lokalt.";if(!item.publishBlob)openCrop();});
 
-$("#sitePreviewBtn")?.addEventListener("click",()=>{
-  const item=activeItem();
-  if(!item)return;
+
+function previewCandidate(){
+  // Välj senast aktiva plagg om det finns, annars första lokala utkastet.
+  // I kommande kanalsteg kan detta ersättas med explicit flerval.
+  return activeItem() || items[0] || null;
+}
+function openSitePreviewForItem(item,index){
+  if(!item)return false;
   const payload={
     id:item.id,
-    title:title(item,activeIndex),
+    title:title(item,index),
     brand:item.brand||item.fields?.brand||"",
     size:item.size||item.fields?.size||"",
     price:item.price||item.fields?.price||"",
@@ -1199,6 +1204,19 @@ $("#sitePreviewBtn")?.addEventListener("click",()=>{
   target.searchParams.set("cccPreview","1");
   target.searchParams.set("item",String(item.id||""));
   window.location.href=target.href;
+  return true;
+}
+
+$("#channelPreviewBtn")?.addEventListener("click",()=>{
+  const item=previewCandidate();
+  const status=$("#channelPreviewStatus");
+  if(!item){
+    if(status)status.textContent="Det finns inget lokalt utkast att förhandsvisa.";
+    return;
+  }
+  const index=Math.max(0,itemIndexById(item.id));
+  if(status)status.textContent="Öppnar förhandsvisningen…";
+  openSitePreviewForItem(item,index);
 });
 
 (async()=>{try{
@@ -1284,3 +1302,5 @@ document.addEventListener("ccc:core-ready",()=>setPublishHeader(currentPublishVi
 
 
 /* CCC cache stamp: v2.9.20 */
+
+/* CCC cache stamp: v2.9.52 */

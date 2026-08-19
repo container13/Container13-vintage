@@ -77,7 +77,15 @@
 
     <section id="channelView" class="publish-view" hidden>
       <div class="publish-heading"><div><h1>Välj kanal</h1><p>Välj var du vill publicera</p></div></div>
-      <div class="publish-empty"><strong>Hemsidan</strong><span>Container13 är första publiceringskanalen. Fler kanaler läggs till senare.</span></div>
+      <div class="channel-card">
+        <div class="channel-card-copy">
+          <strong>Container13 hemsida</strong>
+          <span>Förhandsvisa ett färdigställt plagg på hemsidan innan publicering.</span>
+        </div>
+        <button id="channelPreviewBtn" class="primary-action channel-preview-action" type="button">Förhandsvisa på hemsidan</button>
+        <p id="channelPreviewStatus" class="publish-status" aria-live="polite"></p>
+      </div>
+      <p class="channel-future-note">Fler publiceringskanaler läggs till senare.</p>
     </section>
 
     <section id="publishedView" class="publish-view" hidden>
@@ -95,7 +103,6 @@
       </div>
       <div class="detail-copy"><strong id="detailTitle"></strong><span id="detailMeta"></span></div>
       <div class="detail-actions"><button id="cropBtn" class="secondary-action" type="button">Anpassa bild</button><button id="publishBtn" class="primary-action" type="button">Publicera till Container13</button></div>
-      <button id="sitePreviewBtn" class="site-preview-action" type="button">Förhandsvisa på hemsidan</button>
       <p id="publishStatus" class="publish-status" aria-live="polite"></p>
     </section>
 

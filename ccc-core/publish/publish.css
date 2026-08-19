@@ -1113,18 +1113,25 @@
 .delete-draft-actions{margin-top:4px!important}
 .delete-draft-confirm{background:#b83a3a!important;color:#fff!important}
 
-/* CCC v2.9.51 – site-preview från Publicera */
-.site-preview-action{
-  width:100%;
-  min-height:48px;
-  margin-top:9px;
-  border-radius:15px;
-  border:1px solid rgba(226,181,78,.72);
-  background:rgba(226,181,78,.08);
-  color:var(--gold);
-  font-size:14px;
-  font-weight:850;
-  letter-spacing:.01em;
-  cursor:pointer;
+
+/* CCC v2.9.52 – site-preview hör hemma i Välj kanal */
+.channel-card{
+  width:min(100%,520px);
+  margin:14px auto 0;
+  padding:16px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:var(--surface);
+  display:grid;
+  gap:14px;
 }
-.site-preview-action:active{transform:scale(.99)}
+.channel-card-copy{display:grid;gap:5px}
+.channel-card-copy strong{font-size:17px}
+.channel-card-copy span{font-size:13px;color:var(--muted);line-height:1.4}
+.channel-preview-action{width:100%}
+.channel-future-note{
+  margin:12px auto 0;
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+}
