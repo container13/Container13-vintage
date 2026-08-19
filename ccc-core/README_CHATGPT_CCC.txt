@@ -1212,3 +1212,12 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Enda layoutändringen från v2.9.48 är den globala Core-footerpositionen: `bottom:10px` → `bottom:2px`.
 - Footern sänks alltså 8 px på alla vyer.
 - Header, kort, arbetsytor och övrig geometri är helt oförändrade från v2.9.48.
+
+
+## v2.9.50 – site-preview säker grund
+- `ccc-core/site-preview/` används som isolerad kopia av den publika Container13-sajten inför framtida CCC-förhandsvisning.
+- Den uppladdade preview-kopian refererade till `manifest.webmanifest` men filen saknades. Publika sajtens manifest kopieras därför in för att undvika 404 och behålla samma metadatareferenser.
+- `site-preview/pwa.js` är neutraliserad: ingen service worker registreras, ingen installationsprompt visas och ingen PWA-relaterad lokal state skrivs.
+- `site-preview/sw.js` är inert och cachear/fångar inga requests.
+- Den visuella sajtkopian, HTML, CSS, JS, bilder och befintlig Firestore-läsning är i övrigt orörda i detta steg.
+- Detta steg publicerar ingenting och skriver ingenting till Container13:s live-data; det gör endast preview-kopian säker att använda som nästa byggblock.
