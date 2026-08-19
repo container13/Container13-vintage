@@ -1242,3 +1242,17 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Den fungerande lokala preview-tekniken från v2.9.51 återanvänds: inget skrivs till Firebase eller livesajten.
 - I detta första kanaltest används senast aktiva lokala plagg om ett sådant finns, annars första lokala utkastet. Explicit val av vilka färdigställda plagg som ska publiceras byggs som separat nästa steg.
 - `README_CHATGPT_CCC.txt` återställs som kanonisk fil i projektroten och ska fortsättningsvis levereras där i changed-files.
+
+
+## v2.9.53 – CCC-standard för adaptiv miniatyrgrid
+- `Förbered för publicering` använder nu adaptiv grid beroende på antal synliga bilder på aktuell sida:
+  - 1 bild → 1×1
+  - 2 bilder → 2×1
+  - 3–4 bilder → 2×2
+  - 5–9 bilder → 3×3
+  - 10+ bilder → 3×3, max 9 per sida + swipe/pager
+- Samma reserverade gridyta behålls så färre bilder får större, mer lätttryckta miniatyrer i stället för små 3×3-rutor.
+- Befintliga bildinteraktioner lämnas oförändrade: enkeltryck, långtryck/snabbförstoring, dubbeltryck/quick-look och swipe mellan gridsidor.
+- Den adaptiva griden är nu tänkt som återanvändbar CCC-standard och ska även användas i kommande `Välj plagg för publicering`.
+- Ingen ändring i site-preview, kanalval eller publiceringsmotor i denna version.
+- `README_CHATGPT_CCC.txt` ligger fortsatt i projektroten och `ccc-core/version.js` ingår i changed-files.
