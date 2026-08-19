@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Se vår vintage- och secondhandbutik i Hudiksvall med begagnade kläder, retroplagg, vintagejeans, fotbollströjor, boots och accessoarer."
+  >
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="canonical" href="https://container13.se/galleri.html">
+
+  <meta property="og:locale" content="sv_SE">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Container 13 Vintage">
+  <meta property="og:title" content="Vintagebutiken i Hudiksvall | Container 13">
+  <meta property="og:description" content="Se bilder från vår vintage-, retro- och second hand-butik med handplockade begagnade kläder i Hudiksvall.">
+  <meta property="og:url" content="https://container13.se/galleri.html">
+  <meta property="og:image" content="https://container13.se/bilder/logotyp/logo.png">
+  <meta property="og:image:alt" content="Container 13 Vintage i Hudiksvall">
+  <meta name="twitter:card" content="summary_large_image">
+
+  
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#f8f5ef">
+  <script src="js/theme-init.js?v=1.0.0"></script>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Container13">
+
+<title>Vintagebutiken i Hudiksvall | Container 13</title>
+
+  <link
+    rel="stylesheet"
+    href="css/style.css?v=6.10.30"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+
+  <style>
+    .page-header .logo-small {
+      display: block;
+      width: 680px;
+      width: min(680px, 82vw);
+      max-width: 82vw;
+      margin: 0 auto 18px;
+    }
+
+    .page-header h1 {
+      margin: 0 0 12px;
+    }
+
+    @media (max-width: 700px) {
+      .page-header .logo-small {
+        width: 320px;
+        width: min(320px, 86vw);
+        max-width: 86vw;
+        margin-bottom: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Gemensam navigation och statusrad -->
+  <div id="site-header"></div>
+
+
+  <header class="page-header">
+
+    <a
+      href="index.html"
+      aria-label="Gå till startsidan"
+    >
+      <img
+        src="bilder/logotyp/logo-patina.webp"
+        data-site-logo
+        class="logo-small"
+        alt="Container 13 Vintage"
+      >
+    </a>
+
+    <h1>Butiken</h1>
+
+    <p>
+      Bilder från vår vintage-, retro- och second hand-butik i Hudiksvall
+    </p>
+
+  </header>
+
+
+  <main>
+
+    <div
+      id="gallery"
+      class="gallery"
+      aria-live="polite"
+      aria-busy="true"
+    >
+      <p class="gallery-status">
+        Hämtar bilder...
+      </p>
+    </div>
+
+  </main>
+
+
+  <!-- Förstorad bild -->
+  <div
+    id="lightbox"
+    class="lightbox"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Förstorad bild"
+    aria-hidden="true"
+  >
+
+    <button
+      id="close"
+      class="lightbox-close"
+      type="button"
+      aria-label="Stäng bildvisningen"
+    >
+      &times;
+    </button>
+
+    <button
+      class="prev"
+      type="button"
+      aria-label="Visa föregående bild"
+    >
+      &#10094;
+    </button>
+
+    <img
+      id="lightboxImage"
+      alt="Förstorad bild från Container 13 Vintage"
+    >
+
+    <button
+      class="next"
+      type="button"
+      aria-label="Visa nästa bild"
+    >
+      &#10095;
+    </button>
+
+  </div>
+
+
+  <!-- Gemensam sidfot -->
+  <div id="site-footer"></div>
+
+
+  <!-- Gemensam meny, statusrad och sidfot -->
+  <script
+    type="module"
+    src="js/layout.js?v=6.10.42"
+  ></script>
+
+  <!-- Hämtar bilder från Firebase -->
+  <script
+    type="module"
+    src="js/galleri.js?v=4.1.0"
+  ></script>
+<script type="module" src="js/analytics.js?v=6.3.0"></script>
+
+
+  <script src="pwa.js?v=6.10.53" defer></script>
+</body>
+
+</html>
