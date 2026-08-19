@@ -119,6 +119,24 @@
       <div id="channelToast" class="channel-toast" role="status" aria-live="polite" hidden></div>
     </section>
 
+    <section id="channelConfirmView" class="publish-view" hidden>
+      <div class="publish-heading"><div><h1>Redo att publicera</h1><p id="confirmSummary">Kontrollera innan du publicerar</p></div></div>
+
+      <div class="confirm-channel-card">
+        <span class="channel-brand-icon channel-brand-c13" aria-hidden="true">C13</span>
+        <span><strong>Container13 hemsida</strong><small>Vald kanal</small></span>
+        <span class="confirm-channel-check" aria-hidden="true">✓</span>
+      </div>
+
+      <div id="confirmGrid" class="draft-grid confirm-grid"></div>
+
+      <div class="confirm-actions">
+        <button id="confirmPreviewBtn" class="secondary-action" type="button">Förhandsvisa på hemsidan</button>
+        <button id="confirmPublishBtn" class="primary-action" type="button">Publicera</button>
+        <p id="confirmStatus" class="publish-status" aria-live="polite"></p>
+      </div>
+    </section>
+
     <section id="publishedView" class="publish-view" hidden>
       <div class="publish-heading"><div><h1>Historik</h1><p>Publicerat innehåll</p></div></div>
       <div class="publish-empty"><strong>Ingen historik ännu</strong><span>Det du publicerar kommer att visas här.</span></div>

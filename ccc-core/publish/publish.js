@@ -118,7 +118,7 @@ function setPublishHeader(view){
 }
 function show(view){if(view!=="gridView"&&draftSelectionMode){draftSelectionMode=false;selectedDraftIds.clear();}
   currentPublishView=view;
-  ["startView","gridView","channelView","channelTargetsView","publishedView","detailView","cropView"].forEach(id=>$("#"+id).hidden=id!==view);
+  ["startView","gridView","channelView","channelTargetsView","channelConfirmView","publishedView","detailView","cropView"].forEach(id=>$("#"+id).hidden=id!==view);
   setPublishHeader(view);
   configureFooterForView(view);
   requestAnimationFrame(()=>{
@@ -1339,10 +1339,39 @@ document.querySelectorAll(".channel-option.is-unavailable").forEach(button=>{
   button.addEventListener("click",()=>showChannelUnavailable(button.dataset.channel||"Kanalen"));
 });
 
-$("#container13ChannelBtn")?.addEventListener("click",()=>{
-  $("#channelActions").hidden=false;
+async function renderChannelConfirmation(){
+  const selected=items.filter(item=>channelSelectedIds.has(item.id));
+  const grid=$("#confirmGrid");
+  if(!grid)return;
+  grid.replaceChildren();
+  grid.className=`draft-grid confirm-grid ${channelGridClass(selected.length)}`;
+  $("#confirmSummary").textContent=selected.length===1?"1 plagg till Container13":`${selected.length} plagg till Container13`;
+  $("#confirmPublishBtn").textContent=selected.length===1?"Publicera 1 plagg":`Publicera ${selected.length} plagg`;
+
+  for(const item of selected){
+    const index=Math.max(0,itemIndexById(item.id));
+    const card=document.createElement("button");
+    card.type="button";
+    card.className="draft-card confirm-card";
+    card.setAttribute("aria-label",`Förhandsvisa ${title(item,index)}`);
+    const img=document.createElement("img");
+    img.src=item.thumbUrl||await previewSrc(item);
+    img.alt=title(item,index);
+    img.decoding="async";
+    card.append(img);
+    bindDraftPreview(card,img);
+    card.addEventListener("dblclick",e=>{
+      e.preventDefault();
+      openImageQuickLook(itemImageSrc(index)||img.src,title(item,index));
+    });
+    grid.append(card);
+  }
+}
+
+$("#container13ChannelBtn")?.addEventListener("click",async()=>{
   $("#container13ChannelBtn").classList.add("is-chosen");
-  $("#channelPreviewStatus").textContent=`${channelSelectedIds.size} ${channelSelectedIds.size===1?"plagg":"plagg"} valda för Container13.`;
+  await renderChannelConfirmation();
+  show("channelConfirmView");
 });
 
 async function openSitePreviewForSelection(){
@@ -1368,6 +1397,20 @@ async function openSitePreviewForSelection(){
   window.location.href=target.href;
   return true;
 }
+
+
+$("#confirmPreviewBtn")?.addEventListener("click",()=>{
+  if(!channelSelectedIds.size){
+    $("#confirmStatus").textContent="Inga plagg är valda.";
+    return;
+  }
+  $("#confirmStatus").textContent="Öppnar förhandsvisningen…";
+  openSitePreviewForSelection();
+});
+$("#confirmPublishBtn")?.addEventListener("click",()=>{
+  const count=channelSelectedIds.size;
+  $("#confirmStatus").textContent=`Publicering är ännu inte inkopplad. ${count} ${count===1?"plagg skulle":"plagg skulle"} publiceras till Container13.`;
+});
 
 $("#channelPreviewBtn")?.addEventListener("click",()=>{
   if(!channelSelectedIds.size){
@@ -1443,6 +1486,10 @@ document.addEventListener("ccc:header-back",async()=>{if(currentPublishView==="g
     window.location.href="../dashboard/index.html";
     return;
   }
+  if(currentPublishView==="channelConfirmView"){
+    show("channelTargetsView");
+    return;
+  }
   if(currentPublishView==="channelTargetsView"){
     show("channelView");
     return;
@@ -1470,4 +1517,4 @@ document.addEventListener("ccc:core-ready",()=>setPublishHeader(currentPublishVi
 
 /* CCC cache stamp: v2.9.20 */
 
-/* CCC cache stamp: v2.9.57 */
+/* CCC cache stamp: v2.9.58 */

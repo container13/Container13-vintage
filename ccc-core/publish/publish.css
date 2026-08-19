@@ -1114,7 +1114,7 @@
 .delete-draft-confirm{background:#b83a3a!important;color:#fff!important}
 
 
-/* CCC v2.9.57 – site-preview hör hemma i Välj kanal */
+/* CCC v2.9.58 – site-preview hör hemma i Välj kanal */
 .channel-card{
   width:min(100%,520px);
   margin:14px auto 0;
@@ -1136,7 +1136,7 @@
   font-size:12px;
 }
 
-/* CCC v2.9.57 – adaptiv miniatyrgrid i Förbered för publicering */
+/* CCC v2.9.58 – adaptiv miniatyrgrid i Förbered för publicering */
 #draftGrid.draft-grid.grid-1,
 #draftGrid.draft-grid.grid-2,
 #draftGrid.draft-grid.grid-4,
@@ -1145,7 +1145,7 @@
 }
 #draftGrid.draft-grid.grid-1{align-items:start}
 
-/* CCC v2.9.57 – Välj plagg -> Välj kanal */
+/* CCC v2.9.58 – Välj plagg -> Välj kanal */
 .channel-selection-summary{
   width:min(100%,520px);
   margin:8px auto 10px;
@@ -1197,7 +1197,7 @@
 .channel-actions{width:min(100%,520px);margin:14px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .channel-actions .publish-status{grid-column:1/-1}
 
-/* CCC v2.9.57 – Fortsätt alltid synlig ovanför Core-footern i Välj plagg */
+/* CCC v2.9.58 – Fortsätt alltid synlig ovanför Core-footern i Välj plagg */
 #channelView{
   padding-bottom:84px;
 }
@@ -1220,7 +1220,7 @@
   }
 }
 
-/* CCC v2.9.57 – ren kanalväljare + kanalidentitet */
+/* CCC v2.9.58 – ren kanalväljare + kanalidentitet */
 .ccc-draft-pager[hidden],
 #channelSelectPager[hidden]{
   display:none!important;
@@ -1277,7 +1277,7 @@
   opacity:.55;
 }
 
-/* CCC v2.9.57 – färgstarka kanaler, endast valboxen låst */
+/* CCC v2.9.58 – färgstarka kanaler, endast valboxen låst */
 .channel-option{
   grid-template-columns:56px minmax(0,1fr) 38px;
   min-height:78px;
@@ -1352,3 +1352,53 @@
   pointer-events:none;
 }
 .channel-toast.is-visible{opacity:1;transform:translate(-50%,0)}
+
+/* CCC v2.9.58 – sista kontrollen före publicering */
+.confirm-channel-card{
+  width:min(100%,520px);
+  margin:10px auto 14px;
+  min-height:72px;
+  padding:10px 14px;
+  border:1px solid var(--border);
+  border-radius:17px;
+  background:var(--surface);
+  display:grid;
+  grid-template-columns:56px minmax(0,1fr) 34px;
+  align-items:center;
+  gap:10px;
+}
+.confirm-channel-card>span:nth-child(2){display:grid;gap:4px}
+.confirm-channel-card strong{font-size:16px}
+.confirm-channel-card small{font-size:12px;color:var(--muted)}
+.confirm-channel-check{
+  width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  justify-self:end;background:#2e9f55;color:#fff;font-weight:900;
+}
+.confirm-grid{
+  width:100%;
+  gap:8px!important;
+  align-content:start;
+  touch-action:pan-y;
+}
+.confirm-grid.grid-1{grid-template-columns:minmax(0,1fr)!important}
+.confirm-grid.grid-2,.confirm-grid.grid-4{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+.confirm-grid.grid-9{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.confirm-grid.grid-1 .confirm-card{width:min(100%,420px);justify-self:center}
+.confirm-card{
+  position:relative!important;aspect-ratio:1/1!important;overflow:hidden!important;
+  padding:0!important;border-radius:12px!important;
+}
+.confirm-card img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;pointer-events:none!important}
+.confirm-actions{
+  width:min(100%,520px);
+  margin:14px auto 0;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.confirm-actions .publish-status{grid-column:1/-1;text-align:center}
+@media(max-width:420px){
+  .confirm-actions{grid-template-columns:1fr}
+  .confirm-actions .publish-status{grid-column:1}
+}
