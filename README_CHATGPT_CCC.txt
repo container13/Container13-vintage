@@ -1269,3 +1269,22 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - När Container13 väljs visas `Förhandsvisa på hemsidan` samt en avsiktligt inaktiv `Publicera`-knapp; riktig live-publicering kopplas inte in i denna version.
 - Site-preview kan nu ta emot flera markerade lokala plagg och injicera dem högst upp i Nyinkommet utan Firebase-write.
 - Expresspublicering ligger kvar som senare snabbspår ovanpå samma publiceringsmotor när normalflödet är stabilt.
+
+
+## v2.9.55 – Fortsätt synlig i Välj plagg
+- v2.9.54 hade fungerande markering av miniatyrer, men `Fortsätt` låg efter den reserverade gridytan och kunde hamna bakom/under den fasta Core-footern på mobil.
+- `Fortsätt` är nu fast placerad ovanför Core-footern i `Välj plagg`, med tumvänlig fullbredd inom max 520 px.
+- Knappen är alltid synlig medan användaren väljer plagg, men är fortsatt inaktiv tills minst ett plagg markerats.
+- Ingen ändring i själva markeringen, adaptiva griden, kanalvalet eller site-preview-logiken.
+
+
+## v2.9.56 – kanalidentitet + bort med gul pager-prick
+- Den gula ensamma pricken som kunde synas under `Fortsätt` vid bara en sida var kanalgridens pager-indikator. CSS-regeln för pagern skrev över HTML-attributet `hidden`.
+- `.ccc-draft-pager[hidden]` döljs nu explicit med `display:none!important`, så ingen pager-prick visas när det bara finns en sida.
+- Kanalvyn får tydliga visuella kanalidentiteter:
+  - Container13 hemsida: lokal `C13`-markör.
+  - Instagram: igenkännbar kamera/Instagram-symbol.
+  - Facebook: igenkännbar `f`-symbol.
+  - Tradera: enkel `T`-markör tills eventuell officiell asset kopplas in.
+- Ej anslutna kanaler är fortsatt synliga men gråmarkerade/inaktiva för att visa vad CCC kan stödja framöver.
+- Ingen ändring i urval, preview-data, site-preview eller publiceringslogik.
