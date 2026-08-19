@@ -1319,3 +1319,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Tillbaka-pilen följer exakt samma logiska steg bakåt: kontroll → plaggval → kanalval → Publicera-start.
 - Expresspublicering ligger kvar som ett separat framtida snabbspår för fall där användaren redan vet kanal och inte behöver normalflödets alla steg.
 - Ingen ändring i live-publiceringsmotorn; skarp publicering är fortsatt avstängd.
+
+
+## v2.9.60 – kanalvyn renodlad
+- Den gamla actiondelen med `Förhandsvisa på hemsidan` och `Publicera` har tagits bort från `Välj kanal`.
+- Standardflödet är nu visuellt och funktionellt konsekvent: `Välj kanal` → `Välj plagg` → `Fortsätt` → `Redo att publicera`.
+- `Förhandsvisa på hemsidan` och `Publicera X plagg` visas endast i sista kontrollvyn, efter att plagg faktiskt har valts.
+- Kanalvyns visuella utformning från v2.9.59/v2.9.57 behålls.
+- Skarp publicering är fortsatt avstängd.
