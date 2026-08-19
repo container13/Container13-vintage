@@ -1179,6 +1179,28 @@ $("#cropDone").addEventListener("click",async()=>{
 
 $("#publishBtn").addEventListener("click",()=>{const item=activeItem();if(!item)return;$("#publishStatus").textContent=item.publishBlob?"Nästa steg kopplar den här WebP-bilden till Container13.":"Beskär bilden först så skapas publicerings-WebP lokalt.";if(!item.publishBlob)openCrop();});
 
+$("#sitePreviewBtn")?.addEventListener("click",()=>{
+  const item=activeItem();
+  if(!item)return;
+  const payload={
+    id:item.id,
+    title:title(item,activeIndex),
+    brand:item.brand||item.fields?.brand||"",
+    size:item.size||item.fields?.size||"",
+    price:item.price||item.fields?.price||"",
+    createdAt:new Date().toISOString()
+  };
+  try{
+    sessionStorage.setItem("ccc-site-preview-item",JSON.stringify(payload));
+  }catch(error){
+    console.warn("[CCC Publicera] Kunde inte spara preview-metadata",error);
+  }
+  const target=new URL("../site-preview/nyinkommet.html",window.location.href);
+  target.searchParams.set("cccPreview","1");
+  target.searchParams.set("item",String(item.id||""));
+  window.location.href=target.href;
+});
+
 (async()=>{try{
   let explicit=(await getAll()).filter(r=>r.readyToPublish!==false);
   explicit=await Promise.all(explicit.map(hydrateOriginal));
