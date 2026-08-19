@@ -18,6 +18,92 @@ import {
   let images = [];
   let currentIndex = 0;
 
+  const PREVIEW_DB_NAME = "ccc-local-workspace";
+  const PREVIEW_DB_VERSION = 3;
+  const PREVIEW_IMAGE_STORE = "images";
+  const PREVIEW_FILE_STORE = "vision-files";
+  let previewItem = null;
+  let previewObjectUrl = "";
+
+  function previewRequested() {
+    return new URLSearchParams(window.location.search).get("cccPreview") === "1";
+  }
+
+  function previewMetadata() {
+    try {
+      return JSON.parse(sessionStorage.getItem("ccc-site-preview-item") || "null");
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function openPreviewDb() {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open(PREVIEW_DB_NAME, PREVIEW_DB_VERSION);
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+      request.onblocked = () => reject(new Error("CCC:s lokala databas är blockerad."));
+    });
+  }
+
+  async function getPreviewRecord(id) {
+    if (!id) return null;
+    const db = await openPreviewDb();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(PREVIEW_IMAGE_STORE, "readonly");
+      const request = tx.objectStore(PREVIEW_IMAGE_STORE).get(id);
+      request.onsuccess = () => resolve(request.result || null);
+      request.onerror = () => reject(request.error);
+      tx.oncomplete = () => db.close();
+    });
+  }
+
+  async function getPreviewSourceFile(key) {
+    if (!key) return null;
+    const db = await openPreviewDb();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(PREVIEW_FILE_STORE, "readonly");
+      const request = tx.objectStore(PREVIEW_FILE_STORE).get(key);
+      request.onsuccess = () => resolve(request.result?.blob || null);
+      request.onerror = () => reject(request.error);
+      tx.oncomplete = () => db.close();
+    });
+  }
+
+  async function loadLocalPreviewItem() {
+    if (!previewRequested()) return null;
+    document.getElementById("cccPreviewBanner")?.classList.add("is-active");
+
+    const params = new URLSearchParams(window.location.search);
+    const meta = previewMetadata() || {};
+    const id = params.get("item") || meta.id || "";
+    if (!id) return null;
+
+    try {
+      const record = await getPreviewRecord(id);
+      if (!record) throw new Error("Det lokala utkastet hittades inte.");
+
+      let blob = record.publishBlob || record.thumbnailBlob || record.originalBlob || null;
+      if (!blob && record.originalFileKey) blob = await getPreviewSourceFile(record.originalFileKey);
+      if (!blob) throw new Error("Utkastet saknar lokal bild.");
+
+      previewObjectUrl = URL.createObjectURL(blob);
+      return {
+        id: `ccc-preview-${id}`,
+        title: meta.title || record.title || record.fields?.title || "Förhandsvisning",
+        imageUrl: previewObjectUrl,
+        category: "nyinkommet",
+        createdAt: meta.createdAt || new Date().toISOString(),
+        __cccPreview: true
+      };
+    } catch (error) {
+      console.error("[CCC Site Preview]", error);
+      const banner = document.getElementById("cccPreviewBanner");
+      if (banner) banner.textContent = `Förhandsvisning kunde inte laddas: ${error.message}`;
+      return null;
+    }
+  }
+
   function val(value) {
     if (!value || typeof value !== "object") return null;
     if ("stringValue" in value) return value.stringValue;
@@ -145,6 +231,10 @@ import {
     items.forEach((item, index) => {
       const figure = document.createElement("figure");
       figure.className = "gallery-item nyinkommet-kort image-card-loading";
+      if (item.__cccPreview) {
+        figure.dataset.cccPreview = "true";
+        figure.setAttribute("aria-label","Lokalt CCC-utkast i förhandsvisning");
+      }
 
       const imageButton = document.createElement("button");
       imageButton.className = "nyinkommet-bildknapp";
@@ -187,6 +277,9 @@ import {
 
   async function load() {
     if (!gallery) return;
+    previewItem = await loadLocalPreviewItem();
+    if (previewItem) render([previewItem]);
+
     const cached = getCachedGalleryData();
     if (!cached) {
       gallery.innerHTML = '<p class="gallery-status">Hämtar bilder...</p>';
@@ -202,7 +295,7 @@ import {
       const selected = all
         .filter((item) => category(item) === "nyinkommet" && imageUrl(item) && withinRetention(item, retention))
         .sort((a, b) => time(b) - time(a));
-      render(selected);
+      render(previewItem ? [previewItem, ...selected] : selected);
     };
 
     if (cached) {
@@ -214,8 +307,10 @@ import {
       renderGalleryData(fresh);
     } catch (error) {
       console.error(error);
-      if (!cached) {
+      if (!cached && !previewItem) {
         gallery.innerHTML = `<p class="gallery-status">Bilderna kunde inte hämtas (${error.message}).</p>`;
+      } else if (!cached && previewItem) {
+        render([previewItem]);
       }
     }
   }
@@ -230,5 +325,6 @@ import {
     if (event.key === "ArrowRight") next();
   });
 
+  window.addEventListener("pagehide",()=>{if(previewObjectUrl)URL.revokeObjectURL(previewObjectUrl);});
   load();
 })();
