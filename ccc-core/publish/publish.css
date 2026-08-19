@@ -1114,7 +1114,7 @@
 .delete-draft-confirm{background:#b83a3a!important;color:#fff!important}
 
 
-/* CCC v2.9.54 – site-preview hör hemma i Välj kanal */
+/* CCC v2.9.55 – site-preview hör hemma i Välj kanal */
 .channel-card{
   width:min(100%,520px);
   margin:14px auto 0;
@@ -1136,7 +1136,7 @@
   font-size:12px;
 }
 
-/* CCC v2.9.54 – adaptiv miniatyrgrid i Förbered för publicering */
+/* CCC v2.9.55 – adaptiv miniatyrgrid i Förbered för publicering */
 #draftGrid.draft-grid.grid-1,
 #draftGrid.draft-grid.grid-2,
 #draftGrid.draft-grid.grid-4,
@@ -1145,7 +1145,7 @@
 }
 #draftGrid.draft-grid.grid-1{align-items:start}
 
-/* CCC v2.9.54 – Välj plagg -> Välj kanal */
+/* CCC v2.9.55 – Välj plagg -> Välj kanal */
 .channel-selection-summary{
   width:min(100%,520px);
   margin:8px auto 10px;
@@ -1196,3 +1196,26 @@
 .channel-option.is-chosen{border-color:#2e9f55;box-shadow:0 0 0 2px rgba(46,159,85,.18)}
 .channel-actions{width:min(100%,520px);margin:14px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .channel-actions .publish-status{grid-column:1/-1}
+
+/* CCC v2.9.55 – Fortsätt alltid synlig ovanför Core-footern i Välj plagg */
+#channelView{
+  padding-bottom:84px;
+}
+#channelView .channel-continue-action{
+  position:fixed;
+  left:50%;
+  bottom:62px;
+  transform:translateX(-50%);
+  z-index:9500;
+  width:min(calc(100vw - 28px),520px);
+  margin:0;
+  box-shadow:0 10px 28px rgba(0,0,0,.28);
+}
+#channelView .channel-continue-action:disabled{
+  opacity:.42;
+}
+@media(min-width:700px){
+  #channelView .channel-continue-action{
+    width:min(calc(100vw - 48px),520px);
+  }
+}
