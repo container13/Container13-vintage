@@ -801,7 +801,6 @@ $("#channelBtn").addEventListener("click",()=>{
   channelSelectedIds.clear();
   channelSelectPage=0;
   $("#container13ChannelBtn")?.classList.remove("is-chosen");
-  $("#channelActions").hidden=true;
   show("channelTargetsView");
 });
 $("#publishedBtn").addEventListener("click",()=>show("publishedView"));
@@ -1415,18 +1414,6 @@ $("#confirmPublishBtn")?.addEventListener("click",()=>{
   $("#confirmStatus").textContent=`Publicering är ännu inte inkopplad. ${count} ${count===1?"plagg skulle":"plagg skulle"} publiceras till Container13.`;
 });
 
-$("#channelPreviewBtn")?.addEventListener("click",()=>{
-  if(!channelSelectedIds.size){
-    $("#channelPreviewStatus").textContent="Välj minst ett plagg först.";
-    return;
-  }
-  $("#channelPreviewStatus").textContent="Öppnar förhandsvisningen…";
-  openSitePreviewForSelection();
-});
-
-$("#channelPublishBtn")?.addEventListener("click",()=>{
-  $("#channelPreviewStatus").textContent="Publicering kopplas in i nästa steg. Ingen live-publicering görs ännu.";
-});
 
 (async()=>{try{
   let explicit=(await getAll()).filter(r=>r.readyToPublish!==false);
@@ -1524,4 +1511,4 @@ document.addEventListener("ccc:core-ready",()=>setPublishHeader(currentPublishVi
 
 /* CCC cache stamp: v2.9.20 */
 
-/* CCC cache stamp: v2.9.59 */
+/* CCC cache stamp: v2.9.60 */
