@@ -133,7 +133,12 @@ function ensureDraftGridUi(){
   const style=document.createElement("style");
   style.id="cccDraftGridCompactStyles";
   style.textContent=`
-    #draftGrid.draft-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;touch-action:pan-y;overflow:hidden}
+    #draftGrid.draft-grid{gap:8px!important;touch-action:pan-y;overflow:hidden;align-content:start;min-height:min(66vw,420px)}
+    #draftGrid.draft-grid.grid-1{grid-template-columns:minmax(0,1fr)!important}
+    #draftGrid.draft-grid.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+    #draftGrid.draft-grid.grid-4{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+    #draftGrid.draft-grid.grid-9{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+    #draftGrid.draft-grid.grid-1 .draft-card{width:min(100%,420px);justify-self:center}
     #draftGrid .draft-card{position:relative!important;aspect-ratio:1/1!important;min-width:0!important;min-height:0!important;border-radius:12px!important;overflow:hidden!important;padding:0!important;margin:0!important;-webkit-touch-callout:none!important;-webkit-tap-highlight-color:transparent!important;-webkit-user-select:none!important;user-select:none!important;appearance:none!important;-webkit-appearance:none!important}
     #draftGrid .draft-card img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;pointer-events:none!important;-webkit-user-drag:none!important;-webkit-user-select:none!important;user-select:none!important;-webkit-tap-highlight-color:transparent!important}
     .ccc-draft-preview-layer{position:fixed;inset:0;z-index:9999;pointer-events:none;background:rgba(5,7,12,.58);opacity:0;transition:opacity .16s ease}
@@ -467,6 +472,12 @@ async function renderGrid(){
   draftPage=Math.max(0,Math.min(draftPage,pages-1));
   const pageStart=draftPage*DRAFTS_PER_PAGE;
   const pageEnd=Math.min(items.length,pageStart+DRAFTS_PER_PAGE);
+  const visibleCount=Math.max(0,pageEnd-pageStart);
+  grid.classList.remove("grid-1","grid-2","grid-4","grid-9");
+  if(visibleCount===1)grid.classList.add("grid-1");
+  else if(visibleCount===2)grid.classList.add("grid-2");
+  else if(visibleCount<=4)grid.classList.add("grid-4");
+  else grid.classList.add("grid-9");
   for(let index=pageStart;index<pageEnd;index+=1){
     const item=items[index];
     const b=document.createElement("button");
@@ -1303,4 +1314,4 @@ document.addEventListener("ccc:core-ready",()=>setPublishHeader(currentPublishVi
 
 /* CCC cache stamp: v2.9.20 */
 
-/* CCC cache stamp: v2.9.52 */
+/* CCC cache stamp: v2.9.53 */

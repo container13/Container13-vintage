@@ -1114,7 +1114,7 @@
 .delete-draft-confirm{background:#b83a3a!important;color:#fff!important}
 
 
-/* CCC v2.9.52 – site-preview hör hemma i Välj kanal */
+/* CCC v2.9.53 – site-preview hör hemma i Välj kanal */
 .channel-card{
   width:min(100%,520px);
   margin:14px auto 0;
@@ -1135,3 +1135,12 @@
   color:var(--muted);
   font-size:12px;
 }
+
+/* CCC v2.9.53 – adaptiv miniatyrgrid i Förbered för publicering */
+#draftGrid.draft-grid.grid-1,
+#draftGrid.draft-grid.grid-2,
+#draftGrid.draft-grid.grid-4,
+#draftGrid.draft-grid.grid-9{
+  width:100%;
+}
+#draftGrid.draft-grid.grid-1{align-items:start}
