@@ -1114,7 +1114,7 @@
 .delete-draft-confirm{background:#b83a3a!important;color:#fff!important}
 
 
-/* CCC v2.9.55 – site-preview hör hemma i Välj kanal */
+/* CCC v2.9.56 – site-preview hör hemma i Välj kanal */
 .channel-card{
   width:min(100%,520px);
   margin:14px auto 0;
@@ -1136,7 +1136,7 @@
   font-size:12px;
 }
 
-/* CCC v2.9.55 – adaptiv miniatyrgrid i Förbered för publicering */
+/* CCC v2.9.56 – adaptiv miniatyrgrid i Förbered för publicering */
 #draftGrid.draft-grid.grid-1,
 #draftGrid.draft-grid.grid-2,
 #draftGrid.draft-grid.grid-4,
@@ -1145,7 +1145,7 @@
 }
 #draftGrid.draft-grid.grid-1{align-items:start}
 
-/* CCC v2.9.55 – Välj plagg -> Välj kanal */
+/* CCC v2.9.56 – Välj plagg -> Välj kanal */
 .channel-selection-summary{
   width:min(100%,520px);
   margin:8px auto 10px;
@@ -1197,7 +1197,7 @@
 .channel-actions{width:min(100%,520px);margin:14px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .channel-actions .publish-status{grid-column:1/-1}
 
-/* CCC v2.9.55 – Fortsätt alltid synlig ovanför Core-footern i Välj plagg */
+/* CCC v2.9.56 – Fortsätt alltid synlig ovanför Core-footern i Välj plagg */
 #channelView{
   padding-bottom:84px;
 }
@@ -1218,4 +1218,61 @@
   #channelView .channel-continue-action{
     width:min(calc(100vw - 48px),520px);
   }
+}
+
+/* CCC v2.9.56 – ren kanalväljare + kanalidentitet */
+.ccc-draft-pager[hidden],
+#channelSelectPager[hidden]{
+  display:none!important;
+}
+.channel-option{
+  display:grid;
+  grid-template-columns:44px minmax(0,1fr) auto;
+}
+.channel-brand-icon{
+  width:38px;
+  height:38px;
+  border-radius:11px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  justify-self:start;
+  flex:0 0 auto;
+  font-weight:900;
+  line-height:1;
+}
+.channel-brand-icon svg{
+  width:25px;
+  height:25px;
+  display:block;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.9;
+}
+.channel-brand-facebook svg{
+  fill:currentColor;
+  stroke:none;
+}
+.channel-brand-c13{
+  background:rgba(226,181,78,.14);
+  border:1px solid rgba(226,181,78,.42);
+  color:var(--gold);
+  font-size:12px;
+  letter-spacing:-.04em;
+}
+.channel-brand-instagram{
+  background:linear-gradient(145deg,rgba(188,52,184,.18),rgba(242,125,58,.18));
+}
+.channel-brand-facebook{
+  background:rgba(24,119,242,.14);
+}
+.channel-brand-tradera{
+  background:rgba(111,78,168,.14);
+  font-size:20px;
+}
+.channel-option.is-disabled .channel-brand-icon{
+  filter:grayscale(1);
+}
+.channel-option.is-disabled .channel-option-state{
+  opacity:.55;
 }
