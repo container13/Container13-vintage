@@ -1308,3 +1308,14 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Skarp publicering är fortfarande medvetet avstängd: tryck på Publicera ger endast status om vad som skulle publiceras. Ingen Firebase-write/live-publicering görs i v2.9.58.
 - Headerns tillbaka-pil går från kontrollvyn tillbaka exakt ett steg till kanalvalet.
 - Kontrollvyn är avsedd som sista säkerhetskontroll innan publiceringsmotorn kopplas in.
+
+
+## v2.9.59 – standardflödet byter ordning: kanal först
+- Publicera-standardflödet är nu: `Välj kanal` → `Välj plagg` → `Redo att publicera` → `Förhandsvisa/Publicera`.
+- Motivet är framtidssäkerhet: olika kanaler kan senare kräva olika bildformat, metadata eller förberedelser, så kanalvalet bör sätta ramarna före plaggurvalet.
+- Startkortet `Välj kanal` öppnar därför kanalvyn direkt.
+- Val av `Container13 hemsida` leder därefter till den adaptiva miniatyrgriden för plaggurval.
+- `Fortsätt` från plaggurvalet går direkt till sista kontrollvyn.
+- Tillbaka-pilen följer exakt samma logiska steg bakåt: kontroll → plaggval → kanalval → Publicera-start.
+- Expresspublicering ligger kvar som ett separat framtida snabbspår för fall där användaren redan vet kanal och inte behöver normalflödets alla steg.
+- Ingen ändring i live-publiceringsmotorn; skarp publicering är fortsatt avstängd.
