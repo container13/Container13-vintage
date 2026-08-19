@@ -1298,3 +1298,13 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Endast valboxen längst till höger är grå/låst för en ej ansluten kanal.
 - Tryck på Instagram/Facebook/Tradera visar en liten tillfällig popup som förklarar att kanalen inte är ansluten ännu och att anslutning senare ska kunna göras direkt härifrån.
 - UI:t förbereds därmed för framtida `Anslut kanal`-flöde utan att någon riktig kontointegration kopplas in ännu.
+
+
+## v2.9.58 – sista kontrollvy före publicering
+- Tryck på den anslutna kanalen `Container13 hemsida` leder nu till en separat `Redo att publicera`-vy.
+- Kontrollvyn visar vald kanal, antal valda plagg och de valda plaggen som adaptiva miniatyrer.
+- `Förhandsvisa på hemsidan` återanvänder befintlig multi-item site-preview.
+- `Publicera` visar dynamiskt `Publicera 1 plagg` / `Publicera X plagg`.
+- Skarp publicering är fortfarande medvetet avstängd: tryck på Publicera ger endast status om vad som skulle publiceras. Ingen Firebase-write/live-publicering görs i v2.9.58.
+- Headerns tillbaka-pil går från kontrollvyn tillbaka exakt ett steg till kanalvalet.
+- Kontrollvyn är avsedd som sista säkerhetskontroll innan publiceringsmotorn kopplas in.
