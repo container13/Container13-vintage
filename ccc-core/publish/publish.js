@@ -15,6 +15,7 @@ let recentlyAdaptedItemId=null;
 let draftSelectionMode=false;const selectedDraftIds=new Set();
 let pendingDraftDelete=null;
 const channelSelectedIds=new Set();
+let container13ChannelSelected=false;
 let channelSelectPage=0;
 const CHANNEL_PER_PAGE=9;
 const decodedImageCache=new Map();
@@ -800,7 +801,12 @@ $("#draftsBtn").addEventListener("click",async()=>{
 $("#channelBtn").addEventListener("click",()=>{
   channelSelectedIds.clear();
   channelSelectPage=0;
-  $("#container13ChannelBtn")?.classList.remove("is-chosen");
+  container13ChannelSelected=false;
+  const c13=$("#container13ChannelBtn");
+  c13?.classList.remove("is-chosen");
+  c13?.setAttribute("aria-pressed","false");
+  const next=$("#channelNextBtn");
+  if(next)next.disabled=true;
   show("channelTargetsView");
 });
 $("#publishedBtn").addEventListener("click",()=>show("publishedView"));
@@ -1343,7 +1349,7 @@ async function renderChannelConfirmation(){
   if(!grid)return;
   grid.replaceChildren();
   grid.className=`draft-grid confirm-grid ${channelGridClass(selected.length)}`;
-  $("#confirmSummary").textContent=selected.length===1?"1 plagg till Container13":`${selected.length} plagg till Container13`;
+  $("#confirmSummary").textContent=selected.length===1?"1 plagg valt – redo för Container13":`${selected.length} plagg valda – redo för Container13`;
   $("#confirmPublishBtn").textContent=selected.length===1?"Publicera 1 plagg":`Publicera ${selected.length} plagg`;
 
   for(const item of selected){
@@ -1366,8 +1372,17 @@ async function renderChannelConfirmation(){
   }
 }
 
-$("#container13ChannelBtn")?.addEventListener("click",async()=>{
-  $("#container13ChannelBtn").classList.add("is-chosen");
+$("#container13ChannelBtn")?.addEventListener("click",()=>{
+  container13ChannelSelected=!container13ChannelSelected;
+  const button=$("#container13ChannelBtn");
+  button.classList.toggle("is-chosen",container13ChannelSelected);
+  button.setAttribute("aria-pressed",String(container13ChannelSelected));
+  const next=$("#channelNextBtn");
+  if(next)next.disabled=!container13ChannelSelected;
+});
+
+$("#channelNextBtn")?.addEventListener("click",async()=>{
+  if(!container13ChannelSelected)return;
   channelSelectedIds.clear();
   channelSelectPage=0;
   const label=$("#channelSelectionChannelLabel");
@@ -1511,4 +1526,4 @@ document.addEventListener("ccc:core-ready",()=>setPublishHeader(currentPublishVi
 
 /* CCC cache stamp: v2.9.20 */
 
-/* CCC cache stamp: v2.9.60 */
+/* CCC cache stamp: v2.9.61 */

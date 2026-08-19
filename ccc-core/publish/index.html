@@ -86,10 +86,10 @@
     <section id="channelTargetsView" class="publish-view" hidden>
       <div class="publish-heading"><div><h1>Välj kanal</h1><p id="channelTargetSummary">Välj var du vill publicera</p></div></div>
       <div class="channel-list">
-        <button id="container13ChannelBtn" class="channel-option is-connected" type="button">
+        <button id="container13ChannelBtn" class="channel-option is-connected" type="button" aria-pressed="false">
           <span class="channel-brand-icon channel-brand-c13" aria-hidden="true">C13</span>
           <span class="channel-option-main"><strong>Container13 hemsida</strong><small>Ansluten</small></span>
-          <span class="channel-option-state">✓</span>
+          <span class="channel-option-state channel-select-box" aria-hidden="true"></span>
         </button>
         <button class="channel-option is-unavailable" type="button" data-channel="Instagram" aria-disabled="true">
           <span class="channel-brand-icon channel-brand-instagram" aria-hidden="true">
@@ -111,23 +111,24 @@
           <span class="channel-option-state channel-choice-box" aria-hidden="true">🔒</span>
         </button>
       </div>
+      <button id="channelNextBtn" class="primary-action channel-next-action" type="button" disabled>Nästa</button>
 
       <div id="channelToast" class="channel-toast" role="status" aria-live="polite" hidden></div>
     </section>
 
     <section id="channelConfirmView" class="publish-view" hidden>
-      <div class="publish-heading"><div><h1>Redo att publicera</h1><p id="confirmSummary">Kontrollera innan du publicerar</p></div></div>
+      <div class="publish-heading"><div><h1>Redo att publicera</h1><p id="confirmSummary">Kontrollera ditt val och publicera när du är nöjd</p></div></div>
 
       <div class="confirm-channel-card">
         <span class="channel-brand-icon channel-brand-c13" aria-hidden="true">C13</span>
-        <span><strong>Container13 hemsida</strong><small>Vald kanal</small></span>
+        <span><strong>Container13 hemsida</strong><small>Vald kanal ✓</small></span>
         <span class="confirm-channel-check" aria-hidden="true">✓</span>
       </div>
 
       <div id="confirmGrid" class="draft-grid confirm-grid"></div>
 
       <div class="confirm-actions">
-        <button id="confirmPreviewBtn" class="secondary-action" type="button">Förhandsvisa på hemsidan</button>
+        <button id="confirmPreviewBtn" class="secondary-action" type="button">Förhandsvisa</button>
         <button id="confirmPublishBtn" class="primary-action" type="button">Publicera</button>
         <p id="confirmStatus" class="publish-status" aria-live="polite"></p>
       </div>

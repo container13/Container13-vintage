@@ -1114,7 +1114,7 @@
 .delete-draft-confirm{background:#b83a3a!important;color:#fff!important}
 
 
-/* CCC v2.9.60 – site-preview hör hemma i Välj kanal */
+/* CCC v2.9.61 – site-preview hör hemma i Välj kanal */
 .channel-card{
   width:min(100%,520px);
   margin:14px auto 0;
@@ -1136,7 +1136,7 @@
   font-size:12px;
 }
 
-/* CCC v2.9.60 – adaptiv miniatyrgrid i Förbered för publicering */
+/* CCC v2.9.61 – adaptiv miniatyrgrid i Förbered för publicering */
 #draftGrid.draft-grid.grid-1,
 #draftGrid.draft-grid.grid-2,
 #draftGrid.draft-grid.grid-4,
@@ -1145,7 +1145,7 @@
 }
 #draftGrid.draft-grid.grid-1{align-items:start}
 
-/* CCC v2.9.60 – Välj plagg -> Välj kanal */
+/* CCC v2.9.61 – Välj plagg -> Välj kanal */
 .channel-selection-summary{
   width:min(100%,520px);
   margin:8px auto 10px;
@@ -1197,7 +1197,7 @@
 .channel-actions{width:min(100%,520px);margin:14px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .channel-actions .publish-status{grid-column:1/-1}
 
-/* CCC v2.9.60 – Fortsätt alltid synlig ovanför Core-footern i Välj plagg */
+/* CCC v2.9.61 – Fortsätt alltid synlig ovanför Core-footern i Välj plagg */
 #channelView{
   padding-bottom:84px;
 }
@@ -1220,7 +1220,7 @@
   }
 }
 
-/* CCC v2.9.60 – ren kanalväljare + kanalidentitet */
+/* CCC v2.9.61 – ren kanalväljare + kanalidentitet */
 .ccc-draft-pager[hidden],
 #channelSelectPager[hidden]{
   display:none!important;
@@ -1277,7 +1277,7 @@
   opacity:.55;
 }
 
-/* CCC v2.9.60 – färgstarka kanaler, endast valboxen låst */
+/* CCC v2.9.61 – färgstarka kanaler, endast valboxen låst */
 .channel-option{
   grid-template-columns:56px minmax(0,1fr) 38px;
   min-height:78px;
@@ -1353,7 +1353,7 @@
 }
 .channel-toast.is-visible{opacity:1;transform:translate(-50%,0)}
 
-/* CCC v2.9.60 – sista kontrollen före publicering */
+/* CCC v2.9.61 – sista kontrollen före publicering */
 .confirm-channel-card{
   width:min(100%,520px);
   margin:10px auto 14px;
@@ -1403,8 +1403,38 @@
   .confirm-actions .publish-status{grid-column:1}
 }
 
-/* CCC v2.9.60 – standardflöde: kanal först */
+/* CCC v2.9.61 – standardflöde: kanal först */
 #channelSelectionChannelLabel{
   color:var(--muted);
   font-weight:700;
+}
+
+/* CCC v2.9.61 – explicit kanalval och tydligare slutsteg */
+.channel-select-box{
+  width:32px;height:32px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  justify-self:end;
+  border:2px solid rgba(125,125,135,.42);
+  background:rgba(125,125,135,.08);
+}
+.channel-option.is-chosen .channel-select-box{
+  border-color:#2e9f55;background:#2e9f55;color:#fff;
+}
+.channel-option.is-chosen .channel-select-box::after{
+  content:"✓";font-weight:900;font-size:18px;
+}
+.channel-next-action{
+  width:min(100%,520px);
+  display:block;
+  margin:14px auto 0;
+}
+.channel-next-action:disabled{opacity:.4}
+#channelConfirmView .confirm-channel-card{
+  border-color:rgba(46,159,85,.5);
+}
+#channelConfirmView .confirm-actions{
+  margin-top:18px;
+}
+#channelConfirmView #confirmPublishBtn{
+  font-weight:800;
 }
