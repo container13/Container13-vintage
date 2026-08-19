@@ -797,11 +797,12 @@ $("#draftsBtn").addEventListener("click",async()=>{
   show("gridView");
   requestAnimationFrame(()=>$("#cccHeaderBack")?.focus({preventScroll:true}));
 });
-$("#channelBtn").addEventListener("click",async()=>{
+$("#channelBtn").addEventListener("click",()=>{
   channelSelectedIds.clear();
   channelSelectPage=0;
-  await renderChannelSelection();
-  show("channelView");
+  $("#container13ChannelBtn")?.classList.remove("is-chosen");
+  $("#channelActions").hidden=true;
+  show("channelTargetsView");
 });
 $("#publishedBtn").addEventListener("click",()=>show("publishedView"));
 
@@ -1313,12 +1314,10 @@ async function renderChannelSelection(){
   updateChannelSelectionUi();
 }
 
-$("#channelContinueBtn")?.addEventListener("click",()=>{
+$("#channelContinueBtn")?.addEventListener("click",async()=>{
   if(!channelSelectedIds.size)return;
-  const summary=$("#channelTargetSummary");
-  if(summary)summary.textContent=channelSelectedIds.size===1?"1 plagg valt":"${channelSelectedIds.size} plagg valda";
-  $("#channelActions").hidden=true;
-  show("channelTargetsView");
+  await renderChannelConfirmation();
+  show("channelConfirmView");
 });
 
 
@@ -1370,8 +1369,12 @@ async function renderChannelConfirmation(){
 
 $("#container13ChannelBtn")?.addEventListener("click",async()=>{
   $("#container13ChannelBtn").classList.add("is-chosen");
-  await renderChannelConfirmation();
-  show("channelConfirmView");
+  channelSelectedIds.clear();
+  channelSelectPage=0;
+  const label=$("#channelSelectionChannelLabel");
+  if(label)label.textContent="Container13 hemsida";
+  await renderChannelSelection();
+  show("channelView");
 });
 
 async function openSitePreviewForSelection(){
@@ -1487,14 +1490,18 @@ document.addEventListener("ccc:header-back",async()=>{if(currentPublishView==="g
     return;
   }
   if(currentPublishView==="channelConfirmView"){
+    show("channelView");
+    return;
+  }
+  if(currentPublishView==="channelView"){
     show("channelTargetsView");
     return;
   }
   if(currentPublishView==="channelTargetsView"){
-    show("channelView");
+    show("startView");
     return;
   }
-  if(currentPublishView==="gridView"||currentPublishView==="channelView"||currentPublishView==="publishedView"){
+  if(currentPublishView==="gridView"||currentPublishView==="publishedView"){
     show("startView");
     return;
   }
@@ -1517,4 +1524,4 @@ document.addEventListener("ccc:core-ready",()=>setPublishHeader(currentPublishVi
 
 /* CCC cache stamp: v2.9.20 */
 
-/* CCC cache stamp: v2.9.58 */
+/* CCC cache stamp: v2.9.59 */

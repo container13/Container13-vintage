@@ -1114,7 +1114,7 @@
 .delete-draft-confirm{background:#b83a3a!important;color:#fff!important}
 
 
-/* CCC v2.9.58 – site-preview hör hemma i Välj kanal */
+/* CCC v2.9.59 – site-preview hör hemma i Välj kanal */
 .channel-card{
   width:min(100%,520px);
   margin:14px auto 0;
@@ -1136,7 +1136,7 @@
   font-size:12px;
 }
 
-/* CCC v2.9.58 – adaptiv miniatyrgrid i Förbered för publicering */
+/* CCC v2.9.59 – adaptiv miniatyrgrid i Förbered för publicering */
 #draftGrid.draft-grid.grid-1,
 #draftGrid.draft-grid.grid-2,
 #draftGrid.draft-grid.grid-4,
@@ -1145,7 +1145,7 @@
 }
 #draftGrid.draft-grid.grid-1{align-items:start}
 
-/* CCC v2.9.58 – Välj plagg -> Välj kanal */
+/* CCC v2.9.59 – Välj plagg -> Välj kanal */
 .channel-selection-summary{
   width:min(100%,520px);
   margin:8px auto 10px;
@@ -1197,7 +1197,7 @@
 .channel-actions{width:min(100%,520px);margin:14px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .channel-actions .publish-status{grid-column:1/-1}
 
-/* CCC v2.9.58 – Fortsätt alltid synlig ovanför Core-footern i Välj plagg */
+/* CCC v2.9.59 – Fortsätt alltid synlig ovanför Core-footern i Välj plagg */
 #channelView{
   padding-bottom:84px;
 }
@@ -1220,7 +1220,7 @@
   }
 }
 
-/* CCC v2.9.58 – ren kanalväljare + kanalidentitet */
+/* CCC v2.9.59 – ren kanalväljare + kanalidentitet */
 .ccc-draft-pager[hidden],
 #channelSelectPager[hidden]{
   display:none!important;
@@ -1277,7 +1277,7 @@
   opacity:.55;
 }
 
-/* CCC v2.9.58 – färgstarka kanaler, endast valboxen låst */
+/* CCC v2.9.59 – färgstarka kanaler, endast valboxen låst */
 .channel-option{
   grid-template-columns:56px minmax(0,1fr) 38px;
   min-height:78px;
@@ -1353,7 +1353,7 @@
 }
 .channel-toast.is-visible{opacity:1;transform:translate(-50%,0)}
 
-/* CCC v2.9.58 – sista kontrollen före publicering */
+/* CCC v2.9.59 – sista kontrollen före publicering */
 .confirm-channel-card{
   width:min(100%,520px);
   margin:10px auto 14px;
@@ -1401,4 +1401,10 @@
 @media(max-width:420px){
   .confirm-actions{grid-template-columns:1fr}
   .confirm-actions .publish-status{grid-column:1}
+}
+
+/* CCC v2.9.59 – standardflöde: kanal först */
+#channelSelectionChannelLabel{
+  color:var(--muted);
+  font-weight:700;
 }
