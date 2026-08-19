@@ -91,24 +91,24 @@
           <span class="channel-option-main"><strong>Container13 hemsida</strong><small>Ansluten</small></span>
           <span class="channel-option-state">✓</span>
         </button>
-        <button class="channel-option is-disabled" type="button" disabled aria-disabled="true">
+        <button class="channel-option is-unavailable" type="button" data-channel="Instagram" aria-disabled="true">
           <span class="channel-brand-icon channel-brand-instagram" aria-hidden="true">
             <svg viewBox="0 0 24 24"><rect x="4.2" y="4.2" width="15.6" height="15.6" rx="4.3"/><circle cx="12" cy="12" r="3.5"/><circle cx="17.3" cy="6.9" r="1"/></svg>
           </span>
           <span class="channel-option-main"><strong>Instagram</strong><small>Inte ansluten ännu</small></span>
-          <span class="channel-option-state">○</span>
+          <span class="channel-option-state channel-choice-box" aria-hidden="true">🔒</span>
         </button>
-        <button class="channel-option is-disabled" type="button" disabled aria-disabled="true">
+        <button class="channel-option is-unavailable" type="button" data-channel="Facebook" aria-disabled="true">
           <span class="channel-brand-icon channel-brand-facebook" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M13.7 21v-8h2.8l.45-3.15H13.7V7.8c0-.91.3-1.53 1.61-1.53h1.72V3.45c-.3-.04-1.32-.13-2.5-.13-2.48 0-4.17 1.51-4.17 4.29v2.24H7.55V13h2.81v8z"/></svg>
           </span>
           <span class="channel-option-main"><strong>Facebook</strong><small>Inte ansluten ännu</small></span>
-          <span class="channel-option-state">○</span>
+          <span class="channel-option-state channel-choice-box" aria-hidden="true">🔒</span>
         </button>
-        <button class="channel-option is-disabled" type="button" disabled aria-disabled="true">
+        <button class="channel-option is-unavailable" type="button" data-channel="Tradera" aria-disabled="true">
           <span class="channel-brand-icon channel-brand-tradera" aria-hidden="true">T</span>
           <span class="channel-option-main"><strong>Tradera</strong><small>Inte ansluten ännu</small></span>
-          <span class="channel-option-state">○</span>
+          <span class="channel-option-state channel-choice-box" aria-hidden="true">🔒</span>
         </button>
       </div>
       <div id="channelActions" class="channel-actions" hidden>
@@ -116,6 +116,7 @@
         <button id="channelPublishBtn" class="primary-action" type="button" disabled>Publicera</button>
         <p class="publish-status" id="channelPreviewStatus" aria-live="polite"></p>
       </div>
+      <div id="channelToast" class="channel-toast" role="status" aria-live="polite" hidden></div>
     </section>
 
     <section id="publishedView" class="publish-view" hidden>

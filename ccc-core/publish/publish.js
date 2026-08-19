@@ -1321,6 +1321,24 @@ $("#channelContinueBtn")?.addEventListener("click",()=>{
   show("channelTargetsView");
 });
 
+
+let channelToastTimer=0;
+function showChannelUnavailable(channel){
+  const toast=$("#channelToast");
+  if(!toast)return;
+  toast.textContent=`${channel} är inte anslutet ännu. Härifrån kommer du senare kunna ansluta kanalen.`;
+  toast.hidden=false;
+  toast.classList.add("is-visible");
+  clearTimeout(channelToastTimer);
+  channelToastTimer=window.setTimeout(()=>{
+    toast.classList.remove("is-visible");
+    window.setTimeout(()=>{toast.hidden=true;},180);
+  },2300);
+}
+document.querySelectorAll(".channel-option.is-unavailable").forEach(button=>{
+  button.addEventListener("click",()=>showChannelUnavailable(button.dataset.channel||"Kanalen"));
+});
+
 $("#container13ChannelBtn")?.addEventListener("click",()=>{
   $("#channelActions").hidden=false;
   $("#container13ChannelBtn").classList.add("is-chosen");
@@ -1452,4 +1470,4 @@ document.addEventListener("ccc:core-ready",()=>setPublishHeader(currentPublishVi
 
 /* CCC cache stamp: v2.9.20 */
 
-/* CCC cache stamp: v2.9.56 */
+/* CCC cache stamp: v2.9.57 */

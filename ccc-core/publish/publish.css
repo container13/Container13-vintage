@@ -1114,7 +1114,7 @@
 .delete-draft-confirm{background:#b83a3a!important;color:#fff!important}
 
 
-/* CCC v2.9.56 – site-preview hör hemma i Välj kanal */
+/* CCC v2.9.57 – site-preview hör hemma i Välj kanal */
 .channel-card{
   width:min(100%,520px);
   margin:14px auto 0;
@@ -1136,7 +1136,7 @@
   font-size:12px;
 }
 
-/* CCC v2.9.56 – adaptiv miniatyrgrid i Förbered för publicering */
+/* CCC v2.9.57 – adaptiv miniatyrgrid i Förbered för publicering */
 #draftGrid.draft-grid.grid-1,
 #draftGrid.draft-grid.grid-2,
 #draftGrid.draft-grid.grid-4,
@@ -1145,7 +1145,7 @@
 }
 #draftGrid.draft-grid.grid-1{align-items:start}
 
-/* CCC v2.9.56 – Välj plagg -> Välj kanal */
+/* CCC v2.9.57 – Välj plagg -> Välj kanal */
 .channel-selection-summary{
   width:min(100%,520px);
   margin:8px auto 10px;
@@ -1197,7 +1197,7 @@
 .channel-actions{width:min(100%,520px);margin:14px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .channel-actions .publish-status{grid-column:1/-1}
 
-/* CCC v2.9.56 – Fortsätt alltid synlig ovanför Core-footern i Välj plagg */
+/* CCC v2.9.57 – Fortsätt alltid synlig ovanför Core-footern i Välj plagg */
 #channelView{
   padding-bottom:84px;
 }
@@ -1220,7 +1220,7 @@
   }
 }
 
-/* CCC v2.9.56 – ren kanalväljare + kanalidentitet */
+/* CCC v2.9.57 – ren kanalväljare + kanalidentitet */
 .ccc-draft-pager[hidden],
 #channelSelectPager[hidden]{
   display:none!important;
@@ -1276,3 +1276,79 @@
 .channel-option.is-disabled .channel-option-state{
   opacity:.55;
 }
+
+/* CCC v2.9.57 – färgstarka kanaler, endast valboxen låst */
+.channel-option{
+  grid-template-columns:56px minmax(0,1fr) 38px;
+  min-height:78px;
+}
+.channel-brand-icon{
+  width:50px;
+  height:50px;
+  border-radius:14px;
+}
+.channel-brand-icon svg{width:32px;height:32px}
+.channel-brand-c13{
+  background:linear-gradient(145deg,#f0c85d,#a97a18);
+  border:0;
+  color:#17130a;
+  font-size:15px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);
+}
+.channel-brand-instagram{
+  color:#fff;
+  background:radial-gradient(circle at 30% 105%,#ffd600 0 20%,#ff7a00 38%,#ff0169 62%,#d300c5 78%,#7638fa 100%);
+}
+.channel-brand-facebook{
+  color:#fff;
+  background:#1877f2;
+}
+.channel-brand-tradera{
+  color:#fff;
+  background:linear-gradient(145deg,#8a4bd6,#ef5d91,#f4a340);
+  font-size:27px;
+}
+.channel-option.is-unavailable{
+  opacity:1;
+  cursor:pointer;
+}
+.channel-option.is-unavailable .channel-option-main,
+.channel-option.is-unavailable .channel-brand-icon{
+  opacity:1;
+  filter:none;
+}
+.channel-choice-box{
+  width:32px;
+  height:32px;
+  border-radius:9px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  justify-self:end;
+  border:1px solid rgba(125,125,135,.35);
+  background:rgba(125,125,135,.13);
+  color:var(--muted);
+  font-size:13px;
+  filter:grayscale(1);
+  opacity:.72;
+}
+.channel-toast{
+  position:fixed;
+  left:50%;
+  bottom:72px;
+  transform:translate(-50%,8px);
+  z-index:9800;
+  width:min(calc(100vw - 32px),460px);
+  padding:11px 14px;
+  border-radius:13px;
+  background:rgba(20,22,28,.94);
+  color:#fff;
+  text-align:center;
+  font-size:13px;
+  line-height:1.35;
+  box-shadow:0 10px 30px rgba(0,0,0,.28);
+  opacity:0;
+  transition:opacity .18s ease,transform .18s ease;
+  pointer-events:none;
+}
+.channel-toast.is-visible{opacity:1;transform:translate(-50%,0)}
