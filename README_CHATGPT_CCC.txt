@@ -1327,3 +1327,13 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - `Förhandsvisa på hemsidan` och `Publicera X plagg` visas endast i sista kontrollvyn, efter att plagg faktiskt har valts.
 - Kanalvyns visuella utformning från v2.9.59/v2.9.57 behålls.
 - Skarp publicering är fortsatt avstängd.
+
+
+## v2.9.61 – explicit kanalval + tydligare publiceringssteg
+- `Container13 hemsida` är nu ett riktigt val, inte en dold Nästa-funktion.
+- Kanalens valbox är tom tills användaren väljer kanalen; därefter visas grön bock.
+- En tydlig `Nästa`-knapp ligger under kanalerna och är inaktiv tills minst en tillgänglig kanal valts.
+- Ej anslutna kanaler behåller sina låsta/grå valboxar och informations-popup.
+- `Redo att publicera` visar tydligare vald kanal, antal valda plagg och vad användaren förväntas göra.
+- Slutvyn har `Förhandsvisa` som sekundärt val och `Publicera X plagg` som tydlig huvudåtgärd.
+- Skarp publicering är fortsatt avstängd i denna testversion.
