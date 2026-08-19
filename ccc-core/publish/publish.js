@@ -14,6 +14,9 @@ let activeItemId=null;
 let recentlyAdaptedItemId=null;
 let draftSelectionMode=false;const selectedDraftIds=new Set();
 let pendingDraftDelete=null;
+const channelSelectedIds=new Set();
+let channelSelectPage=0;
+const CHANNEL_PER_PAGE=9;
 const decodedImageCache=new Map();
 const MAX_DECODED_CACHE=3;
 
@@ -115,7 +118,7 @@ function setPublishHeader(view){
 }
 function show(view){if(view!=="gridView"&&draftSelectionMode){draftSelectionMode=false;selectedDraftIds.clear();}
   currentPublishView=view;
-  ["startView","gridView","channelView","publishedView","detailView","cropView"].forEach(id=>$("#"+id).hidden=id!==view);
+  ["startView","gridView","channelView","channelTargetsView","publishedView","detailView","cropView"].forEach(id=>$("#"+id).hidden=id!==view);
   setPublishHeader(view);
   configureFooterForView(view);
   requestAnimationFrame(()=>{
@@ -793,7 +796,12 @@ $("#draftsBtn").addEventListener("click",async()=>{
   show("gridView");
   requestAnimationFrame(()=>$("#cccHeaderBack")?.focus({preventScroll:true}));
 });
-$("#channelBtn").addEventListener("click",()=>show("channelView"));
+$("#channelBtn").addEventListener("click",async()=>{
+  channelSelectedIds.clear();
+  channelSelectPage=0;
+  await renderChannelSelection();
+  show("channelView");
+});
 $("#publishedBtn").addEventListener("click",()=>show("publishedView"));
 
 
@@ -1191,43 +1199,168 @@ $("#cropDone").addEventListener("click",async()=>{
 $("#publishBtn").addEventListener("click",()=>{const item=activeItem();if(!item)return;$("#publishStatus").textContent=item.publishBlob?"Nästa steg kopplar den här WebP-bilden till Container13.":"Beskär bilden först så skapas publicerings-WebP lokalt.";if(!item.publishBlob)openCrop();});
 
 
-function previewCandidate(){
-  // Välj senast aktiva plagg om det finns, annars första lokala utkastet.
-  // I kommande kanalsteg kan detta ersättas med explicit flerval.
-  return activeItem() || items[0] || null;
+function channelGridClass(count){
+  if(count===1)return "grid-1";
+  if(count===2)return "grid-2";
+  if(count<=4)return "grid-4";
+  return "grid-9";
 }
-function openSitePreviewForItem(item,index){
-  if(!item)return false;
-  const payload={
+
+function updateChannelSelectionUi(){
+  const count=channelSelectedIds.size;
+  const label=$("#channelSelectedCount");
+  if(label)label.textContent=count===1?"1 vald":`${count} valda`;
+  const button=$("#channelContinueBtn");
+  if(button)button.disabled=count===0;
+}
+
+function renderChannelPager(pageCount){
+  const pager=$("#channelSelectPager");
+  if(!pager)return;
+  pager.replaceChildren();
+  pager.hidden=pageCount<=1;
+  for(let i=0;i<pageCount;i+=1){
+    const dot=document.createElement("button");
+    dot.type="button";
+    dot.className="ccc-draft-page-dot";
+    dot.setAttribute("aria-label",`Visa sida ${i+1} av ${pageCount}`);
+    dot.setAttribute("aria-current",String(i===channelSelectPage));
+    dot.addEventListener("click",async()=>{channelSelectPage=i;await renderChannelSelection();});
+    pager.append(dot);
+  }
+}
+
+async function renderChannelSelection(){
+  const grid=$("#channelSelectGrid");
+  if(!grid)return;
+  grid.replaceChildren();
+  const pageCount=Math.max(1,Math.ceil(items.length/CHANNEL_PER_PAGE));
+  channelSelectPage=Math.max(0,Math.min(channelSelectPage,pageCount-1));
+  const start=channelSelectPage*CHANNEL_PER_PAGE;
+  const end=Math.min(items.length,start+CHANNEL_PER_PAGE);
+  const count=Math.max(0,end-start);
+  grid.className=`draft-grid channel-select-grid ${channelGridClass(count)}`;
+
+  for(let index=start;index<end;index+=1){
+    const item=items[index];
+    const button=document.createElement("button");
+    button.type="button";
+    button.className="draft-card channel-select-card";
+    button.dataset.itemId=item.id;
+    button.setAttribute("aria-label",`Markera ${title(item,index)}`);
+
+    const img=document.createElement("img");
+    img.src=item.thumbUrl||await previewSrc(item);
+    img.alt=title(item,index);
+    img.decoding="async";
+    button.append(img);
+
+    const mark=document.createElement("span");
+    mark.className="channel-select-mark";
+    mark.textContent=channelSelectedIds.has(item.id)?"✓":"";
+    button.classList.toggle("is-selected",channelSelectedIds.has(item.id));
+    button.append(mark);
+
+    // Samma långtrycks-preview som i Förbered.
+    bindDraftPreview(button,img);
+
+    let tap=null,lastTap=0,singleTimer=null,lastTouchHandled=0;
+    button.addEventListener("pointerdown",e=>{
+      if(e.pointerType!=="touch"&&e.pointerType!=="pen")return;
+      tap={id:e.pointerId,x:e.clientX,y:e.clientY,t:performance.now(),moved:false};
+    },{passive:true});
+    button.addEventListener("pointermove",e=>{
+      if(!tap||tap.id!==e.pointerId)return;
+      if(Math.hypot(e.clientX-tap.x,e.clientY-tap.y)>12)tap.moved=true;
+    },{passive:true});
+    button.addEventListener("pointerup",e=>{
+      if(!tap||tap.id!==e.pointerId)return;
+      const now=performance.now(),isTap=!tap.moved&&now-tap.t<360;
+      tap=null;
+      if(!isTap)return;
+      lastTouchHandled=Date.now();
+      e.preventDefault();
+      if(draftPreviewSuppressClick){
+        draftPreviewSuppressClick=false;
+        if(singleTimer){clearTimeout(singleTimer);singleTimer=null;}
+        return;
+      }
+      if(now-lastTap<330){
+        lastTap=0;
+        if(singleTimer){clearTimeout(singleTimer);singleTimer=null;}
+        openImageQuickLook(itemImageSrc(index)||img.src,title(item,index));
+      }else{
+        lastTap=now;
+        if(singleTimer)clearTimeout(singleTimer);
+        singleTimer=window.setTimeout(async()=>{
+          singleTimer=null;
+          channelSelectedIds.has(item.id)?channelSelectedIds.delete(item.id):channelSelectedIds.add(item.id);
+          await renderChannelSelection();
+        },340);
+      }
+    },{passive:false});
+    button.addEventListener("click",async e=>{
+      if(Date.now()-lastTouchHandled<700){e.preventDefault();return;}
+      if(draftPreviewSuppressClick){draftPreviewSuppressClick=false;e.preventDefault();return;}
+      channelSelectedIds.has(item.id)?channelSelectedIds.delete(item.id):channelSelectedIds.add(item.id);
+      await renderChannelSelection();
+    });
+    grid.append(button);
+  }
+
+  renderChannelPager(pageCount);
+  updateChannelSelectionUi();
+}
+
+$("#channelContinueBtn")?.addEventListener("click",()=>{
+  if(!channelSelectedIds.size)return;
+  const summary=$("#channelTargetSummary");
+  if(summary)summary.textContent=channelSelectedIds.size===1?"1 plagg valt":"${channelSelectedIds.size} plagg valda";
+  $("#channelActions").hidden=true;
+  show("channelTargetsView");
+});
+
+$("#container13ChannelBtn")?.addEventListener("click",()=>{
+  $("#channelActions").hidden=false;
+  $("#container13ChannelBtn").classList.add("is-chosen");
+  $("#channelPreviewStatus").textContent=`${channelSelectedIds.size} ${channelSelectedIds.size===1?"plagg":"plagg"} valda för Container13.`;
+});
+
+async function openSitePreviewForSelection(){
+  const selected=items.filter(item=>channelSelectedIds.has(item.id));
+  if(!selected.length)return false;
+  const payload=selected.map(item=>({
     id:item.id,
-    title:title(item,index),
+    title:title(item,Math.max(0,itemIndexById(item.id))),
     brand:item.brand||item.fields?.brand||"",
     size:item.size||item.fields?.size||"",
     price:item.price||item.fields?.price||"",
     createdAt:new Date().toISOString()
-  };
+  }));
   try{
-    sessionStorage.setItem("ccc-site-preview-item",JSON.stringify(payload));
+    sessionStorage.setItem("ccc-site-preview-items",JSON.stringify(payload));
+    sessionStorage.setItem("ccc-site-preview-item",JSON.stringify(payload[0]));
   }catch(error){
     console.warn("[CCC Publicera] Kunde inte spara preview-metadata",error);
   }
   const target=new URL("../site-preview/nyinkommet.html",window.location.href);
   target.searchParams.set("cccPreview","1");
-  target.searchParams.set("item",String(item.id||""));
+  target.searchParams.set("items",payload.map(item=>item.id).join(","));
   window.location.href=target.href;
   return true;
 }
 
 $("#channelPreviewBtn")?.addEventListener("click",()=>{
-  const item=previewCandidate();
-  const status=$("#channelPreviewStatus");
-  if(!item){
-    if(status)status.textContent="Det finns inget lokalt utkast att förhandsvisa.";
+  if(!channelSelectedIds.size){
+    $("#channelPreviewStatus").textContent="Välj minst ett plagg först.";
     return;
   }
-  const index=Math.max(0,itemIndexById(item.id));
-  if(status)status.textContent="Öppnar förhandsvisningen…";
-  openSitePreviewForItem(item,index);
+  $("#channelPreviewStatus").textContent="Öppnar förhandsvisningen…";
+  openSitePreviewForSelection();
+});
+
+$("#channelPublishBtn")?.addEventListener("click",()=>{
+  $("#channelPreviewStatus").textContent="Publicering kopplas in i nästa steg. Ingen live-publicering görs ännu.";
 });
 
 (async()=>{try{
@@ -1291,6 +1424,10 @@ document.addEventListener("ccc:header-back",async()=>{if(currentPublishView==="g
     window.location.href="../dashboard/index.html";
     return;
   }
+  if(currentPublishView==="channelTargetsView"){
+    show("channelView");
+    return;
+  }
   if(currentPublishView==="gridView"||currentPublishView==="channelView"||currentPublishView==="publishedView"){
     show("startView");
     return;
@@ -1314,4 +1451,4 @@ document.addEventListener("ccc:core-ready",()=>setPublishHeader(currentPublishVi
 
 /* CCC cache stamp: v2.9.20 */
 
-/* CCC cache stamp: v2.9.53 */
+/* CCC cache stamp: v2.9.54 */

@@ -76,16 +76,38 @@
     </section>
 
     <section id="channelView" class="publish-view" hidden>
-      <div class="publish-heading"><div><h1>Välj kanal</h1><p>Välj var du vill publicera</p></div></div>
-      <div class="channel-card">
-        <div class="channel-card-copy">
-          <strong>Container13 hemsida</strong>
-          <span>Förhandsvisa ett färdigställt plagg på hemsidan innan publicering.</span>
-        </div>
-        <button id="channelPreviewBtn" class="primary-action channel-preview-action" type="button">Förhandsvisa på hemsidan</button>
-        <p id="channelPreviewStatus" class="publish-status" aria-live="polite"></p>
+      <div class="publish-heading"><div><h1>Välj plagg</h1><p>Markera vad du vill publicera</p></div></div>
+      <div class="channel-selection-summary"><strong id="channelSelectedCount">0 valda</strong><span>Tryck på bilderna för att markera eller avmarkera.</span></div>
+      <div id="channelSelectGrid" class="draft-grid channel-select-grid"></div>
+      <div id="channelSelectPager" class="ccc-draft-pager" aria-label="Sidor med plagg för publicering"></div>
+      <button id="channelContinueBtn" class="primary-action channel-continue-action" type="button" disabled>Fortsätt</button>
+    </section>
+
+    <section id="channelTargetsView" class="publish-view" hidden>
+      <div class="publish-heading"><div><h1>Välj kanal</h1><p id="channelTargetSummary">Välj var plaggen ska publiceras</p></div></div>
+      <div class="channel-list">
+        <button id="container13ChannelBtn" class="channel-option is-connected" type="button">
+          <span class="channel-option-main"><strong>Container13 hemsida</strong><small>Ansluten</small></span>
+          <span class="channel-option-state">✓</span>
+        </button>
+        <button class="channel-option is-disabled" type="button" disabled aria-disabled="true">
+          <span class="channel-option-main"><strong>Instagram</strong><small>Inte ansluten ännu</small></span>
+          <span class="channel-option-state">○</span>
+        </button>
+        <button class="channel-option is-disabled" type="button" disabled aria-disabled="true">
+          <span class="channel-option-main"><strong>Facebook</strong><small>Inte ansluten ännu</small></span>
+          <span class="channel-option-state">○</span>
+        </button>
+        <button class="channel-option is-disabled" type="button" disabled aria-disabled="true">
+          <span class="channel-option-main"><strong>Tradera</strong><small>Inte ansluten ännu</small></span>
+          <span class="channel-option-state">○</span>
+        </button>
       </div>
-      <p class="channel-future-note">Fler publiceringskanaler läggs till senare.</p>
+      <div id="channelActions" class="channel-actions" hidden>
+        <button id="channelPreviewBtn" class="secondary-action" type="button">Förhandsvisa på hemsidan</button>
+        <button id="channelPublishBtn" class="primary-action" type="button" disabled>Publicera</button>
+        <p class="publish-status" id="channelPreviewStatus" aria-live="polite"></p>
+      </div>
     </section>
 
     <section id="publishedView" class="publish-view" hidden>
