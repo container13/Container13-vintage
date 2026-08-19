@@ -22,18 +22,21 @@ import {
   const PREVIEW_DB_VERSION = 3;
   const PREVIEW_IMAGE_STORE = "images";
   const PREVIEW_FILE_STORE = "vision-files";
-  let previewItem = null;
-  let previewObjectUrl = "";
+  let previewItems = [];
+  let previewObjectUrls = [];
 
   function previewRequested() {
     return new URLSearchParams(window.location.search).get("cccPreview") === "1";
   }
 
-  function previewMetadata() {
+  function previewMetadataList() {
     try {
-      return JSON.parse(sessionStorage.getItem("ccc-site-preview-item") || "null");
+      const list=JSON.parse(sessionStorage.getItem("ccc-site-preview-items") || "null");
+      if(Array.isArray(list)&&list.length)return list;
+      const one=JSON.parse(sessionStorage.getItem("ccc-site-preview-item") || "null");
+      return one?[one]:[];
     } catch (_) {
-      return null;
+      return [];
     }
   }
 
@@ -70,38 +73,46 @@ import {
     });
   }
 
-  async function loadLocalPreviewItem() {
-    if (!previewRequested()) return null;
+  async function loadLocalPreviewItems() {
+    if (!previewRequested()) return [];
     document.getElementById("cccPreviewBanner")?.classList.add("is-active");
 
     const params = new URLSearchParams(window.location.search);
-    const meta = previewMetadata() || {};
-    const id = params.get("item") || meta.id || "";
-    if (!id) return null;
+    const metadata = previewMetadataList();
+    const idsFromUrl=(params.get("items")||params.get("item")||"").split(",").map(s=>s.trim()).filter(Boolean);
+    const ids=idsFromUrl.length?idsFromUrl:metadata.map(item=>item.id).filter(Boolean);
+    if (!ids.length) return [];
 
-    try {
-      const record = await getPreviewRecord(id);
-      if (!record) throw new Error("Det lokala utkastet hittades inte.");
+    const loaded=[];
+    for(const id of ids){
+      try {
+        const meta=metadata.find(item=>String(item.id)===String(id))||{};
+        const record = await getPreviewRecord(id);
+        if (!record) throw new Error(`Det lokala utkastet ${id} hittades inte.`);
 
-      let blob = record.publishBlob || record.thumbnailBlob || record.originalBlob || null;
-      if (!blob && record.originalFileKey) blob = await getPreviewSourceFile(record.originalFileKey);
-      if (!blob) throw new Error("Utkastet saknar lokal bild.");
+        let blob = record.publishBlob || record.thumbnailBlob || record.originalBlob || null;
+        if (!blob && record.originalFileKey) blob = await getPreviewSourceFile(record.originalFileKey);
+        if (!blob) throw new Error(`Utkastet ${id} saknar lokal bild.`);
 
-      previewObjectUrl = URL.createObjectURL(blob);
-      return {
-        id: `ccc-preview-${id}`,
-        title: meta.title || record.title || record.fields?.title || "Förhandsvisning",
-        imageUrl: previewObjectUrl,
-        category: "nyinkommet",
-        createdAt: meta.createdAt || new Date().toISOString(),
-        __cccPreview: true
-      };
-    } catch (error) {
-      console.error("[CCC Site Preview]", error);
-      const banner = document.getElementById("cccPreviewBanner");
-      if (banner) banner.textContent = `Förhandsvisning kunde inte laddas: ${error.message}`;
-      return null;
+        const localUrl=URL.createObjectURL(blob);
+        previewObjectUrls.push(localUrl);
+        loaded.push({
+          id: `ccc-preview-${id}`,
+          title: meta.title || record.title || record.fields?.title || "Förhandsvisning",
+          imageUrl: localUrl,
+          category: "nyinkommet",
+          createdAt: meta.createdAt || new Date().toISOString(),
+          __cccPreview: true
+        });
+      } catch (error) {
+        console.error("[CCC Site Preview]", error);
+      }
     }
+    if(!loaded.length){
+      const banner=document.getElementById("cccPreviewBanner");
+      if(banner)banner.textContent="Förhandsvisningen kunde inte ladda de lokala utkasten.";
+    }
+    return loaded;
   }
 
   function val(value) {
@@ -277,8 +288,8 @@ import {
 
   async function load() {
     if (!gallery) return;
-    previewItem = await loadLocalPreviewItem();
-    if (previewItem) render([previewItem]);
+    previewItems = await loadLocalPreviewItems();
+    if (previewItems.length) render(previewItems);
 
     const cached = getCachedGalleryData();
     if (!cached) {
@@ -295,7 +306,7 @@ import {
       const selected = all
         .filter((item) => category(item) === "nyinkommet" && imageUrl(item) && withinRetention(item, retention))
         .sort((a, b) => time(b) - time(a));
-      render(previewItem ? [previewItem, ...selected] : selected);
+      render(previewItems.length ? [...previewItems, ...selected] : selected);
     };
 
     if (cached) {
@@ -307,10 +318,10 @@ import {
       renderGalleryData(fresh);
     } catch (error) {
       console.error(error);
-      if (!cached && !previewItem) {
+      if (!cached && !previewItems.length) {
         gallery.innerHTML = `<p class="gallery-status">Bilderna kunde inte hämtas (${error.message}).</p>`;
-      } else if (!cached && previewItem) {
-        render([previewItem]);
+      } else if (!cached && previewItems.length) {
+        render(previewItems);
       }
     }
   }
@@ -325,6 +336,6 @@ import {
     if (event.key === "ArrowRight") next();
   });
 
-  window.addEventListener("pagehide",()=>{if(previewObjectUrl)URL.revokeObjectURL(previewObjectUrl);});
+  window.addEventListener("pagehide",()=>previewObjectUrls.forEach(u=>URL.revokeObjectURL(u)));
   load();
 })();
