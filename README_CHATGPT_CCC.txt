@@ -1288,3 +1288,13 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
   - Tradera: enkel `T`-markör tills eventuell officiell asset kopplas in.
 - Ej anslutna kanaler är fortsatt synliga men gråmarkerade/inaktiva för att visa vad CCC kan stödja framöver.
 - Ingen ändring i urval, preview-data, site-preview eller publiceringslogik.
+
+
+## v2.9.57 – större färgkanaler + låst valbox
+- Kanalikonerna är större (~50 px) och mer färgstarka för snabb visuell igenkänning.
+- Instagram och Facebook använder färgmässigt igenkännbara lokala SVG/CSS-symboler; inga externa bildresurser krävs.
+- Container13 får en större gul/guldig `C13`-markör och Tradera en färgstark lokal `T`-markör.
+- Ej anslutna kanalrader gråas inte längre ned. Kanalnamn och ikon visas normalt.
+- Endast valboxen längst till höger är grå/låst för en ej ansluten kanal.
+- Tryck på Instagram/Facebook/Tradera visar en liten tillfällig popup som förklarar att kanalen inte är ansluten ännu och att anslutning senare ska kunna göras direkt härifrån.
+- UI:t förbereds därmed för framtida `Anslut kanal`-flöde utan att någon riktig kontointegration kopplas in ännu.
