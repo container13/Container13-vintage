@@ -1256,3 +1256,16 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Den adaptiva griden är nu tänkt som återanvändbar CCC-standard och ska även användas i kommande `Välj plagg för publicering`.
 - Ingen ändring i site-preview, kanalval eller publiceringsmotor i denna version.
 - `README_CHATGPT_CCC.txt` ligger fortsatt i projektroten och `ccc-core/version.js` ingår i changed-files.
+
+
+## v2.9.54 – publiceringsflöde: Välj plagg → Välj kanal
+- `Välj kanal` börjar nu med ett riktigt plaggval i en adaptiv miniatyrgrid.
+- Griden följer CCC-standarden: 1→1×1, 2→2×1, 3–4→2×2, 5–9→3×3, 10+→3×3 med max 9 per sida.
+- Enkeltryck markerar/avmarkerar plagg och visar grön rund bock; minst ett plagg krävs för `Fortsätt`.
+- Långtryck/snabbförstoring och dubbeltryck/quick-look återanvänds även i denna grid.
+- Efter `Fortsätt` visas kanalalternativ.
+- `Container13 hemsida` visas som ansluten och aktiv.
+- Instagram, Facebook och Tradera visas gråmarkerade som `Inte ansluten ännu` för att göra framtida möjligheter synliga utan att kunna väljas.
+- När Container13 väljs visas `Förhandsvisa på hemsidan` samt en avsiktligt inaktiv `Publicera`-knapp; riktig live-publicering kopplas inte in i denna version.
+- Site-preview kan nu ta emot flera markerade lokala plagg och injicera dem högst upp i Nyinkommet utan Firebase-write.
+- Expresspublicering ligger kvar som senare snabbspår ovanpå samma publiceringsmotor när normalflödet är stabilt.
