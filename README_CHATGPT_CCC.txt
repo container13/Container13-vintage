@@ -1404,3 +1404,16 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Publicera-flöde, preview-data, lightbox och skarp publicering är orörda.
 - Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`.
 - Root `/version.js` är orörd.
+
+
+## v2.9.69 – Arkitektur: permanent identitet per plagg
+- Beslut: varje plagg/exemplar i CCC ska långsiktigt ha en permanent unik intern identitet som följer samma fysiska vara genom hela livscykeln.
+- Identiteten ska skapas tidigt i plaggflödet och inte bytas när plagget redigeras, publiceras på en ny kanal eller senare får annan status.
+- Detta är en intern grundprincip; användaren behöver inte exponeras för tekniska ID:n i dagens arbetsflöde.
+- Framtida funktioner som QR/streckkod, lagerstatus, reservation, försäljning, automatisk avpublicering, webbshop och historik ska kunna kopplas till samma identitet utan att dagens CCC behöver byggas om från grunden.
+- QR-kod byggs INTE nu. v2.9.69 tar endast höjd för framtiden och lägger inte till någon ny komplexitet i användargränssnittet.
+- Princip: CCC:s information om ett plagg är en sak; hur mycket av informationen som visas publikt per kanal är en separat presentationsregel.
+- Nästa produktsteg är fortsatt Container13:s publika visningsinställningar (t.ex. titel/text på eller av), där previewn ska kunna visa resultatet innan skarp publicering.
+- Ingen ändring görs i Publicera-, Vision- eller site-preview-logik i denna version.
+- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`.
+- Root `/version.js` är orörd.
