@@ -1431,3 +1431,15 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Skarp publicering är fortfarande inte inkopplad.
 - Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`; endast redan befintliga modul-README uppdateras.
 - Root `/version.js` är orörd.
+
+
+## v2.9.71 – Modulrena inställningar + Core-layout
+- Inställningar ska inte vara en blandad global sida. Dashboard, Lägg till bilder/Vision och Publicera har varsin egen inställningskontext via respektive kugghjul.
+- När `/settings/?module=publish` öppnas visas endast Publicera/Container13-inställningarna; Dashboard-kort och Dashboard-hjälp döljs.
+- När Inställningar öppnas utan Publicera-kontext behandlas sidan som Dashboardens inställningsyta.
+- En framtida gemensam `Kontrollpanel` kan senare nås från Dashboard och samla verkligt övergripande CCC-funktioner. Den byggs inte i v2.9.71.
+- Inställningar använder nu samma Core-header och permanenta Core-footer som övriga CCC-vyer.
+- Arbetsytan mellan header och footer är vertikalt scrollbar; header/footer ligger kvar.
+- Headerns tillbaka-pil och footerns permanenta Tillbaka-kort använder samma Core-back-event och går tillbaka till den modul som öppnade inställningarna.
+- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`; befintlig `/ccc-core/settings/README_FOLDER.txt` uppdateras.
+- Root `/version.js` är orörd.
