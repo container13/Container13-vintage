@@ -1477,3 +1477,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Framtida bild-/produktbibliotek är en separat backlogpunkt och byggs inte nu.
 - Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`.
 - Root `/version.js` är orörd.
+
+
+## v2.9.75 – Hjälp i Förbered för publicering
+- Huvudvyn hålls ren utan ny permanent instruktionstext.
+- `Hjälp` förklarar att ett plagg kan tryckas för att öppnas och bilden fortfarande kan kontrolleras/anpassas före publicering.
+- Hjälpen beskriver också `Fortsätt` till kanalval och `Välj` för borttagning av lokala utkast.
+- v2.9.74:s Vision-säkerhetsfix och publiceringsläge finns fortsatt med.
+- Root `/version.js` är orörd.
