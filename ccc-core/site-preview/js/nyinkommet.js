@@ -41,6 +41,22 @@ import {
     }
   }
 
+  function previewDisplaySettings() {
+    try {
+      const stored=JSON.parse(sessionStorage.getItem("ccc-site-preview-display-settings") || "null");
+      if(stored && typeof stored==="object"){
+        return {
+          showTitle:stored.showTitle!==false,
+          showDescription:stored.showDescription===true
+        };
+      }
+    } catch (_) {}
+    return {
+      showTitle:localStorage.getItem("ccc-publish-container13-show-title")!=="0",
+      showDescription:localStorage.getItem("ccc-publish-container13-show-description")==="1"
+    };
+  }
+
   function openPreviewDb() {
     return new Promise((resolve, reject) => {
       const request = indexedDB.open(PREVIEW_DB_NAME, PREVIEW_DB_VERSION);
@@ -100,6 +116,7 @@ import {
         loaded.push({
           id: `ccc-preview-${id}`,
           title: meta.title || record.title || record.fields?.title || "Förhandsvisning",
+          description: meta.description || record.description || record.fields?.description || "",
           imageUrl: localUrl,
           category: "nyinkommet",
           createdAt: meta.createdAt || new Date().toISOString(),
@@ -234,6 +251,7 @@ import {
   function render(items) {
     images = items;
     gallery.innerHTML = "";
+    const display=previewDisplaySettings();
 
     if (!items.length) {
       gallery.innerHTML = '<p class="gallery-status">Det finns inga bilder under Nyinkommet ännu.</p>';
@@ -269,11 +287,19 @@ import {
       caption.className = "nyinkommet-info";
 
       const title = String(item.title || "").trim();
-      if (title) {
+      if (display.showTitle && title) {
         const heading = document.createElement("p");
         heading.className = "nyinkommet-titel";
         heading.textContent = title;
         caption.appendChild(heading);
+      }
+
+      const description=String(item.description || "").trim();
+      if(display.showDescription && description){
+        const copy=document.createElement("p");
+        copy.className="nyinkommet-beskrivning";
+        copy.textContent=description;
+        caption.appendChild(copy);
       }
 
       const date = document.createElement("p");
