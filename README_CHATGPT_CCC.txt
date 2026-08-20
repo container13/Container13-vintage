@@ -1563,3 +1563,13 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Befintlig modul-`README_FOLDER.txt` beskriver det modulspecifika. Skapa inte nya README-mappar eller nya dokumentstrukturer utan ett verkligt behov.
 - README är inte ett oföränderligt facit. Det är CCC:s levande arbetssätt och ska förbättras när tester och verklig användning ger bättre kunskap.
 - Innan nästa ändring ska senaste kompletta projektets root-README läsas så att dokumenterade beslut och arbetssätt följs.
+
+
+## v2.9.80 – Publicera: Neon Glöd på kanalraden
+- Kanalraden i Publicera får den valda visuella riktningen `Alternativ 2 – Neon Glöd`.
+- Kanalikonerna får en mer enhetlig rund grundform och diskret kanalidentifierande glöd.
+- Aktiv kanal förstärks lätt; låsta kanaler hålls något dämpade.
+- Befintlig grön statusbock och lås behålls som separata statuslager.
+- Ändringen är medvetet visuell. Publiceringslogiken lämnas orörd.
+- Fokus ligger fortsatt på Container13:s dagliga behov. Framtida webshop/QR/biblioteksfunktioner ligger på sparlåga.
+- Efter stabil Container13-publicering är Öppettider nästa prioriterade område, med fungerande `c13-admin` som förlaga.
