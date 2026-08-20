@@ -1608,3 +1608,14 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - `site-preview` kan därmed läsa bilden från `vision-files` även om en komplett post i `images` saknas eller inte innehåller ett inbäddat blobfält.
 - Staging-bannern visar hur många lokala stagingplagg som faktiskt laddades, vilket gör testet lättare att verifiera.
 - Ingen skarp Container13/Firebase-publicering sker ännu.
+
+
+## v2.9.84 – Staging återanvänder Förhandsvisas bildtransport
+- Efter fortsatt tom staging identifierades en onödig risk i v2.9.82/.83: staging skrev tillbaka hela plaggposten till IndexedDB enbart för att lägga till staging-status.
+- Staging får nu inte mutera/skriva om CCC:s originala `images`-poster alls.
+- `Publicera till staging` använder exakt samma `sessionStorage`-metadata som den redan fungerande `Förhandsvisa`-vägen använder innan navigation till `site-preview`.
+- Ett separat persistent staging-manifest sparar endast plagg-ID, publik metadata, kanal och publiceringstid; inga bildblobbar dupliceras.
+- `site-preview` prioriterar den aktuella sessionens metadata även i staging-läge och faller därefter tillbaka till persistent staging-manifest.
+- Bilden hämtas fortsatt från CCC:s befintliga IndexedDB (`images` / `vision-files`) utan att staging förändrar källdatan.
+- Staging-bannern visar `0 av X` eller `Y av X` om bildladdningen misslyckas delvis, vilket gör nästa felsökning konkret.
+- Ingen skarp Container13/Firebase-data ändras.
