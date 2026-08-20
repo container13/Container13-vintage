@@ -1485,3 +1485,24 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Hjälpen beskriver också `Fortsätt` till kanalval och `Välj` för borttagning av lokala utkast.
 - v2.9.74:s Vision-säkerhetsfix och publiceringsläge finns fortsatt med.
 - Root `/version.js` är orörd.
+
+
+## v2.9.76 – Fortsätt-fix + tydligt bockspråk i Publicera
+- `Fortsätt` i `Förbered för publicering` är korrigerad så att knappen faktiskt öppnar `Välj kanal`.
+- Alla plagg som ligger i Förbered-vyn förs med framåt genom den befintliga `channelSelectedIds`-mängden; mängden återanvänds i stället för att ersättas.
+- Grön ✓ på ett plagg behåller sin etablerade betydelse: bilden har en sparad bildanpassning.
+- I `Välj`/borttagningsläget visas markerade utkast med röd ✓ och röd markeringsram.
+- Hjälp i Förbered-vyn förklarar nu grön ✓, röd ✓, `Fortsätt` och `Välj`.
+- Röd markering innebär endast `markerad för borttagning`; inget raderas innan användaren trycker `Ta bort` och bekräftar.
+- v2.9.73:s bekräftelse före `Rensa lokal kunskapsbas` finns fortsatt med.
+- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`.
+- Root `/version.js` är orörd.
+
+
+## v2.9.77 – Synlig Hjälp i Förbered för publicering
+- `? Hjälp` ska alltid vara synlig i Core-footern på `Förbered för publicering` och ska inte bero på Dashboardens separata hjälpinställning.
+- Footern ska kunna visa `? Hjälp` och `Välj` samtidigt som den permanenta `Tillbaka`-knappen.
+- `Fortsätt` ligger fortsatt som tydlig huvudåtgärd i arbetsytan ovanför footern.
+- Hjälpinnehållet från v2.9.76 behålls: bilder kan öppnas/anpassas, grön ✓ = sparad bildanpassning, röd ✓ = markerad för borttagning, samt förklaring av Fortsätt/Välj.
+- Ingen annan Publicera-logik ändras.
+- Root `/version.js` är orörd.
