@@ -95,6 +95,15 @@
   document.addEventListener("click", (event) => { const pop=$("#visionCostPopover"); const btn=$("#visionCostBtn"); if(pop && !pop.hidden && !pop.contains(event.target) && event.target !== btn){ pop.hidden=true; btn?.setAttribute("aria-expanded","false"); } });
 
   const uid = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const cccItemId = () => {
+    const d=new Date();
+    const y=String(d.getFullYear());
+    const m=String(d.getMonth()+1).padStart(2,"0");
+    const day=String(d.getDate()).padStart(2,"0");
+    const entropy=(globalThis.crypto?.randomUUID?.()||`${Date.now()}-${Math.random()}`)
+      .replace(/[^a-zA-Z0-9]/g,"").slice(-6).toUpperCase();
+    return `C13-${y}${m}${day}-${entropy}`;
+  };
   const currentItem = () => batchItems[currentIndex] || null;
   const currentDemo = () => {
     const item = currentItem();
@@ -181,6 +190,7 @@
   function createBatchItem(file, index) {
     const item = {
       id: uid(),
+      cccItemId: cccItemId(),
       file,
       previewUrl: fileUrl(file),
       originalFileKey: null,
@@ -203,7 +213,11 @@
       cropData: null
     };
     item.originalFileKey = `${item.id}:main`;
-    item.originalFileSavePromise = putVisionSourceFile(item.originalFileKey, file)
+    item.originalFileSavePromise = putVisionSourceFile(
+      item.originalFileKey,
+      file,
+      buildItemImageMetadata(item)
+    )
       .then(() => {
         item.originalFileStored = true;
         item.originalFileSavePromise = null;
@@ -629,7 +643,7 @@
     };
   }
 
-  async function putVisionSourceFile(id, file) {
+  async function putVisionSourceFile(id, file, metadata = null) {
     if (!id || !file) return;
     const db = await openWorkspaceDb();
     try {
@@ -640,7 +654,8 @@
           blob: file,
           name: file.name || `${id}.jpg`,
           type: file.type || "image/jpeg",
-          createdAt: Date.now()
+          createdAt: Date.now(),
+          metadata: metadata && typeof metadata==="object" ? metadata : null
         });
         tx.oncomplete = resolve;
         tx.onerror = () => reject(tx.error || new Error("Kunde inte spara originalbild."));
@@ -667,6 +682,45 @@
     }
   }
 
+  function buildItemImageMetadata(item, fields = null) {
+    const f=fields || item?.editedFields || item?.visionResult?.fields || {};
+    return {
+      schemaVersion:1,
+      cccItemId:String(item?.cccItemId||""),
+      internalId:String(item?.id||""),
+      title:String(f?.title||item?.visionResult?.summaryTitle||"").trim(),
+      brand:String(f?.brand||f?.manufacturer||"").trim(),
+      size:String(f?.size||"").trim(),
+      price:String(f?.price||"").trim(),
+      description:String(f?.description||"").trim(),
+      source:"ccc-vision",
+      updatedAt:new Date().toISOString()
+    };
+  }
+
+  async function updateVisionSourceMetadata(id, metadata) {
+    if(!id || !metadata)return;
+    const db=await openWorkspaceDb();
+    try{
+      await new Promise((resolve,reject)=>{
+        const tx=db.transaction("vision-files","readwrite");
+        const store=tx.objectStore("vision-files");
+        const req=store.get(id);
+        req.onsuccess=()=>{
+          const record=req.result;
+          if(!record)return;
+          store.put({...record,metadata});
+        };
+        req.onerror=()=>reject(req.error);
+        tx.oncomplete=resolve;
+        tx.onerror=()=>reject(tx.error||new Error("Bildmetadata kunde inte sparas."));
+        tx.onabort=()=>reject(tx.error||new Error("Bildmetadata-sparning avbröts."));
+      });
+    }finally{
+      db.close();
+    }
+  }
+
   async function ensureItemSourceFiles(item) {
     if (!item?.file) return;
 
@@ -676,7 +730,7 @@
       if (item.originalFileSavePromise) {
         await item.originalFileSavePromise;
       } else {
-        item.originalFileSavePromise = putVisionSourceFile(item.originalFileKey, item.file)
+        item.originalFileSavePromise = putVisionSourceFile(item.originalFileKey, item.file, buildItemImageMetadata(item))
           .then(() => {
             item.originalFileStored = true;
             item.originalFileSavePromise = null;
@@ -786,6 +840,7 @@
 
     const items = batchItems.map((item) => ({
       id: item.id,
+      cccItemId: item.cccItemId || cccItemId(),
       originalFileKey: item.originalFileKey,
       extraFileKeys: [...(item.extraFileKeys || [])],
       demoKey: item.demoKey,
@@ -875,6 +930,7 @@
 
       restored.push({
         id: saved.id || uid(),
+        cccItemId: saved.cccItemId || cccItemId(),
         file,
         previewUrl: fileUrl(file),
         originalFileKey: originalKey,
@@ -922,8 +978,15 @@
     await ensureItemSourceFiles(item);
 
     const fields = item.editedFields || item.visionResult?.fields || {};
+    const imageMetadata=buildItemImageMetadata(item,fields);
+    item.cccItemId ||= cccItemId();
+    imageMetadata.cccItemId=item.cccItemId;
+    await updateVisionSourceMetadata(item.originalFileKey,imageMetadata);
+
     const record = {
       id: item.id,
+      cccItemId: item.cccItemId,
+      imageMetadata,
       originalFileKey: item.originalFileKey,
       originalName: item.file.name || `ccc-${item.id}`,
       originalType: item.file.type || "image/jpeg",
