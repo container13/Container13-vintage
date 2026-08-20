@@ -1458,14 +1458,15 @@ $("#channelNextBtn")?.addEventListener("click",async()=>{
   show("channelView");
 });
 
-async function openSitePreviewForSelection(){
-  const selected=items.filter(item=>channelSelectedIds.has(item.id));
-  if(!selected.length)return false;
-  const displaySettings={
+function container13DisplaySettings(){
+  return {
     showTitle:localStorage.getItem("ccc-publish-container13-show-title")!=="0",
     showDescription:localStorage.getItem("ccc-publish-container13-show-description")==="1"
   };
-  const payload=selected.map(item=>({
+}
+
+function container13PayloadForSelection(){
+  return items.filter(item=>channelSelectedIds.has(item.id)).map(item=>({
     id:item.id,
     title:title(item,Math.max(0,itemIndexById(item.id))),
     description:String(item.description||item.fields?.description||"").trim(),
@@ -1474,6 +1475,12 @@ async function openSitePreviewForSelection(){
     price:item.price||item.fields?.price||"",
     createdAt:new Date().toISOString()
   }));
+}
+
+async function openSitePreviewForSelection(){
+  const payload=container13PayloadForSelection();
+  if(!payload.length)return false;
+  const displaySettings=container13DisplaySettings();
   try{
     sessionStorage.setItem("ccc-site-preview-items",JSON.stringify(payload));
     sessionStorage.setItem("ccc-site-preview-display-settings",JSON.stringify(displaySettings));
@@ -1510,13 +1517,53 @@ $("#confirmPreviewBtn")?.addEventListener("click",()=>{
   $("#confirmStatus").textContent="Öppnar förhandsvisningen…";
   openSitePreviewForSelection();
 });
-$("#confirmPublishBtn")?.addEventListener("click",()=>{
+$("#confirmPublishBtn")?.addEventListener("click",async()=>{
   if(!container13ChannelSelected){
     $("#confirmStatus").textContent="Välj minst en kanal för att publicera.";
     return;
   }
-  const count=channelSelectedIds.size;
-  $("#confirmStatus").textContent=`Publicering är ännu inte inkopplad. ${count} ${count===1?"plagg skulle":"plagg skulle"} publiceras till Container13.`;
+  const button=$("#confirmPublishBtn");
+  const payload=container13PayloadForSelection();
+  if(!payload.length){
+    $("#confirmStatus").textContent="Inga plagg är valda.";
+    return;
+  }
+
+  button.disabled=true;
+  const originalLabel=button.textContent;
+  button.textContent="Publicerar…";
+  $("#confirmStatus").textContent="Publicerar till Container13 staging…";
+
+  try{
+    const publishedAt=new Date().toISOString();
+    const selectedIds=new Set(payload.map(item=>item.id));
+
+    for(const item of items){
+      if(!selectedIds.has(item.id))continue;
+      item.stagingPublishedAt=publishedAt;
+      item.stagingChannel="container13";
+      await put(persistenceRecord(item));
+    }
+
+    const stagePayload=payload.map(item=>({...item,createdAt:publishedAt,stagingPublishedAt:publishedAt}));
+    localStorage.setItem("ccc-site-stage-items",JSON.stringify(stagePayload));
+    localStorage.setItem("ccc-site-stage-display-settings",JSON.stringify(container13DisplaySettings()));
+    localStorage.setItem("ccc-site-stage-published-at",publishedAt);
+
+    $("#confirmStatus").textContent=payload.length===1
+      ?"1 plagg publicerat till staging."
+      :`${payload.length} plagg publicerade till staging.`;
+
+    const target=new URL("../site-preview/nyinkommet.html",window.location.href);
+    target.searchParams.set("cccStage","1");
+    target.searchParams.set("items",stagePayload.map(item=>item.id).join(","));
+    window.location.href=target.href;
+  }catch(error){
+    console.error("[CCC Publicera] Staging-publicering misslyckades",error);
+    $("#confirmStatus").textContent="Publiceringen till staging misslyckades. Inga skarpa Container13-data har ändrats.";
+    button.disabled=false;
+    button.textContent=originalLabel;
+  }
 });
 
 

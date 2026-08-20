@@ -21,3 +21,5 @@ v2.9.78: Footer-init görs robust mot laddningsordning. Om Core ännu inte är r
 v2.9.80: Publiceras kanalrad får Neon Glöd enligt valt alternativ 2: enhetligare rund ikonform, diskret kanalidentifierande glöd och tydligare aktiv kanal. Befintliga lås och statusbockar behålls. Ingen publiceringslogik ändras.
 
 v2.9.81: v2.9.80 träffade fel vy. Neon Glöd flyttas nu till de faktiska kanalbrickorna i slutkontrollen (`.confirm-channel-chip`) och samma visuella språk används även i Välj kanal. Ikonerna är runda, kanalidentifierande och låsta kanaler behåller färg/glöd medan låset visar status.
+
+v2.9.82: Publicera-knappen kopplas till lokal Container13 staging/site-preview, inte skarpa sajten. Valda plagg får stagingPublishedAt lokalt, staging-metadata sparas persistent på enheten och site-preview öppnas i cccStage-läge. Externa kanaler ligger fortsatt låsta.
