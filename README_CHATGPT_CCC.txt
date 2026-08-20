@@ -1417,3 +1417,17 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Ingen ändring görs i Publicera-, Vision- eller site-preview-logik i denna version.
 - Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`.
 - Root `/version.js` är orörd.
+
+
+## v2.9.70 – Container13: publika visningsinställningar
+- `Publicera`-modulens kugghjul öppnar fortsatt `/settings/?module=publish`. I detta läge visas nu `Publicera – Container13` med sektionen `Visning på hemsidan`.
+- Två kanalinställningar införs: `Visa titel` och `Visa beskrivning`.
+- Standardvärden bevarar dagens beteende: titel PÅ, beskrivning AV.
+- Inställningarna är presentationsregler för Container13. De ändrar eller raderar aldrig CCC:s interna titel/beskrivning för plagget.
+- Förhandsvisa läser samma visningsregler. Preview-payloaden får även med plaggets beskrivning, så valet kan testas innan skarp publicering.
+- Kortgeometrin i site-preview är nu adaptiv per rad: fast kvadratisk bildyta, men informationsytan växer bara när synlig titel/beskrivning kräver det. CSS-gridens stretch håller korten i samma rad lika höga.
+- Om titel/beskrivning döljs blir raden kompaktare i stället för att reservera tom textyta.
+- Individuella undantag per plagg byggs inte i denna version; v2.9.70 etablerar kanalens grundregel först.
+- Skarp publicering är fortfarande inte inkopplad.
+- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`; endast redan befintliga modul-README uppdateras.
+- Root `/version.js` är orörd.
