@@ -1,16 +1,31 @@
 (() => {
   const params=new URLSearchParams(window.location.search);
   const moduleName=params.get("module")||"dashboard";
+
   const publishCard=document.getElementById("publishSettingsCard");
+  const visionCard=document.getElementById("visionSettingsCard");
   const dashboardCard=document.getElementById("dashboardSettingsCard");
   const dashboardHelpCard=document.getElementById("dashboardHelpCard");
 
   if(publishCard)publishCard.hidden=moduleName!=="publish";
-  if(dashboardCard)dashboardCard.hidden=moduleName==="publish";
-  if(dashboardHelpCard)dashboardHelpCard.hidden=moduleName==="publish";
+  if(visionCard)visionCard.hidden=moduleName!=="vision";
+  const dashboardMode=moduleName!=="publish" && moduleName!=="vision";
+  if(dashboardCard)dashboardCard.hidden=!dashboardMode;
+  if(dashboardHelpCard)dashboardHelpCard.hidden=!dashboardMode;
 
+  const markerSubtitle=document.querySelector(".settings-marker span");
+  if(markerSubtitle){
+    markerSubtitle.textContent=moduleName==="publish"
+      ?"Publicera"
+      :moduleName==="vision"
+        ?"Vision"
+        :"Dashboard";
+  }
+
+  // Dashboard
   const key="ccc-help-tips-enabled";
-  const enabled=document.getElementById("helpTipsEnabled"),saved=document.getElementById("tipsSaved");
+  const enabled=document.getElementById("helpTipsEnabled");
+  const saved=document.getElementById("tipsSaved");
   if(enabled){
     enabled.checked=localStorage.getItem(key)!=="0";
     enabled.addEventListener("change",()=>{
@@ -19,6 +34,7 @@
     });
   }
 
+  // Publicera
   const showTitle=document.getElementById("publishC13ShowTitle");
   const showDescription=document.getElementById("publishC13ShowDescription");
   const publishSaved=document.getElementById("publishDisplaySaved");
@@ -28,21 +44,107 @@
   if(moduleName==="publish" && publishCard){
     if(showTitle)showTitle.checked=localStorage.getItem(KEY_TITLE)!=="0";
     if(showDescription)showDescription.checked=localStorage.getItem(KEY_DESCRIPTION)==="1";
-    const save=()=>{
+    const savePublish=()=>{
       localStorage.setItem(KEY_TITLE,showTitle?.checked?"1":"0");
       localStorage.setItem(KEY_DESCRIPTION,showDescription?.checked?"1":"0");
       if(publishSaved){
         publishSaved.textContent="Visningen för Container13 är sparad.";
-        clearTimeout(save._timer);
-        save._timer=setTimeout(()=>{publishSaved.textContent="";},1800);
+        clearTimeout(savePublish._timer);
+        savePublish._timer=setTimeout(()=>{publishSaved.textContent="";},1800);
       }
     };
-    showTitle?.addEventListener("change",save);
-    showDescription?.addEventListener("change",save);
+    showTitle?.addEventListener("change",savePublish);
+    showDescription?.addEventListener("change",savePublish);
+  }
+
+  // Vision
+  const visionAiAuto=document.getElementById("visionAiAutoSetting");
+  const visionLearnEdits=document.getElementById("visionLearnEditsSetting");
+  const visionCost=document.getElementById("visionTotalCost");
+  const visionSaved=document.getElementById("visionSettingsSaved");
+  const knowledgeBtn=document.getElementById("visionShowKnowledgeBtn");
+  const knowledgeList=document.getElementById("visionKnowledgeList");
+  const clearKnowledgeBtn=document.getElementById("visionClearKnowledgeBtn");
+
+  function escapeHtml(value){
+    return String(value??"")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function flashVisionSaved(text="Sparat ✓"){
+    if(!visionSaved)return;
+    visionSaved.textContent=text;
+    clearTimeout(flashVisionSaved._timer);
+    flashVisionSaved._timer=setTimeout(()=>{visionSaved.textContent="";},1600);
+  }
+
+  async function refreshVisionCost(){
+    if(!visionCost)return;
+    try{
+      const summary=await window.CCC_VISION_KNOWLEDGE?.costSummarySince?.("1970-01-01T00:00:00.000Z");
+      const sek=Number(summary?.sek||0);
+      visionCost.textContent=`${new Intl.NumberFormat("sv-SE",{
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+      }).format(sek)} kr`;
+    }catch(error){
+      console.warn("[CCC Settings/Vision] Kunde inte läsa kostnad",error);
+      visionCost.textContent="0,00 kr";
+    }
+  }
+
+  async function renderKnowledgeList(){
+    if(!knowledgeList)return;
+    const rows=await window.CCC_VISION_KNOWLEDGE?.listKnowledge?.()||[];
+    if(!rows.length){
+      knowledgeList.innerHTML='<p class="settings-knowledge-empty">CCC har inte lärt sig något lokalt ännu.</p>';
+      return;
+    }
+    knowledgeList.innerHTML=rows.map(row=>{
+      const title=row.subject||row.brand||"Okänt objekt";
+      const details=[row.brand&&row.brand!==title?row.brand:"",row.category,row.season].filter(Boolean).join(" · ");
+      const source=row.source==="user-confirmed"?"Lärt från din ändring":"Godkänt av dig";
+      return `<div class="settings-knowledge-item"><strong>${escapeHtml(title)}</strong>${details?`<small>${escapeHtml(details)}</small>`:""}<small>${source}</small></div>`;
+    }).join("");
+  }
+
+  if(moduleName==="vision" && visionCard){
+    if(visionAiAuto)visionAiAuto.checked=localStorage.getItem("ccc-vision-ai-auto")!=="false";
+    if(visionLearnEdits)visionLearnEdits.checked=localStorage.getItem("ccc-vision-learn-edits")!=="false";
+
+    visionAiAuto?.addEventListener("change",event=>{
+      localStorage.setItem("ccc-vision-ai-auto",String(event.target.checked));
+      flashVisionSaved();
+    });
+    visionLearnEdits?.addEventListener("change",event=>{
+      localStorage.setItem("ccc-vision-learn-edits",String(event.target.checked));
+      flashVisionSaved();
+    });
+
+    knowledgeBtn?.addEventListener("click",async event=>{
+      const open=knowledgeList?.hidden!==false;
+      if(knowledgeList)knowledgeList.hidden=!open;
+      event.currentTarget.setAttribute("aria-expanded",String(open));
+      event.currentTarget.textContent=open?"Dölj vad CCC har lärt sig":"Visa vad CCC har lärt sig";
+      if(open)await renderKnowledgeList();
+    });
+
+    clearKnowledgeBtn?.addEventListener("click",async()=>{
+      await window.CCC_VISION_KNOWLEDGE?.clearKnowledge?.();
+      await renderKnowledgeList();
+      flashVisionSaved("Kunskapsbasen är rensad ✓");
+    });
+
+    refreshVisionCost();
   }
 
   document.addEventListener("ccc:header-back",()=>{
     if(moduleName==="publish")window.location.href="../publish/index.html";
+    else if(moduleName==="vision")window.location.href="../vision/index.html";
     else window.location.href="../dashboard/index.html";
   });
 })();

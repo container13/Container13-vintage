@@ -32,3 +32,20 @@ html,body{height:100%;overflow:hidden}
     max-height:calc(100dvh - var(--ccc-header-height,150px) - var(--ccc-footer-control-height,50px) - 8px);
   }
 }
+
+
+/* CCC v2.9.72 – Vision settings in shared module-settings layout */
+.settings-output-row{cursor:default}
+.settings-value{font-weight:850;color:var(--gold);white-space:nowrap}
+.settings-knowledge-list{
+  margin-top:10px;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:color-mix(in srgb,var(--surface) 92%,var(--bg));
+}
+.settings-knowledge-item{display:grid;gap:3px;padding:9px 0;border-bottom:1px solid var(--border)}
+.settings-knowledge-item:last-child{border-bottom:0}
+.settings-knowledge-item small,.settings-knowledge-empty{color:var(--muted);font-size:.78rem;line-height:1.35}
+.settings-knowledge-empty{margin:0}
+.settings-danger-action{color:#b13a3a}

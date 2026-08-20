@@ -5,3 +5,5 @@ Bygg vidare här, inte i demo- eller testmappar.
 v2.9.70: När Inställningar öppnas från Publicera visas Container13-val för publik titel och beskrivning.
 
 v2.9.71: Inställningar använder Core-header/footer och scrollbar arbetsyta. Innehållet hålls modulrent: Publicera visar endast Publicera-inställningar; Dashboard-läge visar endast Dashboard-relaterade inställningar. Framtida gemensam kontrollpanel är separat och byggs inte nu.
+
+v2.9.72: Vision får egen modulren inställningskontext i samma Core-layout som Publicera. AI-auto, lokal inlärning, kostnad och lokal kunskapsbas flyttas hit från Vision-overlayn.
