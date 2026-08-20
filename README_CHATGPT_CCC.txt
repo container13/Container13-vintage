@@ -1573,3 +1573,14 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Ändringen är medvetet visuell. Publiceringslogiken lämnas orörd.
 - Fokus ligger fortsatt på Container13:s dagliga behov. Framtida webshop/QR/biblioteksfunktioner ligger på sparlåga.
 - Efter stabil Container13-publicering är Öppettider nästa prioriterade område, med fungerande `c13-admin` som förlaga.
+
+
+## v2.9.81 – Neon Glöd träffar rätt kanalvy
+- Inspektion visade att v2.9.80 stylade `#channelTargetsView`, medan skärmbilden användaren bedömde var slutkontrollen `#channelConfirmView`.
+- Den valda visuella riktningen `Alternativ 2 – Neon Glöd` appliceras nu på de faktiska `.confirm-channel-chip .channel-brand-icon`-elementen.
+- Samma kanalidentitet används även i `Välj kanal`, så kanalval och slutkontroll känns som samma system.
+- Samtliga kanalbrickor får rund form.
+- C13/Tradera använder guldig ton, Instagram sin gradient, Facebook blått, TikTok cyan/rosa glöd och X vit/grå glöd.
+- Låsta kanaler behåller färg och en något dämpad glöd; låsikonen är det primära tecknet för otillgänglig status i stället för full gråskala.
+- Aktiv kanal får lätt förstärkt glöd/skalning. Befintlig grön bock och lås ligger kvar som separata statuslager.
+- Ingen publiceringslogik ändras.
