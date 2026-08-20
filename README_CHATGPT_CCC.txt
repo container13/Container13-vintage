@@ -1372,3 +1372,14 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Extra nederluft reserveras i Publicera-innehållet så huvudknappen inte upplevs tränga mot den globala Core-footern. Core-footerns geometri ändras inte.
 - Leveransstandarden förtydligas: README_FOLDER ska bevaras/uppdateras där den redan används i modul-/undermappar, men ska inte skapas i projektroten eller direkt i `/ccc-core`.
 - Root `/version.js` är fortsatt orörd.
+
+
+## v2.9.66 – Förhandsvisa: riktig kundvy + trygg återgång
+- `Förhandsvisa` från sista kontrollvyn fortsätter att öppna den isolerade kopian av Container13 `Nyinkommet`, alltså samma presentation som kunden möter i stället för en ny CCC-kontrollvy.
+- Preview-läget är fortsatt read-only och skriver ingenting till Firestore/Storage eller den publika sajten.
+- Preview-bannern behåller markeringen `Förhandsvisning – inget är publicerat` och får en kompakt `Tillbaka till CCC`-knapp.
+- Återgång använder webbläsarhistoriken när den finns, så användaren kommer tillbaka till publiceringsflödet utan ett parallellt redigeringsflöde.
+- Lightboxen i preview får touch-swipe vänster/höger mellan plaggen, utöver befintliga pilar/tangentbord.
+- Ingen skarp publicering kopplas in i denna version.
+- Inga nya `README_FOLDER.txt` skapas i projektroten eller direkt i `/ccc-core`; endast befintlig modul-README uppdateras.
+- Root `/version.js` är fortsatt orörd.
