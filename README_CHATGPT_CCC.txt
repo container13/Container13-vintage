@@ -1337,3 +1337,14 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - `Redo att publicera` visar tydligare vald kanal, antal valda plagg och vad användaren förväntas göra.
 - Slutvyn har `Förhandsvisa` som sekundärt val och `Publicera X plagg` som tydlig huvudåtgärd.
 - Skarp publicering är fortsatt avstängd i denna testversion.
+
+
+## v2.9.62 – avskalad slutvy + snabbval av kanaler
+- Sista kontrollvyn förenklas: rubriken `Redo att publicera`, antalstexten och det stora Container13-kortet tas bort eftersom informationen redan framgår av flödet och miniatyrerna.
+- Valda plagg visas först som miniatyrer.
+- Under miniatyrerna finns en kompakt, horisontellt scrollbar kanalrad: `Container13`, `Instagram`, `Facebook`, `TikTok`, `X` och `Tradera`.
+- Container13 visas aktiv med grön markering och kan slås av/på direkt i slutvyn. Om ingen kanal är vald inaktiveras `Förhandsvisa` och `Publicera`.
+- Ej anslutna kanaler visas nedtonade med lås och återanvänder informations-popupen vid tryck.
+- TikTok och X läggs även till i den ordinarie `Välj kanal`-vyn som framtida, ännu ej anslutna kanaler.
+- Slutvyn avslutas med `Förhandsvisa` och den tydliga huvudåtgärden `Publicera X plagg`.
+- Skarp publicering är fortsatt avstängd i denna testversion.
