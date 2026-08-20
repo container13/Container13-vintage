@@ -337,7 +337,9 @@ function helpHtmlForView(view){
     <div class="help-row"><strong>Tryck</strong><br>Öppna plagget.</div>
     <div class="help-row"><strong>Långtryck</strong><br>Snabbzoom/förhandsvisning.</div>
     <div class="help-row"><strong>Dubbeltryck</strong><br>Visa bilden tillfälligt i helskärm.</div>
-    <div class="help-row"><strong>Hantera</strong><br>Öppna markeringsläget om du vill ta bort ett eller flera utkast.</div>`;
+    <div class="help-row"><strong>Bilderna</strong><br>Tryck på ett plagg för att öppna det. Där kan du fortfarande kontrollera och anpassa bilden innan publicering.</div>
+      <div class="help-row"><strong>Fortsätt</strong><br>Går vidare med de färdiga plaggen till val av kanal.</div>
+      <div class="help-row"><strong>Välj</strong><br>Markera ett eller flera lokala utkast om du vill ta bort dem.</div>`;
   if(view==="detailView")return `<div class="help-row"><strong>Grön ✓</strong><br>Bilden har en sparad anpassning men kan ändras igen.</div><div class="help-row"><strong>Anpassa bild</strong><br>Öppna beskärning/zoom för den här bilden.</div>`;
   if(view==="cropView")return `<div class="help-row"><strong>Anpassa bild</strong><br>Flytta och zooma tills utsnittet känns rätt.</div><div class="help-row"><strong>Spara anpassning</strong><br>Sparar bilden och återgår till miniatyrerna.</div>`;
   return `<div class="help-row"><strong>Tillbaka</strong><br>Går till föregående steg.</div>`;
