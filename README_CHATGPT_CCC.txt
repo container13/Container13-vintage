@@ -1506,3 +1506,60 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Hjälpinnehållet från v2.9.76 behålls: bilder kan öppnas/anpassas, grön ✓ = sparad bildanpassning, röd ✓ = markerad för borttagning, samt förklaring av Fortsätt/Välj.
 - Ingen annan Publicera-logik ändras.
 - Root `/version.js` är orörd.
+
+
+## v2.9.78 – Publicera-footer: robust Core-init
+- Inspektion av v2.9.77 visade att Core-footern i sig redan kan rendera både `? Hjälp` och `Välj` samtidigt.
+- Den verkliga svagheten är laddningsordningen: `publish.js` ligger före `core.js`, `configureFooterForView()` kunde därför returnera innan `CCC_CORE.footer` fanns.
+- Tidigare `ccc:core-ready` återställde endast Publicera-headern; footern konfigurerades inte om.
+- Publicera väntar nu in `ccc:core-ready` om footer-Core saknas och kör därefter `configureFooterForView(currentPublishView)` igen.
+- Det ordinarie `ccc:core-ready`-steget återställer nu både header och footer för den aktuella Publicera-vyn.
+- På `Förbered för publicering` ska footern därför rendera `? Hjälp`, `Välj` och permanenta `Tillbaka`, medan `Fortsätt` ligger i arbetsytan.
+- Ingen CSS-hack eller separat lokal footer införs; Core förblir enda footer-ägare.
+- Root `/version.js` är orörd.
+
+
+## v2.9.79 – CCC utvecklings- och arkitekturprinciper
+
+### Core-init och gemensamt UI
+- Nya moduler får inte förutsätta att `CCC_CORE` är färdigladdat när modulens JavaScript startar.
+- Funktioner som är beroende av Core – särskilt header, footer, hjälp, inställningar och gemensam navigation – ska initieras eller återställas när `ccc:core-ready` har körts.
+- När Core blir redo ska modulens aktuella vy/state användas för att konfigurera Core-komponenterna korrekt.
+- Modulstate och Core-state ska hållas synkroniserade vid init, vybyte, tillbaka-navigation och återställning efter tillfälliga lägen.
+- Core är ensam ägare av gemensam header/footer. Undvik lokala speciallösningar för sådant Core redan ansvarar för.
+
+### Checklista för nya moduler och nya huvudvyer
+- Kontrollera första vyn efter Core-ready.
+- Kontrollera att header och modulrad visar rätt sammanhang.
+- Kontrollera att den permanenta Tillbaka-funktionen finns och leder rätt.
+- Kontrollera att footer visar rätt kontextverktyg, t.ex. Hjälp/Välj.
+- Byt mellan modulens viktigaste vyer och kontrollera att Core-komponenterna uppdateras.
+- Gå tillbaka och kontrollera att rätt state och rätt Core-UI återställs.
+- Testa mobil portrait först och kontrollera därefter övriga relevanta storlekar/orienteringar.
+
+### Status, färger och destruktiva åtgärder
+- Positiv status/sparat/godkänt får använda grönt; destruktivt urval/åtgärd ska ha ett tydligt rött visuellt språk.
+- Samma symbol eller färg ska inte få godtyckligt olika betydelser mellan moduler. Befintlig etablerad betydelse ska inventeras innan en symbol återanvänds.
+- Destruktiva åtgärder ska inte ske av misstag: använd bekräftelse när åtgärden är svår att återställa och erbjud ångra där det är praktiskt möjligt.
+- Markering för borttagning är inte samma sak som att objektet redan är borttaget.
+- Hjälp ska förklara statusmarkeringar och beteenden som inte är självklara, men själva huvudflödet ska vara begripligt utan att användaren måste läsa Hjälp.
+
+### Flöde före administration
+- Varje arbetsvy ska prioritera nästa naturliga steg i användarens huvudflöde.
+- Administration, radering och framtida bibliotek ska vara sekundära funktioner och får inte skymma huvudåtgärden.
+- I Publicera ska färdiga plagg röra sig framåt genom flödet; ett framtida plagg-/produktbibliotek är en separat funktion och ska inte blandas ihop med publiceringssteget.
+
+### Plagget som master och kanalernas presentation
+- Plagget är masterobjektet. Bilder, permanent identitet, Vision-data och intern produktinformation hör till plagget.
+- Publiceringskanaler är destinationer och ska inte skapa onödiga kopior av samma plaggdata.
+- Intern CCC-data och publik presentation är separata lager. En kanal bestämmer vilka delar av plagginformationen som ska visas.
+- Kanalunika regler ska kunna utvecklas senare utan att masterobjektet behöver dupliceras.
+- Arkitekturen ska ta höjd för framtida permanent plagg-ID, lagerstatus, såld/reserverad-status, produktbibliotek, webshop och eventuell QR-koppling utan att dessa funktioner behöver byggas nu.
+
+### Leverans- och README-arbetssätt
+- `changed-files` ska vara komplett ovanpå den senast levererade version som användaren förväntas ha laddat upp. En tidigare fix får inte oavsiktligt saknas i nästa changed-files-paket om den fortfarande behöver följa med.
+- Vid versionsuppdatering ska `README_CHATGPT_CCC.txt` i root och `ccc-core/version.js` följa med i changed-files när de hör till uppdateringen.
+- Root `README_CHATGPT_CCC.txt` beskriver projektövergripande arbetssätt, arkitekturprinciper, checkpoints och beslut.
+- Befintlig modul-`README_FOLDER.txt` beskriver det modulspecifika. Skapa inte nya README-mappar eller nya dokumentstrukturer utan ett verkligt behov.
+- README är inte ett oföränderligt facit. Det är CCC:s levande arbetssätt och ska förbättras när tester och verklig användning ger bättre kunskap.
+- Innan nästa ändring ska senaste kompletta projektets root-README läsas så att dokumenterade beslut och arbetssätt följs.
