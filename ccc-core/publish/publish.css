@@ -1516,3 +1516,60 @@
   #channelTargetsView .channel-brand-icon{width:46px;height:46px}
   #channelTargetsView .channel-next-action{margin-top:6px;min-height:50px}
 }
+
+/* CCC v2.9.64 – kompakt slutvy: mindre kanalval + osynlig horisontell scroll */
+#channelConfirmView{
+  overflow-y:auto;
+  overscroll-behavior-y:contain;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:72px;
+}
+#channelConfirmView .confirm-grid{
+  height:auto!important;
+  max-height:none;
+  overflow:visible;
+  margin-top:6px;
+  padding-bottom:2px;
+}
+#channelConfirmView .confirm-channel-strip{
+  margin-top:10px;
+  padding:2px 1px 5px;
+  gap:7px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+  touch-action:pan-x;
+}
+#channelConfirmView .confirm-channel-strip::-webkit-scrollbar{display:none;width:0;height:0}
+#channelConfirmView .confirm-channel-chip{
+  flex:0 0 52px;
+  min-width:52px;
+  padding:3px 1px;
+  gap:4px;
+}
+#channelConfirmView .confirm-channel-chip .channel-brand-icon{
+  width:38px;
+  height:38px;
+  border-radius:11px;
+  font-size:20px;
+}
+#channelConfirmView .confirm-channel-chip .channel-brand-icon svg{width:25px;height:25px}
+#channelConfirmView .confirm-channel-chip small{
+  width:52px;
+  font-size:8px;
+}
+#channelConfirmView .confirm-channel-chip.is-active::after,
+#channelConfirmView .confirm-channel-chip.is-unavailable::after{
+  right:2px;
+  top:0;
+  width:16px;
+  height:16px;
+  font-size:9px;
+}
+#channelConfirmView .confirm-actions{
+  margin-top:7px;
+  gap:7px;
+}
+#channelConfirmView #confirmPreviewBtn{min-height:48px}
+#channelConfirmView #confirmPublishBtn{min-height:54px;font-size:16px}
