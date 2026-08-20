@@ -1619,3 +1619,31 @@
 #draftGrid .draft-card.is-selected::after{
   border-color:#b83a3a!important;
 }
+
+
+/* CCC v2.9.80 – Publicera kanalrad: Neon Glöd */
+#channelTargetsView .channel-target{--channel-glow:rgba(231,188,82,.72);}
+#channelTargetsView .channel-target:nth-child(2){--channel-glow:rgba(225,70,178,.72);}
+#channelTargetsView .channel-target:nth-child(3){--channel-glow:rgba(80,135,255,.72);}
+#channelTargetsView .channel-target:nth-child(4){--channel-glow:rgba(69,224,221,.68);}
+#channelTargetsView .channel-target:nth-child(5){--channel-glow:rgba(235,235,235,.58);}
+#channelTargetsView .channel-target:nth-child(6){--channel-glow:rgba(231,188,82,.72);}
+#channelTargetsView .channel-target .channel-icon,
+#channelTargetsView .channel-target .channel-target-icon{
+  border-radius:50%;
+  border:1px solid var(--channel-glow);
+  box-shadow:0 0 10px var(--channel-glow),0 0 20px var(--channel-glow);
+  transition:transform .16s ease,box-shadow .16s ease,filter .16s ease;
+}
+#channelTargetsView .channel-target.is-chosen .channel-icon,
+#channelTargetsView .channel-target.is-chosen .channel-target-icon{
+  transform:scale(1.045);
+  box-shadow:0 0 14px var(--channel-glow),0 0 28px var(--channel-glow);
+}
+#channelTargetsView .channel-target[aria-disabled="true"] .channel-icon,
+#channelTargetsView .channel-target.is-locked .channel-icon,
+#channelTargetsView .channel-target[aria-disabled="true"] .channel-target-icon,
+#channelTargetsView .channel-target.is-locked .channel-target-icon{
+  filter:saturate(.72) brightness(.82);
+  opacity:.82;
+}
