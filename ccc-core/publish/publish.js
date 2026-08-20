@@ -338,8 +338,10 @@ function helpHtmlForView(view){
     <div class="help-row"><strong>Långtryck</strong><br>Snabbzoom/förhandsvisning.</div>
     <div class="help-row"><strong>Dubbeltryck</strong><br>Visa bilden tillfälligt i helskärm.</div>
     <div class="help-row"><strong>Bilderna</strong><br>Tryck på ett plagg för att öppna det. Där kan du fortfarande kontrollera och anpassa bilden innan publicering.</div>
+      <div class="help-row"><strong>Grön bock ✓</strong><br>Bilden har en sparad bildanpassning. Du kan fortfarande öppna plagget och ändra den.</div>
+      <div class="help-row"><strong>Röd bock ✓</strong><br>Visas i Välj-läget och betyder att utkastet är markerat för borttagning. Inget tas bort förrän du trycker Ta bort och bekräftar.</div>
       <div class="help-row"><strong>Fortsätt</strong><br>Går vidare med de färdiga plaggen till val av kanal.</div>
-      <div class="help-row"><strong>Välj</strong><br>Markera ett eller flera lokala utkast om du vill ta bort dem.</div>`;
+      <div class="help-row"><strong>Välj</strong><br>Öppnar läget där du kan markera lokala utkast för borttagning.</div>`;
   if(view==="detailView")return `<div class="help-row"><strong>Grön ✓</strong><br>Bilden har en sparad anpassning men kan ändras igen.</div><div class="help-row"><strong>Anpassa bild</strong><br>Öppna beskärning/zoom för den här bilden.</div>`;
   if(view==="cropView")return `<div class="help-row"><strong>Anpassa bild</strong><br>Flytta och zooma tills utsnittet känns rätt.</div><div class="help-row"><strong>Spara anpassning</strong><br>Sparar bilden och återgår till miniatyrerna.</div>`;
   return `<div class="help-row"><strong>Tillbaka</strong><br>Går till föregående steg.</div>`;
@@ -828,7 +830,8 @@ $("#draftsBtn").addEventListener("click",async()=>{
 });
 $("#preparedContinueBtn")?.addEventListener("click",()=>{
   if(!items.length)return;
-  channelSelectedIds=new Set(items.map(item=>item.id));
+  channelSelectedIds.clear();
+  items.forEach(item=>channelSelectedIds.add(item.id));
   channelSelectPage=0;
   container13ChannelSelected=false;
   const c13=$("#container13ChannelBtn");

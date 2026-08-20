@@ -1608,3 +1608,14 @@
 }
 .prepared-continue-action[hidden]{display:none!important}
 .prepared-continue-action:disabled{opacity:.38;cursor:default}
+
+
+/* CCC v2.9.76 – destructive selection is red */
+#draftGrid .draft-card.is-selected .draft-select-mark{
+  background:#b83a3a!important;
+  color:#fff!important;
+  border-color:#fff!important;
+}
+#draftGrid .draft-card.is-selected::after{
+  border-color:#b83a3a!important;
+}

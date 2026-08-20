@@ -11,3 +11,5 @@ v2.9.70: Container13-preview läser kanalens publika visningsval (titel/beskrivn
 v2.9.74: Förbered för publicering behandlas som publiceringsläge när utkasten är klara: tydlig primär Fortsätt-knapp går vidare med alla förberedda plagg till kanalval. Radering/urval ligger kvar som sekundärt Hantera/Välj-läge och Fortsätt döljs under detta läge.
 
 v2.9.75: Hjälpen i Förbered för publicering förtydligar att bilderna kan öppnas och fortfarande anpassas före publicering samt beskriver Fortsätt och Välj.
+
+v2.9.76: Förbered-vyns Fortsätt går nu korrekt till Välj kanal och bär med alla aktuella plagg. Grön bock behåller betydelsen sparad bildanpassning. I Välj/Ta bort-läget används röd bock/ram för markerade utkast och Hjälp förklarar båda statusarna.
