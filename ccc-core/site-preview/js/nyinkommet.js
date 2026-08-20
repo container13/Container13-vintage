@@ -15,6 +15,7 @@ import {
   const closeButton = document.getElementById("close");
   const previousButton = document.querySelector(".prev");
   const nextButton = document.querySelector(".next");
+  const previewBackButton = document.getElementById("cccPreviewBack");
   let images = [];
   let currentIndex = 0;
 
@@ -325,6 +326,23 @@ import {
       }
     }
   }
+
+
+  previewBackButton?.addEventListener("click", () => {
+    if (history.length > 1) history.back();
+    else window.location.href = "../publish/";
+  });
+
+  let lightboxTouchStartX = null;
+  lightbox?.addEventListener("touchstart", (event) => { lightboxTouchStartX = event.changedTouches?.[0]?.clientX ?? null; }, {passive:true});
+  lightbox?.addEventListener("touchend", (event) => {
+    if (lightboxTouchStartX == null) return;
+    const endX = event.changedTouches?.[0]?.clientX ?? lightboxTouchStartX;
+    const dx = endX - lightboxTouchStartX;
+    lightboxTouchStartX = null;
+    if (Math.abs(dx) < 45) return;
+    dx < 0 ? next() : previous();
+  }, {passive:true});
 
   closeButton?.addEventListener("click", close);
   previousButton?.addEventListener("click", previous);
