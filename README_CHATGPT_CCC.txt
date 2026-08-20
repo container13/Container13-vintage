@@ -1619,3 +1619,14 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Bilden hämtas fortsatt från CCC:s befintliga IndexedDB (`images` / `vision-files`) utan att staging förändrar källdatan.
 - Staging-bannern visar `0 av X` eller `Y av X` om bildladdningen misslyckas delvis, vilket gör nästa felsökning konkret.
 - Ingen skarp Container13/Firebase-data ändras.
+
+
+## v2.9.85 – Robust gemensam bildtransport till site-preview
+- När både `Förhandsvisa` och staging fastnade på `Hämtar bilder…` blev det tydligt att felet låg i den gemensamma återläsningen efter navigation, inte i stagingstatusen.
+- Publicera har redan rätt valda bildblobbar i minnet. Dessa används nu direkt som källa för site-preview i stället för att site-preview först måste återfinna samma blob via IndexedDB.
+- Före navigation lägger Publicera de valda blobbarna i lokal `Cache Storage` (`ccc-site-preview-local-v1`) och skickar endast cache-nyckeln tillsammans med metadata.
+- Samma transport används av både `Förhandsvisa` och `Publicera → staging`.
+- Site-preview försöker först läsa den exakta transporterade blobben. Befintlig IndexedDB-väg (`images` / `vision-files`) finns kvar som reserv.
+- Vid varje ny preview/staging-körning ersätts den tillfälliga blobcachen så gamla testbilder inte blandas in.
+- Lösningen är fortsatt local-first: inga bilder skickas till Firebase/nätet för staging eller förhandsvisning.
+- Ingen skarp Container13-publicering sker ännu.
