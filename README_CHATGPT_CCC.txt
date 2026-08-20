@@ -1455,3 +1455,25 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - En framtida gemensam Kontrollpanel från Dashboard är fortfarande en separat idé och byggs inte här.
 - Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`; endast befintliga modul-README uppdateras.
 - Root `/version.js` är orörd.
+
+
+## v2.9.73 – Säkerhet: bekräftelse före destruktiv rensning
+- `Rensa lokal kunskapsbas` i Vision får inte längre utföra rensningen direkt på första trycket.
+- Första trycket öppnar en tydlig bekräftelsedialog som förklarar att lokalt inlärd kunskap från tidigare godkännanden och ändringar tas bort.
+- Dialogen har `Avbryt` och en separat destruktiv `Rensa kunskapsbas`-knapp.
+- Själva rensningen sker först efter det andra, uttryckliga bekräftelsetrycket.
+- Dialogen kan även stängas genom att trycka utanför den.
+- Generell CCC-princip: destruktiva åtgärder som inte enkelt kan ångras ska kräva ett tydligt bekräftelsesteg.
+- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`; endast befintliga modul-README uppdateras.
+- Root `/version.js` är orörd.
+
+
+## v2.9.74 – Förbered-vyn blir tydligt publiceringsläge
+- Bygger vidare på v2.9.73 och innehåller alltså även säkerhetsfixen där `Rensa lokal kunskapsbas` kräver separat bekräftelse.
+- När plagg redan ligger i `Förbered för publicering` betraktas de som klara för nästa steg. Vyn får därför en tydlig primär `Fortsätt`-knapp.
+- `Fortsätt` tar med alla aktuella förberedda plagg vidare till kanalvalet; användaren behöver inte först gå in i ett markeringsläge för att kunna fortsätta.
+- Möjligheten att ta bort utkast finns kvar som en sekundär hanteringsfunktion. När hanterings-/raderingsläget är aktivt döljs `Fortsätt` tillfälligt och footern visar `Avbryt`, antal markerade och `Ta bort`.
+- Publiceringsflöde och innehållshantering ska visuellt och funktionellt hållas isär.
+- Framtida bild-/produktbibliotek är en separat backlogpunkt och byggs inte nu.
+- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`.
+- Root `/version.js` är orörd.
