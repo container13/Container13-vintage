@@ -1573,3 +1573,25 @@
 }
 #channelConfirmView #confirmPreviewBtn{min-height:48px}
 #channelConfirmView #confirmPublishBtn{min-height:54px;font-size:16px}
+
+
+/* CCC v2.9.65 – luftigare slutkontroll på mobil */
+#channelConfirmView .confirm-grid{
+  width:86%;
+  margin-left:auto;
+  margin-right:auto;
+}
+#channelConfirmView .confirm-actions{
+  margin-top:9px;
+  gap:8px;
+}
+#channelConfirmView #confirmPreviewBtn{
+  min-height:42px;
+}
+#channelConfirmView #confirmPublishBtn{
+  min-height:50px;
+  font-size:16px;
+}
+#channelConfirmView{
+  padding-bottom:102px;
+}
