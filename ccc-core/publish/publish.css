@@ -1647,3 +1647,114 @@
   filter:saturate(.72) brightness(.82);
   opacity:.82;
 }
+
+
+/* CCC v2.9.81 – Neon Glöd på de faktiska kanalbrickorna */
+/* Gemensam rund ikonform */
+#channelConfirmView .confirm-channel-chip .channel-brand-icon,
+#channelTargetsView .channel-option .channel-brand-icon{
+  width:46px!important;
+  height:46px!important;
+  min-width:46px!important;
+  min-height:46px!important;
+  border-radius:50%!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  opacity:1!important;
+  filter:none!important;
+  transition:transform .16s ease,box-shadow .16s ease,filter .16s ease;
+}
+
+/* C13 – CCC-guld */
+#channelConfirmView .channel-brand-c13,
+#channelTargetsView .channel-brand-c13{
+  background:radial-gradient(circle at 35% 30%,#ffe798 0 12%,#e8b84e 42%,#8b6211 100%)!important;
+  color:#15120a!important;
+  box-shadow:
+    0 0 8px rgba(232,184,78,.82),
+    0 0 18px rgba(232,184,78,.48),
+    inset 0 0 0 1px rgba(255,255,255,.30)!important;
+}
+
+/* Instagram */
+#channelConfirmView .channel-brand-instagram,
+#channelTargetsView .channel-brand-instagram{
+  color:#fff!important;
+  background:radial-gradient(circle at 30% 105%,#ffd600 0 18%,#ff7a00 36%,#ff0169 60%,#d300c5 77%,#7638fa 100%)!important;
+  box-shadow:
+    0 0 8px rgba(232,70,190,.82),
+    0 0 18px rgba(232,70,190,.50)!important;
+}
+
+/* Facebook */
+#channelConfirmView .channel-brand-facebook,
+#channelTargetsView .channel-brand-facebook{
+  color:#fff!important;
+  background:radial-gradient(circle at 35% 30%,#5fa1ff,#1877f2 64%,#0d4fa9)!important;
+  box-shadow:
+    0 0 8px rgba(48,126,255,.82),
+    0 0 18px rgba(48,126,255,.46)!important;
+}
+
+/* TikTok */
+#channelConfirmView .channel-brand-tiktok,
+#channelTargetsView .channel-brand-tiktok{
+  color:#fff!important;
+  background:#090a0d!important;
+  text-shadow:2px 1px #25f4ee,-2px -1px #fe2c55!important;
+  box-shadow:
+    0 0 7px rgba(37,244,238,.74),
+    0 0 16px rgba(254,44,85,.42)!important;
+}
+
+/* X */
+#channelConfirmView .channel-brand-x,
+#channelTargetsView .channel-brand-x{
+  color:#fff!important;
+  background:radial-gradient(circle at 35% 30%,#292b31,#07080a 72%)!important;
+  box-shadow:
+    0 0 7px rgba(255,255,255,.64),
+    0 0 16px rgba(255,255,255,.28)!important;
+}
+
+/* Tradera – behåll enkel T-identitet men ge den gul/guldig kanalbricka */
+#channelConfirmView .channel-brand-tradera,
+#channelTargetsView .channel-brand-tradera{
+  color:#15120a!important;
+  background:radial-gradient(circle at 35% 30%,#ffe58b,#e4b648 58%,#9c7013)!important;
+  box-shadow:
+    0 0 8px rgba(228,182,72,.78),
+    0 0 18px rgba(228,182,72,.44)!important;
+}
+
+/* Låsta kanaler ska fortfarande kännas levande – låset visar statusen */
+#channelConfirmView .confirm-channel-chip.is-unavailable .channel-brand-icon,
+#channelTargetsView .channel-option.is-unavailable .channel-brand-icon{
+  filter:saturate(.82) brightness(.88)!important;
+  opacity:.88!important;
+}
+#channelConfirmView .confirm-channel-chip.is-unavailable small{
+  opacity:.72!important;
+}
+
+/* Aktiv kanal får lite extra energi, utan att ändra statusbocken */
+#channelConfirmView .confirm-channel-chip.is-active .channel-brand-icon,
+#channelTargetsView .channel-option.is-chosen .channel-brand-icon{
+  transform:scale(1.055);
+  filter:saturate(1.08) brightness(1.04)!important;
+}
+
+/* Slutkontrollen: gör den kompakta raden jämn men fortfarande tumvänlig */
+#channelConfirmView .confirm-channel-chip{
+  flex:0 0 58px!important;
+  min-width:58px!important;
+  gap:5px!important;
+}
+#channelConfirmView .confirm-channel-chip small{
+  width:58px!important;
+  font-size:8.5px!important;
+}
+#channelConfirmView .confirm-channel-chip.is-active::after,
+#channelConfirmView .confirm-channel-chip.is-unavailable::after{
+  right:1px!important;
+  top:-1px!important;
+}

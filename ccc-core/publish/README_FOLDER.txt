@@ -19,3 +19,5 @@ v2.9.77: Förbered för publicering visar alltid ? Hjälp i Core-footern samtidi
 v2.9.78: Footer-init görs robust mot laddningsordning. Om Core ännu inte är redo väntar Publicera in ccc:core-ready och konfigurerar därefter om aktuell footer. Core-ready återställer nu både Publicera-header och footer, så ? Hjälp + Välj + Tillbaka kan renderas korrekt i Förbered-vyn.
 
 v2.9.80: Publiceras kanalrad får Neon Glöd enligt valt alternativ 2: enhetligare rund ikonform, diskret kanalidentifierande glöd och tydligare aktiv kanal. Befintliga lås och statusbockar behålls. Ingen publiceringslogik ändras.
+
+v2.9.81: v2.9.80 träffade fel vy. Neon Glöd flyttas nu till de faktiska kanalbrickorna i slutkontrollen (`.confirm-channel-chip`) och samma visuella språk används även i Välj kanal. Ikonerna är runda, kanalidentifierande och låsta kanaler behåller färg/glöd medan låset visar status.
