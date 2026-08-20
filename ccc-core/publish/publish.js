@@ -1465,6 +1465,35 @@ function container13DisplaySettings(){
   };
 }
 
+const SITE_PREVIEW_BLOB_CACHE="ccc-site-preview-local-v1";
+
+async function prepareSitePreviewBlobTransport(payload){
+  if(!("caches" in window))return payload;
+  try{
+    await caches.delete(SITE_PREVIEW_BLOB_CACHE);
+    const cache=await caches.open(SITE_PREVIEW_BLOB_CACHE);
+    const byId=new Map(items.map(item=>[String(item.id),item]));
+
+    return await Promise.all(payload.map(async meta=>{
+      const item=byId.get(String(meta.id));
+      if(!item)return meta;
+
+      let blob=item.publishBlob||item.thumbnailBlob||item.originalBlob||null;
+      if(!blob && item.originalFileKey){
+        try{blob=await getSourceFile(item.originalFileKey);}catch(_){}
+      }
+      if(!blob)return meta;
+
+      const key=new URL(`../site-preview/__ccc_local__/${encodeURIComponent(meta.id)}`,window.location.href).href;
+      await cache.put(key,new Response(blob,{headers:{"Content-Type":blob.type||"image/jpeg"}}));
+      return {...meta,imageCacheKey:key};
+    }));
+  }catch(error){
+    console.warn("[CCC Publicera] Lokal bildtransport via Cache Storage misslyckades, använder IndexedDB-reserv.",error);
+    return payload;
+  }
+}
+
 function container13PayloadForSelection(){
   return items.filter(item=>channelSelectedIds.has(item.id)).map(item=>({
     id:item.id,
@@ -1479,8 +1508,9 @@ function container13PayloadForSelection(){
 }
 
 async function openSitePreviewForSelection(){
-  const payload=container13PayloadForSelection();
+  let payload=container13PayloadForSelection();
   if(!payload.length)return false;
+  payload=await prepareSitePreviewBlobTransport(payload);
   const displaySettings=container13DisplaySettings();
   try{
     sessionStorage.setItem("ccc-site-preview-items",JSON.stringify(payload));
@@ -1524,7 +1554,7 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
     return;
   }
   const button=$("#confirmPublishBtn");
-  const payload=container13PayloadForSelection();
+  let payload=container13PayloadForSelection();
   if(!payload.length){
     $("#confirmStatus").textContent="Inga plagg är valda.";
     return;
@@ -1536,6 +1566,7 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
   $("#confirmStatus").textContent="Publicerar till Container13 staging…";
 
   try{
+    payload=await prepareSitePreviewBlobTransport(payload);
     const publishedAt=new Date().toISOString();
     const stagePayload=payload.map(item=>({...item,createdAt:publishedAt,stagingPublishedAt:publishedAt}));
     const displaySettings=container13DisplaySettings();
