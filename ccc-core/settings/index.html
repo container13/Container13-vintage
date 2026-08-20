@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f7f7f9">
 <title>CCC Inställningar v2.8.2</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-<link rel="stylesheet" href="settings.css?v=2.9.37">
+<link rel="stylesheet" href="settings.css?v=2.9.70">
 </head>
 <body>
 <header class="settings-header">
@@ -16,12 +16,32 @@
 </header>
 <main class="settings-shell">
   <div class="settings-marker"><strong>INSTÄLLNINGAR</strong><span>Anpassa din CCC</span></div>
+
+  <section id="publishSettingsCard" class="settings-card" hidden>
+    <div class="settings-card-head">
+      <div>
+        <h1>Publicera – Container13</h1>
+        <p>Välj vilken information som normalt ska visas på hemsidan. CCC behåller alltid all information internt.</p>
+      </div>
+    </div>
+    <h2 class="settings-subheading">Visning på hemsidan</h2>
+    <label class="setting-row">
+      <span><strong>Visa titel</strong><small>Visar plaggets titel under bilden.</small></span>
+      <input id="publishC13ShowTitle" type="checkbox">
+    </label>
+    <label class="setting-row">
+      <span><strong>Visa beskrivning</strong><small>Visar den extra beskrivningen/texten under titeln när sådan finns.</small></span>
+      <input id="publishC13ShowDescription" type="checkbox">
+    </label>
+    <p id="publishDisplaySaved" class="settings-saved" aria-live="polite"></p>
+  </section>
+
   <section class="settings-card">
     <div class="settings-card-head"><div><h1>Allmänt</h1><p>Här samlas inställningar som gäller hela CCC.</p></div></div>
     <p>Inställningar för en viss modul hittar du via kugghjulet i modulens egen header.</p>
   </section><section class="settings-card"><div class="settings-card-head"><div><h1>Hjälp & tips</h1><p>CCC visar hjälp när du trycker på frågetecknet i footern.</p></div></div><label class="setting-row"><span><strong>Visa hjälpknapp i footer</strong><small>Visar ? Hjälp på vyer där det finns relevant hjälp.</small></span><input id="helpTipsEnabled" type="checkbox"></label><p id="tipsSaved" class="settings-saved" aria-live="polite"></p></section>
 </main>
-<script src="../version.js?v=2.9.37"></script>
-<script src="settings.js?v=2.9.37"></script>
+<script src="../version.js?v=2.9.70"></script>
+<script src="settings.js?v=2.9.70"></script>
 </body>
 </html>
