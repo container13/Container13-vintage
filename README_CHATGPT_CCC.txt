@@ -4,10 +4,10 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.9.14
+CCC-version: 2.9.63
 Senaste stabila: 2.8.95 RC1 – Crop Engine 1.0
 Senaste checkpoint: 2026-08-11
-Nästa uppgift: Testa v2.9.14 på verkliga lokala utkast: miniatyr och detaljvy ska visa naturligt bildläge redan före Anpassa bild.
+Nästa uppgift: Testa v2.9.63 på mobil: i Välj kanal ska kanallistan scrolla inom sin egen yta och Nästa alltid vara synlig.
 
 ARBETSPRINCIPER
 ---------------
@@ -37,6 +37,14 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.9.63 – Välj kanal: scroll + fast Nästa
+- Välj kanal använder nu en höjdlåst grid där endast kanallistan scrollar.
+- Nästa har en reserverad rad och ska alltid vara synlig ovanför Core-footern.
+- Kanalrubrik och listmarginaler har komprimerats så kanalerna börjar högre upp.
+- X och Tradera nås genom scroll i kanallistan på korta mobilskärmar.
+- Övriga Publicera-vyer och publiceringslogik är orörda.
+- Root /version.js är orörd.
+
 v2.9.4 – Header Back hotfix
 - Fixar centrala tillbaka-knappar i Publicera.
 - Orsak: gamla DOM-lyssnare för borttagna #detailBack och #cropBack låg kvar och stoppade publish.js med null.addEventListener innan CCC Header Core-eventen registrerades.
@@ -1221,122 +1229,6 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - `site-preview/sw.js` är inert och cachear/fångar inga requests.
 - Den visuella sajtkopian, HTML, CSS, JS, bilder och befintlig Firestore-läsning är i övrigt orörda i detta steg.
 - Detta steg publicerar ingenting och skriver ingenting till Container13:s live-data; det gör endast preview-kopian säker att använda som nästa byggblock.
-
-
-## v2.9.51 – första riktiga site-preview från Publicera
-- Detaljvyn i Publicera får knappen `Förhandsvisa på hemsidan`.
-- Knappen publicerar ingenting. Den sparar endast lätt metadata i `sessionStorage` och öppnar `ccc-core/site-preview/nyinkommet.html?cccPreview=1`.
-- Själva bilden skickas inte till Firebase eller via URL. Site-preview hämtar det valda utkastet lokalt ur CCC:s befintliga IndexedDB (`ccc-local-workspace`).
-- Site-preview prioriterar `publishBlob`, därefter thumbnail/original och kan även läsa Vision-original via `originalFileKey`.
-- Det lokala plagget injiceras högst upp på Nyinkommet med samma befintliga kort-rendering som live-sidan använder.
-- En tydlig banner `FÖRHANDSVISNING – INGET ÄR PUBLICERAT` visas endast i preview-läge.
-- Om live-galleriet kan hämtas visas preview-plagget överst tillsammans med den vanliga sajtkopian. Om live-hämtningen misslyckas ska det lokala preview-plagget ändå visas.
-- Ingen write/upload till Firestore, Storage eller riktiga Container13-sajten införs i denna version.
-- `site-preview` behåller den neutraliserade PWA/service-worker-grunden från v2.9.50.
-
-
-## v2.9.52 – site-preview flyttad till Välj kanal
-- Den tillfälliga knappen `Förhandsvisa på hemsidan` tas bort från plaggdetaljen/Förbered för publicering.
-- `Välj kanal` får ett riktigt kanal-kort för `Container13 hemsida`.
-- `Förhandsvisa på hemsidan` ligger nu i kanalsteget, där förhandsvisning och senare faktisk publicering hör hemma.
-- Den fungerande lokala preview-tekniken från v2.9.51 återanvänds: inget skrivs till Firebase eller livesajten.
-- I detta första kanaltest används senast aktiva lokala plagg om ett sådant finns, annars första lokala utkastet. Explicit val av vilka färdigställda plagg som ska publiceras byggs som separat nästa steg.
-- `README_CHATGPT_CCC.txt` återställs som kanonisk fil i projektroten och ska fortsättningsvis levereras där i changed-files.
-
-
-## v2.9.53 – CCC-standard för adaptiv miniatyrgrid
-- `Förbered för publicering` använder nu adaptiv grid beroende på antal synliga bilder på aktuell sida:
-  - 1 bild → 1×1
-  - 2 bilder → 2×1
-  - 3–4 bilder → 2×2
-  - 5–9 bilder → 3×3
-  - 10+ bilder → 3×3, max 9 per sida + swipe/pager
-- Samma reserverade gridyta behålls så färre bilder får större, mer lätttryckta miniatyrer i stället för små 3×3-rutor.
-- Befintliga bildinteraktioner lämnas oförändrade: enkeltryck, långtryck/snabbförstoring, dubbeltryck/quick-look och swipe mellan gridsidor.
-- Den adaptiva griden är nu tänkt som återanvändbar CCC-standard och ska även användas i kommande `Välj plagg för publicering`.
-- Ingen ändring i site-preview, kanalval eller publiceringsmotor i denna version.
-- `README_CHATGPT_CCC.txt` ligger fortsatt i projektroten och `ccc-core/version.js` ingår i changed-files.
-
-
-## v2.9.54 – publiceringsflöde: Välj plagg → Välj kanal
-- `Välj kanal` börjar nu med ett riktigt plaggval i en adaptiv miniatyrgrid.
-- Griden följer CCC-standarden: 1→1×1, 2→2×1, 3–4→2×2, 5–9→3×3, 10+→3×3 med max 9 per sida.
-- Enkeltryck markerar/avmarkerar plagg och visar grön rund bock; minst ett plagg krävs för `Fortsätt`.
-- Långtryck/snabbförstoring och dubbeltryck/quick-look återanvänds även i denna grid.
-- Efter `Fortsätt` visas kanalalternativ.
-- `Container13 hemsida` visas som ansluten och aktiv.
-- Instagram, Facebook och Tradera visas gråmarkerade som `Inte ansluten ännu` för att göra framtida möjligheter synliga utan att kunna väljas.
-- När Container13 väljs visas `Förhandsvisa på hemsidan` samt en avsiktligt inaktiv `Publicera`-knapp; riktig live-publicering kopplas inte in i denna version.
-- Site-preview kan nu ta emot flera markerade lokala plagg och injicera dem högst upp i Nyinkommet utan Firebase-write.
-- Expresspublicering ligger kvar som senare snabbspår ovanpå samma publiceringsmotor när normalflödet är stabilt.
-
-
-## v2.9.55 – Fortsätt synlig i Välj plagg
-- v2.9.54 hade fungerande markering av miniatyrer, men `Fortsätt` låg efter den reserverade gridytan och kunde hamna bakom/under den fasta Core-footern på mobil.
-- `Fortsätt` är nu fast placerad ovanför Core-footern i `Välj plagg`, med tumvänlig fullbredd inom max 520 px.
-- Knappen är alltid synlig medan användaren väljer plagg, men är fortsatt inaktiv tills minst ett plagg markerats.
-- Ingen ändring i själva markeringen, adaptiva griden, kanalvalet eller site-preview-logiken.
-
-
-## v2.9.56 – kanalidentitet + bort med gul pager-prick
-- Den gula ensamma pricken som kunde synas under `Fortsätt` vid bara en sida var kanalgridens pager-indikator. CSS-regeln för pagern skrev över HTML-attributet `hidden`.
-- `.ccc-draft-pager[hidden]` döljs nu explicit med `display:none!important`, så ingen pager-prick visas när det bara finns en sida.
-- Kanalvyn får tydliga visuella kanalidentiteter:
-  - Container13 hemsida: lokal `C13`-markör.
-  - Instagram: igenkännbar kamera/Instagram-symbol.
-  - Facebook: igenkännbar `f`-symbol.
-  - Tradera: enkel `T`-markör tills eventuell officiell asset kopplas in.
-- Ej anslutna kanaler är fortsatt synliga men gråmarkerade/inaktiva för att visa vad CCC kan stödja framöver.
-- Ingen ändring i urval, preview-data, site-preview eller publiceringslogik.
-
-
-## v2.9.57 – större färgkanaler + låst valbox
-- Kanalikonerna är större (~50 px) och mer färgstarka för snabb visuell igenkänning.
-- Instagram och Facebook använder färgmässigt igenkännbara lokala SVG/CSS-symboler; inga externa bildresurser krävs.
-- Container13 får en större gul/guldig `C13`-markör och Tradera en färgstark lokal `T`-markör.
-- Ej anslutna kanalrader gråas inte längre ned. Kanalnamn och ikon visas normalt.
-- Endast valboxen längst till höger är grå/låst för en ej ansluten kanal.
-- Tryck på Instagram/Facebook/Tradera visar en liten tillfällig popup som förklarar att kanalen inte är ansluten ännu och att anslutning senare ska kunna göras direkt härifrån.
-- UI:t förbereds därmed för framtida `Anslut kanal`-flöde utan att någon riktig kontointegration kopplas in ännu.
-
-
-## v2.9.58 – sista kontrollvy före publicering
-- Tryck på den anslutna kanalen `Container13 hemsida` leder nu till en separat `Redo att publicera`-vy.
-- Kontrollvyn visar vald kanal, antal valda plagg och de valda plaggen som adaptiva miniatyrer.
-- `Förhandsvisa på hemsidan` återanvänder befintlig multi-item site-preview.
-- `Publicera` visar dynamiskt `Publicera 1 plagg` / `Publicera X plagg`.
-- Skarp publicering är fortfarande medvetet avstängd: tryck på Publicera ger endast status om vad som skulle publiceras. Ingen Firebase-write/live-publicering görs i v2.9.58.
-- Headerns tillbaka-pil går från kontrollvyn tillbaka exakt ett steg till kanalvalet.
-- Kontrollvyn är avsedd som sista säkerhetskontroll innan publiceringsmotorn kopplas in.
-
-
-## v2.9.59 – standardflödet byter ordning: kanal först
-- Publicera-standardflödet är nu: `Välj kanal` → `Välj plagg` → `Redo att publicera` → `Förhandsvisa/Publicera`.
-- Motivet är framtidssäkerhet: olika kanaler kan senare kräva olika bildformat, metadata eller förberedelser, så kanalvalet bör sätta ramarna före plaggurvalet.
-- Startkortet `Välj kanal` öppnar därför kanalvyn direkt.
-- Val av `Container13 hemsida` leder därefter till den adaptiva miniatyrgriden för plaggurval.
-- `Fortsätt` från plaggurvalet går direkt till sista kontrollvyn.
-- Tillbaka-pilen följer exakt samma logiska steg bakåt: kontroll → plaggval → kanalval → Publicera-start.
-- Expresspublicering ligger kvar som ett separat framtida snabbspår för fall där användaren redan vet kanal och inte behöver normalflödets alla steg.
-- Ingen ändring i live-publiceringsmotorn; skarp publicering är fortsatt avstängd.
-
-
-## v2.9.60 – kanalvyn renodlad
-- Den gamla actiondelen med `Förhandsvisa på hemsidan` och `Publicera` har tagits bort från `Välj kanal`.
-- Standardflödet är nu visuellt och funktionellt konsekvent: `Välj kanal` → `Välj plagg` → `Fortsätt` → `Redo att publicera`.
-- `Förhandsvisa på hemsidan` och `Publicera X plagg` visas endast i sista kontrollvyn, efter att plagg faktiskt har valts.
-- Kanalvyns visuella utformning från v2.9.59/v2.9.57 behålls.
-- Skarp publicering är fortsatt avstängd.
-
-
-## v2.9.61 – explicit kanalval + tydligare publiceringssteg
-- `Container13 hemsida` är nu ett riktigt val, inte en dold Nästa-funktion.
-- Kanalens valbox är tom tills användaren väljer kanalen; därefter visas grön bock.
-- En tydlig `Nästa`-knapp ligger under kanalerna och är inaktiv tills minst en tillgänglig kanal valts.
-- Ej anslutna kanaler behåller sina låsta/grå valboxar och informations-popup.
-- `Redo att publicera` visar tydligare vald kanal, antal valda plagg och vad användaren förväntas göra.
-- Slutvyn har `Förhandsvisa` som sekundärt val och `Publicera X plagg` som tydlig huvudåtgärd.
-- Skarp publicering är fortsatt avstängd i denna testversion.
 
 
 ## v2.9.62 – avskalad slutvy + snabbval av kanaler
