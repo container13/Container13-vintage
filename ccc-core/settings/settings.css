@@ -49,3 +49,12 @@ html,body{height:100%;overflow:hidden}
 .settings-knowledge-item small,.settings-knowledge-empty{color:var(--muted);font-size:.78rem;line-height:1.35}
 .settings-knowledge-empty{margin:0}
 .settings-danger-action{color:#b13a3a}
+
+
+/* CCC v2.9.73 – destructive confirmation */
+.settings-destructive-confirm{
+  background:#b83a3a!important;
+  color:#fff!important;
+  border-color:#b83a3a!important;
+}
+.settings-destructive-confirm:disabled{opacity:.55}

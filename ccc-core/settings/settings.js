@@ -133,10 +133,32 @@
       if(open)await renderKnowledgeList();
     });
 
-    clearKnowledgeBtn?.addEventListener("click",async()=>{
-      await window.CCC_VISION_KNOWLEDGE?.clearKnowledge?.();
-      await renderKnowledgeList();
-      flashVisionSaved("Kunskapsbasen är rensad ✓");
+    const clearDialog=document.getElementById("visionClearKnowledgeDialog");
+    const cancelClear=document.getElementById("cancelVisionClearKnowledge");
+    const confirmClear=document.getElementById("confirmVisionClearKnowledge");
+
+    clearKnowledgeBtn?.addEventListener("click",()=>{
+      if(clearDialog)clearDialog.hidden=false;
+    });
+
+    cancelClear?.addEventListener("click",()=>{
+      if(clearDialog)clearDialog.hidden=true;
+    });
+
+    clearDialog?.addEventListener("click",event=>{
+      if(event.target===clearDialog)clearDialog.hidden=true;
+    });
+
+    confirmClear?.addEventListener("click",async()=>{
+      confirmClear.disabled=true;
+      try{
+        await window.CCC_VISION_KNOWLEDGE?.clearKnowledge?.();
+        await renderKnowledgeList();
+        if(clearDialog)clearDialog.hidden=true;
+        flashVisionSaved("Kunskapsbasen är rensad ✓");
+      }finally{
+        confirmClear.disabled=false;
+      }
     });
 
     refreshVisionCost();
