@@ -1393,3 +1393,14 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - `site-preview` är fortsatt en utvecklingsbrygga och ska inte betraktas som permanent produktionsarkitektur.
 - Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`.
 - Root `/version.js` är orörd.
+
+
+## v2.9.68 – Förhandsvisa: fast kortgeometri
+- v2.9.67:s generella equal-height-regler ersätts; de träffade inte den faktiska `#nyGallery`-strukturen tillräckligt precist.
+- Container13-förhandsvisningens Nyinkommet-kort använder nu fast geometri: kvadratisk bildyta + informationsyta med fast höjd.
+- Titeln reserverar plats för högst två rader. Enradig eller saknad titel ändrar därför inte kortets totalhöjd.
+- `Nyinkommen ...` förankras längst ned i informationsytan så datumraden ligger på samma nivå i alla kort.
+- Detta är fortfarande en site-preview-fix, men principen ska tas med när den riktiga Container13-renderingen sjösätts.
+- Publicera-flöde, preview-data, lightbox och skarp publicering är orörda.
+- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`.
+- Root `/version.js` är orörd.
