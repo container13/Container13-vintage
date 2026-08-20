@@ -1498,7 +1498,7 @@
   }
 
   $("#visionStartBackBtn")?.addEventListener("click", () => window.location.assign("../dashboard/index.html?v=2.8.4"));
-  document.addEventListener("ccc:header-settings",()=>setVisionSettingsOpen(true));
+  document.addEventListener("ccc:header-settings",()=>{ window.location.href="../settings/index.html?module=vision"; });
   $("#visionSettingsCloseBtn")?.addEventListener("click", () => setVisionSettingsOpen(false));
 
   async function renderKnowledgeList() {
