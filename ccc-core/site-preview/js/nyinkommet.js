@@ -39,12 +39,15 @@ import {
 
   function previewMetadataList() {
     try {
+      // Samma session-transport används för både Förhandsvisa och direkt staging-test.
+      const current=JSON.parse(sessionStorage.getItem("ccc-site-preview-items") || "null");
+      if(Array.isArray(current)&&current.length)return current;
+
       if(previewMode()==="stage"){
         const staged=JSON.parse(localStorage.getItem("ccc-site-stage-items") || "null");
         return Array.isArray(staged)?staged:[];
       }
-      const list=JSON.parse(sessionStorage.getItem("ccc-site-preview-items") || "null");
-      if(Array.isArray(list)&&list.length)return list;
+
       const one=JSON.parse(sessionStorage.getItem("ccc-site-preview-item") || "null");
       return one?[one]:[];
     } catch (_) {
@@ -54,9 +57,8 @@ import {
 
   function previewDisplaySettings() {
     try {
-      const raw=previewMode()==="stage"
-        ? localStorage.getItem("ccc-site-stage-display-settings")
-        : sessionStorage.getItem("ccc-site-preview-display-settings");
+      const raw=sessionStorage.getItem("ccc-site-preview-display-settings")
+        || (previewMode()==="stage" ? localStorage.getItem("ccc-site-stage-display-settings") : null);
       const stored=JSON.parse(raw || "null");
       if(stored && typeof stored==="object"){
         return {
@@ -147,12 +149,14 @@ import {
         console.error("[CCC Site Preview]", error);
       }
     }
+    const banner=document.getElementById("cccPreviewBanner");
+    const bannerText=banner?.querySelector("span");
     if(!loaded.length){
-      const banner=document.getElementById("cccPreviewBanner");
-      const bannerText=banner?.querySelector("span");
       if(bannerText)bannerText.textContent=previewMode()==="stage"
-        ?"Staging kunde inte ladda de publicerade lokala plaggen."
+        ?`Staging kunde inte ladda bilderna (0 av ${ids.length}).`
         :"Förhandsvisningen kunde inte ladda de lokala utkasten.";
+    }else if(previewMode()==="stage" && loaded.length<ids.length){
+      if(bannerText)bannerText.textContent=`Staging – ${loaded.length} av ${ids.length} plagg laddade, inte live`;
     }
     return loaded;
   }
