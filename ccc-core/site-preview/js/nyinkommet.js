@@ -106,6 +106,18 @@ import {
     });
   }
 
+
+  async function getTransportedPreviewBlob(cacheKey) {
+    if(!cacheKey || !("caches" in window))return null;
+    try{
+      const response=await caches.match(cacheKey);
+      return response?.ok ? await response.blob() : null;
+    }catch(error){
+      console.warn("[CCC Site Preview] Cache Storage kunde inte läsas",error);
+      return null;
+    }
+  }
+
   async function loadLocalPreviewItems() {
     if (!previewRequested()) return [];
     const banner=document.getElementById("cccPreviewBanner");
@@ -127,8 +139,12 @@ import {
     for(const id of ids){
       try {
         const meta=metadata.find(item=>String(item.id)===String(id))||{};
-        const record = await getPreviewRecord(id);
-        let blob = record?.publishBlob || record?.thumbnailBlob || record?.originalBlob || null;
+        let blob=await getTransportedPreviewBlob(meta.imageCacheKey||"");
+        let record=null;
+        if(!blob){
+          record=await getPreviewRecord(id);
+          blob = record?.publishBlob || record?.thumbnailBlob || record?.originalBlob || null;
+        }
         const sourceFileKey=record?.originalFileKey || meta.originalFileKey || "";
         if (!blob && sourceFileKey) blob = await getPreviewSourceFile(sourceFileKey);
         if (!blob) throw new Error(`Utkastet ${id} saknar lokal bild.`);
