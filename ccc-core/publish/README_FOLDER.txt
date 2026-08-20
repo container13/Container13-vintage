@@ -25,3 +25,5 @@ v2.9.81: v2.9.80 träffade fel vy. Neon Glöd flyttas nu till de faktiska kanalb
 v2.9.82: Publicera-knappen kopplas till lokal Container13 staging/site-preview, inte skarpa sajten. Valda plagg får stagingPublishedAt lokalt, staging-metadata sparas persistent på enheten och site-preview öppnas i cccStage-läge. Externa kanaler ligger fortsatt låsta.
 
 v2.9.83: Staging-fix. Lokala stagingplagg får inte längre rensas ur gridden av den efterföljande "Hämtar bilder..."-statusen när vanlig gallericache saknas. Preview/staging-metadata tar även med originalFileKey som reservkälla till vision-files.
+
+v2.9.84: Staging återanvänder nu exakt samma sessionStorage-metadataflöde som fungerande Förhandsvisa. Staging skriver inte längre om plaggposter i IndexedDB; staging-status sparas separat som metadata. Detta skyddar original/publishBlob/originalFileKey från oavsiktlig overwrite.

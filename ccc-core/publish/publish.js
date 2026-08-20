@@ -1537,19 +1537,24 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
 
   try{
     const publishedAt=new Date().toISOString();
-    const selectedIds=new Set(payload.map(item=>item.id));
-
-    for(const item of items){
-      if(!selectedIds.has(item.id))continue;
-      item.stagingPublishedAt=publishedAt;
-      item.stagingChannel="container13";
-      await put(persistenceRecord(item));
-    }
-
     const stagePayload=payload.map(item=>({...item,createdAt:publishedAt,stagingPublishedAt:publishedAt}));
+    const displaySettings=container13DisplaySettings();
+
+    // Staging får INTE skriva om originalposterna i CCC:s IndexedDB.
+    // Återanvänd exakt samma metadata-transport som fungerande Förhandsvisa.
+    sessionStorage.setItem("ccc-site-preview-items",JSON.stringify(stagePayload));
+    sessionStorage.setItem("ccc-site-preview-display-settings",JSON.stringify(displaySettings));
+    sessionStorage.setItem("ccc-site-preview-item",JSON.stringify(stagePayload[0]));
+
+    // Persistent staging-manifest innehåller bara metadata/status, aldrig bildblobbar.
     localStorage.setItem("ccc-site-stage-items",JSON.stringify(stagePayload));
-    localStorage.setItem("ccc-site-stage-display-settings",JSON.stringify(container13DisplaySettings()));
+    localStorage.setItem("ccc-site-stage-display-settings",JSON.stringify(displaySettings));
     localStorage.setItem("ccc-site-stage-published-at",publishedAt);
+    localStorage.setItem("ccc-site-stage-status",JSON.stringify({
+      channel:"container13",
+      ids:stagePayload.map(item=>item.id),
+      publishedAt
+    }));
 
     $("#confirmStatus").textContent=payload.length===1
       ?"1 plagg publicerat till staging."
