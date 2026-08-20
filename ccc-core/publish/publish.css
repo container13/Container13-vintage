@@ -1595,3 +1595,16 @@
 #channelConfirmView{
   padding-bottom:102px;
 }
+
+
+/* CCC v2.9.74 – Förbered-vyn är ett publiceringsläge */
+.prepared-continue-action{
+  width:min(100%,520px);
+  margin:18px auto 72px;
+  display:block;
+  min-height:58px;
+  font-size:18px;
+  font-weight:900;
+}
+.prepared-continue-action[hidden]{display:none!important}
+.prepared-continue-action:disabled{opacity:.38;cursor:default}

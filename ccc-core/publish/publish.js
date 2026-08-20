@@ -337,7 +337,7 @@ function helpHtmlForView(view){
     <div class="help-row"><strong>Tryck</strong><br>Öppna plagget.</div>
     <div class="help-row"><strong>Långtryck</strong><br>Snabbzoom/förhandsvisning.</div>
     <div class="help-row"><strong>Dubbeltryck</strong><br>Visa bilden tillfälligt i helskärm.</div>
-    <div class="help-row"><strong>Välj</strong><br>Markera en eller flera bilder för att ta bort dem.</div>`;
+    <div class="help-row"><strong>Hantera</strong><br>Öppna markeringsläget om du vill ta bort ett eller flera utkast.</div>`;
   if(view==="detailView")return `<div class="help-row"><strong>Grön ✓</strong><br>Bilden har en sparad anpassning men kan ändras igen.</div><div class="help-row"><strong>Anpassa bild</strong><br>Öppna beskärning/zoom för den här bilden.</div>`;
   if(view==="cropView")return `<div class="help-row"><strong>Anpassa bild</strong><br>Flytta och zooma tills utsnittet känns rätt.</div><div class="help-row"><strong>Spara anpassning</strong><br>Sparar bilden och återgår till miniatyrerna.</div>`;
   return `<div class="help-row"><strong>Tillbaka</strong><br>Går till föregående steg.</div>`;
@@ -358,10 +358,30 @@ function configureFooterForView(view){
   if(draftSelectionMode){updateSelectionFooter();return;}
   const helpEnabled=localStorage.getItem("ccc-help-tips-enabled")!=="0";
   const config={help:helpEnabled && ["gridView","detailView","cropView"].includes(view),onHelp:openPublishHelp};
-  if(view==="gridView")Object.assign(config,{select:true,onSelect:enterDraftSelection});
+  if(view==="gridView")Object.assign(config,{select:true,onSelect:enterDraftSelection,selectLabel:"Hantera"});
   window.CCC_CORE.footer.setTools?.(config);
 }
-function updateSelectionFooter(){if(draftSelectionMode)window.CCC_CORE?.footer?.showSelection?.({count:selectedDraftIds.size,onDelete:confirmDeleteSelectedDrafts,onCancel:exitDraftSelection});else window.CCC_CORE?.footer?.showDefault?.();}function enterDraftSelection(){if(!items.length)return;draftSelectionMode=true;selectedDraftIds.clear();updateSelectionFooter();renderGrid();}function exitDraftSelection(){draftSelectionMode=false;selectedDraftIds.clear();configureFooterForView(currentPublishView);renderGrid();}
+function updateSelectionFooter(){
+  const continueBtn=$("#preparedContinueBtn");
+  if(continueBtn)continueBtn.hidden=draftSelectionMode;
+  if(draftSelectionMode)window.CCC_CORE?.footer?.showSelection?.({count:selectedDraftIds.size,onDelete:confirmDeleteSelectedDrafts,onCancel:exitDraftSelection});
+  else window.CCC_CORE?.footer?.showDefault?.();
+}
+function enterDraftSelection(){
+  if(!items.length)return;
+  draftSelectionMode=true;
+  selectedDraftIds.clear();
+  updateSelectionFooter();
+  renderGrid();
+}
+function exitDraftSelection(){
+  draftSelectionMode=false;
+  selectedDraftIds.clear();
+  const continueBtn=$("#preparedContinueBtn");
+  if(continueBtn)continueBtn.hidden=false;
+  configureFooterForView(currentPublishView);
+  renderGrid();
+}
 async function commitPendingDraftDelete(){
   const pending=pendingDraftDelete;
   if(!pending)return;
@@ -389,7 +409,8 @@ function undoPendingDraftDelete(){
     help:localStorage.getItem("ccc-help-tips-enabled")!=="0",
     onHelp:openPublishHelp,
     select:true,
-    onSelect:enterDraftSelection
+    onSelect:enterDraftSelection,
+    selectLabel:"Hantera"
   });
   renderGrid();
 }
@@ -466,6 +487,11 @@ async function renderGrid(){
   $("#startDraftCount").textContent=items.length===1?"1 utkast":`${items.length} utkast`;
 
   const hasItems=items.length>0;
+  const preparedContinue=$("#preparedContinueBtn");
+  if(preparedContinue){
+    preparedContinue.disabled=!hasItems;
+    preparedContinue.hidden=draftSelectionMode;
+  }
   if(empty){
     empty.hidden=hasItems;
     empty.style.display=hasItems?"none":"grid";
@@ -798,6 +824,19 @@ $("#draftsBtn").addEventListener("click",async()=>{
   show("gridView");
   requestAnimationFrame(()=>$("#cccHeaderBack")?.focus({preventScroll:true}));
 });
+$("#preparedContinueBtn")?.addEventListener("click",()=>{
+  if(!items.length)return;
+  channelSelectedIds=new Set(items.map(item=>item.id));
+  channelSelectPage=0;
+  container13ChannelSelected=false;
+  const c13=$("#container13ChannelBtn");
+  c13?.classList.remove("is-chosen");
+  c13?.setAttribute("aria-pressed","false");
+  const next=$("#channelNextBtn");
+  if(next)next.disabled=true;
+  show("channelTargetsView");
+});
+
 $("#channelBtn").addEventListener("click",()=>{
   channelSelectedIds.clear();
   channelSelectPage=0;
