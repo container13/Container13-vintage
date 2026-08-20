@@ -1443,3 +1443,15 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Headerns tillbaka-pil och footerns permanenta Tillbaka-kort använder samma Core-back-event och går tillbaka till den modul som öppnade inställningarna.
 - Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`; befintlig `/ccc-core/settings/README_FOLDER.txt` uppdateras.
 - Root `/version.js` är orörd.
+
+
+## v2.9.72 – Vision-inställningar standardiseras
+- Vision och Publicera använder nu samma inställningsmönster: modulens kugghjul öppnar `/settings/?module=<modul>`.
+- Vision-kugghjulet öppnar `/settings/?module=vision`; den tidigare Vision-specifika overlay/popup-inställningen tas bort.
+- Vision behåller sina befintliga funktioner: `Automatisk AI-analys`, `Låt CCC lära sig av mina ändringar`, `Total Vision-kostnad`, visa lokal kunskap och rensa lokal kunskapsbas.
+- Inställningarnas värden använder samma befintliga localStorage-nycklar som Vision redan använde, så användarens val följer med vid flytten.
+- Vision-inställningsvyn använder samma Core-header, scrollbar arbetsyta och permanenta Core-footer/Tillbaka som Publicera-inställningar.
+- Inställningssidan är fortsatt modulren: Vision visar bara Vision, Publicera bara Publicera och Dashboard bara Dashboard.
+- En framtida gemensam Kontrollpanel från Dashboard är fortfarande en separat idé och byggs inte här.
+- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`; endast befintliga modul-README uppdateras.
+- Root `/version.js` är orörd.
