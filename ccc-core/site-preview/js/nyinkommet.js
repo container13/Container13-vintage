@@ -26,12 +26,23 @@ import {
   let previewItems = [];
   let previewObjectUrls = [];
 
+  function previewMode() {
+    const params=new URLSearchParams(window.location.search);
+    if(params.get("cccStage")==="1")return "stage";
+    if(params.get("cccPreview")==="1")return "preview";
+    return "";
+  }
+
   function previewRequested() {
-    return new URLSearchParams(window.location.search).get("cccPreview") === "1";
+    return !!previewMode();
   }
 
   function previewMetadataList() {
     try {
+      if(previewMode()==="stage"){
+        const staged=JSON.parse(localStorage.getItem("ccc-site-stage-items") || "null");
+        return Array.isArray(staged)?staged:[];
+      }
       const list=JSON.parse(sessionStorage.getItem("ccc-site-preview-items") || "null");
       if(Array.isArray(list)&&list.length)return list;
       const one=JSON.parse(sessionStorage.getItem("ccc-site-preview-item") || "null");
@@ -43,7 +54,10 @@ import {
 
   function previewDisplaySettings() {
     try {
-      const stored=JSON.parse(sessionStorage.getItem("ccc-site-preview-display-settings") || "null");
+      const raw=previewMode()==="stage"
+        ? localStorage.getItem("ccc-site-stage-display-settings")
+        : sessionStorage.getItem("ccc-site-preview-display-settings");
+      const stored=JSON.parse(raw || "null");
       if(stored && typeof stored==="object"){
         return {
           showTitle:stored.showTitle!==false,
@@ -92,7 +106,14 @@ import {
 
   async function loadLocalPreviewItems() {
     if (!previewRequested()) return [];
-    document.getElementById("cccPreviewBanner")?.classList.add("is-active");
+    const banner=document.getElementById("cccPreviewBanner");
+    banner?.classList.add("is-active");
+    const bannerText=banner?.querySelector("span");
+    if(bannerText){
+      bannerText.textContent=previewMode()==="stage"
+        ?"Staging – publicerat från CCC, inte live"
+        :"Förhandsvisning – inget är publicerat";
+    }
 
     const params = new URLSearchParams(window.location.search);
     const metadata = previewMetadataList();
@@ -120,7 +141,8 @@ import {
           imageUrl: localUrl,
           category: "nyinkommet",
           createdAt: meta.createdAt || new Date().toISOString(),
-          __cccPreview: true
+          __cccPreview: true,
+          __cccStage: previewMode()==="stage"
         });
       } catch (error) {
         console.error("[CCC Site Preview]", error);
@@ -128,7 +150,10 @@ import {
     }
     if(!loaded.length){
       const banner=document.getElementById("cccPreviewBanner");
-      if(banner)banner.textContent="Förhandsvisningen kunde inte ladda de lokala utkasten.";
+      const bannerText=banner?.querySelector("span");
+      if(bannerText)bannerText.textContent=previewMode()==="stage"
+        ?"Staging kunde inte ladda de publicerade lokala plaggen."
+        :"Förhandsvisningen kunde inte ladda de lokala utkasten.";
     }
     return loaded;
   }
