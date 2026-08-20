@@ -360,9 +360,16 @@ function configureFooterForView(view){
     return;
   }
   if(draftSelectionMode){updateSelectionFooter();return;}
-  const helpEnabled=localStorage.getItem("ccc-help-tips-enabled")!=="0";
-  const config={help:helpEnabled && ["gridView","detailView","cropView"].includes(view),onHelp:openPublishHelp};
-  if(view==="gridView")Object.assign(config,{select:true,onSelect:enterDraftSelection,selectLabel:"Hantera"});
+  const config={help:["gridView","detailView","cropView"].includes(view),onHelp:openPublishHelp};
+  if(view==="gridView"){
+    Object.assign(config,{
+      help:true,
+      onHelp:openPublishHelp,
+      select:true,
+      onSelect:enterDraftSelection,
+      selectLabel:"Välj"
+    });
+  }
   window.CCC_CORE.footer.setTools?.(config);
 }
 function updateSelectionFooter(){
@@ -410,11 +417,11 @@ function undoPendingDraftDelete(){
     });
   items=restored;
   window.CCC_CORE?.footer?.setTools?.({
-    help:localStorage.getItem("ccc-help-tips-enabled")!=="0",
+    help:true,
     onHelp:openPublishHelp,
     select:true,
     onSelect:enterDraftSelection,
-    selectLabel:"Hantera"
+    selectLabel:"Välj"
   });
   renderGrid();
 }

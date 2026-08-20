@@ -13,3 +13,5 @@ v2.9.74: Förbered för publicering behandlas som publiceringsläge när utkaste
 v2.9.75: Hjälpen i Förbered för publicering förtydligar att bilderna kan öppnas och fortfarande anpassas före publicering samt beskriver Fortsätt och Välj.
 
 v2.9.76: Förbered-vyns Fortsätt går nu korrekt till Välj kanal och bär med alla aktuella plagg. Grön bock behåller betydelsen sparad bildanpassning. I Välj/Ta bort-läget används röd bock/ram för markerade utkast och Hjälp förklarar båda statusarna.
+
+v2.9.77: Förbered för publicering visar alltid ? Hjälp i Core-footern samtidigt som Välj och den permanenta Tillbaka-knappen. Publiceras hjälp är modulens egen och styrs inte av Dashboardens hjälpinställning. Fortsätt ligger kvar som tydlig huvudåtgärd i arbetsytan.
