@@ -1598,3 +1598,13 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Externa kanaler (Instagram, Facebook, TikTok, X och Tradera) ligger kvar låsta och riktig integration skjuts upp tills Container13:s dagliga kärnflöde är stabilt.
 - När stagingflödet är verifierat blir nästa steg att koppla samma publiceringsadapter till skarpa Container13. Därefter är Öppettider nästa prioriterade Container13-behov.
 - Temaprincip: Core ska äga gemensamma design tokens/grundutseende; moduler ska endast hårdkoda färger/stilar som faktiskt är modulspecifika, t.ex. kanalidentiteter.
+
+
+## v2.9.83 – Stagingplagg försvann efter rendering
+- Konkret fel hittat i `site-preview`: lokala preview/staging-plagg renderades först, men om vanlig gallericache saknades ersatte nästa steg omedelbart gridden med `Hämtar bilder...`.
+- `Hämtar bilder...` får nu endast ersätta gridden när det inte redan finns lokalt laddade preview/staging-plagg.
+- Stagingplaggen ligger därför kvar synliga medan eventuell live-galleridata hämtas och kan därefter kombineras med denna.
+- Preview/staging-payloaden innehåller nu även `originalFileKey` som intern reservreferens.
+- `site-preview` kan därmed läsa bilden från `vision-files` även om en komplett post i `images` saknas eller inte innehåller ett inbäddat blobfält.
+- Staging-bannern visar hur många lokala stagingplagg som faktiskt laddades, vilket gör testet lättare att verifiera.
+- Ingen skarp Container13/Firebase-publicering sker ännu.
