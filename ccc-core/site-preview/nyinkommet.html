@@ -57,6 +57,8 @@
             content: "●";
             font-size: .65rem;
         }
+        .ccc-preview-back { margin-left:auto; border:1px solid rgba(228,184,79,.55); border-radius:999px; padding:.34rem .62rem; background:transparent; color:#e4b84f; font:inherit; letter-spacing:.04em; text-transform:none; cursor:pointer; }
+        @media (max-width:520px) { .ccc-preview-banner { justify-content:flex-start; padding-inline:.7rem; } .ccc-preview-banner::before { display:none; } .ccc-preview-back { font-size:.72rem; } }
         .page-header .logo-small {
             display: block;
             width: 680px;
@@ -84,7 +86,8 @@
 <body>
 
     <div id="cccPreviewBanner" class="ccc-preview-banner" role="status" aria-live="polite">
-        Förhandsvisning – inget är publicerat
+        <span>Förhandsvisning – inget är publicerat</span>
+        <button id="cccPreviewBack" class="ccc-preview-back" type="button">Tillbaka till CCC</button>
     </div>
 
     <!-- Gemensam meny -->
@@ -179,7 +182,7 @@
 
     <script
         type="module"
-        src="js/nyinkommet.js?v=4.2.1">
+        src="js/nyinkommet.js?v=4.2.2">
     </script>
 <script type="module" src="js/analytics.js?v=6.3.0"></script>
 
