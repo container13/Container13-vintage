@@ -10,3 +10,25 @@
 
 /* CCC v2.9.70 – channel presentation settings */
 .settings-subheading{margin:4px 0 2px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+
+/* CCC v2.9.71 – Settings follows Core shell/header/footer */
+html,body{height:100%;overflow:hidden}
+.settings-app-shell{height:100dvh;min-height:100dvh;overflow:hidden}
+.settings-app-shell .ccc-header{flex:0 0 auto}
+.settings-shell{
+  height:calc(100dvh - var(--ccc-header-height,105px) - var(--ccc-footer-control-height,50px) - 8px);
+  max-height:calc(100dvh - var(--ccc-header-height,105px) - var(--ccc-footer-control-height,50px) - 8px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+  padding-bottom:18px;
+}
+.settings-context-card[hidden]{display:none!important}
+@media(min-width:700px){
+  .settings-shell{
+    height:calc(100dvh - var(--ccc-header-height,150px) - var(--ccc-footer-control-height,50px) - 8px);
+    max-height:calc(100dvh - var(--ccc-header-height,150px) - var(--ccc-footer-control-height,50px) - 8px);
+  }
+}

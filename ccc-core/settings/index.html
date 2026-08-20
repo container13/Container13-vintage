@@ -6,14 +6,31 @@
 <meta name="theme-color" content="#f7f7f9">
 <title>CCC Inställningar v2.8.2</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-<link rel="stylesheet" href="settings.css?v=2.9.70">
+<link rel="stylesheet" href="settings.css?v=2.9.71">
+<link rel="stylesheet" href="../core.css?v=2.9.49">
 </head>
-<body>
-<header class="settings-header">
-  <a href="../dashboard/index.html" class="settings-back" aria-label="Tillbaka">‹</a>
-  <a class="settings-brand ccc-home-link" href="../dashboard/index.html" aria-label="CCC – hem till Dashboard" title="Hem – Dashboard"><span>✦</span><strong>CCC</strong></a>
-  <span class="settings-spacer"></span>
-</header>
+<body data-ccc-header-back="true" data-ccc-header-settings="false">
+<div class="app-shell ccc-app-shell settings-app-shell">
+  <header class="app-header ccc-header">
+    <a class="brand ccc-brand-mark ccc-home-link" href="../dashboard/index.html" aria-label="CCC – hem till Dashboard" title="Hem – Dashboard">
+      <span class="brand-halo ccc-brand-halo" aria-hidden="true"><span class="ccc-aura-arc"></span></span>
+      <span class="brand-word ccc-brand-word"><span>C</span><span class="ccc-brand-middle">C</span><span>C</span></span>
+    </a>
+    <div class="header-actions ccc-header-actions">
+      <button id="themeBtn" class="icon-button ccc-icon-button" type="button" aria-label="Växla tema" aria-pressed="false">
+        <svg class="icon icon-theme ccc-icon ccc-icon-theme" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.4 0-.8-.1-1.2A7 7 0 0 1 13.2 3H12Z"/></svg>
+      </button>
+      <button id="profileBtn" class="icon-button ccc-icon-button" type="button" aria-label="Öppna användarmeny" aria-expanded="false">
+        <svg class="icon ccc-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm7 8a7 7 0 0 0-14 0"/></svg>
+      </button>
+    </div>
+    <div id="profileMenu" class="profile-menu ccc-profile-menu" hidden>
+      <p class="profile-name">Magnus Johansson</p>
+      <a href="../profile/index.html">Min profil</a>
+      <a href="../settings/index.html">Inställningar</a>
+      <button id="logout" type="button">Logga ut</button>
+    </div>
+  </header>
 <main class="settings-shell">
   <div class="settings-marker"><strong>INSTÄLLNINGAR</strong><span>Anpassa din CCC</span></div>
 
@@ -36,12 +53,13 @@
     <p id="publishDisplaySaved" class="settings-saved" aria-live="polite"></p>
   </section>
 
-  <section class="settings-card">
-    <div class="settings-card-head"><div><h1>Allmänt</h1><p>Här samlas inställningar som gäller hela CCC.</p></div></div>
-    <p>Inställningar för en viss modul hittar du via kugghjulet i modulens egen header.</p>
-  </section><section class="settings-card"><div class="settings-card-head"><div><h1>Hjälp & tips</h1><p>CCC visar hjälp när du trycker på frågetecknet i footern.</p></div></div><label class="setting-row"><span><strong>Visa hjälpknapp i footer</strong><small>Visar ? Hjälp på vyer där det finns relevant hjälp.</small></span><input id="helpTipsEnabled" type="checkbox"></label><p id="tipsSaved" class="settings-saved" aria-live="polite"></p></section>
+  <section id="dashboardSettingsCard" class="settings-card settings-context-card">
+    <div class="settings-card-head"><div><h1>Dashboard</h1><p>Inställningarna här gäller Dashboard. Varje modul har sina egna inställningar via kugghjulet i den modulen.</p></div></div>
+  </section><section id="dashboardHelpCard" class="settings-card settings-context-card"><div class="settings-card-head"><div><h1>Hjälp & tips</h1><p>CCC visar hjälp när du trycker på frågetecknet i footern.</p></div></div><label class="setting-row"><span><strong>Visa hjälpknapp i footer</strong><small>Visar ? Hjälp på vyer där det finns relevant hjälp.</small></span><input id="helpTipsEnabled" type="checkbox"></label><p id="tipsSaved" class="settings-saved" aria-live="polite"></p></section>
 </main>
-<script src="../version.js?v=2.9.70"></script>
-<script src="settings.js?v=2.9.70"></script>
+</div>
+<script src="../version.js?v=2.9.71"></script>
+<script src="settings.js?v=2.9.71"></script>
+<script type="module" src="../core.js?v=2.9.49"></script>
 </body>
 </html>
