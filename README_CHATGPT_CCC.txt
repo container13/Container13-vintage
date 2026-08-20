@@ -1630,3 +1630,32 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Vid varje ny preview/staging-körning ersätts den tillfälliga blobcachen så gamla testbilder inte blandas in.
 - Lösningen är fortsatt local-first: inga bilder skickas till Firebase/nätet för staging eller förhandsvisning.
 - Ingen skarp Container13-publicering sker ännu.
+
+
+## v2.9.86 – Skarp Container13-publicering
+- Efter att lokal `site-preview`-bildtransport blivit onödigt komplex byter CCC till den riktiga publiceringskedjan som Container13-admin redan använder och som är beprövad i drift.
+- CCC och `c13-admin` använder samma Firebase-projekt och samma autentiserade användarsession.
+- `Publicera` laddar vald färdig bildblob till Firebase Storage under `nyinkommet/`, hämtar `downloadURL` och skapar därefter en Firestore-post i `gallery` med `category: nyinkommet`.
+- Firestore-posten innehåller även `cccItemId` och `source: ccc` för framtida spårbarhet utan att ändra befintlig publika datamodell.
+- Container13-visningsinställningen sparas per publicerad post som `showTitle` och `showDescription`; gamla poster utan fälten fortsätter visa titel som tidigare.
+- Beskrivning kan lagras i posten även när den inte visas publikt.
+- Om Storage-uppladdningen lyckas men Firestore-skrivningen misslyckas försöker CCC radera den nyuppladdade Storage-filen för att undvika föräldralösa filer.
+- Publicera-knappen låses under körning. Vid full framgång öppnas riktiga `/nyinkommet.html` för direkt kontroll.
+- Delvis misslyckad flerbildspublicering rapporteras och användaren stannar kvar i CCC; lyckade poster lämnas publicerade och misslyckade kan provas igen.
+- `site-preview` behålls i projektet som visuell test/stagingmiljö men ligger inte längre i vägen för den dagliga publiceringskedjan.
+- Externa kanaler ligger fortsatt på sparlåga. Efter stabil Container13-publicering är Öppettider nästa prioriterade Container13-behov.
+
+
+## v2.9.87 – Permanent plaggidentitet + bildmetadata-kuvert
+- Varje nytt plagg får ett permanent mänskligt läsbart `cccItemId` redan när fotot tas/importeras i Vision. Formatet är `C13-YYYYMMDD-XXXXXX`.
+- Det befintliga tekniska `id` behålls internt för kompatibilitet; `cccItemId` är plaggets långlivade identitet genom Vision → Publicera → Container13 och framtida lager/webshop/QR.
+- Kamerans/importens originalbytes skrivs aldrig om. CCC följer fortsatt principen att originalfilen ska vara orörd.
+- I stället lagras ett `metadata`-kuvert i samma lokala `vision-files`-record som originalbilden. Kuvertet innehåller bl.a. `cccItemId`, titel, märke, storlek, pris, beskrivning, schemaVersion och updatedAt.
+- Kuvertet skapas direkt med identiteten och uppdateras när Vision/användaren godkänner eller ändrar produktdata.
+- Sparade Vision-sessioner och Publicera-utkast bevarar samma `cccItemId`.
+- Äldre lokala Publicera-utkast utan permanent identitet får ett `cccItemId` en gång vid inläsning och sparas därefter med detta ID.
+- Vid skarp Container13-publicering används `cccItemId` i Storage-filnamnet och som Firebase Storage `customMetadata`; samma ID sparas i Firestore-posten.
+- Storage-metadata innehåller endast kompakt stabil information (ID, schemaVersion, titel, märke, storlek, source). Full levande produktdata fortsätter ligga i CCC/Firestore och är inte beroende av bildmetadata.
+- Detta ger bilden/plagget ett digitalt bagagekort genom CCC utan att göra EXIF/XMP i originalfilen till databas eller riskera att originalet förändras.
+- Framtida binär EXIF/XMP-inbäddning kan läggas på CCC:s genererade master/publiceringskopior om det ger praktisk nytta, men är inte ett krav för identitetskedjan.
+- QR, webshop och avancerad lagerhantering byggs inte nu; v2.9.87 lägger endast fundamentet så dagens Container13-flöde inte behöver byggas om senare.
