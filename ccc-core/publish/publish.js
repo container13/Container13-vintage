@@ -353,8 +353,18 @@ function openPublishHelp(){
   dlg.hidden=false;
 }
 function closePublishHelp(){const dlg=$("#publishHelpDialog");if(dlg)dlg.hidden=true;}
+let publishFooterCoreWaitBound=false;
 function configureFooterForView(view){
-  if(!window.CCC_CORE?.footer)return;
+  if(!window.CCC_CORE?.footer){
+    if(!publishFooterCoreWaitBound){
+      publishFooterCoreWaitBound=true;
+      document.addEventListener("ccc:core-ready",()=>{
+        publishFooterCoreWaitBound=false;
+        configureFooterForView(currentPublishView);
+      },{once:true});
+    }
+    return;
+  }
   if(view==="gridView"&&pendingDraftDelete){
     window.CCC_CORE.footer.showUndo?.({count:pendingDraftDelete.ids.length,onUndo:undoPendingDraftDelete});
     return;
@@ -1599,7 +1609,10 @@ document.addEventListener("ccc:header-back",async()=>{if(currentPublishView==="g
 document.addEventListener("ccc:header-settings",()=>{
   window.location.href="../settings/index.html?module=publish";
 });
-document.addEventListener("ccc:core-ready",()=>setPublishHeader(currentPublishView),{once:true});
+document.addEventListener("ccc:core-ready",()=>{
+  setPublishHeader(currentPublishView);
+  configureFooterForView(currentPublishView);
+},{once:true});
 
 /* CCC cache stamp: v2.9.13 */
 
