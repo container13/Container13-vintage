@@ -126,18 +126,17 @@ import {
       try {
         const meta=metadata.find(item=>String(item.id)===String(id))||{};
         const record = await getPreviewRecord(id);
-        if (!record) throw new Error(`Det lokala utkastet ${id} hittades inte.`);
-
-        let blob = record.publishBlob || record.thumbnailBlob || record.originalBlob || null;
-        if (!blob && record.originalFileKey) blob = await getPreviewSourceFile(record.originalFileKey);
+        let blob = record?.publishBlob || record?.thumbnailBlob || record?.originalBlob || null;
+        const sourceFileKey=record?.originalFileKey || meta.originalFileKey || "";
+        if (!blob && sourceFileKey) blob = await getPreviewSourceFile(sourceFileKey);
         if (!blob) throw new Error(`Utkastet ${id} saknar lokal bild.`);
 
         const localUrl=URL.createObjectURL(blob);
         previewObjectUrls.push(localUrl);
         loaded.push({
           id: `ccc-preview-${id}`,
-          title: meta.title || record.title || record.fields?.title || "Förhandsvisning",
-          description: meta.description || record.description || record.fields?.description || "",
+          title: meta.title || record?.title || record?.fields?.title || "Förhandsvisning",
+          description: meta.description || record?.description || record?.fields?.description || "",
           imageUrl: localUrl,
           category: "nyinkommet",
           createdAt: meta.createdAt || new Date().toISOString(),
@@ -341,10 +340,18 @@ import {
   async function load() {
     if (!gallery) return;
     previewItems = await loadLocalPreviewItems();
-    if (previewItems.length) render(previewItems);
+    if (previewItems.length) {
+      render(previewItems);
+      if(previewMode()==="stage"){
+        const bannerText=document.querySelector("#cccPreviewBanner span");
+        if(bannerText){
+          bannerText.textContent=`Staging – ${previewItems.length} ${previewItems.length===1?"plagg":"plagg"} publicerade från CCC, inte live`;
+        }
+      }
+    }
 
     const cached = getCachedGalleryData();
-    if (!cached) {
+    if (!cached && !previewItems.length) {
       gallery.innerHTML = '<p class="gallery-status">Hämtar bilder...</p>';
     }
 
