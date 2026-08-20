@@ -79,42 +79,48 @@
                 margin-bottom: 24px;
             }
         }
-    
-        /* CCC v2.9.67 – equal-height preview cards */
-        #products {
+
+        /* CCC v2.9.68 – fixed card geometry in preview */
+        #nyGallery {
             align-items: stretch;
         }
-        #products .product-card,
-        #products .product {
+
+        #nyGallery .gallery-item.nyinkommet-kort {
+            display: flex;
+            flex-direction: column;
             height: 100%;
-            display: flex;
+        }
+
+        #nyGallery .nyinkommet-bildknapp {
+            flex: 0 0 auto;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+        }
+
+        #nyGallery .nyinkommet-info {
+            box-sizing: border-box;
+            height: 112px;
+            min-height: 112px;
+            display: flex !important;
             flex-direction: column;
+            padding: 13px 15px 15px;
         }
-        #products .product-card .product-info,
-        #products .product .product-info,
-        #products .product-card .info,
-        #products .product .info {
-            flex: 1 1 auto;
-            display: flex;
-            flex-direction: column;
-        }
-        #products .product-card h2,
-        #products .product h2,
-        #products .product-card h3,
-        #products .product h3 {
-            min-height: 2.5em;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        #products .product-card p,
-        #products .product p {
+
+        #nyGallery .nyinkommet-titel {
+            margin: 0 !important;
             min-height: 2.7em;
+            max-height: 2.7em;
+            line-height: 1.35;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+        }
+
+        #nyGallery .nyinkommet-titel + .nyinkommet-datum,
+        #nyGallery .nyinkommet-datum {
+            margin-top: auto !important;
+            margin-bottom: 0 !important;
         }
 
     </style>
