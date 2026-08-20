@@ -1400,9 +1400,14 @@ $("#channelNextBtn")?.addEventListener("click",async()=>{
 async function openSitePreviewForSelection(){
   const selected=items.filter(item=>channelSelectedIds.has(item.id));
   if(!selected.length)return false;
+  const displaySettings={
+    showTitle:localStorage.getItem("ccc-publish-container13-show-title")!=="0",
+    showDescription:localStorage.getItem("ccc-publish-container13-show-description")==="1"
+  };
   const payload=selected.map(item=>({
     id:item.id,
     title:title(item,Math.max(0,itemIndexById(item.id))),
+    description:String(item.description||item.fields?.description||"").trim(),
     brand:item.brand||item.fields?.brand||"",
     size:item.size||item.fields?.size||"",
     price:item.price||item.fields?.price||"",
@@ -1410,6 +1415,7 @@ async function openSitePreviewForSelection(){
   }));
   try{
     sessionStorage.setItem("ccc-site-preview-items",JSON.stringify(payload));
+    sessionStorage.setItem("ccc-site-preview-display-settings",JSON.stringify(displaySettings));
     sessionStorage.setItem("ccc-site-preview-item",JSON.stringify(payload[0]));
   }catch(error){
     console.warn("[CCC Publicera] Kunde inte spara preview-metadata",error);
