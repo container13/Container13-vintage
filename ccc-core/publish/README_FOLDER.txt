@@ -29,3 +29,7 @@ v2.9.83: Staging-fix. Lokala stagingplagg får inte längre rensas ur gridden av
 v2.9.84: Staging återanvänder nu exakt samma sessionStorage-metadataflöde som fungerande Förhandsvisa. Staging skriver inte längre om plaggposter i IndexedDB; staging-status sparas separat som metadata. Detta skyddar original/publishBlob/originalFileKey från oavsiktlig overwrite.
 
 v2.9.85: Förhandsvisa och staging får en gemensam robust lokal bildtransport via Cache Storage. Publicera lägger de redan laddade valda bildblobbarna i lokal cache före navigation; site-preview läser dem direkt och använder IndexedDB endast som reserv. Ingen Firebase/live-data berörs.
+
+v2.9.86: Publicera kopplas till skarpa Container13 via samma fungerande Firebase-väg som adminpanelen: Storage `nyinkommet/` -> downloadURL -> Firestore `gallery` med category `nyinkommet`. CCC lagrar cccItemId/source och kanalens showTitle/showDescription per post. Storage-filen rullas tillbaka om Firestore-skrivningen misslyckas. Efter lyckad publicering öppnas riktiga Nyinkommet för direkt kontroll.
+
+v2.9.87: Publicera bevarar permanent `cccItemId`, backfillar äldre lokala utkast en gång och använder ID:t i Storage-filnamn, Firebase Storage customMetadata och Firestore. Bildbytes lämnas orörda; metadata följer bildobjektet separat genom CCC-pipelinen.

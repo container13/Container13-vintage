@@ -1,7 +1,23 @@
 window.__CCC_HEADER_PENDING__={back:true,settings:true};
 import { auth } from "../auth/firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import {
+  addDoc,
+  collection,
+  getFirestore,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import {
+  deleteObject,
+  getDownloadURL,
+  getStorage,
+  ref as storageRef,
+  uploadBytes
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
 onAuthStateChanged(auth,(user)=>{if(!user)window.location.href="../auth/index.html";});
+
+const database=getFirestore(auth.app);
+const storage=getStorage(auth.app);
 
 const $=(s)=>document.querySelector(s);
 const DB_NAME="ccc-local-workspace", DB_VERSION=3, STORE_NAME="images", FILE_STORE="vision-files";
@@ -35,6 +51,8 @@ async function visionSessionDrafts(){
     const fields=saved.editedFields||saved.visionResult?.fields||{};
     drafts.push({
       id:saved.id,
+      cccItemId:saved.cccItemId||"",
+      imageMetadata:saved.imageMetadata||null,
       originalFileKey:saved.originalFileKey,
       originalBlob,
       createdAt:saved.createdAt||session.savedAt||Date.now(),
@@ -56,6 +74,34 @@ async function visionSessionDrafts(){
 async function put(record){const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(STORE_NAME,"readwrite");tx.objectStore(STORE_NAME).put(record);tx.oncomplete=()=>{db.close();resolve();};tx.onerror=()=>{db.close();reject(tx.error);};});}async function deleteDraftIds(ids){const wanted=new Set(ids);if(!wanted.size)return;const db=await openDb();await new Promise((resolve,reject)=>{const stores=[STORE_NAME,"sessions",FILE_STORE].filter(n=>db.objectStoreNames.contains(n)),tx=db.transaction(stores,"readwrite"),images=tx.objectStore(STORE_NAME);wanted.forEach(id=>images.delete(id));if(stores.includes("sessions")){const sessions=tx.objectStore("sessions"),req=sessions.get("active-vision-session");req.onsuccess=()=>{const s=req.result;if(!s||!Array.isArray(s.items))return;const removed=s.items.filter(i=>wanted.has(i.id));s.items=s.items.filter(i=>!wanted.has(i.id));s.savedAt=Date.now();sessions.put(s);if(stores.includes(FILE_STORE)){const files=tx.objectStore(FILE_STORE);removed.forEach(i=>{if(i.originalFileKey)files.delete(i.originalFileKey);});}};}tx.oncomplete=()=>{db.close();resolve()};tx.onerror=()=>{db.close();reject(tx.error)};tx.onabort=()=>{db.close();reject(tx.error||new Error("Kunde inte ta bort utkast."))};});}
 async function getSourceFile(key){if(!key)return null;const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(FILE_STORE,"readonly"),r=tx.objectStore(FILE_STORE).get(key);r.onsuccess=()=>resolve(r.result?.blob||null);r.onerror=()=>reject(r.error);tx.oncomplete=()=>db.close();});}
 async function hydrateOriginal(record){if(record.originalBlob||!record.originalFileKey)return record;const blob=await getSourceFile(record.originalFileKey);return blob?{...record,originalBlob:blob}:record;}
+function createCccItemId(){
+  const d=new Date();
+  const y=String(d.getFullYear());
+  const m=String(d.getMonth()+1).padStart(2,"0");
+  const day=String(d.getDate()).padStart(2,"0");
+  const entropy=(globalThis.crypto?.randomUUID?.()||`${Date.now()}-${Math.random()}`)
+    .replace(/[^a-zA-Z0-9]/g,"").slice(-6).toUpperCase();
+  return `C13-${y}${m}${day}-${entropy}`;
+}
+function ensureCccIdentity(item){
+  if(!item.cccItemId)item.cccItemId=createCccItemId();
+  return item.cccItemId;
+}
+function buildPublishMetadata(item){
+  const fields=item?.fields||{};
+  return {
+    schemaVersion:1,
+    cccItemId:ensureCccIdentity(item),
+    title:String(item?.title||fields.title||"").trim(),
+    brand:String(item?.brand||fields.brand||fields.manufacturer||"").trim(),
+    size:String(item?.size||fields.size||"").trim(),
+    price:String(item?.price||fields.price||"").trim(),
+    description:String(item?.description||fields.description||"").trim(),
+    source:"ccc",
+    updatedAt:new Date().toISOString()
+  };
+}
+
 function persistenceRecord(item){const record={...item};delete record.thumbUrl;delete record.fullUrl;if(record.originalFileKey)delete record.originalBlob;return record;}
 function url(blob){const u=URL.createObjectURL(blob);objectUrls.push(u);return u;}
 function dataUrl(blob){return new Promise((resolve,reject)=>{if(!blob){resolve("");return;}const reader=new FileReader();reader.onload=()=>resolve(String(reader.result||""));reader.onerror=()=>reject(reader.error||new Error("Kunde inte läsa bildförhandsvisningen."));reader.readAsDataURL(blob);});}
@@ -1465,6 +1511,102 @@ function container13DisplaySettings(){
   };
 }
 
+function safePublishFilePart(value){
+  return String(value||"plagg")
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^a-zA-Z0-9._-]+/g,"-")
+    .replace(/^-+|-+$/g,"")
+    .slice(0,80) || "plagg";
+}
+
+function publishBlobForItem(item){
+  return item?.publishBlob || item?.thumbnailBlob || item?.originalBlob || null;
+}
+
+async function resolvePublishBlob(item){
+  let blob=publishBlobForItem(item);
+  if(!blob && item?.originalFileKey){
+    blob=await getSourceFile(item.originalFileKey);
+  }
+  return blob||null;
+}
+
+function publishBlobExtension(blob){
+  const type=String(blob?.type||"").toLowerCase();
+  if(type.includes("webp"))return "webp";
+  if(type.includes("png"))return "png";
+  return "jpg";
+}
+
+async function publishSelectedToContainer13Live(){
+  if(!auth.currentUser)throw new Error("Du är inte längre inloggad.");
+
+  const display=container13DisplaySettings();
+  const selected=items.filter(item=>channelSelectedIds.has(item.id));
+  if(!selected.length)throw new Error("Inga plagg är valda.");
+
+  let uploaded=0;
+  const failures=[];
+
+  for(let index=0;index<selected.length;index+=1){
+    const item=selected[index];
+    let uploadedRef=null;
+    try{
+      const blob=await resolvePublishBlob(item);
+      if(!blob)throw new Error("Bild saknas");
+
+      const ext=publishBlobExtension(blob);
+      const metadata=buildPublishMetadata(item);
+      const idPart=safePublishFilePart(metadata.cccItemId);
+      const storagePath=`nyinkommet/${Date.now()}-${index}-${idPart}.${ext}`;
+      uploadedRef=storageRef(storage,storagePath);
+
+      await uploadBytes(uploadedRef,blob,{
+        contentType:blob.type||"image/jpeg",
+        cacheControl:"public, max-age=31536000, immutable",
+        customMetadata:{
+          cccItemId:metadata.cccItemId,
+          schemaVersion:"1",
+          title:metadata.title.slice(0,200),
+          brand:metadata.brand.slice(0,120),
+          size:metadata.size.slice(0,80),
+          source:"ccc"
+        }
+      });
+      const imageUrl=await getDownloadURL(uploadedRef);
+
+      const titleText=String(item.title||item.fields?.title||"").trim();
+      const descriptionText=String(item.description||item.fields?.description||"").trim();
+
+      await addDoc(collection(database,"gallery"),{
+        category:"nyinkommet",
+        imageUrl,
+        storagePath,
+        title:titleText,
+        description:descriptionText,
+        showTitle:display.showTitle,
+        showDescription:display.showDescription,
+        cccItemId:metadata.cccItemId,
+        cccMetadataVersion:1,
+        source:"ccc",
+        createdAt:serverTimestamp(),
+        createdBy:auth.currentUser.email||""
+      });
+
+      uploaded+=1;
+    }catch(error){
+      failures.push({id:item?.id||"",message:error?.message||String(error)});
+      if(uploadedRef){
+        try{await deleteObject(uploadedRef);}catch(_){}
+      }
+      console.error("[CCC Publicera] Kunde inte publicera plagg",item?.id,error);
+    }
+  }
+
+  return {uploaded,failed:failures.length,failures};
+}
+
 const SITE_PREVIEW_BLOB_CACHE="ccc-site-preview-local-v1";
 
 async function prepareSitePreviewBlobTransport(payload){
@@ -1553,9 +1695,10 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
     $("#confirmStatus").textContent="Välj minst en kanal för att publicera.";
     return;
   }
+
   const button=$("#confirmPublishBtn");
-  let payload=container13PayloadForSelection();
-  if(!payload.length){
+  const count=channelSelectedIds.size;
+  if(!count){
     $("#confirmStatus").textContent="Inga plagg är valda.";
     return;
   }
@@ -1563,41 +1706,35 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
   button.disabled=true;
   const originalLabel=button.textContent;
   button.textContent="Publicerar…";
-  $("#confirmStatus").textContent="Publicerar till Container13 staging…";
+  $("#confirmStatus").textContent=count===1
+    ?"Publicerar 1 plagg på Container13…"
+    :`Publicerar ${count} plagg på Container13…`;
 
   try{
-    payload=await prepareSitePreviewBlobTransport(payload);
-    const publishedAt=new Date().toISOString();
-    const stagePayload=payload.map(item=>({...item,createdAt:publishedAt,stagingPublishedAt:publishedAt}));
-    const displaySettings=container13DisplaySettings();
+    const result=await publishSelectedToContainer13Live();
 
-    // Staging får INTE skriva om originalposterna i CCC:s IndexedDB.
-    // Återanvänd exakt samma metadata-transport som fungerande Förhandsvisa.
-    sessionStorage.setItem("ccc-site-preview-items",JSON.stringify(stagePayload));
-    sessionStorage.setItem("ccc-site-preview-display-settings",JSON.stringify(displaySettings));
-    sessionStorage.setItem("ccc-site-preview-item",JSON.stringify(stagePayload[0]));
+    if(result.uploaded===0){
+      throw new Error(result.failures?.[0]?.message||"Ingen bild kunde publiceras.");
+    }
 
-    // Persistent staging-manifest innehåller bara metadata/status, aldrig bildblobbar.
-    localStorage.setItem("ccc-site-stage-items",JSON.stringify(stagePayload));
-    localStorage.setItem("ccc-site-stage-display-settings",JSON.stringify(displaySettings));
-    localStorage.setItem("ccc-site-stage-published-at",publishedAt);
-    localStorage.setItem("ccc-site-stage-status",JSON.stringify({
-      channel:"container13",
-      ids:stagePayload.map(item=>item.id),
-      publishedAt
-    }));
+    if(result.failed>0){
+      $("#confirmStatus").textContent=`${result.uploaded} publicerade, ${result.failed} misslyckades.`;
+      button.disabled=false;
+      button.textContent=originalLabel;
+      return;
+    }
 
-    $("#confirmStatus").textContent=payload.length===1
-      ?"1 plagg publicerat till staging."
-      :`${payload.length} plagg publicerade till staging.`;
+    $("#confirmStatus").textContent=result.uploaded===1
+      ?"✓ 1 plagg publicerat på Container13."
+      :`✓ ${result.uploaded} plagg publicerade på Container13.`;
 
-    const target=new URL("../site-preview/nyinkommet.html",window.location.href);
-    target.searchParams.set("cccStage","1");
-    target.searchParams.set("items",stagePayload.map(item=>item.id).join(","));
+    // Öppna riktiga Nyinkommet så publiceringen kan verifieras direkt.
+    const target=new URL("../../nyinkommet.html",window.location.href);
+    target.searchParams.set("cccPublished",Date.now().toString());
     window.location.href=target.href;
   }catch(error){
-    console.error("[CCC Publicera] Staging-publicering misslyckades",error);
-    $("#confirmStatus").textContent="Publiceringen till staging misslyckades. Inga skarpa Container13-data har ändrats.";
+    console.error("[CCC Publicera] Publicering till Container13 misslyckades",error);
+    $("#confirmStatus").textContent=`Publiceringen misslyckades: ${error?.message||"okänt fel"}`;
     button.disabled=false;
     button.textContent=originalLabel;
   }
@@ -1613,6 +1750,14 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
   let records=[...merged.values()].filter(r=>r.originalBlob||r.publishBlob||r.thumbnailBlob);
   records.sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
   items=records.map(r=>({...r,thumbUrl:""}));
+  for(const item of items){
+    const hadIdentity=!!item.cccItemId;
+    ensureCccIdentity(item);
+    item.imageMetadata={...(item.imageMetadata||{}),...buildPublishMetadata(item)};
+    if(!hadIdentity){
+      try{await put(persistenceRecord(item));}catch(error){console.warn("[CCC Publicera] Kunde inte backfilla permanent CCC-ID",item.id,error);}
+    }
+  }
   $("#startDraftCount").textContent=items.length===1?"1 utkast":`${items.length} utkast`;
   show("startView");
 
