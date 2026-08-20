@@ -1383,3 +1383,13 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Ingen skarp publicering kopplas in i denna version.
 - Inga nya `README_FOLDER.txt` skapas i projektroten eller direkt i `/ccc-core`; endast befintlig modul-README uppdateras.
 - Root `/version.js` är fortsatt orörd.
+
+
+## v2.9.67 – Förhandsvisa: jämna produktkort
+- Produktkorten i den isolerade Container13-förhandsvisningen ska ha en enhetlig visuell höjd även när vissa plagg saknar text eller har olika mycket text.
+- Bildytan och kortstrukturen behålls; textytan reserveras så att kortens nederkanter linjerar.
+- Titel/brödtext begränsas visuellt till ett kompakt antal rader så ett enskilt långt innehåll inte får kortet att växa.
+- Ingen ändring görs i Publicera-flödets logik eller i skarp publicering.
+- `site-preview` är fortsatt en utvecklingsbrygga och ska inte betraktas som permanent produktionsarkitektur.
+- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`.
+- Root `/version.js` är orörd.
