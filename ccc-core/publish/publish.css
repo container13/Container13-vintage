@@ -1474,3 +1474,45 @@
 #channelConfirmView #confirmPublishBtn{order:2;min-height:58px;font-size:17px;font-weight:900}
 #channelConfirmView #confirmStatus{order:3;grid-column:1}
 #channelConfirmView .confirm-actions button:disabled{opacity:.4;cursor:default}
+
+/* CCC v2.9.63 – Välj kanal: scrollbara kanaler, Nästa alltid synlig */
+#channelTargetsView{
+  display:grid;
+  grid-template-rows:auto minmax(0,1fr) auto auto;
+  min-height:0;
+  overflow:hidden;
+}
+#channelTargetsView[hidden]{display:none!important}
+#channelTargetsView .publish-heading{
+  height:auto;
+  min-height:50px;
+  padding:0 0 4px;
+}
+#channelTargetsView .channel-list{
+  min-height:0;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  margin:2px auto 0;
+  padding:2px 2px 8px;
+  align-content:start;
+}
+#channelTargetsView .channel-option{
+  min-height:70px;
+}
+#channelTargetsView .channel-next-action{
+  flex:0 0 auto;
+  margin:8px auto 4px;
+}
+#channelTargetsView .channel-toast{
+  pointer-events:none;
+}
+@media(max-height:720px) and (max-width:480px){
+  #channelTargetsView .publish-heading{min-height:44px;padding-bottom:2px}
+  #channelTargetsView .publish-heading h1{font-size:24px}
+  #channelTargetsView .publish-heading p{font-size:12px}
+  #channelTargetsView .channel-list{gap:7px}
+  #channelTargetsView .channel-option{min-height:66px;padding-block:9px}
+  #channelTargetsView .channel-brand-icon{width:46px;height:46px}
+  #channelTargetsView .channel-next-action{margin-top:6px;min-height:50px}
+}
