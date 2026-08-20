@@ -1584,3 +1584,17 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Låsta kanaler behåller färg och en något dämpad glöd; låsikonen är det primära tecknet för otillgänglig status i stället för full gråskala.
 - Aktiv kanal får lätt förstärkt glöd/skalning. Befintlig grön bock och lås ligger kvar som separata statuslager.
 - Ingen publiceringslogik ändras.
+
+
+## v2.9.82 – Första riktiga publiceringsmålet: Container13 staging
+- `site-preview` behålls som permanent staging/testmiljö mellan CCC-utveckling och skarpa Container13.
+- `Förhandsvisa` är fortsatt ett tillfälligt read-only-läge via `cccPreview=1`.
+- `Publicera` i slutkontrollen publicerar nu de valda plaggen till lokal Container13 staging via `cccStage=1`; ingen data skrivs ännu till skarpa Container13/Firebase.
+- Staging-publiceringen använder samma plagg-ID och samma lokala IndexedDB-bilder som CCC redan arbetar med. Ingen parallell bildkopia skapas.
+- Staging-metadata och Container13:s valda publikvisning sparas lokalt så staging-läget kan återge den publicerade uppsättningen på samma enhet.
+- Valda plagg får `stagingPublishedAt` och `stagingChannel=container13` lokalt.
+- Publicera-knappen låses under pågående staging-publicering för att undvika dubbeltryck.
+- Staging-bannern visar tydligt `Staging – publicerat från CCC, inte live`.
+- Externa kanaler (Instagram, Facebook, TikTok, X och Tradera) ligger kvar låsta och riktig integration skjuts upp tills Container13:s dagliga kärnflöde är stabilt.
+- När stagingflödet är verifierat blir nästa steg att koppla samma publiceringsadapter till skarpa Container13. Därefter är Öppettider nästa prioriterade Container13-behov.
+- Temaprincip: Core ska äga gemensamma design tokens/grundutseende; moduler ska endast hårdkoda färger/stilar som faktiskt är modulspecifika, t.ex. kanalidentiteter.
