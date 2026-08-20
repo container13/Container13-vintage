@@ -23,3 +23,5 @@ v2.9.80: Publiceras kanalrad får Neon Glöd enligt valt alternativ 2: enhetliga
 v2.9.81: v2.9.80 träffade fel vy. Neon Glöd flyttas nu till de faktiska kanalbrickorna i slutkontrollen (`.confirm-channel-chip`) och samma visuella språk används även i Välj kanal. Ikonerna är runda, kanalidentifierande och låsta kanaler behåller färg/glöd medan låset visar status.
 
 v2.9.82: Publicera-knappen kopplas till lokal Container13 staging/site-preview, inte skarpa sajten. Valda plagg får stagingPublishedAt lokalt, staging-metadata sparas persistent på enheten och site-preview öppnas i cccStage-läge. Externa kanaler ligger fortsatt låsta.
+
+v2.9.83: Staging-fix. Lokala stagingplagg får inte längre rensas ur gridden av den efterföljande "Hämtar bilder..."-statusen när vanlig gallericache saknas. Preview/staging-metadata tar även med originalFileKey som reservkälla till vision-files.

@@ -1468,6 +1468,7 @@ function container13DisplaySettings(){
 function container13PayloadForSelection(){
   return items.filter(item=>channelSelectedIds.has(item.id)).map(item=>({
     id:item.id,
+    originalFileKey:item.originalFileKey||"",
     title:title(item,Math.max(0,itemIndexById(item.id))),
     description:String(item.description||item.fields?.description||"").trim(),
     brand:item.brand||item.fields?.brand||"",
