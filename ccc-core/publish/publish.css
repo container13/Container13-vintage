@@ -1438,3 +1438,39 @@
 #channelConfirmView #confirmPublishBtn{
   font-weight:800;
 }
+
+
+/* CCC v2.9.62 – avskalad slutvy med snabbval av kanaler */
+.channel-brand-tiktok{background:#111;color:#fff;font-size:27px;text-shadow:2px 1px #25f4ee,-2px -1px #fe2c55}
+.channel-brand-x{background:#111;color:#fff;font-size:24px;font-family:Arial,sans-serif}
+#channelConfirmView .confirm-grid{margin-top:8px}
+.confirm-channel-strip{
+  width:min(100%,520px);margin:14px auto 0;padding:2px 1px 7px;
+  display:flex;gap:9px;overflow-x:auto;overscroll-behavior-x:contain;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;
+}
+.confirm-channel-strip::-webkit-scrollbar{display:none}
+.confirm-channel-chip{
+  flex:0 0 64px;min-width:64px;padding:5px 2px 4px;border:0;background:transparent;color:var(--text);
+  display:grid;justify-items:center;gap:5px;position:relative;border-radius:14px;
+}
+.confirm-channel-chip .channel-brand-icon{width:48px;height:48px;border-radius:14px}
+.confirm-channel-chip small{width:64px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;font-size:9px;color:var(--muted)}
+.confirm-channel-chip.is-active .channel-brand-icon{box-shadow:0 0 0 3px #2e9f55}
+.confirm-channel-chip.is-active::after{
+  content:"✓";position:absolute;right:4px;top:1px;width:19px;height:19px;border-radius:50%;
+  display:grid;place-items:center;background:#2e9f55;color:#fff;font-size:12px;font-weight:900;
+  box-shadow:0 1px 4px rgba(0,0,0,.25);
+}
+.confirm-channel-chip.is-unavailable .channel-brand-icon{filter:grayscale(1);opacity:.42}
+.confirm-channel-chip.is-unavailable small{opacity:.62}
+.confirm-channel-chip.is-unavailable::after{
+  content:"🔒";position:absolute;right:4px;top:1px;width:19px;height:19px;border-radius:50%;
+  display:grid;place-items:center;background:var(--surface);font-size:10px;box-shadow:0 1px 4px rgba(0,0,0,.2);
+}
+#channelConfirmView .publish-heading,#channelConfirmView .confirm-channel-card{display:none!important}
+#channelConfirmView .confirm-actions{margin-top:8px;grid-template-columns:1fr}
+#channelConfirmView #confirmPreviewBtn{order:1}
+#channelConfirmView #confirmPublishBtn{order:2;min-height:58px;font-size:17px;font-weight:900}
+#channelConfirmView #confirmStatus{order:3;grid-column:1}
+#channelConfirmView .confirm-actions button:disabled{opacity:.4;cursor:default}

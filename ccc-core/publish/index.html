@@ -105,6 +105,16 @@
           <span class="channel-option-main"><strong>Facebook</strong><small>Inte ansluten ännu</small></span>
           <span class="channel-option-state channel-choice-box" aria-hidden="true">🔒</span>
         </button>
+        <button class="channel-option is-unavailable" type="button" data-channel="TikTok" aria-disabled="true">
+          <span class="channel-brand-icon channel-brand-tiktok" aria-hidden="true">♪</span>
+          <span class="channel-option-main"><strong>TikTok</strong><small>Inte ansluten ännu</small></span>
+          <span class="channel-option-state channel-choice-box" aria-hidden="true">🔒</span>
+        </button>
+        <button class="channel-option is-unavailable" type="button" data-channel="X" aria-disabled="true">
+          <span class="channel-brand-icon channel-brand-x" aria-hidden="true">X</span>
+          <span class="channel-option-main"><strong>X</strong><small>Inte ansluten ännu</small></span>
+          <span class="channel-option-state channel-choice-box" aria-hidden="true">🔒</span>
+        </button>
         <button class="channel-option is-unavailable" type="button" data-channel="Tradera" aria-disabled="true">
           <span class="channel-brand-icon channel-brand-tradera" aria-hidden="true">T</span>
           <span class="channel-option-main"><strong>Tradera</strong><small>Inte ansluten ännu</small></span>
@@ -117,15 +127,22 @@
     </section>
 
     <section id="channelConfirmView" class="publish-view" hidden>
-      <div class="publish-heading"><div><h1>Redo att publicera</h1><p id="confirmSummary">Kontrollera ditt val och publicera när du är nöjd</p></div></div>
-
-      <div class="confirm-channel-card">
-        <span class="channel-brand-icon channel-brand-c13" aria-hidden="true">C13</span>
-        <span><strong>Container13 hemsida</strong><small>Vald kanal ✓</small></span>
-        <span class="confirm-channel-check" aria-hidden="true">✓</span>
-      </div>
-
       <div id="confirmGrid" class="draft-grid confirm-grid"></div>
+
+      <div class="confirm-channel-strip" aria-label="Publiceringskanaler">
+        <button id="confirmC13Channel" class="confirm-channel-chip is-active" type="button" data-confirm-channel="Container13" aria-pressed="true" aria-label="Container13, vald kanal">
+          <span class="channel-brand-icon channel-brand-c13" aria-hidden="true">C13</span><small>C13</small>
+        </button>
+        <button class="confirm-channel-chip is-unavailable" type="button" data-channel="Instagram" aria-label="Instagram, inte ansluten">
+          <span class="channel-brand-icon channel-brand-instagram" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4.2" y="4.2" width="15.6" height="15.6" rx="4.3"/><circle cx="12" cy="12" r="3.5"/><circle cx="17.3" cy="6.9" r="1"/></svg></span><small>Instagram</small>
+        </button>
+        <button class="confirm-channel-chip is-unavailable" type="button" data-channel="Facebook" aria-label="Facebook, inte ansluten">
+          <span class="channel-brand-icon channel-brand-facebook" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13.7 21v-8h2.8l.45-3.15H13.7V7.8c0-.91.3-1.53 1.61-1.53h1.72V3.45c-.3-.04-1.32-.13-2.5-.13-2.48 0-4.17 1.51-4.17 4.29v2.24H7.55V13h2.81v8z"/></svg></span><small>Facebook</small>
+        </button>
+        <button class="confirm-channel-chip is-unavailable" type="button" data-channel="TikTok" aria-label="TikTok, inte ansluten"><span class="channel-brand-icon channel-brand-tiktok" aria-hidden="true">♪</span><small>TikTok</small></button>
+        <button class="confirm-channel-chip is-unavailable" type="button" data-channel="X" aria-label="X, inte ansluten"><span class="channel-brand-icon channel-brand-x" aria-hidden="true">X</span><small>X</small></button>
+        <button class="confirm-channel-chip is-unavailable" type="button" data-channel="Tradera" aria-label="Tradera, inte ansluten"><span class="channel-brand-icon channel-brand-tradera" aria-hidden="true">T</span><small>Tradera</small></button>
+      </div>
 
       <div class="confirm-actions">
         <button id="confirmPreviewBtn" class="secondary-action" type="button">Förhandsvisa</button>

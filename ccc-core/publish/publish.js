@@ -1349,8 +1349,14 @@ async function renderChannelConfirmation(){
   if(!grid)return;
   grid.replaceChildren();
   grid.className=`draft-grid confirm-grid ${channelGridClass(selected.length)}`;
-  $("#confirmSummary").textContent=selected.length===1?"1 plagg valt – redo för Container13":`${selected.length} plagg valda – redo för Container13`;
   $("#confirmPublishBtn").textContent=selected.length===1?"Publicera 1 plagg":`Publicera ${selected.length} plagg`;
+  const c13Confirm=$("#confirmC13Channel");
+  if(c13Confirm){
+    c13Confirm.classList.toggle("is-active",container13ChannelSelected);
+    c13Confirm.setAttribute("aria-pressed",String(container13ChannelSelected));
+  }
+  $("#confirmPreviewBtn").disabled=!container13ChannelSelected;
+  $("#confirmPublishBtn").disabled=!container13ChannelSelected;
 
   for(const item of selected){
     const index=Math.max(0,itemIndexById(item.id));
@@ -1416,6 +1422,19 @@ async function openSitePreviewForSelection(){
 }
 
 
+$("#confirmC13Channel")?.addEventListener("click",()=>{
+  container13ChannelSelected=!container13ChannelSelected;
+  const button=$("#confirmC13Channel");
+  button.classList.toggle("is-active",container13ChannelSelected);
+  button.setAttribute("aria-pressed",String(container13ChannelSelected));
+  $("#confirmPreviewBtn").disabled=!container13ChannelSelected;
+  $("#confirmPublishBtn").disabled=!container13ChannelSelected;
+  $("#confirmStatus").textContent=container13ChannelSelected?"":"Välj minst en kanal för att publicera.";
+});
+document.querySelectorAll("#channelConfirmView .confirm-channel-chip.is-unavailable").forEach(button=>{
+  button.addEventListener("click",()=>showChannelUnavailable(button.dataset.channel||"Kanalen"));
+});
+
 $("#confirmPreviewBtn")?.addEventListener("click",()=>{
   if(!channelSelectedIds.size){
     $("#confirmStatus").textContent="Inga plagg är valda.";
@@ -1425,6 +1444,10 @@ $("#confirmPreviewBtn")?.addEventListener("click",()=>{
   openSitePreviewForSelection();
 });
 $("#confirmPublishBtn")?.addEventListener("click",()=>{
+  if(!container13ChannelSelected){
+    $("#confirmStatus").textContent="Välj minst en kanal för att publicera.";
+    return;
+  }
   const count=channelSelectedIds.size;
   $("#confirmStatus").textContent=`Publicering är ännu inte inkopplad. ${count} ${count===1?"plagg skulle":"plagg skulle"} publiceras till Container13.`;
 });
