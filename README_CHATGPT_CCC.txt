@@ -118,7 +118,7 @@ LEVERANSSTANDARD
 
 - Leverera normalt en komplett projekt-ZIP och en ZIP med endast ändrade filer.
 - ZIP:en med ändrade filer ska spegla projektets mappstruktur.
-- Varje levererad mapp ska även innehålla README_FOLDER.txt för enklare filöverföring.
+- README_FOLDER.txt ska följa med och uppdateras i modul-/undermappar där filen redan ingår i projektstrukturen. Skapa inte nya README_FOLDER.txt enbart för att en mapp berörs. Projektroten och /ccc-core ska inte ha README_FOLDER.txt.
 
 
 CCC arbetsinstruktioner
@@ -1362,3 +1362,13 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Kanalerna är fortsatt `Container13`, `Instagram`, `Facebook`, `TikTok`, `X` och `Tradera`.
 - `Tillbaka` är fortsatt den globala Core-footern och dess geometri ändras inte lokalt i Publicera.
 - `Förhandsvisa` och `Publicera X plagg` behålls som slutvyns åtgärder. Skarp publicering är fortsatt avstängd.
+
+
+## v2.9.65 – luftigare sista kontrollvy
+- Sista kontrollvyn före publicering komprimeras varsamt för bättre mobilbalans utan att ändra flöde eller logik.
+- Miniatyrgriden görs cirka 14 % smalare och centreras, så bilderna tar mindre vertikal höjd men behåller samma kolumnlogik.
+- Kanalraden behåller mindre ikoner, en rad, horisontell svepning och helt dold scrollbar.
+- `Förhandsvisa` görs något lägre och `Publicera X plagg` något mindre hög men behåller tydlig huvudprioritet.
+- Extra nederluft reserveras i Publicera-innehållet så huvudknappen inte upplevs tränga mot den globala Core-footern. Core-footerns geometri ändras inte.
+- Leveransstandarden förtydligas: README_FOLDER ska bevaras/uppdateras där den redan används i modul-/undermappar, men ska inte skapas i projektroten eller direkt i `/ccc-core`.
+- Root `/version.js` är fortsatt orörd.
