@@ -221,7 +221,8 @@ import {
       }));
       const selected = all
         .filter((item) => category(item) === "nyinkommet" && imageUrl(item) && withinRetention(item, retention))
-        .sort((a, b) => time(b) - time(a));
+        .sort((a, b) => time(b) - time(a))
+        .slice(0, 16);
       render(selected);
     };
 
