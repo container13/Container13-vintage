@@ -1659,3 +1659,12 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Detta ger bilden/plagget ett digitalt bagagekort genom CCC utan att göra EXIF/XMP i originalfilen till databas eller riskera att originalet förändras.
 - Framtida binär EXIF/XMP-inbäddning kan läggas på CCC:s genererade master/publiceringskopior om det ger praktisk nytta, men är inte ett krav för identitetskedjan.
 - QR, webshop och avancerad lagerhantering byggs inte nu; v2.9.87 lägger endast fundamentet så dagens Container13-flöde inte behöver byggas om senare.
+
+
+## v2.9.88 – Kanalstandard + override vid publicering
+- Container13 skiljer på vad CCC vet om plagget och vad som visas publikt.
+- Standard omfattar titel, beskrivning, märke, storlek och pris; grundstandard är bild + titel.
+- Slutsteget visar `Visas på Container13 – Bild + ...`.
+- `Ändra` ger snabbval som endast gäller aktuell publicering. `Använd standard` återgår utan att ändra kanalens standard.
+- Firestore sparar tillgänglig titel, beskrivning, märke, storlek och pris tillsammans med separata show-flaggor.
+- Nyinkommet visar märke/storlek/pris endast när respektive flagga är true. Äldre poster påverkas inte.
