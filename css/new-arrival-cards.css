@@ -1,0 +1,75 @@
+/* Gemensam kortkomponent för index.html och nyinkommet.html. */
+.senaste-nytt-grid,
+main > #nyGallery.gallery{
+  align-items:stretch!important;
+  grid-auto-rows:auto!important;
+}
+
+.senaste-nytt-grid > .senaste-nytt-kort,
+#nyGallery > .senaste-nytt-kort{
+  display:flex!important;
+  flex-direction:column!important;
+  align-self:stretch!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  border:1px solid rgba(154,122,24,.16)!important;
+  border-radius:14px!important;
+  color:#222!important;
+  background:rgba(255,255,255,.72)!important;
+  box-shadow:0 8px 24px rgba(0,0,0,.10)!important;
+  text-align:left!important;
+  box-sizing:border-box!important;
+}
+
+.senaste-nytt-kort > .senaste-nytt-bild{
+  display:block!important;
+  flex:0 0 auto!important;
+  width:100%!important;
+  aspect-ratio:1/1!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+  background:#eee9df!important;
+}
+
+.senaste-nytt-kort > .senaste-nytt-bild img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+}
+
+.senaste-nytt-kort > .senaste-nytt-info{
+  display:flex!important;
+  flex:1 1 auto!important;
+  flex-direction:column!important;
+  min-height:83px!important;
+  height:auto!important;
+  padding:15px 16px 17px!important;
+  box-sizing:border-box!important;
+}
+
+.senaste-nytt-info > .senaste-nytt-titel{
+  margin:0 0 7px!important;
+  font-size:1rem!important;
+  line-height:1.35!important;
+  font-weight:700!important;
+}
+
+.senaste-nytt-info > .senaste-nytt-datum{
+  margin:auto 0 0!important;
+  color:#9a7a18!important;
+  font-size:.9rem!important;
+  line-height:1.35!important;
+  font-weight:600!important;
+}
+
+html[data-theme="dark"] .senaste-nytt-kort{
+  color:#f2ede4!important;
+  background:#26231f!important;
+  border-color:rgba(212,175,55,.25)!important;
+}
+
+html[data-theme="dark"] .senaste-nytt-bild{background:#302c27!important}
