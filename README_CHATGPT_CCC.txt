@@ -1725,3 +1725,14 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - `Förhandsvisa` tas bort från sista publiceringssteget. Slutkontrollen är själv kontrollvyn före den skarpa `Publicera`-knappen.
 - Slutkontrollen komprimerar kanalrad, sammanfattning och knapprad något för att ge bilderna mer luft. 9-per-sida och sidledes paging för fler bilder behålls som princip.
 - Nyinkommet slutar använda de misslyckade fasta höjdexperimenten och speglar i stället geometrin från root-indexets `Senast inkommet`: grid stretch, blockkort, kvadratisk bildyta och `min-height:83px` för infotext. Root-index används som visuellt facit.
+
+
+## v2.9.95 – gemensam miniatyrgrid + fysisk swipe + indexkort på riktigt
+- `Förbered för publicering` och `Välj plagg` använder samma kanoniska 3×3-geometri (samma kolumner, gap, kvadratiska cover-miniatyrer).
+- Båda miniatyrvyerna har nu fingerföljande sid-swipe modellerad på detaljvyn: nästan 1:1-rörelse med fingret, mjukt motstånd, 23 % snap-tröskel och 480 ms cubic-bezier-snap.
+- Under swipen renderas nästa/föregående 9-grid som en visuell grannsida, så man ser den komma in på samma sätt som grannbilden i detaljvyn. För fler än nio behålls pager/dots.
+- `Välj plagg` får därmed den saknade sid-swipen utan att ändra den miniatyrgeometri som redan såg rätt ut.
+- `Frivilliga tillägg` byggs om med ren modal-DOM. Rubrik, scrollbar innehållsyta och `Återgå` / `Spara & återgå` ligger nu i samma flytande box.
+- Nyinkommet använder nu faktiskt samma kortanatomi och klassmodell som root-indexets `Senast inkommet` (`senaste-nytt-kort`, `senaste-nytt-bild`, `senaste-nytt-info`, titel och datum), samtidigt som Nyinkommet behåller sin lightbox och valbara metadata.
+- Nyinkommets grid får dessutom `grid-auto-rows:1fr` och korten `height:100%`, så raderna får enhetlig kortgeometri även när titeltextens längd varierar.
+- Demobild/footer-flödet från v2.9.94 lämnas orört eftersom det är godkänt.
