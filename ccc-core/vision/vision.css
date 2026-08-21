@@ -2808,3 +2808,39 @@ body{min-height:100dvh}
 .review-back-button:active{transform:translateY(1px);}
 
 /* CCC cache stamp: v2.8.69 */
+
+/* CCC v2.9.89 – mobile polish from real-device test */
+.workspace-continue-button{width:100%;margin:8px 0 0;min-height:50px}
+@media (max-width:480px) and (orientation:portrait){
+  /* Camera owns the entire viewport including iPhone safe-area. */
+  .camera-overlay{
+    width:100vw;height:100dvh;box-sizing:border-box;
+    grid-template-rows:auto minmax(0,1fr) auto!important;
+    padding:calc(6px + env(safe-area-inset-top)) 8px calc(8px + env(safe-area-inset-bottom))!important;
+    background:#050505!important;
+  }
+  .camera-viewport{border-radius:18px!important}
+  .camera-review-actions{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:7px!important;padding:9px 0 0!important;
+    background:#050505!important;
+  }
+  .camera-review-actions #retakeBtn{grid-column:auto!important}
+  .camera-review-actions button{min-height:48px!important;font-size:.86rem!important;padding:7px 5px!important}
+  /* Done view must fit without clipping footer/back controls. */
+  .series-done-card{
+    height:100%!important;max-height:100%!important;min-height:0!important;
+    padding:10px 12px!important;gap:6px!important;overflow:hidden!important;
+    align-content:start!important;
+  }
+  .series-done-card .done-icon{font-size:2rem!important;margin:0 auto!important}
+  .series-done-card #seriesDoneTitle{font-size:1.35rem!important;margin:0!important}
+  .series-done-card #seriesDoneText{font-size:.82rem!important}
+  .series-done-card .ready-publish-list{
+    margin:5px auto 6px!important;gap:6px!important;max-height:min(28dvh,190px)!important;
+  }
+  .series-done-card .ready-publish-item{padding:6px 8px!important;grid-template-columns:48px minmax(0,1fr) 16px!important}
+  .series-done-card .ready-publish-item img{width:48px!important;height:48px!important}
+  .series-done-card .done-actions{margin:4px auto 0!important;gap:6px!important}
+  .series-done-card .done-actions>*{min-height:44px!important}
+}

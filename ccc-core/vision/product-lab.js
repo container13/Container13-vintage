@@ -139,6 +139,7 @@
     const help = $("#batchHelp");
     const addDetail = $("#addToSelectedBtn");
     const review = $("#showSuggestionBtn");
+    const workspaceContinue = $("#workspaceContinueBtn");
     const saveSession = $("#saveSessionBtn");
     const startHome = $("#visionStartHome");
     const startActions = document.querySelector(".vision-start-actions");
@@ -165,6 +166,7 @@
       if (help) help.hidden = true;
       if (addDetail) addDetail.hidden = true;
       if (review) review.hidden = true;
+      if (workspaceContinue) workspaceContinue.hidden = true;
       if (saveSession) saveSession.hidden = true;
     }
     const cameraTitle = $("#startCameraBtn .action-copy strong");
@@ -1655,6 +1657,19 @@
   $("#usePhotoBtn").addEventListener("click", finishCameraSeries);
   $("#workspaceCameraBtn")?.addEventListener("click", () => $("#startCameraBtn")?.click());
   $("#workspaceGalleryBtn")?.addEventListener("click", () => $("#galleryInput")?.click());
+
+  $("#workspaceContinueBtn")?.addEventListener("click", () => {
+    const item=batchItems[currentIndex]||batchItems[0];
+    if(!item)return;
+    if(item.analysisMode==="manual" && !item.visionReady){
+      editReturnView="workspace";
+      populateFormFromItem(true);
+      showStage("editCard","edit");
+      return;
+    }
+    if(item.visionReady)openReview(Math.max(0,currentIndex));
+    else editCurrent(true);
+  });
 
   $("#showSuggestionBtn").addEventListener("click", () => {
     const selected = batchItems[currentIndex];
