@@ -1998,3 +1998,12 @@ html[data-theme="dark"] .review-prompt-qr {
   overflow:hidden!important;
 }
 #nyGallery .nyinkommet-datum{margin-top:auto!important}
+
+/* VERSION 6.10.58 – exact equal Nyinkommet card geometry */
+#nyGallery.gallery{align-items:stretch!important}
+#nyGallery .gallery-item.nyinkommet-kort{display:grid!important;grid-template-rows:auto 150px!important;height:100%!important;min-height:0!important}
+#nyGallery .nyinkommet-bildknapp{display:block!important;width:100%!important;aspect-ratio:1/1!important;height:auto!important;overflow:hidden!important}
+#nyGallery .nyinkommet-bildknapp img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important}
+#nyGallery .nyinkommet-info{height:150px!important;min-height:150px!important;max-height:150px!important;overflow:hidden!important;box-sizing:border-box!important}
+#nyGallery .nyinkommet-titel{max-height:3.9em!important;display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:3!important;overflow:hidden!important}
+#nyGallery .nyinkommet-datum{margin-top:auto!important}
