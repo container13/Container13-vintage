@@ -1736,3 +1736,12 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Nyinkommet använder nu faktiskt samma kortanatomi och klassmodell som root-indexets `Senast inkommet` (`senaste-nytt-kort`, `senaste-nytt-bild`, `senaste-nytt-info`, titel och datum), samtidigt som Nyinkommet behåller sin lightbox och valbara metadata.
 - Nyinkommets grid får dessutom `grid-auto-rows:1fr` och korten `height:100%`, så raderna får enhetlig kortgeometri även när titeltextens längd varierar.
 - Demobild/footer-flödet från v2.9.94 lämnas orört eftersom det är godkänt.
+
+
+## v2.9.96 – kompakt grid + swipe/preview-separation + Gå vidare
+- Knappen som tidigare visade `Publicera (antal) plagg` heter nu `Gå vidare`, eftersom den navigerar till nästa kontrollsteg och inte publicerar direkt.
+- Förbered, Välj plagg och slutkontrollen får samma kompakta 3×3-geometri med reserverade kvadratiska gridceller och mindre total bredd på mobil.
+- Den fungerande swipe-easingen från v2.9.95 lämnas orörd.
+- När en horisontell swipe identifieras avbryts pending långtrycks-/quick-preview direkt, så ett kort inte ska förstoras mitt under swipe.
+- Nyinkommet använder nu enbart root-indexets `senaste-nytt-*`-kortklasser för själva kortet/bilden/info/titel/datum. De gamla `nyinkommet-*` layoutklasserna tas bort från DOM för att inte kunna konkurrera med indexgeometrin.
+- Demobild och Frivilliga tillägg lämnas orörda.
