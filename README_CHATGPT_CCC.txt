@@ -1691,3 +1691,12 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Om ett demomärkt plagg publiceras utan att användaren först anpassat bilden skapar CCC ändå en genererad WebP-kopia med vattenstämpel; originalbytes ändras aldrig.
 - Detaljvyns gula knapp är ett flödessteg, inte en publiceringsknapp: `Fortsätt till kanalval` öppnar `Välj kanal`.
 - Container13 `Nyinkommet` sträcker kort till samma höjd inom gridraden. Bildytan är fortsatt kvadratisk och datumraden förankras i kortets botten, så olika mängd titel/metadata inte ger ojämna kort.
+
+
+## v2.9.91 – samlad mobilkorrigering
+- Vision workspace: svarta snabbknappar heter `Nytt foto` och `Album`.
+- `Fler uppgifter` i `Gör förslaget klart` beter sig som en täckande intern panel med `Återgå` och `Spara & återgå`. Core-Tillbaka stänger panelen först i stället för att lämna redigeringsvyn; formulärvärden bevaras.
+- Förbered-gridens faktiska JS-injicerade `grid-9`-regel är ändrad från tre till två kolumner, så tidigare CSS-krock kan inte hålla kvar den trånga 3×3-layouten på telefon.
+- Slutkontrollen före publicering är viewport-bunden på portrait-mobil; hela sidan ska inte scrolla. Vid behov scrollar endast bildområdet internt.
+- Demobild/vattenstämpel tas bort från generella Publicera-inställningar. I `Anpassa bild` visar Core-footern i stället en kontextuell `Inställningar`-knapp som öppnar demoval ovanpå samma vy och återgår dit efter spara/avbryt.
+- Container13 Nyinkommet får fast 142 px informationsyta per kort och titel klampas till högst tre rader. Kortens yttergeometri styrs därmed inte längre av textlängden.
