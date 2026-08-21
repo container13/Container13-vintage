@@ -1785,3 +1785,13 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Nya lyckade publiceringar sparar ett lokalt batchkvitto (upp till 30 batcher). Historiken är ett arbetskvitto på enheten; livefliken är alltid facit för vad som faktiskt ligger på hemsidan.
 - Index och Nyinkommet använder nu samma gemensamma `css/new-arrival-cards.css` i stället för kopierade kortregler. Bildytan är kvadratisk, hela kortet stående rektangulärt och informationsdelen dynamisk.
 - Korten får ingen fast totalhöjd och information kapas inte. Det högsta kortet bestämmer höjden för sin gridrad; övriga kort i samma rad sträcks till samma höjd och datum ligger längst ned. Nästa rad anpassas separat.
+
+
+## v2.10.1 – publicering bevarar originalet
+- Lyckad publicering raderar inte längre det lokala utkastet eller Vision-originalet. Posten arkiveras med `readyToPublish:false`, publiceringstid, kanal, Firebase-dokument-ID och liveadress medan originalfil och genererad WebP ligger kvar i IndexedDB.
+- Arkiverade poster filtreras bort både från den vanliga redo-kön och från återupptagen Vision-session, så de kan inte dyka upp som opublicerade igen.
+- `Hantera publicerade bilder` får tre tydliga flikar: `Ligger ute nu`, `Sparade bilder` och `Historik`. Sparade bilder visar lokala original/publiceringskopior och om respektive bild fortfarande ligger ute.
+- Bilder som publicerades före v2.10.1 kan inte återskapas lokalt automatiskt om deras original redan raderats; det nya bevarandet gäller kommande publiceringar.
+- Borttagning från hemsidan blir ett flöde med flerval. Kort gråmarkeras först, flera bilder kan väljas och en fast knapp genomför borttagningen efter gemensam bekräftelse. Lokala arkivbilder lämnas orörda och markeras som inte längre live.
+- Livevyn behåller sin scrollposition efter borttagning. Kvittot visas flytande och skjuter inte listan uppåt.
+- Kolumnmellanrummet i samtliga 3×3-grids ökas utan att ändra radmellanrummet. Swipe-kopian tas bort i samma renderingsögonblick som den riktiga gridden återställs, så gridkanter inte ska blinka efter snap.
