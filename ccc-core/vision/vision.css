@@ -2901,3 +2901,12 @@ body.camera-open .ccc-app-shell{background:#050505!important}
 .more-fields-scroll{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;padding:2px 3px 10px!important}
 .more-fields-actions{flex:0 0 auto;display:grid;grid-template-columns:1fr 1.35fr;gap:8px;padding-top:10px;background:var(--surface)}
 .more-fields-actions button{min-height:48px}
+
+/* CCC v2.9.94 – Frivilliga tillägg uses same floating pattern as Fler uppgifter */
+.optional-extras-trigger{width:100%;margin-top:4px}
+.optional-extras-dialog{z-index:1200!important;background:rgba(4,6,10,.72)!important;backdrop-filter:blur(3px)}
+.optional-extras-dialog-box{width:min(calc(100vw - 28px),520px)!important;max-height:min(78dvh,650px)!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;padding:16px!important}
+.optional-extras-modal-head{flex:0 0 auto}.optional-extras-modal-head h2{margin:0}.optional-extras-modal-head p{margin:3px 0 10px;color:var(--muted)}
+.optional-extras-modal-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;padding:2px 3px 10px}
+.optional-extras-modal-actions{flex:0 0 auto;display:grid;grid-template-columns:1fr 1.35fr;gap:8px;padding-top:10px;background:var(--surface)}
+.optional-extras-modal-actions button{min-height:48px}

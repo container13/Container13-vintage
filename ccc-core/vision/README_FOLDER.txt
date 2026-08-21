@@ -15,3 +15,5 @@ v2.9.91: Workspace-knappar heter Nytt foto/Album. Fler uppgifter blir en täckan
 v2.9.92: Fler uppgifter är riktig flytande modal med scrollbar fältyta och fasta Återgå/Spara & återgå.
 
 v2.9.93 HOTFIX: .92 flyttade Fler uppgifter till modal men bytte samtidigt bort Visionens kanoniska fieldIds (category/brand/season/manufacturer/size/color). Det gjorde populateFormFromItem/editCurrent trasigt och blockerade både miniatyrtryck och Fortsätt. Modalen använder nu de riktiga fälten direkt.
+
+v2.9.94: Frivilliga tillägg använder nu samma flytande modalprincip som Fler uppgifter, med scrollbar yta och fasta Återgå/Spara & återgå.

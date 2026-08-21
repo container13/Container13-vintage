@@ -1396,8 +1396,8 @@
   }
 
   function closeOptionalExtras() {
-    const details = $("#optionalExtrasDetails");
-    if (details) details.open = false;
+    const dialog=$("#optionalExtrasDialog");
+    if(dialog)dialog.hidden=true;
   }
 
   function setMessage(text) {
@@ -1549,6 +1549,11 @@
   }
 
   function goBackFromVision() {
+    const optionalExtras=$("#optionalExtrasDialog");
+    if(visionView==="edit" && optionalExtras && !optionalExtras.hidden){
+      optionalExtras.hidden=true;
+      return;
+    }
     const moreFields=$("#moreFieldsDialog");
     if(visionView==="edit" && moreFields && !moreFields.hidden){
       moreFields.hidden=true;
@@ -1723,8 +1728,14 @@
   $("#usePriceSuggestionBtn").addEventListener("click", usePriceSuggestion);
   $("#addFactBtn").addEventListener("click", addFact);
   $("#addNewConditionBtn").addEventListener("click", addNewCondition);
-  $("#closeExtrasBtn")?.addEventListener("click", closeOptionalExtras);
-  $("#extrasDoneBtn")?.addEventListener("click", closeOptionalExtras);
+  $("#openExtrasBtn")?.addEventListener("click",()=>{$("#optionalExtrasDialog").hidden=false;});
+  $("#cancelExtrasBtn")?.addEventListener("click",closeOptionalExtras);
+  $("#saveExtrasBtn")?.addEventListener("click",()=>{
+    const item=currentItem();
+    if(item)item.editedFields=Object.fromEntries(fieldIds.map(id=>[id,$("#"+id).value]));
+    saveBatchMetadata();scheduleSave();closeOptionalExtras();
+  });
+  $("#optionalExtrasDialog")?.addEventListener("click",event=>{if(event.target===$("#optionalExtrasDialog"))closeOptionalExtras();});
   $("#openMoreFieldsBtn")?.addEventListener("click",()=>{
     $("#moreFieldsDialog").hidden=false;
   });

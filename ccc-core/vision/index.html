@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>CCC Vision v2.9.3</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-  <link rel="stylesheet" href="vision.css?v=2.9.93">
+  <link rel="stylesheet" href="vision.css?v=2.9.94">
   <link rel="stylesheet" href="../core.css?v=2.9.49">
 </head>
 <body data-ccc-header-back="false" data-ccc-header-settings="true">
@@ -208,36 +208,7 @@
         </label>
 
         <div class="compact-extras-row">
-          <details id="optionalExtrasDetails" class="compact-options optional-extras">
-            <summary>Frivilliga tillägg</summary>
-            <div class="option-content optional-extras-content">
-              <div class="optional-extras-head">
-                <div>
-                  <strong>Frivilliga tillägg</strong>
-                  <span>Välj bara det du vill lägga till i beskrivningen.</span>
-                </div>
-                <button id="closeExtrasBtn" class="extras-close" type="button" aria-label="Stäng frivilliga tillägg">×</button>
-              </div>
-
-              <section class="optional-extra-block" aria-labelledby="factExtraTitle">
-                <h3 id="factExtraTitle">Visste du?</h3>
-                <p class="extra-explanation">Det här stycket läggs sist i produktbeskrivningen:</p>
-                <div class="extra-preview">
-                  <strong>Visste du?</strong>
-                  <p id="factSuggestionText">Den här modellen förknippas med Arsenals Invincibles-säsong.</p>
-                </div>
-                <button id="addFactBtn" class="secondary-button compact-action" type="button">Lägg till i beskrivningen</button>
-              </section>
-
-              <section class="optional-extra-block optional-extra-block--condition" aria-labelledby="conditionExtraTitle">
-                <h3 id="conditionExtraTitle">Nyskick</h3>
-                <p class="extra-explanation">Lägger till “Nyskick.” sist i produktbeskrivningen.</p>
-                <button id="addNewConditionBtn" class="secondary-button compact-action" type="button">Lägg till i beskrivningen</button>
-              </section>
-
-              <button id="extrasDoneBtn" class="primary-button extras-done" type="button">Klar</button>
-            </div>
-          </details>
+          <button id="openExtrasBtn" class="secondary-button optional-extras-trigger" type="button">Frivilliga tillägg</button>
 
           <button id="openMoreFieldsBtn" class="secondary-button more-fields-trigger" type="button">Fler uppgifter</button>
         </div>
@@ -317,6 +288,43 @@
 
 
   
+
+<div id="optionalExtrasDialog" class="dialog ccc-dialog optional-extras-dialog" role="dialog" aria-modal="true" aria-labelledby="optionalExtrasTitle" hidden>
+  <div class="dialog-box ccc-dialog-box optional-extras-dialog-box">
+    <div class="optional-extras-modal-head">
+      <h2 id="optionalExtrasTitle">Frivilliga tillägg</h2>
+      <p>Välj bara det du vill lägga till i beskrivningen.</p>
+    </div>
+    <div class="optional-extras-modal-scroll">
+
+              <button id="closeExtrasBtn" class="extras-close" type="button" aria-label="Stäng frivilliga tillägg">×</button>
+              </div>
+
+              <section class="optional-extra-block" aria-labelledby="factExtraTitle">
+                <h3 id="factExtraTitle">Visste du?</h3>
+                <p class="extra-explanation">Det här stycket läggs sist i produktbeskrivningen:</p>
+                <div class="extra-preview">
+                  <strong>Visste du?</strong>
+                  <p id="factSuggestionText">Den här modellen förknippas med Arsenals Invincibles-säsong.</p>
+                </div>
+                <button id="addFactBtn" class="secondary-button compact-action" type="button">Lägg till i beskrivningen</button>
+              </section>
+
+              <section class="optional-extra-block optional-extra-block--condition" aria-labelledby="conditionExtraTitle">
+                <h3 id="conditionExtraTitle">Nyskick</h3>
+                <p class="extra-explanation">Lägger till “Nyskick.” sist i produktbeskrivningen.</p>
+                <button id="addNewConditionBtn" class="secondary-button compact-action" type="button">Lägg till i beskrivningen</button>
+              </section>
+
+              
+    </div>
+    <div class="optional-extras-modal-actions">
+      <button id="cancelExtrasBtn" class="secondary-button" type="button">Återgå</button>
+      <button id="saveExtrasBtn" class="primary-button" type="button">Spara & återgå</button>
+    </div>
+  </div>
+</div>
+
 <div id="moreFieldsDialog" class="dialog ccc-dialog more-fields-dialog" role="dialog" aria-modal="true" aria-labelledby="moreFieldsTitle" hidden>
   <div class="dialog-box ccc-dialog-box more-fields-dialog-box">
     <div class="more-fields-head"><h2 id="moreFieldsTitle">Fler uppgifter</h2><p>Komplettera bara det du behöver.</p></div>
@@ -346,13 +354,13 @@
     </div>
   </div>
 
-  <script src="../version.js?v=2.9.93"></script>
+  <script src="../version.js?v=2.9.94"></script>
   <script src="demo-data.js?v=2.9.3"></script>
   <script src="vision-ai-config.js?v=2.9.3"></script>
   <script src="vision-ai.js?v=2.9.3"></script>
   <script src="vision-knowledge.js?v=2.9.3"></script>
-  <script src="product-lab.js?v=2.9.93"></script>
-<script type="module" src="../core.js?v=2.9.92"></script>
+  <script src="product-lab.js?v=2.9.94"></script>
+<script type="module" src="../core.js?v=2.9.94"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 </body>
 </html>
