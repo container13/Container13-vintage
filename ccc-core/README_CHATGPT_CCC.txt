@@ -118,7 +118,7 @@ LEVERANSSTANDARD
 
 - Leverera normalt en komplett projekt-ZIP och en ZIP med endast ändrade filer.
 - ZIP:en med ändrade filer ska spegla projektets mappstruktur.
-- Varje levererad mapp ska även innehålla README_FOLDER.txt för enklare filöverföring.
+- README_FOLDER.txt ska följa med och uppdateras i modul-/undermappar där filen redan ingår i projektstrukturen. Skapa inte nya README_FOLDER.txt enbart för att en mapp berörs. Projektroten och /ccc-core ska inte ha README_FOLDER.txt.
 
 
 CCC arbetsinstruktioner
@@ -1221,3 +1221,462 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - `site-preview/sw.js` är inert och cachear/fångar inga requests.
 - Den visuella sajtkopian, HTML, CSS, JS, bilder och befintlig Firestore-läsning är i övrigt orörda i detta steg.
 - Detta steg publicerar ingenting och skriver ingenting till Container13:s live-data; det gör endast preview-kopian säker att använda som nästa byggblock.
+
+
+## v2.9.51 – första riktiga site-preview från Publicera
+- Detaljvyn i Publicera får knappen `Förhandsvisa på hemsidan`.
+- Knappen publicerar ingenting. Den sparar endast lätt metadata i `sessionStorage` och öppnar `ccc-core/site-preview/nyinkommet.html?cccPreview=1`.
+- Själva bilden skickas inte till Firebase eller via URL. Site-preview hämtar det valda utkastet lokalt ur CCC:s befintliga IndexedDB (`ccc-local-workspace`).
+- Site-preview prioriterar `publishBlob`, därefter thumbnail/original och kan även läsa Vision-original via `originalFileKey`.
+- Det lokala plagget injiceras högst upp på Nyinkommet med samma befintliga kort-rendering som live-sidan använder.
+- En tydlig banner `FÖRHANDSVISNING – INGET ÄR PUBLICERAT` visas endast i preview-läge.
+- Om live-galleriet kan hämtas visas preview-plagget överst tillsammans med den vanliga sajtkopian. Om live-hämtningen misslyckas ska det lokala preview-plagget ändå visas.
+- Ingen write/upload till Firestore, Storage eller riktiga Container13-sajten införs i denna version.
+- `site-preview` behåller den neutraliserade PWA/service-worker-grunden från v2.9.50.
+
+
+## v2.9.52 – site-preview flyttad till Välj kanal
+- Den tillfälliga knappen `Förhandsvisa på hemsidan` tas bort från plaggdetaljen/Förbered för publicering.
+- `Välj kanal` får ett riktigt kanal-kort för `Container13 hemsida`.
+- `Förhandsvisa på hemsidan` ligger nu i kanalsteget, där förhandsvisning och senare faktisk publicering hör hemma.
+- Den fungerande lokala preview-tekniken från v2.9.51 återanvänds: inget skrivs till Firebase eller livesajten.
+- I detta första kanaltest används senast aktiva lokala plagg om ett sådant finns, annars första lokala utkastet. Explicit val av vilka färdigställda plagg som ska publiceras byggs som separat nästa steg.
+- `README_CHATGPT_CCC.txt` återställs som kanonisk fil i projektroten och ska fortsättningsvis levereras där i changed-files.
+
+
+## v2.9.53 – CCC-standard för adaptiv miniatyrgrid
+- `Förbered för publicering` använder nu adaptiv grid beroende på antal synliga bilder på aktuell sida:
+  - 1 bild → 1×1
+  - 2 bilder → 2×1
+  - 3–4 bilder → 2×2
+  - 5–9 bilder → 3×3
+  - 10+ bilder → 3×3, max 9 per sida + swipe/pager
+- Samma reserverade gridyta behålls så färre bilder får större, mer lätttryckta miniatyrer i stället för små 3×3-rutor.
+- Befintliga bildinteraktioner lämnas oförändrade: enkeltryck, långtryck/snabbförstoring, dubbeltryck/quick-look och swipe mellan gridsidor.
+- Den adaptiva griden är nu tänkt som återanvändbar CCC-standard och ska även användas i kommande `Välj plagg för publicering`.
+- Ingen ändring i site-preview, kanalval eller publiceringsmotor i denna version.
+- `README_CHATGPT_CCC.txt` ligger fortsatt i projektroten och `ccc-core/version.js` ingår i changed-files.
+
+
+## v2.9.54 – publiceringsflöde: Välj plagg → Välj kanal
+- `Välj kanal` börjar nu med ett riktigt plaggval i en adaptiv miniatyrgrid.
+- Griden följer CCC-standarden: 1→1×1, 2→2×1, 3–4→2×2, 5–9→3×3, 10+→3×3 med max 9 per sida.
+- Enkeltryck markerar/avmarkerar plagg och visar grön rund bock; minst ett plagg krävs för `Fortsätt`.
+- Långtryck/snabbförstoring och dubbeltryck/quick-look återanvänds även i denna grid.
+- Efter `Fortsätt` visas kanalalternativ.
+- `Container13 hemsida` visas som ansluten och aktiv.
+- Instagram, Facebook och Tradera visas gråmarkerade som `Inte ansluten ännu` för att göra framtida möjligheter synliga utan att kunna väljas.
+- När Container13 väljs visas `Förhandsvisa på hemsidan` samt en avsiktligt inaktiv `Publicera`-knapp; riktig live-publicering kopplas inte in i denna version.
+- Site-preview kan nu ta emot flera markerade lokala plagg och injicera dem högst upp i Nyinkommet utan Firebase-write.
+- Expresspublicering ligger kvar som senare snabbspår ovanpå samma publiceringsmotor när normalflödet är stabilt.
+
+
+## v2.9.55 – Fortsätt synlig i Välj plagg
+- v2.9.54 hade fungerande markering av miniatyrer, men `Fortsätt` låg efter den reserverade gridytan och kunde hamna bakom/under den fasta Core-footern på mobil.
+- `Fortsätt` är nu fast placerad ovanför Core-footern i `Välj plagg`, med tumvänlig fullbredd inom max 520 px.
+- Knappen är alltid synlig medan användaren väljer plagg, men är fortsatt inaktiv tills minst ett plagg markerats.
+- Ingen ändring i själva markeringen, adaptiva griden, kanalvalet eller site-preview-logiken.
+
+
+## v2.9.56 – kanalidentitet + bort med gul pager-prick
+- Den gula ensamma pricken som kunde synas under `Fortsätt` vid bara en sida var kanalgridens pager-indikator. CSS-regeln för pagern skrev över HTML-attributet `hidden`.
+- `.ccc-draft-pager[hidden]` döljs nu explicit med `display:none!important`, så ingen pager-prick visas när det bara finns en sida.
+- Kanalvyn får tydliga visuella kanalidentiteter:
+  - Container13 hemsida: lokal `C13`-markör.
+  - Instagram: igenkännbar kamera/Instagram-symbol.
+  - Facebook: igenkännbar `f`-symbol.
+  - Tradera: enkel `T`-markör tills eventuell officiell asset kopplas in.
+- Ej anslutna kanaler är fortsatt synliga men gråmarkerade/inaktiva för att visa vad CCC kan stödja framöver.
+- Ingen ändring i urval, preview-data, site-preview eller publiceringslogik.
+
+
+## v2.9.57 – större färgkanaler + låst valbox
+- Kanalikonerna är större (~50 px) och mer färgstarka för snabb visuell igenkänning.
+- Instagram och Facebook använder färgmässigt igenkännbara lokala SVG/CSS-symboler; inga externa bildresurser krävs.
+- Container13 får en större gul/guldig `C13`-markör och Tradera en färgstark lokal `T`-markör.
+- Ej anslutna kanalrader gråas inte längre ned. Kanalnamn och ikon visas normalt.
+- Endast valboxen längst till höger är grå/låst för en ej ansluten kanal.
+- Tryck på Instagram/Facebook/Tradera visar en liten tillfällig popup som förklarar att kanalen inte är ansluten ännu och att anslutning senare ska kunna göras direkt härifrån.
+- UI:t förbereds därmed för framtida `Anslut kanal`-flöde utan att någon riktig kontointegration kopplas in ännu.
+
+
+## v2.9.58 – sista kontrollvy före publicering
+- Tryck på den anslutna kanalen `Container13 hemsida` leder nu till en separat `Redo att publicera`-vy.
+- Kontrollvyn visar vald kanal, antal valda plagg och de valda plaggen som adaptiva miniatyrer.
+- `Förhandsvisa på hemsidan` återanvänder befintlig multi-item site-preview.
+- `Publicera` visar dynamiskt `Publicera 1 plagg` / `Publicera X plagg`.
+- Skarp publicering är fortfarande medvetet avstängd: tryck på Publicera ger endast status om vad som skulle publiceras. Ingen Firebase-write/live-publicering görs i v2.9.58.
+- Headerns tillbaka-pil går från kontrollvyn tillbaka exakt ett steg till kanalvalet.
+- Kontrollvyn är avsedd som sista säkerhetskontroll innan publiceringsmotorn kopplas in.
+
+
+## v2.9.59 – standardflödet byter ordning: kanal först
+- Publicera-standardflödet är nu: `Välj kanal` → `Välj plagg` → `Redo att publicera` → `Förhandsvisa/Publicera`.
+- Motivet är framtidssäkerhet: olika kanaler kan senare kräva olika bildformat, metadata eller förberedelser, så kanalvalet bör sätta ramarna före plaggurvalet.
+- Startkortet `Välj kanal` öppnar därför kanalvyn direkt.
+- Val av `Container13 hemsida` leder därefter till den adaptiva miniatyrgriden för plaggurval.
+- `Fortsätt` från plaggurvalet går direkt till sista kontrollvyn.
+- Tillbaka-pilen följer exakt samma logiska steg bakåt: kontroll → plaggval → kanalval → Publicera-start.
+- Expresspublicering ligger kvar som ett separat framtida snabbspår för fall där användaren redan vet kanal och inte behöver normalflödets alla steg.
+- Ingen ändring i live-publiceringsmotorn; skarp publicering är fortsatt avstängd.
+
+
+## v2.9.60 – kanalvyn renodlad
+- Den gamla actiondelen med `Förhandsvisa på hemsidan` och `Publicera` har tagits bort från `Välj kanal`.
+- Standardflödet är nu visuellt och funktionellt konsekvent: `Välj kanal` → `Välj plagg` → `Fortsätt` → `Redo att publicera`.
+- `Förhandsvisa på hemsidan` och `Publicera X plagg` visas endast i sista kontrollvyn, efter att plagg faktiskt har valts.
+- Kanalvyns visuella utformning från v2.9.59/v2.9.57 behålls.
+- Skarp publicering är fortsatt avstängd.
+
+
+## v2.9.61 – explicit kanalval + tydligare publiceringssteg
+- `Container13 hemsida` är nu ett riktigt val, inte en dold Nästa-funktion.
+- Kanalens valbox är tom tills användaren väljer kanalen; därefter visas grön bock.
+- En tydlig `Nästa`-knapp ligger under kanalerna och är inaktiv tills minst en tillgänglig kanal valts.
+- Ej anslutna kanaler behåller sina låsta/grå valboxar och informations-popup.
+- `Redo att publicera` visar tydligare vald kanal, antal valda plagg och vad användaren förväntas göra.
+- Slutvyn har `Förhandsvisa` som sekundärt val och `Publicera X plagg` som tydlig huvudåtgärd.
+- Skarp publicering är fortsatt avstängd i denna testversion.
+
+
+## v2.9.62 – avskalad slutvy + snabbval av kanaler
+- Sista kontrollvyn förenklas: rubriken `Redo att publicera`, antalstexten och det stora Container13-kortet tas bort eftersom informationen redan framgår av flödet och miniatyrerna.
+- Valda plagg visas först som miniatyrer.
+- Under miniatyrerna finns en kompakt, horisontellt scrollbar kanalrad: `Container13`, `Instagram`, `Facebook`, `TikTok`, `X` och `Tradera`.
+- Container13 visas aktiv med grön markering och kan slås av/på direkt i slutvyn. Om ingen kanal är vald inaktiveras `Förhandsvisa` och `Publicera`.
+- Ej anslutna kanaler visas nedtonade med lås och återanvänder informations-popupen vid tryck.
+- TikTok och X läggs även till i den ordinarie `Välj kanal`-vyn som framtida, ännu ej anslutna kanaler.
+- Slutvyn avslutas med `Förhandsvisa` och den tydliga huvudåtgärden `Publicera X plagg`.
+- Skarp publicering är fortsatt avstängd i denna testversion.
+
+## v2.9.63 – Välj kanal: scrollbara kanaler, Nästa alltid synlig
+- `Välj kanal` fick en egen vertikalt scrollande kanallista så långa kanallistor inte ska trycka bort `Nästa`.
+- `Nästa` ligger separat efter kanalytan och ska vara synlig även på kortare mobilskärmar.
+- Ändringen gäller kanalsteget; Core-footer och övriga publiceringssteg ska inte flyttas lokalt.
+
+## v2.9.64 – kompakt kanalrad i sista kontrollvyn
+- Sista kontrollvyn före publicering behåller ordningen valda miniatyrer → kanalrad → `Förhandsvisa` → `Publicera X plagg` → global Core-footer.
+- Det stora tomrummet mellan miniatyrerna och kanalraden tas bort genom att kontrollvyns grid inte längre fyller all kvarvarande höjd.
+- Kanalikonerna görs tydligt mindre så kanalvalet fungerar som ett kompakt snabbval och inte dominerar slutvyn.
+- Kanalraden är en enda horisontellt scrollbar rad med osynlig scrollbar. På smal mobil visas så många kanaler som ryms; resten nås genom svep åt sidan.
+- Kanalerna är fortsatt `Container13`, `Instagram`, `Facebook`, `TikTok`, `X` och `Tradera`.
+- `Tillbaka` är fortsatt den globala Core-footern och dess geometri ändras inte lokalt i Publicera.
+- `Förhandsvisa` och `Publicera X plagg` behålls som slutvyns åtgärder. Skarp publicering är fortsatt avstängd.
+
+
+## v2.9.65 – luftigare sista kontrollvy
+- Sista kontrollvyn före publicering komprimeras varsamt för bättre mobilbalans utan att ändra flöde eller logik.
+- Miniatyrgriden görs cirka 14 % smalare och centreras, så bilderna tar mindre vertikal höjd men behåller samma kolumnlogik.
+- Kanalraden behåller mindre ikoner, en rad, horisontell svepning och helt dold scrollbar.
+- `Förhandsvisa` görs något lägre och `Publicera X plagg` något mindre hög men behåller tydlig huvudprioritet.
+- Extra nederluft reserveras i Publicera-innehållet så huvudknappen inte upplevs tränga mot den globala Core-footern. Core-footerns geometri ändras inte.
+- Leveransstandarden förtydligas: README_FOLDER ska bevaras/uppdateras där den redan används i modul-/undermappar, men ska inte skapas i projektroten eller direkt i `/ccc-core`.
+- Root `/version.js` är fortsatt orörd.
+
+
+## v2.9.66 – Förhandsvisa: riktig kundvy + trygg återgång
+- `Förhandsvisa` från sista kontrollvyn fortsätter att öppna den isolerade kopian av Container13 `Nyinkommet`, alltså samma presentation som kunden möter i stället för en ny CCC-kontrollvy.
+- Preview-läget är fortsatt read-only och skriver ingenting till Firestore/Storage eller den publika sajten.
+- Preview-bannern behåller markeringen `Förhandsvisning – inget är publicerat` och får en kompakt `Tillbaka till CCC`-knapp.
+- Återgång använder webbläsarhistoriken när den finns, så användaren kommer tillbaka till publiceringsflödet utan ett parallellt redigeringsflöde.
+- Lightboxen i preview får touch-swipe vänster/höger mellan plaggen, utöver befintliga pilar/tangentbord.
+- Ingen skarp publicering kopplas in i denna version.
+- Inga nya `README_FOLDER.txt` skapas i projektroten eller direkt i `/ccc-core`; endast befintlig modul-README uppdateras.
+- Root `/version.js` är fortsatt orörd.
+
+
+## v2.9.67 – Förhandsvisa: jämna produktkort
+- Produktkorten i den isolerade Container13-förhandsvisningen ska ha en enhetlig visuell höjd även när vissa plagg saknar text eller har olika mycket text.
+- Bildytan och kortstrukturen behålls; textytan reserveras så att kortens nederkanter linjerar.
+- Titel/brödtext begränsas visuellt till ett kompakt antal rader så ett enskilt långt innehåll inte får kortet att växa.
+- Ingen ändring görs i Publicera-flödets logik eller i skarp publicering.
+- `site-preview` är fortsatt en utvecklingsbrygga och ska inte betraktas som permanent produktionsarkitektur.
+- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`.
+- Root `/version.js` är orörd.
+
+
+## v2.9.68 – Förhandsvisa: fast kortgeometri
+- v2.9.67:s generella equal-height-regler ersätts; de träffade inte den faktiska `#nyGallery`-strukturen tillräckligt precist.
+- Container13-förhandsvisningens Nyinkommet-kort använder nu fast geometri: kvadratisk bildyta + informationsyta med fast höjd.
+- Titeln reserverar plats för högst två rader. Enradig eller saknad titel ändrar därför inte kortets totalhöjd.
+- `Nyinkommen ...` förankras längst ned i informationsytan så datumraden ligger på samma nivå i alla kort.
+- Detta är fortfarande en site-preview-fix, men principen ska tas med när den riktiga Container13-renderingen sjösätts.
+- Publicera-flöde, preview-data, lightbox och skarp publicering är orörda.
+- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`.
+- Root `/version.js` är orörd.
+
+
+## v2.9.69 – Arkitektur: permanent identitet per plagg
+- Beslut: varje plagg/exemplar i CCC ska långsiktigt ha en permanent unik intern identitet som följer samma fysiska vara genom hela livscykeln.
+- Identiteten ska skapas tidigt i plaggflödet och inte bytas när plagget redigeras, publiceras på en ny kanal eller senare får annan status.
+- Detta är en intern grundprincip; användaren behöver inte exponeras för tekniska ID:n i dagens arbetsflöde.
+- Framtida funktioner som QR/streckkod, lagerstatus, reservation, försäljning, automatisk avpublicering, webbshop och historik ska kunna kopplas till samma identitet utan att dagens CCC behöver byggas om från grunden.
+- QR-kod byggs INTE nu. v2.9.69 tar endast höjd för framtiden och lägger inte till någon ny komplexitet i användargränssnittet.
+- Princip: CCC:s information om ett plagg är en sak; hur mycket av informationen som visas publikt per kanal är en separat presentationsregel.
+- Nästa produktsteg är fortsatt Container13:s publika visningsinställningar (t.ex. titel/text på eller av), där previewn ska kunna visa resultatet innan skarp publicering.
+- Ingen ändring görs i Publicera-, Vision- eller site-preview-logik i denna version.
+- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`.
+- Root `/version.js` är orörd.
+
+
+## v2.9.70 – Container13: publika visningsinställningar
+- `Publicera`-modulens kugghjul öppnar fortsatt `/settings/?module=publish`. I detta läge visas nu `Publicera – Container13` med sektionen `Visning på hemsidan`.
+- Två kanalinställningar införs: `Visa titel` och `Visa beskrivning`.
+- Standardvärden bevarar dagens beteende: titel PÅ, beskrivning AV.
+- Inställningarna är presentationsregler för Container13. De ändrar eller raderar aldrig CCC:s interna titel/beskrivning för plagget.
+- Förhandsvisa läser samma visningsregler. Preview-payloaden får även med plaggets beskrivning, så valet kan testas innan skarp publicering.
+- Kortgeometrin i site-preview är nu adaptiv per rad: fast kvadratisk bildyta, men informationsytan växer bara när synlig titel/beskrivning kräver det. CSS-gridens stretch håller korten i samma rad lika höga.
+- Om titel/beskrivning döljs blir raden kompaktare i stället för att reservera tom textyta.
+- Individuella undantag per plagg byggs inte i denna version; v2.9.70 etablerar kanalens grundregel först.
+- Skarp publicering är fortfarande inte inkopplad.
+- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`; endast redan befintliga modul-README uppdateras.
+- Root `/version.js` är orörd.
+
+
+## v2.9.71 – Modulrena inställningar + Core-layout
+- Inställningar ska inte vara en blandad global sida. Dashboard, Lägg till bilder/Vision och Publicera har varsin egen inställningskontext via respektive kugghjul.
+- När `/settings/?module=publish` öppnas visas endast Publicera/Container13-inställningarna; Dashboard-kort och Dashboard-hjälp döljs.
+- När Inställningar öppnas utan Publicera-kontext behandlas sidan som Dashboardens inställningsyta.
+- En framtida gemensam `Kontrollpanel` kan senare nås från Dashboard och samla verkligt övergripande CCC-funktioner. Den byggs inte i v2.9.71.
+- Inställningar använder nu samma Core-header och permanenta Core-footer som övriga CCC-vyer.
+- Arbetsytan mellan header och footer är vertikalt scrollbar; header/footer ligger kvar.
+- Headerns tillbaka-pil och footerns permanenta Tillbaka-kort använder samma Core-back-event och går tillbaka till den modul som öppnade inställningarna.
+- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`; befintlig `/ccc-core/settings/README_FOLDER.txt` uppdateras.
+- Root `/version.js` är orörd.
+
+
+## v2.9.72 – Vision-inställningar standardiseras
+- Vision och Publicera använder nu samma inställningsmönster: modulens kugghjul öppnar `/settings/?module=<modul>`.
+- Vision-kugghjulet öppnar `/settings/?module=vision`; den tidigare Vision-specifika overlay/popup-inställningen tas bort.
+- Vision behåller sina befintliga funktioner: `Automatisk AI-analys`, `Låt CCC lära sig av mina ändringar`, `Total Vision-kostnad`, visa lokal kunskap och rensa lokal kunskapsbas.
+- Inställningarnas värden använder samma befintliga localStorage-nycklar som Vision redan använde, så användarens val följer med vid flytten.
+- Vision-inställningsvyn använder samma Core-header, scrollbar arbetsyta och permanenta Core-footer/Tillbaka som Publicera-inställningar.
+- Inställningssidan är fortsatt modulren: Vision visar bara Vision, Publicera bara Publicera och Dashboard bara Dashboard.
+- En framtida gemensam Kontrollpanel från Dashboard är fortfarande en separat idé och byggs inte här.
+- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`; endast befintliga modul-README uppdateras.
+- Root `/version.js` är orörd.
+
+
+## v2.9.73 – Säkerhet: bekräftelse före destruktiv rensning
+- `Rensa lokal kunskapsbas` i Vision får inte längre utföra rensningen direkt på första trycket.
+- Första trycket öppnar en tydlig bekräftelsedialog som förklarar att lokalt inlärd kunskap från tidigare godkännanden och ändringar tas bort.
+- Dialogen har `Avbryt` och en separat destruktiv `Rensa kunskapsbas`-knapp.
+- Själva rensningen sker först efter det andra, uttryckliga bekräftelsetrycket.
+- Dialogen kan även stängas genom att trycka utanför den.
+- Generell CCC-princip: destruktiva åtgärder som inte enkelt kan ångras ska kräva ett tydligt bekräftelsesteg.
+- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`; endast befintliga modul-README uppdateras.
+- Root `/version.js` är orörd.
+
+
+## v2.9.74 – Förbered-vyn blir tydligt publiceringsläge
+- Bygger vidare på v2.9.73 och innehåller alltså även säkerhetsfixen där `Rensa lokal kunskapsbas` kräver separat bekräftelse.
+- När plagg redan ligger i `Förbered för publicering` betraktas de som klara för nästa steg. Vyn får därför en tydlig primär `Fortsätt`-knapp.
+- `Fortsätt` tar med alla aktuella förberedda plagg vidare till kanalvalet; användaren behöver inte först gå in i ett markeringsläge för att kunna fortsätta.
+- Möjligheten att ta bort utkast finns kvar som en sekundär hanteringsfunktion. När hanterings-/raderingsläget är aktivt döljs `Fortsätt` tillfälligt och footern visar `Avbryt`, antal markerade och `Ta bort`.
+- Publiceringsflöde och innehållshantering ska visuellt och funktionellt hållas isär.
+- Framtida bild-/produktbibliotek är en separat backlogpunkt och byggs inte nu.
+- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`.
+- Root `/version.js` är orörd.
+
+
+## v2.9.75 – Hjälp i Förbered för publicering
+- Huvudvyn hålls ren utan ny permanent instruktionstext.
+- `Hjälp` förklarar att ett plagg kan tryckas för att öppnas och bilden fortfarande kan kontrolleras/anpassas före publicering.
+- Hjälpen beskriver också `Fortsätt` till kanalval och `Välj` för borttagning av lokala utkast.
+- v2.9.74:s Vision-säkerhetsfix och publiceringsläge finns fortsatt med.
+- Root `/version.js` är orörd.
+
+
+## v2.9.76 – Fortsätt-fix + tydligt bockspråk i Publicera
+- `Fortsätt` i `Förbered för publicering` är korrigerad så att knappen faktiskt öppnar `Välj kanal`.
+- Alla plagg som ligger i Förbered-vyn förs med framåt genom den befintliga `channelSelectedIds`-mängden; mängden återanvänds i stället för att ersättas.
+- Grön ✓ på ett plagg behåller sin etablerade betydelse: bilden har en sparad bildanpassning.
+- I `Välj`/borttagningsläget visas markerade utkast med röd ✓ och röd markeringsram.
+- Hjälp i Förbered-vyn förklarar nu grön ✓, röd ✓, `Fortsätt` och `Välj`.
+- Röd markering innebär endast `markerad för borttagning`; inget raderas innan användaren trycker `Ta bort` och bekräftar.
+- v2.9.73:s bekräftelse före `Rensa lokal kunskapsbas` finns fortsatt med.
+- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`.
+- Root `/version.js` är orörd.
+
+
+## v2.9.77 – Synlig Hjälp i Förbered för publicering
+- `? Hjälp` ska alltid vara synlig i Core-footern på `Förbered för publicering` och ska inte bero på Dashboardens separata hjälpinställning.
+- Footern ska kunna visa `? Hjälp` och `Välj` samtidigt som den permanenta `Tillbaka`-knappen.
+- `Fortsätt` ligger fortsatt som tydlig huvudåtgärd i arbetsytan ovanför footern.
+- Hjälpinnehållet från v2.9.76 behålls: bilder kan öppnas/anpassas, grön ✓ = sparad bildanpassning, röd ✓ = markerad för borttagning, samt förklaring av Fortsätt/Välj.
+- Ingen annan Publicera-logik ändras.
+- Root `/version.js` är orörd.
+
+
+## v2.9.78 – Publicera-footer: robust Core-init
+- Inspektion av v2.9.77 visade att Core-footern i sig redan kan rendera både `? Hjälp` och `Välj` samtidigt.
+- Den verkliga svagheten är laddningsordningen: `publish.js` ligger före `core.js`, `configureFooterForView()` kunde därför returnera innan `CCC_CORE.footer` fanns.
+- Tidigare `ccc:core-ready` återställde endast Publicera-headern; footern konfigurerades inte om.
+- Publicera väntar nu in `ccc:core-ready` om footer-Core saknas och kör därefter `configureFooterForView(currentPublishView)` igen.
+- Det ordinarie `ccc:core-ready`-steget återställer nu både header och footer för den aktuella Publicera-vyn.
+- På `Förbered för publicering` ska footern därför rendera `? Hjälp`, `Välj` och permanenta `Tillbaka`, medan `Fortsätt` ligger i arbetsytan.
+- Ingen CSS-hack eller separat lokal footer införs; Core förblir enda footer-ägare.
+- Root `/version.js` är orörd.
+
+
+## v2.9.79 – CCC utvecklings- och arkitekturprinciper
+
+### Core-init och gemensamt UI
+- Nya moduler får inte förutsätta att `CCC_CORE` är färdigladdat när modulens JavaScript startar.
+- Funktioner som är beroende av Core – särskilt header, footer, hjälp, inställningar och gemensam navigation – ska initieras eller återställas när `ccc:core-ready` har körts.
+- När Core blir redo ska modulens aktuella vy/state användas för att konfigurera Core-komponenterna korrekt.
+- Modulstate och Core-state ska hållas synkroniserade vid init, vybyte, tillbaka-navigation och återställning efter tillfälliga lägen.
+- Core är ensam ägare av gemensam header/footer. Undvik lokala speciallösningar för sådant Core redan ansvarar för.
+
+### Checklista för nya moduler och nya huvudvyer
+- Kontrollera första vyn efter Core-ready.
+- Kontrollera att header och modulrad visar rätt sammanhang.
+- Kontrollera att den permanenta Tillbaka-funktionen finns och leder rätt.
+- Kontrollera att footer visar rätt kontextverktyg, t.ex. Hjälp/Välj.
+- Byt mellan modulens viktigaste vyer och kontrollera att Core-komponenterna uppdateras.
+- Gå tillbaka och kontrollera att rätt state och rätt Core-UI återställs.
+- Testa mobil portrait först och kontrollera därefter övriga relevanta storlekar/orienteringar.
+
+### Status, färger och destruktiva åtgärder
+- Positiv status/sparat/godkänt får använda grönt; destruktivt urval/åtgärd ska ha ett tydligt rött visuellt språk.
+- Samma symbol eller färg ska inte få godtyckligt olika betydelser mellan moduler. Befintlig etablerad betydelse ska inventeras innan en symbol återanvänds.
+- Destruktiva åtgärder ska inte ske av misstag: använd bekräftelse när åtgärden är svår att återställa och erbjud ångra där det är praktiskt möjligt.
+- Markering för borttagning är inte samma sak som att objektet redan är borttaget.
+- Hjälp ska förklara statusmarkeringar och beteenden som inte är självklara, men själva huvudflödet ska vara begripligt utan att användaren måste läsa Hjälp.
+
+### Flöde före administration
+- Varje arbetsvy ska prioritera nästa naturliga steg i användarens huvudflöde.
+- Administration, radering och framtida bibliotek ska vara sekundära funktioner och får inte skymma huvudåtgärden.
+- I Publicera ska färdiga plagg röra sig framåt genom flödet; ett framtida plagg-/produktbibliotek är en separat funktion och ska inte blandas ihop med publiceringssteget.
+
+### Plagget som master och kanalernas presentation
+- Plagget är masterobjektet. Bilder, permanent identitet, Vision-data och intern produktinformation hör till plagget.
+- Publiceringskanaler är destinationer och ska inte skapa onödiga kopior av samma plaggdata.
+- Intern CCC-data och publik presentation är separata lager. En kanal bestämmer vilka delar av plagginformationen som ska visas.
+- Kanalunika regler ska kunna utvecklas senare utan att masterobjektet behöver dupliceras.
+- Arkitekturen ska ta höjd för framtida permanent plagg-ID, lagerstatus, såld/reserverad-status, produktbibliotek, webshop och eventuell QR-koppling utan att dessa funktioner behöver byggas nu.
+
+### Leverans- och README-arbetssätt
+- `changed-files` ska vara komplett ovanpå den senast levererade version som användaren förväntas ha laddat upp. En tidigare fix får inte oavsiktligt saknas i nästa changed-files-paket om den fortfarande behöver följa med.
+- Vid versionsuppdatering ska `README_CHATGPT_CCC.txt` i root och `ccc-core/version.js` följa med i changed-files när de hör till uppdateringen.
+- Root `README_CHATGPT_CCC.txt` beskriver projektövergripande arbetssätt, arkitekturprinciper, checkpoints och beslut.
+- Befintlig modul-`README_FOLDER.txt` beskriver det modulspecifika. Skapa inte nya README-mappar eller nya dokumentstrukturer utan ett verkligt behov.
+- README är inte ett oföränderligt facit. Det är CCC:s levande arbetssätt och ska förbättras när tester och verklig användning ger bättre kunskap.
+- Innan nästa ändring ska senaste kompletta projektets root-README läsas så att dokumenterade beslut och arbetssätt följs.
+
+
+## v2.9.80 – Publicera: Neon Glöd på kanalraden
+- Kanalraden i Publicera får den valda visuella riktningen `Alternativ 2 – Neon Glöd`.
+- Kanalikonerna får en mer enhetlig rund grundform och diskret kanalidentifierande glöd.
+- Aktiv kanal förstärks lätt; låsta kanaler hålls något dämpade.
+- Befintlig grön statusbock och lås behålls som separata statuslager.
+- Ändringen är medvetet visuell. Publiceringslogiken lämnas orörd.
+- Fokus ligger fortsatt på Container13:s dagliga behov. Framtida webshop/QR/biblioteksfunktioner ligger på sparlåga.
+- Efter stabil Container13-publicering är Öppettider nästa prioriterade område, med fungerande `c13-admin` som förlaga.
+
+
+## v2.9.81 – Neon Glöd träffar rätt kanalvy
+- Inspektion visade att v2.9.80 stylade `#channelTargetsView`, medan skärmbilden användaren bedömde var slutkontrollen `#channelConfirmView`.
+- Den valda visuella riktningen `Alternativ 2 – Neon Glöd` appliceras nu på de faktiska `.confirm-channel-chip .channel-brand-icon`-elementen.
+- Samma kanalidentitet används även i `Välj kanal`, så kanalval och slutkontroll känns som samma system.
+- Samtliga kanalbrickor får rund form.
+- C13/Tradera använder guldig ton, Instagram sin gradient, Facebook blått, TikTok cyan/rosa glöd och X vit/grå glöd.
+- Låsta kanaler behåller färg och en något dämpad glöd; låsikonen är det primära tecknet för otillgänglig status i stället för full gråskala.
+- Aktiv kanal får lätt förstärkt glöd/skalning. Befintlig grön bock och lås ligger kvar som separata statuslager.
+- Ingen publiceringslogik ändras.
+
+
+## v2.9.82 – Första riktiga publiceringsmålet: Container13 staging
+- `site-preview` behålls som permanent staging/testmiljö mellan CCC-utveckling och skarpa Container13.
+- `Förhandsvisa` är fortsatt ett tillfälligt read-only-läge via `cccPreview=1`.
+- `Publicera` i slutkontrollen publicerar nu de valda plaggen till lokal Container13 staging via `cccStage=1`; ingen data skrivs ännu till skarpa Container13/Firebase.
+- Staging-publiceringen använder samma plagg-ID och samma lokala IndexedDB-bilder som CCC redan arbetar med. Ingen parallell bildkopia skapas.
+- Staging-metadata och Container13:s valda publikvisning sparas lokalt så staging-läget kan återge den publicerade uppsättningen på samma enhet.
+- Valda plagg får `stagingPublishedAt` och `stagingChannel=container13` lokalt.
+- Publicera-knappen låses under pågående staging-publicering för att undvika dubbeltryck.
+- Staging-bannern visar tydligt `Staging – publicerat från CCC, inte live`.
+- Externa kanaler (Instagram, Facebook, TikTok, X och Tradera) ligger kvar låsta och riktig integration skjuts upp tills Container13:s dagliga kärnflöde är stabilt.
+- När stagingflödet är verifierat blir nästa steg att koppla samma publiceringsadapter till skarpa Container13. Därefter är Öppettider nästa prioriterade Container13-behov.
+- Temaprincip: Core ska äga gemensamma design tokens/grundutseende; moduler ska endast hårdkoda färger/stilar som faktiskt är modulspecifika, t.ex. kanalidentiteter.
+
+
+## v2.9.83 – Stagingplagg försvann efter rendering
+- Konkret fel hittat i `site-preview`: lokala preview/staging-plagg renderades först, men om vanlig gallericache saknades ersatte nästa steg omedelbart gridden med `Hämtar bilder...`.
+- `Hämtar bilder...` får nu endast ersätta gridden när det inte redan finns lokalt laddade preview/staging-plagg.
+- Stagingplaggen ligger därför kvar synliga medan eventuell live-galleridata hämtas och kan därefter kombineras med denna.
+- Preview/staging-payloaden innehåller nu även `originalFileKey` som intern reservreferens.
+- `site-preview` kan därmed läsa bilden från `vision-files` även om en komplett post i `images` saknas eller inte innehåller ett inbäddat blobfält.
+- Staging-bannern visar hur många lokala stagingplagg som faktiskt laddades, vilket gör testet lättare att verifiera.
+- Ingen skarp Container13/Firebase-publicering sker ännu.
+
+
+## v2.9.84 – Staging återanvänder Förhandsvisas bildtransport
+- Efter fortsatt tom staging identifierades en onödig risk i v2.9.82/.83: staging skrev tillbaka hela plaggposten till IndexedDB enbart för att lägga till staging-status.
+- Staging får nu inte mutera/skriva om CCC:s originala `images`-poster alls.
+- `Publicera till staging` använder exakt samma `sessionStorage`-metadata som den redan fungerande `Förhandsvisa`-vägen använder innan navigation till `site-preview`.
+- Ett separat persistent staging-manifest sparar endast plagg-ID, publik metadata, kanal och publiceringstid; inga bildblobbar dupliceras.
+- `site-preview` prioriterar den aktuella sessionens metadata även i staging-läge och faller därefter tillbaka till persistent staging-manifest.
+- Bilden hämtas fortsatt från CCC:s befintliga IndexedDB (`images` / `vision-files`) utan att staging förändrar källdatan.
+- Staging-bannern visar `0 av X` eller `Y av X` om bildladdningen misslyckas delvis, vilket gör nästa felsökning konkret.
+- Ingen skarp Container13/Firebase-data ändras.
+
+
+## v2.9.85 – Robust gemensam bildtransport till site-preview
+- När både `Förhandsvisa` och staging fastnade på `Hämtar bilder…` blev det tydligt att felet låg i den gemensamma återläsningen efter navigation, inte i stagingstatusen.
+- Publicera har redan rätt valda bildblobbar i minnet. Dessa används nu direkt som källa för site-preview i stället för att site-preview först måste återfinna samma blob via IndexedDB.
+- Före navigation lägger Publicera de valda blobbarna i lokal `Cache Storage` (`ccc-site-preview-local-v1`) och skickar endast cache-nyckeln tillsammans med metadata.
+- Samma transport används av både `Förhandsvisa` och `Publicera → staging`.
+- Site-preview försöker först läsa den exakta transporterade blobben. Befintlig IndexedDB-väg (`images` / `vision-files`) finns kvar som reserv.
+- Vid varje ny preview/staging-körning ersätts den tillfälliga blobcachen så gamla testbilder inte blandas in.
+- Lösningen är fortsatt local-first: inga bilder skickas till Firebase/nätet för staging eller förhandsvisning.
+- Ingen skarp Container13-publicering sker ännu.
+
+
+## v2.9.86 – Skarp Container13-publicering
+- Efter att lokal `site-preview`-bildtransport blivit onödigt komplex byter CCC till den riktiga publiceringskedjan som Container13-admin redan använder och som är beprövad i drift.
+- CCC och `c13-admin` använder samma Firebase-projekt och samma autentiserade användarsession.
+- `Publicera` laddar vald färdig bildblob till Firebase Storage under `nyinkommet/`, hämtar `downloadURL` och skapar därefter en Firestore-post i `gallery` med `category: nyinkommet`.
+- Firestore-posten innehåller även `cccItemId` och `source: ccc` för framtida spårbarhet utan att ändra befintlig publika datamodell.
+- Container13-visningsinställningen sparas per publicerad post som `showTitle` och `showDescription`; gamla poster utan fälten fortsätter visa titel som tidigare.
+- Beskrivning kan lagras i posten även när den inte visas publikt.
+- Om Storage-uppladdningen lyckas men Firestore-skrivningen misslyckas försöker CCC radera den nyuppladdade Storage-filen för att undvika föräldralösa filer.
+- Publicera-knappen låses under körning. Vid full framgång öppnas riktiga `/nyinkommet.html` för direkt kontroll.
+- Delvis misslyckad flerbildspublicering rapporteras och användaren stannar kvar i CCC; lyckade poster lämnas publicerade och misslyckade kan provas igen.
+- `site-preview` behålls i projektet som visuell test/stagingmiljö men ligger inte längre i vägen för den dagliga publiceringskedjan.
+- Externa kanaler ligger fortsatt på sparlåga. Efter stabil Container13-publicering är Öppettider nästa prioriterade Container13-behov.
+
+
+## v2.9.87 – Permanent plaggidentitet + bildmetadata-kuvert
+- Varje nytt plagg får ett permanent mänskligt läsbart `cccItemId` redan när fotot tas/importeras i Vision. Formatet är `C13-YYYYMMDD-XXXXXX`.
+- Det befintliga tekniska `id` behålls internt för kompatibilitet; `cccItemId` är plaggets långlivade identitet genom Vision → Publicera → Container13 och framtida lager/webshop/QR.
+- Kamerans/importens originalbytes skrivs aldrig om. CCC följer fortsatt principen att originalfilen ska vara orörd.
+- I stället lagras ett `metadata`-kuvert i samma lokala `vision-files`-record som originalbilden. Kuvertet innehåller bl.a. `cccItemId`, titel, märke, storlek, pris, beskrivning, schemaVersion och updatedAt.
+- Kuvertet skapas direkt med identiteten och uppdateras när Vision/användaren godkänner eller ändrar produktdata.
+- Sparade Vision-sessioner och Publicera-utkast bevarar samma `cccItemId`.
+- Äldre lokala Publicera-utkast utan permanent identitet får ett `cccItemId` en gång vid inläsning och sparas därefter med detta ID.
+- Vid skarp Container13-publicering används `cccItemId` i Storage-filnamnet och som Firebase Storage `customMetadata`; samma ID sparas i Firestore-posten.
+- Storage-metadata innehåller endast kompakt stabil information (ID, schemaVersion, titel, märke, storlek, source). Full levande produktdata fortsätter ligga i CCC/Firestore och är inte beroende av bildmetadata.
+- Detta ger bilden/plagget ett digitalt bagagekort genom CCC utan att göra EXIF/XMP i originalfilen till databas eller riskera att originalet förändras.
+- Framtida binär EXIF/XMP-inbäddning kan läggas på CCC:s genererade master/publiceringskopior om det ger praktisk nytta, men är inte ett krav för identitetskedjan.
+- QR, webshop och avancerad lagerhantering byggs inte nu; v2.9.87 lägger endast fundamentet så dagens Container13-flöde inte behöver byggas om senare.
+
+
+## v2.9.88 – Kanalstandard + override vid publicering
+- Container13 skiljer på vad CCC vet om plagget och vad som visas publikt.
+- Standard omfattar titel, beskrivning, märke, storlek och pris; grundstandard är bild + titel.
+- Slutsteget visar `Visas på Container13 – Bild + ...`.
+- `Ändra` ger snabbval som endast gäller aktuell publicering. `Använd standard` återgår utan att ändra kanalens standard.
+- Firestore sparar tillgänglig titel, beskrivning, märke, storlek och pris tillsammans med separata show-flaggor.
+- Nyinkommet visar märke/storlek/pris endast när respektive flagga är true. Äldre poster påverkas inte.
+
+
+## v2.9.89 – Mobilpolish + säker demovattenstämpel
+- Real-device-test gav fyra konkreta UI-fixar som ska ses som generell CCC-princip: safe-area får aldrig krocka med primära handlingar, nästa steg ska vara explicit även om en bild också är klickbar, avslutningsvyer ska rymmas i mobil viewport och bildgrids ska prioritera jämn geometri/luft.
+- Vision-kamerans granskningsrad `Ta om / Nästa plagg / Klar` ligger nu i en reserverad helskärmsbotten med samma bakgrund och iPhone safe-area.
+- Vision-arbetsvyn efter foto säger uttryckligen att bilden kan tryckas och har även `Fortsätt`, som gör samma sak för markerat plagg.
+- Vision `Klart!` komprimeras på portrait-mobil så listan får intern scroll vid behov och huvudhandlingarna inte hamnar utanför skärmen.
+- Publicera `Förbered` håller 3×3-miniatyrerna kvadratiska med `object-fit: cover`, jämna gap och mer luft vid 5–9 bilder; detta påverkar inte original eller publiceringsbeskärning.
+- `Anpassa bild` har nu ett kugghjul för bildinställningar. `Demobild / vattenstämpel` kan slås på per plagg.
+- Demomärkningen är en upprepad diagonal, halvtransparent `DEMO · CONTAINER13`-vattenstämpel som ritas på CCC:s genererade WebP-publiceringskopia. Originalbildens bytes ändras aldrig.
+- Demostatus sparas med plagget, visas som `DEMO` i Förbered och räknas i slutkontrollen före publicering. Firestore får även `demoWatermark` för spårbarhet.
+- Vattenstämpeln är en utvecklar-/testfunktion för bilder som inte ska kunna misstas för riktiga Container13-produktbilder; den är inte en ersättning för rättigheter/licenser till källmaterial.
