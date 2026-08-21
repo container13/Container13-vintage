@@ -35,3 +35,5 @@ v2.9.86: Publicera kopplas till skarpa Container13 via samma fungerande Firebase
 v2.9.87: Publicera bevarar permanent `cccItemId`, backfillar äldre lokala utkast en gång och använder ID:t i Storage-filnamn, Firebase Storage customMetadata och Firestore. Bildbytes lämnas orörda; metadata följer bildobjektet separat genom CCC-pipelinen.
 
 v2.9.88: Slutsteget visar vad Container13 kommer visa och kan tillfälligt ändras för just publiceringen. Standard utökad till titel/beskrivning/märke/storlek/pris. All data sparas även när den döljs.
+
+v2.9.89: Anpassa bild får Bildinställningar (kugghjul) med Demobild/vattenstämpel. Vattenstämpeln ritas endast på genererad WebP-publiceringskopia, aldrig originalet, följer plaggets status och markeras i grid/slutkontroll. 3×3-griden får kvadratiska cover-miniatyrer och bättre luft.

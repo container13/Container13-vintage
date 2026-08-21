@@ -98,6 +98,7 @@ function buildPublishMetadata(item){
     price:String(item?.price||fields.price||"").trim(),
     description:String(item?.description||fields.description||"").trim(),
     source:"ccc",
+    demoWatermark:item?.demoWatermark===true,
     updatedAt:new Date().toISOString()
   };
 }
@@ -603,6 +604,13 @@ async function renderGrid(){
       adaptedBadge.textContent="✓";
       adaptedBadge.setAttribute("aria-label","Bilden har en sparad anpassning");
       b.append(adaptedBadge);
+    }
+    if(item.demoWatermark===true){
+      const demoBadge=document.createElement("span");
+      demoBadge.className="draft-demo-badge";
+      demoBadge.textContent="DEMO";
+      demoBadge.setAttribute("aria-label","Demobild med vattenstämpel");
+      b.append(demoBadge);
     }
     if(item.id===recentlyAdaptedItemId)b.classList.add("just-adapted");
 
@@ -1124,6 +1132,32 @@ async function openCrop(){
   $("#cropOriginalPreview").src=item.thumbUrl||item.fullUrl;
   drawCrop();show("cropView");
 }
+function drawDemoWatermark(ctx,width,height){
+  const label="DEMO · CONTAINER13";
+  const fontSize=Math.max(18,Math.round(width*.055));
+  ctx.save();
+  ctx.translate(width/2,height/2);
+  ctx.rotate(-Math.PI/6);
+  ctx.font=`800 ${fontSize}px system-ui, -apple-system, sans-serif`;
+  ctx.textAlign="center";
+  ctx.textBaseline="middle";
+  ctx.fillStyle="rgba(255,255,255,.22)";
+  ctx.strokeStyle="rgba(0,0,0,.16)";
+  ctx.lineWidth=Math.max(1,fontSize*.045);
+  const stepX=Math.max(width*.52,fontSize*8.5);
+  const stepY=Math.max(height*.17,fontSize*2.8);
+  for(let y=-height;y<=height;y+=stepY){
+    for(let x=-width;x<=width;x+=stepX){
+      ctx.strokeText(label,x,y);
+      ctx.fillText(label,x,y);
+    }
+  }
+  ctx.restore();
+}
+function applyDemoWatermarkIfNeeded(ctx,item,width,height){
+  if(item?.demoWatermark===true)drawDemoWatermark(ctx,width,height);
+}
+
 async function createOriginalWebP(item){
   const src=item.originalBlob||item.thumbnailBlob;
   if(!src)throw new Error("Originalbild saknas.");
@@ -1145,8 +1179,26 @@ async function createOriginalWebP(item){
   ctx.fillStyle="#111";
   ctx.fillRect(0,0,outSize,outSize);
   ctx.drawImage(image,dx,dy,drawW,drawH);
+  applyDemoWatermarkIfNeeded(ctx,item,outSize,outSize);
   return new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));
 }
+$("#cropSettingsBtn")?.addEventListener("click",()=>{
+  const item=activeItem(); if(!item)return;
+  $("#cropDemoWatermark").checked=item.demoWatermark===true;
+  $("#cropSettingsDialog").hidden=false;
+});
+$("#closeCropSettings")?.addEventListener("click",async()=>{
+  const item=activeItem();
+  if(item){
+    item.demoWatermark=!!$("#cropDemoWatermark")?.checked;
+    await put(persistenceRecord(item));
+  }
+  $("#cropSettingsDialog").hidden=true;
+});
+$("#cropSettingsDialog")?.addEventListener("click",e=>{
+  if(e.target===$("#cropSettingsDialog"))$("#closeCropSettings")?.click();
+});
+
 $("#cropBtn").addEventListener("click",openCrop);
 const cropDiagToggle=$("#cropDiagToggle");
 if(cropDiagToggle){
@@ -1287,7 +1339,9 @@ $("#cropDone").addEventListener("click",async()=>{
   const outSize=Math.max(1,Math.min(1600,Math.round(size)));
   const out=document.createElement("canvas");
   out.width=out.height=outSize;
-  out.getContext("2d",{alpha:false}).drawImage(cropImage,sx,sy,size,size,0,0,outSize,outSize);
+  const outCtx=out.getContext("2d",{alpha:false});
+  outCtx.drawImage(cropImage,sx,sy,size,size,0,0,outSize,outSize);
+  applyDemoWatermarkIfNeeded(outCtx,item,outSize,outSize);
   const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));
   item.publishBlob=blob;
   item.imageProcessingState="webp-cropped";
@@ -1532,7 +1586,10 @@ function displaySummaryText(settings=effectiveContainer13DisplaySettings()){
 }
 function syncConfirmDisplayUi(){
   const settings=effectiveContainer13DisplaySettings();
-  if($("#confirmDisplaySummary"))$("#confirmDisplaySummary").textContent=displaySummaryText(settings);
+  if($("#confirmDisplaySummary")){
+    const demoCount=items.filter(item=>channelSelectedIds.has(item.id)&&item.demoWatermark===true).length;
+    $("#confirmDisplaySummary").textContent=displaySummaryText(settings)+(demoCount?` · ⚠ ${demoCount} demomärkt${demoCount===1?" plagg":"a plagg"}`:"");
+  }
   for(const [selector,key] of [["#confirmShowTitle","showTitle"],["#confirmShowDescription","showDescription"],["#confirmShowBrand","showBrand"],["#confirmShowSize","showSize"],["#confirmShowPrice","showPrice"]]){
     const input=$(selector); if(input)input.checked=!!settings[key];
   }
@@ -1625,6 +1682,7 @@ async function publishSelectedToContainer13Live(){
         price:metadata.price,
         cccItemId:metadata.cccItemId,
         cccMetadataVersion:1,
+        demoWatermark:item.demoWatermark===true,
         source:"ccc",
         createdAt:serverTimestamp(),
         createdBy:auth.currentUser.email||""

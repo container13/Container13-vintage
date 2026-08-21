@@ -11,7 +11,7 @@
 <title>CCC Publicera v2.9.22</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.9.88">
+<link rel="stylesheet" href="publish.css?v=2.9.89">
 <link rel="stylesheet" href="../core.css?v=2.9.49">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
@@ -184,7 +184,10 @@
     </section>
 
     <section id="cropView" class="publish-view crop-view" hidden>
-      <div class="crop-counter-slot counter-slot"><span id="cropCounter" class="counter-badge">1 av 1</span></div>
+      <div class="crop-counter-slot counter-slot">
+        <span id="cropCounter" class="counter-badge">1 av 1</span>
+        <button id="cropSettingsBtn" class="crop-settings-button" type="button" aria-label="Bildinställningar" title="Bildinställningar">⚙</button>
+      </div>
 <div class="crop-preview" id="cropPreview">
         <img id="cropOriginalPreview" alt="" aria-hidden="true">
         <div class="crop-dim crop-dim-top"></div><div class="crop-dim crop-dim-right"></div><div class="crop-dim crop-dim-bottom"></div><div class="crop-dim crop-dim-left"></div>
@@ -211,6 +214,21 @@
   </main>
 </div>
 
+
+
+<div id="cropSettingsDialog" class="dialog ccc-dialog" role="dialog" aria-modal="true" aria-labelledby="cropSettingsTitle" hidden>
+  <div class="dialog-box ccc-dialog-box crop-settings-box">
+    <h2 id="cropSettingsTitle">Bildinställningar</h2>
+    <label class="crop-demo-toggle">
+      <span><strong>Demobild / vattenstämpel</strong><small>Lägger en diskret DEMO · CONTAINER13-vattenstämpel på publiceringskopian. Originalet ändras aldrig.</small></span>
+      <input id="cropDemoWatermark" type="checkbox">
+    </label>
+    <div class="dialog-actions ccc-dialog-actions">
+      <button id="closeCropSettings" class="button-primary ccc-button-primary" type="button">Klar</button>
+    </div>
+  </div>
+</div>
+
 <div id="logoutDialog" class="dialog ccc-dialog" role="dialog" aria-modal="true" aria-labelledby="logoutTitle" hidden>
   <div class="dialog-box ccc-dialog-box">
     <h2 id="logoutTitle">Logga ut?</h2>
@@ -222,9 +240,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.9.88"></script>
+<script type="module" src="publish.js?v=2.9.89"></script>
 <script type="module" src="../core.js?v=2.9.77"></script>
-  <script src="../version.js?v=2.9.88"></script>
+  <script src="../version.js?v=2.9.89"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 
