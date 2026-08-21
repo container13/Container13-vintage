@@ -4,7 +4,12 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/fi
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
+  getDocs,
   getFirestore,
+  orderBy,
+  query,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 import {
@@ -36,10 +41,15 @@ let channelSelectPage=0;
 const CHANNEL_PER_PAGE=9;
 const decodedImageCache=new Map();
 const MAX_DECODED_CACHE=3;
+function updateStartCount(){
+  const start=$("#startDraftCount"),detail=$("#draftCount");
+  if(start)start.textContent=items.length===1?"1 utkast":`${items.length} utkast`;
+  if(detail)detail.textContent=items.length===1?"1 lokalt utkast":`${items.length} lokala utkast`;
+}
 
 function openDb(){return new Promise((resolve,reject)=>{const r=indexedDB.open(DB_NAME,DB_VERSION);r.onupgradeneeded=()=>{const db=r.result;if(!db.objectStoreNames.contains(STORE_NAME)){const s=db.createObjectStore(STORE_NAME,{keyPath:"id"});s.createIndex("createdAt","createdAt");}if(!db.objectStoreNames.contains("sessions"))db.createObjectStore("sessions",{keyPath:"id"});if(!db.objectStoreNames.contains(FILE_STORE)){const f=db.createObjectStore(FILE_STORE,{keyPath:"id"});f.createIndex("createdAt","createdAt");}};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);r.onblocked=()=>reject(new Error("IndexedDB-uppgraderingen blockerades av en annan öppen CCC-flik."));});}
 async function getAll(){const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(STORE_NAME,"readonly"),r=tx.objectStore(STORE_NAME).getAll();r.onsuccess=()=>resolve(r.result||[]);r.onerror=()=>reject(r.error);tx.oncomplete=()=>db.close();});}
-async function getLatestVisionSession(){const db=await openDb();return new Promise((resolve,reject)=>{if(!db.objectStoreNames.contains("sessions")){db.close();resolve(null);return;}const tx=db.transaction("sessions","readonly"),r=tx.objectStore("sessions").get("active-vision-session");r.onsuccess=()=>resolve(r.result||null);r.onerror=()=>reject(r.error);tx.oncomplete=()=>db.close();});}
+async function getLatestVisionSession(){const db=await openDb();return new Promise((resolve,reject)=>{if(!db.objectStoreNames.contains("sessions")){db.close();resolve(null);return;}const tx=db.transaction("sessions","readonly"),store=tx.objectStore("sessions"),r=store.get("vision-active");r.onsuccess=()=>{if(r.result){resolve(r.result);return;}const legacy=store.get("active-vision-session");legacy.onsuccess=()=>resolve(legacy.result||null);legacy.onerror=()=>reject(legacy.error);};r.onerror=()=>reject(r.error);tx.oncomplete=()=>db.close();});}
 async function visionSessionDrafts(){
   const session=await getLatestVisionSession();
   const savedItems=Array.isArray(session?.items)?session.items:[];
@@ -71,7 +81,29 @@ async function visionSessionDrafts(){
   return drafts;
 }
 
-async function put(record){const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(STORE_NAME,"readwrite");tx.objectStore(STORE_NAME).put(record);tx.oncomplete=()=>{db.close();resolve();};tx.onerror=()=>{db.close();reject(tx.error);};});}async function deleteDraftIds(ids){const wanted=new Set(ids);if(!wanted.size)return;const db=await openDb();await new Promise((resolve,reject)=>{const stores=[STORE_NAME,"sessions",FILE_STORE].filter(n=>db.objectStoreNames.contains(n)),tx=db.transaction(stores,"readwrite"),images=tx.objectStore(STORE_NAME);wanted.forEach(id=>images.delete(id));if(stores.includes("sessions")){const sessions=tx.objectStore("sessions"),req=sessions.get("active-vision-session");req.onsuccess=()=>{const s=req.result;if(!s||!Array.isArray(s.items))return;const removed=s.items.filter(i=>wanted.has(i.id));s.items=s.items.filter(i=>!wanted.has(i.id));s.savedAt=Date.now();sessions.put(s);if(stores.includes(FILE_STORE)){const files=tx.objectStore(FILE_STORE);removed.forEach(i=>{if(i.originalFileKey)files.delete(i.originalFileKey);});}};}tx.oncomplete=()=>{db.close();resolve()};tx.onerror=()=>{db.close();reject(tx.error)};tx.onabort=()=>{db.close();reject(tx.error||new Error("Kunde inte ta bort utkast."))};});}
+async function put(record){const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(STORE_NAME,"readwrite");tx.objectStore(STORE_NAME).put(record);tx.oncomplete=()=>{db.close();resolve();};tx.onerror=()=>{db.close();reject(tx.error);};});}
+async function deleteDraftIds(ids){
+  const wanted=new Set(ids);if(!wanted.size)return;
+  const db=await openDb();
+  await new Promise((resolve,reject)=>{
+    const stores=[STORE_NAME,"sessions",FILE_STORE].filter(n=>db.objectStoreNames.contains(n));
+    const tx=db.transaction(stores,"readwrite"),images=tx.objectStore(STORE_NAME);
+    wanted.forEach(id=>images.delete(id));
+    if(stores.includes("sessions")){
+      const sessions=tx.objectStore("sessions");
+      for(const sessionId of ["vision-active","active-vision-session"]){
+        const req=sessions.get(sessionId);
+        req.onsuccess=()=>{
+          const s=req.result;if(!s||!Array.isArray(s.items))return;
+          const removed=s.items.filter(i=>wanted.has(i.id));
+          s.items=s.items.filter(i=>!wanted.has(i.id));s.count=s.items.length;s.savedAt=new Date().toISOString();sessions.put(s);
+          if(stores.includes(FILE_STORE)){const files=tx.objectStore(FILE_STORE);removed.forEach(i=>{if(i.originalFileKey)files.delete(i.originalFileKey);});}
+        };
+      }
+    }
+    tx.oncomplete=()=>{db.close();resolve()};tx.onerror=()=>{db.close();reject(tx.error)};tx.onabort=()=>{db.close();reject(tx.error||new Error("Kunde inte ta bort utkast."))};
+  });
+}
 async function getSourceFile(key){if(!key)return null;const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(FILE_STORE,"readonly"),r=tx.objectStore(FILE_STORE).get(key);r.onsuccess=()=>resolve(r.result?.blob||null);r.onerror=()=>reject(r.error);tx.oncomplete=()=>db.close();});}
 async function hydrateOriginal(record){if(record.originalBlob||!record.originalFileKey)return record;const blob=await getSourceFile(record.originalFileKey);return blob?{...record,originalBlob:blob}:record;}
 function createCccItemId(){
@@ -333,7 +365,7 @@ function bindDraftPreview(button,img){
   button.addEventListener("lostpointercapture",finish);
 }
 
-bindDetailDoubleTapQuickLook();
+/* Dubbeltryck tas bort: enkeltryck, långtryck och swipe ska inte konkurrera. */
 
 function renderDraftPager(){
   const grid=$("#draftGrid");
@@ -463,8 +495,7 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render}){
       }
       gesture.horizontal=true;
       // Swipe owns the gesture: cancel any pending long-press/quick-preview immediately.
-      if(longPressTimer){clearTimeout(longPressTimer);longPressTimer=null;}
-      closeQuickPreview?.();
+      clearDraftPreviewGesture();
     }
     event.preventDefault();
 
@@ -562,7 +593,6 @@ function helpHtmlForView(view){
   if(view==="gridView")return `
     <div class="help-row"><strong>Tryck</strong><br>Öppna plagget.</div>
     <div class="help-row"><strong>Långtryck</strong><br>Snabbzoom/förhandsvisning.</div>
-    <div class="help-row"><strong>Dubbeltryck</strong><br>Visa bilden tillfälligt i helskärm.</div>
     <div class="help-row"><strong>Bilderna</strong><br>Tryck på ett plagg för att öppna det. Där kan du fortfarande kontrollera och anpassa bilden innan publicering.</div>
       <div class="help-row"><strong>Grön bock ✓</strong><br>Bilden har en sparad bildanpassning. Du kan fortfarande öppna plagget och ändra den.</div>
       <div class="help-row"><strong>Röd bock ✓</strong><br>Visas i Välj-läget och betyder att utkastet är markerat för borttagning. Inget tas bort förrän du trycker Ta bort och bekräftar.</div>
@@ -1121,7 +1151,61 @@ $("#channelBtn").addEventListener("click",()=>{
   if(next)next.disabled=true;
   show("channelTargetsView");
 });
-$("#publishedBtn").addEventListener("click",()=>show("publishedView"));
+function firestoreTime(value){
+  if(!value)return 0;
+  if(typeof value.toMillis==="function")return value.toMillis();
+  if(typeof value.seconds==="number")return value.seconds*1000;
+  return Date.parse(value)||0;
+}
+
+async function fetchPublishedNewArrivals(){
+  const snapshot=await getDocs(query(collection(database,"gallery"),orderBy("createdAt","desc")));
+  return snapshot.docs
+    .map(entry=>({id:entry.id,...entry.data()}))
+    .filter(item=>item.category==="nyinkommet"&&String(item.imageUrl||"").trim())
+    .sort((a,b)=>firestoreTime(b.createdAt)-firestoreTime(a.createdAt));
+}
+
+async function deletePublishedItem(item,button){
+  if(!window.confirm("Ta bort bilden från Nyinkommet?"))return;
+  button.disabled=true;
+  try{
+    if(item.storagePath){try{await deleteObject(storageRef(storage,item.storagePath));}catch(error){console.warn("[CCC Publicera] Bildfilen saknades eller kunde inte tas bort",error);}}
+    await deleteDoc(doc(database,"gallery",item.id));
+    await loadPublishedView("Bilden är borttagen från Nyinkommet.");
+  }catch(error){
+    console.error("[CCC Publicera] Kunde inte ta bort publicerad bild",error);
+    button.disabled=false;
+    $("#publishedResult").hidden=false;
+    $("#publishedResult").textContent="Bilden kunde inte tas bort. Försök igen.";
+  }
+}
+
+async function loadPublishedView(message=""){
+  const grid=$("#publishedGrid"),summary=$("#publishedSummary"),empty=$("#publishedEmpty"),result=$("#publishedResult");
+  grid.replaceChildren();empty.hidden=true;summary.textContent="Hämtar Nyinkommet…";
+  if(message){result.hidden=false;result.textContent=message;}else result.hidden=true;
+  try{
+    const all=await fetchPublishedNewArrivals();
+    const visible=all.slice(0,16);
+    summary.textContent=`${visible.length} av 16 platser används`;
+    const startCount=$("#publishedStartCount");if(startCount)startCount.textContent=`${visible.length} publicerade · se och hantera`;
+    empty.hidden=visible.length!==0;
+    for(const item of visible){
+      const card=document.createElement("article");card.className="published-card";
+      const img=document.createElement("img");img.src=item.imageUrl;img.alt=item.title||"Publicerat plagg";img.loading="lazy";img.decoding="async";
+      const del=document.createElement("button");del.type="button";del.className="published-delete";del.textContent="×";del.setAttribute("aria-label",`Ta bort ${item.title||"bilden"}`);
+      del.addEventListener("click",()=>deletePublishedItem(item,del));
+      card.append(img,del);grid.append(card);
+    }
+  }catch(error){
+    console.error("[CCC Publicera] Kunde inte hämta publicerade bilder",error);
+    summary.textContent="Kunde inte hämta Nyinkommet";
+    result.hidden=false;result.textContent="Kontrollera anslutningen och försök igen.";
+  }
+}
+
+$("#publishedBtn").addEventListener("click",async()=>{show("publishedView");await loadPublishedView();});
 
 
 function loadImage(src){return new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=src;});}
@@ -1318,9 +1402,11 @@ async function openCrop(){
   cropImage=await loadImage(originalSource);
   if(item.cropData){cropState={...item.cropData};}
   else{
-    cropState=smartCropSuggestion(cropImage);
-    item.cropSuggestion={...cropState};
-    console.debug("[CCC Publicera] crop v2.8.95 RC1 paired-collar lock",{id:item.id,zoom:cropState.zoom,x:cropState.x,y:cropState.y});
+    const canvas=$("#cropCanvas");
+    const cover=Math.max(canvas.width/cropImage.naturalWidth,canvas.height/cropImage.naturalHeight);
+    const contain=Math.min(canvas.width/cropImage.naturalWidth,canvas.height/cropImage.naturalHeight);
+    cropState={zoom:Math.max(.35,Math.min(1,contain/cover)),x:0,y:0};
+    item.cropSuggestion=smartCropSuggestion(cropImage);
   }
   $("#cropZoom").value=String(cropState.zoom);
   const zoomValue=$("#cropZoomValue");
@@ -1485,7 +1571,7 @@ $("#cropCanvas").addEventListener("pointermove",e=>{
     const [a,b]=[...cropPointers.values()].slice(0,2);
     const distance=Math.max(1,pointerDistance(a,b));
     const mid=pointerMid(a,b);
-    const newZoom=Math.max(1,Math.min(3,pinchStart.zoom*(distance/pinchStart.distance)));
+    const newZoom=Math.max(.35,Math.min(3,pinchStart.zoom*(distance/pinchStart.distance)));
     cropState.zoom=newZoom;
     cropState.x=pinchStart.x+(mid.x-pinchStart.mid.x)*canvasPerCssX;
     cropState.y=pinchStart.y+(mid.y-pinchStart.mid.y)*canvasPerCssY;
@@ -1524,14 +1610,13 @@ $("#cropDone").addEventListener("click",async()=>{
   if(!item||!g)return;
   const savedItemId=item.id;
   item.cropData={...cropState};
-  const sx=Math.max(0,((g.w-g.c.width)/2-cropState.x)/g.scale);
-  const sy=Math.max(0,((g.h-g.c.height)/2-cropState.y)/g.scale);
-  const size=Math.min(cropImage.naturalWidth-sx,cropImage.naturalHeight-sy,g.c.width/g.scale);
-  const outSize=Math.max(1,Math.min(1600,Math.round(size)));
+  /* Spara exakt det användaren ser i anpassningsrutan. Då fungerar även
+     utzoomning till hela bilden med centrerad restyta. */
+  const outSize=Math.max(1,Math.min(1600,Math.max(cropImage.naturalWidth,cropImage.naturalHeight)));
   const out=document.createElement("canvas");
   out.width=out.height=outSize;
   const outCtx=out.getContext("2d",{alpha:false});
-  outCtx.drawImage(cropImage,sx,sy,size,size,0,0,outSize,outSize);
+  outCtx.drawImage(g.c,0,0,g.c.width,g.c.height,0,0,outSize,outSize);
   applyDemoWatermarkIfNeeded(outCtx,item,outSize,outSize);
   const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));
   item.publishBlob=blob;
@@ -1738,10 +1823,6 @@ async function renderChannelConfirmation(){
     img.decoding="async";
     card.append(img);
     bindDraftPreview(card,img);
-    card.addEventListener("dblclick",e=>{
-      e.preventDefault();
-      openImageQuickLook(itemImageSrc(index)||img.src,title(item,index));
-    });
     grid.append(card);
   }
 }
@@ -1846,6 +1927,7 @@ async function publishSelectedToContainer13Live(){
 
   let uploaded=0;
   const failures=[];
+  const publishedIds=[];
 
   for(let index=0;index<selected.length;index+=1){
     const item=selected[index];
@@ -1900,6 +1982,7 @@ async function publishSelectedToContainer13Live(){
       });
 
       uploaded+=1;
+      publishedIds.push(item.id);
     }catch(error){
       failures.push({id:item?.id||"",message:error?.message||String(error)});
       if(uploadedRef){
@@ -1909,7 +1992,16 @@ async function publishSelectedToContainer13Live(){
     }
   }
 
-  return {uploaded,failed:failures.length,failures};
+  try{await enforceNewArrivalsLimit(16);}catch(error){console.error("[CCC Publicera] Kunde inte verkställa 16-bildersgränsen",error);}
+  return {uploaded,failed:failures.length,failures,publishedIds};
+}
+
+async function enforceNewArrivalsLimit(maximum=16){
+  const all=await fetchPublishedNewArrivals();
+  for(const item of all.slice(maximum)){
+    if(item.storagePath){try{await deleteObject(storageRef(storage,item.storagePath));}catch(error){console.warn("[CCC Publicera] Äldre bildfil kunde inte tas bort",error);}}
+    await deleteDoc(doc(database,"gallery",item.id));
+  }
 }
 
 const SITE_PREVIEW_BLOB_CACHE="ccc-site-preview-local-v1";
@@ -2025,10 +2117,18 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
       throw new Error(result.failures?.[0]?.message||"Ingen bild kunde publiceras.");
     }
 
+    if(result.publishedIds?.length){
+      await deleteDraftIds(result.publishedIds);
+      const publishedSet=new Set(result.publishedIds);
+      items=items.filter(item=>!publishedSet.has(item.id));
+      result.publishedIds.forEach(id=>channelSelectedIds.delete(id));
+      updateStartCount();
+    }
+
     if(result.failed>0){
       $("#confirmStatus").textContent=`${result.uploaded} publicerade, ${result.failed} misslyckades.`;
-      button.disabled=false;
-      button.textContent=originalLabel;
+      show("publishedView");
+      await loadPublishedView(`${result.uploaded} publicerade · ${items.length} finns kvar redo att publicera · ${result.failed} misslyckades.`);
       return;
     }
 
@@ -2036,10 +2136,8 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
       ?"✓ 1 plagg publicerat på Container13."
       :`✓ ${result.uploaded} plagg publicerade på Container13.`;
 
-    // Öppna riktiga Nyinkommet så publiceringen kan verifieras direkt.
-    const target=new URL("../../nyinkommet.html",window.location.href);
-    target.searchParams.set("cccPublished",Date.now().toString());
-    window.location.href=target.href;
+    show("publishedView");
+    await loadPublishedView(`${result.uploaded} publicerade på Container13 · ${items.length} finns kvar redo att publicera.`);
   }catch(error){
     console.error("[CCC Publicera] Publicering till Container13 misslyckades",error);
     $("#confirmStatus").textContent=`Publiceringen misslyckades: ${error?.message||"okänt fel"}`;

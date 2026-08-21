@@ -63,7 +63,7 @@
         </button>
         <button id="publishedBtn" class="ccc-action-card ccc-action-card--purple" type="button">
           <span class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4 4L19 7"/><path d="M4 4h16v16H4z"/></svg></span>
-          <span class="action-copy"><strong>Historik</strong><small>Se det du redan publicerat</small></span>
+          <span class="action-copy"><strong>Publicerade på Container13</strong><small id="publishedStartCount">Se och hantera det som ligger ute</small></span>
           <span class="action-arrow" aria-hidden="true">›</span>
         </button>
       </div>
@@ -165,8 +165,11 @@
     </section>
 
     <section id="publishedView" class="publish-view" hidden>
-      <div class="publish-heading"><div><h1>Historik</h1><p>Publicerat innehåll</p></div></div>
-      <div class="publish-empty"><strong>Ingen historik ännu</strong><span>Det du publicerar kommer att visas här.</span></div>
+      <div class="publish-heading"><div><h1>Publicerade på Container13</h1><p id="publishedSummary">Hämtar Nyinkommet…</p></div></div>
+      <div id="publishedResult" class="published-result" hidden></div>
+      <div id="publishedGrid" class="published-grid" aria-live="polite"></div>
+      <div id="publishedEmpty" class="publish-empty" hidden><strong>Inga publicerade plagg</strong><span>Nyinkommet är tomt.</span></div>
+      <a class="secondary-action published-site-link" href="../../nyinkommet.html" target="_blank" rel="noopener">Visa Nyinkommet på hemsidan</a>
     </section>
 
     <section id="detailView" class="publish-view" hidden>
