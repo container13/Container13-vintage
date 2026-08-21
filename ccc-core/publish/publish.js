@@ -358,24 +358,200 @@ function renderDraftPager(){
     pager.append(dot);
   }
 }
+function pageVisualRange(page,perPage){
+  const start=page*perPage;
+  return {start,end:Math.min(items.length,start+perPage)};
+}
+function pageGhostCard(item,index,kind){
+  const card=document.createElement("div");
+  card.className=`draft-card ${kind==="channel"?"channel-select-card":""}`;
+  const img=document.createElement("img");
+  img.src=item.thumbUrl||itemImageSrc(index)||"";
+  img.alt="";
+  img.decoding="async";
+  card.append(img);
+
+  if(kind==="draft" && item.imageProcessingState==="webp-cropped" && item.publishBlob){
+    const badge=document.createElement("span");
+    badge.className="draft-adapted-badge";
+    badge.textContent="✓";
+    card.append(badge);
+  }
+  if(kind==="draft" && item.demoWatermark===true){
+    const badge=document.createElement("span");
+    badge.className="draft-demo-badge";
+    badge.textContent="DEMO";
+    card.append(badge);
+  }
+  if(kind==="channel"){
+    const mark=document.createElement("span");
+    mark.className="channel-select-mark";
+    const selected=channelSelectedIds.has(item.id);
+    mark.textContent=selected?"✓":"";
+    card.classList.toggle("is-selected",selected);
+    card.append(mark);
+  }
+  return card;
+}
+function createPageGhost(grid,kind,page,perPage){
+  const rect=grid.getBoundingClientRect();
+  const ghost=document.createElement("div");
+  ghost.className=`ccc-paged-grid-ghost draft-grid ${kind==="channel"?"channel-select-grid":""}`;
+  const range=pageVisualRange(page,perPage);
+  const count=Math.max(0,range.end-range.start);
+  ghost.classList.add(channelGridClass(count));
+  Object.assign(ghost.style,{
+    left:`${rect.left}px`,
+    top:`${rect.top}px`,
+    width:`${rect.width}px`,
+    height:`${rect.height}px`
+  });
+  for(let index=range.start;index<range.end;index+=1){
+    ghost.append(pageGhostCard(items[index],index,kind));
+  }
+  document.body.append(ghost);
+  return ghost;
+}
+function softenPageSwipe(dx,width,atEdge=false){
+  const sign=Math.sign(dx)||1;
+  const raw=Math.min(Math.abs(dx),width*1.08);
+  if(atEdge)return sign*Math.min(raw*.28,width*.18);
+  const softened=raw<=width*.78 ? raw*.985 : width*.7683+(raw-width*.78)*.72;
+  return sign*softened;
+}
+function setPagedGridTransform(grid,ghost,offset,width,direction,animate=false){
+  const transition=animate?"transform 480ms cubic-bezier(.16,.74,.18,1)":"none";
+  grid.style.transition=transition;
+  grid.style.transform=`translate3d(${offset}px,0,0)`;
+  if(ghost){
+    ghost.style.transition=transition;
+    ghost.style.transform=`translate3d(${offset+(direction>0?width:-width)}px,0,0)`;
+  }
+}
+function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render}){
+  const grid=$(gridId);
+  if(!grid||grid.dataset.cccSmoothSwipeBound)return;
+  grid.dataset.cccSmoothSwipeBound="1";
+  let gesture=null;
+  let animating=false;
+  let suppressUntil=0;
+
+  grid.addEventListener("click",event=>{
+    if(performance.now()<suppressUntil){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  },true);
+
+  grid.addEventListener("pointerdown",event=>{
+    const pages=Math.ceil(items.length/perPage);
+    if(animating||pages<=1)return;
+    if(event.pointerType==="mouse"&&event.button!==0)return;
+    grid.setPointerCapture?.(event.pointerId);
+    gesture={id:event.pointerId,startX:event.clientX,startY:event.clientY,dx:0,horizontal:false,direction:0,ghost:null};
+  });
+
+  grid.addEventListener("pointermove",event=>{
+    if(!gesture||gesture.id!==event.pointerId||animating)return;
+    const dx=event.clientX-gesture.startX;
+    const dy=event.clientY-gesture.startY;
+    if(!gesture.horizontal){
+      if(Math.abs(dx)<8&&Math.abs(dy)<8)return;
+      if(Math.abs(dy)>Math.abs(dx)*1.15){
+        gesture=null;
+        return;
+      }
+      gesture.horizontal=true;
+    }
+    event.preventDefault();
+
+    const page=getPage();
+    const pages=Math.ceil(items.length/perPage);
+    const direction=dx<0?1:-1;
+    const target=page+direction;
+    const width=Math.max(1,grid.getBoundingClientRect().width);
+    const atEdge=target<0||target>=pages;
+
+    if(!atEdge && gesture.direction!==direction){
+      gesture.ghost?.remove();
+      gesture.ghost=createPageGhost(grid,kind,target,perPage);
+      gesture.direction=direction;
+    }else if(atEdge && gesture.ghost){
+      gesture.ghost.remove();gesture.ghost=null;gesture.direction=direction;
+    }
+
+    const limited=softenPageSwipe(dx,width,atEdge);
+    gesture.dx=limited;
+    setPagedGridTransform(grid,gesture.ghost,limited,width,direction,false);
+  },{passive:false});
+
+  const finish=async(event,cancelled=false)=>{
+    if(!gesture||gesture.id!==event.pointerId)return;
+    const g=gesture;gesture=null;
+    const page=getPage();
+    const pages=Math.ceil(items.length/perPage);
+    const width=Math.max(1,grid.getBoundingClientRect().width);
+
+    if(!g.horizontal||cancelled){
+      setPagedGridTransform(grid,g.ghost,0,width,g.direction||1,true);
+      window.setTimeout(()=>{g.ghost?.remove();grid.style.transition="";grid.style.transform="";},490);
+      return;
+    }
+
+    const direction=g.dx<0?1:-1;
+    const target=page+direction;
+    const valid=target>=0&&target<pages;
+    const threshold=width*.23;
+
+    if(!valid||Math.abs(g.dx)<threshold){
+      setPagedGridTransform(grid,g.ghost,0,width,direction,true);
+      window.setTimeout(()=>{g.ghost?.remove();grid.style.transition="";grid.style.transform="";},490);
+      return;
+    }
+
+    animating=true;
+    suppressUntil=performance.now()+850;
+    setPagedGridTransform(grid,g.ghost,direction>0?-width:width,width,direction,true);
+
+    window.setTimeout(async()=>{
+      setPage(target);
+      await render();
+      grid.style.transition="none";
+      grid.style.transform="translate3d(0,0,0)";
+      requestAnimationFrame(()=>{
+        g.ghost?.remove();
+        grid.style.transition="";
+        grid.style.transform="";
+        animating=false;
+      });
+    },490);
+  };
+
+  grid.addEventListener("pointerup",event=>finish(event,false));
+  grid.addEventListener("pointercancel",event=>finish(event,true));
+  grid.addEventListener("lostpointercapture",event=>{
+    if(gesture?.id===event.pointerId)finish(event,true);
+  });
+}
 function bindDraftGridSwipe(){
-  const grid=$("#draftGrid");
-  if(!grid||grid.dataset.swipeBound)return;
-  grid.dataset.swipeBound="1";
-  grid.addEventListener("pointerdown",e=>{
-    if(Math.ceil(items.length/DRAFTS_PER_PAGE)<=1)return;
-    draftGridGesture={id:e.pointerId,x:e.clientX,y:e.clientY};
+  bindPagedGridSwipe({
+    gridId:"#draftGrid",
+    kind:"draft",
+    getPage:()=>draftPage,
+    setPage:value=>{draftPage=value;},
+    perPage:DRAFTS_PER_PAGE,
+    render:renderGrid
   });
-  grid.addEventListener("pointerup",async e=>{
-    if(!draftGridGesture||draftGridGesture.id!==e.pointerId)return;
-    const g=draftGridGesture; draftGridGesture=null;
-    const dx=e.clientX-g.x,dy=e.clientY-g.y;
-    if(Math.abs(dx)<45||Math.abs(dx)<=Math.abs(dy)*1.15)return;
-    const pages=Math.ceil(items.length/DRAFTS_PER_PAGE);
-    const nextPage=Math.max(0,Math.min(pages-1,draftPage+(dx<0?1:-1)));
-    if(nextPage!==draftPage){draftPage=nextPage;await renderGrid();}
+}
+function bindChannelGridSwipe(){
+  bindPagedGridSwipe({
+    gridId:"#channelSelectGrid",
+    kind:"channel",
+    getPage:()=>channelSelectPage,
+    setPage:value=>{channelSelectPage=value;},
+    perPage:CHANNEL_PER_PAGE,
+    render:renderChannelSelection
   });
-  grid.addEventListener("pointercancel",()=>{draftGridGesture=null;});
 }
 
 
@@ -1425,6 +1601,7 @@ function renderChannelPager(pageCount){
 async function renderChannelSelection(){
   const grid=$("#channelSelectGrid");
   if(!grid)return;
+  bindChannelGridSwipe();
   grid.replaceChildren();
   const pageCount=Math.max(1,Math.ceil(items.length/CHANNEL_PER_PAGE));
   channelSelectPage=Math.max(0,Math.min(channelSelectPage,pageCount-1));

@@ -45,3 +45,5 @@ v2.9.91: Förbered-gridens faktiska runtime-regel ändras till 2 kolumner på mo
 v2.9.92: Core-footer får native Inställningar. Anpassa bild använder den för DEMO. 3×3 per sida återställs; fler än nio fortsätter via befintlig sidpager.
 
 v2.9.94: Anpassa bild visar footerverktyget Demobild (⚙) utan Hjälp för att få plats. Förhandsvisa tas bort från slutkontrollen. Slutkontrollens kanalrad/sammanfattning komprimeras något men 9-per-sida-principen behålls.
+
+v2.9.95: Förbered och Välj plagg delar nu samma kanoniska 3×3-geometri. Båda får fingerföljande sid-swipe med samma easing/tröskel som detaljvyn; nästa/föregående 9-grid visas samtidigt under swipen och pager uppdateras efter snap.
