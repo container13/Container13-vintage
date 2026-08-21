@@ -145,10 +145,10 @@ import {
     items.forEach((item, index) => {
       // Same card anatomy/classes as root index "Senast inkommet".
       const card = document.createElement("article");
-      card.className = "senaste-nytt-kort nyinkommet-kort image-card-loading";
+      card.className = "senaste-nytt-kort image-card-loading";
 
       const imageWrap = document.createElement("button");
-      imageWrap.className = "senaste-nytt-bild nyinkommet-bildknapp";
+      imageWrap.className = "senaste-nytt-bild";
       imageWrap.type = "button";
       imageWrap.setAttribute("aria-label", item.title ? `Öppna ${item.title} i stort format` : "Öppna bilden i stort format");
       imageWrap.addEventListener("click", () => open(index));
@@ -165,12 +165,12 @@ import {
       img.addEventListener("error", () => card.remove());
 
       const info = document.createElement("div");
-      info.className = "senaste-nytt-info nyinkommet-info";
+      info.className = "senaste-nytt-info";
 
       const title = String(item.title || "").trim();
       if (item.showTitle !== false && title) {
         const heading = document.createElement("p");
-        heading.className = "senaste-nytt-titel nyinkommet-titel";
+        heading.className = "senaste-nytt-titel";
         heading.textContent = title;
         info.appendChild(heading);
       }
@@ -195,7 +195,7 @@ import {
       }
 
       const date = document.createElement("p");
-      date.className = "senaste-nytt-datum nyinkommet-datum";
+      date.className = "senaste-nytt-datum";
       date.textContent = relativeDateText(item);
 
       imageWrap.appendChild(img);
