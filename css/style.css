@@ -1952,3 +1952,26 @@ html[data-theme="dark"] .review-prompt-qr {
     width: 100%;
   }
 }
+
+/* VERSION 6.10.56 – Nyinkommet: equal card height per grid row */
+#nyGallery.gallery{
+  align-items:stretch!important;
+}
+#nyGallery .gallery-item.nyinkommet-kort{
+  height:100%!important;
+  display:flex!important;
+  flex-direction:column!important;
+}
+#nyGallery .nyinkommet-bildknapp{
+  flex:0 0 auto!important;
+}
+#nyGallery .nyinkommet-info{
+  flex:1 1 auto!important;
+  display:flex!important;
+  flex-direction:column!important;
+  min-height:112px!important;
+  box-sizing:border-box!important;
+}
+#nyGallery .nyinkommet-datum{
+  margin-top:auto!important;
+}
