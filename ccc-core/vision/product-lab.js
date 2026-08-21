@@ -168,6 +168,13 @@
       if (review) review.hidden = true;
       if (workspaceContinue) workspaceContinue.hidden = true;
       if (saveSession) saveSession.hidden = true;
+    } else if (hasSession) {
+      if (strip) strip.hidden = false;
+      if (help) help.hidden = false;
+      if (workspaceContinue) {
+        workspaceContinue.hidden = false;
+        workspaceContinue.disabled = false;
+      }
     }
     const cameraTitle = $("#startCameraBtn .action-copy strong");
     if (cameraTitle) cameraTitle.textContent = startMode ? "Ta ett foto" : (hasSession ? "Fota nästa plagg" : "Ta ett foto");
@@ -338,11 +345,17 @@
 
   function updateWorkspaceState() {
     const review = $("#showSuggestionBtn");
+    const workspaceContinue = $("#workspaceContinueBtn");
     const addDetail = $("#addToSelectedBtn");
     if (!batchItems.length) {
       if (addDetail) addDetail.hidden = true;
+      if (workspaceContinue) workspaceContinue.hidden = true;
       if (review) { review.hidden = true; review.disabled = true; }
       return;
+    }
+    if (workspaceContinue) {
+      workspaceContinue.hidden = false;
+      workspaceContinue.disabled = false;
     }
     if (addDetail) addDetail.hidden = true;
     const ready = batchItems.filter((item) => item.visionReady).length;
