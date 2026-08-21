@@ -28,6 +28,8 @@ const $=(s)=>document.querySelector(s);
 const DB_NAME="ccc-local-workspace", DB_VERSION=3, STORE_NAME="images", FILE_STORE="vision-files";
 let items=[],activeIndex=0,objectUrls=[];
 const DRAFTS_PER_PAGE=9;
+const PAGED_GRID_GUTTER=14;
+const PUBLICATION_HISTORY_KEY="ccc-publication-history-v1";
 let draftPage=0,draftGridGesture=null;
 let draftPreviewGesture=null,draftPreviewSuppressClick=false;
 let cropImage=null,cropState=null,pointer=null;
@@ -38,6 +40,7 @@ let pendingDraftDelete=null;
 const channelSelectedIds=new Set();
 let container13ChannelSelected=false;
 let channelSelectPage=0;
+let confirmPage=0;
 const CHANNEL_PER_PAGE=9;
 const decodedImageCache=new Map();
 const MAX_DECODED_CACHE=3;
@@ -130,9 +133,21 @@ function buildPublishMetadata(item){
     price:String(item?.price||fields.price||"").trim(),
     description:String(item?.description||fields.description||"").trim(),
     source:"ccc",
-    demoWatermark:item?.demoWatermark===true,
     updatedAt:new Date().toISOString()
   };
+}
+
+function removeLegacyDemoState(item){
+  if(item?.demoWatermark!==true)return false;
+  delete item.demoWatermark;
+  delete item.imageMetadata?.demoWatermark;
+  /* Äldre demokopior kan ha vattenstämpeln inbränd i publishBlob.
+     Kasta därför bara den genererade kopian och återgå säkert till originalet. */
+  item.publishBlob=null;
+  item.publishUrl="";
+  item.cropData=null;
+  item.imageProcessingState="original";
+  return true;
 }
 
 function persistenceRecord(item){const record={...item};delete record.thumbUrl;delete record.fullUrl;if(record.originalFileKey)delete record.originalBlob;return record;}
@@ -290,58 +305,6 @@ function openDraftPreview(button,img){
   }));
 }
 
-let quickLookTimer=null;
-function closeImageQuickLook(){
-  if(quickLookTimer){clearTimeout(quickLookTimer);quickLookTimer=null;}
-  document.querySelector(".ccc-image-quicklook")?.remove();
-}
-function openImageQuickLook(src,alt="Bild"){
-  if(!src)return;
-  closeImageQuickLook();
-  const overlay=document.createElement("div");
-  overlay.className="ccc-image-quicklook";
-  overlay.setAttribute("role","dialog");
-  overlay.setAttribute("aria-label","Tillfällig helskärmsvisning");
-  const image=document.createElement("img");
-  image.src=src;
-  image.alt=alt;
-  overlay.append(image);
-  overlay.addEventListener("click",closeImageQuickLook,{once:true});
-  document.body.append(overlay);
-  requestAnimationFrame(()=>overlay.classList.add("is-open"));
-  quickLookTimer=window.setTimeout(closeImageQuickLook,2500);
-}
-
-function bindDetailDoubleTapQuickLook(){
-  const area=$("#swipeArea");
-  if(!area||area.dataset.quickLookBound)return;
-  area.dataset.quickLookBound="1";
-  let tap=null,lastTapAt=0;
-  area.addEventListener("pointerdown",e=>{
-    if(e.pointerType==="mouse"&&e.button!==0)return;
-    tap={id:e.pointerId,x:e.clientX,y:e.clientY,t:performance.now(),moved:false};
-  },{passive:true});
-  area.addEventListener("pointermove",e=>{
-    if(!tap||tap.id!==e.pointerId)return;
-    if(Math.hypot(e.clientX-tap.x,e.clientY-tap.y)>12)tap.moved=true;
-  },{passive:true});
-  area.addEventListener("pointerup",e=>{
-    if(!tap||tap.id!==e.pointerId)return;
-    const now=performance.now();
-    const isTap=!tap.moved && now-tap.t<360;
-    tap=null;
-    if(!isTap)return;
-    if(now-lastTapAt<330){
-      lastTapAt=0;
-      e.preventDefault();
-      openImageQuickLook($("#detailImage")?.src,$("#detailImage")?.alt||"Bild");
-    }else{
-      lastTapAt=now;
-    }
-  },{passive:false});
-  area.addEventListener("pointercancel",()=>{tap=null;},{passive:true});
-}
-
 function bindDraftPreview(button,img){
   button.addEventListener("contextmenu",e=>e.preventDefault());
   button.addEventListener("pointerdown",e=>{
@@ -390,15 +353,15 @@ function renderDraftPager(){
     pager.append(dot);
   }
 }
-function pageVisualRange(page,perPage){
+function pageVisualRange(page,perPage,sourceItems=items){
   const start=page*perPage;
-  return {start,end:Math.min(items.length,start+perPage)};
+  return {start,end:Math.min(sourceItems.length,start+perPage)};
 }
 function pageGhostCard(item,index,kind){
   const card=document.createElement("div");
-  card.className=`draft-card ${kind==="channel"?"channel-select-card":""}`;
+  card.className=`draft-card ${kind==="channel"?"channel-select-card":kind==="confirm"?"confirm-card":""}`;
   const img=document.createElement("img");
-  img.src=item.thumbUrl||itemImageSrc(index)||"";
+  img.src=item.thumbUrl||itemImageSrc(Math.max(0,itemIndexById(item.id)))||"";
   img.alt="";
   img.decoding="async";
   card.append(img);
@@ -407,12 +370,6 @@ function pageGhostCard(item,index,kind){
     const badge=document.createElement("span");
     badge.className="draft-adapted-badge";
     badge.textContent="✓";
-    card.append(badge);
-  }
-  if(kind==="draft" && item.demoWatermark===true){
-    const badge=document.createElement("span");
-    badge.className="draft-demo-badge";
-    badge.textContent="DEMO";
     card.append(badge);
   }
   if(kind==="channel"){
@@ -425,22 +382,29 @@ function pageGhostCard(item,index,kind){
   }
   return card;
 }
-function createPageGhost(grid,kind,page,perPage){
+function appendGridPlaceholders(grid,count){
+  for(let index=count;index<DRAFTS_PER_PAGE;index+=1){
+    const placeholder=document.createElement("span");
+    placeholder.className="draft-grid-placeholder";
+    placeholder.setAttribute("aria-hidden","true");
+    grid.append(placeholder);
+  }
+}
+function createPageGhost(grid,kind,page,perPage,sourceItems=items){
   const rect=grid.getBoundingClientRect();
   const ghost=document.createElement("div");
-  ghost.className=`ccc-paged-grid-ghost draft-grid ${kind==="channel"?"channel-select-grid":""}`;
-  const range=pageVisualRange(page,perPage);
+  ghost.className=`ccc-paged-grid-ghost draft-grid ${kind==="channel"?"channel-select-grid":kind==="confirm"?"confirm-grid":""}`;
+  const range=pageVisualRange(page,perPage,sourceItems);
   const count=Math.max(0,range.end-range.start);
   ghost.classList.add(channelGridClass(count));
-  Object.assign(ghost.style,{
-    left:`${rect.left}px`,
-    top:`${rect.top}px`,
-    width:`${rect.width}px`,
-    height:`${rect.height}px`
-  });
+  ghost.style.setProperty("left",`${rect.left}px`,"important");
+  ghost.style.setProperty("top",`${rect.top}px`,"important");
+  ghost.style.setProperty("width",`${rect.width}px`,"important");
+  ghost.style.setProperty("height",`${rect.height}px`,"important");
   for(let index=range.start;index<range.end;index+=1){
-    ghost.append(pageGhostCard(items[index],index,kind));
+    ghost.append(pageGhostCard(sourceItems[index],index,kind));
   }
+  appendGridPlaceholders(ghost,count);
   document.body.append(ghost);
   return ghost;
 }
@@ -452,15 +416,16 @@ function softenPageSwipe(dx,width,atEdge=false){
   return sign*softened;
 }
 function setPagedGridTransform(grid,ghost,offset,width,direction,animate=false){
-  const transition=animate?"transform 480ms cubic-bezier(.16,.74,.18,1)":"none";
+  const transition=animate?"transform 360ms cubic-bezier(.2,.78,.2,1)":"none";
+  const travel=width+PAGED_GRID_GUTTER;
   grid.style.transition=transition;
   grid.style.transform=`translate3d(${offset}px,0,0)`;
   if(ghost){
     ghost.style.transition=transition;
-    ghost.style.transform=`translate3d(${offset+(direction>0?width:-width)}px,0,0)`;
+    ghost.style.transform=`translate3d(${offset+(direction>0?travel:-travel)}px,0,0)`;
   }
 }
-function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render}){
+function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems=()=>items}){
   const grid=$(gridId);
   if(!grid||grid.dataset.cccSmoothSwipeBound)return;
   grid.dataset.cccSmoothSwipeBound="1";
@@ -476,17 +441,22 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render}){
   },true);
 
   grid.addEventListener("pointerdown",event=>{
-    const pages=Math.ceil(items.length/perPage);
+    const pages=Math.ceil(getItems().length/perPage);
     if(animating||pages<=1)return;
     if(event.pointerType==="mouse"&&event.button!==0)return;
     grid.setPointerCapture?.(event.pointerId);
-    gesture={id:event.pointerId,startX:event.clientX,startY:event.clientY,dx:0,horizontal:false,direction:0,ghost:null};
+    gesture={id:event.pointerId,startX:event.clientX,startY:event.clientY,dx:0,horizontal:false,direction:0,ghost:null,lastX:event.clientX,lastTime:performance.now(),velocityX:0};
   });
 
   grid.addEventListener("pointermove",event=>{
     if(!gesture||gesture.id!==event.pointerId||animating)return;
     const dx=event.clientX-gesture.startX;
     const dy=event.clientY-gesture.startY;
+    const now=performance.now();
+    const elapsed=Math.max(1,now-gesture.lastTime);
+    gesture.velocityX=(event.clientX-gesture.lastX)/elapsed;
+    gesture.lastX=event.clientX;
+    gesture.lastTime=now;
     if(!gesture.horizontal){
       if(Math.abs(dx)<8&&Math.abs(dy)<8)return;
       if(Math.abs(dy)>Math.abs(dx)*1.15){
@@ -500,7 +470,8 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render}){
     event.preventDefault();
 
     const page=getPage();
-    const pages=Math.ceil(items.length/perPage);
+    const sourceItems=getItems();
+    const pages=Math.ceil(sourceItems.length/perPage);
     const direction=dx<0?1:-1;
     const target=page+direction;
     const width=Math.max(1,grid.getBoundingClientRect().width);
@@ -508,7 +479,7 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render}){
 
     if(!atEdge && gesture.direction!==direction){
       gesture.ghost?.remove();
-      gesture.ghost=createPageGhost(grid,kind,target,perPage);
+      gesture.ghost=createPageGhost(grid,kind,target,perPage,sourceItems);
       gesture.direction=direction;
     }else if(atEdge && gesture.ghost){
       gesture.ghost.remove();gesture.ghost=null;gesture.direction=direction;
@@ -523,29 +494,31 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render}){
     if(!gesture||gesture.id!==event.pointerId)return;
     const g=gesture;gesture=null;
     const page=getPage();
-    const pages=Math.ceil(items.length/perPage);
+    const pages=Math.ceil(getItems().length/perPage);
     const width=Math.max(1,grid.getBoundingClientRect().width);
 
     if(!g.horizontal||cancelled){
       setPagedGridTransform(grid,g.ghost,0,width,g.direction||1,true);
-      window.setTimeout(()=>{g.ghost?.remove();grid.style.transition="";grid.style.transform="";},490);
+      window.setTimeout(()=>{g.ghost?.remove();grid.style.transition="";grid.style.transform="";},370);
       return;
     }
 
     const direction=g.dx<0?1:-1;
     const target=page+direction;
     const valid=target>=0&&target<pages;
-    const threshold=width*.23;
+    const threshold=width*.20;
+    const quickFlick=Math.abs(g.velocityX)>.42&&Math.abs(g.dx)>36;
 
-    if(!valid||Math.abs(g.dx)<threshold){
+    if(!valid||(!quickFlick&&Math.abs(g.dx)<threshold)){
       setPagedGridTransform(grid,g.ghost,0,width,direction,true);
-      window.setTimeout(()=>{g.ghost?.remove();grid.style.transition="";grid.style.transform="";},490);
+      window.setTimeout(()=>{g.ghost?.remove();grid.style.transition="";grid.style.transform="";},370);
       return;
     }
 
     animating=true;
     suppressUntil=performance.now()+850;
-    setPagedGridTransform(grid,g.ghost,direction>0?-width:width,width,direction,true);
+    const travel=width+PAGED_GRID_GUTTER;
+    setPagedGridTransform(grid,g.ghost,direction>0?-travel:travel,width,direction,true);
 
     window.setTimeout(async()=>{
       setPage(target);
@@ -558,7 +531,7 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render}){
         grid.style.transform="";
         animating=false;
       });
-    },490);
+    },370);
   };
 
   grid.addEventListener("pointerup",event=>finish(event,false));
@@ -587,6 +560,18 @@ function bindChannelGridSwipe(){
     render:renderChannelSelection
   });
 }
+function selectedChannelItems(){return items.filter(item=>channelSelectedIds.has(item.id));}
+function bindConfirmGridSwipe(){
+  bindPagedGridSwipe({
+    gridId:"#confirmGrid",
+    kind:"confirm",
+    getPage:()=>confirmPage,
+    setPage:value=>{confirmPage=value;},
+    perPage:DRAFTS_PER_PAGE,
+    getItems:selectedChannelItems,
+    render:()=>renderChannelConfirmation(false)
+  });
+}
 
 
 function helpHtmlForView(view){
@@ -598,7 +583,7 @@ function helpHtmlForView(view){
       <div class="help-row"><strong>Röd bock ✓</strong><br>Visas i Välj-läget och betyder att utkastet är markerat för borttagning. Inget tas bort förrän du trycker Ta bort och bekräftar.</div>
       <div class="help-row"><strong>Fortsätt</strong><br>Går vidare med de färdiga plaggen till val av kanal.</div>
       <div class="help-row"><strong>Välj</strong><br>Öppnar läget där du kan markera lokala utkast för borttagning.</div>`;
-  if(view==="detailView")return `<div class="help-row"><strong>Grön ✓</strong><br>Bilden har en sparad anpassning men kan ändras igen.</div><div class="help-row"><strong>Anpassa bild</strong><br>Öppna beskärning/zoom för den här bilden.</div>`;
+  if(view==="detailView")return `<div class="help-row"><strong>Grön ✓</strong><br>Bilden har en sparad anpassning men kan ändras igen.</div><div class="help-row"><strong>Anpassa bild</strong><br>Öppna beskärning/zoom för den här bilden.</div><div class="help-row"><strong>Klar – tillbaka till bilderna</strong><br>Återgår till Förbered så att du kan fortsätta med nästa bild. Kanalvalet öppnas först med Fortsätt i gridden.</div>`;
   if(view==="cropView")return `<div class="help-row"><strong>Anpassa bild</strong><br>Flytta och zooma tills utsnittet känns rätt.</div><div class="help-row"><strong>Spara anpassning</strong><br>Sparar bilden och återgår till miniatyrerna.</div>`;
   return `<div class="help-row"><strong>Tillbaka</strong><br>Går till föregående steg.</div>`;
 }
@@ -609,19 +594,6 @@ function openPublishHelp(){
   dlg.hidden=false;
 }
 function closePublishHelp(){const dlg=$("#publishHelpDialog");if(dlg)dlg.hidden=true;}
-function openCropDemoSettings(){
-  const item=activeItem(); if(!item)return;
-  $("#cropDemoWatermark").checked=ensureDemoWatermarkState(item);
-  $("#cropDemoDialog").hidden=false;
-}
-function closeCropDemoSettings(save=false){
-  const item=activeItem();
-  if(save && item){
-    item.demoWatermark=!!$("#cropDemoWatermark")?.checked;
-    put(persistenceRecord(item)).catch(error=>console.warn("[CCC Publicera] Kunde inte spara demostatus",error));
-  }
-  if($("#cropDemoDialog"))$("#cropDemoDialog").hidden=true;
-}
 let publishFooterCoreWaitBound=false;
 function configureFooterForView(view){
   if(!window.CCC_CORE?.footer){
@@ -639,7 +611,7 @@ function configureFooterForView(view){
     return;
   }
   if(draftSelectionMode){updateSelectionFooter();return;}
-  const config={help:["gridView","detailView"].includes(view),onHelp:openPublishHelp};
+  const config={help:["gridView","detailView","cropView"].includes(view),onHelp:openPublishHelp};
   if(view==="gridView"){
     Object.assign(config,{
       help:true,
@@ -648,11 +620,6 @@ function configureFooterForView(view){
       onSelect:enterDraftSelection,
       selectLabel:"Välj"
     });
-  }
-  if(view==="cropView"){
-    config.settings=true;
-    config.settingsLabel="Demobild";
-    config.onSettings=openCropDemoSettings;
   }
   window.CCC_CORE.footer.setTools?.(config);
 }
@@ -832,13 +799,6 @@ async function renderGrid(){
       adaptedBadge.setAttribute("aria-label","Bilden har en sparad anpassning");
       b.append(adaptedBadge);
     }
-    if(item.demoWatermark===true){
-      const demoBadge=document.createElement("span");
-      demoBadge.className="draft-demo-badge";
-      demoBadge.textContent="DEMO";
-      demoBadge.setAttribute("aria-label","Demobild med vattenstämpel");
-      b.append(demoBadge);
-    }
     if(item.id===recentlyAdaptedItemId)b.classList.add("just-adapted");
 
     const cap=document.createElement("span");
@@ -848,7 +808,7 @@ async function renderGrid(){
     const itemId=item.id;
     b.dataset.itemId=itemId;if(draftSelectionMode){b.classList.add("is-selecting");if(selectedDraftIds.has(itemId))b.classList.add("is-selected");const mark=document.createElement("span");mark.className="draft-select-mark";mark.textContent=selectedDraftIds.has(itemId)?"✓":"";b.append(mark);}else bindDraftPreview(b,img);
 
-    let thumbTap=null,thumbLastTapAt=0,thumbSingleTimer=null,lastTouchHandledAt=0;
+    let thumbTap=null,lastTouchHandledAt=0;
     b.addEventListener("pointerdown",e=>{
       if(e.pointerType!=="touch"&&e.pointerType!=="pen")return;
       thumbTap={id:e.pointerId,x:e.clientX,y:e.clientY,t:performance.now(),moved:false};
@@ -864,23 +824,8 @@ async function renderGrid(){
       thumbTap=null;
       if(!isTap)return;
       lastTouchHandledAt=Date.now();e.preventDefault();if(draftSelectionMode){selectedDraftIds.has(itemId)?selectedDraftIds.delete(itemId):selectedDraftIds.add(itemId);updateSelectionFooter();renderGrid();return;}
-      if(draftPreviewSuppressClick){
-        draftPreviewSuppressClick=false;
-        if(thumbSingleTimer){clearTimeout(thumbSingleTimer);thumbSingleTimer=null;}
-        return;
-      }
-      if(now-thumbLastTapAt<330){
-        thumbLastTapAt=0;
-        if(thumbSingleTimer){clearTimeout(thumbSingleTimer);thumbSingleTimer=null;}
-        openImageQuickLook(itemImageSrc(index)||img.src,title(item,index));
-      }else{
-        thumbLastTapAt=now;
-        if(thumbSingleTimer)clearTimeout(thumbSingleTimer);
-        thumbSingleTimer=window.setTimeout(()=>{
-          thumbSingleTimer=null;
-          openDetailById(itemId);
-        },340);
-      }
+      if(draftPreviewSuppressClick){draftPreviewSuppressClick=false;return;}
+      openDetailById(itemId);
     },{passive:false});
     b.addEventListener("pointercancel",()=>{thumbTap=null;},{passive:true});
 
@@ -900,6 +845,7 @@ async function renderGrid(){
     });
     grid.append(b);
   }
+  appendGridPlaceholders(grid,visibleCount);
   renderDraftPager();
 }
 function normalizedIndex(index){
@@ -1166,8 +1112,68 @@ async function fetchPublishedNewArrivals(){
     .sort((a,b)=>firestoreTime(b.createdAt)-firestoreTime(a.createdAt));
 }
 
+function publicationDateText(value){
+  const millis=firestoreTime(value);
+  if(!millis)return "Tid saknas";
+  return new Intl.DateTimeFormat("sv-SE",{dateStyle:"short",timeStyle:"short"}).format(new Date(millis));
+}
+function readPublicationHistory(){
+  try{
+    const parsed=JSON.parse(localStorage.getItem(PUBLICATION_HISTORY_KEY)||"[]");
+    return Array.isArray(parsed)?parsed:[];
+  }catch(_){return [];}
+}
+function savePublicationBatch(entries,failed=0){
+  if(!entries?.length)return;
+  const history=readPublicationHistory();
+  history.unshift({
+    id:`batch-${Date.now()}`,
+    publishedAt:new Date().toISOString(),
+    channel:"Container13 · Nyinkommet",
+    failed,
+    items:entries.map(entry=>({title:entry.title||"Namnlöst plagg",imageUrl:entry.imageUrl||"",cccItemId:entry.cccItemId||""}))
+  });
+  try{localStorage.setItem(PUBLICATION_HISTORY_KEY,JSON.stringify(history.slice(0,30)));}catch(error){console.warn("[CCC Publicera] Kunde inte spara publiceringshistorik",error);}
+}
+function renderPublicationHistory(){
+  const list=$("#publishedHistoryList"),empty=$("#publishedHistoryEmpty");
+  if(!list||!empty)return;
+  const history=readPublicationHistory();
+  list.replaceChildren();
+  empty.hidden=history.length!==0;
+  empty.style.display=history.length?"none":"grid";
+  for(const batch of history){
+    const article=document.createElement("article");article.className="publication-batch";
+    const heading=document.createElement("div");heading.className="publication-batch-heading";
+    const copy=document.createElement("div");
+    const title=document.createElement("strong");title.textContent=publicationDateText(batch.publishedAt);
+    const meta=document.createElement("span");
+    const count=Array.isArray(batch.items)?batch.items.length:0;
+    meta.textContent=`${batch.channel||"Container13"} · ${count} ${count===1?"bild":"bilder"}${batch.failed?` · ${batch.failed} misslyckades`:""}`;
+    copy.append(title,meta);heading.append(copy);article.append(heading);
+    const thumbs=document.createElement("div");thumbs.className="publication-batch-images";
+    for(const item of (batch.items||[])){
+      const figure=document.createElement("figure");
+      const img=document.createElement("img");img.src=item.imageUrl;img.alt=item.title||"Publicerad bild";img.loading="lazy";
+      const caption=document.createElement("figcaption");caption.textContent=item.title||"Namnlöst plagg";
+      figure.append(img,caption);thumbs.append(figure);
+    }
+    article.append(thumbs);list.append(article);
+  }
+}
+function selectPublishedTab(tab){
+  const history=tab==="history";
+  $("#publishedLivePanel").hidden=history;
+  $("#publishedHistoryPanel").hidden=!history;
+  $("#publishedLiveTab").classList.toggle("is-active",!history);
+  $("#publishedHistoryTab").classList.toggle("is-active",history);
+  $("#publishedLiveTab").setAttribute("aria-selected",String(!history));
+  $("#publishedHistoryTab").setAttribute("aria-selected",String(history));
+  if(history)renderPublicationHistory();
+}
+
 async function deletePublishedItem(item,button){
-  if(!window.confirm("Ta bort bilden från Nyinkommet?"))return;
+  if(!window.confirm(`Ta bort ${item.title||"bilden"} från Container13 · Nyinkommet?\n\nOriginalet i CCC påverkas inte.`))return;
   button.disabled=true;
   try{
     if(item.storagePath){try{await deleteObject(storageRef(storage,item.storagePath));}catch(error){console.warn("[CCC Publicera] Bildfilen saknades eller kunde inte tas bort",error);}}
@@ -1183,20 +1189,26 @@ async function deletePublishedItem(item,button){
 
 async function loadPublishedView(message=""){
   const grid=$("#publishedGrid"),summary=$("#publishedSummary"),empty=$("#publishedEmpty"),result=$("#publishedResult");
-  grid.replaceChildren();empty.hidden=true;summary.textContent="Hämtar Nyinkommet…";
+  grid.replaceChildren();empty.hidden=true;empty.style.display="none";summary.textContent="Hämtar Container13…";
   if(message){result.hidden=false;result.textContent=message;}else result.hidden=true;
   try{
     const all=await fetchPublishedNewArrivals();
     const visible=all.slice(0,16);
-    summary.textContent=`${visible.length} av 16 platser används`;
-    const startCount=$("#publishedStartCount");if(startCount)startCount.textContent=`${visible.length} publicerade · se och hantera`;
+    summary.textContent=`${visible.length} av 16 bilder ligger ute i Nyinkommet`;
+    const startCount=$("#publishedStartCount");if(startCount)startCount.textContent=`${visible.length} ligger ute · visa eller ta bort`;
     empty.hidden=visible.length!==0;
+    empty.style.display=visible.length?"none":"grid";
     for(const item of visible){
       const card=document.createElement("article");card.className="published-card";
-      const img=document.createElement("img");img.src=item.imageUrl;img.alt=item.title||"Publicerat plagg";img.loading="lazy";img.decoding="async";
-      const del=document.createElement("button");del.type="button";del.className="published-delete";del.textContent="×";del.setAttribute("aria-label",`Ta bort ${item.title||"bilden"}`);
+      const imageWrap=document.createElement("div");imageWrap.className="published-card-image";
+      const img=document.createElement("img");img.src=item.imageUrl;img.alt=item.title||"Publicerat plagg";img.loading="lazy";img.decoding="async";imageWrap.append(img);
+      const info=document.createElement("div");info.className="published-card-info";
+      const title=document.createElement("strong");title.textContent=item.title||"Namnlöst plagg";
+      const where=document.createElement("span");where.textContent="Container13 · Nyinkommet";
+      const when=document.createElement("time");when.textContent=publicationDateText(item.createdAt);
+      const del=document.createElement("button");del.type="button";del.className="published-delete";del.textContent="Ta bort från hemsidan";del.setAttribute("aria-label",`Ta bort ${item.title||"bilden"} från hemsidan`);
       del.addEventListener("click",()=>deletePublishedItem(item,del));
-      card.append(img,del);grid.append(card);
+      info.append(title,where,when,del);card.append(imageWrap,info);grid.append(card);
     }
   }catch(error){
     console.error("[CCC Publicera] Kunde inte hämta publicerade bilder",error);
@@ -1205,7 +1217,9 @@ async function loadPublishedView(message=""){
   }
 }
 
-$("#publishedBtn").addEventListener("click",async()=>{show("publishedView");await loadPublishedView();});
+$("#publishedLiveTab")?.addEventListener("click",()=>selectPublishedTab("live"));
+$("#publishedHistoryTab")?.addEventListener("click",()=>selectPublishedTab("history"));
+$("#publishedBtn").addEventListener("click",async()=>{show("publishedView");selectPublishedTab("live");renderPublicationHistory();await loadPublishedView();});
 
 
 function loadImage(src){return new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=src;});}
@@ -1415,40 +1429,6 @@ async function openCrop(){
   $("#cropOriginalPreview").src=item.thumbUrl||item.fullUrl;
   drawCrop();show("cropView");
 }
-function demoWatermarkDefault(){
-  return localStorage.getItem("ccc-publish-demo-watermark")==="1";
-}
-function ensureDemoWatermarkState(item){
-  if(item && typeof item.demoWatermark!=="boolean")item.demoWatermark=demoWatermarkDefault();
-  return !!item?.demoWatermark;
-}
-
-function drawDemoWatermark(ctx,width,height){
-  const label="DEMO · CONTAINER13";
-  const fontSize=Math.max(18,Math.round(width*.055));
-  ctx.save();
-  ctx.translate(width/2,height/2);
-  ctx.rotate(-Math.PI/6);
-  ctx.font=`800 ${fontSize}px system-ui, -apple-system, sans-serif`;
-  ctx.textAlign="center";
-  ctx.textBaseline="middle";
-  ctx.fillStyle="rgba(255,255,255,.22)";
-  ctx.strokeStyle="rgba(0,0,0,.16)";
-  ctx.lineWidth=Math.max(1,fontSize*.045);
-  const stepX=Math.max(width*.52,fontSize*8.5);
-  const stepY=Math.max(height*.17,fontSize*2.8);
-  for(let y=-height;y<=height;y+=stepY){
-    for(let x=-width;x<=width;x+=stepX){
-      ctx.strokeText(label,x,y);
-      ctx.fillText(label,x,y);
-    }
-  }
-  ctx.restore();
-}
-function applyDemoWatermarkIfNeeded(ctx,item,width,height){
-  if(ensureDemoWatermarkState(item))drawDemoWatermark(ctx,width,height);
-}
-
 async function createOriginalWebP(item){
   const src=item.originalBlob||item.thumbnailBlob;
   if(!src)throw new Error("Originalbild saknas.");
@@ -1470,12 +1450,8 @@ async function createOriginalWebP(item){
   ctx.fillStyle="#111";
   ctx.fillRect(0,0,outSize,outSize);
   ctx.drawImage(image,dx,dy,drawW,drawH);
-  applyDemoWatermarkIfNeeded(ctx,item,outSize,outSize);
   return new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));
 }
-$("#cropDemoCancel")?.addEventListener("click",()=>closeCropDemoSettings(false));
-$("#cropDemoSave")?.addEventListener("click",()=>closeCropDemoSettings(true));
-$("#cropDemoDialog")?.addEventListener("click",event=>{if(event.target===$("#cropDemoDialog"))closeCropDemoSettings(false);});
 $("#cropBtn").addEventListener("click",openCrop);
 const cropDiagToggle=$("#cropDiagToggle");
 if(cropDiagToggle){
@@ -1501,7 +1477,10 @@ $("#keepOriginalBtn").addEventListener("click",async()=>{
     await put(persistenceRecord({...item,publishBlob:blob,cropData:null,imageProcessingState:item.imageProcessingState}));
     if(item.publishUrl&&item.publishUrl.startsWith("blob:"))URL.revokeObjectURL(item.publishUrl);
     item.publishUrl=url(blob);
-    openDetailById(item.id);
+    item.thumbUrl=await previewSrc(item);
+    recentlyAdaptedItemId=item.id;
+    show("gridView");
+    await renderGrid();
   }catch(error){
     console.error("[CCC Publicera] Kunde inte optimera originalbilden",error);
     button.textContent="Försök igen";
@@ -1617,7 +1596,6 @@ $("#cropDone").addEventListener("click",async()=>{
   out.width=out.height=outSize;
   const outCtx=out.getContext("2d",{alpha:false});
   outCtx.drawImage(g.c,0,0,g.c.width,g.c.height,0,0,outSize,outSize);
-  applyDemoWatermarkIfNeeded(outCtx,item,outSize,outSize);
   const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));
   item.publishBlob=blob;
   item.imageProcessingState="webp-cropped";
@@ -1641,17 +1619,8 @@ $("#cropDone").addEventListener("click",async()=>{
 });
 
 $("#publishBtn").addEventListener("click",()=>{
-  const item=activeItem();if(!item)return;
-  channelSelectedIds.clear();
-  channelSelectPage=0;
-  container13ChannelSelected=false;
-  const c13=$("#container13ChannelBtn");
-  c13?.classList.remove("is-chosen");
-  c13?.setAttribute("aria-pressed","false");
-  const next=$("#channelNextBtn");
-  if(next)next.disabled=true;
   $("#publishStatus").textContent="";
-  show("channelTargetsView");
+  leavePublishDetail();
 });
 
 
@@ -1721,7 +1690,7 @@ async function renderChannelSelection(){
     // Samma långtrycks-preview som i Förbered.
     bindDraftPreview(button,img);
 
-    let tap=null,lastTap=0,singleTimer=null,lastTouchHandled=0;
+    let tap=null,lastTouchHandled=0;
     button.addEventListener("pointerdown",e=>{
       if(e.pointerType!=="touch"&&e.pointerType!=="pen")return;
       tap={id:e.pointerId,x:e.clientX,y:e.clientY,t:performance.now(),moved:false};
@@ -1737,24 +1706,9 @@ async function renderChannelSelection(){
       if(!isTap)return;
       lastTouchHandled=Date.now();
       e.preventDefault();
-      if(draftPreviewSuppressClick){
-        draftPreviewSuppressClick=false;
-        if(singleTimer){clearTimeout(singleTimer);singleTimer=null;}
-        return;
-      }
-      if(now-lastTap<330){
-        lastTap=0;
-        if(singleTimer){clearTimeout(singleTimer);singleTimer=null;}
-        openImageQuickLook(itemImageSrc(index)||img.src,title(item,index));
-      }else{
-        lastTap=now;
-        if(singleTimer)clearTimeout(singleTimer);
-        singleTimer=window.setTimeout(async()=>{
-          singleTimer=null;
-          channelSelectedIds.has(item.id)?channelSelectedIds.delete(item.id):channelSelectedIds.add(item.id);
-          await renderChannelSelection();
-        },340);
-      }
+      if(draftPreviewSuppressClick){draftPreviewSuppressClick=false;return;}
+      channelSelectedIds.has(item.id)?channelSelectedIds.delete(item.id):channelSelectedIds.add(item.id);
+      renderChannelSelection();
     },{passive:false});
     button.addEventListener("click",async e=>{
       if(Date.now()-lastTouchHandled<700){e.preventDefault();return;}
@@ -1765,12 +1719,15 @@ async function renderChannelSelection(){
     grid.append(button);
   }
 
+  appendGridPlaceholders(grid,count);
+
   renderChannelPager(pageCount);
   updateChannelSelectionUi();
 }
 
 $("#channelContinueBtn")?.addEventListener("click",async()=>{
   if(!channelSelectedIds.size)return;
+  confirmPage=0;
   await renderChannelConfirmation();
   show("channelConfirmView");
 });
@@ -1793,25 +1750,47 @@ document.querySelectorAll(".channel-option.is-unavailable").forEach(button=>{
   button.addEventListener("click",()=>showChannelUnavailable(button.dataset.channel||"Kanalen"));
 });
 
-async function renderChannelConfirmation(){
-  const selected=items.filter(item=>channelSelectedIds.has(item.id));
+function renderConfirmPager(pageCount){
+  const pager=$("#confirmPager");
+  if(!pager)return;
+  pager.replaceChildren();
+  pager.hidden=pageCount<=1;
+  for(let index=0;index<pageCount;index+=1){
+    const dot=document.createElement("button");dot.type="button";dot.className="ccc-draft-page-dot";
+    dot.setAttribute("aria-label",`Visa kontrollsida ${index+1} av ${pageCount}`);
+    dot.setAttribute("aria-current",String(index===confirmPage));
+    dot.addEventListener("click",async()=>{confirmPage=index;await renderChannelConfirmation(false);});
+    pager.append(dot);
+  }
+}
+
+async function renderChannelConfirmation(resetControls=true){
+  const selected=selectedChannelItems();
   const grid=$("#confirmGrid");
   if(!grid)return;
+  bindConfirmGridSwipe();
   grid.replaceChildren();
-  grid.className=`draft-grid confirm-grid ${channelGridClass(selected.length)}`;
-  $("#confirmPublishBtn").textContent=selected.length===1?"Publicera 1 plagg":"Gå vidare";
+  const pageCount=Math.max(1,Math.ceil(selected.length/DRAFTS_PER_PAGE));
+  confirmPage=Math.max(0,Math.min(confirmPage,pageCount-1));
+  const start=confirmPage*DRAFTS_PER_PAGE;
+  const end=Math.min(selected.length,start+DRAFTS_PER_PAGE);
+  const visible=selected.slice(start,end);
+  grid.className=`draft-grid confirm-grid ${channelGridClass(visible.length)}`;
+  $("#confirmPublishBtn").textContent=selected.length===1?"Publicera 1 plagg":`Publicera ${selected.length} plagg`;
   const c13Confirm=$("#confirmC13Channel");
   if(c13Confirm){
     c13Confirm.classList.toggle("is-active",container13ChannelSelected);
     c13Confirm.setAttribute("aria-pressed",String(container13ChannelSelected));
   }
   $("#confirmPublishBtn").disabled=!container13ChannelSelected;
-  container13PublishDisplayOverride=null;
-  if($("#confirmDisplayEditor"))$("#confirmDisplayEditor").hidden=true;
-  if($("#confirmDisplayEditBtn"))$("#confirmDisplayEditBtn").textContent="Ändra";
+  if(resetControls){
+    container13PublishDisplayOverride=null;
+    if($("#confirmDisplayEditor"))$("#confirmDisplayEditor").hidden=true;
+    if($("#confirmDisplayEditBtn"))$("#confirmDisplayEditBtn").textContent="Ändra";
+  }
   syncConfirmDisplayUi();
 
-  for(const item of selected){
+  for(const item of visible){
     const index=Math.max(0,itemIndexById(item.id));
     const card=document.createElement("button");
     card.type="button";
@@ -1825,6 +1804,8 @@ async function renderChannelConfirmation(){
     bindDraftPreview(card,img);
     grid.append(card);
   }
+  appendGridPlaceholders(grid,visible.length);
+  renderConfirmPager(pageCount);
 }
 
 $("#container13ChannelBtn")?.addEventListener("click",()=>{
@@ -1871,8 +1852,7 @@ function displaySummaryText(settings=effectiveContainer13DisplaySettings()){
 function syncConfirmDisplayUi(){
   const settings=effectiveContainer13DisplaySettings();
   if($("#confirmDisplaySummary")){
-    const demoCount=items.filter(item=>channelSelectedIds.has(item.id)&&item.demoWatermark===true).length;
-    $("#confirmDisplaySummary").textContent=displaySummaryText(settings)+(demoCount?` · ⚠ ${demoCount} demomärkt${demoCount===1?" plagg":"a plagg"}`:"");
+    $("#confirmDisplaySummary").textContent=displaySummaryText(settings);
   }
   for(const [selector,key] of [["#confirmShowTitle","showTitle"],["#confirmShowDescription","showDescription"],["#confirmShowBrand","showBrand"],["#confirmShowSize","showSize"],["#confirmShowPrice","showPrice"]]){
     const input=$(selector); if(input)input.checked=!!settings[key];
@@ -1896,16 +1876,6 @@ function publishBlobForItem(item){
 }
 
 async function resolvePublishBlob(item){
-  ensureDemoWatermarkState(item);
-  if(item?.demoWatermark===true && !item.publishBlob){
-    const source=await getSourceFile(item.originalFileKey);
-    if(source && !item.originalBlob)item.originalBlob=source;
-    const marked=await createOriginalWebP(item);
-    item.publishBlob=marked;
-    item.imageProcessingState="webp-original";
-    await put(persistenceRecord(item));
-    return marked;
-  }
   let blob=publishBlobForItem(item);
   if(!blob && item?.originalFileKey)blob=await getSourceFile(item.originalFileKey);
   return blob||null;
@@ -1928,6 +1898,7 @@ async function publishSelectedToContainer13Live(){
   let uploaded=0;
   const failures=[];
   const publishedIds=[];
+  const publishedEntries=[];
 
   for(let index=0;index<selected.length;index+=1){
     const item=selected[index];
@@ -1975,7 +1946,6 @@ async function publishSelectedToContainer13Live(){
         price:metadata.price,
         cccItemId:metadata.cccItemId,
         cccMetadataVersion:1,
-        demoWatermark:item.demoWatermark===true,
         source:"ccc",
         createdAt:serverTimestamp(),
         createdBy:auth.currentUser.email||""
@@ -1983,6 +1953,7 @@ async function publishSelectedToContainer13Live(){
 
       uploaded+=1;
       publishedIds.push(item.id);
+      publishedEntries.push({title:titleText||metadata.title||"Namnlöst plagg",imageUrl,cccItemId:metadata.cccItemId});
     }catch(error){
       failures.push({id:item?.id||"",message:error?.message||String(error)});
       if(uploadedRef){
@@ -1993,7 +1964,7 @@ async function publishSelectedToContainer13Live(){
   }
 
   try{await enforceNewArrivalsLimit(16);}catch(error){console.error("[CCC Publicera] Kunde inte verkställa 16-bildersgränsen",error);}
-  return {uploaded,failed:failures.length,failures,publishedIds};
+  return {uploaded,failed:failures.length,failures,publishedIds,publishedEntries};
 }
 
 async function enforceNewArrivalsLimit(maximum=16){
@@ -2124,10 +2095,13 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
       result.publishedIds.forEach(id=>channelSelectedIds.delete(id));
       updateStartCount();
     }
+    savePublicationBatch(result.publishedEntries,result.failed);
 
     if(result.failed>0){
       $("#confirmStatus").textContent=`${result.uploaded} publicerade, ${result.failed} misslyckades.`;
       show("publishedView");
+      selectPublishedTab("live");
+      renderPublicationHistory();
       await loadPublishedView(`${result.uploaded} publicerade · ${items.length} finns kvar redo att publicera · ${result.failed} misslyckades.`);
       return;
     }
@@ -2137,6 +2111,8 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
       :`✓ ${result.uploaded} plagg publicerade på Container13.`;
 
     show("publishedView");
+    selectPublishedTab("live");
+    renderPublicationHistory();
     await loadPublishedView(`${result.uploaded} publicerade på Container13 · ${items.length} finns kvar redo att publicera.`);
   }catch(error){
     console.error("[CCC Publicera] Publicering till Container13 misslyckades",error);
@@ -2156,12 +2132,14 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
   let records=[...merged.values()].filter(r=>r.originalBlob||r.publishBlob||r.thumbnailBlob);
   records.sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
   items=records.map(r=>({...r,thumbUrl:""}));
+  localStorage.removeItem("ccc-publish-demo-watermark");
   for(const item of items){
     const hadIdentity=!!item.cccItemId;
+    const removedLegacyDemo=removeLegacyDemoState(item);
     ensureCccIdentity(item);
     item.imageMetadata={...(item.imageMetadata||{}),...buildPublishMetadata(item)};
-    if(!hadIdentity){
-      try{await put(persistenceRecord(item));}catch(error){console.warn("[CCC Publicera] Kunde inte backfilla permanent CCC-ID",item.id,error);}
+    if(!hadIdentity||removedLegacyDemo){
+      try{await put(persistenceRecord(item));}catch(error){console.warn("[CCC Publicera] Kunde inte uppdatera lokalt utkast",item.id,error);}
     }
   }
   $("#startDraftCount").textContent=items.length===1?"1 utkast":`${items.length} utkast`;

@@ -11,7 +11,7 @@
 <title>CCC Publicera v2.9.22</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.9.96">
+<link rel="stylesheet" href="publish.css?v=2.10.0">
 <link rel="stylesheet" href="../core.css?v=2.9.49">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
@@ -129,6 +129,7 @@
 
     <section id="channelConfirmView" class="publish-view" hidden>
       <div id="confirmGrid" class="draft-grid confirm-grid"></div>
+      <div id="confirmPager" class="ccc-draft-pager confirm-pager" aria-label="Sidor med valda plagg"></div>
 
       <div class="confirm-channel-strip" aria-label="Publiceringskanaler">
         <button id="confirmC13Channel" class="confirm-channel-chip is-active" type="button" data-confirm-channel="Container13" aria-pressed="true" aria-label="Container13, vald kanal">
@@ -165,11 +166,23 @@
     </section>
 
     <section id="publishedView" class="publish-view" hidden>
-      <div class="publish-heading"><div><h1>Publicerade på Container13</h1><p id="publishedSummary">Hämtar Nyinkommet…</p></div></div>
-      <div id="publishedResult" class="published-result" hidden></div>
-      <div id="publishedGrid" class="published-grid" aria-live="polite"></div>
-      <div id="publishedEmpty" class="publish-empty" hidden><strong>Inga publicerade plagg</strong><span>Nyinkommet är tomt.</span></div>
-      <a class="secondary-action published-site-link" href="../../nyinkommet.html" target="_blank" rel="noopener">Visa Nyinkommet på hemsidan</a>
+      <div class="publish-heading"><div><h1>Publicerat</h1><p id="publishedSummary">Hämtar Container13…</p></div></div>
+      <div class="published-tabs" role="tablist" aria-label="Publicerade bilder">
+        <button id="publishedLiveTab" class="published-tab is-active" type="button" role="tab" aria-selected="true">Ligger ute nu</button>
+        <button id="publishedHistoryTab" class="published-tab" type="button" role="tab" aria-selected="false">Historik</button>
+      </div>
+      <div id="publishedLivePanel" class="published-panel" role="tabpanel">
+        <div id="publishedResult" class="published-result" hidden></div>
+        <div class="published-section-heading"><strong>Container13 · Nyinkommet</strong><span>De bilder som faktiskt visas på hemsidan nu.</span></div>
+        <div id="publishedGrid" class="published-grid" aria-live="polite"></div>
+        <div id="publishedEmpty" class="publish-empty published-empty" hidden><strong>Nyinkommet är tomt</strong><span>Inga bilder ligger ute på Container13 just nu.</span></div>
+        <a class="secondary-action published-site-link" href="../../nyinkommet.html" target="_blank" rel="noopener">Visa Nyinkommet på hemsidan</a>
+      </div>
+      <div id="publishedHistoryPanel" class="published-panel" role="tabpanel" hidden>
+        <div class="published-section-heading"><strong>Publiceringar från CCC</strong><span>Datum, tid, kanal och bilder per publicering.</span></div>
+        <div id="publishedHistoryList" class="published-history-list"></div>
+        <div id="publishedHistoryEmpty" class="publish-empty published-empty" hidden><strong>Ingen historik ännu</strong><span>Nya publiceringar från CCC sparas här på enheten.</span></div>
+      </div>
     </section>
 
     <section id="detailView" class="publish-view" hidden>
@@ -181,7 +194,7 @@
         <span class="swipe-hint left" aria-hidden="true">‹</span><span class="swipe-hint right" aria-hidden="true">›</span>
       </div>
       <div class="detail-copy"><strong id="detailTitle"></strong><span id="detailMeta"></span></div>
-      <div class="detail-actions"><button id="cropBtn" class="secondary-action" type="button">Anpassa bild</button><button id="publishBtn" class="primary-action" type="button">Fortsätt till kanalval</button></div>
+      <div class="detail-actions"><button id="cropBtn" class="secondary-action" type="button">Anpassa bild</button><button id="publishBtn" class="primary-action" type="button">Klar – tillbaka till bilderna</button></div>
       <p id="publishStatus" class="publish-status" aria-live="polite"></p>
     </section>
 
@@ -212,24 +225,6 @@
     </section>
   </main>
 </div>
-
-
-
-
-<div id="cropDemoDialog" class="dialog ccc-dialog" role="dialog" aria-modal="true" aria-labelledby="cropDemoTitle" hidden>
-  <div class="dialog-box ccc-dialog-box crop-demo-dialog-box">
-    <h2 id="cropDemoTitle">Bildinställningar</h2>
-    <label class="crop-demo-toggle">
-      <span><strong>Demobild / vattenstämpel</strong><small>Gäller den här bilden. Originalet ändras aldrig.</small></span>
-      <input id="cropDemoWatermark" type="checkbox">
-    </label>
-    <div class="dialog-actions ccc-dialog-actions">
-      <button id="cropDemoCancel" class="button-secondary ccc-button-secondary" type="button">Avbryt</button>
-      <button id="cropDemoSave" class="button-primary ccc-button-primary" type="button">Spara & återgå</button>
-    </div>
-  </div>
-</div>
-
 <div id="logoutDialog" class="dialog ccc-dialog" role="dialog" aria-modal="true" aria-labelledby="logoutTitle" hidden>
   <div class="dialog-box ccc-dialog-box">
     <h2 id="logoutTitle">Logga ut?</h2>
@@ -241,9 +236,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.9.96"></script>
+<script type="module" src="publish.js?v=2.10.0"></script>
 <script type="module" src="../core.js?v=2.9.94"></script>
-  <script src="../version.js?v=2.9.96"></script>
+  <script src="../version.js?v=2.10.0"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 

@@ -1775,17 +1775,8 @@
 .confirm-display-editor label{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700}.confirm-display-editor input{width:18px;height:18px;accent-color:#2e9f55}
 .confirm-display-editor #confirmDisplayResetBtn{grid-column:1/-1;min-height:38px;padding:7px 10px}
 
-/* CCC v2.9.89 – demo watermark + real-device spacing */
+/* CCC v2.9.89 – real-device spacing */
 .crop-counter-slot{position:relative!important}
-.crop-settings-button{
-  position:absolute;right:0;top:50%;transform:translateY(-50%);
-  width:38px;height:38px;border-radius:50%;border:1px solid var(--border);
-  background:var(--surface);color:var(--gold);font-size:19px;display:grid;place-items:center
-}
-.crop-demo-toggle{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
-.crop-demo-toggle span{display:grid;gap:4px}.crop-demo-toggle small{color:var(--muted);line-height:1.35}
-.crop-demo-toggle input{width:23px;height:23px;accent-color:var(--gold);flex:0 0 auto}
-.draft-demo-badge{position:absolute;left:7px;top:7px;z-index:7;padding:4px 6px;border-radius:8px;background:rgba(20,23,31,.78);color:#fff;border:1px solid rgba(255,255,255,.65);font-size:9px;font-weight:900;letter-spacing:.06em}
 
 /* Förbered: square thumbnails get breathing room even with 7–9 items. */
 #draftGrid.draft-grid.grid-9{
@@ -1802,8 +1793,95 @@
   .prepared-continue-action{margin-top:8px!important;flex:0 0 auto!important}
 }
 
-/* CCC v2.9.90 – crop settings live in module settings, not workspace */
-.crop-settings-button,.crop-settings-box{display:none!important}
+/* CCC v2.10.0 – kanonisk mobilgrid och hanterbara publicerade bilder */
+#draftGrid.draft-grid,
+#channelSelectGrid.draft-grid,
+.ccc-paged-grid-ghost{
+  width:96%!important;
+  margin-inline:auto!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-auto-rows:auto!important;
+  column-gap:11px!important;
+  row-gap:11px!important;
+  padding:5px 4px 12px!important;
+  align-items:start!important;
+  align-content:start!important;
+  background:var(--bg,#0d1017)!important;
+  box-sizing:border-box!important;
+  isolation:isolate!important;
+}
+#draftGrid .draft-card,
+#channelSelectGrid .draft-card,
+.ccc-paged-grid-ghost .draft-card,
+.draft-grid-placeholder{
+  width:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  aspect-ratio:1/1!important;
+  box-sizing:border-box!important;
+}
+.draft-grid-placeholder{display:block;visibility:hidden;pointer-events:none}
+.ccc-paged-grid-ghost{overflow:hidden!important;contain:layout paint!important}
+
+#publishedView{overflow:hidden!important}
+.published-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;flex:0 0 auto;margin:0 0 10px;padding:4px;border:1px solid var(--border);border-radius:15px;background:var(--surface)}
+.published-tab{min-height:42px;border:0;border-radius:11px;background:transparent;color:var(--muted);font:inherit;font-weight:850;cursor:pointer}
+.published-tab.is-active{background:var(--gold);color:#17130a}
+.published-panel{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 2px 10px}
+.published-panel[hidden]{display:none!important}
+.published-section-heading{display:grid;gap:2px;margin:2px 0 10px;padding:10px 11px;border-radius:13px;background:var(--surface);border:1px solid var(--border)}
+.published-section-heading strong{font-size:14px}.published-section-heading span{font-size:12px;color:var(--muted);line-height:1.35}
+.published-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:stretch!important;align-content:start!important;gap:11px!important;padding:0 0 10px!important;overflow:visible!important}
+.published-card{display:flex!important;flex-direction:column!important;align-self:stretch!important;min-width:0!important;aspect-ratio:auto!important;border:1px solid var(--border)!important;border-radius:15px!important;overflow:hidden!important;background:var(--surface)!important;box-shadow:0 7px 18px rgba(0,0,0,.12)!important}
+.published-card-image{width:100%;aspect-ratio:1/1;overflow:hidden;background:#111}
+.published-card-image img{display:block;width:100%;height:100%;object-fit:cover}
+.published-card-info{display:flex;flex:1 1 auto;flex-direction:column;gap:3px;padding:9px}
+.published-card-info strong{font-size:13px;line-height:1.3}.published-card-info span,.published-card-info time{font-size:10px;color:var(--muted);line-height:1.3}
+.published-delete{position:static!important;width:100%!important;height:auto!important;min-height:40px!important;margin-top:auto!important;padding:8px 6px!important;border:1px solid color-mix(in srgb,#b83a3a 55%,var(--border))!important;border-radius:10px!important;background:color-mix(in srgb,#b83a3a 16%,var(--surface))!important;color:#ff8f8f!important;font-size:11px!important;font-weight:900!important;line-height:1.15!important}
+.published-result{margin:0 0 9px!important}
+.published-site-link{min-height:48px;margin:2px 0 0!important}
+.published-empty{min-height:220px!important;height:auto!important}
+.published-empty[hidden]{display:none!important}
+.published-history-list{display:grid;gap:12px}
+.publication-batch{padding:11px;border:1px solid var(--border);border-radius:15px;background:var(--surface)}
+.publication-batch-heading>div{display:grid;gap:2px}.publication-batch-heading strong{font-size:14px}.publication-batch-heading span{font-size:11px;color:var(--muted)}
+.publication-batch-images{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:9px}
+.publication-batch-images figure{min-width:0;margin:0}.publication-batch-images img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:9px;background:#111}.publication-batch-images figcaption{margin-top:3px;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+
+/* CCC v2.9.99 – stabil 3×3-grid och separerade swipe-sidor */
+#draftGrid.draft-grid,
+#channelSelectGrid.draft-grid,
+.ccc-paged-grid-ghost{
+  grid-auto-rows:auto!important;
+  column-gap:12px!important;
+  row-gap:12px!important;
+  background:var(--bg,#0d1017)!important;
+  isolation:isolate!important;
+}
+#draftGrid .draft-card,
+#channelSelectGrid .draft-card,
+.ccc-paged-grid-ghost .draft-card{
+  align-self:start!important;
+  aspect-ratio:1/1!important;
+}
+.ccc-paged-grid-ghost{
+  overflow:hidden!important;
+  contain:layout paint!important;
+}
+@media(max-width:480px) and (orientation:portrait){
+  #draftGrid.draft-grid,
+  #channelSelectGrid.draft-grid{
+    width:96%!important;
+    column-gap:11px!important;
+    row-gap:11px!important;
+    padding:5px 4px 12px!important;
+  }
+  .ccc-paged-grid-ghost{
+    column-gap:11px!important;
+    row-gap:11px!important;
+    padding:5px 4px 12px!important;
+  }
+}
 
 /* Real-device feedback: 5–9 prepared garments use two columns on phone,
    keeping touch targets and images large; grid scrolls vertically. */
@@ -1825,9 +1903,6 @@
 }
 
 /* CCC v2.9.91 – larger prepared thumbnails + fixed confirmation viewport */
-.crop-demo-dialog-box{max-width:430px}
-.crop-demo-toggle{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0}
-.crop-demo-toggle span{display:grid;gap:4px}.crop-demo-toggle small{color:var(--muted);line-height:1.35}.crop-demo-toggle input{width:24px;height:24px;accent-color:var(--gold)}
 .ccc-core-footer-settings span{font-size:22px!important}
 @media(max-width:480px) and (orientation:portrait){
   #draftGrid.draft-grid.grid-9{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:13px!important}
@@ -1876,7 +1951,8 @@
 
 /* CCC v2.9.95 – Prepare and Choose garments share one thumbnail geometry */
 #draftGrid.draft-grid,
-#channelSelectGrid.draft-grid{
+#channelSelectGrid.draft-grid,
+#channelConfirmView .confirm-grid{
   width:100%!important;
   box-sizing:border-box!important;
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
@@ -1990,3 +2066,33 @@
     padding:4px 2px 9px!important;
   }
 }
+
+/* v2.10.0 final override: samma 3×3-geometri före, under och efter swipe. */
+#draftGrid.draft-grid,
+#channelSelectGrid.draft-grid,
+#channelConfirmView .confirm-grid{
+  width:96%!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-auto-rows:auto!important;
+  column-gap:11px!important;
+  row-gap:11px!important;
+  padding:5px 4px 12px!important;
+  overflow:visible!important;
+  background:var(--bg,#0d1017)!important;
+}
+.ccc-paged-grid-ghost{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-auto-rows:auto!important;
+  column-gap:11px!important;
+  row-gap:11px!important;
+  padding:5px 4px 12px!important;
+  overflow:hidden!important;
+  background:var(--bg,#0d1017)!important;
+}
+#draftGrid .draft-card,
+#channelSelectGrid .draft-card,
+#channelConfirmView .confirm-card,
+.ccc-paged-grid-ghost .draft-card,
+.draft-grid-placeholder{width:100%!important;min-width:0!important;min-height:0!important;aspect-ratio:1/1!important;box-sizing:border-box!important}
+.draft-grid-placeholder{display:block!important;visibility:hidden!important;pointer-events:none!important}
+.confirm-pager{flex:0 0 auto;margin:2px 0 4px}

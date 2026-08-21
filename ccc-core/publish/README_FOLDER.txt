@@ -51,3 +51,9 @@ v2.9.95: Förbered och Välj plagg delar nu samma kanoniska 3×3-geometri. Båda
 v2.9.96: Navigationsknappen efter valda plagg heter Gå vidare. 3×3-miniatyrerna får kompakt fast geometri i Förbered/Välj plagg/slutkontroll. Horisontell swipe avbryter pending long-press preview så kort inte zoomas under swipe; swipe-easing lämnas orörd.
 
 v2.9.97: Publicera läser rätt Vision-session, Anpassa bild kan visa/spara hela originalet, dubbeltryck tas bort och swipe avbryter verklig long-press-state. Publicerade på Container13 hämtar Firebase, visar aktuella Nyinkommet och tillåter borttagning. Lyckade plagg lämnar redo-kön och CCC verkställer max 16 Nyinkommet efter publicering.
+
+v2.9.98: Demobild/vattenstämpel tas bort helt ur Publicera, inklusive footerverktyg, dialog, badges, slutkontroll, metadata och bildgenerering. Äldre lokala demomärkta utkast kastar sin genererade publiceringskopia och återgår till originalet; redan publicerade livebilder ändras inte automatiskt.
+
+v2.9.99: Förbered/Välj-gridden får konsekventa rad- och kolumnmellanrum. Swipe-sidorna är ogenomskinliga, exakt lika stora och åtskilda av en liten spalt även mitt i fingerdraget. Snapen blir snabbare och accepterar även en tydlig kort flick.
+
+v2.10.0: Samlad rättning efter verkligt arbetsprov. Förbered, Välj plagg och Slutkontroll delar samma dubbelriktade paginerade 3×3-komponent med stabil yta även på sista sidan, identisk swipe-geometri utan genomlysning/slutsprång och mjuka ändlägen utan rundgång. Dubbeltryck tas faktiskt bort så enkeltryck/långtryck/swipe inte väntar på eller inkräktar på varandra. Detalj/anpassning återgår till Förbered i stället för kanalval. Publicerat delas i verkligt liveinnehåll och lokal batchhistorik; varje livebild visar kanal/tid och har tydlig Ta bort från hemsidan-knapp. Demobild är fortsatt helt borttagen.
