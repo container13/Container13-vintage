@@ -1745,3 +1745,16 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - När en horisontell swipe identifieras avbryts pending långtrycks-/quick-preview direkt, så ett kort inte ska förstoras mitt under swipe.
 - Nyinkommet använder nu enbart root-indexets `senaste-nytt-*`-kortklasser för själva kortet/bilden/info/titel/datum. De gamla `nyinkommet-*` layoutklasserna tas bort från DOM för att inte kunna konkurrera med indexgeometrin.
 - Demobild och Frivilliga tillägg lämnas orörda.
+
+
+## v2.9.97 – stabilisering efter verkligt Container13-arbete
+- Vision säkerhetssparar nu den aktiva fotosessionen efter varje godkänt kamera-/albumfoto. Sessionslistan och originalfilen hålls ihop i IndexedDB; Tillbaka får inte längre lämna föräldralösa bilder.
+- Om Vision öppnas igen och en sparad session finns återupptas den innan nästa kamerafoto läggs till. Tre tidigare bilder + ett nytt foto ska därför bli fyra, inte en ny serie med endast det sista.
+- Kamerans X sparar ett redan taget granskningsfoto innan kameran lämnas. `Ta om` är fortsatt det uttryckliga sättet att kasta den aktuella tagningen.
+- Kameran visar 0,5× / 1× / 2× när enhetens webbläsare exponerar motsvarande riktiga zoomnivåer. Otillgängliga hårdvarunivåer döljs i stället för att ersättas med falsk digital zoom.
+- Publicera läser nu Visionens kanoniska sessionsnyckel `vision-active` (med stöd för den äldre nyckeln som fallback). Tidigare läste modulen endast ett gammalt namn.
+- Anpassa bild öppnar en oanpassad bild med hela originalet synligt. Pinch kan zooma ut under 1× och sparningen använder exakt det utsnitt/restyta som visas i crop-rutan. `Behåll hela bilden` finns kvar.
+- Dubbeltryck tas bort från miniatyr-/detaljinteraktionerna. Enkeltryck, långtryck och horisontell swipe har separata uppgifter; swipe avbryter samma long-press-state som miniatyren faktiskt använder.
+- `Historik` ersätts av `Publicerade på Container13`. Vyn hämtar de verkliga posterna från Firebase, visar aktuella Nyinkommet-bilder och kan ta bort bild + Firestore-post.
+- Lyckat publicerade plagg tas bort ur den lokala redo-kön. Kvittensen visar hur många som publicerades och hur många som finns kvar redo.
+- Efter CCC-publicering hålls Nyinkommet automatiskt till de 16 senaste posterna; lika många äldsta poster tas bort när nya tillkommer. Webbvisningen har dessutom en 16-posters säkerhetsgräns.
