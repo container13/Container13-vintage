@@ -11,7 +11,7 @@
 <title>CCC Publicera v2.9.22</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.10.0">
+<link rel="stylesheet" href="publish.css?v=2.10.1">
 <link rel="stylesheet" href="../core.css?v=2.9.49">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
@@ -63,7 +63,7 @@
         </button>
         <button id="publishedBtn" class="ccc-action-card ccc-action-card--purple" type="button">
           <span class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4 4L19 7"/><path d="M4 4h16v16H4z"/></svg></span>
-          <span class="action-copy"><strong>Publicerade på Container13</strong><small id="publishedStartCount">Se och hantera det som ligger ute</small></span>
+          <span class="action-copy"><strong>Hantera publicerade bilder</strong><small id="publishedStartCount">Se vad som ligger ute eller ta bort sålda plagg</small></span>
           <span class="action-arrow" aria-hidden="true">›</span>
         </button>
       </div>
@@ -169,6 +169,7 @@
       <div class="publish-heading"><div><h1>Publicerat</h1><p id="publishedSummary">Hämtar Container13…</p></div></div>
       <div class="published-tabs" role="tablist" aria-label="Publicerade bilder">
         <button id="publishedLiveTab" class="published-tab is-active" type="button" role="tab" aria-selected="true">Ligger ute nu</button>
+        <button id="publishedSavedTab" class="published-tab" type="button" role="tab" aria-selected="false">Sparade bilder</button>
         <button id="publishedHistoryTab" class="published-tab" type="button" role="tab" aria-selected="false">Historik</button>
       </div>
       <div id="publishedLivePanel" class="published-panel" role="tabpanel">
@@ -177,6 +178,15 @@
         <div id="publishedGrid" class="published-grid" aria-live="polite"></div>
         <div id="publishedEmpty" class="publish-empty published-empty" hidden><strong>Nyinkommet är tomt</strong><span>Inga bilder ligger ute på Container13 just nu.</span></div>
         <a class="secondary-action published-site-link" href="../../nyinkommet.html" target="_blank" rel="noopener">Visa Nyinkommet på hemsidan</a>
+        <div id="publishedSelectionBar" class="published-selection-bar" hidden>
+          <button id="cancelPublishedSelection" class="secondary-action" type="button">Avbryt</button>
+          <button id="confirmPublishedSelection" class="primary-action" type="button">Ta bort 0 från hemsidan</button>
+        </div>
+      </div>
+      <div id="publishedSavedPanel" class="published-panel" role="tabpanel" hidden>
+        <div class="published-section-heading"><strong>Sparade lokalt i CCC</strong><span>Original och anpassad kopia finns kvar även om bilden tas bort från hemsidan.</span></div>
+        <div id="publishedSavedGrid" class="published-grid published-saved-grid"></div>
+        <div id="publishedSavedEmpty" class="publish-empty published-empty" hidden><strong>Inga lokalt sparade bilder ännu</strong><span>Bilder som publiceras med v2.10.1 eller senare hamnar här.</span></div>
       </div>
       <div id="publishedHistoryPanel" class="published-panel" role="tabpanel" hidden>
         <div class="published-section-heading"><strong>Publiceringar från CCC</strong><span>Datum, tid, kanal och bilder per publicering.</span></div>
@@ -236,9 +246,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.10.0"></script>
+<script type="module" src="publish.js?v=2.10.1"></script>
 <script type="module" src="../core.js?v=2.9.94"></script>
-  <script src="../version.js?v=2.10.0"></script>
+  <script src="../version.js?v=2.10.1"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 

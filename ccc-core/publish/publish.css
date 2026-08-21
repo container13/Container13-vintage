@@ -1801,7 +1801,7 @@
   margin-inline:auto!important;
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
   grid-auto-rows:auto!important;
-  column-gap:11px!important;
+  column-gap:15px!important;
   row-gap:11px!important;
   padding:5px 4px 12px!important;
   align-items:start!important;
@@ -2074,7 +2074,7 @@
   width:96%!important;
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
   grid-auto-rows:auto!important;
-  column-gap:11px!important;
+  column-gap:15px!important;
   row-gap:11px!important;
   padding:5px 4px 12px!important;
   overflow:visible!important;
@@ -2083,7 +2083,7 @@
 .ccc-paged-grid-ghost{
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
   grid-auto-rows:auto!important;
-  column-gap:11px!important;
+  column-gap:15px!important;
   row-gap:11px!important;
   padding:5px 4px 12px!important;
   overflow:hidden!important;
@@ -2096,3 +2096,16 @@
 .draft-grid-placeholder{width:100%!important;min-width:0!important;min-height:0!important;aspect-ratio:1/1!important;box-sizing:border-box!important}
 .draft-grid-placeholder{display:block!important;visibility:hidden!important;pointer-events:none!important}
 .confirm-pager{flex:0 0 auto;margin:2px 0 4px}
+
+/* v2.10.1 – lokalt publiceringsarkiv och lugn flervalsborttagning. */
+.published-tabs{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.published-tab{padding:5px 4px;font-size:11px}
+.published-card{transition:opacity .18s ease,filter .18s ease,border-color .18s ease}
+.published-card.is-selected-for-delete{opacity:.48;filter:grayscale(.9);border-color:#d05a5a!important}
+.published-card.is-selected-for-delete .published-delete{background:#b83a3a!important;color:#fff!important}
+.published-selection-bar{position:fixed;z-index:1100;left:50%;bottom:calc(var(--ccc-footer-h,88px) + 8px + env(safe-area-inset-bottom));width:min(calc(100% - 24px),520px);transform:translateX(-50%);display:grid;grid-template-columns:.8fr 1.4fr;gap:8px;padding:9px;border:1px solid var(--border);border-radius:15px;background:var(--surface);box-shadow:0 12px 34px rgba(0,0,0,.32)}
+.published-selection-bar[hidden]{display:none!important}
+.published-selection-bar .secondary-action,.published-selection-bar .primary-action{min-height:48px;font-size:12px}
+.published-result{position:fixed!important;z-index:1200;left:50%;top:max(12px,env(safe-area-inset-top));width:min(calc(100% - 28px),520px);transform:translateX(-50%);box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.saved-live-status{display:block;margin-top:auto;padding-top:7px;font-weight:850!important}
+.saved-live-status.is-live{color:#55c77a!important}.saved-live-status.is-offline{color:var(--muted)!important}

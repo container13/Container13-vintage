@@ -37,6 +37,7 @@ let activeItemId=null;
 let recentlyAdaptedItemId=null;
 let draftSelectionMode=false;const selectedDraftIds=new Set();
 let pendingDraftDelete=null;
+const publishedSelectedIds=new Set();
 const channelSelectedIds=new Set();
 let container13ChannelSelected=false;
 let channelSelectPage=0;
@@ -106,6 +107,42 @@ async function deleteDraftIds(ids){
     }
     tx.oncomplete=()=>{db.close();resolve()};tx.onerror=()=>{db.close();reject(tx.error)};tx.onabort=()=>{db.close();reject(tx.error||new Error("Kunde inte ta bort utkast."))};
   });
+}
+async function detachDraftIdsFromVisionSession(ids){
+  const wanted=new Set(ids);if(!wanted.size)return;
+  const db=await openDb();
+  if(!db.objectStoreNames.contains("sessions")){db.close();return;}
+  await new Promise((resolve,reject)=>{
+    const tx=db.transaction("sessions","readwrite"),sessions=tx.objectStore("sessions");
+    for(const sessionId of ["vision-active","active-vision-session"]){
+      const req=sessions.get(sessionId);
+      req.onsuccess=()=>{
+        const session=req.result;if(!session||!Array.isArray(session.items))return;
+        session.items=session.items.filter(item=>!wanted.has(item.id));
+        session.count=session.items.length;
+        session.savedAt=new Date().toISOString();
+        sessions.put(session);
+      };
+    }
+    tx.oncomplete=()=>{db.close();resolve();};tx.onerror=()=>{db.close();reject(tx.error);};tx.onabort=()=>{db.close();reject(tx.error||new Error("Kunde inte uppdatera fotosessionen."));};
+  });
+}
+async function archivePublishedDrafts(ids,publishedEntries=[]){
+  const wanted=new Set(ids),byLocalId=new Map(publishedEntries.map(entry=>[entry.localId,entry]));
+  const archivedAt=new Date().toISOString();
+  for(const item of items){
+    if(!wanted.has(item.id))continue;
+    const entry=byLocalId.get(item.id)||{};
+    item.readyToPublish=false;
+    item.localArchiveState="published";
+    item.lastPublishedAt=archivedAt;
+    item.lastPublishedChannel="Container13 · Nyinkommet";
+    item.liveImageUrl=entry.imageUrl||"";
+    item.liveDocumentId=entry.documentId||"";
+    item.isLivePublished=true;
+    await put(persistenceRecord(item));
+  }
+  await detachDraftIdsFromVisionSession(ids);
 }
 async function getSourceFile(key){if(!key)return null;const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(FILE_STORE,"readonly"),r=tx.objectStore(FILE_STORE).get(key);r.onsuccess=()=>resolve(r.result?.blob||null);r.onerror=()=>reject(r.error);tx.oncomplete=()=>db.close();});}
 async function hydrateOriginal(record){if(record.originalBlob||!record.originalFileKey)return record;const blob=await getSourceFile(record.originalFileKey);return blob?{...record,originalBlob:blob}:record;}
@@ -523,10 +560,10 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
     window.setTimeout(async()=>{
       setPage(target);
       await render();
+      g.ghost?.remove();
       grid.style.transition="none";
       grid.style.transform="translate3d(0,0,0)";
       requestAnimationFrame(()=>{
-        g.ghost?.remove();
         grid.style.transition="";
         grid.style.transform="";
         animating=false;
@@ -1162,38 +1199,108 @@ function renderPublicationHistory(){
   }
 }
 function selectPublishedTab(tab){
-  const history=tab==="history";
-  $("#publishedLivePanel").hidden=history;
-  $("#publishedHistoryPanel").hidden=!history;
-  $("#publishedLiveTab").classList.toggle("is-active",!history);
-  $("#publishedHistoryTab").classList.toggle("is-active",history);
-  $("#publishedLiveTab").setAttribute("aria-selected",String(!history));
-  $("#publishedHistoryTab").setAttribute("aria-selected",String(history));
-  if(history)renderPublicationHistory();
+  for(const name of ["live","saved","history"]){
+    const selected=name===tab;
+    const capitalized=name[0].toUpperCase()+name.slice(1);
+    $(`#published${capitalized}Panel`).hidden=!selected;
+    const button=$(`#published${capitalized}Tab`);
+    button.classList.toggle("is-active",selected);
+    button.setAttribute("aria-selected",String(selected));
+  }
+  if(tab==="history")renderPublicationHistory();
+  if(tab==="saved")loadSavedPublishedImages();
 }
-
-async function deletePublishedItem(item,button){
-  if(!window.confirm(`Ta bort ${item.title||"bilden"} från Container13 · Nyinkommet?\n\nOriginalet i CCC påverkas inte.`))return;
-  button.disabled=true;
-  try{
-    if(item.storagePath){try{await deleteObject(storageRef(storage,item.storagePath));}catch(error){console.warn("[CCC Publicera] Bildfilen saknades eller kunde inte tas bort",error);}}
-    await deleteDoc(doc(database,"gallery",item.id));
-    await loadPublishedView("Bilden är borttagen från Nyinkommet.");
-  }catch(error){
-    console.error("[CCC Publicera] Kunde inte ta bort publicerad bild",error);
-    button.disabled=false;
-    $("#publishedResult").hidden=false;
-    $("#publishedResult").textContent="Bilden kunde inte tas bort. Försök igen.";
+async function loadSavedPublishedImages(){
+  const grid=$("#publishedSavedGrid"),empty=$("#publishedSavedEmpty");if(!grid||!empty)return;
+  grid.replaceChildren();
+  const records=(await getAll())
+    .filter(record=>record.readyToPublish===false&&record.localArchiveState==="published")
+    .sort((a,b)=>Date.parse(b.lastPublishedAt||0)-Date.parse(a.lastPublishedAt||0));
+  empty.hidden=records.length!==0;empty.style.display=records.length?"none":"grid";
+  for(const raw of records){
+    const item=await hydrateOriginal(raw);
+    const card=document.createElement("article");card.className="published-card saved-image-card";
+    const imageWrap=document.createElement("div");imageWrap.className="published-card-image";
+    const img=document.createElement("img");img.src=await previewSrc(item);img.alt=item.title||"Lokalt sparad bild";img.loading="lazy";imageWrap.append(img);
+    const info=document.createElement("div");info.className="published-card-info";
+    const title=document.createElement("strong");title.textContent=item.title||"Namnlöst plagg";
+    const channel=document.createElement("span");channel.textContent=item.lastPublishedChannel||"Container13 · Nyinkommet";
+    const when=document.createElement("time");when.textContent=publicationDateText(item.lastPublishedAt);
+    const status=document.createElement("span");status.className=`saved-live-status ${item.isLivePublished?"is-live":"is-offline"}`;status.textContent=item.isLivePublished?"● Ligger ute nu":"Sparad lokalt · inte ute";
+    info.append(title,channel,when,status);card.append(imageWrap,info);grid.append(card);
   }
 }
 
+function updatePublishedSelectionBar(){
+  const bar=$("#publishedSelectionBar"),button=$("#confirmPublishedSelection"),count=publishedSelectedIds.size;
+  if(!bar||!button)return;
+  bar.hidden=count===0;
+  button.textContent=`Ta bort ${count} ${count===1?"bild":"bilder"} från hemsidan`;
+}
+function togglePublishedSelection(item,card){
+  publishedSelectedIds.has(item.id)?publishedSelectedIds.delete(item.id):publishedSelectedIds.add(item.id);
+  card.classList.toggle("is-selected-for-delete",publishedSelectedIds.has(item.id));
+  const button=card.querySelector(".published-delete");
+  if(button)button.textContent=publishedSelectedIds.has(item.id)?"Markerad för borttagning":"Markera för borttagning";
+  updatePublishedSelectionBar();
+}
+async function markLocalArchiveNotLive(itemsRemoved){
+  const documentIds=new Set(itemsRemoved.map(item=>item.id));
+  const cccIds=new Set(itemsRemoved.map(item=>item.cccItemId).filter(Boolean));
+  const localRecords=await getAll();
+  for(const record of localRecords){
+    if(record.readyToPublish!==false)continue;
+    if(!documentIds.has(record.liveDocumentId)&&!cccIds.has(record.cccItemId))continue;
+    record.isLivePublished=false;
+    record.removedFromLiveAt=new Date().toISOString();
+    await put(record);
+  }
+}
+async function syncLocalArchiveLiveState(liveItems){
+  const documentIds=new Set(liveItems.map(item=>item.id)),cccIds=new Set(liveItems.map(item=>item.cccItemId).filter(Boolean));
+  const records=await getAll();
+  for(const record of records){
+    if(record.readyToPublish!==false||record.localArchiveState!=="published")continue;
+    const isLive=documentIds.has(record.liveDocumentId)||cccIds.has(record.cccItemId);
+    if(record.isLivePublished===isLive)continue;
+    record.isLivePublished=isLive;
+    if(!isLive)record.removedFromLiveAt=record.removedFromLiveAt||new Date().toISOString();
+    await put(record);
+  }
+}
+async function deleteSelectedPublishedItems(){
+  const selected=publishedLiveItems.filter(item=>publishedSelectedIds.has(item.id));
+  if(!selected.length)return;
+  if(!window.confirm(`Ta bort ${selected.length} ${selected.length===1?"bild":"bilder"} från Container13 · Nyinkommet?\n\nLokala original i CCC påverkas inte.`))return;
+  const panel=$("#publishedLivePanel"),scrollTop=panel?.scrollTop||0,button=$("#confirmPublishedSelection");
+  if(button)button.disabled=true;
+  const failures=[];
+  for(const item of selected){
+    try{
+      if(item.storagePath){try{await deleteObject(storageRef(storage,item.storagePath));}catch(error){console.warn("[CCC Publicera] Bildfilen saknades eller kunde inte tas bort",error);}}
+      await deleteDoc(doc(database,"gallery",item.id));
+    }catch(error){failures.push(item);console.error("[CCC Publicera] Kunde inte ta bort publicerad bild",item.id,error);}
+  }
+  const removed=selected.filter(item=>!failures.includes(item));
+  await markLocalArchiveNotLive(removed);
+  publishedSelectedIds.clear();updatePublishedSelectionBar();
+  await loadPublishedView(failures.length?`${removed.length} borttagna · ${failures.length} misslyckades.`:`${removed.length} ${removed.length===1?"bild är":"bilder är"} borttagna från hemsidan.`);
+  requestAnimationFrame(()=>{if(panel)panel.scrollTop=Math.min(scrollTop,panel.scrollHeight-panel.clientHeight);});
+  if(button)button.disabled=false;
+}
+
+let publishedLiveItems=[];
+let publishedResultTimer=0;
 async function loadPublishedView(message=""){
   const grid=$("#publishedGrid"),summary=$("#publishedSummary"),empty=$("#publishedEmpty"),result=$("#publishedResult");
   grid.replaceChildren();empty.hidden=true;empty.style.display="none";summary.textContent="Hämtar Container13…";
-  if(message){result.hidden=false;result.textContent=message;}else result.hidden=true;
+  clearTimeout(publishedResultTimer);
+  if(message){result.hidden=false;result.textContent=message;publishedResultTimer=window.setTimeout(()=>{result.hidden=true;},3200);}else result.hidden=true;
   try{
     const all=await fetchPublishedNewArrivals();
+    await syncLocalArchiveLiveState(all);
     const visible=all.slice(0,16);
+    publishedLiveItems=visible;
     summary.textContent=`${visible.length} av 16 bilder ligger ute i Nyinkommet`;
     const startCount=$("#publishedStartCount");if(startCount)startCount.textContent=`${visible.length} ligger ute · visa eller ta bort`;
     empty.hidden=visible.length!==0;
@@ -1206,8 +1313,8 @@ async function loadPublishedView(message=""){
       const title=document.createElement("strong");title.textContent=item.title||"Namnlöst plagg";
       const where=document.createElement("span");where.textContent="Container13 · Nyinkommet";
       const when=document.createElement("time");when.textContent=publicationDateText(item.createdAt);
-      const del=document.createElement("button");del.type="button";del.className="published-delete";del.textContent="Ta bort från hemsidan";del.setAttribute("aria-label",`Ta bort ${item.title||"bilden"} från hemsidan`);
-      del.addEventListener("click",()=>deletePublishedItem(item,del));
+      const del=document.createElement("button");del.type="button";del.className="published-delete";del.textContent="Markera för borttagning";del.setAttribute("aria-label",`Markera ${item.title||"bilden"} för borttagning från hemsidan`);
+      del.addEventListener("click",()=>togglePublishedSelection(item,card));
       info.append(title,where,when,del);card.append(imageWrap,info);grid.append(card);
     }
   }catch(error){
@@ -1218,8 +1325,18 @@ async function loadPublishedView(message=""){
 }
 
 $("#publishedLiveTab")?.addEventListener("click",()=>selectPublishedTab("live"));
+$("#publishedSavedTab")?.addEventListener("click",()=>selectPublishedTab("saved"));
+$("#cancelPublishedSelection")?.addEventListener("click",()=>{
+  publishedSelectedIds.clear();
+  document.querySelectorAll(".published-card.is-selected-for-delete").forEach(card=>{
+    card.classList.remove("is-selected-for-delete");
+    const button=card.querySelector(".published-delete");if(button)button.textContent="Markera för borttagning";
+  });
+  updatePublishedSelectionBar();
+});
+$("#confirmPublishedSelection")?.addEventListener("click",deleteSelectedPublishedItems);
 $("#publishedHistoryTab")?.addEventListener("click",()=>selectPublishedTab("history"));
-$("#publishedBtn").addEventListener("click",async()=>{show("publishedView");selectPublishedTab("live");renderPublicationHistory();await loadPublishedView();});
+$("#publishedBtn").addEventListener("click",async()=>{publishedSelectedIds.clear();updatePublishedSelectionBar();show("publishedView");selectPublishedTab("live");renderPublicationHistory();await loadPublishedView();});
 
 
 function loadImage(src){return new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=src;});}
@@ -1930,7 +2047,7 @@ async function publishSelectedToContainer13Live(){
       const titleText=String(item.title||item.fields?.title||"").trim();
       const descriptionText=String(item.description||item.fields?.description||"").trim();
 
-      await addDoc(collection(database,"gallery"),{
+      const documentRef=await addDoc(collection(database,"gallery"),{
         category:"nyinkommet",
         imageUrl,
         storagePath,
@@ -1953,7 +2070,7 @@ async function publishSelectedToContainer13Live(){
 
       uploaded+=1;
       publishedIds.push(item.id);
-      publishedEntries.push({title:titleText||metadata.title||"Namnlöst plagg",imageUrl,cccItemId:metadata.cccItemId});
+      publishedEntries.push({localId:item.id,documentId:documentRef.id,title:titleText||metadata.title||"Namnlöst plagg",imageUrl,cccItemId:metadata.cccItemId});
     }catch(error){
       failures.push({id:item?.id||"",message:error?.message||String(error)});
       if(uploadedRef){
@@ -2089,7 +2206,7 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
     }
 
     if(result.publishedIds?.length){
-      await deleteDraftIds(result.publishedIds);
+      await archivePublishedDrafts(result.publishedIds,result.publishedEntries);
       const publishedSet=new Set(result.publishedIds);
       items=items.filter(item=>!publishedSet.has(item.id));
       result.publishedIds.forEach(id=>channelSelectedIds.delete(id));
@@ -2124,9 +2241,11 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
 
 
 (async()=>{try{
-  let explicit=(await getAll()).filter(r=>r.readyToPublish!==false);
+  const allLocalRecords=await getAll();
+  const archivedIds=new Set(allLocalRecords.filter(r=>r.readyToPublish===false).map(r=>r.id));
+  let explicit=allLocalRecords.filter(r=>r.readyToPublish!==false);
   explicit=await Promise.all(explicit.map(hydrateOriginal));
-  const sessionDrafts=await visionSessionDrafts();
+  const sessionDrafts=(await visionSessionDrafts()).filter(record=>!archivedIds.has(record.id));
   const merged=new Map(sessionDrafts.map(r=>[r.id,r]));
   explicit.forEach(r=>merged.set(r.id,{...(merged.get(r.id)||{}),...r}));
   let records=[...merged.values()].filter(r=>r.originalBlob||r.publishBlob||r.thumbnailBlob);
