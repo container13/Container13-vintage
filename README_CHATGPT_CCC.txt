@@ -1758,3 +1758,30 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - `Historik` ersätts av `Publicerade på Container13`. Vyn hämtar de verkliga posterna från Firebase, visar aktuella Nyinkommet-bilder och kan ta bort bild + Firestore-post.
 - Lyckat publicerade plagg tas bort ur den lokala redo-kön. Kvittensen visar hur många som publicerades och hur många som finns kvar redo.
 - Efter CCC-publicering hålls Nyinkommet automatiskt till de 16 senaste posterna; lika många äldsta poster tas bort när nya tillkommer. Webbvisningen har dessutom en 16-posters säkerhetsgräns.
+
+
+## v2.9.98 – demobild/vattenstämpel borttagen
+- Hela demobildsfunktionen tas bort ur Publicera: footerverktyg, dialog, DEMO-markeringar, varning i slutkontrollen och vattenstämpelgenerering.
+- Nya Firebase-poster och CCC-metadata får inte längre något `demoWatermark`-fält.
+- Äldre lokala utkast som var demomärkta återställs säkert till originalbilden. En tidigare genererad publiceringskopia med inbränd vattenstämpel kastas, så användaren kan anpassa bilden på nytt utan att märkningen följer med.
+- Redan publicerade bilder påverkas inte automatiskt; en vattenstämplad livebild måste tas bort och publiceras om från originalet.
+
+
+## v2.9.99 – ren grid även mitt under swipe
+- Förbered- och Välj-gridens tre kolumner och tre rader får tydliga, lika stora mellanrum och strikt kvadratiska bildceller.
+- Swipe-sidorna får en ogenomskinlig egen yta och en liten fysisk spalt mellan sidorna. Bilder från föregående och nästa sida kan därför inte längre lysa igenom eller se överlappade ut mitt under fingerdraget.
+- Ghost-sidan låses till exakt samma uppmätta storlek som den riktiga gridden, i stället för att påverkas av mobilens procentbreddsregler.
+- Snap-animeringen kortas från 480 till 360 ms. Tröskeln sänks något och en tydlig snabb flick räcker för sidbyte, vilket gör swipen mindre seg.
+
+
+## v2.10.0 – samlad rättning efter verkligt arbetsprov
+- Demobild/vattenstämpel är fortsatt helt borttagen ur gränssnitt, publiceringsbild och metadata. Äldre lokala demoutkast återgår säkert till originalet.
+- Förbered, Välj plagg och Slutkontroll använder samma gemensamma paginerade 3×3-komponent på mobil. En sida med exempelvis endast bild 10 behåller samma cellstorlek och reserverade 3×3-yta som sidan med bild 1–9.
+- Swipe-kopian låses till exakt samma uppmätta bredd och höjd som den riktiga gridden. Sidorna är ogenomskinliga, har fysisk spalt, snabbare snap och stöd för kort tydlig flick; bytet tillbaka till den riktiga gridden ska inte längre ge ett storlekshopp. Swipe fungerar åt vänster för nästa och åt höger för föregående sida, med mjukt motstånd i ändlägen men utan rundgång.
+- Dubbeltryck/quicklook tas faktiskt bort även ur Förbered och Välj plagg. Enkeltryck utför sin uppgift direkt, långtryck ger förhandsvisning och horisontellt drag äger swipe; ingen 340 ms väntan finns kvar för att avgöra om ett andra tryck kommer.
+- Detaljvyn går inte längre direkt till kanalval. Huvudknappen heter `Klar – tillbaka till bilderna`; `Spara anpassning` och `Behåll hela bilden` återgår också till Förbered. Kanalval öppnas endast via `Fortsätt` i gridden.
+- Publicerat byggs om till två tydliga lägen: `Ligger ute nu` visar de verkliga maximalt 16 Firebase-posterna i Container13/Nyinkommet, och `Historik` visar CCC:s lokalt sparade publiceringsbatcher med datum, tid, kanal och bilder.
+- Varje livepost har eget rektangulärt kort med bild, titel, kanal, publiceringstid och den uttryckliga knappen `Ta bort från hemsidan`. Tomstatus kan inte visas samtidigt som livekort.
+- Nya lyckade publiceringar sparar ett lokalt batchkvitto (upp till 30 batcher). Historiken är ett arbetskvitto på enheten; livefliken är alltid facit för vad som faktiskt ligger på hemsidan.
+- Index och Nyinkommet använder nu samma gemensamma `css/new-arrival-cards.css` i stället för kopierade kortregler. Bildytan är kvadratisk, hela kortet stående rektangulärt och informationsdelen dynamisk.
+- Korten får ingen fast totalhöjd och information kapas inte. Det högsta kortet bestämmer höjden för sin gridrad; övriga kort i samma rad sträcks till samma höjd och datum ligger längst ned. Nästa rad anpassas separat.
