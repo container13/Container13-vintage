@@ -1549,9 +1549,9 @@
   }
 
   function goBackFromVision() {
-    const moreFields=$("#moreFieldsDetails");
-    if(visionView==="edit" && moreFields?.open){
-      moreFields.open=false;
+    const moreFields=$("#moreFieldsDialog");
+    if(visionView==="edit" && moreFields && !moreFields.hidden){
+      moreFields.hidden=true;
       return;
     }
     switch (visionView) {
@@ -1725,6 +1725,18 @@
   $("#addNewConditionBtn").addEventListener("click", addNewCondition);
   $("#closeExtrasBtn")?.addEventListener("click", closeOptionalExtras);
   $("#extrasDoneBtn")?.addEventListener("click", closeOptionalExtras);
+  const moreFieldMap={moreCategory:"category",moreBrand:"brand",moreSeason:"season",moreManufacturer:"manufacturer",moreSize:"size",moreColor:"color"};
+  $("#openMoreFieldsBtn")?.addEventListener("click",()=>{
+    for(const [modalId,fieldId] of Object.entries(moreFieldMap)){const a=$("#"+modalId),b=$("#"+fieldId);if(a)a.value=b?.value||"";}
+    $("#moreFieldsDialog").hidden=false;
+  });
+  $("#cancelMoreFieldsBtn")?.addEventListener("click",()=>{$("#moreFieldsDialog").hidden=true;});
+  $("#saveMoreFieldsBtn")?.addEventListener("click",()=>{
+    for(const [modalId,fieldId] of Object.entries(moreFieldMap)){const a=$("#"+modalId),b=$("#"+fieldId);if(b)b.value=a?.value||"";}
+    const item=currentItem();if(item)item.editedFields=Object.fromEntries(fieldIds.map(id=>[id,$("#"+id).value]));
+    saveBatchMetadata();scheduleSave();$("#moreFieldsDialog").hidden=true;
+  });
+  $("#moreFieldsDialog")?.addEventListener("click",event=>{if(event.target===$("#moreFieldsDialog"))$("#moreFieldsDialog").hidden=true;});
   $("#saveMoreFieldsBtn")?.addEventListener("click",()=>{
     const item=currentItem();
     if(item)item.editedFields=Object.fromEntries(fieldIds.map(id=>[id,$("#"+id).value]));

@@ -2892,3 +2892,12 @@ body.camera-open .ccc-app-shell{background:#050505!important}
   .more-fields-options[open]{inset:44px 5px 62px!important}
   .more-fields-panel{padding:13px}
 }
+
+/* CCC v2.9.92 – true floating More details dialog */
+.more-fields-trigger{width:100%;margin-top:4px}
+.more-fields-dialog{z-index:1200!important;background:rgba(4,6,10,.72)!important;backdrop-filter:blur(3px)}
+.more-fields-dialog-box{width:min(calc(100vw - 28px),520px)!important;max-height:min(78dvh,650px)!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;padding:16px!important}
+.more-fields-head{flex:0 0 auto}.more-fields-head h2{margin:0}.more-fields-head p{margin:3px 0 10px;color:var(--muted)}
+.more-fields-scroll{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;padding:2px 3px 10px!important}
+.more-fields-actions{flex:0 0 auto;display:grid;grid-template-columns:1fr 1.35fr;gap:8px;padding-top:10px;background:var(--surface)}
+.more-fields-actions button{min-height:48px}
