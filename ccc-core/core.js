@@ -209,7 +209,7 @@ const CCCFooter={
         const settings=document.createElement("button");
         settings.type="button";
         settings.className="ccc-core-footer-tool ccc-core-footer-settings";
-        settings.innerHTML='<span aria-hidden="true">⚙</span><small>Inställningar</small>';
+        settings.innerHTML=`<span aria-hidden="true">⚙</span><small>${this.toolConfig.settingsLabel||"Inställningar"}</small>`;
         settings.addEventListener("click",()=>this.toolConfig?.onSettings?.());
         tools.append(settings);
       }
