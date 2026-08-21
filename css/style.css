@@ -2127,3 +2127,42 @@ html[data-theme="dark"] #nyGallery .senaste-nytt-kort.nyinkommet-kort{
   color:#f2ede4!important;
   background:#26231f!important;
 }
+
+/* VERSION 6.10.61 – Nyinkommet cards now use ONLY root-index Senast inkommet classes */
+main > #nyGallery.gallery{
+  align-items:stretch!important;
+}
+#nyGallery > .senaste-nytt-kort{
+  display:flex!important;
+  flex-direction:column!important;
+  width:100%!important;
+  height:100%!important;
+  overflow:hidden!important;
+  border:1px solid rgba(154,122,24,.16)!important;
+  border-radius:14px!important;
+  color:#222!important;
+  background:rgba(255,255,255,.72)!important;
+  box-shadow:0 8px 24px rgba(0,0,0,.10)!important;
+  text-align:left!important;
+}
+#nyGallery > .senaste-nytt-kort .senaste-nytt-bild{
+  display:block!important;width:100%!important;aspect-ratio:1/1!important;
+  padding:0!important;border:0!important;overflow:hidden!important;background:#eee9df!important;
+}
+#nyGallery > .senaste-nytt-kort .senaste-nytt-bild img{
+  display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;
+}
+#nyGallery > .senaste-nytt-kort .senaste-nytt-info{
+  flex:1 1 auto!important;
+  min-height:83px!important;
+  padding:15px 16px 17px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  box-sizing:border-box!important;
+}
+#nyGallery > .senaste-nytt-kort .senaste-nytt-titel{
+  margin:0 0 7px!important;font-size:1rem!important;line-height:1.35!important;font-weight:700!important;
+}
+#nyGallery > .senaste-nytt-kort .senaste-nytt-datum{
+  margin:auto 0 0!important;color:#9a7a18!important;font-size:.9rem!important;line-height:1.35!important;font-weight:600!important;
+}
