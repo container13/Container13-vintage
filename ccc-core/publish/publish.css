@@ -1816,3 +1816,28 @@
     min-height:0!important;
   }
 }
+
+/* CCC v2.9.91 – larger prepared thumbnails + fixed confirmation viewport */
+.crop-demo-dialog-box{max-width:430px}
+.crop-demo-toggle{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0}
+.crop-demo-toggle span{display:grid;gap:4px}.crop-demo-toggle small{color:var(--muted);line-height:1.35}.crop-demo-toggle input{width:24px;height:24px;accent-color:var(--gold)}
+.ccc-core-footer-settings span{font-size:22px!important}
+@media(max-width:480px) and (orientation:portrait){
+  #draftGrid.draft-grid.grid-9{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:13px!important}
+  #gridView{overflow:hidden!important}
+  #draftGrid{overflow-y:auto!important;min-height:0!important}
+  #channelConfirmView{
+    height:calc(100dvh - var(--ccc-header-h,190px) - var(--ccc-footer-h,92px))!important;
+    max-height:calc(100dvh - var(--ccc-header-h,190px) - var(--ccc-footer-h,92px))!important;
+    overflow:hidden!important;
+    display:flex!important;flex-direction:column!important;gap:7px!important;
+  }
+  #channelConfirmView[hidden]{display:none!important}
+  #channelConfirmView .confirm-grid{
+    flex:1 1 auto!important;min-height:0!important;max-height:30dvh!important;
+    overflow-y:auto!important;align-content:start!important;margin:0!important;
+  }
+  #channelConfirmView .confirm-channel-strip,
+  #channelConfirmView .confirm-display-summary,
+  #channelConfirmView .confirm-actions{flex:0 0 auto!important;margin-top:0!important}
+}

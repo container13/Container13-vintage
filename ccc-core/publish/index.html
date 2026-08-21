@@ -11,7 +11,7 @@
 <title>CCC Publicera v2.9.22</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.9.90">
+<link rel="stylesheet" href="publish.css?v=2.9.91">
 <link rel="stylesheet" href="../core.css?v=2.9.49">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
@@ -213,6 +213,21 @@
 
 
 
+
+<div id="cropDemoDialog" class="dialog ccc-dialog" role="dialog" aria-modal="true" aria-labelledby="cropDemoTitle" hidden>
+  <div class="dialog-box ccc-dialog-box crop-demo-dialog-box">
+    <h2 id="cropDemoTitle">Bildinställningar</h2>
+    <label class="crop-demo-toggle">
+      <span><strong>Demobild / vattenstämpel</strong><small>Gäller den här bilden. Originalet ändras aldrig.</small></span>
+      <input id="cropDemoWatermark" type="checkbox">
+    </label>
+    <div class="dialog-actions ccc-dialog-actions">
+      <button id="cropDemoCancel" class="button-secondary ccc-button-secondary" type="button">Avbryt</button>
+      <button id="cropDemoSave" class="button-primary ccc-button-primary" type="button">Spara & återgå</button>
+    </div>
+  </div>
+</div>
+
 <div id="logoutDialog" class="dialog ccc-dialog" role="dialog" aria-modal="true" aria-labelledby="logoutTitle" hidden>
   <div class="dialog-box ccc-dialog-box">
     <h2 id="logoutTitle">Logga ut?</h2>
@@ -224,9 +239,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.9.90"></script>
+<script type="module" src="publish.js?v=2.9.91"></script>
 <script type="module" src="../core.js?v=2.9.77"></script>
-  <script src="../version.js?v=2.9.90"></script>
+  <script src="../version.js?v=2.9.91"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 

@@ -188,7 +188,7 @@ function ensureDraftGridUi(){
     #draftGrid.draft-grid.grid-1{grid-template-columns:minmax(0,1fr)!important}
     #draftGrid.draft-grid.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))!important}
     #draftGrid.draft-grid.grid-4{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-    #draftGrid.draft-grid.grid-9{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+    #draftGrid.draft-grid.grid-9{grid-template-columns:repeat(2,minmax(0,1fr))!important}
     #draftGrid.draft-grid.grid-1 .draft-card{width:min(100%,420px);justify-self:center}
     #draftGrid .draft-card{position:relative!important;aspect-ratio:1/1!important;min-width:0!important;min-height:0!important;border-radius:12px!important;overflow:hidden!important;padding:0!important;margin:0!important;-webkit-touch-callout:none!important;-webkit-tap-highlight-color:transparent!important;-webkit-user-select:none!important;user-select:none!important;appearance:none!important;-webkit-appearance:none!important}
     #draftGrid .draft-card img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;pointer-events:none!important;-webkit-user-drag:none!important;-webkit-user-select:none!important;user-select:none!important;-webkit-tap-highlight-color:transparent!important}
@@ -400,6 +400,19 @@ function openPublishHelp(){
   dlg.hidden=false;
 }
 function closePublishHelp(){const dlg=$("#publishHelpDialog");if(dlg)dlg.hidden=true;}
+function openCropDemoSettings(){
+  const item=activeItem(); if(!item)return;
+  $("#cropDemoWatermark").checked=ensureDemoWatermarkState(item);
+  $("#cropDemoDialog").hidden=false;
+}
+function closeCropDemoSettings(save=false){
+  const item=activeItem();
+  if(save && item){
+    item.demoWatermark=!!$("#cropDemoWatermark")?.checked;
+    put(persistenceRecord(item)).catch(error=>console.warn("[CCC Publicera] Kunde inte spara demostatus",error));
+  }
+  if($("#cropDemoDialog"))$("#cropDemoDialog").hidden=true;
+}
 let publishFooterCoreWaitBound=false;
 function configureFooterForView(view){
   if(!window.CCC_CORE?.footer){
@@ -428,6 +441,18 @@ function configureFooterForView(view){
     });
   }
   window.CCC_CORE.footer.setTools?.(config);
+  if(view==="cropView"){
+    const footer=window.CCC_CORE.footer.el;
+    const tools=footer?.querySelector(".ccc-core-footer-tools");
+    if(tools && !tools.querySelector(".ccc-core-footer-settings")){
+      const settings=document.createElement("button");
+      settings.type="button";
+      settings.className="ccc-core-footer-tool ccc-core-footer-settings";
+      settings.innerHTML='<span aria-hidden="true">⚙</span><small>Inställningar</small>';
+      settings.addEventListener("click",openCropDemoSettings);
+      tools.append(settings);
+    }
+  }
 }
 function updateSelectionFooter(){
   const continueBtn=$("#preparedContinueBtn");
@@ -1190,6 +1215,9 @@ async function createOriginalWebP(item){
   applyDemoWatermarkIfNeeded(ctx,item,outSize,outSize);
   return new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));
 }
+$("#cropDemoCancel")?.addEventListener("click",()=>closeCropDemoSettings(false));
+$("#cropDemoSave")?.addEventListener("click",()=>closeCropDemoSettings(true));
+$("#cropDemoDialog")?.addEventListener("click",event=>{if(event.target===$("#cropDemoDialog"))closeCropDemoSettings(false);});
 $("#cropBtn").addEventListener("click",openCrop);
 const cropDiagToggle=$("#cropDiagToggle");
 if(cropDiagToggle){
