@@ -1132,6 +1132,14 @@ async function openCrop(){
   $("#cropOriginalPreview").src=item.thumbUrl||item.fullUrl;
   drawCrop();show("cropView");
 }
+function demoWatermarkDefault(){
+  return localStorage.getItem("ccc-publish-demo-watermark")==="1";
+}
+function ensureDemoWatermarkState(item){
+  if(item && typeof item.demoWatermark!=="boolean")item.demoWatermark=demoWatermarkDefault();
+  return !!item?.demoWatermark;
+}
+
 function drawDemoWatermark(ctx,width,height){
   const label="DEMO · CONTAINER13";
   const fontSize=Math.max(18,Math.round(width*.055));
@@ -1155,7 +1163,7 @@ function drawDemoWatermark(ctx,width,height){
   ctx.restore();
 }
 function applyDemoWatermarkIfNeeded(ctx,item,width,height){
-  if(item?.demoWatermark===true)drawDemoWatermark(ctx,width,height);
+  if(ensureDemoWatermarkState(item))drawDemoWatermark(ctx,width,height);
 }
 
 async function createOriginalWebP(item){
@@ -1182,23 +1190,6 @@ async function createOriginalWebP(item){
   applyDemoWatermarkIfNeeded(ctx,item,outSize,outSize);
   return new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));
 }
-$("#cropSettingsBtn")?.addEventListener("click",()=>{
-  const item=activeItem(); if(!item)return;
-  $("#cropDemoWatermark").checked=item.demoWatermark===true;
-  $("#cropSettingsDialog").hidden=false;
-});
-$("#closeCropSettings")?.addEventListener("click",async()=>{
-  const item=activeItem();
-  if(item){
-    item.demoWatermark=!!$("#cropDemoWatermark")?.checked;
-    await put(persistenceRecord(item));
-  }
-  $("#cropSettingsDialog").hidden=true;
-});
-$("#cropSettingsDialog")?.addEventListener("click",e=>{
-  if(e.target===$("#cropSettingsDialog"))$("#closeCropSettings")?.click();
-});
-
 $("#cropBtn").addEventListener("click",openCrop);
 const cropDiagToggle=$("#cropDiagToggle");
 if(cropDiagToggle){
@@ -1364,7 +1355,19 @@ $("#cropDone").addEventListener("click",async()=>{
   },1600);
 });
 
-$("#publishBtn").addEventListener("click",()=>{const item=activeItem();if(!item)return;$("#publishStatus").textContent=item.publishBlob?"Nästa steg kopplar den här WebP-bilden till Container13.":"Beskär bilden först så skapas publicerings-WebP lokalt.";if(!item.publishBlob)openCrop();});
+$("#publishBtn").addEventListener("click",()=>{
+  const item=activeItem();if(!item)return;
+  channelSelectedIds.clear();
+  channelSelectPage=0;
+  container13ChannelSelected=false;
+  const c13=$("#container13ChannelBtn");
+  c13?.classList.remove("is-chosen");
+  c13?.setAttribute("aria-pressed","false");
+  const next=$("#channelNextBtn");
+  if(next)next.disabled=true;
+  $("#publishStatus").textContent="";
+  show("channelTargetsView");
+});
 
 
 function channelGridClass(count){
@@ -1612,10 +1615,18 @@ function publishBlobForItem(item){
 }
 
 async function resolvePublishBlob(item){
-  let blob=publishBlobForItem(item);
-  if(!blob && item?.originalFileKey){
-    blob=await getSourceFile(item.originalFileKey);
+  ensureDemoWatermarkState(item);
+  if(item?.demoWatermark===true && !item.publishBlob){
+    const source=await getSourceFile(item.originalFileKey);
+    if(source && !item.originalBlob)item.originalBlob=source;
+    const marked=await createOriginalWebP(item);
+    item.publishBlob=marked;
+    item.imageProcessingState="webp-original";
+    await put(persistenceRecord(item));
+    return marked;
   }
+  let blob=publishBlobForItem(item);
+  if(!blob && item?.originalFileKey)blob=await getSourceFile(item.originalFileKey);
   return blob||null;
 }
 

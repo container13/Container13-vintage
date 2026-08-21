@@ -1794,3 +1794,25 @@
   #draftGrid.draft-grid.grid-9{gap:8px!important;padding-inline:2px!important}
   .prepared-continue-action{margin-top:8px!important;flex:0 0 auto!important}
 }
+
+/* CCC v2.9.90 – crop settings live in module settings, not workspace */
+.crop-settings-button,.crop-settings-box{display:none!important}
+
+/* Real-device feedback: 5–9 prepared garments use two columns on phone,
+   keeping touch targets and images large; grid scrolls vertically. */
+@media(max-width:480px) and (orientation:portrait){
+  #draftGrid.draft-grid.grid-9{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:12px!important;
+    padding:6px 5px 82px!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    min-height:0!important;
+    align-content:start!important;
+  }
+  #draftGrid.draft-grid.grid-9 .draft-card{
+    aspect-ratio:1/1!important;
+    width:100%!important;
+    min-height:0!important;
+  }
+}

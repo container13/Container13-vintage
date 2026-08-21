@@ -37,3 +37,5 @@ v2.9.87: Publicera bevarar permanent `cccItemId`, backfillar äldre lokala utkas
 v2.9.88: Slutsteget visar vad Container13 kommer visa och kan tillfälligt ändras för just publiceringen. Standard utökad till titel/beskrivning/märke/storlek/pris. All data sparas även när den döljs.
 
 v2.9.89: Anpassa bild får Bildinställningar (kugghjul) med Demobild/vattenstämpel. Vattenstämpeln ritas endast på genererad WebP-publiceringskopia, aldrig originalet, följer plaggets status och markeras i grid/slutkontroll. 3×3-griden får kvadratiska cover-miniatyrer och bättre luft.
+
+v2.9.90: Demovattenstämpel flyttas från lokalt crop-kugghjul till Publiceras ordinarie modulinställningar. Detaljvyns gula knapp heter Fortsätt till kanalval och öppnar kanalval, inte publicering. Förbered med 5–9 plagg använder 2 kolumner på mobil för större bilder. Vattenstämpel kan skapas även utan manuell crop.
