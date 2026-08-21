@@ -167,11 +167,30 @@ import {
       caption.className = "nyinkommet-info";
 
       const title = String(item.title || "").trim();
-      if (title) {
+      if (item.showTitle !== false && title) {
         const heading = document.createElement("p");
         heading.className = "nyinkommet-titel";
         heading.textContent = title;
         caption.appendChild(heading);
+      }
+
+      const description = String(item.description || "").trim();
+      if (item.showDescription === true && description) {
+        const copy = document.createElement("p");
+        copy.className = "nyinkommet-beskrivning";
+        copy.textContent = description;
+        caption.appendChild(copy);
+      }
+
+      const extras = [];
+      if (item.showBrand === true && String(item.brand || "").trim()) extras.push(String(item.brand).trim());
+      if (item.showSize === true && String(item.size || "").trim()) extras.push(`Storlek ${String(item.size).trim()}`);
+      if (item.showPrice === true && String(item.price || "").trim()) extras.push(String(item.price).trim());
+      if (extras.length) {
+        const meta = document.createElement("p");
+        meta.className = "nyinkommet-meta";
+        meta.textContent = extras.join(" · ");
+        caption.appendChild(meta);
       }
 
       const date = document.createElement("p");
