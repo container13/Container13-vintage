@@ -11,7 +11,7 @@
 <title>CCC Publicera v2.9.22</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.9.81">
+<link rel="stylesheet" href="publish.css?v=2.9.88">
 <link rel="stylesheet" href="../core.css?v=2.9.49">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
@@ -145,6 +145,19 @@
         <button class="confirm-channel-chip is-unavailable" type="button" data-channel="Tradera" aria-label="Tradera, inte ansluten"><span class="channel-brand-icon channel-brand-tradera" aria-hidden="true">T</span><small>Tradera</small></button>
       </div>
 
+      <div class="confirm-display-summary">
+        <div><strong>Visas på Container13</strong><span id="confirmDisplaySummary">Bild + titel</span></div>
+        <button id="confirmDisplayEditBtn" class="secondary-action confirm-display-edit" type="button">Ändra</button>
+      </div>
+      <div id="confirmDisplayEditor" class="confirm-display-editor" hidden>
+        <p>Gäller bara den här publiceringen.</p>
+        <label><input id="confirmShowTitle" type="checkbox"> <span>Visa titel</span></label>
+        <label><input id="confirmShowDescription" type="checkbox"> <span>Visa beskrivning</span></label>
+        <label><input id="confirmShowBrand" type="checkbox"> <span>Visa märke</span></label>
+        <label><input id="confirmShowSize" type="checkbox"> <span>Visa storlek</span></label>
+        <label><input id="confirmShowPrice" type="checkbox"> <span>Visa pris</span></label>
+        <button id="confirmDisplayResetBtn" class="secondary-action" type="button">Använd standard</button>
+      </div>
       <div class="confirm-actions">
         <button id="confirmPreviewBtn" class="secondary-action" type="button">Förhandsvisa</button>
         <button id="confirmPublishBtn" class="primary-action" type="button">Publicera</button>
@@ -209,9 +222,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.9.87"></script>
+<script type="module" src="publish.js?v=2.9.88"></script>
 <script type="module" src="../core.js?v=2.9.77"></script>
-  <script src="../version.js?v=2.9.87"></script>
+  <script src="../version.js?v=2.9.88"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 

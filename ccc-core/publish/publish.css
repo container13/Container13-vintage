@@ -1758,3 +1758,12 @@
   right:1px!important;
   top:-1px!important;
 }
+
+/* CCC v2.9.88 – kanalstandard + snabb override */
+.confirm-display-summary{width:min(100%,520px);margin:8px auto 0;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
+.confirm-display-summary>div{display:grid;gap:2px;min-width:0}.confirm-display-summary strong{font-size:13px}.confirm-display-summary span{font-size:12px;color:var(--muted)}
+.confirm-display-edit{min-height:38px!important;padding:7px 12px!important;flex:0 0 auto}
+.confirm-display-editor{width:min(100%,520px);margin:7px auto 0;padding:10px 12px;border:1px solid var(--border);border-radius:14px;background:var(--surface);display:grid;grid-template-columns:1fr 1fr;gap:8px 12px}
+.confirm-display-editor[hidden]{display:none!important}.confirm-display-editor p{grid-column:1/-1;margin:0 0 2px;color:var(--muted);font-size:11px}
+.confirm-display-editor label{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700}.confirm-display-editor input{width:18px;height:18px;accent-color:#2e9f55}
+.confirm-display-editor #confirmDisplayResetBtn{grid-column:1/-1;min-height:38px;padding:7px 10px}

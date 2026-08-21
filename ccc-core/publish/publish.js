@@ -1464,6 +1464,10 @@ async function renderChannelConfirmation(){
   }
   $("#confirmPreviewBtn").disabled=!container13ChannelSelected;
   $("#confirmPublishBtn").disabled=!container13ChannelSelected;
+  container13PublishDisplayOverride=null;
+  if($("#confirmDisplayEditor"))$("#confirmDisplayEditor").hidden=true;
+  if($("#confirmDisplayEditBtn"))$("#confirmDisplayEditBtn").textContent="Ändra";
+  syncConfirmDisplayUi();
 
   for(const item of selected){
     const index=Math.max(0,itemIndexById(item.id));
@@ -1507,8 +1511,34 @@ $("#channelNextBtn")?.addEventListener("click",async()=>{
 function container13DisplaySettings(){
   return {
     showTitle:localStorage.getItem("ccc-publish-container13-show-title")!=="0",
-    showDescription:localStorage.getItem("ccc-publish-container13-show-description")==="1"
+    showDescription:localStorage.getItem("ccc-publish-container13-show-description")==="1",
+    showBrand:localStorage.getItem("ccc-publish-container13-show-brand")==="1",
+    showSize:localStorage.getItem("ccc-publish-container13-show-size")==="1",
+    showPrice:localStorage.getItem("ccc-publish-container13-show-price")==="1"
   };
+}
+let container13PublishDisplayOverride=null;
+function effectiveContainer13DisplaySettings(){
+  return container13PublishDisplayOverride?{...container13DisplaySettings(),...container13PublishDisplayOverride}:container13DisplaySettings();
+}
+function displaySummaryText(settings=effectiveContainer13DisplaySettings()){
+  const parts=["Bild"];
+  if(settings.showTitle)parts.push("titel");
+  if(settings.showDescription)parts.push("beskrivning");
+  if(settings.showBrand)parts.push("märke");
+  if(settings.showSize)parts.push("storlek");
+  if(settings.showPrice)parts.push("pris");
+  return parts.join(" + ");
+}
+function syncConfirmDisplayUi(){
+  const settings=effectiveContainer13DisplaySettings();
+  if($("#confirmDisplaySummary"))$("#confirmDisplaySummary").textContent=displaySummaryText(settings);
+  for(const [selector,key] of [["#confirmShowTitle","showTitle"],["#confirmShowDescription","showDescription"],["#confirmShowBrand","showBrand"],["#confirmShowSize","showSize"],["#confirmShowPrice","showPrice"]]){
+    const input=$(selector); if(input)input.checked=!!settings[key];
+  }
+}
+function readConfirmDisplayOverride(){
+  return {showTitle:!!$("#confirmShowTitle")?.checked,showDescription:!!$("#confirmShowDescription")?.checked,showBrand:!!$("#confirmShowBrand")?.checked,showSize:!!$("#confirmShowSize")?.checked,showPrice:!!$("#confirmShowPrice")?.checked};
 }
 
 function safePublishFilePart(value){
@@ -1542,7 +1572,7 @@ function publishBlobExtension(blob){
 async function publishSelectedToContainer13Live(){
   if(!auth.currentUser)throw new Error("Du är inte längre inloggad.");
 
-  const display=container13DisplaySettings();
+  const display=effectiveContainer13DisplaySettings();
   const selected=items.filter(item=>channelSelectedIds.has(item.id));
   if(!selected.length)throw new Error("Inga plagg är valda.");
 
@@ -1587,6 +1617,12 @@ async function publishSelectedToContainer13Live(){
         description:descriptionText,
         showTitle:display.showTitle,
         showDescription:display.showDescription,
+        showBrand:display.showBrand,
+        showSize:display.showSize,
+        showPrice:display.showPrice,
+        brand:metadata.brand,
+        size:metadata.size,
+        price:metadata.price,
         cccItemId:metadata.cccItemId,
         cccMetadataVersion:1,
         source:"ccc",
@@ -1653,7 +1689,7 @@ async function openSitePreviewForSelection(){
   let payload=container13PayloadForSelection();
   if(!payload.length)return false;
   payload=await prepareSitePreviewBlobTransport(payload);
-  const displaySettings=container13DisplaySettings();
+  const displaySettings=effectiveContainer13DisplaySettings();
   try{
     sessionStorage.setItem("ccc-site-preview-items",JSON.stringify(payload));
     sessionStorage.setItem("ccc-site-preview-display-settings",JSON.stringify(displaySettings));
@@ -1668,6 +1704,17 @@ async function openSitePreviewForSelection(){
   return true;
 }
 
+
+$("#confirmDisplayEditBtn")?.addEventListener("click",()=>{
+  const editor=$("#confirmDisplayEditor"); if(!editor)return;
+  editor.hidden=!editor.hidden;
+  $("#confirmDisplayEditBtn").textContent=editor.hidden?"Ändra":"Klar";
+  syncConfirmDisplayUi();
+});
+for(const input of document.querySelectorAll("#confirmDisplayEditor input[type=checkbox]")){
+  input.addEventListener("change",()=>{container13PublishDisplayOverride=readConfirmDisplayOverride();syncConfirmDisplayUi();});
+}
+$("#confirmDisplayResetBtn")?.addEventListener("click",()=>{container13PublishDisplayOverride=null;syncConfirmDisplayUi();});
 
 $("#confirmC13Channel")?.addEventListener("click",()=>{
   container13ChannelSelected=!container13ChannelSelected;

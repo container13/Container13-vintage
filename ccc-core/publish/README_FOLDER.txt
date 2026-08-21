@@ -33,3 +33,5 @@ v2.9.85: Förhandsvisa och staging får en gemensam robust lokal bildtransport v
 v2.9.86: Publicera kopplas till skarpa Container13 via samma fungerande Firebase-väg som adminpanelen: Storage `nyinkommet/` -> downloadURL -> Firestore `gallery` med category `nyinkommet`. CCC lagrar cccItemId/source och kanalens showTitle/showDescription per post. Storage-filen rullas tillbaka om Firestore-skrivningen misslyckas. Efter lyckad publicering öppnas riktiga Nyinkommet för direkt kontroll.
 
 v2.9.87: Publicera bevarar permanent `cccItemId`, backfillar äldre lokala utkast en gång och använder ID:t i Storage-filnamn, Firebase Storage customMetadata och Firestore. Bildbytes lämnas orörda; metadata följer bildobjektet separat genom CCC-pipelinen.
+
+v2.9.88: Slutsteget visar vad Container13 kommer visa och kan tillfälligt ändras för just publiceringen. Standard utökad till titel/beskrivning/märke/storlek/pris. All data sparas även när den döljs.
