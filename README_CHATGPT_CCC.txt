@@ -1716,3 +1716,12 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Resultatet var att flödet stannade innan `Gör förslaget klart`.
 - Modalen använder nu samma riktiga formulärfält direkt. Den flytande modaldesignen behålls, men ingen kopierings-/speglingslogik behövs.
 - Denna version är avsiktligt en begränsad hotfix och ändrar inga övriga .92-layoutbeslut.
+
+
+## v2.9.94 – modalparitet, footer-demo, renare slutkontroll och indexkort som facit
+- `Frivilliga tillägg` använder samma flytande modalprincip som `Fler uppgifter`: bakgrunden ligger kvar, innehållet kan scrolla och `Återgå` / `Spara & återgå` ligger fast.
+- I `Anpassa bild` prioriteras footerverktyget `⚙ Demobild`; Hjälp visas inte samtidigt där, så verktyget får en tydlig plats i Core-footern.
+- Core-footer visar modulens egna `settingsLabel`, vilket gör samma mekanism återanvändbar.
+- `Förhandsvisa` tas bort från sista publiceringssteget. Slutkontrollen är själv kontrollvyn före den skarpa `Publicera`-knappen.
+- Slutkontrollen komprimerar kanalrad, sammanfattning och knapprad något för att ge bilderna mer luft. 9-per-sida och sidledes paging för fler bilder behålls som princip.
+- Nyinkommet slutar använda de misslyckade fasta höjdexperimenten och speglar i stället geometrin från root-indexets `Senast inkommet`: grid stretch, blockkort, kvadratisk bildyta och `min-height:83px` för infotext. Root-index används som visuellt facit.
