@@ -2007,3 +2007,55 @@ html[data-theme="dark"] .review-prompt-qr {
 #nyGallery .nyinkommet-info{height:150px!important;min-height:150px!important;max-height:150px!important;overflow:hidden!important;box-sizing:border-box!important}
 #nyGallery .nyinkommet-titel{max-height:3.9em!important;display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:3!important;overflow:hidden!important}
 #nyGallery .nyinkommet-datum{margin-top:auto!important}
+
+/* VERSION 6.10.59 – Nyinkommet mirrors the working "Senast inkommet" card geometry */
+main > #nyGallery.gallery{
+  align-items:stretch!important;
+}
+#nyGallery .gallery-item.nyinkommet-kort{
+  display:block!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  align-self:stretch!important;
+  overflow:hidden!important;
+  border:1px solid rgba(154,122,24,.16)!important;
+  border-radius:14px!important;
+  background:rgba(255,255,255,.78)!important;
+  box-shadow:0 8px 24px rgba(0,0,0,.10)!important;
+}
+#nyGallery .nyinkommet-bildknapp{
+  display:block!important;
+  width:100%!important;
+  aspect-ratio:1/1!important;
+  height:auto!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  background:#eee9df!important;
+}
+#nyGallery .nyinkommet-bildknapp img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  aspect-ratio:auto!important;
+  object-fit:cover!important;
+}
+#nyGallery .nyinkommet-info{
+  display:block!important;
+  height:auto!important;
+  min-height:83px!important;
+  max-height:none!important;
+  padding:15px 16px 17px!important;
+  overflow:visible!important;
+}
+#nyGallery .nyinkommet-titel{
+  display:block!important;
+  margin:0 0 7px!important;
+  max-height:none!important;
+  overflow:visible!important;
+  -webkit-line-clamp:unset!important;
+}
+#nyGallery .nyinkommet-datum{
+  display:block!important;
+  margin:0!important;
+}
