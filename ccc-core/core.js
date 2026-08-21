@@ -205,6 +205,14 @@ const CCCFooter={
         help.addEventListener("click",()=>this.toolConfig?.onHelp?.());
         tools.append(help);
       }
+      if(this.toolConfig.settings){
+        const settings=document.createElement("button");
+        settings.type="button";
+        settings.className="ccc-core-footer-tool ccc-core-footer-settings";
+        settings.innerHTML='<span aria-hidden="true">⚙</span><small>Inställningar</small>';
+        settings.addEventListener("click",()=>this.toolConfig?.onSettings?.());
+        tools.append(settings);
+      }
       if(this.toolConfig.select){
         const select=document.createElement("button");
         select.type="button";
