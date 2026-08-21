@@ -188,7 +188,7 @@ function ensureDraftGridUi(){
     #draftGrid.draft-grid.grid-1{grid-template-columns:minmax(0,1fr)!important}
     #draftGrid.draft-grid.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))!important}
     #draftGrid.draft-grid.grid-4{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-    #draftGrid.draft-grid.grid-9{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+    #draftGrid.draft-grid.grid-9{grid-template-columns:repeat(3,minmax(0,1fr))!important}
     #draftGrid.draft-grid.grid-1 .draft-card{width:min(100%,420px);justify-self:center}
     #draftGrid .draft-card{position:relative!important;aspect-ratio:1/1!important;min-width:0!important;min-height:0!important;border-radius:12px!important;overflow:hidden!important;padding:0!important;margin:0!important;-webkit-touch-callout:none!important;-webkit-tap-highlight-color:transparent!important;-webkit-user-select:none!important;user-select:none!important;appearance:none!important;-webkit-appearance:none!important}
     #draftGrid .draft-card img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;pointer-events:none!important;-webkit-user-drag:none!important;-webkit-user-select:none!important;user-select:none!important;-webkit-tap-highlight-color:transparent!important}
@@ -440,19 +440,11 @@ function configureFooterForView(view){
       selectLabel:"Välj"
     });
   }
-  window.CCC_CORE.footer.setTools?.(config);
   if(view==="cropView"){
-    const footer=window.CCC_CORE.footer.el;
-    const tools=footer?.querySelector(".ccc-core-footer-tools");
-    if(tools && !tools.querySelector(".ccc-core-footer-settings")){
-      const settings=document.createElement("button");
-      settings.type="button";
-      settings.className="ccc-core-footer-tool ccc-core-footer-settings";
-      settings.innerHTML='<span aria-hidden="true">⚙</span><small>Inställningar</small>';
-      settings.addEventListener("click",openCropDemoSettings);
-      tools.append(settings);
-    }
+    config.settings=true;
+    config.onSettings=openCropDemoSettings;
   }
+  window.CCC_CORE.footer.setTools?.(config);
 }
 function updateSelectionFooter(){
   const continueBtn=$("#preparedContinueBtn");

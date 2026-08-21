@@ -1841,3 +1841,12 @@
   #channelConfirmView .confirm-display-summary,
   #channelConfirmView .confirm-actions{flex:0 0 auto!important;margin-top:0!important}
 }
+
+/* CCC v2.9.92 – 3×3 per page, horizontal pager remains for >9 */
+@media(max-width:480px) and (orientation:portrait){
+  #draftGrid.draft-grid.grid-9{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important;padding:5px 4px 12px!important;overflow:visible!important}
+  #draftGrid.draft-grid.grid-9 .draft-card{aspect-ratio:1/1!important}
+  #channelConfirmView{height:auto!important;max-height:none!important;overflow:visible!important;display:block!important}
+  #channelConfirmView[hidden]{display:none!important}
+  #channelConfirmView .confirm-grid{max-height:none!important;overflow:visible!important}
+}

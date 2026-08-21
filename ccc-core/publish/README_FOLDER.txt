@@ -41,3 +41,5 @@ v2.9.89: Anpassa bild får Bildinställningar (kugghjul) med Demobild/vattenstä
 v2.9.90: Demovattenstämpel flyttas från lokalt crop-kugghjul till Publiceras ordinarie modulinställningar. Detaljvyns gula knapp heter Fortsätt till kanalval och öppnar kanalval, inte publicering. Förbered med 5–9 plagg använder 2 kolumner på mobil för större bilder. Vattenstämpel kan skapas även utan manuell crop.
 
 v2.9.91: Förbered-gridens faktiska runtime-regel ändras till 2 kolumner på mobil. Slutkontrollen låses till viewport med intern bildgrid. Demovattenstämpel flyttas från modulinställningar till kontextuell Inställningar-knapp i Core-footern endast i Anpassa bild.
+
+v2.9.92: Core-footer får native Inställningar. Anpassa bild använder den för DEMO. 3×3 per sida återställs; fler än nio fortsätter via befintlig sidpager.
