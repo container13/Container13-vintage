@@ -1668,3 +1668,26 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - `Ändra` ger snabbval som endast gäller aktuell publicering. `Använd standard` återgår utan att ändra kanalens standard.
 - Firestore sparar tillgänglig titel, beskrivning, märke, storlek och pris tillsammans med separata show-flaggor.
 - Nyinkommet visar märke/storlek/pris endast när respektive flagga är true. Äldre poster påverkas inte.
+
+
+## v2.9.89 – Mobilpolish + säker demovattenstämpel
+- Real-device-test gav fyra konkreta UI-fixar som ska ses som generell CCC-princip: safe-area får aldrig krocka med primära handlingar, nästa steg ska vara explicit även om en bild också är klickbar, avslutningsvyer ska rymmas i mobil viewport och bildgrids ska prioritera jämn geometri/luft.
+- Vision-kamerans granskningsrad `Ta om / Nästa plagg / Klar` ligger nu i en reserverad helskärmsbotten med samma bakgrund och iPhone safe-area.
+- Vision-arbetsvyn efter foto säger uttryckligen att bilden kan tryckas och har även `Fortsätt`, som gör samma sak för markerat plagg.
+- Vision `Klart!` komprimeras på portrait-mobil så listan får intern scroll vid behov och huvudhandlingarna inte hamnar utanför skärmen.
+- Publicera `Förbered` håller 3×3-miniatyrerna kvadratiska med `object-fit: cover`, jämna gap och mer luft vid 5–9 bilder; detta påverkar inte original eller publiceringsbeskärning.
+- `Anpassa bild` har nu ett kugghjul för bildinställningar. `Demobild / vattenstämpel` kan slås på per plagg.
+- Demomärkningen är en upprepad diagonal, halvtransparent `DEMO · CONTAINER13`-vattenstämpel som ritas på CCC:s genererade WebP-publiceringskopia. Originalbildens bytes ändras aldrig.
+- Demostatus sparas med plagget, visas som `DEMO` i Förbered och räknas i slutkontrollen före publicering. Firestore får även `demoWatermark` för spårbarhet.
+- Vattenstämpeln är en utvecklar-/testfunktion för bilder som inte ska kunna misstas för riktiga Container13-produktbilder; den är inte en ersättning för rättigheter/licenser till källmaterial.
+
+
+## v2.9.90 – korrigering efter sju real-device-bilder
+- Kamera-overlay är ett tillfälligt helskärmsläge och får inte samsas med Core-footern. Core-Tillbaka döljs därför helt under både livekamera och kamerans review; hela nederkanten är kamera-svart inklusive safe-area.
+- Vision workspace efter foto har en verklig, explicit `Fortsätt`-knapp. Knappen och klick på vald miniatyr leder till samma nästa arbetssteg.
+- `Förbered` prioriterar nu större touch-/bildytor före 3×3-kompakthet på telefon: 5–9 plagg visas i två kolumner med vertikal scroll. Desktop/tablet kan fortsatt använda tätare grid.
+- Demovattenstämpel hör till Publiceras modulinställningar och använder befintligt inställningskugghjul i Core. Det separata kugghjulet i `Anpassa bild` tas bort.
+- Publicera-inställningar omfattar standard för titel, beskrivning, märke, storlek, pris och `Demobild / vattenstämpel`.
+- Om ett demomärkt plagg publiceras utan att användaren först anpassat bilden skapar CCC ändå en genererad WebP-kopia med vattenstämpel; originalbytes ändras aldrig.
+- Detaljvyns gula knapp är ett flödessteg, inte en publiceringsknapp: `Fortsätt till kanalval` öppnar `Välj kanal`.
+- Container13 `Nyinkommet` sträcker kort till samma höjd inom gridraden. Bildytan är fortsatt kvadratisk och datumraden förankras i kortets botten, så olika mängd titel/metadata inte ger ojämna kort.
