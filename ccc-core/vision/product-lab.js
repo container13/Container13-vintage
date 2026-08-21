@@ -18,6 +18,20 @@
   let cropState = null;
   let cropPointer = null;
   let savedSessionSummary = null;
+  let sessionSaveChain = Promise.resolve();
+
+  function queueVisionSessionSave() {
+    if (!batchItems.length) return Promise.resolve(false);
+    sessionSaveChain = sessionSaveChain
+      .catch(() => false)
+      .then(() => saveVisionSessionLocally())
+      .catch((error) => {
+        console.error("[CCC Vision] Automatisk sessionssparning misslyckades", storageErrorDetails(error), error);
+        setMessage("CCC kunde inte säkerhetsspara fotosessionen. Lämna inte sidan innan du har försökt igen.");
+        return false;
+      });
+    return sessionSaveChain;
+  }
 
   const VISION_SETTING_DEFAULTS = { aiAuto: true, learnEdits: true };
   function readBoolSetting(key, fallback) {
@@ -432,6 +446,12 @@
   }
 
   async function startCamera() {
+    /* Ett nytt kamerabesök ska fortsätta den aktiva lokala sessionen. Det får
+       aldrig tyst ersätta bilder som redan fotograferats. */
+    if (!batchItems.length && savedSessionSummary?.count) {
+      try { await restoreSavedVisionSession(); }
+      catch (error) { console.error("[CCC Vision] Kunde inte återuppta session före kamera", error); }
+    }
     stagedCameraFile = null;
     stagedItem = null;
     $("#cameraReview").hidden = true;
@@ -443,9 +463,42 @@
     try {
       cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" } }, audio: false });
       $("#cameraVideo").srcObject = cameraStream;
+      configureCameraZoom();
     } catch (error) {
       closeCamera();
       $("#cameraFallbackInput").click();
+    }
+  }
+
+  function configureCameraZoom() {
+    const controls = $("#cameraZoomControls");
+    const track = cameraStream?.getVideoTracks?.()[0];
+    if (!controls || !track) return;
+    const capabilities = track.getCapabilities?.() || {};
+    const min = Number(capabilities.zoom?.min ?? 1);
+    const max = Number(capabilities.zoom?.max ?? 1);
+    const supportsZoom = Number.isFinite(min) && Number.isFinite(max) && max > min;
+    controls.querySelectorAll("[data-camera-zoom]").forEach((button) => {
+      const requested = Number(button.dataset.cameraZoom || 1);
+      button.hidden = requested !== 1 && (!supportsZoom || requested < min || requested > max);
+      button.classList.toggle("is-active", requested === 1);
+    });
+  }
+
+  async function setCameraZoom(requested) {
+    const track = cameraStream?.getVideoTracks?.()[0];
+    if (!track) return;
+    const capabilities = track.getCapabilities?.() || {};
+    const min = Number(capabilities.zoom?.min ?? 1);
+    const max = Number(capabilities.zoom?.max ?? 1);
+    const zoom = Math.max(min, Math.min(max, Number(requested) || 1));
+    try {
+      await track.applyConstraints({ advanced: [{ zoom }] });
+      $("#cameraZoomControls")?.querySelectorAll("[data-camera-zoom]").forEach((button) =>
+        button.classList.toggle("is-active", Number(button.dataset.cameraZoom) === Number(requested))
+      );
+    } catch (error) {
+      console.warn("[CCC Vision] Kameran kunde inte byta zoom", error);
     }
   }
 
@@ -460,6 +513,14 @@
     stopCameraStream();
     $("#cameraOverlay").hidden = true;
     document.body.classList.remove("camera-open");
+  }
+
+  function closeCameraSafely() {
+    /* X betyder lämna kameran, inte kasta fotot som redan tagits. */
+    if (stagedItem) commitStagedItem();
+    closeCamera();
+    resetCaptureVisual();
+    if (batchItems.length) showWorkspace();
   }
 
   function captureFrame() {
@@ -504,6 +565,7 @@
     // När plagget först nu läggs i batchItems måste kostnadsrutan uppdateras igen,
     // annars står den kvar på "väntar på AI-analys" trots att usage redan finns.
     refreshCostUi();
+    queueVisionSessionSave();
     return true;
   }
 
@@ -528,6 +590,7 @@
     const files = [...fileList].filter((f) => f.type.startsWith("image/"));
     if (!files.length) return;
     files.forEach((file) => batchItems.push(createBatchItem(file, batchItems.length)));
+    queueVisionSessionSave();
     updateBatchStrip();
     resetCaptureVisual();
     showWorkspace();
@@ -537,6 +600,7 @@
     const files = [...fileList].filter((file) => file.type.startsWith("image/"));
     if (!files.length) return;
     files.forEach((file) => batchItems.push(createBatchItem(file, batchItems.length)));
+    queueVisionSessionSave();
     updateBatchStrip();
     resetCaptureVisual();
     // Bildväljaren är nu stängd: CCC arbetar i bakgrunden medan användaren kan fortsätta.
@@ -1548,7 +1612,7 @@
     localStorage.removeItem("ccc-vision-draft");
   }
 
-  function goBackFromVision() {
+  async function goBackFromVision() {
     const optionalExtras=$("#optionalExtrasDialog");
     if(visionView==="edit" && optionalExtras && !optionalExtras.hidden){
       optionalExtras.hidden=true;
@@ -1576,11 +1640,13 @@
         showWorkspace();
         return;
       case "workspace":
-        // Ett steg bakåt inom modulen. Sessionen ligger kvar i minnet och kan återupptas.
+        // Ett steg bakåt inom modulen. Säkerhetsspara innan arbetsytan lämnas.
+        await queueVisionSessionSave();
         showVisionStart();
         return;
       case "start":
       default:
+        if (batchItems.length) await queueVisionSessionSave();
         window.location.assign("../dashboard/index.html");
     }
   }
@@ -1673,8 +1739,12 @@
   });
   $("#galleryInput").addEventListener("change", (event) => handleGalleryFiles(event.target.files));
   $("#cameraFallbackInput").addEventListener("change", (event) => handleFallbackCamera(event.target.files));
-  $("#closeCameraBtn").addEventListener("click", closeCamera);
+  $("#closeCameraBtn").addEventListener("click", closeCameraSafely);
   $("#shutterBtn").addEventListener("click", captureFrame);
+  $("#cameraZoomControls")?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-camera-zoom]");
+    if (button && !button.hidden) setCameraZoom(button.dataset.cameraZoom);
+  });
   $("#retakeBtn").addEventListener("click", retakePhoto);
   $("#nextPhotoBtn").addEventListener("click", nextPhoto);
   $("#usePhotoBtn").addEventListener("click", finishCameraSeries);

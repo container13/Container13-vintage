@@ -19,3 +19,5 @@ v2.9.93 HOTFIX: .92 flyttade Fler uppgifter till modal men bytte samtidigt bort 
 v2.9.94: Frivilliga tillägg använder nu samma flytande modalprincip som Fler uppgifter, med scrollbar yta och fasta Återgå/Spara & återgå.
 
 v2.9.95: Frivilliga tillägg-modalens HTML byggs om rent så knappfältet alltid ingår i samma flytande box; innehållsdelen scrollar separat.
+
+v2.9.97: Aktiv fotosession säkerhetssparas automatiskt efter varje nytt foto/import och återupptas före nästa kamerabesök. Kamera-X behåller redan tagen bild. Zoomknappar visas för de verkliga nivåer webbläsaren/hårdvaran exponerar.
