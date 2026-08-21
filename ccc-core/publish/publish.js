@@ -462,6 +462,9 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render}){
         return;
       }
       gesture.horizontal=true;
+      // Swipe owns the gesture: cancel any pending long-press/quick-preview immediately.
+      if(longPressTimer){clearTimeout(longPressTimer);longPressTimer=null;}
+      closeQuickPreview?.();
     }
     event.preventDefault();
 
@@ -1711,7 +1714,7 @@ async function renderChannelConfirmation(){
   if(!grid)return;
   grid.replaceChildren();
   grid.className=`draft-grid confirm-grid ${channelGridClass(selected.length)}`;
-  $("#confirmPublishBtn").textContent=selected.length===1?"Publicera 1 plagg":`Publicera ${selected.length} plagg`;
+  $("#confirmPublishBtn").textContent=selected.length===1?"Publicera 1 plagg":"Gå vidare";
   const c13Confirm=$("#confirmC13Channel");
   if(c13Confirm){
     c13Confirm.classList.toggle("is-active",container13ChannelSelected);

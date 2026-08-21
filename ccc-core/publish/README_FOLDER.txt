@@ -47,3 +47,5 @@ v2.9.92: Core-footer får native Inställningar. Anpassa bild använder den för
 v2.9.94: Anpassa bild visar footerverktyget Demobild (⚙) utan Hjälp för att få plats. Förhandsvisa tas bort från slutkontrollen. Slutkontrollens kanalrad/sammanfattning komprimeras något men 9-per-sida-principen behålls.
 
 v2.9.95: Förbered och Välj plagg delar nu samma kanoniska 3×3-geometri. Båda får fingerföljande sid-swipe med samma easing/tröskel som detaljvyn; nästa/föregående 9-grid visas samtidigt under swipen och pager uppdateras efter snap.
+
+v2.9.96: Navigationsknappen efter valda plagg heter Gå vidare. 3×3-miniatyrerna får kompakt fast geometri i Förbered/Välj plagg/slutkontroll. Horisontell swipe avbryter pending long-press preview så kort inte zoomas under swipe; swipe-easing lämnas orörd.

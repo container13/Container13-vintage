@@ -1929,3 +1929,57 @@
     padding-inline:3px!important;
   }
 }
+
+/* CCC v2.9.96 – canonical compact 3×3 thumbnails; swipe animation unchanged */
+#draftGrid.draft-grid,
+#channelSelectGrid.draft-grid,
+#channelConfirmView .confirm-grid.grid-9,
+.ccc-paged-grid-ghost{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-auto-rows:auto!important;
+  column-gap:10px!important;
+  row-gap:10px!important;
+  align-items:start!important;
+  align-content:start!important;
+  overflow:visible!important;
+}
+#draftGrid .draft-card,
+#channelSelectGrid .draft-card,
+#channelConfirmView .confirm-grid.grid-9 .confirm-card,
+.ccc-paged-grid-ghost .draft-card{
+  position:relative!important;
+  width:100%!important;
+  height:auto!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:100%!important;
+  aspect-ratio:1/1!important;
+  box-sizing:border-box!important;
+  transform:none;
+  overflow:hidden!important;
+}
+#draftGrid .draft-card img,
+#channelSelectGrid .draft-card img,
+#channelConfirmView .confirm-grid.grid-9 .confirm-card img,
+.ccc-paged-grid-ghost .draft-card img{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:cover!important;
+  transform:none!important;
+}
+@media(max-width:480px) and (orientation:portrait){
+  #draftGrid.draft-grid,
+  #channelSelectGrid.draft-grid,
+  #channelConfirmView .confirm-grid.grid-9,
+  .ccc-paged-grid-ghost{
+    width:94%!important;
+    margin-inline:auto!important;
+    column-gap:9px!important;
+    row-gap:9px!important;
+    padding:4px 2px 9px!important;
+  }
+}
