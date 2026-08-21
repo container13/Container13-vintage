@@ -430,7 +430,7 @@ function configureFooterForView(view){
     return;
   }
   if(draftSelectionMode){updateSelectionFooter();return;}
-  const config={help:["gridView","detailView","cropView"].includes(view),onHelp:openPublishHelp};
+  const config={help:["gridView","detailView"].includes(view),onHelp:openPublishHelp};
   if(view==="gridView"){
     Object.assign(config,{
       help:true,
@@ -442,6 +442,7 @@ function configureFooterForView(view){
   }
   if(view==="cropView"){
     config.settings=true;
+    config.settingsLabel="Demobild";
     config.onSettings=openCropDemoSettings;
   }
   window.CCC_CORE.footer.setTools?.(config);
@@ -1539,7 +1540,6 @@ async function renderChannelConfirmation(){
     c13Confirm.classList.toggle("is-active",container13ChannelSelected);
     c13Confirm.setAttribute("aria-pressed",String(container13ChannelSelected));
   }
-  $("#confirmPreviewBtn").disabled=!container13ChannelSelected;
   $("#confirmPublishBtn").disabled=!container13ChannelSelected;
   container13PublishDisplayOverride=null;
   if($("#confirmDisplayEditor"))$("#confirmDisplayEditor").hidden=true;
@@ -1818,14 +1818,6 @@ document.querySelectorAll("#channelConfirmView .confirm-channel-chip.is-unavaila
   button.addEventListener("click",()=>showChannelUnavailable(button.dataset.channel||"Kanalen"));
 });
 
-$("#confirmPreviewBtn")?.addEventListener("click",()=>{
-  if(!channelSelectedIds.size){
-    $("#confirmStatus").textContent="Inga plagg är valda.";
-    return;
-  }
-  $("#confirmStatus").textContent="Öppnar förhandsvisningen…";
-  openSitePreviewForSelection();
-});
 $("#confirmPublishBtn")?.addEventListener("click",async()=>{
   if(!container13ChannelSelected){
     $("#confirmStatus").textContent="Välj minst en kanal för att publicera.";

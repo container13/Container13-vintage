@@ -1850,3 +1850,19 @@
   #channelConfirmView[hidden]{display:none!important}
   #channelConfirmView .confirm-grid{max-height:none!important;overflow:visible!important}
 }
+
+/* CCC v2.9.94 – final confirmation gets breathing room without sacrificing 9-per-page */
+#channelConfirmView .confirm-actions{display:grid!important;grid-template-columns:1fr!important;gap:6px!important;margin-top:6px!important}
+#channelConfirmView .confirm-actions .primary-action{min-height:48px!important}
+#channelConfirmView .confirm-channel-strip{margin-top:6px!important;margin-bottom:4px!important}
+#channelConfirmView .confirm-display-summary{margin-top:4px!important;padding:8px 10px!important}
+#channelConfirmView .confirm-grid{margin-bottom:2px!important}
+@media(max-width:480px){
+  #channelConfirmView .confirm-grid.grid-9{gap:7px!important;padding:2px 3px 4px!important}
+  #channelConfirmView .confirm-grid.grid-9 .confirm-card{border-radius:11px!important}
+  #channelConfirmView .confirm-channel-strip{gap:3px!important}
+  #channelConfirmView .confirm-channel-chip{min-width:52px!important;flex-basis:52px!important}
+  #channelConfirmView .confirm-channel-chip .channel-brand-icon{width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important}
+  #channelConfirmView .confirm-display-summary strong{font-size:12px!important}
+  #channelConfirmView .confirm-display-summary span{font-size:11px!important}
+}

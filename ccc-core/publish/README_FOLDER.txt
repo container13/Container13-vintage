@@ -43,3 +43,5 @@ v2.9.90: Demovattenstämpel flyttas från lokalt crop-kugghjul till Publiceras o
 v2.9.91: Förbered-gridens faktiska runtime-regel ändras till 2 kolumner på mobil. Slutkontrollen låses till viewport med intern bildgrid. Demovattenstämpel flyttas från modulinställningar till kontextuell Inställningar-knapp i Core-footern endast i Anpassa bild.
 
 v2.9.92: Core-footer får native Inställningar. Anpassa bild använder den för DEMO. 3×3 per sida återställs; fler än nio fortsätter via befintlig sidpager.
+
+v2.9.94: Anpassa bild visar footerverktyget Demobild (⚙) utan Hjälp för att få plats. Förhandsvisa tas bort från slutkontrollen. Slutkontrollens kanalrad/sammanfattning komprimeras något men 9-per-sida-principen behålls.
