@@ -1549,6 +1549,11 @@
   }
 
   function goBackFromVision() {
+    const moreFields=$("#moreFieldsDetails");
+    if(visionView==="edit" && moreFields?.open){
+      moreFields.open=false;
+      return;
+    }
     switch (visionView) {
       case "edit":
         if (editReturnView === "workspace") showWorkspace();
@@ -1720,6 +1725,16 @@
   $("#addNewConditionBtn").addEventListener("click", addNewCondition);
   $("#closeExtrasBtn")?.addEventListener("click", closeOptionalExtras);
   $("#extrasDoneBtn")?.addEventListener("click", closeOptionalExtras);
+  $("#saveMoreFieldsBtn")?.addEventListener("click",()=>{
+    const item=currentItem();
+    if(item)item.editedFields=Object.fromEntries(fieldIds.map(id=>[id,$("#"+id).value]));
+    saveBatchMetadata();
+    scheduleSave();
+    const details=$("#moreFieldsDetails"); if(details)details.open=false;
+  });
+  $("#cancelMoreFieldsBtn")?.addEventListener("click",()=>{
+    const details=$("#moreFieldsDetails"); if(details)details.open=false;
+  });
 
   $$('[data-copy]').forEach((button) => button.addEventListener("click", () => copyPreview(button.dataset.copy)));
   $$('[data-demo]').forEach((button) => button.addEventListener("click", () => chooseDemo(button.dataset.demo)));

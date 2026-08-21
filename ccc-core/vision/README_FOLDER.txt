@@ -9,3 +9,5 @@ v2.9.87: Varje nytt plagg får permanent mänskligt läsbart `cccItemId` redan n
 v2.9.89: Mobiltestfixar: kamerans bottenområde använder samma helskärmsbakgrund/safe-area och tre granskningsknappar ryms utan krock. Arbetsvyn efter foto förklarar att miniatyren kan tryckas och har dessutom en explicit Fortsätt-knapp med samma destination. Klar-vyn komprimeras på mobil så innehåll/navigation inte kapas.
 
 v2.9.90: Kamera-overlay döljer Core-footern helt medan kameran är öppen, så ingen grå footer/Tillbaka kan läcka in över live/review. Workspace-Fortsätt görs explicit synlig även när updateWorkspaceState/applyCaptureMode kör om vyn.
+
+v2.9.91: Workspace-knappar heter Nytt foto/Album. Fler uppgifter blir en täckande intern redigeringspanel med Återgå och Spara & återgå; Core-Tillbaka stänger panelen först. Inmatade värden ligger kvar.
