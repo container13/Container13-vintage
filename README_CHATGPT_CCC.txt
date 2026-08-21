@@ -1700,3 +1700,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Slutkontrollen före publicering är viewport-bunden på portrait-mobil; hela sidan ska inte scrolla. Vid behov scrollar endast bildområdet internt.
 - Demobild/vattenstämpel tas bort från generella Publicera-inställningar. I `Anpassa bild` visar Core-footern i stället en kontextuell `Inställningar`-knapp som öppnar demoval ovanpå samma vy och återgår dit efter spara/avbryt.
 - Container13 Nyinkommet får fast 142 px informationsyta per kort och titel klampas till högst tre rader. Kortens yttergeometri styrs därmed inte längre av textlängden.
+
+
+## v2.9.92 – korrigering av .91
+- Fler uppgifter är en riktig flytande modal ovanpå Gör förslaget klart, med scrollbar innehållsyta och fasta Återgå / Spara & återgå.
+- Core-footerns setTools har native stöd för settings/onSettings. Anpassa bild använder detta för Demobild/vattenstämpel.
+- Förbered återgår till 3×3 per sida med luftigare gap. Befintlig pager behåller max nio per sida och fler än nio nås sidledes.
+- .91:s viewport-lås av slutkontrollen backas; sidpager är principen för många bilder.
+- Nyinkommet får kvadratisk bildyta + exakt 150 px informationsyta och titel klampad till tre rader för lika kortgeometri.
