@@ -1708,3 +1708,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Förbered återgår till 3×3 per sida med luftigare gap. Befintlig pager behåller max nio per sida och fler än nio nås sidledes.
 - .91:s viewport-lås av slutkontrollen backas; sidpager är principen för många bilder.
 - Nyinkommet får kvadratisk bildyta + exakt 150 px informationsyta och titel klampad till tre rader för lika kortgeometri.
+
+
+## v2.9.93 – Vision navigation hotfix
+- Regression i v2.9.92: `Fler uppgifter`-modalen ersatte de kanoniska Vision-fälten `category`, `brand`, `season`, `manufacturer`, `size`, `color` med separata modal-ID:n.
+- `populateFormFromItem()` och övrig Vision-logik använder `fieldIds` och kunde därför inte hitta dessa fält när användaren tryckte på miniatyren eller `Fortsätt`.
+- Resultatet var att flödet stannade innan `Gör förslaget klart`.
+- Modalen använder nu samma riktiga formulärfält direkt. Den flytande modaldesignen behålls, men ingen kopierings-/speglingslogik behövs.
+- Denna version är avsiktligt en begränsad hotfix och ändrar inga övriga .92-layoutbeslut.
