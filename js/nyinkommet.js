@@ -143,35 +143,36 @@ import {
     }
 
     items.forEach((item, index) => {
-      const figure = document.createElement("figure");
-      figure.className = "gallery-item nyinkommet-kort image-card-loading";
+      // Same card anatomy/classes as root index "Senast inkommet".
+      const card = document.createElement("article");
+      card.className = "senaste-nytt-kort nyinkommet-kort image-card-loading";
 
-      const imageButton = document.createElement("button");
-      imageButton.className = "nyinkommet-bildknapp";
-      imageButton.type = "button";
-      imageButton.setAttribute("aria-label", item.title ? `Öppna ${item.title} i stort format` : "Öppna bilden i stort format");
-      imageButton.addEventListener("click", () => open(index));
+      const imageWrap = document.createElement("button");
+      imageWrap.className = "senaste-nytt-bild nyinkommet-bildknapp";
+      imageWrap.type = "button";
+      imageWrap.setAttribute("aria-label", item.title ? `Öppna ${item.title} i stort format` : "Öppna bilden i stort format");
+      imageWrap.addEventListener("click", () => open(index));
 
       const img = document.createElement("img");
       img.src = imageUrl(item);
-      img.alt = item.title || "Bild från Container 13 Vintage";
+      img.alt = item.title || "Nyinkommet hos Container 13 Vintage";
       img.loading = "lazy";
       img.decoding = "async";
       img.addEventListener("load", () => {
-        figure.classList.remove("image-card-loading");
-        figure.classList.add("image-card-loaded");
+        card.classList.remove("image-card-loading");
+        card.classList.add("image-card-loaded");
       });
-      img.addEventListener("error", () => figure.remove());
+      img.addEventListener("error", () => card.remove());
 
-      const caption = document.createElement("figcaption");
-      caption.className = "nyinkommet-info";
+      const info = document.createElement("div");
+      info.className = "senaste-nytt-info nyinkommet-info";
 
       const title = String(item.title || "").trim();
       if (item.showTitle !== false && title) {
         const heading = document.createElement("p");
-        heading.className = "nyinkommet-titel";
+        heading.className = "senaste-nytt-titel nyinkommet-titel";
         heading.textContent = title;
-        caption.appendChild(heading);
+        info.appendChild(heading);
       }
 
       const description = String(item.description || "").trim();
@@ -179,7 +180,7 @@ import {
         const copy = document.createElement("p");
         copy.className = "nyinkommet-beskrivning";
         copy.textContent = description;
-        caption.appendChild(copy);
+        info.appendChild(copy);
       }
 
       const extras = [];
@@ -190,17 +191,17 @@ import {
         const meta = document.createElement("p");
         meta.className = "nyinkommet-meta";
         meta.textContent = extras.join(" · ");
-        caption.appendChild(meta);
+        info.appendChild(meta);
       }
 
       const date = document.createElement("p");
-      date.className = "nyinkommet-datum";
-      date.textContent = `◷ ${relativeDateText(item)}`;
+      date.className = "senaste-nytt-datum nyinkommet-datum";
+      date.textContent = relativeDateText(item);
 
-      imageButton.appendChild(img);
-      caption.appendChild(date);
-      figure.append(imageButton, caption);
-      gallery.appendChild(figure);
+      imageWrap.appendChild(img);
+      info.appendChild(date);
+      card.append(imageWrap, info);
+      gallery.appendChild(card);
     });
   }
 
