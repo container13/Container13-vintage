@@ -11,3 +11,5 @@ v2.9.72: Vision får egen modulren inställningskontext i samma Core-layout som 
 v2.9.73: Rensa lokal kunskapsbas i Vision kräver nu en separat bekräftelsedialog innan rensning sker.
 
 v2.9.90: Publicera-inställningar omfattar nu titel, beskrivning, märke, storlek, pris och Demobild/vattenstämpel. Modulens befintliga kugghjul är enda väg till dessa standardinställningar.
+
+v2.9.91: Demobild/vattenstämpel tas bort från generella Publicera-inställningar; den är en kontextuell bildinställning i Anpassa bild. Kanalens visningsstandarder ligger kvar här.
