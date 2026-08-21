@@ -37,16 +37,32 @@
   // Publicera
   const showTitle=document.getElementById("publishC13ShowTitle");
   const showDescription=document.getElementById("publishC13ShowDescription");
+  const showBrand=document.getElementById("publishC13ShowBrand");
+  const showSize=document.getElementById("publishC13ShowSize");
+  const showPrice=document.getElementById("publishC13ShowPrice");
+  const demoWatermark=document.getElementById("publishDemoWatermark");
   const publishSaved=document.getElementById("publishDisplaySaved");
   const KEY_TITLE="ccc-publish-container13-show-title";
   const KEY_DESCRIPTION="ccc-publish-container13-show-description";
+  const KEY_BRAND="ccc-publish-container13-show-brand";
+  const KEY_SIZE="ccc-publish-container13-show-size";
+  const KEY_PRICE="ccc-publish-container13-show-price";
+  const KEY_DEMO="ccc-publish-demo-watermark";
 
   if(moduleName==="publish" && publishCard){
     if(showTitle)showTitle.checked=localStorage.getItem(KEY_TITLE)!=="0";
     if(showDescription)showDescription.checked=localStorage.getItem(KEY_DESCRIPTION)==="1";
+    if(showBrand)showBrand.checked=localStorage.getItem(KEY_BRAND)==="1";
+    if(showSize)showSize.checked=localStorage.getItem(KEY_SIZE)==="1";
+    if(showPrice)showPrice.checked=localStorage.getItem(KEY_PRICE)==="1";
+    if(demoWatermark)demoWatermark.checked=localStorage.getItem(KEY_DEMO)==="1";
     const savePublish=()=>{
       localStorage.setItem(KEY_TITLE,showTitle?.checked?"1":"0");
       localStorage.setItem(KEY_DESCRIPTION,showDescription?.checked?"1":"0");
+      localStorage.setItem(KEY_BRAND,showBrand?.checked?"1":"0");
+      localStorage.setItem(KEY_SIZE,showSize?.checked?"1":"0");
+      localStorage.setItem(KEY_PRICE,showPrice?.checked?"1":"0");
+      localStorage.setItem(KEY_DEMO,demoWatermark?.checked?"1":"0");
       if(publishSaved){
         publishSaved.textContent="Visningen för Container13 är sparad.";
         clearTimeout(savePublish._timer);
@@ -55,6 +71,10 @@
     };
     showTitle?.addEventListener("change",savePublish);
     showDescription?.addEventListener("change",savePublish);
+    showBrand?.addEventListener("change",savePublish);
+    showSize?.addEventListener("change",savePublish);
+    showPrice?.addEventListener("change",savePublish);
+    demoWatermark?.addEventListener("change",savePublish);
   }
 
   // Vision
