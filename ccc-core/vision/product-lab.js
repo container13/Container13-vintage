@@ -25,6 +25,8 @@
   let suppressWorkspaceClick = false;
   let cameraSessionStartCount = 0;
   let autosaveSequence = 0;
+  let editBaseline = "";
+  let editStructuralDirty = false;
   let cameraZoomState = { min: 1, max: 1, current: 1, pinchStartDistance: 0, pinchStartZoom: 1 };
 
   function queueVisionSessionSave() {
@@ -1285,6 +1287,7 @@
       await saveApprovedDraftLocally(item);
       item.approved = true;
       saveBatchMetadata();
+      markEditBaseline();
       moveToNextItem();
     } catch (error) {
       console.error("[CCC Vision] Utkast kunde inte sparas lokalt", error);
@@ -1374,9 +1377,25 @@
     scheduleAutosave();
   }
 
+  function formSnapshot() {
+    return JSON.stringify(Object.fromEntries(fieldIds.map((id) => [id, $("#" + id)?.value ?? ""])));
+  }
+
+  function markEditBaseline() {
+    editBaseline = formSnapshot();
+    editStructuralDirty = false;
+  }
+
+  function hasEditChanges() {
+    return editStructuralDirty || (!!editBaseline && formSnapshot() !== editBaseline);
+  }
+
   function editCurrent(allowWhileAnalyzing = false) {
     editReturnView = allowWhileAnalyzing && !currentItem()?.visionReady ? "workspace" : "suggestion";
     populateFormFromItem(allowWhileAnalyzing);
+    markEditBaseline();
+    const state = $("#draftState");
+    if (state) state.textContent = currentItem()?.approved ? "✓ Sparat automatiskt" : "";
     showStage("editCard", "edit");
   }
 
@@ -1420,11 +1439,13 @@
   }
 
   function scheduleAutosave() {
+    clearTimeout(saveTimer);
+    if (visionView !== "edit" || !currentItem() || !hasEditChanges()) return;
     const sequence = ++autosaveSequence;
     const state = $("#draftState");
     if (state) state.textContent = "Sparar…";
-    clearTimeout(saveTimer);
     saveTimer = setTimeout(async () => {
+      if (!hasEditChanges()) return;
       const ok = await saveEditedCurrent({ quiet: true });
       if (sequence !== autosaveSequence) return;
       if (state) state.textContent = ok ? "✓ Sparat automatiskt" : "Kunde inte spara";
@@ -1434,7 +1455,7 @@
   async function flushAutosave() {
     clearTimeout(saveTimer);
     autosaveSequence += 1;
-    if (visionView !== "edit" || !currentItem()) return true;
+    if (visionView !== "edit" || !currentItem() || !hasEditChanges()) return true;
     const state = $("#draftState");
     if (state) state.textContent = "Sparar…";
     const ok = await saveEditedCurrent({ quiet: true });
@@ -1445,6 +1466,13 @@
   function saveEditedAndBack() {
     const item = currentItem();
     if (!item) return;
+    if (!hasEditChanges()) {
+      clearTimeout(saveTimer);
+      autosaveSequence += 1;
+      editReturnView = "workspace";
+      showWorkspace();
+      return;
+    }
 
     /* Läs formuläret synkront medan redigeringsvyn fortfarande är aktiv. */
     item.editedFields = Object.fromEntries(fieldIds.map((id) => [id, $("#" + id).value]));
@@ -1506,7 +1534,8 @@
       item.analysisPromise.then(() => {
         if (visionView === "edit") {
           populateFormFromItem(true);
-          scheduleAutosave();
+          editStructuralDirty = true;
+    scheduleAutosave();
         } else if (!$("#captureCard").hidden) updateBatchStrip();
         else openReview(currentIndex);
       });
@@ -1874,10 +1903,20 @@
       return;
     }
     switch (visionView) {
-      case "edit":
-        if (!await flushAutosave()) return;
+      case "edit": {
+        if (!hasEditChanges()) {
+          clearTimeout(saveTimer);
+          autosaveSequence += 1;
+          showWorkspace();
+          return;
+        }
+        const saved = await flushAutosave();
         showWorkspace();
+        if (!saved) {
+          console.warn("[CCC Vision] Redigeringen kunde inte sparas, men navigation bakåt tillåts.");
+        }
         return;
+      }
       case "crop":
         if (cropReturnView === "done") finishBatch();
         else if (cropReturnView === "workspace") editCurrent(true);
