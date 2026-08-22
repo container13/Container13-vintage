@@ -1939,3 +1939,10 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Pris autosparas fortsatt medan värdet ändras.
 - Rubrik/Beskrivning och övriga funktioner från v2.10.17 lämnas orörda.
 
+## v2.10.19 – hårt scroll-lås i Rubrik/Beskrivning
+- Fokusvyn för Rubrik/Beskrivning kan inte scrollas som helhet.
+- Rubrik, hjälpttext, X och dialogram ligger fasta.
+- Endast innehållet i det stora skrivfältet får scrolla.
+- iOS rubber-band/overscroll blockeras utanför skrivfältet.
+- Prisfokusläget och övriga funktioner från v2.10.18 lämnas orörda.
+
