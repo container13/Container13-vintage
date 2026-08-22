@@ -3684,3 +3684,62 @@ body.ccc-focused-text-mode{
   position:relative!important;
   width:100%!important;
 }
+
+
+/* v2.10.20 – hard page freeze in Rubrik/Beskrivning; ONLY textarea scrolls */
+html.ccc-focused-text-mode{
+  position:fixed!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  touch-action:none!important;
+}
+
+body.ccc-focused-text-mode{
+  position:fixed!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  touch-action:none!important;
+}
+
+/* The focused screen and every shell layer are non-scrollable. */
+body.ccc-focused-text-mode .text-editor-screen{
+  position:fixed!important;
+  inset:0!important;
+  width:100%!important;
+  height:100dvh!important;
+  max-height:100dvh!important;
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  touch-action:none!important;
+}
+
+body.ccc-focused-text-mode .text-editor-screen .text-editor-dialog-box,
+body.ccc-focused-text-mode .text-editor-screen .text-editor-head,
+body.ccc-focused-text-mode .text-editor-screen .text-editor-field-wrap{
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  touch-action:none!important;
+}
+
+/* This is the ONLY scroll container in focused text mode. */
+body.ccc-focused-text-mode .text-editor-screen #largeTextEditor{
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-y!important;
+}
+
+/* Prevent Safari from exposing document scrollbars/rubber-banding. */
+body.ccc-focused-text-mode::-webkit-scrollbar,
+html.ccc-focused-text-mode::-webkit-scrollbar{
+  display:none!important;
+  width:0!important;
+  height:0!important;
+}

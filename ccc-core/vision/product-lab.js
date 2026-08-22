@@ -29,6 +29,7 @@
   let editStructuralDirty = false;
   let activeTextEditorField = null;
   let textEditorOriginalValue = "";
+  let focusedTextScrollY = 0;
   let editorScrollLockY = 0;
   let editorScrollLocked = false;
 
@@ -1844,6 +1845,7 @@
     editor.classList.toggle("title-editor", isTitle);
     $("#largeTextEditorCount").textContent = `${editor.value.length}/${editor.maxLength}`;
 
+    focusedTextScrollY = window.scrollY || document.documentElement.scrollTop || 0;
     if (editCard) editCard.classList.add("text-editor-active");
     dialog.hidden = false;
     document.documentElement.classList.add("ccc-focused-text-mode");
@@ -1869,6 +1871,9 @@
     document.body.classList.remove("ccc-focused-text-mode");
     activeTextEditorField = null;
     textEditorOriginalValue = "";
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: focusedTextScrollY, left: 0, behavior: "auto" });
+    });
   }
 
   function lockVisionScroll() {
