@@ -3419,3 +3419,123 @@ body.ccc-editor-scroll-locked{
     max-height:calc(var(--editor-vv-height,100dvh) - 44px)!important;
   }
 }
+
+
+/* v2.10.17 – dedicated full focus mode for Rubrik/Beskrivning */
+html.ccc-text-focus-open,
+body.ccc-text-focus-open{
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+}
+
+.text-focus-view{
+  position:fixed!important;
+  inset:0!important;
+  z-index:1400!important;
+  background:var(--bg)!important;
+  display:flex!important;
+  align-items:stretch!important;
+  justify-content:center!important;
+  padding:
+    max(18px, env(safe-area-inset-top))
+    14px
+    max(10px, env(safe-area-inset-bottom))!important;
+  overflow:hidden!important;
+}
+
+.text-focus-view[hidden]{
+  display:none!important;
+}
+
+.text-focus-shell{
+  width:min(100%,620px)!important;
+  height:100%!important;
+  min-height:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:16px!important;
+  overflow:hidden!important;
+}
+
+.text-focus-head{
+  flex:0 0 auto!important;
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+}
+
+.text-focus-head h2{
+  margin:0 0 4px!important;
+  font-size:clamp(1.7rem,6vw,2.25rem)!important;
+}
+
+.text-focus-head p{
+  margin:0!important;
+  color:var(--muted)!important;
+}
+
+.text-focus-editor-wrap{
+  position:relative!important;
+  flex:1 1 auto!important;
+  min-height:0!important;
+  overflow:hidden!important;
+}
+
+.text-focus-view #largeTextEditor{
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0!important;
+  resize:none!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+  padding:18px 18px 42px!important;
+  border-radius:20px!important;
+  border:1px solid color-mix(in srgb,var(--gold) 42%,var(--border))!important;
+  background:var(--surface-2)!important;
+  color:var(--text)!important;
+  font:inherit!important;
+  font-size:1.05rem!important;
+  line-height:1.5!important;
+}
+
+.text-focus-view #largeTextEditor.title-editor{
+  height:100%!important;
+  max-height:none!important;
+  margin:0!important;
+}
+
+.text-focus-view .text-editor-count{
+  position:absolute!important;
+  right:16px!important;
+  bottom:12px!important;
+  margin:0!important;
+  pointer-events:none!important;
+  z-index:2!important;
+}
+
+.text-focus-view .dialog-close-x{
+  flex:0 0 46px!important;
+  width:46px!important;
+  height:46px!important;
+  margin:0!important;
+}
+
+/* Keyboard-open landscape/short viewport: keep header visible, editor uses the rest. */
+@media (max-height:560px){
+  .text-focus-view{
+    padding-top:max(10px, env(safe-area-inset-top))!important;
+  }
+  .text-focus-shell{
+    gap:10px!important;
+  }
+  .text-focus-head h2{
+    font-size:1.55rem!important;
+  }
+  .text-focus-head p{
+    font-size:.9rem!important;
+  }
+}

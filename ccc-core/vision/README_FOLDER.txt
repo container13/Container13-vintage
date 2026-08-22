@@ -51,3 +51,5 @@ v2.10.14: visual viewport för textdialoger, fokuserad prisdialog, diskret väns
 v2.10.15: produkteditor öppnas alltid högst upp; bakgrundsscroll fryses under Rubrik/Beskrivning/Pris/Fler uppgifter och återställs vid stängning.
 
 v2.10.16: iOS textdialog stabiliserad genom overflow-baserat bakgrundslås; ingen body-förskjutning; endast textarea scrollar.
+
+v2.10.17: Rubrik/Beskrivning använder separat helskärms-fokusläge; ingen vanlig editor syns bakom; endast textfältet scrollar.

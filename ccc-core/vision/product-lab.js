@@ -1820,19 +1820,23 @@
     activeTextEditorField = fieldId;
     textEditorOriginalValue = source.value;
     const isTitle = fieldId === "title";
+
     $("#textEditorTitle").textContent = isTitle ? "Rubrik" : "Beskrivning";
     $("#textEditorHint").textContent = isTitle
       ? "Skriv en tydlig rubrik för plagget."
       : "Skriv eller justera beskrivningen.";
+
     editor.maxLength = isTitle ? 100 : 800;
-    editor.rows = isTitle ? 4 : 10;
+    editor.rows = isTitle ? 4 : 12;
     editor.value = source.value;
     editor.placeholder = isTitle ? "Rubrik" : "Beskrivning";
     editor.classList.toggle("title-editor", isTitle);
     $("#largeTextEditorCount").textContent = `${editor.value.length}/${editor.maxLength}`;
-    lockVisionScroll();
+
     dialog.hidden = false;
-    syncFocusedEditorViewport(dialog);
+    document.documentElement.classList.add("ccc-text-focus-open");
+    document.body.classList.add("ccc-text-focus-open");
+
     requestAnimationFrame(() => {
       editor.focus();
       editor.setSelectionRange(editor.value.length, editor.value.length);
@@ -1843,13 +1847,16 @@
     const dialog = $("#textEditorDialog");
     const editor = $("#largeTextEditor");
     if (!dialog || !editor) return;
+
     if (save && activeTextEditorField) {
       commitTextFieldChange(activeTextEditorField, editor.value);
     }
+
     dialog.hidden = true;
+    document.documentElement.classList.remove("ccc-text-focus-open");
+    document.body.classList.remove("ccc-text-focus-open");
     activeTextEditorField = null;
     textEditorOriginalValue = "";
-    unlockVisionScroll();
   }
 
   function lockVisionScroll() {
@@ -1876,7 +1883,6 @@
     editor.value=source.value;
     lockVisionScroll();
     dialog.hidden=false;
-    syncFocusedEditorViewport(dialog);
     requestAnimationFrame(()=>{editor.focus();editor.select();});
   }
   function closePriceEditor(){

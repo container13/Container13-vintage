@@ -8,7 +8,7 @@
 <link rel="manifest" href="../manifest.webmanifest?v=2.9.3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>CCC Vision v2.10.16</title>
+  <title>CCC Vision v2.10.17</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
   <link rel="stylesheet" href="vision.css?v=2.10.6">
   <link rel="stylesheet" href="../core.css?v=2.10.2">
@@ -299,21 +299,23 @@
   </div>
 </div>
 
-<div id="textEditorDialog" class="dialog ccc-dialog text-editor-dialog" role="dialog" aria-modal="true" aria-labelledby="textEditorTitle" hidden>
-  <div class="dialog-box ccc-dialog-box text-editor-dialog-box">
-    <div class="text-editor-head dialog-head-with-close">
+<div id="textEditorDialog" class="text-focus-view" role="dialog" aria-modal="true" aria-labelledby="textEditorTitle" hidden>
+  <div class="text-focus-shell">
+    <div class="text-focus-head">
       <div>
         <h2 id="textEditorTitle">Redigera</h2>
         <p id="textEditorHint">Skriv eller ändra texten.</p>
       </div>
       <button id="closeTextEditorBtn" class="dialog-close-x" type="button" aria-label="Stäng">×</button>
     </div>
-    <div class="text-editor-field-wrap">
+
+    <div class="text-focus-editor-wrap">
       <textarea id="largeTextEditor" autocomplete="off"></textarea>
       <small id="largeTextEditorCount" class="text-editor-count">0/100</small>
     </div>
-
   </div>
+</div>
+
 </div>
 
 <div id="moreFieldsDialog" class="dialog ccc-dialog more-fields-dialog" role="dialog" aria-modal="true" aria-labelledby="moreFieldsTitle" hidden>
