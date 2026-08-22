@@ -1879,3 +1879,12 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Borttagning tar bara bort det exakta Visste du-blocket och lämnar övrig beskrivning kvar.
 - Footer, swipe, bildklick, kameraräknare och övrig editorlayout är orörda.
 
+## v2.10.12 – autosparande dialoger + reversibelt Nyskick
+- Fler uppgifter och storredigering av Rubrik/Beskrivning har nu ett stängkryss uppe till höger.
+- Återgå/Klar är borttagna ur dessa dialoger.
+- Rubrik/Beskrivning förs över löpande från storredigeraren och autosparas; X eller CCC:s Tillbaka stänger dialogen.
+- Footer/header-Tillbaka stänger först en öppen text-/fler-uppgifter-dialog utan att lämna plagget.
+- Nyskick fungerar nu likadant som Visste du?: Lägg till respektive Ta bort.
+- Borttagning av Nyskick tar bara bort just `Nyskick.`-tillägget och lämnar övrig beskrivning kvar.
+- Footerutseende, gridswipe, bildklick och kameraräknare är orörda.
+
