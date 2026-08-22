@@ -1733,3 +1733,8 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Rubrik/pris/beskrivning har något tätare etikett- och fältspacing.
 - Klick på bilder, swipe och kameraräknaren lämnas oförändrade.
 
+## v2.10.9 – tätare Vision-editor
+- Rubrik och Beskrivning ligger som placeholders inne i fälten och försvinner när man skriver.
+- Pris ligger på en rad: Pris vänster och kort beloppsfält höger.
+- Lägg till fler uppgifter och Nästa plagg ligger på samma rad.
+- Footern, touchöppning, swipe och kameraräknare är orörda.
