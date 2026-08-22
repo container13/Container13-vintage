@@ -63,3 +63,5 @@ v2.10.20: hela dokumentet fryses i Rubrik/Beskrivning; endast stora textarea få
 v2.10.21: Rubrik/Beskrivning använder aktiv JS-scrollguard mot iOS fokus-scroll; endast textarea får scrolla.
 
 v2.10.22: textfokus använder faktisk visualViewport-höjd; skalet står fast, endast innersta textarea scrollar och tangentbordet lämnas helt fritt.
+
+v2.10.23: textfokus flyttas ned under statusfältet enligt målbild; tangentbordet lämnas fritt och endast textarea scrollar.

@@ -3866,3 +3866,86 @@ body.ccc-focused-text-mode .text-editor-screen #largeTextEditor.title-editor{
     max-height:132px!important;
   }
 }
+
+
+/* v2.10.23 – final safe-area spacing for Rubrik/Beskrivning */
+body.ccc-focused-text-mode .text-editor-screen{
+  box-sizing:border-box!important;
+  padding-top:max(44px, calc(env(safe-area-inset-top) + 18px))!important;
+  padding-left:14px!important;
+  padding-right:14px!important;
+  padding-bottom:10px!important;
+}
+
+/* Keep the card fully inside the remaining visible area above the keyboard. */
+body.ccc-focused-text-mode .text-editor-screen .text-editor-dialog-box{
+  height:calc(100% - 0px)!important;
+  max-height:100%!important;
+  min-height:0!important;
+  box-sizing:border-box!important;
+  padding:16px!important;
+  gap:12px!important;
+}
+
+/* Header stays fixed and clear of the status bar. */
+body.ccc-focused-text-mode .text-editor-screen .text-editor-head{
+  flex:0 0 auto!important;
+  margin:0!important;
+}
+
+/* Description field uses the remaining space only. */
+body.ccc-focused-text-mode .text-editor-screen .text-editor-field-wrap{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:hidden!important;
+}
+
+/* Only the inner writing area can scroll. */
+body.ccc-focused-text-mode .text-editor-screen #largeTextEditor{
+  flex:1 1 auto!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain!important;
+  touch-action:pan-y!important;
+  -webkit-overflow-scrolling:touch!important;
+}
+
+/* Rubrik is deliberately shorter. */
+body.ccc-focused-text-mode .text-editor-screen #largeTextEditor.title-editor{
+  flex:0 0 auto!important;
+  height:min(132px, calc(var(--focused-vv-height,100dvh) - 220px))!important;
+  min-height:90px!important;
+  max-height:132px!important;
+  margin-top:14px!important;
+  overflow-y:auto!important;
+}
+
+/* On iPhone portrait, reserve more top clearance and keep the keyboard fully visible. */
+@media(max-width:480px) and (orientation:portrait){
+  body.ccc-focused-text-mode .text-editor-screen{
+    padding-top:max(48px, calc(env(safe-area-inset-top) + 20px))!important;
+    padding-left:12px!important;
+    padding-right:12px!important;
+    padding-bottom:8px!important;
+  }
+
+  body.ccc-focused-text-mode .text-editor-screen .text-editor-dialog-box{
+    padding:14px!important;
+    gap:10px!important;
+    border-radius:22px!important;
+  }
+
+  body.ccc-focused-text-mode .text-editor-screen #largeTextEditor:not(.title-editor){
+    min-height:110px!important;
+  }
+
+  body.ccc-focused-text-mode .text-editor-screen #largeTextEditor.title-editor{
+    height:min(120px, calc(var(--focused-vv-height,100dvh) - 215px))!important;
+    min-height:88px!important;
+    max-height:120px!important;
+  }
+}
