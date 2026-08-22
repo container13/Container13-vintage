@@ -1690,3 +1690,9 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Redigeringsvyn får större rubriker, samlade fleruppgifter, tydlig AI-knapp, direkt prisval, bekräftad borttagning och `Nästa plagg`.
 - Kameran får CCC-markering, isolerad riktig kameranypzoom och globala Core-regler mot oavsiktlig dubbeltryckszoom.
 - Root `/version.js` är orörd. CCC-versionen hanteras i `/ccc-core/version.js`.
+
+
+## v2.10.3 – blockerande Vision-vy/gridhotfix
+- Redigeringskortets starka layoutregel får inte längre vinna över `hidden`; bara aktiv Vision-vy visas.
+- 3×3-gridden har explicit kvadratisk yta och tre rader så återupptagna miniatyrer inte kollapsar.
+- Övrig v2.10.2-funktionalitet är oförändrad. Root `/version.js` är orörd.
