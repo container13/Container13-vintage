@@ -3421,68 +3421,71 @@ body.ccc-editor-scroll-locked{
 }
 
 
-/* v2.10.17 – dedicated full focus mode for Rubrik/Beskrivning */
-html.ccc-text-focus-open,
-body.ccc-text-focus-open{
+/* v2.10.17 – true focused fullscreen editor for Rubrik/Beskrivning */
+html.ccc-focused-text-mode,
+body.ccc-focused-text-mode{
   overflow:hidden!important;
+  height:100%!important;
   overscroll-behavior:none!important;
 }
 
-.text-focus-view{
+#editCard.text-editor-active{
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+/* Completely separate editor screen: no underlying Vision card visible. */
+.text-editor-screen{
   position:fixed!important;
   inset:0!important;
-  z-index:1400!important;
-  background:var(--bg)!important;
+  z-index:3000!important;
   display:flex!important;
   align-items:stretch!important;
   justify-content:center!important;
   padding:
     max(18px, env(safe-area-inset-top))
     14px
-    max(10px, env(safe-area-inset-bottom))!important;
+    max(12px, env(safe-area-inset-bottom))
+    !important;
+  background:var(--bg,#0f131b)!important;
   overflow:hidden!important;
+  overscroll-behavior:none!important;
+  touch-action:none!important;
 }
-
-.text-focus-view[hidden]{
+.text-editor-screen[hidden]{
   display:none!important;
 }
 
-.text-focus-shell{
-  width:min(100%,620px)!important;
+.text-editor-screen .text-editor-dialog-box{
+  width:min(100%,560px)!important;
   height:100%!important;
-  min-height:0!important;
+  max-height:none!important;
+  margin:0 auto!important;
+  padding:18px!important;
+  border-radius:24px!important;
   display:flex!important;
   flex-direction:column!important;
   gap:16px!important;
   overflow:hidden!important;
+  background:var(--surface,#171d28)!important;
+  border:1px solid var(--border)!important;
+  box-shadow:none!important;
 }
 
-.text-focus-head{
+.text-editor-screen .text-editor-head{
   flex:0 0 auto!important;
-  display:flex!important;
-  align-items:flex-start!important;
-  justify-content:space-between!important;
-  gap:12px!important;
 }
 
-.text-focus-head h2{
-  margin:0 0 4px!important;
-  font-size:clamp(1.7rem,6vw,2.25rem)!important;
-}
-
-.text-focus-head p{
-  margin:0!important;
-  color:var(--muted)!important;
-}
-
-.text-focus-editor-wrap{
-  position:relative!important;
+.text-editor-screen .text-editor-field-wrap{
   flex:1 1 auto!important;
   min-height:0!important;
   overflow:hidden!important;
+  margin:0!important;
+  display:flex!important;
 }
 
-.text-focus-view #largeTextEditor{
+.text-editor-screen #largeTextEditor{
+  flex:1 1 auto!important;
   width:100%!important;
   height:100%!important;
   min-height:0!important;
@@ -3490,52 +3493,130 @@ body.ccc-text-focus-open{
   margin:0!important;
   resize:none!important;
   overflow-y:auto!important;
+  overflow-x:hidden!important;
   overscroll-behavior:contain!important;
   -webkit-overflow-scrolling:touch!important;
-  padding:18px 18px 42px!important;
+  touch-action:pan-y!important;
+  padding:18px 18px 38px!important;
   border-radius:20px!important;
-  border:1px solid color-mix(in srgb,var(--gold) 42%,var(--border))!important;
-  background:var(--surface-2)!important;
-  color:var(--text)!important;
-  font:inherit!important;
-  font-size:1.05rem!important;
-  line-height:1.5!important;
 }
 
-.text-focus-view #largeTextEditor.title-editor{
-  height:100%!important;
-  max-height:none!important;
-  margin:0!important;
+/* Rubrik does not need the whole screen as a tall text box. */
+.text-editor-screen #largeTextEditor.title-editor{
+  flex:0 0 auto!important;
+  height:180px!important;
+  min-height:180px!important;
+  max-height:180px!important;
+  margin-top:22px!important;
 }
 
-.text-focus-view .text-editor-count{
-  position:absolute!important;
+/* Keep the counter inside the writing surface. */
+.text-editor-screen .text-editor-count{
   right:16px!important;
-  bottom:12px!important;
-  margin:0!important;
+  bottom:14px!important;
+}
+
+/* iPhone keyboard: viewport shrinks the fixed screen naturally;
+   nothing in the shell scrolls, only the textarea. */
+@media(max-width:480px) and (orientation:portrait){
+  .text-editor-screen{
+    padding-top:max(20px,env(safe-area-inset-top))!important;
+    padding-bottom:10px!important;
+  }
+  .text-editor-screen .text-editor-dialog-box{
+    border-radius:22px!important;
+    padding:16px!important;
+  }
+  .text-editor-screen #largeTextEditor.title-editor{
+    height:170px!important;
+    min-height:170px!important;
+    max-height:170px!important;
+    margin-top:26px!important;
+  }
+}
+
+
+/* v2.10.18 – true focused fullscreen price editor */
+html.ccc-focused-price-mode,
+body.ccc-focused-price-mode{
+  overflow:hidden!important;
+  height:100%!important;
+  overscroll-behavior:none!important;
+}
+
+#editCard.price-editor-active{
+  visibility:hidden!important;
   pointer-events:none!important;
-  z-index:2!important;
 }
 
-.text-focus-view .dialog-close-x{
-  flex:0 0 46px!important;
-  width:46px!important;
-  height:46px!important;
-  margin:0!important;
+.price-editor-screen{
+  position:fixed!important;
+  inset:0!important;
+  z-index:3000!important;
+  display:flex!important;
+  align-items:stretch!important;
+  justify-content:center!important;
+  padding:
+    max(18px, env(safe-area-inset-top))
+    14px
+    max(12px, env(safe-area-inset-bottom))
+    !important;
+  background:var(--bg,#0f131b)!important;
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  touch-action:none!important;
+}
+.price-editor-screen[hidden]{display:none!important}
+
+.price-editor-screen .price-editor-dialog-box{
+  width:min(100%,560px)!important;
+  height:auto!important;
+  max-height:none!important;
+  margin:0 auto!important;
+  padding:18px!important;
+  border-radius:24px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:22px!important;
+  align-self:flex-start!important;
+  overflow:hidden!important;
+  background:var(--surface,#171d28)!important;
+  border:1px solid var(--border)!important;
+  box-shadow:none!important;
 }
 
-/* Keyboard-open landscape/short viewport: keep header visible, editor uses the rest. */
-@media (max-height:560px){
-  .text-focus-view{
-    padding-top:max(10px, env(safe-area-inset-top))!important;
+.price-editor-screen .price-editor-head{
+  flex:0 0 auto!important;
+}
+
+.price-editor-screen .price-editor-field{
+  flex:0 0 auto!important;
+  height:92px!important;
+  border-radius:20px!important;
+}
+
+.price-editor-screen .price-editor-field input{
+  height:92px!important;
+  font-size:2rem!important;
+  padding-left:20px!important;
+  padding-right:72px!important;
+}
+
+.price-editor-screen .price-editor-field span{
+  right:20px!important;
+  font-size:1.3rem!important;
+}
+
+/* Keep the focused price card comfortably below the status area.
+   The keyboard naturally occupies the lower viewport. */
+@media(max-width:480px) and (orientation:portrait){
+  .price-editor-screen{
+    padding-top:max(28px,env(safe-area-inset-top))!important;
+    padding-bottom:10px!important;
   }
-  .text-focus-shell{
-    gap:10px!important;
-  }
-  .text-focus-head h2{
-    font-size:1.55rem!important;
-  }
-  .text-focus-head p{
-    font-size:.9rem!important;
+  .price-editor-screen .price-editor-dialog-box{
+    border-radius:22px!important;
+    padding:18px!important;
+    gap:24px!important;
   }
 }

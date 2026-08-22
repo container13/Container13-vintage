@@ -52,4 +52,6 @@ v2.10.15: produkteditor öppnas alltid högst upp; bakgrundsscroll fryses under 
 
 v2.10.16: iOS textdialog stabiliserad genom overflow-baserat bakgrundslås; ingen body-förskjutning; endast textarea scrollar.
 
-v2.10.17: Rubrik/Beskrivning använder separat helskärms-fokusläge; ingen vanlig editor syns bakom; endast textfältet scrollar.
+v2.10.17: Rubrik/Beskrivning är nu separat helskärms-fokusläge; normal Vision-editor döljs helt under skrivning.
+
+v2.10.18: Pris använder separat helskärms-fokusläge; normal Vision-editor döljs helt under prisinmatning.

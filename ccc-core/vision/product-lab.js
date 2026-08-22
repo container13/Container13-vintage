@@ -215,6 +215,12 @@
   }
 
   function showWorkspace() {
+    document.documentElement.classList.remove("ccc-focused-price-mode");
+    document.body.classList.remove("ccc-focused-price-mode");
+    $("#editCard")?.classList.remove("price-editor-active");
+    document.documentElement.classList.remove("ccc-focused-text-mode");
+    document.body.classList.remove("ccc-focused-text-mode");
+    $("#editCard")?.classList.remove("text-editor-active");
     unlockVisionScroll();
     showStage("captureCard", batchItems.length ? "workspace" : "start");
     updateBatchStrip();
@@ -1398,6 +1404,12 @@
   }
 
   function editCurrent(allowWhileAnalyzing = false) {
+    document.documentElement.classList.remove("ccc-focused-price-mode");
+    document.body.classList.remove("ccc-focused-price-mode");
+    $("#editCard")?.classList.remove("price-editor-active");
+    document.documentElement.classList.remove("ccc-focused-text-mode");
+    document.body.classList.remove("ccc-focused-text-mode");
+    $("#editCard")?.classList.remove("text-editor-active");
     unlockVisionScroll();
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     editReturnView = allowWhileAnalyzing && !currentItem()?.visionReady ? "workspace" : "suggestion";
@@ -1815,27 +1827,27 @@
     const dialog = $("#textEditorDialog");
     const editor = $("#largeTextEditor");
     const source = $("#" + fieldId);
+    const editCard = $("#editCard");
     if (!dialog || !editor || !source) return;
 
     activeTextEditorField = fieldId;
     textEditorOriginalValue = source.value;
     const isTitle = fieldId === "title";
-
     $("#textEditorTitle").textContent = isTitle ? "Rubrik" : "Beskrivning";
     $("#textEditorHint").textContent = isTitle
       ? "Skriv en tydlig rubrik för plagget."
       : "Skriv eller justera beskrivningen.";
-
     editor.maxLength = isTitle ? 100 : 800;
-    editor.rows = isTitle ? 4 : 12;
+    editor.rows = isTitle ? 4 : 10;
     editor.value = source.value;
     editor.placeholder = isTitle ? "Rubrik" : "Beskrivning";
     editor.classList.toggle("title-editor", isTitle);
     $("#largeTextEditorCount").textContent = `${editor.value.length}/${editor.maxLength}`;
 
+    if (editCard) editCard.classList.add("text-editor-active");
     dialog.hidden = false;
-    document.documentElement.classList.add("ccc-text-focus-open");
-    document.body.classList.add("ccc-text-focus-open");
+    document.documentElement.classList.add("ccc-focused-text-mode");
+    document.body.classList.add("ccc-focused-text-mode");
 
     requestAnimationFrame(() => {
       editor.focus();
@@ -1846,15 +1858,15 @@
   function closeTextEditor({ save = false } = {}) {
     const dialog = $("#textEditorDialog");
     const editor = $("#largeTextEditor");
+    const editCard = $("#editCard");
     if (!dialog || !editor) return;
-
     if (save && activeTextEditorField) {
       commitTextFieldChange(activeTextEditorField, editor.value);
     }
-
     dialog.hidden = true;
-    document.documentElement.classList.remove("ccc-text-focus-open");
-    document.body.classList.remove("ccc-text-focus-open");
+    if (editCard) editCard.classList.remove("text-editor-active");
+    document.documentElement.classList.remove("ccc-focused-text-mode");
+    document.body.classList.remove("ccc-focused-text-mode");
     activeTextEditorField = null;
     textEditorOriginalValue = "";
   }
@@ -1878,17 +1890,21 @@
   }
 
   function openPriceEditor() {
-    const dialog=$("#priceEditorDialog"), editor=$("#largePriceEditor"), source=$("#price");
+    const dialog=$("#priceEditorDialog"), editor=$("#largePriceEditor"), source=$("#price"), editCard=$("#editCard");
     if(!dialog||!editor||!source)return;
     editor.value=source.value;
-    lockVisionScroll();
+    if(editCard)editCard.classList.add("price-editor-active");
+    document.documentElement.classList.add("ccc-focused-price-mode");
+    document.body.classList.add("ccc-focused-price-mode");
     dialog.hidden=false;
     requestAnimationFrame(()=>{editor.focus();editor.select();});
   }
   function closePriceEditor(){
-    const dialog=$("#priceEditorDialog");
+    const dialog=$("#priceEditorDialog"), editCard=$("#editCard");
     if(dialog)dialog.hidden=true;
-    unlockVisionScroll();
+    if(editCard)editCard.classList.remove("price-editor-active");
+    document.documentElement.classList.remove("ccc-focused-price-mode");
+    document.body.classList.remove("ccc-focused-price-mode");
   }
 
   function syncFocusedEditorViewport(dialog=$("#textEditorDialog")){
@@ -1904,11 +1920,7 @@
     dialog.style.setProperty("--editor-vv-top", `${top}px`);
     dialog.style.setProperty("--editor-vv-height", `${height}px`);
   }
-  function syncOpenFocusedEditors(){
-    const text=$("#textEditorDialog"),price=$("#priceEditorDialog");
-    if(text&&!text.hidden)syncFocusedEditorViewport(text);
-    if(price&&!price.hidden)syncFocusedEditorViewport(price);
-  }
+  function syncOpenFocusedEditors(){}
 
   function closeOptionalExtras() {
     const dialog=$("#optionalExtrasDialog");
