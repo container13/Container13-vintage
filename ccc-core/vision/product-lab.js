@@ -438,7 +438,7 @@
       wrap.type = "button";
       wrap.className = "batch-thumb";
       if (index === currentIndex) wrap.classList.add("is-selected");
-      wrap.setAttribute("aria-label", `Plagg ${index + 1}${item.visionReady ? ", analys klar" : item.analysisMode === "manual" ? ", ej AI-analyserat" : ", analyseras"}`);
+      wrap.setAttribute("aria-label", `Gör klart plagg · ${index + 1}${item.visionReady ? ", analys klar" : item.analysisMode === "manual" ? ", ej AI-analyserat" : ", analyseras"}`);
       const img = document.createElement("img");
       img.src = item.previewUrl;
       img.alt = `Plagg ${index + 1}`;

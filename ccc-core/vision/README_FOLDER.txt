@@ -65,3 +65,5 @@ v2.10.21: Rubrik/Beskrivning använder aktiv JS-scrollguard mot iOS fokus-scroll
 v2.10.22: textfokus använder faktisk visualViewport-höjd; skalet står fast, endast innersta textarea scrollar och tangentbordet lämnas helt fritt.
 
 v2.10.23: textfokus flyttas ned under statusfältet enligt målbild; tangentbordet lämnas fritt och endast textarea scrollar.
+
+v2.10.24: arbetsrubriken ändrad från `Plagg X av Y` till `Gör klart plagg · X av Y`; inga andra UI-/funktionsändringar.
