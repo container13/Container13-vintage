@@ -1773,3 +1773,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Räknaren ligger kvar i skrivfältet.
 - Befintlig autosave/X/Tillbaka-logik, Nyskick/Visste du-toggle, footerutseende, swipe och kameraräknare är orörda.
 
+## v2.10.14 – fokuserad tangentbordsredigering + diskret manuell AI
+- Rubrik/Beskrivning positioneras mot iOS visual viewport när tangentbordet är öppet, med luft mot statusfältet.
+- Dialogskalet är låst; endast innehållet i textfältet får scrolla.
+- Pris öppnas i en egen kompakt fokusdialog; bakgrunden tonas ned och kan inte råkas tryckas.
+- När automatisk AI är av blir den manuella AI-knappen liten, sekundär och vänsterställd.
+- Alla lediga bildplatser heter `+ Nytt foto` och använder samma befintliga filväljare.
+- Footer, swipe, autosave och befintliga toggles är orörda.
+
