@@ -1859,3 +1859,8 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Syftet är att direkt förklara vad användaren gör i vyn utan att lägga till ytterligare UI.
 - Övrig layout och funktionalitet, inklusive den nu fungerande Rubrik/Beskrivning-tangentbordslösningen från v2.10.23, lämnas orörd.
 
+## v2.10.25 – korrekt synlig arbetsrubrik
+- Den faktiska synliga rubriken i `ccc-core/vision/index.html` ändras från `Plagg X av Y` till `Gör klart plagg · X av Y`.
+- v2.10.24 ändrade fel kodställe och påverkade därför inte den synliga rubriken.
+- Inga andra UI- eller funktionsändringar görs.
+
