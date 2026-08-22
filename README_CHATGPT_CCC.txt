@@ -1862,3 +1862,12 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Pris ligger på en rad: Pris vänster och kort beloppsfält höger.
 - Lägg till fler uppgifter och Nästa plagg ligger på samma rad.
 - Footern, touchöppning, swipe och kameraräknare är orörda.
+
+## v2.10.10 – tillbaka/sparlogik + lite mer luft
+- Att bara öppna ett plagg räknas inte längre som en ändring och utlöser ingen ny sparning.
+- Tillbaka från ett orört plagg går direkt till arbetsytan utan felmeddelande.
+- Vid verkliga ändringar autosparas fortfarande formuläret.
+- Ett verkligt sparfel får inte längre låsa användaren kvar i editorn; navigation bakåt tillåts ändå.
+- Editorn har fått några pixlar mer luft mellan bilddel, AI-knapp, fält och nedersta knapprad, men enskärmslayouten behålls.
+- Footer, gridswipe, bildklick och kameraräknare är orörda.
+
