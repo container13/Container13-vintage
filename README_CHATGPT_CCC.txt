@@ -1905,3 +1905,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Alla lediga bildplatser heter `+ Nytt foto` och använder samma befintliga filväljare.
 - Footer, swipe, autosave och befintliga toggles är orörda.
 
+## v2.10.15 – scroll/state-fix i Vision-editor
+- När ett plagg öppnas i editorn återställs sidans scroll alltid till toppen.
+- Föregående scrollposition från ett tidigare besök på plagget får inte följa med in igen.
+- När Rubrik, Beskrivning, Pris eller Fler uppgifter öppnas fryses Vision-sidan bakom dialogen på exakt aktuell position.
+- När dialogen stängs återställs samma scrollposition i plagget.
+- Själva sidan bakom dialogen kan inte längre scrollas medan tangentbord/dialog är aktiv.
+- Befintlig textscroll inne i skrivfältet, footer, swipe, bildklick, autosave och AI-/toggle-logik lämnas orörda.
+
