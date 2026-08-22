@@ -1319,8 +1319,9 @@
       const canAnalyze = !!window.CCC_VISION_AI?.configured?.();
       manualAi.hidden = !canAnalyze;
       manualAi.disabled = !!item.analysisInProgress;
-      manualAi.textContent = item.analysisInProgress ? "Analyserar…" : (item.visionReady ? "Analysera igen" : "Analysera med AI");
-      manualAi.classList.toggle("is-secondary", !!item.visionReady);
+      manualAi.textContent = item.analysisInProgress ? "Analyserar…" : (item.visionReady ? "↻ Analysera igen" : "✦ Analysera med AI");
+      manualAi.classList.toggle("is-secondary", !!item.visionReady || !visionSettings().aiAuto);
+      manualAi.classList.toggle("is-manual-quiet", !visionSettings().aiAuto);
     }
   }
 
@@ -1354,7 +1355,7 @@
       const firstEmpty = list.children.length === 1;
       if (firstEmpty) {
         add.innerHTML = "<strong>＋</strong><span>+ Nytt foto</span>";
-        add.addEventListener("click", () => $("#sameGarmentAlbumInput")?.click());
+        add.addEventListener("click", () => $("#sameGarmentInput")?.click());
       } else {
         add.innerHTML = `<strong>＋</strong><span>${item.extraFiles.length ? "+ Nytt foto" : "+ Nytt foto"}</span>`;
         add.addEventListener("click", () => $("#sameGarmentInput")?.click());
@@ -1823,6 +1824,7 @@
     editor.classList.toggle("title-editor", isTitle);
     $("#largeTextEditorCount").textContent = `${editor.value.length}/${editor.maxLength}`;
     dialog.hidden = false;
+    syncFocusedEditorViewport(dialog);
     requestAnimationFrame(() => {
       editor.focus();
       editor.setSelectionRange(editor.value.length, editor.value.length);
@@ -1839,6 +1841,29 @@
     dialog.hidden = true;
     activeTextEditorField = null;
     textEditorOriginalValue = "";
+  }
+
+  function openPriceEditor() {
+    const dialog=$("#priceEditorDialog"), editor=$("#largePriceEditor"), source=$("#price");
+    if(!dialog||!editor||!source)return;
+    editor.value=source.value;
+    dialog.hidden=false;
+    syncFocusedEditorViewport(dialog);
+    requestAnimationFrame(()=>{editor.focus();editor.select();});
+  }
+  function closePriceEditor(){const dialog=$("#priceEditorDialog");if(dialog)dialog.hidden=true;}
+
+  function syncFocusedEditorViewport(dialog=$("#textEditorDialog")){
+    if(!dialog||dialog.hidden)return;
+    const vv=window.visualViewport;
+    if(!vv)return;
+    dialog.style.setProperty("--editor-vv-top",`${vv.offsetTop}px`);
+    dialog.style.setProperty("--editor-vv-height",`${vv.height}px`);
+  }
+  function syncOpenFocusedEditors(){
+    const text=$("#textEditorDialog"),price=$("#priceEditorDialog");
+    if(text&&!text.hidden)syncFocusedEditorViewport(text);
+    if(price&&!price.hidden)syncFocusedEditorViewport(price);
   }
 
   function closeOptionalExtras() {
@@ -1918,7 +1943,7 @@
           contextSub.textContent = "AI-förslag klart – ändra det du vill.";
         }
 
-        if (button) { button.hidden = false; button.textContent = "Analysera igen"; button.classList.add("is-secondary"); }
+        if (button) { button.hidden = false; button.textContent = "↻ Analysera igen"; button.classList.add("is-secondary"); }
         saveBatchMetadata();
         scheduleAutosave();
       } else {
@@ -1940,7 +1965,7 @@
 
       if (currentItem()?.id === itemId && button) {
         button.disabled = false;
-        button.textContent = item.visionReady ? "Analysera igen" : "Analysera med AI";
+        button.textContent = item.visionReady ? "↻ Analysera igen" : "✦ Analysera med AI";
         button.classList.toggle("is-secondary", !!item.visionReady);
         button.hidden = !window.CCC_VISION_AI?.configured?.();
       }
@@ -1998,6 +2023,8 @@
   }
 
   async function goBackFromVision() {
+    const priceEditor=$("#priceEditorDialog");
+    if(visionView==="edit" && priceEditor && !priceEditor.hidden){closePriceEditor();return;}
     const textEditor=$("#textEditorDialog");
     if(visionView==="edit" && textEditor && !textEditor.hidden){
       closeTextEditor({save:false});
@@ -2089,7 +2116,10 @@
   });
 
   $("#visionSettingsOverlay")?.addEventListener("click", (event) => { if (event.target === visionSettingsOverlay) setVisionSettingsOpen(false); });
-  $("#visionAiAutoSetting")?.addEventListener("change", (event) => saveVisionSetting("ccc-vision-ai-auto", event.target.checked));
+  $("#visionAiAutoSetting")?.addEventListener("change",(event)=>{
+    saveVisionSetting("ccc-vision-ai-auto",event.target.checked);
+    if(visionView==="edit")populateFormFromItem();
+  });
   $("#visionLearnEditsSetting")?.addEventListener("change", (event) => saveVisionSetting("ccc-vision-learn-edits", event.target.checked));
 
   document.addEventListener("ccc:core-ready",()=>updateHeaderContext(),{once:true});
@@ -2232,6 +2262,20 @@
       }
     });
   });
+
+  $("#price")?.addEventListener("click", openPriceEditor);
+  $("#price")?.addEventListener("focus", (event)=>{event.target.blur();openPriceEditor();});
+  $("#largePriceEditor")?.addEventListener("input",()=>{
+    const editor=$("#largePriceEditor"),source=$("#price");
+    if(!editor||!source)return;
+    source.value=editor.value;
+    const item=currentItem();
+    if(item)item.editedFields=Object.fromEntries(fieldIds.map(id=>[id,$("#"+id).value]));
+    scheduleAutosave();
+  });
+  $("#closePriceEditorBtn")?.addEventListener("click",closePriceEditor);
+  window.visualViewport?.addEventListener("resize",syncOpenFocusedEditors);
+  window.visualViewport?.addEventListener("scroll",syncOpenFocusedEditors);
 
   $("#largeTextEditor")?.addEventListener("input", () => {
     const editor = $("#largeTextEditor");

@@ -8,7 +8,7 @@
 <link rel="manifest" href="../manifest.webmanifest?v=2.9.3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>CCC Vision v2.10.13</title>
+  <title>CCC Vision v2.10.14</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
   <link rel="stylesheet" href="vision.css?v=2.10.6">
   <link rel="stylesheet" href="../core.css?v=2.10.2">
@@ -199,7 +199,7 @@
         <div class="price-row price-row--single">
           <label>
             <span>Pris</span>
-            <div class="price-input"><input id="price" type="number" min="0" inputmode="numeric" placeholder="0"><span>kr</span></div>
+            <div class="price-input"><input id="price" type="number" min="0" inputmode="numeric" placeholder="0" readonly aria-haspopup="dialog" aria-controls="priceEditorDialog"><span>kr</span></div>
           </label>
         </div>
 
@@ -285,6 +285,19 @@
 
   
 
+
+<div id="priceEditorDialog" class="dialog ccc-dialog price-editor-dialog" role="dialog" aria-modal="true" aria-labelledby="priceEditorTitle" hidden>
+  <div class="dialog-box price-editor-dialog-box">
+    <div class="dialog-head-with-close price-editor-head">
+      <div><h2 id="priceEditorTitle">Pris</h2><p>Skriv priset för plagget.</p></div>
+      <button id="closePriceEditorBtn" class="dialog-close-x" type="button" aria-label="Stäng">×</button>
+    </div>
+    <div class="price-editor-field">
+      <input id="largePriceEditor" type="number" min="0" inputmode="numeric" placeholder="0">
+      <span>kr</span>
+    </div>
+  </div>
+</div>
 
 <div id="textEditorDialog" class="dialog ccc-dialog text-editor-dialog" role="dialog" aria-modal="true" aria-labelledby="textEditorTitle" hidden>
   <div class="dialog-box ccc-dialog-box text-editor-dialog-box">

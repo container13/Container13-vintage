@@ -3315,3 +3315,39 @@ body.camera-open .ccc-app-shell{background:#050505!important}
     margin-top:14px!important;
   }
 }
+
+/* v2.10.14 – focused keyboard editing + quieter manual AI */
+#editCard .manual-ai-button.is-manual-quiet{
+ width:auto!important;min-width:0!important;min-height:36px!important;padding:6px 11px!important;
+ margin:1px auto 1px 0!important;align-self:flex-start!important;background:transparent!important;
+ border:1px solid color-mix(in srgb,var(--gold) 55%,var(--border))!important;color:var(--gold)!important;
+ font-size:.82rem!important;font-weight:800!important;box-shadow:none!important;
+}
+.text-editor-dialog,.price-editor-dialog{
+ position:fixed!important;left:0!important;right:0!important;top:var(--editor-vv-top,0px)!important;
+ height:var(--editor-vv-height,100dvh)!important;bottom:auto!important;padding:24px 12px 16px!important;
+ overflow:hidden!important;display:flex!important;align-items:center!important;justify-content:center!important;
+ touch-action:none!important;
+}
+.text-editor-dialog[hidden],.price-editor-dialog[hidden]{display:none!important}
+.text-editor-dialog-box{
+ width:min(calc(100vw - 24px),560px)!important;height:auto!important;
+ max-height:calc(var(--editor-vv-height,100dvh) - 52px)!important;padding:18px!important;gap:16px!important;
+ overflow:hidden!important;
+}
+.text-editor-field-wrap{flex:0 1 auto!important;overflow:hidden!important}
+#largeTextEditor{
+ min-height:0!important;height:min(300px,calc(var(--editor-vv-height,100dvh) - 205px))!important;
+ max-height:min(300px,calc(var(--editor-vv-height,100dvh) - 205px))!important;overflow-y:auto!important;
+}
+#largeTextEditor.title-editor{
+ height:min(155px,calc(var(--editor-vv-height,100dvh) - 205px))!important;
+ max-height:min(155px,calc(var(--editor-vv-height,100dvh) - 205px))!important;margin-top:18px!important;
+}
+.price-editor-dialog{z-index:1260!important;background:rgba(4,6,10,.80)!important;backdrop-filter:blur(5px)}
+.price-editor-dialog-box{width:min(calc(100vw - 40px),390px)!important;padding:18px!important;gap:18px!important;overflow:hidden!important}
+.price-editor-head h2{margin:0 0 3px!important}.price-editor-head p{margin:0!important}
+.price-editor-field{position:relative;display:flex;align-items:center;border:1px solid color-mix(in srgb,var(--gold) 65%,var(--border));border-radius:18px;background:var(--surface-2);overflow:hidden}
+.price-editor-field input{width:100%;height:72px;padding:10px 64px 10px 18px;border:0!important;outline:0!important;background:transparent!important;color:var(--text);font-size:1.7rem;font-weight:850}
+.price-editor-field span{position:absolute;right:18px;color:var(--muted);font-size:1.15rem;font-weight:900;pointer-events:none}
+#editCard #price[readonly]{cursor:pointer!important}

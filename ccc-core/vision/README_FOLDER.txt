@@ -45,3 +45,5 @@ v2.10.11: stor dialog för Rubrik/Beskrivning och reversibelt Visste du?-tilläg
 v2.10.12: X + autosave i text/Fler uppgifter; Visste du och Nyskick är reversibla. Footerutseendet orört.
 
 v2.10.13: alla tomma bildplatser = + Nytt foto via befintlig picker; textdialog låst, endast textarea scrollar.
+
+v2.10.14: visual viewport för textdialoger, fokuserad prisdialog, diskret vänsterställd manuell AI när auto-AI är av.
