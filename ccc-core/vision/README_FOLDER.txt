@@ -67,3 +67,5 @@ v2.10.22: textfokus använder faktisk visualViewport-höjd; skalet står fast, e
 v2.10.23: textfokus flyttas ned under statusfältet enligt målbild; tangentbordet lämnas fritt och endast textarea scrollar.
 
 v2.10.24: arbetsrubriken ändrad från `Plagg X av Y` till `Gör klart plagg · X av Y`; inga andra UI-/funktionsändringar.
+
+v2.10.25: faktisk synlig `editTitle` ändrad till `Gör klart plagg · X av Y`; inget annat ändrat.
