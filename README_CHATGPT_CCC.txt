@@ -1849,3 +1849,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Touchöppning, swipe och kameraräknare från v2.10.6 lämnas oförändrade.
 - Root `/version.js` är fortsatt orörd.
 
+## v2.10.8 – ännu kompaktare Vision-editor
+- Footern är helt orörd.
+- `Lägg till fler uppgifter` och `Nästa plagg` ligger nu på samma rad inne i editor-kortet.
+- Överkanten i editor-kortet, sparstatus och bildsektionen har mindre vertikal luft.
+- Bildrutorna i editorläget är lägre för att vinna höjd utan att ändra touch/klick-funktionerna.
+- Rubrik/pris/beskrivning har något tätare etikett- och fältspacing.
+- Klick på bilder, swipe och kameraräknaren lämnas oförändrade.
+
