@@ -1798,3 +1798,12 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Bakgrunden isoleras/tonas så underliggande editor inte kan blöda igenom eller ta emot tryck.
 - Övriga funktioner från v2.10.15 lämnas orörda.
 
+## v2.10.17 – separat fokusläge för Rubrik/Beskrivning
+- Den tidigare flytande textdialogen är ersatt med ett separat fokuserat redigeringsläge som täcker hela Vision-vyn.
+- När Rubrik eller Beskrivning öppnas syns inte den vanliga editorn bakom.
+- Rubrik/Beskrivning + X ligger fast överst i fokusläget; skrivfältet använder resten av tillgängliga ytan.
+- Endast innehållet i skrivfältet får scrolla.
+- X och CCC:s Tillbaka stänger fokusläget och återgår till samma plagg.
+- Autosave medan man skriver behålls.
+- Prisdialog, footer, swipe, bildklick, kameraräknare och övrig editorlogik lämnas orörda.
+
