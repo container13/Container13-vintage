@@ -3743,3 +3743,33 @@ html.ccc-focused-text-mode::-webkit-scrollbar{
   width:0!important;
   height:0!important;
 }
+
+
+/* v2.10.21 – iOS document scroll is guarded in JS; textarea remains sole scroller */
+html.ccc-focused-text-mode,
+body.ccc-focused-text-mode{
+  position:static!important;
+  inset:auto!important;
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  touch-action:none!important;
+  height:100%!important;
+  max-height:100%!important;
+}
+
+body.ccc-focused-text-mode .text-editor-screen{
+  position:fixed!important;
+  inset:0!important;
+  width:100vw!important;
+  height:100dvh!important;
+  max-height:100dvh!important;
+  overflow:hidden!important;
+}
+
+body.ccc-focused-text-mode .text-editor-screen #largeTextEditor{
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  touch-action:pan-y!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+}

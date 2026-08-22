@@ -30,6 +30,9 @@
   let activeTextEditorField = null;
   let textEditorOriginalValue = "";
   let focusedTextScrollY = 0;
+  let focusedTextScrollGuard = false;
+  let focusedTextGuardFrame = 0;
+
   let editorScrollLockY = 0;
   let editorScrollLocked = false;
 
@@ -216,6 +219,7 @@
   }
 
   function showWorkspace() {
+    stopFocusedTextGuard();
     document.documentElement.classList.remove("ccc-focused-price-mode");
     document.body.classList.remove("ccc-focused-price-mode");
     $("#editCard")?.classList.remove("price-editor-active");
@@ -1405,6 +1409,7 @@
   }
 
   function editCurrent(allowWhileAnalyzing = false) {
+    stopFocusedTextGuard();
     document.documentElement.classList.remove("ccc-focused-price-mode");
     document.body.classList.remove("ccc-focused-price-mode");
     $("#editCard")?.classList.remove("price-editor-active");
@@ -1823,6 +1828,38 @@
     updateNewConditionButton();
   }
 
+  function enforceFocusedTextViewport() {
+    if (!document.body.classList.contains("ccc-focused-text-mode")) return;
+    if (focusedTextScrollGuard) return;
+    focusedTextScrollGuard = true;
+    cancelAnimationFrame(focusedTextGuardFrame);
+    focusedTextGuardFrame = requestAnimationFrame(() => {
+      // Safari may scroll the document to reveal the focused textarea.
+      // Force the document itself back to 0; the focused screen is fixed.
+      if ((window.scrollY || document.documentElement.scrollTop || 0) !== 0) {
+        window.scrollTo(0, 0);
+      }
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      focusedTextScrollGuard = false;
+    });
+  }
+
+  function startFocusedTextGuard() {
+    window.addEventListener("scroll", enforceFocusedTextViewport, { passive: true });
+    window.visualViewport?.addEventListener("scroll", enforceFocusedTextViewport);
+    window.visualViewport?.addEventListener("resize", enforceFocusedTextViewport);
+    enforceFocusedTextViewport();
+  }
+
+  function stopFocusedTextGuard() {
+    window.removeEventListener("scroll", enforceFocusedTextViewport);
+    window.visualViewport?.removeEventListener("scroll", enforceFocusedTextViewport);
+    window.visualViewport?.removeEventListener("resize", enforceFocusedTextViewport);
+    cancelAnimationFrame(focusedTextGuardFrame);
+    focusedTextScrollGuard = false;
+  }
+
   function openTextEditor(fieldId) {
     if (!["title", "description"].includes(fieldId)) return;
     const dialog = $("#textEditorDialog");
@@ -1850,8 +1887,10 @@
     dialog.hidden = false;
     document.documentElement.classList.add("ccc-focused-text-mode");
     document.body.classList.add("ccc-focused-text-mode");
+    startFocusedTextGuard();
 
     requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
       editor.focus();
       editor.setSelectionRange(editor.value.length, editor.value.length);
     });
@@ -1867,6 +1906,7 @@
     }
     dialog.hidden = true;
     if (editCard) editCard.classList.remove("text-editor-active");
+    stopFocusedTextGuard();
     document.documentElement.classList.remove("ccc-focused-text-mode");
     document.body.classList.remove("ccc-focused-text-mode");
     activeTextEditorField = null;

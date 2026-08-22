@@ -59,3 +59,5 @@ v2.10.18: Pris använder separat helskärms-fokusläge; normal Vision-editor dö
 v2.10.19: Rubrik/Beskrivning-läget låst; endast textarea får scrolla. Pris orört.
 
 v2.10.20: hela dokumentet fryses i Rubrik/Beskrivning; endast stora textarea får scrolla; produktens scrollposition återställs vid stängning.
+
+v2.10.21: Rubrik/Beskrivning använder aktiv JS-scrollguard mot iOS fokus-scroll; endast textarea får scrolla.
