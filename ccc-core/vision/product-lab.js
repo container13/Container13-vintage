@@ -393,6 +393,15 @@
     if (review) { review.hidden = true; review.disabled = true; }
   }
 
+  function openWorkspaceItem(index, page = Math.floor(index / WORKSPACE_PAGE_SIZE)) {
+    if (!Number.isInteger(index) || !batchItems[index]) return;
+    currentIndex = index;
+    workspacePage = Math.max(0, page);
+    editReturnView = "workspace";
+    populateFormFromItem(true);
+    showStage("editCard", "edit");
+  }
+
   function updateBatchStrip() {
     const strip = $("#batchStrip");
     strip.innerHTML = "";
@@ -418,13 +427,11 @@
       state.className = `thumb-status ${item.visionReady ? "is-ready" : item.analysisInProgress ? "is-working" : item.analysisMode === "manual" ? (item.approved ? "is-saved" : "is-manual") : "is-working"}`;
       state.textContent = item.visionReady || item.approved ? "✓" : "";
       state.setAttribute("aria-hidden", "true");
+      wrap.dataset.workspaceIndex = String(index);
+      wrap.dataset.workspacePage = String(page);
       wrap.addEventListener("click", () => {
         if (suppressWorkspaceClick) return;
-        currentIndex = index;
-        workspacePage = page;
-        editReturnView = "workspace";
-        populateFormFromItem(true);
-        showStage("editCard", "edit");
+        openWorkspaceItem(index, page);
       });
       wrap.append(img, state);
       grid.appendChild(wrap);
@@ -477,17 +484,22 @@
     const strip = $("#batchStrip");
     if (!strip) return;
 
-    const begin = (x, y, id = "touch") => {
+    const begin = (x, y, id = "touch", target = null) => {
       const track = strip.querySelector(".vision-grid-track");
-      if (!track || Math.ceil(batchItems.length / WORKSPACE_PAGE_SIZE) <= 1) return false;
-      workspaceSwipe = { id, x, y, dx: 0, horizontal: false };
-      track.style.transition = "none";
+      if (!track) return false;
+      const canSwipe = Math.ceil(batchItems.length / WORKSPACE_PAGE_SIZE) > 1;
+      const thumb = target?.closest?.(".batch-thumb") || null;
+      workspaceSwipe = { id, x, y, dx: 0, dy: 0, horizontal: false, canSwipe, thumb };
+      if (canSwipe) track.style.transition = "none";
       return true;
     };
     const move = (x, y, event) => {
       if (!workspaceSwipe) return;
       const dx = x - workspaceSwipe.x;
       const dy = y - workspaceSwipe.y;
+      workspaceSwipe.dx = dx;
+      workspaceSwipe.dy = dy;
+      if (!workspaceSwipe.canSwipe) return;
       /* Lite fingerjitter ska vara ett vanligt tryck. Först ett tydligt
          horisontellt drag låser gesten till swipe. */
       if (!workspaceSwipe.horizontal && Math.abs(dx) > 24 && Math.abs(dx) > Math.abs(dy) * 1.35) {
@@ -495,7 +507,6 @@
       }
       if (!workspaceSwipe.horizontal) return;
       event.preventDefault();
-      workspaceSwipe.dx = dx;
       suppressWorkspaceClick = true;
       const lastPage = Math.ceil(batchItems.length / WORKSPACE_PAGE_SIZE) - 1;
       const atEdge = (workspacePage === 0 && dx > 0) || (workspacePage === lastPage && dx < 0);
@@ -503,46 +514,69 @@
       const track = strip.querySelector(".vision-grid-track");
       if (track) track.style.transform = `translate3d(calc(${-workspacePage * 100}% + ${resisted}px),0,0)`;
     };
-    const finish = () => {
+    const finish = (event = null) => {
       if (!workspaceSwipe) return;
-      const { dx, horizontal } = workspaceSwipe;
+      const { dx, dy, horizontal, canSwipe, thumb } = workspaceSwipe;
       workspaceSwipe = null;
-      const threshold = Math.max(48, strip.clientWidth * .14);
-      if (horizontal && Math.abs(dx) > threshold) setWorkspacePage(workspacePage + (dx < 0 ? 1 : -1), true);
-      else setWorkspacePage(workspacePage, true);
-      /* Ett click som syntetiseras efter en riktig swipe ska ignoreras,
-         men ett vanligt tap ska aldrig blockeras. */
-      if (horizontal) setTimeout(() => { suppressWorkspaceClick = false; }, 180);
-      else suppressWorkspaceClick = false;
+
+      if (horizontal && canSwipe) {
+        const threshold = Math.max(48, strip.clientWidth * .14);
+        if (Math.abs(dx) > threshold) setWorkspacePage(workspacePage + (dx < 0 ? 1 : -1), true);
+        else setWorkspacePage(workspacePage, true);
+        setTimeout(() => { suppressWorkspaceClick = false; }, 180);
+        return;
+      }
+
+      if (canSwipe) setWorkspacePage(workspacePage, true);
+
+      /* På mobil öppnar vi ett kort tryck direkt på touchend i stället för
+         att vara beroende av webbläsarens efterföljande syntetiska click. */
+      const isTap = thumb && Math.abs(dx) <= 14 && Math.abs(dy) <= 14;
+      if (isTap) {
+        if (event?.cancelable) event.preventDefault();
+        const index = Number(thumb.dataset.workspaceIndex);
+        const page = Number(thumb.dataset.workspacePage);
+        suppressWorkspaceClick = true;
+        openWorkspaceItem(index, page);
+        setTimeout(() => { suppressWorkspaceClick = false; }, 350);
+      } else {
+        suppressWorkspaceClick = false;
+      }
     };
 
     strip.addEventListener("touchstart", (event) => {
       if (event.touches.length !== 1) return;
       const t = event.touches[0];
-      begin(t.clientX, t.clientY);
+      begin(t.clientX, t.clientY, "touch", event.target);
     }, { passive: true });
     strip.addEventListener("touchmove", (event) => {
       if (!workspaceSwipe || event.touches.length !== 1) return;
       const t = event.touches[0];
       move(t.clientX, t.clientY, event);
     }, { passive: false });
-    strip.addEventListener("touchend", finish, { passive: true });
+    strip.addEventListener("touchend", finish, { passive: false });
     strip.addEventListener("touchcancel", finish, { passive: true });
 
     /* Musdrag på desktop, utan att blanda in touch-pointerevents på mobil. */
     strip.addEventListener("pointerdown", (event) => {
       if (event.pointerType !== "mouse" || event.button !== 0) return;
-      begin(event.clientX, event.clientY, event.pointerId);
+      begin(event.clientX, event.clientY, event.pointerId, event.target);
     });
     strip.addEventListener("pointermove", (event) => {
       if (event.pointerType !== "mouse" || !workspaceSwipe || workspaceSwipe.id !== event.pointerId) return;
       move(event.clientX, event.clientY, event);
     });
     strip.addEventListener("pointerup", (event) => {
-      if (event.pointerType === "mouse" && workspaceSwipe?.id === event.pointerId) finish();
+      if (event.pointerType === "mouse" && workspaceSwipe?.id === event.pointerId) {
+        workspaceSwipe = null;
+        suppressWorkspaceClick = false;
+      }
     });
     strip.addEventListener("pointercancel", (event) => {
-      if (event.pointerType === "mouse" && workspaceSwipe?.id === event.pointerId) finish();
+      if (event.pointerType === "mouse" && workspaceSwipe?.id === event.pointerId) {
+        workspaceSwipe = null;
+        suppressWorkspaceClick = false;
+      }
     });
   }
 

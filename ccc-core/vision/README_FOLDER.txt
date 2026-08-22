@@ -29,3 +29,5 @@ v2.9.95: Frivilliga tillägg-modalens HTML byggs om rent så knappfältet alltid
 v2.9.97: Aktiv fotosession säkerhetssparas automatiskt efter varje nytt foto/import och återupptas före nästa kamerabesök. Kamera-X behåller redan tagen bild. Zoomknappar visas för de verkliga nivåer webbläsaren/hårdvaran exponerar.
 
 v2.10.5: Fixar tap + swipe i Vision-grid. Kameraräknaren visar bara nya foton i aktuell fotoserie, inte totalen i sessionen.
+
+v2.10.6: Mobil tap på en Vision-miniatyr öppnar plagget direkt på touchend. Swipe och aktuell-fotoserie-räknaren från v2.10.5 lämnas oförändrade.
