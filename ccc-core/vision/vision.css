@@ -3247,3 +3247,71 @@ body.camera-open .ccc-app-shell{background:#050505!important}
 .more-fields-dialog-box{
   padding-bottom:18px!important;
 }
+
+
+/* v2.10.13 – fixed text editor shell; only writing field scrolls */
+.text-editor-dialog{
+  position:fixed!important;
+  inset:0!important;
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  touch-action:none;
+  display:grid!important;
+  place-items:center!important;
+  padding:12px!important;
+}
+.text-editor-dialog[hidden]{display:none!important}
+
+.text-editor-dialog-box{
+  position:relative!important;
+  width:min(calc(100vw - 24px),560px)!important;
+  max-height:calc(100dvh - 24px)!important;
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  touch-action:none;
+  display:flex!important;
+  flex-direction:column!important;
+}
+
+.text-editor-head{
+  flex:0 0 auto!important;
+}
+
+.text-editor-field-wrap{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  touch-action:none;
+}
+
+#largeTextEditor{
+  display:block!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-y!important;
+  resize:none!important;
+  max-height:100%!important;
+}
+
+#largeTextEditor.title-editor{
+  margin-top:22px!important;
+}
+
+/* Keyboard/visual viewport: keep the dialog itself fixed and compact. */
+@media (max-height:650px){
+  .text-editor-dialog{
+    place-items:start center!important;
+    padding-top:8px!important;
+  }
+  .text-editor-dialog-box{
+    max-height:calc(100dvh - 16px)!important;
+  }
+  .text-editor-head{
+    margin-bottom:4px!important;
+  }
+  #largeTextEditor.title-editor{
+    margin-top:14px!important;
+  }
+}

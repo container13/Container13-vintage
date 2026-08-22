@@ -43,3 +43,5 @@ v2.10.10: dirty-state/back-fix samt något luftigare editor. Footer/touch/swipe/
 v2.10.11: stor dialog för Rubrik/Beskrivning och reversibelt Visste du?-tillägg. Footer/touch/swipe/kameraräknare orörda.
 
 v2.10.12: X + autosave i text/Fler uppgifter; Visste du och Nyskick är reversibla. Footerutseendet orört.
+
+v2.10.13: alla tomma bildplatser = + Nytt foto via befintlig picker; textdialog låst, endast textarea scrollar.

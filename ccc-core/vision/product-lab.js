@@ -1353,10 +1353,10 @@
       add.className = "same-garment-thumb same-garment-add";
       const firstEmpty = list.children.length === 1;
       if (firstEmpty) {
-        add.innerHTML = "<strong>＋</strong><span>Nytt foto</span>";
-        add.addEventListener("click", () => $("#sameGarmentCameraInput")?.click());
+        add.innerHTML = "<strong>＋</strong><span>+ Nytt foto</span>";
+        add.addEventListener("click", () => $("#sameGarmentAlbumInput")?.click());
       } else {
-        add.innerHTML = `<strong>＋</strong><span>${item.extraFiles.length ? "Lägg till" : "Album"}</span>`;
+        add.innerHTML = `<strong>＋</strong><span>${item.extraFiles.length ? "+ Nytt foto" : "+ Nytt foto"}</span>`;
         add.addEventListener("click", () => $("#sameGarmentInput")?.click());
       }
       list.appendChild(add);
