@@ -1954,3 +1954,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Scrollpositionen i plagget sparas när fokusläget öppnas och återställs när det stängs.
 - Prisfokusläget och övriga funktioner från v2.10.19 lämnas orörda.
 
+## v2.10.21 – JS-låst dokument under Rubrik/Beskrivning
+- iOS/Safari kan flytta dokumentet när ett textarea fokuseras även när CSS overflow är låst.
+- Fokusläget bevakar därför document/window-scroll i JavaScript och tvingar dokumentet till scrollposition 0 medan Rubrik/Beskrivning är öppet.
+- VisualViewport scroll/resize bevakas också för att motverka Safaris automatiska fokus-scroll.
+- Endast `largeTextEditor` är tillåten scrollcontainer.
+- När fokusläget stängs stoppas scrollvakten och plaggets tidigare scrollposition återställs.
+- Pris och övriga funktioner lämnas orörda.
+
