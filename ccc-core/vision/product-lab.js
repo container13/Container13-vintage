@@ -1729,6 +1729,7 @@
     updateCounters();
     updateTextPreviews();
     updateFactButton();
+    updateNewConditionButton();
     scheduleAutosave();
   }
 
@@ -1774,10 +1775,31 @@
     updateFactButton();
   }
 
-  function addNewCondition() {
-    appendToDescription("Nyskick.");
-    $("#addNewConditionBtn").textContent = "Tillagt i beskrivningen ✓";
-    $("#addNewConditionBtn").disabled = true;
+  function descriptionHasNewCondition() {
+    return /(^|\n\n)Nyskick\.(?=\n\n|$)/.test($("#description").value.trim());
+  }
+
+  function updateNewConditionButton() {
+    const button = $("#addNewConditionBtn");
+    if (!button) return;
+    const active = descriptionHasNewCondition();
+    button.textContent = active ? "Ta bort “Nyskick”" : "Lägg till “Nyskick”";
+    button.disabled = false;
+    button.classList.toggle("is-active", active);
+  }
+
+  function toggleNewCondition() {
+    const area = $("#description");
+    if (descriptionHasNewCondition()) {
+      const next = area.value
+        .replace(/(^|\n\n)Nyskick\.(?=\n\n|$)/, "$1")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+      commitTextFieldChange("description", next);
+    } else {
+      appendToDescription("Nyskick.");
+    }
+    updateNewConditionButton();
   }
 
   function openTextEditor(fieldId) {
@@ -1813,9 +1835,6 @@
     if (!dialog || !editor) return;
     if (save && activeTextEditorField) {
       commitTextFieldChange(activeTextEditorField, editor.value);
-    } else if (activeTextEditorField) {
-      const source = $("#" + activeTextEditorField);
-      if (source) source.value = textEditorOriginalValue;
     }
     dialog.hidden = true;
     activeTextEditorField = null;
@@ -1979,6 +1998,11 @@
   }
 
   async function goBackFromVision() {
+    const textEditor=$("#textEditorDialog");
+    if(visionView==="edit" && textEditor && !textEditor.hidden){
+      closeTextEditor({save:false});
+      return;
+    }
     const optionalExtras=$("#optionalExtrasDialog");
     if(visionView==="edit" && optionalExtras && !optionalExtras.hidden){
       optionalExtras.hidden=true;
@@ -2174,7 +2198,7 @@
 
   // Existerande extrafunktioner
   $("#addFactBtn").addEventListener("click", toggleFact);
-  $("#addNewConditionBtn").addEventListener("click", addNewCondition);
+  $("#addNewConditionBtn").addEventListener("click", toggleNewCondition);
   $("#openExtrasBtn")?.addEventListener("click",()=>{$("#optionalExtrasDialog").hidden=false;});
   $("#cancelExtrasBtn")?.addEventListener("click",closeOptionalExtras);
   $("#saveExtrasBtn")?.addEventListener("click",()=>{
@@ -2185,16 +2209,10 @@
   $("#optionalExtrasDialog")?.addEventListener("click",event=>{if(event.target===$("#optionalExtrasDialog"))closeOptionalExtras();});
   $("#openMoreFieldsBtn")?.addEventListener("click",()=>{
     updateFactButton();
+    updateNewConditionButton();
     $("#moreFieldsDialog").hidden=false;
   });
-  $("#cancelMoreFieldsBtn")?.addEventListener("click",()=>{
-    $("#moreFieldsDialog").hidden=true;
-  });
-  $("#saveMoreFieldsBtn")?.addEventListener("click",()=>{
-    const item=currentItem();
-    if(item)item.editedFields=Object.fromEntries(fieldIds.map(id=>[id,$("#"+id).value]));
-    saveBatchMetadata();
-    scheduleAutosave();
+  $("#closeMoreFieldsBtn")?.addEventListener("click",()=>{
     $("#moreFieldsDialog").hidden=true;
   });
   $("#moreFieldsDialog")?.addEventListener("click",event=>{
@@ -2218,9 +2236,9 @@
   $("#largeTextEditor")?.addEventListener("input", () => {
     const editor = $("#largeTextEditor");
     $("#largeTextEditorCount").textContent = `${editor.value.length}/${editor.maxLength}`;
+    if (activeTextEditorField) commitTextFieldChange(activeTextEditorField, editor.value);
   });
-  $("#cancelTextEditorBtn")?.addEventListener("click", () => closeTextEditor({ save: false }));
-  $("#saveTextEditorBtn")?.addEventListener("click", () => closeTextEditor({ save: true }));
+  $("#closeTextEditorBtn")?.addEventListener("click", () => closeTextEditor({ save: false }));
   $("#textEditorDialog")?.addEventListener("click", (event) => {
     if (event.target === $("#textEditorDialog")) closeTextEditor({ save: false });
   });
@@ -2235,6 +2253,7 @@
       updateCounters();
       updateTextPreviews();
       updateFactButton();
+      updateNewConditionButton();
       scheduleAutosave();
     });
   });

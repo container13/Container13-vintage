@@ -8,7 +8,7 @@
 <link rel="manifest" href="../manifest.webmanifest?v=2.9.3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>CCC Vision v2.10.11</title>
+  <title>CCC Vision v2.10.12</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
   <link rel="stylesheet" href="vision.css?v=2.10.6">
   <link rel="stylesheet" href="../core.css?v=2.10.2">
@@ -288,24 +288,27 @@
 
 <div id="textEditorDialog" class="dialog ccc-dialog text-editor-dialog" role="dialog" aria-modal="true" aria-labelledby="textEditorTitle" hidden>
   <div class="dialog-box ccc-dialog-box text-editor-dialog-box">
-    <div class="text-editor-head">
-      <h2 id="textEditorTitle">Redigera</h2>
-      <p id="textEditorHint">Skriv eller ändra texten.</p>
+    <div class="text-editor-head dialog-head-with-close">
+      <div>
+        <h2 id="textEditorTitle">Redigera</h2>
+        <p id="textEditorHint">Skriv eller ändra texten.</p>
+      </div>
+      <button id="closeTextEditorBtn" class="dialog-close-x" type="button" aria-label="Stäng">×</button>
     </div>
     <div class="text-editor-field-wrap">
       <textarea id="largeTextEditor" autocomplete="off"></textarea>
       <small id="largeTextEditorCount" class="text-editor-count">0/100</small>
     </div>
-    <div class="more-fields-actions text-editor-actions">
-      <button id="cancelTextEditorBtn" class="secondary-button" type="button">Återgå</button>
-      <button id="saveTextEditorBtn" class="primary-button" type="button">Klar</button>
-    </div>
+
   </div>
 </div>
 
 <div id="moreFieldsDialog" class="dialog ccc-dialog more-fields-dialog" role="dialog" aria-modal="true" aria-labelledby="moreFieldsTitle" hidden>
   <div class="dialog-box ccc-dialog-box more-fields-dialog-box">
-    <div class="more-fields-head"><h2 id="moreFieldsTitle">Fler uppgifter</h2><p>Komplettera bara det du behöver.</p></div>
+    <div class="more-fields-head dialog-head-with-close">
+      <div><h2 id="moreFieldsTitle">Fler uppgifter</h2><p>Komplettera bara det du behöver.</p></div>
+      <button id="closeMoreFieldsBtn" class="dialog-close-x" type="button" aria-label="Stäng">×</button>
+    </div>
     <div class="two-column extra-fields more-fields-scroll">
       <label><span>Kategori</span><input id="category" type="text" autocomplete="off"></label>
       <label><span>Märke / klubb</span><input id="brand" type="text" autocomplete="off"></label>
@@ -320,10 +323,7 @@
         <button id="addNewConditionBtn" class="secondary-button compact-action" type="button">Lägg till “Nyskick”</button>
       </section>
     </div>
-    <div class="more-fields-actions">
-      <button id="cancelMoreFieldsBtn" class="secondary-button" type="button">Återgå</button>
-      <button id="saveMoreFieldsBtn" class="primary-button" type="button">Klar</button>
-    </div>
+
   </div>
 </div>
 

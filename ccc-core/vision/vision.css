@@ -3207,3 +3207,43 @@ body.camera-open .ccc-app-shell{background:#050505!important}
   border-color:rgba(229,184,80,.62)!important;
   color:var(--gold)!important;
 }
+
+
+/* v2.10.12 – autosave dialogs with close X */
+.dialog-head-with-close{
+  position:relative!important;
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  padding-right:2px!important;
+}
+.dialog-head-with-close>div{
+  min-width:0;
+}
+.dialog-close-x{
+  flex:0 0 44px;
+  width:44px;
+  height:44px;
+  border:1px solid var(--border);
+  border-radius:50%;
+  background:var(--surface-2);
+  color:var(--text);
+  font-size:30px;
+  line-height:1;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  padding:0;
+  margin:-4px -2px 0 0;
+}
+.dialog-close-x:active{transform:scale(.95)}
+#addFactBtn.is-active,
+#addNewConditionBtn.is-active{
+  border-color:rgba(229,184,80,.62)!important;
+  color:var(--gold)!important;
+}
+.text-editor-dialog-box,
+.more-fields-dialog-box{
+  padding-bottom:18px!important;
+}
