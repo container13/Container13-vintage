@@ -35,3 +35,5 @@ v2.10.6: Mobil tap på en Vision-miniatyr öppnar plagget direkt på touchend. S
 v2.10.7: kompakt editor, ett prisfält och teckenräknare inne i fälten.
 
 v2.10.8: editor komprimerad ytterligare; nedersta två editor-knappar på samma rad; footer orörd.
+
+v2.10.9: tätare editor. Footer orörd.
