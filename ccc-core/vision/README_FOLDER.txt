@@ -49,3 +49,5 @@ v2.10.13: alla tomma bildplatser = + Nytt foto via befintlig picker; textdialog 
 v2.10.14: visual viewport för textdialoger, fokuserad prisdialog, diskret vänsterställd manuell AI när auto-AI är av.
 
 v2.10.15: produkteditor öppnas alltid högst upp; bakgrundsscroll fryses under Rubrik/Beskrivning/Pris/Fler uppgifter och återställs vid stängning.
+
+v2.10.16: iOS textdialog stabiliserad genom overflow-baserat bakgrundslås; ingen body-förskjutning; endast textarea scrollar.

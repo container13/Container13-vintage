@@ -3360,13 +3360,62 @@ body.ccc-editor-scroll-locked{
   overscroll-behavior:none!important;
 }
 body.ccc-editor-scroll-locked{
-  position:fixed!important;
-  left:0!important;
-  right:0!important;
   width:100%!important;
+  overflow:hidden!important;
 }
 .text-editor-dialog,
 .price-editor-dialog,
 .more-fields-dialog{
   overscroll-behavior:none!important;
+}
+
+
+/* v2.10.16 – stable iOS focused editor */
+.text-editor-dialog,
+.price-editor-dialog,
+.more-fields-dialog{
+  isolation:isolate!important;
+}
+
+.text-editor-dialog::before,
+.price-editor-dialog::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(4,6,10,.80);
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+  z-index:-1;
+  pointer-events:auto;
+}
+
+.text-editor-dialog-box,
+.price-editor-dialog-box{
+  position:relative!important;
+  z-index:2!important;
+}
+
+/* Never allow the focused editor shell itself to scroll. */
+.text-editor-dialog,
+.text-editor-dialog-box,
+.text-editor-field-wrap{
+  overflow:hidden!important;
+}
+
+/* Only the writing surface may scroll. */
+#largeTextEditor{
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+}
+
+/* Keep a safe gap from status bar / Dynamic Island while keyboard is visible. */
+@media (max-width:480px) and (orientation:portrait){
+  .text-editor-dialog{
+    padding-top:max(22px, env(safe-area-inset-top))!important;
+    padding-bottom:14px!important;
+  }
+  .text-editor-dialog-box{
+    max-height:calc(var(--editor-vv-height,100dvh) - 44px)!important;
+  }
 }

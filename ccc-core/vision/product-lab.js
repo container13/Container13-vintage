@@ -1857,7 +1857,6 @@
     editorScrollLockY = window.scrollY || document.documentElement.scrollTop || 0;
     document.documentElement.classList.add("ccc-editor-scroll-locked");
     document.body.classList.add("ccc-editor-scroll-locked");
-    document.body.style.top = `-${editorScrollLockY}px`;
     editorScrollLocked = true;
   }
 
@@ -1865,9 +1864,10 @@
     if (!editorScrollLocked) return;
     document.documentElement.classList.remove("ccc-editor-scroll-locked");
     document.body.classList.remove("ccc-editor-scroll-locked");
-    document.body.style.removeProperty("top");
     editorScrollLocked = false;
-    window.scrollTo({ top: editorScrollLockY, left: 0, behavior: "auto" });
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: editorScrollLockY, left: 0, behavior: "auto" });
+    });
   }
 
   function openPriceEditor() {
@@ -1888,9 +1888,15 @@
   function syncFocusedEditorViewport(dialog=$("#textEditorDialog")){
     if(!dialog||dialog.hidden)return;
     const vv=window.visualViewport;
-    if(!vv)return;
-    dialog.style.setProperty("--editor-vv-top",`${vv.offsetTop}px`);
-    dialog.style.setProperty("--editor-vv-height",`${vv.height}px`);
+    if(!vv){
+      dialog.style.removeProperty("--editor-vv-top");
+      dialog.style.removeProperty("--editor-vv-height");
+      return;
+    }
+    const top = Math.max(0, Math.min(vv.offsetTop || 0, 120));
+    const height = Math.max(260, vv.height || window.innerHeight);
+    dialog.style.setProperty("--editor-vv-top", `${top}px`);
+    dialog.style.setProperty("--editor-vv-height", `${height}px`);
   }
   function syncOpenFocusedEditors(){
     const text=$("#textEditorDialog"),price=$("#priceEditorDialog");
