@@ -1764,3 +1764,12 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Borttagning av Nyskick tar bara bort just `Nyskick.`-tillägget och lämnar övrig beskrivning kvar.
 - Footerutseende, gridswipe, bildklick och kameraräknare är orörda.
 
+## v2.10.13 – enhetlig bildplats + låst textredigering
+- Alla lediga bildplatser i plaggredigeringen heter `+ Nytt foto`.
+- Alla dessa platser använder samma befintliga iOS-/filväljare som tidigare Album, så användaren kan välja Bildbibliotek, Ta bild eller Välj filer.
+- Den stora Rubrik/Beskrivning-dialogen är låst och ska inte kunna scrollas som helhet när tangentbordet visas.
+- Endast innehållet i själva stora skrivfältet får scrolla.
+- Rubrikens skrivfält har flyttats ned något för bättre luft/balans.
+- Räknaren ligger kvar i skrivfältet.
+- Befintlig autosave/X/Tillbaka-logik, Nyskick/Visste du-toggle, footerutseende, swipe och kameraräknare är orörda.
+
