@@ -1978,3 +1978,8 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Endast texten i innersta skrivfältet kan scrolla; övriga fokusvyn är fortsatt låst.
 - Prisfokusläget är orört.
 
+## v2.10.24 – tydligare arbetssteg i Vision
+- Rubriken `Plagg X av Y` i arbetsvyn ändras till `Gör klart plagg · X av Y`.
+- Syftet är att direkt förklara vad användaren gör i vyn utan att lägga till ytterligare UI.
+- Övrig layout och funktionalitet, inklusive den nu fungerande Rubrik/Beskrivning-tangentbordslösningen från v2.10.23, lämnas orörd.
+
