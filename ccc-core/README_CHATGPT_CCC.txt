@@ -1680,3 +1680,13 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Demomärkningen är en upprepad diagonal, halvtransparent `DEMO · CONTAINER13`-vattenstämpel som ritas på CCC:s genererade WebP-publiceringskopia. Originalbildens bytes ändras aldrig.
 - Demostatus sparas med plagget, visas som `DEMO` i Förbered och räknas i slutkontrollen före publicering. Firestore får även `demoWatermark` för spårbarhet.
 - Vattenstämpeln är en utvecklar-/testfunktion för bilder som inte ska kunna misstas för riktiga Container13-produktbilder; den är inte en ersättning för rättigheter/licenser till källmaterial.
+
+
+## v2.10.2 – Vision förenklas och autosparas
+- Vision-arbetsytan använder en paginerad 3×3-grid med swipe åt båda hållen och utan rundgång.
+- `Granska & komplettera` och vald miniatyr leder direkt till samma redigeringsvy.
+- Manuella sparknappar tas bort. Fält, extrabilder, metadata och aktiv session autosparas lokalt med synlig status.
+- Högst två extrabilder kan läggas till tidigt via `Nytt foto` eller `Album` och analyseras tillsammans med huvudbilden.
+- Redigeringsvyn får större rubriker, samlade fleruppgifter, tydlig AI-knapp, direkt prisval, bekräftad borttagning och `Nästa plagg`.
+- Kameran får CCC-markering, isolerad riktig kameranypzoom och globala Core-regler mot oavsiktlig dubbeltryckszoom.
+- Root `/version.js` är orörd. CCC-versionen hanteras i `/ccc-core/version.js`.

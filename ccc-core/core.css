@@ -1548,6 +1548,11 @@ body{
 /* CCC v2.9.49 – footer markeringsläge */
 .ccc-core-footer-selection{width:min(100%,720px);margin:0 auto;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;pointer-events:auto}.ccc-footer-cancel,.ccc-footer-delete{min-height:48px;border:1px solid var(--border,var(--ccc-border));border-radius:15px;background:var(--surface,var(--ccc-surface));color:var(--text,var(--ccc-text));padding:0 14px;font-weight:800}.ccc-footer-delete{color:#c73b3b}.ccc-footer-delete:disabled{opacity:.42}.ccc-footer-selection-count{text-align:center;color:var(--muted,var(--ccc-muted));font-size:12px;font-weight:800}
 
+/* v2.10.2 – arbetsytor får inte misstolka snabba tryck som dubbeltryckszoom. */
+html,body,.ccc-app-shell{touch-action:manipulation}
+button,a,input,textarea,select,[role="button"]{touch-action:manipulation}
+@media(max-width:768px){input,textarea,select{font-size:16px!important}}
+
 /* CCC v2.9.49 – kontextverktyg i Core-footer */
 .ccc-core-footer-tools{
   display:flex;
