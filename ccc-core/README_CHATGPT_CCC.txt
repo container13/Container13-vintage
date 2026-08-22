@@ -1704,3 +1704,9 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Swipe tar kontroll först efter ett tydligt horisontellt drag. Vanligt tryck öppnar plagget direkt.
 - Redigeringsvyn tar bort dubblerad huvudbild/ruta, visar `Plagg X av Y`, samlar tre bildplatser på en rad och gör `Analysera igen` sekundär efter färdig analys.
 - `Nästa plagg` är helbred. Övriga moduler och root `/version.js` är orörda.
+
+## v2.10.5 – Vision touch + kameraräknare
+- Regressionfix: tryck på en miniatyr i Vision-arbetsytan öppnar plagget igen.
+- Swipe mellan gridsidor använder separat touchhantering; fingerjitter räknas inte som swipe.
+- Kamerans räknare visar endast nya foton i det aktuella kamerabesöket/fotoserien, inte äldre bilder i Vision-sessionen.
+- 3×2-layouten och redigeringsvyn från v2.10.4 lämnas i övrigt oförändrade.
