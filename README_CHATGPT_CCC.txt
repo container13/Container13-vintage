@@ -1828,3 +1828,9 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - `Analysera med AI` är guldig före första analysen. När ett AI-resultat redan finns blir åtgärden mindre och heter `Analysera igen`.
 - `Nästa plagg` återgår till en helbred huvudknapp längst ned. Autosparning och Core-Tillbaka behålls.
 - Publicera och övriga CCC-moduler är orörda. Root `/version.js` är fortsatt orörd.
+
+## v2.10.5 – Vision touch + kameraräknare
+- Regressionfix: tryck på en miniatyr i Vision-arbetsytan öppnar plagget igen.
+- Swipe mellan gridsidor använder separat touchhantering; fingerjitter räknas inte som swipe.
+- Kamerans räknare visar endast nya foton i det aktuella kamerabesöket/fotoserien, inte äldre bilder i Vision-sessionen.
+- 3×2-layouten och redigeringsvyn från v2.10.4 lämnas i övrigt oförändrade.
