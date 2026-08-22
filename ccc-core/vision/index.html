@@ -8,9 +8,9 @@
 <link rel="manifest" href="../manifest.webmanifest?v=2.9.3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>CCC Vision v2.10.3</title>
+  <title>CCC Vision v2.10.4</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-  <link rel="stylesheet" href="vision.css?v=2.10.3">
+  <link rel="stylesheet" href="vision.css?v=2.10.4">
   <link rel="stylesheet" href="../core.css?v=2.10.2">
 </head>
 <body data-ccc-header-back="false" data-ccc-header-settings="true">
@@ -113,7 +113,7 @@
     <div id="cameraOverlay" class="camera-overlay" hidden>
       <div class="camera-topbar">
         <button id="closeCameraBtn" class="camera-close" type="button" aria-label="Stäng kameran">×</button>
-        <span class="camera-ccc-brand" aria-label="CCC">CCC</span>
+        <div class="camera-title"><span class="camera-ccc-brand" aria-label="CCC">CCC</span><small id="cameraSessionCount">0 plagg fotograferade</small></div>
         <span></span>
       </div>
       <div class="camera-viewport">
@@ -175,26 +175,16 @@
 
     <section id="editCard" class="card stage-card compact-edit-stage" hidden aria-labelledby="editTitle">
       <div class="fixed-stage-head compact-edit-head">
-        <div><h2 id="editTitle">Gör förslaget klart</h2></div>
-        <span id="draftState" class="vision-autosave-state" role="status" aria-live="polite">✓ Sparat automatiskt</span>
-      </div>
-
-      <div class="edit-product-context compact-product-card mini-context">
-        <img id="editThumbnail" class="product-thumbnail" alt="Miniatyr av varan">
-        <div class="edit-context-copy"><strong id="editContextTitle">Bilder för plagget</strong><span id="editContextSub">Huvudbild och kompletterande bilder.</span></div>
-        <button id="editTrashBtn" class="edit-trash-button" type="button" aria-label="Ta bort plagget" title="Ta bort plagget">Ta bort</button>
+        <div><h2 id="editTitle">Plagg <span id="editProgress">1 av 1</span></h2></div>
+        <div class="edit-head-actions"><span id="draftState" class="vision-autosave-state" role="status" aria-live="polite">✓ Sparat automatiskt</span><button id="editTrashBtn" class="edit-trash-button" type="button">Ta bort</button></div>
       </div>
 
       <section class="same-garment-editor" aria-labelledby="sameGarmentEditTitle">
         <div class="same-garment-heading">
-          <strong id="sameGarmentEditTitle">Fler bilder av samma plagg <span id="sameGarmentCount">(0/2)</span></strong>
-          <small>Exempelvis baksida, etikett eller en detalj.</small>
+          <strong id="sameGarmentEditTitle">Bilder för plagget <span id="sameGarmentCount">(1/3)</span></strong>
+          <small>Huvudbild, baksida, etikett eller detalj.</small>
         </div>
         <div id="sameGarmentThumbs" class="same-garment-thumbs" aria-live="polite"></div>
-        <div class="same-garment-actions">
-          <button id="sameGarmentCameraBtn" class="secondary-button" type="button">Nytt foto</button>
-          <button id="sameGarmentAlbumBtn" class="secondary-button" type="button">Album</button>
-        </div>
         <input id="sameGarmentCameraInput" class="visually-hidden" type="file" accept="image/*" capture="environment">
       </section>
 
@@ -336,12 +326,12 @@
     </div>
   </div>
 
-  <script src="../version.js?v=2.10.3"></script>
+  <script src="../version.js?v=2.10.4"></script>
   <script src="demo-data.js?v=2.9.3"></script>
   <script src="vision-ai-config.js?v=2.9.3"></script>
   <script src="vision-ai.js?v=2.9.3"></script>
   <script src="vision-knowledge.js?v=2.9.3"></script>
-  <script src="product-lab.js?v=2.10.2"></script>
+  <script src="product-lab.js?v=2.10.4"></script>
 <script type="module" src="../core.js?v=2.10.2"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 </body>

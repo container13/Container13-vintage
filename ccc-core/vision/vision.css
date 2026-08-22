@@ -3033,3 +3033,40 @@ body.camera-open .ccc-app-shell{background:#050505!important}
   align-content:stretch!important;
 }
 .vision-grid-page .batch-thumb,.vision-grid-placeholder{height:100%!important;aspect-ratio:auto!important}
+
+/* CCC v2.10.4 – sex tydliga plagg per sida + kompakt produktredigering */
+.vision-grid-page{
+  aspect-ratio:3/2!important;
+  grid-template-rows:repeat(2,minmax(0,1fr))!important;
+}
+.camera-title{display:grid;justify-items:center;align-content:center;gap:7px;min-width:150px}
+.camera-title small{color:#fff;font-size:.76rem;font-weight:800;line-height:1;white-space:nowrap}
+#editCard .compact-edit-head{display:flex!important;justify-content:space-between!important;gap:10px!important}
+#editCard .compact-edit-head h2{font-size:1.42rem!important;white-space:nowrap}
+.edit-head-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-width:0}
+#editCard .edit-head-actions .edit-trash-button{
+  position:static!important;inset:auto!important;transform:none!important;
+  width:auto!important;height:38px!important;flex:0 0 auto;
+}
+#editCard .same-garment-editor{padding:10px!important;gap:8px!important}
+#editCard .same-garment-heading small{font-size:.75rem}
+#editCard .same-garment-thumbs{gap:8px}
+#editCard .same-garment-thumb{aspect-ratio:1!important;min-height:0!important}
+#editCard .same-garment-add{
+  display:grid;place-content:center;justify-items:center;gap:4px;padding:7px!important;
+  border:1px dashed color-mix(in srgb,var(--gold) 55%,var(--border))!important;
+  color:var(--gold)!important;background:color-mix(in srgb,var(--gold) 5%,var(--surface))!important;
+}
+#editCard .same-garment-add strong{font-size:1.55rem;line-height:1}
+#editCard .same-garment-add span{position:static!important;padding:0!important;background:transparent!important;color:inherit!important;font-size:.7rem!important}
+#editCard .manual-ai-button.is-secondary{
+  min-height:46px!important;background:transparent!important;color:var(--gold)!important;
+  border:1px solid color-mix(in srgb,var(--gold) 55%,var(--border))!important;font-size:.9rem!important;
+}
+#editCard .compact-edit-actions--one .primary-button{width:100%!important;min-height:56px!important}
+@media(max-width:480px) and (orientation:portrait){
+  #editCard.compact-edit-stage{gap:8px!important}
+  #editCard .compact-edit-head h2{font-size:1.3rem!important}
+  .edit-head-actions{gap:6px}
+  .vision-autosave-state{max-width:88px;font-size:.62rem}
+}

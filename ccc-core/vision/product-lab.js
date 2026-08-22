@@ -3,6 +3,7 @@
   const $$ = (selector) => [...document.querySelectorAll(selector)];
   const fieldIds = ["title", "category", "brand", "season", "price", "manufacturer", "size", "color", "description"];
   const demoKeys = ["arsenal", "levis", "adidas"];
+  const WORKSPACE_PAGE_SIZE = 6;
 
   let cameraStream = null;
   let stagedCameraFile = null;
@@ -394,16 +395,16 @@
   function updateBatchStrip() {
     const strip = $("#batchStrip");
     strip.innerHTML = "";
-    const pageCount = Math.max(1, Math.ceil(batchItems.length / 9));
+    const pageCount = Math.max(1, Math.ceil(batchItems.length / WORKSPACE_PAGE_SIZE));
     workspacePage = Math.max(0, Math.min(workspacePage, pageCount - 1));
-    if (batchItems[currentIndex] && Math.floor(currentIndex / 9) !== workspacePage) workspacePage = Math.floor(currentIndex / 9);
+    if (batchItems[currentIndex] && Math.floor(currentIndex / WORKSPACE_PAGE_SIZE) !== workspacePage) workspacePage = Math.floor(currentIndex / WORKSPACE_PAGE_SIZE);
     const track = document.createElement("div");
     track.className = "vision-grid-track";
     for (let page = 0; page < pageCount; page += 1) {
       const grid = document.createElement("div");
       grid.className = "vision-grid-page";
-      batchItems.slice(page * 9, page * 9 + 9).forEach((item, localIndex) => {
-      const index = page * 9 + localIndex;
+      batchItems.slice(page * WORKSPACE_PAGE_SIZE, page * WORKSPACE_PAGE_SIZE + WORKSPACE_PAGE_SIZE).forEach((item, localIndex) => {
+      const index = page * WORKSPACE_PAGE_SIZE + localIndex;
       const wrap = document.createElement("button");
       wrap.type = "button";
       wrap.className = "batch-thumb";
@@ -420,8 +421,6 @@
         if (suppressWorkspaceClick) return;
         currentIndex = index;
         workspacePage = page;
-        updateBatchStrip();
-
         editReturnView = "workspace";
         populateFormFromItem(true);
         showStage("editCard", "edit");
@@ -429,7 +428,7 @@
       wrap.append(img, state);
       grid.appendChild(wrap);
       });
-      while (grid.children.length < 9) {
+      while (grid.children.length < WORKSPACE_PAGE_SIZE) {
         const placeholder = document.createElement("span");
         placeholder.className = "vision-grid-placeholder";
         placeholder.setAttribute("aria-hidden", "true");
@@ -447,7 +446,7 @@
     applyCaptureMode();
   }
 
-  function renderWorkspacePager(pageCount = Math.max(1, Math.ceil(batchItems.length / 9))) {
+  function renderWorkspacePager(pageCount = Math.max(1, Math.ceil(batchItems.length / WORKSPACE_PAGE_SIZE))) {
     const pager = $("#batchPager");
     if (!pager) return;
     pager.innerHTML = "";
@@ -464,7 +463,7 @@
 
   function setWorkspacePage(page, animate = true) {
     const track = $("#batchStrip")?.querySelector(".vision-grid-track");
-    const pageCount = Math.max(1, Math.ceil(batchItems.length / 9));
+    const pageCount = Math.max(1, Math.ceil(batchItems.length / WORKSPACE_PAGE_SIZE));
     workspacePage = Math.max(0, Math.min(page, pageCount - 1));
     if (track) {
       track.style.transition = animate ? "transform 320ms cubic-bezier(.22,.72,.22,1)" : "none";
@@ -479,21 +478,23 @@
     strip.addEventListener("pointerdown", (event) => {
       if (event.pointerType === "mouse" && event.button !== 0) return;
       const track = strip.querySelector(".vision-grid-track");
-      if (!track || Math.ceil(batchItems.length / 9) <= 1) return;
+      if (!track || Math.ceil(batchItems.length / WORKSPACE_PAGE_SIZE) <= 1) return;
       workspaceSwipe = { id: event.pointerId, x: event.clientX, y: event.clientY, dx: 0, horizontal: false };
-      strip.setPointerCapture?.(event.pointerId);
       track.style.transition = "none";
     });
     strip.addEventListener("pointermove", (event) => {
       if (!workspaceSwipe || workspaceSwipe.id !== event.pointerId) return;
       const dx = event.clientX - workspaceSwipe.x;
       const dy = event.clientY - workspaceSwipe.y;
-      if (!workspaceSwipe.horizontal && Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy) * 1.15) workspaceSwipe.horizontal = true;
+      if (!workspaceSwipe.horizontal && Math.abs(dx) > 14 && Math.abs(dx) > Math.abs(dy) * 1.35) {
+        workspaceSwipe.horizontal = true;
+        strip.setPointerCapture?.(event.pointerId);
+      }
       if (!workspaceSwipe.horizontal) return;
       event.preventDefault();
       workspaceSwipe.dx = dx;
       suppressWorkspaceClick = true;
-      const lastPage = Math.ceil(batchItems.length / 9) - 1;
+      const lastPage = Math.ceil(batchItems.length / WORKSPACE_PAGE_SIZE) - 1;
       const atEdge = (workspacePage === 0 && dx > 0) || (workspacePage === lastPage && dx < 0);
       const resisted = atEdge ? dx * .24 : dx;
       strip.querySelector(".vision-grid-track").style.transform = `translate3d(calc(${-workspacePage * 100}% + ${resisted}px),0,0)`;
@@ -517,6 +518,15 @@
     $("#startCameraBtn .action-copy strong").textContent = batchItems.length ? "Fota nästa plagg" : "Ta ett foto";
   }
 
+  function updateCameraSessionCount(reviewing = false) {
+    const count = batchItems.length + (stagedItem ? 1 : 0);
+    const label = $("#cameraSessionCount");
+    if (!label) return;
+    label.textContent = reviewing && stagedItem
+      ? `Foto ${count} · totalt ${count} ${count === 1 ? "plagg" : "plagg"}`
+      : `${count} ${count === 1 ? "plagg fotograferat" : "plagg fotograferade"}`;
+  }
+
   async function startCamera() {
     /* Ett nytt kamerabesök ska fortsätta den aktiva lokala sessionen. Det får
        aldrig tyst ersätta bilder som redan fotograferats. */
@@ -526,6 +536,7 @@
     }
     stagedCameraFile = null;
     stagedItem = null;
+    updateCameraSessionCount(false);
     $("#cameraReview").hidden = true;
     $("#cameraVideo").hidden = false;
     $("#cameraLiveActions").hidden = false;
@@ -632,6 +643,7 @@
       if (!blob) return;
       stagedCameraFile = new File([blob], `ccc-vision-${Date.now()}.jpg`, { type: "image/jpeg" });
       stagedItem = createBatchItem(stagedCameraFile, batchItems.length);
+      updateCameraSessionCount(true);
       const reviewUrl = stagedItem.previewUrl;
       $("#cameraReview").src = reviewUrl;
       $("#cameraReview").hidden = false;
@@ -646,6 +658,7 @@
     if (stagedItem?.previewUrl) URL.revokeObjectURL(stagedItem.previewUrl);
     stagedCameraFile = null;
     stagedItem = null;
+    updateCameraSessionCount(false);
     $("#cameraReview").removeAttribute("src");
     $("#cameraReview").hidden = true;
     $("#cameraVideo").hidden = false;
@@ -658,6 +671,7 @@
     batchItems.push(stagedItem);
     stagedItem = null;
     stagedCameraFile = null;
+    updateCameraSessionCount(false);
     updateBatchStrip();
     // Kamerans AI-analys kan bli färdig redan innan användaren trycker Klar.
     // När plagget först nu läggs i batchItems måste kostnadsrutan uppdateras igen,
@@ -1217,23 +1231,9 @@
     fieldIds.forEach((id) => {
       $("#" + id).value = fields[id] !== undefined ? fields[id] : "";
     });
-    $("#editThumbnail").src = item.previewUrl;
-    $("#editThumbnail").hidden = false;
+    const progress = $("#editProgress");
+    if (progress) progress.textContent = `${currentIndex + 1} av ${batchItems.length}`;
     renderSameGarmentEditor();
-    const manualMode = item.analysisMode === "manual" && !item.visionReady;
-    $("#editContextTitle").textContent = item.visionReady
-      ? (item.visionResult?.summaryTitle || "Redigera plagg")
-      : manualMode ? "Redigera plagg" : "Redigera medan CCC arbetar";
-    const contextSub = $("#editContextSub");
-    if (contextSub) {
-      if (item.visionReady) {
-        contextSub.hidden = false;
-        contextSub.textContent = "AI-förslag klart – ändra det du vill.";
-      } else {
-        contextSub.hidden = manualMode;
-        contextSub.textContent = manualMode ? "" : "CCC arbetar med analysen…";
-      }
-    }
     if (allowWhileAnalyzing && !item.visionReady && !item.editedFields) {
       item.editedFields = Object.fromEntries(fieldIds.map((id) => [id, $("#" + id).value]));
     }
@@ -1245,7 +1245,8 @@
       const canAnalyze = !!window.CCC_VISION_AI?.configured?.();
       manualAi.hidden = !canAnalyze;
       manualAi.disabled = !!item.analysisInProgress;
-      manualAi.textContent = item.analysisInProgress ? "Analyserar…" : (item.visionReady ? "Analysera igen med AI" : "Analysera med AI");
+      manualAi.textContent = item.analysisInProgress ? "Analyserar…" : (item.visionReady ? "Analysera igen" : "Analysera med AI");
+      manualAi.classList.toggle("is-secondary", !!item.visionReady);
     }
   }
 
@@ -1272,10 +1273,22 @@
       cell.append(img, remove);
       list.appendChild(cell);
     });
+    while (list.children.length < 3) {
+      const add = document.createElement("button");
+      add.type = "button";
+      add.className = "same-garment-thumb same-garment-add";
+      const firstEmpty = list.children.length === 1;
+      if (firstEmpty) {
+        add.innerHTML = "<strong>＋</strong><span>Nytt foto</span>";
+        add.addEventListener("click", () => $("#sameGarmentCameraInput")?.click());
+      } else {
+        add.innerHTML = `<strong>＋</strong><span>${item.extraFiles.length ? "Lägg till" : "Album"}</span>`;
+        add.addEventListener("click", () => $("#sameGarmentInput")?.click());
+      }
+      list.appendChild(add);
+    }
     const count = $("#sameGarmentCount");
-    if (count) count.textContent = `(${item.extraFiles.length}/2)`;
-    const full = item.extraFiles.length >= 2;
-    [$("#sameGarmentCameraBtn"), $("#sameGarmentAlbumBtn")].forEach((button) => { if (button) button.disabled = full; });
+    if (count) count.textContent = `(${item.extraFiles.length + 1}/3)`;
   }
 
   function removeSameGarmentImage(index) {
@@ -1698,13 +1711,14 @@
         updateTextPreviews();
         updateSmartSuggestions();
 
-        $("#editContextTitle").textContent = item.visionResult.summaryTitle || "AI-förslag klart";
+        const contextTitle = $("#editContextTitle");
+        if (contextTitle) contextTitle.textContent = item.visionResult.summaryTitle || "AI-förslag klart";
         if (contextSub) {
           contextSub.hidden = false;
           contextSub.textContent = "AI-förslag klart – ändra det du vill.";
         }
 
-        if (button) { button.hidden = false; button.textContent = "Analysera igen med AI"; }
+        if (button) { button.hidden = false; button.textContent = "Analysera igen"; button.classList.add("is-secondary"); }
         saveBatchMetadata();
         scheduleAutosave();
       } else {
@@ -1726,7 +1740,8 @@
 
       if (currentItem()?.id === itemId && button) {
         button.disabled = false;
-        button.textContent = item.visionReady ? "Analysera igen med AI" : "Analysera med AI";
+        button.textContent = item.visionReady ? "Analysera igen" : "Analysera med AI";
+        button.classList.toggle("is-secondary", !!item.visionReady);
         button.hidden = !window.CCC_VISION_AI?.configured?.();
       }
       updateBatchStrip();
