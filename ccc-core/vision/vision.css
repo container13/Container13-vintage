@@ -2948,3 +2948,76 @@ body.camera-open .ccc-app-shell{background:#050505!important}
   padding:10px 0 0!important;
   background:var(--surface)!important;
 }
+
+/* CCC v2.10.2 – samlad Vision-förenkling efter verkligt arbetsprov */
+.camera-viewport{touch-action:none!important;overscroll-behavior:none}
+.camera-ccc-brand{
+  position:relative;display:inline-grid;place-items:center;justify-self:center;
+  color:#e4b951;font:500 31px/1 Georgia,"Times New Roman",serif;letter-spacing:-.08em;
+  text-shadow:0 -8px 22px rgba(224,178,62,.42);
+}
+.camera-ccc-brand::before{
+  content:"";position:absolute;left:50%;top:-8px;transform:translateX(-50%);
+  width:58px;height:14px;border-top:2px solid #e4b951;border-radius:50%;opacity:.9;
+}
+
+/* Workspace: alltid 3 × 3 på mobil, nio plagg per sida. */
+#captureCard:has(#batchStrip:not([hidden])) .batch-strip{
+  display:block!important;width:100%;min-height:0!important;margin:3px 0 0!important;padding:0!important;
+  overflow:hidden!important;touch-action:pan-y!important;border-radius:16px;
+}
+.vision-grid-track{display:flex;width:100%;will-change:transform}
+.vision-grid-page{
+  flex:0 0 100%;width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-auto-rows:1fr;gap:10px;padding:3px;box-sizing:border-box;background:var(--surface);
+}
+.vision-grid-page .batch-thumb{
+  width:100%!important;height:auto!important;aspect-ratio:1!important;min-width:0!important;max-width:none!important;
+  flex:none!important;border-radius:14px!important;
+}
+.vision-grid-placeholder{display:block;aspect-ratio:1;visibility:hidden}
+.vision-grid-pager{display:flex;justify-content:center;gap:8px;min-height:18px;margin:2px 0 0}
+.vision-grid-pager[hidden]{display:none!important}
+.vision-grid-pager button{width:9px;height:9px;min-width:9px;padding:0;border:0;border-radius:50%;background:var(--muted);opacity:.55}
+.vision-grid-pager button.is-active{background:var(--gold);opacity:1;transform:scale(1.15)}
+
+/* Ett tydligt, autosparat redigeringsflöde. */
+#editCard.compact-edit-stage{
+  display:flex!important;flex-direction:column!important;gap:11px!important;overflow-y:auto!important;
+  padding:14px!important;-webkit-overflow-scrolling:touch;
+}
+#editCard .compact-edit-head{flex:0 0 auto;align-items:center!important}
+#editCard .compact-edit-head h2{font-size:clamp(1.55rem,6vw,2rem)!important;line-height:1.05!important}
+.vision-autosave-state{color:#80c997;font-size:.78rem;font-weight:850;text-align:right}
+#editCard .edit-product-context{flex:0 0 auto;min-height:76px!important;padding-right:92px!important}
+#editCard .edit-trash-button{
+  width:auto!important;height:40px!important;padding:0 12px!important;border-radius:13px!important;
+  color:#ff8a8a!important;font-size:.76rem!important;font-weight:850!important;
+}
+.same-garment-editor{display:grid;gap:9px;padding:12px;border:1px solid var(--border);border-radius:18px;background:var(--surface-2)}
+.same-garment-heading{display:grid;gap:3px}.same-garment-heading strong{font-size:1.05rem}.same-garment-heading small{color:var(--muted);font-size:.82rem}
+.same-garment-thumbs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.same-garment-thumb{position:relative;aspect-ratio:1;overflow:hidden;border:1px solid var(--border);border-radius:13px;background:var(--surface)}
+.same-garment-thumb img{width:100%;height:100%;display:block;object-fit:cover}
+.same-garment-thumb span{position:absolute;left:5px;bottom:5px;padding:3px 6px;border-radius:999px;background:rgba(0,0,0,.68);color:#fff;font-size:.62rem;font-weight:800}
+.same-garment-thumb button{position:absolute;right:4px;top:4px;width:30px;height:30px;padding:0;border:0;border-radius:50%;background:rgba(12,14,18,.82);color:#fff;font-size:21px;line-height:1}
+.same-garment-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.same-garment-actions button{min-height:46px!important}
+.more-fields-wide{grid-column:1/-1;display:grid;gap:8px;margin-top:5px;padding-top:12px;border-top:1px solid var(--border)}
+.more-fields-wide h3{margin:0;font-size:1rem}.more-fields-wide .compact-action{width:100%;min-height:44px}
+#editCard .manual-ai-button{min-height:52px!important;background:var(--gold)!important;color:#161109!important;font-size:1rem!important;font-weight:900!important}
+#editCard .compact-edit-form{display:grid!important;gap:14px!important;overflow:visible!important;flex:0 0 auto!important}
+#editCard .compact-edit-form label>span,#editCard .price-row label>span{font-size:1rem!important;font-weight:900!important;margin-bottom:6px!important;display:block}
+#editCard input,#editCard textarea{font-size:16px!important;line-height:1.35!important}
+#editCard .more-fields-trigger{min-height:52px!important;font-size:1rem!important}
+#editCard .compact-edit-actions--one{display:block!important;position:static!important;flex:0 0 auto!important}
+#editCard .compact-edit-actions--one .primary-button{width:100%;min-height:58px;font-size:1.05rem}
+#editCard .message{min-height:20px;margin:0!important}
+.price-quick-button small::after{content:" – tryck för att använda"}
+
+@media(max-width:480px) and (orientation:portrait){
+  #captureCard:has(#batchStrip:not([hidden])){gap:7px!important}
+  .vision-grid-page{gap:9px}
+  #editCard.compact-edit-stage{padding:11px 12px 18px!important;gap:9px!important}
+  #editCard .compact-edit-head h2{font-size:1.55rem!important}
+  .vision-autosave-state{font-size:.68rem;max-width:105px}
+}

@@ -19,6 +19,11 @@
   let cropPointer = null;
   let savedSessionSummary = null;
   let sessionSaveChain = Promise.resolve();
+  let workspacePage = 0;
+  let workspaceSwipe = null;
+  let suppressWorkspaceClick = false;
+  let autosaveSequence = 0;
+  let cameraZoomState = { min: 1, max: 1, current: 1, pinchStartDistance: 0, pinchStartZoom: 1 };
 
   function queueVisionSessionSave() {
     if (!batchItems.length) return Promise.resolve(false);
@@ -352,6 +357,15 @@
       return item.visionResult;
     })().finally(() => {
       item.analysisInProgress = false;
+      if (item.visionReady && item.editedFields && item.visionResult?.fields) {
+        fieldIds.forEach((id) => {
+          if (!String(item.editedFields[id] ?? "").trim()) item.editedFields[id] = item.visionResult.fields[id] ?? "";
+        });
+      }
+      if (visionView === "edit" && currentItem()?.id === item.id) {
+        populateFormFromItem(true);
+        scheduleAutosave();
+      }
       updateBatchStrip();
     });
     return item.analysisPromise;
@@ -372,33 +386,24 @@
       workspaceContinue.disabled = false;
     }
     if (addDetail) addDetail.hidden = true;
-    const ready = batchItems.filter((item) => item.visionReady).length;
-    const selected = batchItems[currentIndex];
-    const manualSelected = !!selected && selected.analysisMode === "manual" && !selected.visionReady;
-
-    if (review) {
-      if (manualSelected) {
-        review.hidden = true;
-        review.disabled = true;
-      } else {
-        review.hidden = false;
-        review.disabled = ready === 0;
-        const selectedReady = !!selected?.visionReady;
-        if (selectedReady) {
-          review.textContent = "Visa förslag";
-        } else if (ready > 0) {
-          review.textContent = `Granska ${ready} ${ready === 1 ? "klart plagg" : "klara plagg"}`;
-        } else {
-          review.textContent = "Visa förslag";
-        }
-      }
-    }
+    /* En enda framåtknapp i arbetsvyn. Den valda miniatyren och
+       Granska & komplettera leder till samma plagg. */
+    if (review) { review.hidden = true; review.disabled = true; }
   }
 
   function updateBatchStrip() {
     const strip = $("#batchStrip");
     strip.innerHTML = "";
-    batchItems.forEach((item, index) => {
+    const pageCount = Math.max(1, Math.ceil(batchItems.length / 9));
+    workspacePage = Math.max(0, Math.min(workspacePage, pageCount - 1));
+    if (batchItems[currentIndex] && Math.floor(currentIndex / 9) !== workspacePage) workspacePage = Math.floor(currentIndex / 9);
+    const track = document.createElement("div");
+    track.className = "vision-grid-track";
+    for (let page = 0; page < pageCount; page += 1) {
+      const grid = document.createElement("div");
+      grid.className = "vision-grid-page";
+      batchItems.slice(page * 9, page * 9 + 9).forEach((item, localIndex) => {
+      const index = page * 9 + localIndex;
       const wrap = document.createElement("button");
       wrap.type = "button";
       wrap.className = "batch-thumb";
@@ -412,29 +417,96 @@
       state.textContent = item.visionReady || item.approved ? "✓" : "";
       state.setAttribute("aria-hidden", "true");
       wrap.addEventListener("click", () => {
+        if (suppressWorkspaceClick) return;
         currentIndex = index;
+        workspacePage = page;
         updateBatchStrip();
 
-        /* Ett sparat manuellt plagg är fortfarande redigerbart.
-           approved betyder "sparat till Publicera", inte låst/färdigredigerat. */
-        if (item.analysisMode === "manual" && !item.visionReady) {
-          editReturnView = "workspace";
-          populateFormFromItem(true);
-          showStage("editCard", "edit");
-          return;
-        }
-
-        if (item.visionReady) openReview(index);
-        else editCurrent(true);
+        editReturnView = "workspace";
+        populateFormFromItem(true);
+        showStage("editCard", "edit");
       });
       wrap.append(img, state);
-      strip.appendChild(wrap);
-    });
+      grid.appendChild(wrap);
+      });
+      while (grid.children.length < 9) {
+        const placeholder = document.createElement("span");
+        placeholder.className = "vision-grid-placeholder";
+        placeholder.setAttribute("aria-hidden", "true");
+        grid.appendChild(placeholder);
+      }
+      track.appendChild(grid);
+    }
+    strip.appendChild(track);
+    setWorkspacePage(workspacePage, false);
     strip.hidden = batchItems.length === 0;
+    renderWorkspacePager(pageCount);
     const help = $("#batchHelp");
     if (help) help.hidden = batchItems.length === 0;
     updateWorkspaceState();
     applyCaptureMode();
+  }
+
+  function renderWorkspacePager(pageCount = Math.max(1, Math.ceil(batchItems.length / 9))) {
+    const pager = $("#batchPager");
+    if (!pager) return;
+    pager.innerHTML = "";
+    pager.hidden = pageCount <= 1;
+    for (let page = 0; page < pageCount; page += 1) {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = page === workspacePage ? "is-active" : "";
+      dot.setAttribute("aria-label", `Visa sida ${page + 1}`);
+      dot.addEventListener("click", () => setWorkspacePage(page, true));
+      pager.appendChild(dot);
+    }
+  }
+
+  function setWorkspacePage(page, animate = true) {
+    const track = $("#batchStrip")?.querySelector(".vision-grid-track");
+    const pageCount = Math.max(1, Math.ceil(batchItems.length / 9));
+    workspacePage = Math.max(0, Math.min(page, pageCount - 1));
+    if (track) {
+      track.style.transition = animate ? "transform 320ms cubic-bezier(.22,.72,.22,1)" : "none";
+      track.style.transform = `translate3d(${-workspacePage * 100}%,0,0)`;
+    }
+    renderWorkspacePager(pageCount);
+  }
+
+  function installWorkspaceSwipe() {
+    const strip = $("#batchStrip");
+    if (!strip) return;
+    strip.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      const track = strip.querySelector(".vision-grid-track");
+      if (!track || Math.ceil(batchItems.length / 9) <= 1) return;
+      workspaceSwipe = { id: event.pointerId, x: event.clientX, y: event.clientY, dx: 0, horizontal: false };
+      strip.setPointerCapture?.(event.pointerId);
+      track.style.transition = "none";
+    });
+    strip.addEventListener("pointermove", (event) => {
+      if (!workspaceSwipe || workspaceSwipe.id !== event.pointerId) return;
+      const dx = event.clientX - workspaceSwipe.x;
+      const dy = event.clientY - workspaceSwipe.y;
+      if (!workspaceSwipe.horizontal && Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy) * 1.15) workspaceSwipe.horizontal = true;
+      if (!workspaceSwipe.horizontal) return;
+      event.preventDefault();
+      workspaceSwipe.dx = dx;
+      suppressWorkspaceClick = true;
+      const lastPage = Math.ceil(batchItems.length / 9) - 1;
+      const atEdge = (workspacePage === 0 && dx > 0) || (workspacePage === lastPage && dx < 0);
+      const resisted = atEdge ? dx * .24 : dx;
+      strip.querySelector(".vision-grid-track").style.transform = `translate3d(calc(${-workspacePage * 100}% + ${resisted}px),0,0)`;
+    }, { passive: false });
+    const finish = (event) => {
+      if (!workspaceSwipe || workspaceSwipe.id !== event.pointerId) return;
+      const { dx, horizontal } = workspaceSwipe;
+      workspaceSwipe = null;
+      if (horizontal && Math.abs(dx) > Math.max(42, strip.clientWidth * .16)) setWorkspacePage(workspacePage + (dx < 0 ? 1 : -1), true);
+      else setWorkspacePage(workspacePage, true);
+      setTimeout(() => { suppressWorkspaceClick = false; }, 80);
+    };
+    ["pointerup", "pointercancel", "lostpointercapture"].forEach((name) => strip.addEventListener(name, finish));
   }
 
   function resetCaptureVisual() {
@@ -478,6 +550,9 @@
     const min = Number(capabilities.zoom?.min ?? 1);
     const max = Number(capabilities.zoom?.max ?? 1);
     const supportsZoom = Number.isFinite(min) && Number.isFinite(max) && max > min;
+    cameraZoomState.min = min;
+    cameraZoomState.max = max;
+    cameraZoomState.current = Math.max(min, Math.min(max, 1));
     controls.querySelectorAll("[data-camera-zoom]").forEach((button) => {
       const requested = Number(button.dataset.cameraZoom || 1);
       button.hidden = requested !== 1 && (!supportsZoom || requested < min || requested > max);
@@ -494,12 +569,35 @@
     const zoom = Math.max(min, Math.min(max, Number(requested) || 1));
     try {
       await track.applyConstraints({ advanced: [{ zoom }] });
+      cameraZoomState.current = zoom;
       $("#cameraZoomControls")?.querySelectorAll("[data-camera-zoom]").forEach((button) =>
         button.classList.toggle("is-active", Number(button.dataset.cameraZoom) === Number(requested))
       );
     } catch (error) {
       console.warn("[CCC Vision] Kameran kunde inte byta zoom", error);
     }
+  }
+
+  function installCameraPinchZoom() {
+    const viewport = $(".camera-viewport");
+    if (!viewport) return;
+    const distance = (touches) => Math.hypot(touches[0].clientX - touches[1].clientX, touches[0].clientY - touches[1].clientY);
+    viewport.addEventListener("touchstart", (event) => {
+      if (event.touches.length !== 2 || cameraZoomState.max <= cameraZoomState.min) return;
+      event.preventDefault();
+      cameraZoomState.pinchStartDistance = distance(event.touches);
+      cameraZoomState.pinchStartZoom = cameraZoomState.current;
+    }, { passive: false });
+    viewport.addEventListener("touchmove", (event) => {
+      if (event.touches.length !== 2 || !cameraZoomState.pinchStartDistance || cameraZoomState.max <= cameraZoomState.min) return;
+      event.preventDefault();
+      const ratio = distance(event.touches) / cameraZoomState.pinchStartDistance;
+      const requested = Math.max(cameraZoomState.min, Math.min(cameraZoomState.max, cameraZoomState.pinchStartZoom * ratio));
+      setCameraZoom(requested);
+    }, { passive: false });
+    viewport.addEventListener("touchend", (event) => {
+      if (event.touches.length < 2) cameraZoomState.pinchStartDistance = 0;
+    }, { passive: true });
   }
 
   function stopCameraStream() {
@@ -1121,6 +1219,7 @@
     });
     $("#editThumbnail").src = item.previewUrl;
     $("#editThumbnail").hidden = false;
+    renderSameGarmentEditor();
     const manualMode = item.analysisMode === "manual" && !item.visionReady;
     $("#editContextTitle").textContent = item.visionReady
       ? (item.visionResult?.summaryTitle || "Redigera plagg")
@@ -1143,11 +1242,54 @@
     updateSmartSuggestions();
     const manualAi = $("#manualAiBtn");
     if (manualAi) {
-      const canManualAnalyze = !item.visionReady && item.analysisMode === "manual" && window.CCC_VISION_AI?.configured?.();
-      manualAi.hidden = !canManualAnalyze;
+      const canAnalyze = !!window.CCC_VISION_AI?.configured?.();
+      manualAi.hidden = !canAnalyze;
       manualAi.disabled = !!item.analysisInProgress;
-      manualAi.textContent = item.analysisInProgress ? "Analyserar…" : "Analysera med AI";
+      manualAi.textContent = item.analysisInProgress ? "Analyserar…" : (item.visionReady ? "Analysera igen med AI" : "Analysera med AI");
     }
+  }
+
+  function renderSameGarmentEditor() {
+    const item = currentItem();
+    const list = $("#sameGarmentThumbs");
+    if (!item || !list) return;
+    list.innerHTML = "";
+    const main = document.createElement("div");
+    main.className = "same-garment-thumb is-main";
+    main.innerHTML = `<img src="${item.previewUrl}" alt="Huvudbild"><span>Huvudbild</span>`;
+    list.appendChild(main);
+    (item.extraUrls || []).forEach((url, index) => {
+      const cell = document.createElement("div");
+      cell.className = "same-garment-thumb";
+      const img = document.createElement("img");
+      img.src = url;
+      img.alt = `Extrabild ${index + 1}`;
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.setAttribute("aria-label", `Ta bort extrabild ${index + 1}`);
+      remove.textContent = "×";
+      remove.addEventListener("click", () => removeSameGarmentImage(index));
+      cell.append(img, remove);
+      list.appendChild(cell);
+    });
+    const count = $("#sameGarmentCount");
+    if (count) count.textContent = `(${item.extraFiles.length}/2)`;
+    const full = item.extraFiles.length >= 2;
+    [$("#sameGarmentCameraBtn"), $("#sameGarmentAlbumBtn")].forEach((button) => { if (button) button.disabled = full; });
+  }
+
+  function removeSameGarmentImage(index) {
+    const item = currentItem();
+    if (!item || index < 0 || index >= item.extraFiles.length) return;
+    if (item.extraUrls[index]) URL.revokeObjectURL(item.extraUrls[index]);
+    item.extraFiles.splice(index, 1);
+    item.extraUrls.splice(index, 1);
+    item.extraFileKeys.splice(index, 1);
+    item.extraFileStored.splice(index, 1);
+    item.extraFileSavePromises.splice(index, 1);
+    renderSameGarmentEditor();
+    startSilentAnalysis(item, true);
+    scheduleAutosave();
   }
 
   function editCurrent(allowWhileAnalyzing = false) {
@@ -1156,12 +1298,12 @@
     showStage("editCard", "edit");
   }
 
-  async function saveEditedCurrent({ advance = false } = {}) {
+  async function saveEditedCurrent({ advance = false, quiet = false } = {}) {
     const item = currentItem();
     if (!item) return false;
 
     item.editedFields = Object.fromEntries(fieldIds.map((id) => [id, $("#" + id).value]));
-    rememberApprovedItem(item);
+    if (!quiet) rememberApprovedItem(item);
 
     try {
       await saveApprovedDraftLocally(item);
@@ -1178,9 +1320,9 @@
       if (advance) {
         if (editReturnView === "done") finishBatch();
         else moveToNextItem();
-      } else {
+      } else if (!quiet) {
         const state = $("#draftState");
-        if (state) state.textContent = "Sparat lokalt ✓";
+        if (state) state.textContent = "✓ Sparat automatiskt";
         setMessage("Plagget är sparat. Du kan fortsätta här eller välja ett annat plagg.");
       }
       return true;
@@ -1193,6 +1335,29 @@
 
   async function saveEditedAndNext() {
     return saveEditedCurrent({ advance: true });
+  }
+
+  function scheduleAutosave() {
+    const sequence = ++autosaveSequence;
+    const state = $("#draftState");
+    if (state) state.textContent = "Sparar…";
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(async () => {
+      const ok = await saveEditedCurrent({ quiet: true });
+      if (sequence !== autosaveSequence) return;
+      if (state) state.textContent = ok ? "✓ Sparat automatiskt" : "Kunde inte spara";
+    }, 500);
+  }
+
+  async function flushAutosave() {
+    clearTimeout(saveTimer);
+    autosaveSequence += 1;
+    if (visionView !== "edit" || !currentItem()) return true;
+    const state = $("#draftState");
+    if (state) state.textContent = "Sparar…";
+    const ok = await saveEditedCurrent({ quiet: true });
+    if (state) state.textContent = ok ? "✓ Sparat automatiskt" : "Kunde inte spara";
+    return ok;
   }
 
   function saveEditedAndBack() {
@@ -1229,7 +1394,7 @@
     const available = Math.max(0, 2 - item.extraFiles.length);
     const files = [...fileList].filter((f) => f.type.startsWith("image/")).slice(0, available);
     files.forEach((file) => {
-      const key = `${item.id}:extra:${item.extraFiles.length + 1}`;
+      const key = `${item.id}:extra:${uid()}`;
       item.extraFiles.push(file);
       item.extraUrls.push(fileUrl(file));
       item.extraFileKeys ||= [];
@@ -1253,9 +1418,14 @@
       item.extraFileSavePromises[extraIndex].catch(() => {});
     });
     if (files.length) {
+      renderSameGarmentEditor();
+      queueVisionSessionSave();
       startSilentAnalysis(item);
       item.analysisPromise.then(() => {
-        if (!$("#captureCard").hidden) updateBatchStrip();
+        if (visionView === "edit") {
+          populateFormFromItem(true);
+          scheduleAutosave();
+        } else if (!$("#captureCard").hidden) updateBatchStrip();
         else openReview(currentIndex);
       });
     }
@@ -1264,6 +1434,7 @@
 
   function trashCurrentFromEdit() {
     if (!batchItems.length) return;
+    if (!confirm("Ta bort plagget och bilderna från den här Vision-sessionen?")) return;
     const removedIndex = currentIndex;
     const [removed] = batchItems.splice(removedIndex, 1);
     trashStack.push({ item: removed, index: removedIndex });
@@ -1398,9 +1569,7 @@
   }
 
   function scheduleSave() {
-    if ($("#draftState")) $("#draftState").textContent = "Ändringar…";
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(() => saveDraft(false), 450);
+    scheduleAutosave();
   }
 
   function clean(value) { return value.trim(); }
@@ -1490,7 +1659,7 @@
 
   async function analyzeCurrentManually() {
     const item = currentItem();
-    if (!item || item.visionReady || item.analysisInProgress) return;
+    if (!item || item.analysisInProgress) return;
 
     const itemId = item.id;
     const startedIndex = currentIndex;
@@ -1535,8 +1704,9 @@
           contextSub.textContent = "AI-förslag klart – ändra det du vill.";
         }
 
-        if (button) button.hidden = true;
+        if (button) { button.hidden = false; button.textContent = "Analysera igen med AI"; }
         saveBatchMetadata();
+        scheduleAutosave();
       } else {
         const message = item.analysisError || "AI-analysen gav inget användbart resultat.";
         if (contextSub) {
@@ -1556,8 +1726,8 @@
 
       if (currentItem()?.id === itemId && button) {
         button.disabled = false;
-        button.textContent = "Analysera med AI";
-        button.hidden = !!item.visionReady;
+        button.textContent = item.visionReady ? "Analysera igen med AI" : "Analysera med AI";
+        button.hidden = !window.CCC_VISION_AI?.configured?.();
       }
       updateBatchStrip();
     }
@@ -1625,8 +1795,8 @@
     }
     switch (visionView) {
       case "edit":
-        if (editReturnView === "workspace") showWorkspace();
-        else openReview(currentIndex);
+        if (!await flushAutosave()) return;
+        showWorkspace();
         return;
       case "crop":
         if (cropReturnView === "done") finishBatch();
@@ -1754,14 +1924,10 @@
   $("#workspaceContinueBtn")?.addEventListener("click", () => {
     const item=batchItems[currentIndex]||batchItems[0];
     if(!item)return;
-    if(item.analysisMode==="manual" && !item.visionReady){
-      editReturnView="workspace";
-      populateFormFromItem(true);
-      showStage("editCard","edit");
-      return;
-    }
-    if(item.visionReady)openReview(Math.max(0,currentIndex));
-    else editCurrent(true);
+    currentIndex=Math.max(0,currentIndex);
+    editReturnView="workspace";
+    populateFormFromItem(true);
+    showStage("editCard","edit");
   });
 
   $("#showSuggestionBtn").addEventListener("click", () => {
@@ -1782,10 +1948,16 @@
   $("#wrongSuggestionBtn").addEventListener("click", editCurrent);
   $("#addSameGarmentBtn").addEventListener("click", () => $("#sameGarmentInput").click());
   $("#sameGarmentInput").addEventListener("change", (event) => addSameGarmentFiles(event.target.files));
+  $("#sameGarmentCameraBtn")?.addEventListener("click", () => $("#sameGarmentCameraInput")?.click());
+  $("#sameGarmentAlbumBtn")?.addEventListener("click", () => $("#sameGarmentInput")?.click());
+  $("#sameGarmentCameraInput")?.addEventListener("change", (event) => {
+    addSameGarmentFiles(event.target.files);
+    event.target.value = "";
+  });
   $("#trashCurrentBtn").addEventListener("click", trashCurrent); 
   $("#editTrashBtn")?.addEventListener("click", trashCurrentFromEdit);
   $("#undoTrashBtn").addEventListener("click", undoTrash);
-  $("#backToSuggestionBtn").addEventListener("click", saveEditedAndBack);
+  $("#backToSuggestionBtn")?.addEventListener("click", saveEditedAndBack);
   $("#previewBtn").addEventListener("click", saveEditedAndNext);
   $("#newSeriesBtn").addEventListener("click", newSeries);
   $("#publishReadyBtn")?.addEventListener("click", () => {
@@ -1803,7 +1975,7 @@
   $("#saveExtrasBtn")?.addEventListener("click",()=>{
     const item=currentItem();
     if(item)item.editedFields=Object.fromEntries(fieldIds.map(id=>[id,$("#"+id).value]));
-    saveBatchMetadata();scheduleSave();closeOptionalExtras();
+    saveBatchMetadata();scheduleAutosave();closeOptionalExtras();
   });
   $("#optionalExtrasDialog")?.addEventListener("click",event=>{if(event.target===$("#optionalExtrasDialog"))closeOptionalExtras();});
   $("#openMoreFieldsBtn")?.addEventListener("click",()=>{
@@ -1816,7 +1988,7 @@
     const item=currentItem();
     if(item)item.editedFields=Object.fromEntries(fieldIds.map(id=>[id,$("#"+id).value]));
     saveBatchMetadata();
-    scheduleSave();
+    scheduleAutosave();
     $("#moreFieldsDialog").hidden=true;
   });
   $("#moreFieldsDialog")?.addEventListener("click",event=>{
@@ -1832,7 +2004,7 @@
       if (item) item.editedFields = Object.fromEntries(fieldIds.map((fieldId) => [fieldId, $("#" + fieldId).value]));
       updateCounters();
       updateTextPreviews();
-      scheduleSave();
+      scheduleAutosave();
     });
   });
 
@@ -1840,6 +2012,8 @@
   if ($("#backToEditBtn")) $("#backToEditBtn").addEventListener("click", () => showStage("editCard", "edit"));
   if ($("#approveBtn")) $("#approveBtn").addEventListener("click", finishBatch);
 
+  installWorkspaceSwipe();
+  installCameraPinchZoom();
   showVisionStart();
   refreshSavedSessionSummary();
   refreshCostUi();
