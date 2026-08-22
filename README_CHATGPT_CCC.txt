@@ -1795,3 +1795,24 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Borttagning från hemsidan blir ett flöde med flerval. Kort gråmarkeras först, flera bilder kan väljas och en fast knapp genomför borttagningen efter gemensam bekräftelse. Lokala arkivbilder lämnas orörda och markeras som inte längre live.
 - Livevyn behåller sin scrollposition efter borttagning. Kvittot visas flytande och skjuter inte listan uppåt.
 - Kolumnmellanrummet i samtliga 3×3-grids ökas utan att ändra radmellanrummet. Swipe-kopian tas bort i samma renderingsögonblick som den riktiga gridden återställs, så gridkanter inte ska blinka efter snap.
+
+
+## v2.10.2 – Vision förenklas och autosparas
+- Vision-arbetsytan använder en paginerad 3×3-grid på mobil. Nio plagg visas per sida och fler plagg nås med fingerföljande swipe åt båda hållen utan rundgång.
+- `Fortsätt` heter nu `Granska & komplettera`. Både knappen och vald miniatyr går direkt till samma redigeringsvy; den extra förslagssidan ligger inte längre i normalflödets väg.
+- `Spara och fortsätt senare` och `Spara & tillbaka` tas bort. Formulär, extrabilder, plaggmetadata och aktiv Vision-session säkerhetssparas automatiskt lokalt med statusen `Sparar…` / `Sparat automatiskt`.
+- Redigeringsvyn får större fältrubriker, tydligare luft, exempeltext och direkt prisval. `Frivilliga tillägg` och `Fler uppgifter` samlas under `Lägg till fler uppgifter`.
+- `Fler bilder av samma plagg (0/2)` ligger tidigt med `Nytt foto` och `Album`. Huvudbild plus högst två extrabilder hålls ihop med samma plagg-ID och används gemensamt vid AI-analys.
+- `Analysera med AI` är en tydlig knapp som kan köras igen efter komplettering. AI skriver inte över redan ifyllda användarfält.
+- `Redigerbart` tas bort. `Ta bort` kräver bekräftelse. Enda framåtåtgärden är `Nästa plagg`; Core-Tillbaka autosparar och återgår till gridden.
+- Kamerans `Ta foto` ersätts av en kompakt CCC-markering. Nypgest i kameraytan styr endast riktig hårdvaruzoom när webbläsaren exponerar den.
+- Core får en global touchregel mot oavsiktlig dubbeltryckszoom och mobilens formulärfält hålls minst 16 px.
+- Root `/version.js` är fortsatt orörd. CCC-versionen hanteras i `/ccc-core/version.js`.
+
+
+## v2.10.3 – blockerande Vision-vy/gridhotfix
+- v2.10.2:s nya `display:flex!important` på redigeringskortet kunde vinna över HTML-attributet `hidden`. Resultatet var att startsida/arbetsyta och `Gör förslaget klart` visades samtidigt.
+- `#editCard[hidden]` och övriga Vision-steg får nu explicita starka hidden-regler, så endast den vy som Vision-state aktiverar kan renderas.
+- Visionens 3×3-sida får explicit kvadratisk yta och tre reserverade gridrader. Återupptagna miniatyrer kan därför inte kollapsa till en tunn rest mellan instruktionen och huvudknappen.
+- Hotfixen ändrar inte autosparning, extrabilder, AI-flöde eller övriga v2.10.2-beslut.
+- Root `/version.js` är fortsatt orörd.
