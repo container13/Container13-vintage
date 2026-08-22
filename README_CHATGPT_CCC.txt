@@ -1988,3 +1988,10 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - v2.10.24 ändrade fel kodställe och påverkade därför inte den synliga rubriken.
 - Inga andra UI- eller funktionsändringar görs.
 
+## v2.10.26 – separat yta för arbetsrubrik och status
+- Toppraden i Vision-editorn delas tydligt i två zoner.
+- Vänster zon: `Gör klart plagg · X av Y`.
+- Höger zon: sparstatus och `Ta bort`.
+- Zonerna får reserverad bredd så rubriken inte kan krocka med sparstatus/åtgärd på smala iPhone-skärmar.
+- Inga andra UI- eller funktionsändringar görs.
+
