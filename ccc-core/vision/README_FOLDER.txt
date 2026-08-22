@@ -33,3 +33,5 @@ v2.10.5: Fixar tap + swipe i Vision-grid. Kameraräknaren visar bara nya foton i
 v2.10.6: Mobil tap på en Vision-miniatyr öppnar plagget direkt på touchend. Swipe och aktuell-fotoserie-räknaren från v2.10.5 lämnas oförändrade.
 
 v2.10.7: kompakt editor, ett prisfält och teckenräknare inne i fälten.
+
+v2.10.8: editor komprimerad ytterligare; nedersta två editor-knappar på samma rad; footer orörd.
