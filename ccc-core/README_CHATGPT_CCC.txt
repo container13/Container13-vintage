@@ -1846,3 +1846,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Rubrikfältet är mindre än Beskrivning och scrollar endast internt vid ovanligt lång rubrik.
 - Pris och övriga funktioner från v2.10.21 lämnas orörda.
 
+## v2.10.23 – safe-area-finjustering för Rubrik/Beskrivning
+- Fokus-kortet flyttas ned med tydlig marginal under iPhones statusfält/Dynamic Island.
+- Rubrik/Beskrivning, hjälptext och X ligger fast i toppen av kortet utan krock med klocka/batteri.
+- Skrivfältet använder endast återstående höjd ovanför tangentbordet.
+- Hela iPhone-tangentbordet och dess navigations-/förslagsrad ska lämnas fri.
+- Endast texten i innersta skrivfältet kan scrolla; övriga fokusvyn är fortsatt låst.
+- Prisfokusläget är orört.
+
