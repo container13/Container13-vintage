@@ -27,6 +27,8 @@
   let autosaveSequence = 0;
   let editBaseline = "";
   let editStructuralDirty = false;
+  let activeTextEditorField = null;
+  let textEditorOriginalValue = "";
   let cameraZoomState = { min: 1, max: 1, current: 1, pinchStartDistance: 0, pinchStartZoom: 1 };
 
   function queueVisionSessionSave() {
@@ -1711,28 +1713,113 @@
       scheduleSave();
     }
     $("#factSuggestionText").textContent = demo?.fact || "Ett kort extra fakta kan läggas till om du vill.";
+    updateFactButton();
+  }
+
+  function syncEditedFieldsFromForm() {
+    const item = currentItem();
+    if (item) item.editedFields = Object.fromEntries(fieldIds.map((fieldId) => [fieldId, $("#" + fieldId).value]));
+  }
+
+  function commitTextFieldChange(fieldId, value) {
+    const field = $("#" + fieldId);
+    if (!field) return;
+    field.value = value;
+    syncEditedFieldsFromForm();
+    updateCounters();
+    updateTextPreviews();
+    updateFactButton();
+    scheduleAutosave();
   }
 
   function appendToDescription(text) {
     const area = $("#description");
     if (area.value.includes(text)) return;
-    area.value = `${area.value.trim()}${area.value.trim() ? "\n\n" : ""}${text}`;
-    updateCounters();
-    updateTextPreviews();
-    scheduleSave();
+    const next = `${area.value.trim()}${area.value.trim() ? "\n\n" : ""}${text}`;
+    commitTextFieldChange("description", next);
   }
 
-  function addFact() {
+  function currentFactBlock() {
     const fact = currentDemo()?.fact;
-    if (fact) appendToDescription(`Visste du?\n${fact}`);
-    $("#addFactBtn").textContent = "Tillagt i beskrivningen ✓";
-    $("#addFactBtn").disabled = true;
+    return fact ? `Visste du?\n${fact}` : "";
+  }
+
+  function descriptionHasFact() {
+    const block = currentFactBlock();
+    return !!block && $("#description").value.includes(block);
+  }
+
+  function updateFactButton() {
+    const button = $("#addFactBtn");
+    if (!button) return;
+    const hasFact = descriptionHasFact();
+    button.textContent = hasFact ? "Ta bort “Visste du?”" : "Lägg till “Visste du?”";
+    button.disabled = !currentFactBlock();
+    button.classList.toggle("is-active", hasFact);
+  }
+
+  function toggleFact() {
+    const block = currentFactBlock();
+    if (!block) return;
+    const area = $("#description");
+    if (area.value.includes(block)) {
+      const next = area.value
+        .replace(block, "")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+      commitTextFieldChange("description", next);
+    } else {
+      appendToDescription(block);
+    }
+    updateFactButton();
   }
 
   function addNewCondition() {
     appendToDescription("Nyskick.");
     $("#addNewConditionBtn").textContent = "Tillagt i beskrivningen ✓";
     $("#addNewConditionBtn").disabled = true;
+  }
+
+  function openTextEditor(fieldId) {
+    if (!["title", "description"].includes(fieldId)) return;
+    const dialog = $("#textEditorDialog");
+    const editor = $("#largeTextEditor");
+    const source = $("#" + fieldId);
+    if (!dialog || !editor || !source) return;
+
+    activeTextEditorField = fieldId;
+    textEditorOriginalValue = source.value;
+    const isTitle = fieldId === "title";
+    $("#textEditorTitle").textContent = isTitle ? "Rubrik" : "Beskrivning";
+    $("#textEditorHint").textContent = isTitle
+      ? "Skriv en tydlig rubrik för plagget."
+      : "Skriv eller justera beskrivningen.";
+    editor.maxLength = isTitle ? 100 : 800;
+    editor.rows = isTitle ? 4 : 10;
+    editor.value = source.value;
+    editor.placeholder = isTitle ? "Rubrik" : "Beskrivning";
+    editor.classList.toggle("title-editor", isTitle);
+    $("#largeTextEditorCount").textContent = `${editor.value.length}/${editor.maxLength}`;
+    dialog.hidden = false;
+    requestAnimationFrame(() => {
+      editor.focus();
+      editor.setSelectionRange(editor.value.length, editor.value.length);
+    });
+  }
+
+  function closeTextEditor({ save = false } = {}) {
+    const dialog = $("#textEditorDialog");
+    const editor = $("#largeTextEditor");
+    if (!dialog || !editor) return;
+    if (save && activeTextEditorField) {
+      commitTextFieldChange(activeTextEditorField, editor.value);
+    } else if (activeTextEditorField) {
+      const source = $("#" + activeTextEditorField);
+      if (source) source.value = textEditorOriginalValue;
+    }
+    dialog.hidden = true;
+    activeTextEditorField = null;
+    textEditorOriginalValue = "";
   }
 
   function closeOptionalExtras() {
@@ -2086,7 +2173,7 @@
 
 
   // Existerande extrafunktioner
-  $("#addFactBtn").addEventListener("click", addFact);
+  $("#addFactBtn").addEventListener("click", toggleFact);
   $("#addNewConditionBtn").addEventListener("click", addNewCondition);
   $("#openExtrasBtn")?.addEventListener("click",()=>{$("#optionalExtrasDialog").hidden=false;});
   $("#cancelExtrasBtn")?.addEventListener("click",closeOptionalExtras);
@@ -2097,6 +2184,7 @@
   });
   $("#optionalExtrasDialog")?.addEventListener("click",event=>{if(event.target===$("#optionalExtrasDialog"))closeOptionalExtras();});
   $("#openMoreFieldsBtn")?.addEventListener("click",()=>{
+    updateFactButton();
     $("#moreFieldsDialog").hidden=false;
   });
   $("#cancelMoreFieldsBtn")?.addEventListener("click",()=>{
@@ -2113,6 +2201,30 @@
     if(event.target===$("#moreFieldsDialog"))$("#moreFieldsDialog").hidden=true;
   });
 
+  ["title", "description"].forEach((fieldId) => {
+    const field = $("#" + fieldId);
+    field?.addEventListener("click", (event) => {
+      event.preventDefault();
+      openTextEditor(fieldId);
+    });
+    field?.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openTextEditor(fieldId);
+      }
+    });
+  });
+
+  $("#largeTextEditor")?.addEventListener("input", () => {
+    const editor = $("#largeTextEditor");
+    $("#largeTextEditorCount").textContent = `${editor.value.length}/${editor.maxLength}`;
+  });
+  $("#cancelTextEditorBtn")?.addEventListener("click", () => closeTextEditor({ save: false }));
+  $("#saveTextEditorBtn")?.addEventListener("click", () => closeTextEditor({ save: true }));
+  $("#textEditorDialog")?.addEventListener("click", (event) => {
+    if (event.target === $("#textEditorDialog")) closeTextEditor({ save: false });
+  });
+
   $$('[data-copy]').forEach((button) => button.addEventListener("click", () => copyPreview(button.dataset.copy)));
   $$('[data-demo]').forEach((button) => button.addEventListener("click", () => chooseDemo(button.dataset.demo)));
 
@@ -2122,6 +2234,7 @@
       if (item) item.editedFields = Object.fromEntries(fieldIds.map((fieldId) => [fieldId, $("#" + fieldId).value]));
       updateCounters();
       updateTextPreviews();
+      updateFactButton();
       scheduleAutosave();
     });
   });

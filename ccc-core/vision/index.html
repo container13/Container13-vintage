@@ -8,7 +8,7 @@
 <link rel="manifest" href="../manifest.webmanifest?v=2.9.3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>CCC Vision v2.10.6</title>
+  <title>CCC Vision v2.10.11</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
   <link rel="stylesheet" href="vision.css?v=2.10.6">
   <link rel="stylesheet" href="../core.css?v=2.10.2">
@@ -192,7 +192,7 @@
 
       <form id="productForm" class="compact-edit-form">
         <label class="title-field">
-          <input id="title" type="text" autocomplete="off" maxlength="100" placeholder="Rubrik">
+          <input id="title" type="text" autocomplete="off" maxlength="100" placeholder="Rubrik" readonly aria-haspopup="dialog" aria-controls="textEditorDialog">
           <small class="field-help"><span id="titleCount">0</span>/100</small>
         </label>
 
@@ -204,7 +204,7 @@
         </div>
 
         <label class="compact-description-field">
-          <textarea id="description" rows="3" maxlength="800" placeholder="Beskrivning"></textarea>
+          <textarea id="description" rows="3" maxlength="800" placeholder="Beskrivning" readonly aria-haspopup="dialog" aria-controls="textEditorDialog"></textarea>
           <small class="field-help"><span id="descriptionCount">0</span>/800</small>
         </label>
 
@@ -284,6 +284,24 @@
 
 
   
+
+
+<div id="textEditorDialog" class="dialog ccc-dialog text-editor-dialog" role="dialog" aria-modal="true" aria-labelledby="textEditorTitle" hidden>
+  <div class="dialog-box ccc-dialog-box text-editor-dialog-box">
+    <div class="text-editor-head">
+      <h2 id="textEditorTitle">Redigera</h2>
+      <p id="textEditorHint">Skriv eller ändra texten.</p>
+    </div>
+    <div class="text-editor-field-wrap">
+      <textarea id="largeTextEditor" autocomplete="off"></textarea>
+      <small id="largeTextEditorCount" class="text-editor-count">0/100</small>
+    </div>
+    <div class="more-fields-actions text-editor-actions">
+      <button id="cancelTextEditorBtn" class="secondary-button" type="button">Återgå</button>
+      <button id="saveTextEditorBtn" class="primary-button" type="button">Klar</button>
+    </div>
+  </div>
+</div>
 
 <div id="moreFieldsDialog" class="dialog ccc-dialog more-fields-dialog" role="dialog" aria-modal="true" aria-labelledby="moreFieldsTitle" hidden>
   <div class="dialog-box ccc-dialog-box more-fields-dialog-box">

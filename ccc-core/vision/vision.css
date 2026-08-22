@@ -3137,3 +3137,73 @@ body.camera-open .ccc-app-shell{background:#050505!important}
   height:44px!important;
   min-height:44px!important;
 }
+
+
+/* v2.10.11 – large title/description editor + reversible "Visste du?" */
+#editCard #title[readonly],
+#editCard #description[readonly]{
+  cursor:pointer!important;
+  caret-color:transparent!important;
+}
+#editCard #title[readonly]:focus,
+#editCard #description[readonly]:focus{
+  outline:2px solid color-mix(in srgb,var(--gold) 58%,transparent)!important;
+  outline-offset:1px;
+}
+
+.text-editor-dialog{
+  z-index:1250!important;
+  background:rgba(4,6,10,.76)!important;
+  backdrop-filter:blur(4px);
+}
+.text-editor-dialog-box{
+  width:min(calc(100vw - 28px),560px)!important;
+  max-height:min(82dvh,720px)!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:14px!important;
+  padding:18px!important;
+  overflow:hidden!important;
+}
+.text-editor-head h2{
+  margin:0 0 4px!important;
+}
+.text-editor-head p{
+  margin:0!important;
+}
+.text-editor-field-wrap{
+  position:relative;
+  min-height:0;
+  flex:1 1 auto;
+}
+#largeTextEditor{
+  width:100%;
+  min-height:230px;
+  max-height:52dvh;
+  resize:none;
+  padding:16px 18px 34px;
+  border-radius:18px;
+  border:1px solid var(--ccc-border,var(--border));
+  background:var(--ccc-surface-2,var(--surface-2,#222936));
+  color:var(--ccc-text,var(--text));
+  font:inherit;
+  font-size:1rem;
+  line-height:1.45;
+}
+#largeTextEditor.title-editor{
+  min-height:150px;
+}
+.text-editor-count{
+  position:absolute;
+  right:14px;
+  bottom:12px;
+  color:var(--ccc-muted,var(--muted));
+  pointer-events:none;
+}
+.text-editor-actions{
+  flex:0 0 auto;
+}
+#addFactBtn.is-active{
+  border-color:rgba(229,184,80,.62)!important;
+  color:var(--gold)!important;
+}

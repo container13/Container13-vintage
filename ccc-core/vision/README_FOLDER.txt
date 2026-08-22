@@ -39,3 +39,5 @@ v2.10.8: editor komprimerad ytterligare; nedersta två editor-knappar på samma 
 v2.10.9: tätare editor. Footer orörd.
 
 v2.10.10: dirty-state/back-fix samt något luftigare editor. Footer/touch/swipe/kameraräknare orörda.
+
+v2.10.11: stor dialog för Rubrik/Beskrivning och reversibelt Visste du?-tillägg. Footer/touch/swipe/kameraräknare orörda.
