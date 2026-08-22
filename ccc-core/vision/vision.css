@@ -3620,3 +3620,67 @@ body.ccc-focused-price-mode{
     gap:24px!important;
   }
 }
+
+
+/* v2.10.19 – only textarea may scroll in Rubrik/Beskrivning focus mode */
+html.ccc-focused-text-mode,
+body.ccc-focused-text-mode{
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  touch-action:none!important;
+}
+
+.text-editor-screen{
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  touch-action:none!important;
+}
+
+.text-editor-screen .text-editor-dialog-box{
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  touch-action:none!important;
+}
+
+.text-editor-screen .text-editor-head{
+  flex:0 0 auto!important;
+  position:relative!important;
+  overflow:visible!important;
+  touch-action:none!important;
+}
+
+.text-editor-screen .text-editor-field-wrap{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  touch-action:none!important;
+}
+
+.text-editor-screen #largeTextEditor{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-y!important;
+}
+
+/* Rubrik keeps fixed shell and scrolls only inside its writing field if needed. */
+.text-editor-screen #largeTextEditor.title-editor{
+  flex:0 0 auto!important;
+  height:170px!important;
+  min-height:170px!important;
+  max-height:170px!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+  touch-action:pan-y!important;
+}
+
+/* Prevent the page itself from rubber-banding behind the focus screen. */
+body.ccc-focused-text-mode{
+  position:relative!important;
+  width:100%!important;
+}

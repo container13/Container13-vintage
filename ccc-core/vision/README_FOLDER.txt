@@ -55,3 +55,5 @@ v2.10.16: iOS textdialog stabiliserad genom overflow-baserat bakgrundslås; inge
 v2.10.17: Rubrik/Beskrivning är nu separat helskärms-fokusläge; normal Vision-editor döljs helt under skrivning.
 
 v2.10.18: Pris använder separat helskärms-fokusläge; normal Vision-editor döljs helt under prisinmatning.
+
+v2.10.19: Rubrik/Beskrivning-läget låst; endast textarea får scrolla. Pris orört.
