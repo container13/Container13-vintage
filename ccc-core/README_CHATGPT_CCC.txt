@@ -1822,3 +1822,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - iOS rubber-band/overscroll blockeras utanför skrivfältet.
 - Prisfokusläget och övriga funktioner från v2.10.18 lämnas orörda.
 
+## v2.10.20 – endast skrivfältet får scrolla
+- I Rubrik/Beskrivning fryses nu både `html` och `body` helt medan fokusläget är öppet.
+- Fokusvyn, rubriken, hjälptexten, X, dialogramen och ytan runt skrivfältet kan inte scrollas eller rubber-banda.
+- Endast `largeTextEditor` är en scrollcontainer.
+- Dokumentets scrollbar ska därför inte längre visas längst till höger i fokusläget.
+- Scrollpositionen i plagget sparas när fokusläget öppnas och återställs när det stängs.
+- Prisfokusläget och övriga funktioner från v2.10.19 lämnas orörda.
+
