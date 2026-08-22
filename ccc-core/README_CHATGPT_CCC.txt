@@ -1799,11 +1799,19 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Övriga funktioner från v2.10.15 lämnas orörda.
 
 ## v2.10.17 – separat fokusläge för Rubrik/Beskrivning
-- Den tidigare flytande textdialogen är ersatt med ett separat fokuserat redigeringsläge som täcker hela Vision-vyn.
-- När Rubrik eller Beskrivning öppnas syns inte den vanliga editorn bakom.
-- Rubrik/Beskrivning + X ligger fast överst i fokusläget; skrivfältet använder resten av tillgängliga ytan.
-- Endast innehållet i skrivfältet får scrolla.
+- Den tidigare flytande Rubrik/Beskrivning-dialogen ersätts av ett eget fokuserat helskärmsläge.
+- När Rubrik/Beskrivning öppnas döljs den vanliga Vision-editorn helt; inga dubbla lager eller underliggande fält ska synas bakom.
+- Fokusskärmen använder den tillgängliga iPhone-vyn ovanför tangentbordet utan visual-viewport-positionering av textdialogen.
+- Endast innehållet i själva skrivfältet får scrolla.
 - X och CCC:s Tillbaka stänger fokusläget och återgår till samma plagg.
-- Autosave medan man skriver behålls.
-- Prisdialog, footer, swipe, bildklick, kameraräknare och övrig editorlogik lämnas orörda.
+- Rubrik använder en lagom stor skrivyta; Beskrivning använder återstående tillgängliga höjd.
+- Prisdialogen och övriga funktioner från v2.10.16 lämnas orörda.
+
+## v2.10.18 – separat fokusläge för Pris
+- Pris använder nu samma helskärmsprincip som den fungerande Rubrik/Beskrivning-redigeringen.
+- När Pris öppnas döljs den vanliga Vision-editorn helt; inga underliggande knappar eller fält syns eller går att trycka på.
+- Fokusvyn visar bara Pris, ett stort beloppsfält, `kr` och stängkryss ovanför siffertangentbordet.
+- X och CCC:s Tillbaka stänger prisfokusläget och återgår till samma plagg.
+- Pris autosparas fortsatt medan värdet ändras.
+- Rubrik/Beskrivning och övriga funktioner från v2.10.17 lämnas orörda.
 
