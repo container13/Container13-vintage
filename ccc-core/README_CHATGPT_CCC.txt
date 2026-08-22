@@ -1717,3 +1717,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Swipebeteendet och kamerans räknare för endast nya foton i aktuell fotoserie från v2.10.5 lämnas oförändrade.
 - Publicera och övriga CCC-moduler är orörda. Root `/version.js` är fortsatt orörd.
 
+## v2.10.7 – kompakt Vision-redigering
+- Pris är nu ett enda redigerbart fält; Visions förslag fylls direkt när fältet är tomt.
+- Den separata prisförslagsrutan tas bort.
+- 0/100 och 0/800 ligger inne i respektive fält.
+- Beskrivning, mellanrum och `Lägg till fler uppgifter` komprimeras.
+- Touchöppning, swipe och kameraräknare från v2.10.6 lämnas oförändrade.
+- Root `/version.js` är fortsatt orörd.
+
