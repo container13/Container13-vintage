@@ -1747,3 +1747,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Editorn har fått några pixlar mer luft mellan bilddel, AI-knapp, fält och nedersta knapprad, men enskärmslayouten behålls.
 - Footer, gridswipe, bildklick och kameraräknare är orörda.
 
+## v2.10.11 – stor textredigering + ångra “Visste du?”
+- Tryck på Rubrik eller Beskrivning öppnar nu en stor redigeringsdialog, i samma arbetsstil som Fler uppgifter.
+- Återgå stänger textdialogen utan att föra över ändringen; Klar för över texten till det kompakta fältet och autosparar.
+- De små Rubrik/Beskrivningsfälten är fortsatt kompakta och används som öppnare/översikt.
+- “Visste du?” är nu valbart åt båda håll: Lägg till respektive Ta bort.
+- Borttagning tar bara bort det exakta Visste du-blocket och lämnar övrig beskrivning kvar.
+- Footer, swipe, bildklick, kameraräknare och övrig editorlayout är orörda.
+
