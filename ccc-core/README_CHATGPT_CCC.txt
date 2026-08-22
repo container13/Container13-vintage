@@ -1789,3 +1789,12 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Själva sidan bakom dialogen kan inte längre scrollas medan tangentbord/dialog är aktiv.
 - Befintlig textscroll inne i skrivfältet, footer, swipe, bildklick, autosave och AI-/toggle-logik lämnas orörda.
 
+## v2.10.16 – stabil iOS-dialog för Rubrik/Beskrivning
+- Scroll-låset flyttar inte längre hela `body` med negativ top-position.
+- Bakgrunden låses med overflow i stället, vilket undviker dubbel förskjutning mot iOS visual viewport.
+- Rubrik/Beskrivning-dialogen hålls som ett enda stabilt lager ovanför tangentbordet.
+- Dialogskalet kan inte scrollas; endast själva skrivfältets innehåll får scrolla.
+- Visual viewport-värden klampas till rimliga gränser för att undvika att dialogen hamnar utanför skärmen.
+- Bakgrunden isoleras/tonas så underliggande editor inte kan blöda igenom eller ta emot tryck.
+- Övriga funktioner från v2.10.15 lämnas orörda.
+
