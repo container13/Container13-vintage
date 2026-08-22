@@ -1816,3 +1816,15 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Visionens 3×3-sida får explicit kvadratisk yta och tre reserverade gridrader. Återupptagna miniatyrer kan därför inte kollapsa till en tunn rest mellan instruktionen och huvudknappen.
 - Hotfixen ändrar inte autosparning, extrabilder, AI-flöde eller övriga v2.10.2-beslut.
 - Root `/version.js` är fortsatt orörd.
+
+
+## v2.10.4 – kameraräknare, 3×2 och kompakt redigering
+- Kameratoppen visar hur många plagg som redan fotograferats. Vid granskning av en ny tagning visas även det nya fotots löpnummer och totalt antal plagg.
+- Vision-arbetsytan byter från trång 3×3 till 3×2: sex större miniatyrer per sida. Swipe, sidprickar, motstånd i ändlägen och swipe åt båda hållen behålls.
+- Vanligt tryck och swipe separeras tydligare. Pointer capture aktiveras först efter ett tydligt horisontellt drag på minst 14 px; ett vanligt tryck eller lätt fingerdarr ska öppna plagget.
+- Miniatyrtrycket öppnar redigeringsvyn direkt utan att först rendera om gridden under samma klickhändelse.
+- Redigeringsvyn får kompakt rubrik `Plagg X av Y`. Den separata dubblerade `Redigera plagg`-rutan och dess extra huvudbild tas bort.
+- Bilddelen visar en enda rad med huvudbild och upp till två kompletterande platser. Tomma platser fungerar direkt som `Nytt foto` och `Album/Lägg till`.
+- `Analysera med AI` är guldig före första analysen. När ett AI-resultat redan finns blir åtgärden mindre och heter `Analysera igen`.
+- `Nästa plagg` återgår till en helbred huvudknapp längst ned. Autosparning och Core-Tillbaka behålls.
+- Publicera och övriga CCC-moduler är orörda. Root `/version.js` är fortsatt orörd.
