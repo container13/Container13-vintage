@@ -1962,3 +1962,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - När fokusläget stängs stoppas scrollvakten och plaggets tidigare scrollposition återställs.
 - Pris och övriga funktioner lämnas orörda.
 
+## v2.10.22 – Rubrik/Beskrivning anpassas till synlig iPhone-yta
+- Fokusläget läser `visualViewport.height` när iPhone-tangentbordet öppnas och använder exakt den synliga höjden ovanför tangentbordet.
+- Hela fokusvyn, rubriken, hjälptexten, X och dialogramen är fasta och får inte scrolla.
+- Skrivfältet krymper automatiskt när tangentbordet visas så att hela tangentbordet/navigationsraden lämnas fri.
+- Endast texten inne i själva skrivfältet kan scrolla om innehållet blir längre än fältet.
+- Rubrikfältet är mindre än Beskrivning och scrollar endast internt vid ovanligt lång rubrik.
+- Pris och övriga funktioner från v2.10.21 lämnas orörda.
+
