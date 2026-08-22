@@ -1834,3 +1834,10 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Swipe mellan gridsidor använder separat touchhantering; fingerjitter räknas inte som swipe.
 - Kamerans räknare visar endast nya foton i det aktuella kamerabesöket/fotoserien, inte äldre bilder i Vision-sessionen.
 - 3×2-layouten och redigeringsvyn från v2.10.4 lämnas i övrigt oförändrade.
+
+## v2.10.6 – Vision mobil tap-hotfix
+- Mobiltryck på en miniatyr öppnar nu plagget direkt från `touchend` i stället för att förlita sig på webbläsarens syntetiska `click` efter en touch.
+- Ett kort tryck identifieras separat från horisontell swipe och vertikal rörelse; ghost-click blockeras efter den direkta öppningen.
+- Swipebeteendet och kamerans räknare för endast nya foton i aktuell fotoserie från v2.10.5 lämnas oförändrade.
+- Publicera och övriga CCC-moduler är orörda. Root `/version.js` är fortsatt orörd.
+
