@@ -69,3 +69,5 @@ v2.10.23: textfokus flyttas ned under statusfältet enligt målbild; tangentbord
 v2.10.24: arbetsrubriken ändrad från `Plagg X av Y` till `Gör klart plagg · X av Y`; inga andra UI-/funktionsändringar.
 
 v2.10.25: faktisk synlig `editTitle` ändrad till `Gör klart plagg · X av Y`; inget annat ändrat.
+
+v2.10.26: editorhuvud delas i separat rubrikzon vänster och status/åtgärdszon höger för att undvika överlapp.
