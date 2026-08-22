@@ -61,3 +61,5 @@ v2.10.19: Rubrik/Beskrivning-läget låst; endast textarea får scrolla. Pris or
 v2.10.20: hela dokumentet fryses i Rubrik/Beskrivning; endast stora textarea får scrolla; produktens scrollposition återställs vid stängning.
 
 v2.10.21: Rubrik/Beskrivning använder aktiv JS-scrollguard mot iOS fokus-scroll; endast textarea får scrolla.
+
+v2.10.22: textfokus använder faktisk visualViewport-höjd; skalet står fast, endast innersta textarea scrollar och tangentbordet lämnas helt fritt.

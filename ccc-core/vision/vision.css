@@ -3773,3 +3773,96 @@ body.ccc-focused-text-mode .text-editor-screen #largeTextEditor{
   overscroll-behavior:contain!important;
   -webkit-overflow-scrolling:touch!important;
 }
+
+
+/* v2.10.22 – size Rubrik/Beskrivning to the REAL visible iPhone viewport */
+body.ccc-focused-text-mode .text-editor-screen{
+  top:var(--focused-vv-top,0px)!important;
+  bottom:auto!important;
+  height:var(--focused-vv-height,100dvh)!important;
+  max-height:var(--focused-vv-height,100dvh)!important;
+  min-height:0!important;
+  box-sizing:border-box!important;
+  padding:
+    12px
+    14px
+    10px
+    !important;
+}
+
+/* Fixed outer shell: it must always fit above the keyboard. */
+body.ccc-focused-text-mode .text-editor-screen .text-editor-dialog-box{
+  height:100%!important;
+  min-height:0!important;
+  max-height:100%!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  display:flex!important;
+  flex-direction:column!important;
+}
+
+/* Heading/help/X are fixed. */
+body.ccc-focused-text-mode .text-editor-screen .text-editor-head{
+  flex:0 0 auto!important;
+}
+
+/* The field area takes only the remaining visible height. */
+body.ccc-focused-text-mode .text-editor-screen .text-editor-field-wrap{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:hidden!important;
+  display:flex!important;
+}
+
+/* ONLY this inner writing surface may scroll. */
+body.ccc-focused-text-mode .text-editor-screen #largeTextEditor{
+  flex:1 1 auto!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain!important;
+  touch-action:pan-y!important;
+  -webkit-overflow-scrolling:touch!important;
+}
+
+/* Rubrik stays deliberately smaller; if unusually long it scrolls internally. */
+body.ccc-focused-text-mode .text-editor-screen #largeTextEditor.title-editor{
+  flex:0 0 auto!important;
+  height:min(150px,calc(var(--focused-vv-height,100dvh) - 180px))!important;
+  min-height:96px!important;
+  max-height:150px!important;
+  margin-top:12px!important;
+  overflow-y:auto!important;
+}
+
+/* When keyboard is visible on a phone, keep Description compact enough that
+   the entire iOS keyboard/navigation bar remains unobstructed. */
+@media(max-width:480px) and (orientation:portrait){
+  body.ccc-focused-text-mode .text-editor-screen{
+    padding:10px 12px 8px!important;
+  }
+
+  body.ccc-focused-text-mode .text-editor-screen .text-editor-dialog-box{
+    padding:14px!important;
+    gap:10px!important;
+  }
+
+  body.ccc-focused-text-mode .text-editor-screen .text-editor-field-wrap{
+    flex:1 1 auto!important;
+    min-height:0!important;
+  }
+
+  body.ccc-focused-text-mode .text-editor-screen #largeTextEditor:not(.title-editor){
+    min-height:120px!important;
+  }
+
+  body.ccc-focused-text-mode .text-editor-screen #largeTextEditor.title-editor{
+    height:min(132px,calc(var(--focused-vv-height,100dvh) - 165px))!important;
+    min-height:92px!important;
+    max-height:132px!important;
+  }
+}

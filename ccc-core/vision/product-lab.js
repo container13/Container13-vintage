@@ -1828,8 +1828,19 @@
     updateNewConditionButton();
   }
 
+  function updateFocusedTextViewportSize() {
+    const screen = $("#textEditorDialog");
+    if (!screen || screen.hidden || !document.body.classList.contains("ccc-focused-text-mode")) return;
+    const vv = window.visualViewport;
+    const height = Math.max(260, Math.round(vv?.height || window.innerHeight || 0));
+    const top = Math.max(0, Math.round(vv?.offsetTop || 0));
+    screen.style.setProperty("--focused-vv-height", `${height}px`);
+    screen.style.setProperty("--focused-vv-top", `${top}px`);
+  }
+
   function enforceFocusedTextViewport() {
     if (!document.body.classList.contains("ccc-focused-text-mode")) return;
+    updateFocusedTextViewportSize();
     if (focusedTextScrollGuard) return;
     focusedTextScrollGuard = true;
     cancelAnimationFrame(focusedTextGuardFrame);
@@ -1849,6 +1860,7 @@
     window.addEventListener("scroll", enforceFocusedTextViewport, { passive: true });
     window.visualViewport?.addEventListener("scroll", enforceFocusedTextViewport);
     window.visualViewport?.addEventListener("resize", enforceFocusedTextViewport);
+    updateFocusedTextViewportSize();
     enforceFocusedTextViewport();
   }
 
@@ -1893,6 +1905,8 @@
       window.scrollTo(0, 0);
       editor.focus();
       editor.setSelectionRange(editor.value.length, editor.value.length);
+      setTimeout(updateFocusedTextViewportSize, 80);
+      setTimeout(updateFocusedTextViewportSize, 260);
     });
   }
 
@@ -1907,6 +1921,8 @@
     dialog.hidden = true;
     if (editCard) editCard.classList.remove("text-editor-active");
     stopFocusedTextGuard();
+    dialog.style.removeProperty("--focused-vv-height");
+    dialog.style.removeProperty("--focused-vv-top");
     document.documentElement.classList.remove("ccc-focused-text-mode");
     document.body.classList.remove("ccc-focused-text-mode");
     activeTextEditorField = null;
