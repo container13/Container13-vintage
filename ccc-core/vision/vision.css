@@ -3021,3 +3021,15 @@ body.camera-open .ccc-app-shell{background:#050505!important}
   #editCard .compact-edit-head h2{font-size:1.55rem!important}
   .vision-autosave-state{font-size:.68rem;max-width:105px}
 }
+
+/* CCC v2.10.3 – blockerande vy-/gridhotfix.
+   Den starka flexregeln för editCard får aldrig vinna över hidden. */
+#editCard.compact-edit-stage[hidden]{display:none!important}
+#captureCard[hidden],#visionCard[hidden],#previewCard[hidden],#seriesDoneCard[hidden]{display:none!important}
+.vision-grid-track{align-items:flex-start}
+.vision-grid-page{
+  aspect-ratio:1!important;
+  grid-template-rows:repeat(3,minmax(0,1fr))!important;
+  align-content:stretch!important;
+}
+.vision-grid-page .batch-thumb,.vision-grid-placeholder{height:100%!important;aspect-ratio:auto!important}

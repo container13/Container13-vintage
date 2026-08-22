@@ -2,6 +2,8 @@ CCC Vision-modul. v2.8.1 sparar godkända produkter lokalt och beskär inte län
 
 v2.10.2: 3×3-arbetsgrid med swipe. `Granska & komplettera` öppnar en förenklad autosparad redigeringsvy. Upp till två extrabilder läggs till tidigt via `Nytt foto` eller `Album` och analyseras med huvudbilden. Manuella sparknappar tas bort. Kameranypzoom isoleras till kameran och kameratoppen använder CCC.
 
+v2.10.3: Hotfix som återställer absolut `hidden`-prioritet mellan Vision-stegen och reserverar en verklig kvadratisk 3×3-yta för återupptagna miniatyrer. Ingen övrig Vision-logik ändras.
+
 v2.9.72: Vision-kugghjulet öppnar /settings/?module=vision. Den gamla lokala inställnings-overlayn tas bort; funktionerna behålls i den gemensamma modulinställnings-layouten.
 
 v2.9.73: Destruktiv Vision-rensning skyddas av bekräftelsesteg i den gemensamma inställningsvyn.
