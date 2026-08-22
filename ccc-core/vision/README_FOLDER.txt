@@ -47,3 +47,5 @@ v2.10.12: X + autosave i text/Fler uppgifter; Visste du och Nyskick är reversib
 v2.10.13: alla tomma bildplatser = + Nytt foto via befintlig picker; textdialog låst, endast textarea scrollar.
 
 v2.10.14: visual viewport för textdialoger, fokuserad prisdialog, diskret vänsterställd manuell AI när auto-AI är av.
+
+v2.10.15: produkteditor öppnas alltid högst upp; bakgrundsscroll fryses under Rubrik/Beskrivning/Pris/Fler uppgifter och återställs vid stängning.

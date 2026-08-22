@@ -29,6 +29,9 @@
   let editStructuralDirty = false;
   let activeTextEditorField = null;
   let textEditorOriginalValue = "";
+  let editorScrollLockY = 0;
+  let editorScrollLocked = false;
+
   let cameraZoomState = { min: 1, max: 1, current: 1, pinchStartDistance: 0, pinchStartZoom: 1 };
 
   function queueVisionSessionSave() {
@@ -212,6 +215,7 @@
   }
 
   function showWorkspace() {
+    unlockVisionScroll();
     showStage("captureCard", batchItems.length ? "workspace" : "start");
     updateBatchStrip();
     applyCaptureMode();
@@ -1394,12 +1398,15 @@
   }
 
   function editCurrent(allowWhileAnalyzing = false) {
+    unlockVisionScroll();
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     editReturnView = allowWhileAnalyzing && !currentItem()?.visionReady ? "workspace" : "suggestion";
     populateFormFromItem(allowWhileAnalyzing);
     markEditBaseline();
     const state = $("#draftState");
     if (state) state.textContent = currentItem()?.approved ? "✓ Sparat automatiskt" : "";
     showStage("editCard", "edit");
+    requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
   }
 
   async function saveEditedCurrent({ advance = false, quiet = false } = {}) {
@@ -1823,6 +1830,7 @@
     editor.placeholder = isTitle ? "Rubrik" : "Beskrivning";
     editor.classList.toggle("title-editor", isTitle);
     $("#largeTextEditorCount").textContent = `${editor.value.length}/${editor.maxLength}`;
+    lockVisionScroll();
     dialog.hidden = false;
     syncFocusedEditorViewport(dialog);
     requestAnimationFrame(() => {
@@ -1841,17 +1849,41 @@
     dialog.hidden = true;
     activeTextEditorField = null;
     textEditorOriginalValue = "";
+    unlockVisionScroll();
+  }
+
+  function lockVisionScroll() {
+    if (editorScrollLocked) return;
+    editorScrollLockY = window.scrollY || document.documentElement.scrollTop || 0;
+    document.documentElement.classList.add("ccc-editor-scroll-locked");
+    document.body.classList.add("ccc-editor-scroll-locked");
+    document.body.style.top = `-${editorScrollLockY}px`;
+    editorScrollLocked = true;
+  }
+
+  function unlockVisionScroll() {
+    if (!editorScrollLocked) return;
+    document.documentElement.classList.remove("ccc-editor-scroll-locked");
+    document.body.classList.remove("ccc-editor-scroll-locked");
+    document.body.style.removeProperty("top");
+    editorScrollLocked = false;
+    window.scrollTo({ top: editorScrollLockY, left: 0, behavior: "auto" });
   }
 
   function openPriceEditor() {
     const dialog=$("#priceEditorDialog"), editor=$("#largePriceEditor"), source=$("#price");
     if(!dialog||!editor||!source)return;
     editor.value=source.value;
+    lockVisionScroll();
     dialog.hidden=false;
     syncFocusedEditorViewport(dialog);
     requestAnimationFrame(()=>{editor.focus();editor.select();});
   }
-  function closePriceEditor(){const dialog=$("#priceEditorDialog");if(dialog)dialog.hidden=true;}
+  function closePriceEditor(){
+    const dialog=$("#priceEditorDialog");
+    if(dialog)dialog.hidden=true;
+    unlockVisionScroll();
+  }
 
   function syncFocusedEditorViewport(dialog=$("#textEditorDialog")){
     if(!dialog||dialog.hidden)return;
@@ -2240,10 +2272,12 @@
   $("#openMoreFieldsBtn")?.addEventListener("click",()=>{
     updateFactButton();
     updateNewConditionButton();
+    lockVisionScroll();
     $("#moreFieldsDialog").hidden=false;
   });
   $("#closeMoreFieldsBtn")?.addEventListener("click",()=>{
     $("#moreFieldsDialog").hidden=true;
+    unlockVisionScroll();
   });
   $("#moreFieldsDialog")?.addEventListener("click",event=>{
     if(event.target===$("#moreFieldsDialog"))$("#moreFieldsDialog").hidden=true;
