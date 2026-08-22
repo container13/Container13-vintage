@@ -1675,17 +1675,13 @@
   function updateSmartSuggestions() {
     const demo = currentDemo();
     const priceSuggestion = Number(demo?.priceSuggestion || 0);
-    $("#priceSuggestion").textContent = priceSuggestion > 0 ? `${priceSuggestion} kr` : "Ingen prisbedömning";
-    $("#usePriceSuggestionBtn").disabled = priceSuggestion <= 0;
+    const priceInput = $("#price");
+    if (priceInput && !clean(priceInput.value) && priceSuggestion > 0) {
+      priceInput.value = priceSuggestion;
+      updateTextPreviews();
+      scheduleSave();
+    }
     $("#factSuggestionText").textContent = demo?.fact || "Ett kort extra fakta kan läggas till om du vill.";
-  }
-
-  function usePriceSuggestion() {
-    const suggestion = Number(currentDemo()?.priceSuggestion || 0);
-    if (suggestion <= 0) return;
-    $("#price").value = suggestion;
-    updateTextPreviews();
-    scheduleSave();
   }
 
   function appendToDescription(text) {
@@ -2051,7 +2047,6 @@
 
 
   // Existerande extrafunktioner
-  $("#usePriceSuggestionBtn").addEventListener("click", usePriceSuggestion);
   $("#addFactBtn").addEventListener("click", addFact);
   $("#addNewConditionBtn").addEventListener("click", addNewCondition);
   $("#openExtrasBtn")?.addEventListener("click",()=>{$("#optionalExtrasDialog").hidden=false;});
