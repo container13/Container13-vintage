@@ -1696,3 +1696,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Redigeringskortets starka layoutregel får inte längre vinna över `hidden`; bara aktiv Vision-vy visas.
 - 3×3-gridden har explicit kvadratisk yta och tre rader så återupptagna miniatyrer inte kollapsar.
 - Övrig v2.10.2-funktionalitet är oförändrad. Root `/version.js` är orörd.
+
+
+## v2.10.4 – kameraräknare, 3×2 och kompakt redigering
+- Kameran visar antal fotograferade plagg och aktuell tagning.
+- Arbetsgridden visar sex större bilder per sida i 3×2; swipe behålls åt båda hållen.
+- Swipe tar kontroll först efter ett tydligt horisontellt drag. Vanligt tryck öppnar plagget direkt.
+- Redigeringsvyn tar bort dubblerad huvudbild/ruta, visar `Plagg X av Y`, samlar tre bildplatser på en rad och gör `Analysera igen` sekundär efter färdig analys.
+- `Nästa plagg` är helbred. Övriga moduler och root `/version.js` är orörda.
