@@ -23,6 +23,7 @@
   let workspacePage = 0;
   let workspaceSwipe = null;
   let suppressWorkspaceClick = false;
+  let cameraSessionStartCount = 0;
   let autosaveSequence = 0;
   let cameraZoomState = { min: 1, max: 1, current: 1, pinchStartDistance: 0, pinchStartZoom: 1 };
 
@@ -475,20 +476,22 @@
   function installWorkspaceSwipe() {
     const strip = $("#batchStrip");
     if (!strip) return;
-    strip.addEventListener("pointerdown", (event) => {
-      if (event.pointerType === "mouse" && event.button !== 0) return;
+
+    const begin = (x, y, id = "touch") => {
       const track = strip.querySelector(".vision-grid-track");
-      if (!track || Math.ceil(batchItems.length / WORKSPACE_PAGE_SIZE) <= 1) return;
-      workspaceSwipe = { id: event.pointerId, x: event.clientX, y: event.clientY, dx: 0, horizontal: false };
+      if (!track || Math.ceil(batchItems.length / WORKSPACE_PAGE_SIZE) <= 1) return false;
+      workspaceSwipe = { id, x, y, dx: 0, horizontal: false };
       track.style.transition = "none";
-    });
-    strip.addEventListener("pointermove", (event) => {
-      if (!workspaceSwipe || workspaceSwipe.id !== event.pointerId) return;
-      const dx = event.clientX - workspaceSwipe.x;
-      const dy = event.clientY - workspaceSwipe.y;
-      if (!workspaceSwipe.horizontal && Math.abs(dx) > 14 && Math.abs(dx) > Math.abs(dy) * 1.35) {
+      return true;
+    };
+    const move = (x, y, event) => {
+      if (!workspaceSwipe) return;
+      const dx = x - workspaceSwipe.x;
+      const dy = y - workspaceSwipe.y;
+      /* Lite fingerjitter ska vara ett vanligt tryck. Först ett tydligt
+         horisontellt drag låser gesten till swipe. */
+      if (!workspaceSwipe.horizontal && Math.abs(dx) > 24 && Math.abs(dx) > Math.abs(dy) * 1.35) {
         workspaceSwipe.horizontal = true;
-        strip.setPointerCapture?.(event.pointerId);
       }
       if (!workspaceSwipe.horizontal) return;
       event.preventDefault();
@@ -497,17 +500,50 @@
       const lastPage = Math.ceil(batchItems.length / WORKSPACE_PAGE_SIZE) - 1;
       const atEdge = (workspacePage === 0 && dx > 0) || (workspacePage === lastPage && dx < 0);
       const resisted = atEdge ? dx * .24 : dx;
-      strip.querySelector(".vision-grid-track").style.transform = `translate3d(calc(${-workspacePage * 100}% + ${resisted}px),0,0)`;
-    }, { passive: false });
-    const finish = (event) => {
-      if (!workspaceSwipe || workspaceSwipe.id !== event.pointerId) return;
+      const track = strip.querySelector(".vision-grid-track");
+      if (track) track.style.transform = `translate3d(calc(${-workspacePage * 100}% + ${resisted}px),0,0)`;
+    };
+    const finish = () => {
+      if (!workspaceSwipe) return;
       const { dx, horizontal } = workspaceSwipe;
       workspaceSwipe = null;
-      if (horizontal && Math.abs(dx) > Math.max(42, strip.clientWidth * .16)) setWorkspacePage(workspacePage + (dx < 0 ? 1 : -1), true);
+      const threshold = Math.max(48, strip.clientWidth * .14);
+      if (horizontal && Math.abs(dx) > threshold) setWorkspacePage(workspacePage + (dx < 0 ? 1 : -1), true);
       else setWorkspacePage(workspacePage, true);
-      setTimeout(() => { suppressWorkspaceClick = false; }, 80);
+      /* Ett click som syntetiseras efter en riktig swipe ska ignoreras,
+         men ett vanligt tap ska aldrig blockeras. */
+      if (horizontal) setTimeout(() => { suppressWorkspaceClick = false; }, 180);
+      else suppressWorkspaceClick = false;
     };
-    ["pointerup", "pointercancel", "lostpointercapture"].forEach((name) => strip.addEventListener(name, finish));
+
+    strip.addEventListener("touchstart", (event) => {
+      if (event.touches.length !== 1) return;
+      const t = event.touches[0];
+      begin(t.clientX, t.clientY);
+    }, { passive: true });
+    strip.addEventListener("touchmove", (event) => {
+      if (!workspaceSwipe || event.touches.length !== 1) return;
+      const t = event.touches[0];
+      move(t.clientX, t.clientY, event);
+    }, { passive: false });
+    strip.addEventListener("touchend", finish, { passive: true });
+    strip.addEventListener("touchcancel", finish, { passive: true });
+
+    /* Musdrag på desktop, utan att blanda in touch-pointerevents på mobil. */
+    strip.addEventListener("pointerdown", (event) => {
+      if (event.pointerType !== "mouse" || event.button !== 0) return;
+      begin(event.clientX, event.clientY, event.pointerId);
+    });
+    strip.addEventListener("pointermove", (event) => {
+      if (event.pointerType !== "mouse" || !workspaceSwipe || workspaceSwipe.id !== event.pointerId) return;
+      move(event.clientX, event.clientY, event);
+    });
+    strip.addEventListener("pointerup", (event) => {
+      if (event.pointerType === "mouse" && workspaceSwipe?.id === event.pointerId) finish();
+    });
+    strip.addEventListener("pointercancel", (event) => {
+      if (event.pointerType === "mouse" && workspaceSwipe?.id === event.pointerId) finish();
+    });
   }
 
   function resetCaptureVisual() {
@@ -518,13 +554,11 @@
     $("#startCameraBtn .action-copy strong").textContent = batchItems.length ? "Fota nästa plagg" : "Ta ett foto";
   }
 
-  function updateCameraSessionCount(reviewing = false) {
-    const count = batchItems.length + (stagedItem ? 1 : 0);
+  function updateCameraSessionCount() {
+    const count = Math.max(0, batchItems.length - cameraSessionStartCount) + (stagedItem ? 1 : 0);
     const label = $("#cameraSessionCount");
     if (!label) return;
-    label.textContent = reviewing && stagedItem
-      ? `Foto ${count} · totalt ${count} ${count === 1 ? "plagg" : "plagg"}`
-      : `${count} ${count === 1 ? "plagg fotograferat" : "plagg fotograferade"}`;
+    label.textContent = `${count} ${count === 1 ? "nytt foto" : "nya foton"}`;
   }
 
   async function startCamera() {
@@ -534,6 +568,7 @@
       try { await restoreSavedVisionSession(); }
       catch (error) { console.error("[CCC Vision] Kunde inte återuppta session före kamera", error); }
     }
+    cameraSessionStartCount = batchItems.length;
     stagedCameraFile = null;
     stagedItem = null;
     updateCameraSessionCount(false);

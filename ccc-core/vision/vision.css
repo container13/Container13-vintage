@@ -1979,7 +1979,7 @@ body{min-height:100dvh}
 /* v2.7.3 – valbara plaggminiatyrer */
 .batch-thumb{
   cursor:pointer;
-  touch-action:manipulation;
+  touch-action:pan-y;
   transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease;
 }
 .batch-thumb img{
@@ -3070,3 +3070,6 @@ body.camera-open .ccc-app-shell{background:#050505!important}
   .edit-head-actions{gap:6px}
   .vision-autosave-state{max-width:88px;font-size:.62rem}
 }
+
+/* CCC v2.10.5 – touchregression: tap öppnar plagg, horisontellt drag swipar sida. */
+#captureCard:has(#batchStrip:not([hidden])) .batch-thumb{touch-action:pan-y!important}
