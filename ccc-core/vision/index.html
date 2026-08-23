@@ -8,7 +8,7 @@
 <link rel="manifest" href="../manifest.webmanifest?v=2.9.3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>CCC Vision v2.10.29</title>
+  <title>CCC Vision v2.10.31</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
   <link rel="stylesheet" href="vision.css?v=2.10.6">
   <link rel="stylesheet" href="../core.css?v=2.10.2">
@@ -61,7 +61,7 @@
         <span class="action-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24"><path d="M4 8h3l1.4-2h7.2L17 8h3v11H4V8Zm8 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/></svg>
         </span>
-        <span class="action-copy"><strong>Ta ett foto</strong><small>Ett foto per plagg – avsluta när du vill</small></span>
+        <span class="action-copy"><strong>Ta ett foto</strong><small data-ccc-term="Ett foto per {singular} – avsluta när du vill">Ett foto per objekt – avsluta när du vill</small></span>
         <span class="action-arrow" aria-hidden="true">›</span>
       </button>
 
@@ -93,16 +93,16 @@
       <img id="detailPreview2" alt="Extra bild 2" hidden>
 
       <div id="workspaceToolbar" class="vision-workspace-toolbar" hidden>
-        <strong id="workspaceCount">0 plagg</strong>
+        <strong id="workspaceCount">Objekt 0/0</strong>
         <div class="vision-workspace-add">
           <button id="workspaceCameraBtn" type="button">Nytt foto</button>
           <button id="workspaceGalleryBtn" type="button">Album</button>
         </div>
       </div>
-      <p id="batchHelp" class="batch-help" hidden>Välj ett plagg att granska och komplettera.</p>
-      <div id="batchStrip" class="batch-strip" hidden aria-label="Fotograferade plagg"></div>
-      <div id="batchPager" class="vision-grid-pager" hidden aria-label="Sidor med plagg"></div>
-      <button id="addToSelectedBtn" class="quiet-button workspace-detail-button" type="button" hidden>＋ Komplettera markerat plagg</button>
+      <p id="batchHelp" class="batch-help" hidden></p>
+      <div id="batchStrip" class="batch-strip" hidden data-ccc-term-aria="Fotograferade {plural}" aria-label="Fotograferade objekt"></div>
+      <div id="batchPager" class="vision-grid-pager" hidden data-ccc-term-aria="Sidor med {plural}" aria-label="Sidor med objekt"></div>
+      <button id="addToSelectedBtn" class="quiet-button workspace-detail-button" type="button" hidden data-ccc-term="＋ Komplettera markerat {singular}">＋ Komplettera markerat objekt</button>
       <button id="workspaceContinueBtn" class="primary-button workspace-continue-button" type="button" hidden>Granska &amp; komplettera</button>
       <button id="showSuggestionBtn" class="primary-button capture-next" type="button" hidden disabled>Visa förslag</button>
 
@@ -156,7 +156,7 @@
 
       <p id="visionHint" class="vision-hint">Ett foto räcker oftast.</p>
       <input id="sameGarmentInput" class="visually-hidden" type="file" accept="image/*" multiple>
-      <button id="addSameGarmentBtn" class="quiet-button same-garment-button" type="button">＋ Fler bilder på samma plagg</button>
+      <button id="addSameGarmentBtn" class="quiet-button same-garment-button" type="button" data-ccc-term="＋ Fler bilder på samma {singular}">＋ Fler bilder på samma objekt</button>
 
       <div class="vision-review-actions">
         <button id="trashCurrentBtn" class="trash-button" type="button" aria-label="Lägg i papperskorgen">🗑</button>
@@ -222,11 +222,11 @@
     <section id="seriesDoneCard" class="card stage-card series-done-card" hidden aria-labelledby="seriesDoneTitle">
       <div class="done-icon" aria-hidden="true">✓</div>
       <h2 id="seriesDoneTitle">Klart!</h2>
-      <p id="seriesDoneText" class="vision-hint">Plaggen är klara att publiceras.</p>
+      <p id="seriesDoneText" class="vision-hint" data-ccc-term="{Plural} är klara att publiceras.">Objekt är klara att publiceras.</p>
       <div id="readyPublishList" class="ready-publish-list" aria-label="Färdiga objekt"></div>
       <div class="done-actions">
         <button id="publishReadyBtn" class="primary-button ready-publish-button" type="button" disabled title="Öppna Publicera">Publicera</button>
-        <button id="newSeriesBtn" class="secondary-button" type="button">Fota fler plagg</button>
+        <button id="newSeriesBtn" class="secondary-button" type="button" data-ccc-term="Fota fler {plural}">Fota fler objekt</button>
         <a class="secondary-button done-dashboard-link" href="../dashboard/index.html">Till startsidan</a>
       </div>
     </section>
@@ -290,7 +290,7 @@
 <div id="priceEditorDialog" class="price-editor-dialog price-editor-screen" role="region" aria-labelledby="priceEditorTitle" hidden>
   <div class="dialog-box price-editor-dialog-box">
     <div class="dialog-head-with-close price-editor-head">
-      <div><h2 id="priceEditorTitle">Pris</h2><p>Skriv priset för plagget.</p></div>
+      <div><h2 id="priceEditorTitle">Pris</h2><p data-ccc-term="Skriv priset för {definiteSingular}.">Skriv priset för objektet.</p></div>
       <button id="closePriceEditorBtn" class="dialog-close-x" type="button" aria-label="Stäng">×</button>
     </div>
     <div class="price-editor-field">
@@ -371,6 +371,24 @@
       <p><strong>1/3</strong> visar hur många bilder objektet har. Du kan lägga till upp till tre bilder, till exempel baksida, etikett eller en detalj.</p>
       <p><strong>Analysera igen</strong> låter CCC Vision läsa bilderna på nytt och uppdatera sina förslag.</p>
       <p>Rubrik, pris, beskrivning och fler uppgifter kan granskas och ändras innan du går vidare.</p>
+    </div>
+  </div>
+</div>
+
+
+<div id="visionWorkspaceHelpDialog" class="dialog ccc-dialog vision-context-help" role="dialog" aria-modal="true" aria-labelledby="visionWorkspaceHelpTitle" hidden>
+  <div class="dialog-box">
+    <div class="dialog-head-with-close">
+      <div>
+        <h2 id="visionWorkspaceHelpTitle">Objektöversikt</h2>
+        <p id="visionWorkspaceHelpIntro">Här visas objekten från din fotosession, sex åt gången.</p>
+      </div>
+      <button id="closeVisionWorkspaceHelpBtn" class="dialog-close-x" type="button" aria-label="Stäng">×</button>
+    </div>
+    <div class="vision-help-content">
+      <p id="visionWorkspaceHelpRange"></p>
+      <p>Den gula ramen visar vilket objekt du arbetar med. Tryck på ett objekt för att öppna <strong>Granska &amp; komplettera</strong>.</p>
+      <p>Svep åt sidan för att se nästa grupp när sessionen innehåller fler än sex objekt.</p>
     </div>
   </div>
 </div>

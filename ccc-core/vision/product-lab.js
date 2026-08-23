@@ -172,10 +172,50 @@
           help:true,
           onHelp:()=>{const d=$("#visionContextHelpDialog");if(d)d.hidden=false;}
         });
+      }else if(visionView==="workspace"){
+        footer.setTools({
+          help:true,
+          onHelp:openWorkspaceHelp
+        });
       }else{
         footer.clearTools();
       }
     }
+  }
+
+  function workspaceVisibleRange() {
+    const total = batchItems.length;
+    if (!total) return { start: 0, end: 0, total: 0 };
+    const start = workspacePage * WORKSPACE_PAGE_SIZE + 1;
+    const end = Math.min(total, start + WORKSPACE_PAGE_SIZE - 1);
+    return { start, end, total };
+  }
+
+  function updateWorkspaceRangeLabel() {
+    const label = $("#workspaceCount");
+    if (!label) return;
+    const { start, end, total } = workspaceVisibleRange();
+    const noun = entityTerm(total === 1 ? "singular" : "plural", true);
+    label.textContent = total ? `${noun} ${start}–${end} av ${total}` : `${entityTerm("plural", true)} 0/0`;
+  }
+
+  function openWorkspaceHelp() {
+    const dialog = $("#visionWorkspaceHelpDialog");
+    if (!dialog) return;
+    const { start, end, total } = workspaceVisibleRange();
+    const plural = entityTerm("plural");
+    const pluralCap = entityTerm("plural", true);
+    const intro = $("#visionWorkspaceHelpIntro");
+    const range = $("#visionWorkspaceHelpRange");
+    const title = $("#visionWorkspaceHelpTitle");
+    if (title) title.textContent = `${pluralCap}översikt`;
+    if (intro) intro.textContent = `Här visas ${plural} från din fotosession, sex åt gången.`;
+    if (range) {
+      range.innerHTML = total
+        ? `<strong>${pluralCap} ${start}–${end} av ${total}</strong> visar vilka ${plural} som syns just nu.`
+        : `När du har lagt till ${plural} visas vilka som syns just nu här.`;
+    }
+    dialog.hidden = false;
   }
 
   function applyCaptureMode() {
@@ -203,12 +243,7 @@
     if (startHome) startHome.hidden = !startMode;
     if (startActions) startActions.hidden = !startMode;
     if (workspaceToolbar) workspaceToolbar.hidden = startMode || !hasSession;
-    if (workspaceCount) {
-      const selectedNo = hasSession ? Math.min(currentIndex + 1, batchItems.length) : 0;
-      workspaceCount.textContent = hasSession
-        ? `${batchItems.length} ${batchItems.length === 1 ? "plagg" : "plagg"} · ${selectedNo} markerat`
-        : "0 plagg";
-    }
+    if (workspaceCount) updateWorkspaceRangeLabel();
     if (startMode) {
       if (strip) strip.hidden = true;
       if (help) help.hidden = true;
@@ -218,14 +253,14 @@
       if (saveSession) saveSession.hidden = true;
     } else if (hasSession) {
       if (strip) strip.hidden = false;
-      if (help) help.hidden = false;
+      if (help) help.hidden = true;
       if (workspaceContinue) {
         workspaceContinue.hidden = false;
         workspaceContinue.disabled = false;
       }
     }
     const cameraTitle = $("#startCameraBtn .action-copy strong");
-    if (cameraTitle) cameraTitle.textContent = startMode ? "Ta ett foto" : (hasSession ? "Fota nästa plagg" : "Ta ett foto");
+    if (cameraTitle) cameraTitle.textContent = startMode ? "Ta ett foto" : (hasSession ? `Fota nästa ${entityTerm("singular")}` : "Ta ett foto");
   }
 
   function showVisionStart() {
@@ -454,10 +489,10 @@
       wrap.type = "button";
       wrap.className = "batch-thumb";
       if (index === currentIndex) wrap.classList.add("is-selected");
-      wrap.setAttribute("aria-label", `Gör klart plagg · ${index + 1}${item.visionReady ? ", analys klar" : item.analysisMode === "manual" ? ", ej AI-analyserat" : ", analyseras"}`);
+      wrap.setAttribute("aria-label", `${entityTerm("singular", true)} ${index + 1}${item.visionReady ? ", analys klar" : item.analysisMode === "manual" ? ", ej AI-analyserat" : ", analyseras"}`);
       const img = document.createElement("img");
       img.src = item.previewUrl;
-      img.alt = `Plagg ${index + 1}`;
+      img.alt = `${entityTerm("singular", true)} ${index + 1}`;
       const state = document.createElement("span");
       state.className = `thumb-status ${item.visionReady ? "is-ready" : item.analysisInProgress ? "is-working" : item.analysisMode === "manual" ? (item.approved ? "is-saved" : "is-manual") : "is-working"}`;
       state.textContent = item.visionReady || item.approved ? "✓" : "";
@@ -513,6 +548,7 @@
       track.style.transform = `translate3d(${-workspacePage * 100}%,0,0)`;
     }
     renderWorkspacePager(pageCount);
+    updateWorkspaceRangeLabel();
   }
 
   function installWorkspaceSwipe() {
@@ -620,7 +656,7 @@
     preview.hidden = true;
     preview.removeAttribute("src");
     $("#startCameraBtn").classList.remove("has-image");
-    $("#startCameraBtn .action-copy strong").textContent = batchItems.length ? "Fota nästa plagg" : "Ta ett foto";
+    $("#startCameraBtn .action-copy strong").textContent = batchItems.length ? `Fota nästa ${entityTerm("singular")}` : "Ta ett foto";
   }
 
   function updateCameraSessionCount() {
@@ -859,8 +895,8 @@
       modeNote = "Testläge – AI-endpoint är inte konfigurerad.";
     }
     $("#visionHint").textContent = item.extraFiles.length
-      ? `${item.extraFiles.length + 1} bilder används för det här plagget. ${modeNote}`
-      : `${modeNote} Vill du visa mer av just det här plagget kan du lägga till fler bilder.`;
+      ? `${item.extraFiles.length + 1} bilder används för ${entityTerm("definiteSingular")}. ${modeNote}`
+      : `${modeNote} Vill du visa mer av just ${entityTerm("definiteSingular")} kan du lägga till fler bilder.`;
     $("#correctionBox").hidden = true;
     updateBatchStrip();
     showStage("visionCard", "suggestion");
@@ -1468,7 +1504,7 @@
       } else if (!quiet) {
         const state = $("#draftState");
         if (state) state.textContent = "✓ Sparas automatiskt";
-        setMessage("Plagget är sparat. Du kan fortsätta här eller välja ett annat plagg.");
+        setMessage(`${entityTerm("definiteSingular",true)} är sparat. Du kan fortsätta här eller välja ett annat ${entityTerm("singular")}.`);
       }
       return true;
     } catch (error) {
@@ -1538,7 +1574,7 @@
       })
       .catch((error) => {
         console.error("[CCC Vision] Bakgrundssparning efter Spara & tillbaka misslyckades", error);
-        setMessage("Plagget kunde inte sparas lokalt. Öppna det igen och försök på nytt.");
+        setMessage(`${entityTerm("definiteSingular",true)} kunde inte sparas lokalt. Öppna det igen och försök på nytt.`);
       });
   }
 
@@ -1589,7 +1625,7 @@
 
   function trashCurrentFromEdit() {
     if (!batchItems.length) return;
-    if (!confirm("Ta bort plagget och bilderna från den här Vision-sessionen?")) return;
+    if (!confirm(`Ta bort ${entityTerm("definiteSingular")} och bilderna från den här Vision-sessionen?`)) return;
     const removedIndex = currentIndex;
     const [removed] = batchItems.splice(removedIndex, 1);
     trashStack.push({ item: removed, index: removedIndex });
@@ -1642,7 +1678,7 @@
 
   function readyItemTitle(item, index) {
     const fields = item?.editedFields || item?.visionResult?.fields || {};
-    return (fields.title || item?.visionResult?.summaryTitle || `Plagg ${index + 1}`).trim();
+    return (fields.title || item?.visionResult?.summaryTitle || `${entityTerm("singular",true)} ${index + 1}`).trim();
   }
 
   function renderReadyPublishList() {
@@ -1679,13 +1715,13 @@
       list.appendChild(button);
     });
     const publish = $("#publishReadyBtn");
-    if (publish) { publish.textContent = `Publicera ${ready.length} ${ready.length === 1 ? "plagg" : "plagg"}`; publish.disabled = ready.length === 0; }
+    if (publish) { publish.textContent = `Publicera ${ready.length} ${ready.length === 1 ? entityTerm("singular") : entityTerm("plural")}`; publish.disabled = ready.length === 0; }
   }
 
   function finishBatch() {
     clearVisionSessionRecord().catch((error) => console.warn("[CCC Vision] Kunde inte rensa avslutad fotosession", error));
     const approved = batchItems.filter((item) => item.approved).length;
-    $("#seriesDoneText").textContent = `${approved} ${approved === 1 ? "plagg är" : "plagg är"} ${approved === 1 ? "klart" : "klara"} att publiceras.`;
+    $("#seriesDoneText").textContent = `${approved} ${approved === 1 ? entityTerm("singular") : entityTerm("plural")} ${approved === 1 ? "är klart" : "är klara"} att publiceras.`;
     renderReadyPublishList();
     saveBatchMetadata();
     showStage("seriesDoneCard", "done");
@@ -1901,7 +1937,7 @@
     const isTitle = fieldId === "title";
     $("#textEditorTitle").textContent = isTitle ? "Rubrik" : "Beskrivning";
     $("#textEditorHint").textContent = isTitle
-      ? "Skriv en tydlig rubrik för plagget."
+      ? `Skriv en tydlig rubrik för ${entityTerm("definiteSingular")}.`
       : "Skriv eller justera beskrivningen.";
     editor.maxLength = isTitle ? 100 : 800;
     editor.rows = isTitle ? 4 : 10;
@@ -2044,7 +2080,7 @@
     if (button) { button.disabled = true; button.textContent = "Analyserar…"; }
     if (contextSub) {
       contextSub.hidden = false;
-      contextSub.textContent = "CCC analyserar det här plagget…";
+      contextSub.textContent = `CCC analyserar ${entityTerm("definiteSingular")}…`;
     }
 
     try {
@@ -2156,6 +2192,8 @@
   }
 
   async function goBackFromVision() {
+    const workspaceHelp=$("#visionWorkspaceHelpDialog");
+    if(workspaceHelp && !workspaceHelp.hidden){workspaceHelp.hidden=true;return;}
     const contextHelp=$("#visionContextHelpDialog");
     if(contextHelp && !contextHelp.hidden){contextHelp.hidden=true;return;}
     const priceEditor=$("#priceEditorDialog");
@@ -2459,6 +2497,27 @@ $("#price")?.addEventListener("click", openPriceEditor);
       return;
     }
     if (dialog && event.target === dialog) dialog.hidden = true;
+  });
+
+  // v2.10.31 – workspace contextual help close.
+  document.addEventListener("click", (event) => {
+    const dialog = $("#visionWorkspaceHelpDialog");
+    if (!dialog) return;
+    if (event.target.closest?.("#closeVisionWorkspaceHelpBtn") || event.target === dialog) {
+      event.preventDefault();
+      dialog.hidden = true;
+    }
+  });
+
+  window.addEventListener("ccc:terminologychange",()=>{
+    window.CCC_TERMINOLOGY?.apply?.();
+    updateHeaderContext();
+    if(visionView==="workspace"){
+      updateWorkspaceRangeLabel();
+      renderWorkspace();
+    }else if(visionView==="edit"){
+      populateFormFromItem();
+    }
   });
 
 })();
