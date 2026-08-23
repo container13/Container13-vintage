@@ -8,7 +8,7 @@
 <link rel="manifest" href="../manifest.webmanifest?v=2.9.3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>CCC Vision v2.10.39</title>
+  <title>CCC Vision v2.10.40</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
   <link rel="stylesheet" href="vision.css?v=2.10.6">
   <link rel="stylesheet" href="../core.css?v=2.10.2">
@@ -94,8 +94,7 @@
 
       <div id="workspaceToolbar" class="vision-workspace-toolbar" hidden>
         <h2 id="workspaceTitle" class="workspace-title">Välj objekt</h2>
-        <h2 id="workspaceTitle" class="workspace-title">Välj objekt</h2>
-<strong id="workspaceCount">Objekt 0/0</strong>
+        <strong id="workspaceCount">Objekt 0/0</strong>
         <div class="vision-workspace-add">
           <button id="workspaceCameraBtn" type="button">+ Nytt foto</button>
           <button id="workspaceGalleryBtn" type="button">+ Från album</button>
@@ -177,9 +176,12 @@
     </section>
 
     <section id="editCard" class="card stage-card compact-edit-stage" hidden aria-labelledby="editTitle">
-      <div class="fixed-stage-head compact-edit-head">
-        <div class="edit-context"><span id="editProgress" class="edit-progress-compact">1/1</span><h2 id="editTitle">Granska &amp; komplettera</h2></div>
-        <div class="edit-head-actions"><button id="editTrashBtn" class="edit-trash-button" type="button">Ta bort</button></div>
+      <div class="fixed-stage-head compact-edit-head edit-head-v2">
+        <h2 id="editTitle">Granska &amp; komplettera</h2>
+        <div class="edit-meta-row">
+          <span id="editProgress" class="edit-progress-compact">1/1</span>
+          <button id="editTrashBtn" class="edit-trash-button" type="button">Ta bort</button>
+        </div>
       </div>
 
       <section class="same-garment-editor" aria-labelledby="sameGarmentEditTitle">

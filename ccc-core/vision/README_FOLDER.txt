@@ -97,3 +97,5 @@ v2.10.37: Beskrivning låser viewport/body helt; endast innersta textarea får s
 v2.10.38: Välj objekt som större huvudrubrik; Visar X–Y av Z under fotoknappar; större Granska & komplettera.
 
 v2.10.39: workspace-rubrik isolerad från startvyn; review-header i två rader.
+
+v2.10.40: duplicate Välj objekt removed in DOM; review header rebuilt as title row + 14/14/Ta bort row.
