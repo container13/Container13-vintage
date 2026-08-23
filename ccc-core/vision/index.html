@@ -8,7 +8,7 @@
 <link rel="manifest" href="../manifest.webmanifest?v=2.9.3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>CCC Vision v2.10.34</title>
+  <title>CCC Vision v2.10.35</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
   <link rel="stylesheet" href="vision.css?v=2.10.6">
   <link rel="stylesheet" href="../core.css?v=2.10.2">
@@ -189,8 +189,9 @@
       <button id="manualAiBtn" class="primary-button manual-ai-button" type="button">Analysera med AI</button>
 
       <form id="productForm" class="compact-edit-form">
-        <label class="title-field">
-          <input id="title" type="text" autocomplete="off" maxlength="100" placeholder="Rubrik" readonly aria-haspopup="dialog" aria-controls="textEditorDialog">
+        <label class="title-field" for="title">
+          <span class="edit-field-caption">Rubrik</span>
+          <input id="title" type="text" autocomplete="off" maxlength="100" placeholder="" readonly aria-haspopup="dialog" aria-controls="textEditorDialog">
           <small class="field-help"><span id="titleCount">0</span>/100</small>
         </label>
 
@@ -201,8 +202,9 @@
           </label>
         </div>
 
-        <label class="compact-description-field">
-          <textarea id="description" rows="3" maxlength="800" placeholder="Beskrivning" readonly aria-haspopup="dialog" aria-controls="textEditorDialog"></textarea>
+        <label class="compact-description-field" for="description">
+          <span class="edit-field-caption">Beskrivning</span>
+          <textarea id="description" rows="3" maxlength="800" placeholder="" readonly aria-haspopup="dialog" aria-controls="textEditorDialog"></textarea>
           <small class="field-help"><span id="descriptionCount">0</span>/800</small>
         </label>
 
