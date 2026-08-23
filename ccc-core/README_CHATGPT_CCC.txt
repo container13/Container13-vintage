@@ -1929,3 +1929,10 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - De tre bildrutorna får centrerade rollnamn: `Huvudbild`, `Baksida`, `Detalj`.
 - Övriga delar från v2.10.32 lämnas orörda.
 
+## v2.10.34 – Vision översikt och edit-fält
+- `Objekt X–Y av Z` centreras i översikten.
+- Knapparna för bildkälla förtydligas till `+ Nytt foto` och `+ Från album`.
+- `Rubrik` och `Beskrivning` återgår till etiketter utanför respektive fält.
+- Bildrutorna får konsekventa centrerade bottom-badges: `Huvudbild`, `Baksida`, `Detalj`.
+- Headern `X/Y – Granska & komplettera – Ta bort` lämnas oförändrad.
+
