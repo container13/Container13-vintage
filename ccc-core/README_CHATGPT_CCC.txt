@@ -1871,3 +1871,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Zonerna får reserverad bredd så rubriken inte kan krocka med sparstatus/åtgärd på smala iPhone-skärmar.
 - Inga andra UI- eller funktionsändringar görs.
 
+## v2.10.27 – Objekt + kontextuell Core-hjälp
+- Arbetsrubriken förenklas till `Objekt X/Y` med underraden `Granska & komplettera`.
+- Förklarande text ovanför bildrutorna tas bort; endast den kompakta bildräknaren visas.
+- `Huvudbild` på själva huvudbilden behålls.
+- Den befintliga centrala Core-footern används för `? Hjälp` i just edit-vyn; inget separat Vision-footersystem skapas.
+- Hjälpen förklarar huvudbild, bildantal, `Analysera igen` och vad som granskas i vyn.
+- Rubrik/Beskrivning-tangentbordslösningen och Pris lämnas orörda.
+
