@@ -85,3 +85,5 @@ v2.10.31: workspace visar synligt intervall X–Y av totalen; markerat-text bort
 v2.10.32: aktiva Vision/Publicera-texter migrerade mot central Core-terminologi; v2.10.31 workspace-range/help kvar.
 
 v2.10.33: edit-header centrerad; X/Y vänster; 1/3 bort; bildroller Huvudbild/Baksida/Detalj.
+
+v2.10.34: centrerad objektrange; + Nytt foto/+ Från album; yttre Rubrik/Beskrivning; bildroller som bottom-badges.

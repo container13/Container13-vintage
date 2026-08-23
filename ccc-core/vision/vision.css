@@ -4228,3 +4228,60 @@ body.ccc-focused-text-mode .text-editor-screen #largeTextEditor.title-editor{
  #editCard #editTitle{font-size:.98rem!important}
  #editCard .edit-progress-compact,#editCard #removeItemBtn{font-size:.69rem!important}
 }
+
+
+/* v2.10.34 – Vision polish */
+#reviewView .batch-summary,
+#reviewView .batch-range,
+#reviewView [data-batch-range],
+#reviewView #batchRange{
+  text-align:center!important;
+  width:100%!important;
+  justify-content:center!important;
+}
+
+/* Rubrik/Beskrivning åter som riktiga etiketter ovanför fälten. */
+#editCard .edit-field-label{
+  display:block!important;
+  margin:0 0 7px 2px!important;
+  font-weight:800!important;
+  color:var(--text)!important;
+  font-size:.94rem!important;
+  line-height:1.15!important;
+}
+#editCard input[placeholder="Rubrik"]::placeholder,
+#editCard textarea[placeholder="Beskrivning"]::placeholder{
+  color:transparent!important;
+}
+
+/* v2.10.33 pseudo-labels ersätts av bottom-badges i samma visuella position som Huvudbild. */
+#editCard .same-garment-grid > :nth-child(1)::before,
+#editCard .same-garment-grid > :nth-child(2)::before,
+#editCard .same-garment-grid > :nth-child(3)::before{
+  position:absolute!important;
+  left:50%!important;
+  bottom:8px!important;
+  transform:translateX(-50%)!important;
+  width:auto!important;
+  margin:0!important;
+  padding:3px 8px!important;
+  border-radius:999px!important;
+  background:rgba(20,20,20,.78)!important;
+  color:#fff!important;
+  font-size:.66rem!important;
+  line-height:1.1!important;
+  font-weight:800!important;
+  white-space:nowrap!important;
+  z-index:4!important;
+  pointer-events:none!important;
+}
+#editCard .same-garment-grid > :nth-child(1)::before{content:"Huvudbild"!important}
+#editCard .same-garment-grid > :nth-child(2)::before{content:"Baksida"!important}
+#editCard .same-garment-grid > :nth-child(3)::before{content:"Detalj"!important}
+#editCard .same-garment-grid > *{position:relative!important}
+
+/* Dölj eventuell äldre Huvudbild-badge så den inte dubbleras. */
+#editCard .same-garment-grid .same-garment-slot-label,
+#editCard .same-garment-grid .primary-badge{
+  display:none!important;
+}
