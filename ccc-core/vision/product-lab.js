@@ -1435,7 +1435,7 @@
     populateFormFromItem(allowWhileAnalyzing);
     markEditBaseline();
     const state = $("#draftState");
-    if (state) state.textContent = currentItem()?.approved ? "✓ Sparat automatiskt" : "";
+    if (state) state.textContent = currentItem()?.approved ? "✓ Sparat" : "";
     showStage("editCard", "edit");
     requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
   }
@@ -1464,7 +1464,7 @@
         else moveToNextItem();
       } else if (!quiet) {
         const state = $("#draftState");
-        if (state) state.textContent = "✓ Sparat automatiskt";
+        if (state) state.textContent = "✓ Sparat";
         setMessage("Plagget är sparat. Du kan fortsätta här eller välja ett annat plagg.");
       }
       return true;
@@ -1489,7 +1489,7 @@
       if (!hasEditChanges()) return;
       const ok = await saveEditedCurrent({ quiet: true });
       if (sequence !== autosaveSequence) return;
-      if (state) state.textContent = ok ? "✓ Sparat automatiskt" : "Kunde inte spara";
+      if (state) state.textContent = ok ? "✓ Sparat" : "Kunde inte spara";
     }, 500);
   }
 
@@ -1500,7 +1500,7 @@
     const state = $("#draftState");
     if (state) state.textContent = "Sparar…";
     const ok = await saveEditedCurrent({ quiet: true });
-    if (state) state.textContent = ok ? "✓ Sparat automatiskt" : "Kunde inte spara";
+    if (state) state.textContent = ok ? "✓ Sparat" : "Kunde inte spara";
     return ok;
   }
 
@@ -2396,10 +2396,7 @@
       }
     });
   });
-
-  $("#closeVisionContextHelpBtn")?.addEventListener("click",()=>{const d=$("#visionContextHelpDialog");if(d)d.hidden=true;});
-
-  $("#price")?.addEventListener("click", openPriceEditor);
+$("#price")?.addEventListener("click", openPriceEditor);
   $("#price")?.addEventListener("focus", (event)=>{event.target.blur();openPriceEditor();});
   $("#largePriceEditor")?.addEventListener("input",()=>{
     const editor=$("#largePriceEditor"),source=$("#price");
@@ -2449,6 +2446,15 @@
   refreshCostUi();
   updateCounters();
   updateTextPreviews();
+  const closeContextHelp = () => {
+    const dialog = $("#visionContextHelpDialog");
+    if (dialog) dialog.hidden = true;
+  };
+  $("#closeVisionContextHelpBtn")?.addEventListener("click", closeContextHelp);
+  $("#visionContextHelpDialog")?.addEventListener("click", (event) => {
+    if (event.target === $("#visionContextHelpDialog")) closeContextHelp();
+  });
+
 })();
 
 /* CCC cache stamp: v2.8.69 */
