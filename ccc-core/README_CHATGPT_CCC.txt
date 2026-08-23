@@ -1968,3 +1968,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - `Granska & komplettera` får en egen centrerad rubrikrad.
 - Objektposition (t.ex. `12/14`) och `Ta bort` ligger på raden under, vänster respektive höger.
 
+## v2.10.40 – ombyggd workspace-/review-header
+- Den dubbla `Välj objekt`-rubriken i workspace tas bort i själva HTML:n; exakt en rubrik finns kvar.
+- Workspace behåller ordningen `Välj objekt` → fotoknappar → `Visar X–Y av Z`.
+- `Granska & komplettera` byggs om i DOM, inte med positioneringshack.
+- Första raden innehåller enbart centrerad `Granska & komplettera`.
+- Andra raden innehåller positionen (t.ex. `14/14`) till vänster och `Ta bort` till höger.
+- Tidigare absoluta/överlappande headerbeteenden neutraliseras med exakta v2.10.40-regler.
+
