@@ -1936,3 +1936,10 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Bildrutorna får konsekventa centrerade bottom-badges: `Huvudbild`, `Baksida`, `Detalj`.
 - Headern `X/Y – Granska & komplettera – Ta bort` lämnas oförändrad.
 
+## v2.10.35 – korrigering efter faktisk DOM-inspektion
+- `#workspaceCount` centreras direkt i Vision-workspace, även när toolbaren går över till kolumnläge på iPhone.
+- `Rubrik` läggs som riktig yttre etikett ovanför det faktiska fältet `#title`.
+- `Beskrivning` läggs som riktig yttre etikett ovanför det faktiska fältet `#description`.
+- Placeholder-texterna i dessa två fält tas bort för att undvika dubbel märkning.
+- Inga andra funktioner eller layouter ändras.
+
