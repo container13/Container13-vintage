@@ -103,3 +103,5 @@ v2.10.40: duplicate Välj objekt removed in DOM; review header rebuilt as title 
 v2.10.41: 9/14 + AI-analys + Ta bort flyttade till gemensam rad direkt under bilderna; rubriken står ensam.
 
 v2.10.42: objektåtgärdsraden under bilderna hårdresetad och byggd som ren 3-kolumns-grid utan gamla positioneringskrockar.
+
+v2.10.43: X/Y + AI-analys + Ta bort låsta till samma rad; Rubrik börjar efter raden.
