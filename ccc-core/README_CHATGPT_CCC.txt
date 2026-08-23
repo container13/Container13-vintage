@@ -1976,3 +1976,16 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Andra raden innehåller positionen (t.ex. `14/14`) till vänster och `Ta bort` till höger.
 - Tidigare absoluta/överlappande headerbeteenden neutraliseras med exakta v2.10.40-regler.
 
+## CCC arbetskommando – `kör`
+- När arbete pågår i CCC betyder användarens `kör` alltid: genomför den senast överenskomna kod-/projektändringen.
+- `kör` får aldrig tolkas som en begäran att skapa en bild.
+- Bild, mockup eller annan visualisering får endast genereras när användaren uttryckligen ber om det i samma meddelande.
+- En tidigare bildbegäran får inte följa med till ett senare `kör`.
+
+## v2.10.41 – objektåtgärder under bilderna
+- `Granska & komplettera` står ensam som huvudrubrik.
+- Direkt under de tre bildrutorna ligger nu en gemensam rad med `9/14`, `AI-analys` och `Ta bort`.
+- `9/14` är neutral status/pill, `AI-analys` är sekundär gul knapp och `Ta bort` är sekundär röd knapp.
+- Den tidigare fristående `Analysera med AI`-knappen tas bort.
+- Ingen separat tipsknapp läggs till.
+
