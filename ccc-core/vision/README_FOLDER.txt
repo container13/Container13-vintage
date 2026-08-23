@@ -77,3 +77,5 @@ v2.10.27: `Objekt X/Y` + `Granska & komplettera`, renare bilddel och vy-specifik
 v2.10.28: hjälp-X fungerar; objektshuvudet komprimerat och sparstatus kortad till `✓ Sparat`.
 
 v2.10.29: `Granska & komplettera` huvudrubrik, `Objekt X/Y` sekundärt, autosave längst ned, `Nästa objekt`, hjälp-X robust.
+
+v2.10.30: central Core-terminologi införd; standard `objekt`; Vision kopplad till centrala benämningar.

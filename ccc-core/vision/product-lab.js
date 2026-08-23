@@ -1,4 +1,7 @@
 (() => {
+  const entityTerm=(form="singular",cap=false)=>window.CCC_TERMINOLOGY?.label?.(form,cap)||
+    ({singular:"objekt",plural:"objekt",definiteSingular:"objektet",definitePlural:"objekten"}[form]||"objekt");
+
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
   const fieldIds = ["title", "category", "brand", "season", "price", "manufacturer", "size", "color", "description"];
@@ -194,7 +197,7 @@
     const resumableCount = hasSession ? batchItems.length : Number(savedSessionSummary?.count || 0);
     if (resume) {
       resume.hidden = !(startMode && resumableCount > 0);
-      if (resumableCount > 0) resume.textContent = `Fortsätt fotosession – ${resumableCount} ${resumableCount === 1 ? "plagg" : "plagg"}`;
+      if (resumableCount > 0) resume.textContent = `Fortsätt fotosession – ${resumableCount} ${resumableCount === 1 ? entityTerm("singular") : entityTerm("plural")}`;
     }
     if (saveSession) saveSession.hidden = startMode || !hasSession;
     if (startHome) startHome.hidden = !startMode;
