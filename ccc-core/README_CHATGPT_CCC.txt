@@ -1920,3 +1920,12 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Terminologivalet i Control Center (Objekt / Plagg / Produkt / Vara) kan därmed slå igenom på betydligt fler knappar, statusrader, dialoger, tomlägen och hjälprader.
 - Container13:s publika webbtexter, README/CHANGELOG, kodkommentarer och AI-domäninstruktioner massersätts inte eftersom ordet `plagg` där kan vara korrekt innehåll och inte UI-terminologi.
 - Slutkontroll v2.10.32: kvarvarande användarsynliga Publicera-texter som `Publicerar X plagg`, `Plagg:` och `Valt plagg` är också kopplade till Core-terminologin.
+
+## v2.10.33 – Granska & komplettera på iPhone
+- `Granska & komplettera` centreras som huvudrubrik.
+- Positionen visas enbart som `X/Y` längst till vänster; ordet `Objekt` tas bort.
+- `Ta bort` ligger kvar längst till höger.
+- Separat `1/3` ovanför bildrutorna tas bort.
+- De tre bildrutorna får centrerade rollnamn: `Huvudbild`, `Baksida`, `Detalj`.
+- Övriga delar från v2.10.32 lämnas orörda.
+
