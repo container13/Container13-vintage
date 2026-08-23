@@ -2080,3 +2080,9 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Beskrivningens skrivyta görs något lägre för att hela editorn ska rymmas ovanför iPhone-tangentbordet.
 - Rubrik, Pris och övriga Vision-vyer lämnas oförändrade.
 
+## v2.10.38 – rubrikhierarki
+- `Välj objekt` blir huvudrubrik i objektöversikten och görs tydligare/större.
+- Sidinformationen ändras från `Objekt 7–12 av 14` till `Visar 7–12 av 14` och visas som sekundär information under fotoknapparna.
+- `Granska & komplettera` görs något större i objektvyn.
+- Övrig funktionalitet lämnas orörd.
+
