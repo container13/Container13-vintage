@@ -24,6 +24,7 @@ onAuthStateChanged(auth,(user)=>{if(!user)window.location.href="../auth/index.ht
 const database=getFirestore(auth.app);
 const storage=getStorage(auth.app);
 
+const entityTerm=(form="singular",cap=false)=>window.CCC_TERMINOLOGY?.label?.(form,cap)||({singular:"objekt",plural:"objekt",definiteSingular:"objektet",definitePlural:"objekten"}[form]||"objekt");
 const $=(s)=>document.querySelector(s);
 const DB_NAME="ccc-local-workspace", DB_VERSION=3, STORE_NAME="images", FILE_STORE="vision-files";
 let items=[],activeIndex=0,objectUrls=[];
@@ -234,7 +235,7 @@ function preloadNeighbors(index){
     preloadItem(index+1).catch(()=>{});
   }
 }
-function title(item,index){return item.title?.trim()||item.fields?.title?.trim()||`Plagg ${index+1}`;}
+function title(item,index){return item.title?.trim()||item.fields?.title?.trim()||`${entityTerm("singular",true)} ${index+1}`;}
 function resetViewScroll(view){
   const el=$("#"+view);
   if(!el)return;
@@ -613,12 +614,12 @@ function bindConfirmGridSwipe(){
 
 function helpHtmlForView(view){
   if(view==="gridView")return `
-    <div class="help-row"><strong>Tryck</strong><br>Öppna plagget.</div>
+    <div class="help-row"><strong>Tryck</strong><br>${entityTerm("definiteSingular",true)} öppnas här.</div>
     <div class="help-row"><strong>Långtryck</strong><br>Snabbzoom/förhandsvisning.</div>
-    <div class="help-row"><strong>Bilderna</strong><br>Tryck på ett plagg för att öppna det. Där kan du fortfarande kontrollera och anpassa bilden innan publicering.</div>
-      <div class="help-row"><strong>Grön bock ✓</strong><br>Bilden har en sparad bildanpassning. Du kan fortfarande öppna plagget och ändra den.</div>
+    <div class="help-row"><strong>Bilderna</strong><br>Tryck på ett ${entityTerm("singular")} för att öppna det. Där kan du fortfarande kontrollera och anpassa bilden innan publicering.</div>
+      <div class="help-row"><strong>Grön bock ✓</strong><br>Bilden har en sparad bildanpassning. Du kan fortfarande öppna ${entityTerm("definiteSingular")} och ändra den.</div>
       <div class="help-row"><strong>Röd bock ✓</strong><br>Visas i Välj-läget och betyder att utkastet är markerat för borttagning. Inget tas bort förrän du trycker Ta bort och bekräftar.</div>
-      <div class="help-row"><strong>Fortsätt</strong><br>Går vidare med de färdiga plaggen till val av kanal.</div>
+      <div class="help-row"><strong>Fortsätt</strong><br>Går vidare med de färdiga ${entityTerm("plural")} till val av kanal.</div>
       <div class="help-row"><strong>Välj</strong><br>Öppnar läget där du kan markera lokala utkast för borttagning.</div>`;
   if(view==="detailView")return `<div class="help-row"><strong>Grön ✓</strong><br>Bilden har en sparad anpassning men kan ändras igen.</div><div class="help-row"><strong>Anpassa bild</strong><br>Öppna beskärning/zoom för den här bilden.</div><div class="help-row"><strong>Klar – tillbaka till bilderna</strong><br>Återgår till Förbered så att du kan fortsätta med nästa bild. Kanalvalet öppnas först med Fortsätt i gridden.</div>`;
   if(view==="cropView")return `<div class="help-row"><strong>Anpassa bild</strong><br>Flytta och zooma tills utsnittet känns rätt.</div><div class="help-row"><strong>Spara anpassning</strong><br>Sparar bilden och återgår till miniatyrerna.</div>`;
@@ -1168,7 +1169,7 @@ function savePublicationBatch(entries,failed=0){
     publishedAt:new Date().toISOString(),
     channel:"Container13 · Nyinkommet",
     failed,
-    items:entries.map(entry=>({title:entry.title||"Namnlöst plagg",imageUrl:entry.imageUrl||"",cccItemId:entry.cccItemId||""}))
+    items:entries.map(entry=>({title:entry.title||`${entityTerm("singular",true)} utan namn`,imageUrl:entry.imageUrl||"",cccItemId:entry.cccItemId||""}))
   });
   try{localStorage.setItem(PUBLICATION_HISTORY_KEY,JSON.stringify(history.slice(0,30)));}catch(error){console.warn("[CCC Publicera] Kunde inte spara publiceringshistorik",error);}
 }
@@ -1192,7 +1193,7 @@ function renderPublicationHistory(){
     for(const item of (batch.items||[])){
       const figure=document.createElement("figure");
       const img=document.createElement("img");img.src=item.imageUrl;img.alt=item.title||"Publicerad bild";img.loading="lazy";
-      const caption=document.createElement("figcaption");caption.textContent=item.title||"Namnlöst plagg";
+      const caption=document.createElement("figcaption");caption.textContent=item.title||`${entityTerm("singular",true)} utan namn`;
       figure.append(img,caption);thumbs.append(figure);
     }
     article.append(thumbs);list.append(article);
@@ -1223,7 +1224,7 @@ async function loadSavedPublishedImages(){
     const imageWrap=document.createElement("div");imageWrap.className="published-card-image";
     const img=document.createElement("img");img.src=await previewSrc(item);img.alt=item.title||"Lokalt sparad bild";img.loading="lazy";imageWrap.append(img);
     const info=document.createElement("div");info.className="published-card-info";
-    const title=document.createElement("strong");title.textContent=item.title||"Namnlöst plagg";
+    const title=document.createElement("strong");title.textContent=item.title||`${entityTerm("singular",true)} utan namn`;
     const channel=document.createElement("span");channel.textContent=item.lastPublishedChannel||"Container13 · Nyinkommet";
     const when=document.createElement("time");when.textContent=publicationDateText(item.lastPublishedAt);
     const status=document.createElement("span");status.className=`saved-live-status ${item.isLivePublished?"is-live":"is-offline"}`;status.textContent=item.isLivePublished?"● Ligger ute nu":"Sparad lokalt · inte ute";
@@ -1308,9 +1309,9 @@ async function loadPublishedView(message=""){
     for(const item of visible){
       const card=document.createElement("article");card.className="published-card";
       const imageWrap=document.createElement("div");imageWrap.className="published-card-image";
-      const img=document.createElement("img");img.src=item.imageUrl;img.alt=item.title||"Publicerat plagg";img.loading="lazy";img.decoding="async";imageWrap.append(img);
+      const img=document.createElement("img");img.src=item.imageUrl;img.alt=item.title||`${entityTerm("singular",true)} publicerat`;img.loading="lazy";img.decoding="async";imageWrap.append(img);
       const info=document.createElement("div");info.className="published-card-info";
-      const title=document.createElement("strong");title.textContent=item.title||"Namnlöst plagg";
+      const title=document.createElement("strong");title.textContent=item.title||`${entityTerm("singular",true)} utan namn`;
       const where=document.createElement("span");where.textContent="Container13 · Nyinkommet";
       const when=document.createElement("time");when.textContent=publicationDateText(item.createdAt);
       const del=document.createElement("button");del.type="button";del.className="published-delete";del.textContent="Markera för borttagning";del.setAttribute("aria-label",`Markera ${item.title||"bilden"} för borttagning från hemsidan`);
@@ -1477,7 +1478,7 @@ function renderCropDiagnostics(){
   if(!d){panel.textContent="Ingen crop-data tillgänglig.";return;}
   const item=activeItem?.()||items[activeIndex];
   panel.textContent=[
-    `Plagg: ${item?.title||item?.brand||item?.id||"okänt"}`,
+    `${entityTerm("singular",true)}: ${item?.title||item?.brand||item?.id||"okänt"}`,
     `Källa: ${d.sourceW} × ${d.sourceH}px`,
     ``,
     `Zoom: ${d.zoom}×`,
@@ -1893,7 +1894,7 @@ async function renderChannelConfirmation(resetControls=true){
   const end=Math.min(selected.length,start+DRAFTS_PER_PAGE);
   const visible=selected.slice(start,end);
   grid.className=`draft-grid confirm-grid ${channelGridClass(visible.length)}`;
-  $("#confirmPublishBtn").textContent=selected.length===1?"Publicera 1 plagg":`Publicera ${selected.length} plagg`;
+  $("#confirmPublishBtn").textContent=selected.length===1?`Publicera 1 ${entityTerm("singular")}`:`Publicera ${selected.length} ${entityTerm("plural")}`;
   const c13Confirm=$("#confirmC13Channel");
   if(c13Confirm){
     c13Confirm.classList.toggle("is-active",container13ChannelSelected);
@@ -2010,7 +2011,7 @@ async function publishSelectedToContainer13Live(){
 
   const display=effectiveContainer13DisplaySettings();
   const selected=items.filter(item=>channelSelectedIds.has(item.id));
-  if(!selected.length)throw new Error("Inga plagg är valda.");
+  if(!selected.length)throw new Error( `Inga ${entityTerm("plural")} är valda.`);
 
   let uploaded=0;
   const failures=[];
@@ -2070,7 +2071,7 @@ async function publishSelectedToContainer13Live(){
 
       uploaded+=1;
       publishedIds.push(item.id);
-      publishedEntries.push({localId:item.id,documentId:documentRef.id,title:titleText||metadata.title||"Namnlöst plagg",imageUrl,cccItemId:metadata.cccItemId});
+      publishedEntries.push({localId:item.id,documentId:documentRef.id,title:titleText||metadata.title||`${entityTerm("singular",true)} utan namn`,imageUrl,cccItemId:metadata.cccItemId});
     }catch(error){
       failures.push({id:item?.id||"",message:error?.message||String(error)});
       if(uploadedRef){
@@ -2187,7 +2188,7 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
   const button=$("#confirmPublishBtn");
   const count=channelSelectedIds.size;
   if(!count){
-    $("#confirmStatus").textContent="Inga plagg är valda.";
+    $("#confirmStatus").textContent= `Inga ${entityTerm("plural")} är valda.`;
     return;
   }
 
@@ -2195,8 +2196,8 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
   const originalLabel=button.textContent;
   button.textContent="Publicerar…";
   $("#confirmStatus").textContent=count===1
-    ?"Publicerar 1 plagg på Container13…"
-    :`Publicerar ${count} plagg på Container13…`;
+    ?`Publicerar 1 ${entityTerm("singular")} på Container13…`
+    :`Publicerar ${count} ${entityTerm("plural")} på Container13…`;
 
   try{
     const result=await publishSelectedToContainer13Live();
@@ -2224,8 +2225,8 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
     }
 
     $("#confirmStatus").textContent=result.uploaded===1
-      ?"✓ 1 plagg publicerat på Container13."
-      :`✓ ${result.uploaded} plagg publicerade på Container13.`;
+      ?`✓ 1 ${entityTerm("singular")} publicerat på Container13.`
+      :`✓ ${result.uploaded} ${entityTerm("plural")} publicerade på Container13.`;
 
     show("publishedView");
     selectPublishedTab("live");

@@ -63,7 +63,7 @@
         </button>
         <button id="publishedBtn" class="ccc-action-card ccc-action-card--purple" type="button">
           <span class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4 4L19 7"/><path d="M4 4h16v16H4z"/></svg></span>
-          <span class="action-copy"><strong>Hantera publicerade bilder</strong><small id="publishedStartCount">Se vad som ligger ute eller ta bort sålda plagg</small></span>
+          <span class="action-copy"><strong>Hantera publicerade bilder</strong><small id="publishedStartCount" data-ccc-term="Se vad som ligger ute eller ta bort sålda {plural}">Se vad som ligger ute eller ta bort sålda objekt</small></span>
           <span class="action-arrow" aria-hidden="true">›</span>
         </button>
       </div>
@@ -71,16 +71,16 @@
 
     <section id="gridView" class="publish-view" hidden>
       <div class="publish-heading"><div><h1>Förbered för publicering</h1><p id="draftCount">0 utkast</p></div></div>
-      <div id="emptyState" class="publish-empty" hidden><strong>Inget väntar på publicering</strong><span>Skapa ett plagg i Vision först.</span></div>
+      <div id="emptyState" class="publish-empty" hidden><strong>Inget väntar på publicering</strong><span data-ccc-term="Skapa ett {singular} i Vision först.">Skapa ett objekt i Vision först.</span></div>
       <div id="draftGrid" class="draft-grid" aria-live="polite"></div>
       <button id="preparedContinueBtn" class="primary-action prepared-continue-action" type="button">Fortsätt</button>
     </section>
 
     <section id="channelView" class="publish-view" hidden>
-      <div class="publish-heading"><div><h1>Välj plagg</h1><p id="channelSelectionChannelLabel">Container13 hemsida</p></div></div>
+      <div class="publish-heading"><div><h1 data-ccc-term="Välj {plural}">Välj objekt</h1><p id="channelSelectionChannelLabel">Container13 hemsida</p></div></div>
       <div class="channel-selection-summary"><strong id="channelSelectedCount">0 valda</strong><span>Tryck på bilderna för att markera eller avmarkera.</span></div>
       <div id="channelSelectGrid" class="draft-grid channel-select-grid"></div>
-      <div id="channelSelectPager" class="ccc-draft-pager" aria-label="Sidor med plagg för publicering"></div>
+      <div id="channelSelectPager" class="ccc-draft-pager" data-ccc-term-aria="Sidor med {plural} för publicering" aria-label="Sidor med objekt för publicering"></div>
       <button id="channelContinueBtn" class="primary-action channel-continue-action" type="button" disabled>Fortsätt</button>
     </section>
 
@@ -129,7 +129,7 @@
 
     <section id="channelConfirmView" class="publish-view" hidden>
       <div id="confirmGrid" class="draft-grid confirm-grid"></div>
-      <div id="confirmPager" class="ccc-draft-pager confirm-pager" aria-label="Sidor med valda plagg"></div>
+      <div id="confirmPager" class="ccc-draft-pager confirm-pager" data-ccc-term-aria="Sidor med valda {plural}" aria-label="Sidor med valda objekt"></div>
 
       <div class="confirm-channel-strip" aria-label="Publiceringskanaler">
         <button id="confirmC13Channel" class="confirm-channel-chip is-active" type="button" data-confirm-channel="Container13" aria-pressed="true" aria-label="Container13, vald kanal">
@@ -199,7 +199,7 @@
       <div class="detail-top counter-slot"><div class="detail-counter counter-badge" id="detailCounter"></div></div>
       <div id="swipeArea" class="swipe-area">
         <img id="detailPrevImage" class="swipe-image swipe-image-prev" alt="" aria-hidden="true">
-        <img id="detailImage" class="swipe-image swipe-image-current" alt="Valt plagg"><span id="detailAdjustedBadge" class="detail-adjusted-badge" hidden aria-label="Sparad bildanpassning">✓</span>
+        <img id="detailImage" class="swipe-image swipe-image-current" data-ccc-term-aria="Valt {singular}" alt="Valt objekt"><span id="detailAdjustedBadge" class="detail-adjusted-badge" hidden aria-label="Sparad bildanpassning">✓</span>
         <img id="detailNextImage" class="swipe-image swipe-image-next" alt="" aria-hidden="true">
         <span class="swipe-hint left" aria-hidden="true">‹</span><span class="swipe-hint right" aria-hidden="true">›</span>
       </div>
