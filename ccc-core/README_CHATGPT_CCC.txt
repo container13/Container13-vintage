@@ -1943,3 +1943,9 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Placeholder-texterna i dessa två fält tas bort för att undvika dubbel märkning.
 - Inga andra funktioner eller layouter ändras.
 
+## v2.10.36 – bildrutorna
+- `+ Nytt foto` behålls i de två tomma bildrutorna.
+- Det separata stora plustecknet ovanför texten tas bort.
+- Bildrollerna visas som `Huvudbild`, `Baksida` och `Detalj`.
+- Övrig layout från v2.10.35 lämnas orörd.
+
