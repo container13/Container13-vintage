@@ -1996,3 +1996,10 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Inga absoluta positioner används för de tre kontrollerna.
 - Övrig Vision-layout lämnas orörd.
 
+## v2.10.43 – slutlig justering av objektåtgärdsraden
+- `X/Y`, `AI-analys` och `Ta bort` tvingas till exakt samma rad direkt under bildrutorna.
+- Alla tre kontroller får samma höjd och vertikal centrering.
+- `AI-analys` är den permanenta korta texten.
+- `Rubrik` startar först efter hela actionraden och kan inte längre hamna bredvid/under `X/Y`.
+- Övrig Vision-layout lämnas orörd.
+
