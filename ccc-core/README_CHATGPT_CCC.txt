@@ -1949,3 +1949,10 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Bildrollerna visas som `Huvudbild`, `Baksida` och `Detalj`.
 - Övrig layout från v2.10.35 lämnas orörd.
 
+## v2.10.37 – Beskrivning: låst viewport
+- Beskrivning-editorn får samma princip som Rubrik: hela sidan/dialogen ska vara helt låst när tangentbordet är öppet.
+- Ingen scrollbar ska kunna visas längst ut på skärmen.
+- Endast själva textarea-fältet får scrolla om texten blir längre än fältet.
+- Beskrivningens skrivyta görs något lägre för att hela editorn ska rymmas ovanför iPhone-tangentbordet.
+- Rubrik, Pris och övriga Vision-vyer lämnas oförändrade.
+
