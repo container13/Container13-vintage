@@ -2,7 +2,8 @@
   // v2.10.30 – central user-facing entity terminology
   if (!window.CCC_TERMINOLOGY) {
     const terminologyScript = document.createElement("script");
-    terminologyScript.src = new URL("terminology.js?v=2.10.30", import.meta.url).href;
+    terminologyScript.src = new URL("terminology.js?v=2.10.32", import.meta.url).href;
+    terminologyScript.addEventListener("load",()=>window.CCC_TERMINOLOGY?.apply?.(),{once:true});
     document.head.appendChild(terminologyScript);
   }
 

@@ -3,6 +3,7 @@ import { auth } from "../auth/firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 onAuthStateChanged(auth,(user)=>{if(!user)window.location.href="../auth/index.html";});
 
+const entityTerm=(form="singular",cap=false)=>window.CCC_TERMINOLOGY?.label?.(form,cap)||({singular:"objekt",plural:"objekt",definiteSingular:"objektet",definitePlural:"objekten"}[form]||"objekt");
 const $=(s)=>document.querySelector(s);
 const DB_NAME="ccc-local-workspace", DB_VERSION=3, STORE_NAME="images", FILE_STORE="vision-files";
 let items=[],activeIndex=0,objectUrls=[];
@@ -97,7 +98,7 @@ function preloadNeighbors(index){
     preloadItem(index+1).catch(()=>{});
   }
 }
-function title(item,index){return item.title?.trim()||item.fields?.title?.trim()||`Plagg ${index+1}`;}
+function title(item,index){return item.title?.trim()||item.fields?.title?.trim()||`${entityTerm("singular",true)} ${index+1}`;}
 function resetViewScroll(view){
   const el=$("#"+view);
   if(!el)return;
@@ -738,7 +739,7 @@ function renderCropDiagnostics(){
   if(!d){panel.textContent="Ingen crop-data tillgänglig.";return;}
   const item=activeItem?.()||items[activeIndex];
   panel.textContent=[
-    `Plagg: ${item?.title||item?.brand||item?.id||"okänt"}`,
+    `${entityTerm("singular",true)}: ${item?.title||item?.brand||item?.id||"okänt"}`,
     `Källa: ${d.sourceW} × ${d.sourceH}px`,
     ``,
     `Zoom: ${d.zoom}×`,
