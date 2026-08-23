@@ -2028,3 +2028,19 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Målet är att återstående modultexter successivt ska kopplas till samma API när de berörs; historik/dokumentation och webbplatsens redaktionella texter ska inte massersättas.
 - Papperskorg i Core-footern på relevanta Vision-vyer ligger kvar som nästa separata UI-steg.
 
+## v2.10.31 – sidintervall i Vision-översikten + hjälp
+- Workspace-raden `14 plagg · 10 markerat` tas bort helt.
+- I stället visas det faktiska synliga intervallet: t.ex. `Objekt 1–6 av 14`, `Objekt 7–12 av 14`, `Objekt 13–14 av 14`.
+- Intervallet uppdateras direkt när användaren swipar eller byter sida.
+- Text om `markerat`/`valt` visas inte; den gula ramen räcker som visuell indikation.
+- Den tidigare synliga instruktionstexten i workspace döljs och förklaringen flyttas till `?` i den centrala Core-footern.
+- Workspace-hjälpen förklarar sex objekt per sida, intervalltexten, swipe och att tryck öppnar `Granska & komplettera`.
+- Benämningen hämtas från Core-terminologin, så `Objekt` kan senare bytas centralt till t.ex. `Plagg`, `Produkt` eller `Vara`.
+
+## v2.10.32 – central terminologimigrering
+- Bygger vidare på v2.10.31 och behåller workspace-intervallen `Objekt 1–6 av 14` samt vy-specifik hjälp.
+- Core-terminologin får mallstöd (`{singular}`, `{plural}`, `{definiteSingular}` osv.) samt automatisk uppdatering av märkta UI-element.
+- Aktiva användarsynliga Vision- och Publicera-texter migreras från hårdkodat `plagg/plagget/plaggen` till Core-terminologin.
+- Terminologivalet i Control Center (Objekt / Plagg / Produkt / Vara) kan därmed slå igenom på betydligt fler knappar, statusrader, dialoger, tomlägen och hjälprader.
+- Container13:s publika webbtexter, README/CHANGELOG, kodkommentarer och AI-domäninstruktioner massersätts inte eftersom ordet `plagg` där kan vara korrekt innehåll och inte UI-terminologi.
+- Slutkontroll v2.10.32: kvarvarande användarsynliga Publicera-texter som `Publicerar X plagg`, `Plagg:` och `Valt plagg` är också kopplade till Core-terminologin.
