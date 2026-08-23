@@ -4448,3 +4448,77 @@ body.ccc-focused-text-mode #textEditorDialog .text-editor-shell{
   font-weight:800!important;
   color:var(--ccc-muted,var(--muted))!important;
 }
+
+
+/* v2.10.39 */
+#workspaceToolbar[hidden]{display:none!important;}
+
+#editCard .vision-edit-header,
+#editCard .vision-editor-head,
+#editCard .edit-header,
+#editCard .edit-heading{
+  display:grid!important;
+  grid-template-columns:1fr auto!important;
+  grid-template-areas:"title title" "progress remove"!important;
+  align-items:center!important;
+  gap:8px 12px!important;
+}
+#editCard #editTitle{
+  grid-area:title!important;
+  width:100%!important;
+  margin:0!important;
+  text-align:center!important;
+  font-size:1.55rem!important;
+  line-height:1.12!important;
+  font-weight:900!important;
+}
+#editCard #editProgress{
+  grid-area:progress!important;
+  justify-self:start!important;
+  margin:0!important;
+}
+#editCard #removeItemBtn,
+#editCard #removeSelectedBtn,
+#editCard .edit-remove,
+#editCard .remove-item{
+  grid-area:remove!important;
+  justify-self:end!important;
+  margin:0!important;
+}
+
+
+/* v2.10.39 exact review-header markup */
+#editCard .fixed-stage-head.compact-edit-head{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  grid-template-rows:auto auto!important;
+  row-gap:8px!important;
+}
+#editCard .fixed-stage-head .edit-context{
+  grid-row:1!important;
+  display:block!important;
+  width:100%!important;
+  position:static!important;
+}
+#editCard .fixed-stage-head #editTitle{
+  display:block!important;
+  width:100%!important;
+  margin:0!important;
+  text-align:center!important;
+}
+#editCard .fixed-stage-head #editProgress{
+  position:absolute!important;
+  left:26px!important;
+  top:62px!important;
+  margin:0!important;
+}
+#editCard .fixed-stage-head .edit-head-actions{
+  grid-row:2!important;
+  display:flex!important;
+  justify-content:flex-end!important;
+  width:100%!important;
+  min-height:28px!important;
+}
+#editCard .fixed-stage-head #editTrashBtn{
+  margin:0!important;
+}

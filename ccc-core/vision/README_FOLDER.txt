@@ -95,3 +95,5 @@ v2.10.36: separat stort plus bort i extra bildrutor; + Nytt foto och Baksida/Det
 v2.10.37: Beskrivning låser viewport/body helt; endast innersta textarea får scrolla; skrivytan något lägre.
 
 v2.10.38: Välj objekt som större huvudrubrik; Visar X–Y av Z under fotoknappar; större Granska & komplettera.
+
+v2.10.39: workspace-rubrik isolerad från startvyn; review-header i två rader.
