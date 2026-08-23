@@ -1887,3 +1887,12 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Rubrikraden hålls på en rad på smala iPhone-skärmar.
 - Övrig funktionalitet lämnas orörd.
 
+## v2.10.29 – ny mobil hierarki i objektvyn
+- `Granska & komplettera` är nu huvudrubrik.
+- `Objekt X/Y` ligger som mindre sekundär rad under huvudrubriken.
+- På mobil ligger endast `Ta bort` kvar till höger i toppen.
+- Autosave-status flyttas från toppen till under knapparna och visas diskret som `✓ Sparas automatiskt`.
+- `Nästa plagg` ändras till `Nästa objekt`.
+- Bilddelen förenklas så redundant instruktionstext tas bort.
+- Hjälprutans X använder delegerad klickhantering och fungerar oberoende av script/DOM-ordning.
+
