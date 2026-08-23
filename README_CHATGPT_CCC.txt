@@ -2113,3 +2113,10 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Den tidigare fristående `Analysera med AI`-knappen tas bort.
 - Ingen separat tipsknapp läggs till.
 
+## v2.10.42 – ren objektåtgärdsrad
+- v2.10.41-raden `9/14 | AI-analys | Ta bort` behålls i samma plats direkt under bildrutorna.
+- Gamla positionerings-, storleks- och knappregler för `manualAiBtn`, `editTrashBtn` och `editProgress` neutraliseras uttryckligen i den nya raden.
+- Raden byggs som en stabil trekolumns-grid: neutral status till vänster, AI-analys i mitten, Ta bort till höger.
+- Inga absoluta positioner används för de tre kontrollerna.
+- Övrig Vision-layout lämnas orörd.
+
