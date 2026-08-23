@@ -1927,6 +1927,12 @@
   function openTextEditor(fieldId) {
     if (!["title", "description"].includes(fieldId)) return;
     const dialog = $("#textEditorDialog");
+    if(dialog){
+      const kind = fieldId === "description" ? "description" : "title";
+      dialog.dataset.editorKind = kind;
+      dialog.classList.toggle("is-description", kind === "description");
+      dialog.classList.toggle("is-title", kind === "title");
+    }
     const editor = $("#largeTextEditor");
     const source = $("#" + fieldId);
     const editCard = $("#editCard");
@@ -1950,7 +1956,9 @@
     if (editCard) editCard.classList.add("text-editor-active");
     dialog.hidden = false;
     document.documentElement.classList.add("ccc-focused-text-mode");
+    window.scrollTo({top:0,left:0,behavior:"auto"});
     document.body.classList.add("ccc-focused-text-mode");
+    window.scrollTo({top:0,left:0,behavior:"auto"});
     startFocusedTextGuard();
 
     requestAnimationFrame(() => {

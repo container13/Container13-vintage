@@ -91,3 +91,5 @@ v2.10.34: centrerad objektrange; + Nytt foto/+ Från album; yttre Rubrik/Beskriv
 v2.10.35: exakt centrering av workspaceCount och riktiga yttre etiketter för #title/#description.
 
 v2.10.36: separat stort plus bort i extra bildrutor; + Nytt foto och Baksida/Detalj visas.
+
+v2.10.37: Beskrivning låser viewport/body helt; endast innersta textarea får scrolla; skrivytan något lägre.

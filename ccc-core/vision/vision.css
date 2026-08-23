@@ -4334,3 +4334,56 @@ body.ccc-focused-text-mode .text-editor-screen #largeTextEditor.title-editor{
 #editCard .same-garment-grid > :nth-child(1)::before{content:"Huvudbild"!important}
 #editCard .same-garment-grid > :nth-child(2)::before{content:"Baksida"!important}
 #editCard .same-garment-grid > :nth-child(3)::before{content:"Detalj"!important}
+
+
+/* v2.10.37 – description editor must behave like title editor:
+   no page/body scroll, only the inner textarea may scroll. */
+html.ccc-focused-text-mode,
+body.ccc-focused-text-mode{
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  height:100%!important;
+  max-height:100%!important;
+  position:fixed!important;
+  inset:0!important;
+  width:100%!important;
+}
+
+html.ccc-focused-text-mode body{
+  overflow:hidden!important;
+}
+
+body.ccc-focused-text-mode #textEditorDialog{
+  position:fixed!important;
+  inset:0!important;
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  touch-action:none!important;
+}
+
+body.ccc-focused-text-mode #textEditorDialog .dialog-box{
+  overflow:hidden!important;
+  max-height:calc(100dvh - var(--ccc-keyboard-offset, 360px) - 18px)!important;
+}
+
+/* Description is deliberately shorter than before so the whole editor
+   fits above the iPhone keyboard without creating document scroll. */
+body.ccc-focused-text-mode #textEditorDialog[data-editor-kind="description"] .large-text-editor,
+body.ccc-focused-text-mode #textEditorDialog.is-description .large-text-editor,
+body.ccc-focused-text-mode #textEditorDialog textarea{
+  max-height:46dvh!important;
+}
+
+/* Only the actual writing field may scroll. */
+body.ccc-focused-text-mode #textEditorDialog textarea{
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-y!important;
+}
+
+body.ccc-focused-text-mode #textEditorDialog .dialog-box,
+body.ccc-focused-text-mode #textEditorDialog .dialog-head-with-close,
+body.ccc-focused-text-mode #textEditorDialog .text-editor-shell{
+  overscroll-behavior:none!important;
+}
