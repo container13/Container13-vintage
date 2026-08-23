@@ -1962,3 +1962,9 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - `Granska & komplettera` görs något större i objektvyn.
 - Övrig funktionalitet lämnas orörd.
 
+## v2.10.39 – vyseparation och granskningsrubrik
+- `Välj objekt` ligger nu inne i workspace-vyn och visas inte på Vision-starten.
+- `Välj objekt`-översikten från v2.10.38 lämnas i övrigt orörd.
+- `Granska & komplettera` får en egen centrerad rubrikrad.
+- Objektposition (t.ex. `12/14`) och `Ta bort` ligger på raden under, vänster respektive höger.
+
