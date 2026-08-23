@@ -2127,3 +2127,10 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - `Rubrik` startar först efter hela actionraden och kan inte längre hamna bredvid/under `X/Y`.
 - Övrig Vision-layout lämnas orörd.
 
+## v2.10.44 – bildplatsernas roller
+- Bildplats 2 märks `Baksida`.
+- Bildplats 3 märks `Detalj`.
+- Etiketterna visas både på tomma bildplatser och på tillagda extrabilder.
+- Tomma platser visar dessutom `Nytt foto`, utan det tidigare stora/minsta plustecknet.
+- Huvudbild och övrig Granska & komplettera-layout lämnas orörda.
+
