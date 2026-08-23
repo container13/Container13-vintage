@@ -195,8 +195,7 @@
     const label = $("#workspaceCount");
     if (!label) return;
     const { start, end, total } = workspaceVisibleRange();
-    const noun = entityTerm(total === 1 ? "singular" : "plural", true);
-    label.textContent = total ? `${noun} ${start}–${end} av ${total}` : `${entityTerm("plural", true)} 0/0`;
+    label.textContent = total ? `Visar ${start}–${end} av ${total}` : "Visar 0 av 0";
   }
 
   function openWorkspaceHelp() {

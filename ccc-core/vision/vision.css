@@ -4387,3 +4387,64 @@ body.ccc-focused-text-mode #textEditorDialog .dialog-head-with-close,
 body.ccc-focused-text-mode #textEditorDialog .text-editor-shell{
   overscroll-behavior:none!important;
 }
+
+
+/* v2.10.38 – Vision heading hierarchy */
+#workspaceCard{
+  display:flex!important;
+  flex-direction:column!important;
+}
+#workspaceCard #workspaceTitle{
+  order:-30!important;
+  margin:0 0 12px!important;
+  text-align:center!important;
+  font-size:1.55rem!important;
+  line-height:1.12!important;
+  font-weight:900!important;
+}
+#workspaceCard .workspace-actions,
+#workspaceCard .workspace-source-actions,
+#workspaceCard .workspace-top-actions{
+  order:-20!important;
+}
+#workspaceCard #workspaceCount{
+  order:-10!important;
+  display:block!important;
+  width:100%!important;
+  margin:10px 0 18px!important;
+  text-align:center!important;
+  font-size:.92rem!important;
+  line-height:1.2!important;
+  font-weight:800!important;
+  color:var(--ccc-muted,var(--muted))!important;
+}
+#editCard #editTitle{
+  font-size:1.55rem!important;
+  line-height:1.12!important;
+  font-weight:900!important;
+}
+
+
+/* v2.10.38 exact workspace toolbar ordering */
+#workspaceToolbar.vision-workspace-toolbar{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+}
+#workspaceToolbar #workspaceTitle{
+  grid-row:1!important;
+  text-align:center!important;
+  margin:0 0 12px!important;
+  font-size:1.55rem!important;
+  font-weight:900!important;
+}
+#workspaceToolbar .vision-workspace-add{
+  grid-row:2!important;
+}
+#workspaceToolbar #workspaceCount{
+  grid-row:3!important;
+  text-align:center!important;
+  margin:10px 0 0!important;
+  font-size:.92rem!important;
+  font-weight:800!important;
+  color:var(--ccc-muted,var(--muted))!important;
+}
