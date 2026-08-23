@@ -2003,3 +2003,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Hjälpen förklarar huvudbild, bildantal, `Analysera igen` och vad som granskas i vyn.
 - Rubrik/Beskrivning-tangentbordslösningen och Pris lämnas orörda.
 
+## v2.10.28 – hjälp-X + kompakt objekthuvud
+- Stängkrysset i `Granska & komplettera`-hjälpen stänger nu hjälprutan via en robust direkt listener.
+- Klick på hjälprutans bakgrund stänger också hjälpen.
+- Toppen förenklas visuellt till `Objekt X/Y` med underraden `Granska & komplettera`.
+- Synlig sparstatus kortas till `✓ Sparat`; `Ta bort` ligger kvar till höger.
+- Rubrikraden hålls på en rad på smala iPhone-skärmar.
+- Övrig funktionalitet lämnas orörd.
+
