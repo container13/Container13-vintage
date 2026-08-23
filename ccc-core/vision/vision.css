@@ -4174,3 +4174,57 @@ body.ccc-focused-text-mode .text-editor-screen #largeTextEditor.title-editor{
     font-size:.78rem!important;
   }
 }
+
+
+/* v2.10.31 – clean workspace range status */
+#workspaceToolbar #workspaceCount{
+  white-space:nowrap!important;
+  font-weight:850!important;
+}
+.vision-context-help .vision-help-content{
+  display:grid;
+  gap:12px;
+  line-height:1.45;
+}
+.vision-context-help .vision-help-content p{
+  margin:0;
+}
+
+/* v2.10.33 – mobile edit hierarchy */
+#editCard .compact-edit-head{
+  display:grid!important;
+  grid-template-columns:52px minmax(0,1fr) 52px!important;
+  align-items:center!important;
+  gap:5px!important;
+  width:100%!important;
+}
+#editCard .edit-context{display:contents!important}
+#editCard .edit-progress-compact{
+  grid-column:1!important;justify-self:start!important;margin:0!important;
+  font-size:.76rem!important;font-weight:800!important;color:var(--muted)!important;white-space:nowrap!important
+}
+#editCard #editTitle{
+  grid-column:2!important;justify-self:center!important;margin:0!important;
+  text-align:center!important;white-space:nowrap!important;font-size:1.05rem!important;line-height:1.1!important
+}
+#editCard .edit-head-actions,#editCard .compact-edit-head-actions{
+  grid-column:3!important;justify-self:end!important;display:flex!important;margin:0!important;min-width:0!important
+}
+#editCard #removeItemBtn{margin:0!important;white-space:nowrap!important;font-size:.74rem!important}
+#editCard #sameGarmentCount,#editCard .same-garment-heading,#editCard .same-garment-heading-compact{display:none!important}
+
+/* Equal centered role labels for the three image slots. */
+#editCard .same-garment-grid > :nth-child(1)::before,
+#editCard .same-garment-grid > :nth-child(2)::before,
+#editCard .same-garment-grid > :nth-child(3)::before{
+  display:block!important;width:100%!important;text-align:center!important;
+  font-size:.72rem!important;font-weight:800!important;line-height:1.1!important;margin:0 0 5px!important
+}
+#editCard .same-garment-grid > :nth-child(1)::before{content:"Huvudbild"}
+#editCard .same-garment-grid > :nth-child(2)::before{content:"Baksida"}
+#editCard .same-garment-grid > :nth-child(3)::before{content:"Detalj"}
+@media(max-width:370px){
+ #editCard .compact-edit-head{grid-template-columns:44px minmax(0,1fr) 44px!important}
+ #editCard #editTitle{font-size:.98rem!important}
+ #editCard .edit-progress-compact,#editCard #removeItemBtn{font-size:.69rem!important}
+}

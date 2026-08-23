@@ -83,3 +83,5 @@ v2.10.30: central Core-terminologi införd; standard `objekt`; Vision kopplad ti
 v2.10.31: workspace visar synligt intervall X–Y av totalen; markerat-text bort; förklaring flyttad till vy-specifik Core-footerhjälp.
 
 v2.10.32: aktiva Vision/Publicera-texter migrerade mot central Core-terminologi; v2.10.31 workspace-range/help kvar.
+
+v2.10.33: edit-header centrerad; X/Y vänster; 1/3 bort; bildroller Huvudbild/Baksida/Detalj.
