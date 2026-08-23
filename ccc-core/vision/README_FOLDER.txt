@@ -89,3 +89,5 @@ v2.10.33: edit-header centrerad; X/Y vänster; 1/3 bort; bildroller Huvudbild/Ba
 v2.10.34: centrerad objektrange; + Nytt foto/+ Från album; yttre Rubrik/Beskrivning; bildroller som bottom-badges.
 
 v2.10.35: exakt centrering av workspaceCount och riktiga yttre etiketter för #title/#description.
+
+v2.10.36: separat stort plus bort i extra bildrutor; + Nytt foto och Baksida/Detalj visas.

@@ -4317,3 +4317,20 @@ body.ccc-focused-text-mode .text-editor-screen #largeTextEditor.title-editor{
 #editCard .compact-description-field textarea{
   width:100%!important;
 }
+
+
+/* v2.10.36 – empty image slots */
+#editCard .same-garment-slot .plus{
+  display:none!important;
+}
+
+/* Keep the action text visible and make room for the role badge below. */
+#editCard .same-garment-slot .label{
+  display:block!important;
+  margin:0!important;
+}
+
+/* Consistent role badges in the three image positions. */
+#editCard .same-garment-grid > :nth-child(1)::before{content:"Huvudbild"!important}
+#editCard .same-garment-grid > :nth-child(2)::before{content:"Baksida"!important}
+#editCard .same-garment-grid > :nth-child(3)::before{content:"Detalj"!important}
