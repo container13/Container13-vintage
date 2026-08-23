@@ -1896,3 +1896,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Bilddelen förenklas så redundant instruktionstext tas bort.
 - Hjälprutans X använder delegerad klickhantering och fungerar oberoende av script/DOM-ordning.
 
+## v2.10.30 – central objekterminologi
+- Core har nu `terminology.js` som central källa för användarsynliga objektnamn.
+- Standard är `objekt`; valbara presets är `Objekt`, `Plagg`, `Produkt` och `Vara`.
+- Inställningen exponeras i Control Center/Inställningar under `Terminologi`.
+- Vision använder Core-termen för centrala användartexter som borttagningsfrågan och fotosessionsbenämningen.
+- Målet är att återstående modultexter successivt ska kopplas till samma API när de berörs; historik/dokumentation och webbplatsens redaktionella texter ska inte massersättas.
+- Papperskorg i Core-footern på relevanta Vision-vyer ligger kvar som nästa separata UI-steg.
+

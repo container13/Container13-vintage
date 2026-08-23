@@ -1,4 +1,11 @@
 // CCC Core JS — v2.8.43
+  // v2.10.30 – central user-facing entity terminology
+  if (!window.CCC_TERMINOLOGY) {
+    const terminologyScript = document.createElement("script");
+    terminologyScript.src = new URL("terminology.js?v=2.10.30", import.meta.url).href;
+    document.head.appendChild(terminologyScript);
+  }
+
 // Gemensamt beteende: tema, profilmeny och logout.
 
 const root=document.documentElement;
