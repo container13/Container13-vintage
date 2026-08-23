@@ -4681,3 +4681,108 @@ body.ccc-focused-text-mode #textEditorDialog .text-editor-shell{
     min-height:42px!important;
   }
 }
+
+
+/* v2.10.42 – clean reset for the three controls under the images */
+#editCard .edit-object-actions{
+  position:static!important;
+  display:grid!important;
+  grid-template-columns:72px minmax(0,1fr) 92px!important;
+  gap:8px!important;
+  align-items:center!important;
+  width:100%!important;
+  min-height:0!important;
+  height:auto!important;
+  margin:12px 0 14px!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+  overflow:visible!important;
+}
+
+#editCard .edit-object-actions #editProgress,
+#editCard .edit-object-actions #manualAiBtn,
+#editCard .edit-object-actions #editTrashBtn{
+  position:static!important;
+  inset:auto!important;
+  top:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  left:auto!important;
+  float:none!important;
+  transform:none!important;
+  translate:none!important;
+  margin:0!important;
+  min-width:0!important;
+  width:100%!important;
+  max-width:none!important;
+  min-height:44px!important;
+  height:44px!important;
+  max-height:44px!important;
+  padding:0 10px!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  line-height:1!important;
+  font-size:.8rem!important;
+  font-weight:850!important;
+  border-radius:14px!important;
+  z-index:auto!important;
+}
+
+#editCard .edit-object-actions #editProgress{
+  grid-column:1!important;
+  border:1px solid var(--ccc-border,var(--border))!important;
+  background:var(--ccc-surface-2,var(--surface-2))!important;
+  color:var(--ccc-muted,var(--muted))!important;
+}
+
+#editCard .edit-object-actions #manualAiBtn{
+  grid-column:2!important;
+  border:1px solid var(--gold)!important;
+  background:transparent!important;
+  color:var(--gold)!important;
+  box-shadow:none!important;
+}
+
+#editCard .edit-object-actions #editTrashBtn{
+  grid-column:3!important;
+  border:1px solid rgba(255,112,112,.75)!important;
+  background:transparent!important;
+  color:#ff8b8b!important;
+  box-shadow:none!important;
+}
+
+/* Neutralize legacy classes while these elements live in the action row. */
+#editCard .edit-object-actions .manual-ai-button,
+#editCard .edit-object-actions .edit-trash-button,
+#editCard .edit-object-actions .edit-progress-compact{
+  position:static!important;
+  inset:auto!important;
+  margin:0!important;
+  transform:none!important;
+}
+
+/* Keep the editor compact so bottom actions stay visible. */
+#editCard .same-garment-editor{
+  margin-bottom:0!important;
+}
+
+@media(max-width:380px){
+  #editCard .edit-object-actions{
+    grid-template-columns:64px minmax(0,1fr) 84px!important;
+    gap:6px!important;
+  }
+  #editCard .edit-object-actions #editProgress,
+  #editCard .edit-object-actions #manualAiBtn,
+  #editCard .edit-object-actions #editTrashBtn{
+    font-size:.73rem!important;
+    min-height:42px!important;
+    height:42px!important;
+    max-height:42px!important;
+    padding:0 7px!important;
+  }
+}
