@@ -75,3 +75,5 @@ v2.10.26: editorhuvud delas i separat rubrikzon vänster och status/åtgärdszon
 v2.10.27: `Objekt X/Y` + `Granska & komplettera`, renare bilddel och vy-specifik hjälp via Core-footern.
 
 v2.10.28: hjälp-X fungerar; objektshuvudet komprimerat och sparstatus kortad till `✓ Sparat`.
+
+v2.10.29: `Granska & komplettera` huvudrubrik, `Objekt X/Y` sekundärt, autosave längst ned, `Nästa objekt`, hjälp-X robust.

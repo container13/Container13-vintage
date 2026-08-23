@@ -4085,3 +4085,92 @@ body.ccc-focused-text-mode .text-editor-screen #largeTextEditor.title-editor{
   #editCard #draftState{font-size:.67rem!important}
   #editCard #removeItemBtn{font-size:.75rem!important}
 }
+
+
+/* v2.10.29 – mobile-first hierarchy for Vision object editor */
+#editCard .compact-edit-head{
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+}
+
+#editCard .edit-context{
+  flex:1 1 auto!important;
+  min-width:0!important;
+}
+
+#editCard #editTitle{
+  margin:0!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  font-size:1.16rem!important;
+  line-height:1.1!important;
+}
+
+#editCard .edit-context-subtitle{
+  margin:5px 0 0!important;
+  color:var(--muted)!important;
+  font-size:.78rem!important;
+  font-weight:700!important;
+  line-height:1.1!important;
+  white-space:nowrap!important;
+}
+
+#editCard .edit-head-actions,
+#editCard .compact-edit-head-actions{
+  flex:0 0 auto!important;
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:flex-end!important;
+  min-width:max-content!important;
+}
+
+#editCard #removeItemBtn{
+  white-space:nowrap!important;
+  font-size:.82rem!important;
+}
+
+#editCard .edit-autosave-bottom{
+  width:100%!important;
+  display:flex!important;
+  justify-content:center!important;
+  align-items:center!important;
+  margin:8px 0 0!important;
+  text-align:center!important;
+}
+
+#editCard .edit-autosave-bottom #draftState{
+  display:inline-block!important;
+  max-width:none!important;
+  white-space:nowrap!important;
+  color:var(--muted)!important;
+  font-size:.74rem!important;
+  line-height:1.1!important;
+  text-align:center!important;
+}
+
+#editCard .same-garment-heading-compact{
+  min-height:0!important;
+  margin:0 0 6px!important;
+  justify-content:flex-start!important;
+}
+
+@media(max-width:430px){
+  #editCard .compact-edit-head{
+    display:flex!important;
+    gap:8px!important;
+  }
+
+  #editCard #editTitle{
+    font-size:1.08rem!important;
+  }
+
+  #editCard .edit-context-subtitle{
+    font-size:.73rem!important;
+  }
+
+  #editCard #removeItemBtn{
+    font-size:.78rem!important;
+  }
+}

@@ -1334,7 +1334,7 @@
       $("#" + id).value = fields[id] !== undefined ? fields[id] : "";
     });
     const progress = $("#editProgress");
-    if (progress) progress.textContent = `${currentIndex + 1} av ${batchItems.length}`;
+    if (progress) progress.textContent = `${currentIndex + 1}/${batchItems.length}`;
     renderSameGarmentEditor();
     if (allowWhileAnalyzing && !item.visionReady && !item.editedFields) {
       item.editedFields = Object.fromEntries(fieldIds.map((id) => [id, $("#" + id).value]));
@@ -1435,7 +1435,7 @@
     populateFormFromItem(allowWhileAnalyzing);
     markEditBaseline();
     const state = $("#draftState");
-    if (state) state.textContent = currentItem()?.approved ? "✓ Sparat" : "";
+    if (state) state.textContent = currentItem()?.approved ? "✓ Sparas automatiskt" : "";
     showStage("editCard", "edit");
     requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
   }
@@ -1464,7 +1464,7 @@
         else moveToNextItem();
       } else if (!quiet) {
         const state = $("#draftState");
-        if (state) state.textContent = "✓ Sparat";
+        if (state) state.textContent = "✓ Sparas automatiskt";
         setMessage("Plagget är sparat. Du kan fortsätta här eller välja ett annat plagg.");
       }
       return true;
@@ -1489,7 +1489,7 @@
       if (!hasEditChanges()) return;
       const ok = await saveEditedCurrent({ quiet: true });
       if (sequence !== autosaveSequence) return;
-      if (state) state.textContent = ok ? "✓ Sparat" : "Kunde inte spara";
+      if (state) state.textContent = ok ? "✓ Sparas automatiskt" : "Kunde inte spara";
     }, 500);
   }
 
@@ -1500,7 +1500,7 @@
     const state = $("#draftState");
     if (state) state.textContent = "Sparar…";
     const ok = await saveEditedCurrent({ quiet: true });
-    if (state) state.textContent = ok ? "✓ Sparat" : "Kunde inte spara";
+    if (state) state.textContent = ok ? "✓ Sparas automatiskt" : "Kunde inte spara";
     return ok;
   }
 
@@ -2446,13 +2446,16 @@ $("#price")?.addEventListener("click", openPriceEditor);
   refreshCostUi();
   updateCounters();
   updateTextPreviews();
-  const closeContextHelp = () => {
+  // v2.10.29: delegated help close works regardless of script/DOM order.
+  document.addEventListener("click", (event) => {
+    const close = event.target.closest?.("#closeVisionContextHelpBtn");
     const dialog = $("#visionContextHelpDialog");
-    if (dialog) dialog.hidden = true;
-  };
-  $("#closeVisionContextHelpBtn")?.addEventListener("click", closeContextHelp);
-  $("#visionContextHelpDialog")?.addEventListener("click", (event) => {
-    if (event.target === $("#visionContextHelpDialog")) closeContextHelp();
+    if (close && dialog) {
+      event.preventDefault();
+      dialog.hidden = true;
+      return;
+    }
+    if (dialog && event.target === dialog) dialog.hidden = true;
   });
 
 })();
