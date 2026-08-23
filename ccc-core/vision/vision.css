@@ -4008,3 +4008,17 @@ body.ccc-focused-text-mode .text-editor-screen #largeTextEditor.title-editor{
     font-size:.84rem!important;
   }
 }
+
+/* v2.10.27 – clean object context; help lives in Core footer */
+#editCard .compact-edit-head{display:flex!important;align-items:flex-start!important;justify-content:space-between!important;gap:12px!important}
+#editCard .edit-context{flex:1 1 auto!important;min-width:0!important}
+#editCard #editTitle{margin:0!important;white-space:nowrap!important;overflow-wrap:normal!important;font-size:1.18rem!important;line-height:1.12!important}
+#editCard .edit-context-subtitle{margin:4px 0 0!important;color:var(--muted)!important;font-size:.82rem!important;font-weight:650!important;line-height:1.15!important}
+#editCard .compact-edit-head-actions{flex:0 0 auto!important;min-width:0!important;display:flex!important;align-items:flex-start!important;gap:8px!important}
+#editCard #draftState{max-width:none!important;white-space:nowrap!important;font-size:.72rem!important;line-height:1.1!important}
+#editCard #removeItemBtn{white-space:nowrap!important;font-size:.84rem!important}
+#editCard .photo-section-head-compact{min-height:0!important;margin-bottom:6px!important;justify-content:flex-start!important}
+#editCard .photo-section-head-compact #photoCount{font-size:.82rem!important;color:var(--muted)!important;font-weight:800!important}
+.vision-context-help .vision-help-content{display:grid;gap:12px;line-height:1.45}
+.vision-context-help .vision-help-content p{margin:0}
+@media(max-width:430px){#editCard .compact-edit-head{grid-template-columns:none!important;display:flex!important;gap:8px!important}}

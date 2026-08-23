@@ -8,7 +8,7 @@
 <link rel="manifest" href="../manifest.webmanifest?v=2.9.3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>CCC Vision v2.10.26</title>
+  <title>CCC Vision v2.10.27</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
   <link rel="stylesheet" href="vision.css?v=2.10.6">
   <link rel="stylesheet" href="../core.css?v=2.10.2">
@@ -175,7 +175,7 @@
 
     <section id="editCard" class="card stage-card compact-edit-stage" hidden aria-labelledby="editTitle">
       <div class="fixed-stage-head compact-edit-head">
-        <div><h2 id="editTitle">Gör klart plagg · <span id="editProgress">1 av 1</span></h2></div>
+        <div class="edit-context"><h2 id="editTitle">Objekt <span id="editProgress">1/1</span></h2><p class="edit-context-subtitle">Granska &amp; komplettera</p></div>
         <div class="edit-head-actions"><span id="draftState" class="vision-autosave-state" role="status" aria-live="polite">✓ Sparat automatiskt</span><button id="editTrashBtn" class="edit-trash-button" type="button">Ta bort</button></div>
       </div>
 
@@ -359,5 +359,20 @@
   <script src="product-lab.js?v=2.10.6"></script>
 <script type="module" src="../core.js?v=2.10.2"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
+<div id="visionContextHelpDialog" class="dialog ccc-dialog vision-context-help" role="dialog" aria-modal="true" aria-labelledby="visionContextHelpTitle" hidden>
+  <div class="dialog-box">
+    <div class="dialog-head-with-close">
+      <div><h2 id="visionContextHelpTitle">Granska &amp; komplettera</h2><p>Här kontrollerar du objektets bilder och uppgifter innan du går vidare.</p></div>
+      <button id="closeVisionContextHelpBtn" class="dialog-close-x" type="button" aria-label="Stäng">×</button>
+    </div>
+    <div class="vision-help-content">
+      <p><strong>Huvudbild</strong> är objektets primära bild och används först när objektet går vidare till publicering.</p>
+      <p><strong>1/3</strong> visar hur många bilder objektet har. Du kan lägga till upp till tre bilder, till exempel baksida, etikett eller en detalj.</p>
+      <p><strong>Analysera igen</strong> låter CCC Vision läsa bilderna på nytt och uppdatera sina förslag.</p>
+      <p>Rubrik, pris, beskrivning och fler uppgifter kan granskas och ändras innan du går vidare.</p>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

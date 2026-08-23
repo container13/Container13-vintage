@@ -153,6 +153,7 @@
     });
     if (viewName) visionView = viewName;
     updateHeaderContext();
+  window.addEventListener("load",()=>updateHeaderContext(),{once:true});
   }
 
   function updateHeaderContext() {
@@ -160,6 +161,18 @@
     const state={back:!isModuleHome,settings:true};
     window.__CCC_HEADER_PENDING__=state;
     window.CCC_CORE?.header?.set(state);
+
+    const footer=window.CCC_CORE?.footer;
+    if(footer){
+      if(visionView==="edit"){
+        footer.setTools({
+          help:true,
+          onHelp:()=>{const d=$("#visionContextHelpDialog");if(d)d.hidden=false;}
+        });
+      }else{
+        footer.clearTools();
+      }
+    }
   }
 
   function applyCaptureMode() {
@@ -2140,6 +2153,8 @@
   }
 
   async function goBackFromVision() {
+    const contextHelp=$("#visionContextHelpDialog");
+    if(contextHelp && !contextHelp.hidden){contextHelp.hidden=true;return;}
     const priceEditor=$("#priceEditorDialog");
     if(visionView==="edit" && priceEditor && !priceEditor.hidden){closePriceEditor();return;}
     const textEditor=$("#textEditorDialog");
@@ -2381,6 +2396,8 @@
       }
     });
   });
+
+  $("#closeVisionContextHelpBtn")?.addEventListener("click",()=>{const d=$("#visionContextHelpDialog");if(d)d.hidden=true;});
 
   $("#price")?.addEventListener("click", openPriceEditor);
   $("#price")?.addEventListener("focus", (event)=>{event.target.blur();openPriceEditor();});

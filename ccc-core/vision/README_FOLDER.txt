@@ -71,3 +71,5 @@ v2.10.24: arbetsrubriken ändrad från `Plagg X av Y` till `Gör klart plagg · 
 v2.10.25: faktisk synlig `editTitle` ändrad till `Gör klart plagg · X av Y`; inget annat ändrat.
 
 v2.10.26: editorhuvud delas i separat rubrikzon vänster och status/åtgärdszon höger för att undvika överlapp.
+
+v2.10.27: `Objekt X/Y` + `Granska & komplettera`, renare bilddel och vy-specifik hjälp via Core-footern.
