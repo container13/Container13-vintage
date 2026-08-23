@@ -8,7 +8,7 @@
 <link rel="manifest" href="../manifest.webmanifest?v=2.9.3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>CCC Vision v2.10.40</title>
+  <title>CCC Vision v2.10.41</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
   <link rel="stylesheet" href="vision.css?v=2.10.6">
   <link rel="stylesheet" href="../core.css?v=2.10.2">
@@ -178,10 +178,6 @@
     <section id="editCard" class="card stage-card compact-edit-stage" hidden aria-labelledby="editTitle">
       <div class="fixed-stage-head compact-edit-head edit-head-v2">
         <h2 id="editTitle">Granska &amp; komplettera</h2>
-        <div class="edit-meta-row">
-          <span id="editProgress" class="edit-progress-compact">1/1</span>
-          <button id="editTrashBtn" class="edit-trash-button" type="button">Ta bort</button>
-        </div>
       </div>
 
       <section class="same-garment-editor" aria-labelledby="sameGarmentEditTitle">
@@ -190,7 +186,11 @@
         <input id="sameGarmentCameraInput" class="visually-hidden" type="file" accept="image/*" capture="environment">
       </section>
 
-      <button id="manualAiBtn" class="primary-button manual-ai-button" type="button">Analysera med AI</button>
+      <div class="edit-object-actions" aria-label="Objektåtgärder">
+        <span id="editProgress" class="edit-progress-pill">1/1</span>
+        <button id="manualAiBtn" class="edit-ai-button" type="button">AI-analys</button>
+        <button id="editTrashBtn" class="edit-trash-button edit-trash-pill" type="button">Ta bort</button>
+      </div>
 
       <form id="productForm" class="compact-edit-form">
         <label class="title-field" for="title">

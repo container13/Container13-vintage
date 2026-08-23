@@ -99,3 +99,5 @@ v2.10.38: Välj objekt som större huvudrubrik; Visar X–Y av Z under fotoknapp
 v2.10.39: workspace-rubrik isolerad från startvyn; review-header i två rader.
 
 v2.10.40: duplicate Välj objekt removed in DOM; review header rebuilt as title row + 14/14/Ta bort row.
+
+v2.10.41: 9/14 + AI-analys + Ta bort flyttade till gemensam rad direkt under bilderna; rubriken står ensam.
