@@ -1411,21 +1411,21 @@
       remove.setAttribute("aria-label", `Ta bort extrabild ${index + 1}`);
       remove.textContent = "×";
       remove.addEventListener("click", () => removeSameGarmentImage(index));
-      cell.append(img, remove);
+      const label = document.createElement("span");
+      label.className = "same-garment-slot-label";
+      label.textContent = index === 0 ? "Baksida" : "Detalj";
+      cell.append(img, label, remove);
       list.appendChild(cell);
     });
     while (list.children.length < 3) {
       const add = document.createElement("button");
       add.type = "button";
       add.className = "same-garment-thumb same-garment-add";
-      const firstEmpty = list.children.length === 1;
-      if (firstEmpty) {
-        add.innerHTML = "<strong>＋</strong><span>+ Nytt foto</span>";
-        add.addEventListener("click", () => $("#sameGarmentInput")?.click());
-      } else {
-        add.innerHTML = `<strong>＋</strong><span>${item.extraFiles.length ? "+ Nytt foto" : "+ Nytt foto"}</span>`;
-        add.addEventListener("click", () => $("#sameGarmentInput")?.click());
-      }
+      const slotIndex = list.children.length;
+      const slotLabel = slotIndex === 1 ? "Baksida" : "Detalj";
+      add.setAttribute("aria-label", `Lägg till ${slotLabel.toLowerCase()}`);
+      add.innerHTML = `<span class="same-garment-slot-label">${slotLabel}</span><span class="same-garment-add-copy">Nytt foto</span>`;
+      add.addEventListener("click", () => $("#sameGarmentInput")?.click());
       list.appendChild(add);
     }
     const count = $("#sameGarmentCount");

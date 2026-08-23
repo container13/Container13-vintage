@@ -4896,3 +4896,50 @@ body.ccc-focused-text-mode #textEditorDialog .text-editor-shell{
     padding-right:6px!important;
   }
 }
+
+
+/* v2.10.44 – tydliga roller för bildplats 2 och 3 */
+#editCard .same-garment-thumb .same-garment-slot-label{
+  position:absolute!important;
+  left:50%!important;
+  bottom:8px!important;
+  transform:translateX(-50%)!important;
+  z-index:3!important;
+  max-width:calc(100% - 16px)!important;
+  padding:4px 9px!important;
+  border-radius:999px!important;
+  background:rgba(15,16,18,.78)!important;
+  color:#fff!important;
+  font-size:.72rem!important;
+  line-height:1!important;
+  font-weight:850!important;
+  white-space:nowrap!important;
+  text-align:center!important;
+}
+#editCard .same-garment-add{
+  position:relative!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+}
+#editCard .same-garment-add .same-garment-slot-label{
+  position:static!important;
+  transform:none!important;
+  max-width:100%!important;
+  padding:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:var(--gold)!important;
+  font-size:.84rem!important;
+  line-height:1.1!important;
+}
+#editCard .same-garment-add .same-garment-add-copy{
+  display:block!important;
+  color:var(--gold)!important;
+  font-size:.72rem!important;
+  line-height:1.1!important;
+  font-weight:800!important;
+  text-align:center!important;
+}
