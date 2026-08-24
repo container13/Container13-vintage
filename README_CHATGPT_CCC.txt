@@ -2161,3 +2161,10 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Prisradens placering från v2.10.48 lämnas orörd.
 - Ingen annan layout eller funktion ändras.
 
+## v2.10.50 – navigering direkt i Granska & komplettera
+- Positionskontrollen visas som `‹ X/Y ›`.
+- Vänster/höger pil navigerar till föregående respektive nästa objekt utan att lämna Granska & komplettera.
+- Aktuella ändringar autosparas tyst innan objektbyte.
+- Vänsterpilen är inaktiv på första objektet och högerpilen på sista.
+- AI-knappens normala text är konsekvent `AI-analys`.
+
