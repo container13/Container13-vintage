@@ -5007,3 +5007,12 @@ body.ccc-focused-text-mode #textEditorDialog .text-editor-shell{
     margin-bottom: 16px !important;
   }
 }
+
+
+/* v2.10.49 – flytta upp hela Beskrivning-sektionen på mobil */
+@media (max-width: 700px) {
+  #editCard .compact-description-field {
+    transform: translateY(-12px) !important;
+    margin-bottom: -12px !important;
+  }
+}
