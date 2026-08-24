@@ -132,3 +132,5 @@ v2.10.54: Vision cleanup; sena CSS-patchar konsoliderade utan avsiktlig UI/funkt
 v2.10.55: Höger/vänster pil låsta på samma rad runt X/Y. Verifierat: extrabilder ingår i ny AI-analys när auto-AI är aktiv.
 
 v2.10.56: Automatisk AI borttagen. AI körs endast via AI-analys i Granska & komplettera; alla befintliga bilder analyseras tillsammans.
+
+v2.10.57: Objekt-räknarens pilar och X/Y har nu tre fasta/reserverade zoner så hela räknaren syns.
