@@ -2121,3 +2121,11 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Efter lyckad AI-analys visas `AI ✓` i grönt på huvudbilden.
 - `AI ✓` försvinner automatiskt när Bild 2/3 läggs till eller tas bort, eftersom befintlig analys då ogiltigförklaras.
 
+## v2.10.61 – navigeringsrad korrigerad + Huvudbild centrerad
+- Den för breda v2.10.60-navigationen tas bort.
+- Mobilraden använder fasta, rimliga bredder: navigation 120 px, `Ta bort` 92 px och återstående bredd till `AI-analys`.
+- `< 11/14 >` har separata pilzoner och en 58 px reserverad mittzon för hela räknaren.
+- `Huvudbild` centreras horisontellt på samma sätt som Bild 2/Bild 3.
+- `AI ✓` visas endast efter en verkligt lyckad AI-analys (`analysisMode === ai`) av aktuellt bildunderlag.
+- Ändring av extrabilder fortsätter att ogiltigförklara analysen och ta bort `AI ✓`.
+
