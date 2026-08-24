@@ -5081,68 +5081,158 @@ body.ccc-focused-text-mode #textEditorDialog #largeTextEditor.description-editor
   grid-row:auto!important;
 }
 
-/* v2.10.60 – rymligare < X/Y > + AI-status på huvudbild */
+
+/* v2.10.61 – slutlig kompakt rad:
+   120px navigation + flexibel AI + 92px Ta bort.
+   På ~390px mobilviewport lämnar detta ca 120–130px åt AI-knappen. */
 #editCard .edit-object-actions{
-  grid-template-columns:minmax(202px,1.18fr) minmax(0,.92fr) minmax(0,.78fr)!important;
+  display:grid!important;
+  grid-template-columns:120px minmax(0,1fr) 92px!important;
   gap:8px!important;
+  align-items:center!important;
+  width:100%!important;
 }
+
 #editCard .edit-object-actions .edit-progress-nav{
+  grid-column:1!important;
+  grid-row:1!important;
   position:relative!important;
   display:flex!important;
   align-items:center!important;
   justify-content:center!important;
   box-sizing:border-box!important;
-  min-width:0!important;
-  padding:0 46px!important;
+  width:120px!important;
+  min-width:120px!important;
+  max-width:120px!important;
+  height:44px!important;
+  padding:0 31px!important;
   overflow:hidden!important;
 }
+
 #editCard .edit-object-actions .edit-progress-nav #editProgress{
   position:static!important;
+  inset:auto!important;
   transform:none!important;
-  width:auto!important;
-  min-width:82px!important;
-  max-width:none!important;
-  padding:0 4px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:58px!important;
+  min-width:58px!important;
+  max-width:58px!important;
+  height:42px!important;
+  padding:0!important;
   margin:0!important;
-  text-align:center!important;
   white-space:nowrap!important;
   overflow:visible!important;
+  font-size:.94rem!important;
+  text-align:center!important;
 }
+
 #editCard .edit-object-actions .edit-progress-nav #editPrevObjectBtn,
 #editCard .edit-object-actions .edit-progress-nav #editNextObjectBtn{
   position:absolute!important;
   top:50%!important;
   transform:translateY(-50%)!important;
-  width:36px!important;
-  min-width:36px!important;
-  max-width:36px!important;
-  height:44px!important;
+  width:28px!important;
+  min-width:28px!important;
+  max-width:28px!important;
+  height:42px!important;
   padding:0!important;
   margin:0!important;
   display:flex!important;
   align-items:center!important;
   justify-content:center!important;
-  font-size:30px!important;
+  font-size:28px!important;
   line-height:1!important;
+  z-index:2!important;
 }
-#editCard .edit-object-actions .edit-progress-nav #editPrevObjectBtn{left:10px!important;right:auto!important}
-#editCard .edit-object-actions .edit-progress-nav #editNextObjectBtn{right:10px!important;left:auto!important}
+#editCard .edit-object-actions .edit-progress-nav #editPrevObjectBtn{
+  left:3px!important;
+  right:auto!important;
+}
+#editCard .edit-object-actions .edit-progress-nav #editNextObjectBtn{
+  right:3px!important;
+  left:auto!important;
+}
 
-.same-garment-thumb.is-main{position:relative!important}
-.same-garment-ai-badge{
-  position:absolute;
-  top:8px;
-  right:8px;
-  z-index:3;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding:4px 8px;
-  border-radius:999px;
-  background:rgba(10,18,14,.88);
-  color:#69d58a;
-  font-weight:800;
-  font-size:.78rem;
-  line-height:1;
-  pointer-events:none;
+#editCard .edit-object-actions #manualAiBtn{
+  grid-column:2!important;
+  grid-row:1!important;
+  width:100%!important;
+  min-width:0!important;
+  padding:0 8px!important;
+  font-size:.90rem!important;
+}
+
+#editCard .edit-object-actions #editTrashBtn{
+  grid-column:3!important;
+  grid-row:1!important;
+  width:92px!important;
+  min-width:92px!important;
+  max-width:92px!important;
+  padding:0 7px!important;
+  font-size:.88rem!important;
+}
+
+/* Huvudbild-etiketten centreras på samma sätt som Bild 2/Bild 3. */
+#editCard .same-garment-thumb.is-main > span:not(.same-garment-ai-badge){
+  position:absolute!important;
+  left:50%!important;
+  right:auto!important;
+  bottom:8px!important;
+  transform:translateX(-50%)!important;
+  max-width:calc(100% - 16px)!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+}
+
+/* AI-status visas endast efter verklig AI-analys av aktuellt bildunderlag. */
+#editCard .same-garment-thumb.is-main{position:relative!important}
+#editCard .same-garment-ai-badge{
+  position:absolute!important;
+  top:8px!important;
+  right:8px!important;
+  z-index:4!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:auto!important;
+  min-width:0!important;
+  padding:4px 8px!important;
+  border-radius:999px!important;
+  background:rgba(10,18,14,.88)!important;
+  color:#69d58a!important;
+  font-weight:850!important;
+  font-size:.72rem!important;
+  line-height:1!important;
+  pointer-events:none!important;
+}
+
+@media(max-width:380px){
+  #editCard .edit-object-actions{
+    grid-template-columns:112px minmax(0,1fr) 86px!important;
+    gap:6px!important;
+  }
+  #editCard .edit-object-actions .edit-progress-nav{
+    width:112px!important;
+    min-width:112px!important;
+    max-width:112px!important;
+    padding:0 28px!important;
+  }
+  #editCard .edit-object-actions .edit-progress-nav #editProgress{
+    width:56px!important;
+    min-width:56px!important;
+    max-width:56px!important;
+    font-size:.88rem!important;
+  }
+  #editCard .edit-object-actions #editTrashBtn{
+    width:86px!important;
+    min-width:86px!important;
+    max-width:86px!important;
+    font-size:.82rem!important;
+  }
+  #editCard .edit-object-actions #manualAiBtn{
+    font-size:.84rem!important;
+    padding:0 5px!important;
+  }
 }
