@@ -243,6 +243,9 @@ function resetViewScroll(view){
   const scrollChild=el.querySelector(".draft-grid,.publish-scroll,.crop-view");
   if(scrollChild)try{scrollChild.scrollTop=0;}catch(_){}
 }
+const publishEntryParams = new URLSearchParams(window.location.search);
+const directPrepareView = publishEntryParams.get("view") === "prepare";
+const directPrepareItemId = publishEntryParams.get("item") || "";
 let currentPublishView="startView";
 function setPublishHeader(view){
   const state={back:true,settings:true};
@@ -2270,6 +2273,14 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
     if(index===0)preloadNeighbors(0);
   }));
   await renderGrid();
+  if(directPrepareView){
+    if(directPrepareItemId && itemIndexById(directPrepareItemId) >= 0){
+      openDetailById(directPrepareItemId);
+    }else{
+      preloadNeighbors(0);
+      show("gridView");
+    }
+  }
 }catch(e){
   console.error("[CCC Publicera] Kunde inte läsa lokala utkast",{name:e?.name,message:e?.message},e);
   $("#emptyState").hidden=false;
