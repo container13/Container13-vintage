@@ -2017,3 +2017,8 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Hjälpen för `Granska & komplettera` förklarar att Bild 2 och Bild 3 är extra bilder av samma objekt och kan visa valfri relevant vy.
 - Ingen ny funktion för att visa extrabilder utanför Granska byggs i denna version.
 
+## v2.10.46 – prisrad i Granska & komplettera
+- Prisraden sänks för jämnare avstånd mellan rubrikfält, prisrad och beskrivningsfält.
+- Etiketten `Pris` flyttas åt höger så den visuellt hör tydligare ihop med prisrutan.
+- Övrig layout och funktion lämnas orörd.
+
