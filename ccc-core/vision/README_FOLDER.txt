@@ -146,3 +146,5 @@ v2.10.61: kompakt objektåtgärdsrad, centrerad Huvudbild-etikett och AI ✓ end
 v2.10.62: `AI ✓` lagras och visas per bild; borttagning/tillägg av extrabilder raderar inte AI-historik från kvarvarande bilder.
 
 v2.10.63: Kameraknappar i en rad med centrerad autosparstatus under; kompakt `AI ✓` i bildens övre högra hörn.
+
+v2.10.64: kamera-review hålls dold i live-läge; `AI ✓` mindre och flyttad till övre vänster.
