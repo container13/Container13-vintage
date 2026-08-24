@@ -2097,3 +2097,9 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - v2.10.55:s robusta `‹ X/Y ›`-pilfix ingår.
 - Syfte: tydligare användarkontroll och undvika onödiga AI-kostnader.
 
+## v2.10.57 – Objekt-räknare/pilar
+- Ren layoutfix i `Granska & komplettera`.
+- Vänster navigeringsruta delas i tre reserverade zoner: `‹ | 11/14 | ›`.
+- Räknarlogiken är orörd; hela `11/14` ska nu alltid synas mellan pilarna utan klippning/överlapp.
+- AI-beteendet från v2.10.56 är oförändrat.
+
