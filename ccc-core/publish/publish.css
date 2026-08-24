@@ -2111,10 +2111,9 @@
 .saved-live-status.is-live{color:#55c77a!important}.saved-live-status.is-offline{color:var(--muted)!important}
 
 
-/* CCC v2.10.67 – Förbered återanvänder Välj objekts 3×3-geometri.
-   Pager har egen rad mellan bilder och Fortsätt. Swipe-ghost får aldrig lämna skugga. */
-#gridView #draftGrid,
-#channelView #channelSelectGrid{
+/* CCC v2.10.68 – SAFE grid alignment.
+   Ingen Publish-JS för grid/kanal är ändrad: Förbered lånar bara Välj objekts visuella 3×3-geometri. */
+#gridView #draftGrid.draft-grid{
   width:96%!important;
   margin-inline:auto!important;
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
@@ -2128,40 +2127,28 @@
   isolation:isolate!important;
 }
 #gridView #draftGrid .draft-card,
-#channelView #channelSelectGrid .draft-card{
+#gridView #draftGrid .draft-grid-placeholder{
   width:100%!important;
   min-width:0!important;
   min-height:0!important;
   aspect-ratio:1/1!important;
+  box-sizing:border-box!important;
+}
+#gridView #draftGrid .draft-card{
   border-radius:14px!important;
 }
-#gridView .ccc-draft-pager,
-#channelView .ccc-draft-pager{
-  position:relative!important;
-  z-index:2!important;
-  order:2!important;
+#gridView #draftPager.ccc-draft-pager{
   flex:0 0 auto!important;
-  min-height:24px!important;
-  margin:2px auto 7px!important;
-  padding:3px 0!important;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
+  order:2!important;
+  min-height:22px!important;
+  margin:3px auto 7px!important;
+  padding:2px 0!important;
 }
-#gridView .ccc-draft-pager[hidden],
-#channelView .ccc-draft-pager[hidden]{display:none!important}
 #gridView .prepared-continue-action{
   order:3!important;
-  margin:0 auto 72px!important;
-  flex:0 0 auto!important;
-}
-#channelView .channel-continue-action{
-  /* behåll fast knapp, men prickarna ligger nu tydligt ovanför den */
+  margin-top:0!important;
 }
 .ccc-paged-grid-ghost{
   box-shadow:none!important;
   filter:none!important;
-  pointer-events:none!important;
-  z-index:9490!important;
 }
