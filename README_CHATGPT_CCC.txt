@@ -2174,3 +2174,9 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - `AI-analys` och `Ta bort` är något kompaktare.
 - Alla tre kontroller behåller samma höjd och visuella linjering.
 
+
+
+## v2.10.52 – lägre Beskrivning-editor på mobil
+- Beskrivningens stora skrivyta görs tydligt lägre när iPhone-tangentbordet är öppet.
+- Fokusvyn förblir låst; endast själva textfältet får scrolla vid lång text.
+- Rubrik-editorn och övrig Vision-layout lämnas orörda.
