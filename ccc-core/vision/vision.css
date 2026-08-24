@@ -5076,3 +5076,36 @@ body.ccc-focused-text-mode #textEditorDialog .text-editor-shell{
 #editCard .edit-object-actions .edit-object-nav-btn:disabled{
   opacity:.25!important;
 }
+
+
+/* v2.10.51 – balansera objektkontrollerna:
+   större navigeringsruta/pilar, kompaktare AI-analys och Ta bort */
+#editCard .edit-object-actions{
+  grid-template-columns:1.18fr 1.72fr 1.28fr!important;
+  gap:8px!important;
+}
+#editCard .edit-object-actions .edit-progress-nav{
+  height:44px!important;
+  min-height:44px!important;
+  grid-template-columns:38px minmax(0,1fr) 38px!important;
+}
+#editCard .edit-object-actions .edit-progress-nav #editProgress{
+  height:42px!important;
+  min-height:42px!important;
+  font-size:1rem!important;
+}
+#editCard .edit-object-actions .edit-object-nav-btn{
+  width:38px!important;
+  min-width:38px!important;
+  height:42px!important;
+  min-height:42px!important;
+  font-size:2rem!important;
+  font-weight:900!important;
+}
+#editCard .edit-object-actions #manualAiBtn,
+#editCard .edit-object-actions #editTrashBtn{
+  min-height:44px!important;
+  height:44px!important;
+  padding:0 10px!important;
+  font-size:.96rem!important;
+}

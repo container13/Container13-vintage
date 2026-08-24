@@ -119,3 +119,5 @@ v2.10.48: Jämn vertikal luft runt prisraden; horisontell placering behållen.
 v2.10.49: Hela Beskrivning-sektionen flyttad upp på mobil.
 
 v2.10.50: ‹ X/Y › navigerar föregående/nästa objekt i edit-vyn; AI-knapp = AI-analys.
+
+v2.10.51: bredare objektnavigering med större pilar; AI-analys/Ta bort kompaktare men samma höjd.
