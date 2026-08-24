@@ -2161,14 +2161,14 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Objektöversiktens hjälptext förklarar också footer-genvägen.
 - Core-footern får ett generellt `forward`-verktyg så framåtåtgärder kan ligga konsekvent i den permanenta footerzonen.
 
-## v2.10.67 – Publicera flödesfix + gemensam 3×3-grid
-- `Förbered för publicering` använder nu samma fasta 3×3-geometri som `Välj objekt` i stället för den äldre adaptiva 1/2/4/9-layouten.
-- Sidprickarna i Förbered ligger i en egen rad mellan bilderna och `Fortsätt`.
-- Swipe-ghost städas både före ny ghost och vid vybyte; ghost har ingen skugga/filter.
-- Vision → Publicera från `Granska & komplettera` skickar nu explicit ursprung (`from=vision-edit`) och objekt-ID.
-- Ett färskt/orört Vision-foto hydreras från `originalFileKey` innan Publicera öppnar detaljen, så bilden ska inte bli tom.
-- Direktflödet från ett specifikt Vision-objekt öppnar samma objekt i Publicera utan omval.
-- Tillbaka från Publiceras första objektkontroll återgår till samma objekt i `Granska & komplettera`.
-- Tillbaka från Anpassa går först till objektkontrollen; nästa Tillbaka återgår till samma Vision-objekt.
-- Vision kan återöppna exakt objekt via `?view=edit&item=<id>`.
+## v2.10.68 – återställd Publicera-logik + försiktig flödesfix
+- v2.10.67 ska inte användas: den ändrade för mycket i grid/pager-navigation och gav regressioner i Förbered, Välj kanal och Välj objekt.
+- v2.10.68 är byggd direkt från stabila v2.10.66.
+- All befintlig JS för `Förbered`, `Välj kanal`, `Nästa`, `Välj objekt`, kanalval och gridrendering lämnas oförändrad från v2.10.66.
+- Förbered får endast CSS-geometri som visuellt matchar Välj objekts 3×3-grid.
+- Befintlig `draftPager` används; den hamnar fortsatt mellan grid och Fortsätt och ges tydligare egen luft.
+- Swipe-ghostens visuella skugga/filter tas bort utan att swipe-logiken skrivs om.
+- Ett orört Vision-foto hydreras säkert från `originalFileKey` både vid direkt detaljöppning och när Anpassa öppnas.
+- Från specifikt `Granska & komplettera` märks ursprunget. Tillbaka från Anpassa går till objektkontrollen; Tillbaka därifrån går tillbaka till samma Vision-objekt.
+- Retur till samma Vision-objekt görs med sessionStorage för att inte störa Visions normala start/session-återställning.
 
