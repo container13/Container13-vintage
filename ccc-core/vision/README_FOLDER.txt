@@ -134,3 +134,5 @@ v2.10.55: Höger/vänster pil låsta på samma rad runt X/Y. Verifierat: extrabi
 v2.10.56: Automatisk AI borttagen. AI körs endast via AI-analys i Granska & komplettera; alla befintliga bilder analyseras tillsammans.
 
 v2.10.57: Objekt-räknarens pilar och X/Y har nu tre fasta/reserverade zoner så hela räknaren syns.
+
+v2.10.58: Objekt-navigeringen < X/Y > isolerad i vänster kontroll; v2.10.57-gridfix borttagen.

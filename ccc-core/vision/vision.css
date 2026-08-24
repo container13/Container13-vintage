@@ -5081,38 +5081,48 @@ body.ccc-focused-text-mode #textEditorDialog #largeTextEditor.description-editor
   grid-row:auto!important;
 }
 
-/* v2.10.57 – Objekt-räknaren har tre reserverade zoner: pil | 11/14 | pil.
-   Ingen ändring av räknarlogik eller övrig Granska-layout. */
+/* v2.10.58 – isolerad objekt-navigering.
+   Hela < 11/14 > hålls inom vänster kontroll och kan inte överlappa AI-analys. */
 #editCard .edit-object-actions .edit-progress-nav{
-  display:grid!important;
-  grid-template-columns:42px minmax(72px,1fr) 42px!important;
+  display:flex!important;
   align-items:center!important;
-  column-gap:2px!important;
-  padding:0 6px!important;
-  overflow:visible!important;
+  justify-content:space-between!important;
+  gap:4px!important;
+  box-sizing:border-box!important;
+  min-width:0!important;
+  padding:0 10px!important;
+  overflow:hidden!important;
 }
 #editCard .edit-object-actions .edit-progress-nav #editPrevObjectBtn,
 #editCard .edit-object-actions .edit-progress-nav #editNextObjectBtn{
-  width:42px!important;
-  min-width:42px!important;
-  max-width:42px!important;
+  position:static!important;
+  inset:auto!important;
+  transform:none!important;
+  flex:0 0 34px!important;
+  width:34px!important;
+  min-width:34px!important;
+  max-width:34px!important;
+  height:100%!important;
   padding:0!important;
   margin:0!important;
-  position:static!important;
-  transform:none!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:34px!important;
+  line-height:1!important;
+  overflow:hidden!important;
 }
-#editCard .edit-object-actions .edit-progress-nav #editPrevObjectBtn{grid-column:1!important}
 #editCard .edit-object-actions .edit-progress-nav #editProgress{
-  grid-column:2!important;
+  position:static!important;
+  inset:auto!important;
+  transform:none!important;
+  flex:1 1 auto!important;
   width:auto!important;
-  min-width:72px!important;
+  min-width:0!important;
   max-width:none!important;
-  padding:0 2px!important;
+  padding:0!important;
   margin:0!important;
+  text-align:center!important;
   white-space:nowrap!important;
   overflow:visible!important;
-  text-align:center!important;
-  justify-self:stretch!important;
-  flex:none!important;
 }
-#editCard .edit-object-actions .edit-progress-nav #editNextObjectBtn{grid-column:3!important}
