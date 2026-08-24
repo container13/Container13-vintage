@@ -151,4 +151,4 @@ v2.10.64: kamera-review hålls dold i live-läge; `AI ✓` mindre och flyttad ti
 
 v2.10.66: Publicera i footer från både Objektöversikt och Granska & komplettera; specifikt objekt följer med från editorn.
 
-v2.10.67: retur från Publicera kan återöppna exakt Vision-objekt; Publicera-länken anger vision-edit som ursprung.
+v2.10.68: säkert retur-ID via sessionStorage från Publicera; normal Vision-startlogik behålls.

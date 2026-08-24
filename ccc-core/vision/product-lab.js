@@ -2539,20 +2539,21 @@ $("#price")?.addEventListener("click", openPriceEditor);
 
   installWorkspaceSwipe();
   installCameraPinchZoom();
-  if(returnEditItemId){
-    const returnIndex=batchItems.findIndex(item=>String(item.id)===String(returnEditItemId));
-    if(returnIndex>=0){
-      currentIndex=returnIndex;
-      workspacePage=Math.floor(currentIndex/WORKSPACE_PAGE_SIZE);
-      editReturnView="workspace";
-      populateFormFromItem(true);
-      showStage("editCard","edit");
-    }else{
-      showWorkspace();
+  showVisionStart();
+  try{
+    const returnItemId=sessionStorage.getItem("ccc-vision-return-edit-item")||"";
+    if(returnItemId){
+      sessionStorage.removeItem("ccc-vision-return-edit-item");
+      const returnIndex=batchItems.findIndex(item=>String(item.id)===String(returnItemId));
+      if(returnIndex>=0){
+        currentIndex=returnIndex;
+        workspacePage=Math.floor(currentIndex/WORKSPACE_PAGE_SIZE);
+        editReturnView="workspace";
+        populateFormFromItem(true);
+        showStage("editCard","edit");
+      }
     }
-  }else{
-    showVisionStart();
-  }
+  }catch(_){}
   refreshSavedSessionSummary();
   refreshCostUi();
   updateCounters();
