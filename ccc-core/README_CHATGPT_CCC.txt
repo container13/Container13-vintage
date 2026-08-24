@@ -2138,3 +2138,9 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - AI-bildstatus sparas i den lokala aktiva Vision-sessionen.
 - Objektets AI-resultat kan fortfarande markeras som inaktuellt när bildunderlaget ändras; bildens `AI ✓` är däremot historik för att just den bilden faktiskt analyserats.
 
+## v2.10.63 – kamerastatus + kompakt AI-bock
+- Kamerans granskningsrad är nu `Ta om` – `Nästa objekt` – `Klar`.
+- `✓ Sparas automatiskt` ligger centrerat på egen rad under samtliga tre knappar.
+- `AI ✓` på Huvudbild/Bild 2/Bild 3 är en liten kompakt grön badge i övre högra hörnet i stället för en stor mörk markering över bilden.
+- AI-statuslogiken per bild från v2.10.62 är oförändrad.
+
