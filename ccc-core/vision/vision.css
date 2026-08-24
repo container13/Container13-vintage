@@ -5109,3 +5109,27 @@ body.ccc-focused-text-mode #textEditorDialog .text-editor-shell{
   padding:0 10px!important;
   font-size:.96rem!important;
 }
+
+/* v2.10.52 – shorter description focus editor on mobile.
+   Keep the whole focused view locked; only the textarea itself may scroll. */
+@media(max-width:480px) and (orientation:portrait){
+  body.ccc-focused-text-mode #textEditorDialog[data-editor-kind="description"] .text-editor-dialog-box,
+  body.ccc-focused-text-mode #textEditorDialog.is-description .text-editor-dialog-box{
+    height:auto!important;
+    max-height:calc(var(--focused-vv-height,100dvh) - max(48px, calc(env(safe-area-inset-top) + 20px)) - 8px)!important;
+  }
+  body.ccc-focused-text-mode #textEditorDialog[data-editor-kind="description"] .text-editor-field-wrap,
+  body.ccc-focused-text-mode #textEditorDialog.is-description .text-editor-field-wrap{
+    flex:0 0 auto!important;
+    height:auto!important;
+    min-height:0!important;
+  }
+  body.ccc-focused-text-mode #textEditorDialog[data-editor-kind="description"] #largeTextEditor,
+  body.ccc-focused-text-mode #textEditorDialog.is-description #largeTextEditor{
+    flex:0 0 auto!important;
+    height:clamp(190px,32dvh,320px)!important;
+    min-height:190px!important;
+    max-height:320px!important;
+    overflow-y:auto!important;
+  }
+}
