@@ -2168,3 +2168,9 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Vänsterpilen är inaktiv på första objektet och högerpilen på sista.
 - AI-knappens normala text är konsekvent `AI-analys`.
 
+## v2.10.51 – proportioner för objektkontroller
+- Navigeringsrutan `< X/Y >` är bredare.
+- Vänster/höger-pilarna är tydligt större och får mer egen yta.
+- `AI-analys` och `Ta bort` är något kompaktare.
+- Alla tre kontroller behåller samma höjd och visuella linjering.
+
