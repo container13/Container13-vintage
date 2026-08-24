@@ -2180,3 +2180,11 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Beskrivningens stora skrivyta görs tydligt lägre när iPhone-tangentbordet är öppet.
 - Fokusvyn förblir låst; endast själva textfältet får scrolla vid lång text.
 - Rubrik-editorn och övrig Vision-layout lämnas orörda.
+
+## v2.10.53 – Beskrivning använder Rubriks fungerande editor
+- Beskrivning använder nu samma fokuserade editor-geometri som Rubrik.
+- Samma dialog, samma placering, samma höjdprincip och samma låsning av den yttre skärmen.
+- Endast den innersta textrutan får scrolla.
+- Skillnaden mellan Rubrik och Beskrivning är endast maxlängd/innehåll: 100 respektive 800 tecken.
+- v2.10.52:s separata speciallayout för Beskrivning tas bort.
+
