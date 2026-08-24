@@ -2233,3 +2233,15 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Högerpilen kan inte längre flyta ut över `AI-analys`.
 - `AI-analys`, `Ta bort`, räknarlogik och övrig Granska-layout är orörda.
 
+## v2.10.59 – Objekt-räknaren finjusterad
+- `11/14` centreras självständigt i vänsterrutan.
+- Vänster/höger-pil ligger i varsin fast kantzon och kan inte gå in över räknaren.
+- Pilarna är fortfarande tydliga men något smalare för mer luft runt `11/14`.
+- Ingen räknarlogik, AI-logik eller annan Vision-layout ändras.
+
+## v2.10.60 – Navigering + AI-status
+- Vänsterrutan för `< 11/14 >` görs tydligt bredare; `AI-analys` och `Ta bort` får mindre bredd men behåller samma visuella rad.
+- Räknaren har reserverat centrum och pilarna egna kantzoner.
+- Efter lyckad AI-analys visas `AI ✓` i grönt på huvudbilden.
+- `AI ✓` försvinner automatiskt när Bild 2/3 läggs till eller tas bort, eftersom befintlig analys då ogiltigförklaras.
+
