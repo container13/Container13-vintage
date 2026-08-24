@@ -5110,26 +5110,28 @@ body.ccc-focused-text-mode #textEditorDialog .text-editor-shell{
   font-size:.96rem!important;
 }
 
-/* v2.10.52 – shorter description focus editor on mobile.
-   Keep the whole focused view locked; only the textarea itself may scroll. */
-@media(max-width:480px) and (orientation:portrait){
-  body.ccc-focused-text-mode #textEditorDialog[data-editor-kind="description"] .text-editor-dialog-box,
-  body.ccc-focused-text-mode #textEditorDialog.is-description .text-editor-dialog-box{
-    height:auto!important;
-    max-height:calc(var(--focused-vv-height,100dvh) - max(48px, calc(env(safe-area-inset-top) + 20px)) - 8px)!important;
-  }
-  body.ccc-focused-text-mode #textEditorDialog[data-editor-kind="description"] .text-editor-field-wrap,
-  body.ccc-focused-text-mode #textEditorDialog.is-description .text-editor-field-wrap{
-    flex:0 0 auto!important;
-    height:auto!important;
-    min-height:0!important;
-  }
-  body.ccc-focused-text-mode #textEditorDialog[data-editor-kind="description"] #largeTextEditor,
-  body.ccc-focused-text-mode #textEditorDialog.is-description #largeTextEditor{
-    flex:0 0 auto!important;
-    height:clamp(190px,32dvh,320px)!important;
-    min-height:190px!important;
-    max-height:320px!important;
-    overflow-y:auto!important;
+
+
+/* v2.10.53 – Rubrik och Beskrivning använder samma fokuserade editor-layout.
+   Skillnaden är bara innehåll/maxlängd; själva skärmen och scrollbeteendet är identiskt. */
+body.ccc-focused-text-mode #textEditorDialog #largeTextEditor.description-editor{
+  /* Same geometry as .title-editor on purpose. */
+  flex:0 0 auto!important;
+  height:min(120px, calc(var(--focused-vv-height,100dvh) - 215px))!important;
+  min-height:88px!important;
+  max-height:120px!important;
+  margin-top:14px!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-y!important;
+}
+
+@media(min-width:481px){
+  body.ccc-focused-text-mode #textEditorDialog #largeTextEditor.description-editor{
+    height:min(132px, calc(var(--focused-vv-height,100dvh) - 220px))!important;
+    min-height:90px!important;
+    max-height:132px!important;
   }
 }

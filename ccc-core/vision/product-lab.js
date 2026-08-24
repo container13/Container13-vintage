@@ -1969,7 +1969,8 @@
     editor.rows = isTitle ? 4 : 10;
     editor.value = source.value;
     editor.placeholder = isTitle ? "Rubrik" : "Beskrivning";
-    editor.classList.toggle("title-editor", isTitle);
+    editor.classList.add("title-editor");
+    editor.classList.toggle("description-editor", !isTitle);
     $("#largeTextEditorCount").textContent = `${editor.value.length}/${editor.maxLength}`;
 
     focusedTextScrollY = window.scrollY || document.documentElement.scrollTop || 0;
