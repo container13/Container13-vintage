@@ -2180,3 +2180,9 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Rapporten visar antal objekt i `vision-active`, antal lagrade Vision-filer, vilka filnycklar sessionen refererar till, saknade referenser, orphan-filer samt grupper som ser återställningsbara ut via bildmetadata/internalId.
 - Syftet är att avgöra om de äldre Vision-originalen fortfarande finns kvar innan någon återställningskod byggs.
 
+## v2.10.71-diag – iPhone-vy för read-only lagringsdiagnostik
+- Bygger vidare på v2.10.70-diag.
+- Vision-starten visar tillfälligt knappen `Lagringsdiagnostik (endast läsning)`.
+- Resultatet visas direkt på iPhone: aktiv sessionsstorlek, antal Vision-original, orphan-original, möjliga återställningsbara objekt, saknade referenser och antal Publicera-poster.
+- Ingen återställning, skrivning eller radering utförs.
+
