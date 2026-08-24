@@ -2275,3 +2275,13 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Badgen görs mindre (21 px hög, mindre text/padding) för att inte konkurrera visuellt med bildetiketter eller ×-knappar.
 - Per-bild-AI-logiken från v2.10.62 är oförändrad.
 
+## v2.10.66 – Vision → Publicera i footer med bevarat val
+- Superseder den ej uppladdade v2.10.65-snabbfilen.
+- Vision-footern får `Publicera` både i Objektöversikt och i `Granska & komplettera`.
+- Från Objektöversikt öppnas `Publicera → Förbered för publicering` normalt; användaren väljer själv objekt.
+- Från `Granska & komplettera` sparas aktuellt objekt och dess ID följer med till Publicera.
+- Publicera öppnar då just det objektet direkt i Förbered-flödets detalj/kontroll, så samma objekt behöver inte väljas en gång till.
+- Hjälptexten i Granska & komplettera uppdateras: Huvudbild → Bild 2/3 → AI-analys → AI ✓ → uppgifter → Publicera.
+- Objektöversiktens hjälptext förklarar också footer-genvägen.
+- Core-footern får ett generellt `forward`-verktyg så framåtåtgärder kan ligga konsekvent i den permanenta footerzonen.
+
