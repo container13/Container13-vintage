@@ -1172,6 +1172,89 @@
     }
   }
 
+
+  async function readAllWorkspaceStore(storeName) {
+    const db = await openWorkspaceDb();
+    try {
+      if (!db.objectStoreNames.contains(storeName)) return [];
+      return await new Promise((resolve, reject) => {
+        const tx = db.transaction(storeName, "readonly");
+        const request = tx.objectStore(storeName).getAll();
+        request.onsuccess = () => resolve(Array.isArray(request.result) ? request.result : []);
+        request.onerror = () => reject(request.error);
+      });
+    } finally {
+      db.close();
+    }
+  }
+
+  async function runVisionStorageDiagnostic() {
+    const session = await getVisionSessionRecord();
+    const visionFiles = await readAllWorkspaceStore("vision-files");
+    const publishImages = await readAllWorkspaceStore("images");
+    const sessionItems = Array.isArray(session?.items) ? session.items : [];
+
+    const fileKeys = new Set(visionFiles.map((record) => String(record?.id || "")).filter(Boolean));
+    const referencedKeys = [];
+    sessionItems.forEach((item) => {
+      if (item?.originalFileKey) referencedKeys.push(String(item.originalFileKey));
+      (item?.extraFileKeys || []).forEach((key) => { if (key) referencedKeys.push(String(key)); });
+    });
+    const referencedSet = new Set(referencedKeys);
+    const orphanVisionFiles = visionFiles.filter((record) => record?.id && !referencedSet.has(String(record.id)));
+
+    const byInternalId = new Map();
+    visionFiles.forEach((record) => {
+      const internalId=String(record?.metadata?.internalId || "").trim();
+      if (!internalId) return;
+      if (!byInternalId.has(internalId)) byInternalId.set(internalId, []);
+      byInternalId.get(internalId).push(record);
+    });
+
+    const orphanObjects = [...byInternalId.entries()].filter(([internalId]) =>
+      !sessionItems.some((item) => String(item?.id || "") === internalId)
+    );
+
+    const report = {
+      generatedAt: new Date().toISOString(),
+      mode: "READ_ONLY",
+      activeSession: {
+        exists: !!session,
+        itemCount: sessionItems.length,
+        itemIds: sessionItems.map((item) => String(item?.id || "")),
+        referencedImageKeys: [...referencedSet],
+        missingReferencedImageKeys: [...referencedSet].filter((key) => !fileKeys.has(key))
+      },
+      visionFiles: {
+        count: visionFiles.length,
+        keys: visionFiles.map((record) => String(record?.id || "")),
+        orphanFileCount: orphanVisionFiles.length,
+        orphanKeys: orphanVisionFiles.map((record) => String(record?.id || "")),
+        recoverableObjectCount: orphanObjects.length,
+        recoverableObjects: orphanObjects.map(([internalId, records]) => ({
+          internalId,
+          cccItemId: String(records.find(r=>r?.metadata?.cccItemId)?.metadata?.cccItemId || ""),
+          title: String(records.find(r=>r?.metadata?.title)?.metadata?.title || ""),
+          fileKeys: records.map((r) => String(r?.id || ""))
+        }))
+      },
+      publishImages: {
+        count: publishImages.length,
+        ids: publishImages.map((record) => String(record?.id || "")),
+        sourceKeys: publishImages.map((record) => String(record?.originalFileKey || "")).filter(Boolean)
+      }
+    };
+
+    console.group("[CCC Vision] Lagringsdiagnostik – ENDAST LÄSNING");
+    console.log(report);
+    console.groupEnd();
+    return report;
+  }
+
+  window.CCC_VISION_STORAGE_DIAGNOSTIC = Object.freeze({
+    run: runVisionStorageDiagnostic
+  });
+
   async function clearVisionSessionRecord() {
     const db = await openWorkspaceDb();
     try {
