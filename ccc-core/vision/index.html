@@ -8,7 +8,7 @@
 <link rel="manifest" href="../manifest.webmanifest?v=2.9.3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>CCC Vision v2.10.49</title>
+  <title>CCC Vision v2.10.50</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
   <link rel="stylesheet" href="vision.css?v=2.10.6">
   <link rel="stylesheet" href="../core.css?v=2.10.2">
@@ -187,7 +187,11 @@
       </section>
 
       <div class="edit-object-actions" aria-label="Objektåtgärder">
-        <span id="editProgress" class="edit-progress-pill">1/1</span>
+        <div class="edit-progress-nav" aria-label="Navigera mellan objekt">
+          <button id="editPrevObjectBtn" class="edit-object-nav-btn" type="button" aria-label="Föregående objekt">‹</button>
+          <span id="editProgress" class="edit-progress-pill">1/1</span>
+          <button id="editNextObjectBtn" class="edit-object-nav-btn" type="button" aria-label="Nästa objekt">›</button>
+        </div>
         <button id="manualAiBtn" class="edit-ai-button" type="button">AI-analys</button>
         <button id="editTrashBtn" class="edit-trash-button edit-trash-pill" type="button">Ta bort</button>
       </div>

@@ -5016,3 +5016,63 @@ body.ccc-focused-text-mode #textEditorDialog .text-editor-shell{
     margin-bottom: -12px !important;
   }
 }
+
+
+/* v2.10.50 – navigerbar < X/Y >-kontroll */
+#editCard .edit-object-actions .edit-progress-nav{
+  grid-column:1!important;
+  grid-row:1!important;
+  display:grid!important;
+  grid-template-columns:28px minmax(0,1fr) 28px!important;
+  align-items:center!important;
+  width:100%!important;
+  min-width:0!important;
+  height:44px!important;
+  min-height:44px!important;
+  margin:0!important;
+  padding:0!important;
+  border:1px solid var(--ccc-border,var(--border))!important;
+  border-radius:14px!important;
+  overflow:hidden!important;
+  background:var(--ccc-surface-2,var(--surface-2))!important;
+}
+#editCard .edit-object-actions .edit-progress-nav #editProgress{
+  grid-column:2!important;
+  grid-row:1!important;
+  width:auto!important;
+  height:42px!important;
+  min-height:42px!important;
+  padding:0 2px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+#editCard .edit-object-actions .edit-object-nav-btn{
+  position:static!important;
+  inset:auto!important;
+  transform:none!important;
+  width:28px!important;
+  min-width:28px!important;
+  height:42px!important;
+  min-height:42px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:var(--gold)!important;
+  font-size:1.3rem!important;
+  line-height:1!important;
+  font-weight:900!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+#editCard .edit-object-actions #editPrevObjectBtn{grid-column:1!important;grid-row:1!important}
+#editCard .edit-object-actions #editNextObjectBtn{grid-column:3!important;grid-row:1!important}
+#editCard .edit-object-actions .edit-object-nav-btn:disabled{
+  opacity:.25!important;
+}

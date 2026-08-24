@@ -117,3 +117,5 @@ v2.10.47: Pris flyttat intill prisrutan och fältspacing jämnad.
 v2.10.48: Jämn vertikal luft runt prisraden; horisontell placering behållen.
 
 v2.10.49: Hela Beskrivning-sektionen flyttad upp på mobil.
+
+v2.10.50: ‹ X/Y › navigerar föregående/nästa objekt i edit-vyn; AI-knapp = AI-analys.

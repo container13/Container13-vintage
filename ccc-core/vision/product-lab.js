@@ -918,6 +918,26 @@
     return openReview(index);
   }
 
+  async function navigateEditObject(direction) {
+    if (!batchItems.length) return;
+    const target = currentIndex + direction;
+    if (target < 0 || target >= batchItems.length) return;
+    await saveEditedCurrent({ quiet: true });
+    currentIndex = target;
+    workspacePage = Math.floor(currentIndex / WORKSPACE_PAGE_SIZE);
+    editReturnView = "workspace";
+    populateFormFromItem(true);
+    showStage("editCard", "edit");
+    updateEditObjectNav();
+  }
+
+  function updateEditObjectNav() {
+    const prev = $("#editPrevObjectBtn");
+    const next = $("#editNextObjectBtn");
+    if (prev) prev.disabled = currentIndex <= 0;
+    if (next) next.disabled = currentIndex >= batchItems.length - 1;
+  }
+
   function moveToNextItem() {
     const next = batchItems.findIndex((item, index) => index > currentIndex && !item.approved);
     if (next >= 0) return openItemForWork(next);
@@ -1373,6 +1393,7 @@
     });
     const progress = $("#editProgress");
     if (progress) progress.textContent = `${currentIndex + 1}/${batchItems.length}`;
+    updateEditObjectNav();
     renderSameGarmentEditor();
     if (allowWhileAnalyzing && !item.visionReady && !item.editedFields) {
       item.editedFields = Object.fromEntries(fieldIds.map((id) => [id, $("#" + id).value]));
@@ -1385,7 +1406,7 @@
       const canAnalyze = !!window.CCC_VISION_AI?.configured?.();
       manualAi.hidden = !canAnalyze;
       manualAi.disabled = !!item.analysisInProgress;
-      manualAi.textContent = item.analysisInProgress ? "Analyserar…" : (item.visionReady ? "↻ Analysera igen" : "✦ Analysera med AI");
+      manualAi.textContent = item.analysisInProgress ? "Analyserar…" : "AI-analys";
       manualAi.classList.toggle("is-secondary", !!item.visionReady || !visionSettings().aiAuto);
       manualAi.classList.toggle("is-manual-quiet", !visionSettings().aiAuto);
     }
@@ -2396,6 +2417,8 @@
   });
   $("#trashCurrentBtn").addEventListener("click", trashCurrent); 
   $("#editTrashBtn")?.addEventListener("click", trashCurrentFromEdit);
+  $("#editPrevObjectBtn")?.addEventListener("click", () => navigateEditObject(-1));
+  $("#editNextObjectBtn")?.addEventListener("click", () => navigateEditObject(1));
   $("#undoTrashBtn").addEventListener("click", undoTrash);
   $("#backToSuggestionBtn")?.addEventListener("click", saveEditedAndBack);
   $("#previewBtn").addEventListener("click", saveEditedAndNext);
