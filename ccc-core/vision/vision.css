@@ -4998,3 +4998,12 @@ body.ccc-focused-text-mode #textEditorDialog .text-editor-shell{
     justify-self: end !important;
   }
 }
+
+
+/* v2.10.48 – jämn vertikal luft runt prisraden */
+@media (max-width: 700px) {
+  #editCard .price-row--single {
+    margin-top: 16px !important;
+    margin-bottom: 16px !important;
+  }
+}

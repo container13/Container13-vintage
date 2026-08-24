@@ -113,3 +113,5 @@ v2.10.45: Baksida/Detalj ersatta med Bild 2/Bild 3; hjälptext uppdaterad.
 v2.10.46: Prisraden sänkt och Pris-etiketten flyttad åt höger i Granska & komplettera.
 
 v2.10.47: Pris flyttat intill prisrutan och fältspacing jämnad.
+
+v2.10.48: Jämn vertikal luft runt prisraden; horisontell placering behållen.
