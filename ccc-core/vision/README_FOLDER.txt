@@ -138,3 +138,5 @@ v2.10.57: Objekt-räknarens pilar och X/Y har nu tre fasta/reserverade zoner så
 v2.10.58: Objekt-navigeringen < X/Y > isolerad i vänster kontroll; v2.10.57-gridfix borttagen.
 
 v2.10.59: < X/Y > finjusterad med fasta kantzoner för pilar och självständigt centrerad räknare.
+
+v2.10.60: bredare < X/Y >-kontroll och grön `AI ✓` på huvudbild efter giltig analys.

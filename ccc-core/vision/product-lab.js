@@ -1405,7 +1405,7 @@
     list.innerHTML = "";
     const main = document.createElement("div");
     main.className = "same-garment-thumb is-main";
-    main.innerHTML = `<img src="${item.previewUrl}" alt="Huvudbild"><span>Huvudbild</span>`;
+    main.innerHTML = `<img src="${item.previewUrl}" alt="Huvudbild"><span>Huvudbild</span>${item.visionReady ? '<span class="same-garment-ai-badge">AI ✓</span>' : ""}`;
     list.appendChild(main);
     (item.extraUrls || []).forEach((url, index) => {
       const cell = document.createElement("div");
