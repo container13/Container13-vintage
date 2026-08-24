@@ -2227,3 +2227,9 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Räknarlogiken är orörd; hela `11/14` ska nu alltid synas mellan pilarna utan klippning/överlapp.
 - AI-beteendet från v2.10.56 är oförändrat.
 
+## v2.10.58 – Objekt-navigering isolerad
+- Backar den felaktiga v2.10.57-gridfixen.
+- `< 11/14 >` hålls nu som en enda isolerad flexkontroll i vänsterrutan.
+- Högerpilen kan inte längre flyta ut över `AI-analys`.
+- `AI-analys`, `Ta bort`, räknarlogik och övrig Granska-layout är orörda.
+
