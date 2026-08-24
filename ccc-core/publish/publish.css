@@ -2111,32 +2111,8 @@
 .saved-live-status.is-live{color:#55c77a!important}.saved-live-status.is-offline{color:var(--muted)!important}
 
 
-/* CCC v2.10.68 – SAFE grid alignment.
-   Ingen Publish-JS för grid/kanal är ändrad: Förbered lånar bara Välj objekts visuella 3×3-geometri. */
-#gridView #draftGrid.draft-grid{
-  width:96%!important;
-  margin-inline:auto!important;
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  grid-auto-rows:auto!important;
-  column-gap:15px!important;
-  row-gap:11px!important;
-  padding:5px 4px 12px!important;
-  align-items:start!important;
-  align-content:start!important;
-  overflow:hidden!important;
-  isolation:isolate!important;
-}
-#gridView #draftGrid .draft-card,
-#gridView #draftGrid .draft-grid-placeholder{
-  width:100%!important;
-  min-width:0!important;
-  min-height:0!important;
-  aspect-ratio:1/1!important;
-  box-sizing:border-box!important;
-}
-#gridView #draftGrid .draft-card{
-  border-radius:14px!important;
-}
+/* CCC v2.10.69 – Förbered: prickar i egen rad ovanför Fortsätt.
+   Swipe-ghost ska inte lämna synlig skugga efter sidbyte. */
 #gridView #draftPager.ccc-draft-pager{
   flex:0 0 auto!important;
   order:2!important;

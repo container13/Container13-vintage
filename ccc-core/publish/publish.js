@@ -188,21 +188,28 @@ function removeLegacyDemoState(item){
   return true;
 }
 
-async function ensureItemSource(item){
-  if(!item)return item;
+async function ensurePublishSource(item){
+  if(!item)return "";
   if(!item.originalBlob && item.originalFileKey){
     try{
-      const source=await getSourceFile(item.originalFileKey);
-      if(source)item.originalBlob=source;
+      const blob=await getSourceFile(item.originalFileKey);
+      if(blob)item.originalBlob=blob;
     }catch(error){
-      console.warn("[CCC Publicera] Kunde inte hämta Vision-originalet",item.id,error);
+      console.warn("[CCC Publicera] Vision-originalet kunde inte hämtas",item.id,error);
     }
   }
-  if(!item.thumbUrl && (item.publishBlob||item.thumbnailBlob||item.originalBlob)){
-    item.thumbUrl=await previewSrc(item);
+  if(item.publishBlob){
+    if(!item.publishUrl)item.publishUrl=url(item.publishBlob);
+    return item.publishUrl;
   }
-  return item;
+  if(item.thumbUrl)return item.thumbUrl;
+  if(item.originalBlob||item.thumbnailBlob){
+    item.thumbUrl=await previewSrc(item);
+    return item.thumbUrl;
+  }
+  return item.fullUrl||"";
 }
+
 function persistenceRecord(item){const record={...item};delete record.thumbUrl;delete record.fullUrl;if(record.originalFileKey)delete record.originalBlob;return record;}
 function url(blob){const u=URL.createObjectURL(blob);objectUrls.push(u);return u;}
 function dataUrl(blob){return new Promise((resolve,reject)=>{if(!blob){resolve("");return;}const reader=new FileReader();reader.onload=()=>resolve(String(reader.result||""));reader.onerror=()=>reject(reader.error||new Error("Kunde inte läsa bildförhandsvisningen."));reader.readAsDataURL(blob);});}
@@ -289,12 +296,11 @@ function ensureDraftGridUi(){
   const style=document.createElement("style");
   style.id="cccDraftGridCompactStyles";
   style.textContent=`
-    #draftGrid.draft-grid{gap:8px!important;touch-action:pan-y;overflow:hidden;align-content:start;min-height:min(66vw,420px)}
-    #draftGrid.draft-grid.grid-1{grid-template-columns:minmax(0,1fr)!important}
-    #draftGrid.draft-grid.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-    #draftGrid.draft-grid.grid-4{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+    #draftGrid.draft-grid{width:96%!important;margin-inline:auto!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;column-gap:15px!important;row-gap:11px!important;padding:5px 4px 12px!important;touch-action:pan-y;overflow:hidden;align-content:start;min-height:0!important}
+    #draftGrid.draft-grid.grid-1,
+    #draftGrid.draft-grid.grid-2,
+    #draftGrid.draft-grid.grid-4,
     #draftGrid.draft-grid.grid-9{grid-template-columns:repeat(3,minmax(0,1fr))!important}
-    #draftGrid.draft-grid.grid-1 .draft-card{width:min(100%,420px);justify-self:center}
     #draftGrid .draft-card{position:relative!important;aspect-ratio:1/1!important;min-width:0!important;min-height:0!important;border-radius:12px!important;overflow:hidden!important;padding:0!important;margin:0!important;-webkit-touch-callout:none!important;-webkit-tap-highlight-color:transparent!important;-webkit-user-select:none!important;user-select:none!important;appearance:none!important;-webkit-appearance:none!important}
     #draftGrid .draft-card img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;pointer-events:none!important;-webkit-user-drag:none!important;-webkit-user-select:none!important;user-select:none!important;-webkit-tap-highlight-color:transparent!important}
     .ccc-draft-preview-layer{position:fixed;inset:0;z-index:9999;pointer-events:none;background:rgba(5,7,12,.58);opacity:0;transition:opacity .16s ease}
@@ -980,8 +986,12 @@ async function openDetailById(itemId){
     console.warn("[CCC Publicera] Hittade inte utkastet som miniatyren pekade på",itemId);
     return;
   }
-  await ensureItemSource(items[index]);
+  const source=await ensurePublishSource(items[index]);
+  if(!source){
+    console.warn("[CCC Publicera] Bildkälla saknas för utkastet",itemId);
+  }
   openDetail(index);
+  if(source)$("#detailImage").src=source;
 }
 function openDetail(index){
   if(!items.length)return;
@@ -1547,14 +1557,15 @@ function cycleCropZoom(){
 }
 
 async function openCrop(){
-  const sourceItem=activeItem();
-  if(sourceItem)await ensureItemSource(sourceItem);
-
   syncActiveIndexFromId();
   const item=activeItem();
   if(!item)return;
   // Vision-originalet används som bildkälla; sparad cropData återanvänds för fortsatt finjustering.
-  const originalSource=item.originalBlob?url(item.originalBlob):(item.thumbUrl||item.fullUrl);
+  const originalSource=await ensurePublishSource(item);
+  if(!originalSource){
+    $("#publishStatus").textContent="Originalbilden kunde inte läsas. Gå tillbaka och försök igen.";
+    return;
+  }
   cropImage=await loadImage(originalSource);
   if(item.cropData){cropState={...item.cropData};}
   else{
@@ -2312,7 +2323,7 @@ window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL
 // Dubbeltryck på beskärningsytan används inte längre för zoom.
 // Zoom styrs enbart av de explicita crop-kontrollerna/pinch.
 
-function rememberVisionReturnItem(){
+function returnToVisionObject(){
   if(!directFromVisionEdit)return false;
   try{sessionStorage.setItem("ccc-vision-return-edit-item",directPrepareItemId);}catch(_){}
   window.location.href="../vision/index.html";
@@ -2370,7 +2381,7 @@ document.addEventListener("ccc:header-back",async()=>{if(currentPublishView==="g
     return;
   }
   if(currentPublishView==="detailView"){
-    if(rememberVisionReturnItem())return;
+    if(returnToVisionObject())return;
     await leavePublishDetail();
     return;
   }
