@@ -73,7 +73,6 @@
   }
 
   // Vision
-  const visionAiAuto=document.getElementById("visionAiAutoSetting");
   const visionLearnEdits=document.getElementById("visionLearnEditsSetting");
   const visionCost=document.getElementById("visionTotalCost");
   const visionSaved=document.getElementById("visionSettingsSaved");
@@ -128,13 +127,7 @@
   }
 
   if(moduleName==="vision" && visionCard){
-    if(visionAiAuto)visionAiAuto.checked=localStorage.getItem("ccc-vision-ai-auto")!=="false";
     if(visionLearnEdits)visionLearnEdits.checked=localStorage.getItem("ccc-vision-learn-edits")!=="false";
-
-    visionAiAuto?.addEventListener("change",event=>{
-      localStorage.setItem("ccc-vision-ai-auto",String(event.target.checked));
-      flashVisionSaved();
-    });
     visionLearnEdits?.addEventListener("change",event=>{
       localStorage.setItem("ccc-vision-learn-edits",String(event.target.checked));
       flashVisionSaved();

@@ -13,3 +13,5 @@ v2.9.73: Rensa lokal kunskapsbas i Vision kräver nu en separat bekräftelsedial
 v2.9.90: Publicera-inställningar omfattar nu titel, beskrivning, märke, storlek, pris och Demobild/vattenstämpel. Modulens befintliga kugghjul är enda väg till dessa standardinställningar.
 
 v2.9.91: Demobild/vattenstämpel tas bort från generella Publicera-inställningar; den är en kontextuell bildinställning i Anpassa bild. Kanalens visningsstandarder ligger kvar här.
+
+v2.10.56: Vision-inställningen Automatisk AI-analys borttagen; Vision-AI är nu alltid användarinitierad.
