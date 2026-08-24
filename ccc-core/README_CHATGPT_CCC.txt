@@ -2172,3 +2172,11 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Sidprickarnas lyckade placering mellan bilder och Fortsätt behålls.
 - Swipe-ghostens skugga/filter tas bort visuellt.
 
+## v2.10.70-diag – READ-ONLY Vision-lagringsdiagnostik
+- Detta är inte nästa funktionsfix utan ett diagnostikpaket.
+- Ingen automatisk återställning, radering eller omskrivning av Vision-data görs.
+- Exponerar `CCC_VISION_STORAGE_DIAGNOSTIC.run()` i webbläsarkonsolen.
+- Diagnostiken läser endast IndexedDB `sessions`, `vision-files` och `images`.
+- Rapporten visar antal objekt i `vision-active`, antal lagrade Vision-filer, vilka filnycklar sessionen refererar till, saknade referenser, orphan-filer samt grupper som ser återställningsbara ut via bildmetadata/internalId.
+- Syftet är att avgöra om de äldre Vision-originalen fortfarande finns kvar innan någon återställningskod byggs.
+
