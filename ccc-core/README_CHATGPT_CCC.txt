@@ -2161,14 +2161,14 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Objektöversiktens hjälptext förklarar också footer-genvägen.
 - Core-footern får ett generellt `forward`-verktyg så framåtåtgärder kan ligga konsekvent i den permanenta footerzonen.
 
-## v2.10.68 – återställd Publicera-logik + försiktig flödesfix
-- v2.10.67 ska inte användas: den ändrade för mycket i grid/pager-navigation och gav regressioner i Förbered, Välj kanal och Välj objekt.
-- v2.10.68 är byggd direkt från stabila v2.10.66.
-- All befintlig JS för `Förbered`, `Välj kanal`, `Nästa`, `Välj objekt`, kanalval och gridrendering lämnas oförändrad från v2.10.66.
-- Förbered får endast CSS-geometri som visuellt matchar Välj objekts 3×3-grid.
-- Befintlig `draftPager` används; den hamnar fortsatt mellan grid och Fortsätt och ges tydligare egen luft.
-- Swipe-ghostens visuella skugga/filter tas bort utan att swipe-logiken skrivs om.
-- Ett orört Vision-foto hydreras säkert från `originalFileKey` både vid direkt detaljöppning och när Anpassa öppnas.
-- Från specifikt `Granska & komplettera` märks ursprunget. Tillbaka från Anpassa går till objektkontrollen; Tillbaka därifrån går tillbaka till samma Vision-objekt.
-- Retur till samma Vision-objekt görs med sessionStorage för att inte störa Visions normala start/session-återställning.
+## v2.10.69 – riktad återställning av Vision↔Publicera
+- Byggd direkt från v2.10.66. v2.10.67 och v2.10.68 används inte som kodbas.
+- Vision väntar nu in full sessionssparning innan ett specifikt objekt skickas till Publicera.
+- Retur från Publicera återställer först den sparade Vision-sessionen (inklusive Blob/object-URL för miniatyrerna) och öppnar därefter exakt samma objekt i Granska & komplettera.
+- Detta ska även återställa bilderna i Vision-översikten efter en tur till Publicera.
+- Publicera hydratiserar ett helt orört Vision-original via originalFileKey innan detalj- eller Anpassa-vyn öppnas.
+- Förbered-griddens render-, klick-, kanal- och Nästa-logik är oförändrad från v2.10.66.
+- Endast den dynamiska CSS-geometrin ändras så grid-1/grid-2/grid-4/grid-9 alla visas som 3 kolumner; därmed blir Förbered konsekvent 3×3 utan att röra flödeslogiken.
+- Sidprickarnas lyckade placering mellan bilder och Fortsätt behålls.
+- Swipe-ghostens skugga/filter tas bort visuellt.
 
