@@ -2022,3 +2022,8 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Etiketten `Pris` flyttas åt höger så den visuellt hör tydligare ihop med prisrutan.
 - Övrig layout och funktion lämnas orörd.
 
+## v2.10.47 – prisrad och fältspacing
+- `Pris` flyttas åt höger och placeras direkt intill prisrutan.
+- Rubrikfält, prisrad och beskrivningsfält får jämnare vertikalt avstånd.
+- Ingen annan Vision-layout eller funktion ändras.
+
