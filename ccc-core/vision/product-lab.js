@@ -1255,6 +1255,45 @@
     run: runVisionStorageDiagnostic
   });
 
+  const visionStorageDiagnosticBtn = $("#visionStorageDiagnosticBtn");
+  const visionStorageDiagnosticPanel = $("#visionStorageDiagnosticPanel");
+  const visionStorageDiagnosticCloseBtn = $("#visionStorageDiagnosticCloseBtn");
+  const visionStorageDiagnosticResult = $("#visionStorageDiagnosticResult");
+
+  function diagnosticLine(label,value){
+    return `<p><strong>${label}:</strong> ${String(value)}</p>`;
+  }
+
+  visionStorageDiagnosticBtn?.addEventListener("click", async()=>{
+    if(visionStorageDiagnosticResult) visionStorageDiagnosticResult.innerHTML="<p>Läser lagringen…</p>";
+    if(visionStorageDiagnosticPanel) visionStorageDiagnosticPanel.hidden=false;
+    try{
+      const report=await runVisionStorageDiagnostic();
+      if(!visionStorageDiagnosticResult)return;
+      const active=report.activeSession;
+      const vf=report.visionFiles;
+      const pi=report.publishImages;
+      visionStorageDiagnosticResult.innerHTML=
+        diagnosticLine("Aktiv Vision-session",active.exists ? `${active.itemCount} objekt` : "saknas")+
+        diagnosticLine("Vision-original lagrade",`${vf.count} filer`)+
+        diagnosticLine("Ej kopplade Vision-original",`${vf.orphanFileCount} filer`)+
+        diagnosticLine("Möjligen återställningsbara objekt",`${vf.recoverableObjectCount} objekt`)+
+        diagnosticLine("Saknade bildreferenser i aktiv session",`${active.missingReferencedImageKeys.length} st`)+
+        diagnosticLine("Publicera-bilder",`${pi.count} poster`)+
+        (vf.recoverableObjects.length
+          ? `<p><strong>Återställningsbara ID:</strong><br>${vf.recoverableObjects.map(o=>o.internalId).join("<br>")}</p>`
+          : "<p>Inga separata återställningsbara objekt hittades via bildmetadata.</p>")+
+        '<p><strong>READ ONLY ✓</strong> – inget har ändrats eller raderats.</p>';
+    }catch(error){
+      console.error("[CCC Vision] Diagnostikvyn misslyckades",error);
+      if(visionStorageDiagnosticResult)visionStorageDiagnosticResult.innerHTML=
+        `<p>Diagnostiken kunde inte läsa lagringen.</p><p>${String(error?.message||error)}</p><p><strong>Inget har ändrats.</strong></p>`;
+    }
+  });
+  visionStorageDiagnosticCloseBtn?.addEventListener("click",()=>{
+    if(visionStorageDiagnosticPanel)visionStorageDiagnosticPanel.hidden=true;
+  });
+
   async function clearVisionSessionRecord() {
     const db = await openWorkspaceDb();
     try {

@@ -84,6 +84,16 @@
     </section>
 
       <button id="resumeSessionBtn" class="quiet-button vision-resume-button" type="button" hidden>Fortsätt pågående arbete</button>
+      <button id="visionStorageDiagnosticBtn" class="quiet-button vision-resume-button" type="button">Lagringsdiagnostik (endast läsning)</button>
+      <div id="visionStorageDiagnosticPanel" class="dialog ccc-dialog" role="dialog" aria-modal="true" aria-labelledby="visionStorageDiagnosticTitle" hidden>
+        <div class="dialog-box ccc-dialog-box">
+          <div class="dialog-head-with-close">
+            <div><h2 id="visionStorageDiagnosticTitle">Vision-lagring</h2><p>Diagnostiken läser bara data och ändrar ingenting.</p></div>
+            <button id="visionStorageDiagnosticCloseBtn" class="dialog-close-x" type="button" aria-label="Stäng">×</button>
+          </div>
+          <div id="visionStorageDiagnosticResult" class="vision-help-content"><p>Tryck på knappen för att läsa lagringen.</p></div>
+        </div>
+      </div>
 
       <input id="galleryInput" class="visually-hidden" type="file" accept="image/*" multiple>
       <input id="cameraFallbackInput" class="visually-hidden" type="file" accept="image/*" capture="environment">
