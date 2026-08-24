@@ -144,3 +144,5 @@ v2.10.60: bredare < X/Y >-kontroll och grön `AI ✓` på huvudbild efter giltig
 v2.10.61: kompakt objektåtgärdsrad, centrerad Huvudbild-etikett och AI ✓ endast efter riktig AI-analys.
 
 v2.10.62: `AI ✓` lagras och visas per bild; borttagning/tillägg av extrabilder raderar inte AI-historik från kvarvarande bilder.
+
+v2.10.63: Kameraknappar i en rad med centrerad autosparstatus under; kompakt `AI ✓` i bildens övre högra hörn.
