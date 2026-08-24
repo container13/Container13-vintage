@@ -2078,3 +2078,22 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Objektkontrollerna under bilderna (v2.10.50–51) konsoliderade till sina slutliga värden.
 - Rubrik/Beskrivning-editorn från v2.10.53 lämnas funktionellt orörd.
 - Kritiska uppdateringar får framöver separat rollback-paket.
+
+## v2.10.55 – objektnavigering + verifiering av extrabilder
+- `‹ X/Y ›` använder nu en robust flexrad så både vänster- och högerpilen ligger på samma rad som räknaren.
+- Kodgranskning bekräftar att Bild 2/Bild 3 läggs till i `extraFiles`.
+- När en extrabild läggs till startas `startSilentAnalysis(item)`.
+- AI-underlaget byggs som huvudbild + extrabilder, max 3 bilder totalt.
+- Vid automatisk AI av körs därför en ny analys automatiskt när Bild 2/3 läggs till. Om automatisk AI är av startas ingen riktig AI förrän användaren väljer `AI-analys`.
+
+## v2.10.56 – AI körs endast på användarens initiativ
+- Möjligheten `Automatisk AI-analys` tas bort ur Vision-inställningarna.
+- Nya huvudbilder analyseras inte automatiskt.
+- Bild 2/Bild 3 analyseras inte automatiskt när de läggs till eller tas bort.
+- Återupptagen fotosession startar inte AI automatiskt.
+- Användaren väljer själv `AI-analys` i `Granska & komplettera`.
+- Vid `AI-analys` skickas huvudbild + befintliga extrabilder tillsammans i ett enda AI-anrop, max tre bilder.
+- Om bildunderlaget ändras efter en tidigare analys markeras objektet som ej analyserat; ny AI körs först om användaren väljer `AI-analys` igen.
+- v2.10.55:s robusta `‹ X/Y ›`-pilfix ingår.
+- Syfte: tydligare användarkontroll och undvika onödiga AI-kostnader.
+
