@@ -142,3 +142,5 @@ v2.10.59: < X/Y > finjusterad med fasta kantzoner för pilar och självständigt
 v2.10.60: bredare < X/Y >-kontroll och grön `AI ✓` på huvudbild efter giltig analys.
 
 v2.10.61: kompakt objektåtgärdsrad, centrerad Huvudbild-etikett och AI ✓ endast efter riktig AI-analys.
+
+v2.10.62: `AI ✓` lagras och visas per bild; borttagning/tillägg av extrabilder raderar inte AI-historik från kvarvarande bilder.

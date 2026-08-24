@@ -290,6 +290,8 @@
       extraFileKeys: [],
       extraFileStored: [],
       extraFileSavePromises: [],
+      aiAnalyzedMain: false,
+      aiAnalyzedExtra: [],
       demoKey: demoKeys[index % demoKeys.length],
       visionReady: false,
       visionResult: null,
@@ -394,6 +396,8 @@
           item.aiCostUsd = Number(estimated.usd || 0);
           item.aiCostSek = Number(estimated.sek || 0);
           item.visionReady = true;
+          item.aiAnalyzedMain = true;
+          item.aiAnalyzedExtra = (item.extraFiles || []).map(() => true);
           window.CCC_VISION_KNOWLEDGE?.metric?.({
             type: "ai_analysis", itemId: item.id, usage: item.aiUsage, model: item.aiModel,
             estimatedUsd: item.aiCostUsd, estimatedSek: item.aiCostSek
@@ -1184,6 +1188,8 @@
       cccItemId: item.cccItemId || cccItemId(),
       originalFileKey: item.originalFileKey,
       extraFileKeys: [...(item.extraFileKeys || [])],
+      aiAnalyzedMain: !!item.aiAnalyzedMain,
+      aiAnalyzedExtra: [...(item.aiAnalyzedExtra || [])],
       demoKey: item.demoKey,
       approved: !!item.approved,
       editedFields: item.editedFields || null,
@@ -1282,6 +1288,10 @@
         extraFileKeys: extraKeys,
         extraFileStored: extraFiles.map(() => true),
         extraFileSavePromises: extraFiles.map(() => null),
+        aiAnalyzedMain: saved.aiAnalyzedMain ?? (!!saved.visionReady && saved.analysisMode === "ai"),
+        aiAnalyzedExtra: Array.isArray(saved.aiAnalyzedExtra)
+          ? extraFiles.map((_, index) => !!saved.aiAnalyzedExtra[index])
+          : extraFiles.map(() => !!saved.visionReady && saved.analysisMode === "ai"),
         demoKey: saved.demoKey || "arsenal",
         visionReady: !!saved.visionReady,
         visionResult: saved.visionResult || null,
@@ -1405,7 +1415,7 @@
     list.innerHTML = "";
     const main = document.createElement("div");
     main.className = "same-garment-thumb is-main";
-    main.innerHTML = `<img src="${item.previewUrl}" alt="Huvudbild"><span>Huvudbild</span>${item.visionReady && item.analysisMode === "ai" ? '<span class="same-garment-ai-badge">AI ✓</span>' : ""}`;
+    main.innerHTML = `<img src="${item.previewUrl}" alt="Huvudbild"><span>Huvudbild</span>${item.aiAnalyzedMain ? '<span class="same-garment-ai-badge">AI ✓</span>' : ""}`;
     list.appendChild(main);
     (item.extraUrls || []).forEach((url, index) => {
       const cell = document.createElement("div");
@@ -1422,6 +1432,12 @@
       label.className = "same-garment-slot-label";
       label.textContent = index === 0 ? "Bild 2" : "Bild 3";
       cell.append(img, label, remove);
+      if (item.aiAnalyzedExtra?.[index]) {
+        const aiBadge = document.createElement("span");
+        aiBadge.className = "same-garment-ai-badge";
+        aiBadge.textContent = "AI ✓";
+        cell.appendChild(aiBadge);
+      }
       list.appendChild(cell);
     });
     while (list.children.length < 3) {
@@ -1448,6 +1464,8 @@
     item.extraFileKeys.splice(index, 1);
     item.extraFileStored.splice(index, 1);
     item.extraFileSavePromises.splice(index, 1);
+    item.aiAnalyzedExtra ||= [];
+    item.aiAnalyzedExtra.splice(index, 1);
     renderSameGarmentEditor();
     item.visionReady = false;
     item.analysisMode = "manual";
@@ -1601,7 +1619,9 @@
       item.extraFileStored ||= [];
       item.extraFileSavePromises ||= [];
       item.extraFileKeys.push(key);
+      item.aiAnalyzedExtra ||= [];
       const extraIndex = item.extraFiles.length - 1;
+      item.aiAnalyzedExtra[extraIndex] = false;
       item.extraFileStored[extraIndex] = false;
       item.extraFileSavePromises[extraIndex] = putVisionSourceFile(key, file)
         .then(() => {
