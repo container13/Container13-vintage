@@ -229,6 +229,16 @@ const CCCFooter={
         select.addEventListener("click",()=>this.toolConfig?.onSelect?.());
         tools.append(select);
       }
+      if(this.toolConfig.forward){
+        const forward=document.createElement("button");
+        forward.type="button";
+        forward.className="ccc-core-footer-tool ccc-core-footer-forward";
+        const icon=this.toolConfig.forwardIcon||"→";
+        const label=this.toolConfig.forwardLabel||"Vidare";
+        forward.innerHTML=`<span aria-hidden="true">${icon}</span><small>${label}</small>`;
+        forward.addEventListener("click",()=>this.toolConfig?.onForward?.());
+        tools.append(forward);
+      }
       footer.insertBefore(tools,back||null);
     }
   },
