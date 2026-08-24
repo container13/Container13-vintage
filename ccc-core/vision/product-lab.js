@@ -1413,7 +1413,7 @@
       remove.addEventListener("click", () => removeSameGarmentImage(index));
       const label = document.createElement("span");
       label.className = "same-garment-slot-label";
-      label.textContent = index === 0 ? "Baksida" : "Detalj";
+      label.textContent = index === 0 ? "Bild 2" : "Bild 3";
       cell.append(img, label, remove);
       list.appendChild(cell);
     });
@@ -1422,7 +1422,7 @@
       add.type = "button";
       add.className = "same-garment-thumb same-garment-add";
       const slotIndex = list.children.length;
-      const slotLabel = slotIndex === 1 ? "Baksida" : "Detalj";
+      const slotLabel = slotIndex === 1 ? "Bild 2" : "Bild 3";
       add.setAttribute("aria-label", `Lägg till ${slotLabel.toLowerCase()}`);
       add.innerHTML = `<span class="same-garment-slot-label">${slotLabel}</span><span class="same-garment-add-copy">Nytt foto</span>`;
       add.addEventListener("click", () => $("#sameGarmentInput")?.click());
