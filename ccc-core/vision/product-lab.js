@@ -159,6 +159,7 @@
     if (!item) return;
     const ok = await saveEditedCurrent({ quiet: true });
     if (!ok) return;
+    await queueVisionSessionSave();
     saveBatchMetadata();
     window.location.href = `../publish/index.html?view=prepare&item=${encodeURIComponent(item.id)}&from=vision-edit`;
   }
@@ -2539,21 +2540,32 @@ $("#price")?.addEventListener("click", openPriceEditor);
 
   installWorkspaceSwipe();
   installCameraPinchZoom();
-  showVisionStart();
-  try{
-    const returnItemId=sessionStorage.getItem("ccc-vision-return-edit-item")||"";
-    if(returnItemId){
-      sessionStorage.removeItem("ccc-vision-return-edit-item");
+
+  (async()=>{
+    let returnItemId="";
+    try{returnItemId=sessionStorage.getItem("ccc-vision-return-edit-item")||"";}catch(_){}
+    if(!returnItemId){
+      showVisionStart();
+      return;
+    }
+
+    try{
+      await restoreSavedVisionSession();
       const returnIndex=batchItems.findIndex(item=>String(item.id)===String(returnItemId));
       if(returnIndex>=0){
-        currentIndex=returnIndex;
-        workspacePage=Math.floor(currentIndex/WORKSPACE_PAGE_SIZE);
-        editReturnView="workspace";
-        populateFormFromItem(true);
-        showStage("editCard","edit");
+        try{sessionStorage.removeItem("ccc-vision-return-edit-item");}catch(_){}
+        openWorkspaceItem(returnIndex,Math.floor(returnIndex/WORKSPACE_PAGE_SIZE));
+      }else{
+        console.warn("[CCC Vision] Returobjektet kunde inte hittas i den sparade sessionen",returnItemId);
+        try{sessionStorage.removeItem("ccc-vision-return-edit-item");}catch(_){}
+        showWorkspace();
       }
+    }catch(error){
+      console.error("[CCC Vision] Kunde inte återställa sessionen efter Publicera",error);
+      showVisionStart();
     }
-  }catch(_){}
+  })();
+
   refreshSavedSessionSummary();
   refreshCostUi();
   updateCounters();
