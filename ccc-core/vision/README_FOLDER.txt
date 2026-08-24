@@ -136,3 +136,5 @@ v2.10.56: Automatisk AI borttagen. AI körs endast via AI-analys i Granska & kom
 v2.10.57: Objekt-räknarens pilar och X/Y har nu tre fasta/reserverade zoner så hela räknaren syns.
 
 v2.10.58: Objekt-navigeringen < X/Y > isolerad i vänster kontroll; v2.10.57-gridfix borttagen.
+
+v2.10.59: < X/Y > finjusterad med fasta kantzoner för pilar och självständigt centrerad räknare.
