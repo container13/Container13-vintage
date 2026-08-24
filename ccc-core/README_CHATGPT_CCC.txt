@@ -2010,3 +2010,10 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Tomma platser visar dessutom `Nytt foto`, utan det tidigare stora/minsta plustecknet.
 - Huvudbild och övrig Granska & komplettera-layout lämnas orörda.
 
+## v2.10.45 – neutrala namn för extrabilder
+- `Baksida` ändras till `Bild 2`.
+- `Detalj` ändras till `Bild 3`.
+- `Huvudbild` behålls som primär bild.
+- Hjälpen för `Granska & komplettera` förklarar att Bild 2 och Bild 3 är extra bilder av samma objekt och kan visa valfri relevant vy.
+- Ingen ny funktion för att visa extrabilder utanför Granska byggs i denna version.
+
