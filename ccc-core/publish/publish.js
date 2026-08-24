@@ -246,6 +246,8 @@ function resetViewScroll(view){
 const publishEntryParams = new URLSearchParams(window.location.search);
 const directPrepareView = publishEntryParams.get("view") === "prepare";
 const directPrepareItemId = publishEntryParams.get("item") || "";
+const directPrepareOrigin = publishEntryParams.get("from") || "";
+const directFromVisionEdit = directPrepareOrigin === "vision-edit" && !!directPrepareItemId;
 let currentPublishView="startView";
 function setPublishHeader(view){
   const state={back:true,settings:true};
@@ -253,6 +255,7 @@ function setPublishHeader(view){
   window.CCC_CORE?.header?.set(state);
 }
 function show(view){if(view!=="gridView"&&draftSelectionMode){draftSelectionMode=false;selectedDraftIds.clear();}
+  removePagedGridGhosts();
   currentPublishView=view;
   ["startView","gridView","channelView","channelTargetsView","channelConfirmView","publishedView","detailView","cropView"].forEach(id=>$("#"+id).hidden=id!==view);
   setPublishHeader(view);
@@ -272,116 +275,48 @@ function ensureDraftGridUi(){
   const style=document.createElement("style");
   style.id="cccDraftGridCompactStyles";
   style.textContent=`
-    #draftGrid.draft-grid{gap:8px!important;touch-action:pan-y;overflow:hidden;align-content:start;min-height:min(66vw,420px)}
-    #draftGrid.draft-grid.grid-1{grid-template-columns:minmax(0,1fr)!important}
-    #draftGrid.draft-grid.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-    #draftGrid.draft-grid.grid-4{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-    #draftGrid.draft-grid.grid-9{grid-template-columns:repeat(3,minmax(0,1fr))!important}
-    #draftGrid.draft-grid.grid-1 .draft-card{width:min(100%,420px);justify-self:center}
-    #draftGrid .draft-card{position:relative!important;aspect-ratio:1/1!important;min-width:0!important;min-height:0!important;border-radius:12px!important;overflow:hidden!important;padding:0!important;margin:0!important;-webkit-touch-callout:none!important;-webkit-tap-highlight-color:transparent!important;-webkit-user-select:none!important;user-select:none!important;appearance:none!important;-webkit-appearance:none!important}
-    #draftGrid .draft-card img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;pointer-events:none!important;-webkit-user-drag:none!important;-webkit-user-select:none!important;user-select:none!important;-webkit-tap-highlight-color:transparent!important}
-    .ccc-draft-preview-layer{position:fixed;inset:0;z-index:9999;pointer-events:none;background:rgba(5,7,12,.58);opacity:0;transition:opacity .16s ease}
-    .ccc-draft-preview-layer.is-open{opacity:1}
-    .ccc-draft-preview-image{position:fixed;z-index:10000;pointer-events:none;object-fit:contain;background:#0b0d13;border-radius:12px;box-shadow:0 18px 52px rgba(0,0,0,.55);transform-origin:center center;transform:translate3d(var(--ccc-preview-tx),var(--ccc-preview-ty),0) scale(var(--ccc-preview-sx),var(--ccc-preview-sy));will-change:transform,border-radius;transition:transform .36s cubic-bezier(.22,.7,.24,1),border-radius .36s ease}.ccc-draft-preview-image.is-open{transform:translate3d(0,0,0) scale(1,1);border-radius:16px}
-    #draftGrid .draft-card-caption{display:none!important}
-    .ccc-draft-pager{display:flex;align-items:center;justify-content:center;gap:7px;margin:16px auto 4px;min-height:12px}
-    .ccc-draft-pager[hidden]{display:none!important}
-    .ccc-draft-page-dot{width:7px;height:7px;border:0;border-radius:999px;padding:0;background:rgba(210,214,225,.42)}
-    .ccc-draft-page-dot[aria-current="true"]{background:#e0b14b;transform:scale(1.18)}
-    button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:none!important;box-shadow:none!important}
-    button:focus-visible,a:focus-visible{outline:2px solid #e0b14b!important;outline-offset:3px!important}
+    #draftGrid.draft-grid{
+      width:96%!important;
+      margin-inline:auto!important;
+      grid-template-columns:repeat(3,minmax(0,1fr))!important;
+      grid-auto-rows:auto!important;
+      column-gap:15px!important;
+      row-gap:11px!important;
+      padding:5px 4px 12px!important;
+      touch-action:pan-y!important;
+      overflow:hidden!important;
+      align-items:start!important;
+      align-content:start!important;
+      background:var(--bg,#0d1017)!important;
+      box-sizing:border-box!important;
+      isolation:isolate!important;
+    }
+    #draftGrid .draft-card{
+      position:relative!important;
+      width:100%!important;
+      min-width:0!important;
+      min-height:0!important;
+      aspect-ratio:1/1!important;
+      border-radius:14px!important;
+      overflow:hidden!important;
+      padding:0!important;
+      margin:0!important;
+      -webkit-touch-callout:none!important;
+      -webkit-tap-highlight-color:transparent!important;
+      -webkit-user-select:none!important;
+      user-select:none!important;
+      appearance:none!important;
+      -webkit-appearance:none!important;
+    }
+    #draftGrid .draft-card img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;pointer-events:none!important}
   `;
   document.head.append(style);
 }
-function clearDraftPreviewGesture(){
-  if(draftPreviewGesture?.timer)clearTimeout(draftPreviewGesture.timer);
-  draftPreviewGesture=null;
-}
-function closeDraftPreview(){
-  const g=draftPreviewGesture;
-  if(!g?.preview)return clearDraftPreviewGesture();
-  const {layer,preview}=g.preview;
-  layer.classList.remove("is-open");
-  preview.classList.remove("is-open");
-  const cleanup=()=>{layer.remove();preview.remove();};
-  preview.addEventListener("transitionend",cleanup,{once:true});
-  window.setTimeout(cleanup,420);
-  draftPreviewGesture=null;
-}
-function openDraftPreview(button,img){
-  if(!draftPreviewGesture||draftPreviewGesture.button!==button)return;
-  const rect=button.getBoundingClientRect();
-  const vw=window.innerWidth,vh=window.innerHeight;
-  const maxW=Math.min(vw-32,520),maxH=Math.min(vh-120,680);
-  const ratio=(img.naturalWidth&&img.naturalHeight)?img.naturalWidth/img.naturalHeight:1;
-  let w=maxW,h=w/ratio;
-  if(h>maxH){h=maxH;w=h*ratio;}
-  const targetLeft=Math.round((vw-w)/2),targetTop=Math.round((vh-h)/2);
-  const layer=document.createElement("div");
-  layer.className="ccc-draft-preview-layer";
-  const preview=document.createElement("img");
-  preview.className="ccc-draft-preview-image";
-  preview.alt=img.alt||"Förhandsvisning";
-  preview.src=img.currentSrc||img.src;
-  // Keep one fixed target geometry and animate only transform. This prevents the
-  // final one-frame snap seen when left/top/width/height were animated separately.
-  preview.style.left=`${targetLeft}px`;
-  preview.style.top=`${targetTop}px`;
-  preview.style.width=`${Math.round(w)}px`;
-  preview.style.height=`${Math.round(h)}px`;
-  const sx=rect.width/w,sy=rect.height/h;
-  const tx=rect.left-targetLeft+(rect.width-w)/2;
-  const ty=rect.top-targetTop+(rect.height-h)/2;
-  preview.style.setProperty("--ccc-preview-tx",`${tx}px`);
-  preview.style.setProperty("--ccc-preview-ty",`${ty}px`);
-  preview.style.setProperty("--ccc-preview-sx",String(sx));
-  preview.style.setProperty("--ccc-preview-sy",String(sy));
-  document.body.append(layer,preview);
-  draftPreviewGesture.preview={layer,preview,rect};
-  draftPreviewGesture.longPressed=true;
-  draftPreviewSuppressClick=true;
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    layer.classList.add("is-open");
-    preview.classList.add("is-open");
-  }));
-}
-
-function bindDraftPreview(button,img){
-  button.addEventListener("contextmenu",e=>e.preventDefault());
-  button.addEventListener("pointerdown",e=>{
-    if(e.pointerType==="mouse"&&e.button!==0)return;
-    clearDraftPreviewGesture();
-    draftPreviewGesture={button,id:e.pointerId,x:e.clientX,y:e.clientY,longPressed:false,preview:null,timer:null};
-    draftPreviewGesture.timer=window.setTimeout(()=>openDraftPreview(button,img),750);
-  });
-  button.addEventListener("pointermove",e=>{
-    const g=draftPreviewGesture;
-    if(!g||g.button!==button||g.id!==e.pointerId||g.longPressed)return;
-    if(Math.hypot(e.clientX-g.x,e.clientY-g.y)>12)clearDraftPreviewGesture();
-  });
-  const finish=e=>{
-    const g=draftPreviewGesture;
-    if(!g||g.button!==button||g.id!==e.pointerId)return;
-    if(g.longPressed)closeDraftPreview(); else clearDraftPreviewGesture();
-  };
-  button.addEventListener("pointerup",finish);
-  button.addEventListener("pointercancel",finish);
-  button.addEventListener("lostpointercapture",finish);
-}
-
-/* Dubbeltryck tas bort: enkeltryck, långtryck och swipe ska inte konkurrera. */
-
 function renderDraftPager(){
   const grid=$("#draftGrid");
   if(!grid)return;
-  let pager=document.getElementById("draftPager");
-  if(!pager){
-    pager=document.createElement("div");
-    pager.id="draftPager";
-    pager.className="ccc-draft-pager";
-    pager.setAttribute("aria-label","Sidor med lokala utkast");
-    grid.insertAdjacentElement("afterend",pager);
-  }
+  const pager=document.getElementById("draftPager");
+  if(!pager)return;
   pager.replaceChildren();
   const pages=Math.ceil(items.length/DRAFTS_PER_PAGE);
   pager.hidden=pages<=1;
@@ -431,7 +366,11 @@ function appendGridPlaceholders(grid,count){
     grid.append(placeholder);
   }
 }
+function removePagedGridGhosts(){
+  document.querySelectorAll(".ccc-paged-grid-ghost").forEach(node=>node.remove());
+}
 function createPageGhost(grid,kind,page,perPage,sourceItems=items){
+  removePagedGridGhosts();
   const rect=grid.getBoundingClientRect();
   const ghost=document.createElement("div");
   ghost.className=`ccc-paged-grid-ghost draft-grid ${kind==="channel"?"channel-select-grid":kind==="confirm"?"confirm-grid":""}`;
@@ -808,10 +747,7 @@ async function renderGrid(){
   const pageEnd=Math.min(items.length,pageStart+DRAFTS_PER_PAGE);
   const visibleCount=Math.max(0,pageEnd-pageStart);
   grid.classList.remove("grid-1","grid-2","grid-4","grid-9");
-  if(visibleCount===1)grid.classList.add("grid-1");
-  else if(visibleCount===2)grid.classList.add("grid-2");
-  else if(visibleCount<=4)grid.classList.add("grid-4");
-  else grid.classList.add("grid-9");
+  grid.classList.add("grid-9");
   for(let index=pageStart;index<pageEnd;index+=1){
     const item=items[index];
     const b=document.createElement("button");
@@ -957,12 +893,16 @@ function syncActiveIndexFromId(){
   const index=itemIndexById(activeItemId);
   if(index>=0)activeIndex=index;
 }
-function openDetailById(itemId){
+async function openDetailById(itemId){
   const index=itemIndexById(itemId);
   if(index<0){
     console.warn("[CCC Publicera] Hittade inte utkastet som miniatyren pekade på",itemId);
     return;
   }
+  const hydrated=await hydrateOriginal(items[index]);
+  if(hydrated!==items[index])items[index]={...items[index],...hydrated};
+  const item=items[index];
+  if(!item.thumbUrl)item.thumbUrl=await previewSrc(item);
   openDetail(index);
 }
 function openDetail(index){
@@ -2275,7 +2215,7 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
   await renderGrid();
   if(directPrepareView){
     if(directPrepareItemId && itemIndexById(directPrepareItemId) >= 0){
-      openDetailById(directPrepareItemId);
+      await openDetailById(directPrepareItemId);
     }else{
       preloadNeighbors(0);
       show("gridView");
@@ -2290,6 +2230,15 @@ window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL
 
 // Dubbeltryck på beskärningsytan används inte längre för zoom.
 // Zoom styrs enbart av de explicita crop-kontrollerna/pinch.
+
+function returnToVisionEdit(){
+  if(!directFromVisionEdit)return false;
+  const target=new URL("../vision/index.html",window.location.href);
+  target.searchParams.set("view","edit");
+  target.searchParams.set("item",directPrepareItemId);
+  window.location.href=target.href;
+  return true;
+}
 
 async function leavePublishDetail(){
   if(swipeCommitTimer){
@@ -2342,10 +2291,17 @@ document.addEventListener("ccc:header-back",async()=>{if(currentPublishView==="g
     return;
   }
   if(currentPublishView==="detailView"){
+    if(returnToVisionEdit())return;
     await leavePublishDetail();
     return;
   }
   if(currentPublishView==="cropView"){
+    if(directFromVisionEdit){
+      // Beskärningens första steg tillbaka går till objektets kontrollvy.
+      cropImage=null;cropState=null;pointer=null;
+      await openDetailById(directPrepareItemId);
+      return;
+    }
     await leavePublishCrop();
     return;
   }

@@ -2109,3 +2109,59 @@
 .published-result{position:fixed!important;z-index:1200;left:50%;top:max(12px,env(safe-area-inset-top));width:min(calc(100% - 28px),520px);transform:translateX(-50%);box-shadow:0 10px 30px rgba(0,0,0,.3)}
 .saved-live-status{display:block;margin-top:auto;padding-top:7px;font-weight:850!important}
 .saved-live-status.is-live{color:#55c77a!important}.saved-live-status.is-offline{color:var(--muted)!important}
+
+
+/* CCC v2.10.67 – Förbered återanvänder Välj objekts 3×3-geometri.
+   Pager har egen rad mellan bilder och Fortsätt. Swipe-ghost får aldrig lämna skugga. */
+#gridView #draftGrid,
+#channelView #channelSelectGrid{
+  width:96%!important;
+  margin-inline:auto!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-auto-rows:auto!important;
+  column-gap:15px!important;
+  row-gap:11px!important;
+  padding:5px 4px 12px!important;
+  align-items:start!important;
+  align-content:start!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+}
+#gridView #draftGrid .draft-card,
+#channelView #channelSelectGrid .draft-card{
+  width:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  aspect-ratio:1/1!important;
+  border-radius:14px!important;
+}
+#gridView .ccc-draft-pager,
+#channelView .ccc-draft-pager{
+  position:relative!important;
+  z-index:2!important;
+  order:2!important;
+  flex:0 0 auto!important;
+  min-height:24px!important;
+  margin:2px auto 7px!important;
+  padding:3px 0!important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+#gridView .ccc-draft-pager[hidden],
+#channelView .ccc-draft-pager[hidden]{display:none!important}
+#gridView .prepared-continue-action{
+  order:3!important;
+  margin:0 auto 72px!important;
+  flex:0 0 auto!important;
+}
+#channelView .channel-continue-action{
+  /* behåll fast knapp, men prickarna ligger nu tydligt ovanför den */
+}
+.ccc-paged-grid-ghost{
+  box-shadow:none!important;
+  filter:none!important;
+  pointer-events:none!important;
+  z-index:9490!important;
+}
