@@ -2129,3 +2129,12 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - `AI ✓` visas endast efter en verkligt lyckad AI-analys (`analysisMode === ai`) av aktuellt bildunderlag.
 - Ändring av extrabilder fortsätter att ogiltigförklara analysen och ta bort `AI ✓`.
 
+## v2.10.62 – `AI ✓` per bild
+- `AI ✓` betyder nu att just den bilden har ingått i en verklig AI-analys.
+- Vid AI-analys får huvudbilden och alla extrabilder som faktiskt ingår i anropet varsin `AI ✓`.
+- Lägger användaren senare till en ny Bild 2/Bild 3 får den nya bilden ingen AI-bock förrän AI-analys körs igen.
+- Tar användaren bort en analyserad extrabild påverkas inte huvudbildens `AI ✓` eller andra kvarvarande analyserade bilder.
+- Om AI-analys körs igen markeras samtliga bilder som då ingår.
+- AI-bildstatus sparas i den lokala aktiva Vision-sessionen.
+- Objektets AI-resultat kan fortfarande markeras som inaktuellt när bildunderlaget ändras; bildens `AI ✓` är däremot historik för att just den bilden faktiskt analyserats.
+
