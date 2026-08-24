@@ -2156,3 +2156,8 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Flyttar ned prisraden genom jämn vertikal luft ovanför och under.
 - Ingen annan layout eller funktion ändras.
 
+## v2.10.49 – Beskrivning flyttad upp
+- Hela Beskrivning-sektionen (etikett + inmatningsruta) flyttas upp på mobil.
+- Prisradens placering från v2.10.48 lämnas orörd.
+- Ingen annan layout eller funktion ändras.
+
