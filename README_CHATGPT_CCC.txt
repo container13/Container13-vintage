@@ -2188,3 +2188,17 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Skillnaden mellan Rubrik och Beskrivning är endast maxlängd/innehåll: 100 respektive 800 tecken.
 - v2.10.52:s separata speciallayout för Beskrivning tas bort.
 
+## Leveransregel – rollback vid kritiska uppdateringar
+Vid kritiska eller förhöjt riskfyllda uppdateringar (t.ex. större cleanup/refaktorering, Core, lagring/state eller annan ändring där snabb återställning är viktig) ska leveransen normalt innehålla tre paket:
+1. `changed-files` – de nya/ändrade filerna.
+2. `full` – komplett projekt efter uppdateringen.
+3. `rollback-original-files` – exakt de oförändrade filerna från föregående stabila version som uppdateringen ersätter, med samma mappstruktur.
+
+Rollback-paketet ska innehålla en kort README som anger vilken stabil version det återställer till. ChatGPT ska själv bedöma när en uppdatering bör behandlas som kritisk och hellre skapa rollback-paket en gång för mycket än en gång för lite.
+
+## v2.10.54 – Vision cleanup
+- v2.10.53 är stabil återställningspunkt.
+- Sena CSS-patchar för pris/beskrivningsspacing (v2.10.46–49) konsoliderade utan avsiktlig beteendeförändring.
+- Objektkontrollerna under bilderna (v2.10.50–51) konsoliderade till sina slutliga värden.
+- Rubrik/Beskrivning-editorn från v2.10.53 lämnas funktionellt orörd.
+- Kritiska uppdateringar får framöver separat rollback-paket.
