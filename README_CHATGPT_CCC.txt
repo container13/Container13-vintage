@@ -2151,3 +2151,8 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Rubrikfält, prisrad och beskrivningsfält får jämnare vertikalt avstånd.
 - Ingen annan Vision-layout eller funktion ändras.
 
+## v2.10.48 – jämn luft runt prisraden
+- Behåller `Pris` horisontellt intill prisrutan från v2.10.47.
+- Flyttar ned prisraden genom jämn vertikal luft ovanför och under.
+- Ingen annan layout eller funktion ändras.
+
