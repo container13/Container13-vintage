@@ -160,7 +160,7 @@
     const ok = await saveEditedCurrent({ quiet: true });
     if (!ok) return;
     saveBatchMetadata();
-    window.location.href = `../publish/index.html?view=prepare&item=${encodeURIComponent(item.id)}`;
+    window.location.href = `../publish/index.html?view=prepare&item=${encodeURIComponent(item.id)}&from=vision-edit`;
   }
 
   function updateHeaderContext() {
@@ -2539,7 +2539,20 @@ $("#price")?.addEventListener("click", openPriceEditor);
 
   installWorkspaceSwipe();
   installCameraPinchZoom();
-  showVisionStart();
+  if(returnEditItemId){
+    const returnIndex=batchItems.findIndex(item=>String(item.id)===String(returnEditItemId));
+    if(returnIndex>=0){
+      currentIndex=returnIndex;
+      workspacePage=Math.floor(currentIndex/WORKSPACE_PAGE_SIZE);
+      editReturnView="workspace";
+      populateFormFromItem(true);
+      showStage("editCard","edit");
+    }else{
+      showWorkspace();
+    }
+  }else{
+    showVisionStart();
+  }
   refreshSavedSessionSummary();
   refreshCostUi();
   updateCounters();

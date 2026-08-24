@@ -150,3 +150,5 @@ v2.10.63: Kameraknappar i en rad med centrerad autosparstatus under; kompakt `AI
 v2.10.64: kamera-review hålls dold i live-läge; `AI ✓` mindre och flyttad till övre vänster.
 
 v2.10.66: Publicera i footer från både Objektöversikt och Granska & komplettera; specifikt objekt följer med från editorn.
+
+v2.10.67: retur från Publicera kan återöppna exakt Vision-objekt; Publicera-länken anger vision-edit som ursprung.
