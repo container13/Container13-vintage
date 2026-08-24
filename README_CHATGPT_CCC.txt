@@ -2285,3 +2285,14 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Objektöversiktens hjälptext förklarar också footer-genvägen.
 - Core-footern får ett generellt `forward`-verktyg så framåtåtgärder kan ligga konsekvent i den permanenta footerzonen.
 
+## v2.10.67 – Publicera flödesfix + gemensam 3×3-grid
+- `Förbered för publicering` använder nu samma fasta 3×3-geometri som `Välj objekt` i stället för den äldre adaptiva 1/2/4/9-layouten.
+- Sidprickarna i Förbered ligger i en egen rad mellan bilderna och `Fortsätt`.
+- Swipe-ghost städas både före ny ghost och vid vybyte; ghost har ingen skugga/filter.
+- Vision → Publicera från `Granska & komplettera` skickar nu explicit ursprung (`from=vision-edit`) och objekt-ID.
+- Ett färskt/orört Vision-foto hydreras från `originalFileKey` innan Publicera öppnar detaljen, så bilden ska inte bli tom.
+- Direktflödet från ett specifikt Vision-objekt öppnar samma objekt i Publicera utan omval.
+- Tillbaka från Publiceras första objektkontroll återgår till samma objekt i `Granska & komplettera`.
+- Tillbaka från Anpassa går först till objektkontrollen; nästa Tillbaka återgår till samma Vision-objekt.
+- Vision kan återöppna exakt objekt via `?view=edit&item=<id>`.
+
