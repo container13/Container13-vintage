@@ -126,3 +126,5 @@ v2.10.51: bredare objektnavigering med större pilar; AI-analys/Ta bort kompakta
 v2.10.52: Beskrivningens fokusfält sänkt i höjd på mobil; endast textarea scrollar, Rubrik lämnas orörd.
 
 v2.10.53: Beskrivning använder samma fokuserade editor-layout som Rubrik; bara innersta textarea scrollar.
+
+v2.10.54: Vision cleanup; sena CSS-patchar konsoliderade utan avsiktlig UI/funktionsändring. Rollback till v2.10.53 levereras separat.

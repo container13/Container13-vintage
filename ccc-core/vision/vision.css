@@ -4945,171 +4945,89 @@ body.ccc-focused-text-mode #textEditorDialog .text-editor-shell{
 }
 
 
-/* v2.10.46 – jämnare vertikal rytm för prisraden i Granska & komplettera */
-@media (max-width: 700px) {
+/* v2.10.54 cleanup – final mobile form spacing (consolidated v2.10.46–49) */
+@media (max-width:700px){
   #editCard .field-price-row,
   #editCard .price-row,
-  #editCard .product-price-row {
-    margin-top: 18px !important;
-    margin-bottom: 18px !important;
-  }
+  #editCard .product-price-row{margin-top:18px!important;margin-bottom:18px!important}
 
   #editCard .field-price-row > label,
   #editCard .price-row > label,
   #editCard .product-price-row > label,
-  #editCard .price-label {
-    padding-left: 42px !important;
+  #editCard .price-label{padding-left:42px!important}
+
+  #editCard .compact-edit-form{row-gap:16px!important}
+  #editCard .title-field{margin-top:0!important;margin-bottom:0!important}
+
+  #editCard .price-row--single{
+    margin-top:16px!important;
+    margin-bottom:16px!important;
+  }
+  #editCard .price-row--single > label{
+    display:grid!important;
+    grid-template-columns:auto 150px!important;
+    justify-content:end!important;
+    align-items:center!important;
+    column-gap:12px!important;
+    width:100%!important;
+    padding-left:0!important;
+  }
+  #editCard .price-row--single > label > span{
+    justify-self:end!important;margin:0!important;padding:0!important;
+  }
+  #editCard .price-row--single .price-input{
+    width:150px!important;max-width:42vw!important;justify-self:end!important;
+  }
+  #editCard .compact-description-field{
+    margin-top:0!important;
+    margin-bottom:-12px!important;
+    transform:translateY(-12px)!important;
   }
 }
 
 
-/* v2.10.47 – prisetikett intill prisruta + jämn fältspacing */
-@media (max-width: 700px) {
-  #editCard .compact-edit-form {
-    row-gap: 16px !important;
-  }
-
-  #editCard .title-field,
-  #editCard .compact-description-field,
-  #editCard .price-row--single {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-  }
-
-  #editCard .price-row--single > label {
-    display: grid !important;
-    grid-template-columns: auto 150px !important;
-    justify-content: end !important;
-    align-items: center !important;
-    column-gap: 12px !important;
-    width: 100% !important;
-    padding-left: 0 !important;
-  }
-
-  #editCard .price-row--single > label > span {
-    justify-self: end !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  #editCard .price-row--single .price-input {
-    width: 150px !important;
-    max-width: 42vw !important;
-    justify-self: end !important;
-  }
+/* v2.10.54 cleanup – final object navigation/action row (consolidated v2.10.50–51) */
+#editCard .edit-object-actions{
+  grid-template-columns:1.18fr 1.72fr 1.28fr!important;
+  gap:8px!important;
 }
-
-
-/* v2.10.48 – jämn vertikal luft runt prisraden */
-@media (max-width: 700px) {
-  #editCard .price-row--single {
-    margin-top: 16px !important;
-    margin-bottom: 16px !important;
-  }
-}
-
-
-/* v2.10.49 – flytta upp hela Beskrivning-sektionen på mobil */
-@media (max-width: 700px) {
-  #editCard .compact-description-field {
-    transform: translateY(-12px) !important;
-    margin-bottom: -12px !important;
-  }
-}
-
-
-/* v2.10.50 – navigerbar < X/Y >-kontroll */
 #editCard .edit-object-actions .edit-progress-nav{
-  grid-column:1!important;
-  grid-row:1!important;
+  grid-column:1!important;grid-row:1!important;
   display:grid!important;
-  grid-template-columns:28px minmax(0,1fr) 28px!important;
+  grid-template-columns:38px minmax(0,1fr) 38px!important;
   align-items:center!important;
-  width:100%!important;
-  min-width:0!important;
-  height:44px!important;
-  min-height:44px!important;
-  margin:0!important;
-  padding:0!important;
+  width:100%!important;min-width:0!important;
+  height:44px!important;min-height:44px!important;
+  margin:0!important;padding:0!important;
   border:1px solid var(--ccc-border,var(--border))!important;
   border-radius:14px!important;
   overflow:hidden!important;
   background:var(--ccc-surface-2,var(--surface-2))!important;
 }
 #editCard .edit-object-actions .edit-progress-nav #editProgress{
-  grid-column:2!important;
-  grid-row:1!important;
-  width:auto!important;
-  height:42px!important;
-  min-height:42px!important;
-  padding:0 2px!important;
-  border:0!important;
-  border-radius:0!important;
+  grid-column:2!important;grid-row:1!important;
+  width:auto!important;height:42px!important;min-height:42px!important;
+  padding:0 2px!important;border:0!important;border-radius:0!important;
   background:transparent!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-}
-#editCard .edit-object-actions .edit-object-nav-btn{
-  position:static!important;
-  inset:auto!important;
-  transform:none!important;
-  width:28px!important;
-  min-width:28px!important;
-  height:42px!important;
-  min-height:42px!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  border-radius:0!important;
-  background:transparent!important;
-  color:var(--gold)!important;
-  font-size:1.3rem!important;
-  line-height:1!important;
-  font-weight:900!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-}
-#editCard .edit-object-actions #editPrevObjectBtn{grid-column:1!important;grid-row:1!important}
-#editCard .edit-object-actions #editNextObjectBtn{grid-column:3!important;grid-row:1!important}
-#editCard .edit-object-actions .edit-object-nav-btn:disabled{
-  opacity:.25!important;
-}
-
-
-/* v2.10.51 – balansera objektkontrollerna:
-   större navigeringsruta/pilar, kompaktare AI-analys och Ta bort */
-#editCard .edit-object-actions{
-  grid-template-columns:1.18fr 1.72fr 1.28fr!important;
-  gap:8px!important;
-}
-#editCard .edit-object-actions .edit-progress-nav{
-  height:44px!important;
-  min-height:44px!important;
-  grid-template-columns:38px minmax(0,1fr) 38px!important;
-}
-#editCard .edit-object-actions .edit-progress-nav #editProgress{
-  height:42px!important;
-  min-height:42px!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
   font-size:1rem!important;
 }
 #editCard .edit-object-actions .edit-object-nav-btn{
-  width:38px!important;
-  min-width:38px!important;
-  height:42px!important;
-  min-height:42px!important;
-  font-size:2rem!important;
-  font-weight:900!important;
+  position:static!important;inset:auto!important;transform:none!important;
+  width:38px!important;min-width:38px!important;
+  height:42px!important;min-height:42px!important;
+  margin:0!important;padding:0!important;border:0!important;border-radius:0!important;
+  background:transparent!important;color:var(--gold)!important;
+  font-size:2rem!important;line-height:1!important;font-weight:900!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
 }
+#editCard .edit-object-actions #editPrevObjectBtn{grid-column:1!important;grid-row:1!important}
+#editCard .edit-object-actions #editNextObjectBtn{grid-column:3!important;grid-row:1!important}
+#editCard .edit-object-actions .edit-object-nav-btn:disabled{opacity:.25!important}
 #editCard .edit-object-actions #manualAiBtn,
 #editCard .edit-object-actions #editTrashBtn{
-  min-height:44px!important;
-  height:44px!important;
-  padding:0 10px!important;
-  font-size:.96rem!important;
+  min-height:44px!important;height:44px!important;padding:0 10px!important;font-size:.96rem!important;
 }
-
 
 
 /* v2.10.53 – Rubrik och Beskrivning använder samma fokuserade editor-layout.
