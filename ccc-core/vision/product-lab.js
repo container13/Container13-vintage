@@ -149,6 +149,20 @@
   window.addEventListener("load",()=>updateHeaderContext(),{once:true});
   }
 
+  async function openPublishFromWorkspace() {
+    await queueVisionSessionSave();
+    window.location.href = "../publish/index.html?view=prepare";
+  }
+
+  async function openPublishFromEdit() {
+    const item = currentItem();
+    if (!item) return;
+    const ok = await saveEditedCurrent({ quiet: true });
+    if (!ok) return;
+    saveBatchMetadata();
+    window.location.href = `../publish/index.html?view=prepare&item=${encodeURIComponent(item.id)}`;
+  }
+
   function updateHeaderContext() {
     const isModuleHome = visionView === "start";
     const state={back:!isModuleHome,settings:true};
@@ -160,12 +174,20 @@
       if(visionView==="edit"){
         footer.setTools({
           help:true,
-          onHelp:()=>{const d=$("#visionContextHelpDialog");if(d)d.hidden=false;}
+          onHelp:()=>{const d=$("#visionContextHelpDialog");if(d)d.hidden=false;},
+          forward:true,
+          forwardLabel:"Publicera",
+          forwardIcon:"→",
+          onForward:openPublishFromEdit
         });
       }else if(visionView==="workspace"){
         footer.setTools({
           help:true,
-          onHelp:openWorkspaceHelp
+          onHelp:openWorkspaceHelp,
+          forward:true,
+          forwardLabel:"Publicera",
+          forwardIcon:"→",
+          onForward:openPublishFromWorkspace
         });
       }else{
         footer.clearTools();
