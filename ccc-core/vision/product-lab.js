@@ -54,14 +54,13 @@
     return sessionSaveChain;
   }
 
-  const VISION_SETTING_DEFAULTS = { aiAuto: true, learnEdits: true };
+  const VISION_SETTING_DEFAULTS = { learnEdits: true };
   function readBoolSetting(key, fallback) {
     const value = localStorage.getItem(key);
     return value === null ? fallback : value === "true";
   }
   function visionSettings() {
     return {
-      aiAuto: readBoolSetting("ccc-vision-ai-auto", VISION_SETTING_DEFAULTS.aiAuto),
       learnEdits: readBoolSetting("ccc-vision-learn-edits", VISION_SETTING_DEFAULTS.learnEdits)
     };
   }
@@ -69,7 +68,6 @@
   const visionSettingsButton = $("#visionSettingsBtn");
   const visionSettingsOverlay = $("#visionSettingsOverlay");
   const visionSettingsCloseButton = $("#visionSettingsCloseBtn");
-  const visionAiAutoSetting = $("#visionAiAutoSetting");
   const visionLearnEditsSetting = $("#visionLearnEditsSetting");
   let visionSettingsSavedTimer;
 
@@ -92,7 +90,6 @@
 
   function syncVisionSettingsPanel() {
     const settings = visionSettings();
-    if (visionAiAutoSetting) visionAiAutoSetting.checked = settings.aiAuto;
     if (visionLearnEditsSetting) visionLearnEditsSetting.checked = settings.learnEdits;
   }
   function setVisionSettingsOpen(open) {
@@ -112,19 +109,12 @@
       clearTimeout(visionSettingsSavedTimer);
       visionSettingsSavedTimer = setTimeout(() => saved.textContent = "", 1200);
     }
-    if (key === "ccc-vision-ai-auto" && privacyNote) {
-      privacyNote.textContent = window.CCC_VISION_AI?.configured?.() && value
-        ? "Originalbilderna stannar på enheten. En komprimerad kopia skickas endast för analys."
-        : "Originalbilderna stannar på den här enheten.";
-    }
   }
 
 
   const privacyNote = $("#privacyNote");
   if (privacyNote) {
-    privacyNote.textContent = window.CCC_VISION_AI?.configured?.() && visionSettings().aiAuto
-      ? "Originalbilderna stannar på enheten. En komprimerad kopia skickas endast för analys."
-      : "Originalbilderna stannar på den här enheten.";
+    privacyNote.textContent = "Originalbilderna stannar på enheten. En komprimerad kopia skickas endast när du själv väljer AI-analys.";
   }
 
   document.addEventListener("click", (event) => { const pop=$("#visionCostPopover"); const btn=$("#visionCostBtn"); if(pop && !pop.hidden && !pop.contains(event.target) && event.target !== btn){ pop.hidden=true; btn?.setAttribute("aria-expanded","false"); } });
@@ -330,7 +320,8 @@
       });
     /* Förlagringen får arbeta i bakgrunden; ensureItemSourceFiles avvaktar samma promise vid behov. */
     item.originalFileSavePromise.catch(() => {});
-    startSilentAnalysis(item);
+    item.analysisMode = "manual";
+    item.analysisPromise = Promise.resolve(null);
     return item;
   }
 
@@ -368,7 +359,7 @@
   function startSilentAnalysis(item, forceAi = false) {
     item.visionReady = false;
     item.analysisInProgress = false;
-    const aiAllowed = forceAi || visionSettings().aiAuto;
+    const aiAllowed = forceAi;
     item.analysisMode = aiAllowed && window.CCC_VISION_AI?.configured?.() ? "ai" : (aiAllowed ? "demo" : "manual");
     item.analysisError = "";
     item.analysisErrorCode = "";
@@ -1313,11 +1304,6 @@
     currentIndex = Math.min(Number(record.currentIndex || 0), Math.max(0, batchItems.length - 1));
     savedSessionSummary = batchItems.length ? { count: batchItems.length, savedAt: record.savedAt } : null;
 
-    batchItems.forEach((item) => {
-      if (!item.visionReady && item.analysisMode !== "manual" && visionSettings().aiAuto) {
-        startSilentAnalysis(item, true);
-      }
-    });
 
     showWorkspace();
   }
@@ -1407,8 +1393,8 @@
       manualAi.hidden = !canAnalyze;
       manualAi.disabled = !!item.analysisInProgress;
       manualAi.textContent = item.analysisInProgress ? "Analyserar…" : "AI-analys";
-      manualAi.classList.toggle("is-secondary", !!item.visionReady || !visionSettings().aiAuto);
-      manualAi.classList.toggle("is-manual-quiet", !visionSettings().aiAuto);
+      manualAi.classList.toggle("is-secondary", !!item.visionReady);
+      manualAi.classList.add("is-manual-quiet");
     }
   }
 
@@ -1463,7 +1449,11 @@
     item.extraFileStored.splice(index, 1);
     item.extraFileSavePromises.splice(index, 1);
     renderSameGarmentEditor();
-    startSilentAnalysis(item, true);
+    item.visionReady = false;
+    item.analysisMode = "manual";
+    item.analysisInProgress = false;
+    item.analysisPromise = Promise.resolve(null);
+    item.visionResult = null;
     scheduleAutosave();
   }
 
@@ -1630,15 +1620,13 @@
     if (files.length) {
       renderSameGarmentEditor();
       queueVisionSessionSave();
-      startSilentAnalysis(item);
-      item.analysisPromise.then(() => {
-        if (visionView === "edit") {
-          populateFormFromItem(true);
-          editStructuralDirty = true;
-    scheduleAutosave();
-        } else if (!$("#captureCard").hidden) updateBatchStrip();
-        else openReview(currentIndex);
-      });
+      item.visionReady = false;
+      item.analysisMode = "manual";
+      item.analysisInProgress = false;
+      item.analysisPromise = Promise.resolve(null);
+      item.visionResult = null;
+      editStructuralDirty = true;
+      scheduleAutosave();
     }
     $("#sameGarmentInput").value = "";
   }
@@ -2318,10 +2306,6 @@
   });
 
   $("#visionSettingsOverlay")?.addEventListener("click", (event) => { if (event.target === visionSettingsOverlay) setVisionSettingsOpen(false); });
-  $("#visionAiAutoSetting")?.addEventListener("change",(event)=>{
-    saveVisionSetting("ccc-vision-ai-auto",event.target.checked);
-    if(visionView==="edit")populateFormFromItem();
-  });
   $("#visionLearnEditsSetting")?.addEventListener("change", (event) => saveVisionSetting("ccc-vision-learn-edits", event.target.checked));
 
   document.addEventListener("ccc:core-ready",()=>updateHeaderContext(),{once:true});

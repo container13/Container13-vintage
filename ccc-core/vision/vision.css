@@ -5053,3 +5053,30 @@ body.ccc-focused-text-mode #textEditorDialog #largeTextEditor.description-editor
     max-height:132px!important;
   }
 }
+
+
+/* v2.10.55 – robust ‹ X/Y ›: båda pilarna låses på samma rad */
+#editCard .edit-object-actions .edit-progress-nav{
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+}
+#editCard .edit-object-actions .edit-progress-nav #editProgress{
+  flex:1 1 auto!important;
+  order:2!important;
+  grid-column:auto!important;
+  grid-row:auto!important;
+}
+#editCard .edit-object-actions #editPrevObjectBtn{
+  flex:0 0 38px!important;
+  order:1!important;
+  grid-column:auto!important;
+  grid-row:auto!important;
+}
+#editCard .edit-object-actions #editNextObjectBtn{
+  flex:0 0 38px!important;
+  order:3!important;
+  grid-column:auto!important;
+  grid-row:auto!important;
+}

@@ -128,3 +128,7 @@ v2.10.52: Beskrivningens fokusfält sänkt i höjd på mobil; endast textarea sc
 v2.10.53: Beskrivning använder samma fokuserade editor-layout som Rubrik; bara innersta textarea scrollar.
 
 v2.10.54: Vision cleanup; sena CSS-patchar konsoliderade utan avsiktlig UI/funktionsändring. Rollback till v2.10.53 levereras separat.
+
+v2.10.55: Höger/vänster pil låsta på samma rad runt X/Y. Verifierat: extrabilder ingår i ny AI-analys när auto-AI är aktiv.
+
+v2.10.56: Automatisk AI borttagen. AI körs endast via AI-analys i Granska & komplettera; alla befintliga bilder analyseras tillsammans.
