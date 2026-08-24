@@ -2144,3 +2144,10 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - `AI ✓` på Huvudbild/Bild 2/Bild 3 är en liten kompakt grön badge i övre högra hörnet i stället för en stor mörk markering över bilden.
 - AI-statuslogiken per bild från v2.10.62 är oförändrad.
 
+## v2.10.64 – kamera hidden-state + mindre AI-badge
+- Kamerans review-rad (`Ta om` / `Nästa objekt` / `Klar` / autosparstatus) respekterar åter `hidden` i livekameraläget.
+- Därmed visas bara livekamera + zoom + avtryckare innan ett foto är taget.
+- `AI ✓` flyttas till övre vänstra hörnet på varje analyserad bild.
+- Badgen görs mindre (21 px hög, mindre text/padding) för att inte konkurrera visuellt med bildetiketter eller ×-knappar.
+- Per-bild-AI-logiken från v2.10.62 är oförändrad.
+
