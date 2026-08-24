@@ -4943,3 +4943,21 @@ body.ccc-focused-text-mode #textEditorDialog .text-editor-shell{
   font-weight:800!important;
   text-align:center!important;
 }
+
+
+/* v2.10.46 – jämnare vertikal rytm för prisraden i Granska & komplettera */
+@media (max-width: 700px) {
+  #editCard .field-price-row,
+  #editCard .price-row,
+  #editCard .product-price-row {
+    margin-top: 18px !important;
+    margin-bottom: 18px !important;
+  }
+
+  #editCard .field-price-row > label,
+  #editCard .price-row > label,
+  #editCard .product-price-row > label,
+  #editCard .price-label {
+    padding-left: 42px !important;
+  }
+}

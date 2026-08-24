@@ -109,3 +109,5 @@ v2.10.43: X/Y + AI-analys + Ta bort låsta till samma rad; Rubrik börjar efter 
 v2.10.44: Bildplats 2/3 märkta Baksida/Detalj i Granska & komplettera.
 
 v2.10.45: Baksida/Detalj ersatta med Bild 2/Bild 3; hjälptext uppdaterad.
+
+v2.10.46: Prisraden sänkt och Pris-etiketten flyttad åt höger i Granska & komplettera.
