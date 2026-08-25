@@ -2195,3 +2195,14 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Gamla orphan-testbilder återställs inte automatiskt och raderas inte.
 - Publicera-koden är orörd i denna version.
 
+## v2.10.73 – gemensam Publicera-grid + pager/swipe
+- Bygger direkt på verifierade v2.10.72.
+- Publicera `Välj objekt` används som visuellt facit för `Förbered för publicering`.
+- Förbered och Välj objekt använder nu samma gridklass-helper och samma slutliga 3×3-geometri.
+- Den gamla skillnaden där `#draftGrid` var `flex:1` tas bort; Förbered-griden får naturlig höjd precis som Välj objekt, vilket förhindrar hoptryckta/överlappande rader.
+- 9 platser per sida och befintlig paginglogik behålls.
+- Prickarna i Förbered behålls på den fungerande platsen mellan bilder och Fortsätt.
+- Prickarna i Välj objekt får en egen rad ovanför den fasta Fortsätt-knappen.
+- Swipe-ghost tas bort före den asynkrona renderingen av nästa sida, så en gammal sida inte kan ligga kvar som en 'skugga'.
+- Ingen Vision-logik och ingen kanal-/Nästa-/urvalslogik ändras.
+
