@@ -71,3 +71,7 @@ v2.10.74: iPhone longpress cleanup, exact swipe ghost geometry, crop quick-publi
 v2.10.75: mobile Prepare 2x3/6 per page; normal workflow scroll containment; crop footer Publicera direct-to-confirm with origin-aware back.
 
 v2.10.76: Prepare corrected to 3x2; crop footer quick-publish reinforced after view activation with Core-footer fallback.
+
+v2.10.77: ghost-free shared page swipe; crop footer uses exact Vision Core footer pattern with crop-only guard.
+
+v2.10.78: mobile grid standard fixed to 3x2/6 per page in Prepare and Channel item selection.

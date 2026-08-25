@@ -44,7 +44,7 @@ const channelSelectedIds=new Set();
 let container13ChannelSelected=false;
 let channelSelectPage=0;
 let confirmPage=0;
-const CHANNEL_PER_PAGE=9;
+const CHANNEL_PER_PAGE=6;
 const decodedImageCache=new Map();
 const MAX_DECODED_CACHE=3;
 function updateStartCount(){
@@ -282,10 +282,8 @@ function show(view){if(view!=="gridView"&&draftSelectionMode){draftSelectionMode
   ["startView","gridView","channelView","channelTargetsView","channelConfirmView","publishedView","detailView","cropView"].forEach(id=>$("#"+id).hidden=id!==view);
   setPublishHeader(view);
   configureFooterForView(view);
-  if(view==="cropView"){
-    ensureCropQuickPublishFooter();
-    window.setTimeout(ensureCropQuickPublishFooter,80);
-  }
+  if(view==="cropView")startCropFooterGuard();
+  else stopCropFooterGuard();
   requestAnimationFrame(()=>{
     resetViewScroll(view);
     const active=$("#"+view);
@@ -490,7 +488,7 @@ function createPageGhost(grid,kind,page,perPage,sourceItems=items){
   for(let index=range.start;index<range.end;index+=1){
     ghost.append(pageGhostCard(sourceItems[index],index,kind));
   }
-  appendGridPlaceholders(ghost,count);
+  appendGridPlaceholders(ghost,count,perPage);
   document.body.append(ghost);
   return ghost;
 }
@@ -526,13 +524,22 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
     }
   },true);
 
+  const resetGridTransform=()=>{
+    grid.style.transition="";
+    grid.style.transform="";
+  };
+
   grid.addEventListener("pointerdown",event=>{
     const pages=Math.ceil(getItems().length/perPage);
     if(animating||pages<=1)return;
     if(event.pointerType==="mouse"&&event.button!==0)return;
     closeAnyDraftPreview();
     grid.setPointerCapture?.(event.pointerId);
-    gesture={id:event.pointerId,startX:event.clientX,startY:event.clientY,dx:0,horizontal:false,direction:0,ghost:null,lastX:event.clientX,lastTime:performance.now(),velocityX:0};
+    gesture={
+      id:event.pointerId,startX:event.clientX,startY:event.clientY,
+      dx:0,horizontal:false,lastX:event.clientX,lastTime:performance.now(),velocityX:0
+    };
+    grid.style.transition="none";
   });
 
   grid.addEventListener("pointermove",event=>{
@@ -544,91 +551,84 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
     gesture.velocityX=(event.clientX-gesture.lastX)/elapsed;
     gesture.lastX=event.clientX;
     gesture.lastTime=now;
+
     if(!gesture.horizontal){
-      if(Math.abs(dx)<8&&Math.abs(dy)<8)return;
-      if(Math.abs(dy)>Math.abs(dx)*1.15){
+      if(Math.abs(dx)<10&&Math.abs(dy)<10)return;
+      if(Math.abs(dy)>Math.abs(dx)*1.2){
         gesture=null;
+        resetGridTransform();
         return;
       }
       gesture.horizontal=true;
-      // Swipe owns the gesture: cancel any pending long-press/quick-preview immediately.
       clearDraftPreviewGesture();
     }
     event.preventDefault();
 
     const page=getPage();
-    const sourceItems=getItems();
-    const pages=Math.ceil(sourceItems.length/perPage);
+    const pages=Math.ceil(getItems().length/perPage);
     const direction=dx<0?1:-1;
     const target=page+direction;
     const width=Math.max(1,grid.getBoundingClientRect().width);
     const atEdge=target<0||target>=pages;
-
-    if(!atEdge && gesture.direction!==direction){
-      gesture.ghost?.remove();
-      gesture.ghost=createPageGhost(grid,kind,target,perPage,sourceItems);
-      gesture.direction=direction;
-    }else if(atEdge && gesture.ghost){
-      gesture.ghost.remove();gesture.ghost=null;gesture.direction=direction;
-    }
-
     const limited=softenPageSwipe(dx,width,atEdge);
     gesture.dx=limited;
-    setPagedGridTransform(grid,gesture.ghost,limited,width,direction,false);
+    grid.style.transform=`translate3d(${limited}px,0,0)`;
   },{passive:false});
 
   const finish=async(event,cancelled=false)=>{
     if(!gesture||gesture.id!==event.pointerId)return;
-    const g=gesture;gesture=null;
+    const g=gesture; gesture=null;
     const page=getPage();
     const pages=Math.ceil(getItems().length/perPage);
     const width=Math.max(1,grid.getBoundingClientRect().width);
 
     if(!g.horizontal||cancelled){
-      setPagedGridTransform(grid,g.ghost,0,width,g.direction||1,true);
-      window.setTimeout(()=>{g.ghost?.remove();grid.style.transition="";grid.style.transform="";},370);
+      grid.style.transition="transform 260ms cubic-bezier(.22,.72,.22,1)";
+      grid.style.transform="translate3d(0,0,0)";
+      window.setTimeout(resetGridTransform,280);
       return;
     }
 
     const direction=g.dx<0?1:-1;
     const target=page+direction;
     const valid=target>=0&&target<pages;
-    const threshold=width*.20;
-    const quickFlick=Math.abs(g.velocityX)>.42&&Math.abs(g.dx)>36;
+    const threshold=width*.18;
+    const quickFlick=Math.abs(g.velocityX)>.42&&Math.abs(g.dx)>34;
 
     if(!valid||(!quickFlick&&Math.abs(g.dx)<threshold)){
-      setPagedGridTransform(grid,g.ghost,0,width,direction,true);
-      window.setTimeout(()=>{g.ghost?.remove();grid.style.transition="";grid.style.transform="";},370);
+      grid.style.transition="transform 260ms cubic-bezier(.22,.72,.22,1)";
+      grid.style.transform="translate3d(0,0,0)";
+      window.setTimeout(resetGridTransform,280);
       return;
     }
 
     animating=true;
-    suppressUntil=performance.now()+850;
-    const travel=width+PAGED_GRID_GUTTER;
-    setPagedGridTransform(grid,g.ghost,direction>0?-travel:travel,width,direction,true);
+    suppressUntil=performance.now()+700;
+    grid.style.transition="transform 260ms cubic-bezier(.22,.72,.22,1)";
+    grid.style.transform=`translate3d(${direction>0?-width:width}px,0,0)`;
 
     window.setTimeout(async()=>{
-      /* Ghosten får inte ligga kvar medan nästa sida renderas/asynkront laddar bilder.
-         Det var den som kunde se ut som en fastfrusen skugga på iPhone. */
-      g.ghost?.remove();
-      removePagedGridGhosts();
-      grid.style.transition="none";
-      grid.style.transform="translate3d(0,0,0)";
-      const frozenWidth=grid.getBoundingClientRect().width;
-      grid.style.setProperty("width",`${frozenWidth}px`,"important");
       setPage(target);
+      grid.style.transition="none";
+      grid.style.transform=`translate3d(${direction>0?width:-width}px,0,0)`;
       try{
         await render();
       }finally{
+        /* Render kan skriva om grid-klasser men samma DOM-nod används.
+           Starta nya sidan precis utanför vyn och låt den glida in rent. */
+        grid.style.transition="none";
+        grid.style.transform=`translate3d(${direction>0?width:-width}px,0,0)`;
+        void grid.offsetWidth;
         requestAnimationFrame(()=>{
-          grid.style.removeProperty("width");
-          grid.style.transition="";
-          grid.style.transform="";
-          removePagedGridGhosts();
-          animating=false;
+          grid.style.transition="transform 280ms cubic-bezier(.22,.72,.22,1)";
+          grid.style.transform="translate3d(0,0,0)";
+          window.setTimeout(()=>{
+            resetGridTransform();
+            animating=false;
+          },300);
         });
       }
-    },370);
+    },270);
   };
 
   grid.addEventListener("pointerup",event=>finish(event,false));
@@ -698,40 +698,41 @@ function quickPublishCurrentCrop(){
   $("#cropDone")?.click();
 }
 
-function ensureCropQuickPublishFooter(){
+let cropFooterObserver=null;
+
+function setCropFooterLikeVision(){
   if(currentPublishView!=="cropView")return;
   const footer=window.CCC_CORE?.footer;
-  if(footer){
-    footer.setTools?.({
-      help:true,
-      onHelp:openPublishHelp,
-      forward:true,
-      forwardLabel:"Publicera",
-      forwardIcon:"→",
-      onForward:quickPublishCurrentCrop
-    });
-  }
-  /* Säkerhetsnät för iPhone: om Core-footern har renderats om efter setTools
-     ska snabbfilen fortfarande finnas i footern. */
-  requestAnimationFrame(()=>{
-    if(currentPublishView!=="cropView")return;
-    const coreFooter=document.querySelector("#cccCoreFooter");
-    if(!coreFooter||coreFooter.querySelector(".ccc-core-footer-forward"))return;
-    let tools=coreFooter.querySelector(".ccc-core-footer-tools");
-    if(!tools){
-      tools=document.createElement("div");
-      tools.className="ccc-core-footer-tools";
-      coreFooter.insertBefore(tools,coreFooter.querySelector("#cccCoreFooterBack")||null);
-    }
-    const button=document.createElement("button");
-    button.type="button";
-    button.className="ccc-core-footer-tool ccc-core-footer-forward";
-    button.innerHTML='<span aria-hidden="true">→</span><small>Publicera</small>';
-    button.addEventListener("click",quickPublishCurrentCrop);
-    tools.append(button);
+  if(!footer)return;
+  footer.setTools({
+    help:true,
+    onHelp:openPublishHelp,
+    forward:true,
+    forwardLabel:"Publicera",
+    forwardIcon:"→",
+    onForward:quickPublishCurrentCrop
   });
 }
 
+function startCropFooterGuard(){
+  setCropFooterLikeVision();
+  requestAnimationFrame(setCropFooterLikeVision);
+  const footerEl=document.querySelector("#cccCoreFooter");
+  if(!footerEl)return;
+  cropFooterObserver?.disconnect();
+  cropFooterObserver=new MutationObserver(()=>{
+    if(currentPublishView!=="cropView")return;
+    if(!footerEl.querySelector(".ccc-core-footer-forward")){
+      queueMicrotask(setCropFooterLikeVision);
+    }
+  });
+  cropFooterObserver.observe(footerEl,{childList:true,subtree:true});
+}
+
+function stopCropFooterGuard(){
+  cropFooterObserver?.disconnect();
+  cropFooterObserver=null;
+}
 function configureFooterForView(view){
   if(!window.CCC_CORE?.footer){
     if(!publishFooterCoreWaitBound){
@@ -1969,7 +1970,7 @@ async function renderChannelSelection(){
     grid.append(button);
   }
 
-  appendGridPlaceholders(grid,count);
+  appendGridPlaceholders(grid,count,CHANNEL_PER_PAGE);
 
   renderChannelPager(pageCount);
   updateChannelSelectionUi();

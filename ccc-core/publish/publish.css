@@ -2289,3 +2289,23 @@
     grid-template-columns:repeat(3,minmax(0,1fr))!important;
   }
 }
+
+
+/* CCC v2.10.77 – ren sid-swipe utan ghostlager */
+#gridView #draftGrid,
+#channelView #channelSelectGrid,
+#channelConfirmView #confirmGrid{
+  will-change:transform!important;
+  backface-visibility:hidden!important;
+  -webkit-backface-visibility:hidden!important;
+}
+.ccc-paged-grid-ghost{display:none!important}
+
+
+/* CCC v2.10.78 – gemensam mobil gridstandard: 3×2 / 6 per sida */
+@media(max-width:480px) and (orientation:portrait){
+  #gridView #draftGrid.draft-grid,
+  #channelView #channelSelectGrid.draft-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+}
