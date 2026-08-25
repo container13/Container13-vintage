@@ -1173,127 +1173,6 @@
   }
 
 
-  async function readAllWorkspaceStore(storeName) {
-    const db = await openWorkspaceDb();
-    try {
-      if (!db.objectStoreNames.contains(storeName)) return [];
-      return await new Promise((resolve, reject) => {
-        const tx = db.transaction(storeName, "readonly");
-        const request = tx.objectStore(storeName).getAll();
-        request.onsuccess = () => resolve(Array.isArray(request.result) ? request.result : []);
-        request.onerror = () => reject(request.error);
-      });
-    } finally {
-      db.close();
-    }
-  }
-
-  async function runVisionStorageDiagnostic() {
-    const session = await getVisionSessionRecord();
-    const visionFiles = await readAllWorkspaceStore("vision-files");
-    const publishImages = await readAllWorkspaceStore("images");
-    const sessionItems = Array.isArray(session?.items) ? session.items : [];
-
-    const fileKeys = new Set(visionFiles.map((record) => String(record?.id || "")).filter(Boolean));
-    const referencedKeys = [];
-    sessionItems.forEach((item) => {
-      if (item?.originalFileKey) referencedKeys.push(String(item.originalFileKey));
-      (item?.extraFileKeys || []).forEach((key) => { if (key) referencedKeys.push(String(key)); });
-    });
-    const referencedSet = new Set(referencedKeys);
-    const orphanVisionFiles = visionFiles.filter((record) => record?.id && !referencedSet.has(String(record.id)));
-
-    const byInternalId = new Map();
-    visionFiles.forEach((record) => {
-      const internalId=String(record?.metadata?.internalId || "").trim();
-      if (!internalId) return;
-      if (!byInternalId.has(internalId)) byInternalId.set(internalId, []);
-      byInternalId.get(internalId).push(record);
-    });
-
-    const orphanObjects = [...byInternalId.entries()].filter(([internalId]) =>
-      !sessionItems.some((item) => String(item?.id || "") === internalId)
-    );
-
-    const report = {
-      generatedAt: new Date().toISOString(),
-      mode: "READ_ONLY",
-      activeSession: {
-        exists: !!session,
-        itemCount: sessionItems.length,
-        itemIds: sessionItems.map((item) => String(item?.id || "")),
-        referencedImageKeys: [...referencedSet],
-        missingReferencedImageKeys: [...referencedSet].filter((key) => !fileKeys.has(key))
-      },
-      visionFiles: {
-        count: visionFiles.length,
-        keys: visionFiles.map((record) => String(record?.id || "")),
-        orphanFileCount: orphanVisionFiles.length,
-        orphanKeys: orphanVisionFiles.map((record) => String(record?.id || "")),
-        recoverableObjectCount: orphanObjects.length,
-        recoverableObjects: orphanObjects.map(([internalId, records]) => ({
-          internalId,
-          cccItemId: String(records.find(r=>r?.metadata?.cccItemId)?.metadata?.cccItemId || ""),
-          title: String(records.find(r=>r?.metadata?.title)?.metadata?.title || ""),
-          fileKeys: records.map((r) => String(r?.id || ""))
-        }))
-      },
-      publishImages: {
-        count: publishImages.length,
-        ids: publishImages.map((record) => String(record?.id || "")),
-        sourceKeys: publishImages.map((record) => String(record?.originalFileKey || "")).filter(Boolean)
-      }
-    };
-
-    console.group("[CCC Vision] Lagringsdiagnostik – ENDAST LÄSNING");
-    console.log(report);
-    console.groupEnd();
-    return report;
-  }
-
-  window.CCC_VISION_STORAGE_DIAGNOSTIC = Object.freeze({
-    run: runVisionStorageDiagnostic
-  });
-
-  const visionStorageDiagnosticBtn = $("#visionStorageDiagnosticBtn");
-  const visionStorageDiagnosticPanel = $("#visionStorageDiagnosticPanel");
-  const visionStorageDiagnosticCloseBtn = $("#visionStorageDiagnosticCloseBtn");
-  const visionStorageDiagnosticResult = $("#visionStorageDiagnosticResult");
-
-  function diagnosticLine(label,value){
-    return `<p><strong>${label}:</strong> ${String(value)}</p>`;
-  }
-
-  visionStorageDiagnosticBtn?.addEventListener("click", async()=>{
-    if(visionStorageDiagnosticResult) visionStorageDiagnosticResult.innerHTML="<p>Läser lagringen…</p>";
-    if(visionStorageDiagnosticPanel) visionStorageDiagnosticPanel.hidden=false;
-    try{
-      const report=await runVisionStorageDiagnostic();
-      if(!visionStorageDiagnosticResult)return;
-      const active=report.activeSession;
-      const vf=report.visionFiles;
-      const pi=report.publishImages;
-      visionStorageDiagnosticResult.innerHTML=
-        diagnosticLine("Aktiv Vision-session",active.exists ? `${active.itemCount} objekt` : "saknas")+
-        diagnosticLine("Vision-original lagrade",`${vf.count} filer`)+
-        diagnosticLine("Ej kopplade Vision-original",`${vf.orphanFileCount} filer`)+
-        diagnosticLine("Möjligen återställningsbara objekt",`${vf.recoverableObjectCount} objekt`)+
-        diagnosticLine("Saknade bildreferenser i aktiv session",`${active.missingReferencedImageKeys.length} st`)+
-        diagnosticLine("Publicera-bilder",`${pi.count} poster`)+
-        (vf.recoverableObjects.length
-          ? `<p><strong>Återställningsbara ID:</strong><br>${vf.recoverableObjects.map(o=>o.internalId).join("<br>")}</p>`
-          : "<p>Inga separata återställningsbara objekt hittades via bildmetadata.</p>")+
-        '<p><strong>READ ONLY ✓</strong> – inget har ändrats eller raderats.</p>';
-    }catch(error){
-      console.error("[CCC Vision] Diagnostikvyn misslyckades",error);
-      if(visionStorageDiagnosticResult)visionStorageDiagnosticResult.innerHTML=
-        `<p>Diagnostiken kunde inte läsa lagringen.</p><p>${String(error?.message||error)}</p><p><strong>Inget har ändrats.</strong></p>`;
-    }
-  });
-  visionStorageDiagnosticCloseBtn?.addEventListener("click",()=>{
-    if(visionStorageDiagnosticPanel)visionStorageDiagnosticPanel.hidden=true;
-  });
-
   async function clearVisionSessionRecord() {
     const db = await openWorkspaceDb();
     try {
@@ -1892,11 +1771,16 @@
   }
 
   function finishBatch() {
-    clearVisionSessionRecord().catch((error) => console.warn("[CCC Vision] Kunde inte rensa avslutad fotosession", error));
+    /* En färdig granskningsrunda betyder INTE att fotosessionen ska raderas.
+       Objekten måste ligga kvar så att användaren kan återvända en annan dag,
+       komplettera fler bilder/objekt eller gå till Publicera utan dataförlust. */
     const approved = batchItems.filter((item) => item.approved).length;
     $("#seriesDoneText").textContent = `${approved} ${approved === 1 ? entityTerm("singular") : entityTerm("plural")} ${approved === 1 ? "är klart" : "är klara"} att publiceras.`;
     renderReadyPublishList();
     saveBatchMetadata();
+    queueVisionSessionSave().catch((error) =>
+      console.warn("[CCC Vision] Kunde inte säkerhetsspara färdig fotosession", error)
+    );
     showStage("seriesDoneCard", "done");
   }
 

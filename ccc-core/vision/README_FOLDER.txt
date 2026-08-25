@@ -156,3 +156,5 @@ v2.10.69: full sessionssparning före Publicera; retur återställer sessionen f
 v2.10.70-diag: read-only lagringsdiagnostik via CCC_VISION_STORAGE_DIAGNOSTIC.run().
 
 v2.10.71-diag: synlig read-only diagnostikknapp och resultatdialog för iPhone.
+
+v2.10.72: finishBatch bevarar/säkerhetssparar vision-active i stället för att radera sessionen; diagnostik-UI borttaget.
