@@ -77,3 +77,5 @@ v2.10.77: ghost-free shared page swipe; crop footer uses exact Vision Core foote
 v2.10.78: mobile grid standard fixed to 3x2/6 per page in Prepare and Channel item selection.
 
 v2.10.79: Vision-like swipe; fresh preview source in channel/confirm; confirm grid 3x2/6.
+
+v2.10.80: Publishs sid-swipe använder Visions synliga tvåsidesprincip med samma tröskel och kantmotstånd, så ingen svart tomyta visas mellan sidor. Anpassa bild använder Visions direkta Core-footer-mönster för Hjälp + Publicera; Publicera sparar anpassningen och öppnar sista kontrollvyn med aktuellt objekt valt.

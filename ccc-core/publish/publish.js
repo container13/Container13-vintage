@@ -515,6 +515,14 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
   grid.dataset.cccSmoothSwipeBound="1";
   let swipe=null;
   let suppressUntil=0;
+  let ghost=null;
+  let ghostDirection=0;
+
+  const clearGhost=()=>{
+    ghost?.remove();
+    ghost=null;
+    ghostDirection=0;
+  };
 
   grid.addEventListener("click",event=>{
     if(performance.now()<suppressUntil){
@@ -524,13 +532,13 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
   },true);
 
   const setTransform=(dx,animate=false)=>{
-    grid.style.transition=animate?"transform 320ms cubic-bezier(.22,.72,.22,1)":"none";
-    grid.style.transform=`translate3d(${dx}px,0,0)`;
+    setPagedGridTransform(grid,ghost,dx,Math.max(1,grid.clientWidth),ghostDirection,animate);
   };
 
   const begin=(x,y,id,target)=>{
     if(Math.ceil(getItems().length/perPage)<=1)return false;
     closeAnyDraftPreview();
+    clearGhost();
     swipe={id,x,y,dx:0,dy:0,horizontal:false,target};
     setTransform(0,false);
     return true;
@@ -553,7 +561,13 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
     const page=getPage();
     const last=Math.ceil(getItems().length/perPage)-1;
     const atEdge=(page===0&&dx>0)||(page===last&&dx<0);
-    setTransform(atEdge?dx*.24:dx,false);
+    const direction=dx<0?1:-1;
+    if(!atEdge&&direction!==ghostDirection){
+      clearGhost();
+      ghostDirection=direction;
+      ghost=createPageGhost(grid,kind,page+direction,perPage,getItems());
+    }
+    setTransform(softenPageSwipe(dx,Math.max(1,grid.clientWidth),atEdge),false);
   };
 
   const finish=async()=>{
@@ -563,6 +577,7 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
 
     if(!horizontal){
       setTransform(0,true);
+      window.setTimeout(clearGhost,370);
       draftPreviewSuppressClick=false;
       return;
     }
@@ -575,14 +590,18 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
     const last=Math.max(0,Math.ceil(getItems().length/perPage)-1);
     next=Math.max(0,Math.min(next,last));
 
-    setTransform(0,true);
-    if(next!==oldPage){
+    const changed=next!==oldPage;
+    setTransform(changed?(dx<0?-width:width):0,true);
+    if(changed){
       suppressUntil=performance.now()+500;
       window.setTimeout(async()=>{
         setPage(next);
         await render();
+        clearGhost();
         setTransform(0,false);
-      },120);
+      },370);
+    }else{
+      window.setTimeout(clearGhost,370);
     }
     window.setTimeout(()=>{draftPreviewSuppressClick=false;},350);
   };
@@ -615,6 +634,7 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
     if(event.pointerType==="mouse"&&swipe?.id===event.pointerId){
       swipe=null;
       setTransform(0,true);
+      window.setTimeout(clearGhost,370);
     }
   });
 }
@@ -679,8 +699,6 @@ function quickPublishCurrentCrop(){
   $("#cropDone")?.click();
 }
 
-let cropFooterObserver=null;
-
 function setCropFooterLikeVision(){
   if(currentPublishView!=="cropView")return;
   const footer=window.CCC_CORE?.footer;
@@ -698,22 +716,9 @@ function setCropFooterLikeVision(){
 function startCropFooterGuard(){
   setCropFooterLikeVision();
   requestAnimationFrame(setCropFooterLikeVision);
-  const footerEl=document.querySelector("#cccCoreFooter");
-  if(!footerEl)return;
-  cropFooterObserver?.disconnect();
-  cropFooterObserver=new MutationObserver(()=>{
-    if(currentPublishView!=="cropView")return;
-    if(!footerEl.querySelector(".ccc-core-footer-forward")){
-      queueMicrotask(setCropFooterLikeVision);
-    }
-  });
-  cropFooterObserver.observe(footerEl,{childList:true,subtree:true});
 }
 
-function stopCropFooterGuard(){
-  cropFooterObserver?.disconnect();
-  cropFooterObserver=null;
-}
+function stopCropFooterGuard(){}
 function configureFooterForView(view){
   if(!window.CCC_CORE?.footer){
     if(!publishFooterCoreWaitBound){

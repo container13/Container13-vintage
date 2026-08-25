@@ -2291,7 +2291,7 @@
 }
 
 
-/* CCC v2.10.77 – ren sid-swipe utan ghostlager */
+/* CCC v2.10.77 – stabila GPU-lager för sid-swipe */
 #gridView #draftGrid,
 #channelView #channelSelectGrid,
 #channelConfirmView #confirmGrid{
@@ -2299,7 +2299,17 @@
   backface-visibility:hidden!important;
   -webkit-backface-visibility:hidden!important;
 }
-.ccc-paged-grid-ghost{display:none!important}
+.ccc-paged-grid-ghost{
+  display:grid!important;
+  position:fixed!important;
+  z-index:20!important;
+  margin:0!important;
+  overflow:hidden!important;
+  background:transparent!important;
+  will-change:transform!important;
+  backface-visibility:hidden!important;
+  -webkit-backface-visibility:hidden!important;
+}
 
 
 /* CCC v2.10.78 – gemensam mobil gridstandard: 3×2 / 6 per sida */
@@ -2317,4 +2327,6 @@
     grid-template-columns:repeat(3,minmax(0,1fr))!important;
   }
 }
-.ccc-paged-grid-ghost{display:none!important}
+/* CCC v2.10.80 – Publish använder Visions princip: aktuell och nästa sida
+   ligger samtidigt i ett sammanhängande swipe-spår. */
+.ccc-paged-grid-ghost{display:grid!important}
