@@ -2186,3 +2186,12 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Resultatet visas direkt på iPhone: aktiv sessionsstorlek, antal Vision-original, orphan-original, möjliga återställningsbara objekt, saknade referenser och antal Publicera-poster.
 - Ingen återställning, skrivning eller radering utförs.
 
+## v2.10.72 – Vision-sessionen bevaras när granskningen är klar
+- Grundorsaken till den försvunna Vision-sessionen hittad: `finishBatch()` raderade alltid `vision-active` när alla aktuella objekt var klara.
+- Det innebar att `Fortsätt fotosession` kunde försvinna redan innan användaren tog nästa foto, trots att originalfilerna låg kvar i `vision-files`.
+- `finishBatch()` rensar inte längre sessionen. Den säkerhetssparar i stället hela aktuella sessionen.
+- `clearVisionSessionRecord()` används fortsatt när användaren uttryckligen tar bort det sista objektet ur sessionen.
+- Tillfällig read-only diagnostikknapp/vy från v2.10.70–71 är borttagen.
+- Gamla orphan-testbilder återställs inte automatiskt och raderas inte.
+- Publicera-koden är orörd i denna version.
+
