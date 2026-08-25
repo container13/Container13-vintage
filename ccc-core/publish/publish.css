@@ -491,6 +491,10 @@
 #swipeArea.is-swiping .swipe-image-next{z-index:2}
 #swipeArea.is-swiping .swipe-image-current{z-index:2}
 
+/* v2.10.82 – inkommande detaljbild ligger över den utgående under snapen. */
+#swipeArea.swipe-to-next .swipe-image-next,
+#swipeArea.swipe-to-prev .swipe-image-prev{z-index:3!important}
+
 /* CCC v2.8.92 – crop diagnostics, dev only. */
 .crop-diag-toggle{
   width:100%;

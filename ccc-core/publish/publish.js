@@ -687,7 +687,7 @@ function helpHtmlForView(view){
       <div class="help-row"><strong>Röd bock ✓</strong><br>Visas i Välj-läget och betyder att utkastet är markerat för borttagning. Inget tas bort förrän du trycker Ta bort och bekräftar.</div>
       <div class="help-row"><strong>Fortsätt</strong><br>Går vidare med de färdiga ${entityTerm("plural")} till val av kanal.</div>
       <div class="help-row"><strong>Välj</strong><br>Öppnar läget där du kan markera lokala utkast för borttagning.</div>`;
-  if(view==="detailView")return `<div class="help-row"><strong>Grön ✓</strong><br>Bilden har en sparad anpassning men kan ändras igen.</div><div class="help-row"><strong>Anpassa bild</strong><br>Öppna beskärning/zoom för den här bilden.</div><div class="help-row"><strong>Klar – tillbaka till bilderna</strong><br>Återgår till Förbered så att du kan fortsätta med nästa bild. Kanalvalet öppnas först med Fortsätt i gridden.</div>`;
+  if(view==="detailView")return `<div class="help-row"><strong>Grön ✓</strong><br>Bilden har en sparad anpassning men kan ändras igen.</div><div class="help-row"><strong>Anpassa bild</strong><br>Gör den automatiska bildanpassningen när den behövs.</div><div class="help-row"><strong>Publicera</strong><br>Tar aktuellt objekt direkt till sista kontrollvyn.</div><div class="help-row"><strong>Klar – tillbaka till bilderna</strong><br>Återgår till Förbered så att du kan fortsätta med nästa bild.</div>`;
   if(view==="cropView")return `<div class="help-row"><strong>Anpassa bild</strong><br>Flytta och zooma tills utsnittet känns rätt.</div><div class="help-row"><strong>Spara anpassning</strong><br>Sparar bilden och återgår till miniatyrerna.</div>`;
   return `<div class="help-row"><strong>Tillbaka</strong><br>Går till föregående steg.</div>`;
 }
@@ -703,6 +703,19 @@ function quickPublishCurrentCrop(){
   if(currentPublishView!=="cropView"||!activeItem())return;
   cropQuickPublishRequested=true;
   $("#cropDone")?.click();
+}
+
+async function quickPublishCurrentDetail(){
+  const item=activeItem();
+  if(currentPublishView!=="detailView"||!item)return;
+  quickPublishReturnView="detailView";
+  channelSelectedIds.clear();
+  channelSelectedIds.add(item.id);
+  channelSelectPage=0;
+  confirmPage=0;
+  container13ChannelSelected=true;
+  await renderChannelConfirmation();
+  show("channelConfirmView");
 }
 
 function setCropFooterLikeVision(){
@@ -747,6 +760,14 @@ function configureFooterForView(view){
   }
   if(draftSelectionMode){updateSelectionFooter();return;}
   const config={help:["gridView","detailView","cropView"].includes(view),onHelp:openPublishHelp};
+  if(view==="detailView"){
+    Object.assign(config,{
+      forward:true,
+      forwardLabel:"Publicera",
+      forwardIcon:"→",
+      onForward:quickPublishCurrentDetail
+    });
+  }
   if(view==="cropView"){
     Object.assign(config,{
       forward:true,
@@ -1076,6 +1097,7 @@ function openDetail(index){
   }
   swipeGesture=null;
   swipeAnimating=false;
+  $("#swipeArea")?.classList.remove("is-swiping","swipe-to-next","swipe-to-prev");
 
   activeIndex=normalizedIndex(index);
   const item=items[activeIndex];
@@ -1185,6 +1207,8 @@ function finishSwipe(e,cancelled=false){
   const targetItem=items[normalizedIndex(activeIndex+delta)];
   const targetItemId=targetItem?.id;
   swipeAnimating=true;
+  area.classList.toggle("swipe-to-next",delta>0);
+  area.classList.toggle("swipe-to-prev",delta<0);
   setSwipeTransforms(target,true);
 
   if(swipeCommitTimer)clearTimeout(swipeCommitTimer);
@@ -1200,6 +1224,7 @@ function finishSwipe(e,cancelled=false){
     $("#detailImage").src=itemImageSrc(activeIndex);
     updateDetailCopy();
     syncSwipeNeighbors();
+    area.classList.remove("swipe-to-next","swipe-to-prev");
     swipeAnimating=false;
   },490);
 }
@@ -2433,7 +2458,7 @@ async function leavePublishDetail(){
   }
   swipeGesture=null;
   swipeAnimating=false;
-  $("#swipeArea")?.classList.remove("is-swiping");
+  $("#swipeArea")?.classList.remove("is-swiping","swipe-to-next","swipe-to-prev");
   setSwipeTransforms(0,false);
   await renderGrid();
   activeItemId=null;
@@ -2464,6 +2489,11 @@ document.addEventListener("ccc:header-back",async()=>{if(currentPublishView==="g
     if(quickPublishReturnView==="cropView"){
       quickPublishReturnView=null;
       await openCrop();
+      return;
+    }
+    if(quickPublishReturnView==="detailView"){
+      quickPublishReturnView=null;
+      openDetail(activeIndex);
       return;
     }
     show("channelView");

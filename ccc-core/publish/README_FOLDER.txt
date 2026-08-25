@@ -81,3 +81,5 @@ v2.10.79: Vision-like swipe; fresh preview source in channel/confirm; confirm gr
 v2.10.80: Publishs sid-swipe använder Visions synliga tvåsidesprincip med samma tröskel och kantmotstånd, så ingen svart tomyta visas mellan sidor. Anpassa bild använder Visions direkta Core-footer-mönster för Hjälp + Publicera; Publicera sparar anpassningen och öppnar sista kontrollvyn med aktuellt objekt valt.
 
 v2.10.81: Den gamla gridden döljs vid avslutad swipe innan asynkron rendering, vilket tar bort den kvarhängande efterskuggan. Anpassa återapplicerar kort Visions Core-footer-konfiguration så Publicera-knappen inte tappas i laddningsordningen.
+
+v2.10.82: Detalj-swipe prioriterar inkommande bildlager över utgående under snapen för att ta bort efterskuggan. Publicera ligger i detaljvyns footer och går med aktuellt objekt direkt till sista kontrollvyn; Tillbaka återgår till detaljvyn.
