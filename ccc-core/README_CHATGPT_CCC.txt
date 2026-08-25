@@ -2206,3 +2206,11 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Swipe-ghost tas bort före den asynkrona renderingen av nästa sida, så en gammal sida inte kan ligga kvar som en 'skugga'.
 - Ingen Vision-logik och ingen kanal-/Nästa-/urvalslogik ändras.
 
+## v2.10.74 – Publish gesture-fix + snabbfil
+- Långtrycks-preview stängs via global pointerup/pointercancel på iPhone och kvarvarande preview-noder rensas.
+- Swipe avbryter preview.
+- Swipe-ghost kopierar den riktiga gridens exakta kolumnbredd, gap, padding och bredd; skugga/filter stängs av.
+- Nästa grid fryses till samma bredd under render för att minska storlekshopp när sidan landar.
+- Anpassa bild får `Publicera detta objekt`. Knappen sparar först aktuell anpassning, väljer bara aktuellt objekt och går till sista kontrollvyn om Container13 redan är vald; annars till kanalval.
+- Vision är orörd.
+
