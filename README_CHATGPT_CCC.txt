@@ -37,6 +37,12 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.80 – Publish-swipe + Anpassa-footer
+- Publishs sid-swipe visar aktuell och angränsande sida samtidigt under draget, med Visions tröskel och kantmotstånd.
+- Den svarta tomytan mellan bildsidor tas bort; sidan byts först efter avslutad animation.
+- Anpassa bild använder samma direkta Core-footer-konfiguration som Vision för Hjälp + Publicera, utan MutationObserver-snabbfixen.
+- Snabbflödet Publicera sparar aktuell anpassning och går direkt till sista kontrollvyn med aktuellt objekt valt.
+
 v2.9.4 – Header Back hotfix
 - Fixar centrala tillbaka-knappar i Publicera.
 - Orsak: gamla DOM-lyssnare för borttagna #detailBack och #cropBack låg kvar och stoppade publish.js med null.addEventListener innan CCC Header Core-eventen registrerades.
@@ -2382,4 +2388,3 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Sista kontrollvyn följer också mobilregeln 3×2 / 6 per sida.
 - Förbered och Välj objekt fortsätter vara 3×2 / 6 per sida.
 - Footer-snabbfilen från v2.10.77/.78 lämnas orörd.
-
