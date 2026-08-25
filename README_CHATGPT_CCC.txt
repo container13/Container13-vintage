@@ -2376,3 +2376,10 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Swipe/pager använder nu samma sidstorlek 6 även i Välj objekt.
 - Footer-snabbfil och ghostfri swipe från v2.10.77 lämnas orörda.
 
+## v2.10.79 – Vision-lik swipe, korrekt bildkälla, 3×2 i kontrollvyn
+- Publish-swipen använder Visions gest-/snapprincip utan svart mellanfas.
+- Välj objekt och sista kontrollvyn använder i första hand färsk blob-backed preview.
+- Sista kontrollvyn följer också mobilregeln 3×2 / 6 per sida.
+- Förbered och Välj objekt fortsätter vara 3×2 / 6 per sida.
+- Footer-snabbfilen från v2.10.77/.78 lämnas orörd.
+
