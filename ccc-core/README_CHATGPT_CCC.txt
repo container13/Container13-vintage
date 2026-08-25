@@ -2214,3 +2214,14 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Anpassa bild får `Publicera detta objekt`. Knappen sparar först aktuell anpassning, väljer bara aktuellt objekt och går till sista kontrollvyn om Container13 redan är vald; annars till kanalval.
 - Vision är orörd.
 
+## v2.10.75 – Förbered 2×3 + riktig footer-snabbfil
+- Förbered för publicering visar 2×3 (6 objekt per sida) i mobil portrait, i linje med Vision.
+- Välj objekt efter kanal behåller 3×3 / 9 per sida.
+- Förbered-pager/swipe använder nu 6 som faktisk sidstorlek; placeholders följer samma sidstorlek.
+- Oavsiktlig helsides-scroll stängs av i de normala Publicera-arbetsvyerna på mobil; Anpassa bild får fortfarande scrolla om en liten skärm kräver det.
+- Den felplacerade `Publicera detta objekt`-knappen från v2.10.74 tas bort från Anpassa-vyn.
+- Anpassa bild får i stället `Publicera` som forward/snabbfil i Core-footern, samma mönster som Vision.
+- Footer-snabbfilen sparar aktuell anpassning, väljer exakt aktuellt objekt, aktiverar Container13 och går direkt till sista kontrollvyn före publicering.
+- Tillbaka från sista kontrollvyn går tillbaka till Anpassa bild när kontrollvyn nåddes via snabbfilen.
+- Normal Publicera-navigation behåller sin vanliga Tillbaka-väg.
+
