@@ -2349,3 +2349,13 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Tillbaka från sista kontrollvyn går tillbaka till Anpassa bild när kontrollvyn nåddes via snabbfilen.
 - Normal Publicera-navigation behåller sin vanliga Tillbaka-väg.
 
+## v2.10.76 – 3×2 i Förbered + säkrad footer-snabbfil
+- Korrigerar v2.10.75: Förbered är 3 kolumner × 2 rader (6 per sida), samma orientering som Vision.
+- Sidstorleken 6 från v2.10.75 behålls.
+- `Publicera` i Anpassa säkras efter att `cropView` faktiskt blivit aktiv, så en sen Core-footer-rendering inte kan skriva över snabbfilen.
+- Ett DOM-säkerhetsnät skapar samma Core-footer-knapp om Core av någon anledning renderat om footern på iPhone.
+- Snabbfilen ligger fortfarande i footern, inte i arbetsytan.
+- Snabbfil: aktuell anpassning sparas -> exakt aktuellt objekt -> Container13 -> direkt sista kontrollvyn.
+- Tillbaka från den kontrollvyn återöppnar Anpassa för samma objekt.
+- Inga andra Publish-flöden ändras.
+
