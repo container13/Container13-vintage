@@ -2278,3 +2278,14 @@
 
 /* .74-knappen i arbetsytan är borttagen; snabbfilen ligger nu i Core-footern. */
 #cropView .crop-quick-publish{display:none!important}
+
+/* CCC v2.10.76 – Förbered = 3 kolumner × 2 rader */
+@media(max-width:480px) and (orientation:portrait){
+  #gridView #draftGrid.draft-grid,
+  #gridView #draftGrid.draft-grid.grid-1,
+  #gridView #draftGrid.draft-grid.grid-2,
+  #gridView #draftGrid.draft-grid.grid-4,
+  #gridView #draftGrid.draft-grid.grid-9{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+}

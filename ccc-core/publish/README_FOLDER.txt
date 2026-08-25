@@ -69,3 +69,5 @@ v2.10.73: Förbered och Välj objekt delar gridklass/geometri; draftGrid är int
 v2.10.74: iPhone longpress cleanup, exact swipe ghost geometry, crop quick-publish.
 
 v2.10.75: mobile Prepare 2x3/6 per page; normal workflow scroll containment; crop footer Publicera direct-to-confirm with origin-aware back.
+
+v2.10.76: Prepare corrected to 3x2; crop footer quick-publish reinforced after view activation with Core-footer fallback.

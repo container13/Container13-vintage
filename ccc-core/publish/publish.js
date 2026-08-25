@@ -282,6 +282,10 @@ function show(view){if(view!=="gridView"&&draftSelectionMode){draftSelectionMode
   ["startView","gridView","channelView","channelTargetsView","channelConfirmView","publishedView","detailView","cropView"].forEach(id=>$("#"+id).hidden=id!==view);
   setPublishHeader(view);
   configureFooterForView(view);
+  if(view==="cropView"){
+    ensureCropQuickPublishFooter();
+    window.setTimeout(ensureCropQuickPublishFooter,80);
+  }
   requestAnimationFrame(()=>{
     resetViewScroll(view);
     const active=$("#"+view);
@@ -692,6 +696,40 @@ function quickPublishCurrentCrop(){
   if(currentPublishView!=="cropView"||!activeItem())return;
   cropQuickPublishRequested=true;
   $("#cropDone")?.click();
+}
+
+function ensureCropQuickPublishFooter(){
+  if(currentPublishView!=="cropView")return;
+  const footer=window.CCC_CORE?.footer;
+  if(footer){
+    footer.setTools?.({
+      help:true,
+      onHelp:openPublishHelp,
+      forward:true,
+      forwardLabel:"Publicera",
+      forwardIcon:"→",
+      onForward:quickPublishCurrentCrop
+    });
+  }
+  /* Säkerhetsnät för iPhone: om Core-footern har renderats om efter setTools
+     ska snabbfilen fortfarande finnas i footern. */
+  requestAnimationFrame(()=>{
+    if(currentPublishView!=="cropView")return;
+    const coreFooter=document.querySelector("#cccCoreFooter");
+    if(!coreFooter||coreFooter.querySelector(".ccc-core-footer-forward"))return;
+    let tools=coreFooter.querySelector(".ccc-core-footer-tools");
+    if(!tools){
+      tools=document.createElement("div");
+      tools.className="ccc-core-footer-tools";
+      coreFooter.insertBefore(tools,coreFooter.querySelector("#cccCoreFooterBack")||null);
+    }
+    const button=document.createElement("button");
+    button.type="button";
+    button.className="ccc-core-footer-tool ccc-core-footer-forward";
+    button.innerHTML='<span aria-hidden="true">→</span><small>Publicera</small>';
+    button.addEventListener("click",quickPublishCurrentCrop);
+    tools.append(button);
+  });
 }
 
 function configureFooterForView(view){
