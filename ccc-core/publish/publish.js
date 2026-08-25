@@ -28,10 +28,11 @@ const entityTerm=(form="singular",cap=false)=>window.CCC_TERMINOLOGY?.label?.(fo
 const $=(s)=>document.querySelector(s);
 const DB_NAME="ccc-local-workspace", DB_VERSION=3, STORE_NAME="images", FILE_STORE="vision-files";
 let items=[],activeIndex=0,objectUrls=[];
-const DRAFTS_PER_PAGE=9;
+const DRAFTS_PER_PAGE=9, PREPARED_PER_PAGE=6;
 const PAGED_GRID_GUTTER=14;
 const PUBLICATION_HISTORY_KEY="ccc-publication-history-v1";
 let draftPage=0,draftGridGesture=null;
+let quickPublishReturnView=null;
 let draftPreviewGesture=null,draftPreviewSuppressClick=false;
 let cropImage=null,cropState=null,pointer=null;
 let activeItemId=null;
@@ -412,7 +413,7 @@ function renderDraftPager(){
     grid.insertAdjacentElement("afterend",pager);
   }
   pager.replaceChildren();
-  const pages=Math.ceil(items.length/DRAFTS_PER_PAGE);
+  const pages=Math.ceil(items.length/PREPARED_PER_PAGE);
   pager.hidden=pages<=1;
   for(let i=0;i<pages;i+=1){
     const dot=document.createElement("button");
@@ -452,8 +453,8 @@ function pageGhostCard(item,index,kind){
   }
   return card;
 }
-function appendGridPlaceholders(grid,count){
-  for(let index=count;index<DRAFTS_PER_PAGE;index+=1){
+function appendGridPlaceholders(grid,count,perPage=DRAFTS_PER_PAGE){
+  for(let index=count;index<perPage;index+=1){
     const placeholder=document.createElement("span");
     placeholder.className="draft-grid-placeholder";
     placeholder.setAttribute("aria-hidden","true");
@@ -638,7 +639,7 @@ function bindDraftGridSwipe(){
     kind:"draft",
     getPage:()=>draftPage,
     setPage:value=>{draftPage=value;},
-    perPage:DRAFTS_PER_PAGE,
+    perPage:PREPARED_PER_PAGE,
     render:renderGrid
   });
 }
@@ -687,6 +688,12 @@ function openPublishHelp(){
 }
 function closePublishHelp(){const dlg=$("#publishHelpDialog");if(dlg)dlg.hidden=true;}
 let publishFooterCoreWaitBound=false;
+function quickPublishCurrentCrop(){
+  if(currentPublishView!=="cropView"||!activeItem())return;
+  cropQuickPublishRequested=true;
+  $("#cropDone")?.click();
+}
+
 function configureFooterForView(view){
   if(!window.CCC_CORE?.footer){
     if(!publishFooterCoreWaitBound){
@@ -704,6 +711,14 @@ function configureFooterForView(view){
   }
   if(draftSelectionMode){updateSelectionFooter();return;}
   const config={help:["gridView","detailView","cropView"].includes(view),onHelp:openPublishHelp};
+  if(view==="cropView"){
+    Object.assign(config,{
+      forward:true,
+      forwardLabel:"Publicera",
+      forwardIcon:"→",
+      onForward:quickPublishCurrentCrop
+    });
+  }
   if(view==="gridView"){
     Object.assign(config,{
       help:true,
@@ -823,7 +838,7 @@ async function confirmDeleteSelectedDrafts(){
   items=items.filter(item=>!wanted.has(item.id));
   selectedDraftIds.clear();
   draftSelectionMode=false;
-  draftPage=Math.min(draftPage,Math.max(0,Math.ceil(items.length/DRAFTS_PER_PAGE)-1));
+  draftPage=Math.min(draftPage,Math.max(0,Math.ceil(items.length/PREPARED_PER_PAGE)-1));
 
   const timer=window.setTimeout(()=>{commitPendingDraftDelete();configureFooterForView("gridView");},8000);
   pendingDraftDelete={ids,removed,timer};
@@ -853,10 +868,10 @@ async function renderGrid(){
   grid.hidden=!hasItems;
   grid.style.display=hasItems?"grid":"none";
 
-  const pages=Math.max(1,Math.ceil(items.length/DRAFTS_PER_PAGE));
+  const pages=Math.max(1,Math.ceil(items.length/PREPARED_PER_PAGE));
   draftPage=Math.max(0,Math.min(draftPage,pages-1));
-  const pageStart=draftPage*DRAFTS_PER_PAGE;
-  const pageEnd=Math.min(items.length,pageStart+DRAFTS_PER_PAGE);
+  const pageStart=draftPage*PREPARED_PER_PAGE;
+  const pageEnd=Math.min(items.length,pageStart+PREPARED_PER_PAGE);
   const visibleCount=Math.max(0,pageEnd-pageStart);
   applySharedPublishGridClass(grid,visibleCount);
   for(let index=pageStart;index<pageEnd;index+=1){
@@ -933,7 +948,7 @@ async function renderGrid(){
     });
     grid.append(b);
   }
-  appendGridPlaceholders(grid,visibleCount);
+  appendGridPlaceholders(grid,visibleCount,PREPARED_PER_PAGE);
   renderDraftPager();
 }
 function normalizedIndex(index){
@@ -1762,10 +1777,6 @@ function endCropPointer(e){
 }
 ["pointerup","pointercancel","lostpointercapture"].forEach(n=>$("#cropCanvas").addEventListener(n,endCropPointer));
 let cropQuickPublishRequested=false;
-$("#cropQuickPublishBtn")?.addEventListener("click",()=>{
-  cropQuickPublishRequested=true;
-  $("#cropDone")?.click();
-});
 
 $("#cropDone").addEventListener("click",async()=>{
   const item=activeItem(),g=geometry();
@@ -1789,21 +1800,16 @@ $("#cropDone").addEventListener("click",async()=>{
   recentlyAdaptedItemId=savedItemId;
   if(cropQuickPublishRequested){
     cropQuickPublishRequested=false;
+    quickPublishReturnView="cropView";
     channelSelectedIds.clear();
     channelSelectedIds.add(savedItemId);
     channelSelectPage=0;
     confirmPage=0;
-    if(container13ChannelSelected){
-      await renderChannelConfirmation();
-      show("channelConfirmView");
-    }else{
-      const c13=$("#container13ChannelBtn");
-      c13?.classList.remove("is-chosen");
-      c13?.setAttribute("aria-pressed","false");
-      const next=$("#channelNextBtn");
-      if(next)next.disabled=true;
-      show("channelTargetsView");
-    }
+    /* Snabbfilen betyder: aktuellt objekt -> sista kontrollvyn.
+       Container13 aktiveras här så inga mellanvyer behövs. */
+    container13ChannelSelected=true;
+    await renderChannelConfirmation();
+    show("channelConfirmView");
     return;
   }
   show("gridView");
@@ -1933,6 +1939,7 @@ async function renderChannelSelection(){
 
 $("#channelContinueBtn")?.addEventListener("click",async()=>{
   if(!channelSelectedIds.size)return;
+  quickPublishReturnView=null;
   confirmPage=0;
   await renderChannelConfirmation();
   show("channelConfirmView");
@@ -2418,6 +2425,11 @@ document.addEventListener("ccc:header-back",async()=>{if(currentPublishView==="g
     return;
   }
   if(currentPublishView==="channelConfirmView"){
+    if(quickPublishReturnView==="cropView"){
+      quickPublishReturnView=null;
+      await openCrop();
+      return;
+    }
     show("channelView");
     return;
   }

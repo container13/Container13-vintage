@@ -67,3 +67,5 @@ v2.10.69: orört Vision-original hydreras före detalj/crop; Förbered är 3×3 
 v2.10.73: Förbered och Välj objekt delar gridklass/geometri; draftGrid är inte längre flex-squeezed; channel-pager ovanför Fortsätt; swipe-ghost rensas före async render.
 
 v2.10.74: iPhone longpress cleanup, exact swipe ghost geometry, crop quick-publish.
+
+v2.10.75: mobile Prepare 2x3/6 per page; normal workflow scroll containment; crop footer Publicera direct-to-confirm with origin-aware back.
