@@ -596,9 +596,15 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
       suppressUntil=performance.now()+500;
       window.setTimeout(async()=>{
         setPage(next);
+        /* Den bortgående gridden får inte ligga kvar som ett halvtransparent
+           lager medan nästa sida bygger sina miniatyrer. Målsidan (ghost)
+           ligger kvar synlig tills den riktiga gridden är färdig. */
+        grid.style.visibility="hidden";
+        grid.style.transition="none";
         await render();
-        clearGhost();
         setTransform(0,false);
+        grid.style.visibility="visible";
+        clearGhost();
       },370);
     }else{
       window.setTimeout(clearGhost,370);
@@ -715,7 +721,12 @@ function setCropFooterLikeVision(){
 
 function startCropFooterGuard(){
   setCropFooterLikeVision();
-  requestAnimationFrame(setCropFooterLikeVision);
+  /* Core kan bli klart i samma bildruta som Anpassa öppnas. Några korta,
+     villkorade omtag gör samma deklarativa setTools-anrop som Vision och
+     lämnar inga observer/listeners efter sig. */
+  [0,60,180].forEach(delay=>window.setTimeout(()=>{
+    if(currentPublishView==="cropView")setCropFooterLikeVision();
+  },delay));
 }
 
 function stopCropFooterGuard(){}
