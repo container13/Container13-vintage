@@ -2359,3 +2359,20 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Tillbaka från den kontrollvyn återöppnar Anpassa för samma objekt.
 - Inga andra Publish-flöden ändras.
 
+## v2.10.77 – ghostfri Publish-swipe + Vision-mönster för footer
+- Publiceras delade swipe-motor använder inte längre ett separat ghost-grid bredvid den riktiga sidan.
+- Under drag flyttas endast den aktuella sidan. Vid godkänd swipe glider den ut, nästa sida renderas utanför vyn och glider sedan in. Därmed kan inga dubbla/överlagrade kort eller följande skuggor visas mitt i swipen.
+- Samma swipe-motor används i Förbered, Välj objekt och sista kontrollgrid.
+- Förbered behåller 3×2 / 6 per sida. Välj objekt behåller 3×3 / 9 per sida.
+- Footer-snabbfilen i Anpassa använder nu exakt samma Core-anrop som Vision: `footer.setTools({help, forward, forwardLabel:"Publicera", ...})`.
+- Ett litet MutationObserver-skydd är aktivt endast medan cropView visas och återställer Publicera-knappen om Core skulle rendera om footern på iPhone.
+- Snabbfilens route är oförändrad: aktuell anpassning sparas -> exakt aktuellt objekt -> direkt sista kontrollvyn -> Tillbaka återgår till Anpassa.
+
+## v2.10.78 – gemensam mobil gridregel 3×2
+- Fastställer CCC-regeln för mobil: 3 kolumner × 2 rader = 6 objekt per sida i Vision/Pubish arbetsgrids.
+- Förbered för publicering behåller 6 per sida.
+- Välj objekt efter kanal ändras från 9 till 6 per sida.
+- Välj objekt använder 3 kolumner och 2 rader på mobil portrait.
+- Swipe/pager använder nu samma sidstorlek 6 även i Välj objekt.
+- Footer-snabbfil och ghostfri swipe från v2.10.77 lämnas orörda.
+
