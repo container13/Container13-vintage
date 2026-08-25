@@ -2309,3 +2309,12 @@
     grid-template-columns:repeat(3,minmax(0,1fr))!important;
   }
 }
+
+
+/* CCC v2.10.79 – samma 3×2-standard även i sista kontrollvyn */
+@media(max-width:480px) and (orientation:portrait){
+  #channelConfirmView #confirmGrid.draft-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+}
+.ccc-paged-grid-ghost{display:none!important}
