@@ -8,7 +8,7 @@
 <link rel="manifest" href="../manifest.webmanifest?v=2.9.3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>CCC Publicera v2.10.67</title>
+<title>CCC Publicera v2.9.22</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
 <link rel="stylesheet" href="publish.css?v=2.10.1">
@@ -73,7 +73,6 @@
       <div class="publish-heading"><div><h1>Förbered för publicering</h1><p id="draftCount">0 utkast</p></div></div>
       <div id="emptyState" class="publish-empty" hidden><strong>Inget väntar på publicering</strong><span data-ccc-term="Skapa ett {singular} i Vision först.">Skapa ett objekt i Vision först.</span></div>
       <div id="draftGrid" class="draft-grid" aria-live="polite"></div>
-      <div id="draftPager" class="ccc-draft-pager" aria-label="Sidor med lokala utkast"></div>
       <button id="preparedContinueBtn" class="primary-action prepared-continue-action" type="button">Fortsätt</button>
     </section>
 
@@ -232,6 +231,7 @@
         <button id="keepOriginalBtn" class="secondary-action" type="button">Behåll hela bilden</button>
         <button id="cropReset" class="secondary-action" type="button">Återställ anpassning</button>
         <button id="cropDone" class="primary-action crop-accept" type="button">Spara anpassning</button>
+        <button id="cropQuickPublishBtn" class="secondary-action crop-quick-publish" type="button">Publicera detta objekt</button>
       </div>
     </section>
   </main>

@@ -2239,3 +2239,7 @@
     padding:4px 2px 9px!important;
   }
 }
+
+/* CCC v2.10.74 – iPhone gesture cleanup + snabbfil från Anpassa bild */
+.ccc-paged-grid-ghost,.ccc-paged-grid-ghost .draft-card{box-shadow:none!important;filter:none!important;text-shadow:none!important}
+#cropView .crop-quick-publish{grid-column:1/-1;width:100%;margin-top:2px}

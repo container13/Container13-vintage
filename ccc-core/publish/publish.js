@@ -326,6 +326,10 @@ function closeDraftPreview(){
   window.setTimeout(cleanup,420);
   draftPreviewGesture=null;
 }
+function closeAnyDraftPreview(){
+  if(draftPreviewGesture?.preview)closeDraftPreview(); else clearDraftPreviewGesture();
+  document.querySelectorAll(".ccc-draft-preview-layer,.ccc-draft-preview-image").forEach(node=>node.remove());
+}
 function openDraftPreview(button,img){
   if(!draftPreviewGesture||draftPreviewGesture.button!==button)return;
   const rect=button.getBoundingClientRect();
@@ -385,6 +389,13 @@ function bindDraftPreview(button,img){
   button.addEventListener("pointerup",finish);
   button.addEventListener("pointercancel",finish);
   button.addEventListener("lostpointercapture",finish);
+  const globalFinish=e=>{
+    const g=draftPreviewGesture;
+    if(!g||g.id!==e.pointerId)return;
+    if(g.longPressed)closeAnyDraftPreview(); else clearDraftPreviewGesture();
+  };
+  window.addEventListener("pointerup",globalFinish,{once:true});
+  window.addEventListener("pointercancel",globalFinish,{once:true});
 }
 
 /* Dubbeltryck tas bort: enkeltryck, långtryck och swipe ska inte konkurrera. */
@@ -464,6 +475,13 @@ function createPageGhost(grid,kind,page,perPage,sourceItems=items){
   ghost.style.setProperty("top",`${rect.top}px`,"important");
   ghost.style.setProperty("width",`${rect.width}px`,"important");
   ghost.style.setProperty("height",`${rect.height}px`,"important");
+  const gridStyle=getComputedStyle(grid);
+  ghost.style.setProperty("grid-template-columns",gridStyle.gridTemplateColumns,"important");
+  ghost.style.setProperty("column-gap",gridStyle.columnGap,"important");
+  ghost.style.setProperty("row-gap",gridStyle.rowGap,"important");
+  ghost.style.setProperty("padding",gridStyle.padding,"important");
+  ghost.style.setProperty("box-shadow","none","important");
+  ghost.style.setProperty("filter","none","important");
   for(let index=range.start;index<range.end;index+=1){
     ghost.append(pageGhostCard(sourceItems[index],index,kind));
   }
@@ -507,6 +525,7 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
     const pages=Math.ceil(getItems().length/perPage);
     if(animating||pages<=1)return;
     if(event.pointerType==="mouse"&&event.button!==0)return;
+    closeAnyDraftPreview();
     grid.setPointerCapture?.(event.pointerId);
     gesture={id:event.pointerId,startX:event.clientX,startY:event.clientY,dx:0,horizontal:false,direction:0,ghost:null,lastX:event.clientX,lastTime:performance.now(),velocityX:0};
   });
@@ -590,15 +609,17 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
       removePagedGridGhosts();
       grid.style.transition="none";
       grid.style.transform="translate3d(0,0,0)";
-      grid.style.visibility="hidden";
+      const frozenWidth=grid.getBoundingClientRect().width;
+      grid.style.setProperty("width",`${frozenWidth}px`,"important");
       setPage(target);
       try{
         await render();
       }finally{
-        grid.style.visibility="";
         requestAnimationFrame(()=>{
+          grid.style.removeProperty("width");
           grid.style.transition="";
           grid.style.transform="";
+          removePagedGridGhosts();
           animating=false;
         });
       }
@@ -1740,6 +1761,12 @@ function endCropPointer(e){
   pinchStart=null;
 }
 ["pointerup","pointercancel","lostpointercapture"].forEach(n=>$("#cropCanvas").addEventListener(n,endCropPointer));
+let cropQuickPublishRequested=false;
+$("#cropQuickPublishBtn")?.addEventListener("click",()=>{
+  cropQuickPublishRequested=true;
+  $("#cropDone")?.click();
+});
+
 $("#cropDone").addEventListener("click",async()=>{
   const item=activeItem(),g=geometry();
   if(!item||!g)return;
@@ -1760,6 +1787,25 @@ $("#cropDone").addEventListener("click",async()=>{
   item.publishUrl=url(blob);
   item.thumbUrl=await previewSrc(item);
   recentlyAdaptedItemId=savedItemId;
+  if(cropQuickPublishRequested){
+    cropQuickPublishRequested=false;
+    channelSelectedIds.clear();
+    channelSelectedIds.add(savedItemId);
+    channelSelectPage=0;
+    confirmPage=0;
+    if(container13ChannelSelected){
+      await renderChannelConfirmation();
+      show("channelConfirmView");
+    }else{
+      const c13=$("#container13ChannelBtn");
+      c13?.classList.remove("is-chosen");
+      c13?.setAttribute("aria-pressed","false");
+      const next=$("#channelNextBtn");
+      if(next)next.disabled=true;
+      show("channelTargetsView");
+    }
+    return;
+  }
   show("gridView");
   await renderGrid();
   requestAnimationFrame(()=>{

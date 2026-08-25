@@ -65,3 +65,5 @@ v2.10.66: stöd för `?view=prepare` och `?view=prepare&item=<id>`; specifikt Vi
 v2.10.69: orört Vision-original hydreras före detalj/crop; Förbered är 3×3 via enbart dynamisk CSS; kanal-/Nästa-logik orörd.
 
 v2.10.73: Förbered och Välj objekt delar gridklass/geometri; draftGrid är inte längre flex-squeezed; channel-pager ovanför Fortsätt; swipe-ghost rensas före async render.
+
+v2.10.74: iPhone longpress cleanup, exact swipe ghost geometry, crop quick-publish.
