@@ -37,6 +37,11 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.81 – Swipe-efterskugga + säker Anpassa-footer
+- Den bortgående Publish-gridden döljs exakt när swipe-animationen är klar; nästa sidkopia ligger kvar tills den riktiga sidan är färdigrenderad och tas sedan bort direkt.
+- Anpassa bild återanropar Visions Core-footer-konfiguration under de första korta renderingsögonblicken, så Hjälp + Publicera visas även när Core och vyn blir klara samtidigt.
+- Snabbvalet är fortsatt avgränsat till Anpassa bild. Det går med aktuellt objekt direkt till sista kontrollvyn; Tillbaka därifrån återgår till Anpassa.
+
 v2.10.80 – Publish-swipe + Anpassa-footer
 - Publishs sid-swipe visar aktuell och angränsande sida samtidigt under draget, med Visions tröskel och kantmotstånd.
 - Den svarta tomytan mellan bildsidor tas bort; sidan byts först efter avslutad animation.
