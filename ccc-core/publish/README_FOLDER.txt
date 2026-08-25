@@ -63,3 +63,5 @@ v2.10.1: Publicering arkiverar lokalt original, WebP och metadata i stället fö
 v2.10.66: stöd för `?view=prepare` och `?view=prepare&item=<id>`; specifikt Vision-objekt öppnas direkt.
 
 v2.10.69: orört Vision-original hydreras före detalj/crop; Förbered är 3×3 via enbart dynamisk CSS; kanal-/Nästa-logik orörd.
+
+v2.10.73: Förbered och Välj objekt delar gridklass/geometri; draftGrid är inte längre flex-squeezed; channel-pager ovanför Fortsätt; swipe-ghost rensas före async render.

@@ -296,13 +296,8 @@ function ensureDraftGridUi(){
   const style=document.createElement("style");
   style.id="cccDraftGridCompactStyles";
   style.textContent=`
-    #draftGrid.draft-grid{width:96%!important;margin-inline:auto!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;column-gap:15px!important;row-gap:11px!important;padding:5px 4px 12px!important;touch-action:pan-y;overflow:hidden;align-content:start;min-height:0!important}
-    #draftGrid.draft-grid.grid-1,
-    #draftGrid.draft-grid.grid-2,
-    #draftGrid.draft-grid.grid-4,
-    #draftGrid.draft-grid.grid-9{grid-template-columns:repeat(3,minmax(0,1fr))!important}
-    #draftGrid .draft-card{position:relative!important;aspect-ratio:1/1!important;min-width:0!important;min-height:0!important;border-radius:12px!important;overflow:hidden!important;padding:0!important;margin:0!important;-webkit-touch-callout:none!important;-webkit-tap-highlight-color:transparent!important;-webkit-user-select:none!important;user-select:none!important;appearance:none!important;-webkit-appearance:none!important}
-    #draftGrid .draft-card img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;pointer-events:none!important;-webkit-user-drag:none!important;-webkit-user-select:none!important;user-select:none!important;-webkit-tap-highlight-color:transparent!important}
+    #draftGrid .draft-card{-webkit-touch-callout:none!important;-webkit-tap-highlight-color:transparent!important;-webkit-user-select:none!important;user-select:none!important;appearance:none!important;-webkit-appearance:none!important}
+    #draftGrid .draft-card img{pointer-events:none!important;-webkit-user-drag:none!important;-webkit-user-select:none!important;user-select:none!important;-webkit-tap-highlight-color:transparent!important}
     .ccc-draft-preview-layer{position:fixed;inset:0;z-index:9999;pointer-events:none;background:rgba(5,7,12,.58);opacity:0;transition:opacity .16s ease}
     .ccc-draft-preview-layer.is-open{opacity:1}
     .ccc-draft-preview-image{position:fixed;z-index:10000;pointer-events:none;object-fit:contain;background:#0b0d13;border-radius:12px;box-shadow:0 18px 52px rgba(0,0,0,.55);transform-origin:center center;transform:translate3d(var(--ccc-preview-tx),var(--ccc-preview-ty),0) scale(var(--ccc-preview-sx),var(--ccc-preview-sy));will-change:transform,border-radius;transition:transform .36s cubic-bezier(.22,.7,.24,1),border-radius .36s ease}.ccc-draft-preview-image.is-open{transform:translate3d(0,0,0) scale(1,1);border-radius:16px}
@@ -454,7 +449,11 @@ function appendGridPlaceholders(grid,count){
     grid.append(placeholder);
   }
 }
+function removePagedGridGhosts(){
+  document.querySelectorAll(".ccc-paged-grid-ghost").forEach(node=>node.remove());
+}
 function createPageGhost(grid,kind,page,perPage,sourceItems=items){
+  removePagedGridGhosts();
   const rect=grid.getBoundingClientRect();
   const ghost=document.createElement("div");
   ghost.className=`ccc-paged-grid-ghost draft-grid ${kind==="channel"?"channel-select-grid":kind==="confirm"?"confirm-grid":""}`;
@@ -585,16 +584,24 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
     setPagedGridTransform(grid,g.ghost,direction>0?-travel:travel,width,direction,true);
 
     window.setTimeout(async()=>{
-      setPage(target);
-      await render();
+      /* Ghosten får inte ligga kvar medan nästa sida renderas/asynkront laddar bilder.
+         Det var den som kunde se ut som en fastfrusen skugga på iPhone. */
       g.ghost?.remove();
+      removePagedGridGhosts();
       grid.style.transition="none";
       grid.style.transform="translate3d(0,0,0)";
-      requestAnimationFrame(()=>{
-        grid.style.transition="";
-        grid.style.transform="";
-        animating=false;
-      });
+      grid.style.visibility="hidden";
+      setPage(target);
+      try{
+        await render();
+      }finally{
+        grid.style.visibility="";
+        requestAnimationFrame(()=>{
+          grid.style.transition="";
+          grid.style.transform="";
+          animating=false;
+        });
+      }
     },370);
   };
 
@@ -830,11 +837,7 @@ async function renderGrid(){
   const pageStart=draftPage*DRAFTS_PER_PAGE;
   const pageEnd=Math.min(items.length,pageStart+DRAFTS_PER_PAGE);
   const visibleCount=Math.max(0,pageEnd-pageStart);
-  grid.classList.remove("grid-1","grid-2","grid-4","grid-9");
-  if(visibleCount===1)grid.classList.add("grid-1");
-  else if(visibleCount===2)grid.classList.add("grid-2");
-  else if(visibleCount<=4)grid.classList.add("grid-4");
-  else grid.classList.add("grid-9");
+  applySharedPublishGridClass(grid,visibleCount);
   for(let index=pageStart;index<pageEnd;index+=1){
     const item=items[index];
     const b=document.createElement("button");
@@ -1783,6 +1786,10 @@ function channelGridClass(count){
   if(count<=4)return "grid-4";
   return "grid-9";
 }
+function applySharedPublishGridClass(grid,count,extraClass=""){
+  if(!grid)return;
+  grid.className=`draft-grid ${extraClass} ${channelGridClass(count)}`.trim();
+}
 
 function updateChannelSelectionUi(){
   const count=channelSelectedIds.size;
@@ -1818,7 +1825,7 @@ async function renderChannelSelection(){
   const start=channelSelectPage*CHANNEL_PER_PAGE;
   const end=Math.min(items.length,start+CHANNEL_PER_PAGE);
   const count=Math.max(0,end-start);
-  grid.className=`draft-grid channel-select-grid ${channelGridClass(count)}`;
+  applySharedPublishGridClass(grid,count,"channel-select-grid");
 
   for(let index=start;index<end;index+=1){
     const item=items[index];

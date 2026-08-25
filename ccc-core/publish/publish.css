@@ -2128,3 +2128,114 @@
   box-shadow:none!important;
   filter:none!important;
 }
+
+
+/* CCC v2.10.73 – gemensam Publicera-grid.
+   Välj objekt är visuellt facit; Förbered använder samma naturliga 3×3-yta. */
+#gridView #draftGrid.draft-grid,
+#gridView #draftGrid.draft-grid.grid-1,
+#gridView #draftGrid.draft-grid.grid-2,
+#gridView #draftGrid.draft-grid.grid-4,
+#gridView #draftGrid.draft-grid.grid-9,
+#channelView #channelSelectGrid.draft-grid,
+#channelView #channelSelectGrid.draft-grid.grid-1,
+#channelView #channelSelectGrid.draft-grid.grid-2,
+#channelView #channelSelectGrid.draft-grid.grid-4,
+#channelView #channelSelectGrid.draft-grid.grid-9{
+  display:grid!important;
+  flex:0 0 auto!important;
+  width:96%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0 auto!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-auto-rows:auto!important;
+  column-gap:15px!important;
+  row-gap:11px!important;
+  padding:5px 4px 12px!important;
+  align-items:start!important;
+  align-content:start!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+  isolation:isolate!important;
+  background:var(--bg,#0d1017)!important;
+}
+#gridView #draftGrid .draft-card,
+#channelView #channelSelectGrid .draft-card,
+.ccc-paged-grid-ghost .draft-card{
+  position:relative!important;
+  width:100%!important;
+  height:auto!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:100%!important;
+  aspect-ratio:1/1!important;
+  padding:0!important;
+  margin:0!important;
+  border-radius:13px!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+#gridView #draftGrid .draft-card img,
+#channelView #channelSelectGrid .draft-card img,
+.ccc-paged-grid-ghost .draft-card img{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+}
+#gridView{
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+}
+#gridView #draftPager.ccc-draft-pager{
+  flex:0 0 auto!important;
+  min-height:22px!important;
+  margin:3px auto 7px!important;
+  padding:2px 0!important;
+}
+#gridView .prepared-continue-action{
+  flex:0 0 auto!important;
+  margin:0 auto 72px!important;
+}
+
+/* Välj objekt: prickarna får en egen tydlig rad ovanför den fasta Fortsätt-knappen. */
+#channelView #channelSelectPager.ccc-draft-pager{
+  position:fixed!important;
+  left:50%!important;
+  bottom:124px!important;
+  transform:translateX(-50%)!important;
+  z-index:9501!important;
+  min-height:22px!important;
+  margin:0!important;
+  padding:3px 10px!important;
+  border-radius:999px!important;
+  background:color-mix(in srgb,var(--bg,#0d1017) 88%,transparent)!important;
+}
+
+/* Swipe-ghost: ingen visuell skugga och ingen kvarhängande nod efter sidbyte. */
+.ccc-paged-grid-ghost{
+  box-shadow:none!important;
+  filter:none!important;
+  pointer-events:none!important;
+}
+@media(max-width:480px) and (orientation:portrait){
+  #gridView #draftGrid.draft-grid,
+  #gridView #draftGrid.draft-grid.grid-1,
+  #gridView #draftGrid.draft-grid.grid-2,
+  #gridView #draftGrid.draft-grid.grid-4,
+  #gridView #draftGrid.draft-grid.grid-9,
+  #channelView #channelSelectGrid.draft-grid,
+  #channelView #channelSelectGrid.draft-grid.grid-1,
+  #channelView #channelSelectGrid.draft-grid.grid-2,
+  #channelView #channelSelectGrid.draft-grid.grid-4,
+  #channelView #channelSelectGrid.draft-grid.grid-9{
+    width:94%!important;
+    column-gap:9px!important;
+    row-gap:9px!important;
+    padding:4px 2px 9px!important;
+  }
+}
