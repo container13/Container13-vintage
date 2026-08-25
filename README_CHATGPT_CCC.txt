@@ -37,6 +37,12 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.82 – Detalj-swipe utan efterskugga + Publicera i rätt footer
+- Det var detaljvyns tre bildlager som gav efterskuggan: inkommande bild läggs nu över den utgående under snap-animationen och riktningsklassen tas bort direkt vid commit.
+- Detaljvyns Core-footer visar Hjälp + Publicera + Tillbaka.
+- Publicera i detaljvyn tar aktuellt objekt direkt till sista kontrollvyn med Container13 valt; Tillbaka återgår till samma detaljbild.
+- Anpassa bild behåller Publicera i footern efter bildanpassningen.
+
 v2.10.81 – Swipe-efterskugga + säker Anpassa-footer
 - Den bortgående Publish-gridden döljs exakt när swipe-animationen är klar; nästa sidkopia ligger kvar tills den riktiga sidan är färdigrenderad och tas sedan bort direkt.
 - Anpassa bild återanropar Visions Core-footer-konfiguration under de första korta renderingsögonblicken, så Hjälp + Publicera visas även när Core och vyn blir klara samtidigt.
