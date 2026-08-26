@@ -83,3 +83,4 @@ v2.10.80: Publishs sid-swipe använder Visions synliga tvåsidesprincip med samm
 v2.10.81: Den gamla gridden döljs vid avslutad swipe innan asynkron rendering, vilket tar bort den kvarhängande efterskuggan. Anpassa återapplicerar kort Visions Core-footer-konfiguration så Publicera-knappen inte tappas i laddningsordningen.
 
 v2.10.82: Detalj-swipe prioriterar inkommande bildlager över utgående under snapen för att ta bort efterskuggan. Publicera ligger i detaljvyns footer och går med aktuellt objekt direkt till sista kontrollvyn; Tillbaka återgår till detaljvyn.
+v2.10.83: Publicera-starten får centrerad rubrik, guld/grön modulidentitet och tydligare grafiska SVG-ikoner. Övriga Publicera-vyer och publiceringslogiken är oförändrade.
