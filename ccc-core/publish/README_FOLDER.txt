@@ -84,3 +84,4 @@ v2.10.81: Den gamla gridden döljs vid avslutad swipe innan asynkron rendering, 
 
 v2.10.82: Detalj-swipe prioriterar inkommande bildlager över utgående under snapen för att ta bort efterskuggan. Publicera ligger i detaljvyns footer och går med aktuellt objekt direkt till sista kontrollvyn; Tillbaka återgår till detaljvyn.
 v2.10.83: Publicera-starten får centrerad rubrik, guld/grön modulidentitet och tydligare grafiska SVG-ikoner. Övriga Publicera-vyer och publiceringslogiken är oförändrade.
+v2.10.84: De gemensamma välkomstbrickorna får snabbare, tydligare tryckfeedback via Core. Publiceras funktioner och layout är i övrigt oförändrade.
