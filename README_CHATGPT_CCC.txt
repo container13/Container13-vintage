@@ -37,6 +37,16 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.86 – Swipe utan eftersläpning
+- Publiceras inkommande sida och utgående sida använder nu exakt samma totala förflyttning, inklusive mellanrummet mellan sidorna. Nästa bildserie stannar därför direkt i slutläget utan ett sent hopp när den gamla sidan rensas.
+- Snap-animationen kortas till 240 ms i både Publicera och Vision så den gamla bildserien lämnar skärmen utan den tidigare sega avslutningen.
+- Välkomstkorten upp och den separerade Mer-vyn från v2.10.85 ingår oförändrade.
+
+v2.10.85 – Välkomstkort upp + Mer-vy separerad
+- Högspecificitetsregeln för Dashboardens `#homeView` konsolideras med den nya välkomstlayouten, så rubriken inte längre fyller ett stort tomt område och korten börjar direkt under rubriken.
+- `.ccc-module-home[hidden]` återställer absolut hidden-prioritet, så Dashboard försvinner helt när Mer öppnas och den gamla Mer-vyn inte längre hamnar under Dashboardkorten.
+- Samma kompakta rubrikrad används i Dashboard, Vision-start och Publicera-start. Inga funktioner eller kortdestinationer ändras.
+
 v2.10.84 – Vision-start: Fortsätt fotosession + snabb tryckrespons
 - Vision-startens Tillbaka-kort tas bort; Core-footerns Tillbaka är ensam tillbakaåtgärd.
 - En verklig Fortsätt fotosession-bricka tar tredje plats när en lokal session finns och visar hur många objekt som väntar.
