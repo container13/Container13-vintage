@@ -37,6 +37,12 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.84 – Vision-start: Fortsätt fotosession + snabb tryckrespons
+- Vision-startens Tillbaka-kort tas bort; Core-footerns Tillbaka är ensam tillbakaåtgärd.
+- En verklig Fortsätt fotosession-bricka tar tredje plats när en lokal session finns och visar hur många objekt som väntar.
+- Utan sparad session fördelas Vision-starten automatiskt på två kort utan tom tredje rad.
+- Välkomstkortens tryckfeedback kortas till 70 ms och förstärks med omedelbar press/ljusrespons; destinationer och arbetsflöden är oförändrade.
+
 v2.10.83 – Levande Dashboard och modulstarter
 - Dashboard, Vision-start och Publicera-start får centrerade välkomstrubriker och samma upphöjda kortspråk som Välj kanal.
 - Modulidentiteten följer användaren: blå/lila Vision, guld/grön Publicera och turkos Mer.
