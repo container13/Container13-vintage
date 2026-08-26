@@ -160,3 +160,5 @@ v2.10.71-diag: synlig read-only diagnostikknapp och resultatdialog för iPhone.
 v2.10.72: finishBatch bevarar/säkerhetssparar vision-active i stället för att radera sessionen; diagnostik-UI borttaget.
 v2.10.83: Vision-starten får centrerad välkomstrubrik och blå/lila grafiska ikonbrickor enligt den gemensamma Core-standarden. Vision-arbetsflödet är oförändrat.
 v2.10.84: Vision-startens Tillbaka-kort ersätts av en riktig Fortsätt fotosession-bricka när lokal session finns; footern är ensam Tillbaka. Välkomstkorten får snabbare tryckfeedback.
+v2.10.85: Vision-starten använder samma kompaktare rubrikrad som Dashboard/Publicera så korten börjar högre. Funktionerna är oförändrade.
+v2.10.86: Bildseriens snap-animation kortas till 240 ms så sidbytet avslutas direktare utan seg eftersläpning.

@@ -564,7 +564,7 @@
     const pageCount = Math.max(1, Math.ceil(batchItems.length / WORKSPACE_PAGE_SIZE));
     workspacePage = Math.max(0, Math.min(page, pageCount - 1));
     if (track) {
-      track.style.transition = animate ? "transform 320ms cubic-bezier(.22,.72,.22,1)" : "none";
+      track.style.transition = animate ? "transform 240ms cubic-bezier(.22,.72,.22,1)" : "none";
       track.style.transform = `translate3d(${-workspacePage * 100}%,0,0)`;
     }
     renderWorkspacePager(pageCount);
