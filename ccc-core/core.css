@@ -1671,6 +1671,7 @@ button,a,input,textarea,select,[role="button"]{touch-action:manipulation}
 
 /* CCC v2.10.83 – gemensam visuell identitet för Dashboard och modulstarter. */
 .ccc-module-home{display:grid!important;grid-template-rows:auto minmax(0,1fr)!important;gap:12px!important;min-height:0!important}
+.ccc-module-home[hidden]{display:none!important}
 .ccc-home-heading{width:100%;min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center}
 .ccc-home-heading h1{margin:0!important;color:var(--ccc-text)!important;font-size:clamp(1.75rem,7vw,2.35rem)!important;line-height:1.05!important;letter-spacing:-.035em!important}
 .ccc-home-heading p{margin:0!important;color:var(--ccc-muted)!important;font-size:1rem!important;font-weight:700!important}
@@ -1696,9 +1697,11 @@ button,a,input,textarea,select,[role="button"]{touch-action:manipulation}
 .ccc-module-card:active{transform:scale(.975)!important;filter:brightness(1.12)!important}
 .vision-start-actions:not(:has(#resumeSessionBtn:not([hidden]))){grid-template-rows:repeat(2,minmax(0,1fr))!important}
 @media(max-width:480px) and (orientation:portrait){
-  .ccc-module-home{grid-template-rows:62px minmax(0,1fr)!important;gap:8px!important}
+  #homeView.ccc-module-home,
+  #visionStartHome.ccc-module-home,
+  #startView.ccc-module-home{grid-template-rows:54px minmax(0,1fr)!important;gap:6px!important;align-content:start!important}
   .ccc-module-home>.ccc-action-grid--fill-mobile{height:100%!important;min-height:0!important}
-  .ccc-home-heading{min-height:62px!important}
+  .ccc-home-heading{min-height:54px!important}
   .ccc-home-heading h1{font-size:1.78rem!important}
   .ccc-home-heading p{font-size:.94rem!important}
   .ccc-module-card .action-icon{width:62px!important;height:62px!important}
