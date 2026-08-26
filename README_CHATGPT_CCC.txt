@@ -37,6 +37,12 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.83 – Levande Dashboard och modulstarter
+- Dashboard, Vision-start och Publicera-start får centrerade välkomstrubriker och samma upphöjda kortspråk som Välj kanal.
+- Modulidentiteten följer användaren: blå/lila Vision, guld/grön Publicera och turkos Mer.
+- Grafiska linjeikoner ligger som inline-SVG i glödande cirklar; inga nya bildfiler eller externa ikonberoenden tillkommer.
+- Endast välkomstytorna använder den nya visuella varianten. Arbetsvyer, publiceringslogik, bildkällor och swipe lämnas orörda.
+
 v2.10.82 – Detalj-swipe utan efterskugga + Publicera i rätt footer
 - Det var detaljvyns tre bildlager som gav efterskuggan: inkommande bild läggs nu över den utgående under snap-animationen och riktningsklassen tas bort direkt vid commit.
 - Detaljvyns Core-footer visar Hjälp + Publicera + Tillbaka.
