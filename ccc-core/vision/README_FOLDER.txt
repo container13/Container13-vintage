@@ -158,3 +158,4 @@ v2.10.70-diag: read-only lagringsdiagnostik via CCC_VISION_STORAGE_DIAGNOSTIC.ru
 v2.10.71-diag: synlig read-only diagnostikknapp och resultatdialog för iPhone.
 
 v2.10.72: finishBatch bevarar/säkerhetssparar vision-active i stället för att radera sessionen; diagnostik-UI borttaget.
+v2.10.83: Vision-starten får centrerad välkomstrubrik och blå/lila grafiska ikonbrickor enligt den gemensamma Core-standarden. Vision-arbetsflödet är oförändrat.
