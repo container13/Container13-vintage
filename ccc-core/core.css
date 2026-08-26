@@ -1668,3 +1668,41 @@ button,a,input,textarea,select,[role="button"]{touch-action:manipulation}
     bottom:0!important;
   }
 }
+
+/* CCC v2.10.83 – gemensam visuell identitet för Dashboard och modulstarter. */
+.ccc-module-home{display:grid!important;grid-template-rows:auto minmax(0,1fr)!important;gap:12px!important;min-height:0!important}
+.ccc-home-heading{width:100%;min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center}
+.ccc-home-heading h1{margin:0!important;color:var(--ccc-text)!important;font-size:clamp(1.75rem,7vw,2.35rem)!important;line-height:1.05!important;letter-spacing:-.035em!important}
+.ccc-home-heading p{margin:0!important;color:var(--ccc-muted)!important;font-size:1rem!important;font-weight:700!important}
+.ccc-module-card{
+  --ccc-card-accent:#7a68ff;--ccc-card-accent-soft:#4539a8;
+  background:linear-gradient(105deg,color-mix(in srgb,var(--ccc-card-accent) 10%,var(--ccc-surface)) 0%,var(--ccc-surface) 70%)!important;
+  border-color:color-mix(in srgb,var(--ccc-card-accent) 17%,var(--ccc-border))!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.11)!important
+}
+.ccc-module-card--vision{--ccc-card-accent:#7567ff;--ccc-card-accent-soft:#3f35a5}
+.ccc-module-card--publish{--ccc-card-accent:#e5b94f;--ccc-card-accent-soft:#277a48}
+.ccc-module-card--more{--ccc-card-accent:#45c8d7;--ccc-card-accent-soft:#236b87}
+.ccc-module-card .action-icon{
+  color:#fff!important;
+  background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--ccc-card-accent) 84%,#fff) 0%,var(--ccc-card-accent-soft) 62%,color-mix(in srgb,var(--ccc-card-accent-soft) 78%,#080b12) 100%)!important;
+  border:1px solid color-mix(in srgb,var(--ccc-card-accent) 76%,#fff 24%)!important;
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--ccc-card-accent) 10%,transparent),0 0 20px color-mix(in srgb,var(--ccc-card-accent) 58%,transparent),inset 0 1px 0 rgba(255,255,255,.28)!important
+}
+.ccc-module-card .action-icon svg{color:#fff!important;stroke:currentColor!important;stroke-width:1.9!important}
+.ccc-module-card .action-copy strong{color:var(--ccc-text)!important}
+.ccc-module-card:active{border-color:color-mix(in srgb,var(--ccc-card-accent) 68%,var(--ccc-border))!important;box-shadow:0 0 0 2px color-mix(in srgb,var(--ccc-card-accent) 18%,transparent),0 10px 26px rgba(0,0,0,.14)!important}
+@media(max-width:480px) and (orientation:portrait){
+  .ccc-module-home{grid-template-rows:62px minmax(0,1fr)!important;gap:8px!important}
+  .ccc-module-home>.ccc-action-grid--fill-mobile{height:100%!important;min-height:0!important}
+  .ccc-home-heading{min-height:62px!important}
+  .ccc-home-heading h1{font-size:1.78rem!important}
+  .ccc-home-heading p{font-size:.94rem!important}
+  .ccc-module-card .action-icon{width:62px!important;height:62px!important}
+}
+@media(orientation:landscape) and (max-height:540px) and (max-width:980px){
+  .ccc-module-home{grid-template-rows:44px minmax(0,1fr)!important;gap:7px!important}
+  .ccc-home-heading{min-height:44px!important}
+  .ccc-home-heading h1{font-size:1.45rem!important}
+  .ccc-home-heading p{font-size:.78rem!important}
+}
