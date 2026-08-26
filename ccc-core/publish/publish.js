@@ -500,7 +500,7 @@ function softenPageSwipe(dx,width,atEdge=false){
   return sign*softened;
 }
 function setPagedGridTransform(grid,ghost,offset,width,direction,animate=false){
-  const transition=animate?"transform 360ms cubic-bezier(.2,.78,.2,1)":"none";
+  const transition=animate?"transform 240ms cubic-bezier(.22,.72,.22,1)":"none";
   const travel=width+PAGED_GRID_GUTTER;
   grid.style.transition=transition;
   grid.style.transform=`translate3d(${offset}px,0,0)`;
@@ -577,7 +577,7 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
 
     if(!horizontal){
       setTransform(0,true);
-      window.setTimeout(clearGhost,370);
+      window.setTimeout(clearGhost,250);
       draftPreviewSuppressClick=false;
       return;
     }
@@ -591,7 +591,11 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
     next=Math.max(0,Math.min(next,last));
 
     const changed=next!==oldPage;
-    setTransform(changed?(dx<0?-width:width):0,true);
+    /* Ghost-sidan startar en hel sidbredd + gutter från aktuell sida.
+       Snapen måste färdas exakt samma sträcka, annars stannar den nya sidan
+       vid guttern och hoppar på plats först när den gamla sidan rensas. */
+    const travel=width+PAGED_GRID_GUTTER;
+    setTransform(changed?(dx<0?-travel:travel):0,true);
     if(changed){
       suppressUntil=performance.now()+500;
       window.setTimeout(async()=>{
@@ -605,9 +609,9 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
         setTransform(0,false);
         grid.style.visibility="visible";
         clearGhost();
-      },370);
+      },250);
     }else{
-      window.setTimeout(clearGhost,370);
+      window.setTimeout(clearGhost,250);
     }
     window.setTimeout(()=>{draftPreviewSuppressClick=false;},350);
   };
