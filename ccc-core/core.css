@@ -1692,6 +1692,9 @@ button,a,input,textarea,select,[role="button"]{touch-action:manipulation}
 .ccc-module-card .action-icon svg{color:#fff!important;stroke:currentColor!important;stroke-width:1.9!important}
 .ccc-module-card .action-copy strong{color:var(--ccc-text)!important}
 .ccc-module-card:active{border-color:color-mix(in srgb,var(--ccc-card-accent) 68%,var(--ccc-border))!important;box-shadow:0 0 0 2px color-mix(in srgb,var(--ccc-card-accent) 18%,transparent),0 10px 26px rgba(0,0,0,.14)!important}
+.ccc-module-card{touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important;transition:transform .07s ease,filter .07s ease,border-color .07s ease,box-shadow .07s ease!important}
+.ccc-module-card:active{transform:scale(.975)!important;filter:brightness(1.12)!important}
+.vision-start-actions:not(:has(#resumeSessionBtn:not([hidden]))){grid-template-rows:repeat(2,minmax(0,1fr))!important}
 @media(max-width:480px) and (orientation:portrait){
   .ccc-module-home{grid-template-rows:62px minmax(0,1fr)!important;gap:8px!important}
   .ccc-module-home>.ccc-action-grid--fill-mobile{height:100%!important;min-height:0!important}
