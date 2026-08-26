@@ -2379,7 +2379,7 @@ body{min-height:100dvh}
 
   #captureCard:has(#batchStrip[hidden]) .main-camera.ccc-action-card,
   #captureCard:has(#batchStrip[hidden]) #galleryBtn.ccc-action-card,
-  #captureCard:has(#batchStrip[hidden]) #visionStartBackBtn.ccc-action-card{
+  #captureCard:has(#batchStrip[hidden]) #resumeSessionBtn.ccc-action-card{
     width:100%!important;
     max-width:none!important;
     min-width:0!important;

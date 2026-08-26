@@ -10,8 +10,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>CCC Vision v2.10.66</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-  <link rel="stylesheet" href="vision.css?v=2.10.52">
-  <link rel="stylesheet" href="../core.css?v=2.10.83">
+  <link rel="stylesheet" href="vision.css?v=2.10.84">
+  <link rel="stylesheet" href="../core.css?v=2.10.84">
 </head>
 <body data-ccc-header-back="false" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell">
@@ -74,17 +74,16 @@
         <span class="action-arrow" aria-hidden="true">›</span>
       </button>
 
-      <button id="visionStartBackBtn" class="ccc-action-card ccc-action-card--purple ccc-action-card--back ccc-action-card--arrow-desktop ccc-action-card--dense-copy ccc-module-card ccc-module-card--vision" type="button" aria-label="Tillbaka till dashboard">
-        <span class="action-arrow" aria-hidden="true">‹</span>
+      <button id="resumeSessionBtn" class="ccc-action-card ccc-action-card--purple ccc-action-card--arrow-desktop ccc-action-card--dense-copy ccc-module-card ccc-module-card--vision" type="button" aria-label="Fortsätt fotosession" hidden>
         <span class="action-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M7 7v5h5"/><path d="M7.7 11.5a6.5 6.5 0 1 1 1.4 4.9"/><path d="M12 8.5V12l2.5 1.5"/></svg>
         </span>
-        <span class="action-copy"><strong>Tillbaka</strong><small>Till dashboard</small></span>
+        <span class="action-copy"><strong id="resumeSessionLabel">Fortsätt fotosession</strong><small id="resumeSessionMeta">Fortsätt där du slutade</small></span>
+        <span class="action-arrow" aria-hidden="true">›</span>
       </button>
       </nav>
     </section>
 
-      <button id="resumeSessionBtn" class="quiet-button vision-resume-button" type="button" hidden>Fortsätt pågående arbete</button>
       <input id="galleryInput" class="visually-hidden" type="file" accept="image/*" multiple>
       <input id="cameraFallbackInput" class="visually-hidden" type="file" accept="image/*" capture="environment">
       <input id="detailImage1" class="visually-hidden" type="file" accept="image/*">
@@ -359,12 +358,12 @@
     </div>
   </div>
 
-  <script src="../version.js?v=2.10.83"></script>
+  <script src="../version.js?v=2.10.84"></script>
   <script src="demo-data.js?v=2.9.3"></script>
   <script src="vision-ai-config.js?v=2.9.3"></script>
   <script src="vision-ai.js?v=2.9.3"></script>
   <script src="vision-knowledge.js?v=2.9.3"></script>
-  <script src="product-lab.js?v=2.10.6"></script>
+  <script src="product-lab.js?v=2.10.84"></script>
 <script type="module" src="../core.js?v=2.10.2"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 <div id="visionContextHelpDialog" class="dialog ccc-dialog vision-context-help" role="dialog" aria-modal="true" aria-labelledby="visionContextHelpTitle" hidden>

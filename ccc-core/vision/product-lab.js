@@ -249,7 +249,10 @@
     const resumableCount = hasSession ? batchItems.length : Number(savedSessionSummary?.count || 0);
     if (resume) {
       resume.hidden = !(startMode && resumableCount > 0);
-      if (resumableCount > 0) resume.textContent = `Fortsätt fotosession – ${resumableCount} ${resumableCount === 1 ? entityTerm("singular") : entityTerm("plural")}`;
+      const resumeLabel=$("#resumeSessionLabel");
+      const resumeMeta=$("#resumeSessionMeta");
+      if(resumeLabel)resumeLabel.textContent="Fortsätt fotosession";
+      if(resumeMeta&&resumableCount>0)resumeMeta.textContent=`${resumableCount} ${resumableCount === 1 ? entityTerm("singular") : entityTerm("plural")} väntar`;
     }
     if (saveSession) saveSession.hidden = startMode || !hasSession;
     if (startHome) startHome.hidden = !startMode;
@@ -2367,11 +2370,16 @@
     if (batchItems.length) showWorkspace();
     else {
       const button = $("#resumeSessionBtn");
-      if (button) { button.disabled = true; button.textContent = "Öppnar fotosession…"; }
+      const label=$("#resumeSessionLabel");
+      const meta=$("#resumeSessionMeta");
+      if (button) button.disabled=true;
+      if(label)label.textContent="Öppnar fotosession…";
+      if(meta)meta.textContent="Läser den lokala sessionen";
       try { await restoreSavedVisionSession(); }
       catch (error) {
         console.error("[CCC Vision] Kunde inte återställa fotosession", error);
-        if (button) button.textContent = "Kunde inte öppna fotosessionen";
+        if(label)label.textContent="Kunde inte öppna fotosessionen";
+        if(meta)meta.textContent="Försök igen";
       } finally {
         if (button) button.disabled = false;
       }
