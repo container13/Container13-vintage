@@ -257,58 +257,6 @@ const CCCSwipe={
   }
 };
 
-// ==========================================================
-// CCC DIMMER CORE v1 — v2.10.95
-// Avgränsat pilotläge för sidnavigation från Dashboard.
-// ==========================================================
-function readDimmerMs(key,fallback){
-  try{
-    const value=Number(localStorage.getItem(key));
-    return Number.isFinite(value)&&value>=150&&value<=1200?value:fallback;
-  }catch(_){return fallback;}
-}
-function readDimmerVisibility(){
-  try{
-    const raw=localStorage.getItem("ccc-dimmer-visibility");
-    if(raw===null)return 9;
-    const value=Number(raw);
-    return Number.isFinite(value)&&value>=0&&value<=40?value:9;
-  }catch(_){return 9;}
-}
-function readDimmerColor(){
-  try{
-    const value=String(localStorage.getItem("ccc-dimmer-color")||"").trim();
-    return /^#[0-9a-f]{6}$/i.test(value)?value:"#000000";
-  }catch(_){return "#000000";}
-}
-const CCCDimmer={
-  leaveMs:readDimmerMs("ccc-dimmer-leave-ms",260),
-  enterMs:readDimmerMs("ccc-dimmer-enter-ms",300),
-  visibility:readDimmerVisibility(),
-  color:readDimmerColor(),
-  navigate(url){
-    if(!url)return;
-    if(matchMedia("(prefers-reduced-motion: reduce)").matches){window.location.assign(url);return;}
-    try{sessionStorage.setItem("ccc-core-dimmer-enter","1");}catch(_){ }
-    document.documentElement.classList.add("ccc-dimmer-leaving");
-    window.setTimeout(()=>window.location.assign(url),this.leaveMs);
-  },
-  enter(){
-    if(!document.documentElement.classList.contains("ccc-dimmer-enter-pending"))return;
-    try{sessionStorage.removeItem("ccc-core-dimmer-enter");}catch(_){ }
-    document.documentElement.classList.add("ccc-dimmer-enter-active");
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
-      document.documentElement.classList.remove("ccc-dimmer-enter-pending");
-      window.setTimeout(()=>document.documentElement.classList.remove("ccc-dimmer-enter-active"),this.enterMs+40);
-    }));
-  }
-};
-document.documentElement.style.setProperty("--ccc-dimmer-leave-ms",`${CCCDimmer.leaveMs}ms`);
-document.documentElement.style.setProperty("--ccc-dimmer-enter-ms",`${CCCDimmer.enterMs}ms`);
-document.documentElement.style.setProperty("--ccc-dimmer-visibility",String(CCCDimmer.visibility/100));
-document.documentElement.style.setProperty("--ccc-dimmer-color",CCCDimmer.color);
-CCCDimmer.enter();
-
 // Gemensam fysisk tryckkänsla för Dashboard och modulernas välkomstkort.
 // Vy-/sidnavigation och CCC:s egen kameravy fördröjs. Den rena filväljaren
 // behåller webbläsarens direkta, betrodda användartryck.
@@ -334,11 +282,8 @@ const CCCPress={
       const delay=matchMedia("(prefers-reduced-motion: reduce)").matches?0:this.delayMs;
       window.setTimeout(()=>{
         delete card.dataset.cccPressPending;
-        const dimmerHref=card.dataset.cccDimmerHref;
-        if(dimmerHref){CCCDimmer.navigate(dimmerHref);return;}
         if(card.matches("a[href]")){
-          if(card.hasAttribute("data-ccc-dimmer-nav"))CCCDimmer.navigate(card.href);
-          else window.location.assign(card.href);
+          window.location.assign(card.href);
           return;
         }
         card.dataset.cccPressReplay="1";
@@ -496,5 +441,5 @@ const CCCFooter={
     undo.querySelector(".ccc-footer-undo-btn").onclick=()=>onUndo?.();
   }
 };
-window.CCC_CORE={applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader,footer:CCCFooter,swipe:CCCSwipe,press:CCCPress,dimmer:CCCDimmer};
+window.CCC_CORE={applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader,footer:CCCFooter,swipe:CCCSwipe,press:CCCPress};
 document.dispatchEvent(new CustomEvent("ccc:core-ready",{detail:{header:CCCHeader}}));

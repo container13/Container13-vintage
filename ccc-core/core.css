@@ -1756,33 +1756,3 @@ button,a,input,textarea,select,[role="button"]{touch-action:manipulation}
 .ccc-free-swipe.is-dragging{cursor:grabbing;user-select:none}
 .ccc-free-swipe--center:not(.is-overflowing){justify-content:center!important}
 .ccc-free-swipe.is-overflowing{justify-content:flex-start!important}
-
-/* Core dimmer-pilot: Dashboard → modul. Endast markerade länkar använder den. */
-html.ccc-dimmer-leaving .ccc-app-shell{
-  opacity:var(--ccc-dimmer-visibility,.09)!important;
-  filter:brightness(.28) saturate(.68)!important;
-  transform:scale(.992);
-  transition:opacity var(--ccc-dimmer-leave-ms,260ms) ease,filter var(--ccc-dimmer-leave-ms,260ms) ease,transform var(--ccc-dimmer-leave-ms,260ms) ease!important;
-  pointer-events:none!important;
-}
-html.ccc-dimmer-enter-pending .ccc-app-shell{
-  opacity:var(--ccc-dimmer-visibility,.09)!important;
-  filter:brightness(.28) saturate(.68)!important;
-}
-html.ccc-dimmer-enter-active .ccc-app-shell{
-  transition:opacity var(--ccc-dimmer-enter-ms,300ms) ease,filter var(--ccc-dimmer-enter-ms,300ms) ease,transform var(--ccc-dimmer-enter-ms,300ms) ease!important;
-}
-html.ccc-dimmer-leaving body,
-html.ccc-dimmer-enter-pending body{
-  background:var(--ccc-dimmer-color,#000)!important;
-}
-html.ccc-dimmer-leaving body{
-  transition:background-color var(--ccc-dimmer-leave-ms,260ms) ease!important;
-}
-html.ccc-dimmer-enter-active body{
-  transition:background-color var(--ccc-dimmer-enter-ms,300ms) ease!important;
-}
-@media(prefers-reduced-motion:reduce){
-  html.ccc-dimmer-leaving .ccc-app-shell,
-  html.ccc-dimmer-enter-pending .ccc-app-shell{opacity:1!important;filter:none!important;transform:none!important;transition:none!important}
-}

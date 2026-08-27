@@ -2,6 +2,7 @@ Projektrot för Container13 + CCC. Se README_CHATGPT_CCC.txt för aktuell arbets
 v2.10.89: Gemensam Core-swipe använder en lugnare 380 ms landning efter släpp.
 v2.10.90: Core-landningen är 480 ms. Normala mobilvyer ska vara scrollfria när innehållet rimligen ryms.
 v2.10.91: Core-landningen är 580 ms. Core äger även modulstartens tryckkänsla och säkra 140 ms vyfördröjning.
+v2.10.99: Dimmerpiloten är borttagen ur Core. Tryckrespons och båda swipevarianterna behålls.
 v2.10.98: Core läser även dimmersynlighet 0–40 % och toningsfärg. Den gamla vyn tonas ovanpå vald bakgrundsfärg.
 v2.10.97: Core läser Dashboardens lokala dimmertider (150–1200 ms) och delar dem mellan navigationstimer och CSS-övergång.
 v2.10.96: Dimmerpiloten är tydligare: 260 ms ned till 9 % opacitet/28 % ljusstyrka och 300 ms upp.

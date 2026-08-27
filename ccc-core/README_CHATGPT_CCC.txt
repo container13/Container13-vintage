@@ -2278,6 +2278,15 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Slutkontrollens enkelbild använder en 308 px Core-viewport med 14 px symmetrisk ram runt 280 px bild.
 - `CCC_CORE.press` ger Dashboard och modulstarter en fysisk intryckt status. Endast säkra vy-/sidbyten fördröjs 140 ms; kamera-/filväljare fördröjs aldrig.
 
+## v2.10.99 – Expresspublicera från Vision-kameran
+- Kameragranskningen visar Expresspublicera bredvid autosparstatusen.
+- `cameraSessionStartCount` avgränsar exakt vilka objekt som skapats under aktuellt kamerabesök.
+- Staged foto committas först; nya objekt sparas sekventiellt med `saveApprovedDraftLocally()` och sessionen säkerhetssparas.
+- Vision navigerar med `view=prepare&items=<id-lista>&from=vision-camera-express`.
+- Publicera normaliserar en eller flera ID:n, laddar källorna och väljer bara dem i `channelConfirmView`.
+- C13 är inte förvald. Tillbaka från expresskontrollen går till Vision.
+- Dimmertestets Core-kod, Dashboard-markörer, destination bootstrap och Dashboard-reglage är borttagna. Core press behålls.
+
 ## v2.10.98 – dimmersynlighet och toningsfärg
 - Dashboard-panelen har `ccc-dimmer-visibility` 0–40 % och `ccc-dimmer-color` som sexsiffrig hex-färg.
 - Core validerar värdena och sätter `--ccc-dimmer-visibility` samt `--ccc-dimmer-color`.
