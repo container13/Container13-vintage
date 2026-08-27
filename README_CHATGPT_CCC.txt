@@ -4,10 +4,10 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.87
-Senaste stabila bas: 2.10.86 – skuggfri swipe och korrigerad välkomstlayout
+CCC-version: 2.10.88
+Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
-Nästa uppgift: Testa v2.10.87 på iPhone: Vision-/Publicera-swipe samt första direktvägen Vision → Publicera.
+Nästa uppgift: Testa v2.10.88 på iPhone: längre swipe, klippt Publicera-viewport och direkt slutkontroll från Vision.
 
 ARBETSPRINCIPER
 ---------------
@@ -26,6 +26,9 @@ ARBETSPRINCIPER
 - README_CHATGPT_CCC.txt uppdateras vid varje version och fungerar som gemensam projektjournal/arbetsmanual.
 - Ingen bildgenerering under CCC-arbete om användaren inte uttryckligen ber om det.
 - Crop Engine 1.0 är fryst; nya crop-förbättringar ska baseras på verkliga Vision-bilder.
+- Swipe ska alltid utgå från `CCC_CORE.swipe`. Tröskel, fingerföljning, kantmotstånd, animationstid och easing ändras centralt. Modulunika värden kräver ett dokumenterat funktionsbehov.
+- Anpassa bild är känslofacit för direkt fingerföljning. Publiceras klippta, skuggfria sidlager är tekniskt facit för paginerade grids.
+- När en swipevy flyttas till Core ska äldre konkurrerande modulvärden rensas eller kopplas om, inte lämnas som parallell motor.
 
 CHECKPOINTS
 -----------
@@ -37,6 +40,13 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.88 – Core Swipe v2 + direkt slutkontroll
+- Core-profilen skiljer nu på tidig rörelsestart och godkänt sidbyte: nästa sida börjar följa efter 12 px, men byte kräver 24 % av ytan och minst 72 px.
+- Publiceras aktuella och inkommande grid ligger i samma Core-skapade `ccc-swipe-viewport` med `overflow:hidden`, rundning och egen bakgrund. Det gamla helskärmslagret under `body` används inte längre.
+- Vision-start och Välj objekt visar ingen headerpil; footerns Tillbaka är navigationen där. Granska & komplettera behåller headerpilen som djup undervy.
+- Publicera från Vision väljer aktuellt objekt + Container13 och öppnar sista kontrollvyn direkt. Detalj/Anpassa bild hoppas över och Tillbaka återgår till samma Vision-objekt.
+- Permanent regel: nya och ändrade swipefunktioner ska utgå från `CCC_CORE.swipe`; modulunika avvikelser ska vara dokumenterade undantag.
+
 v2.10.87 – Core-styrd swipe + stabil Vision → Publicera
 - Paginerade arbetsgrids i Vision och Publicera hämtar nu draggräns, fingerföljning, kantmotstånd, snap-tid och easing från en gemensam `CCC_CORE.swipe`-profil.
 - Anpassa bild är känslofacit: innehållet följer fingret direkt och motståndet kommer först nära ytterläget. Sidbyte kräver nu ett något längre drag (18 %, minst 56 px) och landar lugnt på 280 ms.
