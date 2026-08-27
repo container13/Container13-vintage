@@ -2278,6 +2278,12 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Slutkontrollens enkelbild använder en 308 px Core-viewport med 14 px symmetrisk ram runt 280 px bild.
 - `CCC_CORE.press` ger Dashboard och modulstarter en fysisk intryckt status. Endast säkra vy-/sidbyten fördröjs 140 ms; kamera-/filväljare fördröjs aldrig.
 
+## v2.10.96 – starkare Core-dimmerpilot
+- Samma pilotomfattning: endast Dashboard → CCC Vision/Publicera.
+- Nedtoning: 260 ms till opacity .09, brightness .28 och saturation .68.
+- Upptoning: 300 ms. Knappresponsen är fortsatt 320 ms.
+- Reduced-motion-fallback och övriga vyer är oförändrade.
+
 ## v2.10.95 – avgränsad Core-dimmerpilot
 - Samlad leverans relativt v2.10.92; v2.10.93–94 ingår.
 - `CCC_CORE.dimmer` äger ned-/upptoning och markerade destinationsövergångar.

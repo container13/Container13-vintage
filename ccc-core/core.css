@@ -1759,18 +1759,18 @@ button,a,input,textarea,select,[role="button"]{touch-action:manipulation}
 
 /* Core dimmer-pilot: Dashboard → modul. Endast markerade länkar använder den. */
 html.ccc-dimmer-leaving .ccc-app-shell{
-  opacity:.28!important;
-  filter:brightness(.58) saturate(.82)!important;
-  transform:scale(.996);
-  transition:opacity 190ms ease,filter 190ms ease,transform 190ms ease!important;
+  opacity:.09!important;
+  filter:brightness(.28) saturate(.68)!important;
+  transform:scale(.992);
+  transition:opacity 260ms ease,filter 260ms ease,transform 260ms ease!important;
   pointer-events:none!important;
 }
 html.ccc-dimmer-enter-pending .ccc-app-shell{
-  opacity:.24!important;
-  filter:brightness(.56) saturate(.84)!important;
+  opacity:.09!important;
+  filter:brightness(.28) saturate(.68)!important;
 }
 html.ccc-dimmer-enter-active .ccc-app-shell{
-  transition:opacity 240ms ease,filter 240ms ease,transform 240ms ease!important;
+  transition:opacity 300ms ease,filter 300ms ease,transform 300ms ease!important;
 }
 @media(prefers-reduced-motion:reduce){
   html.ccc-dimmer-leaving .ccc-app-shell,

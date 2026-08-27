@@ -262,8 +262,8 @@ const CCCSwipe={
 // Avgränsat pilotläge för sidnavigation från Dashboard.
 // ==========================================================
 const CCCDimmer={
-  leaveMs:190,
-  enterMs:240,
+  leaveMs:260,
+  enterMs:300,
   navigate(url){
     if(!url)return;
     if(matchMedia("(prefers-reduced-motion: reduce)").matches){window.location.assign(url);return;}
