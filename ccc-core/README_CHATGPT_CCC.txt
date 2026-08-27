@@ -2270,3 +2270,10 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - `CCC_CORE.swipe` använder 480 ms och mjukare inbromsning efter släpp; fingerföljning och tröskel ändras inte.
 - Slutkontrollen får balanserad luft ovanför och under gridytan, med kompaktare mellanrum på korta skärmar.
 - Permanent regel: normala mobilvyer ska vara scrollfria när innehållet rimligen ryms och visa huvudinnehåll samt footer samtidigt. Scroll är ett medvetet undantag för verkligt längre innehåll, små skärmar och förstorad text.
+
+## v2.10.91 – Core Swipe 580 + gemensam tryckkänsla
+- `CCC_CORE.swipe` använder 580 ms. Publiceras detalj-swipe har konsoliderats till samma Core-fysik och timer.
+- Vision Välj objekt förlängs 16 px ned i den lediga footerremsan så hela 3×2-sidan syns.
+- Vision-headern visar tillbaka i workspace/edit men inte på startvyn.
+- Slutkontrollens enkelbild använder en 308 px Core-viewport med 14 px symmetrisk ram runt 280 px bild.
+- `CCC_CORE.press` ger Dashboard och modulstarter en fysisk intryckt status. Endast säkra vy-/sidbyten fördröjs 140 ms; kamera-/filväljare fördröjs aldrig.

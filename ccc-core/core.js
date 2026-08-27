@@ -134,7 +134,7 @@ const CCCHeader={
 };
 
 // ==========================================================
-// CCC SWIPE CORE v3 — v2.10.90
+// CCC SWIPE CORE v4 — v2.10.91
 // Gemensam fysik för paginerade CCC-arbetsytor. Anpassa bild
 // är känslofacit: direkt fingerföljning, motstånd först nära
 // ytterläget och en lugn, kort landning efter släpp.
@@ -145,8 +145,8 @@ const CCCSwipe={
     axisRatio:1.25,
     thresholdRatio:.24,
     minThresholdPx:72,
-    snapMs:480,
-    easing:"cubic-bezier(.20,.60,.18,1)",
+    snapMs:580,
+    easing:"cubic-bezier(.20,.58,.16,1)",
     edgeResistance:.24,
     outerStartRatio:.78,
     outerDragFactor:.72,
@@ -185,6 +185,43 @@ const CCCSwipe={
     return viewport;
   }
 };
+
+// Gemensam fysisk tryckkänsla för Dashboard och modulernas välkomstkort.
+// Endast vy-/sidnavigation fördröjs. Kamera och filväljare måste behålla
+// webbläsarens direkta, betrodda användartryck och får därför bara animationen.
+const CCCPress={
+  delayMs:140,
+  install(){
+    if(document.documentElement.dataset.cccPressBound)return;
+    document.documentElement.dataset.cccPressBound="1";
+    document.addEventListener("click",event=>{
+      const card=event.target?.closest?.(".ccc-module-home .ccc-module-card");
+      if(!card||card.disabled||card.getAttribute("aria-disabled")==="true")return;
+      card.classList.add("is-ccc-pressed");
+      window.setTimeout(()=>card.classList.remove("is-ccc-pressed"),220);
+      if(!card.matches("a[href],[data-ccc-press-delay]"))return;
+      if(card.dataset.cccPressReplay==="1"){
+        delete card.dataset.cccPressReplay;
+        return;
+      }
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if(card.dataset.cccPressPending==="1")return;
+      card.dataset.cccPressPending="1";
+      const delay=matchMedia("(prefers-reduced-motion: reduce)").matches?0:this.delayMs;
+      window.setTimeout(()=>{
+        delete card.dataset.cccPressPending;
+        if(card.matches("a[href]")){
+          window.location.assign(card.href);
+          return;
+        }
+        card.dataset.cccPressReplay="1";
+        card.click();
+      },delay);
+    },true);
+  }
+};
+CCCPress.install();
 
 const initialHeader={
   back:document.body?.dataset.cccHeaderBack==="true",
@@ -333,5 +370,5 @@ const CCCFooter={
     undo.querySelector(".ccc-footer-undo-btn").onclick=()=>onUndo?.();
   }
 };
-window.CCC_CORE={applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader,footer:CCCFooter,swipe:CCCSwipe};
+window.CCC_CORE={applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader,footer:CCCFooter,swipe:CCCSwipe,press:CCCPress};
 document.dispatchEvent(new CustomEvent("ccc:core-ready",{detail:{header:CCCHeader}}));

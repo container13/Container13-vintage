@@ -1695,6 +1695,16 @@ button,a,input,textarea,select,[role="button"]{touch-action:manipulation}
 .ccc-module-card:active{border-color:color-mix(in srgb,var(--ccc-card-accent) 68%,var(--ccc-border))!important;box-shadow:0 0 0 2px color-mix(in srgb,var(--ccc-card-accent) 18%,transparent),0 10px 26px rgba(0,0,0,.14)!important}
 .ccc-module-card{touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important;transition:transform .07s ease,filter .07s ease,border-color .07s ease,box-shadow .07s ease!important}
 .ccc-module-card:active{transform:scale(.975)!important;filter:brightness(1.12)!important}
+.ccc-module-card.is-ccc-pressed{
+  transform:translateY(2px) scale(.965)!important;
+  filter:brightness(1.15) saturate(1.08)!important;
+  border-color:color-mix(in srgb,var(--ccc-card-accent) 78%,var(--ccc-border))!important;
+  box-shadow:inset 0 4px 12px rgba(0,0,0,.18),0 0 0 2px color-mix(in srgb,var(--ccc-card-accent) 22%,transparent),0 6px 15px rgba(0,0,0,.12)!important;
+}
+.ccc-module-card.is-ccc-pressed .action-icon{
+  transform:scale(.94)!important;
+  filter:brightness(1.14)!important;
+}
 .vision-start-actions:not(:has(#resumeSessionBtn:not([hidden]))){grid-template-rows:repeat(2,minmax(0,1fr))!important}
 @media(max-width:480px) and (orientation:portrait){
   #homeView.ccc-module-home,
