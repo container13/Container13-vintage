@@ -9,9 +9,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>CCC Vision v2.10.66</title>
-  <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;if(sessionStorage.getItem("ccc-core-dimmer-enter")==="1")document.documentElement.classList.add("ccc-dimmer-enter-pending");}catch(e){}</script>
-  <link rel="stylesheet" href="vision.css?v=2.10.98">
-  <link rel="stylesheet" href="../core.css?v=2.10.98">
+  <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+  <link rel="stylesheet" href="vision.css?v=2.10.99">
+  <link rel="stylesheet" href="../core.css?v=2.10.99">
 </head>
 <body data-ccc-header-back="false" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell">
@@ -133,7 +133,10 @@
         <button id="retakeBtn" class="secondary-button" type="button">Ta om</button>
         <button id="nextPhotoBtn" class="secondary-button" type="button">Nästa objekt</button>
         <button id="usePhotoBtn" class="primary-button" type="button">Klar</button>
-        <div class="camera-autosave-status"><span id="draftState" class="vision-autosave-state" role="status" aria-live="polite">✓ Sparas automatiskt</span></div>
+        <div class="camera-autosave-status">
+          <span id="draftState" class="vision-autosave-state" role="status" aria-live="polite">✓ Sparas automatiskt</span>
+          <button id="cameraExpressPublishBtn" class="camera-express-publish" type="button">Expresspublicera 1 objekt</button>
+        </div>
       </div>
     </div>
 
@@ -358,13 +361,13 @@
     </div>
   </div>
 
-  <script src="../version.js?v=2.10.98"></script>
+  <script src="../version.js?v=2.10.99"></script>
   <script src="demo-data.js?v=2.9.3"></script>
   <script src="vision-ai-config.js?v=2.9.3"></script>
   <script src="vision-ai.js?v=2.9.3"></script>
   <script src="vision-knowledge.js?v=2.9.3"></script>
-  <script src="product-lab.js?v=2.10.98"></script>
-<script type="module" src="../core.js?v=2.10.98"></script>
+  <script src="product-lab.js?v=2.10.99"></script>
+<script type="module" src="../core.js?v=2.10.99"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 <div id="visionContextHelpDialog" class="dialog ccc-dialog vision-context-help" role="dialog" aria-modal="true" aria-labelledby="visionContextHelpTitle" hidden>
   <div class="dialog-box">

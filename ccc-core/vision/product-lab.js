@@ -720,6 +720,13 @@
     const label = $("#cameraSessionCount");
     if (!label) return;
     label.textContent = `${count} ${count === 1 ? "nytt foto" : "nya foton"}`;
+    const express=$("#cameraExpressPublishBtn");
+    if(express){
+      express.disabled=count<1||publishNavigationPending;
+      express.textContent=count===1
+        ?`Expresspublicera 1 ${entityTerm("singular")}`
+        :`Expresspublicera ${count} ${entityTerm("plural")}`;
+    }
   }
 
   async function startCamera() {
@@ -730,6 +737,10 @@
     /* Kameran öppnas från den vy användaren faktiskt står på. En sparad session
        återläses först efter ett taget foto; återläsningen får inte byta vyn bakom
        iOS-kameran när användaren bara provar och sedan trycker Avbryt. */
+    if (!batchItems.length && savedSessionSummary?.count) {
+      try { await restoreSavedVisionSession({ showAfterRestore: false }); }
+      catch (error) { console.error("[CCC Vision] Kunde inte återuppta session före kamera", error); }
+    }
     cameraSessionStartCount = batchItems.length;
     stagedCameraFile = null;
     stagedItem = null;
@@ -923,6 +934,29 @@
     resetCaptureVisual();
     updateBatchStrip();
     showWorkspace();
+  }
+
+  async function expressPublishCameraSession() {
+    if (publishNavigationPending) return;
+    commitStagedItem();
+    const newItems=batchItems.slice(cameraSessionStartCount);
+    if(!newItems.length)return;
+    publishNavigationPending=true;
+    const button=$("#cameraExpressPublishBtn");
+    if(button){button.disabled=true;button.textContent="Förbereder expresspublicering…";}
+    try{
+      for(const item of newItems)await saveApprovedDraftLocally(item);
+      await saveVisionSessionLocally();
+      saveBatchMetadata();
+      closeCamera();
+      const ids=newItems.map(item=>item.id).join(",");
+      window.location.assign(`../publish/index.html?view=prepare&items=${encodeURIComponent(ids)}&from=vision-camera-express`);
+    }catch(error){
+      console.error("[CCC Vision] Expresspublicering kunde inte förberedas",error);
+      publishNavigationPending=false;
+      if(button){button.disabled=false;button.textContent="Försök expresspublicera igen";}
+      setMessage("Expresspubliceringen kunde inte förberedas. Bilderna finns kvar lokalt.");
+    }
   }
 
   async function handleFallbackCamera(fileList) {
@@ -2503,6 +2537,7 @@
   $("#retakeBtn").addEventListener("click", retakePhoto);
   $("#nextPhotoBtn").addEventListener("click", nextPhoto);
   $("#usePhotoBtn").addEventListener("click", finishCameraSeries);
+  $("#cameraExpressPublishBtn")?.addEventListener("click",expressPublishCameraSession);
   $("#workspaceCameraBtn")?.addEventListener("click", () => $("#startCameraBtn")?.click());
   $("#workspaceGalleryBtn")?.addEventListener("click", () => $("#galleryInput")?.click());
 

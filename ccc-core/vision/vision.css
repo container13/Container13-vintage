@@ -5270,11 +5270,12 @@ body.ccc-focused-text-mode #textEditorDialog #largeTextEditor.description-editor
 }
 #cameraReviewActions .camera-autosave-status{
   grid-column:1 / -1!important;
-  display:flex!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  gap:8px!important;
   align-items:center!important;
-  justify-content:center!important;
   width:100%!important;
-  min-height:20px!important;
+  min-height:38px!important;
   margin:0!important;
   text-align:center!important;
 }
@@ -5288,6 +5289,19 @@ body.ccc-focused-text-mode #textEditorDialog #largeTextEditor.description-editor
   white-space:nowrap!important;
   text-align:center!important;
 }
+#cameraReviewActions .camera-express-publish{
+  min-height:38px!important;
+  width:auto!important;
+  padding:7px 12px!important;
+  border:1px solid rgba(221,180,91,.72)!important;
+  border-radius:12px!important;
+  background:rgba(221,180,91,.12)!important;
+  color:#e6bf68!important;
+  font-size:.72rem!important;
+  font-weight:900!important;
+  white-space:nowrap!important;
+}
+#cameraReviewActions .camera-express-publish:disabled{opacity:.55!important}
 
 #editCard .same-garment-thumb{
   position:relative!important;
