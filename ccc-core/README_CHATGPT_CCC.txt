@@ -2264,3 +2264,9 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Slutkontrollen skapar inte längre tomma platshållare när alla objekt ryms på samma sida.
 - En kontrollsida använder 1×1, 2 kolumner, 2×2 eller 3×2 efter antal objekt.
 - Flera kontrollsidor behåller fast 3×2-geometri och använder Core-swipe.
+- `/version.js` i projektroten tillhör Container13s hemsida. CCC-versioner uppdaterar endast `/ccc-core/version.js`.
+
+## v2.10.90 – lugnare landning + scrollfri mobilprincip
+- `CCC_CORE.swipe` använder 480 ms och mjukare inbromsning efter släpp; fingerföljning och tröskel ändras inte.
+- Slutkontrollen får balanserad luft ovanför och under gridytan, med kompaktare mellanrum på korta skärmar.
+- Permanent regel: normala mobilvyer ska vara scrollfria när innehållet rimligen ryms och visa huvudinnehåll samt footer samtidigt. Scroll är ett medvetet undantag för verkligt längre innehåll, små skärmar och förstorad text.
