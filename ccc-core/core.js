@@ -134,10 +134,12 @@ const CCCHeader={
 };
 
 // ==========================================================
-// CCC SWIPE CORE v4 — v2.10.91
+// CCC SWIPE CORE v5 — v2.10.94
 // Gemensam fysik för paginerade CCC-arbetsytor. Anpassa bild
 // är känslofacit: direkt fingerföljning, motstånd först nära
 // ytterläget och en lugn, kort landning efter släpp.
+// Free-varianten äger flytande karuseller: native touch-momentum,
+// fri bromsning och ingen tvingad sidlandning.
 // ==========================================================
 const CCCSwipe={
   profile:Object.freeze({
@@ -183,14 +185,83 @@ const CCCSwipe={
     parent.insertBefore(viewport,element);
     viewport.appendChild(element);
     return viewport;
+  },
+  bindFree(element,{centerWhenFits=true}={}){
+    if(!element)return null;
+    if(element.dataset.cccFreeSwipeBound==="1")return element;
+    element.dataset.cccFreeSwipeBound="1";
+    element.classList.add("ccc-free-swipe");
+    element.classList.toggle("ccc-free-swipe--center",centerWhenFits);
+
+    const syncOverflow=()=>{
+      const overflowing=element.scrollWidth>element.clientWidth+2;
+      element.classList.toggle("is-overflowing",overflowing);
+      if(!overflowing)element.scrollLeft=0;
+    };
+    requestAnimationFrame(syncOverflow);
+    if("ResizeObserver" in window){
+      const observer=new ResizeObserver(syncOverflow);
+      observer.observe(element);
+      [...element.children].forEach(child=>observer.observe(child));
+    }else window.addEventListener("resize",syncOverflow,{passive:true});
+
+    let drag=null;
+    let momentumFrame=0;
+    let suppressClickUntil=0;
+    const stopMomentum=()=>{if(momentumFrame)cancelAnimationFrame(momentumFrame);momentumFrame=0;};
+    const finishMouseDrag=event=>{
+      if(!drag||event.pointerId!==drag.id)return;
+      const velocity=drag.velocity;
+      if(drag.moved)suppressClickUntil=performance.now()+140;
+      drag=null;
+      element.classList.remove("is-dragging");
+      try{element.releasePointerCapture(event.pointerId);}catch(_){ }
+      let speed=velocity;
+      let previous=performance.now();
+      const coast=now=>{
+        const elapsed=Math.min(32,now-previous);
+        previous=now;
+        speed*=Math.pow(.92,elapsed/16.67);
+        element.scrollLeft-=speed*elapsed;
+        if(Math.abs(speed)>.015)momentumFrame=requestAnimationFrame(coast);
+        else momentumFrame=0;
+      };
+      if(Math.abs(speed)>.04)momentumFrame=requestAnimationFrame(coast);
+    };
+    element.addEventListener("pointerdown",event=>{
+      if(event.pointerType!=="mouse"||event.button!==0||!element.classList.contains("is-overflowing"))return;
+      stopMomentum();
+      drag={id:event.pointerId,x:event.clientX,time:performance.now(),velocity:0,moved:false};
+      element.classList.add("is-dragging");
+      element.setPointerCapture(event.pointerId);
+    });
+    element.addEventListener("pointermove",event=>{
+      if(!drag||event.pointerId!==drag.id)return;
+      const now=performance.now();
+      const dx=event.clientX-drag.x;
+      const elapsed=Math.max(1,now-drag.time);
+      element.scrollLeft-=dx;
+      if(Math.abs(dx)>2)drag.moved=true;
+      drag.velocity=dx/elapsed;
+      drag.x=event.clientX;
+      drag.time=now;
+      event.preventDefault();
+    });
+    element.addEventListener("pointerup",finishMouseDrag);
+    element.addEventListener("pointercancel",finishMouseDrag);
+    element.addEventListener("click",event=>{
+      if(performance.now()<suppressClickUntil){event.preventDefault();event.stopImmediatePropagation();}
+    },true);
+    element.addEventListener("dragstart",event=>event.preventDefault());
+    return element;
   }
 };
 
 // Gemensam fysisk tryckkänsla för Dashboard och modulernas välkomstkort.
-// Endast vy-/sidnavigation fördröjs. Kamera och filväljare måste behålla
-// webbläsarens direkta, betrodda användartryck och får därför bara animationen.
+// Vy-/sidnavigation och CCC:s egen kameravy fördröjs. Den rena filväljaren
+// behåller webbläsarens direkta, betrodda användartryck.
 const CCCPress={
-  delayMs:220,
+  delayMs:320,
   install(){
     if(document.documentElement.dataset.cccPressBound)return;
     document.documentElement.dataset.cccPressBound="1";

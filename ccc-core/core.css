@@ -1738,3 +1738,21 @@ button,a,input,textarea,select,[role="button"]{touch-action:manipulation}
   position:relative;
   z-index:2;
 }
+
+/* Core free-swipe – fria karuseller utan sid-snap. Touch använder enhetens
+   naturliga momentum; musdrag får samma flytande bromsning från Core JS. */
+.ccc-free-swipe{
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  overscroll-behavior-x:contain;
+  scroll-snap-type:none!important;
+  scroll-behavior:auto;
+  touch-action:pan-x;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  cursor:grab;
+}
+.ccc-free-swipe::-webkit-scrollbar{display:none;width:0;height:0}
+.ccc-free-swipe.is-dragging{cursor:grabbing;user-select:none}
+.ccc-free-swipe--center:not(.is-overflowing){justify-content:center!important}
+.ccc-free-swipe.is-overflowing{justify-content:flex-start!important}

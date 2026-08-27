@@ -2278,6 +2278,20 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Slutkontrollens enkelbild använder en 308 px Core-viewport med 14 px symmetrisk ram runt 280 px bild.
 - `CCC_CORE.press` ger Dashboard och modulstarter en fysisk intryckt status. Endast säkra vy-/sidbyten fördröjs 140 ms; kamera-/filväljare fördröjs aldrig.
 
+## v2.10.94 – Core free-swipe för kanalkarusellen
+- Samlad leverans relativt v2.10.92: v2.10.93-fixarna ingår.
+- `CCC_CORE.swipe.bindFree(element)` är den centrala fria swipevarianten för karuseller.
+- Touch använder plattformens naturliga momentum; musdrag får Core-styrd efterrörelse och bromsning.
+- Ingen snap eller sidindelning. `centerWhenFits` centrerar raden tills den faktiskt får overflow.
+- Publiceras slutkontroll använder free-swipe för kanalraden. Paged-bildswipe och 580 ms-profilen är orörda.
+
+## v2.10.93 – iOS-kameraåterkomst + synkat kanalval
+- Vision återläser inte längre sparad session innan iOS-kameran/fallbacken har lämnat tillbaka ett faktiskt foto.
+- Avbryt hanteras via input-cancel, tom change och återfokus; state och ursprungsvy återställs före nästa kameraförsök.
+- Core-tryckpausen är 320 ms och Ta ett foto-kortet använder hela animationen. Albumväljaren förblir direkt.
+- Publiceras C13-state styr grön ytterring, tillgänglighetsstatus och Publicera X objekt från samma funktion.
+- Pinterest och Etsy är låsta testkanaler. Kanalraden centreras när den ryms och kan swipas när den blir bredare än sex kanaler.
+
 ## v2.10.92 – kamerans livscykel + kanalval i snabbväg
 - Kameran sparar `cameraReturnView` och återgår dit vid Avbryt.
 - `cameraRequestId` ogiltigförklarar sena `getUserMedia`-resultat; deras spår stoppas innan de kan återaktivera en stängd kamera.
