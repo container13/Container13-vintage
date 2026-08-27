@@ -1756,3 +1756,23 @@ button,a,input,textarea,select,[role="button"]{touch-action:manipulation}
 .ccc-free-swipe.is-dragging{cursor:grabbing;user-select:none}
 .ccc-free-swipe--center:not(.is-overflowing){justify-content:center!important}
 .ccc-free-swipe.is-overflowing{justify-content:flex-start!important}
+
+/* Core dimmer-pilot: Dashboard → modul. Endast markerade länkar använder den. */
+html.ccc-dimmer-leaving .ccc-app-shell{
+  opacity:.28!important;
+  filter:brightness(.58) saturate(.82)!important;
+  transform:scale(.996);
+  transition:opacity 190ms ease,filter 190ms ease,transform 190ms ease!important;
+  pointer-events:none!important;
+}
+html.ccc-dimmer-enter-pending .ccc-app-shell{
+  opacity:.24!important;
+  filter:brightness(.56) saturate(.84)!important;
+}
+html.ccc-dimmer-enter-active .ccc-app-shell{
+  transition:opacity 240ms ease,filter 240ms ease,transform 240ms ease!important;
+}
+@media(prefers-reduced-motion:reduce){
+  html.ccc-dimmer-leaving .ccc-app-shell,
+  html.ccc-dimmer-enter-pending .ccc-app-shell{opacity:1!important;filter:none!important;transform:none!important;transition:none!important}
+}

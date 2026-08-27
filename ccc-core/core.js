@@ -257,6 +257,32 @@ const CCCSwipe={
   }
 };
 
+// ==========================================================
+// CCC DIMMER CORE v1 — v2.10.95
+// Avgränsat pilotläge för sidnavigation från Dashboard.
+// ==========================================================
+const CCCDimmer={
+  leaveMs:190,
+  enterMs:240,
+  navigate(url){
+    if(!url)return;
+    if(matchMedia("(prefers-reduced-motion: reduce)").matches){window.location.assign(url);return;}
+    try{sessionStorage.setItem("ccc-core-dimmer-enter","1");}catch(_){ }
+    document.documentElement.classList.add("ccc-dimmer-leaving");
+    window.setTimeout(()=>window.location.assign(url),this.leaveMs);
+  },
+  enter(){
+    if(!document.documentElement.classList.contains("ccc-dimmer-enter-pending"))return;
+    try{sessionStorage.removeItem("ccc-core-dimmer-enter");}catch(_){ }
+    document.documentElement.classList.add("ccc-dimmer-enter-active");
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      document.documentElement.classList.remove("ccc-dimmer-enter-pending");
+      window.setTimeout(()=>document.documentElement.classList.remove("ccc-dimmer-enter-active"),this.enterMs+40);
+    }));
+  }
+};
+CCCDimmer.enter();
+
 // Gemensam fysisk tryckkänsla för Dashboard och modulernas välkomstkort.
 // Vy-/sidnavigation och CCC:s egen kameravy fördröjs. Den rena filväljaren
 // behåller webbläsarens direkta, betrodda användartryck.
@@ -282,8 +308,11 @@ const CCCPress={
       const delay=matchMedia("(prefers-reduced-motion: reduce)").matches?0:this.delayMs;
       window.setTimeout(()=>{
         delete card.dataset.cccPressPending;
+        const dimmerHref=card.dataset.cccDimmerHref;
+        if(dimmerHref){CCCDimmer.navigate(dimmerHref);return;}
         if(card.matches("a[href]")){
-          window.location.assign(card.href);
+          if(card.hasAttribute("data-ccc-dimmer-nav"))CCCDimmer.navigate(card.href);
+          else window.location.assign(card.href);
           return;
         }
         card.dataset.cccPressReplay="1";
@@ -441,5 +470,5 @@ const CCCFooter={
     undo.querySelector(".ccc-footer-undo-btn").onclick=()=>onUndo?.();
   }
 };
-window.CCC_CORE={applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader,footer:CCCFooter,swipe:CCCSwipe,press:CCCPress};
+window.CCC_CORE={applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader,footer:CCCFooter,swipe:CCCSwipe,press:CCCPress,dimmer:CCCDimmer};
 document.dispatchEvent(new CustomEvent("ccc:core-ready",{detail:{header:CCCHeader}}));

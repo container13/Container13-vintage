@@ -2278,6 +2278,14 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Slutkontrollens enkelbild använder en 308 px Core-viewport med 14 px symmetrisk ram runt 280 px bild.
 - `CCC_CORE.press` ger Dashboard och modulstarter en fysisk intryckt status. Endast säkra vy-/sidbyten fördröjs 140 ms; kamera-/filväljare fördröjs aldrig.
 
+## v2.10.95 – avgränsad Core-dimmerpilot
+- Samlad leverans relativt v2.10.92; v2.10.93–94 ingår.
+- `CCC_CORE.dimmer` äger ned-/upptoning och markerade destinationsövergångar.
+- Piloten gäller endast Dashboard → CCC Vision/Publicera. Mer och interna vyer omfattas inte.
+- Ordning: 320 ms fysisk knapprespons, 190 ms nedtoning, 240 ms upptoning.
+- Destinationsflaggan ligger kort i sessionStorage så nästa dokument kan starta nedtonat utan vit blinkning.
+- `prefers-reduced-motion` hoppar över effekten.
+
 ## v2.10.94 – Core free-swipe för kanalkarusellen
 - Samlad leverans relativt v2.10.92: v2.10.93-fixarna ingår.
 - `CCC_CORE.swipe.bindFree(element)` är den centrala fria swipevarianten för karuseller.
