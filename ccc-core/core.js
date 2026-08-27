@@ -133,6 +133,48 @@ const CCCHeader={
   get(){return {...this.state}}
 };
 
+// ==========================================================
+// CCC SWIPE CORE v1 — v2.10.87
+// Gemensam fysik för paginerade CCC-arbetsytor. Anpassa bild
+// är känslofacit: direkt fingerföljning, motstånd först nära
+// ytterläget och en lugn, kort landning efter släpp.
+// ==========================================================
+const CCCSwipe={
+  profile:Object.freeze({
+    activationPx:24,
+    axisRatio:1.35,
+    thresholdRatio:.18,
+    minThresholdPx:56,
+    snapMs:280,
+    easing:"cubic-bezier(.22,.72,.22,1)",
+    edgeResistance:.24,
+    outerStartRatio:.78,
+    outerDragFactor:.72,
+    maxDragRatio:1.08
+  }),
+  transition(property="transform"){
+    return `${property} ${this.profile.snapMs}ms ${this.profile.easing}`;
+  },
+  isHorizontal(dx,dy){
+    return Math.abs(dx)>this.profile.activationPx&&Math.abs(dx)>Math.abs(dy)*this.profile.axisRatio;
+  },
+  offset(dx,width,{atEdge=false}={}){
+    const safeWidth=Math.max(1,width);
+    const sign=Math.sign(dx)||1;
+    const raw=Math.min(Math.abs(dx),safeWidth*this.profile.maxDragRatio);
+    if(atEdge)return sign*Math.min(raw*this.profile.edgeResistance,safeWidth*.18);
+    const outerStart=safeWidth*this.profile.outerStartRatio;
+    const followed=raw<=outerStart
+      ? raw
+      : outerStart+(raw-outerStart)*this.profile.outerDragFactor;
+    return sign*followed;
+  },
+  shouldCommit(dx,width){
+    const threshold=Math.max(this.profile.minThresholdPx,Math.max(1,width)*this.profile.thresholdRatio);
+    return Math.abs(dx)>threshold;
+  }
+};
+
 const initialHeader={
   back:document.body?.dataset.cccHeaderBack==="true",
   settings:document.body?.dataset.cccHeaderSettings==="true"
@@ -280,5 +322,5 @@ const CCCFooter={
     undo.querySelector(".ccc-footer-undo-btn").onclick=()=>onUndo?.();
   }
 };
-window.CCC_CORE={applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader,footer:CCCFooter};
+window.CCC_CORE={applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader,footer:CCCFooter,swipe:CCCSwipe};
 document.dispatchEvent(new CustomEvent("ccc:core-ready",{detail:{header:CCCHeader}}));
