@@ -747,7 +747,7 @@ async function quickPublishCurrentDetail(){
   channelSelectedIds.add(item.id);
   channelSelectPage=0;
   confirmPage=0;
-  container13ChannelSelected=true;
+  container13ChannelSelected=false;
   await renderChannelConfirmation();
   show("channelConfirmView");
 }
@@ -763,7 +763,7 @@ async function openDirectVisionConfirmation(itemId){
   channelSelectedIds.add(itemId);
   channelSelectPage=0;
   confirmPage=0;
-  container13ChannelSelected=true;
+  container13ChannelSelected=false;
   await renderChannelConfirmation();
   show("channelConfirmView");
   return true;
@@ -1921,9 +1921,9 @@ $("#cropDone").addEventListener("click",async()=>{
     channelSelectedIds.add(savedItemId);
     channelSelectPage=0;
     confirmPage=0;
-    /* Snabbfilen betyder: aktuellt objekt -> sista kontrollvyn.
-       Container13 aktiveras här så inga mellanvyer behövs. */
-    container13ChannelSelected=true;
+    /* Snabbfilen hoppar över kanalsteget men får inte välja kanal åt
+       användaren. Ett aktivt kanalval görs i sista kontrollvyn. */
+    container13ChannelSelected=false;
     await renderChannelConfirmation();
     show("channelConfirmView");
     return;
@@ -2093,6 +2093,19 @@ function renderConfirmPager(pageCount){
   }
 }
 
+function syncConfirmPublishAction(){
+  const button=$("#confirmPublishBtn");
+  if(!button)return;
+  const count=channelSelectedIds.size;
+  if(!container13ChannelSelected){
+    button.textContent="Välj kanal";
+    button.disabled=true;
+    return;
+  }
+  button.textContent=count===1?`Publicera 1 ${entityTerm("singular")}`:`Publicera ${count} ${entityTerm("plural")}`;
+  button.disabled=count===0;
+}
+
 async function renderChannelConfirmation(resetControls=true){
   const selected=selectedChannelItems();
   const grid=$("#confirmGrid");
@@ -2108,13 +2121,12 @@ async function renderChannelConfirmation(resetControls=true){
      samtliga sidor i samma 3x2-geometri så Core-swipen aldrig byter mått. */
   const paged=pageCount>1;
   grid.className=`draft-grid confirm-grid ${paged?"grid-9":channelGridClass(visible.length)}`;
-  $("#confirmPublishBtn").textContent=selected.length===1?`Publicera 1 ${entityTerm("singular")}`:`Publicera ${selected.length} ${entityTerm("plural")}`;
   const c13Confirm=$("#confirmC13Channel");
   if(c13Confirm){
     c13Confirm.classList.toggle("is-active",container13ChannelSelected);
     c13Confirm.setAttribute("aria-pressed",String(container13ChannelSelected));
   }
-  $("#confirmPublishBtn").disabled=!container13ChannelSelected;
+  syncConfirmPublishAction();
   if(resetControls){
     container13PublishDisplayOverride=null;
     if($("#confirmDisplayEditor"))$("#confirmDisplayEditor").hidden=true;
@@ -2386,7 +2398,7 @@ $("#confirmC13Channel")?.addEventListener("click",()=>{
   button.classList.toggle("is-active",container13ChannelSelected);
   button.setAttribute("aria-pressed",String(container13ChannelSelected));
   $("#confirmPreviewBtn").disabled=!container13ChannelSelected;
-  $("#confirmPublishBtn").disabled=!container13ChannelSelected;
+  syncConfirmPublishAction();
   $("#confirmStatus").textContent=container13ChannelSelected?"":"Välj minst en kanal för att publicera.";
 });
 document.querySelectorAll("#channelConfirmView .confirm-channel-chip.is-unavailable").forEach(button=>{
