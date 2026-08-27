@@ -35,6 +35,7 @@
   let focusedTextScrollY = 0;
   let focusedTextScrollGuard = false;
   let focusedTextGuardFrame = 0;
+  let publishNavigationPending = false;
 
   let editorScrollLockY = 0;
   let editorScrollLocked = false;
@@ -150,18 +151,44 @@
   }
 
   async function openPublishFromWorkspace() {
-    await queueVisionSessionSave();
-    window.location.href = "../publish/index.html?view=prepare";
+    if (publishNavigationPending) return;
+    publishNavigationPending = true;
+    const forward = document.querySelector(".ccc-core-footer-forward");
+    if (forward) forward.disabled = true;
+    try {
+      await queueVisionSessionSave();
+      window.location.assign("../publish/index.html?view=prepare");
+    } catch (error) {
+      publishNavigationPending = false;
+      if (forward) forward.disabled = false;
+      throw error;
+    }
   }
 
   async function openPublishFromEdit() {
+    if (publishNavigationPending) return;
     const item = currentItem();
     if (!item) return;
-    const ok = await saveEditedCurrent({ quiet: true });
-    if (!ok) return;
-    await queueVisionSessionSave();
-    saveBatchMetadata();
-    window.location.href = `../publish/index.html?view=prepare&item=${encodeURIComponent(item.id)}&from=vision-edit`;
+    publishNavigationPending = true;
+    clearTimeout(saveTimer);
+    autosaveSequence += 1;
+    const forward = document.querySelector(".ccc-core-footer-forward");
+    if (forward) forward.disabled = true;
+    try {
+      const ok = await saveEditedCurrent({ quiet: true });
+      if (!ok) {
+        publishNavigationPending = false;
+        if (forward) forward.disabled = false;
+        return;
+      }
+      await queueVisionSessionSave();
+      saveBatchMetadata();
+      window.location.assign(`../publish/index.html?view=prepare&item=${encodeURIComponent(item.id)}&from=vision-edit`);
+    } catch (error) {
+      publishNavigationPending = false;
+      if (forward) forward.disabled = false;
+      throw error;
+    }
   }
 
   function updateHeaderContext() {
@@ -564,7 +591,9 @@
     const pageCount = Math.max(1, Math.ceil(batchItems.length / WORKSPACE_PAGE_SIZE));
     workspacePage = Math.max(0, Math.min(page, pageCount - 1));
     if (track) {
-      track.style.transition = animate ? "transform 240ms cubic-bezier(.22,.72,.22,1)" : "none";
+      track.style.transition = animate
+        ? (window.CCC_CORE?.swipe?.transition?.() || "transform 280ms cubic-bezier(.22,.72,.22,1)")
+        : "none";
       track.style.transform = `translate3d(${-workspacePage * 100}%,0,0)`;
     }
     renderWorkspacePager(pageCount);
@@ -593,7 +622,8 @@
       if (!workspaceSwipe.canSwipe) return;
       /* Lite fingerjitter ska vara ett vanligt tryck. Först ett tydligt
          horisontellt drag låser gesten till swipe. */
-      if (!workspaceSwipe.horizontal && Math.abs(dx) > 24 && Math.abs(dx) > Math.abs(dy) * 1.35) {
+      const swipeCore = window.CCC_CORE?.swipe;
+      if (!workspaceSwipe.horizontal && (swipeCore?.isHorizontal?.(dx, dy) ?? (Math.abs(dx) > 24 && Math.abs(dx) > Math.abs(dy) * 1.35))) {
         workspaceSwipe.horizontal = true;
       }
       if (!workspaceSwipe.horizontal) return;
@@ -601,7 +631,7 @@
       suppressWorkspaceClick = true;
       const lastPage = Math.ceil(batchItems.length / WORKSPACE_PAGE_SIZE) - 1;
       const atEdge = (workspacePage === 0 && dx > 0) || (workspacePage === lastPage && dx < 0);
-      const resisted = atEdge ? dx * .24 : dx;
+      const resisted = swipeCore?.offset?.(dx, strip.clientWidth, { atEdge }) ?? (atEdge ? dx * .24 : dx);
       const track = strip.querySelector(".vision-grid-track");
       if (track) track.style.transform = `translate3d(calc(${-workspacePage * 100}% + ${resisted}px),0,0)`;
     };
@@ -611,8 +641,9 @@
       workspaceSwipe = null;
 
       if (horizontal && canSwipe) {
-        const threshold = Math.max(48, strip.clientWidth * .14);
-        if (Math.abs(dx) > threshold) setWorkspacePage(workspacePage + (dx < 0 ? 1 : -1), true);
+        const swipeCore = window.CCC_CORE?.swipe;
+        const commit = swipeCore?.shouldCommit?.(dx, strip.clientWidth) ?? Math.abs(dx) > Math.max(56, strip.clientWidth * .18);
+        if (commit) setWorkspacePage(workspacePage + (dx < 0 ? 1 : -1), true);
         else setWorkspacePage(workspacePage, true);
         setTimeout(() => { suppressWorkspaceClick = false; }, 180);
         return;
