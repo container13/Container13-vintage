@@ -527,7 +527,7 @@ function softenPageSwipe(dx,width,atEdge=false){
 }
 function setPagedGridTransform(grid,ghost,offset,width,direction,animate=false){
   const transition=animate
-    ? (window.CCC_CORE?.swipe?.transition?.()||"transform 380ms cubic-bezier(.22,.68,.20,1)")
+    ? (window.CCC_CORE?.swipe?.transition?.()||"transform 480ms cubic-bezier(.20,.60,.18,1)")
     : "none";
   const travel=width+PAGED_GRID_GUTTER;
   grid.style.transition=transition;
@@ -607,7 +607,7 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
 
     if(!horizontal){
       setTransform(0,true);
-      window.setTimeout(clearGhost,(window.CCC_CORE?.swipe?.profile?.snapMs||380)+10);
+      window.setTimeout(clearGhost,(window.CCC_CORE?.swipe?.profile?.snapMs||480)+10);
       draftPreviewSuppressClick=false;
       return;
     }
@@ -627,7 +627,7 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
     const travel=width+PAGED_GRID_GUTTER;
     setTransform(changed?(dx<0?-travel:travel):0,true);
     if(changed){
-      suppressUntil=performance.now()+(window.CCC_CORE?.swipe?.profile?.snapMs||380)+220;
+      suppressUntil=performance.now()+(window.CCC_CORE?.swipe?.profile?.snapMs||480)+220;
       window.setTimeout(async()=>{
         setPage(next);
         /* Den bortgående gridden får inte ligga kvar som ett halvtransparent
@@ -639,11 +639,11 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
         setTransform(0,false);
         grid.style.visibility="visible";
         clearGhost();
-      },(window.CCC_CORE?.swipe?.profile?.snapMs||380)+10);
+      },(window.CCC_CORE?.swipe?.profile?.snapMs||480)+10);
     }else{
-      window.setTimeout(clearGhost,(window.CCC_CORE?.swipe?.profile?.snapMs||380)+10);
+      window.setTimeout(clearGhost,(window.CCC_CORE?.swipe?.profile?.snapMs||480)+10);
     }
-    window.setTimeout(()=>{draftPreviewSuppressClick=false;},(window.CCC_CORE?.swipe?.profile?.snapMs||380)+80);
+    window.setTimeout(()=>{draftPreviewSuppressClick=false;},(window.CCC_CORE?.swipe?.profile?.snapMs||480)+80);
   };
 
   grid.addEventListener("touchstart",event=>{
@@ -674,7 +674,7 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
     if(event.pointerType==="mouse"&&swipe?.id===event.pointerId){
       swipe=null;
       setTransform(0,true);
-      window.setTimeout(clearGhost,(window.CCC_CORE?.swipe?.profile?.snapMs||380)+10);
+      window.setTimeout(clearGhost,(window.CCC_CORE?.swipe?.profile?.snapMs||480)+10);
     }
   });
 }

@@ -90,3 +90,4 @@ v2.10.86: Sid-snapen använder hela avståndet inklusive gutter, så inkommande 
 v2.10.87: Publiceras paginerade grids använder Core:s gemensamma swipeprofil utan att ändra den skuggfria lagerhanteringen. Vision-direktvägen hoppar över startvyn och skyddas mot ett sent bakåt-event.
 v2.10.88: Aktuell och inkommande gridsida klipps inom samma Core-swipeviewport i stället för att använda ett fast helskärmslager. Vision-direktvägen öppnar sista kontrollvyn direkt.
 v2.10.89: Core-landningen efter släpp är lugnare. Slutkontrollen visar 1–6 objekt adaptivt utan tomma platshållare; 7+ använder stabil 3×2-paging med Core-swipe.
+v2.10.90: Core-landningen är 480 ms. Slutkontrollen får mer luft ovanför och under bilden utan att införa normal mobilscroll; korta skärmar använder mindre mellanrum.

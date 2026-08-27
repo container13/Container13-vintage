@@ -2359,13 +2359,19 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
    En sida anpassar sig efter antalet objekt; flera sidor är alltid 3x2. */
 #channelConfirmView #confirmGrid.confirm-grid{
   width:96%!important;
-  margin:0 auto!important;
+  margin:14px auto 12px!important;
   padding:5px 4px 10px!important;
   column-gap:12px!important;
   row-gap:10px!important;
   align-items:start!important;
   align-content:start!important;
   overflow:visible!important;
+}
+@media(max-height:720px) and (max-width:480px){
+  #channelConfirmView #confirmGrid.confirm-grid{
+    margin-top:8px!important;
+    margin-bottom:8px!important;
+  }
 }
 #channelConfirmView #confirmGrid.confirm-grid.grid-1{
   grid-template-columns:minmax(0,280px)!important;
