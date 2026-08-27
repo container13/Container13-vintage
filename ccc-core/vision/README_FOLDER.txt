@@ -163,3 +163,4 @@ v2.10.84: Vision-startens Tillbaka-kort ersätts av en riktig Fortsätt fotosess
 v2.10.85: Vision-starten använder samma kompaktare rubrikrad som Dashboard/Publicera så korten börjar högre. Funktionerna är oförändrade.
 v2.10.86: Bildseriens snap-animation kortas till 240 ms så sidbytet avslutas direktare utan seg eftersläpning.
 v2.10.87: Vision-gridden använder Core:s gemensamma swipeprofil med längre draggräns och 280 ms landning. Publicera-trycket låses under sessionssparning så direktvägen inte kan dubbelnavigera.
+v2.10.88: Nästa gridsida börjar följa tidigare men sidbyte kräver längre drag enligt Core Swipe v2. Välj objekt visar ingen headerpil och Publicera går direkt till sista kontrollvyn.

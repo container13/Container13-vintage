@@ -192,8 +192,9 @@
   }
 
   function updateHeaderContext() {
-    const isModuleHome = visionView === "start";
-    const state={back:!isModuleHome,settings:true};
+    /* Vision-start och Välj objekt använder footerns Tillbaka. Headerpilen
+       reserveras för den djupare Granska & komplettera-vyn. */
+    const state={back:visionView==="edit",settings:true};
     window.__CCC_HEADER_PENDING__=state;
     window.CCC_CORE?.header?.set(state);
 
@@ -623,7 +624,7 @@
       /* Lite fingerjitter ska vara ett vanligt tryck. Först ett tydligt
          horisontellt drag låser gesten till swipe. */
       const swipeCore = window.CCC_CORE?.swipe;
-      if (!workspaceSwipe.horizontal && (swipeCore?.isHorizontal?.(dx, dy) ?? (Math.abs(dx) > 24 && Math.abs(dx) > Math.abs(dy) * 1.35))) {
+      if (!workspaceSwipe.horizontal && (swipeCore?.isHorizontal?.(dx, dy) ?? (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.25))) {
         workspaceSwipe.horizontal = true;
       }
       if (!workspaceSwipe.horizontal) return;
@@ -642,7 +643,7 @@
 
       if (horizontal && canSwipe) {
         const swipeCore = window.CCC_CORE?.swipe;
-        const commit = swipeCore?.shouldCommit?.(dx, strip.clientWidth) ?? Math.abs(dx) > Math.max(56, strip.clientWidth * .18);
+        const commit = swipeCore?.shouldCommit?.(dx, strip.clientWidth) ?? Math.abs(dx) > Math.max(72, strip.clientWidth * .24);
         if (commit) setWorkspacePage(workspacePage + (dx < 0 ? 1 : -1), true);
         else setWorkspacePage(workspacePage, true);
         setTimeout(() => { suppressWorkspaceClick = false; }, 180);
