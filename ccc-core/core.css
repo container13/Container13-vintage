@@ -1762,7 +1762,7 @@ html.ccc-dimmer-leaving .ccc-app-shell{
   opacity:.09!important;
   filter:brightness(.28) saturate(.68)!important;
   transform:scale(.992);
-  transition:opacity 260ms ease,filter 260ms ease,transform 260ms ease!important;
+  transition:opacity var(--ccc-dimmer-leave-ms,260ms) ease,filter var(--ccc-dimmer-leave-ms,260ms) ease,transform var(--ccc-dimmer-leave-ms,260ms) ease!important;
   pointer-events:none!important;
 }
 html.ccc-dimmer-enter-pending .ccc-app-shell{
@@ -1770,7 +1770,7 @@ html.ccc-dimmer-enter-pending .ccc-app-shell{
   filter:brightness(.28) saturate(.68)!important;
 }
 html.ccc-dimmer-enter-active .ccc-app-shell{
-  transition:opacity 300ms ease,filter 300ms ease,transform 300ms ease!important;
+  transition:opacity var(--ccc-dimmer-enter-ms,300ms) ease,filter var(--ccc-dimmer-enter-ms,300ms) ease,transform var(--ccc-dimmer-enter-ms,300ms) ease!important;
 }
 @media(prefers-reduced-motion:reduce){
   html.ccc-dimmer-leaving .ccc-app-shell,

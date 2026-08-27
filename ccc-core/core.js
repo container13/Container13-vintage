@@ -261,9 +261,15 @@ const CCCSwipe={
 // CCC DIMMER CORE v1 — v2.10.95
 // Avgränsat pilotläge för sidnavigation från Dashboard.
 // ==========================================================
+function readDimmerMs(key,fallback){
+  try{
+    const value=Number(localStorage.getItem(key));
+    return Number.isFinite(value)&&value>=150&&value<=1200?value:fallback;
+  }catch(_){return fallback;}
+}
 const CCCDimmer={
-  leaveMs:260,
-  enterMs:300,
+  leaveMs:readDimmerMs("ccc-dimmer-leave-ms",260),
+  enterMs:readDimmerMs("ccc-dimmer-enter-ms",300),
   navigate(url){
     if(!url)return;
     if(matchMedia("(prefers-reduced-motion: reduce)").matches){window.location.assign(url);return;}
@@ -281,6 +287,8 @@ const CCCDimmer={
     }));
   }
 };
+document.documentElement.style.setProperty("--ccc-dimmer-leave-ms",`${CCCDimmer.leaveMs}ms`);
+document.documentElement.style.setProperty("--ccc-dimmer-enter-ms",`${CCCDimmer.enterMs}ms`);
 CCCDimmer.enter();
 
 // Gemensam fysisk tryckkänsla för Dashboard och modulernas välkomstkort.
