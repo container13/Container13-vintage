@@ -267,9 +267,25 @@ function readDimmerMs(key,fallback){
     return Number.isFinite(value)&&value>=150&&value<=1200?value:fallback;
   }catch(_){return fallback;}
 }
+function readDimmerVisibility(){
+  try{
+    const raw=localStorage.getItem("ccc-dimmer-visibility");
+    if(raw===null)return 9;
+    const value=Number(raw);
+    return Number.isFinite(value)&&value>=0&&value<=40?value:9;
+  }catch(_){return 9;}
+}
+function readDimmerColor(){
+  try{
+    const value=String(localStorage.getItem("ccc-dimmer-color")||"").trim();
+    return /^#[0-9a-f]{6}$/i.test(value)?value:"#000000";
+  }catch(_){return "#000000";}
+}
 const CCCDimmer={
   leaveMs:readDimmerMs("ccc-dimmer-leave-ms",260),
   enterMs:readDimmerMs("ccc-dimmer-enter-ms",300),
+  visibility:readDimmerVisibility(),
+  color:readDimmerColor(),
   navigate(url){
     if(!url)return;
     if(matchMedia("(prefers-reduced-motion: reduce)").matches){window.location.assign(url);return;}
@@ -289,6 +305,8 @@ const CCCDimmer={
 };
 document.documentElement.style.setProperty("--ccc-dimmer-leave-ms",`${CCCDimmer.leaveMs}ms`);
 document.documentElement.style.setProperty("--ccc-dimmer-enter-ms",`${CCCDimmer.enterMs}ms`);
+document.documentElement.style.setProperty("--ccc-dimmer-visibility",String(CCCDimmer.visibility/100));
+document.documentElement.style.setProperty("--ccc-dimmer-color",CCCDimmer.color);
 CCCDimmer.enter();
 
 // Gemensam fysisk tryckkänsla för Dashboard och modulernas välkomstkort.
