@@ -190,7 +190,7 @@ const CCCSwipe={
 // Endast vy-/sidnavigation fördröjs. Kamera och filväljare måste behålla
 // webbläsarens direkta, betrodda användartryck och får därför bara animationen.
 const CCCPress={
-  delayMs:140,
+  delayMs:220,
   install(){
     if(document.documentElement.dataset.cccPressBound)return;
     document.documentElement.dataset.cccPressBound="1";
@@ -198,7 +198,7 @@ const CCCPress={
       const card=event.target?.closest?.(".ccc-module-home .ccc-module-card");
       if(!card||card.disabled||card.getAttribute("aria-disabled")==="true")return;
       card.classList.add("is-ccc-pressed");
-      window.setTimeout(()=>card.classList.remove("is-ccc-pressed"),220);
+      window.setTimeout(()=>card.classList.remove("is-ccc-pressed"),this.delayMs+90);
       if(!card.matches("a[href],[data-ccc-press-delay]"))return;
       if(card.dataset.cccPressReplay==="1"){
         delete card.dataset.cccPressReplay;

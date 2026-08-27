@@ -2277,3 +2277,10 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Vision-headern visar tillbaka i workspace/edit men inte på startvyn.
 - Slutkontrollens enkelbild använder en 308 px Core-viewport med 14 px symmetrisk ram runt 280 px bild.
 - `CCC_CORE.press` ger Dashboard och modulstarter en fysisk intryckt status. Endast säkra vy-/sidbyten fördröjs 140 ms; kamera-/filväljare fördröjs aldrig.
+
+## v2.10.92 – kamerans livscykel + kanalval i snabbväg
+- Kameran sparar `cameraReturnView` och återgår dit vid Avbryt.
+- `cameraRequestId` ogiltigförklarar sena `getUserMedia`-resultat; deras spår stoppas innan de kan återaktivera en stängd kamera.
+- `cameraOpening` blockerar parallella öppningsförsök och återställs vid både lyckat, avbrutet och misslyckat anrop.
+- Core-tryckets säkra navigationsfördröjning är 220 ms.
+- Ordinarie kanalflöde bevarar kanalvalet. Detail/Crop/Vision-snabbvägar startar utan kanal; slutknappen synkas centralt mellan `Välj kanal` och `Publicera X objekt`.
