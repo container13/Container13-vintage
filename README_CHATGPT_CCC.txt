@@ -4,10 +4,10 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.96
+CCC-version: 2.10.97
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
-Nästa uppgift: Bedöm v2.10.96:s starkare dimmerpilot Dashboard → Vision/Publicera innan fler vyer ansluts.
+Nästa uppgift: Kalibrera dimmertiderna i Dashboard-inställningar och återrapportera föredragna ned-/upptider.
 
 ARBETSPRINCIPER
 ---------------
@@ -67,6 +67,11 @@ v2.10.91 – Core Swipe 580 + färdiga mobilkort
 - Vision visar headerns tillbaka-pil i alla undervyer; endast modulens startvy saknar pil. Footer-Tillbaka finns kvar.
 - Slutkontrollens enkelbild får en symmetrisk Core-ram: 280 px bild och 14 px runt om.
 - Dashboard och modulstarter använder gemensam Core-tryckkänsla. Vy-/sidbyten väntar 140 ms; kamera och filväljare behåller direkt användaraktivering.
+
+v2.10.97 – tillfälliga dimmerreglage
+- Dashboard-inställningar har reglage för Tona ned och Tona upp, 150–1200 ms i steg om 10 ms.
+- Värden sparas lokalt och Core använder samma värde för både CSS-animation och faktisk navigationstid.
+- Återställning ger pilotens 260/300 ms. Mörkhetsnivån är fortsatt 9 % opacitet/28 % ljusstyrka.
 
 v2.10.96 – starkare dimmerpilot
 - Samma avgränsning som v2.10.95: endast Dashboard → CCC Vision/Publicera.
