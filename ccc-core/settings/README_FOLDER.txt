@@ -15,5 +15,6 @@ v2.9.90: Publicera-inställningar omfattar nu titel, beskrivning, märke, storle
 v2.9.91: Demobild/vattenstämpel tas bort från generella Publicera-inställningar; den är en kontextuell bildinställning i Anpassa bild. Kanalens visningsstandarder ligger kvar här.
 
 v2.10.56: Vision-inställningen Automatisk AI-analys borttagen; Vision-AI är nu alltid användarinitierad.
+v2.10.99: De tillfälliga Dashboard-reglagen för dimmerpiloten är borttagna.
 v2.10.98: Dimmerpanelen styr även synlighet 0–40 % och toningsfärg. Återställning ger 260/300 ms, 9 % och svart.
 v2.10.97: Dashboard-läget har tillfälliga reglage för Core-dimmerns ned-/upptid (150–1200 ms, steg 10) och återställning till 260/300 ms.
