@@ -12,6 +12,7 @@
   let cameraRequestId = 0;
   let cameraOpening = false;
   let cameraReturnView = "start";
+  let cameraFallbackOpen = false;
   let stagedCameraFile = null;
   let stagedItem = null;
   let batchItems = [];
@@ -726,12 +727,9 @@
     cameraOpening = true;
     const requestId = ++cameraRequestId;
     cameraReturnView = visionView;
-    /* Ett nytt kamerabesök ska fortsätta den aktiva lokala sessionen. Det får
-       aldrig tyst ersätta bilder som redan fotograferats. */
-    if (!batchItems.length && savedSessionSummary?.count) {
-      try { await restoreSavedVisionSession(); }
-      catch (error) { console.error("[CCC Vision] Kunde inte återuppta session före kamera", error); }
-    }
+    /* Kameran öppnas från den vy användaren faktiskt står på. En sparad session
+       återläses först efter ett taget foto; återläsningen får inte byta vyn bakom
+       iOS-kameran när användaren bara provar och sedan trycker Avbryt. */
     cameraSessionStartCount = batchItems.length;
     stagedCameraFile = null;
     stagedItem = null;
@@ -756,6 +754,7 @@
       closeCamera();
       const fallback = $("#cameraFallbackInput");
       fallback.value = "";
+      cameraFallbackOpen = true;
       fallback.click();
     } finally {
       if (requestId === cameraRequestId) cameraOpening = false;
@@ -845,6 +844,21 @@
     else showVisionStart();
   }
 
+  function finishFallbackCamera() {
+    cameraFallbackOpen = false;
+    cameraOpening = false;
+    const fallback = $("#cameraFallbackInput");
+    if (fallback) fallback.value = "";
+  }
+
+  function cancelFallbackCamera() {
+    if (!cameraFallbackOpen) return;
+    finishFallbackCamera();
+    resetCaptureVisual();
+    if (cameraReturnView === "workspace" && batchItems.length) showWorkspace();
+    else showVisionStart();
+  }
+
   function captureFrame() {
     const video = $("#cameraVideo");
     if (!video.videoWidth || !video.videoHeight) return;
@@ -911,10 +925,18 @@
     showWorkspace();
   }
 
-  function handleFallbackCamera(fileList) {
+  async function handleFallbackCamera(fileList) {
     const files = [...fileList].filter((f) => f.type.startsWith("image/"));
-    if (!files.length) return;
+    if (!files.length) {
+      cancelFallbackCamera();
+      return;
+    }
+    if (!batchItems.length && savedSessionSummary?.count) {
+      try { await restoreSavedVisionSession({ showAfterRestore: false }); }
+      catch (error) { console.error("[CCC Vision] Kunde inte återuppta session efter kameran", error); }
+    }
     files.forEach((file) => batchItems.push(createBatchItem(file, batchItems.length)));
+    finishFallbackCamera();
     queueVisionSessionSave();
     updateBatchStrip();
     resetCaptureVisual();
@@ -1311,11 +1333,11 @@
     applyCaptureMode();
   }
 
-  async function restoreSavedVisionSession() {
+  async function restoreSavedVisionSession({ showAfterRestore = true } = {}) {
     const record = await getVisionSessionRecord();
     if (!record?.items?.length) {
       savedSessionSummary = null;
-      showVisionStart();
+      if (showAfterRestore) showVisionStart();
       return;
     }
 
@@ -1395,7 +1417,7 @@
     savedSessionSummary = batchItems.length ? { count: batchItems.length, savedAt: record.savedAt } : null;
 
 
-    showWorkspace();
+    if (showAfterRestore) showWorkspace();
   }
 
 
@@ -2465,6 +2487,13 @@
   });
   $("#galleryInput").addEventListener("change", (event) => handleGalleryFiles(event.target.files));
   $("#cameraFallbackInput").addEventListener("change", (event) => handleFallbackCamera(event.target.files));
+  $("#cameraFallbackInput").addEventListener("cancel", cancelFallbackCamera);
+  window.addEventListener("focus", () => {
+    if (!cameraFallbackOpen) return;
+    window.setTimeout(() => {
+      if (cameraFallbackOpen && !$("#cameraFallbackInput")?.files?.length) cancelFallbackCamera();
+    }, 450);
+  });
   $("#closeCameraBtn").addEventListener("click", closeCameraSafely);
   $("#shutterBtn").addEventListener("click", captureFrame);
   $("#cameraZoomControls")?.addEventListener("click", (event) => {

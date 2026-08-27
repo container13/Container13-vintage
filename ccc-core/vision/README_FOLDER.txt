@@ -165,4 +165,5 @@ v2.10.86: Bildseriens snap-animation kortas till 240 ms så sidbytet avslutas di
 v2.10.87: Vision-gridden använder Core:s gemensamma swipeprofil med längre draggräns och 280 ms landning. Publicera-trycket låses under sessionssparning så direktvägen inte kan dubbelnavigera.
 v2.10.88: Nästa gridsida börjar följa tidigare men sidbyte kräver längre drag enligt Core Swipe v2. Välj objekt visar ingen headerpil och Publicera går direkt till sista kontrollvyn.
 v2.10.91: Välj objekt visar hela 3×2-griden genom att använda ledig yta ovanför footern. Header-Tillbaka visas i workspace/edit. Modulstartskorten får Core-tryckkänsla utan att kamera-/albumaktivering fördröjs.
+v2.10.93: iOS-fallbacken återläser inte längre en sparad session bakom kameran. `cancel`, tomt `change` och återfokus återställer kamerastate och exakt ursprungsvy före nästa försök.
 v2.10.92: Kamera-Avbryt återgår till verklig ursprungsvy. Parallella öppningar blockeras och sena getUserMedia-strömmar stoppas, så upprepade öppna/avbryt inte låser Vision.
