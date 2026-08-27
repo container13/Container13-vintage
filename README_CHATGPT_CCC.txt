@@ -4,10 +4,10 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.92
+CCC-version: 2.10.94
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
-Nästa uppgift: Stresstesta v2.10.92: Vision Ta ett foto → Avbryt upprepade gånger samt snabbväg → aktivt kanalval i slutkontrollen.
+Nästa uppgift: Stresstesta v2.10.94: Vision Ta ett foto → Avbryt minst fem gånger, snabbvägens kanalval samt kanalradens fria swipe med åtta kanaler.
 
 ARBETSPRINCIPER
 ---------------
@@ -67,6 +67,19 @@ v2.10.91 – Core Swipe 580 + färdiga mobilkort
 - Vision visar headerns tillbaka-pil i alla undervyer; endast modulens startvy saknar pil. Footer-Tillbaka finns kvar.
 - Slutkontrollens enkelbild får en symmetrisk Core-ram: 280 px bild och 14 px runt om.
 - Dashboard och modulstarter använder gemensam Core-tryckkänsla. Vy-/sidbyten väntar 140 ms; kamera och filväljare behåller direkt användaraktivering.
+
+v2.10.94 – Core free-swipe för kanalraden
+- Samlat paket ovanpå v2.10.92: innehåller hela v2.10.93 samt denna ändring.
+- Core har nu `paged`-fysiken för bildserier och `bindFree()` för flytande karuseller.
+- Slutkontrollens kanalrad använder fri native touch-momentum utan sid-snap; musdrag får Core-bromsning.
+- Raden centreras när den ryms och vänsterställs automatiskt först när den faktiskt behöver scrollas.
+
+v2.10.93 – iOS-kameraåterkomst + synkat kanalval
+- Sparad Vision-session återläses inte längre bakom iOS-kameran innan ett foto faktiskt har tagits.
+- Avbruten iOS-kamera/fallback återgår uttryckligen till den vy där kameran öppnades och nollställer nästa försök.
+- Core-kortens navigationskänsla är 320 ms; Ta ett foto använder den, medan albumväljaren är direkt.
+- Slutkontrollens C13-val har en gemensam state-synk: grön ytterring och korrekt Publicera X objekt-knapp.
+- Pinterest och Etsy ligger som låsta testkanaler så fler än sex kanaler och horisontell swipe kan provas.
 
 v2.10.92 – stabil kamera-Avbryt + aktivt kanalval
 - Vision sparar vilken vy kameran öppnades från. Avbryt återgår alltid till exakt den vyn i stället för att gissa utifrån sessionsinnehållet.
