@@ -4,10 +4,10 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.9.14
-Senaste stabila: 2.8.95 RC1 – Crop Engine 1.0
-Senaste checkpoint: 2026-08-11
-Nästa uppgift: Testa v2.9.14 på verkliga lokala utkast: miniatyr och detaljvy ska visa naturligt bildläge redan före Anpassa bild.
+CCC-version: 2.10.87
+Senaste stabila bas: 2.10.86 – skuggfri swipe och korrigerad välkomstlayout
+Senaste checkpoint: 2026-08-27
+Nästa uppgift: Testa v2.10.87 på iPhone: Vision-/Publicera-swipe samt första direktvägen Vision → Publicera.
 
 ARBETSPRINCIPER
 ---------------
@@ -37,6 +37,13 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.87 – Core-styrd swipe + stabil Vision → Publicera
+- Paginerade arbetsgrids i Vision och Publicera hämtar nu draggräns, fingerföljning, kantmotstånd, snap-tid och easing från en gemensam `CCC_CORE.swipe`-profil.
+- Anpassa bild är känslofacit: innehållet följer fingret direkt och motståndet kommer först nära ytterläget. Sidbyte kräver nu ett något längre drag (18 %, minst 56 px) och landar lugnt på 280 ms.
+- Publiceras fungerande skuggfria tvålagersrendering och exakta förflyttning inklusive gutter behålls; endast gestfysiken centraliseras.
+- Vision låser första Publicera-trycket medan sessionen sparas. Direktvägen döljer Publiceras startvy, öppnar valt objekt direkt och ignorerar ett sent bakåt-event under bootstrap.
+- v2.10.87 är byggd direkt från den GitHub-uppladdade v2.10.86-basen.
+
 v2.10.86 – Swipe utan eftersläpning
 - Publiceras inkommande sida och utgående sida använder nu exakt samma totala förflyttning, inklusive mellanrummet mellan sidorna. Nästa bildserie stannar därför direkt i slutläget utan ett sent hopp när den gamla sidan rensas.
 - Snap-animationen kortas till 240 ms i både Publicera och Vision så den gamla bildserien lämnar skärmen utan den tidigare sega avslutningen.
