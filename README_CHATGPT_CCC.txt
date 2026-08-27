@@ -4,10 +4,10 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.91
+CCC-version: 2.10.92
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
-Nästa uppgift: Testa v2.10.91 på iPhone: 580 ms Core-landning, komplett Vision-grid, symmetrisk slutkontrollram och tryckkänsla på modulstarter.
+Nästa uppgift: Stresstesta v2.10.92: Vision Ta ett foto → Avbryt upprepade gånger samt snabbväg → aktivt kanalval i slutkontrollen.
 
 ARBETSPRINCIPER
 ---------------
@@ -67,6 +67,13 @@ v2.10.91 – Core Swipe 580 + färdiga mobilkort
 - Vision visar headerns tillbaka-pil i alla undervyer; endast modulens startvy saknar pil. Footer-Tillbaka finns kvar.
 - Slutkontrollens enkelbild får en symmetrisk Core-ram: 280 px bild och 14 px runt om.
 - Dashboard och modulstarter använder gemensam Core-tryckkänsla. Vy-/sidbyten väntar 140 ms; kamera och filväljare behåller direkt användaraktivering.
+
+v2.10.92 – stabil kamera-Avbryt + aktivt kanalval
+- Vision sparar vilken vy kameran öppnades från. Avbryt återgår alltid till exakt den vyn i stället för att gissa utifrån sessionsinnehållet.
+- Varje kameraöppning får ett anrops-ID. Sena resultat från avbrutna `getUserMedia`-anrop stoppas och ignoreras, och öppningslåset återställs säkert.
+- Core-navigationens intryckta paus ökas från 140 till 220 ms. Kamera och filväljare behåller direkt användaraktivering.
+- Ordinarie Publicera-flöde behåller aktivt C13-val från kanalsteget.
+- Snabbvägar som hoppar över kanalsteget förväljer ingen kanal. Slutknappen visar `Välj kanal` tills C13 aktivt väljs och ändras därefter till `Publicera X objekt`.
 - Anpassa bild är känslofacit: innehållet följer fingret direkt och motståndet kommer först nära ytterläget. Sidbyte kräver nu ett något längre drag (18 %, minst 56 px) och landar lugnt på 280 ms.
 - Publiceras fungerande skuggfria tvålagersrendering och exakta förflyttning inklusive gutter behålls; endast gestfysiken centraliseras.
 - Vision låser första Publicera-trycket medan sessionen sparas. Direktvägen döljer Publiceras startvy, öppnar valt objekt direkt och ignorerar ett sent bakåt-event under bootstrap.
