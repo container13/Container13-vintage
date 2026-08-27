@@ -16,6 +16,13 @@
   appearance:auto;width:100%;height:28px;border-radius:0;background:transparent;position:static;accent-color:var(--gold);transition:none
 }
 .setting-row .dimmer-range-control input[type="range"]::before{content:none;display:none}
+.dimmer-color-row{cursor:default}
+.dimmer-color-control{display:grid;grid-template-columns:auto 48px;gap:10px;align-items:center}
+.dimmer-color-control output{color:var(--gold);font-weight:850;font-size:.78rem;font-variant-numeric:tabular-nums}
+.setting-row .dimmer-color-control input[type="color"]{
+  appearance:auto;width:48px;height:38px;padding:2px;border:1px solid var(--border);border-radius:10px;background:var(--surface);position:static;cursor:pointer
+}
+.setting-row .dimmer-color-control input[type="color"]::before{content:none;display:none}
 @media(max-width:420px){.dimmer-range-row{grid-template-columns:1fr}.dimmer-range-control{width:100%}}
 
 /* CCC v2.9.70 – channel presentation settings */
