@@ -8,6 +8,16 @@
 .ccc-home-link{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .settings-action{width:100%;min-height:46px;margin-top:12px;border:1px solid var(--border);border-radius:14px;background:var(--surface);color:var(--gold);font-weight:850}
 
+/* Tillfälliga Dashboard-reglage för kalibrering av Core-dimmern. */
+.dimmer-range-row{grid-template-columns:minmax(0,1fr) minmax(132px,42%);cursor:default}
+.dimmer-range-control{display:grid;gap:8px;justify-items:stretch}
+.dimmer-range-control output{text-align:center;color:var(--gold);font-weight:850;font-variant-numeric:tabular-nums}
+.setting-row .dimmer-range-control input[type="range"]{
+  appearance:auto;width:100%;height:28px;border-radius:0;background:transparent;position:static;accent-color:var(--gold);transition:none
+}
+.setting-row .dimmer-range-control input[type="range"]::before{content:none;display:none}
+@media(max-width:420px){.dimmer-range-row{grid-template-columns:1fr}.dimmer-range-control{width:100%}}
+
 /* CCC v2.9.70 – channel presentation settings */
 .settings-subheading{margin:4px 0 2px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 

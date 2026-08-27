@@ -34,6 +34,52 @@
     });
   }
 
+  const DIMMER_LEAVE_KEY="ccc-dimmer-leave-ms";
+  const DIMMER_ENTER_KEY="ccc-dimmer-enter-ms";
+  const dimmerLeave=document.getElementById("dimmerLeaveMs");
+  const dimmerEnter=document.getElementById("dimmerEnterMs");
+  const dimmerLeaveValue=document.getElementById("dimmerLeaveValue");
+  const dimmerEnterValue=document.getElementById("dimmerEnterValue");
+  const dimmerSaved=document.getElementById("dimmerTimingSaved");
+  const resetDimmer=document.getElementById("resetDimmerTiming");
+  const dimmerStoredValue=(key,fallback)=>{
+    const value=Number(localStorage.getItem(key));
+    return Number.isFinite(value)&&value>=150&&value<=1200?value:fallback;
+  };
+  const syncDimmerControls=()=>{
+    if(dimmerLeaveValue&&dimmerLeave)dimmerLeaveValue.textContent=`${dimmerLeave.value} ms`;
+    if(dimmerEnterValue&&dimmerEnter)dimmerEnterValue.textContent=`${dimmerEnter.value} ms`;
+  };
+  const flashDimmerSaved=(text="Sparat – testa från Dashboard")=>{
+    if(!dimmerSaved)return;
+    dimmerSaved.textContent=text;
+    clearTimeout(flashDimmerSaved._timer);
+    flashDimmerSaved._timer=setTimeout(()=>{dimmerSaved.textContent="";},1800);
+  };
+  if(dashboardMode&&dashboardCard&&dimmerLeave&&dimmerEnter){
+    dimmerLeave.value=String(dimmerStoredValue(DIMMER_LEAVE_KEY,260));
+    dimmerEnter.value=String(dimmerStoredValue(DIMMER_ENTER_KEY,300));
+    syncDimmerControls();
+    dimmerLeave.addEventListener("input",()=>{
+      localStorage.setItem(DIMMER_LEAVE_KEY,dimmerLeave.value);
+      syncDimmerControls();
+      flashDimmerSaved();
+    });
+    dimmerEnter.addEventListener("input",()=>{
+      localStorage.setItem(DIMMER_ENTER_KEY,dimmerEnter.value);
+      syncDimmerControls();
+      flashDimmerSaved();
+    });
+    resetDimmer?.addEventListener("click",()=>{
+      localStorage.removeItem(DIMMER_LEAVE_KEY);
+      localStorage.removeItem(DIMMER_ENTER_KEY);
+      dimmerLeave.value="260";
+      dimmerEnter.value="300";
+      syncDimmerControls();
+      flashDimmerSaved("Återställt till 260 / 300 ms");
+    });
+  }
+
   // Publicera
   const showTitle=document.getElementById("publishC13ShowTitle");
   const showDescription=document.getElementById("publishC13ShowDescription");
