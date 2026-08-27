@@ -2106,6 +2106,26 @@ function syncConfirmPublishAction(){
   button.disabled=count===0;
 }
 
+function setContainer13ChannelSelected(selected){
+  container13ChannelSelected=!!selected;
+  const targetButton=$("#container13ChannelBtn");
+  if(targetButton){
+    targetButton.classList.toggle("is-chosen",container13ChannelSelected);
+    targetButton.setAttribute("aria-pressed",String(container13ChannelSelected));
+  }
+  const confirmButton=$("#confirmC13Channel");
+  if(confirmButton){
+    confirmButton.classList.toggle("is-active",container13ChannelSelected);
+    confirmButton.setAttribute("aria-pressed",String(container13ChannelSelected));
+    confirmButton.setAttribute("aria-label",`Container13, ${container13ChannelSelected?"vald":"inte vald"} kanal`);
+  }
+  const next=$("#channelNextBtn");
+  if(next)next.disabled=!container13ChannelSelected;
+  const preview=$("#confirmPreviewBtn");
+  if(preview)preview.disabled=!container13ChannelSelected;
+  syncConfirmPublishAction();
+}
+
 async function renderChannelConfirmation(resetControls=true){
   const selected=selectedChannelItems();
   const grid=$("#confirmGrid");
@@ -2122,11 +2142,8 @@ async function renderChannelConfirmation(resetControls=true){
   const paged=pageCount>1;
   grid.className=`draft-grid confirm-grid ${paged?"grid-9":channelGridClass(visible.length)}`;
   const c13Confirm=$("#confirmC13Channel");
-  if(c13Confirm){
-    c13Confirm.classList.toggle("is-active",container13ChannelSelected);
-    c13Confirm.setAttribute("aria-pressed",String(container13ChannelSelected));
-  }
-  syncConfirmPublishAction();
+  if(c13Confirm)setContainer13ChannelSelected(container13ChannelSelected);
+  else syncConfirmPublishAction();
   if(resetControls){
     container13PublishDisplayOverride=null;
     if($("#confirmDisplayEditor"))$("#confirmDisplayEditor").hidden=true;
@@ -2153,12 +2170,7 @@ async function renderChannelConfirmation(resetControls=true){
 }
 
 $("#container13ChannelBtn")?.addEventListener("click",()=>{
-  container13ChannelSelected=!container13ChannelSelected;
-  const button=$("#container13ChannelBtn");
-  button.classList.toggle("is-chosen",container13ChannelSelected);
-  button.setAttribute("aria-pressed",String(container13ChannelSelected));
-  const next=$("#channelNextBtn");
-  if(next)next.disabled=!container13ChannelSelected;
+  setContainer13ChannelSelected(!container13ChannelSelected);
 });
 
 $("#channelNextBtn")?.addEventListener("click",async()=>{
@@ -2393,17 +2405,21 @@ for(const input of document.querySelectorAll("#confirmDisplayEditor input[type=c
 $("#confirmDisplayResetBtn")?.addEventListener("click",()=>{container13PublishDisplayOverride=null;syncConfirmDisplayUi();});
 
 $("#confirmC13Channel")?.addEventListener("click",()=>{
-  container13ChannelSelected=!container13ChannelSelected;
-  const button=$("#confirmC13Channel");
-  button.classList.toggle("is-active",container13ChannelSelected);
-  button.setAttribute("aria-pressed",String(container13ChannelSelected));
-  $("#confirmPreviewBtn").disabled=!container13ChannelSelected;
-  syncConfirmPublishAction();
+  setContainer13ChannelSelected(!container13ChannelSelected);
   $("#confirmStatus").textContent=container13ChannelSelected?"":"Välj minst en kanal för att publicera.";
 });
 document.querySelectorAll("#channelConfirmView .confirm-channel-chip.is-unavailable").forEach(button=>{
   button.addEventListener("click",()=>showChannelUnavailable(button.dataset.channel||"Kanalen"));
 });
+
+function bindConfirmChannelFreeSwipe(){
+  window.CCC_CORE?.swipe?.bindFree?.(
+    document.querySelector("#channelConfirmView .confirm-channel-strip"),
+    {centerWhenFits:true}
+  );
+}
+bindConfirmChannelFreeSwipe();
+document.addEventListener("ccc:core-ready",bindConfirmChannelFreeSwipe,{once:true});
 
 $("#confirmPublishBtn")?.addEventListener("click",async()=>{
   if(!container13ChannelSelected){

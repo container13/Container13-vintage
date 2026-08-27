@@ -1457,7 +1457,7 @@
 #channelConfirmView .confirm-grid{margin-top:8px}
 .confirm-channel-strip{
   width:min(100%,520px);margin:14px auto 0;padding:2px 1px 7px;
-  display:flex;gap:9px;overflow-x:auto;overscroll-behavior-x:contain;
+  display:flex;justify-content:safe center;gap:9px;overflow-x:auto;overscroll-behavior-x:contain;
   scrollbar-width:none;-webkit-overflow-scrolling:touch;
 }
 .confirm-channel-strip::-webkit-scrollbar{display:none}
@@ -1467,11 +1467,9 @@
 }
 .confirm-channel-chip .channel-brand-icon{width:48px;height:48px;border-radius:14px}
 .confirm-channel-chip small{width:64px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;font-size:9px;color:var(--muted)}
-.confirm-channel-chip.is-active .channel-brand-icon{box-shadow:0 0 0 3px #2e9f55}
+.confirm-channel-chip.is-active .channel-brand-icon{border-radius:50%;box-shadow:0 0 0 3px #35b866,0 0 14px rgba(53,184,102,.42)}
 .confirm-channel-chip.is-active::after{
-  content:"✓";position:absolute;right:4px;top:1px;width:19px;height:19px;border-radius:50%;
-  display:grid;place-items:center;background:#2e9f55;color:#fff;font-size:12px;font-weight:900;
-  box-shadow:0 1px 4px rgba(0,0,0,.25);
+  content:none;display:none;
 }
 .confirm-channel-chip.is-unavailable .channel-brand-icon{filter:grayscale(1);opacity:.42}
 .confirm-channel-chip.is-unavailable small{opacity:.62}
@@ -1737,6 +1735,18 @@
     0 0 18px rgba(228,182,72,.44)!important;
 }
 
+/* Tillfälliga testkanaler gör kanalradens sjunde position och Core-swipe testbar. */
+#channelConfirmView .channel-brand-pinterest,
+#channelTargetsView .channel-brand-pinterest{
+  color:#fff!important;background:radial-gradient(circle at 35% 30%,#ef5a65,#bd081c 70%)!important;
+  box-shadow:0 0 8px rgba(189,8,28,.72),0 0 18px rgba(189,8,28,.38)!important;
+}
+#channelConfirmView .channel-brand-etsy,
+#channelTargetsView .channel-brand-etsy{
+  color:#fff!important;background:radial-gradient(circle at 35% 30%,#ff985f,#f1641e 70%)!important;
+  box-shadow:0 0 8px rgba(241,100,30,.70),0 0 18px rgba(241,100,30,.36)!important;
+}
+
 /* Låsta kanaler ska fortfarande kännas levande – låset visar statusen */
 #channelConfirmView .confirm-channel-chip.is-unavailable .channel-brand-icon,
 #channelTargetsView .channel-option.is-unavailable .channel-brand-icon{
@@ -1747,11 +1757,13 @@
   opacity:.72!important;
 }
 
-/* Aktiv kanal får lite extra energi, utan att ändra statusbocken */
+/* Aktiv kanal får en tydlig yttre grön cirkel i stället för statusbock. */
 #channelConfirmView .confirm-channel-chip.is-active .channel-brand-icon,
 #channelTargetsView .channel-option.is-chosen .channel-brand-icon{
   transform:scale(1.055);
   filter:saturate(1.08) brightness(1.04)!important;
+  border-radius:50%!important;
+  box-shadow:0 0 0 3px #35b866,0 0 16px rgba(53,184,102,.44)!important;
 }
 
 /* Slutkontrollen: gör den kompakta raden jämn men fortfarande tumvänlig */

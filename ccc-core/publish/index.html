@@ -12,8 +12,8 @@
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <script>if(new URLSearchParams(location.search).get("view")==="prepare")document.documentElement.classList.add("ccc-direct-prepare-loading");</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.10.92">
-<link rel="stylesheet" href="../core.css?v=2.10.92">
+<link rel="stylesheet" href="publish.css?v=2.10.94">
+<link rel="stylesheet" href="../core.css?v=2.10.94">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell publish-shell">
@@ -123,6 +123,16 @@
           <span class="channel-option-main"><strong>Tradera</strong><small>Inte ansluten ännu</small></span>
           <span class="channel-option-state channel-choice-box" aria-hidden="true">🔒</span>
         </button>
+        <button class="channel-option is-unavailable" type="button" data-channel="Pinterest" aria-disabled="true">
+          <span class="channel-brand-icon channel-brand-pinterest" aria-hidden="true">P</span>
+          <span class="channel-option-main"><strong>Pinterest</strong><small>Testkanal · inte ansluten</small></span>
+          <span class="channel-option-state channel-choice-box" aria-hidden="true">🔒</span>
+        </button>
+        <button class="channel-option is-unavailable" type="button" data-channel="Etsy" aria-disabled="true">
+          <span class="channel-brand-icon channel-brand-etsy" aria-hidden="true">E</span>
+          <span class="channel-option-main"><strong>Etsy</strong><small>Testkanal · inte ansluten</small></span>
+          <span class="channel-option-state channel-choice-box" aria-hidden="true">🔒</span>
+        </button>
       </div>
       <button id="channelNextBtn" class="primary-action channel-next-action" type="button" disabled>Nästa</button>
 
@@ -146,6 +156,8 @@
         <button class="confirm-channel-chip is-unavailable" type="button" data-channel="TikTok" aria-label="TikTok, inte ansluten"><span class="channel-brand-icon channel-brand-tiktok" aria-hidden="true">♪</span><small>TikTok</small></button>
         <button class="confirm-channel-chip is-unavailable" type="button" data-channel="X" aria-label="X, inte ansluten"><span class="channel-brand-icon channel-brand-x" aria-hidden="true">X</span><small>X</small></button>
         <button class="confirm-channel-chip is-unavailable" type="button" data-channel="Tradera" aria-label="Tradera, inte ansluten"><span class="channel-brand-icon channel-brand-tradera" aria-hidden="true">T</span><small>Tradera</small></button>
+        <button class="confirm-channel-chip is-unavailable" type="button" data-channel="Pinterest" aria-label="Pinterest, testkanal, inte ansluten"><span class="channel-brand-icon channel-brand-pinterest" aria-hidden="true">P</span><small>Pinterest</small></button>
+        <button class="confirm-channel-chip is-unavailable" type="button" data-channel="Etsy" aria-label="Etsy, testkanal, inte ansluten"><span class="channel-brand-icon channel-brand-etsy" aria-hidden="true">E</span><small>Etsy</small></button>
       </div>
 
       <div class="confirm-display-summary">
@@ -248,9 +260,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.10.92"></script>
-<script type="module" src="../core.js?v=2.10.92"></script>
-  <script src="../version.js?v=2.10.92"></script>
+<script type="module" src="publish.js?v=2.10.94"></script>
+<script type="module" src="../core.js?v=2.10.94"></script>
+  <script src="../version.js?v=2.10.94"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 
