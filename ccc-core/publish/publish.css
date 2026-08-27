@@ -2355,8 +2355,8 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   contain:layout paint!important;
 }
 
-/* CCC v2.10.89 – kanonisk geometri för sista kontrollen.
-   En sida anpassar sig efter antalet objekt; flera sidor är alltid 3x2. */
+/* CCC v2.10.91 – kanonisk geometri för sista kontrollen.
+   En enkel bild får en enda symmetrisk Core-ram. Flera sidor är alltid 3x2. */
 #channelConfirmView #confirmGrid.confirm-grid{
   width:96%!important;
   margin:14px auto 12px!important;
@@ -2366,6 +2366,18 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   align-items:start!important;
   align-content:start!important;
   overflow:visible!important;
+}
+#channelConfirmView .ccc-swipe-viewport:has(> #confirmGrid.grid-1){
+  width:min(96%,308px)!important;
+  margin:14px auto 12px!important;
+  padding:14px!important;
+  border-radius:18px!important;
+  background:var(--surface,var(--ccc-surface))!important;
+}
+#channelConfirmView .ccc-swipe-viewport:has(> #confirmGrid.grid-1) > #confirmGrid{
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
 }
 @media(max-height:720px) and (max-width:480px){
   #channelConfirmView #confirmGrid.confirm-grid{

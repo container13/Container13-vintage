@@ -91,3 +91,4 @@ v2.10.87: Publiceras paginerade grids använder Core:s gemensamma swipeprofil ut
 v2.10.88: Aktuell och inkommande gridsida klipps inom samma Core-swipeviewport i stället för att använda ett fast helskärmslager. Vision-direktvägen öppnar sista kontrollvyn direkt.
 v2.10.89: Core-landningen efter släpp är lugnare. Slutkontrollen visar 1–6 objekt adaptivt utan tomma platshållare; 7+ använder stabil 3×2-paging med Core-swipe.
 v2.10.90: Core-landningen är 480 ms. Slutkontrollen får mer luft ovanför och under bilden utan att införa normal mobilscroll; korta skärmar använder mindre mellanrum.
+v2.10.91: Swipe landar på 580 ms och detalj-swipen använder Core fullt ut. Enkelbildens slutkontroll får en symmetrisk 14 px ram. Startkorten får Core-styrd tryckkänsla och 140 ms vyfördröjning.

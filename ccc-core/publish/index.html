@@ -12,8 +12,8 @@
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <script>if(new URLSearchParams(location.search).get("view")==="prepare")document.documentElement.classList.add("ccc-direct-prepare-loading");</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.10.90">
-<link rel="stylesheet" href="../core.css?v=2.10.90">
+<link rel="stylesheet" href="publish.css?v=2.10.91">
+<link rel="stylesheet" href="../core.css?v=2.10.91">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell publish-shell">
@@ -53,17 +53,17 @@
     <section id="startView" class="publish-view publish-start-view ccc-mobile-home-view ccc-module-home ccc-module-home--publish">
       <div class="ccc-home-heading"><h1>Vad vill du göra?</h1></div>
       <div class="ccc-action-grid ccc-action-grid--fill-mobile publish-start-grid">
-        <button id="draftsBtn" class="ccc-action-card ccc-action-card--blue ccc-module-card ccc-module-card--publish" type="button">
+        <button id="draftsBtn" class="ccc-action-card ccc-action-card--blue ccc-module-card ccc-module-card--publish" type="button" data-ccc-press-delay>
           <span class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 6h2M10 6h8M6 12h2M10 12h8M6 18h2M10 18h8"/></svg></span>
           <span class="action-copy"><strong>Förbered för publicering</strong><small id="startDraftCount">0 utkast</small></span>
           <span class="action-arrow" aria-hidden="true">›</span>
         </button>
-        <button id="channelBtn" class="ccc-action-card ccc-action-card--green ccc-module-card ccc-module-card--publish" type="button">
+        <button id="channelBtn" class="ccc-action-card ccc-action-card--green ccc-module-card ccc-module-card--publish" type="button" data-ccc-press-delay>
           <span class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M4 12h16M12 4c2.4 2.2 3.5 4.9 3.5 8S14.4 17.8 12 20c-2.4-2.2-3.5-4.9-3.5-8S9.6 6.2 12 4Z"/></svg></span>
           <span class="action-copy"><strong>Välj kanal</strong><small>Välj var du vill publicera</small></span>
           <span class="action-arrow" aria-hidden="true">›</span>
         </button>
-        <button id="publishedBtn" class="ccc-action-card ccc-action-card--purple ccc-module-card ccc-module-card--publish" type="button">
+        <button id="publishedBtn" class="ccc-action-card ccc-action-card--purple ccc-module-card ccc-module-card--publish" type="button" data-ccc-press-delay>
           <span class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3.5 2M7 4.8 4.8 7"/></svg></span>
           <span class="action-copy"><strong>Hantera publicerade bilder</strong><small id="publishedStartCount" data-ccc-term="Se vad som ligger ute eller ta bort sålda {plural}">Se vad som ligger ute eller ta bort sålda objekt</small></span>
           <span class="action-arrow" aria-hidden="true">›</span>
@@ -248,9 +248,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.10.90"></script>
-<script type="module" src="../core.js?v=2.10.90"></script>
-  <script src="../version.js?v=2.10.90"></script>
+<script type="module" src="publish.js?v=2.10.91"></script>
+<script type="module" src="../core.js?v=2.10.91"></script>
+  <script src="../version.js?v=2.10.91"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 
