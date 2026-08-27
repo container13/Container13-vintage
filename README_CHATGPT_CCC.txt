@@ -4,10 +4,10 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.89
+CCC-version: 2.10.90
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
-Nästa uppgift: Testa v2.10.89 på iPhone: lugnare Core-landning och adaptiv slutkontroll för 1–6 objekt.
+Nästa uppgift: Testa v2.10.90 på iPhone: 480 ms Core-landning och luftigare, scrollfri normal slutkontroll.
 
 ARBETSPRINCIPER
 ---------------
@@ -54,6 +54,12 @@ v2.10.89 – lugnare Core-snap + adaptiv slutkontroll
 - Core-snapen efter släpp är 380 ms med mjukare inbromsning i alla arbetsgrids som använder `CCC_CORE.swipe`.
 - En enda kontrollsida anpassas efter antalet: 1 objekt = stort centrerat, 2 = 2 kolumner, 3–4 = 2×2 och 5–6 = 3×2.
 - Vid 7 eller fler objekt behåller varje sida 3×2 och växlar med Core-swipe, så inkommande och utgående lager alltid har samma mått.
+- Versionsregel: `/version.js` i projektroten tillhör Container13s hemsida och får inte ändras av CCC-versioner. CCC:s versionsnummer styrs enbart av `/ccc-core/version.js`.
+
+v2.10.90 – lugnare landning + scrollfri mobilprincip
+- Core-snapen efter släpp är 480 ms med en mjukare inbromsning. Fingerföljningen och dragtröskeln är oförändrade.
+- Sista kontrollvyn får mer luft ovanför och under bildytan; korta mobilskärmar använder ett kompaktare mellanrum automatiskt.
+- Permanent mobilregel: normala CCC-vyer ska vara scrollfria när innehållet rimligen ryms. Huvudinnehåll och footer ska synas samtidigt. Scroll används när innehållet faktiskt kräver det, exempelvis öppnade redigeringspaneler, ovanligt små skärmar eller förstorad text.
 - Anpassa bild är känslofacit: innehållet följer fingret direkt och motståndet kommer först nära ytterläget. Sidbyte kräver nu ett något längre drag (18 %, minst 56 px) och landar lugnt på 280 ms.
 - Publiceras fungerande skuggfria tvålagersrendering och exakta förflyttning inklusive gutter behålls; endast gestfysiken centraliseras.
 - Vision låser första Publicera-trycket medan sessionen sparas. Direktvägen döljer Publiceras startvy, öppnar valt objekt direkt och ignorerar ett sent bakåt-event under bootstrap.
