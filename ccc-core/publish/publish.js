@@ -269,14 +269,17 @@ function resetViewScroll(view){
 const publishEntryParams = new URLSearchParams(window.location.search);
 const directPrepareView = publishEntryParams.get("view") === "prepare";
 const directPrepareItemId = publishEntryParams.get("item") || "";
+const directPrepareItemIds = (publishEntryParams.get("items")||directPrepareItemId)
+  .split(",").map(value=>value.trim()).filter(Boolean);
 const directPrepareOrigin = publishEntryParams.get("from") || "";
 const directFromVisionEdit = directPrepareOrigin === "vision-edit" && !!directPrepareItemId;
-let directPrepareBackGuard = directFromVisionEdit;
+const directFromVisionExpress = directPrepareOrigin === "vision-camera-express" && directPrepareItemIds.length>0;
+let directPrepareBackGuard = directFromVisionEdit||directFromVisionExpress;
 let currentPublishView="startView";
 
 function finishDirectPrepareBootstrap(){
   document.documentElement.classList.remove("ccc-direct-prepare-loading");
-  if(!directFromVisionEdit){
+  if(!directFromVisionEdit&&!directFromVisionExpress){
     directPrepareBackGuard=false;
     return;
   }
@@ -752,15 +755,16 @@ async function quickPublishCurrentDetail(){
   show("channelConfirmView");
 }
 
-async function openDirectVisionConfirmation(itemId){
-  const index=itemIndexById(itemId);
-  if(index<0)return false;
-  await ensurePublishSource(items[index]);
-  activeIndex=index;
-  activeItemId=items[index]?.id||null;
+async function openDirectVisionConfirmation(itemIds){
+  const requested=(Array.isArray(itemIds)?itemIds:[itemIds]).filter(Boolean);
+  const selected=requested.filter(id=>itemIndexById(id)>=0);
+  if(!selected.length)return false;
+  for(const id of selected)await ensurePublishSource(items[itemIndexById(id)]);
+  activeIndex=itemIndexById(selected[0]);
+  activeItemId=items[activeIndex]?.id||null;
   quickPublishReturnView=null;
   channelSelectedIds.clear();
-  channelSelectedIds.add(itemId);
+  selected.forEach(id=>channelSelectedIds.add(id));
   channelSelectPage=0;
   confirmPage=0;
   container13ChannelSelected=false;
@@ -2511,8 +2515,8 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
     item.thumbUrl=await previewSrc(item);
     if(index===0)preloadNeighbors(0);
   }));
-  if(directPrepareView && directPrepareItemId && itemIndexById(directPrepareItemId) >= 0){
-    await openDirectVisionConfirmation(directPrepareItemId);
+  if(directPrepareView && directPrepareItemIds.some(id=>itemIndexById(id)>=0)){
+    await openDirectVisionConfirmation(directPrepareItemIds);
     requestAnimationFrame(()=>requestAnimationFrame(finishDirectPrepareBootstrap));
     await previewsReady;
     await renderGrid();
@@ -2583,6 +2587,10 @@ document.addEventListener("ccc:header-back",async()=>{
   if(currentPublishView==="channelConfirmView"){
     if(directFromVisionEdit){
       returnToVisionObject();
+      return;
+    }
+    if(directFromVisionExpress){
+      window.location.href="../vision/index.html";
       return;
     }
     if(quickPublishReturnView==="cropView"){
