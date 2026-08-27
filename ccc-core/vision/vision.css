@@ -5208,6 +5208,23 @@ body.ccc-focused-text-mode #textEditorDialog #largeTextEditor.description-editor
   pointer-events:none!important;
 }
 
+/* CCC Vision v2.10.91 – kanonisk mobilhöjd för Välj objekt.
+   Arbetskortet använder den lediga remsan ovanför Core-footern så hela
+   3x2-sidan syns; miniatyrernas proportioner ändras inte. */
+@media(max-width:480px) and (orientation:portrait){
+  #captureCard:has(#batchStrip:not([hidden])){
+    height:calc(100% + 16px)!important;
+    max-height:calc(100% + 16px)!important;
+    margin-bottom:-16px!important;
+    padding-bottom:10px!important;
+    overflow:hidden!important;
+  }
+  #captureCard:has(#batchStrip:not([hidden])) .batch-strip{
+    min-height:0!important;
+    overflow:hidden!important;
+  }
+}
+
 @media(max-width:380px){
   #editCard .edit-object-actions{
     grid-template-columns:112px minmax(0,1fr) 86px!important;

@@ -192,9 +192,9 @@
   }
 
   function updateHeaderContext() {
-    /* Vision-start och Välj objekt använder footerns Tillbaka. Headerpilen
-       reserveras för den djupare Granska & komplettera-vyn. */
-    const state={back:visionView==="edit",settings:true};
+    /* Startvyn är modulens ingång. Alla djupare Vision-vyer visar både
+       headerpil och den tumvänliga footerknappen för samma bakåtsteg. */
+    const state={back:visionView!=="start",settings:true};
     window.__CCC_HEADER_PENDING__=state;
     window.CCC_CORE?.header?.set(state);
 
@@ -593,7 +593,7 @@
     workspacePage = Math.max(0, Math.min(page, pageCount - 1));
     if (track) {
       track.style.transition = animate
-        ? (window.CCC_CORE?.swipe?.transition?.() || "transform 280ms cubic-bezier(.22,.72,.22,1)")
+        ? (window.CCC_CORE?.swipe?.transition?.() || "transform 580ms cubic-bezier(.20,.58,.16,1)")
         : "none";
       track.style.transform = `translate3d(${-workspacePage * 100}%,0,0)`;
     }
