@@ -2354,3 +2354,29 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   filter:none!important;
   contain:layout paint!important;
 }
+
+/* CCC v2.10.89 – kanonisk geometri för sista kontrollen.
+   En sida anpassar sig efter antalet objekt; flera sidor är alltid 3x2. */
+#channelConfirmView #confirmGrid.confirm-grid{
+  width:96%!important;
+  margin:0 auto!important;
+  padding:5px 4px 10px!important;
+  column-gap:12px!important;
+  row-gap:10px!important;
+  align-items:start!important;
+  align-content:start!important;
+  overflow:visible!important;
+}
+#channelConfirmView #confirmGrid.confirm-grid.grid-1{
+  grid-template-columns:minmax(0,280px)!important;
+  justify-content:center!important;
+}
+#channelConfirmView #confirmGrid.confirm-grid.grid-2,
+#channelConfirmView #confirmGrid.confirm-grid.grid-4{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  justify-content:center!important;
+}
+#channelConfirmView #confirmGrid.confirm-grid.grid-9{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  justify-content:stretch!important;
+}

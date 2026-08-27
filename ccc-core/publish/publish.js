@@ -527,7 +527,7 @@ function softenPageSwipe(dx,width,atEdge=false){
 }
 function setPagedGridTransform(grid,ghost,offset,width,direction,animate=false){
   const transition=animate
-    ? (window.CCC_CORE?.swipe?.transition?.()||"transform 280ms cubic-bezier(.22,.72,.22,1)")
+    ? (window.CCC_CORE?.swipe?.transition?.()||"transform 380ms cubic-bezier(.22,.68,.20,1)")
     : "none";
   const travel=width+PAGED_GRID_GUTTER;
   grid.style.transition=transition;
@@ -607,7 +607,7 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
 
     if(!horizontal){
       setTransform(0,true);
-      window.setTimeout(clearGhost,(window.CCC_CORE?.swipe?.profile?.snapMs||280)+10);
+      window.setTimeout(clearGhost,(window.CCC_CORE?.swipe?.profile?.snapMs||380)+10);
       draftPreviewSuppressClick=false;
       return;
     }
@@ -627,7 +627,7 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
     const travel=width+PAGED_GRID_GUTTER;
     setTransform(changed?(dx<0?-travel:travel):0,true);
     if(changed){
-      suppressUntil=performance.now()+500;
+      suppressUntil=performance.now()+(window.CCC_CORE?.swipe?.profile?.snapMs||380)+220;
       window.setTimeout(async()=>{
         setPage(next);
         /* Den bortgående gridden får inte ligga kvar som ett halvtransparent
@@ -639,11 +639,11 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
         setTransform(0,false);
         grid.style.visibility="visible";
         clearGhost();
-      },(window.CCC_CORE?.swipe?.profile?.snapMs||280)+10);
+      },(window.CCC_CORE?.swipe?.profile?.snapMs||380)+10);
     }else{
-      window.setTimeout(clearGhost,(window.CCC_CORE?.swipe?.profile?.snapMs||280)+10);
+      window.setTimeout(clearGhost,(window.CCC_CORE?.swipe?.profile?.snapMs||380)+10);
     }
-    window.setTimeout(()=>{draftPreviewSuppressClick=false;},350);
+    window.setTimeout(()=>{draftPreviewSuppressClick=false;},(window.CCC_CORE?.swipe?.profile?.snapMs||380)+80);
   };
 
   grid.addEventListener("touchstart",event=>{
@@ -674,7 +674,7 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
     if(event.pointerType==="mouse"&&swipe?.id===event.pointerId){
       swipe=null;
       setTransform(0,true);
-      window.setTimeout(clearGhost,370);
+      window.setTimeout(clearGhost,(window.CCC_CORE?.swipe?.profile?.snapMs||380)+10);
     }
   });
 }
@@ -2100,7 +2100,10 @@ async function renderChannelConfirmation(resetControls=true){
   const start=confirmPage*CONFIRM_PER_PAGE;
   const end=Math.min(selected.length,start+CONFIRM_PER_PAGE);
   const visible=selected.slice(start,end);
-  grid.className=`draft-grid confirm-grid ${channelGridClass(visible.length)}`;
+  /* En enda kontrollsida använder adaptiv geometri. Vid flera sidor hålls
+     samtliga sidor i samma 3x2-geometri så Core-swipen aldrig byter mått. */
+  const paged=pageCount>1;
+  grid.className=`draft-grid confirm-grid ${paged?"grid-9":channelGridClass(visible.length)}`;
   $("#confirmPublishBtn").textContent=selected.length===1?`Publicera 1 ${entityTerm("singular")}`:`Publicera ${selected.length} ${entityTerm("plural")}`;
   const c13Confirm=$("#confirmC13Channel");
   if(c13Confirm){
@@ -2129,7 +2132,7 @@ async function renderChannelConfirmation(resetControls=true){
     bindDraftPreview(card,img);
     grid.append(card);
   }
-  appendGridPlaceholders(grid,visible.length,CONFIRM_PER_PAGE);
+  if(paged)appendGridPlaceholders(grid,visible.length,CONFIRM_PER_PAGE);
   renderConfirmPager(pageCount);
 }
 
