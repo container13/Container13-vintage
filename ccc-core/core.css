@@ -1571,7 +1571,7 @@ button,a,input,textarea,select,[role="button"]{touch-action:manipulation}
   gap:2px;
   border:1px solid var(--border,var(--ccc-border));
   border-radius:16px;
-  background:var(--surface,var(--ccc-surface));
+  background:var(--bg,var(--surface,var(--ccc-surface)));
   color:var(--text,var(--ccc-text));
   padding:4px 8px;
   font:inherit;
@@ -1711,4 +1711,20 @@ button,a,input,textarea,select,[role="button"]{touch-action:manipulation}
   .ccc-home-heading{min-height:44px!important}
   .ccc-home-heading h1{font-size:1.45rem!important}
   .ccc-home-heading p{font-size:.78rem!important}
+}
+
+/* CCC Swipe Core v2 – klipper aktuell och inkommande sida till samma kortyta. */
+.ccc-swipe-viewport{
+  position:relative;
+  width:100%;
+  min-width:0;
+  flex:0 0 auto;
+  overflow:hidden;
+  border-radius:16px;
+  background:var(--surface,var(--ccc-surface));
+  contain:layout paint;
+}
+.ccc-swipe-viewport > .draft-grid{
+  position:relative;
+  z-index:2;
 }

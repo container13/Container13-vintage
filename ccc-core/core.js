@@ -134,17 +134,17 @@ const CCCHeader={
 };
 
 // ==========================================================
-// CCC SWIPE CORE v1 — v2.10.87
+// CCC SWIPE CORE v2 — v2.10.88
 // Gemensam fysik för paginerade CCC-arbetsytor. Anpassa bild
 // är känslofacit: direkt fingerföljning, motstånd först nära
 // ytterläget och en lugn, kort landning efter släpp.
 // ==========================================================
 const CCCSwipe={
   profile:Object.freeze({
-    activationPx:24,
-    axisRatio:1.35,
-    thresholdRatio:.18,
-    minThresholdPx:56,
+    activationPx:12,
+    axisRatio:1.25,
+    thresholdRatio:.24,
+    minThresholdPx:72,
     snapMs:280,
     easing:"cubic-bezier(.22,.72,.22,1)",
     edgeResistance:.24,
@@ -172,6 +172,17 @@ const CCCSwipe={
   shouldCommit(dx,width){
     const threshold=Math.max(this.profile.minThresholdPx,Math.max(1,width)*this.profile.thresholdRatio);
     return Math.abs(dx)>threshold;
+  },
+  ensureViewport(element){
+    if(!element)return null;
+    if(element.parentElement?.classList.contains("ccc-swipe-viewport"))return element.parentElement;
+    const parent=element.parentNode;
+    if(!parent)return null;
+    const viewport=document.createElement("div");
+    viewport.className="ccc-swipe-viewport";
+    parent.insertBefore(viewport,element);
+    viewport.appendChild(element);
+    return viewport;
   }
 };
 
