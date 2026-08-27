@@ -87,3 +87,4 @@ v2.10.83: Publicera-starten får centrerad rubrik, guld/grön modulidentitet och
 v2.10.84: De gemensamma välkomstbrickorna får snabbare, tydligare tryckfeedback via Core. Publiceras funktioner och layout är i övrigt oförändrade.
 v2.10.85: Publicera-starten använder samma kompaktare rubrikrad som Dashboard/Vision så korten börjar högre. Funktionerna är oförändrade.
 v2.10.86: Sid-snapen använder hela avståndet inklusive gutter, så inkommande bildserie når exakt slutläge innan den gamla sidan rensas. Animationen kortas till 240 ms.
+v2.10.87: Publiceras paginerade grids använder Core:s gemensamma swipeprofil utan att ändra den skuggfria lagerhanteringen. Vision-direktvägen hoppar över startvyn och skyddas mot ett sent bakåt-event.

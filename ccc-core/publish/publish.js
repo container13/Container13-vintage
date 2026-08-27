@@ -271,7 +271,17 @@ const directPrepareView = publishEntryParams.get("view") === "prepare";
 const directPrepareItemId = publishEntryParams.get("item") || "";
 const directPrepareOrigin = publishEntryParams.get("from") || "";
 const directFromVisionEdit = directPrepareOrigin === "vision-edit" && !!directPrepareItemId;
+let directPrepareBackGuard = directFromVisionEdit;
 let currentPublishView="startView";
+
+function finishDirectPrepareBootstrap(){
+  document.documentElement.classList.remove("ccc-direct-prepare-loading");
+  if(!directFromVisionEdit){
+    directPrepareBackGuard=false;
+    return;
+  }
+  window.setTimeout(()=>{directPrepareBackGuard=false;},650);
+}
 function setPublishHeader(view){
   const state={back:true,settings:true};
   window.__CCC_HEADER_PENDING__=state;
@@ -493,6 +503,8 @@ function createPageGhost(grid,kind,page,perPage,sourceItems=items){
   return ghost;
 }
 function softenPageSwipe(dx,width,atEdge=false){
+  const swipeCore=window.CCC_CORE?.swipe;
+  if(swipeCore?.offset)return swipeCore.offset(dx,width,{atEdge});
   const sign=Math.sign(dx)||1;
   const raw=Math.min(Math.abs(dx),width*1.08);
   if(atEdge)return sign*Math.min(raw*.28,width*.18);
@@ -500,7 +512,9 @@ function softenPageSwipe(dx,width,atEdge=false){
   return sign*softened;
 }
 function setPagedGridTransform(grid,ghost,offset,width,direction,animate=false){
-  const transition=animate?"transform 240ms cubic-bezier(.22,.72,.22,1)":"none";
+  const transition=animate
+    ? (window.CCC_CORE?.swipe?.transition?.()||"transform 280ms cubic-bezier(.22,.72,.22,1)")
+    : "none";
   const travel=width+PAGED_GRID_GUTTER;
   grid.style.transition=transition;
   grid.style.transform=`translate3d(${offset}px,0,0)`;
@@ -550,7 +564,8 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
     const dy=y-swipe.y;
     swipe.dx=dx; swipe.dy=dy;
 
-    if(!swipe.horizontal&&Math.abs(dx)>24&&Math.abs(dx)>Math.abs(dy)*1.35){
+    const swipeCore=window.CCC_CORE?.swipe;
+    if(!swipe.horizontal&&(swipeCore?.isHorizontal?.(dx,dy)??(Math.abs(dx)>24&&Math.abs(dx)>Math.abs(dy)*1.35))){
       swipe.horizontal=true;
       clearDraftPreviewGesture();
     }
@@ -577,16 +592,16 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
 
     if(!horizontal){
       setTransform(0,true);
-      window.setTimeout(clearGhost,250);
+      window.setTimeout(clearGhost,(window.CCC_CORE?.swipe?.profile?.snapMs||280)+10);
       draftPreviewSuppressClick=false;
       return;
     }
 
     const width=Math.max(1,grid.clientWidth);
-    const threshold=Math.max(48,width*.14);
     const oldPage=getPage();
     let next=oldPage;
-    if(Math.abs(dx)>threshold)next=oldPage+(dx<0?1:-1);
+    const commit=window.CCC_CORE?.swipe?.shouldCommit?.(dx,width)??Math.abs(dx)>Math.max(56,width*.18);
+    if(commit)next=oldPage+(dx<0?1:-1);
     const last=Math.max(0,Math.ceil(getItems().length/perPage)-1);
     next=Math.max(0,Math.min(next,last));
 
@@ -609,9 +624,9 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
         setTransform(0,false);
         grid.style.visibility="visible";
         clearGhost();
-      },250);
+      },(window.CCC_CORE?.swipe?.profile?.snapMs||280)+10);
     }else{
-      window.setTimeout(clearGhost,250);
+      window.setTimeout(clearGhost,(window.CCC_CORE?.swipe?.profile?.snapMs||280)+10);
     }
     window.setTimeout(()=>{draftPreviewSuppressClick=false;},350);
   };
@@ -2423,25 +2438,32 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
     }
   }
   $("#startDraftCount").textContent=items.length===1?"1 utkast":`${items.length} utkast`;
-  show("startView");
+  if(!directPrepareView)show("startView");
 
-  await Promise.all(items.map(async(item,index)=>{
+  const previewsReady=Promise.all(items.map(async(item,index)=>{
     item.thumbUrl=await previewSrc(item);
     if(index===0)preloadNeighbors(0);
   }));
-  await renderGrid();
-  if(directPrepareView){
-    if(directPrepareItemId && itemIndexById(directPrepareItemId) >= 0){
-      await openDetailById(directPrepareItemId);
-    }else{
+  if(directPrepareView && directPrepareItemId && itemIndexById(directPrepareItemId) >= 0){
+    await openDetailById(directPrepareItemId);
+    requestAnimationFrame(()=>requestAnimationFrame(finishDirectPrepareBootstrap));
+    await previewsReady;
+    await renderGrid();
+  }else{
+    await previewsReady;
+    await renderGrid();
+    if(directPrepareView){
       preloadNeighbors(0);
       show("gridView");
+      requestAnimationFrame(finishDirectPrepareBootstrap);
     }
   }
 }catch(e){
   console.error("[CCC Publicera] Kunde inte läsa lokala utkast",{name:e?.name,message:e?.message},e);
   $("#emptyState").hidden=false;
   $("#emptyState").innerHTML="<strong>Kunde inte läsa lokala utkast</strong><span>Försök öppna Publicera igen.</span>";
+  show("gridView");
+  finishDirectPrepareBootstrap();
 }})();
 window.addEventListener("pagehide",()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)));
 
@@ -2484,7 +2506,9 @@ $("#deleteDraftDialog")?.addEventListener("click",e=>{if(e.target===$("#deleteDr
 $("#closePublishHelp")?.addEventListener("click",closePublishHelp);
 $("#publishHelpDialog")?.addEventListener("click",e=>{if(e.target===$("#publishHelpDialog"))closePublishHelp();});
 
-document.addEventListener("ccc:header-back",async()=>{if(currentPublishView==="gridView"&&draftSelectionMode){exitDraftSelection();return;}
+document.addEventListener("ccc:header-back",async()=>{
+  if(directPrepareBackGuard)return;
+  if(currentPublishView==="gridView"&&draftSelectionMode){exitDraftSelection();return;}
   if(currentPublishView==="startView"){
     window.location.href="../dashboard/index.html";
     return;

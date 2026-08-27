@@ -2334,3 +2334,9 @@
 /* CCC v2.10.80 – Publish använder Visions princip: aktuell och nästa sida
    ligger samtidigt i ett sammanhängande swipe-spår. */
 .ccc-paged-grid-ghost{display:grid!important}
+
+html.ccc-direct-prepare-loading .publish-main,
+html.ccc-direct-prepare-loading #cccCoreFooter{
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
