@@ -2259,3 +2259,8 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Förbered och Välj objekt fortsätter vara 3×2 / 6 per sida.
 - Footer-snabbfilen från v2.10.77/.78 lämnas orörd.
 
+## v2.10.89 – lugnare Core-snap + adaptiv slutkontroll
+- `CCC_CORE.swipe` styr nu en 380 ms lång landning med mjukare inbromsning efter att fingret släppts.
+- Slutkontrollen skapar inte längre tomma platshållare när alla objekt ryms på samma sida.
+- En kontrollsida använder 1×1, 2 kolumner, 2×2 eller 3×2 efter antal objekt.
+- Flera kontrollsidor behåller fast 3×2-geometri och använder Core-swipe.

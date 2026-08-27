@@ -134,7 +134,7 @@ const CCCHeader={
 };
 
 // ==========================================================
-// CCC SWIPE CORE v2 — v2.10.88
+// CCC SWIPE CORE v3 — v2.10.89
 // Gemensam fysik för paginerade CCC-arbetsytor. Anpassa bild
 // är känslofacit: direkt fingerföljning, motstånd först nära
 // ytterläget och en lugn, kort landning efter släpp.
@@ -145,8 +145,8 @@ const CCCSwipe={
     axisRatio:1.25,
     thresholdRatio:.24,
     minThresholdPx:72,
-    snapMs:280,
-    easing:"cubic-bezier(.22,.72,.22,1)",
+    snapMs:380,
+    easing:"cubic-bezier(.22,.68,.20,1)",
     edgeResistance:.24,
     outerStartRatio:.78,
     outerDragFactor:.72,
