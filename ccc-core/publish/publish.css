@@ -2340,3 +2340,17 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   visibility:hidden!important;
   pointer-events:none!important;
 }
+
+/* CCC v2.10.88 – ghosten får aldrig lämna Core-swipeytans kort. */
+.ccc-swipe-viewport > .ccc-paged-grid-ghost{
+  position:absolute!important;
+  inset:0 auto auto 0!important;
+  z-index:3!important;
+  margin:0!important;
+  overflow:hidden!important;
+  border-radius:inherit!important;
+  background:var(--bg,var(--surface,var(--ccc-surface)))!important;
+  box-shadow:none!important;
+  filter:none!important;
+  contain:layout paint!important;
+}

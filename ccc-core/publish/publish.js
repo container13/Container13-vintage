@@ -476,16 +476,30 @@ function appendGridPlaceholders(grid,count,perPage=DRAFTS_PER_PAGE){
 function removePagedGridGhosts(){
   document.querySelectorAll(".ccc-paged-grid-ghost").forEach(node=>node.remove());
 }
+function ensurePagedGridViewport(grid){
+  const coreViewport=window.CCC_CORE?.swipe?.ensureViewport?.(grid);
+  if(coreViewport)return coreViewport;
+  if(grid?.parentElement?.classList.contains("ccc-swipe-viewport"))return grid.parentElement;
+  const parent=grid?.parentNode;
+  if(!parent)return null;
+  const viewport=document.createElement("div");
+  viewport.className="ccc-swipe-viewport";
+  parent.insertBefore(viewport,grid);
+  viewport.appendChild(grid);
+  return viewport;
+}
 function createPageGhost(grid,kind,page,perPage,sourceItems=items){
   removePagedGridGhosts();
   const rect=grid.getBoundingClientRect();
+  const viewport=ensurePagedGridViewport(grid)||grid.parentElement;
+  const viewportRect=viewport?.getBoundingClientRect?.()||{left:rect.left,top:rect.top};
   const ghost=document.createElement("div");
   ghost.className=`ccc-paged-grid-ghost draft-grid ${kind==="channel"?"channel-select-grid":kind==="confirm"?"confirm-grid":""}`;
   const range=pageVisualRange(page,perPage,sourceItems);
   const count=Math.max(0,range.end-range.start);
   ghost.classList.add(channelGridClass(count));
-  ghost.style.setProperty("left",`${rect.left}px`,"important");
-  ghost.style.setProperty("top",`${rect.top}px`,"important");
+  ghost.style.setProperty("left",`${rect.left-viewportRect.left}px`,"important");
+  ghost.style.setProperty("top",`${rect.top-viewportRect.top}px`,"important");
   ghost.style.setProperty("width",`${rect.width}px`,"important");
   ghost.style.setProperty("height",`${rect.height}px`,"important");
   const gridStyle=getComputedStyle(grid);
@@ -499,7 +513,7 @@ function createPageGhost(grid,kind,page,perPage,sourceItems=items){
     ghost.append(pageGhostCard(sourceItems[index],index,kind));
   }
   appendGridPlaceholders(ghost,count,perPage);
-  document.body.append(ghost);
+  (viewport||grid.parentElement||document.body).append(ghost);
   return ghost;
 }
 function softenPageSwipe(dx,width,atEdge=false){
@@ -526,6 +540,7 @@ function setPagedGridTransform(grid,ghost,offset,width,direction,animate=false){
 function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems=()=>items}){
   const grid=$(gridId);
   if(!grid||grid.dataset.cccSmoothSwipeBound)return;
+  ensurePagedGridViewport(grid);
   grid.dataset.cccSmoothSwipeBound="1";
   let swipe=null;
   let suppressUntil=0;
@@ -565,7 +580,7 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
     swipe.dx=dx; swipe.dy=dy;
 
     const swipeCore=window.CCC_CORE?.swipe;
-    if(!swipe.horizontal&&(swipeCore?.isHorizontal?.(dx,dy)??(Math.abs(dx)>24&&Math.abs(dx)>Math.abs(dy)*1.35))){
+    if(!swipe.horizontal&&(swipeCore?.isHorizontal?.(dx,dy)??(Math.abs(dx)>12&&Math.abs(dx)>Math.abs(dy)*1.25))){
       swipe.horizontal=true;
       clearDraftPreviewGesture();
     }
@@ -600,7 +615,7 @@ function bindPagedGridSwipe({gridId,kind,getPage,setPage,perPage,render,getItems
     const width=Math.max(1,grid.clientWidth);
     const oldPage=getPage();
     let next=oldPage;
-    const commit=window.CCC_CORE?.swipe?.shouldCommit?.(dx,width)??Math.abs(dx)>Math.max(56,width*.18);
+    const commit=window.CCC_CORE?.swipe?.shouldCommit?.(dx,width)??Math.abs(dx)>Math.max(72,width*.24);
     if(commit)next=oldPage+(dx<0?1:-1);
     const last=Math.max(0,Math.ceil(getItems().length/perPage)-1);
     next=Math.max(0,Math.min(next,last));
@@ -735,6 +750,23 @@ async function quickPublishCurrentDetail(){
   container13ChannelSelected=true;
   await renderChannelConfirmation();
   show("channelConfirmView");
+}
+
+async function openDirectVisionConfirmation(itemId){
+  const index=itemIndexById(itemId);
+  if(index<0)return false;
+  await ensurePublishSource(items[index]);
+  activeIndex=index;
+  activeItemId=items[index]?.id||null;
+  quickPublishReturnView=null;
+  channelSelectedIds.clear();
+  channelSelectedIds.add(itemId);
+  channelSelectPage=0;
+  confirmPage=0;
+  container13ChannelSelected=true;
+  await renderChannelConfirmation();
+  show("channelConfirmView");
+  return true;
 }
 
 function setCropFooterLikeVision(){
@@ -2445,7 +2477,7 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
     if(index===0)preloadNeighbors(0);
   }));
   if(directPrepareView && directPrepareItemId && itemIndexById(directPrepareItemId) >= 0){
-    await openDetailById(directPrepareItemId);
+    await openDirectVisionConfirmation(directPrepareItemId);
     requestAnimationFrame(()=>requestAnimationFrame(finishDirectPrepareBootstrap));
     await previewsReady;
     await renderGrid();
@@ -2514,6 +2546,10 @@ document.addEventListener("ccc:header-back",async()=>{
     return;
   }
   if(currentPublishView==="channelConfirmView"){
+    if(directFromVisionEdit){
+      returnToVisionObject();
+      return;
+    }
     if(quickPublishReturnView==="cropView"){
       quickPublishReturnView=null;
       await openCrop();
