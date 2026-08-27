@@ -9,6 +9,9 @@
   const WORKSPACE_PAGE_SIZE = 6;
 
   let cameraStream = null;
+  let cameraRequestId = 0;
+  let cameraOpening = false;
+  let cameraReturnView = "start";
   let stagedCameraFile = null;
   let stagedItem = null;
   let batchItems = [];
@@ -719,6 +722,10 @@
   }
 
   async function startCamera() {
+    if (cameraOpening) return;
+    cameraOpening = true;
+    const requestId = ++cameraRequestId;
+    cameraReturnView = visionView;
     /* Ett nytt kamerabesök ska fortsätta den aktiva lokala sessionen. Det får
        aldrig tyst ersätta bilder som redan fotograferats. */
     if (!batchItems.length && savedSessionSummary?.count) {
@@ -736,12 +743,22 @@
     $("#cameraOverlay").hidden = false;
     document.body.classList.add("camera-open");
     try {
-      cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" } }, audio: false });
-      $("#cameraVideo").srcObject = cameraStream;
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" } }, audio: false });
+      if (requestId !== cameraRequestId || $("#cameraOverlay").hidden) {
+        stream.getTracks().forEach((track) => track.stop());
+        return;
+      }
+      cameraStream = stream;
+      $("#cameraVideo").srcObject = stream;
       configureCameraZoom();
     } catch (error) {
+      if (requestId !== cameraRequestId) return;
       closeCamera();
-      $("#cameraFallbackInput").click();
+      const fallback = $("#cameraFallbackInput");
+      fallback.value = "";
+      fallback.click();
+    } finally {
+      if (requestId === cameraRequestId) cameraOpening = false;
     }
   }
 
@@ -811,6 +828,8 @@
   }
 
   function closeCamera() {
+    cameraRequestId += 1;
+    cameraOpening = false;
     stopCameraStream();
     $("#cameraOverlay").hidden = true;
     document.body.classList.remove("camera-open");
@@ -818,10 +837,12 @@
 
   function closeCameraSafely() {
     /* X betyder lämna kameran, inte kasta fotot som redan tagits. */
+    const returnView = cameraReturnView;
     if (stagedItem) commitStagedItem();
     closeCamera();
     resetCaptureVisual();
-    if (batchItems.length) showWorkspace();
+    if (returnView === "workspace" && batchItems.length) showWorkspace();
+    else showVisionStart();
   }
 
   function captureFrame() {
