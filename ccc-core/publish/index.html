@@ -12,8 +12,8 @@
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <script>if(new URLSearchParams(location.search).get("view")==="prepare")document.documentElement.classList.add("ccc-direct-prepare-loading");</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.10.99">
-<link rel="stylesheet" href="../core.css?v=2.10.99">
+<link rel="stylesheet" href="publish.css?v=2.10.100">
+<link rel="stylesheet" href="../core.css?v=2.10.100">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell publish-shell">
@@ -141,7 +141,14 @@
 
     <section id="channelConfirmView" class="publish-view" hidden>
       <div id="confirmGrid" class="draft-grid confirm-grid"></div>
-      <div id="confirmPager" class="ccc-draft-pager confirm-pager" data-ccc-term-aria="Sidor med valda {plural}" aria-label="Sidor med valda objekt"></div>
+      <div class="confirm-object-tools" aria-label="Verktyg för markerat objekt">
+        <span id="confirmToolStatus" class="confirm-tool-status">Välj ett objekt</span>
+        <div class="confirm-tool-actions">
+          <button id="confirmReviewBtn" class="secondary-action" type="button" disabled>Granska</button>
+          <button id="confirmAdaptBtn" class="secondary-action" type="button" disabled>Anpassa bild</button>
+          <button id="confirmRemoveBtn" class="secondary-action" type="button" disabled>Ta bort</button>
+        </div>
+      </div>
 
       <div class="confirm-channel-strip" aria-label="Publiceringskanaler">
         <button id="confirmC13Channel" class="confirm-channel-chip is-active" type="button" data-confirm-channel="Container13" aria-pressed="true" aria-label="Container13, vald kanal">
@@ -260,9 +267,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.10.99"></script>
-<script type="module" src="../core.js?v=2.10.99"></script>
-  <script src="../version.js?v=2.10.99"></script>
+<script type="module" src="publish.js?v=2.10.100"></script>
+<script type="module" src="../core.js?v=2.10.100"></script>
+  <script src="../version.js?v=2.10.100"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 

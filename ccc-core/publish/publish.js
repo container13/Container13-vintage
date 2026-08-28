@@ -33,6 +33,7 @@ const PAGED_GRID_GUTTER=14;
 const PUBLICATION_HISTORY_KEY="ccc-publication-history-v1";
 let draftPage=0,draftGridGesture=null;
 let quickPublishReturnView=null;
+let confirmToolItemId=null,confirmToolReturn=false;
 let draftPreviewGesture=null,draftPreviewSuppressClick=false;
 let cropImage=null,cropState=null,pointer=null;
 let activeItemId=null;
@@ -767,6 +768,8 @@ async function openDirectVisionConfirmation(itemIds){
   selected.forEach(id=>channelSelectedIds.add(id));
   channelSelectPage=0;
   confirmPage=0;
+  confirmToolItemId=null;
+  confirmToolReturn=false;
   container13ChannelSelected=false;
   await renderChannelConfirmation();
   show("channelConfirmView");
@@ -774,7 +777,7 @@ async function openDirectVisionConfirmation(itemIds){
 }
 
 function setCropFooterLikeVision(){
-  if(currentPublishView!=="cropView")return;
+  if(currentPublishView!=="cropView"||confirmToolReturn)return;
   const footer=window.CCC_CORE?.footer;
   if(!footer)return;
   footer.setTools({
@@ -815,7 +818,7 @@ function configureFooterForView(view){
   }
   if(draftSelectionMode){updateSelectionFooter();return;}
   const config={help:["gridView","detailView","cropView"].includes(view),onHelp:openPublishHelp};
-  if(view==="detailView"){
+  if(view==="detailView"&&!confirmToolReturn){
     Object.assign(config,{
       forward:true,
       forwardLabel:"Publicera",
@@ -823,7 +826,7 @@ function configureFooterForView(view){
       onForward:quickPublishCurrentDetail
     });
   }
-  if(view==="cropView"){
+  if(view==="cropView"&&!confirmToolReturn){
     Object.assign(config,{
       forward:true,
       forwardLabel:"Publicera",
@@ -1918,6 +1921,13 @@ $("#cropDone").addEventListener("click",async()=>{
   item.publishUrl=url(blob);
   item.thumbUrl=await previewSrc(item);
   recentlyAdaptedItemId=savedItemId;
+  if(confirmToolReturn){
+    confirmToolReturn=false;
+    confirmToolItemId=savedItemId;
+    await renderChannelConfirmation(false);
+    show("channelConfirmView");
+    return;
+  }
   if(cropQuickPublishRequested){
     cropQuickPublishRequested=false;
     quickPublishReturnView="cropView";
@@ -2060,6 +2070,8 @@ async function renderChannelSelection(){
 $("#channelContinueBtn")?.addEventListener("click",async()=>{
   if(!channelSelectedIds.size)return;
   quickPublishReturnView=null;
+  confirmToolItemId=null;
+  confirmToolReturn=false;
   confirmPage=0;
   await renderChannelConfirmation();
   show("channelConfirmView");
@@ -2083,20 +2095,6 @@ document.querySelectorAll(".channel-option.is-unavailable").forEach(button=>{
   button.addEventListener("click",()=>showChannelUnavailable(button.dataset.channel||"Kanalen"));
 });
 
-function renderConfirmPager(pageCount){
-  const pager=$("#confirmPager");
-  if(!pager)return;
-  pager.replaceChildren();
-  pager.hidden=pageCount<=1;
-  for(let index=0;index<pageCount;index+=1){
-    const dot=document.createElement("button");dot.type="button";dot.className="ccc-draft-page-dot";
-    dot.setAttribute("aria-label",`Visa kontrollsida ${index+1} av ${pageCount}`);
-    dot.setAttribute("aria-current",String(index===confirmPage));
-    dot.addEventListener("click",async()=>{confirmPage=index;await renderChannelConfirmation(false);});
-    pager.append(dot);
-  }
-}
-
 function syncConfirmPublishAction(){
   const button=$("#confirmPublishBtn");
   if(!button)return;
@@ -2109,6 +2107,32 @@ function syncConfirmPublishAction(){
   button.textContent=count===1?`Publicera 1 ${entityTerm("singular")}`:`Publicera ${count} ${entityTerm("plural")}`;
   button.disabled=count===0;
 }
+
+function syncConfirmToolUi(){
+  const selected=selectedChannelItems();
+  if(confirmToolItemId&&!selected.some(item=>item.id===confirmToolItemId))confirmToolItemId=null;
+  const item=selected.find(entry=>entry.id===confirmToolItemId)||null;
+  const status=$("#confirmToolStatus");
+  if(status){
+    const position=item?selected.findIndex(entry=>entry.id===item.id)+1:0;
+    status.textContent=item?`Objekt ${position} av ${selected.length} markerat`:"Välj ett objekt";
+  }
+  for(const selector of ["#confirmReviewBtn","#confirmAdaptBtn","#confirmRemoveBtn"]){
+    const button=$(selector);if(button)button.disabled=!item;
+  }
+  document.querySelectorAll("#confirmGrid .confirm-card").forEach(card=>{
+    const active=!!item&&card.dataset.itemId===item.id;
+    card.classList.toggle("is-tool-selected",active);
+    card.setAttribute("aria-pressed",String(active));
+  });
+}
+
+function bindConfirmObjectFreeSwipe(){
+  window.CCC_CORE?.swipe?.bindFree?.($("#confirmGrid"),{centerWhenFits:true});
+}
+document.addEventListener("ccc:core-ready",()=>{
+  if(currentPublishView==="channelConfirmView")bindConfirmObjectFreeSwipe();
+},{once:true});
 
 function setContainer13ChannelSelected(selected){
   container13ChannelSelected=!!selected;
@@ -2134,44 +2158,69 @@ async function renderChannelConfirmation(resetControls=true){
   const selected=selectedChannelItems();
   const grid=$("#confirmGrid");
   if(!grid)return;
-  bindConfirmGridSwipe();
   grid.replaceChildren();
-  const pageCount=Math.max(1,Math.ceil(selected.length/CONFIRM_PER_PAGE));
-  confirmPage=Math.max(0,Math.min(confirmPage,pageCount-1));
-  const start=confirmPage*CONFIRM_PER_PAGE;
-  const end=Math.min(selected.length,start+CONFIRM_PER_PAGE);
-  const visible=selected.slice(start,end);
-  /* En enda kontrollsida använder adaptiv geometri. Vid flera sidor hålls
-     samtliga sidor i samma 3x2-geometri så Core-swipen aldrig byter mått. */
-  const paged=pageCount>1;
-  grid.className=`draft-grid confirm-grid ${paged?"grid-9":channelGridClass(visible.length)}`;
+  grid.className="confirm-grid confirm-object-strip";
   const c13Confirm=$("#confirmC13Channel");
   if(c13Confirm)setContainer13ChannelSelected(container13ChannelSelected);
   else syncConfirmPublishAction();
   if(resetControls){
+    confirmToolItemId=null;
     container13PublishDisplayOverride=null;
     if($("#confirmDisplayEditor"))$("#confirmDisplayEditor").hidden=true;
     if($("#confirmDisplayEditBtn"))$("#confirmDisplayEditBtn").textContent="Ändra";
   }
   syncConfirmDisplayUi();
 
-  for(const item of visible){
+  for(const item of selected){
     const index=Math.max(0,itemIndexById(item.id));
     const card=document.createElement("button");
     card.type="button";
     card.className="draft-card confirm-card";
-    card.setAttribute("aria-label",`Förhandsvisa ${title(item,index)}`);
+    card.dataset.itemId=item.id;
+    card.setAttribute("aria-label",`Markera ${title(item,index)} för verktyg`);
+    card.setAttribute("aria-pressed","false");
     const img=document.createElement("img");
     img.src=await previewSrc(item)||item.thumbUrl||item.fullUrl||"";
     img.alt=title(item,index);
     img.decoding="async";
     card.append(img);
-    bindDraftPreview(card,img);
+    card.addEventListener("click",()=>{
+      confirmToolItemId=item.id;
+      syncConfirmToolUi();
+    });
     grid.append(card);
   }
-  if(paged)appendGridPlaceholders(grid,visible.length,CONFIRM_PER_PAGE);
-  renderConfirmPager(pageCount);
+  syncConfirmToolUi();
+  bindConfirmObjectFreeSwipe();
+  requestAnimationFrame(()=>{
+    grid.classList.toggle("is-overflowing",grid.scrollWidth>grid.clientWidth+2);
+  });
 }
+
+$("#confirmReviewBtn")?.addEventListener("click",async()=>{
+  if(!confirmToolItemId)return;
+  confirmToolReturn=true;
+  await openDetailById(confirmToolItemId);
+});
+
+$("#confirmAdaptBtn")?.addEventListener("click",async()=>{
+  const index=itemIndexById(confirmToolItemId);
+  if(index<0)return;
+  activeIndex=index;
+  activeItemId=confirmToolItemId;
+  confirmToolReturn=true;
+  await openCrop();
+});
+
+$("#confirmRemoveBtn")?.addEventListener("click",async()=>{
+  const item=selectedChannelItems().find(entry=>entry.id===confirmToolItemId);
+  if(!item)return;
+  if(!window.confirm(`Ta bort ${title(item,itemIndexById(item.id))} från den här publiceringen?\n\nObjektet finns kvar som lokalt utkast.`))return;
+  channelSelectedIds.delete(item.id);
+  confirmToolItemId=null;
+  await renderChannelConfirmation(false);
+  syncConfirmPublishAction();
+});
 
 $("#container13ChannelBtn")?.addEventListener("click",()=>{
   setContainer13ChannelSelected(!container13ChannelSelected);
@@ -2619,11 +2668,26 @@ document.addEventListener("ccc:header-back",async()=>{
     return;
   }
   if(currentPublishView==="detailView"){
+    if(confirmToolReturn){
+      confirmToolReturn=false;
+      await renderChannelConfirmation(false);
+      show("channelConfirmView");
+      return;
+    }
     if(returnToVisionObject())return;
     await leavePublishDetail();
     return;
   }
   if(currentPublishView==="cropView"){
+    if(confirmToolReturn){
+      cropImage=null;
+      cropState=null;
+      pointer=null;
+      confirmToolReturn=false;
+      await renderChannelConfirmation(false);
+      show("channelConfirmView");
+      return;
+    }
     if(directFromVisionEdit){
       cropImage=null;
       cropState=null;
