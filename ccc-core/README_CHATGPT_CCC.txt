@@ -2278,6 +2278,12 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Slutkontrollens enkelbild använder en 308 px Core-viewport med 14 px symmetrisk ram runt 280 px bild.
 - `CCC_CORE.press` ger Dashboard och modulstarter en fysisk intryckt status. Endast säkra vy-/sidbyten fördröjs 140 ms; kamera-/filväljare fördröjs aldrig.
 
+## v2.10.102 – Vision-granskning från slutkontrollen
+
+- Granska lagrar markerat objekt och aktuell expressgrupp i sessionStorage och öppnar Visions befintliga Granska & komplettera.
+- Tillbaka eller Publicera i den Vision-kontexten säkerhetssparar och återgår till samma slutkontroll; verktygsmarkeringen återställs via `toolItem`.
+- Slutkontrollens objektkort och kanalikoner är något större. Kanalraden har explicit sidpadding som skyddar första ikonens kant och glöd.
+
 ## v2.10.101 – visuellt förstärkta objektverktyg
 
 - Slutkontrollens status blir ett aktivt guldpill när ett objekt markeras.
