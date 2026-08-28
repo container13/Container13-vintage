@@ -2278,6 +2278,13 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Slutkontrollens enkelbild använder en 308 px Core-viewport med 14 px symmetrisk ram runt 280 px bild.
 - `CCC_CORE.press` ger Dashboard och modulstarter en fysisk intryckt status. Endast säkra vy-/sidbyten fördröjs 140 ms; kamera-/filväljare fördröjs aldrig.
 
+## v2.10.104 – nya objekt direkt i slutkontrollen
+
+- Slutkontrollen har en alltid aktiv grafisk `Lägg till {singular}`-knapp ovanför kanalraden.
+- Filväljaren accepterar en eller flera bilder. Varje bild får eget ID, original i `vision-files`, ett Vision-sessionsobjekt och ett lokalt Publicera-utkast.
+- Nya objekt läggs i `items` och `channelSelectedIds`, så de syns direkt och ingår i aktuell publicering. Extra bilder till ett befintligt objekt hanteras fortsatt via Granska.
+- All synlig objektterminologi hämtas från Core.
+
 ## v2.10.103 – linjerad och centrerad slutkontroll
 
 - Verktygsraden använder samma `min(100%, 520px)` som slutkontrollens informationskort och huvudåtgärd.
