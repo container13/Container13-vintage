@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.104
+CCC-version: 2.10.105
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -67,6 +67,11 @@ v2.10.91 – Core Swipe 580 + färdiga mobilkort
 - Vision visar headerns tillbaka-pil i alla undervyer; endast modulens startvy saknar pil. Footer-Tillbaka finns kvar.
 - Slutkontrollens enkelbild får en symmetrisk Core-ram: 280 px bild och 14 px runt om.
 - Dashboard och modulstarter använder gemensam Core-tryckkänsla. Vy-/sidbyten väntar 140 ms; kamera och filväljare behåller direkt användaraktivering.
+
+v2.10.105 – slutkontrollen som Publiceras arbetsstart
+- Publicera från Dashboard öppnar direkt den kompletta arbetsytan; den tidigare välkomstvyn finns kvar som testfallback via `?legacyStart=1`.
+- Tomläget erbjuder sida vid sida `Lägg till {singular}` och `Välj utkast`. Utkastsväljaren återanvänder befintlig lokal grid och återgår till arbetsytan.
+- Huvudknappen visar `Välj {plural}` utan objekt. Historik finns som sekundär ingång och Tillbaka från arbetsstarten går till Dashboard.
 
 v2.10.104 – Lägg till objekt i slutkontrollen
 - En alltid aktiv grafisk `Lägg till {singular}`-knapp öppnar mobilens bildval för kamera/bibliotek.
