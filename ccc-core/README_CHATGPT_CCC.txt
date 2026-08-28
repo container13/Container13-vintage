@@ -2278,6 +2278,12 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Slutkontrollens enkelbild använder en 308 px Core-viewport med 14 px symmetrisk ram runt 280 px bild.
 - `CCC_CORE.press` ger Dashboard och modulstarter en fysisk intryckt status. Endast säkra vy-/sidbyten fördröjs 140 ms; kamera-/filväljare fördröjs aldrig.
 
+## v2.10.103 – linjerad och centrerad slutkontroll
+
+- Verktygsraden använder samma `min(100%, 520px)` som slutkontrollens informationskort och huvudåtgärd.
+- Core free-swipe-raden centreras när den inte har overflow och växlar explicit till `flex-start` när swipe behövs.
+- Kanalradens befintliga symmetriska slutpadding behålls som säker yta för första och sista kanal.
+
 ## v2.10.102 – Vision-granskning från slutkontrollen
 
 - Granska lagrar markerat objekt och aktuell expressgrupp i sessionStorage och öppnar Visions befintliga Granska & komplettera.
