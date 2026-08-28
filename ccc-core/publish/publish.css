@@ -2507,6 +2507,49 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   pointer-events:none;
   box-shadow:none;
 }
+#channelConfirmView .confirm-add-object{
+  width:min(100%,520px);
+  min-height:48px;
+  margin:0 auto 4px;
+  padding:7px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  border:1px solid rgba(70,194,151,.44);
+  border-radius:15px;
+  background:linear-gradient(155deg,rgba(28,42,43,.98),rgba(20,27,31,.98));
+  color:#eef8f4;
+  font-size:13px;
+  font-weight:900;
+  box-shadow:0 7px 16px rgba(0,0,0,.20),0 0 13px rgba(70,194,151,.08),inset 0 1px 0 rgba(255,255,255,.04);
+  transition:transform .11s ease,box-shadow .11s ease,opacity .15s ease;
+}
+#channelConfirmView .confirm-add-object:not(:disabled):active{
+  transform:translateY(2px) scale(.99);
+  box-shadow:0 2px 7px rgba(0,0,0,.27),inset 0 2px 5px rgba(0,0,0,.22);
+}
+#channelConfirmView .confirm-add-object:disabled{opacity:.55}
+#channelConfirmView .confirm-add-object-icon{
+  width:31px;
+  height:31px;
+  display:grid;
+  place-items:center;
+  flex:0 0 31px;
+  border:1.5px solid #46c297;
+  border-radius:50%;
+  color:#46c297;
+  box-shadow:0 0 12px rgba(70,194,151,.25);
+}
+#channelConfirmView .confirm-add-object-icon svg{
+  width:19px;
+  height:19px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.7;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
 #channelConfirmView .confirm-channel-strip{
   width:100%!important;
   max-width:100%!important;
