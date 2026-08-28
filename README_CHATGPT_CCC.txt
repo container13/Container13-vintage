@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.102
+CCC-version: 2.10.103
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -67,6 +67,11 @@ v2.10.91 – Core Swipe 580 + färdiga mobilkort
 - Vision visar headerns tillbaka-pil i alla undervyer; endast modulens startvy saknar pil. Footer-Tillbaka finns kvar.
 - Slutkontrollens enkelbild får en symmetrisk Core-ram: 280 px bild och 14 px runt om.
 - Dashboard och modulstarter använder gemensam Core-tryckkänsla. Vy-/sidbyten väntar 140 ms; kamera och filväljare behåller direkt användaraktivering.
+
+v2.10.103 – linjerad och centrerad slutkontroll
+- Verktygskortens ytterkanter linjerar med informationskortet och Publicera-knappen.
+- Objekt centreras när hela raden ryms och går över till fri Core-swipe först vid overflow.
+- Kanalradens symmetriska sidpadding låter första och sista kanal visas helt i respektive ändläge.
 
 v2.10.102 – Granska till Vision och bredare slutkontroll
 - Granska öppnar markerat objekt i Visions Granska & komplettera och återvänder därefter till samma expresskontroll och verktygsmarkering.
