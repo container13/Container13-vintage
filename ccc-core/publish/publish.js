@@ -2116,6 +2116,7 @@ function syncConfirmToolUi(){
   if(status){
     const position=item?selected.findIndex(entry=>entry.id===item.id)+1:0;
     status.textContent=item?`Objekt ${position} av ${selected.length} markerat`:"Välj ett objekt";
+    status.classList.toggle("is-active",!!item);
   }
   for(const selector of ["#confirmReviewBtn","#confirmAdaptBtn","#confirmRemoveBtn"]){
     const button=$(selector);if(button)button.disabled=!item;

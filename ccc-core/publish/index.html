@@ -12,8 +12,8 @@
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <script>if(new URLSearchParams(location.search).get("view")==="prepare")document.documentElement.classList.add("ccc-direct-prepare-loading");</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.10.100">
-<link rel="stylesheet" href="../core.css?v=2.10.100">
+<link rel="stylesheet" href="publish.css?v=2.10.101">
+<link rel="stylesheet" href="../core.css?v=2.10.101">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell publish-shell">
@@ -144,9 +144,18 @@
       <div class="confirm-object-tools" aria-label="Verktyg för markerat objekt">
         <span id="confirmToolStatus" class="confirm-tool-status">Välj ett objekt</span>
         <div class="confirm-tool-actions">
-          <button id="confirmReviewBtn" class="secondary-action" type="button" disabled>Granska</button>
-          <button id="confirmAdaptBtn" class="secondary-action" type="button" disabled>Anpassa bild</button>
-          <button id="confirmRemoveBtn" class="secondary-action" type="button" disabled>Ta bort</button>
+          <button id="confirmReviewBtn" class="secondary-action confirm-tool-button confirm-tool-button--review" type="button" disabled>
+            <span class="confirm-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2.5 12s3.5-5.5 9.5-5.5 9.5 5.5 9.5 5.5-3.5 5.5-9.5 5.5S2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.8"/></svg></span>
+            <span>Granska</span>
+          </button>
+          <button id="confirmAdaptBtn" class="secondary-action confirm-tool-button confirm-tool-button--adapt" type="button" disabled>
+            <span class="confirm-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3v14a2 2 0 0 0 2 2h12M3 7h14a2 2 0 0 1 2 2v12"/><path d="M7 17 3 21M17 7l4-4"/></svg></span>
+            <span>Anpassa bild</span>
+          </button>
+          <button id="confirmRemoveBtn" class="secondary-action confirm-tool-button confirm-tool-button--remove" type="button" disabled>
+            <span class="confirm-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M7 7l1 14h8l1-14M10 11v6M14 11v6"/></svg></span>
+            <span>Ta bort</span>
+          </button>
         </div>
       </div>
 
@@ -267,9 +276,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.10.100"></script>
-<script type="module" src="../core.js?v=2.10.100"></script>
-  <script src="../version.js?v=2.10.100"></script>
+<script type="module" src="publish.js?v=2.10.101"></script>
+<script type="module" src="../core.js?v=2.10.101"></script>
+  <script src="../version.js?v=2.10.101"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 

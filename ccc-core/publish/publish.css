@@ -2367,7 +2367,7 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   contain:layout paint!important;
 }
 
-/* CCC v2.10.100 – slutkontrollens enda kanoniska objektgeometri.
+/* CCC v2.10.101 – slutkontrollens enda kanoniska objektgeometri.
    Alla objekt ingår i publiceringen. Gul ram väljer endast vilket objekt
    verktygsraden arbetar med. Core sköter den fria horisontella swipen. */
 #channelConfirmView #confirmGrid.confirm-object-strip{
@@ -2417,35 +2417,96 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
 }
 #channelConfirmView .confirm-object-tools{
   width:calc(100% - 28px);
-  margin:0 auto 5px;
+  margin:1px auto 8px;
   display:grid;
-  gap:5px;
+  gap:7px;
 }
 #channelConfirmView .confirm-tool-status{
-  min-height:16px;
+  width:max-content;
+  max-width:100%;
+  min-height:25px;
+  margin:0 auto;
+  padding:4px 13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid transparent;
+  border-radius:999px;
   color:var(--muted);
-  font-size:11px;
+  background:rgba(27,31,41,.68);
+  font-size:12px;
   font-weight:800;
   text-align:center;
+  box-sizing:border-box;
+  transition:color .16s ease,border-color .16s ease,box-shadow .16s ease;
+}
+#channelConfirmView .confirm-tool-status.is-active{
+  color:var(--gold,#e0b14b);
+  border-color:rgba(224,177,75,.62);
+  box-shadow:0 0 13px rgba(224,177,75,.12);
 }
 #channelConfirmView .confirm-tool-actions{
   display:grid;
-  grid-template-columns:.9fr 1.25fr .85fr;
-  gap:6px;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
 }
-#channelConfirmView .confirm-tool-actions .secondary-action{
+#channelConfirmView .confirm-tool-actions .confirm-tool-button{
   min-width:0;
-  min-height:38px;
-  padding:6px 5px;
-  border-radius:12px;
+  min-height:76px;
+  padding:8px 4px 7px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  border:1px solid rgba(120,128,148,.34);
+  border-radius:15px;
+  background:linear-gradient(155deg,rgba(31,36,48,.98),rgba(20,23,31,.98));
+  box-shadow:0 7px 16px rgba(0,0,0,.23),inset 0 1px 0 rgba(255,255,255,.035);
+  color:#f1f3f8;
   font-size:11px;
-  font-weight:850;
+  font-weight:900;
   white-space:nowrap;
+  transform:translateY(0);
+  transition:transform .11s ease,box-shadow .11s ease,border-color .15s ease,opacity .15s ease;
 }
-#channelConfirmView .confirm-tool-actions .secondary-action:disabled{
-  opacity:.32;
+#channelConfirmView .confirm-tool-actions .confirm-tool-button:not(:disabled):active{
+  transform:translateY(2px) scale(.98);
+  box-shadow:0 2px 7px rgba(0,0,0,.28),inset 0 2px 5px rgba(0,0,0,.22);
+}
+#channelConfirmView .confirm-tool-icon{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border:1.5px solid currentColor;
+  border-radius:50%;
+  box-shadow:0 0 13px color-mix(in srgb,currentColor 38%,transparent);
+}
+#channelConfirmView .confirm-tool-icon svg{
+  width:20px;
+  height:20px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+#channelConfirmView .confirm-tool-button--review .confirm-tool-icon{color:#4aa6ff}
+#channelConfirmView .confirm-tool-button--adapt .confirm-tool-icon{color:#a970ff}
+#channelConfirmView .confirm-tool-button--remove .confirm-tool-icon{color:#f06464}
+#channelConfirmView .confirm-tool-actions .confirm-tool-button:disabled{
+  opacity:.34;
   filter:saturate(.35);
   pointer-events:none;
+  box-shadow:none;
+}
+@media(max-height:760px) and (max-width:480px){
+  #channelConfirmView .confirm-tool-actions .confirm-tool-button{
+    min-height:68px;
+    padding-block:6px;
+  }
+  #channelConfirmView .confirm-tool-icon{width:30px;height:30px}
 }
 @media(min-width:560px){
   #channelConfirmView #confirmGrid.confirm-object-strip{justify-content:center!important}
