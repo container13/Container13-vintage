@@ -2389,6 +2389,12 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   box-sizing:border-box!important;
   will-change:auto!important;
 }
+#channelConfirmView #confirmGrid.confirm-object-strip.ccc-free-swipe--center:not(.is-overflowing){
+  justify-content:center!important;
+}
+#channelConfirmView #confirmGrid.confirm-object-strip.is-overflowing{
+  justify-content:flex-start!important;
+}
 #channelConfirmView #confirmGrid.confirm-object-strip::-webkit-scrollbar{display:none}
 #channelConfirmView #confirmGrid.confirm-object-strip .confirm-card{
   flex:0 0 clamp(96px,28vw,132px)!important;
@@ -2416,7 +2422,7 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   border-radius:10px!important;
 }
 #channelConfirmView .confirm-object-tools{
-  width:calc(100% - 28px);
+  width:min(100%,520px);
   margin:1px auto 8px;
   display:grid;
   gap:7px;
@@ -2529,5 +2535,5 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
 }
 @media(min-width:560px){
   #channelConfirmView #confirmGrid.confirm-object-strip{justify-content:center!important}
-  #channelConfirmView .confirm-object-tools{width:min(100% - 28px,520px)}
+  #channelConfirmView .confirm-object-tools{width:min(100%,520px)}
 }
