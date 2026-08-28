@@ -135,6 +135,34 @@
     return `C13-${y}${m}${day}-${entropy}`;
   };
   const currentItem = () => batchItems[currentIndex] || null;
+  const publishConfirmReturn = () => {
+    try{
+      const raw=sessionStorage.getItem("ccc-vision-return-publish-confirm");
+      if(!raw)return null;
+      const value=JSON.parse(raw);
+      if(!value?.url||!value?.itemId||Date.now()-Number(value.createdAt||0)>15*60*1000){
+        sessionStorage.removeItem("ccc-vision-return-publish-confirm");
+        return null;
+      }
+      if(String(currentItem()?.id||"")!==String(value.itemId))return null;
+      return value;
+    }catch(_){return null;}
+  };
+  async function returnToPublishConfirmation(){
+    const target=publishConfirmReturn();
+    if(!target)return false;
+    clearTimeout(saveTimer);
+    autosaveSequence+=1;
+    if(hasEditChanges())await flushAutosave();
+    await queueVisionSessionSave();
+    saveBatchMetadata();
+    try{
+      sessionStorage.removeItem("ccc-vision-return-publish-confirm");
+      sessionStorage.removeItem("ccc-vision-return-edit-item");
+    }catch(_){ }
+    window.location.assign(target.url);
+    return true;
+  }
   const currentDemo = () => {
     const item = currentItem();
     if (item?.visionResult) return item.visionResult;
@@ -173,6 +201,12 @@
     if (publishNavigationPending) return;
     const item = currentItem();
     if (!item) return;
+    if(publishConfirmReturn()){
+      publishNavigationPending=true;
+      const returned=await returnToPublishConfirmation();
+      if(!returned)publishNavigationPending=false;
+      return;
+    }
     publishNavigationPending = true;
     clearTimeout(saveTimer);
     autosaveSequence += 1;
@@ -2393,6 +2427,7 @@
     }
     switch (visionView) {
       case "edit": {
+        if(await returnToPublishConfirmation())return;
         if (!hasEditChanges()) {
           clearTimeout(saveTimer);
           autosaveSequence += 1;
