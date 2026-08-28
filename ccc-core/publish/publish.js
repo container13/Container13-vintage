@@ -35,6 +35,9 @@ let draftPage=0,draftGridGesture=null;
 let quickPublishReturnView=null;
 let confirmToolItemId=null,confirmToolReturn=false;
 let confirmAddPending=false;
+let workspaceStartMode=false;
+let channelPickerReturnsToWorkspace=false;
+let historyReturnsToWorkspace=false;
 let draftPreviewGesture=null,draftPreviewSuppressClick=false;
 let cropImage=null,cropState=null,pointer=null;
 let activeItemId=null;
@@ -272,6 +275,7 @@ function resetViewScroll(view){
 }
 const publishEntryParams = new URLSearchParams(window.location.search);
 const directPrepareView = publishEntryParams.get("view") === "prepare";
+const legacyPublishStart = publishEntryParams.get("legacyStart") === "1";
 const directPrepareItemId = publishEntryParams.get("item") || "";
 const directPrepareItemIds = (publishEntryParams.get("items")||directPrepareItemId)
   .split(",").map(value=>value.trim()).filter(Boolean);
@@ -1538,7 +1542,7 @@ $("#cancelPublishedSelection")?.addEventListener("click",()=>{
 });
 $("#confirmPublishedSelection")?.addEventListener("click",deleteSelectedPublishedItems);
 $("#publishedHistoryTab")?.addEventListener("click",()=>selectPublishedTab("history"));
-$("#publishedBtn").addEventListener("click",async()=>{publishedSelectedIds.clear();updatePublishedSelectionBar();show("publishedView");selectPublishedTab("live");renderPublicationHistory();await loadPublishedView();});
+$("#publishedBtn").addEventListener("click",async()=>{historyReturnsToWorkspace=false;publishedSelectedIds.clear();updatePublishedSelectionBar();show("publishedView");selectPublishedTab("live");renderPublicationHistory();await loadPublishedView();});
 
 
 function loadImage(src){return new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=src;});}
@@ -2082,6 +2086,7 @@ $("#channelContinueBtn")?.addEventListener("click",async()=>{
   confirmToolReturn=false;
   confirmPage=0;
   await renderChannelConfirmation();
+  channelPickerReturnsToWorkspace=false;
   show("channelConfirmView");
 });
 
@@ -2107,6 +2112,11 @@ function syncConfirmPublishAction(){
   const button=$("#confirmPublishBtn");
   if(!button)return;
   const count=channelSelectedIds.size;
+  if(!count){
+    button.textContent=`Välj ${entityTerm("plural")}`;
+    button.disabled=true;
+    return;
+  }
   if(!container13ChannelSelected){
     button.textContent="Välj kanal";
     button.disabled=true;
@@ -2123,7 +2133,7 @@ function syncConfirmToolUi(){
   const status=$("#confirmToolStatus");
   if(status){
     const position=item?selected.findIndex(entry=>entry.id===item.id)+1:0;
-    status.textContent=item?`Objekt ${position} av ${selected.length} markerat`:"Välj ett objekt";
+    status.textContent=item?`${entityTerm("singular",true)} ${position} av ${selected.length} markerat`:`Välj ett ${entityTerm("singular")}`;
     status.classList.toggle("is-active",!!item);
   }
   for(const selector of ["#confirmReviewBtn","#confirmAdaptBtn","#confirmRemoveBtn"]){
@@ -2167,6 +2177,9 @@ async function renderChannelConfirmation(resetControls=true){
   const selected=selectedChannelItems();
   const grid=$("#confirmGrid");
   if(!grid)return;
+  const empty=$("#confirmWorkspaceEmpty");
+  if(empty)empty.hidden=selected.length>0;
+  grid.hidden=selected.length===0;
   grid.replaceChildren();
   grid.className="confirm-grid confirm-object-strip";
   const c13Confirm=$("#confirmC13Channel");
@@ -2343,6 +2356,24 @@ async function addObjectsFromConfirmation(fileList){
 $("#confirmAddObjectBtn")?.addEventListener("click",()=>$("#confirmAddObjectInput")?.click());
 $("#confirmAddObjectInput")?.addEventListener("change",event=>addObjectsFromConfirmation(event.target.files));
 document.addEventListener("ccc:terminologychange",()=>syncConfirmAddObjectLabel());
+
+$("#confirmChooseDraftsBtn")?.addEventListener("click",async()=>{
+  channelPickerReturnsToWorkspace=true;
+  const label=$("#channelSelectionChannelLabel");if(label)label.textContent="Lokala utkast i CCC";
+  channelSelectPage=0;
+  await renderChannelSelection();
+  show("channelView");
+});
+
+$("#confirmHistoryBtn")?.addEventListener("click",async()=>{
+  historyReturnsToWorkspace=true;
+  publishedSelectedIds.clear();
+  updatePublishedSelectionBar();
+  show("publishedView");
+  selectPublishedTab("live");
+  renderPublicationHistory();
+  await loadPublishedView();
+});
 
 $("#container13ChannelBtn")?.addEventListener("click",()=>{
   setContainer13ChannelSelected(!container13ChannelSelected);
@@ -2680,7 +2711,6 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
     }
   }
   $("#startDraftCount").textContent=items.length===1?"1 utkast":`${items.length} utkast`;
-  if(!directPrepareView)show("startView");
 
   const previewsReady=Promise.all(items.map(async(item,index)=>{
     item.thumbUrl=await previewSrc(item);
@@ -2698,6 +2728,16 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
       preloadNeighbors(0);
       show("gridView");
       requestAnimationFrame(finishDirectPrepareBootstrap);
+    }else if(legacyPublishStart){
+      workspaceStartMode=false;
+      show("startView");
+    }else{
+      workspaceStartMode=true;
+      channelSelectedIds.clear();
+      container13ChannelSelected=false;
+      confirmToolItemId=null;
+      await renderChannelConfirmation();
+      show("channelConfirmView");
     }
   }
 }catch(e){
@@ -2774,15 +2814,31 @@ document.addEventListener("ccc:header-back",async()=>{
       openDetail(activeIndex);
       return;
     }
+    if(workspaceStartMode){
+      window.location.href="../dashboard/index.html";
+      return;
+    }
     show("channelView");
     return;
   }
   if(currentPublishView==="channelView"){
+    if(channelPickerReturnsToWorkspace){
+      channelPickerReturnsToWorkspace=false;
+      await renderChannelConfirmation(false);
+      show("channelConfirmView");
+      return;
+    }
     show("channelTargetsView");
     return;
   }
   if(currentPublishView==="channelTargetsView"){
     show("startView");
+    return;
+  }
+  if(currentPublishView==="publishedView"&&(historyReturnsToWorkspace||workspaceStartMode)){
+    historyReturnsToWorkspace=false;
+    await renderChannelConfirmation(false);
+    show("channelConfirmView");
     return;
   }
   if(currentPublishView==="gridView"||currentPublishView==="publishedView"){

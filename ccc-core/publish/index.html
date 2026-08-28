@@ -12,8 +12,8 @@
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <script>if(new URLSearchParams(location.search).get("view")==="prepare")document.documentElement.classList.add("ccc-direct-prepare-loading");</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.10.104">
-<link rel="stylesheet" href="../core.css?v=2.10.104">
+<link rel="stylesheet" href="publish.css?v=2.10.105">
+<link rel="stylesheet" href="../core.css?v=2.10.105">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell publish-shell">
@@ -140,9 +140,10 @@
     </section>
 
     <section id="channelConfirmView" class="publish-view" hidden>
+      <div id="confirmWorkspaceEmpty" class="confirm-workspace-empty" data-ccc-term="Lägg till {singular} eller välj utkast">Lägg till objekt eller välj utkast</div>
       <div id="confirmGrid" class="draft-grid confirm-grid"></div>
-      <div class="confirm-object-tools" aria-label="Verktyg för markerat objekt">
-        <span id="confirmToolStatus" class="confirm-tool-status">Välj ett objekt</span>
+      <div class="confirm-object-tools" data-ccc-term-aria="Verktyg för markerat {singular}" aria-label="Verktyg för markerat objekt">
+        <span id="confirmToolStatus" class="confirm-tool-status" data-ccc-term="Välj ett {singular}">Välj ett objekt</span>
         <div class="confirm-tool-actions">
           <button id="confirmReviewBtn" class="secondary-action confirm-tool-button confirm-tool-button--review" type="button" disabled>
             <span class="confirm-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2.5 12s3.5-5.5 9.5-5.5 9.5 5.5 9.5 5.5-3.5 5.5-9.5 5.5S2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.8"/></svg></span>
@@ -159,10 +160,16 @@
         </div>
       </div>
 
-      <button id="confirmAddObjectBtn" class="confirm-add-object" type="button">
-        <span class="confirm-add-object-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m6.5 16 4-4 3 3 2-2 2.5 3M17 7.5v5M14.5 10h5"/></svg></span>
-        <span data-ccc-term="Lägg till {singular}">Lägg till objekt</span>
-      </button>
+      <div class="confirm-source-actions">
+        <button id="confirmAddObjectBtn" class="confirm-add-object" type="button">
+          <span class="confirm-add-object-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m6.5 16 4-4 3 3 2-2 2.5 3M17 7.5v5M14.5 10h5"/></svg></span>
+          <span data-ccc-term="Lägg till {singular}">Lägg till objekt</span>
+        </button>
+        <button id="confirmChooseDraftsBtn" class="confirm-add-object confirm-choose-drafts" type="button">
+          <span class="confirm-add-object-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5zM8 9h8M8 12h8M8 15h5"/></svg></span>
+          <span>Välj utkast</span>
+        </button>
+      </div>
       <input id="confirmAddObjectInput" type="file" accept="image/*" multiple hidden>
 
       <div class="confirm-channel-strip" aria-label="Publiceringskanaler">
@@ -199,6 +206,7 @@
         <button id="confirmPublishBtn" class="primary-action" type="button">Publicera</button>
         <p id="confirmStatus" class="publish-status" aria-live="polite"></p>
       </div>
+      <button id="confirmHistoryBtn" class="confirm-history-link" type="button">Historik</button>
     </section>
 
     <section id="publishedView" class="publish-view" hidden>
@@ -282,9 +290,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.10.104"></script>
-<script type="module" src="../core.js?v=2.10.104"></script>
-  <script src="../version.js?v=2.10.104"></script>
+<script type="module" src="publish.js?v=2.10.105"></script>
+<script type="module" src="../core.js?v=2.10.105"></script>
+  <script src="../version.js?v=2.10.105"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 
