@@ -2278,6 +2278,13 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Slutkontrollens enkelbild använder en 308 px Core-viewport med 14 px symmetrisk ram runt 280 px bild.
 - `CCC_CORE.press` ger Dashboard och modulstarter en fysisk intryckt status. Endast säkra vy-/sidbyten fördröjs 140 ms; kamera-/filväljare fördröjs aldrig.
 
+## v2.10.105 – Publiceras nya arbetsstart
+
+- Normal modulstart visar `channelConfirmView` som tom/aktiv arbetsyta. Gamla `startView` behålls bakom `?legacyStart=1` under testperioden.
+- `confirmWorkspaceEmpty` beskriver nästa steg. `Lägg till {singular}` och `Välj utkast` är två jämbördiga källor; den senare återanvänder `channelView` och `channelSelectedIds`.
+- Tom publiceringsgrupp ger huvudtexten `Välj {plural}`. Kanalval kan göras före eller efter objektval.
+- Historik öppnas sekundärt från arbetsytan och Back återgår dit. Header-Back från arbetsstarten går till Dashboard.
+
 ## v2.10.104 – nya objekt direkt i slutkontrollen
 
 - Slutkontrollen har en alltid aktiv grafisk `Lägg till {singular}`-knapp ovanför kanalraden.
