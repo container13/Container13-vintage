@@ -92,6 +92,7 @@ v2.10.88: Aktuell och inkommande gridsida klipps inom samma Core-swipeviewport i
 v2.10.89: Core-landningen efter släpp är lugnare. Slutkontrollen visar 1–6 objekt adaptivt utan tomma platshållare; 7+ använder stabil 3×2-paging med Core-swipe.
 v2.10.90: Core-landningen är 480 ms. Slutkontrollen får mer luft ovanför och under bilden utan att införa normal mobilscroll; korta skärmar använder mindre mellanrum.
 v2.10.91: Swipe landar på 580 ms och detalj-swipen använder Core fullt ut. Enkelbildens slutkontroll får en symmetrisk 14 px ram. Startkorten får Core-styrd tryckkänsla och 140 ms vyfördröjning.
+v2.10.102: Granska i slutkontrollen öppnar markerat objekt i Visions Granska & komplettera och återvänder till samma expressgrupp. Objektkort och kanaler är något större; kanalraden har säker sidluft.
 v2.10.101: Objektverktygen i slutkontrollen har grafiska SVG-ikoner, tydliga funktionsaccenter, aktivt statuspill och nedtryckt respons. Logik och publiceringsurval är oförändrade.
 v2.10.100: Sista kontrollen visar objekten i en Core-styrd fri swipe-rad. Ett separat enkelval med gul ram aktiverar Granska, Anpassa bild och Ta bort utan att påverka publiceringsurvalet.
 v2.10.99: Direktstarten accepterar flera explicita objekt-ID:n från Vision-kamerans Expresspublicera och väljer endast dem i slutkontrollen. Kanal är fortsatt aktivt val.

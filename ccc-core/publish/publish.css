@@ -2391,8 +2391,8 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
 }
 #channelConfirmView #confirmGrid.confirm-object-strip::-webkit-scrollbar{display:none}
 #channelConfirmView #confirmGrid.confirm-object-strip .confirm-card{
-  flex:0 0 clamp(88px,25vw,118px)!important;
-  width:clamp(88px,25vw,118px)!important;
+  flex:0 0 clamp(96px,28vw,132px)!important;
+  width:clamp(96px,28vw,132px)!important;
   height:auto!important;
   aspect-ratio:1/1!important;
   margin:0!important;
@@ -2500,6 +2500,25 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   filter:saturate(.35);
   pointer-events:none;
   box-shadow:none;
+}
+#channelConfirmView .confirm-channel-strip{
+  width:100%!important;
+  max-width:100%!important;
+  margin-inline:auto!important;
+  padding:5px 14px 8px!important;
+  gap:7px!important;
+  scroll-padding-inline:14px;
+  box-sizing:border-box!important;
+}
+#channelConfirmView .confirm-channel-chip{
+  flex-basis:56px!important;
+  min-width:56px!important;
+}
+#channelConfirmView .confirm-channel-chip .channel-brand-icon{
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
 }
 @media(max-height:760px) and (max-width:480px){
   #channelConfirmView .confirm-tool-actions .confirm-tool-button{

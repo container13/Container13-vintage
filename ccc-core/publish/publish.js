@@ -272,6 +272,7 @@ const directPrepareView = publishEntryParams.get("view") === "prepare";
 const directPrepareItemId = publishEntryParams.get("item") || "";
 const directPrepareItemIds = (publishEntryParams.get("items")||directPrepareItemId)
   .split(",").map(value=>value.trim()).filter(Boolean);
+const directPrepareToolItemId = publishEntryParams.get("toolItem") || "";
 const directPrepareOrigin = publishEntryParams.get("from") || "";
 const directFromVisionEdit = directPrepareOrigin === "vision-edit" && !!directPrepareItemId;
 const directFromVisionExpress = directPrepareOrigin === "vision-camera-express" && directPrepareItemIds.length>0;
@@ -753,6 +754,10 @@ async function quickPublishCurrentDetail(){
   confirmPage=0;
   container13ChannelSelected=false;
   await renderChannelConfirmation();
+  if(directPrepareToolItemId&&selected.includes(directPrepareToolItemId)){
+    confirmToolItemId=directPrepareToolItemId;
+    syncConfirmToolUi();
+  }
   show("channelConfirmView");
 }
 
@@ -2200,8 +2205,22 @@ async function renderChannelConfirmation(resetControls=true){
 
 $("#confirmReviewBtn")?.addEventListener("click",async()=>{
   if(!confirmToolItemId)return;
-  confirmToolReturn=true;
-  await openDetailById(confirmToolItemId);
+  const selectedIds=selectedChannelItems().map(item=>item.id);
+  if(!selectedIds.length)return;
+  const returnUrl=new URL("../publish/index.html",window.location.href);
+  returnUrl.searchParams.set("view","prepare");
+  returnUrl.searchParams.set("items",selectedIds.join(","));
+  returnUrl.searchParams.set("toolItem",confirmToolItemId);
+  returnUrl.searchParams.set("from","vision-camera-express");
+  try{
+    sessionStorage.setItem("ccc-vision-return-edit-item",confirmToolItemId);
+    sessionStorage.setItem("ccc-vision-return-publish-confirm",JSON.stringify({
+      itemId:confirmToolItemId,
+      url:returnUrl.href,
+      createdAt:Date.now()
+    }));
+  }catch(_){ }
+  window.location.assign("../vision/index.html");
 });
 
 $("#confirmAdaptBtn")?.addEventListener("click",async()=>{
