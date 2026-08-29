@@ -2278,12 +2278,28 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Slutkontrollens enkelbild använder en 308 px Core-viewport med 14 px symmetrisk ram runt 280 px bild.
 - `CCC_CORE.press` ger Dashboard och modulstarter en fysisk intryckt status. Endast säkra vy-/sidbyten fördröjs 140 ms; kamera-/filväljare fördröjs aldrig.
 
+## v2.10.106 – blinkfri uppstartsgrind i Publicera
+
+- `startView` är dold redan i HTML i stället för att målas före JavaScriptets bootstrap.
+- `ccc-publish-booting` håller Publiceras arbetsyta och Core-footer osynliga tills lokala utkast är lästa, rätt route är avgjord och rätt vy är renderad.
+- Normal Dashboard-ingång, Vision/Express-direktvägar och `?legacyStart=1` avslutar samma uppstartsgrind efter att respektive avsedda vy visats.
+- Header och modulmarkör ligger stabilt under uppstarten. Ingen parallell Express-HTML införs och rootens `/version.js` ändras inte.
+
 ## v2.10.105 – Publiceras nya arbetsstart
 
 - Normal modulstart visar `channelConfirmView` som tom/aktiv arbetsyta. Gamla `startView` behålls bakom `?legacyStart=1` under testperioden.
 - `confirmWorkspaceEmpty` beskriver nästa steg. `Lägg till {singular}` och `Välj utkast` är två jämbördiga källor; den senare återanvänder `channelView` och `channelSelectedIds`.
 - Tom publiceringsgrupp ger huvudtexten `Välj {plural}`. Kanalval kan göras före eller efter objektval.
 - Historik öppnas sekundärt från arbetsytan och Back återgår dit. Header-Back från arbetsstarten går till Dashboard.
+
+## Framtida Core-princip – valbara, låsbara och kvotstyrda verktyg
+
+- Publiceras arbetsyta är en generell Core-grund och ska kunna återanvändas av andra verksamheter med egna termer, kanaler och verktyg.
+- Verksamheten ska kunna välja vilka verktyg som erbjuds. Användaren ska kunna välja vilka av de tillåtna verktygen som visas på den egna arbetsytan.
+- Core ska centralt stödja verktygslägena aktivt, inaktivt tills rätt objekt/underlag valts, behörighetslåst, kvotlåst och helt dolt.
+- Behörighet och kvoter måste kontrolleras vid själva funktionsanropet och får inte implementeras enbart som låsta eller dolda knappar.
+- Ett låst eller förbrukat verktyg bör normalt vara synligt med lås, begriplig orsak och eventuell räknare, exempelvis `AI-sökning · 3 av 5 kvar`.
+- Roller, användningsgränser och eventuell framtida nivå-/betalmodell ligger i backlog och byggs först när Publiceras grundflöde är stabilt.
 
 ## v2.10.104 – nya objekt direkt i slutkontrollen
 
