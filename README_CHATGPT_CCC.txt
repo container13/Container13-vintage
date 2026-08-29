@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.108
+CCC-version: 2.10.109
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -72,6 +72,13 @@ v2.10.91 – Core Swipe 580 + färdiga mobilkort
 - Vision visar headerns tillbaka-pil i alla undervyer; endast modulens startvy saknar pil. Footer-Tillbaka finns kvar.
 - Slutkontrollens enkelbild får en symmetrisk Core-ram: 280 px bild och 14 px runt om.
 - Dashboard och modulstarter använder gemensam Core-tryckkänsla. Vy-/sidbyten väntar 140 ms; kamera och filväljare behåller direkt användaraktivering.
+
+v2.10.109 – flytande källmeny direkt i Publicera
+- `Lägg till {singular}` öppnar en kompakt CCC-meny ovanpå den befintliga Publicera-arbetsytan i stället för att navigera till Visions stora källvy.
+- `Ta foto med CCC` öppnar Visions kamera direkt via `?mode=publish-add&source=camera` och återställer aktuell grupp/kanal efter Klar eller X.
+- `Bildbibliotek / filer` öppnar enhetens säkra bildväljare från samma meny, accepterar flera bilder och skapar Vision-kompatibla lokala objekt direkt i aktuell publiceringsgrupp.
+- Menyn stängs med Avbryt, tryck utanför eller Escape. Safari kan efter enhetsvalet visa sin egen systemmeny för Bildbibliotek/Ta bild/Välj filer; detta styrs av iOS.
+- v2.10.108:s stora Vision-källvy finns kvar som teknisk fallback men används inte från Publiceras normala Lägg till-knapp. Rootens `/version.js` är orörd.
 
 v2.10.108 – källval för nya objekt i Publicera
 - `Lägg till {singular}` öppnar en särskild Vision-vy med två val: `Ta ett foto` och `Från album`.
