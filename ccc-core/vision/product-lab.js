@@ -248,7 +248,7 @@
   function updateHeaderContext() {
     /* Startvyn är modulens ingång. Alla djupare Vision-vyer visar både
        headerpil och den tumvänliga footerknappen för samma bakåtsteg. */
-    const state={back:visionView!=="start",settings:true};
+    const state={back:visionView!=="start"||publishAddMode,settings:true};
     window.__CCC_HEADER_PENDING__=state;
     window.CCC_CORE?.header?.set(state);
 
@@ -330,7 +330,7 @@
 
     const resumableCount = hasSession ? batchItems.length : Number(savedSessionSummary?.count || 0);
     if (resume) {
-      resume.hidden = !(startMode && resumableCount > 0);
+      resume.hidden = publishAddMode || !(startMode && resumableCount > 0);
       const resumeLabel=$("#resumeSessionLabel");
       const resumeMeta=$("#resumeSessionMeta");
       if(resumeLabel)resumeLabel.textContent="Fortsätt fotosession";
@@ -364,6 +364,21 @@
     showStage("captureCard", "start");
     updateBatchStrip();
     applyCaptureMode();
+  }
+
+  function showPublishAddChooser(){
+    showVisionStart();
+    const heading=$("#visionStartHome .ccc-home-heading h1");
+    if(heading)heading.textContent=`Lägg till ${entityTerm("singular")}`;
+    const cameraCopy=$("#startCameraBtn .action-copy small");
+    if(cameraCopy)cameraCopy.textContent="Fotografera med CCC-kameran";
+    const galleryTitle=$("#galleryBtn .action-copy strong");
+    const galleryCopy=$("#galleryBtn .action-copy small");
+    if(galleryTitle)galleryTitle.textContent="Från album";
+    if(galleryCopy)galleryCopy.textContent="Välj en eller flera bilder från enheten";
+    $("#resumeSessionBtn")?.setAttribute("hidden","");
+    document.documentElement.classList.remove("ccc-vision-publish-add-loading");
+    updateHeaderContext();
   }
 
   function showWorkspace() {
@@ -1039,16 +1054,25 @@
     }
     files.forEach((file) => batchItems.push(createBatchItem(file, batchItems.length)));
     finishFallbackCamera();
+    if(publishAddMode){
+      await returnToPublishFromCamera(true);
+      return;
+    }
     queueVisionSessionSave();
     updateBatchStrip();
     resetCaptureVisual();
     showWorkspace();
   }
 
-  function handleGalleryFiles(fileList) {
+  async function handleGalleryFiles(fileList) {
     const files = [...fileList].filter((file) => file.type.startsWith("image/"));
     if (!files.length) return;
     files.forEach((file) => batchItems.push(createBatchItem(file, batchItems.length)));
+    if(publishAddMode){
+      $("#galleryInput").value="";
+      await returnToPublishFromCamera(true);
+      return;
+    }
     queueVisionSessionSave();
     updateBatchStrip();
     resetCaptureVisual();
@@ -2525,6 +2549,10 @@
         return;
       case "start":
       default:
+        if(publishAddMode){
+          await returnToPublishFromCamera(false);
+          return;
+        }
         if (batchItems.length) await queueVisionSessionSave();
         window.location.assign("../dashboard/index.html");
     }
@@ -2780,12 +2808,13 @@ $("#price")?.addEventListener("click", openPriceEditor);
       if(publishAddMode){
         try{
           await restoreSavedVisionSession({showAfterRestore:false});
-          await startCamera();
+          cameraSessionStartCount=batchItems.length;
+          showPublishAddChooser();
         }catch(error){
-          console.error("[CCC Vision] Kunde inte öppna kameran från Publicera",error);
+          console.error("[CCC Vision] Kunde inte öppna Lägg till-vyn från Publicera",error);
           document.documentElement.classList.remove("ccc-vision-publish-add-loading");
           showVisionStart();
-          setMessage("Kameran kunde inte öppnas. Försök igen.");
+          setMessage("Lägg till-vyn kunde inte öppnas. Försök igen.");
         }
         return;
       }
