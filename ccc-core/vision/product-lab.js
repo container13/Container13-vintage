@@ -3,6 +3,7 @@
     ({singular:"objekt",plural:"objekt",definiteSingular:"objektet",definitePlural:"objekten"}[form]||"objekt");
   const visionEntryParams=new URLSearchParams(window.location.search);
   const publishAddMode=visionEntryParams.get("mode")==="publish-add";
+  const publishAddSource=visionEntryParams.get("source")||"";
   const PUBLISH_ADD_STATE_KEY="ccc-publish-add-camera-state";
 
   const $ = (selector) => document.querySelector(selector);
@@ -2809,7 +2810,8 @@ $("#price")?.addEventListener("click", openPriceEditor);
         try{
           await restoreSavedVisionSession({showAfterRestore:false});
           cameraSessionStartCount=batchItems.length;
-          showPublishAddChooser();
+          if(publishAddSource==="camera")await startCamera();
+          else showPublishAddChooser();
         }catch(error){
           console.error("[CCC Vision] Kunde inte öppna Lägg till-vyn från Publicera",error);
           document.documentElement.classList.remove("ccc-vision-publish-add-loading");
