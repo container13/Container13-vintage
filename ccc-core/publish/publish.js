@@ -287,6 +287,7 @@ let directPrepareBackGuard = directFromVisionEdit||directFromVisionExpress;
 let currentPublishView="startView";
 
 function finishDirectPrepareBootstrap(){
+  document.documentElement.classList.remove("ccc-publish-booting");
   document.documentElement.classList.remove("ccc-direct-prepare-loading");
   if(!directFromVisionEdit&&!directFromVisionExpress){
     directPrepareBackGuard=false;
@@ -2731,6 +2732,7 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
     }else if(legacyPublishStart){
       workspaceStartMode=false;
       show("startView");
+      requestAnimationFrame(()=>requestAnimationFrame(finishDirectPrepareBootstrap));
     }else{
       workspaceStartMode=true;
       channelSelectedIds.clear();
@@ -2738,6 +2740,7 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
       confirmToolItemId=null;
       await renderChannelConfirmation();
       show("channelConfirmView");
+      requestAnimationFrame(()=>requestAnimationFrame(finishDirectPrepareBootstrap));
     }
   }
 }catch(e){

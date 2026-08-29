@@ -2347,6 +2347,8 @@
    ligger samtidigt i ett sammanhängande swipe-spår. */
 .ccc-paged-grid-ghost{display:grid!important}
 
+html.ccc-publish-booting .publish-main,
+html.ccc-publish-booting #cccCoreFooter,
 html.ccc-direct-prepare-loading .publish-main,
 html.ccc-direct-prepare-loading #cccCoreFooter{
   visibility:hidden!important;
