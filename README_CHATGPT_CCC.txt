@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.107
+CCC-version: 2.10.108
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -72,6 +72,13 @@ v2.10.91 – Core Swipe 580 + färdiga mobilkort
 - Vision visar headerns tillbaka-pil i alla undervyer; endast modulens startvy saknar pil. Footer-Tillbaka finns kvar.
 - Slutkontrollens enkelbild får en symmetrisk Core-ram: 280 px bild och 14 px runt om.
 - Dashboard och modulstarter använder gemensam Core-tryckkänsla. Vy-/sidbyten väntar 140 ms; kamera och filväljare behåller direkt användaraktivering.
+
+v2.10.108 – källval för nya objekt i Publicera
+- `Lägg till {singular}` öppnar en särskild Vision-vy med två val: `Ta ett foto` och `Från album`.
+- Ta foto använder fortsatt Visions egen CCC-kamera. Från album använder Visions befintliga flervalsimport från enhetens bildbibliotek.
+- Båda källorna skapar nya Vision-kompatibla objekt, återgår till samma Publicera-arbetsyta och bevarar tidigare objekt-/kanalval.
+- Header-Tillbaka från källvalet återgår utan ändring. `Välj utkast` i Publicera är fortsatt separat och visar redan sparade CCC-objekt.
+- Rootens `/version.js` är fortsatt orörd.
 
 v2.10.107 – Visions kamera från Publiceras arbetsyta
 - `Lägg till {singular}` i Publiceras arbetsstart öppnar Visions befintliga CCC-kamera via `?mode=publish-add`; Publicera har inte längre en parallell filinput som normalt öppnar iPhones kamera.
