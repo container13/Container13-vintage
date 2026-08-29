@@ -2275,17 +2275,11 @@ $("#confirmRemoveBtn")?.addEventListener("click",async()=>{
 });
 
 function syncConfirmAddObjectLabel(label=null){
-  const button=$("#confirmAddObjectBtn");
+  const button=$("#confirmAddImagesBtn");
   const text=button?.querySelector("span:last-child");
   if(!button||!text)return;
-  text.textContent=label||`Lägg till ${entityTerm("singular")}`;
+  text.textContent=label||"Bilder";
   button.disabled=confirmAddPending;
-}
-
-function setConfirmAddSourceOpen(open){
-  const dialog=$("#confirmAddSourceDialog");
-  if(!dialog)return;
-  dialog.hidden=!open;
 }
 
 function publishAddCameraState(){
@@ -2336,7 +2330,7 @@ async function addObjectsFromDevice(fileList){
   const files=[...(fileList||[])].filter(file=>file?.type?.startsWith("image/"));
   if(!files.length)return;
   confirmAddPending=true;
-  syncConfirmAddObjectLabel(files.length===1?`Lägger till ${entityTerm("singular")}…`:`Lägger till ${files.length} ${entityTerm("plural")}…`);
+  syncConfirmAddObjectLabel("Lägger till…");
   try{
     const created=[];
     for(let index=0;index<files.length;index+=1)created.push(await createConfirmImportedObject(files[index],index));
@@ -2364,27 +2358,16 @@ async function addObjectsFromDevice(fileList){
   }
 }
 
-$("#confirmAddObjectBtn")?.addEventListener("click",()=>setConfirmAddSourceOpen(true));
-$("#confirmAddCameraChoice")?.addEventListener("click",()=>{
-  setConfirmAddSourceOpen(false);
+$("#confirmAddPhotoBtn")?.addEventListener("click",()=>{
   const state=publishAddCameraState();
   try{sessionStorage.setItem(PUBLISH_ADD_STATE_KEY,JSON.stringify(state));}catch(_){ }
   window.location.assign("../vision/index.html?mode=publish-add&source=camera");
 });
-$("#confirmAddDeviceChoice")?.addEventListener("click",()=>{
-  setConfirmAddSourceOpen(false);
+$("#confirmAddImagesBtn")?.addEventListener("click",()=>{
   const input=$("#confirmAddObjectInput");
   if(input){input.value="";input.click();}
 });
-$("#confirmAddSourceCancel")?.addEventListener("click",()=>setConfirmAddSourceOpen(false));
-$("#confirmAddSourceDialog")?.addEventListener("click",event=>{
-  if(event.target===$("#confirmAddSourceDialog"))setConfirmAddSourceOpen(false);
-});
 $("#confirmAddObjectInput")?.addEventListener("change",event=>addObjectsFromDevice(event.target.files));
-document.addEventListener("keydown",event=>{
-  if(event.key==="Escape"&&!$("#confirmAddSourceDialog")?.hidden)setConfirmAddSourceOpen(false);
-});
-document.addEventListener("ccc:terminologychange",()=>syncConfirmAddObjectLabel());
 
 $("#confirmChooseDraftsBtn")?.addEventListener("click",async()=>{
   channelPickerReturnsToWorkspace=true;

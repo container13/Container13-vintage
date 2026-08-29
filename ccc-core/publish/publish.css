@@ -2531,18 +2531,20 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   width:min(100%,520px);
   margin:0 auto 4px;
   display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:8px;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:6px;
 }
 #channelConfirmView .confirm-add-object{
-  width:min(100%,520px);
-  min-height:48px;
+  width:100%;
+  min-width:0;
+  min-height:68px;
   margin:0;
-  padding:7px 14px;
+  padding:7px 4px;
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:10px;
+  gap:5px;
   border:1px solid rgba(70,194,151,.44);
   border-radius:15px;
   background:linear-gradient(155deg,rgba(28,42,43,.98),rgba(20,27,31,.98));
@@ -2551,6 +2553,21 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   font-weight:900;
   box-shadow:0 7px 16px rgba(0,0,0,.20),0 0 13px rgba(70,194,151,.08),inset 0 1px 0 rgba(255,255,255,.04);
   transition:transform .11s ease,box-shadow .11s ease,opacity .15s ease;
+}
+#channelConfirmView .confirm-add-photo{
+  border-color:rgba(169,112,255,.44);
+  background:linear-gradient(155deg,rgba(39,31,55,.98),rgba(24,22,34,.98));
+  box-shadow:0 7px 16px rgba(0,0,0,.20),0 0 13px rgba(169,112,255,.08),inset 0 1px 0 rgba(255,255,255,.04);
+}
+#channelConfirmView .confirm-add-photo .confirm-add-object-icon{
+  border-color:#a970ff;
+  color:#a970ff;
+  box-shadow:0 0 12px rgba(169,112,255,.24);
+}
+#channelConfirmView .confirm-add-images .confirm-add-object-icon{
+  border-color:#46c297;
+  color:#46c297;
+  box-shadow:0 0 12px rgba(70,194,151,.25);
 }
 #channelConfirmView .confirm-choose-drafts{
   border-color:rgba(74,166,255,.40);
@@ -2587,61 +2604,6 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   stroke-linecap:round;
   stroke-linejoin:round;
 }
-.confirm-add-source-dialog{
-  position:fixed;
-  inset:0;
-  z-index:1400;
-  display:grid;
-  place-items:center;
-  padding:20px;
-  background:rgba(3,5,9,.62);
-  backdrop-filter:blur(5px);
-}
-.confirm-add-source-dialog[hidden]{display:none!important}
-.confirm-add-source-sheet{
-  width:min(86vw,360px);
-  display:grid;
-  gap:10px;
-  padding:20px;
-  border:1px solid rgba(118,128,151,.34);
-  border-radius:26px;
-  background:linear-gradient(160deg,#181c25,#11141b);
-  box-shadow:0 24px 60px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.05);
-}
-.confirm-add-source-sheet h2{margin:0 0 5px;text-align:center;color:#f5f6fa;font-size:22px}
-.confirm-add-source-choice{
-  min-height:62px;
-  padding:10px 15px;
-  display:flex;
-  align-items:center;
-  gap:14px;
-  border:1px solid rgba(118,128,151,.30);
-  border-radius:17px;
-  background:#1b202a;
-  color:#f5f6fa;
-  font-size:16px;
-  text-align:left;
-}
-.confirm-add-source-choice span{width:38px;height:38px;display:grid;place-items:center;flex:0 0 38px;border:1.5px solid currentColor;border-radius:50%}
-.confirm-add-source-choice svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.confirm-add-source-choice--camera{color:#a970ff}
-.confirm-add-source-choice--device{color:#46c297}
-.confirm-add-source-choice strong{color:#f5f6fa}
-.confirm-add-source-choice .confirm-add-source-copy{
-  width:auto;
-  height:auto;
-  display:flex;
-  min-width:0;
-  flex:1 1 auto;
-  flex-direction:column;
-  align-items:flex-start;
-  gap:2px;
-  border:0;
-  border-radius:0;
-}
-.confirm-add-source-copy small{color:#adb4c4;font-size:12px;font-weight:750;line-height:1.15}
-.confirm-add-source-choice:active{transform:translateY(2px) scale(.99);background:#151922}
-.confirm-add-source-cancel{min-height:44px;border:0;background:transparent;color:#adb4c4;font-size:15px;font-weight:850}
 #channelConfirmView .confirm-history-link{
   min-height:32px;
   margin:3px auto 0;

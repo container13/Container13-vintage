@@ -11,8 +11,8 @@
 <title>CCC Publicera v2.9.22</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}const p=new URLSearchParams(location.search);document.documentElement.classList.add("ccc-publish-booting");if(p.get("view")==="prepare")document.documentElement.classList.add("ccc-direct-prepare-loading");</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.10.111">
-<link rel="stylesheet" href="../core.css?v=2.10.111">
+<link rel="stylesheet" href="publish.css?v=2.10.112">
+<link rel="stylesheet" href="../core.css?v=2.10.112">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell publish-shell">
@@ -160,14 +160,19 @@
       </div>
 
       <div class="confirm-source-actions">
-        <button id="confirmAddObjectBtn" class="confirm-add-object" type="button">
-          <span class="confirm-add-object-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m6.5 16 4-4 3 3 2-2 2.5 3M17 7.5v5M14.5 10h5"/></svg></span>
-          <span data-ccc-term="Lägg till {singular}">Lägg till objekt</span>
+        <button id="confirmAddPhotoBtn" class="confirm-add-object confirm-add-photo" type="button">
+          <span class="confirm-add-object-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8h3l1.4-2h7.2L17 8h3v11H4V8Z"/><circle cx="12" cy="13" r="3.5"/></svg></span>
+          <span>Foto</span>
+        </button>
+        <button id="confirmAddImagesBtn" class="confirm-add-object confirm-add-images" type="button">
+          <span class="confirm-add-object-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m6.5 16 4-4 3 3 2-2 2.5 3"/></svg></span>
+          <span>Bilder</span>
         </button>
         <button id="confirmChooseDraftsBtn" class="confirm-add-object confirm-choose-drafts" type="button">
           <span class="confirm-add-object-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5zM8 9h8M8 12h8M8 15h5"/></svg></span>
-          <span>Välj utkast</span>
+          <span>Utkast</span>
         </button>
+        <input id="confirmAddObjectInput" type="file" accept="image/*" multiple hidden>
       </div>
       <div class="confirm-channel-strip" aria-label="Publiceringskanaler">
         <button id="confirmC13Channel" class="confirm-channel-chip is-active" type="button" data-confirm-channel="Container13" aria-pressed="true" aria-label="Container13, vald kanal">
@@ -277,24 +282,6 @@
   </main>
 </div>
 
-<div id="confirmAddSourceDialog" class="confirm-add-source-dialog" role="dialog" aria-modal="true" aria-labelledby="confirmAddSourceTitle" hidden>
-  <div class="confirm-add-source-sheet">
-    <h2 id="confirmAddSourceTitle" data-ccc-term="Lägg till {singular}">Lägg till objekt</h2>
-    <button id="confirmAddCameraChoice" class="confirm-add-source-choice confirm-add-source-choice--camera" type="button">
-      <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8h3l1.4-2h7.2L17 8h3v11H4V8Zm8 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/></svg></span>
-      <strong>Ta foto med CCC</strong>
-    </button>
-    <button id="confirmAddDeviceChoice" class="confirm-add-source-choice confirm-add-source-choice--device" type="button">
-      <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4V5Zm3 11 3.5-4 2.5 3 2-2 2 3H7Zm9-7h.01"/></svg></span>
-      <span class="confirm-add-source-copy">
-        <strong>Välj från enheten</strong>
-        <small>Bildbibliotek eller filer</small>
-      </span>
-    </button>
-    <button id="confirmAddSourceCancel" class="confirm-add-source-cancel" type="button">Avbryt</button>
-    <input id="confirmAddObjectInput" type="file" accept="image/*" multiple hidden>
-  </div>
-</div>
 <div id="logoutDialog" class="dialog ccc-dialog" role="dialog" aria-modal="true" aria-labelledby="logoutTitle" hidden>
   <div class="dialog-box ccc-dialog-box">
     <h2 id="logoutTitle">Logga ut?</h2>
@@ -306,9 +293,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.10.111"></script>
-<script type="module" src="../core.js?v=2.10.111"></script>
-  <script src="../version.js?v=2.10.111"></script>
+<script type="module" src="publish.js?v=2.10.112"></script>
+<script type="module" src="../core.js?v=2.10.112"></script>
+  <script src="../version.js?v=2.10.112"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 
