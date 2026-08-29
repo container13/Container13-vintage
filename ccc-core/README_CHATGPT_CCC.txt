@@ -2278,6 +2278,15 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Slutkontrollens enkelbild använder en 308 px Core-viewport med 14 px symmetrisk ram runt 280 px bild.
 - `CCC_CORE.press` ger Dashboard och modulstarter en fysisk intryckt status. Endast säkra vy-/sidbyten fördröjs 140 ms; kamera-/filväljare fördröjs aldrig.
 
+## v2.10.107 – Publicera återanvänder Visions CCC-kamera
+
+- Publiceras `Lägg till {singular}` navigerar till Vision med `?mode=publish-add` i stället för att öppna en egen `<input type=file>`.
+- Arbetsytans valda objekt, C13-kanal och verktygsmarkering sparas i kortlivad `sessionStorage` och återställs när kameran lämnas.
+- `Klar` sparar endast den aktuella kameraomgångens nya objekt via Visions kanoniska original-/sessions-/utkastslager och lägger deras ID:n till publiceringsgruppen.
+- X återgår utan att staged-fotot läggs till i gruppen. Objekt som redan autosparats med Nästa objekt finns fortsatt kvar i Vision.
+- Vision-starten döljs under specialbootstrapen. Den befintliga native-filkameran är endast fallback om Visions `getUserMedia` inte kan öppnas.
+- Den gamla parallella import- och sessionsskaparkoden tas bort från Publicera. Rootens `/version.js` är orörd.
+
 ## v2.10.106 – blinkfri uppstartsgrind i Publicera
 
 - `startView` är dold redan i HTML i stället för att målas före JavaScriptets bootstrap.
