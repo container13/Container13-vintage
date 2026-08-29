@@ -92,6 +92,8 @@ v2.10.88: Aktuell och inkommande gridsida klipps inom samma Core-swipeviewport i
 v2.10.89: Core-landningen efter släpp är lugnare. Slutkontrollen visar 1–6 objekt adaptivt utan tomma platshållare; 7+ använder stabil 3×2-paging med Core-swipe.
 v2.10.90: Core-landningen är 480 ms. Slutkontrollen får mer luft ovanför och under bilden utan att införa normal mobilscroll; korta skärmar använder mindre mellanrum.
 v2.10.91: Swipe landar på 580 ms och detalj-swipen använder Core fullt ut. Enkelbildens slutkontroll får en symmetrisk 14 px ram. Startkorten får Core-styrd tryckkänsla och 140 ms vyfördröjning.
+v2.10.111: Källmenyn skiljer på `Ta foto med CCC` och det plattformsneutrala `Välj från enheten`. Undertext: `Bildbibliotek eller filer`. v2.10.110 ska hoppas över.
+v2.10.110: Ersatt av v2.10.111 på grund av en iPhone-specifik benämning.
 v2.10.109: Lägg till objekt öppnar en kompakt flytande källmeny direkt ovanpå Publicera. Ta foto med CCC går direkt till Vision-kameran; Bildbibliotek/filer importerar flera bilder till samma Vision-/Publicera-lager. Avbryt/backdrop/Escape stänger utan ändring.
 v2.10.108: Lägg till objekt öppnar ett särskilt Vision-källval: Ta ett foto med CCC-kameran eller Från album via Visions befintliga flervalsimport. Båda återgår till samma arbetsgrupp; Välj utkast är fortsatt separat för redan sparade CCC-objekt.
 v2.10.107: Lägg till objekt öppnar Visions befintliga CCC-kamera i publish-add-läge. Klar sparar kameraomgångens nya objekt och återställer Publiceras tidigare grupp/kanal; X återgår utan staged-fotot. Publiceras gamla parallella filinput/importkod är borttagen.

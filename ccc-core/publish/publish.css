@@ -2627,6 +2627,19 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
 .confirm-add-source-choice--camera{color:#a970ff}
 .confirm-add-source-choice--device{color:#46c297}
 .confirm-add-source-choice strong{color:#f5f6fa}
+.confirm-add-source-choice .confirm-add-source-copy{
+  width:auto;
+  height:auto;
+  display:flex;
+  min-width:0;
+  flex:1 1 auto;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:2px;
+  border:0;
+  border-radius:0;
+}
+.confirm-add-source-copy small{color:#adb4c4;font-size:12px;font-weight:750;line-height:1.15}
 .confirm-add-source-choice:active{transform:translateY(2px) scale(.99);background:#151922}
 .confirm-add-source-cancel{min-height:44px;border:0;background:transparent;color:#adb4c4;font-size:15px;font-weight:850}
 #channelConfirmView .confirm-history-link{

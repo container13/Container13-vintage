@@ -11,8 +11,8 @@
 <title>CCC Publicera v2.9.22</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}const p=new URLSearchParams(location.search);document.documentElement.classList.add("ccc-publish-booting");if(p.get("view")==="prepare")document.documentElement.classList.add("ccc-direct-prepare-loading");</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.10.109">
-<link rel="stylesheet" href="../core.css?v=2.10.109">
+<link rel="stylesheet" href="publish.css?v=2.10.111">
+<link rel="stylesheet" href="../core.css?v=2.10.111">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell publish-shell">
@@ -286,7 +286,10 @@
     </button>
     <button id="confirmAddDeviceChoice" class="confirm-add-source-choice confirm-add-source-choice--device" type="button">
       <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4V5Zm3 11 3.5-4 2.5 3 2-2 2 3H7Zm9-7h.01"/></svg></span>
-      <strong>Bildbibliotek / filer</strong>
+      <span class="confirm-add-source-copy">
+        <strong>Välj från enheten</strong>
+        <small>Bildbibliotek eller filer</small>
+      </span>
     </button>
     <button id="confirmAddSourceCancel" class="confirm-add-source-cancel" type="button">Avbryt</button>
     <input id="confirmAddObjectInput" type="file" accept="image/*" multiple hidden>
@@ -303,9 +306,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.10.109"></script>
-<script type="module" src="../core.js?v=2.10.109"></script>
-  <script src="../version.js?v=2.10.109"></script>
+<script type="module" src="publish.js?v=2.10.111"></script>
+<script type="module" src="../core.js?v=2.10.111"></script>
+  <script src="../version.js?v=2.10.111"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 
