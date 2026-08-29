@@ -2278,6 +2278,14 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Slutkontrollens enkelbild använder en 308 px Core-viewport med 14 px symmetrisk ram runt 280 px bild.
 - `CCC_CORE.press` ger Dashboard och modulstarter en fysisk intryckt status. Endast säkra vy-/sidbyten fördröjs 140 ms; kamera-/filväljare fördröjs aldrig.
 
+## v2.10.109 – flytande Lägg till-meny i Publicera
+
+- Publiceras `Lägg till {singular}` öppnar `confirmAddSourceDialog` ovanpå samma arbetsyta; ingen källvy navigeras fram innan användaren gjort sitt val.
+- `Ta foto med CCC` sparar befintlig grupp-/kanal-/verktygsstate och öppnar Vision direkt med `?mode=publish-add&source=camera`.
+- `Bildbibliotek / filer` använder en lokal multipel bildinput. Importen skriver original till `vision-files`, ett Vision-sessionsobjekt till `vision-active` och ett Publicera-utkast till `images` innan objektet läggs i aktuell grupp.
+- Avbryt, backdrop och Escape stänger dialogen utan stateändring. iOS äger eventuell efterföljande systemmeny för Bildbibliotek/Ta bild/Välj filer.
+- v2.10.108:s generella publish-add-källvy behålls som fallback för anrop utan `source`. Rootens `/version.js` är orörd.
+
 ## v2.10.108 – Vision-källval från Publiceras Lägg till
 
 - `?mode=publish-add` visar en särskild Vision-källvy i stället för att autoöppna kameran.
