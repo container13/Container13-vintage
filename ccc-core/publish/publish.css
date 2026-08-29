@@ -2529,7 +2529,7 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
 }
 #channelConfirmView .confirm-source-actions{
   width:min(100%,520px);
-  margin:0 auto 4px;
+  margin:4px auto 8px;
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:6px;
@@ -2537,47 +2537,47 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
 #channelConfirmView .confirm-add-object{
   width:100%;
   min-width:0;
-  min-height:68px;
+  min-height:50px;
   margin:0;
-  padding:7px 4px;
+  padding:6px 8px;
   display:flex;
-  flex-direction:column;
+  flex-direction:row;
   align-items:center;
   justify-content:center;
-  gap:5px;
+  gap:6px;
   border:1px solid rgba(70,194,151,.44);
-  border-radius:15px;
+  border-radius:13px;
   background:linear-gradient(155deg,rgba(28,42,43,.98),rgba(20,27,31,.98));
   color:#eef8f4;
-  font-size:13px;
+  font-size:12px;
   font-weight:900;
-  box-shadow:0 7px 16px rgba(0,0,0,.20),0 0 13px rgba(70,194,151,.08),inset 0 1px 0 rgba(255,255,255,.04);
+  box-shadow:0 5px 12px rgba(0,0,0,.18),0 0 8px rgba(70,194,151,.05),inset 0 1px 0 rgba(255,255,255,.035);
   transition:transform .11s ease,box-shadow .11s ease,opacity .15s ease;
 }
 #channelConfirmView .confirm-add-photo{
   border-color:rgba(169,112,255,.44);
   background:linear-gradient(155deg,rgba(39,31,55,.98),rgba(24,22,34,.98));
-  box-shadow:0 7px 16px rgba(0,0,0,.20),0 0 13px rgba(169,112,255,.08),inset 0 1px 0 rgba(255,255,255,.04);
+  box-shadow:0 5px 12px rgba(0,0,0,.18),0 0 8px rgba(169,112,255,.05),inset 0 1px 0 rgba(255,255,255,.035);
 }
 #channelConfirmView .confirm-add-photo .confirm-add-object-icon{
   border-color:#a970ff;
   color:#a970ff;
-  box-shadow:0 0 12px rgba(169,112,255,.24);
+  box-shadow:0 0 8px rgba(169,112,255,.17);
 }
 #channelConfirmView .confirm-add-images .confirm-add-object-icon{
   border-color:#46c297;
   color:#46c297;
-  box-shadow:0 0 12px rgba(70,194,151,.25);
+  box-shadow:0 0 8px rgba(70,194,151,.17);
 }
 #channelConfirmView .confirm-choose-drafts{
   border-color:rgba(74,166,255,.40);
   background:linear-gradient(155deg,rgba(27,37,50,.98),rgba(20,25,33,.98));
-  box-shadow:0 7px 16px rgba(0,0,0,.20),0 0 13px rgba(74,166,255,.07),inset 0 1px 0 rgba(255,255,255,.04);
+  box-shadow:0 5px 12px rgba(0,0,0,.18),0 0 8px rgba(74,166,255,.05),inset 0 1px 0 rgba(255,255,255,.035);
 }
 #channelConfirmView .confirm-choose-drafts .confirm-add-object-icon{
   border-color:#4aa6ff;
   color:#4aa6ff;
-  box-shadow:0 0 12px rgba(74,166,255,.24);
+  box-shadow:0 0 8px rgba(74,166,255,.17);
 }
 #channelConfirmView .confirm-add-object:not(:disabled):active{
   transform:translateY(2px) scale(.99);
@@ -2585,19 +2585,19 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
 }
 #channelConfirmView .confirm-add-object:disabled{opacity:.55}
 #channelConfirmView .confirm-add-object-icon{
-  width:31px;
-  height:31px;
+  width:26px;
+  height:26px;
   display:grid;
   place-items:center;
-  flex:0 0 31px;
+  flex:0 0 26px;
   border:1.5px solid #46c297;
   border-radius:50%;
   color:#46c297;
-  box-shadow:0 0 12px rgba(70,194,151,.25);
+  box-shadow:0 0 8px rgba(70,194,151,.17);
 }
 #channelConfirmView .confirm-add-object-icon svg{
-  width:19px;
-  height:19px;
+  width:16px;
+  height:16px;
   fill:none;
   stroke:currentColor;
   stroke-width:1.7;
