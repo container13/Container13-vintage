@@ -2278,6 +2278,12 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Slutkontrollens enkelbild använder en 308 px Core-viewport med 14 px symmetrisk ram runt 280 px bild.
 - `CCC_CORE.press` ger Dashboard och modulstarter en fysisk intryckt status. Endast säkra vy-/sidbyten fördröjs 140 ms; kamera-/filväljare fördröjs aldrig.
 
+## v2.10.111 – plattformsneutralt enhetsval
+- Publiceras gröna källval heter `Välj från enheten` och förklaras med `Bildbibliotek eller filer`.
+- CCC:s kamera är fortsatt ett eget val. v2.10.110 ersätts och ska hoppas över.
+
+## v2.10.110 – ersatt av v2.10.111
+
 ## v2.10.109 – flytande Lägg till-meny i Publicera
 
 - Publiceras `Lägg till {singular}` öppnar `confirmAddSourceDialog` ovanpå samma arbetsyta; ingen källvy navigeras fram innan användaren gjort sitt val.
