@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.105
+CCC-version: 2.10.106
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -29,6 +29,11 @@ ARBETSPRINCIPER
 - Swipe ska alltid utgå från `CCC_CORE.swipe`. Tröskel, fingerföljning, kantmotstånd, animationstid och easing ändras centralt. Modulunika värden kräver ett dokumenterat funktionsbehov.
 - Anpassa bild är känslofacit för direkt fingerföljning. Publiceras klippta, skuggfria sidlager är tekniskt facit för paginerade grids.
 - När en swipevy flyttas till Core ska äldre konkurrerande modulvärden rensas eller kopplas om, inte lämnas som parallell motor.
+- Publiceras arbetsyta ska behandlas som en generell Core-grund: verksamheten kan välja vilka verktyg som erbjuds och användaren kan välja vilka av de tillåtna verktygen som visas.
+- Core ska centralt kunna styra verktygens lägen: aktivt, inaktivt tills rätt objekt/underlag valts, behörighetslåst, kvotlåst eller helt dolt.
+- Behörighet och användningsgränser får aldrig vara enbart visuella. Core ska även kontrollera åtkomsten när verktyget anropas.
+- Låsta eller förbrukade verktyg bör normalt ligga kvar synliga med lås, begriplig förklaring och eventuell kvarvarande kvot, exempelvis `AI-sökning · 3 av 5 kvar`, i stället för att oförklarligt försvinna.
+- Verktygskonfiguration, roller, kvoter och eventuell framtida nivå-/betalmodell är arkitektur/backlog och ska inte byggas innan Publiceras grundflöde är stabilt.
 
 CHECKPOINTS
 -----------
@@ -67,6 +72,12 @@ v2.10.91 – Core Swipe 580 + färdiga mobilkort
 - Vision visar headerns tillbaka-pil i alla undervyer; endast modulens startvy saknar pil. Footer-Tillbaka finns kvar.
 - Slutkontrollens enkelbild får en symmetrisk Core-ram: 280 px bild och 14 px runt om.
 - Dashboard och modulstarter använder gemensam Core-tryckkänsla. Vy-/sidbyten väntar 140 ms; kamera och filväljare behåller direkt användaraktivering.
+
+v2.10.106 – blinkfri uppstart av Publiceras arbetsyta
+- Alla interna Publicera-vyer börjar dolda. En gemensam uppstartsgrind håller arbetsyta och footer osynliga tills lokala data är lästa och rätt ingång har valts.
+- Dashboard → Publicera visar därför inte längre den gamla välkomstvyn innan den nya arbetsytan öppnas.
+- Direktvägar från Vision/Express och fallbacken `?legacyStart=1` använder samma grind och visar endast sin avsedda slutvy.
+- Header och modulidentitet ligger stilla under den korta uppstarten. Rootens `/version.js` är fortsatt orörd.
 
 v2.10.105 – slutkontrollen som Publiceras arbetsstart
 - Publicera från Dashboard öppnar direkt den kompletta arbetsytan; den tidigare välkomstvyn finns kvar som testfallback via `?legacyStart=1`.
