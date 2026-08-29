@@ -1,6 +1,9 @@
 (() => {
   const entityTerm=(form="singular",cap=false)=>window.CCC_TERMINOLOGY?.label?.(form,cap)||
     ({singular:"objekt",plural:"objekt",definiteSingular:"objektet",definitePlural:"objekten"}[form]||"objekt");
+  const visionEntryParams=new URLSearchParams(window.location.search);
+  const publishAddMode=visionEntryParams.get("mode")==="publish-add";
+  const PUBLISH_ADD_STATE_KEY="ccc-publish-add-camera-state";
 
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -40,6 +43,19 @@
   let focusedTextScrollGuard = false;
   let focusedTextGuardFrame = 0;
   let publishNavigationPending = false;
+
+  function readPublishAddState(){
+    try{
+      const raw=sessionStorage.getItem(PUBLISH_ADD_STATE_KEY);
+      if(!raw)return null;
+      const value=JSON.parse(raw);
+      if(!value?.returnUrl||Date.now()-Number(value.createdAt||0)>15*60*1000){
+        sessionStorage.removeItem(PUBLISH_ADD_STATE_KEY);
+        return null;
+      }
+      return value;
+    }catch(_){return null;}
+  }
 
   let editorScrollLockY = 0;
   let editorScrollLocked = false;
@@ -756,6 +772,8 @@
     label.textContent = `${count} ${count === 1 ? "nytt foto" : "nya foton"}`;
     const express=$("#cameraExpressPublishBtn");
     if(express){
+      express.hidden=publishAddMode;
+      if(publishAddMode)return;
       express.disabled=count<1||publishNavigationPending;
       express.textContent=count===1
         ?`Expresspublicera 1 ${entityTerm("singular")}`
@@ -785,6 +803,7 @@
     $("#cameraReviewActions").hidden = true;
     $("#cameraOverlay").hidden = false;
     document.body.classList.add("camera-open");
+    document.documentElement.classList.remove("ccc-vision-publish-add-loading");
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" } }, audio: false });
       if (requestId !== cameraRequestId || $("#cameraOverlay").hidden) {
@@ -879,7 +898,14 @@
     document.body.classList.remove("camera-open");
   }
 
-  function closeCameraSafely() {
+  async function closeCameraSafely() {
+    if(publishAddMode){
+      if(stagedItem?.previewUrl)URL.revokeObjectURL(stagedItem.previewUrl);
+      stagedCameraFile=null;
+      stagedItem=null;
+      await returnToPublishFromCamera(false);
+      return;
+    }
     /* X betyder lämna kameran, inte kasta fotot som redan tagits. */
     const returnView = cameraReturnView;
     if (stagedItem) commitStagedItem();
@@ -896,10 +922,14 @@
     if (fallback) fallback.value = "";
   }
 
-  function cancelFallbackCamera() {
+  async function cancelFallbackCamera() {
     if (!cameraFallbackOpen) return;
     finishFallbackCamera();
     resetCaptureVisual();
+    if(publishAddMode){
+      await returnToPublishFromCamera(false);
+      return;
+    }
     if (cameraReturnView === "workspace" && batchItems.length) showWorkspace();
     else showVisionStart();
   }
@@ -964,6 +994,10 @@
 
   async function finishCameraSeries() {
     commitStagedItem();
+    if(publishAddMode){
+      await returnToPublishFromCamera(true);
+      return;
+    }
     closeCamera();
     resetCaptureVisual();
     updateBatchStrip();
@@ -1529,6 +1563,38 @@
       });
     } finally {
       db.close();
+    }
+  }
+
+  async function returnToPublishFromCamera(includeNewItems){
+    if(publishNavigationPending)return false;
+    const state=readPublishAddState();
+    publishNavigationPending=true;
+    const newItems=includeNewItems?batchItems.slice(cameraSessionStartCount):[];
+    try{
+      if(includeNewItems){
+        for(const item of newItems)await saveApprovedDraftLocally(item);
+      }
+      if(batchItems.length)await saveVisionSessionLocally();
+      const nextState={
+        ...(state||{}),
+        selectedIds:[...(state?.selectedIds||[])],
+        newIds:newItems.map(item=>item.id),
+        channelSelected:!!state?.channelSelected,
+        toolItemId:state?.toolItemId||"",
+        returnUrl:state?.returnUrl||new URL("../publish/index.html?from=vision-publish-add",window.location.href).href,
+        createdAt:Date.now()
+      };
+      sessionStorage.setItem(PUBLISH_ADD_STATE_KEY,JSON.stringify(nextState));
+      closeCamera();
+      window.location.assign(nextState.returnUrl);
+      return true;
+    }catch(error){
+      console.error("[CCC Vision] Kunde inte återgå till Publicera efter kameran",error);
+      publishNavigationPending=false;
+      document.documentElement.classList.remove("ccc-vision-publish-add-loading");
+      setMessage(`Kunde inte lägga till ${entityTerm("plural")} i Publicera. Bilderna finns kvar i Vision.`);
+      return false;
     }
   }
 
@@ -2711,6 +2777,18 @@ $("#price")?.addEventListener("click", openPriceEditor);
     let returnItemId="";
     try{returnItemId=sessionStorage.getItem("ccc-vision-return-edit-item")||"";}catch(_){}
     if(!returnItemId){
+      if(publishAddMode){
+        try{
+          await restoreSavedVisionSession({showAfterRestore:false});
+          await startCamera();
+        }catch(error){
+          console.error("[CCC Vision] Kunde inte öppna kameran från Publicera",error);
+          document.documentElement.classList.remove("ccc-vision-publish-add-loading");
+          showVisionStart();
+          setMessage("Kameran kunde inte öppnas. Försök igen.");
+        }
+        return;
+      }
       showVisionStart();
       return;
     }
