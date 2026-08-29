@@ -92,6 +92,7 @@ v2.10.88: Aktuell och inkommande gridsida klipps inom samma Core-swipeviewport i
 v2.10.89: Core-landningen efter släpp är lugnare. Slutkontrollen visar 1–6 objekt adaptivt utan tomma platshållare; 7+ använder stabil 3×2-paging med Core-swipe.
 v2.10.90: Core-landningen är 480 ms. Slutkontrollen får mer luft ovanför och under bilden utan att införa normal mobilscroll; korta skärmar använder mindre mellanrum.
 v2.10.91: Swipe landar på 580 ms och detalj-swipen använder Core fullt ut. Enkelbildens slutkontroll får en symmetrisk 14 px ram. Startkorten får Core-styrd tryckkänsla och 140 ms vyfördröjning.
+v2.10.107: Lägg till objekt öppnar Visions befintliga CCC-kamera i publish-add-läge. Klar sparar kameraomgångens nya objekt och återställer Publiceras tidigare grupp/kanal; X återgår utan staged-fotot. Publiceras gamla parallella filinput/importkod är borttagen.
 v2.10.106: Publiceras interna vyer börjar dolda och en gemensam uppstartsgrind visar först den färdigrenderade route-vyn. Dashboard-ingången blinkar därför inte längre förbi den gamla välkomstvyn; Vision/Express och legacy-fallback använder samma princip.
 v2.10.105: Slutkontrollen är Publiceras nya standardstart. Tomläget har Lägg till objekt/Välj utkast, huvudknappen kräver objekt, Historik är sekundär och gamla välkomstvyn finns kvar via `?legacyStart=1`.
 v2.10.104: Slutkontrollen kan lägga till nya objekt från mobilens kamera/bildval. Varje bild blir ett Vision-kompatibelt lokalt objekt och inkluderas direkt i aktuell publicering; terminologin styrs från Core.

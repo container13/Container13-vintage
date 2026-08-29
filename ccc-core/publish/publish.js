@@ -34,7 +34,6 @@ const PUBLICATION_HISTORY_KEY="ccc-publication-history-v1";
 let draftPage=0,draftGridGesture=null;
 let quickPublishReturnView=null;
 let confirmToolItemId=null,confirmToolReturn=false;
-let confirmAddPending=false;
 let workspaceStartMode=false;
 let channelPickerReturnsToWorkspace=false;
 let historyReturnsToWorkspace=false;
@@ -93,8 +92,6 @@ async function visionSessionDrafts(){
 }
 
 async function put(record){const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(STORE_NAME,"readwrite");tx.objectStore(STORE_NAME).put(record);tx.oncomplete=()=>{db.close();resolve();};tx.onerror=()=>{db.close();reject(tx.error);};});}
-async function putSourceFile(id,blob,metadata=null){const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(FILE_STORE,"readwrite");tx.objectStore(FILE_STORE).put({id,blob,metadata,createdAt:Date.now()});tx.oncomplete=()=>{db.close();resolve();};tx.onerror=()=>{db.close();reject(tx.error);};tx.onabort=()=>{db.close();reject(tx.error||new Error("Bildfilens sparning avbröts."));};});}
-async function putVisionSession(record){const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction("sessions","readwrite");tx.objectStore("sessions").put(record);tx.oncomplete=()=>{db.close();resolve();};tx.onerror=()=>{db.close();reject(tx.error);};tx.onabort=()=>{db.close();reject(tx.error||new Error("Vision-sessionens sparning avbröts."));};});}
 async function deleteDraftIds(ids){
   const wanted=new Set(ids);if(!wanted.size)return;
   const db=await openDb();
@@ -281,6 +278,8 @@ const directPrepareItemIds = (publishEntryParams.get("items")||directPrepareItem
   .split(",").map(value=>value.trim()).filter(Boolean);
 const directPrepareToolItemId = publishEntryParams.get("toolItem") || "";
 const directPrepareOrigin = publishEntryParams.get("from") || "";
+const publishAddCameraReturn = directPrepareOrigin === "vision-publish-add";
+const PUBLISH_ADD_STATE_KEY = "ccc-publish-add-camera-state";
 const directFromVisionEdit = directPrepareOrigin === "vision-edit" && !!directPrepareItemId;
 const directFromVisionExpress = directPrepareOrigin === "vision-camera-express" && directPrepareItemIds.length>0;
 let directPrepareBackGuard = directFromVisionEdit||directFromVisionExpress;
@@ -294,6 +293,19 @@ function finishDirectPrepareBootstrap(){
     return;
   }
   window.setTimeout(()=>{directPrepareBackGuard=false;},650);
+}
+
+function readPublishAddCameraState(){
+  try{
+    const raw=sessionStorage.getItem(PUBLISH_ADD_STATE_KEY);
+    if(!raw)return null;
+    const value=JSON.parse(raw);
+    if(!value||Date.now()-Number(value.createdAt||0)>15*60*1000){
+      sessionStorage.removeItem(PUBLISH_ADD_STATE_KEY);
+      return null;
+    }
+    return value;
+  }catch(_){return null;}
 }
 function setPublishHeader(view){
   const state={back:true,settings:true};
@@ -2264,98 +2276,19 @@ function syncConfirmAddObjectLabel(label=null){
   const text=button?.querySelector("span:last-child");
   if(!button||!text)return;
   text.textContent=label||`Lägg till ${entityTerm("singular")}`;
-  button.disabled=confirmAddPending;
 }
 
-async function createConfirmImportedObject(file,index){
-  const id=`${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
-  const createdAt=Date.now()+index;
-  const originalFileKey=`${id}:main`;
-  const item={
-    id,
-    cccItemId:createCccItemId(),
-    originalFileKey,
-    originalBlob:file,
-    originalName:file.name||`ccc-${id}.jpg`,
-    originalType:file.type||"image/jpeg",
-    createdAt,
-    source:"publish-confirm-add",
-    imageProcessingState:"original",
-    readyToPublish:true,
-    title:"",brand:"",size:"",price:"",description:"",fields:{},
-    publishBlob:null,publishUrl:"",cropData:null,thumbUrl:""
+$("#confirmAddObjectBtn")?.addEventListener("click",()=>{
+  const state={
+    selectedIds:[...channelSelectedIds],
+    channelSelected:container13ChannelSelected,
+    toolItemId:confirmToolItemId||"",
+    returnUrl:new URL("../publish/index.html?from=vision-publish-add",window.location.href).href,
+    createdAt:Date.now()
   };
-  item.imageMetadata=buildPublishMetadata(item);
-  await putSourceFile(originalFileKey,file,item.imageMetadata);
-  await put(persistenceRecord(item));
-  item.thumbUrl=await previewSrc(item);
-  return {
-    item,
-    sessionItem:{
-      id:item.id,
-      cccItemId:item.cccItemId,
-      originalFileKey,
-      extraFileKeys:[],
-      aiAnalyzedMain:false,
-      aiAnalyzedExtra:[],
-      demoKey:"arsenal",
-      approved:false,
-      editedFields:null,
-      visionReady:false,
-      visionResult:null,
-      analysisMode:"manual",
-      aiUsage:null,
-      aiModel:"",
-      aiCostUsd:0,
-      aiCostSek:0,
-      cropData:null
-    }
-  };
-}
-
-async function addObjectsFromConfirmation(fileList){
-  if(confirmAddPending)return;
-  const files=[...(fileList||[])].filter(file=>file?.type?.startsWith("image/"));
-  if(!files.length)return;
-  confirmAddPending=true;
-  syncConfirmAddObjectLabel(files.length===1?`Lägger till ${entityTerm("singular")}…`:`Lägger till ${files.length} ${entityTerm("plural")}…`);
-  try{
-    const created=[];
-    for(let index=0;index<files.length;index+=1)created.push(await createConfirmImportedObject(files[index],index));
-    const existing=await getLatestVisionSession();
-    const previousItems=Array.isArray(existing?.items)?existing.items:[];
-    const sessionItems=[...previousItems,...created.map(entry=>entry.sessionItem)];
-    await putVisionSession({
-      ...(existing||{}),
-      id:"vision-active",
-      schemaVersion:2,
-      savedAt:new Date().toISOString(),
-      currentIndex:Math.max(0,sessionItems.length-created.length),
-      count:sessionItems.length,
-      items:sessionItems
-    });
-    for(const {item} of created){
-      items.push(item);
-      channelSelectedIds.add(item.id);
-    }
-    updateStartCount();
-    await renderChannelConfirmation(false);
-    syncConfirmPublishAction();
-    $("#confirmStatus").textContent=created.length===1
-      ?`1 ${entityTerm("singular")} har lagts till.`
-      :`${created.length} ${entityTerm("plural")} har lagts till.`;
-  }catch(error){
-    console.error("[CCC Publicera] Kunde inte lägga till objekt i slutkontrollen",error);
-    $("#confirmStatus").textContent=`Kunde inte lägga till ${entityTerm("plural")}. Försök igen.`;
-  }finally{
-    confirmAddPending=false;
-    const input=$("#confirmAddObjectInput");if(input)input.value="";
-    syncConfirmAddObjectLabel();
-  }
-}
-
-$("#confirmAddObjectBtn")?.addEventListener("click",()=>$("#confirmAddObjectInput")?.click());
-$("#confirmAddObjectInput")?.addEventListener("change",event=>addObjectsFromConfirmation(event.target.files));
+  try{sessionStorage.setItem(PUBLISH_ADD_STATE_KEY,JSON.stringify(state));}catch(_){ }
+  window.location.assign("../vision/index.html?mode=publish-add");
+});
 document.addEventListener("ccc:terminologychange",()=>syncConfirmAddObjectLabel());
 
 $("#confirmChooseDraftsBtn")?.addEventListener("click",async()=>{
@@ -2735,11 +2668,27 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
       requestAnimationFrame(()=>requestAnimationFrame(finishDirectPrepareBootstrap));
     }else{
       workspaceStartMode=true;
+      const cameraState=publishAddCameraReturn?readPublishAddCameraState():null;
       channelSelectedIds.clear();
-      container13ChannelSelected=false;
-      confirmToolItemId=null;
+      if(cameraState){
+        [...(cameraState.selectedIds||[]),...(cameraState.newIds||[])]
+          .filter(id=>itemIndexById(id)>=0)
+          .forEach(id=>channelSelectedIds.add(id));
+        container13ChannelSelected=!!cameraState.channelSelected;
+        confirmToolItemId=itemIndexById(cameraState.toolItemId)>=0?cameraState.toolItemId:null;
+      }else{
+        container13ChannelSelected=false;
+        confirmToolItemId=null;
+      }
       await renderChannelConfirmation();
       show("channelConfirmView");
+      if(cameraState){
+        const added=Array.isArray(cameraState.newIds)?cameraState.newIds.length:0;
+        if(added)$("#confirmStatus").textContent=added===1
+          ?`1 ${entityTerm("singular")} har lagts till.`
+          :`${added} ${entityTerm("plural")} har lagts till.`;
+        try{sessionStorage.removeItem(PUBLISH_ADD_STATE_KEY);}catch(_){ }
+      }
       requestAnimationFrame(()=>requestAnimationFrame(finishDirectPrepareBootstrap));
     }
   }
