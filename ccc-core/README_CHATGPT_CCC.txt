@@ -2278,6 +2278,15 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Slutkontrollens enkelbild använder en 308 px Core-viewport med 14 px symmetrisk ram runt 280 px bild.
 - `CCC_CORE.press` ger Dashboard och modulstarter en fysisk intryckt status. Endast säkra vy-/sidbyten fördröjs 140 ms; kamera-/filväljare fördröjs aldrig.
 
+## v2.10.108 – Vision-källval från Publiceras Lägg till
+
+- `?mode=publish-add` visar en särskild Vision-källvy i stället för att autoöppna kameran.
+- Källvyn återanvänder de befintliga Vision-korten och erbjuder `Ta ett foto` samt `Från album`; resumekortet är dolt i detta läge.
+- Albumvalet använder Visions befintliga `galleryInput`, accepterar flera bilder och skickar endast den aktuella importomgångens nya ID:n tillbaka till Publicera.
+- Kameran, native-kamerafallbacken och albumimporten använder samma `returnToPublishFromCamera()` och återställer Publiceras tidigare grupp, kanal och verktygsmarkering.
+- Header-Back från källvyn återgår utan nya objekt. `Välj utkast` är fortsatt ett separat val för redan lokalt sparade CCC-objekt.
+- Rootens `/version.js` är orörd.
+
 ## v2.10.107 – Publicera återanvänder Visions CCC-kamera
 
 - Publiceras `Lägg till {singular}` navigerar till Vision med `?mode=publish-add` i stället för att öppna en egen `<input type=file>`.
