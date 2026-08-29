@@ -2278,6 +2278,11 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Slutkontrollens enkelbild använder en 308 px Core-viewport med 14 px symmetrisk ram runt 280 px bild.
 - `CCC_CORE.press` ger Dashboard och modulstarter en fysisk intryckt status. Endast säkra vy-/sidbyten fördröjs 140 ms; kamera-/filväljare fördröjs aldrig.
 
+## v2.10.112 – direkta Foto/Bilder/Utkast-val
+- Publiceras extra källpopup är borttagen tillsammans med dess CSS- och JS-kedja.
+- Tre jämnbreda knappar visas direkt: `Foto`, `Bilder`, `Utkast`.
+- Foto använder CCC-kameran; Bilder använder enhetens systemval; Utkast behåller befintlig utkastväljare.
+
 ## v2.10.111 – plattformsneutralt enhetsval
 - Publiceras gröna källval heter `Välj från enheten` och förklaras med `Bildbibliotek eller filer`.
 - CCC:s kamera är fortsatt ett eget val. v2.10.110 ersätts och ska hoppas över.
