@@ -38,6 +38,9 @@ let confirmAddPending=false;
 let workspaceStartMode=false;
 let channelPickerReturnsToWorkspace=false;
 let historyReturnsToWorkspace=false;
+let channelTargetsReturnView="startView";
+let cropBackView="gridView";
+let publishBackPending=false;
 let draftPreviewGesture=null,draftPreviewSuppressClick=false;
 let cropImage=null,cropState=null,pointer=null;
 let activeItemId=null;
@@ -287,6 +290,26 @@ const directFromVisionEdit = directPrepareOrigin === "vision-edit" && !!directPr
 const directFromVisionExpress = directPrepareOrigin === "vision-camera-express" && directPrepareItemIds.length>0;
 let directPrepareBackGuard = directFromVisionEdit||directFromVisionExpress;
 let currentPublishView="startView";
+const PUBLISH_SETTINGS_RETURN_KEY="ccc-publish-settings-return";
+
+function rememberPublishSettingsReturn(){
+  try{sessionStorage.setItem(PUBLISH_SETTINGS_RETURN_KEY,JSON.stringify({
+    createdAt:Date.now(),view:currentPublishView,activeItemId,activeIndex,
+    selectedIds:[...channelSelectedIds],confirmToolItemId,container13ChannelSelected,
+    workspaceStartMode,channelPickerReturnsToWorkspace,historyReturnsToWorkspace,
+    channelTargetsReturnView,cropBackView,confirmToolReturn,quickPublishReturnView,
+    draftSelectionMode,selectedDraftIds:[...selectedDraftIds],draftPage,channelSelectPage,confirmPage
+  }));}catch(_){ }
+}
+function takePublishSettingsReturn(){
+  if(new URLSearchParams(window.location.search).get("settingsReturn")!=="1")return null;
+  try{
+    const raw=sessionStorage.getItem(PUBLISH_SETTINGS_RETURN_KEY);
+    sessionStorage.removeItem(PUBLISH_SETTINGS_RETURN_KEY);
+    const state=raw?JSON.parse(raw):null;
+    return state&&Date.now()-Number(state.createdAt||0)<15*60*1000?state:null;
+  }catch(_){return null;}
+}
 
 function finishDirectPrepareBootstrap(){
   document.documentElement.classList.remove("ccc-publish-booting");
@@ -1349,6 +1372,7 @@ $("#preparedContinueBtn")?.addEventListener("click",()=>{
   c13?.setAttribute("aria-pressed","false");
   const next=$("#channelNextBtn");
   if(next)next.disabled=true;
+  channelTargetsReturnView="gridView";
   show("channelTargetsView");
 });
 
@@ -1361,6 +1385,7 @@ $("#channelBtn").addEventListener("click",()=>{
   c13?.setAttribute("aria-pressed","false");
   const next=$("#channelNextBtn");
   if(next)next.disabled=true;
+  channelTargetsReturnView="startView";
   show("channelTargetsView");
 });
 function firestoreTime(value){
@@ -1753,7 +1778,11 @@ function cycleCropZoom(){
   setCropZoom(z<1.15?1.30:z<1.55?1.80:1);
 }
 
-async function openCrop(){
+async function openCrop({preserveBack=false}={}){
+  if(!preserveBack){
+    if(currentPublishView==="detailView")cropBackView="detailView";
+    else if(currentPublishView==="channelConfirmView")cropBackView="channelConfirmView";
+  }
   syncActiveIndexFromId();
   const item=activeItem();
   if(!item)return;
@@ -2709,6 +2738,7 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
 
 
 (async()=>{try{
+  const settingsReturn=takePublishSettingsReturn();
   const allLocalRecords=await getAll();
   const archivedIds=new Set(allLocalRecords.filter(r=>r.readyToPublish===false).map(r=>r.id));
   let explicit=allLocalRecords.filter(r=>r.readyToPublish!==false);
@@ -2735,6 +2765,44 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
     item.thumbUrl=await previewSrc(item);
     if(index===0)preloadNeighbors(0);
   }));
+  if(settingsReturn){
+    await previewsReady;
+    await renderGrid();
+    activeItemId=settingsReturn.activeItemId&&itemIndexById(settingsReturn.activeItemId)>=0?settingsReturn.activeItemId:null;
+    activeIndex=activeItemId?itemIndexById(activeItemId):Math.max(0,Math.min(Number(settingsReturn.activeIndex||0),Math.max(0,items.length-1)));
+    channelSelectedIds.clear();
+    (settingsReturn.selectedIds||[]).filter(id=>itemIndexById(id)>=0).forEach(id=>channelSelectedIds.add(id));
+    confirmToolItemId=itemIndexById(settingsReturn.confirmToolItemId)>=0?settingsReturn.confirmToolItemId:null;
+    container13ChannelSelected=!!settingsReturn.container13ChannelSelected;
+    workspaceStartMode=!!settingsReturn.workspaceStartMode;
+    channelPickerReturnsToWorkspace=!!settingsReturn.channelPickerReturnsToWorkspace;
+    historyReturnsToWorkspace=!!settingsReturn.historyReturnsToWorkspace;
+    channelTargetsReturnView=settingsReturn.channelTargetsReturnView||"startView";
+    cropBackView=settingsReturn.cropBackView||"gridView";
+    confirmToolReturn=!!settingsReturn.confirmToolReturn;
+    quickPublishReturnView=settingsReturn.quickPublishReturnView||null;
+    draftPage=Math.max(0,Number(settingsReturn.draftPage||0));
+    channelSelectPage=Math.max(0,Number(settingsReturn.channelSelectPage||0));
+    confirmPage=Math.max(0,Number(settingsReturn.confirmPage||0));
+    selectedDraftIds.clear();
+    (settingsReturn.selectedDraftIds||[]).filter(id=>itemIndexById(id)>=0).forEach(id=>selectedDraftIds.add(id));
+    if(settingsReturn.view==="detailView"&&items.length)openDetail(activeIndex);
+    else if(settingsReturn.view==="cropView"&&items.length){openDetail(activeIndex);await openCrop();}
+    else if(settingsReturn.view==="channelConfirmView"){await renderChannelConfirmation(false);show("channelConfirmView");}
+    else if(settingsReturn.view==="channelView"){await renderChannelSelection();show("channelView");}
+    else if(settingsReturn.view==="channelTargetsView")show("channelTargetsView");
+    else if(settingsReturn.view==="publishedView"){
+      publishedSelectedIds.clear();updatePublishedSelectionBar();show("publishedView");
+      selectPublishedTab("live");renderPublicationHistory();await loadPublishedView();
+    }
+    else if(settingsReturn.view==="gridView"){
+      show("gridView");
+      if(settingsReturn.draftSelectionMode){draftSelectionMode=true;await renderGrid();updateSelectionFooter();}
+    }
+    else show("startView");
+    requestAnimationFrame(()=>requestAnimationFrame(finishDirectPrepareBootstrap));
+    return;
+  }
   if(directPrepareView && directPrepareItemIds.some(id=>itemIndexById(id)>=0)){
     await openDirectVisionConfirmation(directPrepareItemIds);
     requestAnimationFrame(()=>requestAnimationFrame(finishDirectPrepareBootstrap));
@@ -2825,8 +2893,21 @@ $("#deleteDraftDialog")?.addEventListener("click",e=>{if(e.target===$("#deleteDr
 $("#closePublishHelp")?.addEventListener("click",closePublishHelp);
 $("#publishHelpDialog")?.addEventListener("click",e=>{if(e.target===$("#publishHelpDialog"))closePublishHelp();});
 
-document.addEventListener("ccc:header-back",async()=>{
+async function goBackFromPublish(){
   if(directPrepareBackGuard)return;
+  const logoutDialog=$("#logoutDialog");
+  if(logoutDialog && !logoutDialog.hidden){logoutDialog.hidden=true;return;}
+  const helpDialog=$("#publishHelpDialog");
+  if(helpDialog && !helpDialog.hidden){closePublishHelp();return;}
+  const deleteDialog=$("#deleteDraftDialog");
+  if(deleteDialog && !deleteDialog.hidden){$("#cancelDeleteDrafts")?.click();return;}
+  const displayEditor=$("#confirmDisplayEditor");
+  if(currentPublishView==="channelConfirmView"&&displayEditor&&!displayEditor.hidden){
+    displayEditor.hidden=true;
+    const button=$("#confirmDisplayEditBtn");
+    if(button)button.textContent="Ändra";
+    return;
+  }
   if(currentPublishView==="gridView"&&draftSelectionMode){exitDraftSelection();return;}
   if(currentPublishView==="startView"){
     window.location.href="../dashboard/index.html";
@@ -2843,7 +2924,7 @@ document.addEventListener("ccc:header-back",async()=>{
     }
     if(quickPublishReturnView==="cropView"){
       quickPublishReturnView=null;
-      await openCrop();
+      await openCrop({preserveBack:true});
       return;
     }
     if(quickPublishReturnView==="detailView"){
@@ -2869,7 +2950,8 @@ document.addEventListener("ccc:header-back",async()=>{
     return;
   }
   if(currentPublishView==="channelTargetsView"){
-    show("startView");
+    if(channelTargetsReturnView==="gridView"){await renderGrid();show("gridView");}
+    else show("startView");
     return;
   }
   if(currentPublishView==="publishedView"&&(historyReturnsToWorkspace||workspaceStartMode)){
@@ -2910,12 +2992,32 @@ document.addEventListener("ccc:header-back",async()=>{
       await openDetailById(directPrepareItemId);
       return;
     }
+    cropImage=null;
+    cropState=null;
+    pointer=null;
+    if(cropBackView==="detailView"){openDetail(activeIndex);return;}
+    if(cropBackView==="channelConfirmView"){
+      await renderChannelConfirmation(false);
+      show("channelConfirmView");
+      return;
+    }
     await leavePublishCrop();
     return;
   }
+}
+document.addEventListener("ccc:header-back",async()=>{
+  if(publishBackPending)return;
+  publishBackPending=true;
+  try{await goBackFromPublish();}
+  finally{publishBackPending=false;}
 });
 document.addEventListener("ccc:header-settings",()=>{
-  window.location.href="../settings/index.html?module=publish";
+  rememberPublishSettingsReturn();
+  const target=new URL("../settings/index.html",window.location.href);
+  target.searchParams.set("module","publish");
+  target.searchParams.set("return","1");
+  target.searchParams.set("source",window.location.search);
+  window.location.href=target.href;
 });
 document.addEventListener("ccc:core-ready",()=>{
   setPublishHeader(currentPublishView);
