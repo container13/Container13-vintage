@@ -2278,6 +2278,11 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Slutkontrollens enkelbild använder en 308 px Core-viewport med 14 px symmetrisk ram runt 280 px bild.
 - `CCC_CORE.press` ger Dashboard och modulstarter en fysisk intryckt status. Endast säkra vy-/sidbyten fördröjs 140 ms; kamera-/filväljare fördröjs aldrig.
 
+## v2.10.115 – kontextuell stor Klar och gemensam säker sparretur
+- I Publicera-returläget blir editkortets stora gula primärknapp `Klar`, medan footerns lilla framåtknapp inte renderas.
+- Klar och både header-/footer-Tillbaka går genom `returnToPublishConfirmation()`, som nu kräver lyckad autosparning och sessionssparning innan navigation.
+- Vid sparfel lämnas Granska & komplettera inte. Vanligt Vision-läge behåller `Nästa objekt` och footeråtgärden `Publicera`.
+
 ## v2.10.114 – stabil returmarkering mellan Publicera och Vision
 - Returens `toolItem` appliceras efter att slutkontrollen renderats, så samma objekt förblir centrerat och gulmarkerat med aktiva verktyg.
 - Markeringsramen använder fasta kortmått utan positionsförskjutning.
