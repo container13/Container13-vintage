@@ -256,14 +256,21 @@
     const footer=window.CCC_CORE?.footer;
     if(footer){
       if(visionView==="edit"){
+        const returningToPublish=!!publishConfirmReturn();
         footer.setTools({
           help:true,
           onHelp:()=>{const d=$("#visionContextHelpDialog");if(d)d.hidden=false;},
           forward:true,
-          forwardLabel:"Publicera",
+          forwardLabel:returningToPublish?"Klar":"Publicera",
           forwardIcon:"→",
           onForward:openPublishFromEdit
         });
+        const forward=document.querySelector(".ccc-core-footer-forward");
+        if(forward){
+          const action=returningToPublish?"Klar, tillbaka till Publicera":"Publicera";
+          forward.setAttribute("aria-label",action);
+          forward.title=action;
+        }
       }else if(visionView==="workspace"){
         footer.setTools({
           help:true,
