@@ -170,8 +170,8 @@
     if(!target)return false;
     clearTimeout(saveTimer);
     autosaveSequence+=1;
-    if(hasEditChanges())await flushAutosave();
-    await queueVisionSessionSave();
+    if(hasEditChanges()&&!(await flushAutosave()))return false;
+    if((await queueVisionSessionSave())===false)return false;
     saveBatchMetadata();
     try{
       sessionStorage.removeItem("ccc-vision-return-publish-confirm");
@@ -246,6 +246,21 @@
     }
   }
 
+  async function handleEditorPrimaryAction(){
+    if(!publishConfirmReturn())return saveEditedAndNext();
+    if(publishNavigationPending)return false;
+    publishNavigationPending=true;
+    const button=$("#previewBtn");
+    if(button)button.disabled=true;
+    const returned=await returnToPublishConfirmation();
+    if(!returned){
+      publishNavigationPending=false;
+      if(button)button.disabled=false;
+      setMessage("Ändringarna kunde inte sparas. Du är kvar i Granska & komplettera.");
+    }
+    return returned;
+  }
+
   function updateHeaderContext() {
     /* Startvyn är modulens ingång. Alla djupare Vision-vyer visar både
        headerpil och den tumvänliga footerknappen för samma bakåtsteg. */
@@ -257,20 +272,16 @@
     if(footer){
       if(visionView==="edit"){
         const returningToPublish=!!publishConfirmReturn();
+        const primary=$("#previewBtn");
+        if(primary)primary.textContent=returningToPublish?"Klar":"Nästa objekt";
         footer.setTools({
           help:true,
           onHelp:()=>{const d=$("#visionContextHelpDialog");if(d)d.hidden=false;},
-          forward:true,
-          forwardLabel:returningToPublish?"Klar":"Publicera",
+          forward:!returningToPublish,
+          forwardLabel:"Publicera",
           forwardIcon:"→",
           onForward:openPublishFromEdit
         });
-        const forward=document.querySelector(".ccc-core-footer-forward");
-        if(forward){
-          const action=returningToPublish?"Klar, tillbaka till Publicera":"Publicera";
-          forward.setAttribute("aria-label",action);
-          forward.title=action;
-        }
       }else if(visionView==="workspace"){
         footer.setTools({
           help:true,
@@ -2525,7 +2536,11 @@
     }
     switch (visionView) {
       case "edit": {
-        if(await returnToPublishConfirmation())return;
+        if(publishConfirmReturn()){
+          if(await returnToPublishConfirmation())return;
+          setMessage("Ändringarna kunde inte sparas. Du är kvar i Granska & komplettera.");
+          return;
+        }
         if (!hasEditChanges()) {
           clearTimeout(saveTimer);
           autosaveSequence += 1;
@@ -2717,7 +2732,7 @@
   $("#editNextObjectBtn")?.addEventListener("click", () => navigateEditObject(1));
   $("#undoTrashBtn").addEventListener("click", undoTrash);
   $("#backToSuggestionBtn")?.addEventListener("click", saveEditedAndBack);
-  $("#previewBtn").addEventListener("click", saveEditedAndNext);
+  $("#previewBtn").addEventListener("click", handleEditorPrimaryAction);
   $("#newSeriesBtn").addEventListener("click", newSeries);
   $("#publishReadyBtn")?.addEventListener("click", () => {
     saveBatchMetadata();
