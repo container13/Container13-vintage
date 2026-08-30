@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.114
+CCC-version: 2.10.116
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -32,6 +32,7 @@ ARBETSPRINCIPER
 - Publiceras arbetsyta ska behandlas som en generell Core-grund: verksamheten kan välja vilka verktyg som erbjuds och användaren kan välja vilka av de tillåtna verktygen som visas.
 - Core ska centralt kunna styra verktygens lägen: aktivt, inaktivt tills rätt objekt/underlag valts, behörighetslåst, kvotlåst eller helt dolt.
 - Behörighet och användningsgränser får aldrig vara enbart visuella. Core ska även kontrollera åtkomsten när verktyget anropas.
+- Tillbaka är ett Core-event men varje modul ansvarar för ett uttryckligt, förbrukningsbart ursprung: stäng först översta dialogen, återställ sedan exakt föregående vy/objekt/markering och låt modulstart lämna till Dashboard. Returdata får inte staplas så att användaren kan fastna i en loop.
 - Låsta eller förbrukade verktyg bör normalt ligga kvar synliga med lås, begriplig förklaring och eventuell kvarvarande kvot, exempelvis `AI-sökning · 3 av 5 kvar`, i stället för att oförklarligt försvinna.
 - Verktygskonfiguration, roller, kvoter och eventuell framtida nivå-/betalmodell är arkitektur/backlog och ska inte byggas innan Publiceras grundflöde är stabilt.
 
@@ -45,6 +46,13 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.116 – sammanhållen och loopfri Tillbaka-navigation
+- Vision återgår från Granska & komplettera till den vy som faktiskt öppnade redigeringen: objektöversikt, AI-förslag eller färdiglista.
+- Publicera återgår från Anpassa bild till bilddetaljen och från kanalval till rätt startpunkt, exempelvis utkastlistan.
+- Inställningar bevarar och återställer aktuell modulvy, aktivt objekt, markeringar och relevanta arbetsval via en tidsbegränsad engångsretur.
+- Öppna hjälp-, raderings-, visnings- och utloggningsdialoger stängs före underliggande navigation.
+- Returkontext förbrukas vid användning och modulstart leder alltid till Dashboard, så navigationen kan inte fastna i en fram-och-tillbaka-loop.
+
 v2.10.88 – Core Swipe v2 + direkt slutkontroll
 - Core-profilen skiljer nu på tidig rörelsestart och godkänt sidbyte: nästa sida börjar följa efter 12 px, men byte kräver 24 % av ytan och minst 72 px.
 - Publiceras aktuella och inkommande grid ligger i samma Core-skapade `ccc-swipe-viewport` med `overflow:hidden`, rundning och egen bakgrund. Det gamla helskärmslagret under `body` används inte längre.
@@ -72,6 +80,11 @@ v2.10.91 – Core Swipe 580 + färdiga mobilkort
 - Vision visar headerns tillbaka-pil i alla undervyer; endast modulens startvy saknar pil. Footer-Tillbaka finns kvar.
 - Slutkontrollens enkelbild får en symmetrisk Core-ram: 280 px bild och 14 px runt om.
 - Dashboard och modulstarter använder gemensam Core-tryckkänsla. Vy-/sidbyten väntar 140 ms; kamera och filväljare behåller direkt användaraktivering.
+
+v2.10.115 – stor Klar-knapp och säker retur från Vision
+- När `Granska & komplettera` öppnats från Publicera blir den stora gula `Nästa objekt`-knappen `Klar`.
+- Den lilla Klar-knappen tas bort ur footern i detta läge; vanligt Vision-flöde är oförändrat.
+- Både Klar och Tillbaka inväntar fält- och sessionssparning före retur. Vid sparfel stannar användaren kvar.
 
 v2.10.114 – bevarad markering efter Vision-granskning
 - Publicera återställer samma gulmarkerade objekt efter `Granska & komplettera`.
