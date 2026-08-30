@@ -173,8 +173,21 @@
   }
 
   document.addEventListener("ccc:header-back",()=>{
-    if(moduleName==="publish")window.location.href="../publish/index.html";
-    else if(moduleName==="vision")window.location.href="../vision/index.html";
-    else window.location.href="../dashboard/index.html";
+    const logoutDialog=document.getElementById("logoutDialog");
+    if(logoutDialog&&!logoutDialog.hidden){logoutDialog.hidden=true;return;}
+    const clearDialog=document.getElementById("visionClearKnowledgeDialog");
+    if(clearDialog&&!clearDialog.hidden){clearDialog.hidden=true;return;}
+    const returnToPrevious=params.get("return")==="1";
+    if(moduleName==="publish"||moduleName==="vision"){
+      const target=new URL(`../${moduleName}/index.html`,window.location.href);
+      if(returnToPrevious){
+        const source=new URLSearchParams(params.get("source")||"");
+        source.forEach((value,key)=>target.searchParams.set(key,value));
+        target.searchParams.set("settingsReturn","1");
+      }
+      window.location.href=target.href;
+      return;
+    }
+    window.location.href="../dashboard/index.html";
   });
 })();
