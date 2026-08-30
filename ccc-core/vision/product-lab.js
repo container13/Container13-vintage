@@ -5,6 +5,7 @@
   const publishAddMode=visionEntryParams.get("mode")==="publish-add";
   const publishAddSource=visionEntryParams.get("source")||"";
   const PUBLISH_ADD_STATE_KEY="ccc-publish-add-camera-state";
+  const VISION_SETTINGS_RETURN_KEY="ccc-vision-settings-return";
 
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -44,6 +45,25 @@
   let focusedTextScrollGuard = false;
   let focusedTextGuardFrame = 0;
   let publishNavigationPending = false;
+  let visionBackPending = false;
+
+  function rememberVisionSettingsReturn(){
+    const item=currentItem();
+    try{sessionStorage.setItem(VISION_SETTINGS_RETURN_KEY,JSON.stringify({
+      createdAt:Date.now(),view:visionView,itemId:item?.id||"",index:currentIndex,
+      workspacePage,editReturnView,cropReturnView
+    }));}catch(_){ }
+  }
+
+  function takeVisionSettingsReturn(){
+    if(visionEntryParams.get("settingsReturn")!=="1")return null;
+    try{
+      const raw=sessionStorage.getItem(VISION_SETTINGS_RETURN_KEY);
+      sessionStorage.removeItem(VISION_SETTINGS_RETURN_KEY);
+      const state=raw?JSON.parse(raw):null;
+      return state&&Date.now()-Number(state.createdAt||0)<15*60*1000?state:null;
+    }catch(_){return null;}
+  }
 
   function readPublishAddState(){
     try{
@@ -1767,6 +1787,12 @@
     return editStructuralDirty || (!!editBaseline && formSnapshot() !== editBaseline);
   }
 
+  function returnFromEditToOrigin(){
+    if(editReturnView==="done")finishBatch();
+    else if(editReturnView==="suggestion")openReview(currentIndex);
+    else showWorkspace();
+  }
+
   function editCurrent(allowWhileAnalyzing = false) {
     stopFocusedTextGuard();
     document.documentElement.classList.remove("ccc-focused-price-mode");
@@ -1856,8 +1882,7 @@
     if (!hasEditChanges()) {
       clearTimeout(saveTimer);
       autosaveSequence += 1;
-      editReturnView = "workspace";
-      showWorkspace();
+      returnFromEditToOrigin();
       return;
     }
 
@@ -1869,8 +1894,7 @@
 
     /* Navigation väntar inte på IndexedDB.
        Vision behåller originalbilden; slutlig bildbearbetning hör hemma i Publicera. */
-    editReturnView = "workspace";
-    showWorkspace();
+    returnFromEditToOrigin();
 
     /* Spara original + metadata med samma item.id i bakgrunden.
        put() uppdaterar befintlig post; ingen WebP skapas i Vision. */
@@ -2513,6 +2537,8 @@
   }
 
   async function goBackFromVision() {
+    const logoutDialog=$("#logoutDialog");
+    if(logoutDialog && !logoutDialog.hidden){logoutDialog.hidden=true;return;}
     const workspaceHelp=$("#visionWorkspaceHelpDialog");
     if(workspaceHelp && !workspaceHelp.hidden){workspaceHelp.hidden=true;return;}
     const contextHelp=$("#visionContextHelpDialog");
@@ -2544,11 +2570,11 @@
         if (!hasEditChanges()) {
           clearTimeout(saveTimer);
           autosaveSequence += 1;
-          showWorkspace();
+          returnFromEditToOrigin();
           return;
         }
         const saved = await flushAutosave();
-        showWorkspace();
+        returnFromEditToOrigin();
         if (!saved) {
           console.warn("[CCC Vision] Redigeringen kunde inte sparas, men navigation bakåt tillåts.");
         }
@@ -2581,8 +2607,22 @@
     }
   }
 
+  async function runVisionBackOnce(){
+    if(visionBackPending)return;
+    visionBackPending=true;
+    try{await goBackFromVision();}
+    finally{visionBackPending=false;}
+  }
+
   $("#visionStartBackBtn")?.addEventListener("click", () => window.location.assign("../dashboard/index.html?v=2.8.4"));
-  document.addEventListener("ccc:header-settings",()=>{ window.location.href="../settings/index.html?module=vision"; });
+  document.addEventListener("ccc:header-settings",()=>{
+    rememberVisionSettingsReturn();
+    const target=new URL("../settings/index.html",window.location.href);
+    target.searchParams.set("module","vision");
+    target.searchParams.set("return","1");
+    target.searchParams.set("source",window.location.search);
+    window.location.href=target.href;
+  });
   $("#visionSettingsCloseBtn")?.addEventListener("click", () => setVisionSettingsOpen(false));
 
   async function renderKnowledgeList() {
@@ -2625,8 +2665,8 @@
   // Kamera / fotograferingsflöde
   $("#startCameraBtn").addEventListener("click", startCamera);
   $("#galleryBtn").addEventListener("click", () => $("#galleryInput").click());
-  document.addEventListener("ccc:header-back",goBackFromVision);
-  $("#reviewBackBtn")?.addEventListener("click", () => showWorkspace());
+  document.addEventListener("ccc:header-back",runVisionBackOnce);
+  $("#reviewBackBtn")?.addEventListener("click", runVisionBackOnce);
   $("#resumeSessionBtn")?.addEventListener("click", async () => {
     if (batchItems.length) showWorkspace();
     else {
@@ -2825,9 +2865,26 @@ $("#price")?.addEventListener("click", openPriceEditor);
   installCameraPinchZoom();
 
   (async()=>{
+    const settingsReturn=takeVisionSettingsReturn();
     let returnItemId="";
     try{returnItemId=sessionStorage.getItem("ccc-vision-return-edit-item")||"";}catch(_){}
     if(!returnItemId){
+      if(settingsReturn){
+        try{
+          await restoreSavedVisionSession({showAfterRestore:false});
+          const byId=settingsReturn.itemId?batchItems.findIndex(item=>String(item.id)===String(settingsReturn.itemId)):-1;
+          currentIndex=byId>=0?byId:Math.max(0,Math.min(Number(settingsReturn.index||0),Math.max(0,batchItems.length-1)));
+          workspacePage=Math.max(0,Number(settingsReturn.workspacePage||0));
+          editReturnView=settingsReturn.editReturnView||"workspace";
+          cropReturnView=settingsReturn.cropReturnView||"suggestion";
+          if(settingsReturn.view==="edit"&&batchItems.length){populateFormFromItem(true);showStage("editCard","edit");}
+          else if(settingsReturn.view==="suggestion"&&batchItems.length)await openReview(currentIndex);
+          else if(settingsReturn.view==="done"&&batchItems.length)finishBatch();
+          else if(settingsReturn.view==="workspace"&&batchItems.length)showWorkspace();
+          else showVisionStart();
+        }catch(error){console.warn("[CCC Vision] Kunde inte återställa vyn efter Inställningar",error);showVisionStart();}
+        return;
+      }
       if(publishAddMode){
         try{
           await restoreSavedVisionSession({showAfterRestore:false});
