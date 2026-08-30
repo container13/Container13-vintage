@@ -92,6 +92,7 @@ v2.10.88: Aktuell och inkommande gridsida klipps inom samma Core-swipeviewport i
 v2.10.89: Core-landningen efter släpp är lugnare. Slutkontrollen visar 1–6 objekt adaptivt utan tomma platshållare; 7+ använder stabil 3×2-paging med Core-swipe.
 v2.10.90: Core-landningen är 480 ms. Slutkontrollen får mer luft ovanför och under bilden utan att införa normal mobilscroll; korta skärmar använder mindre mellanrum.
 v2.10.91: Swipe landar på 580 ms och detalj-swipen använder Core fullt ut. Enkelbildens slutkontroll får en symmetrisk 14 px ram. Startkorten får Core-styrd tryckkänsla och 140 ms vyfördröjning.
+v2.10.114: Retur från Vision `Granska & komplettera` återställer samma markerade objekt efter renderingen. Kortet ligger kvar centrerat med gul ram och aktiva verktyg; markering förändrar inte geometrin.
 v2.10.113: `Foto`, `Bilder` och `Utkast` ligger som en kompakt trekolumnsrad direkt under modulheadern. Mindre ikoner och svagare glöd gör raden sekundär till objektverktygen.
 v2.10.112: Den extra källpopupen är borttagen. Direkt i arbetsvyn finns tre jämnbreda knappar: `Foto` till CCC-kameran, `Bilder` till enhetens systemval och `Utkast` till befintliga lokala utkast.
 v2.10.111: Källmenyn skiljer på `Ta foto med CCC` och det plattformsneutrala `Välj från enheten`. Undertext: `Bildbibliotek eller filer`. v2.10.110 ska hoppas över.

@@ -2433,7 +2433,7 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
 #channelConfirmView #confirmGrid.confirm-object-strip .confirm-card.is-tool-selected{
   border-color:var(--gold,#e0b14b)!important;
   box-shadow:0 0 0 2px rgba(224,177,75,.20),0 0 16px rgba(224,177,75,.22)!important;
-  transform:translateY(-1px);
+  transform:none!important;
 }
 #channelConfirmView #confirmGrid.confirm-object-strip .confirm-card img{
   width:100%!important;

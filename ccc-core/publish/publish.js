@@ -796,10 +796,17 @@ async function openDirectVisionConfirmation(itemIds){
   selected.forEach(id=>channelSelectedIds.add(id));
   channelSelectPage=0;
   confirmPage=0;
+  const restoredToolItemId=directPrepareToolItemId&&selected.includes(directPrepareToolItemId)
+    ?directPrepareToolItemId
+    :null;
   confirmToolItemId=null;
   confirmToolReturn=false;
   container13ChannelSelected=false;
   await renderChannelConfirmation();
+  if(restoredToolItemId){
+    confirmToolItemId=restoredToolItemId;
+    syncConfirmToolUi();
+  }
   show("channelConfirmView");
   return true;
 }
