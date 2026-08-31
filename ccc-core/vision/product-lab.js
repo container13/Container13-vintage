@@ -4,6 +4,8 @@
   const visionEntryParams=new URLSearchParams(window.location.search);
   const publishAddMode=visionEntryParams.get("mode")==="publish-add";
   const publishAddSource=visionEntryParams.get("source")||"";
+  const publishConfirmMode=visionEntryParams.get("returnTo")==="publish-confirm";
+  const publishConfirmItemId=visionEntryParams.get("item")||"";
   const PUBLISH_ADD_STATE_KEY="ccc-publish-add-camera-state";
   const VISION_SETTINGS_RETURN_KEY="ccc-vision-settings-return";
 
@@ -197,7 +199,9 @@
         sessionStorage.removeItem("ccc-vision-return-publish-confirm");
         return null;
       }
-      if(String(currentItem()?.id||"")!==String(value.itemId))return null;
+      const expectedId=publishConfirmMode&&publishConfirmItemId?publishConfirmItemId:value.itemId;
+      if(String(value.itemId)!==String(expectedId))return null;
+      if(String(currentItem()?.id||"")!==String(expectedId))return null;
       return value;
     }catch(_){return null;}
   };
@@ -2631,7 +2635,11 @@
     finally{visionBackPending=false;}
   }
 
-  $("#visionStartBackBtn")?.addEventListener("click", () => window.location.assign("../dashboard/index.html?v=2.8.4"));
+  $("#visionStartBackBtn")?.addEventListener("click", () => {
+    const navigate=window.CCC_CORE?.navigation?.dashboard;
+    if(navigate)navigate();
+    else window.location.assign("../dashboard/index.html?v=2.8.4");
+  });
   document.addEventListener("ccc:header-settings",()=>{
     rememberVisionSettingsReturn();
     const target=new URL("../settings/index.html",window.location.href);
@@ -2683,7 +2691,11 @@
   $("#startCameraBtn").addEventListener("click", startCamera);
   $("#galleryBtn").addEventListener("click", () => $("#galleryInput").click());
   document.addEventListener("ccc:header-back",runVisionBackOnce);
-  $("#reviewBackBtn")?.addEventListener("click", runVisionBackOnce);
+  $("#reviewBackBtn")?.addEventListener("click",()=>{
+    const navigate=window.CCC_CORE?.navigation?.back;
+    if(navigate)navigate();
+    else runVisionBackOnce();
+  });
   $("#resumeSessionBtn")?.addEventListener("click", async () => {
     if (batchItems.length) showWorkspace();
     else {
@@ -2890,8 +2902,8 @@ $("#price")?.addEventListener("click", openPriceEditor);
   (async()=>{
     const settingsReturn=takeVisionSettingsReturn();
     const publishReturn=takeVisionPublishReturn();
-    let returnItemId="";
-    try{returnItemId=sessionStorage.getItem("ccc-vision-return-edit-item")||"";}catch(_){}
+    let returnItemId=publishConfirmMode?publishConfirmItemId:"";
+    if(!returnItemId)try{returnItemId=sessionStorage.getItem("ccc-vision-return-edit-item")||"";}catch(_){}
     /* Den uttryckliga returvyn vinner alltid över äldre objektnycklar. Det
        hindrar Inställningar/Publicera från att kasta användaren till fel vy. */
     if(settingsReturn||publishReturn){
