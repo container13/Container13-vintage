@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.116
+CCC-version: 2.10.117
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -33,6 +33,7 @@ ARBETSPRINCIPER
 - Core ska centralt kunna styra verktygens lägen: aktivt, inaktivt tills rätt objekt/underlag valts, behörighetslåst, kvotlåst eller helt dolt.
 - Behörighet och användningsgränser får aldrig vara enbart visuella. Core ska även kontrollera åtkomsten när verktyget anropas.
 - Tillbaka är ett Core-event men varje modul ansvarar för ett uttryckligt, förbrukningsbart ursprung: stäng först översta dialogen, återställ sedan exakt föregående vy/objekt/markering och låt modulstart lämna till Dashboard. Returdata får inte staplas så att användaren kan fastna i en loop.
+- Header och footer ska använda Core-spärren för bakåttryck. Ett och samma fysiska tryck får aldrig förbrukas av två vyer eller två dokument.
 - Låsta eller förbrukade verktyg bör normalt ligga kvar synliga med lås, begriplig förklaring och eventuell kvarvarande kvot, exempelvis `AI-sökning · 3 av 5 kvar`, i stället för att oförklarligt försvinna.
 - Verktygskonfiguration, roller, kvoter och eventuell framtida nivå-/betalmodell är arkitektur/backlog och ska inte byggas innan Publiceras grundflöde är stabilt.
 
@@ -46,6 +47,13 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.117 – bevarat ursprung mellan Vision och Publicera
+- Vision sparar exakt arbetsvy, sida och aktivt objekt innan Publicera öppnas och återställer samma läge vid Tillbaka.
+- Inställningars uttryckliga retur får företräde framför äldre objektnycklar, så Granska & komplettera inte kastas till Vision-starten.
+- Granska från Publiceras slutkontroll behåller aktiv gulmarkering och återvänder med Klar till samma slutkontroll; Anpassa bild kan öppnas från det återställda objektet.
+- Core spärrar ett bakåttryck i 700 ms över både vy- och sidbyten, så dubbeltryck inte hoppar två steg.
+- Vision Välj objekt får mer säker luft mot Core-footern.
+
 v2.10.116 – sammanhållen och loopfri Tillbaka-navigation
 - Vision återgår från Granska & komplettera till den vy som faktiskt öppnade redigeringen: objektöversikt, AI-förslag eller färdiglista.
 - Publicera återgår från Anpassa bild till bilddetaljen och från kanalval till rätt startpunkt, exempelvis utkastlistan.
