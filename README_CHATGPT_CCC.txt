@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.118
+CCC-version: 2.10.119
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -48,6 +48,13 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.119 – stabil Anpassa bild och konsekvent centrering
+- Tillfälliga `blob:`-adresser betraktas som dokumentlokala och sparas inte längre i Publiceras IndexedDB-poster.
+- Vid varje sidladdning skapas en ny giltig adress från sparad `publishBlob`; äldre sparade adresser nollställs vid inläsningen.
+- Både detaljvyn och Anpassa bild kontrollerar att bildadressen skapats i det aktuella dokumentet.
+- Anpassa bild fångar bildladdningsfel och visar ett begripligt meddelande i den aktuella vyn i stället för att verka inaktiv.
+- Slutkontrollens fria bildrad får Core-centrering direkt vid renderingen; Core ändrar till vänsterställning endast när innehållet faktiskt är bredare än ytan.
+
 v2.10.118 – deterministisk Klar-retur och full Core-spärr
 - Core använder samma 1,2-sekunders navigationsspärr för header, footer, lokala bakåtknappar och direktretur till Dashboard.
 - Ett köat andra tryck kan därför inte lämna Välj objekt och därefter omedelbart lämna Vision-starten.
