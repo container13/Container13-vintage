@@ -84,6 +84,22 @@ const CCC_HEADER_ICONS={
   user:`<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="3"/><path d="M6.8 18c1.1-2.5 3-3.8 5.2-3.8s4.1 1.3 5.2 3.8"/></svg>`
 };
 
+// Ett fysiskt tryck får aldrig konsumeras som två bakåtsteg när en vy eller
+// sida hinner bytas under fingret. Spärren delas av header och footer och
+// överlever även en kort sidnavigation via sessionStorage.
+const CCC_BACK_GUARD_KEY="ccc-core-back-guard-until";
+let cccBackGuardUntil=0;
+function dispatchCCCBackOnce(){
+  const now=Date.now();
+  let stored=0;
+  try{stored=Number(sessionStorage.getItem(CCC_BACK_GUARD_KEY)||0);}catch(_){ }
+  if(now<Math.max(cccBackGuardUntil,stored))return false;
+  cccBackGuardUntil=now+700;
+  try{sessionStorage.setItem(CCC_BACK_GUARD_KEY,String(cccBackGuardUntil));}catch(_){ }
+  document.dispatchEvent(new CustomEvent("ccc:header-back"));
+  return true;
+}
+
 function ensureCCCHeader(){
   const header=document.querySelector(".ccc-header");
   if(!header)return null;
@@ -110,7 +126,7 @@ function ensureCCCHeader(){
   const settings=$("#cccHeaderSettings");
   if(back&&!back.dataset.cccBound){
     back.dataset.cccBound="1";
-    back.addEventListener("click",()=>document.dispatchEvent(new CustomEvent("ccc:header-back")));
+    back.addEventListener("click",dispatchCCCBackOnce);
   }
   if(settings&&!settings.dataset.cccBound){
     settings.dataset.cccBound="1";
@@ -343,7 +359,7 @@ function ensureCCCFooter(){
       back.dataset.cccBound="1";
       back.addEventListener("click",()=>{
         if(CCCHeader.state.back){
-          document.dispatchEvent(new CustomEvent("ccc:header-back"));
+          dispatchCCCBackOnce();
         }else{
           location.href=new URL("./dashboard/index.html",import.meta.url).href;
         }
