@@ -210,7 +210,9 @@ async function ensurePublishSource(item){
     }
   }
   if(item.publishBlob){
-    if(!item.publishUrl)item.publishUrl=url(item.publishBlob);
+    /* blob:-adresser gäller bara i dokumentet där de skapades. Äldre utkast
+       kan innehålla en sparad men ogiltig adress; skapa då en ny från Blob. */
+    if(!item.publishUrl||!objectUrls.includes(item.publishUrl))item.publishUrl=url(item.publishBlob);
     return item.publishUrl;
   }
   if(item.thumbUrl)return item.thumbUrl;
@@ -221,7 +223,7 @@ async function ensurePublishSource(item){
   return item.fullUrl||"";
 }
 
-function persistenceRecord(item){const record={...item};delete record.thumbUrl;delete record.fullUrl;if(record.originalFileKey)delete record.originalBlob;return record;}
+function persistenceRecord(item){const record={...item};delete record.thumbUrl;delete record.fullUrl;delete record.publishUrl;if(record.originalFileKey)delete record.originalBlob;return record;}
 function url(blob){const u=URL.createObjectURL(blob);objectUrls.push(u);return u;}
 function dataUrl(blob){return new Promise((resolve,reject)=>{if(!blob){resolve("");return;}const reader=new FileReader();reader.onload=()=>resolve(String(reader.result||""));reader.onerror=()=>reject(reader.error||new Error("Kunde inte läsa bildförhandsvisningen."));reader.readAsDataURL(blob);});}
 async function previewSrc(record){
@@ -1137,7 +1139,7 @@ function itemImageSrc(index){
   const item=items[normalizedIndex(index)];
   if(!item)return "";
   if(item.publishBlob){
-    if(!item.publishUrl)item.publishUrl=url(item.publishBlob);
+    if(!item.publishUrl||!objectUrls.includes(item.publishUrl))item.publishUrl=url(item.publishBlob);
     return item.publishUrl;
   }
   return item.fullUrl||item.thumbUrl||"";
@@ -1792,12 +1794,18 @@ async function openCrop({preserveBack=false}={}){
   const item=activeItem();
   if(!item)return;
   // Vision-originalet används som bildkälla; sparad cropData återanvänds för fortsatt finjustering.
-  const originalSource=await ensurePublishSource(item);
-  if(!originalSource){
-    $("#publishStatus").textContent="Originalbilden kunde inte läsas. Gå tillbaka och försök igen.";
+  let originalSource="";
+  try{
+    originalSource=await ensurePublishSource(item);
+    if(!originalSource)throw new Error("Bildkälla saknas.");
+    cropImage=await loadImage(originalSource);
+  }catch(error){
+    console.error("[CCC Publicera] Anpassa bild kunde inte öppnas",error);
+    const status=confirmToolReturn?$("#confirmStatus"):$("#publishStatus");
+    if(status)status.textContent="Bilden kunde inte öppnas för anpassning. Försök igen.";
+    cropImage=null;
     return;
   }
-  cropImage=await loadImage(originalSource);
   if(item.cropData){cropState={...item.cropData};}
   else{
     const canvas=$("#cropCanvas");
@@ -2275,7 +2283,9 @@ async function renderChannelConfirmation(resetControls=true){
   if(empty)empty.hidden=selected.length>0;
   grid.hidden=selected.length===0;
   grid.replaceChildren();
-  grid.className="confirm-grid confirm-object-strip";
+  /* Centreringen ska vara korrekt redan före Core-modulen hunnit binda den
+     fria swipen. Core tar därefter över och sätter is-overflowing vid behov. */
+  grid.className="confirm-grid confirm-object-strip ccc-free-swipe ccc-free-swipe--center";
   const c13Confirm=$("#confirmC13Channel");
   if(c13Confirm)setContainer13ChannelSelected(container13ChannelSelected);
   else syncConfirmPublishAction();
@@ -2808,7 +2818,7 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
   explicit.forEach(r=>merged.set(r.id,{...(merged.get(r.id)||{}),...r}));
   let records=[...merged.values()].filter(r=>r.originalBlob||r.publishBlob||r.thumbnailBlob);
   records.sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
-  items=records.map(r=>({...r,thumbUrl:""}));
+  items=records.map(r=>({...r,thumbUrl:"",publishUrl:""}));
   localStorage.removeItem("ccc-publish-demo-watermark");
   for(const item of items){
     const hadIdentity=!!item.cccItemId;
