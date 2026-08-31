@@ -89,15 +89,21 @@ const CCC_HEADER_ICONS={
 // överlever även en kort sidnavigation via sessionStorage.
 const CCC_BACK_GUARD_KEY="ccc-core-back-guard-until";
 let cccBackGuardUntil=0;
-function dispatchCCCBackOnce(){
+function runCCCNavigationOnce(action){
   const now=Date.now();
   let stored=0;
   try{stored=Number(sessionStorage.getItem(CCC_BACK_GUARD_KEY)||0);}catch(_){ }
   if(now<Math.max(cccBackGuardUntil,stored))return false;
-  cccBackGuardUntil=now+700;
+  cccBackGuardUntil=now+1200;
   try{sessionStorage.setItem(CCC_BACK_GUARD_KEY,String(cccBackGuardUntil));}catch(_){ }
-  document.dispatchEvent(new CustomEvent("ccc:header-back"));
+  action?.();
   return true;
+}
+function dispatchCCCBackOnce(){
+  return runCCCNavigationOnce(()=>document.dispatchEvent(new CustomEvent("ccc:header-back")));
+}
+function navigateCCCDashboardOnce(){
+  return runCCCNavigationOnce(()=>{location.href=new URL("./dashboard/index.html",import.meta.url).href;});
 }
 
 function ensureCCCHeader(){
@@ -361,7 +367,7 @@ function ensureCCCFooter(){
         if(CCCHeader.state.back){
           dispatchCCCBackOnce();
         }else{
-          location.href=new URL("./dashboard/index.html",import.meta.url).href;
+          navigateCCCDashboardOnce();
         }
       });
     }
@@ -457,5 +463,9 @@ const CCCFooter={
     undo.querySelector(".ccc-footer-undo-btn").onclick=()=>onUndo?.();
   }
 };
-window.CCC_CORE={applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader,footer:CCCFooter,swipe:CCCSwipe,press:CCCPress};
+window.CCC_CORE={
+  applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader,footer:CCCFooter,
+  swipe:CCCSwipe,press:CCCPress,
+  navigation:{back:dispatchCCCBackOnce,dashboard:navigateCCCDashboardOnce}
+};
 document.dispatchEvent(new CustomEvent("ccc:core-ready",{detail:{header:CCCHeader}}));
