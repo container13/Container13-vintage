@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.117
+CCC-version: 2.10.118
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -34,6 +34,7 @@ ARBETSPRINCIPER
 - Behörighet och användningsgränser får aldrig vara enbart visuella. Core ska även kontrollera åtkomsten när verktyget anropas.
 - Tillbaka är ett Core-event men varje modul ansvarar för ett uttryckligt, förbrukningsbart ursprung: stäng först översta dialogen, återställ sedan exakt föregående vy/objekt/markering och låt modulstart lämna till Dashboard. Returdata får inte staplas så att användaren kan fastna i en loop.
 - Header och footer ska använda Core-spärren för bakåttryck. Ett och samma fysiska tryck får aldrig förbrukas av två vyer eller två dokument.
+- Lokala tillbaka-knappar får inte anropa modulnavigation direkt. De ska gå genom `CCC_CORE.navigation`, även när målet är Dashboard eller headerpilen redan hunnit döljas.
 - Låsta eller förbrukade verktyg bör normalt ligga kvar synliga med lås, begriplig förklaring och eventuell kvarvarande kvot, exempelvis `AI-sökning · 3 av 5 kvar`, i stället för att oförklarligt försvinna.
 - Verktygskonfiguration, roller, kvoter och eventuell framtida nivå-/betalmodell är arkitektur/backlog och ska inte byggas innan Publiceras grundflöde är stabilt.
 
@@ -47,6 +48,14 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.118 – deterministisk Klar-retur och full Core-spärr
+- Core använder samma 1,2-sekunders navigationsspärr för header, footer, lokala bakåtknappar och direktretur till Dashboard.
+- Ett köat andra tryck kan därför inte lämna Välj objekt och därefter omedelbart lämna Vision-starten.
+- Publiceras Granska säkerställer att exakt markerat lokalt utkast finns i Vision-sessionen innan navigationen sker.
+- Vision öppnas med `returnTo=publish-confirm` och objekt-ID i URL:en; sessionskontraktet innehåller fortfarande slutkontrollens fullständiga returadress.
+- Klar visas endast för exakt returobjekt och återgår efter säkerhetssparning till samma slutkontroll, markering och ursprung.
+- Ett nytt returkontrakt ersätter äldre Granska-returvärden så att förbrukade nycklar inte styr en senare navigation.
+
 v2.10.117 – bevarat ursprung mellan Vision och Publicera
 - Vision sparar exakt arbetsvy, sida och aktivt objekt innan Publicera öppnas och återställer samma läge vid Tillbaka.
 - Inställningars uttryckliga retur får företräde framför äldre objektnycklar, så Granska & komplettera inte kastas till Vision-starten.
