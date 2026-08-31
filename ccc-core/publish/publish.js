@@ -2206,6 +2206,43 @@ function syncConfirmToolUi(){
 function bindConfirmObjectFreeSwipe(){
   window.CCC_CORE?.swipe?.bindFree?.($("#confirmGrid"),{centerWhenFits:true});
 }
+
+async function ensureVisionReviewItem(item){
+  if(!item?.id)throw new Error("Objektet saknar identitet.");
+  const existing=await getLatestVisionSession();
+  const previousItems=Array.isArray(existing?.items)?existing.items:[];
+  if(previousItems.some(entry=>String(entry.id)===String(item.id)))return;
+
+  await ensurePublishSource(item);
+  const originalFileKey=item.originalFileKey||`${item.id}:main`;
+  if(!item.originalFileKey){
+    const source=item.originalBlob||item.publishBlob||item.thumbnailBlob;
+    if(!source)throw new Error("Originalbilden kunde inte föras tillbaka till Vision.");
+    await putSourceFile(originalFileKey,source,item.imageMetadata||buildPublishMetadata(item));
+    item.originalFileKey=originalFileKey;
+  }
+  const fields={
+    ...(item.fields||{}),
+    title:item.title||item.fields?.title||"",
+    brand:item.brand||item.fields?.brand||"",
+    size:item.size||item.fields?.size||"",
+    price:item.price||item.fields?.price||"",
+    description:item.description||item.fields?.description||""
+  };
+  const sessionItem={
+    id:item.id,cccItemId:item.cccItemId||"",originalFileKey,extraFileKeys:[],
+    aiAnalyzedMain:false,aiAnalyzedExtra:[],demoKey:"arsenal",approved:!!item.approved,
+    editedFields:fields,visionReady:!!item.visionReady,visionResult:item.visionResult||null,
+    analysisMode:item.analysisMode||"manual",aiUsage:item.aiUsage||null,
+    aiModel:item.aiModel||"",aiCostUsd:Number(item.aiCostUsd||0),
+    aiCostSek:Number(item.aiCostSek||0),cropData:item.cropData||null
+  };
+  const sessionItems=[...previousItems,sessionItem];
+  await putVisionSession({
+    ...(existing||{}),id:"vision-active",schemaVersion:2,savedAt:new Date().toISOString(),
+    currentIndex:sessionItems.length-1,count:sessionItems.length,items:sessionItems
+  });
+}
 document.addEventListener("ccc:core-ready",()=>{
   if(currentPublishView==="channelConfirmView")bindConfirmObjectFreeSwipe();
 },{once:true});
@@ -2293,14 +2330,25 @@ $("#confirmReviewBtn")?.addEventListener("click",async()=>{
       :directFromVisionWorkspace?"vision-workspace"
       :workspaceStartMode?"workspace":"channel");
   try{
+    const reviewItem=selectedChannelItems().find(item=>item.id===confirmToolItemId);
+    await ensureVisionReviewItem(reviewItem);
+    sessionStorage.removeItem("ccc-vision-return-edit-item");
+    sessionStorage.removeItem("ccc-vision-return-publish-confirm");
     sessionStorage.setItem("ccc-vision-return-edit-item",confirmToolItemId);
     sessionStorage.setItem("ccc-vision-return-publish-confirm",JSON.stringify({
       itemId:confirmToolItemId,
       url:returnUrl.href,
       createdAt:Date.now()
     }));
-  }catch(_){ }
-  window.location.assign("../vision/index.html");
+  }catch(error){
+    console.error("[CCC Publicera] Kunde inte öppna objektet i Vision",error);
+    $("#confirmStatus").textContent="Kunde inte öppna Granska & komplettera. Försök igen.";
+    return;
+  }
+  const visionTarget=new URL("../vision/index.html",window.location.href);
+  visionTarget.searchParams.set("returnTo","publish-confirm");
+  visionTarget.searchParams.set("item",confirmToolItemId);
+  window.location.assign(visionTarget.href);
 });
 
 $("#confirmAdaptBtn")?.addEventListener("click",async()=>{
