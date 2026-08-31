@@ -288,7 +288,12 @@ const publishAddCameraReturn = directPrepareOrigin === "vision-publish-add";
 const PUBLISH_ADD_STATE_KEY = "ccc-publish-add-camera-state";
 const directFromVisionEdit = directPrepareOrigin === "vision-edit" && !!directPrepareItemId;
 const directFromVisionExpress = directPrepareOrigin === "vision-camera-express" && directPrepareItemIds.length>0;
-let directPrepareBackGuard = directFromVisionEdit||directFromVisionExpress;
+const directFromVisionWorkspace = directPrepareOrigin === "vision-workspace";
+const directFromVisionReady = directPrepareOrigin === "vision-ready";
+const directFromVisionReview = directPrepareOrigin === "vision-review-return";
+const directReturnWorkspace = publishEntryParams.get("workspace") === "1";
+const directReviewParent = publishEntryParams.get("returnParent") || "";
+let directPrepareBackGuard = directFromVisionEdit||directFromVisionExpress||directFromVisionWorkspace||directFromVisionReady||directFromVisionReview;
 let currentPublishView="startView";
 const PUBLISH_SETTINGS_RETURN_KEY="ccc-publish-settings-return";
 
@@ -314,7 +319,7 @@ function takePublishSettingsReturn(){
 function finishDirectPrepareBootstrap(){
   document.documentElement.classList.remove("ccc-publish-booting");
   document.documentElement.classList.remove("ccc-direct-prepare-loading");
-  if(!directFromVisionEdit&&!directFromVisionExpress){
+  if(!directFromVisionEdit&&!directFromVisionExpress&&!directFromVisionWorkspace&&!directFromVisionReady&&!directFromVisionReview){
     directPrepareBackGuard=false;
     return;
   }
@@ -2279,7 +2284,14 @@ $("#confirmReviewBtn")?.addEventListener("click",async()=>{
   returnUrl.searchParams.set("view","prepare");
   returnUrl.searchParams.set("items",selectedIds.join(","));
   returnUrl.searchParams.set("toolItem",confirmToolItemId);
-  returnUrl.searchParams.set("from","vision-camera-express");
+  returnUrl.searchParams.set("from","vision-review-return");
+  if(workspaceStartMode)returnUrl.searchParams.set("workspace","1");
+  returnUrl.searchParams.set("returnParent",
+    directFromVisionEdit?"vision-edit"
+      :directFromVisionExpress?"vision-express"
+      :directFromVisionReady?"vision-ready"
+      :directFromVisionWorkspace?"vision-workspace"
+      :workspaceStartMode?"workspace":"channel");
   try{
     sessionStorage.setItem("ccc-vision-return-edit-item",confirmToolItemId);
     sessionStorage.setItem("ccc-vision-return-publish-confirm",JSON.stringify({
@@ -2804,6 +2816,7 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
     return;
   }
   if(directPrepareView && directPrepareItemIds.some(id=>itemIndexById(id)>=0)){
+    if(directReturnWorkspace)workspaceStartMode=true;
     await openDirectVisionConfirmation(directPrepareItemIds);
     requestAnimationFrame(()=>requestAnimationFrame(finishDirectPrepareBootstrap));
     await previewsReady;
@@ -2864,6 +2877,37 @@ function returnToVisionObject(){
   return true;
 }
 
+function returnToVisionContext(kind="any"){
+  const allowed=kind==="ready"?directFromVisionReady
+    :kind==="workspace"?directFromVisionWorkspace
+    :(directFromVisionWorkspace||directFromVisionReady);
+  if(!allowed)return false;
+  window.location.href="../vision/index.html?returnFrom=publish";
+  return true;
+}
+
+function returnFromVisionReview(){
+  if(!directFromVisionReview)return false;
+  if(directReviewParent==="vision-edit"){
+    if(directPrepareToolItemId)try{sessionStorage.setItem("ccc-vision-return-edit-item",directPrepareToolItemId);}catch(_){ }
+    window.location.href="../vision/index.html";
+    return true;
+  }
+  if(directReviewParent==="vision-express"){
+    window.location.href="../vision/index.html";
+    return true;
+  }
+  if(directReviewParent==="vision-ready"||directReviewParent==="vision-workspace"){
+    window.location.href="../vision/index.html?returnFrom=publish";
+    return true;
+  }
+  if(directReviewParent==="workspace"){
+    window.location.href="../dashboard/index.html";
+    return true;
+  }
+  return false;
+}
+
 async function leavePublishDetail(){
   if(swipeCommitTimer){
     clearTimeout(swipeCommitTimer);
@@ -2914,6 +2958,7 @@ async function goBackFromPublish(){
     return;
   }
   if(currentPublishView==="channelConfirmView"){
+    if(returnFromVisionReview())return;
     if(directFromVisionEdit){
       returnToVisionObject();
       return;
@@ -2922,6 +2967,7 @@ async function goBackFromPublish(){
       window.location.href="../vision/index.html";
       return;
     }
+    if(returnToVisionContext("ready"))return;
     if(quickPublishReturnView==="cropView"){
       quickPublishReturnView=null;
       await openCrop({preserveBack:true});
@@ -2961,6 +3007,7 @@ async function goBackFromPublish(){
     return;
   }
   if(currentPublishView==="gridView"||currentPublishView==="publishedView"){
+    if(returnToVisionContext("workspace"))return;
     show("startView");
     return;
   }
