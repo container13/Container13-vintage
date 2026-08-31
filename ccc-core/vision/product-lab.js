@@ -172,6 +172,22 @@
     return `C13-${y}${m}${day}-${entropy}`;
   };
   const currentItem = () => batchItems[currentIndex] || null;
+  const VISION_PUBLISH_RETURN_KEY="ccc-vision-publish-return";
+  function rememberVisionPublishReturn(view=visionView){
+    try{sessionStorage.setItem(VISION_PUBLISH_RETURN_KEY,JSON.stringify({
+      createdAt:Date.now(),view,itemId:currentItem()?.id||"",index:currentIndex,
+      workspacePage,editReturnView,cropReturnView
+    }));}catch(_){ }
+  }
+  function takeVisionPublishReturn(){
+    if(new URLSearchParams(location.search).get("returnFrom")!=="publish")return null;
+    try{
+      const raw=sessionStorage.getItem(VISION_PUBLISH_RETURN_KEY);
+      sessionStorage.removeItem(VISION_PUBLISH_RETURN_KEY);
+      const value=raw?JSON.parse(raw):null;
+      return value&&Date.now()-Number(value.createdAt||0)<15*60*1000?value:null;
+    }catch(_){return null;}
+  }
   const publishConfirmReturn = () => {
     try{
       const raw=sessionStorage.getItem("ccc-vision-return-publish-confirm");
@@ -226,7 +242,8 @@
     if (forward) forward.disabled = true;
     try {
       await queueVisionSessionSave();
-      window.location.assign("../publish/index.html?view=prepare");
+      rememberVisionPublishReturn("workspace");
+      window.location.assign("../publish/index.html?view=prepare&from=vision-workspace");
     } catch (error) {
       publishNavigationPending = false;
       if (forward) forward.disabled = false;
@@ -2776,7 +2793,13 @@
   $("#newSeriesBtn").addEventListener("click", newSeries);
   $("#publishReadyBtn")?.addEventListener("click", () => {
     saveBatchMetadata();
-    window.location.href = "../publish/index.html";
+    rememberVisionPublishReturn("done");
+    const ids=batchItems.filter(item=>item.approved).map(item=>item.id);
+    const target=new URL("../publish/index.html",window.location.href);
+    target.searchParams.set("view","prepare");
+    target.searchParams.set("from","vision-ready");
+    if(ids.length)target.searchParams.set("items",ids.join(","));
+    window.location.href=target.href;
   });
 
 
@@ -2866,25 +2889,29 @@ $("#price")?.addEventListener("click", openPriceEditor);
 
   (async()=>{
     const settingsReturn=takeVisionSettingsReturn();
+    const publishReturn=takeVisionPublishReturn();
     let returnItemId="";
     try{returnItemId=sessionStorage.getItem("ccc-vision-return-edit-item")||"";}catch(_){}
-    if(!returnItemId){
-      if(settingsReturn){
+    /* Den uttryckliga returvyn vinner alltid över äldre objektnycklar. Det
+       hindrar Inställningar/Publicera från att kasta användaren till fel vy. */
+    if(settingsReturn||publishReturn){
+      const returnState=settingsReturn||publishReturn;
         try{
           await restoreSavedVisionSession({showAfterRestore:false});
-          const byId=settingsReturn.itemId?batchItems.findIndex(item=>String(item.id)===String(settingsReturn.itemId)):-1;
-          currentIndex=byId>=0?byId:Math.max(0,Math.min(Number(settingsReturn.index||0),Math.max(0,batchItems.length-1)));
-          workspacePage=Math.max(0,Number(settingsReturn.workspacePage||0));
-          editReturnView=settingsReturn.editReturnView||"workspace";
-          cropReturnView=settingsReturn.cropReturnView||"suggestion";
-          if(settingsReturn.view==="edit"&&batchItems.length){populateFormFromItem(true);showStage("editCard","edit");}
-          else if(settingsReturn.view==="suggestion"&&batchItems.length)await openReview(currentIndex);
-          else if(settingsReturn.view==="done"&&batchItems.length)finishBatch();
-          else if(settingsReturn.view==="workspace"&&batchItems.length)showWorkspace();
+          const byId=returnState.itemId?batchItems.findIndex(item=>String(item.id)===String(returnState.itemId)):-1;
+          currentIndex=byId>=0?byId:Math.max(0,Math.min(Number(returnState.index||0),Math.max(0,batchItems.length-1)));
+          workspacePage=Math.max(0,Number(returnState.workspacePage||0));
+          editReturnView=returnState.editReturnView||"workspace";
+          cropReturnView=returnState.cropReturnView||"suggestion";
+          if(returnState.view==="edit"&&batchItems.length){populateFormFromItem(true);showStage("editCard","edit");}
+          else if(returnState.view==="suggestion"&&batchItems.length)await openReview(currentIndex);
+          else if(returnState.view==="done"&&batchItems.length)finishBatch();
+          else if(returnState.view==="workspace"&&batchItems.length)showWorkspace();
           else showVisionStart();
-        }catch(error){console.warn("[CCC Vision] Kunde inte återställa vyn efter Inställningar",error);showVisionStart();}
+        }catch(error){console.warn("[CCC Vision] Kunde inte återställa returvyn",error);showVisionStart();}
         return;
-      }
+    }
+    if(!returnItemId){
       if(publishAddMode){
         try{
           await restoreSavedVisionSession({showAfterRestore:false});

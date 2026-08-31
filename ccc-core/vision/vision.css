@@ -5215,10 +5215,10 @@ body.ccc-focused-text-mode #textEditorDialog #largeTextEditor.description-editor
    3x2-sidan syns; miniatyrernas proportioner ändras inte. */
 @media(max-width:480px) and (orientation:portrait){
   #captureCard:has(#batchStrip:not([hidden])){
-    height:calc(100% + 16px)!important;
-    max-height:calc(100% + 16px)!important;
-    margin-bottom:-16px!important;
-    padding-bottom:10px!important;
+    height:calc(100% + 8px)!important;
+    max-height:calc(100% + 8px)!important;
+    margin-bottom:-8px!important;
+    padding-bottom:20px!important;
     overflow:hidden!important;
   }
   #captureCard:has(#batchStrip:not([hidden])) .batch-strip{
