@@ -4947,7 +4947,7 @@ body.ccc-focused-text-mode #textEditorDialog .text-editor-shell{
 }
 
 
-/* v2.10.123 – final mobile form order and spacing. */
+/* v2.10.124 – final inset labels and Publicera-inspired field rhythm. */
 @media (max-width:700px){
   #editCard .field-price-row,
   #editCard .price-row,
@@ -4958,8 +4958,41 @@ body.ccc-focused-text-mode #textEditorDialog .text-editor-shell{
   #editCard .product-price-row > label,
   #editCard .price-label{padding-left:0!important}
 
-  #editCard .compact-edit-form{row-gap:16px!important}
-  #editCard .title-field{margin-top:0!important;margin-bottom:0!important}
+  #editCard .compact-edit-form{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    row-gap:8px!important;
+  }
+  #editCard .title-field,
+  #editCard .compact-description-field{
+    position:relative!important;
+    display:block!important;
+    margin:0!important;
+  }
+  #editCard .title-field .edit-field-caption,
+  #editCard .compact-description-field .edit-field-caption{
+    position:absolute!important;
+    top:7px!important;
+    left:14px!important;
+    z-index:2!important;
+    margin:0!important;
+    color:var(--gold)!important;
+    font-size:.66rem!important;
+    line-height:1!important;
+    font-weight:850!important;
+    letter-spacing:.02em!important;
+    pointer-events:none!important;
+  }
+  #editCard .title-field input{
+    height:58px!important;
+    min-height:58px!important;
+    padding:21px 58px 8px 14px!important;
+  }
+  #editCard .compact-description-field textarea{
+    height:76px!important;
+    min-height:76px!important;
+    padding:23px 58px 17px 14px!important;
+  }
 
   #editCard .price-row--single{
     margin-top:0!important;
@@ -4972,22 +5005,24 @@ body.ccc-focused-text-mode #textEditorDialog .text-editor-shell{
     align-items:center!important;
     column-gap:12px!important;
     width:100%!important;
-    min-height:48px!important;
-    padding:0 14px!important;
+    min-height:42px!important;
+    height:42px!important;
+    padding:0 13px!important;
     border:1px solid var(--border)!important;
     border-radius:14px!important;
     background:var(--surface-2)!important;
   }
   #editCard .price-row--single > label > span{
     justify-self:start!important;margin:0!important;padding:0!important;
+    color:var(--muted)!important;font-size:.78rem!important;font-weight:800!important;
   }
   #editCard .price-row--single .price-input{
     width:100%!important;max-width:none!important;justify-self:stretch!important;
   }
   #editCard .price-row--single .price-input input{
-    width:100%!important;height:46px!important;min-height:46px!important;
+    width:100%!important;height:40px!important;min-height:40px!important;
     padding:0 32px 0 8px!important;border:0!important;background:transparent!important;
-    text-align:right!important;
+    text-align:right!important;font-size:.86rem!important;font-weight:750!important;
   }
   #editCard .price-row--single .price-input input:placeholder-shown{padding-right:0!important;color:var(--muted)!important}
   #editCard .price-row--single .price-input:has(input:placeholder-shown)>span{display:none!important}
@@ -4996,6 +5031,7 @@ body.ccc-focused-text-mode #textEditorDialog .text-editor-shell{
     margin-bottom:0!important;
     transform:none!important;
   }
+  #editCard .editor-bottom-row{margin-top:0!important;gap:8px!important}
 }
 
 
