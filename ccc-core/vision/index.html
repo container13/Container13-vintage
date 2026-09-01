@@ -10,8 +10,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>CCC Vision v2.10.66</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}if(new URLSearchParams(location.search).get("mode")==="publish-add")document.documentElement.classList.add("ccc-vision-publish-add-loading");</script>
-  <link rel="stylesheet" href="vision.css?v=2.10.120">
-  <link rel="stylesheet" href="../core.css?v=2.10.122">
+  <link rel="stylesheet" href="vision.css?v=2.10.123">
+  <link rel="stylesheet" href="../core.css?v=2.10.123">
 </head>
 <body data-ccc-header-back="false" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell">
@@ -205,18 +205,18 @@
           <small class="field-help"><span id="titleCount">0</span>/100</small>
         </label>
 
-        <div class="price-row price-row--single">
-          <label>
-            <span>Pris</span>
-            <div class="price-input"><input id="price" type="number" min="0" inputmode="numeric" placeholder="0" readonly aria-haspopup="dialog" aria-controls="priceEditorDialog"><span>kr</span></div>
-          </label>
-        </div>
-
         <label class="compact-description-field" for="description">
           <span class="edit-field-caption">Beskrivning</span>
           <textarea id="description" rows="3" maxlength="800" placeholder="" readonly aria-haspopup="dialog" aria-controls="textEditorDialog"></textarea>
           <small class="field-help"><span id="descriptionCount">0</span>/800</small>
         </label>
+
+        <div class="price-row price-row--single">
+          <label>
+            <span>Pris</span>
+            <div class="price-input"><input id="price" type="number" min="0" inputmode="numeric" placeholder="Ej angett" readonly aria-haspopup="dialog" aria-controls="priceEditorDialog"><span>kr</span></div>
+          </label>
+        </div>
 
       </form>
 
@@ -361,13 +361,13 @@
     </div>
   </div>
 
-  <script src="../version.js?v=2.10.122"></script>
+  <script src="../version.js?v=2.10.123"></script>
   <script src="demo-data.js?v=2.9.3"></script>
   <script src="vision-ai-config.js?v=2.9.3"></script>
   <script src="vision-ai.js?v=2.9.3"></script>
   <script src="vision-knowledge.js?v=2.9.3"></script>
-  <script src="product-lab.js?v=2.10.120"></script>
-<script type="module" src="../core.js?v=2.10.122"></script>
+  <script src="product-lab.js?v=2.10.123"></script>
+<script type="module" src="../core.js?v=2.10.123"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 <div id="visionContextHelpDialog" class="dialog ccc-dialog vision-context-help" role="dialog" aria-modal="true" aria-labelledby="visionContextHelpTitle" hidden>
   <div class="dialog-box">

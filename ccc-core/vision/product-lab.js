@@ -2140,13 +2140,6 @@
 
   function updateSmartSuggestions() {
     const demo = currentDemo();
-    const priceSuggestion = Number(demo?.priceSuggestion || 0);
-    const priceInput = $("#price");
-    if (priceInput && !clean(priceInput.value) && priceSuggestion > 0) {
-      priceInput.value = priceSuggestion;
-      updateTextPreviews();
-      scheduleSave();
-    }
     $("#factSuggestionText").textContent = demo?.fact || "Ett kort extra fakta kan läggas till om du vill.";
     updateFactButton();
   }
