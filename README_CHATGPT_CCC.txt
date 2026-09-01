@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.121
+CCC-version: 2.10.122
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -48,6 +48,15 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.122 – Core-styrda verktygskort och hjälp endast på begäran
+- Publiceras verktygskort är nu ett gemensamt Core-facit för Vision, Publicera och Inställningar.
+- Core styr kortens yta, kant, glöd, ikonring, tryckrespons, inaktivt läge och färgroller från `ccc-core/core.css`.
+- Modulerna anger bara funktionens semantiska roll, exempelvis granska, redigera, lägga till, AI eller ta bort. Core ensam mappar rollerna till färg, form och visuellt tillstånd.
+- Dashboard och modulernas välkomstvyer fortsätter använda den närbesläktade Core-komponenten `ccc-action-card`, medan primära framåtknappar, bilder och kanalval behåller sina tydliga egna roller.
+- Automatisk hjälppopup och dess första-gången-logik är borttagna. Vyhjälpen öppnas endast aktivt med `?` i Core-footern.
+- Header/footer-förfiningen från v2.10.121 behålls.
+- `/version.js` i projektroten är orörd; CCC-versionen finns endast i `/ccc-core/version.js`.
+
 v2.10.121 – gemensam vyhjälp och balanserad Core-design
 - Core visar nu en gemensam, kontextstyrd hjälpruta på Dashboard samt i Vision, Publicera och Inställningar.
 - Hjälptexten följer den aktiva vyn och förklarar både vad som görs där och vilka lokala val som finns i modulens inställningar.
