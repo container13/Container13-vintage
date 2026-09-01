@@ -11,7 +11,7 @@
   if(visionCard)visionCard.hidden=moduleName!=="vision";
   const dashboardMode=moduleName!=="publish" && moduleName!=="vision";
   if(dashboardCard)dashboardCard.hidden=!dashboardMode;
-  if(dashboardHelpCard)dashboardHelpCard.hidden=!dashboardMode;
+  if(dashboardHelpCard)dashboardHelpCard.hidden=false;
 
   const markerSubtitle=document.querySelector(".settings-marker span");
   if(markerSubtitle){
@@ -25,6 +25,8 @@
   // Dashboard
   const key="ccc-help-tips-enabled";
   const enabled=document.getElementById("helpTipsEnabled");
+  const autoOpen=document.getElementById("helpAutoOpen");
+  const resetHelpHistory=document.getElementById("resetHelpHistory");
   const saved=document.getElementById("tipsSaved");
   if(enabled){
     enabled.checked=localStorage.getItem(key)!=="0";
@@ -33,6 +35,17 @@
       if(saved)saved.textContent=enabled.checked?"Hjälpknappen är aktiverad.":"Hjälpknappen är avstängd.";
     });
   }
+  if(autoOpen){
+    autoOpen.checked=localStorage.getItem("ccc-help-auto-open")!=="0";
+    autoOpen.addEventListener("change",()=>{
+      localStorage.setItem("ccc-help-auto-open",autoOpen.checked?"1":"0");
+      if(saved)saved.textContent=autoOpen.checked?"Första-gången-hjälp är aktiverad.":"Automatisk hjälp är avstängd.";
+    });
+  }
+  resetHelpHistory?.addEventListener("click",()=>{
+    Object.keys(localStorage).filter(key=>key.startsWith("ccc-help-seen:")).forEach(key=>localStorage.removeItem(key));
+    if(saved)saved.textContent="Alla första-gången-tips visas igen.";
+  });
 
   // Publicera
   const showTitle=document.getElementById("publishC13ShowTitle");

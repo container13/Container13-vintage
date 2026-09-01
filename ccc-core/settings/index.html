@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#f7f7f9">
 <title>CCC Inställningar v2.8.2</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-<link rel="stylesheet" href="settings.css?v=2.10.120">
-<link rel="stylesheet" href="../core.css?v=2.10.120">
+<link rel="stylesheet" href="settings.css?v=2.10.121">
+<link rel="stylesheet" href="../core.css?v=2.10.121">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="false">
 <div class="app-shell ccc-app-shell settings-app-shell">
@@ -101,7 +101,7 @@
 
   <section id="dashboardSettingsCard" class="settings-card settings-context-card">
     <div class="settings-card-head"><div><h1>Dashboard</h1><p>Inställningarna här gäller Dashboard. Varje modul har sina egna inställningar via kugghjulet i den modulen.</p></div></div>
-  </section><section id="dashboardHelpCard" class="settings-card settings-context-card"><div class="settings-card-head"><div><h1>Hjälp & tips</h1><p>CCC visar hjälp när du trycker på frågetecknet i footern.</p></div></div><label class="setting-row"><span><strong>Visa hjälpknapp i footer</strong><small>Visar ? Hjälp på vyer där det finns relevant hjälp.</small></span><input id="helpTipsEnabled" type="checkbox"></label><p id="tipsSaved" class="settings-saved" aria-live="polite"></p></section>
+  </section><section id="dashboardHelpCard" class="settings-card settings-context-card"><div class="settings-card-head"><div><h1>Hjälp & tips</h1><p>CCC visar hjälp som hör till den vy du arbetar i.</p></div></div><label class="setting-row"><span><strong>Visa hjälpknapp i footer</strong><small>Visar Hjälp på alla CCC-vyer.</small></span><input id="helpTipsEnabled" type="checkbox"></label><label class="setting-row"><span><strong>Visa automatiskt första gången</strong><small>Varje ny vy förklaras en gång och kan sedan öppnas via Hjälp.</small></span><input id="helpAutoOpen" type="checkbox"></label><button id="resetHelpHistory" class="settings-action" type="button">Visa alla första-gången-tips igen</button><p id="tipsSaved" class="settings-saved" aria-live="polite"></p></section>
 
       <section class="card" aria-labelledby="terminologyTitle">
         <h2 id="terminologyTitle">Terminologi</h2>
@@ -129,10 +129,10 @@
   </div>
 </div>
 
-<script src="../version.js?v=2.10.120"></script>
+<script src="../version.js?v=2.10.121"></script>
 <script src="../vision/vision-knowledge.js?v=2.9.73"></script>
-<script src="settings.js?v=2.10.120"></script>
-<script type="module" src="../core.js?v=2.10.120"></script>
+<script src="settings.js?v=2.10.121"></script>
+<script type="module" src="../core.js?v=2.10.121"></script>
 
 <script>
 (() => {
