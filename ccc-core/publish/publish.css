@@ -2648,22 +2648,35 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   #channelConfirmView .confirm-object-tools{width:min(100%,520px)}
 }
 
-/* v2.10.125 – en samlad slutdefinition för Anpassa bild. */
+/* v2.10.126 – sammanhållen bildverkstad enligt Publiceras visuella facit. */
 #cropView.crop-view{
   height:100%;
   min-height:0;
-  padding:6px 0 4px;
+  padding:5px 0 4px;
   display:grid;
-  grid-template-rows:auto minmax(0,1fr) auto auto auto;
+  grid-template-rows:minmax(0,1fr) auto;
   align-content:start;
-  gap:8px;
+  gap:9px;
   overflow:hidden!important;
 }
 #cropView[hidden]{display:none!important}
-#cropView .crop-counter-slot{min-height:34px;display:grid;place-items:center}
+#cropView .crop-editor-card{
+  width:min(100%,620px);
+  min-height:0;
+  margin:0 auto;
+  padding:9px 10px 10px;
+  display:grid;
+  grid-template-rows:auto minmax(0,1fr) auto auto;
+  gap:7px;
+  border:1px solid rgba(224,177,75,.46);
+  border-radius:20px;
+  background:linear-gradient(155deg,rgba(28,32,43,.98),rgba(18,21,29,.98));
+  box-shadow:0 12px 30px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.035);
+}
+#cropView .crop-counter-slot{min-height:27px;display:grid;place-items:center}
 #cropView .crop-preview{
-  width:min(100%,40dvh,430px)!important;
-  max-width:430px;
+  width:min(100%,36dvh,390px)!important;
+  max-width:390px;
   min-height:0;
   height:auto!important;
   aspect-ratio:1;
@@ -2679,41 +2692,49 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
 #cropView .crop-box{position:absolute;inset:0!important;width:auto!important;height:auto!important;margin:0!important}
 #cropView .crop-border{border:2px solid rgba(232,190,82,.88);border-radius:19px}
 #cropView .crop-tool-grid{
-  width:min(100%,620px);
+  width:100%;
   margin:0 auto;
   display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:7px;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:6px;
 }
 #cropView .crop-tool{
   min-width:0;
-  min-height:54px;
-  padding:6px 3px;
+  min-height:51px;
+  padding:5px 2px;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   gap:3px;
-  font-size:11px;
+  font-size:10px;
   font-weight:900;
   white-space:nowrap;
 }
 #cropView .crop-tool-icon{
-  width:27px;
-  height:27px;
+  width:25px;
+  height:25px;
   display:grid;
   place-items:center;
   border:1.5px solid currentColor;
   border-radius:50%;
-  font-size:16px;
+  font-size:15px;
   line-height:1;
 }
-#cropView .crop-tool small{font-size:8px;font-weight:750;color:var(--muted)}
-#cropView .crop-tool--future{opacity:.42;filter:saturate(.45)}
-#cropView .crop-future-note{margin:0;text-align:center;color:var(--muted);font-size:10px;font-weight:700}
+#cropView .crop-tool--future{
+  grid-column:span 2;
+  min-height:38px;
+  flex-direction:row;
+  gap:6px;
+  opacity:.40;
+  filter:saturate(.4);
+}
+#cropView .crop-tool--future .crop-tool-icon{width:22px;height:22px;font-size:13px}
+#cropView .crop-tool-lock{font-size:9px;color:var(--muted)}
+#cropView .crop-future-note{margin:0;text-align:center;color:var(--muted);font-size:10px;font-weight:750}
 #cropView .crop-accept{
   width:min(100%,620px)!important;
-  min-height:52px!important;
+  min-height:50px!important;
   margin:0 auto!important;
   display:block!important;
   position:relative!important;
@@ -2722,10 +2743,12 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
 #cropView .crop-zoom-toggle{right:10px;bottom:10px}
 #cropView .crop-zoom-controls{right:56px;bottom:10px}
 @media(max-height:760px) and (max-width:520px){
-  #cropView.crop-view{gap:6px;padding-top:3px}
-  #cropView .crop-counter-slot{min-height:28px}
-  #cropView .crop-preview{width:min(100%,36dvh,390px)!important}
-  #cropView .crop-tool{min-height:48px;padding:3px 2px}
-  #cropView .crop-tool-icon{width:23px;height:23px;font-size:14px}
-  #cropView .crop-accept{min-height:46px!important}
+  #cropView.crop-view{gap:6px;padding-top:2px}
+  #cropView .crop-editor-card{padding:6px 7px 7px;gap:5px}
+  #cropView .crop-counter-slot{min-height:24px}
+  #cropView .crop-preview{width:min(100%,31dvh,350px)!important}
+  #cropView .crop-tool{min-height:44px;padding:3px 1px}
+  #cropView .crop-tool-icon{width:21px;height:21px;font-size:13px}
+  #cropView .crop-tool--future{min-height:32px}
+  #cropView .crop-accept{min-height:44px!important}
 }
