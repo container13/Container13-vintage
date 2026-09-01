@@ -784,13 +784,13 @@
 
 /* CCC v2.9.12 — tydligare och luftigare bildanpassning */
 #cropView .crop-actions-row{
-  grid-template-columns:1fr 1fr!important;
+  grid-template-columns:.9fr 1.35fr!important;
   gap:12px!important;
   margin-top:16px!important;
 }
 #cropView .crop-actions-row #cropDone{
-  grid-column:1 / -1;
-  margin-top:4px!important;
+  grid-column:auto;
+  margin-top:0!important;
 }
 #cropView .crop-actions-row button{
   min-height:52px!important;

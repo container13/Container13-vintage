@@ -33,13 +33,13 @@ const PAGED_GRID_GUTTER=14;
 const PUBLICATION_HISTORY_KEY="ccc-publication-history-v1";
 let draftPage=0,draftGridGesture=null;
 let quickPublishReturnView=null;
-let confirmToolItemId=null,confirmToolReturn=false;
+let confirmToolItemId=null;
 let confirmAddPending=false;
 let workspaceStartMode=false;
 let channelPickerReturnsToWorkspace=false;
 let historyReturnsToWorkspace=false;
 let channelTargetsReturnView="startView";
-let cropBackView="gridView";
+let cropReturnContext={view:"gridView",itemId:""};
 let publishBackPending=false;
 let draftPreviewGesture=null,draftPreviewSuppressClick=false;
 let cropImage=null,cropState=null,pointer=null;
@@ -304,7 +304,7 @@ function rememberPublishSettingsReturn(){
     createdAt:Date.now(),view:currentPublishView,activeItemId,activeIndex,
     selectedIds:[...channelSelectedIds],confirmToolItemId,container13ChannelSelected,
     workspaceStartMode,channelPickerReturnsToWorkspace,historyReturnsToWorkspace,
-    channelTargetsReturnView,cropBackView,confirmToolReturn,quickPublishReturnView,
+    channelTargetsReturnView,cropReturnContext:{...cropReturnContext},quickPublishReturnView,
     draftSelectionMode,selectedDraftIds:[...selectedDraftIds],draftPage,channelSelectPage,confirmPage
   }));}catch(_){ }
 }
@@ -780,7 +780,7 @@ function helpHtmlForView(view){
       <div class="help-row"><strong>Fortsätt</strong><br>Går vidare med de färdiga ${entityTerm("plural")} till val av kanal.</div>
       <div class="help-row"><strong>Välj</strong><br>Öppnar läget där du kan markera lokala utkast för borttagning.</div>`;
   if(view==="detailView")return `<div class="help-row"><strong>Grön ✓</strong><br>Bilden har en sparad anpassning men kan ändras igen.</div><div class="help-row"><strong>Anpassa bild</strong><br>Gör den automatiska bildanpassningen när den behövs.</div><div class="help-row"><strong>Publicera</strong><br>Tar aktuellt objekt direkt till sista kontrollvyn.</div><div class="help-row"><strong>Klar – tillbaka till bilderna</strong><br>Återgår till Förbered så att du kan fortsätta med nästa bild.</div>`;
-  if(view==="cropView")return `<div class="help-row"><strong>Anpassa bild</strong><br>Flytta och zooma tills utsnittet känns rätt.</div><div class="help-row"><strong>Spara anpassning</strong><br>Sparar bilden och återgår till miniatyrerna.</div>`;
+  if(view==="cropView")return `<div class="help-row"><strong>Anpassa bild</strong><br>Flytta och zooma bilden manuellt tills den känns rätt.</div><div class="help-row"><strong>Återställ bild</strong><br>Visar hela originalbilden centrerad igen.</div><div class="help-row"><strong>Spara anpassning</strong><br>Sparar bilden och återgår till vyn du kom från.</div>`;
   return `<div class="help-row"><strong>Tillbaka</strong><br>Går till föregående steg.</div>`;
 }
 function openPublishHelp(){
@@ -830,7 +830,6 @@ async function openDirectVisionConfirmation(itemIds){
     ?directPrepareToolItemId
     :null;
   confirmToolItemId=null;
-  confirmToolReturn=false;
   container13ChannelSelected=false;
   await renderChannelConfirmation();
   if(restoredToolItemId){
@@ -842,7 +841,7 @@ async function openDirectVisionConfirmation(itemIds){
 }
 
 function setCropFooterLikeVision(){
-  if(currentPublishView!=="cropView"||confirmToolReturn)return;
+  if(currentPublishView!=="cropView"||cropReturnContext.view==="channelConfirmView")return;
   const footer=window.CCC_CORE?.footer;
   if(!footer)return;
   footer.setTools({
@@ -883,7 +882,7 @@ function configureFooterForView(view){
   }
   if(draftSelectionMode){updateSelectionFooter();return;}
   const config={help:["gridView","detailView","cropView"].includes(view),onHelp:openPublishHelp};
-  if(view==="detailView"&&!confirmToolReturn){
+  if(view==="detailView"){
     Object.assign(config,{
       forward:true,
       forwardLabel:"Publicera",
@@ -891,7 +890,7 @@ function configureFooterForView(view){
       onForward:quickPublishCurrentDetail
     });
   }
-  if(view==="cropView"&&!confirmToolReturn){
+  if(view==="cropView"&&cropReturnContext.view!=="channelConfirmView"){
     Object.assign(config,{
       forward:true,
       forwardLabel:"Publicera",
@@ -1765,7 +1764,7 @@ function updateCropCounter(){
 
 function setCropZoom(nextZoom){
   if(!cropState)return;
-  const z=Math.max(.35,Math.min(3,Number(nextZoom)||1));
+  const z=Math.max(.1,Math.min(3,Number(nextZoom)||1));
   cropState.zoom=z;
   const input=$("#cropZoom");
   if(input)input.value=String(z);
@@ -1785,10 +1784,20 @@ function cycleCropZoom(){
   setCropZoom(z<1.15?1.30:z<1.55?1.80:1);
 }
 
+function defaultManualCropState(image=cropImage){
+  const canvas=$("#cropCanvas");
+  if(!canvas||!image)return {zoom:1,x:0,y:0};
+  const cover=Math.max(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight);
+  const contain=Math.min(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight);
+  return {zoom:Math.max(.1,Math.min(1,contain/cover)),x:0,y:0};
+}
+
 async function openCrop({preserveBack=false}={}){
   if(!preserveBack){
-    if(currentPublishView==="detailView")cropBackView="detailView";
-    else if(currentPublishView==="channelConfirmView")cropBackView="channelConfirmView";
+    const origin=["detailView","channelConfirmView","gridView"].includes(currentPublishView)
+      ?currentPublishView
+      :"gridView";
+    cropReturnContext={view:origin,itemId:activeItemId||activeItem()?.id||""};
   }
   syncActiveIndexFromId();
   const item=activeItem();
@@ -1801,18 +1810,16 @@ async function openCrop({preserveBack=false}={}){
     cropImage=await loadImage(originalSource);
   }catch(error){
     console.error("[CCC Publicera] Anpassa bild kunde inte öppnas",error);
-    const status=confirmToolReturn?$("#confirmStatus"):$("#publishStatus");
+    const status=cropReturnContext.view==="channelConfirmView"?$("#confirmStatus"):$("#publishStatus");
     if(status)status.textContent="Bilden kunde inte öppnas för anpassning. Försök igen.";
     cropImage=null;
     return;
   }
   if(item.cropData){cropState={...item.cropData};}
   else{
-    const canvas=$("#cropCanvas");
-    const cover=Math.max(canvas.width/cropImage.naturalWidth,canvas.height/cropImage.naturalHeight);
-    const contain=Math.min(canvas.width/cropImage.naturalWidth,canvas.height/cropImage.naturalHeight);
-    cropState={zoom:Math.max(.35,Math.min(1,contain/cover)),x:0,y:0};
-    item.cropSuggestion=smartCropSuggestion(cropImage);
+    /* Manuell grundpassning: hela originalet syns centrerat. Automatisk
+       motivbeskärning är avstängd tills den kan utvecklas och testas separat. */
+    cropState=defaultManualCropState(cropImage);
   }
   $("#cropZoom").value=String(cropState.zoom);
   const zoomValue=$("#cropZoomValue");
@@ -1821,30 +1828,7 @@ async function openCrop({preserveBack=false}={}){
   $("#cropOriginalPreview").src=item.thumbUrl||item.fullUrl;
   drawCrop();show("cropView");
 }
-async function createOriginalWebP(item){
-  const src=item.originalBlob||item.thumbnailBlob;
-  if(!src)throw new Error("Originalbild saknas.");
-  const sourceUrl=item.thumbUrl||await previewSrc(item);
-  const image=await loadImage(sourceUrl);
-
-  // v2.9.20: alla färdiga publiceringsbilder får samma kvadratiska canvas.
-  // "Behåll hela bilden" visar hela originalet centrerat utan beskärning;
-  // eventuell restyta blir samma mörka bakgrund som i Publicera.
-  const outSize=Math.max(1,Math.min(1600,Math.max(image.naturalWidth,image.naturalHeight)));
-  const scale=Math.min(outSize/image.naturalWidth,outSize/image.naturalHeight);
-  const drawW=Math.max(1,Math.round(image.naturalWidth*scale));
-  const drawH=Math.max(1,Math.round(image.naturalHeight*scale));
-  const dx=Math.round((outSize-drawW)/2);
-  const dy=Math.round((outSize-drawH)/2);
-  const out=document.createElement("canvas");
-  out.width=out.height=outSize;
-  const ctx=out.getContext("2d",{alpha:false});
-  ctx.fillStyle="#111";
-  ctx.fillRect(0,0,outSize,outSize);
-  ctx.drawImage(image,dx,dy,drawW,drawH);
-  return new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));
-}
-$("#cropBtn").addEventListener("click",openCrop);
+$("#cropBtn").addEventListener("click",()=>openCrop());
 const cropDiagToggle=$("#cropDiagToggle");
 if(cropDiagToggle){
   cropDiagToggle.addEventListener("click",()=>{
@@ -1855,32 +1839,6 @@ if(cropDiagToggle){
     renderCropDiagnostics();
   });
 }
-
-$("#keepOriginalBtn").addEventListener("click",async()=>{
-  const item=activeItem();
-  if(!item)return;
-  const button=$("#keepOriginalBtn"),old=button.textContent;
-  button.disabled=true;button.textContent="Optimerar…";
-  try{
-    const blob=await createOriginalWebP(item);
-    item.publishBlob=blob;
-    item.cropData=null;
-    item.imageProcessingState="webp-original";
-    await put(persistenceRecord({...item,publishBlob:blob,cropData:null,imageProcessingState:item.imageProcessingState}));
-    if(item.publishUrl&&item.publishUrl.startsWith("blob:"))URL.revokeObjectURL(item.publishUrl);
-    item.publishUrl=url(blob);
-    item.thumbUrl=await previewSrc(item);
-    recentlyAdaptedItemId=item.id;
-    show("gridView");
-    await renderGrid();
-  }catch(error){
-    console.error("[CCC Publicera] Kunde inte optimera originalbilden",error);
-    button.textContent="Försök igen";
-    button.disabled=false;
-    return;
-  }
-  button.textContent=old;button.disabled=false;
-});
 
 const cropZoomInput=$("#cropZoom");
 if(cropZoomInput)cropZoomInput.addEventListener("input",e=>setCropZoom(Number(e.target.value)||1));
@@ -1895,9 +1853,7 @@ $("#cropZoomIn")?.addEventListener("click",()=>stepCropZoom(.05));
 $("#cropReset").addEventListener("click",()=>{
   const item=activeItem();
   if(!item)return;
-  const suggestion=item.cropSuggestion||smartCropSuggestion(cropImage);
-  item.cropSuggestion={...suggestion};
-  cropState={...suggestion};
+  cropState=defaultManualCropState(cropImage);
   $("#cropZoom").value=String(cropState.zoom);
   const zoomValue=$("#cropZoomValue");
   if(zoomValue)zoomValue.textContent=`${Math.round(cropState.zoom*100)} %`;
@@ -1942,7 +1898,7 @@ $("#cropCanvas").addEventListener("pointermove",e=>{
     const [a,b]=[...cropPointers.values()].slice(0,2);
     const distance=Math.max(1,pointerDistance(a,b));
     const mid=pointerMid(a,b);
-    const newZoom=Math.max(.35,Math.min(3,pinchStart.zoom*(distance/pinchStart.distance)));
+    const newZoom=Math.max(.1,Math.min(3,pinchStart.zoom*(distance/pinchStart.distance)));
     cropState.zoom=newZoom;
     cropState.x=pinchStart.x+(mid.x-pinchStart.mid.x)*canvasPerCssX;
     cropState.y=pinchStart.y+(mid.y-pinchStart.mid.y)*canvasPerCssY;
@@ -1998,13 +1954,6 @@ $("#cropDone").addEventListener("click",async()=>{
   item.publishUrl=url(blob);
   item.thumbUrl=await previewSrc(item);
   recentlyAdaptedItemId=savedItemId;
-  if(confirmToolReturn){
-    confirmToolReturn=false;
-    confirmToolItemId=savedItemId;
-    await renderChannelConfirmation(false);
-    show("channelConfirmView");
-    return;
-  }
   if(cropQuickPublishRequested){
     cropQuickPublishRequested=false;
     quickPublishReturnView="cropView";
@@ -2019,9 +1968,8 @@ $("#cropDone").addEventListener("click",async()=>{
     show("channelConfirmView");
     return;
   }
-  show("gridView");
-  await renderGrid();
-  requestAnimationFrame(()=>{
+  await returnFromCrop();
+  if(cropReturnContext.view==="gridView")requestAnimationFrame(()=>{
     const card=document.querySelector(`.draft-card[data-item-id="${CSS.escape(savedItemId)}"]`);
     card?.scrollIntoView?.({block:"nearest",inline:"nearest",behavior:"smooth"});
   });
@@ -2148,7 +2096,6 @@ $("#channelContinueBtn")?.addEventListener("click",async()=>{
   if(!channelSelectedIds.size)return;
   quickPublishReturnView=null;
   confirmToolItemId=null;
-  confirmToolReturn=false;
   confirmPage=0;
   await renderChannelConfirmation();
   channelPickerReturnsToWorkspace=false;
@@ -2366,7 +2313,6 @@ $("#confirmAdaptBtn")?.addEventListener("click",async()=>{
   if(index<0)return;
   activeIndex=index;
   activeItemId=confirmToolItemId;
-  confirmToolReturn=true;
   await openCrop();
 });
 
@@ -2848,8 +2794,9 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
     channelPickerReturnsToWorkspace=!!settingsReturn.channelPickerReturnsToWorkspace;
     historyReturnsToWorkspace=!!settingsReturn.historyReturnsToWorkspace;
     channelTargetsReturnView=settingsReturn.channelTargetsReturnView||"startView";
-    cropBackView=settingsReturn.cropBackView||"gridView";
-    confirmToolReturn=!!settingsReturn.confirmToolReturn;
+    cropReturnContext=settingsReturn.cropReturnContext&&typeof settingsReturn.cropReturnContext==="object"
+      ?{view:settingsReturn.cropReturnContext.view||"gridView",itemId:settingsReturn.cropReturnContext.itemId||""}
+      :{view:"gridView",itemId:""};
     quickPublishReturnView=settingsReturn.quickPublishReturnView||null;
     draftPage=Math.max(0,Number(settingsReturn.draftPage||0));
     channelSelectPage=Math.max(0,Number(settingsReturn.channelSelectPage||0));
@@ -2857,7 +2804,7 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
     selectedDraftIds.clear();
     (settingsReturn.selectedDraftIds||[]).filter(id=>itemIndexById(id)>=0).forEach(id=>selectedDraftIds.add(id));
     if(settingsReturn.view==="detailView"&&items.length)openDetail(activeIndex);
-    else if(settingsReturn.view==="cropView"&&items.length){openDetail(activeIndex);await openCrop();}
+    else if(settingsReturn.view==="cropView"&&items.length)await openCrop({preserveBack:true});
     else if(settingsReturn.view==="channelConfirmView"){await renderChannelConfirmation(false);show("channelConfirmView");}
     else if(settingsReturn.view==="channelView"){await renderChannelSelection();show("channelView");}
     else if(settingsReturn.view==="channelTargetsView")show("channelTargetsView");
@@ -2981,10 +2928,22 @@ async function leavePublishDetail(){
 }
 
 
-async function leavePublishCrop(){
+async function returnFromCrop(){
+  const context={...cropReturnContext};
+  const itemId=context.itemId||activeItemId||activeItem()?.id||"";
   cropImage=null;
   cropState=null;
   pointer=null;
+  if(context.view==="channelConfirmView"){
+    if(itemId)confirmToolItemId=itemId;
+    await renderChannelConfirmation(false);
+    show("channelConfirmView");
+    return;
+  }
+  if(context.view==="detailView"&&itemId){
+    await openDetailById(itemId);
+    return;
+  }
   await renderGrid();
   activeItemId=null;
   show("gridView");
@@ -3070,43 +3029,12 @@ async function goBackFromPublish(){
     return;
   }
   if(currentPublishView==="detailView"){
-    if(confirmToolReturn){
-      confirmToolReturn=false;
-      await renderChannelConfirmation(false);
-      show("channelConfirmView");
-      return;
-    }
     if(returnToVisionObject())return;
     await leavePublishDetail();
     return;
   }
   if(currentPublishView==="cropView"){
-    if(confirmToolReturn){
-      cropImage=null;
-      cropState=null;
-      pointer=null;
-      confirmToolReturn=false;
-      await renderChannelConfirmation(false);
-      show("channelConfirmView");
-      return;
-    }
-    if(directFromVisionEdit){
-      cropImage=null;
-      cropState=null;
-      pointer=null;
-      await openDetailById(directPrepareItemId);
-      return;
-    }
-    cropImage=null;
-    cropState=null;
-    pointer=null;
-    if(cropBackView==="detailView"){openDetail(activeIndex);return;}
-    if(cropBackView==="channelConfirmView"){
-      await renderChannelConfirmation(false);
-      show("channelConfirmView");
-      return;
-    }
-    await leavePublishCrop();
+    await returnFromCrop();
     return;
   }
 }
