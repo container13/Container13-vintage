@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.120
+CCC-version: 2.10.121
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -48,6 +48,15 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.121 – gemensam vyhjälp och balanserad Core-design
+- Core visar nu en gemensam, kontextstyrd hjälpruta på Dashboard samt i Vision, Publicera och Inställningar.
+- Hjälptexten följer den aktiva vyn och förklarar både vad som görs där och vilka lokala val som finns i modulens inställningar.
+- Varje vy kan visa hjälpen automatiskt första gången. Därefter öppnas den med Hjälp i Core-footern; beteendet kan stängas av eller återställas under Inställningar.
+- Hjälprutans inställningsknapp använder modulens befintliga returkontrakt så användaren återkommer till samma vy och objekt.
+- Headerns mobila Core-kontroller och symboler är något mindre, med mildare funktionsfärg och glöd. Footer använder samma linjeikonfamilj utan att minska tryckytorna.
+- Vision- och övriga arbetskort får en diskret gemensam yta, kant och skugga med Publicera som visuellt facit.
+- `/version.js` i projektroten är orörd; CCC-versionen finns endast i `/ccc-core/version.js`.
+
 v2.10.120 – manuell Anpassa bild och ett gemensamt returursprung
 - Automatisk motivbeskärning är bortkopplad från det aktiva flödet tills den kan utvecklas och verifieras separat.
 - Ett objekt utan sparad anpassning öppnas med hela originalbilden centrerad; en tidigare sparad manuell anpassning öppnas fortsatt exakt som den lämnades.
