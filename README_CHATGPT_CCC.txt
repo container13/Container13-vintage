@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.124
+CCC-version: 2.10.125
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -48,6 +48,15 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.125 – manuell bildverkstad i Anpassa bild
+- Anpassa bild använder en ny Publicera-inspirerad verktygslayout med Hela bilden, Fyll ytan, Rotera och Återställ.
+- Originalbilden öppnas komplett och centrerad. Ingen automatisk motivbeskärning körs.
+- Dra, nypzoom och de befintliga explicita zoomkontrollerna fungerar tillsammans med verktygslägena.
+- Rotation sparas i bildens separata publiceringsvariant; originalbilden skrivs aldrig över.
+- Frilägg och Bakgrund finns som synliga, låsta framtidsplatser så layout och dataflöde kan byggas vidare utan ny omstrukturering.
+- Hjälpen för vyn beskriver de nya verktygen och framtidsplatserna.
+- Rootens `/version.js` är orörd; CCC-versionen finns endast i `/ccc-core/version.js`.
+
 v2.10.124 – fasta fältetiketter och tätare formulärrytm
 - Rubrik och Beskrivning har nu små fasta etiketter inne i respektive fältruta, även när fälten innehåller text.
 - Fältinnehållet börjar under etiketten och teckenräknaren ligger kvar nere till höger.
