@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.122
+CCC-version: 2.10.123
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -48,6 +48,14 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.123 – lugnare formulärordning och inget automatiskt pris
+- Granska & komplettera visar fälten i ordningen Rubrik, Beskrivning och Pris.
+- Pris är en kompakt helbreddsrad som linjerar med textfälten och visar `Ej angett` när pris saknas.
+- Valutasuffixet visas bara när ett verkligt pris finns.
+- Äldre demodata får inte längre automatiskt skriva sitt prisförslag i objektets riktiga prisfält.
+- Manuellt sparade priser bevaras; AI-pris kan införas senare som ett uttryckligt förslag som användaren aktivt godkänner.
+- `/version.js` i projektroten är orörd; CCC-versionen finns endast i `/ccc-core/version.js`.
+
 v2.10.122 – Core-styrda verktygskort och hjälp endast på begäran
 - Publiceras verktygskort är nu ett gemensamt Core-facit för Vision, Publicera och Inställningar.
 - Core styr kortens yta, kant, glöd, ikonring, tryckrespons, inaktivt läge och färgroller från `ccc-core/core.css`.
