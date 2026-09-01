@@ -467,14 +467,13 @@ const CCCFooter={
 };
 
 // ==========================================================
-// CCC CONTEXT HELP v1 — v2.10.121
+// CCC CONTEXT HELP v2 — v2.10.122
 // En enda Core-ruta för hjälp i alla aktiva vyer. Moduler kan
 // registrera finare innehåll, men äger inte dialogens geometri,
-// första-gången-visning eller länken till lokala inställningar.
+// hjälpknappen eller länken till lokala inställningar. Hjälpen
+// öppnas endast aktivt med ? i Core-footern.
 // ==========================================================
 const CCC_HELP_ENABLED_KEY="ccc-help-tips-enabled";
-const CCC_HELP_AUTO_KEY="ccc-help-auto-open";
-const CCC_HELP_SEEN_PREFIX="ccc-help-seen:";
 const CCC_HELP_CONTENT={
   dashboard:{
     homeView:{title:"Dashboard",intro:"Här väljer du vilken del av CCC du vill arbeta i.",points:["Vision skapar och kompletterar objekt.","Publicera förbereder, väljer kanal och publicerar.","Mer samlar övriga verktyg."],settings:["Hjälp och tips","Vilka verktyg som ska visas när funktionen byggs ut"]},
@@ -507,9 +506,7 @@ const CCC_HELP_CONTENT={
 
 const CCCHelp={
   context:null,
-  autoTimer:0,
   enabled(){return localStorage.getItem(CCC_HELP_ENABLED_KEY)!=="0";},
-  autoEnabled(){return localStorage.getItem(CCC_HELP_AUTO_KEY)!=="0";},
   module(){
     const path=location.pathname;
     if(path.includes("/vision/"))return "vision";
@@ -531,15 +528,10 @@ const CCCHelp={
     }
     return "default";
   },
-  setContext(key,{auto=true}={}){
+  setContext(key){
     const next=`${this.module()}:${key||this.detect()}`;
     if(this.context===next)return;
     this.context=next;
-    clearTimeout(this.autoTimer);
-    if(auto&&this.enabled()&&this.autoEnabled()){
-      const seenKey=CCC_HELP_SEEN_PREFIX+next;
-      if(localStorage.getItem(seenKey)!=="1")this.autoTimer=setTimeout(()=>this.open({automatic:true}),700);
-    }
     CCCFooter?.renderDefault?.();
   },
   data(){
@@ -553,15 +545,14 @@ const CCCHelp={
     dialog.id="cccContextHelpDialog";
     dialog.className="ccc-help-dialog";
     dialog.hidden=true;
-    dialog.innerHTML=`<section class="ccc-help-panel" role="dialog" aria-modal="true" aria-labelledby="cccContextHelpTitle"><button class="ccc-help-close" type="button" aria-label="Stäng hjälp">×</button><div class="ccc-help-mark" aria-hidden="true">?</div><h2 id="cccContextHelpTitle"></h2><p class="ccc-help-intro"></p><div class="ccc-help-points"></div><section class="ccc-help-settings"><h3>Du kan anpassa den här vyn</h3><ul></ul><button class="ccc-help-open-settings" type="button">Öppna inställningar för vyn</button></section><label class="ccc-help-auto"><input type="checkbox"> <span>Visa hjälpen automatiskt första gången</span></label></section>`;
+    dialog.innerHTML=`<section class="ccc-help-panel" role="dialog" aria-modal="true" aria-labelledby="cccContextHelpTitle"><button class="ccc-help-close" type="button" aria-label="Stäng hjälp">×</button><div class="ccc-help-mark" aria-hidden="true">?</div><h2 id="cccContextHelpTitle"></h2><p class="ccc-help-intro"></p><div class="ccc-help-points"></div><section class="ccc-help-settings"><h3>Du kan anpassa den här vyn</h3><ul></ul><button class="ccc-help-open-settings" type="button">Öppna inställningar för vyn</button></section></section>`;
     document.body.append(dialog);
     dialog.querySelector(".ccc-help-close").onclick=()=>this.close();
     dialog.addEventListener("click",event=>{if(event.target===dialog)this.close();});
-    dialog.querySelector(".ccc-help-auto input").onchange=event=>localStorage.setItem(CCC_HELP_AUTO_KEY,event.target.checked?"1":"0");
     dialog.querySelector(".ccc-help-open-settings").onclick=()=>this.openSettings();
     return dialog;
   },
-  open({automatic=false}={}){
+  open(){
     if(!this.enabled())return;
     this.context=`${this.module()}:${this.detect()}`;
     const {module,key,content}=this.data();
@@ -572,9 +563,7 @@ const CCCHelp={
     const settings=dialog.querySelector(".ccc-help-settings");
     settings.hidden=!(content.settings||[]).length;
     settings.querySelector("ul").innerHTML=(content.settings||[]).map(item=>`<li>${item}</li>`).join("");
-    dialog.querySelector(".ccc-help-auto input").checked=this.autoEnabled();
     dialog.hidden=false;
-    localStorage.setItem(CCC_HELP_SEEN_PREFIX+`${module}:${key}`,"1");
     dialog.querySelector(".ccc-help-close").focus({preventScroll:true});
   },
   close(){const dialog=document.querySelector("#cccContextHelpDialog");if(dialog)dialog.hidden=true;},

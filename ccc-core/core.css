@@ -136,20 +136,20 @@ button{color:inherit}
   transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,filter .16s ease!important
 }
 .ccc-action-card:active{transform:scale(.985)}
-.ccc-action-card--blue{background:linear-gradient(105deg,rgba(230,239,255,.95),var(--ccc-surface) 72%)!important}
-.ccc-action-card--green{background:linear-gradient(105deg,rgba(231,247,237,.95),var(--ccc-surface) 72%)!important}
-.ccc-action-card--purple{background:linear-gradient(105deg,rgba(241,236,253,.95),var(--ccc-surface) 72%)!important}
-:root[data-theme="dark"] .ccc-action-card--blue{background:linear-gradient(105deg,#17253c,var(--ccc-surface) 72%)!important}
-:root[data-theme="dark"] .ccc-action-card--green{background:linear-gradient(105deg,#173126,var(--ccc-surface) 72%)!important}
-:root[data-theme="dark"] .ccc-action-card--purple{background:linear-gradient(105deg,#28203c,var(--ccc-surface) 72%)!important}
+.ccc-action-card--vision,.ccc-action-card--capture{background:linear-gradient(105deg,rgba(230,239,255,.95),var(--ccc-surface) 72%)!important}
+.ccc-action-card--publish,.ccc-action-card--import{background:linear-gradient(105deg,rgba(231,247,237,.95),var(--ccc-surface) 72%)!important}
+.ccc-action-card--tools,.ccc-action-card--files{background:linear-gradient(105deg,rgba(241,236,253,.95),var(--ccc-surface) 72%)!important}
+:root[data-theme="dark"] .ccc-action-card--vision,:root[data-theme="dark"] .ccc-action-card--capture{background:linear-gradient(105deg,#17253c,var(--ccc-surface) 72%)!important}
+:root[data-theme="dark"] .ccc-action-card--publish,:root[data-theme="dark"] .ccc-action-card--import{background:linear-gradient(105deg,#173126,var(--ccc-surface) 72%)!important}
+:root[data-theme="dark"] .ccc-action-card--tools,:root[data-theme="dark"] .ccc-action-card--files{background:linear-gradient(105deg,#28203c,var(--ccc-surface) 72%)!important}
 .ccc-action-card .action-icon{
   position:static!important;width:68px!important;height:68px!important;margin:0!important;border-radius:50%!important;
   display:grid!important;place-items:center!important;background:color-mix(in srgb,var(--ccc-surface) 55%,transparent)!important
 }
 .ccc-action-card .action-icon svg{width:33px!important;height:33px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important}
-.ccc-action-card--blue .action-icon,.ccc-action-card--blue .action-copy strong{color:#1f5da8!important}
-.ccc-action-card--green .action-icon,.ccc-action-card--green .action-copy strong{color:#21804c!important}
-.ccc-action-card--purple .action-icon,.ccc-action-card--purple .action-copy strong{color:#5a39a1!important}
+.ccc-action-card--vision .action-icon,.ccc-action-card--vision .action-copy strong,.ccc-action-card--capture .action-icon,.ccc-action-card--capture .action-copy strong{color:#1f5da8!important}
+.ccc-action-card--publish .action-icon,.ccc-action-card--publish .action-copy strong,.ccc-action-card--import .action-icon,.ccc-action-card--import .action-copy strong{color:#21804c!important}
+.ccc-action-card--tools .action-icon,.ccc-action-card--tools .action-copy strong,.ccc-action-card--files .action-icon,.ccc-action-card--files .action-copy strong{color:#5a39a1!important}
 .ccc-action-card .action-copy{
   position:static!important;min-width:0!important;width:auto!important;margin:0!important;display:flex!important;
   flex-direction:column!important;align-items:flex-start!important;gap:7px!important;text-align:left!important
@@ -157,6 +157,79 @@ button{color:inherit}
 .ccc-action-card .action-copy strong{width:auto!important;margin:0!important;font-size:24px!important;line-height:1.05!important;letter-spacing:-.02em!important}
 .ccc-action-card .action-copy small{width:auto!important;margin:0!important;font-size:15px!important;line-height:1.28!important;color:var(--ccc-muted)!important}
 .ccc-action-card .action-arrow{position:static!important;margin:0!important;font-size:36px!important;line-height:1!important;color:var(--ccc-text)!important;opacity:.9!important}
+
+/* Core Tool Card – Publiceras verktygskort är gemensamt facit.
+   Moduler anger bara semantisk funktion; Core äger all visuell mappning. */
+.ccc-tool-card{
+  --ccc-tool-accent:#4da3ff;
+  min-width:0;
+  min-height:68px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  padding:9px 10px;
+  border:1px solid color-mix(in srgb,var(--ccc-tool-accent) 52%,var(--ccc-border))!important;
+  border-radius:18px!important;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--ccc-tool-accent) 8%,var(--ccc-surface)),var(--ccc-surface))!important;
+  color:var(--ccc-text)!important;
+  box-shadow:0 10px 24px rgba(0,0,0,.13),0 0 16px color-mix(in srgb,var(--ccc-tool-accent) 8%,transparent)!important;
+  font:inherit;
+  font-weight:850!important;
+  line-height:1.08;
+  text-align:center;
+  transition:transform .08s ease,filter .08s ease,border-color .08s ease!important;
+  -webkit-tap-highlight-color:transparent;
+}
+.ccc-tool-card--review,.ccc-tool-card--info,.ccc-tool-card--draft,.ccc-tool-card--reset{--ccc-tool-accent:#4da3ff}
+.ccc-tool-card--edit,.ccc-tool-card--ai,.ccc-tool-card--capture{--ccc-tool-accent:#b267ff}
+.ccc-tool-card--add,.ccc-tool-card--import{--ccc-tool-accent:#45d39a}
+.ccc-tool-card--primary,.ccc-tool-card--selection{--ccc-tool-accent:var(--ccc-gold)}
+.ccc-tool-card--danger{--ccc-tool-accent:#ff6b72}
+.ccc-tool-card--compact{min-height:48px;flex-direction:row;padding:8px 14px;border-radius:15px!important}
+.ccc-tool-card:active{transform:translateY(1px) scale(.975)!important;filter:brightness(1.12)}
+.ccc-tool-card:disabled,.ccc-tool-card[aria-disabled="true"]{opacity:.38!important;filter:saturate(.45)!important;box-shadow:none!important}
+.ccc-tool-icon,.confirm-tool-icon,.confirm-add-object-icon,.workspace-add-icon,.edit-tool-icon{
+  width:34px!important;height:34px!important;min-width:34px!important;
+  display:grid!important;place-items:center!important;
+  border:1px solid var(--ccc-tool-accent)!important;border-radius:50%!important;
+  color:var(--ccc-tool-accent)!important;background:color-mix(in srgb,var(--ccc-tool-accent) 7%,transparent)!important;
+  box-shadow:0 0 14px color-mix(in srgb,var(--ccc-tool-accent) 20%,transparent)!important;
+}
+.ccc-tool-icon svg,.confirm-tool-icon svg,.confirm-add-object-icon svg,.workspace-add-icon svg,.edit-tool-icon svg{
+  width:21px!important;height:21px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important;
+}
+
+/* Core v2.10.122 – modulernas äldre regler får styra placeringen,
+   men alla faktiska verktygskort får sin synliga identitet här. */
+#editCard .edit-object-actions #manualAiBtn.ccc-tool-card,
+#editCard .edit-object-actions #editTrashBtn.ccc-tool-card,
+#channelConfirmView .confirm-tool-actions .confirm-tool-button.ccc-tool-card,
+#channelConfirmView .confirm-source-actions .confirm-add-object.ccc-tool-card{
+  border-color:color-mix(in srgb,var(--ccc-tool-accent) 52%,var(--ccc-border))!important;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--ccc-tool-accent) 8%,var(--ccc-surface)),var(--ccc-surface))!important;
+  color:var(--ccc-text)!important;
+  box-shadow:0 10px 24px rgba(0,0,0,.13),0 0 16px color-mix(in srgb,var(--ccc-tool-accent) 8%,transparent)!important;
+}
+#editCard .edit-object-actions #manualAiBtn.ccc-tool-card,
+#editCard .edit-object-actions #editTrashBtn.ccc-tool-card{
+  min-height:60px!important;height:60px!important;max-height:60px!important;
+  padding:6px 7px!important;gap:5px!important;flex-direction:column!important;
+}
+#editCard .edit-object-actions #manualAiBtn.ccc-tool-card .ccc-tool-icon,
+#editCard .edit-object-actions #editTrashBtn.ccc-tool-card .ccc-tool-icon{
+  width:27px!important;height:27px!important;min-width:27px!important;
+}
+#editCard .edit-object-actions #manualAiBtn.ccc-tool-card .ccc-tool-icon svg,
+#editCard .edit-object-actions #editTrashBtn.ccc-tool-card .ccc-tool-icon svg{
+  width:17px!important;height:17px!important;
+}
+#channelConfirmView .confirm-tool-actions .confirm-tool-button.ccc-tool-card .confirm-tool-icon,
+#channelConfirmView .confirm-source-actions .confirm-add-object.ccc-tool-card .confirm-add-object-icon{
+  border-color:var(--ccc-tool-accent)!important;color:var(--ccc-tool-accent)!important;
+  box-shadow:0 0 14px color-mix(in srgb,var(--ccc-tool-accent) 20%,transparent)!important;
+}
 .ccc-action-card--back{padding-left:34px!important}
 .ccc-action-card--back .action-arrow{position:absolute!important;left:10px!important;right:auto!important;top:50%!important;transform:translateY(-50%)!important}
 
@@ -1756,7 +1829,8 @@ button,a,input,textarea,select,[role="button"]{touch-action:manipulation}
   .ccc-home-heading{min-height:54px!important}
   .ccc-home-heading h1{font-size:1.78rem!important}
   .ccc-home-heading p{font-size:.94rem!important}
-  .ccc-module-card .action-icon{width:62px!important;height:62px!important}
+  .ccc-module-card .action-icon{width:56px!important;height:56px!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--ccc-card-accent) 8%,transparent),0 0 15px color-mix(in srgb,var(--ccc-card-accent) 38%,transparent),inset 0 1px 0 rgba(255,255,255,.24)!important}
+  .ccc-module-card .action-icon svg{width:27px!important;height:27px!important}
 }
 @media(orientation:landscape) and (max-height:540px) and (max-width:980px){
   .ccc-module-home{grid-template-rows:44px minmax(0,1fr)!important;gap:7px!important}
