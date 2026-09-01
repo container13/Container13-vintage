@@ -335,6 +335,7 @@ CCCHeader.set(window.__CCC_HEADER_PENDING__||initialHeader);
 function isCCCDashboard(){
   return /\/ccc-core\/dashboard\/?(?:index\.html)?$/i.test(location.pathname);
 }
+function cccHelpEnabled(){return localStorage.getItem("ccc-help-tips-enabled")!=="0";}
 
 
 function ensureCCCFooter(){
@@ -346,7 +347,7 @@ function ensureCCCFooter(){
     footer.setAttribute("aria-label","Snabbnavigation");
     footer.innerHTML=`
       <button id="cccCoreFooterBack" class="ccc-core-footer-back" type="button">
-        <span class="ccc-core-footer-back-icon" aria-hidden="true">←</span>
+        <span class="ccc-core-footer-back-icon" aria-hidden="true">${CCC_HEADER_ICONS.back}</span>
         <span class="ccc-core-footer-back-copy">
           <strong>Tillbaka</strong>
           <small>Till föregående steg</small>
@@ -356,7 +357,7 @@ function ensureCCCFooter(){
   }
 
   const dashboard=isCCCDashboard();
-  footer.classList.toggle("ccc-core-footer--empty",dashboard);
+  footer.classList.toggle("ccc-core-footer--empty",dashboard&&!cccHelpEnabled());
 
   const back=footer.querySelector("#cccCoreFooterBack");
   if(back){
@@ -385,18 +386,19 @@ const CCCFooter={
     footer.querySelector(".ccc-core-footer-tools")?.remove();
     const back=footer.querySelector("#cccCoreFooterBack");
     if(back)back.hidden=isCCCDashboard();
-    if(this.toolConfig&&!isCCCDashboard()){
+    const showCoreHelp=cccHelpEnabled();
+    if(this.toolConfig||showCoreHelp){
       const tools=document.createElement("div");
       tools.className="ccc-core-footer-tools";
-      if(this.toolConfig.help){
+      if(showCoreHelp){
         const help=document.createElement("button");
         help.type="button";
         help.className="ccc-core-footer-tool ccc-core-footer-help";
-        help.innerHTML='<span aria-hidden="true">?</span><small>Hjälp</small>';
-        help.addEventListener("click",()=>this.toolConfig?.onHelp?.());
+        help.innerHTML='<span class="ccc-footer-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.7 9a2.5 2.5 0 0 1 4.8 1c0 2-2.5 2.2-2.5 4"/><path d="M12 17.6h.01"/></svg></span><small>Hjälp</small>';
+        help.addEventListener("click",()=>window.CCC_CORE?.help?.open?.());
         tools.append(help);
       }
-      if(this.toolConfig.settings){
+      if(this.toolConfig?.settings){
         const settings=document.createElement("button");
         settings.type="button";
         settings.className="ccc-core-footer-tool ccc-core-footer-settings";
@@ -404,7 +406,7 @@ const CCCFooter={
         settings.addEventListener("click",()=>this.toolConfig?.onSettings?.());
         tools.append(settings);
       }
-      if(this.toolConfig.select){
+      if(this.toolConfig?.select){
         const select=document.createElement("button");
         select.type="button";
         select.className="ccc-core-footer-tool ccc-core-footer-select";
@@ -412,7 +414,7 @@ const CCCFooter={
         select.addEventListener("click",()=>this.toolConfig?.onSelect?.());
         tools.append(select);
       }
-      if(this.toolConfig.forward){
+      if(this.toolConfig?.forward){
         const forward=document.createElement("button");
         forward.type="button";
         forward.className="ccc-core-footer-tool ccc-core-footer-forward";
@@ -463,9 +465,146 @@ const CCCFooter={
     undo.querySelector(".ccc-footer-undo-btn").onclick=()=>onUndo?.();
   }
 };
+
+// ==========================================================
+// CCC CONTEXT HELP v1 — v2.10.121
+// En enda Core-ruta för hjälp i alla aktiva vyer. Moduler kan
+// registrera finare innehåll, men äger inte dialogens geometri,
+// första-gången-visning eller länken till lokala inställningar.
+// ==========================================================
+const CCC_HELP_ENABLED_KEY="ccc-help-tips-enabled";
+const CCC_HELP_AUTO_KEY="ccc-help-auto-open";
+const CCC_HELP_SEEN_PREFIX="ccc-help-seen:";
+const CCC_HELP_CONTENT={
+  dashboard:{
+    homeView:{title:"Dashboard",intro:"Här väljer du vilken del av CCC du vill arbeta i.",points:["Vision skapar och kompletterar objekt.","Publicera förbereder, väljer kanal och publicerar.","Mer samlar övriga verktyg."],settings:["Hjälp och tips","Vilka verktyg som ska visas när funktionen byggs ut"]},
+    addImagesView:{title:"Lägg till bilder",intro:"Välj hur bilder ska hämtas till den lokala arbetsytan.",points:["Ta ett nytt foto eller välj befintliga bilder.","Inget publiceras automatiskt."],settings:["Standardval för bilder och kamera"]},
+    cameraSessionView:{title:"Fotosession",intro:"Fortsätt fotografera eller avsluta den aktuella serien.",points:["Ångra senaste tar bara bort den senast tillagda bilden.","Klar sparar sessionen lokalt."],settings:["Kamerans standardval"]},
+    imagesView:{title:"Mina bilder",intro:"Här hanterar du bilder som finns lokalt på enheten.",points:["Markera bilder för nästa steg.","Öppna en bild för att komplettera uppgifter."],settings:["Visning och standardfält"]},
+    imageDetailView:{title:"Bildens uppgifter",intro:"Kontrollera och komplettera uppgifterna för den valda bilden.",points:["Spara behåller ändringarna lokalt.","Tillbaka återgår till samma bildlista."],settings:["Vilka uppgifter som visas"]},
+    moreView:{title:"Fler verktyg",intro:"Här finns funktioner som inte behöver ligga på Dashboard.",points:["Välj ett verktyg för att öppna dess egen arbetsyta."],settings:["Synliga verktyg"]}
+  },
+  vision:{
+    start:{title:"Välkommen till Vision",intro:"Skapa nya objekt från kamera eller bilder på enheten.",points:["Ta ett foto startar CCC-kameran.","Fortsätt fotosession återöppnar sparade objekt."],settings:["AI och lokalt lärande","Kostnadsvisning"]},
+    workspace:{title:"Välj objekt",intro:"Välj vilket objekt i fotosessionen du vill arbeta vidare med.",points:["Svep mellan bildserier när det finns fler objekt.","Granska & komplettera öppnar markerat objekt."],settings:["AI och lokalt lärande"]},
+    edit:{title:"Granska & komplettera",intro:"Kontrollera bilder, rubrik, pris och beskrivning för objektet.",points:["Ändringar sparas automatiskt.","AI-analys är frivillig.","Klar eller Tillbaka återgår till rätt ursprung."],settings:["AI-verktyg","Lokalt lärande","Kostnadsvisning"]},
+    suggestion:{title:"Vision-förslag",intro:"Granska CCC:s förslag innan det används.",points:["Godkänn förslaget eller välj Ändra.","Du kan lägga till fler bilder på samma objekt."],settings:["Automatisk AI-analys","Lokalt lärande"]},
+    done:{title:"Färdiga objekt",intro:"Objekten är sparade och kan skickas vidare till Publicera.",points:["Publicera öppnar publiceringsflödet.","Fota fler fortsätter samma arbetspass."],settings:["AI och lokalt lärande"]},
+    camera:{title:"CCC-kameran",intro:"Fotografera ett eller flera objekt utan att lämna CCC.",points:["Välj zoom och ta bilden.","Efteråt kan du ta om, fortsätta eller expresspublicera."],settings:["Kamerans framtida standardval"]}
+  },
+  publish:{
+    startView:{title:"Publicera",intro:"Välj utkast, kanal eller hantera sådant som redan publicerats.",points:["Förbered öppnar lokala utkast.","Historik och publicerade bilder finns kvar lokalt."],settings:["Standardvisning på hemsidan"]},
+    gridView:{title:"Förbered för publicering",intro:"Välj och kontrollera de objekt som ska gå vidare.",points:["Tryck på ett objekt för detaljvy.","Svep mellan sidor när fler objekt finns."],settings:["Standardvisning på hemsidan"]},
+    detailView:{title:"Kontrollera objekt",intro:"Granska objektets bild innan publicering.",points:["Anpassa bild öppnar manuell justering.","Publicera går till sista kontrollen."],settings:["Standardvisning på hemsidan"]},
+    cropView:{title:"Anpassa bild",intro:"Flytta och zooma bilden manuellt tills den känns rätt.",points:["Återställ visar hela originalbilden centrerad.","Spara och Tillbaka behåller samma returväg."],settings:["Bildanpassning när fler val tillkommer"]},
+    channelView:{title:"Välj objekt",intro:"Markera vilka objekt som ska publiceras i den valda kanalen.",points:["Tryck för att markera eller avmarkera.","Fortsätt när urvalet är klart."],settings:["Standardvisning på hemsidan"]},
+    channelTargetsView:{title:"Välj kanal",intro:"Välj var objekten ska publiceras.",points:["Låsta kanaler är ännu inte anslutna.","Ett aktivt val krävs innan publicering."],settings:["Anslutna kanaler när funktionen byggs ut"]},
+    channelConfirmView:{title:"Sista kontrollen",intro:"Kontrollera objekt, verktyg, kanal och visning före publicering.",points:["Gul ram visar vilket objekt verktygen arbetar med.","Alla objekt i raden publiceras även om bara ett är markerat."],settings:["Vilka uppgifter Container13 visar"]},
+    publishedView:{title:"Publicerat och historik",intro:"Se vad som ligger ute och vad som finns sparat lokalt.",points:["Du kan ta bort innehåll från hemsidan utan att radera lokala original.","Historiken visar tidigare publiceringar."],settings:["Standardvisning på hemsidan"]}
+  },
+  settings:{default:{title:"Inställningar",intro:"Här anpassar du den aktuella modulen och CCC:s hjälpsystem.",points:["Ändringar sparas på den här enheten.","Tillbaka återgår till vyn du kom från."],settings:[]}}
+};
+
+const CCCHelp={
+  context:null,
+  autoTimer:0,
+  enabled(){return localStorage.getItem(CCC_HELP_ENABLED_KEY)!=="0";},
+  autoEnabled(){return localStorage.getItem(CCC_HELP_AUTO_KEY)!=="0";},
+  module(){
+    const path=location.pathname;
+    if(path.includes("/vision/"))return "vision";
+    if(path.includes("/publish/"))return "publish";
+    if(path.includes("/settings/"))return "settings";
+    return "dashboard";
+  },
+  detect(){
+    const module=this.module();
+    if(module==="dashboard")return [...document.querySelectorAll(".dashboard-view")].find(el=>!el.hidden&&el.classList.contains("is-active"))?.id||[...document.querySelectorAll(".dashboard-view")].find(el=>!el.hidden)?.id||"homeView";
+    if(module==="publish")return [...document.querySelectorAll(".publish-view")].find(el=>!el.hidden)?.id||"startView";
+    if(module==="vision"){
+      if(!document.querySelector("#cameraOverlay")?.hidden)return "camera";
+      if(!document.querySelector("#editCard")?.hidden)return "edit";
+      if(!document.querySelector("#visionCard")?.hidden)return "suggestion";
+      if(!document.querySelector("#seriesDoneCard")?.hidden)return "done";
+      if(!document.querySelector("#visionStartHome")?.hidden)return "start";
+      return "workspace";
+    }
+    return "default";
+  },
+  setContext(key,{auto=true}={}){
+    const next=`${this.module()}:${key||this.detect()}`;
+    if(this.context===next)return;
+    this.context=next;
+    clearTimeout(this.autoTimer);
+    if(auto&&this.enabled()&&this.autoEnabled()){
+      const seenKey=CCC_HELP_SEEN_PREFIX+next;
+      if(localStorage.getItem(seenKey)!=="1")this.autoTimer=setTimeout(()=>this.open({automatic:true}),700);
+    }
+    CCCFooter?.renderDefault?.();
+  },
+  data(){
+    const [module,key]=(this.context||`${this.module()}:${this.detect()}`).split(":");
+    return {module,key,content:CCC_HELP_CONTENT[module]?.[key]||CCC_HELP_CONTENT[module]?.default||{title:"Hjälp",intro:"Här arbetar du vidare i CCC.",points:[],settings:[]}};
+  },
+  ensureDialog(){
+    let dialog=document.querySelector("#cccContextHelpDialog");
+    if(dialog)return dialog;
+    dialog=document.createElement("div");
+    dialog.id="cccContextHelpDialog";
+    dialog.className="ccc-help-dialog";
+    dialog.hidden=true;
+    dialog.innerHTML=`<section class="ccc-help-panel" role="dialog" aria-modal="true" aria-labelledby="cccContextHelpTitle"><button class="ccc-help-close" type="button" aria-label="Stäng hjälp">×</button><div class="ccc-help-mark" aria-hidden="true">?</div><h2 id="cccContextHelpTitle"></h2><p class="ccc-help-intro"></p><div class="ccc-help-points"></div><section class="ccc-help-settings"><h3>Du kan anpassa den här vyn</h3><ul></ul><button class="ccc-help-open-settings" type="button">Öppna inställningar för vyn</button></section><label class="ccc-help-auto"><input type="checkbox"> <span>Visa hjälpen automatiskt första gången</span></label></section>`;
+    document.body.append(dialog);
+    dialog.querySelector(".ccc-help-close").onclick=()=>this.close();
+    dialog.addEventListener("click",event=>{if(event.target===dialog)this.close();});
+    dialog.querySelector(".ccc-help-auto input").onchange=event=>localStorage.setItem(CCC_HELP_AUTO_KEY,event.target.checked?"1":"0");
+    dialog.querySelector(".ccc-help-open-settings").onclick=()=>this.openSettings();
+    return dialog;
+  },
+  open({automatic=false}={}){
+    if(!this.enabled())return;
+    this.context=`${this.module()}:${this.detect()}`;
+    const {module,key,content}=this.data();
+    const dialog=this.ensureDialog();
+    dialog.querySelector("h2").textContent=content.title;
+    dialog.querySelector(".ccc-help-intro").textContent=content.intro;
+    dialog.querySelector(".ccc-help-points").innerHTML=(content.points||[]).map(point=>`<p><span aria-hidden="true">✓</span>${point}</p>`).join("");
+    const settings=dialog.querySelector(".ccc-help-settings");
+    settings.hidden=!(content.settings||[]).length;
+    settings.querySelector("ul").innerHTML=(content.settings||[]).map(item=>`<li>${item}</li>`).join("");
+    dialog.querySelector(".ccc-help-auto input").checked=this.autoEnabled();
+    dialog.hidden=false;
+    localStorage.setItem(CCC_HELP_SEEN_PREFIX+`${module}:${key}`,"1");
+    dialog.querySelector(".ccc-help-close").focus({preventScroll:true});
+  },
+  close(){const dialog=document.querySelector("#cccContextHelpDialog");if(dialog)dialog.hidden=true;},
+  openSettings(){
+    const {module}=this.data();
+    this.close();
+    if(module==="vision"||module==="publish"){
+      document.dispatchEvent(new CustomEvent("ccc:header-settings"));
+      return;
+    }
+    const target=new URL("./settings/index.html",import.meta.url);
+    target.searchParams.set("module",module==="settings"?"dashboard":module);
+    location.href=target.href;
+  },
+  install(){
+    const sync=()=>this.setContext(this.detect());
+    new MutationObserver(sync).observe(document.body,{subtree:true,attributes:true,attributeFilter:["hidden","class"]});
+    document.addEventListener("ccc:header-back",event=>{
+      const dialog=document.querySelector("#cccContextHelpDialog");
+      if(dialog&&!dialog.hidden){event.stopImmediatePropagation();this.close();}
+    },true);
+    document.addEventListener("keydown",event=>{if(event.key==="Escape")this.close();});
+    setTimeout(sync,250);
+  }
+};
 window.CCC_CORE={
   applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader,footer:CCCFooter,
-  swipe:CCCSwipe,press:CCCPress,
+  swipe:CCCSwipe,press:CCCPress,help:CCCHelp,
   navigation:{back:dispatchCCCBackOnce,dashboard:navigateCCCDashboardOnce}
 };
+CCCHelp.install();
+CCCFooter.renderDefault();
 document.dispatchEvent(new CustomEvent("ccc:core-ready",{detail:{header:CCCHeader}}));

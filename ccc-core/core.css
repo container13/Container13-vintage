@@ -1461,13 +1461,24 @@ body{
 /* Mobile: same geometry everywhere, changed from ONE place only. */
 @media (max-width:760px){
   :root{
-    --ccc-header-control-size:44px;
-    --ccc-header-icon-size:22px;
+    --ccc-header-control-size:42px;
+    --ccc-header-icon-size:20px;
     --ccc-header-control-gap:8px;
     --ccc-header-side:16px;
     --ccc-header-control-bottom:14px;
   }
 }
+
+/* v2.10.121 – balanserad Core-ikonfamilj och mild funktionsglöd. */
+.ccc-header-control,
+.ccc-header .ccc-icon-button{
+  border-color:color-mix(in srgb,currentColor 30%,var(--ccc-border))!important;
+  box-shadow:0 7px 18px rgba(0,0,0,.14),0 0 14px color-mix(in srgb,currentColor 14%,transparent)!important;
+}
+.ccc-header-control--back{color:var(--ccc-gold)!important}
+.ccc-header-control--settings{color:#b267ff!important}
+.ccc-header-control--theme{color:var(--ccc-gold)!important}
+#profileBtn{color:#54d6c0!important}
 
 
 /* ==========================================================
@@ -1528,10 +1539,12 @@ body{
 .ccc-core-footer-back:active{transform:translateY(1px) scale(.985)}
 .ccc-core-footer-back-icon{
   color:var(--gold,var(--ccc-gold,#e4b956))!important;
-  font-size:26px!important;
+  width:27px!important;
+  height:27px!important;
   line-height:1!important;
   font-weight:800!important;
 }
+.ccc-core-footer-back-icon svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
 .ccc-core-footer-back-copy{
   display:flex!important;
   flex-direction:column!important;
@@ -1581,6 +1594,35 @@ button,a,input,textarea,select,[role="button"]{touch-action:manipulation}
   font-size:21px;
   font-weight:900;
   line-height:1;
+}
+.ccc-core-footer-tool .ccc-footer-tool-icon{width:24px;height:24px;display:grid;place-items:center;border:1px solid color-mix(in srgb,#4da3ff 72%,transparent);border-radius:50%;color:#4da3ff;box-shadow:0 0 12px rgba(77,163,255,.18)}
+.ccc-core-footer-tool .ccc-footer-tool-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.ccc-core-footer-tool{box-shadow:0 7px 18px rgba(0,0,0,.14)!important}
+
+/* CCC Context Help – samma dialog och geometri i samtliga moduler. */
+.ccc-help-dialog[hidden]{display:none!important}
+.ccc-help-dialog{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;padding:max(18px,env(safe-area-inset-top)) 18px max(18px,env(safe-area-inset-bottom));background:rgba(5,8,14,.76);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.ccc-help-panel{position:relative;width:min(100%,430px);max-height:min(82dvh,720px);overflow:auto;overscroll-behavior:contain;padding:24px 20px 20px;border:1px solid color-mix(in srgb,#4da3ff 34%,var(--ccc-border));border-radius:25px;background:linear-gradient(145deg,color-mix(in srgb,#15243b 86%,var(--ccc-surface)),var(--ccc-surface));color:var(--ccc-text);box-shadow:0 26px 80px rgba(0,0,0,.48),0 0 30px rgba(77,163,255,.08)}
+.ccc-help-close{position:absolute;right:13px;top:11px;width:38px;height:38px;border:1px solid var(--ccc-border);border-radius:50%;background:var(--ccc-surface);color:var(--ccc-text);font:700 25px/1 inherit}
+.ccc-help-mark{width:52px;height:52px;display:grid;place-items:center;margin:0 auto 10px;border:1px solid #4da3ff;border-radius:50%;color:#4da3ff;font-size:30px;font-weight:900;box-shadow:0 0 20px rgba(77,163,255,.22)}
+.ccc-help-panel h2{margin:0;text-align:center;font-size:25px;line-height:1.1}
+.ccc-help-intro{margin:9px auto 16px;text-align:center;color:var(--ccc-muted);line-height:1.4}
+.ccc-help-points{display:grid;gap:8px}
+.ccc-help-points p{display:grid;grid-template-columns:24px 1fr;gap:8px;align-items:start;margin:0;padding:10px 12px;border:1px solid var(--ccc-border);border-radius:14px;background:color-mix(in srgb,var(--ccc-surface) 90%,transparent);line-height:1.32}
+.ccc-help-points p span{color:#45d39a;font-weight:900}
+.ccc-help-settings{margin-top:14px;padding:14px;border:1px solid color-mix(in srgb,#b267ff 38%,var(--ccc-border));border-radius:17px;background:rgba(178,103,255,.055)}
+.ccc-help-settings[hidden]{display:none!important}
+.ccc-help-settings h3{margin:0 0 7px;font-size:16px}
+.ccc-help-settings ul{margin:0 0 12px;padding-left:20px;color:var(--ccc-muted);font-size:13px;line-height:1.45}
+.ccc-help-open-settings{width:100%;min-height:46px;border:1px solid #b267ff;border-radius:14px;background:transparent;color:var(--ccc-text);font-weight:850}
+.ccc-help-auto{display:flex;align-items:center;gap:9px;margin:14px 2px 0;color:var(--ccc-muted);font-size:12px}
+.ccc-help-auto input{width:20px;height:20px;accent-color:var(--ccc-gold)}
+
+/* Gemensamt visuellt arbetskort: Publicera är facit för övriga arbetsvyer. */
+#captureCard.card,#visionCard.card,#editCard.card,#seriesDoneCard.card,#previewCard.card,
+.publish-view:not(.publish-start-view),.dashboard-view:not(#homeView){
+  border-color:color-mix(in srgb,var(--ccc-gold) 10%,var(--ccc-border));
+  box-shadow:0 15px 38px rgba(0,0,0,.13);
 }
 .ccc-core-footer-tool small{
   font-size:10px;
