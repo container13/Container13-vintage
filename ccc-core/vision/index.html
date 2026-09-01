@@ -11,7 +11,7 @@
   <title>CCC Vision v2.10.66</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}if(new URLSearchParams(location.search).get("mode")==="publish-add")document.documentElement.classList.add("ccc-vision-publish-add-loading");</script>
   <link rel="stylesheet" href="vision.css?v=2.10.120">
-  <link rel="stylesheet" href="../core.css?v=2.10.121">
+  <link rel="stylesheet" href="../core.css?v=2.10.122">
 </head>
 <body data-ccc-header-back="false" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell">
@@ -57,7 +57,7 @@
       <section id="visionStartHome" class="ccc-mobile-home-view vision-home-view ccc-module-home ccc-module-home--vision">
       <div class="ccc-home-heading"><h1>Välkommen till Vision</h1></div>
       <nav class="vision-start-actions ccc-action-grid ccc-action-grid--fill-mobile" aria-label="Vision startval">
-<button id="startCameraBtn" class="main-camera camera-trigger ccc-action-card ccc-action-card--blue ccc-action-card--arrow-desktop ccc-action-card--dense-copy ccc-module-card ccc-module-card--vision" type="button" aria-label="Ta ett foto" data-ccc-press-delay>
+<button id="startCameraBtn" class="main-camera camera-trigger ccc-action-card ccc-action-card--capture ccc-action-card--arrow-desktop ccc-action-card--dense-copy ccc-module-card ccc-module-card--vision" type="button" aria-label="Ta ett foto" data-ccc-press-delay>
         <img id="mainPreview" alt="Förhandsvisning av varan" hidden>
         <span class="action-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24"><path d="M4 8h3l1.4-2h7.2L17 8h3v11H4V8Zm8 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/></svg>
@@ -66,7 +66,7 @@
         <span class="action-arrow" aria-hidden="true">›</span>
       </button>
 
-      <button id="galleryBtn" class="ccc-action-card ccc-action-card--green ccc-action-card--arrow-desktop ccc-action-card--dense-copy ccc-module-card ccc-module-card--vision" type="button" aria-label="Välj bilder från enheten">
+      <button id="galleryBtn" class="ccc-action-card ccc-action-card--import ccc-action-card--arrow-desktop ccc-action-card--dense-copy ccc-module-card ccc-module-card--vision" type="button" aria-label="Välj bilder från enheten">
         <span class="action-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4V5Zm3 11 3.5-4 2.5 3 2-2 2 3H7Zm9-7h.01"/></svg>
         </span>
@@ -74,7 +74,7 @@
         <span class="action-arrow" aria-hidden="true">›</span>
       </button>
 
-      <button id="resumeSessionBtn" class="ccc-action-card ccc-action-card--purple ccc-action-card--arrow-desktop ccc-action-card--dense-copy ccc-module-card ccc-module-card--vision" type="button" aria-label="Fortsätt fotosession" data-ccc-press-delay hidden>
+      <button id="resumeSessionBtn" class="ccc-action-card ccc-action-card--tools ccc-action-card--arrow-desktop ccc-action-card--dense-copy ccc-module-card ccc-module-card--vision" type="button" aria-label="Fortsätt fotosession" data-ccc-press-delay hidden>
         <span class="action-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24"><path d="M7 7v5h5"/><path d="M7.7 11.5a6.5 6.5 0 1 1 1.4 4.9"/><path d="M12 8.5V12l2.5 1.5"/></svg>
         </span>
@@ -95,8 +95,8 @@
         <h2 id="workspaceTitle" class="workspace-title">Välj objekt</h2>
         <strong id="workspaceCount">Objekt 0/0</strong>
         <div class="vision-workspace-add">
-          <button id="workspaceCameraBtn" type="button">+ Nytt foto</button>
-          <button id="workspaceGalleryBtn" type="button">+ Från album</button>
+          <button id="workspaceCameraBtn" class="ccc-tool-card ccc-tool-card--capture" type="button"><span class="workspace-add-icon ccc-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8h3l1.4-2h7.2L17 8h3v11H4V8Z"/><circle cx="12" cy="13" r="3.2"/></svg></span><span>Nytt foto</span></button>
+          <button id="workspaceGalleryBtn" class="ccc-tool-card ccc-tool-card--import" type="button"><span class="workspace-add-icon ccc-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="m6.5 16 4-4 2.7 2.6 2-2 2.8 3.4"/></svg></span><span>Från album</span></button>
         </div>
       </div>
       <p id="batchHelp" class="batch-help" hidden></p>
@@ -194,8 +194,8 @@
           <span id="editProgress" class="edit-progress-pill">1/1</span>
           <button id="editNextObjectBtn" class="edit-object-nav-btn" type="button" aria-label="Nästa objekt">›</button>
         </div>
-        <button id="manualAiBtn" class="edit-ai-button" type="button">AI-analys</button>
-        <button id="editTrashBtn" class="edit-trash-button edit-trash-pill" type="button">Ta bort</button>
+        <button id="manualAiBtn" class="edit-ai-button ccc-tool-card ccc-tool-card--ai" type="button"><span class="edit-tool-icon ccc-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 1.3 4.1L17 8.5l-3.7 1.4L12 14l-1.3-4.1L7 8.5l3.7-1.4L12 3Z"/><path d="m18.5 14 .8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z"/></svg></span><span>AI-analys</span></button>
+        <button id="editTrashBtn" class="edit-trash-button edit-trash-pill ccc-tool-card ccc-tool-card--danger" type="button"><span class="edit-tool-icon ccc-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13M10 10v7M14 10v7"/></svg></span><span>Ta bort</span></button>
       </div>
 
       <form id="productForm" class="compact-edit-form">
@@ -221,7 +221,7 @@
       </form>
 
       <div class="editor-bottom-row">
-        <button id="openMoreFieldsBtn" class="secondary-button more-fields-trigger" type="button">Lägg till fler uppgifter</button>
+        <button id="openMoreFieldsBtn" class="secondary-button more-fields-trigger ccc-tool-card ccc-tool-card--info ccc-tool-card--compact" type="button">Lägg till fler uppgifter</button>
         <button id="previewBtn" class="primary-button" type="button">Nästa objekt</button>
       </div>
       <p id="message" class="message" aria-live="polite"></p>
@@ -361,13 +361,13 @@
     </div>
   </div>
 
-  <script src="../version.js?v=2.10.121"></script>
+  <script src="../version.js?v=2.10.122"></script>
   <script src="demo-data.js?v=2.9.3"></script>
   <script src="vision-ai-config.js?v=2.9.3"></script>
   <script src="vision-ai.js?v=2.9.3"></script>
   <script src="vision-knowledge.js?v=2.9.3"></script>
   <script src="product-lab.js?v=2.10.120"></script>
-<script type="module" src="../core.js?v=2.10.121"></script>
+<script type="module" src="../core.js?v=2.10.122"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 <div id="visionContextHelpDialog" class="dialog ccc-dialog vision-context-help" role="dialog" aria-modal="true" aria-labelledby="visionContextHelpTitle" hidden>
   <div class="dialog-box">
