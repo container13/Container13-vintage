@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.123
+CCC-version: 2.10.124
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -48,6 +48,14 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.124 – fasta fältetiketter och tätare formulärrytm
+- Rubrik och Beskrivning har nu små fasta etiketter inne i respektive fältruta, även när fälten innehåller text.
+- Fältinnehållet börjar under etiketten och teckenräknaren ligger kvar nere till höger.
+- Prisraden är sänkt till 42 px och använder lugnare textvikt och storlek.
+- Mellanrummen mellan Rubrik, Beskrivning, Pris och nedersta verktygsraden följer en tätare Publicera-inspirerad rytm.
+- Bildyta, objektverktyg och navigation är orörda.
+- `/version.js` i projektroten är orörd; CCC-versionen finns endast i `/ccc-core/version.js`.
+
 v2.10.123 – lugnare formulärordning och inget automatiskt pris
 - Granska & komplettera visar fälten i ordningen Rubrik, Beskrivning och Pris.
 - Pris är en kompakt helbreddsrad som linjerar med textfälten och visar `Ej angett` när pris saknas.
