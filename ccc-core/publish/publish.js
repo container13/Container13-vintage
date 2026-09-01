@@ -1768,7 +1768,7 @@ function updateCropCounter(){
   const el=$("#cropCounter");
   if(!el)return;
   syncActiveIndexFromId();
-  el.textContent=`${activeIndex+1} av ${items.length}`;
+  el.textContent=`${entityTerm("singular",true)} ${activeIndex+1} av ${items.length}`;
 }
 
 function setCropZoom(nextZoom){
@@ -2261,8 +2261,8 @@ async function renderChannelConfirmation(resetControls=true){
   if(resetControls){
     confirmToolItemId=null;
     container13PublishDisplayOverride=null;
-    if($("#confirmDisplayEditor"))$("#confirmDisplayEditor").hidden=true;
-    if($("#confirmDisplayEditBtn"))$("#confirmDisplayEditBtn").textContent="Ändra";
+    confirmDisplayDraft=null;
+    if($("#confirmDisplayDialog"))$("#confirmDisplayDialog").hidden=true;
   }
   syncConfirmDisplayUi();
 
@@ -2485,6 +2485,7 @@ function container13DisplaySettings(){
   };
 }
 let container13PublishDisplayOverride=null;
+let confirmDisplayDraft=null;
 function effectiveContainer13DisplaySettings(){
   return container13PublishDisplayOverride?{...container13DisplaySettings(),...container13PublishDisplayOverride}:container13DisplaySettings();
 }
@@ -2502,6 +2503,9 @@ function syncConfirmDisplayUi(){
   if($("#confirmDisplaySummary")){
     $("#confirmDisplaySummary").textContent=displaySummaryText(settings);
   }
+  syncConfirmDisplayInputs(settings);
+}
+function syncConfirmDisplayInputs(settings){
   for(const [selector,key] of [["#confirmShowTitle","showTitle"],["#confirmShowDescription","showDescription"],["#confirmShowBrand","showBrand"],["#confirmShowSize","showSize"],["#confirmShowPrice","showPrice"]]){
     const input=$(selector); if(input)input.checked=!!settings[key];
   }
@@ -2685,16 +2689,32 @@ async function openSitePreviewForSelection(){
 }
 
 
+function closeConfirmDisplayDialog({save=false}={}){
+  const dialog=$("#confirmDisplayDialog");
+  if(!dialog||dialog.hidden)return;
+  if(save&&confirmDisplayDraft){
+    container13PublishDisplayOverride={...confirmDisplayDraft};
+    syncConfirmDisplayUi();
+  }
+  confirmDisplayDraft=null;
+  dialog.hidden=true;
+}
 $("#confirmDisplayEditBtn")?.addEventListener("click",()=>{
-  const editor=$("#confirmDisplayEditor"); if(!editor)return;
-  editor.hidden=!editor.hidden;
-  $("#confirmDisplayEditBtn").textContent=editor.hidden?"Ändra":"Klar";
-  syncConfirmDisplayUi();
+  const dialog=$("#confirmDisplayDialog");if(!dialog)return;
+  confirmDisplayDraft={...effectiveContainer13DisplaySettings()};
+  syncConfirmDisplayInputs(confirmDisplayDraft);
+  dialog.hidden=false;
 });
 for(const input of document.querySelectorAll("#confirmDisplayEditor input[type=checkbox]")){
-  input.addEventListener("change",()=>{container13PublishDisplayOverride=readConfirmDisplayOverride();syncConfirmDisplayUi();});
+  input.addEventListener("change",()=>{confirmDisplayDraft=readConfirmDisplayOverride();});
 }
-$("#confirmDisplayResetBtn")?.addEventListener("click",()=>{container13PublishDisplayOverride=null;syncConfirmDisplayUi();});
+$("#confirmDisplayResetBtn")?.addEventListener("click",()=>{
+  confirmDisplayDraft=container13DisplaySettings();
+  syncConfirmDisplayInputs(confirmDisplayDraft);
+});
+$("#confirmDisplayCancelBtn")?.addEventListener("click",()=>closeConfirmDisplayDialog());
+$("#confirmDisplayDoneBtn")?.addEventListener("click",()=>closeConfirmDisplayDialog({save:true}));
+$("#confirmDisplayDialog")?.addEventListener("click",event=>{if(event.target===$("#confirmDisplayDialog"))closeConfirmDisplayDialog();});
 
 $("#confirmC13Channel")?.addEventListener("click",()=>{
   setContainer13ChannelSelected(!container13ChannelSelected);
@@ -2984,11 +3004,9 @@ async function goBackFromPublish(){
   if(helpDialog && !helpDialog.hidden){closePublishHelp();return;}
   const deleteDialog=$("#deleteDraftDialog");
   if(deleteDialog && !deleteDialog.hidden){$("#cancelDeleteDrafts")?.click();return;}
-  const displayEditor=$("#confirmDisplayEditor");
-  if(currentPublishView==="channelConfirmView"&&displayEditor&&!displayEditor.hidden){
-    displayEditor.hidden=true;
-    const button=$("#confirmDisplayEditBtn");
-    if(button)button.textContent="Ändra";
+  const displayDialog=$("#confirmDisplayDialog");
+  if(displayDialog&&!displayDialog.hidden){
+    closeConfirmDisplayDialog();
     return;
   }
   if(currentPublishView==="gridView"&&draftSelectionMode){exitDraftSelection();return;}

@@ -11,8 +11,8 @@
 <title>CCC Publicera v2.9.22</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}const p=new URLSearchParams(location.search);document.documentElement.classList.add("ccc-publish-booting");if(p.get("view")==="prepare")document.documentElement.classList.add("ccc-direct-prepare-loading");</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.10.126">
-  <link rel="stylesheet" href="../core.css?v=2.10.126">
+<link rel="stylesheet" href="publish.css?v=2.10.127">
+  <link rel="stylesheet" href="../core.css?v=2.10.127">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell publish-shell">
@@ -191,19 +191,10 @@
         <button class="confirm-channel-chip is-unavailable" type="button" data-channel="Etsy" aria-label="Etsy, testkanal, inte ansluten"><span class="channel-brand-icon channel-brand-etsy" aria-hidden="true">E</span><small>Etsy</small></button>
       </div>
 
-      <div class="confirm-display-summary">
-        <div><strong>Visas på Container13</strong><span id="confirmDisplaySummary">Bild + titel</span></div>
-        <button id="confirmDisplayEditBtn" class="secondary-action confirm-display-edit ccc-tool-card ccc-tool-card--edit ccc-tool-card--compact" type="button">Ändra</button>
-      </div>
-      <div id="confirmDisplayEditor" class="confirm-display-editor" hidden>
-        <p>Gäller bara den här publiceringen.</p>
-        <label><input id="confirmShowTitle" type="checkbox"> <span>Visa titel</span></label>
-        <label><input id="confirmShowDescription" type="checkbox"> <span>Visa beskrivning</span></label>
-        <label><input id="confirmShowBrand" type="checkbox"> <span>Visa märke</span></label>
-        <label><input id="confirmShowSize" type="checkbox"> <span>Visa storlek</span></label>
-        <label><input id="confirmShowPrice" type="checkbox"> <span>Visa pris</span></label>
-        <button id="confirmDisplayResetBtn" class="secondary-action" type="button">Använd standard</button>
-      </div>
+      <button id="confirmDisplayEditBtn" class="confirm-display-summary" type="button" aria-haspopup="dialog">
+        <span class="confirm-display-copy"><strong>Visas på Container13</strong><span id="confirmDisplaySummary">Bild + titel</span></span>
+        <span class="confirm-display-arrow" aria-hidden="true">›</span>
+      </button>
       <div class="confirm-actions">
         <button id="confirmPublishBtn" class="primary-action" type="button">Publicera</button>
         <p id="confirmStatus" class="publish-status" aria-live="polite"></p>
@@ -256,8 +247,8 @@
 
     <section id="cropView" class="publish-view crop-view" hidden>
       <div class="crop-editor-card">
-        <div class="crop-counter-slot counter-slot"><span id="cropCounter" class="counter-badge">1 av 1</span></div>
         <div class="crop-preview" id="cropPreview">
+        <div class="crop-counter-slot counter-slot"><span id="cropCounter" class="counter-badge">Objekt 1 av 1</span></div>
         <img id="cropOriginalPreview" alt="" aria-hidden="true">
         <div class="crop-dim crop-dim-top"></div><div class="crop-dim crop-dim-right"></div><div class="crop-dim crop-dim-bottom"></div><div class="crop-dim crop-dim-left"></div>
         <div class="crop-box">
@@ -281,13 +272,32 @@
         <button id="cropCover" class="ccc-tool-card ccc-tool-card--edit crop-tool" type="button"><span class="crop-tool-icon" aria-hidden="true">↗</span><span>Fyll</span></button>
         <button id="cropRotate" class="ccc-tool-card ccc-tool-card--edit crop-tool" type="button"><span class="crop-tool-icon" aria-hidden="true">↻</span><span>Rotera</span></button>
         <button id="cropReset" class="ccc-tool-card ccc-tool-card--reset crop-tool" type="button"><span class="crop-tool-icon" aria-hidden="true">↶</span><span>Återställ</span></button>
-        <button class="ccc-tool-card ccc-tool-card--ai crop-tool crop-tool--future" type="button" disabled aria-label="Frilägg – kommer senare"><span class="crop-tool-icon" aria-hidden="true">✦</span><span>Frilägg</span><span class="crop-tool-lock" aria-hidden="true">▣</span></button>
-        <button class="ccc-tool-card ccc-tool-card--add crop-tool crop-tool--future" type="button" disabled aria-label="Bakgrund – tillgänglig efter friläggning"><span class="crop-tool-icon" aria-hidden="true">◐</span><span>Bakgrund</span><span class="crop-tool-lock" aria-hidden="true">▣</span></button>
+        <button class="ccc-tool-card ccc-tool-card--ai crop-tool crop-tool--future" type="button" disabled aria-label="Frilägg – kommer senare"><span class="crop-tool-icon" aria-hidden="true">✦</span><span>Frilägg</span><span class="crop-tool-lock" aria-hidden="true">🔒</span></button>
+        <button class="ccc-tool-card ccc-tool-card--add crop-tool crop-tool--future" type="button" disabled aria-label="Bakgrund – tillgänglig efter friläggning"><span class="crop-tool-icon" aria-hidden="true">◐</span><span>Bakgrund</span><span class="crop-tool-lock" aria-hidden="true">🔒</span></button>
         </div>
       </div>
       <button id="cropDone" class="primary-action crop-accept" type="button">Spara anpassning</button>
     </section>
   </main>
+</div>
+
+<div id="confirmDisplayDialog" class="dialog ccc-dialog confirm-display-dialog" role="dialog" aria-modal="true" aria-labelledby="confirmDisplayTitle" hidden>
+  <div class="dialog-box ccc-dialog-box confirm-display-dialog-box">
+    <h2 id="confirmDisplayTitle">Visas på Container13</h2>
+    <p>Välj vad som ska visas för den här publiceringen.</p>
+    <div id="confirmDisplayEditor" class="confirm-display-editor">
+      <label><input id="confirmShowTitle" type="checkbox"> <span>Visa titel</span></label>
+      <label><input id="confirmShowDescription" type="checkbox"> <span>Visa beskrivning</span></label>
+      <label><input id="confirmShowBrand" type="checkbox"> <span>Visa märke</span></label>
+      <label><input id="confirmShowSize" type="checkbox"> <span>Visa storlek</span></label>
+      <label><input id="confirmShowPrice" type="checkbox"> <span>Visa pris</span></label>
+      <button id="confirmDisplayResetBtn" class="secondary-action" type="button">Använd standard</button>
+    </div>
+    <div class="dialog-actions ccc-dialog-actions confirm-display-dialog-actions">
+      <button id="confirmDisplayCancelBtn" class="button-secondary ccc-button-secondary" type="button">Avbryt</button>
+      <button id="confirmDisplayDoneBtn" class="button-primary ccc-button-primary" type="button">Klar</button>
+    </div>
+  </div>
 </div>
 
 <div id="logoutDialog" class="dialog ccc-dialog" role="dialog" aria-modal="true" aria-labelledby="logoutTitle" hidden>
@@ -301,9 +311,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.10.126"></script>
-<script type="module" src="../core.js?v=2.10.126"></script>
-  <script src="../version.js?v=2.10.126"></script>
+<script type="module" src="publish.js?v=2.10.127"></script>
+<script type="module" src="../core.js?v=2.10.127"></script>
+  <script src="../version.js?v=2.10.127"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 

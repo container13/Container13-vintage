@@ -2752,3 +2752,96 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   #cropView .crop-tool--future{min-height:32px}
   #cropView .crop-accept{min-height:44px!important}
 }
+
+/* v2.10.127 – modal publiceringsvisning och luftigare bildverkstad. */
+#channelConfirmView .confirm-display-summary{
+  width:min(100%,520px);
+  min-height:64px;
+  margin:8px auto 0!important;
+  padding:10px 14px!important;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  border:1px solid rgba(120,128,148,.34);
+  border-radius:16px;
+  background:linear-gradient(155deg,rgba(31,36,48,.98),rgba(20,23,31,.98));
+  color:var(--text);
+  text-align:left;
+  box-shadow:0 7px 16px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.035);
+}
+#channelConfirmView .confirm-display-summary:active{transform:translateY(1px);box-shadow:0 3px 8px rgba(0,0,0,.24)}
+#channelConfirmView .confirm-display-copy{display:grid;gap:3px;min-width:0}
+#channelConfirmView .confirm-display-copy strong{font-size:14px!important}
+#channelConfirmView .confirm-display-copy #confirmDisplaySummary{font-size:12px!important;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#channelConfirmView .confirm-display-arrow{width:32px;height:32px;display:grid;place-items:center;flex:0 0 32px;border:1px solid rgba(169,112,255,.48);border-radius:50%;color:#a970ff;font-size:25px;line-height:1;box-shadow:0 0 10px rgba(169,112,255,.12)}
+.confirm-display-dialog{z-index:1700}
+.confirm-display-dialog-box{
+  width:min(calc(100% - 32px),470px)!important;
+  padding:20px!important;
+  border:1px solid rgba(169,112,255,.46)!important;
+  border-radius:22px!important;
+  background:linear-gradient(155deg,rgba(29,33,44,.99),rgba(17,20,28,.99))!important;
+  box-shadow:0 24px 70px rgba(0,0,0,.58),0 0 26px rgba(169,112,255,.10)!important;
+}
+.confirm-display-dialog-box h2{margin:0;text-align:center;font-size:24px}
+.confirm-display-dialog-box>p{margin:7px 0 15px;text-align:center;color:var(--muted);font-size:13px}
+.confirm-display-dialog .confirm-display-editor{
+  width:100%;
+  margin:0;
+  padding:0;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  border:0;
+  background:transparent;
+}
+.confirm-display-dialog .confirm-display-editor label{
+  min-height:48px;
+  padding:8px 10px;
+  border:1px solid rgba(120,128,148,.30);
+  border-radius:13px;
+  background:rgba(31,36,48,.72);
+  font-size:13px;
+}
+.confirm-display-dialog .confirm-display-editor input{width:20px;height:20px}
+.confirm-display-dialog #confirmDisplayResetBtn{grid-column:1/-1;min-height:42px;margin-top:1px}
+.confirm-display-dialog-actions{display:grid!important;grid-template-columns:1fr 1.25fr!important;gap:10px!important;margin-top:14px!important}
+.confirm-display-dialog-actions button{min-height:48px!important}
+#cropView.crop-view{gap:17px;padding-bottom:8px}
+#cropView .crop-editor-card{
+  grid-template-rows:minmax(0,1fr) auto auto;
+  border-color:rgba(224,177,75,.28);
+  box-shadow:0 10px 26px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.03);
+}
+#cropView .crop-preview{position:relative}
+#cropView .crop-counter-slot{
+  position:absolute!important;
+  top:9px;
+  left:9px;
+  z-index:12;
+  min-height:0;
+  display:block;
+  pointer-events:none;
+}
+#cropView #cropCounter{
+  display:inline-flex;
+  min-height:26px;
+  padding:5px 9px;
+  align-items:center;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(5,7,11,.70);
+  font-size:10px;
+  backdrop-filter:blur(6px);
+}
+#cropView .crop-future-note{padding:2px 0 1px}
+#cropView .crop-tool{border-color:rgba(120,128,148,.30)}
+#cropView .crop-tool--future{border-color:rgba(120,128,148,.20)}
+#cropView .crop-tool-lock{font-size:10px;filter:grayscale(1)}
+#cropView .crop-accept{margin-top:0!important}
+@media(max-height:760px) and (max-width:520px){
+  #cropView.crop-view{gap:11px;padding-bottom:4px}
+  #cropView .crop-counter-slot{top:6px;left:6px}
+  .confirm-display-dialog-box{padding:16px!important}
+  .confirm-display-dialog .confirm-display-editor label{min-height:43px;padding:6px 8px}
+}
