@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.119
+CCC-version: 2.10.120
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -48,6 +48,15 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.120 – manuell Anpassa bild och ett gemensamt returursprung
+- Automatisk motivbeskärning är bortkopplad från det aktiva flödet tills den kan utvecklas och verifieras separat.
+- Ett objekt utan sparad anpassning öppnas med hela originalbilden centrerad; en tidigare sparad manuell anpassning öppnas fortsatt exakt som den lämnades.
+- `Återställ bild` använder samma centrerade grundpassning som första öppningen och nollställer både zoom och X/Y-förflyttning.
+- Den äldre `Behåll hela bilden` tas bort eftersom den dubblerade grundpassningen, sparade omedelbart och hade en egen hårdkodad returväg.
+- Anpassa bild använder ett enda returkontrakt med ursprungsvy och objekt-ID. Både Spara och Tillbaka går därför till samma vy och samma objekt.
+- Returkontraktet följer med genom Inställningar utan att skrivas över av en tillfällig detaljvy.
+- Snabbpublicering kan fortsatt gå från Anpassa bild till slutkontrollen; Tillbaka därifrån återöppnar samma manuella anpassning.
+
 v2.10.119 – stabil Anpassa bild och konsekvent centrering
 - Tillfälliga `blob:`-adresser betraktas som dokumentlokala och sparas inte längre i Publiceras IndexedDB-poster.
 - Vid varje sidladdning skapas en ny giltig adress från sparad `publishBlob`; äldre sparade adresser nollställs vid inläsningen.
