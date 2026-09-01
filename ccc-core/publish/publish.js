@@ -780,7 +780,7 @@ function helpHtmlForView(view){
       <div class="help-row"><strong>Fortsätt</strong><br>Går vidare med de färdiga ${entityTerm("plural")} till val av kanal.</div>
       <div class="help-row"><strong>Välj</strong><br>Öppnar läget där du kan markera lokala utkast för borttagning.</div>`;
   if(view==="detailView")return `<div class="help-row"><strong>Grön ✓</strong><br>Bilden har en sparad anpassning men kan ändras igen.</div><div class="help-row"><strong>Anpassa bild</strong><br>Gör den automatiska bildanpassningen när den behövs.</div><div class="help-row"><strong>Publicera</strong><br>Tar aktuellt objekt direkt till sista kontrollvyn.</div><div class="help-row"><strong>Klar – tillbaka till bilderna</strong><br>Återgår till Förbered så att du kan fortsätta med nästa bild.</div>`;
-  if(view==="cropView")return `<div class="help-row"><strong>Anpassa bild</strong><br>Flytta och zooma bilden manuellt tills den känns rätt.</div><div class="help-row"><strong>Återställ bild</strong><br>Visar hela originalbilden centrerad igen.</div><div class="help-row"><strong>Spara anpassning</strong><br>Sparar bilden och återgår till vyn du kom från.</div>`;
+  if(view==="cropView")return `<div class="help-row"><strong>Anpassa bild</strong><br>Dra, nypzooma eller använd verktygen för att placera bilden.</div><div class="help-row"><strong>Hela bilden / Fyll ytan</strong><br>Välj om hela originalet ska synas eller om bilden ska fylla publiceringsytan.</div><div class="help-row"><strong>Rotera / Återställ</strong><br>Rotera 90 grader eller återgå till hela originalbilden.</div><div class="help-row"><strong>Frilägg / Bakgrund</strong><br>Platserna är förberedda men funktionerna byggs senare.</div><div class="help-row"><strong>Spara anpassning</strong><br>Sparar en separat publiceringsvariant och bevarar originalet.</div>`;
   return `<div class="help-row"><strong>Tillbaka</strong><br>Går till föregående steg.</div>`;
 }
 function openPublishHelp(){
@@ -1600,8 +1600,17 @@ $("#publishedBtn").addEventListener("click",async()=>{historyReturnsToWorkspace=
 
 
 function loadImage(src){return new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=src;});}
-function geometry(){if(!cropImage||!cropState)return null;const c=$("#cropCanvas"),base=Math.max(c.width/cropImage.naturalWidth,c.height/cropImage.naturalHeight),scale=base*cropState.zoom,w=cropImage.naturalWidth*scale,h=cropImage.naturalHeight*scale,lx=Math.max(0,(w-c.width)/2),ly=Math.max(0,(h-c.height)/2);cropState.x=Math.max(-lx,Math.min(lx,cropState.x));cropState.y=Math.max(-ly,Math.min(ly,cropState.y));return{c,scale,w,h};}
-function drawCrop(){const g=geometry();if(!g)return;const ctx=g.c.getContext("2d",{alpha:false});ctx.fillStyle="#111";ctx.fillRect(0,0,g.c.width,g.c.height);ctx.drawImage(cropImage,(g.c.width-g.w)/2+cropState.x,(g.c.height-g.h)/2+cropState.y,g.w,g.h);
+function cropImageDimensions(image=cropImage,rotation=cropState?.rotation||0){
+  const sideways=Math.abs(rotation%180)===90;
+  return {width:sideways?image.naturalHeight:image.naturalWidth,height:sideways?image.naturalWidth:image.naturalHeight};
+}
+function geometry(){
+  if(!cropImage||!cropState)return null;
+  const c=$("#cropCanvas"),dims=cropImageDimensions(),base=Math.max(c.width/dims.width,c.height/dims.height),scale=base*cropState.zoom,w=dims.width*scale,h=dims.height*scale,lx=Math.max(0,(w-c.width)/2),ly=Math.max(0,(h-c.height)/2);
+  cropState.x=Math.max(-lx,Math.min(lx,cropState.x));cropState.y=Math.max(-ly,Math.min(ly,cropState.y));
+  return{c,scale,w,h,rotation:cropState.rotation||0};
+}
+function drawCrop(){const g=geometry();if(!g)return;const ctx=g.c.getContext("2d",{alpha:false});ctx.fillStyle="#111";ctx.fillRect(0,0,g.c.width,g.c.height);ctx.save();ctx.translate(g.c.width/2+cropState.x,g.c.height/2+cropState.y);ctx.rotate(g.rotation*Math.PI/180);ctx.drawImage(cropImage,-cropImage.naturalWidth*g.scale/2,-cropImage.naturalHeight*g.scale/2,cropImage.naturalWidth*g.scale,cropImage.naturalHeight*g.scale);ctx.restore();
   renderCropDiagnostics();
 }
 function smartCropSuggestion(image){
@@ -1784,12 +1793,11 @@ function cycleCropZoom(){
   setCropZoom(z<1.15?1.30:z<1.55?1.80:1);
 }
 
-function defaultManualCropState(image=cropImage){
+function manualCropState(mode="contain",image=cropImage,rotation=0){
   const canvas=$("#cropCanvas");
-  if(!canvas||!image)return {zoom:1,x:0,y:0};
-  const cover=Math.max(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight);
-  const contain=Math.min(canvas.width/image.naturalWidth,canvas.height/image.naturalHeight);
-  return {zoom:Math.max(.1,Math.min(1,contain/cover)),x:0,y:0};
+  if(!canvas||!image)return {zoom:1,x:0,y:0,rotation};
+  const dims=cropImageDimensions(image,rotation),cover=Math.max(canvas.width/dims.width,canvas.height/dims.height),contain=Math.min(canvas.width/dims.width,canvas.height/dims.height);
+  return {zoom:mode==="cover"?1:Math.max(.1,Math.min(1,contain/cover)),x:0,y:0,rotation};
 }
 
 async function openCrop({preserveBack=false}={}){
@@ -1815,11 +1823,11 @@ async function openCrop({preserveBack=false}={}){
     cropImage=null;
     return;
   }
-  if(item.cropData){cropState={...item.cropData};}
+  if(item.cropData){cropState={rotation:0,...item.cropData};}
   else{
     /* Manuell grundpassning: hela originalet syns centrerat. Automatisk
        motivbeskärning är avstängd tills den kan utvecklas och testas separat. */
-    cropState=defaultManualCropState(cropImage);
+    cropState=manualCropState("contain",cropImage,0);
   }
   $("#cropZoom").value=String(cropState.zoom);
   const zoomValue=$("#cropZoomValue");
@@ -1850,10 +1858,24 @@ $("#cropZoomToggle")?.addEventListener("click",()=>{
 $("#cropZoomOut")?.addEventListener("click",()=>stepCropZoom(-.05));
 $("#cropZoomIn")?.addEventListener("click",()=>stepCropZoom(.05));
 
+function applyCropPreset(mode){
+  if(!cropImage)return;
+  cropState=manualCropState(mode,cropImage,cropState?.rotation||0);
+  setCropZoom(cropState.zoom);
+}
+$("#cropContain")?.addEventListener("click",()=>applyCropPreset("contain"));
+$("#cropCover")?.addEventListener("click",()=>applyCropPreset("cover"));
+$("#cropRotate")?.addEventListener("click",()=>{
+  if(!cropImage)return;
+  const rotation=((cropState?.rotation||0)+90)%360;
+  cropState=manualCropState("contain",cropImage,rotation);
+  setCropZoom(cropState.zoom);
+});
+
 $("#cropReset").addEventListener("click",()=>{
   const item=activeItem();
   if(!item)return;
-  cropState=defaultManualCropState(cropImage);
+  cropState=manualCropState("contain",cropImage,0);
   $("#cropZoom").value=String(cropState.zoom);
   const zoomValue=$("#cropZoomValue");
   if(zoomValue)zoomValue.textContent=`${Math.round(cropState.zoom*100)} %`;

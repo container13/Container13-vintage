@@ -11,8 +11,8 @@
 <title>CCC Publicera v2.9.22</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}const p=new URLSearchParams(location.search);document.documentElement.classList.add("ccc-publish-booting");if(p.get("view")==="prepare")document.documentElement.classList.add("ccc-direct-prepare-loading");</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.10.120">
-  <link rel="stylesheet" href="../core.css?v=2.10.124">
+<link rel="stylesheet" href="publish.css?v=2.10.125">
+  <link rel="stylesheet" href="../core.css?v=2.10.125">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell publish-shell">
@@ -273,10 +273,16 @@
 
       <input id="cropZoom" type="hidden" value="1">
 
-      <div class="crop-actions-row">
-        <button id="cropReset" class="secondary-action ccc-tool-card ccc-tool-card--reset ccc-tool-card--compact" type="button">Återställ bild</button>
-        <button id="cropDone" class="primary-action crop-accept" type="button">Spara anpassning</button>
+      <div class="crop-tool-grid" aria-label="Bildverktyg">
+        <button id="cropContain" class="ccc-tool-card ccc-tool-card--review crop-tool" type="button"><span class="crop-tool-icon" aria-hidden="true">▣</span><span>Hela bilden</span></button>
+        <button id="cropCover" class="ccc-tool-card ccc-tool-card--edit crop-tool" type="button"><span class="crop-tool-icon" aria-hidden="true">↗</span><span>Fyll ytan</span></button>
+        <button id="cropRotate" class="ccc-tool-card ccc-tool-card--edit crop-tool" type="button"><span class="crop-tool-icon" aria-hidden="true">↻</span><span>Rotera</span></button>
+        <button id="cropReset" class="ccc-tool-card ccc-tool-card--reset crop-tool" type="button"><span class="crop-tool-icon" aria-hidden="true">↶</span><span>Återställ</span></button>
+        <button class="ccc-tool-card ccc-tool-card--ai crop-tool crop-tool--future" type="button" disabled aria-describedby="cropFutureNote"><span class="crop-tool-icon" aria-hidden="true">✦</span><span>Frilägg</span><small>Kommer senare</small></button>
+        <button class="ccc-tool-card ccc-tool-card--add crop-tool crop-tool--future" type="button" disabled aria-describedby="cropFutureNote"><span class="crop-tool-icon" aria-hidden="true">◐</span><span>Bakgrund</span><small>Efter friläggning</small></button>
       </div>
+      <p id="cropFutureNote" class="crop-future-note">Dra för att flytta · nyp för att zooma</p>
+      <button id="cropDone" class="primary-action crop-accept" type="button">Spara anpassning</button>
     </section>
   </main>
 </div>
@@ -292,9 +298,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.10.120"></script>
-<script type="module" src="../core.js?v=2.10.124"></script>
-  <script src="../version.js?v=2.10.124"></script>
+<script type="module" src="publish.js?v=2.10.125"></script>
+<script type="module" src="../core.js?v=2.10.125"></script>
+  <script src="../version.js?v=2.10.125"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 
