@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.127
+CCC-version: 2.10.128
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -48,6 +48,14 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.128 – tydligare bildverkstad och synlig Ändra-knapp
+- Container13-sammanfattningen har åter en tydlig lila Ändra-knapp, medan hela kortet fortfarande öppnar samma popup.
+- Anpassa bild använder innehållshöjd i stället för att låta redigeringskortet fylla all ledig yta.
+- Bildytan är försiktigt minskad och Spara anpassning har nu en verklig, synlig egen zon.
+- Gulramen är tunnare, instruktionen lugnare och framtidsverktygen tydligare nedtonade.
+- Aktiva bildverktyg ger en kort fysisk tryckrespons utan att navigation eller bildfunktion ändrats.
+- Rootens `/version.js` är orörd; CCC-versionen finns endast i `/ccc-core/version.js`.
+
 v2.10.127 – modal publiceringsvisning och tydligare bildhierarki
 - Kortet Visas på Container13 är helt klickbart och öppnar en centrerad modal i stället för ett utfällt formulär i huvudvyn.
 - Modalens val sparas först med Klar. Avbryt, tryck utanför eller Core-Tillbaka stänger utan att ändra publiceringen.
