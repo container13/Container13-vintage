@@ -140,6 +140,105 @@
     }
     .tap-path b { padding: 6px 9px; border-radius: 9px; background: #eaf4f9; }
     .small { margin: 10px 0 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+    .visual {
+      position: relative;
+      margin: 16px 0;
+      padding: 14px;
+      overflow: hidden;
+      border: 2px solid #bdd9e8;
+      border-radius: 18px;
+      background: linear-gradient(160deg, #f8fcfe, #e9f5fb);
+    }
+    .visual-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 11px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      color: var(--blue);
+      background: #dceff8;
+      font-size: 12px;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .screen {
+      padding: 13px;
+      border: 1px solid #cbd8df;
+      border-radius: 15px;
+      background: #fff;
+      box-shadow: 0 8px 20px rgba(24, 67, 88, .10);
+    }
+    .screen-top {
+      margin-bottom: 12px;
+      color: #536d7a;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .mock-row { display: flex; align-items: center; gap: 11px; }
+    .mock-icon {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      flex: 0 0 48px;
+      border-radius: 12px;
+      color: #fff;
+      background: linear-gradient(145deg, #111, #3b3b3b);
+      font-size: 13px;
+      font-weight: 900;
+    }
+    .mock-copy { min-width: 0; flex: 1; }
+    .mock-copy strong, .mock-copy span { display: block; }
+    .mock-copy span { margin-top: 2px; color: #71848e; font-size: 12px; }
+    .tap-target {
+      position: relative;
+      padding: 9px 13px;
+      flex: 0 0 auto;
+      border: 3px solid #f0a400;
+      border-radius: 999px;
+      color: #0875d1;
+      background: #fff8d9;
+      font-size: 13px;
+      font-weight: 900;
+      box-shadow: 0 0 0 4px rgba(240,164,0,.16);
+    }
+    .finger { position: absolute; right: -7px; bottom: -18px; font-size: 27px; filter: drop-shadow(0 2px 2px rgba(0,0,0,.18)); }
+    .mock-menu { overflow: hidden; border: 1px solid #d6e0e5; border-radius: 12px; }
+    .mock-menu div { padding: 11px 12px; background: #fff; font-size: 14px; font-weight: 700; }
+    .mock-menu div + div { border-top: 1px solid #e2e8eb; }
+    .mock-menu .chosen { color: #fff; background: var(--blue); }
+    .mock-menu .chosen::after { content: "  ← TRYCK HÄR"; color: #9ee4ff; font-size: 11px; font-weight: 900; }
+    .toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .toggle {
+      width: 48px;
+      height: 28px;
+      padding: 3px;
+      border-radius: 999px;
+      background: #30c759;
+    }
+    .toggle::after { content: ""; display: block; width: 22px; height: 22px; margin-left: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+    .install-panel { text-align: center; }
+    .install-panel .file { margin-bottom: 12px; color: #526d7a; font-size: 13px; word-break: break-word; }
+    .install-button { display: inline-block; padding: 10px 24px; border: 3px solid #f0a400; border-radius: 12px; color: #fff; background: var(--green); font-size: 16px; font-weight: 900; box-shadow: 0 0 0 4px rgba(240,164,0,.16); }
+    .success-screen { padding: 18px 14px; text-align: center; }
+    .success-check { display: grid; place-items: center; width: 58px; height: 58px; margin: 0 auto 10px; border-radius: 50%; color: #fff; background: var(--green); font-size: 34px; font-weight: 900; }
+    .success-screen strong { display: block; font-size: 17px; }
+    .success-screen span { display: block; margin-top: 5px; color: var(--muted); font-size: 13px; line-height: 1.4; }
+    .right-result {
+      display: flex;
+      gap: 9px;
+      margin-top: 13px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: #155c3e;
+      background: #e9f8f0;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .right-result b { color: #087443; }
     .check {
       display: flex;
       align-items: flex-start;
@@ -196,6 +295,18 @@
         <li>Tryck på <strong>Set Userscripts Directory</strong> och välj eller skapa en mapp för skripten.</li>
         <li>Gå tillbaka till den här guiden i Safari.</li>
       </ol>
+      <div class="visual" role="img" aria-label="Illustration som visar knappen Hämta för Userscripts i App Store">
+        <span class="visual-label">Bildhjälp 1</span>
+        <div class="screen">
+          <div class="screen-top">App Store</div>
+          <div class="mock-row">
+            <div class="mock-icon">{ JS }</div>
+            <div class="mock-copy"><strong>Userscripts</strong><span>Safari-tillägg</span></div>
+            <div class="tap-target">HÄMTA<span class="finger">☝️</span></div>
+          </div>
+        </div>
+        <div class="right-result"><span>✓</span><div><b>Rätt när:</b> knappen ändras till <strong>ÖPPNA</strong>. Öppna då appen och välj skriptmapp.</div></div>
+      </div>
       <label class="check"><input type="checkbox" data-step="app"><span>Appen är installerad och skriptmappen är vald</span></label>
     </section>
 
@@ -209,6 +320,18 @@
         <li>Slå på reglaget vid <strong>Userscripts</strong>.</li>
         <li>Öppna Userscripts i samma meny och välj <strong>Tillåt alltid</strong> om Safari frågar.</li>
       </ol>
+      <div class="visual" role="img" aria-label="Illustration som visar Hantera tillägg och reglaget för Userscripts i Safari">
+        <span class="visual-label">Bildhjälp 2</span>
+        <div class="screen">
+          <div class="screen-top">Safari-menyn</div>
+          <div class="mock-menu">
+            <div>Webbplatsinställningar</div>
+            <div class="chosen">Hantera tillägg</div>
+            <div class="toggle-row"><strong>Userscripts</strong><span class="toggle" aria-hidden="true"></span></div>
+          </div>
+        </div>
+        <div class="right-result"><span>✓</span><div><b>Rätt när:</b> reglaget vid Userscripts är grönt.</div></div>
+      </div>
       <p class="small">Ser du inte Userscripts? Kontrollera först att appen är installerad och att du har öppnat den minst en gång.</p>
       <label class="check"><input type="checkbox" data-step="safari"><span>Userscripts är aktiverat i Safari</span></label>
     </section>
@@ -223,6 +346,15 @@
         <li>Kontrollera att skriptet är aktiverat.</li>
         <li>Gå tillbaka till den här guiden.</li>
       </ol>
+      <div class="visual" role="img" aria-label="Illustration som visar installationsknappen i Userscripts">
+        <span class="visual-label">Bildhjälp 3</span>
+        <div class="screen install-panel">
+          <div class="screen-top">Userscripts</div>
+          <div class="file">CompetenceTool-Mobile-ver2.user.js</div>
+          <span class="install-button">Installera ☝️</span>
+        </div>
+        <div class="right-result"><span>✓</span><div><b>Rätt när:</b> skriptet visas i Userscripts och är aktiverat.</div></div>
+      </div>
       <p class="notice" id="localNotice" hidden><strong>Lokal förhandsvisning:</strong> App Store-knappen fungerar här. Direktinstallationen av skriptet blir säkrast när denna guide senare läggs på en webbadress.</p>
       <p class="notice"><strong>Om du bara ser kod eller filen laddas ner:</strong> öppna Safaris tilläggsmeny, tryck på <strong>Userscripts</strong> och installera därifrån. Kontrollera även att filen finns i den skriptmapp du valde i steg 1.</p>
       <label class="check"><input type="checkbox" data-step="script"><span>Mobilskriptet är installerat och aktivt</span></label>
@@ -232,6 +364,14 @@
       <div class="step-head"><span class="number">4</span><h2>Öppna CompetenceTool</h2></div>
       <p class="copy">Öppna CompetenceTool och logga in som vanligt. Första gången kan Safari fråga om Userscripts får köras på webbplatsen — välj då <strong>Tillåt alltid</strong>.</p>
       <a class="button secondary" href="https://holmen.competencetool.se/Home#/Manning/ShowManning/7664">Öppna CompetenceTool</a>
+      <div class="visual" role="img" aria-label="Illustration som visar att CompetenceTools mobilvy fungerar">
+        <span class="visual-label">Bildhjälp 4</span>
+        <div class="screen success-screen">
+          <div class="success-check">✓</div>
+          <strong>Mobilvyn är igång!</strong>
+          <span>Du ser avdelningsväljaren och knapparna Alla samt A–F.</span>
+        </div>
+      </div>
       <p class="small">När allt fungerar ser du avdelningsväljaren i det blå fältet och knapparna Alla, A, B, C, D, E och F.</p>
       <label class="check"><input type="checkbox" data-step="test"><span>Mobilvyn fungerar</span></label>
     </section>
