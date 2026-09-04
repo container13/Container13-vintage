@@ -2753,7 +2753,7 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   #cropView .crop-accept{min-height:44px!important}
 }
 
-/* v2.10.130 – balanserad bildverkstad och lokal Frilägg 1.0. */
+/* v2.10.132 – balanserad bildverkstad och beständig lokal friläggning. */
 #channelConfirmView .confirm-display-summary{
   width:min(100%,520px);
   min-height:64px;
@@ -2849,6 +2849,12 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
 #cropView .crop-preview{
   position:relative;
   width:min(100%,33dvh,360px)!important;
+}
+#cropView .crop-preview.is-cutout{
+  background-color:#d8d8d8;
+  background-image:linear-gradient(45deg,#bcbcbc 25%,transparent 25%),linear-gradient(-45deg,#bcbcbc 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#bcbcbc 75%),linear-gradient(-45deg,transparent 75%,#bcbcbc 75%);
+  background-size:24px 24px;
+  background-position:0 0,0 12px,12px -12px,-12px 0;
 }
 #cropView .crop-counter-slot{
   position:absolute!important;

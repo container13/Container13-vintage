@@ -42,7 +42,7 @@ let channelTargetsReturnView="startView";
 let cropReturnContext={view:"gridView",itemId:""};
 let publishBackPending=false;
 let draftPreviewGesture=null,draftPreviewSuppressClick=false;
-let cropImage=null,cropState=null,cropBaseline=null,pointer=null;
+let cropImage=null,cropState=null,cropBaseline=null,cropUsingCutout=false,pointer=null;
 let activeItemId=null;
 let recentlyAdaptedItemId=null;
 let draftSelectionMode=false;const selectedDraftIds=new Set();
@@ -1620,7 +1620,7 @@ function geometry(){
   cropState.x=Math.max(-lx,Math.min(lx,cropState.x));cropState.y=Math.max(-ly,Math.min(ly,cropState.y));
   return{c,scale,w,h,rotation:cropState.rotation||0};
 }
-function drawCrop(){const g=geometry();if(!g)return;const ctx=g.c.getContext("2d",{alpha:false});ctx.fillStyle="#111";ctx.fillRect(0,0,g.c.width,g.c.height);ctx.save();ctx.translate(g.c.width/2+cropState.x,g.c.height/2+cropState.y);ctx.rotate(g.rotation*Math.PI/180);ctx.drawImage(cropImage,-cropImage.naturalWidth*g.scale/2,-cropImage.naturalHeight*g.scale/2,cropImage.naturalWidth*g.scale,cropImage.naturalHeight*g.scale);ctx.restore();
+function drawCrop(){const g=geometry();if(!g)return;const ctx=g.c.getContext("2d",{alpha:true});if(cropUsingCutout)ctx.clearRect(0,0,g.c.width,g.c.height);else{ctx.fillStyle="#111";ctx.fillRect(0,0,g.c.width,g.c.height);}ctx.save();ctx.translate(g.c.width/2+cropState.x,g.c.height/2+cropState.y);ctx.rotate(g.rotation*Math.PI/180);ctx.drawImage(cropImage,-cropImage.naturalWidth*g.scale/2,-cropImage.naturalHeight*g.scale/2,cropImage.naturalWidth*g.scale,cropImage.naturalHeight*g.scale);ctx.restore();
   renderCropDiagnostics();
 }
 function smartCropSuggestion(image){
@@ -1840,6 +1840,7 @@ function manualCropState(mode="contain",image=cropImage,rotation=0){
 
 async function openCrop({preserveBack=false}={}){
   cropBaseline=null;
+  cropUsingCutout=false;
   updateCropSaveState();
   if(!preserveBack){
     const origin=["detailView","channelConfirmView","gridView"].includes(currentPublishView)
@@ -1850,10 +1851,12 @@ async function openCrop({preserveBack=false}={}){
   syncActiveIndexFromId();
   const item=activeItem();
   if(!item)return;
-  // Vision-originalet används som bildkälla; sparad cropData återanvänds för fortsatt finjustering.
+  // En sparad friläggning är den aktiva redigeringskällan. Vision-originalet
+  // ligger separat kvar och hämtas först om användaren öppnar Frilägg igen.
   let originalSource="";
   try{
-    originalSource=await ensureOriginalSource(item);
+    cropUsingCutout=!!item.cutoutBlob;
+    originalSource=cropUsingCutout?url(item.cutoutBlob):await ensureOriginalSource(item);
     if(!originalSource)throw new Error("Bildkälla saknas.");
     cropImage=await loadImage(originalSource);
   }catch(error){
@@ -1863,7 +1866,8 @@ async function openCrop({preserveBack=false}={}){
     cropImage=null;
     return;
   }
-  if(item.cropData){cropState={rotation:0,...item.cropData};}
+  if(cropUsingCutout){cropState={zoom:1,x:0,y:0,rotation:0,...item.cutoutData?.outputCropData};}
+  else if(item.cropData){cropState={rotation:0,...item.cropData};}
   else{
     /* Manuell grundpassning: hela originalet syns centrerat. Automatisk
        motivbeskärning är avstängd tills den kan utvecklas och testas separat. */
@@ -1876,6 +1880,7 @@ async function openCrop({preserveBack=false}={}){
   $("#cropOriginalPreview").src=item.thumbUrl||item.fullUrl;
   const cropNote=$("#cropFutureNote");
   if(cropNote)cropNote.textContent=item.cutoutBlob?"Friläggning sparad · originalbilden är orörd":"Dra för att flytta · nyp för att zooma";
+  $("#cropPreview")?.classList.toggle("is-cutout",cropUsingCutout);
   drawCrop();
   cropBaseline=cropStateSnapshot();
   updateCropSaveState();
@@ -2053,7 +2058,13 @@ async function openCutoutDialog(){
   if(!cropImage||!cropState)return;
   const source=$("#cropCanvas"),size=Math.min(600,source.width,source.height);
   cutoutSourceCanvas=document.createElement("canvas");cutoutSourceCanvas.width=size;cutoutSourceCanvas.height=size;
-  cutoutSourceCanvas.getContext("2d").drawImage(source,0,0,source.width,source.height,0,0,size,size);
+  if(cropUsingCutout){
+    const item=activeItem(),originalSource=await ensureOriginalSource(item),originalImage=await loadImage(originalSource);
+    const state={zoom:1,x:0,y:0,rotation:0,...item.cutoutData?.sourceCropData};
+    const sideways=Math.abs(state.rotation%180)===90,dims={width:sideways?originalImage.naturalHeight:originalImage.naturalWidth,height:sideways?originalImage.naturalWidth:originalImage.naturalHeight};
+    const base=Math.max(size/dims.width,size/dims.height),scale=base*state.zoom,positionScale=size/Math.max(1,source.width),ctx=cutoutSourceCanvas.getContext("2d");
+    ctx.fillStyle="#111";ctx.fillRect(0,0,size,size);ctx.save();ctx.translate(size/2+state.x*positionScale,size/2+state.y*positionScale);ctx.rotate(state.rotation*Math.PI/180);ctx.drawImage(originalImage,-originalImage.naturalWidth*scale/2,-originalImage.naturalHeight*scale/2,originalImage.naturalWidth*scale,originalImage.naturalHeight*scale);ctx.restore();
+  }else cutoutSourceCanvas.getContext("2d").drawImage(source,0,0,source.width,source.height,0,0,size,size);
   const slider=$("#cutoutSensitivity");if(slider)slider.value="50";
   const value=$("#cutoutSensitivityValue");if(value)value.textContent="50";
   const dialog=$("#cutoutDialog");if(dialog)dialog.hidden=false;
@@ -2085,14 +2096,21 @@ $("#cutoutApply")?.addEventListener("click",async()=>{
   const item=activeItem();if(!item||!cutoutResultCanvas)return;
   setCutoutBusy(true);
   const blob=await new Promise((resolve,reject)=>cutoutResultCanvas.toBlob(value=>value?resolve(value):reject(new Error("Friläggningen kunde inte sparas.")),"image/webp",.90));
-  item.cropData={...cropState};
+  const sourceCropData=cropUsingCutout?{...item.cutoutData?.sourceCropData}:{...cropState};
+  const outputCropData={zoom:1,x:0,y:0,rotation:0};
+  item.cropData={...outputCropData};
   item.cutoutBlob=blob;
-  item.cutoutData={method:"local-edge-v1",sensitivity:Number($("#cutoutSensitivity")?.value)||50,createdAt:new Date().toISOString()};
+  item.cutoutData={method:"local-edge-v1",sensitivity:Number($("#cutoutSensitivity")?.value)||50,createdAt:new Date().toISOString(),sourceCropData,outputCropData};
   item.publishBlob=blob;
   item.imageProcessingState="webp-cutout";
   await put(persistenceRecord(item));
   if(item.publishUrl&&item.publishUrl.startsWith("blob:"))URL.revokeObjectURL(item.publishUrl);
   item.publishUrl=url(blob);item.thumbUrl=await previewSrc(item);
+  cropImage=await loadImage(item.publishUrl);
+  cropUsingCutout=true;
+  cropState={...outputCropData};
+  $("#cropPreview")?.classList.add("is-cutout");
+  drawCrop();
   cropBaseline=cropStateSnapshot();updateCropSaveState();
   closeCutoutDialog();
   const note=$("#cropFutureNote");if(note)note.textContent="Friläggning sparad · originalbilden är orörd";
@@ -2180,12 +2198,14 @@ async function commitCropAdjustment({force=false}={}){
   if(!item||!g)return;
   const savedItemId=item.id;
   item.cropData={...cropState};
+  if(cropUsingCutout&&item.cutoutData)item.cutoutData.outputCropData={...cropState};
   /* Spara exakt det användaren ser i anpassningsrutan. Då fungerar även
      utzoomning till hela bilden med centrerad restyta. */
   const outSize=Math.max(1,Math.min(1600,Math.max(cropImage.naturalWidth,cropImage.naturalHeight)));
   const out=document.createElement("canvas");
   out.width=out.height=outSize;
-  const outCtx=out.getContext("2d",{alpha:false});
+  const outCtx=out.getContext("2d",{alpha:true});
+  if(!cropUsingCutout){outCtx.fillStyle="#111";outCtx.fillRect(0,0,outSize,outSize);}
   outCtx.drawImage(g.c,0,0,g.c.width,g.c.height,0,0,outSize,outSize);
   const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("WebP misslyckades")),"image/webp",.84));
   item.publishBlob=blob;
@@ -3198,6 +3218,7 @@ async function returnFromCrop(){
   cropImage=null;
   cropState=null;
   cropBaseline=null;
+  cropUsingCutout=false;
   pointer=null;
   if(context.view==="channelConfirmView"){
     if(itemId)confirmToolItemId=itemId;
