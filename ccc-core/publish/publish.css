@@ -2753,7 +2753,7 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   #cropView .crop-accept{min-height:44px!important}
 }
 
-/* v2.10.128 – modal publiceringsvisning och balanserad bildverkstad. */
+/* v2.10.130 – balanserad bildverkstad och lokal Frilägg 1.0. */
 #channelConfirmView .confirm-display-summary{
   width:min(100%,520px);
   min-height:64px;
@@ -2880,6 +2880,17 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   box-shadow:inset 0 2px 7px rgba(0,0,0,.28);
 }
 #cropView .crop-tool--future{border-color:rgba(120,128,148,.15);opacity:.30;filter:saturate(.25)}
+#cropView .crop-tool--cutout{
+  grid-column:span 2;
+  min-height:38px;
+  flex-direction:row;
+  gap:7px;
+  border-color:rgba(169,112,255,.55);
+  background:linear-gradient(145deg,rgba(78,42,116,.34),rgba(27,24,40,.96));
+  color:#c49cff;
+  box-shadow:0 0 15px rgba(169,112,255,.08);
+}
+#cropView .crop-tool--cutout .crop-tool-icon{width:22px;height:22px;font-size:13px}
 #cropView .crop-tool-lock{font-size:10px;filter:grayscale(1)}
 #cropView .crop-border{border-width:1.5px}
 #cropView .crop-accept{margin:0 auto 4px!important}
@@ -2891,10 +2902,57 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   cursor:default;
   opacity:1;
 }
+.cutout-dialog{z-index:1800;background:rgba(5,7,12,.72);backdrop-filter:blur(10px)}
+.cutout-dialog-box{
+  width:min(calc(100% - 24px),520px)!important;
+  max-height:calc(100dvh - 28px);
+  padding:15px!important;
+  overflow:auto;
+  border:1px solid rgba(169,112,255,.46)!important;
+  border-radius:22px!important;
+  background:linear-gradient(155deg,rgba(29,33,44,.99),rgba(15,18,25,.99))!important;
+  box-shadow:0 24px 70px rgba(0,0,0,.62),0 0 28px rgba(169,112,255,.10)!important;
+}
+.cutout-dialog-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.cutout-dialog-heading h2{margin:2px 0 0!important;font-size:23px}
+.cutout-kicker{color:#b98cff;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.cutout-close{width:36px;height:36px;display:grid;place-items:center;border:1px solid rgba(120,128,148,.35);border-radius:50%;background:rgba(31,36,48,.86);color:var(--text);font-size:25px;line-height:1}
+.cutout-preview-wrap{
+  position:relative;
+  width:min(100%,42dvh,390px);
+  aspect-ratio:1;
+  margin:0 auto 9px;
+  overflow:hidden;
+  border:1px solid rgba(169,112,255,.36);
+  border-radius:18px;
+  background-color:#d8d8d8;
+  background-image:linear-gradient(45deg,#bcbcbc 25%,transparent 25%),linear-gradient(-45deg,#bcbcbc 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#bcbcbc 75%),linear-gradient(-45deg,transparent 75%,#bcbcbc 75%);
+  background-size:24px 24px;
+  background-position:0 0,0 12px,12px -12px,-12px 0;
+}
+#cutoutPreview{width:100%;height:100%;display:block}
+.cutout-busy{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:9px;background:rgba(8,10,15,.58);color:#fff}
+.cutout-busy[hidden]{display:none}
+.cutout-busy span{width:28px;height:28px;border:3px solid rgba(255,255,255,.28);border-top-color:#c49cff;border-radius:50%;animation:cutout-spin .7s linear infinite}
+@keyframes cutout-spin{to{transform:rotate(360deg)}}
+.cutout-view-switch{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:0 auto 10px}
+.cutout-view-switch button{min-height:38px;border:1px solid rgba(120,128,148,.30);border-radius:12px;background:rgba(31,36,48,.70);color:var(--muted);font-weight:850}
+.cutout-view-switch button.is-active{border-color:rgba(169,112,255,.65);background:rgba(169,112,255,.12);color:#c49cff}
+.cutout-sensitivity{display:grid;gap:5px;padding:10px 12px;border:1px solid rgba(120,128,148,.28);border-radius:14px;background:rgba(31,36,48,.55)}
+.cutout-sensitivity>span{display:flex;justify-content:space-between;gap:12px;font-size:13px}
+.cutout-sensitivity output{color:#c49cff;font-weight:900}
+.cutout-sensitivity input{width:100%;accent-color:#a970ff}
+.cutout-sensitivity small{color:var(--muted);font-size:10px}
+.cutout-status{min-height:16px;margin:7px 2px!important;color:var(--muted)!important;text-align:center;font-size:10px}
+.cutout-actions{display:grid;grid-template-columns:.8fr 1.35fr;gap:9px}
+.cutout-actions button{min-height:46px;border-radius:14px;border:1px solid var(--border);font-weight:900}
+.cutout-actions .button-primary{background:var(--gold);color:#16120a;border-color:transparent}
 @media(max-height:760px) and (max-width:520px){
   #cropView.crop-view{row-gap:14px;padding-bottom:4px}
   #cropView .crop-preview{width:min(100%,29dvh,330px)!important}
   #cropView .crop-counter-slot{top:6px;left:6px}
   .confirm-display-dialog-box{padding:16px!important}
   .confirm-display-dialog .confirm-display-editor label{min-height:43px;padding:6px 8px}
+  .cutout-dialog-box{padding:11px!important}
+  .cutout-preview-wrap{width:min(100%,35dvh,320px)}
 }

@@ -11,8 +11,8 @@
 <title>CCC Publicera v2.9.22</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}const p=new URLSearchParams(location.search);document.documentElement.classList.add("ccc-publish-booting");if(p.get("view")==="prepare")document.documentElement.classList.add("ccc-direct-prepare-loading");</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.10.129">
-  <link rel="stylesheet" href="../core.css?v=2.10.129">
+<link rel="stylesheet" href="publish.css?v=2.10.130">
+  <link rel="stylesheet" href="../core.css?v=2.10.130">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell publish-shell">
@@ -272,8 +272,8 @@
         <button id="cropCover" class="ccc-tool-card ccc-tool-card--edit crop-tool" type="button"><span class="crop-tool-icon" aria-hidden="true">↗</span><span>Fyll</span></button>
         <button id="cropRotate" class="ccc-tool-card ccc-tool-card--edit crop-tool" type="button"><span class="crop-tool-icon" aria-hidden="true">↻</span><span>Rotera</span></button>
         <button id="cropReset" class="ccc-tool-card ccc-tool-card--reset crop-tool" type="button"><span class="crop-tool-icon" aria-hidden="true">↶</span><span>Återställ</span></button>
-        <button class="ccc-tool-card ccc-tool-card--ai crop-tool crop-tool--future" type="button" disabled aria-label="Frilägg – kommer senare"><span class="crop-tool-icon" aria-hidden="true">✦</span><span>Frilägg</span><span class="crop-tool-lock" aria-hidden="true">🔒</span></button>
-        <button class="ccc-tool-card ccc-tool-card--add crop-tool crop-tool--future" type="button" disabled aria-label="Bakgrund – tillgänglig efter friläggning"><span class="crop-tool-icon" aria-hidden="true">◐</span><span>Bakgrund</span><span class="crop-tool-lock" aria-hidden="true">🔒</span></button>
+        <button id="cropCutout" class="ccc-tool-card ccc-tool-card--ai crop-tool crop-tool--cutout" type="button"><span class="crop-tool-icon" aria-hidden="true">✦</span><span>Frilägg</span></button>
+        <button id="cropBackground" class="ccc-tool-card ccc-tool-card--add crop-tool crop-tool--future" type="button" disabled aria-label="Bakgrund – tillgänglig efter friläggning"><span class="crop-tool-icon" aria-hidden="true">◐</span><span>Bakgrund</span><span class="crop-tool-lock" aria-hidden="true">🔒</span></button>
         </div>
       </div>
       <button id="cropDone" class="primary-action crop-accept" type="button" disabled>Spara anpassning</button>
@@ -300,6 +300,33 @@
   </div>
 </div>
 
+<div id="cutoutDialog" class="dialog ccc-dialog cutout-dialog" role="dialog" aria-modal="true" aria-labelledby="cutoutTitle" hidden>
+  <div class="dialog-box ccc-dialog-box cutout-dialog-box">
+    <div class="cutout-dialog-heading">
+      <div><span class="cutout-kicker">Lokal bildbehandling</span><h2 id="cutoutTitle">Frilägg objekt</h2></div>
+      <button id="cutoutClose" class="cutout-close" type="button" aria-label="Stäng">×</button>
+    </div>
+    <div class="cutout-preview-wrap" aria-live="polite">
+      <canvas id="cutoutPreview" width="600" height="600"></canvas>
+      <div id="cutoutBusy" class="cutout-busy" hidden><span></span><strong>Frilägger…</strong></div>
+    </div>
+    <div class="cutout-view-switch" role="group" aria-label="Visa bildvariant">
+      <button id="cutoutShowOriginal" type="button">Original</button>
+      <button id="cutoutShowResult" class="is-active" type="button">Frilagd</button>
+    </div>
+    <label class="cutout-sensitivity" for="cutoutSensitivity">
+      <span><strong>Känslighet</strong><output id="cutoutSensitivityValue">50</output></span>
+      <input id="cutoutSensitivity" type="range" min="15" max="90" value="50" step="1">
+      <small>Höj om mer bakgrund ska tas bort.</small>
+    </label>
+    <p id="cutoutStatus" class="cutout-status">Testmotor för bilder med tydlig skillnad mellan objekt och bakgrund.</p>
+    <div class="cutout-actions">
+      <button id="cutoutReset" class="button-secondary ccc-button-secondary" type="button">Återställ</button>
+      <button id="cutoutApply" class="button-primary ccc-button-primary" type="button">Använd friläggning</button>
+    </div>
+  </div>
+</div>
+
 <div id="logoutDialog" class="dialog ccc-dialog" role="dialog" aria-modal="true" aria-labelledby="logoutTitle" hidden>
   <div class="dialog-box ccc-dialog-box">
     <h2 id="logoutTitle">Logga ut?</h2>
@@ -311,9 +338,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.10.129"></script>
-<script type="module" src="../core.js?v=2.10.129"></script>
-  <script src="../version.js?v=2.10.129"></script>
+<script type="module" src="publish.js?v=2.10.130"></script>
+<script type="module" src="../core.js?v=2.10.130"></script>
+  <script src="../version.js?v=2.10.130"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 

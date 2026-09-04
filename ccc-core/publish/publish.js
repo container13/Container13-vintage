@@ -223,6 +223,16 @@ async function ensurePublishSource(item){
   return item.fullUrl||"";
 }
 
+async function ensureOriginalSource(item){
+  if(!item)return "";
+  if(!item.originalBlob&&item.originalFileKey){
+    try{item.originalBlob=await getSourceFile(item.originalFileKey);}
+    catch(error){console.warn("[CCC Publicera] Originalbilden kunde inte hämtas",item.id,error);}
+  }
+  if(item.originalBlob)return url(item.originalBlob);
+  return item.fullUrl||item.thumbUrl||await previewSrc(item);
+}
+
 function persistenceRecord(item){const record={...item};delete record.thumbUrl;delete record.fullUrl;delete record.publishUrl;if(record.originalFileKey)delete record.originalBlob;return record;}
 function url(blob){const u=URL.createObjectURL(blob);objectUrls.push(u);return u;}
 function dataUrl(blob){return new Promise((resolve,reject)=>{if(!blob){resolve("");return;}const reader=new FileReader();reader.onload=()=>resolve(String(reader.result||""));reader.onerror=()=>reject(reader.error||new Error("Kunde inte läsa bildförhandsvisningen."));reader.readAsDataURL(blob);});}
@@ -780,7 +790,7 @@ function helpHtmlForView(view){
       <div class="help-row"><strong>Fortsätt</strong><br>Går vidare med de färdiga ${entityTerm("plural")} till val av kanal.</div>
       <div class="help-row"><strong>Välj</strong><br>Öppnar läget där du kan markera lokala utkast för borttagning.</div>`;
   if(view==="detailView")return `<div class="help-row"><strong>Grön ✓</strong><br>Bilden har en sparad anpassning men kan ändras igen.</div><div class="help-row"><strong>Anpassa bild</strong><br>Gör den automatiska bildanpassningen när den behövs.</div><div class="help-row"><strong>Publicera</strong><br>Tar aktuellt objekt direkt till sista kontrollvyn.</div><div class="help-row"><strong>Klar – tillbaka till bilderna</strong><br>Återgår till Förbered så att du kan fortsätta med nästa bild.</div>`;
-  if(view==="cropView")return `<div class="help-row"><strong>Anpassa bild</strong><br>Dra, nypzooma eller använd verktygen för att placera bilden.</div><div class="help-row"><strong>Hela bilden / Fyll ytan</strong><br>Välj om hela originalet ska synas eller om bilden ska fylla publiceringsytan.</div><div class="help-row"><strong>Rotera / Återställ</strong><br>Rotera 90 grader eller återgå till hela originalbilden.</div><div class="help-row"><strong>Frilägg / Bakgrund</strong><br>Platserna är förberedda men funktionerna byggs senare.</div><div class="help-row"><strong>Spara anpassning</strong><br>Sparar en separat publiceringsvariant och bevarar originalet.</div>`;
+  if(view==="cropView")return `<div class="help-row"><strong>Anpassa bild</strong><br>Dra, nypzooma eller använd verktygen för att placera bilden.</div><div class="help-row"><strong>Hela bilden / Fyll ytan</strong><br>Välj om hela originalet ska synas eller om bilden ska fylla publiceringsytan.</div><div class="help-row"><strong>Rotera / Återställ</strong><br>Rotera 90 grader eller återgå till hela originalbilden.</div><div class="help-row"><strong>Frilägg</strong><br>Testar lokal bakgrundsborttagning. Jämför Original och Frilagd och justera känsligheten innan du använder resultatet.</div><div class="help-row"><strong>Bakgrund</strong><br>Platsen är förberedd och byggs efter att friläggningen testats.</div><div class="help-row"><strong>Spara anpassning</strong><br>Sparar en separat publiceringsvariant och bevarar originalet.</div>`;
   return `<div class="help-row"><strong>Tillbaka</strong><br>Går till föregående steg.</div>`;
 }
 function openPublishHelp(){
@@ -1843,7 +1853,7 @@ async function openCrop({preserveBack=false}={}){
   // Vision-originalet används som bildkälla; sparad cropData återanvänds för fortsatt finjustering.
   let originalSource="";
   try{
-    originalSource=await ensurePublishSource(item);
+    originalSource=await ensureOriginalSource(item);
     if(!originalSource)throw new Error("Bildkälla saknas.");
     cropImage=await loadImage(originalSource);
   }catch(error){
@@ -1864,6 +1874,8 @@ async function openCrop({preserveBack=false}={}){
   if(zoomValue)zoomValue.textContent=`${Math.round(cropState.zoom*100)} %`;
   updateCropCounter();
   $("#cropOriginalPreview").src=item.thumbUrl||item.fullUrl;
+  const cropNote=$("#cropFutureNote");
+  if(cropNote)cropNote.textContent=item.cutoutBlob?"Friläggning sparad · originalbilden är orörd":"Dra för att flytta · nyp för att zooma";
   drawCrop();
   cropBaseline=cropStateSnapshot();
   updateCropSaveState();
@@ -1914,6 +1926,134 @@ $("#cropReset").addEventListener("click",()=>{
   if(zoomValue)zoomValue.textContent=`${Math.round(cropState.zoom*100)} %`;
   drawCrop();
   updateCropSaveState();
+});
+
+let cutoutSourceCanvas=null,cutoutResultCanvas=null,cutoutRenderTimer=null,cutoutShowingOriginal=false;
+
+function setCutoutBusy(busy){
+  const busyLayer=$("#cutoutBusy"),apply=$("#cutoutApply"),slider=$("#cutoutSensitivity");
+  if(busyLayer)busyLayer.hidden=!busy;
+  if(apply)apply.disabled=busy;
+  if(slider)slider.disabled=busy;
+}
+
+function drawCutoutPreview(){
+  const preview=$("#cutoutPreview"),source=cutoutShowingOriginal?cutoutSourceCanvas:cutoutResultCanvas;
+  if(!preview||!source)return;
+  const ctx=preview.getContext("2d");
+  ctx.clearRect(0,0,preview.width,preview.height);
+  ctx.drawImage(source,0,0,preview.width,preview.height);
+  $("#cutoutShowOriginal")?.classList.toggle("is-active",cutoutShowingOriginal);
+  $("#cutoutShowResult")?.classList.toggle("is-active",!cutoutShowingOriginal);
+}
+
+function cornerPalette(data,width,height){
+  const size=Math.max(5,Math.round(Math.min(width,height)*.025));
+  const anchors=[[0,0],[width-size,0],[0,height-size],[width-size,height-size]];
+  return anchors.map(([sx,sy])=>{
+    let r=0,g=0,b=0,count=0;
+    for(let y=sy;y<sy+size;y+=2)for(let x=sx;x<sx+size;x+=2){
+      const index=(y*width+x)*4;r+=data[index];g+=data[index+1];b+=data[index+2];count++;
+    }
+    return [r/count,g/count,b/count];
+  });
+}
+
+function createLocalCutout(source,sensitivity){
+  const width=source.width,height=source.height,sourceCtx=source.getContext("2d",{willReadFrequently:true});
+  const image=sourceCtx.getImageData(0,0,width,height),data=image.data,palette=cornerPalette(data,width,height);
+  const background=new Uint8Array(width*height),queue=new Int32Array(width*height);
+  const threshold=18+Number(sensitivity)*1.18,thresholdSquared=threshold*threshold;
+  const matchesBackground=index=>{
+    const offset=index*4,r=data[offset],g=data[offset+1],b=data[offset+2];
+    for(const color of palette){
+      const dr=r-color[0],dg=g-color[1],db=b-color[2];
+      if(dr*dr+dg*dg+db*db<=thresholdSquared)return true;
+    }
+    return false;
+  };
+  let head=0,tail=0;
+  const seed=index=>{if(!background[index]&&matchesBackground(index)){background[index]=1;queue[tail++]=index;}};
+  for(let x=0;x<width;x++){seed(x);seed((height-1)*width+x);}
+  for(let y=1;y<height-1;y++){seed(y*width);seed(y*width+width-1);}
+  while(head<tail){
+    const index=queue[head++],x=index%width,y=(index/width)|0;
+    if(x>0)seed(index-1);if(x<width-1)seed(index+1);if(y>0)seed(index-width);if(y<height-1)seed(index+width);
+  }
+  for(let index=0;index<background.length;index++){
+    if(background[index]){data[index*4+3]=0;continue;}
+    const x=index%width,y=(index/width)|0;let neighbours=0;
+    for(let oy=-1;oy<=1;oy++)for(let ox=-1;ox<=1;ox++){
+      if(!ox&&!oy)continue;const nx=x+ox,ny=y+oy;
+      if(nx>=0&&nx<width&&ny>=0&&ny<height&&background[ny*width+nx])neighbours++;
+    }
+    data[index*4+3]=Math.max(70,255-neighbours*24);
+  }
+  const result=document.createElement("canvas");result.width=width;result.height=height;
+  result.getContext("2d").putImageData(image,0,0);
+  return result;
+}
+
+async function runLocalCutout(){
+  const source=cutoutSourceCanvas;
+  if(!source)return;
+  setCutoutBusy(true);
+  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+  if(source!==cutoutSourceCanvas){setCutoutBusy(false);return;}
+  const sensitivity=Number($("#cutoutSensitivity")?.value)||50;
+  cutoutResultCanvas=createLocalCutout(source,sensitivity);
+  cutoutShowingOriginal=false;
+  drawCutoutPreview();
+  setCutoutBusy(false);
+}
+
+async function openCutoutDialog(){
+  if(!cropImage||!cropState)return;
+  const source=$("#cropCanvas"),size=Math.min(600,source.width,source.height);
+  cutoutSourceCanvas=document.createElement("canvas");cutoutSourceCanvas.width=size;cutoutSourceCanvas.height=size;
+  cutoutSourceCanvas.getContext("2d").drawImage(source,0,0,source.width,source.height,0,0,size,size);
+  const slider=$("#cutoutSensitivity");if(slider)slider.value="50";
+  const value=$("#cutoutSensitivityValue");if(value)value.textContent="50";
+  const dialog=$("#cutoutDialog");if(dialog)dialog.hidden=false;
+  await runLocalCutout();
+}
+
+function closeCutoutDialog(){
+  const dialog=$("#cutoutDialog");if(dialog)dialog.hidden=true;
+  cutoutSourceCanvas=null;cutoutResultCanvas=null;cutoutShowingOriginal=false;
+  if(cutoutRenderTimer){clearTimeout(cutoutRenderTimer);cutoutRenderTimer=null;}
+}
+
+$("#cropCutout")?.addEventListener("click",openCutoutDialog);
+$("#cutoutClose")?.addEventListener("click",closeCutoutDialog);
+$("#cutoutDialog")?.addEventListener("click",event=>{if(event.target===$("#cutoutDialog"))closeCutoutDialog();});
+$("#cutoutShowOriginal")?.addEventListener("click",()=>{cutoutShowingOriginal=true;drawCutoutPreview();});
+$("#cutoutShowResult")?.addEventListener("click",()=>{cutoutShowingOriginal=false;drawCutoutPreview();});
+$("#cutoutSensitivity")?.addEventListener("input",event=>{
+  const value=$("#cutoutSensitivityValue");if(value)value.textContent=event.target.value;
+  if(cutoutRenderTimer)clearTimeout(cutoutRenderTimer);
+  cutoutRenderTimer=setTimeout(runLocalCutout,120);
+});
+$("#cutoutReset")?.addEventListener("click",()=>{
+  const slider=$("#cutoutSensitivity");if(slider)slider.value="50";
+  const value=$("#cutoutSensitivityValue");if(value)value.textContent="50";
+  runLocalCutout();
+});
+$("#cutoutApply")?.addEventListener("click",async()=>{
+  const item=activeItem();if(!item||!cutoutResultCanvas)return;
+  setCutoutBusy(true);
+  const blob=await new Promise((resolve,reject)=>cutoutResultCanvas.toBlob(value=>value?resolve(value):reject(new Error("Friläggningen kunde inte sparas.")),"image/webp",.90));
+  item.cropData={...cropState};
+  item.cutoutBlob=blob;
+  item.cutoutData={method:"local-edge-v1",sensitivity:Number($("#cutoutSensitivity")?.value)||50,createdAt:new Date().toISOString()};
+  item.publishBlob=blob;
+  item.imageProcessingState="webp-cutout";
+  await put(persistenceRecord(item));
+  if(item.publishUrl&&item.publishUrl.startsWith("blob:"))URL.revokeObjectURL(item.publishUrl);
+  item.publishUrl=url(blob);item.thumbUrl=await previewSrc(item);
+  cropBaseline=cropStateSnapshot();updateCropSaveState();
+  closeCutoutDialog();
+  const note=$("#cropFutureNote");if(note)note.textContent="Friläggning sparad · originalbilden är orörd";
 });
 const cropPointers=new Map();
 let pinchStart=null;
@@ -3050,6 +3190,8 @@ async function goBackFromPublish(){
     closeConfirmDisplayDialog();
     return;
   }
+  const cutoutDialog=$("#cutoutDialog");
+  if(cutoutDialog&&!cutoutDialog.hidden){closeCutoutDialog();return;}
   if(currentPublishView==="gridView"&&draftSelectionMode){exitDraftSelection();return;}
   if(currentPublishView==="startView"){
     window.location.href="../dashboard/index.html";
