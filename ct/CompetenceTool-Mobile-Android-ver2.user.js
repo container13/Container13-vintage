@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Competence Tool – Android-mobilvy 2.0.3
+// @name         Competence Tool – Android-mobilvy 2.0.4 DIAG
 // @namespace    container13.mobile.android.ver2
-// @version      2.0.3
+// @version      2.0.4
 // @description  Gör Holmens bemanningsschema användbart i Firefox på Android.
 // @match        https://competencetool.se/*
 // @match        https://*.competencetool.se/*
@@ -67,6 +67,22 @@
 
   // Skriptet installeras uttryckligen i Firefox på Android. Competence Tool kan
   // rapportera desktopmått/desktop-UA, så ingen enhetskontroll görs här.
+
+  const diag = {
+    started: Date.now(), apply: 0, startup: 0, scheduleHeight: 0,
+    outerHeight: 0, resize: 0, vvResize: 0, vvScroll: 0, hashchange: 0
+  };
+  try {
+    const key = 'ctm-android-diag-loads-v204';
+    const loads = JSON.parse(sessionStorage.getItem(key) || '[]')
+      .filter((entry) => Date.now() - entry.time < 60000);
+    loads.push({
+      time: Date.now(),
+      frame: window.top === window ? 'top' : 'iframe',
+      path: location.pathname
+    });
+    sessionStorage.setItem(key, JSON.stringify(loads.slice(-40)));
+  } catch (_) {}
 
   const addViewport = (targetDocument = document) => {
     let viewport = targetDocument.querySelector('meta[name="viewport"]');
@@ -1227,7 +1243,55 @@
     return true;
   };
 
+  const installCompactDiagnostics = () => {
+    if (!document.querySelector('#shiftScheduleTable') || document.getElementById('ctm-android-diag-button')) return;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.id = 'ctm-android-diag-button';
+    button.textContent = 'DIAG';
+    button.style.cssText = 'position:fixed;right:10px;bottom:72px;z-index:2147483646;padding:11px 13px;border:2px solid white;border-radius:12px;background:#cf0035;color:white;font:800 14px sans-serif;box-shadow:0 2px 8px #0006';
+
+    const overlay = document.createElement('div');
+    overlay.id = 'ctm-android-diag-overlay';
+    overlay.hidden = true;
+    overlay.style.cssText = 'position:fixed;inset:10px 10px auto;z-index:2147483647;max-height:calc(100dvh - 20px);overflow:auto;padding:15px;border:4px solid #cf0035;border-radius:16px;background:white;color:#111;font:700 14px/1.35 monospace;white-space:pre-wrap;box-shadow:0 4px 18px #0008';
+
+    const summary = () => {
+      let loads = [];
+      try {
+        loads = JSON.parse(sessionStorage.getItem('ctm-android-diag-loads-v204') || '[]')
+          .filter((entry) => Date.now() - entry.time < 30000);
+      } catch (_) {}
+      const topLoads = loads.filter((entry) => entry.frame === 'top').length;
+      const frameLoads = loads.filter((entry) => entry.frame === 'iframe').length;
+      const from = document.querySelector('#ctl00_MainContent_txtStartDate')?.value || '–';
+      const to = document.querySelector('#ctl00_MainContent_txtEndDate')?.value || '–';
+      return [
+        'ANDROIDDIAG 2.0.4',
+        `Dokument: ${window.top === window ? 'TOPP' : 'IFRAME'}`,
+        `Körtid: ${Math.round((Date.now() - diag.started) / 1000)} s`,
+        `Starter 30 s: ${loads.length} (topp ${topLoads}, iframe ${frameLoads})`,
+        `apply: ${diag.apply}   startkontroll: ${diag.startup}`,
+        `höjd schema: ${diag.scheduleHeight}   yttre: ${diag.outerHeight}`,
+        `resize: ${diag.resize}   vv-resize: ${diag.vvResize}`,
+        `vv-scroll: ${diag.vvScroll}   hash: ${diag.hashchange}`,
+        `viewport: ${innerWidth}×${innerHeight} / vv ${Math.round(window.visualViewport?.width || 0)}×${Math.round(window.visualViewport?.height || 0)}`,
+        `datum: ${from} → ${to}`,
+        `postback-lås: ${window.__ctmDateRangeLoading ? 'JA' : 'NEJ'}`,
+        '',
+        'Ta EN skärmdump av denna ruta.'
+      ].join('\n');
+    };
+    button.addEventListener('click', () => {
+      overlay.textContent = summary();
+      overlay.hidden = false;
+    });
+    overlay.addEventListener('click', () => { overlay.hidden = true; });
+    document.body.append(button, overlay);
+  };
+
   const fitScheduleHeight = () => {
+    diag.scheduleHeight += 1;
     const viewportHeight = window.visualViewport?.height || window.innerHeight;
     const bottomGap = 6;
     const scheduleContainer = document.querySelector('#shiftScheduleContainer');
@@ -1260,6 +1324,7 @@
   // Mobilwebbläsare kan räkna iframe-vyn och toppsidans viewport var för sig.
   // Därför måste höjden först föras vidare genom splittern och själva iframe:n.
   const fitOuterFrameHeight = () => {
+    diag.outerHeight += 1;
     try {
       const topWindow = window.top;
       const topDocument = topWindow.document;
@@ -1305,6 +1370,7 @@
   const apply = () => {
     if (applyIsRunning) return;
     applyIsRunning = true;
+    diag.apply += 1;
     try {
       addViewport();
       lockPageZoom();
@@ -1324,6 +1390,7 @@
       installManningModalClose();
       installDepartmentSelect();
       installMobileSignature();
+      installCompactDiagnostics();
       fitOuterFrameHeight();
       requestAnimationFrame(fitScheduleHeight);
     } finally {
@@ -1351,6 +1418,7 @@
   let startupChecks = 0;
   const startupTimer = window.setInterval(() => {
     startupChecks += 1;
+    diag.startup += 1;
     const table = document.querySelector('#shiftScheduleTable');
     if (table) {
       const mobileUiReady = document.getElementById('ctm-shift-filter')
@@ -1363,11 +1431,8 @@
     }
     if (startupChecks >= 80) window.clearInterval(startupTimer);
   }, 250);
-  window.addEventListener('hashchange', scheduleApply);
-  window.addEventListener('resize', fitScheduleHeight);
-  window.addEventListener('resize', fitOuterFrameHeight);
-  window.visualViewport?.addEventListener('resize', fitScheduleHeight);
-  window.visualViewport?.addEventListener('resize', fitOuterFrameHeight);
-  window.visualViewport?.addEventListener('scroll', fitScheduleHeight);
-  window.visualViewport?.addEventListener('scroll', fitOuterFrameHeight);
+  window.addEventListener('hashchange', () => { diag.hashchange += 1; scheduleApply(); });
+  window.addEventListener('resize', () => { diag.resize += 1; fitScheduleHeight(); fitOuterFrameHeight(); });
+  window.visualViewport?.addEventListener('resize', () => { diag.vvResize += 1; fitScheduleHeight(); fitOuterFrameHeight(); });
+  window.visualViewport?.addEventListener('scroll', () => { diag.vvScroll += 1; fitScheduleHeight(); fitOuterFrameHeight(); });
 })();
