@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.131
+CCC-version: 2.10.132
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -48,6 +48,14 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.132 – friläggningen blir aktiv bild direkt
+- Använd friläggning byter omedelbart bildkällan i Anpassa bild i stället för att åter visa originalet.
+- Den frilagda varianten ligger kvar när Anpassa bild öppnas igen; originalbilden bevaras separat och orörd.
+- Anpassningsytan visar schackrutig transparens bakom ett frilagt objekt.
+- Efterföljande flytt, zoom och rotation bevarar genomskinligheten i den publicerade varianten.
+- En ny körning av Frilägg utgår fortfarande från originalet och dess sparade ursprungsanpassning.
+- Rootens `/version.js` är orörd; CCC-versionen finns endast i `/ccc-core/version.js`.
+
 v2.10.131 – automatisk rensning av fristående bakgrundsobjekt
 - Frilägg analyserar kvarvarande sammanhängande ytor efter den vanliga bakgrundsborttagningen.
 - Den stora centrala ytan väljs som huvudobjekt och små fristående ytor vid kanter eller hörn tas bort automatiskt.
