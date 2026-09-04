@@ -11,8 +11,8 @@
 <title>CCC Publicera v2.9.22</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}const p=new URLSearchParams(location.search);document.documentElement.classList.add("ccc-publish-booting");if(p.get("view")==="prepare")document.documentElement.classList.add("ccc-direct-prepare-loading");</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.10.130">
-  <link rel="stylesheet" href="../core.css?v=2.10.130">
+<link rel="stylesheet" href="publish.css?v=2.10.131">
+  <link rel="stylesheet" href="../core.css?v=2.10.131">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell publish-shell">
@@ -316,7 +316,7 @@
     </div>
     <label class="cutout-sensitivity" for="cutoutSensitivity">
       <span><strong>Känslighet</strong><output id="cutoutSensitivityValue">50</output></span>
-      <input id="cutoutSensitivity" type="range" min="15" max="90" value="50" step="1">
+      <input id="cutoutSensitivity" type="range" min="15" max="100" value="50" step="1">
       <small>Höj om mer bakgrund ska tas bort.</small>
     </label>
     <p id="cutoutStatus" class="cutout-status">Testmotor för bilder med tydlig skillnad mellan objekt och bakgrund.</p>
@@ -338,9 +338,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.10.130"></script>
-<script type="module" src="../core.js?v=2.10.130"></script>
-  <script src="../version.js?v=2.10.130"></script>
+<script type="module" src="publish.js?v=2.10.131"></script>
+<script type="module" src="../core.js?v=2.10.131"></script>
+  <script src="../version.js?v=2.10.131"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 

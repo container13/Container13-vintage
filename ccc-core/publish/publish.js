@@ -1959,6 +1959,42 @@ function cornerPalette(data,width,height){
   });
 }
 
+function cleanCutoutIslands(background,width,height,queue){
+  const labels=new Int32Array(background.length),components=[];
+  let label=0;
+  for(let start=0;start<background.length;start++){
+    if(background[start]||labels[start])continue;
+    label++;let head=0,tail=0,area=0,sumX=0,sumY=0;
+    labels[start]=label;queue[tail++]=start;
+    while(head<tail){
+      const index=queue[head++],x=index%width,y=(index/width)|0;
+      area++;sumX+=x;sumY+=y;
+      for(let oy=-1;oy<=1;oy++)for(let ox=-1;ox<=1;ox++){
+        if(!ox&&!oy)continue;
+        const nx=x+ox,ny=y+oy;if(nx<0||nx>=width||ny<0||ny>=height)continue;
+        const next=ny*width+nx;
+        if(!background[next]&&!labels[next]){labels[next]=label;queue[tail++]=next;}
+      }
+    }
+    const cx=sumX/area,cy=sumY/area;
+    const centreDistance=Math.hypot((cx-width/2)/width,(cy-height/2)/height);
+    components.push({label,area,centreDistance,score:area*(1.18-Math.min(.58,centreDistance))});
+  }
+  if(components.length<=1)return 0;
+  const main=components.reduce((best,item)=>item.score>best.score?item:best,components[0]);
+  const keep=new Set([main.label]);
+  for(const component of components){
+    if(component.label===main.label)continue;
+    const substantial=component.area>=main.area*.12;
+    const companion=component.area>=main.area*.035&&component.centreDistance<.34;
+    if(substantial||companion)keep.add(component.label);
+  }
+  const removedComponents=components.filter(component=>!keep.has(component.label));
+  if(!removedComponents.length)return 0;
+  for(let index=0;index<labels.length;index++)if(labels[index]&&!keep.has(labels[index]))background[index]=1;
+  return removedComponents.filter(component=>component.area>=9).length;
+}
+
 function createLocalCutout(source,sensitivity){
   const width=source.width,height=source.height,sourceCtx=source.getContext("2d",{willReadFrequently:true});
   const image=sourceCtx.getImageData(0,0,width,height),data=image.data,palette=cornerPalette(data,width,height);
@@ -1980,6 +2016,7 @@ function createLocalCutout(source,sensitivity){
     const index=queue[head++],x=index%width,y=(index/width)|0;
     if(x>0)seed(index-1);if(x<width-1)seed(index+1);if(y>0)seed(index-width);if(y<height-1)seed(index+width);
   }
+  const removedIslands=cleanCutoutIslands(background,width,height,queue);
   for(let index=0;index<background.length;index++){
     if(background[index]){data[index*4+3]=0;continue;}
     const x=index%width,y=(index/width)|0;let neighbours=0;
@@ -1991,7 +2028,7 @@ function createLocalCutout(source,sensitivity){
   }
   const result=document.createElement("canvas");result.width=width;result.height=height;
   result.getContext("2d").putImageData(image,0,0);
-  return result;
+  return {canvas:result,removedIslands};
 }
 
 async function runLocalCutout(){
@@ -2001,9 +2038,14 @@ async function runLocalCutout(){
   await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
   if(source!==cutoutSourceCanvas){setCutoutBusy(false);return;}
   const sensitivity=Number($("#cutoutSensitivity")?.value)||50;
-  cutoutResultCanvas=createLocalCutout(source,sensitivity);
+  const cutout=createLocalCutout(source,sensitivity);
+  cutoutResultCanvas=cutout.canvas;
   cutoutShowingOriginal=false;
   drawCutoutPreview();
+  const status=$("#cutoutStatus");
+  if(status)status.textContent=cutout.removedIslands
+    ?`${cutout.removedIslands} fristående störande ${cutout.removedIslands===1?"yta":"ytor"} rensades automatiskt.`
+    :"Ingen fristående störande yta hittades.";
   setCutoutBusy(false);
 }
 
