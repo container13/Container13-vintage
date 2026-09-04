@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.130
+CCC-version: 2.10.131
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -48,6 +48,15 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.131 – automatisk rensning av fristående bakgrundsobjekt
+- Frilägg analyserar kvarvarande sammanhängande ytor efter den vanliga bakgrundsborttagningen.
+- Den stora centrala ytan väljs som huvudobjekt och små fristående ytor vid kanter eller hörn tas bort automatiskt.
+- Större separata delar och mindre följeslagare nära bildens centrum skyddas för objekt som består av flera delar.
+- Arbetsrutan berättar om en eller flera tydliga störande ytor har rensats.
+- Känslighetsskalan går nu uttryckligen till 100; ö-rensningen fungerar oberoende av känslighetsvärdet.
+- Originalbilden och den reversibla variantlagringen är oförändrade.
+- Rootens `/version.js` är orörd; CCC-versionen finns endast i `/ccc-core/version.js`.
+
 v2.10.130 – Frilägg 1.0 med lokal testmotor
 - Frilägg är aktiverad i Anpassa bild och öppnar en egen mobilanpassad arbetsruta.
 - Bildbehandlingen körs lokalt i webbläsaren och skickar inte bilden till någon extern tjänst.
