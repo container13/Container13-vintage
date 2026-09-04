@@ -2883,6 +2883,14 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
 #cropView .crop-tool-lock{font-size:10px;filter:grayscale(1)}
 #cropView .crop-border{border-width:1.5px}
 #cropView .crop-accept{margin:0 auto 4px!important}
+#cropView .crop-accept:disabled{
+  border-color:rgba(120,128,148,.26)!important;
+  background:linear-gradient(155deg,rgba(66,71,82,.68),rgba(47,51,61,.68))!important;
+  color:rgba(210,214,223,.48)!important;
+  box-shadow:none!important;
+  cursor:default;
+  opacity:1;
+}
 @media(max-height:760px) and (max-width:520px){
   #cropView.crop-view{row-gap:14px;padding-bottom:4px}
   #cropView .crop-preview{width:min(100%,29dvh,330px)!important}

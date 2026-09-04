@@ -42,7 +42,7 @@ let channelTargetsReturnView="startView";
 let cropReturnContext={view:"gridView",itemId:""};
 let publishBackPending=false;
 let draftPreviewGesture=null,draftPreviewSuppressClick=false;
-let cropImage=null,cropState=null,pointer=null;
+let cropImage=null,cropState=null,cropBaseline=null,pointer=null;
 let activeItemId=null;
 let recentlyAdaptedItemId=null;
 let draftSelectionMode=false;const selectedDraftIds=new Set();
@@ -794,7 +794,7 @@ let publishFooterCoreWaitBound=false;
 function quickPublishCurrentCrop(){
   if(currentPublishView!=="cropView"||!activeItem())return;
   cropQuickPublishRequested=true;
-  $("#cropDone")?.click();
+  commitCropAdjustment({force:true});
 }
 
 async function quickPublishCurrentDetail(){
@@ -1771,6 +1771,33 @@ function updateCropCounter(){
   el.textContent=`${entityTerm("singular",true)} ${activeIndex+1} av ${items.length}`;
 }
 
+function cropStateSnapshot(state=cropState){
+  if(!state)return null;
+  return {
+    zoom:Number(state.zoom)||1,
+    x:Number(state.x)||0,
+    y:Number(state.y)||0,
+    rotation:((Number(state.rotation)||0)%360+360)%360
+  };
+}
+
+function cropStateHasChanged(){
+  const current=cropStateSnapshot(),baseline=cropBaseline;
+  if(!current||!baseline)return false;
+  return Math.abs(current.zoom-baseline.zoom)>.001
+    ||Math.abs(current.x-baseline.x)>.5
+    ||Math.abs(current.y-baseline.y)>.5
+    ||current.rotation!==baseline.rotation;
+}
+
+function updateCropSaveState(){
+  const button=$("#cropDone");
+  if(!button)return;
+  const changed=cropStateHasChanged();
+  button.disabled=!changed;
+  button.setAttribute("aria-disabled",String(!changed));
+}
+
 function setCropZoom(nextZoom){
   if(!cropState)return;
   const z=Math.max(.1,Math.min(3,Number(nextZoom)||1));
@@ -1780,6 +1807,7 @@ function setCropZoom(nextZoom){
   const value=$("#cropZoomValue");
   if(value)value.textContent=`${Math.round(z*100)} %`;
   drawCrop();
+  updateCropSaveState();
 }
 
 function stepCropZoom(delta){
@@ -1801,6 +1829,8 @@ function manualCropState(mode="contain",image=cropImage,rotation=0){
 }
 
 async function openCrop({preserveBack=false}={}){
+  cropBaseline=null;
+  updateCropSaveState();
   if(!preserveBack){
     const origin=["detailView","channelConfirmView","gridView"].includes(currentPublishView)
       ?currentPublishView
@@ -1834,7 +1864,10 @@ async function openCrop({preserveBack=false}={}){
   if(zoomValue)zoomValue.textContent=`${Math.round(cropState.zoom*100)} %`;
   updateCropCounter();
   $("#cropOriginalPreview").src=item.thumbUrl||item.fullUrl;
-  drawCrop();show("cropView");
+  drawCrop();
+  cropBaseline=cropStateSnapshot();
+  updateCropSaveState();
+  show("cropView");
 }
 $("#cropBtn").addEventListener("click",()=>openCrop());
 const cropDiagToggle=$("#cropDiagToggle");
@@ -1880,6 +1913,7 @@ $("#cropReset").addEventListener("click",()=>{
   const zoomValue=$("#cropZoomValue");
   if(zoomValue)zoomValue.textContent=`${Math.round(cropState.zoom*100)} %`;
   drawCrop();
+  updateCropSaveState();
 });
 const cropPointers=new Map();
 let pinchStart=null;
@@ -1928,6 +1962,7 @@ $("#cropCanvas").addEventListener("pointermove",e=>{
     const zoomValue=$("#cropZoomValue");
     if(zoomValue)zoomValue.textContent=`${Math.round(newZoom*100)} %`;
     drawCrop();
+    updateCropSaveState();
     return;
   }
 
@@ -1935,6 +1970,7 @@ $("#cropCanvas").addEventListener("pointermove",e=>{
     cropState.x=pointer.ox+(e.clientX-pointer.x)*canvasPerCssX;
     cropState.y=pointer.oy+(e.clientY-pointer.y)*canvasPerCssY;
     drawCrop();
+    updateCropSaveState();
   }
 },{passive:false});
 
@@ -1956,7 +1992,8 @@ function endCropPointer(e){
 ["pointerup","pointercancel","lostpointercapture"].forEach(n=>$("#cropCanvas").addEventListener(n,endCropPointer));
 let cropQuickPublishRequested=false;
 
-$("#cropDone").addEventListener("click",async()=>{
+async function commitCropAdjustment({force=false}={}){
+  if(!force&&!cropStateHasChanged())return;
   const item=activeItem(),g=geometry();
   if(!item||!g)return;
   const savedItemId=item.id;
@@ -1975,6 +2012,8 @@ $("#cropDone").addEventListener("click",async()=>{
   if(item.publishUrl&&item.publishUrl.startsWith("blob:"))URL.revokeObjectURL(item.publishUrl);
   item.publishUrl=url(blob);
   item.thumbUrl=await previewSrc(item);
+  cropBaseline=cropStateSnapshot();
+  updateCropSaveState();
   recentlyAdaptedItemId=savedItemId;
   if(cropQuickPublishRequested){
     cropQuickPublishRequested=false;
@@ -2001,7 +2040,8 @@ $("#cropDone").addEventListener("click",async()=>{
       document.querySelector(`.draft-card[data-item-id="${CSS.escape(savedItemId)}"]`)?.classList.remove("just-adapted");
     }
   },1600);
-});
+}
+$("#cropDone").addEventListener("click",()=>commitCropAdjustment());
 
 $("#publishBtn").addEventListener("click",()=>{
   $("#publishStatus").textContent="";
@@ -2975,6 +3015,7 @@ async function returnFromCrop(){
   const itemId=context.itemId||activeItemId||activeItem()?.id||"";
   cropImage=null;
   cropState=null;
+  cropBaseline=null;
   pointer=null;
   if(context.view==="channelConfirmView"){
     if(itemId)confirmToolItemId=itemId;
