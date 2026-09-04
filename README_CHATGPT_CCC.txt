@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.128
+CCC-version: 2.10.129
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -48,6 +48,14 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.129 – Spara anpassning aktiveras först vid verklig ändring
+- Spara anpassning är gråtonad och tekniskt inaktiv när bildverkstaden öppnas utan osparade ändringar.
+- Knappen blir gul först när zoom, position eller rotation faktiskt skiljer sig från öppningsläget.
+- Hela, Fyll, Rotera, Återställ, drag och nypzoom använder samma gemensamma ändringskontroll.
+- Om bilden förs tillbaka till öppningsläget blir knappen åter inaktiv.
+- Footer-snabbvägen Publicera kan fortfarande färdigställa bildvarianten och gå vidare även utan manuell ändring.
+- Rootens `/version.js` är orörd; CCC-versionen finns endast i `/ccc-core/version.js`.
+
 v2.10.128 – tydligare bildverkstad och synlig Ändra-knapp
 - Container13-sammanfattningen har åter en tydlig lila Ändra-knapp, medan hela kortet fortfarande öppnar samma popup.
 - Anpassa bild använder innehållshöjd i stället för att låta redigeringskortet fylla all ledig yta.
