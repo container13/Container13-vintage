@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Competence Tool – Android-mobilvy ver2
 // @namespace    container13.mobile.android.ver2
-// @version      2.0.0
+// @version      2.0.1
 // @description  Gör Holmens bemanningsschema användbart i Firefox på Android.
 // @match        https://competencetool.se/*
 // @match        https://*.competencetool.se/*
@@ -1299,27 +1299,44 @@
     }
   };
 
+  let applyIsRunning = false;
+  let applyTimer = 0;
+
   const apply = () => {
-    addViewport();
-    lockPageZoom();
+    if (applyIsRunning) return;
+    applyIsRunning = true;
     try {
-      if (window.top.document !== document) {
-        addViewport(window.top.document);
-        lockPageZoom(window.top.document);
-      }
-    } catch (_) {}
-    styleShell();
-    styleManning();
-    installShiftFilter();
-    installNameOption();
-    applyPersonRowVisibility();
-    installDateRangeControls();
-    installMobileHelp();
-    installManningModalClose();
-    installDepartmentSelect();
-    installMobileSignature();
-    fitOuterFrameHeight();
-    requestAnimationFrame(fitScheduleHeight);
+      addViewport();
+      lockPageZoom();
+      try {
+        if (window.top.document !== document) {
+          addViewport(window.top.document);
+          lockPageZoom(window.top.document);
+        }
+      } catch (_) {}
+      styleShell();
+      styleManning();
+      installShiftFilter();
+      installNameOption();
+      applyPersonRowVisibility();
+      installDateRangeControls();
+      installMobileHelp();
+      installManningModalClose();
+      installDepartmentSelect();
+      installMobileSignature();
+      fitOuterFrameHeight();
+      requestAnimationFrame(fitScheduleHeight);
+    } finally {
+      applyIsRunning = false;
+    }
+  };
+
+  // Firefox/DataTables kan skapa många mutationer under samma ögonblick.
+  // Samla dem till en enda lugn återkontroll så skriptets egna DOM-ändringar
+  // inte kan starta en synlig återinitierings-/blinkloop.
+  const scheduleApply = () => {
+    window.clearTimeout(applyTimer);
+    applyTimer = window.setTimeout(apply, 120);
   };
 
   if (document.readyState === 'loading') {
@@ -1328,10 +1345,10 @@
     apply();
   }
   if (document.documentElement) {
-    new MutationObserver(apply).observe(document.documentElement, { childList: true, subtree: true });
+    new MutationObserver(scheduleApply).observe(document.documentElement, { childList: true, subtree: true });
   }
-  window.addEventListener('hashchange', apply);
-  window.addEventListener('load', apply);
+  window.addEventListener('hashchange', scheduleApply);
+  window.addEventListener('load', scheduleApply);
   window.addEventListener('resize', fitScheduleHeight);
   window.addEventListener('resize', fitOuterFrameHeight);
   window.visualViewport?.addEventListener('resize', fitScheduleHeight);
