@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.129
+CCC-version: 2.10.130
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -48,6 +48,17 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.130 – Frilägg 1.0 med lokal testmotor
+- Frilägg är aktiverad i Anpassa bild och öppnar en egen mobilanpassad arbetsruta.
+- Bildbehandlingen körs lokalt i webbläsaren och skickar inte bilden till någon extern tjänst.
+- Första testmotorn tar bort kantansluten bakgrund utifrån bildens hörnfärger och en justerbar känslighet.
+- Original och Frilagd kan växlas direkt för visuell jämförelse innan resultatet används.
+- Återställ återgår till standardkänslighet och räknar om masken.
+- Använd friläggning sparar en separat transparent publiceringsvariant; Vision-originalet lämnas orört.
+- Anpassa bild hämtar uttryckligen originalkällan även efter att en friläggning har sparats.
+- Bakgrund ligger kvar som nästa förberedda, låsta steg tills friläggningsmotorn har stresstestats.
+- Rootens `/version.js` är orörd; CCC-versionen finns endast i `/ccc-core/version.js`.
+
 v2.10.129 – Spara anpassning aktiveras först vid verklig ändring
 - Spara anpassning är gråtonad och tekniskt inaktiv när bildverkstaden öppnas utan osparade ändringar.
 - Knappen blir gul först när zoom, position eller rotation faktiskt skiljer sig från öppningsläget.
