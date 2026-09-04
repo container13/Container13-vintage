@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Competence Tool – Android-mobilvy 2.0.4 DIAG
+// @name         Competence Tool – Android-mobilvy 2.0.5 DIAG
 // @namespace    container13.mobile.android.ver2
-// @version      2.0.4
+// @version      2.0.5
 // @description  Gör Holmens bemanningsschema användbart i Firefox på Android.
 // @match        https://competencetool.se/*
 // @match        https://*.competencetool.se/*
@@ -73,7 +73,7 @@
     outerHeight: 0, resize: 0, vvResize: 0, vvScroll: 0, hashchange: 0
   };
   try {
-    const key = 'ctm-android-diag-loads-v204';
+    const key = 'ctm-android-diag-loads-v205';
     const loads = JSON.parse(sessionStorage.getItem(key) || '[]')
       .filter((entry) => Date.now() - entry.time < 60000);
     loads.push({
@@ -1182,7 +1182,10 @@
     addButton('#dateTimePickerTo', 'ctm-date-forward', '+', 'Ladda en månad framåt', false, () => {
       sessionStorage.setItem(forwardKey, String(Math.max(0, Number(sessionStorage.getItem(forwardKey)) || 0) + 1));
     });
-    applyRange();
+    // Starta inte en automatisk postback vid sidladdning på Android. Om
+    // servern inte accepterar intervallet kan den annars ladda om iframe:n
+    // innan resten av mobilgränssnittet och DIAG-knappen hinner skapas.
+    restoreVisibleDate();
     return true;
   };
 
@@ -1259,7 +1262,7 @@
     const summary = () => {
       let loads = [];
       try {
-        loads = JSON.parse(sessionStorage.getItem('ctm-android-diag-loads-v204') || '[]')
+        loads = JSON.parse(sessionStorage.getItem('ctm-android-diag-loads-v205') || '[]')
           .filter((entry) => Date.now() - entry.time < 30000);
       } catch (_) {}
       const topLoads = loads.filter((entry) => entry.frame === 'top').length;
@@ -1267,7 +1270,7 @@
       const from = document.querySelector('#ctl00_MainContent_txtStartDate')?.value || '–';
       const to = document.querySelector('#ctl00_MainContent_txtEndDate')?.value || '–';
       return [
-        'ANDROIDDIAG 2.0.4',
+        'ANDROIDDIAG 2.0.5',
         `Dokument: ${window.top === window ? 'TOPP' : 'IFRAME'}`,
         `Körtid: ${Math.round((Date.now() - diag.started) / 1000)} s`,
         `Starter 30 s: ${loads.length} (topp ${topLoads}, iframe ${frameLoads})`,
@@ -1385,12 +1388,12 @@
       installShiftFilter();
       installNameOption();
       applyPersonRowVisibility();
+      installCompactDiagnostics();
       installDateRangeControls();
       installMobileHelp();
       installManningModalClose();
       installDepartmentSelect();
       installMobileSignature();
-      installCompactDiagnostics();
       fitOuterFrameHeight();
       requestAnimationFrame(fitScheduleHeight);
     } finally {
