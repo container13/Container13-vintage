@@ -21,7 +21,7 @@ PAKETETS FEM FILER
 
 4. CompetenceTool-Mobile-Android-ver2.user.js
    Mobilanpassningen för Android och Firefox.
-   Nuvarande Android-testversion i filen: 2.0.5 DIAG (diagnos före datumkod; automatisk datum-postback avstängd).
+   Nuvarande Androidversion i filen: 2.0.6 (stabil; automatisk datum-postback vid sidstart borttagen).
 
 5. README-UPPLADDNING.txt
    Den här filen. Den behöver inte ligga publikt, men kan gärna sparas
