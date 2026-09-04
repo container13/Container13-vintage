@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Competence Tool – Android-mobilvy ver2
+// @name         Competence Tool – Android-mobilvy 2.0.3
 // @namespace    container13.mobile.android.ver2
-// @version      2.0.2
+// @version      2.0.3
 // @description  Gör Holmens bemanningsschema användbart i Firefox på Android.
 // @match        https://competencetool.se/*
 // @match        https://*.competencetool.se/*
@@ -1344,23 +1344,25 @@
   } else {
     apply();
   }
-  if (document.documentElement) {
-    new MutationObserver((mutations) => {
-      const table = document.querySelector('#shiftScheduleTable');
-      const missingMobileUi = table && (
-        !document.getElementById('ctm-shift-filter')
-        || !document.getElementById('ctm-view-options')
-      );
-      const structuralChange = mutations.some((mutation) =>
-        Array.from(mutation.addedNodes).some((node) => {
-          if (node.nodeType !== Node.ELEMENT_NODE) return false;
-          return node.matches?.('#shiftScheduleTable, #shiftScheduleTable_wrapper, #manningModal')
-            || node.querySelector?.('#shiftScheduleTable, #shiftScheduleTable_wrapper, #manningModal');
-        })
-      );
-      if (missingMobileUi || structuralChange) scheduleApply();
-    }).observe(document.documentElement, { childList: true, subtree: true });
-  }
+  // Android/Firefox: bevaka inte hela dokumentet permanent. DataTables bygger
+  // om delar av tabellen och en MutationObserver kan då återstarta skriptet i
+  // en synlig blinkloop. Kontrollera i stället starten under högst 20 sekunder
+  // och sluta helt så snart mobilgränssnittet finns på plats.
+  let startupChecks = 0;
+  const startupTimer = window.setInterval(() => {
+    startupChecks += 1;
+    const table = document.querySelector('#shiftScheduleTable');
+    if (table) {
+      const mobileUiReady = document.getElementById('ctm-shift-filter')
+        && document.getElementById('ctm-view-options');
+      if (mobileUiReady) {
+        window.clearInterval(startupTimer);
+        return;
+      }
+      apply();
+    }
+    if (startupChecks >= 80) window.clearInterval(startupTimer);
+  }, 250);
   window.addEventListener('hashchange', scheduleApply);
   window.addEventListener('resize', fitScheduleHeight);
   window.addEventListener('resize', fitOuterFrameHeight);
