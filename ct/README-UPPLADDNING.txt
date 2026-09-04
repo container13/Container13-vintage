@@ -21,7 +21,7 @@ PAKETETS FEM FILER
 
 4. CompetenceTool-Mobile-Android-ver2.user.js
    Mobilanpassningen för Android och Firefox.
-   Nuvarande Android-testversion i filen: 2.0.1 (med Firefox-loopskydd).
+   Nuvarande Android-testversion i filen: 2.0.2 (med riktat Firefox-loopskydd).
 
 5. README-UPPLADDNING.txt
    Den här filen. Den behöver inte ligga publikt, men kan gärna sparas

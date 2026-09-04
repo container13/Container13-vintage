@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Competence Tool – Android-mobilvy ver2
 // @namespace    container13.mobile.android.ver2
-// @version      2.0.1
+// @version      2.0.2
 // @description  Gör Holmens bemanningsschema användbart i Firefox på Android.
 // @match        https://competencetool.se/*
 // @match        https://*.competencetool.se/*
@@ -1345,10 +1345,23 @@
     apply();
   }
   if (document.documentElement) {
-    new MutationObserver(scheduleApply).observe(document.documentElement, { childList: true, subtree: true });
+    new MutationObserver((mutations) => {
+      const table = document.querySelector('#shiftScheduleTable');
+      const missingMobileUi = table && (
+        !document.getElementById('ctm-shift-filter')
+        || !document.getElementById('ctm-view-options')
+      );
+      const structuralChange = mutations.some((mutation) =>
+        Array.from(mutation.addedNodes).some((node) => {
+          if (node.nodeType !== Node.ELEMENT_NODE) return false;
+          return node.matches?.('#shiftScheduleTable, #shiftScheduleTable_wrapper, #manningModal')
+            || node.querySelector?.('#shiftScheduleTable, #shiftScheduleTable_wrapper, #manningModal');
+        })
+      );
+      if (missingMobileUi || structuralChange) scheduleApply();
+    }).observe(document.documentElement, { childList: true, subtree: true });
   }
   window.addEventListener('hashchange', scheduleApply);
-  window.addEventListener('load', scheduleApply);
   window.addEventListener('resize', fitScheduleHeight);
   window.addEventListener('resize', fitOuterFrameHeight);
   window.visualViewport?.addEventListener('resize', fitScheduleHeight);
