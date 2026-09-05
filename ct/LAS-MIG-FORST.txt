@@ -1,0 +1,20 @@
+COMPETENCE TOOL – ANDROID DIAG 1.0.0
+===================================
+
+Detta är bara ett mätverktyg. Det mobilanpassar inte sidan.
+
+GÖR SÅ HÄR
+1. Öppna Violentmonkey.
+2. Stäng av "Competence Tool – Android-mobilvy ver2".
+3. Installera "CompetenceTool-Android-DIAG.user.js".
+4. Kontrollera att endast DIAG-skriptet är aktivt.
+5. Öppna Competence Tool och gå till bemanningsschemat.
+6. Vänta cirka 20 sekunder utan att röra skärmen.
+7. Om sidan blinkar: tryck "Kopiera rapport" och skicka texten.
+8. Om sidan inte blinkar: scrolla lite och vänta 10 sekunder till.
+   Tryck sedan "Kopiera rapport" och skicka texten.
+
+VIKTIGT
+- Den rödkantade rutan ska synas omedelbart längst upp.
+- Installera inte detta ovanpå den gamla koden.
+- Nollställ endast om vi uttryckligen behöver göra ett nytt test.
