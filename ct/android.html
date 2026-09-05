@@ -336,26 +336,41 @@
       <a class="active" href="android.html">🤖 Android</a>
     </nav>
 
-    <section class="card">
-      <h2>Öppna testsidan</h2>
-      <p class="copy">Öppna CompetenceTool i Firefox när DIAG-skriptet är installerat enligt instruktionen nedan.</p>
-      <a class="button secondary" href="https://holmen.competencetool.se/Home#/Manning/ShowManning/7664">Öppna CompetenceTool</a>
-    </section>
-
     <section class="card diag-card">
-      <h2>Testa Android DIAG 2.0</h2>
+      <div class="step-head"><span class="number">1</span><h2>Förbered testet</h2></div>
       <p class="copy">DIAG 2.0 visar ingen ruta inne i CompetenceTool. I stället sparas mätningen i Violentmonkey, så att det blinkande schemat inte kan radera rapporten.</p>
       <div class="diag-warning"><strong>Viktigt:</strong> stäng först av <em>Competence Tool – Android-mobilvy ver2</em> i Violentmonkey. Endast DIAG-skriptet ska vara aktivt under testet.</div>
       <a class="button" href="https://container13.se/ct/CompetenceTool-Android-DIAG-2.user.js">Installera Android DIAG 2.0</a>
-      <a class="button secondary" href="https://container13.se/ct/android-diag-report.html" style="margin-top:10px">Öppna sparad DIAG-rapport</a>
       <ol class="instructions">
         <li>Stäng av den vanliga Android-mobilvyn i Violentmonkey.</li>
         <li>Tryck på <strong>Installera Android DIAG 2.0</strong> och installera skriptet.</li>
-        <li>Tryck på <strong>Öppna CompetenceTool</strong> högst upp och gå till bemanningsschemat.</li>
-        <li>Vänta ungefär 20 sekunder medan sidan blinkar.</li>
-        <li>Öppna en ny flik och välj sedan <strong>Öppna sparad DIAG-rapport</strong> ovan.</li>
+        <li>Kontrollera att endast <strong>Android DIAG 2.0</strong> är aktiverat.</li>
       </ol>
-      <p class="small">När felsökningen är klar: stäng av DIAG innan den vanliga Android-mobilvyn aktiveras igen.</p>
+    </section>
+
+    <section class="card">
+      <div class="step-head"><span class="number">2</span><h2>Starta testet</h2></div>
+      <p class="copy">Knappen öppnar CompetenceTool i en ny Firefox-flik. Den här guiden ligger kvar i den gamla fliken.</p>
+      <a class="button" target="_blank" rel="noopener" href="https://holmen.competencetool.se/Home#/Manning/ShowManning/7664">Öppna CompetenceTool och starta testet</a>
+      <ol class="instructions">
+        <li>Logga in och öppna bemanningsschemat om det behövs.</li>
+        <li>Låt sidan blinka i minst <strong>20 sekunder</strong>.</li>
+        <li>Tryck på Firefox symbol för öppna flikar – den lilla rutan med en siffra.</li>
+        <li>Välj fliken med den här Android-guiden igen.</li>
+      </ol>
+      <p class="notice"><strong>Du ska inte försöka stoppa blinkningen.</strong> DIAG 2.0 mäter vad som händer i bakgrunden.</p>
+    </section>
+
+    <section class="card">
+      <div class="step-head"><span class="number">3</span><h2>Visa testresultatet</h2></div>
+      <p class="copy">När CompetenceTool har blinkat i minst 20 sekunder trycker du på knappen nedan.</p>
+      <a class="button secondary" href="https://container13.se/ct/android-diag-report.html">Visa sparad DIAG-rapport</a>
+      <ol class="instructions">
+        <li>Tryck på <strong>Visa sparad DIAG-rapport</strong>.</li>
+        <li>Tryck på <strong>Kopiera rapport</strong> på rapportsidan.</li>
+        <li>Skicka den kopierade texten till Magnus.</li>
+      </ol>
+      <p class="small">När testet är klart: stäng av DIAG innan den vanliga Android-mobilvyn aktiveras igen.</p>
     </section>
 
     <footer>Tillfällig Android-diagnos · CompetenceTool · @bulan73</footer>
