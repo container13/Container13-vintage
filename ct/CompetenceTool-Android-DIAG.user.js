@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Competence Tool – Android DIAG (fristående)
 // @namespace    container13.mobile.android.diag
-// @version      1.0.0
+// @version      1.0.1
 // @description  Mäter omladdningar och storlekshändelser utan att ändra Competence Tool.
 // @match        https://competencetool.se/*
 // @match        https://*.competencetool.se/*
@@ -16,7 +16,7 @@
 
   if (window !== window.top) return;
 
-  const KEY = 'ctm-android-diag-v1';
+  const KEY = 'ctm-android-diag-v101';
   const now = () => new Date().toLocaleTimeString('sv-SE');
   const fresh = () => ({
     started: now(), topStarts: 0, topLoads: 0, iframeLoads: 0,
@@ -35,7 +35,7 @@
   save();
 
   const report = () => [
-    'Android DIAG 1.0.0',
+    'Android DIAG 1.0.1',
     `Startad: ${state.started}`,
     `Topstarter: ${state.topStarts}`,
     `Top load: ${state.topLoads}`,
@@ -113,7 +113,9 @@
   const startObserver = () => {
     watchFrames();
     new MutationObserver((records) => {
-      state.mutations += records.length;
+      const externalRecords = records.filter((record) => !panel?.contains(record.target));
+      if (!externalRecords.length) return;
+      state.mutations += externalRecords.length;
       state.lastEvent = `DOM ${now()}`;
       watchFrames();
     }).observe(document.documentElement, { childList: true, subtree: true });
