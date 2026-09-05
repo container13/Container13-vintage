@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Competence Tool – Android DIAG (fristående)
 // @namespace    container13.mobile.android.diag
-// @version      1.0.1
+// @version      1.0.2
 // @description  Mäter omladdningar och storlekshändelser utan att ändra Competence Tool.
 // @match        https://competencetool.se/*
 // @match        https://*.competencetool.se/*
@@ -16,7 +16,8 @@
 
   if (window !== window.top) return;
 
-  const KEY = 'ctm-android-diag-v101';
+  const KEY = 'ctm-android-diag-v102';
+  const MINIMIZED_KEY = 'ctm-android-diag-minimized-v102';
   const now = () => new Date().toLocaleTimeString('sv-SE');
   const fresh = () => ({
     started: now(), topStarts: 0, topLoads: 0, iframeLoads: 0,
@@ -35,7 +36,7 @@
   save();
 
   const report = () => [
-    'Android DIAG 1.0.1',
+    'Android DIAG 1.0.2',
     `Startad: ${state.started}`,
     `Topstarter: ${state.topStarts}`,
     `Top load: ${state.topLoads}`,
@@ -70,10 +71,15 @@
       #ctm-android-diag .row{display:flex;gap:8px}
       #ctm-android-diag button{min-height:42px;flex:1;border:0;border-radius:9px;background:#0d6089;color:#fff;font:700 15px system-ui}
       #ctm-android-diag button:last-child{background:#666}
+      #ctm-android-diag [data-open]{display:none;min-width:82px;min-height:52px;padding:0 16px;background:#d40032;box-shadow:0 5px 18px #0005}
+      #ctm-android-diag.is-minimized{top:auto;left:auto;right:10px;bottom:max(80px,env(safe-area-inset-bottom));padding:0;border:0;background:transparent;box-shadow:none}
+      #ctm-android-diag.is-minimized pre,#ctm-android-diag.is-minimized .row{display:none}
+      #ctm-android-diag.is-minimized [data-open]{display:block}
     `;
     panel = document.createElement('section');
     panel.id = 'ctm-android-diag';
-    panel.innerHTML = '<pre data-diag-report></pre><div class="row"><button data-copy>Kopiera rapport</button><button data-reset>Nollställ</button></div>';
+    panel.innerHTML = '<pre data-diag-report></pre><div class="row"><button data-copy>Kopiera</button><button data-minimize>Minimera</button><button data-reset>Nollställ</button></div><button data-open>DIAG</button>';
+    panel.classList.toggle('is-minimized', sessionStorage.getItem(MINIMIZED_KEY) === 'true');
     (document.head || document.documentElement).appendChild(style);
     (document.body || document.documentElement).appendChild(panel);
     panel.querySelector('[data-copy]').addEventListener('click', async () => {
@@ -89,6 +95,15 @@
       state.topStarts = 1;
       state.lastEvent = `Nollställd ${now()}`;
       save(); render();
+    });
+    panel.querySelector('[data-minimize]').addEventListener('click', () => {
+      sessionStorage.setItem(MINIMIZED_KEY, 'true');
+      panel.classList.add('is-minimized');
+    });
+    panel.querySelector('[data-open]').addEventListener('click', () => {
+      sessionStorage.setItem(MINIMIZED_KEY, 'false');
+      panel.classList.remove('is-minimized');
+      render();
     });
     render();
   };
