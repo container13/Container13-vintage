@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Competence Tool – mobilvy ver2
 // @namespace    container13.mobile.ver2
-// @version      2.0.0
+// @version      2.0.1
 // @description  Gör Holmens bemanningsschema användbart på iPhone.
 // @match        https://competencetool.se/*
 // @match        https://*.competencetool.se/*
@@ -367,9 +367,9 @@
       }
       #ctm-view-options {
         display: grid !important;
-        grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr) 26px !important;
+        grid-template-columns: minmax(0, 1.35fr) minmax(0, .72fr) minmax(0, 1fr) 26px !important;
         align-items: center !important;
-        gap: 8px !important;
+        gap: 6px !important;
         box-sizing: border-box !important;
         height: 32px !important;
         padding: 3px 9px !important;
@@ -386,6 +386,7 @@
         justify-content: center !important;
         gap: 6px !important;
         margin: 0 !important;
+        white-space: nowrap !important;
       }
       #ctm-view-options input {
         width: 19px !important;
@@ -1005,8 +1006,25 @@
     showAllCheckbox.type = 'checkbox';
     showAllCheckbox.checked = sessionStorage.getItem('ctm-show-all-rows-v064') === 'true';
     showAllLabel.append(showAllCheckbox, document.createTextNode('Visa allt'));
-    options.append(label, showAllLabel);
+    const popupLabel = document.createElement('label');
+    const popupCheckbox = document.createElement('input');
+    popupCheckbox.type = 'checkbox';
+    popupCheckbox.checked = sessionStorage.getItem('ctm-allow-popups-v201') === 'true';
+    popupLabel.append(popupCheckbox, document.createTextNode('Tillåt popup'));
+    options.append(label, showAllLabel, popupLabel);
     filter.parentElement.insertBefore(options, filter);
+
+    // Stoppa bara det avslutande klicket som öppnar Competence Tools popup.
+    // Pekstart, drag och touchmove lämnas helt orörda så tabellen kan scrollas.
+    if (document.documentElement.dataset.ctmPopupGuard !== '1') {
+      document.documentElement.dataset.ctmPopupGuard = '1';
+      document.addEventListener('click', (event) => {
+        if (sessionStorage.getItem('ctm-allow-popups-v201') === 'true') return;
+        if (!event.target.closest('#shiftScheduleTable, #shiftScheduleTable_wrapper table')) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }, true);
+    }
 
     const updateNames = () => {
       document.documentElement.classList.toggle('ctm-first-names', checkbox.checked);
@@ -1030,6 +1048,9 @@
       sessionStorage.setItem('ctm-show-all-rows-v064', String(showAllCheckbox.checked));
       applyPersonRowVisibility();
       requestAnimationFrame(fitScheduleHeight);
+    });
+    popupCheckbox.addEventListener('change', () => {
+      sessionStorage.setItem('ctm-allow-popups-v201', String(popupCheckbox.checked));
     });
     updateNames();
     applyPersonRowVisibility();
@@ -1202,6 +1223,8 @@
           <dd>Visar personernas förnamn för att ge schemat mer plats. Avmarkera för att visa fullständiga namn.</dd>
           <dt>Visa allt</dt>
           <dd>Visar även avdelningsinformation, grupprubriker och andra rader utan människosymbol.</dd>
+          <dt>Tillåt popup</dt>
+          <dd>Är normalt avstängd så att drag i schemat inte råkar öppna en ruta. Slå på den tillfälligt när du vill öppna datum, namn eller skiftinformation.</dd>
           <dt>Alla och A–F</dt>
           <dd>Alla visar samtliga skiftlag. Tryck på ett eller flera av A–F för att kombinera skiftlag.</dd>
           <dt>Scrollning</dt>

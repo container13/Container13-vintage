@@ -95,3 +95,7 @@ DIAGNOS FÖR ANDROID
 -------------------
 Filen CompetenceTool-Android-DIAG.user.js ska ligga i samma publika /ct/-mapp
 som android.html. Guidens diagnosknapp länkar direkt till denna fil.
+IPHONE 2.0.1
+------------
+Valet "Tillåt popup" är normalt avstängt. Då blockeras klick som öppnar
+popup-rutor i schemat, medan touchdrag och scrollning lämnas orörda.
