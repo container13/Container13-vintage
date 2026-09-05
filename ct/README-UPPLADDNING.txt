@@ -93,8 +93,9 @@ FRAMTIDA UPPDATERINGAR
 iPhone- och Android-anpassad · CompetenceTool · @bulan73
 DIAGNOS FÖR ANDROID
 -------------------
-Filen CompetenceTool-Android-DIAG.user.js ska ligga i samma publika /ct/-mapp
-som android.html. Guidens diagnosknapp länkar direkt till denna fil.
+Filerna CompetenceTool-Android-DIAG-2.user.js och android-diag-report.html ska
+ligga i samma publika /ct/-mapp som android.html. DIAG 2.0 lagrar mätvärden i
+Violentmonkey och visar dem på den separata rapportsidan.
 IPHONE 2.0.1
 ------------
 Valet "Tillåt popup" är normalt avstängt. Då blockeras klick som öppnar

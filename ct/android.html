@@ -328,7 +328,7 @@
       <span class="badge">🤖 Android-anpassad</span>
       <h1>CompetenceTool<br>för Android</h1>
       <span class="creator">@bulan73</span>
-      <p>En enkel steg-för-steg-guide för Samsung och andra Androidmobiler.</p>
+      <p>Tillfällig testsida för felsökning av det blinkande schemat.</p>
     </header>
 
     <nav class="platform-switch" aria-label="Välj mobiltyp">
@@ -336,156 +336,29 @@
       <a class="active" href="android.html">🤖 Android</a>
     </nav>
 
-    <div class="before"><span>👆</span><div><strong>Gör ett steg i taget.</strong><br>Kryssa i rutan längst ner i varje steg när du är klar. Du kan sedan fortsätta med nästa siffra.</div></div>
-
     <section class="card">
-      <div class="step-head"><span class="number">1</span><h2>Installera Firefox</h2></div>
-      <p class="copy">Mobilvyn ska öppnas i Firefox. Din vanliga Samsung-webbläsare kan vara kvar precis som tidigare.</p>
-      <a class="button" href="https://play.google.com/store/apps/details?id=org.mozilla.firefox">Öppna Firefox i Google Play</a>
-      <ol class="instructions">
-        <li>Tryck på knappen ovan.</li>
-        <li>Installera webbläsaren <strong>Firefox</strong>.</li>
-        <li>Öppna Firefox.</li>
-        <li>Skriv <strong>container13.se/ct/android.html</strong> i adressfältet för att komma tillbaka hit.</li>
-      </ol>
-      <div class="visual" role="img" aria-label="Illustration som visar knappen Installera för Firefox i Google Play">
-        <span class="visual-label">Bildhjälp 1</span>
-        <div class="screen">
-          <div class="screen-top">Google Play</div>
-          <div class="mock-row">
-            <div class="mock-icon">🦊</div>
-            <div class="mock-copy"><strong>Firefox</strong><span>Mozilla</span></div>
-            <div class="tap-target">INSTALLERA<span class="finger">☝️</span></div>
-          </div>
-        </div>
-        <div class="right-result"><span>✓</span><div><b>Rätt när:</b> Firefox är öppet och du ser den här guiden där.</div></div>
-      </div>
-      <label class="check"><input type="checkbox" data-step="firefox"><span>Firefox är installerat och öppet</span></label>
-    </section>
-
-    <section class="card">
-      <div class="step-head"><span class="number">2</span><h2>Installera Violentmonkey</h2></div>
-      <p class="copy">Violentmonkey är tillägget som kör mobilanpassningen inne i Firefox.</p>
-      <a class="button" href="https://addons.mozilla.org/android/addon/violentmonkey/">Öppna Violentmonkey för Firefox</a>
-      <div class="tap-path"><b>Firefox</b><span>›</span><b>Violentmonkey</b><span>›</span><b>Lägg till i Firefox</b></div>
-      <ol class="instructions">
-        <li>Tryck på den blå knappen ovan.</li>
-        <li>Tryck på <strong>Lägg till i Firefox</strong>.</li>
-        <li>Godkänn med <strong>Lägg till</strong> när Firefox frågar.</li>
-        <li>Tryck på <strong>OK</strong> när tillägget är installerat.</li>
-      </ol>
-      <div class="visual" role="img" aria-label="Illustration som visar installation av Violentmonkey i Firefox">
-        <span class="visual-label">Bildhjälp 2</span>
-        <div class="screen">
-          <div class="screen-top">Firefox-tillägg</div>
-          <div class="mock-menu">
-            <div>Violentmonkey</div>
-            <div class="chosen">Lägg till i Firefox</div>
-            <div class="toggle-row"><strong>Tillägget är aktiverat</strong><span class="toggle" aria-hidden="true"></span></div>
-          </div>
-        </div>
-        <div class="right-result"><span>✓</span><div><b>Rätt när:</b> Firefox meddelar att Violentmonkey har lagts till.</div></div>
-      </div>
-      <p class="small">Viktigt: hela resten av installationen och CompetenceTool ska öppnas i Firefox.</p>
-      <label class="check"><input type="checkbox" data-step="violentmonkey"><span>Violentmonkey är installerat i Firefox</span></label>
-    </section>
-
-    <section class="card">
-      <div class="step-head"><span class="number">3</span><h2>Hämta mobilvyn</h2></div>
-      <p class="copy">Nu installerar du själva Android-anpassningen i Violentmonkey.</p>
-      <div class="version-banner">Aktuell Android-version: <strong>2.0.6</strong></div>
-      <a class="button" href="https://container13.se/ct/CompetenceTool-Mobile-Android-ver2.user.js">Installera Android-mobilvyn 2.0.6</a>
-      <ol class="instructions">
-        <li>Tryck på den blå knappen ovan.</li>
-        <li>När Violentmonkey visas: tryck på <strong>Installera</strong>.</li>
-        <li>Kontrollera att skriptet är aktiverat.</li>
-        <li>Gå tillbaka till den här guiden.</li>
-      </ol>
-      <div class="visual" role="img" aria-label="Illustration som visar installationsknappen i Violentmonkey">
-        <span class="visual-label">Bildhjälp 3</span>
-        <div class="screen install-panel">
-          <div class="screen-top">Violentmonkey</div>
-          <div class="file">CompetenceTool-Mobile-Android-ver2.user.js</div>
-          <span class="install-button">Installera ☝️</span>
-        </div>
-        <div class="right-result"><span>✓</span><div><b>Rätt när:</b> skriptet visas i Violentmonkey som version <strong>2.0.6</strong> och är aktiverat.</div></div>
-      </div>
-      <p class="notice" id="localNotice" hidden><strong>Lokal förhandsvisning:</strong> Direktinstallationen fungerar när guiden ligger på container13.se.</p>
-      <p class="notice"><strong>Om du bara ser kod:</strong> kontrollera att sidan är öppnad i Firefox och att Violentmonkey installerades i steg 2.</p>
-      <label class="check"><input type="checkbox" data-step="script"><span>Android-mobilvyn 2.0.6 är installerad och aktiv</span></label>
-    </section>
-
-    <section class="card">
-      <div class="step-head"><span class="number">4</span><h2>Öppna CompetenceTool</h2></div>
-      <p class="copy">Öppna CompetenceTool i Firefox och logga in som vanligt. Android-mobilvyn ska starta automatiskt.</p>
+      <h2>Öppna testsidan</h2>
+      <p class="copy">Öppna CompetenceTool i Firefox när DIAG-skriptet är installerat enligt instruktionen nedan.</p>
       <a class="button secondary" href="https://holmen.competencetool.se/Home#/Manning/ShowManning/7664">Öppna CompetenceTool</a>
-      <div class="visual" role="img" aria-label="Illustration som visar att CompetenceTools mobilvy fungerar">
-        <span class="visual-label">Bildhjälp 4</span>
-        <div class="screen success-screen">
-          <div class="success-check">✓</div>
-          <strong>Mobilvyn är igång!</strong>
-          <span>Du ser avdelningsväljaren och knapparna Alla samt A–F.</span>
-        </div>
-      </div>
-      <p class="small">När allt fungerar ser du avdelningsväljaren i det blå fältet och knapparna Alla, A, B, C, D, E och F.</p>
-      <label class="check"><input type="checkbox" data-step="test"><span>Mobilvyn fungerar</span></label>
-    </section>
-
-    <section class="card">
-      <h2>Om mobilvyn inte syns</h2>
-      <ol class="instructions">
-        <li>Kontrollera att endast den senaste versionen av skriptet är aktiv.</li>
-        <li>Kontrollera att sidan är öppnad i <strong>Firefox</strong>.</li>
-        <li>Kontrollera att Violentmonkey och Android-skriptet är aktiverade.</li>
-        <li>Stäng CompetenceTool-fliken och öppna den igen.</li>
-      </ol>
     </section>
 
     <section class="card diag-card">
-      <h2>Diagnos vid blinkande schema</h2>
-      <p class="copy">Använd bara detta separata mätverktyg när vi felsöker Android-versionen. Det ändrar inte schemat.</p>
+      <h2>Testa Android DIAG 2.0</h2>
+      <p class="copy">DIAG 2.0 visar ingen ruta inne i CompetenceTool. I stället sparas mätningen i Violentmonkey, så att det blinkande schemat inte kan radera rapporten.</p>
       <div class="diag-warning"><strong>Viktigt:</strong> stäng först av <em>Competence Tool – Android-mobilvy ver2</em> i Violentmonkey. Endast DIAG-skriptet ska vara aktivt under testet.</div>
-      <a class="button" href="https://container13.se/ct/CompetenceTool-Android-DIAG.user.js">Installera fristående Android DIAG 1.0.2</a>
+      <a class="button" href="https://container13.se/ct/CompetenceTool-Android-DIAG-2.user.js">Installera Android DIAG 2.0</a>
+      <a class="button secondary" href="https://container13.se/ct/android-diag-report.html" style="margin-top:10px">Öppna sparad DIAG-rapport</a>
       <ol class="instructions">
         <li>Stäng av den vanliga Android-mobilvyn i Violentmonkey.</li>
-        <li>Tryck på den röda knappen och installera DIAG-skriptet.</li>
-        <li>Öppna CompetenceTool och gå till bemanningsschemat.</li>
-        <li>Vänta ungefär 20 sekunder utan att röra skärmen.</li>
-        <li>Tryck på <strong>Kopiera rapport</strong> i den rödkantade rutan.</li>
+        <li>Tryck på <strong>Installera Android DIAG 2.0</strong> och installera skriptet.</li>
+        <li>Tryck på <strong>Öppna CompetenceTool</strong> högst upp och gå till bemanningsschemat.</li>
+        <li>Vänta ungefär 20 sekunder medan sidan blinkar.</li>
+        <li>Öppna en ny flik och välj sedan <strong>Öppna sparad DIAG-rapport</strong> ovan.</li>
       </ol>
       <p class="small">När felsökningen är klar: stäng av DIAG innan den vanliga Android-mobilvyn aktiveras igen.</p>
     </section>
 
-    <section class="card progress-card">
-      <div class="progress-row"><strong>Installation</strong><span id="progressText">0 av 4 klara</span></div>
-      <div class="bar" aria-hidden="true"><span id="progressBar"></span></div>
-    </section>
-
-    <footer>Android-anpassad · CompetenceTool · @bulan73 · guide ver2</footer>
+    <footer>Tillfällig Android-diagnos · CompetenceTool · @bulan73</footer>
   </main>
-  <script>
-    (() => {
-      const boxes = [...document.querySelectorAll('[data-step]')];
-      const localNotice = document.getElementById('localNotice');
-      if (location.protocol === 'file:') localNotice.hidden = false;
-      const key = 'ct-android-install-guide-ver2';
-      let saved = {};
-      try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (_) {}
-      const render = () => {
-        const done = boxes.filter(box => box.checked).length;
-        document.getElementById('progressText').textContent = `${done} av ${boxes.length} klara`;
-        document.getElementById('progressBar').style.width = `${done / boxes.length * 100}%`;
-      };
-      boxes.forEach(box => {
-        box.checked = Boolean(saved[box.dataset.step]);
-        box.addEventListener('change', () => {
-          saved[box.dataset.step] = box.checked;
-          try { localStorage.setItem(key, JSON.stringify(saved)); } catch (_) {}
-          render();
-        });
-      });
-      render();
-    })();
-  </script>
 </body>
 </html>
