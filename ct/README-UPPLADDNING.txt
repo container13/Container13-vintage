@@ -91,3 +91,7 @@ FRAMTIDA UPPDATERINGAR
 
 
 iPhone- och Android-anpassad · CompetenceTool · @bulan73
+DIAGNOS FÖR ANDROID
+-------------------
+Filen CompetenceTool-Android-DIAG.user.js ska ligga i samma publika /ct/-mapp
+som android.html. Guidens diagnosknapp länkar direkt till denna fil.

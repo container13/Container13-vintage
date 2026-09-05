@@ -177,6 +177,18 @@
       font-weight: 800;
     }
     .version-banner strong { font-size: 19px; }
+    .diag-card { border-color: #e5b6c1; background: #fffafb; }
+    .diag-card .button { background: linear-gradient(135deg, #a80029, #d40032); }
+    .diag-warning {
+      margin: 14px 0;
+      padding: 12px 14px;
+      border-left: 5px solid #d40032;
+      border-radius: 10px;
+      background: #fff0f3;
+      color: #6d1026;
+      font-size: 14px;
+      line-height: 1.45;
+    }
     .visual {
       position: relative;
       margin: 16px 0;
@@ -427,6 +439,21 @@
         <li>Kontrollera att Violentmonkey och Android-skriptet är aktiverade.</li>
         <li>Stäng CompetenceTool-fliken och öppna den igen.</li>
       </ol>
+    </section>
+
+    <section class="card diag-card">
+      <h2>Diagnos vid blinkande schema</h2>
+      <p class="copy">Använd bara detta separata mätverktyg när vi felsöker Android-versionen. Det ändrar inte schemat.</p>
+      <div class="diag-warning"><strong>Viktigt:</strong> stäng först av <em>Competence Tool – Android-mobilvy ver2</em> i Violentmonkey. Endast DIAG-skriptet ska vara aktivt under testet.</div>
+      <a class="button" href="https://container13.se/ct/CompetenceTool-Android-DIAG.user.js">Installera fristående Android DIAG 1.0.0</a>
+      <ol class="instructions">
+        <li>Stäng av den vanliga Android-mobilvyn i Violentmonkey.</li>
+        <li>Tryck på den röda knappen och installera DIAG-skriptet.</li>
+        <li>Öppna CompetenceTool och gå till bemanningsschemat.</li>
+        <li>Vänta ungefär 20 sekunder utan att röra skärmen.</li>
+        <li>Tryck på <strong>Kopiera rapport</strong> i den rödkantade rutan.</li>
+      </ol>
+      <p class="small">När felsökningen är klar: stäng av DIAG innan den vanliga Android-mobilvyn aktiveras igen.</p>
     </section>
 
     <section class="card progress-card">
