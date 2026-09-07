@@ -16,3 +16,12 @@ V0.28 bygger vidare på V0.27 utan att ändra den verifierade Opti Swing-baslinj
 - Swing-logik och kronologi.
 - SPY benchmark/omvärldsexperiment.
 - Opti Day A:s V0.27-regler och kostnadsmodell.
+
+
+## V0.29 – marknadsgrupper
+- Opti Day/Swing-logiken är oförändrad från V0.28.
+- Nya symbolpreset: USA Core (10), USA 20 och USA 30. SPY följer med som benchmark men handlas inte.
+- Byte av grupp tömmer tidigare inläst data så grupper inte blandas av misstag.
+- Europa och Asien visas som kommande grupper men är inte aktiverade i denna version.
+- Full testdata exporterar vald marknadsgrupp.
+- Syftet är att testa om samma strategi beter sig annorlunda i ett bredare aktieuniversum innan signalparametrar ändras.

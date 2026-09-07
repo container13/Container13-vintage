@@ -1,10 +1,29 @@
 
-const APP_VERSION = "V0.28";
+const APP_VERSION = "V0.29";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
 });
 
+
+// V0.29 – marknadsgrupper. Strategilogiken ändras inte; endast symboluniversum byts.
+const MARKET_GROUPS={
+ usa10:{name:"USA Core",symbols:["AAPL","MSFT","NVDA","AMZN","META","TSLA","AMD","NFLX","AVGO","JPM","SPY"]},
+ usa20:{name:"USA 20",symbols:["AAPL","MSFT","NVDA","AMZN","META","TSLA","AMD","NFLX","AVGO","JPM","GOOGL","ORCL","CRM","INTC","QCOM","MU","BAC","GS","WMT","COST","SPY"]},
+ usa30:{name:"USA 30",symbols:["AAPL","MSFT","NVDA","AMZN","META","TSLA","AMD","NFLX","AVGO","JPM","GOOGL","ORCL","CRM","INTC","QCOM","MU","BAC","GS","WMT","COST","HD","DIS","UBER","PLTR","PYPL","ADBE","CSCO","PEP","KO","XOM","SPY"]}
+};
+let ACTIVE_MARKET="usa10";
+function setMarketGroup(key){
+ const g=MARKET_GROUPS[key]; if(!g)return; ACTIVE_MARKET=key;
+ const el=document.getElementById("symbols"); if(el)el.value=g.symbols.join(",");
+ document.querySelectorAll(".market-btn[data-market]").forEach(b=>b.classList.toggle("active",b.dataset.market===key));
+ const info=document.getElementById("marketGroupInfo"); if(info)info.textContent=`${g.name} · ${g.symbols.length-1} aktier + SPY`;
+ DAILY=[]; INTRA=[]; LAST=null; updateTestDataStatus(); updateDataStatus();
+ const bs=document.getElementById("bridgeStatus"); if(bs)bs.textContent=`${g.name} vald. Hämta data för att testa gruppen.`;
+}
+window.addEventListener("DOMContentLoaded",()=>{
+ document.querySelectorAll(".market-btn[data-market]:not([disabled])").forEach(b=>b.addEventListener("click",()=>setMarketGroup(b.dataset.market)));
+});
 let DAILY=[], INTRA=[], LAST=null;
 const API_BASE = "https://linas-opti-api.mangaj73.workers.dev";
 const $=id=>document.getElementById(id);
@@ -524,6 +543,7 @@ function v17BaseReport(full){
   tradingEnabled:false,
   data:{
    symbols:v17Symbols(),
+   marketGroup:MARKET_GROUPS[ACTIVE_MARKET]?.name||"Egen lista",
    from:document.getElementById("start")?.value||"",
    to:document.getElementById("end")?.value||"",
    evaluationStart:document.getElementById("evalStart")?.value||"",
@@ -591,7 +611,7 @@ function v17TextReport(full){
  const p=v17BaseReport(full),s=p.swing,d=p.day,dB=p.dayConfirm;
  let a=[];
  a.push("LINAS OPTI – TESTRAPPORT",`Version: ${p.version}`,`Exporterad: ${p.exportedAt}`,"Handel: AVSTÄNGD (backtest/paper)","");
- a.push("DATA",`Symboler: ${p.data.symbols}`,`Data: ${p.data.from} → ${p.data.to}`,`Teststart: ${p.data.evaluationStart}`,`Dagsrader: ${p.data.dailyRows}`,`5-min-rader: ${p.data.fiveMinuteRows}`,"");
+ a.push("DATA",`Marknadsgrupp: ${p.data.marketGroup||"Egen lista"}`,`Symboler: ${p.data.symbols}`,`Data: ${p.data.from} → ${p.data.to}`,`Teststart: ${p.data.evaluationStart}`,`Dagsrader: ${p.data.dailyRows}`,`5-min-rader: ${p.data.fiveMinuteRows}`,"");
  a.push("INSTÄLLNINGAR",`Startkapital: ${p.settings.startCapital}`,`Max position swing: ${p.settings.swingMaxPosition}`,`Risk/affär day: ${p.settings.dayRiskPerTrade}`,"");
  if(s){
   a.push("OPTI SWING",`Slutkapital: ${s.endingCapital}`,`Avkastning: ${s.returnPct.toFixed(2)}%`,`Max drawdown: ${s.maxDrawdownPct.toFixed(2)}%`,`Affärer: ${s.trades}`,`Vinstfrekvens: ${s.winRatePct.toFixed(2)}%`,`Benchmark: SPY`,`SPY: ${s.benchmarkReturnPct==null?"—":s.benchmarkReturnPct.toFixed(2)+"%"}`,`Mot benchmark: ${s.vsBenchmarkPct==null?"—":s.vsBenchmarkPct.toFixed(2)+"%"}`,`Profit factor: ${s.profitFactor}`,`Snittvinst: ${s.averageWin}`,`Snittförlust: ${s.averageLoss}`,`Bästa affär: ${s.bestTrade}`,`Sämsta affär: ${s.worstTrade}`,`Öppna vid slut: ${s.openAtEnd}`,"");
