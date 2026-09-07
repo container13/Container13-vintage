@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.15";
+const APP_VERSION = "V0.16";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = "Linas Opti " + APP_VERSION + " · JS " + APP_VERSION;
@@ -256,6 +256,19 @@ function renderV015Audit(s){
  set("v15AvgWin",fmt(s.avgWin||0)); set("v15AvgLoss",fmt(s.avgLoss||0));
  set("v15Best",fmt(s.best||0)); set("v15Worst",fmt(s.worst||0));
  set("v15Open",String(s.openAtEnd||0)); set("v15Eval",s.evalStart||"—");
- let tb=document.getElementById("v15Trades");
- if(tb)tb.innerHTML=(s.closed||[]).map((x,i)=>`<tr><td>${i+1}</td><td>${x.symbol}</td><td>${x.entryDate}</td><td>${x.exitDate}</td><td>${x.entry.toFixed(2)}</td><td>${x.exit.toFixed(2)}</td><td class="${x.pnl>=0?"good":"bad"}">${fmt(x.pnl)}</td><td>${pct(x.ret)}</td><td>${x.why}</td></tr>`).join("");
+ let cards=document.getElementById("v16TradeCards");
+ if(cards)cards.innerHTML=(s.closed||[]).map((x,i)=>{
+  const positive=x.pnl>=0;
+  return `<article class="v16-tradecard ${positive?"win":"loss"}">
+    <div class="v16-tradehead"><strong>Affär #${i+1}</strong><span class="v16-symbol">${x.symbol}</span></div>
+    <div class="v16-dates">${x.entryDate} → ${x.exitDate}</div>
+    <div class="v16-tradegrid">
+      <div><span>In</span><strong>${x.entry.toFixed(2)}</strong></div>
+      <div><span>Ut</span><strong>${x.exit.toFixed(2)}</strong></div>
+      <div><span>Resultat</span><strong class="${positive?"good":"bad"}">${fmt(x.pnl)}</strong></div>
+      <div><span>Avkastning</span><strong class="${positive?"good":"bad"}">${pct(x.ret)}</strong></div>
+    </div>
+    <div class="v16-reason"><span>Orsak</span><strong>${x.why}</strong></div>
+  </article>`;
+ }).join("");
 }

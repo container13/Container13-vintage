@@ -6,10 +6,10 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.15">
+<link rel="stylesheet" href="linasopti.css?v=0.16">
 </head>
 <body>
-<div id="appVersion" aria-label="Version">Linas Opti V0.15</div>
+<div id="appVersion" aria-label="Version">Linas Opti V0.16</div>
 <div class="wrap">
 <header><div><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Opti Day • gemensam jämförelse</div></div><div class="badge" id="modeBadge">DATA EJ INLÄST</div></header>
 
@@ -78,7 +78,7 @@
 
 <div class="note">Detta är en testplattform, inte investeringsrådgivning. För riktig utvärdering måste data vara korrekt, överlevnadsbias undvikas och spread/slippage/courtage modelleras realistiskt. Linas Opti är mobil-först och lägger grunden för reproducerbara tester med samma regler över verklig historik.</div>
 </div>
-<script src="linasopti.js?v=0.15"></script>
+<script src="linasopti.js?v=0.16"></script>
 <section class="v014-audit"><h3>Backtestkontroll V0.15</h3>
 <div class="v014-metrics">
 <div><span>Benchmark</span><strong>SPY · handlas inte</strong></div>
@@ -91,6 +91,6 @@
 <div><span>Öppna vid slut</span><strong id="v15Open">—</strong></div>
 </div>
 <p class="v014-note"><b>Look-ahead-kontroll:</b> köpsignalen beräknas endast med data till och med föregående handelsdags stängning. Köp sker till nästa handelsdags öppningskurs. SPY används bara som benchmark.</p>
-<details><summary>Visa avslutade Swing-affärer</summary><div class="tablewrap"><table><thead><tr><th>#</th><th>Symbol</th><th>Köp</th><th>Sälj</th><th>In</th><th>Ut</th><th>Resultat</th><th>%</th><th>Orsak</th></tr></thead><tbody id="v15Trades"></tbody></table></div></details>
+<details><summary>Visa avslutade Swing-affärer</summary><div id="v16TradeCards" class="v16-tradecards"></div></details>
 </section>
 </body></html>

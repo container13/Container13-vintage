@@ -28,3 +28,16 @@
 .v014-control{margin:18px 0}.v014-control label{display:block;font-weight:800;margin-bottom:8px}.v014-control input{width:100%;box-sizing:border-box;padding:16px;border:1px solid #cbd3df;border-radius:14px;font:inherit;font-weight:700}.v014-help,.v014-note{font-size:.86rem;color:#6b7280;line-height:1.4;margin-top:7px}.v014-audit{margin:18px 24px;padding:20px;border:1px solid #d8dee8;border-radius:22px;background:#fff}.v014-audit h3{margin:0 0 14px}.v014-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}.v014-metrics>div{padding:12px;border-radius:14px;background:#f5f7fa}.v014-metrics span{display:block;color:#6b7280;font-weight:700;font-size:.82rem}.v014-metrics strong{display:block;margin-top:4px}
 
 .v014-audit details{margin-top:16px}.v014-audit summary{font-weight:800;cursor:pointer;padding:8px 0}.v014-audit .tablewrap{margin-top:10px}
+
+/* V0.16 mobilvänlig affärslista */
+.v16-tradecards{display:grid;gap:12px;margin-top:12px}
+.v16-tradecard{border:1px solid #e2e7ee;border-radius:18px;padding:14px;background:#fff;overflow:hidden}
+.v16-tradecard.win{box-shadow:inset 4px 0 0 rgba(20,140,84,.85)}
+.v16-tradecard.loss{box-shadow:inset 4px 0 0 rgba(180,55,55,.85)}
+.v16-tradehead{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:1.05rem}
+.v16-symbol{font-weight:900}.v16-dates{margin-top:5px;color:#6b7280;font-weight:700;font-size:.9rem}
+.v16-tradegrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.v16-tradegrid>div,.v16-reason{background:#f6f8fa;border-radius:13px;padding:10px 11px}
+.v16-tradegrid span,.v16-reason span{display:block;color:#6b7280;font-size:.76rem;font-weight:800;margin-bottom:3px}
+.v16-tradegrid strong,.v16-reason strong{font-size:.95rem;word-break:break-word}.v16-reason{margin-top:8px}
+@media (min-width:700px){.v16-tradecards{grid-template-columns:1fr 1fr}}
