@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.11";
+const APP_VERSION = "V0.12";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = "Linas Opti " + APP_VERSION + " · JS " + APP_VERSION;
@@ -24,7 +24,7 @@ function parseCSV(text){
  }).filter(x=>x.t&&x.symbol&&Number.isFinite(x.c)).sort((a,b)=>new Date(a.t)-new Date(b.t));
 }
 async function loadFile(input,kind){
- let f=input.files[0];if(!f)return;try{let rows=parseCSV(await f.text());if(kind==="daily")DAILY=rows;else INTRA=rows;updateDataStatus()}catch(e){$("csvStatus").innerHTML='<span class="bad">'+e.message+"</span>"}
+ let f=input.files[0];if(!f)return;try{let rows=parseCSV(await f.text());if(kind==="daily")DAILY=rows; updateTestDataStatus();else INTRA=rows; updateTestDataStatus();updateDataStatus()}catch(e){$("csvStatus").innerHTML='<span class="bad">'+e.message+"</span>"}
 }
 $("dailyFile").onchange=e=>loadFile(e.target,"daily");$("intraFile").onchange=e=>loadFile(e.target,"intra");
 function updateDataStatus(){
@@ -47,7 +47,7 @@ $("healthBtn").onclick=async()=>{try{
 function params(tf){let s=$("symbols").value.split(",").map(x=>x.trim().toUpperCase()).filter(Boolean).join(",");return `/bars?symbols=${encodeURIComponent(s)}&timeframe=${tf}&start=${$("start").value}&end=${$("end").value}`}
 async function getBars(tf){
  try{$("bridgeStatus").textContent="Hämtar...";
- let j=await bridge(params(tf));let rows=j.rows||[];if(tf==="1Day")DAILY=rows;else INTRA=rows;
+ let j=await bridge(params(tf));let rows=j.rows||[];if(tf==="1Day")DAILY=rows; updateTestDataStatus();else INTRA=rows; updateTestDataStatus();
  $("bridgeStatus").innerHTML=`<span class="good">Klart: ${rows.length} rader (${tf})</span>`;updateDataStatus()}
  catch(e){$("bridgeStatus").innerHTML='<span class="bad">'+e.message+"</span>"}
 }
@@ -126,4 +126,39 @@ async function checkLinasOptiApi(){
     throw err;
   }
 }
+
+
+
+function updateTestDataStatus(){
+  const dailyCount = Array.isArray(DAILY) ? DAILY.length : 0;
+  const intraCount = Array.isArray(INTRA) ? INTRA.length : 0;
+
+  const status = document.getElementById("testDataStatus");
+  if (status) {
+    const dailyText = dailyCount > 0
+      ? "🟢 Dagsdata: " + dailyCount + " rader"
+      : "⚪ Dagsdata: ej hämtad";
+    const intraText = intraCount > 0
+      ? "🟢 5-min-data: " + intraCount + " rader"
+      : "⚪ 5-min-data: ej hämtad";
+
+    status.innerHTML = dailyText + "<br>" + intraText;
+  }
+
+  const runBtn = document.getElementById("runBothBtn");
+  if (runBtn) {
+    runBtn.disabled = dailyCount === 0 && intraCount === 0;
+  }
+}
+
+
+
+window.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("button, a").forEach(el => {
+    if ((el.textContent || "").trim().includes("Test")) {
+      el.addEventListener("click", () => setTimeout(updateTestDataStatus, 0));
+    }
+  });
+  updateTestDataStatus();
+});
 

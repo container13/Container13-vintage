@@ -6,10 +6,10 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.11">
+<link rel="stylesheet" href="linasopti.css?v=0.12">
 </head>
 <body>
-<div id="appVersion" aria-label="Version">Linas Opti V0.11</div>
+<div id="appVersion" aria-label="Version">Linas Opti V0.12</div>
 <div class="wrap">
 <header><div><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Opti Day • gemensam jämförelse</div></div><div class="badge" id="modeBadge">DATA EJ INLÄST</div></header>
 
@@ -55,7 +55,7 @@
 <label>Risk/affär, daytrader<select id="risk"><option value=".0025">0,25%</option><option value=".005" selected>0,5%</option><option value=".01">1,0%</option></select></label>
 </div>
 <div class="row" style="margin-top:10px"><button class="primary" id="runBtn">Kör båda robotarna</button></div>
-<div class="status" id="testStatus">Läs först in verkliga kurser på fliken Data.</div>
+<div id="testDataStatus" class="status-box">⚪ Dagsdata: ej hämtad<br>⚪ 5-min-data: ej hämtad</div>
 </div>
 </section>
 
@@ -78,5 +78,5 @@
 
 <div class="note">Detta är en testplattform, inte investeringsrådgivning. För riktig utvärdering måste data vara korrekt, överlevnadsbias undvikas och spread/slippage/courtage modelleras realistiskt. Linas Opti är mobil-först och lägger grunden för reproducerbara tester med samma regler över verklig historik.</div>
 </div>
-<script src="linasopti.js?v=0.11"></script>
+<script src="linasopti.js?v=0.12"></script>
 </body></html>

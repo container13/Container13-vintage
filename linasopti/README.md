@@ -1,9 +1,14 @@
-# Linas Opti V0.11
+# Linas Opti V0.12
 
-Fix för webbläsarcache:
-- CSS laddas som `linasopti.css?v=0.11`
-- JavaScript laddas som `linasopti.js?v=0.11`
-- Versionsrutan ändras av själva JavaScriptet till:
-  `Linas Opti V0.11 · JS V0.11`
+Fixar Test-flikens dataindikering.
 
-Det gör att vi kan se om både nya HTML- och nya JS-filen verkligen körs.
+Nytt:
+- Versionsruta visar `Linas Opti V0.12 · JS V0.12`.
+- Test-fliken visar nu verkligt laddade datamängder:
+  - `🟢 Dagsdata: X rader`
+  - `🟢 5-min-data: X rader`
+- Status uppdateras efter hämtning och när Test-fliken öppnas.
+- Körknappen kan användas när minst en datatyp finns laddad.
+- Ingen handelsfunktion är aktiverad.
+
+Cloudflare Workern behöver inte ändras för denna version.
