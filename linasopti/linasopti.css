@@ -121,3 +121,50 @@ section,
 @media(max-width:520px){
  .lina-watermark{width:98vw !important;opacity:.13 !important}
 }
+
+/* V0.21 – Lina ska lysa igenom själva gränssnittet, inte bara mellan korten */
+body{background-attachment:fixed}
+.lina-watermark{
+  opacity:.16 !important;
+  top:11vh !important;
+  width:min(105vw,620px) !important;
+  filter:grayscale(.55) blur(.35px) contrast(.92) !important;
+}
+.card,
+.kpi,
+.v014-audit,
+.v17-export,
+.v19-ab,
+.v19-variant,
+.status-box,
+.status,
+section > .grid > div{
+  background-color:rgba(255,255,255,.84) !important;
+}
+input,select,button,.period-btn{
+  backdrop-filter:none;
+}
+@supports (backdrop-filter: blur(2px)){
+  .card,.kpi,.v014-audit,.v17-export,.v19-ab,.v19-variant,.status-box,.status{
+    backdrop-filter:blur(1.2px);
+  }
+}
+@media(max-width:520px){
+  .lina-watermark{opacity:.15 !important;top:12vh !important;width:112vw !important}
+  .card,.kpi,.v014-audit,.v17-export,.v19-ab,.v19-variant,.status-box,.status{
+    background-color:rgba(255,255,255,.82) !important;
+  }
+}
+
+/* Snabbval tidsperiod */
+.period-wrap{display:flex;align-items:end;gap:6px;flex-wrap:wrap;padding-bottom:1px}
+.period-label{font-size:.76rem;color:#6b7280;width:100%}
+.period-btn{
+  min-height:38px;padding:8px 11px;border-radius:11px;border:1px solid #d9dee7;
+  background:rgba(255,255,255,.94);font-weight:750;font-size:.82rem;color:#253141;
+}
+.period-btn.active{outline:2px solid currentColor;outline-offset:1px}
+@media(max-width:620px){
+ .period-wrap{width:100%;margin-top:2px}
+ .period-btn{flex:1 1 auto;min-width:68px}
+}

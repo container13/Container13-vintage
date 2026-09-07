@@ -1,13 +1,7 @@
-# Linas Opti V0.20
-## A/B-test
-A = originalstrategin.
-B = originalstrategin + 5 handelsdagars karantän för samma symbol efter att den stoppats ut på -7 %.
-Stop, mål, max 20 dagar, signal, position sizing och övriga symboler är oförändrade.
-
-## Lina-bakgrund
-Ingen ny eller AI-genererad Lina används.
-Samma originalbild från tidigare version används.
-Den hårda cirkelkänslan tonas bort med CSS-mask så personen ska smälta mjukare in i bakgrunden.
-
-## Export
-Full export innehåller både originalresultatet och 5-dagarsvarianten samt dess avslutade affärer.
+# Linas Opti V0.21
+- Behåller V0.20:s A/B-test: original mot 5 handelsdagars återköpskarantän efter stop-loss.
+- Snabbval direkt bredvid datumen: 2024, 2025, 2026 och 2024–nu.
+- Snabbvalen ställer både hämtperiod och teststart automatiskt. Januari används som uppvärmning; resultat börjar 1 februari.
+- Exportens Data-från/till är korrigerad till fälten start/end.
+- Lina-bakgrunden ligger kvar som samma originalfil. Ingen ny/genererad person används.
+- Kort/resultatytor är nu halvtransparenta så Lina ska synas genom större delen av appen, inte bara i mellanrummen.

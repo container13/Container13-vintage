@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.20";
+const APP_VERSION = "V0.21";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = "Linas Opti " + APP_VERSION + " · JS " + APP_VERSION;
@@ -290,8 +290,8 @@ function v17BaseReport(full){
   tradingEnabled:false,
   data:{
    symbols:v17Symbols(),
-   from:document.getElementById("from")?.value||"",
-   to:document.getElementById("to")?.value||"",
+   from:document.getElementById("start")?.value||"",
+   to:document.getElementById("end")?.value||"",
    evaluationStart:document.getElementById("evalStart")?.value||"",
    dailyRows:Array.isArray(DAILY)?DAILY.length:0,
    fiveMinuteRows:Array.isArray(INTRA)?INTRA.length:0
@@ -400,3 +400,22 @@ function renderV019AB(a,b){
    put("abDDDelta",(ddImprove>=0?"+":"")+pct(ddImprove),ddImprove>=0?"good":"bad");
  }
 }
+
+// V0.21 – lata snabbval för testperioder
+(function(){
+ const pad=n=>String(n).padStart(2,"0");
+ const localISO=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+ const setPeriod=(p)=>{
+   const start=document.getElementById("start"), end=document.getElementById("end"), ev=document.getElementById("evalStart");
+   if(!start||!end)return;
+   const now=new Date();
+   let from,to,testStart;
+   if(p==="2024"){from="2024-01-01";to="2024-12-31";testStart="2024-02-01";}
+   else if(p==="2025"){from="2025-01-01";to="2025-12-31";testStart="2025-02-01";}
+   else if(p==="2026"){from="2026-01-01";to=localISO(now);testStart="2026-02-01";}
+   else {from="2024-01-01";to=localISO(now);testStart="2024-02-01";}
+   start.value=from; end.value=to; if(ev)ev.value=testStart;
+   document.querySelectorAll(".period-btn").forEach(b=>b.classList.toggle("active",b.dataset.period===p));
+ };
+ document.querySelectorAll(".period-btn").forEach(b=>b.addEventListener("click",()=>setPeriod(b.dataset.period)));
+})();
