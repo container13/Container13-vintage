@@ -62,3 +62,12 @@ V0.29.1: Fixad cache-busting för JavaScript/CSS. V0.29 HTML hade script-taggen 
 - **1. Data** och **3. Resultat** återgår till början av respektive arbetsyta vid flikbyte.
 - Ingen ändring i Opti Swing, Opti Day A/B, risk, kostnader eller marknadsgrupper.
 - Cache-busting uppdaterad till 0.29.2.
+
+
+## V0.31.1 – Danmark 20
+- Aktiverar Danmark 20 via EODHD Copenhagen (`.CO`).
+- Benchmark: `SPIC25KL.CO` (Sparindex INDEX OMX C25 KL).
+- Opti Swing-reglerna är oförändrade från V0.31.
+- Sverige 20 och USA-grupperna är oförändrade.
+- Danmark-listan är statisk och kan därför ha urvals-/survivorship bias.
+- EODHD raw EOD OHLC, split/dividend/cost caveats från V0.31 gäller fortsatt.
