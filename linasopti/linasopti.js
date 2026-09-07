@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.21";
+const APP_VERSION = "V0.22";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = "Linas Opti " + APP_VERSION + " · JS " + APP_VERSION;
@@ -80,29 +80,12 @@ function swing(rows,capital,maxPos,evalStart,cooldownDays=0){
  let firstTrade=Math.max(20,firstEval);
 
  for(let di=firstTrade;di<dates.length;di++){
-  let date=dates[di];
+  let date=dates[di],signalDate=dates[di-1];
 
-  // Exit: stop/target uses today's OHLC; time exit uses today's close.
-  for(let s of Object.keys(pos)){
-   let bar=map[s][date]; if(!bar)continue;
-   let p=pos[s],age=di-p.di,exit=null,exitPrice=null;
-   let stop=p.entry*.93,target=p.entry*1.12;
-   if(bar.l<=stop){exit="Stop −7%";exitPrice=stop}
-   else if(bar.h>=target){exit="Vinst +12%";exitPrice=target}
-   else if(age>=20){exit="20 dagar";exitPrice=bar.c}
-   if(exit){
-    if(exit==="Stop −7%") lastStopDi[s]=di;
-    let value=p.shares*exitPrice,pl=value-p.cost;
-    cash+=value; pl>=0?w++:l++;
-    let tr={symbol:s,entryDate:p.entryDate,exitDate:date,entry:p.entry,exit:exitPrice,shares:p.shares,pnl:pl,ret:exitPrice/p.entry-1,why:exit};
-    closed.push(tr);
-    log.push({t:date,robot:"Opti Swing",s,a:"SÄLJ",price:exitPrice,amount:value,why:exit,pnl:pl});
-    delete pos[s];
-   }
-  }
-
-  // Entry: signal uses ONLY data through previous trading day; execution at today's open.
-  let signalDate=dates[di-1],candidates=[];
+  // 1) OPEN: signalen är känd från gårdagens stängning.
+  // Befintliga positioner räknas fortfarande som öppna och dagens framtida exit får
+  // varken frigöra kapital eller plats retroaktivt till dagens öppning.
+  let candidates=[];
   for(let s of tradeSymbols){
    if(pos[s])continue;
    let hist=g[s].filter(r=>r.t.slice(0,10)<=signalDate);
@@ -114,19 +97,38 @@ function swing(rows,capital,maxPos,evalStart,cooldownDays=0){
    let rets=hist.slice(-20).map((x,i,a)=>i?Math.log(x.c/a[i-1].c):0).slice(1);
    let vol=sd(rets)*Math.sqrt(252),score=.65*r20+.20*r5-.15*vol;
    if(score>.015){
-     let blocked=cooldownDays>0 && lastStopDi[s]!=null && (di-lastStopDi[s])<=cooldownDays;
-     if(blocked) blockedEntries++;
-     else candidates.push({s,score,price:today.o});
+    let blocked=cooldownDays>0 && lastStopDi[s]!=null && (di-lastStopDi[s])<=cooldownDays;
+    if(blocked)blockedEntries++; else candidates.push({s,score,price:today.o});
    }
   }
   candidates.sort((a,b)=>b.score-a.score);
   while(Object.keys(pos).length<5&&candidates.length){
    let x=candidates.shift();
-   let eq=cash+Object.values(pos).reduce((q,p)=>q+p.shares*(map[p.s][date]?.c||p.entry),0);
+   let eq=cash+Object.values(pos).reduce((q,p)=>q+p.shares*(map[p.s][signalDate]?.c||p.entry),0);
    let budget=Math.min(cash,eq*maxPos); if(budget<eq*.04)break;
    let shares=budget/x.price; cash-=budget;
    pos[x.s]={s:x.s,entry:x.price,entryDate:date,shares,cost:budget,di};
    log.push({t:date,robot:"Opti Swing",s:x.s,a:"KÖP",price:x.price,amount:budget,why:"Signal föregående stängning → köp dagens öppning",pnl:null});
+  }
+
+  // 2) INTRADAY/CLOSE: först efter öppningsköpen får dagens OHLC avgöra exit.
+  // Därmed kan en försäljning senare under dagen aldrig följas av ett köp bakåt i tiden
+  // på samma dags öppningskurs.
+  for(let s of Object.keys(pos)){
+   let bar=map[s][date]; if(!bar)continue;
+   let p=pos[s],age=di-p.di,exit=null,exitPrice=null;
+   let stop=p.entry*.93,target=p.entry*1.12;
+   if(bar.l<=stop){exit="Stop −7%";exitPrice=stop}
+   else if(bar.h>=target){exit="Vinst +12%";exitPrice=target}
+   else if(age>=20){exit="20 dagar";exitPrice=bar.c}
+   if(exit){
+    if(exit==="Stop −7%")lastStopDi[s]=di;
+    let value=p.shares*exitPrice,pl=value-p.cost;
+    cash+=value;pl>=0?w++:l++;
+    closed.push({symbol:s,entryDate:p.entryDate,exitDate:date,entry:p.entry,exit:exitPrice,shares:p.shares,pnl:pl,ret:exitPrice/p.entry-1,why:exit});
+    log.push({t:date,robot:"Opti Swing",s,a:"SÄLJ",price:exitPrice,amount:value,why:exit,pnl:pl});
+    delete pos[s];
+   }
   }
 
   let eq=cash+Object.values(pos).reduce((q,p)=>q+p.shares*(map[p.s][date]?.c||p.entry),0);

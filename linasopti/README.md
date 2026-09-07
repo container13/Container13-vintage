@@ -1,7 +1,16 @@
-# Linas Opti V0.21
-- Behåller V0.20:s A/B-test: original mot 5 handelsdagars återköpskarantän efter stop-loss.
-- Snabbval direkt bredvid datumen: 2024, 2025, 2026 och 2024–nu.
-- Snabbvalen ställer både hämtperiod och teststart automatiskt. Januari används som uppvärmning; resultat börjar 1 februari.
-- Exportens Data-från/till är korrigerad till fälten start/end.
-- Lina-bakgrunden ligger kvar som samma originalfil. Ingen ny/genererad person används.
-- Kort/resultatytor är nu halvtransparenta så Lina ska synas genom större delen av appen, inte bara i mellanrummen.
+# Linas Opti V0.22
+## Viktig verifieringsfix: korrekt handelsordning
+Tidigare kunde dagens intraday-exit behandlas före ett köp på samma dags öppning. Det kunde skapa tidsmässigt omöjliga affärer och låta kapital från en senare försäljning finansiera ett tidigare öppningsköp.
+
+V0.22 kör varje dags Swing-händelser i kronologisk ordning:
+1. Signal från föregående stängning.
+2. Köp på dagens öppning med kapital och positionsplatser som faktiskt finns vid öppningen.
+3. Därefter dagens stop/target.
+4. Tidsutgång vid dagens stängning.
+
+A/B-testet finns kvar: A utan karantän, B med 5 handelsdagars karantän efter stop-loss.
+Snabbvalen 2024, 2025, 2026 och 2024–nu finns kvar.
+
+## Lina
+Samma befintliga originalbild används. Ingen genererad bild används.
+Watermarken ligger nu som en mycket svag overlay ovanpå kortytorna, så Lina ska synas genom hela gränssnittet och inte bara i gliporna.

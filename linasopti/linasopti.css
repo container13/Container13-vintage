@@ -168,3 +168,19 @@ input,select,button,.period-btn{
  .period-wrap{width:100%;margin-top:2px}
  .period-btn{flex:1 1 auto;min-width:68px}
 }
+
+/* V0.22 – Lina som riktig watermark-overlay ovanpå gränssnittet.
+   Exakt befintlig originalfil används. */
+.lina-watermark{
+  z-index:50 !important;
+  opacity:.055 !important;
+  pointer-events:none !important;
+  mix-blend-mode:multiply;
+  width:min(105vw,620px) !important;
+  top:12vh !important;
+  filter:grayscale(.5) contrast(.92) !important;
+}
+header,nav,main,footer{position:relative;z-index:auto}
+@media(max-width:520px){
+ .lina-watermark{opacity:.06 !important;width:112vw !important;top:13vh !important}
+}
