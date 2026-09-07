@@ -319,3 +319,11 @@ body > .v23-sharebar{overflow:visible !important}
 
 /* V0.30 – Opti Trend */
 .v30-trend-info{border:1px solid rgba(36,106,165,.22)!important;background:rgba(245,250,255,.88)!important}.v30-trend-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.v30-exp{font-size:10px;font-weight:900;background:#e6f2fb;color:#246aa5;padding:5px 8px;border-radius:999px}.v30-trend{border:1px solid rgba(36,106,165,.22)!important}.two{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))!important}
+
+
+/* V0.30.1 – Swing revision, inga strategiändringar */
+.v301-revision{margin:14px 0 4px;padding:14px;border:1px solid rgba(36,106,165,.24);border-radius:16px;background:rgba(246,250,254,.9)}
+.v301-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.v301-head h3{margin:0 0 4px}.v301-head>strong{white-space:nowrap;font-size:12px;padding:6px 9px;border-radius:999px;background:#eef2f6}
+.v301-head>strong.good{background:#e8f5ec;color:#21703d}.v301-head>strong.bad{background:#fdecec;color:#a12c2c}
+.v301-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.v301-grid>div{padding:9px 10px;border-radius:11px;background:rgba(255,255,255,.84);border:1px solid #e3e9ef}.v301-grid span{display:block;font-size:10px;font-weight:800;color:#6b7480;margin-bottom:3px}.v301-grid b{font-size:12px}.v301-result,.v301-warn{margin-top:10px;padding:10px 11px;border-radius:11px;font-size:11px;line-height:1.45}.v301-result{background:#fff}.v301-warn{background:#fff8e8;color:#685019}
+@media(min-width:760px){.v301-grid{grid-template-columns:repeat(4,1fr)}}

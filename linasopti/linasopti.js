@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.30";
+const APP_VERSION = "V0.30.1";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -480,7 +480,7 @@ window.addEventListener("DOMContentLoaded",()=>{
    let w=swingWorld(DAILY,cap,mp,start);
    let d=daytrade(INTRA,cap,+$("risk").value);
    let dB=daytradeConfirm(INTRA,cap,+$("risk").value);
-   LAST={s,t,w,d,dB}; render(s,d,cap); renderTrend(t); renderWorld(w,s); renderDayAB(d,dB); renderV015Audit(s);
+   let audit=auditSwing(DAILY,s,cap); LAST={s,t,w,d,dB,audit}; render(s,d,cap); renderTrend(t); renderWorld(w,s); renderDayAB(d,dB); renderV015Audit(s); renderSwingAudit(audit);
    btn.textContent=oldText; btn.disabled=false;
   }catch(err){
    console.error("Linas Opti run error",err);
@@ -563,6 +563,109 @@ window.addEventListener("DOMContentLoaded",()=>{
  if(e&&w){const f=()=>w.textContent="före "+e.value; e.addEventListener("change",f); f();}
 });
 
+function auditSwing(rows,s,capital){
+ if(!rows?.length||!s)return null;
+ const eps=1e-6, issues=[], warnings=[];
+ const dates=[...new Set(rows.map(r=>r.t.slice(0,10)))].sort();
+ const dateIndex=Object.fromEntries(dates.map((d,i)=>[d,i]));
+ const g=grouped(rows), map={};
+ let invalidBars=0,duplicateBars=0,unsortedSeries=0;
+ for(const [sym,arr] of Object.entries(g)){
+  map[sym]={}; let prev='';
+  for(const r of arr){
+   const d=r.t.slice(0,10);
+   if(prev&&d<prev)unsortedSeries++;
+   prev=d;
+   if(map[sym][d])duplicateBars++;
+   map[sym][d]=r;
+   const vals=[r.o,r.h,r.l,r.c];
+   if(vals.some(v=>!Number.isFinite(v)||v<=0)||r.l>Math.min(r.o,r.c)+eps||r.h<Math.max(r.o,r.c)-eps||r.l>r.h+eps)invalidBars++;
+  }
+ }
+ if(invalidBars)issues.push(`${invalidBars} ogiltiga OHLC-rader`);
+ if(duplicateBars)issues.push(`${duplicateBars} dubbla symbol/datum-rader`);
+ if(unsortedSeries)issues.push(`${unsortedSeries} rader ligger i fel datumordning inom symbol`);
+
+ let cash=capital,maxPositions=0,minCash=capital,capitalViolations=0,positionViolations=0,orphanSells=0,spyTrades=0;
+ const positions=new Set();
+ for(const e of (s.log||[])){
+  if(e.s==='SPY')spyTrades++;
+  if(e.a==='KÖP'){
+   if(e.amount>cash+0.01)capitalViolations++;
+   cash-=e.amount; positions.add(e.s);
+   maxPositions=Math.max(maxPositions,positions.size);
+   if(positions.size>5)positionViolations++;
+  }else if(e.a==='SÄLJ'){
+   if(!positions.has(e.s))orphanSells++;
+   cash+=e.amount; positions.delete(e.s);
+  }
+  minCash=Math.min(minCash,cash);
+ }
+ if(capitalViolations)issues.push(`${capitalViolations} köp använde mer kontanter än fanns före köpet`);
+ if(positionViolations)issues.push(`${positionViolations} händelser överskred 5 samtidiga positioner`);
+ if(orphanSells)issues.push(`${orphanSells} försäljningar saknade öppen position i loggreplay`);
+ if(spyTrades)issues.push(`SPY handlades ${spyTrades} gånger`);
+ if(minCash < -0.01)issues.push(`negativ kontantnivå: ${minCash.toFixed(2)}`);
+
+ let entries=0,entryOpenMismatch=0,signalFailures=0,sameDay=0,sameDayStop=0,bothTouched=0,exitRuleFailures=0,chronologyFailures=0;
+ const buyLogs=(s.log||[]).filter(e=>e.a==='KÖP');
+ for(const e of buyLogs){
+  entries++;
+  const di=dateIndex[e.t];
+  if(!(di>0)){chronologyFailures++;continue;}
+  const signalDate=dates[di-1], bar=map[e.s]?.[e.t];
+  if(!bar||Math.abs(bar.o-e.price)>Math.max(1e-8,Math.abs(e.price)*1e-10))entryOpenMismatch++;
+  const hist=(g[e.s]||[]).filter(r=>r.t.slice(0,10)<=signalDate);
+  if(hist.length<21){signalFailures++;continue;}
+  const sig=hist.at(-1),c0=sig.c,c20=hist.at(-21).c,c5=hist.at(-6).c;
+  const r20=c0/c20-1,r5=c0/c5-1;
+  const rets=hist.slice(-20).map((x,i,a)=>i?Math.log(x.c/a[i-1].c):0).slice(1);
+  const vol=sd(rets)*Math.sqrt(252),score=.65*r20+.20*r5-.15*vol;
+  if(!(score>.015))signalFailures++;
+ }
+ for(const x of (s.closed||[])){
+  const ei=dateIndex[x.entryDate],xi=dateIndex[x.exitDate];
+  if(ei==null||xi==null||xi<ei)chronologyFailures++;
+  if(x.entryDate===x.exitDate){sameDay++;if(x.why==='Stop −7%')sameDayStop++;}
+  const bar=map[x.symbol]?.[x.exitDate];
+  if(!bar)continue;
+  const stop=x.entry*.93,target=x.entry*1.12;
+  if(bar.l<=stop&&bar.h>=target)bothTouched++;
+  if(x.why==='Stop −7%' && !(bar.l<=stop+eps && Math.abs(x.exit-stop)<=Math.max(1e-8,stop*1e-10)))exitRuleFailures++;
+  if(x.why==='Vinst +12%' && !(bar.l>stop-eps && bar.h>=target-eps && Math.abs(x.exit-target)<=Math.max(1e-8,target*1e-10)))exitRuleFailures++;
+  if(x.why==='20 dagar' && !(xi-ei>=20 && Math.abs(x.exit-bar.c)<=Math.max(1e-8,bar.c*1e-10)))exitRuleFailures++;
+ }
+ if(entryOpenMismatch)issues.push(`${entryOpenMismatch} köp matchar inte dagens öppningskurs`);
+ if(signalFailures)issues.push(`${signalFailures} köp kunde inte återskapas från föregående dags data`);
+ if(exitRuleFailures)issues.push(`${exitRuleFailures} exits matchar inte stop/mål/tidsregel`);
+ if(chronologyFailures)issues.push(`${chronologyFailures} datum/kronologifel`);
+ warnings.push('USA 30 är en statisk vald aktielista, inte historiska point-in-time-indexmedlemmar. Resultatet kan därför innehålla urvals-/survivorship bias.');
+ warnings.push('Swing V0.30.1 modellerar ännu inte courtage, spread eller slippage.');
+ return {
+  pass:issues.length===0,issues,warnings,entries,closed:(s.closed||[]).length,
+  sameDay,sameDayStop,bothTouched,maxPositions,minCash,capitalViolations,positionViolations,
+  spyTrades,invalidBars,duplicateBars,unsortedSeries,entryOpenMismatch,signalFailures,exitRuleFailures,chronologyFailures
+ };
+}
+
+function renderSwingAudit(a){
+ const set=(id,v,cls)=>{const e=document.getElementById(id);if(e){e.textContent=v;if(cls!==undefined)e.className=cls}};
+ if(!a){['auditStatus','auditEntries','auditSignals','auditCash','auditPos','auditSameDay','auditBoth','auditBars','auditSpy'].forEach(id=>set(id,'—'));return;}
+ set('auditStatus',a.pass?'PASS · inga mekaniska fel hittade':'FLAG · kontrollera fel',a.pass?'good':'bad');
+ set('auditEntries',`${a.entries} / ${a.closed}`);
+ set('auditSignals',a.signalFailures===0?'0 fel':`${a.signalFailures} fel`,a.signalFailures===0?'good':'bad');
+ set('auditCash',`${a.capitalViolations} fel · min ${fmt(a.minCash)}`,a.capitalViolations===0?'good':'bad');
+ set('auditPos',`${a.maxPositions} max · ${a.positionViolations} fel`,a.positionViolations===0?'good':'bad');
+ set('auditSameDay',`${a.sameDay} (${a.sameDayStop} stop)`);
+ set('auditBoth',`${a.bothTouched} · stop väljs först`);
+ set('auditBars',`${a.invalidBars+a.duplicateBars+a.unsortedSeries} fel`,(a.invalidBars+a.duplicateBars+a.unsortedSeries)===0?'good':'bad');
+ set('auditSpy',a.spyTrades===0?'0 affärer':'⚠ '+a.spyTrades,a.spyTrades===0?'good':'bad');
+ const issues=document.getElementById('auditIssues');
+ if(issues)issues.innerHTML=a.issues.length?'<b>FLAG:</b> '+a.issues.join(' · '):'<b>PASS:</b> signal → nästa öppning, kapital, maxpositioner, exitregler och SPY-handelsförbud klarade kontrollen.';
+ const warn=document.getElementById('auditWarnings');
+ if(warn)warn.innerHTML=a.warnings.map(x=>'• '+x).join('<br>');
+}
+
 function renderV015Audit(s){
  const set=(id,v)=>{let e=document.getElementById(id);if(e)e.textContent=v};
  if(!s){return}
@@ -611,6 +714,7 @@ function v17BaseReport(full){
    swingMaxPosition:Number(document.getElementById("maxpos")?.value||0),
    dayRiskPerTrade:Number(document.getElementById("risk")?.value||0)
   },
+  audit:LAST?.audit||null,
   swing:s?{
    endingCapital:s.eq,returnPct:s.ret*100,maxDrawdownPct:s.dd*100,
    trades:s.n,winRatePct:s.wr*100,
@@ -669,6 +773,7 @@ function v17TextReport(full){
  a.push("LINAS OPTI – TESTRAPPORT",`Version: ${p.version}`,`Exporterad: ${p.exportedAt}`,"Handel: AVSTÄNGD (backtest/paper)","");
  a.push("DATA",`Marknadsgrupp: ${p.data.marketGroup||"Egen lista"}`,`Symboler: ${p.data.symbols}`,`Data: ${p.data.from} → ${p.data.to}`,`Teststart: ${p.data.evaluationStart}`,`Dagsrader: ${p.data.dailyRows}`,`5-min-rader: ${p.data.fiveMinuteRows}`,"");
  a.push("INSTÄLLNINGAR",`Startkapital: ${p.settings.startCapital}`,`Max position swing: ${p.settings.swingMaxPosition}`,`Risk/affär day: ${p.settings.dayRiskPerTrade}`,"");
+ if(p.audit){let z=p.audit;a.push("SWING REVISION V0.30.1",`Status: ${z.pass?"PASS":"FLAG"}`,`Kontrollerade köp / avslut: ${z.entries} / ${z.closed}`,`Signalfel: ${z.signalFailures}`,`Kapitalfel: ${z.capitalViolations}`,`Max samtidiga positioner: ${z.maxPositions}`,`Positionsfel: ${z.positionViolations}`,`Samma-dag exits: ${z.sameDay}`,`Samma-dag stop: ${z.sameDayStop}`,`Både stop och mål berörda samma dag: ${z.bothTouched}`,`OHLC/duplikat/sorteringsfel: ${z.invalidBars+z.duplicateBars+z.unsortedSeries}`,`SPY-affärer: ${z.spyTrades}`,`Exitregelfel: ${z.exitRuleFailures}`,`Kronologifel: ${z.chronologyFailures}`,`Varningar: ${z.warnings.join(" | ")}`,"");}
  if(s){
   a.push("OPTI SWING",`Slutkapital: ${s.endingCapital}`,`Avkastning: ${s.returnPct.toFixed(2)}%`,`Max drawdown: ${s.maxDrawdownPct.toFixed(2)}%`,`Affärer: ${s.trades}`,`Vinstfrekvens: ${s.winRatePct.toFixed(2)}%`,`Benchmark: SPY`,`SPY: ${s.benchmarkReturnPct==null?"—":s.benchmarkReturnPct.toFixed(2)+"%"}`,`Mot benchmark: ${s.vsBenchmarkPct==null?"—":s.vsBenchmarkPct.toFixed(2)+"%"}`,`Profit factor: ${s.profitFactor}`,`Snittvinst: ${s.averageWin}`,`Snittförlust: ${s.averageLoss}`,`Bästa affär: ${s.bestTrade}`,`Sämsta affär: ${s.worstTrade}`,`Öppna vid slut: ${s.openAtEnd}`,"");
  }
@@ -699,7 +804,7 @@ async function v17Share(full){
  if(!LAST?.s&&!LAST?.d){if(status)status.textContent="Kör ett test först.";return}
  const txt=v17TextReport(full);
  const stamp=new Date().toISOString().slice(0,10);
- const name=`linasopti_v028_${full?"full":"snabb"}_${stamp}.txt`;
+ const name=`linasopti_v0301_${full?"full":"snabb"}_${stamp}.txt`;
  const file=new File([txt],name,{type:"text/plain;charset=utf-8"});
  try{
   if(navigator.share && (!navigator.canShare || navigator.canShare({files:[file]}))){

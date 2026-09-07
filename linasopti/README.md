@@ -1,3 +1,9 @@
+# Linas Opti V0.30.1 – Swing revision
+
+V0.30.1 ändrar **inte Swing-strategin**. Den lägger till en revisionspanel som kontrollerar signalchronologi, nästa dags öppning, kontantnivå, max 5 samtidiga positioner, exitregler, samma-dag-affärer, OHLC-kvalitet och att SPY aldrig handlas. Full export innehåller revisionsresultatet.
+
+Varningar som revisionen avsiktligt inte kan trolla bort: statisk USA30-lista kan ge survivorship/urvalsbias, och Swing saknar fortfarande courtage/spread/slippage.
+
 # Linas Opti V0.30 – Opti Trend
 
 Ny tredje strategi: Opti Trend. Swing och Day är oförändrade. Trend rankar aktier veckovis på 3/6/12 månaders momentum, kräver pris över SMA200 och håller Top 5. Signal använder föregående stängning och handel sker vid nästa öppning. SPY är benchmark och handlas inte. För Trend krävs cirka 252 handelsdagars dagsdata före teststart.

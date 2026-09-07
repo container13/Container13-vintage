@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.30">
+<link rel="stylesheet" href="linasopti.css?v=0.30.1">
 </head>
 <body>
 <div class="lina-watermark" aria-hidden="true"></div>
@@ -146,9 +146,9 @@
 
 <div class="note">Detta är en testplattform, inte investeringsrådgivning. För riktig utvärdering måste data vara korrekt, överlevnadsbias undvikas och spread/slippage/courtage modelleras realistiskt. Linas Opti är mobil-först och lägger grunden för reproducerbara tester med samma regler över verklig historik.</div>
 </div>
-<script src="linasopti.js?v=0.30"></script>
+<script src="linasopti.js?v=0.30.1"></script>
 
-<section class="v014-audit"><h3>Backtestkontroll V0.29</h3>
+<section class="v014-audit"><h3>Backtestkontroll V0.30.1</h3>
 <div class="v014-metrics">
 <div><span>Benchmark</span><strong>SPY · handlas inte</strong></div>
 <div><span>Faktisk teststart</span><strong id="v15Eval">—</strong></div>
@@ -160,6 +160,22 @@
 <div><span>Öppna vid slut</span><strong id="v15Open">—</strong></div>
 </div>
 <p class="v014-note"><b>Look-ahead-kontroll:</b> köpsignalen beräknas endast med data till och med föregående handelsdags stängning. Köp sker till nästa handelsdags öppningskurs. SPY används bara som benchmark.</p>
+<section class="v301-revision">
+  <div class="v301-head"><div><h3>Swing revision · V0.30.1</h3><div class="muted">Strategin är orörd. Detta är en mekanisk kontroll av samma backtest.</div></div><strong id="auditStatus">—</strong></div>
+  <div class="v301-grid">
+    <div><span>Köp / avslut</span><b id="auditEntries">—</b></div>
+    <div><span>Signaler</span><b id="auditSignals">—</b></div>
+    <div><span>Kontanter</span><b id="auditCash">—</b></div>
+    <div><span>Positioner</span><b id="auditPos">—</b></div>
+    <div><span>Samma dag</span><b id="auditSameDay">—</b></div>
+    <div><span>Stop + mål samma bar</span><b id="auditBoth">—</b></div>
+    <div><span>Datakvalitet OHLC</span><b id="auditBars">—</b></div>
+    <div><span>SPY handlad?</span><b id="auditSpy">—</b></div>
+  </div>
+  <div id="auditIssues" class="v301-result">Kör testet för revision.</div>
+  <div id="auditWarnings" class="v301-warn"></div>
+</section>
+
 <details><summary>Visa avslutade Swing-affärer</summary><div id="v16TradeCards" class="v16-tradecards"></div></details>
 </section>
 
