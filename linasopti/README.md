@@ -1,7 +1,9 @@
-# Linas Opti V0.10
+# Linas Opti V0.11
 
-- Tydlig versionsmarkering `Linas Opti V0.10` högst upp till höger.
-- Statuskontrollen är korrigerad mot Cloudflare `/health`.
-- Förväntat svar: `Linas Opti API anslutet · Alpaca Paper · Handel avstängd`.
-- Inga API-nycklar finns i frontend.
-- Ingen orderläggning är aktiverad.
+Fix för webbläsarcache:
+- CSS laddas som `linasopti.css?v=0.11`
+- JavaScript laddas som `linasopti.js?v=0.11`
+- Versionsrutan ändras av själva JavaScriptet till:
+  `Linas Opti V0.11 · JS V0.11`
+
+Det gör att vi kan se om både nya HTML- och nya JS-filen verkligen körs.

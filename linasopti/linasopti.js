@@ -1,3 +1,10 @@
+
+const APP_VERSION = "V0.11";
+window.addEventListener("DOMContentLoaded", () => {
+  const v = document.getElementById("appVersion");
+  if (v) v.textContent = "Linas Opti " + APP_VERSION + " · JS " + APP_VERSION;
+});
+
 let DAILY=[], INTRA=[], LAST=null;
 const API_BASE = "https://linas-opti-api.mangaj73.workers.dev";
 const $=id=>document.getElementById(id);
