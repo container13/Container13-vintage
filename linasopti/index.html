@@ -49,10 +49,10 @@
     <button type="button" class="market-btn" data-market="usa30">USA 30</button>
     <button type="button" class="market-btn market-nordic" data-market="sweden20">🇸🇪 Sverige 20</button>
     <button type="button" class="market-btn market-nordic" data-market="denmark20">🇩🇰 Danmark 20</button>
-    <button type="button" class="market-btn market-future" disabled>🇫🇮 Finland · redo nästa</button>
-    <button type="button" class="market-btn market-future" disabled>🇳🇴 Norge · redo nästa</button>
+    <button type="button" class="market-btn market-nordic" data-market="finland20">🇫🇮 Finland 20</button>
+    <button type="button" class="market-btn market-nordic" data-market="norway20">🇳🇴 Norge 20</button>
   </div>
-  <div class="muted v29-market-note">USA använder Alpaca. Sverige 20 är första externa marknaden och använder EODHD via samma Cloudflare Worker. Benchmark handlas aldrig. Opti Day är tills vidare bara USA.</div>
+  <div class="muted v29-market-note">USA använder Alpaca. Sverige, Danmark, Finland och Norge använder EODHD-dagsdata via samma Cloudflare Worker. Benchmark handlas aldrig. Opti Day är tills vidare bara USA.</div>
 </div>
 <label>Symboler, kommaseparerade<input id="symbols" value="AAPL,MSFT,NVDA,AMZN,META,TSLA,AMD,NFLX,AVGO,JPM,SPY"></label>
 <label>Från<input id="start" type="date"></label>
@@ -79,7 +79,7 @@
 <div class="status" id="bridgeStatus">Linas Opti API är anslutet via Cloudflare.</div>
 <div class="v31-provider" id="providerInfo">Datakälla: Alpaca · Benchmark: SPY</div>
 </div>
-<div class="card v31-nordic-info"><h2>V0.31.1 · Sverige + Danmark</h2><div class="muted">Sverige 20 och Danmark 20 är aktiva med EODHD-dagsdata. Samma frysta Opti Swing används i båda marknaderna. Finland (HE) och Norge (OL) ligger kvar som nästa steg.</div></div>
+<div class="card v31-nordic-info"><h2>V0.31.2 · Norden klar</h2><div class="muted">Sverige 20, Danmark 20, Finland 20 och Norge 20 är aktiva med EODHD-dagsdata. Samma frysta Opti Swing används på alla fyra marknaderna.</div></div>
 </section>
 
 <section id="pane-test" class="hidden">

@@ -71,3 +71,11 @@ V0.29.1: Fixad cache-busting för JavaScript/CSS. V0.29 HTML hade script-taggen 
 - Sverige 20 och USA-grupperna är oförändrade.
 - Danmark-listan är statisk och kan därför ha urvals-/survivorship bias.
 - EODHD raw EOD OHLC, split/dividend/cost caveats från V0.31 gäller fortsatt.
+
+
+## V0.31.2 – Finland 20 + Norge 20
+- Aktiverar Finland 20 via EODHD Helsinki (`.HE`), benchmark `SLGOMXH25.HE`.
+- Aktiverar Norge 20 via EODHD Oslo (`.OL`), benchmark `OBX.OL` (OBX Total Return Index).
+- Samma frysta Opti Swing och revisionskontroller som tidigare; inga strategiparametrar ändrade.
+- USA, Sverige och Danmark är oförändrade.
+- Norden är fortfarande datatest: statiska universum, rå EODHD-OHLC och inga courtage/spread/slippage i Swing.
