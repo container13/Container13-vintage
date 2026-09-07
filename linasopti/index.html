@@ -6,13 +6,13 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.30.1">
+<link rel="stylesheet" href="linasopti.css?v=0.31">
 </head>
 <body>
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Opti Day + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div id="appVersion" aria-label="Version">V0.30</div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Opti Day + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div id="appVersion" aria-label="Version">V0.31</div></div></div></header>
 
 <div class="tabs">
 <button class="tab active" data-pane="data">1. Data</button>
@@ -39,7 +39,7 @@
 </div>
 
 <div class="card">
-<h2>Alpaca via Linas Opti API</h2>
+<h2>Marknadsdata via Linas Opti API</h2>
 <div class="row">
 <div class="v29-market-box">
   <div class="v29-market-title"><b>Marknadsgrupp</b><span id="marketGroupInfo">USA Core · 10 aktier + SPY</span></div>
@@ -47,10 +47,12 @@
     <button type="button" class="market-btn active" data-market="usa10">USA Core</button>
     <button type="button" class="market-btn" data-market="usa20">USA 20</button>
     <button type="button" class="market-btn" data-market="usa30">USA 30</button>
-    <button type="button" class="market-btn market-future" data-market="europe" disabled>Europa · senare</button>
-    <button type="button" class="market-btn market-future" data-market="asia" disabled>Asien · senare</button>
+    <button type="button" class="market-btn market-nordic" data-market="sweden20">🇸🇪 Sverige 20</button>
+    <button type="button" class="market-btn market-future" disabled>🇩🇰 Danmark · redo nästa</button>
+    <button type="button" class="market-btn market-future" disabled>🇫🇮 Finland · redo nästa</button>
+    <button type="button" class="market-btn market-future" disabled>🇳🇴 Norge · redo nästa</button>
   </div>
-  <div class="muted v29-market-note">Samma Opti Day-motor testas mot olika aktieuniversum. SPY används som benchmark och handlas inte.</div>
+  <div class="muted v29-market-note">USA använder Alpaca. Sverige 20 är första externa marknaden och använder EODHD via samma Cloudflare Worker. Benchmark handlas aldrig. Opti Day är tills vidare bara USA.</div>
 </div>
 <label>Symboler, kommaseparerade<input id="symbols" value="AAPL,MSFT,NVDA,AMZN,META,TSLA,AMD,NFLX,AVGO,JPM,SPY"></label>
 <label>Från<input id="start" type="date"></label>
@@ -75,7 +77,9 @@
 <button class="purple" id="intraBtn">Hämta 5-min-data</button>
 </div>
 <div class="status" id="bridgeStatus">Linas Opti API är anslutet via Cloudflare.</div>
+<div class="v31-provider" id="providerInfo">Datakälla: Alpaca · Benchmark: SPY</div>
 </div>
+<div class="card v31-nordic-info"><h2>V0.31 · Norden börjar här</h2><div class="muted">Sverige 20 är förberett för EODHD-dagsdata. EODHD-token ska ligga som Worker-secret <b>EODHD_API_TOKEN</b> – aldrig i webbsidan. Danmark (CO), Finland (HE) och Norge (OL) ligger kvar som nästa steg efter första svenska datatestet.</div></div>
 </section>
 
 <section id="pane-test" class="hidden">

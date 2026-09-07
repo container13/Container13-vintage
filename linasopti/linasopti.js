@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.30.1";
+const APP_VERSION = "V0.31";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -8,16 +8,24 @@ window.addEventListener("DOMContentLoaded", () => {
 
 // V0.29.2 – marknadsgrupper. Strategilogiken ändras inte; endast symboluniversum byts.
 const MARKET_GROUPS={
- usa10:{name:"USA Core",symbols:["AAPL","MSFT","NVDA","AMZN","META","TSLA","AMD","NFLX","AVGO","JPM","SPY"]},
- usa20:{name:"USA 20",symbols:["AAPL","MSFT","NVDA","AMZN","META","TSLA","AMD","NFLX","AVGO","JPM","GOOGL","ORCL","CRM","INTC","QCOM","MU","BAC","GS","WMT","COST","SPY"]},
- usa30:{name:"USA 30",symbols:["AAPL","MSFT","NVDA","AMZN","META","TSLA","AMD","NFLX","AVGO","JPM","GOOGL","ORCL","CRM","INTC","QCOM","MU","BAC","GS","WMT","COST","HD","DIS","UBER","PLTR","PYPL","ADBE","CSCO","PEP","KO","XOM","SPY"]}
+ usa10:{name:"USA Core",provider:"alpaca",benchmark:"SPY",symbols:["AAPL","MSFT","NVDA","AMZN","META","TSLA","AMD","NFLX","AVGO","JPM","SPY"]},
+ usa20:{name:"USA 20",provider:"alpaca",benchmark:"SPY",symbols:["AAPL","MSFT","NVDA","AMZN","META","TSLA","AMD","NFLX","AVGO","JPM","GOOGL","ORCL","CRM","INTC","QCOM","MU","BAC","GS","WMT","COST","SPY"]},
+ usa30:{name:"USA 30",provider:"alpaca",benchmark:"SPY",symbols:["AAPL","MSFT","NVDA","AMZN","META","TSLA","AMD","NFLX","AVGO","JPM","GOOGL","ORCL","CRM","INTC","QCOM","MU","BAC","GS","WMT","COST","HD","DIS","UBER","PLTR","PYPL","ADBE","CSCO","PEP","KO","XOM","SPY"]},
+ sweden20:{name:"Sverige 20",provider:"eodhd",benchmark:"XACT-OMXS30.ST",symbols:["ABB.ST","ALFA.ST","ASSA-B.ST","ATCO-A.ST","AZN.ST","BOL.ST","ERIC-B.ST","EQT.ST","ESSITY-B.ST","HEXA-B.ST","HMB.ST","INVE-B.ST","SAAB-B.ST","SAND.ST","SEB-A.ST","SHB-A.ST","SWED-A.ST","TEL2-B.ST","TELIA.ST","VOLV-B.ST","XACT-OMXS30.ST"]}
 };
+function currentGroup(){return MARKET_GROUPS[ACTIVE_MARKET]||MARKET_GROUPS.usa10}
+function currentBenchmark(){return currentGroup().benchmark||"SPY"}
+function currentProvider(){return currentGroup().provider||"alpaca"}
+function isUsMarket(){return currentProvider()==="alpaca"}
+
 let ACTIVE_MARKET="usa10";
 function setMarketGroup(key){
  const g=MARKET_GROUPS[key]; if(!g)return; ACTIVE_MARKET=key;
  const el=document.getElementById("symbols"); if(el)el.value=g.symbols.join(",");
  document.querySelectorAll(".market-btn[data-market]").forEach(b=>b.classList.toggle("active",b.dataset.market===key));
- const info=document.getElementById("marketGroupInfo"); if(info)info.textContent=`${g.name} · ${g.symbols.length-1} aktier + SPY`;
+ const info=document.getElementById("marketGroupInfo"); if(info)info.textContent=`${g.name} · ${g.symbols.length-1} aktier + ${g.benchmark}`;
+ const pi=document.getElementById("providerInfo"); if(pi)pi.textContent=`Datakälla: ${g.provider==="eodhd"?"EODHD":"Alpaca"} · Benchmark: ${g.benchmark}`;
+ const ib=document.getElementById("intraBtn"); if(ib){ib.disabled=g.provider!=="alpaca";ib.title=g.provider!=="alpaca"?"Opti Day är tills vidare endast USA":"";}
  DAILY=[]; INTRA=[]; LAST=null; updateTestDataStatus(); updateDataStatus();
  const bs=document.getElementById("bridgeStatus"); if(bs)bs.textContent=`${g.name} vald. Hämta data för att testa gruppen.`;
 }
@@ -78,7 +86,7 @@ $("healthBtn").onclick=async()=>{try{
 }catch(e){
   $("bridgeStatus").innerHTML='<span class="bad">🔴 Kunde inte nå Linas Opti API: '+e.message+"</span>";
 }};
-function params(tf){let s=$("symbols").value.split(",").map(x=>x.trim().toUpperCase()).filter(Boolean).join(",");return `/bars?symbols=${encodeURIComponent(s)}&timeframe=${tf}&start=${$("start").value}&end=${$("end").value}`}
+function params(tf){let s=$("symbols").value.split(",").map(x=>x.trim().toUpperCase()).filter(Boolean).join(",");const base=currentProvider()==="eodhd"?"/eod-bars":"/bars";return `${base}?symbols=${encodeURIComponent(s)}&timeframe=${tf}&start=${$("start").value}&end=${$("end").value}` }
 function expectedDailyFloor(){
   const symbols=$("symbols").value.split(",").map(x=>x.trim()).filter(Boolean).length;
   const a=new Date($("start").value), b=new Date($("end").value);
@@ -99,6 +107,7 @@ function paintBridgeDone(count,tf){
   setTimeout(()=>{ if(el.textContent!==text) el.textContent=text; },120);
 }
 async function getBars(tf){
+ if(currentProvider()==="eodhd" && tf!=="1Day"){const el=$("bridgeStatus");if(el){el.className="status bad";el.textContent="Opti Day/5-min är tills vidare endast USA.";}return;}
  const btn=tf==="1Day"?$("dailyBtn"):$("intraBtn");
  const old=btn?.textContent;
  try{
@@ -132,7 +141,7 @@ function grouped(rows){let m={};rows.forEach(r=>(m[r.symbol]??=[]).push(r));retu
 function sd(a){if(a.length<2)return 0;let m=a.reduce((s,x)=>s+x,0)/a.length;return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/a.length)}
 function swing(rows,capital,maxPos,evalStart){
  if(!rows.length)return null;
- let g=grouped(rows),symbols=Object.keys(g),tradeSymbols=symbols.filter(s=>s!=="SPY"),
+ let g=grouped(rows),symbols=Object.keys(g),benchSym=currentBenchmark(),tradeSymbols=symbols.filter(s=>s!==benchSym),
  dates=[...new Set(rows.map(r=>r.t.slice(0,10)))].sort(),
  cash=capital,pos={},log=[],curve=[],peak=capital,dd=0,w=0,l=0,closed=[];
  let map={};symbols.forEach(s=>{map[s]={};g[s].forEach(r=>map[s][r.t.slice(0,10)]=r)});
@@ -201,8 +210,8 @@ function swing(rows,capital,maxPos,evalStart){
   log.push({t:last,robot:"Opti Swing",s,a:"SÄLJ",price:bar.c,amount:value,why:"Period slut",pnl:pl});
  }
  let bench=null;
- if(g.SPY?.length){
-   let b=g.SPY.filter(r=>r.t.slice(0,10)>=dates[firstTrade]);
+ if(g[benchSym]?.length){
+   let b=g[benchSym].filter(r=>r.t.slice(0,10)>=dates[firstTrade]);
    if(b.length>1)bench=b.at(-1).c/b[0].o-1;
  }
  let wins=closed.filter(x=>x.pnl>0),losses=closed.filter(x=>x.pnl<0);
@@ -410,7 +419,7 @@ function renderWorld(w,s){
 }
 function optiTrend(rows,capital,evalStart){
  if(!rows.length)return null;
- const g=grouped(rows), symbols=Object.keys(g), tradeSymbols=symbols.filter(s=>s!=="SPY");
+ const g=grouped(rows), symbols=Object.keys(g), benchSym=currentBenchmark(), tradeSymbols=symbols.filter(s=>s!==benchSym);
  const dates=[...new Set(rows.map(r=>r.t.slice(0,10)))].sort();
  const map={}; symbols.forEach(s=>{map[s]={};g[s].forEach(r=>map[s][r.t.slice(0,10)]=r)});
  const firstEval=dates.findIndex(d=>!evalStart||d>=evalStart); if(firstEval<0)return null;
@@ -442,7 +451,7 @@ function optiTrend(rows,capital,evalStart){
    const e=equity(di,false);peak=Math.max(peak,e);dd=Math.min(dd,e/peak-1);curve.push({t:dates[di],v:e});
  }
  const lastDi=dates.length-1,eq=equity(lastDi,false),ret=eq/capital-1;
- let bench=null; const spyStart=map.SPY?.[dates[firstTrade]],spyEnd=map.SPY?.[dates[lastDi]];if(spyStart&&spyEnd)bench=spyEnd.c/spyStart.o-1;
+ let bench=null; const spyStart=map[benchSym]?.[dates[firstTrade]],spyEnd=map[benchSym]?.[dates[lastDi]];if(spyStart&&spyEnd)bench=spyEnd.c/spyStart.o-1;
  const days=firstTradeDate?Math.max(1,(new Date(dates[lastDi])-new Date(firstTradeDate))/86400000):0;
  const cagr=days?Math.pow(eq/capital,365.25/days)-1:0;
  return {eq,ret,dd,n:rebalances,bench,cagr,curve,log,firstTrade:dates[firstTrade]};
@@ -477,9 +486,9 @@ window.addEventListener("DOMContentLoaded",()=>{
    let start=$("evalStart")?.value||"",mp=+$("maxpos").value;
    let s=swing(DAILY,cap,mp,start);
    let t=optiTrend(DAILY,cap,start);
-   let w=swingWorld(DAILY,cap,mp,start);
-   let d=daytrade(INTRA,cap,+$("risk").value);
-   let dB=daytradeConfirm(INTRA,cap,+$("risk").value);
+   let w=isUsMarket()?swingWorld(DAILY,cap,mp,start):null;
+   let d=isUsMarket()?daytrade(INTRA,cap,+$("risk").value):null;
+   let dB=isUsMarket()?daytradeConfirm(INTRA,cap,+$("risk").value):null;
    let audit=auditSwing(DAILY,s,cap); LAST={s,t,w,d,dB,audit}; render(s,d,cap); renderTrend(t); renderWorld(w,s); renderDayAB(d,dB); renderV015Audit(s); renderSwingAudit(audit);
    btn.textContent=oldText; btn.disabled=false;
   }catch(err){
@@ -586,10 +595,10 @@ function auditSwing(rows,s,capital){
  if(duplicateBars)issues.push(`${duplicateBars} dubbla symbol/datum-rader`);
  if(unsortedSeries)issues.push(`${unsortedSeries} rader ligger i fel datumordning inom symbol`);
 
- let cash=capital,maxPositions=0,minCash=capital,capitalViolations=0,positionViolations=0,orphanSells=0,spyTrades=0;
+ let cash=capital,maxPositions=0,minCash=capital,capitalViolations=0,positionViolations=0,orphanSells=0,spyTrades=0; const benchmarkSymbol=currentBenchmark();
  const positions=new Set();
  for(const e of (s.log||[])){
-  if(e.s==='SPY')spyTrades++;
+  if(e.s===benchmarkSymbol)spyTrades++;
   if(e.a==='KÖP'){
    if(e.amount>cash+0.01)capitalViolations++;
    cash-=e.amount; positions.add(e.s);
@@ -604,7 +613,7 @@ function auditSwing(rows,s,capital){
  if(capitalViolations)issues.push(`${capitalViolations} köp använde mer kontanter än fanns före köpet`);
  if(positionViolations)issues.push(`${positionViolations} händelser överskred 5 samtidiga positioner`);
  if(orphanSells)issues.push(`${orphanSells} försäljningar saknade öppen position i loggreplay`);
- if(spyTrades)issues.push(`SPY handlades ${spyTrades} gånger`);
+ if(spyTrades)issues.push(`${benchmarkSymbol} handlades ${spyTrades} gånger`);
  if(minCash < -0.01)issues.push(`negativ kontantnivå: ${minCash.toFixed(2)}`);
 
  let entries=0,entryOpenMismatch=0,signalFailures=0,sameDay=0,sameDayStop=0,bothTouched=0,exitRuleFailures=0,chronologyFailures=0;
@@ -639,8 +648,9 @@ function auditSwing(rows,s,capital){
  if(signalFailures)issues.push(`${signalFailures} köp kunde inte återskapas från föregående dags data`);
  if(exitRuleFailures)issues.push(`${exitRuleFailures} exits matchar inte stop/mål/tidsregel`);
  if(chronologyFailures)issues.push(`${chronologyFailures} datum/kronologifel`);
- warnings.push('USA 30 är en statisk vald aktielista, inte historiska point-in-time-indexmedlemmar. Resultatet kan därför innehålla urvals-/survivorship bias.');
- warnings.push('Swing V0.30.1 modellerar ännu inte courtage, spread eller slippage.');
+ warnings.push(`${currentGroup().name} är en statisk vald aktielista. Resultatet kan därför innehålla urvals-/survivorship bias.`);
+ warnings.push('Swing modellerar ännu inte courtage, spread eller slippage.');
+ if(currentProvider()==='eodhd')warnings.push('EODHD:s vanliga EOD-OHLC är råa priser. Splits/dividender och valutaväxling är inte slutligt modellerade i V0.31; Norden är därför ett datatest, inte en verifierad strategi.');
  return {
   pass:issues.length===0,issues,warnings,entries,closed:(s.closed||[]).length,
   sameDay,sameDayStop,bothTouched,maxPositions,minCash,capitalViolations,positionViolations,
@@ -703,6 +713,7 @@ function v17BaseReport(full){
   data:{
    symbols:v17Symbols(),
    marketGroup:MARKET_GROUPS[ACTIVE_MARKET]?.name||"Egen lista",
+   provider:currentProvider(),benchmark:currentBenchmark(),
    from:document.getElementById("start")?.value||"",
    to:document.getElementById("end")?.value||"",
    evaluationStart:document.getElementById("evalStart")?.value||"",
@@ -718,7 +729,7 @@ function v17BaseReport(full){
   swing:s?{
    endingCapital:s.eq,returnPct:s.ret*100,maxDrawdownPct:s.dd*100,
    trades:s.n,winRatePct:s.wr*100,
-   benchmark:"SPY",benchmarkReturnPct:Number.isFinite(s.bench)?s.bench*100:null,
+   benchmark:currentBenchmark(),benchmarkReturnPct:Number.isFinite(s.bench)?s.bench*100:null,
    vsBenchmarkPct:Number.isFinite(s.bench)?(s.ret-s.bench)*100:null,
    profitFactor:s.pf===Infinity?"Infinity":s.pf,
    averageWin:s.avgWin,averageLoss:s.avgLoss,bestTrade:s.best,worstTrade:s.worst,
@@ -771,11 +782,11 @@ function v17TextReport(full){
  const p=v17BaseReport(full),s=p.swing,d=p.day,dB=p.dayConfirm;
  let a=[];
  a.push("LINAS OPTI – TESTRAPPORT",`Version: ${p.version}`,`Exporterad: ${p.exportedAt}`,"Handel: AVSTÄNGD (backtest/paper)","");
- a.push("DATA",`Marknadsgrupp: ${p.data.marketGroup||"Egen lista"}`,`Symboler: ${p.data.symbols}`,`Data: ${p.data.from} → ${p.data.to}`,`Teststart: ${p.data.evaluationStart}`,`Dagsrader: ${p.data.dailyRows}`,`5-min-rader: ${p.data.fiveMinuteRows}`,"");
+ a.push("DATA",`Marknadsgrupp: ${p.data.marketGroup||"Egen lista"}`,`Datakälla: ${p.data.provider||"—"}`,`Benchmark: ${p.data.benchmark||"—"}`,`Symboler: ${p.data.symbols}`,`Data: ${p.data.from} → ${p.data.to}`,`Teststart: ${p.data.evaluationStart}`,`Dagsrader: ${p.data.dailyRows}`,`5-min-rader: ${p.data.fiveMinuteRows}`,"");
  a.push("INSTÄLLNINGAR",`Startkapital: ${p.settings.startCapital}`,`Max position swing: ${p.settings.swingMaxPosition}`,`Risk/affär day: ${p.settings.dayRiskPerTrade}`,"");
- if(p.audit){let z=p.audit;a.push("SWING REVISION V0.30.1",`Status: ${z.pass?"PASS":"FLAG"}`,`Kontrollerade köp / avslut: ${z.entries} / ${z.closed}`,`Signalfel: ${z.signalFailures}`,`Kapitalfel: ${z.capitalViolations}`,`Max samtidiga positioner: ${z.maxPositions}`,`Positionsfel: ${z.positionViolations}`,`Samma-dag exits: ${z.sameDay}`,`Samma-dag stop: ${z.sameDayStop}`,`Både stop och mål berörda samma dag: ${z.bothTouched}`,`OHLC/duplikat/sorteringsfel: ${z.invalidBars+z.duplicateBars+z.unsortedSeries}`,`SPY-affärer: ${z.spyTrades}`,`Exitregelfel: ${z.exitRuleFailures}`,`Kronologifel: ${z.chronologyFailures}`,`Varningar: ${z.warnings.join(" | ")}`,"");}
+ if(p.audit){let z=p.audit;a.push("SWING REVISION V0.31",`Status: ${z.pass?"PASS":"FLAG"}`,`Kontrollerade köp / avslut: ${z.entries} / ${z.closed}`,`Signalfel: ${z.signalFailures}`,`Kapitalfel: ${z.capitalViolations}`,`Max samtidiga positioner: ${z.maxPositions}`,`Positionsfel: ${z.positionViolations}`,`Samma-dag exits: ${z.sameDay}`,`Samma-dag stop: ${z.sameDayStop}`,`Både stop och mål berörda samma dag: ${z.bothTouched}`,`OHLC/duplikat/sorteringsfel: ${z.invalidBars+z.duplicateBars+z.unsortedSeries}`,`SPY-affärer: ${z.spyTrades}`,`Exitregelfel: ${z.exitRuleFailures}`,`Kronologifel: ${z.chronologyFailures}`,`Varningar: ${z.warnings.join(" | ")}`,"");}
  if(s){
-  a.push("OPTI SWING",`Slutkapital: ${s.endingCapital}`,`Avkastning: ${s.returnPct.toFixed(2)}%`,`Max drawdown: ${s.maxDrawdownPct.toFixed(2)}%`,`Affärer: ${s.trades}`,`Vinstfrekvens: ${s.winRatePct.toFixed(2)}%`,`Benchmark: SPY`,`SPY: ${s.benchmarkReturnPct==null?"—":s.benchmarkReturnPct.toFixed(2)+"%"}`,`Mot benchmark: ${s.vsBenchmarkPct==null?"—":s.vsBenchmarkPct.toFixed(2)+"%"}`,`Profit factor: ${s.profitFactor}`,`Snittvinst: ${s.averageWin}`,`Snittförlust: ${s.averageLoss}`,`Bästa affär: ${s.bestTrade}`,`Sämsta affär: ${s.worstTrade}`,`Öppna vid slut: ${s.openAtEnd}`,"");
+  a.push("OPTI SWING",`Slutkapital: ${s.endingCapital}`,`Avkastning: ${s.returnPct.toFixed(2)}%`,`Max drawdown: ${s.maxDrawdownPct.toFixed(2)}%`,`Affärer: ${s.trades}`,`Vinstfrekvens: ${s.winRatePct.toFixed(2)}%`,`Benchmark: ${s.benchmark}`,`${s.benchmark}: ${s.benchmarkReturnPct==null?"—":s.benchmarkReturnPct.toFixed(2)+"%"}`,`Mot benchmark: ${s.vsBenchmarkPct==null?"—":s.vsBenchmarkPct.toFixed(2)+"%"}`,`Profit factor: ${s.profitFactor}`,`Snittvinst: ${s.averageWin}`,`Snittförlust: ${s.averageLoss}`,`Bästa affär: ${s.bestTrade}`,`Sämsta affär: ${s.worstTrade}`,`Öppna vid slut: ${s.openAtEnd}`,"");
  }
  if(p.worldTest){let w=p.worldTest;a.push("OMVÄRLDSTEST V0.26",`Regel: ${w.rule}`,`Slutkapital: ${w.endingCapital}`,`Avkastning: ${w.returnPct.toFixed(2)}%`,`Max drawdown: ${w.maxDrawdownPct.toFixed(2)}%`,`Affärer: ${w.trades}`,`Vinstfrekvens: ${w.winRatePct.toFixed(2)}%`,`Profit factor: ${w.profitFactor}`,`Mot baslinjen: ${w.vsBaselinePct==null?"—":w.vsBaselinePct.toFixed(2)+"%"}`,`Gröna dagar: ${w.regimeDays?.green||0}`,`Gula dagar: ${w.regimeDays?.yellow||0}`,`Röda dagar: ${w.regimeDays?.red||0}`,`Blockerade signaler totalt: ${w.blockedSignals}`,`Blockerade i gult: ${w.blockedYellow}`,`Blockerade i rött: ${w.blockedRed}`,`Gul/röd-dagar med rå signal: ${w.regimeSignalDays}`,`Regimdiagnostik (första 20): ${JSON.stringify(w.regimeSamples)}`,"");}
  if(d)a.push("OPTI DAY A – BASLINJE",`Regel: ${d.rule}`,`Slutkapital: ${d.endingCapital}`,`Avkastning: ${d.returnPct.toFixed(2)}%`,`Max drawdown: ${d.maxDrawdownPct.toFixed(2)}%`,`Affärer: ${d.trades}`,`Vinstfrekvens: ${d.winRatePct.toFixed(2)}%`,`Profit factor: ${d.profitFactor}`,`Snitt/affär: ${d.averageTrade}`,`Affärer/dag: ${d.tradesPerDay}`,"");

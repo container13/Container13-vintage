@@ -1,3 +1,21 @@
+# Linas Opti V0.31 – Nordic-ready
+
+V0.31 behåller den verifierade USA30 Swing-motorn oförändrad för USA och lägger till en separat dataväg för första nordiska testet.
+
+## Nytt
+- **Sverige 20** som första EODHD-grupp. Benchmark: `XACT-OMXS30.ST` (handlas aldrig).
+- Datakällan väljs per marknadsgrupp: Alpaca för USA, EODHD för Sverige.
+- Opti Day och V0.26-omvärldstest körs fortfarande bara för USA; Sverige testar i första hand Swing/Trend på dagsdata.
+- Frontend skickar EODHD-grupper till Worker-endpointen `/eod-bars`. Ingen EODHD-token finns i frontend.
+- Danmark (`CO`), Finland (`HE`) och Norge (`OL`) visas som nästa nordiska steg.
+- Full export anger datakälla och benchmark.
+
+## Viktigt innan svenska resultat tolkas
+Detta är ett **datatest**, inte en ny verifierad strategi. EODHD:s vanliga EOD-OHLC är råa priser. V0.31 har ännu inte slutlig splitjustering, utdelningar eller valutahantering. Sverige 20 är dessutom en statisk lista och kan innehålla urvals-/survivorship bias.
+
+## Worker
+Se `worker_eodhd_patch_v031.js`. Lägg EODHD-token som Cloudflare Worker-secret med namnet `EODHD_API_TOKEN`; lägg aldrig token i GitHub eller webbsidan.
+
 # Linas Opti V0.30.1 – Swing revision
 
 V0.30.1 ändrar **inte Swing-strategin**. Den lägger till en revisionspanel som kontrollerar signalchronologi, nästa dags öppning, kontantnivå, max 5 samtidiga positioner, exitregler, samma-dag-affärer, OHLC-kvalitet och att SPY aldrig handlas. Full export innehåller revisionsresultatet.

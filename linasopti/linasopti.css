@@ -327,3 +327,11 @@ body > .v23-sharebar{overflow:visible !important}
 .v301-head>strong.good{background:#e8f5ec;color:#21703d}.v301-head>strong.bad{background:#fdecec;color:#a12c2c}
 .v301-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.v301-grid>div{padding:9px 10px;border-radius:11px;background:rgba(255,255,255,.84);border:1px solid #e3e9ef}.v301-grid span{display:block;font-size:10px;font-weight:800;color:#6b7480;margin-bottom:3px}.v301-grid b{font-size:12px}.v301-result,.v301-warn{margin-top:10px;padding:10px 11px;border-radius:11px;font-size:11px;line-height:1.45}.v301-result{background:#fff}.v301-warn{background:#fff8e8;color:#685019}
 @media(min-width:760px){.v301-grid{grid-template-columns:repeat(4,1fr)}}
+
+
+/* V0.31 – Nordic-ready datakälla */
+.v31-provider{margin-top:9px;padding:9px 11px;border-radius:11px;background:#f5f7fa;border:1px solid #e1e7ee;font-size:11px;font-weight:800;color:#586574}
+.v31-nordic-info{border:1px solid rgba(36,106,165,.20)!important;background:rgba(246,250,254,.90)!important}
+.market-btn.market-nordic{background:#eef8f1!important;border-color:#cfe8d6!important}
+.market-btn.market-nordic.active{background:#246aa5!important;border-color:#246aa5!important;color:#fff!important}
+@media(max-width:520px){.v29-market-buttons{grid-template-columns:repeat(2,1fr)}.market-btn{min-height:44px}}
