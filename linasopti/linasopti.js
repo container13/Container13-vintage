@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.26.4";
+const APP_VERSION = "V0.27";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = "Linas Opti " + APP_VERSION + " · JS " + APP_VERSION;
@@ -253,16 +253,55 @@ function swingWorld(rows,capital,maxPos,evalStart){
  return {eq:cash,ret:cash/capital-1,dd,n:closed.length,wr:closed.length?wins.length/closed.length:0,log,curve,bench,closed,pf,regimeDays,blocked,blockedYellow,blockedRed,regimeSignalDays,regimeSamples,avgWin:wins.length?grossWin/wins.length:0,avgLoss:losses.length?losses.reduce((a,x)=>a+x.pnl,0)/losses.length:0,best:closed.length?Math.max(...closed.map(x=>x.pnl)):0,worst:closed.length?Math.min(...closed.map(x=>x.pnl)):0,openAtEnd:0,evalStart:dates[firstTrade]||evalStart||null};
 }
 function daytrade(rows,capital,riskPct){
- if(!rows.length)return null;let days={};rows.forEach(r=>{let d=r.t.slice(0,10);(days[d]??={});(days[d][r.symbol]??=[]).push(r)});
- let eq=capital,peak=capital,dd=0,w=0,l=0,log=[],curve=[];
- for(let d of Object.keys(days).sort()){let count=0;
-  for(let [s,bars] of Object.entries(days[d])){bars.sort((a,b)=>new Date(a.t)-new Date(b.t));if(bars.length<8||count>=6)continue;let entryIdx=Math.min(3,bars.length-2),base=bars[0].o,entryBar=bars[entryIdx],move=entryBar.c/base-1,side=null,why=null;if(move>.004){side="LONG";why="öppningsmomentum"}else if(move<-.006){side="LONG";why="mean reversion"}else continue;
-   let spread=.00035,slip=.00025,entry=entryBar.c*(1+spread/2+slip),stop=entry*.992,target=entry*1.012,exitBar=bars.at(-1),exitWhy="stängning";
-   for(let i=entryIdx+1;i<bars.length;i++){if(bars[i].l<=stop){exitBar=bars[i];exitWhy="stop";break}if(bars[i].h>=target){exitBar=bars[i];exitWhy="mål";break}}
-   let exit=Math.max(exitBar.l,Math.min(exitBar.c,exitBar.h))*(1-spread/2-slip),risk=eq*riskPct,shares=Math.min((eq*.20)/entry,risk/(entry-stop)),pl=shares*(exit-entry);eq+=pl;pl>=0?w++:l++;count++;
-   log.push({t:exitBar.t,robot:"Opti Day",s,a:"LONG",price:entry,amount:shares*entry,why:why+" / "+exitWhy,pnl:pl})
-  }peak=Math.max(peak,eq);dd=Math.min(dd,eq/peak-1);curve.push({t:d,v:eq})
- }return {eq,ret:eq/capital-1,dd,n:w+l,wr:(w+l)?w/(w+l):0,avg:(w+l)?(eq-capital)/(w+l):0,log,curve}
+ if(!rows.length)return null;
+ let days={};rows.forEach(r=>{let d=r.t.slice(0,10);(days[d]??={});(days[d][r.symbol]??=[]).push(r)});
+ let eq=capital,peak=capital,dd=0,w=0,l=0,log=[],curve=[],closed=[];
+ let dayCount=0,maxTradesDay=12,maxTradesSymbol=3;
+ const spread=.00035,slip=.00025,costSide=spread/2+slip;
+ for(let d of Object.keys(days).sort()){
+  let tradesToday=0;dayCount++;
+  for(let [s,bars] of Object.entries(days[d])){
+   if(s==="SPY")continue;
+   bars.sort((a,b)=>new Date(a.t)-new Date(b.t));
+   if(bars.length<18||tradesToday>=maxTradesDay)continue;
+   let symTrades=0,nextAllowed=4;
+   for(let i=12;i<bars.length-1 && tradesToday<maxTradesDay && symTrades<maxTradesSymbol;i++){
+    if(i<nextAllowed)continue;
+    // All signal inputs come from the completed bar i; execution is next bar open.
+    let hist=bars.slice(Math.max(0,i-11),i+1);
+    let sma=hist.reduce((a,b)=>a+b.c,0)/hist.length;
+    let r3=bars[i].c/bars[i-3].c-1;
+    let r1=bars[i].c/bars[i-1].c-1;
+    let signal=null,why=null;
+    if(r3>.0045 && bars[i].c>sma && r1>0){signal="LONG";why="momentum 15 min"}
+    else if(r3<-.008 && r1>0 && bars[i].c<sma){signal="LONG";why="återhämtning efter snabb nedgång"}
+    if(!signal)continue;
+    let entryBar=bars[i+1],entry=entryBar.o*(1+costSide);
+    let stop=entry*.992,target=entry*1.012,maxExit=Math.min(bars.length-1,i+13);
+    let exitBar=bars[maxExit],exitWhy="max 60 min",exitRaw=exitBar.c;
+    for(let k=i+1;k<=maxExit;k++){
+      let b=bars[k];
+      if(b.l<=stop){exitBar=b;exitWhy="stop −0,8%";exitRaw=stop;break}
+      if(b.h>=target){exitBar=b;exitWhy="mål +1,2%";exitRaw=target;break}
+      if(k===bars.length-1){exitBar=b;exitWhy="stängning";exitRaw=b.c;break}
+    }
+    let exit=exitRaw*(1-costSide);
+    let risk=Math.max(0,eq*riskPct),riskPerShare=Math.max(.0001,entry-stop);
+    let shares=Math.min((eq*.20)/entry,risk/riskPerShare);
+    if(!(shares>0))continue;
+    let pl=shares*(exit-entry);eq+=pl;pl>=0?w++:l++;tradesToday++;symTrades++;
+    let ret=exit/entry-1;
+    closed.push({symbol:s,entryTime:entryBar.t,exitTime:exitBar.t,entry,exit,shares,pnl:pl,ret,why:exitWhy,setup:why});
+    log.push({t:exitBar.t,robot:"Opti Day",s,a:"LONG",price:entry,amount:shares*entry,why:why+" / "+exitWhy,pnl:pl});
+    // Re-entry only after the exit bar plus two complete 5-min bars.
+    let exitIdx=bars.indexOf(exitBar);nextAllowed=Math.max(i+2,exitIdx+2);i=Math.max(i,exitIdx);
+   }
+  }
+  peak=Math.max(peak,eq);dd=Math.min(dd,eq/peak-1);curve.push({t:d,v:eq});
+ }
+ let wins=closed.filter(x=>x.pnl>0),losses=closed.filter(x=>x.pnl<0),grossWin=wins.reduce((a,x)=>a+x.pnl,0),grossLoss=Math.abs(losses.reduce((a,x)=>a+x.pnl,0));
+ let pf=grossLoss?grossWin/grossLoss:(grossWin?Infinity:0);
+ return {eq,ret:eq/capital-1,dd,n:closed.length,wr:closed.length?wins.length/closed.length:0,avg:closed.length?(eq-capital)/closed.length:0,log,curve,closed,pf,tradesPerDay:dayCount?closed.length/dayCount:0,maxTradesDay,maxTradesSymbol};
 }
 
 function render(s,d,capital){
@@ -270,8 +309,8 @@ function render(s,d,capital){
  let ts=[...DAILY,...INTRA].map(x=>x.t).sort();$("kPeriod").textContent=ts.length?ts[0].slice(0,10)+" → "+ts.at(-1).slice(0,10):"—";
  if(s){$("sEq").textContent=fmt(s.eq);$("sRet").textContent=(s.ret>=0?"+":"")+pct(s.ret);$("sRet").className=s.ret>=0?"good":"bad";$("sDD").textContent=pct(s.dd);$("sN").textContent=s.n;$("sWR").textContent=pct(s.wr);$("sBench").textContent=s.bench==null?"—":pct(s.ret-s.bench)}
  else ["sEq","sRet","sDD","sN","sWR","sBench"].forEach(x=>$(x).textContent="Ingen dagsdata");
- if(d){$("dEq").textContent=fmt(d.eq);$("dRet").textContent=(d.ret>=0?"+":"")+pct(d.ret);$("dRet").className=d.ret>=0?"good":"bad";$("dDD").textContent=pct(d.dd);$("dN").textContent=d.n;$("dWR").textContent=pct(d.wr);$("dAvg").textContent=fmt(d.avg)}
- else ["dEq","dRet","dDD","dN","dWR","dAvg"].forEach(x=>$(x).textContent="Ingen 5-min-data");
+ if(d){$("dEq").textContent=fmt(d.eq);$("dRet").textContent=(d.ret>=0?"+":"")+pct(d.ret);$("dRet").className=d.ret>=0?"good":"bad";$("dDD").textContent=pct(d.dd);$("dN").textContent=d.n;$("dWR").textContent=pct(d.wr);$("dAvg").textContent=fmt(d.avg);$("dPF").textContent=d.pf===Infinity?"∞":Number(d.pf||0).toFixed(2);$("dPerDay").textContent=Number(d.tradesPerDay||0).toFixed(2)}
+ else ["dEq","dRet","dDD","dN","dWR","dAvg","dPF","dPerDay"].forEach(x=>$(x).textContent="Ingen 5-min-data");
  let logs=[...(s?.log||[]),...(d?.log||[])].sort((a,b)=>new Date(b.t)-new Date(a.t));$("tbody").innerHTML=logs.map(x=>`<tr><td>${x.t}</td><td>${x.robot}</td><td>${x.s}</td><td>${x.a}</td><td>${x.price.toFixed(2)}</td><td>${fmt(x.amount)}</td><td>${x.why}</td><td class="${x.pnl==null?"":x.pnl>=0?"good":"bad"}">${x.pnl==null?"—":fmt(x.pnl)}</td></tr>`).join("");draw(s,d,capital);show("result")
 }
 function draw(s,d,capital){let c=$("chart"),ctx=c.getContext("2d"),q=devicePixelRatio||1,W=c.clientWidth,H=c.clientHeight;c.width=W*q;c.height=H*q;ctx.scale(q,q);ctx.clearRect(0,0,W,H);let curves=[s?.curve,d?.curve].filter(Boolean),vals=curves.flatMap(x=>x.map(q=>q.v));if(!vals.length)return;let mn=Math.min(capital,...vals)*.98,mx=Math.max(capital,...vals)*1.02;ctx.strokeStyle="#dfe3e8";for(let i=0;i<5;i++){let y=12+i*(H-24)/4;ctx.beginPath();ctx.moveTo(10,y);ctx.lineTo(W-10,y);ctx.stroke()}[s?.curve,d?.curve].forEach((arr,j)=>{if(!arr?.length)return;ctx.strokeStyle=j?"#8a4f9e":"#1f5f99";ctx.lineWidth=2;ctx.beginPath();arr.forEach((p,i)=>{let x=10+i*(W-20)/Math.max(1,arr.length-1),y=10+(mx-p.v)*(H-20)/(mx-mn);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke()});ctx.fillStyle="#59636e";ctx.font="12px -apple-system";ctx.fillText("Blå = Opti Swing • Lila = Opti Day",14,18)}
@@ -442,8 +481,9 @@ function v17BaseReport(full){
    blockedYellow:LAST.w.blockedYellow,blockedRed:LAST.w.blockedRed,regimeSignalDays:LAST.w.regimeSignalDays,regimeSamples:LAST.w.regimeSamples
   }:null,
   day:d?{
+   rule:"Signal på avslutad 5-minutersbar → köp nästa bars öppning. Long-only momentum/återhämtning, stop 0,8%, mål 1,2%, max 60 min, ingen övernattning, max 12 affärer/dag och 3/symbol.",
    endingCapital:d.eq,returnPct:d.ret*100,maxDrawdownPct:d.dd*100,
-   trades:d.n,winRatePct:d.wr*100
+   trades:d.n,winRatePct:d.wr*100,profitFactor:d.pf===Infinity?"Infinity":d.pf,averageTrade:d.avg,tradesPerDay:d.tradesPerDay
   }:null
  };
  if(full && s){
@@ -458,6 +498,10 @@ function v17BaseReport(full){
    payload.worldTest.eventLog=LAST.w.log||[];
   }
  }
+ if(full && d){
+   payload.day.closedTrades=(d.closed||[]).map(x=>({symbol:x.symbol,entryTime:x.entryTime,exitTime:x.exitTime,entryPrice:x.entry,exitPrice:x.exit,shares:x.shares,pnl:x.pnl,returnPct:x.ret*100,setup:x.setup,exitReason:x.why}));
+   payload.day.eventLog=d.log||[];
+ }
  return payload;
 }
 function v17TextReport(full){
@@ -470,12 +514,17 @@ function v17TextReport(full){
   a.push("OPTI SWING",`Slutkapital: ${s.endingCapital}`,`Avkastning: ${s.returnPct.toFixed(2)}%`,`Max drawdown: ${s.maxDrawdownPct.toFixed(2)}%`,`Affärer: ${s.trades}`,`Vinstfrekvens: ${s.winRatePct.toFixed(2)}%`,`Benchmark: SPY`,`SPY: ${s.benchmarkReturnPct==null?"—":s.benchmarkReturnPct.toFixed(2)+"%"}`,`Mot benchmark: ${s.vsBenchmarkPct==null?"—":s.vsBenchmarkPct.toFixed(2)+"%"}`,`Profit factor: ${s.profitFactor}`,`Snittvinst: ${s.averageWin}`,`Snittförlust: ${s.averageLoss}`,`Bästa affär: ${s.bestTrade}`,`Sämsta affär: ${s.worstTrade}`,`Öppna vid slut: ${s.openAtEnd}`,"");
  }
  if(p.worldTest){let w=p.worldTest;a.push("OMVÄRLDSTEST V0.26",`Regel: ${w.rule}`,`Slutkapital: ${w.endingCapital}`,`Avkastning: ${w.returnPct.toFixed(2)}%`,`Max drawdown: ${w.maxDrawdownPct.toFixed(2)}%`,`Affärer: ${w.trades}`,`Vinstfrekvens: ${w.winRatePct.toFixed(2)}%`,`Profit factor: ${w.profitFactor}`,`Mot baslinjen: ${w.vsBaselinePct==null?"—":w.vsBaselinePct.toFixed(2)+"%"}`,`Gröna dagar: ${w.regimeDays?.green||0}`,`Gula dagar: ${w.regimeDays?.yellow||0}`,`Röda dagar: ${w.regimeDays?.red||0}`,`Blockerade signaler totalt: ${w.blockedSignals}`,`Blockerade i gult: ${w.blockedYellow}`,`Blockerade i rött: ${w.blockedRed}`,`Gul/röd-dagar med rå signal: ${w.regimeSignalDays}`,`Regimdiagnostik (första 20): ${JSON.stringify(w.regimeSamples)}`,"");}
- if(d)a.push("OPTI DAY",`Slutkapital: ${d.endingCapital}`,`Avkastning: ${d.returnPct.toFixed(2)}%`,`Affärer: ${d.trades}`,"");
+ if(d)a.push("OPTI DAY",`Regel: ${d.rule}`,`Slutkapital: ${d.endingCapital}`,`Avkastning: ${d.returnPct.toFixed(2)}%`,`Max drawdown: ${d.maxDrawdownPct.toFixed(2)}%`,`Affärer: ${d.trades}`,`Vinstfrekvens: ${d.winRatePct.toFixed(2)}%`,`Profit factor: ${d.profitFactor}`,`Snitt/affär: ${d.averageTrade}`,`Affärer/dag: ${d.tradesPerDay}`,"");
  if(full&&s){
   a.push("AVSLUTADE SWING-AFFÄRER");
   (s.closedTrades||[]).forEach((x,i)=>a.push(`${i+1}. ${x.symbol} | ${x.entryDate} → ${x.exitDate} | in ${x.entryPrice} | ut ${x.exitPrice} | P/L ${x.pnl} | ${x.returnPct.toFixed(2)}% | ${x.exitReason}`));
   a.push("","HÄNDELSELOGG",JSON.stringify(s.eventLog,null,2));
   if(p.worldTest?.eventLog)a.push("","OMVÄRLDSTEST – HÄNDELSELOGG",JSON.stringify(p.worldTest.eventLog,null,2));
+ }
+ if(full&&d){
+  a.push("","AVSLUTADE OPTI DAY-AFFÄRER");
+  (d.closedTrades||[]).forEach((x,i)=>a.push(`${i+1}. ${x.symbol} | ${x.entryTime} → ${x.exitTime} | in ${x.entryPrice} | ut ${x.exitPrice} | P/L ${x.pnl} | ${x.returnPct.toFixed(2)}% | ${x.setup} / ${x.exitReason}`));
+  a.push("","OPTI DAY – HÄNDELSELOGG",JSON.stringify(d.eventLog||[],null,2));
  }
  return a.join("\n");
 }
@@ -484,7 +533,7 @@ async function v17Share(full){
  if(!LAST?.s&&!LAST?.d){if(status)status.textContent="Kör ett test först.";return}
  const txt=v17TextReport(full);
  const stamp=new Date().toISOString().slice(0,10);
- const name=`linasopti_v026_${full?"full":"snabb"}_${stamp}.txt`;
+ const name=`linasopti_v027_${full?"full":"snabb"}_${stamp}.txt`;
  const file=new File([txt],name,{type:"text/plain;charset=utf-8"});
  try{
   if(navigator.share && (!navigator.canShare || navigator.canShare({files:[file]}))){
@@ -532,3 +581,16 @@ window.addEventListener("DOMContentLoaded",()=>{
  };
  document.querySelectorAll(".period-btn").forEach(b=>b.addEventListener("click",()=>setPeriod(b.dataset.period)));
 })();
+
+
+// V0.27 – snabbval för mindre 5-minutersperioder så intradagsdata inte blir onödigt tung.
+window.addEventListener("DOMContentLoaded",()=>{
+ const pad=n=>String(n).padStart(2,"0"), iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+ document.querySelectorAll(".day-period-btn").forEach(b=>b.addEventListener("click",()=>{
+   const n=+b.dataset.days, end=document.getElementById("end"), start=document.getElementById("start"); if(!start||!end)return;
+   let to=end.value?new Date(end.value+"T12:00:00"):new Date(), from=new Date(to); from.setDate(from.getDate()-Math.max(1,n*1.45));
+   start.value=iso(from); end.value=iso(to);
+   document.querySelectorAll(".day-period-btn").forEach(x=>x.classList.toggle("active",x===b));
+   document.querySelectorAll(".period-btn").forEach(x=>x.classList.remove("active"));
+ }));
+});

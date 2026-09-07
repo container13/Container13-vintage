@@ -257,3 +257,23 @@ body > .v23-sharebar{overflow:visible !important}
   max-height:min(58vh,420px);
   overflow:auto;
 }
+
+
+/* V0.27 – renare sticky topp på mobil: titel först, status/version på egen rad. */
+@media(max-width:699px){
+  .sticky-top header{display:block!important}
+  .sticky-top .brand{min-width:0}
+  .sticky-top .brand h1{margin-bottom:2px}
+  .sticky-top .sub{padding-right:0!important;max-width:none!important}
+  .status-stack{margin-top:7px;align-items:flex-end!important;width:100%}
+  #modeBadge{position:static!important}
+  #appVersion{position:static!important;margin:0!important;font-size:10px!important}
+  .sticky-top .tabs{margin-top:8px}
+}
+.v27-day-start{border-style:solid!important}
+.v27-day-pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.v27-day-pills span{background:rgba(238,242,246,.9);border-radius:999px;padding:7px 10px;font-size:.78rem;font-weight:800;color:#4b5563}
+.day-period-wrap{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px;grid-column:1/-1}
+.day-period-wrap .period-label{width:100%;font-weight:800;color:var(--muted);font-size:.9rem}
+.day-period-btn{border:1px solid #ccd5df;background:rgba(255,255,255,.82);color:#17202b;border-radius:12px;padding:10px 13px;font:inherit;font-weight:850}
+.day-period-btn.active{outline:2px solid #8a4f9e;outline-offset:1px}
