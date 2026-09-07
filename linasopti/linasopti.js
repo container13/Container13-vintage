@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.26.1";
+const APP_VERSION = "V0.26.3";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = "Linas Opti " + APP_VERSION + " · JS " + APP_VERSION;
@@ -51,19 +51,52 @@ $("healthBtn").onclick=async()=>{try{
   $("bridgeStatus").innerHTML='<span class="bad">🔴 Kunde inte nå Linas Opti API: '+e.message+"</span>";
 }};
 function params(tf){let s=$("symbols").value.split(",").map(x=>x.trim().toUpperCase()).filter(Boolean).join(",");return `/bars?symbols=${encodeURIComponent(s)}&timeframe=${tf}&start=${$("start").value}&end=${$("end").value}`}
+function expectedDailyFloor(){
+  const symbols=$("symbols").value.split(",").map(x=>x.trim()).filter(Boolean).length;
+  const a=new Date($("start").value), b=new Date($("end").value);
+  if(!symbols || !Number.isFinite(a.getTime()) || !Number.isFinite(b.getTime()) || b<a) return 0;
+  const calendarDays=Math.floor((b-a)/86400000)+1;
+  // Grov underkant: ca 5/7 vardagar och extra marginal för helgdagar/saknade bars.
+  return Math.floor(calendarDays*(5/7)*symbols*.72);
+}
+function paintBridgeDone(count,tf){
+  const el=$("bridgeStatus");
+  if(!el)return;
+  const text=`Klart: ${count} rader (${tf})`;
+  el.className="status good";
+  el.textContent=text;
+  // iOS Safari har ibland lämnat statusraden halvritad efter en lång fetch.
+  // Måla om samma text i nästa frame och strax därefter så ett enda tryck räcker.
+  requestAnimationFrame(()=>{ el.textContent=text; void el.offsetWidth; });
+  setTimeout(()=>{ if(el.textContent!==text) el.textContent=text; },120);
+}
 async function getBars(tf){
- try{$("bridgeStatus").textContent="Hämtar...";
- let j=await bridge(params(tf));
- let rows=j.rows||[];
- if(tf==="1Day"){
-   DAILY=rows;
- }else{
-   INTRA=rows;
+ const btn=tf==="1Day"?$("dailyBtn"):$("intraBtn");
+ const old=btn?.textContent;
+ try{
+   if(btn){btn.disabled=true;btn.textContent="Hämtar…";}
+   $("bridgeStatus").className="status";
+   $("bridgeStatus").textContent="Hämtar...";
+   let j=await bridge(params(tf));
+   let rows=j.rows||[];
+   // Om en lång dagsdatahämtning mot förmodan kommer tillbaka uppenbart ofullständig,
+   // gör en automatisk verifieringshämtning. Användaren ska aldrig behöva trycka två gånger.
+   if(tf==="1Day" && rows.length<expectedDailyFloor()) {
+     $("bridgeStatus").textContent=`Verifierar dagsdata… (${rows.length} rader först)`;
+     const j2=await bridge(params(tf));
+     const rows2=j2.rows||[];
+     if(rows2.length>rows.length) rows=rows2;
+   }
+   if(tf==="1Day") DAILY=rows; else INTRA=rows;
+   updateTestDataStatus();
+   updateDataStatus();
+   paintBridgeDone(rows.length,tf);
+ } catch(e){
+   $("bridgeStatus").className="status bad";
+   $("bridgeStatus").textContent=e.message;
+ } finally {
+   if(btn){btn.disabled=false;btn.textContent=old;}
  }
- updateTestDataStatus();
- $("bridgeStatus").innerHTML=`<span class="good">Klart: ${rows.length} rader (${tf})</span>`;
- updateDataStatus()}
- catch(e){$("bridgeStatus").innerHTML='<span class="bad">'+e.message+"</span>"}
 }
 $("dailyBtn").onclick=()=>getBars("1Day");$("intraBtn").onclick=()=>getBars("5Min");
 
@@ -219,6 +252,19 @@ function swingWorld(rows,capital,maxPos,evalStart){
  let wins=closed.filter(x=>x.pnl>0),losses=closed.filter(x=>x.pnl<0),grossWin=wins.reduce((a,x)=>a+x.pnl,0),grossLoss=Math.abs(losses.reduce((a,x)=>a+x.pnl,0));let pf=grossLoss?grossWin/grossLoss:(grossWin?Infinity:0);
  return {eq:cash,ret:cash/capital-1,dd,n:closed.length,wr:closed.length?wins.length/closed.length:0,log,curve,bench,closed,pf,regimeDays,blocked,blockedYellow,blockedRed,regimeSignalDays,regimeSamples,avgWin:wins.length?grossWin/wins.length:0,avgLoss:losses.length?losses.reduce((a,x)=>a+x.pnl,0)/losses.length:0,best:closed.length?Math.max(...closed.map(x=>x.pnl)):0,worst:closed.length?Math.min(...closed.map(x=>x.pnl)):0,openAtEnd:0,evalStart:dates[firstTrade]||evalStart||null};
 }
+function daytrade(rows,capital,riskPct){
+ if(!rows.length)return null;let days={};rows.forEach(r=>{let d=r.t.slice(0,10);(days[d]??={});(days[d][r.symbol]??=[]).push(r)});
+ let eq=capital,peak=capital,dd=0,w=0,l=0,log=[],curve=[];
+ for(let d of Object.keys(days).sort()){let count=0;
+  for(let [s,bars] of Object.entries(days[d])){bars.sort((a,b)=>new Date(a.t)-new Date(b.t));if(bars.length<8||count>=6)continue;let entryIdx=Math.min(3,bars.length-2),base=bars[0].o,entryBar=bars[entryIdx],move=entryBar.c/base-1,side=null,why=null;if(move>.004){side="LONG";why="öppningsmomentum"}else if(move<-.006){side="LONG";why="mean reversion"}else continue;
+   let spread=.00035,slip=.00025,entry=entryBar.c*(1+spread/2+slip),stop=entry*.992,target=entry*1.012,exitBar=bars.at(-1),exitWhy="stängning";
+   for(let i=entryIdx+1;i<bars.length;i++){if(bars[i].l<=stop){exitBar=bars[i];exitWhy="stop";break}if(bars[i].h>=target){exitBar=bars[i];exitWhy="mål";break}}
+   let exit=Math.max(exitBar.l,Math.min(exitBar.c,exitBar.h))*(1-spread/2-slip),risk=eq*riskPct,shares=Math.min((eq*.20)/entry,risk/(entry-stop)),pl=shares*(exit-entry);eq+=pl;pl>=0?w++:l++;count++;
+   log.push({t:exitBar.t,robot:"Opti Day",s,a:"LONG",price:entry,amount:shares*entry,why:why+" / "+exitWhy,pnl:pl})
+  }peak=Math.max(peak,eq);dd=Math.min(dd,eq/peak-1);curve.push({t:d,v:eq})
+ }return {eq,ret:eq/capital-1,dd,n:w+l,wr:(w+l)?w/(w+l):0,avg:(w+l)?(eq-capital)/(w+l):0,log,curve}
+}
+
 function render(s,d,capital){
  $("kStart").textContent=fmt(capital);$("kDaily").textContent=DAILY.length;$("kIntra").textContent=INTRA.length;
  let ts=[...DAILY,...INTRA].map(x=>x.t).sort();$("kPeriod").textContent=ts.length?ts[0].slice(0,10)+" → "+ts.at(-1).slice(0,10):"—";
