@@ -6,11 +6,11 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.18">
+<link rel="stylesheet" href="linasopti.css?v=0.19">
 </head>
 <body>
 <div class="lina-watermark" aria-hidden="true"></div>
-<div id="appVersion" aria-label="Version">Linas Opti V0.18</div>
+<div id="appVersion" aria-label="Version">Linas Opti V0.19</div>
 <div class="wrap">
 <header><div><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Opti Day • gemensam jämförelse</div></div><div class="badge" id="modeBadge">DATA EJ INLÄST</div></header>
 
@@ -79,8 +79,18 @@
 
 <div class="note">Detta är en testplattform, inte investeringsrådgivning. För riktig utvärdering måste data vara korrekt, överlevnadsbias undvikas och spread/slippage/courtage modelleras realistiskt. Linas Opti är mobil-först och lägger grunden för reproducerbara tester med samma regler över verklig historik.</div>
 </div>
-<script src="linasopti.js?v=0.18"></script>
-<section class="v014-audit"><h3>Backtestkontroll V0.15</h3>
+<script src="linasopti.js?v=0.19"></script>
+
+<section class="v19-ab">
+ <h3>A/B-test · SPY-trendfilter</h3>
+ <p class="v014-note"><b>A</b> = exakt V0.15–V0.18. <b>B</b> = samma regler, men nya köp tillåts bara när SPY:s föregående stängning ligger över sitt 20-dagars snitt. Befintliga positioner hanteras oförändrat.</p>
+ <div class="v19-abgrid">
+  <div class="v19-variant"><h4>A · Original</h4><div class="v19-big" id="abARet">—</div><div class="v19-kpis"><span>Kapital <b id="abAEq">—</b></span><span>Drawdown <b id="abADD">—</b></span><span>Affärer <b id="abAN">—</b></span><span>Vinst % <b id="abAWR">—</b></span><span>Profit factor <b id="abAPF">—</b></span><span>Mot SPY <b id="abAVs">—</b></span></div></div>
+  <div class="v19-variant"><h4>B · SPY-filter</h4><div class="v19-big" id="abBRet">—</div><div class="v19-kpis"><span>Kapital <b id="abBEq">—</b></span><span>Drawdown <b id="abBDD">—</b></span><span>Affärer <b id="abBN">—</b></span><span>Vinst % <b id="abBWR">—</b></span><span>Profit factor <b id="abBPF">—</b></span><span>Mot SPY <b id="abBVs">—</b></span></div></div>
+ </div>
+ <div class="v19-summary"><span>Skillnad B − A <b id="abDelta">—</b></span><span>Drawdown-förändring <b id="abDDDelta">—</b></span><span>Blockerade kandidatsignaler <b id="abBlocked">—</b></span></div>
+</section>
+<section class="v014-audit"><h3>Backtestkontroll V0.19</h3>
 <div class="v014-metrics">
 <div><span>Benchmark</span><strong>SPY · handlas inte</strong></div>
 <div><span>Faktisk teststart</span><strong id="v15Eval">—</strong></div>

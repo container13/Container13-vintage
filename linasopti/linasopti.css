@@ -86,3 +86,24 @@ section,
 @media (prefers-reduced-transparency: reduce){
   .lina-watermark{opacity:.045;filter:grayscale(1)}
 }
+
+/* V0.19 – Lina tydligare men fortfarande nedtonad */
+.lina-watermark{
+  top:14vh !important;
+  width:min(92vw,520px) !important;
+  opacity:.16 !important;
+  filter:grayscale(.7) blur(.55px) contrast(.9) !important;
+}
+@media(max-width:520px){
+  .lina-watermark{top:16vh !important;width:96vw !important;opacity:.14 !important}
+}
+
+/* V0.19 A/B */
+.v19-ab{margin:18px 24px;padding:20px;border:1px solid #d8dee8;border-radius:22px;background:rgba(255,255,255,.94)}
+.v19-ab h3{margin:0 0 8px}.v19-abgrid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
+.v19-variant{padding:15px;border:1px solid #e2e7ee;border-radius:17px;background:#fff}.v19-variant h4{margin:0 0 7px}
+.v19-big{font-size:1.8rem;font-weight:900}.v19-kpis{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+.v19-kpis span,.v19-summary span{background:#f5f7fa;border-radius:11px;padding:9px;font-size:.82rem;color:#68717c}
+.v19-kpis b,.v19-summary b{display:block;color:#17202b;margin-top:2px}
+.v19-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.v19-summary span:last-child{grid-column:1/-1}
+@media(min-width:760px){.v19-abgrid{grid-template-columns:1fr 1fr}}
