@@ -219,3 +219,19 @@ body > .v23-sharebar{
 .v24-world-grid span{display:block;color:#6b7280;font-size:.76rem;font-weight:800;margin-bottom:4px}
 .v24-world-grid strong{display:block;font-size:1rem}
 @media(min-width:760px){.v24-world-grid{grid-template-columns:repeat(4,1fr)}}
+
+
+/* V0.25 – Lina ett försiktigt steg tydligare + delningsmeny ovanför fast knapp */
+.lina-watermark{opacity:.112 !important}
+@media(max-width:520px){.lina-watermark{opacity:.12 !important}}
+body > .v23-sharebar{overflow:visible !important}
+.v23-sharebar{padding-top:8px !important}
+.v23-share-menu{
+  position:absolute !important;
+  left:50% !important;
+  bottom:calc(100% + 8px) !important;
+  transform:translateX(-50%) !important;
+  margin:0 !important;
+  max-height:min(58vh,420px);
+  overflow:auto;
+}

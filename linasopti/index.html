@@ -6,11 +6,11 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.24">
+<link rel="stylesheet" href="linasopti.css?v=0.25">
 </head>
 <body>
 <div class="lina-watermark" aria-hidden="true"></div>
-<div id="appVersion" aria-label="Version">Linas Opti V0.24</div>
+<div id="appVersion" aria-label="Version">Linas Opti V0.25</div>
 <div class="wrap">
 <header><div><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Opti Day • gemensam jämförelse</div></div><div class="badge" id="modeBadge">DATA EJ INLÄST</div></header>
 
@@ -66,9 +66,9 @@
 <div id="testDataStatus" class="status-box">⚪ Dagsdata: ej hämtad<br>⚪ 5-min-data: ej hämtad</div>
 </div>
 <div class="card v24-world-info">
-<h2>Omvärldstest · första proxy</h2>
+<h2>Omvärldstest · verifiering av första proxy</h2>
 <div class="muted">Linas vanliga Swing lämnas orörd. Samtidigt körs ett experiment där nya köp pausas när SPY, räknat på föregående stängning, ligger minst 5 % under högsta stängning de senaste 20 handelsdagarna. Befintliga positioner hanteras exakt som vanligt.</div>
-<div class="v24-rule">Ingen nyhets-AI ännu · endast historiskt verifierbar marknadsstress</div>
+<div class="v24-rule">V0.25 visar även om det faktiskt finns köpsignaler på stressdagarna</div>
 </div>
 </section>
 
@@ -95,6 +95,9 @@
     <div><span>Profit factor</span><strong id="wPF">—</strong></div>
     <div><span>Mot baslinjen</span><strong id="wVsBase">—</strong></div>
     <div><span>Stressdagar</span><strong id="wStressDays">—</strong></div>
+    <div><span>Råa signaler i stress</span><strong id="wStressRaw">—</strong></div>
+    <div><span>Stressdagar med signal</span><strong id="wStressRawDays">—</strong></div>
+    <div><span>Stressdagar med möjlig ny position</span><strong id="wStressEligibleDays">—</strong></div>
     <div><span>Blockerade signaler</span><strong id="wBlocked">—</strong></div>
   </div>
 </div>
@@ -104,9 +107,9 @@
 
 <div class="note">Detta är en testplattform, inte investeringsrådgivning. För riktig utvärdering måste data vara korrekt, överlevnadsbias undvikas och spread/slippage/courtage modelleras realistiskt. Linas Opti är mobil-först och lägger grunden för reproducerbara tester med samma regler över verklig historik.</div>
 </div>
-<script src="linasopti.js?v=0.24"></script>
+<script src="linasopti.js?v=0.25"></script>
 
-<section class="v014-audit"><h3>Backtestkontroll V0.24</h3>
+<section class="v014-audit"><h3>Backtestkontroll V0.25</h3>
 <div class="v014-metrics">
 <div><span>Benchmark</span><strong>SPY · handlas inte</strong></div>
 <div><span>Faktisk teststart</span><strong id="v15Eval">—</strong></div>

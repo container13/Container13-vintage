@@ -26,3 +26,12 @@ Detta är **inte ännu nyhets- eller AI-tolkning av omvärlden**. Det är först
 - Snabbval: 2024, 2025, 2026, Hela perioden.
 - SPY handlas inte i baslinjen.
 - Delning via Snabbrapport / Full testdata finns kvar.
+
+
+## V0.25 – omvärldsdiagnostik + UI
+- Ingen ändring av den verifierade Opti Swing-baslinjen.
+- Omvärldstestets 5 %-regel är oförändrad.
+- Ny diagnostik skiljer på råa köpsignaler under stress, stressdagar med signal, stressdagar där en ny position faktiskt hade varit möjlig och blockerade signaler.
+- Full testdata exporterar dessutom upp till 16 exempel på stressdagar med SPY-drawdown och signaler.
+- Lina använder exakt samma befintliga originalbild och har gjorts ett litet steg tydligare.
+- Dela testdata-knappen ligger kvar fast längst ner; när menyn öppnas visas den ovanför knappen så att huvudknappen inte flyttar sig.
