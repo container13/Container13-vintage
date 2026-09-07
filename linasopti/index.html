@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f4f6f8">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Linas Opti</title>
+<link rel="stylesheet" href="linasopti.css">
+</head>
+<body>
+<div class="wrap">
+<header><div><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Opti Day • gemensam jämförelse</div></div><div class="badge" id="modeBadge">DATA EJ INLÄST</div></header>
+
+<div class="tabs">
+<button class="tab active" data-pane="data">1. Data</button>
+<button class="tab" data-pane="test">2. Test</button>
+<button class="tab" data-pane="result">3. Resultat</button>
+</div>
+
+<section id="pane-data">
+<div class="card"><h2>Kom igång</h2><div class="muted">På mobilen gör du allt i tre steg: läs in/hämta data → kör test → jämför resultat. Samma sida skalar upp automatiskt på 13&quot; och 24&quot;.</div></div>
+<div class="card">
+<h2>Alternativ A — CSV-filer</h2>
+<div class="files">
+<div class="filebox"><b>Sparrobot: dagskurser</b><div class="muted">CSV: timestamp,symbol,open,high,low,close,volume</div><input id="dailyFile" type="file" accept=".csv,text/csv"></div>
+<div class="filebox"><b>Opti Day: 5-minuterskurser</b><div class="muted">Samma kolumner, en rad per 5-minutersbar</div><input id="intraFile" type="file" accept=".csv,text/csv"></div>
+</div>
+<div class="status" id="csvStatus">Du kan läsa in en eller båda filerna. Testerna använder bara den data som finns.</div>
+</div>
+
+<div class="card">
+<h2>Alternativ B — säker Alpaca-koppling</h2>
+<div class="row">
+<label>Symboler, kommaseparerade<input id="symbols" value="AAPL,MSFT,NVDA,AMZN,META,TSLA,AMD,NFLX,AVGO,JPM"></label>
+<label>Från<input id="start" type="date"></label>
+<label>Till<input id="end" type="date"></label>
+</div>
+<div class="row" style="margin-top:9px">
+<button class="secondary" id="healthBtn">Testa anslutning</button>
+<button class="primary" id="dailyBtn">Hämta dagsdata</button>
+<button class="purple" id="intraBtn">Hämta 5-min-data</button>
+</div>
+<div class="status" id="bridgeStatus">Säker Alpaca-backend är förberedd men ännu inte ansluten.</div>
+</div>
+</section>
+
+<section id="pane-test" class="hidden">
+<div class="card">
+<h2>Testinställningar</h2>
+<div class="row">
+<label>Startkapital<input id="capital" type="number" value="100000" min="1000" step="1000"></label>
+<label>Max position, swing<select id="maxpos"><option value=".10">10%</option><option value=".20" selected>20%</option><option value=".25">25%</option></select></label>
+<label>Risk/affär, daytrader<select id="risk"><option value=".0025">0,25%</option><option value=".005" selected>0,5%</option><option value=".01">1,0%</option></select></label>
+</div>
+<div class="row" style="margin-top:10px"><button class="primary" id="runBtn">Kör båda robotarna</button></div>
+<div class="status" id="testStatus">Läs först in verkliga kurser på fliken Data.</div>
+</div>
+</section>
+
+<section id="pane-result" class="hidden">
+<div class="grid" style="margin-bottom:14px">
+<div class="kpi"><b>Startkapital</b><span id="kStart">—</span></div>
+<div class="kpi"><b>Period</b><span id="kPeriod">—</span></div>
+<div class="kpi"><b>Dagsbarer</b><span id="kDaily">0</span></div>
+<div class="kpi"><b>5-minbarer</b><span id="kIntra">0</span></div>
+</div>
+<div class="card">
+<div class="two">
+<div class="robot"><h3>Opti Swing</h3><div class="muted">Momentum + mean-reversion, innehav över flera dagar</div><div class="big" id="sEq">—</div><div id="sRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="sDD">—</span></div><div class="mini"><b>Affärer</b><span id="sN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="sWR">—</span></div><div class="mini"><b>Mot benchmark</b><span id="sBench">—</span></div></div></div>
+<div class="robot"><h3>Opti Day</h3><div class="muted">5-min momentum / återhämtning, ingen övernattning</div><div class="big" id="dEq">—</div><div id="dRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="dDD">—</span></div><div class="mini"><b>Affärer</b><span id="dN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="dWR">—</span></div><div class="mini"><b>Snitt/affär</b><span id="dAvg">—</span></div></div></div>
+</div>
+</div>
+<div class="card chart"><canvas id="chart"></canvas></div>
+<div class="card"><h2>Affärslogg</h2><div class="tablewrap"><table><thead><tr><th>Tid</th><th>Robot</th><th>Symbol</th><th>Åtgärd</th><th>Pris</th><th>Belopp</th><th>Orsak</th><th>Resultat</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
+</section>
+
+<div class="note">Detta är en testplattform, inte investeringsrådgivning. För riktig utvärdering måste data vara korrekt, överlevnadsbias undvikas och spread/slippage/courtage modelleras realistiskt. Linas Opti är mobil-först och lägger grunden för reproducerbara tester med samma regler över verklig historik.</div>
+</div>
+<script src="linasopti.js"></script>
+</body></html>
