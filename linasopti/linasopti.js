@@ -29,7 +29,7 @@ async function bridge(path){
  if(!API_BASE) throw new Error("Kunde inte nå Linas Opti API.");
  let r=await fetch(API_BASE+path);let j=await r.json();if(!r.ok)throw new Error(j.error||("HTTP "+r.status));return j
 }
-$("healthBtn").onclick=async()=>{try{let j=await bridge("/health");$("bridgeStatus").innerHTML='<span class="good">Bryggan svarar: '+j.status+"</span>"}catch(e){$("bridgeStatus").innerHTML='<span class="bad">Ingen brygga: '+e.message+"</span>"}};
+$("healthBtn").onclick=async()=>{try{let j=await checkLinasOptiApi();$("bridgeStatus").innerHTML='<span class="good">Bryggan svarar: '+j.status+"</span>"}catch(e){$("bridgeStatus").innerHTML='<span class="bad">Ingen brygga: '+e.message+"</span>"}};
 function params(tf){let s=$("symbols").value.split(",").map(x=>x.trim().toUpperCase()).filter(Boolean).join(",");return `/bars?symbols=${encodeURIComponent(s)}&timeframe=${tf}&start=${$("start").value}&end=${$("end").value}`}
 async function getBars(tf){
  try{$("bridgeStatus").textContent="Hämtar...";
@@ -82,3 +82,34 @@ function draw(s,d,capital){let c=$("chart"),ctx=c.getContext("2d"),q=devicePixel
 $("runBtn").onclick=()=>{let cap=+$("capital").value;if(!DAILY.length&&!INTRA.length){$("testStatus").innerHTML='<span class="bad">Ingen data inläst.</span>';return}let s=swing(DAILY,cap,+$("maxpos").value),d=daytrade(INTRA,cap,+$("risk").value);LAST={s,d};render(s,d,cap)};
 window.onresize=()=>LAST&&draw(LAST.s,LAST.d,+$("capital").value);
 let now=new Date(),ago=new Date(now);ago.setMonth(ago.getMonth()-1);$("end").value=now.toISOString().slice(0,10);$("start").value=ago.toISOString().slice(0,10);
+
+
+async function checkLinasOptiApi(){
+  const el = document.getElementById("bridgeStatus");
+  if (el) {
+    el.classList.remove("good","bad");
+    el.textContent = "Kontrollerar Linas Opti API…";
+  }
+  try{
+    const r = await fetch(API_BASE + "/health", { cache: "no-store" });
+    const data = await r.json();
+    if(!r.ok || !data.ok) throw new Error(data.error || ("HTTP " + r.status));
+
+    const mode = data.mode === "paper" ? "Alpaca Paper" : (data.mode || "Alpaca");
+    const trading = data.tradingEnabled === false ? "Handel avstängd" : "Handelsläge okänt";
+    const service = data.service || "Linas Opti API";
+
+    if (el) {
+      el.classList.add("good");
+      el.textContent = "🟢 " + service + " anslutet · " + mode + " · " + trading;
+    }
+    return data;
+  }catch(err){
+    if (el) {
+      el.classList.add("bad");
+      el.textContent = "🔴 Kunde inte nå Linas Opti API: " + err.message;
+    }
+    throw err;
+  }
+}
+
