@@ -107,3 +107,17 @@ section,
 .v19-kpis b,.v19-summary b{display:block;color:#17202b;margin-top:2px}
 .v19-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.v19-summary span:last-child{grid-column:1/-1}
 @media(min-width:760px){.v19-abgrid{grid-template-columns:1fr 1fr}}
+
+/* V0.20 – original-Lina, utan synlig cirkelkant.
+   Samma originalfil används; kanten tonas ut med mask i stället för cirkel. */
+.lina-watermark{
+  width:min(96vw,540px) !important;
+  opacity:.14 !important;
+  background-size:contain !important;
+  -webkit-mask-image:radial-gradient(ellipse 48% 49% at 50% 50%, #000 48%, rgba(0,0,0,.82) 62%, rgba(0,0,0,.35) 78%, transparent 98%);
+  mask-image:radial-gradient(ellipse 48% 49% at 50% 50%, #000 48%, rgba(0,0,0,.82) 62%, rgba(0,0,0,.35) 78%, transparent 98%);
+  filter:grayscale(.65) blur(.45px) contrast(.9) !important;
+}
+@media(max-width:520px){
+ .lina-watermark{width:98vw !important;opacity:.13 !important}
+}

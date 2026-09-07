@@ -1,8 +1,13 @@
-# Linas Opti V0.19 — A/B SPY-trendfilter
-- A: oförändrad verifierad Swing från V0.15–V0.18.
-- B: exakt samma strategi, men nya köp tillåts bara när SPY:s föregående stängning ligger över SMA20.
-- Befintliga positioner, stop -7 %, mål +12 %, max 20 dagar och position sizing är oförändrade.
-- A/B-resultat visas sida vid sida: avkastning, kapital, drawdown, affärer, vinstfrekvens, profit factor och mot SPY.
-- Full export innehåller nu även B-resultat och B-affärer.
-- Lina-bakgrunden har gjorts tydligare eftersom V0.18 var för svag.
-- Ingen livehandel; tradingEnabled är fortsatt false.
+# Linas Opti V0.20
+## A/B-test
+A = originalstrategin.
+B = originalstrategin + 5 handelsdagars karantän för samma symbol efter att den stoppats ut på -7 %.
+Stop, mål, max 20 dagar, signal, position sizing och övriga symboler är oförändrade.
+
+## Lina-bakgrund
+Ingen ny eller AI-genererad Lina används.
+Samma originalbild från tidigare version används.
+Den hårda cirkelkänslan tonas bort med CSS-mask så personen ska smälta mjukare in i bakgrunden.
+
+## Export
+Full export innehåller både originalresultatet och 5-dagarsvarianten samt dess avslutade affärer.
