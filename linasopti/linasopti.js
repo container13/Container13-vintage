@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.29";
+const APP_VERSION = "V0.29.1";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
