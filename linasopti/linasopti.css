@@ -24,3 +24,5 @@
   color:#333;
   pointer-events:none;
 }
+
+.v014-control{margin:18px 0}.v014-control label{display:block;font-weight:800;margin-bottom:8px}.v014-control input{width:100%;box-sizing:border-box;padding:16px;border:1px solid #cbd3df;border-radius:14px;font:inherit;font-weight:700}.v014-help,.v014-note{font-size:.86rem;color:#6b7280;line-height:1.4;margin-top:7px}.v014-audit{margin:18px 24px;padding:20px;border:1px solid #d8dee8;border-radius:22px;background:#fff}.v014-audit h3{margin:0 0 14px}.v014-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}.v014-metrics>div{padding:12px;border-radius:14px;background:#f5f7fa}.v014-metrics span{display:block;color:#6b7280;font-weight:700;font-size:.82rem}.v014-metrics strong{display:block;margin-top:4px}

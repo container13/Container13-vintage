@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.13";
+const APP_VERSION = "V0.14";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = "Linas Opti " + APP_VERSION + " · JS " + APP_VERSION;
@@ -176,3 +176,8 @@ window.addEventListener("DOMContentLoaded", () => {
   updateTestDataStatus();
 });
 
+
+window.addEventListener("DOMContentLoaded",()=>{
+ const e=document.getElementById("evalStart"), w=document.getElementById("warmupInfo");
+ if(e&&w){const f=()=>w.textContent="före "+e.value; e.addEventListener("change",f); f();}
+});
