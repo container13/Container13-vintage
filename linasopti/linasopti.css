@@ -7,3 +7,20 @@
 @media(min-width:700px){.wrap{padding-left:20px;padding-right:20px}.tabs{margin-left:0;margin-right:0;padding:8px 0;background:var(--bg);border-bottom:0}.row{grid-template-columns:repeat(2,minmax(0,1fr))}.row button{align-self:end}.files{grid-template-columns:1fr 1fr}.grid{grid-template-columns:repeat(4,1fr)}.two{grid-template-columns:1fr 1fr}.chart{height:320px}.card{padding:16px}}
 @media(min-width:980px){.wrap{padding:22px 28px 40px}header{margin-bottom:16px}h1{font-size:31px}.sub{font-size:14px}.tabs{grid-template-columns:repeat(3,minmax(180px,260px));justify-content:start;gap:10px}.tab{font-size:14px}.row{grid-template-columns:repeat(3,minmax(0,1fr))}.card{padding:18px}.chart{height:360px}table{font-size:13px}}
 @media(min-width:1400px){.wrap{padding-left:36px;padding-right:36px}h1{font-size:34px}.card{padding:20px}.grid{gap:12px}.two{gap:16px}.robot{padding:17px}.big{font-size:36px}.chart{height:420px}.tablewrap{max-height:620px}}
+
+/* V0.10 – tydlig versionsmarkering */
+#appVersion{
+  position:fixed;
+  top:max(6px, env(safe-area-inset-top));
+  right:8px;
+  z-index:9999;
+  padding:4px 7px;
+  border-radius:8px;
+  background:rgba(255,255,255,.88);
+  border:1px solid rgba(0,0,0,.12);
+  font-size:11px;
+  font-weight:700;
+  line-height:1;
+  color:#333;
+  pointer-events:none;
+}

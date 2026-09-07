@@ -1,15 +1,7 @@
-# Linas Opti V0.9
+# Linas Opti V0.10
 
-## Fix
-- Rättar statuskontrollen mot Cloudflare Workerns `/health`.
-- Frontend läser nu Worker-svaret:
-  - `ok`
-  - `service`
-  - `mode`
-  - `tradingEnabled`
-- Status visas som exempelvis:
-  `🟢 Linas Opti API anslutet · Alpaca Paper · Handel avstängd`
-- Ingen handelslogik har ändrats.
-- Alpaca-nycklar ligger fortsatt endast som Cloudflare Secrets.
-
-Lägg alla filer direkt i `/linasopti/` och ersätt V0.8.
+- Tydlig versionsmarkering `Linas Opti V0.10` högst upp till höger.
+- Statuskontrollen är korrigerad mot Cloudflare `/health`.
+- Förväntat svar: `Linas Opti API anslutet · Alpaca Paper · Handel avstängd`.
+- Inga API-nycklar finns i frontend.
+- Ingen orderläggning är aktiverad.

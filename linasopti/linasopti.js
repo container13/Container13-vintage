@@ -29,7 +29,14 @@ async function bridge(path){
  if(!API_BASE) throw new Error("Kunde inte nå Linas Opti API.");
  let r=await fetch(API_BASE+path);let j=await r.json();if(!r.ok)throw new Error(j.error||("HTTP "+r.status));return j
 }
-$("healthBtn").onclick=async()=>{try{let j=await checkLinasOptiApi();$("bridgeStatus").innerHTML='<span class="good">Bryggan svarar: '+j.status+"</span>"}catch(e){$("bridgeStatus").innerHTML='<span class="bad">Ingen brygga: '+e.message+"</span>"}};
+$("healthBtn").onclick=async()=>{try{
+  let j=await checkLinasOptiApi();
+  const mode=j.mode==="paper"?"Alpaca Paper":(j.mode||"Alpaca");
+  const trading=j.tradingEnabled===false?"Handel avstängd":"Handelsläge okänt";
+  $("bridgeStatus").innerHTML='<span class="good">🟢 '+(j.service||"Linas Opti API")+' anslutet · '+mode+' · '+trading+'</span>';
+}catch(e){
+  $("bridgeStatus").innerHTML='<span class="bad">🔴 Kunde inte nå Linas Opti API: '+e.message+"</span>";
+}};
 function params(tf){let s=$("symbols").value.split(",").map(x=>x.trim().toUpperCase()).filter(Boolean).join(",");return `/bars?symbols=${encodeURIComponent(s)}&timeframe=${tf}&start=${$("start").value}&end=${$("end").value}`}
 async function getBars(tf){
  try{$("bridgeStatus").textContent="Hämtar...";
