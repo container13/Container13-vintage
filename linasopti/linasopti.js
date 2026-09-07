@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.14";
+const APP_VERSION = "V0.15";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = "Linas Opti " + APP_VERSION + " · JS " + APP_VERSION;
@@ -69,21 +69,88 @@ $("dailyBtn").onclick=()=>getBars("1Day");$("intraBtn").onclick=()=>getBars("5Mi
 
 function grouped(rows){let m={};rows.forEach(r=>(m[r.symbol]??=[]).push(r));return m}
 function sd(a){if(a.length<2)return 0;let m=a.reduce((s,x)=>s+x,0)/a.length;return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/a.length)}
-function swing(rows,capital,maxPos){
- if(!rows.length)return null;let g=grouped(rows),symbols=Object.keys(g),dates=[...new Set(rows.map(r=>r.t.slice(0,10)))].sort(),cash=capital,pos={},log=[],curve=[],peak=capital,dd=0,w=0,l=0;
+function swing(rows,capital,maxPos,evalStart){
+ if(!rows.length)return null;
+ let g=grouped(rows),symbols=Object.keys(g),tradeSymbols=symbols.filter(s=>s!=="SPY"),
+ dates=[...new Set(rows.map(r=>r.t.slice(0,10)))].sort(),
+ cash=capital,pos={},log=[],curve=[],peak=capital,dd=0,w=0,l=0,closed=[];
  let map={};symbols.forEach(s=>{map[s]={};g[s].forEach(r=>map[s][r.t.slice(0,10)]=r)});
- for(let di=20;di<dates.length;di++){let date=dates[di];
-  for(let s of Object.keys(pos)){let bar=map[s][date];if(!bar)continue;let p=pos[s],pnl=bar.c/p.entry-1,age=di-p.di,exit=pnl<=-.07?"Stop −7%":pnl>=.12?"Vinst +12%":age>=20?"20 dagar":null;
-   if(exit){let value=p.shares*bar.c,pl=value-p.cost;cash+=value;pl>=0?w++:l++;log.push({t:date,robot:"Opti Swing",s,a:"SÄLJ",price:bar.c,amount:value,why:exit,pnl:pl});delete pos[s]}}
-  let candidates=[];
-  for(let s of symbols){if(pos[s])continue;let hist=g[s].filter(r=>r.t.slice(0,10)<=date);if(hist.length<21)continue;let c=hist[hist.length-1].c,c20=hist[hist.length-21].c,c5=hist[hist.length-6].c,r20=c/c20-1,r5=c/c5-1,rets=hist.slice(-20).map((x,i,a)=>i?Math.log(x.c/a[i-1].c):0).slice(1),vol=sd(rets)*Math.sqrt(252),score=.65*r20+.20*r5-.15*vol;if(score>.015)candidates.push({s,score,bar:hist[hist.length-1]})}
+ let firstEval=dates.findIndex(d=>!evalStart||d>=evalStart);
+ if(firstEval<0) firstEval=dates.length;
+ let firstTrade=Math.max(20,firstEval);
+
+ for(let di=firstTrade;di<dates.length;di++){
+  let date=dates[di];
+
+  // Exit: stop/target uses today's OHLC; time exit uses today's close.
+  for(let s of Object.keys(pos)){
+   let bar=map[s][date]; if(!bar)continue;
+   let p=pos[s],age=di-p.di,exit=null,exitPrice=null;
+   let stop=p.entry*.93,target=p.entry*1.12;
+   if(bar.l<=stop){exit="Stop −7%";exitPrice=stop}
+   else if(bar.h>=target){exit="Vinst +12%";exitPrice=target}
+   else if(age>=20){exit="20 dagar";exitPrice=bar.c}
+   if(exit){
+    let value=p.shares*exitPrice,pl=value-p.cost;
+    cash+=value; pl>=0?w++:l++;
+    let tr={symbol:s,entryDate:p.entryDate,exitDate:date,entry:p.entry,exit:exitPrice,shares:p.shares,pnl:pl,ret:exitPrice/p.entry-1,why:exit};
+    closed.push(tr);
+    log.push({t:date,robot:"Opti Swing",s,a:"SÄLJ",price:exitPrice,amount:value,why:exit,pnl:pl});
+    delete pos[s];
+   }
+  }
+
+  // Entry: signal uses ONLY data through previous trading day; execution at today's open.
+  let signalDate=dates[di-1],candidates=[];
+  for(let s of tradeSymbols){
+   if(pos[s])continue;
+   let hist=g[s].filter(r=>r.t.slice(0,10)<=signalDate);
+   if(hist.length<21)continue;
+   let sig=hist[hist.length-1],today=map[s][date];
+   if(!today)continue;
+   let c0=sig.c,c20=hist[hist.length-21].c,c5=hist[hist.length-6].c;
+   let r20=c0/c20-1,r5=c0/c5-1;
+   let rets=hist.slice(-20).map((x,i,a)=>i?Math.log(x.c/a[i-1].c):0).slice(1);
+   let vol=sd(rets)*Math.sqrt(252),score=.65*r20+.20*r5-.15*vol;
+   if(score>.015)candidates.push({s,score,price:today.o});
+  }
   candidates.sort((a,b)=>b.score-a.score);
-  while(Object.keys(pos).length<5&&candidates.length){let x=candidates.shift(),eq=cash+Object.values(pos).reduce((q,p)=>q+p.shares*(map[p.s][date]?.c||p.entry),0),budget=Math.min(cash,eq*maxPos);if(budget<eq*.04)break;let shares=budget/x.bar.c;cash-=budget;pos[x.s]={s:x.s,entry:x.bar.c,shares,cost:budget,di};log.push({t:date,robot:"Opti Swing",s:x.s,a:"KÖP",price:x.bar.c,amount:budget,why:"20d/5d momentum + volatilitet",pnl:null})}
-  let eq=cash+Object.values(pos).reduce((q,p)=>q+p.shares*(map[p.s][date]?.c||p.entry),0);peak=Math.max(peak,eq);dd=Math.min(dd,eq/peak-1);curve.push({t:date,v:eq})
+  while(Object.keys(pos).length<5&&candidates.length){
+   let x=candidates.shift();
+   let eq=cash+Object.values(pos).reduce((q,p)=>q+p.shares*(map[p.s][date]?.c||p.entry),0);
+   let budget=Math.min(cash,eq*maxPos); if(budget<eq*.04)break;
+   let shares=budget/x.price; cash-=budget;
+   pos[x.s]={s:x.s,entry:x.price,entryDate:date,shares,cost:budget,di};
+   log.push({t:date,robot:"Opti Swing",s:x.s,a:"KÖP",price:x.price,amount:budget,why:"Signal föregående stängning → köp dagens öppning",pnl:null});
+  }
+
+  let eq=cash+Object.values(pos).reduce((q,p)=>q+p.shares*(map[p.s][date]?.c||p.entry),0);
+  peak=Math.max(peak,eq);dd=Math.min(dd,eq/peak-1);curve.push({t:date,v:eq});
  }
- let last=dates.at(-1);for(let s of Object.keys(pos)){let bar=map[s][last];if(!bar)continue;let p=pos[s],value=p.shares*bar.c,pl=value-p.cost;cash+=value;pl>=0?w++:l++;log.push({t:last,robot:"Opti Swing",s,a:"SÄLJ",price:bar.c,amount:value,why:"Period slut",pnl:pl})}
- let bench=null;let bs=symbols.includes("SPY")?"SPY":symbols[0];if(g[bs]?.length>1)bench=g[bs].at(-1).c/g[bs][0].c-1;
- return {eq:cash,ret:cash/capital-1,dd,n:w+l,wr:(w+l)?w/(w+l):0,log,curve,bench}
+
+ let last=dates.at(-1);
+ for(let s of Object.keys(pos)){
+  let bar=map[s][last];if(!bar)continue;
+  let p=pos[s],value=p.shares*bar.c,pl=value-p.cost;
+  cash+=value;pl>=0?w++:l++;
+  closed.push({symbol:s,entryDate:p.entryDate,exitDate:last,entry:p.entry,exit:bar.c,shares:p.shares,pnl:pl,ret:bar.c/p.entry-1,why:"Period slut"});
+  log.push({t:last,robot:"Opti Swing",s,a:"SÄLJ",price:bar.c,amount:value,why:"Period slut",pnl:pl});
+ }
+ let bench=null;
+ if(g.SPY?.length){
+   let b=g.SPY.filter(r=>r.t.slice(0,10)>=dates[firstTrade]);
+   if(b.length>1)bench=b.at(-1).c/b[0].o-1;
+ }
+ let wins=closed.filter(x=>x.pnl>0),losses=closed.filter(x=>x.pnl<0);
+ let grossWin=wins.reduce((a,x)=>a+x.pnl,0),grossLoss=Math.abs(losses.reduce((a,x)=>a+x.pnl,0));
+ let pf=grossLoss?grossWin/grossLoss:(grossWin?Infinity:0);
+ return {eq:cash,ret:cash/capital-1,dd,n:closed.length,wr:closed.length?wins.length/closed.length:0,
+   log,curve,bench,closed,pf,
+   avgWin:wins.length?grossWin/wins.length:0,
+   avgLoss:losses.length?losses.reduce((a,x)=>a+x.pnl,0)/losses.length:0,
+   best:closed.length?Math.max(...closed.map(x=>x.pnl)):0,
+   worst:closed.length?Math.min(...closed.map(x=>x.pnl)):0,
+   openAtEnd:0,evalStart:dates[firstTrade]||evalStart||null};
 }
 function daytrade(rows,capital,riskPct){
  if(!rows.length)return null;let days={};rows.forEach(r=>{let d=r.t.slice(0,10);(days[d]??={});(days[d][r.symbol]??=[]).push(r)});
@@ -107,7 +174,7 @@ function render(s,d,capital){
  let logs=[...(s?.log||[]),...(d?.log||[])].sort((a,b)=>new Date(b.t)-new Date(a.t));$("tbody").innerHTML=logs.map(x=>`<tr><td>${x.t}</td><td>${x.robot}</td><td>${x.s}</td><td>${x.a}</td><td>${x.price.toFixed(2)}</td><td>${fmt(x.amount)}</td><td>${x.why}</td><td class="${x.pnl==null?"":x.pnl>=0?"good":"bad"}">${x.pnl==null?"—":fmt(x.pnl)}</td></tr>`).join("");draw(s,d,capital);show("result")
 }
 function draw(s,d,capital){let c=$("chart"),ctx=c.getContext("2d"),q=devicePixelRatio||1,W=c.clientWidth,H=c.clientHeight;c.width=W*q;c.height=H*q;ctx.scale(q,q);ctx.clearRect(0,0,W,H);let curves=[s?.curve,d?.curve].filter(Boolean),vals=curves.flatMap(x=>x.map(q=>q.v));if(!vals.length)return;let mn=Math.min(capital,...vals)*.98,mx=Math.max(capital,...vals)*1.02;ctx.strokeStyle="#dfe3e8";for(let i=0;i<5;i++){let y=12+i*(H-24)/4;ctx.beginPath();ctx.moveTo(10,y);ctx.lineTo(W-10,y);ctx.stroke()}[s?.curve,d?.curve].forEach((arr,j)=>{if(!arr?.length)return;ctx.strokeStyle=j?"#8a4f9e":"#1f5f99";ctx.lineWidth=2;ctx.beginPath();arr.forEach((p,i)=>{let x=10+i*(W-20)/Math.max(1,arr.length-1),y=10+(mx-p.v)*(H-20)/(mx-mn);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke()});ctx.fillStyle="#59636e";ctx.font="12px -apple-system";ctx.fillText("Blå = Opti Swing • Lila = Opti Day",14,18)}
-$("runBtn").onclick=()=>{let cap=+$("capital").value;if(!DAILY.length&&!INTRA.length){$("testStatus").innerHTML='<span class="bad">Ingen data inläst.</span>';return}let s=swing(DAILY,cap,+$("maxpos").value),d=daytrade(INTRA,cap,+$("risk").value);LAST={s,d};render(s,d,cap)};
+$("runBtn").onclick=()=>{let cap=+$("capital").value;if(!DAILY.length&&!INTRA.length){$("testStatus").innerHTML='<span class="bad">Ingen data inläst.</span>';return}let s=swing(DAILY,cap,+$("maxpos").value,$("evalStart")?.value||""),d=daytrade(INTRA,cap,+$("risk").value);LAST={s,d};render(s,d,cap);renderV015Audit(s)};
 window.onresize=()=>LAST&&draw(LAST.s,LAST.d,+$("capital").value);
 let now=new Date(),ago=new Date(now);ago.setMonth(ago.getMonth()-1);$("end").value=now.toISOString().slice(0,10);$("start").value=ago.toISOString().slice(0,10);
 
@@ -181,3 +248,14 @@ window.addEventListener("DOMContentLoaded",()=>{
  const e=document.getElementById("evalStart"), w=document.getElementById("warmupInfo");
  if(e&&w){const f=()=>w.textContent="före "+e.value; e.addEventListener("change",f); f();}
 });
+
+function renderV015Audit(s){
+ const set=(id,v)=>{let e=document.getElementById(id);if(e)e.textContent=v};
+ if(!s){return}
+ set("v15PF",s.pf===Infinity?"∞":Number(s.pf||0).toFixed(2));
+ set("v15AvgWin",fmt(s.avgWin||0)); set("v15AvgLoss",fmt(s.avgLoss||0));
+ set("v15Best",fmt(s.best||0)); set("v15Worst",fmt(s.worst||0));
+ set("v15Open",String(s.openAtEnd||0)); set("v15Eval",s.evalStart||"—");
+ let tb=document.getElementById("v15Trades");
+ if(tb)tb.innerHTML=(s.closed||[]).map((x,i)=>`<tr><td>${i+1}</td><td>${x.symbol}</td><td>${x.entryDate}</td><td>${x.exitDate}</td><td>${x.entry.toFixed(2)}</td><td>${x.exit.toFixed(2)}</td><td class="${x.pnl>=0?"good":"bad"}">${fmt(x.pnl)}</td><td>${pct(x.ret)}</td><td>${x.why}</td></tr>`).join("");
+}

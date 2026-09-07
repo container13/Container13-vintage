@@ -6,10 +6,10 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.14">
+<link rel="stylesheet" href="linasopti.css?v=0.15">
 </head>
 <body>
-<div id="appVersion" aria-label="Version">Linas Opti V0.14</div>
+<div id="appVersion" aria-label="Version">Linas Opti V0.15</div>
 <div class="wrap">
 <header><div><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Opti Day • gemensam jämförelse</div></div><div class="badge" id="modeBadge">DATA EJ INLÄST</div></header>
 
@@ -54,7 +54,7 @@
 <label>Max position, swing<select id="maxpos"><option value=".10">10%</option><option value=".20" selected>20%</option><option value=".25">25%</option></select></label>
 <label>Risk/affär, daytrader<select id="risk"><option value=".0025">0,25%</option><option value=".005" selected>0,5%</option><option value=".01">1,0%</option></select></label>
 </div>
-<div class="row" style="margin-top:10px"><div class="v014-control"><label for="evalStart">Testperiod börjar</label><input id="evalStart" type="date" value="2026-02-01"><div class="v014-help">Data före detta datum används som uppvärmning. I V0.14 visas detta separat för kontroll.</div></div><button class="primary" id="runBtn">Kör båda robotarna</button></div>
+<div class="row" style="margin-top:10px"><div class="v014-control"><label for="evalStart">Testperiod börjar</label><input id="evalStart" type="date" value="2026-02-01"><div class="v014-help">Data före detta datum används endast för indikatorernas uppvärmning. Affärer och resultat räknas från teststarten.</div></div><button class="primary" id="runBtn">Kör båda robotarna</button></div>
 <div id="testDataStatus" class="status-box">⚪ Dagsdata: ej hämtad<br>⚪ 5-min-data: ej hämtad</div>
 </div>
 </section>
@@ -78,6 +78,19 @@
 
 <div class="note">Detta är en testplattform, inte investeringsrådgivning. För riktig utvärdering måste data vara korrekt, överlevnadsbias undvikas och spread/slippage/courtage modelleras realistiskt. Linas Opti är mobil-först och lägger grunden för reproducerbara tester med samma regler över verklig historik.</div>
 </div>
-<script src="linasopti.js?v=0.14"></script>
-<section class="v014-audit"><h3>Backtestkontroll V0.14</h3><div class="v014-metrics"><div><span>Benchmark</span><strong>SPY</strong></div><div><span>Uppvärmning</span><strong id="warmupInfo">visas separat</strong></div></div><p class="v014-note">Hämta dagsdata igen i V0.14 så att SPY ingår. Nästa kontrollsteg blir affärslista, profit factor och snittvinst/förlust från robotens faktiska trade-logg.</p></section>
+<script src="linasopti.js?v=0.15"></script>
+<section class="v014-audit"><h3>Backtestkontroll V0.15</h3>
+<div class="v014-metrics">
+<div><span>Benchmark</span><strong>SPY · handlas inte</strong></div>
+<div><span>Faktisk teststart</span><strong id="v15Eval">—</strong></div>
+<div><span>Profit factor</span><strong id="v15PF">—</strong></div>
+<div><span>Snittvinst</span><strong id="v15AvgWin">—</strong></div>
+<div><span>Snittförlust</span><strong id="v15AvgLoss">—</strong></div>
+<div><span>Bästa affär</span><strong id="v15Best">—</strong></div>
+<div><span>Sämsta affär</span><strong id="v15Worst">—</strong></div>
+<div><span>Öppna vid slut</span><strong id="v15Open">—</strong></div>
+</div>
+<p class="v014-note"><b>Look-ahead-kontroll:</b> köpsignalen beräknas endast med data till och med föregående handelsdags stängning. Köp sker till nästa handelsdags öppningskurs. SPY används bara som benchmark.</p>
+<details><summary>Visa avslutade Swing-affärer</summary><div class="tablewrap"><table><thead><tr><th>#</th><th>Symbol</th><th>Köp</th><th>Sälj</th><th>In</th><th>Ut</th><th>Resultat</th><th>%</th><th>Orsak</th></tr></thead><tbody id="v15Trades"></tbody></table></div></details>
+</section>
 </body></html>
