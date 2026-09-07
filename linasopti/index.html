@@ -6,11 +6,11 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.25">
+<link rel="stylesheet" href="linasopti.css?v=0.26">
 </head>
 <body>
 <div class="lina-watermark" aria-hidden="true"></div>
-<div id="appVersion" aria-label="Version">Linas Opti V0.25</div>
+<div id="appVersion" aria-label="Version">Linas Opti V0.26</div>
 <div class="wrap">
 <header><div><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Opti Day • gemensam jämförelse</div></div><div class="badge" id="modeBadge">DATA EJ INLÄST</div></header>
 
@@ -66,9 +66,9 @@
 <div id="testDataStatus" class="status-box">⚪ Dagsdata: ej hämtad<br>⚪ 5-min-data: ej hämtad</div>
 </div>
 <div class="card v24-world-info">
-<h2>Omvärldstest · verifiering av första proxy</h2>
-<div class="muted">Linas vanliga Swing lämnas orörd. Samtidigt körs ett experiment där nya köp pausas när SPY, räknat på föregående stängning, ligger minst 5 % under högsta stängning de senaste 20 handelsdagarna. Befintliga positioner hanteras exakt som vanligt.</div>
-<div class="v24-rule">V0.25 visar även om det faktiskt finns köpsignaler på stressdagarna</div>
+<h2>Omvärldstest · tre marknadslägen</h2>
+<div class="muted">Linas vanliga Swing lämnas orörd. Experimentet klassar varje handelsdag som GRÖN, GUL eller RÖD med endast SPY-data från föregående stängning. Grön tillåter upp till 5 positioner, gul upp till 3 och röd inga nya köp. Befintliga positioner säljs inte av omvärldslagret.</div>
+<div class="v24-rule">GRÖN: upp till 5 positioner · GUL: upp till 3 · RÖD: inga nya köp</div>
 </div>
 </section>
 
@@ -86,7 +86,7 @@
 </div>
 </div>
 <div class="card v24-world-card">
-  <div class="v24-world-head"><div><h2>Omvärldstest</h2><div class="muted">Experimentell stressproxy · baslinjen ovan är fortfarande huvudresultatet</div></div><span class="v24-exp-badge">EXPERIMENT</span></div>
+  <div class="v24-world-head"><div><h2>Omvärldstest</h2><div class="muted">Experimentellt trelägesfilter · baslinjen ovan är fortfarande huvudresultatet</div></div><span class="v24-exp-badge">EXPERIMENT</span></div>
   <div class="v24-world-grid">
     <div><span>Slutkapital</span><strong id="wEq">—</strong></div>
     <div><span>Avkastning</span><strong id="wRet">—</strong></div>
@@ -94,11 +94,12 @@
     <div><span>Affärer</span><strong id="wN">—</strong></div>
     <div><span>Profit factor</span><strong id="wPF">—</strong></div>
     <div><span>Mot baslinjen</span><strong id="wVsBase">—</strong></div>
-    <div><span>Stressdagar</span><strong id="wStressDays">—</strong></div>
-    <div><span>Råa signaler i stress</span><strong id="wStressRaw">—</strong></div>
-    <div><span>Stressdagar med signal</span><strong id="wStressRawDays">—</strong></div>
-    <div><span>Stressdagar med möjlig ny position</span><strong id="wStressEligibleDays">—</strong></div>
-    <div><span>Blockerade signaler</span><strong id="wBlocked">—</strong></div>
+    <div><span>Gröna dagar</span><strong id="wGreen">—</strong></div>
+    <div><span>Gula dagar</span><strong id="wYellow">—</strong></div>
+    <div><span>Röda dagar</span><strong id="wRed">—</strong></div>
+    <div><span>Blockerade totalt</span><strong id="wBlocked">—</strong></div>
+    <div><span>Blockerade i gult</span><strong id="wBlockedYellow">—</strong></div>
+    <div><span>Blockerade i rött</span><strong id="wBlockedRed">—</strong></div>
   </div>
 </div>
 <div class="card chart"><canvas id="chart"></canvas></div>
@@ -107,9 +108,9 @@
 
 <div class="note">Detta är en testplattform, inte investeringsrådgivning. För riktig utvärdering måste data vara korrekt, överlevnadsbias undvikas och spread/slippage/courtage modelleras realistiskt. Linas Opti är mobil-först och lägger grunden för reproducerbara tester med samma regler över verklig historik.</div>
 </div>
-<script src="linasopti.js?v=0.25"></script>
+<script src="linasopti.js?v=0.26"></script>
 
-<section class="v014-audit"><h3>Backtestkontroll V0.25</h3>
+<section class="v014-audit"><h3>Backtestkontroll V0.26</h3>
 <div class="v014-metrics">
 <div><span>Benchmark</span><strong>SPY · handlas inte</strong></div>
 <div><span>Faktisk teststart</span><strong id="v15Eval">—</strong></div>
