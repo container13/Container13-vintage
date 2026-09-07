@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.26.3";
+const APP_VERSION = "V0.26.4";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = "Linas Opti " + APP_VERSION + " · JS " + APP_VERSION;
