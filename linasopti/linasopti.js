@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.29.2.2";
+const APP_VERSION = "V0.30";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -408,6 +408,52 @@ function renderWorld(w,s){
  let diff=s?w.ret-s.ret:null;set("wVsBase",diff==null?"—":(diff>=0?"+":"")+pct(diff),diff==null?"":diff>=0?"good":"bad");
  set("wGreen",String(w.regimeDays?.green||0));set("wYellow",String(w.regimeDays?.yellow||0));set("wRed",String(w.regimeDays?.red||0));set("wBlocked",String(w.blocked||0));set("wBlockedYellow",String(w.blockedYellow||0));set("wBlockedRed",String(w.blockedRed||0));
 }
+function optiTrend(rows,capital,evalStart){
+ if(!rows.length)return null;
+ const g=grouped(rows), symbols=Object.keys(g), tradeSymbols=symbols.filter(s=>s!=="SPY");
+ const dates=[...new Set(rows.map(r=>r.t.slice(0,10)))].sort();
+ const map={}; symbols.forEach(s=>{map[s]={};g[s].forEach(r=>map[s][r.t.slice(0,10)]=r)});
+ const firstEval=dates.findIndex(d=>!evalStart||d>=evalStart); if(firstEval<0)return null;
+ const firstTrade=Math.max(252,firstEval), topN=5;
+ if(firstTrade>=dates.length)return {eq:capital,ret:0,dd:0,n:0,bench:null,cagr:0,curve:[],log:[],note:"Minst cirka 252 handelsdagars uppvärmning behövs."};
+ let cash=capital,pos={},curve=[],log=[],peak=capital,dd=0,rebalances=0,firstTradeDate=null;
+ const px=(s,di)=>map[s]?.[dates[di]];
+ const closeAgo=(s,di,n)=>px(s,di-n)?.c;
+ const sma=(s,di,n)=>{let a=[];for(let k=0;k<n;k++){let r=px(s,di-k);if(!r)return null;a.push(r.c)}return a.reduce((x,y)=>x+y,0)/a.length};
+ function equity(di,atOpen=false){let e=cash;for(const [s,p] of Object.entries(pos)){let r=px(s,di);e+=p.qty*(r?(atOpen?r.o:r.c):p.last)}return e}
+ for(let di=firstTrade;di<dates.length;di++){
+   // Signal from previous close; execute at today's open. Rebalance every 5 trading days.
+   if((di-firstTrade)%5===0){
+     const sig=di-1,cands=[];
+     for(const s of tradeSymbols){
+       const r=px(s,sig), c63=closeAgo(s,sig,63),c126=closeAgo(s,sig,126),c252=closeAgo(s,sig,252),ma=sma(s,sig,200);
+       if(!r||!c63||!c126||!c252||!ma||r.c<=ma)continue;
+       const score=.20*(r.c/c63-1)+.30*(r.c/c126-1)+.50*(r.c/c252-1);
+       if(score>0)cands.push({s,score});
+     }
+     cands.sort((a,b)=>b.score-a.score); const wanted=cands.slice(0,topN).map(x=>x.s);
+     // sell names leaving top 5 at today's open
+     for(const s of Object.keys(pos))if(!wanted.includes(s)){const r=px(s,di);if(r){cash+=pos[s].qty*r.o;log.push({t:dates[di],robot:"Trend",symbol:s,action:"SÄLJ",price:r.o,amount:pos[s].qty*r.o,reason:"Utanför Top 5",result:null});delete pos[s]}}
+     const slots=wanted.filter(s=>!pos[s]&&px(s,di));
+     if(slots.length){const targetEquity=equity(di,true),target=targetEquity/topN;for(const s of slots){const r=px(s,di);const spend=Math.min(target,cash);if(spend>0){const qty=spend/r.o;cash-=qty*r.o;pos[s]={qty,last:r.o};log.push({t:dates[di],robot:"Trend",symbol:s,action:"KÖP",price:r.o,amount:spend,reason:"Top 5 momentum",result:null});if(!firstTradeDate)firstTradeDate=dates[di]}}}
+     rebalances++;
+   }
+   for(const [s,p] of Object.entries(pos)){const r=px(s,di);if(r)p.last=r.c}
+   const e=equity(di,false);peak=Math.max(peak,e);dd=Math.min(dd,e/peak-1);curve.push({t:dates[di],v:e});
+ }
+ const lastDi=dates.length-1,eq=equity(lastDi,false),ret=eq/capital-1;
+ let bench=null; const spyStart=map.SPY?.[dates[firstTrade]],spyEnd=map.SPY?.[dates[lastDi]];if(spyStart&&spyEnd)bench=spyEnd.c/spyStart.o-1;
+ const days=firstTradeDate?Math.max(1,(new Date(dates[lastDi])-new Date(firstTradeDate))/86400000):0;
+ const cagr=days?Math.pow(eq/capital,365.25/days)-1:0;
+ return {eq,ret,dd,n:rebalances,bench,cagr,curve,log,firstTrade:dates[firstTrade]};
+}
+function renderTrend(t){
+ const set=(id,v)=>{const e=$(id);if(e)e.textContent=v};
+ if(!t){["tEq","tRet","tDD","tN","tBench","tCagr"].forEach(id=>set(id,"Ingen dagsdata"));return;}
+ set("tEq",fmt(t.eq));set("tRet",(t.ret>=0?"+":"")+pct(t.ret));set("tDD",pct(t.dd));set("tN",String(t.n));set("tCagr",pct(t.cagr));
+ set("tBench",t.bench==null?"—":((t.ret-t.bench)>=0?"+":"")+pct(t.ret-t.bench));
+}
+
 function renderDayAB(a,b){
  const set=(id,v,cls)=>{let e=document.getElementById(id);if(e){e.textContent=v;if(cls!==undefined)e.className=cls}};
  if(!a||!b){["daRet","dbRet","daPF","dbPF","daN","dbN","daWR","dbWR","dbVsA","dbPassed"].forEach(id=>set(id,"Ingen 5-min-data"));return;}
@@ -430,10 +476,11 @@ window.addEventListener("DOMContentLoaded",()=>{
    btn.disabled=true; const oldText=btn.textContent; btn.textContent="Kör test…";
    let start=$("evalStart")?.value||"",mp=+$("maxpos").value;
    let s=swing(DAILY,cap,mp,start);
+   let t=optiTrend(DAILY,cap,start);
    let w=swingWorld(DAILY,cap,mp,start);
    let d=daytrade(INTRA,cap,+$("risk").value);
    let dB=daytradeConfirm(INTRA,cap,+$("risk").value);
-   LAST={s,w,d,dB}; render(s,d,cap); renderWorld(w,s); renderDayAB(d,dB); renderV015Audit(s);
+   LAST={s,t,w,d,dB}; render(s,d,cap); renderTrend(t); renderWorld(w,s); renderDayAB(d,dB); renderV015Audit(s);
    btn.textContent=oldText; btn.disabled=false;
   }catch(err){
    console.error("Linas Opti run error",err);

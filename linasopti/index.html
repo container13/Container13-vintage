@@ -6,13 +6,13 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.29.2">
+<link rel="stylesheet" href="linasopti.css?v=0.30">
 </head>
 <body>
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Opti Day</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div id="appVersion" aria-label="Version">V0.29.2</div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Opti Day + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div id="appVersion" aria-label="Version">V0.30</div></div></div></header>
 
 <div class="tabs">
 <button class="tab active" data-pane="data">1. Data</button>
@@ -89,6 +89,11 @@
 <div class="row" style="margin-top:10px"><div class="v014-control"><label for="evalStart">Testperiod börjar</label><input id="evalStart" type="date" value="2026-02-01"><div class="v014-help">Data före detta datum används endast för indikatorernas uppvärmning. Affärer och resultat räknas från teststarten.</div></div><button class="primary" id="runBtn">Kör Linas Opti</button></div>
 <div id="testDataStatus" class="status-box">⚪ Dagsdata: ej hämtad<br>⚪ 5-min-data: ej hämtad</div>
 </div>
+<div class="card v30-trend-info">
+<div class="v30-trend-head"><div><h2>Opti Trend · SPY-utmanaren</h2><div class="muted">Långsammare kapitalförvaltning. Varje vecka rankas aktierna på 3, 6 och 12 månaders momentum. Endast aktier över SMA200 får väljas. De fem starkaste hålls till nästa ombalansering.</div></div><span class="v30-exp">NY</span></div>
+<div class="v27-day-pills"><span>Veckovis</span><span>Top 5</span><span>3/6/12 mån</span><span>Över SMA200</span><span>SPY = motståndare</span></div>
+<div class="v014-help">För ett rättvist Trend-test behövs minst cirka 12 månaders dagsdata före teststart som uppvärmning.</div>
+</div>
 <div class="card v24-world-info">
 <h2>Omvärldstest · tre marknadslägen</h2>
 <div class="muted">Linas vanliga Swing lämnas orörd. Experimentet klassar varje handelsdag som GRÖN, GUL eller RÖD med endast SPY-data från föregående stängning. Grön tillåter upp till 5 positioner, gul upp till 3 och röd inga nya köp. Befintliga positioner säljs inte av omvärldslagret.</div>
@@ -106,6 +111,7 @@
 <div class="card">
 <div class="two">
 <div class="robot"><h3>Opti Swing</h3><div class="muted">Momentum + mean-reversion, innehav över flera dagar</div><div class="big" id="sEq">—</div><div id="sRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="sDD">—</span></div><div class="mini"><b>Affärer</b><span id="sN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="sWR">—</span></div><div class="mini"><b>Mot benchmark</b><span id="sBench">—</span></div></div></div>
+<div class="robot v30-trend"><h3>Opti Trend</h3><div class="muted">Top 5 momentum · veckovis ombalansering · endast över SMA200</div><div class="big" id="tEq">—</div><div id="tRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="tDD">—</span></div><div class="mini"><b>Ombalanseringar</b><span id="tN">—</span></div><div class="mini"><b>Mot SPY</b><span id="tBench">—</span></div><div class="mini"><b>CAGR</b><span id="tCagr">—</span></div></div></div>
 <div class="robot"><h3>Opti Day</h3><div class="muted">5-min momentum + återhämtning · flera affärer/dag · ingen övernattning</div><div class="big" id="dEq">—</div><div id="dRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="dDD">—</span></div><div class="mini"><b>Affärer</b><span id="dN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="dWR">—</span></div><div class="mini"><b>Snitt/affär</b><span id="dAvg">—</span></div><div class="mini"><b>Profit factor</b><span id="dPF">—</span></div><div class="mini"><b>Affärer/dag</b><span id="dPerDay">—</span></div></div></div>
 </div>
 </div>
@@ -140,7 +146,7 @@
 
 <div class="note">Detta är en testplattform, inte investeringsrådgivning. För riktig utvärdering måste data vara korrekt, överlevnadsbias undvikas och spread/slippage/courtage modelleras realistiskt. Linas Opti är mobil-först och lägger grunden för reproducerbara tester med samma regler över verklig historik.</div>
 </div>
-<script src="linasopti.js?v=0.29.2"></script>
+<script src="linasopti.js?v=0.30"></script>
 
 <section class="v014-audit"><h3>Backtestkontroll V0.29</h3>
 <div class="v014-metrics">

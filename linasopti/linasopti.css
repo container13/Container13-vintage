@@ -316,3 +316,6 @@ body > .v23-sharebar{overflow:visible !important}
 #pane-data,#pane-test,#pane-result{scroll-margin-top:118px}
 #runBtn{scroll-margin-top:118px}
 @media(max-width:520px){#runBtn{min-height:54px}}
+
+/* V0.30 – Opti Trend */
+.v30-trend-info{border:1px solid rgba(36,106,165,.22)!important;background:rgba(245,250,255,.88)!important}.v30-trend-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.v30-exp{font-size:10px;font-weight:900;background:#e6f2fb;color:#246aa5;padding:5px 8px;border-radius:999px}.v30-trend{border:1px solid rgba(36,106,165,.22)!important}.two{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))!important}

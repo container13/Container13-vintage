@@ -1,3 +1,7 @@
+# Linas Opti V0.30 – Opti Trend
+
+Ny tredje strategi: Opti Trend. Swing och Day är oförändrade. Trend rankar aktier veckovis på 3/6/12 månaders momentum, kräver pris över SMA200 och håller Top 5. Signal använder föregående stängning och handel sker vid nästa öppning. SPY är benchmark och handlas inte. För Trend krävs cirka 252 handelsdagars dagsdata före teststart.
+
 # Linas Opti V0.28
 
 V0.28 bygger vidare på V0.27 utan att ändra den verifierade Opti Swing-baslinjen.
