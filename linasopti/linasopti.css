@@ -310,3 +310,9 @@ body > .v23-sharebar{overflow:visible !important}
 .v29-market-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px}.v29-market-title span{font-size:11px;font-weight:800;color:#68727e}
 .v29-market-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.market-btn{padding:10px 7px!important;border-radius:12px!important;font-size:12px!important;font-weight:850!important;background:#eef2f6!important;color:#25303c!important;border:1px solid #dce3ea!important}.market-btn.active{background:#246aa5!important;color:#fff!important;border-color:#246aa5!important}.market-btn.market-future{opacity:.48!important}.v29-market-note{font-size:11px!important;margin-top:8px}
 @media(max-width:520px){.v29-market-buttons{grid-template-columns:repeat(3,1fr)}.market-btn.market-future{grid-column:span 1;font-size:10px!important;padding:8px 4px!important}.v29-market-title{align-items:flex-start;flex-direction:column;gap:2px}}
+
+
+/* V0.29.2 – flikbyte ska landa på rätt arbetsyta på mobil. */
+#pane-data,#pane-test,#pane-result{scroll-margin-top:118px}
+#runBtn{scroll-margin-top:118px}
+@media(max-width:520px){#runBtn{min-height:54px}}

@@ -27,3 +27,10 @@ V0.28 bygger vidare på V0.27 utan att ändra den verifierade Opti Swing-baslinj
 - Syftet är att testa om samma strategi beter sig annorlunda i ett bredare aktieuniversum innan signalparametrar ändras.
 
 V0.29.1: Fixad cache-busting för JavaScript/CSS. V0.29 HTML hade script-taggen kvar på ?v=0.28, vilket kunde ladda cachad V0.28-JS och göra USA 20/30 oklickbara. Ingen strategilogik ändrad.
+
+
+## V0.29.2
+- Fix: när användaren trycker på **2. Test** scrollas vyn automatiskt så **Kör Linas Opti** blir direkt synlig.
+- **1. Data** och **3. Resultat** återgår till början av respektive arbetsyta vid flikbyte.
+- Ingen ändring i Opti Swing, Opti Day A/B, risk, kostnader eller marknadsgrupper.
+- Cache-busting uppdaterad till 0.29.2.

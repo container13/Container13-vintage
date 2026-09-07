@@ -1,12 +1,12 @@
 
-const APP_VERSION = "V0.29.1";
+const APP_VERSION = "V0.29.2.2";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
 });
 
 
-// V0.29 – marknadsgrupper. Strategilogiken ändras inte; endast symboluniversum byts.
+// V0.29.2 – marknadsgrupper. Strategilogiken ändras inte; endast symboluniversum byts.
 const MARKET_GROUPS={
  usa10:{name:"USA Core",symbols:["AAPL","MSFT","NVDA","AMZN","META","TSLA","AMD","NFLX","AVGO","JPM","SPY"]},
  usa20:{name:"USA 20",symbols:["AAPL","MSFT","NVDA","AMZN","META","TSLA","AMD","NFLX","AVGO","JPM","GOOGL","ORCL","CRM","INTC","QCOM","MU","BAC","GS","WMT","COST","SPY"]},
@@ -27,8 +27,17 @@ window.addEventListener("DOMContentLoaded",()=>{
 let DAILY=[], INTRA=[], LAST=null;
 const API_BASE = "https://linas-opti-api.mangaj73.workers.dev";
 const $=id=>document.getElementById(id);
-document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>show(b.dataset.pane));
-function show(p){document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.pane===p));["data","test","result"].forEach(x=>$("pane-"+x).classList.toggle("hidden",x!==p))}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>show(b.dataset.pane,true));
+function show(p,fromTab=false){
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.pane===p));
+  ["data","test","result"].forEach(x=>$("pane-"+x).classList.toggle("hidden",x!==p));
+  if(fromTab){
+    requestAnimationFrame(()=>{
+      const target=p==="test" ? $("runBtn") : $("pane-"+p);
+      if(target) target.scrollIntoView({behavior:"smooth",block:p==="test"?"center":"start"});
+    });
+  }
+}
 function fmt(x){return new Intl.NumberFormat("sv-SE",{style:"currency",currency:"SEK",maximumFractionDigits:0}).format(x)}
 function pct(x){return Number.isFinite(x)?(x*100).toFixed(2).replace(".",",")+"%":"—"}
 function parseCSV(text){
