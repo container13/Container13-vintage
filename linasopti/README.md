@@ -1,23 +1,26 @@
-# Linas Opti V0.7
+# Linas Opti V0.8
 
-Alla publika filer ligger i samma mapp för enklare GitHub-hantering.
+Publik frontend för:
+`https://container13.se/linasopti/`
 
-## Lägg direkt i
-`/linasopti/`
+## Nytt i V0.8
+- Frontend är nu kopplad till den fungerande Cloudflare Workern:
+  `https://linas-opti-api.mangaj73.workers.dev`
+- Alpaca API Key ID och Secret Key ligger fortsatt endast som Cloudflare Secrets.
+- Inga hemligheter finns i GitHub-filerna.
+- Knappen för anslutningskontroll använder nu den riktiga Workern.
+- Hämtning av `1Day` och `5Min` går via Workerns `/bars`-endpoint.
+- Ingen orderläggning är aktiverad. Workerns health-svar rapporterar `tradingEnabled: false`.
 
 ## Filer
+Alla filer ligger i samma `/linasopti/`-mapp:
 - `index.html`
 - `linasopti.css`
 - `linasopti.js`
 - `manifest.webmanifest`
 - `README.md`
 
-## Viktigt
-Lägg aldrig Alpaca API Key ID eller Secret Key i GitHub-filerna.
-Frontend är förberedd för en separat säker backend.
+## Säkerhetsmodell
+iPhone / webbläsare → container13.se/linasopti/ → Cloudflare Worker → Alpaca
 
-## V0.7
-- Samma funktionalitet som V0.6.
-- CSS och JS flyttade upp till samma mapp som index.html.
-- Referenser i index.html uppdaterade.
-- Mobil först, responsiv för iPhone, cirka 13" och 24".
+Alpaca-hemligheterna får aldrig läggas i GitHub, HTML eller JavaScript.

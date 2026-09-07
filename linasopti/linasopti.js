@@ -1,5 +1,5 @@
 let DAILY=[], INTRA=[], LAST=null;
-const API_BASE = ""; // sätts först när säker backend finns
+const API_BASE = "https://linas-opti-api.mangaj73.workers.dev";
 const $=id=>document.getElementById(id);
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>show(b.dataset.pane));
 function show(p){document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.pane===p));["data","test","result"].forEach(x=>$("pane-"+x).classList.toggle("hidden",x!==p))}
@@ -26,7 +26,7 @@ function updateDataStatus(){
  $("modeBadge").style.background=(DAILY.length||INTRA.length)?"#e8f6ef":"#eaf4fd";
 }
 async function bridge(path){
- if(!API_BASE) throw new Error("Säker Alpaca-backend är inte ansluten ännu.");
+ if(!API_BASE) throw new Error("Kunde inte nå Linas Opti API.");
  let r=await fetch(API_BASE+path);let j=await r.json();if(!r.ok)throw new Error(j.error||("HTTP "+r.status));return j
 }
 $("healthBtn").onclick=async()=>{try{let j=await bridge("/health");$("bridgeStatus").innerHTML='<span class="good">Bryggan svarar: '+j.status+"</span>"}catch(e){$("bridgeStatus").innerHTML='<span class="bad">Ingen brygga: '+e.message+"</span>"}};
