@@ -6,11 +6,11 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.22">
+<link rel="stylesheet" href="linasopti.css?v=0.23">
 </head>
 <body>
 <div class="lina-watermark" aria-hidden="true"></div>
-<div id="appVersion" aria-label="Version">Linas Opti V0.22</div>
+<div id="appVersion" aria-label="Version">Linas Opti V0.23</div>
 <div class="wrap">
 <header><div><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Opti Day • gemensam jämförelse</div></div><div class="badge" id="modeBadge">DATA EJ INLÄST</div></header>
 
@@ -42,7 +42,7 @@
   <button type="button" class="period-btn" data-period="2024">2024</button>
   <button type="button" class="period-btn" data-period="2025">2025</button>
   <button type="button" class="period-btn" data-period="2026">2026</button>
-  <button type="button" class="period-btn" data-period="all">2024–nu</button>
+  <button type="button" class="period-btn" data-period="all">Hela perioden</button>
 </div>
 </div>
 <div class="row" style="margin-top:9px">
@@ -62,7 +62,7 @@
 <label>Max position, swing<select id="maxpos"><option value=".10">10%</option><option value=".20" selected>20%</option><option value=".25">25%</option></select></label>
 <label>Risk/affär, daytrader<select id="risk"><option value=".0025">0,25%</option><option value=".005" selected>0,5%</option><option value=".01">1,0%</option></select></label>
 </div>
-<div class="row" style="margin-top:10px"><div class="v014-control"><label for="evalStart">Testperiod börjar</label><input id="evalStart" type="date" value="2026-02-01"><div class="v014-help">Data före detta datum används endast för indikatorernas uppvärmning. Affärer och resultat räknas från teststarten.</div></div><button class="primary" id="runBtn">Kör båda robotarna</button></div>
+<div class="row" style="margin-top:10px"><div class="v014-control"><label for="evalStart">Testperiod börjar</label><input id="evalStart" type="date" value="2026-02-01"><div class="v014-help">Data före detta datum används endast för indikatorernas uppvärmning. Affärer och resultat räknas från teststarten.</div></div><button class="primary" id="runBtn">Kör Linas Opti</button></div>
 <div id="testDataStatus" class="status-box">⚪ Dagsdata: ej hämtad<br>⚪ 5-min-data: ej hämtad</div>
 </div>
 </section>
@@ -86,18 +86,9 @@
 
 <div class="note">Detta är en testplattform, inte investeringsrådgivning. För riktig utvärdering måste data vara korrekt, överlevnadsbias undvikas och spread/slippage/courtage modelleras realistiskt. Linas Opti är mobil-först och lägger grunden för reproducerbara tester med samma regler över verklig historik.</div>
 </div>
-<script src="linasopti.js?v=0.22"></script>
+<script src="linasopti.js?v=0.23"></script>
 
-<section class="v19-ab">
- <h3>A/B-test · 5 dagars karantän</h3>
- <p class="v014-note"><b>A</b> = exakt V0.15–V0.18. <b>B</b> = samma regler, men efter en stop-loss får samma aktie inte köpas igen under de följande 5 handelsdagarna. Övriga aktier och befintliga positioner påverkas inte.</p>
- <div class="v19-abgrid">
-  <div class="v19-variant"><h4>A · Original</h4><div class="v19-big" id="abARet">—</div><div class="v19-kpis"><span>Kapital <b id="abAEq">—</b></span><span>Drawdown <b id="abADD">—</b></span><span>Affärer <b id="abAN">—</b></span><span>Vinst % <b id="abAWR">—</b></span><span>Profit factor <b id="abAPF">—</b></span><span>Mot SPY <b id="abAVs">—</b></span></div></div>
-  <div class="v19-variant"><h4>B · 5 dagars karantän</h4><div class="v19-big" id="abBRet">—</div><div class="v19-kpis"><span>Kapital <b id="abBEq">—</b></span><span>Drawdown <b id="abBDD">—</b></span><span>Affärer <b id="abBN">—</b></span><span>Vinst % <b id="abBWR">—</b></span><span>Profit factor <b id="abBPF">—</b></span><span>Mot SPY <b id="abBVs">—</b></span></div></div>
- </div>
- <div class="v19-summary"><span>Skillnad B − A <b id="abDelta">—</b></span><span>Drawdown-förändring <b id="abDDDelta">—</b></span><span>Blockerade återköpssignaler <b id="abBlocked">—</b></span></div>
-</section>
-<section class="v014-audit"><h3>Backtestkontroll V0.22</h3>
+<section class="v014-audit"><h3>Backtestkontroll V0.23</h3>
 <div class="v014-metrics">
 <div><span>Benchmark</span><strong>SPY · handlas inte</strong></div>
 <div><span>Faktisk teststart</span><strong id="v15Eval">—</strong></div>
@@ -111,11 +102,14 @@
 <p class="v014-note"><b>Look-ahead-kontroll:</b> köpsignalen beräknas endast med data till och med föregående handelsdags stängning. Köp sker till nästa handelsdags öppningskurs. SPY används bara som benchmark.</p>
 <details><summary>Visa avslutade Swing-affärer</summary><div id="v16TradeCards" class="v16-tradecards"></div></details>
 </section>
-<section class="v17-export">
-  <h3>Dela test</h3>
-  <p>Skapar en rapport med testinställningar, resultat, benchmark och affärslogg. På iPhone öppnas den vanliga delningsrutan där AirDrop kan väljas.</p>
-  <button type="button" id="v17ShareQuick">Dela snabbrapport</button>
-  <button type="button" id="v17ShareFull" class="secondary">Dela full testdata</button>
-  <div id="v17ExportStatus" class="v17-status"></div>
-</section>
+
+
+<div class="v23-sharebar" id="v23ShareBar">
+  <button type="button" id="v23ShareToggle" class="v23-share-main">Dela testdata</button>
+  <div class="v23-share-menu" id="v23ShareMenu" hidden>
+    <button type="button" id="v17ShareQuick">Snabbrapport</button>
+    <button type="button" id="v17ShareFull" class="secondary">Full testdata</button>
+    <div id="v17ExportStatus" class="v17-status"></div>
+  </div>
+</div>
 </body></html>

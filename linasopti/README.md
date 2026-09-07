@@ -1,16 +1,24 @@
-# Linas Opti V0.22
-## Viktig verifieringsfix: korrekt handelsordning
-Tidigare kunde dagens intraday-exit behandlas före ett köp på samma dags öppning. Det kunde skapa tidsmässigt omöjliga affärer och låta kapital från en senare försäljning finansiera ett tidigare öppningsköp.
+# Linas Opti V0.23
 
-V0.22 kör varje dags Swing-händelser i kronologisk ordning:
-1. Signal från föregående stängning.
-2. Köp på dagens öppning med kapital och positionsplatser som faktiskt finns vid öppningen.
-3. Därefter dagens stop/target.
-4. Tidsutgång vid dagens stängning.
+Städad baslinje efter verifiering av V0.22.
 
-A/B-testet finns kvar: A utan karantän, B med 5 handelsdagars karantän efter stop-loss.
-Snabbvalen 2024, 2025, 2026 och 2024–nu finns kvar.
+## Ändrat
+- 5-dagarskarantän och hela A/B-spåret är borttaget.
+- Opti Swing är exakt den kronologiskt korrigerade A-baslinjen från V0.22.
+- Huvudknappen heter **Kör Linas Opti**.
+- Snabbvalet **2024–nu** heter nu **Hela perioden**.
+- **Dela testdata** ligger fast i nederkant; tryck öppnar Snabbrapport / Full testdata.
+- Lina-watermarken använder samma befintliga bild och har gjorts ett litet steg tydligare. Ingen ny/genererad bild används.
+- Exporten innehåller inte längre karantän/A-B-resultat.
 
-## Lina
-Samma befintliga originalbild används. Ingen genererad bild används.
-Watermarken ligger nu som en mycket svag overlay ovanpå kortytorna, så Lina ska synas genom hela gränssnittet och inte bara i gliporna.
+## Inte ändrat
+- Swing-score/signallogik.
+- Stop −7 %, mål +12 %, 20 handelsdagars exit.
+- Max fem samtidiga Swing-positioner och vald maxposition.
+- Signal på föregående stängning → köp nästa öppning.
+- Dagens köp sker före dagens stop/target/time-exit; kapital från senare exit kan inte användas retroaktivt vid öppningen.
+- SPY är endast benchmark och handlas inte.
+- Opti Day finns kvar oförändrad.
+- Handel är avstängd; detta är backtest/paper.
+
+Föregående version: V0.22 chronology.
