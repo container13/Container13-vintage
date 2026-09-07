@@ -1,8 +1,8 @@
 
-const APP_VERSION = "V0.27";
+const APP_VERSION = "V0.28";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
-  if (v) v.textContent = "Linas Opti " + APP_VERSION + " · JS " + APP_VERSION;
+  if (v) v.textContent = APP_VERSION;
 });
 
 let DAILY=[], INTRA=[], LAST=null;
@@ -304,6 +304,65 @@ function daytrade(rows,capital,riskPct){
  return {eq,ret:eq/capital-1,dd,n:closed.length,wr:closed.length?wins.length/closed.length:0,avg:closed.length?(eq-capital)/closed.length:0,log,curve,closed,pf,tradesPerDay:dayCount?closed.length/dayCount:0,maxTradesDay,maxTradesSymbol};
 }
 
+function daytradeConfirm(rows,capital,riskPct){
+ if(!rows.length)return null;
+ let days={};rows.forEach(r=>{let d=r.t.slice(0,10);(days[d]??={});(days[d][r.symbol]??=[]).push(r)});
+ let eq=capital,peak=capital,dd=0,w=0,l=0,log=[],curve=[],closed=[];
+ let dayCount=0,maxTradesDay=12,maxTradesSymbol=3,rawSignals=0,passedSignals=0;
+ const spread=.00035,slip=.00025,costSide=spread/2+slip;
+ for(let d of Object.keys(days).sort()){
+  let tradesToday=0;dayCount++;
+  for(let [s,bars] of Object.entries(days[d])){
+   if(s==="SPY")continue;
+   bars.sort((a,b)=>new Date(a.t)-new Date(b.t));
+   if(bars.length<18||tradesToday>=maxTradesDay)continue;
+   let symTrades=0,nextAllowed=4;
+   for(let i=12;i<bars.length-1 && tradesToday<maxTradesDay && symTrades<maxTradesSymbol;i++){
+    if(i<nextAllowed)continue;
+    let hist=bars.slice(Math.max(0,i-11),i+1);
+    let sma=hist.reduce((a,b)=>a+b.c,0)/hist.length;
+    let r3=bars[i].c/bars[i-3].c-1;
+    let r1=bars[i].c/bars[i-1].c-1;
+    // A:s råa signal, räknas bara för diagnostik.
+    let baseSignal=(r3>.0045 && bars[i].c>sma && r1>0) || (r3<-.008 && r1>0 && bars[i].c<sma);
+    if(baseSignal)rawSignals++;
+    // B testar endast starkare momentum med bekräftelse i pris och volym.
+    // Allt är känt när bar i har stängt; köp sker fortfarande först på nästa bars öppning.
+    let range=Math.max(.000001,bars[i].h-bars[i].l);
+    let closeLocation=(bars[i].c-bars[i].l)/range;
+    let avgVol=hist.reduce((a,b)=>a+(Number(b.v)||0),0)/hist.length;
+    let volumeOk=(Number(bars[i].v)||0)>=avgVol;
+    let signal=r3>.006 && bars[i].c>sma && r1>0 && closeLocation>=.65 && volumeOk;
+    if(!signal)continue;
+    passedSignals++;
+    let why="bekräftat momentum 15 min";
+    let entryBar=bars[i+1],entry=entryBar.o*(1+costSide);
+    let stop=entry*.992,target=entry*1.012,maxExit=Math.min(bars.length-1,i+13);
+    let exitBar=bars[maxExit],exitWhy="max 60 min",exitRaw=exitBar.c;
+    for(let k=i+1;k<=maxExit;k++){
+      let b=bars[k];
+      if(b.l<=stop){exitBar=b;exitWhy="stop −0,8%";exitRaw=stop;break}
+      if(b.h>=target){exitBar=b;exitWhy="mål +1,2%";exitRaw=target;break}
+      if(k===bars.length-1){exitBar=b;exitWhy="stängning";exitRaw=b.c;break}
+    }
+    let exit=exitRaw*(1-costSide);
+    let risk=Math.max(0,eq*riskPct),riskPerShare=Math.max(.0001,entry-stop);
+    let shares=Math.min((eq*.20)/entry,risk/riskPerShare);
+    if(!(shares>0))continue;
+    let pl=shares*(exit-entry);eq+=pl;pl>=0?w++:l++;tradesToday++;symTrades++;
+    let ret=exit/entry-1;
+    closed.push({symbol:s,entryTime:entryBar.t,exitTime:exitBar.t,entry,exit,shares,pnl:pl,ret,why:exitWhy,setup:why});
+    log.push({t:exitBar.t,robot:"Opti Day B",s,a:"LONG",price:entry,amount:shares*entry,why:why+" / "+exitWhy,pnl:pl});
+    let exitIdx=bars.indexOf(exitBar);nextAllowed=Math.max(i+2,exitIdx+2);i=Math.max(i,exitIdx);
+   }
+  }
+  peak=Math.max(peak,eq);dd=Math.min(dd,eq/peak-1);curve.push({t:d,v:eq});
+ }
+ let wins=closed.filter(x=>x.pnl>0),losses=closed.filter(x=>x.pnl<0),grossWin=wins.reduce((a,x)=>a+x.pnl,0),grossLoss=Math.abs(losses.reduce((a,x)=>a+x.pnl,0));
+ let pf=grossLoss?grossWin/grossLoss:(grossWin?Infinity:0);
+ return {eq,ret:eq/capital-1,dd,n:closed.length,wr:closed.length?wins.length/closed.length:0,avg:closed.length?(eq-capital)/closed.length:0,log,curve,closed,pf,tradesPerDay:dayCount?closed.length/dayCount:0,maxTradesDay,maxTradesSymbol,rawSignals,passedSignals};
+}
+
 function render(s,d,capital){
  $("kStart").textContent=fmt(capital);$("kDaily").textContent=DAILY.length;$("kIntra").textContent=INTRA.length;
  let ts=[...DAILY,...INTRA].map(x=>x.t).sort();$("kPeriod").textContent=ts.length?ts[0].slice(0,10)+" → "+ts.at(-1).slice(0,10):"—";
@@ -321,6 +380,17 @@ function renderWorld(w,s){
  let diff=s?w.ret-s.ret:null;set("wVsBase",diff==null?"—":(diff>=0?"+":"")+pct(diff),diff==null?"":diff>=0?"good":"bad");
  set("wGreen",String(w.regimeDays?.green||0));set("wYellow",String(w.regimeDays?.yellow||0));set("wRed",String(w.regimeDays?.red||0));set("wBlocked",String(w.blocked||0));set("wBlockedYellow",String(w.blockedYellow||0));set("wBlockedRed",String(w.blockedRed||0));
 }
+function renderDayAB(a,b){
+ const set=(id,v,cls)=>{let e=document.getElementById(id);if(e){e.textContent=v;if(cls!==undefined)e.className=cls}};
+ if(!a||!b){["daRet","dbRet","daPF","dbPF","daN","dbN","daWR","dbWR","dbVsA","dbPassed"].forEach(id=>set(id,"Ingen 5-min-data"));return;}
+ set("daRet",(a.ret>=0?"+":"")+pct(a.ret),a.ret>=0?"good":"bad");
+ set("dbRet",(b.ret>=0?"+":"")+pct(b.ret),b.ret>=0?"good":"bad");
+ set("daPF",a.pf===Infinity?"∞":Number(a.pf||0).toFixed(2)); set("dbPF",b.pf===Infinity?"∞":Number(b.pf||0).toFixed(2));
+ set("daN",String(a.n)); set("dbN",String(b.n)); set("daWR",pct(a.wr)); set("dbWR",pct(b.wr));
+ let diff=b.ret-a.ret; set("dbVsA",(diff>=0?"+":"")+pct(diff),diff>=0?"good":"bad");
+ set("dbPassed",`${b.passedSignals||0} / ${b.rawSignals||0}`);
+}
+
 window.addEventListener("DOMContentLoaded",()=>{
  const btn=$("runBtn");
  if(!btn)return;
@@ -334,7 +404,8 @@ window.addEventListener("DOMContentLoaded",()=>{
    let s=swing(DAILY,cap,mp,start);
    let w=swingWorld(DAILY,cap,mp,start);
    let d=daytrade(INTRA,cap,+$("risk").value);
-   LAST={s,w,d}; render(s,d,cap); renderWorld(w,s); renderV015Audit(s);
+   let dB=daytradeConfirm(INTRA,cap,+$("risk").value);
+   LAST={s,w,d,dB}; render(s,d,cap); renderWorld(w,s); renderDayAB(d,dB); renderV015Audit(s);
    btn.textContent=oldText; btn.disabled=false;
   }catch(err){
    console.error("Linas Opti run error",err);
@@ -444,7 +515,7 @@ function renderV015Audit(s){
 function v17DateOnly(v){return String(v||"").slice(0,10)}
 function v17Symbols(){const e=document.getElementById("symbols");return e?e.value:""}
 function v17BaseReport(full){
- const s=LAST?.s||null,d=LAST?.d||null;
+ const s=LAST?.s||null,d=LAST?.d||null,dB=LAST?.dB||null;
  const payload={
   app:"Linas Opti",
   version:APP_VERSION,
@@ -481,9 +552,17 @@ function v17BaseReport(full){
    blockedYellow:LAST.w.blockedYellow,blockedRed:LAST.w.blockedRed,regimeSignalDays:LAST.w.regimeSignalDays,regimeSamples:LAST.w.regimeSamples
   }:null,
   day:d?{
+   variant:"A · V0.27-baslinje",
    rule:"Signal på avslutad 5-minutersbar → köp nästa bars öppning. Long-only momentum/återhämtning, stop 0,8%, mål 1,2%, max 60 min, ingen övernattning, max 12 affärer/dag och 3/symbol.",
    endingCapital:d.eq,returnPct:d.ret*100,maxDrawdownPct:d.dd*100,
    trades:d.n,winRatePct:d.wr*100,profitFactor:d.pf===Infinity?"Infinity":d.pf,averageTrade:d.avg,tradesPerDay:d.tradesPerDay
+  }:null,
+  dayConfirm:dB?{
+   variant:"B · Bekräftad momentum",
+   rule:"Samma exekvering/risk/exit som A. Endast momentum: r3 > 0,6%, pris över SMA12, positiv senaste bar, stängning i övre 35% av baren och volym minst 12-bars-snitt. Köp nästa bars öppning.",
+   endingCapital:dB.eq,returnPct:dB.ret*100,maxDrawdownPct:dB.dd*100,
+   trades:dB.n,winRatePct:dB.wr*100,profitFactor:dB.pf===Infinity?"Infinity":dB.pf,averageTrade:dB.avg,tradesPerDay:dB.tradesPerDay,
+   vsBaselinePct:d?(dB.ret-d.ret)*100:null,rawSignals:dB.rawSignals,passedSignals:dB.passedSignals
   }:null
  };
  if(full && s){
@@ -502,10 +581,14 @@ function v17BaseReport(full){
    payload.day.closedTrades=(d.closed||[]).map(x=>({symbol:x.symbol,entryTime:x.entryTime,exitTime:x.exitTime,entryPrice:x.entry,exitPrice:x.exit,shares:x.shares,pnl:x.pnl,returnPct:x.ret*100,setup:x.setup,exitReason:x.why}));
    payload.day.eventLog=d.log||[];
  }
+ if(full && dB){
+   payload.dayConfirm.closedTrades=(dB.closed||[]).map(x=>({symbol:x.symbol,entryTime:x.entryTime,exitTime:x.exitTime,entryPrice:x.entry,exitPrice:x.exit,shares:x.shares,pnl:x.pnl,returnPct:x.ret*100,setup:x.setup,exitReason:x.why}));
+   payload.dayConfirm.eventLog=dB.log||[];
+ }
  return payload;
 }
 function v17TextReport(full){
- const p=v17BaseReport(full),s=p.swing,d=p.day;
+ const p=v17BaseReport(full),s=p.swing,d=p.day,dB=p.dayConfirm;
  let a=[];
  a.push("LINAS OPTI – TESTRAPPORT",`Version: ${p.version}`,`Exporterad: ${p.exportedAt}`,"Handel: AVSTÄNGD (backtest/paper)","");
  a.push("DATA",`Symboler: ${p.data.symbols}`,`Data: ${p.data.from} → ${p.data.to}`,`Teststart: ${p.data.evaluationStart}`,`Dagsrader: ${p.data.dailyRows}`,`5-min-rader: ${p.data.fiveMinuteRows}`,"");
@@ -514,7 +597,9 @@ function v17TextReport(full){
   a.push("OPTI SWING",`Slutkapital: ${s.endingCapital}`,`Avkastning: ${s.returnPct.toFixed(2)}%`,`Max drawdown: ${s.maxDrawdownPct.toFixed(2)}%`,`Affärer: ${s.trades}`,`Vinstfrekvens: ${s.winRatePct.toFixed(2)}%`,`Benchmark: SPY`,`SPY: ${s.benchmarkReturnPct==null?"—":s.benchmarkReturnPct.toFixed(2)+"%"}`,`Mot benchmark: ${s.vsBenchmarkPct==null?"—":s.vsBenchmarkPct.toFixed(2)+"%"}`,`Profit factor: ${s.profitFactor}`,`Snittvinst: ${s.averageWin}`,`Snittförlust: ${s.averageLoss}`,`Bästa affär: ${s.bestTrade}`,`Sämsta affär: ${s.worstTrade}`,`Öppna vid slut: ${s.openAtEnd}`,"");
  }
  if(p.worldTest){let w=p.worldTest;a.push("OMVÄRLDSTEST V0.26",`Regel: ${w.rule}`,`Slutkapital: ${w.endingCapital}`,`Avkastning: ${w.returnPct.toFixed(2)}%`,`Max drawdown: ${w.maxDrawdownPct.toFixed(2)}%`,`Affärer: ${w.trades}`,`Vinstfrekvens: ${w.winRatePct.toFixed(2)}%`,`Profit factor: ${w.profitFactor}`,`Mot baslinjen: ${w.vsBaselinePct==null?"—":w.vsBaselinePct.toFixed(2)+"%"}`,`Gröna dagar: ${w.regimeDays?.green||0}`,`Gula dagar: ${w.regimeDays?.yellow||0}`,`Röda dagar: ${w.regimeDays?.red||0}`,`Blockerade signaler totalt: ${w.blockedSignals}`,`Blockerade i gult: ${w.blockedYellow}`,`Blockerade i rött: ${w.blockedRed}`,`Gul/röd-dagar med rå signal: ${w.regimeSignalDays}`,`Regimdiagnostik (första 20): ${JSON.stringify(w.regimeSamples)}`,"");}
- if(d)a.push("OPTI DAY",`Regel: ${d.rule}`,`Slutkapital: ${d.endingCapital}`,`Avkastning: ${d.returnPct.toFixed(2)}%`,`Max drawdown: ${d.maxDrawdownPct.toFixed(2)}%`,`Affärer: ${d.trades}`,`Vinstfrekvens: ${d.winRatePct.toFixed(2)}%`,`Profit factor: ${d.profitFactor}`,`Snitt/affär: ${d.averageTrade}`,`Affärer/dag: ${d.tradesPerDay}`,"");
+ if(d)a.push("OPTI DAY A – BASLINJE",`Regel: ${d.rule}`,`Slutkapital: ${d.endingCapital}`,`Avkastning: ${d.returnPct.toFixed(2)}%`,`Max drawdown: ${d.maxDrawdownPct.toFixed(2)}%`,`Affärer: ${d.trades}`,`Vinstfrekvens: ${d.winRatePct.toFixed(2)}%`,`Profit factor: ${d.profitFactor}`,`Snitt/affär: ${d.averageTrade}`,`Affärer/dag: ${d.tradesPerDay}`,"");
+
+ if(dB)a.push("OPTI DAY B – BEKRÄFTAD MOMENTUM",`Regel: ${dB.rule}`,`Slutkapital: ${dB.endingCapital}`,`Avkastning: ${dB.returnPct.toFixed(2)}%`,`Max drawdown: ${dB.maxDrawdownPct.toFixed(2)}%`,`Affärer: ${dB.trades}`,`Vinstfrekvens: ${dB.winRatePct.toFixed(2)}%`,`Profit factor: ${dB.profitFactor}`,`Snitt/affär: ${dB.averageTrade}`,`Affärer/dag: ${dB.tradesPerDay}`,`Mot A: ${dB.vsBaselinePct==null?"—":dB.vsBaselinePct.toFixed(2)+"%"}`,`Godkända / råa A-signaler: ${dB.passedSignals} / ${dB.rawSignals}`,"");
  if(full&&s){
   a.push("AVSLUTADE SWING-AFFÄRER");
   (s.closedTrades||[]).forEach((x,i)=>a.push(`${i+1}. ${x.symbol} | ${x.entryDate} → ${x.exitDate} | in ${x.entryPrice} | ut ${x.exitPrice} | P/L ${x.pnl} | ${x.returnPct.toFixed(2)}% | ${x.exitReason}`));
@@ -526,6 +611,11 @@ function v17TextReport(full){
   (d.closedTrades||[]).forEach((x,i)=>a.push(`${i+1}. ${x.symbol} | ${x.entryTime} → ${x.exitTime} | in ${x.entryPrice} | ut ${x.exitPrice} | P/L ${x.pnl} | ${x.returnPct.toFixed(2)}% | ${x.setup} / ${x.exitReason}`));
   a.push("","OPTI DAY – HÄNDELSELOGG",JSON.stringify(d.eventLog||[],null,2));
  }
+ if(full&&dB){
+  a.push("","AVSLUTADE OPTI DAY B-AFFÄRER");
+  (dB.closedTrades||[]).forEach((x,i)=>a.push(`${i+1}. ${x.symbol} | ${x.entryTime} → ${x.exitTime} | in ${x.entryPrice} | ut ${x.exitPrice} | P/L ${x.pnl} | ${x.returnPct.toFixed(2)}% | ${x.setup} / ${x.exitReason}`));
+  a.push("","OPTI DAY B – HÄNDELSELOGG",JSON.stringify(dB.eventLog||[],null,2));
+ }
  return a.join("\n");
 }
 async function v17Share(full){
@@ -533,7 +623,7 @@ async function v17Share(full){
  if(!LAST?.s&&!LAST?.d){if(status)status.textContent="Kör ett test först.";return}
  const txt=v17TextReport(full);
  const stamp=new Date().toISOString().slice(0,10);
- const name=`linasopti_v027_${full?"full":"snabb"}_${stamp}.txt`;
+ const name=`linasopti_v028_${full?"full":"snabb"}_${stamp}.txt`;
  const file=new File([txt],name,{type:"text/plain;charset=utf-8"});
  try{
   if(navigator.share && (!navigator.canShare || navigator.canShare({files:[file]}))){

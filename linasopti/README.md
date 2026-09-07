@@ -1,16 +1,18 @@
-# Linas Opti V0.27
+# Linas Opti V0.28
 
-V0.27 bygger första riktiga Opti Day-motorn och snyggar toppfältet på mobil.
+V0.28 bygger vidare på V0.27 utan att ändra den verifierade Opti Swing-baslinjen.
 
-- Opti Swing lämnas oförändrad som verifierad kontroll.
-- Opti Day använder 5-minutersdata och kan göra flera affärer samma dag.
-- Signal beräknas på en avslutad 5-minutersbar och simulerad entry sker först på nästa bars öppning.
-- Long-only i denna första version: momentum eller återhämtning efter snabb nedgång.
-- Stop 0,8 %, mål 1,2 %, max 60 min i position.
-- Max 12 affärer per dag och max 3 per symbol, aldrig flera samtidiga positioner i samma symbol och ingen övernattning.
-- Spread/slippage finns kvar i Day-testet.
-- Full testdata exporterar nu även alla Opti Day-affärer.
-- Nya Opti Day-snabbval för 5, 20 och 60 dagar för att hålla 5-minutershämtningen rimlig.
-- Mobil topp: status/version ligger på egen rad och kan inte krocka med underrubriken.
+## Nytt
+- Renare sticky topp: titel + underrubrik, därefter en kompakt rad med datastatus och version, sedan flikarna.
+- Opti Day A/B-test.
+  - A = exakt V0.27-signalen.
+  - B = experimentell bekräftad momentum-signal. Samma risk, stop, mål, kostnader, max hålltid och exekveringsordning som A.
+  - B kräver 15-min momentum > 0,6 %, pris över SMA12, positiv senaste bar, stängning i övre 35 % av signalbaren och volym minst 12-bars-snitt.
+- Resultatpanelen visar A och B sida vid sida.
+- Full testdata exporterar båda Opti Day-varianternas affärer och händelseloggar.
 
-Trading är fortsatt avstängd; endast backtest/paper.
+## Oförändrat
+- Paper/backtest only; inga liveordrar.
+- Swing-logik och kronologi.
+- SPY benchmark/omvärldsexperiment.
+- Opti Day A:s V0.27-regler och kostnadsmodell.

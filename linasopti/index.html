@@ -6,13 +6,13 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.27">
+<link rel="stylesheet" href="linasopti.css?v=0.28">
 </head>
 <body>
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Opti Day</div></div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div id="appVersion" aria-label="Version">Linas Opti V0.27</div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Opti Day</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div id="appVersion" aria-label="Version">V0.28</div></div></div></header>
 
 <div class="tabs">
 <button class="tab active" data-pane="data">1. Data</button>
@@ -98,6 +98,14 @@
 <div class="robot"><h3>Opti Day</h3><div class="muted">5-min momentum + återhämtning · flera affärer/dag · ingen övernattning</div><div class="big" id="dEq">—</div><div id="dRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="dDD">—</span></div><div class="mini"><b>Affärer</b><span id="dN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="dWR">—</span></div><div class="mini"><b>Snitt/affär</b><span id="dAvg">—</span></div><div class="mini"><b>Profit factor</b><span id="dPF">—</span></div><div class="mini"><b>Affärer/dag</b><span id="dPerDay">—</span></div></div></div>
 </div>
 </div>
+
+<div class="card v28-day-ab">
+  <div class="v28-day-head"><div><h2>Opti Day · A/B signaltest</h2><div class="muted">A är exakt V0.27-signalen. B ändrar bara intradagssignalen – risk, stop, mål, kostnader och exekvering är samma.</div></div><span class="v28-exp">EXPERIMENT</span></div>
+  <div class="v28-abgrid">
+    <div class="v28-variant"><h3>A · Baslinje</h3><div class="v28-big" id="daRet">—</div><div class="v28-mini"><span>PF <b id="daPF">—</b></span><span>Affärer <b id="daN">—</b></span><span>Vinstfrekvens <b id="daWR">—</b></span></div></div>
+    <div class="v28-variant"><h3>B · Bekräftad momentum</h3><div class="v28-big" id="dbRet">—</div><div class="v28-mini"><span>PF <b id="dbPF">—</b></span><span>Affärer <b id="dbN">—</b></span><span>Vinstfrekvens <b id="dbWR">—</b></span><span>Mot A <b id="dbVsA">—</b></span><span>Godkända / råa signaler <b id="dbPassed">—</b></span></div></div>
+  </div>
+</div>
 <div class="card v24-world-card">
   <div class="v24-world-head"><div><h2>Omvärldstest</h2><div class="muted">Experimentellt trelägesfilter · baslinjen ovan är fortfarande huvudresultatet</div></div><span class="v24-exp-badge">EXPERIMENT</span></div>
   <div class="v24-world-grid">
@@ -121,9 +129,9 @@
 
 <div class="note">Detta är en testplattform, inte investeringsrådgivning. För riktig utvärdering måste data vara korrekt, överlevnadsbias undvikas och spread/slippage/courtage modelleras realistiskt. Linas Opti är mobil-först och lägger grunden för reproducerbara tester med samma regler över verklig historik.</div>
 </div>
-<script src="linasopti.js?v=0.27"></script>
+<script src="linasopti.js?v=0.28"></script>
 
-<section class="v014-audit"><h3>Backtestkontroll V0.27</h3>
+<section class="v014-audit"><h3>Backtestkontroll V0.28</h3>
 <div class="v014-metrics">
 <div><span>Benchmark</span><strong>SPY · handlas inte</strong></div>
 <div><span>Faktisk teststart</span><strong id="v15Eval">—</strong></div>
