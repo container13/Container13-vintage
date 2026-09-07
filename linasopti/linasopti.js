@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.16";
+const APP_VERSION = "V0.18";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = "Linas Opti " + APP_VERSION + " · JS " + APP_VERSION;
@@ -272,3 +272,93 @@ function renderV015Audit(s){
   </article>`;
  }).join("");
 }
+
+function v17DateOnly(v){return String(v||"").slice(0,10)}
+function v17Symbols(){const e=document.getElementById("symbols");return e?e.value:""}
+function v17BaseReport(full){
+ const s=LAST?.s||null,d=LAST?.d||null;
+ const payload={
+  app:"Linas Opti",
+  version:APP_VERSION,
+  exportedAt:new Date().toISOString(),
+  mode:"Backtest / paper only",
+  tradingEnabled:false,
+  data:{
+   symbols:v17Symbols(),
+   from:document.getElementById("from")?.value||"",
+   to:document.getElementById("to")?.value||"",
+   evaluationStart:document.getElementById("evalStart")?.value||"",
+   dailyRows:Array.isArray(DAILY)?DAILY.length:0,
+   fiveMinuteRows:Array.isArray(INTRA)?INTRA.length:0
+  },
+  settings:{
+   startCapital:Number(document.getElementById("capital")?.value||0),
+   swingMaxPosition:Number(document.getElementById("maxpos")?.value||0),
+   dayRiskPerTrade:Number(document.getElementById("risk")?.value||0)
+  },
+  swing:s?{
+   endingCapital:s.eq,returnPct:s.ret*100,maxDrawdownPct:s.dd*100,
+   trades:s.n,winRatePct:s.wr*100,
+   benchmark:"SPY",benchmarkReturnPct:Number.isFinite(s.bench)?s.bench*100:null,
+   vsBenchmarkPct:Number.isFinite(s.bench)?(s.ret-s.bench)*100:null,
+   profitFactor:s.pf===Infinity?"Infinity":s.pf,
+   averageWin:s.avgWin,averageLoss:s.avgLoss,bestTrade:s.best,worstTrade:s.worst,
+   openAtEnd:s.openAtEnd,effectiveTestStart:s.evalStart
+  }:null,
+  day:d?{
+   endingCapital:d.eq,returnPct:d.ret*100,maxDrawdownPct:d.dd*100,
+   trades:d.n,winRatePct:d.wr*100
+  }:null
+ };
+ if(full && s){
+  payload.swing.closedTrades=(s.closed||[]).map(x=>({
+   symbol:x.symbol,entryDate:x.entryDate,exitDate:x.exitDate,
+   entryPrice:x.entry,exitPrice:x.exit,shares:x.shares,
+   pnl:x.pnl,returnPct:x.ret*100,exitReason:x.why
+  }));
+  payload.swing.eventLog=s.log||[];
+ }
+ return payload;
+}
+function v17TextReport(full){
+ const p=v17BaseReport(full),s=p.swing,d=p.day;
+ let a=[];
+ a.push("LINAS OPTI – TESTRAPPORT",`Version: ${p.version}`,`Exporterad: ${p.exportedAt}`,"Handel: AVSTÄNGD (backtest/paper)","");
+ a.push("DATA",`Symboler: ${p.data.symbols}`,`Data: ${p.data.from} → ${p.data.to}`,`Teststart: ${p.data.evaluationStart}`,`Dagsrader: ${p.data.dailyRows}`,`5-min-rader: ${p.data.fiveMinuteRows}`,"");
+ a.push("INSTÄLLNINGAR",`Startkapital: ${p.settings.startCapital}`,`Max position swing: ${p.settings.swingMaxPosition}`,`Risk/affär day: ${p.settings.dayRiskPerTrade}`,"");
+ if(s){
+  a.push("OPTI SWING",`Slutkapital: ${s.endingCapital}`,`Avkastning: ${s.returnPct.toFixed(2)}%`,`Max drawdown: ${s.maxDrawdownPct.toFixed(2)}%`,`Affärer: ${s.trades}`,`Vinstfrekvens: ${s.winRatePct.toFixed(2)}%`,`Benchmark: SPY`,`SPY: ${s.benchmarkReturnPct==null?"—":s.benchmarkReturnPct.toFixed(2)+"%"}`,`Mot benchmark: ${s.vsBenchmarkPct==null?"—":s.vsBenchmarkPct.toFixed(2)+"%"}`,`Profit factor: ${s.profitFactor}`,`Snittvinst: ${s.averageWin}`,`Snittförlust: ${s.averageLoss}`,`Bästa affär: ${s.bestTrade}`,`Sämsta affär: ${s.worstTrade}`,`Öppna vid slut: ${s.openAtEnd}`,"");
+ }
+ if(d)a.push("OPTI DAY",`Slutkapital: ${d.endingCapital}`,`Avkastning: ${d.returnPct.toFixed(2)}%`,`Affärer: ${d.trades}`,"");
+ if(full&&s){
+  a.push("AVSLUTADE SWING-AFFÄRER");
+  (s.closedTrades||[]).forEach((x,i)=>a.push(`${i+1}. ${x.symbol} | ${x.entryDate} → ${x.exitDate} | in ${x.entryPrice} | ut ${x.exitPrice} | P/L ${x.pnl} | ${x.returnPct.toFixed(2)}% | ${x.exitReason}`));
+  a.push("","HÄNDELSELOGG",JSON.stringify(s.eventLog,null,2));
+ }
+ return a.join("\n");
+}
+async function v17Share(full){
+ const status=document.getElementById("v17ExportStatus");
+ if(!LAST?.s&&!LAST?.d){if(status)status.textContent="Kör ett test först.";return}
+ const txt=v17TextReport(full);
+ const stamp=new Date().toISOString().slice(0,10);
+ const name=`linasopti_v017_${full?"full":"snabb"}_${stamp}.txt`;
+ const file=new File([txt],name,{type:"text/plain;charset=utf-8"});
+ try{
+  if(navigator.share && (!navigator.canShare || navigator.canShare({files:[file]}))){
+   await navigator.share({title:"Linas Opti test",text:"Linas Opti testrapport",files:[file]});
+   if(status)status.textContent="Delningsrutan öppnades.";
+   return;
+  }
+ }catch(e){
+  if(e?.name==="AbortError"){if(status)status.textContent="Delning avbruten.";return}
+ }
+ const url=URL.createObjectURL(file),a=document.createElement("a");
+ a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ if(status)status.textContent="Rapporten laddades ner. Dela filen via AirDrop.";
+}
+window.addEventListener("DOMContentLoaded",()=>{
+ document.getElementById("v17ShareQuick")?.addEventListener("click",()=>v17Share(false));
+ document.getElementById("v17ShareFull")?.addEventListener("click",()=>v17Share(true));
+});

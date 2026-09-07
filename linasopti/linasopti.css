@@ -41,3 +41,48 @@
 .v16-tradegrid span,.v16-reason span{display:block;color:#6b7280;font-size:.76rem;font-weight:800;margin-bottom:3px}
 .v16-tradegrid strong,.v16-reason strong{font-size:.95rem;word-break:break-word}.v16-reason{margin-top:8px}
 @media (min-width:700px){.v16-tradecards{grid-template-columns:1fr 1fr}}
+
+/* V0.17 export/delning */
+.v17-export{margin:18px 24px;padding:20px;border:1px solid #d8dee8;border-radius:22px;background:#fff}
+.v17-export h3{margin:0 0 8px;font-size:1.35rem}.v17-export p{color:#6b7280;line-height:1.4}
+.v17-export button{width:100%;border:0;border-radius:16px;padding:15px;margin-top:10px;font:inherit;font-weight:900;background:#2468a2;color:#fff}
+.v17-export button.secondary{background:#eef2f6;color:#17202b}
+.v17-status{margin-top:10px;color:#148c54;font-weight:800;min-height:1.2em}
+
+/* V0.18 – Lina som diskret bakgrundsvattenmärke */
+.lina-watermark{
+  position:fixed;
+  left:50%;
+  top:18vh;
+  width:min(78vw, 430px);
+  aspect-ratio:1 / 1;
+  transform:translateX(-50%);
+  background:url("lina-circle.png") center/contain no-repeat;
+  opacity:.075;
+  filter:grayscale(1) blur(1.2px) contrast(.88);
+  pointer-events:none;
+  user-select:none;
+  z-index:0;
+}
+body > *:not(.lina-watermark){
+  position:relative;
+  z-index:1;
+}
+/* Låt bilden anas svagt genom större vita ytor utan att störa läsbarheten */
+.card,
+section,
+.v014-audit,
+.v17-export{
+  backdrop-filter:blur(0.3px);
+}
+@media (max-width:520px){
+  .lina-watermark{
+    width:88vw;
+    top:20vh;
+    opacity:.065;
+    filter:grayscale(1) blur(1.4px) contrast(.86);
+  }
+}
+@media (prefers-reduced-transparency: reduce){
+  .lina-watermark{opacity:.045;filter:grayscale(1)}
+}
