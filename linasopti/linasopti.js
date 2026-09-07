@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.26";
+const APP_VERSION = "V0.26.1";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = "Linas Opti " + APP_VERSION + " · JS " + APP_VERSION;
@@ -236,7 +236,28 @@ function renderWorld(w,s){
  let diff=s?w.ret-s.ret:null;set("wVsBase",diff==null?"—":(diff>=0?"+":"")+pct(diff),diff==null?"":diff>=0?"good":"bad");
  set("wGreen",String(w.regimeDays?.green||0));set("wYellow",String(w.regimeDays?.yellow||0));set("wRed",String(w.regimeDays?.red||0));set("wBlocked",String(w.blocked||0));set("wBlockedYellow",String(w.blockedYellow||0));set("wBlockedRed",String(w.blockedRed||0));
 }
-$("runBtn").onclick=()=>{let cap=+$("capital").value;if(!DAILY.length&&!INTRA.length){let e=$("testDataStatus");if(e)e.innerHTML='<span class="bad">Ingen data inläst.</span>';return}let start=$("evalStart")?.value||"",mp=+$("maxpos").value;let s=swing(DAILY,cap,mp,start),w=swingWorld(DAILY,cap,mp,start),d=daytrade(INTRA,cap,+$("risk").value);LAST={s,w,d};render(s,d,cap);renderWorld(w,s);renderV015Audit(s)};
+window.addEventListener("DOMContentLoaded",()=>{
+ const btn=$("runBtn");
+ if(!btn)return;
+ btn.addEventListener("click",()=>{
+  const status=$("testDataStatus");
+  try{
+   let cap=+$("capital").value;
+   if(!DAILY.length&&!INTRA.length){if(status)status.innerHTML='<span class="bad">Ingen data inläst.</span>';return;}
+   btn.disabled=true; const oldText=btn.textContent; btn.textContent="Kör test…";
+   let start=$("evalStart")?.value||"",mp=+$("maxpos").value;
+   let s=swing(DAILY,cap,mp,start);
+   let w=swingWorld(DAILY,cap,mp,start);
+   let d=daytrade(INTRA,cap,+$("risk").value);
+   LAST={s,w,d}; render(s,d,cap); renderWorld(w,s); renderV015Audit(s);
+   btn.textContent=oldText; btn.disabled=false;
+  }catch(err){
+   console.error("Linas Opti run error",err);
+   btn.disabled=false; btn.textContent="Kör Linas Opti";
+   if(status)status.innerHTML='<span class="bad">Testet kunde inte köras: '+String(err?.message||err)+'</span>';
+  }
+ });
+});
 window.onresize=()=>LAST&&draw(LAST.s,LAST.d,+$("capital").value);
 let now=new Date(),ago=new Date(now);ago.setMonth(ago.getMonth()-1);$("end").value=now.toISOString().slice(0,10);$("start").value=ago.toISOString().slice(0,10);
 
