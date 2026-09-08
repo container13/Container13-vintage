@@ -335,3 +335,13 @@ body > .v23-sharebar{overflow:visible !important}
 .market-btn.market-nordic{background:#eef8f1!important;border-color:#cfe8d6!important}
 .market-btn.market-nordic.active{background:#246aa5!important;border-color:#246aa5!important;color:#fff!important}
 @media(max-width:520px){.v29-market-buttons{grid-template-columns:repeat(2,1fr)}.market-btn{min-height:44px}}
+
+
+/* V0.34.2 – automatisk symbolanalys för aktuell Swing-körning */
+.v342-analysis{border:1px solid rgba(36,106,165,.22)!important;background:rgba(248,251,254,.94)!important}
+.v342-analysis-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.v342-analysis-head h2{margin:0 0 5px}.v342-badge{font-size:10px;font-weight:900;letter-spacing:.05em;background:#e6f2fb;color:#246aa5;padding:5px 8px;border-radius:999px;white-space:nowrap}
+.v342-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px}.v342-kpis>div{padding:10px;border:1px solid #e0e7ee;border-radius:12px;background:#fff}.v342-kpis span{display:block;font-size:10px;color:#6b7480;font-weight:800;margin-bottom:3px}.v342-kpis strong{font-size:15px}
+.v342-analysis-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}.v342-panel{border:1px solid #e3e9ef;border-radius:14px;background:#fff;padding:11px}.v342-panel h3{margin:0 0 8px;font-size:15px}
+.v342-list{display:grid;gap:6px}.v342-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 9px;background:#f6f8fa;border-radius:10px}.v342-item div{min-width:0}.v342-item b{display:block}.v342-item span{display:block;font-size:10px;color:#727b86;margin-top:2px}.v342-item strong{white-space:nowrap;font-size:12px}
+.v342-details{margin-top:11px}.v342-details summary{cursor:pointer;font-weight:850}.v342-details .tablewrap{margin-top:9px;max-height:360px}
+@media(min-width:760px){.v342-kpis{grid-template-columns:repeat(4,1fr)}.v342-analysis-grid{grid-template-columns:1fr 1fr}}

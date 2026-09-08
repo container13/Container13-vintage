@@ -112,3 +112,32 @@ Syftet är robusthetstest, inte parameteroptimering. ETF-universumen är statisk
 - Ny knapp **1 år** under Snabbval.
 - Ett tryck sätter Till = dagens datum, Från = exakt ett år tidigare och Testperiod börjar = fem månader efter Från för samma enkla warmup-upplägg som de senaste jämförelsetesterna.
 - Ingen strategi, signal, benchmark eller marknadsgrupp har ändrats.
+
+
+## V0.34.2 – Analys
+- Ny automatisk symbolanalys efter varje Opti Swing-test.
+- Visar största bidrag, största förluster, antal vinst/förlustsymboler och topp-3-koncentration.
+- Alla handlade symboler kan fällas ut med affärer, vinstfrekvens, total P/L, +12%-mål och stoppar.
+- Symbolanalysen följer med i Snabbrapport och Full testdata.
+- Swing-strategins signal-, köp-, exit- och sizingregler är oförändrade från V0.34.1.
+
+
+## V0.34.3 – Lina Selection 16
+
+Ny marknadsgrupp: `⭐ Lina Selection 16`.
+
+Aktier:
+`HD, BAC, AMD, INTC, GOOGL, NVDA, CRM, UBER, ADBE, MU, PYPL, AMZN, WMT, CSCO, KO, QCOM`
+
+Benchmark: `SPY`. Datakälla: Alpaca.
+
+Urvalsmetod:
+- Alla inskickade Linas Opti-rapporter användes som underlag och dubbletter identifierades.
+- Kända pre-V0.22-körningar med den äldre kronologin används inte för själva rankingen.
+- För det gemensamma Alpaca-urvalet används fem separata testmiljöer: USA30 2024, USA30 2025, USA30 2026, Global Stocks 100 (2026-fönstret) och USA + Värld 50 (2026-fönstret).
+- Minimikrav: minst 5 avslutade affärer, minst 2 testmiljöer, positiv genomsnittlig affär, profit factor > 1 och positivt bidrag i minst hälften av testmiljöerna.
+- Rankingpoängen väger genomsnittlig affär, konsekvens mellan miljöer, profit factor, antal affärer och vinstfrekvens.
+
+Viktigt: detta är selection bias med flit – listan har valts från tidigare testresultat. Resultat på samma eller överlappande historik får därför **inte** användas som oberoende bevis. Den frysta Opti Swing-motorn är inte ändrad. Nästa meningsfulla test är ett held-out/intervall som inte användes för urvalet.
+
+Ingen Worker-ändring krävs.

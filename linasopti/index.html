@@ -44,6 +44,7 @@
 <div class="v29-market-box">
   <div class="v29-market-title"><b>Marknadsgrupp</b><span id="marketGroupInfo">USA Core · 10 aktier + SPY</span></div>
   <div class="v29-market-buttons" role="group" aria-label="Marknadsgrupp">
+    <button type="button" class="market-btn market-selection" data-market="linaSelection16">⭐ Lina Selection 16</button>
     <button type="button" class="market-btn active" data-market="usa10">USA Core</button>
     <button type="button" class="market-btn" data-market="usa20">USA 20</button>
     <button type="button" class="market-btn" data-market="usa30">USA 30</button>
@@ -57,7 +58,7 @@
     <button type="button" class="market-btn" data-market="usaWorld50">🚀 USA + Värld 50</button>
     <button type="button" class="market-btn" data-market="globalStocks100">🌍 Global Stocks 100</button>
   </div>
-  <div class="muted v29-market-note">USA och de nya globala ETF-grupperna använder Alpaca. Norden 80 använder EODHD-dagsdata. Alla grupper kör samma frysta Opti Swing och benchmark handlas aldrig. Världsregioner/Ex-USA använder börshandlade region-ETF:er som kandidater; USA + Värld 50 låter Lina välja mellan USA30-aktier och 20 globala region-ETF:er. Opti Day är tills vidare bara USA.</div>
+  <div class="muted v29-market-note">⭐ Lina Selection 16 är ett historikbaserat urval från våra tidigare tester och använder Alpaca + SPY som benchmark. USA och de globala Alpaca-grupperna använder Alpaca; Norden 80 använder EODHD-dagsdata. Alla grupper kör samma frysta Opti Swing och benchmark handlas aldrig. Selection-resultat på överlappande historik är urvalstest – inte oberoende bevis.</div>
 </div>
 <label>Symboler, kommaseparerade<input id="symbols" value="AAPL,MSFT,NVDA,AMZN,META,TSLA,AMD,NFLX,AVGO,JPM,SPY"></label>
 <label>Från<input id="start" type="date"></label>
@@ -85,7 +86,31 @@
 <div class="status" id="bridgeStatus">Linas Opti API är anslutet via Cloudflare.</div>
 <div class="v31-provider" id="providerInfo">Datakälla: Alpaca · Benchmark: SPY</div>
 </div>
-<div class="card v31-nordic-info"><h2>V0.34.1 · Global Lab</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
+
+<div class="card v31-nordic-info">
+  <h2>V0.34.3 · ⭐ Lina Selection 16</h2>
+  <div class="muted">
+    Urvalet är räknat från alla inskickade rapporter, men rankingen använder deduplicerade och kronologiskt korrigerade testfönster så samma körning inte får extra vikt.
+    För själva USA/Alpaca-urvalet användes fem separata miljöer: USA30 2024, 2025 och 2026 samt Global Stocks 100 och USA + Värld 50.
+    Krav: minst 5 affärer, minst 2 testmiljöer, positiv snittaffär, PF &gt; 1 och positivt resultat i minst hälften av miljöerna.
+  </div>
+  <div class="status-box" style="margin-top:10px"><b>Urval:</b> HD, BAC, AMD, INTC, GOOGL, NVDA, CRM, UBER, ADBE, MU, PYPL, AMZN, WMT, CSCO, KO, QCOM</div>
+  <details style="margin-top:10px">
+    <summary><b>Varför just dessa? Visa urvalsstatistik</b></summary>
+    <div class="tablewrap" style="margin-top:8px">
+      <table>
+        <thead><tr><th>Aktie</th><th>Poäng</th><th>Affärer</th><th>Miljöer</th><th>Vinstfrekv.</th><th>Snitt/affär</th></tr></thead>
+        <tbody><tr><td><b>HD</b></td><td>81,6</td><td>5</td><td>4</td><td>100%</td><td>4,51%</td></tr><tr><td><b>BAC</b></td><td>80,9</td><td>7</td><td>5</td><td>85,7%</td><td>5,53%</td></tr><tr><td><b>AMD</b></td><td>75,7</td><td>36</td><td>5</td><td>63,9%</td><td>5,14%</td></tr><tr><td><b>INTC</b></td><td>73,0</td><td>37</td><td>5</td><td>67,6%</td><td>5,84%</td></tr><tr><td><b>GOOGL</b></td><td>64,3</td><td>7</td><td>2</td><td>71,4%</td><td>5,32%</td></tr><tr><td><b>NVDA</b></td><td>64,2</td><td>12</td><td>2</td><td>66,7%</td><td>4,90%</td></tr><tr><td><b>CRM</b></td><td>62,0</td><td>9</td><td>5</td><td>77,8%</td><td>5,30%</td></tr><tr><td><b>UBER</b></td><td>51,3</td><td>5</td><td>2</td><td>60,0%</td><td>2,63%</td></tr><tr><td><b>ADBE</b></td><td>50,2</td><td>5</td><td>3</td><td>60,0%</td><td>4,60%</td></tr><tr><td><b>MU</b></td><td>48,6</td><td>60</td><td>5</td><td>43,3%</td><td>1,30%</td></tr><tr><td><b>PYPL</b></td><td>47,4</td><td>7</td><td>4</td><td>57,1%</td><td>3,07%</td></tr><tr><td><b>AMZN</b></td><td>46,9</td><td>5</td><td>5</td><td>60,0%</td><td>4,13%</td></tr><tr><td><b>WMT</b></td><td>43,2</td><td>8</td><td>4</td><td>75,0%</td><td>0,97%</td></tr><tr><td><b>CSCO</b></td><td>41,8</td><td>10</td><td>4</td><td>60,0%</td><td>1,07%</td></tr><tr><td><b>KO</b></td><td>39,2</td><td>10</td><td>4</td><td>50,0%</td><td>0,78%</td></tr><tr><td><b>QCOM</b></td><td>38,2</td><td>17</td><td>5</td><td>47,1%</td><td>0,83%</td></tr></tbody>
+      </table>
+    </div>
+    <div class="muted" style="margin-top:8px">
+      Poängen väger snittaffär, konsekvens mellan miljöer, profit factor, antal affärer och vinstfrekvens. Små stickprov kan fortfarande se starka ut.
+      Därför är detta ett urvalstest. Nästa riktiga kontroll är att frysa listan och köra den på historik som inte användes när listan valdes.
+    </div>
+  </details>
+</div>
+
+<div class="card v31-nordic-info"><h2>V0.34.3 · Global Lab</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
 </section>
 
 <section id="pane-test" class="hidden">
@@ -150,13 +175,31 @@
     <div><span>Blockerade i rött</span><strong id="wBlockedRed">—</strong></div>
   </div>
 </div>
+
+<div class="card v342-analysis" id="v342AnalysisCard">
+  <div class="v342-analysis-head">
+    <div><h2>Analys · vilka aktier gjorde jobbet?</h2><div class="muted">Automatisk analys av just den här Swing-körningen. Visar bidrag, bredd och koncentration.</div></div>
+    <span class="v342-badge">ANALYS</span>
+  </div>
+  <div class="v342-kpis">
+    <div><span>Vinstgivande symboler</span><strong id="aWinSymbols">—</strong></div>
+    <div><span>Förlustsymboler</span><strong id="aLossSymbols">—</strong></div>
+    <div><span>Topp 3 av vinsten</span><strong id="aTop3Share">—</strong></div>
+    <div><span>Koncentration</span><strong id="aConcentration">—</strong></div>
+  </div>
+  <div class="v342-analysis-grid">
+    <div class="v342-panel"><h3>🏆 Största bidrag</h3><div id="aWinners" class="v342-list"><div class="muted">Kör ett Swing-test först.</div></div></div>
+    <div class="v342-panel"><h3>⚠️ Största förluster</h3><div id="aLosers" class="v342-list"><div class="muted">Kör ett Swing-test först.</div></div></div>
+  </div>
+  <details class="v342-details"><summary>Visa alla handlade symboler</summary><div class="tablewrap"><table><thead><tr><th>Symbol</th><th>Affärer</th><th>Vinst %</th><th>Total P/L</th><th>+12%</th><th>Stop</th></tr></thead><tbody id="aSymbolTable"></tbody></table></div></details>
+</div>
 <div class="card chart"><canvas id="chart"></canvas></div>
 <div class="card"><h2>Affärslogg</h2><div class="tablewrap"><table><thead><tr><th>Tid</th><th>Robot</th><th>Symbol</th><th>Åtgärd</th><th>Pris</th><th>Belopp</th><th>Orsak</th><th>Resultat</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
 </section>
 
 <div class="note">Detta är en testplattform, inte investeringsrådgivning. För riktig utvärdering måste data vara korrekt, överlevnadsbias undvikas och spread/slippage/courtage modelleras realistiskt. Linas Opti är mobil-först och lägger grunden för reproducerbara tester med samma regler över verklig historik.</div>
 </div>
-<script src="linasopti.js?v=0.34.1"></script>
+<script src="linasopti.js?v=0.34.2"></script>
 
 <section class="v014-audit"><h3>Backtestkontroll V0.30.1</h3>
 <div class="v014-metrics">
