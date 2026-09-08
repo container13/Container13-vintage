@@ -470,3 +470,6 @@ body > .v23-sharebar{overflow:visible !important}
   flex:1 1 160px;
   min-height:48px;
 }
+
+/* V0.36.6 – Swing-resultat visar inte irrelevant 5-min-KPI */
+.v0366-day-only{display:none!important}

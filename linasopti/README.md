@@ -240,3 +240,11 @@ Ren UX-version. Swing, Lina Selection 16 och handelsreglerna är oförändrade.
 - `Dela rapport` visar samma kort om det skulle vara dolt.
 - Permanent Dela-knapp via kugghjulet finns kvar som reserv.
 - Ingen strategi- eller backtestlogik ändrad.
+
+
+## V0.36.6 – Finish Point
+- `Testet är klart ✓` kopplas nu direkt i den verkliga `runBtn`-slutpunkten.
+- Resultatfliken och färdigkortet visas innan övriga sekundära resultatpaneler renderas.
+- Kortet säkras en andra gång efter renderingen.
+- 5-minbarer döljs i det Swing-fokuserade resultatet.
+- Ingen beräkning, signalregel, position sizing, exitregel eller benchmarklogik ändrad.

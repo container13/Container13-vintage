@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.36.5";
+const APP_VERSION = "V0.36.6";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -569,7 +569,26 @@ window.addEventListener("DOMContentLoaded",()=>{
    let w=isUsMarket()?swingWorld(DAILY,cap,mp,start):null;
    let d=isUsMarket()?daytrade(INTRA,cap,+$("risk").value):null;
    let dB=isUsMarket()?daytradeConfirm(INTRA,cap,+$("risk").value):null;
-   let audit=auditSwing(DAILY,s,cap); LAST={s,t,w,d,dB,audit}; render(s,d,cap); renderTrend(t); renderWorld(w,s); renderDayAB(d,dB); renderV015Audit(s); renderSwingAudit(audit); v342RenderAnalysis(s); v0344RenderValidation(s,cap); v035RenderHero(s); v036AfterRun();
+   let audit=auditSwing(DAILY,s,cap); LAST={s,t,w,d,dB,audit};
+
+   // V0.36.6: detta är den verkliga slutpunkten för användarens test.
+   // Visa Resultat + färdigkortet INNAN sekundära resultatpaneler renderas.
+   show("result",false);
+   var done=document.getElementById("v0365DoneCard");
+   if(done){done.hidden=false;done.style.display="block";}
+
+   render(s,d,cap);
+   renderTrend(t);
+   renderWorld(w,s);
+   renderDayAB(d,dB);
+   renderV015Audit(s);
+   renderSwingAudit(audit);
+   v342RenderAnalysis(s);
+   v0344RenderValidation(s,cap);
+   v035RenderHero(s);
+
+   if(done){done.hidden=false;done.style.display="block";}
+   window.scrollTo({top:0,behavior:"smooth"});
    btn.textContent=oldText; btn.disabled=false;
   }catch(err){
    console.error("Linas Opti run error",err);
