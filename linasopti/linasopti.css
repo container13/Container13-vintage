@@ -449,3 +449,24 @@ body > .v23-sharebar{overflow:visible !important}
   .v0364-share-sheet{align-items:center}
   .v0364-share-card{margin-bottom:0}
 }
+
+/* V0.36.5 – inline completion/share card */
+.v0365-done{
+  border:2px solid #cbd7df;
+  margin-bottom:14px;
+}
+.v0365-done-title{
+  font-size:1.35rem;
+  font-weight:800;
+  margin-bottom:6px;
+}
+.v0365-done-buttons{
+  display:flex;
+  gap:10px;
+  margin-top:14px;
+  flex-wrap:wrap;
+}
+.v0365-done-buttons button{
+  flex:1 1 160px;
+  min-height:48px;
+}

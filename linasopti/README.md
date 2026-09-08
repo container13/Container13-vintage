@@ -231,3 +231,12 @@ Ren UX-version. Swing, Lina Selection 16 och handelsreglerna är oförändrade.
 - Full testdata / Snabbrapport kräver därefter ett aktivt tryck för iOS Share/AirDrop.
 - Kugghjulet fortsätter använda ren HTML details/summary.
 - Ingen strategi- eller backtestlogik ändrad.
+
+
+## V0.36.5 – Inline Share
+- Popuprutan efter test är borttagen.
+- Efter test går appen till Resultat och visar en vanlig synlig kortsektion högst upp: `Testet är klart ✓`.
+- Full testdata och Snabbrapport ligger direkt i Resultat och kräver ett aktivt tryck, vilket passar iOS Web Share/AirDrop bättre.
+- `Dela rapport` visar samma kort om det skulle vara dolt.
+- Permanent Dela-knapp via kugghjulet finns kvar som reserv.
+- Ingen strategi- eller backtestlogik ändrad.

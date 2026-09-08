@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.36.4";
+const APP_VERSION = "V0.36.5";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -528,22 +528,18 @@ function v036ApplySettings(){
 function v036OpenSettings(open=true){ /* V0.36.4: settings use native details/summary */ }
 function v036AfterRun(){
   v035ClickTab("3");
-  window.setTimeout(function(){
-    v036OpenSharePrompt();
-  },400);
+  var c=document.getElementById("v0365DoneCard");
+  if(c){
+    c.hidden=false;
+    c.style.display="block";
+    try{c.scrollIntoView({behavior:"smooth",block:"start"});}catch(e){c.scrollIntoView();}
+  }
 }
 function v036OpenSharePrompt(){
-  var m=document.getElementById("v036SharePrompt");
-  if(!m)return;
-  m.style.display="flex";
-  m.setAttribute("aria-hidden","false");
+  var c=document.getElementById("v0365DoneCard");
+  if(c){c.hidden=false;c.style.display="block";}
 }
-function v036CloseSharePrompt(){
-  var m=document.getElementById("v036SharePrompt");
-  if(!m)return;
-  m.style.display="none";
-  m.setAttribute("aria-hidden","true");
-}
+function v036CloseSharePrompt(){ /* V0.36.5 uses inline share card */ }
 async function v036ShareFromPrompt(full){
   v036CloseSharePrompt();
   await v17Share(full);
@@ -1138,27 +1134,30 @@ window.addEventListener("DOMContentLoaded",()=>{
 });
 
 
-(function v0364FinalInit(){
+
+
+async function v0365Share(full){
+  var st=document.getElementById("v0365ShareStatus");
+  if(st) st.textContent="Öppnar delning…";
+  try{
+    await v17Share(full);
+    var legacy=document.getElementById("v17ExportStatus");
+    if(st && legacy && legacy.textContent) st.textContent=legacy.textContent;
+  }catch(e){
+    if(st) st.textContent="Delningen kunde inte öppnas. Prova den permanenta Dela-knappen i Inställningar.";
+  }
+}
+
+(function v0365FinalInit(){
   function bind(){
-    var full=document.getElementById("v036PromptFull");
-    var quick=document.getElementById("v036PromptQuick");
-    var close=document.getElementById("v036PromptClose");
-    var skip=document.getElementById("v036PromptSkip");
+    var full=document.getElementById("v0365ShareFull");
+    var quick=document.getElementById("v0365ShareQuick");
     var resultShare=document.getElementById("v036ShareResult");
-    var shareBarToggle=document.getElementById("v23ShareToggle");
-
-    if(full) full.onclick=function(e){e.preventDefault();v036ShareFromPrompt(true);};
-    if(quick) quick.onclick=function(e){e.preventDefault();v036ShareFromPrompt(false);};
-    if(close) close.onclick=function(e){e.preventDefault();v036CloseSharePrompt();};
-    if(skip) skip.onclick=function(e){e.preventDefault();v036CloseSharePrompt();};
-    if(resultShare) resultShare.onclick=function(e){e.preventDefault();v036OpenSharePrompt();};
-
-    var sheet=document.getElementById("v036SharePrompt");
-    if(sheet) sheet.onclick=function(e){if(e.target===sheet)v036CloseSharePrompt();};
-
     var chk=document.getElementById("v036ShowShareBar");
+    if(full) full.onclick=function(e){e.preventDefault();v0365Share(true);};
+    if(quick) quick.onclick=function(e){e.preventDefault();v0365Share(false);};
+    if(resultShare) resultShare.onclick=function(e){e.preventDefault();v036OpenSharePrompt();};
     if(chk) chk.addEventListener("change",v036SaveSettings);
-
     v036ApplySettings();
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",bind);

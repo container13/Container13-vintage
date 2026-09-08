@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.36.4">
+<link rel="stylesheet" href="linasopti.css?v=0.36.5">
 </head>
 <body>
 <div class="lina-watermark" aria-hidden="true"></div>
@@ -98,7 +98,7 @@
 </div>
 
 <div class="card v31-nordic-info">
-  <h2>V0.36.4 · Share Fix</h2>
+  <h2>V0.36.5 · Inline Share</h2>
   <div class="muted">
     Urvalet är räknat från alla inskickade rapporter, men rankingen använder deduplicerade och kronologiskt korrigerade testfönster så samma körning inte får extra vikt.
     För själva USA/Alpaca-urvalet användes fem separata miljöer: USA30 2024, 2025 och 2026 samt Global Stocks 100 och USA + Värld 50.
@@ -120,7 +120,7 @@
   </details>
 </div>
 
-<div class="card v31-nordic-info"><h2>V0.36.4 · Share Fix</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
+<div class="card v31-nordic-info"><h2>V0.36.5 · Inline Share</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
 </section>
 
 <section id="pane-test" class="hidden">
@@ -150,6 +150,15 @@
 </section>
 
 <section id="pane-result" class="hidden">
+<div id="v0365DoneCard" class="card v0365-done" hidden>
+  <div class="v0365-done-title">Testet är klart ✓</div>
+  <div class="muted">Välj vad du vill dela. Nästa tryck öppnar iPhones vanliga delningsruta där AirDrop finns.</div>
+  <div class="v0365-done-buttons">
+    <button type="button" id="v0365ShareFull" class="primary">Full testdata</button>
+    <button type="button" id="v0365ShareQuick" class="secondary">Snabbrapport</button>
+  </div>
+  <div id="v0365ShareStatus" class="v17-status"></div>
+</div>
 <div class="v036-result-actions">
   <button type="button" id="v036ShareResult" class="secondary">Dela rapport</button>
 </div>
@@ -270,18 +279,5 @@
   </div>
 </div>
 
-<div id="v036SharePrompt" class="v0364-share-sheet" aria-hidden="true">
-  <div class="v0364-share-card">
-    <div class="v036-modal-head">
-      <h2>Testet är klart ✓</h2>
-      <button type="button" id="v036PromptClose" aria-label="Stäng">×</button>
-    </div>
-    <div class="muted v0364-share-help">Välj rapport. Nästa tryck öppnar iPhones vanliga delningsruta där AirDrop finns.</div>
-    <button type="button" class="primary v036-share-choice" id="v036PromptFull">Full testdata</button>
-    <button type="button" class="secondary v036-share-choice" id="v036PromptQuick">Snabbrapport</button>
-    <button type="button" class="v036-share-skip" id="v036PromptSkip">Inte nu</button>
-  </div>
-</div>
-
-<script src="linasopti.js?v=0.36.4"></script>
+<script src="linasopti.js?v=0.36.5"></script>
 </body></html>
