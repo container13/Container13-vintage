@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.33";
+const APP_VERSION = "V0.34.1";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -18,7 +18,8 @@ const MARKET_GROUPS={
  globalNordic:{name:"Opti Global · Norden 80",provider:"eodhd",benchmark:"NORDIC-4",benchmarks:["XACT-OMXS30.ST","SPIC25KL.CO","SLGOMXH25.HE","OBX.OL"],symbols:["ABB.ST","ALFA.ST","ASSA-B.ST","ATCO-A.ST","AZN.ST","BOL.ST","ERIC-B.ST","EQT.ST","ESSITY-B.ST","HEXA-B.ST","HMB.ST","INVE-B.ST","SAAB-B.ST","SAND.ST","SEB-A.ST","SHB-A.ST","SWED-A.ST","TEL2-B.ST","TELIA.ST","VOLV-B.ST","CARL-B.CO","COLO-B.CO","DANSKE.CO","DEMANT.CO","DSV.CO","FLS.CO","GMAB.CO","GN.CO","ISS.CO","JYSK.CO","MAERSK-B.CO","NOVO-B.CO","NZYM-B.CO","ORSTED.CO","PNDORA.CO","ROCK-B.CO","TRYG.CO","VWS.CO","ZEAL.CO","AMBU-B.CO","ELISA.HE","FORTUM.HE","HARVIA.HE","HIAB.HE","HUH1V.HE","KALMAR.HE","KCR.HE","KEMIRA.HE","KESKOB.HE","KNEBV.HE","MANTA.HE","METSB.HE","METSO.HE","NDA-FI.HE","NESTE.HE","NOKIA.HE","ORNBV.HE","OUT1V.HE","QTCOM.HE","SAMPO.HE","AKRBP.OL","AUSS.OL","AUTO.OL","BRG.OL","BWLPG.OL","DNB.OL","EQNR.OL","GJF.OL","KIT.OL","KOG.OL","MOWI.OL","NHY.OL","ORK.OL","PROT.OL","SALM.OL","STB.OL","SUBC.OL","TEL.OL","TOM.OL","VAR.OL","XACT-OMXS30.ST","SPIC25KL.CO","SLGOMXH25.HE","OBX.OL"]},
  worldRegions20:{name:"Världsregioner 20",provider:"alpaca",benchmark:"VT",symbols:["VEA","VWO","VGK","VPL","VEU","EFA","EEM","EWJ","EWG","EWU","EWQ","EWC","EWA","INDA","EWY","EWT","EWZ","EWW","EWH","EWS","VT"]},
  worldExUs20:{name:"Global ex-USA 20",provider:"alpaca",benchmark:"VEU",symbols:["VEA","VWO","VGK","VPL","EFA","EEM","EWJ","EWG","EWU","EWQ","EWC","EWA","INDA","EWY","EWT","EWZ","EWW","EWH","EWS","EZA","VEU"]},
- usaWorld50:{name:"USA + Värld 50",provider:"alpaca",benchmark:"VT",symbols:["AAPL","MSFT","NVDA","AMZN","META","TSLA","AMD","NFLX","AVGO","JPM","GOOGL","ORCL","CRM","INTC","QCOM","MU","BAC","GS","WMT","COST","HD","DIS","UBER","PLTR","PYPL","ADBE","CSCO","PEP","KO","XOM","VEA","VWO","VGK","VPL","VEU","EFA","EEM","EWJ","EWG","EWU","EWQ","EWC","EWA","INDA","EWY","EWT","EWZ","EWW","EWH","EWS","VT"]}
+ usaWorld50:{name:"USA + Värld 50",provider:"alpaca",benchmark:"VT",symbols:["AAPL","MSFT","NVDA","AMZN","META","TSLA","AMD","NFLX","AVGO","JPM","GOOGL","ORCL","CRM","INTC","QCOM","MU","BAC","GS","WMT","COST","HD","DIS","UBER","PLTR","PYPL","ADBE","CSCO","PEP","KO","XOM","VEA","VWO","VGK","VPL","VEU","EFA","EEM","EWJ","EWG","EWU","EWQ","EWC","EWA","INDA","EWY","EWT","EWZ","EWW","EWH","EWS","VT"]},
+ globalStocks100:{name:"Global Stocks 100",provider:"alpaca",benchmark:"VT",symbols:["AAPL", "MSFT", "NVDA", "AMZN", "META", "TSLA", "AVGO", "GOOGL", "JPM", "V", "MA", "LLY", "WMT", "COST", "ORCL", "NFLX", "AMD", "CRM", "ADBE", "CSCO", "IBM", "INTC", "QCOM", "MU", "GS", "BAC", "MS", "HD", "LOW", "NKE", "MCD", "SBUX", "KO", "PEP", "XOM", "CVX", "CAT", "GE", "BA", "RTX", "UBER", "PLTR", "PYPL", "ABNB", "SHOP", "MELI", "TSM", "ASML", "SAP", "NVO", "AZN", "TM", "SONY", "HMC", "BABA", "PDD", "JD", "BIDU", "NTES", "SE", "GRAB", "INFY", "HDB", "IBN", "VALE", "PBR", "NU", "UL", "DEO", "BP", "SHEL", "GSK", "SNY", "NVS", "UBS", "DB", "ING", "BCS", "RY", "TD", "BMO", "BNS", "ENB", "CNQ", "CP", "CNI", "RELX", "FERG", "CCEP", "ARGX", "BEKE", "TCOM", "ZTO", "LI", "XPEV", "NIO", "ARM", "SPOT", "CRH", "VT"]}
 };
 function currentGroup(){return MARKET_GROUPS[ACTIVE_MARKET]||MARKET_GROUPS.usa10}
 function currentBenchmark(){return currentGroup().benchmark||"SPY"}
@@ -493,6 +494,37 @@ window.addEventListener("DOMContentLoaded",()=>{
   }
  });
 });
+
+// V0.34 – fristående globala experiment. Baseline Swing ovan är orörd.
+let V034_MODE="baseline", V034_LAST=null;
+function v034Map(rows){const m={};for(const r of rows){(m[r.symbol]??={})[String(r.t).slice(0,10)]=r}return m}
+function v034Dates(rows,start){return [...new Set(rows.map(r=>String(r.t).slice(0,10)).filter(d=>!start||d>=start))].sort()}
+function v034SimpleMomentum(rows,capital,start,defensive=false){
+ const map=v034Map(rows), bench=currentBenchmark(), symbols=[...new Set(rows.map(r=>r.symbol))].filter(s=>s!==bench), dates=v034Dates(rows,start); if(!dates.length)return null;
+ const allDates=[...new Set(rows.map(r=>String(r.t).slice(0,10)))].sort(), idx=Object.fromEntries(allDates.map((d,i)=>[d,i])); let cash=capital,pos={},peak=capital,dd=0,curve=[],trades=0,lastMonth="";
+ const close=(s,i)=>map[s]?.[allDates[i]]?.c;
+ for(const d of dates){let i=idx[d]; if(i<126)continue; let month=d.slice(0,7); if(month!==lastMonth){lastMonth=month; let ranks=[]; for(const s of symbols){let c=close(s,i-1),c126=close(s,i-127);if(c&&c126)ranks.push([s,c/c126-1])} ranks.sort((a,b)=>b[1]-a[1]); let top=ranks.filter(x=>x[1]>0).slice(0,5).map(x=>x[0]);
+   if(defensive){let positive=ranks.filter(x=>x[1]>0).length; if(positive<Math.max(10,Math.floor(ranks.length*.35)))top=[]}
+   for(const s of Object.keys(pos))if(!top.includes(s)){let r=map[s]?.[d];if(r){cash+=pos[s]*r.o;delete pos[s];trades++}}
+   let eq=cash+Object.entries(pos).reduce((q,[s,n])=>q+n*(map[s]?.[d]?.o||0),0),target=eq/5;
+   for(const s of top)if(!pos[s]){let r=map[s]?.[d];if(r&&cash>0){let spend=Math.min(target,cash);pos[s]=spend/r.o;cash-=spend}}
+ }
+ let eq=cash+Object.entries(pos).reduce((q,[s,n])=>q+n*(map[s]?.[d]?.c||0),0);peak=Math.max(peak,eq);dd=Math.min(dd,eq/peak-1);curve.push({t:d,v:eq}) }
+ let eq=curve.at(-1)?.v||capital; return {eq,ret:eq/capital-1,dd,trades,curve,rule:defensive?'Månadsvis 6m momentum, top 5; cash om <35% av universum har positivt 6m-momentum.':'Månadsvis 6m momentum, top 5 positiva instrument.'};
+}
+function v034RankedSwing(rows,capital,maxPos,start){
+ // Samma signalmått som Swing, men kräver starkare relativ ranking: endast dagens toppkvintil av positiva kandidater får öppnas.
+ const map=v034Map(rows),bench=currentBenchmark(),symbols=[...new Set(rows.map(r=>r.symbol))].filter(s=>s!==bench),dates=[...new Set(rows.map(r=>String(r.t).slice(0,10)))].sort();let cash=capital,pos={},peak=capital,dd=0,curve=[],closed=[];
+ for(let di=21;di<dates.length;di++){let d=dates[di];if(start&&d<start)continue;let sig=dates[di-1],cands=[];for(const s of symbols){let b0=map[s]?.[sig],b5=map[s]?.[dates[di-6]],b20=map[s]?.[dates[di-21]],bo=map[s]?.[d];if(!b0||!b5||!b20||!bo)continue;let rs=[];for(let k=di-20;k<=di-1;k++){let a=map[s]?.[dates[k]],z=map[s]?.[dates[k-1]];if(a&&z)rs.push(Math.log(a.c/z.c))}let mean=rs.reduce((a,b)=>a+b,0)/(rs.length||1),vol=Math.sqrt(rs.reduce((q,x)=>q+(x-mean)**2,0)/(rs.length||1))*Math.sqrt(252),score=.65*(b0.c/b20.c-1)+.20*(b0.c/b5.c-1)-.15*vol;if(score>.015)cands.push({s,score,price:bo.o})}
+ cands.sort((a,b)=>b.score-a.score);cands=cands.slice(0,Math.max(1,Math.ceil(cands.length*.20)));let slots=5-Object.keys(pos).length;for(const x of cands){if(slots<=0)break;if(pos[x.s])continue;let eq=cash+Object.entries(pos).reduce((q,[s,p])=>q+p.shares*(map[s]?.[sig]?.c||p.entry),0),budget=Math.min(eq*maxPos,cash);if(budget<=0)break;pos[x.s]={entry:x.price,shares:budget/x.price,cost:budget,di};cash-=budget;slots--}
+ for(const s of Object.keys(pos)){let p=pos[s],b=map[s]?.[d];if(!b)continue;let ep=null;if(b.l<=p.entry*.93)ep=p.entry*.93;else if(b.h>=p.entry*1.12)ep=p.entry*1.12;else if(di-p.di>=20)ep=b.c;if(ep){let val=p.shares*ep;cash+=val;closed.push(val-p.cost);delete pos[s]}}
+ let eq=cash+Object.entries(pos).reduce((q,[s,p])=>q+p.shares*(map[s]?.[d]?.c||p.entry),0);peak=Math.max(peak,eq);dd=Math.min(dd,eq/peak-1);curve.push({t:d,v:eq})}
+ let eq=curve.at(-1)?.v||capital;return {eq,ret:eq/capital-1,dd,trades:closed.length,curve,rule:'Fryst Swing-signal; endast topp 20% av dagens positiva kandidater får öppna nya positioner.'}
+}
+function v034Run(){if(ACTIVE_MARKET!=="globalStocks100"||!DAILY.length){V034_LAST=null;return}let cap=+$('capital').value,start=$('evalStart')?.value||'',mp=+$('maxpos').value;if(V034_MODE==='momentum')V034_LAST=v034RankedSwing(DAILY,cap,mp,start);else if(V034_MODE==='defensive')V034_LAST=v034SimpleMomentum(DAILY,cap,start,true);else if(V034_MODE==='simple')V034_LAST=v034SimpleMomentum(DAILY,cap,start,false);else V034_LAST=null;v034Render()}
+function v034Render(){let e=document.getElementById('v034Result');if(!e)return;if(!V034_LAST){e.innerHTML='<span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span>';return}let x=V034_LAST;e.innerHTML=`<b>${V034_MODE==='momentum'?'⚡ Global Momentum':V034_MODE==='defensive'?'🛡️ Global Defensive':'🥊 Enkel momentum-kontroll'}</b><div class="v27-day-pills"><span>Slut ${fmt(x.eq)}</span><span>Avkastning ${(x.ret>=0?'+':'')+pct(x.ret)}</span><span>DD ${pct(x.dd)}</span><span>Avslut ${x.trades}</span></div><div class="muted">${x.rule}</div>`}
+window.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('[data-v034-mode]').forEach(b=>b.addEventListener('click',()=>{V034_MODE=b.dataset.v034Mode;document.querySelectorAll('[data-v034-mode]').forEach(x=>x.classList.toggle('active',x===b));setMarketGroup('globalStocks100')}));const rb=$('runBtn');if(rb)rb.addEventListener('click',()=>setTimeout(v034Run,0));});
+
 window.onresize=()=>LAST&&draw(LAST.s,LAST.d,+$("capital").value);
 let now=new Date(),ago=new Date(now);ago.setMonth(ago.getMonth()-1);$("end").value=now.toISOString().slice(0,10);$("start").value=ago.toISOString().slice(0,10);
 
@@ -751,6 +783,7 @@ function v17BaseReport(full){
    vsBaselinePct:d?(dB.ret-d.ret)*100:null,rawSignals:dB.rawSignals,passedSignals:dB.passedSignals
   }:null
  };
+ payload.v034Experiment=V034_LAST?{mode:V034_MODE,endingCapital:V034_LAST.eq,returnPct:V034_LAST.ret*100,maxDrawdownPct:V034_LAST.dd*100,trades:V034_LAST.trades,rule:V034_LAST.rule}:null;
  if(full && s){
   payload.swing.closedTrades=(s.closed||[]).map(x=>({
    symbol:x.symbol,entryDate:x.entryDate,exitDate:x.exitDate,
@@ -803,6 +836,7 @@ function v17TextReport(full){
   (dB.closedTrades||[]).forEach((x,i)=>a.push(`${i+1}. ${x.symbol} | ${x.entryTime} → ${x.exitTime} | in ${x.entryPrice} | ut ${x.exitPrice} | P/L ${x.pnl} | ${x.returnPct.toFixed(2)}% | ${x.setup} / ${x.exitReason}`));
   a.push("","OPTI DAY B – HÄNDELSELOGG",JSON.stringify(dB.eventLog||[],null,2));
  }
+ if(p.v034Experiment){let x=p.v034Experiment;a.push("","V0.34 GLOBAL EXPERIMENT",`Läge: ${x.mode}`,`Slutkapital: ${x.endingCapital}`,`Avkastning: ${x.returnPct.toFixed(2)}%`,`Max drawdown: ${x.maxDrawdownPct.toFixed(2)}%`,`Avslut: ${x.trades}`,`Regel: ${x.rule}`)}
  return a.join("\n");
 }
 async function v17Share(full){
@@ -849,7 +883,13 @@ window.addEventListener("DOMContentLoaded",()=>{
    if(!start||!end)return;
    const now=new Date();
    let from,to,testStart;
-   if(p==="2024"){from="2024-01-01";to="2024-12-31";testStart="2024-02-01";}
+   if(p==="1y"){
+     const toDate=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+     const fromDate=new Date(toDate); fromDate.setFullYear(fromDate.getFullYear()-1);
+     const testDate=new Date(fromDate); testDate.setMonth(testDate.getMonth()+5);
+     from=localISO(fromDate); to=localISO(toDate); testStart=localISO(testDate);
+   }
+   else if(p==="2024"){from="2024-01-01";to="2024-12-31";testStart="2024-02-01";}
    else if(p==="2025"){from="2025-01-01";to="2025-12-31";testStart="2025-02-01";}
    else if(p==="2026"){from="2026-01-01";to=localISO(now);testStart="2026-02-01";}
    else {from="2024-01-01";to=localISO(now);testStart="2024-02-01";}

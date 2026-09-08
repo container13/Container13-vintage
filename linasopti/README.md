@@ -97,3 +97,18 @@ Ingen ändring av Opti Swing-parametrarna. Tre nya Alpaca-baserade testuniversum
 - USA + Värld 50: USA30-aktier + 20 region-ETF:er i samma ranking, benchmark VT.
 
 Syftet är robusthetstest, inte parameteroptimering. ETF-universumen är statiska och utdelningar/kostnader är inte fullständigt modellerade. Norden 80 från V0.32 finns kvar oförändrad.
+
+
+## V0.34 – Global Lab
+- Global Stocks 100: 99 USA-noterade aktier/ADR:er från flera regioner + VT benchmark.
+- Global Momentum: fryst Swing-signal men endast topp 20% av dagens positiva kandidater får nya positioner.
+- Global Defensive: enkel månadsvis 6m momentum top-5, men står i cash när färre än 35% av universum har positivt 6m-momentum.
+- Lina vs enkel momentum: kontrollstrategi, månadsvis top-5 på 6m momentum.
+- Baseline Opti Swing är oförändrad. Experimenten exporteras separat.
+- Alpaca Basic/IEX är fortfarande en testdatakälla; USA-noterade ADR:er ger gemensam USD-prissättning men är inte samma sak som lokal primärnotering.
+
+
+## V0.34.1 – snabbval 1 år
+- Ny knapp **1 år** under Snabbval.
+- Ett tryck sätter Till = dagens datum, Från = exakt ett år tidigare och Testperiod börjar = fem månader efter Från för samma enkla warmup-upplägg som de senaste jämförelsetesterna.
+- Ingen strategi, signal, benchmark eller marknadsgrupp har ändrats.

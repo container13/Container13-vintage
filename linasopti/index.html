@@ -55,6 +55,7 @@
     <button type="button" class="market-btn" data-market="worldRegions20">🌐 Världsregioner 20</button>
     <button type="button" class="market-btn" data-market="worldExUs20">🌎 Ex-USA 20</button>
     <button type="button" class="market-btn" data-market="usaWorld50">🚀 USA + Värld 50</button>
+    <button type="button" class="market-btn" data-market="globalStocks100">🌍 Global Stocks 100</button>
   </div>
   <div class="muted v29-market-note">USA och de nya globala ETF-grupperna använder Alpaca. Norden 80 använder EODHD-dagsdata. Alla grupper kör samma frysta Opti Swing och benchmark handlas aldrig. Världsregioner/Ex-USA använder börshandlade region-ETF:er som kandidater; USA + Värld 50 låter Lina välja mellan USA30-aktier och 20 globala region-ETF:er. Opti Day är tills vidare bara USA.</div>
 </div>
@@ -63,6 +64,7 @@
 <label>Till<input id="end" type="date"></label>
 <div class="period-wrap" aria-label="Snabbval tidsperiod">
   <span class="period-label">Snabbval</span>
+  <button type="button" class="period-btn" data-period="1y">1 år</button>
   <button type="button" class="period-btn" data-period="2024">2024</button>
   <button type="button" class="period-btn" data-period="2025">2025</button>
   <button type="button" class="period-btn" data-period="2026">2026</button>
@@ -83,7 +85,7 @@
 <div class="status" id="bridgeStatus">Linas Opti API är anslutet via Cloudflare.</div>
 <div class="v31-provider" id="providerInfo">Datakälla: Alpaca · Benchmark: SPY</div>
 </div>
-<div class="card v31-nordic-info"><h2>V0.33 · Global Test Pack</h2><div class="muted">Fyra större tester utan ändrade Swing-parametrar: Norden 80, Världsregioner 20, Global ex-USA 20 och USA + Värld 50. De globala grupperna använder USA-noterade region-ETF:er via Alpaca, vilket ger en gemensam USD-datakälla och gör testerna enkla att köra. VT respektive VEU används som benchmark och handlas inte.</div></div>
+<div class="card v31-nordic-info"><h2>V0.34.1 · Global Lab</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
 </section>
 
 <section id="pane-test" class="hidden">
@@ -154,7 +156,7 @@
 
 <div class="note">Detta är en testplattform, inte investeringsrådgivning. För riktig utvärdering måste data vara korrekt, överlevnadsbias undvikas och spread/slippage/courtage modelleras realistiskt. Linas Opti är mobil-först och lägger grunden för reproducerbara tester med samma regler över verklig historik.</div>
 </div>
-<script src="linasopti.js?v=0.30.1"></script>
+<script src="linasopti.js?v=0.34.1"></script>
 
 <section class="v014-audit"><h3>Backtestkontroll V0.30.1</h3>
 <div class="v014-metrics">
