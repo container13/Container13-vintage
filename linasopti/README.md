@@ -464,3 +464,38 @@ När en period väljs gör periodmotorn själv allt i samma steg:
 Det gör att Safari/CSS-cascade inte kan få markeringen att se omarkerad ut.
 
 Ingen handelslogik är ändrad.
+
+
+## V0.37.8 – Runtime Root Fix
+
+### Faktisk grundorsak hittad
+En trasig JavaScript-rad från V0.37.2 fanns kvar:
+
+`$("dailyBtn").onclick$("dailyBtn").onclick=...`
+
+Den gav runtime-felet:
+`$(...).onclick$ is not a function`
+
+Det felet stoppade exekveringen av resten av `linasopti.js`. Därför kördes bland annat inte:
+- periodväljaren i V0.37.0
+- headerhöjdsmätningen i V0.37.5
+- senare initieringskod
+
+Det förklarar varför flera CSS-/periodfixar inte kunde hjälpa.
+
+### Åtgärd
+- Den trasiga raden är ersatt med korrekt `dailyBtn.onclick=...`.
+- `intraBtn` är null-säkrad.
+- Periodmotorn får nu faktiskt starta och sköter markeringen själv.
+- Headern är dessutom flyttad utanför `.wrap` och ligger som direkt barn till `body`, vilket är robustare för `position:fixed` i mobil Safari.
+
+### Verifiering
+- `node --check` körs.
+- Automatisk browser-test körs i Chromium:
+  - `adam` öppnar appen
+  - 2026-knappen blir markerad
+  - start/eval/slutdatum sätts
+  - headerns position är `fixed` och top=0 efter scroll till botten
+  - inga JavaScript-runtimefel accepteras
+
+Ingen strategi-, data- eller Worker-logik ändrad.

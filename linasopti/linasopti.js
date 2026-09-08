@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.37.7";
+const APP_VERSION = "V0.37.8";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -171,7 +171,7 @@ async function getBars(tf){
    if(btn){btn.disabled=false;btn.textContent=old;}
  }
 }
-$("dailyBtn").onclick$("dailyBtn").onclick=()=>getBars("1Day");$("intraBtn").onclick=()=>getBars("5Min");
+$("dailyBtn").onclick=()=>getBars("1Day"); if($("intraBtn")) $("intraBtn").onclick=()=>getBars("5Min");
 
 function grouped(rows){let m={};rows.forEach(r=>(m[r.symbol]??=[]).push(r));return m}
 function sd(a){if(a.length<2)return 0;let m=a.reduce((s,x)=>s+x,0)/a.length;return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/a.length)}
