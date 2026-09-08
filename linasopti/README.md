@@ -213,3 +213,11 @@ Ren UX-version. Swing, Lina Selection 16 och handelsreglerna är oförändrade.
 - Gamla V0.36/V0.36.1 sparade delningsvärden migreras automatiskt till `prompt`.
 - Efter test visas delningsvalet som standard; endast explicit `Gå bara till Resultat` stänger av det.
 - Ingen strategi- eller backtestlogik ändrad.
+
+
+## V0.36.3 – Native Settings
+- Kugghjulet är nu byggt med webbläsarens egna HTML `details/summary` och kräver inget JavaScript för att öppnas.
+- Den tidigare JavaScript-modalen för Inställningar är borttagen.
+- Efter ett avslutat test visas delningsvalet ovillkorligen; användaren väljer därefter Full testdata eller Snabbrapport med ett aktivt tryck för iOS Share/AirDrop.
+- Permanent Dela-knapp kan fortfarande slås på/av i kugghjulet.
+- Ingen strategi- eller backtestlogik ändrad.

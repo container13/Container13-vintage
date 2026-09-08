@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.36.2";
+const APP_VERSION = "V0.36.3";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -515,16 +515,15 @@ function v036GetSettings(){
   }catch(e){return {afterRun:"prompt",showShareBar:false}}
 }
 function v036SaveSettings(){
-  const s={afterRun:document.getElementById("v036AfterRun")?.value||"prompt",
-           showShareBar:!!document.getElementById("v036ShowShareBar")?.checked};
+  var old=v036GetSettings();
+  var s={afterRun:"prompt",showShareBar:!!document.getElementById("v036ShowShareBar")?.checked};
   localStorage.setItem(V036_SETTINGS_KEY,JSON.stringify(s));
   v036ApplySettings();
 }
 function v036ApplySettings(){
-  const s=v036GetSettings(),bar=document.getElementById("v23ShareBar");
+  var s=v036GetSettings(),bar=document.getElementById("v23ShareBar");
   if(bar)bar.classList.toggle("v036-share-hidden",!s.showShareBar);
-  const sel=document.getElementById("v036AfterRun"),chk=document.getElementById("v036ShowShareBar");
-  if(sel)sel.value=s.afterRun;if(chk)chk.checked=s.showShareBar;
+  var chk=document.getElementById("v036ShowShareBar"); if(chk)chk.checked=s.showShareBar;
 }
 function v036OpenSettings(open=true){
   const m=document.getElementById("v036SettingsModal"); if(!m)return;
@@ -532,9 +531,8 @@ function v036OpenSettings(open=true){
   m.classList.toggle("v036-open",open);
 }
 function v036AfterRun(){
-  const s=v036GetSettings();
   v035ClickTab("3");
-  if(s.afterRun!=="result") setTimeout(function(){v036OpenSharePrompt();},250);
+  setTimeout(function(){v036OpenSharePrompt();},250);
 }
 function v036OpenSharePrompt(){
   const m=document.getElementById("v036SharePrompt"); if(!m)return;
@@ -552,8 +550,8 @@ window.addEventListener("DOMContentLoaded",()=>{
   v036ApplySettings();
   
   
-  document.getElementById("v036SettingsModal")?.addEventListener("click",e=>{if(e.target.id==="v036SettingsModal")v036OpenSettings(false)});
-  document.getElementById("v036AfterRun")?.addEventListener("change",v036SaveSettings);
+  
+  
   document.getElementById("v036ShowShareBar")?.addEventListener("change",v036SaveSettings);
   document.getElementById("v036ShareResult")?.addEventListener("click",()=>v036OpenSharePrompt());
 });

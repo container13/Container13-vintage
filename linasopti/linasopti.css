@@ -418,3 +418,9 @@ body > .v23-sharebar{overflow:visible !important}
 /* V0.36.2 click/modal hardening */
 .v036-modal-backdrop.v036-open{display:flex!important}
 #v036SettingsBtn{position:relative;z-index:10001;pointer-events:auto!important;touch-action:manipulation}
+
+/* V0.36.3 – settings without JavaScript */
+.v0363-settings{position:relative}
+.v0363-settings>summary{list-style:none;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.v0363-settings>summary::-webkit-details-marker{display:none}
+.v0363-settings-panel{position:absolute;right:0;top:46px;width:min(320px,82vw);background:#fff;border:1px solid #d8e0e7;border-radius:18px;padding:15px;box-shadow:0 14px 40px rgba(0,0,0,.18);z-index:20000;text-align:left}
