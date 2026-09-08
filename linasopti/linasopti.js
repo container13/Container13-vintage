@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.37.9";
+const APP_VERSION = "V0.38.0";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -141,7 +141,8 @@ async function getBars(tf){
    if(el){el.className="status v0372-visible v0372-bad";el.textContent="Opti Day/5-min är tills vidare endast USA.";}
    return;
  }
- const btn=tf==="1Day"?$("dailyBtn"):$("intraBtn"), old=btn?.textContent;
+ const btn=tf==="1Day"?$("dailyBtn"):$("intraBtn");
+ const old=btn?.textContent;
  const status=$("bridgeStatus");
  try{
    if(btn){btn.disabled=true;btn.textContent="Hämtar…";}
@@ -150,33 +151,43 @@ async function getBars(tf){
      status.textContent=tf==="1Day"?"Hämtar dagsdata…":"Hämtar 5-min-data…";
    }
 
-   const syms=$("symbols").value.split(",").map(x=>x.trim().toUpperCase()).filter(Boolean);
-   if(!syms.length)throw new Error("Ingen marknadsgrupp/symbol är vald.");
-
-   const chunkSize=currentProvider()==="eodhd"?25:5;
-   const chunks=[];
-   for(let i=0;i<syms.length;i+=chunkSize)chunks.push(syms.slice(i,i+chunkSize));
-
    let rows=[];
-   for(let i=0;i<chunks.length;i++){
-     if(status)status.textContent=`Hämtar dagsdata · del ${i+1}/${chunks.length}…`;
-     const base=currentProvider()==="eodhd"?"/eod-bars":"/bars";
-     const url=`${base}?symbols=${encodeURIComponent(chunks[i].join(","))}&timeframe=${encodeURIComponent(tf)}&start=${encodeURIComponent($("start").value)}&end=${encodeURIComponent($("end").value)}`;
-     const j=await bridge(url,15000);
-     rows.push(...(j.rows||[]));
+   if(currentProvider()==="eodhd" && tf==="1Day"){
+     const syms=$("symbols").value.split(",").map(x=>x.trim().toUpperCase()).filter(Boolean);
+     const chunks=[];
+     for(let i=0;i<syms.length;i+=25)chunks.push(syms.slice(i,i+25));
+     for(let i=0;i<chunks.length;i++){
+       if(status)status.textContent=`Hämtar del ${i+1}/${chunks.length}…`;
+       const url=`/eod-bars?symbols=${encodeURIComponent(chunks[i].join(","))}&timeframe=1Day&start=${$("start").value}&end=${$("end").value}`;
+       const j=await bridge(url,30000);
+       rows.push(...(j.rows||[]));
+     }
+   }else{
+     // Alpaca: tillbaka till ett enda anrop, vilket var den fungerande vägen före V0.37.9.
+     const j=await bridge(params(tf),30000);
+     rows=j.rows||[];
+   }
+
+   if(status){
+     status.className="status v0372-visible v0372-loading";
+     status.textContent=`Data mottagen: ${rows.length.toLocaleString("sv-SE")} rader · bearbetar…`;
    }
 
    if(!rows.length)throw new Error("Ingen data kom tillbaka för vald marknad och period.");
    if(tf==="1Day")DAILY=rows;else INTRA=rows;
 
-   updateTestDataStatus();
-   updateDataStatus();
-   v035RefreshGuide();
-   v0368UpdateContextUI();
+   // Varje UI-uppdatering isoleras så att en mindre visningsbugg inte kan stoppa "Klart".
+   try{updateTestDataStatus();}catch(e){console.warn("updateTestDataStatus",e);}
+   try{updateDataStatus();}catch(e){console.warn("updateDataStatus",e);}
+   try{v035RefreshGuide();}catch(e){console.warn("v035RefreshGuide",e);}
+   try{v0368UpdateContextUI();}catch(e){console.warn("v0368UpdateContextUI",e);}
 
    if(status){
+     const text=`✓ Klart: ${rows.length.toLocaleString("sv-SE")} rader`;
      status.className="status v0372-visible v0372-good";
-     status.textContent=`✓ Klart: ${rows.length.toLocaleString("sv-SE")} rader`;
+     status.textContent=text;
+     requestAnimationFrame(()=>{status.textContent=text; void status.offsetWidth;});
+     setTimeout(()=>{status.textContent=text;},120);
    }
  }catch(e){
    if(status){

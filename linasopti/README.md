@@ -509,3 +509,23 @@ Ingen strategi-, data- eller Worker-logik ändrad.
 - Varje delanrop har hård 15 sekunders timeout via Promise.race.
 - UI kan inte stå på Hämtar för alltid; fel visas och knappen återställs.
 - Ingen strategi-, period-, marknadsgrupps- eller Worker-logik är ändrad.
+
+
+## V0.38.0 – Fetch Finalize Fix
+
+### Vad som ändras
+- V0.37.9 delade även Alpaca/USA i 3 mindre anrop. Det gav läget där appen kunde stanna på `del 3/3`.
+- USA/Alpaca är nu tillbaka på den tidigare fungerande vägen: ett enda `/bars`-anrop.
+- EODHD/Norden fortsätter att batchas i 25 symboler.
+- När API-svaret är mottaget visas `Data mottagen: X rader · bearbetar…`.
+- Därefter körs UI-uppdateringarna var för sig i egna try/catch.
+  En mindre visningsbugg kan därför inte längre hindra slutstatusen.
+- Slutstatus målas explicit om för iOS Safari:
+  `✓ Klart: X rader`.
+
+### Inte ändrat
+- Strategilogik
+- Periodlogik
+- Marknadsgrupper
+- Worker/API-kontrakt
+- Rapport/export
