@@ -287,3 +287,20 @@ Viktigt:
 - `bridge()`, `params()` och `getBars()` från V0.36.8 lämnas orörda.
 - Inga senare fetch-timeouts, AbortController, Promise.race eller Alpaca-batchningar följer med.
 - Ingen strategi-, Worker- eller rapportlogik ändrad.
+
+
+## V0.38.4 – Surgical UI Cleanup
+
+Byggd från V0.38.3, som i sin tur är byggd från den kända fungerande V0.36.8-basen.
+
+### UI
+- Login-gaten ligger nu verkligen ovanpå hela appen.
+- Medan gaten är låst döljs `.wrap` och vattenmärket helt, så headern kan inte synas ovanpå login.
+- Efter korrekt `adam` visas appen och scroll återställs till toppen.
+- `Kom igång` är borttaget från normalvyn.
+- `Alternativ A — CSV-filer` och den gamla Opti Day-introduktionen ligger nu under ett enda kollapsat `Tekniskt / felsökning`.
+- Funktionerna och deras befintliga DOM-id:n är bevarade.
+
+### Viktigt
+- `bridge()`, `params()` och `getBars()` är fortfarande exakt från V0.36.8.
+- Ingen fetch-, Worker-, strategi-, period- eller rapportlogik ändrad i denna version.

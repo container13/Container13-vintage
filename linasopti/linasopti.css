@@ -541,3 +541,40 @@ body > .v23-sharebar{overflow:visible !important}
 
 /* V0.38.3 – normalvy cleanup without deleting debug features */
 .v0368-day-intro,.v0368-day-quick,.v0368-test-connection{display:none!important}
+
+/* V0.38.4 – login ligger verkligt ovanpå hela appen */
+.v0383-gate{
+  z-index:2147483647!important;
+  position:fixed!important;
+  inset:0!important;
+  isolation:isolate;
+}
+body.v0384-locked{
+  overflow:hidden!important;
+}
+body.v0384-locked > .wrap,
+body.v0384-locked > .lina-watermark{
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+/* V0.38.4 – tekniska funktioner finns kvar men stör inte normalflödet */
+.v0384-tech{
+  margin:18px 0 6px;
+  border:1px solid #d9e1e7;
+  border-radius:22px;
+  background:rgba(255,255,255,.92);
+  overflow:hidden;
+}
+.v0384-tech > summary{
+  cursor:pointer;
+  list-style:none;
+  padding:20px 22px;
+  font-weight:900;
+  font-size:1.05rem;
+}
+.v0384-tech > summary::-webkit-details-marker{display:none}
+.v0384-tech > summary::before{content:"▶ ";font-weight:900}
+.v0384-tech[open] > summary::before{content:"▼ "}
+.v0384-tech-inner{padding:0 14px 14px}
+.v0384-tech-inner > .card{margin:10px 0}

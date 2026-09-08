@@ -6,9 +6,9 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.38.3">
+<link rel="stylesheet" href="linasopti.css?v=0.38.4">
 </head>
-<body>
+<body class="v0384-locked">
 
 <div id="v0383Gate" class="v0383-gate" aria-hidden="false">
   <div class="v0383-gate-card">
@@ -33,21 +33,9 @@
 </div>
 
 <section id="pane-data">
-<div class="card"><h2>Kom igång</h2><div class="muted">På mobilen gör du allt i tre steg: läs in/hämta data → kör test → jämför resultat. Samma sida skalar upp automatiskt på 13&quot; och 24&quot;.</div></div>
-<div class="card">
-<h2>Alternativ A — CSV-filer</h2>
-<div class="files">
-<div class="filebox"><b>Sparrobot: dagskurser</b><div class="muted">CSV: timestamp,symbol,open,high,low,close,volume</div><input id="dailyFile" type="file" accept=".csv,text/csv"></div>
-<div class="filebox"><b>Opti Day: 5-minuterskurser</b><div class="muted">Samma kolumner, en rad per 5-minutersbar</div><input id="intraFile" type="file" accept=".csv,text/csv"></div>
-</div>
-<div class="status" id="csvStatus">Du kan läsa in en eller båda filerna. Testerna använder bara den data som finns.</div>
-</div>
 
-<div class="card v27-day-start">
-<h2>Opti Day · 5-minutershandel</h2>
-<div class="muted">Första riktiga intradagsmotorn. Signal tas på en avslutad 5-minutersbar och ordern simuleras först på nästa bars öppning. Samma aktie kan handlas flera gånger under dagen, men aldrig samtidigt och aldrig över natten.</div>
-<div class="v27-day-pills"><span>Max 12 affärer/dag</span><span>Max 3/symbol</span><span>Stop 0,8%</span><span>Mål 1,2%</span><span>Max 60 min</span></div>
-</div>
+
+
 
 <div class="card">
 <h2>Marknadsdata via Linas Opti API</h2>
@@ -128,6 +116,25 @@
 </div>
 
 <div class="card v31-nordic-info"><h2>V0.36.8 · Context Cleanup</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
+<details class="v0384-tech">
+  <summary>Tekniskt / felsökning</summary>
+  <div class="v0384-tech-inner">
+    <div class="card">
+<h2>Alternativ A — CSV-filer</h2>
+<div class="files">
+<div class="filebox"><b>Sparrobot: dagskurser</b><div class="muted">CSV: timestamp,symbol,open,high,low,close,volume</div><input id="dailyFile" type="file" accept=".csv,text/csv"></div>
+<div class="filebox"><b>Opti Day: 5-minuterskurser</b><div class="muted">Samma kolumner, en rad per 5-minutersbar</div><input id="intraFile" type="file" accept=".csv,text/csv"></div>
+</div>
+<div class="status" id="csvStatus">Du kan läsa in en eller båda filerna. Testerna använder bara den data som finns.</div>
+</div>
+    <div class="card v27-day-start">
+<h2>Opti Day · 5-minutershandel</h2>
+<div class="muted">Första riktiga intradagsmotorn. Signal tas på en avslutad 5-minutersbar och ordern simuleras först på nästa bars öppning. Samma aktie kan handlas flera gånger under dagen, men aldrig samtidigt och aldrig över natten.</div>
+<div class="v27-day-pills"><span>Max 12 affärer/dag</span><span>Max 3/symbol</span><span>Stop 0,8%</span><span>Mål 1,2%</span><span>Max 60 min</span></div>
+</div>
+  </div>
+</details>
+
 </section>
 
 <section id="pane-test" class="hidden">
@@ -292,8 +299,12 @@
       setTimeout(()=>{
         gate.style.display="none";
         gate.setAttribute("aria-hidden","true");
+        document.body.classList.remove("v0384-locked");
         history.scrollRestoration="manual";
+        document.documentElement.scrollTop=0;
+        document.body.scrollTop=0;
         window.scrollTo(0,0);
+        requestAnimationFrame(()=>window.scrollTo(0,0));
       },120);
     }else{
       msg.textContent="Fel lösenkod";
@@ -308,5 +319,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.38.3"></script>
+<script src="linasopti.js?v=0.38.4"></script>
 </body></html>
