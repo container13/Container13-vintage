@@ -88,3 +88,12 @@ V0.29.1: Fixad cache-busting för JavaScript/CSS. V0.29 HTML hade script-taggen 
 - EODHD-hämtning delas automatiskt i batcher om max 25 symboler för att passa Worker-gränsen.
 - NORDIC-4 benchmark = aritmetiskt medel av Sverige/Danmark/Finland/Norge-benchmark under testperioden.
 - Valutaeffekter mellan SEK/DKK/EUR/NOK är INTE modellerade; Global är därför fortfarande ett experimentellt, currency-neutral datatest.
+
+
+## V0.33 – Global Test Pack
+Ingen ändring av Opti Swing-parametrarna. Tre nya Alpaca-baserade testuniversum har lagts till:
+- Världsregioner 20: 20 USA-noterade region-/internationella ETF:er, benchmark VT.
+- Global ex-USA 20: 20 internationella ETF:er, benchmark VEU.
+- USA + Värld 50: USA30-aktier + 20 region-ETF:er i samma ranking, benchmark VT.
+
+Syftet är robusthetstest, inte parameteroptimering. ETF-universumen är statiska och utdelningar/kostnader är inte fullständigt modellerade. Norden 80 från V0.32 finns kvar oförändrad.

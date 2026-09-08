@@ -51,9 +51,12 @@
     <button type="button" class="market-btn market-nordic" data-market="denmark20">🇩🇰 Danmark 20</button>
     <button type="button" class="market-btn market-nordic" data-market="finland20">🇫🇮 Finland 20</button>
     <button type="button" class="market-btn market-nordic" data-market="norway20">🇳🇴 Norge 20</button>
-    <button type="button" class="market-btn market-nordic" data-market="globalNordic">🌍 Opti Global</button>
+    <button type="button" class="market-btn market-nordic" data-market="globalNordic">🌍 Norden 80</button>
+    <button type="button" class="market-btn" data-market="worldRegions20">🌐 Världsregioner 20</button>
+    <button type="button" class="market-btn" data-market="worldExUs20">🌎 Ex-USA 20</button>
+    <button type="button" class="market-btn" data-market="usaWorld50">🚀 USA + Värld 50</button>
   </div>
-  <div class="muted v29-market-note">USA använder Alpaca. Norden och Opti Global använder EODHD-dagsdata. Opti Global hämtar Norden i flera delar automatiskt och väljer de starkaste signalerna över alla 80 aktier. Benchmark handlas aldrig. Opti Day är tills vidare bara USA.</div>
+  <div class="muted v29-market-note">USA och de nya globala ETF-grupperna använder Alpaca. Norden 80 använder EODHD-dagsdata. Alla grupper kör samma frysta Opti Swing och benchmark handlas aldrig. Världsregioner/Ex-USA använder börshandlade region-ETF:er som kandidater; USA + Värld 50 låter Lina välja mellan USA30-aktier och 20 globala region-ETF:er. Opti Day är tills vidare bara USA.</div>
 </div>
 <label>Symboler, kommaseparerade<input id="symbols" value="AAPL,MSFT,NVDA,AMZN,META,TSLA,AMD,NFLX,AVGO,JPM,SPY"></label>
 <label>Från<input id="start" type="date"></label>
@@ -80,7 +83,7 @@
 <div class="status" id="bridgeStatus">Linas Opti API är anslutet via Cloudflare.</div>
 <div class="v31-provider" id="providerInfo">Datakälla: Alpaca · Benchmark: SPY</div>
 </div>
-<div class="card v31-nordic-info"><h2>V0.32 · Opti Global</h2><div class="muted">Opti Global kombinerar 20 aktier vardera från Sverige, Danmark, Finland och Norge. Samma frysta Opti Swing rankar alla 80 tillsammans och får hålla högst fem positioner. NORDIC-4 är ett enkelt lika viktat jämförelseindex av de fyra lokala benchmarkserierna; valutaförändringar och handels­kostnader är ännu inte modellerade.</div></div>
+<div class="card v31-nordic-info"><h2>V0.33 · Global Test Pack</h2><div class="muted">Fyra större tester utan ändrade Swing-parametrar: Norden 80, Världsregioner 20, Global ex-USA 20 och USA + Värld 50. De globala grupperna använder USA-noterade region-ETF:er via Alpaca, vilket ger en gemensam USD-datakälla och gör testerna enkla att köra. VT respektive VEU används som benchmark och handlas inte.</div></div>
 </section>
 
 <section id="pane-test" class="hidden">

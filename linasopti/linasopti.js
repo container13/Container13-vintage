@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.32";
+const APP_VERSION = "V0.33";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -15,7 +15,10 @@ const MARKET_GROUPS={
  denmark20:{name:"Danmark 20",provider:"eodhd",benchmark:"SPIC25KL.CO",symbols:["CARL-B.CO","COLO-B.CO","DANSKE.CO","DEMANT.CO","DSV.CO","FLS.CO","GMAB.CO","GN.CO","ISS.CO","JYSK.CO","MAERSK-B.CO","NOVO-B.CO","NZYM-B.CO","ORSTED.CO","PNDORA.CO","ROCK-B.CO","TRYG.CO","VWS.CO","ZEAL.CO","AMBU-B.CO","SPIC25KL.CO"]},
  finland20:{name:"Finland 20",provider:"eodhd",benchmark:"SLGOMXH25.HE",symbols:["ELISA.HE","FORTUM.HE","HARVIA.HE","HIAB.HE","HUH1V.HE","KALMAR.HE","KCR.HE","KEMIRA.HE","KESKOB.HE","KNEBV.HE","MANTA.HE","METSB.HE","METSO.HE","NDA-FI.HE","NESTE.HE","NOKIA.HE","ORNBV.HE","OUT1V.HE","QTCOM.HE","SAMPO.HE","SLGOMXH25.HE"]},
  norway20:{name:"Norge 20",provider:"eodhd",benchmark:"OBX.OL",symbols:["AKRBP.OL","AUSS.OL","AUTO.OL","BRG.OL","BWLPG.OL","DNB.OL","EQNR.OL","GJF.OL","KIT.OL","KOG.OL","MOWI.OL","NHY.OL","ORK.OL","PROT.OL","SALM.OL","STB.OL","SUBC.OL","TEL.OL","TOM.OL","VAR.OL","OBX.OL"]},
- globalNordic:{name:"Opti Global · Norden 80",provider:"eodhd",benchmark:"NORDIC-4",benchmarks:["XACT-OMXS30.ST","SPIC25KL.CO","SLGOMXH25.HE","OBX.OL"],symbols:["ABB.ST","ALFA.ST","ASSA-B.ST","ATCO-A.ST","AZN.ST","BOL.ST","ERIC-B.ST","EQT.ST","ESSITY-B.ST","HEXA-B.ST","HMB.ST","INVE-B.ST","SAAB-B.ST","SAND.ST","SEB-A.ST","SHB-A.ST","SWED-A.ST","TEL2-B.ST","TELIA.ST","VOLV-B.ST","CARL-B.CO","COLO-B.CO","DANSKE.CO","DEMANT.CO","DSV.CO","FLS.CO","GMAB.CO","GN.CO","ISS.CO","JYSK.CO","MAERSK-B.CO","NOVO-B.CO","NZYM-B.CO","ORSTED.CO","PNDORA.CO","ROCK-B.CO","TRYG.CO","VWS.CO","ZEAL.CO","AMBU-B.CO","ELISA.HE","FORTUM.HE","HARVIA.HE","HIAB.HE","HUH1V.HE","KALMAR.HE","KCR.HE","KEMIRA.HE","KESKOB.HE","KNEBV.HE","MANTA.HE","METSB.HE","METSO.HE","NDA-FI.HE","NESTE.HE","NOKIA.HE","ORNBV.HE","OUT1V.HE","QTCOM.HE","SAMPO.HE","AKRBP.OL","AUSS.OL","AUTO.OL","BRG.OL","BWLPG.OL","DNB.OL","EQNR.OL","GJF.OL","KIT.OL","KOG.OL","MOWI.OL","NHY.OL","ORK.OL","PROT.OL","SALM.OL","STB.OL","SUBC.OL","TEL.OL","TOM.OL","VAR.OL","XACT-OMXS30.ST","SPIC25KL.CO","SLGOMXH25.HE","OBX.OL"]}
+ globalNordic:{name:"Opti Global · Norden 80",provider:"eodhd",benchmark:"NORDIC-4",benchmarks:["XACT-OMXS30.ST","SPIC25KL.CO","SLGOMXH25.HE","OBX.OL"],symbols:["ABB.ST","ALFA.ST","ASSA-B.ST","ATCO-A.ST","AZN.ST","BOL.ST","ERIC-B.ST","EQT.ST","ESSITY-B.ST","HEXA-B.ST","HMB.ST","INVE-B.ST","SAAB-B.ST","SAND.ST","SEB-A.ST","SHB-A.ST","SWED-A.ST","TEL2-B.ST","TELIA.ST","VOLV-B.ST","CARL-B.CO","COLO-B.CO","DANSKE.CO","DEMANT.CO","DSV.CO","FLS.CO","GMAB.CO","GN.CO","ISS.CO","JYSK.CO","MAERSK-B.CO","NOVO-B.CO","NZYM-B.CO","ORSTED.CO","PNDORA.CO","ROCK-B.CO","TRYG.CO","VWS.CO","ZEAL.CO","AMBU-B.CO","ELISA.HE","FORTUM.HE","HARVIA.HE","HIAB.HE","HUH1V.HE","KALMAR.HE","KCR.HE","KEMIRA.HE","KESKOB.HE","KNEBV.HE","MANTA.HE","METSB.HE","METSO.HE","NDA-FI.HE","NESTE.HE","NOKIA.HE","ORNBV.HE","OUT1V.HE","QTCOM.HE","SAMPO.HE","AKRBP.OL","AUSS.OL","AUTO.OL","BRG.OL","BWLPG.OL","DNB.OL","EQNR.OL","GJF.OL","KIT.OL","KOG.OL","MOWI.OL","NHY.OL","ORK.OL","PROT.OL","SALM.OL","STB.OL","SUBC.OL","TEL.OL","TOM.OL","VAR.OL","XACT-OMXS30.ST","SPIC25KL.CO","SLGOMXH25.HE","OBX.OL"]},
+ worldRegions20:{name:"Världsregioner 20",provider:"alpaca",benchmark:"VT",symbols:["VEA","VWO","VGK","VPL","VEU","EFA","EEM","EWJ","EWG","EWU","EWQ","EWC","EWA","INDA","EWY","EWT","EWZ","EWW","EWH","EWS","VT"]},
+ worldExUs20:{name:"Global ex-USA 20",provider:"alpaca",benchmark:"VEU",symbols:["VEA","VWO","VGK","VPL","EFA","EEM","EWJ","EWG","EWU","EWQ","EWC","EWA","INDA","EWY","EWT","EWZ","EWW","EWH","EWS","EZA","VEU"]},
+ usaWorld50:{name:"USA + Värld 50",provider:"alpaca",benchmark:"VT",symbols:["AAPL","MSFT","NVDA","AMZN","META","TSLA","AMD","NFLX","AVGO","JPM","GOOGL","ORCL","CRM","INTC","QCOM","MU","BAC","GS","WMT","COST","HD","DIS","UBER","PLTR","PYPL","ADBE","CSCO","PEP","KO","XOM","VEA","VWO","VGK","VPL","VEU","EFA","EEM","EWJ","EWG","EWU","EWQ","EWC","EWA","INDA","EWY","EWT","EWZ","EWW","EWH","EWS","VT"]}
 };
 function currentGroup(){return MARKET_GROUPS[ACTIVE_MARKET]||MARKET_GROUPS.usa10}
 function currentBenchmark(){return currentGroup().benchmark||"SPY"}
@@ -642,7 +645,7 @@ function auditSwing(rows,s,capital){
  if(chronologyFailures)issues.push(`${chronologyFailures} datum/kronologifel`);
  warnings.push(`${currentGroup().name} är en statisk vald aktielista. Resultatet kan därför innehålla urvals-/survivorship bias.`);
  warnings.push('Swing modellerar ännu inte courtage, spread eller slippage.');
- if(currentProvider()==='eodhd')warnings.push('EODHD:s vanliga EOD-OHLC är råa priser. Splits/dividender och valutaväxling är inte slutligt modellerade i V0.31; Norden är därför ett datatest, inte en verifierad strategi.');
+ if(currentProvider()==='eodhd')warnings.push('EODHD:s vanliga EOD-OHLC är råa priser. Splits/dividender och valutaväxling är inte slutligt modellerade; Norden är därför ett datatest, inte en verifierad strategi.');
  return {
   pass:issues.length===0,issues,warnings,entries,closed:(s.closed||[]).length,
   sameDay,sameDayStop,bothTouched,maxPositions,minCash,capitalViolations,positionViolations,
