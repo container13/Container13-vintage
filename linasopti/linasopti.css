@@ -545,31 +545,46 @@ body > .v23-sharebar{overflow:visible !important}
 #bridgeStatus.v0372-good{background:#f1fbf5;color:#16794a}
 #bridgeStatus.v0372-bad{background:#fff1f0;color:#a9342c}
 
-/* V0.37.3 – sticky top navigation */
-header{
+
+/* V0.37.4 – lösenkod: en enda slutlig komponentdefinition */
+.v0369-gate{
+  position:fixed!important;
+  inset:0!important;
+  z-index:50000!important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:#f4f7f9;
+  opacity:1;
+  visibility:visible;
+  transition:opacity .18s ease,visibility .18s ease;
+}
+.v0369-gate.v0374-unlocked{
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+.v0374-gate-ok{color:#147d4f!important}
+.v0374-gate-error{color:#b42318!important}
+
+/* V0.37.4 – header + Data/Test/Resultat är EN sticky enhet.
+   Ingen nested sticky på header eller .tabs. */
+.sticky-top{
   position:sticky!important;
   top:0!important;
   z-index:12000!important;
-  background:#f4f7f9!important;
+  background:rgba(244,246,248,.98)!important;
+  -webkit-backdrop-filter:blur(12px);
+  backdrop-filter:blur(12px);
 }
-.tabs{
-  position:sticky!important;
-  top:74px!important;
-  z-index:11990!important;
-  background:#f4f7f9!important;
-  padding-top:6px!important;
-  padding-bottom:8px!important;
+.sticky-top header{
+  position:relative!important;
+  top:auto!important;
+  z-index:auto!important;
 }
-/* Prevent content from visually bleeding through sticky controls */
-header::after,.tabs::after{
-  content:"";
-  position:absolute;
-  left:0;right:0;bottom:-1px;
-  height:1px;
-  background:#dfe6eb;
-}
-/* iPhone safe area */
-@supports (padding-top: env(safe-area-inset-top)){
-  header{padding-top:calc(8px + env(safe-area-inset-top))!important}
-  .tabs{top:calc(74px + env(safe-area-inset-top))!important}
+.sticky-top .tabs{
+  position:relative!important;
+  top:auto!important;
+  z-index:auto!important;
 }

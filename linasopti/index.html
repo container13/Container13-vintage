@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.37.3">
+<link rel="stylesheet" href="linasopti.css?v=0.37.4">
 </head>
 <body>
 <div id="v0369Gate" class="v0369-gate" aria-hidden="false">
@@ -18,6 +18,45 @@
     <div id="v0369GateMsg" class="v0369-gate-msg"></div>
   </div>
 </div>
+<script>
+/* V0.37.4: fristående lösenkodsgate. Kör oberoende av appens huvud-JS. */
+(function(){
+  var gate=document.getElementById("v0369Gate");
+  var input=document.getElementById("v0369Code");
+  var button=document.getElementById("v0369Enter");
+  var msg=document.getElementById("v0369GateMsg");
+  if(!gate||!input||!button)return;
+
+  gate.hidden=false;
+  gate.style.display="flex";
+  gate.setAttribute("aria-hidden","false");
+  input.value="";
+
+  function openLina(){
+    var ok=input.value.trim().toLowerCase()==="adam";
+    if(!ok){
+      msg.textContent="Fel lösenkod";
+      msg.className="v0369-gate-msg v0374-gate-error";
+      input.focus(); input.select();
+      return;
+    }
+    msg.textContent="✓ Kod godkänd";
+    msg.className="v0369-gate-msg v0374-gate-ok";
+    button.disabled=true;
+    setTimeout(function(){
+      gate.classList.add("v0374-unlocked");
+      gate.setAttribute("aria-hidden","true");
+      setTimeout(function(){ gate.style.display="none"; },180);
+      window.scrollTo(0,0);
+    },180);
+  }
+  button.addEventListener("click",function(e){e.preventDefault();openLina();});
+  input.addEventListener("keydown",function(e){
+    if(e.key==="Enter"){e.preventDefault();openLina();}
+  });
+  setTimeout(function(){input.focus();},50);
+})();
+</script>
 
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
@@ -131,7 +170,7 @@
   </details>
 </div></details>
 
-<div class="card v31-nordic-info"><h2>V0.37.3 · Gate + Sticky Header</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
+<div class="card v31-nordic-info"><h2>V0.37.4 · Gate Root Fix</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
 </section>
 
 <section id="pane-test" class="hidden">
@@ -282,5 +321,5 @@
 
 </div>
 
-<script src="linasopti.js?v=0.37.3"></script>
+<script src="linasopti.js?v=0.37.4"></script>
 </body></html>

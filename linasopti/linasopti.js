@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.37.3";
+const APP_VERSION = "V0.37.4";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -1219,37 +1219,6 @@ function v0368UpdateContextUI(){
   });
 }
 
-(function v0369GateInit(){
-  function unlock(){
-    var input=document.getElementById("v0369Code");
-    var gate=document.getElementById("v0369Gate");
-    var msg=document.getElementById("v0369GateMsg");
-    if(!input||!gate)return;
-    if(String(input.value||"").trim().toLowerCase()==="adam"){
-      gate.style.display="none";
-      gate.setAttribute("aria-hidden","true");
-      if(msg)msg.textContent="";
-      window.scrollTo(0,0);
-    }else{
-      if(msg)msg.textContent="Fel lösenkod";
-      input.focus();
-      input.select();
-    }
-  }
-  function init(){
-    var gate=document.getElementById("v0369Gate");
-    var btn=document.getElementById("v0369Enter");
-    var input=document.getElementById("v0369Code");
-    if(!gate)return;
-    gate.style.display="flex";
-    gate.setAttribute("aria-hidden","false");
-    if(input){input.value="";setTimeout(function(){input.focus();},50);}
-    if(btn)btn.onclick=function(e){e.preventDefault();unlock();};
-    if(input)input.onkeydown=function(e){if(e.key==="Enter"){e.preventDefault();unlock();}};
-  }
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);
-  else init();
-})();
 
 
 // V0.37.0 – generella årsval. Ändrar endast datumfält och tömmer tidigare hämtad data.

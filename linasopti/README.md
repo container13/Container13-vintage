@@ -393,3 +393,25 @@ Ren UX-version. Swing, Lina Selection 16 och handelsreglerna är oförändrade.
 - Ingen datahämtning.
 - Ingen Worker/API-logik.
 - Ingen export/delning.
+
+
+## V0.37.4 – Gate Root Fix
+
+### Grundorsak och ändring
+- V0.37.3 hade lösenkodshanteringen inne i samma stora `linasopti.js` som resten av appen. Ett fel tidigare i appens initieringskedja kan då göra att lösenkodsknappen aldrig får sin handler.
+- Lösenkodsgaten är nu helt fristående direkt i `index.html`, precis efter själva gate-markupen. Den kan därför fungera även om huvudappen skulle få ett senare JavaScript-fel.
+- Vid rätt kod visas först `✓ Kod godkänd`, sedan tonas spärren bort och tas ur vägen.
+- Vid fel kod visas `Fel lösenkod`.
+- Gammal gate-init är borttagen ur `linasopti.js`; det finns nu bara en handlerkedja.
+
+### Sticky header
+- HTML hade redan en gemensam `.sticky-top` runt både headern och Data/Test/Resultat.
+- V0.37.3 lade dessutom sticky på barnen `header` och `.tabs`, vilket skapade konkurrerande/nästlade sticky-regler.
+- V0.37.4 använder endast den gemensamma `.sticky-top` som sticky-enhet. Header + flikar ska därför följa varandra och ligga kvar tillsammans.
+
+### Inte ändrat
+- Datahämtning och timeout från V0.37.2.
+- Periodval och tydlig aktiv markering.
+- Swing/Day/Trend-strategier.
+- Worker/API.
+- Rapportdelning.
