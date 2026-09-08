@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f4f6f8">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Linas Opti</title>
+<link rel="stylesheet" href="linasopti.css?v=0.36.7">
+</head>
+<body>
+<div class="lina-watermark" aria-hidden="true"></div>
+<div class="wrap">
+<div class="sticky-top">
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Opti Day + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.31</div></div></div></div></header>
+
+<div class="tabs">
+<button class="tab active" data-pane="data">1. Data</button>
+<button class="tab" data-pane="test">2. Test</button>
+<button class="tab" data-pane="result">3. Resultat</button>
+</div>
+</div>
+
+<section id="pane-data">
+<div class="card"><h2>Kom igång</h2><div class="muted">På mobilen gör du allt i tre steg: läs in/hämta data → kör test → jämför resultat. Samma sida skalar upp automatiskt på 13&quot; och 24&quot;.</div></div>
+<div class="card">
+<h2>Alternativ A — CSV-filer</h2>
+<div class="files">
+<div class="filebox"><b>Sparrobot: dagskurser</b><div class="muted">CSV: timestamp,symbol,open,high,low,close,volume</div><input id="dailyFile" type="file" accept=".csv,text/csv"></div>
+<div class="filebox"><b>Opti Day: 5-minuterskurser</b><div class="muted">Samma kolumner, en rad per 5-minutersbar</div><input id="intraFile" type="file" accept=".csv,text/csv"></div>
+</div>
+<div class="status" id="csvStatus">Du kan läsa in en eller båda filerna. Testerna använder bara den data som finns.</div>
+</div>
+
+<div class="card v27-day-start">
+<h2>Opti Day · 5-minutershandel</h2>
+<div class="muted">Första riktiga intradagsmotorn. Signal tas på en avslutad 5-minutersbar och ordern simuleras först på nästa bars öppning. Samma aktie kan handlas flera gånger under dagen, men aldrig samtidigt och aldrig över natten.</div>
+<div class="v27-day-pills"><span>Max 12 affärer/dag</span><span>Max 3/symbol</span><span>Stop 0,8%</span><span>Mål 1,2%</span><span>Max 60 min</span></div>
+</div>
+
+<div class="card">
+<h2>Marknadsdata via Linas Opti API</h2>
+<div class="row">
+<div class="v29-market-box">
+  <div class="v29-market-title"><b>Marknadsgrupp</b><span id="marketGroupInfo">USA Core · 10 aktier + SPY</span></div>
+  <div class="v29-market-buttons" role="group" aria-label="Marknadsgrupp">
+    <button type="button" class="market-btn market-selection" data-market="linaSelection16">⭐ Lina Selection 16</button>
+    <button type="button" class="market-btn active" data-market="usa10">USA Core</button>
+    <button type="button" class="market-btn" data-market="usa20">USA 20</button>
+    <button type="button" class="market-btn" data-market="usa30">USA 30</button>
+    <button type="button" class="market-btn market-nordic" data-market="sweden20">🇸🇪 Sverige 20</button>
+    <button type="button" class="market-btn market-nordic" data-market="denmark20">🇩🇰 Danmark 20</button>
+    <button type="button" class="market-btn market-nordic" data-market="finland20">🇫🇮 Finland 20</button>
+    <button type="button" class="market-btn market-nordic" data-market="norway20">🇳🇴 Norge 20</button>
+    <button type="button" class="market-btn market-nordic" data-market="globalNordic">🌍 Norden 80</button>
+    <button type="button" class="market-btn" data-market="worldRegions20">🌐 Världsregioner 20</button>
+    <button type="button" class="market-btn" data-market="worldExUs20">🌎 Ex-USA 20</button>
+    <button type="button" class="market-btn" data-market="usaWorld50">🚀 USA + Värld 50</button>
+    <button type="button" class="market-btn" data-market="globalStocks100">🌍 Global Stocks 100</button>
+  </div>
+  <div class="muted v29-market-note">⭐ Lina Selection 16 är ett historikbaserat urval från våra tidigare tester och använder Alpaca + SPY som benchmark. USA och de globala Alpaca-grupperna använder Alpaca; Norden 80 använder EODHD-dagsdata. Alla grupper kör samma frysta Opti Swing och benchmark handlas aldrig. Selection-resultat på överlappande historik är urvalstest – inte oberoende bevis.</div>
+</div>
+<label>Symboler, kommaseparerade<input id="symbols" value="AAPL,MSFT,NVDA,AMZN,META,TSLA,AMD,NFLX,AVGO,JPM,SPY"></label>
+<label>Från<input id="start" type="date"></label>
+<label>Till<input id="end" type="date"></label>
+<div class="period-wrap" aria-label="Snabbval tidsperiod">
+  <span class="period-label">Snabbval</span>
+  <button type="button" class="period-btn v035-period-choice" data-period="1y">1 år</button>
+  <button type="button" class="period-btn v035-period-choice" data-period="2024">2024</button>
+  <button type="button" class="period-btn v035-period-choice" data-period="2025">2025</button>
+  <button type="button" class="period-btn v035-period-choice" data-period="2026">2026</button>
+  <button type="button" class="period-btn v035-period-choice" data-period="all">Hela perioden</button>
+<button type="button" class="period-btn v0344-fire v035-period-choice" id="v0344FireTest">🔥 Eldprov 2023</button>
+<button type="button" class="period-btn v035-fire v035-period-choice" id="v035Fire2022">🔥 Eldprov 2022</button>
+</div>
+<div class="day-period-wrap" aria-label="Snabbval Opti Day">
+  <span class="period-label">Opti Day snabbval</span>
+  <button type="button" class="day-period-btn" data-days="5">5 dagar</button>
+  <button type="button" class="day-period-btn" data-days="20">20 dagar</button>
+  <button type="button" class="day-period-btn" data-days="60">60 dagar</button>
+</div>
+</div>
+<div class="row" style="margin-top:9px">
+<button class="secondary" id="healthBtn">Testa anslutning</button>
+<button class="primary" id="dailyBtn">Hämta dagsdata</button>
+<button class="purple" id="intraBtn">Hämta 5-min-data</button>
+</div>
+<div class="status" id="bridgeStatus">Linas Opti API är anslutet via Cloudflare.</div>
+<div class="v31-provider" id="providerInfo">Datakälla: Alpaca · Benchmark: SPY</div>
+</div>
+
+<div class="card v31-nordic-info">
+  <h2>V0.36.7 · Cleanup</h2>
+  <div class="muted">
+    Urvalet är räknat från alla inskickade rapporter, men rankingen använder deduplicerade och kronologiskt korrigerade testfönster så samma körning inte får extra vikt.
+    För själva USA/Alpaca-urvalet användes fem separata miljöer: USA30 2024, 2025 och 2026 samt Global Stocks 100 och USA + Värld 50.
+    Krav: minst 5 affärer, minst 2 testmiljöer, positiv snittaffär, PF &gt; 1 och positivt resultat i minst hälften av miljöerna.
+  </div>
+  <div class="status-box" style="margin-top:10px"><b>Urval:</b> HD, BAC, AMD, INTC, GOOGL, NVDA, CRM, UBER, ADBE, MU, PYPL, AMZN, WMT, CSCO, KO, QCOM</div>
+  <details style="margin-top:10px">
+    <summary><b>Varför just dessa? Visa urvalsstatistik</b></summary>
+    <div class="tablewrap" style="margin-top:8px">
+      <table>
+        <thead><tr><th>Aktie</th><th>Poäng</th><th>Affärer</th><th>Miljöer</th><th>Vinstfrekv.</th><th>Snitt/affär</th></tr></thead>
+        <tbody><tr><td><b>HD</b></td><td>81,6</td><td>5</td><td>4</td><td>100%</td><td>4,51%</td></tr><tr><td><b>BAC</b></td><td>80,9</td><td>7</td><td>5</td><td>85,7%</td><td>5,53%</td></tr><tr><td><b>AMD</b></td><td>75,7</td><td>36</td><td>5</td><td>63,9%</td><td>5,14%</td></tr><tr><td><b>INTC</b></td><td>73,0</td><td>37</td><td>5</td><td>67,6%</td><td>5,84%</td></tr><tr><td><b>GOOGL</b></td><td>64,3</td><td>7</td><td>2</td><td>71,4%</td><td>5,32%</td></tr><tr><td><b>NVDA</b></td><td>64,2</td><td>12</td><td>2</td><td>66,7%</td><td>4,90%</td></tr><tr><td><b>CRM</b></td><td>62,0</td><td>9</td><td>5</td><td>77,8%</td><td>5,30%</td></tr><tr><td><b>UBER</b></td><td>51,3</td><td>5</td><td>2</td><td>60,0%</td><td>2,63%</td></tr><tr><td><b>ADBE</b></td><td>50,2</td><td>5</td><td>3</td><td>60,0%</td><td>4,60%</td></tr><tr><td><b>MU</b></td><td>48,6</td><td>60</td><td>5</td><td>43,3%</td><td>1,30%</td></tr><tr><td><b>PYPL</b></td><td>47,4</td><td>7</td><td>4</td><td>57,1%</td><td>3,07%</td></tr><tr><td><b>AMZN</b></td><td>46,9</td><td>5</td><td>5</td><td>60,0%</td><td>4,13%</td></tr><tr><td><b>WMT</b></td><td>43,2</td><td>8</td><td>4</td><td>75,0%</td><td>0,97%</td></tr><tr><td><b>CSCO</b></td><td>41,8</td><td>10</td><td>4</td><td>60,0%</td><td>1,07%</td></tr><tr><td><b>KO</b></td><td>39,2</td><td>10</td><td>4</td><td>50,0%</td><td>0,78%</td></tr><tr><td><b>QCOM</b></td><td>38,2</td><td>17</td><td>5</td><td>47,1%</td><td>0,83%</td></tr></tbody>
+      </table>
+    </div>
+    <div class="muted" style="margin-top:8px">
+      Poängen väger snittaffär, konsekvens mellan miljöer, profit factor, antal affärer och vinstfrekvens. Små stickprov kan fortfarande se starka ut.
+      Därför är detta ett urvalstest. Nästa riktiga kontroll är att frysa listan och köra den på historik som inte användes när listan valdes.
+    </div>
+  </details>
+</div>
+
+<div class="card v31-nordic-info"><h2>V0.36.7 · Cleanup</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
+</section>
+
+<section id="pane-test" class="hidden">
+<div class="card v036-test-main">
+  <div class="v036-step-title"><span>②</span><div><h2>Redo att testa</h2><div class="muted">Kontrollera sammanfattningen och kör. Strategin ändras inte här.</div></div></div>
+  <div id="v035TestSummary" class="v036-test-summary">Hämta data på fliken Data först.</div>
+  <button class="primary v036-run" id="runBtn">Kör Linas Opti</button>
+  <div id="testDataStatus" class="status-box">⚪ Dagsdata: ej hämtad<br>⚪ 5-min-data: ej hämtad</div>
+</div>
+
+<details class="card v036-advanced">
+  <summary>Avancerat &amp; testinställningar</summary>
+  <div class="row v036-advanced-grid">
+    <label>Startkapital<input id="capital" type="number" value="100000" min="1000" step="1000"></label>
+    <label>Max position, swing<select id="maxpos"><option value=".10">10%</option><option value=".20" selected>20%</option><option value=".25">25%</option></select></label>
+    <label>Risk/affär, daytrader<select id="risk"><option value=".0025">0,25%</option><option value=".005" selected>0,5%</option><option value=".01">1,0%</option></select></label>
+    <label>Testperiod börjar<input id="evalStart" type="date" value="2026-02-01"></label>
+  </div>
+  <div class="v014-help">Data före teststart används endast för indikatorernas uppvärmning. Daytrader-inställningen påverkar inte Swing.</div>
+</details>
+
+<details class="card v036-advanced">
+  <summary>Experiment &amp; utvecklarinformation</summary>
+  <div class="v30-trend-info"><h3>Opti Trend</h3><div class="muted">Veckovis Top 5 momentum. Fortfarande experimentell och inte huvudtestet.</div></div>
+  <div class="v24-world-info"><h3>Omvärldstest</h3><div class="muted">Tre marknadslägen: grön max 5 positioner, gul max 3, röd inga nya köp. Baslinjen Swing lämnas orörd.</div></div>
+</details>
+</section>
+
+<section id="pane-result" class="hidden">
+<div id="v0365DoneCard" class="card v0365-done" hidden>
+  <div class="v0365-done-title">Testet är klart ✓</div>
+  <div class="muted">Välj vad du vill dela. Nästa tryck öppnar iPhones vanliga delningsruta där AirDrop finns.</div>
+  <div class="v0365-done-buttons">
+    <button type="button" id="v0365ShareFull" class="primary">Full testdata</button>
+    <button type="button" id="v0365ShareQuick" class="secondary">Snabbrapport</button>
+  </div>
+  <div id="v0365ShareStatus" class="v17-status"></div>
+</div>
+
+<div class="grid" style="margin-bottom:14px">
+<div class="kpi"><b>Startkapital</b><span id="kStart">—</span></div>
+<div class="kpi"><b>Period</b><span id="kPeriod">—</span></div>
+<div class="kpi"><b>Dagsbarer</b><span id="kDaily">0</span></div>
+<div class="kpi v0366-day-only"><b>5-minbarer</b><span id="kIntra">0</span></div>
+</div>
+<div class="card">
+<div class="two">
+<div class="robot"><h3>Opti Swing</h3><div class="muted">Momentum + mean-reversion, innehav över flera dagar</div><div class="big" id="sEq">—</div><div id="sRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="sDD">—</span></div><div class="mini"><b>Affärer</b><span id="sN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="sWR">—</span></div><div class="mini"><b>Mot benchmark</b><span id="sBench">—</span></div></div></div>
+<div class="robot v30-trend"><h3>Opti Trend</h3><div class="muted">Top 5 momentum · veckovis ombalansering · endast över SMA200</div><div class="big" id="tEq">—</div><div id="tRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="tDD">—</span></div><div class="mini"><b>Ombalanseringar</b><span id="tN">—</span></div><div class="mini"><b>Mot SPY</b><span id="tBench">—</span></div><div class="mini"><b>CAGR</b><span id="tCagr">—</span></div></div></div>
+<div class="robot"><h3>Opti Day</h3><div class="muted">5-min momentum + återhämtning · flera affärer/dag · ingen övernattning</div><div class="big" id="dEq">—</div><div id="dRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="dDD">—</span></div><div class="mini"><b>Affärer</b><span id="dN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="dWR">—</span></div><div class="mini"><b>Snitt/affär</b><span id="dAvg">—</span></div><div class="mini"><b>Profit factor</b><span id="dPF">—</span></div><div class="mini"><b>Affärer/dag</b><span id="dPerDay">—</span></div></div></div>
+</div>
+</div>
+
+<div class="card v28-day-ab">
+  <div class="v28-day-head"><div><h2>Opti Day · A/B signaltest</h2><div class="muted">A är exakt V0.27-signalen. B ändrar bara intradagssignalen – risk, stop, mål, kostnader och exekvering är samma.</div></div><span class="v28-exp">EXPERIMENT</span></div>
+  <div class="v28-abgrid">
+    <div class="v28-variant"><h3>A · Baslinje</h3><div class="v28-big" id="daRet">—</div><div class="v28-mini"><span>PF <b id="daPF">—</b></span><span>Affärer <b id="daN">—</b></span><span>Vinstfrekvens <b id="daWR">—</b></span></div></div>
+    <div class="v28-variant"><h3>B · Bekräftad momentum</h3><div class="v28-big" id="dbRet">—</div><div class="v28-mini"><span>PF <b id="dbPF">—</b></span><span>Affärer <b id="dbN">—</b></span><span>Vinstfrekvens <b id="dbWR">—</b></span><span>Mot A <b id="dbVsA">—</b></span><span>Godkända / råa signaler <b id="dbPassed">—</b></span></div></div>
+  </div>
+</div>
+<div class="card v24-world-card">
+  <div class="v24-world-head"><div><h2>Omvärldstest</h2><div class="muted">Experimentellt trelägesfilter · baslinjen ovan är fortfarande huvudresultatet</div></div><span class="v24-exp-badge">EXPERIMENT</span></div>
+  <div class="v24-world-grid">
+    <div><span>Slutkapital</span><strong id="wEq">—</strong></div>
+    <div><span>Avkastning</span><strong id="wRet">—</strong></div>
+    <div><span>Max drawdown</span><strong id="wDD">—</strong></div>
+    <div><span>Affärer</span><strong id="wN">—</strong></div>
+    <div><span>Profit factor</span><strong id="wPF">—</strong></div>
+    <div><span>Mot baslinjen</span><strong id="wVsBase">—</strong></div>
+    <div><span>Gröna dagar</span><strong id="wGreen">—</strong></div>
+    <div><span>Gula dagar</span><strong id="wYellow">—</strong></div>
+    <div><span>Röda dagar</span><strong id="wRed">—</strong></div>
+    <div><span>Blockerade totalt</span><strong id="wBlocked">—</strong></div>
+    <div><span>Blockerade i gult</span><strong id="wBlockedYellow">—</strong></div>
+    <div><span>Blockerade i rött</span><strong id="wBlockedRed">—</strong></div>
+  </div>
+</div>
+
+<div class="card v342-analysis" id="v342AnalysisCard">
+  <div class="v342-analysis-head">
+    <div><h2>Analys · vilka aktier gjorde jobbet?</h2><div class="muted">Automatisk analys av just den här Swing-körningen. Visar bidrag, bredd och koncentration.</div></div>
+    <span class="v342-badge">ANALYS</span>
+  </div>
+  <div class="v342-kpis">
+    <div><span>Vinstgivande symboler</span><strong id="aWinSymbols">—</strong></div>
+    <div><span>Förlustsymboler</span><strong id="aLossSymbols">—</strong></div>
+    <div><span>Topp 3 av vinsten</span><strong id="aTop3Share">—</strong></div>
+    <div><span>Koncentration</span><strong id="aConcentration">—</strong></div>
+  </div>
+  <div class="v0344-costbox">
+    <div><span>Brutto</span><strong id="v0344Gross">—</strong></div>
+    <div><span>Efter testkostnad</span><strong id="v0344Net">—</strong></div>
+    <div><span>Kostnad</span><strong id="v0344Cost">—</strong></div>
+    <div><span>Mot benchmark netto</span><strong id="v0344NetVsBench">—</strong></div>
+  </div>
+  <div class="muted v0344-costnote">Skuggberäkning: 0,10% per köp + 0,10% per sälj (0,20% tur/retur). Baslinjens Swing-motor ändras inte.</div>
+  <details class="v0344-stockdetails"><summary>📊 Aktier · snabbvy</summary><div id="v0344StockCards" class="v0344-stockcards"></div></details>
+  <div class="v342-analysis-grid">
+    <div class="v342-panel"><h3>🏆 Största bidrag</h3><div id="aWinners" class="v342-list"><div class="muted">Kör ett Swing-test först.</div></div></div>
+    <div class="v342-panel"><h3>⚠️ Största förluster</h3><div id="aLosers" class="v342-list"><div class="muted">Kör ett Swing-test först.</div></div></div>
+  </div>
+  <details class="v342-details"><summary>Visa alla handlade symboler</summary><div class="tablewrap"><table><thead><tr><th>Symbol</th><th>Affärer</th><th>Vinst %</th><th>Total P/L</th><th>+12%</th><th>Stop</th></tr></thead><tbody id="aSymbolTable"></tbody></table></div></details>
+</div>
+<div class="card chart"><canvas id="chart"></canvas></div>
+<div class="card"><h2>Affärslogg</h2><div class="tablewrap"><table><thead><tr><th>Tid</th><th>Robot</th><th>Symbol</th><th>Åtgärd</th><th>Pris</th><th>Belopp</th><th>Orsak</th><th>Resultat</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
+<details class="card v036-result-advanced">
+<summary>Revision, kontroll &amp; avslutade affärer</summary>
+<div class="v036-result-advanced-inner">
+<h3>Backtestkontroll V0.30.1</h3>
+<div class="v014-metrics">
+<div><span>Benchmark</span><strong>SPY · handlas inte</strong></div>
+<div><span>Faktisk teststart</span><strong id="v15Eval">—</strong></div>
+<div><span>Profit factor</span><strong id="v15PF">—</strong></div>
+<div><span>Snittvinst</span><strong id="v15AvgWin">—</strong></div>
+<div><span>Snittförlust</span><strong id="v15AvgLoss">—</strong></div>
+<div><span>Bästa affär</span><strong id="v15Best">—</strong></div>
+<div><span>Sämsta affär</span><strong id="v15Worst">—</strong></div>
+<div><span>Öppna vid slut</span><strong id="v15Open">—</strong></div>
+</div>
+<p class="v014-note"><b>Look-ahead-kontroll:</b> köpsignalen beräknas endast med data till och med föregående handelsdags stängning. Köp sker till nästa handelsdags öppningskurs. SPY används bara som benchmark.</p>
+<section class="v301-revision">
+  <div class="v301-head"><div><h3>Swing revision · V0.30.1</h3><div class="muted">Strategin är orörd. Detta är en mekanisk kontroll av samma backtest.</div></div><strong id="auditStatus">—</strong></div>
+  <div class="v301-grid">
+    <div><span>Köp / avslut</span><b id="auditEntries">—</b></div>
+    <div><span>Signaler</span><b id="auditSignals">—</b></div>
+    <div><span>Kontanter</span><b id="auditCash">—</b></div>
+    <div><span>Positioner</span><b id="auditPos">—</b></div>
+    <div><span>Samma dag</span><b id="auditSameDay">—</b></div>
+    <div><span>Stop + mål samma bar</span><b id="auditBoth">—</b></div>
+    <div><span>Datakvalitet OHLC</span><b id="auditBars">—</b></div>
+    <div><span>SPY handlad?</span><b id="auditSpy">—</b></div>
+  </div>
+  <div id="auditIssues" class="v301-result">Kör testet för revision.</div>
+  <div id="auditWarnings" class="v301-warn"></div>
+</section>
+
+<details><summary>Visa avslutade Swing-affärer</summary><div id="v16TradeCards" class="v16-tradecards"></div></details>
+
+
+
+
+</div>
+</details>
+</section>
+
+<div class="note">Detta är en testplattform, inte investeringsrådgivning. För riktig utvärdering måste data vara korrekt, överlevnadsbias undvikas och spread/slippage/courtage modelleras realistiskt. Linas Opti är mobil-först och lägger grunden för reproducerbara tester med samma regler över verklig historik.</div>
+</div>
+
+</div>
+
+<script src="linasopti.js?v=0.36.7"></script>
+</body></html>
