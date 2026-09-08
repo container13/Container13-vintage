@@ -369,3 +369,27 @@ Ren UX-version. Swing, Lina Selection 16 och handelsreglerna är oförändrade.
 - Inga marknadsgrupper eller symbolurval.
 - Ingen Worker-kod.
 - Ingen export/delning.
+
+
+## V0.37.3 – Gate + Sticky Header
+
+### Lösenkod
+- Lösenkodshanteringen är ombyggd rent från grunden.
+- `adam` accepteras case-insensitive efter trimning.
+- Gate visas explicit vid varje sidladdning.
+- Inputfältet töms vid ny laddning och får fokus.
+- Enter och knappen `Öppna Linas Opti` använder samma unlock-funktion.
+- Ingen `sessionStorage` används.
+
+### Fast header
+- Appens huvudheader är sticky.
+- Flikarna `1. Data / 2. Test / 3. Resultat` är också sticky och ligger kvar under headern vid scroll.
+- Safe-area-hänsyn för iPhone är tillagd.
+- Syfte: navigationen ska alltid vara åtkomlig under långa Data-/Resultatvyer.
+
+### Inte ändrat
+- Ingen handelslogik.
+- Ingen periodlogik.
+- Ingen datahämtning.
+- Ingen Worker/API-logik.
+- Ingen export/delning.

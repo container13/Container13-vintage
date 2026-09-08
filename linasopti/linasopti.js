@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.37.2";
+const APP_VERSION = "V0.37.3";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -1225,12 +1225,14 @@ function v0368UpdateContextUI(){
     var gate=document.getElementById("v0369Gate");
     var msg=document.getElementById("v0369GateMsg");
     if(!input||!gate)return;
-    if(input.value==="adam"){
+    if(String(input.value||"").trim().toLowerCase()==="adam"){
       gate.style.display="none";
       gate.setAttribute("aria-hidden","true");
       if(msg)msg.textContent="";
+      window.scrollTo(0,0);
     }else{
       if(msg)msg.textContent="Fel lösenkod";
+      input.focus();
       input.select();
     }
   }
@@ -1239,8 +1241,11 @@ function v0368UpdateContextUI(){
     var btn=document.getElementById("v0369Enter");
     var input=document.getElementById("v0369Code");
     if(!gate)return;
-    if(btn)btn.addEventListener("click",unlock);
-    if(input)input.addEventListener("keydown",function(e){if(e.key==="Enter")unlock();});
+    gate.style.display="flex";
+    gate.setAttribute("aria-hidden","false");
+    if(input){input.value="";setTimeout(function(){input.focus();},50);}
+    if(btn)btn.onclick=function(e){e.preventDefault();unlock();};
+    if(input)input.onkeydown=function(e){if(e.key==="Enter"){e.preventDefault();unlock();}};
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);
   else init();

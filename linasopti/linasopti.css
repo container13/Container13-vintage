@@ -544,3 +544,32 @@ body > .v23-sharebar{overflow:visible !important}
 #bridgeStatus.v0372-loading{background:#eef6fd;color:#174f7a}
 #bridgeStatus.v0372-good{background:#f1fbf5;color:#16794a}
 #bridgeStatus.v0372-bad{background:#fff1f0;color:#a9342c}
+
+/* V0.37.3 – sticky top navigation */
+header{
+  position:sticky!important;
+  top:0!important;
+  z-index:12000!important;
+  background:#f4f7f9!important;
+}
+.tabs{
+  position:sticky!important;
+  top:74px!important;
+  z-index:11990!important;
+  background:#f4f7f9!important;
+  padding-top:6px!important;
+  padding-bottom:8px!important;
+}
+/* Prevent content from visually bleeding through sticky controls */
+header::after,.tabs::after{
+  content:"";
+  position:absolute;
+  left:0;right:0;bottom:-1px;
+  height:1px;
+  background:#dfe6eb;
+}
+/* iPhone safe area */
+@supports (padding-top: env(safe-area-inset-top)){
+  header{padding-top:calc(8px + env(safe-area-inset-top))!important}
+  .tabs{top:calc(74px + env(safe-area-inset-top))!important}
+}
