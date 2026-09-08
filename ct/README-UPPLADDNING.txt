@@ -6,8 +6,8 @@ PUBLICERINGSADRESS
 https://container13.se/ct/
 
 
-PAKETETS FEM FILER
-------------------
+PAKETETS FILER
+--------------
 1. index.html
    Startsidan och den illustrerade installationsguiden för iPhone.
    Här väljer användaren även mellan iPhone och Android.
@@ -96,7 +96,8 @@ DIAGNOS FÖR ANDROID
 Filerna CompetenceTool-Android-DIAG-2.user.js och android-diag-report.html ska
 ligga i samma publika /ct/-mapp som android.html. DIAG 2.0 lagrar mätvärden i
 Violentmonkey och visar dem på den separata rapportsidan.
-IPHONE 2.0.1
+IPHONE 2.0.4
 ------------
-Valet "Tillåt popup" är normalt avstängt. Då blockeras klick som öppnar
-popup-rutor i schemat, medan touchdrag och scrollning lämnas orörda.
+Valet "Tillåt popup" är normalt avstängt. Då är schemat pek-inaktivt medan
+scrollbehållaren runt tabellen är aktiv. Det blockerar popup från datum,
+rubriker, namn och skiftceller utan att stoppa vågrät eller lodrät scrollning.

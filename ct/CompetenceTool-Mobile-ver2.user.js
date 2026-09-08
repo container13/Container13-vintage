@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Competence Tool – mobilvy ver2
+// @name         Competence Tool – mobilvy v2.0.4
 // @namespace    container13.mobile.ver2
-// @version      2.0.1
+// @version      2.0.4
 // @description  Gör Holmens bemanningsschema användbart på iPhone.
 // @match        https://competencetool.se/*
 // @match        https://*.competencetool.se/*
@@ -100,6 +100,13 @@
     style.textContent = css;
     (targetDocument.head || targetDocument.documentElement).appendChild(style);
   };
+
+  const applyPopupMode = () => {
+    const disabled = sessionStorage.getItem('ctm-allow-popups-v201') !== 'true';
+    document.documentElement.classList.toggle('ctm-popups-disabled', disabled);
+  };
+
+  applyPopupMode();
 
   const styleShell = () => {
     let shellDocument = document;
@@ -505,6 +512,17 @@
         overflow: auto !important;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: none !important;
+      }
+      /*
+        När popup är avstängd ignoreras pekning på tabellerna helt. Draget
+        landar då på scrollbehållaren runt tabellen och den naturliga vågräta
+        och lodräta scrollningen finns kvar. Detta motsvarar varför den klonade
+        datum-/f-e-n-rubriken redan är säker att dra på.
+      */
+      html.ctm-popups-disabled #shiftScheduleTable,
+      html.ctm-popups-disabled #shiftScheduleTable_wrapper .dataTables_scrollHead table,
+      html.ctm-popups-disabled #shiftScheduleTable_wrapper .dataTables_scrollBody table {
+        pointer-events: none !important;
       }
       .TimeViewTable, #shiftScheduleTable {
         width: max-content !important;
@@ -1014,18 +1032,6 @@
     options.append(label, showAllLabel, popupLabel);
     filter.parentElement.insertBefore(options, filter);
 
-    // Stoppa bara det avslutande klicket som öppnar Competence Tools popup.
-    // Pekstart, drag och touchmove lämnas helt orörda så tabellen kan scrollas.
-    if (document.documentElement.dataset.ctmPopupGuard !== '1') {
-      document.documentElement.dataset.ctmPopupGuard = '1';
-      document.addEventListener('click', (event) => {
-        if (sessionStorage.getItem('ctm-allow-popups-v201') === 'true') return;
-        if (!event.target.closest('#shiftScheduleTable, #shiftScheduleTable_wrapper table')) return;
-        event.preventDefault();
-        event.stopImmediatePropagation();
-      }, true);
-    }
-
     const updateNames = () => {
       document.documentElement.classList.toggle('ctm-first-names', checkbox.checked);
       table.querySelectorAll('a.TimeViewName').forEach((link) => {
@@ -1051,7 +1057,9 @@
     });
     popupCheckbox.addEventListener('change', () => {
       sessionStorage.setItem('ctm-allow-popups-v201', String(popupCheckbox.checked));
+      applyPopupMode();
     });
+    applyPopupMode();
     updateNames();
     applyPersonRowVisibility();
     return true;
