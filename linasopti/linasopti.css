@@ -589,3 +589,8 @@ body.v0384-locked > .lina-watermark{
 .v0391-day-title{font-weight:900;font-size:1.05rem;margin-bottom:4px}
 .v0391-day-fetch .day-period-wrap{margin:12px 0 10px}
 #intraBtn.v0391-intra{display:inline-flex!important;margin-top:2px}
+
+/* V0.40.0: Test-fliken signalerar omedelbart när körbar data finns. */
+.tab.data-ready{position:relative;font-weight:800;box-shadow:inset 0 -3px 0 rgba(35,140,75,.65)}
+.tab.data-ready::after{content:" • REDO";font-size:.72em;color:#238c4b;font-weight:900}
+.v0400-pro{outline:2px solid rgba(138,79,158,.22);outline-offset:-2px}
