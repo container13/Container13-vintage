@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.38.1";
+const APP_VERSION = "V0.38.2";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -88,6 +88,18 @@ async function bridge(path){
  if(!API_BASE) throw new Error("Kunde inte nå Linas Opti API.");
  let r=await fetch(API_BASE+path);let j=await r.json();if(!r.ok)throw new Error(j.error||("HTTP "+r.status));return j
 }
+async function v0382Timed(path,ms=12000){
+ let timer;
+ try{
+  return await Promise.race([
+   bridge(path),
+   new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error("TIMEOUT")),ms)})
+  ]);
+ }finally{
+  clearTimeout(timer);
+ }
+}
+
 $("healthBtn").onclick=async()=>{try{
   let j=await checkLinasOptiApi();
   const mode=j.mode==="paper"?"Alpaca Paper":(j.mode||"Alpaca");
@@ -119,20 +131,54 @@ function paintBridgeDone(count,tf){
 async function getBars(tf){
  if(currentProvider()==="eodhd" && tf!=="1Day"){const el=$("bridgeStatus");if(el){el.className="status bad";el.textContent="Opti Day/5-min är tills vidare endast USA.";}return;}
  const btn=tf==="1Day"?$("dailyBtn"):$("intraBtn"); const old=btn?.textContent;
+ const status=$("bridgeStatus");
  try{
-  if(btn){btn.disabled=true;btn.textContent="Hämtar…";} $("bridgeStatus").className="status"; $("bridgeStatus").textContent="Hämtar...";
+  if(btn){btn.disabled=true;btn.textContent="Hämtar…";}
+  status.className="status";
+  status.textContent="Steg 1/3 · Kontrollerar Linas Opti API…";
+
+  try{
+    await v0382Timed("/health",8000);
+  }catch(e){
+    if(e.message==="TIMEOUT") throw new Error("API-kontrollen svarar inte inom 8 sekunder.");
+    throw new Error("API-kontrollen misslyckades: "+e.message);
+  }
+
+  status.textContent="Steg 2/3 · API svarar · hämtar marknadsdata…";
+
   let rows=[];
   if(currentProvider()==="eodhd" && tf==="1Day"){
    const syms=$("symbols").value.split(",").map(x=>x.trim().toUpperCase()).filter(Boolean);
    const chunks=[]; for(let i=0;i<syms.length;i+=25)chunks.push(syms.slice(i,i+25));
    for(let i=0;i<chunks.length;i++){
-    $("bridgeStatus").textContent=`Hämtar del ${i+1}/${chunks.length}…`;
+    status.textContent=`Steg 2/3 · Hämtar EODHD del ${i+1}/${chunks.length}…`;
     const url=`/eod-bars?symbols=${encodeURIComponent(chunks[i].join(","))}&timeframe=1Day&start=${$("start").value}&end=${$("end").value}`;
-    const j=await bridge(url); rows.push(...(j.rows||[]));
+    try{
+      const j=await v0382Timed(url,20000); rows.push(...(j.rows||[]));
+    }catch(e){
+      if(e.message==="TIMEOUT") throw new Error("EODHD-anropet svarar inte inom 20 sekunder.");
+      throw e;
+    }
    }
-  }else{ const j=await bridge(params(tf)); rows=j.rows||[]; }
-  if(tf==="1Day")DAILY=rows;else INTRA=rows; updateTestDataStatus();updateDataStatus();v035RefreshGuide(); v0368UpdateContextUI();paintBridgeDone(rows.length,tf);
- }catch(e){$("bridgeStatus").className="status bad";$("bridgeStatus").textContent=e.message;}finally{if(btn){btn.disabled=false;btn.textContent=old;}}
+  }else{
+    try{
+      const j=await v0382Timed(params(tf),20000); rows=j.rows||[];
+    }catch(e){
+      if(e.message==="TIMEOUT") throw new Error("Alpaca/Worker-anropet svarar inte inom 20 sekunder.");
+      throw e;
+    }
+  }
+
+  status.textContent=`Steg 3/3 · ${rows.length.toLocaleString("sv-SE")} rader mottagna · slutför…`;
+
+  if(tf==="1Day")DAILY=rows;else INTRA=rows;
+  updateTestDataStatus();updateDataStatus();v035RefreshGuide();v0368UpdateContextUI();paintBridgeDone(rows.length,tf);
+ }catch(e){
+  status.className="status bad";
+  status.textContent="🔴 "+(e?.message||String(e));
+ }finally{
+  if(btn){btn.disabled=false;btn.textContent=old;}
+ }
 }
 $("dailyBtn").onclick=()=>getBars("1Day"); if($("intraBtn")) $("intraBtn").onclick=()=>getBars("5Min");
 

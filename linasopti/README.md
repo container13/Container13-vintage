@@ -550,3 +550,22 @@ Fixarna för:
 ligger kvar.
 
 Ingen strategi-, period-, marknadsgrupps- eller Worker-logik ändrad.
+
+
+## V0.38.2 – API Diagnostic
+
+Denna version ändrar inte strategin eller Worker-koden.
+
+Hämtningen visar tre separata steg:
+1. `Kontrollerar Linas Opti API…`
+2. `API svarar · hämtar marknadsdata…`
+3. `X rader mottagna · slutför…`
+
+Timeout:
+- /health: 8 sekunder
+- /bars eller /eod-bars: 20 sekunder
+
+Syftet är att exakt skilja på:
+- Worker/API nås inte
+- Worker nås men marknadsdata-anropet hänger
+- data kommer fram men frontend fastnar efter mottagning
