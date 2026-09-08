@@ -13,8 +13,8 @@ PAKETETS FILER
    Här väljer användaren även mellan iPhone och Android.
 
 2. android.html
-   Den illustrerade installationsguiden för Android.
-   Androidspåret använder Firefox och Violentmonkey.
+   Vilande Android-sida som visar "Under konstruktion".
+   Inga Android-installationssteg visas publikt medan arbetet är pausat.
 
 3. CompetenceTool-Mobile-ver2.user.js
    Mobilanpassningen för iPhone och Safari.
@@ -42,7 +42,7 @@ ADRESSER SOM SKA FUNGERA
 Guide och plattformsval:
 https://container13.se/ct/
 
-Androidguide:
+Androidsida (ska visa "Under konstruktion"):
 https://container13.se/ct/android.html
 
 iPhone-skript:
@@ -70,13 +70,10 @@ iPhone:
 2. Kontrollera att iPhone är markerat.
 3. Kontrollera att installationsknappen öppnar iPhone-skriptet.
 
-Android/Samsung:
-1. Öppna https://container13.se/ct/ i Firefox, inte Samsung Internet.
+Android:
+1. Öppna https://container13.se/ct/.
 2. Välj Android.
-3. Installera Violentmonkey enligt guiden.
-4. Kontrollera att installationsknappen öppnar Android-skriptet.
-5. Testa CompetenceTool: avdelningsval, A–F, vågrät/lodrät scrollning,
-   datumval, namn och popupfönster.
+3. Kontrollera att sidan visar "Under konstruktion" och en knapp tillbaka till iPhone-guiden.
 
 
 FRAMTIDA UPPDATERINGAR
@@ -94,8 +91,8 @@ iPhone- och Android-anpassad · CompetenceTool · @bulan73
 DIAGNOS FÖR ANDROID
 -------------------
 Filerna CompetenceTool-Android-DIAG-2.user.js och android-diag-report.html ska
-ligga i samma publika /ct/-mapp som android.html. DIAG 2.0 lagrar mätvärden i
-Violentmonkey och visar dem på den separata rapportsidan.
+ligga kvar i paketet som arbetsmaterial, men länkas inte från den publika
+Android-sidan medan Androidversionen är under konstruktion.
 IPHONE 2.0.4
 ------------
 Valet "Tillåt popup" är normalt avstängt. Då är schemat pek-inaktivt medan
