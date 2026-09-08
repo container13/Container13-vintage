@@ -568,23 +568,47 @@ body > .v23-sharebar{overflow:visible !important}
 .v0374-gate-ok{color:#147d4f!important}
 .v0374-gate-error{color:#b42318!important}
 
-/* V0.37.4 – header + Data/Test/Resultat är EN sticky enhet.
-   Ingen nested sticky på header eller .tabs. */
+
+
+
+
+/* V0.37.5 – iPhone: headern är FIXED, inte sticky.
+   Safari kan släppa position:sticky vid lång scroll; fixed gör Data/Test/Resultat verkligt fasta. */
+:root{--v0375-head-h:170px}
 .sticky-top{
-  position:sticky!important;
+  position:fixed!important;
   top:0!important;
+  left:0!important;
+  right:0!important;
   z-index:12000!important;
+  margin:0!important;
+  padding:calc(8px + env(safe-area-inset-top)) 12px 8px!important;
   background:rgba(244,246,248,.98)!important;
+  border-bottom:1px solid rgba(229,231,235,.95)!important;
   -webkit-backdrop-filter:blur(12px);
   backdrop-filter:blur(12px);
 }
-.sticky-top header{
+.sticky-top header,.sticky-top .tabs{
   position:relative!important;
   top:auto!important;
   z-index:auto!important;
 }
-.sticky-top .tabs{
-  position:relative!important;
-  top:auto!important;
-  z-index:auto!important;
+.wrap{
+  padding-top:calc(var(--v0375-head-h) + 12px)!important;
+}
+@media(min-width:700px){
+  .sticky-top{padding-left:max(20px,calc((100vw - 1440px)/2 + 20px))!important;padding-right:max(20px,calc((100vw - 1440px)/2 + 20px))!important}
+}
+
+/* V0.37.6 – vald period ska vara omisskännlig */
+.v0376-selected{
+  background:#1267b2!important;
+  color:#fff!important;
+  border-color:#1267b2!important;
+  box-shadow:0 0 0 4px rgba(18,103,178,.18),0 4px 12px rgba(18,103,178,.20)!important;
+  transform:translateY(-1px);
+}
+.v0376-selected::before{
+  content:"✓ "!important;
+  font-weight:900!important;
 }

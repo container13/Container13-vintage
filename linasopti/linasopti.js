@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.37.4";
+const APP_VERSION = "V0.37.6";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -1258,4 +1258,57 @@ function v0368UpdateContextUI(){
     d.addEventListener("toggle",sync); sync();
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initCustom);else initCustom();
+})();
+
+// V0.37.5 – håll innehållet exakt under den fasta headern.
+(function v0375FixedHeaderMeasure(){
+  function sync(){
+    const h=document.querySelector(".sticky-top");
+    if(!h)return;
+    const px=Math.ceil(h.getBoundingClientRect().height);
+    document.documentElement.style.setProperty("--v0375-head-h",px+"px");
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",sync);else sync();
+  window.addEventListener("load",sync);
+  window.addEventListener("resize",sync);
+  window.addEventListener("orientationchange",()=>setTimeout(sync,100));
+})();
+
+// V0.37.6 – robust visuell periodmarkering oberoende av tidigare klassnamn.
+(function v0376PeriodVisualSelection(){
+  function periodButtons(){
+    return Array.from(document.querySelectorAll(
+      '.v0370-range-btn, .v0370-year-btn, [data-years], [data-year], .period-btn, .year-btn'
+    ));
+  }
+  function clearAll(){
+    periodButtons().forEach(b=>{
+      b.classList.remove('active','selected','is-active','v0376-selected');
+      b.setAttribute('aria-pressed','false');
+    });
+  }
+  function mark(btn){
+    if(!btn)return;
+    clearAll();
+    btn.classList.add('v0376-selected');
+    btn.setAttribute('aria-pressed','true');
+  }
+  function init(){
+    periodButtons().forEach(btn=>{
+      btn.addEventListener('click',function(){
+        // Låt befintlig periodlogik köra först, markera sedan säkert.
+        setTimeout(()=>mark(btn),0);
+      },true);
+    });
+
+    // Om period redan är vald av befintlig kod, spegla den visuellt.
+    const pre=periodButtons().find(b=>
+      b.classList.contains('active') ||
+      b.classList.contains('selected') ||
+      b.getAttribute('aria-pressed')==='true'
+    );
+    if(pre) mark(pre);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
+  else init();
 })();

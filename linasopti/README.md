@@ -415,3 +415,31 @@ Ren UX-version. Swing, Lina Selection 16 och handelsreglerna är oförändrade.
 - Swing/Day/Trend-strategier.
 - Worker/API.
 - Rapportdelning.
+
+
+## V0.37.5 – Mobile Header + Start Fix
+
+Skärmbilderna från iPhone visade två separata fel:
+
+1. Efter godkänd kod kunde Safari återställa den gamla scrollpositionen efter vårt första `scrollTo(0,0)`.
+   - Top-reset körs nu först när gaten verkligen är `display:none`.
+   - Den upprepas via `requestAnimationFrame` och en kort Safari-fördröjning.
+
+2. `position:sticky` höll inte Data/Test/Resultat kvar genom hela den långa sidan i mobil Safari.
+   - Den gemensamma `.sticky-top` är nu `position:fixed`.
+   - Headerhöjden mäts i JS och läggs som exakt top-padding på innehållet.
+   - Data/Test/Resultat ska därför vara kvar oavsett hur långt man scrollar.
+
+Dessutom:
+- Det gamla synliga V0.37.x/Global Momentum/Defensive-experimentkortet som syntes längst ned i skärmbilden är nu faktiskt dolt från normalvyn.
+- Ingen strategi-, period-, data- eller Worker-logik ändrad.
+
+
+## V0.37.6 – Period Selection Fix
+
+- Periodmarkeringen är nu frikopplad från de äldre klassnamnen.
+- Ett separat visuellt lager lyssnar på alla periodknappar och sätter exakt en vald knapp.
+- Vald period får blå fylld bakgrund, vit text, tydlig ram/skugga och ✓.
+- `aria-pressed=true` sätts samtidigt för bättre tillgänglighet.
+- Själva periodberäkningen/datumlogiken är inte ändrad.
+- V0.37.5-fixarna för fast header och start högst upp ligger kvar.
