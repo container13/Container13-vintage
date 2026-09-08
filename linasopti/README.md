@@ -292,3 +292,19 @@ Ren UX-version. Swing, Lina Selection 16 och handelsreglerna är oförändrade.
 - Ingen Worker/API-logik.
 - Ingen exportlogik.
 - Ingen datahämtning eller CSV-parser ändrad.
+
+
+## V0.37.0 – Årsperioder + utvecklingsstädning
+- Bas: V0.36.9.
+- Eldprov 2022/2023 borttagna ur användarflödet och deras specialhandlers bortkopplade.
+- Kalenderårsval: 2017–2026.
+- Snabbval: 1, 3, 5 och 10 år bakåt till aktuellt år.
+- Årsval använder 1 december föregående år som warmup-data och 1 januari som evaluationStart. API:t avgör faktiska handelsdagar.
+- Pågående år slutar på dagens datum; avslutade år begärs till 31 december.
+- Egen period finns kvar.
+- Opti Day-introkort, anslutningstest, Day-snabbval och 5-min-hämtning är dolda i normal Swing-vy men inte raderade.
+- CSV/manuell import och urvalsmetod ligger kollapsat som tekniska/felsökningsdelar.
+- Revision/audit och utvecklingsinformation behålls kollapsat för framtida felsökning.
+- Lösenkod `adam` och fungerande iOS-delning behålls.
+- INTE ändrat: Swing-signaler/score, entry/exit-kronologi, stop/target/time exit, sizing/maxpositioner, benchmark, Omvärld, Day-/Trend-beräkningsmotorer, Worker/API eller exportformat.
+- Felsök årsval i `v0370PeriodPicker()`. Dolda delar är avsiktligt bevarade för senare återaktivering.

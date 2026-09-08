@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.36.9";
+const APP_VERSION = "V0.37.0";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -871,24 +871,12 @@ function v035ClearFireSelection(){
    }
  });
 }
-function v035SetFire2022(){
- v035SelectPeriodButton("v035Fire2022");
- const start=document.getElementById("start"),end=document.getElementById("end"),ev=document.getElementById("evalStart");
- if(start)start.value="2021-12-01";
- if(ev)ev.value="2022-01-03";
- if(end)end.value="2022-12-30";
- v035RefreshGuide("🔥 Eldprov 2022");
-}
+
 function v035ClickTab(n){
  const el=[...document.querySelectorAll("button,a")].find(x=>x.textContent.trim().startsWith(n+"."));
  if(el) el.click();
 }
-function v035PeriodName(){
- const s=document.getElementById("start")?.value,e=document.getElementById("end")?.value;
- if(s==="2022-12-01"&&e==="2023-12-29")return "🔥 Eldprov 2023";
- if(s==="2021-12-01"&&e==="2022-12-30")return "🔥 Eldprov 2022";
- return s&&e?`${s} → ${e}`:"Välj period";
-}
+function v035PeriodName(){const s=document.getElementById("start")?.value,e=document.getElementById("end")?.value;return s&&e?`${s} → ${e}`:"Välj period";}
 function v035RefreshGuide(label){
  const g=currentGroup?.(), rows=DAILY.length;
  const summary=document.getElementById("v035DataSummary"),check=document.getElementById("v035DataCheck"),next=document.getElementById("v035ToTest");
@@ -910,9 +898,7 @@ function v035RenderHero(s){
  ${c?`<div><span>Efter kostnader</span><strong>${c.netRet>=0?"+":""}${pct(c.netRet)}</strong></div>`:""}`;
 }
 window.addEventListener("DOMContentLoaded",()=>{
- document.getElementById("v035Fire2022")?.addEventListener("click",v035SetFire2022);
  document.getElementById("v035ToTest")?.addEventListener("click",()=>v035ClickTab("2"));
- document.getElementById("v035NextTest")?.addEventListener("click",()=>{v035ClickTab("1");setTimeout(v035SetFire2022,60);});
  document.querySelectorAll(".v035-period-choice[data-period]").forEach(btn=>{
    if(!btn.dataset.v035OriginalText) btn.dataset.v035OriginalText=btn.textContent;
    btn.addEventListener("click",()=>{
@@ -928,17 +914,7 @@ window.addEventListener("DOMContentLoaded",()=>{
  });
  setTimeout(v035RefreshGuide,100);
 });
-function v0344SetFireTest(){
- v035SelectPeriodButton("v0344FireTest");
- const start=document.getElementById("start"),end=document.getElementById("end"),ev=document.getElementById("evalStart");
- if(start)start.value="2022-12-01"; // uppvärmning före testet
- if(ev)ev.value="2023-01-03";
- if(end)end.value="2023-12-29";
- v035RefreshGuide("🔥 Eldprov 2023");
- const st=document.getElementById("testDataStatus");
- if(st)st.innerHTML='<span class="good">🔥 Eldprov 2023 valt · helt före urvalsperioderna 2024–2026. Hämta dagsdata och kör utan att ändra Swing.</span>';
-}
-window.addEventListener("DOMContentLoaded",()=>document.getElementById("v0344FireTest")?.addEventListener("click",v0344SetFireTest));
+
 
 function v17DateOnly(v){return String(v||"").slice(0,10)}
 function v17Symbols(){const e=document.getElementById("symbols");return e?e.value:""}
@@ -1238,4 +1214,26 @@ function v0368UpdateContextUI(){
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);
   else init();
+})();
+
+
+// V0.37.0 – generella årsval. Ändrar endast datumfält och tömmer tidigare hämtad data.
+(function v0370PeriodPicker(){
+ const pad=n=>String(n).padStart(2,"0"), iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+ function clear(){document.querySelectorAll(".v0370-range-btn,.v0370-year-btn").forEach(b=>b.classList.remove("active"))}
+ function apply(first,last,btn){
+  const s=document.getElementById("start"),e=document.getElementById("end"),v=document.getElementById("evalStart"); if(!s||!e||!v)return;
+  const now=new Date(),cy=now.getFullYear();
+  s.value=`${first-1}-12-01`; v.value=`${first}-01-01`; e.value=last>=cy?iso(now):`${last}-12-31`;
+  clear(); if(btn)btn.classList.add("active");
+  if(typeof DAILY!=="undefined")DAILY.length=0;
+  const badge=document.getElementById("modeBadge"); if(badge){badge.textContent="DATA EJ INLÄST";}
+  const ready=document.getElementById("v0368DataReady"); if(ready){ready.hidden=true;ready.style.display="none";}
+  if(typeof v035RefreshGuide==="function")v035RefreshGuide();
+ }
+ function init(){
+  document.querySelectorAll(".v0370-year-btn").forEach(b=>b.onclick=()=>{const y=+b.dataset.year;apply(y,y,b)});
+  document.querySelectorAll(".v0370-range-btn").forEach(b=>b.onclick=()=>{const n=+b.dataset.years,now=new Date(),last=now.getFullYear();apply(last-n+1,last,b)});
+ }
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();

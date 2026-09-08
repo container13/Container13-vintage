@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.36.9">
+<link rel="stylesheet" href="linasopti.css?v=0.37.0">
 </head>
 <body>
 <div id="v0369Gate" class="v0369-gate" aria-hidden="false">
@@ -34,7 +34,7 @@
 <section id="pane-data">
 <div class="card"><h2>Kom igång</h2><div class="muted">På mobilen gör du allt i tre steg: läs in/hämta data → kör test → jämför resultat. Samma sida skalar upp automatiskt på 13&quot; och 24&quot;.</div></div>
 <details class="v0369-altA">
-  <summary>CSV-filer / manuell inläsning</summary>
+  <summary>Tekniskt: CSV / manuell inläsning</summary>
   <div class="card">
 <h2>Alternativ A — CSV-filer</h2>
 <div class="files">
@@ -45,7 +45,7 @@
 <div class="status" id="csvStatus">Du kan läsa in en eller båda filerna. Testerna använder bara den data som finns.</div>
 </div>
 
-<div class="card v27-day-start">
+<div class="card v27-day-start v0370-dev-hidden">
 <h2>Opti Day · 5-minutershandel</h2>
 <div class="muted">Första riktiga intradagsmotorn. Signal tas på en avslutad 5-minutersbar och ordern simuleras först på nästa bars öppning. Samma aktie kan handlas flera gånger under dagen, men aldrig samtidigt och aldrig över natten.</div>
 <div class="v27-day-pills"><span>Max 12 affärer/dag</span><span>Max 3/symbol</span><span>Stop 0,8%</span><span>Mål 1,2%</span><span>Max 60 min</span></div>
@@ -76,15 +76,17 @@
 <label>Symboler, kommaseparerade<input id="symbols" value="AAPL,MSFT,NVDA,AMZN,META,TSLA,AMD,NFLX,AVGO,JPM,SPY"></label>
 <label>Från<input id="start" type="date"></label>
 <label>Till<input id="end" type="date"></label>
-<div class="period-wrap" aria-label="Snabbval tidsperiod">
-  <span class="period-label">Snabbval</span>
-  <button type="button" class="period-btn v035-period-choice" data-period="1y">1 år</button>
-  <button type="button" class="period-btn v035-period-choice" data-period="2024">2024</button>
-  <button type="button" class="period-btn v035-period-choice" data-period="2025">2025</button>
-  <button type="button" class="period-btn v035-period-choice" data-period="2026">2026</button>
-  <button type="button" class="period-btn v035-period-choice" data-period="all">Hela perioden</button>
-<button type="button" class="period-btn v0344-fire v035-period-choice" id="v0344FireTest">🔥 Eldprov 2023</button>
-<button type="button" class="period-btn v035-fire v035-period-choice" id="v035Fire2022">🔥 Eldprov 2022</button>
+<div class="v0370-period-panel">
+<span class="period-label">Period</span>
+<div class="v0370-range-row">
+<button type="button" class="v0370-range-btn" data-years="1">1 år</button>
+<button type="button" class="v0370-range-btn" data-years="3">3 år</button>
+<button type="button" class="v0370-range-btn" data-years="5">5 år</button>
+<button type="button" class="v0370-range-btn" data-years="10">10 år</button>
+</div>
+<div class="v0370-year-grid">
+<button type="button" class="v0370-year-btn" data-year="2026">2026</button><button type="button" class="v0370-year-btn" data-year="2025">2025</button><button type="button" class="v0370-year-btn" data-year="2024">2024</button><button type="button" class="v0370-year-btn" data-year="2023">2023</button><button type="button" class="v0370-year-btn" data-year="2022">2022</button><button type="button" class="v0370-year-btn" data-year="2021">2021</button><button type="button" class="v0370-year-btn" data-year="2020">2020</button><button type="button" class="v0370-year-btn" data-year="2019">2019</button><button type="button" class="v0370-year-btn" data-year="2018">2018</button><button type="button" class="v0370-year-btn" data-year="2017">2017</button></div>
+<details class="v0370-custom"><summary>Egen period</summary><div class="muted">Använd fälten Från och Till ovan.</div></details>
 </div>
 <div class="day-period-wrap v0368-day-control" aria-label="Snabbval Opti Day">
   <span class="period-label">Opti Day snabbval</span>
@@ -106,8 +108,8 @@
 <div class="v31-provider" id="providerInfo">Datakälla: Alpaca · Benchmark: SPY</div>
 </div>
 
-<div class="card v31-nordic-info">
-  <h2>V0.36.9 · Gate + Alt A Cleanup</h2>
+<details class="v0370-tech"><summary>Tekniskt / felsökning</summary><div class="card v31-nordic-info">
+  <h2>Urval & metod</h2>
   <div class="muted">
     Urvalet är räknat från alla inskickade rapporter, men rankingen använder deduplicerade och kronologiskt korrigerade testfönster så samma körning inte får extra vikt.
     För själva USA/Alpaca-urvalet användes fem separata miljöer: USA30 2024, 2025 och 2026 samt Global Stocks 100 och USA + Värld 50.
@@ -127,9 +129,9 @@
       Därför är detta ett urvalstest. Nästa riktiga kontroll är att frysa listan och köra den på historik som inte användes när listan valdes.
     </div>
   </details>
-</div>
+</div></details>
 
-<div class="card v31-nordic-info"><h2>V0.36.9 · Gate + Alt A Cleanup</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
+<div class="card v31-nordic-info"><h2>V0.37.0 · Årsperioder</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
 </section>
 
 <section id="pane-test" class="hidden">
@@ -280,5 +282,5 @@
 
 </div>
 
-<script src="linasopti.js?v=0.36.9"></script>
+<script src="linasopti.js?v=0.37.0"></script>
 </body></html>

@@ -506,3 +506,12 @@ body > .v23-sharebar{overflow:visible !important}
 .v0369-altA>summary::-webkit-details-marker{display:none}
 .v0369-altA>summary:before{content:"▶ ";margin-right:6px}
 .v0369-altA[open]>summary:before{content:"▼ "}
+
+/* V0.37.0 */
+.v0370-range-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
+.v0370-year-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.v0370-range-btn,.v0370-year-btn{min-height:48px;border-radius:14px;padding:8px 4px}
+.v0370-range-btn.active,.v0370-year-btn.active{outline:3px solid rgba(30,111,181,.25)}
+.v0370-custom{margin-top:10px}.v0370-custom summary,.v0370-tech>summary{font-weight:800;cursor:pointer}
+.v0370-tech{margin-top:18px}.v0370-tech>summary{background:#fff;border:1px solid #dfe6eb;border-radius:18px;padding:18px 20px}
+.v0370-dev-hidden{display:none!important}
