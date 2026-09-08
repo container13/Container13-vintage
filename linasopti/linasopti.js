@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.37.6";
+const APP_VERSION = "V0.37.7";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -1224,12 +1224,33 @@ function v0368UpdateContextUI(){
 // V0.37.0 – generella årsval. Ändrar endast datumfält och tömmer tidigare hämtad data.
 (function v0370PeriodPicker(){
  const pad=n=>String(n).padStart(2,"0"), iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
- function clear(){document.querySelectorAll(".v0370-range-btn,.v0370-year-btn").forEach(b=>b.classList.remove("active"))}
+ function clear(){
+  document.querySelectorAll(".v0370-range-btn,.v0370-year-btn").forEach(b=>{
+    b.classList.remove("active");
+    b.removeAttribute("data-selected");
+    b.setAttribute("aria-pressed","false");
+    b.style.removeProperty("background");
+    b.style.removeProperty("color");
+    b.style.removeProperty("border-color");
+    b.style.removeProperty("box-shadow");
+  });
+ }
+ function mark(btn){
+  if(!btn)return;
+  btn.classList.add("active");
+  btn.setAttribute("data-selected","true");
+  btn.setAttribute("aria-pressed","true");
+  // Inline !important: Safari ska inte kunna skriva över den visuella markeringen.
+  btn.style.setProperty("background","#1267b2","important");
+  btn.style.setProperty("color","#ffffff","important");
+  btn.style.setProperty("border-color","#1267b2","important");
+  btn.style.setProperty("box-shadow","0 0 0 4px rgba(18,103,178,.20)","important");
+ }
  function apply(first,last,btn){
   const s=document.getElementById("start"),e=document.getElementById("end"),v=document.getElementById("evalStart"); if(!s||!e||!v)return;
   const now=new Date(),cy=now.getFullYear();
   s.value=`${first-1}-12-01`; v.value=`${first}-01-01`; e.value=last>=cy?iso(now):`${last}-12-31`;
-  clear(); if(btn)btn.classList.add("active");
+  clear(); mark(btn);
   if(typeof DAILY!=="undefined")DAILY.length=0;
   const badge=document.getElementById("modeBadge"); if(badge){badge.textContent="DATA EJ INLÄST";}
   const ready=document.getElementById("v0368DataReady"); if(ready){ready.hidden=true;ready.style.display="none";}
@@ -1274,41 +1295,3 @@ function v0368UpdateContextUI(){
   window.addEventListener("orientationchange",()=>setTimeout(sync,100));
 })();
 
-// V0.37.6 – robust visuell periodmarkering oberoende av tidigare klassnamn.
-(function v0376PeriodVisualSelection(){
-  function periodButtons(){
-    return Array.from(document.querySelectorAll(
-      '.v0370-range-btn, .v0370-year-btn, [data-years], [data-year], .period-btn, .year-btn'
-    ));
-  }
-  function clearAll(){
-    periodButtons().forEach(b=>{
-      b.classList.remove('active','selected','is-active','v0376-selected');
-      b.setAttribute('aria-pressed','false');
-    });
-  }
-  function mark(btn){
-    if(!btn)return;
-    clearAll();
-    btn.classList.add('v0376-selected');
-    btn.setAttribute('aria-pressed','true');
-  }
-  function init(){
-    periodButtons().forEach(btn=>{
-      btn.addEventListener('click',function(){
-        // Låt befintlig periodlogik köra först, markera sedan säkert.
-        setTimeout(()=>mark(btn),0);
-      },true);
-    });
-
-    // Om period redan är vald av befintlig kod, spegla den visuellt.
-    const pre=periodButtons().find(b=>
-      b.classList.contains('active') ||
-      b.classList.contains('selected') ||
-      b.getAttribute('aria-pressed')==='true'
-    );
-    if(pre) mark(pre);
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
-  else init();
-})();

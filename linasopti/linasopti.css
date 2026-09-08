@@ -612,3 +612,17 @@ body > .v23-sharebar{overflow:visible !important}
   content:"✓ "!important;
   font-weight:900!important;
 }
+
+/* V0.37.7 – periodmarkeringen ägs av riktiga periodmotorn */
+.v0370-range-btn[data-selected="true"],
+.v0370-year-btn[data-selected="true"]{
+  background:#1267b2!important;
+  color:#fff!important;
+  border-color:#1267b2!important;
+  box-shadow:0 0 0 4px rgba(18,103,178,.20)!important;
+}
+.v0370-range-btn[data-selected="true"]::before,
+.v0370-year-btn[data-selected="true"]::before{
+  content:"✓ "!important;
+  font-weight:900!important;
+}

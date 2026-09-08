@@ -443,3 +443,24 @@ Dessutom:
 - `aria-pressed=true` sätts samtidigt för bättre tillgänglighet.
 - Själva periodberäkningen/datumlogiken är inte ändrad.
 - V0.37.5-fixarna för fast header och start högst upp ligger kvar.
+
+
+## V0.37.7 – Period Root Fix
+
+Det tidigare V0.37.6-lagret är borttaget.
+
+Periodmarkeringen ligger nu i samma funktion som faktiskt sätter:
+- `start`
+- `evalStart`
+- `end`
+
+När en period väljs gör periodmotorn själv allt i samma steg:
+- tömmer föregående markering
+- sätter `active`
+- sätter `data-selected=true`
+- sätter `aria-pressed=true`
+- sätter blå bakgrund/vit text som inline `!important`
+
+Det gör att Safari/CSS-cascade inte kan få markeringen att se omarkerad ut.
+
+Ingen handelslogik är ändrad.
