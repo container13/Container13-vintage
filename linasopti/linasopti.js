@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.34.5";
+const APP_VERSION = "V0.35";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -520,7 +520,7 @@ window.addEventListener("DOMContentLoaded",()=>{
    let w=isUsMarket()?swingWorld(DAILY,cap,mp,start):null;
    let d=isUsMarket()?daytrade(INTRA,cap,+$("risk").value):null;
    let dB=isUsMarket()?daytradeConfirm(INTRA,cap,+$("risk").value):null;
-   let audit=auditSwing(DAILY,s,cap); LAST={s,t,w,d,dB,audit}; render(s,d,cap); renderTrend(t); renderWorld(w,s); renderDayAB(d,dB); renderV015Audit(s); renderSwingAudit(audit); v342RenderAnalysis(s); v0344RenderValidation(s,cap);
+   let audit=auditSwing(DAILY,s,cap); LAST={s,t,w,d,dB,audit}; render(s,d,cap); renderTrend(t); renderWorld(w,s); renderDayAB(d,dB); renderV015Audit(s); renderSwingAudit(audit); v342RenderAnalysis(s); v0344RenderValidation(s,cap); v035RenderHero(s); setTimeout(()=>v035ClickTab("3"),80);
    btn.textContent=oldText; btn.disabled=false;
   }catch(err){
    console.error("Linas Opti run error",err);
@@ -793,11 +793,56 @@ function v0344RenderValidation(s,capital){
   box.innerHTML=(a?.symbols||[]).map((x,i)=>`<div class="v0344-stock ${x.totalPnl>=0?"win":"loss"}"><b>${i+1}. ${x.symbol}</b><span>${x.trades} affärer · ${x.winRatePct.toFixed(0)}% vinst</span><strong>${x.totalPnl>=0?"+":""}${fmt(x.totalPnl)}</strong></div>`).join("");
  }
 }
+
+function v035SetFire2022(){
+ const start=document.getElementById("start"),end=document.getElementById("end"),ev=document.getElementById("evalStart");
+ if(start)start.value="2021-12-01";
+ if(ev)ev.value="2022-01-03";
+ if(end)end.value="2022-12-30";
+ v035RefreshGuide("🔥 Eldprov 2022");
+}
+function v035ClickTab(n){
+ const el=[...document.querySelectorAll("button,a")].find(x=>x.textContent.trim().startsWith(n+"."));
+ if(el) el.click();
+}
+function v035PeriodName(){
+ const s=document.getElementById("start")?.value,e=document.getElementById("end")?.value;
+ if(s==="2022-12-01"&&e==="2023-12-29")return "🔥 Eldprov 2023";
+ if(s==="2021-12-01"&&e==="2022-12-30")return "🔥 Eldprov 2022";
+ return s&&e?`${s} → ${e}`:"Välj period";
+}
+function v035RefreshGuide(label){
+ const g=currentGroup?.(), rows=(window.DAILY||[]).length;
+ const summary=document.getElementById("v035DataSummary"),check=document.getElementById("v035DataCheck"),next=document.getElementById("v035ToTest");
+ const name=g?.name||"Ingen grupp", p=label||v035PeriodName();
+ if(summary) summary.innerHTML=`<b>${name}</b><br>${p}${rows?`<br><span class="good">✓ ${rows.toLocaleString("sv-SE")} dagsrader hämtade</span>`:""}`;
+ if(check) check.textContent=rows?"Data klar ✓":"Välj grupp och period";
+ if(next) next.hidden=!rows;
+ const ts=document.getElementById("v035TestSummary");
+ if(ts) ts.innerHTML=rows?`<b>${name}</b><br>${p}<br>${rows.toLocaleString("sv-SE")} dagsrader · 100 000 startkapital<br><span class="good">Swing · fryst strategi</span>`:"Data måste hämtas först.";
+}
+function v035RenderHero(s){
+ const lead=document.getElementById("v035ResultLead"),hero=document.getElementById("v035HeroResult");
+ if(!lead||!hero||!s)return;
+ const cap=Number(document.getElementById("capital")?.value||100000),c=v0344CostShadow(s,cap);
+ lead.hidden=false;
+ hero.innerHTML=`<div><span>LINA</span><strong>${s.ret>=0?"+":""}${pct(s.ret)}</strong></div>
+ <div><span>${currentBenchmark()}</span><strong>${s.bench>=0?"+":""}${pct(s.bench)}</strong></div>
+ <div><span>Skillnad</span><strong>${s.vs>=0?"+":""}${pct(s.vs)}</strong></div>
+ ${c?`<div><span>Efter kostnader</span><strong>${c.netRet>=0?"+":""}${pct(c.netRet)}</strong></div>`:""}`;
+}
+window.addEventListener("DOMContentLoaded",()=>{
+ document.getElementById("v035Fire2022")?.addEventListener("click",v035SetFire2022);
+ document.getElementById("v035ToTest")?.addEventListener("click",()=>v035ClickTab("2"));
+ document.getElementById("v035NextTest")?.addEventListener("click",()=>{v035ClickTab("1");setTimeout(v035SetFire2022,60);});
+ setTimeout(v035RefreshGuide,100);
+});
 function v0344SetFireTest(){
  const start=document.getElementById("start"),end=document.getElementById("end"),ev=document.getElementById("evalStart");
  if(start)start.value="2022-12-01"; // uppvärmning före testet
  if(ev)ev.value="2023-01-03";
  if(end)end.value="2023-12-29";
+ v035RefreshGuide("🔥 Eldprov 2023");
  const st=document.getElementById("testDataStatus");
  if(st)st.innerHTML='<span class="good">🔥 Eldprov 2023 valt · helt före urvalsperioderna 2024–2026. Hämta dagsdata och kör utan att ändra Swing.</span>';
 }
@@ -1000,4 +1045,11 @@ window.addEventListener("DOMContentLoaded",()=>{
    document.querySelectorAll(".day-period-btn").forEach(x=>x.classList.toggle("active",x===b));
    document.querySelectorAll(".period-btn").forEach(x=>x.classList.remove("active"));
  }));
+});
+
+// V0.35 guided-flow observer: UI-only; does not alter data or strategy.
+window.addEventListener("DOMContentLoaded",()=>{
+ const root=document.body;
+ const obs=new MutationObserver(()=>{ if((window.DAILY||[]).length) v035RefreshGuide(); });
+ obs.observe(root,{subtree:true,childList:true,characterData:true});
 });

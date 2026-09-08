@@ -158,3 +158,16 @@ Ingen Worker-ändring krävs.
 - `🔥 Eldprov 2023` ligger nu direkt efter `Hela perioden` under Data → Snabbval.
 - Testlogik och Swing-strategi är oförändrade.
 - Arbetsgång: 1. Data = välj grupp/period och hämta data; 2. Test = välj/kör test; 3. Resultat = granska analys och dela rapport.
+
+
+## V0.35 – Guided Flow
+Ren UX-/flödesversion. Swing, Lina Selection 16 och handelsregler är oförändrade.
+
+- Data får en tydlig stegpanel och `Fortsätt till test →` när dagsdata finns.
+- Ny `🔥 Eldprov 2022` bredvid Eldprov 2023.
+- Test-fliken sammanfattar vald grupp, period och inläst data.
+- Efter `Kör Linas Opti` går appen automatiskt till Resultat.
+- Resultat får en kompakt topp med Lina, benchmark, skillnad och efter kostnader.
+- `Nästa test → 🔥 Eldprov 2022` tar användaren tillbaka till Data och väljer nästa eldprov.
+- Befintliga avancerade funktioner finns kvar; V0.35 fokuserar på att huvudkedjan ska kännas sammanhängande.
+- Worker oförändrad.
