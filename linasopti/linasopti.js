@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.39.0";
+const APP_VERSION = "V0.39.1";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -292,7 +292,7 @@ function swingWorld(rows,capital,maxPos,evalStart){
  return {eq:cash,ret:cash/capital-1,dd,n:closed.length,wr:closed.length?wins.length/closed.length:0,log,curve,bench,closed,pf,regimeDays,blocked,blockedYellow,blockedRed,regimeSignalDays,regimeSamples,avgWin:wins.length?grossWin/wins.length:0,avgLoss:losses.length?losses.reduce((a,x)=>a+x.pnl,0)/losses.length:0,best:closed.length?Math.max(...closed.map(x=>x.pnl)):0,worst:closed.length?Math.min(...closed.map(x=>x.pnl)):0,openAtEnd:0,evalStart:dates[firstTrade]||evalStart||null};
 }
 function daytrade(rows,capital,riskPct){
- // V0.39.0 Lina Day – Jägaren. Fryst första forskningsmotor.
+ // V0.39.1 Lina Day – Jägaren. Fryst första forskningsmotor.
  // Princip: avslutad 5-minbar -> ranka alla symboler -> köp nästa bars open.
  // En position åt gången för entydig kapital/kronologi. Ingen hävstång, ingen övernattning.
  if(!rows.length)return null;
@@ -580,7 +580,7 @@ window.addEventListener("DOMContentLoaded",()=>{
    let t=optiTrend(DAILY,cap,start);
    let w=isUsMarket()?swingWorld(DAILY,cap,mp,start):null;
    let d=isUsMarket()?daytrade(INTRA,cap,+$("risk").value):null;
-   let dB=null; // V0.39.0: gamla Day A/B är fryst och körs inte
+   let dB=null; // V0.39.1: gamla Day A/B är fryst och körs inte
    let audit=auditSwing(DAILY,s,cap); LAST={s,t,w,d,dB,audit};
 
    // V0.36.6: detta är den verkliga slutpunkten för användarens test.

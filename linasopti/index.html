@@ -78,17 +78,22 @@
     <div class="muted">Vid snabbval läggs indikatorernas warmup automatiskt före teststart. För egen period kan teststart finjusteras under Test → Avancerat &amp; testinställningar.</div>
   </details>
 </div>
-<div class="day-period-wrap v0368-day-control" aria-label="Snabbval Opti Day">
-  <span class="period-label">Lina Day · testperiod</span>
-  <button type="button" class="day-period-btn" data-days="5">5 dagar</button>
-  <button type="button" class="day-period-btn" data-days="20">20 dagar</button>
-  <button type="button" class="day-period-btn" data-days="60">60 dagar</button>
+<div class="v0391-day-fetch" aria-label="Lina Day 5-minutersdata">
+  <div class="v0391-day-title">⚡ Lina Day · Jägaren</div>
+  <div class="muted">Välj en kort testperiod och hämta sedan 5-minutersdata.</div>
+  <div class="day-period-wrap v0368-day-control" aria-label="Snabbval Opti Day">
+    <span class="period-label">Testperiod</span>
+    <button type="button" class="day-period-btn" data-days="5">5 dagar</button>
+    <button type="button" class="day-period-btn" data-days="20">20 dagar</button>
+    <button type="button" class="day-period-btn" data-days="60">60 dagar</button>
+  </div>
+  <button class="purple v0368-day-control v0391-intra" id="intraBtn">Hämta 5-min-data för Jägaren</button>
 </div>
 </div>
 <div class="row" style="margin-top:9px">
 <button class="secondary v0368-dev-only" id="healthBtn">Testa anslutning</button>
 <button class="primary" id="dailyBtn">Hämta dagsdata</button>
-<button class="purple v0368-day-control" id="intraBtn">Hämta 5-min-data för Jägaren</button>
+
 </div>
 <div class="status" id="bridgeStatus">Linas Opti API är anslutet via Cloudflare.</div><div id="v0368DataReady" class="v0368-data-ready" hidden>
 <div class="v0368-ready-title">✓ Dagsdata klar</div>

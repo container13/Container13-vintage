@@ -1,4 +1,4 @@
-# Linas Opti V0.39.0 – Lina Day Jägaren
+# Linas Opti V0.39.1 – Lina Day Jägaren
 
 Datum: 2026-09-08
 Bas: V0.38.7 (snabbval), som i sin tur bygger på verifierat fungerande V0.38.5/V0.38.6-spår.
@@ -18,7 +18,7 @@ Första frysta forskningsmotorn för nya Lina Day. Målet i denna version är IN
 - Stop -0,6%, mål +1,0%, max innehav 40 minuter.
 - Inga nya köp sent på dagen och säkerhetsstängning före/vid dagsslut; ingen övernattning.
 - Modellerad spread/slippage är integrerad i Day-motorn (samma grundantagande som tidigare Day: spread 0,035% + slippage 0,025%).
-- Gamla Day A/B-testet är fryst och körs inte i V0.39.0.
+- Gamla Day A/B-testet är fryst och körs inte i V0.39.1.
 
 ## Uttryckligen INTE ändrat
 - Opti Swing-motorn.
@@ -29,7 +29,7 @@ Första frysta forskningsmotorn för nya Lina Day. Målet i denna version är IN
 - Rapport-/delningsflödet i övrigt.
 
 ## Forskningsregel
-V0.39.0 Jägaren V1 ska betraktas som fryst första hypotes. Vi ska först läsa resultaten månad för månad innan signalgränser, stop, mål eller position sizing ändras. Ett snyggt backtest är inte bevis på framtida avkastning.
+V0.39.1 Jägaren V1 ska betraktas som fryst första hypotes. Vi ska först läsa resultaten månad för månad innan signalgränser, stop, mål eller position sizing ändras. Ett snyggt backtest är inte bevis på framtida avkastning.
 
 ## Första test
 1. Välj USA-marknad, gärna Lina Selection 16 eller USA 30.
@@ -37,3 +37,11 @@ V0.39.0 Jägaren V1 ska betraktas som fryst första hypotes. Vi ska först läsa
 3. Hämta 5-min-data för Jägaren.
 4. Kör Linas Opti.
 5. Dela Full testdata så att affärerna kan granskas exakt.
+
+
+## V0.39.1 – 5-minutersdata återställd tydligt
+- Återställer en tydlig Lina Day/Jägaren-yta i Data-fliken.
+- Visar snabbval 5, 20 och 60 dagar.
+- Visar knappen **Hämta 5-min-data för Jägaren** direkt i samma yta.
+- Befintlig `getBars("5Min")` och Worker/API-väg återanvänds; ingen ändring av Swing-strategin eller dagsdatahämtningen.
+- V0.38.5 är fortsatt golden master för datahämtningen.
