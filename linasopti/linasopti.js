@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.36.8";
+const APP_VERSION = "V0.36.9";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -1205,3 +1205,37 @@ function v0368UpdateContextUI(){
     el.style.display=empty?"none":"";
   });
 }
+
+(function v0369GateInit(){
+  var KEY="linasOptiUnlocked";
+  function unlock(){
+    var input=document.getElementById("v0369Code");
+    var gate=document.getElementById("v0369Gate");
+    var msg=document.getElementById("v0369GateMsg");
+    if(!input||!gate)return;
+    if(input.value==="adam"){
+      sessionStorage.setItem(KEY,"1");
+      gate.style.display="none";
+      gate.setAttribute("aria-hidden","true");
+      if(msg)msg.textContent="";
+    }else{
+      if(msg)msg.textContent="Fel lösenkod";
+      input.select();
+    }
+  }
+  function init(){
+    var gate=document.getElementById("v0369Gate");
+    var btn=document.getElementById("v0369Enter");
+    var input=document.getElementById("v0369Code");
+    if(!gate)return;
+    if(sessionStorage.getItem(KEY)==="1"){
+      gate.style.display="none";
+      gate.setAttribute("aria-hidden","true");
+      return;
+    }
+    if(btn)btn.addEventListener("click",unlock);
+    if(input)input.addEventListener("keydown",function(e){if(e.key==="Enter")unlock();});
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);
+  else init();
+})();

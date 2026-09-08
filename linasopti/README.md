@@ -270,3 +270,25 @@ Ren UX-version. Swing, Lina Selection 16 och handelsreglerna är oförändrade.
 **Inte ändrat:** Swing-score/signaler, kronologi, entry/exit, stop/target/time exit, position sizing, maxpositioner, benchmark, Omvärld-regler, Day-/Trend-motorernas beräkningskod, Worker/API/secrets eller exportinnehåll.
 
 **Felsökning senare:** Day/Trend och anslutningstest är dolda presentationsmässigt – inte raderade. Börja vid `.v0368-day-control`, `.v0368-day-result`, `.v0368-trend-result`, `#healthBtn` och `v0368UpdateContextUI()` om de återaktiveras. Behåll V0.36.1–V0.36.6 i historiken för felsökning av modal/Web Share/finish-point.
+
+
+## V0.36.9 – Gate + Alt A Cleanup
+
+### Alt A
+- `Alternativ A — CSV-filer` ligger inte längre öppet högt i Data-vyn.
+- Det är flyttat till en kollapsad sektion `CSV-filer / manuell inläsning`.
+- Syftet är att den normala API-hämtningen ska dominera arbetsflödet.
+- CSV-importen finns kvar oförändrad för felsökning och manuell testning.
+
+### Lösenkod
+- En enkel klientbaserad spärr har lagts till före appen.
+- Lösenkod: `adam`.
+- Upplåsningen gäller under aktuell webbläsarsession via `sessionStorage`.
+- Viktigt: detta är endast en enkel UI-spärr, inte riktig säker autentisering. Eftersom koden ligger i frontend kan en tekniskt kunnig person läsa den i sidkällan.
+- För verkligt skydd behöver spärren flyttas till server/Cloudflare Worker eller Cloudflare Access.
+
+### Inte ändrat
+- Ingen handelslogik.
+- Ingen Worker/API-logik.
+- Ingen exportlogik.
+- Ingen datahämtning eller CSV-parser ändrad.

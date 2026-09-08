@@ -483,3 +483,26 @@ body > .v23-sharebar{overflow:visible !important}
 .v0368-data-ready{margin-top:14px;padding:16px 18px;border:2px solid #b9dfc8;background:#f2fbf5;border-radius:18px;font-weight:700;line-height:1.45}
 .v0368-ready-title{font-size:1.15rem;color:#16844f;margin-bottom:4px}
 .v0368-ready-go{color:#16844f;margin-top:5px}
+
+/* V0.36.9 – passcode gate + Alt A cleanup */
+.v0369-gate{
+  position:fixed;inset:0;z-index:50000;background:#f4f7f9;
+  display:flex;align-items:center;justify-content:center;padding:24px;
+}
+.v0369-gate-card{
+  width:min(420px,100%);background:#fff;border:1px solid #dfe6eb;
+  border-radius:24px;padding:24px;box-shadow:0 18px 60px rgba(0,0,0,.12)
+}
+.v0369-gate-title{font-size:2rem;font-weight:800;margin-bottom:6px}
+.v0369-gate-sub{color:#697386;margin-bottom:18px}
+.v0369-gate input{width:100%;box-sizing:border-box;padding:14px 16px;border:1px solid #cdd7df;border-radius:14px;font-size:1rem;margin-bottom:12px}
+.v0369-gate button{width:100%;min-height:50px;border:0;border-radius:14px;font-weight:800;font-size:1rem}
+.v0369-gate-msg{min-height:1.4em;color:#b42318;margin-top:10px;font-weight:700}
+.v0369-altA{margin-top:18px}
+.v0369-altA>summary{
+  list-style:none;cursor:pointer;background:#fff;border:1px solid #dfe6eb;border-radius:18px;
+  padding:18px 20px;font-weight:800
+}
+.v0369-altA>summary::-webkit-details-marker{display:none}
+.v0369-altA>summary:before{content:"▶ ";margin-right:6px}
+.v0369-altA[open]>summary:before{content:"▼ "}
