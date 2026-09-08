@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.35.1";
+const APP_VERSION = "V0.36";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -505,6 +505,47 @@ function renderDayAB(a,b){
  set("dbPassed",`${b.passedSignals||0} / ${b.rawSignals||0}`);
 }
 
+
+const V036_SETTINGS_KEY="linasopti_v036_settings";
+function v036GetSettings(){
+  try{return Object.assign({afterRun:"share-full",showShareBar:false},JSON.parse(localStorage.getItem(V036_SETTINGS_KEY)||"{}"))}
+  catch(e){return {afterRun:"share-full",showShareBar:false}}
+}
+function v036SaveSettings(){
+  const s={afterRun:document.getElementById("v036AfterRun")?.value||"share-full",
+           showShareBar:!!document.getElementById("v036ShowShareBar")?.checked};
+  localStorage.setItem(V036_SETTINGS_KEY,JSON.stringify(s));
+  v036ApplySettings();
+}
+function v036ApplySettings(){
+  const s=v036GetSettings(),bar=document.getElementById("v23ShareBar");
+  if(bar)bar.classList.toggle("v036-share-hidden",!s.showShareBar);
+  const sel=document.getElementById("v036AfterRun"),chk=document.getElementById("v036ShowShareBar");
+  if(sel)sel.value=s.afterRun;if(chk)chk.checked=s.showShareBar;
+}
+function v036OpenSettings(open=true){
+  const m=document.getElementById("v036SettingsModal"); if(m)m.hidden=!open;
+}
+function v036AfterRun(){
+  const s=v036GetSettings();
+  v035ClickTab("3");
+  if(s.afterRun==="share-full") v17Share(true);
+  else if(s.afterRun==="share-quick") v17Share(false);
+}
+window.addEventListener("DOMContentLoaded",()=>{
+  v036ApplySettings();
+  document.getElementById("v036SettingsBtn")?.addEventListener("click",()=>v036OpenSettings(true));
+  document.getElementById("v036SettingsClose")?.addEventListener("click",()=>v036OpenSettings(false));
+  document.getElementById("v036SettingsModal")?.addEventListener("click",e=>{if(e.target.id==="v036SettingsModal")v036OpenSettings(false)});
+  document.getElementById("v036AfterRun")?.addEventListener("change",v036SaveSettings);
+  document.getElementById("v036ShowShareBar")?.addEventListener("change",v036SaveSettings);
+  document.getElementById("v036ShareResult")?.addEventListener("click",()=>{
+    const menu=document.getElementById("v23ShareMenu");
+    if(menu){menu.hidden=false;menu.scrollIntoView({behavior:"smooth",block:"nearest"});}
+    const bar=document.getElementById("v23ShareBar"); if(bar)bar.classList.remove("v036-share-hidden");
+  });
+});
+
 window.addEventListener("DOMContentLoaded",()=>{
  const btn=$("runBtn");
  if(!btn)return;
@@ -520,7 +561,7 @@ window.addEventListener("DOMContentLoaded",()=>{
    let w=isUsMarket()?swingWorld(DAILY,cap,mp,start):null;
    let d=isUsMarket()?daytrade(INTRA,cap,+$("risk").value):null;
    let dB=isUsMarket()?daytradeConfirm(INTRA,cap,+$("risk").value):null;
-   let audit=auditSwing(DAILY,s,cap); LAST={s,t,w,d,dB,audit}; render(s,d,cap); renderTrend(t); renderWorld(w,s); renderDayAB(d,dB); renderV015Audit(s); renderSwingAudit(audit); v342RenderAnalysis(s); v0344RenderValidation(s,cap); v035RenderHero(s); setTimeout(()=>v035ClickTab("3"),80);
+   let audit=auditSwing(DAILY,s,cap); LAST={s,t,w,d,dB,audit}; render(s,d,cap); renderTrend(t); renderWorld(w,s); renderDayAB(d,dB); renderV015Audit(s); renderSwingAudit(audit); v342RenderAnalysis(s); v0344RenderValidation(s,cap); v035RenderHero(s); v036AfterRun();
    btn.textContent=oldText; btn.disabled=false;
   }catch(err){
    console.error("Linas Opti run error",err);
@@ -845,7 +886,7 @@ function v035RefreshGuide(label){
  if(check) check.textContent=rows?"Data klar ✓":"Välj grupp och period";
  if(next) next.hidden=!rows;
  const ts=document.getElementById("v035TestSummary");
- if(ts) ts.innerHTML=rows?`<b>${name}</b><br>${p}<br>${rows.toLocaleString("sv-SE")} dagsrader · 100 000 startkapital<br><span class="good">Swing · fryst strategi</span>`:"Data måste hämtas först.";
+ if(ts) ts.innerHTML=rows?`<div class="v036-ready-line"><b>${name}</b><span>✓ Data klar</span></div><div>${p}</div><div>${rows.toLocaleString("sv-SE")} dagsrader · ${Number(document.getElementById("capital")?.value||100000).toLocaleString("sv-SE")} startkapital</div><div class="good">Opti Swing · fryst strategi</div>`:"Data måste hämtas först.";
 }
 function v035RenderHero(s){
  const lead=document.getElementById("v035ResultLead"),hero=document.getElementById("v035HeroResult");

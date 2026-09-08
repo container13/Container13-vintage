@@ -178,3 +178,18 @@ Ren UX-/flödesversion. Swing, Lina Selection 16 och handelsregler är oföränd
 - Vald period får prefixet `✓`.
 - Om ett vanligt snabbval (1 år, 2024, 2025, 2026, Hela perioden) väljs tas eldprovsmarkeringen bort.
 - Ingen ändring i Swing, Lina Selection, datahämtning eller backtestlogik.
+
+
+## V0.36 – Flow Cleanup
+Ren UX-version. Swing, Lina Selection 16 och handelsreglerna är oförändrade.
+
+- Test-fliken är kraftigt förenklad: sammanfattning + `Kör Linas Opti`.
+- Startkapital, maxposition, Day-risk och teststart ligger under `Avancerat & testinställningar`.
+- Trend/omvärldsförklaringar ligger under `Experiment & utvecklarinformation`.
+- Nytt kugghjul i toppen med inställningen `Efter avslutat test`.
+- Förvalt beteende: gå till Resultat och öppna delning av **Full testdata** automatiskt.
+- Alternativ: Snabbrapport eller bara Resultat.
+- Permanent `Dela testdata`-knapp längst ned är avstängd som standard, men kan slås på igen i Inställningar.
+- Resultat har en kompakt `Dela rapport`-väg även när den permanenta nederknappen är dold.
+- Inställningarna sparas lokalt på enheten.
+- Worker oförändrad.
