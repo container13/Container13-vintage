@@ -653,3 +653,16 @@ body > .sticky-top .tabs{
 @media(max-height:700px){
   .v0369-gate{padding-top:max(calc(env(safe-area-inset-top) + 28px), 5vh)!important}
 }
+
+/* V0.38.1 – statusrad för kända fungerande fetch-vägen */
+#bridgeStatus.status{
+  display:block!important;
+}
+#bridgeStatus.status.good{
+  background:#f1fbf5!important;
+  color:#16794a!important;
+}
+#bridgeStatus.status.bad{
+  background:#fff1f0!important;
+  color:#a9342c!important;
+}

@@ -529,3 +529,24 @@ Ingen strategi-, data- eller Worker-logik ändrad.
 - Marknadsgrupper
 - Worker/API-kontrakt
 - Rapport/export
+
+
+## V0.38.1 – Known-Good Fetch Restore
+
+Efter jämförelse mot V0.37.0 hittades att de senare försöken hade ändrat själva
+`bridge()`-funktionen och fetch-flödet trots att den äldre varianten tidigare fungerade.
+
+I V0.38.1 är följande återställt exakt från den kända fungerande V0.37.0-vägen:
+- `bridge(path)` = enkel `fetch(API_BASE+path)` utan AbortController, cache-override eller Promise.race.
+- Alpaca/USA = ett enda `/bars`-anrop.
+- EODHD/Norden = batchning om 25 symboler.
+- `paintBridgeDone()` används åter som tidigare efter lyckad hämtning.
+
+Fixarna för:
+- lösenkod
+- högre loginplacering
+- fast Data/Test/Resultat-header
+- periodmarkering
+ligger kvar.
+
+Ingen strategi-, period-, marknadsgrupps- eller Worker-logik ändrad.

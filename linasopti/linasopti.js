@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.38.0";
+const APP_VERSION = "V0.38.1";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -84,28 +84,9 @@ function updateDataStatus(){
  $("modeBadge").textContent=(DAILY.length||INTRA.length)?"VERKLIG DATA INLÄST":"DATA EJ INLÄST";
  $("modeBadge").style.background=(DAILY.length||INTRA.length)?"#e8f6ef":"#eaf4fd";
 }
-async function bridge(path,timeoutMs=15000){
+async function bridge(path){
  if(!API_BASE) throw new Error("Kunde inte nå Linas Opti API.");
- const controller=new AbortController();
- let timer=null;
- const fetchPromise=(async()=>{
-   const r=await fetch(API_BASE+path,{signal:controller.signal,cache:"no-store"});
-   let j;
-   try{j=await r.json();}catch(e){throw new Error("API:t svarade utan giltig data.");}
-   if(!r.ok)throw new Error(j.error||("HTTP "+r.status));
-   return j;
- })();
- const timeoutPromise=new Promise((_,reject)=>{
-   timer=setTimeout(()=>{
-     try{controller.abort();}catch(_){}
-     reject(new Error("Hämtningen tog för lång tid. Försök igen."));
-   },timeoutMs);
- });
- try{
-   return await Promise.race([fetchPromise,timeoutPromise]);
- }finally{
-   if(timer)clearTimeout(timer);
- }
+ let r=await fetch(API_BASE+path);let j=await r.json();if(!r.ok)throw new Error(j.error||("HTTP "+r.status));return j
 }
 $("healthBtn").onclick=async()=>{try{
   let j=await checkLinasOptiApi();
@@ -136,67 +117,22 @@ function paintBridgeDone(count,tf){
   setTimeout(()=>{ if(el.textContent!==text) el.textContent=text; },120);
 }
 async function getBars(tf){
- if(currentProvider()==="eodhd" && tf!=="1Day"){
-   const el=$("bridgeStatus");
-   if(el){el.className="status v0372-visible v0372-bad";el.textContent="Opti Day/5-min är tills vidare endast USA.";}
-   return;
- }
- const btn=tf==="1Day"?$("dailyBtn"):$("intraBtn");
- const old=btn?.textContent;
- const status=$("bridgeStatus");
+ if(currentProvider()==="eodhd" && tf!=="1Day"){const el=$("bridgeStatus");if(el){el.className="status bad";el.textContent="Opti Day/5-min är tills vidare endast USA.";}return;}
+ const btn=tf==="1Day"?$("dailyBtn"):$("intraBtn"); const old=btn?.textContent;
  try{
-   if(btn){btn.disabled=true;btn.textContent="Hämtar…";}
-   if(status){
-     status.className="status v0372-visible v0372-loading";
-     status.textContent=tf==="1Day"?"Hämtar dagsdata…":"Hämtar 5-min-data…";
+  if(btn){btn.disabled=true;btn.textContent="Hämtar…";} $("bridgeStatus").className="status"; $("bridgeStatus").textContent="Hämtar...";
+  let rows=[];
+  if(currentProvider()==="eodhd" && tf==="1Day"){
+   const syms=$("symbols").value.split(",").map(x=>x.trim().toUpperCase()).filter(Boolean);
+   const chunks=[]; for(let i=0;i<syms.length;i+=25)chunks.push(syms.slice(i,i+25));
+   for(let i=0;i<chunks.length;i++){
+    $("bridgeStatus").textContent=`Hämtar del ${i+1}/${chunks.length}…`;
+    const url=`/eod-bars?symbols=${encodeURIComponent(chunks[i].join(","))}&timeframe=1Day&start=${$("start").value}&end=${$("end").value}`;
+    const j=await bridge(url); rows.push(...(j.rows||[]));
    }
-
-   let rows=[];
-   if(currentProvider()==="eodhd" && tf==="1Day"){
-     const syms=$("symbols").value.split(",").map(x=>x.trim().toUpperCase()).filter(Boolean);
-     const chunks=[];
-     for(let i=0;i<syms.length;i+=25)chunks.push(syms.slice(i,i+25));
-     for(let i=0;i<chunks.length;i++){
-       if(status)status.textContent=`Hämtar del ${i+1}/${chunks.length}…`;
-       const url=`/eod-bars?symbols=${encodeURIComponent(chunks[i].join(","))}&timeframe=1Day&start=${$("start").value}&end=${$("end").value}`;
-       const j=await bridge(url,30000);
-       rows.push(...(j.rows||[]));
-     }
-   }else{
-     // Alpaca: tillbaka till ett enda anrop, vilket var den fungerande vägen före V0.37.9.
-     const j=await bridge(params(tf),30000);
-     rows=j.rows||[];
-   }
-
-   if(status){
-     status.className="status v0372-visible v0372-loading";
-     status.textContent=`Data mottagen: ${rows.length.toLocaleString("sv-SE")} rader · bearbetar…`;
-   }
-
-   if(!rows.length)throw new Error("Ingen data kom tillbaka för vald marknad och period.");
-   if(tf==="1Day")DAILY=rows;else INTRA=rows;
-
-   // Varje UI-uppdatering isoleras så att en mindre visningsbugg inte kan stoppa "Klart".
-   try{updateTestDataStatus();}catch(e){console.warn("updateTestDataStatus",e);}
-   try{updateDataStatus();}catch(e){console.warn("updateDataStatus",e);}
-   try{v035RefreshGuide();}catch(e){console.warn("v035RefreshGuide",e);}
-   try{v0368UpdateContextUI();}catch(e){console.warn("v0368UpdateContextUI",e);}
-
-   if(status){
-     const text=`✓ Klart: ${rows.length.toLocaleString("sv-SE")} rader`;
-     status.className="status v0372-visible v0372-good";
-     status.textContent=text;
-     requestAnimationFrame(()=>{status.textContent=text; void status.offsetWidth;});
-     setTimeout(()=>{status.textContent=text;},120);
-   }
- }catch(e){
-   if(status){
-     status.className="status v0372-visible v0372-bad";
-     status.textContent="Kunde inte hämta data: "+(e?.message||String(e));
-   }
- }finally{
-   if(btn){btn.disabled=false;btn.textContent=old;}
- }
+  }else{ const j=await bridge(params(tf)); rows=j.rows||[]; }
+  if(tf==="1Day")DAILY=rows;else INTRA=rows; updateTestDataStatus();updateDataStatus();v035RefreshGuide(); v0368UpdateContextUI();paintBridgeDone(rows.length,tf);
+ }catch(e){$("bridgeStatus").className="status bad";$("bridgeStatus").textContent=e.message;}finally{if(btn){btn.disabled=false;btn.textContent=old;}}
 }
 $("dailyBtn").onclick=()=>getBars("1Day"); if($("intraBtn")) $("intraBtn").onclick=()=>getBars("5Min");
 
