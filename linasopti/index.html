@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.36.3">
+<link rel="stylesheet" href="linasopti.css?v=0.36.4">
 </head>
 <body>
 <div class="lina-watermark" aria-hidden="true"></div>
@@ -98,7 +98,7 @@
 </div>
 
 <div class="card v31-nordic-info">
-  <h2>V0.36.3 · Native Settings</h2>
+  <h2>V0.36.4 · Share Fix</h2>
   <div class="muted">
     Urvalet är räknat från alla inskickade rapporter, men rankingen använder deduplicerade och kronologiskt korrigerade testfönster så samma körning inte får extra vikt.
     För själva USA/Alpaca-urvalet användes fem separata miljöer: USA30 2024, 2025 och 2026 samt Global Stocks 100 och USA + Värld 50.
@@ -120,7 +120,7 @@
   </details>
 </div>
 
-<div class="card v31-nordic-info"><h2>V0.36.3 · Native Settings</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
+<div class="card v31-nordic-info"><h2>V0.36.4 · Share Fix</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
 </section>
 
 <section id="pane-test" class="hidden">
@@ -261,8 +261,6 @@
 
 <div class="note">Detta är en testplattform, inte investeringsrådgivning. För riktig utvärdering måste data vara korrekt, överlevnadsbias undvikas och spread/slippage/courtage modelleras realistiskt. Linas Opti är mobil-först och lägger grunden för reproducerbara tester med samma regler över verklig historik.</div>
 </div>
-<script src="linasopti.js?v=0.36.3"></script>
-
 <div class="v23-sharebar" id="v23ShareBar">
   <button type="button" id="v23ShareToggle" class="v23-share-main">Dela testdata</button>
   <div class="v23-share-menu" id="v23ShareMenu" hidden>
@@ -271,18 +269,19 @@
     <div id="v17ExportStatus" class="v17-status"></div>
   </div>
 </div>
-<div class="v036-modal-backdrop" id="v036SharePrompt" hidden>
-  <div class="v036-modal" role="dialog" aria-modal="true" aria-labelledby="v036ShareTitle">
-    <div class="v036-modal-head"><h2 id="v036ShareTitle">Testet är klart ✓</h2><button type="button" id="v036PromptClose" aria-label="Stäng">×</button></div>
-    <div class="muted" style="margin-bottom:14px">Välj rapport. Nästa tryck öppnar iPhones vanliga delningsruta där AirDrop finns.</div>
+
+<div id="v036SharePrompt" class="v0364-share-sheet" aria-hidden="true">
+  <div class="v0364-share-card">
+    <div class="v036-modal-head">
+      <h2>Testet är klart ✓</h2>
+      <button type="button" id="v036PromptClose" aria-label="Stäng">×</button>
+    </div>
+    <div class="muted v0364-share-help">Välj rapport. Nästa tryck öppnar iPhones vanliga delningsruta där AirDrop finns.</div>
     <button type="button" class="primary v036-share-choice" id="v036PromptFull">Full testdata</button>
     <button type="button" class="secondary v036-share-choice" id="v036PromptQuick">Snabbrapport</button>
-    <button type="button" class="v036-share-skip">Inte nu</button>
+    <button type="button" class="v036-share-skip" id="v036PromptSkip">Inte nu</button>
   </div>
 </div>
 
-    <label class="v036-toggle"><input type="checkbox" id="v036ShowShareBar"> <span>Visa permanent Dela-knapp längst ned</span></label>
-    <div class="muted">Om den är av kan du fortfarande dela från Resultat.</div>
-  </div>
-</div>
+<script src="linasopti.js?v=0.36.4"></script>
 </body></html>

@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.36.3";
+const APP_VERSION = "V0.36.4";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -525,22 +525,24 @@ function v036ApplySettings(){
   if(bar)bar.classList.toggle("v036-share-hidden",!s.showShareBar);
   var chk=document.getElementById("v036ShowShareBar"); if(chk)chk.checked=s.showShareBar;
 }
-function v036OpenSettings(open=true){
-  const m=document.getElementById("v036SettingsModal"); if(!m)return;
-  m.hidden=!open;
-  m.classList.toggle("v036-open",open);
-}
+function v036OpenSettings(open=true){ /* V0.36.4: settings use native details/summary */ }
 function v036AfterRun(){
   v035ClickTab("3");
-  setTimeout(function(){v036OpenSharePrompt();},250);
+  window.setTimeout(function(){
+    v036OpenSharePrompt();
+  },400);
 }
 function v036OpenSharePrompt(){
-  const m=document.getElementById("v036SharePrompt"); if(!m)return;
-  m.hidden=false; m.classList.add("v036-open");
+  var m=document.getElementById("v036SharePrompt");
+  if(!m)return;
+  m.style.display="flex";
+  m.setAttribute("aria-hidden","false");
 }
 function v036CloseSharePrompt(){
-  const m=document.getElementById("v036SharePrompt"); if(!m)return;
-  m.hidden=true; m.classList.remove("v036-open");
+  var m=document.getElementById("v036SharePrompt");
+  if(!m)return;
+  m.style.display="none";
+  m.setAttribute("aria-hidden","true");
 }
 async function v036ShareFromPrompt(full){
   v036CloseSharePrompt();
@@ -1136,24 +1138,27 @@ window.addEventListener("DOMContentLoaded",()=>{
 });
 
 
-(function v0362FinalInit(){
+(function v0364FinalInit(){
   function bind(){
-    var b=document.getElementById("v036SettingsBtn");
-    if(b) b.onclick=function(e){e.preventDefault();v036OpenSettings(true);};
-    var c=document.getElementById("v036SettingsClose");
-    if(c) c.onclick=function(e){e.preventDefault();v036OpenSettings(false);};
-    var pc=document.getElementById("v036PromptClose");
-    if(pc) pc.onclick=function(e){e.preventDefault();v036CloseSharePrompt();};
-    var pf=document.getElementById("v036PromptFull");
-    if(pf) pf.onclick=function(e){e.preventDefault();v036ShareFromPrompt(true);};
-    var pq=document.getElementById("v036PromptQuick");
-    if(pq) pq.onclick=function(e){e.preventDefault();v036ShareFromPrompt(false);};
-    var sr=document.getElementById("v036ShareResult");
-    if(sr) sr.onclick=function(e){e.preventDefault();v036OpenSharePrompt();};
-    var sm=document.getElementById("v036SettingsModal");
-    if(sm) sm.addEventListener("click",function(e){if(e.target===sm)v036OpenSettings(false);});
-    var sp=document.getElementById("v036SharePrompt");
-    if(sp) sp.addEventListener("click",function(e){if(e.target===sp)v036CloseSharePrompt();});
+    var full=document.getElementById("v036PromptFull");
+    var quick=document.getElementById("v036PromptQuick");
+    var close=document.getElementById("v036PromptClose");
+    var skip=document.getElementById("v036PromptSkip");
+    var resultShare=document.getElementById("v036ShareResult");
+    var shareBarToggle=document.getElementById("v23ShareToggle");
+
+    if(full) full.onclick=function(e){e.preventDefault();v036ShareFromPrompt(true);};
+    if(quick) quick.onclick=function(e){e.preventDefault();v036ShareFromPrompt(false);};
+    if(close) close.onclick=function(e){e.preventDefault();v036CloseSharePrompt();};
+    if(skip) skip.onclick=function(e){e.preventDefault();v036CloseSharePrompt();};
+    if(resultShare) resultShare.onclick=function(e){e.preventDefault();v036OpenSharePrompt();};
+
+    var sheet=document.getElementById("v036SharePrompt");
+    if(sheet) sheet.onclick=function(e){if(e.target===sheet)v036CloseSharePrompt();};
+
+    var chk=document.getElementById("v036ShowShareBar");
+    if(chk) chk.addEventListener("change",v036SaveSettings);
+
     v036ApplySettings();
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",bind);

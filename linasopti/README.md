@@ -221,3 +221,13 @@ Ren UX-version. Swing, Lina Selection 16 och handelsreglerna är oförändrade.
 - Efter ett avslutat test visas delningsvalet ovillkorligen; användaren väljer därefter Full testdata eller Snabbrapport med ett aktivt tryck för iOS Share/AirDrop.
 - Permanent Dela-knapp kan fortfarande slås på/av i kugghjulet.
 - Ingen strategi- eller backtestlogik ändrad.
+
+
+## V0.36.4 – Share Fix
+- Orsak hittad: V0.36.3 hade kvar trasig HTML från den borttagna gamla inställningsmodalen efter delningsrutan.
+- Sidans nederdel är nu ombyggd rent från grunden.
+- `Testet är klart ✓` använder nu en egen enkel bottom-sheet med direkt `display:flex/none`, inte kombinationen hidden + modal-klasser.
+- Efter test går appen till Resultat och öppnar delningsvalet efter 400 ms.
+- Full testdata / Snabbrapport kräver därefter ett aktivt tryck för iOS Share/AirDrop.
+- Kugghjulet fortsätter använda ren HTML details/summary.
+- Ingen strategi- eller backtestlogik ändrad.
