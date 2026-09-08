@@ -414,3 +414,7 @@ body > .v23-sharebar{overflow:visible !important}
 .v036-result-advanced>summary{font-weight:900;cursor:pointer}
 .v036-result-advanced-inner{margin-top:14px}
 .v036-result-advanced .v014-audit{margin:0;padding:0;background:transparent}
+
+/* V0.36.2 click/modal hardening */
+.v036-modal-backdrop.v036-open{display:flex!important}
+#v036SettingsBtn{position:relative;z-index:10001;pointer-events:auto!important;touch-action:manipulation}

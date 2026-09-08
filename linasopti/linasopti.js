@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.36.1";
+const APP_VERSION = "V0.36.2";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -508,8 +508,11 @@ function renderDayAB(a,b){
 
 const V036_SETTINGS_KEY="linasopti_v036_settings";
 function v036GetSettings(){
-  try{return Object.assign({afterRun:"prompt",showShareBar:false},JSON.parse(localStorage.getItem(V036_SETTINGS_KEY)||"{}"))}
-  catch(e){return {afterRun:"prompt",showShareBar:false}}
+  try{
+    var s=Object.assign({afterRun:"prompt",showShareBar:false},JSON.parse(localStorage.getItem(V036_SETTINGS_KEY)||"{}"));
+    if(s.afterRun==="share-full"||s.afterRun==="share-quick")s.afterRun="prompt";
+    return s;
+  }catch(e){return {afterRun:"prompt",showShareBar:false}}
 }
 function v036SaveSettings(){
   const s={afterRun:document.getElementById("v036AfterRun")?.value||"prompt",
@@ -524,18 +527,22 @@ function v036ApplySettings(){
   if(sel)sel.value=s.afterRun;if(chk)chk.checked=s.showShareBar;
 }
 function v036OpenSettings(open=true){
-  const m=document.getElementById("v036SettingsModal"); if(m)m.hidden=!open;
+  const m=document.getElementById("v036SettingsModal"); if(!m)return;
+  m.hidden=!open;
+  m.classList.toggle("v036-open",open);
 }
 function v036AfterRun(){
   const s=v036GetSettings();
   v035ClickTab("3");
-  if(s.afterRun==="prompt") setTimeout(()=>v036OpenSharePrompt(),120);
+  if(s.afterRun!=="result") setTimeout(function(){v036OpenSharePrompt();},250);
 }
 function v036OpenSharePrompt(){
-  const m=document.getElementById("v036SharePrompt"); if(m)m.hidden=false;
+  const m=document.getElementById("v036SharePrompt"); if(!m)return;
+  m.hidden=false; m.classList.add("v036-open");
 }
 function v036CloseSharePrompt(){
-  const m=document.getElementById("v036SharePrompt"); if(m)m.hidden=true;
+  const m=document.getElementById("v036SharePrompt"); if(!m)return;
+  m.hidden=true; m.classList.remove("v036-open");
 }
 async function v036ShareFromPrompt(full){
   v036CloseSharePrompt();
@@ -1129,3 +1136,28 @@ window.addEventListener("DOMContentLoaded",()=>{
    if(!btn.dataset.v035OriginalText) btn.dataset.v035OriginalText=btn.textContent.replace(/^✓\s*/,"");
  });
 });
+
+
+(function v0362FinalInit(){
+  function bind(){
+    var b=document.getElementById("v036SettingsBtn");
+    if(b) b.onclick=function(e){e.preventDefault();v036OpenSettings(true);};
+    var c=document.getElementById("v036SettingsClose");
+    if(c) c.onclick=function(e){e.preventDefault();v036OpenSettings(false);};
+    var pc=document.getElementById("v036PromptClose");
+    if(pc) pc.onclick=function(e){e.preventDefault();v036CloseSharePrompt();};
+    var pf=document.getElementById("v036PromptFull");
+    if(pf) pf.onclick=function(e){e.preventDefault();v036ShareFromPrompt(true);};
+    var pq=document.getElementById("v036PromptQuick");
+    if(pq) pq.onclick=function(e){e.preventDefault();v036ShareFromPrompt(false);};
+    var sr=document.getElementById("v036ShareResult");
+    if(sr) sr.onclick=function(e){e.preventDefault();v036OpenSharePrompt();};
+    var sm=document.getElementById("v036SettingsModal");
+    if(sm) sm.addEventListener("click",function(e){if(e.target===sm)v036OpenSettings(false);});
+    var sp=document.getElementById("v036SharePrompt");
+    if(sp) sp.addEventListener("click",function(e){if(e.target===sp)v036CloseSharePrompt();});
+    v036ApplySettings();
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",bind);
+  else bind();
+})();

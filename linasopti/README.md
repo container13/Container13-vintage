@@ -204,3 +204,12 @@ Ren UX-version. Swing, Lina Selection 16 och handelsreglerna är oförändrade.
 - Nytt: efter avslutat test kan appen i stället automatiskt visa ett eget delningsval. Ett tryck på `Full testdata` eller `Snabbrapport` öppnar därefter iPhones vanliga delningsruta/AirDrop.
 - Permanent nederknapp för delning är fortfarande av som standard och kan slås på i Inställningar.
 - Swing-motor och handelsregler är oförändrade.
+
+
+## V0.36.2 – Click Fix
+- Inställningskugghjulet och delningsprompten binds om efter att hela JavaScript-filen laddats.
+- Inga inline-onclick-anrop behövs.
+- Modalvisning säkras med både `hidden` och `.v036-open`.
+- Gamla V0.36/V0.36.1 sparade delningsvärden migreras automatiskt till `prompt`.
+- Efter test visas delningsvalet som standard; endast explicit `Gå bara till Resultat` stänger av det.
+- Ingen strategi- eller backtestlogik ändrad.
