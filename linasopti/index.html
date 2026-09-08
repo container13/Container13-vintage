@@ -60,17 +60,23 @@
   <div class="muted v29-market-note">⭐ Lina Selection 16 är ett historikbaserat urval från våra tidigare tester och använder Alpaca + SPY som benchmark. USA och de globala Alpaca-grupperna använder Alpaca; Norden 80 använder EODHD-dagsdata. Alla grupper kör samma frysta Opti Swing och benchmark handlas aldrig. Selection-resultat på överlappande historik är urvalstest – inte oberoende bevis.</div>
 </div>
 <label>Symboler, kommaseparerade<input id="symbols" value="AAPL,MSFT,NVDA,AMZN,META,TSLA,AMD,NFLX,AVGO,JPM,SPY"></label>
-<label>Från<input id="start" type="date"></label>
-<label>Till<input id="end" type="date"></label>
-<div class="period-wrap" aria-label="Snabbval tidsperiod">
-  <span class="period-label">Snabbval</span>
-  <button type="button" class="period-btn v035-period-choice" data-period="1y">1 år</button>
-  <button type="button" class="period-btn v035-period-choice" data-period="2024">2024</button>
-  <button type="button" class="period-btn v035-period-choice" data-period="2025">2025</button>
-  <button type="button" class="period-btn v035-period-choice" data-period="2026">2026</button>
-  <button type="button" class="period-btn v035-period-choice" data-period="all">Hela perioden</button>
-<button type="button" class="period-btn v0344-fire v035-period-choice" id="v0344FireTest">🔥 Eldprov 2023</button>
-<button type="button" class="period-btn v035-fire v035-period-choice" id="v035Fire2022">🔥 Eldprov 2022</button>
+<div class="v0383-period-card" aria-label="Välj tidsperiod">
+  <div class="v0383-period-title">Tidsperiod</div>
+  <div class="v0383-quick">
+    <button type="button" data-range-years="1">1 år</button>
+    <button type="button" data-range-years="3">3 år</button>
+    <button type="button" data-range-years="5">5 år</button>
+    <button type="button" data-range-years="10">10 år</button>
+  </div>
+  <div id="v0383Years" class="v0383-years" aria-label="Kalenderår"></div>
+  <details class="v0383-custom">
+    <summary>Egen period</summary>
+    <div class="row" style="margin-top:10px">
+      <label>Från<input id="start" type="date"></label>
+      <label>Till<input id="end" type="date"></label>
+    </div>
+    <div class="muted">Vid snabbval läggs indikatorernas warmup automatiskt före teststart. För egen period kan teststart finjusteras under Test → Avancerat &amp; testinställningar.</div>
+  </details>
 </div>
 <div class="day-period-wrap v0368-day-control" aria-label="Snabbval Opti Day">
   <span class="period-label">Opti Day snabbval</span>
@@ -93,7 +99,7 @@
 </div>
 
 <div class="card v31-nordic-info">
-  <h2>V0.38.5 · Golden Rebuild</h2>
+  <h2>V0.38.6 · Perioder återställda</h2>
   <div class="muted">
     Urvalet är räknat från alla inskickade rapporter, men rankingen använder deduplicerade och kronologiskt korrigerade testfönster så samma körning inte får extra vikt.
     För själva USA/Alpaca-urvalet användes fem separata miljöer: USA30 2024, 2025 och 2026 samt Global Stocks 100 och USA + Värld 50.
@@ -115,7 +121,7 @@
   </details>
 </div>
 
-<div class="card v31-nordic-info"><h2>V0.38.5 · Golden Rebuild</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
+<div class="card v31-nordic-info"><h2>V0.38.6 · Perioder återställda</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
 <details class="v0384-tech">
   <summary>Tekniskt / felsökning</summary>
   <div class="v0384-tech-inner">
@@ -319,5 +325,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.38.5"></script>
+<script src="linasopti.js?v=0.38.6"></script>
 </body></html>

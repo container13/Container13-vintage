@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.38.5";
+const APP_VERSION = "V0.38.6";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -1183,7 +1183,7 @@ async function v0365Share(full){
   else bind();
 })();
 
-// V0.38.5: safe one-shot UI refresh after a completed data fetch.
+// V0.38.6: safe one-shot UI refresh after a completed data fetch.
 // No MutationObserver calls this function. The V0.36.7 fetch path remains untouched.
 const v0385OriginalPaintBridgeDone = paintBridgeDone;
 paintBridgeDone = function(count, tf){
@@ -1261,6 +1261,13 @@ function v0368UpdateContextUI(){
       b.addEventListener("click",()=>{
         const n=Number(b.dataset.rangeYears),cy=new Date().getFullYear();
         apply(cy-n+1,cy,b);
+      });
+    });
+    [document.getElementById("start"),document.getElementById("end")].forEach(el=>{
+      el?.addEventListener("change",()=>{
+        mark(null);
+        if(typeof DAILY!=="undefined")DAILY=[];
+        if(typeof updateTestDataStatus==="function")updateTestDataStatus();
       });
     });
   }

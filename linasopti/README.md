@@ -1,20 +1,24 @@
-# Linas Opti V0.38.5 – Golden Rebuild
+# Linas Opti V0.38.6 – Perioder återställda
 
-Bas: verifierat fungerande V0.36.7-dataflöde.
+Bas: **V0.38.5 Golden Rebuild**, verifierad fungerande publikt på iPhone.
 
-## Ändrat
-- Behåller UI-förbättringarna från senare versioner.
-- Återställer `getBars()` till V0.36.7:s fungerande fetch-/slutförandeflöde.
-- Tar bort anropet till `v0368UpdateContextUI()` från MutationObservern.
-- Data-klar-rutan uppdateras i stället exakt en gång när `paintBridgeDone()` körs efter lyckad dagsdatahämtning.
-- Ingen ändring av Worker, API-nycklar, strategi eller handelslogik.
+## Ändrat i V0.38.6
+- Återställt tidsperiodväljaren från det tidigare UI-spåret.
+- Snabbval: **1 år, 3 år, 5 år, 10 år**.
+- Kalenderår skapas dynamiskt för **innevarande år + nio år bakåt** (2026 ger 2026–2017).
+- **Egen period** finns hopfälld och visar Från/Till.
+- Ett kalenderår använder föregående 1 december som warmup-data och 1 januari som teststart.
+- Flerårsval använder samma princip: warmup från 1 december året före första teståret.
+- Val av ny period tömmer tidigare hämtad DAILY-data så fel period inte kan testas av misstag.
 
-## Varför
-V0.38.4 hade en MutationObserver som anropade en funktion som själv ändrade observerad DOM-text. Det kunde skapa en självutlösande UI-loop efter att data kommit tillbaka. Cloudflare-loggen visade samtidigt HTTP 200 / outcome ok på `/bars`.
+## Uttryckligen inte ändrat
+- `bridge()`
+- `params()`
+- `getBars()` / fungerande dagsdatahämtning från V0.38.5/V0.36.7
+- Cloudflare Worker
+- Alpaca/EODHD-anrop
+- Opti Swing-regler, position sizing, exits, benchmark eller övrig handelslogik
+- Resultat-/delningsflödet
 
-## Testordning
-1. Ladda upp filerna i testmapp.
-2. Logga in med befintlig kod.
-3. Välj 2026.
-4. Hämta dagsdata.
-5. Kontrollera att status går till klart/data-klar och därefter kör test.
+## Viktig felsökningsregel
+V0.38.5 är fortsatt golden master för datahämtningen. Om V0.38.6 skulle få problem ska period-UI:t granskas först; fetch-kedjan ska inte ändras utan separat bevis.
