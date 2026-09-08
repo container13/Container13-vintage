@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.38.4";
+const APP_VERSION = "V0.38.5";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -131,7 +131,7 @@ async function getBars(tf){
     const j=await bridge(url); rows.push(...(j.rows||[]));
    }
   }else{ const j=await bridge(params(tf)); rows=j.rows||[]; }
-  if(tf==="1Day")DAILY=rows;else INTRA=rows; updateTestDataStatus();updateDataStatus();v035RefreshGuide(); v0368UpdateContextUI();paintBridgeDone(rows.length,tf);
+  if(tf==="1Day")DAILY=rows;else INTRA=rows; updateTestDataStatus();updateDataStatus();v035RefreshGuide();paintBridgeDone(rows.length,tf);
  }catch(e){$("bridgeStatus").className="status bad";$("bridgeStatus").textContent=e.message;}finally{if(btn){btn.disabled=false;btn.textContent=old;}}
 }
 $("dailyBtn").onclick=()=>getBars("1Day");$("intraBtn").onclick=()=>getBars("5Min");
@@ -585,7 +585,7 @@ window.addEventListener("DOMContentLoaded",()=>{
    renderSwingAudit(audit);
    v342RenderAnalysis(s);
    v0344RenderValidation(s,cap);
-   v035RenderHero(s); v0368UpdateContextUI();
+   v035RenderHero(s);
 
    if(done){done.hidden=false;done.style.display="block";}
    window.scrollTo({top:0,behavior:"smooth"});
@@ -1142,7 +1142,7 @@ window.addEventListener("DOMContentLoaded",()=>{
 // V0.35 guided-flow observer: UI-only; does not alter data or strategy.
 window.addEventListener("DOMContentLoaded",()=>{
  const root=document.body;
- const obs=new MutationObserver(()=>{ if((window.DAILY||[]).length) v035RefreshGuide(); v0368UpdateContextUI(); });
+ const obs=new MutationObserver(()=>{ if((window.DAILY||[]).length) v035RefreshGuide(); });
  obs.observe(root,{subtree:true,childList:true,characterData:true});
 });
 
@@ -1182,6 +1182,14 @@ async function v0365Share(full){
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",bind);
   else bind();
 })();
+
+// V0.38.5: safe one-shot UI refresh after a completed data fetch.
+// No MutationObserver calls this function. The V0.36.7 fetch path remains untouched.
+const v0385OriginalPaintBridgeDone = paintBridgeDone;
+paintBridgeDone = function(count, tf){
+  v0385OriginalPaintBridgeDone(count, tf);
+  if(tf === "1Day") v0368UpdateContextUI();
+};
 
 function v0368UpdateContextUI(){
   var ready=document.getElementById("v0368DataReady");
