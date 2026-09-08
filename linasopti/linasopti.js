@@ -576,12 +576,12 @@ window.addEventListener("DOMContentLoaded",()=>{
    if(!DAILY.length&&!INTRA.length){if(status)status.innerHTML='<span class="bad">Ingen data inläst.</span>';return;}
    btn.disabled=true; const oldText=btn.textContent; btn.textContent="Kör test…";
    let start=$("evalStart")?.value||"",mp=+$("maxpos").value;
-   let s=swing(DAILY,cap,mp,start);
-   let t=optiTrend(DAILY,cap,start);
-   let w=isUsMarket()?swingWorld(DAILY,cap,mp,start):null;
-   let d=isUsMarket()?daytrade(INTRA,cap,+$("risk").value):null;
-   let dB=null; // V0.39.1: gamla Day A/B är fryst och körs inte
-   let audit=auditSwing(DAILY,s,cap); LAST={s,t,w,d,dB,audit};
+   let s=DAILY.length?swing(DAILY,cap,mp,start):null;
+   let t=DAILY.length?optiTrend(DAILY,cap,start):null;
+   let w=(DAILY.length&&isUsMarket())?swingWorld(DAILY,cap,mp,start):null;
+   let d=(INTRA.length&&isUsMarket())?daytrade(INTRA,cap,+$("risk").value):null;
+   let dB=null; // V0.39.2: gamla Day A/B är fryst och körs inte
+   let audit=(DAILY.length&&s)?auditSwing(DAILY,s,cap):null; LAST={s,t,w,d,dB,audit};
 
    // V0.36.6: detta är den verkliga slutpunkten för användarens test.
    // Visa Resultat + färdigkortet INNAN sekundära resultatpaneler renderas.
@@ -677,8 +677,7 @@ async function checkLinasOptiApi(){
 
 function updateTestDataStatus(){
  const d=document.getElementById("testDataStatus"); if(!d)return;
- const swingFocused=true;
- d.innerHTML=`${DAILY.length?"🟢":"⚪"} Dagsdata: ${DAILY.length?DAILY.length+" rader":"ej hämtad"}` + (swingFocused?"":`<br>${INTRA.length?"🟢":"⚪"} 5-min-data: ${INTRA.length?INTRA.length+" rader":"ej hämtad"}`);
+ d.innerHTML=`${DAILY.length?"🟢":"⚪"} Dagsdata: ${DAILY.length?DAILY.length+" rader":"ej hämtad"}<br>${INTRA.length?"🟢":"⚪"} 5-min-data: ${INTRA.length?INTRA.length+" rader":"ej hämtad"}`;
 }
 
 
@@ -902,14 +901,19 @@ function v035PeriodName(){
  return s&&e?`${s} → ${e}`:"Välj period";
 }
 function v035RefreshGuide(label){
- const g=currentGroup?.(), rows=DAILY.length;
+ const g=currentGroup?.(), dailyRows=DAILY.length, intraRows=INTRA.length, rows=dailyRows||intraRows;
  const summary=document.getElementById("v035DataSummary"),check=document.getElementById("v035DataCheck"),next=document.getElementById("v035ToTest");
  const name=g?.name||"Ingen grupp", p=label||v035PeriodName();
- if(summary) summary.innerHTML=`<b>${name}</b><br>${p}${rows?`<br><span class="good">✓ ${rows.toLocaleString("sv-SE")} dagsrader hämtade</span>`:""}`;
+ const readyText=dailyRows?`✓ ${dailyRows.toLocaleString("sv-SE")} dagsrader hämtade`:`✓ ${intraRows.toLocaleString("sv-SE")} 5-min-rader hämtade`;
+ if(summary) summary.innerHTML=`<b>${name}</b><br>${p}${rows?`<br><span class="good">${readyText}</span>`:""}`;
  if(check) check.textContent=rows?"Data klar ✓":"Välj grupp och period";
  if(next) next.hidden=!rows;
  const ts=document.getElementById("v035TestSummary");
- if(ts) ts.innerHTML=rows?`<div class="v036-ready-line"><b>${name}</b><span>✓ Data klar</span></div><div>${p}</div><div>${rows.toLocaleString("sv-SE")} dagsrader · ${Number(document.getElementById("capital")?.value||100000).toLocaleString("sv-SE")} startkapital</div><div class="good">Opti Swing · fryst strategi</div>`:"Data måste hämtas först.";
+ if(ts){
+   if(dailyRows) ts.innerHTML=`<div class="v036-ready-line"><b>${name}</b><span>✓ Data klar</span></div><div>${p}</div><div>${dailyRows.toLocaleString("sv-SE")} dagsrader · ${Number(document.getElementById("capital")?.value||100000).toLocaleString("sv-SE")} startkapital</div><div class="good">Opti Swing · fryst strategi</div>`;
+   else if(intraRows) ts.innerHTML=`<div class="v036-ready-line"><b>${name}</b><span>✓ 5-min-data klar</span></div><div>${intraRows.toLocaleString("sv-SE")} 5-min-rader · ${Number(document.getElementById("capital")?.value||100000).toLocaleString("sv-SE")} startkapital</div><div class="good">⚡ Lina Day · Jägaren redo</div>`;
+   else ts.textContent="Data måste hämtas först.";
+ }
 }
 function v035RenderHero(s){
  const lead=document.getElementById("v035ResultLead"),hero=document.getElementById("v035HeroResult");

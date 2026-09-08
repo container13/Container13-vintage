@@ -1,3 +1,7 @@
+# Linas Opti V0.39.2 – Day Test inkopplad
+
+Byggd direkt från V0.39.1. Fixar kopplingen mellan lyckad 5-minutershämtning och Test-fliken. INTRA-data räcker nu för att visa **Lina Day · Jägaren redo** och köra ett Day-only-test utan dagsdata. Swing/dagsdata, Worker/API och Jägaren-reglerna är inte ändrade.
+
 # Linas Opti V0.39.1 – Lina Day Jägaren
 
 Datum: 2026-09-08
