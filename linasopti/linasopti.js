@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.38.2";
+const APP_VERSION = "V0.38.3";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -37,7 +37,7 @@ function setMarketGroup(key){
  const pi=document.getElementById("providerInfo"); if(pi)pi.textContent=`Datakälla: ${g.provider==="eodhd"?"EODHD":"Alpaca"} · Benchmark: ${g.benchmark}`;
  const ib=document.getElementById("intraBtn"); if(ib){ib.disabled=g.provider!=="alpaca";ib.title=g.provider!=="alpaca"?"Opti Day är tills vidare endast USA":"";}
  DAILY=[]; INTRA=[]; LAST=null; updateTestDataStatus(); updateDataStatus();
- const bs=document.getElementById("bridgeStatus"); if(bs){bs.className="status v0371-api-status";bs.textContent=`${g.name} vald. Hämta data för att testa gruppen.`;}
+ const bs=document.getElementById("bridgeStatus"); if(bs)bs.textContent=`${g.name} vald. Hämta data för att testa gruppen.`;
 }
 window.addEventListener("DOMContentLoaded",()=>{
  document.querySelectorAll(".market-btn[data-market]:not([disabled])").forEach(b=>b.addEventListener("click",()=>setMarketGroup(b.dataset.market)));
@@ -88,18 +88,6 @@ async function bridge(path){
  if(!API_BASE) throw new Error("Kunde inte nå Linas Opti API.");
  let r=await fetch(API_BASE+path);let j=await r.json();if(!r.ok)throw new Error(j.error||("HTTP "+r.status));return j
 }
-async function v0382Timed(path,ms=12000){
- let timer;
- try{
-  return await Promise.race([
-   bridge(path),
-   new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error("TIMEOUT")),ms)})
-  ]);
- }finally{
-  clearTimeout(timer);
- }
-}
-
 $("healthBtn").onclick=async()=>{try{
   let j=await checkLinasOptiApi();
   const mode=j.mode==="paper"?"Alpaca Paper":(j.mode||"Alpaca");
@@ -131,56 +119,22 @@ function paintBridgeDone(count,tf){
 async function getBars(tf){
  if(currentProvider()==="eodhd" && tf!=="1Day"){const el=$("bridgeStatus");if(el){el.className="status bad";el.textContent="Opti Day/5-min är tills vidare endast USA.";}return;}
  const btn=tf==="1Day"?$("dailyBtn"):$("intraBtn"); const old=btn?.textContent;
- const status=$("bridgeStatus");
  try{
-  if(btn){btn.disabled=true;btn.textContent="Hämtar…";}
-  status.className="status";
-  status.textContent="Steg 1/3 · Kontrollerar Linas Opti API…";
-
-  try{
-    await v0382Timed("/health",8000);
-  }catch(e){
-    if(e.message==="TIMEOUT") throw new Error("API-kontrollen svarar inte inom 8 sekunder.");
-    throw new Error("API-kontrollen misslyckades: "+e.message);
-  }
-
-  status.textContent="Steg 2/3 · API svarar · hämtar marknadsdata…";
-
+  if(btn){btn.disabled=true;btn.textContent="Hämtar…";} $("bridgeStatus").className="status"; $("bridgeStatus").textContent="Hämtar...";
   let rows=[];
   if(currentProvider()==="eodhd" && tf==="1Day"){
    const syms=$("symbols").value.split(",").map(x=>x.trim().toUpperCase()).filter(Boolean);
    const chunks=[]; for(let i=0;i<syms.length;i+=25)chunks.push(syms.slice(i,i+25));
    for(let i=0;i<chunks.length;i++){
-    status.textContent=`Steg 2/3 · Hämtar EODHD del ${i+1}/${chunks.length}…`;
+    $("bridgeStatus").textContent=`Hämtar del ${i+1}/${chunks.length}…`;
     const url=`/eod-bars?symbols=${encodeURIComponent(chunks[i].join(","))}&timeframe=1Day&start=${$("start").value}&end=${$("end").value}`;
-    try{
-      const j=await v0382Timed(url,20000); rows.push(...(j.rows||[]));
-    }catch(e){
-      if(e.message==="TIMEOUT") throw new Error("EODHD-anropet svarar inte inom 20 sekunder.");
-      throw e;
-    }
+    const j=await bridge(url); rows.push(...(j.rows||[]));
    }
-  }else{
-    try{
-      const j=await v0382Timed(params(tf),20000); rows=j.rows||[];
-    }catch(e){
-      if(e.message==="TIMEOUT") throw new Error("Alpaca/Worker-anropet svarar inte inom 20 sekunder.");
-      throw e;
-    }
-  }
-
-  status.textContent=`Steg 3/3 · ${rows.length.toLocaleString("sv-SE")} rader mottagna · slutför…`;
-
-  if(tf==="1Day")DAILY=rows;else INTRA=rows;
-  updateTestDataStatus();updateDataStatus();v035RefreshGuide();v0368UpdateContextUI();paintBridgeDone(rows.length,tf);
- }catch(e){
-  status.className="status bad";
-  status.textContent="🔴 "+(e?.message||String(e));
- }finally{
-  if(btn){btn.disabled=false;btn.textContent=old;}
- }
+  }else{ const j=await bridge(params(tf)); rows=j.rows||[]; }
+  if(tf==="1Day")DAILY=rows;else INTRA=rows; updateTestDataStatus();updateDataStatus();v035RefreshGuide(); v0368UpdateContextUI();paintBridgeDone(rows.length,tf);
+ }catch(e){$("bridgeStatus").className="status bad";$("bridgeStatus").textContent=e.message;}finally{if(btn){btn.disabled=false;btn.textContent=old;}}
 }
-$("dailyBtn").onclick=()=>getBars("1Day"); if($("intraBtn")) $("intraBtn").onclick=()=>getBars("5Min");
+$("dailyBtn").onclick=()=>getBars("1Day");$("intraBtn").onclick=()=>getBars("5Min");
 
 function grouped(rows){let m={};rows.forEach(r=>(m[r.symbol]??=[]).push(r));return m}
 function sd(a){if(a.length<2)return 0;let m=a.reduce((s,x)=>s+x,0)/a.length;return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/a.length)}
@@ -917,12 +871,24 @@ function v035ClearFireSelection(){
    }
  });
 }
-
+function v035SetFire2022(){
+ v035SelectPeriodButton("v035Fire2022");
+ const start=document.getElementById("start"),end=document.getElementById("end"),ev=document.getElementById("evalStart");
+ if(start)start.value="2021-12-01";
+ if(ev)ev.value="2022-01-03";
+ if(end)end.value="2022-12-30";
+ v035RefreshGuide("🔥 Eldprov 2022");
+}
 function v035ClickTab(n){
  const el=[...document.querySelectorAll("button,a")].find(x=>x.textContent.trim().startsWith(n+"."));
  if(el) el.click();
 }
-function v035PeriodName(){const s=document.getElementById("start")?.value,e=document.getElementById("end")?.value;return s&&e?`${s} → ${e}`:"Välj period";}
+function v035PeriodName(){
+ const s=document.getElementById("start")?.value,e=document.getElementById("end")?.value;
+ if(s==="2022-12-01"&&e==="2023-12-29")return "🔥 Eldprov 2023";
+ if(s==="2021-12-01"&&e==="2022-12-30")return "🔥 Eldprov 2022";
+ return s&&e?`${s} → ${e}`:"Välj period";
+}
 function v035RefreshGuide(label){
  const g=currentGroup?.(), rows=DAILY.length;
  const summary=document.getElementById("v035DataSummary"),check=document.getElementById("v035DataCheck"),next=document.getElementById("v035ToTest");
@@ -944,7 +910,9 @@ function v035RenderHero(s){
  ${c?`<div><span>Efter kostnader</span><strong>${c.netRet>=0?"+":""}${pct(c.netRet)}</strong></div>`:""}`;
 }
 window.addEventListener("DOMContentLoaded",()=>{
+ document.getElementById("v035Fire2022")?.addEventListener("click",v035SetFire2022);
  document.getElementById("v035ToTest")?.addEventListener("click",()=>v035ClickTab("2"));
+ document.getElementById("v035NextTest")?.addEventListener("click",()=>{v035ClickTab("1");setTimeout(v035SetFire2022,60);});
  document.querySelectorAll(".v035-period-choice[data-period]").forEach(btn=>{
    if(!btn.dataset.v035OriginalText) btn.dataset.v035OriginalText=btn.textContent;
    btn.addEventListener("click",()=>{
@@ -960,7 +928,17 @@ window.addEventListener("DOMContentLoaded",()=>{
  });
  setTimeout(v035RefreshGuide,100);
 });
-
+function v0344SetFireTest(){
+ v035SelectPeriodButton("v0344FireTest");
+ const start=document.getElementById("start"),end=document.getElementById("end"),ev=document.getElementById("evalStart");
+ if(start)start.value="2022-12-01"; // uppvärmning före testet
+ if(ev)ev.value="2023-01-03";
+ if(end)end.value="2023-12-29";
+ v035RefreshGuide("🔥 Eldprov 2023");
+ const st=document.getElementById("testDataStatus");
+ if(st)st.innerHTML='<span class="good">🔥 Eldprov 2023 valt · helt före urvalsperioderna 2024–2026. Hämta dagsdata och kör utan att ändra Swing.</span>';
+}
+window.addEventListener("DOMContentLoaded",()=>document.getElementById("v0344FireTest")?.addEventListener("click",v0344SetFireTest));
 
 function v17DateOnly(v){return String(v||"").slice(0,10)}
 function v17Symbols(){const e=document.getElementById("symbols");return e?e.value:""}
@@ -1228,79 +1206,55 @@ function v0368UpdateContextUI(){
   });
 }
 
-
-
-// V0.37.0 – generella årsval. Ändrar endast datumfält och tömmer tidigare hämtad data.
-(function v0370PeriodPicker(){
- const pad=n=>String(n).padStart(2,"0"), iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
- function clear(){
-  document.querySelectorAll(".v0370-range-btn,.v0370-year-btn").forEach(b=>{
-    b.classList.remove("active");
-    b.removeAttribute("data-selected");
-    b.setAttribute("aria-pressed","false");
-    b.style.removeProperty("background");
-    b.style.removeProperty("color");
-    b.style.removeProperty("border-color");
-    b.style.removeProperty("box-shadow");
-  });
- }
- function mark(btn){
-  if(!btn)return;
-  btn.classList.add("active");
-  btn.setAttribute("data-selected","true");
-  btn.setAttribute("aria-pressed","true");
-  // Inline !important: Safari ska inte kunna skriva över den visuella markeringen.
-  btn.style.setProperty("background","#1267b2","important");
-  btn.style.setProperty("color","#ffffff","important");
-  btn.style.setProperty("border-color","#1267b2","important");
-  btn.style.setProperty("box-shadow","0 0 0 4px rgba(18,103,178,.20)","important");
- }
- function apply(first,last,btn){
-  const s=document.getElementById("start"),e=document.getElementById("end"),v=document.getElementById("evalStart"); if(!s||!e||!v)return;
-  const now=new Date(),cy=now.getFullYear();
-  s.value=`${first-1}-12-01`; v.value=`${first}-01-01`; e.value=last>=cy?iso(now):`${last}-12-31`;
-  clear(); mark(btn);
-  if(typeof DAILY!=="undefined")DAILY.length=0;
-  const badge=document.getElementById("modeBadge"); if(badge){badge.textContent="DATA EJ INLÄST";}
-  const ready=document.getElementById("v0368DataReady"); if(ready){ready.hidden=true;ready.style.display="none";}
-  const st=document.getElementById("bridgeStatus"); if(st){st.className="status v0371-api-status";st.textContent="";}
-  if(typeof v035RefreshGuide==="function")v035RefreshGuide();
- }
- function init(){
-  document.querySelectorAll(".v0370-year-btn").forEach(b=>b.onclick=()=>{const y=+b.dataset.year;apply(y,y,b)});
-  document.querySelectorAll(".v0370-range-btn").forEach(b=>b.onclick=()=>{const n=+b.dataset.years,now=new Date(),last=now.getFullYear();apply(last-n+1,last,b)});
- }
- if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
-})();
-
-// V0.37.1 – appstart: varje omladdning börjar låst och högst upp.
-(function v0371Startup(){
-  if("scrollRestoration" in history) history.scrollRestoration="manual";
-  function top(){ window.scrollTo(0,0); document.documentElement.scrollTop=0; document.body.scrollTop=0; }
-  window.addEventListener("pageshow",top);
-  window.addEventListener("load",()=>setTimeout(top,0));
-
-  function initCustom(){
-    const d=document.getElementById("v0371CustomPeriod");
-    if(!d)return;
-    const fields=document.querySelectorAll(".v0371-date-field");
-    const sync=()=>fields.forEach(el=>el.style.display=d.open?"":"none");
-    d.addEventListener("toggle",sync); sync();
-  }
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initCustom);else initCustom();
-})();
-
-// V0.37.5 – håll innehållet exakt under den fasta headern.
-(function v0375FixedHeaderMeasure(){
+// V0.38.3 – fixed header spacing only. No fetch logic changed.
+(function v0383HeaderMeasure(){
   function sync(){
     const h=document.querySelector(".sticky-top");
     if(!h)return;
-    const px=Math.ceil(h.getBoundingClientRect().height);
-    document.documentElement.style.setProperty("--v0375-head-h",px+"px");
+    document.documentElement.style.setProperty("--v0383-head-h",Math.ceil(h.getBoundingClientRect().height)+"px");
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",sync);else sync();
   window.addEventListener("load",sync);
   window.addEventListener("resize",sync);
-  window.addEventListener("orientationchange",()=>setTimeout(sync,100));
 })();
 
+// V0.38.3 – period UI only. Sets the existing start/end/evalStart fields.
+// Does not alter bridge(), params() or getBars().
+(function v0383PeriodPicker(){
+  function iso(d){return d.toISOString().slice(0,10)}
+  function buttons(){return Array.from(document.querySelectorAll("[data-range-years],[data-year]"))}
+  function mark(btn){
+    buttons().forEach(b=>b.removeAttribute("data-selected"));
+    if(btn)btn.setAttribute("data-selected","true");
+  }
+  function apply(first,last,btn){
+    const s=document.getElementById("start"),e=document.getElementById("end"),v=document.getElementById("evalStart");
+    if(!s||!e||!v)return;
+    const now=new Date(),cy=now.getFullYear();
+    s.value=`${first-1}-12-01`;
+    v.value=`${first}-01-01`;
+    e.value=last>=cy?iso(now):`${last}-12-31`;
+    mark(btn);
+    if(typeof DAILY!=="undefined")DAILY=[];
+    if(typeof updateTestDataStatus==="function")updateTestDataStatus();
+  }
+  function init(){
+    const holder=document.getElementById("v0383Years");
+    if(holder){
+      const cy=new Date().getFullYear();
+      for(let y=cy;y>=cy-9;y--){
+        const b=document.createElement("button");
+        b.type="button"; b.textContent=String(y); b.dataset.year=String(y);
+        b.addEventListener("click",()=>apply(y,y,b));
+        holder.appendChild(b);
+      }
+    }
+    document.querySelectorAll("[data-range-years]").forEach(b=>{
+      b.addEventListener("click",()=>{
+        const n=Number(b.dataset.rangeYears),cy=new Date().getFullYear();
+        apply(cy-n+1,cy,b);
+      });
+    });
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();

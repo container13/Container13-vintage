@@ -6,67 +6,22 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.38.2">
+<link rel="stylesheet" href="linasopti.css?v=0.38.3">
 </head>
 <body>
-<div id="v0369Gate" class="v0369-gate" aria-hidden="false">
-  <div class="v0369-gate-card">
-    <div class="v0369-gate-title">Linas Opti</div>
-    <div class="v0369-gate-sub">Ange lösenkod för att fortsätta</div>
-    <input id="v0369Code" type="password" autocomplete="off" inputmode="text" placeholder="Lösenkod">
-    <button id="v0369Enter" type="button">Öppna Linas Opti</button>
-    <div id="v0369GateMsg" class="v0369-gate-msg"></div>
+
+<div id="v0383Gate" class="v0383-gate" aria-hidden="false">
+  <div class="v0383-gate-card">
+    <h1>Linas Opti</h1>
+    <p>Ange lösenkod för att fortsätta</p>
+    <input id="v0383Code" type="password" inputmode="text" autocomplete="off" placeholder="Lösenkod">
+    <button id="v0383Enter" type="button">Öppna Linas Opti</button>
+    <div id="v0383GateMsg" class="v0383-gate-msg"></div>
   </div>
 </div>
-<script>
-/* V0.37.4: fristående lösenkodsgate. Kör oberoende av appens huvud-JS. */
-(function(){
-  var gate=document.getElementById("v0369Gate");
-  var input=document.getElementById("v0369Code");
-  var button=document.getElementById("v0369Enter");
-  var msg=document.getElementById("v0369GateMsg");
-  if(!gate||!input||!button)return;
-
-  gate.hidden=false;
-  gate.style.display="flex";
-  gate.setAttribute("aria-hidden","false");
-  input.value="";
-
-  function openLina(){
-    var ok=input.value.trim().toLowerCase()==="adam";
-    if(!ok){
-      msg.textContent="Fel lösenkod";
-      msg.className="v0369-gate-msg v0374-gate-error";
-      input.focus(); input.select();
-      return;
-    }
-    msg.textContent="✓ Kod godkänd";
-    msg.className="v0369-gate-msg v0374-gate-ok";
-    button.disabled=true;
-    setTimeout(function(){
-      gate.classList.add("v0374-unlocked");
-      gate.setAttribute("aria-hidden","true");
-      setTimeout(function(){
-        gate.style.display="none";
-        document.documentElement.scrollTop=0;
-        document.body.scrollTop=0;
-        window.scrollTo(0,0);
-        requestAnimationFrame(function(){
-          window.scrollTo(0,0);
-          setTimeout(function(){ window.scrollTo(0,0); },250);
-        });
-      },180);
-    },180);
-  }
-  button.addEventListener("click",function(e){e.preventDefault();openLina();});
-  input.addEventListener("keydown",function(e){
-    if(e.key==="Enter"){e.preventDefault();openLina();}
-  });
-  setTimeout(function(){input.focus();},50);
-})();
-</script>
 
 <div class="lina-watermark" aria-hidden="true"></div>
+<div class="wrap">
 <div class="sticky-top">
 <header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Opti Day + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.31</div></div></div></div></header>
 
@@ -77,22 +32,18 @@
 </div>
 </div>
 
-<div class="wrap">
 <section id="pane-data">
-<div class="card v0371-normal-hidden"><h2>Kom igång</h2><div class="muted">På mobilen gör du allt i tre steg: läs in/hämta data → kör test → jämför resultat. Samma sida skalar upp automatiskt på 13&quot; och 24&quot;.</div></div>
-<details class="v0369-altA">
-  <summary>Tekniskt: CSV / manuell inläsning</summary>
-  <div class="card">
+<div class="card"><h2>Kom igång</h2><div class="muted">På mobilen gör du allt i tre steg: läs in/hämta data → kör test → jämför resultat. Samma sida skalar upp automatiskt på 13&quot; och 24&quot;.</div></div>
+<div class="card">
 <h2>Alternativ A — CSV-filer</h2>
 <div class="files">
 <div class="filebox"><b>Sparrobot: dagskurser</b><div class="muted">CSV: timestamp,symbol,open,high,low,close,volume</div><input id="dailyFile" type="file" accept=".csv,text/csv"></div>
 <div class="filebox"><b>Opti Day: 5-minuterskurser</b><div class="muted">Samma kolumner, en rad per 5-minutersbar</div><input id="intraFile" type="file" accept=".csv,text/csv"></div>
 </div>
-</details>
 <div class="status" id="csvStatus">Du kan läsa in en eller båda filerna. Testerna använder bara den data som finns.</div>
 </div>
 
-<div class="card v27-day-start v0370-dev-hidden">
+<div class="card v27-day-start">
 <h2>Opti Day · 5-minutershandel</h2>
 <div class="muted">Första riktiga intradagsmotorn. Signal tas på en avslutad 5-minutersbar och ordern simuleras först på nästa bars öppning. Samma aktie kan handlas flera gånger under dagen, men aldrig samtidigt och aldrig över natten.</div>
 <div class="v27-day-pills"><span>Max 12 affärer/dag</span><span>Max 3/symbol</span><span>Stop 0,8%</span><span>Mål 1,2%</span><span>Max 60 min</span></div>
@@ -120,20 +71,18 @@
   </div>
   <div class="muted v29-market-note">⭐ Lina Selection 16 är ett historikbaserat urval från våra tidigare tester och använder Alpaca + SPY som benchmark. USA och de globala Alpaca-grupperna använder Alpaca; Norden 80 använder EODHD-dagsdata. Alla grupper kör samma frysta Opti Swing och benchmark handlas aldrig. Selection-resultat på överlappande historik är urvalstest – inte oberoende bevis.</div>
 </div>
-<label class="v0371-tech-field">Symboler, kommaseparerade<input id="symbols" value="AAPL,MSFT,NVDA,AMZN,META,TSLA,AMD,NFLX,AVGO,JPM,SPY"></label>
-<label class="v0371-date-field">Från<input id="start" type="date"></label>
-<label class="v0371-date-field">Till<input id="end" type="date"></label>
-<div class="v0370-period-panel">
-<span class="period-label">Period</span>
-<div class="v0370-range-row">
-<button type="button" class="v0370-range-btn" data-years="1">1 år</button>
-<button type="button" class="v0370-range-btn" data-years="3">3 år</button>
-<button type="button" class="v0370-range-btn" data-years="5">5 år</button>
-<button type="button" class="v0370-range-btn" data-years="10">10 år</button>
-</div>
-<div class="v0370-year-grid">
-<button type="button" class="v0370-year-btn" data-year="2026">2026</button><button type="button" class="v0370-year-btn" data-year="2025">2025</button><button type="button" class="v0370-year-btn" data-year="2024">2024</button><button type="button" class="v0370-year-btn" data-year="2023">2023</button><button type="button" class="v0370-year-btn" data-year="2022">2022</button><button type="button" class="v0370-year-btn" data-year="2021">2021</button><button type="button" class="v0370-year-btn" data-year="2020">2020</button><button type="button" class="v0370-year-btn" data-year="2019">2019</button><button type="button" class="v0370-year-btn" data-year="2018">2018</button><button type="button" class="v0370-year-btn" data-year="2017">2017</button></div>
-<details class="v0370-custom" id="v0371CustomPeriod"><summary>Egen period</summary><div class="muted">Använd fälten Från och Till ovan.</div></details>
+<label>Symboler, kommaseparerade<input id="symbols" value="AAPL,MSFT,NVDA,AMZN,META,TSLA,AMD,NFLX,AVGO,JPM,SPY"></label>
+<label>Från<input id="start" type="date"></label>
+<label>Till<input id="end" type="date"></label>
+<div class="period-wrap" aria-label="Snabbval tidsperiod">
+  <span class="period-label">Snabbval</span>
+  <button type="button" class="period-btn v035-period-choice" data-period="1y">1 år</button>
+  <button type="button" class="period-btn v035-period-choice" data-period="2024">2024</button>
+  <button type="button" class="period-btn v035-period-choice" data-period="2025">2025</button>
+  <button type="button" class="period-btn v035-period-choice" data-period="2026">2026</button>
+  <button type="button" class="period-btn v035-period-choice" data-period="all">Hela perioden</button>
+<button type="button" class="period-btn v0344-fire v035-period-choice" id="v0344FireTest">🔥 Eldprov 2023</button>
+<button type="button" class="period-btn v035-fire v035-period-choice" id="v035Fire2022">🔥 Eldprov 2022</button>
 </div>
 <div class="day-period-wrap v0368-day-control" aria-label="Snabbval Opti Day">
   <span class="period-label">Opti Day snabbval</span>
@@ -147,7 +96,7 @@
 <button class="primary" id="dailyBtn">Hämta dagsdata</button>
 <button class="purple v0368-day-control" id="intraBtn">Hämta 5-min-data</button>
 </div>
-<div class="status v0371-api-status" id="bridgeStatus">Linas Opti API är anslutet via Cloudflare.</div><div id="v0368DataReady" class="v0368-data-ready" hidden>
+<div class="status" id="bridgeStatus">Linas Opti API är anslutet via Cloudflare.</div><div id="v0368DataReady" class="v0368-data-ready" hidden>
 <div class="v0368-ready-title">✓ Dagsdata klar</div>
 <div id="v0368ReadyMarket"></div><div id="v0368ReadyRows"></div>
 <div id="v0368ReadyPeriod"></div><div class="v0368-ready-go">Redo att testa</div>
@@ -155,8 +104,8 @@
 <div class="v31-provider" id="providerInfo">Datakälla: Alpaca · Benchmark: SPY</div>
 </div>
 
-<details class="v0370-tech"><summary>Tekniskt / felsökning</summary><div class="card v31-nordic-info">
-  <h2>Urval & metod</h2>
+<div class="card v31-nordic-info">
+  <h2>V0.36.8 · Context Cleanup</h2>
   <div class="muted">
     Urvalet är räknat från alla inskickade rapporter, men rankingen använder deduplicerade och kronologiskt korrigerade testfönster så samma körning inte får extra vikt.
     För själva USA/Alpaca-urvalet användes fem separata miljöer: USA30 2024, 2025 och 2026 samt Global Stocks 100 och USA + Värld 50.
@@ -176,9 +125,9 @@
       Därför är detta ett urvalstest. Nästa riktiga kontroll är att frysa listan och köra den på historik som inte användes när listan valdes.
     </div>
   </details>
-</div></details>
+</div>
 
-<div class="card v31-nordic-info v0371-normal-hidden"><h2>V0.38.2 · API Diagnostic</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
+<div class="card v31-nordic-info"><h2>V0.36.8 · Context Cleanup</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
 </section>
 
 <section id="pane-test" class="hidden">
@@ -329,5 +278,35 @@
 
 </div>
 
-<script src="linasopti.js?v=0.38.2"></script>
+
+<script>
+(function(){
+  const gate=document.getElementById("v0383Gate");
+  const input=document.getElementById("v0383Code");
+  const btn=document.getElementById("v0383Enter");
+  const msg=document.getElementById("v0383GateMsg");
+  function unlock(){
+    if((input.value||"").trim().toLowerCase()==="adam"){
+      msg.textContent="✓ Kod godkänd";
+      msg.className="v0383-gate-msg ok";
+      setTimeout(()=>{
+        gate.style.display="none";
+        gate.setAttribute("aria-hidden","true");
+        history.scrollRestoration="manual";
+        window.scrollTo(0,0);
+      },120);
+    }else{
+      msg.textContent="Fel lösenkod";
+      msg.className="v0383-gate-msg bad";
+      input.focus(); input.select();
+    }
+  }
+  btn.addEventListener("click", unlock);
+  input.addEventListener("keydown", e=>{ if(e.key==="Enter"){e.preventDefault();unlock();}});
+  window.addEventListener("pageshow", ()=>{ window.scrollTo(0,0); });
+  setTimeout(()=>input.focus(),50);
+})();
+</script>
+
+<script src="linasopti.js?v=0.38.3"></script>
 </body></html>

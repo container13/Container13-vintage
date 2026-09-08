@@ -484,185 +484,60 @@ body > .v23-sharebar{overflow:visible !important}
 .v0368-ready-title{font-size:1.15rem;color:#16844f;margin-bottom:4px}
 .v0368-ready-go{color:#16844f;margin-top:5px}
 
-/* V0.36.9 – passcode gate + Alt A cleanup */
-.v0369-gate{
-  position:fixed;inset:0;z-index:50000;background:#f4f7f9;
-  display:flex;align-items:center;justify-content:center;padding:24px;
-}
-.v0369-gate-card{
-  width:min(420px,100%);background:#fff;border:1px solid #dfe6eb;
-  border-radius:24px;padding:24px;box-shadow:0 18px 60px rgba(0,0,0,.12)
-}
-.v0369-gate-title{font-size:2rem;font-weight:800;margin-bottom:6px}
-.v0369-gate-sub{color:#697386;margin-bottom:18px}
-.v0369-gate input{width:100%;box-sizing:border-box;padding:14px 16px;border:1px solid #cdd7df;border-radius:14px;font-size:1rem;margin-bottom:12px}
-.v0369-gate button{width:100%;min-height:50px;border:0;border-radius:14px;font-weight:800;font-size:1rem}
-.v0369-gate-msg{min-height:1.4em;color:#b42318;margin-top:10px;font-weight:700}
-.v0369-altA{margin-top:18px}
-.v0369-altA>summary{
-  list-style:none;cursor:pointer;background:#fff;border:1px solid #dfe6eb;border-radius:18px;
-  padding:18px 20px;font-weight:800
-}
-.v0369-altA>summary::-webkit-details-marker{display:none}
-.v0369-altA>summary:before{content:"▶ ";margin-right:6px}
-.v0369-altA[open]>summary:before{content:"▼ "}
-
-/* V0.37.0 */
-.v0370-range-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
-.v0370-year-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
-.v0370-range-btn,.v0370-year-btn{min-height:48px;border-radius:14px;padding:8px 4px}
-.v0370-range-btn.active,.v0370-year-btn.active{outline:3px solid rgba(30,111,181,.25)}
-.v0370-custom{margin-top:10px}.v0370-custom summary,.v0370-tech>summary{font-weight:800;cursor:pointer}
-.v0370-tech{margin-top:18px}.v0370-tech>summary{background:#fff;border:1px solid #dfe6eb;border-radius:18px;padding:18px 20px}
-.v0370-dev-hidden{display:none!important}
-
-/* V0.37.1 – normal Data view cleanup */
-.v0371-normal-hidden{display:none!important}
-.v0371-tech-field{display:none!important}
-.v0371-date-field{display:none}
-.v0371-api-status{display:none}
-#v0371CustomPeriod[open] .v0370-custom-note{display:block}
-
-/* V0.37.2 – tydligare periodval */
-.v0370-range-btn.active,.v0370-year-btn.active{
-  background:#256aa4!important;
-  color:#fff!important;
-  border-color:#256aa4!important;
-  outline:3px solid rgba(37,106,164,.20)!important;
-  box-shadow:0 4px 12px rgba(37,106,164,.22);
-}
-.v0370-range-btn.active::before,.v0370-year-btn.active::before{content:"✓ ";font-weight:900}
-
-/* Hämtningsstatus visas bara när JS aktivt öppnar den */
-#bridgeStatus.v0372-visible{
-  display:block!important;
-  margin-top:12px;
-  padding:14px 16px;
-  border-radius:14px;
-  font-weight:800;
-}
-#bridgeStatus.v0372-loading{background:#eef6fd;color:#174f7a}
-#bridgeStatus.v0372-good{background:#f1fbf5;color:#16794a}
-#bridgeStatus.v0372-bad{background:#fff1f0;color:#a9342c}
-
-
-/* V0.37.4 – lösenkod: en enda slutlig komponentdefinition */
-.v0369-gate{
-  position:fixed!important;
-  inset:0!important;
-  z-index:50000!important;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
+/* V0.38.3 – isolated login gate, no dependency on app JS */
+.v0383-gate{
+  position:fixed; inset:0; z-index:50000;
+  display:flex; align-items:flex-start; justify-content:center;
+  padding:calc(env(safe-area-inset-top) + 54px) 20px 24px;
   background:#f4f7f9;
-  opacity:1;
-  visibility:visible;
-  transition:opacity .18s ease,visibility .18s ease;
 }
-.v0369-gate.v0374-unlocked{
-  opacity:0!important;
-  visibility:hidden!important;
-  pointer-events:none!important;
+.v0383-gate-card{
+  width:min(100%,520px);
+  background:#fff; border:1px solid #d9e1e7; border-radius:28px;
+  padding:26px; box-shadow:0 18px 50px rgba(0,0,0,.10);
 }
-.v0374-gate-ok{color:#147d4f!important}
-.v0374-gate-error{color:#b42318!important}
+.v0383-gate-card h1{margin:0 0 8px;font-size:2rem}
+.v0383-gate-card p{margin:0 0 18px;color:#667085;font-weight:700}
+.v0383-gate-card input{
+  width:100%; box-sizing:border-box; font-size:1.2rem;
+  padding:16px 18px; border:2px solid #9fd6ff; border-radius:20px; margin-bottom:14px;
+}
+.v0383-gate-card button{
+  width:100%; padding:16px; border:0; border-radius:18px;
+  font-size:1.1rem; font-weight:900; background:#256aa4; color:#fff;
+}
+.v0383-gate-msg{min-height:24px;margin-top:10px;font-weight:800}
+.v0383-gate-msg.ok{color:#16794a}
+.v0383-gate-msg.bad{color:#b42318}
 
-
-
-
-
-/* V0.37.5 – iPhone: headern är FIXED, inte sticky.
-   Safari kan släppa position:sticky vid lång scroll; fixed gör Data/Test/Resultat verkligt fasta. */
-:root{--v0375-head-h:170px}
+/* V0.38.3 – fixed app header/tabs */
 .sticky-top{
   position:fixed!important;
-  top:0!important;
-  left:0!important;
-  right:0!important;
+  top:0!important; left:0!important; right:0!important;
   z-index:12000!important;
-  margin:0!important;
-  padding:calc(8px + env(safe-area-inset-top)) 12px 8px!important;
   background:rgba(244,246,248,.98)!important;
-  border-bottom:1px solid rgba(229,231,235,.95)!important;
   -webkit-backdrop-filter:blur(12px);
   backdrop-filter:blur(12px);
 }
-.sticky-top header,.sticky-top .tabs{
-  position:relative!important;
-  top:auto!important;
-  z-index:auto!important;
+.wrap{padding-top:var(--v0383-head-h,170px)!important}
+
+.v0383-period-card{margin:18px 0}
+.v0383-period-title{font-weight:800;color:#667085;margin:0 0 10px}
+.v0383-quick,.v0383-years{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:10px}
+.v0383-quick{grid-template-columns:repeat(4,1fr)}
+.v0383-period-card button{
+  min-height:58px;border:1px solid #d3dae1;border-radius:20px;
+  background:#e8ecef;color:#156bd1;font-weight:900;font-size:1.02rem
 }
-.wrap{
-  padding-top:calc(var(--v0375-head-h) + 12px)!important;
+.v0383-period-card button[data-selected="true"]{
+  background:#156fba!important;color:#fff!important;border-color:#156fba!important;
+  box-shadow:0 0 0 4px rgba(21,111,186,.18)!important
 }
-@media(min-width:700px){
-  .sticky-top{padding-left:max(20px,calc((100vw - 1440px)/2 + 20px))!important;padding-right:max(20px,calc((100vw - 1440px)/2 + 20px))!important}
+.v0383-period-card button[data-selected="true"]::before{content:"✓ ";font-weight:900}
+.v0383-custom summary{font-weight:900;font-size:1.05rem;cursor:pointer}
+@media(max-width:560px){
+  .v0383-period-card button{min-height:52px;font-size:.95rem}
 }
 
-/* V0.37.6 – vald period ska vara omisskännlig */
-.v0376-selected{
-  background:#1267b2!important;
-  color:#fff!important;
-  border-color:#1267b2!important;
-  box-shadow:0 0 0 4px rgba(18,103,178,.18),0 4px 12px rgba(18,103,178,.20)!important;
-  transform:translateY(-1px);
-}
-.v0376-selected::before{
-  content:"✓ "!important;
-  font-weight:900!important;
-}
-
-/* V0.37.7 – periodmarkeringen ägs av riktiga periodmotorn */
-.v0370-range-btn[data-selected="true"],
-.v0370-year-btn[data-selected="true"]{
-  background:#1267b2!important;
-  color:#fff!important;
-  border-color:#1267b2!important;
-  box-shadow:0 0 0 4px rgba(18,103,178,.20)!important;
-}
-.v0370-range-btn[data-selected="true"]::before,
-.v0370-year-btn[data-selected="true"]::before{
-  content:"✓ "!important;
-  font-weight:900!important;
-}
-
-/* V0.37.8 – slutlig mobilheader: direkt barn till body, utanför .wrap */
-body > .sticky-top{
-  position:fixed!important;
-  top:0!important;
-  left:0!important;
-  right:0!important;
-  width:100%!important;
-  z-index:30000!important;
-  margin:0!important;
-  background:rgba(244,246,248,.985)!important;
-  isolation:isolate;
-}
-body > .sticky-top .tabs{
-  position:relative!important;
-  z-index:1!important;
-}
-
-/* V0.37.9 – login högre på iPhone */
-.v0369-gate{
-  align-items:flex-start!important;
-  justify-content:center!important;
-  padding-top:max(calc(env(safe-area-inset-top) + 72px), 11vh)!important;
-}
-@media(max-height:700px){
-  .v0369-gate{padding-top:max(calc(env(safe-area-inset-top) + 28px), 5vh)!important}
-}
-
-/* V0.38.1 – statusrad för kända fungerande fetch-vägen */
-#bridgeStatus.status{
-  display:block!important;
-}
-#bridgeStatus.status.good{
-  background:#f1fbf5!important;
-  color:#16794a!important;
-}
-#bridgeStatus.status.bad{
-  background:#fff1f0!important;
-  color:#a9342c!important;
-}
+/* V0.38.3 – normalvy cleanup without deleting debug features */
+.v0368-day-intro,.v0368-day-quick,.v0368-test-connection{display:none!important}
