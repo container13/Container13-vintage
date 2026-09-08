@@ -578,3 +578,7 @@ body.v0384-locked > .lina-watermark{
 .v0384-tech[open] > summary::before{content:"▼ "}
 .v0384-tech-inner{padding:0 14px 14px}
 .v0384-tech-inner > .card{margin:10px 0}
+
+/* V0.39.0 – Lina Day Jägaren: visa endast relevanta Day-kontroller igen. */
+.day-period-wrap.v0368-day-control{display:flex!important}
+#intraBtn.v0368-day-control{display:inline-flex!important}

@@ -23,7 +23,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Opti Day + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.31</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.31</div></div></div></div></header>
 
 <div class="tabs">
 <button class="tab active" data-pane="data">1. Data</button>
@@ -79,7 +79,7 @@
   </details>
 </div>
 <div class="day-period-wrap v0368-day-control" aria-label="Snabbval Opti Day">
-  <span class="period-label">Opti Day snabbval</span>
+  <span class="period-label">Lina Day · testperiod</span>
   <button type="button" class="day-period-btn" data-days="5">5 dagar</button>
   <button type="button" class="day-period-btn" data-days="20">20 dagar</button>
   <button type="button" class="day-period-btn" data-days="60">60 dagar</button>
@@ -88,7 +88,7 @@
 <div class="row" style="margin-top:9px">
 <button class="secondary v0368-dev-only" id="healthBtn">Testa anslutning</button>
 <button class="primary" id="dailyBtn">Hämta dagsdata</button>
-<button class="purple v0368-day-control" id="intraBtn">Hämta 5-min-data</button>
+<button class="purple v0368-day-control" id="intraBtn">Hämta 5-min-data för Jägaren</button>
 </div>
 <div class="status" id="bridgeStatus">Linas Opti API är anslutet via Cloudflare.</div><div id="v0368DataReady" class="v0368-data-ready" hidden>
 <div class="v0368-ready-title">✓ Dagsdata klar</div>
@@ -190,11 +190,11 @@
 <div class="two">
 <div class="robot"><h3>Opti Swing</h3><div class="muted">Momentum + mean-reversion, innehav över flera dagar</div><div class="big" id="sEq">—</div><div id="sRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="sDD">—</span></div><div class="mini"><b>Affärer</b><span id="sN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="sWR">—</span></div><div class="mini"><b>Mot benchmark</b><span id="sBench">—</span></div></div></div>
 <div class="robot v30-trend"><h3>Opti Trend</h3><div class="muted">Top 5 momentum · veckovis ombalansering · endast över SMA200</div><div class="big" id="tEq">—</div><div id="tRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="tDD">—</span></div><div class="mini"><b>Ombalanseringar</b><span id="tN">—</span></div><div class="mini"><b>Mot SPY</b><span id="tBench">—</span></div><div class="mini"><b>CAGR</b><span id="tCagr">—</span></div></div></div>
-<div class="robot"><h3>Opti Day</h3><div class="muted">5-min momentum + återhämtning · flera affärer/dag · ingen övernattning</div><div class="big" id="dEq">—</div><div id="dRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="dDD">—</span></div><div class="mini"><b>Affärer</b><span id="dN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="dWR">—</span></div><div class="mini"><b>Snitt/affär</b><span id="dAvg">—</span></div><div class="mini"><b>Profit factor</b><span id="dPF">—</span></div><div class="mini"><b>Affärer/dag</b><span id="dPerDay">—</span></div></div></div>
+<div class="robot"><h3>Lina Day · Jägaren</h3><div class="muted">Ranka momentum + volym · köp nästa 5-minbars öppning · max 6 affärer/dag · aldrig över natt</div><div class="big" id="dEq">—</div><div id="dRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="dDD">—</span></div><div class="mini"><b>Affärer</b><span id="dN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="dWR">—</span></div><div class="mini"><b>Snitt/affär</b><span id="dAvg">—</span></div><div class="mini"><b>Profit factor</b><span id="dPF">—</span></div><div class="mini"><b>Affärer/dag</b><span id="dPerDay">—</span></div></div></div>
 </div>
 </div>
 
-<div class="v0368-day-result card v28-day-ab">
+<div class="v0368-day-result card v28-day-ab" style="display:none!important">
   <div class="v28-day-head"><div><h2>Opti Day · A/B signaltest</h2><div class="muted">A är exakt V0.27-signalen. B ändrar bara intradagssignalen – risk, stop, mål, kostnader och exekvering är samma.</div></div><span class="v28-exp">EXPERIMENT</span></div>
   <div class="v28-abgrid">
     <div class="v28-variant"><h3>A · Baslinje</h3><div class="v28-big" id="daRet">—</div><div class="v28-mini"><span>PF <b id="daPF">—</b></span><span>Affärer <b id="daN">—</b></span><span>Vinstfrekvens <b id="daWR">—</b></span></div></div>

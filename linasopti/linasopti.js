@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.38.7";
+const APP_VERSION = "V0.39.0";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -292,55 +292,62 @@ function swingWorld(rows,capital,maxPos,evalStart){
  return {eq:cash,ret:cash/capital-1,dd,n:closed.length,wr:closed.length?wins.length/closed.length:0,log,curve,bench,closed,pf,regimeDays,blocked,blockedYellow,blockedRed,regimeSignalDays,regimeSamples,avgWin:wins.length?grossWin/wins.length:0,avgLoss:losses.length?losses.reduce((a,x)=>a+x.pnl,0)/losses.length:0,best:closed.length?Math.max(...closed.map(x=>x.pnl)):0,worst:closed.length?Math.min(...closed.map(x=>x.pnl)):0,openAtEnd:0,evalStart:dates[firstTrade]||evalStart||null};
 }
 function daytrade(rows,capital,riskPct){
+ // V0.39.0 Lina Day – Jägaren. Fryst första forskningsmotor.
+ // Princip: avslutad 5-minbar -> ranka alla symboler -> köp nästa bars open.
+ // En position åt gången för entydig kapital/kronologi. Ingen hävstång, ingen övernattning.
  if(!rows.length)return null;
- let days={};rows.forEach(r=>{let d=r.t.slice(0,10);(days[d]??={});(days[d][r.symbol]??=[]).push(r)});
- let eq=capital,peak=capital,dd=0,w=0,l=0,log=[],curve=[],closed=[];
- let dayCount=0,maxTradesDay=12,maxTradesSymbol=3;
+ const nyParts=(iso)=>{const a=new Intl.DateTimeFormat("en-CA",{timeZone:"America/New_York",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(new Date(iso));const o={};a.forEach(x=>o[x.type]=x.value);return {d:o.year+"-"+o.month+"-"+o.day,m:(+o.hour)*60+(+o.minute)}};
+ const byDay={};
+ for(const r of rows){if(r.symbol==="SPY")continue;const z=nyParts(r.t);if(z.m<570||z.m>=960)continue;(byDay[z.d]??={});(byDay[z.d][r.symbol]??=[]).push({...r,_m:z.m});}
+ let eq=capital,peak=capital,dd=0,closed=[],log=[],curve=[];
  const spread=.00035,slip=.00025,costSide=spread/2+slip;
- for(let d of Object.keys(days).sort()){
-  let tradesToday=0;dayCount++;
-  for(let [s,bars] of Object.entries(days[d])){
-   if(s==="SPY")continue;
-   bars.sort((a,b)=>new Date(a.t)-new Date(b.t));
-   if(bars.length<18||tradesToday>=maxTradesDay)continue;
-   let symTrades=0,nextAllowed=4;
-   for(let i=12;i<bars.length-1 && tradesToday<maxTradesDay && symTrades<maxTradesSymbol;i++){
-    if(i<nextAllowed)continue;
-    // All signal inputs come from the completed bar i; execution is next bar open.
-    let hist=bars.slice(Math.max(0,i-11),i+1);
-    let sma=hist.reduce((a,b)=>a+b.c,0)/hist.length;
-    let r3=bars[i].c/bars[i-3].c-1;
-    let r1=bars[i].c/bars[i-1].c-1;
-    let signal=null,why=null;
-    if(r3>.0045 && bars[i].c>sma && r1>0){signal="LONG";why="momentum 15 min"}
-    else if(r3<-.008 && r1>0 && bars[i].c<sma){signal="LONG";why="återhämtning efter snabb nedgång"}
-    if(!signal)continue;
-    let entryBar=bars[i+1],entry=entryBar.o*(1+costSide);
-    let stop=entry*.992,target=entry*1.012,maxExit=Math.min(bars.length-1,i+13);
-    let exitBar=bars[maxExit],exitWhy="max 60 min",exitRaw=exitBar.c;
-    for(let k=i+1;k<=maxExit;k++){
-      let b=bars[k];
-      if(b.l<=stop){exitBar=b;exitWhy="stop −0,8%";exitRaw=stop;break}
-      if(b.h>=target){exitBar=b;exitWhy="mål +1,2%";exitRaw=target;break}
-      if(k===bars.length-1){exitBar=b;exitWhy="stängning";exitRaw=b.c;break}
-    }
-    let exit=exitRaw*(1-costSide);
-    let risk=Math.max(0,eq*riskPct),riskPerShare=Math.max(.0001,entry-stop);
-    let shares=Math.min((eq*.20)/entry,risk/riskPerShare);
-    if(!(shares>0))continue;
-    let pl=shares*(exit-entry);eq+=pl;pl>=0?w++:l++;tradesToday++;symTrades++;
-    let ret=exit/entry-1;
-    closed.push({symbol:s,entryTime:entryBar.t,exitTime:exitBar.t,entry,exit,shares,pnl:pl,ret,why:exitWhy,setup:why});
-    log.push({t:exitBar.t,robot:"Opti Day",s,a:"LONG",price:entry,amount:shares*entry,why:why+" / "+exitWhy,pnl:pl});
-    // Re-entry only after the exit bar plus two complete 5-min bars.
-    let exitIdx=bars.indexOf(exitBar);nextAllowed=Math.max(i+2,exitIdx+2);i=Math.max(i,exitIdx);
+ const maxTradesDay=6,maxPosPct=.20,stopPct=.006,targetPct=.010,maxHoldBars=8;
+ let dayCount=0;
+ for(const d of Object.keys(byDay).sort()){
+   dayCount++; let tradesToday=0,position=null;
+   const syms=byDay[d]; Object.values(syms).forEach(a=>a.sort((x,y)=>new Date(x.t)-new Date(y.t)));
+   const timeline=[...new Set(Object.values(syms).flat().map(b=>b.t))].sort((a,b)=>new Date(a)-new Date(b));
+   const idx={}; for(const [sym,a] of Object.entries(syms)){idx[sym]=new Map(a.map((b,i)=>[b.t,i]));}
+   for(let ti=0;ti<timeline.length;ti++){
+     const ts=timeline[ti];
+     // Hantera öppen position först på aktuell bars OHLC.
+     if(position){
+       const a=syms[position.s], i=idx[position.s].get(ts); if(i!=null){
+         const b=a[i]; let raw=null,why=null;
+         if(b.l<=position.stop){raw=position.stop;why="stop −0,6%";}
+         else if(b.h>=position.target){raw=position.target;why="mål +1,0%";}
+         else if(i-position.entryIdx>=maxHoldBars){raw=b.c;why="max 40 min";}
+         else if(b._m>=950){raw=b.c;why="stängning 15:50";}
+         if(raw!=null){const exit=raw*(1-costSide),pl=position.shares*(exit-position.entry);eq+=pl;closed.push({symbol:position.s,entryTime:position.entryTime,exitTime:b.t,entry:position.entry,exit,shares:position.shares,pnl:pl,ret:exit/position.entry-1,why,setup:position.setup,score:position.score});log.push({t:b.t,robot:"Lina Day Jägaren",s:position.s,a:"SÄLJ",price:exit,amount:position.shares*exit,why,pnl:pl});position=null;tradesToday++;}
+       }
+     }
+     if(position||tradesToday>=maxTradesDay)continue;
+     // Ranka signaler på helt avslutad bar. Köp får ske först på nästa bars open.
+     let candidates=[];
+     for(const [sym,a] of Object.entries(syms)){
+       const i=idx[sym].get(ts); if(i==null||i<12||i>=a.length-1)continue;
+       const b=a[i]; if(b._m<630||b._m>930)continue; // 10:30–15:30 NY
+       const hist=a.slice(i-11,i+1),avgVol=hist.slice(0,-1).reduce((q,x)=>q+(+x.v||0),0)/Math.max(1,hist.length-1);
+       const r3=b.c/a[i-3].c-1,r1=b.c/a[i-1].c-1,range=Math.max(.000001,b.h-b.l),closeLoc=(b.c-b.l)/range,volRatio=avgVol?((+b.v||0)/avgVol):0;
+       const sma=hist.reduce((q,x)=>q+x.c,0)/hist.length;
+       if(r3<.004||r1<=0||b.c<=sma||closeLoc<.60||volRatio<1.15)continue;
+       const score=r3*100 + r1*55 + Math.min(volRatio,3)*.18 + closeLoc*.12;
+       candidates.push({sym,i,score,setup:`momentum ${(r3*100).toFixed(2)}% / volym ${volRatio.toFixed(2)}x`});
+     }
+     candidates.sort((a,b)=>b.score-a.score); const c=candidates[0]; if(!c)continue;
+     const next=syms[c.sym][c.i+1]; if(!next||next._m>=950)continue;
+     const entry=next.o*(1+costSide),stop=entry*(1-stopPct),target=entry*(1+targetPct);
+     const risk=Math.max(0,eq*riskPct),riskPerShare=Math.max(.0001,entry-stop),shares=Math.min((eq*maxPosPct)/entry,risk/riskPerShare);
+     if(!(shares>0))continue;
+     position={s:c.sym,entry,entryTime:next.t,entryIdx:c.i+1,shares,stop,target,score:c.score,setup:c.setup};
+     log.push({t:next.t,robot:"Lina Day Jägaren",s:c.sym,a:"KÖP",price:entry,amount:shares*entry,why:c.setup});
    }
-  }
-  peak=Math.max(peak,eq);dd=Math.min(dd,eq/peak-1);curve.push({t:d,v:eq});
+   // Säkerhetsstängning på sista tillgängliga bar – aldrig över natt.
+   if(position){const a=syms[position.s],b=a[a.length-1],exit=b.c*(1-costSide),pl=position.shares*(exit-position.entry);eq+=pl;closed.push({symbol:position.s,entryTime:position.entryTime,exitTime:b.t,entry:position.entry,exit,shares:position.shares,pnl:pl,ret:exit/position.entry-1,why:"dagsslut",setup:position.setup,score:position.score});log.push({t:b.t,robot:"Lina Day Jägaren",s:position.s,a:"SÄLJ",price:exit,amount:position.shares*exit,why:"dagsslut",pnl:pl});position=null;tradesToday++;}
+   peak=Math.max(peak,eq);dd=Math.min(dd,eq/peak-1);curve.push({t:d,v:eq});
  }
- let wins=closed.filter(x=>x.pnl>0),losses=closed.filter(x=>x.pnl<0),grossWin=wins.reduce((a,x)=>a+x.pnl,0),grossLoss=Math.abs(losses.reduce((a,x)=>a+x.pnl,0));
- let pf=grossLoss?grossWin/grossLoss:(grossWin?Infinity:0);
- return {eq,ret:eq/capital-1,dd,n:closed.length,wr:closed.length?wins.length/closed.length:0,avg:closed.length?(eq-capital)/closed.length:0,log,curve,closed,pf,tradesPerDay:dayCount?closed.length/dayCount:0,maxTradesDay,maxTradesSymbol};
+ const wins=closed.filter(x=>x.pnl>0),losses=closed.filter(x=>x.pnl<0),grossWin=wins.reduce((a,x)=>a+x.pnl,0),grossLoss=Math.abs(losses.reduce((a,x)=>a+x.pnl,0)),pf=grossLoss?grossWin/grossLoss:(grossWin?Infinity:0);
+ return {eq,ret:eq/capital-1,dd,n:closed.length,wr:closed.length?wins.length/closed.length:0,avg:closed.length?(eq-capital)/closed.length:0,log,curve,closed,pf,tradesPerDay:dayCount?closed.length/dayCount:0,maxTradesDay,maxTradesSymbol:1,engine:"Lina Day Jägaren V1",rules:{maxPosPct,stopPct,targetPct,maxHoldBars,costSide}};
 }
 
 function daytradeConfirm(rows,capital,riskPct){
@@ -573,7 +580,7 @@ window.addEventListener("DOMContentLoaded",()=>{
    let t=optiTrend(DAILY,cap,start);
    let w=isUsMarket()?swingWorld(DAILY,cap,mp,start):null;
    let d=isUsMarket()?daytrade(INTRA,cap,+$("risk").value):null;
-   let dB=isUsMarket()?daytradeConfirm(INTRA,cap,+$("risk").value):null;
+   let dB=null; // V0.39.0: gamla Day A/B är fryst och körs inte
    let audit=auditSwing(DAILY,s,cap); LAST={s,t,w,d,dB,audit};
 
    // V0.36.6: detta är den verkliga slutpunkten för användarens test.

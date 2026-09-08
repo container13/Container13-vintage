@@ -1,24 +1,39 @@
-# Linas Opti V0.38.7 – Snabbare val
+# Linas Opti V0.39.0 – Lina Day Jägaren
 
-Byggd direkt ovanpå fungerande V0.38.6.
+Datum: 2026-09-08
+Bas: V0.38.7 (snabbval), som i sin tur bygger på verifierat fungerande V0.38.5/V0.38.6-spår.
 
-## Ändrat i V0.38.7
-- Periodvalet markerar vald knapp omedelbart och gör datum-/statusuppdateringen i nästa renderingsvarv.
-- Marknadsval (bl.a. USA Core, USA 20 och USA 30) markerar vald knapp omedelbart och gör övrig UI-städning i nästa renderingsvarv.
-- Målet är att valen ska kännas rappare på iPhone utan att ändra vad valet faktiskt gör.
+## Syfte
+Första frysta forskningsmotorn för nya Lina Day. Målet i denna version är INTE att optimera fram hög avkastning utan att testa om en kronologiskt ren intradagsmekanism har edge efter modellerad spread/slippage.
 
-## Uttryckligen inte ändrat
-- `bridge()` och `getBars()` / datahämtningen.
-- Cloudflare Worker eller API-adress.
-- Alpaca/EODHD-logik.
-- Swing-strategi, signaler, exits, position sizing eller benchmarklogik.
-- Rapport-/delningsflödet.
+## Nytt
+- Lina Day heter nu **Lina Day · Jägaren** i resultatet.
+- 5-minutershämtning och snabbval 5/20/60 dagar är synliga igen för USA-marknader.
+- Jägaren bevakar alla valda USA-symboler samtidigt och rankar kandidater på varje avslutad 5-minutersbar.
+- Signal: kort momentum + positiv senaste bar + över kort SMA + stark stängning i baren + volym minst 1,15x nyligt snitt.
+- Högst rankade kandidat får affären.
+- Exekvering sker först på NÄSTA 5-minutersbars öppning.
+- En position åt gången, max 6 avslutade affärer/dag, max 20% av kapitalet per position.
+- Riskinställningen i appen används; default 0,5% risk/affär.
+- Stop -0,6%, mål +1,0%, max innehav 40 minuter.
+- Inga nya köp sent på dagen och säkerhetsstängning före/vid dagsslut; ingen övernattning.
+- Modellerad spread/slippage är integrerad i Day-motorn (samma grundantagande som tidigare Day: spread 0,035% + slippage 0,025%).
+- Gamla Day A/B-testet är fryst och körs inte i V0.39.0.
 
-## Stabil bas
-V0.38.5 är golden master för fungerande datahämtning. V0.38.6 är verifierad fungerande med återställda perioder. V0.38.7 ändrar endast responsordningen i period- och marknadsvalens UI.
+## Uttryckligen INTE ändrat
+- Opti Swing-motorn.
+- Swing-regler, Selection16, omvärldstest eller benchmarklogik.
+- Dagsdatahämtningen/bridge()/getBars("1Day").
+- Cloudflare Worker eller API-hemligheter.
+- V0.38.7 period-/marknadsval.
+- Rapport-/delningsflödet i övrigt.
 
-## Test
-1. Prova snabbt mellan USA Core / USA 20 / USA 30 och kontrollera att markeringen flyttar direkt.
-2. Prova flera perioder/år och kontrollera att markeringen flyttar direkt och datumen uppdateras.
-3. Välj önskad grupp + period och hämta dagsdata.
-4. Kör test och kontrollera resultat/export som vanligt.
+## Forskningsregel
+V0.39.0 Jägaren V1 ska betraktas som fryst första hypotes. Vi ska först läsa resultaten månad för månad innan signalgränser, stop, mål eller position sizing ändras. Ett snyggt backtest är inte bevis på framtida avkastning.
+
+## Första test
+1. Välj USA-marknad, gärna Lina Selection 16 eller USA 30.
+2. Välj Lina Day testperiod 20 dagar.
+3. Hämta 5-min-data för Jägaren.
+4. Kör Linas Opti.
+5. Dela Full testdata så att affärerna kan granskas exakt.
