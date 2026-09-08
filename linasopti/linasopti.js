@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.34.3";
+const APP_VERSION = "V0.34.4";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -520,7 +520,7 @@ window.addEventListener("DOMContentLoaded",()=>{
    let w=isUsMarket()?swingWorld(DAILY,cap,mp,start):null;
    let d=isUsMarket()?daytrade(INTRA,cap,+$("risk").value):null;
    let dB=isUsMarket()?daytradeConfirm(INTRA,cap,+$("risk").value):null;
-   let audit=auditSwing(DAILY,s,cap); LAST={s,t,w,d,dB,audit}; render(s,d,cap); renderTrend(t); renderWorld(w,s); renderDayAB(d,dB); renderV015Audit(s); renderSwingAudit(audit); v342RenderAnalysis(s);
+   let audit=auditSwing(DAILY,s,cap); LAST={s,t,w,d,dB,audit}; render(s,d,cap); renderTrend(t); renderWorld(w,s); renderDayAB(d,dB); renderV015Audit(s); renderSwingAudit(audit); v342RenderAnalysis(s); v0344RenderValidation(s,cap);
    btn.textContent=oldText; btn.disabled=false;
   }catch(err){
    console.error("Linas Opti run error",err);
@@ -766,6 +766,43 @@ function renderV015Audit(s){
  }).join("");
 }
 
+
+// V0.34.4 – valideringshjälp. Baslinjens Swing-motor är fortsatt orörd.
+const V0344_COST_SIDE=0.001; // 0,10% på köp och 0,10% på sälj.
+function v0344CostShadow(s,capital){
+ if(!s?.closed?.length)return null;
+ let totalCost=0;
+ for(const x of s.closed){
+  const buy=Math.abs((x.entry||0)*(x.shares||0));
+  const sell=Math.abs((x.exit||0)*(x.shares||0));
+  totalCost+=(buy+sell)*V0344_COST_SIDE;
+ }
+ const netEq=s.eq-totalCost,netRet=netEq/capital-1;
+ return {totalCost,netEq,netRet,netVsBench:Number.isFinite(s.bench)?netRet-s.bench:null};
+}
+function v0344RenderValidation(s,capital){
+ const c=v0344CostShadow(s,capital),set=(id,v,cls)=>{const e=document.getElementById(id);if(e){e.textContent=v;if(cls)e.className=cls}};
+ if(!c){["v0344Gross","v0344Net","v0344Cost","v0344NetVsBench"].forEach(id=>set(id,"—"));return;}
+ set("v0344Gross",(s.ret>=0?"+":"")+pct(s.ret),s.ret>=0?"good":"bad");
+ set("v0344Net",(c.netRet>=0?"+":"")+pct(c.netRet),c.netRet>=0?"good":"bad");
+ set("v0344Cost",fmt(c.totalCost));
+ set("v0344NetVsBench",c.netVsBench==null?"—":((c.netVsBench>=0?"+":"")+pct(c.netVsBench)),c.netVsBench>=0?"good":"bad");
+ const box=document.getElementById("v0344StockCards");
+ if(box){
+  const a=v342BuildAnalysis(s);
+  box.innerHTML=(a?.symbols||[]).map((x,i)=>`<div class="v0344-stock ${x.totalPnl>=0?"win":"loss"}"><b>${i+1}. ${x.symbol}</b><span>${x.trades} affärer · ${x.winRatePct.toFixed(0)}% vinst</span><strong>${x.totalPnl>=0?"+":""}${fmt(x.totalPnl)}</strong></div>`).join("");
+ }
+}
+function v0344SetFireTest(){
+ const start=document.getElementById("start"),end=document.getElementById("end"),ev=document.getElementById("evalStart");
+ if(start)start.value="2022-12-01"; // uppvärmning före testet
+ if(ev)ev.value="2023-01-03";
+ if(end)end.value="2023-12-29";
+ const st=document.getElementById("testDataStatus");
+ if(st)st.innerHTML='<span class="good">🔥 Eldprov 2023 valt · helt före urvalsperioderna 2024–2026. Hämta dagsdata och kör utan att ändra Swing.</span>';
+}
+window.addEventListener("DOMContentLoaded",()=>document.getElementById("v0344FireTest")?.addEventListener("click",v0344SetFireTest));
+
 function v17DateOnly(v){return String(v||"").slice(0,10)}
 function v17Symbols(){const e=document.getElementById("symbols");return e?e.value:""}
 function v17BaseReport(full){
@@ -792,6 +829,7 @@ function v17BaseReport(full){
    dayRiskPerTrade:Number(document.getElementById("risk")?.value||0)
   },
   audit:LAST?.audit||null,
+  costShadow:s?v0344CostShadow(s,Number(document.getElementById("capital")?.value||0)):null,
   swing:s?{
    endingCapital:s.eq,returnPct:s.ret*100,maxDrawdownPct:s.dd*100,
    trades:s.n,winRatePct:s.wr*100,
@@ -863,6 +901,7 @@ function v17TextReport(full){
  if(s){
   a.push("OPTI SWING",`Slutkapital: ${s.endingCapital}`,`Avkastning: ${s.returnPct.toFixed(2)}%`,`Max drawdown: ${s.maxDrawdownPct.toFixed(2)}%`,`Affärer: ${s.trades}`,`Vinstfrekvens: ${s.winRatePct.toFixed(2)}%`,`Benchmark: ${s.benchmark}`,`${s.benchmark}: ${s.benchmarkReturnPct==null?"—":s.benchmarkReturnPct.toFixed(2)+"%"}`,`Mot benchmark: ${s.vsBenchmarkPct==null?"—":s.vsBenchmarkPct.toFixed(2)+"%"}`,`Profit factor: ${s.profitFactor}`,`Snittvinst: ${s.averageWin}`,`Snittförlust: ${s.averageLoss}`,`Bästa affär: ${s.bestTrade}`,`Sämsta affär: ${s.worstTrade}`,`Öppna vid slut: ${s.openAtEnd}`,"");
  }
+ if(p.costShadow){let c=p.costShadow;a.push("KOSTNADSTEST V0.34.4","Antagande: 0.10% köp + 0.10% sälj",`Total modellerad kostnad: ${c.totalCost}`,`Slutkapital efter kostnad: ${c.netEq}`,`Avkastning efter kostnad: ${(c.netRet*100).toFixed(2)}%`,`Mot benchmark efter kostnad: ${c.netVsBench==null?"—":(c.netVsBench*100).toFixed(2)+"%"}`,"");}
  if(p.worldTest){let w=p.worldTest;a.push("OMVÄRLDSTEST V0.26",`Regel: ${w.rule}`,`Slutkapital: ${w.endingCapital}`,`Avkastning: ${w.returnPct.toFixed(2)}%`,`Max drawdown: ${w.maxDrawdownPct.toFixed(2)}%`,`Affärer: ${w.trades}`,`Vinstfrekvens: ${w.winRatePct.toFixed(2)}%`,`Profit factor: ${w.profitFactor}`,`Mot baslinjen: ${w.vsBaselinePct==null?"—":w.vsBaselinePct.toFixed(2)+"%"}`,`Gröna dagar: ${w.regimeDays?.green||0}`,`Gula dagar: ${w.regimeDays?.yellow||0}`,`Röda dagar: ${w.regimeDays?.red||0}`,`Blockerade signaler totalt: ${w.blockedSignals}`,`Blockerade i gult: ${w.blockedYellow}`,`Blockerade i rött: ${w.blockedRed}`,`Gul/röd-dagar med rå signal: ${w.regimeSignalDays}`,`Regimdiagnostik (första 20): ${JSON.stringify(w.regimeSamples)}`,"");}
  if(d)a.push("OPTI DAY A – BASLINJE",`Regel: ${d.rule}`,`Slutkapital: ${d.endingCapital}`,`Avkastning: ${d.returnPct.toFixed(2)}%`,`Max drawdown: ${d.maxDrawdownPct.toFixed(2)}%`,`Affärer: ${d.trades}`,`Vinstfrekvens: ${d.winRatePct.toFixed(2)}%`,`Profit factor: ${d.profitFactor}`,`Snitt/affär: ${d.averageTrade}`,`Affärer/dag: ${d.tradesPerDay}`,"");
 
@@ -889,7 +928,10 @@ function v17TextReport(full){
 }
 async function v17Share(full){
  const status=document.getElementById("v17ExportStatus");
+ const menu=document.getElementById("v23ShareMenu"),toggle=document.getElementById("v23ShareToggle");
+ const closeMenu=()=>{if(menu)menu.hidden=true;if(toggle)toggle.setAttribute("aria-expanded","false");};
  if(!LAST?.s&&!LAST?.d){if(status)status.textContent="Kör ett test först.";return}
+ closeMenu();
  const txt=v17TextReport(full);
  const stamp=new Date().toISOString().slice(0,10);
  const name=`linasopti_v0301_${full?"full":"snabb"}_${stamp}.txt`;

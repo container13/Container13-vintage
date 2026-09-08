@@ -88,7 +88,7 @@
 </div>
 
 <div class="card v31-nordic-info">
-  <h2>V0.34.3 · ⭐ Lina Selection 16</h2>
+  <h2>V0.34.4 · ⭐ Lina Selection 16</h2>
   <div class="muted">
     Urvalet är räknat från alla inskickade rapporter, men rankingen använder deduplicerade och kronologiskt korrigerade testfönster så samma körning inte får extra vikt.
     För själva USA/Alpaca-urvalet användes fem separata miljöer: USA30 2024, 2025 och 2026 samt Global Stocks 100 och USA + Värld 50.
@@ -110,7 +110,7 @@
   </details>
 </div>
 
-<div class="card v31-nordic-info"><h2>V0.34.3 · Global Lab</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
+<div class="card v31-nordic-info"><h2>V0.34.4 · Global Lab</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
 </section>
 
 <section id="pane-test" class="hidden">
@@ -187,6 +187,14 @@
     <div><span>Topp 3 av vinsten</span><strong id="aTop3Share">—</strong></div>
     <div><span>Koncentration</span><strong id="aConcentration">—</strong></div>
   </div>
+  <div class="v0344-costbox">
+    <div><span>Brutto</span><strong id="v0344Gross">—</strong></div>
+    <div><span>Efter testkostnad</span><strong id="v0344Net">—</strong></div>
+    <div><span>Kostnad</span><strong id="v0344Cost">—</strong></div>
+    <div><span>Mot benchmark netto</span><strong id="v0344NetVsBench">—</strong></div>
+  </div>
+  <div class="muted v0344-costnote">Skuggberäkning: 0,10% per köp + 0,10% per sälj (0,20% tur/retur). Baslinjens Swing-motor ändras inte.</div>
+  <details class="v0344-stockdetails"><summary>📊 Aktier · snabbvy</summary><div id="v0344StockCards" class="v0344-stockcards"></div></details>
   <div class="v342-analysis-grid">
     <div class="v342-panel"><h3>🏆 Största bidrag</h3><div id="aWinners" class="v342-list"><div class="muted">Kör ett Swing-test först.</div></div></div>
     <div class="v342-panel"><h3>⚠️ Största förluster</h3><div id="aLosers" class="v342-list"><div class="muted">Kör ett Swing-test först.</div></div></div>
@@ -199,7 +207,7 @@
 
 <div class="note">Detta är en testplattform, inte investeringsrådgivning. För riktig utvärdering måste data vara korrekt, överlevnadsbias undvikas och spread/slippage/courtage modelleras realistiskt. Linas Opti är mobil-först och lägger grunden för reproducerbara tester med samma regler över verklig historik.</div>
 </div>
-<script src="linasopti.js?v=0.34.2"></script>
+<script src="linasopti.js?v=0.34.4"></script>
 
 <section class="v014-audit"><h3>Backtestkontroll V0.30.1</h3>
 <div class="v014-metrics">

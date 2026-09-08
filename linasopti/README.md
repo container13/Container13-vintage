@@ -141,3 +141,13 @@ Urvalsmetod:
 Viktigt: detta är selection bias med flit – listan har valts från tidigare testresultat. Resultat på samma eller överlappande historik får därför **inte** användas som oberoende bevis. Den frysta Opti Swing-motorn är inte ändrad. Nästa meningsfulla test är ett held-out/intervall som inte användes för urvalet.
 
 Ingen Worker-ändring krävs.
+
+
+## V0.34.4 – Eldprov + kostnader + aktier
+- Delningsmenyn stängs direkt när Snabbrapport eller Full testdata väljs.
+- Ny snabbknapp `🔥 Eldprov 2023`: data 2022-12-01–2023-12-29, teststart 2023-01-03. 2023 användes inte när Lina Selection 16 skapades.
+- Ny `Aktier · snabbvy` i resultatet.
+- Ny skuggberäkning av handelsfriktion: 0,10% på köp och 0,10% på sälj. Visar brutto, netto, kostnad och netto mot benchmark.
+- Kostnadstestet påverkar inte köp/sälj-signaler, positionsstorlek eller den frysta Swing-motorn; det är en separat efterberäkning.
+- Kostnadsresultatet följer med i exporterad rapport.
+- Ingen Worker-ändring krävs.
