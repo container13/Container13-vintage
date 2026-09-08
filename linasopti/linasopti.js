@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.39.3";
+const APP_VERSION = "V0.39.4";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -292,7 +292,7 @@ function swingWorld(rows,capital,maxPos,evalStart){
  return {eq:cash,ret:cash/capital-1,dd,n:closed.length,wr:closed.length?wins.length/closed.length:0,log,curve,bench,closed,pf,regimeDays,blocked,blockedYellow,blockedRed,regimeSignalDays,regimeSamples,avgWin:wins.length?grossWin/wins.length:0,avgLoss:losses.length?losses.reduce((a,x)=>a+x.pnl,0)/losses.length:0,best:closed.length?Math.max(...closed.map(x=>x.pnl)):0,worst:closed.length?Math.min(...closed.map(x=>x.pnl)):0,openAtEnd:0,evalStart:dates[firstTrade]||evalStart||null};
 }
 function daytrade(rows,capital,riskPct){
- // V0.39.1 Lina Day – Jägaren. Fryst första forskningsmotor.
+ // V0.39.4 Lina Day – Jägaren. Mekanisk korrigering ovanpå fryst forskningsmotor.
  // Princip: avslutad 5-minbar -> ranka alla symboler -> köp nästa bars open.
  // En position åt gången för entydig kapital/kronologi. Ingen hävstång, ingen övernattning.
  if(!rows.length)return null;
@@ -314,11 +314,16 @@ function daytrade(rows,capital,riskPct){
      if(position){
        const a=syms[position.s], i=idx[position.s].get(ts); if(i!=null){
          const b=a[i]; let raw=null,why=null;
-         if(b.l<=position.stop){raw=position.stop;why="stop −0,6%";}
-         else if(b.h>=position.target){raw=position.target;why="mål +1,0%";}
-         else if(i-position.entryIdx>=maxHoldBars){raw=b.c;why="max 40 min";}
-         else if(b._m>=950){raw=b.c;why="stängning 15:50";}
-         if(raw!=null){const exit=raw*(1-costSide),pl=position.shares*(exit-position.entry);eq+=pl;closed.push({symbol:position.s,entryTime:position.entryTime,exitTime:b.t,entry:position.entry,exit,shares:position.shares,pnl:pl,ret:exit/position.entry-1,why,setup:position.setup,score:position.score});log.push({t:b.t,robot:"Lina Day Jägaren",s:position.s,a:"SÄLJ",price:exit,amount:position.shares*exit,why,pnl:pl});position=null;tradesToday++;}
+         // V0.39.4 konservativ entrybar: köp sker vid barens open, men stop/mål
+         // utvärderas först från efterföljande 5-minutersbar. Detta tar bort
+         // beroendet av okänd intrabar-ordning i själva entrybaren.
+         if(i>position.entryIdx){
+           if(b.l<=position.stop){raw=position.stop;why="stop −0,6%";}
+           else if(b.h>=position.target){raw=position.target;why="mål +1,0%";}
+           else if(i-position.entryIdx>=maxHoldBars){raw=b.c;why="max 40 min";}
+           else if(b._m>=950){raw=b.c;why="stängning 15:50";}
+         }
+         if(raw!=null){const exit=raw*(1-costSide),pl=position.shares*(exit-position.entry);eq+=pl;closed.push({symbol:position.s,entryTime:position.entryTime,exitTime:b.t,entry:position.entry,exit,shares:position.shares,pnl:pl,ret:exit/position.entry-1,why,setup:position.setup,score:position.score,entryEquity:position.entryEquity});log.push({t:b.t,robot:"Lina Day Jägaren",s:position.s,a:"SÄLJ",price:exit,amount:position.shares*exit,why,pnl:pl});position=null;tradesToday++;}
        }
      }
      if(position||tradesToday>=maxTradesDay)continue;
@@ -339,11 +344,11 @@ function daytrade(rows,capital,riskPct){
      const entry=next.o*(1+costSide),stop=entry*(1-stopPct),target=entry*(1+targetPct);
      const risk=Math.max(0,eq*riskPct),riskPerShare=Math.max(.0001,entry-stop),shares=Math.min((eq*maxPosPct)/entry,risk/riskPerShare);
      if(!(shares>0))continue;
-     position={s:c.sym,entry,entryTime:next.t,entryIdx:c.i+1,shares,stop,target,score:c.score,setup:c.setup};
+     position={s:c.sym,entry,entryTime:next.t,entryIdx:c.i+1,shares,stop,target,score:c.score,setup:c.setup,entryEquity:eq};
      log.push({t:next.t,robot:"Lina Day Jägaren",s:c.sym,a:"KÖP",price:entry,amount:shares*entry,why:c.setup});
    }
    // Säkerhetsstängning på sista tillgängliga bar – aldrig över natt.
-   if(position){const a=syms[position.s],b=a[a.length-1],exit=b.c*(1-costSide),pl=position.shares*(exit-position.entry);eq+=pl;closed.push({symbol:position.s,entryTime:position.entryTime,exitTime:b.t,entry:position.entry,exit,shares:position.shares,pnl:pl,ret:exit/position.entry-1,why:"dagsslut",setup:position.setup,score:position.score});log.push({t:b.t,robot:"Lina Day Jägaren",s:position.s,a:"SÄLJ",price:exit,amount:position.shares*exit,why:"dagsslut",pnl:pl});position=null;tradesToday++;}
+   if(position){const a=syms[position.s],b=a[a.length-1],exit=b.c*(1-costSide),pl=position.shares*(exit-position.entry);eq+=pl;closed.push({symbol:position.s,entryTime:position.entryTime,exitTime:b.t,entry:position.entry,exit,shares:position.shares,pnl:pl,ret:exit/position.entry-1,why:"dagsslut",setup:position.setup,score:position.score,entryEquity:position.entryEquity});log.push({t:b.t,robot:"Lina Day Jägaren",s:position.s,a:"SÄLJ",price:exit,amount:position.shares*exit,why:"dagsslut",pnl:pl});position=null;tradesToday++;}
    peak=Math.max(peak,eq);dd=Math.min(dd,eq/peak-1);curve.push({t:d,v:eq});
  }
  const wins=closed.filter(x=>x.pnl>0),losses=closed.filter(x=>x.pnl<0),grossWin=wins.reduce((a,x)=>a+x.pnl,0),grossLoss=Math.abs(losses.reduce((a,x)=>a+x.pnl,0)),pf=grossLoss?grossWin/grossLoss:(grossWin?Infinity:0);
@@ -368,7 +373,9 @@ function auditDay(rows,d,capital){
    // Entry måste vara nästa bars open efter signalbaren (med modellens köpfriktion).
    const expected=+ent.o*(1+(d.rules?.costSide||0)); if(Math.abs(x.entry-expected)>Math.max(.000001,Math.abs(expected)*1e-9))entryRuleFailures++;
    if(new Date(ent.t)<=new Date(sig.t))chronologyFailures++;
-   const notional=x.entry*x.shares; maxPositionPct=Math.max(maxPositionPct,notional/Math.max(1,capital)); if(notional>capital*(d.rules?.maxPosPct||.20)*1.000001)capitalViolations++;
+   const notional=x.entry*x.shares, entryEquity=Math.max(1,+x.entryEquity||capital);
+   maxPositionPct=Math.max(maxPositionPct,notional/entryEquity);
+   if(notional>entryEquity*(d.rules?.maxPosPct||.20)*1.000001)capitalViolations++;
    if(xi===ei)sameBarExits++;
    const stop=x.entry*(1-(d.rules?.stopPct||.006)),target=x.entry*(1+(d.rules?.targetPct||.010)),bar=a[xi];
    if(+bar.l<=stop && +bar.h>=target)bothTouched++;
@@ -1070,7 +1077,7 @@ function v17BaseReport(full){
   }
  }
  if(full && d){
-   payload.day.closedTrades=(d.closed||[]).map(x=>({symbol:x.symbol,entryTime:x.entryTime,exitTime:x.exitTime,entryPrice:x.entry,exitPrice:x.exit,shares:x.shares,pnl:x.pnl,returnPct:x.ret*100,setup:x.setup,exitReason:x.why}));
+   payload.day.closedTrades=(d.closed||[]).map(x=>({symbol:x.symbol,entryTime:x.entryTime,exitTime:x.exitTime,entryPrice:x.entry,exitPrice:x.exit,shares:x.shares,pnl:x.pnl,returnPct:x.ret*100,setup:x.setup,exitReason:x.why,entryEquity:x.entryEquity}));
    payload.day.eventLog=d.log||[];
  }
  if(full && dB){
@@ -1085,7 +1092,7 @@ function v17TextReport(full){
  a.push("LINAS OPTI – TESTRAPPORT",`Version: ${p.version}`,`Exporterad: ${p.exportedAt}`,"Handel: AVSTÄNGD (backtest/paper)","");
  a.push("DATA",`Marknadsgrupp: ${p.data.marketGroup||"Egen lista"}`,`Datakälla: ${p.data.provider||"—"}`,`Benchmark: ${p.data.benchmark||"—"}`,`Symboler: ${p.data.symbols}`,`Data: ${p.data.from} → ${p.data.to}`,`Teststart: ${p.data.evaluationStart}`,`Dagsrader: ${p.data.dailyRows}`,`5-min-rader: ${p.data.fiveMinuteRows}`,"");
  a.push("INSTÄLLNINGAR",`Startkapital: ${p.settings.startCapital}`,`Max position swing: ${p.settings.swingMaxPosition}`,`Risk/affär day: ${p.settings.dayRiskPerTrade}`,"");
- if(p.dayAudit){let z=p.dayAudit;a.push("DAY REVISION V0.39.3",`Status: ${z.pass?"PASS":"FLAG"}`,`Kontrollerade affärer: ${z.trades}`,`Kronologifel: ${z.chronologyFailures}`,`Entry nästa bar-fel: ${z.entryRuleFailures}`,`Exitregelfel: ${z.exitRuleFailures}`,`Börstid/dag-fel: ${z.marketHoursFailures}`,`Kapitalfel: ${z.capitalViolations}`,`Positionsöverlapp: ${z.positionViolations}`,`SPY-affärer: ${z.spyTrades}`,`OHLC/duplikat/sorteringsfel: ${z.invalidBars+z.duplicateBars+z.unsortedSeries}`,`Samma 5-min-bar köp/sälj: ${z.sameBarExits}`,`Både stop + mål på exitbar: ${z.bothTouched}`,`Största positionsandel: ${(z.maxPositionPct*100).toFixed(2)}%`,`Varningar: ${z.warnings.join(" | ")}`,"");}
+ if(p.dayAudit){let z=p.dayAudit;a.push("DAY REVISION V0.39.4",`Status: ${z.pass?"PASS":"FLAG"}`,`Kontrollerade affärer: ${z.trades}`,`Kronologifel: ${z.chronologyFailures}`,`Entry nästa bar-fel: ${z.entryRuleFailures}`,`Exitregelfel: ${z.exitRuleFailures}`,`Börstid/dag-fel: ${z.marketHoursFailures}`,`Kapitalfel: ${z.capitalViolations}`,`Positionsöverlapp: ${z.positionViolations}`,`SPY-affärer: ${z.spyTrades}`,`OHLC/duplikat/sorteringsfel: ${z.invalidBars+z.duplicateBars+z.unsortedSeries}`,`Samma 5-min-bar köp/sälj: ${z.sameBarExits}`,`Både stop + mål på exitbar: ${z.bothTouched}`,`Största positionsandel: ${(z.maxPositionPct*100).toFixed(2)}%`,`Varningar: ${z.warnings.join(" | ")}`,"");}
  if(p.audit){let z=p.audit;a.push("SWING REVISION V0.31",`Status: ${z.pass?"PASS":"FLAG"}`,`Kontrollerade köp / avslut: ${z.entries} / ${z.closed}`,`Signalfel: ${z.signalFailures}`,`Kapitalfel: ${z.capitalViolations}`,`Max samtidiga positioner: ${z.maxPositions}`,`Positionsfel: ${z.positionViolations}`,`Samma-dag exits: ${z.sameDay}`,`Samma-dag stop: ${z.sameDayStop}`,`Både stop och mål berörda samma dag: ${z.bothTouched}`,`OHLC/duplikat/sorteringsfel: ${z.invalidBars+z.duplicateBars+z.unsortedSeries}`,`SPY-affärer: ${z.spyTrades}`,`Exitregelfel: ${z.exitRuleFailures}`,`Kronologifel: ${z.chronologyFailures}`,`Varningar: ${z.warnings.join(" | ")}`,"");}
  if(s){
   a.push("OPTI SWING",`Slutkapital: ${s.endingCapital}`,`Avkastning: ${s.returnPct.toFixed(2)}%`,`Max drawdown: ${s.maxDrawdownPct.toFixed(2)}%`,`Affärer: ${s.trades}`,`Vinstfrekvens: ${s.winRatePct.toFixed(2)}%`,`Benchmark: ${s.benchmark}`,`${s.benchmark}: ${s.benchmarkReturnPct==null?"—":s.benchmarkReturnPct.toFixed(2)+"%"}`,`Mot benchmark: ${s.vsBenchmarkPct==null?"—":s.vsBenchmarkPct.toFixed(2)+"%"}`,`Profit factor: ${s.profitFactor}`,`Snittvinst: ${s.averageWin}`,`Snittförlust: ${s.averageLoss}`,`Bästa affär: ${s.bestTrade}`,`Sämsta affär: ${s.worstTrade}`,`Öppna vid slut: ${s.openAtEnd}`,"");
@@ -1210,12 +1217,18 @@ window.addEventListener("DOMContentLoaded",()=>{
 async function v0365Share(full){
   var st=document.getElementById("v0365ShareStatus");
   if(st) st.textContent="Öppnar delning…";
+  // iOS kan hålla native-delningen öppen efter AirDrop. Byt därför vår egen
+  // statustext i bakgrunden så användaren möts av ett färdigt läge när den stängs.
+  var doneTimer=setTimeout(function(){
+    if(st && st.textContent==="Öppnar delning…") st.textContent="✓ Rapporten är klar · Dela igen vid behov";
+  },700);
   try{
     await v17Share(full);
-    var legacy=document.getElementById("v17ExportStatus");
-    if(st && legacy && legacy.textContent) st.textContent=legacy.textContent;
+    clearTimeout(doneTimer);
+    if(st) st.textContent="✓ Rapporten är klar · Dela igen vid behov";
   }catch(e){
-    if(st) st.textContent="Delningen kunde inte öppnas. Prova den permanenta Dela-knappen i Inställningar.";
+    clearTimeout(doneTimer);
+    if(st) st.textContent="Delningen kunde inte öppnas. Försök igen.";
   }
 }
 
