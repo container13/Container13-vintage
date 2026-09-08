@@ -343,3 +343,29 @@ Ren UX-version. Swing, Lina Selection 16 och handelsreglerna är oförändrade.
 - Appstart/scroll: `v0371Startup()`.
 - Egen period: `#v0371CustomPeriod` + `.v0371-date-field`.
 - Dolda tekniska element är inte raderade; de kan återaktiveras utan att återskapa funktionerna.
+
+
+## V0.37.2 – Fetch + Period Feedback
+
+### Problem som rättas
+- Periodknapparna hade endast en svag outline och såg nästan omarkerade ut.
+- I V0.37.1 var `#bridgeStatus` dold i normalvyn. Om en fetch blev lång eller fastnade såg användaren därför bara `Hämtar…` på knappen utan progress, fel eller timeout.
+- `bridge()` hade ingen timeout.
+
+### Periodval
+- Aktiv 1/3/5/10-årsknapp eller kalenderår får nu tydlig blå fylld markering, vit text och ✓.
+- Byte av period tömmer tidigare data och gammal hämtningsstatus.
+
+### Datahämtning
+- Hämtstatus visas synligt endast under pågående hämtning, vid klart eller fel.
+- 30 sekunders timeout per API-anrop via `AbortController`.
+- Timeout ger begripligt fel: `Hämtningen tog för lång tid. Försök igen.`
+- Tomt API-resultat behandlas som fel istället för att se ut som lyckad hämtning.
+- Knappen återställs alltid i `finally`, även vid timeout/fel.
+- `cache: no-store` används för datakallet för att undvika gammalt cachat API-svar.
+
+### Inte ändrat
+- Inga Swing/Day/Trend-strategiregler.
+- Inga marknadsgrupper eller symbolurval.
+- Ingen Worker-kod.
+- Ingen export/delning.

@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.37.1";
+const APP_VERSION = "V0.37.2";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -37,7 +37,7 @@ function setMarketGroup(key){
  const pi=document.getElementById("providerInfo"); if(pi)pi.textContent=`Datakälla: ${g.provider==="eodhd"?"EODHD":"Alpaca"} · Benchmark: ${g.benchmark}`;
  const ib=document.getElementById("intraBtn"); if(ib){ib.disabled=g.provider!=="alpaca";ib.title=g.provider!=="alpaca"?"Opti Day är tills vidare endast USA":"";}
  DAILY=[]; INTRA=[]; LAST=null; updateTestDataStatus(); updateDataStatus();
- const bs=document.getElementById("bridgeStatus"); if(bs)bs.textContent=`${g.name} vald. Hämta data för att testa gruppen.`;
+ const bs=document.getElementById("bridgeStatus"); if(bs){bs.className="status v0371-api-status";bs.textContent=`${g.name} vald. Hämta data för att testa gruppen.`;}
 }
 window.addEventListener("DOMContentLoaded",()=>{
  document.querySelectorAll(".market-btn[data-market]:not([disabled])").forEach(b=>b.addEventListener("click",()=>setMarketGroup(b.dataset.market)));
@@ -84,9 +84,22 @@ function updateDataStatus(){
  $("modeBadge").textContent=(DAILY.length||INTRA.length)?"VERKLIG DATA INLÄST":"DATA EJ INLÄST";
  $("modeBadge").style.background=(DAILY.length||INTRA.length)?"#e8f6ef":"#eaf4fd";
 }
-async function bridge(path){
+async function bridge(path,timeoutMs=30000){
  if(!API_BASE) throw new Error("Kunde inte nå Linas Opti API.");
- let r=await fetch(API_BASE+path);let j=await r.json();if(!r.ok)throw new Error(j.error||("HTTP "+r.status));return j
+ const controller=new AbortController();
+ const timer=setTimeout(()=>controller.abort(),timeoutMs);
+ try{
+   const r=await fetch(API_BASE+path,{signal:controller.signal,cache:"no-store"});
+   let j;
+   try{j=await r.json();}catch(e){throw new Error("API:t svarade utan giltig data.");}
+   if(!r.ok)throw new Error(j.error||("HTTP "+r.status));
+   return j;
+ }catch(e){
+   if(e && e.name==="AbortError")throw new Error("Hämtningen tog för lång tid. Försök igen.");
+   throw e;
+ }finally{
+   clearTimeout(timer);
+ }
 }
 $("healthBtn").onclick=async()=>{try{
   let j=await checkLinasOptiApi();
@@ -117,24 +130,48 @@ function paintBridgeDone(count,tf){
   setTimeout(()=>{ if(el.textContent!==text) el.textContent=text; },120);
 }
 async function getBars(tf){
- if(currentProvider()==="eodhd" && tf!=="1Day"){const el=$("bridgeStatus");if(el){el.className="status bad";el.textContent="Opti Day/5-min är tills vidare endast USA.";}return;}
- const btn=tf==="1Day"?$("dailyBtn"):$("intraBtn"); const old=btn?.textContent;
+ if(currentProvider()==="eodhd" && tf!=="1Day"){
+   const el=$("bridgeStatus");
+   if(el){el.className="status v0372-visible v0372-bad";el.textContent="Opti Day/5-min är tills vidare endast USA.";}
+   return;
+ }
+ const btn=tf==="1Day"?$("dailyBtn"):$("intraBtn"), old=btn?.textContent;
+ const status=$("bridgeStatus");
  try{
-  if(btn){btn.disabled=true;btn.textContent="Hämtar…";} $("bridgeStatus").className="status"; $("bridgeStatus").textContent="Hämtar...";
-  let rows=[];
-  if(currentProvider()==="eodhd" && tf==="1Day"){
-   const syms=$("symbols").value.split(",").map(x=>x.trim().toUpperCase()).filter(Boolean);
-   const chunks=[]; for(let i=0;i<syms.length;i+=25)chunks.push(syms.slice(i,i+25));
-   for(let i=0;i<chunks.length;i++){
-    $("bridgeStatus").textContent=`Hämtar del ${i+1}/${chunks.length}…`;
-    const url=`/eod-bars?symbols=${encodeURIComponent(chunks[i].join(","))}&timeframe=1Day&start=${$("start").value}&end=${$("end").value}`;
-    const j=await bridge(url); rows.push(...(j.rows||[]));
+   if(btn){btn.disabled=true;btn.textContent="Hämtar…";}
+   if(status){
+     status.className="status v0372-visible v0372-loading";
+     status.textContent=tf==="1Day"?"Hämtar dagsdata…":"Hämtar 5-min-data…";
    }
-  }else{ const j=await bridge(params(tf)); rows=j.rows||[]; }
-  if(tf==="1Day")DAILY=rows;else INTRA=rows; updateTestDataStatus();updateDataStatus();v035RefreshGuide(); v0368UpdateContextUI();paintBridgeDone(rows.length,tf);
- }catch(e){$("bridgeStatus").className="status bad";$("bridgeStatus").textContent=e.message;}finally{if(btn){btn.disabled=false;btn.textContent=old;}}
+   let rows=[];
+   if(currentProvider()==="eodhd" && tf==="1Day"){
+     const syms=$("symbols").value.split(",").map(x=>x.trim().toUpperCase()).filter(Boolean);
+     const chunks=[]; for(let i=0;i<syms.length;i+=25)chunks.push(syms.slice(i,i+25));
+     for(let i=0;i<chunks.length;i++){
+       if(status)status.textContent=`Hämtar del ${i+1}/${chunks.length}…`;
+       const url=`/eod-bars?symbols=${encodeURIComponent(chunks[i].join(","))}&timeframe=1Day&start=${$("start").value}&end=${$("end").value}`;
+       const j=await bridge(url,30000); rows.push(...(j.rows||[]));
+     }
+   }else{
+     const j=await bridge(params(tf),30000); rows=j.rows||[];
+   }
+   if(!rows.length)throw new Error("Ingen data kom tillbaka för vald marknad och period.");
+   if(tf==="1Day")DAILY=rows;else INTRA=rows;
+   updateTestDataStatus();updateDataStatus();v035RefreshGuide();v0368UpdateContextUI();
+   if(status){
+     status.className="status v0372-visible v0372-good";
+     status.textContent=`✓ Klart: ${rows.length.toLocaleString("sv-SE")} rader`;
+   }
+ }catch(e){
+   if(status){
+     status.className="status v0372-visible v0372-bad";
+     status.textContent="Kunde inte hämta data: "+e.message;
+   }
+ }finally{
+   if(btn){btn.disabled=false;btn.textContent=old;}
+ }
 }
-$("dailyBtn").onclick=()=>getBars("1Day");$("intraBtn").onclick=()=>getBars("5Min");
+$("dailyBtn").onclick$("dailyBtn").onclick=()=>getBars("1Day");$("intraBtn").onclick=()=>getBars("5Min");
 
 function grouped(rows){let m={};rows.forEach(r=>(m[r.symbol]??=[]).push(r));return m}
 function sd(a){if(a.length<2)return 0;let m=a.reduce((s,x)=>s+x,0)/a.length;return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/a.length)}
@@ -1222,6 +1259,7 @@ function v0368UpdateContextUI(){
   if(typeof DAILY!=="undefined")DAILY.length=0;
   const badge=document.getElementById("modeBadge"); if(badge){badge.textContent="DATA EJ INLÄST";}
   const ready=document.getElementById("v0368DataReady"); if(ready){ready.hidden=true;ready.style.display="none";}
+  const st=document.getElementById("bridgeStatus"); if(st){st.className="status v0371-api-status";st.textContent="";}
   if(typeof v035RefreshGuide==="function")v035RefreshGuide();
  }
  function init(){

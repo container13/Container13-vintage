@@ -522,3 +522,25 @@ body > .v23-sharebar{overflow:visible !important}
 .v0371-date-field{display:none}
 .v0371-api-status{display:none}
 #v0371CustomPeriod[open] .v0370-custom-note{display:block}
+
+/* V0.37.2 – tydligare periodval */
+.v0370-range-btn.active,.v0370-year-btn.active{
+  background:#256aa4!important;
+  color:#fff!important;
+  border-color:#256aa4!important;
+  outline:3px solid rgba(37,106,164,.20)!important;
+  box-shadow:0 4px 12px rgba(37,106,164,.22);
+}
+.v0370-range-btn.active::before,.v0370-year-btn.active::before{content:"✓ ";font-weight:900}
+
+/* Hämtningsstatus visas bara när JS aktivt öppnar den */
+#bridgeStatus.v0372-visible{
+  display:block!important;
+  margin-top:12px;
+  padding:14px 16px;
+  border-radius:14px;
+  font-weight:800;
+}
+#bridgeStatus.v0372-loading{background:#eef6fd;color:#174f7a}
+#bridgeStatus.v0372-good{background:#f1fbf5;color:#16794a}
+#bridgeStatus.v0372-bad{background:#fff1f0;color:#a9342c}
