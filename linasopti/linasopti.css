@@ -406,3 +406,11 @@ body > .v23-sharebar{overflow:visible !important}
 .v036-toggle{display:flex;gap:10px;align-items:center;margin-top:18px;padding:12px;background:#f5f8fa;border-radius:14px}
 .v036-toggle input{width:22px;height:22px}
 @media(min-width:700px){.v036-modal-backdrop{align-items:center}.v036-modal{margin:0}}
+
+/* V0.36.1 */
+.v036-share-choice{width:100%;min-height:52px;margin-top:9px;font-weight:900}
+.v036-share-skip{width:100%;margin-top:10px;border:0;background:transparent;min-height:44px}
+.v036-result-advanced{margin-top:14px}
+.v036-result-advanced>summary{font-weight:900;cursor:pointer}
+.v036-result-advanced-inner{margin-top:14px}
+.v036-result-advanced .v014-audit{margin:0;padding:0;background:transparent}

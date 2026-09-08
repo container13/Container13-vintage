@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.36";
+const APP_VERSION = "V0.36.1";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -76,7 +76,7 @@ async function loadFile(input,kind){
   INTRA=rows;
 }
 updateTestDataStatus();
-updateDataStatus()}catch(e){$("csvStatus").innerHTML='<span class="bad">'+e.message+"</span>"}
+updateDataStatus();v035RefreshGuide()}catch(e){$("csvStatus").innerHTML='<span class="bad">'+e.message+"</span>"}
 }
 $("dailyFile").onchange=e=>loadFile(e.target,"daily");$("intraFile").onchange=e=>loadFile(e.target,"intra");
 function updateDataStatus(){
@@ -131,7 +131,7 @@ async function getBars(tf){
     const j=await bridge(url); rows.push(...(j.rows||[]));
    }
   }else{ const j=await bridge(params(tf)); rows=j.rows||[]; }
-  if(tf==="1Day")DAILY=rows;else INTRA=rows; updateTestDataStatus();updateDataStatus();paintBridgeDone(rows.length,tf);
+  if(tf==="1Day")DAILY=rows;else INTRA=rows; updateTestDataStatus();updateDataStatus();v035RefreshGuide();paintBridgeDone(rows.length,tf);
  }catch(e){$("bridgeStatus").className="status bad";$("bridgeStatus").textContent=e.message;}finally{if(btn){btn.disabled=false;btn.textContent=old;}}
 }
 $("dailyBtn").onclick=()=>getBars("1Day");$("intraBtn").onclick=()=>getBars("5Min");
@@ -508,11 +508,11 @@ function renderDayAB(a,b){
 
 const V036_SETTINGS_KEY="linasopti_v036_settings";
 function v036GetSettings(){
-  try{return Object.assign({afterRun:"share-full",showShareBar:false},JSON.parse(localStorage.getItem(V036_SETTINGS_KEY)||"{}"))}
-  catch(e){return {afterRun:"share-full",showShareBar:false}}
+  try{return Object.assign({afterRun:"prompt",showShareBar:false},JSON.parse(localStorage.getItem(V036_SETTINGS_KEY)||"{}"))}
+  catch(e){return {afterRun:"prompt",showShareBar:false}}
 }
 function v036SaveSettings(){
-  const s={afterRun:document.getElementById("v036AfterRun")?.value||"share-full",
+  const s={afterRun:document.getElementById("v036AfterRun")?.value||"prompt",
            showShareBar:!!document.getElementById("v036ShowShareBar")?.checked};
   localStorage.setItem(V036_SETTINGS_KEY,JSON.stringify(s));
   v036ApplySettings();
@@ -529,21 +529,26 @@ function v036OpenSettings(open=true){
 function v036AfterRun(){
   const s=v036GetSettings();
   v035ClickTab("3");
-  if(s.afterRun==="share-full") v17Share(true);
-  else if(s.afterRun==="share-quick") v17Share(false);
+  if(s.afterRun==="prompt") setTimeout(()=>v036OpenSharePrompt(),120);
+}
+function v036OpenSharePrompt(){
+  const m=document.getElementById("v036SharePrompt"); if(m)m.hidden=false;
+}
+function v036CloseSharePrompt(){
+  const m=document.getElementById("v036SharePrompt"); if(m)m.hidden=true;
+}
+async function v036ShareFromPrompt(full){
+  v036CloseSharePrompt();
+  await v17Share(full);
 }
 window.addEventListener("DOMContentLoaded",()=>{
   v036ApplySettings();
-  document.getElementById("v036SettingsBtn")?.addEventListener("click",()=>v036OpenSettings(true));
-  document.getElementById("v036SettingsClose")?.addEventListener("click",()=>v036OpenSettings(false));
+  
+  
   document.getElementById("v036SettingsModal")?.addEventListener("click",e=>{if(e.target.id==="v036SettingsModal")v036OpenSettings(false)});
   document.getElementById("v036AfterRun")?.addEventListener("change",v036SaveSettings);
   document.getElementById("v036ShowShareBar")?.addEventListener("change",v036SaveSettings);
-  document.getElementById("v036ShareResult")?.addEventListener("click",()=>{
-    const menu=document.getElementById("v23ShareMenu");
-    if(menu){menu.hidden=false;menu.scrollIntoView({behavior:"smooth",block:"nearest"});}
-    const bar=document.getElementById("v23ShareBar"); if(bar)bar.classList.remove("v036-share-hidden");
-  });
+  document.getElementById("v036ShareResult")?.addEventListener("click",()=>v036OpenSharePrompt());
 });
 
 window.addEventListener("DOMContentLoaded",()=>{
@@ -637,25 +642,9 @@ async function checkLinasOptiApi(){
 
 
 function updateTestDataStatus(){
-  const dailyCount = Array.isArray(DAILY) ? DAILY.length : 0;
-  const intraCount = Array.isArray(INTRA) ? INTRA.length : 0;
-
-  const status = document.getElementById("testDataStatus");
-  if (status) {
-    const dailyText = dailyCount > 0
-      ? "🟢 Dagsdata: " + dailyCount + " rader"
-      : "⚪ Dagsdata: ej hämtad";
-    const intraText = intraCount > 0
-      ? "🟢 5-min-data: " + intraCount + " rader"
-      : "⚪ 5-min-data: ej hämtad";
-
-    status.innerHTML = dailyText + "<br>" + intraText;
-  }
-
-  const runBtn = document.getElementById("runBothBtn");
-  if (runBtn) {
-    runBtn.disabled = dailyCount === 0 && intraCount === 0;
-  }
+ const d=document.getElementById("testDataStatus"); if(!d)return;
+ const swingFocused=true;
+ d.innerHTML=`${DAILY.length?"🟢":"⚪"} Dagsdata: ${DAILY.length?DAILY.length+" rader":"ej hämtad"}` + (swingFocused?"":`<br>${INTRA.length?"🟢":"⚪"} 5-min-data: ${INTRA.length?INTRA.length+" rader":"ej hämtad"}`);
 }
 
 
@@ -879,7 +868,7 @@ function v035PeriodName(){
  return s&&e?`${s} → ${e}`:"Välj period";
 }
 function v035RefreshGuide(label){
- const g=currentGroup?.(), rows=(window.DAILY||[]).length;
+ const g=currentGroup?.(), rows=DAILY.length;
  const summary=document.getElementById("v035DataSummary"),check=document.getElementById("v035DataCheck"),next=document.getElementById("v035ToTest");
  const name=g?.name||"Ingen grupp", p=label||v035PeriodName();
  if(summary) summary.innerHTML=`<b>${name}</b><br>${p}${rows?`<br><span class="good">✓ ${rows.toLocaleString("sv-SE")} dagsrader hämtade</span>`:""}`;

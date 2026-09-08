@@ -193,3 +193,14 @@ Ren UX-version. Swing, Lina Selection 16 och handelsreglerna är oförändrade.
 - Resultat har en kompakt `Dela rapport`-väg även när den permanenta nederknappen är dold.
 - Inställningarna sparas lokalt på enheten.
 - Worker oförändrad.
+
+
+## V0.36.1 – Robust Flow
+- Fix: Test-sammanfattningen använder nu faktiskt hämtade `DAILY`-rader och uppdateras direkt efter hämtning/import.
+- Fix: 5-min-status visas inte i Swing-fokuserad Test-vy.
+- Fix: Backtestkontroll/revision ligger nu hopfälld under Resultat, inte löst under sidfoten.
+- Fix: Inställningsknappen använder en robust direktkoppling till inställningspanelen.
+- Ändring: automatisk **native** AirDrop/delningsruta efter ett långt test används inte längre. iPhone/Safari kräver ett aktivt användartryck för Web Share.
+- Nytt: efter avslutat test kan appen i stället automatiskt visa ett eget delningsval. Ett tryck på `Full testdata` eller `Snabbrapport` öppnar därefter iPhones vanliga delningsruta/AirDrop.
+- Permanent nederknapp för delning är fortfarande av som standard och kan slås på i Inställningar.
+- Swing-motor och handelsregler är oförändrade.
