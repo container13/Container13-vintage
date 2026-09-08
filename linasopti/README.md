@@ -151,3 +151,10 @@ Ingen Worker-ändring krävs.
 - Kostnadstestet påverkar inte köp/sälj-signaler, positionsstorlek eller den frysta Swing-motorn; det är en separat efterberäkning.
 - Kostnadsresultatet följer med i exporterad rapport.
 - Ingen Worker-ändring krävs.
+
+
+## V0.34.5 – tydlig Eldprov-knapp
+- Korrigerar V0.34.4 där Eldprov-knappen inte hamnade i den faktiska snabbvalssektionen.
+- `🔥 Eldprov 2023` ligger nu direkt efter `Hela perioden` under Data → Snabbval.
+- Testlogik och Swing-strategi är oförändrade.
+- Arbetsgång: 1. Data = välj grupp/period och hämta data; 2. Test = välj/kör test; 3. Resultat = granska analys och dela rapport.
