@@ -308,3 +308,38 @@ Ren UX-version. Swing, Lina Selection 16 och handelsreglerna är oförändrade.
 - Lösenkod `adam` och fungerande iOS-delning behålls.
 - INTE ändrat: Swing-signaler/score, entry/exit-kronologi, stop/target/time exit, sizing/maxpositioner, benchmark, Omvärld, Day-/Trend-beräkningsmotorer, Worker/API eller exportformat.
 - Felsök årsval i `v0370PeriodPicker()`. Dolda delar är avsiktligt bevarade för senare återaktivering.
+
+
+## V0.37.1 – Data Cleanup + appstart
+
+### Appstart / lösenkod
+- Den enkla frontend-spärren med lösenkod `adam` visas nu vid **varje riktig sidladdning/uppdatering**.
+- Tidigare `sessionStorage`-upplåsning är borttagen. Data → Test → Resultat inom samma laddade app kräver inte ny kod.
+- Detta är fortfarande endast en UI-spärr och inte säker serverautentisering.
+
+### Scrollstart
+- `history.scrollRestoration = "manual"` används.
+- Vid `pageshow` och `load` återställs sidan explicit till toppen.
+- Syfte: Safari ska inte återöppna Linas Opti mitt i/längst ned på föregående scrollposition.
+
+### Data-vy
+- `Kom igång` döljs från normalvyn.
+- CSV/manuell inläsning och dess förklarande text hålls undan som teknisk väg.
+- Symbolfältet döljs från normal marknadsgruppsanvändning men finns kvar i DOM/kod.
+- Från/Till döljs normalt och visas endast när `Egen period` öppnas.
+- Normal positiv API-status döljs; teknisk status/funktion finns kvar för felsökning.
+- Gamla experimentkort döljs från normal Data-vy.
+- Målet för normalvyn är: **Marknadsgrupp → Period → Hämta dagsdata → tydlig datakvittens**.
+
+### Inte ändrat
+- Årslogiken från V0.37.0.
+- Swing-signaler/score, entry/exit-kronologi, stop/target/time exit, sizing/maxpositioner.
+- Benchmark och Omvärld.
+- Day-/Trend-motorerna.
+- Worker/API-kontrakt och secrets.
+- Full testdata/Snabbrapport och iOS-delningen.
+
+### Felsökning
+- Appstart/scroll: `v0371Startup()`.
+- Egen period: `#v0371CustomPeriod` + `.v0371-date-field`.
+- Dolda tekniska element är inte raderade; de kan återaktiveras utan att återskapa funktionerna.

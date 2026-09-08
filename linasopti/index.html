@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.37.0">
+<link rel="stylesheet" href="linasopti.css?v=0.37.1">
 </head>
 <body>
 <div id="v0369Gate" class="v0369-gate" aria-hidden="false">
@@ -32,7 +32,7 @@
 </div>
 
 <section id="pane-data">
-<div class="card"><h2>Kom igång</h2><div class="muted">På mobilen gör du allt i tre steg: läs in/hämta data → kör test → jämför resultat. Samma sida skalar upp automatiskt på 13&quot; och 24&quot;.</div></div>
+<div class="card v0371-normal-hidden"><h2>Kom igång</h2><div class="muted">På mobilen gör du allt i tre steg: läs in/hämta data → kör test → jämför resultat. Samma sida skalar upp automatiskt på 13&quot; och 24&quot;.</div></div>
 <details class="v0369-altA">
   <summary>Tekniskt: CSV / manuell inläsning</summary>
   <div class="card">
@@ -73,9 +73,9 @@
   </div>
   <div class="muted v29-market-note">⭐ Lina Selection 16 är ett historikbaserat urval från våra tidigare tester och använder Alpaca + SPY som benchmark. USA och de globala Alpaca-grupperna använder Alpaca; Norden 80 använder EODHD-dagsdata. Alla grupper kör samma frysta Opti Swing och benchmark handlas aldrig. Selection-resultat på överlappande historik är urvalstest – inte oberoende bevis.</div>
 </div>
-<label>Symboler, kommaseparerade<input id="symbols" value="AAPL,MSFT,NVDA,AMZN,META,TSLA,AMD,NFLX,AVGO,JPM,SPY"></label>
-<label>Från<input id="start" type="date"></label>
-<label>Till<input id="end" type="date"></label>
+<label class="v0371-tech-field">Symboler, kommaseparerade<input id="symbols" value="AAPL,MSFT,NVDA,AMZN,META,TSLA,AMD,NFLX,AVGO,JPM,SPY"></label>
+<label class="v0371-date-field">Från<input id="start" type="date"></label>
+<label class="v0371-date-field">Till<input id="end" type="date"></label>
 <div class="v0370-period-panel">
 <span class="period-label">Period</span>
 <div class="v0370-range-row">
@@ -86,7 +86,7 @@
 </div>
 <div class="v0370-year-grid">
 <button type="button" class="v0370-year-btn" data-year="2026">2026</button><button type="button" class="v0370-year-btn" data-year="2025">2025</button><button type="button" class="v0370-year-btn" data-year="2024">2024</button><button type="button" class="v0370-year-btn" data-year="2023">2023</button><button type="button" class="v0370-year-btn" data-year="2022">2022</button><button type="button" class="v0370-year-btn" data-year="2021">2021</button><button type="button" class="v0370-year-btn" data-year="2020">2020</button><button type="button" class="v0370-year-btn" data-year="2019">2019</button><button type="button" class="v0370-year-btn" data-year="2018">2018</button><button type="button" class="v0370-year-btn" data-year="2017">2017</button></div>
-<details class="v0370-custom"><summary>Egen period</summary><div class="muted">Använd fälten Från och Till ovan.</div></details>
+<details class="v0370-custom" id="v0371CustomPeriod"><summary>Egen period</summary><div class="muted">Använd fälten Från och Till ovan.</div></details>
 </div>
 <div class="day-period-wrap v0368-day-control" aria-label="Snabbval Opti Day">
   <span class="period-label">Opti Day snabbval</span>
@@ -100,7 +100,7 @@
 <button class="primary" id="dailyBtn">Hämta dagsdata</button>
 <button class="purple v0368-day-control" id="intraBtn">Hämta 5-min-data</button>
 </div>
-<div class="status" id="bridgeStatus">Linas Opti API är anslutet via Cloudflare.</div><div id="v0368DataReady" class="v0368-data-ready" hidden>
+<div class="status v0371-api-status" id="bridgeStatus">Linas Opti API är anslutet via Cloudflare.</div><div id="v0368DataReady" class="v0368-data-ready" hidden>
 <div class="v0368-ready-title">✓ Dagsdata klar</div>
 <div id="v0368ReadyMarket"></div><div id="v0368ReadyRows"></div>
 <div id="v0368ReadyPeriod"></div><div class="v0368-ready-go">Redo att testa</div>
@@ -131,7 +131,7 @@
   </details>
 </div></details>
 
-<div class="card v31-nordic-info"><h2>V0.37.0 · Årsperioder</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
+<div class="card v31-nordic-info"><h2>V0.37.1 · Data Cleanup</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
 </section>
 
 <section id="pane-test" class="hidden">
@@ -282,5 +282,5 @@
 
 </div>
 
-<script src="linasopti.js?v=0.37.0"></script>
+<script src="linasopti.js?v=0.37.1"></script>
 </body></html>

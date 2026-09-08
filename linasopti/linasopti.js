@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.37.0";
+const APP_VERSION = "V0.37.1";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -1183,14 +1183,12 @@ function v0368UpdateContextUI(){
 }
 
 (function v0369GateInit(){
-  var KEY="linasOptiUnlocked";
   function unlock(){
     var input=document.getElementById("v0369Code");
     var gate=document.getElementById("v0369Gate");
     var msg=document.getElementById("v0369GateMsg");
     if(!input||!gate)return;
     if(input.value==="adam"){
-      sessionStorage.setItem(KEY,"1");
       gate.style.display="none";
       gate.setAttribute("aria-hidden","true");
       if(msg)msg.textContent="";
@@ -1204,11 +1202,6 @@ function v0368UpdateContextUI(){
     var btn=document.getElementById("v0369Enter");
     var input=document.getElementById("v0369Code");
     if(!gate)return;
-    if(sessionStorage.getItem(KEY)==="1"){
-      gate.style.display="none";
-      gate.setAttribute("aria-hidden","true");
-      return;
-    }
     if(btn)btn.addEventListener("click",unlock);
     if(input)input.addEventListener("keydown",function(e){if(e.key==="Enter")unlock();});
   }
@@ -1236,4 +1229,21 @@ function v0368UpdateContextUI(){
   document.querySelectorAll(".v0370-range-btn").forEach(b=>b.onclick=()=>{const n=+b.dataset.years,now=new Date(),last=now.getFullYear();apply(last-n+1,last,b)});
  }
  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();
+
+// V0.37.1 – appstart: varje omladdning börjar låst och högst upp.
+(function v0371Startup(){
+  if("scrollRestoration" in history) history.scrollRestoration="manual";
+  function top(){ window.scrollTo(0,0); document.documentElement.scrollTop=0; document.body.scrollTop=0; }
+  window.addEventListener("pageshow",top);
+  window.addEventListener("load",()=>setTimeout(top,0));
+
+  function initCustom(){
+    const d=document.getElementById("v0371CustomPeriod");
+    if(!d)return;
+    const fields=document.querySelectorAll(".v0371-date-field");
+    const sync=()=>fields.forEach(el=>el.style.display=d.open?"":"none");
+    d.addEventListener("toggle",sync); sync();
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initCustom);else initCustom();
 })();

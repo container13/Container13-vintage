@@ -515,3 +515,10 @@ body > .v23-sharebar{overflow:visible !important}
 .v0370-custom{margin-top:10px}.v0370-custom summary,.v0370-tech>summary{font-weight:800;cursor:pointer}
 .v0370-tech{margin-top:18px}.v0370-tech>summary{background:#fff;border:1px solid #dfe6eb;border-radius:18px;padding:18px 20px}
 .v0370-dev-hidden{display:none!important}
+
+/* V0.37.1 – normal Data view cleanup */
+.v0371-normal-hidden{display:none!important}
+.v0371-tech-field{display:none!important}
+.v0371-date-field{display:none}
+.v0371-api-status{display:none}
+#v0371CustomPeriod[open] .v0370-custom-note{display:block}
