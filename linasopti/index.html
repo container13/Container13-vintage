@@ -51,8 +51,9 @@
     <button type="button" class="market-btn market-nordic" data-market="denmark20">🇩🇰 Danmark 20</button>
     <button type="button" class="market-btn market-nordic" data-market="finland20">🇫🇮 Finland 20</button>
     <button type="button" class="market-btn market-nordic" data-market="norway20">🇳🇴 Norge 20</button>
+    <button type="button" class="market-btn market-nordic" data-market="globalNordic">🌍 Opti Global</button>
   </div>
-  <div class="muted v29-market-note">USA använder Alpaca. Sverige, Danmark, Finland och Norge använder EODHD-dagsdata via samma Cloudflare Worker. Benchmark handlas aldrig. Opti Day är tills vidare bara USA.</div>
+  <div class="muted v29-market-note">USA använder Alpaca. Norden och Opti Global använder EODHD-dagsdata. Opti Global hämtar Norden i flera delar automatiskt och väljer de starkaste signalerna över alla 80 aktier. Benchmark handlas aldrig. Opti Day är tills vidare bara USA.</div>
 </div>
 <label>Symboler, kommaseparerade<input id="symbols" value="AAPL,MSFT,NVDA,AMZN,META,TSLA,AMD,NFLX,AVGO,JPM,SPY"></label>
 <label>Från<input id="start" type="date"></label>
@@ -79,7 +80,7 @@
 <div class="status" id="bridgeStatus">Linas Opti API är anslutet via Cloudflare.</div>
 <div class="v31-provider" id="providerInfo">Datakälla: Alpaca · Benchmark: SPY</div>
 </div>
-<div class="card v31-nordic-info"><h2>V0.31.2 · Norden klar</h2><div class="muted">Sverige 20, Danmark 20, Finland 20 och Norge 20 är aktiva med EODHD-dagsdata. Samma frysta Opti Swing används på alla fyra marknaderna.</div></div>
+<div class="card v31-nordic-info"><h2>V0.32 · Opti Global</h2><div class="muted">Opti Global kombinerar 20 aktier vardera från Sverige, Danmark, Finland och Norge. Samma frysta Opti Swing rankar alla 80 tillsammans och får hålla högst fem positioner. NORDIC-4 är ett enkelt lika viktat jämförelseindex av de fyra lokala benchmarkserierna; valutaförändringar och handels­kostnader är ännu inte modellerade.</div></div>
 </section>
 
 <section id="pane-test" class="hidden">

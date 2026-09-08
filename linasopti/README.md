@@ -73,9 +73,18 @@ V0.29.1: Fixad cache-busting för JavaScript/CSS. V0.29 HTML hade script-taggen 
 - EODHD raw EOD OHLC, split/dividend/cost caveats från V0.31 gäller fortsatt.
 
 
-## V0.31.2 – Finland 20 + Norge 20
+## V0.32 – Finland 20 + Norge 20
 - Aktiverar Finland 20 via EODHD Helsinki (`.HE`), benchmark `SLGOMXH25.HE`.
 - Aktiverar Norge 20 via EODHD Oslo (`.OL`), benchmark `OBX.OL` (OBX Total Return Index).
 - Samma frysta Opti Swing och revisionskontroller som tidigare; inga strategiparametrar ändrade.
 - USA, Sverige och Danmark är oförändrade.
 - Norden är fortfarande datatest: statiska universum, rå EODHD-OHLC och inga courtage/spread/slippage i Swing.
+
+
+## V0.32 Opti Global
+- Ny grupp: Opti Global · Norden 80.
+- Exakt samma frysta Swing-regler; inga signalparametrar ändrade.
+- 80 aktier rankas gemensamt, max fem samtidiga positioner.
+- EODHD-hämtning delas automatiskt i batcher om max 25 symboler för att passa Worker-gränsen.
+- NORDIC-4 benchmark = aritmetiskt medel av Sverige/Danmark/Finland/Norge-benchmark under testperioden.
+- Valutaeffekter mellan SEK/DKK/EUR/NOK är INTE modellerade; Global är därför fortfarande ett experimentellt, currency-neutral datatest.

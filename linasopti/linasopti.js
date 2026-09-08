@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.31.2";
+const APP_VERSION = "V0.32";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -14,10 +14,12 @@ const MARKET_GROUPS={
  sweden20:{name:"Sverige 20",provider:"eodhd",benchmark:"XACT-OMXS30.ST",symbols:["ABB.ST","ALFA.ST","ASSA-B.ST","ATCO-A.ST","AZN.ST","BOL.ST","ERIC-B.ST","EQT.ST","ESSITY-B.ST","HEXA-B.ST","HMB.ST","INVE-B.ST","SAAB-B.ST","SAND.ST","SEB-A.ST","SHB-A.ST","SWED-A.ST","TEL2-B.ST","TELIA.ST","VOLV-B.ST","XACT-OMXS30.ST"]},
  denmark20:{name:"Danmark 20",provider:"eodhd",benchmark:"SPIC25KL.CO",symbols:["CARL-B.CO","COLO-B.CO","DANSKE.CO","DEMANT.CO","DSV.CO","FLS.CO","GMAB.CO","GN.CO","ISS.CO","JYSK.CO","MAERSK-B.CO","NOVO-B.CO","NZYM-B.CO","ORSTED.CO","PNDORA.CO","ROCK-B.CO","TRYG.CO","VWS.CO","ZEAL.CO","AMBU-B.CO","SPIC25KL.CO"]},
  finland20:{name:"Finland 20",provider:"eodhd",benchmark:"SLGOMXH25.HE",symbols:["ELISA.HE","FORTUM.HE","HARVIA.HE","HIAB.HE","HUH1V.HE","KALMAR.HE","KCR.HE","KEMIRA.HE","KESKOB.HE","KNEBV.HE","MANTA.HE","METSB.HE","METSO.HE","NDA-FI.HE","NESTE.HE","NOKIA.HE","ORNBV.HE","OUT1V.HE","QTCOM.HE","SAMPO.HE","SLGOMXH25.HE"]},
- norway20:{name:"Norge 20",provider:"eodhd",benchmark:"OBX.OL",symbols:["AKRBP.OL","AUSS.OL","AUTO.OL","BRG.OL","BWLPG.OL","DNB.OL","EQNR.OL","GJF.OL","KIT.OL","KOG.OL","MOWI.OL","NHY.OL","ORK.OL","PROT.OL","SALM.OL","STB.OL","SUBC.OL","TEL.OL","TOM.OL","VAR.OL","OBX.OL"]}
+ norway20:{name:"Norge 20",provider:"eodhd",benchmark:"OBX.OL",symbols:["AKRBP.OL","AUSS.OL","AUTO.OL","BRG.OL","BWLPG.OL","DNB.OL","EQNR.OL","GJF.OL","KIT.OL","KOG.OL","MOWI.OL","NHY.OL","ORK.OL","PROT.OL","SALM.OL","STB.OL","SUBC.OL","TEL.OL","TOM.OL","VAR.OL","OBX.OL"]},
+ globalNordic:{name:"Opti Global · Norden 80",provider:"eodhd",benchmark:"NORDIC-4",benchmarks:["XACT-OMXS30.ST","SPIC25KL.CO","SLGOMXH25.HE","OBX.OL"],symbols:["ABB.ST","ALFA.ST","ASSA-B.ST","ATCO-A.ST","AZN.ST","BOL.ST","ERIC-B.ST","EQT.ST","ESSITY-B.ST","HEXA-B.ST","HMB.ST","INVE-B.ST","SAAB-B.ST","SAND.ST","SEB-A.ST","SHB-A.ST","SWED-A.ST","TEL2-B.ST","TELIA.ST","VOLV-B.ST","CARL-B.CO","COLO-B.CO","DANSKE.CO","DEMANT.CO","DSV.CO","FLS.CO","GMAB.CO","GN.CO","ISS.CO","JYSK.CO","MAERSK-B.CO","NOVO-B.CO","NZYM-B.CO","ORSTED.CO","PNDORA.CO","ROCK-B.CO","TRYG.CO","VWS.CO","ZEAL.CO","AMBU-B.CO","ELISA.HE","FORTUM.HE","HARVIA.HE","HIAB.HE","HUH1V.HE","KALMAR.HE","KCR.HE","KEMIRA.HE","KESKOB.HE","KNEBV.HE","MANTA.HE","METSB.HE","METSO.HE","NDA-FI.HE","NESTE.HE","NOKIA.HE","ORNBV.HE","OUT1V.HE","QTCOM.HE","SAMPO.HE","AKRBP.OL","AUSS.OL","AUTO.OL","BRG.OL","BWLPG.OL","DNB.OL","EQNR.OL","GJF.OL","KIT.OL","KOG.OL","MOWI.OL","NHY.OL","ORK.OL","PROT.OL","SALM.OL","STB.OL","SUBC.OL","TEL.OL","TOM.OL","VAR.OL","XACT-OMXS30.ST","SPIC25KL.CO","SLGOMXH25.HE","OBX.OL"]}
 };
 function currentGroup(){return MARKET_GROUPS[ACTIVE_MARKET]||MARKET_GROUPS.usa10}
 function currentBenchmark(){return currentGroup().benchmark||"SPY"}
+function currentBenchmarks(){return currentGroup().benchmarks||[currentBenchmark()]}
 function currentProvider(){return currentGroup().provider||"alpaca"}
 function isUsMarket(){return currentProvider()==="alpaca"}
 
@@ -26,7 +28,7 @@ function setMarketGroup(key){
  const g=MARKET_GROUPS[key]; if(!g)return; ACTIVE_MARKET=key;
  const el=document.getElementById("symbols"); if(el)el.value=g.symbols.join(",");
  document.querySelectorAll(".market-btn[data-market]").forEach(b=>b.classList.toggle("active",b.dataset.market===key));
- const info=document.getElementById("marketGroupInfo"); if(info)info.textContent=`${g.name} · ${g.symbols.length-1} aktier + ${g.benchmark}`;
+ const info=document.getElementById("marketGroupInfo"); if(info)info.textContent=`${g.name} · ${g.symbols.length-currentBenchmarks().length} aktier + ${g.benchmark}`;
  const pi=document.getElementById("providerInfo"); if(pi)pi.textContent=`Datakälla: ${g.provider==="eodhd"?"EODHD":"Alpaca"} · Benchmark: ${g.benchmark}`;
  const ib=document.getElementById("intraBtn"); if(ib){ib.disabled=g.provider!=="alpaca";ib.title=g.provider!=="alpaca"?"Opti Day är tills vidare endast USA":"";}
  DAILY=[]; INTRA=[]; LAST=null; updateTestDataStatus(); updateDataStatus();
@@ -111,32 +113,21 @@ function paintBridgeDone(count,tf){
 }
 async function getBars(tf){
  if(currentProvider()==="eodhd" && tf!=="1Day"){const el=$("bridgeStatus");if(el){el.className="status bad";el.textContent="Opti Day/5-min är tills vidare endast USA.";}return;}
- const btn=tf==="1Day"?$("dailyBtn"):$("intraBtn");
- const old=btn?.textContent;
+ const btn=tf==="1Day"?$("dailyBtn"):$("intraBtn"); const old=btn?.textContent;
  try{
-   if(btn){btn.disabled=true;btn.textContent="Hämtar…";}
-   $("bridgeStatus").className="status";
-   $("bridgeStatus").textContent="Hämtar...";
-   let j=await bridge(params(tf));
-   let rows=j.rows||[];
-   // Om en lång dagsdatahämtning mot förmodan kommer tillbaka uppenbart ofullständig,
-   // gör en automatisk verifieringshämtning. Användaren ska aldrig behöva trycka två gånger.
-   if(tf==="1Day" && rows.length<expectedDailyFloor()) {
-     $("bridgeStatus").textContent=`Verifierar dagsdata… (${rows.length} rader först)`;
-     const j2=await bridge(params(tf));
-     const rows2=j2.rows||[];
-     if(rows2.length>rows.length) rows=rows2;
+  if(btn){btn.disabled=true;btn.textContent="Hämtar…";} $("bridgeStatus").className="status"; $("bridgeStatus").textContent="Hämtar...";
+  let rows=[];
+  if(currentProvider()==="eodhd" && tf==="1Day"){
+   const syms=$("symbols").value.split(",").map(x=>x.trim().toUpperCase()).filter(Boolean);
+   const chunks=[]; for(let i=0;i<syms.length;i+=25)chunks.push(syms.slice(i,i+25));
+   for(let i=0;i<chunks.length;i++){
+    $("bridgeStatus").textContent=`Hämtar del ${i+1}/${chunks.length}…`;
+    const url=`/eod-bars?symbols=${encodeURIComponent(chunks[i].join(","))}&timeframe=1Day&start=${$("start").value}&end=${$("end").value}`;
+    const j=await bridge(url); rows.push(...(j.rows||[]));
    }
-   if(tf==="1Day") DAILY=rows; else INTRA=rows;
-   updateTestDataStatus();
-   updateDataStatus();
-   paintBridgeDone(rows.length,tf);
- } catch(e){
-   $("bridgeStatus").className="status bad";
-   $("bridgeStatus").textContent=e.message;
- } finally {
-   if(btn){btn.disabled=false;btn.textContent=old;}
- }
+  }else{ const j=await bridge(params(tf)); rows=j.rows||[]; }
+  if(tf==="1Day")DAILY=rows;else INTRA=rows; updateTestDataStatus();updateDataStatus();paintBridgeDone(rows.length,tf);
+ }catch(e){$("bridgeStatus").className="status bad";$("bridgeStatus").textContent=e.message;}finally{if(btn){btn.disabled=false;btn.textContent=old;}}
 }
 $("dailyBtn").onclick=()=>getBars("1Day");$("intraBtn").onclick=()=>getBars("5Min");
 
@@ -144,7 +135,7 @@ function grouped(rows){let m={};rows.forEach(r=>(m[r.symbol]??=[]).push(r));retu
 function sd(a){if(a.length<2)return 0;let m=a.reduce((s,x)=>s+x,0)/a.length;return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/a.length)}
 function swing(rows,capital,maxPos,evalStart){
  if(!rows.length)return null;
- let g=grouped(rows),symbols=Object.keys(g),benchSym=currentBenchmark(),tradeSymbols=symbols.filter(s=>s!==benchSym),
+ let g=grouped(rows),symbols=Object.keys(g),benchSym=currentBenchmark(),benchSyms=currentBenchmarks(),tradeSymbols=symbols.filter(s=>!benchSyms.includes(s)),
  dates=[...new Set(rows.map(r=>r.t.slice(0,10)))].sort(),
  cash=capital,pos={},log=[],curve=[],peak=capital,dd=0,w=0,l=0,closed=[];
  let map={};symbols.forEach(s=>{map[s]={};g[s].forEach(r=>map[s][r.t.slice(0,10)]=r)});
@@ -213,10 +204,8 @@ function swing(rows,capital,maxPos,evalStart){
   log.push({t:last,robot:"Opti Swing",s,a:"SÄLJ",price:bar.c,amount:value,why:"Period slut",pnl:pl});
  }
  let bench=null;
- if(g[benchSym]?.length){
-   let b=g[benchSym].filter(r=>r.t.slice(0,10)>=dates[firstTrade]);
-   if(b.length>1)bench=b.at(-1).c/b[0].o-1;
- }
+ const benchReturns=benchSyms.map(bs=>{const b=(g[bs]||[]).filter(r=>r.t.slice(0,10)>=dates[firstTrade]);return b.length>1?b.at(-1).c/b[0].o-1:null;}).filter(Number.isFinite);
+ if(benchReturns.length)bench=benchReturns.reduce((a,x)=>a+x,0)/benchReturns.length;
  let wins=closed.filter(x=>x.pnl>0),losses=closed.filter(x=>x.pnl<0);
  let grossWin=wins.reduce((a,x)=>a+x.pnl,0),grossLoss=Math.abs(losses.reduce((a,x)=>a+x.pnl,0));
  let pf=grossLoss?grossWin/grossLoss:(grossWin?Infinity:0);
@@ -422,7 +411,7 @@ function renderWorld(w,s){
 }
 function optiTrend(rows,capital,evalStart){
  if(!rows.length)return null;
- const g=grouped(rows), symbols=Object.keys(g), benchSym=currentBenchmark(), tradeSymbols=symbols.filter(s=>s!==benchSym);
+ const g=grouped(rows), symbols=Object.keys(g), benchSym=currentBenchmark(), benchSyms=currentBenchmarks(), tradeSymbols=symbols.filter(s=>!benchSyms.includes(s));
  const dates=[...new Set(rows.map(r=>r.t.slice(0,10)))].sort();
  const map={}; symbols.forEach(s=>{map[s]={};g[s].forEach(r=>map[s][r.t.slice(0,10)]=r)});
  const firstEval=dates.findIndex(d=>!evalStart||d>=evalStart); if(firstEval<0)return null;
@@ -454,7 +443,7 @@ function optiTrend(rows,capital,evalStart){
    const e=equity(di,false);peak=Math.max(peak,e);dd=Math.min(dd,e/peak-1);curve.push({t:dates[di],v:e});
  }
  const lastDi=dates.length-1,eq=equity(lastDi,false),ret=eq/capital-1;
- let bench=null; const spyStart=map[benchSym]?.[dates[firstTrade]],spyEnd=map[benchSym]?.[dates[lastDi]];if(spyStart&&spyEnd)bench=spyEnd.c/spyStart.o-1;
+ let bench=null; const br=benchSyms.map(bs=>{const a=map[bs]?.[dates[firstTrade]],z=map[bs]?.[dates[lastDi]];return a&&z?z.c/a.o-1:null;}).filter(Number.isFinite);if(br.length)bench=br.reduce((a,x)=>a+x,0)/br.length;
  const days=firstTradeDate?Math.max(1,(new Date(dates[lastDi])-new Date(firstTradeDate))/86400000):0;
  const cagr=days?Math.pow(eq/capital,365.25/days)-1:0;
  return {eq,ret,dd,n:rebalances,bench,cagr,curve,log,firstTrade:dates[firstTrade]};
@@ -598,10 +587,10 @@ function auditSwing(rows,s,capital){
  if(duplicateBars)issues.push(`${duplicateBars} dubbla symbol/datum-rader`);
  if(unsortedSeries)issues.push(`${unsortedSeries} rader ligger i fel datumordning inom symbol`);
 
- let cash=capital,maxPositions=0,minCash=capital,capitalViolations=0,positionViolations=0,orphanSells=0,spyTrades=0; const benchmarkSymbol=currentBenchmark();
+ let cash=capital,maxPositions=0,minCash=capital,capitalViolations=0,positionViolations=0,orphanSells=0,spyTrades=0; const benchmarkSymbol=currentBenchmark(), benchmarkSymbols=currentBenchmarks();
  const positions=new Set();
  for(const e of (s.log||[])){
-  if(e.s===benchmarkSymbol)spyTrades++;
+  if(benchmarkSymbols.includes(e.s))spyTrades++;
   if(e.a==='KÖP'){
    if(e.amount>cash+0.01)capitalViolations++;
    cash-=e.amount; positions.add(e.s);
