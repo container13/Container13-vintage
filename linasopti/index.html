@@ -6,21 +6,13 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.36.6">
+<link rel="stylesheet" href="linasopti.css?v=0.36.7">
 </head>
 <body>
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Opti Day + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.31</div>
-<details class="v0363-settings">
- <summary class="v036-settings-btn" aria-label="Inställningar">⚙︎</summary>
- <div class="v0363-settings-panel">
-   <b>Inställningar</b>
-   <label class="v036-toggle"><input type="checkbox" id="v036ShowShareBar"> <span>Visa permanent Dela-knapp längst ned</span></label>
-   <div class="muted">Efter avslutat test visas delningsvalet automatiskt.</div>
- </div>
-</details></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Opti Day + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.31</div></div></div></div></header>
 
 <div class="tabs">
 <button class="tab active" data-pane="data">1. Data</button>
@@ -98,7 +90,7 @@
 </div>
 
 <div class="card v31-nordic-info">
-  <h2>V0.36.6 · Finish Point</h2>
+  <h2>V0.36.7 · Cleanup</h2>
   <div class="muted">
     Urvalet är räknat från alla inskickade rapporter, men rankingen använder deduplicerade och kronologiskt korrigerade testfönster så samma körning inte får extra vikt.
     För själva USA/Alpaca-urvalet användes fem separata miljöer: USA30 2024, 2025 och 2026 samt Global Stocks 100 och USA + Värld 50.
@@ -120,7 +112,7 @@
   </details>
 </div>
 
-<div class="card v31-nordic-info"><h2>V0.36.6 · Finish Point</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
+<div class="card v31-nordic-info"><h2>V0.36.7 · Cleanup</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
 </section>
 
 <section id="pane-test" class="hidden">
@@ -159,9 +151,7 @@
   </div>
   <div id="v0365ShareStatus" class="v17-status"></div>
 </div>
-<div class="v036-result-actions">
-  <button type="button" id="v036ShareResult" class="secondary">Dela rapport</button>
-</div>
+
 <div class="grid" style="margin-bottom:14px">
 <div class="kpi"><b>Startkapital</b><span id="kStart">—</span></div>
 <div class="kpi"><b>Period</b><span id="kPeriod">—</span></div>
@@ -270,14 +260,8 @@
 
 <div class="note">Detta är en testplattform, inte investeringsrådgivning. För riktig utvärdering måste data vara korrekt, överlevnadsbias undvikas och spread/slippage/courtage modelleras realistiskt. Linas Opti är mobil-först och lägger grunden för reproducerbara tester med samma regler över verklig historik.</div>
 </div>
-<div class="v23-sharebar" id="v23ShareBar">
-  <button type="button" id="v23ShareToggle" class="v23-share-main">Dela testdata</button>
-  <div class="v23-share-menu" id="v23ShareMenu" hidden>
-    <button type="button" id="v17ShareQuick">Snabbrapport</button>
-    <button type="button" id="v17ShareFull" class="secondary">Full testdata</button>
-    <div id="v17ExportStatus" class="v17-status"></div>
-  </div>
+
 </div>
 
-<script src="linasopti.js?v=0.36.6"></script>
+<script src="linasopti.js?v=0.36.7"></script>
 </body></html>

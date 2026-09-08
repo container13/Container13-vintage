@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.36.6";
+const APP_VERSION = "V0.36.7";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -1171,11 +1171,11 @@ async function v0365Share(full){
   function bind(){
     var full=document.getElementById("v0365ShareFull");
     var quick=document.getElementById("v0365ShareQuick");
-    var resultShare=document.getElementById("v036ShareResult");
+    
     var chk=document.getElementById("v036ShowShareBar");
     if(full) full.onclick=function(e){e.preventDefault();v0365Share(true);};
     if(quick) quick.onclick=function(e){e.preventDefault();v0365Share(false);};
-    if(resultShare) resultShare.onclick=function(e){e.preventDefault();v036OpenSharePrompt();};
+    
     if(chk) chk.addEventListener("change",v036SaveSettings);
     v036ApplySettings();
   }

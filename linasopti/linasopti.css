@@ -473,3 +473,7 @@ body > .v23-sharebar{overflow:visible !important}
 
 /* V0.36.6 – Swing-resultat visar inte irrelevant 5-min-KPI */
 .v0366-day-only{display:none!important}
+
+/* V0.36.7 cleanup */
+#testDataStatus{display:none!important}
+.v036-headtools{gap:0}

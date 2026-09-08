@@ -248,3 +248,12 @@ Ren UX-version. Swing, Lina Selection 16 och handelsreglerna är oförändrade.
 - Kortet säkras en andra gång efter renderingen.
 - 5-minbarer döljs i det Swing-fokuserade resultatet.
 - Ingen beräkning, signalregel, position sizing, exitregel eller benchmarklogik ändrad.
+
+
+## V0.36.7 – Cleanup
+- Kugghjulet/Inställningar borttaget.
+- Gamla `Dela rapport` borttaget.
+- Permanent nedersta Dela-rad borttagen.
+- Dubbla `Dagsdata: N rader` under `Kör Linas Opti` döljs.
+- `Testet är klart ✓` med Full testdata / Snabbrapport behålls.
+- Ingen strategi- eller backtestlogik ändrad.
