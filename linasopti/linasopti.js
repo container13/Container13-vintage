@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.36.7";
+const APP_VERSION = "V0.36.8";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -131,7 +131,7 @@ async function getBars(tf){
     const j=await bridge(url); rows.push(...(j.rows||[]));
    }
   }else{ const j=await bridge(params(tf)); rows=j.rows||[]; }
-  if(tf==="1Day")DAILY=rows;else INTRA=rows; updateTestDataStatus();updateDataStatus();v035RefreshGuide();paintBridgeDone(rows.length,tf);
+  if(tf==="1Day")DAILY=rows;else INTRA=rows; updateTestDataStatus();updateDataStatus();v035RefreshGuide(); v0368UpdateContextUI();paintBridgeDone(rows.length,tf);
  }catch(e){$("bridgeStatus").className="status bad";$("bridgeStatus").textContent=e.message;}finally{if(btn){btn.disabled=false;btn.textContent=old;}}
 }
 $("dailyBtn").onclick=()=>getBars("1Day");$("intraBtn").onclick=()=>getBars("5Min");
@@ -585,7 +585,7 @@ window.addEventListener("DOMContentLoaded",()=>{
    renderSwingAudit(audit);
    v342RenderAnalysis(s);
    v0344RenderValidation(s,cap);
-   v035RenderHero(s);
+   v035RenderHero(s); v0368UpdateContextUI();
 
    if(done){done.hidden=false;done.style.display="block";}
    window.scrollTo({top:0,behavior:"smooth"});
@@ -1142,7 +1142,7 @@ window.addEventListener("DOMContentLoaded",()=>{
 // V0.35 guided-flow observer: UI-only; does not alter data or strategy.
 window.addEventListener("DOMContentLoaded",()=>{
  const root=document.body;
- const obs=new MutationObserver(()=>{ if((window.DAILY||[]).length) v035RefreshGuide(); });
+ const obs=new MutationObserver(()=>{ if((window.DAILY||[]).length) v035RefreshGuide(); v0368UpdateContextUI(); });
  obs.observe(root,{subtree:true,childList:true,characterData:true});
 });
 
@@ -1182,3 +1182,26 @@ async function v0365Share(full){
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",bind);
   else bind();
 })();
+
+function v0368UpdateContextUI(){
+  var ready=document.getElementById("v0368DataReady");
+  if(ready && typeof DAILY!=="undefined" && DAILY.length){
+    ready.hidden=false; ready.style.display="block";
+    var label="";
+    var active=document.querySelector(".market-btn.active");
+    if(active) label=active.textContent.trim().replace(/^[^\p{L}\p{N}]+/u,"");
+    var a=DAILY[0], b=DAILY[DAILY.length-1];
+    var mr=document.getElementById("v0368ReadyMarket"), rr=document.getElementById("v0368ReadyRows"), pr=document.getElementById("v0368ReadyPeriod");
+    if(mr)mr.textContent=label;
+    if(rr)rr.textContent=DAILY.length.toLocaleString("sv-SE")+" rader";
+    if(pr)pr.textContent=(a&&a.t?String(a.t).slice(0,10):"")+" → "+(b&&b.t?String(b.t).slice(0,10):"");
+  }
+  var has5=false;
+  try{has5=typeof INTRA!=="undefined" && INTRA && INTRA.length>0;}catch(e){}
+  document.querySelectorAll(".v0368-day-result").forEach(function(el){el.style.display=has5?"":"none";});
+  document.querySelectorAll(".v0368-trend-result").forEach(function(el){
+    var txt=el.textContent||"";
+    var empty=/100\s*000\s*kr/.test(txt) && /(\+0[,.]00%|0[,.]00%)/.test(txt);
+    el.style.display=empty?"none":"";
+  });
+}

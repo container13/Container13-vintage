@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.36.7">
+<link rel="stylesheet" href="linasopti.css?v=0.36.8">
 </head>
 <body>
 <div class="lina-watermark" aria-hidden="true"></div>
@@ -73,7 +73,7 @@
 <button type="button" class="period-btn v0344-fire v035-period-choice" id="v0344FireTest">🔥 Eldprov 2023</button>
 <button type="button" class="period-btn v035-fire v035-period-choice" id="v035Fire2022">🔥 Eldprov 2022</button>
 </div>
-<div class="day-period-wrap" aria-label="Snabbval Opti Day">
+<div class="day-period-wrap v0368-day-control" aria-label="Snabbval Opti Day">
   <span class="period-label">Opti Day snabbval</span>
   <button type="button" class="day-period-btn" data-days="5">5 dagar</button>
   <button type="button" class="day-period-btn" data-days="20">20 dagar</button>
@@ -81,16 +81,20 @@
 </div>
 </div>
 <div class="row" style="margin-top:9px">
-<button class="secondary" id="healthBtn">Testa anslutning</button>
+<button class="secondary v0368-dev-only" id="healthBtn">Testa anslutning</button>
 <button class="primary" id="dailyBtn">Hämta dagsdata</button>
-<button class="purple" id="intraBtn">Hämta 5-min-data</button>
+<button class="purple v0368-day-control" id="intraBtn">Hämta 5-min-data</button>
 </div>
-<div class="status" id="bridgeStatus">Linas Opti API är anslutet via Cloudflare.</div>
+<div class="status" id="bridgeStatus">Linas Opti API är anslutet via Cloudflare.</div><div id="v0368DataReady" class="v0368-data-ready" hidden>
+<div class="v0368-ready-title">✓ Dagsdata klar</div>
+<div id="v0368ReadyMarket"></div><div id="v0368ReadyRows"></div>
+<div id="v0368ReadyPeriod"></div><div class="v0368-ready-go">Redo att testa</div>
+</div>
 <div class="v31-provider" id="providerInfo">Datakälla: Alpaca · Benchmark: SPY</div>
 </div>
 
 <div class="card v31-nordic-info">
-  <h2>V0.36.7 · Cleanup</h2>
+  <h2>V0.36.8 · Context Cleanup</h2>
   <div class="muted">
     Urvalet är räknat från alla inskickade rapporter, men rankingen använder deduplicerade och kronologiskt korrigerade testfönster så samma körning inte får extra vikt.
     För själva USA/Alpaca-urvalet användes fem separata miljöer: USA30 2024, 2025 och 2026 samt Global Stocks 100 och USA + Värld 50.
@@ -112,7 +116,7 @@
   </details>
 </div>
 
-<div class="card v31-nordic-info"><h2>V0.36.7 · Cleanup</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
+<div class="card v31-nordic-info"><h2>V0.36.8 · Context Cleanup</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
 </section>
 
 <section id="pane-test" class="hidden">
@@ -166,7 +170,7 @@
 </div>
 </div>
 
-<div class="card v28-day-ab">
+<div class="v0368-day-result card v28-day-ab">
   <div class="v28-day-head"><div><h2>Opti Day · A/B signaltest</h2><div class="muted">A är exakt V0.27-signalen. B ändrar bara intradagssignalen – risk, stop, mål, kostnader och exekvering är samma.</div></div><span class="v28-exp">EXPERIMENT</span></div>
   <div class="v28-abgrid">
     <div class="v28-variant"><h3>A · Baslinje</h3><div class="v28-big" id="daRet">—</div><div class="v28-mini"><span>PF <b id="daPF">—</b></span><span>Affärer <b id="daN">—</b></span><span>Vinstfrekvens <b id="daWR">—</b></span></div></div>
@@ -263,5 +267,5 @@
 
 </div>
 
-<script src="linasopti.js?v=0.36.7"></script>
+<script src="linasopti.js?v=0.36.8"></script>
 </body></html>

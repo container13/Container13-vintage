@@ -257,3 +257,16 @@ Ren UX-version. Swing, Lina Selection 16 och handelsreglerna är oförändrade.
 - Dubbla `Dagsdata: N rader` under `Kör Linas Opti` döljs.
 - `Testet är klart ✓` med Full testdata / Snabbrapport behålls.
 - Ingen strategi- eller backtestlogik ändrad.
+
+
+## V0.36.8 – Context Cleanup
+
+**Bas:** byggd direkt från V0.36.7 Cleanup. Detta är UI/presentationsstädning.
+
+**Data:** `Testa anslutning` döljs från normalvyn men `#healthBtn` och funktionen finns kvar för felsökning. Opti Day-snabbval och `Hämta 5-min-data` döljs i den Swing-fokuserade normalvyn men finns kvar i DOM/kod. Efter lyckad dagsdatahämtning visas en tydlig grön bekräftelse med vald marknad, antal rader, dataperiod och `Redo att testa`. Befintlig `#bridgeStatus` behålls för intern status/felsökning.
+
+**Resultat:** Opti Day och Day A/B döljs när ingen 5-min-data finns. Opti Trend döljs när den bara visar ej-kört/tomt 100 000 kr och 0,00 %. Swing och verkliga Swing-analyser lämnas kvar. `Testet är klart ✓` och Full testdata/Snabbrapport lämnas oförändrade.
+
+**Inte ändrat:** Swing-score/signaler, kronologi, entry/exit, stop/target/time exit, position sizing, maxpositioner, benchmark, Omvärld-regler, Day-/Trend-motorernas beräkningskod, Worker/API/secrets eller exportinnehåll.
+
+**Felsökning senare:** Day/Trend och anslutningstest är dolda presentationsmässigt – inte raderade. Börja vid `.v0368-day-control`, `.v0368-day-result`, `.v0368-trend-result`, `#healthBtn` och `v0368UpdateContextUI()` om de återaktiveras. Behåll V0.36.1–V0.36.6 i historiken för felsökning av modal/Web Share/finish-point.

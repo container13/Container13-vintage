@@ -477,3 +477,9 @@ body > .v23-sharebar{overflow:visible !important}
 /* V0.36.7 cleanup */
 #testDataStatus{display:none!important}
 .v036-headtools{gap:0}
+
+/* V0.36.8 – context-aware cleanup */
+.v0368-dev-only,.v0368-day-control{display:none!important}
+.v0368-data-ready{margin-top:14px;padding:16px 18px;border:2px solid #b9dfc8;background:#f2fbf5;border-radius:18px;font-weight:700;line-height:1.45}
+.v0368-ready-title{font-size:1.15rem;color:#16844f;margin-bottom:4px}
+.v0368-ready-go{color:#16844f;margin-top:5px}
