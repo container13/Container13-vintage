@@ -643,3 +643,13 @@ body > .sticky-top .tabs{
   position:relative!important;
   z-index:1!important;
 }
+
+/* V0.37.9 – login högre på iPhone */
+.v0369-gate{
+  align-items:flex-start!important;
+  justify-content:center!important;
+  padding-top:max(calc(env(safe-area-inset-top) + 72px), 11vh)!important;
+}
+@media(max-height:700px){
+  .v0369-gate{padding-top:max(calc(env(safe-area-inset-top) + 28px), 5vh)!important}
+}

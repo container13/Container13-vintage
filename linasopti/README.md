@@ -499,3 +499,13 @@ Det förklarar varför flera CSS-/periodfixar inte kunde hjälpa.
   - inga JavaScript-runtimefel accepteras
 
 Ingen strategi-, data- eller Worker-logik ändrad.
+
+
+## V0.37.9 – Login + Fetch Root Fix
+
+- Loginrutan ligger högre på iPhone.
+- Alpaca-hämtning delas upp i paket om 5 symboler.
+- USA Core visas som tre delanrop: del 1/3, 2/3, 3/3.
+- Varje delanrop har hård 15 sekunders timeout via Promise.race.
+- UI kan inte stå på Hämtar för alltid; fel visas och knappen återställs.
+- Ingen strategi-, period-, marknadsgrupps- eller Worker-logik är ändrad.
