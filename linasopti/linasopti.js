@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.38.6";
+const APP_VERSION = "V0.38.7";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -30,14 +30,19 @@ function isUsMarket(){return currentProvider()==="alpaca"}
 
 let ACTIVE_MARKET="usa10";
 function setMarketGroup(key){
- const g=MARKET_GROUPS[key]; if(!g)return; ACTIVE_MARKET=key;
- const el=document.getElementById("symbols"); if(el)el.value=g.symbols.join(",");
+ const g=MARKET_GROUPS[key]; if(!g)return;
+ // V0.38.7: ge touch/klick omedelbar visuell respons innan övrig UI-städning.
+ ACTIVE_MARKET=key;
  document.querySelectorAll(".market-btn[data-market]").forEach(b=>b.classList.toggle("active",b.dataset.market===key));
- const info=document.getElementById("marketGroupInfo"); if(info)info.textContent=`${g.name} · ${g.symbols.length-currentBenchmarks().length} aktier + ${g.benchmark}`;
- const pi=document.getElementById("providerInfo"); if(pi)pi.textContent=`Datakälla: ${g.provider==="eodhd"?"EODHD":"Alpaca"} · Benchmark: ${g.benchmark}`;
- const ib=document.getElementById("intraBtn"); if(ib){ib.disabled=g.provider!=="alpaca";ib.title=g.provider!=="alpaca"?"Opti Day är tills vidare endast USA":"";}
- DAILY=[]; INTRA=[]; LAST=null; updateTestDataStatus(); updateDataStatus();
  const bs=document.getElementById("bridgeStatus"); if(bs)bs.textContent=`${g.name} vald. Hämta data för att testa gruppen.`;
+ requestAnimationFrame(()=>{
+   const el=document.getElementById("symbols"); if(el)el.value=g.symbols.join(",");
+   const info=document.getElementById("marketGroupInfo"); if(info)info.textContent=`${g.name} · ${g.symbols.length-currentBenchmarks().length} aktier + ${g.benchmark}`;
+   const pi=document.getElementById("providerInfo"); if(pi)pi.textContent=`Datakälla: ${g.provider==="eodhd"?"EODHD":"Alpaca"} · Benchmark: ${g.benchmark}`;
+   const ib=document.getElementById("intraBtn"); if(ib){ib.disabled=g.provider!=="alpaca";ib.title=g.provider!=="alpaca"?"Opti Day är tills vidare endast USA":"";}
+   DAILY=[]; INTRA=[]; LAST=null;
+   updateTestDataStatus(); updateDataStatus();
+ });
 }
 window.addEventListener("DOMContentLoaded",()=>{
  document.querySelectorAll(".market-btn[data-market]:not([disabled])").forEach(b=>b.addEventListener("click",()=>setMarketGroup(b.dataset.market)));
@@ -1238,13 +1243,16 @@ function v0368UpdateContextUI(){
   function apply(first,last,btn){
     const s=document.getElementById("start"),e=document.getElementById("end"),v=document.getElementById("evalStart");
     if(!s||!e||!v)return;
-    const now=new Date(),cy=now.getFullYear();
-    s.value=`${first-1}-12-01`;
-    v.value=`${first}-01-01`;
-    e.value=last>=cy?iso(now):`${last}-12-31`;
+    // V0.38.7: markera valet först så iPhone hinner måla knappen direkt.
     mark(btn);
-    if(typeof DAILY!=="undefined")DAILY=[];
-    if(typeof updateTestDataStatus==="function")updateTestDataStatus();
+    requestAnimationFrame(()=>{
+      const now=new Date(),cy=now.getFullYear();
+      s.value=`${first-1}-12-01`;
+      v.value=`${first}-01-01`;
+      e.value=last>=cy?iso(now):`${last}-12-31`;
+      if(typeof DAILY!=="undefined")DAILY=[];
+      if(typeof updateTestDataStatus==="function")updateTestDataStatus();
+    });
   }
   function init(){
     const holder=document.getElementById("v0383Years");

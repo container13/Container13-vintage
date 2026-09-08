@@ -1,24 +1,24 @@
-# Linas Opti V0.38.6 – Perioder återställda
+# Linas Opti V0.38.7 – Snabbare val
 
-Bas: **V0.38.5 Golden Rebuild**, verifierad fungerande publikt på iPhone.
+Byggd direkt ovanpå fungerande V0.38.6.
 
-## Ändrat i V0.38.6
-- Återställt tidsperiodväljaren från det tidigare UI-spåret.
-- Snabbval: **1 år, 3 år, 5 år, 10 år**.
-- Kalenderår skapas dynamiskt för **innevarande år + nio år bakåt** (2026 ger 2026–2017).
-- **Egen period** finns hopfälld och visar Från/Till.
-- Ett kalenderår använder föregående 1 december som warmup-data och 1 januari som teststart.
-- Flerårsval använder samma princip: warmup från 1 december året före första teståret.
-- Val av ny period tömmer tidigare hämtad DAILY-data så fel period inte kan testas av misstag.
+## Ändrat i V0.38.7
+- Periodvalet markerar vald knapp omedelbart och gör datum-/statusuppdateringen i nästa renderingsvarv.
+- Marknadsval (bl.a. USA Core, USA 20 och USA 30) markerar vald knapp omedelbart och gör övrig UI-städning i nästa renderingsvarv.
+- Målet är att valen ska kännas rappare på iPhone utan att ändra vad valet faktiskt gör.
 
 ## Uttryckligen inte ändrat
-- `bridge()`
-- `params()`
-- `getBars()` / fungerande dagsdatahämtning från V0.38.5/V0.36.7
-- Cloudflare Worker
-- Alpaca/EODHD-anrop
-- Opti Swing-regler, position sizing, exits, benchmark eller övrig handelslogik
-- Resultat-/delningsflödet
+- `bridge()` och `getBars()` / datahämtningen.
+- Cloudflare Worker eller API-adress.
+- Alpaca/EODHD-logik.
+- Swing-strategi, signaler, exits, position sizing eller benchmarklogik.
+- Rapport-/delningsflödet.
 
-## Viktig felsökningsregel
-V0.38.5 är fortsatt golden master för datahämtningen. Om V0.38.6 skulle få problem ska period-UI:t granskas först; fetch-kedjan ska inte ändras utan separat bevis.
+## Stabil bas
+V0.38.5 är golden master för fungerande datahämtning. V0.38.6 är verifierad fungerande med återställda perioder. V0.38.7 ändrar endast responsordningen i period- och marknadsvalens UI.
+
+## Test
+1. Prova snabbt mellan USA Core / USA 20 / USA 30 och kontrollera att markeringen flyttar direkt.
+2. Prova flera perioder/år och kontrollera att markeringen flyttar direkt och datumen uppdateras.
+3. Välj önskad grupp + period och hämta dagsdata.
+4. Kör test och kontrollera resultat/export som vanligt.
