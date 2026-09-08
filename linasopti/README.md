@@ -171,3 +171,10 @@ Ren UX-/flödesversion. Swing, Lina Selection 16 och handelsregler är oföränd
 - `Nästa test → 🔥 Eldprov 2022` tar användaren tillbaka till Data och väljer nästa eldprov.
 - Befintliga avancerade funktioner finns kvar; V0.35 fokuserar på att huvudkedjan ska kännas sammanhängande.
 - Worker oförändrad.
+
+
+## V0.35.1 – periodval fix
+- Eldprov 2022 och Eldprov 2023 har nu exklusiv markering: bara ett periodval kan se aktivt ut åt gången.
+- Vald period får prefixet `✓`.
+- Om ett vanligt snabbval (1 år, 2024, 2025, 2026, Hela perioden) väljs tas eldprovsmarkeringen bort.
+- Ingen ändring i Swing, Lina Selection, datahämtning eller backtestlogik.

@@ -373,3 +373,11 @@ body > .v23-sharebar{overflow:visible !important}
 .v035-heroresult span{display:block;font-size:.78rem;color:#64748b;font-weight:800}
 .v035-heroresult strong{display:block;font-size:1.18rem;margin-top:3px}
 @media(min-width:800px){.v035-heroresult{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+/* V0.35.1 – tydlig och exklusiv periodmarkering */
+.v035-period-choice.v035-selected,
+.v035-period-choice[aria-current="true"]{
+  box-shadow:0 0 0 3px rgba(24,119,242,.18);
+  transform:translateY(-1px);
+  font-weight:900;
+}

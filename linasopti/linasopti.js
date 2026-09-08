@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.35";
+const APP_VERSION = "V0.35.1";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -794,7 +794,33 @@ function v0344RenderValidation(s,capital){
  }
 }
 
+
+function v035SelectPeriodButton(id){
+ document.querySelectorAll(".v035-period-choice").forEach(b=>{
+   b.classList.remove("active","v035-selected");
+   b.removeAttribute("aria-current");
+   if(b.dataset.v035OriginalText) b.textContent=b.dataset.v035OriginalText;
+ });
+ const btn=document.getElementById(id);
+ if(btn){
+   if(!btn.dataset.v035OriginalText) btn.dataset.v035OriginalText=btn.textContent.replace(/^✓\s*/,"");
+   btn.classList.add("active","v035-selected");
+   btn.setAttribute("aria-current","true");
+   btn.textContent="✓ "+btn.dataset.v035OriginalText;
+ }
+}
+function v035ClearFireSelection(){
+ ["v0344FireTest","v035Fire2022"].forEach(id=>{
+   const b=document.getElementById(id);
+   if(b){
+     b.classList.remove("active","v035-selected");
+     b.removeAttribute("aria-current");
+     if(b.dataset.v035OriginalText) b.textContent=b.dataset.v035OriginalText;
+   }
+ });
+}
 function v035SetFire2022(){
+ v035SelectPeriodButton("v035Fire2022");
  const start=document.getElementById("start"),end=document.getElementById("end"),ev=document.getElementById("evalStart");
  if(start)start.value="2021-12-01";
  if(ev)ev.value="2022-01-03";
@@ -835,9 +861,23 @@ window.addEventListener("DOMContentLoaded",()=>{
  document.getElementById("v035Fire2022")?.addEventListener("click",v035SetFire2022);
  document.getElementById("v035ToTest")?.addEventListener("click",()=>v035ClickTab("2"));
  document.getElementById("v035NextTest")?.addEventListener("click",()=>{v035ClickTab("1");setTimeout(v035SetFire2022,60);});
+ document.querySelectorAll(".v035-period-choice[data-period]").forEach(btn=>{
+   if(!btn.dataset.v035OriginalText) btn.dataset.v035OriginalText=btn.textContent;
+   btn.addEventListener("click",()=>{
+     document.querySelectorAll(".v035-period-choice").forEach(b=>{
+       b.classList.remove("active","v035-selected");
+       b.removeAttribute("aria-current");
+       if(b.dataset.v035OriginalText) b.textContent=b.dataset.v035OriginalText;
+     });
+     btn.classList.add("active","v035-selected");
+     btn.setAttribute("aria-current","true");
+     btn.textContent="✓ "+btn.dataset.v035OriginalText;
+   });
+ });
  setTimeout(v035RefreshGuide,100);
 });
 function v0344SetFireTest(){
+ v035SelectPeriodButton("v0344FireTest");
  const start=document.getElementById("start"),end=document.getElementById("end"),ev=document.getElementById("evalStart");
  if(start)start.value="2022-12-01"; // uppvärmning före testet
  if(ev)ev.value="2023-01-03";
@@ -1052,4 +1092,10 @@ window.addEventListener("DOMContentLoaded",()=>{
  const root=document.body;
  const obs=new MutationObserver(()=>{ if((window.DAILY||[]).length) v035RefreshGuide(); });
  obs.observe(root,{subtree:true,childList:true,characterData:true});
+});
+
+window.addEventListener("DOMContentLoaded",()=>{
+ document.querySelectorAll(".v035-period-choice").forEach(btn=>{
+   if(!btn.dataset.v035OriginalText) btn.dataset.v035OriginalText=btn.textContent.replace(/^✓\s*/,"");
+ });
 });
