@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.41.2a">
+<link rel="stylesheet" href="linasopti.css?v=0.41.3">
 </head>
 <body class="v0384-locked">
 
@@ -23,7 +23,13 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.41.2</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.41.3</div></div></div></div></header>
+
+<div class="v0413-dashboard" aria-label="Linas robotstatus">
+  <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">38/100</b><small>Forskningsfas</small></button>
+  <button type="button" id="v0413Sims" class="v0413-stat" aria-label="Visa simuleringsstatistik"><span>🧪 Simuleringar</span><b id="v0413SimValue">6 300</b><small>registrerade</small></button>
+</div>
+<div id="v0413Info" class="v0413-info" hidden></div>
 
 <div class="tabs">
 <button class="tab active" data-pane="data">1. Data</button>
@@ -317,7 +323,15 @@
 
 
 <section id="pane-testlab" class="hidden">
-<div class="card v0410-labhero">
+<div class="card v0413-quickcard">
+  <label for="v0413LabJump"><b>Snabbval · Testlab</b></label>
+  <select id="v0413LabJump" aria-label="Hoppa till test">
+    <option value="v0412Lab">🧬 Exit Lab 2 · Parameterkarta (senaste)</option>
+    <option value="v0411Lab">🔬 Exit Lab 1</option>
+    <option value="v0410Lab">🧪 Kontrollserie · 10 eldprov</option>
+  </select>
+</div>
+<div id="v0410Lab" class="card v0410-labhero">
   <div class="v0410-labtitle"><span class="v0410-flask">🧪</span><div><h2>Lina Testlab</h2><div class="muted">Låt Lina göra grovjobbet. Första kontrollen reproducerar våra 10 frysta PRO2-eldprov automatiskt.</div></div></div>
   <div class="v0410-lock">🔒 PRO2 är fryst · inga strategiinställningar ändras i denna körning</div>
   <div class="v0410-labgrid">
@@ -336,7 +350,7 @@
   <div id="v0410Summary" class="v0410-summary muted">Ingen kontrollserie körd ännu.</div>
   <div class="v0410-tablewrap"><table class="v0410-table"><thead><tr><th>#</th><th>Period</th><th>Baseline</th><th>PRO2</th><th>Skillnad</th><th>Kontroll</th></tr></thead><tbody id="v0410Rows"></tbody></table></div>
 </div>
-<div class="card v0410-labhero" style="margin-top:16px;border-color:#d8d0ff">
+<div id="v0411Lab" class="card v0410-labhero" style="margin-top:16px;border-color:#d8d0ff">
   <div class="v0410-labtitle"><span class="v0410-flask">🔬</span><div><h2>Exit Lab</h2><div class="muted">Samma frysta PRO2-entries. Lina ändrar bara exit efter köpet.</div></div></div>
   <div class="v0410-lock">🔒 Entry, signalurval, position och friktion låsta · shadow-replay</div>
   <div class="v0410-labgrid">
@@ -353,7 +367,7 @@
  <div id="v0411Summary" class="v0410-summary muted">Ingen Exit Lab-körning ännu.</div>
  <div class="v0410-tablewrap"><table class="v0410-table"><thead><tr><th>Variant</th><th>Perioder</th><th>Affärer</th><th>P/L</th><th>PF</th><th>WR</th><th>+perioder</th></tr></thead><tbody id="v0411Rows"></tbody></table></div>
 </div>
-<div class="card v0410-labhero" style="margin-top:16px;border-color:#c9e6dd">
+<div id="v0412Lab" class="card v0410-labhero" style="margin-top:16px;border-color:#c9e6dd">
   <div class="v0410-labtitle"><span class="v0410-flask">🧬</span><div><h2>Exit Lab 2 · Parameterkarta</h2><div class="muted">Massprovar en förregistrerad exit-grid på exakt samma frysta PRO2-entries.</div></div></div>
   <div class="v0410-lock">🔒 PRO2-entry, signalurval, shares och friktion låsta · endast exitparametrar ändras</div>
   <div class="v0410-labgrid">
@@ -372,7 +386,7 @@
  <div class="v0410-tablewrap"><table class="v0410-table"><thead><tr><th>#</th><th>Exit</th><th>P/L</th><th>PF</th><th>+perioder</th><th>DD</th><th>Robusthet</th></tr></thead><tbody id="v0412Rows"></tbody></table></div>
 </div>
 <details class="card v0410-details">
-  <summary>Vad Testlab gör i V0.41.2</summary>
+  <summary>Vad Testlab gör i V0.41.3</summary>
   <div class="muted" style="margin-top:10px">Den här första versionen är medvetet enkel: den automatiserar exakt kontrollarbetet vi nyss gjorde manuellt. När 10/10 reproduceras har vi ett säkert fundament för nästa steg: massprovning av exitvarianter och därefter robusthets-/valideringskörningar.</div>
 </details>
 </section>
@@ -416,5 +430,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.41.2a"></script>
+<script src="linasopti.js?v=0.41.3"></script>
 </body></html>

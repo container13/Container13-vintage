@@ -1,3 +1,12 @@
+# Linas Opti V0.41.3
+
+- Synlig Robotmognad 38/100 i toppytan, klickbar med dynamisk förklaring.
+- Kumulativ simuleringsräknare, seed 6 300 dokumenterade automatiska Testlab-simuleringar.
+- Räknaren ökar automatiskt vid nya kontroll-, Exit Lab- och Exit Lab 2-simuleringar.
+- Testlab har snabbval högst upp; senaste labbet är förvalt.
+- Exit Lab 2 och PRO2-strategilogik är oförändrade från V0.41.2.
+- Worker/API och hemligheter är oförändrade.
+
 # Linas Opti V0.41.2 – Exit Lab 2
 
 Byggd från verifierade V0.41.1.
