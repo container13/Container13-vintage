@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.42.5";
+const APP_VERSION = "V0.43.0";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -52,21 +52,6 @@ const API_BASE = "https://linas-opti-api.mangaj73.workers.dev";
 const $=id=>document.getElementById(id);
 let V0404_TEST_READY_ACK=false;
 let V0405_TEST_COMPLETED=false;
-function v0426SyncResearchUI(mode){
-  const labPick=document.getElementById("v0423LabPick");
-  const testerNav=document.getElementById("v0424TesterNav");
-  const isLab=mode==="testlab";
-  if(labPick){
-    labPick.hidden=!isLab;
-    labPick.setAttribute("aria-hidden",isLab?"false":"true");
-    labPick.style.setProperty("display",isLab?"grid":"none","important");
-  }
-  if(testerNav){
-    testerNav.hidden=isLab;
-    testerNav.setAttribute("aria-hidden",isLab?"true":"false");
-    testerNav.style.setProperty("display",isLab?"none":"grid","important");
-  }
-}
 function show(p,fromTab=false){
   if(p==="data" && fromTab && LAST){
     V0404_TEST_READY_ACK=true;
@@ -82,7 +67,8 @@ function show(p,fromTab=false){
   const testerNav=document.getElementById("v0424TesterNav");
   const inLab=p==="testlab";
   if(engine) engine.value=inLab?"testlab":"tester";
-  v0426SyncResearchUI(inLab?"testlab":"tester");
+  if(labPick) labPick.hidden=!inLab;
+  if(testerNav) testerNav.hidden=inLab;
   document.querySelectorAll(".v0424-subtab").forEach(b=>b.classList.toggle("active",b.dataset.pane===p));
   ["data","test","result","testlab"].forEach(x=>$("pane-"+x).classList.toggle("hidden",x!==p));
   if(fromTab){
@@ -1726,7 +1712,7 @@ window.addEventListener('DOMContentLoaded',()=>{v0412Paint();document.getElement
 // beskriver bevisläge/teknisk beredskap, inte utlovad avkastning.
 // ============================================================
 const V0413_SIM_KEY='linasopti_simulations_v0413';
-const V0413_SIM_SEED=18890;
+const V0413_SIM_SEED=18910;
 function v0413GetSims(){let n=Number(localStorage.getItem(V0413_SIM_KEY));if(!Number.isFinite(n)||n<V0413_SIM_SEED){n=V0413_SIM_SEED;localStorage.setItem(V0413_SIM_KEY,String(n))}return n}
 function v0413PaintSims(){const e=document.getElementById('v0413SimValue');if(e)e.textContent=v0413GetSims().toLocaleString('sv-SE')}
 function v0413AddSims(n){if(!n||n<0)return;localStorage.setItem(V0413_SIM_KEY,String(v0413GetSims()+n));v0413PaintSims()}
@@ -1734,7 +1720,7 @@ function v0413ShowInfo(kind){
  const box=document.getElementById('v0413Info');if(!box)return;
  if(!box.hidden && box.dataset.kind===kind){box.hidden=true;return}
  box.dataset.kind=kind;box.hidden=false;
- if(kind==='maturity')box.innerHTML=`<h3>🤖 Lina är i forskningsfas · 38/100</h3><div class="v0413-meter"><i></i></div><p><b>Det vi har:</b> fungerande datamotor, reproducerbart backtest, mekanisk audit, fryst PRO2, Testlab, OOS-kontroller och automatiserad parameterforskning.</p><p><b>Det som håller tillbaka poängen:</b> Entry B var nära break-even i första OOS-provet. Regim Lab 1 hittade därefter ett lovande förregistrerat Strong-filter, men det resultatet kommer från utvecklingsdata och är ännu inte oberoende validerat.</p><p><b>Nästa steg mot högre mognad:</b> Entry B + Strong måste klara Regim Lab 2 på 10 nya orörda perioder utan parameterändringar.</p><p><b>Kvar till mäklarredo:</b> robust strategi → walk-forward/orörd validering → realtids-paper → riskmotor → ordermotor → brokerintegration → felhantering/kill-switch → längre stabil paperdrift.</p><p><small>100/100 betyder att vår broker-ready-checklista är uppfylld – inte garanterad lönsamhet. Senast omvärderad: V0.42.3.</small></p>`;
+ if(kind==='maturity')box.innerHTML=`<h3>🤖 Lina är i forskningsfas · 42/100</h3><div class="v0413-meter"><i></i></div><p><b>Det vi har:</b> fungerande datamotor, reproducerbart backtest, mekanisk audit, fryst PRO2, Testlab, OOS-kontroller och automatiserad parameterforskning.</p><p><b>Senaste bevis:</b> fryst Entry B + Strong klarade Regim Lab 2 på 10 orörda perioder med positiv total P/L, PF över 1 och lägre drawdown än ofiltrerad Entry B.</p><p><b>Nästa steg mot högre mognad:</b> skapa ett intradagsspecifikt Day Selection på 5-minutersdata och validera exakt det frysta urvalet på nya orörda perioder.</p><p><b>Kvar till mäklarredo:</b> robust strategi → walk-forward/orörd validering → realtids-paper → riskmotor → ordermotor → brokerintegration → felhantering/kill-switch → längre stabil paperdrift.</p><p><small>100/100 betyder att vår broker-ready-checklista är uppfylld – inte garanterad lönsamhet. Senast omvärderad: V0.43.0.</small></p>`;
  else box.innerHTML=`<h3>🧪 ${v0413GetSims().toLocaleString('sv-SE')} registrerade simuleringar</h3><p>Historiska omkörningar gör att det exakta äldre totalantalet inte kan rekonstrueras. V0.42.3 använder ett konservativt dokumenterat golv på minst 18 890 simuleringar (inklusive den genomförda Regim Lab 1-körningen); därefter adderas varje faktisk Testlab-simulering lokalt.</p><p>Från V0.41.3 ökar den automatiskt för varje faktiskt genomförd Testlab-simulering. Antalet är ett aktivitetsmått – fler simuleringar höjer inte Robotmognaden automatiskt.</p>`;
 }
 window.addEventListener('DOMContentLoaded',()=>{
@@ -1744,14 +1730,13 @@ window.addEventListener('DOMContentLoaded',()=>{
  const engine=document.getElementById('v0423Engine'),jump=document.getElementById('v0413LabJump');
  const LAB_KEY='linasopti_testlab_selected_v0423';
  function showSelectedLab(){if(!jump)return;const val=jump.value;document.querySelectorAll('[class*=\"vlab-v04\"]').forEach(el=>{el.style.display=el.classList.contains('vlab-'+val)?'':'none'});document.querySelectorAll('.vlab-extra').forEach(el=>el.style.display='none');localStorage.setItem(LAB_KEY,val);}
- if(jump){const saved=localStorage.getItem(LAB_KEY);if(saved&&[...jump.options].some(o=>o.value===saved))jump.value=saved;else jump.value='v0423Lab';jump.addEventListener('change',showSelectedLab);showSelectedLab();}
+ if(jump){const saved=localStorage.getItem(LAB_KEY);if(saved&&[...jump.options].some(o=>o.value===saved))jump.value=saved;else jump.value='v0430Lab';jump.addEventListener('change',showSelectedLab);showSelectedLab();}
  document.querySelectorAll('.v0424-subtab').forEach(b=>b.addEventListener('click',()=>show(b.dataset.pane,true)));
  if(engine){engine.addEventListener('change',()=>{
    if(engine.value==='testlab') show('testlab',true);
    else {const active=document.querySelector('.v0424-subtab.active')?.dataset.pane||'data';show(active,true);}
- });engine.value='tester';v0426SyncResearchUI('tester');}
+ });engine.value='tester';}
  show('data',false);
- v0426SyncResearchUI('tester');
 });
 
 
@@ -1868,3 +1853,43 @@ function v0423Report(){const A=v0423Agg(),L=['LINAS OPTI – REGIM LAB 2 · ORÖ
 async function v0423Share(){const text=v0423Report(),file=new File([text],`linasopti_regimlab2_oos_${new Date().toISOString().slice(0,10)}.txt`,{type:'text/plain'});try{if(navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}))){await navigator.share({title:'Linas Opti Regim Lab 2',files:[file]});return}}catch(e){if(e?.name==='AbortError')return}const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}
 async function v0423Run(){if(V0423_RUNNING)return;V0423_RUNNING=true;V0423_ABORT=false;V0423_RESULTS=[];v0423Paint();const run=document.getElementById('v0423Run'),stop=document.getElementById('v0423Stop'),st=document.getElementById('v0423Status'),bar=document.getElementById('v0423Bar');if(run)run.disabled=true;if(stop)stop.hidden=false;try{for(let i=0;i<V0423_WINDOWS.length;i++){if(V0423_ABORT)break;const w=V0423_WINDOWS[i];if(st)st.innerHTML=`<span class="v0406-spinner small"></span> ${i+1}/10 · hämtar orörd period ${w.label}…`;if(bar)bar.style.width=`${i*10}%`;await v0406Yield(40);const cut=await v0410FetchWindow(w),pro=daytradePro(cut.rows,100000,.005);for(const v of V0423_VARIANTS){const trades=v0423Trades(cut.rows,pro,v),r=v0420Replay(cut.rows,trades),wins=r.closed.filter(x=>x.pnl>0).length,gw=r.closed.filter(x=>x.pnl>0).reduce((a,x)=>a+x.pnl,0),gl=Math.abs(r.closed.filter(x=>x.pnl<0).reduce((a,x)=>a+x.pnl,0));V0423_RESULTS.push({window:w.n,from:cut.dates[0],to:cut.dates.at(-1),variant:v.id,...r,wins,gw,gl});v0413AddSims(1)}v0423Paint();if(bar)bar.style.width=`${(i+1)*10}%`;await v0406Yield(30)}if(st)st.textContent=V0423_ABORT?'Regim Lab 2 stoppad efter pågående period.':'✓ Regim Lab 2 klart · 20 OOS-simuleringar.';}catch(e){if(st)st.textContent='Fel: '+(e?.message||e)}finally{V0423_RUNNING=false;if(run)run.disabled=false;if(stop)stop.hidden=true;v0423Paint()}}
 window.addEventListener('DOMContentLoaded',()=>{v0423Paint();document.getElementById('v0423Run')?.addEventListener('click',v0423Run);document.getElementById('v0423Stop')?.addEventListener('click',()=>V0423_ABORT=true);document.getElementById('v0423Share')?.addEventListener('click',v0423Share)});
+
+
+// ============================================================
+// V0.43.0 – DAY SELECTION 1 + 2
+// DS1 använder redan förbrukade utvecklingsperioder och ett fast brett USA-universum.
+// DS2 är låst tills DS1 har fryst urvalet och använder därefter nya OOS-perioder.
+// Entry B, Strong-regim och forsknings-exit ändras inte.
+// ============================================================
+const V0430_UNIVERSE=["AAPL","MSFT","NVDA","AMZN","META","TSLA","AVGO","GOOGL","JPM","V","MA","WMT","COST","ORCL","NFLX","AMD","CRM","ADBE","CSCO","IBM","INTC","QCOM","MU","GS","BAC","MS","HD","LOW","NKE","MCD","SBUX","KO","PEP","XOM","CVX","CAT","GE","BA","RTX","UBER","PLTR","PYPL","ABNB","SHOP","LLY","JNJ","MRK","ABBV","PFE","TMO","UNH","CVS","DIS","CMCSA","T","VZ","F","GM","DE","HON","UPS","FDX","BKNG","MAR","DAL","LUV","AMAT","LRCX","KLAC","TXN","ADI","NOW","PANW","CRWD","SNOW","DDOG","MDB","C","AXP","SCHW"];
+const V0430_FREEZE_KEY='linasopti_dayselection_frozen_v0430';
+const V0431_WINDOWS=[
+ {n:1,start:'2021-01-04',label:'jan 2021'},{n:2,start:'2021-07-01',label:'jul 2021'},
+ {n:3,start:'2022-03-01',label:'mar 2022'},{n:4,start:'2022-12-01',label:'dec 2022'},
+ {n:5,start:'2023-06-01',label:'jun 2023'},{n:6,start:'2024-01-02',label:'jan 2024'},
+ {n:7,start:'2024-10-01',label:'okt 2024'},{n:8,start:'2025-01-02',label:'jan 2025'},
+ {n:9,start:'2025-07-01',label:'jul 2025'},{n:10,start:'2026-02-02',label:'feb 2026'}
+];
+let V0430_RESULTS=[],V0430_RUNNING=false,V0430_FROZEN=null,V0431_RESULTS=[],V0431_RUNNING=false;
+function v0430Strong(){return V0423_VARIANTS.find(x=>x.id==='strong')}
+async function v0430FetchSymbols(w,symbols){
+ const all=[...new Set(symbols.filter(x=>x!=='SPY'))], out=[]; const end=v0410DatePlus(w.start,40);
+ for(let i=0;i<all.length;i+=20){const batch=[...all.slice(i,i+20),'SPY'];const j=await bridge(`/bars?symbols=${encodeURIComponent(batch.join(','))}&timeframe=5Min&start=${w.start}&end=${end}`);out.push(...(j.rows||[]));await v0406Yield(15)}
+ const uniq=new Map();for(const r of out)uniq.set(r.symbol+'|'+r.t,r);return v0410Trim20([...uniq.values()],w.start);
+}
+function v0430One(rows,sym){const r=rows.filter(x=>x.symbol===sym||x.symbol==='SPY');if(!r.some(x=>x.symbol===sym))return null;const pro=daytradePro(r,100000,.005);const trades=v0423Trades(r,pro,v0430Strong()),rep=v0420Replay(r,trades),wins=rep.closed.filter(x=>x.pnl>0).length,gw=rep.closed.filter(x=>x.pnl>0).reduce((a,x)=>a+x.pnl,0),gl=Math.abs(rep.closed.filter(x=>x.pnl<0).reduce((a,x)=>a+x.pnl,0));return {...rep,wins,gw,gl}}
+function v0430Rank(){return V0430_UNIVERSE.map(sym=>{const a=V0430_RESULTS.filter(x=>x.symbol===sym),n=a.reduce((q,x)=>q+x.n,0),pnl=a.reduce((q,x)=>q+x.pnl,0),gw=a.reduce((q,x)=>q+x.gw,0),gl=a.reduce((q,x)=>q+x.gl,0),wins=a.reduce((q,x)=>q+x.wins,0),pos=a.filter(x=>x.pnl>0).length,pf=gl?gw/gl:(gw?Infinity:0),wr=n?wins/n:0,score=Math.min(Number.isFinite(pf)?pf:2,2)*30+pos*6+Math.min(n,30)*.5+Math.max(-15,Math.min(15,pnl/100));return {sym,n,pnl,pf,wr,pos,periods:a.length,score,eligible:n>=5&&pnl>0&&pf>=1&&pos>=3}}).sort((a,b)=>(b.eligible-a.eligible)||b.score-a.score)}
+function v0430Paint(){const body=document.getElementById('v0430Rows'),sum=document.getElementById('v0430Summary'),share=document.getElementById('v0430Share');if(!body)return;const R=v0430Rank();body.innerHTML=R.filter(x=>x.n).slice(0,25).map((a,i)=>`<tr><td>${i+1}</td><td><b>${a.sym}</b>${a.eligible?' ✓':''}</td><td>${a.n}</td><td class="${a.pnl>=0?'good':'bad'}">${a.pnl>=0?'+':''}${a.pnl.toFixed(0)}</td><td>${v0411FmtPF(a.pf)}</td><td>${a.pos}/${a.periods}</td></tr>`).join('');if(V0430_FROZEN){sum.innerHTML=`<b>🔒 Day Selection fryst · ${V0430_FROZEN.symbols.length} aktier</b><br>${V0430_FROZEN.symbols.join(', ')}`;if(share)share.disabled=false}else if(V0430_RESULTS.length){const done=new Set(V0430_RESULTS.map(x=>x.window)).size,eligible=R.filter(x=>x.eligible).length;sum.innerHTML=`Utvecklingsperioder ${done}/10 · universum ${V0430_UNIVERSE.length} · kvalificerade hittills <b>${eligible}</b>.<br>Urval fryses först efter 10/10.`;if(share)share.disabled=done<10}else{sum.textContent='Inget Day-urval skapat ännu.';if(share)share.disabled=true}v0431PaintFrozen()}
+function v0430Freeze(){const R=v0430Rank(),eligible=R.filter(x=>x.eligible),picked=eligible.slice(0,16);V0430_FROZEN={version:'V0.43.0',created:new Date().toISOString(),rule:'n>=5, P/L>0, PF>=1, minst 3 positiva utvecklingsperioder; rank score för max 16',symbols:picked.map(x=>x.sym),stats:picked};localStorage.setItem(V0430_FREEZE_KEY,JSON.stringify(V0430_FROZEN));}
+async function v0430Run(){if(V0430_RUNNING||V0430_FROZEN)return;V0430_RUNNING=true;V0430_RESULTS=[];const run=document.getElementById('v0430Run'),st=document.getElementById('v0430Status'),bar=document.getElementById('v0430Bar');run.disabled=true;try{for(let i=0;i<V0421_WINDOWS.length;i++){const w=V0421_WINDOWS[i];st.innerHTML=`<span class="v0406-spinner small"></span> ${i+1}/10 · hämtar utvecklingsperiod ${w.label} · ${V0430_UNIVERSE.length} aktier…`;bar.style.width=`${i*10}%`;const cut=await v0430FetchSymbols(w,V0430_UNIVERSE);if(cut.dates.length<18)throw new Error('för få handelsdagar');st.innerHTML=`<span class="v0406-spinner small"></span> ${i+1}/10 · kartlägger aktier…`;for(let k=0;k<V0430_UNIVERSE.length;k++){const sym=V0430_UNIVERSE[k],r=v0430One(cut.rows,sym);if(r)V0430_RESULTS.push({window:w.n,from:cut.dates[0],to:cut.dates.at(-1),symbol:sym,...r});v0413AddSims(1);if(k%10===0){st.innerHTML=`<span class="v0406-spinner small"></span> ${i+1}/10 · ${k+1}/${V0430_UNIVERSE.length} aktier…`;await v0406Yield(0)}}bar.style.width=`${(i+1)*10}%`;v0430Paint()}v0430Freeze();v0430Paint();st.textContent=`✓ Day Selection 1 klart · ${V0430_FROZEN.symbols.length} aktier frysta. Day Selection 2 är upplåst.`}catch(e){st.textContent='Fel: '+(e?.message||e)}finally{V0430_RUNNING=false;run.disabled=!!V0430_FROZEN}}
+function v0430Report(){const R=v0430Rank(),L=['LINAS OPTI – DAY SELECTION 1','Version: '+APP_VERSION,'Skapad: '+new Date().toISOString(),'Handel: AVSTÄNGD (backtest/paper)','','METOD',`Förregistrerat USA-universum: ${V0430_UNIVERSE.length} aktier.`,'10 redan förbrukade Entry Lab 2-perioder används som UTVECKLINGSDATA.','Varje symbol körs separat med fryst PRO2 → Entry B → Strong → forsknings-exit.','Kvalificering för fryst urval: n>=5, positiv P/L, PF>=1, minst 3 positiva perioder. Max 16 rankas med förregistrerad score.','Detta är urvalsforskning, INTE oberoende validering.','','FRYST DAY SELECTION',...(V0430_FROZEN?[V0430_FROZEN.symbols.join(', ')]:['Ej fryst']),'','RANKING'];R.forEach((x,i)=>L.push(`${i+1}. ${x.sym} | n ${x.n} | P/L ${x.pnl.toFixed(2)} | PF ${v0411FmtPF(x.pf)} | WR ${(x.wr*100).toFixed(1)}% | +perioder ${x.pos}/${x.periods} | eligible ${x.eligible?'JA':'NEJ'} | score ${x.score.toFixed(2)}`));return L.join('\n')}
+async function v0430Share(){return v043xShare(v0430Report(),'linasopti_dayselection1','Linas Opti Day Selection 1')}
+function v0431PaintFrozen(){const box=document.getElementById('v0431Frozen'),run=document.getElementById('v0431Run');if(!box||!run)return;if(V0430_FROZEN?.symbols?.length){box.innerHTML=`<b>🔒 Fryst från Selection 1 · ${V0430_FROZEN.symbols.length} aktier</b><br>${V0430_FROZEN.symbols.join(', ')}`;run.disabled=V0431_RUNNING}else{box.textContent='Inget Day-urval fryst ännu. Kör Day Selection 1 först.';run.disabled=true}}
+function v0431Group(rows,symbols){const keep=new Set([...symbols,'SPY']),r=rows.filter(x=>keep.has(x.symbol)),pro=daytradePro(r,100000,.005),trades=v0423Trades(r,pro,v0430Strong()),rep=v0420Replay(r,trades),wins=rep.closed.filter(x=>x.pnl>0).length,gw=rep.closed.filter(x=>x.pnl>0).reduce((a,x)=>a+x.pnl,0),gl=Math.abs(rep.closed.filter(x=>x.pnl<0).reduce((a,x)=>a+x.pnl,0));return {...rep,wins,gw,gl}}
+function v0431Agg(){return ['day','lina16'].map(id=>{const a=V0431_RESULTS.filter(x=>x.group===id),n=a.reduce((q,x)=>q+x.n,0),pnl=a.reduce((q,x)=>q+x.pnl,0),gw=a.reduce((q,x)=>q+x.gw,0),gl=a.reduce((q,x)=>q+x.gl,0),wins=a.reduce((q,x)=>q+x.wins,0),pos=a.filter(x=>x.pnl>0).length,dd=a.length?Math.min(...a.map(x=>x.dd)):0,pf=gl?gw/gl:(gw?Infinity:0);return {id,name:id==='day'?'Day Selection':'Lina Selection 16',n,pnl,pf,wr:n?wins/n:0,pos,dd,periods:a.length}})}
+function v0431Paint(){const body=document.getElementById('v0431Rows'),share=document.getElementById('v0431Share');if(!body)return;const A=v0431Agg();body.innerHTML=A.map(a=>`<tr><td><b>${a.name}</b></td><td>${a.n}</td><td class="${a.pnl>=0?'good':'bad'}">${a.pnl>=0?'+':''}${a.pnl.toFixed(0)}</td><td>${v0411FmtPF(a.pf)}</td><td>${(a.wr*100).toFixed(1)}%</td><td>${a.pos}/${a.periods||10}</td><td>${(a.dd*100).toFixed(2)}%</td></tr>`).join('');if(share)share.disabled=!V0431_RESULTS.length;v0431PaintFrozen()}
+async function v0431Run(){if(V0431_RUNNING||!V0430_FROZEN?.symbols?.length)return;V0431_RUNNING=true;V0431_RESULTS=[];const run=document.getElementById('v0431Run'),st=document.getElementById('v0431Status'),bar=document.getElementById('v0431Bar');run.disabled=true;const lina=MARKET_GROUPS.linaSelection16.symbols.filter(x=>x!=='SPY');try{for(let i=0;i<V0431_WINDOWS.length;i++){const w=V0431_WINDOWS[i];st.innerHTML=`<span class="v0406-spinner small"></span> ${i+1}/10 · hämtar ORÖRD period ${w.label}…`;bar.style.width=`${i*10}%`;const all=[...new Set([...V0430_FROZEN.symbols,...lina])],cut=await v0430FetchSymbols(w,all);if(cut.dates.length<18)throw new Error('för få handelsdagar');for(const [id,syms] of [['day',V0430_FROZEN.symbols],['lina16',lina]]){const r=v0431Group(cut.rows,syms);V0431_RESULTS.push({window:w.n,from:cut.dates[0],to:cut.dates.at(-1),group:id,...r});v0413AddSims(1)}bar.style.width=`${(i+1)*10}%`;v0431Paint();await v0406Yield(20)}st.textContent='✓ Day Selection 2 klart · 10/10 orörda perioder. Dela rapporten för analys.'}catch(e){st.textContent='Fel: '+(e?.message||e)}finally{V0431_RUNNING=false;v0431PaintFrozen()}}
+function v0431Report(){const A=v0431Agg(),L=['LINAS OPTI – DAY SELECTION 2 · ORÖRT PROV','Version: '+APP_VERSION,'Skapad: '+new Date().toISOString(),'Handel: AVSTÄNGD (backtest/paper)','','METOD','Exakt fryst Day Selection från Day Selection 1 jämförs med Lina Selection 16.','10 nya 20-handelsdagarsperioder som inte används i tidigare labb i appens förregistrerade testplan.','Entry B + Strong + forsknings-exit är oförändrade. Ingen parameteroptimering görs.','','FRYST DAY SELECTION',V0430_FROZEN?.symbols?.join(', ')||'saknas','','OOS-RESULTAT'];A.forEach(a=>L.push(`${a.name} | perioder ${a.periods}/10 | n ${a.n} | P/L ${a.pnl.toFixed(2)} | PF ${v0411FmtPF(a.pf)} | WR ${(a.wr*100).toFixed(1)}% | +perioder ${a.pos}/${a.periods} | värsta DD ${(a.dd*100).toFixed(2)}%`));L.push('','PERIODRESULTAT');for(const w of V0431_WINDOWS)for(const id of ['day','lina16']){const x=V0431_RESULTS.find(q=>q.window===w.n&&q.group===id);if(x)L.push(`#${w.n} ${x.from}→${x.to} | ${id} | n ${x.n} | P/L ${x.pnl.toFixed(2)} | PF ${v0411FmtPF(x.gl?x.gw/x.gl:(x.gw?Infinity:0))} | WR ${x.n?(x.wins/x.n*100).toFixed(1):'0.0'}% | DD ${(x.dd*100).toFixed(2)}%`)}L.push('','OBS: Efter denna körning är dessa perioder förbrukade som orörd valideringsdata för det frysta Day Selection-urvalet.');return L.join('\n')}
+async function v0431Share(){return v043xShare(v0431Report(),'linasopti_dayselection2_oos','Linas Opti Day Selection 2')}
+async function v043xShare(text,prefix,title){const file=new File([text],`${prefix}_${new Date().toISOString().slice(0,10)}.txt`,{type:'text/plain'});try{if(navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}))){await navigator.share({title,files:[file]});return}}catch(e){if(e?.name==='AbortError')return}const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}
+window.addEventListener('DOMContentLoaded',()=>{try{V0430_FROZEN=JSON.parse(localStorage.getItem(V0430_FREEZE_KEY)||'null')}catch{}v0430Paint();v0431Paint();document.getElementById('v0430Run')?.addEventListener('click',v0430Run);document.getElementById('v0430Share')?.addEventListener('click',v0430Share);document.getElementById('v0431Run')?.addEventListener('click',v0431Run);document.getElementById('v0431Share')?.addEventListener('click',v0431Share);});

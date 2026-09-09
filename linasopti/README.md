@@ -1,10 +1,22 @@
-# V0.42.6 – Forskningsmotor hardfix
+# V0.43.0 – Day Selection 1 + Day Selection 2
 
-- Regim/Testlab-väljaren tvingas nu bort både via `hidden`, `aria-hidden` och explicit `display:none!important` när **Tester** är valt.
-- **Tester** visar endast Data · Test · Resultat.
-- **Testlab** visar endast labbväljaren och döljer Data · Test · Resultat-navigationen.
-- Extra cache-buster 0.42.6 för både CSS och JavaScript för att iPhone/Safari inte ska behålla V0.42.4/0.42.5-beteendet.
-- Ingen strategi-, data-, Worker- eller testlogik ändrad.
+- Robotmognad: 42/100 efter Regim Lab 2 OOS.
+- Day Selection 1 kartlägger 80 förregistrerade likvida USA-aktier på 5-minutersdata.
+- Entry B + Strong-regim + forsknings-exit är frysta och ändras inte.
+- Selection 1 använder 10 redan förbrukade Entry Lab 2-perioder som utvecklingsdata.
+- Kvalificering: minst 5 affärer, positiv P/L, PF >= 1 och minst 3 positiva utvecklingsperioder; max 16 symboler fryses.
+- Det frysta urvalet sparas lokalt och låser upp Day Selection 2.
+- Day Selection 2 jämför exakt det frysta urvalet mot Lina Selection 16 på 10 nya OOS-perioder.
+- Ingen OOS-data används för omrankning eller parameterändring.
+- Forskningsmotor-navigationen från V0.42.6 är kvar: labbväljaren visas endast i Testlab-läge.
+- Worker och handelsläge är oförändrade; handel är avstängd.
+# V0.43.0 – Day Selection 1 + 2
+
+- Robotmognad 42/100 efter godkänt Regim Lab 2 OOS.
+- Day Selection 1: fast brett USA-universum, 5-minutersdata, redan förbrukade utvecklingsperioder, fryst Entry B + Strong + forsknings-exit.
+- Urval fryses automatiskt efter 10/10 med förregistrerade kvalificeringsregler; max 16 symboler.
+- Day Selection 2 är låst tills urvalet är fryst och testar exakt urval på 10 nya OOS-perioder mot Lina Selection 16.
+- Ingen livehandel. Worker oförändrad.
 
 # V0.42.5 – Forskningsmotor nav-polish
 
