@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.39.4">
+<link rel="stylesheet" href="linasopti.css?v=0.40.2">
 </head>
 <body class="v0384-locked">
 
@@ -23,7 +23,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.40.0</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.40.2</div></div></div></div></header>
 
 <div class="tabs">
 <button class="tab active" data-pane="data">1. Data</button>
@@ -104,7 +104,7 @@
 </div>
 
 <div class="card v31-nordic-info">
-  <h2>V0.40.1 · PRO Analys</h2>
+  <h2>V0.40.2 · PRO 2</h2>
   <div class="muted">
     Urvalet är räknat från alla inskickade rapporter, men rankingen använder deduplicerade och kronologiskt korrigerade testfönster så samma körning inte får extra vikt.
     För själva USA/Alpaca-urvalet användes fem separata miljöer: USA30 2024, 2025 och 2026 samt Global Stocks 100 och USA + Värld 50.
@@ -126,7 +126,7 @@
   </details>
 </div>
 
-<div class="card v31-nordic-info"><h2>V0.40.1 · PRO Analys</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
+<div class="card v31-nordic-info"><h2>V0.40.2 · PRO 2</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
 <details class="v0384-tech">
   <summary>Tekniskt / felsökning</summary>
   <div class="v0384-tech-inner">
@@ -195,7 +195,7 @@
 <div class="two">
 <div class="robot"><h3>Opti Swing</h3><div class="muted">Momentum + mean-reversion, innehav över flera dagar</div><div class="big" id="sEq">—</div><div id="sRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="sDD">—</span></div><div class="mini"><b>Affärer</b><span id="sN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="sWR">—</span></div><div class="mini"><b>Mot benchmark</b><span id="sBench">—</span></div></div></div>
 <div class="robot v30-trend"><h3>Opti Trend</h3><div class="muted">Top 5 momentum · veckovis ombalansering · endast över SMA200</div><div class="big" id="tEq">—</div><div id="tRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="tDD">—</span></div><div class="mini"><b>Ombalanseringar</b><span id="tN">—</span></div><div class="mini"><b>Mot SPY</b><span id="tBench">—</span></div><div class="mini"><b>CAGR</b><span id="tCagr">—</span></div></div></div>
-<div class="robot"><h3>Lina Day · Jägaren</h3><div class="muted">Ranka momentum + volym · köp nästa 5-minbars öppning · max 6 affärer/dag · aldrig över natt</div><div class="big" id="dEq">—</div><div id="dRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="dDD">—</span></div><div class="mini"><b>Affärer</b><span id="dN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="dWR">—</span></div><div class="mini"><b>Snitt/affär</b><span id="dAvg">—</span></div><div class="mini"><b>Profit factor</b><span id="dPF">—</span></div><div class="mini"><b>Affärer/dag</b><span id="dPerDay">—</span></div></div></div><div class="robot v0400-pro"><h3>⚡ Lina Day PRO · Challenger</h3><div class="muted">Kvalitetsrankad momentum · samma risk/exekvering som baseline · forskningsversion</div><div class="big" id="dpEq">—</div><div id="dpRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="dpDD">—</span></div><div class="mini"><b>Affärer</b><span id="dpN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="dpWR">—</span></div><div class="mini"><b>Profit factor</b><span id="dpPF">—</span></div><div class="mini"><b>Mot baseline</b><span id="dpVs">—</span></div><div class="mini"><b>Godkända/råa</b><span id="dpPass">—</span></div></div></div>
+<div class="robot"><h3>Lina Day · Jägaren</h3><div class="muted">Ranka momentum + volym · köp nästa 5-minbars öppning · max 6 affärer/dag · aldrig över natt</div><div class="big" id="dEq">—</div><div id="dRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="dDD">—</span></div><div class="mini"><b>Affärer</b><span id="dN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="dWR">—</span></div><div class="mini"><b>Snitt/affär</b><span id="dAvg">—</span></div><div class="mini"><b>Profit factor</b><span id="dPF">—</span></div><div class="mini"><b>Affärer/dag</b><span id="dPerDay">—</span></div></div></div><div class="robot v0400-pro"><h3>⚡ Lina Day PRO 2 · Challenger</h3><div class="muted">Tids-/regimmedveten Jägare · lunchfilter + kvalitetsranking · forskningsversion</div><div class="big" id="dpEq">—</div><div id="dpRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="dpDD">—</span></div><div class="mini"><b>Affärer</b><span id="dpN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="dpWR">—</span></div><div class="mini"><b>Profit factor</b><span id="dpPF">—</span></div><div class="mini"><b>Mot baseline</b><span id="dpVs">—</span></div><div class="mini"><b>Godkända/råa</b><span id="dpPass">—</span></div></div></div>
 </div>
 </div>
 
@@ -332,5 +332,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.39.4"></script>
+<script src="linasopti.js?v=0.40.2"></script>
 </body></html>

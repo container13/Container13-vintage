@@ -1,7 +1,10 @@
-# Linas Opti V0.40.1 – PRO Analys
+# Linas Opti V0.40.2 – PRO 2
 
-- V0.40.0 PRO-strategin är oförändrad.
-- Baseline är oförändrad.
-- Ny deskriptiv Day-analys: tid på dagen, momentumintervall, relativ volym, hålltid, exittyp och symbol.
-- Analysen visas i Resultat och följer med full testrapport.
-- Syftet är hypotesbildning; samma testperiod är inte oberoende validering.
+Byggd från V0.40.1 PRO Analys.
+
+- Fryst V0.39.4 Day-baseline är orörd.
+- PRO 2 är en ny challengerhypotes baserad på V0.40.1:s deskriptiva analys: tids-/regimmedveten ranking, lunchfilter 12–14 NY, skydd mot extrema momentum/volym-lägen och extra vikt för sen handelsregim.
+- Ingen symbolspecifik optimering.
+- Samma exekveringsmodell, 20% maxposition, stop/mål, maxhålltid och modellerade kostnader som baseline.
+- Analysen finns kvar för jämförelse.
+- Resultat på samma period är utvecklingsdata, inte oberoende validering. Om PRO 2 förbättras ska reglerna frysas innan andra perioder testas.
