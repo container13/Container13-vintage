@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.40.2";
+const APP_VERSION = "V0.40.3";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -136,6 +136,13 @@ async function getBars(tf){
     const j=await bridge(url); rows.push(...(j.rows||[]));
    }
   }else{ const j=await bridge(params(tf)); rows=j.rows||[]; }
+  if(tf==="5Min" && window.V0403_DAY_WINDOW?.days){
+    const w=window.V0403_DAY_WINDOW;
+    const dates=[...new Set(rows.map(r=>String(r.t).slice(0,10)))].filter(d=>d>=w.start).sort().slice(0,w.days);
+    const keep=new Set(dates); rows=rows.filter(r=>keep.has(String(r.t).slice(0,10)));
+    const st=document.getElementById("dayPeriodStatus");
+    if(st) st.textContent=dates.length?`✓ ${dates.length} handelsdagar: ${dates[0]} → ${dates[dates.length-1]}`:`Inga handelsdagar hittades från ${w.start}.`;
+  }
   if(tf==="1Day")DAILY=rows;else INTRA=rows; updateTestDataStatus();updateDataStatus();v035RefreshGuide();paintBridgeDone(rows.length,tf);
  }catch(e){$("bridgeStatus").className="status bad";$("bridgeStatus").textContent=e.message;}finally{if(btn){btn.disabled=false;btn.textContent=old;}}
 }
@@ -1274,16 +1281,24 @@ window.addEventListener("DOMContentLoaded",()=>{
 })();
 
 
-// V0.27 – snabbval för mindre 5-minutersperioder så intradagsdata inte blir onödigt tung.
+// V0.40.3 – valfri Day-period. Hämtar extra kalenderdagar och trimmar sedan till exakt antal handelsdagar.
 window.addEventListener("DOMContentLoaded",()=>{
  const pad=n=>String(n).padStart(2,"0"), iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
- document.querySelectorAll(".day-period-btn").forEach(b=>b.addEventListener("click",()=>{
-   const n=+b.dataset.days, end=document.getElementById("end"), start=document.getElementById("start"); if(!start||!end)return;
-   let to=end.value?new Date(end.value+"T12:00:00"):new Date(), from=new Date(to); from.setDate(from.getDate()-Math.max(1,n*1.45));
-   start.value=iso(from); end.value=iso(to);
-   document.querySelectorAll(".day-period-btn").forEach(x=>x.classList.toggle("active",x===b));
+ const dayStart=document.getElementById("dayStart"), start=document.getElementById("start"), end=document.getElementById("end"), status=document.getElementById("dayPeriodStatus");
+ if(dayStart && !dayStart.value){ const d=new Date(); d.setDate(d.getDate()-29); dayStart.value=iso(d); }
+ const apply=n=>{
+   if(!dayStart||!dayStart.value||!start||!end)return;
+   const from=new Date(dayStart.value+"T12:00:00"), to=new Date(from);
+   // Extra marginal för helger/helgdagar; getBars trimmar svaret till exakt N handelsdagar.
+   to.setDate(to.getDate()+Math.ceil(n*1.65)+7);
+   start.value=dayStart.value; end.value=iso(to);
+   window.V0403_DAY_WINDOW={start:dayStart.value,days:n};
+   document.querySelectorAll(".day-period-btn").forEach(x=>x.classList.toggle("active",+x.dataset.days===n));
    document.querySelectorAll(".period-btn").forEach(x=>x.classList.remove("active"));
- }));
+   if(status)status.textContent=`Redo att hämta ${n} handelsdagar från ${dayStart.value}.`;
+ };
+ document.querySelectorAll(".day-period-btn").forEach(b=>b.addEventListener("click",()=>apply(+b.dataset.days)));
+ dayStart?.addEventListener("change",()=>{ const a=document.querySelector(".day-period-btn.active"); if(a)apply(+a.dataset.days); });
 });
 
 // V0.35 guided-flow observer: UI-only; does not alter data or strategy.

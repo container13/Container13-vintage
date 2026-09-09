@@ -1,10 +1,18 @@
-# Linas Opti V0.40.2 – PRO 2
+# Linas Opti V0.40.3 – Valfri Day-period
 
-Byggd från V0.40.1 PRO Analys.
+Byggd direkt från V0.40.2 PRO 2.
 
-- Fryst V0.39.4 Day-baseline är orörd.
-- PRO 2 är en ny challengerhypotes baserad på V0.40.1:s deskriptiva analys: tids-/regimmedveten ranking, lunchfilter 12–14 NY, skydd mot extrema momentum/volym-lägen och extra vikt för sen handelsregim.
-- Ingen symbolspecifik optimering.
-- Samma exekveringsmodell, 20% maxposition, stop/mål, maxhålltid och modellerade kostnader som baseline.
-- Analysen finns kvar för jämförelse.
-- Resultat på samma period är utvecklingsdata, inte oberoende validering. Om PRO 2 förbättras ska reglerna frysas innan andra perioder testas.
+## Nytt
+- Lina Day har ett eget valbart startdatum.
+- Välj 5, 20 eller 60 **handelsdagar från startdatumet**.
+- Appen hämtar en kalenderbuffert och trimmar därefter 5-minutersdatan till exakt valt antal faktiska handelsdagar.
+- Visar den faktiska perioden efter hämtning.
+- Gör det möjligt att köra frysta PRO 2 på äldre, separata eldprovsperioder.
+
+## Oförändrat
+- V0.39.4-baseline är oförändrad.
+- PRO 2-strategin från V0.40.2 är oförändrad.
+- Stop, mål, position, kostnader, ranking och tidsfilter är inte optimerade i denna version.
+- Worker/API är oförändrad.
+
+V0.40.3 är alltså en period-/test-UX-version, inte en ny strategi.

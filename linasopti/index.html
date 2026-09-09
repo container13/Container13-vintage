@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.40.2">
+<link rel="stylesheet" href="linasopti.css?v=0.40.3">
 </head>
 <body class="v0384-locked">
 
@@ -23,7 +23,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.40.2</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.40.3</div></div></div></div></header>
 
 <div class="tabs">
 <button class="tab active" data-pane="data">1. Data</button>
@@ -80,13 +80,19 @@
 </div>
 <div class="v0391-day-fetch" aria-label="Lina Day 5-minutersdata">
   <div class="v0391-day-title">⚡ Lina Day · Jägaren</div>
-  <div class="muted">Välj en kort testperiod och hämta sedan 5-minutersdata.</div>
-  <div class="day-period-wrap v0368-day-control" aria-label="Snabbval Opti Day">
-    <span class="period-label">Testperiod</span>
+  <div class="muted">Välj startdatum och antal handelsdagar. PRO 2-reglerna är fortfarande helt frysta.</div>
+  <div class="day-custom-period v0368-day-control" style="margin-top:10px">
+    <label style="display:block;max-width:230px">Startdatum för Day-test
+      <input id="dayStart" type="date" style="width:100%;margin-top:5px">
+    </label>
+  </div>
+  <div class="day-period-wrap v0368-day-control" aria-label="Valfri Lina Day-period">
+    <span class="period-label">Handelsdagar från start</span>
     <button type="button" class="day-period-btn" data-days="5">5 dagar</button>
     <button type="button" class="day-period-btn" data-days="20">20 dagar</button>
     <button type="button" class="day-period-btn" data-days="60">60 dagar</button>
   </div>
+  <div id="dayPeriodStatus" class="muted" style="margin:7px 0 2px">Välj ett startdatum och sedan 5, 20 eller 60 handelsdagar.</div>
   <button class="purple v0368-day-control v0391-intra" id="intraBtn">Hämta 5-min-data för Jägaren</button>
 </div>
 </div>
@@ -332,5 +338,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.40.2"></script>
+<script src="linasopti.js?v=0.40.3"></script>
 </body></html>
