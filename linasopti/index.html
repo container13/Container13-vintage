@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.40.6">
+<link rel="stylesheet" href="linasopti.css?v=0.41.0">
 </head>
 <body class="v0384-locked">
 
@@ -23,12 +23,13 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.40.6</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.41.0</div></div></div></div></header>
 
 <div class="tabs">
 <button class="tab active" data-pane="data">1. Data</button>
 <button class="tab" data-pane="test">2. Test</button>
 <button class="tab" data-pane="result">3. Resultat</button>
+<button class="tab" data-pane="testlab">🧪 Testlab</button>
 </div>
 </div>
 
@@ -314,6 +315,33 @@
 </details>
 </section>
 
+
+<section id="pane-testlab" class="hidden">
+<div class="card v0410-labhero">
+  <div class="v0410-labtitle"><span class="v0410-flask">🧪</span><div><h2>Lina Testlab</h2><div class="muted">Låt Lina göra grovjobbet. Första kontrollen reproducerar våra 10 frysta PRO2-eldprov automatiskt.</div></div></div>
+  <div class="v0410-lock">🔒 PRO2 är fryst · inga strategiinställningar ändras i denna körning</div>
+  <div class="v0410-labgrid">
+    <div><span>Motorer</span><b>Baseline + PRO2</b></div>
+    <div><span>Marknad</span><b>Lina Selection 16</b></div>
+    <div><span>Period/test</span><b>20 handelsdagar</b></div>
+    <div><span>Kontroller</span><b>10 historiska fönster</b></div>
+  </div>
+  <button id="v0410RunControl" class="primary v0410-big">Kör kontrollserie · 10 eldprov</button>
+  <button id="v0410StopControl" class="secondary" hidden>Stoppa efter pågående period</button>
+  <div id="v0410LabStatus" class="v0410-status">Redo. Lina hämtar och testar en period i taget.</div>
+  <div class="v0410-progress"><div id="v0410ProgressBar"></div></div>
+</div>
+<div class="card">
+  <div class="v0410-summaryhead"><div><h2>Kontrollresultat</h2><div class="muted">PASS betyder att körningen både klarade mekanikrevisionen och reproducerade det manuella facit inom 0,02 procentenheter.</div></div><button id="v0410Share" class="secondary" disabled>Dela labbrapport</button></div>
+  <div id="v0410Summary" class="v0410-summary muted">Ingen kontrollserie körd ännu.</div>
+  <div class="v0410-tablewrap"><table class="v0410-table"><thead><tr><th>#</th><th>Period</th><th>Baseline</th><th>PRO2</th><th>Skillnad</th><th>Kontroll</th></tr></thead><tbody id="v0410Rows"></tbody></table></div>
+</div>
+<details class="card v0410-details">
+  <summary>Vad Testlab gör i V0.41.0</summary>
+  <div class="muted" style="margin-top:10px">Den här första versionen är medvetet enkel: den automatiserar exakt kontrollarbetet vi nyss gjorde manuellt. När 10/10 reproduceras har vi ett säkert fundament för nästa steg: massprovning av exitvarianter och därefter robusthets-/valideringskörningar.</div>
+</details>
+</section>
+
 <div class="note">Detta är en testplattform, inte investeringsrådgivning. För riktig utvärdering måste data vara korrekt, överlevnadsbias undvikas och spread/slippage/courtage modelleras realistiskt. Linas Opti är mobil-först och lägger grunden för reproducerbara tester med samma regler över verklig historik.</div>
 </div>
 
@@ -353,5 +381,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.40.6"></script>
+<script src="linasopti.js?v=0.41.0"></script>
 </body></html>

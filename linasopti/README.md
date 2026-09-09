@@ -1,7 +1,23 @@
-# Linas Opti V0.40.6 – levande status och rena resultat
+Linas Opti V0.41.0 – Lina Testlab
 
-- Hämta data visar spinner, löpande sekunder och tydlig aktivitet tills svaret är klart.
-- Kör Linas Opti visar stegvis status: start, baseline, PRO 2, analys och klart.
-- Resultat visar bara sektioner för data som faktiskt finns: dagsdata eller 5-min-data.
-- PRO 2-strategin från V0.40.2 är fryst och oförändrad.
-- V0.40.5 datatyp/period/reset-flöde behålls.
+Byggd från verifierade V0.40.6.
+
+NYTT
+- Ny flik: 🧪 Testlab.
+- Ett tryck kör de 10 historiska 20-handelsdagarsfönster som tidigare testades manuellt.
+- Hämtar varje fönster automatiskt via befintlig Cloudflare/Alpaca-route.
+- Kör fryst baseline och fryst PRO2 utan parameterändringar.
+- Kör mekanikrevision på båda motorerna.
+- Jämför mot manuellt facit med tolerans 0,02 procentenheter.
+- Visar löpande tabell, kontroll, snitt och PRO2-vs-baseline.
+- Labbrapport kan delas som TXT.
+- Stoppa-knapp stoppar efter pågående fönster.
+
+INTE ÄNDRAT
+- daytrade() baseline.
+- daytradePro() PRO2 V0.40.2.
+- Risk, friktion, stop, mål, max hålltider eller signalregler.
+- Worker/API.
+
+NÄSTA STEG EFTER 10/10 REPRODUKTION
+Exit Lab / massprovning med separata utvecklings- och valideringsperioder.

@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.40.6";
+const APP_VERSION = "V0.41.0";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -64,7 +64,7 @@ function show(p,fromTab=false){
     }
   }
   document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.pane===p));
-  ["data","test","result"].forEach(x=>$("pane-"+x).classList.toggle("hidden",x!==p));
+  ["data","test","result","testlab"].forEach(x=>$("pane-"+x).classList.toggle("hidden",x!==p));
   if(fromTab){
     requestAnimationFrame(()=>{
       const target=p==="test" ? $("runBtn") : $("pane-"+p);
@@ -1514,3 +1514,81 @@ function v0368UpdateContextUI(){
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
+
+
+// ============================================================
+// V0.41.0 – LINA TESTLAB · automatisk kontrollserie
+// PRO2 och baseline ovan är medvetet orörda. Testlab anropar dem bara.
+// ============================================================
+const V0410_SYMBOLS="HD,BAC,AMD,INTC,GOOGL,NVDA,CRM,UBER,ADBE,MU,PYPL,AMZN,WMT,CSCO,KO,QCOM,SPY";
+const V0410_WINDOWS=[
+ {n:1,start:"2026-01-01",label:"jan 2026",base:-1.49,pro:-0.60},
+ {n:2,start:"2024-08-11",label:"aug–sep 2024",base:-2.32,pro:-0.99},
+ {n:3,start:"2022-01-11",label:"jan–feb 2022",base:-2.03,pro:-1.34},
+ {n:4,start:"2024-12-11",label:"dec 2024–jan 2025",base:-2.57,pro:-0.73},
+ {n:5,start:"2022-04-11",label:"apr–maj 2022",base:-2.30,pro:-1.69},
+ {n:6,start:"2023-07-11",label:"jul–aug 2023",base:-1.22,pro:-0.31},
+ {n:7,start:"2025-05-11",label:"maj–jun 2025",base:-2.22,pro:-0.66},
+ {n:8,start:"2023-10-02",label:"okt–nov 2023",base:-1.55,pro:-0.10},
+ {n:9,start:"2024-02-02",label:"feb–mar 2024",base:-1.28,pro:-0.43},
+ {n:10,start:"2021-09-02",label:"sep–okt 2021",base:-0.49,pro:-0.24}
+];
+let V0410_RESULTS=[],V0410_ABORT=false,V0410_RUNNING=false;
+function v0410DatePlus(iso,days){const d=new Date(iso+"T12:00:00Z");d.setUTCDate(d.getUTCDate()+days);return d.toISOString().slice(0,10)}
+function v0410Pct(x){return Number.isFinite(x)?(x>=0?"+":"")+x.toFixed(2).replace(".",",")+"%":"—"}
+function v0410Trim20(rows,start){const dates=[...new Set(rows.map(r=>String(r.t).slice(0,10)))].filter(d=>d>=start).sort().slice(0,20);const keep=new Set(dates);return {rows:rows.filter(r=>keep.has(String(r.t).slice(0,10))),dates};}
+function v0410PaintRows(){
+ const body=document.getElementById("v0410Rows");if(!body)return;
+ body.innerHTML=V0410_WINDOWS.map(w=>{
+  const r=V0410_RESULTS.find(x=>x.n===w.n);
+  if(!r)return `<tr data-v0410="${w.n}"><td>${w.n}</td><td>${w.label}<small>${w.start}</small></td><td>—</td><td>—</td><td>—</td><td class="v0410-wait">väntar</td></tr>`;
+  const cls=r.pass?"v0410-pass":"v0410-fail";
+  return `<tr data-v0410="${w.n}"><td>${w.n}</td><td>${w.label}<small>${r.from||w.start} → ${r.to||"—"}</small></td><td>${v0410Pct(r.base)}</td><td>${v0410Pct(r.pro)}</td><td class="${r.diff>=0?'good':'bad'}">${v0410Pct(r.diff)}</td><td class="${cls}">${r.pass?'✓ PASS':'⚠ AVVIKELSE'}</td></tr>`;
+ }).join("");
+}
+function v0410UpdateSummary(){
+ const el=document.getElementById("v0410Summary"),share=document.getElementById("v0410Share");if(!el)return;
+ if(!V0410_RESULTS.length){el.className="v0410-summary muted";el.textContent="Ingen kontrollserie körd ännu.";if(share)share.disabled=true;return;}
+ const valid=V0410_RESULTS.filter(x=>Number.isFinite(x.base)&&Number.isFinite(x.pro)),done=V0410_RESULTS.length,passes=V0410_RESULTS.filter(x=>x.pass).length,wins=valid.filter(x=>x.pro>x.base).length;
+ const ab=valid.length?valid.reduce((a,x)=>a+x.base,0)/valid.length:NaN,ap=valid.length?valid.reduce((a,x)=>a+x.pro,0)/valid.length:NaN;
+ el.className="v0410-summary";el.innerHTML=`<b>${done}/10 körda</b> · mekanik/facit PASS ${passes}/${done} · PRO2 bättre ${wins}/${valid.length}<br><span>Snitt hittills: baseline ${v0410Pct(ab)} · PRO2 ${v0410Pct(ap)} · förbättring ${v0410Pct(ap-ab)}</span>`;
+ if(share)share.disabled=done<1;
+}
+function v0410Report(){
+ const lines=["LINAS OPTI – TESTLABBRAPPORT",`Version: ${APP_VERSION}`,`Skapad: ${new Date().toISOString()}`,"Handel: AVSTÄNGD (backtest/paper)","","KONTROLLSERIE · FRYST PRO2","Lina Selection 16 · 20 handelsdagar per fönster","",...V0410_RESULTS.map(r=>`${r.n}. ${r.from} → ${r.to} | rows ${r.rows} | baseline ${Number.isFinite(r.base)?r.base.toFixed(2):'ERR'}% | PRO2 ${Number.isFinite(r.pro)?r.pro.toFixed(2):'ERR'}% | diff ${Number.isFinite(r.diff)?r.diff.toFixed(2):'ERR'}pp | audit ${r.auditBase&&r.auditPro?'PASS':'FAIL'} | facit ${r.facit?'PASS':'AVVIKELSE'}${r.error?' | fel '+r.error:''}`),""];
+ const valid=V0410_RESULTS.filter(x=>Number.isFinite(x.base)&&Number.isFinite(x.pro));
+ if(valid.length){const n=valid.length,ab=valid.reduce((a,x)=>a+x.base,0)/n,ap=valid.reduce((a,x)=>a+x.pro,0)/n;lines.push(`PRO2 bättre: ${valid.filter(x=>x.pro>x.base).length}/${n}`,`PASS: ${V0410_RESULTS.filter(x=>x.pass).length}/${V0410_RESULTS.length}`,`Snitt baseline: ${ab.toFixed(3)}%`,`Snitt PRO2: ${ap.toFixed(3)}%`,`Snitt förbättring: ${(ap-ab).toFixed(3)}pp`)}
+ return lines.join("\n");
+}
+async function v0410Share(){
+ const text=v0410Report(),file=new File([text],`linasopti_testlab_${new Date().toISOString().slice(0,10)}.txt`,{type:"text/plain"});
+ try{if(navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}))){await navigator.share({title:"Linas Opti Testlab",text:"Lina Testlab kontrollserie",files:[file]});return}}catch(e){if(e?.name==="AbortError")return}
+ const a=document.createElement("a");a.href=URL.createObjectURL(file);a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+}
+async function v0410FetchWindow(w){
+ const end=v0410DatePlus(w.start,40),url=`/bars?symbols=${encodeURIComponent(V0410_SYMBOLS)}&timeframe=5Min&start=${w.start}&end=${end}`;
+ const j=await bridge(url),raw=j.rows||[],cut=v0410Trim20(raw,w.start);if(cut.dates.length<18)throw new Error(`bara ${cut.dates.length} handelsdagar`);return cut;
+}
+async function v0410RunControl(){
+ if(V0410_RUNNING)return;V0410_RUNNING=true;V0410_ABORT=false;V0410_RESULTS=[];v0410PaintRows();v0410UpdateSummary();
+ const run=document.getElementById("v0410RunControl"),stop=document.getElementById("v0410StopControl"),status=document.getElementById("v0410LabStatus"),bar=document.getElementById("v0410ProgressBar");if(run)run.disabled=true;if(stop)stop.hidden=false;
+ try{
+  for(let i=0;i<V0410_WINDOWS.length;i++){
+   if(V0410_ABORT)break;const w=V0410_WINDOWS[i];if(status)status.innerHTML=`<span class="v0406-spinner small"></span> Eldprov ${w.n}/10 · hämtar ${w.label}…`;if(bar)bar.style.width=`${(i/10)*100}%`;await v0406Yield(60);
+   try{
+    const cut=await v0410FetchWindow(w);if(status)status.innerHTML=`<span class="v0406-spinner small"></span> Eldprov ${w.n}/10 · kör baseline + PRO2…`;await v0406Yield(40);
+    const base=daytrade(cut.rows,100000,.005),pro=daytradePro(cut.rows,100000,.005),aBase=auditDay(cut.rows,base,100000),aPro=auditDay(cut.rows,pro,100000);
+    const br=base.ret*100,pr=pro.ret*100,facit=Math.abs(br-w.base)<=.02&&Math.abs(pr-w.pro)<=.02,pass=!!aBase?.pass&&!!aPro?.pass&&facit;
+    V0410_RESULTS.push({n:w.n,from:cut.dates[0],to:cut.dates.at(-1),rows:cut.rows.length,base:br,pro:pr,diff:pr-br,auditBase:!!aBase?.pass,auditPro:!!aPro?.pass,facit,pass,baseTrades:base.n,proTrades:pro.n,basePF:base.pf,proPF:pro.pf});
+   }catch(e){V0410_RESULTS.push({n:w.n,from:w.start,to:"—",rows:0,base:NaN,pro:NaN,diff:NaN,auditBase:false,auditPro:false,facit:false,pass:false,error:String(e?.message||e)});}
+   v0410PaintRows();v0410UpdateSummary();if(bar)bar.style.width=`${((i+1)/10)*100}%`;await v0406Yield(80);
+  }
+  const passes=V0410_RESULTS.filter(x=>x.pass).length;if(status)status.innerHTML=V0410_ABORT?`Stoppad efter ${V0410_RESULTS.length}/10 perioder.`:`✓ Kontrollserie klar · ${passes}/10 reproducerade exakt.`;
+ }finally{V0410_RUNNING=false;if(run)run.disabled=false;if(stop)stop.hidden=true;}
+}
+window.addEventListener("DOMContentLoaded",()=>{
+ v0410PaintRows();v0410UpdateSummary();
+ document.getElementById("v0410RunControl")?.addEventListener("click",v0410RunControl);
+ document.getElementById("v0410StopControl")?.addEventListener("click",()=>{V0410_ABORT=true;const s=document.getElementById("v0410LabStatus");if(s)s.textContent="Stoppar efter pågående period…"});
+ document.getElementById("v0410Share")?.addEventListener("click",v0410Share);
+});
