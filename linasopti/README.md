@@ -1,29 +1,20 @@
-# Linas Opti V0.41.1 – Exit Lab
+# Linas Opti V0.41.2 – Exit Lab 2
 
-Byggd från verifierade V0.41.0. PRO2 och baseline är orörda.
+Byggd från verifierade V0.41.1.
 
-Nytt: Exit Lab återspelar exakt samma PRO2-entries över de 10 kontrollperioderna med tre förregistrerade exitregler: original, stop först efter 15 minuter, och ingen stop. Entrypris, shares och kostnadsmodell låses till PRO2. Detta är shadow-research och inte oberoende validering.
+## Nytt
+- Exit Lab 2 / Parameterkarta.
+- 625 förregistrerade exitkombinationer:
+  - stop: 0,4 / 0,6 / 0,8 / 1,0 / 1,2 %
+  - stop-delay: 0 / 5 / 10 / 15 / 20 min
+  - mål: 0,6 / 0,8 / 1,0 / 1,2 / 1,5 %
+  - max hålltid: 20 / 30 / 40 / 50 / 60 min
+- 10 historiska 20-handelsdagarsfönster = 6 250 simuleringar.
+- Samma frysta PRO2-entries återspelas; entry/signal/shares/friktion ändras inte.
+- Topp 20 visas i appen; full rapport innehåller topp 50 + alla 625 kombinationer.
+- Enkel robusthetsindikator räknar hur många närmaste parametergrannar som också har positiv P/L och PF >= 1.
 
-Linas Opti V0.41.0 – Lina Testlab
+## Forskningsdisciplin
+De 10 perioderna är utvecklingsdata för Exit Lab 2 efter denna körning. En vald PRO3-kandidat måste frysas och testas på nya orörda perioder innan den kan kallas oberoende validerad.
 
-Byggd från verifierade V0.40.6.
-
-NYTT
-- Ny flik: 🧪 Testlab.
-- Ett tryck kör de 10 historiska 20-handelsdagarsfönster som tidigare testades manuellt.
-- Hämtar varje fönster automatiskt via befintlig Cloudflare/Alpaca-route.
-- Kör fryst baseline och fryst PRO2 utan parameterändringar.
-- Kör mekanikrevision på båda motorerna.
-- Jämför mot manuellt facit med tolerans 0,02 procentenheter.
-- Visar löpande tabell, kontroll, snitt och PRO2-vs-baseline.
-- Labbrapport kan delas som TXT.
-- Stoppa-knapp stoppar efter pågående fönster.
-
-INTE ÄNDRAT
-- daytrade() baseline.
-- daytradePro() PRO2 V0.40.2.
-- Risk, friktion, stop, mål, max hålltider eller signalregler.
-- Worker/API.
-
-NÄSTA STEG EFTER 10/10 REPRODUKTION
-Exit Lab / massprovning med separata utvecklings- och valideringsperioder.
+Ingen livehandel.

@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.41.1";
+const APP_VERSION = "V0.41.2";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -1641,3 +1641,60 @@ function v0411Report(){
 async function v0411Share(){const text=v0411Report(),file=new File([text],`linasopti_exitlab_${new Date().toISOString().slice(0,10)}.txt`,{type:'text/plain'});try{if(navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}))){await navigator.share({title:'Linas Opti Exit Lab',files:[file]});return}}catch(e){if(e?.name==='AbortError')return}const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}
 async function v0411Run(){if(V0411_RUNNING)return;V0411_RUNNING=true;V0411_ABORT=false;V0411_RESULTS=[];v0411Paint();const run=document.getElementById('v0411Run'),stop=document.getElementById('v0411Stop'),st=document.getElementById('v0411Status'),bar=document.getElementById('v0411Bar');if(run)run.disabled=true;if(stop)stop.hidden=false;try{for(let i=0;i<V0410_WINDOWS.length;i++){if(V0411_ABORT)break;const w=V0410_WINDOWS[i];if(st)st.innerHTML=`<span class="v0406-spinner small"></span> ${i+1}/10 · hämtar ${w.label}…`;if(bar)bar.style.width=`${i*10}%`;await v0406Yield(40);const cut=await v0410FetchWindow(w);if(st)st.innerHTML=`<span class="v0406-spinner small"></span> ${i+1}/10 · bygger frysta PRO2-entries + ${V0411_VARIANTS.length} exits…`;await v0406Yield(30);const pro=daytradePro(cut.rows,100000,.005);for(const v of V0411_VARIANTS){const r=v0411Replay(cut.rows,pro,v),wins=r.closed.filter(x=>x.pnl>0).length,gw=r.closed.filter(x=>x.pnl>0).reduce((a,x)=>a+x.pnl,0),gl=Math.abs(r.closed.filter(x=>x.pnl<0).reduce((a,x)=>a+x.pnl,0));V0411_RESULTS.push({window:w.n,from:cut.dates[0],to:cut.dates.at(-1),variant:v.id,...r,wins,gw,gl});}v0411Paint();if(bar)bar.style.width=`${(i+1)*10}%`;await v0406Yield(50)}if(st)st.textContent=V0411_ABORT?`Stoppad efter ${Math.max(0,...V0411_RESULTS.map(x=>x.window))}/10 perioder.`:'✓ Exit Lab klart · 10/10 perioder analyserade.';}catch(e){if(st)st.textContent='⚠ Exit Lab: '+String(e?.message||e)}finally{V0411_RUNNING=false;if(run)run.disabled=false;if(stop)stop.hidden=true}}
 window.addEventListener('DOMContentLoaded',()=>{v0411Paint();document.getElementById('v0411Run')?.addEventListener('click',v0411Run);document.getElementById('v0411Stop')?.addEventListener('click',()=>V0411_ABORT=true);document.getElementById('v0411Share')?.addEventListener('click',v0411Share)});
+
+
+// ============================================================
+// V0.41.2 – EXIT LAB 2 · förregistrerad parameterkarta
+// 5 stop × 5 delay × 5 target × 5 hold = 625 kombinationer.
+// Exakt samma frysta PRO2-entries återspelas. Ingen entryoptimering.
+// ============================================================
+const V0412_STOPS=[.004,.006,.008,.010,.012];
+const V0412_DELAYS=[0,1,2,3,4]; // 5-min bars: 0,5,10,15,20 min
+const V0412_TARGETS=[.006,.008,.010,.012,.015];
+const V0412_HOLDS=[4,6,8,10,12]; // 20,30,40,50,60 min
+const V0412_VARIANTS=[];
+for(const stop of V0412_STOPS)for(const delay of V0412_DELAYS)for(const target of V0412_TARGETS)for(const hold of V0412_HOLDS){
+ V0412_VARIANTS.push({id:`S${stop}_D${delay}_T${target}_H${hold}`,stop,delay,target,hold,name:`S−${(stop*100).toFixed(1)}% · D${delay*5}m · M+${(target*100).toFixed(1)}% · H${hold*5}m`});
+}
+let V0412_RESULTS=[],V0412_RUNNING=false,V0412_ABORT=false,V0412_RANKED=[];
+function v0412Agg(){
+ const by=new Map();
+ for(const x of V0412_RESULTS){let a=by.get(x.variant);if(!a){a={variant:x.variant,rs:[],n:0,pnl:0,gw:0,gl:0,wins:0,maxDD:0};by.set(x.variant,a)}a.rs.push(x);a.n+=x.n;a.pnl+=x.pnl;a.gw+=x.gw;a.gl+=x.gl;a.wins+=x.wins;a.maxDD=Math.min(a.maxDD,x.dd)}
+ const all=[...by.values()].map(a=>{const v=V0412_VARIANTS.find(z=>z.id===a.variant),pf=a.gl?a.gw/a.gl:(a.gw?Infinity:0),pos=a.rs.filter(x=>x.ret>0).length,wr=a.n?a.wins/a.n:0;return {...a,v,pf,pos,wr}});
+ // transparent ranking: PF capped 2.0 + positive periods + normalized pnl - DD penalty.
+ if(!all.length)return [];
+ const pn=all.map(a=>a.pnl),lo=Math.min(...pn),hi=Math.max(...pn),norm=x=>hi===lo?.5:(x-lo)/(hi-lo);
+ for(const a of all){a.score=35*Math.min(a.pf,2)/2 + 30*(a.pos/10) + 25*norm(a.pnl) + 10*Math.max(0,1-Math.abs(a.maxDD)/.05)}
+ all.sort((a,b)=>b.score-a.score||b.pnl-a.pnl);return all;
+}
+function v0412NeighborCount(a,ranked){
+ // Robust zone: nearby grid points (one step in exactly one parameter) that are PF>=1 and pnl>0.
+ const idx=(arr,x)=>arr.indexOf(x), ai=[idx(V0412_STOPS,a.v.stop),idx(V0412_DELAYS,a.v.delay),idx(V0412_TARGETS,a.v.target),idx(V0412_HOLDS,a.v.hold)];
+ let good=0,total=0;
+ for(let d=0;d<4;d++)for(const step of [-1,1]){const z=[...ai];z[d]+=step;const arrays=[V0412_STOPS,V0412_DELAYS,V0412_TARGETS,V0412_HOLDS];if(z[d]<0||z[d]>=arrays[d].length)continue;total++;const id=`S${arrays[0][z[0]]}_D${arrays[1][z[1]]}_T${arrays[2][z[2]]}_H${arrays[3][z[3]]}`,n=ranked.find(x=>x.variant===id);if(n&&n.pf>=1&&n.pnl>0)good++}
+ return {good,total};
+}
+function v0412Paint(){
+ const body=document.getElementById('v0412Rows'),sum=document.getElementById('v0412Summary'),share=document.getElementById('v0412Share');if(!body)return;
+ V0412_RANKED=v0412Agg();
+ body.innerHTML=V0412_RANKED.slice(0,20).map((a,i)=>{const nb=v0412NeighborCount(a,V0412_RANKED);return `<tr><td>${i+1}</td><td><b>${a.v.name}</b></td><td class="${a.pnl>=0?'good':'bad'}">${a.pnl>=0?'+':''}${a.pnl.toFixed(0)}</td><td>${v0411FmtPF(a.pf)}</td><td>${a.pos}/10</td><td>${(a.maxDD*100).toFixed(2)}%</td><td>${nb.good}/${nb.total}</td></tr>`}).join('');
+ if(!V0412_RESULTS.length){sum.textContent='Ingen masskörning ännu.';if(share)share.disabled=true;return}
+ const done=Math.max(...V0412_RESULTS.map(x=>x.window)),best=V0412_RANKED[0],positive=V0412_RANKED.filter(x=>x.pnl>0).length,pf1=V0412_RANKED.filter(x=>x.pf>=1).length;
+ sum.innerHTML=`<b>${done}/10 perioder · ${(V0412_RESULTS.length).toLocaleString('sv-SE')} simuleringar klara</b>${best?`<br>Bäst hittills: <b>${best.v.name}</b> · P/L ${best.pnl>=0?'+':''}${best.pnl.toFixed(0)} · PF ${v0411FmtPF(best.pf)} · +perioder ${best.pos}/10`:''}<br><span class="muted">Positiv P/L: ${positive}/625 · PF ≥ 1: ${pf1}/625. Robusthet = lönsamma närmaste grannar i parameterkartan.</span>`;
+ if(share)share.disabled=done<10;
+}
+function v0412Report(){
+ const R=v0412Agg(),L=['LINAS OPTI – EXIT LAB 2 · PARAMETERKARTA','Version: '+APP_VERSION,'Skapad: '+new Date().toISOString(),'Handel: AVSTÄNGD (backtest/paper)','','METOD','Förregistrerad grid: stop 0,4/0,6/0,8/1,0/1,2%; delay 0/5/10/15/20 min; mål 0,6/0,8/1,0/1,2/1,5%; max hålltid 20/30/40/50/60 min.','625 kombinationer × 10 historiska 20-handelsdagarsperioder. Exakt samma frysta PRO2-entries; endast exit ändras.','Ranking används för forskning och är INTE oberoende validering.',''];
+ const positive=R.filter(x=>x.pnl>0).length,pf1=R.filter(x=>x.pf>=1).length;L.push(`SAMMANFATTNING | kombinationer ${R.length}/625 | positiv P/L ${positive} | PF>=1 ${pf1}`,'','TOPP 50');
+ R.slice(0,50).forEach((a,i)=>{const nb=v0412NeighborCount(a,R);L.push(`${i+1}. ${a.v.name} | P/L ${a.pnl.toFixed(2)} | PF ${v0411FmtPF(a.pf)} | WR ${(a.wr*100).toFixed(1)}% | +perioder ${a.pos}/10 | värsta DD ${(a.maxDD*100).toFixed(2)}% | robusta grannar ${nb.good}/${nb.total} | score ${a.score.toFixed(2)}`)});
+ L.push('','ALLA 625 KOMBINATIONER');R.forEach((a,i)=>{const nb=v0412NeighborCount(a,R);L.push(`${i+1}|${a.v.stop}|${a.v.delay*5}|${a.v.target}|${a.v.hold*5}|${a.pnl.toFixed(2)}|${v0411FmtPF(a.pf)}|${(a.wr*100).toFixed(2)}|${a.pos}|${(a.maxDD*100).toFixed(3)}|${nb.good}/${nb.total}|${a.score.toFixed(3)}`)});
+ L.push('','OBS: Dessa 10 perioder är nu utvecklingsdata för Exit Lab 2. En vald kandidat måste senare frysas och testas på nya orörda perioder.');return L.join('\n');
+}
+async function v0412Share(){const text=v0412Report(),file=new File([text],`linasopti_exitlab2_${new Date().toISOString().slice(0,10)}.txt`,{type:'text/plain'});try{if(navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}))){await navigator.share({title:'Linas Opti Exit Lab 2',files:[file]});return}}catch(e){if(e?.name==='AbortError')return}const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}
+async function v0412Run(){
+ if(V0412_RUNNING)return;V0412_RUNNING=true;V0412_ABORT=false;V0412_RESULTS=[];V0412_RANKED=[];v0412Paint();
+ const run=document.getElementById('v0412Run'),stop=document.getElementById('v0412Stop'),st=document.getElementById('v0412Status'),bar=document.getElementById('v0412Bar');if(run)run.disabled=true;if(stop)stop.hidden=false;
+ try{for(let i=0;i<V0410_WINDOWS.length;i++){if(V0412_ABORT)break;const w=V0410_WINDOWS[i];if(st)st.innerHTML=`<span class="v0406-spinner small"></span> ${i+1}/10 · hämtar ${w.label}…`;if(bar)bar.style.width=`${i*10}%`;await v0406Yield(40);const cut=await v0410FetchWindow(w);if(st)st.innerHTML=`<span class="v0406-spinner small"></span> ${i+1}/10 · kör 625 exitkombinationer…`;await v0406Yield(20);const pro=daytradePro(cut.rows,100000,.005);let k=0;for(const v of V0412_VARIANTS){if(V0412_ABORT)break;const r=v0411Replay(cut.rows,pro,v),wins=r.closed.filter(x=>x.pnl>0).length,gw=r.closed.filter(x=>x.pnl>0).reduce((a,x)=>a+x.pnl,0),gl=Math.abs(r.closed.filter(x=>x.pnl<0).reduce((a,x)=>a+x.pnl,0));V0412_RESULTS.push({window:w.n,from:cut.dates[0],to:cut.dates.at(-1),variant:v.id,...r,wins,gw,gl});if(++k%75===0){if(st)st.innerHTML=`<span class="v0406-spinner small"></span> ${i+1}/10 · ${k}/625 kombinationer…`;await v0406Yield(0)}}v0412Paint();if(bar)bar.style.width=`${(i+1)*10}%`;await v0406Yield(40)}if(st)st.textContent=V0412_ABORT?`Stoppad efter ${Math.max(0,...V0412_RESULTS.map(x=>x.window))}/10 perioder.`:'✓ Exit Lab 2 klart · 6 250 simuleringar analyserade.';
+ }catch(e){if(st)st.textContent='⚠ Exit Lab 2: '+String(e?.message||e)}finally{V0412_RUNNING=false;if(run)run.disabled=false;if(stop)stop.hidden=true}
+}
+window.addEventListener('DOMContentLoaded',()=>{v0412Paint();document.getElementById('v0412Run')?.addEventListener('click',v0412Run);document.getElementById('v0412Stop')?.addEventListener('click',()=>V0412_ABORT=true);document.getElementById('v0412Share')?.addEventListener('click',v0412Share)});

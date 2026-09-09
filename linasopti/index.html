@@ -23,7 +23,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.41.1</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.41.2</div></div></div></div></header>
 
 <div class="tabs">
 <button class="tab active" data-pane="data">1. Data</button>
@@ -353,8 +353,26 @@
  <div id="v0411Summary" class="v0410-summary muted">Ingen Exit Lab-körning ännu.</div>
  <div class="v0410-tablewrap"><table class="v0410-table"><thead><tr><th>Variant</th><th>Perioder</th><th>Affärer</th><th>P/L</th><th>PF</th><th>WR</th><th>+perioder</th></tr></thead><tbody id="v0411Rows"></tbody></table></div>
 </div>
+<div class="card v0410-labhero" style="margin-top:16px;border-color:#c9e6dd">
+  <div class="v0410-labtitle"><span class="v0410-flask">🧬</span><div><h2>Exit Lab 2 · Parameterkarta</h2><div class="muted">Massprovar en förregistrerad exit-grid på exakt samma frysta PRO2-entries.</div></div></div>
+  <div class="v0410-lock">🔒 PRO2-entry, signalurval, shares och friktion låsta · endast exitparametrar ändras</div>
+  <div class="v0410-labgrid">
+    <div><span>Stop</span><b>0,4 · 0,6 · 0,8 · 1,0 · 1,2%</b></div><div><span>Stop-delay</span><b>0 · 5 · 10 · 15 · 20 min</b></div>
+    <div><span>Mål</span><b>0,6 · 0,8 · 1,0 · 1,2 · 1,5%</b></div><div><span>Max hålltid</span><b>20 · 30 · 40 · 50 · 60 min</b></div>
+  </div>
+  <div class="v0410-summary"><b>625 kombinationer × 10 perioder = 6 250 simuleringar</b><br><span class="muted">Rankning premierar PF, P/L, positiva perioder och låg drawdown. Vi letar efter robusta zoner – inte en ensam magisk vinnare.</span></div>
+  <button id="v0412Run" class="primary v0410-big">Kör Exit Lab 2 · 6 250 simuleringar</button>
+  <button id="v0412Stop" class="secondary" hidden>Stoppa efter pågående period</button>
+  <div id="v0412Status" class="v0410-status">Redo för massprovning.</div>
+  <div class="v0410-progress"><div id="v0412Bar"></div></div>
+</div>
+<div class="card">
+ <div class="v0410-summaryhead"><div><h2>Parameterkarta · toppkandidater</h2><div class="muted">Topp 20 visas. En kandidat är forskning – inte oberoende validerad.</div></div><button id="v0412Share" class="secondary" disabled>Dela massrapport</button></div>
+ <div id="v0412Summary" class="v0410-summary muted">Ingen masskörning ännu.</div>
+ <div class="v0410-tablewrap"><table class="v0410-table"><thead><tr><th>#</th><th>Exit</th><th>P/L</th><th>PF</th><th>+perioder</th><th>DD</th><th>Robusthet</th></tr></thead><tbody id="v0412Rows"></tbody></table></div>
+</div>
 <details class="card v0410-details">
-  <summary>Vad Testlab gör i V0.41.1</summary>
+  <summary>Vad Testlab gör i V0.41.2</summary>
   <div class="muted" style="margin-top:10px">Den här första versionen är medvetet enkel: den automatiserar exakt kontrollarbetet vi nyss gjorde manuellt. När 10/10 reproduceras har vi ett säkert fundament för nästa steg: massprovning av exitvarianter och därefter robusthets-/valideringskörningar.</div>
 </details>
 </section>
