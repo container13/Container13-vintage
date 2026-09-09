@@ -1,3 +1,20 @@
+# V0.43.2 – mobilpolish Testlab
+
+- Day Selection/Testlab-korten använder full tillgänglig mobilbredd.
+- Tabellerna hålls inne i kortet och får horisontell scroll vid behov i stället för att pressa layouten.
+- Körknappar, status och progresslinje fyller samma kortbredd.
+- Forskningsmotor- och Labb-rullgardinerna behåller den stora, knapp-lika utformningen från V0.43.1.
+- Ingen strategi-, data-, Worker- eller Day Selection-logik ändrad.
+- ZIP är flat: endast de sju filer som ska läggas direkt i /linasopti/.
+
+# V0.43.1 – navigation finalfix
+
+- Regim/Entry/Exit/Day Selection-väljaren kan nu endast visas när Forskningsmotor = Testlab.
+- Tester-läge visar endast Data, Test och Resultat.
+- Navigationsläget styrs samtidigt via DOM-state, hidden, inline !important och CSS-state för att undvika iOS Safari/CSS-state-problem.
+- Båda rullgardinsmenyerna är nu visuellt lika stora som Data/Test/Resultat-knapparna.
+- Day Selection 1/2 och all strategi-/forskningslogik är oförändrad från V0.43.0.
+
 # V0.43.0 – Day Selection 1 + Day Selection 2
 
 - Robotmognad: 42/100 efter Regim Lab 2 OOS.

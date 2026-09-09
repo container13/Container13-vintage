@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.43.0";
+const APP_VERSION = "V0.43.2";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -67,8 +67,10 @@ function show(p,fromTab=false){
   const testerNav=document.getElementById("v0424TesterNav");
   const inLab=p==="testlab";
   if(engine) engine.value=inLab?"testlab":"tester";
-  if(labPick) labPick.hidden=!inLab;
-  if(testerNav) testerNav.hidden=inLab;
+  // V0.43.1: one authoritative navigation state. Do not rely on hidden alone (iOS Safari/CSS can resurrect the label).
+  document.documentElement.dataset.researchMode=inLab?"testlab":"tester";
+  if(labPick){ labPick.hidden=!inLab; labPick.style.setProperty("display",inLab?"grid":"none","important"); labPick.setAttribute("aria-hidden",inLab?"false":"true"); }
+  if(testerNav){ testerNav.hidden=inLab; testerNav.style.setProperty("display",inLab?"none":"grid","important"); testerNav.setAttribute("aria-hidden",inLab?"true":"false"); }
   document.querySelectorAll(".v0424-subtab").forEach(b=>b.classList.toggle("active",b.dataset.pane===p));
   ["data","test","result","testlab"].forEach(x=>$("pane-"+x).classList.toggle("hidden",x!==p));
   if(fromTab){
