@@ -1,3 +1,12 @@
+# V0.42.5 – Forskningsmotor nav-polish
+
+- Fix: Testlab/labbväljaren är nu hårt dold när **Tester** är valt.
+- Tester visar endast **Data · Test · Resultat**.
+- Testlab döljer testerknapparna och visar endast labbväljaren.
+- Ny tydligare mobil navigation: större träffytor, tydligare nivåer och mindre formulärfältskänsla.
+- Ingen strategi-, test-, data- eller Worker-logik ändrad.
+- Ingen bild genererad eller ändrad.
+
 # V0.42.4 – Forskningsmotor navigation
 
 - Forskningsmotor har nu två huvudval: **Tester** och **Testlab**.

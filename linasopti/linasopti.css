@@ -647,3 +647,37 @@ body.v0384-locked > .lina-watermark{
 .v0410-labhero{display:flex;flex-direction:column}.v0410-labhero>.v0410-big{order:-10;margin:0 0 14px!important}
 @media(max-width:560px){.v0423-researchbar{gap:6px}.v0423-enginepick{flex:0 1 42%}.v0423-labpick{flex:1 1 58%}.v0423-enginepick span{display:none}.v0423-enginepick select,.v0423-labpick select{width:100%;min-width:0;font-size:13px;padding:0 8px}}
 \n\n/* V0.42.4 – hierarkisk Forskningsmotor: Tester ELLER Testlab */\n.v0424-researchbar{display:grid;grid-template-columns:minmax(220px,.9fr) minmax(0,1.35fr);gap:10px;align-items:stretch;margin:10px 0 12px;position:relative;z-index:25}\n.v0424-enginepick,.v0424-labpick{display:flex;align-items:center;gap:8px;min-width:0;margin:0}\n.v0424-enginepick select,.v0424-labpick select{width:100%;min-height:54px;border:2px solid #b9cce1;border-radius:16px;background:#fff;padding:0 14px;font-size:15px;font-weight:900;color:#182331;box-shadow:0 3px 10px rgba(20,45,75,.08)}\n.v0424-enginepick span{font-size:20px}.v0424-testernav{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;min-width:0}\n.v0424-subtab{min-height:54px;border:2px solid #d2dce7;border-radius:16px;background:#fff;color:#243243;font-size:15px;font-weight:900;box-shadow:0 3px 10px rgba(20,45,75,.06)}\n.v0424-subtab.active{background:#2678b8;color:#fff;border-color:#2678b8}\n.v0424-runstatus{margin-top:-5px;margin-bottom:7px;text-align:center;font-weight:800}\n@media(max-width:560px){.v0424-researchbar{grid-template-columns:1fr;gap:7px}.v0424-enginepick span{display:none}.v0424-enginepick select,.v0424-labpick select{min-height:52px;font-size:15px}.v0424-subtab{min-height:48px;font-size:14px}.v0424-testernav{gap:6px}}\n
+
+/* V0.42.5 – ren, villkorad Forskningsmotor */
+#v0423LabPick[hidden],#v0424TesterNav[hidden]{display:none!important}
+.v0424-researchbar{
+  display:grid;grid-template-columns:auto minmax(150px,.62fr) minmax(0,1.38fr);
+  gap:10px;align-items:center;margin:12px 0 14px;padding:10px;
+  border:1px solid #d7e0e9;border-radius:20px;background:rgba(255,255,255,.92);
+  box-shadow:0 6px 18px rgba(27,48,72,.07);position:relative;z-index:25
+}
+.v0425-navlabel{font-size:12px;font-weight:950;letter-spacing:.08em;color:#607080;white-space:nowrap;padding-left:3px}
+.v0424-enginepick,.v0424-labpick{display:flex;align-items:center;gap:8px;min-width:0;margin:0}
+.v0424-enginepick select,.v0424-labpick select{
+  width:100%;min-height:56px;border:0;border-radius:16px;background:#eef4f9;
+  padding:0 42px 0 16px;font-size:17px;font-weight:950;color:#142233;
+  box-shadow:inset 0 0 0 2px #cbd9e7
+}
+.v0424-enginepick select:focus,.v0424-labpick select:focus{outline:3px solid rgba(38,120,184,.18);outline-offset:1px}
+.v0424-testernav{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;min-width:0}
+.v0424-subtab{
+  min-height:56px;border:0;border-radius:16px;background:#edf1f5;color:#526171;
+  font-size:16px;font-weight:950;box-shadow:inset 0 0 0 1px #dce4ec
+}
+.v0424-subtab.active{background:#2678b8;color:#fff;box-shadow:0 5px 14px rgba(38,120,184,.22)}
+.v0425-labtag{font-size:11px;font-weight:950;letter-spacing:.08em;color:#607080;white-space:nowrap}
+.v0424-labpick select{background:#fff8e9;box-shadow:inset 0 0 0 2px #e6c779}
+@media(max-width:560px){
+ .v0424-researchbar{grid-template-columns:1fr;padding:9px;gap:8px;border-radius:18px}
+ .v0425-navlabel{padding:1px 5px 0}
+ .v0424-enginepick select,.v0424-labpick select{min-height:54px;font-size:17px}
+ .v0424-testernav{gap:7px}
+ .v0424-subtab{min-height:52px;font-size:16px}
+ .v0424-labpick{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px}
+ .v0425-labtag{padding-left:5px}
+}
