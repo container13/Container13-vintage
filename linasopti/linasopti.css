@@ -610,3 +610,15 @@ body.v0384-locked > .lina-watermark{
 /* V0.40.5 – startdatum synligt i 5-min-flödet */
 #intraPeriodPanel .day-custom-period.v0368-day-control{display:block!important}
 #intraPeriodPanel #dayStart{display:block!important;min-height:48px;font-size:18px}
+
+
+/* V0.40.6 – levande hämtning/test + datatypstyrt resultat */
+.v0406-live{display:flex!important;align-items:center;gap:9px}
+.v0406-spinner{display:inline-block;width:18px;height:18px;border:3px solid currentColor;border-right-color:transparent;border-radius:50%;animation:v0406spin .75s linear infinite;flex:0 0 auto}
+.v0406-spinner.small{width:14px;height:14px;border-width:2px;vertical-align:-2px;margin-right:5px}
+.v0406-dots::after{content:"";animation:v0406dots 1.2s steps(4,end) infinite}
+@keyframes v0406spin{to{transform:rotate(360deg)}}
+@keyframes v0406dots{0%{content:""}25%{content:"."}50%{content:".."}75%,100%{content:"..."}}
+.v0406-run-status{margin-top:10px;padding:13px 14px;border-radius:12px;background:rgba(36,99,235,.08);font-size:15px;min-height:22px}
+.v0406-result-type{display:inline-block;margin:0 0 10px;padding:7px 11px;border-radius:999px;background:rgba(36,99,235,.10);font-weight:700;font-size:13px}
+#fetchDataBtn:disabled,#runBtn:disabled{opacity:.72;cursor:wait}

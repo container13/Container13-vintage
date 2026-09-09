@@ -1,11 +1,7 @@
-# Linas Opti V0.40.5 – Day-period + arbetsflöde
+# Linas Opti V0.40.6 – levande status och rena resultat
 
-Bygger på V0.40.4.
-
-- Återställer synligt **Startdatum** när 5-min-data är vald.
-- 5 / 20 / 60 handelsdagar uppdaterar direkt texten med valt startdatum.
-- Efter ett genomfört test och återgång till Data släcks **Test · REDO**.
-- Data och senaste resultat ligger kvar; endast arbetsflödets redo-status nollställs.
-- Data-sidan visar: **Senaste test klart · välj ny period och hämta data.**
-- Ny datahämtning tänder Test · REDO igen.
-- Lina Day PRO 2-strategin är fortsatt fryst; ingen strategilogik ändrad.
+- Hämta data visar spinner, löpande sekunder och tydlig aktivitet tills svaret är klart.
+- Kör Linas Opti visar stegvis status: start, baseline, PRO 2, analys och klart.
+- Resultat visar bara sektioner för data som faktiskt finns: dagsdata eller 5-min-data.
+- PRO 2-strategin från V0.40.2 är fryst och oförändrad.
+- V0.40.5 datatyp/period/reset-flöde behålls.

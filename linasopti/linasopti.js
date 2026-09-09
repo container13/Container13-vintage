@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.40.5";
+const APP_VERSION = "V0.40.6";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -132,13 +132,37 @@ function paintBridgeDone(count,tf){
   requestAnimationFrame(()=>{ el.textContent=text; void el.offsetWidth; });
   setTimeout(()=>{ if(el.textContent!==text) el.textContent=text; },120);
 }
+function v0406Busy(el, text){
+ if(!el)return;
+ el.className="status v0406-live";
+ el.innerHTML='<span class="v0406-spinner" aria-hidden="true"></span><span>'+text+'</span><span class="v0406-dots" aria-hidden="true"></span>';
+}
+function v0406SetTestStage(text){
+ const el=document.getElementById("v0406RunStatus");
+ if(!el)return;
+ el.hidden=false;
+ el.className="v0406-run-status v0406-live";
+ el.innerHTML='<span class="v0406-spinner" aria-hidden="true"></span><strong>'+text+'</strong><span class="v0406-dots" aria-hidden="true"></span>';
+}
+function v0406Yield(ms=35){return new Promise(r=>setTimeout(r,ms));}
+function v0406ResultContext(hasDaily,has5){
+ document.querySelectorAll(".v0406-daily-only").forEach(el=>el.style.display=hasDaily?"":"none");
+ document.querySelectorAll(".v0406-intra-only").forEach(el=>el.style.display=has5?"":"none");
+ const both=hasDaily&&has5;
+ const label=document.getElementById("v0406ResultType");
+ if(label){label.textContent=both?"Dagsdata + 5-min-data":has5?"5-min-data · Lina Day":"Dagsdata · Swing / Trend";label.hidden=false;}
+}
+
 async function getBars(tf){
  V0404_TEST_READY_ACK=false;
  V0405_TEST_COMPLETED=false;
  if(currentProvider()==="eodhd" && tf!=="1Day"){const el=$("bridgeStatus");if(el){el.className="status bad";el.textContent="Opti Day/5-min är tills vidare endast USA.";}return;}
  const btn=tf==="1Day"?$("dailyBtn"):$("intraBtn"); const old=btn?.textContent;
  try{
-  if(btn){btn.disabled=true;btn.textContent="Hämtar…";} $("bridgeStatus").className="status"; $("bridgeStatus").textContent="Hämtar...";
+  if(btn){btn.disabled=true;btn.textContent="Hämtar…";}
+  const fetchBtn=document.getElementById("fetchDataBtn"); if(fetchBtn){fetchBtn.disabled=true;fetchBtn.innerHTML='<span class="v0406-spinner small"></span> Hämtar data…';}
+  const bs=$("bridgeStatus"); v0406Busy(bs,"Kontaktar datakällan");
+  let secs=0; const ticker=setInterval(()=>{secs++; const live=$("bridgeStatus"); if(live&&live.classList.contains("v0406-live")){const txt=tf==="5Min"?"Hämtar 5-min-data":"Hämtar dagsdata";v0406Busy(live,txt+" · "+secs+" s");}},1000);
   let rows=[];
   if(currentProvider()==="eodhd" && tf==="1Day"){
    const syms=$("symbols").value.split(",").map(x=>x.trim().toUpperCase()).filter(Boolean);
@@ -157,7 +181,11 @@ async function getBars(tf){
     if(st) st.textContent=dates.length?`✓ ${dates.length} handelsdagar: ${dates[0]} → ${dates[dates.length-1]}`:`Inga handelsdagar hittades från ${w.start}.`;
   }
   if(tf==="1Day")DAILY=rows;else INTRA=rows; updateTestDataStatus();updateDataStatus();v035RefreshGuide();paintBridgeDone(rows.length,tf);
- }catch(e){$("bridgeStatus").className="status bad";$("bridgeStatus").textContent=e.message;}finally{if(btn){btn.disabled=false;btn.textContent=old;}}
+ }catch(e){$("bridgeStatus").className="status bad";$("bridgeStatus").textContent=e.message;}finally{
+  try{clearInterval(ticker);}catch(e){}
+  if(btn){btn.disabled=false;btn.textContent=old;}
+  const fetchBtn=document.getElementById("fetchDataBtn"); if(fetchBtn){fetchBtn.disabled=false;fetchBtn.textContent="Hämta data";}
+ }
 }
 $("dailyBtn").onclick=()=>getBars("1Day");$("intraBtn").onclick=()=>getBars("5Min");
 
@@ -697,24 +725,30 @@ window.addEventListener("DOMContentLoaded",()=>{
 window.addEventListener("DOMContentLoaded",()=>{
  const btn=$("runBtn");
  if(!btn)return;
- btn.addEventListener("click",()=>{
+ btn.addEventListener("click",async ()=>{
   const status=$("testDataStatus");
   try{
    let cap=+$("capital").value;
    if(!DAILY.length&&!INTRA.length){if(status)status.innerHTML='<span class="bad">Ingen data inläst.</span>';return;}
    btn.disabled=true; const oldText=btn.textContent; btn.textContent="Kör test…";
+   v0406SetTestStage("Startar Linas Opti"); await v0406Yield(60);
    let start=$("evalStart")?.value||"",mp=+$("maxpos").value;
-   let s=DAILY.length?swing(DAILY,cap,mp,start):null;
-   let t=DAILY.length?optiTrend(DAILY,cap,start):null;
-   let w=(DAILY.length&&isUsMarket())?swingWorld(DAILY,cap,mp,start):null;
-   let d=(INTRA.length&&isUsMarket())?daytrade(INTRA,cap,+$("risk").value):null;
+   let s=null,t=null,w=null,d=null;
+   if(DAILY.length){v0406SetTestStage("Kör Swing-baseline");await v0406Yield();s=swing(DAILY,cap,mp,start);}
+   if(DAILY.length){v0406SetTestStage("Kör Trend");await v0406Yield();t=optiTrend(DAILY,cap,start);}
+   if(DAILY.length&&isUsMarket()){v0406SetTestStage("Kör omvärldstest");await v0406Yield();w=swingWorld(DAILY,cap,mp,start);}
+   if(INTRA.length&&isUsMarket()){v0406SetTestStage("Kör Lina Day · Jägaren");await v0406Yield();d=daytrade(INTRA,cap,+$("risk").value);}
    let dB=null; // gamla Day A/B är fryst
-   let dPro=(INTRA.length&&isUsMarket())?daytradePro(INTRA,cap,+$("risk").value):null;
+   let dPro=null;
+   if(INTRA.length&&isUsMarket()){v0406SetTestStage("Kör Lina Day PRO 2");await v0406Yield();dPro=daytradePro(INTRA,cap,+$("risk").value);}
+   v0406SetTestStage("Bygger analys och resultat"); await v0406Yield();
    let audit=(DAILY.length&&s)?auditSwing(DAILY,s,cap):null;
    let dayAudit=d?auditDay(INTRA,d,cap):null;
    let dayProAudit=dPro?auditDay(INTRA,dPro,cap):null; let dayAnalysis=v0401DayAnalysis(d,dPro); LAST={s,t,w,d,dB,dPro,audit,dayAudit,dayProAudit,dayAnalysis};
    V0405_TEST_COMPLETED=true;
 
+   v0406ResultContext(!!DAILY.length,!!INTRA.length);
+   v0406SetTestStage("✓ Test klart"); await v0406Yield(180);
    // V0.36.6: detta är den verkliga slutpunkten för användarens test.
    // Visa Resultat + färdigkortet INNAN sekundära resultatpaneler renderas.
    show("result",false);
@@ -736,6 +770,7 @@ window.addEventListener("DOMContentLoaded",()=>{
    if(done){done.hidden=false;done.style.display="block";}
    window.scrollTo({top:0,behavior:"smooth"});
    btn.textContent=oldText; btn.disabled=false;
+   const rs=document.getElementById("v0406RunStatus"); if(rs)rs.hidden=true;
   }catch(err){
    console.error("Linas Opti run error",err);
    btn.disabled=false; btn.textContent="Kör Linas Opti";
@@ -1295,7 +1330,7 @@ window.addEventListener("DOMContentLoaded",()=>{
 })();
 
 
-// V0.40.5 – välj först datatyp, därefter visas endast relevanta perioder och en gemensam Hämta data-knapp.
+// V0.40.6 – välj först datatyp, därefter visas endast relevanta perioder och en gemensam Hämta data-knapp.
 window.addEventListener("DOMContentLoaded",()=>{
  let type="daily";
  const buttons=[...document.querySelectorAll(".v0404-type-btn")];
