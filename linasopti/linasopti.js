@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.40.3";
+const APP_VERSION = "V0.40.4";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -41,7 +41,7 @@ function setMarketGroup(key){
    const pi=document.getElementById("providerInfo"); if(pi)pi.textContent=`Datakälla: ${g.provider==="eodhd"?"EODHD":"Alpaca"} · Benchmark: ${g.benchmark}`;
    const ib=document.getElementById("intraBtn"); if(ib){ib.disabled=g.provider!=="alpaca";ib.title=g.provider!=="alpaca"?"Opti Day är tills vidare endast USA":"";}
    DAILY=[]; INTRA=[]; LAST=null;
-   updateTestDataStatus(); updateDataStatus();
+   updateTestDataStatus(); updateDataStatus(); if(window.V0404_REFRESH_DATATYPE)window.V0404_REFRESH_DATATYPE();
  });
 }
 window.addEventListener("DOMContentLoaded",()=>{
@@ -51,7 +51,13 @@ let DAILY=[], INTRA=[], LAST=null;
 const API_BASE = "https://linas-opti-api.mangaj73.workers.dev";
 const $=id=>document.getElementById(id);
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>show(b.dataset.pane,true));
+let V0404_TEST_READY_ACK=false;
 function show(p,fromTab=false){
+  if(p==="data" && fromTab && LAST){
+    V0404_TEST_READY_ACK=true;
+    const tt=document.querySelector('.tab[data-pane="test"]');
+    if(tt){tt.classList.remove("data-ready");tt.setAttribute("data-ready-label","");}
+  }
   document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.pane===p));
   ["data","test","result"].forEach(x=>$("pane-"+x).classList.toggle("hidden",x!==p));
   if(fromTab){
@@ -122,6 +128,7 @@ function paintBridgeDone(count,tf){
   setTimeout(()=>{ if(el.textContent!==text) el.textContent=text; },120);
 }
 async function getBars(tf){
+ V0404_TEST_READY_ACK=false;
  if(currentProvider()==="eodhd" && tf!=="1Day"){const el=$("bridgeStatus");if(el){el.className="status bad";el.textContent="Opti Day/5-min är tills vidare endast USA.";}return;}
  const btn=tf==="1Day"?$("dailyBtn"):$("intraBtn"); const old=btn?.textContent;
  try{
@@ -1029,7 +1036,7 @@ function v035RefreshGuide(label){
  if(check) check.textContent=rows?"Data klar ✓":"Välj grupp och period";
  if(next) next.hidden=!rows;
  const testTab=document.querySelector('.tab[data-pane="test"]');
- if(testTab){testTab.classList.toggle("data-ready",!!rows);testTab.setAttribute("data-ready-label",rows?"REDO":"");}
+ if(testTab){const ready=!!rows&&!V0404_TEST_READY_ACK;testTab.classList.toggle("data-ready",ready);testTab.setAttribute("data-ready-label",ready?"REDO":"");}
  const ts=document.getElementById("v035TestSummary");
  if(ts){
    if(dailyRows) ts.innerHTML=`<div class="v036-ready-line"><b>${name}</b><span>✓ Data klar</span></div><div>${p}</div><div>${dailyRows.toLocaleString("sv-SE")} dagsrader · ${Number(document.getElementById("capital")?.value||100000).toLocaleString("sv-SE")} startkapital</div><div class="good">Opti Swing · fryst strategi</div>`;
@@ -1281,6 +1288,26 @@ window.addEventListener("DOMContentLoaded",()=>{
 })();
 
 
+// V0.40.4 – välj först datatyp, därefter visas endast relevanta perioder och en gemensam Hämta data-knapp.
+window.addEventListener("DOMContentLoaded",()=>{
+ let type="daily";
+ const buttons=[...document.querySelectorAll(".v0404-type-btn")];
+ const daily=document.getElementById("dailyPeriodPanel"), intra=document.getElementById("intraPeriodPanel"), fetch=document.getElementById("fetchDataBtn");
+ const paint=()=>{
+   buttons.forEach(b=>b.classList.toggle("active",b.dataset.type===type));
+   daily?.classList.toggle("hidden",type!=="daily");
+   intra?.classList.toggle("hidden",type!=="intra");
+   if(fetch){
+     const blocked=type==="intra" && currentProvider()!=="alpaca";
+     fetch.disabled=blocked; fetch.textContent=blocked?"5-min-data finns tills vidare bara för USA":"Hämta data";
+   }
+ };
+ buttons.forEach(b=>b.addEventListener("click",()=>{type=b.dataset.type;paint();}));
+ fetch?.addEventListener("click",()=>getBars(type==="daily"?"1Day":"5Min"));
+ window.V0404_REFRESH_DATATYPE=paint;
+ paint();
+});
+
 // V0.40.3 – valfri Day-period. Hämtar extra kalenderdagar och trimmar sedan till exakt antal handelsdagar.
 window.addEventListener("DOMContentLoaded",()=>{
  const pad=n=>String(n).padStart(2,"0"), iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
@@ -1299,6 +1326,7 @@ window.addEventListener("DOMContentLoaded",()=>{
  };
  document.querySelectorAll(".day-period-btn").forEach(b=>b.addEventListener("click",()=>apply(+b.dataset.days)));
  dayStart?.addEventListener("change",()=>{ const a=document.querySelector(".day-period-btn.active"); if(a)apply(+a.dataset.days); });
+ const initial=document.querySelector(".day-period-btn.active"); if(initial)apply(+initial.dataset.days);
 });
 
 // V0.35 guided-flow observer: UI-only; does not alter data or strategy.

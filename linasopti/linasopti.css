@@ -594,3 +594,14 @@ body.v0384-locked > .lina-watermark{
 .tab.data-ready{position:relative;font-weight:800;box-shadow:inset 0 -3px 0 rgba(35,140,75,.65)}
 .tab.data-ready::after{content:" • REDO";font-size:.72em;color:#238c4b;font-weight:900}
 .v0400-pro{outline:2px solid rgba(138,79,158,.22);outline-offset:-2px}
+
+/* V0.40.4 – Datatyp → Period → Hämta */
+.v0404-dataflow{margin-top:12px}
+.v0404-step-title{font-weight:900;font-size:1.02rem;margin:16px 0 8px;color:#182331}
+.v0404-type-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.v0404-type-btn{min-height:58px;border:2px solid #d5dde6;border-radius:16px;background:#fff;color:#17212d;font-weight:900;font-size:1.03rem}
+.v0404-type-btn.active[data-type="daily"]{background:#246aa5;color:#fff;border-color:#246aa5;box-shadow:0 0 0 3px rgba(36,106,165,.12)}
+.v0404-type-btn.active[data-type="intra"]{background:#9148a6;color:#fff;border-color:#9148a6;box-shadow:0 0 0 3px rgba(145,72,166,.13)}
+.v0404-period-panel.hidden{display:none!important}
+.v0404-fetch{width:100%;min-height:58px;font-size:1.08rem;font-weight:900}
+.v0404-dataflow .v0391-day-fetch{margin-top:0}

@@ -1,18 +1,10 @@
-# Linas Opti V0.40.3 – Valfri Day-period
+# Linas Opti V0.40.4 – Datatypflöde
 
-Byggd direkt från V0.40.2 PRO 2.
+UI-uppdatering byggd från V0.40.3.
 
-## Nytt
-- Lina Day har ett eget valbart startdatum.
-- Välj 5, 20 eller 60 **handelsdagar från startdatumet**.
-- Appen hämtar en kalenderbuffert och trimmar därefter 5-minutersdatan till exakt valt antal faktiska handelsdagar.
-- Visar den faktiska perioden efter hämtning.
-- Gör det möjligt att köra frysta PRO 2 på äldre, separata eldprovsperioder.
-
-## Oförändrat
-- V0.39.4-baseline är oförändrad.
-- PRO 2-strategin från V0.40.2 är oförändrad.
-- Stop, mål, position, kostnader, ranking och tidsfilter är inte optimerade i denna version.
-- Worker/API är oförändrad.
-
-V0.40.3 är alltså en period-/test-UX-version, inte en ny strategi.
+- Dataflödet är nu: **Datatyp → Period → Hämta data**.
+- Två tydliga val: **Dagsdata** och **5-min-data**. Aktivt val markeras tydligt.
+- Endast relevanta periodval visas för vald datatyp.
+- En gemensam knapp **Hämta data** används för båda datatyperna.
+- Efter ett genomfört test släcks **Test • REDO** när användaren går tillbaka till Data. Ny data tänder REDO igen.
+- Lina Day PRO 2-strategin är fortsatt fryst; ingen strategi-, risk-, stop-, target- eller exekveringslogik har ändrats.

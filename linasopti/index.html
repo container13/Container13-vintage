@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.40.3">
+<link rel="stylesheet" href="linasopti.css?v=0.40.4">
 </head>
 <body class="v0384-locked">
 
@@ -23,7 +23,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.40.3</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.40.4</div></div></div></div></header>
 
 <div class="tabs">
 <button class="tab active" data-pane="data">1. Data</button>
@@ -60,46 +60,59 @@
   <div class="muted v29-market-note">⭐ Lina Selection 16 är ett historikbaserat urval från våra tidigare tester och använder Alpaca + SPY som benchmark. USA och de globala Alpaca-grupperna använder Alpaca; Norden 80 använder EODHD-dagsdata. Alla grupper kör samma frysta Opti Swing och benchmark handlas aldrig. Selection-resultat på överlappande historik är urvalstest – inte oberoende bevis.</div>
 </div>
 <label>Symboler, kommaseparerade<input id="symbols" value="AAPL,MSFT,NVDA,AMZN,META,TSLA,AMD,NFLX,AVGO,JPM,SPY"></label>
-<div class="v0383-period-card" aria-label="Välj tidsperiod">
-  <div class="v0383-period-title">Tidsperiod</div>
-  <div class="v0383-quick">
-    <button type="button" data-range-years="1">1 år</button>
-    <button type="button" data-range-years="3">3 år</button>
-    <button type="button" data-range-years="5">5 år</button>
-    <button type="button" data-range-years="10">10 år</button>
+<div class="v0404-dataflow" aria-label="Välj datatyp och period">
+  <div class="v0404-step-title">1. Datatyp</div>
+  <div class="v0404-type-buttons" role="group" aria-label="Datatyp">
+    <button type="button" class="v0404-type-btn active" data-type="daily">📅 Dagsdata</button>
+    <button type="button" class="v0404-type-btn" data-type="intra">⚡ 5-min-data</button>
   </div>
-  <div id="v0383Years" class="v0383-years" aria-label="Kalenderår"></div>
-  <details class="v0383-custom">
-    <summary>Egen period</summary>
-    <div class="row" style="margin-top:10px">
-      <label>Från<input id="start" type="date"></label>
-      <label>Till<input id="end" type="date"></label>
-    </div>
-    <div class="muted">Vid snabbval läggs indikatorernas warmup automatiskt före teststart. För egen period kan teststart finjusteras under Test → Avancerat &amp; testinställningar.</div>
-  </details>
-</div>
-<div class="v0391-day-fetch" aria-label="Lina Day 5-minutersdata">
-  <div class="v0391-day-title">⚡ Lina Day · Jägaren</div>
-  <div class="muted">Välj startdatum och antal handelsdagar. PRO 2-reglerna är fortfarande helt frysta.</div>
-  <div class="day-custom-period v0368-day-control" style="margin-top:10px">
-    <label style="display:block;max-width:230px">Startdatum för Day-test
-      <input id="dayStart" type="date" style="width:100%;margin-top:5px">
-    </label>
-  </div>
-  <div class="day-period-wrap v0368-day-control" aria-label="Valfri Lina Day-period">
-    <span class="period-label">Handelsdagar från start</span>
-    <button type="button" class="day-period-btn" data-days="5">5 dagar</button>
-    <button type="button" class="day-period-btn" data-days="20">20 dagar</button>
-    <button type="button" class="day-period-btn" data-days="60">60 dagar</button>
-  </div>
-  <div id="dayPeriodStatus" class="muted" style="margin:7px 0 2px">Välj ett startdatum och sedan 5, 20 eller 60 handelsdagar.</div>
-  <button class="purple v0368-day-control v0391-intra" id="intraBtn">Hämta 5-min-data för Jägaren</button>
-</div>
-</div>
-<div class="row" style="margin-top:9px">
-<button class="secondary v0368-dev-only" id="healthBtn">Testa anslutning</button>
-<button class="primary" id="dailyBtn">Hämta dagsdata</button>
 
+  <div class="v0404-step-title">2. Period</div>
+  <div id="dailyPeriodPanel" class="v0404-period-panel">
+    <div class="v0383-period-card" aria-label="Välj dagsdataperiod">
+      <div class="v0383-period-title">Dagsdata · Swing + Trend</div>
+      <div class="v0383-quick">
+        <button type="button" data-range-years="1">1 år</button>
+        <button type="button" data-range-years="3">3 år</button>
+        <button type="button" data-range-years="5">5 år</button>
+        <button type="button" data-range-years="10">10 år</button>
+      </div>
+      <div id="v0383Years" class="v0383-years" aria-label="Kalenderår"></div>
+      <details class="v0383-custom">
+        <summary>Egen period</summary>
+        <div class="row" style="margin-top:10px">
+          <label>Från<input id="start" type="date"></label>
+          <label>Till<input id="end" type="date"></label>
+        </div>
+        <div class="muted">Vid snabbval läggs indikatorernas warmup automatiskt före teststart. För egen period kan teststart finjusteras under Test → Avancerat &amp; testinställningar.</div>
+      </details>
+    </div>
+  </div>
+
+  <div id="intraPeriodPanel" class="v0404-period-panel hidden">
+    <div class="v0391-day-fetch" aria-label="Lina Day 5-minutersdata">
+      <div class="v0391-day-title">⚡ Lina Day · Jägaren</div>
+      <div class="muted">PRO 2 är fryst. Välj startdatum och antal handelsdagar.</div>
+      <div class="day-custom-period v0368-day-control" style="margin-top:10px">
+        <label style="display:block;max-width:230px">Startdatum
+          <input id="dayStart" type="date" style="width:100%;margin-top:5px">
+        </label>
+      </div>
+      <div class="day-period-wrap v0368-day-control" aria-label="Valfri Lina Day-period">
+        <span class="period-label">Handelsdagar från start</span>
+        <button type="button" class="day-period-btn" data-days="5">5 dagar</button>
+        <button type="button" class="day-period-btn active" data-days="20">20 dagar</button>
+        <button type="button" class="day-period-btn" data-days="60">60 dagar</button>
+      </div>
+      <div id="dayPeriodStatus" class="muted" style="margin:7px 0 2px">20 handelsdagar valda.</div>
+    </div>
+  </div>
+
+  <div class="v0404-step-title">3. Hämta</div>
+  <button class="primary v0404-fetch" id="fetchDataBtn">Hämta data</button>
+  <button class="secondary v0368-dev-only" id="healthBtn">Testa anslutning</button>
+  <button id="dailyBtn" hidden aria-hidden="true">Hämta dagsdata</button>
+  <button id="intraBtn" hidden aria-hidden="true">Hämta 5-min-data</button>
 </div>
 <div class="status" id="bridgeStatus">Linas Opti API är anslutet via Cloudflare.</div><div id="v0368DataReady" class="v0368-data-ready" hidden>
 <div class="v0368-ready-title">✓ Dagsdata klar</div>
@@ -338,5 +351,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.40.3"></script>
+<script src="linasopti.js?v=0.40.4"></script>
 </body></html>
