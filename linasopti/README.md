@@ -1,3 +1,9 @@
+# Linas Opti V0.41.1 – Exit Lab
+
+Byggd från verifierade V0.41.0. PRO2 och baseline är orörda.
+
+Nytt: Exit Lab återspelar exakt samma PRO2-entries över de 10 kontrollperioderna med tre förregistrerade exitregler: original, stop först efter 15 minuter, och ingen stop. Entrypris, shares och kostnadsmodell låses till PRO2. Detta är shadow-research och inte oberoende validering.
+
 Linas Opti V0.41.0 – Lina Testlab
 
 Byggd från verifierade V0.40.6.

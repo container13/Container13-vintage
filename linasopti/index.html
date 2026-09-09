@@ -23,7 +23,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.41.0</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.41.1</div></div></div></div></header>
 
 <div class="tabs">
 <button class="tab active" data-pane="data">1. Data</button>
@@ -336,8 +336,25 @@
   <div id="v0410Summary" class="v0410-summary muted">Ingen kontrollserie körd ännu.</div>
   <div class="v0410-tablewrap"><table class="v0410-table"><thead><tr><th>#</th><th>Period</th><th>Baseline</th><th>PRO2</th><th>Skillnad</th><th>Kontroll</th></tr></thead><tbody id="v0410Rows"></tbody></table></div>
 </div>
+<div class="card v0410-labhero" style="margin-top:16px;border-color:#d8d0ff">
+  <div class="v0410-labtitle"><span class="v0410-flask">🔬</span><div><h2>Exit Lab</h2><div class="muted">Samma frysta PRO2-entries. Lina ändrar bara exit efter köpet.</div></div></div>
+  <div class="v0410-lock">🔒 Entry, signalurval, position och friktion låsta · shadow-replay</div>
+  <div class="v0410-labgrid">
+    <div><span>Perioder</span><b>10 eldprov</b></div><div><span>Varianter</span><b>3 exitregler</b></div>
+    <div><span>PRO2</span><b>−0,6% / +1,0% / 40m</b></div><div><span>Forskningsläge</span><b>Ingen livehandel</b></div>
+  </div>
+  <button id="v0411Run" class="primary v0410-big">Kör Exit Lab · 30 simuleringar</button>
+  <button id="v0411Stop" class="secondary" hidden>Stoppa efter pågående period</button>
+  <div id="v0411Status" class="v0410-status">Redo. 10 perioder × 3 exitvarianter.</div>
+  <div class="v0410-progress"><div id="v0411Bar"></div></div>
+</div>
+<div class="card">
+ <div class="v0410-summaryhead"><div><h2>Exit-resultat</h2><div class="muted">Första forskningsbatteriet: original, fördröjd stop och ingen stop.</div></div><button id="v0411Share" class="secondary" disabled>Dela Exit Lab</button></div>
+ <div id="v0411Summary" class="v0410-summary muted">Ingen Exit Lab-körning ännu.</div>
+ <div class="v0410-tablewrap"><table class="v0410-table"><thead><tr><th>Variant</th><th>Perioder</th><th>Affärer</th><th>P/L</th><th>PF</th><th>WR</th><th>+perioder</th></tr></thead><tbody id="v0411Rows"></tbody></table></div>
+</div>
 <details class="card v0410-details">
-  <summary>Vad Testlab gör i V0.41.0</summary>
+  <summary>Vad Testlab gör i V0.41.1</summary>
   <div class="muted" style="margin-top:10px">Den här första versionen är medvetet enkel: den automatiserar exakt kontrollarbetet vi nyss gjorde manuellt. När 10/10 reproduceras har vi ett säkert fundament för nästa steg: massprovning av exitvarianter och därefter robusthets-/valideringskörningar.</div>
 </details>
 </section>

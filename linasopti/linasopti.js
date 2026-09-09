@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.41.0";
+const APP_VERSION = "V0.41.1";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -1517,7 +1517,7 @@ function v0368UpdateContextUI(){
 
 
 // ============================================================
-// V0.41.0 – LINA TESTLAB · automatisk kontrollserie
+// V0.41.1 – LINA TESTLAB · automatisk kontrollserie
 // PRO2 och baseline ovan är medvetet orörda. Testlab anropar dem bara.
 // ============================================================
 const V0410_SYMBOLS="HD,BAC,AMD,INTC,GOOGL,NVDA,CRM,UBER,ADBE,MU,PYPL,AMZN,WMT,CSCO,KO,QCOM,SPY";
@@ -1592,3 +1592,52 @@ window.addEventListener("DOMContentLoaded",()=>{
  document.getElementById("v0410StopControl")?.addEventListener("click",()=>{V0410_ABORT=true;const s=document.getElementById("v0410LabStatus");if(s)s.textContent="Stoppar efter pågående period…"});
  document.getElementById("v0410Share")?.addEventListener("click",v0410Share);
 });
+
+
+// ============================================================
+// V0.41.1 – EXIT LAB · shadow-replay på EXAKT samma PRO2-entries
+// PRO2-signaler, entrypris, shares och friktion lämnas orörda.
+// Varianten ändrar bara vad som händer EFTER entry.
+// ============================================================
+const V0411_VARIANTS=[
+ {id:"P2",name:"PRO2 original",stop:.006,target:.010,hold:8,delay:0},
+ {id:"A",name:"PRO3-A · stop efter 15 min",stop:.006,target:.010,hold:8,delay:3},
+ {id:"B",name:"PRO3-B · ingen stop",stop:null,target:.010,hold:8,delay:999}
+];
+let V0411_RESULTS=[],V0411_RUNNING=false,V0411_ABORT=false;
+function v0411Replay(rows,pro,v){
+ const series={};for(const r of rows){if(r.symbol==="SPY")continue;(series[r.symbol]??=[]).push(r)};Object.values(series).forEach(a=>a.sort((x,y)=>new Date(x.t)-new Date(y.t)));
+ const costSide=pro?.rules?.costSide??(.00035/2+.00025), out=[];
+ for(const tr of (pro?.closed||[])){
+  const a=series[tr.symbol]||[],ei=a.findIndex(b=>b.t===tr.entryTime);if(ei<0)continue;
+  let raw=null,why=null,bar=null;
+  for(let j=ei+1;j<a.length;j++){
+   const b=a[j]; if(String(b.t).slice(0,10)!==String(tr.entryTime).slice(0,10))break;
+   const age=j-ei;
+   if(v.stop!=null && age>v.delay && +b.l<=tr.entry*(1-v.stop)){raw=tr.entry*(1-v.stop);why=`stop −${(v.stop*100).toFixed(1)}%`;bar=b;break;}
+   if(+b.h>=tr.entry*(1+v.target)){raw=tr.entry*(1+v.target);why=`mål +${(v.target*100).toFixed(1)}%`;bar=b;break;}
+   if(age>=v.hold){raw=+b.c;why=`max ${v.hold*5} min`;bar=b;break;}
+   const ny=new Intl.DateTimeFormat("en-US",{timeZone:"America/New_York",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(new Date(b.t));const o={};ny.forEach(x=>o[x.type]=x.value);if((+o.hour)*60+(+o.minute)>=950){raw=+b.c;why="stängning 15:50";bar=b;break;}
+  }
+  if(raw==null){const same=a.filter(b=>String(b.t).slice(0,10)===String(tr.entryTime).slice(0,10));bar=same.at(-1);if(!bar)continue;raw=+bar.c;why="dagsslut";}
+  const exit=raw*(1-costSide),pnl=tr.shares*(exit-tr.entry);out.push({...tr,exitTime:bar.t,exit,pnl,ret:exit/tr.entry-1,why});
+ }
+ const wins=out.filter(x=>x.pnl>0),loss=out.filter(x=>x.pnl<0),gw=wins.reduce((a,x)=>a+x.pnl,0),gl=Math.abs(loss.reduce((a,x)=>a+x.pnl,0));
+ let eq=100000,peak=eq,dd=0;for(const x of [...out].sort((a,b)=>new Date(a.exitTime)-new Date(b.exitTime))){eq+=x.pnl;peak=Math.max(peak,eq);dd=Math.min(dd,eq/peak-1)}
+ return {closed:out,n:out.length,pnl:out.reduce((a,x)=>a+x.pnl,0),ret:(eq/100000-1),dd,pf:gl?gw/gl:(gw?Infinity:0),wr:out.length?wins.length/out.length:0};
+}
+function v0411FmtPF(x){return x===Infinity?'∞':Number.isFinite(x)?x.toFixed(2):'—'}
+function v0411Paint(){
+ const body=document.getElementById('v0411Rows'),sum=document.getElementById('v0411Summary'),share=document.getElementById('v0411Share');if(!body)return;
+ body.innerHTML=V0411_VARIANTS.map(v=>{const rs=V0411_RESULTS.filter(x=>x.variant===v.id),n=rs.reduce((a,x)=>a+x.n,0),pnl=rs.reduce((a,x)=>a+x.pnl,0),gw=rs.reduce((a,x)=>a+x.gw,0),gl=rs.reduce((a,x)=>a+x.gl,0),pf=gl?gw/gl:(gw?Infinity:0),wr=n?rs.reduce((a,x)=>a+x.wins,0)/n:0,wins=rs.filter(x=>x.ret>0).length;return `<tr><td><b>${v.name}</b></td><td>${rs.length}/10</td><td>${n||'—'}</td><td class="${pnl>=0?'good':'bad'}">${rs.length?(pnl>=0?'+':'')+pnl.toFixed(0):'—'}</td><td>${rs.length?v0411FmtPF(pf):'—'}</td><td>${rs.length?(wr*100).toFixed(1)+'%':'—'}</td><td>${rs.length?wins+'/10':'—'}</td></tr>`}).join('');
+ if(!V0411_RESULTS.length){if(sum)sum.textContent='Ingen Exit Lab-körning ännu.';if(share)share.disabled=true;return}
+ const done=Math.max(...V0411_RESULTS.map(x=>x.window));if(sum)sum.innerHTML=`<b>${done}/10 perioder klara</b> · samma PRO2-entries återspelas genom ${V0411_VARIANTS.length} exitregler.`;if(share)share.disabled=false;
+}
+function v0411Report(){
+ const L=['LINAS OPTI – EXIT LAB','Version: '+APP_VERSION,'Skapad: '+new Date().toISOString(),'Handel: AVSTÄNGD (backtest/paper)','','METOD','Shadow-replay på exakt samma frysta PRO2-entries. Entrypris, shares, signalurval och kostnadsmodell är låsta. Endast exit efter entry ändras.',''];
+ for(const v of V0411_VARIANTS){const rs=V0411_RESULTS.filter(x=>x.variant===v.id),n=rs.reduce((a,x)=>a+x.n,0),pnl=rs.reduce((a,x)=>a+x.pnl,0),gw=rs.reduce((a,x)=>a+x.gw,0),gl=rs.reduce((a,x)=>a+x.gl,0),pf=gl?gw/gl:(gw?Infinity:0);L.push(v.name,`Perioder: ${rs.length}/10 | affärer ${n} | P/L ${pnl.toFixed(2)} | PF ${v0411FmtPF(pf)} | positiva perioder ${rs.filter(x=>x.ret>0).length}/10`,...rs.map(x=>`  #${x.window} ${x.from}→${x.to} | n ${x.n} | P/L ${x.pnl.toFixed(2)} | PF ${v0411FmtPF(x.pf)} | WR ${(x.wr*100).toFixed(1)}% | DD ${(x.dd*100).toFixed(2)}%`),'');}
+ L.push('OBS: Exit Lab är ett forsknings-/shadowtest. Varianten får inte kallas oberoende validerad efter att dessa perioder använts för urval.');return L.join('\n');
+}
+async function v0411Share(){const text=v0411Report(),file=new File([text],`linasopti_exitlab_${new Date().toISOString().slice(0,10)}.txt`,{type:'text/plain'});try{if(navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}))){await navigator.share({title:'Linas Opti Exit Lab',files:[file]});return}}catch(e){if(e?.name==='AbortError')return}const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}
+async function v0411Run(){if(V0411_RUNNING)return;V0411_RUNNING=true;V0411_ABORT=false;V0411_RESULTS=[];v0411Paint();const run=document.getElementById('v0411Run'),stop=document.getElementById('v0411Stop'),st=document.getElementById('v0411Status'),bar=document.getElementById('v0411Bar');if(run)run.disabled=true;if(stop)stop.hidden=false;try{for(let i=0;i<V0410_WINDOWS.length;i++){if(V0411_ABORT)break;const w=V0410_WINDOWS[i];if(st)st.innerHTML=`<span class="v0406-spinner small"></span> ${i+1}/10 · hämtar ${w.label}…`;if(bar)bar.style.width=`${i*10}%`;await v0406Yield(40);const cut=await v0410FetchWindow(w);if(st)st.innerHTML=`<span class="v0406-spinner small"></span> ${i+1}/10 · bygger frysta PRO2-entries + ${V0411_VARIANTS.length} exits…`;await v0406Yield(30);const pro=daytradePro(cut.rows,100000,.005);for(const v of V0411_VARIANTS){const r=v0411Replay(cut.rows,pro,v),wins=r.closed.filter(x=>x.pnl>0).length,gw=r.closed.filter(x=>x.pnl>0).reduce((a,x)=>a+x.pnl,0),gl=Math.abs(r.closed.filter(x=>x.pnl<0).reduce((a,x)=>a+x.pnl,0));V0411_RESULTS.push({window:w.n,from:cut.dates[0],to:cut.dates.at(-1),variant:v.id,...r,wins,gw,gl});}v0411Paint();if(bar)bar.style.width=`${(i+1)*10}%`;await v0406Yield(50)}if(st)st.textContent=V0411_ABORT?`Stoppad efter ${Math.max(0,...V0411_RESULTS.map(x=>x.window))}/10 perioder.`:'✓ Exit Lab klart · 10/10 perioder analyserade.';}catch(e){if(st)st.textContent='⚠ Exit Lab: '+String(e?.message||e)}finally{V0411_RUNNING=false;if(run)run.disabled=false;if(stop)stop.hidden=true}}
+window.addEventListener('DOMContentLoaded',()=>{v0411Paint();document.getElementById('v0411Run')?.addEventListener('click',v0411Run);document.getElementById('v0411Stop')?.addEventListener('click',()=>V0411_ABORT=true);document.getElementById('v0411Share')?.addEventListener('click',v0411Share)});
