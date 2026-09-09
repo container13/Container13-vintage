@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.40.4";
+const APP_VERSION = "V0.40.5";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -52,11 +52,16 @@ const API_BASE = "https://linas-opti-api.mangaj73.workers.dev";
 const $=id=>document.getElementById(id);
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>show(b.dataset.pane,true));
 let V0404_TEST_READY_ACK=false;
+let V0405_TEST_COMPLETED=false;
 function show(p,fromTab=false){
   if(p==="data" && fromTab && LAST){
     V0404_TEST_READY_ACK=true;
     const tt=document.querySelector('.tab[data-pane="test"]');
     if(tt){tt.classList.remove("data-ready");tt.setAttribute("data-ready-label","");}
+    if(V0405_TEST_COMPLETED){
+      const bs=document.getElementById("bridgeStatus");
+      if(bs){bs.className="status";bs.textContent="Senaste test klart · välj ny period och hämta data.";}
+    }
   }
   document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.pane===p));
   ["data","test","result"].forEach(x=>$("pane-"+x).classList.toggle("hidden",x!==p));
@@ -129,6 +134,7 @@ function paintBridgeDone(count,tf){
 }
 async function getBars(tf){
  V0404_TEST_READY_ACK=false;
+ V0405_TEST_COMPLETED=false;
  if(currentProvider()==="eodhd" && tf!=="1Day"){const el=$("bridgeStatus");if(el){el.className="status bad";el.textContent="Opti Day/5-min är tills vidare endast USA.";}return;}
  const btn=tf==="1Day"?$("dailyBtn"):$("intraBtn"); const old=btn?.textContent;
  try{
@@ -707,6 +713,7 @@ window.addEventListener("DOMContentLoaded",()=>{
    let audit=(DAILY.length&&s)?auditSwing(DAILY,s,cap):null;
    let dayAudit=d?auditDay(INTRA,d,cap):null;
    let dayProAudit=dPro?auditDay(INTRA,dPro,cap):null; let dayAnalysis=v0401DayAnalysis(d,dPro); LAST={s,t,w,d,dB,dPro,audit,dayAudit,dayProAudit,dayAnalysis};
+   V0405_TEST_COMPLETED=true;
 
    // V0.36.6: detta är den verkliga slutpunkten för användarens test.
    // Visa Resultat + färdigkortet INNAN sekundära resultatpaneler renderas.
@@ -1288,7 +1295,7 @@ window.addEventListener("DOMContentLoaded",()=>{
 })();
 
 
-// V0.40.4 – välj först datatyp, därefter visas endast relevanta perioder och en gemensam Hämta data-knapp.
+// V0.40.5 – välj först datatyp, därefter visas endast relevanta perioder och en gemensam Hämta data-knapp.
 window.addEventListener("DOMContentLoaded",()=>{
  let type="daily";
  const buttons=[...document.querySelectorAll(".v0404-type-btn")];

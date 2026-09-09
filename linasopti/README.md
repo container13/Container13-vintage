@@ -1,10 +1,11 @@
-# Linas Opti V0.40.4 – Datatypflöde
+# Linas Opti V0.40.5 – Day-period + arbetsflöde
 
-UI-uppdatering byggd från V0.40.3.
+Bygger på V0.40.4.
 
-- Dataflödet är nu: **Datatyp → Period → Hämta data**.
-- Två tydliga val: **Dagsdata** och **5-min-data**. Aktivt val markeras tydligt.
-- Endast relevanta periodval visas för vald datatyp.
-- En gemensam knapp **Hämta data** används för båda datatyperna.
-- Efter ett genomfört test släcks **Test • REDO** när användaren går tillbaka till Data. Ny data tänder REDO igen.
-- Lina Day PRO 2-strategin är fortsatt fryst; ingen strategi-, risk-, stop-, target- eller exekveringslogik har ändrats.
+- Återställer synligt **Startdatum** när 5-min-data är vald.
+- 5 / 20 / 60 handelsdagar uppdaterar direkt texten med valt startdatum.
+- Efter ett genomfört test och återgång till Data släcks **Test · REDO**.
+- Data och senaste resultat ligger kvar; endast arbetsflödets redo-status nollställs.
+- Data-sidan visar: **Senaste test klart · välj ny period och hämta data.**
+- Ny datahämtning tänder Test · REDO igen.
+- Lina Day PRO 2-strategin är fortsatt fryst; ingen strategilogik ändrad.

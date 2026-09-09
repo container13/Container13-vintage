@@ -605,3 +605,8 @@ body.v0384-locked > .lina-watermark{
 .v0404-period-panel.hidden{display:none!important}
 .v0404-fetch{width:100%;min-height:58px;font-size:1.08rem;font-weight:900}
 .v0404-dataflow .v0391-day-fetch{margin-top:0}
+
+
+/* V0.40.5 – startdatum synligt i 5-min-flödet */
+#intraPeriodPanel .day-custom-period.v0368-day-control{display:block!important}
+#intraPeriodPanel #dayStart{display:block!important;min-height:48px;font-size:18px}
