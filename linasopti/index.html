@@ -104,7 +104,7 @@
 </div>
 
 <div class="card v31-nordic-info">
-  <h2>V0.40.0 · Lina Day PRO</h2>
+  <h2>V0.40.1 · PRO Analys</h2>
   <div class="muted">
     Urvalet är räknat från alla inskickade rapporter, men rankingen använder deduplicerade och kronologiskt korrigerade testfönster så samma körning inte får extra vikt.
     För själva USA/Alpaca-urvalet användes fem separata miljöer: USA30 2024, 2025 och 2026 samt Global Stocks 100 och USA + Värld 50.
@@ -126,7 +126,7 @@
   </details>
 </div>
 
-<div class="card v31-nordic-info"><h2>V0.40.0 · Lina Day PRO</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
+<div class="card v31-nordic-info"><h2>V0.40.1 · PRO Analys</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
 <details class="v0384-tech">
   <summary>Tekniskt / felsökning</summary>
   <div class="v0384-tech-inner">
@@ -198,6 +198,8 @@
 <div class="robot"><h3>Lina Day · Jägaren</h3><div class="muted">Ranka momentum + volym · köp nästa 5-minbars öppning · max 6 affärer/dag · aldrig över natt</div><div class="big" id="dEq">—</div><div id="dRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="dDD">—</span></div><div class="mini"><b>Affärer</b><span id="dN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="dWR">—</span></div><div class="mini"><b>Snitt/affär</b><span id="dAvg">—</span></div><div class="mini"><b>Profit factor</b><span id="dPF">—</span></div><div class="mini"><b>Affärer/dag</b><span id="dPerDay">—</span></div></div></div><div class="robot v0400-pro"><h3>⚡ Lina Day PRO · Challenger</h3><div class="muted">Kvalitetsrankad momentum · samma risk/exekvering som baseline · forskningsversion</div><div class="big" id="dpEq">—</div><div id="dpRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="dpDD">—</span></div><div class="mini"><b>Affärer</b><span id="dpN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="dpWR">—</span></div><div class="mini"><b>Profit factor</b><span id="dpPF">—</span></div><div class="mini"><b>Mot baseline</b><span id="dpVs">—</span></div><div class="mini"><b>Godkända/råa</b><span id="dpPass">—</span></div></div></div>
 </div>
 </div>
+
+<div class="card v0401-analysis-card"><h2>🔬 Lina Day PRO · Analys</h2><div class="muted">Bryter ned affärerna efter tid, momentum, relativ volym, exittyp och symbol. Ingen optimering sker här.</div><div id="v0401Analysis" style="margin-top:12px"><span class="muted">Kör ett Day-test för analys.</span></div></div>
 
 <div class="v0368-day-result card v28-day-ab" style="display:none!important">
   <div class="v28-day-head"><div><h2>Opti Day · A/B signaltest</h2><div class="muted">A är exakt V0.27-signalen. B ändrar bara intradagssignalen – risk, stop, mål, kostnader och exekvering är samma.</div></div><span class="v28-exp">EXPERIMENT</span></div>
