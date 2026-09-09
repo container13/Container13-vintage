@@ -1,3 +1,14 @@
+# V0.43.4 – Stabilitet + UX
+
+- Day Selection återupptas efter avbrott i stället för att börja om.
+- Delresultat sparas lokalt efter varje färdig period.
+- Datablock försöks automatiskt igen upp till 3 gånger vid Load failed/nätavbrott.
+- Simuleringsräknaren ökar först för faktiskt registrerade färdiga resultat.
+- Val av Day Selection scrollar till början av labbet.
+- Körknapp före metodtext på Day Selection 1/2.
+- Rullgardiner och knappar harmoniserade visuellt.
+- Strategi/Entry B/Strong/exit/OOS-perioder oförändrade.
+
 # V0.43.3 – Day Selection sharefix
 
 - Dela Day Selection 1 är nu aktiv så fort det finns resultat, även om körningen avbryts före 10/10.
