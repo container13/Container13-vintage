@@ -1,3 +1,13 @@
+# V0.42.4 – Forskningsmotor navigation
+
+- Forskningsmotor har nu två huvudval: **Tester** och **Testlab**.
+- Tester visar tre separata knappar: **Data · Test · Resultat**.
+- Testlab döljer dessa och visar i stället labbväljaren.
+- Regim Lab 2 ligger kvar oförändrat som senaste labb.
+- Körstatus/progress ligger direkt under körknappen.
+- Menyerna är större och tydligare på mobil.
+- Ingen strategi-, parameter-, data- eller Worker-logik ändrad.
+
 # V0.42.3 – Regim Lab 2 + Forskningsmotor
 
 - Ny fast toppnavigering: **Forskningsmotor** innehåller Data, Test, Resultat och Testlab.

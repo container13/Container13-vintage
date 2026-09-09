@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.42.3";
+const APP_VERSION = "V0.42.4";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -62,8 +62,14 @@ function show(p,fromTab=false){
       if(bs){bs.className="status";bs.textContent="Senaste test klart · välj ny period och hämta data.";}
     }
   }
-  const engine=document.getElementById("v0423Engine"); if(engine&&engine.value!==p)engine.value=p;
-  const labPick=document.getElementById("v0423LabPick"); if(labPick)labPick.hidden=p!=="testlab";
+  const engine=document.getElementById("v0423Engine");
+  const labPick=document.getElementById("v0423LabPick");
+  const testerNav=document.getElementById("v0424TesterNav");
+  const inLab=p==="testlab";
+  if(engine) engine.value=inLab?"testlab":"tester";
+  if(labPick) labPick.hidden=!inLab;
+  if(testerNav) testerNav.hidden=inLab;
+  document.querySelectorAll(".v0424-subtab").forEach(b=>b.classList.toggle("active",b.dataset.pane===p));
   ["data","test","result","testlab"].forEach(x=>$("pane-"+x).classList.toggle("hidden",x!==p));
   if(fromTab){
     requestAnimationFrame(()=>{
@@ -1725,7 +1731,11 @@ window.addEventListener('DOMContentLoaded',()=>{
  const LAB_KEY='linasopti_testlab_selected_v0423';
  function showSelectedLab(){if(!jump)return;const val=jump.value;document.querySelectorAll('[class*=\"vlab-v04\"]').forEach(el=>{el.style.display=el.classList.contains('vlab-'+val)?'':'none'});document.querySelectorAll('.vlab-extra').forEach(el=>el.style.display='none');localStorage.setItem(LAB_KEY,val);}
  if(jump){const saved=localStorage.getItem(LAB_KEY);if(saved&&[...jump.options].some(o=>o.value===saved))jump.value=saved;else jump.value='v0423Lab';jump.addEventListener('change',showSelectedLab);showSelectedLab();}
- if(engine){engine.addEventListener('change',()=>show(engine.value,true));engine.value='data';}
+ document.querySelectorAll('.v0424-subtab').forEach(b=>b.addEventListener('click',()=>show(b.dataset.pane,true)));
+ if(engine){engine.addEventListener('change',()=>{
+   if(engine.value==='testlab') show('testlab',true);
+   else {const active=document.querySelector('.v0424-subtab.active')?.dataset.pane||'data';show(active,true);}
+ });engine.value='tester';}
  show('data',false);
 });
 

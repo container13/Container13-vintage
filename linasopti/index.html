@@ -23,7 +23,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.42.3</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.42.4</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">38/100</b><small>Forskningsfas</small></button>
@@ -31,14 +31,17 @@
 </div>
 <div id="v0413Info" class="v0413-info" hidden></div>
 
-<div class="v0423-researchbar" aria-label="Forskningsmotor">
-  <label class="v0423-enginepick"><span>🔬</span><select id="v0423Engine" aria-label="Forskningsmotor">
-    <option value="data">Data</option>
-    <option value="test">Test</option>
-    <option value="result">Resultat</option>
-    <option value="testlab">Testlab</option>
+<div class="v0424-researchbar" aria-label="Forskningsmotor">
+  <label class="v0424-enginepick"><span>🔬</span><select id="v0423Engine" aria-label="Forskningsmotor">
+    <option value="tester">Forskningsmotor · Tester</option>
+    <option value="testlab">Forskningsmotor · Testlab</option>
   </select></label>
-  <label id="v0423LabPick" class="v0423-labpick" hidden><select id="v0413LabJump" aria-label="Välj Testlab">
+  <div id="v0424TesterNav" class="v0424-testernav" aria-label="Tester">
+    <button type="button" class="v0424-subtab active" data-pane="data">Data</button>
+    <button type="button" class="v0424-subtab" data-pane="test">Test</button>
+    <button type="button" class="v0424-subtab" data-pane="result">Resultat</button>
+  </div>
+  <label id="v0423LabPick" class="v0424-labpick" hidden><select id="v0413LabJump" aria-label="Välj Testlab">
     <option value="v0423Lab">🌤️ Regim Lab 2 · OOS (senaste)</option>
     <option value="v0422Lab">🌦️ Regim Lab 1 · Marknadsfilter</option>
     <option value="v0421Lab">🧪 Entry Lab 2 · Orörda perioder</option>
@@ -343,9 +346,9 @@
   </div>
   <div class="v0410-summary"><b>2 förregistrerade jämförelser × 10 orörda perioder = 20 simuleringar</b><br><span class="muted">Syftet är validering, inte optimering. Strong får inte ändras efter resultatet.</span></div>
   <button id="v0423Run" class="primary v0410-big">▶ Kör Regim Lab 2 · 20 OOS-simuleringar</button>
-  <button id="v0423Stop" class="secondary" hidden>Stoppa efter pågående period</button>
-  <div id="v0423Status" class="v0410-status">Redo för orört regimprov.</div>
+  <div id="v0423Status" class="v0410-status v0424-runstatus">Redo för orört regimprov.</div>
   <div class="v0410-progress"><div id="v0423Bar"></div></div>
+  <button id="v0423Stop" class="secondary" hidden>Stoppa efter pågående period</button>
 </div>
 <div class="card vlab-v0423Lab">
  <div class="v0410-summaryhead"><div><h2>OOS-resultat · Strong-regim</h2><div class="muted">Baseline är samma frysta Entry B utan regimfilter. Strong är exakt filtret från Regim Lab 1.</div></div><button id="v0423Share" class="secondary" disabled>Dela Regim Lab 2</button></div>
@@ -461,7 +464,7 @@
  <div class="v0410-tablewrap"><table class="v0410-table"><thead><tr><th>#</th><th>Exit</th><th>P/L</th><th>PF</th><th>+perioder</th><th>DD</th><th>Robusthet</th></tr></thead><tbody id="v0412Rows"></tbody></table></div>
 </div>
 <details class="card v0410-details vlab-extra">
-  <summary>Vad Testlab gör i V0.42.3</summary>
+  <summary>Vad Testlab gör i V0.42.4</summary>
   <div class="muted" style="margin-top:10px">Den här första versionen är medvetet enkel: den automatiserar exakt kontrollarbetet vi nyss gjorde manuellt. När 10/10 reproduceras har vi ett säkert fundament för nästa steg: massprovning av exitvarianter och därefter robusthets-/valideringskörningar.</div>
 </details>
 </section>
