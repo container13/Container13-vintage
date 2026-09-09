@@ -1,3 +1,16 @@
+# Linas Opti V0.42.2 – Regim Lab 1
+
+- Nytt Regim Lab 1 överst i Testlabs rullgardinsmeny.
+- Endast valt labb visas.
+- Entrykandidat B från Entry Lab 2 hålls fryst.
+- 5 förregistrerade SPY-regimfilter × 10 tidigare Entry Lab 2-perioder = 50 utvecklingssimuleringar.
+- Regimdata använder endast SPY-information känd vid entry: avkastning sedan dagsöppning och 15-minuters momentum.
+- Samma exit: stop -0,4%, delay 20 min, mål +0,8%, max 60 min.
+- Dessa perioder är utvecklingsdata; ett lovande filter måste senare valideras på nya orörda perioder.
+- Robotmognad kvar 38/100.
+- Simuleringsgolv minst 18 840 före nya V0.42.2-körningar.
+- Worker oförändrad.
+
 # Linas Opti V0.42.1 – Entry Lab 2
 
 - Nytt **Entry Lab 2 · Orörda perioder** överst i Testlab-snabbvalet.
