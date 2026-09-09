@@ -1,3 +1,15 @@
+# Linas Opti V0.42.0 – Entry Lab 1
+
+- Nytt Entry Lab 1 ligger överst i snabbvalet/rullgardinsmenyn i Testlab.
+- 625 förregistrerade entryfilter × 10 perioder = 6 250 shadow-simuleringar.
+- Testar m3-minimum, relativ volym-minimum, close-location-minimum och fem tidsfilter.
+- Exakt samma frysta PRO2-entries används; bortfiltrerade entries ersätts inte med nya signaler.
+- Exit hålls låst till Exit Lab 2:s bästa forskningsinställning (S−0,4 / D20-inställning / M+0,8 / H60).
+- Inga symbol-specifika regler. Resultatet är utvecklingsforskning, inte oberoende validering.
+- Simuleringsräknarens historiska golv höjt konservativt till minst 12 550; därefter räknas faktiska körningar lokalt.
+- Robotmognad kvar på 38/100 tills positiv robust edge faktiskt visas.
+- Worker/API och hemligheter är oförändrade.
+
 # Linas Opti V0.41.3
 
 - Synlig Robotmognad 38/100 i toppytan, klickbar med dynamisk förklaring.
