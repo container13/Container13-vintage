@@ -1,3 +1,10 @@
+# V0.43.3 – Day Selection sharefix
+
+- Dela Day Selection 1 är nu aktiv så fort det finns resultat, även om körningen avbryts före 10/10.
+- iOS-delning försöker fil först, sedan text, urklipp och sist filnedladdning.
+- Delningsstatus visas direkt i Day Selection-statusraden.
+- Ingen strategi-, urvals- eller OOS-logik ändrad.
+
 # V0.43.2 – mobilpolish Testlab
 
 - Day Selection/Testlab-korten använder full tillgänglig mobilbredd.
