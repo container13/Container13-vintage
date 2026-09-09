@@ -1,3 +1,13 @@
+# Linas Opti V0.42.1 – Entry Lab 2
+
+- Nytt **Entry Lab 2 · Orörda perioder** överst i Testlab-snabbvalet.
+- Fryser fyra kandidater från den robusta zonen i Entry Lab 1 och kör dem på 10 nya 20-handelsdagarsperioder.
+- 40 OOS-simuleringar; ingen ny parameteroptimering.
+- Testlab visar nu **endast det labb som är valt i rullgardinsmenyn**.
+- Simuleringsräknarens konservativa golv är uppdaterat till **≥18 800** efter genomförd Entry Lab 1; därefter fortsätter lokal automatisk räkning.
+- Robotmognad kvar på 38/100 i väntan på OOS-resultatet.
+- PRO2, Swing, Trend och Worker är oförändrade.
+
 # Linas Opti V0.42.0 – Entry Lab 1
 
 - Nytt Entry Lab 1 ligger överst i snabbvalet/rullgardinsmenyn i Testlab.
