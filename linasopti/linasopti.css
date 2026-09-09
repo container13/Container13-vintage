@@ -681,3 +681,14 @@ body.v0384-locked > .lina-watermark{
  .v0424-labpick{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px}
  .v0425-labtag{padding-left:5px}
 }
+
+
+/* V0.42.6 – hardfix: aldrig labbväljare i Tester-läge */
+#v0423LabPick.v0426-force-hide{display:none!important}
+#v0424TesterNav.v0426-force-hide{display:none!important}
+@media(max-width:560px){
+  .v0424-researchbar{padding:10px 9px 11px}
+  .v0425-navlabel{font-size:11px;opacity:.82}
+  .v0424-enginepick select{background:#f7f9fb;box-shadow:inset 0 0 0 2px #b9cadb}
+  .v0424-subtab{border-radius:15px}
+}

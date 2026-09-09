@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.42.5">
+<link rel="stylesheet" href="linasopti.css?v=0.42.6">
 </head>
 <body class="v0384-locked">
 
@@ -23,7 +23,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.42.5</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.42.6</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">38/100</b><small>Forskningsfas</small></button>
@@ -37,12 +37,12 @@
     <option value="tester">Tester</option>
     <option value="testlab">Testlab</option>
   </select></label>
-  <div id="v0424TesterNav" class="v0424-testernav" aria-label="Tester">
+  <div id="v0424TesterNav" class="v0424-testernav" aria-label="Tester" style="display:grid">
     <button type="button" class="v0424-subtab active" data-pane="data">Data</button>
     <button type="button" class="v0424-subtab" data-pane="test">Test</button>
     <button type="button" class="v0424-subtab" data-pane="result">Resultat</button>
   </div>
-  <label id="v0423LabPick" class="v0424-labpick" hidden><span class="v0425-labtag">LABB</span><select id="v0413LabJump" aria-label="Välj Testlab">
+  <label id="v0423LabPick" class="v0424-labpick" hidden aria-hidden="true" style="display:none!important"><span class="v0425-labtag">LABB</span><select id="v0413LabJump" aria-label="Välj Testlab">
     <option value="v0423Lab">🌤️ Regim Lab 2 · OOS (senaste)</option>
     <option value="v0422Lab">🌦️ Regim Lab 1 · Marknadsfilter</option>
     <option value="v0421Lab">🧪 Entry Lab 2 · Orörda perioder</option>
@@ -465,7 +465,7 @@
  <div class="v0410-tablewrap"><table class="v0410-table"><thead><tr><th>#</th><th>Exit</th><th>P/L</th><th>PF</th><th>+perioder</th><th>DD</th><th>Robusthet</th></tr></thead><tbody id="v0412Rows"></tbody></table></div>
 </div>
 <details class="card v0410-details vlab-extra">
-  <summary>Vad Testlab gör i V0.42.5</summary>
+  <summary>Vad Testlab gör i V0.42.6</summary>
   <div class="muted" style="margin-top:10px">Den här första versionen är medvetet enkel: den automatiserar exakt kontrollarbetet vi nyss gjorde manuellt. När 10/10 reproduceras har vi ett säkert fundament för nästa steg: massprovning av exitvarianter och därefter robusthets-/valideringskörningar.</div>
 </details>
 </section>

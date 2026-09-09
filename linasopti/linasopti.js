@@ -52,6 +52,21 @@ const API_BASE = "https://linas-opti-api.mangaj73.workers.dev";
 const $=id=>document.getElementById(id);
 let V0404_TEST_READY_ACK=false;
 let V0405_TEST_COMPLETED=false;
+function v0426SyncResearchUI(mode){
+  const labPick=document.getElementById("v0423LabPick");
+  const testerNav=document.getElementById("v0424TesterNav");
+  const isLab=mode==="testlab";
+  if(labPick){
+    labPick.hidden=!isLab;
+    labPick.setAttribute("aria-hidden",isLab?"false":"true");
+    labPick.style.setProperty("display",isLab?"grid":"none","important");
+  }
+  if(testerNav){
+    testerNav.hidden=isLab;
+    testerNav.setAttribute("aria-hidden",isLab?"true":"false");
+    testerNav.style.setProperty("display",isLab?"none":"grid","important");
+  }
+}
 function show(p,fromTab=false){
   if(p==="data" && fromTab && LAST){
     V0404_TEST_READY_ACK=true;
@@ -67,8 +82,7 @@ function show(p,fromTab=false){
   const testerNav=document.getElementById("v0424TesterNav");
   const inLab=p==="testlab";
   if(engine) engine.value=inLab?"testlab":"tester";
-  if(labPick) labPick.hidden=!inLab;
-  if(testerNav) testerNav.hidden=inLab;
+  v0426SyncResearchUI(inLab?"testlab":"tester");
   document.querySelectorAll(".v0424-subtab").forEach(b=>b.classList.toggle("active",b.dataset.pane===p));
   ["data","test","result","testlab"].forEach(x=>$("pane-"+x).classList.toggle("hidden",x!==p));
   if(fromTab){
@@ -1735,8 +1749,9 @@ window.addEventListener('DOMContentLoaded',()=>{
  if(engine){engine.addEventListener('change',()=>{
    if(engine.value==='testlab') show('testlab',true);
    else {const active=document.querySelector('.v0424-subtab.active')?.dataset.pane||'data';show(active,true);}
- });engine.value='tester';}
+ });engine.value='tester';v0426SyncResearchUI('tester');}
  show('data',false);
+ v0426SyncResearchUI('tester');
 });
 
 

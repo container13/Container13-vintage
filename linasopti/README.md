@@ -1,3 +1,11 @@
+# V0.42.6 – Forskningsmotor hardfix
+
+- Regim/Testlab-väljaren tvingas nu bort både via `hidden`, `aria-hidden` och explicit `display:none!important` när **Tester** är valt.
+- **Tester** visar endast Data · Test · Resultat.
+- **Testlab** visar endast labbväljaren och döljer Data · Test · Resultat-navigationen.
+- Extra cache-buster 0.42.6 för både CSS och JavaScript för att iPhone/Safari inte ska behålla V0.42.4/0.42.5-beteendet.
+- Ingen strategi-, data-, Worker- eller testlogik ändrad.
+
 # V0.42.5 – Forskningsmotor nav-polish
 
 - Fix: Testlab/labbväljaren är nu hårt dold när **Tester** är valt.
