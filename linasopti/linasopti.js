@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.42.2";
+const APP_VERSION = "V0.42.3";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -50,7 +50,6 @@ window.addEventListener("DOMContentLoaded",()=>{
 let DAILY=[], INTRA=[], LAST=null;
 const API_BASE = "https://linas-opti-api.mangaj73.workers.dev";
 const $=id=>document.getElementById(id);
-document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>show(b.dataset.pane,true));
 let V0404_TEST_READY_ACK=false;
 let V0405_TEST_COMPLETED=false;
 function show(p,fromTab=false){
@@ -63,7 +62,8 @@ function show(p,fromTab=false){
       if(bs){bs.className="status";bs.textContent="Senaste test klart · välj ny period och hämta data.";}
     }
   }
-  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.pane===p));
+  const engine=document.getElementById("v0423Engine"); if(engine&&engine.value!==p)engine.value=p;
+  const labPick=document.getElementById("v0423LabPick"); if(labPick)labPick.hidden=p!=="testlab";
   ["data","test","result","testlab"].forEach(x=>$("pane-"+x).classList.toggle("hidden",x!==p));
   if(fromTab){
     requestAnimationFrame(()=>{
@@ -1706,7 +1706,7 @@ window.addEventListener('DOMContentLoaded',()=>{v0412Paint();document.getElement
 // beskriver bevisläge/teknisk beredskap, inte utlovad avkastning.
 // ============================================================
 const V0413_SIM_KEY='linasopti_simulations_v0413';
-const V0413_SIM_SEED=18840;
+const V0413_SIM_SEED=18890;
 function v0413GetSims(){let n=Number(localStorage.getItem(V0413_SIM_KEY));if(!Number.isFinite(n)||n<V0413_SIM_SEED){n=V0413_SIM_SEED;localStorage.setItem(V0413_SIM_KEY,String(n))}return n}
 function v0413PaintSims(){const e=document.getElementById('v0413SimValue');if(e)e.textContent=v0413GetSims().toLocaleString('sv-SE')}
 function v0413AddSims(n){if(!n||n<0)return;localStorage.setItem(V0413_SIM_KEY,String(v0413GetSims()+n));v0413PaintSims()}
@@ -1714,16 +1714,19 @@ function v0413ShowInfo(kind){
  const box=document.getElementById('v0413Info');if(!box)return;
  if(!box.hidden && box.dataset.kind===kind){box.hidden=true;return}
  box.dataset.kind=kind;box.hidden=false;
- if(kind==='maturity')box.innerHTML=`<h3>🤖 Lina är i forskningsfas · 38/100</h3><div class="v0413-meter"><i></i></div><p><b>Det vi har:</b> fungerande datamotor, reproducerbart backtest, mekanisk audit, fryst PRO2, Testlab, OOS-kontroller och automatiserad parameterforskning.</p><p><b>Det som håller tillbaka poängen:</b> Entry Lab 1 hittade en lovande entryfamilj: 134/625 utvecklingskombinationer blev positiva och nådde PF ≥ 1. Det är ännu inte oberoende bevis; familjen måste nu klara nya orörda perioder.</p><p><b>Nästa steg mot högre mognad:</b> låta den frysta entryfamiljen klara Entry Lab 2 på nya orörda perioder utan parameterändringar.</p><p><b>Kvar till mäklarredo:</b> robust strategi → walk-forward/orörd validering → realtids-paper → riskmotor → ordermotor → brokerintegration → felhantering/kill-switch → längre stabil paperdrift.</p><p><small>100/100 betyder att vår broker-ready-checklista är uppfylld – inte garanterad lönsamhet. Senast omvärderad: V0.42.2.</small></p>`;
- else box.innerHTML=`<h3>🧪 ${v0413GetSims().toLocaleString('sv-SE')} registrerade simuleringar</h3><p>Historiska omkörningar gör att det exakta äldre totalantalet inte kan rekonstrueras. V0.42.2 använder ett konservativt dokumenterat golv på minst 18 840 simuleringar (inklusive genomförda Entry Lab 1 och Entry Lab 2); därefter adderas varje faktisk Testlab-simulering lokalt.</p><p>Från V0.41.3 ökar den automatiskt för varje faktiskt genomförd Testlab-simulering. Antalet är ett aktivitetsmått – fler simuleringar höjer inte Robotmognaden automatiskt.</p>`;
+ if(kind==='maturity')box.innerHTML=`<h3>🤖 Lina är i forskningsfas · 38/100</h3><div class="v0413-meter"><i></i></div><p><b>Det vi har:</b> fungerande datamotor, reproducerbart backtest, mekanisk audit, fryst PRO2, Testlab, OOS-kontroller och automatiserad parameterforskning.</p><p><b>Det som håller tillbaka poängen:</b> Entry B var nära break-even i första OOS-provet. Regim Lab 1 hittade därefter ett lovande förregistrerat Strong-filter, men det resultatet kommer från utvecklingsdata och är ännu inte oberoende validerat.</p><p><b>Nästa steg mot högre mognad:</b> Entry B + Strong måste klara Regim Lab 2 på 10 nya orörda perioder utan parameterändringar.</p><p><b>Kvar till mäklarredo:</b> robust strategi → walk-forward/orörd validering → realtids-paper → riskmotor → ordermotor → brokerintegration → felhantering/kill-switch → längre stabil paperdrift.</p><p><small>100/100 betyder att vår broker-ready-checklista är uppfylld – inte garanterad lönsamhet. Senast omvärderad: V0.42.3.</small></p>`;
+ else box.innerHTML=`<h3>🧪 ${v0413GetSims().toLocaleString('sv-SE')} registrerade simuleringar</h3><p>Historiska omkörningar gör att det exakta äldre totalantalet inte kan rekonstrueras. V0.42.3 använder ett konservativt dokumenterat golv på minst 18 890 simuleringar (inklusive den genomförda Regim Lab 1-körningen); därefter adderas varje faktisk Testlab-simulering lokalt.</p><p>Från V0.41.3 ökar den automatiskt för varje faktiskt genomförd Testlab-simulering. Antalet är ett aktivitetsmått – fler simuleringar höjer inte Robotmognaden automatiskt.</p>`;
 }
 window.addEventListener('DOMContentLoaded',()=>{
  v0413PaintSims();
  document.getElementById('v0413Maturity')?.addEventListener('click',()=>v0413ShowInfo('maturity'));
  document.getElementById('v0413Sims')?.addEventListener('click',()=>v0413ShowInfo('sims'));
- const jump=document.getElementById('v0413LabJump');
- function showSelectedLab(){if(!jump)return;const val=jump.value;document.querySelectorAll('[class*=\"vlab-v04\"]').forEach(el=>{el.style.display=el.classList.contains('vlab-'+val)?'':'none'});document.querySelectorAll('.vlab-extra').forEach(el=>el.style.display='none');}
- jump?.addEventListener('change',showSelectedLab);showSelectedLab();
+ const engine=document.getElementById('v0423Engine'),jump=document.getElementById('v0413LabJump');
+ const LAB_KEY='linasopti_testlab_selected_v0423';
+ function showSelectedLab(){if(!jump)return;const val=jump.value;document.querySelectorAll('[class*=\"vlab-v04\"]').forEach(el=>{el.style.display=el.classList.contains('vlab-'+val)?'':'none'});document.querySelectorAll('.vlab-extra').forEach(el=>el.style.display='none');localStorage.setItem(LAB_KEY,val);}
+ if(jump){const saved=localStorage.getItem(LAB_KEY);if(saved&&[...jump.options].some(o=>o.value===saved))jump.value=saved;else jump.value='v0423Lab';jump.addEventListener('change',showSelectedLab);showSelectedLab();}
+ if(engine){engine.addEventListener('change',()=>show(engine.value,true));engine.value='data';}
+ show('data',false);
 });
 
 
@@ -1809,3 +1812,34 @@ function v0422Report(){const A=v0422Agg(),L=['LINAS OPTI – REGIM LAB 1 · MARK
 async function v0422Share(){const text=v0422Report(),file=new File([text],`linasopti_regimlab1_${new Date().toISOString().slice(0,10)}.txt`,{type:'text/plain'});try{if(navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}))){await navigator.share({title:'Linas Opti Regim Lab 1',files:[file]});return}}catch(e){if(e?.name==='AbortError')return}const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}
 async function v0422Run(){if(V0422_RUNNING)return;V0422_RUNNING=true;V0422_ABORT=false;V0422_RESULTS=[];v0422Paint();const run=document.getElementById('v0422Run'),stop=document.getElementById('v0422Stop'),st=document.getElementById('v0422Status'),bar=document.getElementById('v0422Bar');if(run)run.disabled=true;if(stop)stop.hidden=false;try{for(let i=0;i<V0421_WINDOWS.length;i++){if(V0422_ABORT)break;const w=V0421_WINDOWS[i];if(st)st.innerHTML=`<span class="v0406-spinner small"></span> ${i+1}/10 · hämtar ${w.label} och mäter SPY-regim…`;if(bar)bar.style.width=`${i*10}%`;await v0406Yield(40);const cut=await v0410FetchWindow(w),pro=daytradePro(cut.rows,100000,.005);for(const reg of V0422_REGIMES){const trades=v0422Filter(cut.rows,pro,reg),r=v0420Replay(cut.rows,trades),wins=r.closed.filter(x=>x.pnl>0).length,gw=r.closed.filter(x=>x.pnl>0).reduce((a,x)=>a+x.pnl,0),gl=Math.abs(r.closed.filter(x=>x.pnl<0).reduce((a,x)=>a+x.pnl,0));V0422_RESULTS.push({window:w.n,from:cut.dates[0],to:cut.dates.at(-1),variant:reg.id,...r,wins,gw,gl});v0413AddSims(1)}v0422Paint();if(bar)bar.style.width=`${(i+1)*10}%`;await v0406Yield(30)}if(st)st.textContent=V0422_ABORT?'Regim Lab stoppad efter pågående period.':'✓ Regim Lab 1 klart · 50 simuleringar.';}catch(e){if(st)st.textContent='Fel: '+(e?.message||e)}finally{V0422_RUNNING=false;if(run)run.disabled=false;if(stop)stop.hidden=true;v0422Paint()}}
 window.addEventListener('DOMContentLoaded',()=>{v0422Paint();document.getElementById('v0422Run')?.addEventListener('click',v0422Run);document.getElementById('v0422Stop')?.addEventListener('click',()=>V0422_ABORT=true);document.getElementById('v0422Share')?.addEventListener('click',v0422Share)});
+
+
+// ============================================================
+// V0.42.3 – Regim Lab 2 · förregistrerad OOS-kontroll
+// Entry B och Strong-regimen från V0.42.2 är frysta före körning.
+// Tio helt nya 20-handelsdagarsperioder används. Ingen optimering.
+// ============================================================
+const V0423_WINDOWS=[
+ {n:1,start:'2021-05-03',label:'maj 2021'},
+ {n:2,start:'2021-11-01',label:'nov 2021'},
+ {n:3,start:'2022-06-01',label:'jun 2022'},
+ {n:4,start:'2022-09-01',label:'sep 2022'},
+ {n:5,start:'2023-01-03',label:'jan 2023'},
+ {n:6,start:'2023-05-01',label:'maj 2023'},
+ {n:7,start:'2023-09-01',label:'sep 2023'},
+ {n:8,start:'2024-04-01',label:'apr 2024'},
+ {n:9,start:'2025-04-01',label:'apr 2025'},
+ {n:10,start:'2026-06-01',label:'jun 2026'}
+];
+const V0423_VARIANTS=[
+ {id:'base',name:'Entry B · inget regimfilter',ok:x=>true},
+ {id:'strong',name:'Entry B + Strong',ok:x=>x.dayRet>=.001&&x.m15>=.0005}
+];
+let V0423_RESULTS=[],V0423_RUNNING=false,V0423_ABORT=false;
+function v0423Trades(rows,pro,v){const b=V0421_CANDIDATES.find(x=>x.id==='B');return v0420Filter(pro,b).filter(t=>v.ok(v0422SpyFeature(rows,t.entryTime)))}
+function v0423Agg(){return V0423_VARIANTS.map(v=>{const a=V0423_RESULTS.filter(x=>x.variant===v.id),pnl=a.reduce((q,x)=>q+x.pnl,0),gw=a.reduce((q,x)=>q+x.gw,0),gl=a.reduce((q,x)=>q+x.gl,0),n=a.reduce((q,x)=>q+x.n,0),wins=a.reduce((q,x)=>q+x.wins,0),pos=a.filter(x=>x.pnl>0).length,maxDD=a.length?Math.min(...a.map(x=>x.dd)):0,pf=gl?gw/gl:(gw?Infinity:0);return {v,pnl,pf,n,wr:n?wins/n:0,pos,maxDD,periods:a.length}})}
+function v0423Paint(){const body=document.getElementById('v0423Rows'),sum=document.getElementById('v0423Summary'),share=document.getElementById('v0423Share');if(!body)return;const A=v0423Agg();body.innerHTML=A.map(a=>`<tr><td><b>${a.v.name}</b></td><td>${a.n}</td><td class="${a.pnl>=0?'good':'bad'}">${a.pnl>=0?'+':''}${a.pnl.toFixed(0)}</td><td>${v0411FmtPF(a.pf)}</td><td>${(a.wr*100).toFixed(1)}%</td><td>${a.pos}/${a.periods||10}</td><td>${(a.maxDD*100).toFixed(2)}%</td></tr>`).join('');if(!V0423_RESULTS.length){sum.textContent='Ingen OOS-körning ännu.';if(share)share.disabled=true;return}const done=Math.max(0,...A.map(x=>x.periods)),base=A.find(x=>x.v.id==='base'),strong=A.find(x=>x.v.id==='strong'),delta=(strong&&base)?strong.pnl-base.pnl:0;sum.innerHTML=`Perioder ${done}/10 · två frysta varianter.${strong&&base?`<br><b>Strong mot baseline:</b> P/L ${delta>=0?'+':''}${delta.toFixed(0)} · PF ${v0411FmtPF(strong.pf)} mot ${v0411FmtPF(base.pf)} · +perioder ${strong.pos}/${strong.periods}`:''}`;if(share)share.disabled=done<1}
+function v0423Report(){const A=v0423Agg(),L=['LINAS OPTI – REGIM LAB 2 · ORÖRT PROV','Version: '+APP_VERSION,'Skapad: '+new Date().toISOString(),'Handel: AVSTÄNGD (backtest/paper)','','METOD','Entrykandidat B är fryst: m3>=0,40%, vol>=1,15x, close>=86%, 10:30–12:00 NY.','Strong-regimen är fryst före denna körning: SPY sedan öppning >= +0,10% OCH SPY 15m momentum >= +0,05%.','Samma forsknings-exit: stop -0,4%, delay 20 min, mål +0,8%, max 60 min.','10 nya historiska 20-handelsdagarsperioder som inte användes i tidigare kontroll-, Exit-, Entry- eller Regim Lab 1.','Ingen parameteroptimering görs. Baseline Entry B utan regimfilter körs endast som förregistrerad jämförelse.','','OOS-RESULTAT'];A.forEach(a=>L.push(`${a.v.name} | perioder ${a.periods}/10 | n ${a.n} | P/L ${a.pnl.toFixed(2)} | PF ${v0411FmtPF(a.pf)} | WR ${(a.wr*100).toFixed(1)}% | +perioder ${a.pos}/${a.periods} | värsta DD ${(a.maxDD*100).toFixed(2)}%`));L.push('','PERIODRESULTAT');for(const w of V0423_WINDOWS){for(const v of V0423_VARIANTS){const x=V0423_RESULTS.find(q=>q.window===w.n&&q.variant===v.id);if(x)L.push(`#${w.n} ${x.from}→${x.to} | ${v.id} | n ${x.n} | P/L ${x.pnl.toFixed(2)} | PF ${v0411FmtPF(x.gl?x.gw/x.gl:(x.gw?Infinity:0))} | WR ${x.n?(x.wins/x.n*100).toFixed(1):'0.0'}% | DD ${(x.dd*100).toFixed(2)}%`)}}L.push('','OBS: Dessa 10 perioder är efter körningen förbrukade som orörd valideringsdata för Entry B + Strong. Robotmognad ska endast omvärderas efter att hela serien är färdig.');return L.join('\n')}
+async function v0423Share(){const text=v0423Report(),file=new File([text],`linasopti_regimlab2_oos_${new Date().toISOString().slice(0,10)}.txt`,{type:'text/plain'});try{if(navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}))){await navigator.share({title:'Linas Opti Regim Lab 2',files:[file]});return}}catch(e){if(e?.name==='AbortError')return}const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}
+async function v0423Run(){if(V0423_RUNNING)return;V0423_RUNNING=true;V0423_ABORT=false;V0423_RESULTS=[];v0423Paint();const run=document.getElementById('v0423Run'),stop=document.getElementById('v0423Stop'),st=document.getElementById('v0423Status'),bar=document.getElementById('v0423Bar');if(run)run.disabled=true;if(stop)stop.hidden=false;try{for(let i=0;i<V0423_WINDOWS.length;i++){if(V0423_ABORT)break;const w=V0423_WINDOWS[i];if(st)st.innerHTML=`<span class="v0406-spinner small"></span> ${i+1}/10 · hämtar orörd period ${w.label}…`;if(bar)bar.style.width=`${i*10}%`;await v0406Yield(40);const cut=await v0410FetchWindow(w),pro=daytradePro(cut.rows,100000,.005);for(const v of V0423_VARIANTS){const trades=v0423Trades(cut.rows,pro,v),r=v0420Replay(cut.rows,trades),wins=r.closed.filter(x=>x.pnl>0).length,gw=r.closed.filter(x=>x.pnl>0).reduce((a,x)=>a+x.pnl,0),gl=Math.abs(r.closed.filter(x=>x.pnl<0).reduce((a,x)=>a+x.pnl,0));V0423_RESULTS.push({window:w.n,from:cut.dates[0],to:cut.dates.at(-1),variant:v.id,...r,wins,gw,gl});v0413AddSims(1)}v0423Paint();if(bar)bar.style.width=`${(i+1)*10}%`;await v0406Yield(30)}if(st)st.textContent=V0423_ABORT?'Regim Lab 2 stoppad efter pågående period.':'✓ Regim Lab 2 klart · 20 OOS-simuleringar.';}catch(e){if(st)st.textContent='Fel: '+(e?.message||e)}finally{V0423_RUNNING=false;if(run)run.disabled=false;if(stop)stop.hidden=true;v0423Paint()}}
+window.addEventListener('DOMContentLoaded',()=>{v0423Paint();document.getElementById('v0423Run')?.addEventListener('click',v0423Run);document.getElementById('v0423Stop')?.addEventListener('click',()=>V0423_ABORT=true);document.getElementById('v0423Share')?.addEventListener('click',v0423Share)});

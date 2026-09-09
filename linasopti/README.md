@@ -1,3 +1,16 @@
+# V0.42.3 – Regim Lab 2 + Forskningsmotor
+
+- Ny fast toppnavigering: **Forskningsmotor** innehåller Data, Test, Resultat och Testlab.
+- När Testlab är aktivt visas labbväljaren direkt bredvid och ligger kvar i toppytan. Senast valda labb sparas lokalt.
+- Endast valt labb visas. Primär **Kör …**-knapp ligger överst i valt labb.
+- Nytt **Regim Lab 2** ligger överst/förvalt: Entry B + exakt fryst Strong-regim testas på 10 nya, tidigare oanvända 20-handelsdagarsperioder.
+- Förregistrerad jämförelse: Entry B utan regimfilter vs Entry B + Strong. 20 OOS-simuleringar totalt.
+- Strong: SPY sedan öppning ≥ +0,10 % och SPY 15m momentum ≥ +0,05 %, mätt med information känd vid entry.
+- Forsknings-exit oförändrad: stop −0,4 %, delay 20 min, mål +0,8 %, max 60 min.
+- Robotmognad kvar 38/100 tills OOS-resultatet finns.
+- Konservativ simuleringslägstanivå före denna körning: ≥18 890.
+- Worker och handelsläge oförändrade. Ingen livehandel.
+
 # Linas Opti V0.42.2 – Regim Lab 1
 
 - Nytt Regim Lab 1 överst i Testlabs rullgardinsmeny.

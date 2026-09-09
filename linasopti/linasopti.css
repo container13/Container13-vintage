@@ -636,3 +636,13 @@ body.v0384-locked > .lina-watermark{
 .v0413-quickcard{position:sticky;top:0;z-index:5;padding:12px!important;border:1px solid #c9d8ee!important;background:rgba(255,255,255,.97)!important;backdrop-filter:blur(8px)}
 .v0413-quickcard label{display:block;margin-bottom:6px}.v0413-quickcard select{width:100%;min-height:48px;border:1px solid #cbd4df;border-radius:12px;background:#fff;padding:0 12px;font-size:16px;font-weight:800;color:#182331}
 @media(max-width:420px){.v0413-stat{padding:7px 9px}.v0413-stat b{font-size:19px}.v0413-stat span{font-size:11px}}
+
+
+/* V0.42.3 – Forskningsmotor + fast Testlab-väljare */
+.v0423-researchbar{display:flex;gap:8px;align-items:center;margin:8px 0 10px;position:relative;z-index:25}
+.v0423-enginepick,.v0423-labpick{display:flex;align-items:center;gap:7px;min-width:0;margin:0}
+.v0423-enginepick{flex:0 0 auto}.v0423-labpick{flex:1 1 auto}
+.v0423-enginepick select,.v0423-labpick select{min-height:46px;border:1px solid #cbd4df;border-radius:13px;background:#fff;padding:0 12px;font-size:14px;font-weight:800;color:#182331;max-width:100%}
+.v0423-enginepick select{min-width:160px}.v0423-labpick select{width:100%}
+.v0410-labhero{display:flex;flex-direction:column}.v0410-labhero>.v0410-big{order:-10;margin:0 0 14px!important}
+@media(max-width:560px){.v0423-researchbar{gap:6px}.v0423-enginepick{flex:0 1 42%}.v0423-labpick{flex:1 1 58%}.v0423-enginepick span{display:none}.v0423-enginepick select,.v0423-labpick select{width:100%;min-width:0;font-size:13px;padding:0 8px}}

@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.42.2">
+<link rel="stylesheet" href="linasopti.css?v=0.42.3">
 </head>
 <body class="v0384-locked">
 
@@ -23,7 +23,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.42.2</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.42.3</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">38/100</b><small>Forskningsfas</small></button>
@@ -31,11 +31,22 @@
 </div>
 <div id="v0413Info" class="v0413-info" hidden></div>
 
-<div class="tabs">
-<button class="tab active" data-pane="data">1. Data</button>
-<button class="tab" data-pane="test">2. Test</button>
-<button class="tab" data-pane="result">3. Resultat</button>
-<button class="tab" data-pane="testlab">🧪 Testlab</button>
+<div class="v0423-researchbar" aria-label="Forskningsmotor">
+  <label class="v0423-enginepick"><span>🔬</span><select id="v0423Engine" aria-label="Forskningsmotor">
+    <option value="data">Data</option>
+    <option value="test">Test</option>
+    <option value="result">Resultat</option>
+    <option value="testlab">Testlab</option>
+  </select></label>
+  <label id="v0423LabPick" class="v0423-labpick" hidden><select id="v0413LabJump" aria-label="Välj Testlab">
+    <option value="v0423Lab">🌤️ Regim Lab 2 · OOS (senaste)</option>
+    <option value="v0422Lab">🌦️ Regim Lab 1 · Marknadsfilter</option>
+    <option value="v0421Lab">🧪 Entry Lab 2 · Orörda perioder</option>
+    <option value="v0420Lab">🎯 Entry Lab 1 · Entrykarta</option>
+    <option value="v0412Lab">🧬 Exit Lab 2 · Parameterkarta</option>
+    <option value="v0411Lab">🔬 Exit Lab 1</option>
+    <option value="v0410Lab">🧪 Kontrollserie · 10 eldprov</option>
+  </select></label>
 </div>
 </div>
 
@@ -323,16 +334,23 @@
 
 
 <section id="pane-testlab" class="hidden">
-<div class="card v0413-quickcard">
-  <label for="v0413LabJump"><b>Snabbval · Testlab</b></label>
-  <select id="v0413LabJump" aria-label="Hoppa till test">
-    <option value="v0422Lab">🌦️ Regim Lab 1 · Marknadsfilter (senaste)</option>
-    <option value="v0421Lab">🧪 Entry Lab 2 · Orörda perioder</option>
-    <option value="v0420Lab">🎯 Entry Lab 1 · Entrykarta</option>
-    <option value="v0412Lab">🧬 Exit Lab 2 · Parameterkarta</option>
-    <option value="v0411Lab">🔬 Exit Lab 1</option>
-    <option value="v0410Lab">🧪 Kontrollserie · 10 eldprov</option>
-  </select>
+<div id="v0423Lab" class="card v0410-labhero vlab-v0423Lab" style="margin-top:8px;border-color:#80c8a4">
+  <div class="v0410-labtitle"><span class="v0410-flask">🌤️</span><div><h2>Regim Lab 2 · Orört prov</h2><div class="muted">Fryst OOS-kontroll av Entry B + Strong-regimen från Regim Lab 1 på 10 nya historiska perioder.</div></div></div>
+  <div class="v0410-lock">🔒 Entry B fryst · Strong fryst före körning · samma forsknings-exit · inga nya parameterändringar</div>
+  <div class="v0410-labgrid">
+    <div><span>Entry</span><b>B · m3≥0,40 · vol≥1,15 · close≥86 · 10:30–12</b></div><div><span>Strong-regim</span><b>SPY öppning ≥+0,10% + 15m ≥+0,05%</b></div>
+    <div><span>Nya perioder</span><b>10 × 20 handelsdagar</b></div><div><span>Simuleringar</span><b>20 · B utan filter + B+Strong</b></div>
+  </div>
+  <div class="v0410-summary"><b>2 förregistrerade jämförelser × 10 orörda perioder = 20 simuleringar</b><br><span class="muted">Syftet är validering, inte optimering. Strong får inte ändras efter resultatet.</span></div>
+  <button id="v0423Run" class="primary v0410-big">▶ Kör Regim Lab 2 · 20 OOS-simuleringar</button>
+  <button id="v0423Stop" class="secondary" hidden>Stoppa efter pågående period</button>
+  <div id="v0423Status" class="v0410-status">Redo för orört regimprov.</div>
+  <div class="v0410-progress"><div id="v0423Bar"></div></div>
+</div>
+<div class="card vlab-v0423Lab">
+ <div class="v0410-summaryhead"><div><h2>OOS-resultat · Strong-regim</h2><div class="muted">Baseline är samma frysta Entry B utan regimfilter. Strong är exakt filtret från Regim Lab 1.</div></div><button id="v0423Share" class="secondary" disabled>Dela Regim Lab 2</button></div>
+ <div id="v0423Summary" class="v0410-summary muted">Ingen OOS-körning ännu.</div>
+ <div class="v0410-tablewrap"><table class="v0410-table"><thead><tr><th>Variant</th><th>Affärer</th><th>P/L</th><th>PF</th><th>WR</th><th>+perioder</th><th>DD</th></tr></thead><tbody id="v0423Rows"></tbody></table></div>
 </div>
 <div id="v0422Lab" class="card v0410-labhero vlab-v0422Lab" style="margin-top:16px;border-color:#e4c56a">
   <div class="v0410-labtitle"><span class="v0410-flask">🌦️</span><div><h2>Regim Lab 1 · Marknadsfilter</h2><div class="muted">Undersöker om Jägaren bör stå över när SPY inte bekräftar momentumet. Entrykandidat B hålls fryst.</div></div></div>
@@ -443,7 +461,7 @@
  <div class="v0410-tablewrap"><table class="v0410-table"><thead><tr><th>#</th><th>Exit</th><th>P/L</th><th>PF</th><th>+perioder</th><th>DD</th><th>Robusthet</th></tr></thead><tbody id="v0412Rows"></tbody></table></div>
 </div>
 <details class="card v0410-details vlab-extra">
-  <summary>Vad Testlab gör i V0.42.2</summary>
+  <summary>Vad Testlab gör i V0.42.3</summary>
   <div class="muted" style="margin-top:10px">Den här första versionen är medvetet enkel: den automatiserar exakt kontrollarbetet vi nyss gjorde manuellt. När 10/10 reproduceras har vi ett säkert fundament för nästa steg: massprovning av exitvarianter och därefter robusthets-/valideringskörningar.</div>
 </details>
 </section>
@@ -487,5 +505,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.42.2"></script>
+<script src="linasopti.js?v=0.42.3"></script>
 </body></html>
