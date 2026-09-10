@@ -1,3 +1,11 @@
+# V0.45.1 – plattformsanpassad rapportdelning + Robotmognad 48/100
+
+- Windows/macOS/Linux: rapportknappar laddar direkt ner `.txt` via webbläsaren (normalt till Hämtade/Downloads enligt webbläsarens inställning).
+- iPhone/iPad: rapportknappar använder native delningsark när det stöds.
+- Samma princip används för Testlab-rapporterna och vanliga snabb/full-testexporter.
+- Robotmognad rättad från 42/100 till 48/100 enligt senaste beslutade status.
+- Ingen strategi-, test-, data- eller Worker-logik ändrad.
+
 # V0.45.0 – Kapital Lab 1
 
 - Nytt Testlab: jämför 1, 2, 3 och 5 samtidiga positioner med exakt samma frysta Jägare.
