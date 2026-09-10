@@ -1,3 +1,10 @@
+# V0.45.2 – Kapital Lab 2
+
+- Nytt Testlab: positionsstorlek 10 / 20 / 30 / 33,3% med exakt 3 samtidiga positioner.
+- Tre positioner är frysta från Kapital Lab 1; signal-, regim-, exit- och friktionslogik är oförändrad.
+- Robotmognad kvar 48/100.
+- Rapportdelning följer V0.45.1: direkt .txt-nedladdning på desktop, native share på iPhone/iPad.
+
 # V0.45.1 – plattformsanpassad rapportdelning + Robotmognad 48/100
 
 - Windows/macOS/Linux: rapportknappar laddar direkt ner `.txt` via webbläsaren (normalt till Hämtade/Downloads enligt webbläsarens inställning).

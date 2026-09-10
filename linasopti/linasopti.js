@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.45.1";
+const APP_VERSION = "V0.45.2";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -1714,7 +1714,7 @@ window.addEventListener('DOMContentLoaded',()=>{
  const engine=document.getElementById('v0423Engine'),jump=document.getElementById('v0413LabJump');
  const LAB_KEY='linasopti_testlab_selected_v0423';
  function showSelectedLab(){if(!jump)return;const val=jump.value;document.querySelectorAll('[class*=\"vlab-v04\"]').forEach(el=>{el.style.display=el.classList.contains('vlab-'+val)?'':'none'});document.querySelectorAll('.vlab-extra').forEach(el=>el.style.display='none');localStorage.setItem(LAB_KEY,val);}
- if(jump){const saved=localStorage.getItem(LAB_KEY);if(saved&&[...jump.options].some(o=>o.value===saved))jump.value=saved;else jump.value='v0450Lab';jump.addEventListener('change',showSelectedLab);showSelectedLab();}
+ if(jump){const saved=localStorage.getItem(LAB_KEY);if(saved&&[...jump.options].some(o=>o.value===saved))jump.value=saved;else jump.value='v0452Lab';jump.addEventListener('change',showSelectedLab);showSelectedLab();}
  document.querySelectorAll('.v0424-subtab').forEach(b=>b.addEventListener('click',()=>show(b.dataset.pane,true)));
  if(engine){engine.addEventListener('change',()=>{
    if(engine.value==='testlab') show('testlab',true);
@@ -2009,7 +2009,7 @@ const V0450_VARIANTS=[
 ];
 let V0450_RESULT=null,V0450_RUNNING=false;
 
-function v0450Engine(rows,capital,maxPositions){
+function v0450Engine(rows,capital,maxPositions,maxPositionPct=.20){
  const byDay={},spy={};
  for(const r of rows){
   const z=v0440NY(r.t); if(z.m<570||z.m>=960)continue;
@@ -2075,7 +2075,7 @@ function v0450Engine(rows,capital,maxPositions){
         const entry=c.next.o*(1+costSide);
         const grossUsed=positions.reduce((q,p)=>q+p.entry*p.shares,0);
         const capitalLeft=Math.max(0,eq-grossUsed);
-        const notionalCap=Math.min(eq*.20,capitalLeft);
+        const notionalCap=Math.min(eq*maxPositionPct,capitalLeft);
         const shares=Math.min(notionalCap/entry,(eq*.005)/(entry*.006));
         if(!(shares>0))continue;
         positions.push({s:c.sym,symbol:c.sym,entry,entryTime:c.next.t,entryIdx:c.i+1,shares,stop:entry*(1-.004),target:entry*(1+.008),entryEquity:eq});
@@ -2143,3 +2143,56 @@ function v0450Report(){
 }
 async function v0450Share(){return v043xShare(v0450Report(),'linasopti_kapitallab1','Linas Opti Kapital Lab 1','v0450Status')}
 window.addEventListener('DOMContentLoaded',()=>{document.getElementById('v0450Run')?.addEventListener('click',v0450Run);document.getElementById('v0450Share')?.addEventListener('click',v0450Share);v0450Paint()});
+
+
+// ============================================================
+// V0.45.2 – KAPITAL LAB 2 · POSITIONSSTORLEK
+// Fryst kandidat från Kapital Lab 1: max 3 samtidiga positioner.
+// Endast max position per affär ändras: 10 / 20 / 30 / 33,3 % equity.
+// Signal-, regime-, exit-, riskreferens- och friktionslogik är oförändrad.
+// ============================================================
+const V0452_VARIANTS=[
+ {id:'s10',pct:.10,name:'10% per position'},
+ {id:'s20',pct:.20,name:'20% per position'},
+ {id:'s30',pct:.30,name:'30% per position'},
+ {id:'s33',pct:1/3,name:'33,3% per position'}
+];
+let V0452_RESULT=null,V0452_RUNNING=false;
+function v0452Stats(r){return v0450Stats(r)}
+function v0452Paint(){
+ const sum=document.getElementById('v0452Summary'),body=document.getElementById('v0452Rows'),share=document.getElementById('v0452Share'); if(!sum||!body)return;
+ if(!V0452_RESULT){sum.textContent='Ingen körning ännu.';body.innerHTML='';if(share)share.disabled=true;return}
+ const ranked=V0452_RESULT.variants.map(v=>({...v,stats:v0452Stats(v)})).sort((a,b)=>b.eq-a.eq),best=ranked[0];
+ sum.innerHTML=`<b>Bäst slutvärde: ${best.name} · ${Math.round(best.eq).toLocaleString('sv-SE')} kr</b><br>Tre samtidiga positioner är frysta från Kapital Lab 1. Endast positionsstorleken ändras.`;
+ body.innerHTML=V0452_RESULT.variants.map(v=>{const s=v0452Stats(v);return `<tr><td>${v.name}</td><td>${Math.round(v.eq).toLocaleString('sv-SE')} kr</td><td class="${s.ret>=0?'good':'bad'}">${(s.ret*100).toFixed(2)}%</td><td>${v0411FmtPF(s.pf)}</td><td>${(s.wr*100).toFixed(1)}%</td><td>${(v.dd*100).toFixed(2)}%</td><td>${v.closed.length}</td><td>${(s.util*100).toFixed(1)}%</td></tr>`}).join('');
+ if(share)share.disabled=false;
+}
+async function v0452Run(){
+ if(V0452_RUNNING)return; V0452_RUNNING=true;
+ const run=document.getElementById('v0452Run'),st=document.getElementById('v0452Status'),bar=document.getElementById('v0452Bar'),months=v0440Months(); run.disabled=true;
+ const states=V0452_VARIANTS.map(v=>({...v,eq:100000,dd:0,peak:100000,closed:[],curve:[],utilSum:0,utilN:0,maxConcurrent:0,years:[],yearStart:100000}));
+ try{
+  for(let i=0;i<months.length;i++){
+   const w=months[i]; st.innerHTML=`<span class="v0406-spinner small"></span> ${i+1}/${months.length} · hämtar ${w.label} och kör 4 storleksvarianter…`; bar.style.width=`${i/months.length*100}%`;
+   const j=await v0440FetchMonth(w,st),rows=j.rows||[];
+   for(const state of states){
+    const r=v0450Engine(rows,state.eq,3,state.pct); state.eq=r.eq; state.utilSum+=r.utilSum; state.utilN+=r.utilN; state.maxConcurrent=Math.max(state.maxConcurrent,r.maxConcurrent);
+    for(const t of r.closed)state.closed.push(t); for(const c of r.curve){state.peak=Math.max(state.peak,c.v);state.dd=Math.min(state.dd,c.v/state.peak-1);state.curve.push(c)}
+    const y=+w.label.slice(0,4),nextY=i===months.length-1?null:+months[i+1].label.slice(0,4);
+    if(nextY!==y){const n=state.closed.filter(t=>+v0440NY(t.entryTime).d.slice(0,4)===y).length;state.years.push({year:y,start:state.yearStart,end:state.eq,n});state.yearStart=state.eq;}
+   }
+   bar.style.width=`${(i+1)/months.length*100}%`; await v0406Yield(20);
+  }
+  V0452_RESULT={from:'2023-01-01',to:'2026-09-30',variants:states}; v0413AddSims(4); v0452Paint(); st.textContent='✓ Kapital Lab 2 klart · fyra positionsstorlekar testade med tre samtidiga positioner.';
+ }catch(e){st.textContent=`Kapital Lab 2 avbröts. Inga simuleringar registrerades som klara. Tryck Kör för att starta om. (${e?.message||e})`}
+ finally{V0452_RUNNING=false;run.disabled=false}
+}
+function v0452Report(){
+ if(!V0452_RESULT)return'';
+ const L=['LINAS OPTI – KAPITAL LAB 2 · POSITIONSSTORLEK','Version: '+APP_VERSION,'Handel: AVSTÄNGD (historiskt backtest)','','STARTKAPITAL: 100 000 kr','PERIOD: 2023-01-01 → 2026-09','FRYST DAY SELECTION: '+V0440_SYMBOLS.join(', '),'','METOD','Kapital Lab 1 pekade ut 3 samtidiga positioner som forskningskandidat. Den är fryst här.','Endast max positionsstorlek ändras: 10% / 20% / 30% / 33,3% av equity.','Samma frysta Jägare: PRO2-kvalitet → Entry B → Strong-regim → forsknings-exit.','0,5% risk mot 0,6%-referens, max 4 nya entries per dag.','Exit och friktion oförändrade: mål +0,8%, stop -0,4% efter fryst delay, max 60 min, 0,0425% per sida.','Ingen signalparameter optimeras.','','RESULTAT'];
+ for(const v of V0452_RESULT.variants){const s=v0452Stats(v);L.push(`${v.name} | slut ${v.eq.toFixed(2)} kr | avkastning ${(s.ret*100).toFixed(2)}% | affärer ${v.closed.length} | PF ${v0411FmtPF(s.pf)} | WR ${(s.wr*100).toFixed(1)}% | max DD ${(v.dd*100).toFixed(2)}% | snitt kapital i arbete ${(s.util*100).toFixed(1)}% | max samtidiga ${v.maxConcurrent}`)}
+ L.push('','ÅRSRESULTAT'); for(const v of V0452_RESULT.variants){L.push('',v.name.toUpperCase());for(const y of v.years)L.push(`${y.year} | ${y.start.toFixed(2)} → ${y.end.toFixed(2)} | ${((y.end/y.start-1)*100).toFixed(2)}% | ${y.n} affärer`)}
+ L.push('','OBS: 2023–2026 är inte ett nytt orört OOS-prov i sin helhet. Kapital Lab 2 testar positionsstorlek med frysta signalregler; det är inte en prognos.'); return L.join('\n');
+}
+async function v0452Share(){return v043xShare(v0452Report(),'linasopti_kapitallab2','Linas Opti Kapital Lab 2','v0452Status')}
+window.addEventListener('DOMContentLoaded',()=>{document.getElementById('v0452Run')?.addEventListener('click',v0452Run);document.getElementById('v0452Share')?.addEventListener('click',v0452Share);v0452Paint()});
