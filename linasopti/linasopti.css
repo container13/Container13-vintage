@@ -1073,3 +1073,25 @@ body.v0462-running .v0460-lock{padding:6px 10px;margin:4px 0;font-size:.86rem}
  body.v0462-running .v0460-lock{display:none}
  .v0462-progressblock{margin:7px 0}
 }
+
+/* V0.47.0 modal + status clarity */
+.v0460-modal{display:flex;align-items:center;justify-content:center;padding:14px;overflow:hidden}
+.v0460-modal[hidden]{display:none!important}
+.v0460-modalbox{margin:0!important;max-height:88vh;overflow:auto;width:min(94vw,620px)}
+.v0470-statusnote{font-size:.86rem;padding:7px 0 10px;opacity:.86}
+.v0470-complete{margin:10px 0;padding:10px 12px;border-radius:12px;background:rgba(0,128,0,.08);font-weight:800}
+.v0470-metricgrid{display:grid;grid-template-columns:1fr auto;gap:7px 12px;margin:12px 0}
+.v0470-metricgrid div:nth-child(even){font-weight:800;text-align:right}
+.v0470-tech{margin-top:12px}
+.v0470-tech pre{font-size:.78rem;white-space:pre-wrap;overflow-wrap:anywhere}
+
+/* V0.47.0 Suite B */
+.v0470-help{border:1px solid currentColor;border-radius:50%;width:26px;height:26px;background:transparent;font-weight:900}
+.v0470-bactions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.v0470-bactions button{flex:1 1 170px}
+.v0470-progresshead{display:flex;justify-content:space-between;margin:8px 0 4px}
+.v0470-browbtn{border:0;background:transparent;text-decoration:underline;font:inherit;padding:0;text-align:left}
+.v0470-good{font-weight:900}
+.v0470-warn{font-weight:900}
+.v0470-weak{font-weight:900}
+.v0470-done{font-weight:900}

@@ -1,4 +1,7 @@
-# Linas Opti V0.45.12
+# Linas Opti V0.47.0
+
+> **Aktuell release: V0.47.0** · Validation Suite A + Suite B · Handel AV · Close ≥83% fryst kandidat · Robotmognad 48/100
+
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
 - Korrigerar V0.45.11 där Signal Lab 3 fanns i HTML/JS men kunde döljas/överskridas av äldre Testlab-initiering i webbläsaren.
@@ -532,3 +535,36 @@ Ingen forsknings- eller handelslogik ändrad.
 - fältet rensas även första gången det får fokus medan inloggningsgrinden är låst.
 
 Syftet är endast att inloggningsrutan ska börja visuellt tom. Användaren kan fortfarande själv välja ett sparat lösenord från webbläsarens lösenordshanterare.
+
+
+## V0.47.0 – Validation Suite B · Edge & robusthet
+
+Stor sammanhållen testetapp. Ingen handelsregel ändrad; Close ≥83% är fortsatt fryst kandidat.
+
+Suite B är medvetet en **ny forskningsgeneration efter Suite A**. Det är viktigt eftersom Suite A-resultaten redan är kända. De 12 nya testerna ska därför beskrivas som robusthetsdiagnostik på återanvänd historik, inte som nytt orört OOS-bevis.
+
+Förregistrerade Suite B-tester:
+1. Edge per affär.
+2. Kostnads-headroom / break-even.
+3. Friktionsstege 1,0×–2,0×.
+4. Leave-one-symbol-out.
+5. Exit-orsaker.
+6. Tid på dagen.
+7. Veckodagar.
+8. Rullande 6 månader.
+9. Rullande 12 månader.
+10. Bootstrap 95% konfidensintervall.
+11. Svansrisk / längsta förlustsvit.
+12. Vinstkoncentration topp 10%.
+
+Varje test har ?-förklaring, sparat resultat, tekniska detaljer och separat export. Ingen parameter ändras automatiskt efter resultatet.
+
+UI-fixar i V0.47.0:
+- PASS/FAIL visas på svenska som GODKÄND / KRAV EJ UPPFYLLT, medan tekniska fel heter KÖRFEL.
+- resultatrutor centreras i synlig viewport och scrollar internt;
+- resultat visas i mänskligt läsbara nyckeltal med tekniska detaljer hopfällda;
+- när Suite A redan är 7/7 klar döljs startknapparna och ersätts av tydligt genomfört-läge;
+- lösenkodsfältet använder autocomplete=off och flera ignore-attribut för att minska automatiska lösenordsförslag;
+- README-huvudet och aktuell release uppdateras till V0.47.0.
+
+Releasekrav från och med denna version: README-huvudversion = APP_VERSION = loginversion = headerversion = CSS/JS-cacheversion innan ZIP får godkännas.

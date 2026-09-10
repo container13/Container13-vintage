@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.46.3";
+const APP_VERSION = "V0.47.0";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -2498,10 +2498,10 @@ const V0462_PBO_CP_KEY='linasopti_validation_pbo_checkpoint_v0462';
 let V0462_ACTIVE={id:null,index:0,total:0,label:''},V0462_DETAIL_ID=null,V0462_RERUN_MODE=false;
 
 function v0462StatusMarkup(status,progress=''){
- if(status==='PASS')return '<span class="v0462-status v0462-pass">✅ PASS</span>';
+ if(status==='PASS')return '<span class="v0462-status v0462-pass">✅ GODKÄND</span>';
  if(status==='VARNING')return '<span class="v0462-status v0462-warning">⚠️ VARNING</span>';
- if(status==='FAIL')return '<span class="v0462-status v0462-fail">❌ FAIL</span>';
- if(status==='PÅGÅR')return `<span class="v0462-status v0462-running">⏳ PÅGÅR${progress?' · '+progress:''}</span>`;
+ if(status==='FAIL')return '<span class="v0462-status v0462-fail">❌ KRAV EJ UPPFYLLT</span>';
+ if(status==='PÅGÅR')return `<span class="v0462-status v0462-running">⚙️ KÖRS${progress?' · '+progress:''}</span>`;
  return '<span class="v0462-status v0462-muted">○ EJ KÖRD</span>';
 }
 function v0462SetActive(id,index=0,total=0,label=''){
@@ -2536,11 +2536,25 @@ function v0462TestReport(id,r){
  L.push('','Ingen parameter har ändrats av denna export.');
  return L.join('\n');
 }
+
+function v0470FriendlyMetrics(id,m){
+ const f=n=>Number.isFinite(n)?n.toLocaleString('sv-SE',{maximumFractionDigits:2}):'—';
+ const pct=n=>Number.isFinite(n)?(n*100).toFixed(1)+'%':'—';
+ let rows=[];
+ if(id==='integrity')rows=[['Dubbletter',m.duplicates??'—'],['Tidsordningsfel',m.order??'—'],['Reproducerbar',m.reproducible?'Ja':'Nej']];
+ else if(id==='pbo')rows=[['PBO',pct(m.pbo)],['DSR',pct(m.dsr)],['Train/test-kombinationer',m.combos??'—']];
+ else if(id==='time')rows=(m.years||[]).flatMap(y=>[[`${y.year} avkastning`,pct(y.ret)],[`${y.year} affärer`,y.trades]]);
+ else if(id==='friction')rows=(m.levels||[]).flatMap(x=>[[`${x.mult}× friktion · P/L`,f(x.pnl)+' kr'],[`${x.mult}× friktion · PF`,f(x.pf)]]);
+ else if(id==='concentration')rows=[['Största vinstkoncentration',pct(m.bestShare)],['Bästa symbol',m.symbols?.[0]?.[0]||'—']];
+ else if(id==='monte')rows=[['Monte Carlo-körningar',m.runs??'—'],['5:e percentil slutvärde',f(m.finalP05)+' kr'],['Svagaste 5% drawdown',pct(m.ddWorst5)]];
+ else if(id==='final')rows=[['Godkända',m.passes??0],['Varningar',m.warnings??0],['Krav ej uppfyllda',m.fails??0]];
+ return `<div class="v0470-metricgrid">${rows.map(r=>`<div>${r[0]}</div><div>${r[1]}</div>`).join('')}</div>`;
+}
 function v0462ShowDetail(id){
  const x=v0460Load(),r=x.steps[id],s=V0460_STEPS.find(q=>q[0]===id);V0462_DETAIL_ID=id;
  const m=document.getElementById('v0462DetailModal'),title=document.getElementById('v0462DetailTitle'),body=document.getElementById('v0462DetailBody'),rerun=document.getElementById('v0462RerunTest');
  if(title)title.textContent=s?.[1]||id;
- if(body)body.innerHTML=r?`${v0462StatusMarkup(r.status)}<p>${r.explain||''}</p><pre style="white-space:pre-wrap">${JSON.stringify(r.metrics||{},null,2)}</pre>${r.reruns?.length?`<p><b>Kontrollkörningar:</b> ${r.reruns.length}</p>`:''}`:'<p>Testet är inte kört ännu.</p>';
+ if(body)body.innerHTML=r?`${v0462StatusMarkup(r.status)}<p>${r.explain||''}</p>${v0470FriendlyMetrics(id,r.metrics||{})}<details class="v0470-tech"><summary>Visa tekniska detaljer</summary><pre>${JSON.stringify(r.metrics||{},null,2)}</pre></details>${r.reruns?.length?`<p><b>Kontrollkörningar:</b> ${r.reruns.length}</p>`:''}`:'<p>Testet är inte kört ännu.</p>';
  if(rerun)rerun.disabled=!r||V0460_RUNNING||id==='final';
  if(m)m.hidden=false;
 }
@@ -2565,13 +2579,13 @@ function v0460Paint(){
    const stat=isRun?v0462StatusMarkup('PÅGÅR',progress):v0462StatusMarkup(r?.status||'');
    return `<tr><td>${i+1}/7</td><td>${r?`<button class="v0462-rowbtn" data-detail="${s[0]}">${s[1]}</button>`:s[1]}</td><td>${stat}</td><td><button class="v0460-help" data-help="${s[0]}">?</button></td></tr>`
  }).join('');
- const z=document.getElementById('v0460Result');if(z)z.innerHTML=`Regelhash <b>${V0460_RULE_HASH}</b> · ${done}/7 sparade${x.completed?' · <b>SVIT KLAR</b>':''}`;
+ const z=document.getElementById('v0460Result');if(z)z.innerHTML=`Regelhash <b>${V0460_RULE_HASH}</b> · ${done}/7 sparade${x.completed?' · <b>SVIT KLAR</b>':''}`;const complete=document.getElementById('v0470SuiteAComplete');if(complete)complete.hidden=!x.completed;
  const st=document.getElementById('v0460Storage');if(st)st.textContent=`Lokal Safari-lagring · ${done}/7 test sparade`;
  const bcp=v0461LoadBaseCp(),pcp=v0462LoadPboCp(),runAll=document.getElementById('v0460RunAll'),runNext=document.getElementById('v0460RunNext'),cpel=document.getElementById('v0461Checkpoint');
  if(!V0460_RUNNING){
    if(bcp){if(runAll)runAll.textContent=`▶ Fortsätt Validation Suite · basdata ${Math.min(bcp.nextIndex+1,bcp.total)}/${bcp.total}`;if(runNext)runNext.textContent='▶ Fortsätt nästa test';if(cpel)cpel.textContent=`Checkpoint: basdata ${bcp.nextIndex}/${bcp.total} · ${new Date(bcp.savedAt).toLocaleTimeString('sv-SE')}`}
    else if(pcp){if(runAll)runAll.textContent=`▶ Fortsätt Validation Suite · PBO ${Math.min(pcp.nextIndex+1,pcp.total)}/${pcp.total}`;if(runNext)runNext.textContent=`▶ Fortsätt PBO · ${Math.min(pcp.nextIndex+1,pcp.total)}/${pcp.total}`;if(cpel)cpel.textContent=`Checkpoint: PBO ${pcp.nextIndex}/${pcp.total} · ${new Date(pcp.savedAt).toLocaleTimeString('sv-SE')}`}
-   else{if(runAll)runAll.textContent='▶ Kör hela Validation Suite';if(runNext)runNext.textContent='▶ Kör nästa test';if(cpel)cpel.textContent='Checkpoint: ingen pågående delkörning.'}
+   else{if(runAll){runAll.textContent='▶ Kör hela Validation Suite';runAll.hidden=!!x.completed}if(runNext){runNext.textContent='▶ Kör nästa test';runNext.hidden=!!x.completed}if(cpel)cpel.textContent='Checkpoint: ingen pågående delkörning.'}
  }
  ['v0460FinalReport','v0460Raw'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=!x.completed});
  document.querySelectorAll('.v0460-help').forEach(b=>b.onclick=()=>v0460Help(b.dataset.help,x.steps[b.dataset.help]?.explain||''));
@@ -2988,4 +3002,176 @@ document.addEventListener('focusin',e=>{
    // Never expose a prefilled credential from Lina itself.
    if(!e.target.dataset.v0463Touched){e.target.value='';e.target.dataset.v0463Touched='1'}
  }
+});
+
+
+// ============================================================
+// V0.47.0 – VALIDATION SUITE B · EDGE & ROBUSTHET
+// Post-Suite-A diagnostics on reused history. No optimization.
+// ============================================================
+const V0470_B_KEY='linasopti_validation_suite_b_v0470';
+const V0470_B_SCHEMA='LINA-SUITE-B-1';
+const V0470_B_TESTS=[
+ ['edge','Edge per affär'],
+ ['breakeven','Kostnads-headroom / break-even'],
+ ['ladder','Friktionsstege 1,0×–2,0×'],
+ ['loo','Leave-one-symbol-out'],
+ ['exit','Exit-orsaker'],
+ ['tod','Tid på dagen'],
+ ['weekday','Veckodagar'],
+ ['roll6','Rullande 6 månader'],
+ ['roll12','Rullande 12 månader'],
+ ['bootstrap','Bootstrap konfidensintervall'],
+ ['tail','Svansrisk / förlustsviter'],
+ ['concentration2','Vinstkoncentration topp 10%']
+];
+const V0470_B_HELP={
+ suite:['Vad är Suite B?','Detta är en ny diagnostikgeneration efter Suite A. Den försöker förklara var Jägarens edge är stark eller skör. Den ändrar inga regler och är inte nytt orört OOS-bevis.'],
+ edge:['Edge per affär','Visar genomsnitt, median, bruttovinster, bruttoförluster och PF för de observerade affärerna.'],
+ breakeven:['Kostnads-headroom','Beräknar ungefär hur mycket den modellerade friktionen kan öka innan total P/L når noll. Större marginal är bättre.'],
+ ladder:['Friktionsstege','Visar hur resultatet förändras vid flera fasta kostnadsnivåer. Detta är diagnostik, inte parameteroptimering.'],
+ loo:['Leave-one-symbol-out','Tar bort en aktie i taget och räknar om resultatet. Om en enda aktie avgör allt är strategin koncentrerad.'],
+ exit:['Exit-orsaker','Delar upp P/L och antal affärer efter mål, stop och max-tid. Visar var edge och förluster faktiskt uppstår.'],
+ tod:['Tid på dagen','Delar affärerna i fasta 30-minutersfönster under entryperioden för att se tidskoncentration.'],
+ weekday:['Veckodagar','Visar resultat per veckodag. Ett extremt beroende av en dag är en varningssignal.'],
+ roll6:['Rullande 6 månader','Mäter varje sammanhängande 6-månadersperiod. Visar hur ofta strategin är positiv och hur svag den sämsta perioden är.'],
+ roll12:['Rullande 12 månader','Samma idé över 12 månader. Längre fönster ger en lugnare bild av stabilitet över tid.'],
+ bootstrap:['Bootstrap CI','Drar affärer med återläggning många gånger och uppskattar osäkerhetsintervall för genomsnittlig P/L per affär.'],
+ tail:['Svansrisk','Visar största enskilda förlust, längsta förlustsvit och andelen P/L från de sämsta affärerna.'],
+ concentration2:['Vinstkoncentration','Mäter hur stor del av total bruttovinst som kommer från de bästa 10% av affärerna. Extrem koncentration betyder att få affärer bär strategin.']
+};
+function v0470BNew(){return{schema:V0470_B_SCHEMA,appVersion:'V0.47.0',rulesHash:V0460_RULE_HASH,createdAt:new Date().toISOString(),tests:{},completed:false}}
+function v0470BLoad(){try{const x=JSON.parse(localStorage.getItem(V0470_B_KEY)||'null');return x&&x.schema===V0470_B_SCHEMA&&x.rulesHash===V0460_RULE_HASH?x:v0470BNew()}catch{return v0470BNew()}}
+function v0470BSave(x){x.updatedAt=new Date().toISOString();localStorage.setItem(V0470_B_KEY,JSON.stringify(x));return x}
+function v0470BBase(){const a=v0460Load();return a?.base?.closed?.length?a.base:null}
+function v0470BAssess(kind,v){
+ if(kind==='good')return {status:'ROBUST',label:'✅ SER ROBUST UT'};
+ if(kind==='warn')return {status:'SENSITIVE',label:'⚠️ KÄNSLIG'};
+ if(kind==='weak')return {status:'WEAK',label:'❌ SVAGHET HITTAD'};
+ return {status:'INFO',label:'ℹ️ BESKRIVANDE'};
+}
+function v0470BStatusLabel(r){return r?.label||'○ EJ KÖRD'}
+function v0470BHelp(id){const x=V0470_B_HELP[id]||['Förklaring','Ingen hjälptext.'],m=document.getElementById('v0470BHelpModal');document.getElementById('v0470BHelpTitle').textContent=x[0];document.getElementById('v0470BHelpBody').innerHTML=`<p>${x[1]}</p>`;m.hidden=false}
+function v0470BPaint(){
+ const x=v0470BLoad(),rows=document.getElementById('v0470BRows'),done=V0470_B_TESTS.filter(t=>x.tests[t[0]]).length;
+ if(rows)rows.innerHTML=V0470_B_TESTS.map((t,i)=>{const r=x.tests[t[0]];return `<tr><td>${i+1}</td><td>${r?`<button class="v0470-browbtn" data-bdetail="${t[0]}">${t[1]}</button>`:t[1]}</td><td>${v0470BStatusLabel(r)}</td><td><button class="v0470-help" data-bhelp="${t[0]}">?</button></td></tr>`}).join('');
+ const bar=document.getElementById('v0470BBar'),pct=document.getElementById('v0470BPct'),sum=document.getElementById('v0470BSummary');
+ if(bar)bar.style.width=`${done/12*100}%`;if(pct)pct.textContent=`${done}/12`;
+ if(sum){const a=Object.values(x.tests),g=a.filter(r=>r.status==='ROBUST').length,w=a.filter(r=>r.status==='SENSITIVE').length,q=a.filter(r=>r.status==='WEAK').length;sum.innerHTML=`${done}/12 klara · ✅ ${g} robusta · ⚠️ ${w} känsliga · ❌ ${q} svagheter`;}
+ ['v0470BReport','v0470BRaw'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=!x.completed});
+ document.querySelectorAll('[data-bhelp]').forEach(b=>b.onclick=()=>v0470BHelp(b.dataset.bhelp));
+ document.querySelectorAll('[data-bdetail]').forEach(b=>b.onclick=()=>v0470BShowDetail(b.dataset.bdetail));
+}
+function v0470BSym(t){return t.symbol||t.s||'—'}
+function v0470BPnl(t){return Number(t.pnl)||0}
+function v0470BNotional(t){return Math.abs((Number(t.shares)||0)*(Number(t.entry)||0))}
+function v0470BStats(trades){
+ const p=trades.map(v0470BPnl),wins=p.filter(x=>x>0),loss=p.filter(x=>x<0),gw=wins.reduce((a,x)=>a+x,0),gl=Math.abs(loss.reduce((a,x)=>a+x,0)),sum=p.reduce((a,x)=>a+x,0),mean=p.length?sum/p.length:0,srt=[...p].sort((a,b)=>a-b),med=srt.length?srt[Math.floor(srt.length/2)]:0;
+ return{n:p.length,pnl:sum,mean,median:med,pf:gl?gw/gl:(gw?Infinity:0),wr:p.length?wins.length/p.length:0,grossWin:gw,grossLoss:gl}
+}
+function v0470BMonthPnl(base){
+ const out={};for(const t of base.closed){const k=(t.entryTime||'').slice(0,7);out[k]=(out[k]||0)+v0470BPnl(t)}return out
+}
+function v0470BWindow(monthMap,n){
+ const ks=Object.keys(monthMap).sort(),out=[];for(let i=0;i+n<=ks.length;i++){const sub=ks.slice(i,i+n),p=sub.reduce((a,k)=>a+(monthMap[k]||0),0);out.push({from:sub[0],to:sub.at(-1),pnl:p})}return out
+}
+function v0470BRng(seed=470){let x=seed>>>0;return()=>{x=(Math.imul(1664525,x)+1013904223)>>>0;return x/4294967296}}
+function v0470BQ(a,p){const b=[...a].sort((x,y)=>x-y);return b[Math.max(0,Math.min(b.length-1,Math.floor((b.length-1)*p)))]}
+function v0470BNyDate(t){try{return new Intl.DateTimeFormat('sv-SE',{timeZone:'America/New_York',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date(t))}catch{return[]}}
+async function v0470BRunTest(id){
+ const base=v0470BBase();if(!base)throw new Error('Suite A-basdata saknas. Öppna/återställ först Validation Suite A.');
+ const tr=base.closed,st=v0470BStats(tr);
+ if(id==='edge'){
+   const a=st.pf>=1.10&&st.mean>5?v0470BAssess('good'):st.pf>1&&st.mean>0?v0470BAssess('warn'):v0470BAssess('weak');
+   return{...a,metrics:st,explain:`${st.n} affärer · snitt ${st.mean.toFixed(2)} kr/affär · median ${st.median.toFixed(2)} kr · PF ${st.pf.toFixed(2)}.`}
+ }
+ if(id==='breakeven'){
+   const totalNot=tr.reduce((a,t)=>a+v0470BNotional(t),0),normal=V0460_RULES.costSide*2,extraPerMult=totalNot*normal;
+   const mult=extraPerMult>0?1+st.pnl/extraPerMult:Infinity;
+   const a=mult>=1.5?v0470BAssess('good'):mult>=1.25?v0470BAssess('warn'):v0470BAssess('weak');
+   return{...a,metrics:{breakEvenMultiplier:mult,totalNotional:totalNot,basePnl:st.pnl},explain:`Beräknad break-even cirka ${mult.toFixed(2)}× normal modellerad friktion.`}
+ }
+ if(id==='ladder'){
+   const levels=[];for(let mult=1;mult<=2.0001;mult+=.1){const extra=V0460_RULES.costSide*2*(mult-1),c=tr.map(t=>({...t,pnl:v0470BPnl(t)-v0470BNotional(t)*extra}));const s=v0470BStats(c);levels.push({mult:+mult.toFixed(1),pnl:s.pnl,pf:s.pf})}
+   const cross=levels.find(x=>x.pnl<0)?.mult??null,a=cross===null?v0470BAssess('good'):cross>=1.5?v0470BAssess('warn'):v0470BAssess('weak');
+   return{...a,metrics:{levels,firstNegativeMultiplier:cross},explain:`Första fasta steget med negativ total P/L: ${cross?cross.toFixed(1)+'×':'inte före 2,0×'}.`}
+ }
+ if(id==='loo'){
+   const syms=[...new Set(tr.map(v0470BSym))],rows=syms.map(sym=>({symbol:sym,...v0470BStats(tr.filter(t=>v0470BSym(t)!==sym))})).sort((a,b)=>a.pnl-b.pnl),worst=rows[0];
+   const a=worst&&worst.pnl>0?v0470BAssess('good'):worst&&worst.pnl>-2000?v0470BAssess('warn'):v0470BAssess('weak');
+   return{...a,metrics:{worstLeaveOut:worst,all:rows},explain:`Sämsta leave-one-out: utan ${worst?.symbol||'—'} blir P/L ${(worst?.pnl||0).toFixed(0)} kr.`}
+ }
+ if(id==='exit'){
+   const g={};for(const t of tr){const k=t.why||'okänd';(g[k]??=[]).push(t)}const rows=Object.entries(g).map(([why,a])=>({why,...v0470BStats(a)})).sort((a,b)=>b.n-a.n);
+   return{...v0470BAssess('info'),metrics:{groups:rows},explain:rows.map(x=>`${x.why}: ${x.n} affärer, ${x.pnl.toFixed(0)} kr`).join(' · ')}
+ }
+ if(id==='tod'){
+   const g={};for(const t of tr){const parts=v0470BNyDate(t.entryTime),h=Number(parts.find(x=>x.type==='hour')?.value),m=Number(parts.find(x=>x.type==='minute')?.value),mins=h*60+m,b=mins<660?'10:30–11:00':mins<690?'11:00–11:30':'11:30–12:00';(g[b]??=[]).push(t)}
+   const rows=Object.entries(g).map(([bucket,a])=>({bucket,...v0470BStats(a)})),pos=rows.filter(x=>x.pnl>0).length,a=pos>=2?v0470BAssess('good'):pos===1?v0470BAssess('warn'):v0470BAssess('weak');
+   return{...a,metrics:{buckets:rows},explain:`${pos}/${rows.length} tidsfönster positiva.`}
+ }
+ if(id==='weekday'){
+   const names=['mån','tis','ons','tor','fre'],g={};for(const t of tr){const wd=new Intl.DateTimeFormat('sv-SE',{timeZone:'America/New_York',weekday:'short'}).format(new Date(t.entryTime)).slice(0,3);(g[wd]??=[]).push(t)}
+   const rows=Object.entries(g).map(([day,a])=>({day,...v0470BStats(a)})),pos=rows.filter(x=>x.pnl>0).length,a=pos>=4?v0470BAssess('good'):pos>=3?v0470BAssess('warn'):v0470BAssess('weak');
+   return{...a,metrics:{days:rows},explain:`${pos}/${rows.length} veckodagar positiva.`}
+ }
+ if(id==='roll6'||id==='roll12'){
+   const n=id==='roll6'?6:12,w=v0470BWindow(v0470BMonthPnl(base),n),pos=w.filter(x=>x.pnl>0).length,rate=w.length?pos/w.length:0,worst=[...w].sort((a,b)=>a.pnl-b.pnl)[0],a=rate>=.70?v0470BAssess('good'):rate>=.55?v0470BAssess('warn'):v0470BAssess('weak');
+   return{...a,metrics:{months:n,windows:w.length,positiveRate:rate,worst},explain:`${(rate*100).toFixed(0)}% av ${w.length} rullande ${n}-månadersfönster positiva · sämsta ${(worst?.pnl||0).toFixed(0)} kr.`}
+ }
+ if(id==='bootstrap'){
+   const rng=v0470BRng(47001),vals=tr.map(v0470BPnl),means=[];for(let k=0;k<3000;k++){let s=0;for(let i=0;i<vals.length;i++)s+=vals[Math.floor(rng()*vals.length)];means.push(s/vals.length);if(k%250===0)await new Promise(r=>setTimeout(r,0))}
+   const lo=v0470BQ(means,.025),hi=v0470BQ(means,.975),a=lo>0?v0470BAssess('good'):hi>0&&st.mean>0?v0470BAssess('warn'):v0470BAssess('weak');
+   return{...a,metrics:{runs:3000,mean:st.mean,ci95:[lo,hi]},explain:`Bootstrap 95% intervall för snitt-P/L: ${lo.toFixed(2)} till ${hi.toFixed(2)} kr/affär.`}
+ }
+ if(id==='tail'){
+   let streak=0,maxStreak=0;for(const t of tr){if(v0470BPnl(t)<0){streak++;maxStreak=Math.max(maxStreak,streak)}else streak=0}
+   const sorted=[...tr].sort((a,b)=>v0470BPnl(a)-v0470BPnl(b)),n=Math.max(1,Math.ceil(sorted.length*.05)),tail=sorted.slice(0,n).reduce((a,t)=>a+v0470BPnl(t),0),worst=v0470BPnl(sorted[0]),a=maxStreak<=8?v0470BAssess('good'):maxStreak<=12?v0470BAssess('warn'):v0470BAssess('weak');
+   return{...a,metrics:{worstTrade:worst,maxLosingStreak:maxStreak,worst5PctPnl:tail},explain:`Största förlust ${worst.toFixed(0)} kr · längsta förlustsvit ${maxStreak} affärer · sämsta 5% totalt ${tail.toFixed(0)} kr.`}
+ }
+ if(id==='concentration2'){
+   const wins=tr.filter(t=>v0470BPnl(t)>0).sort((a,b)=>v0470BPnl(b)-v0470BPnl(a)),n=Math.max(1,Math.ceil(wins.length*.10)),top=wins.slice(0,n).reduce((a,t)=>a+v0470BPnl(t),0),gross=wins.reduce((a,t)=>a+v0470BPnl(t),0),share=gross?top/gross:1,a=share<=.35?v0470BAssess('good'):share<=.50?v0470BAssess('warn'):v0470BAssess('weak');
+   return{...a,metrics:{top10Share:share,topCount:n,winnerCount:wins.length},explain:`Bästa 10% av vinnarna står för ${(share*100).toFixed(1)}% av bruttovinsten.`}
+ }
+ throw new Error('Okänt test');
+}
+let V0470_B_RUNNING=false;
+async function v0470BRun(all){
+ if(V0470_B_RUNNING)return;V0470_B_RUNNING=true;const st=document.getElementById('v0470BStatus'),A=document.getElementById('v0470RunAll'),N=document.getElementById('v0470RunNext');A.disabled=N.disabled=true;
+ try{
+  let x=v0470BLoad();
+  do{
+   const t=V0470_B_TESTS.find(q=>!x.tests[q[0]]);if(!t)break;
+   st.textContent=`Kör ${t[1]}…`;
+   const r=await v0470BRunTest(t[0]);x.tests[t[0]]={...r,completedAt:new Date().toISOString(),rulesHash:V0460_RULE_HASH,dataFingerprint:v0470BBase()?.dataFingerprint||'—'};v0470BSave(x);v0470BPaint();
+   if(!all)break;
+   await new Promise(r=>setTimeout(r,20));
+  }while(true);
+  x=v0470BLoad();if(V0470_B_TESTS.every(t=>x.tests[t[0]])){x.completed=true;v0470BSave(x);st.textContent='✓ Suite B klar · 12/12 diagnostiska tester genomförda.'}else st.textContent='✓ Test sparat.';
+ }catch(e){st.textContent='KÖRFEL: '+(e?.message||e)}
+ finally{V0470_B_RUNNING=false;A.disabled=N.disabled=false;v0470BPaint()}
+}
+function v0470BShowDetail(id){
+ const x=v0470BLoad(),r=x.tests[id],t=V0470_B_TESTS.find(q=>q[0]===id),m=document.getElementById('v0470BDetailModal');document.getElementById('v0470BDetailTitle').textContent=t?.[1]||id;
+ document.getElementById('v0470BDetailBody').innerHTML=r?`<p><b>${r.label}</b></p><p>${r.explain||''}</p><details><summary>Visa tekniska detaljer</summary><pre style="white-space:pre-wrap">${JSON.stringify(r.metrics||{},null,2)}</pre></details>`:'<p>Ej kört.</p>';m.hidden=false;document.getElementById('v0470BExportOne').dataset.id=id
+}
+function v0470BTestText(id){
+ const x=v0470BLoad(),r=x.tests[id],t=V0470_B_TESTS.find(q=>q[0]===id);return ['LINAS OPTI – SUITE B TEST','Version: '+APP_VERSION,'Test: '+(t?.[1]||id),'Bedömning: '+(r?.label||'—'),'Regelhash: '+V0460_RULE_HASH,'',r?.explain||'',JSON.stringify(r?.metrics||{},null,2),'','Reused history diagnostic – ej nytt orört OOS-bevis.'].join('\n')
+}
+function v0470BReport(){
+ const x=v0470BLoad(),L=['LINAS OPTI – VALIDATION SUITE B · EDGE & ROBUSTHET','Version: '+APP_VERSION,'Handel: AVSTÄNGD','Close >=83% fryst kandidat','Regelhash: '+V0460_RULE_HASH,'','OBS: Suite B skapades efter Suite A-resultaten och använder återanvänd historik. Den är diagnostik, inte nytt OOS-bevis.',''];
+ V0470_B_TESTS.forEach((t,i)=>{const r=x.tests[t[0]];L.push(`${i+1}. ${t[1]} | ${r?.label||'Ej körd'}`);if(r?.explain)L.push('   '+r.explain)});L.push('','Ingen parameteroptimering eller automatisk räddning har körts.');return L.join('\n')
+}
+window.addEventListener('DOMContentLoaded',()=>{
+ document.getElementById('v0470RunAll')?.addEventListener('click',()=>v0470BRun(true));
+ document.getElementById('v0470RunNext')?.addEventListener('click',()=>v0470BRun(false));
+ document.getElementById('v0470BReport')?.addEventListener('click',()=>v0460Dl(v0470BReport(),`LINAS_OPTI_VALIDATION_SUITE_B_V0470_${new Date().toISOString().slice(0,10)}.txt`));
+ document.getElementById('v0470BRaw')?.addEventListener('click',()=>v0460Dl(JSON.stringify(v0470BLoad(),null,2),`LINAS_OPTI_VALIDATION_SUITE_B_RAW_V0470_${new Date().toISOString().slice(0,10)}.json`,'application/json'));
+ document.getElementById('v0470BHelpClose')?.addEventListener('click',()=>document.getElementById('v0470BHelpModal').hidden=true);
+ document.getElementById('v0470BDetailClose')?.addEventListener('click',()=>document.getElementById('v0470BDetailModal').hidden=true);
+ document.getElementById('v0470BExportOne')?.addEventListener('click',e=>{const id=e.currentTarget.dataset.id;if(id)v0460Dl(v0470BTestText(id),`LINAS_OPTI_SUITE_B_${id.toUpperCase()}_V0470_${new Date().toISOString().slice(0,10)}.txt`)});
+ document.getElementById('v0470BHelpModal')?.addEventListener('click',e=>{if(e.target.id==='v0470BHelpModal')e.currentTarget.hidden=true});
+ document.getElementById('v0470BDetailModal')?.addEventListener('click',e=>{if(e.target.id==='v0470BDetailModal')e.currentTarget.hidden=true});
+ v0470BPaint();
+ const jump=document.getElementById('v0413LabJump');if(jump&&[...jump.options].some(o=>o.value==='v0470Lab')){jump.value='v0470Lab';try{localStorage.setItem('linasopti_testlab_selected_v0423','v0470Lab')}catch{}jump.dispatchEvent(new Event('change'))}
 });
