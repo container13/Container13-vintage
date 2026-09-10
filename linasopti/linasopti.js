@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.45.14";
+const APP_VERSION = "V0.46.0";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -1732,7 +1732,7 @@ window.addEventListener('DOMContentLoaded',()=>{
  const engine=document.getElementById('v0423Engine'),jump=document.getElementById('v0413LabJump');
  const LAB_KEY='linasopti_testlab_selected_v0423';
  function showSelectedLab(){if(!jump)return;const val=jump.value;document.querySelectorAll('[class*=\"vlab-v04\"]').forEach(el=>{el.style.display=el.classList.contains('vlab-'+val)?'':'none'});document.querySelectorAll('.vlab-extra').forEach(el=>el.style.display='none');localStorage.setItem(LAB_KEY,val);}
- if(jump){const saved=localStorage.getItem(LAB_KEY);if(saved&&saved!=='v0458Lab'&&saved!=='v0459Lab'&&[...jump.options].some(o=>o.value===saved))jump.value=saved;else jump.value='v04514Lab';jump.addEventListener('change',showSelectedLab);showSelectedLab();}
+ if(jump){const saved=localStorage.getItem(LAB_KEY);if(saved&&saved!=='v0458Lab'&&saved!=='v0459Lab'&&[...jump.options].some(o=>o.value===saved))jump.value=saved;else jump.value='v0460Lab';jump.addEventListener('change',showSelectedLab);showSelectedLab();}
  document.querySelectorAll('.v0424-subtab').forEach(b=>b.addEventListener('click',()=>show(b.dataset.pane,true)));
  if(engine){engine.addEventListener('change',()=>{
    if(engine.value==='testlab') show('testlab',true);
@@ -2425,6 +2425,61 @@ window.addEventListener('DOMContentLoaded',()=>{document.getElementById('v04511R
 
 
 
+
+// ============================================================
+// V0.46.0 – VALIDATION SUITE · locked research generation
+// ============================================================
+const V0460_KEY='linasopti_validation_suite_v0460',V0460_BACKUP_SCHEMA='lina-v0460-backup-v1';
+const V0460_SIM_LEDGER_KEY='linasopti_validation_sim_ledger_v0460';
+function v0460CountSims(id,n){
+ try{
+  const ledger=JSON.parse(localStorage.getItem(V0460_SIM_LEDGER_KEY)||'{}');
+  if(ledger[id])return false;
+  // Mark ledger and update counter together as closely as localStorage allows.
+  ledger[id]={n,at:new Date().toISOString()};
+  localStorage.setItem(V0460_SIM_LEDGER_KEY,JSON.stringify(ledger));
+  v0413AddSims(n);
+  return true;
+ }catch{return false}
+}
+
+const V0460_RULES={close:.83,strongDayRet:.001,strongM15:.0005,m3Min:.004,m3Max:.012,volMin:1.15,volMax:3,target:.008,stop:.004,delay:4,maxBars:12,maxPositions:3,maxEntries:4,maxPositionPct:1/3,costSide:.000425,symbols:['AMD','SHOP','ADBE','MU','FDX','TSLA','LUV','NFLX','C','NOW','QCOM','BAC','GM','DDOG','PYPL','NVDA']};
+function v0460Hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return ('00000000'+(h>>>0).toString(16)).slice(-8)}
+const V0460_RULE_HASH=v0460Hash(JSON.stringify(V0460_RULES));
+const V0460_HELP={
+suite:['Vad testar vi här?','Validation Suite försöker slå hål på Lina innan vi litar på henne. Reglerna är låsta och ett dåligt resultat startar aldrig automatisk optimering.'],
+integrity:['Integrity Audit','Kontrollerar datatäckning, dubbletter, tidsordning och reproducerbarhet. Grundfel gör senare backtestresultat opålitliga.'],
+pbo:['PBO / DSR','PBO uppskattar hur ofta en in-sample-vinnare blir svag out-of-sample. Lägre är bättre. DSR justerar Sharpe för flera jämförbara försök. DSR är inte sannolikheten att Lina tjänar pengar.'],
+time:['Tidsstabilitet','Samma frysta 83%-strategi bedöms år för år utan att parametrarna ändras mellan blocken.'],
+friction:['Friktionsstress','Stressar redan observerade affärer med högre modellerade kostnader. Om liten kostnadsökning förstör resultatet är strategin skör.'],
+concentration:['Koncentration','Visar om resultatet är beroende av enstaka aktier eller perioder. Mer spridning är normalt robustare.'],
+monte:['Monte Carlo','Blandar ordningen på observerade affärer 2 000 gånger och visar möjliga drawdownbanor. Affärernas P/L ändras inte.'],
+final:['Slutrapport','Samlar PASS, VARNING och FAIL. Ingen artificiell totalscore och ingen automatisk parameterjakt.']};
+const V0460_STEPS=[['integrity','Integrity Audit · data / leakage / reproducerbarhet'],['pbo','Robustness · PBO / DSR'],['time','Tidsblock · walk-forward stability'],['friction','Stress · friktion / execution'],['concentration','Stabilitet · symbol / tid'],['monte','Monte Carlo · drawdown stress'],['final','Final Validation Report']];
+function v0460New(){return{schema:'V0.46.0',rulesHash:V0460_RULE_HASH,createdAt:new Date().toISOString(),steps:{},base:null,completed:false}}
+function v0460Load(){try{const x=JSON.parse(localStorage.getItem(V0460_KEY)||'null');return x&&x.schema==='V0.46.0'&&x.rulesHash===V0460_RULE_HASH?x:v0460New()}catch{return v0460New()}}
+function v0460Save(x){x.updatedAt=new Date().toISOString();localStorage.setItem(V0460_KEY,JSON.stringify(x));return x}
+function v0460Help(k,extra=''){const x=V0460_HELP[k]||['Förklaring','Ingen hjälptext.'],m=document.getElementById('v0460HelpModal');document.getElementById('v0460HelpTitle').textContent=x[0];document.getElementById('v0460HelpBody').innerHTML=`<p>${x[1]}</p>${extra?`<p><b>Ditt resultat:</b> ${extra}</p>`:''}`;m.hidden=false}
+function v0460Paint(){const x=v0460Load(),tb=document.getElementById('v0460Steps'),bar=document.getElementById('v0460Bar'),done=V0460_STEPS.filter(s=>x.steps[s[0]]).length;if(tb)tb.innerHTML=V0460_STEPS.map((s,i)=>{const r=x.steps[s[0]],q=r?.status||'Ej körd';return `<tr><td>${i+1}/7</td><td>${s[1]}</td><td><b>${q}</b></td><td><button class="v0460-help" data-help="${s[0]}">?</button></td></tr>`}).join('');if(bar)bar.style.width=`${done/7*100}%`;const z=document.getElementById('v0460Result');if(z)z.innerHTML=`Regelhash <b>${V0460_RULE_HASH}</b> · ${done}/7 sparade${x.completed?' · <b>SVIT KLAR</b>':''}`;const st=document.getElementById('v0460Storage');if(st)st.textContent=`Lokal Safari-lagring · ${done}/7 test sparade`;['v0460FinalReport','v0460Raw'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=!x.completed});document.querySelectorAll('.v0460-help').forEach(b=>b.onclick=()=>v0460Help(b.dataset.help,x.steps[b.dataset.help]?.explain||''))}
+function v0460Stats(c){const w=c.filter(t=>t.pnl>0),l=c.filter(t=>t.pnl<0),gw=w.reduce((a,t)=>a+t.pnl,0),gl=Math.abs(l.reduce((a,t)=>a+t.pnl,0));return{n:c.length,pnl:c.reduce((a,t)=>a+t.pnl,0),pf:gl?gw/gl:(gw?Infinity:0),wr:c.length?w.length/c.length:0}}
+async function v0460Base(st){const state={eq:100000,closed:[],monthly:[],meta:[],hash:[]},M=v0440Months();for(let i=0;i<M.length;i++){const w=M[i];st.textContent=`Basdata ${i+1}/${M.length} · ${w.label}`;const j=await v0440FetchMonth(w,st),rows=j.rows||[];if(!rows.length)throw Error('Ingen data '+w.label);const seen=new Set(),dup=new Set();let order=0,last={};for(const r of rows){const k=r.symbol+'|'+r.t;if(seen.has(k))dup.add(k);seen.add(k);if(last[r.symbol]&&new Date(r.t)<new Date(last[r.symbol]))order++;last[r.symbol]=r.t}const before=state.eq,r=v04511Engine(rows,state.eq,.83);state.eq=r.eq;state.closed.push(...r.closed);state.monthly.push({label:w.label,ret:state.eq/before-1,trades:r.closed.length});state.meta.push({label:w.label,rows:rows.length,duplicates:dup.size,order});state.hash.push(`${w.label}:${rows.length}:${rows[0]?.t}:${rows.at(-1)?.t}`)}state.dataFingerprint=v0460Hash(state.hash.join('|'));return state}
+function v0460Rng(seed){let x=seed>>>0;return()=>{x=(Math.imul(1664525,x)+1013904223)>>>0;return x/4294967296}}
+function v0460Q(a,p){const b=[...a].sort((x,y)=>x-y);return b[Math.floor((b.length-1)*p)]}
+async function v0460Step(id,x){const st=document.getElementById('v0460Status');if(!x.base&&id!=='final'){x.base=await v0460Base(st);v0460Save(x);v0460CountSims('base83-months',x.base.monthly.length)}const b=x.base;
+if(id==='integrity'){const d=b.meta.reduce((a,z)=>a+z.duplicates,0),o=b.meta.reduce((a,z)=>a+z.order,0),same=JSON.stringify(v0460Stats(b.closed))===JSON.stringify(v0460Stats(b.closed)),status=d===0&&o===0&&same?'PASS':'FAIL';return{status,metrics:{duplicates:d,order:o,reproducible:same,dataFingerprint:b.dataFingerprint},explain:`Dubbletter ${d}, tidsordningsfel ${o}, reproducerbar ${same?'ja':'nej'}. Motorn använder signalbar och entry på nästa bars open.`}}
+if(id==='pbo'){const states=V04514_VARIANTS.map(v=>({id:v.id,name:v.name,close:v.close,eq:100000,monthly:[],closed:[]})),M=v0440Months();for(let i=0;i<M.length;i++){const w=M[i];st.textContent=`PBO ${i+1}/${M.length} · ${w.label}`;const rows=(await v0440FetchMonth(w,st)).rows||[];for(const s of states){const q=s.eq,r=v04511Engine(rows,s.eq,s.close);s.eq=r.eq;s.monthly.push({label:w.label,ret:s.eq/q-1});s.closed.push(...r.closed)}}const a=v04514Analyze(states),p=a.cscv.pbo,d=a.dsr.dsr,status=p<=.2&&d>=.95?'PASS':p<=.5&&d>=.8?'VARNING':'FAIL';v0460CountSims('pbo-close-family',states.reduce((q,s)=>q+s.monthly.length,0));return{status,metrics:{pbo:p,dsr:d,combos:a.cscv.combos},explain:`PBO ${(p*100).toFixed(1)}%, DSR ${(d*100).toFixed(1)}%. Gäller endast close-familjen.`}}
+if(id==='time'){const y={};b.monthly.forEach(m=>(y[m.label.slice(0,4)]??=[]).push(m));const years=Object.entries(y).map(([year,a])=>({year,ret:a.reduce((q,z)=>q*(1+z.ret),1)-1,trades:a.reduce((q,z)=>q+z.trades,0)})),pos=years.filter(z=>z.ret>0).length,min=Math.min(...years.map(z=>z.trades)),status=pos>=3&&min>=50?'PASS':pos>=2&&min>=30?'VARNING':'FAIL';return{status,metrics:{years},explain:`${pos}/${years.length} positiva år; minsta årsblock ${min} affärer.`}}
+if(id==='friction'){const not=t=>Math.abs((t.shares||0)*(t.entry||0)),levels=[1,1.5,2].map(mult=>{const c=b.closed.map(t=>({...t,pnl:t.pnl-not(t)*2*V0460_RULES.costSide*(mult-1)}));return{mult,...v0460Stats(c)}}),z=levels.at(-1),status=z.pf>=1?'PASS':z.pf>=.95?'VARNING':'FAIL';return{status,metrics:{levels},explain:`Vid 2× friktion PF ${Number.isFinite(z.pf)?z.pf.toFixed(2):'∞'}, P/L ${z.pnl.toFixed(0)} kr.`}}
+if(id==='concentration'){const s={};b.closed.forEach(t=>s[t.symbol]=(s[t.symbol]||0)+t.pnl);const arr=Object.entries(s).sort((a,z)=>z[1]-a[1]),gross=b.closed.filter(t=>t.pnl>0).reduce((a,t)=>a+t.pnl,0)||1,share=Math.max(0,arr[0]?.[1]||0)/gross,status=share<=.35?'PASS':share<=.5?'VARNING':'FAIL';return{status,metrics:{symbols:arr,bestShare:share},explain:`Största positiva symbolbidrag ${arr[0]?.[0]||'—'}: ${Math.round(share*100)}% av bruttovinsten.`}}
+if(id==='monte'){const pnl=b.closed.map(t=>t.pnl),rng=v0460Rng(parseInt(V0460_RULE_HASH,16)),dds=[],ends=[];for(let k=0;k<2000;k++){const a=[...pnl];for(let i=a.length-1;i;i--){const j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]]}let eq=100000,pk=eq,dd=0;a.forEach(p=>{eq+=p;pk=Math.max(pk,eq);dd=Math.min(dd,eq/pk-1)});ends.push(eq);dds.push(dd)}const d=v0460Q(dds,.05),status=d>=-.15?'PASS':d>=-.25?'VARNING':'FAIL';v0460CountSims('monte-carlo-permutations',2000);return{status,metrics:{runs:2000,finalP05:v0460Q(ends,.05),ddWorst5:d},explain:`2 000 körningar; 5:e percentil slut ${v0460Q(ends,.05).toFixed(0)} kr, drawdown ${(d*100).toFixed(1)}%.`}}
+if(id==='final'){const a=V0460_STEPS.slice(0,6).map(s=>x.steps[s[0]]?.status),f=a.filter(z=>z==='FAIL').length,w=a.filter(z=>z==='VARNING').length,p=a.filter(z=>z==='PASS').length;return{status:f?'FAIL':w?'VARNING':'PASS',metrics:{passes:p,warnings:w,fails:f},explain:`${p} PASS, ${w} VARNING, ${f} FAIL. Ingen automatisk optimering.`}}}
+let V0460_RUNNING=false;async function v0460Run(all){if(V0460_RUNNING)return;V0460_RUNNING=true;const A=document.getElementById('v0460RunAll'),N=document.getElementById('v0460RunNext'),st=document.getElementById('v0460Status');A.disabled=N.disabled=true;try{let x=v0460Load();do{const s=V0460_STEPS.find(q=>!x.steps[q[0]]);if(!s)break;st.textContent='Kör '+s[1];const r=await v0460Step(s[0],x);x.steps[s[0]]={...r,completedAt:new Date().toISOString(),rulesHash:V0460_RULE_HASH,dataFingerprint:x.base?.dataFingerprint};if(s[0]==='final')x.completed=true;v0460Save(x);v0460Paint();if(!all)break}while(true);st.textContent=v0460Load().completed?'✓ Validation Suite klar.':'✓ Steget sparat.'}catch(e){st.textContent='Stoppad: '+(e?.message||e)+' · färdiga steg är sparade.'}finally{V0460_RUNNING=false;A.disabled=N.disabled=false;v0460Paint()}}
+function v0460Report(){const x=v0460Load(),L=['LINAS OPTI – VALIDATION SUITE','Version: '+APP_VERSION,'Handel: AVSTÄNGD','Regelhash: '+V0460_RULE_HASH,'Datafingerprint: '+(x.base?.dataFingerprint||'—'),'Close >=83% fryst kandidat',''];V0460_STEPS.forEach((s,i)=>{const r=x.steps[s[0]];L.push(`${i+1}. ${s[1]} | ${r?.status||'Ej körd'}`);if(r?.explain)L.push('   '+r.explain)});L.push('','Ingen automatisk parameteroptimering har startats. PASS är inte garanti för framtida avkastning.');return L.join('\n')}
+function v0460Dl(text,name,type='text/plain'){const b=new Blob([text],{type}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),500)}
+function v0460Backup(){const x={backupSchema:V0460_BACKUP_SCHEMA,appVersion:APP_VERSION,exportedAt:new Date().toISOString(),validation:v0460Load(),simulations:v0413GetSims(),validationSimLedger:JSON.parse(localStorage.getItem(V0460_SIM_LEDGER_KEY)||'{}')};v0460Dl(JSON.stringify(x,null,2),`LINAS_OPTI_BACKUP_V0460_${new Date().toISOString().slice(0,10)}.json`,'application/json')}
+async function v0460Restore(f){const st=document.getElementById('v0460Status');try{const x=JSON.parse(await f.text());if(x.backupSchema!==V0460_BACKUP_SCHEMA||x.validation?.rulesHash!==V0460_RULE_HASH)throw Error('Fel backup eller regelgeneration');localStorage.setItem(V0460_KEY,JSON.stringify(x.validation));if(x.validationSimLedger)localStorage.setItem(V0460_SIM_LEDGER_KEY,JSON.stringify(x.validationSimLedger));if(Number.isFinite(x.simulations))localStorage.setItem(V0413_SIM_KEY,String(Math.max(v0413GetSims(),x.simulations)));st.textContent='✓ Backup återställd';v0460Paint()}catch(e){st.textContent='Återställning misslyckades: '+e.message}}
+window.addEventListener('DOMContentLoaded',()=>{document.getElementById('v0460RunAll')?.addEventListener('click',()=>v0460Run(true));document.getElementById('v0460RunNext')?.addEventListener('click',()=>v0460Run(false));document.getElementById('v0460FinalReport')?.addEventListener('click',()=>v0460Dl(v0460Report(),`LINAS_OPTI_VALIDATION_SUITE_V0460_${new Date().toISOString().slice(0,10)}.txt`));document.getElementById('v0460Raw')?.addEventListener('click',()=>v0460Dl(JSON.stringify(v0460Load(),null,2),`LINAS_OPTI_VALIDATION_RAW_V0460_${new Date().toISOString().slice(0,10)}.json`,'application/json'));document.getElementById('v0460Backup')?.addEventListener('click',v0460Backup);document.getElementById('v0460Restore')?.addEventListener('change',e=>{if(e.target.files?.[0])v0460Restore(e.target.files[0]);e.target.value=''});document.getElementById('v0460HelpClose')?.addEventListener('click',()=>document.getElementById('v0460HelpModal').hidden=true);v0460Paint();const j=document.getElementById('v0413LabJump');if(j){j.value='v0460Lab';try{localStorage.setItem('linasopti_testlab_selected_v0423','v0460Lab')}catch{}j.dispatchEvent(new Event('change'))}});
+
 // ============================================================
 // V0.45.14 – ROBUSTNESS LAB 1 · PBO / DSR
 // Ingen strategiregel ändras. Close 83% är fryst kandidat.
@@ -2574,7 +2629,7 @@ window.addEventListener('DOMContentLoaded',()=>{
  document.getElementById('v04514Run')?.addEventListener('click',v04514Run);
  document.getElementById('v04514Share')?.addEventListener('click',v04514Share);
  v04514Paint();
- const jump=document.getElementById('v0413LabJump');if(jump){jump.value='v04514Lab';try{localStorage.setItem('linasopti_testlab_selected_v0423','v04514Lab')}catch{}jump.dispatchEvent(new Event('change'))}
+ const jump=document.getElementById('v0413LabJump');if(jump){/* V0.46.0 owns latest selection */}
  const cp=v04514Load();if(cp&&cp.nextIndex>0){const st=document.getElementById('v04514Status'),bar=document.getElementById('v04514Bar'),months=v0440Months();if(st)st.textContent=`Sparad delkörning ${cp.nextIndex}/${months.length} månader · tryck Fortsätt.`;if(bar)bar.style.width=`${cp.nextIndex/months.length*100}%`;v04514RunLabel(true)}
 });
 

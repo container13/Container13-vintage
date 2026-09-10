@@ -9,14 +9,14 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.45.14">
+<link rel="stylesheet" href="linasopti.css?v=0.46.0">
 </head>
 <body class="v0384-locked">
 
 <div id="v0383Gate" class="v0383-gate" aria-hidden="false">
   <div class="v0383-gate-card">
     <h1>Linas Opti</h1>
-    <div class="v04512-gate-version" aria-label="Version">V0.45.14</div>
+    <div class="v04512-gate-version" aria-label="Version">V0.46.0</div>
     <p>Ange lösenkod för att fortsätta</p>
     <input id="v0383Code" type="password" inputmode="text" autocomplete="off" placeholder="Lösenkod">
     <button id="v0383Enter" type="button">Öppna Linas Opti</button>
@@ -27,7 +27,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.45.14</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.46.0</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">48/100</b><small>Forskningsfas</small></button>
@@ -47,7 +47,8 @@
     <button type="button" class="v0424-subtab" data-pane="result">Resultat</button>
   </div>
   <label id="v0423LabPick" class="v0424-labpick" hidden><span class="v0425-labtag">LABB</span><select id="v0413LabJump" aria-label="Välj Testlab">
-    <option value="v04514Lab">🛡️ Robustness Lab 1 · PBO / DSR (senaste)</option>
+    <option value="v0460Lab">🧰 Validation Suite · 7 steg (senaste)</option>
+    <option value="v04514Lab">🛡️ Robustness Lab 1 · PBO / DSR</option>
     <option value="v04513Lab">🧪 Signal Lab 4 · Close 83 holdout</option>
     <option value="v04511Lab">🎯 Signal Lab 3 · Close-testet</option>
     <option value="v0459Lab">🧬 Signal Lab 2 · Entry B-dissektion</option>
@@ -354,6 +355,20 @@
 
 <section id="pane-testlab" class="hidden">
 
+<div id="v0460Lab" class="card v0410-lab v0413-lab-section vlab-v0460Lab">
+<div class="v0410-labtitle"><span class="v0410-flask">🧰</span><div><h2>Validation Suite · 7 steg <button class="v0460-help" data-help="suite">?</button></h2></div></div>
+<div class="v0460-lock">🔒 Forskningsläge låst · Close ≥83% fryst kandidat · Handel AV</div>
+<button id="v0460RunAll" class="primary v0410-big">▶ Kör hela Validation Suite</button>
+<button id="v0460RunNext" class="secondary">▶ Kör nästa test</button>
+<div id="v0460Status" class="v0410-status v0424-runstatus">Redo · alla tester är förregistrerade.</div><div class="v0410-progress"><div id="v0460Bar"></div></div>
+<div id="v0460Storage" class="muted">Lagring kontrolleras…</div>
+<div class="table-scroll"><table><thead><tr><th>Steg</th><th>Test</th><th>Status</th><th>?</th></tr></thead><tbody id="v0460Steps"></tbody></table></div>
+<div id="v0460Result" class="v0410-summary muted">Ingen svit körd ännu.</div>
+<div class="v0460-actions"><button id="v0460FinalReport" class="secondary" disabled>📄 Slutrapport</button><button id="v0460Raw" class="secondary" disabled>🧾 Rådata JSON</button><button id="v0460Backup" class="secondary">💾 Säkerhetskopia</button><label class="secondary">↩ Återställ<input id="v0460Restore" type="file" accept=".json" hidden></label></div>
+<p class="muted">Varje färdigt steg sparas på telefonen. Vid avbrott fortsätter Lina från nästa ofärdiga steg. Exportera backup till Filer/iCloud efter viktiga körningar.</p>
+</div>
+<div id="v0460HelpModal" class="v0460-modal" hidden><div class="v0460-modalbox"><button id="v0460HelpClose" class="v0460-close">×</button><h3 id="v0460HelpTitle"></h3><div id="v0460HelpBody"></div></div></div>
+
 <div id="v04514Lab" class="card v0410-lab v0413-lab-section vlab-v04514Lab">
   <div class="v0410-labtitle"><span class="v0410-flask">🛡️</span><div><h2>Robustness Lab 1 · PBO / DSR</h2></div></div>
   <button id="v04514Run" class="primary v0410-big">▶ Kör Robustness Lab 1</button>
@@ -655,5 +670,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.45.14"></script>
+<script src="linasopti.js?v=0.46.0"></script>
 </body></html>

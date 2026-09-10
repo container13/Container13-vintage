@@ -458,3 +458,19 @@ Verifierat golv höjs till **19 970** efter slutfört Signal Lab 4 (19 922 + 48 
 
 ### Nästa beslut
 Nästa forskningssteg bestäms först efter Robustness Lab 1-rapporten. Vid svag PBO/DSR ska vi inte optimera vidare. Vid rimlig robusthet går vi vidare mot walk-forward/paper-design utan att använda samma historik för nya efterhandsregler.
+
+
+## V0.46.0 – Validation Suite
+Stor sammanhållen iPhone-anpassad valideringsetapp. Close ≥83% är fryst kandidat och ingen strategiparameter ändras automatiskt.
+
+Sju förregistrerade steg: Integrity Audit, PBO/DSR, tidsstabilitet, friktionsstress, koncentration, Monte Carlo och slutrapport. Varje steg sparar status och forskningskvitto lokalt. Hela sviten kan köras i följd eller ett steg i taget. Slutrapport, rådata-JSON samt separat backup/restore finns.
+
+Alla steg har tryckbara ?-förklaringar på vanlig svenska. Förklaringarna beskriver vad måttet betyder och, efter körning, det aktuella resultatet.
+
+V0.46.0 använder regelhash och datafingerprint för spårbarhet. Ingen artificiell totalscore används: varje steg får PASS/VARNING/FAIL. Ingen automatisk räddningsoptimering görs. PBO/DSR gäller endast den jämförbara close-familjen. Test på andra marknader och fintrimning runt 83% ingår inte.
+
+iPhone: färdiga steg lagras i Safari localStorage och kan fortsätta efter omladdning. Safari-lagring betraktas inte som permanent arkiv; backup bör sparas till Filer/iCloud.
+
+
+### V0.46.0 slutinspektion
+Efter extra release-audit rättades en kvarvarande äldre fallback i Testlab-väljaren från V0.45.14 till Validation Suite V0.46.0. Simuleringsräknaren fick även ett separat idempotent V0.46.0-ledger: fryst 83%-bas räknar månadsreplays en gång, PBO-familjen räknar variant×månad en gång och Monte Carlo räknar sina 2 000 permutationer en gång. Ledgern följer med backup/restore för att undvika dubbelräkning efter återställning.
