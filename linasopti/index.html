@@ -9,14 +9,14 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.50.0">
+<link rel="stylesheet" href="linasopti.css?v=0.51.0">
 </head>
 <body class="v0384-locked">
 
 <div id="v0383Gate" class="v0383-gate" aria-hidden="false">
   <div class="v0383-gate-card">
     <h1>Linas Opti</h1>
-    <div class="v04512-gate-version" aria-label="Version">V0.50.0</div>
+    <div class="v04512-gate-version" aria-label="Version">V0.51.0</div>
     <p>Ange lösenkod för att fortsätta</p>
     <input id="v0383Code" name="lina_one_time_code_0470" type="password" inputmode="text" autocomplete="one-time-code" autocapitalize="off" autocorrect="off" spellcheck="false" value="" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" placeholder="Lösenkod">
     <button id="v0383Enter" type="button">Öppna Linas Opti</button>
@@ -27,7 +27,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.50.0</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.51.0</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">48/100</b><small>Forskningsfas</small></button>
@@ -47,7 +47,8 @@
     <button type="button" class="v0424-subtab" data-pane="result">Resultat</button>
   </div>
   <label id="v0423LabPick" class="v0424-labpick" hidden><span class="v0425-labtag">LABB</span><select id="v0413LabJump" aria-label="Välj Testlab">
-    <option value="v0500KLab">🛡️ Validation Suite K · Resiliens & kombostress · 10 tester (senaste)</option>
+    <option value="v0510ForwardLab">🚦 Forward Validation · Från 2026-09-11 (senaste)</option>
+    <option value="v0500KLab">🛡️ Validation Suite K · Resiliens & kombostress · 10 tester</option>
     <option value="v0500JLab">📉 Validation Suite J · Equity & drawdown · 10 tester</option>
     <option value="v0500ILab">📊 Validation Suite I · Fördelning & expectancy · 10 tester</option>
     <option value="v0490HLab">🧱 Validation Suite H · Blockstress & borttagning · 10 tester</option>
@@ -368,6 +369,64 @@
 
 
 
+
+<div id="v0510ForwardLab" class="card v0410-lab v0413-lab-section vlab-v0510ForwardLab">
+  <div class="v0410-labtitle"><span class="v0410-flask">🚦</span><div>
+    <h2>Forward Validation Gate <button class="v0470-help" data-v51help="suite">?</button></h2>
+    <p>Fryst Jägare · ny data först efter 2026-09-10 · ingen historisk efteroptimering</p>
+  </div></div>
+
+  <div class="v0460-lock">🔒 Startankare: 2026-09-11 · Close ≥83% · regelhash <span id="v0510RuleHash">—</span> · Handel AV</div>
+
+  <div class="v0510-grid">
+    <div><span>Status</span><b id="v0510GateStatus">EJ STARTAD</b></div>
+    <div><span>Nya handelsdagar</span><b id="v0510Days">0</b></div>
+    <div><span>Nya affärer</span><b id="v0510Trades">0</b></div>
+    <div><span>Netto-P/L</span><b id="v0510Pnl">0 kr</b></div>
+    <div><span>PF</span><b id="v0510Pf">—</b></div>
+    <div><span>Max DD</span><b id="v0510Dd">—</b></div>
+  </div>
+
+  <div class="v0470-bactions">
+    <button id="v0510Init" class="primary v0410-big">🔒 Starta forward-validering</button>
+    <button id="v0510Scan" class="secondary" disabled>▶ Hämta nya dagar</button>
+    <button id="v0510Report" class="secondary" disabled>📄 Exportera forward-rapport</button>
+    <button id="v0510Backup" class="secondary">💾 Exportera checkpoint</button>
+  </div>
+
+  <div id="v0510Status" class="v0410-status">
+    Forward-testet är inte startat ännu. När det startas låses ankardatum och regelhash.
+  </div>
+
+  <div class="v0510-progressbox">
+    <div class="v0470-progresshead"><b>Framsteg mot första bedömning</b><span id="v0510ProgressText">0 / 60 affärer</span></div>
+    <div class="v0410-progress"><div id="v0510Bar"></div></div>
+    <p class="muted">Första lägesbedömning vid 60 nya affärer. Starkare bedömning vid 120 och 250. Ingen automatisk regeländring sker.</p>
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Nivå</th><th>Krav</th><th>Status</th><th>?</th></tr></thead>
+      <tbody id="v0510Milestones"></tbody>
+    </table>
+  </div>
+
+  <div class="v0510-note">
+    <b>Viktigt:</b> Bara affärer vars entrytid är efter startankaret räknas som forward-data.
+    Historiken 2023–2026 används inte för att avgöra PASS/FAIL här.
+  </div>
+
+  <details>
+    <summary>Visa forward-affärer</summary>
+    <div id="v0510TradesList" class="v0510-tradelist"></div>
+  </details>
+</div>
+
+<div id="v0510HelpModal" class="v0460-modal" hidden><div class="v0460-modalbox">
+  <button id="v0510HelpClose" class="v0460-close">×</button>
+  <h3 id="v0510HelpTitle"></h3>
+  <div id="v0510HelpBody"></div>
+</div></div>
 <div id="v0500KLab" class="card v0410-lab v0413-lab-section vlab-v0500KLab">
   <div class="v0410-labtitle"><span class="v0410-flask">🛡️</span><div>
     <h2>Validation Suite K · Resiliens & kombostress <button class="v0470-help" data-v50help="K:suite">?</button></h2>
@@ -987,5 +1046,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.50.0"></script>
+<script src="linasopti.js?v=0.51.0"></script>
 </body></html>

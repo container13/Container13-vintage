@@ -1,6 +1,6 @@
-# Linas Opti V0.50.0
+# Linas Opti V0.51.0
 
-> **Aktuell release: V0.50.0** · Validation Suite A–K · 109 tester/steg totalt · Handel AV · Close ≥83% fryst kandidat · Robotmognad 48/100
+> **Aktuell release: V0.51.0** · Forward Validation Gate · Handel AV · Close ≥83% fryst kandidat · Robotmognad 48/100
 
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
@@ -631,3 +631,28 @@ Ny snabbknapp **Kör alla 30 tester** kör I → J → K lokalt. Varje test spar
 Totalt A–K: 109 steg/tester.
 
 Alla I–K-resultat är diagnostik på återanvänd historik, inte nytt orört OOS-bevis. Ingen parameteroptimering eller automatisk räddning.
+
+
+## V0.51.0 – Forward Validation Gate
+
+Nu lämnar Lina den långa historiska diagnostikfasen och går över till ett äkta framåttest.
+
+- Startankare: **2026-09-11**.
+- Endast affärer med entrytid efter ankaret räknas.
+- Samma frysta Jägare används: Day Selection 16, Strong regime, Entry B, Close ≥83%, research exit och samma kapitalregler.
+- Regelhashen låses när forward-testet startas.
+- Historiken 2023–2026 får ligga kvar för referens men används inte för att avgöra forward-resultatet.
+- Handel är fortsatt AVSTÄNGD. Detta är paper/forward research.
+- Ingen automatisk optimering, räddning eller parameterändring efter svaga resultat.
+
+### Milstolpar
+1. **60 nya affärer** – första lägesbild.
+2. **120 nya affärer** – mellanbedömning.
+3. **250 nya affärer** – starkare forward-bedömning.
+
+V0.51.0 sparar varje ny forward-affär lokalt, deduplicerar affärer, sparar scan-historik, lastDataEnd och checkpoint i localStorage. Det finns separat forward-rapport och JSON-backup.
+
+### Viktig princip
+Om forward-resultaten är svaga ska samma generation fortsätta eller avslutas som svag. Vi ska inte ändra 83%, entrytid, exit eller andra regler och sedan kalla det samma forward-test. En framtida ändring måste bli en ny forskningsgeneration med nytt regelhash/nytt ankare.
+
+Robotmognad ligger kvar på **48/100** tills verklig ny forward-data ger grund för höjning.

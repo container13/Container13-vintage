@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.50.0";
+const APP_VERSION = "V0.51.0";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -3523,3 +3523,198 @@ async function v0500RunIJK(){const o=document.getElementById('v0500IJKStatus');t
 function v0500IJKReport(){const L=['LINAS OPTI – VALIDATION SUITES I + J + K','Version: '+APP_VERSION,'Handel: AVSTÄNGD','Close >=83% fryst kandidat','Regelhash: '+V0460_RULE_HASH,'','30 lokala diagnostiska tester · återanvänd historik · inte nytt orört OOS-bevis.',''];for(const s of ['I','J','K']){L.push(`=== SUITE ${s} · ${V0500_DEFS[s].name} ===`);const x=v0500Load(s);V0500_DEFS[s].tests.forEach((t,i)=>{const r=x.tests[t[0]];L.push(`${i+1}. ${t[1]} | ${r?.label||'Ej körd'}`);if(r?.explain)L.push('   '+r.explain)});L.push('')}L.push('Ingen parameteroptimering eller automatisk räddning har körts.');return L.join('\n')}
 function v0500IJKBackup(){return{backupSchema:'lina-v0500-ijk-backup-v1',appVersion:APP_VERSION,exportedAt:new Date().toISOString(),rulesHash:V0460_RULE_HASH,dataFingerprint:v0500Base()?.dataFingerprint||'—',suiteI:v0500Load('I'),suiteJ:v0500Load('J'),suiteK:v0500Load('K')}}
 window.addEventListener('DOMContentLoaded',()=>{for(const s of ['I','J','K']){document.getElementById(`v0500${s}RunAll`)?.addEventListener('click',()=>v0500RunSuite(s,true).catch(()=>{}));document.getElementById(`v0500${s}RunNext`)?.addEventListener('click',()=>v0500RunSuite(s,false).catch(()=>{}));document.getElementById(`v0500${s}Report`)?.addEventListener('click',()=>v0460Dl(v0500Report(s),`LINAS_OPTI_VALIDATION_SUITE_${s}_V0500_${new Date().toISOString().slice(0,10)}.txt`));document.getElementById(`v0500${s}Raw`)?.addEventListener('click',()=>v0460Dl(JSON.stringify(v0500Load(s),null,2),`LINAS_OPTI_VALIDATION_SUITE_${s}_RAW_V0500_${new Date().toISOString().slice(0,10)}.json`,'application/json'));v0500Paint(s)}document.getElementById('v0500RunIJK')?.addEventListener('click',v0500RunIJK);document.getElementById('v0500IJKReport')?.addEventListener('click',()=>v0460Dl(v0500IJKReport(),`LINAS_OPTI_VALIDATION_IJK_V0500_${new Date().toISOString().slice(0,10)}.txt`));document.getElementById('v0500IJKBackup')?.addEventListener('click',()=>v0460Dl(JSON.stringify(v0500IJKBackup(),null,2),`LINAS_OPTI_VALIDATION_IJK_BACKUP_V0500_${new Date().toISOString().slice(0,10)}.json`,'application/json'));document.getElementById('v0500HelpClose')?.addEventListener('click',()=>document.getElementById('v0500HelpModal').hidden=true);document.getElementById('v0500DetailClose')?.addEventListener('click',()=>document.getElementById('v0500DetailModal').hidden=true);document.getElementById('v0500ExportOne')?.addEventListener('click',e=>{const k=e.currentTarget.dataset.key;if(k){const [s,id]=k.split(':');v0460Dl(v0500ExportOne(k),`LINAS_OPTI_SUITE_${s}_${id.toUpperCase()}_V0500_${new Date().toISOString().slice(0,10)}.txt`)}});const jump=document.getElementById('v0413LabJump');if(jump&&[...jump.options].some(o=>o.value==='v0500KLab')){jump.value='v0500KLab';try{localStorage.setItem('linasopti_testlab_selected_v0423','v0500KLab')}catch{}jump.dispatchEvent(new Event('change'))}});
+
+
+// ============================================================
+// V0.51.0 – FORWARD VALIDATION GATE
+// Starts only after 2026-09-10. Historical diagnostics remain frozen.
+// ============================================================
+const V0510_KEY='linasopti_forward_validation_v0510';
+const V0510_ANCHOR='2026-09-11T00:00:00Z';
+const V0510_MILESTONES=[
+  {n:60,label:'Första lägesbild',help:'Minst 60 nya forward-affärer. För tidigt för stark slutsats, men tillräckligt för första varningssignal.'},
+  {n:120,label:'Mellanbedömning',help:'120 nya affärer ger bättre möjlighet att skilja tillfälligt brus från bestående försämring.'},
+  {n:250,label:'Starkare forward-bedömning',help:'250 nya affärer är fortfarande inte ett bevis, men betydligt mer informativt än historisk efterdiagnostik.'}
+];
+const V0510_HELP={
+  suite:['Forward Validation Gate','Detta steg använder bara data efter 2026-09-10. Regler och regelhash låses vid start. Ingen parameter får ändras inom samma forward-generation.'],
+  pf:['Profit Factor','Bruttovinster dividerat med bruttoförluster på enbart nya forward-affärer.'],
+  dd:['Max drawdown','Största fall från tidigare forward-equitytopp till efterföljande botten.'],
+  milestone:['Milstolpar','60, 120 och 250 nya affärer används som observationsnivåer. De är inte optimeringsmål och ändrar inga regler automatiskt.']
+};
+function v0510New(){
+  return {
+    schema:'LINA-FORWARD-1',
+    appVersion:'V0.51.0',
+    anchor:V0510_ANCHOR,
+    rulesHash:V0460_RULE_HASH,
+    startedAt:null,
+    lastScanAt:null,
+    lastDataEnd:null,
+    lastProcessedDate:null,
+    closed:[],
+    seenTradeIds:{},
+    scans:[],
+    gate:'NOT_STARTED'
+  };
+}
+function v0510Load(){
+  try{
+    const x=JSON.parse(localStorage.getItem(V0510_KEY)||'null');
+    if(x&&x.schema==='LINA-FORWARD-1'&&x.rulesHash===V0460_RULE_HASH)return x;
+  }catch{}
+  return v0510New();
+}
+function v0510Save(x){localStorage.setItem(V0510_KEY,JSON.stringify(x));return x}
+function v0510TradeId(t){return [t.symbol||t.s,t.entryTime,t.exitTime,(+t.entry).toFixed(6),(+t.exit).toFixed(6)].join('|')}
+function v0510Stats(tr){
+  const ps=tr.map(v0470BPnl),gw=ps.filter(x=>x>0).reduce((a,b)=>a+b,0),gl=-ps.filter(x=>x<0).reduce((a,b)=>a+b,0);
+  let eq=100000,peak=100000,maxDD=0;for(const p of ps){eq+=p;peak=Math.max(peak,eq);maxDD=Math.min(maxDD,eq-peak)}
+  return {n:tr.length,pnl:ps.reduce((a,b)=>a+b,0),pf:gl?gw/gl:null,wr:tr.length?ps.filter(x=>x>0).length/tr.length:0,maxDD,final:100000+ps.reduce((a,b)=>a+b,0)};
+}
+function v0510TradeDays(tr){return new Set(tr.map(t=>(t.entryTime||'').slice(0,10))).size}
+function v0510Gate(st){
+  const n=st.n;
+  if(n<60)return {code:'COLLECTING',label:'SAMlar NY DATA'};
+  // Deliberately broad frozen observation thresholds; no optimization follows.
+  if(st.pf!==null && st.pf>=1.05 && st.pnl>0)return {code:'HEALTHY',label:n>=250?'✅ STARKARE FRAMÅTSTÖD':'✅ POSITIV LÄGESBILD'};
+  if(st.pf!==null && st.pf>=.95 && st.pnl>-2000)return {code:'WATCH',label:'⚠️ BEVAKA'};
+  return {code:'WEAK',label:'❌ FORWARD-SVAGHET'};
+}
+function v0510Paint(){
+  const x=v0510Load(),st=v0510Stats(x.closed),gate=x.startedAt?v0510Gate(st):{label:'EJ STARTAD'};
+  document.getElementById('v0510RuleHash').textContent=V0460_RULE_HASH;
+  document.getElementById('v0510GateStatus').textContent=gate.label;
+  document.getElementById('v0510Days').textContent=v0510TradeDays(x.closed);
+  document.getElementById('v0510Trades').textContent=st.n;
+  document.getElementById('v0510Pnl').textContent=`${st.pnl.toFixed(0)} kr`;
+  document.getElementById('v0510Pf').textContent=st.pf===null?'—':st.pf.toFixed(2);
+  document.getElementById('v0510Dd').textContent=st.n?`${st.maxDD.toFixed(0)} kr`:'—';
+  document.getElementById('v0510ProgressText').textContent=`${Math.min(st.n,60)} / 60 affärer`;
+  document.getElementById('v0510Bar').style.width=`${Math.min(100,st.n/60*100)}%`;
+  document.getElementById('v0510Init').disabled=!!x.startedAt;
+  document.getElementById('v0510Scan').disabled=!x.startedAt;
+  document.getElementById('v0510Report').disabled=!x.startedAt;
+  document.getElementById('v0510Status').textContent=x.startedAt
+    ? `Startad ${new Date(x.startedAt).toLocaleString('sv-SE')} · senaste scan ${x.lastScanAt?new Date(x.lastScanAt).toLocaleString('sv-SE'):'ingen ännu'} · ${st.n} nya affärer sparade.`
+    : 'Forward-testet är inte startat ännu. När det startas låses ankardatum och regelhash.';
+  document.getElementById('v0510Milestones').innerHTML=V0510_MILESTONES.map(m=>{
+    const done=st.n>=m.n;
+    return `<tr><td>${m.label}</td><td>${m.n} affärer</td><td>${done?'✅ UPPNÅDD':'○ EJ UPPNÅDD'}</td><td><button class="v0470-help" data-v51ms="${m.n}">?</button></td></tr>`
+  }).join('');
+  document.querySelectorAll('[data-v51ms]').forEach(b=>b.onclick=()=>{const m=V0510_MILESTONES.find(x=>x.n===+b.dataset.v51ms);v0510Help([m.label,m.help])});
+  document.querySelectorAll('[data-v51help]').forEach(b=>b.onclick=()=>v0510Help(V0510_HELP[b.dataset.v51help]||V0510_HELP.suite));
+  const list=document.getElementById('v0510TradesList');
+  list.innerHTML=x.closed.slice(-100).reverse().map(t=>`<div class="v0510-trade"><b>${t.symbol||t.s}</b> · ${(t.entryTime||'').replace('T',' ').slice(0,16)} · ${v0470BPnl(t).toFixed(0)} kr · ${t.why||''}</div>`).join('')||'<div class="muted">Inga forward-affärer ännu.</div>';
+}
+function v0510Help(x){document.getElementById('v0510HelpTitle').textContent=x[0];document.getElementById('v0510HelpBody').innerHTML=`<p>${x[1]}</p>`;document.getElementById('v0510HelpModal').hidden=false}
+function v0510Init(){
+  let x=v0510Load();
+  if(x.startedAt)return;
+  x.startedAt=new Date().toISOString();
+  x.anchor=V0510_ANCHOR;
+  x.rulesHash=V0460_RULE_HASH;
+  x.gate='COLLECTING';
+  v0510Save(x);v0510Paint();
+}
+async function v0510FetchRange(start,end,statusEl){
+  const symbols=[...V0440_SYMBOLS,'SPY'];
+  if(statusEl)statusEl.textContent=`Hämtar ${symbols.length} symboler · ${start.slice(0,10)} → ${end.slice(0,10)}…`;
+  return v0434Retry(
+    ()=>bridge(`/bars?symbols=${encodeURIComponent(symbols.join(','))}&timeframe=5Min&start=${encodeURIComponent(start.slice(0,10))}&end=${encodeURIComponent(end.slice(0,10))}`),
+    'Forward-data',
+    statusEl
+  );
+}
+
+function v0510DateAdd(dateStr,days){
+  const d=new Date(dateStr+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+days);return d.toISOString().slice(0,10);
+}
+function v0510NYNowParts(){
+  const p=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()),o={};
+  p.forEach(x=>o[x.type]=x.value);
+  return {date:`${o.year}-${o.month}-${o.day}`,minutes:(+o.hour)*60+(+o.minute)};
+}
+function v0510LastCompletedDate(){
+  const n=v0510NYNowParts();
+  // Do not admit a current US session until safely after regular close.
+  return n.minutes>=965?n.date:v0510DateAdd(n.date,-1);
+}
+async function v0510Scan(){
+  const btn=document.getElementById('v0510Scan'),status=document.getElementById('v0510Status');
+  let x=v0510Load();if(!x.startedAt)throw new Error('Forward-valideringen är inte startad.');
+  btn.disabled=true;
+  try{
+    const anchorDate=V0510_ANCHOR.slice(0,10);
+    const endDate=v0510LastCompletedDate();
+    const startDate=x.lastProcessedDate?v0510DateAdd(x.lastProcessedDate,1):anchorDate;
+    if(startDate>endDate){
+      status.textContent=`Ingen ny avslutad USA-handelsdag att läsa ännu. Senast behandlad: ${x.lastProcessedDate||'ingen'} · första tillåtna dag ${anchorDate}.`;
+      return;
+    }
+    const prior=v0510Stats(x.closed);
+    status.textContent=`Hämtar avslutade dagar ${startDate} → ${endDate}…`;
+    const rows=await v0510FetchRange(startDate,endDate,status);
+    const candidate=v04511Engine(rows,prior.final,.83);
+    const all=Array.isArray(candidate?.closed)?candidate.closed:(Array.isArray(candidate)?candidate:[]);
+    let added=0;
+    for(const t of all){
+      if((t.entryTime||'').slice(0,10)<anchorDate)continue;
+      const id=v0510TradeId(t);if(x.seenTradeIds[id])continue;
+      x.seenTradeIds[id]=true;x.closed.push(t);added++;
+    }
+    x.closed.sort((a,b)=>new Date(a.entryTime)-new Date(b.entryTime));
+    x.lastScanAt=new Date().toISOString();
+    x.lastProcessedDate=endDate;
+    x.lastDataEnd=endDate;
+    x.scans.push({at:x.lastScanAt,start:startDate,end:endDate,added,total:x.closed.length,startCapital:prior.final});
+    v0510Save(x);v0510Paint();
+    status.textContent=`✓ Scan klar · ${added} nya affärer · behandlat t.o.m. ${endDate} · totalt ${x.closed.length}.`;
+  }catch(e){
+    status.textContent='KÖRFEL: '+(e?.message||e);
+  }finally{btn.disabled=false}
+}
+function v0510Report(){
+  const x=v0510Load(),st=v0510Stats(x.closed),gate=v0510Gate(st),L=[
+    'LINAS OPTI – FORWARD VALIDATION REPORT',
+    'Version: '+APP_VERSION,
+    'Handel: AVSTÄNGD',
+    'Startankare: '+x.anchor,
+    'Startad: '+(x.startedAt||'—'),
+    'Regelhash: '+x.rulesHash,
+    'Close >=83% fryst kandidat',
+    '',
+    `Status: ${gate.label}`,
+    `Nya handelsdagar: ${v0510TradeDays(x.closed)}`,
+    `Nya affärer: ${st.n}`,
+    `Netto-P/L: ${st.pnl.toFixed(2)} kr`,
+    `PF: ${st.pf===null?'—':st.pf.toFixed(3)}`,
+    `WR: ${(st.wr*100).toFixed(1)}%`,
+    `Max DD: ${st.maxDD.toFixed(2)} kr`,
+    '',
+    'Milstolpar:',
+    ...V0510_MILESTONES.map(m=>`- ${m.n} affärer: ${st.n>=m.n?'UPPNÅDD':'ej uppnådd'}`),
+    '',
+    'Endast affärer efter ankardatum räknas. Ingen parameteroptimering eller automatisk räddning har körts.'
+  ];
+  return L.join('\n');
+}
+function v0510Backup(){
+  const x=v0510Load();
+  return {backupSchema:'lina-v0510-forward-backup-v1',appVersion:APP_VERSION,exportedAt:new Date().toISOString(),forward:x};
+}
+window.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('v0510Init')?.addEventListener('click',v0510Init);
+  document.getElementById('v0510Scan')?.addEventListener('click',()=>v0510Scan());
+  document.getElementById('v0510Report')?.addEventListener('click',()=>v0460Dl(v0510Report(),`LINAS_OPTI_FORWARD_V0510_${new Date().toISOString().slice(0,10)}.txt`));
+  document.getElementById('v0510Backup')?.addEventListener('click',()=>v0460Dl(JSON.stringify(v0510Backup(),null,2),`LINAS_OPTI_FORWARD_BACKUP_V0510_${new Date().toISOString().slice(0,10)}.json`,'application/json'));
+  document.getElementById('v0510HelpClose')?.addEventListener('click',()=>document.getElementById('v0510HelpModal').hidden=true);
+  document.getElementById('v0510HelpModal')?.addEventListener('click',e=>{if(e.target.id==='v0510HelpModal')e.currentTarget.hidden=true});
+  v0510Paint();
+  const jump=document.getElementById('v0413LabJump');
+  if(jump&&[...jump.options].some(o=>o.value==='v0510ForwardLab')){
+    jump.value='v0510ForwardLab';
+    try{localStorage.setItem('linasopti_testlab_selected_v0423','v0510ForwardLab')}catch{}
+    jump.dispatchEvent(new Event('change'));
+  }
+});

@@ -1105,3 +1105,13 @@ body.v0462-running .v0460-lock{padding:6px 10px;margin:4px 0;font-size:.86rem}
 
 /* V0.50.0 Suite I/J/K */
 .v0500-small{font-size:.84rem;opacity:.88}
+
+/* V0.51.0 Forward Validation Gate */
+.v0510-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.v0510-grid>div{padding:10px;border:1px solid rgba(127,127,127,.25);border-radius:12px;display:flex;flex-direction:column;gap:4px}
+.v0510-grid span{font-size:.82rem;opacity:.75}
+.v0510-grid b{font-size:1.05rem}
+.v0510-note{margin-top:12px;padding:10px 12px;border-radius:12px;border:1px solid rgba(127,127,127,.25)}
+.v0510-tradelist{display:grid;gap:8px;margin-top:10px}
+.v0510-trade{padding:9px 10px;border:1px solid rgba(127,127,127,.22);border-radius:10px}
+@media(max-width:700px){.v0510-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
