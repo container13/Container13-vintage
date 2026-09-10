@@ -1042,3 +1042,12 @@ html[data-research-mode="testlab"] #v0424TesterNav{display:none!important}
 /* V0.45.12 – version visible on login card */
 .v04512-gate-version{display:inline-flex;align-items:center;justify-content:center;margin:0 0 14px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.82);border:1px solid rgba(23,32,42,.12);font-size:13px;font-weight:900;color:#59636e;line-height:1;letter-spacing:.02em}
 .v0460-help{border:1px solid currentColor;border-radius:50%;width:26px;height:26px;padding:0;font-weight:800;background:transparent}.v0460-lock{padding:10px;border:1px solid #8886;border-radius:12px;margin:8px 0}.v0460-actions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.v0460-modal{position:fixed;inset:0;background:#0009;z-index:9999;padding:18px;overflow:auto}.v0460-modalbox{max-width:560px;margin:10vh auto;background:white;color:#111;padding:20px;border-radius:18px;position:relative}.v0460-close{position:absolute;right:10px;top:8px;font-size:28px;border:0;background:transparent}
+/* V0.46.1 reliability + live progress */
+.v0461-controls{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.v0461-controls .secondary{flex:1 1 120px}
+.v0461-live{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:.95rem}
+.v0461-pulse{width:10px;height:10px;border-radius:50%;background:#999;display:inline-block}
+.v0461-pulse.active{animation:v0461pulse 1s infinite}
+@keyframes v0461pulse{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+.v0461-log{margin-top:8px;padding:8px 10px;border-radius:10px;background:rgba(128,128,128,.08);font-size:.85rem;max-height:130px;overflow:auto}
+.v0461-log div{padding:2px 0}

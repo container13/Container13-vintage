@@ -474,3 +474,27 @@ iPhone: färdiga steg lagras i Safari localStorage och kan fortsätta efter omla
 
 ### V0.46.0 slutinspektion
 Efter extra release-audit rättades en kvarvarande äldre fallback i Testlab-väljaren från V0.45.14 till Validation Suite V0.46.0. Simuleringsräknaren fick även ett separat idempotent V0.46.0-ledger: fryst 83%-bas räknar månadsreplays en gång, PBO-familjen räknar variant×månad en gång och Monte Carlo räknar sina 2 000 permutationer en gång. Ledgern följer med backup/restore för att undvika dubbelräkning efter återställning.
+
+
+### Release gate – godkänd för uppladdning
+Slutinspektion genomförd efter V0.46.0-auditen. 47 kontroller granskades. Den enda automatiska flaggan var HTML-attributet `placeholder="Lösenkod"`, vilket är avsiktlig UI-text och inte en kvarlämnad utvecklings-placeholder. Därmed är samtliga releasekontroller godkända.
+
+
+## V0.46.1 – Reliability / Live Progress
+
+Ingen handelsregel ändrad. Close ≥83% förblir fryst kandidat.
+
+Förbättringar för långa iPhone/webbläsarkörningar:
+- basdata checkpointas efter varje färdig månad;
+- en avbruten basdatakörning fortsätter från nästa ofärdiga månad i stället för 1/45;
+- separat pågående checkpoint hålls isär från färdiga testresultat;
+- live-status visar aktuell månad, delprogress, aktivitet, förfluten tid och senaste checkpoint;
+- fem senaste logghändelserna visas;
+- Pausa, Fortsätt och Avbryt;
+- automatiskt upp till tre försök vid datafel samt 90 sekunders timeout per månadshämtning;
+- skydd mot parallell dubbelkörning;
+- Kör hela stoppar efter Integrity FAIL i stället för att fortsätta blint;
+- säkerhetskopian inkluderar även pågående basdata-checkpoint;
+- V0.46.1 har egna lagrings-/ledgernycklar så halvfärdig V0.46.0-state inte blandas in.
+
+Safari/iOS kan fortfarande pausa JavaScript när sidan går i bakgrunden eller telefonen låses. V0.46.1 lovar därför inte bakgrundskörning, men färdiga månadscheckpoints ska finnas kvar.

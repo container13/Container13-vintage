@@ -9,14 +9,14 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.46.0">
+<link rel="stylesheet" href="linasopti.css?v=0.46.1">
 </head>
 <body class="v0384-locked">
 
 <div id="v0383Gate" class="v0383-gate" aria-hidden="false">
   <div class="v0383-gate-card">
     <h1>Linas Opti</h1>
-    <div class="v04512-gate-version" aria-label="Version">V0.46.0</div>
+    <div class="v04512-gate-version" aria-label="Version">V0.46.1</div>
     <p>Ange lösenkod för att fortsätta</p>
     <input id="v0383Code" type="password" inputmode="text" autocomplete="off" placeholder="Lösenkod">
     <button id="v0383Enter" type="button">Öppna Linas Opti</button>
@@ -27,7 +27,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.46.0</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.46.1</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">48/100</b><small>Forskningsfas</small></button>
@@ -360,8 +360,18 @@
 <div class="v0460-lock">🔒 Forskningsläge låst · Close ≥83% fryst kandidat · Handel AV</div>
 <button id="v0460RunAll" class="primary v0410-big">▶ Kör hela Validation Suite</button>
 <button id="v0460RunNext" class="secondary">▶ Kör nästa test</button>
-<div id="v0460Status" class="v0410-status v0424-runstatus">Redo · alla tester är förregistrerade.</div><div class="v0410-progress"><div id="v0460Bar"></div></div>
+<div class="v0461-controls">
+  <button id="v0461Pause" class="secondary" disabled>⏸ Pausa</button>
+  <button id="v0461Resume" class="secondary" disabled>▶ Fortsätt</button>
+  <button id="v0461Cancel" class="secondary" disabled>■ Avbryt</button>
+</div>
+<div id="v0460Status" class="v0410-status v0424-runstatus">Redo · alla tester är förregistrerade.</div>
+<div id="v0461Live" class="v0461-live"><span id="v0461Pulse" class="v0461-pulse"></span><b id="v0461LiveText">Väntar</b><span id="v0461Elapsed">00:00</span></div>
+<div class="v0410-progress"><div id="v0460Bar"></div></div>
+<div id="v0461SubProgress" class="muted">Ingen aktiv delkörning.</div>
 <div id="v0460Storage" class="muted">Lagring kontrolleras…</div>
+<div id="v0461Checkpoint" class="muted">Checkpoint: ingen ännu.</div>
+<div id="v0461Log" class="v0461-log"></div>
 <div class="table-scroll"><table><thead><tr><th>Steg</th><th>Test</th><th>Status</th><th>?</th></tr></thead><tbody id="v0460Steps"></tbody></table></div>
 <div id="v0460Result" class="v0410-summary muted">Ingen svit körd ännu.</div>
 <div class="v0460-actions"><button id="v0460FinalReport" class="secondary" disabled>📄 Slutrapport</button><button id="v0460Raw" class="secondary" disabled>🧾 Rådata JSON</button><button id="v0460Backup" class="secondary">💾 Säkerhetskopia</button><label class="secondary">↩ Återställ<input id="v0460Restore" type="file" accept=".json" hidden></label></div>
@@ -670,5 +680,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.46.0"></script>
+<script src="linasopti.js?v=0.46.1"></script>
 </body></html>
