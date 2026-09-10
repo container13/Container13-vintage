@@ -1,6 +1,6 @@
-# Linas Opti V0.49.0
+# Linas Opti V0.50.0
 
-> **Aktuell release: V0.49.0** · Validation Suite A–H · 79 tester/steg totalt · Handel AV · Close ≥83% fryst kandidat · Robotmognad 48/100
+> **Aktuell release: V0.50.0** · Validation Suite A–K · 109 tester/steg totalt · Handel AV · Close ≥83% fryst kandidat · Robotmognad 48/100
 
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
@@ -611,3 +611,23 @@ Ny snabbknapp **Kör alla 30 tester** kör F → G → H lokalt. Varje test spar
 Totalt A–H: 7 + 12 + 10 + 10 + 10 + 10 + 10 + 10 = 79 steg/tester.
 
 Alla F–H-resultat är diagnostik på återanvänd historik, inte nytt orört OOS-bevis. Ingen parameteroptimering eller automatisk räddning.
+
+
+## V0.50.0 – Validation Suites I, J och K
+
+Ytterligare 30 lokala diagnostiska tester. Ingen handelsregel ändrad. Close ≥83% fortsatt fryst kandidat. Robotmognad kvar 48/100.
+
+### Suite I – Fördelning & expectancy · 10 tester
+Payoff ratio; trimmat snitt 5%; P/L-kvantiler; skevhet; excess kurtosis; PF utan bästa 1% vinnare; PF utan sämsta 1% förluster; median-expectancy; win/loss-asymmetri; expectancy-dekomposition.
+
+### Suite J – Equity & drawdown · 10 tester
+Max drawdown i kronor; max drawdown i procent; längsta underwater i affärer; längsta underwater i kalenderdagar; recovery factor; Ulcer index; sämsta aktiva dag; sämsta vecka; sämsta månad; drawdown-episoder.
+
+### Suite K – Resiliens & kombostress · 10 tester
+Slumpbortfall 5%; 15%; 30%; +10% kostnad +10% bortfall; +20% kostnad +10% bortfall; månadsbootstrap +10% kostnad; ta bort 2 slumpmånader; ta bort 4 slumpmånader; winsor 1% +10% kostnad; pessimistisk kombostress med bästa månaden borttagen +10% kostnad.
+
+Ny snabbknapp **Kör alla 30 tester** kör I → J → K lokalt. Varje test sparas direkt. Separata TXT/RAW JSON per svit plus samlad I+J+K TXT och JSON-backup.
+
+Totalt A–K: 109 steg/tester.
+
+Alla I–K-resultat är diagnostik på återanvänd historik, inte nytt orört OOS-bevis. Ingen parameteroptimering eller automatisk räddning.
