@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.43.4-sharefix">
+<link rel="stylesheet" href="linasopti.css?v=0.44.0">
 </head>
 <body class="v0384-locked">
 
@@ -43,7 +43,8 @@
     <button type="button" class="v0424-subtab" data-pane="result">Resultat</button>
   </div>
   <label id="v0423LabPick" class="v0424-labpick" hidden><span class="v0425-labtag">LABB</span><select id="v0413LabJump" aria-label="Välj Testlab">
-    <option value="v0430Lab">🔎 Day Selection 1 · Urval (senaste)</option>
+    <option value="v0440Lab">🏁 Jägaren · 2023→nu (senaste)</option>
+    <option value="v0430Lab">🔎 Day Selection 1 · Urval</option>
     <option value="v0431Lab">🧭 Day Selection 2 · OOS</option>
     <option value="v0423Lab">🌤️ Regim Lab 2 · OOS</option>
     <option value="v0422Lab">🌦️ Regim Lab 1 · Marknadsfilter</option>
@@ -340,6 +341,15 @@
 
 
 <section id="pane-testlab" class="hidden">
+<div id="v0440Lab" class="card v0410-lab v0413-lab-section vlab-v0440Lab">
+  <div class="v0410-labtitle"><span class="v0410-flask">🏁</span><div><h2>Jägaren · 100 000 kr från 2023 till nu</h2></div></div>
+  <button id="v0440Run" class="primary v0410-big">▶ Kör hela Jägaren · 2023→nu</button>
+  <div id="v0440Status" class="v0410-status v0424-runstatus">Redo · startkapital 100 000 kr.</div><div class="v0410-progress"><div id="v0440Bar"></div></div>
+  <div class="muted v0434-afterrun">Sammanhängande portföljtest: fryst Day Selection 16 + Entry B + Strong + forsknings-exit. En position åt gången, kapitalet återinvesteras och modellerad friktion ingår.</div>
+  <div id="v0440Summary" class="v0410-summary muted">Ingen körning ännu.</div>
+  <div class="table-scroll"><table><thead><tr><th>År</th><th>Start</th><th>Slut</th><th>Avkastning</th><th>Affärer</th></tr></thead><tbody id="v0440Rows"></tbody></table></div>
+  <button id="v0440Share" class="secondary" disabled>Dela Jägaren 2023→nu</button>
+</div>
 <div id="v0431Lab" class="card v0410-lab v0413-lab-section vlab-v0431Lab">
   <div class="v0410-labtitle"><span class="v0410-flask">🧭</span><div><h2>Day Selection 2 · Orört prov</h2></div></div>
   <button id="v0431Run" class="primary v0410-big">▶ Kör Day Selection 2 · 20 OOS-simuleringar</button>
@@ -531,5 +541,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.43.4-sharefix"></script>
+<script src="linasopti.js?v=0.44.0"></script>
 </body></html>

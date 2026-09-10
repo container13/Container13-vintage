@@ -1,3 +1,9 @@
+# Linas Opti V0.44.0 – Jägaren 2023→nu
+
+Nyhet: sammanhängande historiskt portföljtest med 100 000 kr startkapital från januari 2023 till september 2026. Motorn använder det frysta Day Selection 16, PRO2-kvalitetsregler, Entry B, Strong-regim och den frysta forsknings-exiten. En position åt gången, max fyra avslut per dag, återinvestering av aktuellt kapital och modellerad friktion 0,0425 % per sida. Position sizing behåller PRO2:s frysta riskreferens (0,5 % equity mot 0,6 % stop-referens, max 20 % equity).
+
+Resultatet visar slutvärde, total avkastning, PF, win rate, max drawdown och årsvis kapitalutveckling. Detta är historiskt backtest – inte prognos – och perioden är inte ett helt nytt OOS-prov eftersom delar av historiken tidigare använts i forskning/validering.
+
 # V0.43.4 – Stabilitet + UX
 
 - Day Selection återupptas efter avbrott i stället för att börja om.
