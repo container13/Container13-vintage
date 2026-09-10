@@ -397,3 +397,22 @@ Byggd från verifierade V0.41.1.
 De 10 perioderna är utvecklingsdata för Exit Lab 2 efter denna körning. En vald PRO3-kandidat måste frysas och testas på nya orörda perioder innan den kan kallas oberoende validerad.
 
 Ingen livehandel.
+
+
+## V0.45.13 – Signal Lab 4 · Close 83 holdout + räknarfix
+
+### Varför detta steg
+Signal Lab 3 (V0.45.12) jämförde close 77/80/83/86% på 2023–2026. 83% gav högst slutvärde (+4,07%) med PF 1,08, 711 affärer och ett betydligt mindre tapp under 2026 än 86%-kontrollen. 83% utses därför endast till **fryst forskningskandidat**, inte ny produktionsregel.
+
+### Förregistrerat test
+Signal Lab 4 jämför endast:
+- **83% – fryst kandidat**
+- **86% – fryst kontroll**
+
+Alla andra regler är frysta. Testperioden är 2021-01-01–2022-12-31. Den perioden användes inte för att formulera eller välja 83%-hypotesen i Signal Lab 2/3 och fungerar därför som **holdout för close-frågan**. Den ska inte beskrivas som globalt orörd OOS för hela Jägaren, eftersom äldre labb har använt delar av 2021–2022.
+
+### Räknarfix
+Den gamla räknaren ökade Signal Lab 3 med endast +4 trots att fyra varianter kördes över 45 månader. V0.45.13 migrerar därför räknaren en gång till verifierat minimum **19 922** (= 19 742 t.o.m. Signal Lab 2 + 180 variant×månad-enheter från Signal Lab 3). Därefter räknas Signal Lab 4 med **+2 per färdig månadscheckpoint**. Vid avbrott räknas inte ofärdiga månader om efter återupptagning.
+
+### Projekthistorik / överlämning
+README ska även fortsättningsvis bära den kompakta forskningshistoriken, frysta beslut, större buggar/fixar och varför nästa steg valts. När chatten blir lång ska en överlämningssammanfattning göras innan kontext riskerar att gå förlorad.

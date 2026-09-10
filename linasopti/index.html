@@ -9,14 +9,14 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.45.12">
+<link rel="stylesheet" href="linasopti.css?v=0.45.13">
 </head>
 <body class="v0384-locked">
 
 <div id="v0383Gate" class="v0383-gate" aria-hidden="false">
   <div class="v0383-gate-card">
     <h1>Linas Opti</h1>
-    <div class="v04512-gate-version" aria-label="Version">V0.45.12</div>
+    <div class="v04512-gate-version" aria-label="Version">V0.45.13</div>
     <p>Ange lösenkod för att fortsätta</p>
     <input id="v0383Code" type="password" inputmode="text" autocomplete="off" placeholder="Lösenkod">
     <button id="v0383Enter" type="button">Öppna Linas Opti</button>
@@ -27,7 +27,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.45.12</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.45.13</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">48/100</b><small>Forskningsfas</small></button>
@@ -47,7 +47,8 @@
     <button type="button" class="v0424-subtab" data-pane="result">Resultat</button>
   </div>
   <label id="v0423LabPick" class="v0424-labpick" hidden><span class="v0425-labtag">LABB</span><select id="v0413LabJump" aria-label="Välj Testlab">
-    <option value="v04511Lab">🎯 Signal Lab 3 · Close-testet (senaste)</option>
+    <option value="v04513Lab">🧪 Signal Lab 4 · Close 83 holdout (senaste)</option>
+    <option value="v04511Lab">🎯 Signal Lab 3 · Close-testet</option>
     <option value="v0459Lab">🧬 Signal Lab 2 · Entry B-dissektion</option>
     <option value="v0458Lab">🔬 Signal Lab 1 · Filtertratten</option>
     <option value="v0457Lab">🔎 Kapital Lab 3 · kapitalutnyttjande</option>
@@ -352,6 +353,17 @@
 
 <section id="pane-testlab" class="hidden">
 
+<div id="v04513Lab" class="card v0410-lab v0413-lab-section vlab-v04513Lab">
+  <div class="v0410-labtitle"><span class="v0410-flask">🧪</span><div><h2>Signal Lab 4 · Close 83 holdout</h2></div></div>
+  <button id="v04513Run" class="primary v0410-big">▶ Kör Signal Lab 4 · 83% mot 86%</button>
+  <div id="v04513Status" class="v0410-status v0424-runstatus">Redo · 83% är fryst kandidat och 86% fryst kontroll. Testperiod 2021–2022.</div><div class="v0410-progress"><div id="v04513Bar"></div></div>
+  <p class="muted">Förregistrerad validering av close-hypotesen på data före 2023, som inte användes för att formulera eller välja 83%-kandidaten. Detta är holdout för close-frågan, inte globalt orörd OOS för hela Jägaren.</p>
+  <div id="v04513Summary" class="v0410-summary muted">Ingen körning ännu.</div>
+  <div class="table-scroll"><table><thead><tr><th>Close</th><th>Slutvärde</th><th>Avkastning</th><th>Affärer</th><th>PF</th><th>WR</th><th>Max DD</th><th>Snitt kapital</th></tr></thead><tbody id="v04513Rows"></tbody></table></div>
+  <h3>Årsresultat</h3><div class="table-scroll"><table><thead><tr><th>Close</th><th>År</th><th>Start</th><th>Slut</th><th>Avkastning</th><th>Affärer</th></tr></thead><tbody id="v04513YearRows"></tbody></table></div>
+  <button id="v04513Share" class="secondary" disabled>Ladda ner / Dela Signal Lab 4</button>
+</div>
+
 <div id="v04511Lab" class="card v0410-lab v0413-lab-section vlab-v04511Lab">
   <div class="v0410-labtitle"><span class="v0410-flask">🎯</span><div><h2>Signal Lab 3 · Close-testet</h2></div></div>
   <button id="v04511Run" class="primary v0410-big">▶ Kör Signal Lab 3 · 77 / 80 / 83 / 86%</button>
@@ -622,5 +634,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.45.12"></script>
+<script src="linasopti.js?v=0.45.13"></script>
 </body></html>
