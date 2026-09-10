@@ -1,31 +1,8 @@
 {
-  "name": "Container13 Vintage",
-  "short_name": "Container13",
-  "description": "Container 13 Vintage – vintage, second hand och begagnade kläder i Hudiksvall.",
-  "lang": "sv-SE",
-  "start_url": "/",
-  "scope": "/",
+  "name": "Linas Opti",
+  "short_name": "Linas Opti",
+  "start_url": "./",
   "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#f8f5ef",
-  "theme_color": "#f8f5ef",
-  "icons": [
-    {
-      "src": "./icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "./icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ],
-  "id": "/",
-  "categories": [
-    "shopping",
-    "lifestyle"
-  ]
+  "background_color": "#f4f6f8",
+  "theme_color": "#f4f6f8"
 }
