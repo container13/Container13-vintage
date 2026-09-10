@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.44.4";
+const APP_VERSION = "V0.45.0";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -1732,7 +1732,7 @@ window.addEventListener('DOMContentLoaded',()=>{
  const engine=document.getElementById('v0423Engine'),jump=document.getElementById('v0413LabJump');
  const LAB_KEY='linasopti_testlab_selected_v0423';
  function showSelectedLab(){if(!jump)return;const val=jump.value;document.querySelectorAll('[class*=\"vlab-v04\"]').forEach(el=>{el.style.display=el.classList.contains('vlab-'+val)?'':'none'});document.querySelectorAll('.vlab-extra').forEach(el=>el.style.display='none');localStorage.setItem(LAB_KEY,val);}
- if(jump){const saved=localStorage.getItem(LAB_KEY);if(saved&&[...jump.options].some(o=>o.value===saved))jump.value=saved;else jump.value='v0440Lab';jump.addEventListener('change',showSelectedLab);showSelectedLab();}
+ if(jump){const saved=localStorage.getItem(LAB_KEY);if(saved&&[...jump.options].some(o=>o.value===saved))jump.value=saved;else jump.value='v0450Lab';jump.addEventListener('change',showSelectedLab);showSelectedLab();}
  document.querySelectorAll('.v0424-subtab').forEach(b=>b.addEventListener('click',()=>show(b.dataset.pane,true)));
  if(engine){engine.addEventListener('change',()=>{
    if(engine.value==='testlab') show('testlab',true);
@@ -1999,3 +1999,155 @@ window.addEventListener('DOMContentLoaded',()=>{document.getElementById('v0440Ru
     sync(); safeScrollTo(document.getElementById(lab.value));
   })));
 })();
+
+
+// ============================================================
+// V0.45.0 – KAPITAL LAB 1
+// Samma frysta Jägare som V0.44.0. Endast max antal samtidiga
+// positioner ändras: 1 / 2 / 3 / 5. Högst 20% equity per position,
+// samma 0,5%-riskreferens, max 4 nya entries per dag och samma friktion.
+// Syfte: mäta om kapitalutnyttjande, inte nya signalparametrar, förklarar
+// den låga portföljavkastningen i V0.44.0.
+// ============================================================
+const V0450_VARIANTS=[
+ {id:'p1',slots:1,name:'1 position'},
+ {id:'p2',slots:2,name:'2 positioner'},
+ {id:'p3',slots:3,name:'3 positioner'},
+ {id:'p5',slots:5,name:'5 positioner'}
+];
+let V0450_RESULT=null,V0450_RUNNING=false;
+
+function v0450Engine(rows,capital,maxPositions){
+ const byDay={},spy={};
+ for(const r of rows){
+  const z=v0440NY(r.t); if(z.m<570||z.m>=960)continue;
+  if(r.symbol==='SPY')(spy[z.d]??=[]).push({...r,_m:z.m});
+  else { (byDay[z.d]??={}); (byDay[z.d][r.symbol]??=[]).push({...r,_m:z.m}); }
+ }
+ let eq=capital,peak=capital,dd=0,closed=[],curve=[],utilSum=0,utilN=0,maxConcurrent=0;
+ const costSide=.000425,maxEntriesDay=4;
+ for(const d of Object.keys(byDay).sort()){
+  let positions=[],entriesToday=0;
+  const syms=byDay[d],sp=(spy[d]||[]).sort((a,b)=>new Date(a.t)-new Date(b.t));
+  Object.values(syms).forEach(a=>a.sort((x,y)=>new Date(x.t)-new Date(y.t)));
+  const timeline=[...new Set(Object.values(syms).flat().map(b=>b.t))].sort((a,b)=>new Date(a)-new Date(b));
+  const idx={}; for(const [sym,a] of Object.entries(syms))idx[sym]=new Map(a.map((b,i)=>[b.t,i]));
+
+  for(const ts of timeline){
+   // Exits först, precis som i den frysta enpositionsmotorn.
+   const keep=[];
+   for(const position of positions){
+    const a=syms[position.s],i=idx[position.s]?.get(ts);
+    let exited=false;
+    if(i!=null){
+     const b=a[i],age=i-position.entryIdx; let raw=null,why='';
+     if(age>0&&b.h>=position.target){raw=position.target;why='mål +0,8%'}
+     else if(age>4&&b.l<=position.stop){raw=position.stop;why='stop −0,4% efter delay'}
+     else if(age>=12){raw=b.c;why='max 60 min'}
+     else if(b._m>=950){raw=b.c;why='stängning 15:50'}
+     if(raw!=null){
+      const exit=raw*(1-costSide),pnl=position.shares*(exit-position.entry); eq+=pnl;
+      closed.push({...position,exitTime:b.t,exit,pnl,why}); exited=true;
+     }
+    }
+    if(!exited)keep.push(position);
+   }
+   positions=keep;
+
+   if(positions.length<maxPositions&&entriesToday<maxEntriesDay){
+    const z=v0440NY(ts);
+    if(z.m>=630&&z.m<=720){
+     const spPast=sp.filter(x=>new Date(x.t)<=new Date(ts));
+     if(spPast.length>=4){
+      const sc=spPast.at(-1),so=spPast[0],s15=spPast[Math.max(0,spPast.length-4)];
+      const dayRet=sc.c/so.o-1,m15=sc.c/s15.c-1;
+      if(dayRet>=.001&&m15>=.0005){
+       const held=new Set(positions.map(p=>p.s)),cand=[];
+       for(const [sym,a] of Object.entries(syms)){
+        if(held.has(sym))continue;
+        const i=idx[sym].get(ts); if(i==null||i<15||i>=a.length-1)continue;
+        const b=a[i],hist=a.slice(i-14,i+1),prev=hist.at(-2),avgVol=hist.slice(0,-1).reduce((q,x)=>q+(+x.v||0),0)/14,
+          r1=b.c/prev.c-1,r3=b.c/a[i-3].c-1,r6=b.c/a[i-6].c-1,prev2=prev.c/a[i-2].c-1,
+          range=Math.max(.000001,b.h-b.l),closeLoc=(b.c-b.l)/range,volRatio=avgVol?((+b.v||0)/avgVol):0,
+          sma=hist.reduce((q,x)=>q+x.c,0)/hist.length,stretch=b.c/sma-1;
+        if(r3<.004||r3>.012||r1<=0||r6<.0025||b.c<=sma||closeLoc<.86||volRatio<1.15||volRatio>3||stretch>.020||prev2<-.005)continue;
+        const sweet=(r3>=.0075&&r3<.0100)?.55:0,volSweet=(volRatio>=2&&volRatio<3)?.25:0,timeBoost=.20,accel=r1-prev2,
+          score=r3*105+r6*35+Math.max(-.01,Math.min(.01,accel))*40+Math.min(volRatio,3)*.12+closeLoc*.12+sweet+volSweet+timeBoost-Math.max(0,stretch-.012)*70;
+        const next=a[i+1]; if(!next||next._m>=950)continue;
+        cand.push({sym,i,score,next});
+       }
+       cand.sort((a,b)=>b.score-a.score);
+       let slots=Math.min(maxPositions-positions.length,maxEntriesDay-entriesToday);
+       for(const c of cand){
+        if(slots<=0)break;
+        const entry=c.next.o*(1+costSide);
+        const grossUsed=positions.reduce((q,p)=>q+p.entry*p.shares,0);
+        const capitalLeft=Math.max(0,eq-grossUsed);
+        const notionalCap=Math.min(eq*.20,capitalLeft);
+        const shares=Math.min(notionalCap/entry,(eq*.005)/(entry*.006));
+        if(!(shares>0))continue;
+        positions.push({s:c.sym,symbol:c.sym,entry,entryTime:c.next.t,entryIdx:c.i+1,shares,stop:entry*(1-.004),target:entry*(1+.008),entryEquity:eq});
+        entriesToday++; slots--;
+       }
+      }
+     }
+    }
+   }
+
+   const gross=positions.reduce((q,p)=>q+p.entry*p.shares,0);
+   utilSum+=eq>0?Math.min(1,gross/eq):0; utilN++;
+   maxConcurrent=Math.max(maxConcurrent,positions.length);
+  }
+
+  // Inga positioner får gå över natt.
+  for(const position of positions){
+   const a=syms[position.s],b=a?.at(-1); if(!b)continue;
+   const exit=b.c*(1-costSide),pnl=position.shares*(exit-position.entry); eq+=pnl;
+   closed.push({...position,exitTime:b.t,exit,pnl,why:'dagsslut'});
+  }
+  peak=Math.max(peak,eq); dd=Math.min(dd,eq/peak-1); curve.push({t:d,v:eq});
+ }
+ return {eq,dd,closed,curve,utilSum,utilN,maxConcurrent};
+}
+
+function v0450Stats(r){
+ const w=r.closed.filter(x=>x.pnl>0),l=r.closed.filter(x=>x.pnl<0),gw=w.reduce((a,x)=>a+x.pnl,0),gl=Math.abs(l.reduce((a,x)=>a+x.pnl,0));
+ return {pf:gl?gw/gl:(gw?Infinity:0),wr:r.closed.length?w.length/r.closed.length:0,ret:r.eq/100000-1,util:r.utilN?r.utilSum/r.utilN:0};
+}
+function v0450Paint(){
+ const sum=document.getElementById('v0450Summary'),body=document.getElementById('v0450Rows'),share=document.getElementById('v0450Share'); if(!sum||!body)return;
+ if(!V0450_RESULT){sum.textContent='Ingen körning ännu.';body.innerHTML='';if(share)share.disabled=true;return}
+ const ranked=V0450_RESULT.variants.map(v=>({...v,stats:v0450Stats(v)})).sort((a,b)=>b.eq-a.eq),best=ranked[0];
+ sum.innerHTML=`<b>Bäst slutvärde: ${best.name} · ${Math.round(best.eq).toLocaleString('sv-SE')} kr</b><br>Detta är ett kapitalutnyttjandetest – inte ny signaloptimering.`;
+ body.innerHTML=V0450_RESULT.variants.map(v=>{const s=v0450Stats(v);return `<tr><td>${v.name}</td><td>${Math.round(v.eq).toLocaleString('sv-SE')} kr</td><td class="${s.ret>=0?'good':'bad'}">${(s.ret*100).toFixed(2)}%</td><td>${v0411FmtPF(s.pf)}</td><td>${(s.wr*100).toFixed(1)}%</td><td>${(v.dd*100).toFixed(2)}%</td><td>${v.closed.length}</td><td>${(s.util*100).toFixed(1)}%</td></tr>`}).join('');
+ if(share)share.disabled=false;
+}
+async function v0450Run(){
+ if(V0450_RUNNING)return; V0450_RUNNING=true;
+ const run=document.getElementById('v0450Run'),st=document.getElementById('v0450Status'),bar=document.getElementById('v0450Bar'),months=v0440Months(); run.disabled=true;
+ const states=V0450_VARIANTS.map(v=>({...v,eq:100000,dd:0,peak:100000,closed:[],curve:[],utilSum:0,utilN:0,maxConcurrent:0,years:[],yearStart:100000}));
+ try{
+  for(let i=0;i<months.length;i++){
+   const w=months[i]; st.innerHTML=`<span class="v0406-spinner small"></span> ${i+1}/${months.length} · hämtar ${w.label} och kör 4 kapitalvarianter…`; bar.style.width=`${i/months.length*100}%`;
+   const j=await v0440FetchMonth(w,st),rows=j.rows||[];
+   for(const state of states){
+    const r=v0450Engine(rows,state.eq,state.slots); state.eq=r.eq; state.utilSum+=r.utilSum; state.utilN+=r.utilN; state.maxConcurrent=Math.max(state.maxConcurrent,r.maxConcurrent);
+    for(const t of r.closed)state.closed.push(t); for(const c of r.curve){state.peak=Math.max(state.peak,c.v);state.dd=Math.min(state.dd,c.v/state.peak-1);state.curve.push(c)}
+    const y=+w.label.slice(0,4),nextY=i===months.length-1?null:+months[i+1].label.slice(0,4);
+    if(nextY!==y){const n=state.closed.filter(t=>+v0440NY(t.entryTime).d.slice(0,4)===y).length;state.years.push({year:y,start:state.yearStart,end:state.eq,n});state.yearStart=state.eq;}
+   }
+   bar.style.width=`${(i+1)/months.length*100}%`; await v0406Yield(20);
+  }
+  V0450_RESULT={from:'2023-01-01',to:'2026-09-30',variants:states}; v0413AddSims(4); v0450Paint(); st.textContent='✓ Kapital Lab 1 klart · fyra sammanhängande portföljtester.';
+ }catch(e){st.textContent=`Kapital Lab avbröts. Inga simuleringar registrerades som klara. Tryck Kör för att starta om. (${e?.message||e})`}
+ finally{V0450_RUNNING=false;run.disabled=false}
+}
+function v0450Report(){
+ if(!V0450_RESULT)return'';
+ const L=['LINAS OPTI – KAPITAL LAB 1','Version: '+APP_VERSION,'Handel: AVSTÄNGD (historiskt backtest)','','STARTKAPITAL: 100 000 kr','PERIOD: 2023-01-01 → 2026-09','FRYST DAY SELECTION: '+V0440_SYMBOLS.join(', '),'','METOD','Samma frysta Jägare som i V0.44.0: PRO2-kvalitet → Entry B → Strong-regim → forsknings-exit.','Endast max antal samtidiga positioner ändras: 1 / 2 / 3 / 5.','Max 20% equity per position, 0,5% risk mot 0,6%-referens, max 4 nya entries per dag.','Exit och friktion oförändrade: mål +0,8%, stop -0,4% efter fryst delay, max 60 min, 0,0425% per sida.','Ingen ny signalparameter optimeras.','','RESULTAT'];
+ for(const v of V0450_RESULT.variants){const s=v0450Stats(v);L.push(`${v.name} | slut ${v.eq.toFixed(2)} kr | avkastning ${(s.ret*100).toFixed(2)}% | affärer ${v.closed.length} | PF ${v0411FmtPF(s.pf)} | WR ${(s.wr*100).toFixed(1)}% | max DD ${(v.dd*100).toFixed(2)}% | snitt kapital i arbete ${(s.util*100).toFixed(1)}% | max samtidiga ${v.maxConcurrent}`)}
+ L.push('','ÅRSRESULTAT'); for(const v of V0450_RESULT.variants){L.push('',v.name.toUpperCase());for(const y of v.years)L.push(`${y.year} | ${y.start.toFixed(2)} → ${y.end.toFixed(2)} | ${((y.end/y.start-1)*100).toFixed(2)}% | ${y.n} affärer`)}
+ L.push('','OBS: 2023–2026 är inte ett nytt orört OOS-prov i sin helhet. Kapital Lab testar portfölj- och kapitalutnyttjande med frysta signalregler; det är inte en prognos.'); return L.join('\n');
+}
+async function v0450Share(){return v043xShare(v0450Report(),'linasopti_kapitallab1','Linas Opti Kapital Lab 1')}
+window.addEventListener('DOMContentLoaded',()=>{document.getElementById('v0450Run')?.addEventListener('click',v0450Run);document.getElementById('v0450Share')?.addEventListener('click',v0450Share);v0450Paint()});

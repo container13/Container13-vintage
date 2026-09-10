@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.44.4">
+<link rel="stylesheet" href="linasopti.css?v=0.45.0">
 </head>
 <body class="v0384-locked">
 
@@ -23,7 +23,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.44.4</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.45.0</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">42/100</b><small>Forskningsfas</small></button>
@@ -43,7 +43,8 @@
     <button type="button" class="v0424-subtab" data-pane="result">Resultat</button>
   </div>
   <label id="v0423LabPick" class="v0424-labpick" hidden><span class="v0425-labtag">LABB</span><select id="v0413LabJump" aria-label="Välj Testlab">
-    <option value="v0440Lab">🏁 Jägaren · 2023→nu (senaste)</option>
+    <option value="v0450Lab">💰 Kapital Lab 1 · samtidiga positioner (senaste)</option>
+    <option value="v0440Lab">🏁 Jägaren · 2023→nu</option>
     <option value="v0430Lab">🔎 Day Selection 1 · Urval</option>
     <option value="v0431Lab">🧭 Day Selection 2 · OOS</option>
     <option value="v0423Lab">🌤️ Regim Lab 2 · OOS</option>
@@ -341,6 +342,15 @@
 
 
 <section id="pane-testlab" class="hidden">
+<div id="v0450Lab" class="card v0410-lab v0413-lab-section vlab-v0450Lab">
+  <div class="v0410-labtitle"><span class="v0410-flask">💰</span><div><h2>Kapital Lab 1 · Hur många samtidiga positioner?</h2></div></div>
+  <button id="v0450Run" class="primary v0410-big">▶ Kör Kapital Lab 1 · 1 / 2 / 3 / 5 positioner</button>
+  <div id="v0450Status" class="v0410-status v0424-runstatus">Redo · samma frysta Jägare, startkapital 100 000 kr.</div><div class="v0410-progress"><div id="v0450Bar"></div></div>
+  <div class="muted v0434-afterrun">Jämför samma Day Selection 16 + Entry B + Strong + forsknings-exit. Endast max antal samtidiga positioner ändras. Varje position får högst 20% av kapitalet och samma riskmodell/friktion används.</div>
+  <div id="v0450Summary" class="v0410-summary muted">Ingen körning ännu.</div>
+  <div class="table-scroll"><table><thead><tr><th>Positioner</th><th>Slutvärde</th><th>Avkastning</th><th>PF</th><th>WR</th><th>Max DD</th><th>Affärer</th><th>Kapital i arbete</th></tr></thead><tbody id="v0450Rows"></tbody></table></div>
+  <button id="v0450Share" class="secondary" disabled>Dela Kapital Lab 1</button>
+</div>
 <div id="v0440Lab" class="card v0410-lab v0413-lab-section vlab-v0440Lab">
   <div class="v0410-labtitle"><span class="v0410-flask">🏁</span><div><h2>Jägaren · 100 000 kr från 2023 till nu</h2></div></div>
   <button id="v0440Run" class="primary v0410-big">▶ Kör hela Jägaren · 2023→nu</button>
@@ -541,5 +551,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.44.4"></script>
+<script src="linasopti.js?v=0.45.0"></script>
 </body></html>

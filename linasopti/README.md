@@ -1,3 +1,14 @@
+# V0.45.0 – Kapital Lab 1
+
+- Nytt Testlab: jämför 1, 2, 3 och 5 samtidiga positioner med exakt samma frysta Jägare.
+- Startkapital 100 000 kr, period 2023–2026-09.
+- Max 20% equity per position, samma riskmodell, Entry B, Strong-regim, exit och friktion som V0.44.0.
+- Hämtar varje månad en gång och kör fyra portföljvarianter på samma data.
+- Visar slutvärde, avkastning, PF, WR, max DD, affärer och genomsnittligt kapital i arbete.
+- Simuleringsräknaren ökar först när alla fyra kompletta tester är färdiga.
+- Ingen Worker-ändring.
+- Befintlig mobil/desktop-layout från V0.44.4 bevarad.
+
 # V0.44.4 – Navigation proportion fix
 
 - Desktop: FORSKNING has a dedicated wider label column so it can no longer sit behind the engine dropdown.
