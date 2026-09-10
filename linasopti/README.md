@@ -1,3 +1,10 @@
+# V0.44.3 – Layout/UX final pass
+
+- Mobil: Data/Test/Resultat nedtonade till sekundär navigation.
+- Mobil/Testlab: dynamisk mätning av fast header med ResizeObserver och säker scroll-offset; labbets överkant ska aldrig hamna bakom headern.
+- Desktop: Data-vyn har explicit 50/50-grid: Marknadsgrupp vänster, Symboler + Datatyp/Period/Hämta höger.
+- Ingen strategi-, test-, data- eller Worker-logik ändrad.
+
 # V0.44.2 – Desktop alignment
 
 - Desktop-only alignment pass; mobile rules unchanged.

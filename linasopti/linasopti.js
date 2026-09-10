@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.44.2";
+const APP_VERSION = "V0.44.3";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -1966,3 +1966,36 @@ async function v0440Run(){if(V0440_RUNNING)return;V0440_RUNNING=true;const run=d
 function v0440Report(){if(!V0440_RESULT)return'';const r=V0440_RESULT,w=r.closed.filter(x=>x.pnl>0),l=r.closed.filter(x=>x.pnl<0),gw=w.reduce((a,x)=>a+x.pnl,0),gl=Math.abs(l.reduce((a,x)=>a+x.pnl,0)),pf=gl?gw/gl:(gw?Infinity:0),L=['LINAS OPTI – JÄGAREN · SAMMANHÄNGANDE PORTFÖLJTEST','Version: '+APP_VERSION,'Handel: AVSTÄNGD (historiskt backtest)','','STARTKAPITAL: 100 000 kr','PERIOD: 2023-01-01 → 2026-09','FRYST DAY SELECTION: '+V0440_SYMBOLS.join(', '),'','REGLER','PRO2-kvalitet → Entry B → Strong-regim → forsknings-exit.','En position åt gången, max 4 avslut per dag. Nästa bars open.','Position sizing: 0,5% risk mot PRO2:s 0,6%-referens, max 20% equity.','Exit: mål +0,8%, stop -0,4% efter fryst delay, max 60 min.','Modellerad friktion: 0,0425% per sida.','','RESULTAT',`Slutvärde: ${r.eq.toFixed(2)} kr`,`Total avkastning: ${((r.eq/100000-1)*100).toFixed(2)}%`,`Affärer: ${r.closed.length}`,`PF: ${v0411FmtPF(pf)}`,`WR: ${r.closed.length?(w.length/r.closed.length*100).toFixed(1):'0.0'}%`,`Max DD: ${(r.dd*100).toFixed(2)}%`,'','ÅR'];for(const y of r.years)L.push(`${y.year} | ${y.start.toFixed(2)} → ${y.end.toFixed(2)} | ${((y.end/y.start-1)*100).toFixed(2)}% | ${y.n} affärer`);L.push('','OBS: Historiskt backtest är inte en prognos. Day Selection är framtaget och validerat på tidigare historiska perioder; 2023–2026 är därför inte ett nytt orört OOS-prov i sin helhet.');return L.join('\n')}
 async function v0440Share(){return v043xShare(v0440Report(),'linasopti_jagaren_2023_nu','Linas Opti Jägaren 2023→nu')}
 window.addEventListener('DOMContentLoaded',()=>{document.getElementById('v0440Run')?.addEventListener('click',v0440Run);document.getElementById('v0440Share')?.addEventListener('click',v0440Share);v0440Paint()});
+
+
+// V0.44.3 – fixed-header geometry + safe lab scrolling (layout only).
+(function v0443FixedHeaderGeometry(){
+  const root=document.documentElement;
+  function sync(){
+    const h=document.querySelector('.sticky-top');
+    if(!h)return;
+    root.style.setProperty('--v0383-head-h', Math.ceil(h.getBoundingClientRect().height)+'px');
+  }
+  function safeScrollTo(el){
+    if(!el)return;
+    sync();
+    const h=document.querySelector('.sticky-top');
+    const hh=h?Math.ceil(h.getBoundingClientRect().height):0;
+    const y=Math.max(0, window.scrollY + el.getBoundingClientRect().top - hh - 12);
+    window.scrollTo({top:y,behavior:'smooth'});
+  }
+  window.v0443SafeScrollTo=safeScrollTo;
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync);else sync();
+  window.addEventListener('load',sync);
+  window.addEventListener('resize',sync);
+  if('ResizeObserver' in window){
+    const h=document.querySelector('.sticky-top');
+    if(h)new ResizeObserver(sync).observe(h);
+  }
+  const engine=document.getElementById('v0423Engine');
+  if(engine)engine.addEventListener('change',()=>requestAnimationFrame(()=>requestAnimationFrame(sync)));
+  const lab=document.getElementById('v0413LabJump');
+  if(lab)lab.addEventListener('change',()=>requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    sync(); safeScrollTo(document.getElementById(lab.value));
+  })));
+})();

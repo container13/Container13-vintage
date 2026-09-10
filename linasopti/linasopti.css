@@ -934,3 +934,50 @@ html[data-research-mode="testlab"] #v0424TesterNav{display:none!important}
 @media (min-width:1700px){
   :root{--desktop-shell:1240px}
 }
+
+
+/* V0.44.3 – UX/layout final pass. No strategy logic changed. */
+/* Every pane starts below the measured fixed header, also after Tester/Testlab changes height. */
+#pane-data,#pane-test,#pane-result,#pane-testlab{scroll-margin-top:calc(var(--v0383-head-h,170px) + 12px)}
+#pane-testlab > [id$="Lab"]{scroll-margin-top:calc(var(--v0383-head-h,170px) + 12px)!important}
+
+/* Mobile: Data/Test/Resultat are secondary navigation, not giant action buttons. */
+@media (max-width:560px){
+  .v0424-testernav{gap:7px!important}
+  .v0424-subtab{
+    min-height:48px!important;
+    height:48px!important;
+    padding:7px 8px!important;
+    font-size:15px!important;
+    border-radius:15px!important;
+    box-shadow:0 2px 7px rgba(20,45,75,.05)!important;
+  }
+  .v0424-enginepick select,.v0424-labpick select{
+    min-height:56px!important;
+    font-size:16px!important;
+  }
+  .v0424-researchbar{padding-bottom:9px!important}
+  #pane-testlab{scroll-margin-top:calc(var(--v0383-head-h,170px) + 10px)!important}
+}
+
+/* Desktop: explicit two-column data grid; no inherited row placement can drift. */
+@media (min-width:1200px){
+  #pane-data > .card:first-child > .row{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    grid-template-areas:
+      "market symbols"
+      "market flow"
+      "bridge ready"
+      "bridge provider"!important;
+    gap:14px 28px!important;
+    align-items:start!important;
+  }
+  #pane-data > .card:first-child > .row > .v29-market-box{grid-area:market!important}
+  #pane-data > .card:first-child > .row > label{grid-area:symbols!important;align-self:start!important}
+  #pane-data > .card:first-child > .row > .v0404-dataflow{grid-area:flow!important;align-self:start!important;width:100%!important}
+  #pane-data > .card:first-child > .row > #bridgeStatus{grid-area:bridge!important;margin-top:0!important}
+  #pane-data > .card:first-child > .row > #v0368DataReady{grid-area:ready!important;margin-top:0!important}
+  #pane-data > .card:first-child > .row > #providerInfo{grid-area:provider!important;margin-top:0!important}
+  #pane-data .v29-market-box,#pane-data .v0404-dataflow{min-width:0!important}
+}
