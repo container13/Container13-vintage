@@ -1,3 +1,36 @@
+# V0.45.7 – Kapital Lab 3 · kapitalutnyttjande
+
+Byggd direkt från V0.45.6. Ingen signal-, Entry B-, Strong-regim-, exit-, friktions-, Day Selection- eller Worker-logik ändrad.
+
+## Nytt i V0.45.7
+- Nytt Testlab: **Kapital Lab 3 · kapitalutnyttjande**.
+- Fryst forskningskandidat: **max 3 samtidiga positioner + max 33,3% equity per position**.
+- Labbet är diagnostiskt och ändrar inga signalparametrar.
+- Mäter andel observerade 5-min-tidpunkter med 0 / 1 / 2 / 3 öppna positioner.
+- Mäter snitt kapital i arbete, faktisk positionsstorlek, hålltid, dagar med position och dagar som når 4 entries.
+- Räknar godkända signalkandidater samt kandidater blockerade av 3-positionersgränsen respektive max 4 nya entries/dag.
+- Blockerade kandidater är diagnostik och räknas **inte** som hypotetiska affärer.
+- Checkpoint sparas efter varje helt färdig månad och körningen kan återupptas efter avbrott/sidomladdning.
+- Samma retry-funktion som V0.45.6 används vid datahämtning.
+- Simuleringsräknaren ökar med **1 först när hela Kapital Lab 3 är färdigkört**.
+- Rapport: `LINAS_OPTI_KAPITAL_LAB_3_KAPITALUTNYTTJANDE_V0457_YYYY-MM-DD.txt`.
+- Kapital Lab 3 ligger överst/förvalt i Testlabs rullgardinsmeny.
+
+## Varför detta labb byggdes
+Kapital Lab 1 pekade ut 3 samtidiga positioner som forskningskandidat. Kapital Lab 2 visade sedan nästan linjär skalning när positionsstorleken ökades: 10% gav +1,18%, 20% +2,36%, 30% +3,53% och 33,3% +3,91%. PF och WR var i princip oförändrade och samtliga varianter hade 657 affärer. Vid 33,3% var max DD -3,03%, men genomsnittligt kapital i arbete fortfarande bara 2,8%.
+
+Det centrala nästa forskningsproblemet är därför inte att optimera ytterligare en signalparameter, utan att mäta **varför kapitalet nästan alltid står oanvänt**. Kapital Lab 3 ska skilja mellan två hypoteser:
+1. Bra kandidater finns men blockeras av positions-/dagsgränser.
+2. Jägaren producerar helt enkelt få samtidiga godkända signaler och 0–1 position dominerar.
+
+## Forskningsdisciplin
+2023–2026 är inte ett nytt orört OOS-prov i sin helhet. Kapital Lab 3 är diagnostik på redan frysta signalregler och får inte behandlas som en prognos eller som ny oberoende validering. Robotmognad ligger därför kvar på **48/100** i denna version.
+
+## README- och chattöverlämningsregel från V0.45.7
+README ska framöver bära en kompakt löpande projekthistorik: viktiga versioner, forskningssteg, centrala resultat, beslut, frysta delar, större buggar/fixar och varför nästa steg valdes. När en arbetschatt börjar bli lång ska ChatGPT proaktivt skapa en överlämningssammanfattning **innan** kontext riskerar att gå förlorad. Sammanfattningen ska kunna klistras direkt i nästa chatt och ange senaste kodbas, forskningsstatus, frysta regler, resultat, öppna problem och nästa planerade steg.
+
+---
+
 # V0.45.6 – återuppta Kapital Lab 2 + flikfix
 
 - Bygger vidare på V0.45.5 och behåller flikväxlingsfixen.

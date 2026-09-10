@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.45.6">
+<link rel="stylesheet" href="linasopti.css?v=0.45.7">
 </head>
 <body class="v0384-locked">
 
@@ -43,7 +43,8 @@
     <button type="button" class="v0424-subtab" data-pane="result">Resultat</button>
   </div>
   <label id="v0423LabPick" class="v0424-labpick" hidden><span class="v0425-labtag">LABB</span><select id="v0413LabJump" aria-label="Välj Testlab">
-    <option value="v0452Lab">📐 Kapital Lab 2 · positionsstorlek (senaste)</option>
+    <option value="v0457Lab">🔎 Kapital Lab 3 · kapitalutnyttjande (senaste)</option>
+    <option value="v0452Lab">📐 Kapital Lab 2 · positionsstorlek</option>
     <option value="v0450Lab">💰 Kapital Lab 1 · samtidiga positioner</option>
     <option value="v0440Lab">🏁 Jägaren · 2023→nu</option>
     <option value="v0430Lab">🔎 Day Selection 1 · Urval</option>
@@ -343,6 +344,15 @@
 
 
 <section id="pane-testlab" class="hidden">
+<div id="v0457Lab" class="card v0410-lab v0413-lab-section vlab-v0457Lab">
+  <div class="v0410-labtitle"><span class="v0410-flask">🔎</span><div><h2>Kapital Lab 3 · Varför används så lite kapital?</h2></div></div>
+  <button id="v0457Run" class="primary v0410-big">▶ Kör Kapital Lab 3 · diagnostik</button>
+  <div id="v0457Status" class="v0410-status v0424-runstatus">Redo · 3 positioner och 33,3% per position är frysta. Ingen signalparameter ändras.</div><div class="v0410-progress"><div id="v0457Bar"></div></div>
+  <p class="muted">Mäter 0/1/2/3 öppna positioner, faktisk positionsstorlek, hålltid, signalflöde och hur ofta positions- eller dagsgränsen blockerar kandidater.</p>
+  <div id="v0457Summary" class="v0410-summary muted">Ingen körning ännu.</div>
+  <div class="table-scroll"><table><thead><tr><th>Mått</th><th>Resultat</th></tr></thead><tbody id="v0457Rows"></tbody></table></div>
+  <button id="v0457Share" class="secondary" disabled>Ladda ner / Dela Kapital Lab 3</button>
+</div>
 <div id="v0452Lab" class="card v0410-lab v0413-lab-section vlab-v0452Lab">
   <div class="v0410-labtitle"><span class="v0410-flask">📐</span><div><h2>Kapital Lab 2 · Hur stor ska varje position vara?</h2></div></div>
   <button id="v0452Run" class="primary v0410-big">▶ Kör Kapital Lab 2 · 10 / 20 / 30 / 33,3%</button>
@@ -557,7 +567,7 @@
   }
   btn.addEventListener("click", unlock);
   input.addEventListener("keydown", e=>{ if(e.key==="Enter"){e.preventDefault();unlock();}});
-  // V0.45.6: do not force scroll/focus when Chrome resumes an already open tab.
+  // V0.45.7: do not force scroll/focus when Chrome resumes an already open tab.
   // This keeps the exact view the user left and avoids unnecessary repaint work.
   window.addEventListener("pageshow", (e)=>{
     if(!e.persisted && !sessionStorage.getItem("linasopti_unlocked")) window.scrollTo(0,0);
@@ -569,5 +579,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.45.6"></script>
+<script src="linasopti.js?v=0.45.7"></script>
 </body></html>
