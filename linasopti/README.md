@@ -498,3 +498,24 @@ Förbättringar för långa iPhone/webbläsarkörningar:
 - V0.46.1 har egna lagrings-/ledgernycklar så halvfärdig V0.46.0-state inte blandas in.
 
 Safari/iOS kan fortfarande pausa JavaScript när sidan går i bakgrunden eller telefonen låses. V0.46.1 lovar därför inte bakgrundskörning, men färdiga månadscheckpoints ska finnas kvar.
+
+
+## V0.46.2 – Validation Suite UX / Progress / Reproducibility
+
+Ingen handelsregel ändrad. Close ≥83% är fortsatt fryst kandidat.
+
+Ändringar:
+- två separata progressnivåer: aktuellt test och hela 7-stegssviten;
+- aktiv tabellrad visar ⏳ PÅGÅR med delprogress i stället för ”Ej körd”;
+- färdiga rader visar ✅ PASS, ⚠️ VARNING eller ❌ FAIL;
+- Fortsätt-knappen visas endast när körningen faktiskt är pausad;
+- under aktiv körning visas endast Pausa och Avbryt; startknapparna döljs;
+- loggen märker BASDATA respektive PBO och PBO skriver en ny klar-rad efter varje månad;
+- PBO/DSR har egen månadscheckpoint och kan fortsätta efter ett avbrott utan att börja om från 1/45;
+- testresultat kan öppnas direkt från tabellen, exporteras separat och kontrollköras;
+- kontrollkörningar sparas under originalresultatet och skriver inte över första Validation Suite-resultatet;
+- kontrollkörning jämför resultat/status mot originalet och varnar vid avvikelse;
+- V0.46.1-resultat migreras till V0.46.2 när regelhashen är samma, så redan färdiga Validation Suite-resultat inte behöver kastas bort;
+- backup inkluderar även eventuell pågående PBO-checkpoint.
+
+V0.46.2 fortsätter forskningsprincipen att en omkörning är reproducerbarhetskontroll, inte ett sätt att jaga PASS.

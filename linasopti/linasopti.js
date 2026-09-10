@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.46.1";
+const APP_VERSION = "V0.46.2";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -2427,10 +2427,10 @@ window.addEventListener('DOMContentLoaded',()=>{document.getElementById('v04511R
 
 
 // ============================================================
-// V0.46.0 – VALIDATION SUITE · locked research generation
+// V0.46.2 – VALIDATION SUITE · UX / progress / reproducibility
 // ============================================================
-const V0460_KEY='linasopti_validation_suite_v0461',V0460_BACKUP_SCHEMA='lina-v0461-backup-v1';
-const V0460_SIM_LEDGER_KEY='linasopti_validation_sim_ledger_v0461';
+const V0460_KEY='linasopti_validation_suite_v0462',V0460_OLD_KEY='linasopti_validation_suite_v0461',V0460_BACKUP_SCHEMA='lina-v0462-backup-v1';
+const V0460_SIM_LEDGER_KEY='linasopti_validation_sim_ledger_v0462',V0460_OLD_SIM_LEDGER_KEY='linasopti_validation_sim_ledger_v0461';
 function v0460CountSims(id,n){
  try{
   const ledger=JSON.parse(localStorage.getItem(V0460_SIM_LEDGER_KEY)||'{}');
@@ -2456,18 +2456,113 @@ concentration:['Koncentration','Visar om resultatet är beroende av enstaka akti
 monte:['Monte Carlo','Blandar ordningen på observerade affärer 2 000 gånger och visar möjliga drawdownbanor. Affärernas P/L ändras inte.'],
 final:['Slutrapport','Samlar PASS, VARNING och FAIL. Ingen artificiell totalscore och ingen automatisk parameterjakt.']};
 const V0460_STEPS=[['integrity','Integrity Audit · data / leakage / reproducerbarhet'],['pbo','Robustness · PBO / DSR'],['time','Tidsblock · walk-forward stability'],['friction','Stress · friktion / execution'],['concentration','Stabilitet · symbol / tid'],['monte','Monte Carlo · drawdown stress'],['final','Final Validation Report']];
-function v0460New(){return{schema:'V0.46.1',rulesHash:V0460_RULE_HASH,createdAt:new Date().toISOString(),steps:{},base:null,completed:false}}
-function v0460Load(){try{const x=JSON.parse(localStorage.getItem(V0460_KEY)||'null');return x&&x.schema==='V0.46.1'&&x.rulesHash===V0460_RULE_HASH?x:v0460New()}catch{return v0460New()}}
+function v0460New(){return{schema:'V0.46.2',rulesHash:V0460_RULE_HASH,createdAt:new Date().toISOString(),steps:{},base:null,completed:false}}
+function v0460Load(){
+ try{
+  let x=JSON.parse(localStorage.getItem(V0460_KEY)||'null');
+  if(x&&x.schema==='V0.46.2'&&x.rulesHash===V0460_RULE_HASH)return x;
+  const old=JSON.parse(localStorage.getItem(V0460_OLD_KEY)||'null');
+  if(old&&old.schema==='V0.46.1'&&old.rulesHash===V0460_RULE_HASH){
+    old.schema='V0.46.2';old.migratedFrom='V0.46.1';old.migratedAt=new Date().toISOString();
+    localStorage.setItem(V0460_KEY,JSON.stringify(old));
+    try{
+      const ol=JSON.parse(localStorage.getItem(V0460_OLD_SIM_LEDGER_KEY)||'{}');
+      if(Object.keys(ol).length&&!localStorage.getItem(V0460_SIM_LEDGER_KEY))localStorage.setItem(V0460_SIM_LEDGER_KEY,JSON.stringify(ol));
+    }catch{}
+    return old;
+  }
+  return v0460New();
+ }catch{return v0460New()}
+}
 function v0460Save(x){x.updatedAt=new Date().toISOString();localStorage.setItem(V0460_KEY,JSON.stringify(x));return x}
+
+const V0462_PBO_CP_KEY='linasopti_validation_pbo_checkpoint_v0462';
+let V0462_ACTIVE={id:null,index:0,total:0,label:''},V0462_DETAIL_ID=null,V0462_RERUN_MODE=false;
+
+function v0462StatusMarkup(status,progress=''){
+ if(status==='PASS')return '<span class="v0462-status v0462-pass">✅ PASS</span>';
+ if(status==='VARNING')return '<span class="v0462-status v0462-warning">⚠️ VARNING</span>';
+ if(status==='FAIL')return '<span class="v0462-status v0462-fail">❌ FAIL</span>';
+ if(status==='PÅGÅR')return `<span class="v0462-status v0462-running">⏳ PÅGÅR${progress?' · '+progress:''}</span>`;
+ return '<span class="v0462-status v0462-muted">○ EJ KÖRD</span>';
+}
+function v0462SetActive(id,index=0,total=0,label=''){
+ V0462_ACTIVE={id,index,total,label};
+ const pct=total?Math.round(index/total*100):0;
+ const al=document.getElementById('v0462ActiveLabel'),ap=document.getElementById('v0462ActivePct'),bar=document.getElementById('v0460Bar');
+ const step=V0460_STEPS.find(s=>s[0]===id);
+ if(al)al.textContent=step?step[1]:'Aktuellt test';
+ if(ap)ap.textContent=total?`${index}/${total} · ${pct}%`:(id?'Pågår':'0%');
+ if(bar&&total)bar.style.width=`${pct}%`;
+ v0460Paint();
+}
+function v0462SuiteProgress(done){
+ const b=document.getElementById('v0462SuiteBar'),t=document.getElementById('v0462SuiteText');
+ if(b)b.style.width=`${done/7*100}%`;if(t)t.textContent=`${done}/7 tester klara`;
+}
+function v0462LoadPboCp(){
+ try{const x=JSON.parse(localStorage.getItem(V0462_PBO_CP_KEY)||'null');return x&&x.version==='V0.46.2'&&x.rulesHash===V0460_RULE_HASH?x:null}catch{return null}
+}
+function v0462SavePboCp(nextIndex,states){
+ const compact=states.map(s=>({id:s.id,name:s.name,close:s.close,eq:s.eq,monthly:s.monthly}));
+ const x={version:'V0.46.2',rulesHash:V0460_RULE_HASH,nextIndex,total:v0440Months().length,states:compact,savedAt:new Date().toISOString()};
+ localStorage.setItem(V0462_PBO_CP_KEY,JSON.stringify(x));
+ const e=document.getElementById('v0461Checkpoint');if(e)e.textContent=`Checkpoint: PBO ${nextIndex}/${x.total} · sparat ${new Date(x.savedAt).toLocaleTimeString('sv-SE')}`;
+}
+function v0462ClearPboCp(){try{localStorage.removeItem(V0462_PBO_CP_KEY)}catch{}}
+function v0462TestReport(id,r){
+ const s=V0460_STEPS.find(x=>x[0]===id),L=['LINAS OPTI – VALIDATION TEST','Version: '+APP_VERSION,'Test: '+(s?.[1]||id),'Status: '+(r?.status||'—'),'Regelhash: '+V0460_RULE_HASH,'Datafingerprint: '+(r?.dataFingerprint||v0460Load().base?.dataFingerprint||'—'),''];
+ if(r?.explain)L.push('Tolkning:',r.explain,'');
+ L.push('Mätvärden:',JSON.stringify(r?.metrics||{},null,2));
+ if(r?.reruns?.length){L.push('','KONTROLLKÖRNINGAR');r.reruns.forEach((q,i)=>L.push(`${i+1}. ${q.completedAt} | ${q.status} | ${q.explain||''}`))}
+ L.push('','Ingen parameter har ändrats av denna export.');
+ return L.join('\n');
+}
+function v0462ShowDetail(id){
+ const x=v0460Load(),r=x.steps[id],s=V0460_STEPS.find(q=>q[0]===id);V0462_DETAIL_ID=id;
+ const m=document.getElementById('v0462DetailModal'),title=document.getElementById('v0462DetailTitle'),body=document.getElementById('v0462DetailBody'),rerun=document.getElementById('v0462RerunTest');
+ if(title)title.textContent=s?.[1]||id;
+ if(body)body.innerHTML=r?`${v0462StatusMarkup(r.status)}<p>${r.explain||''}</p><pre style="white-space:pre-wrap">${JSON.stringify(r.metrics||{},null,2)}</pre>${r.reruns?.length?`<p><b>Kontrollkörningar:</b> ${r.reruns.length}</p>`:''}`:'<p>Testet är inte kört ännu.</p>';
+ if(rerun)rerun.disabled=!r||V0460_RUNNING||id==='final';
+ if(m)m.hidden=false;
+}
+async function v0462Rerun(id){
+ if(V0460_RUNNING)return;const x=v0460Load(),orig=x.steps[id];if(!orig)return;
+ if(id==='pbo')v0462ClearPboCp();
+ V0462_RERUN_MODE=true;V0460_RUNNING=true;V0461_PAUSED=false;V0461_CANCEL=false;v0461StartClock();v0461Buttons(true);document.body.classList.add('v0462-running');
+ const st=document.getElementById('v0460Status');try{
+   st.textContent='Kontrollkör '+(V0460_STEPS.find(s=>s[0]===id)?.[1]||id);
+   const r=await v0460Step(id,x),entry={...r,completedAt:new Date().toISOString(),rulesHash:V0460_RULE_HASH,dataFingerprint:x.base?.dataFingerprint};
+   orig.reruns=orig.reruns||[];orig.reruns.push(entry);v0460Save(x);
+   const same=orig.status===entry.status&&JSON.stringify(orig.metrics)===JSON.stringify(entry.metrics);
+   st.textContent=`✓ Kontrollkörning klar · ${same?'identiskt resultat':'RESULTATET SKILJER SIG – kontrollera reproducerbarhet'}`;v0461Log(`Kontrollkörning ${id} · ${entry.status} · ${same?'identisk':'avvikelse'}`);
+ }catch(e){st.textContent='Kontrollkörning stoppad: '+(e?.message||e)}finally{V0462_RERUN_MODE=false;V0460_RUNNING=false;v0461Buttons(false);v0461StopClock();document.body.classList.remove('v0462-running');v0462SetActive(null,0,0,'');v0460Paint();v0462ShowDetail(id)}
+}
 function v0460Help(k,extra=''){const x=V0460_HELP[k]||['Förklaring','Ingen hjälptext.'],m=document.getElementById('v0460HelpModal');document.getElementById('v0460HelpTitle').textContent=x[0];document.getElementById('v0460HelpBody').innerHTML=`<p>${x[1]}</p>${extra?`<p><b>Ditt resultat:</b> ${extra}</p>`:''}`;m.hidden=false}
-function v0460Paint(){const x=v0460Load(),tb=document.getElementById('v0460Steps'),bar=document.getElementById('v0460Bar'),done=V0460_STEPS.filter(s=>x.steps[s[0]]).length;if(tb)tb.innerHTML=V0460_STEPS.map((s,i)=>{const r=x.steps[s[0]],q=r?.status||'Ej körd';return `<tr><td>${i+1}/7</td><td>${s[1]}</td><td><b>${q}</b></td><td><button class="v0460-help" data-help="${s[0]}">?</button></td></tr>`}).join('');if(bar)bar.style.width=`${done/7*100}%`;const z=document.getElementById('v0460Result');if(z)z.innerHTML=`Regelhash <b>${V0460_RULE_HASH}</b> · ${done}/7 sparade${x.completed?' · <b>SVIT KLAR</b>':''}`;const st=document.getElementById('v0460Storage');if(st)st.textContent=`Lokal Safari-lagring · ${done}/7 test sparade`;
-const cp=v0461LoadBaseCp(),runAll=document.getElementById('v0460RunAll'),runNext=document.getElementById('v0460RunNext'),cpel=document.getElementById('v0461Checkpoint');
-if(cp){if(runAll)runAll.textContent=`▶ Fortsätt Validation Suite · basdata ${Math.min(cp.nextIndex+1,cp.total)}/${cp.total}`;if(runNext)runNext.textContent=`▶ Fortsätt nästa test · ${Math.min(cp.nextIndex+1,cp.total)}/${cp.total}`;if(cpel)cpel.textContent=`Checkpoint: ${cp.nextIndex}/${cp.total} månader · sparat ${new Date(cp.savedAt).toLocaleTimeString('sv-SE')}`;}
-else{if(runAll)runAll.textContent='▶ Kör hela Validation Suite';if(runNext)runNext.textContent='▶ Kör nästa test';if(cpel)cpel.textContent='Checkpoint: ingen pågående delkörning.';}['v0460FinalReport','v0460Raw'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=!x.completed});document.querySelectorAll('.v0460-help').forEach(b=>b.onclick=()=>v0460Help(b.dataset.help,x.steps[b.dataset.help]?.explain||''))}
+function v0460Paint(){
+ const x=v0460Load(),tb=document.getElementById('v0460Steps'),done=V0460_STEPS.filter(s=>x.steps[s[0]]).length;
+ v0462SuiteProgress(done);
+ if(tb)tb.innerHTML=V0460_STEPS.map((s,i)=>{
+   const r=x.steps[s[0]],isRun=V0460_RUNNING&&V0462_ACTIVE.id===s[0],progress=isRun&&V0462_ACTIVE.total?`${V0462_ACTIVE.index}/${V0462_ACTIVE.total}`:'';
+   const stat=isRun?v0462StatusMarkup('PÅGÅR',progress):v0462StatusMarkup(r?.status||'');
+   return `<tr><td>${i+1}/7</td><td>${r?`<button class="v0462-rowbtn" data-detail="${s[0]}">${s[1]}</button>`:s[1]}</td><td>${stat}</td><td><button class="v0460-help" data-help="${s[0]}">?</button></td></tr>`
+ }).join('');
+ const z=document.getElementById('v0460Result');if(z)z.innerHTML=`Regelhash <b>${V0460_RULE_HASH}</b> · ${done}/7 sparade${x.completed?' · <b>SVIT KLAR</b>':''}`;
+ const st=document.getElementById('v0460Storage');if(st)st.textContent=`Lokal Safari-lagring · ${done}/7 test sparade`;
+ const bcp=v0461LoadBaseCp(),pcp=v0462LoadPboCp(),runAll=document.getElementById('v0460RunAll'),runNext=document.getElementById('v0460RunNext'),cpel=document.getElementById('v0461Checkpoint');
+ if(!V0460_RUNNING){
+   if(bcp){if(runAll)runAll.textContent=`▶ Fortsätt Validation Suite · basdata ${Math.min(bcp.nextIndex+1,bcp.total)}/${bcp.total}`;if(runNext)runNext.textContent='▶ Fortsätt nästa test';if(cpel)cpel.textContent=`Checkpoint: basdata ${bcp.nextIndex}/${bcp.total} · ${new Date(bcp.savedAt).toLocaleTimeString('sv-SE')}`}
+   else if(pcp){if(runAll)runAll.textContent=`▶ Fortsätt Validation Suite · PBO ${Math.min(pcp.nextIndex+1,pcp.total)}/${pcp.total}`;if(runNext)runNext.textContent=`▶ Fortsätt PBO · ${Math.min(pcp.nextIndex+1,pcp.total)}/${pcp.total}`;if(cpel)cpel.textContent=`Checkpoint: PBO ${pcp.nextIndex}/${pcp.total} · ${new Date(pcp.savedAt).toLocaleTimeString('sv-SE')}`}
+   else{if(runAll)runAll.textContent='▶ Kör hela Validation Suite';if(runNext)runNext.textContent='▶ Kör nästa test';if(cpel)cpel.textContent='Checkpoint: ingen pågående delkörning.'}
+ }
+ ['v0460FinalReport','v0460Raw'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=!x.completed});
+ document.querySelectorAll('.v0460-help').forEach(b=>b.onclick=()=>v0460Help(b.dataset.help,x.steps[b.dataset.help]?.explain||''));
+ document.querySelectorAll('.v0462-rowbtn').forEach(b=>b.onclick=()=>v0462ShowDetail(b.dataset.detail));
+}
 function v0460Stats(c){const w=c.filter(t=>t.pnl>0),l=c.filter(t=>t.pnl<0),gw=w.reduce((a,t)=>a+t.pnl,0),gl=Math.abs(l.reduce((a,t)=>a+t.pnl,0));return{n:c.length,pnl:c.reduce((a,t)=>a+t.pnl,0),pf:gl?gw/gl:(gw?Infinity:0),wr:c.length?w.length/c.length:0}}
 
-const V0461_BASE_CP_KEY='linasopti_validation_base_checkpoint_v0461';
-const V0461_RUN_KEY='linasopti_validation_run_state_v0461';
+const V0461_BASE_CP_KEY='linasopti_validation_base_checkpoint_v0462';
+const V0461_RUN_KEY='linasopti_validation_run_state_v0462';
 let V0461_PAUSED=false,V0461_CANCEL=false,V0461_TIMER=null,V0461_STARTED=0;
 function v0461Now(){return new Date().toLocaleTimeString('sv-SE')}
 function v0461Log(msg){
@@ -2486,14 +2581,19 @@ function v0461StartClock(){
 function v0461StopClock(){clearInterval(V0461_TIMER);V0461_TIMER=null;const p=document.getElementById('v0461Pulse');if(p)p.classList.remove('active')}
 function v0461Buttons(running){
  const p=document.getElementById('v0461Pause'),r=document.getElementById('v0461Resume'),c=document.getElementById('v0461Cancel');
- if(p)p.disabled=!running||V0461_PAUSED;if(r)r.disabled=!running||!V0461_PAUSED;if(c)c.disabled=!running;
+ if(!p||!r||!c)return;
+ if(!running){p.hidden=r.hidden=c.hidden=true;return}
+ c.hidden=false;
+ if(V0461_PAUSED){p.hidden=true;r.hidden=false}
+ else{p.hidden=false;r.hidden=true}
+ p.disabled=false;r.disabled=false;c.disabled=false;
 }
 async function v0461WaitIfPaused(){
  while(V0461_PAUSED&&!V0461_CANCEL){v0461Live('Pausad · checkpoint sparad',false);await new Promise(r=>setTimeout(r,300))}
  if(V0461_CANCEL)throw new Error('Avbruten av användaren');
 }
 function v0461LoadBaseCp(){
- try{const x=JSON.parse(localStorage.getItem(V0461_BASE_CP_KEY)||'null');return x&&x.version==='V0.46.1'&&x.rulesHash===V0460_RULE_HASH?x:null}catch{return null}
+ try{const x=JSON.parse(localStorage.getItem(V0461_BASE_CP_KEY)||'null');return x&&x.version==='V0.46.2'&&x.rulesHash===V0460_RULE_HASH?x:null}catch{return null}
 }
 function v0461SaveBaseCp(cp){
  cp.savedAt=new Date().toISOString();localStorage.setItem(V0461_BASE_CP_KEY,JSON.stringify(cp));
@@ -2524,7 +2624,7 @@ async function v0460Base(st){
  for(let i=start;i<M.length;i++){
    await v0461WaitIfPaused();
    const w=M[i];
-   st.textContent=`Basdata ${i+1}/${M.length} · ${w.label}`;
+   st.textContent=`Basdata ${i+1}/${M.length} · ${w.label}`;v0462SetActive('integrity',i,M.length,w.label);
    v0461Live(`Arbetar · basdata ${i+1}/${M.length} · ${w.label}`);
    if(sub)sub.textContent=`Aktiv del: basdata · månad ${i+1}/${M.length} · ${Math.round(i/M.length*100)}% klar före denna månad`;
    if(bar)bar.style.width=`${i/M.length*100}%`;
@@ -2536,8 +2636,8 @@ async function v0460Base(st){
    state.monthly.push({label:w.label,ret:state.eq/before-1,trades:r.closed.length});
    state.meta.push({label:w.label,rows:rows.length,duplicates:dup.size,order});
    state.hash.push(`${w.label}:${rows.length}:${rows[0]?.t}:${rows.at(-1)?.t}`);
-   v0461SaveBaseCp({version:'V0.46.1',rulesHash:V0460_RULE_HASH,nextIndex:i+1,total:M.length,state});
-   v0461Log(`${w.label} klar · ${rows.length.toLocaleString('sv-SE')} rader · checkpoint ${i+1}/${M.length}`);
+   v0461SaveBaseCp({version:'V0.46.2',rulesHash:V0460_RULE_HASH,nextIndex:i+1,total:M.length,state});
+   v0461Log(`BASDATA · ${w.label} klar · ${rows.length.toLocaleString('sv-SE')} rader · ${i+1}/${M.length}`);v0462SetActive('integrity',i+1,M.length,w.label);
    if(bar)bar.style.width=`${(i+1)/M.length*100}%`;
    if(sub)sub.textContent=`Basdata ${i+1}/${M.length} klar · nästa ${i+2<=M.length?M[i+1].label:'—'}`;
    await new Promise(r=>setTimeout(r,20));
@@ -2550,22 +2650,42 @@ function v0460Rng(seed){let x=seed>>>0;return()=>{x=(Math.imul(1664525,x)+101390
 function v0460Q(a,p){const b=[...a].sort((x,y)=>x-y);return b[Math.floor((b.length-1)*p)]}
 async function v0460Step(id,x){const st=document.getElementById('v0460Status');if(!x.base&&id!=='final'){x.base=await v0460Base(st);v0460Save(x);v0460CountSims('base83-months',x.base.monthly.length)}const b=x.base;
 if(id==='integrity'){const d=b.meta.reduce((a,z)=>a+z.duplicates,0),o=b.meta.reduce((a,z)=>a+z.order,0),same=JSON.stringify(v0460Stats(b.closed))===JSON.stringify(v0460Stats(b.closed)),status=d===0&&o===0&&same?'PASS':'FAIL';return{status,metrics:{duplicates:d,order:o,reproducible:same,dataFingerprint:b.dataFingerprint},explain:`Dubbletter ${d}, tidsordningsfel ${o}, reproducerbar ${same?'ja':'nej'}. Motorn använder signalbar och entry på nästa bars open.`}}
-if(id==='pbo'){const states=V04514_VARIANTS.map(v=>({id:v.id,name:v.name,close:v.close,eq:100000,monthly:[],closed:[]})),M=v0440Months();for(let i=0;i<M.length;i++){const w=M[i];st.textContent=`PBO ${i+1}/${M.length} · ${w.label}`;const rows=(await v0440FetchMonth(w,st)).rows||[];for(const s of states){const q=s.eq,r=v04511Engine(rows,s.eq,s.close);s.eq=r.eq;s.monthly.push({label:w.label,ret:s.eq/q-1});s.closed.push(...r.closed)}}const a=v04514Analyze(states),p=a.cscv.pbo,d=a.dsr.dsr,status=p<=.2&&d>=.95?'PASS':p<=.5&&d>=.8?'VARNING':'FAIL';v0460CountSims('pbo-close-family',states.reduce((q,s)=>q+s.monthly.length,0));return{status,metrics:{pbo:p,dsr:d,combos:a.cscv.combos},explain:`PBO ${(p*100).toFixed(1)}%, DSR ${(d*100).toFixed(1)}%. Gäller endast close-familjen.`}}
-if(id==='time'){const y={};b.monthly.forEach(m=>(y[m.label.slice(0,4)]??=[]).push(m));const years=Object.entries(y).map(([year,a])=>({year,ret:a.reduce((q,z)=>q*(1+z.ret),1)-1,trades:a.reduce((q,z)=>q+z.trades,0)})),pos=years.filter(z=>z.ret>0).length,min=Math.min(...years.map(z=>z.trades)),status=pos>=3&&min>=50?'PASS':pos>=2&&min>=30?'VARNING':'FAIL';return{status,metrics:{years},explain:`${pos}/${years.length} positiva år; minsta årsblock ${min} affärer.`}}
-if(id==='friction'){const not=t=>Math.abs((t.shares||0)*(t.entry||0)),levels=[1,1.5,2].map(mult=>{const c=b.closed.map(t=>({...t,pnl:t.pnl-not(t)*2*V0460_RULES.costSide*(mult-1)}));return{mult,...v0460Stats(c)}}),z=levels.at(-1),status=z.pf>=1?'PASS':z.pf>=.95?'VARNING':'FAIL';return{status,metrics:{levels},explain:`Vid 2× friktion PF ${Number.isFinite(z.pf)?z.pf.toFixed(2):'∞'}, P/L ${z.pnl.toFixed(0)} kr.`}}
-if(id==='concentration'){const s={};b.closed.forEach(t=>s[t.symbol]=(s[t.symbol]||0)+t.pnl);const arr=Object.entries(s).sort((a,z)=>z[1]-a[1]),gross=b.closed.filter(t=>t.pnl>0).reduce((a,t)=>a+t.pnl,0)||1,share=Math.max(0,arr[0]?.[1]||0)/gross,status=share<=.35?'PASS':share<=.5?'VARNING':'FAIL';return{status,metrics:{symbols:arr,bestShare:share},explain:`Största positiva symbolbidrag ${arr[0]?.[0]||'—'}: ${Math.round(share*100)}% av bruttovinsten.`}}
-if(id==='monte'){const pnl=b.closed.map(t=>t.pnl),rng=v0460Rng(parseInt(V0460_RULE_HASH,16)),dds=[],ends=[];for(let k=0;k<2000;k++){const a=[...pnl];for(let i=a.length-1;i;i--){const j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]]}let eq=100000,pk=eq,dd=0;a.forEach(p=>{eq+=p;pk=Math.max(pk,eq);dd=Math.min(dd,eq/pk-1)});ends.push(eq);dds.push(dd)}const d=v0460Q(dds,.05),status=d>=-.15?'PASS':d>=-.25?'VARNING':'FAIL';v0460CountSims('monte-carlo-permutations',2000);return{status,metrics:{runs:2000,finalP05:v0460Q(ends,.05),ddWorst5:d},explain:`2 000 körningar; 5:e percentil slut ${v0460Q(ends,.05).toFixed(0)} kr, drawdown ${(d*100).toFixed(1)}%.`}}
-if(id==='final'){const a=V0460_STEPS.slice(0,6).map(s=>x.steps[s[0]]?.status),f=a.filter(z=>z==='FAIL').length,w=a.filter(z=>z==='VARNING').length,p=a.filter(z=>z==='PASS').length;return{status:f?'FAIL':w?'VARNING':'PASS',metrics:{passes:p,warnings:w,fails:f},explain:`${p} PASS, ${w} VARNING, ${f} FAIL. Ingen automatisk optimering.`}}}
+if(id==='pbo'){
+ const M=v0440Months(),saved=V0462_RERUN_MODE?null:v0462LoadPboCp();
+ let states=saved?saved.states:V04514_VARIANTS.map(v=>({id:v.id,name:v.name,close:v.close,eq:100000,monthly:[]}));
+ let start=saved?Math.max(0,Math.min(M.length,saved.nextIndex)):0;
+ if(saved&&start>0)v0461Log(`PBO · fortsätter från ${start+1}/${M.length}`);
+ for(let i=start;i<M.length;i++){
+   await v0461WaitIfPaused();const w=M[i];
+   st.textContent=`PBO ${i+1}/${M.length} · ${w.label}`;v0462SetActive('pbo',i,M.length,w.label);
+   v0461Live(`Arbetar · PBO/DSR · ${i+1}/${M.length} · ${w.label}`);
+   const sub=document.getElementById('v0461SubProgress');if(sub)sub.textContent=`PBO/DSR · månad ${i+1}/${M.length} · ${Math.round(i/M.length*100)}% klar före denna månad`;
+   const rows=(await v0461FetchRetry(w,st)).rows||[];if(!rows.length)throw Error('Ingen data '+w.label);
+   for(const s of states){const q=s.eq,r=v04511Engine(rows,s.eq,s.close);s.eq=r.eq;s.monthly.push({label:w.label,ret:s.eq/q-1})}
+   if(!V0462_RERUN_MODE)v0462SavePboCp(i+1,states);
+   v0461Log(`PBO · ${w.label} klar · ${i+1}/${M.length}`);
+   v0462SetActive('pbo',i+1,M.length,w.label);
+   await new Promise(r=>setTimeout(r,20));
+ }
+ const a=v04514Analyze(states),p=a.cscv.pbo,d=a.dsr.dsr,status=p<=.2&&d>=.95?'PASS':p<=.5&&d>=.8?'VARNING':'FAIL';
+ if(!V0462_RERUN_MODE){v0462ClearPboCp();v0460CountSims('pbo-close-family',states.reduce((q,s)=>q+s.monthly.length,0))}
+ return{status,metrics:{pbo:p,dsr:d,combos:a.cscv.combos},explain:`PBO ${(p*100).toFixed(1)}%, DSR ${(d*100).toFixed(1)}%. Gäller endast close-familjen.`}
+}
+if(id==='time'){v0462SetActive('time',0,1,'beräknar');const y={};b.monthly.forEach(m=>(y[m.label.slice(0,4)]??=[]).push(m));const years=Object.entries(y).map(([year,a])=>({year,ret:a.reduce((q,z)=>q*(1+z.ret),1)-1,trades:a.reduce((q,z)=>q+z.trades,0)})),pos=years.filter(z=>z.ret>0).length,min=Math.min(...years.map(z=>z.trades)),status=pos>=3&&min>=50?'PASS':pos>=2&&min>=30?'VARNING':'FAIL';return{status,metrics:{years},explain:`${pos}/${years.length} positiva år; minsta årsblock ${min} affärer.`}}
+if(id==='friction'){v0462SetActive('friction',0,1,'beräknar');const not=t=>Math.abs((t.shares||0)*(t.entry||0)),levels=[1,1.5,2].map(mult=>{const c=b.closed.map(t=>({...t,pnl:t.pnl-not(t)*2*V0460_RULES.costSide*(mult-1)}));return{mult,...v0460Stats(c)}}),z=levels.at(-1),status=z.pf>=1?'PASS':z.pf>=.95?'VARNING':'FAIL';return{status,metrics:{levels},explain:`Vid 2× friktion PF ${Number.isFinite(z.pf)?z.pf.toFixed(2):'∞'}, P/L ${z.pnl.toFixed(0)} kr.`}}
+if(id==='concentration'){v0462SetActive('concentration',0,1,'beräknar');const s={};b.closed.forEach(t=>s[t.symbol]=(s[t.symbol]||0)+t.pnl);const arr=Object.entries(s).sort((a,z)=>z[1]-a[1]),gross=b.closed.filter(t=>t.pnl>0).reduce((a,t)=>a+t.pnl,0)||1,share=Math.max(0,arr[0]?.[1]||0)/gross,status=share<=.35?'PASS':share<=.5?'VARNING':'FAIL';return{status,metrics:{symbols:arr,bestShare:share},explain:`Största positiva symbolbidrag ${arr[0]?.[0]||'—'}: ${Math.round(share*100)}% av bruttovinsten.`}}
+if(id==='monte'){v0462SetActive('monte',0,2000,'simulationer');const pnl=b.closed.map(t=>t.pnl),rng=v0460Rng(parseInt(V0460_RULE_HASH,16)),dds=[],ends=[];for(let k=0;k<2000;k++){if(k%100===0){v0462SetActive('monte',k,2000,'simulationer');v0461Live(`Arbetar · Monte Carlo ${k}/2000`);await new Promise(r=>setTimeout(r,0))}const a=[...pnl];for(let i=a.length-1;i;i--){const j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]]}let eq=100000,pk=eq,dd=0;a.forEach(p=>{eq+=p;pk=Math.max(pk,eq);dd=Math.min(dd,eq/pk-1)});ends.push(eq);dds.push(dd)}const d=v0460Q(dds,.05),status=d>=-.15?'PASS':d>=-.25?'VARNING':'FAIL';v0460CountSims('monte-carlo-permutations',2000);return{status,metrics:{runs:2000,finalP05:v0460Q(ends,.05),ddWorst5:d},explain:`2 000 körningar; 5:e percentil slut ${v0460Q(ends,.05).toFixed(0)} kr, drawdown ${(d*100).toFixed(1)}%.`}}
+if(id==='final'){v0462SetActive('final',0,1,'sammanställer');const a=V0460_STEPS.slice(0,6).map(s=>x.steps[s[0]]?.status),f=a.filter(z=>z==='FAIL').length,w=a.filter(z=>z==='VARNING').length,p=a.filter(z=>z==='PASS').length;return{status:f?'FAIL':w?'VARNING':'PASS',metrics:{passes:p,warnings:w,fails:f},explain:`${p} PASS, ${w} VARNING, ${f} FAIL. Ingen automatisk optimering.`}}}
 
 let V0460_RUNNING=false;
 async function v0460Run(all){
- if(V0460_RUNNING)return;V0460_RUNNING=true;V0461_PAUSED=false;V0461_CANCEL=false;v0461StartClock();v0461Buttons(true);
+ if(V0460_RUNNING)return;V0460_RUNNING=true;V0461_PAUSED=false;V0461_CANCEL=false;document.body.classList.add('v0462-running');v0461StartClock();v0461Buttons(true);
  const A=document.getElementById('v0460RunAll'),N=document.getElementById('v0460RunNext'),st=document.getElementById('v0460Status');A.disabled=N.disabled=true;
  try{
    let x=v0460Load();
    do{
      await v0461WaitIfPaused();
-     const s=V0460_STEPS.find(q=>!x.steps[q[0]]);if(!s)break;
+     const s=V0460_STEPS.find(q=>!x.steps[q[0]]);if(!s)break;v0462SetActive(s[0],0,0,'');
      st.textContent='Kör '+s[1];v0461Live(`Arbetar · ${s[1]}`);v0461Log(`Startar ${s[1]}`);
      const r=await v0460Step(s[0],x);
      x.steps[s[0]]={...r,completedAt:new Date().toISOString(),rulesHash:V0460_RULE_HASH,dataFingerprint:x.base?.dataFingerprint};
@@ -2581,17 +2701,19 @@ async function v0460Run(all){
    if(msg==='Avbruten av användaren'){st.textContent='Avbruten · senaste checkpoint är sparad.';v0461Live('Avbruten',false)}
    else{st.textContent='Pausad efter fel: '+msg+' · fortsätt från senaste checkpoint.';v0461Live('Fel · checkpoint sparad',false);v0461Log('Körfel: '+msg)}
  }finally{
-   V0460_RUNNING=false;A.disabled=N.disabled=false;v0461Buttons(false);v0461StopClock();v0460Paint();
+   V0460_RUNNING=false;A.disabled=N.disabled=false;v0461Buttons(false);v0461StopClock();document.body.classList.remove('v0462-running');v0462SetActive(null,0,0,'');v0460Paint();
  }
 }
 function v0460Report(){const x=v0460Load(),L=['LINAS OPTI – VALIDATION SUITE','Version: '+APP_VERSION,'Handel: AVSTÄNGD','Regelhash: '+V0460_RULE_HASH,'Datafingerprint: '+(x.base?.dataFingerprint||'—'),'Close >=83% fryst kandidat',''];V0460_STEPS.forEach((s,i)=>{const r=x.steps[s[0]];L.push(`${i+1}. ${s[1]} | ${r?.status||'Ej körd'}`);if(r?.explain)L.push('   '+r.explain)});L.push('','Ingen automatisk parameteroptimering har startats. PASS är inte garanti för framtida avkastning.');return L.join('\n')}
 function v0460Dl(text,name,type='text/plain'){const b=new Blob([text],{type}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),500)}
-function v0460Backup(){const x={backupSchema:V0460_BACKUP_SCHEMA,appVersion:APP_VERSION,exportedAt:new Date().toISOString(),validation:v0460Load(),simulations:v0413GetSims(),validationSimLedger:JSON.parse(localStorage.getItem(V0460_SIM_LEDGER_KEY)||'{}'),baseCheckpoint:v0461LoadBaseCp()};v0460Dl(JSON.stringify(x,null,2),`LINAS_OPTI_BACKUP_V0461_${new Date().toISOString().slice(0,10)}.json`,'application/json')}
-async function v0460Restore(f){const st=document.getElementById('v0460Status');try{const x=JSON.parse(await f.text());if(x.backupSchema!==V0460_BACKUP_SCHEMA||x.validation?.rulesHash!==V0460_RULE_HASH)throw Error('Fel backup eller regelgeneration');localStorage.setItem(V0460_KEY,JSON.stringify(x.validation));if(x.validationSimLedger)localStorage.setItem(V0460_SIM_LEDGER_KEY,JSON.stringify(x.validationSimLedger));if(x.baseCheckpoint)localStorage.setItem(V0461_BASE_CP_KEY,JSON.stringify(x.baseCheckpoint));if(Number.isFinite(x.simulations))localStorage.setItem(V0413_SIM_KEY,String(Math.max(v0413GetSims(),x.simulations)));st.textContent='✓ Backup återställd';v0460Paint()}catch(e){st.textContent='Återställning misslyckades: '+e.message}}
-window.addEventListener('DOMContentLoaded',()=>{document.getElementById('v0460RunAll')?.addEventListener('click',()=>v0460Run(true));document.getElementById('v0460RunNext')?.addEventListener('click',()=>v0460Run(false));document.getElementById('v0460FinalReport')?.addEventListener('click',()=>v0460Dl(v0460Report(),`LINAS_OPTI_VALIDATION_SUITE_V0461_${new Date().toISOString().slice(0,10)}.txt`));document.getElementById('v0460Raw')?.addEventListener('click',()=>v0460Dl(JSON.stringify(v0460Load(),null,2),`LINAS_OPTI_VALIDATION_RAW_V0461_${new Date().toISOString().slice(0,10)}.json`,'application/json'));document.getElementById('v0460Backup')?.addEventListener('click',v0460Backup);
+function v0460Backup(){const x={backupSchema:V0460_BACKUP_SCHEMA,appVersion:APP_VERSION,exportedAt:new Date().toISOString(),validation:v0460Load(),simulations:v0413GetSims(),validationSimLedger:JSON.parse(localStorage.getItem(V0460_SIM_LEDGER_KEY)||'{}'),baseCheckpoint:v0461LoadBaseCp(),pboCheckpoint:v0462LoadPboCp()};v0460Dl(JSON.stringify(x,null,2),`LINAS_OPTI_BACKUP_V0462_${new Date().toISOString().slice(0,10)}.json`,'application/json')}
+async function v0460Restore(f){const st=document.getElementById('v0460Status');try{const x=JSON.parse(await f.text());if(x.backupSchema!==V0460_BACKUP_SCHEMA||x.validation?.rulesHash!==V0460_RULE_HASH)throw Error('Fel backup eller regelgeneration');localStorage.setItem(V0460_KEY,JSON.stringify(x.validation));if(x.validationSimLedger)localStorage.setItem(V0460_SIM_LEDGER_KEY,JSON.stringify(x.validationSimLedger));if(x.baseCheckpoint)localStorage.setItem(V0461_BASE_CP_KEY,JSON.stringify(x.baseCheckpoint));if(x.pboCheckpoint)localStorage.setItem(V0462_PBO_CP_KEY,JSON.stringify(x.pboCheckpoint));if(Number.isFinite(x.simulations))localStorage.setItem(V0413_SIM_KEY,String(Math.max(v0413GetSims(),x.simulations)));st.textContent='✓ Backup återställd';v0460Paint()}catch(e){st.textContent='Återställning misslyckades: '+e.message}}
+window.addEventListener('DOMContentLoaded',()=>{document.getElementById('v0460RunAll')?.addEventListener('click',()=>v0460Run(true));document.getElementById('v0460RunNext')?.addEventListener('click',()=>v0460Run(false));document.getElementById('v0460FinalReport')?.addEventListener('click',()=>v0460Dl(v0460Report(),`LINAS_OPTI_VALIDATION_SUITE_V0462_${new Date().toISOString().slice(0,10)}.txt`));document.getElementById('v0460Raw')?.addEventListener('click',()=>v0460Dl(JSON.stringify(v0460Load(),null,2),`LINAS_OPTI_VALIDATION_RAW_V0462_${new Date().toISOString().slice(0,10)}.json`,'application/json'));document.getElementById('v0460Backup')?.addEventListener('click',v0460Backup);
 document.getElementById('v0461Pause')?.addEventListener('click',()=>{if(!V0460_RUNNING)return;V0461_PAUSED=true;v0461Buttons(true);v0461Log('Paus begärd')});
 document.getElementById('v0461Resume')?.addEventListener('click',()=>{if(!V0460_RUNNING)return;V0461_PAUSED=false;v0461Buttons(true);v0461Live('Fortsätter…');v0461Log('Körning fortsätter')});
-document.getElementById('v0461Cancel')?.addEventListener('click',()=>{if(!V0460_RUNNING)return;V0461_CANCEL=true;V0461_PAUSED=false;v0461Log('Avbrott begärt')});document.getElementById('v0460Restore')?.addEventListener('change',e=>{if(e.target.files?.[0])v0460Restore(e.target.files[0]);e.target.value=''});document.getElementById('v0460HelpClose')?.addEventListener('click',()=>document.getElementById('v0460HelpModal').hidden=true);v0460Paint();const j=document.getElementById('v0413LabJump');if(j){j.value='v0460Lab';try{localStorage.setItem('linasopti_testlab_selected_v0423','v0460Lab')}catch{}j.dispatchEvent(new Event('change'))}});
+document.getElementById('v0461Cancel')?.addEventListener('click',()=>{if(!V0460_RUNNING)return;V0461_CANCEL=true;V0461_PAUSED=false;v0461Log('Avbrott begärt')});document.getElementById('v0460Restore')?.addEventListener('change',e=>{if(e.target.files?.[0])v0460Restore(e.target.files[0]);e.target.value=''});document.getElementById('v0460HelpClose')?.addEventListener('click',()=>document.getElementById('v0460HelpModal').hidden=true);document.getElementById('v0462DetailClose')?.addEventListener('click',()=>document.getElementById('v0462DetailModal').hidden=true);
+document.getElementById('v0462ExportTest')?.addEventListener('click',()=>{if(!V0462_DETAIL_ID)return;const x=v0460Load(),r=x.steps[V0462_DETAIL_ID];if(!r)return;v0460Dl(v0462TestReport(V0462_DETAIL_ID,r),`LINAS_OPTI_TEST_${V0462_DETAIL_ID.toUpperCase()}_V0462_${new Date().toISOString().slice(0,10)}.txt`)});
+document.getElementById('v0462RerunTest')?.addEventListener('click',()=>{if(!V0462_DETAIL_ID)return;document.getElementById('v0462DetailModal').hidden=true;v0462Rerun(V0462_DETAIL_ID)});document.getElementById('v0462DetailModal')?.addEventListener('click',e=>{if(e.target.id==='v0462DetailModal')e.currentTarget.hidden=true});v0460Paint();const j=document.getElementById('v0413LabJump');if(j){j.value='v0460Lab';try{localStorage.setItem('linasopti_testlab_selected_v0423','v0460Lab')}catch{}j.dispatchEvent(new Event('change'))}});
 
 // ============================================================
 // V0.45.14 – ROBUSTNESS LAB 1 · PBO / DSR

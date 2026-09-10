@@ -1051,3 +1051,25 @@ html[data-research-mode="testlab"] #v0424TesterNav{display:none!important}
 @keyframes v0461pulse{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
 .v0461-log{margin-top:8px;padding:8px 10px;border-radius:10px;background:rgba(128,128,128,.08);font-size:.85rem;max-height:130px;overflow:auto}
 .v0461-log div{padding:2px 0}
+
+/* V0.46.2 UX + test progress */
+.v0462-progressblock{margin:10px 0}
+.v0462-progresshead{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:4px}
+.v0462-suiteblock{opacity:.92}
+.v0462-suitebar{height:7px}
+.v0462-activebar{height:10px}
+.v0462-status{white-space:nowrap;font-weight:800}
+.v0462-pass{font-weight:900}
+.v0462-warning{font-weight:900}
+.v0462-fail{font-weight:900}
+.v0462-running{font-weight:900}
+.v0462-muted{opacity:.68}
+.v0462-rowbtn{border:0;background:transparent;text-decoration:underline;cursor:pointer;font:inherit;padding:2px 0}
+.v0462-detailactions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.v0462-detailactions button{flex:1 1 180px}
+body.v0462-running #v0460RunAll,body.v0462-running #v0460RunNext{display:none}
+body.v0462-running .v0460-lock{padding:6px 10px;margin:4px 0;font-size:.86rem}
+@media(max-width:700px){
+ body.v0462-running .v0460-lock{display:none}
+ .v0462-progressblock{margin:7px 0}
+}

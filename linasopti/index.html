@@ -9,14 +9,14 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.46.1">
+<link rel="stylesheet" href="linasopti.css?v=0.46.2">
 </head>
 <body class="v0384-locked">
 
 <div id="v0383Gate" class="v0383-gate" aria-hidden="false">
   <div class="v0383-gate-card">
     <h1>Linas Opti</h1>
-    <div class="v04512-gate-version" aria-label="Version">V0.46.1</div>
+    <div class="v04512-gate-version" aria-label="Version">V0.46.2</div>
     <p>Ange lösenkod för att fortsätta</p>
     <input id="v0383Code" type="password" inputmode="text" autocomplete="off" placeholder="Lösenkod">
     <button id="v0383Enter" type="button">Öppna Linas Opti</button>
@@ -27,7 +27,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.46.1</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.46.2</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">48/100</b><small>Forskningsfas</small></button>
@@ -360,15 +360,25 @@
 <div class="v0460-lock">🔒 Forskningsläge låst · Close ≥83% fryst kandidat · Handel AV</div>
 <button id="v0460RunAll" class="primary v0410-big">▶ Kör hela Validation Suite</button>
 <button id="v0460RunNext" class="secondary">▶ Kör nästa test</button>
-<div class="v0461-controls">
-  <button id="v0461Pause" class="secondary" disabled>⏸ Pausa</button>
-  <button id="v0461Resume" class="secondary" disabled>▶ Fortsätt</button>
-  <button id="v0461Cancel" class="secondary" disabled>■ Avbryt</button>
+<div id="v0462RunControls" class="v0461-controls">
+  <button id="v0461Pause" class="secondary" hidden>⏸ Pausa</button>
+  <button id="v0461Resume" class="secondary" hidden>▶ Fortsätt</button>
+  <button id="v0461Cancel" class="secondary" hidden>■ Avbryt</button>
 </div>
 <div id="v0460Status" class="v0410-status v0424-runstatus">Redo · alla tester är förregistrerade.</div>
 <div id="v0461Live" class="v0461-live"><span id="v0461Pulse" class="v0461-pulse"></span><b id="v0461LiveText">Väntar</b><span id="v0461Elapsed">00:00</span></div>
-<div class="v0410-progress"><div id="v0460Bar"></div></div>
-<div id="v0461SubProgress" class="muted">Ingen aktiv delkörning.</div>
+
+<div class="v0462-progressblock">
+  <div class="v0462-progresshead"><b id="v0462ActiveLabel">Aktuellt test</b><span id="v0462ActivePct">0%</span></div>
+  <div class="v0410-progress v0462-activebar"><div id="v0460Bar"></div></div>
+  <div id="v0461SubProgress" class="muted">Ingen aktiv delkörning.</div>
+</div>
+
+<div class="v0462-progressblock v0462-suiteblock">
+  <div class="v0462-progresshead"><b>Hela Validation Suite</b><span id="v0462SuiteText">0/7 tester klara</span></div>
+  <div class="v0410-progress v0462-suitebar"><div id="v0462SuiteBar"></div></div>
+</div>
+
 <div id="v0460Storage" class="muted">Lagring kontrolleras…</div>
 <div id="v0461Checkpoint" class="muted">Checkpoint: ingen ännu.</div>
 <div id="v0461Log" class="v0461-log"></div>
@@ -378,6 +388,15 @@
 <p class="muted">Varje färdigt steg sparas på telefonen. Vid avbrott fortsätter Lina från nästa ofärdiga steg. Exportera backup till Filer/iCloud efter viktiga körningar.</p>
 </div>
 <div id="v0460HelpModal" class="v0460-modal" hidden><div class="v0460-modalbox"><button id="v0460HelpClose" class="v0460-close">×</button><h3 id="v0460HelpTitle"></h3><div id="v0460HelpBody"></div></div></div>
+<div id="v0462DetailModal" class="v0460-modal" hidden><div class="v0460-modalbox">
+<button id="v0462DetailClose" class="v0460-close">×</button>
+<h3 id="v0462DetailTitle">Testresultat</h3>
+<div id="v0462DetailBody"></div>
+<div class="v0462-detailactions">
+<button id="v0462ExportTest" class="secondary">📄 Exportera detta test</button>
+<button id="v0462RerunTest" class="secondary">↻ Kontrollkör igen</button>
+</div>
+</div></div>
 
 <div id="v04514Lab" class="card v0410-lab v0413-lab-section vlab-v04514Lab">
   <div class="v0410-labtitle"><span class="v0410-flask">🛡️</span><div><h2>Robustness Lab 1 · PBO / DSR</h2></div></div>
@@ -680,5 +699,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.46.1"></script>
+<script src="linasopti.js?v=0.46.2"></script>
 </body></html>
