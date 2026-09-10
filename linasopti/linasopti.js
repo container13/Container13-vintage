@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.47.0";
+const APP_VERSION = "V0.48.0";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -3174,4 +3174,152 @@ window.addEventListener('DOMContentLoaded',()=>{
  document.getElementById('v0470BDetailModal')?.addEventListener('click',e=>{if(e.target.id==='v0470BDetailModal')e.currentTarget.hidden=true});
  v0470BPaint();
  const jump=document.getElementById('v0413LabJump');if(jump&&[...jump.options].some(o=>o.value==='v0470Lab')){jump.value='v0470Lab';try{localStorage.setItem('linasopti_testlab_selected_v0423','v0470Lab')}catch{}jump.dispatchEvent(new Event('change'))}
+});
+
+
+// ============================================================
+// V0.48.0 – VALIDATION SUITES C / D / E
+// 30 fast local diagnostics using saved Suite A trades.
+// Reused history: diagnostic only, never fresh OOS evidence.
+// ============================================================
+const V0480_DEFS={
+ C:{
+  name:'Tidsstruktur', key:'linasopti_validation_suite_c_v0480',
+  tests:[
+   ['monthpos','Positiva månader'],['quarter','Kvartalsstabilitet'],['roll3','Rullande 3 månader'],
+   ['roll9','Rullande 9 månader'],['halfyear','Halvårsstabilitet'],['entry15','Entry 15-minutersfönster'],
+   ['weekdaytime','Veckodag × tid'],['duration','Affärslängd'],['exityear','Exit-orsak × år'],['earlylate','Tidig vs sen historik']
+  ]
+ },
+ D:{
+  name:'Bredd & beroenden', key:'linasopti_validation_suite_d_v0480',
+  tests:[
+   ['symbreadth','Positiva symboler'],['sympf','PF-bredd per symbol'],['symyear','Symbol × år-stabilitet'],
+   ['leave2','Ta bort två bästa symbolerna'],['leave3','Ta bort tre bästa symbolerna'],['countconc','Affärskoncentration per symbol'],
+   ['pnlhhi','P/L-koncentration HHI'],['top5','Topp 5% vinnare'],['bottom5','Sämsta 5% förluster'],['symstreak','Förlustsvit per symbol']
+  ]
+ },
+ E:{
+  name:'Statistik & Monte Carlo', key:'linasopti_validation_suite_e_v0480',
+  tests:[
+   ['boottrade','Bootstrap affärer 5 000×'],['bootmonth','Block-bootstrap månader 5 000×'],['drop10','Slumpmässigt bortfall 10%'],
+   ['drop25','Slumpmässigt bortfall 25%'],['costmc','Slumpmässig kostnadschock'],['ordermc','Slumpad ordning / drawdown'],
+   ['roll20','Sämsta 20-affärersfönster'],['roll50','Sämsta 50-affärersfönster'],['streakmc','Förlustsvit Monte Carlo'],['winci','Vinstfrekvens konfidensintervall']
+  ]
+ }
+};
+const V0480_HELP={
+ 'C:suite':['Suite C','Tidsdiagnostik. Letar efter när edgen finns eller försvinner utan att ändra några regler.'],
+ 'D:suite':['Suite D','Bredddiagnostik. Testar om resultatet är beroende av få aktier eller koncentrerade bidrag.'],
+ 'E:suite':['Suite E','Statistisk stress. Bootstrap, bortfall och Monte Carlo för att mäta hur osäkert resultatet är.'],
+ monthpos:['Positiva månader','Andel kalendermånader med positiv P/L.'],quarter:['Kvartalsstabilitet','Andel kalenderkvartal med positiv P/L.'],
+ roll3:['Rullande 3 månader','Varje sammanhängande 3-månadersfönster.'],roll9:['Rullande 9 månader','Varje sammanhängande 9-månadersfönster.'],
+ halfyear:['Halvårsstabilitet','Resultat för H1/H2 per år.'],entry15:['Entry 15-minutersfönster','Delar entrytiden i fasta 15-minutersblock.'],
+ weekdaytime:['Veckodag × tid','Korsar veckodag med halvtimmesfönster för koncentrationskontroll.'],duration:['Affärslängd','Delar P/L efter hur länge positionen var öppen.'],
+ exityear:['Exit-orsak × år','Visar om mål/stop/max-tid beter sig likartat mellan år.'],earlylate:['Tidig vs sen historik','Jämför första och andra halvan av affärerna i tid.'],
+ symbreadth:['Positiva symboler','Hur många av Day Selection-symbolerna bidrar positivt.'],sympf:['PF-bredd','Hur många symboler har PF över 1.'],
+ symyear:['Symbol × år','Hur ofta samma symbol är positiv i olika år.'],leave2:['Ta bort två bästa','Robusthetsstress: resultat utan de två största positiva symbolbidragen.'],
+ leave3:['Ta bort tre bästa','Samma stress utan de tre största positiva symbolbidragen.'],countconc:['Affärskoncentration','Hur stor del av alla affärer som ligger i de mest handlade symbolerna.'],
+ pnlhhi:['P/L HHI','Koncentrationsindex på absoluta symbolbidrag. Lägre betyder bredare spridning.'],top5:['Topp 5% vinnare','Hur stor del av bruttovinsten som kommer från de allra bästa vinnarna.'],
+ bottom5:['Sämsta 5%','Hur stor del av bruttoförlusten som kommer från de värsta förlustaffärerna.'],symstreak:['Förlustsvit per symbol','Längsta följd av förlustaffärer inom samma symbol.'],
+ boottrade:['Bootstrap affärer','5 000 resamplingar av enskilda affärer med återläggning.'],bootmonth:['Block-bootstrap månader','5 000 resamplingar av hela månader för att bevara mer tidsstruktur.'],
+ drop10:['Bortfall 10%','Tar slumpmässigt bort 10% av affärerna många gånger.'],drop25:['Bortfall 25%','Tar slumpmässigt bort 25% av affärerna många gånger.'],
+ costmc:['Kostnadschock','Lägger slumpmässig extra friktion mellan 0 och +20% på varje affär.'],ordermc:['Slumpad ordning','Behåller samma affärer men slumpar ordningen och mäter drawdown.'],
+ roll20:['20-affärersfönster','Sämsta sammanhängande 20 affärer.'],roll50:['50-affärersfönster','Sämsta sammanhängande 50 affärer.'],
+ streakmc:['Förlustsvit Monte Carlo','Slumpar ordning och mäter förlustsvitens fördelning.'],winci:['Vinstfrekvens CI','Wilson 95%-intervall för vinstfrekvensen.']
+};
+function v0480New(s){return{schema:'LINA-SUITE-'+s+'-1',appVersion:'V0.48.0',rulesHash:V0460_RULE_HASH,createdAt:new Date().toISOString(),tests:{},completed:false}}
+function v0480Load(s){const d=V0480_DEFS[s];try{const x=JSON.parse(localStorage.getItem(d.key)||'null');return x&&x.schema==='LINA-SUITE-'+s+'-1'&&x.rulesHash===V0460_RULE_HASH?x:v0480New(s)}catch{return v0480New(s)}}
+function v0480Save(s,x){x.updatedAt=new Date().toISOString();localStorage.setItem(V0480_DEFS[s].key,JSON.stringify(x));return x}
+function v0480Base(){return v0470BBase()}
+function v0480Assess(x,good,warn){return x>=good?{status:'ROBUST',label:'✅ SER ROBUST UT'}:x>=warn?{status:'SENSITIVE',label:'⚠️ KÄNSLIG'}:{status:'WEAK',label:'❌ SVAGHET HITTAD'}}
+function v0480Info(){return{status:'INFO',label:'ℹ️ BESKRIVANDE'}}
+function v0480MonthKey(t){return (t.entryTime||'').slice(0,7)}
+function v0480Year(t){return (t.entryTime||'').slice(0,4)}
+function v0480MonthMap(tr){const m={};for(const t of tr){const k=v0480MonthKey(t);m[k]=(m[k]||0)+v0470BPnl(t)}return m}
+function v0480Group(tr,fn){const g={};for(const t of tr){const k=fn(t);(g[k]??=[]).push(t)}return g}
+function v0480Rows(g){return Object.entries(g).map(([k,a])=>({key:k,...v0470BStats(a)}))}
+function v0480Quant(a,p){return v0470BQ(a,p)}
+function v0480Rng(seed){return v0470BRng(seed)}
+function v0480Duration(t){return Math.max(0,(new Date(t.exitTime)-new Date(t.entryTime))/60000)}
+function v0480MaxDD(pnls){let e=0,peak=0,dd=0;for(const p of pnls){e+=p;peak=Math.max(peak,e);dd=Math.min(dd,e-peak)}return dd}
+function v0480Rolling(vals,n){let best=Infinity,at=-1,s=0;for(let i=0;i<vals.length;i++){s+=vals[i];if(i>=n)s-=vals[i-n];if(i>=n-1&&s<best){best=s;at=i-n+1}}return{pnl:best,index:at}}
+function v0480Wilson(w,n){if(!n)return[0,0];const z=1.96,p=w/n,den=1+z*z/n,c=(p+z*z/(2*n))/den,h=z*Math.sqrt((p*(1-p)+z*z/(4*n))/n)/den;return[c-h,c+h]}
+async function v0480RunTest(s,id){
+ const base=v0480Base();if(!base?.closed?.length)throw new Error('Suite A-basdata saknas lokalt.');
+ const tr=base.closed,st=v0470BStats(tr),months=v0480MonthMap(tr);
+ // C
+ if(id==='monthpos'){const a=Object.values(months),r=a.filter(x=>x>0).length/a.length,q=v0480Assess(r,.65,.55);return{...q,metrics:{months:a.length,positiveRate:r,worst:Math.min(...a),best:Math.max(...a)},explain:`${(r*100).toFixed(0)}% av ${a.length} månader positiva.`}}
+ if(id==='quarter'){const g={};for(const [k,p] of Object.entries(months)){const [y,m]=k.split('-').map(Number),q=`${y}-Q${Math.ceil(m/3)}`;g[q]=(g[q]||0)+p}const a=Object.values(g),r=a.filter(x=>x>0).length/a.length,q=v0480Assess(r,.65,.5);return{...q,metrics:{quarters:g,positiveRate:r},explain:`${(r*100).toFixed(0)}% av ${a.length} kvartal positiva.`}}
+ if(id==='roll3'||id==='roll9'){const n=id==='roll3'?3:9,w=v0470BWindow(months,n),r=w.filter(x=>x.pnl>0).length/w.length,q=v0480Assess(r,.70,.55),worst=[...w].sort((a,b)=>a.pnl-b.pnl)[0];return{...q,metrics:{windows:w.length,positiveRate:r,worst},explain:`${(r*100).toFixed(0)}% av ${w.length} rullande ${n}-månadersfönster positiva · sämsta ${worst.pnl.toFixed(0)} kr.`}}
+ if(id==='halfyear'){const g={};for(const [k,p] of Object.entries(months)){const [y,m]=k.split('-').map(Number),h=`${y}-H${m<=6?1:2}`;g[h]=(g[h]||0)+p}const a=Object.values(g),r=a.filter(x=>x>0).length/a.length,q=v0480Assess(r,.70,.55);return{...q,metrics:{blocks:g,positiveRate:r},explain:`${(r*100).toFixed(0)}% av ${a.length} halvår positiva.`}}
+ if(id==='entry15'){const g=v0480Group(tr,t=>{const d=new Date(t.entryTime),parts=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(d),h=+parts.find(x=>x.type==='hour').value,m=+parts.find(x=>x.type==='minute').value,b=Math.floor(m/15)*15;return `${String(h).padStart(2,'0')}:${String(b).padStart(2,'0')}`});const rows=v0480Rows(g),r=rows.filter(x=>x.pnl>0).length/rows.length,q=v0480Assess(r,.65,.5);return{...q,metrics:{buckets:rows,positiveRate:r},explain:`${rows.filter(x=>x.pnl>0).length}/${rows.length} 15-minutersfönster positiva.`}}
+ if(id==='weekdaytime'){const g=v0480Group(tr,t=>{const p=v0470BNyDate(t.entryTime),wd=p.find(x=>x.type==='weekday')?.value||'?',h=+p.find(x=>x.type==='hour')?.value,m=+p.find(x=>x.type==='minute')?.value;return `${wd} ${m<30?`${h}:00–${h}:30`:`${h}:30–${h+1}:00`}`});const rows=v0480Rows(g).filter(x=>x.n>=15),r=rows.filter(x=>x.pnl>0).length/Math.max(1,rows.length),q=v0480Assess(r,.6,.45);return{...q,metrics:{groups:rows,positiveRate:r},explain:`${rows.filter(x=>x.pnl>0).length}/${rows.length} grupper med minst 15 affärer positiva.`}}
+ if(id==='duration'){const g=v0480Group(tr,t=>{const m=v0480Duration(t);return m<=20?'≤20 min':m<=40?'21–40 min':'41–60+ min'}),rows=v0480Rows(g),r=rows.filter(x=>x.pnl>0).length/rows.length,q=v0480Assess(r,.66,.34);return{...q,metrics:{groups:rows},explain:rows.map(x=>`${x.key}: ${x.pnl.toFixed(0)} kr`).join(' · ')}}
+ if(id==='exityear'){const g=v0480Group(tr,t=>`${v0480Year(t)} · ${t.why||'okänd'}`),rows=v0480Rows(g);return{...v0480Info(),metrics:{groups:rows},explain:`${rows.length} år×exit-grupper kartlagda.`}}
+ if(id==='earlylate'){const a=[...tr].sort((x,y)=>new Date(x.entryTime)-new Date(y.entryTime)),h=Math.floor(a.length/2),s1=v0470BStats(a.slice(0,h)),s2=v0470BStats(a.slice(h)),r=(s1.pnl>0?1:0)+(s2.pnl>0?1:0),q=v0480Assess(r,2,1);return{...q,metrics:{early:s1,late:s2},explain:`Första halvan ${s1.pnl.toFixed(0)} kr · andra halvan ${s2.pnl.toFixed(0)} kr.`}}
+ // D
+ if(id==='symbreadth'||id==='sympf'){const rows=v0480Rows(v0480Group(tr,v0470BSym)),good=rows.filter(x=>id==='symbreadth'?x.pnl>0:x.pf>1).length,r=good/rows.length,q=v0480Assess(r,.6,.45);return{...q,metrics:{symbols:rows,positiveRate:r},explain:`${good}/${rows.length} symboler ${id==='symbreadth'?'positiva':'med PF > 1'}.`}}
+ if(id==='symyear'){const rows=v0480Rows(v0480Group(tr,t=>`${v0470BSym(t)}:${v0480Year(t)}`)).filter(x=>x.n>=5),r=rows.filter(x=>x.pnl>0).length/rows.length,q=v0480Assess(r,.55,.45);return{...q,metrics:{groups:rows,positiveRate:r},explain:`${(r*100).toFixed(0)}% av symbol×år-grupper med minst 5 affärer positiva.`}}
+ if(id==='leave2'||id==='leave3'){const n=id==='leave2'?2:3,srows=v0480Rows(v0480Group(tr,v0470BSym)).sort((a,b)=>b.pnl-a.pnl),drop=srows.slice(0,n).map(x=>x.key),remain=v0470BStats(tr.filter(t=>!drop.includes(v0470BSym(t)))),q=remain.pnl>0?v0480Assess(1,1,.5):v0480Assess(0,1,.5);return{...q,metrics:{removed:drop,remaining:remain},explain:`Utan ${drop.join(', ')}: P/L ${remain.pnl.toFixed(0)} kr · PF ${remain.pf.toFixed(2)}.`}}
+ if(id==='countconc'){const rows=v0480Rows(v0480Group(tr,v0470BSym)).sort((a,b)=>b.n-a.n),share=rows.slice(0,3).reduce((a,x)=>a+x.n,0)/tr.length,q=share<=.35?v0480Assess(1,1,.5):share<=.5?v0480Assess(.5,1,.5):v0480Assess(0,1,.5);return{...q,metrics:{top3Share:share,rows},explain:`Tre mest handlade symboler står för ${(share*100).toFixed(1)}% av affärerna.`}}
+ if(id==='pnlhhi'){const rows=v0480Rows(v0480Group(tr,v0470BSym)),tot=rows.reduce((a,x)=>a+Math.abs(x.pnl),0),hhi=rows.reduce((a,x)=>a+Math.pow(Math.abs(x.pnl)/tot,2),0),q=hhi<=.15?v0480Assess(1,1,.5):hhi<=.25?v0480Assess(.5,1,.5):v0480Assess(0,1,.5);return{...q,metrics:{hhi,rows},explain:`Absolut P/L-HHI ${(hhi*10000).toFixed(0)}.`}}
+ if(id==='top5'){const w=tr.filter(t=>v0470BPnl(t)>0).sort((a,b)=>v0470BPnl(b)-v0470BPnl(a)),n=Math.max(1,Math.ceil(w.length*.05)),share=w.slice(0,n).reduce((a,t)=>a+v0470BPnl(t),0)/w.reduce((a,t)=>a+v0470BPnl(t),0),q=share<=.25?v0480Assess(1,1,.5):share<=.4?v0480Assess(.5,1,.5):v0480Assess(0,1,.5);return{...q,metrics:{share,count:n,winners:w.length},explain:`Bästa 5% av vinnarna står för ${(share*100).toFixed(1)}% av bruttovinsten.`}}
+ if(id==='bottom5'){const l=tr.filter(t=>v0470BPnl(t)<0).sort((a,b)=>v0470BPnl(a)-v0470BPnl(b)),n=Math.max(1,Math.ceil(l.length*.05)),share=Math.abs(l.slice(0,n).reduce((a,t)=>a+v0470BPnl(t),0))/Math.abs(l.reduce((a,t)=>a+v0470BPnl(t),0)),q=share<=.25?v0480Assess(1,1,.5):share<=.4?v0480Assess(.5,1,.5):v0480Assess(0,1,.5);return{...q,metrics:{share,count:n,losers:l.length},explain:`Sämsta 5% av förlusterna står för ${(share*100).toFixed(1)}% av bruttoförlusten.`}}
+ if(id==='symstreak'){const by=v0480Group([...tr].sort((a,b)=>new Date(a.entryTime)-new Date(b.entryTime)),v0470BSym),rows=[];for(const [sym,a] of Object.entries(by)){let s=0,m=0;for(const t of a){if(v0470BPnl(t)<0){s++;m=Math.max(m,s)}else s=0}rows.push({symbol:sym,maxLosingStreak:m,n:a.length})}const worst=Math.max(...rows.map(x=>x.maxLosingStreak)),q=worst<=6?v0480Assess(1,1,.5):worst<=9?v0480Assess(.5,1,.5):v0480Assess(0,1,.5);return{...q,metrics:{worst,rows},explain:`Längsta symbolspecifika förlustsvit: ${worst} affärer.`}}
+ // E
+ if(id==='boottrade'){const vals=tr.map(v0470BPnl),rng=v0480Rng(48001),tot=[];for(let k=0;k<5000;k++){let s=0;for(let i=0;i<vals.length;i++)s+=vals[Math.floor(rng()*vals.length)];tot.push(s);if(k%500===0)await new Promise(r=>setTimeout(r,0))}const lo=v0480Quant(tot,.025),med=v0480Quant(tot,.5),hi=v0480Quant(tot,.975),prob=tot.filter(x=>x>0).length/tot.length,q=v0480Assess(prob,.8,.6);return{...q,metrics:{runs:5000,ci95:[lo,hi],median:med,positiveProbability:prob},explain:`P(P/L>0) ${(prob*100).toFixed(1)}% · 95% intervall ${lo.toFixed(0)} till ${hi.toFixed(0)} kr.`}}
+ if(id==='bootmonth'){const vals=Object.values(months),rng=v0480Rng(48002),tot=[];for(let k=0;k<5000;k++){let s=0;for(let i=0;i<vals.length;i++)s+=vals[Math.floor(rng()*vals.length)];tot.push(s);if(k%500===0)await new Promise(r=>setTimeout(r,0))}const lo=v0480Quant(tot,.025),hi=v0480Quant(tot,.975),prob=tot.filter(x=>x>0).length/tot.length,q=v0480Assess(prob,.8,.6);return{...q,metrics:{runs:5000,ci95:[lo,hi],positiveProbability:prob},explain:`Månadsblock-bootstrap: P(P/L>0) ${(prob*100).toFixed(1)}% · 95% ${lo.toFixed(0)} till ${hi.toFixed(0)} kr.`}}
+ if(id==='drop10'||id==='drop25'){const drop=id==='drop10'?.10:.25,rng=v0480Rng(id==='drop10'?48003:48004),tot=[];for(let k=0;k<3000;k++){let s=0;for(const t of tr)if(rng()>=drop)s+=v0470BPnl(t);tot.push(s)}const prob=tot.filter(x=>x>0).length/tot.length,lo=v0480Quant(tot,.05),q=v0480Assess(prob,.8,.6);return{...q,metrics:{runs:3000,dropRate:drop,positiveProbability:prob,p05:lo},explain:`Vid ${(drop*100).toFixed(0)}% slumpbortfall är ${(prob*100).toFixed(1)}% av körningarna positiva · 5:e percentil ${lo.toFixed(0)} kr.`}}
+ if(id==='costmc'){const rng=v0480Rng(48005),tot=[];for(let k=0;k<3000;k++){let s=0;for(const t of tr){const extra=v0470BNotional(t)*V0460_RULES.costSide*2*(rng()*.20);s+=v0470BPnl(t)-extra}tot.push(s)}const prob=tot.filter(x=>x>0).length/tot.length,lo=v0480Quant(tot,.05),q=v0480Assess(prob,.75,.5);return{...q,metrics:{runs:3000,maxExtraCostPct:.20,positiveProbability:prob,p05:lo},explain:`Slumpmässig +0–20% friktion: ${(prob*100).toFixed(1)}% positiva simuleringar · 5:e percentil ${lo.toFixed(0)} kr.`}}
+ if(id==='ordermc'){const vals=tr.map(v0470BPnl),rng=v0480Rng(48006),dds=[];for(let k=0;k<3000;k++){const a=[...vals];for(let i=a.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]]}dds.push(v0480MaxDD(a));if(k%300===0)await new Promise(r=>setTimeout(r,0))}const p05=v0480Quant(dds,.05),med=v0480Quant(dds,.5),q=Math.abs(p05)<=10000?v0480Assess(1,1,.5):Math.abs(p05)<=15000?v0480Assess(.5,1,.5):v0480Assess(0,1,.5);return{...q,metrics:{runs:3000,ddP05:p05,ddMedian:med},explain:`Slumpad affärsordning: median-DD ${med.toFixed(0)} kr · svag 5:e percentil ${p05.toFixed(0)} kr.`}}
+ if(id==='roll20'||id==='roll50'){const n=id==='roll20'?20:50,r=v0480Rolling(tr.map(v0470BPnl),n),q=Math.abs(r.pnl)<=4000?v0480Assess(1,1,.5):Math.abs(r.pnl)<=7000?v0480Assess(.5,1,.5):v0480Assess(0,1,.5);return{...q,metrics:{window:n,worst:r},explain:`Sämsta sammanhängande ${n} affärer: ${r.pnl.toFixed(0)} kr.`}}
+ if(id==='streakmc'){const vals=tr.map(t=>v0470BPnl(t)<0),rng=v0480Rng(48007),arr=[];for(let k=0;k<3000;k++){const a=[...vals];for(let i=a.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]]}let s=0,m=0;for(const loss of a){if(loss){s++;m=Math.max(m,s)}else s=0}arr.push(m)}const p95=v0480Quant(arr,.95),med=v0480Quant(arr,.5),q=p95<=12?v0480Assess(1,1,.5):p95<=16?v0480Assess(.5,1,.5):v0480Assess(0,1,.5);return{...q,metrics:{runs:3000,median:med,p95},explain:`Slumpad ordning: median längsta förlustsvit ${med} · 95:e percentil ${p95}.`}}
+ if(id==='winci'){const w=tr.filter(t=>v0470BPnl(t)>0).length,ci=v0480Wilson(w,tr.length),wr=w/tr.length,q=ci[0]>=.40?v0480Assess(1,1,.5):ci[0]>=.35?v0480Assess(.5,1,.5):v0480Assess(0,1,.5);return{...q,metrics:{wins:w,n:tr.length,wr,ci95:ci},explain:`Vinstfrekvens ${(wr*100).toFixed(1)}% · Wilson 95% ${(ci[0]*100).toFixed(1)}–${(ci[1]*100).toFixed(1)}%.`}}
+ throw new Error('Okänt test '+id)
+}
+let V0480_RUNNING=false;
+function v0480Paint(s){
+ const d=V0480_DEFS[s],x=v0480Load(s),done=d.tests.filter(t=>x.tests[t[0]]).length,rows=document.getElementById(`v0480${s}Rows`);
+ if(rows)rows.innerHTML=d.tests.map((t,i)=>{const r=x.tests[t[0]];return `<tr><td>${i+1}</td><td>${r?`<button class="v0470-browbtn" data-v48detail="${s}:${t[0]}">${t[1]}</button>`:t[1]}</td><td>${r?.label||'○ EJ KÖRD'}</td><td><button class="v0470-help" data-v48help="${t[0]}">?</button></td></tr>`}).join('');
+ const bar=document.getElementById(`v0480${s}Bar`),pct=document.getElementById(`v0480${s}Pct`),sum=document.getElementById(`v0480${s}Summary`);
+ if(bar)bar.style.width=`${done/10*100}%`;if(pct)pct.textContent=`${done}/10`;
+ if(sum){const a=Object.values(x.tests);sum.textContent=`${done}/10 klara · ✅ ${a.filter(r=>r.status==='ROBUST').length} robusta · ⚠️ ${a.filter(r=>r.status==='SENSITIVE').length} känsliga · ❌ ${a.filter(r=>r.status==='WEAK').length} svagheter · ℹ️ ${a.filter(r=>r.status==='INFO').length} beskrivande`;}
+ [`v0480${s}Report`,`v0480${s}Raw`].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=!x.completed});
+ document.querySelectorAll('[data-v48help]').forEach(b=>b.onclick=()=>v0480ShowHelp(b.dataset.v48help));
+ document.querySelectorAll('[data-v48detail]').forEach(b=>b.onclick=()=>v0480ShowDetail(b.dataset.v48detail));
+}
+function v0480ShowHelp(key){const x=V0480_HELP[key]||['Förklaring','Detta test är diagnostik på återanvänd historik.'],m=document.getElementById('v0480HelpModal');document.getElementById('v0480HelpTitle').textContent=x[0];document.getElementById('v0480HelpBody').innerHTML=`<p>${x[1]}</p>`;m.hidden=false}
+function v0480ShowDetail(key){const [s,id]=key.split(':'),x=v0480Load(s),r=x.tests[id],t=V0480_DEFS[s].tests.find(q=>q[0]===id),m=document.getElementById('v0480DetailModal');document.getElementById('v0480DetailTitle').textContent=`Suite ${s} · ${t?.[1]||id}`;document.getElementById('v0480DetailBody').innerHTML=r?`<p><b>${r.label}</b></p><p>${r.explain}</p><details><summary>Visa tekniska detaljer</summary><pre style="white-space:pre-wrap">${JSON.stringify(r.metrics,null,2)}</pre></details>`:'Ej kört';document.getElementById('v0480ExportOne').dataset.key=key;m.hidden=false}
+async function v0480RunSuite(s,all=true){
+ if(V0480_RUNNING)throw new Error('En lokal svit körs redan.');V0480_RUNNING=true;const d=V0480_DEFS[s],st=document.getElementById(`v0480${s}Status`);
+ try{let x=v0480Load(s);do{const t=d.tests.find(q=>!x.tests[q[0]]);if(!t)break;st.textContent=`Kör ${t[1]}…`;const r=await v0480RunTest(s,t[0]);x.tests[t[0]]={...r,completedAt:new Date().toISOString(),rulesHash:V0460_RULE_HASH,dataFingerprint:v0480Base()?.dataFingerprint||'—'};v0480Save(s,x);v0480Paint(s);if(!all)break;await new Promise(r=>setTimeout(r,15))}while(true);x=v0480Load(s);if(d.tests.every(t=>x.tests[t[0]])){x.completed=true;v0480Save(s,x);st.textContent=`✓ Suite ${s} klar · 10/10.`}else st.textContent='✓ Test sparat.'}catch(e){st.textContent='KÖRFEL: '+(e?.message||e);throw e}finally{V0480_RUNNING=false;v0480Paint(s)}
+}
+function v0480Report(s){const d=V0480_DEFS[s],x=v0480Load(s),L=[`LINAS OPTI – VALIDATION SUITE ${s} · ${d.name}`,'Version: '+APP_VERSION,'Handel: AVSTÄNGD','Close >=83% fryst kandidat','Regelhash: '+V0460_RULE_HASH,'','OBS: diagnostik på återanvänd historik – inte nytt orört OOS-bevis.',''];d.tests.forEach((t,i)=>{const r=x.tests[t[0]];L.push(`${i+1}. ${t[1]} | ${r?.label||'Ej körd'}`);if(r?.explain)L.push('   '+r.explain)});L.push('','Ingen parameteroptimering eller automatisk räddning har körts.');return L.join('\n')}
+function v0480ExportOne(key){const [s,id]=key.split(':'),r=v0480Load(s).tests[id],t=V0480_DEFS[s].tests.find(q=>q[0]===id);return [`LINAS OPTI – SUITE ${s} TEST`,'Version: '+APP_VERSION,'Test: '+t[1],'Bedömning: '+r.label,'',r.explain,JSON.stringify(r.metrics,null,2),'','Återanvänd historik – diagnostik, inte nytt OOS-bevis.'].join('\n')}
+async function v0480RunCDE(){const o=document.getElementById('v0480CDEStatus');try{o.textContent='Kör Suite C…';await v0480RunSuite('C',true);o.textContent='Kör Suite D…';await v0480RunSuite('D',true);o.textContent='Kör Suite E…';await v0480RunSuite('E',true);o.textContent='✓ C + D + E klara · 30/30 tester.'}catch(e){o.textContent='KÖRFEL: '+(e?.message||e)}}
+
+function v0480CDEReport(){
+ const L=['LINAS OPTI – VALIDATION SUITES C + D + E','Version: '+APP_VERSION,'Handel: AVSTÄNGD','Close >=83% fryst kandidat','Regelhash: '+V0460_RULE_HASH,'','30 lokala diagnostiska tester · återanvänd historik · inte nytt orört OOS-bevis.',''];
+ for(const s of ['C','D','E']){L.push(`=== SUITE ${s} · ${V0480_DEFS[s].name} ===`);const x=v0480Load(s);V0480_DEFS[s].tests.forEach((t,i)=>{const r=x.tests[t[0]];L.push(`${i+1}. ${t[1]} | ${r?.label||'Ej körd'}`);if(r?.explain)L.push('   '+r.explain)});L.push('')}
+ L.push('Ingen parameteroptimering eller automatisk räddning har körts.');return L.join('\n')
+}
+function v0480CDEBackup(){return{backupSchema:'lina-v0480-cde-backup-v1',appVersion:APP_VERSION,exportedAt:new Date().toISOString(),rulesHash:V0460_RULE_HASH,dataFingerprint:v0480Base()?.dataFingerprint||'—',suiteC:v0480Load('C'),suiteD:v0480Load('D'),suiteE:v0480Load('E')}}
+window.addEventListener('DOMContentLoaded',()=>{
+ for(const s of ['C','D','E']){
+  document.getElementById(`v0480${s}RunAll`)?.addEventListener('click',()=>v0480RunSuite(s,true).catch(()=>{}));
+  document.getElementById(`v0480${s}RunNext`)?.addEventListener('click',()=>v0480RunSuite(s,false).catch(()=>{}));
+  document.getElementById(`v0480${s}Report`)?.addEventListener('click',()=>v0460Dl(v0480Report(s),`LINAS_OPTI_VALIDATION_SUITE_${s}_V0480_${new Date().toISOString().slice(0,10)}.txt`));
+  document.getElementById(`v0480${s}Raw`)?.addEventListener('click',()=>v0460Dl(JSON.stringify(v0480Load(s),null,2),`LINAS_OPTI_VALIDATION_SUITE_${s}_RAW_V0480_${new Date().toISOString().slice(0,10)}.json`,'application/json'));
+  v0480Paint(s);
+ }
+ document.getElementById('v0480RunCDE')?.addEventListener('click',v0480RunCDE);
+ document.getElementById('v0480CDEReport')?.addEventListener('click',()=>v0460Dl(v0480CDEReport(),`LINAS_OPTI_VALIDATION_CDE_V0480_${new Date().toISOString().slice(0,10)}.txt`));
+ document.getElementById('v0480CDEBackup')?.addEventListener('click',()=>v0460Dl(JSON.stringify(v0480CDEBackup(),null,2),`LINAS_OPTI_VALIDATION_CDE_BACKUP_V0480_${new Date().toISOString().slice(0,10)}.json`,'application/json'));
+ document.getElementById('v0480HelpClose')?.addEventListener('click',()=>document.getElementById('v0480HelpModal').hidden=true);
+ document.getElementById('v0480DetailClose')?.addEventListener('click',()=>document.getElementById('v0480DetailModal').hidden=true);
+ document.getElementById('v0480ExportOne')?.addEventListener('click',e=>{const k=e.currentTarget.dataset.key;if(k){const [s,id]=k.split(':');v0460Dl(v0480ExportOne(k),`LINAS_OPTI_SUITE_${s}_${id.toUpperCase()}_V0480_${new Date().toISOString().slice(0,10)}.txt`)}})
+ document.getElementById('v0480HelpModal')?.addEventListener('click',e=>{if(e.target.id==='v0480HelpModal')e.currentTarget.hidden=true});
+ document.getElementById('v0480DetailModal')?.addEventListener('click',e=>{if(e.target.id==='v0480DetailModal')e.currentTarget.hidden=true});
+ const jump=document.getElementById('v0413LabJump');if(jump&&[...jump.options].some(o=>o.value==='v0480ELab')){jump.value='v0480ELab';try{localStorage.setItem('linasopti_testlab_selected_v0423','v0480ELab')}catch{}jump.dispatchEvent(new Event('change'))}
 });

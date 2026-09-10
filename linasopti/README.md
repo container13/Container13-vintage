@@ -1,6 +1,6 @@
-# Linas Opti V0.47.0
+# Linas Opti V0.48.0
 
-> **Aktuell release: V0.47.0** · Validation Suite A + Suite B · Handel AV · Close ≥83% fryst kandidat · Robotmognad 48/100
+> **Aktuell release: V0.48.0** · Validation Suite A–E · 49 tester/steg totalt · Handel AV · Close ≥83% fryst kandidat · Robotmognad 48/100
 
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
@@ -568,3 +568,26 @@ UI-fixar i V0.47.0:
 - README-huvudet och aktuell release uppdateras till V0.47.0.
 
 Releasekrav från och med denna version: README-huvudversion = APP_VERSION = loginversion = headerversion = CSS/JS-cacheversion innan ZIP får godkännas.
+
+
+## V0.48.0 – Validation Suites C, D och E
+
+Ny stor lokal diagnostiketapp. Ingen handelsregel ändrad. Close ≥83% är fortsatt fryst kandidat. Robotmognad kvar 48/100.
+
+Alla tre nya sviter använder de redan sparade 711 Suite A-affärerna lokalt. Därför krävs ingen ny scanning/API-hämtning och körningen ska normalt gå mycket snabbt. De är diagnostik på återanvänd historik, inte nytt orört OOS-bevis.
+
+### Suite C – Tidsstruktur · 10 tester
+Positiva månader; kvartalsstabilitet; rullande 3 månader; rullande 9 månader; halvårsstabilitet; entry i 15-minutersfönster; veckodag × tid; affärslängd; exit-orsak × år; tidig vs sen historik.
+
+### Suite D – Bredd & beroenden · 10 tester
+Positiva symboler; PF-bredd per symbol; symbol × år; ta bort två bästa symbolerna; ta bort tre bästa symbolerna; affärskoncentration; P/L-HHI; topp 5% vinnare; sämsta 5% förluster; längsta symbolspecifika förlustsvit.
+
+### Suite E – Statistik & Monte Carlo · 10 tester
+Bootstrap affärer 5 000×; månadsblock-bootstrap 5 000×; slumpbortfall 10%; slumpbortfall 25%; slumpmässig kostnadschock; slumpad affärsordning/drawdown; sämsta 20-affärersfönster; sämsta 50-affärersfönster; förlustsvit Monte Carlo; Wilson 95% CI för vinstfrekvens.
+
+Ny snabbknapp **Kör alla 30 tester** kör C → D → E i följd och sparar varje test lokalt direkt efter genomförande. Varje svit kan även köras separat och exporteras som TXT + RAW JSON. Varje enskilt test har hjälptext, detaljvy och separat export.
+
+Totalt i A–E: 7 + 12 + 10 + 10 + 10 = 49 steg/tester.
+
+
+V0.48.0 exporttillägg: snabbkörningen C+D+E har även en samlad TXT-rapport och en samlad JSON-backup med alla tre sviterna, regelhash och datafingerprint. Detta gör att hela 30-testpaketet kan lämnas till ChatGPT/analyseras senare utan tre separata råfiler.

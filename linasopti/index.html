@@ -9,14 +9,14 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.47.0">
+<link rel="stylesheet" href="linasopti.css?v=0.48.0">
 </head>
 <body class="v0384-locked">
 
 <div id="v0383Gate" class="v0383-gate" aria-hidden="false">
   <div class="v0383-gate-card">
     <h1>Linas Opti</h1>
-    <div class="v04512-gate-version" aria-label="Version">V0.47.0</div>
+    <div class="v04512-gate-version" aria-label="Version">V0.48.0</div>
     <p>Ange lösenkod för att fortsätta</p>
     <input id="v0383Code" name="lina_one_time_code_0470" type="password" inputmode="text" autocomplete="one-time-code" autocapitalize="off" autocorrect="off" spellcheck="false" value="" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" placeholder="Lösenkod">
     <button id="v0383Enter" type="button">Öppna Linas Opti</button>
@@ -27,7 +27,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.47.0</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.48.0</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">48/100</b><small>Forskningsfas</small></button>
@@ -47,7 +47,10 @@
     <button type="button" class="v0424-subtab" data-pane="result">Resultat</button>
   </div>
   <label id="v0423LabPick" class="v0424-labpick" hidden><span class="v0425-labtag">LABB</span><select id="v0413LabJump" aria-label="Välj Testlab">
-    <option value="v0470Lab">🧪 Validation Suite B · 12 tester (senaste)</option>
+    <option value="v0480ELab">🧬 Validation Suite E · Statistik & Monte Carlo · 10 tester (senaste)</option>
+    <option value="v0480DLab">🧩 Validation Suite D · Bredd & beroenden · 10 tester</option>
+    <option value="v0480CLab">⏱️ Validation Suite C · Tidsstruktur · 10 tester</option>
+    <option value="v0470Lab">🧪 Validation Suite B · 12 tester</option>
     <option value="v0460Lab">🧰 Validation Suite A · 7 steg</option>
     <option value="v04514Lab">🛡️ Robustness Lab 1 · PBO / DSR</option>
     <option value="v04513Lab">🧪 Signal Lab 4 · Close 83 holdout</option>
@@ -356,6 +359,87 @@
 
 <section id="pane-testlab" class="hidden">
 
+
+<div id="v0480ELab" class="card v0410-lab v0413-lab-section vlab-v0480ELab">
+  <div class="v0410-labtitle"><span class="v0410-flask">🧬</span><div>
+    <h2>Validation Suite E · Statistik & Monte Carlo <button class="v0470-help" data-v48help="E:suite">?</button></h2>
+    <p>10 stresstester av osäkerhet, slump, drawdown och databortfall</p>
+  </div></div>
+  <div class="v0460-lock">🔒 Samma frysta 83%-Jägare · lokal analys av sparade Suite A-affärer · inga regeländringar</div>
+  <div class="v0470-bactions">
+    <button id="v0480ERunAll" class="primary v0410-big">▶ Kör alla 10 tester</button>
+    <button id="v0480ERunNext" class="secondary">▶ Kör nästa test</button>
+  </div>
+  <div id="v0480EStatus" class="v0410-status">Redo · ingen ny datascan behövs.</div>
+  <div class="v0470-progresshead"><b>Suite E</b><span id="v0480EPct">0/10</span></div>
+  <div class="v0410-progress"><div id="v0480EBar"></div></div>
+  <div class="table-scroll"><table><thead><tr><th>#</th><th>Test</th><th>Bedömning</th><th>?</th></tr></thead><tbody id="v0480ERows"></tbody></table></div>
+  <div id="v0480ESummary" class="v0410-summary muted">Ingen körning ännu.</div>
+  <div class="v0470-bactions">
+    <button id="v0480EReport" class="secondary" disabled>📄 Suite E-rapport</button>
+    <button id="v0480ERaw" class="secondary" disabled>🧾 Suite E JSON</button>
+  </div>
+  <p class="muted">Diagnostik på redan använd historik · inte nytt orört OOS-bevis.</p>
+</div>
+
+<div id="v0480DLab" class="card v0410-lab v0413-lab-section vlab-v0480DLab">
+  <div class="v0410-labtitle"><span class="v0410-flask">🧩</span><div>
+    <h2>Validation Suite D · Bredd & beroenden <button class="v0470-help" data-v48help="D:suite">?</button></h2>
+    <p>10 tester av symbolbredd, koncentration och beroenden</p>
+  </div></div>
+  <div class="v0460-lock">🔒 Samma frysta 83%-Jägare · lokal analys av sparade Suite A-affärer · inga regeländringar</div>
+  <div class="v0470-bactions">
+    <button id="v0480DRunAll" class="primary v0410-big">▶ Kör alla 10 tester</button>
+    <button id="v0480DRunNext" class="secondary">▶ Kör nästa test</button>
+  </div>
+  <div id="v0480DStatus" class="v0410-status">Redo · ingen ny datascan behövs.</div>
+  <div class="v0470-progresshead"><b>Suite D</b><span id="v0480DPct">0/10</span></div>
+  <div class="v0410-progress"><div id="v0480DBar"></div></div>
+  <div class="table-scroll"><table><thead><tr><th>#</th><th>Test</th><th>Bedömning</th><th>?</th></tr></thead><tbody id="v0480DRows"></tbody></table></div>
+  <div id="v0480DSummary" class="v0410-summary muted">Ingen körning ännu.</div>
+  <div class="v0470-bactions">
+    <button id="v0480DReport" class="secondary" disabled>📄 Suite D-rapport</button>
+    <button id="v0480DRaw" class="secondary" disabled>🧾 Suite D JSON</button>
+  </div>
+  <p class="muted">Diagnostik på redan använd historik · inte nytt orört OOS-bevis.</p>
+</div>
+
+<div id="v0480CLab" class="card v0410-lab v0413-lab-section vlab-v0480CLab">
+  <div class="v0410-labtitle"><span class="v0410-flask">⏱️</span><div>
+    <h2>Validation Suite C · Tidsstruktur <button class="v0470-help" data-v48help="C:suite">?</button></h2>
+    <p>10 tester av månader, kvartal, intradag och varaktighet</p>
+  </div></div>
+  <div class="v0460-lock">🔒 Samma frysta 83%-Jägare · lokal analys av sparade Suite A-affärer · inga regeländringar</div>
+  <div class="v0470-bactions">
+    <button id="v0480CRunAll" class="primary v0410-big">▶ Kör alla 10 tester</button>
+    <button id="v0480CRunNext" class="secondary">▶ Kör nästa test</button>
+  </div>
+  <div id="v0480CStatus" class="v0410-status">Redo · ingen ny datascan behövs.</div>
+  <div class="v0470-progresshead"><b>Suite C</b><span id="v0480CPct">0/10</span></div>
+  <div class="v0410-progress"><div id="v0480CBar"></div></div>
+  <div class="table-scroll"><table><thead><tr><th>#</th><th>Test</th><th>Bedömning</th><th>?</th></tr></thead><tbody id="v0480CRows"></tbody></table></div>
+  <div id="v0480CSummary" class="v0410-summary muted">Ingen körning ännu.</div>
+  <div class="v0470-bactions">
+    <button id="v0480CReport" class="secondary" disabled>📄 Suite C-rapport</button>
+    <button id="v0480CRaw" class="secondary" disabled>🧾 Suite C JSON</button>
+  </div>
+  <p class="muted">Diagnostik på redan använd historik · inte nytt orört OOS-bevis.</p>
+</div>
+<div class="card v0410-lab v0413-lab-section vlab-v0480CLab vlab-v0480DLab vlab-v0480ELab">
+  <h3>⚡ Snabbkörning C + D + E</h3>
+  <p>Alla 30 tester använder lokalt sparade affärer. Ingen API-hämtning.</p>
+  <button id="v0480RunCDE" class="primary v0410-big">▶ Kör alla 30 tester</button>
+  <div class="v0470-bactions">
+    <button id="v0480CDEReport" class="secondary">📚 Samlad C+D+E-rapport</button>
+    <button id="v0480CDEBackup" class="secondary">💾 C+D+E JSON-backup</button>
+  </div>
+  <div id="v0480CDEStatus" class="v0410-status">Redo.</div>
+</div>
+<div id="v0480HelpModal" class="v0460-modal" hidden><div class="v0460-modalbox">
+<button id="v0480HelpClose" class="v0460-close">×</button><h3 id="v0480HelpTitle"></h3><div id="v0480HelpBody"></div></div></div>
+<div id="v0480DetailModal" class="v0460-modal" hidden><div class="v0460-modalbox">
+<button id="v0480DetailClose" class="v0460-close">×</button><h3 id="v0480DetailTitle"></h3><div id="v0480DetailBody"></div>
+<button id="v0480ExportOne" class="secondary">📄 Exportera detta test</button></div></div>
 <div id="v0470Lab" class="card v0410-lab v0413-lab-section vlab-v0470Lab">
   <div class="v0410-labtitle"><span class="v0410-flask">🧪</span><div>
     <h2>Validation Suite B · Edge & robusthet <button class="v0470-help" data-bhelp="suite">?</button></h2>
@@ -733,5 +817,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.47.0"></script>
+<script src="linasopti.js?v=0.48.0"></script>
 </body></html>
