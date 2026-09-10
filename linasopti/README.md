@@ -1,3 +1,45 @@
+# Linas Opti V0.45.12
+
+## V0.45.12 – Signal Lab 3 UI/version hard-fix
+- Korrigerar V0.45.11 där Signal Lab 3 fanns i HTML/JS men kunde döljas/överskridas av äldre Testlab-initiering i webbläsaren.
+- Legacy-initieringen från Signal Lab 1 får inte längre skriva över aktuell Testlab-selection efter sidladdning.
+- Signal Lab 3 · Close-testet finns kvar oförändrat som senaste labb; ingen strategi-, signal-, exit-, risk-, data- eller Worker-logik ändras.
+- Versionsnumret visas nu både i huvudheadern och direkt på inloggningsrutan.
+- Header, APP_VERSION och CSS/JS cache-busters är V0.45.12 / 0.45.12.
+- `index.html` innehåller no-cache-meta för att minska risken att en gammal HTML-sida återanvänds.
+- Signal Lab 3-rapporten använder V04512 i filnamnet.
+- Simuleringsräknarens större logikfix är fortfarande planerad till nästa forskningsversion efter att Signal Lab 3-rapporten analyserats, enligt beslutet före denna hotfix.
+
+# Linas Opti V0.45.11
+
+## V0.45.11 – Signal Lab 3 · Close-testet
+
+- Nytt **förregistrerat** Testlab efter Signal Lab 2: close-location testas som **77 / 80 / 83 / 86 %**, där **86 % är fryst kontroll**.
+- Endast close-tröskeln ändras. Day Selection 16, PRO2-kvalitet, övriga Entry B-villkor, Strong-regim, forsknings-exit, risk, friktion, max 3 samtidiga positioner, 33,3 % max per position och max 4 nya entries/dag är frysta.
+- Varje variant körs som sammanhängande portföljtest över 2023-01 → 2026-09 och rapporterar slutvärde, avkastning, affärer, PF, WR, max DD, kapitalutnyttjande och årsresultat.
+- Checkpoint sparas efter varje helt färdig månad för alla fyra varianter. Avbruten körning kan återupptas. Simuleringsräknaren adderar **4 först när hela Signal Lab 3 är färdigt**.
+- Signal Lab 3 ligger överst/förvalt i Testlab. Header och CSS/JS cache-busters är **0.45.11**. Rapportfilen heter `LINAS_OPTI_SIGNAL_LAB_3_CLOSE_TESTET_V04511_YYYY-MM-DD.txt`.
+
+### Varför detta steg valdes
+Signal Lab 1 visade att Entry B var den största signalflödesflaskhalsen: 41 420 PRO2-observationer blev 2 138 Entry B-observationer. Signal Lab 2 dissekerade Entry B. De hårda sekventiella filtren var m3-min, close ≥86 % och volym ≥1,15×. m3-min och volym-min hade bättre deskriptiv framåtrörelse för pass-gruppen, medan **close ≥86 % hade något bättre +15/+30/+60 min-rörelse i fail-gruppen**. Därför väljs close som första lilla förregistrerade parameterfamilj.
+
+### Signal Lab 2 – resultat som nu är historik
+- PRO2: 41 420 observationer.
+- Efter m3 ≥0,40 %: 15 513.
+- Efter m3 ≤1,20 %: 14 759.
+- Efter close ≥86 %: 8 206.
+- Efter volym ≥1,15×: 2 283.
+- Efter volym ≤3,00×: 2 138.
+- Separat close-test diagnostik: pass/fail framåtrörelse var +0,003/+0,007 % vid +15 min, +0,013/+0,017 % vid +30 min och +0,027/+0,037 % vid +60 min. Detta var endast diagnostik och används nu för att formulera Signal Lab 3, inte som bevis för en bättre tröskel.
+
+### Forskningsdisciplin
+2023–2026 är **inte nytt orört OOS**. Signal Lab 3 är ett förregistrerat utvecklingstest på historik som redan påverkat forskningen. Om 77/80/83 slår kontrollen 86 skall kandidaten frysas och därefter prövas på verkligt orörd data innan den får ersätta Entry B:s frysta 86 %. Robotmognad höjs inte av detta test ensamt.
+
+### README- och chattöverlämningsregel
+Varje kommande README ska fortsätta bära en kompakt löpande projekthistorik: viktiga versioner, forskningssteg, resultat, beslut, frysta delar, större buggar/fixar och varför nästa steg valts. När en Lina-chatt blir lång eller riskerar kontextförlust ska en proaktiv överlämningssammanfattning göras innan byte av chatt.
+
+---
+
 # Linas Opti V0.45.10
 
 ## V0.45.10 – korrigerad Signal Lab 2-build
