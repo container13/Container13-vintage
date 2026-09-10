@@ -1,3 +1,13 @@
+# V0.45.3 – rapportnamn + simuleringsräknare
+
+- Kapital Lab 2 får unikt filnamn: `LINAS_OPTI_KAPITAL_LAB_2_POSITIONSSTORLEK_V0453_YYYY-MM-DD.txt`.
+- Kapital Lab 1 får eget tydligt filnamn så rapporterna inte kan förväxlas.
+- Simuleringsräknaren har dokumenterat gemensamt minimum ≥19 739 efter färdig Kapital Lab 2 och migrerar äldre lokala värden uppåt.
+- Räknaren visar ≥ eftersom localStorage är enhets-/webbläsarlokal och därför inte kan ge ett falskt exakt globalt totalvärde.
+- Endast färdigregistrerade simuleringar adderas.
+- Robotmognadsinformationen är rättad till 48/100.
+- Ingen strategi-, data-, Kapital Lab- eller Worker-logik ändrad.
+
 # V0.45.2 – Kapital Lab 2
 
 - Nytt Testlab: positionsstorlek 10 / 20 / 30 / 33,3% med exakt 3 samtidiga positioner.

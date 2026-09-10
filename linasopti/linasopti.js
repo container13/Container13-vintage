@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.45.2";
+const APP_VERSION = "V0.45.3";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -1696,16 +1696,26 @@ window.addEventListener('DOMContentLoaded',()=>{v0412Paint();document.getElement
 // beskriver bevisläge/teknisk beredskap, inte utlovad avkastning.
 // ============================================================
 const V0413_SIM_KEY='linasopti_simulations_v0413';
-const V0413_SIM_SEED=18910;
-function v0413GetSims(){let n=Number(localStorage.getItem(V0413_SIM_KEY));if(!Number.isFinite(n)||n<V0413_SIM_SEED){n=V0413_SIM_SEED;localStorage.setItem(V0413_SIM_KEY,String(n))}return n}
-function v0413PaintSims(){const e=document.getElementById('v0413SimValue');if(e)e.textContent=v0413GetSims().toLocaleString('sv-SE')}
-function v0413AddSims(n){if(!n||n<0)return;localStorage.setItem(V0413_SIM_KEY,String(v0413GetSims()+n));v0413PaintSims()}
+const V0413_SIM_SEED=19739; // dokumenterat minimum t.o.m. färdig Kapital Lab 2
+function v0413GetSims(){
+ let n=Number(localStorage.getItem(V0413_SIM_KEY));
+ if(!Number.isFinite(n)||n<V0413_SIM_SEED){n=V0413_SIM_SEED;localStorage.setItem(V0413_SIM_KEY,String(n))}
+ return Math.floor(n);
+}
+function v0413PaintSims(){
+ const e=document.getElementById('v0413SimValue');
+ if(e)e.textContent='≥ '+v0413GetSims().toLocaleString('sv-SE');
+}
+function v0413AddSims(n){
+ n=Math.floor(Number(n)); if(!Number.isFinite(n)||n<=0)return;
+ const next=v0413GetSims()+n; localStorage.setItem(V0413_SIM_KEY,String(next)); v0413PaintSims();
+}
 function v0413ShowInfo(kind){
  const box=document.getElementById('v0413Info');if(!box)return;
  if(!box.hidden && box.dataset.kind===kind){box.hidden=true;return}
  box.dataset.kind=kind;box.hidden=false;
- if(kind==='maturity')box.innerHTML=`<h3>🤖 Lina är i forskningsfas · 42/100</h3><div class="v0413-meter"><i></i></div><p><b>Det vi har:</b> fungerande datamotor, reproducerbart backtest, mekanisk audit, fryst PRO2, Testlab, OOS-kontroller och automatiserad parameterforskning.</p><p><b>Senaste bevis:</b> fryst Entry B + Strong klarade Regim Lab 2 på 10 orörda perioder med positiv total P/L, PF över 1 och lägre drawdown än ofiltrerad Entry B.</p><p><b>Nästa steg mot högre mognad:</b> skapa ett intradagsspecifikt Day Selection på 5-minutersdata och validera exakt det frysta urvalet på nya orörda perioder.</p><p><b>Kvar till mäklarredo:</b> robust strategi → walk-forward/orörd validering → realtids-paper → riskmotor → ordermotor → brokerintegration → felhantering/kill-switch → längre stabil paperdrift.</p><p><small>100/100 betyder att vår broker-ready-checklista är uppfylld – inte garanterad lönsamhet. Senast omvärderad: V0.43.3.</small></p>`;
- else box.innerHTML=`<h3>🧪 ${v0413GetSims().toLocaleString('sv-SE')} registrerade simuleringar</h3><p>Historiska omkörningar gör att det exakta äldre totalantalet inte kan rekonstrueras. V0.42.3 använder ett konservativt dokumenterat golv på minst 18 890 simuleringar (inklusive den genomförda Regim Lab 1-körningen); därefter adderas varje faktisk Testlab-simulering lokalt.</p><p>Från V0.41.3 ökar den automatiskt för varje faktiskt genomförd Testlab-simulering. Antalet är ett aktivitetsmått – fler simuleringar höjer inte Robotmognaden automatiskt.</p>`;
+ if(kind==='maturity')box.innerHTML=`<h3>🤖 Lina är i forskningsfas · 48/100</h3><div class="v0413-meter"><i></i></div><p><b>Det vi har:</b> fungerande datamotor, reproducerbart backtest, mekanisk audit, fryst PRO2, Testlab, OOS-kontroller och automatiserad parameterforskning.</p><p><b>Senaste bevis:</b> fryst Entry B + Strong klarade Regim Lab 2 på 10 orörda perioder med positiv total P/L, PF över 1 och lägre drawdown än ofiltrerad Entry B.</p><p><b>Nästa steg mot högre mognad:</b> skapa ett intradagsspecifikt Day Selection på 5-minutersdata och validera exakt det frysta urvalet på nya orörda perioder.</p><p><b>Kvar till mäklarredo:</b> robust strategi → walk-forward/orörd validering → realtids-paper → riskmotor → ordermotor → brokerintegration → felhantering/kill-switch → längre stabil paperdrift.</p><p><small>100/100 betyder att vår broker-ready-checklista är uppfylld – inte garanterad lönsamhet. Senast omvärderad: V0.43.3.</small></p>`;
+ else box.innerHTML=`<h3>🧪 Minst ${v0413GetSims().toLocaleString('sv-SE')} registrerade simuleringar</h3><p>Räknaren har nu ett dokumenterat gemensamt golv på minst 19 739 färdigregistrerade simuleringar t.o.m. Kapital Lab 2. Om en äldre webbläsare eller en annan enhet har ett lägre lokalt värde migreras den automatiskt upp till golvet.</p><p>Från V0.45.3 adderas bara helt färdiga och registrerade simuleringar. Räknaren lagras fortfarande lokalt i webbläsaren, så körningar på flera enheter kan inte summeras exakt utan serverlagring. Därför visas ≥ och inte ett falskt exakt globalt tal.</p>`;
 }
 window.addEventListener('DOMContentLoaded',()=>{
  v0413PaintSims();
@@ -2141,7 +2151,7 @@ function v0450Report(){
  L.push('','ÅRSRESULTAT'); for(const v of V0450_RESULT.variants){L.push('',v.name.toUpperCase());for(const y of v.years)L.push(`${y.year} | ${y.start.toFixed(2)} → ${y.end.toFixed(2)} | ${((y.end/y.start-1)*100).toFixed(2)}% | ${y.n} affärer`)}
  L.push('','OBS: 2023–2026 är inte ett nytt orört OOS-prov i sin helhet. Kapital Lab testar portfölj- och kapitalutnyttjande med frysta signalregler; det är inte en prognos.'); return L.join('\n');
 }
-async function v0450Share(){return v043xShare(v0450Report(),'linasopti_kapitallab1','Linas Opti Kapital Lab 1','v0450Status')}
+async function v0450Share(){return v043xShare(v0450Report(),'LINAS_OPTI_KAPITAL_LAB_1_V0453','Linas Opti Kapital Lab 1','v0450Status')}
 window.addEventListener('DOMContentLoaded',()=>{document.getElementById('v0450Run')?.addEventListener('click',v0450Run);document.getElementById('v0450Share')?.addEventListener('click',v0450Share);v0450Paint()});
 
 
@@ -2194,5 +2204,5 @@ function v0452Report(){
  L.push('','ÅRSRESULTAT'); for(const v of V0452_RESULT.variants){L.push('',v.name.toUpperCase());for(const y of v.years)L.push(`${y.year} | ${y.start.toFixed(2)} → ${y.end.toFixed(2)} | ${((y.end/y.start-1)*100).toFixed(2)}% | ${y.n} affärer`)}
  L.push('','OBS: 2023–2026 är inte ett nytt orört OOS-prov i sin helhet. Kapital Lab 2 testar positionsstorlek med frysta signalregler; det är inte en prognos.'); return L.join('\n');
 }
-async function v0452Share(){return v043xShare(v0452Report(),'linasopti_kapitallab2','Linas Opti Kapital Lab 2','v0452Status')}
+async function v0452Share(){return v043xShare(v0452Report(),'LINAS_OPTI_KAPITAL_LAB_2_POSITIONSSTORLEK_V0453','Linas Opti Kapital Lab 2 · Positionsstorlek','v0452Status')}
 window.addEventListener('DOMContentLoaded',()=>{document.getElementById('v0452Run')?.addEventListener('click',v0452Run);document.getElementById('v0452Share')?.addEventListener('click',v0452Share);v0452Paint()});
