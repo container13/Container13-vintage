@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.45.7">
+<link rel="stylesheet" href="linasopti.css?v=0.45.10">
 </head>
 <body class="v0384-locked">
 
@@ -23,11 +23,11 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.45.6</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.45.10</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">48/100</b><small>Forskningsfas</small></button>
-  <button type="button" id="v0413Sims" class="v0413-stat" aria-label="Visa simuleringsstatistik"><span>🧪 Simuleringar</span><b id="v0413SimValue">≥ 19 739</b><small>registrerade</small></button>
+  <button type="button" id="v0413Sims" class="v0413-stat" aria-label="Visa simuleringsstatistik"><span>🧪 Simuleringar</span><b id="v0413SimValue">≥ 19 741</b><small>registrerade</small></button>
 </div>
 <div id="v0413Info" class="v0413-info" hidden></div>
 
@@ -43,7 +43,8 @@
     <button type="button" class="v0424-subtab" data-pane="result">Resultat</button>
   </div>
   <label id="v0423LabPick" class="v0424-labpick" hidden><span class="v0425-labtag">LABB</span><select id="v0413LabJump" aria-label="Välj Testlab">
-    <option value="v0458Lab">🔬 Signal Lab 1 · Filtertratten (senaste)</option>
+    <option value="v0459Lab">🧬 Signal Lab 2 · Entry B-dissektion (senaste)</option>
+    <option value="v0458Lab">🔬 Signal Lab 1 · Filtertratten</option>
     <option value="v0457Lab">🔎 Kapital Lab 3 · kapitalutnyttjande</option>
     <option value="v0452Lab">📐 Kapital Lab 2 · positionsstorlek</option>
     <option value="v0450Lab">💰 Kapital Lab 1 · samtidiga positioner</option>
@@ -346,6 +347,18 @@
 
 <section id="pane-testlab" class="hidden">
 
+<div id="v0459Lab" class="card v0410-lab v0413-lab-section vlab-v0459Lab">
+  <div class="v0410-labtitle"><span class="v0410-flask">🧬</span><div><h2>Signal Lab 2 · Entry B-dissektion</h2></div></div>
+  <button id="v0459Run" class="primary v0410-big">▶ Kör Signal Lab 2 · Entry B-dissektion</button>
+  <div id="v0459Status" class="v0410-status v0424-runstatus">Redo · Entry B är fryst. Labbet mäter delvillkor och framåtrörelse utan att ändra någon regel.</div><div class="v0410-progress"><div id="v0459Bar"></div></div>
+  <p class="muted">Analyserar endast observationer som redan klarat PRO2-kvaliteten. Entry B:s fem delvillkor mäts separat och sekventiellt: m3 ≥0,40%, m3 ≤1,20%, close ≥86%, volym ≥1,15× och volym ≤3,00×. Framåtrörelse +15/+30/+60 min är diagnostik, inte hypotetiska affärer.</p>
+  <div id="v0459Summary" class="v0410-summary muted">Ingen körning ännu.</div>
+  <h3>Sekventiellt bortfall</h3><div class="table-scroll"><table><thead><tr><th>Steg</th><th>Kvar</th><th>Andel av föregående</th></tr></thead><tbody id="v0459SeqRows"></tbody></table></div>
+  <h3>Varje villkor separat</h3><div class="table-scroll"><table><thead><tr><th>Villkor</th><th>Klarar</th><th>Faller</th><th>Klarar %</th><th>+15m pass/fail</th><th>+30m pass/fail</th><th>+60m pass/fail</th></tr></thead><tbody id="v0459CondRows"></tbody></table></div>
+  <h3>Vanligaste bortfallskombinationer</h3><div class="table-scroll"><table><thead><tr><th>Missade villkor</th><th>Antal</th><th>Andel av PRO2</th></tr></thead><tbody id="v0459MaskRows"></tbody></table></div>
+  <button id="v0459Share" class="secondary" disabled>Ladda ner / Dela Signal Lab 2</button>
+</div>
+
 <div id="v0458Lab" class="card v0410-lab v0413-lab-section vlab-v0458Lab">
   <div class="v0410-labtitle"><span class="v0410-flask">🔬</span><div><h2>Signal Lab 1 · Filtertratten</h2></div></div>
   <button id="v0458Run" class="primary v0410-big">▶ Kör Signal Lab 1 · diagnostik</button>
@@ -593,5 +606,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.45.8"></script>
+<script src="linasopti.js?v=0.45.10"></script>
 </body></html>

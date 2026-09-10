@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.45.8";
+const APP_VERSION = "V0.45.10";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -1696,7 +1696,7 @@ window.addEventListener('DOMContentLoaded',()=>{v0412Paint();document.getElement
 // beskriver bevisläge/teknisk beredskap, inte utlovad avkastning.
 // ============================================================
 const V0413_SIM_KEY='linasopti_simulations_v0413';
-const V0413_SIM_SEED=19739; // dokumenterat minimum t.o.m. färdig Kapital Lab 2
+const V0413_SIM_SEED=19741; // dokumenterat minimum t.o.m. färdig Signal Lab 1
 function v0413GetSims(){
  let n=Number(localStorage.getItem(V0413_SIM_KEY));
  if(!Number.isFinite(n)||n<V0413_SIM_SEED){n=V0413_SIM_SEED;localStorage.setItem(V0413_SIM_KEY,String(n))}
@@ -1715,7 +1715,7 @@ function v0413ShowInfo(kind){
  if(!box.hidden && box.dataset.kind===kind){box.hidden=true;return}
  box.dataset.kind=kind;box.hidden=false;
  if(kind==='maturity')box.innerHTML=`<h3>🤖 Lina är i forskningsfas · 48/100</h3><div class="v0413-meter"><i></i></div><p><b>Det vi har:</b> fungerande datamotor, reproducerbart backtest, mekanisk audit, fryst PRO2, Testlab, OOS-kontroller och automatiserad parameterforskning.</p><p><b>Senaste bevis:</b> fryst Entry B + Strong klarade Regim Lab 2 på 10 orörda perioder med positiv total P/L, PF över 1 och lägre drawdown än ofiltrerad Entry B.</p><p><b>Nästa steg mot högre mognad:</b> skapa ett intradagsspecifikt Day Selection på 5-minutersdata och validera exakt det frysta urvalet på nya orörda perioder.</p><p><b>Kvar till mäklarredo:</b> robust strategi → walk-forward/orörd validering → realtids-paper → riskmotor → ordermotor → brokerintegration → felhantering/kill-switch → längre stabil paperdrift.</p><p><small>100/100 betyder att vår broker-ready-checklista är uppfylld – inte garanterad lönsamhet. Senast omvärderad: V0.43.3.</small></p>`;
- else box.innerHTML=`<h3>🧪 Minst ${v0413GetSims().toLocaleString('sv-SE')} registrerade simuleringar</h3><p>Räknaren har nu ett dokumenterat gemensamt golv på minst 19 739 färdigregistrerade simuleringar t.o.m. Kapital Lab 2. Om en äldre webbläsare eller en annan enhet har ett lägre lokalt värde migreras den automatiskt upp till golvet.</p><p>Från V0.45.3 adderas bara helt färdiga och registrerade simuleringar. Räknaren lagras fortfarande lokalt i webbläsaren, så körningar på flera enheter kan inte summeras exakt utan serverlagring. Därför visas ≥ och inte ett falskt exakt globalt tal.</p>`;
+ else box.innerHTML=`<h3>🧪 Minst ${v0413GetSims().toLocaleString('sv-SE')} registrerade simuleringar</h3><p>Räknaren har nu ett dokumenterat gemensamt golv på minst 19 741 färdigregistrerade simuleringar t.o.m. Signal Lab 1. Om en äldre webbläsare eller en annan enhet har ett lägre lokalt värde migreras den automatiskt upp till golvet.</p><p>Från V0.45.3 adderas bara helt färdiga och registrerade simuleringar. Räknaren lagras fortfarande lokalt i webbläsaren, så körningar på flera enheter kan inte summeras exakt utan serverlagring. Därför visas ≥ och inte ett falskt exakt globalt tal.</p>`;
 }
 window.addEventListener('DOMContentLoaded',()=>{
  v0413PaintSims();
@@ -1724,7 +1724,7 @@ window.addEventListener('DOMContentLoaded',()=>{
  const engine=document.getElementById('v0423Engine'),jump=document.getElementById('v0413LabJump');
  const LAB_KEY='linasopti_testlab_selected_v0423';
  function showSelectedLab(){if(!jump)return;const val=jump.value;document.querySelectorAll('[class*=\"vlab-v04\"]').forEach(el=>{el.style.display=el.classList.contains('vlab-'+val)?'':'none'});document.querySelectorAll('.vlab-extra').forEach(el=>el.style.display='none');localStorage.setItem(LAB_KEY,val);}
- if(jump){const saved=localStorage.getItem(LAB_KEY);if(saved&&[...jump.options].some(o=>o.value===saved))jump.value=saved;else jump.value='v0457Lab';jump.addEventListener('change',showSelectedLab);showSelectedLab();}
+ if(jump){const saved=localStorage.getItem(LAB_KEY);if(saved&&saved!=='v0458Lab'&&[...jump.options].some(o=>o.value===saved))jump.value=saved;else jump.value='v0459Lab';jump.addEventListener('change',showSelectedLab);showSelectedLab();}
  document.querySelectorAll('.v0424-subtab').forEach(b=>b.addEventListener('click',()=>show(b.dataset.pane,true)));
  if(engine){engine.addEventListener('change',()=>{
    if(engine.value==='testlab') show('testlab',true);
@@ -2326,6 +2326,51 @@ function v0457Report(){if(!V0457_RESULT)return'';const r=V0457_RESULT,m=v0457Met
 async function v0457Share(){const st=document.getElementById('v0457Status');if(!V0457_RESULT){if(st)st.textContent='Ingen Kapital Lab 3-rapport finns ännu. Kör labbet först.';return false}const text=v0457Report(),date=new Date().toISOString().slice(0,10),name=`LINAS_OPTI_KAPITAL_LAB_3_KAPITALUTNYTTJANDE_V0457_${date}.txt`;if(!v0451IsIOS()){try{v0451DownloadText(text,name);if(st)st.textContent=`✓ Kapital Lab 3-rapport nedladdad: ${name}`;return true}catch(e){if(st)st.textContent='Kunde inte ladda ner Kapital Lab 3-rapporten.';return false}}const file=new File([text],name,{type:'text/plain;charset=utf-8'});try{if(navigator.share){if(!navigator.canShare||navigator.canShare({files:[file]})){await navigator.share({title:'Linas Opti Kapital Lab 3',files:[file]});return true}await navigator.share({title:'Linas Opti Kapital Lab 3',text});return true}}catch(e){if(e?.name==='AbortError')return false}try{v0451DownloadText(text,name);return true}catch{return false}}
 window.addEventListener('DOMContentLoaded',()=>{document.getElementById('v0457Run')?.addEventListener('click',v0457Run);document.getElementById('v0457Share')?.addEventListener('click',v0457Share);v0457Paint();const cp=v0457Load();if(cp&&cp.nextIndex>0){const st=document.getElementById('v0457Status'),bar=document.getElementById('v0457Bar'),months=v0440Months();if(st)st.textContent=`Sparad delkörning ${cp.nextIndex}/${months.length} månader · tryck Fortsätt för att återuppta.`;if(bar)bar.style.width=`${cp.nextIndex/months.length*100}%`;v0457RunLabel(true)}});
 
+
+// ============================================================
+// V0.45.9 – SIGNAL LAB 2 · ENTRY B-DISSEKTION
+// Diagnostik på observationer som klarat fryst PRO2-kvalitet.
+// Entry B ändras inte. Fem delvillkor mäts separat/sekventiellt,
+// inklusive överlapp och deskriptiv +15/+30/+60 min framåtrörelse.
+// ============================================================
+let V0459_RESULT=null,V0459_RUNNING=false;
+const V0459_CHECKPOINT_KEY='linasopti_signallab2_checkpoint_v04510';
+const V0459_CONDS=[
+ {id:'m3min',name:'m3 ≥ 0,40%',ok:x=>x.r3>=.004},
+ {id:'m3max',name:'m3 ≤ 1,20%',ok:x=>x.r3<=.012},
+ {id:'close',name:'close ≥ 86%',ok:x=>x.closeLoc>=.86},
+ {id:'volmin',name:'volym ≥ 1,15×',ok:x=>x.volRatio>=1.15},
+ {id:'volmax',name:'volym ≤ 3,00×',ok:x=>x.volRatio<=3}
+];
+function v0459Stat(){return {n:0,r15n:0,r15s:0,r15p:0,r30n:0,r30s:0,r30p:0,r60n:0,r60s:0,r60p:0}}
+function v0459Fresh(){const c={};for(const x of V0459_CONDS)c[x.id]={pass:v0459Stat(),fail:v0459Stat()};return {pro2:0,seq:[0,0,0,0,0,0],conds:c,masks:{},months:0}}
+function v0459AddStat(s,f){s.n++;for(const [k,v] of [['15',f.r15],['30',f.r30],['60',f.r60]])if(Number.isFinite(v)){s['r'+k+'n']++;s['r'+k+'s']+=v;if(v>0)s['r'+k+'p']++}}
+function v0459Future(a,i,b){const ret=n=>{const q=a[i+n];return q&&q._m<960&&q._m>b._m?q.c/b.c-1:null};return {r15:ret(3),r30:ret(6),r60:ret(12)}}
+function v0459Analyze(rows){
+ const byDay={};for(const r of rows){const z=v0440NY(r.t);if(z.m<570||z.m>=960||r.symbol==='SPY')continue;(byDay[z.d]??={});(byDay[z.d][r.symbol]??=[]).push({...r,_m:z.m})}
+ const out=v0459Fresh();
+ for(const d of Object.keys(byDay).sort())for(const [sym,a0] of Object.entries(byDay[d])){const a=a0.sort((x,y)=>new Date(x.t)-new Date(y.t));for(let i=15;i<a.length-1;i++){
+   const b=a[i];if(b._m<630||b._m>720)continue;const hist=a.slice(i-14,i+1),prev=hist.at(-2),avgVol=hist.slice(0,-1).reduce((q,x)=>q+(+x.v||0),0)/14;
+   const x={r1:b.c/prev.c-1,r3:b.c/a[i-3].c-1,r6:b.c/a[i-6].c-1,prev2:prev.c/a[i-2].c-1,closeLoc:(b.c-b.l)/Math.max(.000001,b.h-b.l),volRatio:avgVol?((+b.v||0)/avgVol):0,sma:hist.reduce((q,z)=>q+z.c,0)/hist.length};x.stretch=b.c/x.sma-1;
+   const pro2=x.r1>0&&x.r6>=.0025&&b.c>x.sma&&x.stretch<=.020&&x.prev2>=-.005;if(!pro2)continue;
+   out.pro2++;out.seq[0]++;const f=v0459Future(a,i,b);let still=true,mask=[];
+   V0459_CONDS.forEach((c,j)=>{const pass=c.ok(x);v0459AddStat(out.conds[c.id][pass?'pass':'fail'],f);if(!pass)mask.push(c.id);if(still&&pass)out.seq[j+1]++;else still=false});
+   const key=mask.length?mask.join('+'):'PASS_ALL';out.masks[key]=(out.masks[key]||0)+1;
+ }}
+ return out;
+}
+function v0459Merge(a,b){a.pro2+=b.pro2;for(let i=0;i<a.seq.length;i++)a.seq[i]+=b.seq[i]||0;for(const c of V0459_CONDS)for(const side of ['pass','fail']){const A=a.conds[c.id][side],B=b.conds[c.id][side];for(const k of Object.keys(A))A[k]+=B[k]||0}for(const [k,v] of Object.entries(b.masks||{}))a.masks[k]=(a.masks[k]||0)+v;a.months++;return a}
+function v0459Save(nextIndex,state){try{localStorage.setItem(V0459_CHECKPOINT_KEY,JSON.stringify({version:'V0.45.9',nextIndex,state,savedAt:new Date().toISOString()}));return true}catch{return false}}
+function v0459Load(){try{const x=JSON.parse(localStorage.getItem(V0459_CHECKPOINT_KEY)||'null');return x&&x.version==='V0.45.9'&&Number.isInteger(x.nextIndex)&&x.state?x:null}catch{return null}}
+function v0459Clear(){try{localStorage.removeItem(V0459_CHECKPOINT_KEY)}catch{}}
+function v0459RunLabel(cp=false){const b=document.getElementById('v0459Run');if(b)b.textContent=cp?'▶ Fortsätt Signal Lab 2 från sparad punkt':'▶ Kör Signal Lab 2 · Entry B-dissektion'}
+function v0459Avg(s,k){const n=s['r'+k+'n'];return n?s['r'+k+'s']/n:null}
+function v0459Fmt(v){return Number.isFinite(v)?`${v>=0?'+':''}${(v*100).toFixed(3)}%`:'—'}
+function v0459Paint(){const sum=document.getElementById('v0459Summary'),seq=document.getElementById('v0459SeqRows'),conds=document.getElementById('v0459CondRows'),masks=document.getElementById('v0459MaskRows'),share=document.getElementById('v0459Share');if(!sum||!seq)return;if(!V0459_RESULT){sum.textContent='Ingen körning ännu.';seq.innerHTML='';if(conds)conds.innerHTML='';if(masks)masks.innerHTML='';if(share)share.disabled=true;return}const r=V0459_RESULT,names=['PRO2-kvalitet',...V0459_CONDS.map(x=>x.name)];seq.innerHTML=r.seq.map((v,i)=>`<tr><td>${names[i]}</td><td><b>${v.toLocaleString('sv-SE')}</b></td><td>${i?((r.seq[i-1]?v/r.seq[i-1]*100:0).toFixed(2)+'%'):'100,00%'}</td></tr>`).join('');const all=r.seq.at(-1)||0;sum.innerHTML=`<b>${all.toLocaleString('sv-SE')} av ${r.pro2.toLocaleString('sv-SE')} PRO2-observationer klarar hela Entry B</b><br>${r.pro2?(all/r.pro2*100).toFixed(2):'0.00'}% passerar samtliga fem frysta villkor.`;if(conds)conds.innerHTML=V0459_CONDS.map(c=>{const x=r.conds[c.id],p=x.pass.n/(x.pass.n+x.fail.n||1)*100,cell=k=>`${v0459Fmt(v0459Avg(x.pass,k))} / ${v0459Fmt(v0459Avg(x.fail,k))}`;return `<tr><td><b>${c.name}</b></td><td>${x.pass.n}</td><td>${x.fail.n}</td><td>${p.toFixed(2)}%</td><td>${cell('15')}</td><td>${cell('30')}</td><td>${cell('60')}</td></tr>`}).join('');if(masks)masks.innerHTML=Object.entries(r.masks).filter(([k])=>k!=='PASS_ALL').sort((a,b)=>b[1]-a[1]).slice(0,15).map(([k,v])=>`<tr><td>${k.split('+').map(id=>V0459_CONDS.find(c=>c.id===id)?.name||id).join(' + ')}</td><td><b>${v}</b></td><td>${r.pro2?(v/r.pro2*100).toFixed(2):'0.00'}%</td></tr>`).join('');if(share)share.disabled=false}
+async function v0459Run(){if(V0459_RUNNING)return;V0459_RUNNING=true;const run=document.getElementById('v0459Run'),st=document.getElementById('v0459Status'),bar=document.getElementById('v0459Bar'),months=v0440Months();run.disabled=true;const saved=v0459Load();let start=saved?Math.max(0,Math.min(months.length,saved.nextIndex)):0,state=saved?saved.state:v0459Fresh();if(start>=months.length){v0459Clear();start=0;state=v0459Fresh()}try{if(saved&&start>0){st.textContent=`Återupptar Signal Lab 2 från ${start}/${months.length} färdiga månader…`;bar.style.width=`${start/months.length*100}%`}for(let i=start;i<months.length;i++){const w=months[i];st.innerHTML=`<span class="v0406-spinner small"></span> ${i+1}/${months.length} · hämtar ${w.label} och dissekerar Entry B…`;bar.style.width=`${i/months.length*100}%`;const j=await v0440FetchMonth(w,st),q=v0459Analyze(j.rows||[]);v0459Merge(state,q);v0459Save(i+1,state);bar.style.width=`${(i+1)/months.length*100}%`;await v0406Yield(20)}V0459_RESULT=state;v0413AddSims(1);v0459Clear();v0459Paint();v0459RunLabel(false);st.textContent='✓ Signal Lab 2 klart · Entry B är dissekerad.'}catch(e){const cp=v0459Load(),done=cp?.nextIndex||start;bar.style.width=`${done/months.length*100}%`;v0459RunLabel(done>0);st.textContent=`Signal Lab 2 avbröts efter ${done}/${months.length} färdiga månader. Delkörningen är sparad. Tryck Fortsätt för att återuppta. (${e?.message||e})`}finally{V0459_RUNNING=false;run.disabled=false}}
+function v0459Report(){if(!V0459_RESULT)return'';const r=V0459_RESULT,L=['LINAS OPTI – SIGNAL LAB 2 · ENTRY B-DISSEKTION','Version: '+APP_VERSION,'Handel: AVSTÄNGD (historiskt backtest/diagnostik)','','PERIOD: 2023-01-01 → 2026-09','FRYST DAY SELECTION: '+V0440_SYMBOLS.join(', '),'','METOD','Ingen strategi- eller signalparameter ändras. Entry B är exakt fryst.','Endast observationer som redan klarat PRO2-kvalitet analyseras.','Entry B:s fem villkor mäts separat och sekventiellt. Framåtrörelse +15/+30/+60 min från observationsbarens close är deskriptiv diagnostik, inte hypotetiska affärer.','','SEKVENTIELLT BORTFALL'];const names=['PRO2-kvalitet',...V0459_CONDS.map(x=>x.name)];r.seq.forEach((v,i)=>L.push(`${names[i]}: ${v} | ${i?(r.seq[i-1]?v/r.seq[i-1]*100:0).toFixed(2):'100.00'}% av föregående steg`));L.push('','VARJE VILLKOR SEPARAT','villkor|pass|fail|pass_pct|avg15_pass|avg15_fail|avg30_pass|avg30_fail|avg60_pass|avg60_fail');for(const c of V0459_CONDS){const x=r.conds[c.id],pct=x.pass.n/(x.pass.n+x.fail.n||1)*100;L.push(`${c.name}|${x.pass.n}|${x.fail.n}|${pct.toFixed(2)}|${v0459Fmt(v0459Avg(x.pass,'15'))}|${v0459Fmt(v0459Avg(x.fail,'15'))}|${v0459Fmt(v0459Avg(x.pass,'30'))}|${v0459Fmt(v0459Avg(x.fail,'30'))}|${v0459Fmt(v0459Avg(x.pass,'60'))}|${v0459Fmt(v0459Avg(x.fail,'60'))}`)}L.push('','BORTFALLSKOMBINATIONER','missade_villkor|antal|andel_av_PRO2');for(const [k,v] of Object.entries(r.masks).sort((a,b)=>b[1]-a[1]))L.push(`${k}|${v}|${r.pro2?(v/r.pro2*100).toFixed(2):'0.00'}%`);L.push('','TOLKNING','Det hårdaste villkoret är inte automatiskt ett dåligt villkor. Framåtrörelsen används för att formulera nästa förregistrerade test, inte för att efterhandsändra Entry B.','','OBS: 2023–2026 är inte ett nytt orört OOS-prov. Signal Lab 2 är diagnostik på frysta regler; det är inte en prognos.');return L.join('\n')}
+async function v0459Share(){const st=document.getElementById('v0459Status');if(!V0459_RESULT){if(st)st.textContent='Ingen Signal Lab 2-rapport finns ännu. Kör labbet först.';return false}const text=v0459Report(),date=new Date().toISOString().slice(0,10),name=`LINAS_OPTI_SIGNAL_LAB_2_ENTRY_B_DISSEKTION_V04510_${date}.txt`;if(!v0451IsIOS()){try{v0451DownloadText(text,name);if(st)st.textContent=`✓ Signal Lab 2-rapport nedladdad: ${name}`;return true}catch(e){if(st)st.textContent='Kunde inte ladda ner Signal Lab 2-rapporten.';return false}}const file=new File([text],name,{type:'text/plain;charset=utf-8'});try{if(navigator.share){if(!navigator.canShare||navigator.canShare({files:[file]})){await navigator.share({title:'Linas Opti Signal Lab 2',files:[file]});return true}await navigator.share({title:'Linas Opti Signal Lab 2',text});return true}}catch(e){if(e?.name==='AbortError')return false}try{v0451DownloadText(text,name);return true}catch{return false}}
+window.addEventListener('DOMContentLoaded',()=>{document.getElementById('v0459Run')?.addEventListener('click',v0459Run);document.getElementById('v0459Share')?.addEventListener('click',v0459Share);v0459Paint();const jump=document.getElementById('v0413LabJump');if(jump){try{const saved=localStorage.getItem('linasopti_testlab_selected_v0423');if(!saved||saved==='v0458Lab')jump.value='v0459Lab'}catch{}}const cp=v0459Load();if(cp&&cp.nextIndex>0){const st=document.getElementById('v0459Status'),bar=document.getElementById('v0459Bar'),months=v0440Months();if(st)st.textContent=`Sparad delkörning ${cp.nextIndex}/${months.length} månader · tryck Fortsätt för att återuppta.`;if(bar)bar.style.width=`${cp.nextIndex/months.length*100}%`;v0459RunLabel(true)}});
 
 // ============================================================
 // V0.45.8 – SIGNAL LAB 1 · FILTERTRATTEN

@@ -1,3 +1,42 @@
+# Linas Opti V0.45.10
+
+## V0.45.10 – korrigerad Signal Lab 2-build
+- Korrigerar V0.45.9 där index.html hade gamla versions-/cache-referenser och kunde ladda V0.45.8-JavaScript från webbläsarcache.
+- Header, CSS cache-buster och JS cache-buster är nu 0.45.10.
+- Signal Lab 2 · Entry B-dissektion är med i Testlab och är senaste/förvalda labb.
+- APP_VERSION och Signal Lab 2-rapportnamn är V0.45.10/V04510.
+- Ingen strategi-, signal-, exit-, data- eller Worker-logik ändras jämfört med avsedd V0.45.9.
+
+# V0.45.9 – Signal Lab 2 · Entry B-dissektion
+
+Byggd direkt från V0.45.8. Ingen strategi-, Entry B-, Strong-regim-, exit-, friktions-, Day Selection- eller Worker-logik ändrad.
+
+## Nytt i V0.45.9
+- Nytt diagnostiskt Testlab: **Signal Lab 2 · Entry B-dissektion**.
+- Signal Lab 1 visade att Entry B är största relativa flaskhalsen: **41 420 PRO2-observationer → 2 138 Entry B (5,16%) → 840 Strong/godkända**.
+- Endast observationer som redan klarat fryst PRO2-kvalitet analyseras.
+- Entry B delas upp i exakt fem befintliga villkor: **m3 ≥0,40%**, **m3 ≤1,20%**, **close-location ≥86%**, **relativ volym ≥1,15×**, **relativ volym ≤3,00×**.
+- Visar både sekventiellt bortfall och varje villkors pass/fail separat.
+- Räknar vanligaste kombinationer av samtidigt missade villkor för att synliggöra överlapp.
+- Mäter deskriptiv framåtrörelse **+15 / +30 / +60 min** från observationsbarens close för pass respektive fail. Detta är diagnostik, inte hypotetiska affärer och inte en ny strategi.
+- Checkpoint sparas efter varje helt färdig månad och körningen kan återupptas efter avbrott/sidomladdning.
+- Simuleringsräknarens dokumenterade golv är nu **≥19 741** efter färdig Kapital Lab 3 och Signal Lab 1; Signal Lab 2 adderar **1 först när hela körningen är färdig**.
+- Rapport: `LINAS_OPTI_SIGNAL_LAB_2_ENTRY_B_DISSEKTION_V0459_YYYY-MM-DD.txt`.
+
+## Varför detta steg valdes
+Kapital Lab 3 visade att kapitalutnyttjandet är lågt främst därför att signalflödet är glest. Signal Lab 1 lokaliserade därefter största relativa bortfallet till Entry B: bara 5,16% av PRO2-observationerna passerade Entry B. V0.45.9 ändrar därför inte Entry B utan kartlägger vilket eller vilka delvillkor som står för bortfallet och om bortfiltrerade observationer deskriptivt har sämre eller bättre efterföljande prisrörelse. Först därefter får ett separat förregistrerat Signal Lab 3 testa en faktisk förändring.
+
+## Forskningsdisciplin
+- Entry B är fortsatt **fryst** i V0.45.9.
+- Framåtrörelserna används endast för hypotesgenerering.
+- Ingen tröskel får ändras utifrån denna rapport utan ett separat förregistrerat test.
+- 2023–2026 är inte nytt orört OOS i sin helhet. Robotmognad ligger kvar på **48/100**.
+
+## README- och chattöverlämningsregel
+README ska fortsatt bära kompakt projekthistorik, centrala resultat/beslut, frysta delar, större buggar/fixar och varför nästa steg valdes. När arbetschatten börjar bli lång ska ChatGPT proaktivt skapa en överlämningssammanfattning innan kontext riskerar att gå förlorad.
+
+---
+
 # V0.45.8 – Signal Lab 1 · Filtertratten
 
 Byggd direkt från V0.45.7. Ingen signal-, Entry B-, Strong-regim-, exit-, friktions-, Day Selection- eller Worker-logik ändrad.
