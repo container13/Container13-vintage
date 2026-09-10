@@ -1,6 +1,6 @@
-# Linas Opti V0.51.0
+# Linas Opti V0.51.2
 
-> **Aktuell release: V0.51.0** · Forward Validation Gate · Handel AV · Close ≥83% fryst kandidat · Robotmognad 48/100
+> **Aktuell release: V0.51.2** · iPhone PWA + lättåtkomlig uppdateringsknapp · Handel AV · Close ≥83% fryst kandidat · Robotmognad 48/100
 
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
@@ -656,3 +656,34 @@ V0.51.0 sparar varje ny forward-affär lokalt, deduplicerar affärer, sparar sca
 Om forward-resultaten är svaga ska samma generation fortsätta eller avslutas som svag. Vi ska inte ändra 83%, entrytid, exit eller andra regler och sedan kalla det samma forward-test. En framtida ändring måste bli en ny forskningsgeneration med nytt regelhash/nytt ankare.
 
 Robotmognad ligger kvar på **48/100** tills verklig ny forward-data ger grund för höjning.
+
+
+## V0.51.1 – iPhone PWA + auto-kontroll
+
+Ingen forsknings- eller handelslogik ändrad. Samma frysta Jägare och samma forward-generation fortsätter.
+
+Förbättringar:
+- iPhone-PWA-stöd med `display: standalone`, Apple web-app-meta och appikon.
+- Instruktion **Lägg till på hemskärmen** direkt i Lina.
+- Vid öppning kontrollerar Lina automatiskt om avslutade USA-handelsdagar saknas sedan senaste forward-checkpointen.
+- Om dagar saknas körs samma V0.51.0-forwardscan automatiskt. Om inget saknas görs ingen dataladdning.
+- Auto-kontrollen kan stängas av/på lokalt.
+- Senaste auto-kontroll visas i UI.
+- Dator/iPhone behöver fortfarande inte vara på när marknaden stänger; nästa öppning hämtar ikapp saknade avslutade dagar.
+- iOS får pausa webbappen i bakgrunden. V0.51.1 bygger därför inte på bakgrundskörning.
+
+Forward-startankare, regelhash, 83%-kandidat och tidigare checkpoints bevaras. Robotmognad kvar **48/100**.
+
+
+## V0.51.2 – Global uppdateringsknapp
+
+Ingen forsknings- eller handelslogik ändrad.
+
+- Ny fast, tumvänlig **↻ Uppdatera**-knapp nere till höger.
+- Knappen finns lättillgänglig även när Lina körs som iPhone-PWA från hemskärmen.
+- Ett tryck laddar om aktuell sida/app.
+- Alla localStorage-checkpoints, forward-data och resultat bevaras vid omladdning.
+- Om en datahämtning pågår frågar Lina först innan omladdning, så en aktiv scan inte avbryts av misstag.
+- iPhone safe-area respekteras så knappen inte hamnar bakom hemindikatorn.
+
+Forward-generation, startankare, regelhash och Close ≥83% är oförändrade. Robotmognad kvar 48/100.

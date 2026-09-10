@@ -1,8 +1,17 @@
 {
   "name": "Linas Opti",
-  "short_name": "Linas Opti",
+  "short_name": "Lina",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#f4f6f8",
-  "theme_color": "#f4f6f8"
+  "background_color": "#f4f7fb",
+  "theme_color": "#f4f7fb",
+  "description": "Linas Opti – Trading Lab och Forward Validation",
+  "icons": [
+    {
+      "src": "lina-circle.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }

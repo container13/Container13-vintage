@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.51.0";
+const APP_VERSION = "V0.51.2";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -3717,4 +3717,77 @@ window.addEventListener('DOMContentLoaded',()=>{
     try{localStorage.setItem('linasopti_testlab_selected_v0423','v0510ForwardLab')}catch{}
     jump.dispatchEvent(new Event('change'));
   }
+});
+
+
+// ============================================================
+// V0.51.1 – iPhone PWA + automatic forward catch-up on open
+// ============================================================
+const V0511_PREF_KEY='linasopti_pwa_prefs_v0511';
+function v0511LoadPrefs(){
+  try{
+    const x=JSON.parse(localStorage.getItem(V0511_PREF_KEY)||'null');
+    return x&&typeof x==='object'?{autoCheck:x.autoCheck!==false,lastAuto:x.lastAuto||null}:{autoCheck:true,lastAuto:null};
+  }catch{return{autoCheck:true,lastAuto:null}}
+}
+function v0511SavePrefs(x){localStorage.setItem(V0511_PREF_KEY,JSON.stringify(x));return x}
+function v0511IsStandalone(){
+  return window.matchMedia?.('(display-mode: standalone)')?.matches===true || window.navigator.standalone===true;
+}
+function v0511Paint(){
+  const p=v0511LoadPrefs();
+  const m=document.getElementById('v0511Mode'),a=document.getElementById('v0511AutoState'),l=document.getElementById('v0511LastAuto'),b=document.getElementById('v0511AutoToggle');
+  if(m)m.textContent=v0511IsStandalone()?'Hemscreen-app':'Webbläsare';
+  if(a)a.textContent=p.autoCheck?'På':'Av';
+  if(l)l.textContent=p.lastAuto?new Date(p.lastAuto).toLocaleString('sv-SE'):'—';
+  if(b)b.textContent=p.autoCheck?'Stäng av auto-kontroll':'Slå på auto-kontroll';
+}
+async function v0511AutoCatchup(){
+  const p=v0511LoadPrefs();if(!p.autoCheck)return;
+  const x=v0510Load();if(!x.startedAt)return;
+  const endDate=v0510LastCompletedDate(),anchor=V0510_ANCHOR.slice(0,10),startDate=x.lastProcessedDate?v0510DateAdd(x.lastProcessedDate,1):anchor;
+  p.lastAuto=new Date().toISOString();v0511SavePrefs(p);v0511Paint();
+  if(startDate>endDate)return;
+  const status=document.getElementById('v0510Status');
+  try{
+    if(status)status.textContent=`Auto-kontroll: hämtar saknade avslutade dagar ${startDate} → ${endDate}…`;
+    await v0510Scan();
+  }catch(e){
+    if(status)status.textContent='Auto-kontroll KÖRFEL: '+(e?.message||e);
+  }
+}
+window.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('v0511InstallHelp')?.addEventListener('click',()=>{
+    const h=document.getElementById('v0511InstallHint');if(h)h.hidden=!h.hidden;
+  });
+  document.getElementById('v0511AutoToggle')?.addEventListener('click',()=>{
+    const p=v0511LoadPrefs();p.autoCheck=!p.autoCheck;v0511SavePrefs(p);v0511Paint();
+  });
+  document.querySelectorAll('[data-v511help]').forEach(b=>b.addEventListener('click',()=>{
+    const h=document.getElementById('v0511InstallHint');if(h)h.hidden=false;
+  }));
+  v0511Paint();
+  // Small delay so the existing Forward UI finishes painting first.
+  setTimeout(v0511AutoCatchup,700);
+});
+
+
+// ============================================================
+// V0.51.2 – global refresh button
+// Reloads the current page/PWA while preserving localStorage checkpoints.
+// ============================================================
+window.addEventListener('DOMContentLoaded',()=>{
+  const b=document.getElementById('v0512Refresh');
+  if(!b)return;
+  b.addEventListener('click',()=>{
+    const s=document.getElementById('v0510Status')?.textContent||'';
+    const scanBusy=/hämtar|auto-kontroll/i.test(s);
+    if(scanBusy){
+      const ok=window.confirm('Lina hämtar data just nu. Uppdatera ändå? Pågående hämtning avbryts, men redan sparade checkpoints ligger kvar.');
+      if(!ok)return;
+    }
+    b.disabled=true;
+    b.querySelector('small').textContent='Laddar…';
+    window.location.reload();
+  });
 });
