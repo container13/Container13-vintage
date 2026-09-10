@@ -9,14 +9,14 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.45.13">
+<link rel="stylesheet" href="linasopti.css?v=0.45.14">
 </head>
 <body class="v0384-locked">
 
 <div id="v0383Gate" class="v0383-gate" aria-hidden="false">
   <div class="v0383-gate-card">
     <h1>Linas Opti</h1>
-    <div class="v04512-gate-version" aria-label="Version">V0.45.13</div>
+    <div class="v04512-gate-version" aria-label="Version">V0.45.14</div>
     <p>Ange lösenkod för att fortsätta</p>
     <input id="v0383Code" type="password" inputmode="text" autocomplete="off" placeholder="Lösenkod">
     <button id="v0383Enter" type="button">Öppna Linas Opti</button>
@@ -27,11 +27,11 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.45.13</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.45.14</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">48/100</b><small>Forskningsfas</small></button>
-  <button type="button" id="v0413Sims" class="v0413-stat" aria-label="Visa simuleringsstatistik"><span>🧪 Simuleringar</span><b id="v0413SimValue">≥ 19 741</b><small>registrerade</small></button>
+  <button type="button" id="v0413Sims" class="v0413-stat" aria-label="Visa simuleringsstatistik"><span>🧪 Simuleringar</span><b id="v0413SimValue">≥ 19 970</b><small>registrerade</small></button>
 </div>
 <div id="v0413Info" class="v0413-info" hidden></div>
 
@@ -47,7 +47,8 @@
     <button type="button" class="v0424-subtab" data-pane="result">Resultat</button>
   </div>
   <label id="v0423LabPick" class="v0424-labpick" hidden><span class="v0425-labtag">LABB</span><select id="v0413LabJump" aria-label="Välj Testlab">
-    <option value="v04513Lab">🧪 Signal Lab 4 · Close 83 holdout (senaste)</option>
+    <option value="v04514Lab">🛡️ Robustness Lab 1 · PBO / DSR (senaste)</option>
+    <option value="v04513Lab">🧪 Signal Lab 4 · Close 83 holdout</option>
     <option value="v04511Lab">🎯 Signal Lab 3 · Close-testet</option>
     <option value="v0459Lab">🧬 Signal Lab 2 · Entry B-dissektion</option>
     <option value="v0458Lab">🔬 Signal Lab 1 · Filtertratten</option>
@@ -353,6 +354,26 @@
 
 <section id="pane-testlab" class="hidden">
 
+<div id="v04514Lab" class="card v0410-lab v0413-lab-section vlab-v04514Lab">
+  <div class="v0410-labtitle"><span class="v0410-flask">🛡️</span><div><h2>Robustness Lab 1 · PBO / DSR</h2></div></div>
+  <button id="v04514Run" class="primary v0410-big">▶ Kör Robustness Lab 1</button>
+  <div id="v04514Status" class="v0410-status v0424-runstatus">Redo · strategin ändras inte. Close 83% är fryst kandidat.</div><div class="v0410-progress"><div id="v04514Bar"></div></div>
+  <p class="muted">Återkör den förregistrerade close-familjen 77/80/83/86% månadsvis 2023–2026 och mäter urvalsstabilitet med CSCV/PBO samt Deflated Sharpe inom just denna jämförbara familj. Hela Linas äldre forskningshistorik visas separat som trial pressure och blandas inte felaktigt in som om alla tester vore samma experiment.</p>
+  <div id="v04514Summary" class="v0410-summary muted">Ingen robusthetskörning ännu.</div>
+
+  <h3>Robusthetsmått</h3>
+  <div class="table-scroll"><table><thead><tr><th>Mått</th><th>Resultat</th><th>Tolkning</th></tr></thead><tbody id="v04514MetricRows"></tbody></table></div>
+
+  <h3>Close-familjen</h3>
+  <div class="table-scroll"><table><thead><tr><th>Close</th><th>Månads-SR</th><th>Snitt/mån</th><th>Positiva månader</th><th>Slutvärde</th></tr></thead><tbody id="v04514VariantRows"></tbody></table></div>
+
+  <h3>Trial ledger · dokumenterat minimum</h3>
+  <div class="table-scroll"><table><thead><tr><th>Forskningssteg</th><th>Varianter</th><th>Räknas i PBO/DSR här?</th></tr></thead><tbody id="v04514TrialRows"></tbody></table></div>
+  <div class="muted">Trial ledger är ett konservativt minimum av dokumenterade strategivariationer. Diagnostik, Day Selection-symbolurval och rena omkörningar hålls utanför denna siffra tills de kan klassificeras konsekvent.</div>
+
+  <button id="v04514Share" class="secondary" disabled>Ladda ner / Dela Robustness Lab 1</button>
+</div>
+
 <div id="v04513Lab" class="card v0410-lab v0413-lab-section vlab-v04513Lab">
   <div class="v0410-labtitle"><span class="v0410-flask">🧪</span><div><h2>Signal Lab 4 · Close 83 holdout</h2></div></div>
   <button id="v04513Run" class="primary v0410-big">▶ Kör Signal Lab 4 · 83% mot 86%</button>
@@ -634,5 +655,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.45.13"></script>
+<script src="linasopti.js?v=0.45.14"></script>
 </body></html>

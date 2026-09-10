@@ -416,3 +416,45 @@ Den gamla räknaren ökade Signal Lab 3 med endast +4 trots att fyra varianter k
 
 ### Projekthistorik / överlämning
 README ska även fortsättningsvis bära den kompakta forskningshistoriken, frysta beslut, större buggar/fixar och varför nästa steg valts. När chatten blir lång ska en överlämningssammanfattning göras innan kontext riskerar att gå förlorad.
+
+
+## V0.45.14 – Robustness Lab 1 · PBO / DSR
+
+### Beslut efter Signal Lab 4
+Close ≥83% slog 86%-kontrollen även i 2021–2022-holdouten men både 83% och 86% var negativa absolut. 83% förblir därför **fryst forskningskandidat**, inte bevisad slutregel. Ingen finoptimering runt 83% görs.
+
+### Syfte
+V0.45.14 ändrar inga Jägaren-regler. Den återkör den redan förregistrerade close-familjen 77/80/83/86% månadsvis över 2023–2026 och beräknar:
+- CSCV/PBO för close-familjens urvalsstabilitet.
+- Deflated Sharpe inom samma jämförbara fyrvariantsfamilj.
+- Separat trial ledger som dokumenterar forskningsprogrammets minsta kända antal strategivariationer.
+
+### Viktig metoddisciplin
+PBO/DSR får **inte** låtsas omfatta alla gamla Lina-labb som om de vore en homogen kandidatmatris. Exit-, Entry-, Regim-, Kapital- och close-labb har olika sökutrymmen och datalayout. Därför används endast 77/80/83/86 i PBO/DSR. Hela historiken visas separat som trial pressure.
+
+Dokumenterat minimum i V0.45.14:
+- Exit Lab 1: 3
+- Exit Lab 2: 625
+- Entry Lab 1: 625
+- Entry Lab 2: 4
+- Regim Lab 1: 5
+- Regim Lab 2: 2
+- Kapital Lab 1: 4
+- Kapital Lab 2: 4
+- Signal Lab 3: 4
+- Signal Lab 4: 2
+= **1 278 dokumenterade strategivariationer minimum**.
+
+Day Selection-symbolurval, diagnostik och rena omkörningar hålls utanför trial-siffran tills de klassificeras konsekvent.
+
+### CSCV/PBO
+2023–2026 månadsobservationer delas i 8 balanserade kronologiska block. Alla 70 val av 4 block som in-sample mot återstående 4 out-of-sample analyseras. För varje kombination väljs bästa close-variant in-sample och dess OOS-rank omvandlas till logit. PBO är andelen där den valda IS-vinnaren hamnar i den svagare OOS-halvan.
+
+### DSR
+Deflated Sharpe beräknas på 83%-kandidatens månadsavkastningar, med jämförelse mot förväntad maximum-Sharpe efter de fyra jämförbara close-trials. Resultatet gäller bara close-familjen och är inte ett bevis för hela strategins framtida edge.
+
+### Simuleringsräknare
+Verifierat golv höjs till **19 970** efter slutfört Signal Lab 4 (19 922 + 48 variant×månad). Robustness Lab 1 lägger därefter +4 först efter varje sparad månadscheckpoint. En full körning lägger alltså +180 och slutar på minst **20 150**.
+
+### Nästa beslut
+Nästa forskningssteg bestäms först efter Robustness Lab 1-rapporten. Vid svag PBO/DSR ska vi inte optimera vidare. Vid rimlig robusthet går vi vidare mot walk-forward/paper-design utan att använda samma historik för nya efterhandsregler.

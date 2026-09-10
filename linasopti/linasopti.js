@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.45.13";
+const APP_VERSION = "V0.45.14";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -1696,17 +1696,16 @@ window.addEventListener('DOMContentLoaded',()=>{v0412Paint();document.getElement
 // beskriver bevisläge/teknisk beredskap, inte utlovad avkastning.
 // ============================================================
 const V0413_SIM_KEY='linasopti_simulations_v0413';
-const V0413_SIM_SEED=19922; // verifierat minimum: 19 742 t.o.m. Signal Lab 2 + 180 variant×månader i Signal Lab 3
-const V04513_SIM_MIGRATION_KEY='linasopti_sim_counter_migrated_v04513';
+const V0413_SIM_SEED=19970; // verifierat minimum t.o.m. färdig Signal Lab 4
+const V04514_SIM_MIGRATION_KEY='linasopti_sim_counter_migrated_v04514';
 function v0413GetSims(){
  let n=Number(localStorage.getItem(V0413_SIM_KEY));
  if(!Number.isFinite(n))n=0;
- // V0.45.13: tidigare Signal Lab 3 lade bara +4 trots 45 månader × 4 varianter.
- // Migrera en gång till verifierat minimum 19 922. Framåt räknas färdiga variant×period-enheter vid checkpoint.
- if(localStorage.getItem(V04513_SIM_MIGRATION_KEY)!=='1'){
+ // V0.45.14: 19 742 t.o.m. Signal Lab 2 + 180 Signal Lab 3 + 48 Signal Lab 4 = 19 970.
+ if(localStorage.getItem(V04514_SIM_MIGRATION_KEY)!=='1'){
    n=Math.max(n,V0413_SIM_SEED);
    localStorage.setItem(V0413_SIM_KEY,String(Math.floor(n)));
-   localStorage.setItem(V04513_SIM_MIGRATION_KEY,'1');
+   localStorage.setItem(V04514_SIM_MIGRATION_KEY,'1');
  }
  if(n<V0413_SIM_SEED){n=V0413_SIM_SEED;localStorage.setItem(V0413_SIM_KEY,String(n))}
  return Math.floor(n);
@@ -1733,7 +1732,7 @@ window.addEventListener('DOMContentLoaded',()=>{
  const engine=document.getElementById('v0423Engine'),jump=document.getElementById('v0413LabJump');
  const LAB_KEY='linasopti_testlab_selected_v0423';
  function showSelectedLab(){if(!jump)return;const val=jump.value;document.querySelectorAll('[class*=\"vlab-v04\"]').forEach(el=>{el.style.display=el.classList.contains('vlab-'+val)?'':'none'});document.querySelectorAll('.vlab-extra').forEach(el=>el.style.display='none');localStorage.setItem(LAB_KEY,val);}
- if(jump){const saved=localStorage.getItem(LAB_KEY);if(saved&&saved!=='v0458Lab'&&saved!=='v0459Lab'&&[...jump.options].some(o=>o.value===saved))jump.value=saved;else jump.value='v04513Lab';jump.addEventListener('change',showSelectedLab);showSelectedLab();}
+ if(jump){const saved=localStorage.getItem(LAB_KEY);if(saved&&saved!=='v0458Lab'&&saved!=='v0459Lab'&&[...jump.options].some(o=>o.value===saved))jump.value=saved;else jump.value='v04514Lab';jump.addEventListener('change',showSelectedLab);showSelectedLab();}
  document.querySelectorAll('.v0424-subtab').forEach(b=>b.addEventListener('click',()=>show(b.dataset.pane,true)));
  if(engine){engine.addEventListener('change',()=>{
    if(engine.value==='testlab') show('testlab',true);
@@ -2425,6 +2424,161 @@ async function v04511Share(){const st=document.getElementById('v04511Status');if
 window.addEventListener('DOMContentLoaded',()=>{document.getElementById('v04511Run')?.addEventListener('click',v04511Run);document.getElementById('v04511Share')?.addEventListener('click',v04511Share);v04511Paint();const jump=document.getElementById('v0413LabJump');if(jump){try{const saved=localStorage.getItem('linasopti_testlab_selected_v0423');if(!saved||saved==='v0459Lab')jump.value='v04511Lab'}catch{}}const cp=v04511Load();if(cp&&cp.nextIndex>0){const st=document.getElementById('v04511Status'),bar=document.getElementById('v04511Bar'),months=v0440Months();if(st)st.textContent=`Sparad delkörning ${cp.nextIndex}/${months.length} månader · tryck Fortsätt för att återuppta.`;if(bar)bar.style.width=`${cp.nextIndex/months.length*100}%`;v04511RunLabel(true)}});
 
 
+
+// ============================================================
+// V0.45.14 – ROBUSTNESS LAB 1 · PBO / DSR
+// Ingen strategiregel ändras. Close 83% är fryst kandidat.
+// PBO/DSR appliceras endast på den jämförbara close-familjen
+// 77/80/83/86% över 2023–2026. Trial ledger redovisas separat.
+// ============================================================
+const V04514_VARIANTS=[
+ {id:'c77',close:.77,name:'77%'},
+ {id:'c80',close:.80,name:'80%'},
+ {id:'c83',close:.83,name:'83% · fryst kandidat'},
+ {id:'c86',close:.86,name:'86% · kontroll'}
+];
+const V04514_TRIAL_LEDGER=[
+ ['Exit Lab 1',3,'nej'],
+ ['Exit Lab 2 · exit-grid',625,'nej'],
+ ['Entry Lab 1 · entry-grid',625,'nej'],
+ ['Entry Lab 2 · frysta kandidater',4,'nej'],
+ ['Regim Lab 1',5,'nej'],
+ ['Regim Lab 2',2,'nej'],
+ ['Kapital Lab 1',4,'nej'],
+ ['Kapital Lab 2',4,'nej'],
+ ['Signal Lab 3 · close-familj',4,'JA'],
+ ['Signal Lab 4 · 83 mot 86',2,'nej']
+];
+const V04514_DOCUMENTED_TRIALS=V04514_TRIAL_LEDGER.reduce((a,x)=>a+x[1],0); // 1278
+const V04514_CHECKPOINT_KEY='linasopti_robustness1_close_cscv_checkpoint_v04514';
+let V04514_RESULT=null,V04514_RUNNING=false;
+
+function v04514FreshStates(){return V04514_VARIANTS.map(v=>({id:v.id,name:v.name,close:v.close,eq:100000,peak:100000,dd:0,closed:[],curve:[],utilSum:0,utilN:0,maxConcurrent:0,monthly:[]}))}
+function v04514Save(nextIndex,states){try{localStorage.setItem(V04514_CHECKPOINT_KEY,JSON.stringify({version:'V0.45.14',nextIndex,states,savedAt:new Date().toISOString()}));return true}catch{return false}}
+function v04514Load(){try{const x=JSON.parse(localStorage.getItem(V04514_CHECKPOINT_KEY)||'null');return x&&x.version==='V0.45.14'&&Number.isInteger(x.nextIndex)&&Array.isArray(x.states)?x:null}catch{return null}}
+function v04514Clear(){try{localStorage.removeItem(V04514_CHECKPOINT_KEY)}catch{}}
+function v04514RunLabel(cp=false){const b=document.getElementById('v04514Run');if(b)b.textContent=cp?'▶ Fortsätt Robustness Lab 1':'▶ Kör Robustness Lab 1'}
+
+function v04514Mean(a){return a.length?a.reduce((s,x)=>s+x,0)/a.length:0}
+function v04514Std(a){if(a.length<2)return 0;const m=v04514Mean(a);return Math.sqrt(a.reduce((s,x)=>s+(x-m)*(x-m),0)/(a.length-1))}
+function v04514Sharpe(a){const sd=v04514Std(a);return sd?v04514Mean(a)/sd*Math.sqrt(12):0}
+function v04514Skew(a){if(a.length<3)return 0;const m=v04514Mean(a),sd=Math.sqrt(a.reduce((s,x)=>s+(x-m)*(x-m),0)/a.length);if(!sd)return 0;return a.reduce((s,x)=>s+Math.pow((x-m)/sd,3),0)/a.length}
+function v04514Kurt(a){if(a.length<4)return 3;const m=v04514Mean(a),sd=Math.sqrt(a.reduce((s,x)=>s+(x-m)*(x-m),0)/a.length);if(!sd)return 3;return a.reduce((s,x)=>s+Math.pow((x-m)/sd,4),0)/a.length}
+function v04514Phi(x){const t=1/(1+.2316419*Math.abs(x)),d=.3989422804014327*Math.exp(-x*x/2),p=1-d*t*(.319381530+t*(-.356563782+t*(1.781477937+t*(-1.821255978+t*1.330274429))));return x>=0?p:1-p}
+function v04514InvPhi(p){
+ if(p<=0)return -Infinity;if(p>=1)return Infinity;
+ const a=[-39.6968302866538,220.946098424521,-275.928510446969,138.357751867269,-30.6647980661472,2.50662827745924];
+ const b=[-54.4760987982241,161.585836858041,-155.698979859887,66.8013118877197,-13.2806815528857];
+ const c=[-.00778489400243029,-.322396458041136,-2.40075827716184,-2.54973253934373,4.37466414146497,2.93816398269878];
+ const d=[.00778469570904146,.32246712907004,2.445134137143,3.75440866190742],pl=.02425,ph=1-pl;let q,r;
+ if(p<pl){q=Math.sqrt(-2*Math.log(p));return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)}
+ if(p>ph){q=Math.sqrt(-2*Math.log(1-p));return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)}
+ q=p-.5;r=q*q;return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1)
+}
+function v04514Combinations(n,k){const out=[];function rec(start,a){if(a.length===k){out.push([...a]);return}for(let i=start;i<=n-(k-a.length);i++){a.push(i);rec(i+1,a);a.pop()}}rec(0,[]);return out}
+function v04514Blocks(T,S=8){const out=[],base=Math.floor(T/S),extra=T%S;let p=0;for(let s=0;s<S;s++){const len=base+(s<extra?1:0),a=[];for(let j=0;j<len;j++)a.push(p++);out.push(a)}return out}
+function v04514CSCV(states){
+ const T=Math.min(...states.map(s=>s.monthly.length));if(T<16)return {pbo:NaN,medianLambda:NaN,combos:0};
+ const blocks=v04514Blocks(T,8),combos=v04514Combinations(8,4),lambdas=[];
+ for(const trainBlocks of combos){
+   const trainSet=new Set(trainBlocks),trainIdx=[],testIdx=[];
+   blocks.forEach((b,i)=>(trainSet.has(i)?trainIdx:testIdx).push(...b));
+   const isSR=states.map(s=>v04514Sharpe(trainIdx.map(i=>s.monthly[i]?.ret||0)));
+   let pick=0;for(let j=1;j<isSR.length;j++)if(isSR[j]>isSR[pick])pick=j;
+   const osSR=states.map(s=>v04514Sharpe(testIdx.map(i=>s.monthly[i]?.ret||0))),picked=osSR[pick];
+   const sorted=[...osSR].sort((a,b)=>a-b);
+   let rank=sorted.findIndex(x=>x>=picked-1e-12)+1;if(rank<1)rank=1;
+   const w=rank/(states.length+1),lambda=Math.log(w/(1-w));lambdas.push(lambda);
+ }
+ const sortedL=[...lambdas].sort((a,b)=>a-b),med=sortedL[Math.floor(sortedL.length/2)],pbo=lambdas.filter(x=>x<=0).length/lambdas.length;
+ return {pbo,medianLambda:med,combos:lambdas.length};
+}
+function v04514DSR(states){
+ const srs=states.map(s=>v04514Sharpe(s.monthly.map(x=>x.ret))),sigmaSR=v04514Std(srs),N=states.length,gamma=.5772156649015329;
+ const srStar=sigmaSR*((1-gamma)*v04514InvPhi(1-1/N)+gamma*v04514InvPhi(1-1/(N*Math.E)));
+ const cand=states.find(s=>s.id==='c83'),r=cand.monthly.map(x=>x.ret),sr=v04514Sharpe(r),sk=v04514Skew(r),ku=v04514Kurt(r),T=r.length;
+ const denom=Math.sqrt(Math.max(1e-12,1-sk*sr+((ku-1)/4)*sr*sr));
+ const z=(sr-srStar)*Math.sqrt(Math.max(1,T-1))/denom;
+ return {dsr:v04514Phi(z),sr,srStar,skew:sk,kurt:ku,sigmaSR};
+}
+function v04514Analyze(states){return {cscv:v04514CSCV(states),dsr:v04514DSR(states),documentedTrials:V04514_DOCUMENTED_TRIALS}}
+
+function v04514Paint(){
+ const sum=document.getElementById('v04514Summary'),mb=document.getElementById('v04514MetricRows'),vb=document.getElementById('v04514VariantRows'),tb=document.getElementById('v04514TrialRows'),share=document.getElementById('v04514Share');
+ if(tb)tb.innerHTML=V04514_TRIAL_LEDGER.map(x=>`<tr><td>${x[0]}</td><td>${x[1].toLocaleString('sv-SE')}</td><td>${x[2]}</td></tr>`).join('')+`<tr><td><b>Dokumenterat minimum</b></td><td><b>${V04514_DOCUMENTED_TRIALS.toLocaleString('sv-SE')}</b></td><td>trial pressure</td></tr>`;
+ if(!sum||!mb||!vb)return;
+ if(!V04514_RESULT){sum.textContent='Ingen robusthetskörning ännu.';mb.innerHTML='';vb.innerHTML='';if(share)share.disabled=true;return}
+ const {states,analysis}=V04514_RESULT,{cscv,dsr}=analysis,cand=states.find(s=>s.id==='c83');
+ const pboTxt=Number.isFinite(cscv.pbo)?`${(cscv.pbo*100).toFixed(1)}%`:'—',dsrTxt=Number.isFinite(dsr.dsr)?`${(dsr.dsr*100).toFixed(1)}%`:'—';
+ const pboInterp=!Number.isFinite(cscv.pbo)?'otillräcklig data':cscv.pbo<=.20?'låg close-familj-overfitrisk':cscv.pbo<=.50?'måttlig / osäker':'hög overfitrisk';
+ const dsrInterp=!Number.isFinite(dsr.dsr)?'otillräcklig data':dsr.dsr>=.95?'starkt inom close-familjen':dsr.dsr>=.80?'visst stöd, ej starkt':'svagt statistiskt stöd';
+ sum.innerHTML=`Close 83% är fortfarande <b>fryst kandidat</b>. PBO ${pboTxt} · DSR ${dsrTxt}. Dessa mått gäller endast 77/80/83/86-familjen, inte hela Linas ${V04514_DOCUMENTED_TRIALS.toLocaleString('sv-SE')}+ dokumenterade trials.`;
+ mb.innerHTML=[
+   ['CSCV/PBO',pboTxt,`${pboInterp} · ${cscv.combos} train/test-kombinationer`],
+   ['Median logit λ',Number.isFinite(cscv.medianLambda)?cscv.medianLambda.toFixed(3):'—','positiv är bättre; negativ betyder vald IS-vinnare hamnar under OOS-median'],
+   ['Deflated Sharpe',dsrTxt,dsrInterp],
+   ['83% månads-SR',dsr.sr.toFixed(3),`tröskel efter 4 jämförbara close-trials: ${dsr.srStar.toFixed(3)}`],
+   ['Dokumenterade trials',V04514_DOCUMENTED_TRIALS.toLocaleString('sv-SE'),'separat trial pressure; används inte som falskt jämförbar PBO-familj']
+ ].map(x=>`<tr><td><b>${x[0]}</b></td><td>${x[1]}</td><td>${x[2]}</td></tr>`).join('');
+ vb.innerHTML=states.map(s=>{const rs=s.monthly.map(x=>x.ret),sr=v04514Sharpe(rs),pos=rs.filter(x=>x>0).length;return `<tr><td><b>${s.name}</b></td><td>${sr.toFixed(3)}</td><td>${(v04514Mean(rs)*100).toFixed(3)}%</td><td>${pos}/${rs.length}</td><td>${s.eq.toFixed(0)} kr</td></tr>`}).join('');
+ if(share)share.disabled=false;
+}
+async function v04514Run(){
+ if(V04514_RUNNING)return;V04514_RUNNING=true;
+ const run=document.getElementById('v04514Run'),st=document.getElementById('v04514Status'),bar=document.getElementById('v04514Bar'),months=v0440Months();run.disabled=true;
+ const saved=v04514Load();let start=saved?Math.max(0,Math.min(months.length,saved.nextIndex)):0,states=saved?saved.states:v04514FreshStates();
+ if(start>=months.length){v04514Clear();start=0;states=v04514FreshStates()}
+ try{
+  if(saved&&start>0){st.textContent=`Återupptar Robustness Lab 1 från ${start}/${months.length} månader…`;bar.style.width=`${start/months.length*100}%`}
+  for(let i=start;i<months.length;i++){
+   const w=months[i];st.innerHTML=`<span class="v0406-spinner small"></span> ${i+1}/${months.length} · ${w.label} · återkör 4 close-varianter…`;bar.style.width=`${i/months.length*100}%`;
+   const j=await v0440FetchMonth(w,st),rows=j.rows||[];if(!rows.length)throw new Error(`Ingen 5-min-data för ${w.label}`);
+   for(const state of states){
+     const before=state.eq,r=v04511Engine(rows,state.eq,state.close);state.eq=r.eq;
+     state.monthly.push({label:w.label,ret:before?state.eq/before-1:0});
+     state.utilSum+=r.utilSum;state.utilN+=r.utilN;state.maxConcurrent=Math.max(state.maxConcurrent,r.maxConcurrent);
+     for(const t of r.closed)state.closed.push(t);for(const c of r.curve){state.peak=Math.max(state.peak,c.v);state.dd=Math.min(state.dd,c.v/state.peak-1);state.curve.push(c)}
+   }
+   v04514Save(i+1,states);v0413AddSims(4);bar.style.width=`${(i+1)/months.length*100}%`;await v0406Yield(20);
+  }
+  V04514_RESULT={from:'2023-01-01',to:'2026-09-30',states,analysis:v04514Analyze(states)};
+  v04514Clear();v04514Paint();v04514RunLabel(false);st.textContent='✓ Robustness Lab 1 klart · CSCV/PBO + DSR beräknade för close-familjen.';
+ }catch(e){
+  const cp=v04514Load(),done=cp?.nextIndex||start;bar.style.width=`${done/months.length*100}%`;v04514RunLabel(done>0);st.textContent=`Robustness Lab 1 avbröts efter ${done}/${months.length} månader. Checkpoint sparad. (${e?.message||e})`;
+ }finally{V04514_RUNNING=false;run.disabled=false}
+}
+function v04514Report(){
+ if(!V04514_RESULT)return'';const {states,analysis}=V04514_RESULT,{cscv,dsr}=analysis,L=[
+ 'LINAS OPTI – ROBUSTNESS LAB 1 · PBO / DSR','Version: '+APP_VERSION,'Handel: AVSTÄNGD (historisk robusthetsanalys)','','FRYST KANDIDAT: close >=83%','JÄMFÖRELSEFAMILJ: 77% / 80% / 83% / 86%','PERIOD: 2023-01-01 → 2026-09','',
+ 'SYFTE','Ingen strategiparameter optimeras eller ändras. Labbet mäter hur stabilt close-valet är när samma fyra förregistrerade close-varianter bedöms över månadsblock.','','RESULTAT',
+ `CSCV/PBO: ${(cscv.pbo*100).toFixed(1)}% (${cscv.combos} kombinationer)`,
+ `Median logit lambda: ${cscv.medianLambda.toFixed(4)}`,
+ `Deflated Sharpe, close-familj: ${(dsr.dsr*100).toFixed(1)}%`,
+ `83% månads-SR: ${dsr.sr.toFixed(4)}`,
+ `DSR referenströskel efter 4 close-trials: ${dsr.srStar.toFixed(4)}`,
+ `Dokumenterat research trial minimum: ${V04514_DOCUMENTED_TRIALS}`,
+ '','CLOSE-FAMILJ'];
+ for(const s of states){const r=s.monthly.map(x=>x.ret);L.push(`${s.name} | månads-SR ${v04514Sharpe(r).toFixed(4)} | snitt/mån ${(v04514Mean(r)*100).toFixed(4)}% | positiva månader ${r.filter(x=>x>0).length}/${r.length} | slut ${s.eq.toFixed(2)} kr`)}
+ L.push('','TRIAL LEDGER');for(const x of V04514_TRIAL_LEDGER)L.push(`${x[0]} | ${x[1]} varianter | PBO/DSR här: ${x[2]}`);
+ L.push('','METODNOT','PBO/DSR i detta labb gäller endast den jämförbara close-familjen. Äldre exit-, entry-, regim- och kapitallabb redovisas som trial pressure men blandas inte in i samma PBO/DSR-beräkning eftersom de inte utgör en homogen kandidatmatris.','CSCV använder 8 balanserade kronologiska block och alla 70 kombinationer av 4 block som in-sample mot återstående 4 som out-of-sample.','83% valdes före denna robusthetskörning; labbet väljer inte om close-tröskeln.','','FORSKNINGSDISCIPLIN','Ett bra PBO/DSR-resultat är inte bevis för framtida lönsamhet. Ett svagt resultat är däremot en tydlig varningssignal mot att gå vidare utan omprövning.');
+ return L.join('\n');
+}
+async function v04514Share(){
+ const st=document.getElementById('v04514Status');if(!V04514_RESULT){if(st)st.textContent='Ingen Robustness Lab 1-rapport finns ännu.';return false}
+ const text=v04514Report(),date=new Date().toISOString().slice(0,10),name=`LINAS_OPTI_ROBUSTNESS_LAB_1_PBO_DSR_V04514_${date}.txt`;
+ if(!v0451IsIOS()){v0451DownloadText(text,name);if(st)st.textContent=`✓ Robustness Lab 1-rapport nedladdad: ${name}`;return true}
+ const file=new File([text],name,{type:'text/plain;charset=utf-8'});try{if(navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}))){await navigator.share({title:'Linas Opti Robustness Lab 1',files:[file]});return true}}catch(e){if(e?.name==='AbortError')return false}
+ v0451DownloadText(text,name);return true;
+}
+window.addEventListener('DOMContentLoaded',()=>{
+ document.getElementById('v04514Run')?.addEventListener('click',v04514Run);
+ document.getElementById('v04514Share')?.addEventListener('click',v04514Share);
+ v04514Paint();
+ const jump=document.getElementById('v0413LabJump');if(jump){jump.value='v04514Lab';try{localStorage.setItem('linasopti_testlab_selected_v0423','v04514Lab')}catch{}jump.dispatchEvent(new Event('change'))}
+ const cp=v04514Load();if(cp&&cp.nextIndex>0){const st=document.getElementById('v04514Status'),bar=document.getElementById('v04514Bar'),months=v0440Months();if(st)st.textContent=`Sparad delkörning ${cp.nextIndex}/${months.length} månader · tryck Fortsätt.`;if(bar)bar.style.width=`${cp.nextIndex/months.length*100}%`;v04514RunLabel(true)}
+});
+
+
 // ============================================================
 // V0.45.13 – SIGNAL LAB 4 · CLOSE 83 HOLDOUT
 // 83% fryst kandidat mot 86% fryst kontroll på 2021–2022.
@@ -2452,7 +2606,7 @@ async function v04513Run(){if(V04513_RUNNING)return;V04513_RUNNING=true;const ru
  V04513_RESULT={from:'2021-01-01',to:'2022-12-31',variants:states};v04513Clear();v04513Paint();v04513RunLabel(false);st.textContent='✓ Signal Lab 4 klart · 83% och 86% jämförda på close-holdout 2021–2022.'}catch(e){const cp=v04513Load(),done=cp?.nextIndex||start;bar.style.width=`${done/months.length*100}%`;v04513RunLabel(done>0);st.textContent=`Signal Lab 4 avbröts efter ${done}/${months.length} färdiga månader. Delkörningen är sparad. (${e?.message||e})`}finally{V04513_RUNNING=false;run.disabled=false}}
 function v04513Report(){if(!V04513_RESULT)return'';const L=['LINAS OPTI – SIGNAL LAB 4 · CLOSE 83 HOLDOUT','Version: '+APP_VERSION,'Handel: AVSTÄNGD (historiskt backtest/förregistrerad validering)','','STARTKAPITAL: 100 000 kr','PERIOD: 2021-01-01 → 2022-12-31','FRYST DAY SELECTION: '+V0440_SYMBOLS.join(', '),'','FÖRREGISTRERAD HYPOTES','Signal Lab 3 utsåg close ≥83% till forskningskandidat mot den gamla 86%-kontrollen. Endast dessa två jämförs här.','','METOD','83% är fryst kandidat. 86% är fryst kontroll.','Alla övriga regler är identiska: PRO2, m3, volymkrav, Strong, Day Selection, exit, risk, tre samtidiga positioner, 33,3% max per position, max 4 entries/dag och friktion.','2021–2022 användes inte för att formulera eller välja 83%-kandidaten i Signal Lab 2/3. Perioden är därför holdout för close-hypotesen. Den är INTE globalt orörd OOS för hela Jägaren, eftersom äldre labb har använt delar av 2021–2022.','','RESULTAT'];for(const v of V04513_RESULT.variants){const s=v04513Stats(v);L.push(`${v.name} | slut ${v.eq.toFixed(2)} kr | avkastning ${(s.ret*100).toFixed(2)}% | affärer ${v.closed.length} | PF ${v0411FmtPF(s.pf)} | WR ${(s.wr*100).toFixed(1)}% | max DD ${(v.dd*100).toFixed(2)}% | snitt kapital i arbete ${(s.util*100).toFixed(1)}% | max samtidiga ${v.maxConcurrent}`)}L.push('','ÅRSRESULTAT');for(const v of V04513_RESULT.variants){L.push('',v.name.toUpperCase());for(const y of v.years)L.push(`${y.year} | ${y.start.toFixed(2)} → ${y.end.toFixed(2)} | ${((y.end/y.start-1)*100).toFixed(2)}% | ${y.n} affärer`)}L.push('','RÄKNARFIX V0.45.13','Simuleringsräknaren migreras till verifierat minimum 19 922: tidigare 19 742 t.o.m. Signal Lab 2 + 180 färdiga variant×månad-enheter i Signal Lab 3. Signal Lab 4 räknar därefter +2 först efter varje sparad månadscheckpoint.','','FORSKNINGSDISCIPLIN','Resultatet validerar endast close 83%-hypotesen mot 86%-kontrollen på data som inte användes för att välja 83%. Det får inte beskrivas som helt oberoende OOS för hela strategin.');return L.join('\n')}
 async function v04513Share(){const st=document.getElementById('v04513Status');if(!V04513_RESULT){if(st)st.textContent='Ingen Signal Lab 4-rapport finns ännu.';return false}const text=v04513Report(),date=new Date().toISOString().slice(0,10),name=`LINAS_OPTI_SIGNAL_LAB_4_CLOSE83_HOLDOUT_V04513_${date}.txt`;if(!v0451IsIOS()){v0451DownloadText(text,name);if(st)st.textContent=`✓ Signal Lab 4-rapport nedladdad: ${name}`;return true}const file=new File([text],name,{type:'text/plain;charset=utf-8'});try{if(navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}))){await navigator.share({title:'Linas Opti Signal Lab 4',files:[file]});return true}}catch(e){if(e?.name==='AbortError')return false}v0451DownloadText(text,name);return true}
-window.addEventListener('DOMContentLoaded',()=>{document.getElementById('v04513Run')?.addEventListener('click',v04513Run);document.getElementById('v04513Share')?.addEventListener('click',v04513Share);v04513Paint();const jump=document.getElementById('v0413LabJump');if(jump){jump.value='v04513Lab';try{localStorage.setItem('linasopti_testlab_selected_v0423','v04513Lab')}catch{}jump.dispatchEvent(new Event('change'))}const cp=v04513Load();if(cp&&cp.nextIndex>0){const st=document.getElementById('v04513Status'),bar=document.getElementById('v04513Bar'),months=v04513Months();if(st)st.textContent=`Sparad delkörning ${cp.nextIndex}/${months.length} månader · tryck Fortsätt.`;if(bar)bar.style.width=`${cp.nextIndex/months.length*100}%`;v04513RunLabel(true)}});
+window.addEventListener('DOMContentLoaded',()=>{document.getElementById('v04513Run')?.addEventListener('click',v04513Run);document.getElementById('v04513Share')?.addEventListener('click',v04513Share);v04513Paint();const jump=document.getElementById('v0413LabJump');if(jump){/* V0.45.14: Robustness Lab 1 owns latest-lab selection. */}const cp=v04513Load();if(cp&&cp.nextIndex>0){const st=document.getElementById('v04513Status'),bar=document.getElementById('v04513Bar'),months=v04513Months();if(st)st.textContent=`Sparad delkörning ${cp.nextIndex}/${months.length} månader · tryck Fortsätt.`;if(bar)bar.style.width=`${cp.nextIndex/months.length*100}%`;v04513RunLabel(true)}});
 
 
 // ============================================================
