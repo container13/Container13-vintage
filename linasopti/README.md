@@ -1,3 +1,35 @@
+# V0.45.8 – Signal Lab 1 · Filtertratten
+
+Byggd direkt från V0.45.7. Ingen signal-, Entry B-, Strong-regim-, exit-, friktions-, Day Selection- eller Worker-logik ändrad.
+
+## Nytt i V0.45.8
+- Nytt diagnostiskt Testlab: **Signal Lab 1 · Filtertratten**.
+- Mäter samma frysta Jägare stegvis: **rå teknisk observation → PRO2-kvalitet → Entry B → Strong-regim → slutligt godkänd kandidat**.
+- Visar total tratt samt samma steg **per symbol** och **per år**.
+- Ingen tröskel optimeras och inga alternativa strategier simuleras.
+- Checkpoint sparas efter varje helt färdig månad och körningen kan återupptas efter avbrott/sidomladdning.
+- Samma retry-funktion som tidigare långkörningar används vid datahämtning.
+- Simuleringsräknaren ökar med **1 först när hela Signal Lab 1 är färdigkört**.
+- Rapport: `LINAS_OPTI_SIGNAL_LAB_1_FILTERTRATTEN_V0458_YYYY-MM-DD.txt`.
+- Signal Lab 1 ligger överst/förvalt i Testlabs rullgardinsmeny.
+
+## Varför Signal Lab byggdes
+Kapital Lab 3 gav ett tydligt diagnostiskt besked: 0 positioner vid **94,30%** av observerade 5-min-tidpunkter, någon position endast **5,70%**, 3 samtidiga positioner endast **0,69%**, och dagar med någon position **334/950 (35,2%)**. Samtidigt blockerades 70 kandidater av 3-positionersgränsen och 38 av max 4 entries/dag. Huvudflaskhalsen bedöms därför ligga i **signalflödet**, inte i tillåtet kapital eller antal positioner.
+
+Signal Lab 1 ska därför inte försöka skapa fler affärer. Det ska först lokalisera **vilket fryst filter som står för det största bortfallet**, totalt och per symbol/år. Ett eventuellt nästa experiment ska förregistreras separat utifrån denna diagnostik.
+
+## Forskningsstatus efter Kapital Lab 1–3
+- Kapital Lab 1: **3 samtidiga positioner** är forskningskandidat.
+- Kapital Lab 2: **33,3% max per position** gav högst slutvärde, men främst genom linjär skalning av befintlig edge.
+- Kapital Lab 3: genomsnittligt kapital i arbete **2,81%**; flaskhalsen är främst signalflödet.
+- Kapital Lab pausas tills vidare.
+- Robotmognad ligger kvar på **48/100**; Signal Lab 1 är diagnostik och är inte ny OOS-validering.
+
+## README- och chattöverlämningsregel
+README ska fortsatt bära kompakt projekthistorik, viktiga versioner, forskningsresultat, beslut, frysta delar, större buggar/fixar och varför nästa steg valdes. När arbetschatten börjar bli lång ska ChatGPT proaktivt skapa en överlämningssammanfattning innan kontext riskerar att gå förlorad.
+
+---
+
 # V0.45.7 – Kapital Lab 3 · kapitalutnyttjande
 
 Byggd direkt från V0.45.6. Ingen signal-, Entry B-, Strong-regim-, exit-, friktions-, Day Selection- eller Worker-logik ändrad.

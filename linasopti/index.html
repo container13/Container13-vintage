@@ -43,7 +43,8 @@
     <button type="button" class="v0424-subtab" data-pane="result">Resultat</button>
   </div>
   <label id="v0423LabPick" class="v0424-labpick" hidden><span class="v0425-labtag">LABB</span><select id="v0413LabJump" aria-label="Välj Testlab">
-    <option value="v0457Lab">🔎 Kapital Lab 3 · kapitalutnyttjande (senaste)</option>
+    <option value="v0458Lab">🔬 Signal Lab 1 · Filtertratten (senaste)</option>
+    <option value="v0457Lab">🔎 Kapital Lab 3 · kapitalutnyttjande</option>
     <option value="v0452Lab">📐 Kapital Lab 2 · positionsstorlek</option>
     <option value="v0450Lab">💰 Kapital Lab 1 · samtidiga positioner</option>
     <option value="v0440Lab">🏁 Jägaren · 2023→nu</option>
@@ -344,6 +345,19 @@
 
 
 <section id="pane-testlab" class="hidden">
+
+<div id="v0458Lab" class="card v0410-lab v0413-lab-section vlab-v0458Lab">
+  <div class="v0410-labtitle"><span class="v0410-flask">🔬</span><div><h2>Signal Lab 1 · Filtertratten</h2></div></div>
+  <button id="v0458Run" class="primary v0410-big">▶ Kör Signal Lab 1 · diagnostik</button>
+  <div id="v0458Status" class="v0410-status v0424-runstatus">Redo · Jägaren är fryst. Labbet mäter var kandidater försvinner utan att ändra någon regel.</div><div class="v0410-progress"><div id="v0458Bar"></div></div>
+  <p class="muted">Tratten följer samma frysta Jägare: rå teknisk observation → PRO2-kvalitet → Entry B → Strong-regim → slutligt godkänd kandidat. Resultat bryts även ned per symbol och år.</p>
+  <div id="v0458Summary" class="v0410-summary muted">Ingen körning ännu.</div>
+  <div class="table-scroll"><table><thead><tr><th>Steg</th><th>Kvar</th><th>Andel av föregående</th></tr></thead><tbody id="v0458Rows"></tbody></table></div>
+  <h3>Bortfall per symbol</h3><div class="table-scroll"><table><thead><tr><th>Symbol</th><th>Rå</th><th>PRO2</th><th>Entry B</th><th>Strong</th><th>Godkänd</th></tr></thead><tbody id="v0458SymbolRows"></tbody></table></div>
+  <h3>Bortfall per år</h3><div class="table-scroll"><table><thead><tr><th>År</th><th>Rå</th><th>PRO2</th><th>Entry B</th><th>Strong</th><th>Godkänd</th></tr></thead><tbody id="v0458YearRows"></tbody></table></div>
+  <button id="v0458Share" class="secondary" disabled>Ladda ner / Dela Signal Lab 1</button>
+</div>
+
 <div id="v0457Lab" class="card v0410-lab v0413-lab-section vlab-v0457Lab">
   <div class="v0410-labtitle"><span class="v0410-flask">🔎</span><div><h2>Kapital Lab 3 · Varför används så lite kapital?</h2></div></div>
   <button id="v0457Run" class="primary v0410-big">▶ Kör Kapital Lab 3 · diagnostik</button>
@@ -567,7 +581,7 @@
   }
   btn.addEventListener("click", unlock);
   input.addEventListener("keydown", e=>{ if(e.key==="Enter"){e.preventDefault();unlock();}});
-  // V0.45.7: do not force scroll/focus when Chrome resumes an already open tab.
+  // V0.45.8: do not force scroll/focus when Chrome resumes an already open tab.
   // This keeps the exact view the user left and avoids unnecessary repaint work.
   window.addEventListener("pageshow", (e)=>{
     if(!e.persisted && !sessionStorage.getItem("linasopti_unlocked")) window.scrollTo(0,0);
@@ -579,5 +593,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.45.7"></script>
+<script src="linasopti.js?v=0.45.8"></script>
 </body></html>
