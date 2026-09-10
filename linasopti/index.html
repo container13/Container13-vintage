@@ -9,14 +9,14 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.48.0">
+<link rel="stylesheet" href="linasopti.css?v=0.49.0">
 </head>
 <body class="v0384-locked">
 
 <div id="v0383Gate" class="v0383-gate" aria-hidden="false">
   <div class="v0383-gate-card">
     <h1>Linas Opti</h1>
-    <div class="v04512-gate-version" aria-label="Version">V0.48.0</div>
+    <div class="v04512-gate-version" aria-label="Version">V0.49.0</div>
     <p>Ange lösenkod för att fortsätta</p>
     <input id="v0383Code" name="lina_one_time_code_0470" type="password" inputmode="text" autocomplete="one-time-code" autocapitalize="off" autocorrect="off" spellcheck="false" value="" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" placeholder="Lösenkod">
     <button id="v0383Enter" type="button">Öppna Linas Opti</button>
@@ -27,7 +27,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.48.0</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.49.0</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">48/100</b><small>Forskningsfas</small></button>
@@ -47,7 +47,10 @@
     <button type="button" class="v0424-subtab" data-pane="result">Resultat</button>
   </div>
   <label id="v0423LabPick" class="v0424-labpick" hidden><span class="v0425-labtag">LABB</span><select id="v0413LabJump" aria-label="Välj Testlab">
-    <option value="v0480ELab">🧬 Validation Suite E · Statistik & Monte Carlo · 10 tester (senaste)</option>
+    <option value="v0490HLab">🧱 Validation Suite H · Blockstress & borttagning · 10 tester (senaste)</option>
+    <option value="v0490GLab">📐 Validation Suite G · Trade-geometri & exits · 10 tester</option>
+    <option value="v0490FLab">🧭 Validation Suite F · Sekvens & tidsberoende · 10 tester</option>
+    <option value="v0480ELab">🧬 Validation Suite E · Statistik & Monte Carlo · 10 tester</option>
     <option value="v0480DLab">🧩 Validation Suite D · Bredd & beroenden · 10 tester</option>
     <option value="v0480CLab">⏱️ Validation Suite C · Tidsstruktur · 10 tester</option>
     <option value="v0470Lab">🧪 Validation Suite B · 12 tester</option>
@@ -360,6 +363,88 @@
 <section id="pane-testlab" class="hidden">
 
 
+
+<div id="v0490HLab" class="card v0410-lab v0413-lab-section vlab-v0490HLab">
+  <div class="v0410-labtitle"><span class="v0410-flask">🧱</span><div>
+    <h2>Validation Suite H · Blockstress & borttagning <button class="v0470-help" data-v49help="H:suite">?</button></h2>
+    <p>10 leave-block-out och tail-stresstester</p>
+  </div></div>
+  <div class="v0460-lock">🔒 Samma frysta 83%-Jägare · lokal analys av sparade Suite A-affärer · inga regeländringar</div>
+  <div class="v0470-bactions">
+    <button id="v0490HRunAll" class="primary v0410-big">▶ Kör alla 10 tester</button>
+    <button id="v0490HRunNext" class="secondary">▶ Kör nästa test</button>
+  </div>
+  <div id="v0490HStatus" class="v0410-status">Redo · ingen ny datascan behövs.</div>
+  <div class="v0470-progresshead"><b>Suite H</b><span id="v0490HPct">0/10</span></div>
+  <div class="v0410-progress"><div id="v0490HBar"></div></div>
+  <div class="table-scroll"><table><thead><tr><th>#</th><th>Test</th><th>Bedömning</th><th>?</th></tr></thead><tbody id="v0490HRows"></tbody></table></div>
+  <div id="v0490HSummary" class="v0410-summary muted">Ingen körning ännu.</div>
+  <div class="v0470-bactions">
+    <button id="v0490HReport" class="secondary" disabled>📄 Suite H-rapport</button>
+    <button id="v0490HRaw" class="secondary" disabled>🧾 Suite H JSON</button>
+  </div>
+  <p class="muted">Diagnostik på redan använd historik · inte nytt orört OOS-bevis.</p>
+</div>
+
+<div id="v0490GLab" class="card v0410-lab v0413-lab-section vlab-v0490GLab">
+  <div class="v0410-labtitle"><span class="v0410-flask">📐</span><div>
+    <h2>Validation Suite G · Trade-geometri & exits <button class="v0470-help" data-v49help="G:suite">?</button></h2>
+    <p>10 tester av R-multiplar, storlek, entry/exit och hålltid</p>
+  </div></div>
+  <div class="v0460-lock">🔒 Samma frysta 83%-Jägare · lokal analys av sparade Suite A-affärer · inga regeländringar</div>
+  <div class="v0470-bactions">
+    <button id="v0490GRunAll" class="primary v0410-big">▶ Kör alla 10 tester</button>
+    <button id="v0490GRunNext" class="secondary">▶ Kör nästa test</button>
+  </div>
+  <div id="v0490GStatus" class="v0410-status">Redo · ingen ny datascan behövs.</div>
+  <div class="v0470-progresshead"><b>Suite G</b><span id="v0490GPct">0/10</span></div>
+  <div class="v0410-progress"><div id="v0490GBar"></div></div>
+  <div class="table-scroll"><table><thead><tr><th>#</th><th>Test</th><th>Bedömning</th><th>?</th></tr></thead><tbody id="v0490GRows"></tbody></table></div>
+  <div id="v0490GSummary" class="v0410-summary muted">Ingen körning ännu.</div>
+  <div class="v0470-bactions">
+    <button id="v0490GReport" class="secondary" disabled>📄 Suite G-rapport</button>
+    <button id="v0490GRaw" class="secondary" disabled>🧾 Suite G JSON</button>
+  </div>
+  <p class="muted">Diagnostik på redan använd historik · inte nytt orört OOS-bevis.</p>
+</div>
+
+<div id="v0490FLab" class="card v0410-lab v0413-lab-section vlab-v0490FLab">
+  <div class="v0410-labtitle"><span class="v0410-flask">🧭</span><div>
+    <h2>Validation Suite F · Sekvens & tidsberoende <button class="v0470-help" data-v49help="F:suite">?</button></h2>
+    <p>10 tester av seriekorrelation, streaks, dags- och månadsstruktur</p>
+  </div></div>
+  <div class="v0460-lock">🔒 Samma frysta 83%-Jägare · lokal analys av sparade Suite A-affärer · inga regeländringar</div>
+  <div class="v0470-bactions">
+    <button id="v0490FRunAll" class="primary v0410-big">▶ Kör alla 10 tester</button>
+    <button id="v0490FRunNext" class="secondary">▶ Kör nästa test</button>
+  </div>
+  <div id="v0490FStatus" class="v0410-status">Redo · ingen ny datascan behövs.</div>
+  <div class="v0470-progresshead"><b>Suite F</b><span id="v0490FPct">0/10</span></div>
+  <div class="v0410-progress"><div id="v0490FBar"></div></div>
+  <div class="table-scroll"><table><thead><tr><th>#</th><th>Test</th><th>Bedömning</th><th>?</th></tr></thead><tbody id="v0490FRows"></tbody></table></div>
+  <div id="v0490FSummary" class="v0410-summary muted">Ingen körning ännu.</div>
+  <div class="v0470-bactions">
+    <button id="v0490FReport" class="secondary" disabled>📄 Suite F-rapport</button>
+    <button id="v0490FRaw" class="secondary" disabled>🧾 Suite F JSON</button>
+  </div>
+  <p class="muted">Diagnostik på redan använd historik · inte nytt orört OOS-bevis.</p>
+</div>
+<div class="card v0410-lab v0413-lab-section vlab-v0490FLab vlab-v0490GLab vlab-v0490HLab">
+  <h3>⚡ Snabbkörning F + G + H</h3>
+  <p>Alla 30 tester använder lokalt sparade affärer. Ingen API-hämtning.</p>
+  <button id="v0490RunFGH" class="primary v0410-big">▶ Kör alla 30 tester</button>
+  <div class="v0470-bactions">
+    <button id="v0490FGHReport" class="secondary">📚 Samlad F+G+H-rapport</button>
+    <button id="v0490FGHBackup" class="secondary">💾 F+G+H JSON-backup</button>
+  </div>
+  <div id="v0490FGHStatus" class="v0410-status">Redo.</div>
+</div>
+
+<div id="v0490HelpModal" class="v0460-modal" hidden><div class="v0460-modalbox">
+<button id="v0490HelpClose" class="v0460-close">×</button><h3 id="v0490HelpTitle"></h3><div id="v0490HelpBody"></div></div></div>
+<div id="v0490DetailModal" class="v0460-modal" hidden><div class="v0460-modalbox">
+<button id="v0490DetailClose" class="v0460-close">×</button><h3 id="v0490DetailTitle"></h3><div id="v0490DetailBody"></div>
+<button id="v0490ExportOne" class="secondary">📄 Exportera detta test</button></div></div>
 <div id="v0480ELab" class="card v0410-lab v0413-lab-section vlab-v0480ELab">
   <div class="v0410-labtitle"><span class="v0410-flask">🧬</span><div>
     <h2>Validation Suite E · Statistik & Monte Carlo <button class="v0470-help" data-v48help="E:suite">?</button></h2>
@@ -817,5 +902,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.48.0"></script>
+<script src="linasopti.js?v=0.49.0"></script>
 </body></html>

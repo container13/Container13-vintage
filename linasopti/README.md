@@ -1,6 +1,6 @@
-# Linas Opti V0.48.0
+# Linas Opti V0.49.0
 
-> **Aktuell release: V0.48.0** · Validation Suite A–E · 49 tester/steg totalt · Handel AV · Close ≥83% fryst kandidat · Robotmognad 48/100
+> **Aktuell release: V0.49.0** · Validation Suite A–H · 79 tester/steg totalt · Handel AV · Close ≥83% fryst kandidat · Robotmognad 48/100
 
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
@@ -591,3 +591,23 @@ Totalt i A–E: 7 + 12 + 10 + 10 + 10 = 49 steg/tester.
 
 
 V0.48.0 exporttillägg: snabbkörningen C+D+E har även en samlad TXT-rapport och en samlad JSON-backup med alla tre sviterna, regelhash och datafingerprint. Detta gör att hela 30-testpaketet kan lämnas till ChatGPT/analyseras senare utan tre separata råfiler.
+
+
+## V0.49.0 – Validation Suites F, G och H
+
+Ytterligare 30 lokala diagnostiska tester. Ingen handelsregel ändrad. Close ≥83% fortsatt fryst kandidat. Robotmognad kvar 48/100.
+
+### Suite F – Sekvens & tidsberoende · 10 tester
+P/L-autokorrelation lag 1; vinst/förlust-övergångar; efter förlust; efter tre raka förluster; månadsautokorrelation; kvartalsautokorrelation; första/andra halvan av månaden; månadens början/slut; dagsklustring; daglig expectancy.
+
+### Suite G – Trade-geometri & exits · 10 tester
+Realiserad R-multipel; riskbelopp; andel målträffar; andel stoppar; andel max-60-exits; hålltid × P/L; entrypris-kvartiler; positionsstorleks-kvartiler; equity-kvartiler; exitavstånd från entry.
+
+### Suite H – Blockstress & borttagning · 10 tester
+Leave-one-month-out; leave-one-quarter-out; leave-one-year-out; leave-one-weekday-out; leave-one-timebucket-out; ta bort bästa månaden; ta bort tre bästa månader; winsorize 1%; winsorize 2,5%; udda vs jämna handelsdagar.
+
+Ny snabbknapp **Kör alla 30 tester** kör F → G → H lokalt. Varje test sparas direkt. Separata TXT/RAW JSON per svit plus samlad F+G+H TXT och JSON-backup.
+
+Totalt A–H: 7 + 12 + 10 + 10 + 10 + 10 + 10 + 10 = 79 steg/tester.
+
+Alla F–H-resultat är diagnostik på återanvänd historik, inte nytt orört OOS-bevis. Ingen parameteroptimering eller automatisk räddning.
