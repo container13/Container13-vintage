@@ -774,3 +774,82 @@ html[data-research-mode="testlab"] #v0424TesterNav{display:none!important}
   #pane-testlab .secondary{width:100%;min-height:56px;border-radius:16px;font-size:16px}
 }
 \n\n/* V0.43.4 – sista kvällsfix: balans, position, återupptagning */\n.v0424-enginepick select,.v0424-labpick select{min-height:62px!important;font-size:18px!important;border-radius:18px!important;padding:0 18px!important}\n.v0424-subtab{min-height:62px!important;font-size:18px!important;border-radius:18px!important}\n.v0434-afterrun{margin:10px 4px 2px;line-height:1.45;font-size:14px}\n#v0430Lab,#v0431Lab{scroll-margin-top:14px}\n@media(max-width:560px){\n .v0424-enginepick select,.v0424-labpick select,.v0424-subtab{min-height:60px!important;font-size:17px!important}\n #pane-testlab .v0410-big{min-height:60px!important;font-size:16px!important;border-radius:18px!important}\n #pane-testlab .v0410-labtitle h2{font-size:20px!important}\n .v0434-afterrun{font-size:13px;margin-top:9px}\n}\n
+/* V0.44.1 – Responsive Desktop
+   Desktop-only layout polish. Mobile/tablet rules above are intentionally untouched. */
+@media (min-width:1200px){
+  .wrap{max-width:1480px;padding-left:32px;padding-right:32px}
+
+  /* Keep the control centre readable instead of stretching across a 24-inch screen. */
+  .sticky-top header,
+  .v0413-dashboard,
+  #v0413Info,
+  .v0424-researchbar{
+    width:min(100%,1320px);
+    margin-left:auto;
+    margin-right:auto;
+  }
+  .sticky-top header{padding-top:2px}
+  .v0413-dashboard{gap:14px}
+  .v0413-stat{min-height:82px;padding:14px 18px}
+
+  /* Research navigation: compact control-panel proportions on desktop. */
+  .v0424-researchbar{
+    grid-template-columns:auto minmax(300px,420px) minmax(0,1fr);
+    gap:12px;
+    align-items:center;
+    padding:10px 12px;
+  }
+  .v0425-navlabel{white-space:nowrap}
+  .v0424-enginepick select,
+  .v0424-labpick select,
+  .v0424-subtab{
+    min-height:56px!important;
+    font-size:16px!important;
+    border-radius:16px!important;
+  }
+  .v0424-testernav{gap:10px}
+  .v0424-labpick{grid-column:3;min-width:0}
+
+  /* Main work area gets a deliberate desktop width. */
+  #pane-data,#pane-test,#pane-result,#pane-testlab{
+    width:min(100%,1280px);
+    margin-left:auto;
+    margin-right:auto;
+  }
+  #pane-testlab{max-width:1180px!important}
+  #pane-testlab > .v0413-lab-section,
+  #pane-testlab > .card{max-width:1180px!important;margin-left:auto!important;margin-right:auto!important}
+
+  /* Data page becomes a real two-column desktop workspace. */
+  #pane-data > .card:first-child > .row{
+    display:grid;
+    grid-template-columns:minmax(0,1.05fr) minmax(420px,.95fr);
+    grid-template-rows:auto auto auto auto;
+    gap:14px 18px;
+    align-items:start;
+  }
+  #pane-data > .card:first-child > .row > .v29-market-box{grid-column:1;grid-row:1 / span 3}
+  #pane-data > .card:first-child > .row > label{grid-column:2;grid-row:1}
+  #pane-data > .card:first-child > .row > .v0404-dataflow{grid-column:2;grid-row:2}
+  #pane-data > .card:first-child > .row > #bridgeStatus{grid-column:1;grid-row:4;margin-top:0}
+  #pane-data > .card:first-child > .row > #v0368DataReady{grid-column:2;grid-row:3}
+  #pane-data > .card:first-child > .row > #providerInfo{grid-column:2;grid-row:4}
+  .v29-market-buttons{gap:10px}
+  .market-btn{min-height:52px}
+
+  /* Testlab is a focused workstation, not a stretched mobile card. */
+  #pane-testlab .v0410-big{min-height:58px;font-size:17px}
+  #pane-testlab .table-scroll{max-width:100%}
+  #pane-testlab .table-scroll table{width:100%;min-width:760px}
+
+  /* Slightly denser desktop typography/cards while preserving touch sizes. */
+  .card{border-radius:20px}
+  .card h2{font-size:20px}
+  .note{max-width:1180px;margin-left:auto;margin-right:auto}
+}
+
+@media (min-width:1700px){
+  .wrap{max-width:1540px}
+  .sticky-top header,.v0413-dashboard,#v0413Info,.v0424-researchbar{width:min(100%,1360px)}
+  #pane-data,#pane-test,#pane-result{width:min(100%,1320px)}
+}
