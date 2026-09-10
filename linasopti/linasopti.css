@@ -853,3 +853,84 @@ html[data-research-mode="testlab"] #v0424TesterNav{display:none!important}
   .sticky-top header,.v0413-dashboard,#v0413Info,.v0424-researchbar{width:min(100%,1360px)}
   #pane-data,#pane-test,#pane-result{width:min(100%,1320px)}
 }
+
+/* V0.44.2 – Desktop alignment pass
+   Desktop only: one shared centered grid for header, dashboard, research nav and work panes. */
+@media (min-width:1200px){
+  :root{--desktop-shell:1180px;--desktop-gap:14px}
+
+  .sticky-top header,
+  .v0413-dashboard,
+  #v0413Info,
+  .v0424-researchbar,
+  #pane-data,
+  #pane-test,
+  #pane-result,
+  #pane-testlab,
+  .note{
+    width:min(calc(100% - 48px),var(--desktop-shell))!important;
+    max-width:var(--desktop-shell)!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    box-sizing:border-box;
+  }
+
+  /* The research row now uses one stable grid in both Tester and Testlab modes. */
+  .v0424-researchbar{
+    display:grid!important;
+    grid-template-columns:86px 300px minmax(0,1fr)!important;
+    column-gap:var(--desktop-gap)!important;
+    align-items:center!important;
+    padding:10px 12px!important;
+  }
+  .v0425-navlabel{grid-column:1!important;margin:0!important;justify-self:start}
+  .v0424-enginepick{grid-column:2!important;width:100%!important;margin:0!important}
+  .v0424-enginepick select{width:100%!important}
+  .v0424-testernav{
+    grid-column:3!important;
+    width:100%!important;
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:10px!important;
+    margin:0!important;
+  }
+  .v0424-labpick{
+    grid-column:3!important;
+    width:100%!important;
+    min-width:0!important;
+    margin:0!important;
+    display:grid!important;
+    grid-template-columns:auto minmax(0,1fr)!important;
+    gap:10px!important;
+    align-items:center!important;
+  }
+  .v0424-labpick[hidden]{display:none!important}
+  .v0424-labpick select{width:100%!important;min-width:0!important;margin:0!important}
+  .v0425-labtag{margin:0!important;white-space:nowrap}
+
+  /* Work cards share the same visual centreline as the controls above. */
+  #pane-data > .card,
+  #pane-test > .card,
+  #pane-result > .card,
+  #pane-testlab > .card,
+  #pane-testlab > .v0413-lab-section{
+    width:100%!important;
+    max-width:100%!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    box-sizing:border-box;
+  }
+
+  /* Data workspace: balanced columns and no drifting middle seam. */
+  #pane-data > .card:first-child > .row{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    column-gap:28px!important;
+  }
+
+  /* Jägaren/Testlab buttons stay substantial without becoming a full-screen bar. */
+  #pane-testlab .v0410-big{width:100%!important;max-width:100%!important}
+}
+
+@media (min-width:1700px){
+  :root{--desktop-shell:1240px}
+}

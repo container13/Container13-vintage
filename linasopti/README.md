@@ -1,3 +1,12 @@
+# V0.44.2 – Desktop alignment
+
+- Desktop-only alignment pass; mobile rules unchanged.
+- Header, dashboard, research navigation and work panes now share one centered desktop shell.
+- Tester/Testlab use the same stable three-column navigation grid.
+- Labb selector aligns with Data/Test/Resultat instead of drifting horizontally.
+- Data workspace columns are balanced around the same centreline.
+- No strategy, data, Worker, Jägaren or Testlab logic changed.
+
 # Linas Opti V0.44.1 – Responsive Desktop
 
 Desktop-only responsive polish for 13–24 inch screens. Mobile layout and all trading/research logic are unchanged. Adds constrained desktop work widths, a balanced research/navigation bar, two-column Data workspace and centered Testlab workspace.
