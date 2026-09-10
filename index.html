@@ -1,610 +1,1169 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="sv">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f4f6f8">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Vintage &amp; second hand i Hudiksvall | Container 13</title>
+<meta name="description" content="Vintage, secondhand och begagnade kläder i Hudiksvall. Hitta handplockade retrokläder, vintagejeans, fotbollströjor, boots och accessoarer.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://container13.se/">
+
+<meta property="og:locale" content="sv_SE">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Container 13 Vintage">
+<meta property="og:title" content="Vintage &amp; second hand i Hudiksvall | Container 13">
+<meta property="og:description" content="Vintage, second hand och begagnade kläder i Hudiksvall – retrokläder, vintagejeans, fotbollströjor, boots och accessoarer.">
+<meta property="og:url" content="https://container13.se/">
+<meta property="og:image" content="https://container13.se/bilder/logotyp/logo.png">
+<meta property="og:image:width" content="1642">
+<meta property="og:image:height" content="741">
+<meta property="og:image:alt" content="Container 13 Vintage i Hudiksvall">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ClothingStore",
+  "@id": "https://container13.se/#butik",
+  "name": "Container 13 Vintage",
+  "description": "Personlig vintage-, retro- och second hand-butik i Hudiksvall med handplockade begagnade kläder, vintagejeans, fotbollströjor, boots och accessoarer.",
+  "url": "https://container13.se/",
+  "logo": "https://container13.se/bilder/logotyp/logo.png",
+  "image": "https://container13.se/bilder/logotyp/logo.png",
+  "telephone": "+46725270235",
+  "email": "alvinbrisvag@outlook.com",
+  "priceRange": "$$",
+  "currenciesAccepted": "SEK",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Marknadsgatan 1A",
+    "postalCode": "824 32",
+    "addressLocality": "Hudiksvall",
+    "addressCountry": "SE"
+  },
+  "sameAs": [
+    "https://www.facebook.com/61590920005705",
+    "https://www.instagram.com/container.13",
+    "https://www.tiktok.com/@container.13"
+  ]
+}
+</script>
+
 <link rel="manifest" href="manifest.webmanifest">
-<title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.45.7">
-</head>
-<body class="v0384-locked">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#f8f5ef">
+<script src="js/theme-init.js?v=1.0.0"></script>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Container13">
 
-<div id="v0383Gate" class="v0383-gate" aria-hidden="false">
-  <div class="v0383-gate-card">
-    <h1>Linas Opti</h1>
-    <p>Ange lösenkod för att fortsätta</p>
-    <input id="v0383Code" type="password" inputmode="text" autocomplete="off" placeholder="Lösenkod">
-    <button id="v0383Enter" type="button">Öppna Linas Opti</button>
-    <div id="v0383GateMsg" class="v0383-gate-msg"></div>
-  </div>
-</div>
+<link rel="stylesheet" href="css/style.css?v=6.10.30">
 
-<div class="lina-watermark" aria-hidden="true"></div>
-<div class="wrap">
-<div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.45.6</div></div></div></div></header>
-
-<div class="v0413-dashboard" aria-label="Linas robotstatus">
-  <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">48/100</b><small>Forskningsfas</small></button>
-  <button type="button" id="v0413Sims" class="v0413-stat" aria-label="Visa simuleringsstatistik"><span>🧪 Simuleringar</span><b id="v0413SimValue">≥ 19 741</b><small>registrerade</small></button>
-</div>
-<div id="v0413Info" class="v0413-info" hidden></div>
-
-<div class="v0424-researchbar" aria-label="Forskningsmotor">
-  <div class="v0425-navlabel">🔬 FORSKNING</div>
-  <label class="v0424-enginepick"><select id="v0423Engine" aria-label="Forskningsmotor">
-    <option value="tester">Tester</option>
-    <option value="testlab">Testlab</option>
-  </select></label>
-  <div id="v0424TesterNav" class="v0424-testernav" aria-label="Tester">
-    <button type="button" class="v0424-subtab active" data-pane="data">Data</button>
-    <button type="button" class="v0424-subtab" data-pane="test">Test</button>
-    <button type="button" class="v0424-subtab" data-pane="result">Resultat</button>
-  </div>
-  <label id="v0423LabPick" class="v0424-labpick" hidden><span class="v0425-labtag">LABB</span><select id="v0413LabJump" aria-label="Välj Testlab">
-    <option value="v0459Lab">🧬 Signal Lab 2 · Entry B-dissektion (senaste)</option>
-    <option value="v0458Lab">🔬 Signal Lab 1 · Filtertratten</option>
-    <option value="v0457Lab">🔎 Kapital Lab 3 · kapitalutnyttjande</option>
-    <option value="v0452Lab">📐 Kapital Lab 2 · positionsstorlek</option>
-    <option value="v0450Lab">💰 Kapital Lab 1 · samtidiga positioner</option>
-    <option value="v0440Lab">🏁 Jägaren · 2023→nu</option>
-    <option value="v0430Lab">🔎 Day Selection 1 · Urval</option>
-    <option value="v0431Lab">🧭 Day Selection 2 · OOS</option>
-    <option value="v0423Lab">🌤️ Regim Lab 2 · OOS</option>
-    <option value="v0422Lab">🌦️ Regim Lab 1 · Marknadsfilter</option>
-    <option value="v0421Lab">🧪 Entry Lab 2 · Orörda perioder</option>
-    <option value="v0420Lab">🎯 Entry Lab 1 · Entrykarta</option>
-    <option value="v0412Lab">🧬 Exit Lab 2 · Parameterkarta</option>
-    <option value="v0411Lab">🔬 Exit Lab 1</option>
-    <option value="v0410Lab">🧪 Kontrollserie · 10 eldprov</option>
-  </select></label>
-</div>
-</div>
-
-<section id="pane-data">
-
-
-
-
-<div class="card">
-<h2>Marknadsdata via Linas Opti API</h2>
-<div class="row">
-<div class="v29-market-box">
-  <div class="v29-market-title"><b>Marknadsgrupp</b><span id="marketGroupInfo">USA Core · 10 aktier + SPY</span></div>
-  <div class="v29-market-buttons" role="group" aria-label="Marknadsgrupp">
-    <button type="button" class="market-btn market-selection" data-market="linaSelection16">⭐ Lina Selection 16</button>
-    <button type="button" class="market-btn active" data-market="usa10">USA Core</button>
-    <button type="button" class="market-btn" data-market="usa20">USA 20</button>
-    <button type="button" class="market-btn" data-market="usa30">USA 30</button>
-    <button type="button" class="market-btn market-nordic" data-market="sweden20">🇸🇪 Sverige 20</button>
-    <button type="button" class="market-btn market-nordic" data-market="denmark20">🇩🇰 Danmark 20</button>
-    <button type="button" class="market-btn market-nordic" data-market="finland20">🇫🇮 Finland 20</button>
-    <button type="button" class="market-btn market-nordic" data-market="norway20">🇳🇴 Norge 20</button>
-    <button type="button" class="market-btn market-nordic" data-market="globalNordic">🌍 Norden 80</button>
-    <button type="button" class="market-btn" data-market="worldRegions20">🌐 Världsregioner 20</button>
-    <button type="button" class="market-btn" data-market="worldExUs20">🌎 Ex-USA 20</button>
-    <button type="button" class="market-btn" data-market="usaWorld50">🚀 USA + Värld 50</button>
-    <button type="button" class="market-btn" data-market="globalStocks100">🌍 Global Stocks 100</button>
-  </div>
-  <div class="muted v29-market-note">⭐ Lina Selection 16 är ett historikbaserat urval från våra tidigare tester och använder Alpaca + SPY som benchmark. USA och de globala Alpaca-grupperna använder Alpaca; Norden 80 använder EODHD-dagsdata. Alla grupper kör samma frysta Opti Swing och benchmark handlas aldrig. Selection-resultat på överlappande historik är urvalstest – inte oberoende bevis.</div>
-</div>
-<label>Symboler, kommaseparerade<input id="symbols" value="AAPL,MSFT,NVDA,AMZN,META,TSLA,AMD,NFLX,AVGO,JPM,SPY"></label>
-<div class="v0404-dataflow" aria-label="Välj datatyp och period">
-  <div class="v0404-step-title">1. Datatyp</div>
-  <div class="v0404-type-buttons" role="group" aria-label="Datatyp">
-    <button type="button" class="v0404-type-btn active" data-type="daily">📅 Dagsdata</button>
-    <button type="button" class="v0404-type-btn" data-type="intra">⚡ 5-min-data</button>
-  </div>
-
-  <div class="v0404-step-title">2. Period</div>
-  <div id="dailyPeriodPanel" class="v0404-period-panel">
-    <div class="v0383-period-card" aria-label="Välj dagsdataperiod">
-      <div class="v0383-period-title">Dagsdata · Swing + Trend</div>
-      <div class="v0383-quick">
-        <button type="button" data-range-years="1">1 år</button>
-        <button type="button" data-range-years="3">3 år</button>
-        <button type="button" data-range-years="5">5 år</button>
-        <button type="button" data-range-years="10">10 år</button>
-      </div>
-      <div id="v0383Years" class="v0383-years" aria-label="Kalenderår"></div>
-      <details class="v0383-custom">
-        <summary>Egen period</summary>
-        <div class="row" style="margin-top:10px">
-          <label>Från<input id="start" type="date"></label>
-          <label>Till<input id="end" type="date"></label>
-        </div>
-        <div class="muted">Vid snabbval läggs indikatorernas warmup automatiskt före teststart. För egen period kan teststart finjusteras under Test → Avancerat &amp; testinställningar.</div>
-      </details>
-    </div>
-  </div>
-
-  <div id="intraPeriodPanel" class="v0404-period-panel hidden">
-    <div class="v0391-day-fetch" aria-label="Lina Day 5-minutersdata">
-      <div class="v0391-day-title">⚡ Lina Day · Jägaren</div>
-      <div class="muted">PRO 2 är fryst. Välj startdatum och antal handelsdagar.</div>
-      <div class="day-custom-period v0368-day-control" style="margin-top:10px">
-        <label style="display:block;max-width:230px">Startdatum
-          <input id="dayStart" type="date" style="width:100%;margin-top:5px">
-        </label>
-      </div>
-      <div class="day-period-wrap v0368-day-control" aria-label="Valfri Lina Day-period">
-        <span class="period-label">Handelsdagar från start</span>
-        <button type="button" class="day-period-btn" data-days="5">5 dagar</button>
-        <button type="button" class="day-period-btn active" data-days="20">20 dagar</button>
-        <button type="button" class="day-period-btn" data-days="60">60 dagar</button>
-      </div>
-      <div id="dayPeriodStatus" class="muted" style="margin:7px 0 2px">20 handelsdagar valda.</div>
-    </div>
-  </div>
-
-  <div class="v0404-step-title">3. Hämta</div>
-  <button class="primary v0404-fetch" id="fetchDataBtn">Hämta data</button>
-  <button class="secondary v0368-dev-only" id="healthBtn">Testa anslutning</button>
-  <button id="dailyBtn" hidden aria-hidden="true">Hämta dagsdata</button>
-  <button id="intraBtn" hidden aria-hidden="true">Hämta 5-min-data</button>
-</div>
-<div class="status" id="bridgeStatus">Linas Opti API är anslutet via Cloudflare.</div><div id="v0368DataReady" class="v0368-data-ready" hidden>
-<div class="v0368-ready-title">✓ Dagsdata klar</div>
-<div id="v0368ReadyMarket"></div><div id="v0368ReadyRows"></div>
-<div id="v0368ReadyPeriod"></div><div class="v0368-ready-go">Redo att testa</div>
-</div>
-<div class="v31-provider" id="providerInfo">Datakälla: Alpaca · Benchmark: SPY</div>
-</div>
-
-<div class="card v31-nordic-info">
-  <h2>V0.40.2 · PRO 2</h2>
-  <div class="muted">
-    Urvalet är räknat från alla inskickade rapporter, men rankingen använder deduplicerade och kronologiskt korrigerade testfönster så samma körning inte får extra vikt.
-    För själva USA/Alpaca-urvalet användes fem separata miljöer: USA30 2024, 2025 och 2026 samt Global Stocks 100 och USA + Värld 50.
-    Krav: minst 5 affärer, minst 2 testmiljöer, positiv snittaffär, PF &gt; 1 och positivt resultat i minst hälften av miljöerna.
-  </div>
-  <div class="status-box" style="margin-top:10px"><b>Urval:</b> HD, BAC, AMD, INTC, GOOGL, NVDA, CRM, UBER, ADBE, MU, PYPL, AMZN, WMT, CSCO, KO, QCOM</div>
-  <details style="margin-top:10px">
-    <summary><b>Varför just dessa? Visa urvalsstatistik</b></summary>
-    <div class="tablewrap" style="margin-top:8px">
-      <table>
-        <thead><tr><th>Aktie</th><th>Poäng</th><th>Affärer</th><th>Miljöer</th><th>Vinstfrekv.</th><th>Snitt/affär</th></tr></thead>
-        <tbody><tr><td><b>HD</b></td><td>81,6</td><td>5</td><td>4</td><td>100%</td><td>4,51%</td></tr><tr><td><b>BAC</b></td><td>80,9</td><td>7</td><td>5</td><td>85,7%</td><td>5,53%</td></tr><tr><td><b>AMD</b></td><td>75,7</td><td>36</td><td>5</td><td>63,9%</td><td>5,14%</td></tr><tr><td><b>INTC</b></td><td>73,0</td><td>37</td><td>5</td><td>67,6%</td><td>5,84%</td></tr><tr><td><b>GOOGL</b></td><td>64,3</td><td>7</td><td>2</td><td>71,4%</td><td>5,32%</td></tr><tr><td><b>NVDA</b></td><td>64,2</td><td>12</td><td>2</td><td>66,7%</td><td>4,90%</td></tr><tr><td><b>CRM</b></td><td>62,0</td><td>9</td><td>5</td><td>77,8%</td><td>5,30%</td></tr><tr><td><b>UBER</b></td><td>51,3</td><td>5</td><td>2</td><td>60,0%</td><td>2,63%</td></tr><tr><td><b>ADBE</b></td><td>50,2</td><td>5</td><td>3</td><td>60,0%</td><td>4,60%</td></tr><tr><td><b>MU</b></td><td>48,6</td><td>60</td><td>5</td><td>43,3%</td><td>1,30%</td></tr><tr><td><b>PYPL</b></td><td>47,4</td><td>7</td><td>4</td><td>57,1%</td><td>3,07%</td></tr><tr><td><b>AMZN</b></td><td>46,9</td><td>5</td><td>5</td><td>60,0%</td><td>4,13%</td></tr><tr><td><b>WMT</b></td><td>43,2</td><td>8</td><td>4</td><td>75,0%</td><td>0,97%</td></tr><tr><td><b>CSCO</b></td><td>41,8</td><td>10</td><td>4</td><td>60,0%</td><td>1,07%</td></tr><tr><td><b>KO</b></td><td>39,2</td><td>10</td><td>4</td><td>50,0%</td><td>0,78%</td></tr><tr><td><b>QCOM</b></td><td>38,2</td><td>17</td><td>5</td><td>47,1%</td><td>0,83%</td></tr></tbody>
-      </table>
-    </div>
-    <div class="muted" style="margin-top:8px">
-      Poängen väger snittaffär, konsekvens mellan miljöer, profit factor, antal affärer och vinstfrekvens. Små stickprov kan fortfarande se starka ut.
-      Därför är detta ett urvalstest. Nästa riktiga kontroll är att frysa listan och köra den på historik som inte användes när listan valdes.
-    </div>
-  </details>
-</div>
-
-<div class="card v31-nordic-info"><h2>V0.40.2 · PRO 2</h2><div class="muted">Global Stocks 100 använder 99 USA-noterade aktier/ADR:er från flera regioner + VT som benchmark. Baseline Swing är fortfarande fryst. Experimenten nedan ändrar inte baseline och redovisas separat.</div><div class="v29-market-buttons" style="margin-top:10px"><button type="button" class="market-btn" data-v034-mode="baseline">🌍 Global Stocks 100</button><button type="button" class="market-btn" data-v034-mode="momentum">⚡ Global Momentum</button><button type="button" class="market-btn" data-v034-mode="defensive">🛡️ Global Defensive</button><button type="button" class="market-btn" data-v034-mode="simple">🥊 Lina vs enkel momentum</button></div><div id="v034Result" class="status-box" style="margin-top:10px"><span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span></div></div>
-<details class="v0384-tech">
-  <summary>Tekniskt / felsökning</summary>
-  <div class="v0384-tech-inner">
-    <div class="card">
-<h2>Alternativ A — CSV-filer</h2>
-<div class="files">
-<div class="filebox"><b>Sparrobot: dagskurser</b><div class="muted">CSV: timestamp,symbol,open,high,low,close,volume</div><input id="dailyFile" type="file" accept=".csv,text/csv"></div>
-<div class="filebox"><b>Opti Day: 5-minuterskurser</b><div class="muted">Samma kolumner, en rad per 5-minutersbar</div><input id="intraFile" type="file" accept=".csv,text/csv"></div>
-</div>
-<div class="status" id="csvStatus">Du kan läsa in en eller båda filerna. Testerna använder bara den data som finns.</div>
-</div>
-    <div class="card v27-day-start">
-<h2>Opti Day · 5-minutershandel</h2>
-<div class="muted">Första riktiga intradagsmotorn. Signal tas på en avslutad 5-minutersbar och ordern simuleras först på nästa bars öppning. Samma aktie kan handlas flera gånger under dagen, men aldrig samtidigt och aldrig över natten.</div>
-<div class="v27-day-pills"><span>Max 12 affärer/dag</span><span>Max 3/symbol</span><span>Stop 0,8%</span><span>Mål 1,2%</span><span>Max 60 min</span></div>
-</div>
-  </div>
-</details>
-
-</section>
-
-<section id="pane-test" class="hidden">
-<div class="card v036-test-main">
-  <div class="v036-step-title"><span>②</span><div><h2>Redo att testa</h2><div class="muted">Kontrollera sammanfattningen och kör. Strategin ändras inte här.</div></div></div>
-  <div id="v035TestSummary" class="v036-test-summary">Hämta data på fliken Data först.</div>
-  <button class="primary v036-run" id="runBtn">Kör Linas Opti</button>
-  <div id="v0406RunStatus" class="v0406-run-status" hidden aria-live="polite"></div>
-  <div id="testDataStatus" class="status-box">⚪ Dagsdata: ej hämtad<br>⚪ 5-min-data: ej hämtad</div>
-</div>
-
-<details class="card v036-advanced">
-  <summary>Avancerat &amp; testinställningar</summary>
-  <div class="row v036-advanced-grid">
-    <label>Startkapital<input id="capital" type="number" value="100000" min="1000" step="1000"></label>
-    <label>Max position, swing<select id="maxpos"><option value=".10">10%</option><option value=".20" selected>20%</option><option value=".25">25%</option></select></label>
-    <label>Risk/affär, daytrader<select id="risk"><option value=".0025">0,25%</option><option value=".005" selected>0,5%</option><option value=".01">1,0%</option></select></label>
-    <label>Testperiod börjar<input id="evalStart" type="date" value="2026-02-01"></label>
-  </div>
-  <div class="v014-help">Data före teststart används endast för indikatorernas uppvärmning. Daytrader-inställningen påverkar inte Swing.</div>
-</details>
-
-<details class="card v036-advanced">
-  <summary>Experiment &amp; utvecklarinformation</summary>
-  <div class="v30-trend-info"><h3>Opti Trend</h3><div class="muted">Veckovis Top 5 momentum. Fortfarande experimentell och inte huvudtestet.</div></div>
-  <div class="v24-world-info"><h3>Omvärldstest</h3><div class="muted">Tre marknadslägen: grön max 5 positioner, gul max 3, röd inga nya köp. Baslinjen Swing lämnas orörd.</div></div>
-</details>
-</section>
-
-<section id="pane-result" class="hidden">
-<div id="v0406ResultType" class="v0406-result-type" hidden></div>
-<div id="v0365DoneCard" class="card v0365-done" hidden>
-  <div class="v0365-done-title">Testet är klart ✓</div>
-  <div class="muted">Välj vad du vill dela. Nästa tryck öppnar iPhones vanliga delningsruta där AirDrop finns.</div>
-  <div class="v0365-done-buttons">
-    <button type="button" id="v0365ShareFull" class="primary">Full testdata</button>
-    <button type="button" id="v0365ShareQuick" class="secondary">Snabbrapport</button>
-  </div>
-  <div id="v0365ShareStatus" class="v17-status"></div>
-</div>
-
-<div class="grid" style="margin-bottom:14px">
-<div class="kpi"><b>Startkapital</b><span id="kStart">—</span></div>
-<div class="kpi"><b>Period</b><span id="kPeriod">—</span></div>
-<div class="kpi v0406-daily-only"><b>Dagsbarer</b><span id="kDaily">0</span></div>
-<div class="kpi v0366-day-only v0406-intra-only"><b>5-minbarer</b><span id="kIntra">0</span></div>
-</div>
-<div class="card">
-<div class="two">
-<div class="robot v0406-daily-only"><h3>Opti Swing</h3><div class="muted">Momentum + mean-reversion, innehav över flera dagar</div><div class="big" id="sEq">—</div><div id="sRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="sDD">—</span></div><div class="mini"><b>Affärer</b><span id="sN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="sWR">—</span></div><div class="mini"><b>Mot benchmark</b><span id="sBench">—</span></div></div></div>
-<div class="robot v30-trend v0406-daily-only"><h3>Opti Trend</h3><div class="muted">Top 5 momentum · veckovis ombalansering · endast över SMA200</div><div class="big" id="tEq">—</div><div id="tRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="tDD">—</span></div><div class="mini"><b>Ombalanseringar</b><span id="tN">—</span></div><div class="mini"><b>Mot SPY</b><span id="tBench">—</span></div><div class="mini"><b>CAGR</b><span id="tCagr">—</span></div></div></div>
-<div class="robot v0406-intra-only"><h3>Lina Day · Jägaren</h3><div class="muted">Ranka momentum + volym · köp nästa 5-minbars öppning · max 6 affärer/dag · aldrig över natt</div><div class="big" id="dEq">—</div><div id="dRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="dDD">—</span></div><div class="mini"><b>Affärer</b><span id="dN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="dWR">—</span></div><div class="mini"><b>Snitt/affär</b><span id="dAvg">—</span></div><div class="mini"><b>Profit factor</b><span id="dPF">—</span></div><div class="mini"><b>Affärer/dag</b><span id="dPerDay">—</span></div></div></div><div class="robot v0400-pro v0406-intra-only"><h3>⚡ Lina Day PRO 2 · Challenger</h3><div class="muted">Tids-/regimmedveten Jägare · lunchfilter + kvalitetsranking · forskningsversion</div><div class="big" id="dpEq">—</div><div id="dpRet">—</div><div class="stats"><div class="mini"><b>Max drawdown</b><span id="dpDD">—</span></div><div class="mini"><b>Affärer</b><span id="dpN">—</span></div><div class="mini"><b>Vinstfrekvens</b><span id="dpWR">—</span></div><div class="mini"><b>Profit factor</b><span id="dpPF">—</span></div><div class="mini"><b>Mot baseline</b><span id="dpVs">—</span></div><div class="mini"><b>Godkända/råa</b><span id="dpPass">—</span></div></div></div>
-</div>
-</div>
-
-<div class="card v0401-analysis-card v0406-intra-only"><h2>🔬 Lina Day PRO · Analys</h2><div class="muted">Bryter ned affärerna efter tid, momentum, relativ volym, exittyp och symbol. Ingen optimering sker här.</div><div id="v0401Analysis" style="margin-top:12px"><span class="muted">Kör ett Day-test för analys.</span></div></div>
-
-<div class="v0368-day-result card v28-day-ab" style="display:none!important">
-  <div class="v28-day-head"><div><h2>Opti Day · A/B signaltest</h2><div class="muted">A är exakt V0.27-signalen. B ändrar bara intradagssignalen – risk, stop, mål, kostnader och exekvering är samma.</div></div><span class="v28-exp">EXPERIMENT</span></div>
-  <div class="v28-abgrid">
-    <div class="v28-variant"><h3>A · Baslinje</h3><div class="v28-big" id="daRet">—</div><div class="v28-mini"><span>PF <b id="daPF">—</b></span><span>Affärer <b id="daN">—</b></span><span>Vinstfrekvens <b id="daWR">—</b></span></div></div>
-    <div class="v28-variant"><h3>B · Bekräftad momentum</h3><div class="v28-big" id="dbRet">—</div><div class="v28-mini"><span>PF <b id="dbPF">—</b></span><span>Affärer <b id="dbN">—</b></span><span>Vinstfrekvens <b id="dbWR">—</b></span><span>Mot A <b id="dbVsA">—</b></span><span>Godkända / råa signaler <b id="dbPassed">—</b></span></div></div>
-  </div>
-</div>
-<div class="card v24-world-card v0406-daily-only">
-  <div class="v24-world-head"><div><h2>Omvärldstest</h2><div class="muted">Experimentellt trelägesfilter · baslinjen ovan är fortfarande huvudresultatet</div></div><span class="v24-exp-badge">EXPERIMENT</span></div>
-  <div class="v24-world-grid">
-    <div><span>Slutkapital</span><strong id="wEq">—</strong></div>
-    <div><span>Avkastning</span><strong id="wRet">—</strong></div>
-    <div><span>Max drawdown</span><strong id="wDD">—</strong></div>
-    <div><span>Affärer</span><strong id="wN">—</strong></div>
-    <div><span>Profit factor</span><strong id="wPF">—</strong></div>
-    <div><span>Mot baslinjen</span><strong id="wVsBase">—</strong></div>
-    <div><span>Gröna dagar</span><strong id="wGreen">—</strong></div>
-    <div><span>Gula dagar</span><strong id="wYellow">—</strong></div>
-    <div><span>Röda dagar</span><strong id="wRed">—</strong></div>
-    <div><span>Blockerade totalt</span><strong id="wBlocked">—</strong></div>
-    <div><span>Blockerade i gult</span><strong id="wBlockedYellow">—</strong></div>
-    <div><span>Blockerade i rött</span><strong id="wBlockedRed">—</strong></div>
-  </div>
-</div>
-
-<div class="card v342-analysis v0406-daily-only" id="v342AnalysisCard">
-  <div class="v342-analysis-head">
-    <div><h2>Analys · vilka aktier gjorde jobbet?</h2><div class="muted">Automatisk analys av just den här Swing-körningen. Visar bidrag, bredd och koncentration.</div></div>
-    <span class="v342-badge">ANALYS</span>
-  </div>
-  <div class="v342-kpis">
-    <div><span>Vinstgivande symboler</span><strong id="aWinSymbols">—</strong></div>
-    <div><span>Förlustsymboler</span><strong id="aLossSymbols">—</strong></div>
-    <div><span>Topp 3 av vinsten</span><strong id="aTop3Share">—</strong></div>
-    <div><span>Koncentration</span><strong id="aConcentration">—</strong></div>
-  </div>
-  <div class="v0344-costbox">
-    <div><span>Brutto</span><strong id="v0344Gross">—</strong></div>
-    <div><span>Efter testkostnad</span><strong id="v0344Net">—</strong></div>
-    <div><span>Kostnad</span><strong id="v0344Cost">—</strong></div>
-    <div><span>Mot benchmark netto</span><strong id="v0344NetVsBench">—</strong></div>
-  </div>
-  <div class="muted v0344-costnote">Skuggberäkning: 0,10% per köp + 0,10% per sälj (0,20% tur/retur). Baslinjens Swing-motor ändras inte.</div>
-  <details class="v0344-stockdetails"><summary>📊 Aktier · snabbvy</summary><div id="v0344StockCards" class="v0344-stockcards"></div></details>
-  <div class="v342-analysis-grid">
-    <div class="v342-panel"><h3>🏆 Största bidrag</h3><div id="aWinners" class="v342-list"><div class="muted">Kör ett Swing-test först.</div></div></div>
-    <div class="v342-panel"><h3>⚠️ Största förluster</h3><div id="aLosers" class="v342-list"><div class="muted">Kör ett Swing-test först.</div></div></div>
-  </div>
-  <details class="v342-details"><summary>Visa alla handlade symboler</summary><div class="tablewrap"><table><thead><tr><th>Symbol</th><th>Affärer</th><th>Vinst %</th><th>Total P/L</th><th>+12%</th><th>Stop</th></tr></thead><tbody id="aSymbolTable"></tbody></table></div></details>
-</div>
-<div class="card chart"><canvas id="chart"></canvas></div>
-<div class="card"><h2>Affärslogg</h2><div class="tablewrap"><table><thead><tr><th>Tid</th><th>Robot</th><th>Symbol</th><th>Åtgärd</th><th>Pris</th><th>Belopp</th><th>Orsak</th><th>Resultat</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
-<details class="card v036-result-advanced">
-<summary>Revision, kontroll &amp; avslutade affärer</summary>
-<div class="v036-result-advanced-inner">
-<h3>Backtestkontroll V0.30.1</h3>
-<div class="v014-metrics">
-<div><span>Benchmark</span><strong>SPY · handlas inte</strong></div>
-<div><span>Faktisk teststart</span><strong id="v15Eval">—</strong></div>
-<div><span>Profit factor</span><strong id="v15PF">—</strong></div>
-<div><span>Snittvinst</span><strong id="v15AvgWin">—</strong></div>
-<div><span>Snittförlust</span><strong id="v15AvgLoss">—</strong></div>
-<div><span>Bästa affär</span><strong id="v15Best">—</strong></div>
-<div><span>Sämsta affär</span><strong id="v15Worst">—</strong></div>
-<div><span>Öppna vid slut</span><strong id="v15Open">—</strong></div>
-</div>
-<p class="v014-note"><b>Look-ahead-kontroll:</b> köpsignalen beräknas endast med data till och med föregående handelsdags stängning. Köp sker till nästa handelsdags öppningskurs. SPY används bara som benchmark.</p>
-<section class="v301-revision">
-  <div class="v301-head"><div><h3>Swing revision · V0.30.1</h3><div class="muted">Strategin är orörd. Detta är en mekanisk kontroll av samma backtest.</div></div><strong id="auditStatus">—</strong></div>
-  <div class="v301-grid">
-    <div><span>Köp / avslut</span><b id="auditEntries">—</b></div>
-    <div><span>Signaler</span><b id="auditSignals">—</b></div>
-    <div><span>Kontanter</span><b id="auditCash">—</b></div>
-    <div><span>Positioner</span><b id="auditPos">—</b></div>
-    <div><span>Samma dag</span><b id="auditSameDay">—</b></div>
-    <div><span>Stop + mål samma bar</span><b id="auditBoth">—</b></div>
-    <div><span>Datakvalitet OHLC</span><b id="auditBars">—</b></div>
-    <div><span>SPY handlad?</span><b id="auditSpy">—</b></div>
-  </div>
-  <div id="auditIssues" class="v301-result">Kör testet för revision.</div>
-  <div id="auditWarnings" class="v301-warn"></div>
-</section>
-
-<details><summary>Visa avslutade Swing-affärer</summary><div id="v16TradeCards" class="v16-tradecards"></div></details>
-
-
-
-
-</div>
-</details>
-</section>
-
-
-<section id="pane-testlab" class="hidden">
-
-<div id="v0459Lab" class="card v0410-lab v0413-lab-section vlab-v0459Lab">
-  <div class="v0410-labtitle"><span class="v0410-flask">🧬</span><div><h2>Signal Lab 2 · Entry B-dissektion</h2></div></div>
-  <button id="v0459Run" class="primary v0410-big">▶ Kör Signal Lab 2 · Entry B-dissektion</button>
-  <div id="v0459Status" class="v0410-status v0424-runstatus">Redo · Entry B är fryst. Labbet mäter delvillkor och framåtrörelse utan att ändra någon regel.</div><div class="v0410-progress"><div id="v0459Bar"></div></div>
-  <p class="muted">Analyserar endast observationer som redan klarat PRO2-kvaliteten. Entry B:s fem delvillkor mäts separat och sekventiellt: m3 ≥0,40%, m3 ≤1,20%, close ≥86%, volym ≥1,15× och volym ≤3,00×. Framåtrörelse +15/+30/+60 min är diagnostik, inte hypotetiska affärer.</p>
-  <div id="v0459Summary" class="v0410-summary muted">Ingen körning ännu.</div>
-  <h3>Sekventiellt bortfall</h3><div class="table-scroll"><table><thead><tr><th>Steg</th><th>Kvar</th><th>Andel av föregående</th></tr></thead><tbody id="v0459SeqRows"></tbody></table></div>
-  <h3>Varje villkor separat</h3><div class="table-scroll"><table><thead><tr><th>Villkor</th><th>Klarar</th><th>Faller</th><th>Klarar %</th><th>+15m pass/fail</th><th>+30m pass/fail</th><th>+60m pass/fail</th></tr></thead><tbody id="v0459CondRows"></tbody></table></div>
-  <h3>Vanligaste bortfallskombinationer</h3><div class="table-scroll"><table><thead><tr><th>Missade villkor</th><th>Antal</th><th>Andel av PRO2</th></tr></thead><tbody id="v0459MaskRows"></tbody></table></div>
-  <button id="v0459Share" class="secondary" disabled>Ladda ner / Dela Signal Lab 2</button>
-</div>
-
-<div id="v0458Lab" class="card v0410-lab v0413-lab-section vlab-v0458Lab">
-  <div class="v0410-labtitle"><span class="v0410-flask">🔬</span><div><h2>Signal Lab 1 · Filtertratten</h2></div></div>
-  <button id="v0458Run" class="primary v0410-big">▶ Kör Signal Lab 1 · diagnostik</button>
-  <div id="v0458Status" class="v0410-status v0424-runstatus">Redo · Jägaren är fryst. Labbet mäter var kandidater försvinner utan att ändra någon regel.</div><div class="v0410-progress"><div id="v0458Bar"></div></div>
-  <p class="muted">Tratten följer samma frysta Jägare: rå teknisk observation → PRO2-kvalitet → Entry B → Strong-regim → slutligt godkänd kandidat. Resultat bryts även ned per symbol och år.</p>
-  <div id="v0458Summary" class="v0410-summary muted">Ingen körning ännu.</div>
-  <div class="table-scroll"><table><thead><tr><th>Steg</th><th>Kvar</th><th>Andel av föregående</th></tr></thead><tbody id="v0458Rows"></tbody></table></div>
-  <h3>Bortfall per symbol</h3><div class="table-scroll"><table><thead><tr><th>Symbol</th><th>Rå</th><th>PRO2</th><th>Entry B</th><th>Strong</th><th>Godkänd</th></tr></thead><tbody id="v0458SymbolRows"></tbody></table></div>
-  <h3>Bortfall per år</h3><div class="table-scroll"><table><thead><tr><th>År</th><th>Rå</th><th>PRO2</th><th>Entry B</th><th>Strong</th><th>Godkänd</th></tr></thead><tbody id="v0458YearRows"></tbody></table></div>
-  <button id="v0458Share" class="secondary" disabled>Ladda ner / Dela Signal Lab 1</button>
-</div>
-
-<div id="v0457Lab" class="card v0410-lab v0413-lab-section vlab-v0457Lab">
-  <div class="v0410-labtitle"><span class="v0410-flask">🔎</span><div><h2>Kapital Lab 3 · Varför används så lite kapital?</h2></div></div>
-  <button id="v0457Run" class="primary v0410-big">▶ Kör Kapital Lab 3 · diagnostik</button>
-  <div id="v0457Status" class="v0410-status v0424-runstatus">Redo · 3 positioner och 33,3% per position är frysta. Ingen signalparameter ändras.</div><div class="v0410-progress"><div id="v0457Bar"></div></div>
-  <p class="muted">Mäter 0/1/2/3 öppna positioner, faktisk positionsstorlek, hålltid, signalflöde och hur ofta positions- eller dagsgränsen blockerar kandidater.</p>
-  <div id="v0457Summary" class="v0410-summary muted">Ingen körning ännu.</div>
-  <div class="table-scroll"><table><thead><tr><th>Mått</th><th>Resultat</th></tr></thead><tbody id="v0457Rows"></tbody></table></div>
-  <button id="v0457Share" class="secondary" disabled>Ladda ner / Dela Kapital Lab 3</button>
-</div>
-<div id="v0452Lab" class="card v0410-lab v0413-lab-section vlab-v0452Lab">
-  <div class="v0410-labtitle"><span class="v0410-flask">📐</span><div><h2>Kapital Lab 2 · Hur stor ska varje position vara?</h2></div></div>
-  <button id="v0452Run" class="primary v0410-big">▶ Kör Kapital Lab 2 · 10 / 20 / 30 / 33,3%</button>
-  <div id="v0452Status" class="v0410-status v0424-runstatus">Redo · 3 samtidiga positioner är frysta från Kapital Lab 1.</div><div class="v0410-progress"><div id="v0452Bar"></div></div>
-  <div class="muted v0434-afterrun">Samma frysta Jägare och 100 000 kr. Endast max storlek per position ändras; signaler, Strong-regim, exit, riskreferens och friktion lämnas orörda.</div>
-  <div id="v0452Summary" class="v0410-summary muted">Ingen körning ännu.</div>
-  <div class="table-scroll"><table><thead><tr><th>Storlek</th><th>Slutvärde</th><th>Avkastning</th><th>PF</th><th>WR</th><th>Max DD</th><th>Affärer</th><th>Kapital i arbete</th></tr></thead><tbody id="v0452Rows"></tbody></table></div>
-  <button id="v0452Share" class="secondary" disabled>Ladda ner / Dela Kapital Lab 2</button>
-</div>
-<div id="v0450Lab" class="card v0410-lab v0413-lab-section vlab-v0450Lab">
-  <div class="v0410-labtitle"><span class="v0410-flask">💰</span><div><h2>Kapital Lab 1 · Hur många samtidiga positioner?</h2></div></div>
-  <button id="v0450Run" class="primary v0410-big">▶ Kör Kapital Lab 1 · 1 / 2 / 3 / 5 positioner</button>
-  <div id="v0450Status" class="v0410-status v0424-runstatus">Redo · samma frysta Jägare, startkapital 100 000 kr.</div><div class="v0410-progress"><div id="v0450Bar"></div></div>
-  <div class="muted v0434-afterrun">Jämför samma Day Selection 16 + Entry B + Strong + forsknings-exit. Endast max antal samtidiga positioner ändras. Varje position får högst 20% av kapitalet och samma riskmodell/friktion används.</div>
-  <div id="v0450Summary" class="v0410-summary muted">Ingen körning ännu.</div>
-  <div class="table-scroll"><table><thead><tr><th>Positioner</th><th>Slutvärde</th><th>Avkastning</th><th>PF</th><th>WR</th><th>Max DD</th><th>Affärer</th><th>Kapital i arbete</th></tr></thead><tbody id="v0450Rows"></tbody></table></div>
-  <button id="v0450Share" class="secondary" disabled>Dela Kapital Lab 1</button>
-</div>
-<div id="v0440Lab" class="card v0410-lab v0413-lab-section vlab-v0440Lab">
-  <div class="v0410-labtitle"><span class="v0410-flask">🏁</span><div><h2>Jägaren · 100 000 kr från 2023 till nu</h2></div></div>
-  <button id="v0440Run" class="primary v0410-big">▶ Kör hela Jägaren · 2023→nu</button>
-  <div id="v0440Status" class="v0410-status v0424-runstatus">Redo · startkapital 100 000 kr.</div><div class="v0410-progress"><div id="v0440Bar"></div></div>
-  <div class="muted v0434-afterrun">Sammanhängande portföljtest: fryst Day Selection 16 + Entry B + Strong + forsknings-exit. En position åt gången, kapitalet återinvesteras och modellerad friktion ingår.</div>
-  <div id="v0440Summary" class="v0410-summary muted">Ingen körning ännu.</div>
-  <div class="table-scroll"><table><thead><tr><th>År</th><th>Start</th><th>Slut</th><th>Avkastning</th><th>Affärer</th></tr></thead><tbody id="v0440Rows"></tbody></table></div>
-  <button id="v0440Share" class="secondary" disabled>Dela Jägaren 2023→nu</button>
-</div>
-<div id="v0431Lab" class="card v0410-lab v0413-lab-section vlab-v0431Lab">
-  <div class="v0410-labtitle"><span class="v0410-flask">🧭</span><div><h2>Day Selection 2 · Orört prov</h2></div></div>
-  <button id="v0431Run" class="primary v0410-big">▶ Kör Day Selection 2 · 20 OOS-simuleringar</button>
-  <div class="muted v0434-afterrun">Testar exakt det frysta Day-urvalet från Selection 1 på 10 nya perioder mot Lina Selection 16.</div>
-  <div id="v0431Status" class="v0410-status v0424-runstatus">Väntar på fryst Day Selection från Lab 1.</div><div class="v0410-progress"><div id="v0431Bar"></div></div>
-  <div id="v0431Frozen" class="v0410-summary muted">Inget Day-urval fryst ännu.</div>
-  <div class="table-scroll"><table><thead><tr><th>Grupp</th><th>Affärer</th><th>P/L</th><th>PF</th><th>WR</th><th>+perioder</th><th>DD</th></tr></thead><tbody id="v0431Rows"></tbody></table></div>
-  <button id="v0431Share" class="secondary" disabled>Dela Day Selection 2</button>
-</div>
-
-<div id="v0430Lab" class="card v0410-lab v0413-lab-section vlab-v0430Lab">
-  <div class="v0410-labtitle"><span class="v0410-flask">🔎</span><div><h2>Day Selection 1 · 5-minutersurval</h2></div></div>
-  <button id="v0430Run" class="primary v0410-big">▶ Kör Day Selection 1 · kartläggning</button>
-  <div class="muted v0434-afterrun">Kartlägger ett brett, förregistrerat USA-universum på redan förbrukade utvecklingsperioder. Entry B + Strong + forsknings-exit hålls frysta.</div>
-  <div id="v0430Status" class="v0410-status v0424-runstatus">Redo · inga nya OOS-perioder förbrukas.</div><div class="v0410-progress"><div id="v0430Bar"></div></div>
-  <div id="v0430Summary" class="v0410-summary muted">Inget Day-urval skapat ännu.</div>
-  <div class="table-scroll"><table><thead><tr><th>#</th><th>Symbol</th><th>Affärer</th><th>P/L</th><th>PF</th><th>+perioder</th></tr></thead><tbody id="v0430Rows"></tbody></table></div>
-  <button id="v0430Share" class="secondary" disabled>Dela Day Selection 1</button>
-</div>
-
-<div id="v0423Lab" class="card v0410-labhero vlab-v0423Lab" style="margin-top:8px;border-color:#80c8a4">
-  <div class="v0410-labtitle"><span class="v0410-flask">🌤️</span><div><h2>Regim Lab 2 · Orört prov</h2><div class="muted">Fryst OOS-kontroll av Entry B + Strong-regimen från Regim Lab 1 på 10 nya historiska perioder.</div></div></div>
-  <div class="v0410-lock">🔒 Entry B fryst · Strong fryst före körning · samma forsknings-exit · inga nya parameterändringar</div>
-  <div class="v0410-labgrid">
-    <div><span>Entry</span><b>B · m3≥0,40 · vol≥1,15 · close≥86 · 10:30–12</b></div><div><span>Strong-regim</span><b>SPY öppning ≥+0,10% + 15m ≥+0,05%</b></div>
-    <div><span>Nya perioder</span><b>10 × 20 handelsdagar</b></div><div><span>Simuleringar</span><b>20 · B utan filter + B+Strong</b></div>
-  </div>
-  <div class="v0410-summary"><b>2 förregistrerade jämförelser × 10 orörda perioder = 20 simuleringar</b><br><span class="muted">Syftet är validering, inte optimering. Strong får inte ändras efter resultatet.</span></div>
-  <button id="v0423Run" class="primary v0410-big">▶ Kör Regim Lab 2 · 20 OOS-simuleringar</button>
-  <div id="v0423Status" class="v0410-status v0424-runstatus">Redo för orört regimprov.</div>
-  <div class="v0410-progress"><div id="v0423Bar"></div></div>
-  <button id="v0423Stop" class="secondary" hidden>Stoppa efter pågående period</button>
-</div>
-<div class="card vlab-v0423Lab">
- <div class="v0410-summaryhead"><div><h2>OOS-resultat · Strong-regim</h2><div class="muted">Baseline är samma frysta Entry B utan regimfilter. Strong är exakt filtret från Regim Lab 1.</div></div><button id="v0423Share" class="secondary" disabled>Dela Regim Lab 2</button></div>
- <div id="v0423Summary" class="v0410-summary muted">Ingen OOS-körning ännu.</div>
- <div class="v0410-tablewrap"><table class="v0410-table"><thead><tr><th>Variant</th><th>Affärer</th><th>P/L</th><th>PF</th><th>WR</th><th>+perioder</th><th>DD</th></tr></thead><tbody id="v0423Rows"></tbody></table></div>
-</div>
-<div id="v0422Lab" class="card v0410-labhero vlab-v0422Lab" style="margin-top:16px;border-color:#e4c56a">
-  <div class="v0410-labtitle"><span class="v0410-flask">🌦️</span><div><h2>Regim Lab 1 · Marknadsfilter</h2><div class="muted">Undersöker om Jägaren bör stå över när SPY inte bekräftar momentumet. Entrykandidat B hålls fryst.</div></div></div>
-  <div class="v0410-lock">🔒 Kandidat B fryst · samma 10 förbrukade Entry Lab 2-perioder · inga symbolregler · ingen ny entryoptimering</div>
-  <div class="v0410-labgrid">
-    <div><span>Entry</span><b>B · m3≥0,40 · vol≥1,15 · close≥86 · 10:30–12</b></div><div><span>Regimfilter</span><b>5 förregistrerade SPY-lägen</b></div>
-    <div><span>Perioder</span><b>10 × 20 handelsdagar</b></div><div><span>Simuleringar</span><b>50</b></div>
-  </div>
-  <div class="v0410-summary"><b>5 SPY-regimer × 10 perioder = 50 simuleringar</b><br><span class="muted">All information mäts senast vid entry: SPY sedan dagsöppning och SPY-momentum senaste 15 minuterna. Ingen framtidsdata används.</span></div>
-  <button id="v0422Run" class="primary v0410-big">Kör Regim Lab 1 · 50 simuleringar</button>
-  <button id="v0422Stop" class="secondary" hidden>Stoppa efter pågående period</button>
-  <div id="v0422Status" class="v0410-status">Redo för regimanalys.</div>
-  <div class="v0410-progress"><div id="v0422Bar"></div></div>
-</div>
-<div class="card vlab-v0422Lab">
- <div class="v0410-summaryhead"><div><h2>Regimresultat · kandidat B</h2><div class="muted">Detta är utvecklingsforskning på redan förbrukade perioder. Ett vinnande filter måste senare frysas och testas på nya orörda perioder.</div></div><button id="v0422Share" class="secondary" disabled>Dela Regim Lab</button></div>
- <div id="v0422Summary" class="v0410-summary muted">Ingen Regim Lab-körning ännu.</div>
- <div class="v0410-tablewrap"><table class="v0410-table"><thead><tr><th>Regim</th><th>Affärer</th><th>P/L</th><th>PF</th><th>+perioder</th><th>DD</th></tr></thead><tbody id="v0422Rows"></tbody></table></div>
-</div>
-<div id="v0421Lab" class="card v0410-labhero vlab-v0421Lab" style="margin-top:16px;border-color:#9fd7b5">
-  <div class="v0410-labtitle"><span class="v0410-flask">🧪</span><div><h2>Entry Lab 2 · Orörda perioder</h2><div class="muted">Förregistrerad kontroll av den robusta entryfamiljen från Entry Lab 1 på 10 nya historiska perioder som inte användes för urvalet.</div></div></div>
-  <div class="v0410-lock">🔒 4 entrykandidater frysta före körning · samma forsknings-exit · inga symbol-specifika regler</div>
-  <div class="v0410-labgrid">
-    <div><span>Kandidater</span><b>4 frysta entryfilter</b></div><div><span>Nya perioder</span><b>10 × 20 handelsdagar</b></div>
-    <div><span>Simuleringar</span><b>40</b></div><div><span>Syfte</span><b>OOS-kontroll, inte ny optimering</b></div>
-  </div>
-  <div class="v0410-summary"><b>4 kandidater × 10 orörda perioder = 40 simuleringar</b><br><span class="muted">Familj: m3 0,40–0,55% · vol ≥1,15x · close 80–86% · 10:30–12:00 NY. Exit: stop −0,4% · delay 20 min · mål +0,8% · max 60 min.</span></div>
-  <button id="v0421Run" class="primary v0410-big">Kör Entry Lab 2 · 40 OOS-simuleringar</button>
-  <button id="v0421Stop" class="secondary" hidden>Stoppa efter pågående period</button>
-  <div id="v0421Status" class="v0410-status">Redo för orört prov.</div>
-  <div class="v0410-progress"><div id="v0421Bar"></div></div>
-</div>
-<div class="card vlab-v0421Lab">
- <div class="v0410-summaryhead"><div><h2>OOS-resultat · fryst entryfamilj</h2><div class="muted">Ingen parameter får ändras efter att körningen startat. Resultaten avgör om hypotesen går vidare eller förkastas.</div></div><button id="v0421Share" class="secondary" disabled>Dela Entry Lab 2</button></div>
- <div id="v0421Summary" class="v0410-summary muted">Ingen OOS-körning ännu.</div>
- <div class="v0410-tablewrap"><table class="v0410-table"><thead><tr><th>Kandidat</th><th>Affärer</th><th>P/L</th><th>PF</th><th>+perioder</th><th>DD</th></tr></thead><tbody id="v0421Rows"></tbody></table></div>
-</div>
-<div id="v0420Lab" class="card v0410-labhero vlab-v0420Lab" style="margin-top:16px;border-color:#b9d7ff">
-  <div class="v0410-labtitle"><span class="v0410-flask">🎯</span><div><h2>Entry Lab 1 · Entrykarta</h2><div class="muted">Massprovar vilka frysta PRO2-entries som bör få passera. Exit hålls låst till bästa forskningsregionen från Exit Lab 2.</div></div></div>
-  <div class="v0410-lock">🔒 Shadow-filter · samma PRO2-entries, priser, shares och kostnader · inga symbol-specifika regler</div>
-  <div class="v0410-labgrid">
-    <div><span>m3 min</span><b>0,40 · 0,55 · 0,70 · 0,80 · 0,90%</b></div><div><span>Relativ volym min</span><b>1,15 · 1,30 · 1,50 · 1,80 · 2,00x</b></div>
-    <div><span>Close location min</span><b>62 · 68 · 74 · 80 · 86%</b></div><div><span>Tidsfilter</span><b>5 förregistrerade lägen</b></div>
-  </div>
-  <div class="v0410-summary"><b>625 entryfilter × 10 perioder = 6 250 simuleringar</b><br><span class="muted">Forsknings-exit: stop −0,4% · delay 20 min · mål +0,8% · max 60 min. Vi söker breda robusta entryzoner, inte en ensam vinnare.</span></div>
-  <button id="v0420Run" class="primary v0410-big">Kör Entry Lab 1 · 6 250 simuleringar</button>
-  <button id="v0420Stop" class="secondary" hidden>Stoppa efter pågående period</button>
-  <div id="v0420Status" class="v0410-status">Redo för entryforskning.</div>
-  <div class="v0410-progress"><div id="v0420Bar"></div></div>
-</div>
-<div class="card vlab-v0420Lab">
- <div class="v0410-summaryhead"><div><h2>Entrykarta · toppkandidater</h2><div class="muted">Topp 20 visas. Detta är utvecklingsdata – vinnaren är inte oberoende validerad.</div></div><button id="v0420Share" class="secondary" disabled>Dela Entry Lab</button></div>
- <div id="v0420Summary" class="v0410-summary muted">Ingen Entry Lab-körning ännu.</div>
- <div class="v0410-tablewrap"><table class="v0410-table"><thead><tr><th>#</th><th>Entryfilter</th><th>Affärer</th><th>P/L</th><th>PF</th><th>+perioder</th><th>DD</th></tr></thead><tbody id="v0420Rows"></tbody></table></div>
-</div>
-<div id="v0410Lab" class="card v0410-labhero vlab-v0410Lab">
-  <div class="v0410-labtitle"><span class="v0410-flask">🧪</span><div><h2>Lina Testlab</h2><div class="muted">Låt Lina göra grovjobbet. Första kontrollen reproducerar våra 10 frysta PRO2-eldprov automatiskt.</div></div></div>
-  <div class="v0410-lock">🔒 PRO2 är fryst · inga strategiinställningar ändras i denna körning</div>
-  <div class="v0410-labgrid">
-    <div><span>Motorer</span><b>Baseline + PRO2</b></div>
-    <div><span>Marknad</span><b>Lina Selection 16</b></div>
-    <div><span>Period/test</span><b>20 handelsdagar</b></div>
-    <div><span>Kontroller</span><b>10 historiska fönster</b></div>
-  </div>
-  <button id="v0410RunControl" class="primary v0410-big">Kör kontrollserie · 10 eldprov</button>
-  <button id="v0410StopControl" class="secondary" hidden>Stoppa efter pågående period</button>
-  <div id="v0410LabStatus" class="v0410-status">Redo. Lina hämtar och testar en period i taget.</div>
-  <div class="v0410-progress"><div id="v0410ProgressBar"></div></div>
-</div>
-<div class="card vlab-v0410Lab">
-  <div class="v0410-summaryhead"><div><h2>Kontrollresultat</h2><div class="muted">PASS betyder att körningen både klarade mekanikrevisionen och reproducerade det manuella facit inom 0,02 procentenheter.</div></div><button id="v0410Share" class="secondary" disabled>Dela labbrapport</button></div>
-  <div id="v0410Summary" class="v0410-summary muted">Ingen kontrollserie körd ännu.</div>
-  <div class="v0410-tablewrap"><table class="v0410-table"><thead><tr><th>#</th><th>Period</th><th>Baseline</th><th>PRO2</th><th>Skillnad</th><th>Kontroll</th></tr></thead><tbody id="v0410Rows"></tbody></table></div>
-</div>
-<div id="v0411Lab" class="card v0410-labhero vlab-v0411Lab" style="margin-top:16px;border-color:#d8d0ff">
-  <div class="v0410-labtitle"><span class="v0410-flask">🔬</span><div><h2>Exit Lab</h2><div class="muted">Samma frysta PRO2-entries. Lina ändrar bara exit efter köpet.</div></div></div>
-  <div class="v0410-lock">🔒 Entry, signalurval, position och friktion låsta · shadow-replay</div>
-  <div class="v0410-labgrid">
-    <div><span>Perioder</span><b>10 eldprov</b></div><div><span>Varianter</span><b>3 exitregler</b></div>
-    <div><span>PRO2</span><b>−0,6% / +1,0% / 40m</b></div><div><span>Forskningsläge</span><b>Ingen livehandel</b></div>
-  </div>
-  <button id="v0411Run" class="primary v0410-big">Kör Exit Lab · 30 simuleringar</button>
-  <button id="v0411Stop" class="secondary" hidden>Stoppa efter pågående period</button>
-  <div id="v0411Status" class="v0410-status">Redo. 10 perioder × 3 exitvarianter.</div>
-  <div class="v0410-progress"><div id="v0411Bar"></div></div>
-</div>
-<div class="card vlab-v0411Lab">
- <div class="v0410-summaryhead"><div><h2>Exit-resultat</h2><div class="muted">Första forskningsbatteriet: original, fördröjd stop och ingen stop.</div></div><button id="v0411Share" class="secondary" disabled>Dela Exit Lab</button></div>
- <div id="v0411Summary" class="v0410-summary muted">Ingen Exit Lab-körning ännu.</div>
- <div class="v0410-tablewrap"><table class="v0410-table"><thead><tr><th>Variant</th><th>Perioder</th><th>Affärer</th><th>P/L</th><th>PF</th><th>WR</th><th>+perioder</th></tr></thead><tbody id="v0411Rows"></tbody></table></div>
-</div>
-<div id="v0412Lab" class="card v0410-labhero vlab-v0412Lab" style="margin-top:16px;border-color:#c9e6dd">
-  <div class="v0410-labtitle"><span class="v0410-flask">🧬</span><div><h2>Exit Lab 2 · Parameterkarta</h2><div class="muted">Massprovar en förregistrerad exit-grid på exakt samma frysta PRO2-entries.</div></div></div>
-  <div class="v0410-lock">🔒 PRO2-entry, signalurval, shares och friktion låsta · endast exitparametrar ändras</div>
-  <div class="v0410-labgrid">
-    <div><span>Stop</span><b>0,4 · 0,6 · 0,8 · 1,0 · 1,2%</b></div><div><span>Stop-delay</span><b>0 · 5 · 10 · 15 · 20 min</b></div>
-    <div><span>Mål</span><b>0,6 · 0,8 · 1,0 · 1,2 · 1,5%</b></div><div><span>Max hålltid</span><b>20 · 30 · 40 · 50 · 60 min</b></div>
-  </div>
-  <div class="v0410-summary"><b>625 kombinationer × 10 perioder = 6 250 simuleringar</b><br><span class="muted">Rankning premierar PF, P/L, positiva perioder och låg drawdown. Vi letar efter robusta zoner – inte en ensam magisk vinnare.</span></div>
-  <button id="v0412Run" class="primary v0410-big">Kör Exit Lab 2 · 6 250 simuleringar</button>
-  <button id="v0412Stop" class="secondary" hidden>Stoppa efter pågående period</button>
-  <div id="v0412Status" class="v0410-status">Redo för massprovning.</div>
-  <div class="v0410-progress"><div id="v0412Bar"></div></div>
-</div>
-<div class="card vlab-v0412Lab">
- <div class="v0410-summaryhead"><div><h2>Parameterkarta · toppkandidater</h2><div class="muted">Topp 20 visas. En kandidat är forskning – inte oberoende validerad.</div></div><button id="v0412Share" class="secondary" disabled>Dela massrapport</button></div>
- <div id="v0412Summary" class="v0410-summary muted">Ingen masskörning ännu.</div>
- <div class="v0410-tablewrap"><table class="v0410-table"><thead><tr><th>#</th><th>Exit</th><th>P/L</th><th>PF</th><th>+perioder</th><th>DD</th><th>Robusthet</th></tr></thead><tbody id="v0412Rows"></tbody></table></div>
-</div>
-<details class="card v0410-details vlab-extra">
-  <summary>Vad Testlab gör i V0.43.3</summary>
-  <div class="muted" style="margin-top:10px">Den här första versionen är medvetet enkel: den automatiserar exakt kontrollarbetet vi nyss gjorde manuellt. När 10/10 reproduceras har vi ett säkert fundament för nästa steg: massprovning av exitvarianter och därefter robusthets-/valideringskörningar.</div>
-</details>
-</section>
-
-<div class="note">Detta är en testplattform, inte investeringsrådgivning. För riktig utvärdering måste data vara korrekt, överlevnadsbias undvikas och spread/slippage/courtage modelleras realistiskt. Linas Opti är mobil-först och lägger grunden för reproducerbara tester med samma regler över verklig historik.</div>
-</div>
-
-</div>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <script>
-(function(){
-  const gate=document.getElementById("v0383Gate");
-  const input=document.getElementById("v0383Code");
-  const btn=document.getElementById("v0383Enter");
-  const msg=document.getElementById("v0383GateMsg");
-  function unlock(){
-    if((input.value||"").trim().toLowerCase()==="adam"){
-      msg.textContent="✓ Kod godkänd";
-      msg.className="v0383-gate-msg ok";
-      setTimeout(()=>{
-        sessionStorage.setItem("linasopti_unlocked","1");
-        gate.style.display="none";
-        gate.setAttribute("aria-hidden","true");
-        document.body.classList.remove("v0384-locked");
-        history.scrollRestoration="manual";
-        document.documentElement.scrollTop=0;
-        document.body.scrollTop=0;
-        window.scrollTo(0,0);
-        requestAnimationFrame(()=>window.scrollTo(0,0));
-      },120);
-    }else{
-      msg.textContent="Fel lösenkod";
-      msg.className="v0383-gate-msg bad";
-      input.focus(); input.select();
-    }
+(() => {
+  const introKey = "c13StarIntroShown";
+  const introSettingsCacheKey = "c13IntroSettingsCache";
+  const introSettingsUrl =
+    "https://firestore.googleapis.com/v1/projects/container13-87c1a/databases/(default)/documents/settings/site?key=AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw";
+
+  let cachedIntroSettings = null;
+
+  try {
+    cachedIntroSettings = JSON.parse(
+      localStorage.getItem(introSettingsCacheKey) || "null"
+    );
+  } catch (_) {
+    cachedIntroSettings = null;
   }
-  btn.addEventListener("click", unlock);
-  input.addEventListener("keydown", e=>{ if(e.key==="Enter"){e.preventDefault();unlock();}});
-  // V0.45.8: do not force scroll/focus when Chrome resumes an already open tab.
-  // This keeps the exact view the user left and avoids unnecessary repaint work.
-  window.addEventListener("pageshow", (e)=>{
-    if(!e.persisted && !sessionStorage.getItem("linasopti_unlocked")) window.scrollTo(0,0);
-  });
-  document.addEventListener("visibilitychange", ()=>{
-    if(document.visibilityState==="hidden") sessionStorage.setItem("linasopti_scrollY", String(window.scrollY||0));
-  }, {passive:true});
-  setTimeout(()=>{ if(document.visibilityState==="visible" && gate.style.display!=="none") input.focus(); },50);
+
+  const freshIntroSettingsPromise = fetch(
+    introSettingsUrl,
+    { cache: "no-store" }
+  )
+    .then((response) => response.ok ? response.json() : null)
+    .then((settings) => {
+      if (settings) {
+        try {
+          localStorage.setItem(
+            introSettingsCacheKey,
+            JSON.stringify(settings)
+          );
+        } catch (_) {
+          // Inställningen fungerar även om lokal lagring är blockerad.
+        }
+      }
+
+      return settings;
+    })
+    .catch(() => null);
+
+  window.c13IntroFreshSettingsPromise =
+    freshIntroSettingsPromise;
+
+  window.c13IntroSettingsPromise =
+    cachedIntroSettings
+      ? Promise.resolve(cachedIntroSettings)
+      : freshIntroSettingsPromise;
+
+  try {
+    const forceIntro =
+      new URLSearchParams(window.location.search).get("star") === "1";
+    const introAlreadyShown = sessionStorage.getItem(introKey) === "true";
+    const reducedMotion =
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const cachedIntroMode =
+      cachedIntroSettings?.fields?.introAnimationMode?.stringValue || "";
+    const animationKnownToBeDisabled =
+      cachedIntroMode === "none";
+
+    sessionStorage.setItem(introKey, "true");
+
+    if (forceIntro) {
+      document.documentElement.classList.add("star-intro-force");
+    }
+
+    if (
+      window.matchMedia("(hover: none), (pointer: coarse)").matches
+    ) {
+      document.documentElement.classList.add("star-intro-mobile-mode");
+    }
+
+    if (
+      forceIntro ||
+      (!introAlreadyShown &&
+        !reducedMotion &&
+        !animationKnownToBeDisabled)
+    ) {
+      document.documentElement.classList.add("star-intro-pending");
+    }
+  } catch (_) {
+    document.documentElement.classList.remove("star-intro-active");
+    document.documentElement.classList.remove("star-intro-pending");
+    document.documentElement.classList.remove("star-intro-force");
+  }
 })();
 </script>
 
-<script src="linasopti.js?v=0.45.8"></script>
-</body></html>
+<style>
+/* Stjärnöppning – visas bara vid det första besöket i fliken */
+html.star-intro-active {
+  overflow: hidden;
+}
+
+.star-intro {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 50000;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  pointer-events: none;
+  background: transparent;
+}
+
+html.star-intro-active .star-intro {
+  display: block;
+}
+
+html.star-intro-active .star-intro-mobile {
+  display: none;
+}
+
+html.star-intro-active.star-intro-mobile-mode #star-intro {
+  display: none;
+}
+
+html.star-intro-active.star-intro-mobile-mode .star-intro-mobile {
+  display: block;
+}
+
+.star-intro-browser-bottom-shield {
+  display: none;
+  position: absolute;
+  top: calc(100dvh - 2px);
+  left: 0;
+  z-index: 50001;
+  width: 100%;
+  height: 320px;
+  pointer-events: none;
+  background: var(--star-intro-background, #000);
+}
+
+html.star-intro-active .star-intro-browser-bottom-shield {
+  display: block;
+}
+
+.star-intro[hidden] {
+  display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:not(.star-intro-force) .star-intro {
+    display: none !important;
+  }
+}
+
+/* Förfinad startsida – påverkar endast index.html */
+.landing {
+  min-height: auto;
+  padding: 48px 20px 72px;
+}
+
+.landing .logo {
+  width: min(680px, 82vw);
+  height: auto !important;
+  aspect-ratio: auto !important;
+  object-fit: contain !important;
+  margin-bottom: 20px;
+}
+
+.landing h1 {
+  margin: 0 0 14px;
+  font-size: clamp(2.4rem, 5vw, 4.2rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.landing .undertitel {
+  max-width: 720px;
+  margin: 0 auto 30px;
+  font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+  line-height: 1.55;
+}
+
+.landing .knappar {
+  margin-top: 0;
+}
+
+.intro {
+  width: min(820px, calc(100% - 40px));
+  margin: 0 auto 72px;
+  padding: 38px 46px;
+  background: rgba(255, 255, 255, 0.52);
+  border: 1px solid rgba(154, 122, 24, 0.2);
+  border-radius: 18px;
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.055);
+}
+
+.intro h2 {
+  margin-top: 0;
+  margin-bottom: 18px;
+  font-size: clamp(1.55rem, 2.8vw, 2rem);
+}
+
+.intro p {
+  max-width: 690px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+@media (max-width: 700px) {
+  .landing {
+    padding: 34px 18px 52px;
+  }
+
+  .landing .logo {
+    width: min(320px, 86vw);
+    height: auto !important;
+    aspect-ratio: auto !important;
+    object-fit: contain !important;
+    margin-bottom: 24px;
+  }
+
+  .landing h1 {
+    margin-bottom: 12px;
+  }
+
+  .landing .undertitel {
+    margin-bottom: 26px;
+  }
+
+  .intro {
+    width: min(92%, 820px);
+    margin-bottom: 48px;
+    padding: 28px 22px;
+    border-radius: 14px;
+  }
+
+  .intro p {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+}
+
+/* Fyra senaste nyinkomna på startsidan */
+.senaste-nytt {
+  width: min(1240px, calc(100% - 40px));
+  margin: 0 auto 78px;
+  text-align: center;
+}
+
+.senaste-nytt-rubrik {
+  margin-bottom: 28px;
+}
+
+.senaste-nytt-rubrik h2 {
+  margin: 0 0 10px;
+  font-size: clamp(1.7rem, 3vw, 2.35rem);
+}
+
+.senaste-nytt-rubrik p {
+  margin: 0;
+  color: #666;
+  line-height: 1.6;
+}
+
+.senaste-nytt-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.senaste-nytt-kort {
+  display: block;
+  overflow: hidden;
+  border: 1px solid rgba(154, 122, 24, 0.16);
+  border-radius: 14px;
+  color: #222;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+  text-align: left;
+  text-decoration: none;
+  transition: transform 0.24s ease, box-shadow 0.24s ease;
+}
+
+.senaste-nytt-bild {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #eee9df;
+}
+
+.senaste-nytt-kort img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.28s ease;
+}
+
+.senaste-nytt-info {
+  min-height: 83px;
+  padding: 15px 16px 17px;
+}
+
+.senaste-nytt-titel {
+  margin: 0 0 7px;
+  font-size: 1rem;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.senaste-nytt-datum {
+  margin: 0;
+  color: #9a7a18;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+.senaste-nytt-kort:focus-visible {
+  outline: 3px solid #9a7a18;
+  outline-offset: 4px;
+}
+
+.senaste-nytt-status {
+  grid-column: 1 / -1;
+  padding: 28px 12px;
+  color: #666;
+}
+
+.senaste-nytt-knapp {
+  display: inline-block;
+  padding: 15px 28px;
+  color: #222;
+  background: #d4af37;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.senaste-nytt-knapp:hover,
+.senaste-nytt-knapp:focus-visible {
+  color: #fff;
+  background: #222;
+  transform: translateY(-2px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .senaste-nytt-kort:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 13px 30px rgba(0, 0, 0, 0.14);
+  }
+
+  .senaste-nytt-kort:hover img {
+    transform: scale(1.045);
+  }
+}
+
+@media (max-width: 820px) {
+  .senaste-nytt-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+}
+
+@media (max-width: 700px) {
+  .senaste-nytt {
+    width: min(92%, 1240px);
+    margin-bottom: 54px;
+  }
+}
+
+@media (max-width: 390px) {
+  .senaste-nytt-grid {
+    grid-template-columns: 1fr;
+    max-width: 330px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<canvas id="star-intro" class="star-intro" aria-hidden="true"></canvas>
+
+<svg
+  id="star-intro-mobile"
+  class="star-intro star-intro-mobile"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path
+    id="star-intro-mobile-path"
+    fill="#000"
+    fill-rule="evenodd"
+    clip-rule="evenodd"
+  ></path>
+</svg>
+
+<div
+  class="star-intro-browser-bottom-shield"
+  aria-hidden="true"
+></div>
+
+
+
+<div id="site-header"></div>
+
+
+
+
+
+
+
+<section class="landing">
+
+
+<img src="bilder/logotyp/logo-patina.webp"
+data-site-logo
+alt="Container 13 Vintage"
+class="logo">
+
+
+
+<p class="undertitel">
+
+Vintage, secondhand och utvalda begagnade kläder
+i Hudiksvall – med retro märkesjeans och klassiska fotbollströjor.
+
+</p>
+
+
+
+
+
+<div class="knappar">
+
+
+<a href="galleri.html">
+Butiken
+</a>
+
+
+<a href="nyinkommet.html">
+Nyinkommet
+</a>
+
+
+<a href="kontakt.html">
+Kontakt
+</a>
+
+
+<a href="hittahit.html">
+Hitta hit
+</a>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<section class="intro">
+
+
+<h2>
+Välkommen
+</h2>
+
+
+<p>
+
+Hos Container 13 Vintage hittar du handplockade
+vintageplagg med fokus på kvalitet, personlighet
+och tidlös stil. Vi fyller butiken med retro
+märkesjeans, klassiska fotbollströjor och unika
+fynd som förtjänar ett nytt kapitel.
+
+Sortimentet förändras ständigt, vilket gör att
+varje besök kan bjuda på något nytt – oavsett om
+du letar efter en ny favorit eller bara vill
+inspireras.
+
+Vi är en liten vintage- och second hand-butik i
+Hudiksvall för dig som gillar begagnade kläder,
+retrokläder, återbruk och personliga second-hand-fynd.
+Om du brukar besöka loppis i Hudiksvall är du
+varmt välkommen att även titta in hos oss.
+
+</p>
+
+
+</section>
+
+
+
+
+<section class="review-prompt" aria-labelledby="review-prompt-title">
+
+  <div class="review-prompt-copy">
+    <h2 id="review-prompt-title">
+      <i class="fas fa-star" aria-hidden="true"></i>
+      Gillar du <span class="review-brand">Container&nbsp;13?</span>
+    </h2>
+
+    <p>
+      Har du besökt oss? Berätta gärna vad du tyckte.
+      Din recension hjälper fler att upptäcka Container 13
+      och betyder mycket för oss som liten butik.
+    </p>
+
+    <a class="review-prompt-button"
+       href="https://g.page/r/CXUaXjfxDUcxEBM/review"
+       target="_blank"
+       rel="noopener noreferrer">
+      <i class="fas fa-star" aria-hidden="true"></i>
+      Skriv en Google-recension
+    </a>
+  </div>
+
+  <div class="review-prompt-qr">
+    <img src="bilder/qrkod-google-recension.png"
+         alt="QR-kod till Container 13:s Google-recensioner"
+         width="130"
+         height="130"
+         loading="lazy">
+    <span>Skanna med mobilkameran</span>
+  </div>
+
+</section>
+
+
+
+
+<section class="senaste-nytt" id="senaste-nytt" aria-labelledby="senaste-nytt-rubrik">
+
+  <div class="senaste-nytt-rubrik">
+    <h2 id="senaste-nytt-rubrik">Senast inkommet</h2>
+    <p>De senaste vintagefynden som lagts in i butiken.</p>
+  </div>
+
+  <div id="senasteNyttGrid" class="senaste-nytt-grid" aria-live="polite">
+    <p class="senaste-nytt-status">Hämtar de senaste bilderna...</p>
+  </div>
+
+  <a class="senaste-nytt-knapp" href="nyinkommet.html">
+    Se allt nyinkommet
+  </a>
+
+</section>
+
+
+<div id="site-footer"></div>
+
+
+
+
+
+
+
+
+<script type="module" src="js/layout.js?v=6.10.42"></script>
+<script type="module" src="js/senaste-nytt.js?v=6.4.0"></script>
+<script type="module" src="js/image-preloader.js?v=1.2.0"></script>
+<script type="module" src="js/analytics.js?v=6.3.0"></script>
+
+<script>
+(() => {
+  const DEFAULT_INTRO_DESKTOP_IMAGE =
+    "bilder/animation/startanimation-second-hand-desktop.webp";
+  const DEFAULT_INTRO_MOBILE_IMAGE =
+    "bilder/animation/startanimation-second-hand-mobile.webp";
+  const defaultIntroSettings = {
+    mode: "image",
+    backgroundColor: "#000000",
+    starColor: "#d4af37",
+    initialDuration: 500,
+    pauseDuration: 0,
+    revealDuration: 1000,
+    imageUrl: DEFAULT_INTRO_DESKTOP_IMAGE,
+    imageFit: "cover"
+  };
+  const root = document.documentElement;
+  const canvas = document.getElementById("star-intro");
+  const ctx = canvas?.getContext("2d");
+  const mobileSvg = document.getElementById("star-intro-mobile");
+  const mobilePath =
+    document.getElementById("star-intro-mobile-path");
+  let useMobileSvg =
+    root.classList.contains("star-intro-mobile-mode");
+
+  const canvasReady = canvas && ctx;
+  const mobileSvgReady = mobileSvg && mobilePath;
+
+  if (
+    !root.classList.contains("star-intro-pending") ||
+    (useMobileSvg ? !mobileSvgReady : !canvasReady)
+  ) {
+    canvas?.remove();
+    mobileSvg?.remove();
+    root.classList.remove("star-intro-active");
+    root.classList.remove("star-intro-pending");
+    root.classList.remove("star-intro-image-wait");
+    root.classList.remove("star-intro-force");
+    root.classList.remove("star-intro-mobile-mode");
+    return;
+  }
+
+  let animationFrame = 0;
+  let startTimer = 0;
+  let fallbackTimer = 0;
+  let finished = false;
+  let introSettings = { ...defaultIntroSettings };
+  let introImage = null;
+  let layerPrepared = false;
+  let introViewportWidth = window.innerWidth;
+  let introViewportHeight = window.innerHeight;
+
+  function updateIntroViewport() {
+    introViewportWidth = Math.ceil(Math.max(
+      window.innerWidth || 0,
+      document.documentElement.clientWidth || 0,
+      window.visualViewport?.width || 0
+    ));
+    introViewportHeight = Math.ceil(Math.max(
+      window.innerHeight || 0,
+      document.documentElement.clientHeight || 0,
+      window.visualViewport?.height || 0
+    ));
+  }
+
+  function firestoreString(field, fallback) {
+    return typeof field?.stringValue === "string"
+      ? field.stringValue
+      : fallback;
+  }
+
+  function firestoreNumber(field, fallback) {
+    const raw = field?.integerValue ?? field?.doubleValue;
+    const parsed = Number(raw);
+    return Number.isFinite(parsed) ? parsed : fallback;
+  }
+
+  function validColor(value, fallback) {
+    return /^#[0-9a-f]{6}$/i.test(String(value || ""))
+      ? value
+      : fallback;
+  }
+
+  async function loadIntroSettings() {
+    try {
+      const request =
+        (root.classList.contains("star-intro-force")
+          ? window.c13IntroFreshSettingsPromise
+          : window.c13IntroSettingsPromise) ||
+        Promise.resolve(null);
+
+      const json = await Promise.race([
+        request,
+        new Promise((resolve) => {
+          window.setTimeout(() => resolve(null), 900);
+        })
+      ]);
+
+      if (!json) {
+        return {
+          ...defaultIntroSettings,
+          mode: "none"
+        };
+      }
+
+      const fields = json.fields || {};
+      const mode = firestoreString(
+        fields.introAnimationMode,
+        defaultIntroSettings.mode
+      );
+
+      return {
+        mode: ["classic", "gold", "image", "none"].includes(mode)
+          ? mode
+          : defaultIntroSettings.mode,
+        backgroundColor: validColor(
+          firestoreString(
+            fields.introBackgroundColor,
+            defaultIntroSettings.backgroundColor
+          ),
+          defaultIntroSettings.backgroundColor
+        ),
+        starColor: validColor(
+          firestoreString(
+            fields.introStarColor,
+            defaultIntroSettings.starColor
+          ),
+          defaultIntroSettings.starColor
+        ),
+        initialDuration: Math.min(
+          5000,
+          Math.max(
+            0,
+            firestoreNumber(
+              fields.introInitialDurationMs,
+              defaultIntroSettings.initialDuration
+            )
+          )
+        ),
+        pauseDuration: Math.min(
+          5000,
+          Math.max(
+            0,
+            firestoreNumber(
+              fields.introPauseDurationMs,
+              defaultIntroSettings.pauseDuration
+            )
+          )
+        ),
+        revealDuration: Math.min(
+          5000,
+          Math.max(
+            200,
+            firestoreNumber(
+              fields.introRevealDurationMs,
+              defaultIntroSettings.revealDuration
+            )
+          )
+        ),
+        imageUrl: firestoreString(
+          fields.introImageUrl,
+          defaultIntroSettings.imageUrl
+        ),
+        imageFit: firestoreString(fields.introImageFit, "cover") === "contain"
+          ? "contain"
+          : "cover"
+      };
+    } catch (_) {
+      return { ...defaultIntroSettings };
+    }
+  }
+
+  function resizeCanvas() {
+    updateIntroViewport();
+    const dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
+    canvas.width = Math.round(introViewportWidth * dpr);
+    canvas.height = Math.round(introViewportHeight * dpr);
+    canvas.style.width = introViewportWidth + "px";
+    canvas.style.height = introViewportHeight + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function resizeMobileSvg() {
+    updateIntroViewport();
+    const width = introViewportWidth;
+    const height = introViewportHeight;
+
+    mobileSvg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    mobileSvg.style.width = width + "px";
+    mobileSvg.style.height = height + "px";
+  }
+
+  function drawStar(cx, cy, outerRadius, innerRadius) {
+    ctx.beginPath();
+
+    for (let i = 0; i < 10; i += 1) {
+      const angle = -Math.PI / 2 + i * Math.PI / 5;
+      const radius = i % 2 === 0 ? outerRadius : innerRadius;
+      const x = cx + Math.cos(angle) * radius;
+      const y = cy + Math.sin(angle) * radius;
+
+      if (i === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    }
+
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function drawIntroImage() {
+    if (!introImage) return;
+    const width = introViewportWidth;
+    const height = introViewportHeight;
+    const scale = introSettings.imageFit === "contain"
+      ? Math.min(width / introImage.naturalWidth, height / introImage.naturalHeight)
+      : Math.max(width / introImage.naturalWidth, height / introImage.naturalHeight);
+    const drawWidth = introImage.naturalWidth * scale;
+    const drawHeight = introImage.naturalHeight * scale;
+    ctx.drawImage(
+      introImage,
+      (width - drawWidth) / 2,
+      (height - drawHeight) / 2,
+      drawWidth,
+      drawHeight
+    );
+  }
+
+  function drawRevealFrame(radius) {
+    ctx.globalCompositeOperation = "source-over";
+    ctx.clearRect(0, 0, introViewportWidth, introViewportHeight);
+
+    ctx.fillStyle = introSettings.backgroundColor;
+    ctx.fillRect(0, 0, introViewportWidth, introViewportHeight);
+    if (introSettings.mode === "image") drawIntroImage();
+
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.fillStyle = introSettings.backgroundColor;
+
+    const cx = introViewportWidth / 2;
+    const cy = introViewportHeight / 2;
+    drawStar(cx, cy, radius, radius * 0.46);
+
+    ctx.globalCompositeOperation = "source-over";
+  }
+
+  function drawGoldFrame(radius) {
+    ctx.globalCompositeOperation = "source-over";
+    ctx.clearRect(0, 0, introViewportWidth, introViewportHeight);
+    ctx.fillStyle = introSettings.backgroundColor;
+    ctx.fillRect(0, 0, introViewportWidth, introViewportHeight);
+    if (introSettings.mode === "image") drawIntroImage();
+    ctx.fillStyle = introSettings.starColor;
+    drawStar(
+      introViewportWidth / 2,
+      introViewportHeight / 2,
+      radius,
+      radius * 0.46
+    );
+  }
+
+  function starPoints(radius) {
+    const cx = introViewportWidth / 2;
+    const cy = introViewportHeight / 2;
+    const points = [];
+
+    for (let i = 0; i < 10; i += 1) {
+      const angle = -Math.PI / 2 + i * Math.PI / 5;
+      const pointRadius = i % 2 === 0 ? radius : radius * 0.46;
+      const x = cx + Math.cos(angle) * pointRadius;
+      const y = cy + Math.sin(angle) * pointRadius;
+      points.push(`${x} ${y}`);
+    }
+
+    return points;
+  }
+
+  function drawMobileRevealFrame(radius) {
+    const width = introViewportWidth;
+    const height = introViewportHeight;
+    const points = starPoints(radius);
+
+    mobilePath.setAttribute(
+      "d",
+      `M 0 0 H ${width} V ${height} H 0 Z ` +
+        `M ${points.join(" L ")} Z`
+    );
+    mobilePath.setAttribute("fill", introSettings.backgroundColor);
+    mobileSvg.style.background = "transparent";
+  }
+
+  function drawMobileGoldFrame(radius) {
+    mobilePath.setAttribute(
+      "d",
+      `M ${starPoints(radius).join(" L ")} Z`
+    );
+    mobilePath.setAttribute("fill", introSettings.starColor);
+    mobileSvg.style.background = introSettings.backgroundColor;
+  }
+
+  function easeStar(progress) {
+    return Math.pow(progress, 1.35);
+  }
+
+  function finishIntro() {
+    if (finished) return;
+    finished = true;
+    cancelAnimationFrame(animationFrame);
+    clearTimeout(startTimer);
+    clearTimeout(fallbackTimer);
+    canvas.hidden = true;
+    mobileSvg.hidden = true;
+    root.classList.remove("star-intro-active");
+    root.classList.remove("star-intro-pending");
+    root.classList.remove("star-intro-image-wait");
+    root.classList.remove("star-intro-force");
+    root.classList.remove("star-intro-mobile-mode");
+    canvas.remove();
+    mobileSvg.remove();
+    window.dispatchEvent(new CustomEvent("c13-intro-finished"));
+  }
+
+  function prepareLayer() {
+    if (useMobileSvg) {
+      canvas.remove();
+      resizeMobileSvg();
+      mobileSvg.hidden = false;
+    } else {
+      mobileSvg.remove();
+      resizeCanvas();
+      canvas.hidden = false;
+      canvas.style.background = "transparent";
+    }
+  }
+
+  async function loadIntroImage() {
+    if (introSettings.mode !== "image") return true;
+    return new Promise((resolve) => {
+      const image = new Image();
+      let settled = false;
+      const finish = (loaded) => {
+        if (settled) return;
+        settled = true;
+        resolve(loaded);
+      };
+      const timer = window.setTimeout(() => finish(false), 5000);
+      image.onload = () => {
+        clearTimeout(timer);
+        introImage = image;
+        finish(true);
+      };
+      image.onerror = () => {
+        clearTimeout(timer);
+        finish(false);
+      };
+      const savedSource =
+        introSettings.imageUrl || DEFAULT_INTRO_DESKTOP_IMAGE;
+      const useResponsivePreset =
+        savedSource === DEFAULT_INTRO_DESKTOP_IMAGE
+        || savedSource.endsWith(
+          "/bilder/animation/startanimation-second-hand-desktop.webp"
+        );
+      const source = useResponsivePreset
+        ? (
+          window.matchMedia("(orientation: portrait), (max-width: 700px)").matches
+            ? DEFAULT_INTRO_MOBILE_IMAGE
+            : DEFAULT_INTRO_DESKTOP_IMAGE
+        )
+        : savedSource;
+      image.src = new URL(source, document.baseURI).href;
+    });
+  }
+
+  function runReveal() {
+    const maxRadius = Math.hypot(
+      introViewportWidth / 2,
+      introViewportHeight / 2
+    ) * 2.25;
+    let startedAt = null;
+
+    function animate(now) {
+      if (startedAt === null) startedAt = now;
+
+      const progress = Math.min(
+        1,
+        (now - startedAt) / introSettings.revealDuration
+      );
+      const eased = easeStar(progress);
+      const startRadius = 8;
+      const radius =
+        startRadius + (maxRadius - startRadius) * eased;
+
+      if (useMobileSvg) {
+        drawMobileRevealFrame(radius);
+      } else {
+        drawRevealFrame(radius);
+      }
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      } else {
+        finishIntro();
+      }
+    }
+
+    animationFrame = requestAnimationFrame(animate);
+  }
+
+  function runClassicIntro() {
+    if (useMobileSvg) {
+      drawMobileRevealFrame(0);
+    } else {
+      drawRevealFrame(0);
+    }
+
+    startTimer = window.setTimeout(
+      runReveal,
+      introSettings.initialDuration
+    );
+  }
+
+  function runGoldIntro() {
+    const diagonal = Math.hypot(
+      introViewportWidth / 2,
+      introViewportHeight / 2
+    );
+    const startingRadius = (diagonal / 0.46) * 1.2;
+    let startedAt = null;
+
+    if (useMobileSvg) {
+      drawMobileGoldFrame(startingRadius);
+    } else {
+      drawGoldFrame(startingRadius);
+    }
+
+    function shrink(now) {
+      if (startedAt === null) startedAt = now;
+      const duration = Math.max(1, introSettings.initialDuration);
+      const progress = Math.min(1, (now - startedAt) / duration);
+      const smooth = progress * progress * (3 - 2 * progress);
+      const radius = startingRadius * (1 - smooth);
+
+      if (useMobileSvg) {
+        drawMobileGoldFrame(radius);
+      } else {
+        drawGoldFrame(radius);
+      }
+
+      if (progress < 1 && introSettings.initialDuration > 0) {
+        animationFrame = requestAnimationFrame(shrink);
+      } else {
+        const continueToReveal = () => {
+          if (useMobileSvg) {
+            drawMobileRevealFrame(0);
+          } else {
+            drawRevealFrame(0);
+          }
+          animationFrame = requestAnimationFrame(runReveal);
+        };
+        startTimer = window.setTimeout(
+          continueToReveal,
+          introSettings.pauseDuration
+        );
+      }
+    }
+
+    animationFrame = requestAnimationFrame(shrink);
+  }
+
+  async function startIntro() {
+    introSettings = await loadIntroSettings();
+
+    if (introSettings.mode === "none") {
+      finishIntro();
+      return;
+    }
+
+    if (introSettings.mode === "image") {
+      useMobileSvg = false;
+      root.classList.remove("star-intro-mobile-mode");
+      root.classList.add("star-intro-image-wait");
+      prepareLayer();
+      layerPrepared = true;
+      ctx.globalCompositeOperation = "source-over";
+      ctx.clearRect(0, 0, introViewportWidth, introViewportHeight);
+      ctx.fillStyle = introSettings.backgroundColor;
+      ctx.fillRect(0, 0, introViewportWidth, introViewportHeight);
+      root.classList.add("star-intro-active");
+      const imageReady = await loadIntroImage();
+      if (!imageReady) {
+        finishIntro();
+        return;
+      }
+    }
+
+    if (!layerPrepared) {
+      prepareLayer();
+    }
+    document.documentElement.style.setProperty(
+      "--star-intro-background",
+      introSettings.backgroundColor
+    );
+
+    fallbackTimer = window.setTimeout(
+      finishIntro,
+      introSettings.initialDuration +
+        introSettings.pauseDuration +
+        introSettings.revealDuration +
+        2000
+    );
+
+    if (introSettings.mode === "gold" || introSettings.mode === "image") {
+      runGoldIntro();
+    } else {
+      runClassicIntro();
+    }
+
+    root.classList.add("star-intro-active");
+    root.classList.remove("star-intro-image-wait");
+  }
+
+  startIntro().catch(finishIntro);
+})();
+</script>
+
+  <script src="pwa.js?v=6.10.53" defer></script>
+</body>
+
+</html>
