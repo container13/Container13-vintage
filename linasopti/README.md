@@ -519,3 +519,16 @@ Ingen handelsregel ändrad. Close ≥83% är fortsatt fryst kandidat.
 - backup inkluderar även eventuell pågående PBO-checkpoint.
 
 V0.46.2 fortsätter forskningsprincipen att en omkörning är reproducerbarhetskontroll, inte ett sätt att jaga PASS.
+
+
+## V0.46.3 – Loginfält tomt vid start
+
+Ingen forsknings- eller handelslogik ändrad.
+
+Ändring:
+- lösenkodsfältet öppnar tomt vid sidladdning;
+- fältet har `autocomplete="new-password"` och inget förifyllt value;
+- Lina rensar fältet vid DOMContentLoaded, pageshow och några korta efterkontroller för att motverka sen autofyllning från webbläsaren;
+- fältet rensas även första gången det får fokus medan inloggningsgrinden är låst.
+
+Syftet är endast att inloggningsrutan ska börja visuellt tom. Användaren kan fortfarande själv välja ett sparat lösenord från webbläsarens lösenordshanterare.

@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.46.2";
+const APP_VERSION = "V0.46.3";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -815,6 +815,24 @@ function v034RankedSwing(rows,capital,maxPos,start){
 }
 function v034Run(){if(ACTIVE_MARKET!=="globalStocks100"||!DAILY.length){V034_LAST=null;return}let cap=+$('capital').value,start=$('evalStart')?.value||'',mp=+$('maxpos').value;if(V034_MODE==='momentum')V034_LAST=v034RankedSwing(DAILY,cap,mp,start);else if(V034_MODE==='defensive')V034_LAST=v034SimpleMomentum(DAILY,cap,start,true);else if(V034_MODE==='simple')V034_LAST=v034SimpleMomentum(DAILY,cap,start,false);else V034_LAST=null;v034Render()}
 function v034Render(){let e=document.getElementById('v034Result');if(!e)return;if(!V034_LAST){e.innerHTML='<span class="muted">Välj ett V0.34-experiment och kör Global Stocks 100.</span>';return}let x=V034_LAST;e.innerHTML=`<b>${V034_MODE==='momentum'?'⚡ Global Momentum':V034_MODE==='defensive'?'🛡️ Global Defensive':'🥊 Enkel momentum-kontroll'}</b><div class="v27-day-pills"><span>Slut ${fmt(x.eq)}</span><span>Avkastning ${(x.ret>=0?'+':'')+pct(x.ret)}</span><span>DD ${pct(x.dd)}</span><span>Avslut ${x.trades}</span></div><div class="muted">${x.rule}</div>`}
+
+// V0.46.3 – loginfält ska alltid öppna tomt.
+function v0463ClearLoginField(){
+ const el=document.getElementById('v0383Code');
+ if(!el)return;
+ el.value='';
+ el.defaultValue='';
+ el.removeAttribute('value');
+}
+document.addEventListener('DOMContentLoaded',()=>{
+ v0463ClearLoginField();
+ // Vissa lösenordshanterare fyller efter DOMContentLoaded.
+ setTimeout(v0463ClearLoginField,50);
+ setTimeout(v0463ClearLoginField,250);
+ setTimeout(v0463ClearLoginField,800);
+});
+window.addEventListener('pageshow',()=>{v0463ClearLoginField();setTimeout(v0463ClearLoginField,100)});
+
 window.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('[data-v034-mode]').forEach(b=>b.addEventListener('click',()=>{V034_MODE=b.dataset.v034Mode;document.querySelectorAll('[data-v034-mode]').forEach(x=>x.classList.toggle('active',x===b));setMarketGroup('globalStocks100')}));const rb=$('runBtn');if(rb)rb.addEventListener('click',()=>setTimeout(v034Run,0));});
 
 window.onresize=()=>LAST&&draw(LAST.s,LAST.d,+$("capital").value);
@@ -2963,4 +2981,11 @@ window.addEventListener('DOMContentLoaded',()=>{
       jump.dispatchEvent(new Event('change',{bubbles:true}));
     }
   }
+});
+
+document.addEventListener('focusin',e=>{
+ if(e.target?.id==='v0383Code' && document.body.classList.contains('v0384-locked')){
+   // Never expose a prefilled credential from Lina itself.
+   if(!e.target.dataset.v0463Touched){e.target.value='';e.target.dataset.v0463Touched='1'}
+ }
 });
