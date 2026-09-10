@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.45.3";
+const APP_VERSION = "V0.45.4";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -2204,5 +2204,34 @@ function v0452Report(){
  L.push('','ÅRSRESULTAT'); for(const v of V0452_RESULT.variants){L.push('',v.name.toUpperCase());for(const y of v.years)L.push(`${y.year} | ${y.start.toFixed(2)} → ${y.end.toFixed(2)} | ${((y.end/y.start-1)*100).toFixed(2)}% | ${y.n} affärer`)}
  L.push('','OBS: 2023–2026 är inte ett nytt orört OOS-prov i sin helhet. Kapital Lab 2 testar positionsstorlek med frysta signalregler; det är inte en prognos.'); return L.join('\n');
 }
-async function v0452Share(){return v043xShare(v0452Report(),'LINAS_OPTI_KAPITAL_LAB_2_POSITIONSSTORLEK_V0453','Linas Opti Kapital Lab 2 · Positionsstorlek','v0452Status')}
-window.addEventListener('DOMContentLoaded',()=>{document.getElementById('v0452Run')?.addEventListener('click',v0452Run);document.getElementById('v0452Share')?.addEventListener('click',v0452Share);v0452Paint()});
+async function v0454KapitalLab2Download(){
+ const st=document.getElementById('v0452Status');
+ if(!V0452_RESULT){if(st)st.textContent='Ingen Kapital Lab 2-rapport finns ännu. Kör labbet först.';return false}
+ const text=v0452Report();
+ // Hård säkerhetskontroll: Lab 2-knappen får aldrig exportera Lab 1-innehåll.
+ if(!text.startsWith('LINAS OPTI – KAPITAL LAB 2 · POSITIONSSTORLEK') || !text.includes('10% / 20% / 30% / 33,3%')){
+   if(st)st.textContent='Rapportspärr: fel rapportinnehåll upptäcktes. Ingen fil skapades.';return false;
+ }
+ const date=new Date().toISOString().slice(0,10);
+ const name=`LINAS_OPTI_KAPITAL_LAB_2_POSITIONSSTORLEK_V0454_${date}.txt`;
+ if(!v0451IsIOS()){
+   try{v0451DownloadText(text,name);if(st)st.textContent=`✓ Kapital Lab 2-rapport nedladdad: ${name}`;return true}
+   catch(e){if(st)st.textContent='Kunde inte ladda ner Kapital Lab 2-rapporten.';return false}
+ }
+ const file=new File([text],name,{type:'text/plain;charset=utf-8'});
+ try{
+   if(navigator.share){
+     if(!navigator.canShare||navigator.canShare({files:[file]})){await navigator.share({title:'Linas Opti Kapital Lab 2',files:[file]});if(st)st.textContent='✓ Kapital Lab 2-rapport delad.';return true}
+     await navigator.share({title:'Linas Opti Kapital Lab 2',text});if(st)st.textContent='✓ Kapital Lab 2-rapport delad som text.';return true
+   }
+ }catch(e){if(e?.name==='AbortError'){if(st)st.textContent='Delning avbruten.';return false}}
+ try{v0451DownloadText(text,name);if(st)st.textContent=`✓ Kapital Lab 2-rapport sparad: ${name}`;return true}
+ catch(e){if(st)st.textContent='Kunde inte spara Kapital Lab 2-rapporten.';return false}
+}
+window.addEventListener('DOMContentLoaded',()=>{
+ const run=document.getElementById('v0452Run'),share=document.getElementById('v0452Share');
+ run?.addEventListener('click',v0452Run);
+ // Hård isolering från äldre rapportkopplingar: ersätt knappen med en ren klon.
+ if(share){const clean=share.cloneNode(true);share.replaceWith(clean);clean.addEventListener('click',v0454KapitalLab2Download)}
+ v0452Paint();
+});

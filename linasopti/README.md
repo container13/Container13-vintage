@@ -1,3 +1,12 @@
+# V0.45.4 – Kapital Lab 2 rapport hard-fix
+
+- Kapital Lab 2 har en helt isolerad rapportknapp.
+- Rapporten måste börja med `LINAS OPTI – KAPITAL LAB 2 · POSITIONSSTORLEK` och innehålla 10/20/30/33,3%-grid innan fil får skapas.
+- Filnamn: `LINAS_OPTI_KAPITAL_LAB_2_POSITIONSSTORLEK_V0454_YYYY-MM-DD.txt`.
+- Statusraden visar det exakta filnamnet efter nedladdning.
+- Äldre event listeners på Lab 2-rapportknappen rensas genom att knappen ersätts med en ren klon vid sidstart.
+- Strategi, Worker och Kapital Lab 2-resultatlogik är oförändrade. Robotmognad 48/100.
+
 # V0.45.3 – rapportnamn + simuleringsräknare
 
 - Kapital Lab 2 får unikt filnamn: `LINAS_OPTI_KAPITAL_LAB_2_POSITIONSSTORLEK_V0453_YYYY-MM-DD.txt`.
