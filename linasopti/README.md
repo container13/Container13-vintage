@@ -1,3 +1,27 @@
+# V0.45.6 – återuppta Kapital Lab 2 + flikfix
+
+- Bygger vidare på V0.45.5 och behåller flikväxlingsfixen.
+- Kapital Lab 2 sparar checkpoint efter varje helt färdig månad.
+- Tillfälliga fetchfel försöks automatiskt upp till tre gånger via befintlig retry.
+- Vid kvarstående avbrott behålls färdiga månader i localStorage och knappen blir **Fortsätt Kapital Lab 2 från sparad punkt**.
+- Progressbaren återställs till sparad nivå även efter omladdning.
+- Simuleringsräknaren ökar med 4 först när hela Kapital Lab 2 är färdigkört; delkörningar räknas inte som klara simuleringar.
+- Kapital Lab 2-rapporten behåller den isolerade hårdfixen och får filnamn med `V0456`.
+- Ingen strategi-, signal-, exit-, marknadsdata- eller Worker-logik ändrad. Robotmognad kvar 48/100.
+
+# V0.45.5 – flikväxlingsfix
+
+Byggd från V0.45.4. Ingen strategi-, data-, rapport- eller Worker-logik ändrad.
+
+Ändringar:
+- tar bort dyr `backdrop-filter`-komposition i desktop-headern som kan ge vit återritning när Chrome återgår till en bakgrundsflik,
+- `pageshow` tvingar inte längre scroll till toppen när en befintlig sida återupptas,
+- fokus skickas inte onödigt till kodfältet när fliken återaktiveras,
+- sparar aktuell scrollposition passivt när fliken göms, utan att rendera om appen,
+- cache-buster och versionsetikett V0.45.5.
+
+Mål: Linas Opti ska ligga kvar visuellt där den lämnades när användaren växlar till en annan Chrome-flik och tillbaka.
+
 # V0.45.4 – Kapital Lab 2 rapport hard-fix
 
 - Kapital Lab 2 har en helt isolerad rapportknapp.

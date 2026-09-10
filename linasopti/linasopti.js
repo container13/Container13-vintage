@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.45.4";
+const APP_VERSION = "V0.45.6";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -2168,7 +2168,27 @@ const V0452_VARIANTS=[
  {id:'s33',pct:1/3,name:'33,3% per position'}
 ];
 let V0452_RESULT=null,V0452_RUNNING=false;
+const V0456_KL2_CHECKPOINT_KEY='linasopti_kapitallab2_checkpoint_v0456';
+
 function v0452Stats(r){return v0450Stats(r)}
+function v0456FreshKL2States(){
+ return V0452_VARIANTS.map(v=>({...v,eq:100000,dd:0,peak:100000,closed:[],curve:[],utilSum:0,utilN:0,maxConcurrent:0,years:[],yearStart:100000}));
+}
+function v0456SaveKL2Checkpoint(nextIndex,states){
+ try{localStorage.setItem(V0456_KL2_CHECKPOINT_KEY,JSON.stringify({version:'V0.45.6',nextIndex,states,savedAt:new Date().toISOString()}));return true}catch{return false}
+}
+function v0456LoadKL2Checkpoint(){
+ try{
+  const x=JSON.parse(localStorage.getItem(V0456_KL2_CHECKPOINT_KEY)||'null');
+  if(!x||x.version!=='V0.45.6'||!Number.isInteger(x.nextIndex)||!Array.isArray(x.states)||x.states.length!==V0452_VARIANTS.length)return null;
+  return x;
+ }catch{return null}
+}
+function v0456ClearKL2Checkpoint(){try{localStorage.removeItem(V0456_KL2_CHECKPOINT_KEY)}catch{}}
+function v0456SetKL2RunLabel(hasCheckpoint=false){
+ const run=document.getElementById('v0452Run'); if(!run)return;
+ run.textContent=hasCheckpoint?'▶ Fortsätt Kapital Lab 2 från sparad punkt':'▶ Kör Kapital Lab 2 · 10 / 20 / 30 / 33,3%';
+}
 function v0452Paint(){
  const sum=document.getElementById('v0452Summary'),body=document.getElementById('v0452Rows'),share=document.getElementById('v0452Share'); if(!sum||!body)return;
  if(!V0452_RESULT){sum.textContent='Ingen körning ännu.';body.innerHTML='';if(share)share.disabled=true;return}
@@ -2180,9 +2200,16 @@ function v0452Paint(){
 async function v0452Run(){
  if(V0452_RUNNING)return; V0452_RUNNING=true;
  const run=document.getElementById('v0452Run'),st=document.getElementById('v0452Status'),bar=document.getElementById('v0452Bar'),months=v0440Months(); run.disabled=true;
- const states=V0452_VARIANTS.map(v=>({...v,eq:100000,dd:0,peak:100000,closed:[],curve:[],utilSum:0,utilN:0,maxConcurrent:0,years:[],yearStart:100000}));
+ const saved=v0456LoadKL2Checkpoint();
+ let startIndex=saved?Math.max(0,Math.min(months.length,saved.nextIndex)):0;
+ let states=saved?saved.states:v0456FreshKL2States();
+ if(startIndex>=months.length){v0456ClearKL2Checkpoint();startIndex=0;states=v0456FreshKL2States()}
  try{
-  for(let i=0;i<months.length;i++){
+  if(saved&&startIndex>0){
+   st.textContent=`Återupptar Kapital Lab 2 från ${startIndex}/${months.length} färdiga månader…`;
+   bar.style.width=`${startIndex/months.length*100}%`;
+  }
+  for(let i=startIndex;i<months.length;i++){
    const w=months[i]; st.innerHTML=`<span class="v0406-spinner small"></span> ${i+1}/${months.length} · hämtar ${w.label} och kör 4 storleksvarianter…`; bar.style.width=`${i/months.length*100}%`;
    const j=await v0440FetchMonth(w,st),rows=j.rows||[];
    for(const state of states){
@@ -2191,11 +2218,19 @@ async function v0452Run(){
     const y=+w.label.slice(0,4),nextY=i===months.length-1?null:+months[i+1].label.slice(0,4);
     if(nextY!==y){const n=state.closed.filter(t=>+v0440NY(t.entryTime).d.slice(0,4)===y).length;state.years.push({year:y,start:state.yearStart,end:state.eq,n});state.yearStart=state.eq;}
    }
+   // Checkpoint först när hela månaden + alla fyra varianter är färdiga.
+   v0456SaveKL2Checkpoint(i+1,states);
    bar.style.width=`${(i+1)/months.length*100}%`; await v0406Yield(20);
   }
-  V0452_RESULT={from:'2023-01-01',to:'2026-09-30',variants:states}; v0413AddSims(4); v0452Paint(); st.textContent='✓ Kapital Lab 2 klart · fyra positionsstorlekar testade med tre samtidiga positioner.';
- }catch(e){st.textContent=`Kapital Lab 2 avbröts. Inga simuleringar registrerades som klara. Tryck Kör för att starta om. (${e?.message||e})`}
- finally{V0452_RUNNING=false;run.disabled=false}
+  V0452_RESULT={from:'2023-01-01',to:'2026-09-30',variants:states};
+  v0413AddSims(4); v0456ClearKL2Checkpoint(); v0452Paint(); v0456SetKL2RunLabel(false);
+  st.textContent='✓ Kapital Lab 2 klart · fyra positionsstorlekar testade med tre samtidiga positioner.';
+ }catch(e){
+  const cp=v0456LoadKL2Checkpoint(),done=cp?.nextIndex||startIndex;
+  if(bar)bar.style.width=`${done/months.length*100}%`;
+  v0456SetKL2RunLabel(done>0);
+  st.textContent=`Kapital Lab 2 avbröts efter ${done}/${months.length} färdiga månader. Delkörningen är sparad. Tryck Fortsätt för att återuppta. (${e?.message||e})`;
+ }finally{V0452_RUNNING=false;run.disabled=false}
 }
 function v0452Report(){
  if(!V0452_RESULT)return'';
@@ -2213,7 +2248,7 @@ async function v0454KapitalLab2Download(){
    if(st)st.textContent='Rapportspärr: fel rapportinnehåll upptäcktes. Ingen fil skapades.';return false;
  }
  const date=new Date().toISOString().slice(0,10);
- const name=`LINAS_OPTI_KAPITAL_LAB_2_POSITIONSSTORLEK_V0454_${date}.txt`;
+ const name=`LINAS_OPTI_KAPITAL_LAB_2_POSITIONSSTORLEK_V0456_${date}.txt`;
  if(!v0451IsIOS()){
    try{v0451DownloadText(text,name);if(st)st.textContent=`✓ Kapital Lab 2-rapport nedladdad: ${name}`;return true}
    catch(e){if(st)st.textContent='Kunde inte ladda ner Kapital Lab 2-rapporten.';return false}
@@ -2234,4 +2269,11 @@ window.addEventListener('DOMContentLoaded',()=>{
  // Hård isolering från äldre rapportkopplingar: ersätt knappen med en ren klon.
  if(share){const clean=share.cloneNode(true);share.replaceWith(clean);clean.addEventListener('click',v0454KapitalLab2Download)}
  v0452Paint();
+ const cp=v0456LoadKL2Checkpoint();
+ if(cp&&cp.nextIndex>0){
+   const st=document.getElementById('v0452Status'),bar=document.getElementById('v0452Bar'),months=v0440Months();
+   if(st)st.textContent=`Sparad delkörning ${cp.nextIndex}/${months.length} månader · tryck Fortsätt för att återuppta.`;
+   if(bar)bar.style.width=`${cp.nextIndex/months.length*100}%`;
+   v0456SetKL2RunLabel(true);
+ }else v0456SetKL2RunLabel(false);
 });

@@ -1022,3 +1022,18 @@ html[data-research-mode="testlab"] #v0424TesterNav{display:none!important}
   .v0425-labtag{font-size:16px!important;font-weight:900!important;letter-spacing:.08em!important}
   .v0424-researchbar{gap:10px!important}
 }
+
+
+/* ============================================================
+   V0.45.5 – TAB RESUME / CHROME COMPOSITOR FIX
+   Avoid expensive backdrop-filter recomposition when a hidden
+   desktop tab becomes visible again. Visual appearance remains
+   intentionally near-identical using an almost opaque surface.
+   ============================================================ */
+@media (min-width:700px){
+  .sticky-top, .tabs, .v23-sharebar, .v0413-quickcard{
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+  }
+  .sticky-top{background:rgba(244,246,248,.992)!important;}
+}

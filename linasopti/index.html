@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.45.4">
+<link rel="stylesheet" href="linasopti.css?v=0.45.6">
 </head>
 <body class="v0384-locked">
 
@@ -23,7 +23,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.45.4</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.45.6</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">48/100</b><small>Forskningsfas</small></button>
@@ -539,6 +539,7 @@
       msg.textContent="✓ Kod godkänd";
       msg.className="v0383-gate-msg ok";
       setTimeout(()=>{
+        sessionStorage.setItem("linasopti_unlocked","1");
         gate.style.display="none";
         gate.setAttribute("aria-hidden","true");
         document.body.classList.remove("v0384-locked");
@@ -556,10 +557,17 @@
   }
   btn.addEventListener("click", unlock);
   input.addEventListener("keydown", e=>{ if(e.key==="Enter"){e.preventDefault();unlock();}});
-  window.addEventListener("pageshow", ()=>{ window.scrollTo(0,0); });
-  setTimeout(()=>input.focus(),50);
+  // V0.45.6: do not force scroll/focus when Chrome resumes an already open tab.
+  // This keeps the exact view the user left and avoids unnecessary repaint work.
+  window.addEventListener("pageshow", (e)=>{
+    if(!e.persisted && !sessionStorage.getItem("linasopti_unlocked")) window.scrollTo(0,0);
+  });
+  document.addEventListener("visibilitychange", ()=>{
+    if(document.visibilityState==="hidden") sessionStorage.setItem("linasopti_scrollY", String(window.scrollY||0));
+  }, {passive:true});
+  setTimeout(()=>{ if(document.visibilityState==="visible" && gate.style.display!=="none") input.focus(); },50);
 })();
 </script>
 
-<script src="linasopti.js?v=0.45.4"></script>
+<script src="linasopti.js?v=0.45.6"></script>
 </body></html>
