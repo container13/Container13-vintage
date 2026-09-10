@@ -981,3 +981,44 @@ html[data-research-mode="testlab"] #v0424TesterNav{display:none!important}
   #pane-data > .card:first-child > .row > #providerInfo{grid-area:provider!important;margin-top:0!important}
   #pane-data .v29-market-box,#pane-data .v0404-dataflow{min-width:0!important}
 }
+
+
+/* V0.44.4 – navigation proportion fix only. No strategy/test logic changed. */
+/* Desktop: reserve enough real space for the FORSKNING label so the engine select never covers it. */
+@media (min-width:1200px){
+  .v0424-researchbar{
+    grid-template-columns:132px 300px minmax(0,1fr)!important;
+    column-gap:16px!important;
+  }
+  .v0425-navlabel{
+    width:132px!important;
+    min-width:132px!important;
+    overflow:visible!important;
+    white-space:nowrap!important;
+    position:relative!important;
+    z-index:2!important;
+  }
+  .v0424-enginepick,
+  .v0424-labpick,
+  .v0424-testernav{position:relative!important;z-index:1!important}
+}
+
+/* Mobile: selects are navigation controls, not small form fields. Keep sub-tabs calmer. */
+@media (max-width:560px){
+  .v0424-enginepick select,
+  .v0424-labpick select{
+    min-height:68px!important;
+    height:68px!important;
+    border-width:2px!important;
+    border-radius:20px!important;
+    padding:0 18px!important;
+    font-size:20px!important;
+    line-height:1.1!important;
+    font-weight:900!important;
+    box-shadow:0 3px 10px rgba(20,45,75,.08)!important;
+  }
+  .v0424-enginepick,
+  .v0424-labpick{min-height:68px!important}
+  .v0425-labtag{font-size:16px!important;font-weight:900!important;letter-spacing:.08em!important}
+  .v0424-researchbar{gap:10px!important}
+}

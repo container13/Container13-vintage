@@ -1,3 +1,10 @@
+# V0.44.4 – Navigation proportion fix
+
+- Desktop: FORSKNING has a dedicated wider label column so it can no longer sit behind the engine dropdown.
+- Mobile: Forskningsmotor and Labb dropdowns are now full navigation-sized controls (68 px, larger type and touch target).
+- Data/Test/Resultat remain intentionally calmer secondary navigation.
+- No strategy, Day Selection, Jägaren, data, Worker or test logic changed.
+
 # V0.44.3 – Layout/UX final pass
 
 - Mobil: Data/Test/Resultat nedtonade till sekundär navigation.
