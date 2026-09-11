@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.54.2";
+const APP_VERSION = "V0.54.3";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -3892,6 +3892,50 @@ function v0542DailyFromIntraday(rows){
  }
  return [...m.values()].map(({first,last,...q})=>q).sort((a,b)=>a.t.localeCompare(b.t)||a.symbol.localeCompare(b.symbol));
 }
+async function v0543FetchSymbolRange(symbol,start,end,label){
+ let last;
+ for(let a=1;a<=4;a++){
+  try{
+   v0540Live(label,`${symbol} · ${start} → ${end} · försök ${a}/4`);
+   const j=await Promise.race([
+    bridge(`/bars?symbols=${encodeURIComponent(symbol)}&timeframe=5Min&start=${start}T00:00:00Z&end=${end}T23:59:59Z`),
+    new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout 60 s')),60000))
+   ]);
+   const rows=v0540Rows(j);
+   if(!rows.length)throw new Error(`0 rader för ${symbol}`);
+   return rows;
+  }catch(e){last=e;if(a<4)await v0540Wait(a*2500)}
+ }
+ throw new Error(`${symbol} ${start}–${end}: ${last?.message||last||'okänt fel'}`);
+}
+async function v0543FetchChunked(x,key,start,end,label){
+ const chunks=v0541MonthChunks(start,end),symbols=[...V0540_SYMBOLS,'SPY'];
+ x.fetch??={};
+ if(!x.fetch[key]||x.fetch[key].mode!=='symbol-month-1'){
+   x.fetch[key]={mode:'symbol-month-1',month:0,symbol:0,rows:[]};
+   v0540Save(x);
+ }
+ const f=x.fetch[key];
+ while(f.month<chunks.length){
+   const [a,b]=chunks[f.month];
+   while(f.symbol<symbols.length){
+     const sym=symbols[f.symbol];
+     v0540Live(label,`Månad ${f.month+1}/${chunks.length} · symbol ${f.symbol+1}/${symbols.length} ${sym} · ${a} → ${b}`);
+     const intraday=await v0543FetchSymbolRange(sym,a,b,label);
+     const part=v0542DailyFromIntraday(intraday);
+     if(!part.length)throw new Error(`0 dagsrader efter aggregering för ${sym} ${a} → ${b}`);
+     f.rows.push(...part);
+     f.symbol++;
+     x.fetch[key]=f;
+     v0540Save(x);
+     await v0540Wait(25);
+   }
+   f.month++; f.symbol=0; x.fetch[key]=f; v0540Save(x);
+ }
+ const rows=f.rows;
+ delete x.fetch[key]; v0540Save(x);
+ return rows;
+}
 function v0540NormRows(rows){
  return rows.map(r=>({symbol:String(r.symbol||r.s||'').toUpperCase(),t:String(r.t||r.time||r.timestamp||''),
   o:+r.o,h:+r.h,l:+r.l,c:+r.c,v:+(r.v||0)}))
@@ -4018,7 +4062,7 @@ async function v0540Run(){
  try{
   // A
   if(!x.stages.A){
-   const raw=await v0541FetchChunked(x,'dev',V0540_DEV_START,V0540_DEV_END,'A · Dataintegritet');
+   const raw=await v0543FetchChunked(x,'dev',V0540_DEV_START,V0540_DEV_END,'A · Dataintegritet');
    const rows=v0540NormRows(raw),dups=new Set(),seen=new Set();let duplicate=0;
    for(const r of rows){const k=r.symbol+'|'+r.t;if(seen.has(k))duplicate++;else seen.add(k)}
    const syms=[...new Set(rows.map(r=>r.symbol))],dates=[...new Set(rows.map(v0540Date))];
@@ -4086,7 +4130,7 @@ async function v0540Run(){
   if(x.gridResults?.length>25){x.gridResultsTop25=x.gridResults.slice(0,25);delete x.gridResults;v0540Save(x)}
   // N locked pseudo-forward fetch only after freeze
   if(!x.stages.N){
-   const oosRaw=await v0541FetchChunked(x,'oos',V0540_OOS_START,V0540_OOS_END,'N · Låst pseudo-forward');
+   const oosRaw=await v0543FetchChunked(x,'oos',V0540_OOS_START,V0540_OOS_END,'N · Låst pseudo-forward');
    const oosRows=v0540NormRows(oosRaw),r=v0540Engine(oosRows,x.candidate.params);
    x.pseudoForward={start:V0540_OOS_START,end:V0540_OOS_END,hash:x.candidate.hash,n:r.n,pl:r.pl,pf:r.pf,wr:r.wr,dd:r.dd,avg:r.avg,closed:r.closed};
    v0540StageDone(x,'N',{summary:`${r.n} affärer · P/L ${r.pl.toFixed(0)} kr · PF ${Number.isFinite(r.pf)?r.pf.toFixed(2):'∞'} · DD ${(r.dd*100).toFixed(1)}%`,result:{n:r.n,pl:r.pl,pf:r.pf,wr:r.wr,dd:r.dd,avg:r.avg},rows:oosRows.length});
@@ -4106,7 +4150,7 @@ async function v0540Run(){
   v0540Live('Klar','A–O färdigt. Ingen automatisk rescue/optimering efter pseudo-forward.');
  }catch(e){
   x=v0540Load()||x;x.error={message:String(e.message||e),at:new Date().toISOString(),stage:x.stage};
-  v0540Save(x);v0540Live('PAUSAD',x.error.message);alert(`Swing A–O pausades: ${x.error.message}\n\nCheckpointen är sparad månad för månad. Tryck Fortsätt så fortsätter hämtningen där den slutade.`);
+  v0540Save(x);v0540Live('PAUSAD',x.error.message);alert(`Swing A–O pausades: ${x.error.message}\n\nCheckpointen är sparad efter varje färdig symbol. Tryck Fortsätt så fortsätter den på exakt nästa symbol/månad.`);
  }
 }
 function v0540Report(){

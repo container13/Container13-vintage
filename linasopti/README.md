@@ -1,4 +1,4 @@
-# Linas Opti V0.54.2
+# Linas Opti V0.54.3
 
 > **Aktuell release: V0.54.0** · Lina Swing Alphabet A–O · utveckling 2021–2023 → automatisk frysning → låst pseudo-forward 2024–2026-09-10 · Jägaren orörd · Handel AV · Robotmognad 48/100
 
@@ -843,3 +843,17 @@ Fix: Swing A–O hämtar utvecklingsdata och låst pseudo-forward månad för m�
 V0.54.1 visade att även en månads direkt `1Day`-hämtning gav `Alpaca svarade med ett fel`.
 Swing använder därför nu samma beprövade 5-minuters `/bars`-transport som Jägaren/Tidsmaskinen och aggregerar varje månad lokalt till dags-OHLCV innan Swing-motorn får datan.
 Checkpoint sparar endast de kompakta dagsraderna. Forskningsregler, A–O-grid, datadelning och Jägaren är oförändrade.
+
+## V0.54.3 – extra robust datahämtning: symbol × månad
+V0.54.2 gav fortfarande Alpaca-fel. Nästa möjliga flaskhals är att ett månadspaket med alla 17 symboler fortfarande är för tungt eller att en enskild symbol orsakar felet.
+
+V0.54.3 hämtar därför:
+- **en symbol i taget**,
+- **en månad i taget**,
+- 5-minutersdata via samma `/bars`-väg,
+- lokal aggregering till dags-OHLCV,
+- checkpoint efter varje färdig symbol.
+
+UI visar exakt `Månad X/Y · symbol N/17 · SYMBOL`. Om något fortfarande fallerar får vi därmed exakt symbol och månad istället för ett generiskt Alpaca-fel. Pågående misslyckad V0.54.2-fetch migreras automatiskt till nya symbol×månadsläget när `Fortsätt` trycks.
+
+Ingen strategi-, grid-, datadelning- eller Jägarenändring.
