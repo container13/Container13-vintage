@@ -1208,3 +1208,51 @@ body.v0462-running .v0460-lock{padding:6px 10px;margin:4px 0;font-size:.86rem}
     align-self:center;
   }
 }
+
+/* V0.51.5 – Uppdatera kompakt på 13" och större */
+@media(min-width:900px){
+  .v0424-researchbar{
+    grid-template-columns:auto 300px auto minmax(0,1fr);
+    align-items:center;
+    gap:12px;
+  }
+  .v0425-navlabel{grid-column:1}
+  .v0424-enginepick{
+    grid-column:2;
+    width:300px;
+  }
+  .v0514-refresh-inline{
+    grid-column:3;
+    width:76px;
+    min-width:76px;
+    min-height:64px;
+    padding:6px 8px;
+    box-shadow:0 4px 14px rgba(0,0,0,.12);
+  }
+  .v0424-testernav{
+    grid-column:4;
+    min-width:0;
+  }
+}
+
+/* V0.51.6 – återställ LABB-raden till full bredd på mobil */
+@media(max-width:700px){
+  .v0424-labpick{
+    grid-column:1 / -1!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+  .v0424-labpick select{
+    width:100%!important;
+    min-width:0!important;
+  }
+}
+
+/* V0.52.0 – Historisk Tidsmaskin */
+.v0520-warning{padding:10px 12px;margin:10px 0;border-radius:12px;background:#fff3cd;border:1px solid #ead38b;font-size:13px}
+.v0520-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.v0520-controls label{font-size:12px;font-weight:800;color:#607080}
+.v0520-controls select{display:block;width:100%;min-height:44px;margin-top:4px;border-radius:12px;border:1px solid #cbd9e7;background:#fff;padding:0 10px;font-weight:800}
+.v0520-progress{height:12px;background:#e7edf3;border-radius:999px;overflow:hidden;margin:12px 0}
+#v0520Bar{height:100%;width:0;background:#2678b8;transition:width .2s}
+@media(max-width:700px){.v0520-controls{grid-template-columns:1fr}}

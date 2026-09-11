@@ -1,6 +1,6 @@
-# Linas Opti V0.51.4
+# Linas Opti V0.52.0
 
-> **Aktuell release: V0.51.4** · Mobil layout: Tester + Uppdatera på samma rad · Handel AV · Close ≥83% fryst kandidat · Robotmognad 48/100
+> **Aktuell release: V0.52.0** · Historisk Tidsmaskin / pseudo-forward · Handel AV · riktig Forward V0.51 fortsätter orörd · Robotmognad 48/100
 
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
@@ -707,3 +707,37 @@ Ingen forsknings- eller handelslogik ändrad.
 - Tester tar resterande bredd på raden.
 - Data / Test / Resultat ligger kvar under.
 - Ingen ändring av Jägaren, forward-ankare, regelhash, Close ≥83% eller robotmognad.
+
+
+## V0.51.5 – Responsiv Uppdatera-knapp
+
+Ingen forsknings- eller handelslogik ändrad.
+
+- Mobil behåller V0.51.4-upplägget: Tester + Uppdatera på samma rad, med tumvänlig Uppdatera-knapp.
+- På 13" skärm och större blir Uppdatera kompakt i stället för att breda ut sig över raden.
+- Testlab ligger kvar tydligt till vänster och labbvalet får resterande bredd.
+- Ingen ändring av Jägaren, forward-ankare, regelhash eller Close ≥83%.
+
+
+## V0.51.6 – LABB-raden full bredd på mobil
+
+- Rättar bieffekten från V0.51.4 där LABB/Forward Validation-raden blev för smal på iPhone.
+- **Tester + Uppdatera** ligger fortsatt på samma rad.
+- Raden under, **LABB + Forward Validation**, använder åter hela tillgängliga bredden.
+- Desktopfixen från V0.51.5 behålls.
+- Ingen ändring av forskningslogik, Jägaren, forward-ankare, regelhash eller Close ≥83%.
+
+
+## V0.52.0 – Historisk Tidsmaskin / pseudo-forward
+
+Ny separat forskningsfunktion medan riktiga Jägaren samlar forward-data.
+
+- Startår kan väljas 2024, 2025 eller 2026.
+- Historiken släpps fram kronologiskt i 1, 5 eller 20 vardagar per steg, eller automatiskt till 2026-09-10.
+- Samma frysta Jägaren och Close ≥83% används.
+- Resultat och checkpoint sparas separat i `linasopti_historical_timemachine_v0520`.
+- Riktig V0.51-forward och dess localStorage ändras inte.
+- Rapporten märks uttryckligen **HISTORISK PSEUDO-FORWARD – INTE NY OOS**.
+- Funktionen är diagnostisk eftersom dagens Jägare redan har påverkats av delar av 2024–2026-historiken.
+- Ingen parameteroptimering eller automatisk regeländring sker från resultatet.
+- Robotmognad kvar 48/100; Tidsmaskinen får inte ensam höja mognaden.

@@ -9,21 +9,21 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.51.4">
+<link rel="stylesheet" href="linasopti.css?v=0.52.0">
 
   <meta name="theme-color" content="#f4f7fb">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Linas Opti">
-  <link rel="apple-touch-icon" href="lina-circle.png?v=0.51.4">
+  <link rel="apple-touch-icon" href="lina-circle.png?v=0.52.0">
 </head>
 <body class="v0384-locked">
 
 <div id="v0383Gate" class="v0383-gate" aria-hidden="false">
   <div class="v0383-gate-card">
     <h1>Linas Opti</h1>
-    <div class="v04512-gate-version" aria-label="Version">V0.51.4</div>
+    <div class="v04512-gate-version" aria-label="Version">V0.52.0</div>
     <p>Ange lösenkod för att fortsätta</p>
     <input id="v0383Code" name="lina_one_time_code_0470" type="password" inputmode="text" autocomplete="one-time-code" autocapitalize="off" autocorrect="off" spellcheck="false" value="" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" placeholder="Lösenkod">
     <button id="v0383Enter" type="button">Öppna Linas Opti</button>
@@ -34,7 +34,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.51.4</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.52.0</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">48/100</b><small>Forskningsfas</small></button>
@@ -54,7 +54,8 @@
     <button type="button" class="v0424-subtab" data-pane="result">Resultat</button>
   </div>
   <label id="v0423LabPick" class="v0424-labpick" hidden><span class="v0425-labtag">LABB</span><select id="v0413LabJump" aria-label="Välj Testlab">
-    <option value="v0510ForwardLab">🚦 Forward Validation · Från 2026-09-11 (senaste)</option>
+    <option value="v0520TimeMachineLab">⏳ Tidsmaskin · Historiskt pseudo-forward (senaste)</option>
+    <option value="v0510ForwardLab">🚦 Forward Validation · Från 2026-09-11 (riktig forward)</option>
     <option value="v0500KLab">🛡️ Validation Suite K · Resiliens & kombostress · 10 tester</option>
     <option value="v0500JLab">📉 Validation Suite J · Equity & drawdown · 10 tester</option>
     <option value="v0500ILab">📊 Validation Suite I · Fördelning & expectancy · 10 tester</option>
@@ -378,6 +379,36 @@
 
 
 
+
+<div id="v0520TimeMachineLab" class="card v0410-lab v0413-lab-section vlab-v0520TimeMachineLab">
+  <div class="v0410-labtitle"><span class="v0410-flask">⏳</span><div>
+    <h2>Historisk Tidsmaskin <button class="v0470-help" id="v0520Help">?</button></h2>
+    <p>Pseudo-forward: släpper fram historiken kronologiskt utan att motorn får läsa framtida dagar.</p>
+  </div></div>
+  <div class="v0520-warning"><b>Viktigt:</b> detta är INTE ny OOS-data och får aldrig blandas ihop med den riktiga forward-valideringen från 2026-09-11. Jägaren har tidigare sett delar av historiken.</div>
+  <div class="v0511-pwa-grid">
+    <div><span>Simulerad start</span><b id="v0520StartLabel">2024-01-01</b></div>
+    <div><span>Simulerat stopp</span><b id="v0520EndLabel">2026-09-10</b></div>
+    <div><span>Läge</span><b id="v0520Mode">EJ STARTAD</b></div>
+  </div>
+  <div class="v0520-controls">
+    <label>Startår <select id="v0520StartYear"><option>2024</option><option>2025</option><option>2026</option></select></label>
+    <label>Släpp fram <select id="v0520Step"><option value="1">1 handelsdag</option><option value="5">5 handelsdagar</option><option value="20">20 handelsdagar</option></select></label>
+  </div>
+  <div class="v0470-bactions">
+    <button id="v0520Start" class="primary">Starta tidsmaskin</button>
+    <button id="v0520Next" class="secondary" disabled>▶ Nästa steg</button>
+    <button id="v0520Auto" class="secondary" disabled>⏩ Kör till stopp</button>
+    <button id="v0520Reset" class="secondary">Återställ</button>
+  </div>
+  <div class="v0520-progress"><div id="v0520Bar"></div></div>
+  <p id="v0520Status">Ingen historisk pseudo-forward körd ännu.</p>
+  <div id="v0520Stats" class="v0511-pwa-grid"></div>
+  <div class="v0470-bactions">
+    <button id="v0520Report" class="secondary" disabled>TXT-rapport</button>
+    <button id="v0520Backup" class="secondary" disabled>JSON-checkpoint</button>
+  </div>
+</div>
 <div id="v0510ForwardLab" class="card v0410-lab v0413-lab-section vlab-v0510ForwardLab">
   <div class="v0410-labtitle"><span class="v0410-flask">🚦</span><div>
     <h2>Forward Validation Gate <button class="v0470-help" data-v51help="suite">?</button></h2>
@@ -1054,5 +1085,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.51.4"></script>
+<script src="linasopti.js?v=0.52.0"></script>
 </body></html>
