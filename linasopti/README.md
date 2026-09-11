@@ -1,6 +1,6 @@
-# Linas Opti V0.51.2
+# Linas Opti V0.51.3
 
-> **Aktuell release: V0.51.2** · iPhone PWA + lättåtkomlig uppdateringsknapp · Handel AV · Close ≥83% fryst kandidat · Robotmognad 48/100
+> **Aktuell release: V0.51.3** · PWA UI-städning · Handel AV · Close ≥83% fryst kandidat · Robotmognad 48/100
 
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
@@ -687,3 +687,11 @@ Ingen forsknings- eller handelslogik ändrad.
 - iPhone safe-area respekteras så knappen inte hamnar bakom hemindikatorn.
 
 Forward-generation, startankare, regelhash och Close ≥83% är oförändrade. Robotmognad kvar 48/100.
+
+
+## V0.51.3 – PWA UI-städning
+- Stora permanenta iPhone-webbapp-kortet borttaget.
+- Forward Validation Gate ligger åter direkt under Testlab-raden.
+- ↻ Uppdatera behålls lättillgänglig.
+- PWA/hemskärmsläge och automatisk forward-kontroll vid öppning behålls.
+- Ingen ändring av Jägaren, forward-ankare, regelhash eller Close ≥83%.
