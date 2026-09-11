@@ -1,4 +1,4 @@
-# Linas Opti V0.54.0
+# Linas Opti V0.54.1
 
 > **Aktuell release: V0.54.0** · Lina Swing Alphabet A–O · utveckling 2021–2023 → automatisk frysning → låst pseudo-forward 2024–2026-09-10 · Jägaren orörd · Handel AV · Robotmognad 48/100
 
@@ -834,3 +834,7 @@ A Dataintegritet · B Baseline · C Trendfamilj · D Rekylfamilj · E Återhämt
 
 Urvalet använder utvecklingsresultat, årsstabilitet och drawdown. Pseudo-forward klassas separat och är fortfarande historisk, inte ny framtida OOS.
 Robotmognad ligger kvar på 48/100 tills ny evidens motiverar annat.
+
+
+## V0.54.1
+Fix: Swing A–O hämtar utvecklingsdata och låst pseudo-forward månad för månad med checkpoint efter varje färdig månad. Ingen strategiändring; Jägaren är orörd.

@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.54.0";
+const APP_VERSION = "V0.54.1";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -3862,6 +3862,17 @@ async function v0540FetchRange(start,end,label){
  }
  throw last;
 }
+function v0541MonthChunks(start,end){
+ const out=[];let d=new Date(start+'T00:00:00Z'),last=new Date(end+'T00:00:00Z');
+ d=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),1));
+ while(d<=last){const y=d.getUTCFullYear(),m=d.getUTCMonth(),a=`${y}-${String(m+1).padStart(2,'0')}-01`,e=new Date(Date.UTC(y,m+1,0)),b=`${e.getUTCFullYear()}-${String(e.getUTCMonth()+1).padStart(2,'0')}-${String(e.getUTCDate()).padStart(2,'0')}`;out.push([a<start?start:a,b>end?end:b]);d=new Date(Date.UTC(y,m+1,1))}
+ return out;
+}
+async function v0541FetchChunked(x,key,start,end,label){
+ const chunks=v0541MonthChunks(start,end);x.fetch??={};x.fetch[key]??={cursor:0,rows:[]};let f=x.fetch[key];
+ for(;f.cursor<chunks.length;){const [a,b]=chunks[f.cursor];v0540Live(label,`Månad ${f.cursor+1}/${chunks.length} · ${a} → ${b}`);const part=await v0540FetchRange(a,b,`${label} · månad ${f.cursor+1}/${chunks.length}`);f.rows.push(...part);f.cursor++;x.fetch[key]=f;v0540Save(x);await v0540Wait(40)}
+ const rows=f.rows;delete x.fetch[key];v0540Save(x);return rows;
+}
 function v0540NormRows(rows){
  return rows.map(r=>({symbol:String(r.symbol||r.s||'').toUpperCase(),t:String(r.t||r.time||r.timestamp||''),
   o:+r.o,h:+r.h,l:+r.l,c:+r.c,v:+(r.v||0)}))
@@ -3988,7 +3999,7 @@ async function v0540Run(){
  try{
   // A
   if(!x.stages.A){
-   const raw=await v0540FetchRange(V0540_DEV_START,V0540_DEV_END,'A · Dataintegritet');
+   const raw=await v0541FetchChunked(x,'dev',V0540_DEV_START,V0540_DEV_END,'A · Dataintegritet');
    const rows=v0540NormRows(raw),dups=new Set(),seen=new Set();let duplicate=0;
    for(const r of rows){const k=r.symbol+'|'+r.t;if(seen.has(k))duplicate++;else seen.add(k)}
    const syms=[...new Set(rows.map(r=>r.symbol))],dates=[...new Set(rows.map(v0540Date))];
@@ -4056,7 +4067,7 @@ async function v0540Run(){
   if(x.gridResults?.length>25){x.gridResultsTop25=x.gridResults.slice(0,25);delete x.gridResults;v0540Save(x)}
   // N locked pseudo-forward fetch only after freeze
   if(!x.stages.N){
-   const oosRaw=await v0540FetchRange(V0540_OOS_START,V0540_OOS_END,'N · Låst pseudo-forward');
+   const oosRaw=await v0541FetchChunked(x,'oos',V0540_OOS_START,V0540_OOS_END,'N · Låst pseudo-forward');
    const oosRows=v0540NormRows(oosRaw),r=v0540Engine(oosRows,x.candidate.params);
    x.pseudoForward={start:V0540_OOS_START,end:V0540_OOS_END,hash:x.candidate.hash,n:r.n,pl:r.pl,pf:r.pf,wr:r.wr,dd:r.dd,avg:r.avg,closed:r.closed};
    v0540StageDone(x,'N',{summary:`${r.n} affärer · P/L ${r.pl.toFixed(0)} kr · PF ${Number.isFinite(r.pf)?r.pf.toFixed(2):'∞'} · DD ${(r.dd*100).toFixed(1)}%`,result:{n:r.n,pl:r.pl,pf:r.pf,wr:r.wr,dd:r.dd,avg:r.avg},rows:oosRows.length});
@@ -4076,7 +4087,7 @@ async function v0540Run(){
   v0540Live('Klar','A–O färdigt. Ingen automatisk rescue/optimering efter pseudo-forward.');
  }catch(e){
   x=v0540Load()||x;x.error={message:String(e.message||e),at:new Date().toISOString(),stage:x.stage};
-  v0540Save(x);v0540Live('PAUSAD',x.error.message);alert(`Swing A–O pausades: ${x.error.message}\n\nCheckpointen är sparad. Tryck Fortsätt.`);
+  v0540Save(x);v0540Live('PAUSAD',x.error.message);alert(`Swing A–O pausades: ${x.error.message}\n\nCheckpointen är sparad månad för månad. Tryck Fortsätt så fortsätter hämtningen där den slutade.`);
  }
 }
 function v0540Report(){
