@@ -1273,3 +1273,6 @@ body.v0462-running .v0460-lock{padding:6px 10px;margin:4px 0;font-size:.86rem}
 
 /* V0.52.2 – tydligare dataläge */
 #v0522FetchLine{font-weight:700;color:#43566c}
+
+/* V0.52.3 – retry/resume-status */
+#v0523RetryLine{font-weight:700;color:#43566c}

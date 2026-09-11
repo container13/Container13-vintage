@@ -1,6 +1,6 @@
-# Linas Opti V0.52.2
+# Linas Opti V0.52.3
 
-> **Aktuell release: V0.52.2** · Tidsmaskin med mindre datablock, timeout och tydlig hämtstatus · Handel AV · riktig Forward V0.51 orörd · Robotmognad 48/100
+> **Aktuell release: V0.52.3** · Tidsmaskin med 1-dagsblock, automatisk retry/backoff och säker resume · Handel AV · riktig Forward V0.51 orörd · Robotmognad 48/100
 
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
@@ -768,3 +768,20 @@ Ren tillförlitlighets-/UI-patch. Ingen strategi eller forskningsregel ändrad.
 - Vid timeout/fel pausas körningen men checkpointen behålls; nästa tryck på `Kör till stopp` fortsätter från sparat läge.
 - LABB-väljaren visar Tidsmaskinen som vald när den senaste Tidsmaskin-vyn öppnas.
 - Riktig forward V0.51 och dess lagring lämnas orörda.
+
+
+## V0.52.3 – Robust resume vid nätverksfel
+
+Bakgrund: en verklig körning nådde 685/704 vardagar (2026-08-14) men fastnade sedan på återkommande `NetworkError` vid blocket som började 2026-08-17.
+
+Ändringar:
+- automatisk körning hämtar nu **en historisk vardag i taget**,
+- varje dag får upp till **4 försök**,
+- retry-backoff: 3 s, 6 s, 9 s,
+- UI visar aktuellt försök,
+- checkpoint sparas efter varje färdig dag,
+- vid 4 misslyckade försök pausas körningen utan att cursor/affärer tappas,
+- nästa `Kör till stopp` fortsätter exakt från samma dag,
+- tidigare localStorage-nyckel behålls så pågående V0.52.2-körning kan återupptas utan reset.
+
+Ingen strategi, Close ≥83 %, regelhash eller riktig Forward V0.51 har ändrats.

@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.52.2";
+const APP_VERSION = "V0.52.3";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -3813,6 +3813,42 @@ function v0522SetFetchStatus(text){
   if(el)el.textContent=`Datahämtning: ${text}`;
 }
 
+function v0523SetRetryStatus(text){
+  const el=document.getElementById('v0523RetryLine');
+  if(el)el.textContent=`Försök: ${text}`;
+}
+function v0523Sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+async function v0523FetchOneDay(date,syms){
+  const url=`/bars?symbols=${encodeURIComponent(syms)}&timeframe=5Min&start=${date}T00:00:00Z&end=${date}T23:59:59Z`;
+  let lastErr=null;
+  for(let attempt=1;attempt<=4;attempt++){
+    try{
+      v0523SetRetryStatus(`${attempt}/4 · ${date}`);
+      v0522SetFetchStatus(`hämtar ${date} …`);
+      const t0=performance.now();
+      const rows=await v0522WithTimeout(
+        bridge(url),
+        V0522_FETCH_TIMEOUT_MS,
+        `Hämtning ${date}`
+      );
+      const flat=Array.isArray(rows)?rows:(rows?.rows||rows?.data||[]);
+      const secs=((performance.now()-t0)/1000).toFixed(1);
+      v0522SetFetchStatus(`klar ${date} på ${secs}s · ${flat.length} rader`);
+      v0523SetRetryStatus(`klart på försök ${attempt}/4`);
+      return flat;
+    }catch(err){
+      lastErr=err;
+      if(attempt<4){
+        const wait=attempt*3000;
+        v0522SetFetchStatus(`fel ${date} · väntar ${wait/1000}s och försöker igen`);
+        await v0523Sleep(wait);
+      }
+    }
+  }
+  v0523SetRetryStatus(`4/4 misslyckades · ${date}`);
+  throw lastErr||new Error(`Kunde inte hämta ${date}`);
+}
+
 function v0520Load(){try{return JSON.parse(localStorage.getItem(V0520_KEY)||'null')}catch{return null}}
 function v0520Save(x){localStorage.setItem(V0520_KEY,JSON.stringify(x));return x}
 function v0520Dates(start,end){
@@ -3832,7 +3868,7 @@ function v0520Paint(){
   if(!x){
     if(mode)mode.textContent='EJ STARTAD';
     const b=document.querySelector('#v0521LiveStatus b'),d=document.getElementById('v0521DayLine'),t=document.getElementById('v0521TradeLine'),sv=document.getElementById('v0521SavedLine');
-    if(b)b.textContent='Väntar på start…'; if(d)d.textContent='Dag — / — · 0%'; if(t)t.textContent='Affärer hittills: 0'; if(sv)sv.textContent='Senast sparad: —'; v0522SetFetchStatus('väntar');
+    if(b)b.textContent='Väntar på start…'; if(d)d.textContent='Dag — / — · 0%'; if(t)t.textContent='Affärer hittills: 0'; if(sv)sv.textContent='Senast sparad: —'; v0522SetFetchStatus('väntar'); v0523SetRetryStatus('—');
     return
   }
   if(mode)mode.textContent=x.done?'KLAR':'PÅGÅR';
@@ -3856,40 +3892,44 @@ async function v0520Start(){
 async function v0520Advance(n){
   const x=v0520Load();if(!x||x.done)return;
   const target=Math.min(x.cursor+n,x.dates.length);if(target<=x.cursor)return;
-  const from=x.dates[x.cursor],to=x.dates[target-1];
-  x.currentDate=from; x.savedAt=new Date().toISOString(); v0520Save(x); v0520Paint();
   const syms=[...V0440_SYMBOLS,'SPY'].join(',');
-  const t0=performance.now();
-  v0522SetFetchStatus(`hämtar ${from} → ${to} …`);
-  let rows;
-  try{
-    rows=await v0522WithTimeout(
-      v0434Retry(()=>bridge(`/bars?symbols=${encodeURIComponent(syms)}&timeframe=5Min&start=${from}T00:00:00Z&end=${to}T23:59:59Z`)),
-      V0522_FETCH_TIMEOUT_MS,
-      `Hämtning ${from} → ${to}`
-    );
-  }catch(err){
-    v0522SetFetchStatus(`FEL – ${err.message||err}`);
-    throw err;
+  while(x.cursor<target){
+    const date=x.dates[x.cursor];
+    x.currentDate=date; x.savedAt=new Date().toISOString(); v0520Save(x); v0520Paint();
+    let flat;
+    try{
+      flat=await v0523FetchOneDay(date,syms);
+    }catch(err){
+      v0522SetFetchStatus(`FEL ${date} – ${err.message||err}`);
+      x.lastError={date,message:String(err.message||err),at:new Date().toISOString()};
+      x.savedAt=new Date().toISOString(); v0520Save(x); v0520Paint();
+      throw err;
+    }
+    const prior=v0520Stats(x.closed),capital=100000+prior.pl;
+    const r=v04511Engine(flat,capital,.83);
+    for(const t of (r.closed||[])){
+      const id=[t.symbol,t.entryTime,t.exitTime,t.entry,t.exit].join('|');
+      if(!x.seen[id]){x.seen[id]=1;x.closed.push(t)}
+    }
+    x.cursor++;
+    x.lastDate=date;
+    x.currentDate=date;
+    x.done=x.cursor>=x.dates.length;
+    x.updatedAt=new Date().toISOString();
+    x.savedAt=x.updatedAt;
+    x.lastError=null;
+    v0520Save(x);
+    v0520Paint();
+    await v0523Sleep(30);
   }
-  const secs=((performance.now()-t0)/1000).toFixed(1);
-  const flat=Array.isArray(rows)?rows:(rows?.rows||rows?.data||[]);
-  v0522SetFetchStatus(`klar ${from} → ${to} på ${secs}s · ${flat.length} rader`);
-  const prior=v0520Stats(x.closed),capital=100000+prior.pl;
-  const r=v04511Engine(flat,capital,.83);
-  for(const t of (r.closed||[])){
-    const id=[t.symbol,t.entryTime,t.exitTime,t.entry,t.exit].join('|');
-    if(!x.seen[id]){x.seen[id]=1;x.closed.push(t)}
-  }
-  x.cursor=target;x.lastDate=to;x.currentDate=to;x.done=target>=x.dates.length;x.updatedAt=new Date().toISOString();x.savedAt=x.updatedAt;v0520Save(x);v0520Paint();
 }
 async function v0520RunAll(){
   let x=v0520Load();
   while(x&&!x.done){
     try{
-      await v0520Advance(5);
+      await v0520Advance(1);
     }catch(err){
-      alert(`Tidsmaskinen pausades. ${err.message||err}\n\nCheckpointen är sparad. Tryck Kör till stopp igen för att fortsätta.`);
+      alert(`Tidsmaskinen pausades efter 4 automatiska försök. ${err.message||err}\n\nCheckpointen är sparad på senast färdiga dag. Tryck Kör till stopp igen senare så fortsätter den från exakt samma datum.`);
       break;
     }
     x=v0520Load();
@@ -3904,7 +3944,7 @@ window.addEventListener('DOMContentLoaded',()=>{
  document.getElementById('v0520Next')?.addEventListener('click',async()=>{try{await v0520Advance(+(document.getElementById('v0520Step')?.value||1))}catch(err){alert(`Kunde inte hämta nästa block: ${err.message||err}`)}});
  document.getElementById('v0520Auto')?.addEventListener('click',v0520RunAll);
  document.getElementById('v0520Reset')?.addEventListener('click',()=>{if(confirm('Återställa endast historiska Tidsmaskinen? Riktig forward påverkas inte.')){localStorage.removeItem(V0520_KEY);v0520Paint()}});
- document.getElementById('v0520Report')?.addEventListener('click',()=>{const x=v0520Load();if(!x)return;const s=v0520Stats(x.closed);v0520Download(`LINA_TIMEMACHINE_V0520_${x.start}_${x.end}.txt`,`LINA HISTORISK TIDSMASKIN V0.52.2\nDIAGNOSTIK / PSEUDO-FORWARD – INTE NY OOS\nStart: ${x.start}\nStopp: ${x.end}\nRegelhash: ${x.rulesHash}\nAffärer: ${s.n}\nNetto P/L: ${s.pl.toFixed(2)} kr\nPF: ${Number.isFinite(s.pf)?s.pf.toFixed(3):'INF'}\nWR: ${(100*s.wr).toFixed(1)}%\n`)});
+ document.getElementById('v0520Report')?.addEventListener('click',()=>{const x=v0520Load();if(!x)return;const s=v0520Stats(x.closed);v0520Download(`LINA_TIMEMACHINE_V0520_${x.start}_${x.end}.txt`,`LINA HISTORISK TIDSMASKIN V0.52.3\nDIAGNOSTIK / PSEUDO-FORWARD – INTE NY OOS\nStart: ${x.start}\nStopp: ${x.end}\nRegelhash: ${x.rulesHash}\nAffärer: ${s.n}\nNetto P/L: ${s.pl.toFixed(2)} kr\nPF: ${Number.isFinite(s.pf)?s.pf.toFixed(3):'INF'}\nWR: ${(100*s.wr).toFixed(1)}%\n`)});
  document.getElementById('v0520Backup')?.addEventListener('click',()=>{const x=v0520Load();if(x)v0520Download('LINA_TIMEMACHINE_V0520_CHECKPOINT.json',JSON.stringify(x,null,2),'application/json')});
  document.getElementById('v0520Help')?.addEventListener('click',()=>alert('Tidsmaskinen spelar upp gammal marknadsdata kronologiskt. Motorn får bara dagens och tidigare bars i varje steg. Eftersom Jägaren redan utvecklats med delar av denna historik är detta pseudo-forward/diagnostik – aldrig en ersättning för riktig forward från 2026-09-11.'));
  v0520Paint();
