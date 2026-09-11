@@ -1270,3 +1270,6 @@ body.v0462-running .v0460-lock{padding:6px 10px;margin:4px 0;font-size:.86rem}
 }
 .v0521-live-status b{font-size:15px}
 .v0521-live-status span{font-size:12px;color:#607080}
+
+/* V0.52.2 – tydligare dataläge */
+#v0522FetchLine{font-weight:700;color:#43566c}

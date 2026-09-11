@@ -1,6 +1,6 @@
-# Linas Opti V0.52.1
+# Linas Opti V0.52.2
 
-> **Aktuell release: V0.52.1** · Tidsmaskin med tydlig aktuell dag/progress · Handel AV · riktig Forward V0.51 fortsätter orörd · Robotmognad 48/100
+> **Aktuell release: V0.52.2** · Tidsmaskin med mindre datablock, timeout och tydlig hämtstatus · Handel AV · riktig Forward V0.51 orörd · Robotmognad 48/100
 
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
@@ -755,3 +755,16 @@ Tidsmaskinen visar nu tydligt under körning:
 - senaste sparade checkpoint.
 
 Statusen uppdateras före varje nytt datachunk och efter sparad checkpoint. Den riktiga V0.51-forwarden påverkas inte.
+
+
+## V0.52.2 – Datablock, timeout och hämtstatus
+
+Ren tillförlitlighets-/UI-patch. Ingen strategi eller forskningsregel ändrad.
+
+- Automatisk Tidsmaskin kör nu i mindre block om 5 vardagar i stället för 20.
+- UI visar exakt vilket datumintervall som hämtas.
+- När ett block är klart visas hämtningstid och antal rader.
+- 45 sekunders timeout skyddar mot att sidan ser frusen ut i flera minuter.
+- Vid timeout/fel pausas körningen men checkpointen behålls; nästa tryck på `Kör till stopp` fortsätter från sparat läge.
+- LABB-väljaren visar Tidsmaskinen som vald när den senaste Tidsmaskin-vyn öppnas.
+- Riktig forward V0.51 och dess lagring lämnas orörda.
