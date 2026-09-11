@@ -1151,3 +1151,60 @@ body.v0462-running .v0460-lock{padding:6px 10px;margin:4px 0;font-size:.86rem}
 .v0512-refresh small{font-size:10px;line-height:12px;font-weight:700}
 .v0512-refresh:active{transform:scale(.96)}
 @media(min-width:900px){.v0512-refresh{right:22px;bottom:22px}}
+
+/* V0.51.4 – Tester + Uppdatera på samma rad i mobilvy */
+.v0424-researchbar{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  align-items:center;
+  gap:10px;
+}
+.v0424-enginepick{
+  min-width:0;
+}
+.v0424-enginepick select{
+  width:100%;
+}
+.v0514-refresh-inline{
+  min-width:64px;
+  min-height:64px;
+  padding:8px 10px;
+  border-radius:18px;
+  border:1px solid rgba(70,90,120,.28);
+  box-shadow:0 6px 24px rgba(0,0,0,.18);
+  background:rgba(255,255,255,.94);
+  color:#243447;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:1px;
+  font:inherit;
+  -webkit-backdrop-filter:blur(12px);
+  backdrop-filter:blur(12px);
+  touch-action:manipulation;
+  flex:0 0 auto;
+}
+.v0514-refresh-inline span{font-size:29px;line-height:28px;font-weight:700}
+.v0514-refresh-inline small{font-size:10px;line-height:12px;font-weight:700}
+.v0514-refresh-inline:active{transform:scale(.96)}
+
+@media(max-width:700px){
+  .v0424-researchbar{
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:10px;
+  }
+  .v0425-navlabel{
+    grid-column:1 / -1;
+  }
+  .v0424-testernav{
+    grid-column:1 / -1;
+  }
+  .v0424-enginepick{
+    grid-column:1;
+  }
+  .v0514-refresh-inline{
+    grid-column:2;
+    align-self:center;
+  }
+}

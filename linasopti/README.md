@@ -1,6 +1,6 @@
-# Linas Opti V0.51.3
+# Linas Opti V0.51.4
 
-> **Aktuell release: V0.51.3** · PWA UI-städning · Handel AV · Close ≥83% fryst kandidat · Robotmognad 48/100
+> **Aktuell release: V0.51.4** · Mobil layout: Tester + Uppdatera på samma rad · Handel AV · Close ≥83% fryst kandidat · Robotmognad 48/100
 
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
@@ -695,3 +695,15 @@ Forward-generation, startankare, regelhash och Close ≥83% är oförändrade. R
 - ↻ Uppdatera behålls lättillgänglig.
 - PWA/hemskärmsläge och automatisk forward-kontroll vid öppning behålls.
 - Ingen ändring av Jägaren, forward-ankare, regelhash eller Close ≥83%.
+
+
+## V0.51.4 – Tester + Uppdatera på samma rad
+
+Ingen forsknings- eller handelslogik ändrad.
+
+- Uppdatera-knappen är inte längre flytande ovanpå sidan.
+- På mobil ligger **Tester** och **↻ Uppdatera** på samma rad.
+- Uppdatera behåller samma storlek/utseende som tidigare.
+- Tester tar resterande bredd på raden.
+- Data / Test / Resultat ligger kvar under.
+- Ingen ändring av Jägaren, forward-ankare, regelhash, Close ≥83% eller robotmognad.
