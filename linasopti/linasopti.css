@@ -1276,3 +1276,10 @@ body.v0462-running .v0460-lock{padding:6px 10px;margin:4px 0;font-size:.86rem}
 
 /* V0.52.3 – retry/resume-status */
 #v0523RetryLine{font-weight:700;color:#43566c}
+
+/* V0.53.0 – Lina Swing Research Gate */
+.v0530-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0}
+.v0530-grid>div,.v0530-rules>div{border:1px solid #d9e2ea;border-radius:12px;padding:11px;background:#fbfcfd}
+.v0530-grid span,.v0530-rules span{display:block;color:#617083;font-size:12px;margin-bottom:3px}
+.v0530-grid b{font-size:15px}.v0530-rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:10px 0 14px}.v0530-rules b{display:block;margin-bottom:4px}
+@media(max-width:700px){.v0530-grid,.v0530-rules{grid-template-columns:1fr}}

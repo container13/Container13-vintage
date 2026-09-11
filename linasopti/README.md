@@ -1,6 +1,6 @@
-# Linas Opti V0.52.3
+# Linas Opti V0.53.0
 
-> **Aktuell release: V0.52.3** · Tidsmaskin med 1-dagsblock, automatisk retry/backoff och säker resume · Handel AV · riktig Forward V0.51 orörd · Robotmognad 48/100
+> **Aktuell release: V0.53.0** · Lina Swing Research Gate 1 · separat forskningsgeneration · Jägaren/Forward orörd · Handel AV · Robotmognad 48/100
 
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
@@ -785,3 +785,21 @@ Bakgrund: en verklig körning nådde 685/704 vardagar (2026-08-14) men fastnade 
 - tidigare localStorage-nyckel behålls så pågående V0.52.2-körning kan återupptas utan reset.
 
 Ingen strategi, Close ≥83 %, regelhash eller riktig Forward V0.51 har ändrats.
+
+
+## V0.53.0 – Lina Swing Research Gate 1
+
+Ny separat forskningsgeneration: **SWING-G1**. Jägaren fortsätter sin riktiga forward-validering orörd.
+
+Förregistrerad uppdelning:
+- utvecklingsdata: **2021-01-01 – 2023-12-31**,
+- låst historisk pseudo-forward: **2024-01-01 – 2026-09-10**,
+- första universum: samma 16 likvida USA-aktier som Jägaren,
+- normal swinghorisont: 2–10 handelsdagar,
+- separat signalfamilj: trend + rekyl + återhämtning,
+- SPY-trend som gemensamt regimfilter,
+- inga symbolspecifika räddningsregler,
+- modellerad friktion och fast risk per affär,
+- ingen tuning på den låsta pseudo-forward-perioden.
+
+V0.53.0 kör ännu ingen Swing-optimering. Den låser forskningsplanen först. Nästa steg blir Swing Lab 1 som endast får använda 2021–2023. Robotmognad ligger kvar på 48/100.

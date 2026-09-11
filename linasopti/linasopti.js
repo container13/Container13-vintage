@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.52.3";
+const APP_VERSION = "V0.53.0";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -1749,7 +1749,7 @@ window.addEventListener('DOMContentLoaded',()=>{
  document.getElementById('v0413Sims')?.addEventListener('click',()=>v0413ShowInfo('sims'));
  const engine=document.getElementById('v0423Engine'),jump=document.getElementById('v0413LabJump');
  const LAB_KEY='linasopti_testlab_selected_v0423';
- function showSelectedLab(){if(!jump)return;const val=jump.value;document.querySelectorAll('[class*=\"vlab-v04\"]').forEach(el=>{el.style.display=el.classList.contains('vlab-'+val)?'':'none'});document.querySelectorAll('.vlab-extra').forEach(el=>el.style.display='none');localStorage.setItem(LAB_KEY,val);}
+ function showSelectedLab(){if(!jump)return;const val=jump.value;document.querySelectorAll('.v0413-lab-section').forEach(el=>{el.style.display=el.classList.contains('vlab-'+val)?'':'none'});document.querySelectorAll('.vlab-extra').forEach(el=>el.style.display='none');localStorage.setItem(LAB_KEY,val);}
  if(jump){const saved=localStorage.getItem(LAB_KEY);if(saved&&saved!=='v0458Lab'&&saved!=='v0459Lab'&&[...jump.options].some(o=>o.value===saved))jump.value=saved;else jump.value='v0460Lab';jump.addEventListener('change',showSelectedLab);showSelectedLab();}
  document.querySelectorAll('.v0424-subtab').forEach(b=>b.addEventListener('click',()=>show(b.dataset.pane,true)));
  if(engine){engine.addEventListener('change',()=>{
@@ -3793,6 +3793,29 @@ window.addEventListener('DOMContentLoaded',()=>{
 });
 
 
+
+// ============================================================
+// V0.53.0 – Lina Swing Research Gate 1
+// ============================================================
+const V0530_KEY='linasopti_swing_research_gate_v0530';
+const V0530_PLAN={schema:'LINA-SWING-RESEARCH-GATE-1',generation:'SWING-G1',
+ development:'2021-01-01..2023-12-31',lockedPseudoForward:'2024-01-01..2026-09-10',
+ universe:['AMD','SHOP','ADBE','MU','FDX','TSLA','LUV','NFLX','C','NOW','QCOM','BAC','GM','DDOG','PYPL','NVDA'],
+ horizon:'2–10 trading days',signalFamily:'trend + pullback + recovery',regime:'SPY trend filter',
+ constraints:['no Jägaren intraday signal reuse','no symbol-specific rescue rules','fixed risk per trade','modeled friction','no tuning on locked pseudo-forward'],trading:'OFF'};
+function v0530Load(){try{return JSON.parse(localStorage.getItem(V0530_KEY)||'null')}catch{return null}}
+function v0530Hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(16).padStart(8,'0')}
+function v0530Paint(){const x=v0530Load(),st=document.getElementById('v0530Status'),msg=document.getElementById('v0530Message'),lock=document.getElementById('v0530Lock'),exp=document.getElementById('v0530Export');if(!st)return;
+ if(!x){st.textContent='EJ LÅST';if(lock){lock.disabled=false;lock.textContent='🔒 Lås forskningsplan'}if(exp)exp.disabled=true;if(msg)msg.textContent='Nästa steg: lås planen. Därefter bygger vi Swing Lab 1 mot endast 2021–2023.';return}
+ st.textContent='LÅST · '+x.planHash;if(lock){lock.disabled=true;lock.textContent='✓ Forskningsplan låst'}if(exp)exp.disabled=false;
+ if(msg)msg.innerHTML=`✓ SWING-G1 låst ${new Date(x.lockedAt).toLocaleString('sv-SE')} · planhash <b>${x.planHash}</b>.<br>Nästa forskningssteg får endast använda utvecklingsperioden 2021–2023.`}
+function v0530Lock(){if(v0530Load())return;const canonical=JSON.stringify(V0530_PLAN);const x={...V0530_PLAN,version:APP_VERSION,lockedAt:new Date().toISOString(),planHash:v0530Hash(canonical)};localStorage.setItem(V0530_KEY,JSON.stringify(x));v0530Paint()}
+function v0530Report(){const x=v0530Load();if(!x)return'LINA SWING RESEARCH GATE 1 – EJ LÅST';return[
+ 'LINAS OPTI – LINA SWING RESEARCH GATE 1','Version: '+APP_VERSION,'Generation: '+x.generation,'Låst: '+x.lockedAt,'Planhash: '+x.planHash,'Handel: AVSTÄNGD','',
+ 'UTVECKLINGSDATA: '+x.development,'LÅST PSEUDO-FORWARD: '+x.lockedPseudoForward,'UNIVERSUM: '+x.universe.join(', '),'HORISONT: '+x.horizon,'SIGNALFAMILJ: '+x.signalFamily,'REGIM: '+x.regime,'','REGLER:',...x.constraints.map(q=>'- '+q),'','Jägaren och dess riktiga forward-validering är separata och oförändrade.'].join('\n')}
+window.addEventListener('DOMContentLoaded',()=>{document.getElementById('v0530Lock')?.addEventListener('click',v0530Lock);document.getElementById('v0530Export')?.addEventListener('click',()=>v0460Dl(v0530Report(),`LINAS_OPTI_SWING_RESEARCH_GATE_V0530_${new Date().toISOString().slice(0,10)}.txt`));
+ document.getElementById('v0530Help')?.addEventListener('click',()=>alert('Research Gate låser metod och datadelning innan Swing-forskningen börjar. 2021–2023 används för utveckling. 2024–2026-09-10 hålls undan tills en kandidat är fryst. Det minskar risken att vi råkar optimera Swing på samma period som senare ska bedöma den.'));
+ v0530Paint();const jump=document.getElementById('v0413LabJump');if(jump&&[...jump.options].some(o=>o.value==='v0530SwingLab')){jump.value='v0530SwingLab';try{localStorage.setItem('linasopti_testlab_selected_v0423','v0530SwingLab')}catch{}jump.dispatchEvent(new Event('change'))}});
 // ============================================================
 // V0.52.0 – HISTORICAL TIME MACHINE / PSEUDO-FORWARD
 // Diagnostic only. Never counts as real V0.51 forward evidence.
