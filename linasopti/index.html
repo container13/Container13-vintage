@@ -9,21 +9,21 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.53.0">
+<link rel="stylesheet" href="linasopti.css?v=0.54.0">
 
   <meta name="theme-color" content="#f4f7fb">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Linas Opti">
-  <link rel="apple-touch-icon" href="lina-circle.png?v=0.53.0">
+  <link rel="apple-touch-icon" href="lina-circle.png?v=0.54.0">
 </head>
 <body class="v0384-locked">
 
 <div id="v0383Gate" class="v0383-gate" aria-hidden="false">
   <div class="v0383-gate-card">
     <h1>Linas Opti</h1>
-    <div class="v04512-gate-version" aria-label="Version">V0.53.0</div>
+    <div class="v04512-gate-version" aria-label="Version">V0.54.0</div>
     <p>Ange lösenkod för att fortsätta</p>
     <input id="v0383Code" name="lina_one_time_code_0470" type="password" inputmode="text" autocomplete="one-time-code" autocapitalize="off" autocorrect="off" spellcheck="false" value="" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" placeholder="Lösenkod">
     <button id="v0383Enter" type="button">Öppna Linas Opti</button>
@@ -34,7 +34,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.53.0</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.54.0</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">48/100</b><small>Forskningsfas</small></button>
@@ -54,7 +54,8 @@
     <button type="button" class="v0424-subtab" data-pane="result">Resultat</button>
   </div>
   <label id="v0423LabPick" class="v0424-labpick" hidden><span class="v0425-labtag">LABB</span><select id="v0413LabJump" aria-label="Välj Testlab">
-    <option value="v0530SwingLab" selected>🌙 Lina Swing · Research Gate 1 (senaste)</option>
+    <option value="v0540SwingAlphabetLab" selected>🌙 Lina Swing · Alphabet A–O (senaste)</option>
+    <option value="v0530SwingLab">🌙 Lina Swing · Research Gate 1</option>
     <option value="v0520TimeMachineLab">⏳ Tidsmaskin · Historiskt pseudo-forward (senaste)</option>
     <option value="v0510ForwardLab">🚦 Forward Validation · Från 2026-09-11 (riktig forward)</option>
     <option value="v0500KLab">🛡️ Validation Suite K · Resiliens & kombostress · 10 tester</option>
@@ -381,6 +382,53 @@
 
 
 
+
+<div id="v0540SwingAlphabetLab" class="card v0410-lab v0413-lab-section vlab-v0540SwingAlphabetLab">
+  <div class="v0410-labtitle"><span class="v0410-flask">🌙</span><div>
+    <h2>Lina Swing · Alphabet A–O <button class="v0470-help" id="v0540Help">?</button></h2>
+    <p>Ett sammanhängande forskningspaket: utveckling → robusthet → automatisk kandidatfrysning → låst pseudo-forward.</p>
+  </div></div>
+
+  <div class="v0460-lock">🔒 2024–2026-09-10 får inte användas för urval · Jägaren/riktig Forward är separat · Handel AV</div>
+
+  <div class="v0540-topgrid">
+    <div><span>Generation</span><b>SWING-G1</b></div>
+    <div><span>Utveckling</span><b>2021–2023</b></div>
+    <div><span>Låst pseudo-forward</span><b>2024–2026-09-10</b></div>
+    <div><span>Status</span><b id="v0540Overall">EJ KÖRD</b></div>
+  </div>
+
+  <div class="v0520-warning"><b>Forskningsregel:</b> Kandidaten väljs mekaniskt från 2021–2023. Först därefter får samma frysta parameterhash öppna 2024–2026. Resultatet får inte räddas genom efterjustering i SWING-G1.</div>
+
+  <div class="v0540-actions">
+    <button id="v0540RunAll" class="primary">▶ Kör hela A–O</button>
+    <button id="v0540Resume" class="secondary">↻ Fortsätt</button>
+    <button id="v0540Reset" class="secondary">Återställ endast Swing A–O</button>
+  </div>
+
+  <div class="v0540-progress"><div id="v0540Bar"></div></div>
+  <div id="v0540Live" class="v0521-live-status">
+    <b>Väntar</b>
+    <span id="v0540StageLine">Steg — / 15</span>
+    <span id="v0540DetailLine">Ingen körning ännu.</span>
+    <span id="v0540SavedLine">Senast sparad: —</span>
+  </div>
+
+  <div id="v0540Stages" class="v0540-stages"></div>
+
+  <div class="v0540-summary">
+    <h3>Fryst kandidat</h3>
+    <div id="v0540Candidate" class="v0540-candidate">Ingen kandidat fryst ännu.</div>
+    <h3>Låst pseudo-forward</h3>
+    <div id="v0540Forward" class="v0540-candidate">Inte öppnad ännu.</div>
+  </div>
+
+  <div class="v0470-bactions">
+    <button id="v0540Report" class="secondary" disabled>📄 Slutrapport TXT</button>
+    <button id="v0540Raw" class="secondary" disabled>🧾 Raw JSON</button>
+    <button id="v0540Backup" class="secondary" disabled>💾 Backup/checkpoint</button>
+  </div>
+</div>
 <div id="v0530SwingLab" class="card v0410-lab v0413-lab-section vlab-v0530SwingLab">
   <div class="v0410-labtitle"><span class="v0410-flask">🌙</span><div>
     <h2>Lina Swing · Research Gate 1 <button class="v0470-help" id="v0530Help">?</button></h2>
@@ -1121,5 +1169,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.53.0"></script>
+<script src="linasopti.js?v=0.54.0"></script>
 </body></html>

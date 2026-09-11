@@ -1,6 +1,6 @@
-# Linas Opti V0.53.0
+# Linas Opti V0.54.0
 
-> **Aktuell release: V0.53.0** · Lina Swing Research Gate 1 · separat forskningsgeneration · Jägaren/Forward orörd · Handel AV · Robotmognad 48/100
+> **Aktuell release: V0.54.0** · Lina Swing Alphabet A–O · utveckling 2021–2023 → automatisk frysning → låst pseudo-forward 2024–2026-09-10 · Jägaren orörd · Handel AV · Robotmognad 48/100
 
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
@@ -803,3 +803,34 @@ Förregistrerad uppdelning:
 - ingen tuning på den låsta pseudo-forward-perioden.
 
 V0.53.0 kör ännu ingen Swing-optimering. Den låser forskningsplanen först. Nästa steg blir Swing Lab 1 som endast får använda 2021–2023. Robotmognad ligger kvar på 48/100.
+
+
+## V0.54.0 – Lina Swing Alphabet A–O
+
+Detta paket samlar så mycket som möjligt av första Swing-generationen i en enda reproducerbar körning.
+
+**Dataregim**
+- A–M får endast använda 2021-01-01 – 2023-12-31.
+- Steg M fryser exakt kandidat och parameterhash mekaniskt.
+- Först efter M får steg N hämta 2024-01-01 – 2026-09-10.
+- Pseudo-forward-resultatet får inte användas för att rädda/ändra SWING-G1.
+- Jägaren och riktig forward från 2026-09-11 påverkas inte.
+
+**Alphabet A–O**
+A Dataintegritet · B Baseline · C Trendfamilj · D Rekylfamilj · E Återhämtning · F SPY-regim · G Exitfamilj · H Friktion · I Kapital/risk · J Årsstabilitet · K Leave-one-symbol-out · L Bootstrap · M Frys kandidat · N Låst pseudo-forward · O Slutrapport.
+
+**Förregistrerad grid**
+- trend: 20/50/100 dagar
+- rekyl: 2/4/6 %
+- recovery: uppstängning / stängning över föregående high
+- SPY-regim: av / över SMA50 / över SMA100
+- stop: 5/7 %
+- mål: 8/12 %
+- max hålltid: 5/10 handelsdagar
+- modellerad friktion: 0,10 % per sida
+- risk: 0,5 % equity/affär
+- max 5 samtidiga positioner
+- max 20 % equity/position
+
+Urvalet använder utvecklingsresultat, årsstabilitet och drawdown. Pseudo-forward klassas separat och är fortfarande historisk, inte ny framtida OOS.
+Robotmognad ligger kvar på 48/100 tills ny evidens motiverar annat.

@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.53.0";
+const APP_VERSION = "V0.54.0";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -3794,6 +3794,313 @@ window.addEventListener('DOMContentLoaded',()=>{
 
 
 
+
+// ============================================================
+// V0.54.0 – LINA SWING ALPHABET A–O
+// Development 2021–2023 only -> mechanical freeze -> locked pseudo-forward.
+// ============================================================
+const V0540_KEY='linasopti_swing_alphabet_v0540';
+const V0540_DEV_START='2021-01-01', V0540_DEV_END='2023-12-31';
+const V0540_OOS_START='2024-01-01', V0540_OOS_END='2026-09-10';
+const V0540_SYMBOLS=['AMD','SHOP','ADBE','MU','FDX','TSLA','LUV','NFLX','C','NOW','QCOM','BAC','GM','DDOG','PYPL','NVDA'];
+const V0540_STAGES=[
+ ['A','Dataintegritet','Hämta och kontrollera dagsdata 2021–2023.'],
+ ['B','Baseline','Kör förregistrerad enkel Swing-baseline.'],
+ ['C','Trendfamilj','Jämför 20/50/100 dagars trendhorisont.'],
+ ['D','Rekylfamilj','Jämför mekaniska rekyltrösklar.'],
+ ['E','Återhämtning','Jämför två förregistrerade recovery-definitioner.'],
+ ['F','SPY-regim','Jämför av/på trendfilter utan symbolsärregler.'],
+ ['G','Exitfamilj','Stop/target/maxhålltid inom förregistrerad grid.'],
+ ['H','Friktion','Normal, +50% och +100% modellerad friktion.'],
+ ['I','Kapital/risk','Kontrollera risk, positionsgräns och kapitalutnyttjande.'],
+ ['J','Årsstabilitet','2021, 2022 och 2023 separat.'],
+ ['K','Leave-one-symbol-out','Ta bort en symbol i taget.'],
+ ['L','Bootstrap','Resampla utvecklingsaffärerna 2 000 gånger.'],
+ ['M','Frys kandidat','Mekaniskt urval + parameterhash.'],
+ ['N','Låst pseudo-forward','Öppna först nu 2024–2026-09-10.'],
+ ['O','Slutrapport','Sammanställ utveckling och pseudo-forward utan rescue.']
+];
+
+const V0540_GRID={
+ trend:[20,50,100],
+ pullback:[0.02,0.04,0.06],
+ recovery:['upclose','prevhigh'],
+ regime:['off','spy50','spy100'],
+ stop:[0.05,0.07],
+ target:[0.08,0.12],
+ hold:[5,10]
+};
+const V0540_COST_SIDE=.001; // 0.10% per sida, förregistrerat
+const V0540_CAPITAL=100000, V0540_RISK=.005, V0540_MAXPOS=5, V0540_MAXPOSPCT=.20;
+
+function v0540Load(){try{return JSON.parse(localStorage.getItem(V0540_KEY)||'null')}catch{return null}}
+function v0540Save(x){x.savedAt=new Date().toISOString();localStorage.setItem(V0540_KEY,JSON.stringify(x));v0540Paint();return x}
+function v0540Init(){
+ const old=v0540Load(); if(old)return old;
+ const x={schema:'LINA-SWING-ALPHABET-1',version:'V0.54.0',generation:'SWING-G1',
+  dev:[V0540_DEV_START,V0540_DEV_END],lockedPseudoForward:[V0540_OOS_START,V0540_OOS_END],
+  createdAt:new Date().toISOString(),stage:0,stages:{},devRows:null,candidate:null,pseudoForward:null,done:false,error:null};
+ return v0540Save(x);
+}
+function v0540Hash(obj){const s=typeof obj==='string'?obj:JSON.stringify(obj);let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(16).padStart(8,'0')}
+function v0540Dl(text,name,type='text/plain'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+function v0540Wait(ms){return new Promise(r=>setTimeout(r,ms))}
+function v0540Rows(j){return Array.isArray(j)?j:(j?.rows||j?.data||[])}
+async function v0540FetchRange(start,end,label){
+ const syms=[...V0540_SYMBOLS,'SPY'].join(',');
+ let last;
+ for(let a=1;a<=4;a++){
+  try{
+   v0540Live(label,`Hämtar ${start} → ${end} · försök ${a}/4`);
+   const j=await Promise.race([
+    bridge(`/bars?symbols=${encodeURIComponent(syms)}&timeframe=1Day&start=${start}&end=${end}`),
+    new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout 60 s')),60000))
+   ]);
+   const rows=v0540Rows(j); if(!rows.length)throw new Error('0 datarader');
+   return rows;
+  }catch(e){last=e;if(a<4)await v0540Wait(a*2500)}
+ }
+ throw last;
+}
+function v0540NormRows(rows){
+ return rows.map(r=>({symbol:String(r.symbol||r.s||'').toUpperCase(),t:String(r.t||r.time||r.timestamp||''),
+  o:+r.o,h:+r.h,l:+r.l,c:+r.c,v:+(r.v||0)}))
+ .filter(r=>r.symbol&&r.t&&[r.o,r.h,r.l,r.c].every(Number.isFinite))
+ .sort((a,b)=>a.t.localeCompare(b.t)||a.symbol.localeCompare(b.symbol));
+}
+function v0540Prep(rows){
+ const by={}; for(const r of rows){(by[r.symbol]??=[]).push(r)}
+ for(const a of Object.values(by))a.sort((x,y)=>x.t.localeCompare(y.t));
+ return by;
+}
+function v0540SMA(a,i,n){if(i-n+1<0)return null;let s=0;for(let k=i-n+1;k<=i;k++)s+=a[k].c;return s/n}
+function v0540High(a,i,n){if(i-n+1<0)return null;let h=-Infinity;for(let k=i-n+1;k<=i;k++)h=Math.max(h,a[k].h);return h}
+function v0540Date(r){return String(r.t).slice(0,10)}
+function v0540TradeStats(closed,capital=V0540_CAPITAL){
+ const n=closed.length,w=closed.filter(x=>x.pnl>0),l=closed.filter(x=>x.pnl<0);
+ const gw=w.reduce((s,x)=>s+x.pnl,0),gl=-l.reduce((s,x)=>s+x.pnl,0),pl=closed.reduce((s,x)=>s+x.pnl,0);
+ let eq=capital,peak=capital,dd=0;for(const t of closed.slice().sort((a,b)=>a.exitDate.localeCompare(b.exitDate))){eq+=t.pnl;peak=Math.max(peak,eq);dd=Math.min(dd,eq/peak-1)}
+ return {n,pl,final:capital+pl,pf:gl?gw/gl:(gw?Infinity:0),wr:n?w.length/n:0,dd,avg:n?pl/n:0};
+}
+function v0540Engine(rows,p,costSide=V0540_COST_SIDE){
+ const by=v0540Prep(rows), spy=by.SPY||[], tradeSyms=V0540_SYMBOLS.filter(s=>by[s]?.length);
+ const spyMap=new Map(spy.map((r,i)=>[v0540Date(r),i]));
+ const dates=[...new Set(rows.map(v0540Date))].sort(), dateIndex=new Map(dates.map((d,i)=>[d,i]));
+ const maps={};for(const s of tradeSyms)maps[s]=new Map(by[s].map((r,i)=>[v0540Date(r),i]));
+ let cash=V0540_CAPITAL,pos={},closed=[],peak=V0540_CAPITAL,dd=0,capSum=0,capN=0,blocked=0;
+ for(let di=1;di<dates.length;di++){
+  const date=dates[di], sigDate=dates[di-1];
+  // Exits first only for positions carried into the day. New entries occur after this block at today's open.
+  for(const s of Object.keys(pos)){
+   const idx=maps[s].get(date); if(idx==null)continue; const bar=by[s][idx],q=pos[s],age=di-q.entryDI;
+   let raw=null,why='';
+   const stop=q.entryRaw*(1-p.stop),target=q.entryRaw*(1+p.target);
+   // Conservative OHLC ambiguity: if both stop and target touched same day, assume stop first.
+   if(bar.l<=stop){raw=stop;why='stop'}
+   else if(bar.h>=target){raw=target;why='target'}
+   else if(age>=p.hold){raw=bar.c;why='maxhold'}
+   if(raw!=null){
+    const exit=raw*(1-costSide),value=q.shares*exit,pl=value-q.cost;
+    cash+=value;closed.push({symbol:s,entryDate:q.entryDate,exitDate:date,entry:q.entry,exit,entryRaw:q.entryRaw,shares:q.shares,pnl:pl,ret:exit/q.entry-1,why});
+    delete pos[s];
+   }
+  }
+  let candidates=[];
+  for(const s of tradeSyms){
+   if(pos[s])continue;
+   const si=maps[s].get(sigDate),ti=maps[s].get(date); if(si==null||ti==null)continue;
+   const a=by[s]; if(si<Math.max(p.trend+5,12))continue;
+   const close=a[si].c, sma=v0540SMA(a,si,p.trend), sma5ago=v0540SMA(a,si-5,p.trend);
+   if(!(sma&&sma5ago&&close>sma&&sma>sma5ago))continue;
+   const high10=v0540High(a,si,10); if(!high10)continue;
+   const pull=1-close/high10;
+   if(pull<p.pullback*.45 || pull>p.pullback*1.55)continue;
+   const rec=p.recovery==='prevhigh'?close>a[si-1].h:close>a[si-1].c;
+   if(!rec)continue;
+   if(p.regime!=='off'){
+     const spi=spyMap.get(sigDate); if(spi==null)continue;
+     const n=p.regime==='spy50'?50:100, ss=v0540SMA(spy,spi,n); if(!(ss&&spy[spi].c>ss))continue;
+   }
+   // rank stronger trend but not by future data
+   const mom=close/a[Math.max(0,si-20)].c-1;
+   candidates.push({s,score:mom-pull*.25,open:a[ti].o});
+  }
+  candidates.sort((a,b)=>b.score-a.score);
+  while(candidates.length && Object.keys(pos).length<V0540_MAXPOS){
+   const c=candidates.shift(),eq=cash+Object.values(pos).reduce((s,q)=>s+q.cost,0);
+   const entryRaw=c.open,entry=entryRaw*(1+costSide),riskCash=eq*V0540_RISK,riskPerShare=Math.max(.0001,entryRaw*p.stop);
+   const shares=Math.min(riskCash/riskPerShare,(eq*V0540_MAXPOSPCT)/entry,cash/entry);
+   if(!(shares>0))break;
+   const cost=shares*entry;if(cost>cash)break;cash-=cost;
+   pos[c.s]={entryRaw,entry,shares,cost,entryDate:date,entryDI:di};
+  }
+  // diagnostic capital use
+  const mark=Object.entries(pos).reduce((s,[sym,q])=>{const idx=maps[sym].get(date);return s+(idx==null?q.cost:q.shares*by[sym][idx].c)},0);
+  const eq=cash+mark;peak=Math.max(peak,eq);dd=Math.min(dd,eq/peak-1);capSum+=eq?mark/eq:0;capN++;
+  if(candidates.length)blocked+=candidates.length;
+ }
+ const last=dates.at(-1);
+ for(const s of Object.keys(pos)){
+   const idx=maps[s].get(last);if(idx==null)continue;const q=pos[s],raw=by[s][idx].c,exit=raw*(1-costSide),value=q.shares*exit,pl=value-q.cost;
+   cash+=value;closed.push({symbol:s,entryDate:q.entryDate,exitDate:last,entry:q.entry,exit,entryRaw:q.entryRaw,shares:q.shares,pnl:pl,ret:exit/q.entry-1,why:'periodend'});
+ }
+ const st=v0540TradeStats(closed);
+ return {...st,closed,capitalUse:capN?capSum/capN:0,blocked,params:p,costSide};
+}
+function v0540Variants(){
+ const out=[];
+ for(const trend of V0540_GRID.trend)for(const pullback of V0540_GRID.pullback)for(const recovery of V0540_GRID.recovery)
+ for(const regime of V0540_GRID.regime)for(const stop of V0540_GRID.stop)for(const target of V0540_GRID.target)for(const hold of V0540_GRID.hold)
+  out.push({trend,pullback,recovery,regime,stop,target,hold});
+ return out;
+}
+function v0540Score(r,years){
+ if(!r||r.n<25||!Number.isFinite(r.pf))return -1e9;
+ const posYears=years.filter(y=>y.pl>0).length, worst=Math.min(...years.map(y=>y.pl));
+ // Reward PF + breadth; penalize drawdown and negative worst year.
+ return (r.pf-1)*100 + posYears*8 + Math.min(20,r.n/10) + r.dd*150 + Math.min(0,worst/500);
+}
+function v0540FilterRows(rows,a,b){return rows.filter(r=>{const d=v0540Date(r);return d>=a&&d<=b})}
+function v0540YearStats(rows,p,cost=V0540_COST_SIDE){
+ return ['2021','2022','2023'].map(y=>{const r=v0540Engine(v0540FilterRows(rows,y+'-01-01',y+'-12-31'),p,cost);return{year:y,n:r.n,pl:r.pl,pf:r.pf,dd:r.dd,wr:r.wr}})
+}
+function v0540Live(stage,detail){
+ const b=document.querySelector('#v0540Live b'),d=document.getElementById('v0540DetailLine');
+ if(b)b.textContent=stage;if(d)d.textContent=detail||'';
+}
+function v0540StageDone(x,letter,data,label='KLAR'){x.stages[letter]={status:label,at:new Date().toISOString(),...data};x.stage=Math.max(x.stage,V0540_STAGES.findIndex(s=>s[0]===letter)+1);v0540Save(x)}
+function v0540Paint(){
+ const x=v0540Load(),box=document.getElementById('v0540Stages');if(!box)return;
+ box.innerHTML=V0540_STAGES.map((s,i)=>{const z=x?.stages?.[s[0]],cl=z?.status==='FEL'?'fail':z?'done':(x&&x.stage===i?'run':'');return`<div class="v0540-stage ${cl}"><b>${s[0]} · ${s[1]}</b><small>${z?.summary||s[2]}</small></div>`}).join('');
+ const n=x?Object.keys(x.stages||{}).length:0,pct=100*n/V0540_STAGES.length;
+ const bar=document.getElementById('v0540Bar');if(bar)bar.style.width=pct.toFixed(1)+'%';
+ const overall=document.getElementById('v0540Overall');if(overall)overall.textContent=x?.done?'KLAR':x?.error?'PAUSAD':'PÅGÅR';
+ const line=document.getElementById('v0540StageLine');if(line)line.textContent=`Steg ${Math.min(n+1,15)} / 15 · ${pct.toFixed(0)}%`;
+ const sv=document.getElementById('v0540SavedLine');if(sv)sv.textContent='Senast sparad: '+(x?.savedAt?new Date(x.savedAt).toLocaleString('sv-SE'):'—');
+ const c=document.getElementById('v0540Candidate');
+ if(c)c.innerHTML=x?.candidate?`<b>${x.candidate.hash}</b> · trend ${x.candidate.params.trend}d · rekyl ${(x.candidate.params.pullback*100).toFixed(0)}% · recovery ${x.candidate.params.recovery} · regim ${x.candidate.params.regime} · stop ${(x.candidate.params.stop*100).toFixed(0)}% · mål ${(x.candidate.params.target*100).toFixed(0)}% · max ${x.candidate.params.hold}d<br>DEV: ${x.candidate.dev.n} affärer · P/L ${x.candidate.dev.pl.toFixed(0)} kr · PF ${x.candidate.dev.pf.toFixed(2)} · DD ${(x.candidate.dev.dd*100).toFixed(1)}%`:'Ingen kandidat fryst ännu.';
+ const f=document.getElementById('v0540Forward');
+ if(f)f.innerHTML=x?.pseudoForward?`<b>${x.pseudoForward.start} → ${x.pseudoForward.end}</b> · ${x.pseudoForward.n} affärer · P/L ${x.pseudoForward.pl.toFixed(0)} kr · PF ${Number.isFinite(x.pseudoForward.pf)?x.pseudoForward.pf.toFixed(2):'∞'} · WR ${(x.pseudoForward.wr*100).toFixed(1)}% · DD ${(x.pseudoForward.dd*100).toFixed(1)}%`:'Inte öppnad ännu.';
+ for(const id of ['v0540Report','v0540Raw','v0540Backup']){const e=document.getElementById(id);if(e)e.disabled=!x}
+}
+async function v0540Run(){
+ let x=v0540Init();x.error=null;v0540Save(x);
+ try{
+  // A
+  if(!x.stages.A){
+   const raw=await v0540FetchRange(V0540_DEV_START,V0540_DEV_END,'A · Dataintegritet');
+   const rows=v0540NormRows(raw),dups=new Set(),seen=new Set();let duplicate=0;
+   for(const r of rows){const k=r.symbol+'|'+r.t;if(seen.has(k))duplicate++;else seen.add(k)}
+   const syms=[...new Set(rows.map(r=>r.symbol))],dates=[...new Set(rows.map(v0540Date))];
+   if(duplicate)throw new Error('Dubbletter i utvecklingsdata: '+duplicate);
+   x.devRows=rows;
+   v0540StageDone(x,'A',{summary:`${rows.length} rader · ${syms.length} symboler · ${dates.length} datum · 0 dubbletter`,rows:rows.length,symbols:syms.length,dates:dates.length,duplicate});
+  }
+  const rows=x.devRows;
+  // B baseline fixed
+  if(!x.stages.B){
+   v0540Live('B · Baseline','Kör fast baseline');
+   const p={trend:50,pullback:.04,recovery:'upclose',regime:'spy50',stop:.07,target:.12,hold:10};
+   const r=v0540Engine(rows,p);v0540StageDone(x,'B',{summary:`${r.n} affärer · P/L ${r.pl.toFixed(0)} · PF ${r.pf.toFixed(2)} · DD ${(r.dd*100).toFixed(1)}%`,result:r});
+  }
+  // C-G full grid, but evaluated once
+  if(!x.gridResults){
+   const vars=v0540Variants(),results=[];
+   for(let i=0;i<vars.length;i++){
+    if(i%40===0){v0540Live('C–G · Förregistrerad grid',`${i}/${vars.length} varianter`);await v0540Wait(0)}
+    const p=vars[i],r=v0540Engine(rows,p),ys=v0540YearStats(rows,p);
+    results.push({p,r:{n:r.n,pl:r.pl,pf:r.pf,wr:r.wr,dd:r.dd,avg:r.avg,capitalUse:r.capitalUse,blocked:r.blocked},years:ys,score:v0540Score(r,ys)});
+   }
+   results.sort((a,b)=>b.score-a.score);x.gridResults=results;v0540Save(x);
+  }
+  const best=x.gridResults[0];
+  if(!x.stages.C){const g={};for(const v of V0540_GRID.trend){const q=x.gridResults.filter(z=>z.p.trend===v);g[v]=q.reduce((s,z)=>s+z.score,0)/q.length}v0540StageDone(x,'C',{summary:'Trendfamilj kartlagd · robusthetsmedel per horisont sparat',means:g})}
+  if(!x.stages.D){const g={};for(const v of V0540_GRID.pullback){const q=x.gridResults.filter(z=>z.p.pullback===v);g[v]=q.reduce((s,z)=>s+z.score,0)/q.length}v0540StageDone(x,'D',{summary:'Rekylfamilj kartlagd · 2/4/6% zoner',means:g})}
+  if(!x.stages.E){const g={};for(const v of V0540_GRID.recovery){const q=x.gridResults.filter(z=>z.p.recovery===v);g[v]=q.reduce((s,z)=>s+z.score,0)/q.length}v0540StageDone(x,'E',{summary:'Recovery-definitioner jämförda utan framtidsdata',means:g})}
+  if(!x.stages.F){const g={};for(const v of V0540_GRID.regime){const q=x.gridResults.filter(z=>z.p.regime===v);g[v]=q.reduce((s,z)=>s+z.score,0)/q.length}v0540StageDone(x,'F',{summary:'SPY-regimer jämförda: off / SMA50 / SMA100',means:g})}
+  if(!x.stages.G){v0540StageDone(x,'G',{summary:`Exitgrid klar · bästa DEV-kandidat hittills PF ${best.r.pf.toFixed(2)}`,top:x.gridResults.slice(0,25)})}
+  // H friction on best development candidate
+  if(!x.stages.H){
+   const stress=[1,1.5,2].map(m=>{const r=v0540Engine(rows,best.p,V0540_COST_SIDE*m);return{mult:m,n:r.n,pl:r.pl,pf:r.pf,dd:r.dd}});
+   v0540StageDone(x,'H',{summary:`Friktion 1×/1.5×/2×: ${stress.map(q=>q.pl.toFixed(0)).join(' / ')} kr`,stress});
+  }
+  // I capital/risk diagnostics
+  if(!x.stages.I){
+   const r=v0540Engine(rows,best.p);v0540StageDone(x,'I',{summary:`Kapital i arbete ${(r.capitalUse*100).toFixed(1)}% i snitt · blockerade kandidater ${r.blocked}`,capitalUse:r.capitalUse,blocked:r.blocked});
+  }
+  // J yearly
+  if(!x.stages.J){
+   const ys=v0540YearStats(rows,best.p);v0540StageDone(x,'J',{summary:`År +P/L: ${ys.filter(y=>y.pl>0).length}/3 · ${ys.map(y=>y.year+' '+y.pl.toFixed(0)).join(' | ')}`,years:ys});
+  }
+  // K leave-one-symbol-out
+  if(!x.stages.K){
+   const loo=[];
+   for(const s of V0540_SYMBOLS){const rr=rows.filter(r=>r.symbol!==s);const r=v0540Engine(rr,best.p);loo.push({removed:s,n:r.n,pl:r.pl,pf:r.pf,dd:r.dd})}
+   const worst=loo.slice().sort((a,b)=>a.pl-b.pl)[0];v0540StageDone(x,'K',{summary:`16 leave-one-out · sämst utan ${worst.removed}: ${worst.pl.toFixed(0)} kr`,loo});
+  }
+  // L bootstrap
+  if(!x.stages.L){
+   const base=v0540Engine(rows,best.p),pnls=base.closed.map(t=>t.pnl),sims=[],N=2000;
+   let seed=540123456;const rnd=()=>{seed=(1664525*seed+1013904223)>>>0;return seed/4294967296};
+   for(let j=0;j<N;j++){let sum=0;for(let i=0;i<pnls.length;i++)sum+=pnls[Math.floor(rnd()*pnls.length)];sims.push(sum)}
+   sims.sort((a,b)=>a-b);const p05=sims[Math.floor(N*.05)],p50=sims[Math.floor(N*.5)],p95=sims[Math.floor(N*.95)],positive=sims.filter(x=>x>0).length/N;
+   v0540StageDone(x,'L',{summary:`Bootstrap 2 000 · P05 ${p05.toFixed(0)} · median ${p50.toFixed(0)} · P>0 ${(positive*100).toFixed(1)}%`,bootstrap:{N,p05,p50,p95,positive}});
+  }
+  // M mechanical freeze
+  if(!x.stages.M){
+   const dev=v0540Engine(rows,best.p),hash=v0540Hash({generation:'SWING-G1',params:best.p,costSide:V0540_COST_SIDE,risk:V0540_RISK,maxPos:V0540_MAXPOS,maxPosPct:V0540_MAXPOSPCT});
+   x.candidate={hash,params:best.p,dev:{n:dev.n,pl:dev.pl,pf:dev.pf,wr:dev.wr,dd:dev.dd,avg:dev.avg},frozenAt:new Date().toISOString(),selectionScore:best.score};
+   v0540StageDone(x,'M',{summary:`Kandidat fryst · hash ${hash} · inga fler SWING-G1-regeländringar`,hash,params:best.p});
+  }
+  // Free large grid before OOS fetch, keep top 25 only
+  if(x.gridResults?.length>25){x.gridResultsTop25=x.gridResults.slice(0,25);delete x.gridResults;v0540Save(x)}
+  // N locked pseudo-forward fetch only after freeze
+  if(!x.stages.N){
+   const oosRaw=await v0540FetchRange(V0540_OOS_START,V0540_OOS_END,'N · Låst pseudo-forward');
+   const oosRows=v0540NormRows(oosRaw),r=v0540Engine(oosRows,x.candidate.params);
+   x.pseudoForward={start:V0540_OOS_START,end:V0540_OOS_END,hash:x.candidate.hash,n:r.n,pl:r.pl,pf:r.pf,wr:r.wr,dd:r.dd,avg:r.avg,closed:r.closed};
+   v0540StageDone(x,'N',{summary:`${r.n} affärer · P/L ${r.pl.toFixed(0)} kr · PF ${Number.isFinite(r.pf)?r.pf.toFixed(2):'∞'} · DD ${(r.dd*100).toFixed(1)}%`,result:{n:r.n,pl:r.pl,pf:r.pf,wr:r.wr,dd:r.dd,avg:r.avg},rows:oosRows.length});
+  }
+  // O final
+  if(!x.stages.O){
+   const d=x.candidate.dev,o=x.pseudoForward;
+   let assessment='SVAG/OKLAR';
+   if(o.n>=40&&o.pl>0&&o.pf>=1.10)assessment='LOVANDE PSEUDO-FORWARD';
+   else if(o.n>=30&&o.pl>0&&o.pf>=1.02)assessment='POSITIV MEN TUNN';
+   else if(o.pl<=0||o.pf<1)assessment='EJ GODKÄND I PSEUDO-FORWARD';
+   x.finalAssessment=assessment;x.done=true;
+   v0540StageDone(x,'O',{summary:`${assessment} · DEV PF ${d.pf.toFixed(2)} → pseudo-forward PF ${Number.isFinite(o.pf)?o.pf.toFixed(2):'∞'}`,assessment});
+   x.done=true;v0540Save(x);
+   v0413AddSims((3*3*2*3*2*2*2)+1+3+16+2000+1);
+  }
+  v0540Live('Klar','A–O färdigt. Ingen automatisk rescue/optimering efter pseudo-forward.');
+ }catch(e){
+  x=v0540Load()||x;x.error={message:String(e.message||e),at:new Date().toISOString(),stage:x.stage};
+  v0540Save(x);v0540Live('PAUSAD',x.error.message);alert(`Swing A–O pausades: ${x.error.message}\n\nCheckpointen är sparad. Tryck Fortsätt.`);
+ }
+}
+function v0540Report(){
+ const x=v0540Load();if(!x)return'Ingen Swing A–O-körning.';
+ const L=['LINAS OPTI – LINA SWING ALPHABET A–O','Version: '+APP_VERSION,'Generation: SWING-G1','Handel: AVSTÄNGD',
+  'Utveckling: '+V0540_DEV_START+' → '+V0540_DEV_END,'Låst pseudo-forward: '+V0540_OOS_START+' → '+V0540_OOS_END,
+  'OBS: pseudo-forward är historisk och inte samma sak som ny framtida OOS.','','STEG'];
+ for(const s of V0540_STAGES){const z=x.stages?.[s[0]];L.push(`${s[0]} · ${s[1]} | ${z?.status||'EJ KÖRD'} | ${z?.summary||''}`)}
+ if(x.candidate)L.push('','FRYST KANDIDAT','Hash: '+x.candidate.hash,'Params: '+JSON.stringify(x.candidate.params),'DEV: '+JSON.stringify(x.candidate.dev));
+ if(x.pseudoForward)L.push('','LÅST PSEUDO-FORWARD',`Affärer ${x.pseudoForward.n} | P/L ${x.pseudoForward.pl.toFixed(2)} | PF ${x.pseudoForward.pf} | WR ${(x.pseudoForward.wr*100).toFixed(2)}% | DD ${(x.pseudoForward.dd*100).toFixed(2)}%`);
+ if(x.finalAssessment)L.push('','SLUTBEDÖMNING: '+x.finalAssessment,'Ingen regeländring eller automatisk rescue har gjorts efter att pseudo-forward öppnats.');
+ return L.join('\n');
+}
+window.addEventListener('DOMContentLoaded',()=>{
+ document.getElementById('v0540RunAll')?.addEventListener('click',v0540Run);
+ document.getElementById('v0540Resume')?.addEventListener('click',v0540Run);
+ document.getElementById('v0540Reset')?.addEventListener('click',()=>{if(confirm('Återställa endast Swing Alphabet A–O? Jägaren och riktig Forward påverkas inte.')){localStorage.removeItem(V0540_KEY);v0540Paint()}});
+ document.getElementById('v0540Report')?.addEventListener('click',()=>v0540Dl(v0540Report(),`LINAS_OPTI_SWING_A_O_V0540_${new Date().toISOString().slice(0,10)}.txt`));
+ document.getElementById('v0540Raw')?.addEventListener('click',()=>{const x=v0540Load();if(x)v0540Dl(JSON.stringify(x,null,2),`LINAS_OPTI_SWING_A_O_RAW_V0540_${new Date().toISOString().slice(0,10)}.json`,'application/json')});
+ document.getElementById('v0540Backup')?.addEventListener('click',()=>{const x=v0540Load();if(x)v0540Dl(JSON.stringify({backupSchema:'lina-swing-v0540-backup',appVersion:APP_VERSION,exportedAt:new Date().toISOString(),swing:x},null,2),`LINAS_OPTI_SWING_A_O_BACKUP_V0540_${new Date().toISOString().slice(0,10)}.json`,'application/json')});
+ document.getElementById('v0540Help')?.addEventListener('click',()=>alert('A–M använder bara 2021–2023. M fryser kandidaten mekaniskt. N hämtar först därefter 2024–2026-09-10 och kör exakt samma hash. O sammanställer utan automatisk rescue. Pseudo-forward är starkare än ännu en utvecklingskörning men är fortfarande historisk och ersätter inte framtida riktig forward.'));
+ v0540Paint();
+ const jump=document.getElementById('v0413LabJump');if(jump&&[...jump.options].some(o=>o.value==='v0540SwingAlphabetLab')){jump.value='v0540SwingAlphabetLab';try{localStorage.setItem('linasopti_testlab_selected_v0423','v0540SwingAlphabetLab')}catch{}jump.dispatchEvent(new Event('change'))}
+});
 // ============================================================
 // V0.53.0 – Lina Swing Research Gate 1
 // ============================================================

@@ -1283,3 +1283,19 @@ body.v0462-running .v0460-lock{padding:6px 10px;margin:4px 0;font-size:.86rem}
 .v0530-grid span,.v0530-rules span{display:block;color:#617083;font-size:12px;margin-bottom:3px}
 .v0530-grid b{font-size:15px}.v0530-rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:10px 0 14px}.v0530-rules b{display:block;margin-bottom:4px}
 @media(max-width:700px){.v0530-grid,.v0530-rules{grid-template-columns:1fr}}
+
+/* V0.54.0 – Lina Swing Alphabet A–O */
+.v0540-topgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:12px 0}
+.v0540-topgrid>div{border:1px solid #d9e2ea;border-radius:12px;padding:10px;background:#fbfcfd}
+.v0540-topgrid span{display:block;color:#657487;font-size:12px}.v0540-topgrid b{font-size:15px}
+.v0540-actions{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;margin:12px 0}
+.v0540-progress{height:12px;background:#e7edf3;border-radius:999px;overflow:hidden;margin:10px 0}
+#v0540Bar{height:100%;width:0;background:#2678b8;transition:width .2s}
+.v0540-stages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.v0540-stage{border:1px solid #d9e2ea;border-radius:12px;padding:10px;background:#fff;min-height:78px}
+.v0540-stage b{display:block}.v0540-stage small{display:block;color:#687789;margin-top:4px;line-height:1.3}
+.v0540-stage.done{background:#eff9f2;border-color:#a9d8b5}.v0540-stage.run{background:#eef6ff;border-color:#9bc2e7}
+.v0540-stage.fail{background:#fff2f0;border-color:#e7aaa2}
+.v0540-candidate{border:1px solid #d9e2ea;border-radius:12px;padding:12px;background:#fbfcfd;line-height:1.45}
+.v0540-summary h3{margin:14px 0 7px}
+@media(max-width:800px){.v0540-topgrid,.v0540-stages{grid-template-columns:1fr}.v0540-actions{grid-template-columns:1fr}}
