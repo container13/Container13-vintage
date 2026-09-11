@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.54.1";
+const APP_VERSION = "V0.54.2";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -3853,7 +3853,7 @@ async function v0540FetchRange(start,end,label){
   try{
    v0540Live(label,`Hämtar ${start} → ${end} · försök ${a}/4`);
    const j=await Promise.race([
-    bridge(`/bars?symbols=${encodeURIComponent(syms)}&timeframe=1Day&start=${start}&end=${end}`),
+    bridge(`/bars?symbols=${encodeURIComponent(syms)}&timeframe=5Min&start=${start}T00:00:00Z&end=${end}T23:59:59Z`),
     new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout 60 s')),60000))
    ]);
    const rows=v0540Rows(j); if(!rows.length)throw new Error('0 datarader');
@@ -3870,8 +3870,27 @@ function v0541MonthChunks(start,end){
 }
 async function v0541FetchChunked(x,key,start,end,label){
  const chunks=v0541MonthChunks(start,end);x.fetch??={};x.fetch[key]??={cursor:0,rows:[]};let f=x.fetch[key];
- for(;f.cursor<chunks.length;){const [a,b]=chunks[f.cursor];v0540Live(label,`Månad ${f.cursor+1}/${chunks.length} · ${a} → ${b}`);const part=await v0540FetchRange(a,b,`${label} · månad ${f.cursor+1}/${chunks.length}`);f.rows.push(...part);f.cursor++;x.fetch[key]=f;v0540Save(x);await v0540Wait(40)}
+ for(;f.cursor<chunks.length;){const [a,b]=chunks[f.cursor];v0540Live(label,`Månad ${f.cursor+1}/${chunks.length} · ${a} → ${b} · hämtar 5-min och bygger dagsdata lokalt`);const intraday=await v0540FetchRange(a,b,`${label} · månad ${f.cursor+1}/${chunks.length}`);const part=v0542DailyFromIntraday(intraday);if(!part.length)throw new Error(`0 dagsrader efter aggregering ${a} → ${b}`);f.rows.push(...part);f.cursor++;x.fetch[key]=f;v0540Save(x);await v0540Wait(40)}
  const rows=f.rows;delete x.fetch[key];v0540Save(x);return rows;
+}
+function v0542DailyFromIntraday(rows){
+ const src=Array.isArray(rows)?rows:[], m=new Map();
+ for(const r of src){
+   const symbol=String(r.symbol||r.s||'').toUpperCase();
+   const ts=String(r.t||r.time||r.timestamp||'');
+   if(!symbol||!ts)continue;
+   const day=ts.slice(0,10), key=symbol+'|'+day;
+   const o=+r.o,h=+r.h,l=+r.l,c=+r.c,v=+(r.v||0);
+   if(![o,h,l,c].every(Number.isFinite))continue;
+   let q=m.get(key);
+   if(!q){q={symbol,t:day+'T00:00:00Z',o,h,l,c,v,first:ts,last:ts};m.set(key,q)}
+   else{
+     if(ts<q.first){q.first=ts;q.o=o}
+     if(ts>q.last){q.last=ts;q.c=c}
+     q.h=Math.max(q.h,h);q.l=Math.min(q.l,l);q.v+=v;
+   }
+ }
+ return [...m.values()].map(({first,last,...q})=>q).sort((a,b)=>a.t.localeCompare(b.t)||a.symbol.localeCompare(b.symbol));
 }
 function v0540NormRows(rows){
  return rows.map(r=>({symbol:String(r.symbol||r.s||'').toUpperCase(),t:String(r.t||r.time||r.timestamp||''),

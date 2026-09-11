@@ -1,4 +1,4 @@
-# Linas Opti V0.54.1
+# Linas Opti V0.54.2
 
 > **Aktuell release: V0.54.0** · Lina Swing Alphabet A–O · utveckling 2021–2023 → automatisk frysning → låst pseudo-forward 2024–2026-09-10 · Jägaren orörd · Handel AV · Robotmognad 48/100
 
@@ -838,3 +838,8 @@ Robotmognad ligger kvar på 48/100 tills ny evidens motiverar annat.
 
 ## V0.54.1
 Fix: Swing A–O hämtar utvecklingsdata och låst pseudo-forward månad för månad med checkpoint efter varje färdig månad. Ingen strategiändring; Jägaren är orörd.
+
+## V0.54.2 – Alpaca transportfix
+V0.54.1 visade att även en månads direkt `1Day`-hämtning gav `Alpaca svarade med ett fel`.
+Swing använder därför nu samma beprövade 5-minuters `/bars`-transport som Jägaren/Tidsmaskinen och aggregerar varje månad lokalt till dags-OHLCV innan Swing-motorn får datan.
+Checkpoint sparar endast de kompakta dagsraderna. Forskningsregler, A–O-grid, datadelning och Jägaren är oförändrade.
