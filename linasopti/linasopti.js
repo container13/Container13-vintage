@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.52.0";
+const APP_VERSION = "V0.52.1";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -3815,23 +3815,35 @@ function v0520Paint(){
   const x=v0520Load(),mode=document.getElementById('v0520Mode'),status=document.getElementById('v0520Status'),
   next=document.getElementById('v0520Next'),auto=document.getElementById('v0520Auto'),rep=document.getElementById('v0520Report'),bak=document.getElementById('v0520Backup'),
   bar=document.getElementById('v0520Bar'),stats=document.getElementById('v0520Stats');
-  if(!x){if(mode)mode.textContent='EJ STARTAD';return}
+  if(!x){
+    if(mode)mode.textContent='EJ STARTAD';
+    const b=document.querySelector('#v0521LiveStatus b'),d=document.getElementById('v0521DayLine'),t=document.getElementById('v0521TradeLine'),sv=document.getElementById('v0521SavedLine');
+    if(b)b.textContent='Väntar på start…'; if(d)d.textContent='Dag — / — · 0%'; if(t)t.textContent='Affärer hittills: 0'; if(sv)sv.textContent='Senast sparad: —';
+    return
+  }
   if(mode)mode.textContent=x.done?'KLAR':'PÅGÅR';
   if(next)next.disabled=x.done;if(auto)auto.disabled=x.done;if(rep)rep.disabled=false;if(bak)bak.disabled=false;
   const pct=x.dates.length?100*Math.min(x.cursor,x.dates.length)/x.dates.length:0;if(bar)bar.style.width=pct.toFixed(1)+'%';
   const s=v0520Stats(x.closed||[]);
   if(status)status.textContent=`Framsläppt t.o.m. ${x.lastDate||'—'} · ${x.cursor}/${x.dates.length} vardagar · ${s.n} affärer`;
   if(stats)stats.innerHTML=`<div><span>Affärer</span><b>${s.n}</b></div><div><span>Netto P/L</span><b>${s.pl.toFixed(0)} kr</b></div><div><span>PF</span><b>${Number.isFinite(s.pf)?s.pf.toFixed(2):'∞'}</b></div>`;
+  const b=document.querySelector('#v0521LiveStatus b'),d=document.getElementById('v0521DayLine'),t=document.getElementById('v0521TradeLine'),sv=document.getElementById('v0521SavedLine');
+  const shownDate=x.currentDate||x.lastDate||x.dates[Math.min(x.cursor,x.dates.length-1)]||'—';
+  if(b)b.textContent=x.done?`Klar: ${shownDate}`:`Bearbetar: ${shownDate}`;
+  if(d)d.textContent=`Dag ${Math.min(x.cursor,x.dates.length)} / ${x.dates.length} · ${pct.toFixed(1)}%`;
+  if(t)t.textContent=`Affärer hittills: ${s.n}`;
+  if(sv)sv.textContent=`Senast sparad: ${x.savedAt?new Date(x.savedAt).toLocaleString('sv-SE'):x.lastDate||'—'}`;
 }
 async function v0520Start(){
   const y=document.getElementById('v0520StartYear')?.value||'2024',start=`${y}-01-01`,dates=v0520Dates(start,V0520_END);
-  v0520Save({schema:'LINA-TIMEMACHINE-1',version:'V0.52.0',start,end:V0520_END,dates,cursor:0,lastDate:null,closed:[],seen:{},createdAt:new Date().toISOString(),rulesHash:'7fe0c1bb',diagnosticOnly:true,done:false});
+  v0520Save({schema:'LINA-TIMEMACHINE-1',version:'V0.52.1',start,end:V0520_END,dates,cursor:0,lastDate:null,currentDate:dates[0]||null,closed:[],seen:{},createdAt:new Date().toISOString(),savedAt:new Date().toISOString(),rulesHash:'7fe0c1bb',diagnosticOnly:true,done:false});
   v0520Paint();
 }
 async function v0520Advance(n){
   const x=v0520Load();if(!x||x.done)return;
   const target=Math.min(x.cursor+n,x.dates.length);if(target<=x.cursor)return;
   const from=x.dates[x.cursor],to=x.dates[target-1];
+  x.currentDate=from; x.savedAt=new Date().toISOString(); v0520Save(x); v0520Paint();
   const syms=[...V0440_SYMBOLS,'SPY'].join(',');
   const rows=await v0434Retry(()=>bridge(`/bars?symbols=${encodeURIComponent(syms)}&timeframe=5Min&start=${from}T00:00:00Z&end=${to}T23:59:59Z`));
   const flat=Array.isArray(rows)?rows:(rows?.rows||rows?.data||[]);
@@ -3841,7 +3853,7 @@ async function v0520Advance(n){
     const id=[t.symbol,t.entryTime,t.exitTime,t.entry,t.exit].join('|');
     if(!x.seen[id]){x.seen[id]=1;x.closed.push(t)}
   }
-  x.cursor=target;x.lastDate=to;x.done=target>=x.dates.length;x.updatedAt=new Date().toISOString();v0520Save(x);v0520Paint();
+  x.cursor=target;x.lastDate=to;x.currentDate=to;x.done=target>=x.dates.length;x.updatedAt=new Date().toISOString();x.savedAt=x.updatedAt;v0520Save(x);v0520Paint();
 }
 async function v0520RunAll(){
   let x=v0520Load();while(x&&!x.done){await v0520Advance(20);x=v0520Load();await new Promise(r=>setTimeout(r,20))}
@@ -3854,7 +3866,7 @@ window.addEventListener('DOMContentLoaded',()=>{
  document.getElementById('v0520Next')?.addEventListener('click',()=>v0520Advance(+(document.getElementById('v0520Step')?.value||1)));
  document.getElementById('v0520Auto')?.addEventListener('click',v0520RunAll);
  document.getElementById('v0520Reset')?.addEventListener('click',()=>{if(confirm('Återställa endast historiska Tidsmaskinen? Riktig forward påverkas inte.')){localStorage.removeItem(V0520_KEY);v0520Paint()}});
- document.getElementById('v0520Report')?.addEventListener('click',()=>{const x=v0520Load();if(!x)return;const s=v0520Stats(x.closed);v0520Download(`LINA_TIMEMACHINE_V0520_${x.start}_${x.end}.txt`,`LINA HISTORISK TIDSMASKIN V0.52.0\nDIAGNOSTIK / PSEUDO-FORWARD – INTE NY OOS\nStart: ${x.start}\nStopp: ${x.end}\nRegelhash: ${x.rulesHash}\nAffärer: ${s.n}\nNetto P/L: ${s.pl.toFixed(2)} kr\nPF: ${Number.isFinite(s.pf)?s.pf.toFixed(3):'INF'}\nWR: ${(100*s.wr).toFixed(1)}%\n`)});
+ document.getElementById('v0520Report')?.addEventListener('click',()=>{const x=v0520Load();if(!x)return;const s=v0520Stats(x.closed);v0520Download(`LINA_TIMEMACHINE_V0520_${x.start}_${x.end}.txt`,`LINA HISTORISK TIDSMASKIN V0.52.1\nDIAGNOSTIK / PSEUDO-FORWARD – INTE NY OOS\nStart: ${x.start}\nStopp: ${x.end}\nRegelhash: ${x.rulesHash}\nAffärer: ${s.n}\nNetto P/L: ${s.pl.toFixed(2)} kr\nPF: ${Number.isFinite(s.pf)?s.pf.toFixed(3):'INF'}\nWR: ${(100*s.wr).toFixed(1)}%\n`)});
  document.getElementById('v0520Backup')?.addEventListener('click',()=>{const x=v0520Load();if(x)v0520Download('LINA_TIMEMACHINE_V0520_CHECKPOINT.json',JSON.stringify(x,null,2),'application/json')});
  document.getElementById('v0520Help')?.addEventListener('click',()=>alert('Tidsmaskinen spelar upp gammal marknadsdata kronologiskt. Motorn får bara dagens och tidigare bars i varje steg. Eftersom Jägaren redan utvecklats med delar av denna historik är detta pseudo-forward/diagnostik – aldrig en ersättning för riktig forward från 2026-09-11.'));
  v0520Paint();

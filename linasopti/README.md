@@ -1,6 +1,6 @@
-# Linas Opti V0.52.0
+# Linas Opti V0.52.1
 
-> **Aktuell release: V0.52.0** · Historisk Tidsmaskin / pseudo-forward · Handel AV · riktig Forward V0.51 fortsätter orörd · Robotmognad 48/100
+> **Aktuell release: V0.52.1** · Tidsmaskin med tydlig aktuell dag/progress · Handel AV · riktig Forward V0.51 fortsätter orörd · Robotmognad 48/100
 
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
@@ -741,3 +741,17 @@ Ny separat forskningsfunktion medan riktiga Jägaren samlar forward-data.
 - Funktionen är diagnostisk eftersom dagens Jägare redan har påverkats av delar av 2024–2026-historiken.
 - Ingen parameteroptimering eller automatisk regeländring sker från resultatet.
 - Robotmognad kvar 48/100; Tidsmaskinen får inte ensam höja mognaden.
+
+
+## V0.52.1 – Live-status för Tidsmaskinen
+
+Ingen forskningslogik ändrad.
+
+Tidsmaskinen visar nu tydligt under körning:
+- aktuell historisk dag som bearbetas,
+- dagnummer av totalt antal vardagar,
+- procent färdigt,
+- antal affärer hittills,
+- senaste sparade checkpoint.
+
+Statusen uppdateras före varje nytt datachunk och efter sparad checkpoint. Den riktiga V0.51-forwarden påverkas inte.

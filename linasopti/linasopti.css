@@ -1256,3 +1256,17 @@ body.v0462-running .v0460-lock{padding:6px 10px;margin:4px 0;font-size:.86rem}
 .v0520-progress{height:12px;background:#e7edf3;border-radius:999px;overflow:hidden;margin:12px 0}
 #v0520Bar{height:100%;width:0;background:#2678b8;transition:width .2s}
 @media(max-width:700px){.v0520-controls{grid-template-columns:1fr}}
+
+/* V0.52.1 – tydlig live-status i Tidsmaskinen */
+.v0521-live-status{
+  display:grid;
+  gap:3px;
+  margin:10px 0 8px;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid #d5e0ea;
+  background:#f8fbfe;
+  color:#25364a;
+}
+.v0521-live-status b{font-size:15px}
+.v0521-live-status span{font-size:12px;color:#607080}
