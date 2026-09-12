@@ -9,21 +9,21 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.56.0">
+<link rel="stylesheet" href="linasopti.css?v=0.56.1">
 
   <meta name="theme-color" content="#f4f7fb">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Linas Opti">
-  <link rel="apple-touch-icon" href="lina-circle.png?v=0.56.0">
+  <link rel="apple-touch-icon" href="lina-circle.png?v=0.56.1">
 </head>
 <body class="v0384-locked">
 
 <div id="v0383Gate" class="v0383-gate" aria-hidden="false">
   <div class="v0383-gate-card">
     <h1>Linas Opti</h1>
-    <div class="v04512-gate-version" aria-label="Version">V0.56.0</div>
+    <div class="v04512-gate-version" aria-label="Version">V0.56.1</div>
     <p>Ange lösenkod för att fortsätta</p>
     <input id="v0383Code" name="lina_one_time_code_0470" type="password" inputmode="text" autocomplete="one-time-code" autocapitalize="off" autocorrect="off" spellcheck="false" value="" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" placeholder="Lösenkod">
     <button id="v0383Enter" type="button">Öppna Linas Opti</button>
@@ -34,7 +34,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.56.0</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.56.1</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">48/100</b><small>Forskningsfas</small></button>
@@ -43,7 +43,139 @@
 <div id="v0413Info" class="v0413-info" hidden></div>
 
 
-<div id="v0560ForwardMenu" class="v0551-forwardbar v0560-menu-card" aria-label="Aktiva forward-robotar">
+
+<section id="v0561Dashboard" class="v0561-dashboard">
+  <div class="v0561-hero">
+    <div>
+      <span class="v0561-kicker">LINAS OPTI · KONTROLLCENTRAL</span>
+      <h1>Linas lägesbild</h1>
+      <p id="v0561Summary">Läser aktuell status…</p>
+    </div>
+    <div class="v0561-hero-actions">
+      <span class="v0561-badge danger">Handel AVSTÄNGD</span>
+      <span class="v0561-badge neutral">Robotmognad 48/100</span>
+      <button id="v0561BackupAll" class="secondary">💾 Backup hela Lina</button>
+    </div>
+  </div>
+
+  <div class="v0561-next">
+    <div>
+      <span>NÄSTA STEG</span>
+      <b id="v0561NextTitle">Läser status…</b>
+      <small id="v0561NextText"></small>
+    </div>
+    <button id="v0561NextBtn" class="primary">Öppna</button>
+  </div>
+
+  <div class="v0561-section-head">
+    <div><span>🚦</span><div><b>Forward</b><small>Riktig framtidsdata</small></div></div>
+    <span id="v0561ForwardCount" class="v0561-pill">2 robotar</span>
+  </div>
+  <div class="v0561-grid v0561-forward-grid">
+    <button class="v0561-card" data-open="v0510ForwardLab">
+      <div class="v0561-card-top"><span class="v0561-icon">🎯</span><span id="v0561HunterStatus" class="v0561-state">—</span></div>
+      <h3>Jägaren</h3>
+      <p>Riktig forward från 2026-09-11</p>
+      <div id="v0561HunterStats" class="v0561-stats">Läser…</div>
+      <div class="v0561-card-foot"><span>🔒 Regler frysta</span><span>Öppna →</span></div>
+    </button>
+
+    <button class="v0561-card" data-open="v0550SwingForwardLab">
+      <div class="v0561-card-top"><span class="v0561-icon">🌙</span><span id="v0561SwingStatus" class="v0561-state">—</span></div>
+      <h3>Swing G1</h3>
+      <p>Riktig forward från 2026-09-14</p>
+      <div id="v0561SwingStats" class="v0561-stats">Läser…</div>
+      <div class="v0561-card-foot"><span>🔒 8f09f32a</span><span>Öppna →</span></div>
+    </button>
+  </div>
+
+  <div class="v0561-section-head">
+    <div><span>🧪</span><div><b>Pågående forskning</b><small>Nya idéer testas separat från forward</small></div></div>
+    <span class="v0561-pill new">🆕 NYTT</span>
+  </div>
+  <div class="v0561-grid v0561-research-grid">
+    <button class="v0561-card v0561-card-feature" data-open="v0560SwingG2Lab">
+      <div class="v0561-card-top"><span class="v0561-icon">🚀</span><span id="v0561G2Status" class="v0561-state new">🆕 NYTT</span></div>
+      <h3>Swing G2 · Breakout/Momentum</h3>
+      <p>Ny oberoende strategifamilj · Alphabet A–O</p>
+      <div id="v0561G2Stats" class="v0561-stats">Plan väntar på start.</div>
+      <div class="v0561-progress-mini"><div id="v0561G2Bar"></div></div>
+      <div class="v0561-card-foot"><span>DEV 2020–2022 · pseudo-forward 2023–2026</span><span>Öppna G2 →</span></div>
+    </button>
+  </div>
+
+  <div class="v0561-section-head">
+    <div><span>📚</span><div><b>Historik & utveckling</b><small>Vad vi gjort, varför och vad som är klart</small></div></div>
+  </div>
+  <div class="v0561-grid v0561-history-grid">
+    <button id="v0561ProjectHistoryBtn" class="v0561-card compact">
+      <div class="v0561-card-top"><span class="v0561-icon">🧭</span><span class="v0561-state done">✅ KLART</span></div>
+      <h3>Projektets resa</h3>
+      <p>Från första Lina-testet till dagens forwardrobotar.</p>
+      <div class="v0561-card-foot"><span>Beslut · principer · versioner</span><span>Visa →</span></div>
+    </button>
+
+    <button class="v0561-card compact" data-open="v0540SwingAlphabetLab">
+      <div class="v0561-card-top"><span class="v0561-icon">🌙</span><span class="v0561-state done">✅ KLART</span></div>
+      <h3>Swing G1 · A–O</h3>
+      <p>DEV PF 1,43 · pseudo-forward PF 1,04.</p>
+      <div class="v0561-card-foot"><span>Fryst kandidat 8f09f32a</span><span>Visa →</span></div>
+    </button>
+
+    <button id="v0561JHistoryBtn" class="v0561-card compact">
+      <div class="v0561-card-top"><span class="v0561-icon">🎯</span><span class="v0561-state done">✅ KLART</span></div>
+      <h3>Jägaren · forskning</h3>
+      <p>Validation A–K, Tidsmaskin och robusthetshistorik.</p>
+      <div class="v0561-card-foot"><span>109 historiska tester/steg</span><span>Visa →</span></div>
+    </button>
+
+    <button id="v0561MethodBtn" class="v0561-card compact">
+      <div class="v0561-card-top"><span class="v0561-icon">🔒</span><span class="v0561-state neutral">METOD</span></div>
+      <h3>Så bygger vi Lina</h3>
+      <p>DEV → robusthet → frysning → pseudo-forward → riktig forward.</p>
+      <div class="v0561-card-foot"><span>Ingen rescue efter öppnad holdout</span><span>Visa →</span></div>
+    </button>
+  </div>
+
+  <div class="v0561-section-head">
+    <div><span>🛠</span><div><b>Data & verktyg</b><small>Arbetsyta, export och kontroll</small></div></div>
+  </div>
+  <div class="v0561-grid v0561-tools-grid">
+    <button id="v0561LegacyLabBtn" class="v0561-card compact">
+      <div class="v0561-card-top"><span class="v0561-icon">🧰</span><span class="v0561-state neutral">VERKTYG</span></div>
+      <h3>Äldre LABB / Testverktyg</h3>
+      <p>Öppna klassiska test- och datavyn vid behov.</p>
+      <div class="v0561-card-foot"><span>För avancerad felsökning</span><span>Öppna →</span></div>
+    </button>
+
+    <button id="v0561NotesBtn" class="v0561-card compact">
+      <div class="v0561-card-top"><span class="v0561-icon">📝</span><span class="v0561-state neutral">LOGG</span></div>
+      <h3>Projektanteckningar</h3>
+      <p>En enkel lokal loggbok som följer med backup.</p>
+      <div class="v0561-card-foot"><span id="v0561NoteCount">0 anteckningar</span><span>Öppna →</span></div>
+    </button>
+  </div>
+
+  <div class="v0561-latest">
+    <h3>Senaste ändringar</h3>
+    <div class="v0561-latest-list">
+      <div><span>🆕</span><p><b>V0.56.1</b><br>Ny dashboard-first kontrollcentral.</p></div>
+      <div><span>🆕</span><p><b>V0.56.0</b><br>Swing G2 Breakout/Momentum A–O tillagd.</p></div>
+      <div><span>✅</span><p><b>V0.55.x</b><br>Jägaren och Swing G1 separerade som riktiga forwardspår.</p></div>
+    </div>
+  </div>
+</section>
+
+<div id="v0561Overlay" class="v0561-overlay" hidden>
+  <div class="v0561-overlay-card">
+    <div class="v0561-overlay-head">
+      <h2 id="v0561OverlayTitle">Historik</h2>
+      <button id="v0561OverlayClose">✕</button>
+    </div>
+    <div id="v0561OverlayBody" class="v0561-overlay-body"></div>
+  </div>
+</div>
+<div id="v0560ForwardMenu" hidden class="v0551-forwardbar v0560-menu-card" aria-label="Aktiva forward-robotar">
   <div class="v0551-forward-head">
     <span class="v0551-forward-label">🚦 FORWARD</span>
     <span id="v0551ForwardCount" class="v0551-forward-count">2 robotar</span>
@@ -59,7 +191,7 @@
   <div class="v0551-forward-help">🟢 aktiv · 🟡 redo</div>
 </div>
 
-<div id="v0560ResearchMenu" class="v0424-researchbar v0560-menu-card" aria-label="Forskningsmotor">
+<div id="v0560ResearchMenu" hidden class="v0424-researchbar v0560-menu-card" aria-label="Forskningsmotor">
   <div class="v0425-navlabel">🧪 FORSKNING & HISTORIK</div>
   <label class="v0424-enginepick"><select id="v0423Engine" aria-label="Forskningsmotor">
     <option value="tester">Tester</option>
@@ -1310,5 +1442,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.56.0"></script>
+<script src="linasopti.js?v=0.56.1"></script>
 </body></html>

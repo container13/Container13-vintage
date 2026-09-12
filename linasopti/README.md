@@ -1,6 +1,6 @@
-# Linas Opti V0.56.0
+# Linas Opti V0.56.1
 
-> **Aktuell release: V0.56.0** · Swing G2 Breakout/Momentum Alphabet A–O · förregistrerad historisk forskning · Forward Jägaren + Swing G1 orörda · Handel AV · Robotmognad 48/100
+> **Aktuell release: V0.56.1** · Dashboard-first kontrollcentral · responsiv mobil/desktop · tydlig status/nytt/klart · historik/utveckling · Forward + forskning · Handel AV · Robotmognad 48/100
 
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
@@ -962,3 +962,32 @@ Detta är en ren UI/navigation-ändring. Jägaren, Swing G1 forward och Swing G2
 - Bakgrundsgrafiken tonas ned bakom arbetskontroller.
 - Vald modul fortsätter öppnas som egen arbetsvy med `← LABB`.
 - Ingen strategi-, data-, forward- eller G2-testlogik ändrad.
+
+
+## V0.56.1 – Dashboard-first kontrollcentral
+
+Lina öppnar nu på en responsiv dashboard i stället för den gamla staplade LABB-navigationen.
+
+Dashboarden visar:
+- Linas lägesbild
+- nästa rekommenderade steg
+- Forward: Jägaren och Swing G1 med verklig lokal status, affärer, P/L, PF och senaste behandlade dag
+- Pågående forskning: Swing G2 med verklig A–O-progress
+- Historik & utveckling
+- metod/principer
+- äldre LABB/testverktyg
+- projektanteckningar
+- backup av hela Lina
+- senaste ändringar
+
+Statusnivåer:
+- `✅ KLART`
+- `🟢 AKTIV`
+- `🟡 REDO`
+- `🆕 NYTT`
+- `🧪 PÅGÅR`
+
+Val av kort öppnar modulens egen arbetsvy. Där visas endast vald modul och `← Dashboard`.
+Layouten anpassas automatiskt för mobil, tablet/laptop och större skärmar.
+
+Ingen strategi-, signal-, forward-, data- eller G2-testlogik ändras i V0.56.1.

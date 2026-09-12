@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.56.0";
+const APP_VERSION = "V0.56.1";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -5086,4 +5086,157 @@ window.addEventListener('DOMContentLoaded',()=>{
       if(/uppdatera|refresh/i.test(b.textContent||'')) b.classList.add('v0560-legacy-nav-refresh');
     });
   }
+});
+
+
+// ============================================================
+// V0.56.1 – DASHBOARD FIRST CONTROL CENTER
+// Reads real saved local state; no strategy rules changed.
+// ============================================================
+const V0561_NOTES_KEY='linasopti_project_notes_v0561';
+
+function v0561Hunter(){
+  try{const x=v0510Load(),s=v0510Stats(x.closed||[]);return{x,s}}catch{return{x:null,s:{n:0,pnl:0,pf:null,wr:0}}}
+}
+function v0561Swing(){
+  try{const x=v0550Load(),s=v0550Stats(x.closed||[]);return{x,s}}catch{return{x:null,s:{n:0,pnl:0,pf:null,wr:0}}}
+}
+function v0561G2(){try{return v0560Load()}catch{return null}}
+function v0561Notes(){try{return JSON.parse(localStorage.getItem(V0561_NOTES_KEY)||'[]')}catch{return[]}}
+function v0561SaveNotes(a){localStorage.setItem(V0561_NOTES_KEY,JSON.stringify(a))}
+function v0561FmtPf(x){return x==null||!Number.isFinite(x)?'—':(+x).toFixed(2)}
+function v0561Open(id){
+  document.body.classList.remove('v0561-dashboard-mode','v0560-lab-home');
+  document.body.classList.add('v0561-workspace-mode','v0560-workspace-open');
+  v0560OpenWorkspace(id,false);
+  const back=document.getElementById('v0560WorkspaceBack');if(back)back.textContent='← Dashboard';
+  requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'smooth'}));
+}
+function v0561Home(){
+  document.body.classList.remove('v0561-workspace-mode','v0560-workspace-open');
+  document.body.classList.add('v0561-dashboard-mode');
+  const h=document.getElementById('v0560WorkspaceHead');if(h)h.hidden=true;
+  v0561Paint();requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'smooth'}))
+}
+function v0561Overlay(title,html){
+  const o=document.getElementById('v0561Overlay');if(!o)return;
+  document.getElementById('v0561OverlayTitle').textContent=title;
+  document.getElementById('v0561OverlayBody').innerHTML=html;
+  o.hidden=false
+}
+function v0561HistoryHtml(){
+ return `
+ <h3>Projektets idé</h3>
+ <p>Lina byggs för att vara svår att lura, inte för att maximera ett snyggt backtest. Strategier måste tåla robusthetstest, frysas innan ny period öppnas och därefter samla riktig forwarddata.</p>
+ <h3>Viktiga steg</h3>
+ <table><tbody>
+ <tr><td>V0.41–0.45</td><td>Jägaren utvecklades: exit, entry, regim, universum, kapital och signalflöde.</td><td>✅ Klart</td></tr>
+ <tr><td>V0.46</td><td>Validation Suite A: integritet, PBO/DSR, tidsblock, friktion, koncentration, Monte Carlo.</td><td>✅ Klart</td></tr>
+ <tr><td>V0.47+</td><td>Validation B–K. Totalt 109 historiska tester/steg. Edge bedömdes tunn och känslig för friktion.</td><td>✅ Klart</td></tr>
+ <tr><td>V0.51</td><td>Jägaren fryst och satt i riktig forward från 2026-09-11.</td><td>🟢 Aktiv</td></tr>
+ <tr><td>V0.52</td><td>Tidsmaskin historisk pseudo-forward 2024–2026: 442 affärer, +2 524 kr, PF 1,081.</td><td>✅ Klart</td></tr>
+ <tr><td>V0.53–0.54</td><td>Swing G1 A–O. DEV PF 1,43, låst pseudo-forward PF 1,04. Kandidat 8f09f32a fryst.</td><td>✅ Klart</td></tr>
+ <tr><td>V0.55</td><td>Swing G1 satt i riktig forward från 2026-09-14. Jägaren och Swing separerades tydligt.</td><td>🟢 Aktiv</td></tr>
+ <tr><td>V0.56</td><td>Swing G2 Breakout/Momentum introducerad som ny oberoende forskningsgeneration.</td><td>🆕 Nytt</td></tr>
+ </tbody></table>
+ <h3>Grundprinciper</h3>
+ <p>DEV → robusthet → kandidatfrysning → låst historisk pseudo-forward → riktig forward. Ingen automatisk rescue efter att holdout/pseudo-forward öppnats. Historisk pseudo-forward får aldrig beskrivas som färsk OOS.</p>`
+}
+function v0561MethodHtml(){
+ return `
+ <h3>Så tänker vi</h3>
+ <p><b>1. Ny idé först.</b> Vi vill hellre ha flera oberoende strategier än många små variationer av samma idé.</p>
+ <p><b>2. Förregistrering.</b> Period, parameterfamilj, kostnader, risk och urvalsregel bestäms innan låst data öppnas.</p>
+ <p><b>3. Försök slå sönder strategin.</b> Friktion, perioder, symbolberoende, bootstrap och andra robusthetstester väger tyngre än högsta historiska avkastning.</p>
+ <p><b>4. Frys regler.</b> Kandidat + hash låses innan nästa period får användas.</p>
+ <p><b>5. Riktig forward.</b> Endast nya dagar efter ankaret räknas som ny evidens.</p>
+ <p><b>6. Inga riktiga pengar ännu.</b> Handel är avstängd tills betydligt mer faktisk forwardevidens finns.</p>`
+}
+function v0561JHistoryHtml(){
+ return `
+ <h3>Jägaren – sammanfattning</h3>
+ <p>Fryst kärna: Day Selection 16, PRO2 quality, Entry B, Strong regime och research exit. Close-location 83 % är fryst forskningskandidat.</p>
+ <table><tbody>
+ <tr><td>Validation A</td><td>4 PASS / 2 FAIL</td><td>PBO/DSR och friktionsstress var svagheterna.</td></tr>
+ <tr><td>Validation B–K</td><td>109 historiska tester/steg totalt</td><td>Strategin såg inte ut som ren artefakt, men edge var tunn och ojämn.</td></tr>
+ <tr><td>Tidsmaskin</td><td>442 affärer · +2 523,51 kr · PF 1,081</td><td>Historisk pseudo-forward, inte ny OOS.</td></tr>
+ <tr><td>Riktig forward</td><td>Från 2026-09-11</td><td>Regler frysta.</td></tr>
+ </tbody></table>`
+}
+function v0561NotesHtml(){
+ const notes=v0561Notes();
+ return `<textarea id="v0561NoteInput" class="v0561-note-area" placeholder="Skriv en projektanteckning…"></textarea>
+ <button id="v0561AddNote" class="primary">Spara anteckning</button>
+ <div class="v0561-note-list">${notes.slice().reverse().map(n=>`<div class="v0561-note-item"><b>${new Date(n.at).toLocaleString('sv-SE')}</b><br>${String(n.text).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}</div>`).join('')||'<div class="muted">Inga anteckningar ännu.</div>'}</div>`
+}
+function v0561BindNote(){
+ document.getElementById('v0561AddNote')?.addEventListener('click',()=>{
+   const i=document.getElementById('v0561NoteInput'),t=i?.value.trim();if(!t)return;
+   const a=v0561Notes();a.push({at:new Date().toISOString(),text:t});v0561SaveNotes(a);
+   v0561Overlay('Projektanteckningar',v0561NotesHtml());v0561BindNote();v0561Paint()
+ })
+}
+function v0561Backup(){
+ const hunter=(()=>{try{return v0510Load()}catch{return null}})();
+ const swing=(()=>{try{return v0550Load()}catch{return null}})();
+ const g2=(()=>{try{return v0560Load()}catch{return null}})();
+ return {
+  backupSchema:'linas-opti-dashboard-v0561',
+  appVersion:APP_VERSION,exportedAt:new Date().toISOString(),
+  hunterForward:hunter,swingG1Forward:swing,swingG2Research:g2,
+  notes:v0561Notes(),
+  methodology:{tradeEnabled:false,maturity:48}
+ }
+}
+function v0561Paint(){
+ const H=v0561Hunter(),S=v0561Swing(),G=v0561G2(),notes=v0561Notes();
+ const hs=!!H.x?.startedAt, ss=!!S.x?.startedAt, active=(hs?1:0)+(ss?1:0);
+ const hst=document.getElementById('v0561HunterStatus'),sst=document.getElementById('v0561SwingStatus');
+ if(hst){hst.textContent=hs?'🟢 AKTIV':'🟡 REDO';hst.className='v0561-state '+(hs?'done':'new')}
+ if(sst){sst.textContent=ss?'🟢 AKTIV':'🟡 REDO';sst.className='v0561-state '+(ss?'done':'new')}
+ const hc=document.getElementById('v0561HunterStats');if(hc)hc.textContent=`${H.s.n} affärer · P/L ${H.s.pnl.toFixed(0)} kr · PF ${v0561FmtPf(H.s.pf)} · data ${H.x?.lastProcessedDate||'—'}`;
+ const sc=document.getElementById('v0561SwingStats');if(sc)sc.textContent=`${S.s.n} affärer · P/L ${S.s.pnl.toFixed(0)} kr · PF ${v0561FmtPf(S.s.pf)} · data ${S.x?.lastProcessedDate||'—'}`;
+ const fc=document.getElementById('v0561ForwardCount');if(fc)fc.textContent=`2 robotar · ${active} aktiva`;
+
+ let gText='Plan väntar på start.',gState='🆕 NYTT',gClass='new',gDone=0;
+ if(G){
+   gDone=Object.keys(G.stages||{}).length;
+   if(G.stages?.O){gText=`A–O klart · ${G.final?.verdict||'slutrapport klar'}`;gState='✅ KLART';gClass='done'}
+   else if(G.planLocked){gText=`Plan låst · ${gDone}/15 steg klara`;gState='🧪 PÅGÅR';gClass='neutral'}
+ }
+ const ge=document.getElementById('v0561G2Stats');if(ge)ge.textContent=gText;
+ const gs=document.getElementById('v0561G2Status');if(gs){gs.textContent=gState;gs.className='v0561-state '+gClass}
+ const gb=document.getElementById('v0561G2Bar');if(gb)gb.style.width=`${Math.min(100,gDone/15*100)}%`;
+
+ const sum=document.getElementById('v0561Summary');
+ if(sum)sum.textContent=`${active} strategier samlar riktig forwarddata. ${G?.stages?.O?'Swing G2-forskningen är klar.':'Swing G2 är den nya forskningsgenerationen.'} Ingen strategi är godkänd för riktiga pengar.`;
+
+ const nt=document.getElementById('v0561NextTitle'),nx=document.getElementById('v0561NextText'),nb=document.getElementById('v0561NextBtn');
+ let nextId='v0560SwingG2Lab';
+ if(!G?.planLocked){if(nt)nt.textContent='Lås Swing G2-planen';if(nx)nx.textContent='Förregistreringen är klar. Nästa steg är att låsa planen innan data hämtas.'}
+ else if(!G?.stages?.O){if(nt)nt.textContent='Fortsätt Swing G2 A–O';if(nx)nx.textContent=`${gDone}/15 steg klara. Jägaren och Swing G1 fortsätter forward separat.`}
+ else{if(nt)nt.textContent='Granska Swing G2-resultatet';if(nx)nx.textContent='A–O är klart. Nästa beslut tas utan rescue-optimering.'}
+ if(nb)nb.onclick=()=>v0561Open(nextId);
+ const nc=document.getElementById('v0561NoteCount');if(nc)nc.textContent=`${notes.length} anteckningar`;
+}
+window.addEventListener('DOMContentLoaded',()=>{
+ document.body.classList.add('v0561-dashboard-mode');
+ document.body.classList.remove('v0561-workspace-mode','v0560-workspace-open','v0560-lab-home');
+ const oldBack=document.getElementById('v0560WorkspaceBack');
+ if(oldBack){const replacement=oldBack.cloneNode(true);oldBack.parentNode.replaceChild(replacement,oldBack);replacement.textContent='← Dashboard';replacement.addEventListener('click',v0561Home)}
+ document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>v0561Open(b.dataset.open)));
+ document.getElementById('v0561NextBtn')?.addEventListener('click',()=>v0561Open('v0560SwingG2Lab'));
+ document.getElementById('v0561ProjectHistoryBtn')?.addEventListener('click',()=>v0561Overlay('Projektets resa',v0561HistoryHtml()));
+ document.getElementById('v0561MethodBtn')?.addEventListener('click',()=>v0561Overlay('Så bygger vi Lina',v0561MethodHtml()));
+ document.getElementById('v0561JHistoryBtn')?.addEventListener('click',()=>v0561Overlay('Jägaren · forskning & historik',v0561JHistoryHtml()));
+ document.getElementById('v0561NotesBtn')?.addEventListener('click',()=>{v0561Overlay('Projektanteckningar',v0561NotesHtml());v0561BindNote()});
+ document.getElementById('v0561LegacyLabBtn')?.addEventListener('click',()=>{
+   document.body.classList.remove('v0561-dashboard-mode');document.body.classList.add('v0560-lab-home');
+   const f=document.getElementById('v0560ForwardMenu'),r=document.getElementById('v0560ResearchMenu');if(f)f.hidden=false;if(r)r.hidden=false;
+   document.getElementById('v0561Dashboard').style.display='none';requestAnimationFrame(()=>f?.scrollIntoView({behavior:'smooth',block:'start'}))
+ });
+ document.getElementById('v0561OverlayClose')?.addEventListener('click',()=>document.getElementById('v0561Overlay').hidden=true);
+ document.getElementById('v0561Overlay')?.addEventListener('click',e=>{if(e.target.id==='v0561Overlay')e.currentTarget.hidden=true});
+ document.getElementById('v0561BackupAll')?.addEventListener('click',()=>v0540Dl(JSON.stringify(v0561Backup(),null,2),`LINAS_OPTI_FULL_BACKUP_V0561_${new Date().toISOString().slice(0,10)}.json`,'application/json'));
+ v0561Paint();
 });
