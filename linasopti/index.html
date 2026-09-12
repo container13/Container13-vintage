@@ -9,21 +9,21 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.55.0">
+<link rel="stylesheet" href="linasopti.css?v=0.55.1">
 
   <meta name="theme-color" content="#f4f7fb">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Linas Opti">
-  <link rel="apple-touch-icon" href="lina-circle.png?v=0.55.0">
+  <link rel="apple-touch-icon" href="lina-circle.png?v=0.55.1">
 </head>
 <body class="v0384-locked">
 
 <div id="v0383Gate" class="v0383-gate" aria-hidden="false">
   <div class="v0383-gate-card">
     <h1>Linas Opti</h1>
-    <div class="v04512-gate-version" aria-label="Version">V0.55.0</div>
+    <div class="v04512-gate-version" aria-label="Version">V0.55.1</div>
     <p>Ange lösenkod för att fortsätta</p>
     <input id="v0383Code" name="lina_one_time_code_0470" type="password" inputmode="text" autocomplete="one-time-code" autocapitalize="off" autocorrect="off" spellcheck="false" value="" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" placeholder="Lösenkod">
     <button id="v0383Enter" type="button">Öppna Linas Opti</button>
@@ -34,7 +34,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.55.0</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.55.1</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">48/100</b><small>Forskningsfas</small></button>
@@ -42,8 +42,25 @@
 </div>
 <div id="v0413Info" class="v0413-info" hidden></div>
 
+
+<div class="v0551-forwardbar" aria-label="Aktiva forward-robotar">
+  <div class="v0551-forward-head">
+    <span class="v0551-forward-label">🚦 FORWARD</span>
+    <span id="v0551ForwardCount" class="v0551-forward-count">2 robotar</span>
+  </div>
+  <label class="v0551-forward-pick">
+    <span>Jobbar framåt i tiden</span>
+    <select id="v0551ForwardJump" aria-label="Välj forward-robot">
+      <option value="">Välj forward-robot…</option>
+      <option value="v0510ForwardLab" data-base="🎯 Jägaren · riktig forward">🎯 Jägaren · riktig forward</option>
+      <option value="v0550SwingForwardLab" data-base="🌙 Swing G1 · riktig forward">🌙 Swing G1 · riktig forward</option>
+    </select>
+  </label>
+  <div class="v0551-forward-help">🟢 AKTIV = startad på den här enheten · 🟡 REDO = fryst och klar att starta. Båda använder bara nya dagar efter sina forwardankare.</div>
+</div>
+
 <div class="v0424-researchbar" aria-label="Forskningsmotor">
-  <div class="v0425-navlabel">🔬 FORSKNING</div>
+  <div class="v0425-navlabel">🧪 FORSKNING & HISTORIK</div>
   <label class="v0424-enginepick"><select id="v0423Engine" aria-label="Forskningsmotor">
     <option value="tester">Tester</option>
     <option value="testlab">Testlab</option>
@@ -53,12 +70,10 @@
     <button type="button" class="v0424-subtab" data-pane="test">Test</button>
     <button type="button" class="v0424-subtab" data-pane="result">Resultat</button>
   </div>
-  <label id="v0423LabPick" class="v0424-labpick" hidden><span class="v0425-labtag">LABB</span><select id="v0413LabJump" aria-label="Välj Testlab">
-    <option value="v0550SwingForwardLab" selected>🚦 Lina Swing G1 · Riktig Forward (senaste)</option>
-    <option value="v0540SwingAlphabetLab">🌙 Lina Swing · Alphabet A–O</option>
+  <label id="v0423LabPick" class="v0424-labpick" hidden><span class="v0425-labtag">HISTORIK/LABB</span><select id="v0413LabJump" aria-label="Välj forskning eller historiskt test">
+    <option value="v0540SwingAlphabetLab" selected>🌙 Lina Swing · Alphabet A–O (senaste forskning)</option>
     <option value="v0530SwingLab">🌙 Lina Swing · Research Gate 1</option>
     <option value="v0520TimeMachineLab">⏳ Tidsmaskin · Historiskt pseudo-forward (senaste)</option>
-    <option value="v0510ForwardLab">🚦 Forward Validation · Från 2026-09-11 (riktig forward)</option>
     <option value="v0500KLab">🛡️ Validation Suite K · Resiliens & kombostress · 10 tester</option>
     <option value="v0500JLab">📉 Validation Suite J · Equity & drawdown · 10 tester</option>
     <option value="v0500ILab">📊 Validation Suite I · Fördelning & expectancy · 10 tester</option>
@@ -1239,5 +1254,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.55.0"></script>
+<script src="linasopti.js?v=0.55.1"></script>
 </body></html>

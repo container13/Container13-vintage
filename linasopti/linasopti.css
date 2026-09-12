@@ -1306,3 +1306,23 @@ body.v0462-running .v0460-lock{padding:6px 10px;margin:4px 0;font-size:.86rem}
 .v0550-compare>div{border:1px solid #d8e1e9;border-radius:12px;padding:11px;background:#fbfcfd}
 .v0550-compare h4{margin:0 0 6px}.v0550-compare p{margin:3px 0;font-size:13px}
 @media(max-width:700px){.v0550-compare{grid-template-columns:1fr}}
+
+
+/* V0.55.1 – separat navigation för riktig forward */
+.v0551-forwardbar{
+  margin:10px 0 12px;padding:12px;border:2px solid #b8d7c5;border-radius:14px;
+  background:#f6fbf8;display:grid;gap:8px
+}
+.v0551-forward-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.v0551-forward-label{font-weight:800;letter-spacing:.04em}
+.v0551-forward-count{font-size:12px;font-weight:700;padding:4px 8px;border-radius:999px;background:#e8f4ed}
+.v0551-forward-pick{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:center}
+.v0551-forward-pick>span{font-size:12px;font-weight:700}
+.v0551-forward-pick select{width:100%;min-width:0;font-weight:700}
+.v0551-forward-help{font-size:12px;line-height:1.4;color:#52606d}
+.v0551-forwardbar[data-active="1"]{border-color:#67a97e;box-shadow:0 0 0 2px rgba(103,169,126,.08)}
+.v0424-researchbar[data-v0551-active="1"]{box-shadow:0 0 0 2px rgba(83,116,148,.08)}
+@media(max-width:700px){
+  .v0551-forward-pick{grid-template-columns:1fr}
+  .v0551-forwardbar{padding:10px}
+}

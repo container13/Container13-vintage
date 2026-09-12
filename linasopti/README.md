@@ -1,6 +1,6 @@
-# Linas Opti V0.55.0
+# Linas Opti V0.55.1
 
-> **Aktuell release: V0.55.0** · Lina Swing G1 riktig forward · fryst hash 8f09f32a · start 2026-09-14 · Jägaren forward parallellt · Handel AV · Robotmognad 48/100
+> **Aktuell release: V0.55.1** · separat forwardnavigation för Jägaren + Swing G1 · forskning/historik separerad · Handel AV · Robotmognad 48/100
 
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
@@ -891,3 +891,19 @@ Swing-kandidaten frystes under USA-sessionen den 11 september 2026. Därför vor
 
 Pseudo-forward 2024–2026-09-10 är endast referens: 323 affärer, +2 417 kr, PF 1,042, WR 50,46 %, DD −5,66 %.
 Jägarens forward och regler är oförändrade. Robotmognad är fortsatt 48/100.
+
+
+## V0.55.1 – Forward och forskning separeras i UI
+
+Två robotar är nu särskilt markerade som strategier som arbetar framåt i riktig tid:
+- **Jägaren · riktig forward**, ankare 2026-09-11.
+- **Swing G1 · riktig forward**, ankare 2026-09-14.
+
+De visas i en egen permanent `🚦 FORWARD`-rullgardin ovanför forskningsdelen. Status visas per lokal enhet:
+- `🟢 AKTIV` = forwarden är startad i den aktuella webbläsarens localStorage.
+- `🟡 REDO` = strategin är fryst men forwarden är ännu inte startad på just den enheten.
+
+Den gamla Testlab-rullgardinen heter nu `HISTORIK/LABB` och innehåller endast forskning, pseudo-forward och historiska tester. Jägaren och Swing G1 har tagits bort ur den historiska listan för att undvika sammanblandning.
+
+Ingen strategi-, data-, risk- eller forwardlogik ändras i V0.55.1. Jägaren och Swing G1 är exakt samma frysta robotar som i V0.55.0.
+Nästa planerade forskningsspår är en separat **Swing G2** med en annan signalfamilj, inte finjustering av Swing G1.

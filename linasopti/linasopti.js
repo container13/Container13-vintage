@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.55.0";
+const APP_VERSION = "V0.55.1";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -4544,4 +4544,78 @@ window.addEventListener('DOMContentLoaded',()=>{
  v0550Paint();
  const jump=document.getElementById('v0413LabJump');if(jump&&[...jump.options].some(o=>o.value==='v0550SwingForwardLab')){jump.value='v0550SwingForwardLab';try{localStorage.setItem('linasopti_testlab_selected_v0423','v0550SwingForwardLab')}catch{}jump.dispatchEvent(new Event('change'))}
  setTimeout(v0550AutoCatchup,1300);
+});
+
+
+// ============================================================
+// V0.55.1 – SEPARAT FORWARDNAVIGATION
+// Forward och historisk forskning ska aldrig blandas ihop i samma lista.
+// ============================================================
+const V0551_FORWARD_NAV_KEY='linasopti_forward_nav_v0551';
+
+function v0551ForwardStatus(){
+  let hunterStarted=false,swingStarted=false;
+  try{hunterStarted=!!v0510Load()?.startedAt}catch{}
+  try{swingStarted=!!v0550Load()?.startedAt}catch{}
+  return {hunterStarted,swingStarted,active:(hunterStarted?1:0)+(swingStarted?1:0)}
+}
+function v0551PaintForwardNav(){
+  const s=v0551ForwardStatus(),sel=document.getElementById('v0551ForwardJump'),
+        count=document.getElementById('v0551ForwardCount');
+  if(count)count.textContent=`2 robotar · ${s.active} aktiva`;
+  if(sel){
+    const h=sel.querySelector('option[value="v0510ForwardLab"]'),
+          w=sel.querySelector('option[value="v0550SwingForwardLab"]');
+    if(h)h.textContent=`🎯 Jägaren · ${s.hunterStarted?'🟢 AKTIV':'🟡 REDO'} · från 2026-09-11`;
+    if(w)w.textContent=`🌙 Swing G1 · ${s.swingStarted?'🟢 AKTIV':'🟡 REDO'} · från 2026-09-14`;
+  }
+}
+function v0551ShowLabOnly(id){
+  document.querySelectorAll('.v0413-lab-section').forEach(el=>{
+    el.style.display=el.classList.contains('vlab-'+id)?'':'none'
+  });
+  document.querySelectorAll('.vlab-extra').forEach(el=>el.style.display='none');
+}
+function v0551OpenForward(id,scroll=true){
+  if(!id)return;
+  show('testlab',false);
+  v0551ShowLabOnly(id);
+  const fbar=document.querySelector('.v0551-forwardbar'),
+        rbar=document.querySelector('.v0424-researchbar'),
+        sel=document.getElementById('v0551ForwardJump');
+  if(fbar)fbar.dataset.active='1';
+  if(rbar)rbar.dataset.v0551Active='0';
+  if(sel)sel.value=id;
+  try{localStorage.setItem(V0551_FORWARD_NAV_KEY,id)}catch{}
+  if(scroll)requestAnimationFrame(()=>document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'}));
+}
+function v0551ResearchChosen(){
+  const fbar=document.querySelector('.v0551-forwardbar'),
+        rbar=document.querySelector('.v0424-researchbar'),
+        sel=document.getElementById('v0551ForwardJump');
+  if(fbar)fbar.dataset.active='0';
+  if(rbar)rbar.dataset.v0551Active='1';
+  if(sel)sel.value='';
+}
+window.addEventListener('DOMContentLoaded',()=>{
+  const fsel=document.getElementById('v0551ForwardJump'),
+        research=document.getElementById('v0413LabJump');
+  fsel?.addEventListener('change',e=>{
+    const id=e.target.value;
+    if(id)v0551OpenForward(id,true);
+    else{
+      v0551ResearchChosen();
+      show('testlab',false);
+      research?.dispatchEvent(new Event('change'));
+    }
+  });
+  research?.addEventListener('change',v0551ResearchChosen);
+  document.getElementById('v0510Init')?.addEventListener('click',()=>setTimeout(v0551PaintForwardNav,20));
+  document.getElementById('v0550Init')?.addEventListener('click',()=>setTimeout(v0551PaintForwardNav,20));
+  v0551PaintForwardNav();
+
+  let saved='';
+  try{saved=localStorage.getItem(V0551_FORWARD_NAV_KEY)||''}catch{}
+  if(saved==='v0510ForwardLab'||saved==='v0550SwingForwardLab')v0551OpenForward(saved,false);
+  else v0551ResearchChosen();
 });
