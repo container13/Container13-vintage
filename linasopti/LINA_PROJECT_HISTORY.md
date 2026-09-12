@@ -85,3 +85,6 @@ For the Lina project, the assistant must **never generate, create, redesign or m
 
 ## V0.56.2
 Dashboard scroll/höjd korrigerad efter verkligt test på desktop och mobil. Felet berodde på att dashboarden låg inne i den äldre fasta `.sticky-top`-containern och därför inte bidrog till dokumentets totala höjd.
+
+## V0.56.3
+Dashboarden förenklades till en verklig översikt: tre kompakta spår, uppdateringsknapp i headern och historik/verktyg bakom en utfällbar ingång. All historik behölls.

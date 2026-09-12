@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.56.2";
+const APP_VERSION = "V0.56.3";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -5240,3 +5240,49 @@ window.addEventListener('DOMContentLoaded',()=>{
  document.getElementById('v0561BackupAll')?.addEventListener('click',()=>v0540Dl(JSON.stringify(v0561Backup(),null,2),`LINAS_OPTI_FULL_BACKUP_V0561_${new Date().toISOString().slice(0,10)}.json`,'application/json'));
  v0561Paint();
 });
+
+
+// V0.56.3 – compact dashboard + permanent header refresh (UI only)
+function v0563RefreshAll(){
+  const b=document.getElementById('v0563Refresh');
+  if(b){b.disabled=true;b.dataset.old=b.textContent;b.textContent='↻ Uppdaterar…'}
+  const jobs=[];
+  try{if(typeof v0510CatchUp==='function')jobs.push(Promise.resolve(v0510CatchUp()))}catch(e){}
+  try{if(typeof v0550CatchUp==='function')jobs.push(Promise.resolve(v0550CatchUp()))}catch(e){}
+  Promise.allSettled(jobs).then(()=>{try{v0561Paint()}catch(e){} if(b){b.disabled=false;b.textContent=b.dataset.old||'↻ Uppdatera'}})
+}
+function v0563CompactDashboard(){
+  const dash=document.getElementById('v0561Dashboard');if(!dash)return;
+
+  const headtools=document.querySelector('.v036-headtools');
+  if(headtools&&!document.getElementById('v0563Refresh')){
+    const b=document.createElement('button');b.id='v0563Refresh';b.className='secondary';b.textContent='↻ Uppdatera';
+    b.title='Hämta ikapp forwarddata och uppdatera dashboarden';b.addEventListener('click',v0563RefreshAll);headtools.appendChild(b)
+  }
+
+  const fgrid=dash.querySelector('.v0561-forward-grid');
+  const g2=dash.querySelector('.v0561-research-grid .v0561-card');
+  if(fgrid&&g2&&!fgrid.contains(g2))fgrid.appendChild(g2);
+
+  const heads=[...dash.querySelectorAll('.v0561-section-head')];
+  if(heads[0]){
+    const b=heads[0].querySelector('b');if(b)b.textContent='Pågår nu';
+    const sm=heads[0].querySelector('small');if(sm)sm.textContent='Forward och aktuell forskning';
+    const pill=heads[0].querySelector('.v0561-pill');if(pill)pill.textContent='3 spår'
+  }
+  if(heads[1])heads[1].style.display='none';
+
+  if(!document.getElementById('v0563MoreToggle')){
+    const histHead=heads[2];
+    if(histHead){
+      const toggle=document.createElement('button');toggle.id='v0563MoreToggle';toggle.className='v0563-more-toggle';
+      toggle.innerHTML='<span>☰ Historik, forskning & verktyg</span><span id="v0563MoreArrow">Visa ▾</span>';
+      histHead.parentNode.insertBefore(toggle,histHead);
+      const block=document.createElement('div');block.id='v0563MoreBlock';block.hidden=true;
+      let n=histHead;while(n){const next=n.nextSibling;block.appendChild(n);n=next}
+      toggle.parentNode.insertBefore(block,toggle.nextSibling);
+      toggle.addEventListener('click',()=>{block.hidden=!block.hidden;document.getElementById('v0563MoreArrow').textContent=block.hidden?'Visa ▾':'Dölj ▴'})
+    }
+  }
+}
+window.addEventListener('DOMContentLoaded',()=>requestAnimationFrame(v0563CompactDashboard));

@@ -1,4 +1,4 @@
-# Linas Opti V0.56.2
+# Linas Opti V0.56.3
 
 > **Aktuell release: V0.56.1** · Dashboard-first kontrollcentral · responsiv mobil/desktop · tydlig status/nytt/klart · historik/utveckling · Forward + forskning · Handel AV · Robotmognad 48/100
 
@@ -1030,3 +1030,9 @@ For the Lina project, the assistant must **never generate, create, redesign or m
 - Workspace/module behavior remains unchanged.
 - Added permanent project rule: do not generate images unless the user explicitly asks for an image.
 - No strategy, signal, data, forward, G2 A–O, anchor, hash, risk or trading logic changed.
+
+## V0.56.3 – Compact dashboard
+- Permanent `↻ Uppdatera` in the header; compact icon on mobile.
+- Home view prioritizes status, next step, and three compact tracks: Jägaren, Swing G1, Swing G2.
+- History, methodology, project journey, notes, data and tools remain available behind one expandable entry.
+- No strategy/data/forward/risk/trading logic changed.

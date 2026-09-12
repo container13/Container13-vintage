@@ -1717,3 +1717,33 @@ body.v0561-dashboard-mode #v0561Dashboard{
     padding-bottom:140px !important;
   }
 }
+
+/* V0.56.3 – compact dashboard + header refresh */
+#v0563Refresh{margin-left:8px;min-width:auto;padding:7px 11px;border-radius:10px;font-weight:900;white-space:nowrap}
+.v0563-more-toggle{width:100%;display:flex;justify-content:space-between;align-items:center;padding:11px 13px;border:1px solid #d8e1e9;border-radius:13px;background:rgba(255,255,255,.94);font-weight:900;cursor:pointer}
+body.v0561-dashboard-mode .v0561-dashboard{gap:10px}
+body.v0561-dashboard-mode .v0561-hero{padding:12px 14px;align-items:center}
+body.v0561-dashboard-mode .v0561-hero h1{font-size:19px;margin:2px 0}
+body.v0561-dashboard-mode .v0561-kicker{font-size:9px}
+body.v0561-dashboard-mode .v0561-hero p{font-size:12px}
+body.v0561-dashboard-mode .v0561-hero-actions{display:none}
+body.v0561-dashboard-mode .v0561-next{padding:10px 12px}
+body.v0561-dashboard-mode .v0561-section-head{margin-top:1px}
+body.v0561-dashboard-mode .v0561-section-head small{display:none}
+body.v0561-dashboard-mode .v0561-forward-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+body.v0561-dashboard-mode .v0561-forward-grid .v0561-card{padding:11px}
+body.v0561-dashboard-mode .v0561-forward-grid .v0561-card h3{margin:5px 0 2px;font-size:14px}
+body.v0561-dashboard-mode .v0561-forward-grid .v0561-card p{font-size:11px;margin-bottom:5px}
+body.v0561-dashboard-mode .v0561-stats{font-size:11px;margin:4px 0}
+body.v0561-dashboard-mode .v0561-card-foot{margin-top:5px;font-size:10px}
+body.v0561-dashboard-mode .v0561-icon{font-size:17px}
+#v0563MoreBlock[hidden]{display:none!important}
+#v0563MoreBlock{display:grid;gap:10px}
+@media(max-width:900px){body.v0561-dashboard-mode .v0561-forward-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){
+ #v0563Refresh{font-size:0;padding:8px 10px}
+ #v0563Refresh::before{content:"↻";font-size:20px}
+ body.v0561-dashboard-mode .v0561-forward-grid{grid-template-columns:1fr}
+ body.v0561-dashboard-mode .v0561-hero{padding:10px 12px}
+ body.v0561-dashboard-mode .v0561-next{padding:9px 10px}
+}
