@@ -5077,3 +5077,13 @@ window.addEventListener('DOMContentLoaded',()=>{
   // User selects which workspace to enter; no large panel remains hanging below.
   v0560LabHome(false);
 });
+
+// V0.56.0 final visual cleanup: identify legacy top-level Testlab refresh only.
+window.addEventListener('DOMContentLoaded',()=>{
+  const research=document.getElementById('v0560ResearchMenu');
+  if(research){
+    [...research.querySelectorAll('button')].forEach(b=>{
+      if(/uppdatera|refresh/i.test(b.textContent||'')) b.classList.add('v0560-legacy-nav-refresh');
+    });
+  }
+});

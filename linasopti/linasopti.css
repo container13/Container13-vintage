@@ -1458,3 +1458,139 @@ body.v0560-lab-home .vlab-extra{
     margin-top:4px;
   }
 }
+
+
+/* V0.56.0 final visual cleanup – compact navigation hierarchy */
+#v0560ForwardMenu{
+  display:grid !important;
+  grid-template-columns:auto minmax(360px,1fr) !important;
+  align-items:center !important;
+  gap:10px !important;
+  min-height:54px !important;
+  padding:7px 12px !important;
+}
+#v0560ForwardMenu .v0551-forward-head{
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+}
+#v0560ForwardMenu .v0551-forward-count{
+  white-space:nowrap !important;
+}
+#v0560ForwardMenu .v0551-forward-pick{
+  display:grid !important;
+  grid-template-columns:auto minmax(260px,1fr) !important;
+  align-items:center !important;
+  gap:8px !important;
+}
+#v0560ForwardMenu .v0551-forward-help{
+  display:none !important;
+}
+#v0560ForwardMenu select{
+  height:38px !important;
+  min-height:38px !important;
+  font-size:14px !important;
+}
+
+/* Research bar becomes one clean row. Old nested lab navigation is flattened. */
+#v0560ResearchMenu{
+  display:flex !important;
+  align-items:center !important;
+  gap:12px !important;
+  min-height:54px !important;
+  height:auto !important;
+  padding:7px 12px !important;
+  margin:8px 0 !important;
+  overflow:visible !important;
+}
+#v0560ResearchMenu .v0425-navlabel{
+  flex:0 0 auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  min-width:0 !important;
+  white-space:nowrap !important;
+  line-height:38px !important;
+}
+#v0560ResearchMenu #v0423LabPick{
+  display:flex !important;
+  flex:1 1 auto !important;
+  align-items:center !important;
+  gap:8px !important;
+  margin:0 !important;
+  padding:0 !important;
+  min-width:0 !important;
+  position:static !important;
+}
+#v0560ResearchMenu .v0425-labtag{
+  flex:0 0 auto !important;
+  margin:0 !important;
+  white-space:nowrap !important;
+  line-height:38px !important;
+}
+#v0560ResearchMenu #v0413LabJump{
+  flex:1 1 auto !important;
+  width:auto !important;
+  min-width:220px !important;
+  max-width:none !important;
+  height:38px !important;
+  min-height:38px !important;
+  margin:0 !important;
+  padding:5px 34px 5px 10px !important;
+  font-size:14px !important;
+  border-radius:10px !important;
+}
+
+/* The generic refresh button was useful in old Testlab navigation but makes
+   the new menu crowded. Data refresh remains available inside relevant workspaces. */
+#v0560ResearchMenu button,
+#v0560ResearchMenu .v0424-refresh,
+#v0560ResearchMenu [id*="Refresh"],
+#v0560ResearchMenu [id*="Update"]{
+  display:none !important;
+}
+
+/* Data/Test/Result belong below the navigation as a distinct thin tab strip. */
+#v0560ResearchMenu .v0424-tabs,
+#v0560ResearchMenu .tabs,
+#v0560ResearchMenu [role="tablist"]{
+  flex-basis:100% !important;
+}
+body:not(.v0560-workspace-open) #v0560ResearchMenu + .v0424-tabs,
+body:not(.v0560-workspace-open) .v0424-research-tabs{
+  margin-top:4px !important;
+}
+
+/* Reduce background artwork interference behind controls/work areas. */
+main::before,.app::before,.shell::before,.page::before{
+  opacity:.035 !important;
+}
+
+/* Selected module workspace: navigation disappears completely. */
+body.v0560-workspace-open #v0560ForwardMenu,
+body.v0560-workspace-open #v0560ResearchMenu{
+  display:none !important;
+}
+
+@media(max-width:800px){
+  #v0560ForwardMenu{
+    grid-template-columns:1fr !important;
+    gap:5px !important;
+  }
+  #v0560ForwardMenu .v0551-forward-pick{
+    grid-template-columns:1fr !important;
+  }
+  #v0560ResearchMenu{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:5px !important;
+  }
+  #v0560ResearchMenu #v0423LabPick{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:4px !important;
+  }
+  #v0560ResearchMenu .v0425-navlabel,
+  #v0560ResearchMenu .v0425-labtag{
+    line-height:1.2 !important;
+  }
+}

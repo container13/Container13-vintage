@@ -952,3 +952,13 @@ Ny princip:
 - Vid ny sidladdning visas den kompakta LABB-starten i stället för att ett gammalt test automatiskt ligger öppet under menyerna.
 
 Detta är en ren UI/navigation-ändring. Jägaren, Swing G1 forward och Swing G2 A–O-motorerna är oförändrade.
+
+
+### V0.56.0 – slutlig visuell städning före GitHub
+- Forwardraden komprimerad till rubrik/status + en normalstor rullgardin.
+- Forskning & historik komprimerad till en enda ren rad med normalstor testväljare.
+- Den gamla stora generella Uppdatera-kontrollen döljs i navigeringen; relevant uppdatering finns i respektive arbetsvy.
+- Data/Test/Resultat behandlas visuellt som separat fliknivå, inte som del av rullgardinsraden.
+- Bakgrundsgrafiken tonas ned bakom arbetskontroller.
+- Vald modul fortsätter öppnas som egen arbetsvy med `← LABB`.
+- Ingen strategi-, data-, forward- eller G2-testlogik ändrad.
