@@ -1,6 +1,6 @@
-# Linas Opti V0.54.3
+# Linas Opti V0.55.0
 
-> **Aktuell release: V0.54.0** · Lina Swing Alphabet A–O · utveckling 2021–2023 → automatisk frysning → låst pseudo-forward 2024–2026-09-10 · Jägaren orörd · Handel AV · Robotmognad 48/100
+> **Aktuell release: V0.55.0** · Lina Swing G1 riktig forward · fryst hash 8f09f32a · start 2026-09-14 · Jägaren forward parallellt · Handel AV · Robotmognad 48/100
 
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
@@ -857,3 +857,37 @@ V0.54.3 hämtar därför:
 UI visar exakt `Månad X/Y · symbol N/17 · SYMBOL`. Om något fortfarande fallerar får vi därmed exakt symbol och månad istället för ett generiskt Alpaca-fel. Pågående misslyckad V0.54.2-fetch migreras automatiskt till nya symbol×månadsläget när `Fortsätt` trycks.
 
 Ingen strategi-, grid-, datadelning- eller Jägarenändring.
+
+
+## V0.55.0 – Lina Swing G1 · Riktig Forward
+
+Swing-kandidaten från Alphabet A–O är fryst:
+- hash `8f09f32a`
+- trend 50 dagar
+- rekyl 2 %
+- recovery `prevhigh`
+- SPY över SMA100
+- stop 7 %
+- mål 12 %
+- max hålltid 5 handelsdagar
+- kostnad 0,10 % per sida
+- risk 0,5 % equity/affär, max 5 positioner, max 20 % equity/position
+
+### Forwardankare
+Swing-kandidaten frystes under USA-sessionen den 11 september 2026. Därför vore det metodologiskt fel att räkna en entry vid 11 september-open som riktig forward. **Första giltiga Swing-forwarddag är 2026-09-14.**
+
+### Funktion
+- separat localStorage: `linasopti_swing_forward_v0550`
+- indikator-warmup börjar 2026-04-01 men får inte skapa entries före ankaret
+- datan hämtas robust symbol × månad via 5-minutersbridge och aggregeras lokalt till dagsdata
+- checkpoint efter varje färdig symbol
+- öppna positioner tvångsstängs inte vid scan-slut
+- motorn körs om deterministiskt från warmup med entries låsta till >= 2026-09-14
+- milstolpar 60 / 120 / 250 stängda affärer
+- auto catch-up vid öppning
+- TXT, Raw JSON och separat backup
+- jämförelsepanel mot Jägarens riktiga forward
+- ingen automatisk rescue/optimering
+
+Pseudo-forward 2024–2026-09-10 är endast referens: 323 affärer, +2 417 kr, PF 1,042, WR 50,46 %, DD −5,66 %.
+Jägarens forward och regler är oförändrade. Robotmognad är fortsatt 48/100.

@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.54.3";
+const APP_VERSION = "V0.55.0";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -4352,4 +4352,196 @@ window.addEventListener('DOMContentLoaded',()=>{
  document.getElementById('v0520Backup')?.addEventListener('click',()=>{const x=v0520Load();if(x)v0520Download('LINA_TIMEMACHINE_V0520_CHECKPOINT.json',JSON.stringify(x,null,2),'application/json')});
  document.getElementById('v0520Help')?.addEventListener('click',()=>alert('Tidsmaskinen spelar upp gammal marknadsdata kronologiskt. Motorn får bara dagens och tidigare bars i varje steg. Eftersom Jägaren redan utvecklats med delar av denna historik är detta pseudo-forward/diagnostik – aldrig en ersättning för riktig forward från 2026-09-11.'));
  v0520Paint();
+});
+
+
+// ============================================================
+// V0.55.0 – LINA SWING G1 · REAL FORWARD
+// Candidate frozen during 2026-09-11 session; first valid future entry = 2026-09-14.
+// ============================================================
+const V0550_KEY='linasopti_swing_forward_v0550';
+const V0550_ANCHOR='2026-09-14';
+const V0550_WARMUP_START='2026-04-01';
+const V0550_HASH='8f09f32a';
+const V0550_PARAMS={trend:50,pullback:.02,recovery:'prevhigh',regime:'spy100',stop:.07,target:.12,hold:5};
+const V0550_MILESTONES=[
+ {n:60,label:'Första lägesbild'},
+ {n:120,label:'Mellanbedömning'},
+ {n:250,label:'Starkare forward-bedömning'}
+];
+function v0550New(){return{
+ schema:'LINA-SWING-FORWARD-1',version:'V0.55.0',generation:'SWING-G1',
+ anchor:V0550_ANCHOR,warmupStart:V0550_WARMUP_START,candidateHash:V0550_HASH,params:V0550_PARAMS,
+ startedAt:null,lastScanAt:null,lastProcessedDate:null,cacheRows:[],fetch:null,
+ closed:[],open:[],engine:null,scans:[],gate:'NOT_STARTED'
+}}
+function v0550Load(){try{
+ const x=JSON.parse(localStorage.getItem(V0550_KEY)||'null');
+ if(x&&x.schema==='LINA-SWING-FORWARD-1'&&x.candidateHash===V0550_HASH)return x
+}catch{}return v0550New()}
+function v0550Save(x){localStorage.setItem(V0550_KEY,JSON.stringify(x));return x}
+function v0550Stats(tr){
+ const ps=(tr||[]).map(t=>+t.pnl||0),gw=ps.filter(x=>x>0).reduce((a,b)=>a+b,0),gl=-ps.filter(x=>x<0).reduce((a,b)=>a+b,0);
+ let eq=100000,peak=100000,maxDD=0;for(const p of ps){eq+=p;peak=Math.max(peak,eq);maxDD=Math.min(maxDD,eq-peak)}
+ return{n:ps.length,pnl:ps.reduce((a,b)=>a+b,0),pf:gl?gw/gl:null,wr:ps.length?ps.filter(x=>x>0).length/ps.length:0,maxDD,final:100000+ps.reduce((a,b)=>a+b,0)}
+}
+function v0550Gate(st){
+ if(st.n<60)return{code:'COLLECTING',label:'SAMlar NY DATA'};
+ if(st.pf!==null&&st.pf>=1.10&&st.pnl>0)return{code:'HEALTHY',label:st.n>=250?'✅ STARKARE FRAMÅTSTÖD':'✅ POSITIV LÄGESBILD'};
+ if(st.pf!==null&&st.pf>=.95&&st.pnl>-2500)return{code:'WATCH',label:'⚠️ BEVAKA'};
+ return{code:'WEAK',label:'❌ FORWARD-SVAGHET'}
+}
+function v0550LastCompletedDate(){return v0510LastCompletedDate()}
+function v0550DateAdd(s,n){return v0510DateAdd(s,n)}
+function v0550MonthChunks(start,end){
+ const out=[];let d=new Date(start+'T00:00:00Z'),last=new Date(end+'T00:00:00Z');
+ d=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),1));
+ while(d<=last){
+  const y=d.getUTCFullYear(),m=d.getUTCMonth(),a=`${y}-${String(m+1).padStart(2,'0')}-01`,e=new Date(Date.UTC(y,m+1,0)),
+  b=`${e.getUTCFullYear()}-${String(e.getUTCMonth()+1).padStart(2,'0')}-${String(e.getUTCDate()).padStart(2,'0')}`;
+  out.push([a<start?start:a,b>end?end:b]);d=new Date(Date.UTC(y,m+1,1))
+ }
+ return out
+}
+async function v0550FetchSymbol(symbol,start,end,status){
+ let last;
+ for(let a=1;a<=4;a++){
+  try{
+   if(status)status.textContent=`Hämtar ${symbol} · ${start} → ${end} · försök ${a}/4…`;
+   const j=await Promise.race([
+    bridge(`/bars?symbols=${encodeURIComponent(symbol)}&timeframe=5Min&start=${start}T00:00:00Z&end=${end}T23:59:59Z`),
+    new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout 60 s')),60000))
+   ]);
+   const rows=Array.isArray(j)?j:(j?.rows||j?.data||[]);
+   if(!rows.length)throw new Error('0 rader');
+   return rows
+  }catch(e){last=e;if(a<4)await new Promise(r=>setTimeout(r,a*2500))}
+ }
+ throw new Error(`${symbol} ${start}–${end}: ${last?.message||last}`)
+}
+function v0550Daily(rows){return v0542DailyFromIntraday(rows)}
+function v0550MergeRows(oldRows,newRows){
+ const m=new Map();for(const r of [...(oldRows||[]),...(newRows||[])])m.set((r.symbol||r.s)+'|'+String(r.t||r.time||'').slice(0,10),r);
+ return [...m.values()].sort((a,b)=>String(a.t).localeCompare(String(b.t))||String(a.symbol).localeCompare(String(b.symbol)))
+}
+async function v0550FetchIntoCache(x,start,end,status){
+ const symbols=[...V0540_SYMBOLS,'SPY'],chunks=v0550MonthChunks(start,end);
+ if(!x.fetch||x.fetch.start!==start||x.fetch.end!==end)x.fetch={start,end,month:0,symbol:0,rows:[]};
+ const f=x.fetch;
+ while(f.month<chunks.length){
+  const [a,b]=chunks[f.month];
+  while(f.symbol<symbols.length){
+   const sym=symbols[f.symbol];
+   if(status)status.textContent=`Forward-data · månad ${f.month+1}/${chunks.length} · symbol ${f.symbol+1}/${symbols.length} ${sym} · ${a} → ${b}`;
+   const intraday=await v0550FetchSymbol(sym,a,b,status),daily=v0550Daily(intraday);
+   if(!daily.length)throw new Error(`0 dagsrader ${sym} ${a}→${b}`);
+   f.rows.push(...daily);f.symbol++;x.fetch=f;v0550Save(x);await new Promise(r=>setTimeout(r,20))
+  }
+  f.month++;f.symbol=0;x.fetch=f;v0550Save(x)
+ }
+ x.cacheRows=v0550MergeRows(x.cacheRows,f.rows);x.fetch=null;v0550Save(x);return x
+}
+function v0550Engine(rows,p,entryStart){
+ const by=v0540Prep(rows),spy=by.SPY||[],tradeSyms=V0540_SYMBOLS.filter(s=>by[s]?.length),spyMap=new Map(spy.map((r,i)=>[v0540Date(r),i]));
+ const dates=[...new Set(rows.map(v0540Date))].sort(),maps={};for(const s of tradeSyms)maps[s]=new Map(by[s].map((r,i)=>[v0540Date(r),i]));
+ let cash=V0540_CAPITAL,pos={},closed=[],peak=V0540_CAPITAL,dd=0,capSum=0,capN=0;
+ for(let di=1;di<dates.length;di++){
+  const date=dates[di],sigDate=dates[di-1];
+  for(const s of Object.keys(pos)){
+   const idx=maps[s].get(date);if(idx==null)continue;const bar=by[s][idx],q=pos[s],age=di-q.entryDI;
+   let raw=null,why='',stop=q.entryRaw*(1-p.stop),target=q.entryRaw*(1+p.target);
+   if(bar.l<=stop){raw=stop;why='stop'}else if(bar.h>=target){raw=target;why='target'}else if(age>=p.hold){raw=bar.c;why='maxhold'}
+   if(raw!=null){const exit=raw*(1-V0540_COST_SIDE),value=q.shares*exit,pl=value-q.cost;cash+=value;closed.push({symbol:s,entryDate:q.entryDate,exitDate:date,entry:q.entry,exit,entryRaw:q.entryRaw,shares:q.shares,pnl:pl,ret:exit/q.entry-1,why});delete pos[s]}
+  }
+  if(date>=entryStart){
+   let candidates=[];
+   for(const s of tradeSyms){
+    if(pos[s])continue;
+    const si=maps[s].get(sigDate),ti=maps[s].get(date);if(si==null||ti==null)continue;const a=by[s];
+    if(si<Math.max(p.trend+5,12))continue;
+    const close=a[si].c,sma=v0540SMA(a,si,p.trend),sma5ago=v0540SMA(a,si-5,p.trend);
+    if(!(sma&&sma5ago&&close>sma&&sma>sma5ago))continue;
+    const high10=v0540High(a,si,10);if(!high10)continue;const pull=1-close/high10;
+    if(pull<p.pullback*.45||pull>p.pullback*1.55)continue;
+    const rec=p.recovery==='prevhigh'?close>a[si-1].h:close>a[si-1].c;if(!rec)continue;
+    if(p.regime!=='off'){const spi=spyMap.get(sigDate);if(spi==null)continue;const n=p.regime==='spy50'?50:100,ss=v0540SMA(spy,spi,n);if(!(ss&&spy[spi].c>ss))continue}
+    const mom=close/a[Math.max(0,si-20)].c-1;candidates.push({s,score:mom-pull*.25,open:a[ti].o})
+   }
+   candidates.sort((a,b)=>b.score-a.score);
+   while(candidates.length&&Object.keys(pos).length<V0540_MAXPOS){
+    const c=candidates.shift(),eq=cash+Object.values(pos).reduce((s,q)=>s+q.cost,0),entryRaw=c.open,entry=entryRaw*(1+V0540_COST_SIDE),
+    riskCash=eq*V0540_RISK,riskPerShare=Math.max(.0001,entryRaw*p.stop),shares=Math.min(riskCash/riskPerShare,(eq*V0540_MAXPOSPCT)/entry,cash/entry);
+    if(!(shares>0))break;const cost=shares*entry;if(cost>cash)break;cash-=cost;pos[c.s]={entryRaw,entry,shares,cost,entryDate:date,entryDI:di}
+   }
+  }
+  const mark=Object.entries(pos).reduce((s,[sym,q])=>{const idx=maps[sym].get(date);return s+(idx==null?q.cost:q.shares*by[sym][idx].c)},0),eq=cash+mark;
+  peak=Math.max(peak,eq);dd=Math.min(dd,eq/peak-1);capSum+=eq?mark/eq:0;capN++
+ }
+ const last=dates.at(-1),open=Object.entries(pos).map(([symbol,q])=>{const idx=maps[symbol].get(last),mark=idx==null?q.entryRaw:by[symbol][idx].c;return{symbol,entryDate:q.entryDate,entry:q.entry,entryRaw:q.entryRaw,shares:q.shares,mark,unrealized:q.shares*mark-q.cost,age:dates.indexOf(last)-q.entryDI}});
+ const st=v0550Stats(closed);
+ return{...st,closed,open,maxDDPct:dd,capitalUse:capN?capSum/capN:0,lastDate:last}
+}
+function v0550Paint(){
+ const x=v0550Load(),st=v0550Stats(x.closed),g=x.startedAt?v0550Gate(st):{label:'EJ STARTAD'};
+ const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+ set('v0550GateStatus',g.label);set('v0550LastDay',x.lastProcessedDate||'—');set('v0550Trades',st.n);set('v0550Open',(x.open||[]).length);
+ set('v0550Pnl',`${st.pnl.toFixed(0)} kr`);set('v0550Pf',st.pf===null?'—':st.pf.toFixed(2));set('v0550Wr',st.n?`${(st.wr*100).toFixed(1)}%`:'—');
+ set('v0550Dd',x.engine?.maxDDPct!=null?`${(x.engine.maxDDPct*100).toFixed(1)}%`:(st.n?`${st.maxDD.toFixed(0)} kr`:'—'));
+ set('v0550ProgressText',`${Math.min(st.n,60)} / 60 affärer`);
+ const bar=document.getElementById('v0550Bar');if(bar)bar.style.width=`${Math.min(100,st.n/60*100)}%`;
+ for(const [id,dis] of [['v0550Init',!!x.startedAt],['v0550Scan',!x.startedAt],['v0550Report',!x.startedAt],['v0550Raw',!x.startedAt],['v0550Backup',!x.startedAt]]){const e=document.getElementById(id);if(e)e.disabled=dis}
+ const ms=document.getElementById('v0550Milestones');if(ms)ms.innerHTML=V0550_MILESTONES.map(m=>`<tr><td>${m.label}</td><td>${m.n} affärer</td><td>${st.n>=m.n?'✅ UPPNÅDD':'○ EJ UPPNÅDD'}</td></tr>`).join('');
+ const status=document.getElementById('v0550Status');if(status)status.textContent=x.startedAt?`Startad ${new Date(x.startedAt).toLocaleString('sv-SE')} · senaste scan ${x.lastScanAt?new Date(x.lastScanAt).toLocaleString('sv-SE'):'ingen'} · kandidat ${V0550_HASH}.`:'Inte startad. När du startar låses kandidat, hash och forwardankare.';
+ const ol=document.getElementById('v0550OpenList');if(ol)ol.innerHTML=(x.open||[]).map(q=>`<div class="v0510-trade"><b>${q.symbol}</b> · entry ${q.entryDate} · ${q.age} handelsdagar · orealiserat ${q.unrealized.toFixed(0)} kr</div>`).join('')||'<div class="muted">Inga öppna Swing-positioner.</div>';
+ const tl=document.getElementById('v0550TradesList');if(tl)tl.innerHTML=(x.closed||[]).slice(-100).reverse().map(t=>`<div class="v0510-trade"><b>${t.symbol}</b> · ${t.entryDate} → ${t.exitDate} · ${(+t.pnl).toFixed(0)} kr · ${t.why}</div>`).join('')||'<div class="muted">Inga stängda Swing-forward-affärer ännu.</div>';
+ const j=v0510Load(),js=v0510Stats(j.closed||[]),cmp=document.getElementById('v0550Compare');
+ if(cmp)cmp.innerHTML=`<div><h4>🌙 Swing G1</h4><p>${st.n} stängda · PF ${st.pf===null?'—':st.pf.toFixed(2)} · P/L ${st.pnl.toFixed(0)} kr</p><p>Start ${V0550_ANCHOR} · hash ${V0550_HASH}</p></div><div><h4>🎯 Jägaren</h4><p>${js.n} stängda · PF ${js.pf===null?'—':js.pf.toFixed(2)} · P/L ${js.pnl.toFixed(0)} kr</p><p>Start 2026-09-11 · hash ${V0460_RULE_HASH}</p></div>`
+}
+function v0550Init(){
+ let x=v0550Load();if(x.startedAt)return;x.startedAt=new Date().toISOString();x.anchor=V0550_ANCHOR;x.candidateHash=V0550_HASH;x.params=V0550_PARAMS;x.gate='COLLECTING';v0550Save(x);v0550Paint()
+}
+async function v0550Scan(){
+ const status=document.getElementById('v0550Status'),btn=document.getElementById('v0550Scan');let x=v0550Load();
+ if(!x.startedAt)throw new Error('Swing-forward är inte startad.');if(btn)btn.disabled=true;
+ try{
+  const end=v0550LastCompletedDate();
+  if(end<V0550_ANCHOR){if(status)status.textContent=`Ingen giltig Swing-forwarddag ännu. Första möjliga dag är ${V0550_ANCHOR}.`;return}
+  let fetchStart=x.cacheRows?.length?(x.lastProcessedDate?v0550DateAdd(x.lastProcessedDate,1):V0550_WARMUP_START):V0550_WARMUP_START;
+  if(x.fetch)fetchStart=x.fetch.start;
+  if(fetchStart<=end)x=await v0550FetchIntoCache(x,fetchStart,end,status);
+  const rows=v0540NormRows(x.cacheRows||[]),r=v0550Engine(rows,V0550_PARAMS,V0550_ANCHOR);
+  x.closed=r.closed;x.open=r.open;x.engine={maxDDPct:r.maxDDPct,capitalUse:r.capitalUse,lastDate:r.lastDate};
+  x.lastProcessedDate=end;x.lastScanAt=new Date().toISOString();x.scans.push({at:x.lastScanAt,end,closed:x.closed.length,open:x.open.length,pnl:r.pnl,pf:r.pf,maxDDPct:r.maxDDPct});
+  v0550Save(x);v0550Paint();if(status)status.textContent=`✓ Swing-forward uppdaterad t.o.m. ${end} · ${x.closed.length} stängda · ${x.open.length} öppna positioner.`
+ }catch(e){if(status)status.textContent='KÖRFEL: '+(e?.message||e)}finally{if(btn)btn.disabled=false}
+}
+function v0550Report(){
+ const x=v0550Load(),st=v0550Stats(x.closed),g=v0550Gate(st),L=[
+ 'LINAS OPTI – LINA SWING G1 REAL FORWARD','Version: '+APP_VERSION,'Handel: AVSTÄNGD','Generation: SWING-G1',
+ 'Forwardankare: '+V0550_ANCHOR,'Kandidathash: '+V0550_HASH,'Params: '+JSON.stringify(V0550_PARAMS),
+ 'Viktigt: 2026-09-11 räknas inte för Swing eftersom kandidaten frystes under den sessionen.','','Status: '+g.label,
+ `Behandlat t.o.m.: ${x.lastProcessedDate||'—'}`,`Stängda affärer: ${st.n}`,`Öppna positioner: ${(x.open||[]).length}`,
+ `Netto-P/L: ${st.pnl.toFixed(2)} kr`,`PF: ${st.pf===null?'—':st.pf.toFixed(3)}`,`WR: ${(st.wr*100).toFixed(2)}%`,
+ `Max DD: ${x.engine?.maxDDPct!=null?(x.engine.maxDDPct*100).toFixed(2)+'%':'—'}`,'',
+ 'Milstolpar:',...V0550_MILESTONES.map(m=>`- ${m.n}: ${st.n>=m.n?'UPPNÅDD':'ej uppnådd'}`),'',
+ 'Pseudo-forward referens (inte ny evidens): 323 affärer, +2417.04 kr, PF 1.04195, WR 50.46%, DD -5.66%.',
+ 'Ingen automatisk rescue eller parameterändring är tillåten inom SWING-G1.'
+ ];return L.join('\n')
+}
+function v0550Backup(){const x=v0550Load();return{backupSchema:'lina-swing-forward-v0550-backup',appVersion:APP_VERSION,exportedAt:new Date().toISOString(),candidateHash:V0550_HASH,forward:x}}
+async function v0550AutoCatchup(){
+ const x=v0550Load();if(!x.startedAt)return;const end=v0550LastCompletedDate();
+ if(end<V0550_ANCHOR)return;if(x.lastProcessedDate&&x.lastProcessedDate>=end)return;
+ try{await v0550Scan()}catch{}
+}
+window.addEventListener('DOMContentLoaded',()=>{
+ document.getElementById('v0550Init')?.addEventListener('click',v0550Init);
+ document.getElementById('v0550Scan')?.addEventListener('click',v0550Scan);
+ document.getElementById('v0550Report')?.addEventListener('click',()=>v0540Dl(v0550Report(),`LINAS_OPTI_SWING_FORWARD_V0550_${new Date().toISOString().slice(0,10)}.txt`));
+ document.getElementById('v0550Raw')?.addEventListener('click',()=>v0540Dl(JSON.stringify(v0550Load(),null,2),`LINAS_OPTI_SWING_FORWARD_RAW_V0550_${new Date().toISOString().slice(0,10)}.json`,'application/json'));
+ document.getElementById('v0550Backup')?.addEventListener('click',()=>v0540Dl(JSON.stringify(v0550Backup(),null,2),`LINAS_OPTI_SWING_FORWARD_BACKUP_V0550_${new Date().toISOString().slice(0,10)}.json`,'application/json'));
+ document.getElementById('v0550Help')?.addEventListener('click',()=>alert('Swing G1 är helt fryst. Appen hämtar historiska dagsrader endast som indikator-warmup och räknar aldrig entries före 2026-09-14. Öppna positioner tvångsstängs inte vid varje scan; samma frysta motor körs om deterministiskt genom all tillgänglig forward-data.'));
+ v0550Paint();
+ const jump=document.getElementById('v0413LabJump');if(jump&&[...jump.options].some(o=>o.value==='v0550SwingForwardLab')){jump.value='v0550SwingForwardLab';try{localStorage.setItem('linasopti_testlab_selected_v0423','v0550SwingForwardLab')}catch{}jump.dispatchEvent(new Event('change'))}
+ setTimeout(v0550AutoCatchup,1300);
 });

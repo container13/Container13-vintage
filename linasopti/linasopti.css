@@ -1299,3 +1299,10 @@ body.v0462-running .v0460-lock{padding:6px 10px;margin:4px 0;font-size:.86rem}
 .v0540-candidate{border:1px solid #d9e2ea;border-radius:12px;padding:12px;background:#fbfcfd;line-height:1.45}
 .v0540-summary h3{margin:14px 0 7px}
 @media(max-width:800px){.v0540-topgrid,.v0540-stages{grid-template-columns:1fr}.v0540-actions{grid-template-columns:1fr}}
+
+/* V0.55.0 – Swing G1 riktig forward */
+.v0550-anchor-note{margin:10px 0;padding:10px 12px;border-radius:12px;border:1px solid #c8d9e8;background:#f4f9fd;font-size:13px;line-height:1.45}
+.v0550-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 14px}
+.v0550-compare>div{border:1px solid #d8e1e9;border-radius:12px;padding:11px;background:#fbfcfd}
+.v0550-compare h4{margin:0 0 6px}.v0550-compare p{margin:3px 0;font-size:13px}
+@media(max-width:700px){.v0550-compare{grid-template-columns:1fr}}

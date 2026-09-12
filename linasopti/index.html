@@ -9,21 +9,21 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.54.3">
+<link rel="stylesheet" href="linasopti.css?v=0.55.0">
 
   <meta name="theme-color" content="#f4f7fb">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Linas Opti">
-  <link rel="apple-touch-icon" href="lina-circle.png?v=0.54.3">
+  <link rel="apple-touch-icon" href="lina-circle.png?v=0.55.0">
 </head>
 <body class="v0384-locked">
 
 <div id="v0383Gate" class="v0383-gate" aria-hidden="false">
   <div class="v0383-gate-card">
     <h1>Linas Opti</h1>
-    <div class="v04512-gate-version" aria-label="Version">V0.54.3</div>
+    <div class="v04512-gate-version" aria-label="Version">V0.55.0</div>
     <p>Ange lösenkod för att fortsätta</p>
     <input id="v0383Code" name="lina_one_time_code_0470" type="password" inputmode="text" autocomplete="one-time-code" autocapitalize="off" autocorrect="off" spellcheck="false" value="" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" placeholder="Lösenkod">
     <button id="v0383Enter" type="button">Öppna Linas Opti</button>
@@ -34,7 +34,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.54.3</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Trading Lab • Opti Swing + Lina Day Jägaren + Opti Trend</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.55.0</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">48/100</b><small>Forskningsfas</small></button>
@@ -54,7 +54,8 @@
     <button type="button" class="v0424-subtab" data-pane="result">Resultat</button>
   </div>
   <label id="v0423LabPick" class="v0424-labpick" hidden><span class="v0425-labtag">LABB</span><select id="v0413LabJump" aria-label="Välj Testlab">
-    <option value="v0540SwingAlphabetLab" selected>🌙 Lina Swing · Alphabet A–O (senaste)</option>
+    <option value="v0550SwingForwardLab" selected>🚦 Lina Swing G1 · Riktig Forward (senaste)</option>
+    <option value="v0540SwingAlphabetLab">🌙 Lina Swing · Alphabet A–O</option>
     <option value="v0530SwingLab">🌙 Lina Swing · Research Gate 1</option>
     <option value="v0520TimeMachineLab">⏳ Tidsmaskin · Historiskt pseudo-forward (senaste)</option>
     <option value="v0510ForwardLab">🚦 Forward Validation · Från 2026-09-11 (riktig forward)</option>
@@ -383,6 +384,75 @@
 
 
 
+
+<div id="v0550SwingForwardLab" class="card v0410-lab v0413-lab-section vlab-v0550SwingForwardLab">
+  <div class="v0410-labtitle"><span class="v0410-flask">🚦</span><div>
+    <h2>Lina Swing G1 · Riktig Forward <button class="v0470-help" id="v0550Help">?</button></h2>
+    <p>Fryst Swing-kandidat · endast nya avslutade USA-dagar · ingen efteroptimering</p>
+  </div></div>
+
+  <div class="v0460-lock">
+    🔒 Forwardstart: 2026-09-14 · kandidat <b>8f09f32a</b> · 50d trend · 2% rekyl · prevhigh · SPY100 · stop 7% · mål 12% · max 5 dagar · Handel AV
+  </div>
+
+  <div class="v0550-anchor-note">
+    Swing frystes under 11 september-sessionen. Därför räknas <b>inte</b> 11 september som riktig forward för Swing.
+    Första möjliga nya entrydag är nästa USA-handelsdag: <b>14 september 2026</b>.
+  </div>
+
+  <div class="v0510-grid">
+    <div><span>Status</span><b id="v0550GateStatus">EJ STARTAD</b></div>
+    <div><span>Behandlat t.o.m.</span><b id="v0550LastDay">—</b></div>
+    <div><span>Stängda affärer</span><b id="v0550Trades">0</b></div>
+    <div><span>Öppna positioner</span><b id="v0550Open">0</b></div>
+    <div><span>Netto-P/L</span><b id="v0550Pnl">0 kr</b></div>
+    <div><span>PF</span><b id="v0550Pf">—</b></div>
+    <div><span>WR</span><b id="v0550Wr">—</b></div>
+    <div><span>Max DD</span><b id="v0550Dd">—</b></div>
+  </div>
+
+  <div class="v0470-bactions">
+    <button id="v0550Init" class="primary v0410-big">🔒 Starta Swing-forward</button>
+    <button id="v0550Scan" class="secondary" disabled>▶ Hämta nya dagar</button>
+    <button id="v0550Report" class="secondary" disabled>📄 Forward-rapport</button>
+    <button id="v0550Raw" class="secondary" disabled>🧾 Raw JSON</button>
+    <button id="v0550Backup" class="secondary" disabled>💾 Backup</button>
+  </div>
+
+  <div id="v0550Status" class="v0410-status">
+    Inte startad. När du startar låses kandidat, hash och forwardankare.
+  </div>
+
+  <div class="v0510-progressbox">
+    <div class="v0470-progresshead"><b>Framsteg mot första Swing-bedömning</b><span id="v0550ProgressText">0 / 60 affärer</span></div>
+    <div class="v0410-progress"><div id="v0550Bar"></div></div>
+    <p class="muted">Milstolpar 60 / 120 / 250 är observationsnivåer. De ändrar aldrig Swing-reglerna automatiskt.</p>
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Nivå</th><th>Krav</th><th>Status</th></tr></thead>
+      <tbody id="v0550Milestones"></tbody>
+    </table>
+  </div>
+
+  <h3>Forward jämförelse · Swing ↔ Jägaren</h3>
+  <div id="v0550Compare" class="v0550-compare"></div>
+
+  <details>
+    <summary>Visa öppna Swing-positioner</summary>
+    <div id="v0550OpenList" class="v0510-tradelist"></div>
+  </details>
+  <details>
+    <summary>Visa senaste Swing-affärer</summary>
+    <div id="v0550TradesList" class="v0510-tradelist"></div>
+  </details>
+
+  <div class="v0510-note">
+    <b>Referens från låst historisk pseudo-forward:</b> 323 affärer · +2 417 kr · PF 1,042 · WR 50,46% · DD −5,66%.
+    Denna referens används bara för jämförelse och räknas inte som ny forward-evidens.
+  </div>
+</div>
 <div id="v0540SwingAlphabetLab" class="card v0410-lab v0413-lab-section vlab-v0540SwingAlphabetLab">
   <div class="v0410-labtitle"><span class="v0410-flask">🌙</span><div>
     <h2>Lina Swing · Alphabet A–O <button class="v0470-help" id="v0540Help">?</button></h2>
@@ -1169,5 +1239,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.54.3"></script>
+<script src="linasopti.js?v=0.55.0"></script>
 </body></html>
