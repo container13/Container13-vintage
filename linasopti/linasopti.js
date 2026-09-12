@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.55.1";
+const APP_VERSION = "V0.56.0";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -4618,4 +4618,462 @@ window.addEventListener('DOMContentLoaded',()=>{
   try{saved=localStorage.getItem(V0551_FORWARD_NAV_KEY)||''}catch{}
   if(saved==='v0510ForwardLab'||saved==='v0550SwingForwardLab')v0551OpenForward(saved,false);
   else v0551ResearchChosen();
+});
+
+
+// ============================================================
+// V0.56.0 – LINA SWING G2 · BREAKOUT/MOMENTUM ALPHABET A–O
+// Independent generation. A–M DEV only; N opens locked historical pseudo-forward once.
+// ============================================================
+const V0560_KEY='linasopti_swing_g2_v0560';
+const V0560_GENERATION='SWING-G2';
+const V0560_DEV_START='2020-01-01', V0560_DEV_END='2022-12-31';
+const V0560_OOS_START='2023-01-01', V0560_OOS_END='2026-09-10';
+const V0560_COST_SIDE=.001, V0560_CAPITAL=100000, V0560_RISK=.005, V0560_MAXPOS=5, V0560_MAXPOSPCT=.20;
+const V0560_GRID={
+ breakout:[20,55,100],
+ trend:['off','sma100','sma200'],
+ volume:['off',1.2,1.5],
+ regime:['off','spy100','spy200'],
+ stop:[.05,.07],
+ target:[.10,.15],
+ hold:[10,20]
+};
+const V0560_STAGES=[
+ ['A','Dataintegritet','DEV hämtas och granskas utan pseudo-forward'],
+ ['B','Baseline','Förregistrerad 55d breakout-baslinje'],
+ ['C','Breakoutfamilj','20 / 55 / 100 handelsdagar'],
+ ['D','Trendfilter','off / SMA100 / SMA200'],
+ ['E','Volymbekräftelse','off / 1,2× / 1,5× 20d'],
+ ['F','SPY-regim','off / SMA100 / SMA200'],
+ ['G','Exitfamilj','stop / mål / hålltid + bästa DEV-kandidat'],
+ ['H','Friktion','1× / 1,5× / 2× kostnad'],
+ ['I','Kapital/risk','kapitalutnyttjande och blockerade signaler'],
+ ['J','Årsstabilitet','2020 / 2021 / 2022'],
+ ['K','Leave-one-symbol-out','alla 16 symboler'],
+ ['L','Bootstrap','2 000 omsamplingar av DEV-affärer'],
+ ['M','Kandidatfrysning','exakt G2-kandidat + hash låses'],
+ ['N','Låst pseudo-forward','2023 → 2026-09-10 öppnas först efter M'],
+ ['O','Slutrapport','ingen rescue eller efteroptimering']
+];
+
+function v0560Load(){try{return JSON.parse(localStorage.getItem(V0560_KEY)||'null')}catch{return null}}
+function v0560New(){return{
+ schema:'LINA-SWING-G2-1',version:'V0.56.0',generation:V0560_GENERATION,
+ planLocked:false,lockedAt:null,dev:[V0560_DEV_START,V0560_DEV_END],lockedPseudoForward:[V0560_OOS_START,V0560_OOS_END],
+ stages:{},stage:0,fetch:{},devRows:null,gridResults:null,candidate:null,pseudoForward:null,final:null,trialLedger:[]
+}}
+function v0560Save(x){x.savedAt=new Date().toISOString();localStorage.setItem(V0560_KEY,JSON.stringify(x));v0560Paint();return x}
+function v0560Hash(obj){return v0540Hash(obj)}
+function v0560Live(stage,detail=''){
+ const b=document.querySelector('#v0560Live b'),d=document.getElementById('v0560DetailLine');
+ if(b)b.textContent=stage;if(d)d.textContent=detail;
+}
+function v0560Done(x,letter,data,label='KLAR'){
+ x.stages[letter]={status:label,at:new Date().toISOString(),...data};
+ x.stage=Math.max(x.stage,V0560_STAGES.findIndex(s=>s[0]===letter)+1);
+ v0560Save(x)
+}
+function v0560Lock(){
+ let x=v0560Load()||v0560New();
+ if(x.planLocked)return;
+ x.planLocked=true;x.lockedAt=new Date().toISOString();
+ x.planHash=v0560Hash({
+   generation:V0560_GENERATION,dev:x.dev,oos:x.lockedPseudoForward,grid:V0560_GRID,
+   costSide:V0560_COST_SIDE,risk:V0560_RISK,maxPos:V0560_MAXPOS,maxPosPct:V0560_MAXPOSPCT,
+   signal:'prior close > highest prior N closes; next-day open entry'
+ });
+ x.trialLedger.push({at:x.lockedAt,event:'PLAN_LOCK',planHash:x.planHash,gridVariants:v0560Variants().length});
+ v0560Save(x);v0560Live('PLAN LÅST',`Hash ${x.planHash} · 648 varianter · pseudo-forward fortfarande stängd.`)
+}
+function v0560Variants(){
+ const out=[];
+ for(const breakout of V0560_GRID.breakout)
+ for(const trend of V0560_GRID.trend)
+ for(const volume of V0560_GRID.volume)
+ for(const regime of V0560_GRID.regime)
+ for(const stop of V0560_GRID.stop)
+ for(const target of V0560_GRID.target)
+ for(const hold of V0560_GRID.hold)
+   out.push({breakout,trend,volume,regime,stop,target,hold});
+ return out
+}
+function v0560AvgVol(a,i,n=20){
+ if(i-n+1<0)return null;let s=0;for(let k=i-n+1;k<=i;k++)s+=(+a[k].v||0);return s/n
+}
+function v0560PrevCloseHigh(a,i,n){
+ if(i-n<0)return null;let h=-Infinity;for(let k=i-n;k<=i-1;k++)h=Math.max(h,a[k].c);return h
+}
+function v0560Engine(rows,p,costSide=V0560_COST_SIDE,allowedSymbols=null){
+ const by=v0540Prep(rows),spy=by.SPY||[],symbols=(allowedSymbols||V0540_SYMBOLS).filter(s=>by[s]?.length);
+ const spyMap=new Map(spy.map((r,i)=>[v0540Date(r),i])),dates=[...new Set(rows.map(v0540Date))].sort();
+ const maps={};for(const s of symbols)maps[s]=new Map(by[s].map((r,i)=>[v0540Date(r),i]));
+ let cash=V0560_CAPITAL,pos={},closed=[],capitalUseSum=0,capitalUseN=0,blocked=0;
+ for(let di=1;di<dates.length;di++){
+   const date=dates[di],sigDate=dates[di-1];
+
+   // Existing positions exit first. Conservative OHLC ambiguity = stop first.
+   for(const s of Object.keys(pos)){
+     const idx=maps[s].get(date);if(idx==null)continue;
+     const bar=by[s][idx],q=pos[s],age=di-q.entryDI;
+     const stop=q.entryRaw*(1-p.stop),target=q.entryRaw*(1+p.target);
+     let raw=null,why='';
+     if(bar.l<=stop){raw=stop;why='stop'}
+     else if(bar.h>=target){raw=target;why='target'}
+     else if(age>=p.hold){raw=bar.c;why='maxhold'}
+     if(raw!=null){
+       const exit=raw*(1-costSide),value=q.shares*exit,pnl=value-q.cost;
+       cash+=value;closed.push({symbol:s,entryDate:q.entryDate,exitDate:date,entry:q.entry,exit,entryRaw:q.entryRaw,shares:q.shares,pnl,ret:exit/q.entry-1,why});
+       delete pos[s]
+     }
+   }
+
+   let cand=[];
+   for(const s of symbols){
+     if(pos[s])continue;
+     const si=maps[s].get(sigDate),ti=maps[s].get(date);if(si==null||ti==null)continue;
+     const a=by[s],need=Math.max(p.breakout+1,p.trend==='sma200'?205:p.trend==='sma100'?105:25,25);
+     if(si<need)continue;
+
+     const close=a[si].c,priorHigh=v0560PrevCloseHigh(a,si,p.breakout);
+     if(!(priorHigh&&close>priorHigh))continue;
+
+     if(p.trend!=='off'){
+       const n=p.trend==='sma200'?200:100,sma=v0540SMA(a,si,n);
+       if(!(sma&&close>sma))continue
+     }
+
+     if(p.volume!=='off'){
+       const av=v0560AvgVol(a,si-1,20);
+       if(!(av>0&&a[si].v>=av*p.volume))continue
+     }
+
+     if(p.regime!=='off'){
+       const spi=spyMap.get(sigDate),n=p.regime==='spy200'?200:100;
+       if(spi==null)continue;
+       const ss=v0540SMA(spy,spi,n);
+       if(!(ss&&spy[spi].c>ss))continue
+     }
+
+     const mom20=si>=20?close/a[si-20].c-1:0;
+     const breakoutPct=close/priorHigh-1;
+     cand.push({s,score:mom20+breakoutPct*2,open:a[ti].o})
+   }
+
+   cand.sort((a,b)=>b.score-a.score);
+   while(cand.length&&Object.keys(pos).length<V0560_MAXPOS){
+     const c=cand.shift(),mark=Object.values(pos).reduce((s,q)=>s+q.cost,0),eq=cash+mark;
+     const entryRaw=c.open,entry=entryRaw*(1+costSide),riskCash=eq*V0560_RISK,riskPerShare=Math.max(.0001,entryRaw*p.stop);
+     const shares=Math.min(riskCash/riskPerShare,(eq*V0560_MAXPOSPCT)/entry,cash/entry);
+     if(!(shares>0))break;
+     const cost=shares*entry;if(cost>cash)break;
+     cash-=cost;pos[c.s]={entryRaw,entry,shares,cost,entryDate:date,entryDI:di}
+   }
+   if(cand.length)blocked+=cand.length;
+
+   const mark=Object.entries(pos).reduce((s,[sym,q])=>{
+     const idx=maps[sym].get(date);return s+(idx==null?q.cost:q.shares*by[sym][idx].c)
+   },0),eq=cash+mark;
+   capitalUseSum+=eq?mark/eq:0;capitalUseN++
+ }
+
+ // Historical research runs close residual positions on period end only for comparable test accounting.
+ const last=dates.at(-1);
+ for(const s of Object.keys(pos)){
+   const idx=maps[s].get(last);if(idx==null)continue;
+   const q=pos[s],raw=by[s][idx].c,exit=raw*(1-costSide),value=q.shares*exit,pnl=value-q.cost;
+   cash+=value;closed.push({symbol:s,entryDate:q.entryDate,exitDate:last,entry:q.entry,exit,entryRaw:q.entryRaw,shares:q.shares,pnl,ret:exit/q.entry-1,why:'periodend'})
+ }
+ const st=v0540TradeStats(closed,V0560_CAPITAL);
+ return {...st,closed,capitalUse:capitalUseN?capitalUseSum/capitalUseN:0,blocked,params:p,costSide}
+}
+function v0560Filter(rows,a,b){return rows.filter(r=>{const d=v0540Date(r);return d>=a&&d<=b})}
+function v0560YearStats(rows,p,cost=V0560_COST_SIDE){
+ return ['2020','2021','2022'].map(year=>{
+   const r=v0560Engine(v0560Filter(rows,year+'-01-01',year+'-12-31'),p,cost);
+   return{year,n:r.n,pl:r.pl,pf:r.pf,wr:r.wr,dd:r.dd}
+ })
+}
+function v0560Score(r,ys){
+ if(!r||r.n<30||!Number.isFinite(r.pf))return -1e12;
+ const positive=ys.filter(y=>y.pl>0).length,worst=Math.min(...ys.map(y=>y.pl));
+ return (r.pf-1)*100 + positive*8 + Math.min(20,r.n/12) + r.dd*160 + Math.min(0,worst/600)
+}
+function v0560Bootstrap(closed,n=2000){
+ const vals=closed.map(t=>+t.pnl||0);if(!vals.length)return null;
+ let sums=[];for(let i=0;i<n;i++){let s=0;for(let k=0;k<vals.length;k++)s+=vals[Math.floor(Math.random()*vals.length)];sums.push(s)}
+ sums.sort((a,b)=>a-b);
+ const q=p=>sums[Math.min(sums.length-1,Math.floor((sums.length-1)*p))];
+ return{runs:n,p05:q(.05),median:q(.5),p95:q(.95),pPositive:sums.filter(x=>x>0).length/sums.length}
+}
+async function v0560FetchSymbol(symbol,start,end,label){
+ let last;
+ for(let a=1;a<=4;a++){
+   try{
+     v0560Live(label,`${symbol} · ${start} → ${end} · försök ${a}/4`);
+     const j=await Promise.race([
+       bridge(`/bars?symbols=${encodeURIComponent(symbol)}&timeframe=5Min&start=${start}T00:00:00Z&end=${end}T23:59:59Z`),
+       new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout 60 s')),60000))
+     ]);
+     const rows=v0540Rows(j);if(!rows.length)throw new Error('0 rader');
+     return rows
+   }catch(e){last=e;if(a<4)await v0540Wait(a*2500)}
+ }
+ throw new Error(`${symbol} ${start}–${end}: ${last?.message||last}`)
+}
+async function v0560FetchChunked(x,key,start,end,label){
+ const chunks=v0550MonthChunks(start,end),symbols=[...V0540_SYMBOLS,'SPY'];
+ x.fetch??={};
+ if(!x.fetch[key]||x.fetch[key].mode!=='g2-symbol-month-1'){
+   x.fetch[key]={mode:'g2-symbol-month-1',month:0,symbol:0,rows:[]};v0560Save(x)
+ }
+ const f=x.fetch[key];
+ while(f.month<chunks.length){
+   const [a,b]=chunks[f.month];
+   while(f.symbol<symbols.length){
+     const sym=symbols[f.symbol];
+     v0560Live(label,`Månad ${f.month+1}/${chunks.length} · symbol ${f.symbol+1}/${symbols.length} ${sym} · ${a} → ${b}`);
+     const intraday=await v0560FetchSymbol(sym,a,b,label),daily=v0542DailyFromIntraday(intraday);
+     if(!daily.length)throw new Error(`0 dagsrader efter aggregering: ${sym} ${a}–${b}`);
+     f.rows.push(...daily);f.symbol++;x.fetch[key]=f;v0560Save(x);await v0540Wait(20)
+   }
+   f.month++;f.symbol=0;x.fetch[key]=f;v0560Save(x)
+ }
+ const rows=f.rows;delete x.fetch[key];v0560Save(x);return rows
+}
+function v0560Means(grid,key,values){
+ const o={};for(const v of values){const q=grid.filter(z=>z.p[key]===v);o[String(v)]=q.length?q.reduce((s,z)=>s+z.score,0)/q.length:null}return o
+}
+function v0560Paint(){
+ const x=v0560Load(),box=document.getElementById('v0560Stages');if(!box)return;
+ box.innerHTML=V0560_STAGES.map((s,i)=>{
+   const z=x?.stages?.[s[0]],cl=z?.status==='FEL'?'fail':z?'done':(x&&x.stage===i?'run':'');
+   return`<div class="v0540-stage ${cl}"><b>${s[0]} · ${s[1]}</b><small>${z?.summary||s[2]}</small></div>`
+ }).join('');
+ const n=x?Object.keys(x.stages||{}).length:0;
+ const bar=document.getElementById('v0560Bar');if(bar)bar.style.width=(100*n/V0560_STAGES.length).toFixed(1)+'%';
+ const pt=document.getElementById('v0560ProgressText');if(pt)pt.textContent=`${n} / ${V0560_STAGES.length}`;
+ const lock=document.getElementById('v0560Lock'),run=document.getElementById('v0560Run');
+ if(lock)lock.disabled=!!x?.planLocked;if(run)run.disabled=!x?.planLocked||!!x?.stages?.O;
+ for(const id of ['v0560Report','v0560Raw','v0560Backup']){const e=document.getElementById(id);if(e)e.disabled=!x}
+}
+async function v0560Run(){
+ let x=v0560Load();if(!x?.planLocked)throw new Error('Lås G2-planen först.');
+ const run=document.getElementById('v0560Run');if(run)run.disabled=true;
+ try{
+  if(!x.stages.A){
+    const raw=await v0560FetchChunked(x,'dev',V0560_DEV_START,V0560_DEV_END,'A · Dataintegritet');
+    const rows=v0540NormRows(raw),dupes=rows.length-new Map(rows.map(r=>[r.symbol+'|'+v0540Date(r),r])).size,
+          symbols=[...new Set(rows.map(r=>r.symbol))],dates=[...new Set(rows.map(v0540Date))];
+    x.devRows=rows;
+    v0560Done(x,'A',{summary:`${rows.length.toLocaleString('sv-SE')} dagsrader · ${symbols.length} symboler · ${dates.length} datum · ${dupes} dubletter`,rows:rows.length,symbols,dates:dates.length,duplicates:dupes})
+  }
+  x=v0560Load();const rows=x.devRows;
+
+  if(!x.stages.B){
+    const p={breakout:55,trend:'sma100',volume:'off',regime:'spy100',stop:.07,target:.15,hold:20},r=v0560Engine(rows,p);
+    v0560Done(x,'B',{summary:`Baseline · ${r.n} affärer · P/L ${r.pl.toFixed(0)} · PF ${r.pf.toFixed(2)} · DD ${(r.dd*100).toFixed(1)}%`,params:p,result:{n:r.n,pl:r.pl,pf:r.pf,wr:r.wr,dd:r.dd}})
+  }
+
+  x=v0560Load();
+  if(!x.gridResults){
+    const vars=v0560Variants(),results=[];
+    for(let i=0;i<vars.length;i++){
+      const p=vars[i],r=v0560Engine(rows,p),ys=v0560YearStats(rows,p),score=v0560Score(r,ys);
+      results.push({i,p,n:r.n,pl:r.pl,pf:r.pf,wr:r.wr,dd:r.dd,avg:r.avg,score,years:ys});
+      if(i%12===0){v0560Live('B–G · DEV-grid',`${i+1}/${vars.length} varianter`);await v0540Wait(0)}
+    }
+    x.gridResults=results;x.trialLedger.push({at:new Date().toISOString(),event:'DEV_GRID_COMPLETE',trials:results.length});v0560Save(x)
+  }
+
+  x=v0560Load();const grid=x.gridResults;
+  if(!x.stages.C)v0560Done(x,'C',{summary:'Breakout 20/55/100d kartlagd',means:v0560Means(grid,'breakout',V0560_GRID.breakout)});
+  x=v0560Load();if(!x.stages.D)v0560Done(x,'D',{summary:'Trendfilter off/SMA100/SMA200 kartlagt',means:v0560Means(grid,'trend',V0560_GRID.trend)});
+  x=v0560Load();if(!x.stages.E)v0560Done(x,'E',{summary:'Volymbekräftelse off/1,2×/1,5× kartlagd',means:v0560Means(grid,'volume',V0560_GRID.volume)});
+  x=v0560Load();if(!x.stages.F)v0560Done(x,'F',{summary:'SPY-regim off/SMA100/SMA200 kartlagd',means:v0560Means(grid,'regime',V0560_GRID.regime)});
+
+  x=v0560Load();
+  if(!x.stages.G){
+    const best=grid.slice().sort((a,b)=>b.score-a.score)[0];
+    v0560Done(x,'G',{summary:`Bästa DEV-kandidat · ${best.n} affärer · P/L ${best.pl.toFixed(0)} · PF ${best.pf.toFixed(2)} · DD ${(best.dd*100).toFixed(1)}%`,best})
+  }
+
+  x=v0560Load();const best=x.stages.G.best;
+  if(!x.stages.H){
+    const stress=[1,1.5,2].map(mult=>{const r=v0560Engine(rows,best.p,V0560_COST_SIDE*mult);return{mult,n:r.n,pl:r.pl,pf:r.pf,dd:r.dd}});
+    v0560Done(x,'H',{summary:`Friktion 1×/1,5×/2×: ${stress.map(s=>`${s.pl.toFixed(0)}`).join(' / ')} kr`,stress})
+  }
+
+  x=v0560Load();
+  if(!x.stages.I){
+    const r=v0560Engine(rows,best.p);
+    v0560Done(x,'I',{summary:`Kapital i arbete avg ${(r.capitalUse*100).toFixed(1)}% · ${r.blocked} blockerade kandidater`,capitalUse:r.capitalUse,blocked:r.blocked})
+  }
+
+  x=v0560Load();
+  if(!x.stages.J){
+    const ys=v0560YearStats(rows,best.p),positive=ys.filter(y=>y.pl>0).length;
+    v0560Done(x,'J',{summary:`${positive}/3 positiva år · ${ys.map(y=>`${y.year} ${y.pl.toFixed(0)}`).join(' | ')}`,years:ys})
+  }
+
+  x=v0560Load();
+  if(!x.stages.K){
+    const loo=[];
+    for(const s of V0540_SYMBOLS){
+      const rr=v0560Engine(rows,best.p,V0560_COST_SIDE,V0540_SYMBOLS.filter(x=>x!==s));
+      loo.push({removed:s,n:rr.n,pl:rr.pl,pf:rr.pf,dd:rr.dd})
+    }
+    const worst=loo.slice().sort((a,b)=>a.pl-b.pl)[0];
+    v0560Done(x,'K',{summary:`16/16 leave-one-symbol-out klara · sämst utan ${worst.removed}: ${worst.pl.toFixed(0)} kr`,loo})
+  }
+
+  x=v0560Load();
+  if(!x.stages.L){
+    const r=v0560Engine(rows,best.p),boot=v0560Bootstrap(r.closed,2000);
+    v0560Done(x,'L',{summary:`Bootstrap 2 000 · P05 ${boot.p05.toFixed(0)} · median ${boot.median.toFixed(0)} · P>0 ${(boot.pPositive*100).toFixed(1)}%`,bootstrap:boot})
+  }
+
+  x=v0560Load();
+  if(!x.stages.M){
+    const r=v0560Engine(rows,best.p),hash=v0560Hash({generation:V0560_GENERATION,params:best.p,costSide:V0560_COST_SIDE,risk:V0560_RISK,maxPos:V0560_MAXPOS,maxPosPct:V0560_MAXPOSPCT});
+    x.candidate={frozenAt:new Date().toISOString(),hash,params:best.p,dev:{n:r.n,pl:r.pl,pf:r.pf,wr:r.wr,dd:r.dd,avg:r.avg}};
+    x.trialLedger.push({at:x.candidate.frozenAt,event:'CANDIDATE_FREEZE',hash,params:best.p});
+    v0560Done(x,'M',{summary:`FRYST · hash ${hash} · ${r.n} affärer · PF ${r.pf.toFixed(2)} · P/L ${r.pl.toFixed(0)} kr`,candidate:x.candidate})
+  }
+
+  x=v0560Load();
+  if(!x.stages.N){
+    if(!x.candidate?.hash)throw new Error('N får inte öppnas före kandidatfrysning M.');
+    x.trialLedger.push({at:new Date().toISOString(),event:'LOCKED_PSEUDO_FORWARD_OPEN',start:V0560_OOS_START,end:V0560_OOS_END,candidateHash:x.candidate.hash});
+    v0560Save(x);
+    const raw=await v0560FetchChunked(x,'oos',V0560_OOS_START,V0560_OOS_END,'N · Låst pseudo-forward'),
+          oosRows=v0540NormRows(raw),r=v0560Engine(oosRows,x.candidate.params);
+    x=v0560Load();x.pseudoForward={start:V0560_OOS_START,end:V0560_OOS_END,hash:x.candidate.hash,n:r.n,pl:r.pl,pf:r.pf,wr:r.wr,dd:r.dd,avg:r.avg,closed:r.closed};
+    v0560Save(x);
+    v0560Done(x,'N',{summary:`LÅST pseudo-forward · ${r.n} affärer · P/L ${r.pl.toFixed(0)} · PF ${r.pf.toFixed(2)} · DD ${(r.dd*100).toFixed(1)}%`,result:{n:r.n,pl:r.pl,pf:r.pf,wr:r.wr,dd:r.dd,avg:r.avg}})
+  }
+
+  x=v0560Load();
+  if(!x.stages.O){
+    const d=x.candidate.dev,o=x.pseudoForward;
+    let verdict='SVAG / EJ VIDARE';
+    if(o.n>=60&&o.pl>0&&o.pf>=1.08)verdict='POSITIV KANDIDAT';
+    else if(o.n>=40&&o.pl>0&&o.pf>=1.00)verdict='POSITIV MEN TUNN';
+    x.final={verdict,devPF:d.pf,pseudoPF:o.pf,devPL:d.pl,pseudoPL:o.pl,candidateHash:x.candidate.hash,noRescue:true};
+    x.trialLedger.push({at:new Date().toISOString(),event:'FINAL',verdict,noRescue:true});
+    v0560Done(x,'O',{summary:`${verdict} · DEV PF ${d.pf.toFixed(2)} → pseudo-forward PF ${o.pf.toFixed(2)} · ingen rescue`,final:x.final})
+  }
+  v0560Live('A–O KLART',`${v0560Load().final.verdict} · nästa beslut tas utan att ändra G2-reglerna.`)
+ }catch(e){
+   v0560Live('KÖRFEL',e?.message||String(e));
+ }finally{v0560Paint()}
+}
+function v0560Report(){
+ const x=v0560Load();if(!x)return 'Ingen G2-körning.';
+ const L=[
+  'LINAS OPTI – SWING G2 BREAKOUT/MOMENTUM ALPHABET A–O',
+  'Version: '+APP_VERSION,'Generation: '+V0560_GENERATION,'Handel: AVSTÄNGD',
+  'Plan låst: '+(x.planLocked?'JA':'NEJ')+' · planhash '+(x.planHash||'—'),
+  'DEV: '+V0560_DEV_START+' → '+V0560_DEV_END,
+  'Låst historisk pseudo-forward: '+V0560_OOS_START+' → '+V0560_OOS_END,
+  'Viktigt: pseudo-forward är historik, inte färsk framtida OOS.',''
+ ];
+ for(const s of V0560_STAGES){const z=x.stages?.[s[0]];L.push(`${s[0]} · ${s[1]} | ${z?.status||'EJ KÖRD'} | ${z?.summary||''}`)}
+ if(x.candidate)L.push('','FRYST KANDIDAT','Hash: '+x.candidate.hash,'Params: '+JSON.stringify(x.candidate.params),'DEV: '+JSON.stringify(x.candidate.dev));
+ if(x.pseudoForward)L.push('','PSEUDO-FORWARD',JSON.stringify({n:x.pseudoForward.n,pl:x.pseudoForward.pl,pf:x.pseudoForward.pf,wr:x.pseudoForward.wr,dd:x.pseudoForward.dd}));
+ if(x.final)L.push('','SLUTBEDÖMNING: '+x.final.verdict,'Ingen automatisk rescue/efteroptimering: JA');
+ return L.join('\n')
+}
+function v0560Backup(){
+ const x=v0560Load();return{backupSchema:'lina-swing-g2-v0560-backup',appVersion:APP_VERSION,exportedAt:new Date().toISOString(),g2:x}
+}
+
+window.addEventListener('DOMContentLoaded',()=>{
+ document.getElementById('v0560Lock')?.addEventListener('click',v0560Lock);
+ document.getElementById('v0560Run')?.addEventListener('click',v0560Run);
+ document.getElementById('v0560Report')?.addEventListener('click',()=>v0540Dl(v0560Report(),`LINAS_OPTI_SWING_G2_A_O_V0560_${new Date().toISOString().slice(0,10)}.txt`));
+ document.getElementById('v0560Raw')?.addEventListener('click',()=>{const x=v0560Load();if(x)v0540Dl(JSON.stringify(x,null,2),`LINAS_OPTI_SWING_G2_RAW_V0560_${new Date().toISOString().slice(0,10)}.json`,'application/json')});
+ document.getElementById('v0560Backup')?.addEventListener('click',()=>{const x=v0560Backup();if(x.g2)v0540Dl(JSON.stringify(x,null,2),`LINAS_OPTI_SWING_G2_BACKUP_V0560_${new Date().toISOString().slice(0,10)}.json`,'application/json')});
+ document.getElementById('v0560Reset')?.addEventListener('click',()=>{if(confirm('Återställa endast Swing G2? Jägaren, Swing G1 och båda riktiga forwardspåren påverkas inte.')){localStorage.removeItem(V0560_KEY);v0560Paint();v0560Live('Inte låst','Lås planen innan någon G2-data hämtas.')}});
+ document.getElementById('v0560Help')?.addEventListener('click',()=>alert('G2 är en separat breakout/momentum-generation. A–M använder bara 2020–2022. Först när kandidat + hash är fryst får N hämta 2023–2026. Resultatet får inte användas för att starta om eller fintrimma samma G2-generation.'));
+ v0560Paint();
+});
+
+
+// ============================================================
+// V0.56.0 – COMPACT LABB HOME + SEPARATE WORKSPACE AFTER SELECTION
+// UI-only patch. Strategy/research engines remain unchanged.
+// ============================================================
+const V0560_WORKSPACE_KEY='linasopti_workspace_v0560';
+
+const V0560_WORKSPACE_META={
+  v0510ForwardLab:['🎯 Jägaren · riktig forward','Forwardrobot'],
+  v0550SwingForwardLab:['🌙 Swing G1 · riktig forward','Forwardrobot'],
+  v0560SwingG2Lab:['🚀 Swing G2 · Breakout A–O','Forskning'],
+  v0540SwingAlphabetLab:['🌙 Swing G1 · Alphabet A–O','Historik/forskning'],
+  v0530SwingGateLab:['🌙 Lina Swing · Research Gate 1','Historik/forskning']
+};
+
+function v0560WorkspaceInfo(id){
+  if(V0560_WORKSPACE_META[id])return V0560_WORKSPACE_META[id];
+  const el=document.getElementById(id);
+  const title=el?.querySelector('h2')?.textContent?.replace('?','').trim() || 'LABB-modul';
+  return [title,'Historik/labb'];
+}
+function v0560OpenWorkspace(id,doScroll=true){
+  if(!id)return;
+  document.body.classList.remove('v0560-lab-home');
+  document.body.classList.add('v0560-workspace-open');
+
+  document.querySelectorAll('.v0413-lab-section').forEach(el=>{
+    el.style.display=el.classList.contains('vlab-'+id)?'':'none';
+  });
+  document.querySelectorAll('.vlab-extra').forEach(el=>el.style.display='none');
+
+  const [title,meta]=v0560WorkspaceInfo(id);
+  const t=document.getElementById('v0560WorkspaceTitle');
+  const m=document.getElementById('v0560WorkspaceMeta');
+  const h=document.getElementById('v0560WorkspaceHead');
+  if(t)t.textContent=title;
+  if(m)m.textContent=meta;
+  if(h)h.hidden=false;
+
+  try{localStorage.setItem(V0560_WORKSPACE_KEY,id)}catch{}
+  if(doScroll)requestAnimationFrame(()=>document.getElementById('v0560WorkspaceHead')?.scrollIntoView({behavior:'smooth',block:'start'}));
+}
+function v0560LabHome(doScroll=true){
+  document.body.classList.remove('v0560-workspace-open');
+  document.body.classList.add('v0560-lab-home');
+
+  const h=document.getElementById('v0560WorkspaceHead');
+  if(h)h.hidden=true;
+
+  const f=document.getElementById('v0551ForwardJump');
+  const r=document.getElementById('v0413LabJump');
+  if(f)f.value='';
+  if(r)r.selectedIndex=0;
+
+  try{localStorage.removeItem(V0560_WORKSPACE_KEY)}catch{}
+  if(doScroll)requestAnimationFrame(()=>document.getElementById('v0560ForwardMenu')?.scrollIntoView({behavior:'smooth',block:'start'}));
+}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const f=document.getElementById('v0551ForwardJump');
+  const r=document.getElementById('v0413LabJump');
+  const back=document.getElementById('v0560WorkspaceBack');
+
+  // Capture late in registration order: selection always becomes a clean workspace.
+  f?.addEventListener('change',e=>{
+    const id=e.target.value;
+    if(id)setTimeout(()=>v0560OpenWorkspace(id,true),0);
+  });
+  r?.addEventListener('change',e=>{
+    const id=e.target.value;
+    if(id)setTimeout(()=>v0560OpenWorkspace(id,true),0);
+  });
+  back?.addEventListener('click',()=>v0560LabHome(true));
+
+  // Always land on the compact LABB start screen after loading a new release.
+  // User selects which workspace to enter; no large panel remains hanging below.
+  v0560LabHome(false);
 });

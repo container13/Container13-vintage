@@ -1326,3 +1326,135 @@ body.v0462-running .v0460-lock{padding:6px 10px;margin:4px 0;font-size:.86rem}
   .v0551-forward-pick{grid-template-columns:1fr}
   .v0551-forwardbar{padding:10px}
 }
+
+/* V0.56.0 – Swing G2 Breakout Alphabet */
+.v0560-plan,.v0560-gridnote{margin:10px 0;padding:11px 12px;border-radius:12px;border:1px solid #d7dfe7;background:#fafcfe;font-size:13px;line-height:1.5}
+.v0560-plan{background:#f7f8ff;border-color:#d8daf4}
+#v0560Live{display:grid;gap:3px}
+#v0560Live span{font-size:12px;opacity:.8}
+
+
+/* V0.56.0 workspace-navigation patch
+   Compact LABB start page; selected module becomes its own workspace. */
+
+.v0560-menu-card{
+  margin:8px 0 !important;
+  padding:8px 10px !important;
+  border-radius:12px !important;
+  min-height:0 !important;
+}
+.v0551-forwardbar.v0560-menu-card{
+  display:grid !important;
+  grid-template-columns:auto minmax(300px,1fr) auto !important;
+  align-items:center !important;
+  column-gap:10px !important;
+  row-gap:0 !important;
+}
+.v0551-forwardbar.v0560-menu-card .v0551-forward-head{
+  display:flex !important;
+  gap:8px !important;
+  white-space:nowrap;
+}
+.v0551-forwardbar.v0560-menu-card .v0551-forward-pick{
+  display:grid !important;
+  grid-template-columns:auto minmax(220px,1fr) !important;
+  gap:8px !important;
+  align-items:center !important;
+}
+.v0551-forwardbar.v0560-menu-card .v0551-forward-pick select,
+.v0424-researchbar.v0560-menu-card select{
+  min-height:38px !important;
+  height:38px !important;
+  padding:6px 34px 6px 10px !important;
+  border-radius:10px !important;
+}
+.v0551-forwardbar.v0560-menu-card .v0551-forward-help{
+  font-size:11px !important;
+  white-space:nowrap;
+  opacity:.72;
+}
+.v0424-researchbar.v0560-menu-card{
+  min-height:0 !important;
+}
+.v0424-researchbar.v0560-menu-card .v0425-navlabel{
+  margin:0 !important;
+}
+.v0424-researchbar.v0560-menu-card .v0424-labpick,
+.v0424-researchbar.v0560-menu-card #v0423LabPick{
+  min-height:0 !important;
+  margin:0 !important;
+}
+.v0424-researchbar.v0560-menu-card .v0425-labtag{
+  white-space:nowrap;
+}
+.v0424-researchbar.v0560-menu-card button{
+  min-height:38px !important;
+  height:38px !important;
+  padding:5px 10px !important;
+}
+
+/* When a module is chosen, menus disappear and the selected panel owns the page. */
+body.v0560-workspace-open #v0560ForwardMenu,
+body.v0560-workspace-open #v0560ResearchMenu{
+  display:none !important;
+}
+body.v0560-workspace-open .v0560-workspace-head{
+  display:flex !important;
+}
+.v0560-workspace-head{
+  margin:8px 0 12px;
+  padding:8px 10px;
+  border:1px solid #d8e1e9;
+  border-radius:12px;
+  background:#fff;
+  align-items:center;
+  gap:10px;
+  position:sticky;
+  top:4px;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(20,35,50,.05);
+}
+.v0560-backbtn{
+  min-height:36px;
+  padding:6px 12px;
+  border-radius:9px;
+  font-weight:800;
+}
+.v0560-workspace-title{
+  display:grid;
+  gap:1px;
+  min-width:0;
+}
+.v0560-workspace-title b{
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.v0560-workspace-title span{
+  font-size:11px;
+  opacity:.68;
+}
+
+/* Home state: do not show a previously selected lab below menus. */
+body.v0560-lab-home .v0413-lab-section,
+body.v0560-lab-home .vlab-extra{
+  display:none !important;
+}
+
+/* Mobile: two compact menu cards; no giant navigation blocks. */
+@media(max-width:700px){
+  .v0551-forwardbar.v0560-menu-card{
+    grid-template-columns:1fr !important;
+    row-gap:6px !important;
+  }
+  .v0551-forwardbar.v0560-menu-card .v0551-forward-pick{
+    grid-template-columns:1fr !important;
+  }
+  .v0551-forwardbar.v0560-menu-card .v0551-forward-help{
+    display:none !important;
+  }
+  .v0560-workspace-head{
+    top:2px;
+    margin-top:4px;
+  }
+}

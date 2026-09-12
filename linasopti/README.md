@@ -1,6 +1,6 @@
-# Linas Opti V0.55.1
+# Linas Opti V0.56.0
 
-> **Aktuell release: V0.55.1** · separat forwardnavigation för Jägaren + Swing G1 · forskning/historik separerad · Handel AV · Robotmognad 48/100
+> **Aktuell release: V0.56.0** · Swing G2 Breakout/Momentum Alphabet A–O · förregistrerad historisk forskning · Forward Jägaren + Swing G1 orörda · Handel AV · Robotmognad 48/100
 
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
@@ -907,3 +907,48 @@ Den gamla Testlab-rullgardinen heter nu `HISTORIK/LABB` och innehåller endast f
 
 Ingen strategi-, data-, risk- eller forwardlogik ändras i V0.55.1. Jägaren och Swing G1 är exakt samma frysta robotar som i V0.55.0.
 Nästa planerade forskningsspår är en separat **Swing G2** med en annan signalfamilj, inte finjustering av Swing G1.
+
+
+## V0.56.0 – Lina Swing G2 · Breakout/Momentum Alphabet A–O
+
+Ny oberoende strategigeneration. Den ersätter inte Swing G1 och ändrar inte Jägaren eller någon riktig forward.
+
+### Förregistrering
+- DEV: **2020-01-01 → 2022-12-31**
+- låst historisk pseudo-forward: **2023-01-01 → 2026-09-10**
+- signal: gårdagens stängning bryter över högsta tidigare stängningskurs i vald lookback
+- entry: nästa handelsdags open
+- breakout: 20 / 55 / 100 dagar
+- trendfilter: off / SMA100 / SMA200
+- volym: off / 1,2× / 1,5× 20-dagars snitt
+- SPY-regim: off / SMA100 / SMA200
+- stop: 5 / 7 %
+- mål: 10 / 15 %
+- max hålltid: 10 / 20 handelsdagar
+- totalt **648 förregistrerade varianter**
+- friktion: 0,10 % per sida
+- risk: 0,5 % equity/affär
+- max 5 samtidiga positioner
+- max 20 % equity per position
+
+A–M får endast se DEV. M fryser exakt kandidat och hash. Först därefter får N öppna pseudo-forward. Ingen rescue eller automatisk efteroptimering efter N.
+
+### A–O
+Dataintegritet, baseline, breakoutfamilj, trendfilter, volym, SPY-regim, exitfamilj, friktionsstress, kapital/risk, årsstabilitet, leave-one-symbol-out, bootstrap 2 000, kandidatfrysning, låst pseudo-forward och slutrapport.
+
+2023–2026 benämns uttryckligen **historisk pseudo-forward**, inte färsk OOS.
+Jägaren och Swing G1 forward är helt oförändrade. Robotmognad ligger kvar på 48/100 tills ny faktisk forwardevidens motiverar annat.
+
+
+## V0.56.0 – UI patch: kompakt LABB → egen arbetsvy
+
+Innan V0.56.0 publicerades ändrades LABB-navigationen för att lösa problemet där Forward + Forskning/Historik tog så stor höjd att bara en smal remsa av själva testpanelen syntes.
+
+Ny princip:
+- LABB-starten visar två kompakta menyområden: **Forward** och **Forskning & historik**.
+- När en robot eller ett test väljs öppnas den som en **egen arbetsvy**.
+- De stora navigeringsblocken döljs i arbetsvyn.
+- En liten sticky `← LABB`-knapp tar användaren tillbaka till valvyn.
+- Vid ny sidladdning visas den kompakta LABB-starten i stället för att ett gammalt test automatiskt ligger öppet under menyerna.
+
+Detta är en ren UI/navigation-ändring. Jägaren, Swing G1 forward och Swing G2 A–O-motorerna är oförändrade.
