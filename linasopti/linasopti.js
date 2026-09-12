@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.56.3";
+const APP_VERSION = "V0.56.4";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -5286,3 +5286,89 @@ function v0563CompactDashboard(){
   }
 }
 window.addEventListener('DOMContentLoaded',()=>requestAnimationFrame(v0563CompactDashboard));
+
+
+// ============================================================
+// V0.56.4 – focused section navigation
+// ============================================================
+function v0564OpenData(){
+  document.body.classList.remove('v0561-dashboard-mode','v0561-workspace-mode','v0560-workspace-open','v0560-lab-home');
+  document.body.classList.add('v0564-data-workspace');
+  const d=document.getElementById('pane-data'); if(d)d.classList.remove('hidden');
+  const t=document.getElementById('pane-testlab'); if(t)t.classList.add('hidden');
+  requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'smooth'}));
+}
+function v0564BackHome(){
+  document.body.classList.remove('v0564-data-workspace','v0561-workspace-mode','v0560-workspace-open','v0560-lab-home');
+  const dash=document.getElementById('v0561Dashboard'); if(dash)dash.style.display='';
+  try{v0561Home()}catch(e){document.body.classList.add('v0561-dashboard-mode')}
+}
+function v0564HistoryPickerHtml(){
+  const sel=document.getElementById('v0413LabJump');
+  const opts=sel?[...sel.options].map(o=>`<option value="${o.value}">${o.textContent}</option>`).join(''):'';
+  return `<p>Välj ett historiskt test. Endast den valda modulen öppnas.</p>
+    <div id="v0564LegacyPicker">
+      <select id="v0564HistorySelect">${opts}</select>
+      <button id="v0564HistoryOpen" class="primary">Öppna valt test</button>
+    </div>`;
+}
+function v0564BindHistoryPicker(){
+  document.getElementById('v0564HistoryOpen')?.addEventListener('click',()=>{
+    const id=document.getElementById('v0564HistorySelect')?.value;
+    document.getElementById('v0561Overlay').hidden=true;
+    if(id)v0561Open(id)
+  });
+}
+function v0564BuildMenu(){
+  const old=document.getElementById('v0563MoreToggle');
+  const block=document.getElementById('v0563MoreBlock');
+  if(!old)return;
+
+  // Never expand the old giant legacy page again.
+  if(block){block.hidden=true;block.style.display='none'}
+
+  old.className='v0563-more-toggle';
+  old.innerHTML='<span>☰ Historik, forskning & verktyg</span><span id="v0564MenuArrow">Visa ▾</span>';
+
+  let menu=document.getElementById('v0564Menu');
+  if(!menu){
+    menu=document.createElement('div');menu.id='v0564Menu';menu.className='v0564-menu';menu.hidden=true;
+    menu.innerHTML=`
+      <button class="v0564-menu-card" id="v0564ProjectJourney"><span class="ico">🧭</span><b>Projektets resa</b><small>Hur Lina byggts, beslut och vägval.</small><span class="go">Öppna →</span></button>
+      <button class="v0564-menu-card" id="v0564HunterHistory"><span class="ico">🎯</span><b>Jägaren · historik</b><small>Validation A–K, Tidsmaskin och robusthet.</small><span class="go">Öppna →</span></button>
+      <button class="v0564-menu-card" data-lab="v0540SwingAlphabetLab"><span class="ico">🌙</span><b>Swing G1 · A–O</b><small>Fryst kandidat, DEV och pseudo-forward.</small><span class="go">Öppna →</span></button>
+      <button class="v0564-menu-card" data-lab="v0520TimeMachineLab"><span class="ico">⏳</span><b>Tidsmaskin</b><small>Historiskt pseudo-forward för Jägaren.</small><span class="go">Öppna →</span></button>
+      <button class="v0564-menu-card" id="v0564Method"><span class="ico">🔒</span><b>Metod & principer</b><small>DEV → robusthet → frysning → forward.</small><span class="go">Öppna →</span></button>
+      <button class="v0564-menu-card" id="v0564AllHistory"><span class="ico">📚</span><b>Alla historiska tester</b><small>Välj ett test ur hela forskningshistoriken.</small><span class="go">Välj →</span></button>
+      <button class="v0564-menu-card" id="v0564Data"><span class="ico">📊</span><b>Data</b><small>Marknadsdata, period och hämtning – egen arbetsvy.</small><span class="go">Öppna →</span></button>
+      <button class="v0564-menu-card" id="v0564Notes"><span class="ico">📝</span><b>Projektanteckningar</b><small>Lokal projektlogg som följer backup.</small><span class="go">Öppna →</span></button>
+    `;
+    old.parentNode.insertBefore(menu,old.nextSibling);
+
+    old.addEventListener('click',()=>{
+      menu.hidden=!menu.hidden;
+      document.getElementById('v0564MenuArrow').textContent=menu.hidden?'Visa ▾':'Dölj ▴';
+    });
+    menu.querySelectorAll('[data-lab]').forEach(b=>b.addEventListener('click',()=>v0561Open(b.dataset.lab)));
+    document.getElementById('v0564ProjectJourney')?.addEventListener('click',()=>v0561Overlay('Projektets resa',v0561HistoryHtml()));
+    document.getElementById('v0564HunterHistory')?.addEventListener('click',()=>v0561Overlay('Jägaren · forskning & historik',v0561JHistoryHtml()));
+    document.getElementById('v0564Method')?.addEventListener('click',()=>v0561Overlay('Så bygger vi Lina',v0561MethodHtml()));
+    document.getElementById('v0564Data')?.addEventListener('click',v0564OpenData);
+    document.getElementById('v0564Notes')?.addEventListener('click',()=>{v0561Overlay('Projektanteckningar',v0561NotesHtml());v0561BindNote()});
+    document.getElementById('v0564AllHistory')?.addEventListener('click',()=>{
+      v0561Overlay('Alla historiska tester',v0564HistoryPickerHtml());v0564BindHistoryPicker()
+    });
+  }
+
+  // Dedicated Back-to-Dashboard header for the data workspace.
+  if(!document.getElementById('v0564DataHead')){
+    const pane=document.getElementById('pane-data');
+    if(pane){
+      const h=document.createElement('div');h.id='v0564DataHead';
+      h.innerHTML='<button id="v0564DataBack" class="v0560-backbtn">← Dashboard</button><div><b>📊 Data</b><br><small>Marknadsdata och hämtning</small></div>';
+      pane.parentNode.insertBefore(h,pane);
+      document.getElementById('v0564DataBack')?.addEventListener('click',v0564BackHome)
+    }
+  }
+}
+window.addEventListener('DOMContentLoaded',()=>requestAnimationFrame(v0564BuildMenu));

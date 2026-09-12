@@ -1747,3 +1747,41 @@ body.v0561-dashboard-mode .v0561-icon{font-size:17px}
  body.v0561-dashboard-mode .v0561-hero{padding:10px 12px}
  body.v0561-dashboard-mode .v0561-next{padding:9px 10px}
 }
+
+/* ============================================================
+   V0.56.4 – SECTIONED NAVIGATION
+   Replaces the old "expand everything" legacy page with small
+   navigation cards that open one focused view at a time.
+   ============================================================ */
+.v0564-menu{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px
+}
+.v0564-menu-card{
+  appearance:none;text-align:left;border:1px solid #d8e1e9;border-radius:14px;
+  background:rgba(255,255,255,.96);padding:13px;cursor:pointer;color:inherit;
+  box-shadow:0 3px 12px rgba(20,35,50,.04)
+}
+.v0564-menu-card:hover{border-color:#bfcbd7;box-shadow:0 6px 18px rgba(20,35,50,.07)}
+.v0564-menu-card .ico{font-size:20px;display:block;margin-bottom:6px}
+.v0564-menu-card b{display:block;font-size:14px;margin-bottom:3px}
+.v0564-menu-card small{display:block;opacity:.68;line-height:1.35}
+.v0564-menu-card .go{display:block;text-align:right;margin-top:8px;font-size:11px;font-weight:900;opacity:.72}
+#v0564LegacyPicker{display:grid;gap:8px}
+#v0564LegacyPicker select{width:100%;padding:10px;border-radius:10px;border:1px solid #cfd8e1;background:#fff}
+#v0564DataHead{
+  display:none;align-items:center;gap:10px;padding:10px 12px;margin:0 0 10px;
+  border:1px solid #d8e1e9;border-radius:12px;background:rgba(255,255,255,.96)
+}
+body.v0564-data-workspace #v0564DataHead{display:flex}
+body.v0564-data-workspace #v0561Dashboard{display:none!important}
+body.v0564-data-workspace #v0560ForwardMenu,
+body.v0564-data-workspace #v0560ResearchMenu{display:none!important}
+body.v0564-data-workspace #pane-testlab{display:none!important}
+body.v0564-data-workspace #pane-data{display:block!important}
+body.v0564-data-workspace .tabs,
+body.v0564-data-workspace #v0424TesterNav{display:none!important}
+body.v0564-data-workspace .sticky-top{position:relative!important;top:auto!important;left:auto!important;right:auto!important;width:auto!important}
+body.v0564-data-workspace .wrap{padding-top:12px!important;height:auto!important;min-height:100vh!important;overflow:visible!important}
+body.v0564-data-workspace{overflow-y:auto!important;overflow-x:hidden!important}
+@media(max-width:900px){.v0564-menu{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.v0564-menu{grid-template-columns:1fr}}

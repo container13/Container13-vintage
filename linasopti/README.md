@@ -1,4 +1,4 @@
-# Linas Opti V0.56.3
+# Linas Opti V0.56.4
 
 > **Aktuell release: V0.56.1** · Dashboard-first kontrollcentral · responsiv mobil/desktop · tydlig status/nytt/klart · historik/utveckling · Forward + forskning · Handel AV · Robotmognad 48/100
 
@@ -1035,4 +1035,13 @@ For the Lina project, the assistant must **never generate, create, redesign or m
 - Permanent `↻ Uppdatera` in the header; compact icon on mobile.
 - Home view prioritizes status, next step, and three compact tracks: Jägaren, Swing G1, Swing G2.
 - History, methodology, project journey, notes, data and tools remain available behind one expandable entry.
+- No strategy/data/forward/risk/trading logic changed.
+
+## V0.56.4 – Focused section navigation
+- The old giant expanded LABB page is no longer shown from the dashboard.
+- `Historik, forskning & verktyg` now opens a compact menu of focused destinations.
+- Historical labs open one module at a time with `← Dashboard`.
+- Data opens in its own dedicated workspace with `← Dashboard`.
+- Project journey, Jägaren history, methodology and notes open as focused overlays.
+- `Alla historiska tester` provides a compact picker instead of rendering the full legacy page.
 - No strategy/data/forward/risk/trading logic changed.

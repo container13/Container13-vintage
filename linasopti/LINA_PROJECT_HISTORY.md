@@ -88,3 +88,6 @@ Dashboard scroll/höjd korrigerad efter verkligt test på desktop och mobil. Fel
 
 ## V0.56.3
 Dashboarden förenklades till en verklig översikt: tre kompakta spår, uppdateringsknapp i headern och historik/verktyg bakom en utfällbar ingång. All historik behölls.
+
+## V0.56.4
+Den gamla jättesidan under `Historik, forskning & verktyg` togs bort från dashboardflödet. I stället öppnas separata fokuserade arbetsvyer/overlays för historik, Jägaren, Swing G1, Tidsmaskin, metod, data och anteckningar. Alla äldre testmoduler finns kvar via en kompakt väljare.
