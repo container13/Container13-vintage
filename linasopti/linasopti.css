@@ -1674,3 +1674,46 @@ body.v0561-workspace-mode #v0560ResearchMenu{display:none !important}
  .v0561-card{padding:14px}.v0561-card-foot{align-items:flex-start}
  .v0561-overlay{padding:8px}.v0561-overlay-card{margin:1vh auto}
 }
+
+
+/* ============================================================
+   V0.56.2 – DASHBOARD SCROLL FIX
+   Root cause: the V0.56.1 dashboard lives inside .sticky-top.
+   .sticky-top is position:fixed in the legacy app shell, so the
+   dashboard did not contribute its full height to the document.
+   Dashboard home therefore appeared clipped and could not scroll
+   to the lower sections on desktop or mobile.
+   ============================================================ */
+body.v0561-dashboard-mode .sticky-top{
+  position:relative !important;
+  top:auto !important;
+  left:auto !important;
+  right:auto !important;
+  width:auto !important;
+}
+body.v0561-dashboard-mode .wrap{
+  padding-top:calc(12px + env(safe-area-inset-top)) !important;
+  min-height:100vh !important;
+  height:auto !important;
+  overflow:visible !important;
+}
+body.v0561-dashboard-mode,
+body.v0561-dashboard-mode html{
+  height:auto !important;
+  min-height:100% !important;
+}
+body.v0561-dashboard-mode{
+  overflow-x:hidden !important;
+  overflow-y:auto !important;
+  -webkit-overflow-scrolling:touch;
+}
+/* Keep generous room below the final dashboard section and fixed share footer. */
+body.v0561-dashboard-mode #v0561Dashboard{
+  padding-bottom:120px !important;
+  overflow:visible !important;
+}
+@media(max-width:700px){
+  body.v0561-dashboard-mode #v0561Dashboard{
+    padding-bottom:140px !important;
+  }
+}

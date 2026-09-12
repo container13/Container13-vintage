@@ -53,3 +53,35 @@ Från V0.56.1 är Lina dashboard-first:
 
 Handel: AVSTÄNGD.
 Robotmognad: 48/100 tills ny faktisk forwardevidens motiverar ändring.
+
+
+## Permanent release rule – two ZIP packages
+
+From V0.56.1 onward, every Lina release delivered to the user MUST include two ZIP packages:
+
+1. **COMPLETE** – the complete deployable Lina package containing all files required for the version.
+2. **CHANGED_FILES_ONLY** – only files that were created or modified since the immediately preceding release.
+
+Additional rules:
+- Both ZIP packages must use the same Lina version number.
+- The complete package is the authoritative deployable release.
+- The changed-files package is a convenience package for reviewing/updating only changed files.
+- Every delivery must state which files are included in CHANGED_FILES_ONLY.
+- Release inspection and ZIP integrity checks must be performed before delivery.
+- Historical `LINA_HANDOFF_Vxxxx.md` files are immutable snapshots and must not be rewritten retroactively.
+- Each new version gets a new handoff file.
+- `LINA_PROJECT_HISTORY.md` is the rolling project/build history and may be updated in new releases.
+- This rule must be preserved in future README/handoff files so it survives chat handoffs.
+
+
+## Permanent assistant/build rule – no generated images unless explicitly requested
+
+For the Lina project, the assistant must **never generate, create, redesign or mock up an image merely because the user attaches a screenshot or says "kör"**.
+
+- A screenshot is normally evidence to inspect/analyse the actual Lina UI or bug.
+- `kör` means continue the requested Lina code/build work unless the user explicitly asks for an image.
+- Image generation may only be used when the user explicitly asks to create/generate/design/render an image or visual.
+- This rule must be preserved in future README and handoff files so it survives chat handoffs.
+
+## V0.56.2
+Dashboard scroll/höjd korrigerad efter verkligt test på desktop och mobil. Felet berodde på att dashboarden låg inne i den äldre fasta `.sticky-top`-containern och därför inte bidrog till dokumentets totala höjd.
