@@ -1979,3 +1979,123 @@ body.v0571-flow-workspace{overflow-y:auto!important;overflow-x:hidden!important}
   .v0571-next-action,.v0571-result-action{display:grid}
   .v0571-next-action button,.v0571-result-action button{width:100%}
 }
+
+/* ============================================================
+   V0.57.2 – WORKSPACE CLARITY
+   One primary reading column in workspaces. Multi-column layout
+   is reserved for dashboard/category cards and compact KPI rows.
+   ============================================================ */
+
+/* A selected module must announce itself clearly. */
+body.v0570-workspace .v0560-workspace-head{
+  display:flex!important;
+  position:relative!important;
+  top:auto!important;
+  margin:0 auto 12px!important;
+  width:min(calc(100% - 24px),980px)!important;
+  padding:12px 14px!important;
+  border:2px solid #b9cee2!important;
+  border-radius:14px!important;
+  background:#f5f9fd!important;
+  box-shadow:none!important;
+  z-index:4!important;
+}
+body.v0570-workspace .v0560-workspace-title b{
+  font-size:16px!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+body.v0570-workspace .v0560-workspace-title span{
+  font-size:11px!important;
+  font-weight:800!important;
+  opacity:.68!important;
+}
+body.v0570-workspace #pane-testlab{
+  width:min(calc(100% - 24px),980px)!important;
+  max-width:980px!important;
+  margin:0 auto!important;
+}
+body.v0570-workspace #pane-testlab > .v0413-lab-section{
+  width:100%!important;
+  max-width:100%!important;
+}
+
+/* G2 is a reading/workflow page, not a dashboard. */
+body.v0570-workspace #v0560SwingG2Lab .v0470-bactions{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:8px!important;
+}
+body.v0570-workspace #v0560SwingG2Lab .v0540-stages{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:7px!important;
+}
+body.v0570-workspace #v0560SwingG2Lab .v0540-stage{
+  min-height:0!important;
+}
+
+/* Same principle for other long research/history workspaces. */
+body.v0570-workspace #v0540SwingAlphabetLab .v0540-actions,
+body.v0570-workspace #v0540SwingAlphabetLab .v0540-stages,
+body.v0570-workspace #v0530SwingLab .v0530-rules,
+body.v0570-workspace #v0530SwingLab .v0530-grid{
+  grid-template-columns:1fr!important;
+}
+
+/* Data is a step-by-step flow. Never split it into two competing columns. */
+body.v0571-flow-workspace #pane-data{
+  width:min(calc(100% - 24px),900px)!important;
+  max-width:900px!important;
+  margin:0 auto!important;
+}
+body.v0571-flow-workspace #pane-data > .card:first-child > .row{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  grid-template-rows:auto!important;
+  gap:12px!important;
+}
+body.v0571-flow-workspace #pane-data > .card:first-child > .row > *{
+  grid-column:1!important;
+  grid-row:auto!important;
+}
+body.v0571-flow-workspace #pane-data .v29-market-buttons{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+body.v0571-flow-workspace #pane-test,
+body.v0571-flow-workspace #pane-result{
+  width:min(calc(100% - 24px),900px)!important;
+  max-width:900px!important;
+  margin:0 auto!important;
+}
+
+/* The flow header says exactly where the user is. */
+body.v0571-flow-workspace #v0571FlowHead{
+  display:flex!important;
+  width:min(calc(100% - 24px),900px)!important;
+  margin:0 auto 12px!important;
+  border:2px solid #b9cee2!important;
+  background:#f5f9fd!important;
+}
+
+/* One-click data -> test. No misleading "go to test and click again". */
+.v0572-run-now{
+  border-color:#9bc9ae!important;
+  background:#eef9f2!important;
+}
+.v0572-run-now button{min-width:210px}
+
+@media(max-width:700px){
+  body.v0571-flow-workspace #pane-data .v29-market-buttons{
+    grid-template-columns:1fr!important;
+  }
+  body.v0570-workspace .v0560-workspace-head,
+  body.v0570-workspace #pane-testlab,
+  body.v0571-flow-workspace #v0571FlowHead,
+  body.v0571-flow-workspace #pane-data,
+  body.v0571-flow-workspace #pane-test,
+  body.v0571-flow-workspace #pane-result{
+    width:calc(100% - 16px)!important;
+  }
+}

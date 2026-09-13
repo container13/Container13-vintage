@@ -125,3 +125,11 @@ Detta gjordes efter att V0.56.x visade att även en kompakt dashboard blev röri
 Hela paketet granskades för statusfraser som riskerar att lämna användaren utan nästa väg. Det verkliga dödläget `Redo att testa` i Data fick en direkt knapp till testvyn. Data/Test/Resultat fick ett sammanhängande arbetsflöde med tydlig `← Data`-väg. Headerns `↻ Uppdatera` återställdes oberoende av äldre V0.56-navigation.
 
 Permanent UX-regel: när Lina säger `redo`, `klar`, `väntar på användaren` eller hänvisar till ett nästa steg på annan plats ska samma vy ge en konkret knapp eller tydlig väg dit.
+
+## V0.57.2 – tydligare arbetsvyer
+
+Efter praktiskt test på både stor skärm och mobil gjordes en ny layout-/flödesrevision. Detaljarbetsvyer får nu en tydlig kategori + modulidentitet och använder en primär vertikal spalt. Dataflödet ändrades från två konkurrerande desktopkolumner till en stegvis spalt. Swing G2:s steg och huvudkontroller följer samma princip.
+
+`Kör test med denna data` var semantiskt fel eftersom knappen bara navigerade till en ny vy där användaren behövde trycka `Kör Linas Opti` igen. V0.57.2 ersätter detta med `Kör test nu`, som startar testet direkt med ett enda användartryck.
+
+Ny permanent regel: kör-/startknappar utför handlingen; rena navigationsknappar ska heta Öppna/Visa.

@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.57.1";
+const APP_VERSION = "V0.57.2";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -5821,3 +5821,68 @@ function v0571AuditInit(){
   v0571AddResultAction();
 }
 window.addEventListener('DOMContentLoaded',()=>setTimeout(v0571AuditInit,20));
+
+
+// ============================================================
+// V0.57.2 – workspace clarity + one-click testing
+// ============================================================
+function v0572CategoryLabel(cat){
+  return ({forward:'Forward',research:'Forskning',history:'Historik',data:'Data',tools:'Verktyg',about:'Om Lina'})[cat]||'Dashboard';
+}
+
+const v0572OriginalOpenLab=v0570OpenLab;
+v0570OpenLab=function(id,returnCat){
+  const cat=returnCat||'history';
+  v0572OriginalOpenLab(id,cat);
+  const h=document.getElementById('v0560WorkspaceHead');
+  const title=document.getElementById('v0560WorkspaceTitle');
+  const meta=document.getElementById('v0560WorkspaceMeta');
+  const back=document.getElementById('v0560WorkspaceBack');
+  if(h)h.hidden=false;
+  if(back)back.textContent=`← ${v0572CategoryLabel(cat)}`;
+  if(meta)meta.textContent=`${v0572CategoryLabel(cat)} › vald arbetsvy`;
+  // Keep the module's own title, but make sure it is visible before the content.
+  if(title && id==='v0560SwingG2Lab')title.textContent='🚀 Swing G2 · Breakout/Momentum · A–O';
+  requestAnimationFrame(()=>h?.scrollIntoView({behavior:'smooth',block:'start'}));
+};
+
+function v0572RunLoadedDataNow(){
+  if(!DAILY.length&&!INTRA.length){
+    alert('Ingen data är inläst ännu.');
+    return;
+  }
+  v0570CurrentCategory='data';
+  v0571EnterFlow('test','🧪 Test körs','Inläst data skickas direkt till Linas Opti');
+  requestAnimationFrame(()=>{
+    const btn=document.getElementById('runBtn');
+    if(!btn){alert('Testknappen kunde inte hittas.');return;}
+    // One user action = start the test. No second click.
+    btn.click();
+  });
+}
+
+function v0572ReplaceDataNext(){
+  const ready=document.getElementById('v0368DataReady');
+  if(!ready)return;
+  document.getElementById('v0571DataNext')?.remove();
+  if(document.getElementById('v0572DataNext'))return;
+  const box=document.createElement('div');
+  box.id='v0572DataNext';
+  box.className='v0571-next-action v0572-run-now';
+  box.innerHTML='<div><b>Nästa steg</b><span>Datan är klar. Ett tryck nedan startar testet direkt och visar resultatet när körningen är färdig.</span></div><button id="v0572RunNow" class="primary">▶ Kör test nu</button>';
+  ready.appendChild(box);
+  document.getElementById('v0572RunNow')?.addEventListener('click',v0572RunLoadedDataNow);
+}
+
+function v0572AuditWorkspaceIdentity(){
+  // Any detailed lab opened through the new architecture must have a visible parent + module identity.
+  const h=document.getElementById('v0560WorkspaceHead');
+  if(h)h.setAttribute('aria-label','Aktuell arbetsvy och tillbaka-navigation');
+}
+
+function v0572Init(){
+  if(APP_VERSION!=='V0.57.2')return;
+  v0572ReplaceDataNext();
+  v0572AuditWorkspaceIdentity();
+}
+window.addEventListener('DOMContentLoaded',()=>setTimeout(v0572Init,40));

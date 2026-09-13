@@ -1,4 +1,4 @@
-# Linas Opti V0.57.1
+# Linas Opti V0.57.2
 
 > **Aktuell release: V0.56.1** · Dashboard-first kontrollcentral · responsiv mobil/desktop · tydlig status/nytt/klart · historik/utveckling · Forward + forskning · Handel AV · Robotmognad 48/100
 
@@ -1104,3 +1104,20 @@ Permanent UX rule: whenever Lina says that something is ready, complete, waiting
 No strategy, signal, data engine, research rule, forward anchor, hash, risk or trading logic changed.
 
 **FULL PACKAGE FLOW AUDIT: COMPLETED in V0.57.1.**
+
+
+## V0.57.2 – workspace clarity audit
+
+A second full UI inspection focused on two problems: unclear workspace identity and competing multi-column work areas.
+
+Changes:
+- Every detailed research/history/forward workspace now begins with a prominent parent/category + module header.
+- Swing G2 explicitly identifies itself as `Swing G2 · Breakout/Momentum · A–O` before its controls.
+- Detailed workspaces use one primary reading column. Dashboard/category cards may still use multiple columns because they are navigation, not work content.
+- Data is now always a single vertical step flow on desktop and mobile. The previous desktop two-column market/data layout was removed.
+- Swing G2 stages/actions are one column. The same rule is applied to the long Swing G1 / Research Gate work areas where competing columns reduced readability.
+- Compact KPI groups may remain multi-column; they are short status values, not separate work streams.
+- The data-ready action is now truly one click: `Kör test nu` starts Linas Opti immediately. It no longer jumps to a test view and asks for a second click.
+
+Permanent interaction rule:
+A button labelled `Kör`, `Starta`, `Fortsätt` or equivalent must perform that action. If a button only navigates, its label must say `Öppna`, `Visa` or otherwise make the navigation explicit.
