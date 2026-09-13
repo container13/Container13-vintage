@@ -1145,7 +1145,7 @@ Changes:
 Permanent responsive rule:
 Normal user-facing information must fit without horizontal scrolling on a 13-inch screen. On mobile, wide tables must reflow into a readable stacked/card representation. Horizontal scrolling is reserved for genuine raw/technical data where preserving the raw table is more important than overview.
 
-## V0.58.2 – navigation & orientation audit
+## V0.58.3 – navigation & orientation audit
 
 The whole package was inspected for subviews that could visually replace the dashboard without clearly identifying the current location.
 
@@ -1322,3 +1322,20 @@ Also fixed: the permanent V0.58 G2 flow no longer disables itself after a patch 
 
 Permanent engineering rule:
 Module visibility is controlled by one generic workspace host, not by assumptions about which historical CSS class a lab happens to use.
+
+## V0.58.3 – G2 daily-data fetch fix
+
+A real G2 run failed immediately at:
+`AMD 2020-01-01–2020-01-31: 0 rows`.
+
+Root cause: the G2 swing engine works entirely on daily bars, but its historical loader still requested **5-minute bars** month-by-month and then aggregated them into daily bars. That was unnecessary and made old history dependent on intraday availability.
+
+V0.58.3 changes only the G2 data transport:
+- G2 requests `timeframe=1Day` directly
+- no 5-minute-to-daily aggregation in the G2 loader
+- a new checkpoint mode `g2-symbol-month-daily-2` resets incompatible old 5-minute fetch checkpoints
+- the DEV/OOS periods, symbol universe, strategy grid and all A–O research rules are unchanged
+- retry/checkpoint/resume behavior remains
+
+Permanent engineering rule:
+A daily strategy should fetch daily bars directly unless intraday data is explicitly required by the research hypothesis.

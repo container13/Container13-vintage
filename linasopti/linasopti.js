@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.58.2";
+const APP_VERSION = "V0.58.3";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -4810,12 +4810,13 @@ async function v0560FetchSymbol(symbol,start,end,label){
  let last;
  for(let a=1;a<=4;a++){
    try{
-     v0560Live(label,`${symbol} · ${start} → ${end} · försök ${a}/4`);
+     v0560Live(label,`${symbol} · ${start} → ${end} · dagsdata · försök ${a}/4`);
      const j=await Promise.race([
-       bridge(`/bars?symbols=${encodeURIComponent(symbol)}&timeframe=5Min&start=${start}T00:00:00Z&end=${end}T23:59:59Z`),
+       bridge(`/bars?symbols=${encodeURIComponent(symbol)}&timeframe=1Day&start=${start}T00:00:00Z&end=${end}T23:59:59Z`),
        new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout 60 s')),60000))
      ]);
-     const rows=v0540Rows(j);if(!rows.length)throw new Error('0 rader');
+     const rows=v0540Rows(j);
+     if(!rows.length)throw new Error('0 dagsrader');
      return rows
    }catch(e){last=e;if(a<4)await v0540Wait(a*2500)}
  }
@@ -4824,17 +4825,18 @@ async function v0560FetchSymbol(symbol,start,end,label){
 async function v0560FetchChunked(x,key,start,end,label){
  const chunks=v0550MonthChunks(start,end),symbols=[...V0540_SYMBOLS,'SPY'];
  x.fetch??={};
- if(!x.fetch[key]||x.fetch[key].mode!=='g2-symbol-month-1'){
-   x.fetch[key]={mode:'g2-symbol-month-1',month:0,symbol:0,rows:[]};v0560Save(x)
+ // v2 deliberately resets older 5-min checkpoints so daily and intraday rows can never mix.
+ if(!x.fetch[key]||x.fetch[key].mode!=='g2-symbol-month-daily-2'){
+   x.fetch[key]={mode:'g2-symbol-month-daily-2',month:0,symbol:0,rows:[]};v0560Save(x)
  }
  const f=x.fetch[key];
  while(f.month<chunks.length){
    const [a,b]=chunks[f.month];
    while(f.symbol<symbols.length){
      const sym=symbols[f.symbol];
-     v0560Live(label,`Månad ${f.month+1}/${chunks.length} · symbol ${f.symbol+1}/${symbols.length} ${sym} · ${a} → ${b}`);
-     const intraday=await v0560FetchSymbol(sym,a,b,label),daily=v0542DailyFromIntraday(intraday);
-     if(!daily.length)throw new Error(`0 dagsrader efter aggregering: ${sym} ${a}–${b}`);
+     v0560Live(label,`Månad ${f.month+1}/${chunks.length} · symbol ${f.symbol+1}/${symbols.length} ${sym} · dagsdata · ${a} → ${b}`);
+     const daily=await v0560FetchSymbol(sym,a,b,label);
+     if(!daily.length)throw new Error(`0 dagsrader: ${sym} ${a}–${b}`);
      f.rows.push(...daily);f.symbol++;x.fetch[key]=f;v0560Save(x);await v0540Wait(20)
    }
    f.month++;f.symbol=0;x.fetch[key]=f;v0560Save(x)

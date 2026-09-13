@@ -228,3 +228,11 @@ Leak-auditen hittade 35 äldre labb-ID:n och 36 `vlab-*`-moduler. Flera äldre l
 V0.58.2 isolerar därför arbetsytan generiskt på root-nivå: endast den aktiva modulens `vlab-*`-token får visas. Gamla Forward/Forskning/Tester-rader döljs i modulvyn och en runtime-guard stoppar äldre kod från att visa syskon igen.
 
 Samtidigt rättades G2-panelens permanenta versionsguard som gjorde att `Lås G2-planen` var död i V0.58.1.
+
+## V0.58.3 – G2 körfel 0 rader fixat
+
+Första riktiga G2-körningen stoppade direkt på `AMD 2020-01-01–2020-01-31: 0 rader`.
+
+G2 är en dagsdata-/swingstrategi men dess loader hämtade fortfarande 5-minutersdata och aggregerade till dagsdata. V0.58.3 byter G2-transporten till direkt `1Day`. Äldre inkompatibla G2-fetch-checkpoints nollställs automatiskt genom nytt checkpoint-mode.
+
+Ingen strategi- eller forskningsregel ändrades.
