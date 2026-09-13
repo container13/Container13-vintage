@@ -119,3 +119,9 @@ Huvudkategorier:
 Forward, Forskning, Historik, Data, Verktyg och Om Lina.
 
 Detta gjordes efter att V0.56.x visade att även en kompakt dashboard blev rörig när äldre LABB/data-information fortfarande kunde vecklas ut under den. Från V0.57.0 får detaljinnehåll aldrig läcka in under dashboarden.
+
+## V0.57.1 – flödesrevision
+
+Hela paketet granskades för statusfraser som riskerar att lämna användaren utan nästa väg. Det verkliga dödläget `Redo att testa` i Data fick en direkt knapp till testvyn. Data/Test/Resultat fick ett sammanhängande arbetsflöde med tydlig `← Data`-väg. Headerns `↻ Uppdatera` återställdes oberoende av äldre V0.56-navigation.
+
+Permanent UX-regel: när Lina säger `redo`, `klar`, `väntar på användaren` eller hänvisar till ett nästa steg på annan plats ska samma vy ge en konkret knapp eller tydlig väg dit.

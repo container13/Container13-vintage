@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.57.0";
+const APP_VERSION = "V0.57.1";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -5711,3 +5711,113 @@ function v0570Init(){
   v0570RenderHome();
 }
 window.addEventListener('DOMContentLoaded',()=>setTimeout(v0570Init,0));
+
+
+// ============================================================
+// V0.57.1 – full package flow audit fixes
+// Goal: status text must not strand the user without a route.
+// Strategy/research engines are unchanged.
+// ============================================================
+function v0571EnsureRefresh(){
+  const tools=document.querySelector('.v036-headtools');
+  if(!tools)return;
+  if(!document.getElementById('v0563Refresh')){
+    const b=document.createElement('button');
+    b.id='v0563Refresh';b.className='secondary';b.textContent='↻ Uppdatera';
+    b.title='Hämta ikapp forwarddata och uppdatera Lina';
+    b.addEventListener('click',()=>{try{v0563RefreshAll()}catch(e){console.error(e)}});
+    tools.appendChild(b);
+  }
+}
+
+function v0571EnsureFlowHead(){
+  if(document.getElementById('v0571FlowHead'))return;
+  const pane=document.getElementById('pane-data');
+  if(!pane)return;
+  const h=document.createElement('div');
+  h.id='v0571FlowHead';
+  h.innerHTML='<button id="v0571FlowBack">← Data</button><div><b id="v0571FlowTitle">Data</b><small id="v0571FlowSub">Marknadsdata och hämtning</small></div>';
+  pane.parentNode.insertBefore(h,pane);
+  document.getElementById('v0571FlowBack')?.addEventListener('click',()=>v0570ShowCategory('data'));
+}
+
+function v0571SetFlowHead(title,sub=''){
+  v0571EnsureFlowHead();
+  const t=document.getElementById('v0571FlowTitle'),s=document.getElementById('v0571FlowSub'),b=document.getElementById('v0571FlowBack');
+  if(t)t.textContent=title;
+  if(s)s.textContent=sub;
+  if(b)b.textContent='← Data';
+}
+
+function v0571EnterFlow(pane,title,sub){
+  document.body.classList.remove('v0561-dashboard-mode','v0570-data-workspace','v0564-data-workspace','v0570-workspace','v0561-workspace-mode','v0560-workspace-open');
+  document.body.classList.add('v0570-app','v0571-flow-workspace');
+  const dash=document.getElementById('v0561Dashboard');if(dash)dash.style.display='none';
+  v0571SetFlowHead(title,sub);
+  show(pane,false);
+  requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'smooth'}));
+}
+
+// Override the V0.57.0 Data opener with the focused guided flow.
+v0570OpenData=function(){
+  v0570CurrentCategory='data';
+  v0571EnterFlow('data','📊 Data','Marknadsdata och hämtning');
+};
+
+function v0571OpenLoadedTest(){
+  v0570CurrentCategory='data';
+  try{v035RefreshGuide()}catch(e){}
+  v0571EnterFlow('test','🧪 Testa inläst data','Kontrollera sammanfattningen och kör testet');
+}
+
+function v0571AddDataAction(){
+  const ready=document.getElementById('v0368DataReady');
+  if(!ready||document.getElementById('v0571DataNext'))return;
+  const box=document.createElement('div');
+  box.id='v0571DataNext';box.className='v0571-next-action';
+  box.innerHTML='<div><b>Nästa steg</b><span>Datan är inläst. Fortsätt direkt till testvyn – du behöver inte leta efter den någon annanstans.</span></div><button id="v0571GoTest" class="primary">Kör test med denna data →</button>';
+  ready.appendChild(box);
+  document.getElementById('v0571GoTest')?.addEventListener('click',v0571OpenLoadedTest);
+}
+
+function v0571AddResultAction(){
+  const done=document.getElementById('v0365DoneCard');
+  if(!done||document.getElementById('v0571ResultNext'))return;
+  const box=document.createElement('div');
+  box.id='v0571ResultNext';box.className='v0571-result-action';
+  box.innerHTML='<span><b>Testet är klart.</b> Resultatet visas nedan. När du är färdig kan du gå tillbaka till Data för en ny period/körning.</span><button id="v0571BackData" class="secondary">← Till Data</button>';
+  done.appendChild(box);
+  document.getElementById('v0571BackData')?.addEventListener('click',()=>v0570ShowCategory('data'));
+}
+
+// Keep the flow header correct when the legacy tester changes pane.
+const v0571OriginalShow=show;
+show=function(p,fromTab=false){
+  v0571OriginalShow(p,fromTab);
+  if(document.body.classList.contains('v0571-flow-workspace')){
+    if(p==='data')v0571SetFlowHead('📊 Data','Marknadsdata och hämtning');
+    if(p==='test')v0571SetFlowHead('🧪 Testa inläst data','Kontrollera sammanfattningen och kör testet');
+    if(p==='result')v0571SetFlowHead('📈 Resultat','Testet är klart – granska resultatet eller gå tillbaka till Data');
+  }
+};
+
+// When returning to a new category/home, leave guided flow cleanly.
+const v0571OriginalCategory=v0570ShowCategory;
+v0570ShowCategory=function(cat){
+  document.body.classList.remove('v0571-flow-workspace');
+  return v0571OriginalCategory(cat);
+};
+const v0571OriginalHome=v0570RenderHome;
+v0570RenderHome=function(){
+  document.body.classList.remove('v0571-flow-workspace');
+  return v0571OriginalHome();
+};
+
+function v0571AuditInit(){
+  if(APP_VERSION!=='V0.57.1')return;
+  v0571EnsureRefresh();
+  v0571EnsureFlowHead();
+  v0571AddDataAction();
+  v0571AddResultAction();
+}
+window.addEventListener('DOMContentLoaded',()=>setTimeout(v0571AuditInit,20));

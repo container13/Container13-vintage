@@ -1,4 +1,4 @@
-# Linas Opti V0.57.0
+# Linas Opti V0.57.1
 
 > **Aktuell release: V0.56.1** · Dashboard-first kontrollcentral · responsiv mobil/desktop · tydlig status/nytt/klart · historik/utveckling · Forward + forskning · Handel AV · Robotmognad 48/100
 
@@ -1083,3 +1083,24 @@ The dashboard contains only project status, next step and category navigation. D
 Existing strategy engines, stored forward state and historical labs remain intact.
 
 No strategy, signal, data, forward anchor, risk or trading rule was changed.
+
+
+## V0.57.1 – Flow audit / actionable status
+
+The complete package was inspected for user-facing states such as `redo`, `klar`, `väntar`, `nästa steg`, `starta` and `fortsätt`.
+
+Findings and fixes:
+- **Data ready card:** was a real dead end. It said `Redo att testa` without a route. It now says `Data klar för test` and contains a direct `Kör test med denna data →` action.
+- **Data workspace:** V0.57.0 had disabled the transitional builder that used to create its back header. V0.57.1 creates its own permanent flow header with `← Data`.
+- **Test workspace/result:** now stays inside the same guided flow. After a test is complete the result card explicitly says what happens next and offers `← Till Data`.
+- **Header refresh:** V0.57.0 could lose the refresh button because the older dashboard builder was disabled. V0.57.1 restores `↻ Uppdatera` independently in the header.
+- **Forward Jägaren/Swing G1:** no dead end found; `EJ STARTAD/REDO` states already have explicit Start/Scan actions.
+- **Swing G2:** no dead end found; unlocked state has `Lås forskningsplan`, running state has its A–O controls, completed state shows final verdict.
+- **Tidsmaskin / Swing G1 A–O / validation labs:** their waiting/running/completed states already have Start/Next/Resume/Run or visible results in the same workspace.
+- **Completed generic test:** share buttons already existed; an explicit return-to-Data action was added to make continuation obvious.
+
+Permanent UX rule: whenever Lina says that something is ready, complete, waiting for the user, or has a next step elsewhere, the same view must provide the concrete action or a clear route to it.
+
+No strategy, signal, data engine, research rule, forward anchor, hash, risk or trading logic changed.
+
+**FULL PACKAGE FLOW AUDIT: COMPLETED in V0.57.1.**

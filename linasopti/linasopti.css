@@ -1932,3 +1932,50 @@ body.v0570-app:not(.v0570-data-workspace):not(.v0570-workspace) #pane-testlab{
   .v0570-category-title{display:block}
   .v0570-catcard,.v0570-subcard{padding:14px}
 }
+
+/* ============================================================
+   V0.57.1 – FLOW GUIDANCE / NO DEAD-END STATUS
+   ============================================================ */
+#v0571FlowHead{
+  display:none;align-items:center;gap:10px;padding:10px 12px;margin:0 0 10px;
+  border:1px solid #d8e1e9;border-radius:13px;background:rgba(255,255,255,.97);
+  position:relative;z-index:4
+}
+#v0571FlowHead button{
+  min-height:38px;padding:7px 10px;border-radius:10px;border:1px solid #d4dde6;
+  background:#fff;font-weight:900
+}
+#v0571FlowHead b{display:block;font-size:14px}
+#v0571FlowHead small{display:block;opacity:.65}
+body.v0571-flow-workspace #v0571FlowHead{display:flex}
+body.v0571-flow-workspace #v0561Dashboard{display:none!important}
+body.v0571-flow-workspace #v0560ForwardMenu,
+body.v0571-flow-workspace #v0560ResearchMenu,
+body.v0571-flow-workspace .tabs,
+body.v0571-flow-workspace #v0424TesterNav{display:none!important}
+body.v0571-flow-workspace .sticky-top{
+  position:relative!important;top:auto!important;left:auto!important;right:auto!important;width:auto!important
+}
+body.v0571-flow-workspace .wrap{
+  padding-top:12px!important;height:auto!important;min-height:100vh!important;overflow:visible!important
+}
+body.v0571-flow-workspace{overflow-y:auto!important;overflow-x:hidden!important}
+
+.v0571-next-action{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-top:12px;padding:12px;border:1px solid #b9dfc7;border-radius:13px;
+  background:#effaf3
+}
+.v0571-next-action b{display:block;font-size:13px;color:#176b3a}
+.v0571-next-action span{display:block;font-size:11px;line-height:1.4;opacity:.72;margin-top:2px}
+.v0571-next-action button{white-space:nowrap}
+.v0571-result-action{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin-top:10px;padding:10px 11px;border-radius:12px;background:#f3f8ff;border:1px solid #cfdeef
+}
+.v0571-result-action span{font-size:11px;line-height:1.4}
+@media(max-width:700px){
+  #v0571FlowHead{margin:0 8px 10px}
+  .v0571-next-action,.v0571-result-action{display:grid}
+  .v0571-next-action button,.v0571-result-action button{width:100%}
+}
