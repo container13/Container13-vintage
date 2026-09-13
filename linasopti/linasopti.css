@@ -2401,3 +2401,16 @@ body:has(#pane-testlab:not(.hidden)) #v0574ContextBar{
     grid-template-columns:1fr!important;
   }
 }
+
+/* ============================================================
+   V0.57.7 – BOOT/ROUTE VISIBILITY GUARANTEE
+   ============================================================ */
+body.v0570-app.v0561-dashboard-mode #pane-data,
+body.v0570-app.v0561-dashboard-mode #pane-test,
+body.v0570-app.v0561-dashboard-mode #pane-result,
+body.v0570-app.v0561-dashboard-mode #pane-testlab{
+  display:none!important;
+}
+body.v0570-app.v0561-dashboard-mode #v0574ContextBar{
+  display:none!important;
+}

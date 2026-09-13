@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.57.6";
+const APP_VERSION = "V0.57.7";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -6286,3 +6286,47 @@ function v0576Init(){
   v0576ObserveVisibleState();
 }
 window.addEventListener('DOMContentLoaded',()=>setTimeout(v0576Init,150));
+
+
+// ============================================================
+// V0.57.7 – UNIFIED CURRENT-APP BOOT
+// Root fix: earlier V0.57.x features used exact-version init guards.
+// After a version bump, e.g. V0.57.0 init no longer ran, while the
+// legacy boot still executed show('data', false). Result: the app
+// could open directly in Data and lose the G2/category context.
+// ============================================================
+let V0577_BOOTED=false;
+
+function v0577InitCurrentArchitecture(){
+  if(V0577_BOOTED)return;
+  if(APP_VERSION!=='V0.57.7')return;
+  V0577_BOOTED=true;
+
+  // 1) Current header controls.
+  try{v0570Header()}catch(e){}
+  try{v0571EnsureRefresh()}catch(e){}
+
+  // 2) Current orientation/state infrastructure.
+  try{v0574EnsureContextBar()}catch(e){}
+  try{v0573MarkRawTechnicalTables()}catch(e){}
+  try{v0573AnnotateAll()}catch(e){}
+  try{v0573ObserveTables()}catch(e){}
+  try{v0575WatchCompletion()}catch(e){}
+  try{v0576ObserveVisibleState()}catch(e){}
+
+  // 3) Normalize selection truth before first user interaction.
+  try{v0576SyncMarketTruth()}catch(e){}
+
+  // 4) Authoritative startup: ALWAYS start at Dashboard.
+  // This deliberately overrides the legacy boot's show('data',false).
+  try{v0570RenderHome()}catch(e){console.error('V0.57.7 dashboard boot failed',e)}
+
+  // 5) Refresh dashboard status after the DOM has settled.
+  requestAnimationFrame(()=>{
+    try{v0561Paint()}catch(e){}
+    try{v0576RefreshVisibleState()}catch(e){}
+  });
+}
+
+// Run after all older synchronous DOMContentLoaded handlers have had a chance to execute.
+window.addEventListener('DOMContentLoaded',()=>setTimeout(v0577InitCurrentArchitecture,250));

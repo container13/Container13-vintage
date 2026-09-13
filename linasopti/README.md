@@ -1145,7 +1145,7 @@ Changes:
 Permanent responsive rule:
 Normal user-facing information must fit without horizontal scrolling on a 13-inch screen. On mobile, wide tables must reflow into a readable stacked/card representation. Horizontal scrolling is reserved for genuine raw/technical data where preserving the raw table is more important than overview.
 
-## V0.57.6 – navigation & orientation audit
+## V0.57.7 – navigation & orientation audit
 
 The whole package was inspected for subviews that could visually replace the dashboard without clearly identifying the current location.
 
@@ -1203,3 +1203,33 @@ V0.57.6:
 
 Permanent rule:
 Visible state is authoritative. Layout, orientation and selected-state UI must not depend on which navigation path happened to open the view.
+
+## V0.57.7 – unified application boot audit
+
+A package-wide initialization audit found the deeper cause of the recent orientation failures.
+
+### Root cause
+Several V0.57.x features had exact-version initialization guards:
+- V0.57.0 dashboard boot only ran when `APP_VERSION === V0.57.0`
+- V0.57.1 flow init only ran in V0.57.1
+- V0.57.2 workspace init only ran in V0.57.2
+- V0.57.4/5/6 had the same pattern
+
+After later version bumps, those initializers stopped running. Meanwhile the old legacy startup still executed `show('data', false)`. This could make Lina open directly in Data, making it look as if clicking G2 had led to a generic Data page.
+
+### V0.57.7 fix
+A single current-app boot now initializes the active V0.57 architecture and **always starts a fresh page load at Dashboard** after older legacy DOMContentLoaded handlers have finished.
+
+It explicitly initializes:
+- current header controls / Refresh
+- context/orientation system
+- responsive table labelling
+- completion/next-step watcher
+- visible-view normalization
+- market selection truth
+- Dashboard as authoritative startup
+
+Permanent engineering rule:
+Version-specific historical initializers must never be the only way a permanent current-app feature is started. Each current release must have one authoritative boot path that initializes the whole active architecture.
+
+No strategy, research, forward, risk or data-engine logic changed.

@@ -180,3 +180,9 @@ V0.57.6 gör därför synlig vy auktoritativ:
 - synligt Testlab → den faktiskt synliga modulens kontext
 
 Marknadsgrupp jämförs åter mot den faktiska symbollistan efter varje relevant UI-förändring.
+
+## V0.57.7 – en gemensam boot för hela appen
+
+En full init-granskning hittade rotorsaken bakom att Data kunde visas trots att den nya dashboardarkitekturen fanns i koden: flera V0.57.x-initfunktioner var låsta till exakt versionsnummer. När versionen ökades slutade äldre permanenta funktioner att initieras, medan den ursprungliga legacy-starten fortfarande körde `show('data', false)`.
+
+V0.57.7 inför därför en enda auktoritativ current-app boot. Efter att äldre DOMContentLoaded-hanterare körts återställer den alltid en ny sidladdning till Dashboard och startar alla permanenta moderna system som behövs.
