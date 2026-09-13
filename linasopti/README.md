@@ -1,4 +1,4 @@
-# Linas Opti V0.57.2
+# Linas Opti V0.57.3
 
 > **Aktuell release: V0.56.1** · Dashboard-first kontrollcentral · responsiv mobil/desktop · tydlig status/nytt/klart · historik/utveckling · Forward + forskning · Handel AV · Robotmognad 48/100
 
@@ -1121,3 +1121,26 @@ Changes:
 
 Permanent interaction rule:
 A button labelled `Kör`, `Starta`, `Fortsätt` or equivalent must perform that action. If a button only navigates, its label must say `Öppna`, `Visa` or otherwise make the navigation explicit.
+
+## V0.57.3 – full responsive workspace/table audit
+
+The complete V0.57.2 package was reviewed for fixed/minimum widths, horizontal overflow and desktop-only multi-column assumptions.
+
+Responsive targets:
+- mobile
+- medium / 13-inch laptop
+- large desktop
+
+Changes:
+- detailed workspaces use more of the available width on 13-inch screens (up to 1180 px)
+- normal user-facing tables no longer keep the old global `min-width:760px`
+- normal tables fit their workspace and allow meaningful cells such as `Orsak` to wrap
+- the main trade log receives sensible proportional column widths
+- on mobile, user-facing tables automatically become stacked labelled cards
+- table labels are derived from each table's actual headers, including dynamically-generated result rows
+- only explicitly technical/raw audit tables may retain horizontal scrolling
+- dashboard/category navigation stays responsive 3/2/1 columns
+- one-column detailed workspaces from V0.57.2 remain in force
+
+Permanent responsive rule:
+Normal user-facing information must fit without horizontal scrolling on a 13-inch screen. On mobile, wide tables must reflow into a readable stacked/card representation. Horizontal scrolling is reserved for genuine raw/technical data where preserving the raw table is more important than overview.

@@ -133,3 +133,16 @@ Efter praktiskt test på både stor skärm och mobil gjordes en ny layout-/flöd
 `Kör test med denna data` var semantiskt fel eftersom knappen bara navigerade till en ny vy där användaren behövde trycka `Kör Linas Opti` igen. V0.57.2 ersätter detta med `Kör test nu`, som startar testet direkt med ett enda användartryck.
 
 Ny permanent regel: kör-/startknappar utför handlingen; rena navigationsknappar ska heta Öppna/Visa.
+
+## V0.57.3 – full responsivitetsrevision
+
+Hela paketet granskades för äldre fasta/minsta bredder och horisontell overflow. Den generella gamla tabellregeln `min-width:760px` gjorde bland annat Affärsloggen bredare än arbetsytan på 13-tumsskärm.
+
+V0.57.3:
+- arbetsvyer får använda mer av tillgänglig 13-tumsbredd
+- normala tabeller anpassas till arbetsytan
+- Affärsloggen får proportionella kolumner och radbrytning
+- mobil omvandlar användartabeller till etiketterade kort/rader
+- endast uttryckligen tekniska råtabeller får behålla horisontell scroll
+
+Permanent regel: normal användarinformation ska rymmas utan horisontell scroll på 13-tum; mobil ska reflowa breda tabeller.

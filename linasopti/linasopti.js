@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.57.2";
+const APP_VERSION = "V0.57.3";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -5886,3 +5886,53 @@ function v0572Init(){
   v0572AuditWorkspaceIdentity();
 }
 window.addEventListener('DOMContentLoaded',()=>setTimeout(v0572Init,40));
+
+
+// ============================================================
+// V0.57.3 – responsive table audit
+// ============================================================
+function v0573AnnotateTable(table){
+  if(!table || table.dataset.v0573Labels==='1')return;
+  const headers=[...table.querySelectorAll('thead th')].map(th=>th.textContent.trim());
+  if(!headers.length)return;
+  table.querySelectorAll('tbody tr').forEach(tr=>{
+    [...tr.children].forEach((td,i)=>{
+      if(td.tagName==='TD' && !td.dataset.label)td.dataset.label=headers[i]||`Kolumn ${i+1}`;
+    });
+  });
+  table.dataset.v0573Labels='1';
+}
+function v0573AnnotateAll(){
+  document.querySelectorAll('.tablewrap table').forEach(v0573AnnotateTable);
+}
+function v0573ObserveTables(){
+  const root=document.querySelector('.wrap')||document.body;
+  const obs=new MutationObserver(muts=>{
+    let dirty=false;
+    for(const m of muts){
+      if(m.type==='childList' && m.addedNodes.length){dirty=true;break}
+    }
+    if(dirty){
+      // Dynamic result rows need fresh labels even if table existed before.
+      document.querySelectorAll('.tablewrap table').forEach(t=>{
+        t.dataset.v0573Labels='';
+        v0573AnnotateTable(t);
+      });
+    }
+  });
+  obs.observe(root,{childList:true,subtree:true});
+}
+function v0573MarkRawTechnicalTables(){
+  // Preserve horizontal scroll only for tables that are genuinely diagnostic/raw.
+  document.querySelectorAll('.v014-audit .tablewrap, .v036-result-advanced .tablewrap').forEach(w=>{
+    // Main completed-trades table (#tbody) is user-facing and must stay responsive.
+    if(!w.querySelector('#tbody'))w.classList.add('v0573-raw');
+  });
+}
+function v0573ResponsiveInit(){
+  if(APP_VERSION!=='V0.57.3')return;
+  v0573MarkRawTechnicalTables();
+  v0573AnnotateAll();
+  v0573ObserveTables();
+}
+window.addEventListener('DOMContentLoaded',()=>setTimeout(v0573ResponsiveInit,60));

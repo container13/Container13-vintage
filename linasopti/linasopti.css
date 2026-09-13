@@ -2099,3 +2099,139 @@ body.v0571-flow-workspace #v0571FlowHead{
     width:calc(100% - 16px)!important;
   }
 }
+
+/* ============================================================
+   V0.57.3 – RESPONSIVE WORKSPACE / TABLE AUDIT
+   Targets mobile, 13" / medium screens, and large desktop.
+   ============================================================ */
+
+/* Use the available 13" width instead of keeping workspaces artificially narrow. */
+@media(min-width:900px){
+  body.v0570-workspace .v0560-workspace-head,
+  body.v0570-workspace #pane-testlab,
+  body.v0571-flow-workspace #v0571FlowHead,
+  body.v0571-flow-workspace #pane-data,
+  body.v0571-flow-workspace #pane-test,
+  body.v0571-flow-workspace #pane-result{
+    width:calc(100% - 32px)!important;
+    max-width:1180px!important;
+  }
+}
+
+/* Normal result/research tables must fit the workspace on 13" without horizontal scrolling. */
+body.v0570-workspace .tablewrap,
+body.v0571-flow-workspace .tablewrap{
+  width:100%!important;
+  max-width:100%!important;
+  overflow-x:hidden!important;
+}
+body.v0570-workspace .tablewrap table,
+body.v0571-flow-workspace .tablewrap table{
+  width:100%!important;
+  min-width:0!important;
+  table-layout:fixed!important;
+}
+body.v0570-workspace .tablewrap th,
+body.v0570-workspace .tablewrap td,
+body.v0571-flow-workspace .tablewrap th,
+body.v0571-flow-workspace .tablewrap td{
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  word-break:normal!important;
+  padding:8px 7px!important;
+  line-height:1.25!important;
+}
+
+/* Main trade log: give reason more room and compress predictable columns. */
+body.v0571-flow-workspace #tbody.closest-marker{}
+body.v0571-flow-workspace #pane-result .tablewrap table:has(#tbody) th:nth-child(1),
+body.v0571-flow-workspace #pane-result .tablewrap table:has(#tbody) td:nth-child(1){width:12%}
+body.v0571-flow-workspace #pane-result .tablewrap table:has(#tbody) th:nth-child(2),
+body.v0571-flow-workspace #pane-result .tablewrap table:has(#tbody) td:nth-child(2){width:11%}
+body.v0571-flow-workspace #pane-result .tablewrap table:has(#tbody) th:nth-child(3),
+body.v0571-flow-workspace #pane-result .tablewrap table:has(#tbody) td:nth-child(3){width:8%}
+body.v0571-flow-workspace #pane-result .tablewrap table:has(#tbody) th:nth-child(4),
+body.v0571-flow-workspace #pane-result .tablewrap table:has(#tbody) td:nth-child(4){width:8%}
+body.v0571-flow-workspace #pane-result .tablewrap table:has(#tbody) th:nth-child(5),
+body.v0571-flow-workspace #pane-result .tablewrap table:has(#tbody) td:nth-child(5){width:9%}
+body.v0571-flow-workspace #pane-result .tablewrap table:has(#tbody) th:nth-child(6),
+body.v0571-flow-workspace #pane-result .tablewrap table:has(#tbody) td:nth-child(6){width:12%}
+body.v0571-flow-workspace #pane-result .tablewrap table:has(#tbody) th:nth-child(7),
+body.v0571-flow-workspace #pane-result .tablewrap table:has(#tbody) td:nth-child(7){width:27%}
+body.v0571-flow-workspace #pane-result .tablewrap table:has(#tbody) th:nth-child(8),
+body.v0571-flow-workspace #pane-result .tablewrap table:has(#tbody) td:nth-child(8){width:13%}
+
+/* 13" / medium screens: slightly denser typography, still readable. */
+@media(min-width:700px) and (max-width:1399px){
+  body.v0570-workspace .tablewrap table,
+  body.v0571-flow-workspace .tablewrap table{font-size:11px!important}
+  body.v0570-workspace .tablewrap th,
+  body.v0570-workspace .tablewrap td,
+  body.v0571-flow-workspace .tablewrap th,
+  body.v0571-flow-workspace .tablewrap td{padding:7px 6px!important}
+}
+
+/* Mobile: normal result/research tables become stacked cards instead of side-scroll tables.
+   JS adds data-label from the header text. */
+@media(max-width:699px){
+  body.v0570-workspace .tablewrap,
+  body.v0571-flow-workspace .tablewrap{
+    max-height:none!important;
+    overflow:visible!important;
+  }
+  body.v0570-workspace .tablewrap table,
+  body.v0571-flow-workspace .tablewrap table{
+    display:block!important;
+    table-layout:auto!important;
+  }
+  body.v0570-workspace .tablewrap thead,
+  body.v0571-flow-workspace .tablewrap thead{
+    display:none!important;
+  }
+  body.v0570-workspace .tablewrap tbody,
+  body.v0571-flow-workspace .tablewrap tbody{
+    display:grid!important;
+    gap:10px!important;
+  }
+  body.v0570-workspace .tablewrap tr,
+  body.v0571-flow-workspace .tablewrap tr{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    padding:10px!important;
+    border:1px solid #dce4eb!important;
+    border-radius:13px!important;
+    background:rgba(255,255,255,.96)!important;
+  }
+  body.v0570-workspace .tablewrap td,
+  body.v0571-flow-workspace .tablewrap td{
+    display:grid!important;
+    grid-template-columns:minmax(90px,36%) 1fr!important;
+    gap:8px!important;
+    align-items:start!important;
+    width:auto!important;
+    border-bottom:1px solid #eef1f4!important;
+    padding:7px 3px!important;
+    font-size:12px!important;
+    text-align:left!important;
+  }
+  body.v0570-workspace .tablewrap td:last-child,
+  body.v0571-flow-workspace .tablewrap td:last-child{border-bottom:0!important}
+  body.v0570-workspace .tablewrap td::before,
+  body.v0571-flow-workspace .tablewrap td::before{
+    content:attr(data-label);
+    font-size:10px;
+    font-weight:900;
+    color:#697583;
+  }
+}
+
+/* Only explicitly-marked raw/technical tables may retain horizontal scrolling. */
+body.v0570-workspace .tablewrap.v0573-raw,
+body.v0571-flow-workspace .tablewrap.v0573-raw{
+  overflow-x:auto!important;
+}
+body.v0570-workspace .tablewrap.v0573-raw table,
+body.v0571-flow-workspace .tablewrap.v0573-raw table{
+  min-width:760px!important;
+  table-layout:auto!important;
+}
