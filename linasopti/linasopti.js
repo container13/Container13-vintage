@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.57.3";
+const APP_VERSION = "V0.57.4";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -5889,7 +5889,7 @@ window.addEventListener('DOMContentLoaded',()=>setTimeout(v0572Init,40));
 
 
 // ============================================================
-// V0.57.3 – responsive table audit
+// V0.57.4 – responsive table audit
 // ============================================================
 function v0573AnnotateTable(table){
   if(!table || table.dataset.v0573Labels==='1')return;
@@ -5930,9 +5930,128 @@ function v0573MarkRawTechnicalTables(){
   });
 }
 function v0573ResponsiveInit(){
-  if(APP_VERSION!=='V0.57.3')return;
+  if(APP_VERSION!=='V0.57.4')return;
   v0573MarkRawTechnicalTables();
   v0573AnnotateAll();
   v0573ObserveTables();
 }
 window.addEventListener('DOMContentLoaded',()=>setTimeout(v0573ResponsiveInit,60));
+
+
+// ============================================================
+// V0.57.4 – one authoritative orientation system
+// ============================================================
+const V0574_LAB_CONTEXT={
+  v0560SwingG2Lab:{cat:'research',title:'🚀 Swing G2 · Breakout/Momentum · A–O',purpose:'Ny forskningsgeneration · steg A–O'},
+  v0540SwingAlphabetLab:{cat:'history',title:'🌙 Swing G1 · A–O',purpose:'Fryst kandidat, DEV och pseudo-forward'},
+  v0530SwingLab:{cat:'history',title:'🌙 Swing G1 · Research Gate 1',purpose:'Historisk forskningsplan'},
+  v0520TimeMachineLab:{cat:'history',title:'⏳ Tidsmaskin',purpose:'Historisk pseudo-forward för Jägaren'},
+  v0460Lab:{cat:'history',title:'🎯 Jägaren · Validation Suite A',purpose:'Robusthets- och valideringshistorik'},
+  v0510ForwardLab:{cat:'forward',title:'🎯 Jägaren · riktig forward',purpose:'Ny data från 2026-09-11'},
+  v0550SwingForwardLab:{cat:'forward',title:'🌙 Swing G1 · riktig forward',purpose:'Ny data från 2026-09-14'}
+};
+function v0574EnsureContextBar(){
+  let bar=document.getElementById('v0574ContextBar');
+  if(bar)return bar;
+  bar=document.createElement('div');
+  bar.id='v0574ContextBar';
+  bar.innerHTML='<button id="v0574ContextBack">← Dashboard</button><div class="v0574-context-copy"><div id="v0574Crumb">Dashboard</div><div id="v0574Where">Linas Opti</div><div id="v0574Purpose"></div></div>';
+  const anchor=document.getElementById('v0561Dashboard')||document.getElementById('pane-data');
+  if(anchor)anchor.parentNode.insertBefore(bar,anchor);
+  return bar;
+}
+function v0574SetContext({cat='home',title='Linas Opti',purpose='',parent='Dashboard',back=null}={}){
+  v0574EnsureContextBar();
+  const b=document.getElementById('v0574ContextBack');
+  const c=document.getElementById('v0574Crumb');
+  const w=document.getElementById('v0574Where');
+  const p=document.getElementById('v0574Purpose');
+  const catLabel=v0572CategoryLabel(cat);
+  if(c)c.textContent=cat==='home'?'Dashboard':`Dashboard › ${catLabel} › ${title.replace(/^[^\p{L}\p{N}]+/u,'').trim()}`;
+  if(w)w.textContent=title;
+  if(p)p.textContent=purpose;
+  if(b){
+    b.textContent=`← ${parent}`;
+    const nb=b.cloneNode(true); b.parentNode.replaceChild(nb,b);
+    nb.addEventListener('click',back||(()=>v0570ShowCategory(cat)));
+  }
+}
+function v0574ContextForLab(id,cat){
+  const known=V0574_LAB_CONTEXT[id];
+  if(known)return {...known,cat:cat||known.cat};
+  const el=document.getElementById(id);
+  const heading=el?.querySelector('h1,h2,h3,b');
+  return {cat:cat||'history',title:heading?.textContent?.trim()||'Arbetsvy',purpose:'Vald arbetsvy'};
+}
+
+const v0574OriginalOpenLab=v0570OpenLab;
+v0570OpenLab=function(id,returnCat){
+  const cat=returnCat||V0574_LAB_CONTEXT[id]?.cat||'history';
+  v0574OriginalOpenLab(id,cat);
+  const ctx=v0574ContextForLab(id,cat);
+  v0574SetContext({...ctx,parent:v0572CategoryLabel(cat),back:()=>v0570ShowCategory(cat)});
+};
+
+const v0574OriginalEnterFlow=v0571EnterFlow;
+v0571EnterFlow=function(pane,title,sub){
+  v0574OriginalEnterFlow(pane,title,sub);
+  const names={
+    data:{title:'📊 Marknadsdata',purpose:'Välj marknad, datatyp och period · hämta sedan data'},
+    test:{title:'🧪 Test',purpose:'Kör Linas Opti med den inlästa datan'},
+    result:{title:'📈 Resultat',purpose:'Granska testresultat, affärer och revision'}
+  };
+  const x=names[pane]||{title:title||'Data',purpose:sub||''};
+  const parent=pane==='data'?'Data':'Data';
+  v0574SetContext({cat:'data',title:x.title,purpose:x.purpose,parent,back:()=>v0570ShowCategory('data')});
+};
+
+const v0574OriginalShow=show;
+show=function(p,fromTab=false){
+  v0574OriginalShow(p,fromTab);
+  if(document.body.classList.contains('v0571-flow-workspace')){
+    const names={
+      data:['📊 Marknadsdata','Välj marknad, datatyp och period · hämta sedan data'],
+      test:['🧪 Test','Kör Linas Opti med den inlästa datan'],
+      result:['📈 Resultat','Granska testresultat, affärer och revision']
+    };
+    if(names[p])v0574SetContext({cat:'data',title:names[p][0],purpose:names[p][1],parent:'Data',back:()=>v0570ShowCategory('data')});
+  }
+};
+
+function v0574SyncMarketState(){
+  const symbols=document.getElementById('symbols');
+  if(!symbols)return;
+  const normalized=s=>String(s||'').split(',').map(x=>x.trim()).filter(Boolean).join(',');
+  const value=normalized(symbols.value);
+  let match=null;
+  for(const [key,g] of Object.entries(MARKET_GROUPS)){
+    if(normalized(g.symbols.join(','))===value){match=key;break}
+  }
+  if(match && match!==ACTIVE_MARKET){
+    ACTIVE_MARKET=match;
+    document.querySelectorAll('.market-btn[data-market]').forEach(b=>b.classList.toggle('active',b.dataset.market===match));
+    const g=MARKET_GROUPS[match];
+    const info=document.getElementById('marketGroupInfo');
+    if(info)info.textContent=`${g.name} · ${g.symbols.length-currentBenchmarks().length} aktier + ${g.benchmark}`;
+  }
+  // If symbols are custom, do not lie by leaving a preset highlighted.
+  if(!match){
+    document.querySelectorAll('.market-btn[data-market]').forEach(b=>b.classList.remove('active'));
+    const info=document.getElementById('marketGroupInfo');
+    if(info)info.textContent='Egen symbolista';
+  }
+}
+function v0574WatchMarketState(){
+  const symbols=document.getElementById('symbols');
+  if(!symbols)return;
+  ['input','change'].forEach(ev=>symbols.addEventListener(ev,v0574SyncMarketState));
+  const obs=new MutationObserver(()=>v0574SyncMarketState());
+  obs.observe(symbols,{attributes:true,attributeFilter:['value']});
+  setTimeout(v0574SyncMarketState,80);
+}
+function v0574Init(){
+  if(APP_VERSION!=='V0.57.4')return;
+  v0574EnsureContextBar();
+  v0574WatchMarketState();
+}
+window.addEventListener('DOMContentLoaded',()=>setTimeout(v0574Init,80));

@@ -2235,3 +2235,75 @@ body.v0571-flow-workspace .tablewrap.v0573-raw table{
   min-width:760px!important;
   table-layout:auto!important;
 }
+
+/* ============================================================
+   V0.57.4 – NAVIGATION & ORIENTATION AUDIT
+   Every subview must say where the user is and where Back goes.
+   ============================================================ */
+#v0574ContextBar{
+  display:none;
+  width:min(calc(100% - 24px),1180px);
+  margin:10px auto 12px;
+  padding:11px 13px;
+  border:2px solid #b9cee2;
+  border-radius:14px;
+  background:rgba(245,249,253,.97);
+  box-sizing:border-box;
+  align-items:center;
+  gap:12px;
+}
+body.v0570-workspace #v0574ContextBar,
+body.v0571-flow-workspace #v0574ContextBar{display:flex}
+#v0574ContextBack{
+  flex:0 0 auto;
+  min-height:38px;
+  padding:8px 11px;
+  border:1px solid #cad6e1;
+  border-radius:10px;
+  background:#fff;
+  font-weight:900;
+}
+.v0574-context-copy{min-width:0;display:grid;gap:2px}
+#v0574Crumb{
+  color:#687586;
+  font-size:11px;
+  font-weight:850;
+  white-space:normal;
+}
+#v0574Where{
+  color:#18222e;
+  font-size:17px;
+  font-weight:950;
+  line-height:1.15;
+}
+#v0574Purpose{
+  color:#5f6b78;
+  font-size:11px;
+  font-weight:700;
+  line-height:1.25;
+}
+body.v0570-workspace .v0560-workspace-head,
+body.v0571-flow-workspace #v0571FlowHead{
+  display:none!important; /* one authoritative orientation bar */
+}
+.v0574-state-warning{
+  margin:8px 0 0;
+  padding:8px 10px;
+  border:1px solid #e8c887;
+  border-radius:10px;
+  background:#fff8e8;
+  font-size:11px;
+  font-weight:800;
+}
+@media(max-width:699px){
+  #v0574ContextBar{
+    width:calc(100% - 16px);
+    align-items:flex-start;
+    padding:9px 10px;
+    gap:9px;
+  }
+  #v0574ContextBack{min-height:34px;padding:6px 8px;font-size:12px}
+  #v0574Crumb{font-size:10px}
+  #v0574Where{font-size:15px}
+  #v0574Purpose{font-size:10px}
+}

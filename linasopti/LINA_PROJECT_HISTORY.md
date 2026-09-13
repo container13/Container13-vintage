@@ -146,3 +146,13 @@ V0.57.3:
 - endast uttryckligen tekniska råtabeller får behålla horisontell scroll
 
 Permanent regel: normal användarinformation ska rymmas utan horisontell scroll på 13-tum; mobil ska reflowa breda tabeller.
+
+## V0.57.4 – orientering och navigation
+
+Efter test på riktig 13-tumsskärm visade det sig att användaren kunde hamna i exempelvis Marknadsdata utan att tydligt se varifrån vyn kom eller hur den hörde ihop med dashboarden.
+
+V0.57.4 inför en gemensam kontextrad för detaljvyer:
+Dashboard → kategori → modul/arbetssteg.
+Den visar alltid aktuell plats, syfte och tydlig tillbaka-väg.
+
+Samtidigt kontrolleras Marknadsgrupp mot den verkliga symbollistan. En gammal markerad preset får inte längre visas om symbolfältet representerar en annan grupp eller en egen lista.

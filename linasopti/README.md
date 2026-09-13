@@ -1144,3 +1144,30 @@ Changes:
 
 Permanent responsive rule:
 Normal user-facing information must fit without horizontal scrolling on a 13-inch screen. On mobile, wide tables must reflow into a readable stacked/card representation. Horizontal scrolling is reserved for genuine raw/technical data where preserving the raw table is more important than overview.
+
+## V0.57.4 – navigation & orientation audit
+
+The whole package was inspected for subviews that could visually replace the dashboard without clearly identifying the current location.
+
+Permanent navigation hierarchy:
+`Dashboard → Category → Module → Work step`
+
+Every detailed workspace now gets one authoritative context bar containing:
+- a visible Back button
+- breadcrumb/location
+- current module/work step
+- a short description of what the user does there
+
+Examples:
+- `Dashboard › Forskning › Swing G2 · Breakout/Momentum · A–O`
+- `Dashboard › Data › Marknadsdata`
+- `Dashboard › Data › Test`
+- `Dashboard › Data › Resultat`
+
+The older competing workspace/flow headers are hidden while the new context bar is active, preventing two different navigation systems from appearing at once.
+
+State audit:
+The selected Market Group is now reconciled with the actual symbol list. If the symbol list exactly matches a known group, that group is highlighted. If it is custom, no preset remains falsely highlighted and the status says `Egen symbolista`.
+
+Permanent rule:
+A visible selected option must describe the state actually used by Lina. A stale highlight is treated as a UI correctness bug, not merely a cosmetic issue.
