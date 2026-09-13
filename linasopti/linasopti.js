@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.57.4";
+const APP_VERSION = "V0.57.5";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -6055,3 +6055,122 @@ function v0574Init(){
   v0574WatchMarketState();
 }
 window.addEventListener('DOMContentLoaded',()=>setTimeout(v0574Init,80));
+
+
+// ============================================================
+// V0.57.5 – context-preserving flow + no dead-end "Klar"
+// ============================================================
+const V0575_CTX_KEY='linasopti_flow_context_v0575';
+
+function v0575SaveContext(ctx){
+  try{ localStorage.setItem(V0575_CTX_KEY,JSON.stringify(ctx||{})); }catch(e){}
+}
+function v0575LoadContext(){
+  try{return JSON.parse(localStorage.getItem(V0575_CTX_KEY)||'{}')||{};}catch(e){return {}}
+}
+function v0575RememberOrigin(kind,id,title){
+  const ctx={kind:kind||'general',id:id||'',title:title||'',at:new Date().toISOString()};
+  v0575SaveContext(ctx);
+  return ctx;
+}
+function v0575OriginFromVisibleLab(){
+  for(const [id,meta] of Object.entries(V0574_LAB_CONTEXT||{})){
+    const el=document.getElementById(id);
+    if(el && !el.hidden && getComputedStyle(el).display!=='none'){
+      return {kind:id==='v0560SwingG2Lab'?'swing-g2':id,id,title:meta.title};
+    }
+  }
+  return null;
+}
+
+// Remember research/module origin whenever a lab is opened.
+const v0575OriginalOpenLab=v0570OpenLab;
+v0570OpenLab=function(id,returnCat){
+  const out=v0575OriginalOpenLab(id,returnCat);
+  const meta=V0574_LAB_CONTEXT?.[id];
+  if(id==='v0560SwingG2Lab')v0575RememberOrigin('swing-g2',id,meta?.title||'Swing G2');
+  else if(meta)v0575RememberOrigin('lab',id,meta.title);
+  return out;
+};
+
+function v0575EnterDataFromCurrentContext(){
+  const origin=v0575OriginFromVisibleLab();
+  if(origin)v0575SaveContext(origin);
+  else {
+    const old=v0575LoadContext();
+    if(!old.kind)v0575RememberOrigin('general','','Data');
+  }
+  v0571EnterFlow('data','📊 Marknadsdata','Hämta data för nästa steg');
+}
+
+function v0575G2CanStart(){
+  return typeof v0560Load==='function' && !!document.getElementById('v0560SwingG2Lab');
+}
+function v0575StartG2(){
+  // Return to the canonical G2 module; do not invent a second research engine.
+  v0570OpenLab('v0560SwingG2Lab','research');
+  requestAnimationFrame(()=>{
+    const lab=document.getElementById('v0560SwingG2Lab');
+    // Prefer the canonical first enabled G2 action.
+    const candidates=[...lab.querySelectorAll('button')].filter(b=>!b.disabled && /lås|start|kör|fortsätt/i.test(b.textContent||''));
+    const btn=candidates[0];
+    if(btn){
+      btn.scrollIntoView({behavior:'smooth',block:'center'});
+      // The continuation button itself is navigation into G2; do not silently
+      // trigger an irreversible/research stage if its exact state is unknown.
+      btn.classList.add('v0575-next-highlight');
+    }
+  });
+}
+function v0575RunGeneralTest(){
+  if(typeof v0572RunLoadedDataNow==='function') return v0572RunLoadedDataNow();
+  v0571EnterFlow('test','🧪 Test','Inläst data');
+  requestAnimationFrame(()=>document.getElementById('runBtn')?.click());
+}
+
+function v0575RenderNextAction(){
+  const ready=document.getElementById('v0368DataReady');
+  if(!ready || ready.hidden || getComputedStyle(ready).display==='none')return;
+  document.getElementById('v0571DataNext')?.remove();
+  document.getElementById('v0572DataNext')?.remove();
+  document.getElementById('v0575NextAction')?.remove();
+
+  const ctx=v0575LoadContext();
+  const box=document.createElement('div');
+  box.id='v0575NextAction';
+
+  if(ctx.kind==='swing-g2' && v0575G2CanStart()){
+    box.innerHTML='<div class="v0575-copy"><div class="v0575-kicker">Nästa steg</div><div class="v0575-title">Fortsätt med Swing G2</div><div class="v0575-sub">Dagsdatan är klar. Gå tillbaka till Swing G2 · Breakout/Momentum · A–O och fortsätt från rätt forskningssteg.</div></div><button id="v0575NextBtn" class="primary">🚀 Till Swing G2 →</button>';
+    box.querySelector('button').addEventListener('click',v0575StartG2);
+  }else{
+    box.innerHTML='<div class="v0575-copy"><div class="v0575-kicker">Nästa steg</div><div class="v0575-title">Testa den inlästa datan</div><div class="v0575-sub">Datan är klar. Ett tryck startar Linas Opti direkt med den inlästa datan.</div></div><button id="v0575NextBtn" class="primary">▶ Kör test nu</button>';
+    box.querySelector('button').addEventListener('click',v0575RunGeneralTest);
+  }
+  ready.appendChild(box);
+}
+
+function v0575AuditCompletedStates(){
+  // Known Data completion state: always attach next action.
+  v0575RenderNextAction();
+
+  // Generic guard for future "klar/redo" status blocks: mark un-actionable states
+  // for diagnostics without guessing what action should be.
+  document.querySelectorAll('.card,.v0413-lab-section,.v0540-stage').forEach(el=>{
+    const txt=(el.textContent||'').toLowerCase();
+    if(!/(klar|redo|väntar)/.test(txt))return;
+    const hasAction=[...el.querySelectorAll('button,a')].some(x=>x.offsetParent!==null && !x.disabled);
+    el.dataset.v0575CompletionAction=hasAction?'present':'missing';
+  });
+}
+
+function v0575WatchCompletion(){
+  const root=document.querySelector('.wrap')||document.body;
+  const obs=new MutationObserver(()=>setTimeout(v0575AuditCompletedStates,0));
+  obs.observe(root,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','class']});
+}
+function v0575Init(){
+  if(APP_VERSION!=='V0.57.5')return;
+  v0575AuditCompletedStates();
+  v0575WatchCompletion();
+}
+window.addEventListener('DOMContentLoaded',()=>setTimeout(v0575Init,120));

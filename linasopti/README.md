@@ -1145,7 +1145,7 @@ Changes:
 Permanent responsive rule:
 Normal user-facing information must fit without horizontal scrolling on a 13-inch screen. On mobile, wide tables must reflow into a readable stacked/card representation. Horizontal scrolling is reserved for genuine raw/technical data where preserving the raw table is more important than overview.
 
-## V0.57.4 – navigation & orientation audit
+## V0.57.5 – navigation & orientation audit
 
 The whole package was inspected for subviews that could visually replace the dashboard without clearly identifying the current location.
 
@@ -1171,3 +1171,18 @@ The selected Market Group is now reconciled with the actual symbol list. If the 
 
 Permanent rule:
 A visible selected option must describe the state actually used by Lina. A stale highlight is treated as a UI correctness bug, not merely a cosmetic issue.
+
+## V0.57.5 – context-preserving next-step flow
+
+A completed step may never end with only `Klar`, `Redo` or `Väntar`.
+
+The app now stores the workflow origin before entering Data. When Data completes, the next-action card uses that origin:
+- Swing G2 origin → `Till Swing G2 →`
+- general Data origin → `Kör test nu`
+
+Important safety/UX distinction:
+`Till Swing G2` returns to the canonical G2 A–O module and highlights the next enabled canonical control. It does not invent or auto-trigger a research stage whose exact state may require review/locking.
+For the general test flow, `Kör test nu` executes the existing canonical test button in one user action.
+
+Permanent flow rule:
+Every completed user-facing step must expose a concrete next action in the same view. The action must preserve the workflow context that brought the user there. Navigation and execution must remain semantically distinct.

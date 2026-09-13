@@ -156,3 +156,15 @@ Dashboard → kategori → modul/arbetssteg.
 Den visar alltid aktuell plats, syfte och tydlig tillbaka-väg.
 
 Samtidigt kontrolleras Marknadsgrupp mot den verkliga symbollistan. En gammal markerad preset får inte längre visas om symbolfältet representerar en annan grupp eller en egen lista.
+
+## V0.57.5 – nästa steg behåller sammanhanget
+
+Efter verkligt test syntes fortfarande `Dagsdata klar` utan tydlig fortsättning. Grundfelet var att Data-vyn inte säkert behöll information om vilket arbetsflöde användaren kom ifrån.
+
+V0.57.5 sparar arbetsflödets ursprung. Efter Data:
+- från Swing G2 visas `Till Swing G2 →`
+- från generell Data visas `Kör test nu`
+
+G2-knappen återgår till den befintliga kanoniska G2-modulen och markerar nästa aktiva kontroll; den startar inte automatiskt ett forskningssteg vars status kan kräva granskning/låsning.
+
+Permanent regel: Klar/Redo/Väntar får aldrig vara en återvändsgränd.
