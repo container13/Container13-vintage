@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.56.4";
+const APP_VERSION = "V0.57.0";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -5252,6 +5252,7 @@ function v0563RefreshAll(){
   Promise.allSettled(jobs).then(()=>{try{v0561Paint()}catch(e){} if(b){b.disabled=false;b.textContent=b.dataset.old||'↻ Uppdatera'}})
 }
 function v0563CompactDashboard(){
+  if(APP_VERSION==='V0.57.0')return;
   const dash=document.getElementById('v0561Dashboard');if(!dash)return;
 
   const headtools=document.querySelector('.v036-headtools');
@@ -5320,6 +5321,7 @@ function v0564BindHistoryPicker(){
   });
 }
 function v0564BuildMenu(){
+  if(APP_VERSION==='V0.57.0')return;
   const old=document.getElementById('v0563MoreToggle');
   const block=document.getElementById('v0563MoreBlock');
   if(!old)return;
@@ -5372,3 +5374,340 @@ function v0564BuildMenu(){
   }
 }
 window.addEventListener('DOMContentLoaded',()=>requestAnimationFrame(v0564BuildMenu));
+
+
+// ============================================================
+// V0.57.0 – real application navigation
+// Dashboard -> category -> subcategory/workspace.
+// Detailed legacy content is never rendered underneath dashboard.
+// ============================================================
+const V0570_CATEGORIES = {
+  forward:{icon:'🚦',title:'Forward',desc:'Riktig framtidsdata från frysta strategier.'},
+  research:{icon:'🧪',title:'Forskning',desc:'Aktiva forskningsgenerationer och frysta kandidater.'},
+  history:{icon:'📚',title:'Historik',desc:'Tester, pseudo-forward, beslut och tidigare generationer.'},
+  data:{icon:'📊',title:'Data',desc:'Marknadsdata, datakällor och hämtning.'},
+  tools:{icon:'🛠️',title:'Verktyg',desc:'Backup, anteckningar och tekniska funktioner.'},
+  about:{icon:'🧭',title:'Om Lina',desc:'Metod, projektets resa och versionshistorik.'}
+};
+
+let v0570CurrentCategory = null;
+
+function v0570Escape(s){
+  return String(s??'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+}
+function v0570GetState(){
+  const H=(()=>{try{return v0561Hunter()}catch{return {x:null,s:{n:0,pnl:0,pf:null}}}})();
+  const S=(()=>{try{return v0561Swing()}catch{return {x:null,s:{n:0,pnl:0,pf:null}}}})();
+  const G=(()=>{try{return v0561G2()}catch{return null}})();
+  const notes=(()=>{try{return v0561Notes()}catch{return []}})();
+  const hActive=!!H.x?.startedAt, sActive=!!S.x?.startedAt;
+  const gDone=G?Object.keys(G.stages||{}).length:0;
+  const dataStatus=document.getElementById('modeBadge')?.textContent?.trim()||'DATA EJ INLÄST';
+  return {H,S,G,notes,hActive,sActive,gDone,dataStatus};
+}
+function v0570Pf(v){return v==null||!Number.isFinite(v)?'—':Number(v).toFixed(2)}
+
+function v0570HomeHtml(){
+  const x=v0570GetState();
+  const active=(x.hActive?1:0)+(x.sActive?1:0);
+  let next='Lås Swing G2-planen', nextText='Förregistreringen är klar. Öppna Forskning för nästa steg.';
+  if(x.G?.planLocked && !x.G?.stages?.O){next='Fortsätt Swing G2 A–O';nextText=`${x.gDone}/15 steg klara.`}
+  if(x.G?.stages?.O){next='Granska Swing G2-resultatet';nextText='A–O är klart. Nästa beslut tas utan rescue-optimering.'}
+  const gStatus=x.G?.stages?.O?'✅ KLART':x.G?.planLocked?'🧪 PÅGÅR':'🆕 NYTT';
+
+  return `
+  <div class="v0570-home" id="v0570Home">
+    <div class="v0570-statusline">
+      <div>
+        <h2>Linas lägesbild</h2>
+        <p>${active} forwardspår aktiva · Swing G2 är aktuell forskning · detaljer ligger i respektive kategori.</p>
+      </div>
+      <div class="v0570-chips">
+        <span class="v0570-chip red">Handel AV</span>
+        <span class="v0570-chip">Mognad 48/100</span>
+        <span class="v0570-chip ${x.dataStatus.includes('EJ')?'amber':'green'}">${v0570Escape(x.dataStatus)}</span>
+      </div>
+    </div>
+
+    <div class="v0570-next">
+      <div>
+        <span class="v0570-next-label">NÄSTA STEG</span>
+        <b>${v0570Escape(next)}</b>
+        <small>${v0570Escape(nextText)}</small>
+      </div>
+      <button class="primary" data-v0570-cat="research">Öppna Forskning</button>
+    </div>
+
+    <div class="v0570-category-grid">
+      <button class="v0570-catcard" data-v0570-cat="forward">
+        <div class="v0570-cathead"><span class="v0570-cat-icon">🚦</span><span class="v0570-state active">${active}/2 AKTIVA</span></div>
+        <h3>Forward</h3><p>Jägaren och Swing G1. Endast riktig framtidsdata.</p>
+        <div class="v0570-catmeta"><span>${(x.H.s?.n||0)+(x.S.s?.n||0)} stängda affärer</span><span>Öppna →</span></div>
+      </button>
+      <button class="v0570-catcard" data-v0570-cat="research">
+        <div class="v0570-cathead"><span class="v0570-cat-icon">🧪</span><span class="v0570-state new">${gStatus}</span></div>
+        <h3>Forskning</h3><p>Swing G2 och framtida forskningsgenerationer.</p>
+        <div class="v0570-catmeta"><span>${x.gDone}/15 G2-steg</span><span>Öppna →</span></div>
+      </button>
+      <button class="v0570-catcard" data-v0570-cat="history">
+        <div class="v0570-cathead"><span class="v0570-cat-icon">📚</span><span class="v0570-state done">SPARAD</span></div>
+        <h3>Historik</h3><p>Jägaren A–K, Swing G1, Tidsmaskin och alla äldre tester.</p>
+        <div class="v0570-catmeta"><span>109+ tester/steg</span><span>Öppna →</span></div>
+      </button>
+      <button class="v0570-catcard" data-v0570-cat="data">
+        <div class="v0570-cathead"><span class="v0570-cat-icon">📊</span><span class="v0570-state">${v0570Escape(x.dataStatus)}</span></div>
+        <h3>Data</h3><p>Hämta och kontrollera dagsdata och 5-min-data.</p>
+        <div class="v0570-catmeta"><span>Alpaca · SPY benchmark</span><span>Öppna →</span></div>
+      </button>
+      <button class="v0570-catcard" data-v0570-cat="tools">
+        <div class="v0570-cathead"><span class="v0570-cat-icon">🛠️</span><span class="v0570-state">${x.notes.length} NOTERINGAR</span></div>
+        <h3>Verktyg</h3><p>Backup, projektanteckningar och tekniska funktioner.</p>
+        <div class="v0570-catmeta"><span>Projektkontroll</span><span>Öppna →</span></div>
+      </button>
+      <button class="v0570-catcard" data-v0570-cat="about">
+        <div class="v0570-cathead"><span class="v0570-cat-icon">🧭</span><span class="v0570-state locked">V0.57.0</span></div>
+        <h3>Om Lina</h3><p>Metod, projektets resa, principer och versionshistorik.</p>
+        <div class="v0570-catmeta"><span>Varför vi bygger så här</span><span>Öppna →</span></div>
+      </button>
+    </div>
+
+    <div class="v0570-section-note">
+      Dashboarden visar bara status och vägar vidare. Ny funktionalitet ska inte automatiskt lägga mer information här.
+    </div>
+  </div>`;
+}
+
+function v0570ForwardHtml(x){
+  return `
+  <div class="v0570-subgrid">
+    <button class="v0570-subcard" data-v0570-lab="v0510ForwardLab" data-return="forward">
+      <span class="v0570-state ${x.hActive?'active':'new'}">${x.hActive?'🟢 AKTIV':'🟡 REDO'}</span>
+      <span class="v0570-cat-icon">🎯</span><h3>Jägaren</h3>
+      <p>Riktig forward från 2026-09-11. Regler frysta.</p>
+      <div class="v0570-mini-stats"><span>${x.H.s?.n||0} affärer</span><span>${Math.round(x.H.s?.pnl||0)} kr</span><span>PF ${v0570Pf(x.H.s?.pf)}</span></div>
+      <div class="v0570-catmeta"><span>🔒 Fryst kandidat</span><span>Öppna →</span></div>
+    </button>
+    <button class="v0570-subcard" data-v0570-lab="v0550SwingForwardLab" data-return="forward">
+      <span class="v0570-state ${x.sActive?'active':'new'}">${x.sActive?'🟢 AKTIV':'🟡 REDO'}</span>
+      <span class="v0570-cat-icon">🌙</span><h3>Swing G1</h3>
+      <p>Riktig forward från 2026-09-14. Hash 8f09f32a.</p>
+      <div class="v0570-mini-stats"><span>${x.S.s?.n||0} affärer</span><span>${Math.round(x.S.s?.pnl||0)} kr</span><span>PF ${v0570Pf(x.S.s?.pf)}</span></div>
+      <div class="v0570-catmeta"><span>🔒 8f09f32a</span><span>Öppna →</span></div>
+    </button>
+  </div>
+  <div class="v0570-section-note">Forward visar endast data efter respektive riktiga forwardankare. Historik och pseudo-forward blandas inte in här.</div>`;
+}
+function v0570ResearchHtml(x){
+  const state=x.G?.stages?.O?'✅ KLART':x.G?.planLocked?'🧪 PÅGÅR':'🆕 NYTT';
+  return `
+  <div class="v0570-subgrid">
+    <button class="v0570-subcard" data-v0570-lab="v0560SwingG2Lab" data-return="research">
+      <span class="v0570-state new">${state}</span>
+      <span class="v0570-cat-icon">🚀</span><h3>Swing G2 · Breakout/Momentum</h3>
+      <p>DEV 2020–2022 · låst pseudo-forward 2023–2026 · Alphabet A–O.</p>
+      <div class="v0570-mini-stats"><span>${x.gDone}/15 steg</span><span>648 varianter</span><span>Ingen rescue</span></div>
+      <div class="v0570-catmeta"><span>Aktuell forskning</span><span>Öppna →</span></div>
+    </button>
+    <button class="v0570-subcard" data-v0570-action="method">
+      <span class="v0570-state locked">REGLER</span>
+      <span class="v0570-cat-icon">🔒</span><h3>Forskningsprinciper</h3>
+      <p>Hur kandidater förregistreras, fryses och får gå vidare.</p>
+      <div class="v0570-catmeta"><span>DEV → robusthet → forward</span><span>Visa →</span></div>
+    </button>
+    <button class="v0570-subcard" data-v0570-action="ideas">
+      <span class="v0570-state">IDÉBANK</span>
+      <span class="v0570-cat-icon">💡</span><h3>Framtida idéer</h3>
+      <p>Plats för G3 och andra idéer innan de blir faktisk forskning.</p>
+      <div class="v0570-catmeta"><span>Ej testad ≠ forskning</span><span>Visa →</span></div>
+    </button>
+  </div>`;
+}
+function v0570HistoryHtml(){
+  return `
+  <div class="v0570-subgrid">
+    <button class="v0570-subcard" data-v0570-action="hunterhistory"><span class="v0570-cat-icon">🎯</span><h3>Jägaren</h3><p>Validation A–K, robusthet och beslut.</p><div class="v0570-catmeta"><span>109 historiska tester/steg</span><span>Visa →</span></div></button>
+    <button class="v0570-subcard" data-v0570-lab="v0540SwingAlphabetLab" data-return="history"><span class="v0570-cat-icon">🌙</span><h3>Swing G1 · A–O</h3><p>DEV, robusthet, kandidatfrysning och pseudo-forward.</p><div class="v0570-catmeta"><span>PF 1,43 → 1,04</span><span>Öppna →</span></div></button>
+    <button class="v0570-subcard" data-v0570-lab="v0520TimeMachineLab" data-return="history"><span class="v0570-cat-icon">⏳</span><h3>Tidsmaskin</h3><p>Historiskt pseudo-forward för Jägaren 2024–2026.</p><div class="v0570-catmeta"><span>442 affärer · PF 1,081</span><span>Öppna →</span></div></button>
+    <button class="v0570-subcard" data-v0570-action="allhistory"><span class="v0570-cat-icon">🗂️</span><h3>Alla historiska tester</h3><p>Hela forskningsarkivet, ett test i taget.</p><div class="v0570-catmeta"><span>Exit → Validation K</span><span>Välj →</span></div></button>
+    <button class="v0570-subcard" data-v0570-action="projecthistory"><span class="v0570-cat-icon">🧭</span><h3>Projektets resa</h3><p>Varför Lina utvecklats som den gjort.</p><div class="v0570-catmeta"><span>Beslut · vägval · versioner</span><span>Visa →</span></div></button>
+  </div>`;
+}
+function v0570DataHtml(x){
+  return `
+  <div class="v0570-subgrid">
+    <button class="v0570-subcard" data-v0570-action="dataworkspace">
+      <span class="v0570-state ${x.dataStatus.includes('EJ')?'new':'active'}">${v0570Escape(x.dataStatus)}</span>
+      <span class="v0570-cat-icon">⬇️</span><h3>Hämta marknadsdata</h3>
+      <p>Marknadsgrupp, symboler, dagsdata/5-min-data och period.</p>
+      <div class="v0570-catmeta"><span>Alpaca · benchmark SPY</span><span>Öppna →</span></div>
+    </button>
+    <button class="v0570-subcard" data-v0570-action="datainfo">
+      <span class="v0570-cat-icon">🩺</span><h3>Datastatus</h3>
+      <p>Vad som är inläst och varför dataintegritet är viktig.</p>
+      <div class="v0570-catmeta"><span>${v0570Escape(x.dataStatus)}</span><span>Visa →</span></div>
+    </button>
+  </div>`;
+}
+function v0570ToolsHtml(x){
+  return `
+  <div class="v0570-subgrid">
+    <button class="v0570-subcard" data-v0570-action="backup"><span class="v0570-cat-icon">💾</span><h3>Backup hela Lina</h3><p>Forwardstatus, checkpoints, forskning och anteckningar.</p><div class="v0570-catmeta"><span>JSON-snapshot</span><span>Skapa →</span></div></button>
+    <button class="v0570-subcard" data-v0570-action="notes"><span class="v0570-cat-icon">📝</span><h3>Projektanteckningar</h3><p>Lokal loggbok som följer med backup.</p><div class="v0570-catmeta"><span>${x.notes.length} anteckningar</span><span>Öppna →</span></div></button>
+    <button class="v0570-subcard" data-v0570-action="technical"><span class="v0570-cat-icon">🧰</span><h3>Tekniskt / felsökning</h3><p>Äldre verktyg finns kvar utan att belasta dashboarden.</p><div class="v0570-catmeta"><span>Avancerat</span><span>Öppna →</span></div></button>
+  </div>`;
+}
+function v0570AboutHtml(){
+  return `
+  <div class="v0570-subgrid">
+    <button class="v0570-subcard" data-v0570-action="method"><span class="v0570-cat-icon">🔒</span><h3>Metod & principer</h3><p>Hur Lina ska vara svår att lura med backtest.</p><div class="v0570-catmeta"><span>Ingen rescue efter holdout</span><span>Visa →</span></div></button>
+    <button class="v0570-subcard" data-v0570-action="projecthistory"><span class="v0570-cat-icon">🧭</span><h3>Projektets resa</h3><p>Från första roboten till flera frysta strategispår.</p><div class="v0570-catmeta"><span>Bygghistorik</span><span>Visa →</span></div></button>
+    <button class="v0570-subcard" data-v0570-action="version"><span class="v0570-cat-icon">🏷️</span><h3>Version & nuläge</h3><p>Aktuell arkitektur och permanenta projektregler.</p><div class="v0570-catmeta"><span>V0.57.0</span><span>Visa →</span></div></button>
+    <button class="v0570-subcard" data-v0570-action="maturity"><span class="v0570-cat-icon">🤖</span><h3>Robotmognad</h3><p>Varför Lina fortfarande står på 48/100.</p><div class="v0570-catmeta"><span>Forskningsfas</span><span>Visa →</span></div></button>
+  </div>`;
+}
+
+function v0570CategoryHtml(cat){
+  const x=v0570GetState(), info=V0570_CATEGORIES[cat];
+  let content='';
+  if(cat==='forward')content=v0570ForwardHtml(x);
+  if(cat==='research')content=v0570ResearchHtml(x);
+  if(cat==='history')content=v0570HistoryHtml();
+  if(cat==='data')content=v0570DataHtml(x);
+  if(cat==='tools')content=v0570ToolsHtml(x);
+  if(cat==='about')content=v0570AboutHtml();
+  return `
+  <div class="v0570-category" id="v0570Category">
+    <div class="v0570-breadcrumb"><button data-v0570-home>← Dashboard</button><span>/</span><b>${info.icon} ${info.title}</b></div>
+    <div class="v0570-category-title"><div><h2>${info.title}</h2><p>${info.desc}</p></div></div>
+    ${content}
+  </div>`;
+}
+
+function v0570RenderHome(){
+  v0570CurrentCategory=null;
+  document.body.classList.remove('v0570-workspace','v0570-data-workspace','v0561-workspace-mode','v0560-workspace-open','v0564-data-workspace');
+  document.body.classList.add('v0570-app','v0561-dashboard-mode');
+  const dash=document.getElementById('v0561Dashboard');
+  if(!dash)return;
+  dash.style.display='';
+  dash.innerHTML=v0570HomeHtml();
+  v0570Bind();
+  requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'smooth'}));
+}
+function v0570ShowCategory(cat){
+  if(!V0570_CATEGORIES[cat])return v0570RenderHome();
+  v0570CurrentCategory=cat;
+  document.body.classList.remove('v0570-workspace','v0570-data-workspace','v0561-workspace-mode','v0560-workspace-open','v0564-data-workspace');
+  document.body.classList.add('v0570-app','v0561-dashboard-mode');
+  const dash=document.getElementById('v0561Dashboard');
+  if(!dash)return;
+  dash.style.display='';
+  dash.innerHTML=v0570CategoryHtml(cat);
+  v0570Bind();
+  requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'smooth'}));
+}
+
+function v0570OpenLab(id,returnCat){
+  v0570CurrentCategory=returnCat||'history';
+  document.body.classList.remove('v0561-dashboard-mode','v0570-data-workspace','v0564-data-workspace');
+  document.body.classList.add('v0570-app','v0570-workspace');
+  v0561Open(id);
+  const old=document.getElementById('v0560WorkspaceBack');
+  if(old){
+    const b=old.cloneNode(true); old.parentNode.replaceChild(b,old);
+    const label=V0570_CATEGORIES[v0570CurrentCategory]?.title||'Dashboard';
+    b.textContent=`← ${label}`;
+    b.addEventListener('click',()=>v0570ShowCategory(v0570CurrentCategory));
+  }
+}
+function v0570OpenData(){
+  v0570CurrentCategory='data';
+  document.body.classList.remove('v0561-dashboard-mode','v0570-workspace','v0561-workspace-mode','v0560-workspace-open','v0564-data-workspace');
+  document.body.classList.add('v0570-app','v0570-data-workspace');
+  const dash=document.getElementById('v0561Dashboard'); if(dash)dash.style.display='none';
+  const d=document.getElementById('pane-data');if(d){d.classList.remove('hidden');d.style.display='block'}
+  const t=document.getElementById('pane-testlab');if(t){t.classList.add('hidden');t.style.display='none'}
+  const head=document.getElementById('v0564DataHead');
+  if(head){
+    head.style.display='flex';
+    const old=head.querySelector('#v0564DataBack');
+    if(old){
+      const b=old.cloneNode(true); old.parentNode.replaceChild(b,old);
+      b.textContent='← Data'; b.addEventListener('click',()=>v0570ShowCategory('data'));
+    }
+  }
+  requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'smooth'}));
+}
+
+function v0570VersionHtml(){
+ return `<h3>V0.57.0 – kontrollcentral som applikation</h3>
+ <p>Lina använder nu tre nivåer: <b>Dashboard → kategori → arbetsvy</b>. Dashboarden visar status och navigation, aldrig hela verktyg eller historiska testytor.</p>
+ <p><b>Permanenta regler:</b> två ZIP per release, gamla handoff-filer skrivs inte om, ingen bildgenerering utan uttrycklig begäran och nya funktioner får inte automatiskt öka informationsmängden på dashboarden.</p>
+ <p>Handel är AVSTÄNGD. Robotmognad är 48/100.</p>`;
+}
+function v0570IdeasHtml(){
+ return `<h3>Idébank</h3><p>Den här ytan skiljer framtida idéer från faktisk forskning. En idé får inte behandlas som testad eller lovande innan den har en förregistrerad forskningsplan.</p><p>Nästa separata strategi efter G2 får registreras här innan utveckling startar.</p>`;
+}
+function v0570DataInfoHtml(){
+ const x=v0570GetState();
+ return `<h3>Datastatus</h3><p><b>${v0570Escape(x.dataStatus)}</b></p><p>Data är en separat del av Lina. Forskningsresultat ska kunna knytas till tydliga perioder, regler/hash och datakvalitet. Dashboarden visar bara status; själva dataverktyget öppnas separat.</p>`;
+}
+function v0570MaturityHtml(){
+ return `<h3>Robotmognad 48/100</h3><p>Mognaden höjs inte av fler historiska tester i sig. Jägaren och Swing G1 behöver samla verklig forwarddata, medan Swing G2 först ska genomföra sin förregistrerade A–O-process.</p><p>48/100 betyder forskningsfas – inte att Lina är redo för riktiga pengar.</p>`;
+}
+function v0570Technical(){
+  // Expose the old technical/data environment only intentionally.
+  v0570OpenData();
+  requestAnimationFrame(()=>{
+    document.querySelector('#pane-data details:last-of-type')?.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+}
+function v0570AllHistory(){
+  v0561Overlay('Alla historiska tester',v0564HistoryPickerHtml());
+  v0564BindHistoryPicker();
+  const btn=document.getElementById('v0564HistoryOpen');
+  if(btn){
+    const clone=btn.cloneNode(true);btn.parentNode.replaceChild(clone,btn);
+    clone.addEventListener('click',()=>{
+      const id=document.getElementById('v0564HistorySelect')?.value;
+      document.getElementById('v0561Overlay').hidden=true;
+      if(id)v0570OpenLab(id,'history')
+    });
+  }
+}
+function v0570Bind(){
+  document.querySelectorAll('[data-v0570-cat]').forEach(b=>b.addEventListener('click',()=>v0570ShowCategory(b.dataset.v0570Cat)));
+  document.querySelectorAll('[data-v0570-home]').forEach(b=>b.addEventListener('click',v0570RenderHome));
+  document.querySelectorAll('[data-v0570-lab]').forEach(b=>b.addEventListener('click',()=>v0570OpenLab(b.dataset.v0570Lab,b.dataset.return||v0570CurrentCategory)));
+  document.querySelectorAll('[data-v0570-action]').forEach(b=>b.addEventListener('click',()=>{
+    const a=b.dataset.v0570Action;
+    if(a==='method')v0561Overlay('Metod & principer',v0561MethodHtml());
+    if(a==='hunterhistory')v0561Overlay('Jägaren · forskning & historik',v0561JHistoryHtml());
+    if(a==='projecthistory')v0561Overlay('Projektets resa',v0561HistoryHtml());
+    if(a==='notes'){v0561Overlay('Projektanteckningar',v0561NotesHtml());v0561BindNote()}
+    if(a==='backup')v0540Dl(JSON.stringify(v0561Backup(),null,2),`LINAS_OPTI_FULL_BACKUP_V0570_${new Date().toISOString().slice(0,10)}.json`,'application/json');
+    if(a==='allhistory')v0570AllHistory();
+    if(a==='dataworkspace')v0570OpenData();
+    if(a==='datainfo')v0561Overlay('Datastatus',v0570DataInfoHtml());
+    if(a==='ideas')v0561Overlay('Idébank',v0570IdeasHtml());
+    if(a==='version')v0561Overlay('Version & nuläge',v0570VersionHtml());
+    if(a==='maturity')v0561Overlay('Robotmognad',v0570MaturityHtml());
+    if(a==='technical')v0570Technical();
+  }));
+}
+function v0570Header(){
+  document.body.classList.add('v0570-app');
+  const tools=document.querySelector('.v036-headtools');
+  if(tools&&!document.getElementById('v0570Trade')){
+    const t=document.createElement('span');t.id='v0570Trade';t.className='v0570-header-trade';t.textContent='Handel AV';
+    const refresh=document.getElementById('v0563Refresh');
+    tools.insertBefore(t,refresh||null);
+  }
+}
+function v0570Init(){
+  if(APP_VERSION!=='V0.57.0')return;
+  v0570Header();
+  // Start every fresh page load at the dashboard, never in legacy expanded UI.
+  v0570RenderHome();
+}
+window.addEventListener('DOMContentLoaded',()=>setTimeout(v0570Init,0));

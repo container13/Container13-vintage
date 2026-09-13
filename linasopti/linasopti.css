@@ -1785,3 +1785,150 @@ body.v0564-data-workspace .wrap{padding-top:12px!important;height:auto!important
 body.v0564-data-workspace{overflow-y:auto!important;overflow-x:hidden!important}
 @media(max-width:900px){.v0564-menu{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.v0564-menu{grid-template-columns:1fr}}
+
+
+/* ============================================================
+   V0.57.0 – APPLICATION ARCHITECTURE
+   Dashboard -> category -> subcategory/workspace.
+   Dashboard is navigation/status only. Detailed content never
+   expands underneath it.
+   ============================================================ */
+
+body.v0570-app .v0413-dashboard{display:none!important}
+body.v0570-app .v0561-dashboard{display:block!important}
+body.v0570-app #v0563MoreToggle,
+body.v0570-app #v0563MoreBlock,
+body.v0570-app #v0564Menu{display:none!important}
+
+.v0570-home,.v0570-category{display:grid;gap:12px}
+.v0570-home[hidden],.v0570-category[hidden]{display:none!important}
+
+.v0570-statusline{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:12px 14px;border:1px solid #d9e2ea;border-radius:15px;
+  background:rgba(255,255,255,.95)
+}
+.v0570-statusline h2{margin:0 0 2px;font-size:20px}
+.v0570-statusline p{margin:0;font-size:12px;opacity:.72;line-height:1.4}
+.v0570-chips{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.v0570-chip{
+  display:inline-flex;align-items:center;gap:4px;padding:5px 8px;border-radius:999px;
+  font-size:10px;font-weight:900;white-space:nowrap;background:#edf2f6;color:#46525f
+}
+.v0570-chip.red{background:#ffe9e9;color:#8a1d1d}
+.v0570-chip.green{background:#e7f5eb;color:#24633a}
+.v0570-chip.amber{background:#fff2d8;color:#895b00}
+.v0570-chip.blue{background:#e8f2ff;color:#225f9d}
+
+.v0570-next{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:11px 14px;border:1px solid #cfdff0;border-radius:15px;background:#f3f8ff
+}
+.v0570-next-label{font-size:9px;font-weight:900;letter-spacing:.12em;opacity:.58}
+.v0570-next b{display:block;font-size:15px;margin:2px 0}
+.v0570-next small{display:block;opacity:.68}
+.v0570-next button{white-space:nowrap}
+
+.v0570-category-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px
+}
+.v0570-catcard,.v0570-subcard{
+  appearance:none;width:100%;text-align:left;cursor:pointer;color:inherit;
+  border:1px solid #d8e1e9;border-radius:16px;background:rgba(255,255,255,.96);
+  padding:15px;box-shadow:0 3px 13px rgba(20,35,50,.045);
+  transition:transform .12s ease,border-color .12s ease,box-shadow .12s ease
+}
+.v0570-catcard:hover,.v0570-subcard:hover{
+  transform:translateY(-1px);border-color:#bdc9d5;box-shadow:0 7px 20px rgba(20,35,50,.07)
+}
+.v0570-cathead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.v0570-cat-icon{font-size:24px}
+.v0570-catcard h3,.v0570-subcard h3{font-size:16px;margin:9px 0 4px}
+.v0570-catcard p,.v0570-subcard p{font-size:11px;line-height:1.4;margin:0;opacity:.7}
+.v0570-catmeta{
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  margin-top:12px;font-size:10px;font-weight:800;opacity:.72
+}
+
+.v0570-breadcrumb{
+  display:flex;align-items:center;gap:8px;padding:3px 0 1px;font-size:12px
+}
+.v0570-breadcrumb button{
+  min-height:36px;padding:6px 10px;border-radius:10px;border:1px solid #d8e1e9;
+  background:#fff;font-weight:900
+}
+.v0570-breadcrumb span{opacity:.45}
+.v0570-category-title{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:12px;
+  padding:8px 1px 3px
+}
+.v0570-category-title h2{margin:0;font-size:21px}
+.v0570-category-title p{margin:3px 0 0;font-size:12px;opacity:.68}
+.v0570-subgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.v0570-subcard .v0570-state{float:right}
+.v0570-state{
+  display:inline-flex;padding:4px 7px;border-radius:999px;font-size:9px;font-weight:900;
+  background:#edf2f6;color:#46525f
+}
+.v0570-state.active{background:#e7f5eb;color:#24633a}
+.v0570-state.new{background:#fff2d8;color:#895b00}
+.v0570-state.done{background:#e8f2ff;color:#225f9d}
+.v0570-state.locked{background:#f0edf8;color:#5c4a7d}
+
+.v0570-mini-stats{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:10px
+}
+.v0570-mini-stats span{
+  display:block;padding:7px;border-radius:10px;background:#f5f8fa;
+  font-size:10px;text-align:center;font-weight:800
+}
+
+.v0570-section-note{
+  padding:11px 13px;border:1px solid #d8e1e9;border-radius:13px;background:rgba(255,255,255,.9);
+  font-size:11px;line-height:1.45;opacity:.76
+}
+
+.v0570-header-trade{
+  display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;
+  font-size:9px;font-weight:900;background:#ffe9e9;color:#8a1d1d
+}
+
+/* Workspaces: no dashboard/category content underneath. */
+body.v0570-workspace #v0561Dashboard{display:none!important}
+body.v0570-workspace .v0413-dashboard{display:none!important}
+
+/* Data workspace returns to category Data rather than generic legacy home. */
+body.v0570-data-workspace #v0561Dashboard{display:none!important}
+body.v0570-data-workspace #v0560ForwardMenu,
+body.v0570-data-workspace #v0560ResearchMenu,
+body.v0570-data-workspace #pane-testlab{display:none!important}
+body.v0570-data-workspace #pane-data{display:block!important}
+body.v0570-data-workspace .tabs,
+body.v0570-data-workspace #v0424TesterNav{display:none!important}
+body.v0570-data-workspace .sticky-top{
+  position:relative!important;top:auto!important;left:auto!important;right:auto!important;width:auto!important
+}
+body.v0570-data-workspace .wrap{
+  padding-top:12px!important;height:auto!important;min-height:100vh!important;overflow:visible!important
+}
+body.v0570-data-workspace{overflow-y:auto!important;overflow-x:hidden!important}
+body.v0570-data-workspace #v0564DataHead{display:flex!important}
+
+/* The legacy pane must never leak under the new dashboard. */
+body.v0570-app:not(.v0570-data-workspace):not(.v0570-workspace) #pane-data,
+body.v0570-app:not(.v0570-data-workspace):not(.v0570-workspace) #pane-testlab{
+  display:none!important
+}
+
+@media(max-width:1050px){
+  .v0570-category-grid,.v0570-subgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+  .v0570-statusline{display:grid}
+  .v0570-chips{justify-content:flex-start}
+  .v0570-next{display:grid}
+  .v0570-next button{width:100%}
+  .v0570-category-grid,.v0570-subgrid{grid-template-columns:1fr}
+  .v0570-category-title{display:block}
+  .v0570-catcard,.v0570-subcard{padding:14px}
+}

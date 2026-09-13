@@ -1,4 +1,4 @@
-# Linas Opti V0.56.4
+# Linas Opti V0.57.0
 
 > **Aktuell release: V0.56.1** · Dashboard-first kontrollcentral · responsiv mobil/desktop · tydlig status/nytt/klart · historik/utveckling · Forward + forskning · Handel AV · Robotmognad 48/100
 
@@ -1045,3 +1045,41 @@ For the Lina project, the assistant must **never generate, create, redesign or m
 - Project journey, Jägaren history, methodology and notes open as focused overlays.
 - `Alla historiska tester` provides a compact picker instead of rendering the full legacy page.
 - No strategy/data/forward/risk/trading logic changed.
+
+
+## Permanent UI architecture rule – dashboard is navigation, not content
+
+From V0.57.0 onward Lina uses a strict three-level application hierarchy:
+
+1. **Dashboard** – only status, next step and top-level categories.
+2. **Category page** – only relevant subcategories/actions.
+3. **Workspace/detail view** – the actual detailed test, data tool, history or report.
+
+Permanent rules:
+- New functionality must **not automatically add more detail to the dashboard**.
+- Detailed legacy/test/data content must never expand underneath the dashboard.
+- Each workspace must provide a clear back path to its parent category.
+- The same information architecture must adapt automatically to mobile and larger screens.
+- Existing research engines/history may remain under the hood; navigation controls what is visible.
+
+## V0.57.0 – Application architecture
+
+Major UI architecture change.
+
+Lina is no longer treated as one growing Trading Lab page. It is now organized as:
+
+`Dashboard → Category → Subcategory / Workspace`
+
+Top-level dashboard categories:
+- Forward
+- Forskning
+- Historik
+- Data
+- Verktyg
+- Om Lina
+
+The dashboard contains only project status, next step and category navigation. Detailed research/data/history tools are opened separately and never render underneath the dashboard.
+
+Existing strategy engines, stored forward state and historical labs remain intact.
+
+No strategy, signal, data, forward anchor, risk or trading rule was changed.

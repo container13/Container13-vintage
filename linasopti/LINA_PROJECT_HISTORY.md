@@ -91,3 +91,31 @@ Dashboarden förenklades till en verklig översikt: tre kompakta spår, uppdater
 
 ## V0.56.4
 Den gamla jättesidan under `Historik, forskning & verktyg` togs bort från dashboardflödet. I stället öppnas separata fokuserade arbetsvyer/overlays för historik, Jägaren, Swing G1, Tidsmaskin, metod, data och anteckningar. Alla äldre testmoduler finns kvar via en kompakt väljare.
+
+
+## Permanent UI architecture rule – dashboard is navigation, not content
+
+From V0.57.0 onward Lina uses a strict three-level application hierarchy:
+
+1. **Dashboard** – only status, next step and top-level categories.
+2. **Category page** – only relevant subcategories/actions.
+3. **Workspace/detail view** – the actual detailed test, data tool, history or report.
+
+Permanent rules:
+- New functionality must **not automatically add more detail to the dashboard**.
+- Detailed legacy/test/data content must never expand underneath the dashboard.
+- Each workspace must provide a clear back path to its parent category.
+- The same information architecture must adapt automatically to mobile and larger screens.
+- Existing research engines/history may remain under the hood; navigation controls what is visible.
+
+## V0.57.0 – arkitekturbrytpunkt
+
+Lina gick från en växande testsida till en riktig kontrollcentral/applikation.
+
+Ny informationsarkitektur:
+Dashboard → kategori → underkategori/arbetsvy.
+
+Huvudkategorier:
+Forward, Forskning, Historik, Data, Verktyg och Om Lina.
+
+Detta gjordes efter att V0.56.x visade att även en kompakt dashboard blev rörig när äldre LABB/data-information fortfarande kunde vecklas ut under den. Från V0.57.0 får detaljinnehåll aldrig läcka in under dashboarden.
