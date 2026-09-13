@@ -1145,7 +1145,7 @@ Changes:
 Permanent responsive rule:
 Normal user-facing information must fit without horizontal scrolling on a 13-inch screen. On mobile, wide tables must reflow into a readable stacked/card representation. Horizontal scrolling is reserved for genuine raw/technical data where preserving the raw table is more important than overview.
 
-## V0.58.0 – navigation & orientation audit
+## V0.58.1 – navigation & orientation audit
 
 The whole package was inspected for subviews that could visually replace the dashboard without clearly identifying the current location.
 
@@ -1282,3 +1282,19 @@ The generic Data tool remains available as an advanced/general tool, but it is n
 
 Permanent research UX rule:
 When an experiment can determine its own frozen inputs, the primary action is `Kör`. After completion, Lina must provide an explicit export action and tell the user to send that report to ChatGPT for analysis.
+
+## V0.58.1 – authoritative G2 route
+
+V0.58.0 still allowed legacy pane logic to win and show generic Data after the user chose G2.
+
+V0.58.1 makes the G2 route authoritative:
+- clicking G2 can only activate the G2 workspace
+- Data/Test/Result panes are forcibly hidden while G2 is active
+- only `#v0560SwingG2Lab` is visible in Testlab
+- legacy `show('data')` calls are ignored while G2 is active
+- G2 always shows its own context header and V0.58 guided flow
+- leaving G2 through category/home explicitly clears the G2 route
+- fresh page load still starts at Dashboard
+
+Permanent route rule:
+A module route owns the visible workspace until the user explicitly leaves that module. Legacy pane switches may not hijack an active modern workflow.

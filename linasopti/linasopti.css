@@ -2473,3 +2473,29 @@ body.v0579-g2-data #pane-data > .card:first-child{display:none!important}
 .v0580-advanced>summary{font-weight:900;cursor:pointer}
 .v0580-done{border-color:#9fd6b4;background:#f2fbf5}
 @media(max-width:699px){.v0580-actions>*{width:100%}.v0580-g2flow{padding:15px}.v0580-g2flow h3{font-size:20px}}
+
+/* ============================================================
+   V0.58.1 – AUTHORITATIVE G2 ROUTE
+   Clicking G2 can only show the G2 workspace.
+   Legacy Data/Test/Result panes cannot win while G2 is active.
+   ============================================================ */
+body.v0581-g2-active #pane-data,
+body.v0581-g2-active #pane-test,
+body.v0581-g2-active #pane-result{
+  display:none!important;
+}
+body.v0581-g2-active #pane-testlab{
+  display:block!important;
+}
+body.v0581-g2-active #v0560SwingG2Lab{
+  display:block!important;
+}
+body.v0581-g2-active #v0574ContextBar{
+  display:flex!important;
+}
+body.v0581-g2-active #v0560SwingG2Lab .v0580-g2flow{
+  display:block!important;
+}
+body.v0581-g2-active .v0413-lab-section:not(#v0560SwingG2Lab){
+  display:none!important;
+}

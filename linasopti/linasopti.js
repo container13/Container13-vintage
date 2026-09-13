@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.58.0";
+const APP_VERSION = "V0.58.1";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -6634,3 +6634,123 @@ window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{
   if(APP_VERSION!=='V0.58.0')return;
   v0580PaintG2Flow();
 },420));
+
+
+// ============================================================
+// V0.58.1 – authoritative G2 route
+// ============================================================
+const V0581_ROUTE_KEY='linasopti_active_route_v0581';
+
+function v0581SetRoute(route){
+  try{localStorage.setItem(V0581_ROUTE_KEY,route||'dashboard')}catch(e){}
+}
+function v0581GetRoute(){
+  try{return localStorage.getItem(V0581_ROUTE_KEY)||'dashboard'}catch(e){return 'dashboard'}
+}
+
+function v0581ApplyG2Context(){
+  try{
+    v0578SaveOwner({kind:'g2',category:'research',owner:'🚀 Swing G2',module:'Breakout/Momentum · A–O'});
+  }catch(e){}
+  try{
+    v0574SetContext({
+      cat:'research',
+      title:'🚀 Swing G2 · Breakout/Momentum · A–O',
+      purpose:'Aktuellt forskningsflöde · Lås plan → Kör A–O → Exportera rapport',
+      parent:'Forskning',
+      back:()=>v0570ShowCategory('research')
+    });
+  }catch(e){}
+}
+
+function v0581OpenG2(){
+  v0581SetRoute('g2');
+  document.body.classList.remove(
+    'v0561-dashboard-mode','v0570-data-workspace','v0571-flow-workspace',
+    'v0564-data-workspace','v0579-g2-data'
+  );
+  document.body.classList.add('v0570-app','v0570-workspace','v0581-g2-active');
+
+  const dash=document.getElementById('v0561Dashboard');
+  if(dash)dash.style.display='none';
+
+  // Hide all primary panes, then reveal only Testlab/G2.
+  ['pane-data','pane-test','pane-result'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.classList.add('hidden');el.style.setProperty('display','none','important')}
+  });
+  const pane=document.getElementById('pane-testlab');
+  if(pane){pane.classList.remove('hidden');pane.style.setProperty('display','block','important')}
+
+  document.querySelectorAll('#pane-testlab .v0413-lab-section').forEach(el=>{
+    const on=el.id==='v0560SwingG2Lab';
+    el.hidden=!on;
+    el.style.setProperty('display',on?'block':'none','important');
+  });
+
+  v0581ApplyG2Context();
+  try{v0580PaintG2Flow()}catch(e){}
+  requestAnimationFrame(()=>{
+    const top=document.getElementById('v0574ContextBar')||document.getElementById('v0560SwingG2Lab');
+    top?.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+}
+
+function v0581LeaveG2(){
+  document.body.classList.remove('v0581-g2-active');
+  v0581SetRoute('dashboard');
+}
+
+// Override all current G2 entry points.
+const v0581OldOpenLab=v0570OpenLab;
+v0570OpenLab=function(id,returnCat){
+  if(id==='v0560SwingG2Lab'){
+    v0581OpenG2();
+    return;
+  }
+  v0581LeaveG2();
+  return v0581OldOpenLab(id,returnCat);
+};
+
+// Category/home exits G2 explicitly.
+const v0581OldCategory=v0570ShowCategory;
+v0570ShowCategory=function(cat){
+  v0581LeaveG2();
+  return v0581OldCategory(cat);
+};
+const v0581OldHome=v0570RenderHome;
+v0570RenderHome=function(){
+  v0581LeaveG2();
+  return v0581OldHome();
+};
+
+// Intercept any G2 card/button route before older click handlers.
+document.addEventListener('click',e=>{
+  if(APP_VERSION!=='V0.58.1')return;
+  const el=e.target.closest('[data-v0570-lab="v0560SwingG2Lab"],#v0560SwingG2Lab .v0580-g2flow button');
+  if(!el)return;
+  if(el.matches('[data-v0570-lab="v0560SwingG2Lab"]')){
+    e.preventDefault();e.stopImmediatePropagation();v0581OpenG2();
+  }
+},true);
+
+// Hard guard: while G2 is active, legacy show('data') cannot hijack the workspace.
+const v0581OldShow=show;
+show=function(p,fromTab=false){
+  if(document.body.classList.contains('v0581-g2-active') && p!=='testlab'){
+    // Ignore legacy pane switches while the user is in G2.
+    return;
+  }
+  return v0581OldShow(p,fromTab);
+};
+
+function v0581Boot(){
+  if(APP_VERSION!=='V0.58.1')return;
+
+  // Current release always starts at Dashboard on fresh load.
+  // If user deliberately re-enters G2, only v0581OpenG2 can activate it.
+  v0581SetRoute('dashboard');
+  document.body.classList.remove('v0581-g2-active');
+  try{v0570RenderHome()}catch(e){}
+}
+window.addEventListener('DOMContentLoaded',()=>setTimeout(v0581Boot,500));

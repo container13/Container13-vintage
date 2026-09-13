@@ -210,3 +210,13 @@ G2:s huvudsakliga UI är nu:
 4. Skicka rapportfilen till ChatGPT för analys och beslut om nästa steg.
 
 Avancerade gamla G2-kontroller finns kvar bakom en utfällning. Forskningslogiken är oförändrad.
+
+## V0.58.1 – G2 får ensamrätt på sin arbetsyta
+
+V0.58.0 var korrekt tänkt men legacy `show('data')` kunde fortfarande vinna efter klick på G2. V0.58.1 inför en hård, auktoritativ G2-route.
+
+När G2 är aktiv:
+- bara Swing G2-modulen visas
+- Data/Test/Resultat är dolda
+- äldre show()-anrop ignoreras
+- G2-kontext och guidat Kör → Exportera-flöde visas
