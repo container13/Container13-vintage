@@ -1145,7 +1145,7 @@ Changes:
 Permanent responsive rule:
 Normal user-facing information must fit without horizontal scrolling on a 13-inch screen. On mobile, wide tables must reflow into a readable stacked/card representation. Horizontal scrolling is reserved for genuine raw/technical data where preserving the raw table is more important than overview.
 
-## V0.57.8 – navigation & orientation audit
+## V0.58.0 – navigation & orientation audit
 
 The whole package was inspected for subviews that could visually replace the dashboard without clearly identifying the current location.
 
@@ -1248,3 +1248,37 @@ The same pattern is applied to Jägaren and Swing G1 contexts where a shared Dat
 
 Permanent UX rule:
 Shared tools such as Data, Test and Result must inherit the identity of the workflow/strategy that opened them. The owner, current step, breadcrumb and Back destination must all agree.
+
+## V0.57.9 – G2 guided workflow
+
+Swing G2 no longer dumps the user into the generic Data workbench as the primary experience.
+
+G2 now owns a guided first step:
+`Swing G2 → Steg 1: Hämta forskningsdata`.
+
+The user is shown the frozen/pre-registered requirements:
+- Lina Selection 16
+- daily data
+- DEV 2020–2022
+- locked pseudo-forward 2023–2026
+
+One primary action, `Hämta G2-data`, configures the known data choices and invokes the existing data fetch. Advanced Data settings remain available behind `Visa datainställningar`.
+
+When data is ready, the same G2 context shows:
+`✓ G2-data klar → Nästa: Steg A – Dataintegritet → Fortsätt till steg A`.
+
+Permanent UX rule:
+A research workflow with pre-registered inputs must present those inputs as fixed workflow requirements, not ask the user to reconstruct them in a generic tool.
+
+## V0.58.0 – G2 returns to the proven research loop
+
+The user-facing G2 workflow is deliberately simple again:
+
+`Lås plan → Kör G2 A–O → Resultat klart → Exportera G2-rapport till ChatGPT`.
+
+The existing G2 engine already knows its exact data periods and fetches the required data itself. Therefore the normal G2 path must NOT force the user through the generic Data workbench.
+
+The generic Data tool remains available as an advanced/general tool, but it is not a required step in G2.
+
+Permanent research UX rule:
+When an experiment can determine its own frozen inputs, the primary action is `Kör`. After completion, Lina must provide an explicit export action and tell the user to send that report to ChatGPT for analysis.

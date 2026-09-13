@@ -192,3 +192,21 @@ V0.57.7 inför därför en enda auktoritativ current-app boot. Efter att äldre 
 Data/Test/Resultat visade tidigare bara generisk Data-kontext även när användaren kom från Swing G2. V0.57.8 sparar därför vilken strategi/modul som äger arbetsflödet och använder den identiteten i den gemensamma arbetsheadern.
 
 Exempel: Dashboard → Forskning → Swing G2 → Data visar Swing G2 tydligt, steg Data/Marknadsdata och `← Swing G2`.
+
+## V0.57.9 – G2 får ett riktigt guidat arbetsflöde
+
+Efter V0.57.8 stod det klart att ägarkontext inte räckte: G2 skickade fortfarande användaren till den generella Data-arbetsbänken. V0.57.9 gör därför G2:s första arbetssteg till en egen guidad vy.
+
+G2 visar vad som är förinställt, vad användaren ska göra nu och vad som kommer därefter. Avancerade dataval finns kvar men är sekundära. Ett klick på Hämta G2-data startar befintlig datahämtning med G2:s förbestämda val.
+
+## V0.58.0 – tillbaka till Kör → Exportera
+
+Vi återställde den fungerande forskningsmodellen från tidigare Lina: användaren ska inte manuellt bygga upp dataflödet för en förregistrerad studie. G2-motorn hämtar själv sina exakta perioder när A–O körs.
+
+G2:s huvudsakliga UI är nu:
+1. Lås G2-planen.
+2. Kör/Fortsätt G2 A–O.
+3. När O är klart: Exportera G2-rapport till ChatGPT.
+4. Skicka rapportfilen till ChatGPT för analys och beslut om nästa steg.
+
+Avancerade gamla G2-kontroller finns kvar bakom en utfällning. Forskningslogiken är oförändrad.

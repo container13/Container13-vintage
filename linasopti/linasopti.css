@@ -2440,3 +2440,36 @@ body.v0570-app.v0561-dashboard-mode #v0574ContextBar{
   color:#687586;
   margin-bottom:2px;
 }
+
+/* V0.57.9 — G2 GUIDED FLOW */
+#v0579G2Guide{display:none}
+body.v0579-g2-data #v0579G2Guide{display:block}
+body.v0579-g2-data #pane-data > .card:first-child{display:none!important}
+.v0579-guide{width:min(calc(100% - 24px),900px);margin:16px auto;padding:20px;border:1px solid #bfd8ee;border-radius:18px;background:rgba(255,255,255,.92)}
+.v0579-kicker{font-size:11px;font-weight:950;letter-spacing:.08em;color:#687586;text-transform:uppercase}
+.v0579-guide h2{margin:5px 0 5px;font-size:25px}
+.v0579-guide p{margin:5px 0 12px;color:#536171}
+.v0579-plan{padding:14px;border-radius:14px;background:#f2f7fb;border:1px solid #d7e3ed;margin:14px 0}
+.v0579-plan strong{display:block;margin-bottom:5px}
+.v0579-action{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.v0579-primary{border:0;border-radius:14px;background:#236aa2;color:#fff;font-weight:950;font-size:16px;padding:14px 20px;cursor:pointer}
+.v0579-secondary{border:1px solid #ccd8e3;border-radius:14px;background:#fff;font-weight:850;padding:13px 16px;cursor:pointer}
+.v0579-ready{margin-top:14px;padding:14px;border:2px solid #a9ddbd;border-radius:14px;background:#f1fbf5}
+@media(max-width:699px){
+ .v0579-guide{width:calc(100% - 16px);padding:16px}
+ .v0579-action>*{width:100%}
+}
+
+/* V0.58.0 — G2: KÖR → RESULTAT → EXPORTERA */
+.v0580-g2flow{margin:14px 0 18px;padding:18px;border:2px solid #bdd8ef;border-radius:18px;background:rgba(247,251,255,.96)}
+.v0580-eyebrow{font-size:11px;font-weight:950;letter-spacing:.08em;color:#47708f}
+.v0580-g2flow h3{font-size:23px;margin:5px 0}
+.v0580-g2flow p{margin:4px 0 12px;color:#526171}
+.v0580-fixed{padding:12px 14px;border-radius:13px;background:#fff;border:1px solid #d9e4ed;margin-bottom:12px}
+.v0580-actions{display:flex;gap:10px;flex-wrap:wrap}
+.v0580-primary,.v0580-export{min-height:50px;font-size:16px;font-weight:950}
+.v0580-hint{margin-top:10px;font-size:13px;font-weight:800;color:#667383}
+.v0580-advanced{margin:10px 0 14px;border:1px solid #dbe3ea;border-radius:13px;padding:10px 12px;background:rgba(255,255,255,.7)}
+.v0580-advanced>summary{font-weight:900;cursor:pointer}
+.v0580-done{border-color:#9fd6b4;background:#f2fbf5}
+@media(max-width:699px){.v0580-actions>*{width:100%}.v0580-g2flow{padding:15px}.v0580-g2flow h3{font-size:20px}}

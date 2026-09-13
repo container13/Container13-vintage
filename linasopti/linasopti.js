@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.57.8";
+const APP_VERSION = "V0.58.0";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -6374,8 +6374,8 @@ function v0578ContextPayload(pane){
         parent:o.owner.replace(/^[^\p{L}\p{N}]+/u,'').trim(),
         path:`Dashboard › ${v0572CategoryLabel(o.category||'research')} › ${o.owner.replace(/^[^\p{L}\p{N}]+/u,'').trim()} › Data`,
         owner:o.owner,
-        step:'Steg: Data · Marknadsdata',
-        purpose:`Här hämtar du data till ${o.owner.replace(/^[^\p{L}\p{N}]+/u,'').trim()}${o.module?` · ${o.module}`:''}.`,
+        step:o.kind==='g2'?'Steg 1: Hämta forskningsdata':'Steg: Data · Marknadsdata',
+        purpose:o.kind==='g2'?'G2 behöver dagsdata för Lina Selection 16. Inställningarna är redan bestämda i forskningsplanen.':`Här hämtar du data till ${o.owner.replace(/^[^\p{L}\p{N}]+/u,'').trim()}${o.module?` · ${o.module}`:''}.`,
         back:()=>v0570OpenLab(o.kind==='g2'?'v0560SwingG2Lab':
                              o.kind==='g1-forward'?'v0550SwingForwardLab':
                              o.kind==='hunter-forward'?'v0510ForwardLab':
@@ -6464,3 +6464,173 @@ function v0578Init(){
   requestAnimationFrame(()=>v0576RefreshVisibleState());
 }
 window.addEventListener('DOMContentLoaded',()=>setTimeout(v0578Init,300));
+
+
+// ============================================================
+// V0.57.9 – G2 owns its data step
+// ============================================================
+function v0579SetOwner(owner){ v0578SaveOwner(owner); }
+
+function v0579OpenG2Data(){
+  const owner={kind:'g2',category:'research',owner:'🚀 Swing G2',module:'Breakout/Momentum · A–O'};
+  v0579SetOwner(owner);
+  document.body.classList.add('v0579-g2-data');
+  try{show('data',false)}catch(e){}
+  try{v0578RenderContextForPane('data')}catch(e){}
+  v0579PaintG2DataState();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function v0579PaintG2DataState(){
+  const ready=document.getElementById('v0579G2Ready');
+  const need=document.getElementById('v0579G2Need');
+  if(!ready||!need)return;
+  // Reuse Lina's actual data-ready state instead of inventing a second source of truth.
+  const hasRows = Array.isArray(window.DATA) ? window.DATA.length>0 :
+                  (typeof DATA!=='undefined' && Array.isArray(DATA) ? DATA.length>0 : false);
+  ready.hidden=!hasRows;
+  need.style.display=hasRows?'none':'block';
+}
+
+function v0579ConfigureG2Data(){
+  // Exact research universe and daily data. Period selection is intentionally
+  // not delegated to the user in the guided G2 path.
+  try{
+    const btn=document.querySelector('.market-btn[data-market="lina16"]') ||
+              [...document.querySelectorAll('.market-btn[data-market]')].find(b=>/Lina Selection 16/i.test(b.textContent));
+    if(btn)btn.click();
+  }catch(e){}
+  try{
+    const daily=document.querySelector('[data-type="1day"],[data-timeframe="1Day"],[data-timeframe="1day"]') ||
+                [...document.querySelectorAll('button')].find(b=>/Dagsdata/i.test(b.textContent));
+    if(daily && !daily.classList.contains('active'))daily.click();
+  }catch(e){}
+}
+
+function v0579FetchG2(){
+  v0579ConfigureG2Data();
+  // Use the existing real fetch button/function; one user click starts the work.
+  const candidates=[...document.querySelectorAll('#pane-data button')];
+  const fetch=candidates.find(b=>/Hämta data/i.test(b.textContent));
+  if(fetch){ fetch.click(); setTimeout(v0579PaintG2DataState,500); }
+}
+
+function v0579ShowAdvanced(){
+  const card=document.querySelector('#pane-data > .card:first-child');
+  if(card)card.style.setProperty('display','block','important');
+  const b=document.getElementById('v0579ShowAdvanced');
+  if(b)b.textContent='Datainställningar visas';
+}
+
+function v0579ContinueA(){
+  document.body.classList.remove('v0579-g2-data');
+  v0570OpenLab('v0560SwingG2Lab','research');
+  setTimeout(()=>{
+    const lab=document.getElementById('v0560SwingG2Lab');
+    if(lab){
+      const first=[...lab.querySelectorAll('button')].find(b=>/\bA\b|integritet|starta|kör/i.test(b.textContent));
+      if(first){first.scrollIntoView({behavior:'smooth',block:'center'});first.focus();}
+      else lab.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  },80);
+}
+
+// Critical fix: route G2's "data needed" actions to the owned guided view.
+// Capture click before legacy handlers can drop the workflow owner.
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button,a');
+  if(!b)return;
+  const txt=(b.textContent||'').trim();
+  const inG2=!!b.closest('#v0560SwingG2Lab');
+  if(inG2 && /(data|hämta|fortsätt|start)/i.test(txt) && !/A–O|rapport|backup/i.test(txt)){
+    if(/data|hämta/i.test(txt)){
+      e.preventDefault(); e.stopImmediatePropagation(); v0579OpenG2Data();
+    }
+  }
+},true);
+
+function v0579Init(){
+  if(APP_VERSION!=='V0.57.9')return;
+  const f=document.getElementById('v0579FetchG2');
+  const a=document.getElementById('v0579ShowAdvanced');
+  const c=document.getElementById('v0579ContinueA');
+  if(f)f.onclick=v0579FetchG2;
+  if(a)a.onclick=v0579ShowAdvanced;
+  if(c)c.onclick=v0579ContinueA;
+
+  // If an existing G2 owner survives a reload while Data is visible, restore guided context.
+  const o=v0578LoadOwner();
+  if(o.kind==='g2' && v0576VisiblePane()==='pane-data'){
+    document.body.classList.add('v0579-g2-data');
+    v0578RenderContextForPane('data');
+    v0579PaintG2DataState();
+  }
+}
+window.addEventListener('DOMContentLoaded',()=>setTimeout(v0579Init,350));
+
+
+// ============================================================
+// V0.58.0 – G2 SIMPLE RESEARCH LOOP
+// User-facing truth: KÖR -> RESULTAT -> EXPORTERA TILL CHATGPT.
+// The existing v0560 engine remains authoritative and fetches its own exact data.
+// ============================================================
+function v0580G2State(){
+  const x=v0560Load();
+  const done=x?Object.keys(x.stages||{}).length:0;
+  return {x,done,locked:!!x?.planLocked,complete:!!x?.stages?.O};
+}
+function v0580PaintG2Flow(){
+  if(APP_VERSION!=='V0.58.0')return;
+  const {x,done,locked,complete}=v0580G2State();
+  const box=document.getElementById('v0580G2Flow'),
+        title=document.getElementById('v0580G2Title'),
+        text=document.getElementById('v0580G2Text'),
+        primary=document.getElementById('v0580G2Primary'),
+        exp=document.getElementById('v0580G2Export'),
+        hint=document.getElementById('v0580G2Hint');
+  if(!box||!title||!text||!primary||!exp||!hint)return;
+
+  box.classList.toggle('v0580-done',complete);
+  exp.hidden=!complete;
+
+  if(!locked){
+    title.textContent='Steg 1 · Lås forskningsplanen';
+    text.textContent='Planen är förregistrerad. Du behöver inte välja marknad, period eller testinställningar.';
+    primary.hidden=false; primary.disabled=false;
+    primary.textContent='🔒 Lås G2-planen';
+    primary.onclick=()=>{v0560Lock();v0580PaintG2Flow()};
+    hint.textContent='Efter låsning får du en enda Kör-knapp.';
+    return;
+  }
+  if(!complete){
+    title.textContent=`Steg 2 · Kör Swing G2 A–O`;
+    text.textContent=`${done}/15 steg klara. Lina hämtar rätt data, kör testerna i rätt ordning, fryser kandidaten vid M och öppnar pseudo-forward först vid N.`;
+    primary.hidden=false; primary.disabled=false;
+    primary.textContent=done?'▶ Fortsätt G2 A–O':'▶ Kör G2 A–O';
+    primary.onclick=async()=>{primary.disabled=true;primary.textContent='⏳ G2 kör…';await v0560Run();v0580PaintG2Flow()};
+    hint.textContent='Du behöver inte gå via det generella Data-verktyget.';
+    return;
+  }
+  title.textContent='✓ Swing G2 A–O är klar';
+  text.textContent=`${x.final?.verdict||'Slutrapport klar'}. Körningen är färdig. Nästa steg är att exportera rapporten och skicka filen till ChatGPT för analys.`;
+  primary.hidden=true;
+  exp.hidden=false;
+  exp.onclick=()=>v0540Dl(v0560Report(),`LINAS_OPTI_SWING_G2_A_O_V0580_${new Date().toISOString().slice(0,10)}.txt`);
+  hint.textContent='Nästa: exportera rapporten → dra filen till ChatGPT.';
+}
+
+// Keep the old controls synchronized but secondary.
+const v0580OldPaint=v0560Paint;
+v0560Paint=function(){const r=v0580OldPaint();try{v0580PaintG2Flow()}catch(e){}return r};
+
+// V0.57.9 generic-data interception is no longer the primary G2 path.
+// Prevent its capture handler from hijacking the new V0.58.0 guided buttons.
+document.addEventListener('click',e=>{
+  if(APP_VERSION!=='V0.58.0')return;
+  if(e.target.closest('#v0580G2Flow')) e.stopPropagation();
+},true);
+
+window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{
+  if(APP_VERSION!=='V0.58.0')return;
+  v0580PaintG2Flow();
+},420));

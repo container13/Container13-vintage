@@ -9,21 +9,21 @@
 <meta name="theme-color" content="#f4f6f8">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Linas Opti</title>
-<link rel="stylesheet" href="linasopti.css?v=0.57.8">
+<link rel="stylesheet" href="linasopti.css?v=0.58.0">
 
   <meta name="theme-color" content="#f4f7fb">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Linas Opti">
-  <link rel="apple-touch-icon" href="lina-circle.png?v=0.57.8">
+  <link rel="apple-touch-icon" href="lina-circle.png?v=0.58.0">
 </head>
 <body class="v0384-locked">
 
 <div id="v0383Gate" class="v0383-gate" aria-hidden="false">
   <div class="v0383-gate-card">
     <h1>Linas Opti</h1>
-    <div class="v04512-gate-version" aria-label="Version">V0.57.8</div>
+    <div class="v04512-gate-version" aria-label="Version">V0.58.0</div>
     <p>Ange lösenkod för att fortsätta</p>
     <input id="v0383Code" name="lina_one_time_code_0470" type="password" inputmode="text" autocomplete="one-time-code" autocapitalize="off" autocorrect="off" spellcheck="false" value="" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" placeholder="Lösenkod">
     <button id="v0383Enter" type="button">Öppna Linas Opti</button>
@@ -34,7 +34,7 @@
 <div class="lina-watermark" aria-hidden="true"></div>
 <div class="wrap">
 <div class="sticky-top">
-<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Kontrollcentral • Forward • Forskning • Historik</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.57.8</div></div></div></div></header>
+<header><div class="brand"><h1>Linas Opti</h1><div class="sub">Kontrollcentral • Forward • Forskning • Historik</div><div class="status-stack"><div class="badge" id="modeBadge">DATA EJ INLÄST</div><div class="v036-headtools"><div id="appVersion" aria-label="Version">V0.58.0</div></div></div></div></header>
 
 <div class="v0413-dashboard" aria-label="Linas robotstatus">
   <button type="button" id="v0413Maturity" class="v0413-stat" aria-label="Visa förklaring av robotmognad"><span>🤖 Robotmognad</span><b id="v0413MaturityValue">48/100</b><small>Forskningsfas</small></button>
@@ -159,7 +159,7 @@
   <div class="v0561-latest">
     <h3>Senaste ändringar</h3>
     <div class="v0561-latest-list">
-      <div><span>🆕</span><p><b>V0.57.8</b><br>Ny dashboard-first kontrollcentral.</p></div>
+      <div><span>🆕</span><p><b>V0.58.0</b><br>Ny dashboard-first kontrollcentral.</p></div>
       <div><span>🆕</span><p><b>V0.56.0</b><br>Swing G2 Breakout/Momentum A–O tillagd.</p></div>
       <div><span>✅</span><p><b>V0.55.x</b><br>Jägaren och Swing G1 separerade som riktiga forwardspår.</p></div>
     </div>
@@ -240,6 +240,30 @@
 </div>
 </div>
 
+<section id="v0579G2Guide" class="v0579-guide" aria-live="polite">
+  <div class="v0579-kicker">🚀 Swing G2 · forskningsflöde</div>
+  <h2>Steg 1: Hämta forskningsdata</h2>
+  <p>G2 behöver rätt historik innan A–O kan börja. Du behöver inte välja marknad eller period själv.</p>
+  <div class="v0579-plan">
+    <strong>Förinställt av G2-planen</strong>
+    Lina Selection 16 · Dagsdata<br>
+    DEV 2020–2022 · låst pseudo-forward 2023–2026
+  </div>
+  <div id="v0579G2Need">
+    <strong>Gör nu:</strong> tryck på <b>Hämta G2-data</b>. Lina ställer in rätt data automatiskt.
+  </div>
+  <div class="v0579-action">
+    <button id="v0579FetchG2" class="v0579-primary" type="button">Hämta G2-data</button>
+    <button id="v0579ShowAdvanced" class="v0579-secondary" type="button">Visa datainställningar</button>
+  </div>
+  <div id="v0579G2Ready" class="v0579-ready" hidden>
+    <strong>✓ G2-data klar</strong><br>
+    Nästa: Steg A – Dataintegritet
+    <div class="v0579-action" style="margin-top:10px">
+      <button id="v0579ContinueA" class="v0579-primary" type="button">Fortsätt till steg A</button>
+    </div>
+  </div>
+</section>
 <section id="pane-data">
 
 
@@ -558,6 +582,22 @@
     Signal på stängd dagsbar → entry nästa handelsdags open.
   </div>
 
+  <div id="v0580G2Flow" class="v0580-g2flow">
+    <div class="v0580-eyebrow">🚀 SWING G2 · GUIDAT FORSKNINGSFLÖDE</div>
+    <h3 id="v0580G2Title">Steg 1 · Lås forskningsplanen</h3>
+    <p id="v0580G2Text">Planen är förregistrerad. Lås den innan Lina hämtar eller testar någon G2-data.</p>
+    <div id="v0580G2Fixed" class="v0580-fixed">
+      <b>Förbestämt:</b> Lina Selection 16 · dagsdata · DEV 2020–2022 · låst pseudo-forward 2023–2026 · 648 varianter.
+    </div>
+    <div class="v0580-actions">
+      <button id="v0580G2Primary" class="primary v0580-primary" type="button">🔒 Lås G2-planen</button>
+      <button id="v0580G2Export" class="secondary v0580-export" type="button" hidden>📤 Exportera G2-rapport till ChatGPT</button>
+    </div>
+    <div id="v0580G2Hint" class="v0580-hint">Nästa steg visas här automatiskt.</div>
+  </div>
+
+  <details class="v0580-advanced">
+    <summary>Avancerade G2-kontroller</summary>
   <div class="v0470-bactions">
     <button id="v0560Lock" class="primary v0410-big">🔒 Lås G2-plan</button>
     <button id="v0560Run" class="primary v0410-big" disabled>▶ Kör hela A–O</button>
@@ -566,6 +606,7 @@
     <button id="v0560Backup" class="secondary" disabled>💾 Backup</button>
     <button id="v0560Reset" class="secondary">↺ Återställ endast G2</button>
   </div>
+  </details>
 
   <div id="v0560Live" class="v0410-status"><b>Inte låst</b><span id="v0560DetailLine">Lås planen innan någon G2-data hämtas.</span></div>
 
@@ -1442,5 +1483,5 @@
 })();
 </script>
 
-<script src="linasopti.js?v=0.57.8"></script>
+<script src="linasopti.js?v=0.58.0"></script>
 </body></html>
