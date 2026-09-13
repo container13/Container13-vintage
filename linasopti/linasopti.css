@@ -2334,3 +2334,70 @@ body.v0571-flow-workspace #v0571FlowHead{
   #v0575NextAction{grid-template-columns:1fr}
   #v0575NextAction button{width:100%}
 }
+
+/* ============================================================
+   V0.57.6 – VIEW-DRIVEN LAYOUT
+   Visible pane determines layout/orientation, not navigation path.
+   ============================================================ */
+
+/* Data pane is always a single-column workflow whenever visible. */
+#pane-data:not(.hidden){
+  width:min(calc(100% - 24px),1180px)!important;
+  max-width:1180px!important;
+  margin:0 auto!important;
+}
+#pane-data:not(.hidden) > .card:first-child > .row{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  grid-template-rows:auto!important;
+  gap:12px!important;
+}
+#pane-data:not(.hidden) > .card:first-child > .row > *{
+  grid-column:1!important;
+  grid-row:auto!important;
+}
+#pane-data:not(.hidden) .v29-market-buttons{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+
+/* Test and Result also use the same clear single work column whenever visible. */
+#pane-test:not(.hidden),
+#pane-result:not(.hidden){
+  width:min(calc(100% - 24px),1180px)!important;
+  max-width:1180px!important;
+  margin:0 auto!important;
+}
+
+/* Orientation bar must show whenever a detail pane is visible, regardless of body classes. */
+body:has(#pane-data:not(.hidden)) #v0574ContextBar,
+body:has(#pane-test:not(.hidden)) #v0574ContextBar,
+body:has(#pane-result:not(.hidden)) #v0574ContextBar,
+body:has(#pane-testlab:not(.hidden)) #v0574ContextBar{
+  display:flex!important;
+}
+
+/* The old competing flow/workspace headers never win over the authoritative context bar. */
+#v0560WorkspaceHead,
+#v0571FlowHead,
+#v0564DataHead{
+  display:none!important;
+}
+
+/* Visible detail panes must never inherit the old desktop 2/3-column row rules. */
+#pane-data:not(.hidden) .row,
+#pane-test:not(.hidden) .row,
+#pane-result:not(.hidden) .row{
+  grid-template-columns:1fr!important;
+}
+
+/* Mobile */
+@media(max-width:699px){
+  #pane-data:not(.hidden),
+  #pane-test:not(.hidden),
+  #pane-result:not(.hidden){
+    width:calc(100% - 16px)!important;
+  }
+  #pane-data:not(.hidden) .v29-market-buttons{
+    grid-template-columns:1fr!important;
+  }
+}

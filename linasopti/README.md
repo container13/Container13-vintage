@@ -1145,7 +1145,7 @@ Changes:
 Permanent responsive rule:
 Normal user-facing information must fit without horizontal scrolling on a 13-inch screen. On mobile, wide tables must reflow into a readable stacked/card representation. Horizontal scrolling is reserved for genuine raw/technical data where preserving the raw table is more important than overview.
 
-## V0.57.5 – navigation & orientation audit
+## V0.57.6 – navigation & orientation audit
 
 The whole package was inspected for subviews that could visually replace the dashboard without clearly identifying the current location.
 
@@ -1186,3 +1186,20 @@ For the general test flow, `Kör test nu` executes the existing canonical test b
 
 Permanent flow rule:
 Every completed user-facing step must expose a concrete next action in the same view. The action must preserve the workflow context that brought the user there. Navigation and execution must remain semantically distinct.
+
+## V0.57.6 – view-driven layout/orientation
+
+Previous fixes depended too much on how a pane was reached. In practice, the legacy code can show Data/Test/Result/Testlab through several paths, so a correct layout must be based on the **visible view itself**, not a body class set earlier in the route.
+
+V0.57.6:
+- Data is always one column whenever `#pane-data` is visible
+- Test and Result always use the same clear work-column width when visible
+- the authoritative context/orientation bar appears whenever Data, Test, Result or Testlab is visible
+- old competing workspace headers are always suppressed
+- the visible Testlab module determines the breadcrumb/module identity
+- Market Group highlighting is recalculated from the actual symbol list every time the visible state changes
+- a known exact symbol group is highlighted; custom symbols show `Egen symbolista`
+- next-step rendering is refreshed from the actual visible Data-ready state
+
+Permanent rule:
+Visible state is authoritative. Layout, orientation and selected-state UI must not depend on which navigation path happened to open the view.

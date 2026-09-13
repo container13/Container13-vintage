@@ -168,3 +168,15 @@ V0.57.5 sparar arbetsflödets ursprung. Efter Data:
 G2-knappen återgår till den befintliga kanoniska G2-modulen och markerar nästa aktiva kontroll; den startar inte automatiskt ett forskningssteg vars status kan kräva granskning/låsning.
 
 Permanent regel: Klar/Redo/Väntar får aldrig vara en återvändsgränd.
+
+## V0.57.6 – synlig vy är sanningen
+
+V0.57.5 syntes inte i praktiken eftersom Data kunde visas via äldre kodvägar utan de body-klasser som de nya CSS-/orienteringsreglerna förutsatte.
+
+V0.57.6 gör därför synlig vy auktoritativ:
+- synlig Data → en spalt + Data-kontext
+- synlig Test → Test-kontext
+- synligt Resultat → Resultat-kontext
+- synligt Testlab → den faktiskt synliga modulens kontext
+
+Marknadsgrupp jämförs åter mot den faktiska symbollistan efter varje relevant UI-förändring.

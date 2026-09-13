@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.57.5";
+const APP_VERSION = "V0.57.6";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -6174,3 +6174,115 @@ function v0575Init(){
   v0575WatchCompletion();
 }
 window.addEventListener('DOMContentLoaded',()=>setTimeout(v0575Init,120));
+
+
+// ============================================================
+// V0.57.6 – visible view drives context/layout
+// ============================================================
+function v0576VisiblePane(){
+  for(const id of ['pane-data','pane-test','pane-result','pane-testlab']){
+    const el=document.getElementById(id);
+    if(el && !el.classList.contains('hidden') && getComputedStyle(el).display!=='none') return id;
+  }
+  return null;
+}
+
+function v0576ContextFromVisibleView(){
+  const pane=v0576VisiblePane();
+  if(!pane)return;
+
+  if(pane==='pane-data'){
+    v0574SetContext({
+      cat:'data',
+      title:'📊 Marknadsdata',
+      purpose:'Välj marknad, datatyp och period · hämta sedan data',
+      parent:'Data',
+      back:()=>v0570ShowCategory('data')
+    });
+    return;
+  }
+  if(pane==='pane-test'){
+    v0574SetContext({
+      cat:'data',
+      title:'🧪 Test',
+      purpose:'Kör Linas Opti med den inlästa datan',
+      parent:'Data',
+      back:()=>v0570ShowCategory('data')
+    });
+    return;
+  }
+  if(pane==='pane-result'){
+    v0574SetContext({
+      cat:'data',
+      title:'📈 Resultat',
+      purpose:'Granska testresultat, affärer och revision',
+      parent:'Data',
+      back:()=>v0570ShowCategory('data')
+    });
+    return;
+  }
+  if(pane==='pane-testlab'){
+    // Find the actually visible lab, independent of entry path/body class.
+    let chosen=null;
+    document.querySelectorAll('#pane-testlab .v0413-lab-section').forEach(el=>{
+      if(!chosen && !el.hidden && getComputedStyle(el).display!=='none') chosen=el;
+    });
+    if(chosen){
+      const id=chosen.id;
+      const ctx=v0574ContextForLab(id, V0574_LAB_CONTEXT?.[id]?.cat || v0570CurrentCategory || 'history');
+      const cat=ctx.cat||'history';
+      v0574SetContext({...ctx,parent:v0572CategoryLabel(cat),back:()=>v0570ShowCategory(cat)});
+    }
+  }
+}
+
+function v0576NormalizeSymbols(s){
+  return String(s||'').split(',').map(x=>x.trim()).filter(Boolean).join(',');
+}
+function v0576SyncMarketTruth(){
+  const symbols=document.getElementById('symbols');
+  if(!symbols || typeof MARKET_GROUPS!=='object')return;
+  const actual=v0576NormalizeSymbols(symbols.value);
+  let match=null;
+  for(const [key,g] of Object.entries(MARKET_GROUPS)){
+    if(v0576NormalizeSymbols((g.symbols||[]).join(','))===actual){match=key;break}
+  }
+
+  document.querySelectorAll('.market-btn[data-market]').forEach(b=>{
+    b.classList.toggle('active', !!match && b.dataset.market===match);
+    b.setAttribute('aria-pressed', (!!match && b.dataset.market===match) ? 'true' : 'false');
+  });
+
+  const info=document.getElementById('marketGroupInfo');
+  if(match){
+    ACTIVE_MARKET=match;
+    const g=MARKET_GROUPS[match];
+    if(info)info.textContent=`${g.name} · ${g.symbols.length-currentBenchmarks().length} aktier + ${g.benchmark}`;
+  }else{
+    if(info)info.textContent='Egen symbolista';
+  }
+}
+
+function v0576RefreshVisibleState(){
+  v0576ContextFromVisibleView();
+  v0576SyncMarketTruth();
+  try{v0575RenderNextAction()}catch(e){}
+}
+
+function v0576ObserveVisibleState(){
+  const root=document.querySelector('.wrap')||document.body;
+  const obs=new MutationObserver(()=>requestAnimationFrame(v0576RefreshVisibleState));
+  obs.observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','style','value']});
+  const symbols=document.getElementById('symbols');
+  if(symbols){
+    ['input','change'].forEach(ev=>symbols.addEventListener(ev,v0576SyncMarketTruth));
+  }
+}
+
+function v0576Init(){
+  if(APP_VERSION!=='V0.57.6')return;
+  v0574EnsureContextBar();
+  v0576RefreshVisibleState();
+  v0576ObserveVisibleState();
+}
+window.addEventListener('DOMContentLoaded',()=>setTimeout(v0576Init,150));
