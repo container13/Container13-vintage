@@ -186,3 +186,9 @@ Marknadsgrupp jämförs åter mot den faktiska symbollistan efter varje relevant
 En full init-granskning hittade rotorsaken bakom att Data kunde visas trots att den nya dashboardarkitekturen fanns i koden: flera V0.57.x-initfunktioner var låsta till exakt versionsnummer. När versionen ökades slutade äldre permanenta funktioner att initieras, medan den ursprungliga legacy-starten fortfarande körde `show('data', false)`.
 
 V0.57.7 inför därför en enda auktoritativ current-app boot. Efter att äldre DOMContentLoaded-hanterare körts återställer den alltid en ny sidladdning till Dashboard och startar alla permanenta moderna system som behövs.
+
+## V0.57.8 – arbetsflödet äger delade verktyg
+
+Data/Test/Resultat visade tidigare bara generisk Data-kontext även när användaren kom från Swing G2. V0.57.8 sparar därför vilken strategi/modul som äger arbetsflödet och använder den identiteten i den gemensamma arbetsheadern.
+
+Exempel: Dashboard → Forskning → Swing G2 → Data visar Swing G2 tydligt, steg Data/Marknadsdata och `← Swing G2`.

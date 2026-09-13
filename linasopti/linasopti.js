@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.57.7";
+const APP_VERSION = "V0.57.8";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -6330,3 +6330,137 @@ function v0577InitCurrentArchitecture(){
 
 // Run after all older synchronous DOMContentLoaded handlers have had a chance to execute.
 window.addEventListener('DOMContentLoaded',()=>setTimeout(v0577InitCurrentArchitecture,250));
+
+
+// ============================================================
+// V0.57.8 – workflow owner context
+// "Where am I?" must be obvious from the work header.
+// ============================================================
+const V0578_OWNER_KEY='linasopti_workflow_owner_v0578';
+
+function v0578SaveOwner(owner){
+  try{localStorage.setItem(V0578_OWNER_KEY,JSON.stringify(owner||{}));}catch(e){}
+}
+function v0578LoadOwner(){
+  try{return JSON.parse(localStorage.getItem(V0578_OWNER_KEY)||'{}')||{};}catch(e){return {}}
+}
+function v0578OwnerForLab(id){
+  const map={
+    v0560SwingG2Lab:{kind:'g2',category:'research',owner:'🚀 Swing G2',module:'Breakout/Momentum · A–O'},
+    v0550SwingForwardLab:{kind:'g1-forward',category:'forward',owner:'🌙 Swing G1',module:'Riktig forward'},
+    v0510ForwardLab:{kind:'hunter-forward',category:'forward',owner:'🎯 Jägaren',module:'Riktig forward'},
+    v0540SwingAlphabetLab:{kind:'g1-history',category:'history',owner:'🌙 Swing G1',module:'A–O historik'},
+    v0520TimeMachineLab:{kind:'hunter-history',category:'history',owner:'🎯 Jägaren',module:'Tidsmaskin'},
+    v0460Lab:{kind:'hunter-history',category:'history',owner:'🎯 Jägaren',module:'Validation Suite A'}
+  };
+  return map[id]||null;
+}
+
+const v0578OriginalOpenLab=v0570OpenLab;
+v0570OpenLab=function(id,returnCat){
+  const owner=v0578OwnerForLab(id);
+  if(owner)v0578SaveOwner(owner);
+  return v0578OriginalOpenLab(id,returnCat);
+};
+
+function v0578ContextPayload(pane){
+  const o=v0578LoadOwner();
+  const hasOwner=!!o.owner;
+
+  if(pane==='data'){
+    if(hasOwner){
+      return {
+        cat:o.category||'research',
+        parent:o.owner.replace(/^[^\p{L}\p{N}]+/u,'').trim(),
+        path:`Dashboard › ${v0572CategoryLabel(o.category||'research')} › ${o.owner.replace(/^[^\p{L}\p{N}]+/u,'').trim()} › Data`,
+        owner:o.owner,
+        step:'Steg: Data · Marknadsdata',
+        purpose:`Här hämtar du data till ${o.owner.replace(/^[^\p{L}\p{N}]+/u,'').trim()}${o.module?` · ${o.module}`:''}.`,
+        back:()=>v0570OpenLab(o.kind==='g2'?'v0560SwingG2Lab':
+                             o.kind==='g1-forward'?'v0550SwingForwardLab':
+                             o.kind==='hunter-forward'?'v0510ForwardLab':
+                             o.kind==='g1-history'?'v0540SwingAlphabetLab':
+                             o.kind==='hunter-history'?'v0520TimeMachineLab':'v0560SwingG2Lab',
+                             o.category||'research')
+      };
+    }
+    return {
+      cat:'data',parent:'Data',path:'Dashboard › Data › Marknadsdata',
+      owner:'📊 Data',step:'Marknadsdata',
+      purpose:'Välj marknad, datatyp och period · hämta sedan data',
+      back:()=>v0570ShowCategory('data')
+    };
+  }
+
+  if(pane==='test'){
+    if(hasOwner){
+      return {
+        cat:o.category||'research',
+        parent:o.owner.replace(/^[^\p{L}\p{N}]+/u,'').trim(),
+        path:`Dashboard › ${v0572CategoryLabel(o.category||'research')} › ${o.owner.replace(/^[^\p{L}\p{N}]+/u,'').trim()} › Test`,
+        owner:o.owner,step:'Steg: Test',
+        purpose:`Kör testet i ${o.owner.replace(/^[^\p{L}\p{N}]+/u,'').trim()}-flödet.`,
+        back:()=>v0570OpenLab(o.kind==='g2'?'v0560SwingG2Lab':'v0540SwingAlphabetLab',o.category||'research')
+      };
+    }
+    return {cat:'data',parent:'Data',path:'Dashboard › Data › Test',owner:'🧪 Test',step:'Linas Opti',purpose:'Kör test med den inlästa datan',back:()=>v0570ShowCategory('data')};
+  }
+
+  if(pane==='result'){
+    if(hasOwner){
+      return {
+        cat:o.category||'research',
+        parent:o.owner.replace(/^[^\p{L}\p{N}]+/u,'').trim(),
+        path:`Dashboard › ${v0572CategoryLabel(o.category||'research')} › ${o.owner.replace(/^[^\p{L}\p{N}]+/u,'').trim()} › Resultat`,
+        owner:o.owner,step:'Steg: Resultat',
+        purpose:`Granska resultatet för ${o.owner.replace(/^[^\p{L}\p{N}]+/u,'').trim()}.`,
+        back:()=>v0570OpenLab(o.kind==='g2'?'v0560SwingG2Lab':'v0540SwingAlphabetLab',o.category||'research')
+      };
+    }
+    return {cat:'data',parent:'Data',path:'Dashboard › Data › Resultat',owner:'📈 Resultat',step:'Linas Opti',purpose:'Granska testresultat, affärer och revision',back:()=>v0570ShowCategory('data')};
+  }
+  return null;
+}
+
+function v0578RenderContextForPane(pane){
+  const ctx=v0578ContextPayload(pane);
+  if(!ctx)return;
+  v0574EnsureContextBar();
+  const b=document.getElementById('v0574ContextBack');
+  const c=document.getElementById('v0574Crumb');
+  const w=document.getElementById('v0574Where');
+  const p=document.getElementById('v0574Purpose');
+  if(c){c.textContent=ctx.path;c.classList.add('v0578-path')}
+  if(w){w.innerHTML=`<div class="v0578-owner">${ctx.owner}</div><div class="v0578-step">${ctx.step}</div>`}
+  if(p)p.textContent=ctx.purpose;
+  if(b){
+    b.textContent=`← ${ctx.parent}`;
+    const nb=b.cloneNode(true);b.parentNode.replaceChild(nb,b);
+    nb.addEventListener('click',ctx.back);
+  }
+}
+
+const v0578OriginalVisibleContext=v0576ContextFromVisibleView;
+v0576ContextFromVisibleView=function(){
+  const pane=v0576VisiblePane();
+  if(['pane-data','pane-test','pane-result'].includes(pane)){
+    v0578RenderContextForPane(pane.replace('pane-',''));
+    return;
+  }
+  return v0578OriginalVisibleContext();
+};
+
+const v0578OriginalShowCategory=v0570ShowCategory;
+v0570ShowCategory=function(cat){
+  // Opening a top-level category intentionally ends a module-owned shared-tool context.
+  if(['data','tools','about','history','research','forward'].includes(cat)){
+    if(cat==='data')v0578SaveOwner({});
+  }
+  return v0578OriginalShowCategory(cat);
+};
+
+function v0578Init(){
+  if(APP_VERSION!=='V0.57.8')return;
+  requestAnimationFrame(()=>v0576RefreshVisibleState());
+}
+window.addEventListener('DOMContentLoaded',()=>setTimeout(v0578Init,300));

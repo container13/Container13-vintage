@@ -2414,3 +2414,29 @@ body.v0570-app.v0561-dashboard-mode #pane-testlab{
 body.v0570-app.v0561-dashboard-mode #v0574ContextBar{
   display:none!important;
 }
+
+/* ============================================================
+   V0.57.8 – WORKFLOW OWNER CONTEXT
+   The upper work header must answer: Where am I?
+   ============================================================ */
+#v0574ContextBar{
+  grid-template-columns:auto 1fr!important;
+}
+.v0578-owner{
+  font-size:11px;
+  font-weight:950;
+  color:#1e5f8f;
+  margin-bottom:1px;
+}
+.v0578-step{
+  font-size:15px;
+  font-weight:950;
+  color:#17222e;
+  line-height:1.15;
+}
+.v0578-path{
+  font-size:10px;
+  font-weight:800;
+  color:#687586;
+  margin-bottom:2px;
+}

@@ -1145,7 +1145,7 @@ Changes:
 Permanent responsive rule:
 Normal user-facing information must fit without horizontal scrolling on a 13-inch screen. On mobile, wide tables must reflow into a readable stacked/card representation. Horizontal scrolling is reserved for genuine raw/technical data where preserving the raw table is more important than overview.
 
-## V0.57.7 – navigation & orientation audit
+## V0.57.8 – navigation & orientation audit
 
 The whole package was inspected for subviews that could visually replace the dashboard without clearly identifying the current location.
 
@@ -1233,3 +1233,18 @@ Permanent engineering rule:
 Version-specific historical initializers must never be the only way a permanent current-app feature is started. Each current release must have one authoritative boot path that initializes the whole active architecture.
 
 No strategy, research, forward, risk or data-engine logic changed.
+
+## V0.57.8 – workflow-owner orientation
+
+The work header now answers `Where am I?` using the workflow that owns the shared view, not only the generic pane name.
+
+Examples:
+- `Dashboard › Forskning › Swing G2 › Data`
+- owner: `Swing G2`
+- step: `Data · Marknadsdata`
+- back: `← Swing G2`
+
+The same pattern is applied to Jägaren and Swing G1 contexts where a shared Data/Test/Result view is used.
+
+Permanent UX rule:
+Shared tools such as Data, Test and Result must inherit the identity of the workflow/strategy that opened them. The owner, current step, breadcrumb and Back destination must all agree.
