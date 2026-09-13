@@ -1145,7 +1145,7 @@ Changes:
 Permanent responsive rule:
 Normal user-facing information must fit without horizontal scrolling on a 13-inch screen. On mobile, wide tables must reflow into a readable stacked/card representation. Horizontal scrolling is reserved for genuine raw/technical data where preserving the raw table is more important than overview.
 
-## V0.58.1 – navigation & orientation audit
+## V0.58.2 – navigation & orientation audit
 
 The whole package was inspected for subviews that could visually replace the dashboard without clearly identifying the current location.
 
@@ -1298,3 +1298,27 @@ V0.58.1 makes the G2 route authoritative:
 
 Permanent route rule:
 A module route owns the visible workspace until the user explicitly leaves that module. Legacy pane switches may not hijack an active modern workflow.
+
+## V0.58.2 – workspace isolation
+
+A complete leak audit showed that the problem was not limited to Regim Lab 2.
+
+The old testlab contains multiple generations of root nodes:
+- modern `.v0413-lab-section.vlab-*`
+- older `.card.vlab-*` / `.v0410-labhero`
+- global legacy navigation blocks
+
+V0.58.1 only hid one class family, so older labs and navigation could remain visible underneath a modern module.
+
+V0.58.2 introduces one generic workspace-isolation layer:
+- every root-level `vlab-*` block is hidden
+- only nodes belonging to the active lab token are shown
+- this also supports older labs that use companion cards with the same `vlab-*` class
+- legacy Forward / Forskning & Historik / Tester navigation is hidden inside a module workspace
+- a runtime MutationObserver re-hides anything old code tries to reveal later
+- leaving to Dashboard/category releases the isolated workspace
+
+Also fixed: the permanent V0.58 G2 flow no longer disables itself after a patch release. `v0580PaintG2Flow()` now remains active throughout V0.58.x, fixing the dead `Lås G2-planen` button seen in V0.58.1.
+
+Permanent engineering rule:
+Module visibility is controlled by one generic workspace host, not by assumptions about which historical CSS class a lab happens to use.

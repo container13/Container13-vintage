@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.58.1";
+const APP_VERSION = "V0.58.2";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -6580,7 +6580,7 @@ function v0580G2State(){
   return {x,done,locked:!!x?.planLocked,complete:!!x?.stages?.O};
 }
 function v0580PaintG2Flow(){
-  if(APP_VERSION!=='V0.58.0')return;
+  if(!APP_VERSION.startsWith('V0.58.'))return;
   const {x,done,locked,complete}=v0580G2State();
   const box=document.getElementById('v0580G2Flow'),
         title=document.getElementById('v0580G2Title'),
@@ -6754,3 +6754,139 @@ function v0581Boot(){
   try{v0570RenderHome()}catch(e){}
 }
 window.addEventListener('DOMContentLoaded',()=>setTimeout(v0581Boot,500));
+
+
+// ============================================================
+// V0.58.2 – generic workspace isolation
+// Handles both modern .v0413-lab-section and old .card.vlab-* roots.
+// ============================================================
+let V0582_ACTIVE_LAB=null;
+
+function v0582LabToken(id){ return `vlab-${id}`; }
+
+function v0582IsLabRoot(el){
+  if(!el || el.parentElement?.id!=='pane-testlab') return false;
+  return [...el.classList].some(c=>c.startsWith('vlab-')) ||
+         (/^v0\d+.*Lab$/i.test(el.id||''));
+}
+
+function v0582ActivateLab(id){
+  const pane=document.getElementById('pane-testlab');
+  if(!pane)return;
+
+  V0582_ACTIVE_LAB=id;
+  document.body.classList.add('v0582-module-workspace');
+
+  const token=v0582LabToken(id);
+
+  // Hide every root-level lab/card, regardless of which historical class system it uses.
+  [...pane.children].forEach(el=>{
+    if(!v0582IsLabRoot(el))return;
+    const belongs=(el.id===id || el.classList.contains(token));
+    el.classList.toggle('v0582-active-root',belongs);
+    el.hidden=!belongs;
+    el.style.setProperty('display',belongs?'block':'none','important');
+  });
+
+  // Legacy global navigation never belongs inside a modern module workspace.
+  ['v0560ForwardMenu','v0560ResearchMenu','v0424TesterNav'].forEach(x=>{
+    const el=document.getElementById(x);
+    if(el)el.style.setProperty('display','none','important');
+  });
+}
+
+function v0582ReleaseWorkspace(){
+  V0582_ACTIVE_LAB=null;
+  document.body.classList.remove('v0582-module-workspace','v0581-g2-active');
+
+  // Remove our direct style overrides; normal category/dashboard code may decide visibility again.
+  const pane=document.getElementById('pane-testlab');
+  if(pane){
+    [...pane.children].forEach(el=>{
+      if(!v0582IsLabRoot(el))return;
+      el.classList.remove('v0582-active-root');
+      el.style.removeProperty('display');
+    });
+  }
+  ['v0560ForwardMenu','v0560ResearchMenu','v0424TesterNav'].forEach(x=>{
+    document.getElementById(x)?.style.removeProperty('display');
+  });
+}
+
+function v0582BindG2Primary(){
+  const btn=document.getElementById('v0580G2Primary');
+  if(!btn)return;
+  // v0580PaintG2Flow is now permanent for all V0.58.x releases.
+  try{v0580PaintG2Flow()}catch(e){console.error(e)}
+}
+
+const v0582PrevOpenLab=v0570OpenLab;
+v0570OpenLab=function(id,returnCat){
+  // G2 remains routed through its dedicated route, then isolated generically.
+  if(id==='v0560SwingG2Lab'){
+    try{v0581OpenG2()}catch(e){console.error(e)}
+    v0582ActivateLab(id);
+    v0582BindG2Primary();
+    return;
+  }
+
+  const result=v0582PrevOpenLab(id,returnCat);
+  v0582ActivateLab(id);
+  return result;
+};
+
+// Strengthen the dedicated G2 route itself.
+const v0582PrevOpenG2=v0581OpenG2;
+v0581OpenG2=function(){
+  v0582PrevOpenG2();
+  v0582ActivateLab('v0560SwingG2Lab');
+  v0582BindG2Primary();
+};
+
+// Leaving a module explicitly releases isolation.
+const v0582PrevCategory=v0570ShowCategory;
+v0570ShowCategory=function(cat){
+  v0582ReleaseWorkspace();
+  return v0582PrevCategory(cat);
+};
+const v0582PrevHome=v0570RenderHome;
+v0570RenderHome=function(){
+  v0582ReleaseWorkspace();
+  return v0582PrevHome();
+};
+
+function v0582LeakGuard(){
+  if(!V0582_ACTIVE_LAB)return;
+  const pane=document.getElementById('pane-testlab');
+  if(!pane)return;
+  const token=v0582LabToken(V0582_ACTIVE_LAB);
+
+  [...pane.children].forEach(el=>{
+    if(!v0582IsLabRoot(el))return;
+    const belongs=(el.id===V0582_ACTIVE_LAB || el.classList.contains(token));
+    if(!belongs && getComputedStyle(el).display!=='none'){
+      el.classList.remove('v0582-active-root');
+      el.hidden=true;
+      el.style.setProperty('display','none','important');
+    }
+  });
+
+  ['v0560ForwardMenu','v0560ResearchMenu','v0424TesterNav'].forEach(x=>{
+    const el=document.getElementById(x);
+    if(el && getComputedStyle(el).display!=='none')
+      el.style.setProperty('display','none','important');
+  });
+}
+
+function v0582Init(){
+  if(APP_VERSION!=='V0.58.2')return;
+
+  // Runtime guard catches any older code that tries to reveal a sibling afterwards.
+  const root=document.querySelector('.wrap')||document.body;
+  const obs=new MutationObserver(()=>requestAnimationFrame(v0582LeakGuard));
+  obs.observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','style']});
+
+  // Dashboard remains the fresh-load start.
+  try{v0570RenderHome()}catch(e){}
+}
+window.addEventListener('DOMContentLoaded',()=>setTimeout(v0582Init,650));

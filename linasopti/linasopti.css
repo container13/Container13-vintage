@@ -2499,3 +2499,43 @@ body.v0581-g2-active #v0560SwingG2Lab .v0580-g2flow{
 body.v0581-g2-active .v0413-lab-section:not(#v0560SwingG2Lab){
   display:none!important;
 }
+
+/* ============================================================
+   V0.58.2 – WORKSPACE ISOLATION
+   One active module owns pane-testlab.
+   ============================================================ */
+
+body.v0582-module-workspace #v0560ForwardMenu,
+body.v0582-module-workspace #v0560ResearchMenu,
+body.v0582-module-workspace #v0424TesterNav,
+body.v0582-module-workspace .tabs{
+  display:none!important;
+}
+
+/* Direct legacy lab roots are hidden by JS isolation. CSS is the safety net. */
+body.v0582-module-workspace #pane-testlab > [class*="vlab-"]{
+  display:none!important;
+}
+body.v0582-module-workspace #pane-testlab > .v0582-active-root{
+  display:block!important;
+}
+
+/* The modern context bar is the only navigation header in a module workspace. */
+body.v0582-module-workspace #v0560WorkspaceHead,
+body.v0582-module-workspace #v0571FlowHead,
+body.v0582-module-workspace #v0564DataHead{
+  display:none!important;
+}
+body.v0582-module-workspace #v0574ContextBar{
+  display:flex!important;
+}
+
+/* Prevent old navigation strips from occupying space above the active module. */
+body.v0582-module-workspace #pane-testlab{
+  padding-top:0!important;
+}
+
+/* G2 panel must be visible when G2 is the active isolated root. */
+body.v0582-module-workspace #v0560SwingG2Lab.v0582-active-root #v0580G2Flow{
+  display:block!important;
+}

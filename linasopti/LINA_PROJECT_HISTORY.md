@@ -220,3 +220,11 @@ När G2 är aktiv:
 - Data/Test/Resultat är dolda
 - äldre show()-anrop ignoreras
 - G2-kontext och guidat Kör → Exportera-flöde visas
+
+## V0.58.2 – workspace isolation
+
+Leak-auditen hittade 35 äldre labb-ID:n och 36 `vlab-*`-moduler. Flera äldre labb använder inte `.v0413-lab-section`, vilket gjorde att de kunde synas under G2 och andra moderna arbetsvyer.
+
+V0.58.2 isolerar därför arbetsytan generiskt på root-nivå: endast den aktiva modulens `vlab-*`-token får visas. Gamla Forward/Forskning/Tester-rader döljs i modulvyn och en runtime-guard stoppar äldre kod från att visa syskon igen.
+
+Samtidigt rättades G2-panelens permanenta versionsguard som gjorde att `Lås G2-planen` var död i V0.58.1.
