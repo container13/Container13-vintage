@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  const APP_VERSION='0.2.7';
+  const APP_VERSION='0.2.8';
   const cards=[
     ['forward','Forward','Riktig forward-validering · G2 aktiv.'],
     ['research','Forskning','Jägaren, Swing G1, Swing G2 och Broker/Cost Gate.'],
@@ -30,13 +30,19 @@
       root.querySelector('#g2forward').onclick=()=>R.navigate('g2-forward');
     });
     R.register('g2-forward',root=>window.LinaG2Forward.render(root,{back:()=>R.navigate('forward')}));
-    for(const [r,t,d] of cards.filter(x=>!['research','forward'].includes(x[0])))R.register(r,root=>{
+    R.register('history',root=>{
+      shell(root,'Historik','Alla frysta resultat och rapporter på ett ställe.',`<button class="back" id="home">← Dashboard</button><div class="grid"><button class="card" id="archive"><b>Lina Arkiv</b><small>Robotmognad, simuleringar, PASS/FAIL och rapporter</small></button></div>`);
+      root.querySelector('#home').onclick=()=>R.navigate('dashboard');
+      root.querySelector('#archive').onclick=()=>R.navigate('archive');
+    });
+    R.register('archive',root=>window.LinaArchive.render(root,{back:()=>R.navigate('dashboard')}));
+    for(const [r,t,d] of cards.filter(x=>!['research','forward','history'].includes(x[0])))R.register(r,root=>{
       shell(root,t,d,`<button class="back" id="home">← Dashboard</button><section class="workspace"><div class="statusline">Modulen väntar på kontrollerad migrering.</div></section>`);
       root.querySelector('#home').onclick=()=>R.navigate('dashboard');
     });
   }
 
-  // V0.2.7 – Uppdatera ska ge en verklig ny start, inte bara ladda om en redan upplåst session.
+  // V0.2.8 – Uppdatera ska ge en verklig ny start, inte bara ladda om en redan upplåst session.
   // Bevarar all persistent Lina-data i localStorage, men rensar endast login-sessionen.
   // Navigerar sedan till en ren, cache-bustad index-URL så login visas och senaste index/scripts hämtas.
   function installRefresh(){

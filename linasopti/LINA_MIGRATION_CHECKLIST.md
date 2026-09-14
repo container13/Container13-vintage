@@ -22,7 +22,7 @@
 - [x] Portat legacy V0.46.3 loginfält-clear/autofill-skydd.
 - [x] Browser reload tvingar login, localStorage bevaras.
 
-## Swing G2 – V0.2.7
+## Swing G2 – V0.2.8
 - [x] Fryst plan portad utan parameterändring.
 - [x] Exakt grid 648 varianter.
 - [x] A–O ordning portad.
@@ -31,6 +31,6 @@
 - [x] G2 hämtar egen data.
 - [x] Rapport + Raw JSON export.
 - [x] Strategi separerad från UI.
-- [ ] Live reproducerbarhetskörning mot legacy-resultat – kräver lyckad historisk Worker-data och görs efter användarens första V0.2.7-körning.
+- [ ] Live reproducerbarhetskörning mot legacy-resultat – kräver lyckad historisk Worker-data och görs efter användarens första V0.2.8-körning.
 
-- [x] V0.2.7: ny start/inloggning ignorerar gammal hash och öppnar alltid Dashboard.
+- [x] V0.2.8: ny start/inloggning ignorerar gammal hash och öppnar alltid Dashboard.
