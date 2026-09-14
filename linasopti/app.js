@@ -28,7 +28,7 @@
     });
   }
 
-  // V0.2.0 – Uppdatera ska ge en verklig ny start, inte bara ladda om en redan upplåst session.
+  // V0.2.1 – Uppdatera ska ge en verklig ny start, inte bara ladda om en redan upplåst session.
   // Bevarar all persistent Lina-data i localStorage, men rensar endast login-sessionen.
   // Navigerar sedan till en ren, cache-bustad index-URL så login visas och senaste index/scripts hämtas.
   function installRefresh(){

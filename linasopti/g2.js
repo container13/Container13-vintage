@@ -17,7 +17,7 @@
       <div class="g2-progress"><div><b>Alphabet A–O</b><span>${done} / 15</span></div><progress value="${done}" max="15"></progress></div>
       <div class="g2-stages">${stageCards(x)}</div></section>`;
     root.querySelector('#g2Back').onclick=ctx.back;
-    const p=root.querySelector('#g2Primary');if(p)p.onclick=async()=>{if(!locked){E.lock();render(root,ctx);return}p.disabled=true;p.textContent='⏳ G2 kör…';try{await E.run()}catch(e){}render(root,ctx)};
+    const p=root.querySelector('#g2Primary');if(p)p.onclick=async()=>{if(!locked){E.lock();render(root,ctx);return}p.disabled=true;p.textContent='⏳ G2 kör…';try{await E.run();render(root,ctx)}catch(e){render(root,ctx);const box=root.querySelector('#g2Live');if(box){box.classList.add('error');box.innerHTML=`<b>KÖRFEL</b><span>${esc(e?.message||String(e))}</span>`}}};
     root.querySelector('#g2Export')?.addEventListener('click',()=>E.exportReport());
     root.querySelector('#g2Raw')?.addEventListener('click',()=>E.exportRaw());
     root.querySelector('#g2Reset')?.addEventListener('click',()=>{if(confirm('Återställa endast Swing G2? Övriga Lina-data påverkas inte.')){E.reset();render(root,ctx)}});
