@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.58.5";
+const APP_VERSION = "V0.58.6";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -7003,4 +7003,98 @@ function v0585CurrentBoot(){
   });
 }
 
-window.addEventListener('DOMContentLoaded',v0585CurrentBoot);
+// V0.58.6: v0585CurrentBoot remains the base boot, but no longer registers itself.
+
+
+// ============================================================
+// V0.58.6 – AUTHORITATIVE NAVIGATION ROUTER
+// Fixes back buttons whose handlers could be lost/replaced by old cloneNode wrappers.
+// One delegated capture handler owns all current back navigation.
+// ============================================================
+let V0586_NAV_INSTALLED=false;
+
+function v0586ResolveBackTarget(el){
+  if(!el)return null;
+
+  // G2 always returns one level to Forskning.
+  if(el.id==='v0574ContextBack' && document.body.classList.contains('v0581-g2-active'))
+    return {type:'category',value:'research'};
+
+  // Shared/current workspace backs.
+  if(el.id==='v0564DataBack' || el.id==='v0571BackData' || el.id==='v0571FlowBack')
+    return {type:'category',value:'data'};
+
+  if(el.id==='v0560WorkspaceBack'){
+    const cat=(typeof v0570CurrentCategory==='string' && v0570CurrentCategory) ? v0570CurrentCategory : 'dashboard';
+    return cat==='dashboard' ? {type:'home'} : {type:'category',value:cat};
+  }
+
+  // Context bar: derive from explicit label/path if not in G2.
+  if(el.id==='v0574ContextBack'){
+    const label=(el.textContent||'').replace(/^←\s*/,'').trim().toLowerCase();
+    const map={
+      'forskning':'research',
+      'historik':'history',
+      'data':'data',
+      'forward':'forward',
+      'verktyg':'tools',
+      'om lina':'about',
+      'dashboard':'dashboard'
+    };
+    const cat=map[label];
+    if(cat==='dashboard')return {type:'home'};
+    if(cat)return {type:'category',value:cat};
+
+    if(typeof v0570CurrentCategory==='string' && v0570CurrentCategory)
+      return {type:'category',value:v0570CurrentCategory};
+    return {type:'home'};
+  }
+
+  // Category breadcrumb home button.
+  if(el.matches?.('[data-v0570-home]')) return {type:'home'};
+
+  return null;
+}
+
+function v0586Navigate(target){
+  if(!target)return;
+
+  // Release module isolation before any outward navigation.
+  try{ if(typeof v0582ReleaseWorkspace==='function') v0582ReleaseWorkspace(); }catch(e){}
+  try{ if(typeof v0581LeaveG2==='function') v0581LeaveG2(); }catch(e){}
+
+  if(target.type==='category'){
+    try{v0570ShowCategory(target.value)}catch(e){console.error('V0.58.6 category nav',e)}
+    return;
+  }
+  try{v0570RenderHome()}catch(e){console.error('V0.58.6 home nav',e)}
+}
+
+function v0586InstallNavigationRouter(){
+  if(V0586_NAV_INSTALLED)return;
+  V0586_NAV_INSTALLED=true;
+
+  document.addEventListener('click',e=>{
+    const el=e.target.closest?.(
+      '#v0574ContextBack,#v0560WorkspaceBack,#v0564DataBack,#v0571BackData,#v0571FlowBack,[data-v0570-home]'
+    );
+    if(!el)return;
+
+    const target=v0586ResolveBackTarget(el);
+    if(!target)return;
+
+    // Capture phase makes the current router authoritative even if an old
+    // wrapper cloned/rebound the button earlier.
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    v0586Navigate(target);
+  },true);
+}
+
+function v0586CurrentBoot(){
+  if(!APP_VERSION.startsWith('V0.58.'))return;
+  v0585CurrentBoot();
+  v0586InstallNavigationRouter();
+}
+
+window.addEventListener('DOMContentLoaded',v0586CurrentBoot);

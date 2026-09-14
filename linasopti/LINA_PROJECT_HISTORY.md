@@ -248,3 +248,7 @@ V0.58.4 inför en enda current-app boot för hela V0.58.x. Den startar alla perm
 V0.58.4 gjorde inloggning/start mycket seg eftersom flera historiska init-generationer återaktiverades samtidigt. V0.58.5 stänger av deras autostart och inför en enda current boot med en enda uppsättning observers.
 
 Målet är snabb start, Dashboard direkt efter laddning och inga dubbla MutationObservers/listeners.
+
+## V0.58.6 – stabil tillbaka-navigation
+
+Efter att V0.58.5 löste startprestandan visade G2 att `← Forskning` inte fungerade. Audit visade flera gamla wrapperlager och `cloneNode()`-baserad återbindning av backknappar. V0.58.6 lägger ett enda auktoritativt capture-baserat navigationslager ovanpå alla aktuella tillbaka-vägar och frigör workspace/G2-state innan navigation.

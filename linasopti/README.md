@@ -1,6 +1,6 @@
-# Linas Opti V0.57.3
+# Linas Opti V0.58.6
 
-> **Aktuell release: V0.56.1** · Dashboard-first kontrollcentral · responsiv mobil/desktop · tydlig status/nytt/klart · historik/utveckling · Forward + forskning · Handel AV · Robotmognad 48/100
+> **Aktuell release: V0.58.6** · Dashboard-first kontrollcentral · responsiv mobil/desktop · tydlig status/nytt/klart · historik/utveckling · Forward + forskning · Handel AV · Robotmognad 48/100
 
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
@@ -1145,7 +1145,7 @@ Changes:
 Permanent responsive rule:
 Normal user-facing information must fit without horizontal scrolling on a 13-inch screen. On mobile, wide tables must reflow into a readable stacked/card representation. Horizontal scrolling is reserved for genuine raw/technical data where preserving the raw table is more important than overview.
 
-## V0.58.5 – navigation & orientation audit
+## V0.58.6 – navigation & orientation audit
 
 The whole package was inspected for subviews that could visually replace the dashboard without clearly identifying the current location.
 
@@ -1375,3 +1375,18 @@ V0.58.5 changes the architecture:
 
 Permanent performance rule:
 One release = one authoritative app boot. Historical initializers may remain in code but must not autostart. Permanent observers/listeners must be idempotent and started once.
+
+## V0.58.6 – navigation audit/fix
+
+Navigation audit found several generations of wrappers around `v0570ShowCategory`, `v0570OpenLab` and `v0570RenderHome`, plus multiple back buttons that were rebound using `cloneNode()`. A visible button could therefore keep the right label while losing/replacing its click handler.
+
+V0.58.6 introduces one authoritative delegated navigation router in capture phase. It owns the current back controls:
+- G2 `← Forskning`
+- category `← Dashboard`
+- generic workspace back
+- Data back
+- flow back
+
+Before leaving a module it releases workspace isolation and G2 state, then routes exactly one level out.
+
+Single-boot rule is preserved: V0.58.6 is the only DOMContentLoaded boot; it calls the V0.58.5 base boot and then installs the navigation router once.
