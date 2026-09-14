@@ -1,11 +1,11 @@
-# Lina Clean Core V0.2.4
+# Lina Clean Core V0.2.5
 
 ## Status
 Clean Core är en teknisk omstart av Lina, inte en kunskapsomstart. V0.58.8 COMPLETE är permanent legacy-checkpoint/facit före Clean Core och ska aldrig skrivas över.
 
-V0.2.4 gör Uppdatera-flödet deterministiskt. V0.1.4 litade enbart på att sessionStorage-rensningen överlevde navigeringen. Nu skickas dessutom en explicit `force_login=1`-markör till nästa sidladdning. Login-koden ser markören innan någon auto-unlock kan ske, rensar upplåsningsflaggan igen och visar login. Därefter städas URL:en utan extra reload.
+V0.2.5 gör Uppdatera-flödet deterministiskt. V0.1.4 litade enbart på att sessionStorage-rensningen överlevde navigeringen. Nu skickas dessutom en explicit `force_login=1`-markör till nästa sidladdning. Login-koden ser markören innan någon auto-unlock kan ske, rensar upplåsningsflaggan igen och visar login. Därefter städas URL:en utan extra reload.
 
-## V0.2.4 ändrat
+## V0.2.5 ändrat
 - Uppdatera rensar `sessionStorage["linasopti_unlocked"]`;
 - navigerar till `index.html?force_login=1&update=<timestamp>`;
 - login-koden kontrollerar `force_login=1` före all auto-unlock;
@@ -65,16 +65,16 @@ Fryst hash `8f09f32a`. DEV-resultat och pseudo-forward ska bevaras. Real forward
 Första modul att migrera. DEV 2020-01-01–2022-12-31. Låst historisk pseudo-forward 2023-01-01–2026-09-10. Breakout/momentum-grid 648 varianter. A–M DEV, M fryser kandidat/hash, N öppnar pseudo-forward, O slutbedömning. Ingen rescue efter N.
 
 ## Nästa steg
-Verifiera V0.2.4 live: login → Dashboard → Uppdatera → ren URL med `?update=...` → login ska visas igen → logga in → Dashboard → Forskning → Swing G2 → Tillbaka. När det är PASS portas auktoritativ G2-motor utan legacy-UI och jämförs mot gamla Lina innan acceptans.
+Verifiera V0.2.5 live: login → Dashboard → Uppdatera → ren URL med `?update=...` → login ska visas igen → logga in → Dashboard → Forskning → Swing G2 → Tillbaka. När det är PASS portas auktoritativ G2-motor utan legacy-UI och jämförs mot gamla Lina innan acceptans.
 
 
-## V0.2.4 – login/autofill + browser refresh
+## V0.2.5 – login/autofill + browser refresh
 - Portar den bevisat fungerande legacy-lösningen från V0.46.3 som aktivt tömmer loginfältet vid DOM-start, fördröjt efter password-manager-autofill, vid pageshow och första fokus.
 - Firefox/webbläsarens vanliga Reload räknas nu som en ren login-start och rensar endast `sessionStorage`-flaggan `linasopti_unlocked`; Lina-data i `localStorage` lämnas orörd.
 - Linas egen Uppdatera behåller cache-bustad omladdning och tvingad login.
 - Permanent regel: när ett beteende redan fungerat tidigare ska exakt fungerande implementation först lokaliseras, jämföras och portas/testas innan ny lösning uppfinns.
 
-## V0.2.4 – Swing G2 första riktiga Clean Core-modulen
+## V0.2.5 – Swing G2 första riktiga Clean Core-modulen
 - V0.1.6 är fryst som första fungerande Clean Core-checkpoint för login, Enter, Uppdatera och browser reload.
 - Auktoritativ Swing G2-motor från legacy V0.56.0/V0.58.8 har portats till separat `g2-engine.js` utan legacy-navigation eller gamla bootkedjor.
 - Forskningsreglerna är oförändrade: DEV 2020–2022, pseudo-forward 2023–2026-09-10, 648 varianter, 0,10 % kostnad/sida, 0,5 % risk, max 5 positioner, max 20 %/position.
@@ -87,21 +87,33 @@ Verifiera V0.2.4 live: login → Dashboard → Uppdatera → ren URL med `?updat
 - Clean Core använder egen G2-nyckel `lina_clean_swing_g2_v0201`, så gamla checkpoints/felstatus inte smyger in i en ny körning. Legacy-nyckeln `linasopti_swing_g2_v0560` lämnas orörd som facit.
 
 
-## V0.2.4 – G2 synligt körfel
+## V0.2.5 – G2 synligt körfel
 - Korrigerar ett UI-fel i V0.2.0 där `Kör G2 A–O` fångade ett körfel och sedan direkt ritade om sidan, vilket gjorde att felet försvann och såg ut som att inget hände.
 - Körstart och körfel sparas nu i G2-state (`runStatus`, `runStartedAt`, `lastError`) och `RUN_ERROR` skrivs i `trialLedger`.
 - Strategiregler, grid, perioder, kandidatfrysning och datakällor är oförändrade.
 - Vid nästa fel ska användaren få ett synligt `KÖRFEL` med exakt felorsak istället för tyst återgång till `Redo`.
 
 
-## V0.2.4 – versionsynk är release-blocker
+## V0.2.5 – versionsynk är release-blocker
 - Korrigerar V0.2.1 där synlig version var V0.2.1 men cache-busters och APP_VERSION fortfarande var 0.2.0.
 - Permanent regel: en release får inte märkas PASS om synlig version, APP_VERSION, script/style `?v=`, rapportversion, README och handoff inte är synkroniserade.
 - Releasekontrollen ska uttryckligen söka efter föregående patchversion i runtimefilerna innan ZIP byggs.
 
-## Permanent startregel (V0.2.4)
+## Permanent startregel (V0.2.5)
 Varje ny start eller ny inloggning ska alltid börja på `index.html` / Dashboard. En kvarvarande intern route-hash som `#g2` får aldrig återöppna en underliggande modul som första vy. Hash-routing får användas under en aktiv session, men den initiala vyn efter login är alltid Dashboard.
 
 
-## V0.2.4 – G2 lagringsfix vid M/N
-Efter verklig körning nådde G2 13/15 och avbröts under N med `The quota has been exceeded.`. Rotorsaken var att DEV-rådata + 648 gridresultat låg kvar samtidigt som pseudo-forward-rader växte i localStorage. V0.2.4 komprimerar state efter kandidatfrysning M och före fortsatt N. A–M, fryst kandidat och pågående OOS-checkpoint bevaras. Ingen strategiändring.
+## V0.2.5 – G2 lagringsfix vid M/N
+Efter verklig körning nådde G2 13/15 och avbröts under N med `The quota has been exceeded.`. Rotorsaken var att DEV-rådata + 648 gridresultat låg kvar samtidigt som pseudo-forward-rader växte i localStorage. V0.2.5 komprimerar state efter kandidatfrysning M och före fortsatt N. A–M, fryst kandidat och pågående OOS-checkpoint bevaras. Ingen strategiändring.
+
+
+## V0.2.5 – G2 robusthetsanalys + Broker Gate förberedd
+- G2-strategin är oförändrad och fryst med kandidat-hash `15efd75a`.
+- Inbyggd robusthetsanalys för de 144 pseudo-forward-affärerna.
+- Ny exportknapp `Robusthetsrapport`.
+- Års-, symbol-, exit- och koncentrationsanalys finns i Lina.
+- Ny dokumentation: `LINA_G2_ROBUSTHETSANALYS_V0205.md`.
+- Ny dokumentation: `LINA_BROKER_GATE.md`.
+- Permanent regel för stora körningar: checkpoint + automatisk lagringskompaktering planeras före körstart; rådata/mellanresultat som inte längre behövs får inte tillåtas fylla webbläsarens lagringskvot. Frysta resultat, historik och återstartspunkt ska alltid bevaras.
+- Cloudflare-arbetsregel: när befintlig Lina Worker ska ändras ges hela färdiga Worker-koden direkt i chatten för copy/paste i Cloudflare-editorn → Deploy, om inget annat faktiskt krävs.
+- Bildregel: skapa/generera aldrig bild om användaren inte uttryckligen ber om det.

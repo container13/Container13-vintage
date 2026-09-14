@@ -2,11 +2,12 @@
   'use strict';
   function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
   function stageCards(x){return window.LinaG2Engine.STAGES.map(([l,n,d])=>{const z=x?.stages?.[l],cl=z?'done':'';return `<div class="g2-stage ${cl}"><b>${l} · ${esc(n)}</b><small>${esc(z?.summary||d)}</small></div>`}).join('')}
+  function robustBox(E){const r=E.robustAnalysis?.();if(!r)return'';const f=n=>Number(n).toLocaleString('sv-SE',{maximumFractionDigits:0}),pct=n=>(100*n).toFixed(1)+'%';const best=r.symbols?.[0],weak=r.symbols?.slice(-1)[0];return `<div class="g2-robust"><div class="eyebrow">G2 · ROBUSTHET PSEUDO-FORWARD</div><h3>${r.total.n} affärer · +${f(r.total.pl)} kr · PF ${r.total.pf.toFixed(2)}</h3><p>Alla pseudo-forward-år positiva. Starkaste symbol ${esc(best?.symbol)} ${best?.pl>=0?'+':''}${f(best?.pl)} kr. Svagaste ${esc(weak?.symbol)} ${f(weak?.pl)} kr.</p><p><b>Koncentrationsflagga:</b> ${esc(best?.symbol)} står för ${pct(best?.pl/r.total.pl)} av nettovinsten. Kandidaten förblir fryst; detta ska följas i riktig forward.</p></div>`}
   function render(root,ctx){
     const E=window.LinaG2Engine,x=E.load(),done=Object.keys(x?.stages||{}).length,locked=!!x?.planLocked,complete=!!x?.stages?.O;
     let title='Steg 1 · Lås forskningsplanen',text='Planen är förregistrerad. Du behöver inte välja marknad, period eller testinställningar.',action='<button id="g2Primary" class="primary">🔒 Lås G2-planen</button>',hint='Efter låsning får du en enda Kör-knapp.';
     if(locked&&!complete){title='Steg 2 · Kör Swing G2 A–O';text=`${done}/15 steg klara. Lina hämtar rätt data, kör testerna i rätt ordning, fryser kandidaten vid M och öppnar pseudo-forward först vid N.`;action=`<button id="g2Primary" class="primary">${done?'▶ Fortsätt G2 A–O':'▶ Kör G2 A–O'}</button>`;hint='Du behöver inte gå via det generella Data-verktyget.'}
-    if(complete){title='✓ Swing G2 A–O är klar';text=`${esc(x.final?.verdict||'Slutrapport klar')}. Körningen är färdig.`;action='<button id="g2Export" class="primary">📤 Exportera G2-rapport till ChatGPT</button>';hint='Nästa: exportera rapporten och dra filen till ChatGPT.'}
+    if(complete){title='✓ Swing G2 A–O är klar';text=`${esc(x.final?.verdict||'Slutrapport klar')}. Körningen är färdig.`;action='<button id="g2Export" class="primary">📤 Exportera G2-rapport</button><button id="g2Robust" class="secondary">📊 Robusthetsrapport</button>';hint='G2 är fryst. Nästa Gate: verkliga mäklarkostnader och därefter riktig forward/paper trading.'}
     root.innerHTML=`<div class="crumb">Dashboard › Forskning › Swing G2 · Breakout/Momentum · A–O</div>
       <section class="hero"><h1>Swing G2</h1><p>Breakout/Momentum · auktoritativ G2-motor portad från gamla Lina. Handel AV.</p></section>
       <button class="back" id="g2Back">← Forskning</button>
@@ -15,10 +16,11 @@
       <div class="actions">${action}${x?'<button id="g2Raw" class="secondary">🧾 Raw JSON</button>':''}${x?'<button id="g2Reset" class="secondary">↺ Återställ endast G2</button>':''}</div><div id="g2Hint" class="g2-hint">${hint}</div>
       <div id="g2Live" class="statusline"><b>${complete?'A–O KLART':locked?'Redo':'Inte låst'}</b><span>${complete?esc(x.final?.verdict||''):' '}</span></div>
       <div class="g2-progress"><div><b>Alphabet A–O</b><span>${done} / 15</span></div><progress value="${done}" max="15"></progress></div>
-      <div class="g2-stages">${stageCards(x)}</div></section>`;
+      <div class="g2-stages">${stageCards(x)}</div>${complete?robustBox(E):''}</section>`;
     root.querySelector('#g2Back').onclick=ctx.back;
     const p=root.querySelector('#g2Primary');if(p)p.onclick=async()=>{if(!locked){E.lock();render(root,ctx);return}p.disabled=true;p.textContent='⏳ G2 kör…';try{await E.run();render(root,ctx)}catch(e){render(root,ctx);const box=root.querySelector('#g2Live');if(box){box.classList.add('error');box.innerHTML=`<b>KÖRFEL</b><span>${esc(e?.message||String(e))}</span>`}}};
     root.querySelector('#g2Export')?.addEventListener('click',()=>E.exportReport());
+    root.querySelector('#g2Robust')?.addEventListener('click',()=>E.exportRobust());
     root.querySelector('#g2Raw')?.addEventListener('click',()=>E.exportRaw());
     root.querySelector('#g2Reset')?.addEventListener('click',()=>{if(confirm('Återställa endast Swing G2? Övriga Lina-data påverkas inte.')){E.reset();render(root,ctx)}});
   }

@@ -85,10 +85,44 @@
     x=load();if(!x.stages.O){const d=x.candidate.dev,o=x.pseudoForward;let verdict='SVAG / EJ VIDARE';if(o.n>=60&&o.pl>0&&o.pf>=1.08)verdict='POSITIV KANDIDAT';else if(o.n>=40&&o.pl>0&&o.pf>=1.00)verdict='POSITIV MEN TUNN';x.final={verdict,devPF:d.pf,pseudoPF:o.pf,devPL:d.pl,pseudoPL:o.pl,candidateHash:x.candidate.hash,noRescue:true};x.trialLedger.push({at:new Date().toISOString(),event:'FINAL',verdict,noRescue:true});done(x,'O',{summary:`${verdict} · DEV PF ${d.pf.toFixed(2)} → pseudo-forward PF ${o.pf.toFixed(2)} · ingen rescue`,final:x.final})}
     x=load();x.runStatus='complete';x.runFinishedAt=new Date().toISOString();x.lastError=null;save(x);live('A–O KLART',`${load().final.verdict} · nästa beslut tas utan att ändra G2-reglerna.`);return load();
   }catch(e){x=load()||x||fresh();x.runStatus='error';x.lastError={at:new Date().toISOString(),message:e?.message||String(e)};x.trialLedger??=[];x.trialLedger.push({at:x.lastError.at,event:'RUN_ERROR',stage:x.stage||0,message:x.lastError.message});save(x);live('KÖRFEL',x.lastError.message);throw e}}
-  function report(){const x=load();if(!x)return'Ingen G2-körning.';const L=['LINAS OPTI – SWING G2 BREAKOUT/MOMENTUM ALPHABET A–O','Clean Core: V0.2.4','Generation: '+GENERATION,'Handel: AVSTÄNGD','Plan låst: '+(x.planLocked?'JA':'NEJ')+' · planhash '+(x.planHash||'—'),'DEV: '+DEV_START+' → '+DEV_END,'Låst historisk pseudo-forward: '+OOS_START+' → '+OOS_END,'Viktigt: pseudo-forward är historik, inte färsk framtida OOS.',''];for(const s of STAGES){const z=x.stages?.[s[0]];L.push(`${s[0]} · ${s[1]} | ${z?.status||'EJ KÖRD'} | ${z?.summary||''}`)}if(x.candidate)L.push('','FRYST KANDIDAT','Hash: '+x.candidate.hash,'Params: '+JSON.stringify(x.candidate.params),'DEV: '+JSON.stringify(x.candidate.dev));if(x.pseudoForward)L.push('','PSEUDO-FORWARD',JSON.stringify({n:x.pseudoForward.n,pl:x.pseudoForward.pl,pf:x.pseudoForward.pf,wr:x.pseudoForward.wr,dd:x.pseudoForward.dd}));if(x.final)L.push('','SLUTBEDÖMNING: '+x.final.verdict,'Ingen automatisk rescue/efteroptimering: JA');return L.join('\n')}
+
+  function pfOf(trades){const gp=trades.filter(t=>t.pnl>0).reduce((s,t)=>s+t.pnl,0),gl=-trades.filter(t=>t.pnl<0).reduce((s,t)=>s+t.pnl,0);return gl?gp/gl:(gp?Infinity:0)}
+  function summarizeTrades(trades){
+    const n=trades.length,pl=trades.reduce((s,t)=>s+t.pnl,0),wins=trades.filter(t=>t.pnl>0).length;
+    return {n,pl,pf:pfOf(trades),wr:n?wins/n:0,avg:n?pl/n:0};
+  }
+  function robustAnalysis(){
+    const x=load(),trades=x?.pseudoForward?.closed||[];
+    if(!x?.stages?.O||!trades.length)return null;
+    const years={};for(const t of trades){const y=String(t.exitDate||t.entryDate||'').slice(0,4);(years[y]??=[]).push(t)}
+    const symbols={};for(const t of trades)(symbols[t.symbol]??=[]).push(t);
+    const exits={};for(const t of trades)(exits[t.why||'okänd']??=[]).push(t);
+    const yearRows=Object.entries(years).sort().map(([year,a])=>({year,...summarizeTrades(a)}));
+    const symbolRows=Object.entries(symbols).map(([symbol,a])=>({symbol,...summarizeTrades(a)})).sort((a,b)=>b.pl-a.pl);
+    const exitRows=Object.entries(exits).map(([why,a])=>({why,...summarizeTrades(a)})).sort((a,b)=>b.pl-a.pl);
+    const grossProfit=trades.filter(t=>t.pnl>0).reduce((s,t)=>s+t.pnl,0),grossLoss=-trades.filter(t=>t.pnl<0).reduce((s,t)=>s+t.pnl,0);
+    const sorted=trades.slice().sort((a,b)=>b.pnl-a.pnl),top10=sorted.slice(0,10).reduce((s,t)=>s+t.pnl,0);
+    let mw=0,ml=0,cw=0,cl=0;for(const t of trades.slice().sort((a,b)=>String(a.exitDate).localeCompare(String(b.exitDate)))){if(t.pnl>0){cw++;cl=0;mw=Math.max(mw,cw)}else if(t.pnl<0){cl++;cw=0;ml=Math.max(ml,cl)}}
+    return {candidateHash:x.candidate.hash,total:summarizeTrades(trades),years:yearRows,symbols:symbolRows,exits:exitRows,grossProfit,grossLoss,maxWin:Math.max(...trades.map(t=>t.pnl)),maxLoss:Math.min(...trades.map(t=>t.pnl)),maxWinStreak:mw,maxLossStreak:ml,top10GrossProfitShare:grossProfit?top10/grossProfit:0};
+  }
+  function robustReport(){
+    const r=robustAnalysis();if(!r)return'Ingen färdig pseudo-forward att analysera.';
+    const f=n=>Number(n).toLocaleString('sv-SE',{maximumFractionDigits:2}),pct=n=>(100*n).toFixed(1)+'%';
+    const L=['LINAS OPTI – G2 ROBUSTHETSANALYS','Clean Core: V0.2.5','Kandidat: '+r.candidateHash,'Handel: AVSTÄNGD','',
+      `TOTALT · ${r.total.n} affärer · P/L ${f(r.total.pl)} kr · PF ${f(r.total.pf)} · WR ${pct(r.total.wr)}`,'',
+      'ÅR FÖR ÅR'];
+    r.years.forEach(y=>L.push(`${y.year} · ${y.n} affärer · P/L ${f(y.pl)} kr · PF ${f(y.pf)} · WR ${pct(y.wr)}`));
+    L.push('','SYMBOLER');r.symbols.forEach(z=>L.push(`${z.symbol} · ${z.n} affärer · P/L ${f(z.pl)} kr · PF ${f(z.pf)} · WR ${pct(z.wr)}`));
+    L.push('','EXITTYP');r.exits.forEach(z=>L.push(`${z.why} · ${z.n} affärer · P/L ${f(z.pl)} kr · PF ${Number.isFinite(z.pf)?f(z.pf):'∞'}`));
+    L.push('','KONCENTRATION',`Gross profit ${f(r.grossProfit)} kr · gross loss ${f(r.grossLoss)} kr`,`Största vinst ${f(r.maxWin)} kr · största förlust ${f(r.maxLoss)} kr`,`Längsta vinstsvit ${r.maxWinStreak} · förlustsvit ${r.maxLossStreak}`,`Top 10 vinnare = ${pct(r.top10GrossProfitShare)} av gross profit`,'','BESLUT','G2 förblir FRYST. Ingen parameterändring. Nästa Gate: Broker/Cost Gate → därefter riktig forward/paper trading om kandidaten håller.');
+    return L.join('\n');
+  }
+  function exportRobust(){download(robustReport(),`LINAS_OPTI_G2_ROBUSTHET_CLEAN_V0205_${new Date().toISOString().slice(0,10)}.txt`)}
+
+  function report(){const x=load();if(!x)return'Ingen G2-körning.';const L=['LINAS OPTI – SWING G2 BREAKOUT/MOMENTUM ALPHABET A–O','Clean Core: V0.2.5','Generation: '+GENERATION,'Handel: AVSTÄNGD','Plan låst: '+(x.planLocked?'JA':'NEJ')+' · planhash '+(x.planHash||'—'),'DEV: '+DEV_START+' → '+DEV_END,'Låst historisk pseudo-forward: '+OOS_START+' → '+OOS_END,'Viktigt: pseudo-forward är historik, inte färsk framtida OOS.',''];for(const s of STAGES){const z=x.stages?.[s[0]];L.push(`${s[0]} · ${s[1]} | ${z?.status||'EJ KÖRD'} | ${z?.summary||''}`)}if(x.candidate)L.push('','FRYST KANDIDAT','Hash: '+x.candidate.hash,'Params: '+JSON.stringify(x.candidate.params),'DEV: '+JSON.stringify(x.candidate.dev));if(x.pseudoForward)L.push('','PSEUDO-FORWARD',JSON.stringify({n:x.pseudoForward.n,pl:x.pseudoForward.pl,pf:x.pseudoForward.pf,wr:x.pseudoForward.wr,dd:x.pseudoForward.dd}));if(x.final)L.push('','SLUTBEDÖMNING: '+x.final.verdict,'Ingen automatisk rescue/efteroptimering: JA');return L.join('\n')}
   function download(text,name,type='text/plain'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
-  function exportReport(){download(report(),`LINAS_OPTI_SWING_G2_A_O_CLEAN_V0204_${new Date().toISOString().slice(0,10)}.txt`)}
-  function exportRaw(){const x=load();if(x)download(JSON.stringify(x,null,2),`LINAS_OPTI_SWING_G2_RAW_CLEAN_V0204_${new Date().toISOString().slice(0,10)}.json`,'application/json')}
+  function exportReport(){download(report(),`LINAS_OPTI_SWING_G2_A_O_CLEAN_V0205_${new Date().toISOString().slice(0,10)}.txt`)}
+  function exportRaw(){const x=load();if(x)download(JSON.stringify(x,null,2),`LINAS_OPTI_SWING_G2_RAW_CLEAN_V0205_${new Date().toISOString().slice(0,10)}.json`,'application/json')}
   function reset(){localStorage.removeItem(KEY);emit()}
-  window.LinaG2Engine={KEY,LEGACY_KEY,GENERATION,DEV_START,DEV_END,OOS_START,OOS_END,GRID,STAGES,SYMBOLS,load,fresh,save,lock,run,report,exportReport,exportRaw,reset,variants,engine,normRows,hash};
+  window.LinaG2Engine={KEY,LEGACY_KEY,GENERATION,DEV_START,DEV_END,OOS_START,OOS_END,GRID,STAGES,SYMBOLS,load,fresh,save,lock,run,report,robustAnalysis,robustReport,exportRobust,exportReport,exportRaw,reset,variants,engine,normRows,hash};
 })();
