@@ -1,19 +1,20 @@
-# Lina Clean Core V0.1.2
+# Lina Clean Core V0.1.4
 
 ## Status
 Clean Core är en teknisk omstart av Lina, inte en kunskapsomstart. V0.58.8 COMPLETE är permanent legacy-checkpoint/facit före Clean Core och ska aldrig skrivas över.
 
-V0.1.2 rättar ett blockerande fel i första Clean Core-skalet: efter godkänd login kunde inget hända. Login är nu frikopplad från modul-loadern och använder samma beprövade grundbeteende som legacy-Lina: kodkontroll i sidan, sessionStorage `linasopti_unlocked`, därefter start av en enda Clean Core-boot.
+V0.1.4 korrigerar Uppdatera-flödet. V0.1.3 laddade bara om samma upplåsta session, vilket gjorde att login aldrig visades. Nu rensas endast login-flaggan i sessionStorage, all persistent Lina-data i localStorage bevaras, URL/hash/gammal lösenkods-query ersätts av en ren cache-bustad index-URL och login visas igen.
 
-## V0.1.2 ändrat
-- login fungerar utan ES-module-importer;
-- gamla fungerande loginprincipen från V0.58.8 återanvänds;
-- alla JS-filer laddas som vanliga `defer`-script i bestämd ordning;
-- en enda app-start: `LinaApp.start()`;
-- en enda router: `LinaRouter`;
-- appen öppnar Dashboard direkt efter godkänd login;
-- versions/cache-busters synkade till 0.1.2;
-- flat filstruktur: alla filer ligger direkt i samma mapp/ZIP-rot.
+## V0.1.4 ändrat
+- Uppdatera rensar endast `sessionStorage["linasopti_unlocked"]`;
+- all Lina-data/checkpoints i `localStorage` lämnas orörda;
+- `#dashboard` och gamla query-parametrar följer inte med;
+- navigerar till `index.html?update=<timestamp>` för riktig cache-bust;
+- login visas igen efter Uppdatera;
+- login/Enter-logiken i övrigt lämnas orörd;
+- proven-function-first-regeln förtydligad: tidigare fungerande implementation är förstahandsreferens, men beteendet ska jämföras mot aktuellt krav och får inte kopieras blint;
+- versions/cache-busters synkade till 0.1.4;
+- flat filstruktur kvarstår.
 
 ## PERMANENTA REGLER FÖR CHATGPT / UTVECKLING
 1. `kör` betyder bygg/ändra de riktiga filerna omedelbart enligt senast överenskommen riktning.
@@ -41,6 +42,7 @@ V0.1.2 rättar ett blockerande fel i första Clean Core-skalet: efter godkänd l
 23. Robotmognad är 48/100 tills ny evidens motiverar annat.
 24. 2023–2026 får inte beskrivas som färsk orörd OOS i sin helhet.
 25. V0.58.8 COMPLETE är permanent legacy-checkpoint före Clean Core.
+26. ÅTERANVÄND BEVISAT FUNGERANDE FUNKTION FÖRST: om en funktion redan har fungerat korrekt i en tidigare Lina-version ska den implementationen alltid undersökas och testas som förstahandsval innan funktionen skrivs om eller byggs på nytt. Men tidigare kod får inte kopieras blint: först ska det tidigare beteendet jämföras mot det aktuella kravet. Om kravet skiljer sig ska den fungerande implementationen användas som facit/referens och bara den nödvändiga beteendeskillnaden göras. Ny implementation görs endast om den gamla inte passar Clean Core-arkitekturen eller om det finns ett dokumenterat skäl. Vid omskrivning ska beteendet jämföras mot den tidigare fungerande versionen. Detta gäller bland annat login, Enter-inloggning, Uppdatera, navigation, API-anrop, datainsamling, beräkningar och export.
 
 ## Clean Core arkitektur
 - en boot;
@@ -64,4 +66,4 @@ Fryst hash `8f09f32a`. DEV-resultat och pseudo-forward ska bevaras. Real forward
 Första modul att migrera. DEV 2020-01-01–2022-12-31. Låst historisk pseudo-forward 2023-01-01–2026-09-10. Breakout/momentum-grid 648 varianter. A–M DEV, M fryser kandidat/hash, N öppnar pseudo-forward, O slutbedömning. Ingen rescue efter N.
 
 ## Nästa steg
-Verifiera V0.1.2 live: login → Dashboard → Forskning → Swing G2 → Tillbaka. När det är PASS portas auktoritativ G2-motor utan legacy-UI och jämförs mot gamla Lina innan acceptans.
+Verifiera V0.1.4 live: login → Dashboard → Uppdatera → ren URL med `?update=...` → login ska visas igen → logga in → Dashboard → Forskning → Swing G2 → Tillbaka. När det är PASS portas auktoritativ G2-motor utan legacy-UI och jämförs mot gamla Lina innan acceptans.

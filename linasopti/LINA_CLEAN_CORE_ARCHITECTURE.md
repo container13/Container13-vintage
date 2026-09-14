@@ -1,4 +1,4 @@
-# Lina Clean Core Architecture V0.1.2
+# Lina Clean Core Architecture V0.1.4
 
 - `index.html`: skal + robust login gate.
 - `app.js`: exakt en app-boot och vyregistrering.
@@ -9,3 +9,6 @@
 - `style.css`: gemensam responsiv UI.
 
 Ingen ES-module-loader krävs för grundstarten. Script laddas deterministiskt med `defer`. Login kan därför låsa upp sidan även om en senare modul skulle få fel. Inga exakta versionsguards, clone/rebind-system eller historiska bootkedjor får återinföras.
+
+## Proven-function-first
+När en funktion fungerat i legacy används den implementationen som förstahandsreferens och regressionstest innan ny lösning byggs. V0.1.4 återanvänder V0.58.8:s `v0512Refresh`-beteende.

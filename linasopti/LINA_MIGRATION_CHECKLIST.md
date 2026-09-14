@@ -15,3 +15,6 @@
 - [ ] Porta Jägaren.
 - [ ] Porta G1.
 - [ ] Porta Historik/Forward/Verktyg.
+
+- [x] Uppdatera använder V0.58.8 som referens men korrigerad för Clean Core-kravet: rensa login-session, bevara localStorage, ren cache-bustad index-URL, visa login igen.
+- [x] Regel: tidigare fungerande funktion testas först och jämförs mot aktuellt beteendekrav; ingen blind kopiering.
