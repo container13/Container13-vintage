@@ -1,11 +1,11 @@
-# Lina Clean Core V0.1.6
+# Lina Clean Core V0.2.0
 
 ## Status
 Clean Core är en teknisk omstart av Lina, inte en kunskapsomstart. V0.58.8 COMPLETE är permanent legacy-checkpoint/facit före Clean Core och ska aldrig skrivas över.
 
-V0.1.6 gör Uppdatera-flödet deterministiskt. V0.1.4 litade enbart på att sessionStorage-rensningen överlevde navigeringen. Nu skickas dessutom en explicit `force_login=1`-markör till nästa sidladdning. Login-koden ser markören innan någon auto-unlock kan ske, rensar upplåsningsflaggan igen och visar login. Därefter städas URL:en utan extra reload.
+V0.2.0 gör Uppdatera-flödet deterministiskt. V0.1.4 litade enbart på att sessionStorage-rensningen överlevde navigeringen. Nu skickas dessutom en explicit `force_login=1`-markör till nästa sidladdning. Login-koden ser markören innan någon auto-unlock kan ske, rensar upplåsningsflaggan igen och visar login. Därefter städas URL:en utan extra reload.
 
-## V0.1.6 ändrat
+## V0.2.0 ändrat
 - Uppdatera rensar `sessionStorage["linasopti_unlocked"]`;
 - navigerar till `index.html?force_login=1&update=<timestamp>`;
 - login-koden kontrollerar `force_login=1` före all auto-unlock;
@@ -65,11 +65,23 @@ Fryst hash `8f09f32a`. DEV-resultat och pseudo-forward ska bevaras. Real forward
 Första modul att migrera. DEV 2020-01-01–2022-12-31. Låst historisk pseudo-forward 2023-01-01–2026-09-10. Breakout/momentum-grid 648 varianter. A–M DEV, M fryser kandidat/hash, N öppnar pseudo-forward, O slutbedömning. Ingen rescue efter N.
 
 ## Nästa steg
-Verifiera V0.1.6 live: login → Dashboard → Uppdatera → ren URL med `?update=...` → login ska visas igen → logga in → Dashboard → Forskning → Swing G2 → Tillbaka. När det är PASS portas auktoritativ G2-motor utan legacy-UI och jämförs mot gamla Lina innan acceptans.
+Verifiera V0.2.0 live: login → Dashboard → Uppdatera → ren URL med `?update=...` → login ska visas igen → logga in → Dashboard → Forskning → Swing G2 → Tillbaka. När det är PASS portas auktoritativ G2-motor utan legacy-UI och jämförs mot gamla Lina innan acceptans.
 
 
-## V0.1.6 – login/autofill + browser refresh
+## V0.2.0 – login/autofill + browser refresh
 - Portar den bevisat fungerande legacy-lösningen från V0.46.3 som aktivt tömmer loginfältet vid DOM-start, fördröjt efter password-manager-autofill, vid pageshow och första fokus.
 - Firefox/webbläsarens vanliga Reload räknas nu som en ren login-start och rensar endast `sessionStorage`-flaggan `linasopti_unlocked`; Lina-data i `localStorage` lämnas orörd.
 - Linas egen Uppdatera behåller cache-bustad omladdning och tvingad login.
 - Permanent regel: när ett beteende redan fungerat tidigare ska exakt fungerande implementation först lokaliseras, jämföras och portas/testas innan ny lösning uppfinns.
+
+## V0.2.0 – Swing G2 första riktiga Clean Core-modulen
+- V0.1.6 är fryst som första fungerande Clean Core-checkpoint för login, Enter, Uppdatera och browser reload.
+- Auktoritativ Swing G2-motor från legacy V0.56.0/V0.58.8 har portats till separat `g2-engine.js` utan legacy-navigation eller gamla bootkedjor.
+- Forskningsreglerna är oförändrade: DEV 2020–2022, pseudo-forward 2023–2026-09-10, 648 varianter, 0,10 % kostnad/sida, 0,5 % risk, max 5 positioner, max 20 %/position.
+- Guidat flöde: **Lås plan → Kör/Fortsätt G2 A–O → Resultat → Exportera rapport till ChatGPT**.
+- G2 hämtar sin egen exakta data; generella Data-vyn används inte som mellanlandning.
+- Datatransporten behåller legacy V0.58.8-ordningen: Worker Yahoo daily → EODHD .US → Alpaca daily, två cykler, 60 s timeout.
+- Datakällans namn sparas på hämtade rader och Stage A visar vilka providers som faktiskt användes. Blandad provider är därför synlig och kan granskas; ingen data blandas tyst utan spårbarhet.
+- M fryser kandidat/hash innan N får öppna historisk pseudo-forward. Ingen rescue efter N.
+- Strategilogik ligger i `g2-engine.js`; UI ligger i `g2.js`.
+- Clean Core använder egen G2-nyckel `lina_clean_swing_g2_v0200`, så gamla checkpoints/felstatus inte smyger in i en ny körning. Legacy-nyckeln `linasopti_swing_g2_v0560` lämnas orörd som facit.

@@ -1,9 +1,9 @@
 (function(){
   'use strict';
-  const APP_VERSION='0.1.6';
+  const APP_VERSION='0.2.0';
   const cards=[
     ['forward','Forward','Riktig forward-validering. Portas efter forskningskärnan.'],
-    ['research','Forskning','Jägaren, Swing G1 och Swing G2.'],
+    ['research','Forskning','Jägaren, Swing G1 och Swing G2 · G2 aktiv.'],
     ['history','Historik','Projektresa, tester och frysta beslut.'],
     ['data','Data','Datakällor och integritetskontroller.'],
     ['tools','Verktyg','Backup, export och diagnostik.'],
@@ -17,7 +17,7 @@
       root.querySelectorAll('[data-route]').forEach(b=>b.onclick=()=>R.navigate(b.dataset.route));
     });
     R.register('research',root=>{
-      shell(root,'Forskning','Välj forskningsgeneration. G2 är första modulen som migreras.',`<button class="back" id="home">← Dashboard</button><div class="grid"><button class="card" disabled><b>Jägaren</b><small>Fryst · portas senare</small></button><button class="card" disabled><b>Swing G1</b><small>Fryst · portas senare</small></button><button class="card" id="g2"><b>Swing G2</b><small>Clean Core-migrering pågår</small></button></div>`);
+      shell(root,'Forskning','Välj forskningsgeneration. G2 är första modulen som migreras.',`<button class="back" id="home">← Dashboard</button><div class="grid"><button class="card" disabled><b>Jägaren</b><small>Fryst · portas senare</small></button><button class="card" disabled><b>Swing G1</b><small>Fryst · portas senare</small></button><button class="card" id="g2"><b>Swing G2</b><small>Aktiv · Breakout/Momentum A–O</small></button></div>`);
       root.querySelector('#home').onclick=()=>R.navigate('dashboard');
       root.querySelector('#g2').onclick=()=>R.navigate('g2');
     });
@@ -28,7 +28,7 @@
     });
   }
 
-  // V0.1.6 – Uppdatera ska ge en verklig ny start, inte bara ladda om en redan upplåst session.
+  // V0.2.0 – Uppdatera ska ge en verklig ny start, inte bara ladda om en redan upplåst session.
   // Bevarar all persistent Lina-data i localStorage, men rensar endast login-sessionen.
   // Navigerar sedan till en ren, cache-bustad index-URL så login visas och senaste index/scripts hämtas.
   function installRefresh(){

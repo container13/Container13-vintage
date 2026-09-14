@@ -21,3 +21,14 @@
 
 - [x] Portat legacy V0.46.3 loginfält-clear/autofill-skydd.
 - [x] Browser reload tvingar login, localStorage bevaras.
+
+## Swing G2 – V0.2.0
+- [x] Fryst plan portad utan parameterändring.
+- [x] Exakt grid 648 varianter.
+- [x] A–O ordning portad.
+- [x] M måste frysa kandidat/hash före N.
+- [x] Ingen rescue efter N.
+- [x] G2 hämtar egen data.
+- [x] Rapport + Raw JSON export.
+- [x] Strategi separerad från UI.
+- [ ] Live reproducerbarhetskörning mot legacy-resultat – kräver lyckad historisk Worker-data och görs efter användarens första V0.2.0-körning.
