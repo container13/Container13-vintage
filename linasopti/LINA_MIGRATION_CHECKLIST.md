@@ -18,3 +18,6 @@
 
 - [x] Uppdatera använder V0.58.8 som referens men korrigerad för Clean Core-kravet: rensa login-session, bevara localStorage, ren cache-bustad index-URL, visa login igen.
 - [x] Regel: tidigare fungerande funktion testas först och jämförs mot aktuellt beteendekrav; ingen blind kopiering.
+
+- [x] Portat legacy V0.46.3 loginfält-clear/autofill-skydd.
+- [x] Browser reload tvingar login, localStorage bevaras.

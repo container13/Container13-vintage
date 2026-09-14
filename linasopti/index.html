@@ -1,17 +1,40 @@
 <!doctype html>
-<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f4f7fb"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><title>Linas Opti · Clean Core</title><link rel="stylesheet" href="style.css?v=0.1.5"></head>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f4f7fb"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><title>Linas Opti · Clean Core</title><link rel="stylesheet" href="style.css?v=0.1.6"></head>
 <body class="locked">
-<div id="loginGate" class="gate"><form id="loginForm" class="gate-card"><img src="lina-circle.png" alt="" class="logo"><h1>Linas Opti</h1><div class="version">Clean Core V0.1.5</div><p>Ange lösenkod för att fortsätta</p><input id="loginCode" name="lina_one_time_code_0470" type="password" inputmode="text" autocomplete="one-time-code" autocapitalize="off" autocorrect="off" spellcheck="false" value="" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" placeholder="Lösenkod"><button id="loginEnter" class="primary" type="submit">Öppna Linas Opti</button><div id="loginMsg" class="login-msg" aria-live="polite"></div></form></div>
-<div id="app" hidden><header class="header"><div><b>Linas Opti</b><small>Clean Core V0.1.5</small></div><div class="header-status"><button id="refreshApp" class="refresh" type="button" aria-label="Uppdatera Lina" title="Uppdatera Lina"><span aria-hidden="true">↻</span><small>Uppdatera</small></button><span>Robotmognad 48/100</span><strong>Handel AV</strong></div></header><main id="view"></main></div>
+<div id="loginGate" class="gate"><form id="loginForm" class="gate-card"><img src="lina-circle.png" alt="" class="logo"><h1>Linas Opti</h1><div class="version">Clean Core V0.1.6</div><p>Ange lösenkod för att fortsätta</p><input id="loginCode" name="lina_one_time_code_0470" type="password" inputmode="text" autocomplete="one-time-code" autocapitalize="off" autocorrect="off" spellcheck="false" value="" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" placeholder="Lösenkod"><button id="loginEnter" class="primary" type="submit">Öppna Linas Opti</button><div id="loginMsg" class="login-msg" aria-live="polite"></div></form></div>
+<div id="app" hidden><header class="header"><div><b>Linas Opti</b><small>Clean Core V0.1.6</small></div><div class="header-status"><button id="refreshApp" class="refresh" type="button" aria-label="Uppdatera Lina" title="Uppdatera Lina"><span aria-hidden="true">↻</span><small>Uppdatera</small></button><span>Robotmognad 48/100</span><strong>Handel AV</strong></div></header><main id="view"></main></div>
 <script>
 (function(){
   const gate=document.getElementById('loginGate'),form=document.getElementById('loginForm'),input=document.getElementById('loginCode'),msg=document.getElementById('loginMsg');
   const params=new URLSearchParams(window.location.search);
   const forceLogin=params.get('force_login')==='1';
-  if(forceLogin){
+  const navEntry=performance.getEntriesByType?.('navigation')?.[0];
+  const browserReload=navEntry?.type==='reload';
+  // V0.1.6: både Linas egen Uppdatera och webbläsarens vanliga Uppdatera ska ge en ren login-start.
+  if(forceLogin || browserReload){
     sessionStorage.removeItem('linasopti_unlocked');
+  }
+  if(forceLogin){
     history.replaceState(null,'',window.location.pathname);
   }
+
+  // Återanvänd bevisad V0.46.3-lösning från legacy-Lina: loginfältet ska alltid öppna tomt.
+  function clearLoginField(){
+    input.value='';
+    input.defaultValue='';
+    input.removeAttribute('value');
+  }
+  clearLoginField();
+  setTimeout(clearLoginField,50);
+  setTimeout(clearLoginField,250);
+  setTimeout(clearLoginField,800);
+  window.addEventListener('pageshow',()=>{clearLoginField();setTimeout(clearLoginField,100);});
+  document.addEventListener('focusin',e=>{
+    if(e.target===input && document.body.classList.contains('locked')){
+      if(!input.dataset.loginTouched){input.value='';input.dataset.loginTouched='1';}
+    }
+  });
+
   let opened=false;
   function open(){
     if(opened)return;opened=true;
@@ -34,9 +57,9 @@
   if(sessionStorage.getItem('linasopti_unlocked')==='1')open();else setTimeout(()=>input.focus(),50);
 })();
 </script>
-<script defer src="state.js?v=0.1.5"></script>
-<script defer src="api.js?v=0.1.5"></script>
-<script defer src="router.js?v=0.1.5"></script>
-<script defer src="g2.js?v=0.1.5"></script>
-<script defer src="app.js?v=0.1.5"></script>
+<script defer src="state.js?v=0.1.6"></script>
+<script defer src="api.js?v=0.1.6"></script>
+<script defer src="router.js?v=0.1.6"></script>
+<script defer src="g2.js?v=0.1.6"></script>
+<script defer src="app.js?v=0.1.6"></script>
 </body></html>

@@ -1,11 +1,11 @@
-# Lina Clean Core V0.1.5
+# Lina Clean Core V0.1.6
 
 ## Status
 Clean Core är en teknisk omstart av Lina, inte en kunskapsomstart. V0.58.8 COMPLETE är permanent legacy-checkpoint/facit före Clean Core och ska aldrig skrivas över.
 
-V0.1.5 gör Uppdatera-flödet deterministiskt. V0.1.4 litade enbart på att sessionStorage-rensningen överlevde navigeringen. Nu skickas dessutom en explicit `force_login=1`-markör till nästa sidladdning. Login-koden ser markören innan någon auto-unlock kan ske, rensar upplåsningsflaggan igen och visar login. Därefter städas URL:en utan extra reload.
+V0.1.6 gör Uppdatera-flödet deterministiskt. V0.1.4 litade enbart på att sessionStorage-rensningen överlevde navigeringen. Nu skickas dessutom en explicit `force_login=1`-markör till nästa sidladdning. Login-koden ser markören innan någon auto-unlock kan ske, rensar upplåsningsflaggan igen och visar login. Därefter städas URL:en utan extra reload.
 
-## V0.1.5 ändrat
+## V0.1.6 ändrat
 - Uppdatera rensar `sessionStorage["linasopti_unlocked"]`;
 - navigerar till `index.html?force_login=1&update=<timestamp>`;
 - login-koden kontrollerar `force_login=1` före all auto-unlock;
@@ -65,4 +65,11 @@ Fryst hash `8f09f32a`. DEV-resultat och pseudo-forward ska bevaras. Real forward
 Första modul att migrera. DEV 2020-01-01–2022-12-31. Låst historisk pseudo-forward 2023-01-01–2026-09-10. Breakout/momentum-grid 648 varianter. A–M DEV, M fryser kandidat/hash, N öppnar pseudo-forward, O slutbedömning. Ingen rescue efter N.
 
 ## Nästa steg
-Verifiera V0.1.5 live: login → Dashboard → Uppdatera → ren URL med `?update=...` → login ska visas igen → logga in → Dashboard → Forskning → Swing G2 → Tillbaka. När det är PASS portas auktoritativ G2-motor utan legacy-UI och jämförs mot gamla Lina innan acceptans.
+Verifiera V0.1.6 live: login → Dashboard → Uppdatera → ren URL med `?update=...` → login ska visas igen → logga in → Dashboard → Forskning → Swing G2 → Tillbaka. När det är PASS portas auktoritativ G2-motor utan legacy-UI och jämförs mot gamla Lina innan acceptans.
+
+
+## V0.1.6 – login/autofill + browser refresh
+- Portar den bevisat fungerande legacy-lösningen från V0.46.3 som aktivt tömmer loginfältet vid DOM-start, fördröjt efter password-manager-autofill, vid pageshow och första fokus.
+- Firefox/webbläsarens vanliga Reload räknas nu som en ren login-start och rensar endast `sessionStorage`-flaggan `linasopti_unlocked`; Lina-data i `localStorage` lämnas orörd.
+- Linas egen Uppdatera behåller cache-bustad omladdning och tvingad login.
+- Permanent regel: när ett beteende redan fungerat tidigare ska exakt fungerande implementation först lokaliseras, jämföras och portas/testas innan ny lösning uppfinns.
