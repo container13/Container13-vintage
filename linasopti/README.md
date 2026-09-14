@@ -1,6 +1,6 @@
-# Linas Opti V0.58.6
+# Linas Opti V0.58.7
 
-> **Aktuell release: V0.58.6** · Dashboard-first kontrollcentral · responsiv mobil/desktop · tydlig status/nytt/klart · historik/utveckling · Forward + forskning · Handel AV · Robotmognad 48/100
+> **Aktuell release: V0.58.7** · Dashboard-first kontrollcentral · responsiv mobil/desktop · tydlig status/nytt/klart · historik/utveckling · Forward + forskning · Handel AV · Robotmognad 48/100
 
 
 ## V0.45.12 – Signal Lab 3 UI/version hard-fix
@@ -1390,3 +1390,18 @@ V0.58.6 introduces one authoritative delegated navigation router in capture phas
 Before leaving a module it releases workspace isolation and G2 state, then routes exactly one level out.
 
 Single-boot rule is preserved: V0.58.6 is the only DOMContentLoaded boot; it calls the V0.58.5 base boot and then installs the navigation router once.
+
+## V0.58.7 – G2 historical daily transport + durable back
+
+Two live failures remained in V0.58.6:
+
+1. G2 still returned `AMD 2020-01-01–2020-01-31: 0 dagsrader`.
+   The G2 loader had moved to 1Day bars but still relied primarily on the Alpaca `/bars` route. V0.58.7 uses a historical-daily provider chain instead:
+   `EODHD plain ticker → EODHD .US ticker → Alpaca 1Day`.
+   Returned ticker names are normalized back to the frozen G2 universe.
+   The checkpoint mode is bumped to `g2-symbol-month-daily-3`.
+
+2. `← Forskning` could still fail because older context code replaces the button node with `cloneNode()`.
+   V0.58.7 arms G2's back button with an inline `onclick` attribute. Attributes survive cloning, so the route remains attached even when historical wrappers replace the DOM node.
+
+No G2 strategy/grid/risk logic changed.

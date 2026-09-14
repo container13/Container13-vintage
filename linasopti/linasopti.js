@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.58.6";
+const APP_VERSION = "V0.58.7";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -4807,27 +4807,40 @@ function v0560Bootstrap(closed,n=2000){
  return{runs:n,p05:q(.05),median:q(.5),p95:q(.95),pPositive:sums.filter(x=>x>0).length/sums.length}
 }
 async function v0560FetchSymbol(symbol,start,end,label){
- let last;
- for(let a=1;a<=4;a++){
-   try{
-     v0560Live(label,`${symbol} · ${start} → ${end} · dagsdata · försök ${a}/4`);
-     const j=await Promise.race([
-       bridge(`/bars?symbols=${encodeURIComponent(symbol)}&timeframe=1Day&start=${start}T00:00:00Z&end=${end}T23:59:59Z`),
-       new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout 60 s')),60000))
-     ]);
-     const rows=v0540Rows(j);
-     if(!rows.length)throw new Error('0 dagsrader');
-     return rows
-   }catch(e){last=e;if(a<4)await v0540Wait(a*2500)}
+ let last=null;
+ const attempts=[
+   {name:'EODHD',path:`/eod-bars?symbols=${encodeURIComponent(symbol)}&timeframe=1Day&start=${start}&end=${end}`},
+   {name:'EODHD .US',path:`/eod-bars?symbols=${encodeURIComponent(symbol+'.US')}&timeframe=1Day&start=${start}&end=${end}`},
+   {name:'Alpaca daily',path:`/bars?symbols=${encodeURIComponent(symbol)}&timeframe=1Day&start=${start}T00:00:00Z&end=${end}T23:59:59Z`}
+ ];
+ for(let cycle=1;cycle<=2;cycle++){
+   for(const src of attempts){
+     try{
+       v0560Live(label,`${symbol} · ${start} → ${end} · ${src.name} · försök ${cycle}/2`);
+       const j=await Promise.race([
+         bridge(src.path),
+         new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout 60 s')),60000))
+       ]);
+       let rows=v0540Rows(j);
+       if(!rows.length)throw new Error('0 dagsrader');
+       // G2's frozen universe uses plain ticker names. Some EOD providers may
+       // return AMD.US etc; normalize the fetched symbol back to the requested ticker.
+       rows=rows.map(r=>({...r,symbol,ticker:undefined,s:symbol}));
+       return rows;
+     }catch(e){
+       last=new Error(`${src.name}: ${e?.message||e}`);
+     }
+   }
+   if(cycle<2)await v0540Wait(2500);
  }
- throw new Error(`${symbol} ${start}–${end}: ${last?.message||last}`)
+ throw new Error(`${symbol} ${start}–${end}: ${last?.message||last||'ingen dagsdata'}`);
 }
 async function v0560FetchChunked(x,key,start,end,label){
  const chunks=v0550MonthChunks(start,end),symbols=[...V0540_SYMBOLS,'SPY'];
  x.fetch??={};
  // v2 deliberately resets older 5-min checkpoints so daily and intraday rows can never mix.
- if(!x.fetch[key]||x.fetch[key].mode!=='g2-symbol-month-daily-2'){
-   x.fetch[key]={mode:'g2-symbol-month-daily-2',month:0,symbol:0,rows:[]};v0560Save(x)
+ if(!x.fetch[key]||x.fetch[key].mode!=='g2-symbol-month-daily-3'){
+   x.fetch[key]={mode:'g2-symbol-month-daily-3',month:0,symbol:0,rows:[]};v0560Save(x)
  }
  const f=x.fetch[key];
  while(f.month<chunks.length){
@@ -6653,6 +6666,8 @@ function v0581ApplyG2Context(){
       back:()=>v0570ShowCategory('research')
     });
   }catch(e){}
+  try{v0587ArmG2Back()}catch(e){}
+  requestAnimationFrame(()=>{try{v0587ArmG2Back()}catch(e){}});
 }
 
 function v0581OpenG2(){
@@ -6832,6 +6847,7 @@ v0581OpenG2=function(){
   v0582PrevOpenG2();
   v0582ActivateLab('v0560SwingG2Lab');
   v0582BindG2Primary();
+  try{v0587ArmG2Back()}catch(e){}
 };
 
 // Leaving a module explicitly releases isolation.
@@ -7098,3 +7114,27 @@ function v0586CurrentBoot(){
 }
 
 window.addEventListener('DOMContentLoaded',v0586CurrentBoot);
+
+
+// ============================================================
+// V0.58.7 – DURABLE G2 BACK NAVIGATION
+// Inline onclick attribute survives cloneNode() replacements of the context button.
+// ============================================================
+function v0587BackToResearch(ev){
+  try{ev?.preventDefault?.();ev?.stopPropagation?.();}catch(e){}
+  try{if(typeof v0582ReleaseWorkspace==='function')v0582ReleaseWorkspace()}catch(e){}
+  try{if(typeof v0581LeaveG2==='function')v0581LeaveG2()}catch(e){}
+  try{v0570ShowCategory('research')}catch(e){
+    console.error('V0.58.7 G2 back',e);
+    try{v0570RenderHome()}catch(_){}
+  }
+  return false;
+}
+
+function v0587ArmG2Back(){
+  const b=document.getElementById('v0574ContextBack');
+  if(!b)return;
+  b.textContent='← Forskning';
+  b.setAttribute('onclick','return v0587BackToResearch(event)');
+  b.setAttribute('data-v0587-back','research');
+}

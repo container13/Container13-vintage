@@ -252,3 +252,7 @@ Målet är snabb start, Dashboard direkt efter laddning och inga dubbla Mutation
 ## V0.58.6 – stabil tillbaka-navigation
 
 Efter att V0.58.5 löste startprestandan visade G2 att `← Forskning` inte fungerade. Audit visade flera gamla wrapperlager och `cloneNode()`-baserad återbindning av backknappar. V0.58.6 lägger ett enda auktoritativt capture-baserat navigationslager ovanpå alla aktuella tillbaka-vägar och frigör workspace/G2-state innan navigation.
+
+## V0.58.7 – G2 transport + tillbaka
+
+Live test i V0.58.6 visade fortsatt 0 dagsrader för AMD januari 2020 och `← Forskning` fungerade fortfarande inte. G2:s historiska daily-loader får därför fallbackkedjan EODHD → EODHD .US → Alpaca daily, med normalisering av ticker tillbaka till fryst universum. G2-bakåt får en cloneNode-tålig inline-handler.
