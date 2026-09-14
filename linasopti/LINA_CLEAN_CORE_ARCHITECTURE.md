@@ -1,4 +1,4 @@
-# Lina Clean Core Architecture V0.1.1
+# Lina Clean Core Architecture V0.1.2
 
 - `index.html`: skal + robust login gate.
 - `app.js`: exakt en app-boot och vyregistrering.

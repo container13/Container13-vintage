@@ -1,18 +1,18 @@
-# Lina Clean Core V0.1.1
+# Lina Clean Core V0.1.2
 
 ## Status
 Clean Core är en teknisk omstart av Lina, inte en kunskapsomstart. V0.58.8 COMPLETE är permanent legacy-checkpoint/facit före Clean Core och ska aldrig skrivas över.
 
-V0.1.1 rättar ett blockerande fel i första Clean Core-skalet: efter godkänd login kunde inget hända. Login är nu frikopplad från modul-loadern och använder samma beprövade grundbeteende som legacy-Lina: kodkontroll i sidan, sessionStorage `linasopti_unlocked`, därefter start av en enda Clean Core-boot.
+V0.1.2 rättar ett blockerande fel i första Clean Core-skalet: efter godkänd login kunde inget hända. Login är nu frikopplad från modul-loadern och använder samma beprövade grundbeteende som legacy-Lina: kodkontroll i sidan, sessionStorage `linasopti_unlocked`, därefter start av en enda Clean Core-boot.
 
-## V0.1.1 ändrat
+## V0.1.2 ändrat
 - login fungerar utan ES-module-importer;
 - gamla fungerande loginprincipen från V0.58.8 återanvänds;
 - alla JS-filer laddas som vanliga `defer`-script i bestämd ordning;
 - en enda app-start: `LinaApp.start()`;
 - en enda router: `LinaRouter`;
 - appen öppnar Dashboard direkt efter godkänd login;
-- versions/cache-busters synkade till 0.1.1;
+- versions/cache-busters synkade till 0.1.2;
 - flat filstruktur: alla filer ligger direkt i samma mapp/ZIP-rot.
 
 ## PERMANENTA REGLER FÖR CHATGPT / UTVECKLING
@@ -64,4 +64,4 @@ Fryst hash `8f09f32a`. DEV-resultat och pseudo-forward ska bevaras. Real forward
 Första modul att migrera. DEV 2020-01-01–2022-12-31. Låst historisk pseudo-forward 2023-01-01–2026-09-10. Breakout/momentum-grid 648 varianter. A–M DEV, M fryser kandidat/hash, N öppnar pseudo-forward, O slutbedömning. Ingen rescue efter N.
 
 ## Nästa steg
-Verifiera V0.1.1 live: login → Dashboard → Forskning → Swing G2 → Tillbaka. När det är PASS portas auktoritativ G2-motor utan legacy-UI och jämförs mot gamla Lina innan acceptans.
+Verifiera V0.1.2 live: login → Dashboard → Forskning → Swing G2 → Tillbaka. När det är PASS portas auktoritativ G2-motor utan legacy-UI och jämförs mot gamla Lina innan acceptans.

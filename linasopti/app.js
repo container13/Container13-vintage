@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  const APP_VERSION='0.1.1';
+  const APP_VERSION='0.1.2';
   const cards=[
     ['forward','Forward','Riktig forward-validering. Portas efter forskningskärnan.'],
     ['research','Forskning','Jägaren, Swing G1 och Swing G2.'],
