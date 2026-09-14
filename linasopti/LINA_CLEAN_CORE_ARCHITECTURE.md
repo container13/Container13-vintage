@@ -1,5 +1,11 @@
-# Lina Clean Core Architecture V0.1
+# Lina Clean Core Architecture V0.1.1
 
-Princip: liten explicit kärna. `app.js` bootar en gång. `router.js` äger navigation. `state.js` äger Clean Core-state. `api.js` äger nätverk. `modules/` äger forskningslogik. UI får anropa moduler men forskningsregler får inte gömmas i DOM/eventkod.
+- `index.html`: skal + robust login gate.
+- `app.js`: exakt en app-boot och vyregistrering.
+- `router.js`: exakt en router.
+- `state.js`: centralt state/localStorage.
+- `api.js`: extern data/API-trafik.
+- `g2.js`: isolerad G2-vy/modulskal.
+- `style.css`: gemensam responsiv UI.
 
-V0.58.8 ligger kvar som referens. Ingen legacy-initializer, versionsguard, MutationObserver-router eller clone/rebind-navigation har kopierats in.
+Ingen ES-module-loader krävs för grundstarten. Script laddas deterministiskt med `defer`. Login kan därför låsa upp sidan även om en senare modul skulle få fel. Inga exakta versionsguards, clone/rebind-system eller historiska bootkedjor får återinföras.

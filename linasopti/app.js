@@ -1,8 +1,40 @@
-import{installAuth}from'./auth.js';import{registerRoute,navigate,startRouter}from'./router.js';import{renderG2}from'./g2.js';
-const cards=[['forward','Forward','Riktig forward-validering. Portas efter forskningskärnan.'],['research','Forskning','Jägaren, Swing G1 och Swing G2.'],['history','Historik','Projektresa, tester och frysta beslut.'],['data','Data','Datakällor och integritetskontroller.'],['tools','Verktyg','Backup, export och diagnostik.'],['about','Om Lina','Metod, mognad och säkerhetsregler.']];
-function shell(root,title,text,body=''){root.innerHTML=`<div class="crumb">Dashboard${title==='Linas lägesbild'?'':' › '+title}</div><section class="hero"><h1>${title}</h1><p>${text}</p></section>${body}`}
-registerRoute('dashboard',root=>{shell(root,'Linas lägesbild','Clean Core är den nya tekniska basen. Ingen legacy-kod körs här.',`<div class="grid">${cards.map(([r,t,d])=>`<button class="card" data-route="${r}"><b>${t}</b><small>${d}</small></button>`).join('')}</div>`);root.querySelectorAll('[data-route]').forEach(b=>b.onclick=()=>navigate(b.dataset.route))});
-registerRoute('research',root=>{shell(root,'Forskning','Välj forskningsgeneration. G2 är första modulen som migreras.',`<button class="back" id="home">← Dashboard</button><div class="grid"><button class="card" disabled><b>Jägaren</b><small>Fryst · portas senare</small></button><button class="card" disabled><b>Swing G1</b><small>Fryst · portas senare</small></button><button class="card" id="g2"><b>Swing G2</b><small>Clean Core-migrering pågår</small></button></div>`);root.querySelector('#home').onclick=()=>navigate('dashboard');root.querySelector('#g2').onclick=()=>navigate('g2')});
-registerRoute('g2',root=>renderG2(root,{back:()=>navigate('research')}));
-for(const [r,t,d] of cards.filter(x=>!['research'].includes(x[0])))registerRoute(r,root=>{shell(root,t,d,`<button class="back" id="home">← Dashboard</button><section class="workspace"><div class="statusline">Modulen väntar på kontrollerad migrering.</div></section>`);root.querySelector('#home').onclick=()=>navigate('dashboard')});
-installAuth(()=>{document.querySelector('#app').hidden=false;startRouter()});
+(function(){
+  'use strict';
+  const APP_VERSION='0.1.1';
+  const cards=[
+    ['forward','Forward','Riktig forward-validering. Portas efter forskningskärnan.'],
+    ['research','Forskning','Jägaren, Swing G1 och Swing G2.'],
+    ['history','Historik','Projektresa, tester och frysta beslut.'],
+    ['data','Data','Datakällor och integritetskontroller.'],
+    ['tools','Verktyg','Backup, export och diagnostik.'],
+    ['about','Om Lina','Metod, mognad och säkerhetsregler.']
+  ];
+  function shell(root,title,text,body){root.innerHTML=`<div class="crumb">Dashboard${title==='Linas lägesbild'?'':' › '+title}</div><section class="hero"><h1>${title}</h1><p>${text}</p></section>${body||''}`}
+  function registerRoutes(){
+    const R=window.LinaRouter;
+    R.register('dashboard',root=>{
+      shell(root,'Linas lägesbild','Clean Core är den nya tekniska basen. Ingen legacy-kod körs här.',`<div class="grid">${cards.map(([r,t,d])=>`<button class="card" data-route="${r}"><b>${t}</b><small>${d}</small></button>`).join('')}</div>`);
+      root.querySelectorAll('[data-route]').forEach(b=>b.onclick=()=>R.navigate(b.dataset.route));
+    });
+    R.register('research',root=>{
+      shell(root,'Forskning','Välj forskningsgeneration. G2 är första modulen som migreras.',`<button class="back" id="home">← Dashboard</button><div class="grid"><button class="card" disabled><b>Jägaren</b><small>Fryst · portas senare</small></button><button class="card" disabled><b>Swing G1</b><small>Fryst · portas senare</small></button><button class="card" id="g2"><b>Swing G2</b><small>Clean Core-migrering pågår</small></button></div>`);
+      root.querySelector('#home').onclick=()=>R.navigate('dashboard');
+      root.querySelector('#g2').onclick=()=>R.navigate('g2');
+    });
+    R.register('g2',root=>window.LinaG2.render(root,{back:()=>R.navigate('research')}));
+    for(const [r,t,d] of cards.filter(x=>x[0]!=='research'))R.register(r,root=>{
+      shell(root,t,d,`<button class="back" id="home">← Dashboard</button><section class="workspace"><div class="statusline">Modulen väntar på kontrollerad migrering.</div></section>`);
+      root.querySelector('#home').onclick=()=>R.navigate('dashboard');
+    });
+  }
+  function startApp(){
+    const app=document.querySelector('#app');
+    if(!app)return;
+    app.hidden=false;
+    registerRoutes();
+    window.LinaRouter.start();
+  }
+  window.LinaApp={version:APP_VERSION,start:startApp};
+  document.addEventListener('lina:unlocked',startApp,{once:true});
+  if(sessionStorage.getItem('linasopti_unlocked')==='1') startApp();
+})();

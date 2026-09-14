@@ -1,1 +1,7 @@
-const routes=new Map();let current='dashboard';export function registerRoute(name,render){routes.set(name,render)}export function navigate(name){if(!routes.has(name))name='dashboard';current=name;history.replaceState({route:name},'',`#${name}`);routes.get(name)(document.querySelector('#view'))}export function backTo(name){navigate(name)}export function startRouter(){const r=location.hash.slice(1)||'dashboard';navigate(r)}export function currentRoute(){return current}
+(function(){
+  const routes=new Map();let current='dashboard';
+  function register(name,render){routes.set(name,render)}
+  function navigate(name){if(!routes.has(name))name='dashboard';current=name;history.replaceState({route:name},'',location.pathname+location.search+'#'+name);window.LinaState&&LinaState.set({lastRoute:name});routes.get(name)(document.querySelector('#view'))}
+  function start(){const r=(location.hash||'').replace(/^#/,'')||'dashboard';navigate(r)}
+  window.LinaRouter={register,navigate,start,current:()=>current};
+})();

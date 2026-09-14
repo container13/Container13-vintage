@@ -1,2 +1,8 @@
-const PREFIX='linasopti_clean_';
-export const state={get(k,f=null){try{const v=localStorage.getItem(PREFIX+k);return v===null?f:JSON.parse(v)}catch{return f}},set(k,v){localStorage.setItem(PREFIX+k,JSON.stringify(v));return v},remove(k){localStorage.removeItem(PREFIX+k)}};
+(function(){
+  const KEY='lina_clean_core_state_v0011';
+  const defaults={version:'0.1.1',tradeEnabled:false,maturity:48,lastRoute:'dashboard'};
+  function load(){try{return Object.assign({},defaults,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch{return {...defaults}}}
+  let state=load();
+  function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+  window.LinaState={get:()=>({...state}),set(patch){state=Object.assign({},state,patch||{});save();return {...state}},reset(){state={...defaults};save();return {...state}}};
+})();

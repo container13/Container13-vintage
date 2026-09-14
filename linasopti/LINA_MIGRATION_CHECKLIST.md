@@ -1,17 +1,17 @@
-# Lina Migration Checklist
+# Lina Clean Core Migration Checklist
 
-- [x] Clean Core V0.1 separat från V0.58.8
-- [x] Login portad isolerat
-- [x] En boot
-- [x] En router
-- [x] Dashboard
-- [x] Forskning → G2 → Tillbaka
-- [x] State/API separerade
-- [ ] Porta G2-motor exakt
-- [ ] Verifiera G2 dataproveniens
-- [ ] Reproducera G2 mot referens
-- [ ] Porta Jägaren
-- [ ] Porta Swing G1
-- [ ] Porta real-forward state/checkpoints
-- [ ] Porta historik/export/backup
-- [ ] Slutlig regressionssvit
+- [x] Flat filstruktur.
+- [x] Login/session portad och frikopplad från modul-loader.
+- [x] En boot.
+- [x] En router.
+- [x] Central state.
+- [x] Separat API-lager.
+- [x] Dashboard-skal.
+- [x] Forskning-skal.
+- [x] G2 route/back-skal.
+- [ ] Live-verifiera login → Dashboard → Forskning → G2 → Tillbaka.
+- [ ] Porta auktoritativ G2-motor.
+- [ ] Jämför G2-resultat mot legacy V0.58.8.
+- [ ] Porta Jägaren.
+- [ ] Porta G1.
+- [ ] Porta Historik/Forward/Verktyg.

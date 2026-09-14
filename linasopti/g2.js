@@ -1,2 +1,12 @@
-export const G2_PLAN=Object.freeze({generation:'SWING-G2',dev:['2020-01-01','2022-12-31'],pseudoForward:['2023-01-01','2026-09-10'],symbols:['AMD','SHOP','ADBE','MU','FDX','TSLA','LUV','NFLX','C','NOW','QCOM','BAC','GM','DDOG','PYPL','NVDA'],variants:648,costPerSide:0.001,riskPerTrade:0.005,maxPositions:5,maxEquityPerPosition:0.20});
-export function renderG2(root,{back}){root.innerHTML=`<button class="back" id="backResearch">← Forskning</button><div class="crumb">Dashboard › Forskning › Swing G2</div><section class="hero"><h1>Swing G2</h1><p>Breakout/Momentum · A–O. Förregistrerad forskningsplan. Strategireglerna är inte implementerade i Clean Core ännu.</p></section><section class="workspace"><h2>Migrationssteg 1</h2><div class="statusline">✓ Clean Core-router aktiv · ✓ isolerad G2-modul · Nästa: porta den auktoritativa G2-motorn utan legacy-UI.</div><div class="actions"><button class="secondary" id="planBtn">Visa fryst plan</button></div><pre id="plan" hidden></pre></section>`;root.querySelector('#backResearch').onclick=back;root.querySelector('#planBtn').onclick=()=>{const p=root.querySelector('#plan');p.hidden=!p.hidden;p.textContent=JSON.stringify(G2_PLAN,null,2)}}
+(function(){
+  function render(root,ctx){
+    root.innerHTML=`<div class="crumb">Dashboard › Forskning › Swing G2 · Breakout/Momentum · A–O</div>
+      <section class="hero"><h1>Swing G2</h1><p>Första forskningsmodulen som migreras till Clean Core. Forskningsplanen är dokumenterad men motorn är ännu inte aktiverad i V0.1.1.</p></section>
+      <button class="back" id="g2Back">← Forskning</button>
+      <section class="workspace"><div class="statusline"><b>Status:</b> skal + navigation verifieras först.</div>
+      <p>DEV 2020-01-01 → 2022-12-31 · låst historisk pseudo-forward 2023-01-01 → 2026-09-10 · 648 varianter · Handel AV.</p>
+      <button class="primary" disabled>Kör G2 A–O – kommer i nästa migreringssteg</button></section>`;
+    document.querySelector('#g2Back').onclick=ctx.back;
+  }
+  window.LinaG2={render};
+})();
