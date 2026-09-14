@@ -1,8 +1,8 @@
 (function(){
   'use strict';
-  const APP_VERSION='0.2.6';
+  const APP_VERSION='0.2.7';
   const cards=[
-    ['forward','Forward','Riktig forward-validering. Portas efter forskningskärnan.'],
+    ['forward','Forward','Riktig forward-validering · G2 aktiv.'],
     ['research','Forskning','Jägaren, Swing G1, Swing G2 och Broker/Cost Gate.'],
     ['history','Historik','Projektresa, tester och frysta beslut.'],
     ['data','Data','Datakällor och integritetskontroller.'],
@@ -24,13 +24,19 @@
     });
     R.register('g2',root=>window.LinaG2.render(root,{back:()=>R.navigate('research'),broker:()=>R.navigate('broker-gate')}));
     R.register('broker-gate',root=>window.LinaBrokerGate.render(root,{back:()=>R.navigate('g2')}));
-    for(const [r,t,d] of cards.filter(x=>x[0]!=='research'))R.register(r,root=>{
+    R.register('forward',root=>{
+      shell(root,'Forward','Här räknas endast ny data efter respektive fryst anchor.',`<button class="back" id="home">← Dashboard</button><div class="grid"><button class="card" id="g2forward"><b>Swing G2 Real Forward</b><small>Aktiv · kandidat 15efd75a · Handel AV</small></button><button class="card" disabled><b>Swing G1 Forward</b><small>Fryst legacy · portas senare</small></button></div>`);
+      root.querySelector('#home').onclick=()=>R.navigate('dashboard');
+      root.querySelector('#g2forward').onclick=()=>R.navigate('g2-forward');
+    });
+    R.register('g2-forward',root=>window.LinaG2Forward.render(root,{back:()=>R.navigate('forward')}));
+    for(const [r,t,d] of cards.filter(x=>!['research','forward'].includes(x[0])))R.register(r,root=>{
       shell(root,t,d,`<button class="back" id="home">← Dashboard</button><section class="workspace"><div class="statusline">Modulen väntar på kontrollerad migrering.</div></section>`);
       root.querySelector('#home').onclick=()=>R.navigate('dashboard');
     });
   }
 
-  // V0.2.6 – Uppdatera ska ge en verklig ny start, inte bara ladda om en redan upplåst session.
+  // V0.2.7 – Uppdatera ska ge en verklig ny start, inte bara ladda om en redan upplåst session.
   // Bevarar all persistent Lina-data i localStorage, men rensar endast login-sessionen.
   // Navigerar sedan till en ren, cache-bustad index-URL så login visas och senaste index/scripts hämtas.
   function installRefresh(){

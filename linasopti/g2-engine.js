@@ -108,7 +108,7 @@
   function robustReport(){
     const r=robustAnalysis();if(!r)return'Ingen färdig pseudo-forward att analysera.';
     const f=n=>Number(n).toLocaleString('sv-SE',{maximumFractionDigits:2}),pct=n=>(100*n).toFixed(1)+'%';
-    const L=['LINAS OPTI – G2 ROBUSTHETSANALYS','Clean Core: V0.2.6','Kandidat: '+r.candidateHash,'Handel: AVSTÄNGD','',
+    const L=['LINAS OPTI – G2 ROBUSTHETSANALYS','Clean Core: V0.2.7','Kandidat: '+r.candidateHash,'Handel: AVSTÄNGD','',
       `TOTALT · ${r.total.n} affärer · P/L ${f(r.total.pl)} kr · PF ${f(r.total.pf)} · WR ${pct(r.total.wr)}`,'',
       'ÅR FÖR ÅR'];
     r.years.forEach(y=>L.push(`${y.year} · ${y.n} affärer · P/L ${f(y.pl)} kr · PF ${f(y.pf)} · WR ${pct(y.wr)}`));
@@ -117,12 +117,12 @@
     L.push('','KONCENTRATION',`Gross profit ${f(r.grossProfit)} kr · gross loss ${f(r.grossLoss)} kr`,`Största vinst ${f(r.maxWin)} kr · största förlust ${f(r.maxLoss)} kr`,`Längsta vinstsvit ${r.maxWinStreak} · förlustsvit ${r.maxLossStreak}`,`Top 10 vinnare = ${pct(r.top10GrossProfitShare)} av gross profit`,'','BESLUT','G2 förblir FRYST. Ingen parameterändring. Nästa Gate: Broker/Cost Gate → därefter riktig forward/paper trading om kandidaten håller.');
     return L.join('\n');
   }
-  function exportRobust(){download(robustReport(),`LINAS_OPTI_G2_ROBUSTHET_CLEAN_V0206_${new Date().toISOString().slice(0,10)}.txt`)}
+  function exportRobust(){download(robustReport(),`LINAS_OPTI_G2_ROBUSTHET_CLEAN_V0207_${new Date().toISOString().slice(0,10)}.txt`)}
 
-  function report(){const x=load();if(!x)return'Ingen G2-körning.';const L=['LINAS OPTI – SWING G2 BREAKOUT/MOMENTUM ALPHABET A–O','Clean Core: V0.2.6','Generation: '+GENERATION,'Handel: AVSTÄNGD','Plan låst: '+(x.planLocked?'JA':'NEJ')+' · planhash '+(x.planHash||'—'),'DEV: '+DEV_START+' → '+DEV_END,'Låst historisk pseudo-forward: '+OOS_START+' → '+OOS_END,'Viktigt: pseudo-forward är historik, inte färsk framtida OOS.',''];for(const s of STAGES){const z=x.stages?.[s[0]];L.push(`${s[0]} · ${s[1]} | ${z?.status||'EJ KÖRD'} | ${z?.summary||''}`)}if(x.candidate)L.push('','FRYST KANDIDAT','Hash: '+x.candidate.hash,'Params: '+JSON.stringify(x.candidate.params),'DEV: '+JSON.stringify(x.candidate.dev));if(x.pseudoForward)L.push('','PSEUDO-FORWARD',JSON.stringify({n:x.pseudoForward.n,pl:x.pseudoForward.pl,pf:x.pseudoForward.pf,wr:x.pseudoForward.wr,dd:x.pseudoForward.dd}));if(x.final)L.push('','SLUTBEDÖMNING: '+x.final.verdict,'Ingen automatisk rescue/efteroptimering: JA');return L.join('\n')}
+  function report(){const x=load();if(!x)return'Ingen G2-körning.';const L=['LINAS OPTI – SWING G2 BREAKOUT/MOMENTUM ALPHABET A–O','Clean Core: V0.2.7','Generation: '+GENERATION,'Handel: AVSTÄNGD','Plan låst: '+(x.planLocked?'JA':'NEJ')+' · planhash '+(x.planHash||'—'),'DEV: '+DEV_START+' → '+DEV_END,'Låst historisk pseudo-forward: '+OOS_START+' → '+OOS_END,'Viktigt: pseudo-forward är historik, inte färsk framtida OOS.',''];for(const s of STAGES){const z=x.stages?.[s[0]];L.push(`${s[0]} · ${s[1]} | ${z?.status||'EJ KÖRD'} | ${z?.summary||''}`)}if(x.candidate)L.push('','FRYST KANDIDAT','Hash: '+x.candidate.hash,'Params: '+JSON.stringify(x.candidate.params),'DEV: '+JSON.stringify(x.candidate.dev));if(x.pseudoForward)L.push('','PSEUDO-FORWARD',JSON.stringify({n:x.pseudoForward.n,pl:x.pseudoForward.pl,pf:x.pseudoForward.pf,wr:x.pseudoForward.wr,dd:x.pseudoForward.dd}));if(x.final)L.push('','SLUTBEDÖMNING: '+x.final.verdict,'Ingen automatisk rescue/efteroptimering: JA');return L.join('\n')}
   function download(text,name,type='text/plain'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
-  function exportReport(){download(report(),`LINAS_OPTI_SWING_G2_A_O_CLEAN_V0206_${new Date().toISOString().slice(0,10)}.txt`)}
-  function exportRaw(){const x=load();if(x)download(JSON.stringify(x,null,2),`LINAS_OPTI_SWING_G2_RAW_CLEAN_V0206_${new Date().toISOString().slice(0,10)}.json`,'application/json')}
+  function exportReport(){download(report(),`LINAS_OPTI_SWING_G2_A_O_CLEAN_V0207_${new Date().toISOString().slice(0,10)}.txt`)}
+  function exportRaw(){const x=load();if(x)download(JSON.stringify(x,null,2),`LINAS_OPTI_SWING_G2_RAW_CLEAN_V0207_${new Date().toISOString().slice(0,10)}.json`,'application/json')}
   function reset(){localStorage.removeItem(KEY);emit()}
   window.LinaG2Engine={KEY,LEGACY_KEY,GENERATION,DEV_START,DEV_END,OOS_START,OOS_END,GRID,STAGES,SYMBOLS,load,fresh,save,lock,run,report,robustAnalysis,robustReport,exportRobust,exportReport,exportRaw,reset,variants,engine,normRows,hash};
 })();
