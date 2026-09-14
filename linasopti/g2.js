@@ -7,7 +7,7 @@
     const E=window.LinaG2Engine,x=E.load(),done=Object.keys(x?.stages||{}).length,locked=!!x?.planLocked,complete=!!x?.stages?.O;
     let title='Steg 1 · Lås forskningsplanen',text='Planen är förregistrerad. Du behöver inte välja marknad, period eller testinställningar.',action='<button id="g2Primary" class="primary">🔒 Lås G2-planen</button>',hint='Efter låsning får du en enda Kör-knapp.';
     if(locked&&!complete){title='Steg 2 · Kör Swing G2 A–O';text=`${done}/15 steg klara. Lina hämtar rätt data, kör testerna i rätt ordning, fryser kandidaten vid M och öppnar pseudo-forward först vid N.`;action=`<button id="g2Primary" class="primary">${done?'▶ Fortsätt G2 A–O':'▶ Kör G2 A–O'}</button>`;hint='Du behöver inte gå via det generella Data-verktyget.'}
-    if(complete){title='✓ Swing G2 A–O är klar';text=`${esc(x.final?.verdict||'Slutrapport klar')}. Körningen är färdig.`;action='<button id="g2Export" class="primary">📤 Exportera G2-rapport</button><button id="g2Robust" class="secondary">📊 Robusthetsrapport</button>';hint='G2 är fryst. Nästa Gate: verkliga mäklarkostnader och därefter riktig forward/paper trading.'}
+    if(complete){title='✓ Swing G2 A–O är klar';text=`${esc(x.final?.verdict||'Slutrapport klar')}. Körningen är färdig.`;action='<button id="g2Broker" class="primary">💰 Broker/Cost Gate</button><button id="g2Export" class="secondary">📤 Exportera G2-rapport</button><button id="g2Robust" class="secondary">📊 Robusthetsrapport</button>';hint='G2 är fryst. Broker/Cost Gate reprissätter exakt samma affärer utan parameterändringar.'}
     root.innerHTML=`<div class="crumb">Dashboard › Forskning › Swing G2 · Breakout/Momentum · A–O</div>
       <section class="hero"><h1>Swing G2</h1><p>Breakout/Momentum · auktoritativ G2-motor portad från gamla Lina. Handel AV.</p></section>
       <button class="back" id="g2Back">← Forskning</button>
@@ -19,6 +19,7 @@
       <div class="g2-stages">${stageCards(x)}</div>${complete?robustBox(E):''}</section>`;
     root.querySelector('#g2Back').onclick=ctx.back;
     const p=root.querySelector('#g2Primary');if(p)p.onclick=async()=>{if(!locked){E.lock();render(root,ctx);return}p.disabled=true;p.textContent='⏳ G2 kör…';try{await E.run();render(root,ctx)}catch(e){render(root,ctx);const box=root.querySelector('#g2Live');if(box){box.classList.add('error');box.innerHTML=`<b>KÖRFEL</b><span>${esc(e?.message||String(e))}</span>`}}};
+    root.querySelector('#g2Broker')?.addEventListener('click',()=>ctx.broker?.());
     root.querySelector('#g2Export')?.addEventListener('click',()=>E.exportReport());
     root.querySelector('#g2Robust')?.addEventListener('click',()=>E.exportRobust());
     root.querySelector('#g2Raw')?.addEventListener('click',()=>E.exportRaw());
