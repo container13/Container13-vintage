@@ -1,19 +1,18 @@
-# Lina Clean Core V0.1.4
+# Lina Clean Core V0.1.5
 
 ## Status
 Clean Core är en teknisk omstart av Lina, inte en kunskapsomstart. V0.58.8 COMPLETE är permanent legacy-checkpoint/facit före Clean Core och ska aldrig skrivas över.
 
-V0.1.4 korrigerar Uppdatera-flödet. V0.1.3 laddade bara om samma upplåsta session, vilket gjorde att login aldrig visades. Nu rensas endast login-flaggan i sessionStorage, all persistent Lina-data i localStorage bevaras, URL/hash/gammal lösenkods-query ersätts av en ren cache-bustad index-URL och login visas igen.
+V0.1.5 gör Uppdatera-flödet deterministiskt. V0.1.4 litade enbart på att sessionStorage-rensningen överlevde navigeringen. Nu skickas dessutom en explicit `force_login=1`-markör till nästa sidladdning. Login-koden ser markören innan någon auto-unlock kan ske, rensar upplåsningsflaggan igen och visar login. Därefter städas URL:en utan extra reload.
 
-## V0.1.4 ändrat
-- Uppdatera rensar endast `sessionStorage["linasopti_unlocked"]`;
-- all Lina-data/checkpoints i `localStorage` lämnas orörda;
-- `#dashboard` och gamla query-parametrar följer inte med;
-- navigerar till `index.html?update=<timestamp>` för riktig cache-bust;
-- login visas igen efter Uppdatera;
-- login/Enter-logiken i övrigt lämnas orörd;
-- proven-function-first-regeln förtydligad: tidigare fungerande implementation är förstahandsreferens, men beteendet ska jämföras mot aktuellt krav och får inte kopieras blint;
-- versions/cache-busters synkade till 0.1.4;
+## V0.1.5 ändrat
+- Uppdatera rensar `sessionStorage["linasopti_unlocked"]`;
+- navigerar till `index.html?force_login=1&update=<timestamp>`;
+- login-koden kontrollerar `force_login=1` före all auto-unlock;
+- upplåsningsflaggan rensas en andra gång på den nya sidladdningen;
+- URL:en städas tillbaka till ren `/linasopti/` eller `/linasopti/index.html` innan login;
+- persistent Lina-data/checkpoints i `localStorage` lämnas orörda;
+- login med knapp och Enter lämnas i samma fungerande flöde;
 - flat filstruktur kvarstår.
 
 ## PERMANENTA REGLER FÖR CHATGPT / UTVECKLING
@@ -66,4 +65,4 @@ Fryst hash `8f09f32a`. DEV-resultat och pseudo-forward ska bevaras. Real forward
 Första modul att migrera. DEV 2020-01-01–2022-12-31. Låst historisk pseudo-forward 2023-01-01–2026-09-10. Breakout/momentum-grid 648 varianter. A–M DEV, M fryser kandidat/hash, N öppnar pseudo-forward, O slutbedömning. Ingen rescue efter N.
 
 ## Nästa steg
-Verifiera V0.1.4 live: login → Dashboard → Uppdatera → ren URL med `?update=...` → login ska visas igen → logga in → Dashboard → Forskning → Swing G2 → Tillbaka. När det är PASS portas auktoritativ G2-motor utan legacy-UI och jämförs mot gamla Lina innan acceptans.
+Verifiera V0.1.5 live: login → Dashboard → Uppdatera → ren URL med `?update=...` → login ska visas igen → logga in → Dashboard → Forskning → Swing G2 → Tillbaka. När det är PASS portas auktoritativ G2-motor utan legacy-UI och jämförs mot gamla Lina innan acceptans.

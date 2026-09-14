@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  const APP_VERSION='0.1.4';
+  const APP_VERSION='0.1.5';
   const cards=[
     ['forward','Forward','Riktig forward-validering. Portas efter forskningskärnan.'],
     ['research','Forskning','Jägaren, Swing G1 och Swing G2.'],
@@ -28,7 +28,7 @@
     });
   }
 
-  // V0.1.4 – Uppdatera ska ge en verklig ny start, inte bara ladda om en redan upplåst session.
+  // V0.1.5 – Uppdatera ska ge en verklig ny start, inte bara ladda om en redan upplåst session.
   // Bevarar all persistent Lina-data i localStorage, men rensar endast login-sessionen.
   // Navigerar sedan till en ren, cache-bustad index-URL så login visas och senaste index/scripts hämtas.
   function installRefresh(){
@@ -41,8 +41,8 @@
       if(label)label.textContent='Laddar…';
       sessionStorage.removeItem('linasopti_unlocked');
       const base=window.location.origin+window.location.pathname;
-      const next=base+'?update='+Date.now();
-      window.location.replace(next);
+      const next=base+'?force_login=1&update='+Date.now();
+      window.location.assign(next);
     });
   }
   function startApp(){
