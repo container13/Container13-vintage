@@ -1,4 +1,4 @@
-# Lina Clean Core Architecture V0.2.1
+# Lina Clean Core Architecture V0.2.2
 
 - `index.html`: skal + robust login gate.
 - `app.js`: exakt en app-boot och vyregistrering.
@@ -11,16 +11,16 @@
 Ingen ES-module-loader krävs för grundstarten. Script laddas deterministiskt med `defer`. Login kan därför låsa upp sidan även om en senare modul skulle få fel. Inga exakta versionsguards, clone/rebind-system eller historiska bootkedjor får återinföras.
 
 ## Proven-function-first
-När en funktion fungerat i legacy används den implementationen som förstahandsreferens och regressionstest innan ny lösning byggs. V0.2.1 återanvänder V0.58.8:s `v0512Refresh`-beteende.
+När en funktion fungerat i legacy används den implementationen som förstahandsreferens och regressionstest innan ny lösning byggs. V0.2.2 återanvänder V0.58.8:s `v0512Refresh`-beteende.
 
 
-## Auth/refresh invariant V0.2.1
+## Auth/refresh invariant V0.2.2
 `Uppdatera` får aldrig kunna återöppna Dashboard genom en kvarvarande sessionflagga. Refresh-flödet skickar därför explicit `force_login=1`; auth-bootstrap behandlar denna före auto-unlock och bevarar endast persistent appdata i localStorage.
 
 
-V0.2.1: loginfältets autofill-skydd är portat från legacy V0.46.3. Browser reload tvingar ren login utan att röra localStorage.
+V0.2.2: loginfältets autofill-skydd är portat från legacy V0.46.3. Browser reload tvingar ren login utan att röra localStorage.
 
-## V0.2.1 – G2-modulgräns
+## V0.2.2 – G2-modulgräns
 - `g2-engine.js`: fryst strategi, datainsamling, checkpoints, A–O, rapport/export.
 - `g2.js`: endast vy och användarflöde.
 - `app.js`: endast registrering/routing; ingen G2-strategilogik.
