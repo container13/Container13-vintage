@@ -242,3 +242,9 @@ Ingen strategi- eller forskningsregel ändrades.
 En full versionsguard-audit hittade 17 exakta versionskontroller. Det gjorde att permanenta funktioner kunde sluta initieras efter en versionshöjning, medan legacy `show('data', false)` fortfarande kördes.
 
 V0.58.4 inför en enda current-app boot för hela V0.58.x. Den startar alla permanenta moderna system och renderar Dashboard sist, så gammal Data-start aldrig får vinna första vyn.
+
+## V0.58.5 – en enda boot
+
+V0.58.4 gjorde inloggning/start mycket seg eftersom flera historiska init-generationer återaktiverades samtidigt. V0.58.5 stänger av deras autostart och inför en enda current boot med en enda uppsättning observers.
+
+Målet är snabb start, Dashboard direkt efter laddning och inga dubbla MutationObservers/listeners.

@@ -1145,7 +1145,7 @@ Changes:
 Permanent responsive rule:
 Normal user-facing information must fit without horizontal scrolling on a 13-inch screen. On mobile, wide tables must reflow into a readable stacked/card representation. Horizontal scrolling is reserved for genuine raw/technical data where preserving the raw table is more important than overview.
 
-## V0.58.4 – navigation & orientation audit
+## V0.58.5 – navigation & orientation audit
 
 The whole package was inspected for subviews that could visually replace the dashboard without clearly identifying the current location.
 
@@ -1360,3 +1360,18 @@ Then it renders Dashboard last, after older DOMContentLoaded handlers, so legacy
 
 Permanent engineering rule:
 No permanent current-app feature may depend solely on an exact historical version guard. Patch-version bumps inside the same active architecture family must not disable navigation, isolation, orientation, responsiveness or workflow logic.
+
+## V0.58.5 – single boot / performance cleanup
+
+V0.58.4 fixed exact-version guards but accidentally reactivated multiple historical startup generations at once. On login/page load this could start many delayed initializers and overlapping MutationObservers.
+
+V0.58.5 changes the architecture:
+- historical V0.57.x/V0.58.0–.4 init functions remain in source for compatibility/history
+- their DOMContentLoaded autostarts are disabled
+- exactly one current boot runs: `v0585CurrentBoot`
+- exactly one observer of each permanent type is started
+- dashboard is the final fresh-load state
+- G2 panel, orientation, responsive tables, market-state truth and refresh are initialized once
+
+Permanent performance rule:
+One release = one authoritative app boot. Historical initializers may remain in code but must not autostart. Permanent observers/listeners must be idempotent and started once.

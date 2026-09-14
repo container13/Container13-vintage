@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.58.4";
+const APP_VERSION = "V0.58.5";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -5712,7 +5712,6 @@ function v0570Init(){
   // Start every fresh page load at the dashboard, never in legacy expanded UI.
   v0570RenderHome();
 }
-window.addEventListener('DOMContentLoaded',()=>setTimeout(v0570Init,0));
 
 
 // ============================================================
@@ -5822,7 +5821,6 @@ function v0571AuditInit(){
   v0571AddDataAction();
   v0571AddResultAction();
 }
-window.addEventListener('DOMContentLoaded',()=>setTimeout(v0571AuditInit,20));
 
 
 // ============================================================
@@ -5887,7 +5885,6 @@ function v0572Init(){
   v0572ReplaceDataNext();
   v0572AuditWorkspaceIdentity();
 }
-window.addEventListener('DOMContentLoaded',()=>setTimeout(v0572Init,40));
 
 
 // ============================================================
@@ -5937,7 +5934,6 @@ function v0573ResponsiveInit(){
   v0573AnnotateAll();
   v0573ObserveTables();
 }
-window.addEventListener('DOMContentLoaded',()=>setTimeout(v0573ResponsiveInit,60));
 
 
 // ============================================================
@@ -6056,7 +6052,6 @@ function v0574Init(){
   v0574EnsureContextBar();
   v0574WatchMarketState();
 }
-window.addEventListener('DOMContentLoaded',()=>setTimeout(v0574Init,80));
 
 
 // ============================================================
@@ -6175,7 +6170,6 @@ function v0575Init(){
   v0575AuditCompletedStates();
   v0575WatchCompletion();
 }
-window.addEventListener('DOMContentLoaded',()=>setTimeout(v0575Init,120));
 
 
 // ============================================================
@@ -6287,7 +6281,6 @@ function v0576Init(){
   v0576RefreshVisibleState();
   v0576ObserveVisibleState();
 }
-window.addEventListener('DOMContentLoaded',()=>setTimeout(v0576Init,150));
 
 
 // ============================================================
@@ -6331,7 +6324,6 @@ function v0577InitCurrentArchitecture(){
 }
 
 // Run after all older synchronous DOMContentLoaded handlers have had a chance to execute.
-window.addEventListener('DOMContentLoaded',()=>setTimeout(v0577InitCurrentArchitecture,250));
 
 
 // ============================================================
@@ -6465,7 +6457,6 @@ function v0578Init(){
   if(!APP_VERSION.startsWith('V0.58.'))return;
   requestAnimationFrame(()=>v0576RefreshVisibleState());
 }
-window.addEventListener('DOMContentLoaded',()=>setTimeout(v0578Init,300));
 
 
 // ============================================================
@@ -6568,7 +6559,6 @@ function v0579Init(){
     v0579PaintG2DataState();
   }
 }
-window.addEventListener('DOMContentLoaded',()=>setTimeout(v0579Init,350));
 
 
 // ============================================================
@@ -6755,7 +6745,6 @@ function v0581Boot(){
   document.body.classList.remove('v0581-g2-active');
   try{v0570RenderHome()}catch(e){}
 }
-window.addEventListener('DOMContentLoaded',()=>setTimeout(v0581Boot,500));
 
 
 // ============================================================
@@ -6881,6 +6870,7 @@ function v0582LeakGuard(){
 }
 
 function v0582Init(){
+  if(APP_VERSION==='V0.58.5')return;
   if(!APP_VERSION.startsWith('V0.58.'))return;
 
   // Runtime guard catches any older code that tries to reveal a sibling afterwards.
@@ -6891,7 +6881,6 @@ function v0582Init(){
   // Dashboard remains the fresh-load start.
   try{v0570RenderHome()}catch(e){}
 }
-window.addEventListener('DOMContentLoaded',()=>setTimeout(v0582Init,650));
 
 
 // ============================================================
@@ -6932,6 +6921,7 @@ function v0584StartPermanentFeatures(){
 }
 
 function v0584CurrentBoot(){
+  if(APP_VERSION==='V0.58.5')return;
   if(V0584_BOOTED)return;
   if(!APP_VERSION.startsWith('V0.58.'))return;
   V0584_BOOTED=true;
@@ -6949,4 +6939,68 @@ function v0584CurrentBoot(){
 }
 
 // Run after all old DOMContentLoaded handlers so this is the final authority.
-window.addEventListener('DOMContentLoaded',()=>setTimeout(v0584CurrentBoot,900));
+
+
+// ============================================================
+// V0.58.5 – SINGLE BOOT, SINGLE OBSERVER SET
+// Historical init functions remain in source but do NOT autostart.
+// ============================================================
+let V0585_BOOTED=false;
+let V0585_TABLE_OBSERVER_STARTED=false;
+let V0585_COMPLETION_OBSERVER_STARTED=false;
+let V0585_VISIBLE_OBSERVER_STARTED=false;
+let V0585_WORKSPACE_OBSERVER_STARTED=false;
+
+function v0585SafeStart(name,fn){
+  try{ if(typeof fn==='function') fn(); }
+  catch(e){ console.error(`V0.58.5 ${name}`,e); }
+}
+
+function v0585StartObserversOnce(){
+  if(!V0585_TABLE_OBSERVER_STARTED){
+    V0585_TABLE_OBSERVER_STARTED=true;
+    v0585SafeStart('table observer',v0573ObserveTables);
+  }
+  if(!V0585_COMPLETION_OBSERVER_STARTED){
+    V0585_COMPLETION_OBSERVER_STARTED=true;
+    v0585SafeStart('completion observer',v0575WatchCompletion);
+  }
+  if(!V0585_VISIBLE_OBSERVER_STARTED){
+    V0585_VISIBLE_OBSERVER_STARTED=true;
+    v0585SafeStart('visible-view observer',v0576ObserveVisibleState);
+  }
+  if(!V0585_WORKSPACE_OBSERVER_STARTED){
+    V0585_WORKSPACE_OBSERVER_STARTED=true;
+    // Start only the V0.58.2 workspace leak observer logic.
+    const root=document.querySelector('.wrap')||document.body;
+    const obs=new MutationObserver(()=>requestAnimationFrame(v0582LeakGuard));
+    obs.observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','style']});
+  }
+}
+
+function v0585CurrentBoot(){
+  if(V0585_BOOTED)return;
+  if(!APP_VERSION.startsWith('V0.58.'))return;
+  V0585_BOOTED=true;
+
+  // Lightweight one-time setup.
+  v0585SafeStart('header',v0570Header);
+  v0585SafeStart('refresh',v0571EnsureRefresh);
+  v0585SafeStart('context bar',v0574EnsureContextBar);
+  v0585SafeStart('raw-table marks',v0573MarkRawTechnicalTables);
+  v0585SafeStart('table labels',v0573AnnotateAll);
+  v0585SafeStart('market truth',v0576SyncMarketTruth);
+  v0585SafeStart('G2 panel',v0580PaintG2Flow);
+
+  // Exactly one of each observer generation.
+  v0585StartObserversOnce();
+
+  // Fresh load always ends on Dashboard.
+  v0585SafeStart('dashboard',v0570RenderHome);
+
+  requestAnimationFrame(()=>{
+    v0585SafeStart('dashboard paint',v0561Paint);
+  });
+}
+
+window.addEventListener('DOMContentLoaded',v0585CurrentBoot);
