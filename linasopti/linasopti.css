@@ -2539,3 +2539,16 @@ body.v0582-module-workspace #pane-testlab{
 body.v0582-module-workspace #v0560SwingG2Lab.v0582-active-root #v0580G2Flow{
   display:block!important;
 }
+
+/* ============================================================
+   V0.58.4 – FINAL BOOT VISIBILITY GUARANTEE
+   ============================================================ */
+body.v0561-dashboard-mode #pane-data,
+body.v0561-dashboard-mode #pane-test,
+body.v0561-dashboard-mode #pane-result,
+body.v0561-dashboard-mode #pane-testlab{
+  display:none!important;
+}
+body.v0561-dashboard-mode #v0574ContextBar{
+  display:none!important;
+}

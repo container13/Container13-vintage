@@ -236,3 +236,9 @@ Första riktiga G2-körningen stoppade direkt på `AMD 2020-01-01–2020-01-31: 
 G2 är en dagsdata-/swingstrategi men dess loader hämtade fortfarande 5-minutersdata och aggregerade till dagsdata. V0.58.3 byter G2-transporten till direkt `1Day`. Äldre inkompatibla G2-fetch-checkpoints nollställs automatiskt genom nytt checkpoint-mode.
 
 Ingen strategi- eller forskningsregel ändrades.
+
+## V0.58.4 – boot/guard-städning
+
+En full versionsguard-audit hittade 17 exakta versionskontroller. Det gjorde att permanenta funktioner kunde sluta initieras efter en versionshöjning, medan legacy `show('data', false)` fortfarande kördes.
+
+V0.58.4 inför en enda current-app boot för hela V0.58.x. Den startar alla permanenta moderna system och renderar Dashboard sist, så gammal Data-start aldrig får vinna första vyn.

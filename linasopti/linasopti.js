@@ -1,5 +1,5 @@
 
-const APP_VERSION = "V0.58.3";
+const APP_VERSION = "V0.58.4";
 window.addEventListener("DOMContentLoaded", () => {
   const v = document.getElementById("appVersion");
   if (v) v.textContent = APP_VERSION;
@@ -6301,7 +6301,7 @@ let V0577_BOOTED=false;
 
 function v0577InitCurrentArchitecture(){
   if(V0577_BOOTED)return;
-  if(APP_VERSION!=='V0.57.7')return;
+  if(!APP_VERSION.startsWith('V0.58.'))return;
   V0577_BOOTED=true;
 
   // 1) Current header controls.
@@ -6462,7 +6462,7 @@ v0570ShowCategory=function(cat){
 };
 
 function v0578Init(){
-  if(APP_VERSION!=='V0.57.8')return;
+  if(!APP_VERSION.startsWith('V0.58.'))return;
   requestAnimationFrame(()=>v0576RefreshVisibleState());
 }
 window.addEventListener('DOMContentLoaded',()=>setTimeout(v0578Init,300));
@@ -6552,7 +6552,7 @@ document.addEventListener('click',e=>{
 },true);
 
 function v0579Init(){
-  if(APP_VERSION!=='V0.57.9')return;
+  if(!APP_VERSION.startsWith('V0.58.'))return;
   const f=document.getElementById('v0579FetchG2');
   const a=document.getElementById('v0579ShowAdvanced');
   const c=document.getElementById('v0579ContinueA');
@@ -6728,7 +6728,7 @@ v0570RenderHome=function(){
 
 // Intercept any G2 card/button route before older click handlers.
 document.addEventListener('click',e=>{
-  if(APP_VERSION!=='V0.58.1')return;
+  if(!APP_VERSION.startsWith('V0.58.'))return;
   const el=e.target.closest('[data-v0570-lab="v0560SwingG2Lab"],#v0560SwingG2Lab .v0580-g2flow button');
   if(!el)return;
   if(el.matches('[data-v0570-lab="v0560SwingG2Lab"]')){
@@ -6747,7 +6747,7 @@ show=function(p,fromTab=false){
 };
 
 function v0581Boot(){
-  if(APP_VERSION!=='V0.58.1')return;
+  if(!APP_VERSION.startsWith('V0.58.'))return;
 
   // Current release always starts at Dashboard on fresh load.
   // If user deliberately re-enters G2, only v0581OpenG2 can activate it.
@@ -6881,7 +6881,7 @@ function v0582LeakGuard(){
 }
 
 function v0582Init(){
-  if(APP_VERSION!=='V0.58.2')return;
+  if(!APP_VERSION.startsWith('V0.58.'))return;
 
   // Runtime guard catches any older code that tries to reveal a sibling afterwards.
   const root=document.querySelector('.wrap')||document.body;
@@ -6892,3 +6892,61 @@ function v0582Init(){
   try{v0570RenderHome()}catch(e){}
 }
 window.addEventListener('DOMContentLoaded',()=>setTimeout(v0582Init,650));
+
+
+// ============================================================
+// V0.58.4 – SINGLE CURRENT-APP BOOT / GUARD CLEANUP
+// ============================================================
+let V0584_BOOTED=false;
+
+function v0584StartPermanentFeatures(){
+  // Header / refresh
+  try{v0570Header()}catch(e){}
+  try{v0571EnsureRefresh()}catch(e){}
+
+  // Orientation / workflow context
+  try{v0574EnsureContextBar()}catch(e){}
+
+  // Responsive tables
+  try{v0573MarkRawTechnicalTables()}catch(e){}
+  try{v0573AnnotateAll()}catch(e){}
+  try{v0573ObserveTables()}catch(e){}
+
+  // Completion / next-step flow
+  try{v0575WatchCompletion()}catch(e){}
+
+  // Visible-view normalization / market-state truth
+  try{v0576ObserveVisibleState()}catch(e){}
+  try{v0576SyncMarketTruth()}catch(e){}
+
+  // Workspace isolation runtime observer
+  try{
+    if(typeof v0582Init==='function'){
+      // v0582Init now accepts V0.58.x and creates the leak guard observer.
+      v0582Init();
+    }
+  }catch(e){console.error('V0.58.4 workspace init',e)}
+
+  // G2 permanent panel wiring
+  try{v0580PaintG2Flow()}catch(e){}
+}
+
+function v0584CurrentBoot(){
+  if(V0584_BOOTED)return;
+  if(!APP_VERSION.startsWith('V0.58.'))return;
+  V0584_BOOTED=true;
+
+  v0584StartPermanentFeatures();
+
+  // Authoritative fresh-load state: Dashboard.
+  // Legacy show('data', false) may run earlier, but must never win the final screen.
+  try{v0570RenderHome()}catch(e){console.error('V0.58.4 dashboard boot',e)}
+
+  requestAnimationFrame(()=>{
+    try{v0561Paint()}catch(e){}
+    try{v0576RefreshVisibleState()}catch(e){}
+  });
+}
+
+// Run after all old DOMContentLoaded handlers so this is the final authority.
+window.addEventListener('DOMContentLoaded',()=>setTimeout(v0584CurrentBoot,900));

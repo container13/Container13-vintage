@@ -1145,7 +1145,7 @@ Changes:
 Permanent responsive rule:
 Normal user-facing information must fit without horizontal scrolling on a 13-inch screen. On mobile, wide tables must reflow into a readable stacked/card representation. Horizontal scrolling is reserved for genuine raw/technical data where preserving the raw table is more important than overview.
 
-## V0.58.3 – navigation & orientation audit
+## V0.58.4 – navigation & orientation audit
 
 The whole package was inspected for subviews that could visually replace the dashboard without clearly identifying the current location.
 
@@ -1339,3 +1339,24 @@ V0.58.3 changes only the G2 data transport:
 
 Permanent engineering rule:
 A daily strategy should fetch daily bars directly unless intraday data is explicitly required by the research hypothesis.
+
+## V0.58.4 – boot/guard cleanup
+
+A package-wide guard audit found 17 exact-version checks. Several permanent UI/navigation features could silently stop after a patch release while legacy startup still called `show('data', false)`.
+
+V0.58.4 introduces one authoritative current-app boot for the whole V0.58.x family.
+
+It explicitly starts:
+- header / refresh
+- context/orientation
+- responsive table support
+- completion/next-step monitoring
+- visible-view normalization
+- market-state truth
+- workspace-isolation runtime guard
+- G2 permanent run/export panel
+
+Then it renders Dashboard last, after older DOMContentLoaded handlers, so legacy Data startup cannot win the final first screen.
+
+Permanent engineering rule:
+No permanent current-app feature may depend solely on an exact historical version guard. Patch-version bumps inside the same active architecture family must not disable navigation, isolation, orientation, responsiveness or workflow logic.
