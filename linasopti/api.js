@@ -1,0 +1,1 @@
+export const API={base:'https://linas-opti-api.mangaj73.workers.dev',async health(){const r=await fetch(`${this.base}/health`,{cache:'no-store'});if(!r.ok)throw new Error(`API ${r.status}`);return r.json()}};
