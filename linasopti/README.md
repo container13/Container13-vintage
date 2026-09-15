@@ -1,4 +1,14 @@
-# Lina Clean Core V0.2.10
+# Lina Clean Core V0.2.11
+
+## V0.2.11 – G3 Research Gate PASS + Real Forward
+- G3 plan `75838ed5` är avslutad som metodtest: 181 affärer, +18 446,11, PF 1,4851, WR 51,38 %, DD -3,38 %.
+- G3 Research Gate: **PASS**, därefter metodfrysning. Ingen rescue/efteroptimering på 2023–2026.
+- Ny `g3-forward-engine.js` + `g3-forward.js`.
+- G2 och G3 Real Forward går parallellt från anchor 2026-09-11, Handel AV.
+- G3 septembermodell är fryst `69147890` tränad t.o.m. 2026-08-31; framtida månadsval använder endast då känd data och den frysta topp-12-poolen.
+- Milstolpar 60 / 120 / 250 stängda affärer. Robotmognad kvar 48/100.
+- Ny dokumentation: `LINA_G3_RESEARCH_GATE_RESULT_V0211.md` och `LINA_HANDOFF_CLEAN_CORE_V0211.md`.
+
 
 ## Status
 Clean Core är en teknisk omstart av Lina, inte en kunskapsomstart. V0.58.8 COMPLETE är permanent legacy-checkpoint/facit före Clean Core och ska aldrig skrivas över.

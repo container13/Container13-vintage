@@ -15,7 +15,7 @@ function render(root,ctx){
    <div><small>G3-simuleringar</small><b>${(x.simulationCount||0).toLocaleString('sv-SE')}</b><span>separat från äldre räknare</span></div>
   </div>
   <div class="g3-warning"><b>Forskningsstatus:</b> 2023–2026 är inte längre helt orörd data för oss. Därför är G3 ett metod-/walk-forward-test. Vi får inte trimma G3 efter att resultatet visas och sedan kalla samma period ny OOS.</div>
-  ${r?`<div class="g3-result"><div class="eyebrow">G3 RESULTAT</div><h2>${r.n} affärer · ${r.pl>=0?'+':''}${f(r.pl)} · PF ${f(r.pf)}</h2><p>WR ${pct(r.wr)} · DD ${pct(r.dd)} · ${(x.retrains||[]).length} månadsvisa omträningar.</p><p><b>G2 facit:</b> 144 affärer · +13 708,85 · PF 1,467 · DD −2,34 %. G3 ersätter inte G2 automatiskt även om resultatet blir bättre.</p></div>`:''}
+  ${r?`<div class="g3-result"><div class="eyebrow">G3 RESEARCH GATE · PASS · FRYST</div><h2>${r.n} affärer · ${r.pl>=0?'+':''}${f(r.pl)} · PF ${f(r.pf)}</h2><p>WR ${pct(r.wr)} · DD ${pct(r.dd)} · ${(x.retrains||[]).length} månadsvisa omträningar.</p><p><b>G2 facit:</b> 144 affärer · +13 708,85 · PF 1,467 · DD −2,34 %. G3 ersätter inte G2 historiskt. Metoden är nu fryst och går parallellt med G2 i Real Forward.</p></div>`:''}
   <div id="g3Status" class="statusline">${x.status==='complete'?'✓ G3 färdig':x.lastError?'FEL: '+x.lastError.message:x.planLocked?'Plan låst · redo att köra':'Lås planen först'}</div>
   <div class="actions">
    ${!x.planLocked?'<button id="g3Lock" class="primary">🔒 Lås G3-plan</button>':''}

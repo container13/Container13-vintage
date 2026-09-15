@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='0.2.10';
+const VERSION='0.2.11';
 const ROBOT_MATURITY=48;
 
 const RECORDS=[
@@ -188,7 +188,7 @@ function downloadRecord(rec){
   const text=reportText(rec);
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));
-  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0209.txt`;
+  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0211.txt`;
   a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),500);
 }
