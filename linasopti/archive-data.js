@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='0.2.17';
+const VERSION='0.2.35';
 const ROBOT_MATURITY=48;
 
 const RECORDS=[
@@ -197,6 +197,18 @@ const RECORDS=[
       ['Handel','AV']
     ],
     decision:'Från V0.2.34 ska varje större release få en permanent utvecklingspost i Lina Arkiv som del av releasearbetet.'
+  },
+  {
+    id:'dev-v0235-evidence-freeze-sync',
+    date:'2026-09-15',
+    family:'Utveckling',
+    title:'V0.2.35 – Godkänn, frys och synka evidence',
+    type:'Evidence / GitHub-arkiv',
+    status:'AKTIV · SÄKERHETSGRIND',
+    candidate:'Ej forskningskandidat',
+    summary:'Nya TXT-rapporter och RAW JSON blir först PRELIMINÄRA. De måste uttryckligen Godkännas & frysas i Lina Arkiv innan headerns GitHub-synk får arkivera dem permanent.',
+    metrics:[['Flöde','PRELIMINÄR → FROZEN → GITHUB ✓'],['Hash','SHA256 före uppladdning'],['Överskrivning','Förbjuden'],['Rå marknadsdata','Ej synkad'],['Handel','AV']],
+    decision:'Endast verifierad FROZEN evidence får bli permanent GitHub-evidence. FAIL-resultat får och ska frysas när resultatet är verifierat.'
   }
 
 ]
@@ -297,7 +309,7 @@ function downloadRecord(rec){
   const text=reportText(rec);
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));
-  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0234.txt`;
+  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0235.txt`;
   a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),500);
 }

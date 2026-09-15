@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const API='https://linas-opti-api.mangaj73.workers.dev', RELEASE='V0.2.33';
+const API='https://linas-opti-api.mangaj73.workers.dev', RELEASE='V0.2.35';
 const EXCLUDE=new Set(['lina_clean_core_state_v0011','lina_clean_swing_g4_universe_result_v0213']);
 const MAX_ENTRY=400000, MAX_PACKAGE=1500000;
 function code(){return sessionStorage.getItem('linasopti_login_code')||''}
@@ -13,6 +13,6 @@ async function get(){const r=await fetch(API+'/app-state',{cache:'no-store'}),j=
 async function put(p){const c=code();if(!c)throw new Error('Lina-session saknas – logga in igen');const r=await fetch(API+'/app-state',{method:'POST',headers:{'Content-Type':'application/json','X-Lina-Login-Code':c},body:JSON.stringify(p)}),j=await r.json().catch(()=>({}));if(!r.ok||!j.ok)throw new Error(j.error||('HTTP '+r.status));return j}
 async function syncAll(){// Forward har egen strikt merge och är en del av helsynken.
   if(window.LinaForwardCenter){await window.LinaForwardCenter.remotePull();await window.LinaForwardCenter.remotePush()}
-  const local=collect(), remote=await get(), merged=merge(local,remote.state||null);const wr=await put(merged);apply(wr.state||merged);return {ok:true,keys:Object.keys((wr.state||merged).entries||{}).length}}
+  const local=collect(), remote=await get(), merged=merge(local,remote.state||null);const wr=await put(merged);apply(wr.state||merged);const evidence=window.LinaEvidence?await window.LinaEvidence.syncApproved():0;return {ok:true,keys:Object.keys((wr.state||merged).entries||{}).length,evidence}}
 window.LinaGitHubSync={syncAll,collect,get};
 })();

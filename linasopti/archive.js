@@ -31,9 +31,12 @@ function render(root,ctx){
   <div class="maturity-box"><div><b>Robotmognad ${c.maturity}/100</b><span>Nästa mognadspoäng ska komma från ny forward-data, inte fler varv på samma historik.</span></div><div class="maturity-bar"><i style="width:${c.maturity}%"></i></div></div>
   <div class="archive-note"><b>Simuleringsräknaren är återställd som historik:</b> du hade redan observerat <b>över 21 400 simuleringar</b> före Clean Core. Vi visar därför konservativt <b>≥ 21 400</b> som historiskt golv och räknar G3 separat ovanpå det, i stället för att felaktigt ersätta siffran med antal affärer. G1/G2-affärer och Jägaren-teststeg visas fortfarande som egna mått för att undvika dubbelräkning.</div>
   <div class="archive-filter"><button class="secondary active" data-filter="all">Alla</button><button class="secondary" data-filter="Utveckling">Utveckling</button><button class="secondary" data-filter="Swing G2">Swing G2</button><button class="secondary" data-filter="Swing G1">Swing G1</button><button class="secondary" data-filter="Jägaren">Jägaren</button></div>
+  <div class="archive-note"><b>Evidencekö:</b> Rapporter/RAW som exporteras i Lina blir först PRELIMINÄRA. Godkänn & frys dem här. Först därefter får ☁ Synka skicka dem till GitHub.</div>
+  <div id="evidenceQueue">${window.LinaEvidence?window.LinaEvidence.items().map(x=>`<div class="statusline"><b>${esc(x.name)}</b> · ${esc(x.status)} ${x.status==='PRELIMINÄR'?`<button class="secondary evidence-approve" data-id="${esc(x.id)}">✓ Godkänn & frys</button>`:''}${x.githubPath?`<br><small>${esc(x.githubPath)} · SHA256 ${esc(x.sha256||'')}</small>`:''}</div>`).join('')||'<div class="statusline">Ingen preliminär evidence väntar.</div>':'Evidencehanteraren laddas…'}</div>
   <div id="archiveRecords">${recs.slice().reverse().map(recordCard).join('')}</div>
  </section>`;
  root.querySelector('#arBack').onclick=ctx.back;
+ root.querySelectorAll('.evidence-approve').forEach(b=>b.onclick=async()=>{b.disabled=true;try{await window.LinaEvidence.approve(b.dataset.id);render(root,ctx)}catch(e){alert(e.message||e)}});
  root.querySelectorAll('.archive-export').forEach(b=>b.onclick=()=>{const r=D.records().find(x=>x.id===b.dataset.id);if(r)D.downloadRecord(r)});
  root.querySelectorAll('.archive-filter button').forEach(b=>b.onclick=()=>{
    root.querySelectorAll('.archive-filter button').forEach(x=>x.classList.remove('active'));b.classList.add('active');

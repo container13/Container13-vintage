@@ -355,3 +355,6 @@ Lina Arkiv visar nu större utvecklingssteg. V0.2.32–V0.2.34 är dokumenterade
 
 ### V0.2.34 – Evidence-komplettering
 COMPLETE innehåller nu tillgängliga originalexporter i TXT/JSON för G3, G4, G5, G6, G7–G12 och Forward-state/evidence från 2026-09-15. `LINA_EVIDENCE_INVENTORY_V0234.md` är kontrollregister med SHA256. Resultatfiler är permanent evidence/facit; stora råa marknadsdataset och IndexedDB-cache ingår inte. Cloudflare Worker: INGEN ÄNDRING.
+
+## V0.2.35 – Evidence Freeze & GitHub Sync (2026-09-15)
+Framtida TXT-rapporter och RAW/resultat-JSON blir PRELIMINÄRA vid export. De måste uttryckligen Godkännas & frysas i Lina Arkiv. Först därefter laddar headerns ☁ Synka upp dem som permanent, SHA256-verifierad evidence till GitHub. Befintlig evidence skrivs aldrig över. Stora marknadsrådata/IndexedDB-cache synkas inte. Handel AV; robotmognad 48/100.
