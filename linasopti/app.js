@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  const APP_VERSION='0.2.36';
+  const APP_VERSION='0.2.37';
   const cards=[
     ['forward','Forward','Riktig forward-validering · G2 + G3 parallellt.'],
     ['research','Forskning','Jägaren, Swing G1, Swing G2, G3, G4 Universe, G5 Stress, G6 Cost Boundary, G7–G12 Research Battery och Broker/Cost Gate.'],
@@ -77,6 +77,12 @@
       finally{b.disabled=false}
     });
   }
+  function installBrandHome(){
+    const b=document.getElementById('brandHome');
+    if(!b||b.dataset.bound==='1')return;
+    b.dataset.bound='1';
+    b.addEventListener('click',()=>window.LinaRouter.navigate('dashboard'));
+  }
   function installRefresh(){
     const b=document.getElementById('refreshApp');
     if(!b||b.dataset.bound==='1')return;
@@ -97,6 +103,7 @@
     app.hidden=false;
     installRefresh();
     installGitHubSync();
+    installBrandHome();
     registerRoutes();
     window.LinaRouter.start();
   }

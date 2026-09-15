@@ -366,3 +366,7 @@ Framtida TXT-rapporter och RAW/resultat-JSON blir PRELIMINÄRA vid export. De m�
 - `app.js` versionsmetadata korrigerad till 0.2.36.
 - Ingen strategi, forskningsregel, evidence, Worker-endpoint eller robotmognad ändrad.
 - Cloudflare Worker: INGEN ÄNDRING. Fortsätt använda redan deployad V0.2.35 Worker.
+
+
+## V0.2.37
+`Linas Opti` i headern fungerar alltid som Hem och går till Dashboard. Worker oförändrad.

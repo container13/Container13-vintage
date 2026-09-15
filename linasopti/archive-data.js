@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='0.2.36';
+const VERSION='0.2.37';
 const ROBOT_MATURITY=48;
 
 const RECORDS=[
@@ -209,6 +209,30 @@ const RECORDS=[
     summary:'Nya TXT-rapporter och RAW JSON blir först PRELIMINÄRA. De måste uttryckligen Godkännas & frysas i Lina Arkiv innan headerns GitHub-synk får arkivera dem permanent.',
     metrics:[['Flöde','PRELIMINÄR → FROZEN → GITHUB ✓'],['Hash','SHA256 före uppladdning'],['Överskrivning','Förbjuden'],['Rå marknadsdata','Ej synkad'],['Handel','AV']],
     decision:'Endast verifierad FROZEN evidence får bli permanent GitHub-evidence. FAIL-resultat får och ska frysas när resultatet är verifierat.'
+  },
+  {
+    id:'dev-v0236-archive-hotfix',
+    date:'2026-09-15',
+    family:'Utveckling',
+    title:'V0.2.36 – Lina Arkiv hotfix',
+    type:'Frontend / arkiv',
+    status:'PASS · HOTFIX',
+    candidate:'Ej forskningskandidat',
+    summary:'Arkivnavigationen reparerades efter att en tom post i RECORDS-arrayen fick renderingen att stanna. Release-testet utökades till att validera samtliga arkivposter.',
+    metrics:[['Arkivposter','15/15 PASS vid release-test'],['Forskningsresultat','Orörda'],['Worker','Oförändrad'],['Handel','AV']],
+    decision:'Frontend-hotfix. Ingen vetenskaplig evidens eller robotmognad ändrades.'
+  },
+  {
+    id:'dev-v0237-header-home',
+    date:'2026-09-15',
+    family:'Utveckling',
+    title:'V0.2.37 – Linas Opti = Hem',
+    type:'Navigation / UX',
+    status:'PASS · FAST UI-REGEL',
+    candidate:'Ej forskningskandidat',
+    summary:'Produktnamnet Linas Opti i headern gjordes till en global Hem-knapp. Ett tryck navigerar till Dashboard oavsett vilken Lina-vy som är öppen.',
+    metrics:[['Header','Linas Opti → Dashboard'],['Omfattning','Alla vyer'],['Worker','Oförändrad'],['Handel','AV']],
+    decision:'Permanent UI-regel: Linas Opti i headern fungerar som Hem/Dashboard.'
   }
 
 ]
@@ -309,7 +333,7 @@ function downloadRecord(rec){
   const text=reportText(rec);
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));
-  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0236.txt`;
+  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0237.txt`;
   a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),500);
 }
