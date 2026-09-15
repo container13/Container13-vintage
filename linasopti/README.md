@@ -232,3 +232,10 @@ Efter verklig körning nådde G2 13/15 och avbröts under N med `The quota has b
 
 ## V0.2.18 – Lina background visual restoration
 UI-only. Restores the much larger visual scale of the Lina watermark using the older Linas Opti dashboard as the visual reference. Desktop watermark container max 1100px / 94vw, top 10vh. Mobile 150vw (max 760px), top 12vh. Opacity/filter and lina-circle.png unchanged. G5 plan/runner and all research logic unchanged.
+
+
+## V0.2.19 – exact legacy Lina watermark restore
+- UI-only. The effective V0.20 + V0.21 Lina watermark CSS from supplied legacy Linas Opti V0.58.8 is copied verbatim into Clean Core.
+- Restores the exact radial mask, effective 620px desktop / 112vw mobile sizing, top position, opacity, filters and legacy translucent-card behavior.
+- `lina-circle.png` verified byte-identical to legacy.
+- No G2/G3/G4/G5/forward/research/storage logic changed. G5 plan `6ec36eb2` and existing result remain untouched. Handel AV. Robotmognad 48/100.

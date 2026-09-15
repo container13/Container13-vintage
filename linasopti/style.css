@@ -26,3 +26,52 @@ body.locked .lina-watermark{display:none}
 .card,section{backdrop-filter:blur(.3px)}
 @media(max-width:520px){.lina-watermark{width:150vw;max-width:760px;top:12vh;opacity:.065;filter:grayscale(1) blur(1.4px) contrast(.86)}}
 @media(prefers-reduced-transparency:reduce){.lina-watermark{opacity:.04;filter:grayscale(1)}}
+
+/* V0.2.19 – copied verbatim from legacy Linas Opti V0.58.8 effective Lina watermark stack */
+/* V0.20 – original-Lina, utan synlig cirkelkant.
+   Samma originalfil används; kanten tonas ut med mask i stället för cirkel. */
+.lina-watermark{
+  width:min(96vw,540px) !important;
+  opacity:.14 !important;
+  background-size:contain !important;
+  -webkit-mask-image:radial-gradient(ellipse 48% 49% at 50% 50%, #000 48%, rgba(0,0,0,.82) 62%, rgba(0,0,0,.35) 78%, transparent 98%);
+  mask-image:radial-gradient(ellipse 48% 49% at 50% 50%, #000 48%, rgba(0,0,0,.82) 62%, rgba(0,0,0,.35) 78%, transparent 98%);
+  filter:grayscale(.65) blur(.45px) contrast(.9) !important;
+}
+@media(max-width:520px){
+ .lina-watermark{width:98vw !important;opacity:.13 !important}
+}
+
+/* V0.21 – Lina ska lysa igenom själva gränssnittet, inte bara mellan korten */
+body{background-attachment:fixed}
+.lina-watermark{
+  opacity:.16 !important;
+  top:11vh !important;
+  width:min(105vw,620px) !important;
+  filter:grayscale(.55) blur(.35px) contrast(.92) !important;
+}
+.card,
+.kpi,
+.v014-audit,
+.v17-export,
+.v19-ab,
+.v19-variant,
+.status-box,
+.status,
+section > .grid > div{
+  background-color:rgba(255,255,255,.84) !important;
+}
+input,select,button,.period-btn{
+  backdrop-filter:none;
+}
+@supports (backdrop-filter: blur(2px)){
+  .card,.kpi,.v014-audit,.v17-export,.v19-ab,.v19-variant,.status-box,.status{
+    backdrop-filter:blur(1.2px);
+  }
+}
+@media(max-width:520px){
+  .lina-watermark{opacity:.15 !important;top:12vh !important;width:112vw !important}
+  .card,.kpi,.v014-audit,.v17-export,.v19-ab,.v19-variant,.status-box,.status{
+    background-color:rgba(255,255,255,.82) !important;
+  }
+}
