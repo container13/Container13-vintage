@@ -1,0 +1,42 @@
+LINAS OPTI – G4 UNIVERSE ROBUSTNESS
+Clean Core: V0.2.14
+Handel: AVSTÄNGD
+Plan: 95d2e735 · kandidat 15efd75a
+Period: 2020-01-01 → 2026-09-10
+
+RESULTAT
+185 affärer · P/L 6 522,15 · PF 1,29 · WR 51.35% · DD -3.70% · slut 106 522,15
+
+GATE: PASS
+Positiva kalendersegment: 6
+Största positiva symbolandel: 23.03% (CAT)
+
+ÅR
+2020 · 9 affärer · P/L 498,84 · PF 1,55 · WR 55.56%
+2021 · 43 affärer · P/L 256,63 · PF 1,04 · WR 48.84%
+2022 · 6 affärer · P/L 107,93 · PF 1,28 · WR 33.33%
+2023 · 35 affärer · P/L −2 399,79 · PF 0,58 · WR 37.14%
+2024 · 36 affärer · P/L 3 748,43 · PF 2,61 · WR 63.89%
+2025 · 37 affärer · P/L 2 939,49 · PF 1,63 · WR 56.76%
+2026 · 19 affärer · P/L 1 370,62 · PF 1,5 · WR 52.63%
+
+SYMBOLER
+CAT · 19 affärer · P/L 2 559,91 · PF 2,03 · WR 47.37%
+JPM · 11 affärer · P/L 2 504,07 · PF 11,94 · WR 63.64%
+GOOGL · 20 affärer · P/L 1 521,68 · PF 1,62 · WR 55.00%
+WMT · 11 affärer · P/L 972,02 · PF 1,92 · WR 63.64%
+AAPL · 12 affärer · P/L 878,48 · PF 1,92 · WR 58.33%
+JNJ · 11 affärer · P/L 607,77 · PF 2,04 · WR 63.64%
+DIS · 8 affärer · P/L 583,99 · PF 1,54 · WR 62.50%
+HD · 6 affärer · P/L 413,57 · PF 1,77 · WR 50.00%
+KO · 12 affärer · P/L 406,47 · PF 1,44 · WR 58.33%
+PG · 8 affärer · P/L 349,62 · PF 1,84 · WR 50.00%
+XOM · 6 affärer · P/L 317,38 · PF 1,29 · WR 50.00%
+NKE · 4 affärer · P/L −130,84 · PF 0,75 · WR 50.00%
+META · 15 affärer · P/L −422,13 · PF 0,85 · WR 46.67%
+UNH · 9 affärer · P/L −693,31 · PF 0,47 · WR 22.22%
+MSFT · 14 affärer · P/L −788,92 · PF 0,62 · WR 57.14%
+AMZN · 19 affärer · P/L −2 557,62 · PF 0,34 · WR 31.58%
+
+EVIDENSBEGRÄNSNING
+G4 är robusthets-/portabilitetstest, inte ny oberoende OOS. Ingen rescue eller parameterändring tillåts efter resultat. G2/G3 Real Forward har högre evidens.

@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='0.2.12',KEY='lina_clean_swing_g3_walkforward_v0209';
+const VERSION='0.2.15',KEY='lina_clean_swing_g3_walkforward_v0209';
 const API='https://linas-opti-api.mangaj73.workers.dev';
 const DEV_START='2020-01-01',DEV_END='2022-12-31',WF_START='2023-01-01',WF_END='2026-09-10';
 const COST=.001,CAPITAL=100000,RISK=.005,MAXPOS=5,MAXPOSPCT=.20,POOL_SIZE=12;
@@ -16,7 +16,7 @@ const PLAN={
 };
 function emit(){document.dispatchEvent(new CustomEvent('lina:g3change'))}
 function hash(obj){return window.LinaG2Engine.hash(obj)}
-function fresh(){return{schema:'LINA-SWING-G3-WF-1',version:'V0.2.12',planLocked:false,planHash:null,lockedAt:null,status:'new',phase:'plan',candidatePool:null,retrains:[],closed:[],open:[],result:null,simulationCount:0,lastCompletedMonth:null,lastError:null,createdAt:new Date().toISOString()}}
+function fresh(){return{schema:'LINA-SWING-G3-WF-1',version:'V0.2.15',planLocked:false,planHash:null,lockedAt:null,status:'new',phase:'plan',candidatePool:null,retrains:[],closed:[],open:[],result:null,simulationCount:0,lastCompletedMonth:null,lastError:null,createdAt:new Date().toISOString()}}
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch{return null}}
 function save(x){x.savedAt=new Date().toISOString();localStorage.setItem(KEY,JSON.stringify(x));emit();return x}
 function lock(){let x=load()||fresh();if(x.planLocked)return x;x.planLocked=true;x.lockedAt=new Date().toISOString();x.planHash=hash(PLAN);x.status='locked';x.phase='fetch';return save(x)}
@@ -103,7 +103,7 @@ async function run(progress){
 }
 function report(){
  const x=load()||fresh(),r=x.result;const f=n=>Number(n).toLocaleString('sv-SE',{maximumFractionDigits:2}),pct=n=>(100*Number(n)).toFixed(2)+'%';
- const L=['LINAS OPTI – G3 WALK-FORWARD LEARNER','Clean Core: V0.2.12','Handel: AVSTÄNGD','Plan låst: '+(x.planLocked?'JA':'NEJ')+' · '+(x.planHash||'—'),'',
+ const L=['LINAS OPTI – G3 WALK-FORWARD LEARNER','Clean Core: V0.2.15','Handel: AVSTÄNGD','Plan låst: '+(x.planLocked?'JA':'NEJ')+' · '+(x.planHash||'—'),'',
  'METOD','Träning/pool: 2020-01-01 → 2022-12-31.','648 G2-gridvarianter rankas endast på 2020–2022; topp 12 blir permanent kandidatpool.','Från 2023 väljs modell på första handelsdagen varje månad, endast från topp-12-poolen och endast med data t.o.m. föregående handelsdag.','Dagliga entries använder månadens valda modell. Öppna positioner behåller reglerna från sin entry.','Ingen rescue eller efteroptimering efter resultat.','',
  `Simuleringar i just G3: ${x.simulationCount||0}`,`Omträningar: ${(x.retrains||[]).length}`,`Provider: ${(x.providers||[]).join(' → ')||'—'}`,'',
  'VIKTIGT','2023–2026 är inte längre helt orörd data eftersom tidigare Lina/G2-resultat redan har observerats. G3 är därför ett walk-forward-metodtest, inte ny oberoende OOS-evidens.'];

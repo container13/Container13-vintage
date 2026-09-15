@@ -1,4 +1,13 @@
-# Lina Clean Core V0.2.14
+# Lina Clean Core V0.2.15
+
+## V0.2.15 – G4 Evidence Freeze
+- G4 plan `95d2e735` är avslutad som **PASS · FROZEN**. Kandidat `15efd75a` ändras inte.
+- Fryst resultat: 185 affärer, P/L +6 522,15, PF 1,29, WR 51,35 %, DD −3,70 %, slut 106 522,15.
+- 6 positiva kalendersegment; största positiva symbolandel 23,03 % (CAT).
+- De två exporterade V0.2.14-bevisfilerna är inlagda oförändrade i COMPLETE tillsammans med `LINA_G4_RESEARCH_GATE_RESULT_V0215.md`.
+- Arkivet har permanent G4-post `PASS · FROZEN`. G4-vyn visar fryst status.
+- G4 är portabilitets-/robusthetsevidens, inte ny oberoende OOS. G2/G3 Real Forward har fortsatt högre evidens.
+- Ingen strategi-, parameter-, gate- eller forwardlogik ändrad. Robotmognad 48/100. Handel AV.
 
 ## V0.2.14 – G4 Universe Robustness Runner
 - G4-plan `95d2e735` var låst i V0.2.12 innan resultatmotorn byggdes.

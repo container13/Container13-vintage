@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='0.2.12';
+const VERSION='0.2.15';
 const ROBOT_MATURITY=48;
 
 const RECORDS=[
@@ -115,8 +115,22 @@ const RECORDS=[
       ['Stress 0,50 %','+4 967,76 · PF 1,15']
     ],
     decision:'PASS. Broker väljs inte ännu. G2-parametrarna förblir frysta.'
-  }
-];
+  },
+  {
+    id:'g4-universe',
+    date:'2026-09-15',
+    family:'Swing G4',
+    title:'G4 Universe Robustness',
+    type:'Portabilitet / robusthet',
+    status:'PASS · FROZEN',
+    candidate:'15efd75a',
+    summary:'Förregistrerad plan 95d2e735. Exakt fryst G2 testad på 16 andra aktier utan rescue eller parameterändring. G4 är robusthetsevidens, inte ny oberoende OOS.',
+    metrics:[
+      ['Affärer','185'],['P/L','+6 522,15'],['PF','1,29'],['WR','51,35 %'],['DD','−3,70 %'],['Positiva kalendersegment','6'],['Största positiva symbolandel','23,03 % · CAT']
+    ],
+    decision:'PASS och permanent fryst. Ingen symbol får tas bort och inga G2-parametrar ändras på grund av G4-resultatet.'
+  },
+]
 
 function forwardRecord(){
   const x=window.LinaG2ForwardEngine?.load?.();

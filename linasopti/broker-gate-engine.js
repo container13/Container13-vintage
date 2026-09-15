@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  const VERSION='0.2.12';
+  const VERSION='0.2.15';
   const BASE_G2_COST_SIDE=0.001;
   const SEC_SELL_VALUE_RATE=0.0000206;
   const FINRA_SELL_SHARE_RATE=0.000195;
