@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='0.2.35';
+const VERSION='0.2.36';
 const ROBOT_MATURITY=48;
 
 const RECORDS=[
@@ -130,7 +130,7 @@ const RECORDS=[
     ],
     decision:'PASS och permanent fryst. Ingen symbol får tas bort och inga G2-parametrar ändras på grund av G4-resultatet.'
   },
-  ,{
+  {
     id:'g5-stress',
     date:'2026-09-15',
     family:'Swing G5',
@@ -309,7 +309,7 @@ function downloadRecord(rec){
   const text=reportText(rec);
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));
-  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0235.txt`;
+  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0236.txt`;
   a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),500);
 }

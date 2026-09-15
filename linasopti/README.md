@@ -358,3 +358,11 @@ COMPLETE innehåller nu tillgängliga originalexporter i TXT/JSON för G3, G4, G
 
 ## V0.2.35 – Evidence Freeze & GitHub Sync (2026-09-15)
 Framtida TXT-rapporter och RAW/resultat-JSON blir PRELIMINÄRA vid export. De måste uttryckligen Godkännas & frysas i Lina Arkiv. Först därefter laddar headerns ☁ Synka upp dem som permanent, SHA256-verifierad evidence till GitHub. Befintlig evidence skrivs aldrig över. Stora marknadsrådata/IndexedDB-cache synkas inte. Handel AV; robotmognad 48/100.
+
+## V0.2.36 – Archive navigation hotfix (2026-09-15)
+- Fixar ett konkret fel i `archive-data.js`: en extra separator skapade en tom post (`undefined`) i arkivets RECORDS-array.
+- När Lina Arkiv renderade försökte UI läsa `r.family` från den tomma posten och navigationen såg därför ut att inte göra något.
+- Sparse-array-posten är borttagen och arkivets samtliga poster valideras nu i release-test.
+- `app.js` versionsmetadata korrigerad till 0.2.36.
+- Ingen strategi, forskningsregel, evidence, Worker-endpoint eller robotmognad ändrad.
+- Cloudflare Worker: INGEN ÄNDRING. Fortsätt använda redan deployad V0.2.35 Worker.
