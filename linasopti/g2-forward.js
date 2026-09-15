@@ -18,7 +18,7 @@ function render(root,ctx){
   </div>
   <div class="milestones"><b>Forward-milstolpar</b>${[60,120,250].map(m=>`<span class="${x.milestones[m]?'done':''}">${x.milestones[m]?'✓':'○'} ${m}</span>`).join('')}</div>
   <div class="forward-open"><b>Öppna paper-positioner: ${s.open||0}</b><span>Orealiserat ${s.unrealized>=0?'+':''}${f(s.unrealized)} · modell-equity ${f(s.equity)}</span></div>
-  <div id="gfStatus" class="statusline">${x.lastRefreshAt?'Senast kontrollerad '+new Date(x.lastRefreshAt).toLocaleString('sv-SE'):'Inte hämtad ännu.'}</div>
+  <div id="gfStatus" class="statusline">${x.lastRefreshAt?'Lokal runtime: senast kontrollerad '+new Date(x.lastRefreshAt).toLocaleString('sv-SE'):'Historik: G2 Real Forward är dokumenterat aktivt från anchor 2026-09-11. Ingen lokal runtime-data finns på just denna enhet.'}</div>
   <div class="actions"><button id="gfRefresh" class="primary">↻ Hämta nya marknadsdagar</button><button id="gfReport" class="secondary">📤 Exportera forward-rapport</button><button id="gfRaw" class="secondary">Raw JSON</button></div>
   <div class="forward-note"><b>Ingen look-ahead:</b> data före 2026-09-11 används endast som warmup för SMA, breakout och volym. Affärer får öppnas först från anchor-datumet. Öppna positioner tvångsstängs inte vid varje uppdatering.</div>
  </section>`;

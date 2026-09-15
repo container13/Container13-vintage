@@ -1,4 +1,14 @@
-# Lina Clean Core V0.2.28
+# Lina Clean Core V0.2.29
+
+## V0.2.29 – History-aware Forward State
+- Forward Evidence Center skiljer nu permanent dokumenterad projekthistorik från lokal browser-runtime.
+- Tom localStorage/IndexedDB på en ny dator får inte längre beskrivas som att G2/G3 aldrig har körts.
+- G2/G3 visas som dokumenterat aktiva från anchor 2026-09-11 även när lokal runtime-data saknas.
+- Lokala mätvärden visas endast när de faktiskt finns på den aktuella enheten; inga saknade siffror uppfinns från historiken.
+- Permanent evidens/history är facit; localStorage/IndexedDB är runtime/cache/checkpoint.
+- Ingen forskningslogik, kandidat, plan, anchor, robotmognad eller handel ändrad.
+- Cloudflare Worker: INGEN ÄNDRING.
+
 
 ## V0.2.28 – Forward Evidence Phase
 - Efter G2–G12 Research Review flyttas huvudfokus till riktig Real Forward.
