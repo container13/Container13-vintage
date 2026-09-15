@@ -1,0 +1,69 @@
+{
+  "schema": "LINA-G5-STRESS-PLAN-1",
+  "version": "V0.2.16",
+  "candidate": "15efd75a",
+  "sourceEvidence": "G4 PASS/FROZEN 95d2e735",
+  "period": [
+    "2020-01-01",
+    "2026-09-10"
+  ],
+  "universe": [
+    "AAPL",
+    "MSFT",
+    "AMZN",
+    "GOOGL",
+    "META",
+    "JPM",
+    "XOM",
+    "UNH",
+    "JNJ",
+    "PG",
+    "KO",
+    "CAT",
+    "HD",
+    "DIS",
+    "NKE",
+    "WMT"
+  ],
+  "principle": "No parameter changes, no rescue, no symbol removal after result.",
+  "scenarios": [
+    {
+      "id": "COST_10",
+      "label": "Extra kostnad 0,10 % per sida",
+      "extraCostPerSide": 0.001,
+      "entryDelayTradingDays": 0
+    },
+    {
+      "id": "COST_25",
+      "label": "Extra kostnad 0,25 % per sida",
+      "extraCostPerSide": 0.0025,
+      "entryDelayTradingDays": 0
+    },
+    {
+      "id": "COST_50",
+      "label": "Extra kostnad 0,50 % per sida",
+      "extraCostPerSide": 0.005,
+      "entryDelayTradingDays": 0
+    },
+    {
+      "id": "DELAY_1",
+      "label": "Entry fördröjd 1 handelsdag",
+      "extraCostPerSide": 0,
+      "entryDelayTradingDays": 1
+    },
+    {
+      "id": "COMBINED",
+      "label": "0,25 % extra per sida + 1 handelsdags entryfördröjning",
+      "extraCostPerSide": 0.0025,
+      "entryDelayTradingDays": 1
+    }
+  ],
+  "gate": {
+    "PASS": "Minst 4 av 5 stresscenarier har P/L > 0, PF >= 1.05 och DD >= -10%; COMBINED måste dessutom ha P/L > 0, PF >= 1.00 och DD >= -12%.",
+    "HOLD": "Minst 3 av 5 stresscenarier har P/L > 0 och PF >= 1.00, och inget scenario har DD < -15%.",
+    "FAIL": "Annars FAIL."
+  },
+  "tradeEnabled": false,
+  "resultOpened": false,
+  "planHash": "6ec36eb2"
+}

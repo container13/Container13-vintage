@@ -213,3 +213,11 @@ Efter verklig körning nådde G2 13/15 och avbröts under N med `The quota has b
 - Efter färdig G4-beräkning rensas rå marknadsdata ur IndexedDB; det frysta resultatet bevaras kompakt.
 - Lina-vattenmärket är förstorat globalt för att visuellt motsvara den större Lina-bakgrunden: desktop max 620 px, mobil 96vw.
 - Ingen strategi-, parameter-, gate-, G2-, G3- eller forward-logik ändrad. Handel AV. Robotmognad 48/100.
+
+
+## V0.2.16 – G5 Stress Test Plan
+- G4 är PASS/FROZEN; inga G4-resultat ändras.
+- Ny förregistrerad G5-plan `6ec36eb2` för frysta `15efd75a`.
+- Fem låsta stresscenarier: extra exekveringskostnad 0,10/0,25/0,50 % per sida, 1 handelsdags entryfördröjning samt kombinerat 0,25 % + 1 dag.
+- PASS/HOLD/FAIL-gate visas och låses innan någon G5-runner finns.
+- Ingen strategi-, G2/G3/G4- eller forwardlogik ändrad. Handel AV. Robotmognad 48/100.
