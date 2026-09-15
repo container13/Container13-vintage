@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  const VERSION='0.2.8';
+  const VERSION='0.2.9';
   const BASE_G2_COST_SIDE=0.001;
   const SEC_SELL_VALUE_RATE=0.0000206;
   const FINRA_SELL_SHARE_RATE=0.000195;
@@ -203,7 +203,7 @@
     setTimeout(()=>URL.revokeObjectURL(a.href),1000);
   }
   function exportReport(){
-    download(report(),`LINAS_OPTI_BROKER_COST_GATE_V0208_${new Date().toISOString().slice(0,10)}.txt`);
+    download(report(),`LINAS_OPTI_BROKER_COST_GATE_V0209_${new Date().toISOString().slice(0,10)}.txt`);
   }
 
   window.LinaBrokerGateEngine={

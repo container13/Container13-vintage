@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='0.2.8';
+const VERSION='0.2.9';
 const ROBOT_MATURITY=48;
 
 const RECORDS=[
@@ -155,7 +155,9 @@ function counters(){
     knownSwingHistoricalTrades:(249+323)+(78+144),
     jagarenPseudoTrades:442,
     forwardTrades:fN,
-    reports:RECORDS.length+1
+    reports:RECORDS.length+1,
+    historicalSimulationFloor:21400,
+    g3Simulations:window.LinaG3Engine?.load?.()?.simulationCount||0
   };
 }
 
@@ -186,7 +188,7 @@ function downloadRecord(rec){
   const text=reportText(rec);
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));
-  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0208.txt`;
+  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0209.txt`;
   a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),500);
 }

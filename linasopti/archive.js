@@ -5,10 +5,10 @@ function metricCards(c){
  return `<div class="archive-kpis">
   <div><small>Robotmognad</small><b>${c.maturity}/100</b><span>Oförändrad</span></div>
   <div><small>Kända Swing-affärer</small><b>${c.knownSwingHistoricalTrades}</b><span>G1 + G2 historiskt</span></div>
-  <div><small>Jägaren teststeg</small><b>${c.documentedStages}</b><span>historiska A–K</span></div>
+  <div><small>Historiska simuleringar</small><b>≥ 21 400</b><span>senast observerat före Clean Core</span></div>
   <div><small>Jägaren tidsmaskin</small><b>${c.jagarenPseudoTrades}</b><span>historiska affärer</span></div>
   <div><small>G2 Real Forward</small><b>${c.forwardTrades}</b><span>nya stängda affärer</span></div>
-  <div><small>Arkivposter</small><b>${c.reports}</b><span>inkl. live forward-status</span></div>
+  <div><small>G3 simuleringar</small><b>+${c.g3Simulations.toLocaleString('sv-SE')}</b><span>nya i Walk-Forward</span></div>
  </div>`;
 }
 function recordCard(r){
@@ -29,7 +29,7 @@ function render(root,ctx){
  <section class="workspace archive">
   ${metricCards(c)}
   <div class="maturity-box"><div><b>Robotmognad ${c.maturity}/100</b><span>Nästa mognadspoäng ska komma från ny forward-data, inte fler varv på samma historik.</span></div><div class="maturity-bar"><i style="width:${c.maturity}%"></i></div></div>
-  <div class="archive-note"><b>Räknar vi simuleringar?</b> Ja, men utan att blanda äpplen och päron. G1 + G2 ger <b>${c.knownSwingHistoricalTrades} kända historiska Swing-affärer</b>. Jägaren har dessutom 109 dokumenterade teststeg och 442 affärer i Tidsmaskinen, men dessa hålls separata eftersom de kan överlappa andra Jägaren-tester.</div>
+  <div class="archive-note"><b>Simuleringsräknaren är återställd som historik:</b> du hade redan observerat <b>över 21 400 simuleringar</b> före Clean Core. Vi visar därför konservativt <b>≥ 21 400</b> som historiskt golv och räknar G3 separat ovanpå det, i stället för att felaktigt ersätta siffran med antal affärer. G1/G2-affärer och Jägaren-teststeg visas fortfarande som egna mått för att undvika dubbelräkning.</div>
   <div class="archive-filter"><button class="secondary active" data-filter="all">Alla</button><button class="secondary" data-filter="Swing G2">Swing G2</button><button class="secondary" data-filter="Swing G1">Swing G1</button><button class="secondary" data-filter="Jägaren">Jägaren</button></div>
   <div id="archiveRecords">${recs.slice().reverse().map(recordCard).join('')}</div>
  </section>`;
