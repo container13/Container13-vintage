@@ -1,0 +1,22 @@
+LINAS OPTI – G6 EXECUTION COST BOUNDARY
+Clean Core: V0.2.24
+Handel: AVSTÄNGD
+Plan: 1567bbbe · kandidat 15efd75a
+Period: 2020-01-01 → 2026-09-10
+
+GATE: PASS
+BOUNDARY extra kostnad/sida: 0.20%
+
+TESTPUNKTER
+Extra 0.00% · total 0.10% · 185 affärer · P/L 6 522,15 · PF 1,29 · WR 51.35% · DD -3.70% · slut 106 522,15
+Extra 0.05% · total 0.15% · 185 affärer · P/L 5 120,95 · PF 1,22 · WR 50.81% · DD -4.14% · slut 105 120,95
+Extra 0.10% · total 0.20% · 185 affärer · P/L 3 737,78 · PF 1,16 · WR 49.73% · DD -4.62% · slut 103 737,78
+Extra 0.15% · total 0.25% · 185 affärer · P/L 2 372,44 · PF 1,1 · WR 49.19% · DD -5.10% · slut 102 372,44
+Extra 0.20% · total 0.30% · 185 affärer · P/L 1 024,68 · PF 1,04 · WR 48.65% · DD -5.58% · slut 101 024,68
+Extra 0.25% · total 0.35% · 185 affärer · P/L −305,7 · PF 0,99 · WR 48.11% · DD -6.10% · slut 99 694,3
+Extra 0.30% · total 0.40% · 185 affärer · P/L −1 618,93 · PF 0,94 · WR 47.57% · DD -6.64% · slut 98 381,07
+Extra 0.40% · total 0.50% · 185 affärer · P/L −4 194,81 · PF 0,84 · WR 45.41% · DD -7.70% · slut 95 805,19
+Extra 0.50% · total 0.60% · 185 affärer · P/L −6 704,64 · PF 0,76 · WR 44.86% · DD -8.75% · slut 93 295,36
+
+FORSKNINGSREGEL
+G6 beskriver kostnadskänslighet. Ingen parameterändring, symbolrensning eller rescue av G5. G6 är inte ny oberoende OOS-evidens. G2/G3 Real Forward har högre evidens.

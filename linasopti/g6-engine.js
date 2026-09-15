@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='V0.2.24';
+const VERSION='V0.2.25';
 const RESULT_KEY='lina_clean_swing_g6_cost_boundary_result_v0224';
 const DB_NAME='lina_g6_marketdata_v0224',STORE='chunks';
 const PLAN_HASH='1567bbbe',CANDIDATE='15efd75a';

@@ -171,7 +171,18 @@ function forwardRecord(){
   };
 }
 
-function records(){ return [...RECORDS,forwardRecord()]; }
+function records(){ return [...RECORDS,forwardRecord(),
+  {
+    id:'swing-g6-cost-boundary',
+    family:'Swing G6',
+    title:'G6 Execution Cost Boundary',
+    status:'PASS · FROZEN',
+    plan:'1567bbbe',
+    candidate:'15efd75a',
+    summary:'Förregistrerad kostnadsgräns för oförändrad kandidat. Boundary +0,20 % extra kostnad/sida (0,30 % total modellerad kostnad/sida). G6 är diagnostisk robusthetsforskning, inte ny oberoende OOS.',
+    decision:'PASS och permanent fryst. Ingen rescue, parameterändring eller symbolrensning. G2/G3 Real Forward har högre evidens.'
+  }
+]; }
 
 function counters(){
   const f=window.LinaG2ForwardEngine?.load?.();

@@ -256,7 +256,7 @@ Structural Lina watermark fix: watermark moved inside #app as final child so it 
 - Lina-watermarken från V0.2.21 lämnas orörd. Handel AV. Robotmognad 48/100.
 
 
-## V0.2.24 – G6 Execution Cost Boundary Plan
+## V0.2.25 – G6 Execution Cost Boundary Plan
 - Ny förregistrerad och låst G6-plan `1567bbbe`.
 - G6 mäter kostnadsgränsen för oförändrade `15efd75a`; ingen rescue/optimering.
 - Extra kostnadsgrid per sida: 0,00–0,50 % i nio låsta punkter.
@@ -264,11 +264,20 @@ Structural Lina watermark fix: watermark moved inside #app as final child so it 
 - G5 förblir FAIL/FROZEN. Handel AV. Robotmognad 48/100.
 - Cloudflare Worker: **INGEN ÄNDRING**.
 
-## V0.2.24 – G6 Execution Cost Boundary Runner
+## V0.2.25 – G6 Execution Cost Boundary Runner
 - Förregistrerad/låst G6-plan `1567bbbe` är oförändrad; kandidat `15efd75a`, universum, period, nio kostnadspunkter och gate ändras inte.
 - Ny G6-runner kör exakt de nio låsta kostnadspunkterna och beräknar P/L, PF, WR, DD och slutkapital.
 - Boundary = högsta testade extra kostnad/sida med P/L > 0 och PF >= 1,00; ingen interpolation.
 - PASS/HOLD/FAIL räknas exakt enligt V0.2.23-planen.
 - Marknadsrådata/checkpoint lagras i IndexedDB; localStorage innehåller endast kompakt status/resultat med storleksvakt.
 - Ingen rescue, parameterändring eller symbolrensning. G5 förblir FAIL/FROZEN. Handel AV. Robotmognad 48/100.
+- Cloudflare Worker: **INGEN ÄNDRING**.
+
+## V0.2.25 – G6 Evidence Freeze
+- G6 plan `1567bbbe` och kandidat `15efd75a` är oförändrade.
+- Användarens exporterade G6-rapport och RAW JSON från V0.2.24 ingår byte-för-byte som permanent evidens.
+- G6 registreras **PASS · FROZEN**. Boundary = +0,20 % extra kostnad per sida, motsvarande 0,30 % total modellerad kostnad per sida.
+- Vid boundary: P/L +1 024,68, PF 1,04, WR 48,65 %, DD -5,58 %. Nästa testpunkt (+0,25 % extra) är negativ med PF < 1.
+- Ingen rescue, parameterändring eller symbolrensning. G6 är inte ny oberoende OOS-evidens. G2/G3 Real Forward har högre evidens.
+- Lina-watermarken lämnas orörd. Handel AV. Robotmognad 48/100.
 - Cloudflare Worker: **INGEN ÄNDRING**.

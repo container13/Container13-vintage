@@ -32,3 +32,8 @@ Gamla resultat, beslut, kandidat-hashar och rapporter får inte skrivas över el
 9. Swing G5 Stress Test – **FAIL · FROZEN** · plan `6ec36eb2` · kandidat `15efd75a` · 2/5 PASS-kvalificerade scenarier · COMBINED NEJ.
 
 G5 får inte rescue-optimeras i efterhand. G2/G3 Real Forward har fortsatt högre evidens.
+
+## Tillägg 2026-09-15 – G6 Evidence Freeze (V0.2.25)
+10. Swing G6 Execution Cost Boundary – **PASS · FROZEN** · plan `1567bbbe` · kandidat `15efd75a` · boundary +0,20 % extra kostnad/sida (0,30 % total modellerad kostnad/sida).
+
+G6 är diagnostisk robusthetsforskning, inte ny oberoende OOS. Ingen parameterändring, symbolrensning eller rescue. G2/G3 Real Forward har fortsatt högre evidens.
