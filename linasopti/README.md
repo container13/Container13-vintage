@@ -1,4 +1,17 @@
-# Lina Clean Core V0.2.15
+# Lina Clean Core V0.2.27
+
+## V0.2.27 – G7–G12 Evidence Freeze + Research Review
+- G7–G12 är avslutade som **6/6 PASS · FRYST**. Kandidat `15efd75a` ändras inte.
+- Planhashar: G7 `247c474a`, G8 `46c80eee`, G9 `c82b5c2a`, G10 `80385a7e`, G11 `0cc6ede6`, G12 `403fef49`.
+- De två exporterade V0.2.26-bevisfilerna ligger byte-identiskt i COMPLETE.
+- G7: 6 positiva år; 2023 negativt bevaras. G8: största positiva symbolandel 23,03 %, 11/16 icke-negativa.
+- G9: 10 000 Monte Carlo; p95 max-DD 4,69 %. G10: 86,67 % positiva proxy-grannar.
+- G11: även BOTH_20 positiv (+1 133,08; PF 1,045). G12: 1,5× DD ca −5,50 %.
+- Historisk diagnostik; inte ny oberoende OOS. G2/G3 Real Forward har högre evidens. Robotmognad kvar 48/100. Handel AV.
+- Permanent workflow: paketera oberoende förregistrerade tester i batterier och använd IndexedDB/checkpoint för stora data; localStorage ska bara bära kompakt state/resultat.
+- Cloudflare Worker: INGEN ÄNDRING.
+
+## Historik från tidigare releaser
 
 ## V0.2.15 – G4 Evidence Freeze
 - G4 plan `95d2e735` är avslutad som **PASS · FROZEN**. Kandidat `15efd75a` ändras inte.

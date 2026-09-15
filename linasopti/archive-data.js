@@ -181,6 +181,18 @@ function records(){ return [...RECORDS,forwardRecord(),
     candidate:'15efd75a',
     summary:'Förregistrerad kostnadsgräns för oförändrad kandidat. Boundary +0,20 % extra kostnad/sida (0,30 % total modellerad kostnad/sida). G6 är diagnostisk robusthetsforskning, inte ny oberoende OOS.',
     decision:'PASS och permanent fryst. Ingen rescue, parameterändring eller symbolrensning. G2/G3 Real Forward har högre evidens.'
+  },
+  {
+    id:'g7-g12-battery',
+    date:'2026-09-15',
+    family:'Swing G7–G12',
+    title:'G7–G12 Research Battery',
+    type:'Historisk robusthetsdiagnostik',
+    status:'6/6 PASS · FROZEN',
+    candidate:'15efd75a',
+    summary:'Sex förregistrerade planer låstes före resultat. Ingen rescue mellan tester. Historisk diagnostik; inte ny oberoende OOS.',
+    metrics:[['G7','PASS · 6 positiva år'],['G8','PASS · 23,03 % maxandel · 11/16 icke-negativa'],['G9','PASS · p95 max-DD 4,69 %'],['G10','PASS · 86,67 % positiva proxy-grannar'],['G11','PASS · BOTH_20 +1 133,08 · PF 1,045'],['G12','PASS · 1,5× DD −5,50 %']],
+    decision:'6/6 PASS och permanent fryst. G5 FAIL bevaras. G2/G3 Real Forward har högre evidens.'
   }
 ]; }
 
