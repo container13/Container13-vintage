@@ -1,0 +1,68 @@
+{
+  "schema": "LINA-G6-EXECUTION-COST-BOUNDARY-PLAN-1",
+  "version": "V0.2.23",
+  "locked": true,
+  "candidate": "15efd75a",
+  "sourceEvidence": "G5 FAIL/FROZEN 6ec36eb2",
+  "purpose": "Measure the execution-cost boundary of the unchanged frozen candidate; descriptive robustness research, not rescue or optimization.",
+  "period": [
+    "2020-01-01",
+    "2026-09-10"
+  ],
+  "universe": [
+    "AAPL",
+    "MSFT",
+    "AMZN",
+    "GOOGL",
+    "META",
+    "JPM",
+    "XOM",
+    "UNH",
+    "JNJ",
+    "PG",
+    "KO",
+    "CAT",
+    "HD",
+    "DIS",
+    "NKE",
+    "WMT"
+  ],
+  "baseCostPerSide": 0.001,
+  "extraCostPerSideGrid": [
+    0,
+    0.0005,
+    0.001,
+    0.0015,
+    0.002,
+    0.0025,
+    0.003,
+    0.004,
+    0.005
+  ],
+  "params": {
+    "breakout": 55,
+    "trend": "sma200",
+    "volume": 1.5,
+    "regime": "spy200",
+    "stop": 0.07,
+    "target": 0.15,
+    "hold": 10
+  },
+  "entryDelayTradingDays": 0,
+  "boundaryDefinition": "Highest tested extra cost per side with P/L > 0 and PF >= 1.00. No interpolation is used for the gate.",
+  "gate": {
+    "PASS": "Boundary >= 0.20% extra cost per side and DD >= -10% at every tested point through that boundary.",
+    "HOLD": "Boundary >= 0.10% but < 0.20% extra cost per side, with no tested DD < -15%.",
+    "FAIL": "Boundary < 0.10% extra cost per side, or any tested DD < -15%."
+  },
+  "researchRules": [
+    "No parameter changes",
+    "No symbol removal",
+    "No rescue of G5",
+    "No use as independent OOS evidence",
+    "G2/G3 Real Forward remains higher evidence"
+  ],
+  "tradeEnabled": false,
+  "runnerAvailable": false,
+  "planHash": "1567bbbe"
+}

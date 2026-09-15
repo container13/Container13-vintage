@@ -254,3 +254,12 @@ Structural Lina watermark fix: watermark moved inside #app as final child so it 
 - G5-vyn visar nu `FAIL · FRYST` för redan lagrat komplett resultat. Ingen omkörning krävs.
 - Ingen rescue, parameterändring eller symbolrensning. Ingen G2/G3/G4/forward-/tradinglogik ändrad.
 - Lina-watermarken från V0.2.21 lämnas orörd. Handel AV. Robotmognad 48/100.
+
+
+## V0.2.23 – G6 Execution Cost Boundary Plan
+- Ny förregistrerad och låst G6-plan `1567bbbe`.
+- G6 mäter kostnadsgränsen för oförändrade `15efd75a`; ingen rescue/optimering.
+- Extra kostnadsgrid per sida: 0,00–0,50 % i nio låsta punkter.
+- PASS/HOLD/FAIL och boundary-definition låses innan runner byggs.
+- G5 förblir FAIL/FROZEN. Handel AV. Robotmognad 48/100.
+- Cloudflare Worker: **INGEN ÄNDRING**.
