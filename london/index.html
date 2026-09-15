@@ -2,75 +2,131 @@
 <html lang="sv">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>London + Lee Young Ji • 16–19 oktober 2026</title>
+<title>London 2026 • Lee Young Ji</title>
 <style>
-:root{--bg:#090a0d;--card:#14161c;--text:#f7f7f5;--muted:#b9bcc5;--red:#e73d35;--gold:#f2c45d;--line:#2b2e36}
-*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5}
-.hero{min-height:78vh;display:flex;align-items:end;padding:28px 20px;background:linear-gradient(0deg,rgba(0,0,0,.92),rgba(0,0,0,.08)),url("https://www.kpopconcertseurope.com/_next/image?url=https%3A%2F%2Fstatic.wixstatic.com%2Fmedia%2F0cc5f0_49f61f5147ea482e9b4c202ec8f96e3e~mv2.jpg&w=1920&q=75") center/cover}
-.hero h1{font-size:clamp(42px,12vw,82px);line-height:.88;margin:8px 0;letter-spacing:-3px}.eyebrow{color:var(--red);font-weight:900;letter-spacing:2px}.hero p{font-size:19px;max-width:650px}
-.wrap{max-width:980px;margin:auto;padding:22px 16px 60px}.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:-35px 0 28px;position:relative}
-.fact,.card{background:rgba(20,22,28,.96);border:1px solid var(--line);border-radius:18px;padding:18px}.fact b{display:block;font-size:22px}.fact span,.muted{color:var(--muted)}
-h2{font-size:32px;margin:38px 0 15px}.options{display:grid;grid-template-columns:1fr 1fr;gap:14px}.option{position:relative}.badge{display:inline-block;background:var(--red);padding:5px 10px;border-radius:999px;font-weight:800;font-size:12px}.price{font-size:34px;font-weight:900;margin:10px 0}.route{font-size:18px;font-weight:750}.plus{color:var(--gold)}
-.photo{width:100%;height:300px;object-fit:cover;border-radius:18px;margin:8px 0 14px}.split{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;align-items:center}
-.timeline{border-left:2px solid var(--red);padding-left:20px;margin-left:8px}.timeline p{margin:0 0 18px}.timeline b{display:block}
-.btn{display:inline-block;background:var(--red);color:white;text-decoration:none;padding:14px 18px;border-radius:12px;font-weight:800;margin:5px 6px 5px 0}
-.small{font-size:13px;color:var(--muted)} footer{text-align:center;color:#888;padding:25px}
-@media(max-width:700px){.facts{grid-template-columns:1fr 1fr}.facts .fact:last-child{grid-column:1/-1}.options,.split{grid-template-columns:1fr}.hero{min-height:64vh}.photo{height:240px}}
+:root{--ink:#07111b;--navy:#09243a;--navy2:#0d3453;--red:#e82743;--pink:#ff6c82;--white:#fff;--muted:#b9c6d2;--line:#25445c}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#06111b;color:#fff;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.45}
+a{color:inherit}.hero{min-height:690px;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;padding:90px 20px 150px;overflow:hidden;background:
+linear-gradient(180deg,rgba(2,10,18,.10),rgba(2,10,18,.30) 45%,#06111b 100%),
+url('https://images.unsplash.com/photo-1520986606214-8b456906c813?auto=format&fit=crop&w=1800&q=85') center/cover}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(2,8,15,.34),rgba(2,8,15,.05),rgba(2,8,15,.34));pointer-events:none}
+.hero-inner{position:relative;z-index:2;max-width:900px;margin:auto}.kicker{font-weight:900;letter-spacing:.26em;text-transform:uppercase;font-size:14px}
+h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16px 0 8px;text-shadow:0 4px 28px #000}
+.script{font-family:Georgia,serif;font-style:italic;color:#ff536e;font-size:clamp(28px,4vw,48px);margin:0 0 15px}
+.lead{font-size:clamp(17px,2vw,22px);max-width:720px;margin:auto;text-shadow:0 2px 12px #000}
+.hero-icons{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;margin-top:35px}.hero-icons div{min-width:140px}.hero-icons b{display:block;font-size:16px}.hero-icons span{font-size:13px}
+.wrap{max-width:1180px;margin:-105px auto 0;padding:0 18px 60px;position:relative;z-index:5}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:18px}.option{border:1px solid #2c6c9d;background:linear-gradient(145deg,#0b2b46,#071927);border-radius:20px;padding:22px;box-shadow:0 18px 55px #0008}.option.alt2{border-color:#a92a42;background:linear-gradient(145deg,#3a1520,#160d14)}
+.tag{display:inline-block;padding:5px 10px;border-radius:999px;background:#cfe8ff;color:#08223a;font-weight:900;font-size:12px}.alt2 .tag{background:var(--red);color:white}
+.option h2{font-size:25px;margin:10px 0 0}.sub{color:#d4dde5;margin-top:2px}.flightgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}.flight{background:#f7fafc;color:#101a22;border-radius:13px;padding:14px}.flight .air{font-size:12px;font-weight:900;color:#173c68}.flight b{font-size:18px}.price{font-size:37px;font-weight:950;text-align:center;margin:13px 0 0}.price small{display:block;font-size:13px;font-weight:500;color:#c8d3dc}.checks{padding:0;list-style:none}.checks li{margin:7px 0}.checks li:before{content:"✓";font-weight:900;margin-right:9px}
+.breakfast{background:#ffffff0b;border:1px solid #ffffff14;padding:10px;border-radius:11px;text-align:center;margin-top:15px}
+.section-title{text-align:center;font-size:34px;margin:45px 0 18px}
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.tile{height:255px;border-radius:17px;display:flex;align-items:end;overflow:hidden;background-size:cover;background-position:center;box-shadow:inset 0 -110px 70px #000b}.tile div{padding:15px}.tile b{font-size:18px;display:block}.tile span{font-size:13px;color:#eee}
+.bigben{background-image:url('https://images.unsplash.com/photo-1529655683826-aba9b3e77383?auto=format&fit=crop&w=900&q=80')}
+.bus{background-image:url('https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=900&q=80')}
+.taxi{background-image:url('https://images.unsplash.com/photo-1513026705753-bc3fffca8bf4?auto=format&fit=crop&w=900&q=80')}
+.flag{background-image:url('https://images.unsplash.com/photo-1486299267070-83823f5448dd?auto=format&fit=crop&w=900&q=80')}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.card{background:#0b1d2b;border:1px solid #213b4e;border-radius:18px;padding:18px}.card h3{font-size:21px;margin:0 0 10px}.card img{width:100%;height:210px;object-fit:cover;border-radius:12px}.card p{color:#d3dde5}.pill{display:inline-block;border:1px solid #5b9fd0;padding:9px 13px;border-radius:999px;text-decoration:none;font-weight:800}
+.parking{margin-top:18px;background:#f2f5f7;color:#0b1720;border-radius:20px;padding:24px;display:grid;grid-template-columns:1.2fr .8fr;gap:25px}.parking h2{margin-top:0}.parking .times{background:white;border-radius:15px;padding:17px}.parking .times b{font-size:19px}.parking a{background:#09243a;color:white;padding:12px 16px;border-radius:999px;text-decoration:none;font-weight:850;display:inline-block}
+.note{font-size:12px;color:#667783}.footer{background:linear-gradient(90deg,#bd1530,#f32c48);padding:26px;text-align:center;font-size:22px;font-weight:900}
+@media(max-width:800px){.hero{min-height:610px;padding-bottom:135px}.wrap{margin-top:-90px}.options,.cards,.parking{grid-template-columns:1fr}.gallery{grid-template-columns:1fr 1fr}.tile{height:210px}.flightgrid{grid-template-columns:1fr}.hero-icons{gap:14px}.hero-icons div{min-width:120px}}
 </style></head>
 <body>
-<section class="hero">
- <div><div class="eyebrow">LONDON • 16–19 OKTOBER 2026</div>
- <h1>LEE<br>YOUNG JI</h1>
- <p>En Londonweekend med Hilton Kensington, direktflyg till Heathrow och konsert på The Clapham Grand.</p></div>
-</section>
+<header class="hero">
+ <div class="hero-inner">
+   <div class="kicker">London • 16–19 oktober 2026</div>
+   <h1>LEE YOUNG JI</h1>
+   <div class="script">Live in London ♥</div>
+   <p class="lead">En Londonweekend med Hilton London Kensington, konsert på The Clapham Grand och två tydliga flygalternativ.</p>
+   <div class="hero-icons">
+     <div><b>✈ Direktflyg</b><span>Stockholm → London</span></div>
+     <div><b>▰ 3 nätter</b><span>Hilton London Kensington</span></div>
+     <div><b>♫ Lee Young Ji</b><span>18 oktober 2026</span></div>
+     <div><b>♛ 2 personer</b><span>Londonweekend</span></div>
+   </div>
+ </div>
+</header>
 
 <main class="wrap">
-<div class="facts">
- <div class="fact"><b>2 personer</b><span>3 nätter</span></div>
- <div class="fact"><b>Hilton</b><span>London Kensington</span></div>
- <div class="fact"><b>18 oktober</b><span>Lee Young Ji • London</span></div>
-</div>
+<section class="options">
+ <article class="option">
+   <span class="tag">ALTERNATIV 1 • HEATHROW</span>
+   <h2>British Airways – bekväma tider</h2>
+   <div class="sub">Samma flyg som ingår utan flygtillägg</div>
+   <div class="flightgrid">
+    <div class="flight"><div class="air">BRITISH AIRWAYS</div><small>Utresa • fre 16 okt</small><br><b>21:00 ARN → 22:35 LHR</b><br><small>Direkt • 2 h 35 min</small></div>
+    <div class="flight"><div class="air">BRITISH AIRWAYS</div><small>Hemresa • mån 19 okt</small><br><b>19:05 LHR → 22:25 ARN</b><br><small>Direkt • 2 h 20 min</small></div>
+   </div>
+   <div class="price">9 064 kr <small>per person • 18 128 kr totalt för 2</small></div>
+   <ul class="checks"><li>Heathrow åt båda håll</li><li>Hela måndagen kan användas i London</li><li>Inget flygtillägg</li></ul>
+   <div class="breakfast"><b>Med frukost:</b> 9 740 kr/person<br><small>+676 kr/person jämfört med utan frukost</small></div>
+ </article>
 
-<h2>Två resealternativ</h2>
-<div class="options">
- <div class="card option"><span class="badge">ALT 1 • BILLIGAST</span><div class="price">8 940 kr</div><div class="muted">totalt för 2 • 4 470 kr/person</div><hr style="border-color:#2b2e36"><div class="route">ARN 21:00 → LHR 22:35</div><p>Direktflyg fredag kväll. Fredagen blir huvudsakligen resdag, men ni får lägsta paketpriset.</p><p><b>Flygets parkering:</b> sikta på cirka <b>18:00</b>, alltså ungefär 3 timmar före avgång.</p></div>
- <div class="card option"><span class="badge">ALT 2 • MER LONDON</span><div class="price">ca 10 440 kr</div><div class="muted">totalt för 2 • ca 5 220 kr/person</div><hr style="border-color:#2b2e36"><div class="route">Tidigare direktflyg fredag</div><p><span class="plus"><b>+1 500 kr totalt / +750 kr per person.</b></span> Ni får flera extra timmar i London redan på fredagen.</p><p><b>Flygets parkering:</b> boka ankomst cirka <b>3 timmar före den valda avgången</b>.</p></div>
-</div>
+ <article class="option alt2">
+   <span class="tag">ALTERNATIV 2 • HEATHROW</span>
+   <h2>British Airways – tidigare utresa</h2>
+   <div class="sub">Tidigare utresa fredag – samma sena hemresa måndag</div>
+   <div class="flightgrid">
+    <div class="flight"><div class="air">BRITISH AIRWAYS</div><small>Utresa • fre 16 okt</small><br><b>18:35 ARN → 20:10 LHR</b><br><small>Direkt • 2 h 35 min</small></div>
+    <div class="flight"><div class="air">BRITISH AIRWAYS</div><small>Hemresa • mån 19 okt</small><br><b>19:05 LHR → 22:25 ARN</b><br><small>Direkt • 2 h 20 min</small></div>
+   </div>
+   <div class="price">+799 kr <small>per person i flygtillägg • +630 kr för 2</small></div>
+   <ul class="checks"><li>2 h 25 min tidigare avgång från Arlanda</li><li>Landar Heathrow 2 h 25 min tidigare</li><li>Samma sena hemresa som alternativ 1</li><li>Heathrow åt båda håll</li></ul>
+   <div class="breakfast"><b>Viktig skillnad:</b> ni får 2 h 25 min mer på fredagen och behåller Heathrow samt den sena måndagsflighten.</div>
+ </article>
+</section>
 
-<h2>Hotellet</h2>
-<div class="split">
- <img class="photo" src="https://www.myhotelbreak.com/images/hotels/large1/1665486226exterior1.png" alt="Hilton London Kensington">
- <div><h3>Hilton London Kensington</h3><p>Vid Holland Park/Shepherd’s Bush – ett bra mellanläge för både sightseeing och konserten. Westfield och Holland Park ligger nära, och Notting Hill/Portobello Road nås enkelt.</p><p>Heathrow ligger på samma västra sida av London, vilket gör flygplatsresan smidigare än från Stansted.</p></div>
-</div>
+<h2 class="section-title">Londonkänslan</h2>
+<section class="gallery">
+ <div class="tile bigben"><div><b>Big Ben</b><span>Westminster & klassiska London</span></div></div>
+ <div class="tile bus"><div><b>Röd dubbeldäckare</b><span>Precis som det ska vara i London</span></div></div>
+ <div class="tile taxi"><div><b>Black cab</b><span>Klassisk London-taxi</span></div></div>
+ <div class="tile flag"><div><b>Union Jack</b><span>Londonweekend 2026</span></div></div>
+</section>
 
-<h2>Konsertkvällen</h2>
-<div class="split">
- <div><h3>Lee Young Ji • The Clapham Grand</h3><p><b>Söndag 18 oktober 2026</b> på The Clapham Grand vid Clapham Junction.</p><p>Från hotellet: cirka 7–10 min promenad till Shepherd’s Bush, därefter direktförbindelse till Clapham Junction. Arenan ligger precis vid stationen.</p><p class="price" style="font-size:27px">≈ 25–30 min</p><p class="muted">hotell → konsert</p></div>
- <img class="photo" src="https://www.tritonrestoration.co.uk/wp-content/uploads/2024/04/clapham-grand.jpg" alt="The Clapham Grand">
-</div>
+<h2 class="section-title">Hotell, konsert & resa</h2>
+<section class="cards">
+ <article class="card">
+  <img src="https://www.myhotelbreak.com/images/hotels/large1/1665486226exterior1.png" alt="Hilton London Kensington">
+  <h3>▰ Hilton London Kensington</h3>
+  <p><b>16–19 oktober • 3 nätter.</b><br>Holland Park/Shepherd’s Bush. Bra läge för Westfield, Notting Hill och vidare transport in mot centrala London.</p>
+  <p><b>Utan frukost:</b> 9 064 kr/person i BA-paketet.<br><b>Med frukost:</b> 9 740 kr/person.</p>
+ </article>
+ <article class="card">
+  <img src="https://www.tritonrestoration.co.uk/wp-content/uploads/2024/04/clapham-grand.jpg" alt="The Clapham Grand">
+  <h3>♫ Lee Young Ji</h3>
+  <p><b>Söndag 18 oktober 2026</b><br>The Clapham Grand vid Clapham Junction.</p>
+  <p>Från Hilton: promenad till Shepherd’s Bush och därefter direktförbindelse mot Clapham Junction. Cirka <b>25–30 minuter</b> när anslutningarna passar.</p>
+ </article>
+ <article class="card">
+  <div style="height:210px;border-radius:12px;background:linear-gradient(145deg,#183c56,#071520);display:grid;place-items:center;font-size:76px">✈︎</div>
+  <h3>Se London</h3>
+  <p>Big Ben, Westminster, Hyde Park, Buckingham Palace, Notting Hill, Oxford Street, röda bussar och svarta taxibilar.</p>
+  <p>Alternativ 2 ger mer tid redan på fredagen och båda alternativen använder Heathrow.</p>
+ </article>
+</section>
 
-<h2>Arlanda & Flygets Långtidsparkering</h2>
-<div class="card">
- <p><b>Flygets Långtidsparkering</b> ligger i Arlandastad, cirka 6 minuters transfer från Arlanda. Transfern är kostnadsfri och går dygnet runt. Ni parkerar på anvisad rad och hämtas vid bilen eller i närheten.</p>
- <div class="timeline">
-  <p><b>Alternativ 1</b>Ca 18:00 parkering → transfer → god marginal på Arlanda → flyg 21:00.</p>
-  <p><b>Alternativ 2</b>Kom till Flygets cirka 3 timmar före den tidigare fredagsavgången.</p>
-  <p><b>Hemkomst</b>Flyget landar ARN 22:25 på måndagen. Flygets följer flighten och hämtar när ni landat och fått bagaget.</p>
+<section class="parking">
+ <div>
+   <h2>🚗 Flygets Långtidsparkering</h2>
+   <p>Flygets ligger i Arlandastad. Transfern till Arlanda tar cirka <b>6 minuter</b>, är kostnadsfri och går dygnet runt. Flygets bokningssystem föreslår <b>3 timmar före flygets avgång</b> och följer hemflighten för upphämtning efter landning.</p>
+   <a href="https://www.flygets.se/">Boka hos Flygets →</a>
+   <p class="note">Boka den verkliga flighten i Flygets system så att deras bevakning och upphämtning kopplas till rätt flyg.</p>
  </div>
- <a class="btn" href="https://www.flygets.se/">Boka Flygets parkering</a>
- <p class="small">Flygets anger ca 6 min transfer och rekommenderar normalt parkering 3 h före avgång.</p>
-</div>
+ <div class="times">
+   <b>Alt 1 • British Airways 21:00</b><p>Rekommenderad ankomst Flygets: <strong>ca 18:00 fredag</strong>.</p>
+   <hr>
+   <b>Alt 2 • British Airways 18:35</b><p>Rekommenderad ankomst Flygets: <strong>ca 15:35 fredag</strong>.</p>
+   <hr>
+   <b>Hemkomst</b><p>BA landar ARN <strong>22:25</strong>.<br>BA landar ARN <strong>22:25</strong>.</p>
+ </div>
+</section>
 
-<h2>Helgen i korthet</h2>
-<div class="card timeline">
- <p><b>Fredag 16/10</b>Arlanda → Heathrow → Hilton. Med alternativ 2 får ni dessutom tid i London redan under fredagen.</p>
- <p><b>Lördag 17/10</b>Hel dag för London: Notting Hill, Hyde Park, Buckingham Palace, Westminster, Soho, Oxford Street m.m.</p>
- <p><b>Söndag 18/10</b>London under dagen → Lee Young Ji på The Clapham Grand på kvällen.</p>
- <p><b>Måndag 19/10</b>Mer London på dagen → Heathrow. Direktflyg <b>19:05 → Arlanda 22:25</b> → Flygets transfer till bilen.</p>
-</div>
-
-<h2>Vilket alternativ?</h2>
-<div class="card"><p><b>Alt 1:</b> bäst om ni vill hålla nere priset – <b>8 940 kr för två</b>.</p><p><b>Alt 2:</b> bäst om ni vill maximera weekendresan. För <b>750 kr extra/person</b> får ni betydligt mer av fredagen i London.</p></div>
+<h2 class="section-title">Vilket hade jag valt?</h2>
+<section class="card" style="max-width:850px;margin:auto">
+<p><b>Alternativ 1 – British Airways/Heathrow</b> är det smidigare alternativet: Heathrow passar Hilton Kensington bättre geografiskt och flygtillägget är 0 kr.</p>
+<p><b>Alternativ 2 – British Airways 18:35/Heathrow</b> kostar <b>799 kr extra/person</b>. Ni kommer iväg 2 h 25 min tidigare på fredagen, landar Heathrow 20:10 och behåller den fina hemresan 19:05 på måndagen.</p>
+</section>
 </main>
-<footer>London 2026 • reseöversikt</footer>
+<footer class="footer">LONDON 2026 • MUSIK • RESA • UPPLEVELSER</footer>
 </body></html>
