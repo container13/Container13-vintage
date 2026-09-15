@@ -256,10 +256,19 @@ Structural Lina watermark fix: watermark moved inside #app as final child so it 
 - Lina-watermarken från V0.2.21 lämnas orörd. Handel AV. Robotmognad 48/100.
 
 
-## V0.2.23 – G6 Execution Cost Boundary Plan
+## V0.2.24 – G6 Execution Cost Boundary Plan
 - Ny förregistrerad och låst G6-plan `1567bbbe`.
 - G6 mäter kostnadsgränsen för oförändrade `15efd75a`; ingen rescue/optimering.
 - Extra kostnadsgrid per sida: 0,00–0,50 % i nio låsta punkter.
 - PASS/HOLD/FAIL och boundary-definition låses innan runner byggs.
 - G5 förblir FAIL/FROZEN. Handel AV. Robotmognad 48/100.
+- Cloudflare Worker: **INGEN ÄNDRING**.
+
+## V0.2.24 – G6 Execution Cost Boundary Runner
+- Förregistrerad/låst G6-plan `1567bbbe` är oförändrad; kandidat `15efd75a`, universum, period, nio kostnadspunkter och gate ändras inte.
+- Ny G6-runner kör exakt de nio låsta kostnadspunkterna och beräknar P/L, PF, WR, DD och slutkapital.
+- Boundary = högsta testade extra kostnad/sida med P/L > 0 och PF >= 1,00; ingen interpolation.
+- PASS/HOLD/FAIL räknas exakt enligt V0.2.23-planen.
+- Marknadsrådata/checkpoint lagras i IndexedDB; localStorage innehåller endast kompakt status/resultat med storleksvakt.
+- Ingen rescue, parameterändring eller symbolrensning. G5 förblir FAIL/FROZEN. Handel AV. Robotmognad 48/100.
 - Cloudflare Worker: **INGEN ÄNDRING**.
