@@ -215,9 +215,16 @@ Efter verklig körning nådde G2 13/15 och avbröts under N med `The quota has b
 - Ingen strategi-, parameter-, gate-, G2-, G3- eller forward-logik ändrad. Handel AV. Robotmognad 48/100.
 
 
-## V0.2.16 – G5 Stress Test Plan
+## V0.2.17 – G5 Stress Test Plan
 - G4 är PASS/FROZEN; inga G4-resultat ändras.
 - Ny förregistrerad G5-plan `6ec36eb2` för frysta `15efd75a`.
 - Fem låsta stresscenarier: extra exekveringskostnad 0,10/0,25/0,50 % per sida, 1 handelsdags entryfördröjning samt kombinerat 0,25 % + 1 dag.
 - PASS/HOLD/FAIL-gate visas och låses innan någon G5-runner finns.
 - Ingen strategi-, G2/G3/G4- eller forwardlogik ändrad. Handel AV. Robotmognad 48/100.
+
+## V0.2.17 – G5 Stress Test Runner
+- Förregistrerad/låst G5-plan `6ec36eb2` är oförändrad; kandidat `15efd75a`, universum, period, fem scenarier och gate ändras inte.
+- Ny G5-runner kör de fem låsta stresscenarierna. Resultat öppnas först när användaren trycker Kör G5.
+- Marknadsrådata/checkpoint lagras i IndexedDB; localStorage innehåller endast kompakt status/resultat med storleksvakt.
+- 1 handelsdags entryfördröjning simuleras som verklig senare entry på nästa handelsdags open; stop/target/hold börjar från faktisk entrydag.
+- Ingen rescue, parameterändring eller symbolrensning. G2/G3 Real Forward orörda. Handel AV. Robotmognad 48/100.
