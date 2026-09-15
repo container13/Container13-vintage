@@ -1,3 +1,15 @@
+# Lina Clean Core V0.2.31
+
+## V0.2.31 – GitHub Shared Forward State
+- G2/G3 Real Forward har nu gemensam kompakt master i GitHub via Cloudflare Worker.
+- Forward Evidence Center läser GitHub-master vid öppning och sparar automatiskt efter `Uppdatera G2 + G3`.
+- `Synka GitHub` initialiserar/kontrollerar master manuellt. Lokal backup/import finns kvar som recovery.
+- GitHub-token ligger endast som Worker secret. Skrivning kräver separat `LINA_SYNC_KEY`, som endast hålls i browserns sessionStorage.
+- Worker validerar anchor 2026-09-11, G2 `15efd75a`, G3 plan `75838ed5` och Handel AV. Konflikt stoppar skrivning.
+- GitHub-state är gemensam Real Forward-master; permanent forskningshistorik/evidence förblir separat och fryst.
+- Robotmognad 48/100. Handel AV. Ingen strategi-/parameter-/gateändring.
+- Cloudflare Worker: ÄNDRING KRÄVS. Full kod: `cloudflare-worker-v0231.js`.
+
 # Lina Clean Core V0.2.30
 
 ## V0.2.30 – Forward Integrity & Sync
