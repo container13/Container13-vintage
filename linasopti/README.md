@@ -246,3 +246,11 @@ UI-only. Restores the much larger visual scale of the Lina watermark using the o
 
 ## V0.2.21
 Structural Lina watermark fix: watermark moved inside #app as final child so it paints above Clean Core cards; legacy V0.58.8 mask/blend/opacity retained. No research/trading logic changed.
+
+## V0.2.22 – G5 Evidence Freeze
+- G5 plan `6ec36eb2`, kandidat `15efd75a`, period och universum är oförändrade.
+- Användarens exporterade G5-rapport och RAW JSON är inlagda oförändrade som permanent evidens.
+- G5 registreras i arkivet som **FAIL · FROZEN**: 2/5 PASS-kvalificerade scenarier; COMBINED = NEJ.
+- G5-vyn visar nu `FAIL · FRYST` för redan lagrat komplett resultat. Ingen omkörning krävs.
+- Ingen rescue, parameterändring eller symbolrensning. Ingen G2/G3/G4/forward-/tradinglogik ändrad.
+- Lina-watermarken från V0.2.21 lämnas orörd. Handel AV. Robotmognad 48/100.

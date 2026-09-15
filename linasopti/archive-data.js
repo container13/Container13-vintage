@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='0.2.15';
+const VERSION='0.2.17';
 const ROBOT_MATURITY=48;
 
 const RECORDS=[
@@ -130,6 +130,21 @@ const RECORDS=[
     ],
     decision:'PASS och permanent fryst. Ingen symbol får tas bort och inga G2-parametrar ändras på grund av G4-resultatet.'
   },
+  ,{
+    id:'g5-stress',
+    date:'2026-09-15',
+    family:'Swing G5',
+    title:'G5 Stress Test',
+    type:'Exekveringsstress / robusthet',
+    status:'FAIL · FROZEN',
+    candidate:'15efd75a',
+    summary:'Förregistrerad plan 6ec36eb2. Fryst G2/G4-kandidat stressad med högre kostnader och 1 handelsdags entryfördröjning. Ingen rescue eller parameterändring efter resultat.',
+    metrics:[
+      ['PASS-scenarier','2/5'],['COST_10','+3 737,78 · PF 1,16'],['COST_25','−305,70 · PF 0,99'],['COST_50','−6 704,64 · PF 0,76'],['DELAY_1','+4 205,97 · PF 1,18'],['COMBINED','−2 367,93 · PF 0,91']
+    ],
+    decision:'FAIL och permanent fryst. Resultatet accepteras utan rescue, parameterändring eller symbolrensning. G2/G3 Real Forward har fortsatt högre evidens.'
+  }
+
 ]
 
 function forwardRecord(){

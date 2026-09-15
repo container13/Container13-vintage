@@ -26,3 +26,9 @@ Robotmognad ska inte höjas bara för att fler historiska tester eller UI-funkti
 
 ## Arkivregel
 Gamla resultat, beslut, kandidat-hashar och rapporter får inte skrivas över eller raderas när nya steg tillkommer.
+
+## Tillägg 2026-09-15 – G5 Evidence Freeze (V0.2.22)
+8. Swing G4 Universe Robustness – PASS · FROZEN · plan `95d2e735`.
+9. Swing G5 Stress Test – **FAIL · FROZEN** · plan `6ec36eb2` · kandidat `15efd75a` · 2/5 PASS-kvalificerade scenarier · COMBINED NEJ.
+
+G5 får inte rescue-optimeras i efterhand. G2/G3 Real Forward har fortsatt högre evidens.
