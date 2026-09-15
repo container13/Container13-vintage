@@ -281,3 +281,7 @@ Structural Lina watermark fix: watermark moved inside #app as final child so it 
 - Ingen rescue, parameterändring eller symbolrensning. G6 är inte ny oberoende OOS-evidens. G2/G3 Real Forward har högre evidens.
 - Lina-watermarken lämnas orörd. Handel AV. Robotmognad 48/100.
 - Cloudflare Worker: **INGEN ÄNDRING**.
+
+
+## V0.2.26 – G7–G12 Research Battery
+Sex planer och runners levereras tillsammans för att minska separata uppladdningar. Alla planer låses före resultat och får inte ändras utifrån andra resultat i samma batteri. Planhashar: G7 247c474a, G8 46c80eee, G9 c82b5c2a, G10 80385a7e, G11 0cc6ede6, G12 403fef49. Cloudflare Worker: INGEN ÄNDRING.
