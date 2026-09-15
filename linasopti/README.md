@@ -1,6 +1,6 @@
-# Lina Clean Core V0.2.31
+# Lina Clean Core V0.2.32
 
-## V0.2.31 – GitHub Shared Forward State
+## V0.2.32 – GitHub Shared Forward State
 - G2/G3 Real Forward har nu gemensam kompakt master i GitHub via Cloudflare Worker.
 - Forward Evidence Center läser GitHub-master vid öppning och sparar automatiskt efter `Uppdatera G2 + G3`.
 - `Synka GitHub` initialiserar/kontrollerar master manuellt. Lokal backup/import finns kvar som recovery.
@@ -8,7 +8,7 @@
 - Worker validerar anchor 2026-09-11, G2 `15efd75a`, G3 plan `75838ed5` och Handel AV. Konflikt stoppar skrivning.
 - GitHub-state är gemensam Real Forward-master; permanent forskningshistorik/evidence förblir separat och fryst.
 - Robotmognad 48/100. Handel AV. Ingen strategi-/parameter-/gateändring.
-- Cloudflare Worker: ÄNDRING KRÄVS. Full kod: `cloudflare-worker-v0231.js`.
+- Cloudflare Worker: ÄNDRING KRÄVS. Full kod: `cloudflare-worker-v0232.js`.
 
 # Lina Clean Core V0.2.30
 
@@ -342,3 +342,6 @@ Structural Lina watermark fix: watermark moved inside #app as final child so it 
 
 ## V0.2.26 – G7–G12 Research Battery
 Sex planer och runners levereras tillsammans för att minska separata uppladdningar. Alla planer låses före resultat och får inte ändras utifrån andra resultat i samma batteri. Planhashar: G7 247c474a, G8 46c80eee, G9 c82b5c2a, G10 80385a7e, G11 0cc6ede6, G12 403fef49. Cloudflare Worker: INGEN ÄNDRING.
+
+### Clean Core V0.2.32
+Cross-device Forward-sync använder nu den vanliga Lina-inloggningen. Den separata prompten för synknyckel är borttagen. Worker verifierar login mot Secret `LINA_LOGIN_CODE`; GitHub-token stannar server-side. Ingen forskningslogik ändrad. Robotmognad 48/100. Handel AV.

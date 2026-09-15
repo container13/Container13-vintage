@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='0.2.31';
+const VERSION='0.2.32';
 const KEY='lina_clean_swing_g3_forward_v0211';
 const API='https://linas-opti-api.mangaj73.workers.dev';
 const ANCHOR='2026-09-11',TRAIN_START='2020-01-01';
@@ -13,7 +13,7 @@ const POOL=[
 const SEPT_MODEL={month:'2026-09',trainEnd:'2026-08-31',selectedHash:'69147890',params:{breakout:55,trend:'off',volume:1.5,regime:'off',stop:.07,target:.15,hold:10},source:'G3 frozen PASS'};
 function today(){return new Date().toISOString().slice(0,10)}
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch{return null}}
-function fresh(){return{schema:'LINA-G3-REAL-FORWARD-1',version:'V0.2.31',planHash:PLAN_HASH,anchor:ANCHOR,costSide:COST_SIDE,capital:CAPITAL,createdAt:new Date().toISOString(),models:[SEPT_MODEL],closed:[],open:[],stats:null,lastMarketDate:null,lastRefreshAt:null,provider:null,milestones:{60:false,120:false,250:false},history:[]}}
+function fresh(){return{schema:'LINA-G3-REAL-FORWARD-1',version:'V0.2.32',planHash:PLAN_HASH,anchor:ANCHOR,costSide:COST_SIDE,capital:CAPITAL,createdAt:new Date().toISOString(),models:[SEPT_MODEL],closed:[],open:[],stats:null,lastMarketDate:null,lastRefreshAt:null,provider:null,milestones:{60:false,120:false,250:false},history:[]}}
 function save(x){x.savedAt=new Date().toISOString();localStorage.setItem(KEY,JSON.stringify(x));document.dispatchEvent(new CustomEvent('lina:g3forwardchange'));return x}
 function rowsOf(j){return Array.isArray(j)?j:(j?.rows||j?.data||[])}
 function norm(rows,symbol,provider){return rows.map(r=>({symbol:String(r.symbol||r.s||symbol).replace(/\.US$/,'').toUpperCase(),t:String(r.t||r.time||r.timestamp||''),o:+r.o,h:+r.h,l:+r.l,c:+r.c,v:+(r.v||0),provider})).filter(r=>r.symbol&&r.t&&[r.o,r.h,r.l,r.c].every(Number.isFinite))}
@@ -46,9 +46,9 @@ function normalizeState(x){
  x.milestones=x.milestones||{60:false,120:false,250:false};
  return x;
 }
-function report(){const x=load()||fresh(),s=x.stats||{n:0,pl:0,pf:0,wr:0,dd:0,unrealized:0,open:0,equity:CAPITAL},f=n=>Number(n).toLocaleString('sv-SE',{maximumFractionDigits:2}),pct=n=>(100*Number(n)).toFixed(2)+'%';return ['LINAS OPTI – G3 REAL FORWARD / PAPER','Clean Core: V0.2.31','G3 Research Gate: PASS · FRYST','Planhash: '+PLAN_HASH,'Anchor: '+ANCHOR,'Handel: AVSTÄNGD','Kandidatpool: fryst topp 12 från 2020–2022 · månadsval endast med då känd data','',`Senaste marknadsdag: ${x.lastMarketDate||'ingen ännu'}`,`Stängda affärer: ${s.n} · P/L ${f(s.pl)} · PF ${f(s.pf)} · WR ${pct(s.wr)} · DD ${pct(s.dd)}`,`Öppna positioner: ${s.open} · orealiserat ${f(s.unrealized)} · modell-equity ${f(s.equity)}`,'',`Månadsmodeller: ${(x.models||[]).map(m=>m.month+' '+m.selectedHash+' (train '+m.trainEnd+')').join(' · ')}`,'',`Milstolpar: 60 ${x.milestones[60]?'✓':'—'} · 120 ${x.milestones[120]?'✓':'—'} · 250 ${x.milestones[250]?'✓':'—'}`,'','OBS: September 2026 använder det redan frysta G3-valet 69147890 tränat t.o.m. 2026-08-31. Framtida månadsval görs först när föregående månad finns i marknadsdatan. Ingen rescue/efteroptimering.'].join('\n')}
+function report(){const x=load()||fresh(),s=x.stats||{n:0,pl:0,pf:0,wr:0,dd:0,unrealized:0,open:0,equity:CAPITAL},f=n=>Number(n).toLocaleString('sv-SE',{maximumFractionDigits:2}),pct=n=>(100*Number(n)).toFixed(2)+'%';return ['LINAS OPTI – G3 REAL FORWARD / PAPER','Clean Core: V0.2.32','G3 Research Gate: PASS · FRYST','Planhash: '+PLAN_HASH,'Anchor: '+ANCHOR,'Handel: AVSTÄNGD','Kandidatpool: fryst topp 12 från 2020–2022 · månadsval endast med då känd data','',`Senaste marknadsdag: ${x.lastMarketDate||'ingen ännu'}`,`Stängda affärer: ${s.n} · P/L ${f(s.pl)} · PF ${f(s.pf)} · WR ${pct(s.wr)} · DD ${pct(s.dd)}`,`Öppna positioner: ${s.open} · orealiserat ${f(s.unrealized)} · modell-equity ${f(s.equity)}`,'',`Månadsmodeller: ${(x.models||[]).map(m=>m.month+' '+m.selectedHash+' (train '+m.trainEnd+')').join(' · ')}`,'',`Milstolpar: 60 ${x.milestones[60]?'✓':'—'} · 120 ${x.milestones[120]?'✓':'—'} · 250 ${x.milestones[250]?'✓':'—'}`,'','OBS: September 2026 använder det redan frysta G3-valet 69147890 tränat t.o.m. 2026-08-31. Framtida månadsval görs först när föregående månad finns i marknadsdatan. Ingen rescue/efteroptimering.'].join('\n')}
 function download(text,name,type='text/plain'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
-function exportReport(){download(report(),`LINAS_OPTI_G3_REAL_FORWARD_V0231_${today()}.txt`)}
-function exportRaw(){download(JSON.stringify(load()||fresh(),null,2),`LINAS_OPTI_G3_REAL_FORWARD_RAW_V0231_${today()}.json`,'application/json')}
+function exportReport(){download(report(),`LINAS_OPTI_G3_REAL_FORWARD_V0232_${today()}.txt`)}
+function exportRaw(){download(JSON.stringify(load()||fresh(),null,2),`LINAS_OPTI_G3_REAL_FORWARD_RAW_V0232_${today()}.json`,'application/json')}
 window.LinaG3ForwardEngine={VERSION,KEY,ANCHOR,PLAN_HASH,POOL,load,fresh,save,refresh,report,exportReport,exportRaw,tradeId,normalizeState};
 })();
