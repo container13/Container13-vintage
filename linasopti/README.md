@@ -1,4 +1,16 @@
-# Lina Clean Core V0.2.11
+# Lina Clean Core V0.2.12
+
+## V0.2.12 – G4 Universe Robustness Plan
+- Ny separat forskningsgeneration: **G4 Universe Robustness**.
+- G2 `15efd75a` och G3 lämnas helt orörda; G2/G3 Real Forward fortsätter parallellt från anchor 2026-09-11.
+- G4 testar exakt fryst G2-strategi på ett annat, förregistrerat 16-aktieuniversum utan parameterändring.
+- G4 testuniversum: AAPL, MSFT, AMZN, GOOGL, META, JPM, XOM, UNH, JNJ, PG, KO, CAT, HD, DIS, NKE, WMT. Noll överlapp med ursprungliga G2-universumet.
+- Period: 2020-01-01 → 2026-09-10. Planhash `95d2e735`.
+- Förregistrerad PASS/HOLD/FAIL-gate finns i `LINA_G4_UNIVERSE_ROBUSTNESS_PLAN_V0212.md`.
+- V0.2.12 öppnar **inte** G4-resultatet. Först låses planen i UI; körmotorn byggs i nästa steg.
+- G4 är robusthets-/portabilitetstest, inte ny oberoende OOS. Real Forward har fortsatt högre evidens.
+- Robotmognad kvar 48/100. Handel AV.
+
 
 ## V0.2.11 – G3 Research Gate PASS + Real Forward
 - G3 plan `75838ed5` är avslutad som metodtest: 181 affärer, +18 446,11, PF 1,4851, WR 51,38 %, DD -3,38 %.

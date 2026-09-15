@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='0.2.11';
+const VERSION='0.2.12';
 const ROBOT_MATURITY=48;
 
 const RECORDS=[

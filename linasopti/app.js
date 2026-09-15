@@ -1,9 +1,9 @@
 (function(){
   'use strict';
-  const APP_VERSION='0.2.11';
+  const APP_VERSION='0.2.12';
   const cards=[
     ['forward','Forward','Riktig forward-validering · G2 + G3 parallellt.'],
-    ['research','Forskning','Jägaren, Swing G1, Swing G2, G3 Walk-Forward och Broker/Cost Gate.'],
+    ['research','Forskning','Jägaren, Swing G1, Swing G2, G3, G4 Universe och Broker/Cost Gate.'],
     ['history','Historik','Projektresa, tester och frysta beslut.'],
     ['data','Data','Datakällor och integritetskontroller.'],
     ['tools','Verktyg','Backup, export och diagnostik.'],
@@ -17,14 +17,16 @@
       root.querySelectorAll('[data-route]').forEach(b=>b.onclick=()=>R.navigate(b.dataset.route));
     });
     R.register('research',root=>{
-      shell(root,'Forskning','Välj forskningsgeneration. G2 är första modulen som migreras.',`<button class="back" id="home">← Dashboard</button><div class="grid"><button class="card" disabled><b>Jägaren</b><small>Fryst · portas senare</small></button><button class="card" disabled><b>Swing G1</b><small>Fryst · portas senare</small></button><button class="card" id="g2"><b>Swing G2</b><small>KLAR · positiv kandidat</small></button><button class="card" id="g3"><b>Swing G3 Walk-Forward</b><small>PASS · metod fryst · plan 75838ed5</small></button><button class="card" id="brokerGate"><b>Broker/Cost Gate</b><small>Aktiv · kostnader, API och mäklarval</small></button></div>`);
+      shell(root,'Forskning','Välj forskningsgeneration. G2 är första modulen som migreras.',`<button class="back" id="home">← Dashboard</button><div class="grid"><button class="card" disabled><b>Jägaren</b><small>Fryst · portas senare</small></button><button class="card" disabled><b>Swing G1</b><small>Fryst · portas senare</small></button><button class="card" id="g2"><b>Swing G2</b><small>KLAR · positiv kandidat</small></button><button class="card" id="g3"><b>Swing G3 Walk-Forward</b><small>PASS · metod fryst · plan 75838ed5</small></button><button class="card" id="g4"><b>Swing G4 Universe Robustness</b><small>NY · förregistrera och lås universumtest</small></button><button class="card" id="brokerGate"><b>Broker/Cost Gate</b><small>Aktiv · kostnader, API och mäklarval</small></button></div>`);
       root.querySelector('#home').onclick=()=>R.navigate('dashboard');
       root.querySelector('#g2').onclick=()=>R.navigate('g2');
       root.querySelector('#g3').onclick=()=>R.navigate('g3');
+      root.querySelector('#g4').onclick=()=>R.navigate('g4');
       root.querySelector('#brokerGate').onclick=()=>R.navigate('broker-gate');
     });
     R.register('g2',root=>window.LinaG2.render(root,{back:()=>R.navigate('research'),broker:()=>R.navigate('broker-gate')}));
     R.register('g3',root=>window.LinaG3.render(root,{back:()=>R.navigate('research')}));
+    R.register('g4',root=>window.LinaG4.render(root,{back:()=>R.navigate('research')}));
     R.register('broker-gate',root=>window.LinaBrokerGate.render(root,{back:()=>R.navigate('g2')}));
     R.register('forward',root=>{
       shell(root,'Forward','Här räknas endast ny data efter respektive fryst anchor.',`<button class="back" id="home">← Dashboard</button><div class="grid"><button class="card" id="g2forward"><b>Swing G2 Real Forward</b><small>Aktiv · statisk 15efd75a · Handel AV</small></button><button class="card" id="g3forward"><b>Swing G3 Real Forward</b><small>Aktiv · lär månadsvis · plan 75838ed5 · Handel AV</small></button><button class="card" disabled><b>Swing G1 Forward</b><small>Fryst legacy · portas senare</small></button></div>`);
@@ -46,7 +48,7 @@
     });
   }
 
-  // V0.2.11 – Uppdatera ska ge en verklig ny start, inte bara ladda om en redan upplåst session.
+  // V0.2.12 – Uppdatera ska ge en verklig ny start, inte bara ladda om en redan upplåst session.
   // Bevarar all persistent Lina-data i localStorage, men rensar endast login-sessionen.
   // Navigerar sedan till en ren, cache-bustad index-URL så login visas och senaste index/scripts hämtas.
   function installRefresh(){

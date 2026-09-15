@@ -1,0 +1,79 @@
+{
+  "generation": "SWING-G4-UNIVERSE-ROBUSTNESS",
+  "baseCandidate": "15efd75a",
+  "params": {
+    "breakout": 55,
+    "trend": "sma200",
+    "volume": 1.5,
+    "regime": "spy200",
+    "stop": 0.07,
+    "target": 0.15,
+    "hold": 10
+  },
+  "costSide": 0.001,
+  "capital": 100000,
+  "risk": 0.005,
+  "maxPositions": 5,
+  "maxPositionPct": 0.2,
+  "period": [
+    "2020-01-01",
+    "2026-09-10"
+  ],
+  "originalUniverse": [
+    "AMD",
+    "SHOP",
+    "ADBE",
+    "MU",
+    "FDX",
+    "TSLA",
+    "LUV",
+    "NFLX",
+    "C",
+    "NOW",
+    "QCOM",
+    "BAC",
+    "GM",
+    "DDOG",
+    "PYPL",
+    "NVDA"
+  ],
+  "testUniverse": [
+    "AAPL",
+    "MSFT",
+    "AMZN",
+    "GOOGL",
+    "META",
+    "JPM",
+    "XOM",
+    "UNH",
+    "JNJ",
+    "PG",
+    "KO",
+    "CAT",
+    "HD",
+    "DIS",
+    "NKE",
+    "WMT"
+  ],
+  "benchmark": "SPY",
+  "selectionRule": "Predeclared diversified liquid US large-cap set, zero overlap with original 16; frozen before G4 result is observed.",
+  "gate": {
+    "pass": {
+      "minTrades": 100,
+      "plPositive": true,
+      "minPF": 1.15,
+      "maxDDAbs": 0.08,
+      "minPositiveCalendarSegments": 4,
+      "maxSingleSymbolSharePositivePL": 0.5
+    },
+    "hold": {
+      "minTrades": 60,
+      "plPositive": true,
+      "minPF": 1.0,
+      "maxDDAbs": 0.12
+    },
+    "fail": "otherwise"
+  },
+  "noRescue": true,
+  "tradeEnabled": false
+}
