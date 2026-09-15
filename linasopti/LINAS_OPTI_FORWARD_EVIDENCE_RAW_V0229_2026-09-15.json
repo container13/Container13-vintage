@@ -1,0 +1,87 @@
+{
+  "schema": "LINA-FORWARD-EVIDENCE-CENTER-1",
+  "release": "V0.2.29",
+  "tradeEnabled": false,
+  "createdAt": "2026-09-15T08:36:15.165Z",
+  "anchor": "2026-09-11",
+  "calendarDaysSinceAnchor": 4,
+  "g2": {
+    "history": {
+      "documented": true,
+      "status": "AKTIV · HISTORIK FINNS",
+      "anchor": "2026-09-11",
+      "candidate": "15efd75a",
+      "note": "G2 Real Forward är dokumenterat som startat/aktivt i projekthistoriken. Lokal kördata kan saknas på denna enhet."
+    },
+    "localState": true,
+    "candidate": "15efd75a",
+    "lastMarketDate": "2026-09-14",
+    "lastRefreshAt": "2026-09-15T08:35:56.083Z",
+    "provider": "Worker Yahoo daily",
+    "stats": {
+      "n": 0,
+      "pl": 0,
+      "pf": 0,
+      "wr": 0,
+      "dd": 0,
+      "unrealized": 0,
+      "open": 0,
+      "equity": 100000
+    },
+    "milestones": {
+      "60": false,
+      "120": false,
+      "250": false
+    },
+    "closed": 0,
+    "open": 0
+  },
+  "g3": {
+    "history": {
+      "documented": true,
+      "status": "AKTIV · HISTORIK FINNS",
+      "anchor": "2026-09-11",
+      "planHash": "75838ed5",
+      "note": "G3 Real Forward är dokumenterat som startat/aktivt i projekthistoriken. Lokal kördata kan saknas på denna enhet."
+    },
+    "localState": true,
+    "planHash": "75838ed5",
+    "lastMarketDate": "2026-09-14",
+    "lastRefreshAt": "2026-09-15T08:35:59.305Z",
+    "provider": "Worker Yahoo daily",
+    "stats": {
+      "n": 0,
+      "pl": 0,
+      "pf": 0,
+      "wr": 0,
+      "dd": 0,
+      "unrealized": 0,
+      "open": 0,
+      "equity": 100000
+    },
+    "milestones": {
+      "60": false,
+      "120": false,
+      "250": false
+    },
+    "models": [
+      {
+        "month": "2026-09",
+        "trainEnd": "2026-08-31",
+        "selectedHash": "69147890",
+        "params": {
+          "breakout": 55,
+          "trend": "off",
+          "volume": 1.5,
+          "regime": "off",
+          "stop": 0.07,
+          "target": 0.15,
+          "hold": 10
+        },
+        "source": "G3 frozen PASS"
+      }
+    ],
+    "closed": 0,
+    "open": 0
+  }
+}

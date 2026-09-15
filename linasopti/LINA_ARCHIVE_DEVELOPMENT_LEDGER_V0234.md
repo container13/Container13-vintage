@@ -15,3 +15,6 @@ Varje större release ska få en kompakt permanent utvecklingspost i Lina Arkiv 
 
 Robotmognad: 48/100. Handel: AV.
 Cloudflare Worker: INGEN ÄNDRING i V0.2.34.
+
+## Evidence-komplettering
+V0.2.34 COMPLETE innehåller även de tillgängliga originalexporterna i TXT/JSON för dagens forsknings-/forwardarbete: G3, G4, G5, G6, G7–G12 samt Forward-evidence/backup. `LINA_EVIDENCE_INVENTORY_V0234.md` listar varje fil och SHA256. Stora råa marknadsdataset/IndexedDB-cache arkiveras inte i GitHub-releasen.

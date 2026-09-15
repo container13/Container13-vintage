@@ -1,0 +1,20 @@
+LINAS OPTI – FORWARD EVIDENCE CENTER
+Clean Core: V0.2.30
+Handel: AVSTÄNGD
+Anchor: 2026-09-11
+Kalenderdagar sedan anchor: 4
+
+G2 · kandidat 15efd75a
+Senaste marknadsdag: 2026-09-14 · stängda 0 · öppna 0
+P/L 0 · PF 0 · WR 0.00% · DD 0.00%
+
+G3 · plan 75838ed5
+Senaste marknadsdag: 2026-09-14 · stängda 0 · öppna 0
+P/L 0 · PF 0 · WR 0.00% · DD 0.00%
+Aktuell månadsmodell: 2026-09 69147890
+
+SYNCREGEL
+Varje forward-affär har deterministiskt ID. Import merge:ar runtime-state och stoppar vid konflikt; permanent projekthistorik skrivs aldrig över.
+
+EVIDENSREGEL
+Historiska G2–G12 ändras inte. Robotmognad 48/100. Forward-milstolpar 60/120/250 bedöms först när ny data faktiskt finns. Ingen automatisk mognadshöjning och ingen livehandel.

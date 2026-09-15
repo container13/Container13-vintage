@@ -1,0 +1,14 @@
+LINAS OPTI – G7–G12 RESEARCH BATTERY
+Clean Core: V0.2.26
+Kandidat: 15efd75a
+Handel: AVSTÄNGD
+
+G7 · PASS · plan 247c474a
+G8 · PASS · plan 46c80eee
+G9 · PASS · plan c82b5c2a
+G10 · PASS · plan 80385a7e
+G11 · PASS · plan 0cc6ede6
+G12 · PASS · plan 403fef49
+
+FORSKNINGSREGEL
+Alla sex planer låstes före resultat. Ingen rescue mellan tester. Historisk diagnostik; inte ny oberoende OOS.

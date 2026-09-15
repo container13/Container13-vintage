@@ -352,3 +352,6 @@ Headern har `☁ Synka` för gemensam synk mellan datorer. Forward-state plus ko
 
 ## V0.2.34 – Lina Arkiv utvecklingslogg (2026-09-15)
 Lina Arkiv visar nu större utvecklingssteg. V0.2.32–V0.2.34 är dokumenterade, inklusive V0.2.33 första synk-FAIL och efterföljande PASS. Frysta forskningsresultat är orörda. Cloudflare Worker: ingen ändring. Handel AV. Robotmognad 48/100.
+
+### V0.2.34 – Evidence-komplettering
+COMPLETE innehåller nu tillgängliga originalexporter i TXT/JSON för G3, G4, G5, G6, G7–G12 och Forward-state/evidence från 2026-09-15. `LINA_EVIDENCE_INVENTORY_V0234.md` är kontrollregister med SHA256. Resultatfiler är permanent evidence/facit; stora råa marknadsdataset och IndexedDB-cache ingår inte. Cloudflare Worker: INGEN ÄNDRING.

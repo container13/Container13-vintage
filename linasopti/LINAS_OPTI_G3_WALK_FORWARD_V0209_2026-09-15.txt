@@ -1,0 +1,72 @@
+LINAS OPTI – G3 WALK-FORWARD LEARNER
+Clean Core: V0.2.10
+Handel: AVSTÄNGD
+Plan låst: JA · 75838ed5
+
+METOD
+Träning/pool: 2020-01-01 → 2022-12-31.
+648 G2-gridvarianter rankas endast på 2020–2022; topp 12 blir permanent kandidatpool.
+Från 2023 väljs modell på första handelsdagen varje månad, endast från topp-12-poolen och endast med data t.o.m. föregående handelsdag.
+Dagliga entries använder månadens valda modell. Öppna positioner behåller reglerna från sin entry.
+Ingen rescue eller efteroptimering efter resultat.
+
+Simuleringar i just G3: 1188
+Omträningar: 45
+Provider: Worker Yahoo daily
+
+VIKTIGT
+2023–2026 är inte längre helt orörd data eftersom tidigare Lina/G2-resultat redan har observerats. G3 är därför ett walk-forward-metodtest, inte ny oberoende OOS-evidens.
+
+RESULTAT
+181 affärer · P/L 18 446,11 · PF 1,49 · WR 51.38% · DD -3.38% · slut 118 446,11
+
+JÄMFÖRELSEFACIT
+G2 fryst pseudo-forward: 144 affärer · +13 708,85 · PF 1,467 · WR 50,0 % · DD -2,34 %.
+G3 får inte ersätta G2 enbart för att den råkar slå detta historiska facit.
+
+MÅNADSMODELLER
+2023-01 · ae0e95e3 · train t.o.m. 2022-12-30 · PF 2.01 · P/L 13 165,73
+2023-02 · 8db4137e · train t.o.m. 2023-01-31 · PF 2.11 · P/L 14 359,28
+2023-03 · ae0e95e3 · train t.o.m. 2023-02-28 · PF 2.19 · P/L 15 969,37
+2023-04 · ae0e95e3 · train t.o.m. 2023-03-31 · PF 2.18 · P/L 15 978,85
+2023-05 · ae0e95e3 · train t.o.m. 2023-04-28 · PF 2.17 · P/L 15 941,86
+2023-06 · ae0e95e3 · train t.o.m. 2023-05-31 · PF 2.50 · P/L 20 812
+2023-07 · ae0e95e3 · train t.o.m. 2023-06-30 · PF 2.56 · P/L 22 563,69
+2023-08 · ae0e95e3 · train t.o.m. 2023-07-31 · PF 2.31 · P/L 21 758,69
+2023-09 · ae0e95e3 · train t.o.m. 2023-08-31 · PF 2.16 · P/L 20 301,43
+2023-10 · ae0e95e3 · train t.o.m. 2023-09-29 · PF 2.09 · P/L 19 683,34
+2023-11 · ae0e95e3 · train t.o.m. 2023-10-31 · PF 2.09 · P/L 19 683,34
+2023-12 · ae0e95e3 · train t.o.m. 2023-11-30 · PF 2.15 · P/L 20 907,59
+2024-01 · ae0e95e3 · train t.o.m. 2023-12-29 · PF 2.12 · P/L 21 275,96
+2024-02 · ae0e95e3 · train t.o.m. 2024-01-31 · PF 2.01 · P/L 21 725,09
+2024-03 · ae0e95e3 · train t.o.m. 2024-02-29 · PF 1.82 · P/L 19 454,69
+2024-04 · 69147890 · train t.o.m. 2024-03-28 · PF 1.82 · P/L 31 304,82
+2024-05 · 69147890 · train t.o.m. 2024-04-30 · PF 1.82 · P/L 31 418,4
+2024-06 · 69147890 · train t.o.m. 2024-05-31 · PF 1.82 · P/L 31 991,98
+2024-07 · 69147890 · train t.o.m. 2024-06-28 · PF 1.80 · P/L 32 915,53
+2024-08 · 69147890 · train t.o.m. 2024-07-31 · PF 1.76 · P/L 32 623,52
+2024-09 · 69147890 · train t.o.m. 2024-08-30 · PF 1.74 · P/L 32 117,9
+2024-10 · 69147890 · train t.o.m. 2024-09-30 · PF 1.72 · P/L 31 797,52
+2024-11 · 69147890 · train t.o.m. 2024-10-31 · PF 1.68 · P/L 31 112,64
+2024-12 · 69147890 · train t.o.m. 2024-11-29 · PF 1.78 · P/L 36 067,27
+2025-01 · 69147890 · train t.o.m. 2024-12-31 · PF 1.71 · P/L 34 429,54
+2025-02 · 69147890 · train t.o.m. 2025-01-31 · PF 1.69 · P/L 34 538,24
+2025-03 · 69147890 · train t.o.m. 2025-02-28 · PF 1.66 · P/L 33 788,23
+2025-04 · 69147890 · train t.o.m. 2025-03-31 · PF 1.66 · P/L 33 788,23
+2025-05 · 69147890 · train t.o.m. 2025-04-30 · PF 1.66 · P/L 33 788,23
+2025-06 · 69147890 · train t.o.m. 2025-05-30 · PF 1.63 · P/L 32 836,03
+2025-07 · 69147890 · train t.o.m. 2025-06-30 · PF 1.73 · P/L 37 480,13
+2025-08 · 69147890 · train t.o.m. 2025-07-31 · PF 1.73 · P/L 39 016,67
+2025-09 · 69147890 · train t.o.m. 2025-08-29 · PF 1.66 · P/L 36 583,76
+2025-10 · 69147890 · train t.o.m. 2025-09-30 · PF 1.72 · P/L 40 054,38
+2025-11 · 69147890 · train t.o.m. 2025-10-31 · PF 1.66 · P/L 38 622,35
+2025-12 · 69147890 · train t.o.m. 2025-11-28 · PF 1.62 · P/L 37 288,09
+2026-01 · ae0e95e3 · train t.o.m. 2025-12-31 · PF 1.68 · P/L 29 903,39
+2026-02 · ae0e95e3 · train t.o.m. 2026-01-30 · PF 1.77 · P/L 34 528,25
+2026-03 · ae0e95e3 · train t.o.m. 2026-02-27 · PF 1.79 · P/L 35 509,7
+2026-04 · ae0e95e3 · train t.o.m. 2026-03-31 · PF 1.76 · P/L 34 813,47
+2026-05 · 69147890 · train t.o.m. 2026-04-30 · PF 1.77 · P/L 48 287,02
+2026-06 · 69147890 · train t.o.m. 2026-05-29 · PF 1.81 · P/L 53 378,62
+2026-07 · 69147890 · train t.o.m. 2026-06-30 · PF 1.72 · P/L 50 178,23
+2026-08 · 69147890 · train t.o.m. 2026-07-31 · PF 1.71 · P/L 50 087,98
+2026-09 · 69147890 · train t.o.m. 2026-08-31 · PF 1.71 · P/L 50 182,08

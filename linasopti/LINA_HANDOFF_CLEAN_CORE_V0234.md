@@ -16,3 +16,6 @@ Varje större framtida release ska få en permanent utvecklingspost i Lina Arkiv
 ## Säkerhet
 Handel AV. Robotmognad 48/100.
 Cloudflare Worker: INGEN ÄNDRING. V0.2.33 Worker lämnas orörd.
+
+## Evidence-komplettering
+V0.2.34 COMPLETE bär med sig tillgängliga TXT/JSON-originalexporter från 2026-09-15 (G3, G4, G5, G6, G7–G12 och Forward). Se `LINA_EVIDENCE_INVENTORY_V0234.md` för exakt filregister och SHA256. Dessa är permanent facit/evidence och ska följa framtida COMPLETE-releaser. Stora marknadsrådata/IndexedDB-cache ska inte följa GitHub-synken. Cloudflare Worker: INGEN ÄNDRING.

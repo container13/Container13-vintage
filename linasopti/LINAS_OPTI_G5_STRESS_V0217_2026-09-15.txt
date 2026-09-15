@@ -1,0 +1,19 @@
+LINAS OPTI – G5 STRESS TEST
+Clean Core: V0.2.17
+Handel: AVSTÄNGD
+Plan: 6ec36eb2 · kandidat 15efd75a
+Period: 2020-01-01 → 2026-09-10
+
+GATE: FAIL
+PASS-kvalificerade scenarier: 2/5
+COMBINED villkor: NEJ
+
+SCENARIER
+COST_10 · Extra kostnad 0,10 % per sida · 185 affärer · P/L 3 737,78 · PF 1,16 · WR 49.73% · DD -4.62% · slut 103 737,78
+COST_25 · Extra kostnad 0,25 % per sida · 185 affärer · P/L −305,7 · PF 0,99 · WR 48.11% · DD -6.10% · slut 99 694,3
+COST_50 · Extra kostnad 0,50 % per sida · 185 affärer · P/L −6 704,64 · PF 0,76 · WR 44.86% · DD -8.75% · slut 93 295,36
+DELAY_1 · Entry fördröjd 1 handelsdag · 182 affärer · P/L 4 205,97 · PF 1,18 · WR 50.55% · DD -4.26% · slut 104 205,97
+COMBINED · 0,25 % extra per sida + 1 handelsdags entryfördröjning · 182 affärer · P/L −2 367,93 · PF 0,91 · WR 47.25% · DD -6.93% · slut 97 632,07
+
+FORSKNINGSREGEL
+Ingen rescue, parameterändring eller symbolrensning efter resultat. G5 är stress-/robusthetstest, inte ny oberoende OOS. G2/G3 Real Forward har högre evidens.
