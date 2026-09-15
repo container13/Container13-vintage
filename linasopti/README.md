@@ -1,4 +1,4 @@
-# Lina Clean Core V0.2.32
+# Lina Clean Core V0.2.33
 
 ## V0.2.32 – GitHub Shared Forward State
 - G2/G3 Real Forward har nu gemensam kompakt master i GitHub via Cloudflare Worker.
@@ -345,3 +345,6 @@ Sex planer och runners levereras tillsammans för att minska separata uppladdnin
 
 ### Clean Core V0.2.32
 Cross-device Forward-sync använder nu den vanliga Lina-inloggningen. Den separata prompten för synknyckel är borttagen. Worker verifierar login mot Secret `LINA_LOGIN_CODE`; GitHub-token stannar server-side. Ingen forskningslogik ändrad. Robotmognad 48/100. Handel AV.
+
+## V0.2.33 – GitHub Full Sync
+Headern har `☁ Synka` för gemensam synk mellan datorer. Forward-state plus kompakt beständig Lina-state synkas via Worker/GitHub. IndexedDB/rådata stannar lokalt. Konflikt = stopp, inte tyst överskrivning. Handel AV; robotmognad 48/100.

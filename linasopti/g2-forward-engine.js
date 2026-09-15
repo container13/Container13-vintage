@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='0.2.32';
+const VERSION='0.2.33';
 const KEY='lina_clean_swing_g2_forward_v0207';
 const API='https://linas-opti-api.mangaj73.workers.dev';
 const ANCHOR='2026-09-11';
@@ -11,7 +11,7 @@ const HASH='15efd75a';
 const SYMBOLS=['AMD','SHOP','ADBE','MU','FDX','TSLA','LUV','NFLX','C','NOW','QCOM','BAC','GM','DDOG','PYPL','NVDA'];
 function today(){return new Date().toISOString().slice(0,10)}
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch{return null}}
-function fresh(){return{schema:'LINA-G2-REAL-FORWARD-1',version:'V0.2.32',candidateHash:HASH,anchor:ANCHOR,params:PARAMS,capital:CAPITAL,costSide:COST_SIDE,createdAt:new Date().toISOString(),lastMarketDate:null,lastRefreshAt:null,provider:null,closed:[],open:[],stats:null,milestones:{60:false,120:false,250:false},history:[]}}
+function fresh(){return{schema:'LINA-G2-REAL-FORWARD-1',version:'V0.2.33',candidateHash:HASH,anchor:ANCHOR,params:PARAMS,capital:CAPITAL,costSide:COST_SIDE,createdAt:new Date().toISOString(),lastMarketDate:null,lastRefreshAt:null,provider:null,closed:[],open:[],stats:null,milestones:{60:false,120:false,250:false},history:[]}}
 function save(x){x.savedAt=new Date().toISOString();localStorage.setItem(KEY,JSON.stringify(x));document.dispatchEvent(new CustomEvent('lina:g2forwardchange'));return x}
 function rowsOf(j){return Array.isArray(j)?j:(j?.rows||j?.data||[])}
 function norm(rows,symbol,provider){return rows.map(r=>({symbol:String(r.symbol||r.s||symbol).toUpperCase(),t:String(r.t||r.time||r.timestamp||''),o:+r.o,h:+r.h,l:+r.l,c:+r.c,v:+(r.v||0),provider})).filter(r=>r.symbol&&r.t&&[r.o,r.h,r.l,r.c].every(Number.isFinite))}
@@ -79,7 +79,7 @@ function normalizeState(x){
 function report(){
  const x=load()||fresh(),s=x.stats||{n:0,pl:0,pf:0,wr:0,dd:0,unrealized:0,open:0,equity:CAPITAL};
  const f=n=>Number(n).toLocaleString('sv-SE',{maximumFractionDigits:2}),pct=n=>(100*Number(n)).toFixed(2)+'%';
- return ['LINAS OPTI – G2 REAL FORWARD / PAPER','Clean Core: V0.2.32','Kandidat: '+HASH,'Anchor: '+ANCHOR,'Handel: AVSTÄNGD','Regler: FRYSTA · ingen rescue/optimering','',
+ return ['LINAS OPTI – G2 REAL FORWARD / PAPER','Clean Core: V0.2.33','Kandidat: '+HASH,'Anchor: '+ANCHOR,'Handel: AVSTÄNGD','Regler: FRYSTA · ingen rescue/optimering','',
  'Senaste marknadsdag: '+(x.lastMarketDate||'ingen ännu'),'Senast hämtad: '+(x.lastRefreshAt||'aldrig'),'Provider: '+(x.provider||'—'),'',
  `Stängda affärer: ${s.n} · P/L ${f(s.pl)} · PF ${f(s.pf)} · WR ${pct(s.wr)} · DD ${pct(s.dd)}`,
  `Öppna positioner: ${s.open} · orealiserat ${f(s.unrealized)} · modell-equity ${f(s.equity)}`,

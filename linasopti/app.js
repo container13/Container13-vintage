@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  const APP_VERSION='0.2.32';
+  const APP_VERSION='0.2.33';
   const cards=[
     ['forward','Forward','Riktig forward-validering · G2 + G3 parallellt.'],
     ['research','Forskning','Jägaren, Swing G1, Swing G2, G3, G4 Universe, G5 Stress, G6 Cost Boundary, G7–G12 Research Battery och Broker/Cost Gate.'],
@@ -59,6 +59,24 @@
   // V0.2.17 – Uppdatera ska ge en verklig ny start, inte bara ladda om en redan upplåst session.
   // Bevarar all persistent Lina-data i localStorage, men rensar endast login-sessionen.
   // Navigerar sedan till en ren, cache-bustad index-URL så login visas och senaste index/scripts hämtas.
+  function installGitHubSync(){
+    const b=document.getElementById('githubSync');
+    if(!b||b.dataset.bound==='1')return;
+    b.dataset.bound='1';
+    const label=b.querySelector('small');
+    const set=(text,bad=false)=>{if(label)label.textContent=text;b.classList.toggle('bad',!!bad)};
+    b.addEventListener('click',async()=>{
+      b.disabled=true;set('Synkar…');
+      try{
+        if(!window.LinaGitHubSync)throw new Error('Synkmodulen saknas');
+        const r=await window.LinaGitHubSync.syncAll();
+        set('Synkad');
+        b.title=`GitHub synkad ${new Date().toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'})} · ${r.keys} lokala poster`;
+        setTimeout(()=>set('Synka'),2500);
+      }catch(e){set('Stoppad',true);b.title='GitHub-synk stoppad: '+(e?.message||e);setTimeout(()=>set('Synka',false),5000)}
+      finally{b.disabled=false}
+    });
+  }
   function installRefresh(){
     const b=document.getElementById('refreshApp');
     if(!b||b.dataset.bound==='1')return;
@@ -78,6 +96,7 @@
     if(!app)return;
     app.hidden=false;
     installRefresh();
+    installGitHubSync();
     registerRoutes();
     window.LinaRouter.start();
   }

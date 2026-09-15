@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const RELEASE='V0.2.32', ANCHOR='2026-09-11', API='https://linas-opti-api.mangaj73.workers.dev';
+const RELEASE='V0.2.33', ANCHOR='2026-09-11', API='https://linas-opti-api.mangaj73.workers.dev';
 const HISTORY={g2:{documented:true,status:'AKTIV · HISTORIK FINNS',anchor:ANCHOR,candidate:'15efd75a',note:'G2 Real Forward är dokumenterat som startat/aktivt i projekthistoriken.'},g3:{documented:true,status:'AKTIV · HISTORIK FINNS',anchor:ANCHOR,planHash:'75838ed5',note:'G3 Real Forward är dokumenterat som startat/aktivt i projekthistoriken.'}};
 const f=n=>Number(n||0).toLocaleString('sv-SE',{maximumFractionDigits:2});
 const pct=n=>(100*Number(n||0)).toFixed(2)+'%';
