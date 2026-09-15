@@ -30,6 +30,22 @@ h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16
 .parking{margin-top:18px;background:#f2f5f7;color:#0b1720;border-radius:20px;padding:24px;display:grid;grid-template-columns:1.2fr .8fr;gap:25px}.parking h2{margin-top:0}.parking .times{background:white;border-radius:15px;padding:17px}.parking .times b{font-size:19px}.parking a{background:#09243a;color:white;padding:12px 16px;border-radius:999px;text-decoration:none;font-weight:850;display:inline-block}
 .note{font-size:12px;color:#667783}.footer{background:linear-gradient(90deg,#bd1530,#f32c48);padding:26px;text-align:center;font-size:22px;font-weight:900}
 @media(max-width:800px){.hero{min-height:610px;padding-bottom:135px}.wrap{margin-top:-90px}.options,.cards,.parking{grid-template-columns:1fr}.gallery{grid-template-columns:1fr 1fr}.tile{height:210px}.flightgrid{grid-template-columns:1fr}.hero-icons{gap:14px}.hero-icons div{min-width:120px}}
+
+.route-hero{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin:18px 0}
+.route-hero img,.route-photo img{width:100%;height:100%;object-fit:cover;border-radius:18px;display:block}
+.route-hero .mainpic{min-height:330px}
+.route-stack{display:grid;grid-template-rows:1fr 1fr;gap:16px}
+.route-stack img{min-height:157px}
+.route-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+.route-step{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);border-radius:18px;overflow:hidden}
+.route-step img{width:100%;height:155px;object-fit:cover}
+.route-step .pad{padding:14px}
+.route-num{font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.route-big{font-size:21px;font-weight:800;margin:4px 0 7px}
+.route-arrow{text-align:center;font-size:28px;margin:-5px 0 2px}
+.route-tip{border-left:4px solid #e72b4d;padding:12px 15px;background:rgba(231,43,77,.1);border-radius:0 12px 12px 0}
+@media(max-width:760px){.route-hero{grid-template-columns:1fr}.route-hero .mainpic{min-height:260px}.route-steps{grid-template-columns:1fr}.route-step img{height:210px}}
+
 </style></head>
 <body>
 <header class="hero">
@@ -136,27 +152,51 @@ Med frukost: <b>11 338 kr totalt</b> • 21 078 kr för 2</p>
 </section>
 
 
-<h2 class="section-title">Så hade jag tagit mig till konserten</h2>
-<section class="card" style="max-width:900px;margin:0 auto 25px">
-  <h3 style="font-size:25px">Hilton Kensington → The Clapham Grand</h3>
-  <p><b>Mitt val: promenad + direkt London Overground. Ingen tunnelbana och inget byte.</b></p>
-  <div class="timeline">
-    <p><b>1. Lämna Hilton cirka 17:45–18:00</b>
-    Gå från Hilton London Kensington längs Holland Park Avenue mot <b>Shepherd’s Bush Rail Station</b>. Räkna ungefär 7–10 minuters promenad.</p>
-    <p><b>2. Shepherd’s Bush → Clapham Junction</b>
-    Ta <b>London Overground, Mildmay line</b>, i riktning mot <b>Clapham Junction</b>. Det är ett direkttåg – ni ska alltså inte byta. Resan är normalt omkring 12–15 minuter.</p>
-    <p><b>3. Gå av vid slutstationen Clapham Junction</b>
-    Följ skyltarna mot <b>St John’s Hill exit</b>. Det är den utgång The Clapham Grand själv rekommenderar.</p>
-    <p><b>4. Station → The Clapham Grand</b>
-    När ni kommer ut ligger arenan <b>direkt mittemot Clapham Junction Station</b>, på 21–25 St John’s Hill. Bara någon minuts promenad.</p>
+
+<h2 class="section-title">Söndag 18 oktober – mot Lee Young Ji 🎤</h2>
+<section class="card" style="max-width:1000px;margin:0 auto 25px">
+  <div class="route-hero">
+    <div class="mainpic route-photo">
+      <img src="https://davidekpop.com/wp-content/uploads/2024/12/lee-young-ji-davide-kpop.png?w=1024" alt="Lee Young Ji i London">
+    </div>
+    <div class="route-stack">
+      <img src="https://www.bgphotographic.co.uk/uploads/7/0/2/0/7020207/07-378226-22-03-25-6y69-1005-stratford-claphamjn-shepardsbush_orig.jpg" alt="London Overground vid Shepherd's Bush">
+      <img src="https://static.independent.co.uk/s3fs-public/thumbnails/image/2019/02/12/10/istock-503593816.jpg?fit=crop&height=1200&width=1200" alt="Röd Londonbuss och Big Ben">
+    </div>
   </div>
-  <div class="breakfast"><b>Jag skulle ge mig av cirka 60–75 minuter innan ni vill vara inne på arenan.</b><br>
-  Själva resan kan gå på ungefär 25–30 minuter, men Clapham Junction byggs om under 2026 och TfL rekommenderar extra tid på stationen.</div>
-  <h3 style="margin-top:24px">Efter konserten</h3>
-  <p><b>Förstahandsval:</b> samma väg tillbaka – Clapham Junction → direkt Mildmay line till Shepherd’s Bush → promenad till Hilton.</p>
-  <p><b>Om tågen slutat gå:</b> ta <b>nattbuss 295</b> från Clapham Junction mot <b>Shepherd’s Bush</b>. The Clapham Grand listar 295 som nattalternativ till Shepherd’s Bush. Därifrån går ni sista biten till hotellet.</p>
-  <p><b>Bekvämaste reservplanen:</b> svart taxi/Uber/Bolt direkt från Clapham Junction till Hilton om ni inte vill hålla koll på sista tåget.</p>
-  <p class="note">Exakta avgångar för söndag 18 oktober bör kontrolleras i TfL-appen/Google Maps samma dag, eftersom helgarbeten kan ändra trafiken.</p>
+
+  <h3 style="font-size:27px;margin-bottom:6px">Så hade jag åkt från Hilton</h3>
+  <p style="font-size:18px">Det här är den enkla vägen: <b>gå till Shepherd’s Bush → direkt Overground till Clapham Junction → arenan ligger mittemot stationen.</b> Inget byte mitt i London.</p>
+
+  <div class="route-steps">
+    <div class="route-step">
+      <img src="https://i.pinimg.com/736x/a2/e5/8c/a2e58c040e4fe436510363b78088d342.jpg" alt="London station roundel">
+      <div class="pad"><div class="route-num">Steg 1 • cirka 17:45–18:00</div><div class="route-big">🚶 Hilton → Shepherd’s Bush</div>Gå från Hilton London Kensington mot Shepherd’s Bush station. Räkna ungefär <b>7–10 minuter</b>.</div>
+    </div>
+    <div class="route-step">
+      <img src="https://www.bgphotographic.co.uk/uploads/7/0/2/0/7020207/07-378226-22-03-25-6y69-1005-stratford-claphamjn-shepardsbush_orig.jpg" alt="London Overground">
+      <div class="pad"><div class="route-num">Steg 2</div><div class="route-big">🚆 Direkt till Clapham Junction</div>Ta <b>London Overground</b> mot <b>Clapham Junction</b>. Ingen tunnelbana och inget byte. Cirka <b>12–15 minuter</b>.</div>
+    </div>
+    <div class="route-step">
+      <img src="https://anonw.com/wp-content/uploads/2015/10/dscn1812.jpg" alt="Clapham Junction">
+      <div class="pad"><div class="route-num">Steg 3</div><div class="route-big">🎤 Framme!</div>Gå av vid <b>Clapham Junction</b> och följ <b>St John’s Hill exit</b>. The Clapham Grand ligger <b>direkt mittemot stationen</b>.</div>
+    </div>
+  </div>
+
+  <div class="route-tip"><b>Min plan:</b> hellre komma fram lite tidigt, ta något att dricka/äta runt Clapham Junction och sedan gå in på konserten utan stress. Jag hade räknat med <b>60–75 minuter från hotelldörr till önskad ankomsttid</b>, trots att själva resan normalt går betydligt snabbare.</div>
+
+  <h3 style="font-size:25px;margin-top:28px">Efter konserten 🌙</h3>
+  <div class="route-steps" style="grid-template-columns:1fr 1fr">
+    <div class="route-step">
+      <img src="https://www.bgphotographic.co.uk/uploads/7/0/2/0/7020207/07-378226-22-03-25-6y69-1005-stratford-claphamjn-shepardsbush_orig.jpg" alt="Overground tillbaka">
+      <div class="pad"><div class="route-big">🚆 Först: tåget tillbaka</div>Om Overground fortfarande går: <b>Clapham Junction → Shepherd’s Bush</b> och sedan promenaden tillbaka till Hilton.</div>
+    </div>
+    <div class="route-step">
+      <img src="https://static.independent.co.uk/s3fs-public/thumbnails/image/2019/02/12/10/istock-503593816.jpg?fit=crop&height=1200&width=1200" alt="Röd Londonbuss">
+      <div class="pad"><div class="route-big">🚌 Reservplan: buss 295</div>Om tåget inte passar: <b>295 mot Shepherd’s Bush</b>. Den går mellan Clapham Junction och Shepherd’s Bush och är ett bra sent alternativ. Taxi/Uber/Bolt är den bekväma reservplanen.</div>
+    </div>
+  </div>
+  <p class="note">Kolla den exakta söndagsavgången samma dag. Helgarbeten kan påverka Londontrafiken.</p>
 </section>
 <h2 class="section-title">Prisjämförelse – totalpris för hela bokningen</h2>
 <section class="card" style="max-width:900px;margin:0 auto 20px">
