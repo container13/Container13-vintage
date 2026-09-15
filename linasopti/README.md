@@ -1,3 +1,15 @@
+# Lina Clean Core V0.2.30
+
+## V0.2.30 – Forward Integrity & Sync
+- Forward Evidence Center kan nu exportera en kompakt **Backup Forward-state** och importera/synka den på en annan dator.
+- Varje G2/G3 forward-affär får ett deterministiskt permanent trade-ID. Import merge:ar på ID och dubbelräknar inte samma affär.
+- Kandidat, planhash och anchor valideras före import. Vid konflikt stoppas synken i stället för att skriva över data.
+- G3 månadsmodeller valideras per månad; olika modell för samma månad är en blockerande konflikt.
+- Senaste marknadsdag/refresh och refreshhistorik merge:as. Permanent README/handoff/evidence-historik skrivs aldrig över av browser-state.
+- localStorage fortsätter endast bära kompakt runtime/resultat; ingen rå marknadsdata läggs där.
+- Robotmognad 48/100. Handel AV. Ingen strategi-, parameter-, gate- eller forwardregel ändrad.
+- Cloudflare Worker: INGEN ÄNDRING.
+
 # Lina Clean Core V0.2.29
 
 ## V0.2.29 – History-aware Forward State
