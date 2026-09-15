@@ -104,3 +104,28 @@ header,nav,main,footer{position:relative;z-index:auto}
 /* V0.25 – Lina ett försiktigt steg tydligare */
 .lina-watermark{opacity:.112 !important}
 @media(max-width:520px){.lina-watermark{opacity:.12 !important}}
+
+/* V0.2.21 – structural watermark fix.
+   Clean Core #app created its own stacking context, so the legacy sibling watermark
+   did not reliably paint above cards. Watermark now lives inside #app as its final child. */
+#app{position:relative;z-index:1}
+#app > .lina-watermark{
+  position:fixed !important;
+  z-index:50 !important;
+  left:50% !important;
+  top:12vh !important;
+  width:min(105vw,620px) !important;
+  aspect-ratio:1/1;
+  transform:translateX(-50%) !important;
+  background:url("lina-circle.png") center/contain no-repeat !important;
+  opacity:.112 !important;
+  pointer-events:none !important;
+  user-select:none !important;
+  mix-blend-mode:multiply !important;
+  -webkit-mask-image:radial-gradient(ellipse 48% 49% at 50% 50%,#000 48%,rgba(0,0,0,.82) 62%,rgba(0,0,0,.35) 78%,transparent 98%) !important;
+  mask-image:radial-gradient(ellipse 48% 49% at 50% 50%,#000 48%,rgba(0,0,0,.82) 62%,rgba(0,0,0,.35) 78%,transparent 98%) !important;
+  filter:grayscale(.5) contrast(.92) !important;
+}
+.header{z-index:60}
+body.locked #app > .lina-watermark{display:none}
+@media(max-width:520px){#app > .lina-watermark{opacity:.12 !important;width:112vw !important;top:13vh !important}}
