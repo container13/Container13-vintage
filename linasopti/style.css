@@ -19,10 +19,10 @@
 .g3-lock{display:flex;gap:12px;align-items:center;padding:13px 15px;border:1px solid #dce3ed;background:#f8fafc;border-radius:13px;margin-bottom:14px}.g3-lock b{white-space:nowrap}.g3-lock span{color:#475467}.g3-method{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.g3-method>div{padding:13px;border:1px solid #dce3ed;border-radius:12px;background:#fff;display:flex;flex-direction:column;gap:3px}.g3-method small,.g3-method span{color:#667085}.g3-method b{font-size:1.1rem}.g3-warning{margin:14px 0;padding:14px;border-radius:12px;background:#fff7ed;border:1px solid #fed7aa;line-height:1.45}.g3-result{padding:15px;border:1px solid #bbf7d0;background:#f0fdf4;border-radius:14px;margin:14px 0}.g3-result h2{margin:4px 0}.g3-result p{margin:7px 0;line-height:1.45}.g3-note{margin-top:14px;padding:13px 15px;border-radius:12px;background:#f8fafc;border:1px solid #dce3ed;line-height:1.45}
 @media(max-width:760px){.g3-method{grid-template-columns:repeat(2,1fr)}.g3-lock{align-items:flex-start;flex-direction:column;gap:5px}}
 
-/* V0.2.14 – unified larger Lina background watermark */
-.lina-watermark{position:fixed;left:50%;top:13vh;width:min(90vw,620px);aspect-ratio:1/1;transform:translateX(-50%);background:url("lina-circle.png") center/contain no-repeat;opacity:.075;filter:grayscale(1) blur(1.2px) contrast(.88);pointer-events:none;user-select:none;z-index:0}
+/* V0.2.18 – legacy Linas Opti visual-scale watermark restoration */
+.lina-watermark{position:fixed;left:50%;top:10vh;width:min(94vw,1100px);aspect-ratio:1/1;transform:translateX(-50%);background:url("lina-circle.png") center/contain no-repeat;opacity:.075;filter:grayscale(1) blur(1.2px) contrast(.88);pointer-events:none;user-select:none;z-index:0}
 body > *:not(.lina-watermark){position:relative;z-index:1}
 body.locked .lina-watermark{display:none}
 .card,section{backdrop-filter:blur(.3px)}
-@media(max-width:520px){.lina-watermark{width:96vw;top:16vh;opacity:.065;filter:grayscale(1) blur(1.4px) contrast(.86)}}
+@media(max-width:520px){.lina-watermark{width:150vw;max-width:760px;top:12vh;opacity:.065;filter:grayscale(1) blur(1.4px) contrast(.86)}}
 @media(prefers-reduced-transparency:reduce){.lina-watermark{opacity:.04;filter:grayscale(1)}}
