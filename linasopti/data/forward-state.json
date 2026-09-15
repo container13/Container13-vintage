@@ -1,7 +1,7 @@
 {
   "schema": "LINA-FORWARD-SYNC-1",
-  "release": "V0.2.32",
-  "exportedAt": "2026-09-15T10:35:56.744Z",
+  "release": "V0.2.33",
+  "exportedAt": "2026-09-15T10:53:40.006Z",
   "anchor": "2026-09-11",
   "tradeEnabled": false,
   "g2": {
@@ -51,7 +51,7 @@
         "pf": 0
       }
     ],
-    "savedAt": "2026-09-15T10:35:56.447Z"
+    "savedAt": "2026-09-15T10:53:39.720Z"
   },
   "g3": {
     "schema": "LINA-G3-REAL-FORWARD-1",
@@ -109,6 +109,6 @@
         "model": "69147890"
       }
     ],
-    "savedAt": "2026-09-15T10:35:56.447Z"
+    "savedAt": "2026-09-15T10:53:39.720Z"
   }
 }
