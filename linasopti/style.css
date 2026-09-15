@@ -129,3 +129,6 @@ header,nav,main,footer{position:relative;z-index:auto}
 .header{z-index:60}
 body.locked #app > .lina-watermark{display:none}
 @media(max-width:520px){#app > .lina-watermark{opacity:.12 !important;width:112vw !important;top:13vh !important}}
+
+/* V0.2.28 Forward Evidence Center */
+.forward-center-card{padding:14px 0;border-bottom:1px solid #e7ebf1}.forward-center-card>div:first-child{display:flex;gap:10px;align-items:baseline;margin-bottom:10px}.forward-center-card small{color:#657086}

@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  const APP_VERSION='0.2.27';
+  const APP_VERSION='0.2.28';
   const cards=[
     ['forward','Forward','Riktig forward-validering · G2 + G3 parallellt.'],
     ['research','Forskning','Jägaren, Swing G1, Swing G2, G3, G4 Universe, G5 Stress, G6 Cost Boundary, G7–G12 Research Battery och Broker/Cost Gate.'],
@@ -35,11 +35,13 @@
     R.register('battery',root=>window.LinaBattery.render(root,{back:()=>R.navigate('research')}));
     R.register('broker-gate',root=>window.LinaBrokerGate.render(root,{back:()=>R.navigate('g2')}));
     R.register('forward',root=>{
-      shell(root,'Forward','Här räknas endast ny data efter respektive fryst anchor.',`<button class="back" id="home">← Dashboard</button><div class="grid"><button class="card" id="g2forward"><b>Swing G2 Real Forward</b><small>Aktiv · statisk 15efd75a · Handel AV</small></button><button class="card" id="g3forward"><b>Swing G3 Real Forward</b><small>Aktiv · lär månadsvis · plan 75838ed5 · Handel AV</small></button><button class="card" disabled><b>Swing G1 Forward</b><small>Fryst legacy · portas senare</small></button></div>`);
+      shell(root,'Forward','Ny evidens efter frysta anchors. Historiska G2–G12 är avslutade; fokus ligger nu på riktig forward.',`<button class="back" id="home">← Dashboard</button><div class="grid"><button class="card" id="forwardCenter"><b>Forward Evidence Center</b><small>NY · uppdatera G2 + G3 tillsammans · evidensstatus</small></button><button class="card" id="g2forward"><b>Swing G2 Real Forward</b><small>Aktiv · statisk 15efd75a · Handel AV</small></button><button class="card" id="g3forward"><b>Swing G3 Real Forward</b><small>Aktiv · lär månadsvis · plan 75838ed5 · Handel AV</small></button><button class="card" disabled><b>Swing G1 Forward</b><small>Fryst legacy · portas senare</small></button></div>`);
       root.querySelector('#home').onclick=()=>R.navigate('dashboard');
+      root.querySelector('#forwardCenter').onclick=()=>R.navigate('forward-center');
       root.querySelector('#g2forward').onclick=()=>R.navigate('g2-forward');
       root.querySelector('#g3forward').onclick=()=>R.navigate('g3-forward');
     });
+    R.register('forward-center',root=>window.LinaForwardCenter.render(root,{back:()=>R.navigate('forward')}));
     R.register('g2-forward',root=>window.LinaG2Forward.render(root,{back:()=>R.navigate('forward')}));
     R.register('g3-forward',root=>window.LinaG3Forward.render(root,{back:()=>R.navigate('forward')}));
     R.register('history',root=>{

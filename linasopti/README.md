@@ -1,4 +1,16 @@
-# Lina Clean Core V0.2.27
+# Lina Clean Core V0.2.28
+
+## V0.2.28 – Forward Evidence Phase
+- Efter G2–G12 Research Review flyttas huvudfokus till riktig Real Forward.
+- Ny **Forward Evidence Center** uppdaterar G2 + G3 sekventiellt med en knapp och visar deras evidensstatus tillsammans.
+- Gemensam forward-rapport + Raw JSON kan exporteras.
+- Formella forward-milstolpar: 60 / 120 / 250 nya stängda affärer per modell.
+- Robotmognad kvar 48/100; historiska tester eller tid höjer den inte automatiskt. Handel AV.
+- G2/G3 forward-rapporternas releaseversion/exportfilnamn synkade till V0.2.28; forskningsregler/state-nycklar är oförändrade.
+- Rå warmup/marknadsdata sparas inte i localStorage; endast kompakt forward-state/resultat.
+- Cloudflare Worker: INGEN ÄNDRING.
+
+## Historik från tidigare releaser
 
 ## V0.2.27 – G7–G12 Evidence Freeze + Research Review
 - G7–G12 är avslutade som **6/6 PASS · FRYST**. Kandidat `15efd75a` ändras inte.
@@ -10,8 +22,6 @@
 - Historisk diagnostik; inte ny oberoende OOS. G2/G3 Real Forward har högre evidens. Robotmognad kvar 48/100. Handel AV.
 - Permanent workflow: paketera oberoende förregistrerade tester i batterier och använd IndexedDB/checkpoint för stora data; localStorage ska bara bära kompakt state/resultat.
 - Cloudflare Worker: INGEN ÄNDRING.
-
-## Historik från tidigare releaser
 
 ## V0.2.15 – G4 Evidence Freeze
 - G4 plan `95d2e735` är avslutad som **PASS · FROZEN**. Kandidat `15efd75a` ändras inte.
