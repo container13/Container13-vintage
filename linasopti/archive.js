@@ -24,13 +24,13 @@ function recordCard(r){
 function render(root,ctx){
  const D=window.LinaArchiveData,c=D.counters(),recs=D.records();
  root.innerHTML=`<div class="crumb">Dashboard › Historik › Lina Arkiv</div>
- <section class="hero"><h1>Lina Arkiv & Robotmognad</h1><p>Samlad forskningshistorik, frysta kandidater, PASS/FAIL och forward-status. Gamla resultat skrivs inte över.</p></section>
+ <section class="hero"><h1>Lina Arkiv & Robotmognad</h1><p>Samlad forsknings- och utvecklingshistorik, frysta kandidater, PASS/FAIL, forward-status och större releaser. Gamla resultat skrivs inte över.</p></section>
  <button class="back" id="arBack">← Dashboard</button>
  <section class="workspace archive">
   ${metricCards(c)}
   <div class="maturity-box"><div><b>Robotmognad ${c.maturity}/100</b><span>Nästa mognadspoäng ska komma från ny forward-data, inte fler varv på samma historik.</span></div><div class="maturity-bar"><i style="width:${c.maturity}%"></i></div></div>
   <div class="archive-note"><b>Simuleringsräknaren är återställd som historik:</b> du hade redan observerat <b>över 21 400 simuleringar</b> före Clean Core. Vi visar därför konservativt <b>≥ 21 400</b> som historiskt golv och räknar G3 separat ovanpå det, i stället för att felaktigt ersätta siffran med antal affärer. G1/G2-affärer och Jägaren-teststeg visas fortfarande som egna mått för att undvika dubbelräkning.</div>
-  <div class="archive-filter"><button class="secondary active" data-filter="all">Alla</button><button class="secondary" data-filter="Swing G2">Swing G2</button><button class="secondary" data-filter="Swing G1">Swing G1</button><button class="secondary" data-filter="Jägaren">Jägaren</button></div>
+  <div class="archive-filter"><button class="secondary active" data-filter="all">Alla</button><button class="secondary" data-filter="Utveckling">Utveckling</button><button class="secondary" data-filter="Swing G2">Swing G2</button><button class="secondary" data-filter="Swing G1">Swing G1</button><button class="secondary" data-filter="Jägaren">Jägaren</button></div>
   <div id="archiveRecords">${recs.slice().reverse().map(recordCard).join('')}</div>
  </section>`;
  root.querySelector('#arBack').onclick=ctx.back;

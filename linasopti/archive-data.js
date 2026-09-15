@@ -144,6 +144,60 @@ const RECORDS=[
     ],
     decision:'FAIL och permanent fryst. Resultatet accepteras utan rescue, parameterändring eller symbolrensning. G2/G3 Real Forward har fortsatt högre evidens.'
   }
+,
+  {
+    id:'dev-v0232-forward-sync',
+    date:'2026-09-15',
+    family:'Utveckling',
+    title:'V0.2.32 – Gemensam Forward-synk',
+    type:'Infrastruktur / synk',
+    status:'PASS · STABIL GRUND',
+    candidate:'Ej forskningskandidat',
+    summary:'G2/G3 Real Forward fick gemensam GitHub-master via Cloudflare Worker. Den vanliga Lina-inloggningen används för skrivbehörighet; ingen separat synknyckel behövs i UI. GitHub-token ligger endast server-side.',
+    metrics:[
+      ['Release','V0.2.32'],
+      ['Forward-master','GitHub'],
+      ['Separat synknyckel','Nej'],
+      ['Handel','AV']
+    ],
+    decision:'Godkänd infrastrukturgrund. Ingen forskningsregel ändrades och robotmognad kvarstår 48/100.'
+  },
+  {
+    id:'dev-v0233-full-sync',
+    date:'2026-09-15',
+    family:'Utveckling',
+    title:'V0.2.33 – GitHub Full Sync i headern',
+    type:'Infrastruktur / synk',
+    status:'PASS · VERIFIERAD',
+    candidate:'Ej forskningskandidat',
+    summary:'Övergripande GitHub-synk lades i headern för beständigt kompakt Lina-arbetsläge mellan datorer. Första live-testet stoppades av schema-mismatch mellan frontend och Worker. Workern korrigerades till releaseformatet entries och nytt live-test gick Synkar… → Synkad.',
+    metrics:[
+      ['Header','☁ Synka'],
+      ['Första live-test','FAIL · Stoppad'],
+      ['Orsak','app-state schema'],
+      ['Korrigering','Worker → entries'],
+      ['Sluttest','PASS · Synkad'],
+      ['Robotmognad','48/100']
+    ],
+    decision:'V0.2.33 GitHub-synk verifierad på jobbdator. Stora rådata/IndexedDB-cache synkas inte. Permanent projekthistorik får inte skrivas över av browser-state.'
+  },
+  {
+    id:'dev-v0234-archive-ledger',
+    date:'2026-09-15',
+    family:'Utveckling',
+    title:'V0.2.34 – Utvecklingslogg i Lina Arkiv',
+    type:'Historik / dokumentation',
+    status:'AKTIV · PERMANENT',
+    candidate:'Ej forskningskandidat',
+    summary:'Lina Arkiv utökades så större utvecklingssteg visas tillsammans med forskningshistoriken. Dagens V0.2.32–V0.2.34 dokumenteras som läsbara arkivposter utan att ändra eller skriva över frysta forskningsresultat.',
+    metrics:[
+      ['Arkivkategori','Utveckling'],
+      ['Dagens releaser','V0.2.32–V0.2.34'],
+      ['Frysta resultat','Orörda'],
+      ['Handel','AV']
+    ],
+    decision:'Från V0.2.34 ska varje större release få en permanent utvecklingspost i Lina Arkiv som del av releasearbetet.'
+  }
 
 ]
 
@@ -175,11 +229,14 @@ function records(){ return [...RECORDS,forwardRecord(),
   {
     id:'swing-g6-cost-boundary',
     family:'Swing G6',
+    date:'2026-09-15',
     title:'G6 Execution Cost Boundary',
+    type:'Kostnadsgräns / robusthet',
     status:'PASS · FROZEN',
     plan:'1567bbbe',
     candidate:'15efd75a',
     summary:'Förregistrerad kostnadsgräns för oförändrad kandidat. Boundary +0,20 % extra kostnad/sida (0,30 % total modellerad kostnad/sida). G6 är diagnostisk robusthetsforskning, inte ny oberoende OOS.',
+    metrics:[['Planhash','1567bbbe'],['Boundary extra/sida','+0,20 %'],['Total modellerad kostnad/sida','0,30 %'],['Status','PASS · FROZEN']],
     decision:'PASS och permanent fryst. Ingen rescue, parameterändring eller symbolrensning. G2/G3 Real Forward har högre evidens.'
   },
   {
@@ -240,7 +297,7 @@ function downloadRecord(rec){
   const text=reportText(rec);
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));
-  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0211.txt`;
+  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0234.txt`;
   a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),500);
 }

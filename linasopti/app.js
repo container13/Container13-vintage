@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  const APP_VERSION='0.2.33';
+  const APP_VERSION='0.2.34';
   const cards=[
     ['forward','Forward','Riktig forward-validering · G2 + G3 parallellt.'],
     ['research','Forskning','Jägaren, Swing G1, Swing G2, G3, G4 Universe, G5 Stress, G6 Cost Boundary, G7–G12 Research Battery och Broker/Cost Gate.'],
@@ -45,7 +45,7 @@
     R.register('g2-forward',root=>window.LinaG2Forward.render(root,{back:()=>R.navigate('forward')}));
     R.register('g3-forward',root=>window.LinaG3Forward.render(root,{back:()=>R.navigate('forward')}));
     R.register('history',root=>{
-      shell(root,'Historik','Alla frysta resultat och rapporter på ett ställe.',`<button class="back" id="home">← Dashboard</button><div class="grid"><button class="card" id="archive"><b>Lina Arkiv</b><small>Robotmognad, simuleringar, PASS/FAIL och rapporter</small></button></div>`);
+      shell(root,'Historik','Frysta resultat, rapporter och permanent utvecklingslogg på ett ställe.',`<button class="back" id="home">← Dashboard</button><div class="grid"><button class="card" id="archive"><b>Lina Arkiv</b><small>Forskning, utvecklingslogg, robotmognad, PASS/FAIL och rapporter</small></button></div>`);
       root.querySelector('#home').onclick=()=>R.navigate('dashboard');
       root.querySelector('#archive').onclick=()=>R.navigate('archive');
     });

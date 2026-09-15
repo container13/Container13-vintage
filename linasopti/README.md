@@ -348,3 +348,7 @@ Cross-device Forward-sync använder nu den vanliga Lina-inloggningen. Den separa
 
 ## V0.2.33 – GitHub Full Sync
 Headern har `☁ Synka` för gemensam synk mellan datorer. Forward-state plus kompakt beständig Lina-state synkas via Worker/GitHub. IndexedDB/rådata stannar lokalt. Konflikt = stopp, inte tyst överskrivning. Handel AV; robotmognad 48/100.
+
+
+## V0.2.34 – Lina Arkiv utvecklingslogg (2026-09-15)
+Lina Arkiv visar nu större utvecklingssteg. V0.2.32–V0.2.34 är dokumenterade, inklusive V0.2.33 första synk-FAIL och efterföljande PASS. Frysta forskningsresultat är orörda. Cloudflare Worker: ingen ändring. Handel AV. Robotmognad 48/100.
