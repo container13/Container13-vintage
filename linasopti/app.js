@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  const APP_VERSION='0.2.9';
+  const APP_VERSION='0.2.10';
   const cards=[
     ['forward','Forward','Riktig forward-validering · G2 aktiv.'],
     ['research','Forskning','Jägaren, Swing G1, Swing G2, G3 Walk-Forward och Broker/Cost Gate.'],
@@ -44,7 +44,7 @@
     });
   }
 
-  // V0.2.9 – Uppdatera ska ge en verklig ny start, inte bara ladda om en redan upplåst session.
+  // V0.2.10 – Uppdatera ska ge en verklig ny start, inte bara ladda om en redan upplåst session.
   // Bevarar all persistent Lina-data i localStorage, men rensar endast login-sessionen.
   // Navigerar sedan till en ren, cache-bustad index-URL så login visas och senaste index/scripts hämtas.
   function installRefresh(){
