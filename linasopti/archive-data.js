@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='0.2.37';
+const VERSION='0.2.38';
 const ROBOT_MATURITY=48;
 
 const RECORDS=[
@@ -234,6 +234,19 @@ const RECORDS=[
     metrics:[['Header','Linas Opti → Dashboard'],['Omfattning','Alla vyer'],['Worker','Oförändrad'],['Handel','AV']],
     decision:'Permanent UI-regel: Linas Opti i headern fungerar som Hem/Dashboard.'
   }
+,
+  {
+    id:'dev-v0238-evidence-e2e',
+    date:'2026-09-15',
+    family:'Utveckling',
+    title:'V0.2.38 – Evidence end-to-end + App-state hotfix',
+    type:'Evidence / GitHub / infrastruktur',
+    status:'TESTKLAR · APP-STATE PASS',
+    candidate:'Ej forskningskandidat',
+    summary:'Arkivexporter kopplas in i Evidence-kön så befintliga verifierade rapporter kan gå genom PRELIMINÄR → FROZEN → GitHub utan omkörning av forskning. App-state JSON-newline-felet i Workern är rättat och cross-device Mac-synk verifierad PASS.',
+    metrics:[['App-state cross-device','PASS'],['Evidencekö','Arkivexport → PRELIMINÄR'],['Forskningsomkörning','Ingen'],['Robotmognad','48/100'],['Handel','AV']],
+    decision:'Verifiera nu Evidence-flödet end-to-end med en befintlig fryst arkivrapport. Ingen ny forskning skapas och inga forskningsresultat ändras.'
+  }
 
 ]
 
@@ -333,7 +346,7 @@ function downloadRecord(rec){
   const text=reportText(rec);
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));
-  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0237.txt`;
+  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0238.txt`;
   a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),500);
 }

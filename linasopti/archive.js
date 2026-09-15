@@ -37,7 +37,7 @@ function render(root,ctx){
  </section>`;
  root.querySelector('#arBack').onclick=ctx.back;
  root.querySelectorAll('.evidence-approve').forEach(b=>b.onclick=async()=>{b.disabled=true;try{await window.LinaEvidence.approve(b.dataset.id);render(root,ctx)}catch(e){alert(e.message||e)}});
- root.querySelectorAll('.archive-export').forEach(b=>b.onclick=()=>{const r=D.records().find(x=>x.id===b.dataset.id);if(r)D.downloadRecord(r)});
+ root.querySelectorAll('.archive-export').forEach(b=>b.onclick=()=>{const r=D.records().find(x=>x.id===b.dataset.id);if(!r)return;const text=D.reportText(r),name=`LINAS_OPTI_ARKIV_${r.id.toUpperCase()}_V0238.txt`;if(window.LinaEvidence)window.LinaEvidence.stage(name,text,'text/plain','ARKIV_VERIFIERAD');D.downloadRecord(r);render(root,ctx)});
  root.querySelectorAll('.archive-filter button').forEach(b=>b.onclick=()=>{
    root.querySelectorAll('.archive-filter button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
    const f=b.dataset.filter;root.querySelectorAll('.archive-record').forEach(card=>card.style.display=(f==='all'||card.dataset.family===f)?'':'none');

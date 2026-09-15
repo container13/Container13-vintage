@@ -370,3 +370,12 @@ Framtida TXT-rapporter och RAW/resultat-JSON blir PRELIMINÄRA vid export. De m�
 
 ## V0.2.37
 `Linas Opti` i headern fungerar alltid som Hem och går till Dashboard. Worker oförändrad.
+
+
+## V0.2.38 – Evidence E2E test-ready + App-state newline hotfix (2026-09-15)
+- Byggd från godkänd V0.2.37 COMPLETE.
+- Arkivets befintliga rapportexporter stageas nu samtidigt som PRELIMINÄR evidence. Detta gör att en redan fryst/verifierad arkivrapport kan användas för första riktiga end-to-end-testet utan att köra om forskning.
+- Flöde: Exportera rapport → PRELIMINÄR → Godkänn & frys → FROZEN → ☁ Synka → FROZEN · GITHUB ✓.
+- App-state-felet från Worker V0.2.35 var en bokstavlig `\n` efter JSON. Worker-källan i denna COMPLETE innehåller den redan deployade korrigeringen till riktig newline. Befintlig GitHub-fil reparerades och Mac cross-device ☁ Synka verifierades PASS 2026-09-15.
+- Inga forskningsregler/resultat ändrade. Ingen omkörning. Robotmognad 48/100. Handel AV.
+- Cloudflare Worker: INGEN YTTERLIGARE ÄNDRING. Den korrigerade Workern är redan deployad.

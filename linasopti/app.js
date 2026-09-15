@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  const APP_VERSION='0.2.37';
+  const APP_VERSION='0.2.38';
   const cards=[
     ['forward','Forward','Riktig forward-validering · G2 + G3 parallellt.'],
     ['research','Forskning','Jägaren, Swing G1, Swing G2, G3, G4 Universe, G5 Stress, G6 Cost Boundary, G7–G12 Research Battery och Broker/Cost Gate.'],
