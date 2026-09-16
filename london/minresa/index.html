@@ -13,7 +13,7 @@ a{color:inherit}.top{padding:14px 16px;display:flex;justify-content:space-betwee
 .wrap{width:min(900px,100%);margin:auto;padding:30px 18px 70px}.hero{text-align:center;margin:28px auto 30px}.flag{font-size:34px}.eyebrow{margin-top:12px;color:var(--gold);font-size:11px;letter-spacing:.2em;font-weight:950}.hero h1{font-size:clamp(44px,11vw,72px);line-height:.9;letter-spacing:-.055em;margin:10px 0}.hero p{color:var(--muted);margin:13px auto;max-width:520px}
 .login{max-width:470px;margin:auto;background:linear-gradient(145deg,#0d1d2b,#08131d);border:1px solid #ffffff18;border-radius:28px;padding:22px;box-shadow:0 24px 70px #0008}
 .login label{display:block;font-size:12px;font-weight:900;color:#c5d0d8;margin-bottom:8px}.pwrow{display:grid;grid-template-columns:1fr auto;gap:8px}.pwrow input{width:100%;min-width:0;background:#02080e;border:1px solid #ffffff20;color:#fff;border-radius:15px;padding:16px;font-size:18px;outline:none}.pwrow input:focus{border-color:#d9b86c}.eye{border:1px solid #ffffff20;background:#ffffff08;color:#fff;border-radius:15px;padding:0 15px;font-size:18px}.unlock{width:100%;margin-top:12px;border:0;border-radius:15px;background:linear-gradient(100deg,#d9b86c,#f1d99b);color:#171207;padding:16px;font-weight:950;font-size:14px;letter-spacing:.04em}.hint{text-align:center;color:#718391;font-size:11px;margin:14px 0 0}.status{min-height:20px;text-align:center;color:#efb6b6;font-size:12px;margin-top:10px}
-.wallet{display:none}.wallet.demo{display:block}.wallethead{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:16px}.wallethead h2{font-size:31px;margin:0}.wallethead small{color:var(--muted)}.cards{display:grid;gap:12px}.card{background:linear-gradient(135deg,#0e2030,#08141f);border:1px solid var(--line);border-radius:23px;padding:18px;display:grid;grid-template-columns:auto 1fr;gap:15px}.ico{width:48px;height:48px;border-radius:15px;background:#ffffff0b;display:grid;place-items:center;font-size:25px}.card h3{margin:1px 0 3px}.meta{color:#a8b7c3;font-size:13px}.actions{grid-column:2;display:flex;gap:8px;flex-wrap:wrap;margin-top:7px}.btn{border:1px solid #d9b86c66;background:#d9b86c12;color:#efd895;border-radius:999px;padding:10px 13px;font-size:11px;font-weight:950;text-decoration:none}.btn.disabled{opacity:.45;pointer-events:none}.ticketgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;grid-column:2}.ticket{border:1px solid #ffffff18;background:#ffffff08;border-radius:15px;padding:13px}.ticket b{display:block}.ticket small{color:#93a4b1}.paper{grid-column:2;color:#9bcdb0;font-size:12px;margin-top:2px}.devnote{max-width:620px;margin:24px auto 0;border:1px dashed #d9b86c55;color:#a9b8c3;border-radius:16px;padding:13px;font-size:11px;text-align:center}
+.wallet{display:none}.wallet.demo{display:block}.wallethead{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:16px}.wallethead h2{font-size:31px;margin:0}.wallethead small{color:var(--muted)}.cards{display:grid;gap:12px}.card{background:linear-gradient(135deg,#0e2030,#08141f);border:1px solid var(--line);border-radius:23px;padding:18px;display:grid;grid-template-columns:auto 1fr;gap:15px}.ico{width:48px;height:48px;border-radius:15px;background:#ffffff0b;display:grid;place-items:center;font-size:25px}.card h3{margin:1px 0 3px}.meta{color:#a8b7c3;font-size:13px}.actions{grid-column:2;display:flex;gap:8px;flex-wrap:wrap;margin-top:7px}.btn{border:1px solid #d9b86c66;background:#d9b86c12;color:#efd895;border-radius:999px;padding:10px 13px;font-size:11px;font-weight:950;text-decoration:none}.btn.disabled{opacity:.45;pointer-events:none}.ticketgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;grid-column:2}.ticket{border:1px solid #ffffff18;background:#ffffff08;border-radius:15px;padding:13px}.ticket b{display:block}.ticket small{color:#93a4b1}.paper{grid-column:2;color:#9bcdb0;font-size:12px;margin-top:2px}.logout{border:1px solid #ffffff20;background:#ffffff08;color:#fff;border-radius:999px;padding:9px 12px;font-size:11px;font-weight:900;cursor:pointer}.devnote{max-width:620px;margin:24px auto 0;border:1px dashed #d9b86c55;color:#a9b8c3;border-radius:16px;padding:13px;font-size:11px;text-align:center}
 @media(max-width:600px){.wrap{padding-top:10px}.hero{margin-top:10px}.card{grid-template-columns:auto 1fr}.ticketgrid{grid-template-columns:1fr}.login{border-radius:22px}.wallethead{align-items:start;flex-direction:column}}
 </style>
 </head>
@@ -34,7 +34,7 @@ a{color:inherit}.top{padding:14px 16px;display:flex;justify-content:space-betwee
 </section>
 
 <section class="wallet" id="wallet">
- <div class="wallethead"><div><small>16–19 OKTOBER 2026</small><h2>Reseplånbok</h2></div><small>🔒 Skyddat innehåll</small></div>
+ <div class="wallethead"><div><small>16–19 OKTOBER 2026</small><h2>Reseplånbok</h2></div><button class="logout" id="logout" type="button">LÅS / LOGGA UT</button></div>
  <div class="cards">
   <article class="card"><div class="ico">✈️</div><div><h3>British Airways</h3><div class="meta">ARN → LHR • fredag 16 oktober<br>LHR → ARN • måndag 19 oktober</div></div><div class="actions"><span class="btn disabled">ÖPPNA FLYGBOKNING</span></div></article>
   <article class="card"><div class="ico">🏨</div><div><h3>Hilton London Kensington</h3><div class="meta">16–19 oktober • 3 nätter • Agoda</div></div><div class="actions"><span class="btn disabled">ÖPPNA HOTELLBOKNING</span></div></article>
@@ -44,12 +44,80 @@ a{color:inherit}.top{padding:14px 16px;display:flex;justify-content:space-betwee
   </article>
  </div>
 </section>
-<div class="devnote">V06 är det säkra skalet. Inga riktiga biljettfiler, bokningslänkar eller lösenord finns i denna version.</div>
+<div class="devnote">V07 testar riktig Firebase-inloggning. Privata biljettfiler och bokningslänkar läggs fortfarande inte in förrän åtkomstskyddet är verifierat.</div>
 </main>
-<script>
-const pw=document.getElementById('password'), eye=document.getElementById('eye');
-eye.onclick=()=>{pw.type=pw.type==='password'?'text':'password';eye.setAttribute('aria-label',pw.type==='password'?'Visa lösenord':'Dölj lösenord')};
-document.getElementById('unlock').onclick=()=>{document.getElementById('status').textContent='Säker inloggning kopplas in i nästa steg.'};
-pw.addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('unlock').click()});
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import {
+  getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut,
+  setPersistence, browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw",
+  authDomain: "container13-87c1a.firebaseapp.com",
+  projectId: "container13-87c1a",
+  storageBucket: "container13-87c1a.firebasestorage.app",
+  messagingSenderId: "936924614149",
+  appId: "1:936924614149:web:2b74d823951538fa2b166c",
+  measurementId: "G-PSHRGK4JJC"
+};
+const LONDON_EMAIL = "london@container13.se";
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+await setPersistence(auth, browserLocalPersistence);
+
+const login = document.getElementById("login");
+const wallet = document.getElementById("wallet");
+const pw = document.getElementById("password");
+const eye = document.getElementById("eye");
+const status = document.getElementById("status");
+const unlock = document.getElementById("unlock");
+const logout = document.getElementById("logout");
+
+function showLocked(){
+  login.style.display = "";
+  wallet.style.display = "none";
+  pw.value = "";
+}
+function showWallet(){
+  login.style.display = "none";
+  wallet.style.display = "block";
+  status.textContent = "";
+}
+eye.addEventListener("click",()=>{
+  pw.type = pw.type === "password" ? "text" : "password";
+  eye.setAttribute("aria-label", pw.type === "password" ? "Visa lösenord" : "Dölj lösenord");
+});
+async function doLogin(){
+  const password = pw.value;
+  if(!password){ status.textContent="Skriv lösenordet först."; return; }
+  unlock.disabled=true; unlock.textContent="KONTROLLERAR…"; status.textContent="";
+  try{
+    const cred = await signInWithEmailAndPassword(auth, LONDON_EMAIL, password);
+    if(cred.user.email !== LONDON_EMAIL){
+      await signOut(auth);
+      throw new Error("wrong-user");
+    }
+    showWallet();
+  }catch(e){
+    status.textContent="Fel lösenord – försök igen.";
+    pw.select();
+  }finally{
+    unlock.disabled=false; unlock.textContent="LÅS UPP MIN RESA";
+  }
+}
+unlock.addEventListener("click", doLogin);
+pw.addEventListener("keydown",e=>{if(e.key==="Enter")doLogin()});
+logout.addEventListener("click", async()=>{await signOut(auth); showLocked()});
+
+onAuthStateChanged(auth, async user=>{
+  if(user && user.email === LONDON_EMAIL) showWallet();
+  else {
+    if(user) await signOut(auth);
+    showLocked();
+  }
+});
 </script>
 </body></html>
