@@ -1,8 +1,9 @@
-LONDON GUIDE + SCHEMA V03
-- index.html = reseguiden som huvudsida med flytande knapp till schemat.
-- schema.html = reseschema + ny checklista INFÖR RESAN + utfällbar packlista.
-- Flyg, hotell och konsert markeras från start som klara.
-- ETA, parkering, pass, försäkring, trafikbetalning, BA, hotellvoucher, konsertbiljetter, TfL, UK-adapter och packning kan bockas av.
-- Direkta länkar finns där de är användbara, främst officiella sidor.
-- Checkboxar och packlista sparas lokalt i webbläsaren.
-- Inga bokningsnummer/personuppgifter är inlagda.
+LONDON GUIDE + SCHEMA V04
+Förbättrad checklista:
+- Tydlig progress: X av 14 + procent + progressbar.
+- Tre fasta bokningar visas grönt och tydligt som KLART.
+- Viktigt först: ETA, pass, Flygets parkering med guldfärgad prioritering.
+- Mobil/dokument/praktiskt i egen grupp.
+- Större checkboxar och tydligare action-knappar.
+- Packlista fortsatt utfällbar och sparas lokalt.
+- Huvudsidan/reseguiden är oförändrad och schema.html är separat.
