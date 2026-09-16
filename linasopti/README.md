@@ -417,3 +417,7 @@ Framtida TXT-rapporter och RAW/resultat-JSON blir PRELIMINÄRA vid export. De m�
 - Inga forskningsresultat, parametrar eller regler ändrade. Robotmognad 48/100. Handel AV.
 - Nästa fokus: kontroll av Real Forward-status och fortsatt ny, tidsmässigt framåtriktad evidens; inga G13+-historiska tester startas här.
 - Cloudflare Worker: **INGEN ÄNDRING**.
+
+
+## V0.2.43 – Automatisk Forward med stängd-marknadsdagsspärr (2026-09-16)
+Lina gör Forward catch-up automatiskt vid start. G2/G3 får endast behandla säkert avslutade USA-marknadsdagar. Liveprovet i V0.2.42 visade att 2026-09-16 kunde synas medan USA-sessionen fortfarande pågick; V0.2.43 korrigerar detta och innehåller en snäv, autentiserad Worker-repair för master som ligger framför säker cutoff. Handel AV, robotmognad 48/100.

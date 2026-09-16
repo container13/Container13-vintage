@@ -10,6 +10,14 @@ const PARAMS={breakout:55,trend:'sma200',volume:1.5,regime:'spy200',stop:.07,tar
 const HASH='15efd75a';
 const SYMBOLS=['AMD','SHOP','ADBE','MU','FDX','TSLA','LUV','NFLX','C','NOW','QCOM','BAC','GM','DDOG','PYPL','NVDA'];
 function today(){return new Date().toISOString().slice(0,10)}
+function safeCompletedDate(){
+ const parts=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));
+ let d=new Date(`${parts.year}-${parts.month}-${parts.day}T12:00:00Z`);
+ const mins=(+parts.hour)*60+(+parts.minute);
+ if(mins<16*60+15)d.setUTCDate(d.getUTCDate()-1);
+ while(d.getUTCDay()===0||d.getUTCDay()===6)d.setUTCDate(d.getUTCDate()-1);
+ return d.toISOString().slice(0,10);
+}
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch{return null}}
 function fresh(){return{schema:'LINA-G2-REAL-FORWARD-1',version:'V0.2.33',candidateHash:HASH,anchor:ANCHOR,params:PARAMS,capital:CAPITAL,costSide:COST_SIDE,createdAt:new Date().toISOString(),lastMarketDate:null,lastRefreshAt:null,provider:null,closed:[],open:[],stats:null,milestones:{60:false,120:false,250:false},history:[]}}
 function save(x){x.savedAt=new Date().toISOString();localStorage.setItem(KEY,JSON.stringify(x));document.dispatchEvent(new CustomEvent('lina:g2forwardchange'));return x}
@@ -53,7 +61,7 @@ function simulate(rows){
  return{closed,open,lastMarketDate:last,stats:calcStats(closed,open,lastPrices)};
 }
 async function refresh(progress){
- let rows=[],providers=new Set(),end=today(),all=[...SYMBOLS,'SPY'];
+ let rows=[],providers=new Set(),end=safeCompletedDate(),all=[...SYMBOLS,'SPY'];
  for(let i=0;i<all.length;i++){const s=all[i];progress?.(`Hämtar ${s} · ${i+1}/${all.length}`);const a=await getSymbol(s,WARMUP_START,end);a.forEach(r=>providers.add(r.provider));rows.push(...a)}
  rows.sort((a,b)=>a.t.localeCompare(b.t)||a.symbol.localeCompare(b.symbol));
  const sim=simulate(rows),x=load()||fresh(),oldN=x.closed?.length||0,oldDate=x.lastMarketDate;
@@ -90,5 +98,5 @@ function report(){
 function download(text,name,type='text/plain'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
 function exportReport(){download(report(),`LINAS_OPTI_G2_REAL_FORWARD_V0232_${today()}.txt`)}
 function exportRaw(){const x=load()||fresh();download(JSON.stringify(x,null,2),`LINAS_OPTI_G2_REAL_FORWARD_RAW_V0232_${today()}.json`,'application/json')}
-window.LinaG2ForwardEngine={VERSION,KEY,ANCHOR,HASH,PARAMS,SYMBOLS,load,fresh,save,refresh,report,exportReport,exportRaw,tradeId,normalizeState};
+window.LinaG2ForwardEngine={VERSION,KEY,ANCHOR,HASH,PARAMS,SYMBOLS,load,fresh,save,refresh,report,exportReport,exportRaw,tradeId,normalizeState,safeCompletedDate};
 })();

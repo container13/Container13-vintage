@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const API='https://linas-opti-api.mangaj73.workers.dev', KEY='lina_clean_evidence_queue_v1', RELEASE='V0.2.42';
+const API='https://linas-opti-api.mangaj73.workers.dev', KEY='lina_clean_evidence_queue_v1', RELEASE='V0.2.43';
 function now(){return new Date().toISOString()}
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||'{"items":[]}')}catch{return {items:[]}}}
 function save(x){x.updatedAt=now();localStorage.setItem(KEY,JSON.stringify(x));return x}

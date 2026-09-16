@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  const APP_VERSION='0.2.42';
+  const APP_VERSION='0.2.43';
   const cards=[
     ['forward','Forward','Riktig forward-validering · G2 + G3 parallellt.'],
     ['research','Forskning','Jägaren, Swing G1, Swing G2, G3, G4 Universe, G5 Stress, G6 Cost Boundary, G7–G12 Research Battery och Broker/Cost Gate.'],
@@ -106,6 +106,8 @@
     installBrandHome();
     registerRoutes();
     window.LinaRouter.start();
+    // V0.2.43: automatisk Forward catch-up vid varje ny Lina-session. Endast avslutade USA-marknadsdagar behandlas.
+    setTimeout(()=>window.LinaForwardCenter?.autoCatchUp?.().catch(e=>console.warn('Auto Forward stoppad:',e)),0);
   }
   window.LinaApp={version:APP_VERSION,start:startApp};
   document.addEventListener('lina:unlocked',startApp,{once:true});

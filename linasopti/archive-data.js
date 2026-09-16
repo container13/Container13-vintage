@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='0.2.42';
+const VERSION='0.2.43';
 const ROBOT_MATURITY=48;
 
 const RECORDS=[
@@ -294,6 +294,8 @@ function records(){ return [...RECORDS,{
     id:'dev-v0241-cross-device-evidence',family:'Utveckling',date:'2026-09-16',title:'V0.2.41 – Datoroberoende historisk evidens',type:'Cross-device evidence / livefix',status:'PASS · RELEASE',candidate:'15efd75a',summary:'Live-test av V0.2.40 på ny dator gav FAIL: Säkra evidens letade efter lokalt engine-resultat och visade “Inget färdigt resultat finns att frysa”. V0.2.41 hämtar i stället permanenta TXT/RAW-filer som redan ingår i Lina-releasen för G4/G5/G6/G7–G12.',metrics:[['V0.2.40 live-test','FAIL'],['Orsak','lokal runtime-data saknades'],['V0.2.41 källa','permanent release-evidens'],['Handel','AV']],decision:'Historisk evidens får inte bero på localStorage/IndexedDB på den dator där säkringen utförs. Frysta forskningsresultat är oförändrade.'
   },{
     id:'dev-v0242-evidence-e2e-checkpoint',family:'Utveckling',date:'2026-09-16',title:'V0.2.42 – Evidence E2E checkpoint',type:'Verifierad live-checkpoint',status:'PASS · VERIFIED',candidate:'15efd75a',summary:'V0.2.41 verifierades live på en ny dator. Ett tryck på G6 Säkra evidens gav FROZEN · GITHUB ✓ och GitHub kontrollerades därefter manuellt: både G6 TXT/RAW JSON och G7–G12 TXT/RAW JSON finns permanent under linasopti/evidence/2026-09-16/.',metrics:[['Ny dator','PASS'],['G6 ett-trycksflöde','PASS'],['GitHub TXT + RAW','VERIFIERAT'],['Evidence E2E','PASS'],['Robotmognad','48/100'],['Handel','AV']],decision:'Evidence-infrastrukturen betraktas som verifierad för detta flöde. Ingen mer historisk evidence-utbyggnad prioriteras nu; nästa fokus är Real Forward. Inga forskningsresultat eller regler ändras.'
+  },{
+    id:'dev-v0243-auto-forward-safe-close',family:'Utveckling',date:'2026-09-16',title:'V0.2.43 – Automatisk Forward + stängd-marknadsdagsspärr',type:'Forward-integritet / automation',status:'BYGGD · LIVE-TEST VÄNTAR',candidate:'15efd75a',summary:'Efter V0.2.42-liveprovet upptäcktes att manuell Forward-uppdatering kunde ta med pågående USA-marknadsdag. V0.2.43 automatiserar catch-up men begränsar G2/G3 till säkert avslutade USA-marknadsdagar. Om GitHub-master ligger framför säker cutoff kan den autentiserade Workern göra en snäv rollback till omräknad säker state.',metrics:[['Auto catch-up','VID LINA-START'],['Marknadsdag','ENDAST AVSLUTAD'],['Intraday 2026-09-16','SKA REPARERAS TILL 2026-09-15 VID TEST'],['Robotmognad','48/100'],['Handel','AV']],decision:'Ingen strategi-, kandidat- eller parameterändring. Ändringen är forskningsintegritet och drift. Live-PASS får först sättas efter deploy av både frontend och Worker samt verifierad GitHub-master.'
   },forwardRecord(),
   {
     id:'swing-g6-cost-boundary',
@@ -366,7 +368,7 @@ function downloadRecord(rec){
   const text=reportText(rec);
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));
-  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0242.txt`;
+  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0243.txt`;
   a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),500);
 }
