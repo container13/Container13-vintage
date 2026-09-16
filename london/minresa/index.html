@@ -44,7 +44,7 @@ a{color:inherit}.top{padding:14px 16px;display:flex;justify-content:space-betwee
   </article>
  </div>
 </section>
-<div class="devnote">V11 fixar flyg- och hotellknapparna: de är riktiga knappar och aktiveras efter att de privata Firestore-länkarna har lästs. Biljetterna hämtas fortsatt från skyddade Firebase Storage.</div>
+<div class="devnote">V12 öppnar flyg- och hotellbokningslänkarna exakt som de är sparade i det UID-skyddade Firestore-dokumentet. Biljetterna hämtas fortsatt från skyddade Firebase Storage.</div>
 </main>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
@@ -153,13 +153,10 @@ function openPrivateBooking(field){
     alert("Bokningslänken kunde inte hämtas.");
     return;
   }
-  try{
-    const parsed = new URL(url);
-    if(parsed.protocol !== "https:") throw new Error("invalid protocol");
-    window.open(parsed.href, "_blank", "noopener,noreferrer");
-  }catch(e){
-    alert("Bokningslänken är ogiltig.");
-  }
+  // URL-värdet kommer från det UID-skyddade Firestore-dokumentet.
+  // Öppna exakt det sparade värdet; privata bokningslänkar kan innehålla
+  // långa query-strängar/deep-link-format som inte ska normaliseras här.
+  window.open(url, "_blank", "noopener,noreferrer");
 }
 if(flightBooking){
   flightBooking.disabled = true;
