@@ -59,3 +59,21 @@ TEST
 2. Öppna /london/minresa/ och logga ut om sessionen redan är aktiv.
 3. Rätt London-lösenord -> reseplånbok + "Privat data verifierad".
 4. Lås/logga ut -> bankfacket ska inte visas.
+
+
+V09 – SKYDDADE KONSERTBILJETTER
+- Malins biljett -> Firebase Storage: london-private/leeyoungji1.pdf
+- Agnes biljett -> Firebase Storage: london-private/leeyoungji2.pdf
+- PDF hämtas via Firebase Storage SDK först efter autentisering.
+- Ingen biljett-PDF eller publik download-URL finns i GitHub-paketet.
+- Blob-URL skapas lokalt i webbläsaren när användaren trycker på biljettknappen.
+- Firestore-verifieringen från V08 finns kvar.
+- Flyg/hotell-knappar är fortfarande avstängda tills deras privata länkar läggs i Firestore.
+
+TEST
+1. Ladda upp V09.
+2. Logga in på Min resa.
+3. Kontrollera "Privat data verifierad".
+4. Tryck Malins biljett -> PDF ska öppnas.
+5. Tryck Agnes biljett -> den andra PDF:en ska öppnas.
+6. Logga ut -> reseplånboken och biljettknapparna ska försvinna.
