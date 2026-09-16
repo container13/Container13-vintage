@@ -45,3 +45,17 @@ TEST EFTER UPPLADDNING
 3. Testa det riktiga London-lösenordet -> reseplånboken ska visas.
 4. Uppdatera sidan -> reseplånboken ska fortfarande vara upplåst.
 5. Tryck LÅS / LOGGA UT -> lösenordsvyn ska återkomma.
+
+
+V08 – FIRESTORE ACCESS TEST
+- Efter godkänd Firebase-login läser /minresa/ dokumentet:
+  london_private/travel_wallet
+- Förväntat med London-kontot: "✓ Privat data verifierad • ready = false"
+- Om Firestore-regeln nekar åtkomst låses reseplånboken igen.
+- Fortfarande inga riktiga bokningslänkar eller biljett-PDF:er i paketet.
+
+TEST
+1. Ladda upp hela london-mappen.
+2. Öppna /london/minresa/ och logga ut om sessionen redan är aktiv.
+3. Rätt London-lösenord -> reseplånbok + "Privat data verifierad".
+4. Lås/logga ut -> bankfacket ska inte visas.
