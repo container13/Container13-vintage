@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
+<title>London 2026 • Inför resan</title>
+<style>
+:root{--bg:#06101a;--gold:#d9b86c;--green:#35be69}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#15334b 0,#07131e 34%,#050d15 100%);color:#fff;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.45}
+.topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(16px);background:#06111bd9;border-bottom:1px solid #ffffff12;padding:10px 14px}
+.topin{max-width:1050px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:10px}.brand{font-weight:900;letter-spacing:.12em}.nav{display:flex;gap:7px}.oldbtn{border:1px solid #ffffff28;border-radius:999px;padding:9px 12px;text-decoration:none;color:#fff;font-size:12px;font-weight:800;background:#ffffff0a}
+.hero{max-width:1050px;margin:auto;padding:40px 18px 22px}.eyebrow{color:#d9b86c;font-weight:900;letter-spacing:.18em;text-transform:uppercase;font-size:12px}h1{font-size:clamp(40px,7vw,68px);line-height:.95;letter-spacing:-.05em;margin:10px 0}.hero p{color:#c8d5df;max-width:680px;font-size:17px}.wrap{max-width:1050px;margin:auto;padding:0 18px 60px}
+</style>
+<style id="pretrip-style">
+.pretrip{margin:0 0 24px;background:linear-gradient(150deg,#10283a,#07141f);border:1px solid #345269;border-radius:26px;padding:21px;box-shadow:0 18px 55px #0005}
+.pretrip-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-end;flex-wrap:wrap}.pretrip h2{margin:4px 0 0;font-size:30px}.progress{color:#fff;font-weight:950;font-size:17px}.progress small{display:block;color:#9fb2c1;font-size:11px;text-align:right;letter-spacing:.08em}
+.progressbar{height:8px;background:#ffffff12;border-radius:999px;overflow:hidden;margin:14px 0 19px}.progressbar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#d9b86c,#f0d99c);border-radius:inherit;transition:.3s}
+.pre-group{margin-top:20px}.pre-group-title{display:flex;align-items:center;gap:9px;margin:0 0 9px;font-size:13px;font-weight:950;letter-spacing:.1em;text-transform:uppercase;color:#d9b86c}.pre-group-title span{font-size:18px}
+.pre-list{display:grid;gap:9px}.pre-item{position:relative;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:#0a1a27;border:1px solid #284154;border-radius:17px;padding:14px;transition:.2s}
+.pre-item.todo:hover{border-color:#526d82}.pre-item.important{border-color:#d9b86c80;background:linear-gradient(100deg,#2b2417,#0b1b28 58%)}.pre-item.done{opacity:1;background:#0a211a;border-color:#2f7650}.pre-item.done .pre-copy small{color:#9cc7ad}
+.bigcheck{width:29px;height:29px;accent-color:#35be69;cursor:pointer}.pre-copy b{display:block;font-size:16px}.pre-copy small{display:block;color:#aebdca;margin-top:2px;line-height:1.35}
+.go{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border:1px solid #d9b86c66;background:#d9b86c10;color:#f1d793;border-radius:999px;padding:9px 12px;font-size:11px;font-weight:950;white-space:nowrap}.go.official{background:#d9b86c;color:#171207}.donebadge{display:inline-flex;align-items:center;gap:5px;background:#35be6922;border:1px solid #35be6966;color:#bdf0ce;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:950}
+.packbox{margin-top:20px;border-top:1px solid #ffffff14;padding-top:16px}.packtoggle{width:100%;border:1px solid #ffffff1c;background:#ffffff08;color:#fff;border-radius:15px;padding:13px 15px;font-weight:950;cursor:pointer;text-align:left;display:flex;justify-content:space-between}.packlist{display:none;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}.packlist.show{display:grid}.pack{background:#ffffff08;border:1px solid #ffffff0d;border-radius:12px;padding:11px}.pack label{display:flex;gap:9px;align-items:center}
+@media(max-width:650px){.pretrip{padding:16px}.pre-item{grid-template-columns:auto 1fr}.pre-item>.go,.pre-item>.donebadge{grid-column:2;justify-self:start}.packlist{grid-template-columns:1fr}.progress small{text-align:left}}
+</style>
+</head><body>
+<div class="topbar"><div class="topin"><div class="brand">LONDON • 2026</div><div class="nav"><a class="oldbtn" href="schema.html">📅 Schema</a><a class="oldbtn" href="./">← Reseguiden</a></div></div></div>
+<header class="hero"><div class="eyebrow">16–19 oktober 2026</div><h1>INFÖR RESAN</h1><p>Allt som behöver ordnas innan avresa på ett ställe. Bockarna sparas på den här enheten.</p></header>
+<main class="wrap"><section class="pretrip" id="pretrip">
+ <div class="pretrip-head">
+  <div><div class="eyebrow">FÖRE AVRESA</div><h2>Redo för London? 🇬🇧</h2></div>
+  <div class="progress"><span id="preProgress">3 av 14 klart</span><small id="prePercent">21 % FÄRDIGT</small></div>
+ </div>
+ <div class="progressbar"><i id="preBar"></i></div>
+
+ <div class="pre-group">
+  <div class="pre-group-title"><span>⚡</span> Viktigt först</div>
+  <div class="pre-list">
+   <label class="pre-item important"><input class="bigcheck precheck" type="checkbox" data-id="pre-eta"><div class="pre-copy"><b>Ansök om ETA för båda</b><small>Behövs före avresa för vanliga svenska pass.</small></div><a class="go official" href="https://www.gov.uk/eta/apply" target="_blank" rel="noopener">ANSÖK ETA ↗</a></label>
+   <label class="pre-item important"><input class="bigcheck precheck" type="checkbox" data-id="pre-pass"><div class="pre-copy"><b>Kontrollera bådas pass</b><small>ETA kopplas till passet som används på resan.</small></div><a class="go" href="https://www.gov.uk/check-eta" target="_blank" rel="noopener">ETA-INFO ↗</a></label>
+   <label class="pre-item important"><input class="bigcheck precheck" type="checkbox" data-id="pre-parking"><div class="pre-copy"><b>Boka Flygets parkering</b><small>Planerad ankomst cirka 15:35 fredag 16 oktober.</small></div><a class="go" href="https://www.flygets.se/" target="_blank" rel="noopener">BOKA ↗</a></label>
+  </div>
+ </div>
+
+ <div class="pre-group">
+  <div class="pre-group-title"><span>✓</span> Bokningar klara</div>
+  <div class="pre-list">
+   <div class="pre-item done"><div style="font-size:26px">✓</div><div class="pre-copy"><b>British Airways</b><small>ARN ↔ LHR • bokat & betalt</small></div><span class="donebadge">KLART</span></div>
+   <div class="pre-item done"><div style="font-size:26px">✓</div><div class="pre-copy"><b>Hilton London Kensington</b><small>3 nätter • Agoda • frukost ingår • betalt</small></div><span class="donebadge">KLART</span></div>
+   <div class="pre-item done"><div style="font-size:26px">✓</div><div class="pre-copy"><b>Lee Young Ji</b><small>The Clapham Grand • söndag 18 oktober</small></div><a class="go" href="https://claphamgrand.com/event/2026-lee-young-ji-world-tour-lee-young-ji-version-2-0/" target="_blank" rel="noopener">KONSERTINFO ↗</a></div>
+  </div>
+ </div>
+
+ <div class="pre-group">
+  <div class="pre-group-title"><span>📱</span> Mobil, dokument & praktiskt</div>
+  <div class="pre-list">
+   <label class="pre-item"><input class="bigcheck precheck" type="checkbox" data-id="pre-insurance"><div class="pre-copy"><b>Kontrollera reseförsäkring</b><small>Hemförsäkring/kortförsäkring och kontaktuppgifter.</small></div><span></span></label>
+   <label class="pre-item"><input class="bigcheck precheck" type="checkbox" data-id="pre-pay"><div class="pre-copy"><b>Varsitt kontaktlöst kort / Apple Pay</b><small>För Tube, Elizabeth line och Overground.</small></div><a class="go" href="https://tfl.gov.uk/fares/how-to-pay-and-where-to-buy-tickets-and-oyster/pay-as-you-go/contactless-and-mobile-pay-as-you-go" target="_blank" rel="noopener">TfL INFO ↗</a></label>
+   <label class="pre-item"><input class="bigcheck precheck" type="checkbox" data-id="pre-ba"><div class="pre-copy"><b>Flygbokningen i mobilen</b><small>BA Manage My Booking • check-in normalt 24 h före.</small></div><a class="go" href="https://www.britishairways.com/travel/mmbproxy/public/en_gb?appName=ap" target="_blank" rel="noopener">ÖPPNA BA ↗</a></label>
+   <label class="pre-item"><input class="bigcheck precheck" type="checkbox" data-id="pre-voucher"><div class="pre-copy"><b>Spara Agoda-voucher offline</b><small>Ha hotellbekräftelsen tillgänglig utan internet.</small></div><a class="go" href="https://www.agoda.com/" target="_blank" rel="noopener">AGODA ↗</a></label>
+   <label class="pre-item"><input class="bigcheck precheck" type="checkbox" data-id="pre-tickets"><div class="pre-copy"><b>Spara konsertbiljetterna offline</b><small>PDF, Wallet eller skärmdump beroende på biljettformat.</small></div><span></span></label>
+   <label class="pre-item"><input class="bigcheck precheck" type="checkbox" data-id="pre-route"><div class="pre-copy"><b>Ha TfL Journey Planner redo</b><small>Kontrollera trafikläget samma dag.</small></div><a class="go" href="https://tfl.gov.uk/plan-a-journey/" target="_blank" rel="noopener">RESEPLANERARE ↗</a></label>
+   <label class="pre-item"><input class="bigcheck precheck" type="checkbox" data-id="pre-adapter"><div class="pre-copy"><b>UK-adapter ordnad</b><small>Storbritannien använder typ G-uttag.</small></div><span></span></label>
+   <label class="pre-item"><input class="bigcheck precheck" type="checkbox" data-id="pre-pack"><div class="pre-copy"><b>Packningen klar</b><small>Bocka av packlistan nedan.</small></div><span></span></label>
+  </div>
+ </div>
+
+ <div class="packbox">
+  <button class="packtoggle" id="packToggle" type="button"><span>🧳 Packlista</span><span id="packCount">0/12 ›</span></button>
+  <div class="packlist" id="packList">
+   <div class="pack"><label><input type="checkbox" class="packcheck" data-id="passport"> Pass</label></div>
+   <div class="pack"><label><input type="checkbox" class="packcheck" data-id="phone"> Mobiltelefon</label></div>
+   <div class="pack"><label><input type="checkbox" class="packcheck" data-id="charger"> Mobilladdare</label></div>
+   <div class="pack"><label><input type="checkbox" class="packcheck" data-id="powerbank"> Powerbank</label></div>
+   <div class="pack"><label><input type="checkbox" class="packcheck" data-id="adapter"> UK-adapter</label></div>
+   <div class="pack"><label><input type="checkbox" class="packcheck" data-id="cards"> Bankkort</label></div>
+   <div class="pack"><label><input type="checkbox" class="packcheck" data-id="tickets"> Biljetter/vouchers offline</label></div>
+   <div class="pack"><label><input type="checkbox" class="packcheck" data-id="clothes"> Kläder</label></div>
+   <div class="pack"><label><input type="checkbox" class="packcheck" data-id="underwear"> Underkläder/strumpor</label></div>
+   <div class="pack"><label><input type="checkbox" class="packcheck" data-id="toiletries"> Necessär</label></div>
+   <div class="pack"><label><input type="checkbox" class="packcheck" data-id="meds"> Eventuella mediciner</label></div>
+   <div class="pack"><label><input type="checkbox" class="packcheck" data-id="headphones"> Hörlurar</label></div>
+  </div>
+ </div>
+</section>
+</main>
+<script id="pretrip-script">
+(function(){
+ const FIXED=3, TOTAL=14;
+ const pre=[...document.querySelectorAll('.precheck')];
+ function upd(){
+  pre.forEach(x=>x.closest('.pre-item').classList.toggle('done',x.checked));
+  const done=FIXED+pre.filter(x=>x.checked).length;
+  const pct=Math.round(done/TOTAL*100);
+  document.getElementById('preProgress').textContent=done+' av '+TOTAL+' klart';
+  document.getElementById('prePercent').textContent=pct+' % FÄRDIGT';
+  document.getElementById('preBar').style.width=pct+'%';
+ }
+ pre.forEach(c=>{
+  c.checked=localStorage.getItem('london-task-'+c.dataset.id)==='1';
+  c.addEventListener('change',()=>{localStorage.setItem('london-task-'+c.dataset.id,c.checked?'1':'0');upd()});
+ });
+ const packs=[...document.querySelectorAll('.packcheck')];
+ packs.forEach(c=>{
+  c.checked=localStorage.getItem('london-pack-'+c.dataset.id)==='1';
+  c.addEventListener('change',()=>{localStorage.setItem('london-pack-'+c.dataset.id,c.checked?'1':'0');packUpd()});
+ });
+ function packUpd(){document.getElementById('packCount').textContent=packs.filter(x=>x.checked).length+'/'+packs.length+' ›'}
+ document.getElementById('packToggle').addEventListener('click',()=>document.getElementById('packList').classList.toggle('show'));
+ packUpd();upd();
+})();
+</script>
+</body></html>

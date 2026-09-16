@@ -71,7 +71,11 @@ h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16
 }
 </style>
 
-</head>
+<style id="travel-dock-style">
+.travel-dock{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:10000;display:grid;grid-template-columns:1fr 1fr;gap:8px;width:min(620px,calc(100% - 24px));padding:7px;background:rgba(5,15,24,.91);border:1px solid rgba(255,255,255,.12);border-radius:20px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 16px 50px #0009}
+.travel-dock a{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:8px 10px;border-radius:14px;text-decoration:none;color:#fff;font-weight:900;text-align:center;font-size:13px}
+.travel-dock .prep{border:1px solid #d9b86c66;background:#d9b86c12}.travel-dock .sched{background:#fff;color:#07131e}.travel-dock small{display:block;font-size:10px;font-weight:800;opacity:.72}
+</style></head>
 <body>
 <header class="hero">
  <div class="hero-inner">
@@ -251,19 +255,20 @@ h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16
 </section>
 <footer class="footer">LONDON 2026 • MUSIK • RESA • UPPLEVELSER</footer>
 
-<a class="schedule-fab" href="schema.html" aria-label="Öppna reseschemat">
-  <span style="font-size:22px">📅</span>
-  <span><span id="fab-title">ÖPPNA RESESCHEMAT</span><br><span class="fab-sub" id="fab-sub">16–19 oktober • London</span></span>
-</a>
-<script id="schedule-fab-script">
-(function(){
- const ymd=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
- const d=ymd(), t=document.getElementById('fab-title'), s=document.getElementById('fab-sub');
- if(d==='2026-10-16'){t.textContent='FREDAG • RESEDAGEN';s.textContent='Nästa steg i reseschemat →'}
- else if(d==='2026-10-17'){t.textContent='LÖRDAG • LONDON';s.textContent='Öppna dagens schema →'}
- else if(d==='2026-10-18'){t.textContent='🎤 SÖNDAG • KONSERTDAGEN';s.textContent='Lee Young Ji • öppna schemat →'}
- else if(d==='2026-10-19'){t.textContent='MÅNDAG • HEMRESA';s.textContent='Öppna dagens schema →'}
-})();
-</script>
 
-</body></html>
+
+
+<div class="travel-dock">
+<a class="prep" href="checklista.html"><span>✓</span><span>INFÖR RESAN<small id="dockProgress">3/14 klart</small></span></a>
+<a class="sched" href="schema.html"><span>📅</span><span>RESESCHEMA<small id="dockDay">16–19 oktober</small></span></a>
+</div>
+<script>
+(function(){
+ const ids=['pre-eta','pre-pass','pre-parking','pre-insurance','pre-pay','pre-ba','pre-voucher','pre-tickets','pre-route','pre-adapter','pre-pack'];
+ const n=3+ids.filter(id=>localStorage.getItem('london-task-'+id)==='1').length;
+ const p=document.getElementById('dockProgress'); if(p)p.textContent=n===14?'REDO FÖR LONDON ✓':n+'/14 klart';
+ const d=new Date(), key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+ const day=document.getElementById('dockDay');
+ if(day) day.textContent=key==='2026-10-16'?'Fredag • resdagen':key==='2026-10-17'?'Lördag • London':key==='2026-10-18'?'Söndag • konserten':key==='2026-10-19'?'Måndag • hemresa':'16–19 oktober';
+})();
+</script></body></html>
