@@ -21,9 +21,9 @@ h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16
 .lead{font-size:clamp(17px,2vw,22px);max-width:720px;margin:auto;text-shadow:0 2px 12px #000}
 .hero-icons{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;margin-top:35px}.hero-icons div{min-width:140px}.hero-icons b{display:block;font-size:16px}.hero-icons span{font-size:13px}
 .wrap{max-width:1180px;margin:-105px auto 0;padding:0 18px 60px;position:relative;z-index:5}
-.options{display:grid;grid-template-columns:1fr 1fr;gap:18px}.option{border:1px solid #2c6c9d;background:linear-gradient(145deg,#0b2b46,#071927);border-radius:20px;padding:22px;box-shadow:0 18px 55px #0008}.option.alt2{border-color:#a92a42;background:linear-gradient(145deg,#3a1520,#160d14)}
+.options{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}.option{border:1px solid #2c6c9d;background:linear-gradient(145deg,#0b2b46,#071927);border-radius:20px;padding:22px;box-shadow:0 18px 55px #0008}.option.alt2{border-color:#a92a42;background:linear-gradient(145deg,#3a1520,#160d14)}
 .tag{display:inline-block;padding:5px 10px;border-radius:999px;background:#cfe8ff;color:#08223a;font-weight:900;font-size:12px}.alt2 .tag{background:var(--red);color:white}
-.option h2{font-size:25px;margin:10px 0 0}.sub{color:#d4dde5;margin-top:2px}.flightgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}.flight{background:#f7fafc;color:#101a22;border-radius:13px;padding:14px}.flight .air{font-size:12px;font-weight:900;color:#173c68}.flight b{font-size:18px}.price{font-size:37px;font-weight:950;text-align:center;margin:13px 0 0}.price small{display:block;font-size:13px;font-weight:500;color:#c8d3dc}.checks{padding:0;list-style:none}.checks li{margin:7px 0}.checks li:before{content:"✓";font-weight:900;margin-right:9px}
+.option h2{font-size:25px;margin:10px 0 0}.sub{color:#d4dde5;margin-top:2px}.flightgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:18px 0}.flight{background:#f7fafc;color:#101a22;border-radius:13px;padding:14px}.flight .air{font-size:12px;font-weight:900;color:#173c68}.flight b{font-size:18px}.price{font-size:37px;font-weight:950;text-align:center;margin:13px 0 0}.price small{display:block;font-size:13px;font-weight:500;color:#c8d3dc}.checks{padding:0;list-style:none}.checks li{margin:7px 0}.checks li:before{content:"✓";font-weight:900;margin-right:9px}
 .breakfast{background:#ffffff0b;border:1px solid #ffffff14;padding:10px;border-radius:11px;text-align:center;margin-top:15px}
 .section-title{text-align:center;font-size:34px;margin:45px 0 18px}
 .gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.tile{height:255px;border-radius:17px;display:flex;align-items:end;overflow:hidden;background-size:cover;background-position:center;box-shadow:inset 0 -110px 70px #000b}.tile div{padding:15px}.tile b{font-size:18px;display:block}.tile span{font-size:13px;color:#eee}
@@ -72,7 +72,7 @@ h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16
 </style>
 
 <style id="travel-dock-style">
-.travel-dock{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:10000;display:grid;grid-template-columns:1fr 1fr;gap:8px;width:min(620px,calc(100% - 24px));padding:7px;background:rgba(5,15,24,.91);border:1px solid rgba(255,255,255,.12);border-radius:20px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 16px 50px #0009}
+.travel-dock{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:10000;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;width:min(620px,calc(100% - 24px));padding:7px;background:rgba(5,15,24,.91);border:1px solid rgba(255,255,255,.12);border-radius:20px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 16px 50px #0009}
 .travel-dock a{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:8px 10px;border-radius:14px;text-decoration:none;color:#fff;font-weight:900;text-align:center;font-size:13px}
 .travel-dock .prep{border:1px solid #d9b86c66;background:#d9b86c12}.travel-dock .sched{background:#fff;color:#07131e}.travel-dock small{display:block;font-size:10px;font-weight:800;opacity:.72}
 </style></head>
@@ -260,7 +260,7 @@ h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16
 
 <div class="travel-dock">
 <a class="prep" href="checklista.html"><span>✓</span><span>INFÖR RESAN<small id="dockProgress">3/14 klart</small></span></a>
-<a class="sched" href="schema.html"><span>📅</span><span>RESESCHEMA<small id="dockDay">16–19 oktober</small></span></a>
+<a class="sched" href="schema.html"><span>📅</span><span>RESESCHEMA<small id="dockDay">16–19 oktober</small></span></a><a class="prep" href="minresa/"><span>🔐</span><span>MIN RESA<small>biljetter & bokningar</small></span></a>
 </div>
 <script>
 (function(){

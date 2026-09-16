@@ -1,11 +1,28 @@
-LONDON V05 – TRE DELAR
-1. index.html – den befintliga reseguiden, fortsatt huvudsida.
-2. checklista.html – separat 'Inför resan' med progress, ETA/pass/parkering, dokument och packlista.
-3. schema.html – rent reseschema fredag–måndag, utan förberedelsechecklistan.
+LONDON V06 – MIN RESA, SÄKERT SKAL
+====================================
 
-Huvudsidan har nu en flytande tvådelad dock:
-- ✓ INFÖR RESAN – visar X/14 klart, eller REDO FÖR LONDON när allt är klart.
-- 📅 RESESCHEMA – visar resans datum och under resan aktuell dag.
+STRUKTUR
+- /london/index.html          Reseguide
+- /london/checklista.html     Inför resan
+- /london/schema.html         Reseschema
+- /london/minresa/index.html  Privat reseplånbok – UI/skalet
 
-Checkboxar sparas i localStorage på respektive enhet/webbläsare.
-Inga känsliga bokningsnummer/personuppgifter är inlagda.
+V06
+- Ny knapp 🔐 MIN RESA på huvudsidan.
+- Lösenords-only gränssnitt för Malin/Agnes.
+- Reseplånbok med Flyg, Hotell och Lee Young Ji.
+- Två biljettplatser: Malins biljett och Agnes biljett.
+- Pappersbiljetter markeras som backup.
+
+SÄKERHET
+V06 innehåller AVSIKTLIGT INTE:
+- valt lösenord
+- Flightnetwork privat orderlänk
+- Agoda token/bokningslänk
+- Weeztix privat download-länk
+- PDF-biljetterna eller QR-koderna
+- bokningsreferenser
+
+Nästa steg är att koppla lösenordsfältet till Firebase Authentication och lägga privata
+reseuppgifter/biljettfiler bakom autentiserade Firebase-regler. Först efter verifierat
+obehörighetstest läggs de riktiga privata uppgifterna in.
