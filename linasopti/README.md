@@ -397,3 +397,12 @@ Framtida TXT-rapporter och RAW/resultat-JSON blir PRELIMINÄRA vid export. De m�
 - Evidence-kön är fortsatt endast kontroll/recovery.
 - Inga forskningsresultat eller regler ändrade. Robotmognad 48/100. Handel AV.
 - Cloudflare Worker: INGEN ÄNDRING.
+
+
+## V0.2.41 – Datoroberoende historisk evidens (2026-09-16)
+- Live-test V0.2.40 på ny dator: FAIL. `Säkra evidens` försökte läsa lokalt engine-resultat och gav `Inget färdigt resultat finns att frysa`.
+- V0.2.41 använder permanent TXT + RAW från releasepaketet för historisk backfill av G4/G5/G6/G7–G12. G6 kräver därmed inte gammal localStorage/IndexedDB.
+- RAW måste vara giltig JSON före frysning. Klienten SHA256-fryser och skickar via befintlig `/evidence`-endpoint; Worker verifierar hash och nekar overwrite som tidigare.
+- G2 lämnas på befintlig engine-väg eftersom komplett permanent TXT+RAW-par inte finns i releasepaketet; ingen evidens fabriceras.
+- Handel AV. Robotmognad 48/100. Inga frysta forskningsresultat ändrade.
+- Cloudflare Worker: INGEN ÄNDRING.

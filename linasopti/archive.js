@@ -3,10 +3,10 @@
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 const EVIDENCE_TARGETS={
  'swing-g2':['G2',()=>window.LinaG2Engine],
- 'g4-universe':['G4',()=>window.LinaG4Engine],
- 'g5-stress':['G5',()=>window.LinaG5Engine],
- 'swing-g6-cost-boundary':['G6',()=>window.LinaG6Engine],
- 'g7-g12-battery':['G7_G12',()=>window.LinaBatteryEngine]
+ 'g4-universe':['G4',()=>window.LinaG4Engine,{report:'LINAS_OPTI_G4_UNIVERSE_V0214_2026-09-15.txt',raw:'LINAS_OPTI_G4_UNIVERSE_RAW_V0214_2026-09-15.json'}],
+ 'g5-stress':['G5',()=>window.LinaG5Engine,{report:'LINAS_OPTI_G5_STRESS_V0217_2026-09-15.txt',raw:'LINAS_OPTI_G5_STRESS_RAW_V0217_2026-09-15.json'}],
+ 'swing-g6-cost-boundary':['G6',()=>window.LinaG6Engine,{report:'LINAS_OPTI_G6_COST_BOUNDARY_V0224_2026-09-15.txt',raw:'LINAS_OPTI_G6_COST_BOUNDARY_RAW_V0224_2026-09-15.json'}],
+ 'g7-g12-battery':['G7_G12',()=>window.LinaBatteryEngine,{report:'LINAS_OPTI_G7_G12_BATTERY_V0226_2026-09-15.txt',raw:'LINAS_OPTI_G7_G12_BATTERY_RAW_V0226_2026-09-15.json'}]
 };
 function evidenceAction(r){
  const t=EVIDENCE_TARGETS[r.id];if(!t||!window.LinaEvidence)return '';
@@ -51,7 +51,7 @@ function render(root,ctx){
  </section>`;
  root.querySelector('#arBack').onclick=ctx.back;
  root.querySelectorAll('.evidence-approve').forEach(b=>b.onclick=async()=>{b.disabled=true;try{await window.LinaEvidence.approveAndSync(b.dataset.id);render(root,ctx)}catch(e){alert(e.message||e)}});
- root.querySelectorAll('.archive-freeze').forEach(b=>b.onclick=async()=>{const t=EVIDENCE_TARGETS[b.dataset.id];if(!t)return;const E=t[1]();b.disabled=true;b.textContent='Säkrar…';try{const q=await window.LinaEvidence.freezeEngine(E,t[0]);b.textContent=q.status==='FROZEN · GITHUB ✓'?'✓ FROZEN · GITHUB ✓':'✓ FROZEN · VÄNTAR PÅ SYNK';if(q.status!=='FROZEN · GITHUB ✓')b.disabled=false}catch(e){b.disabled=false;b.textContent='✓ Säkra evidens';alert(e.message||e)}});
+ root.querySelectorAll('.archive-freeze').forEach(b=>b.onclick=async()=>{const t=EVIDENCE_TARGETS[b.dataset.id];if(!t)return;const E=t[1]();b.disabled=true;b.textContent='Säkrar…';try{const q=t[2]?await window.LinaEvidence.freezeFiles(t[2],t[0]):await window.LinaEvidence.freezeEngine(E,t[0]);b.textContent=q.status==='FROZEN · GITHUB ✓'?'✓ FROZEN · GITHUB ✓':'✓ FROZEN · VÄNTAR PÅ SYNK';if(q.status!=='FROZEN · GITHUB ✓')b.disabled=false}catch(e){b.disabled=false;b.textContent='✓ Säkra evidens';alert(e.message||e)}});
  root.querySelectorAll('.archive-export').forEach(b=>b.onclick=()=>{const r=D.records().find(x=>x.id===b.dataset.id);if(!r)return;const text=D.reportText(r),name=`LINAS_OPTI_ARKIV_${r.id.toUpperCase()}_V0239.txt`;if(window.LinaEvidence)window.LinaEvidence.stage(name,text,'text/plain','ARKIV_VERIFIERAD');D.downloadRecord(r);render(root,ctx)});
  root.querySelectorAll('.archive-filter button').forEach(b=>b.onclick=()=>{
    root.querySelectorAll('.archive-filter button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
