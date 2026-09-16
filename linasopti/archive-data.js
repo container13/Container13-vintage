@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='0.2.38';
+const VERSION='0.2.39';
 const ROBOT_MATURITY=48;
 
 const RECORDS=[
@@ -248,6 +248,20 @@ const RECORDS=[
     decision:'Verifiera nu Evidence-flödet end-to-end med en befintlig fryst arkivrapport. Ingen ny forskning skapas och inga forskningsresultat ändras.'
   }
 
+,
+  {
+    id:'dev-v0239-one-click-freeze',
+    date:'2026-09-16',
+    family:'Utveckling',
+    title:'V0.2.39 – Ett tryck: Godkänn & frys',
+    type:'Evidence / UX',
+    status:'TESTKLAR',
+    candidate:'Ej forskningskandidat',
+    summary:'Det normala evidence-flödet förenklades: ett färdigt resultat godkänns och fryses med en knapp. Lina skapar rapport + resultat-RAW, SHA256-verifierar, fryser och försöker synka direkt till GitHub.',
+    metrics:[['Normal väg','Godkänn & frys → GitHub'],['Offline/fel','FROZEN · VÄNTAR PÅ SYNK'],['Evidencekö','Kontroll / recovery'],['Robotmognad','48/100'],['Handel','AV']],
+    decision:'Minska användarens handgrepp utan att sänka evidenskraven. Live E2E måste verifieras innan funktionen markeras PASS.'
+  }
+
 ]
 
 function forwardRecord(){
@@ -346,7 +360,7 @@ function downloadRecord(rec){
   const text=reportText(rec);
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));
-  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0238.txt`;
+  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0239.txt`;
   a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),500);
 }

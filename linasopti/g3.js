@@ -20,13 +20,13 @@ function render(root,ctx){
   <div class="actions">
    ${!x.planLocked?'<button id="g3Lock" class="primary">🔒 Lås G3-plan</button>':''}
    ${x.planLocked&&x.status!=='complete'?'<button id="g3Run" class="primary">▶ Kör / fortsätt G3</button>':''}
-   ${x.status==='complete'?'<button id="g3Report" class="primary">📤 Exportera G3-rapport</button><button id="g3Raw" class="secondary">Raw JSON</button>':''}
+   ${x.status==='complete'?'<button id="g3Report" class="primary">✓ Godkänn & frys</button><button id="g3Raw" class="secondary">Raw JSON</button>':''}
   </div>
   <div class="g3-note"><b>Checkpoint:</b> topp-12-poolen och varje färdig månadsomträning sparas. Vid avbrott hämtas prisdata på nytt men redan färdiga månadsval körs inte om. Rå prisdata lagras inte permanent i localStorage.</div>
  </section>`;
  root.querySelector('#g3Back').onclick=ctx.back;
  root.querySelector('#g3Lock')?.addEventListener('click',()=>{E.lock();render(root,ctx)});
- root.querySelector('#g3Report')?.addEventListener('click',()=>E.exportReport());
+ root.querySelector('#g3Report')?.addEventListener('click',async()=>{const b=root.querySelector('#g3Report');b.disabled=true;b.textContent='Fryser…';const z=await window.LinaEvidence.freezeEngine(E,'G3');b.textContent=z.status==='FROZEN · GITHUB ✓'?'✓ FROZEN · GITHUB ✓':'✓ FROZEN · VÄNTAR PÅ SYNK'});
  root.querySelector('#g3Raw')?.addEventListener('click',()=>E.exportRaw());
  root.querySelector('#g3Run')?.addEventListener('click',async()=>{const b=root.querySelector('#g3Run'),st=root.querySelector('#g3Status');b.disabled=true;try{await E.run(msg=>st.textContent=msg);render(root,ctx)}catch(e){st.textContent='FEL: '+(e?.message||e);st.classList.add('bad');b.disabled=false}});
 }
