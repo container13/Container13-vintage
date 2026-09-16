@@ -155,3 +155,12 @@ V17 – CLAPHAM GRAND FÖR AGNES
 - Egen K-pop-ruta: Lee Young Ji har spelat på The Grand tidigare.
 - Kapacitetstext förtydligad: upp till 1 250 stående / cirka 700–725 helt sittande.
 - Övriga London-sidor och Min resa/Firebase är orörda.
+
+
+V18 – DAGLIGA EXTRA-IDÉER
+- Reseschemat har fått en tydlig "om ni vill göra mer"-del för fredag, lördag, söndag och måndag.
+- Söndag har extra fokus på lagom aktiviteter före Lee Young Ji-konserten.
+- Fredag hålls lätt efter flygresan; lördag får större sightseeingval; måndag utnyttjar tiden före kvällsflyget.
+- Förslag inkluderar Westfield, Holland Park/Kyoto Garden, Notting Hill/Portobello,
+  South Bank/Big Ben, Camden, Covent Garden och Borough Market.
+- Befintliga bokningar och fasta tider är oförändrade.

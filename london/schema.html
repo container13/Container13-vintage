@@ -28,6 +28,16 @@ h1{font-size:clamp(44px,8vw,78px);line-height:.95;letter-spacing:-.055em;margin:
 </style>
 
 
+
+<style>
+.day-ideas{margin:20px 0 8px;padding:18px;border-radius:20px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(145deg,rgba(16,31,45,.96),rgba(7,18,28,.97))}
+.day-ideas h3{margin:0 0 5px;font-size:20px}.day-ideas .ideas-intro{margin:0 0 13px;color:#aebfcb;font-size:14px}
+.idea-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.idea{padding:13px;border-radius:15px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
+.idea b{display:block;margin-bottom:4px;color:#fff}.idea span{display:block;color:#c3d0d9;font-size:13px;line-height:1.4}
+.idea.easy{border-color:rgba(113,207,171,.24);background:rgba(113,207,171,.055)}
+@media(max-width:700px){.day-ideas{padding:15px}.idea-grid{grid-template-columns:1fr}.idea{padding:12px}}
+</style>
 </head>
 <body>
 <div class="topbar"><div class="topin"><div class="brand">LONDON • 2026</div><div style="display:flex;gap:7px"><a class="oldbtn" href="checklista.html">✓ Inför resan</a><a class="oldbtn" href="minresa/">🔐 Min resa</a><a class="oldbtn" href="./">← Reseguiden</a></div></div></div>
@@ -52,13 +62,21 @@ h1{font-size:clamp(44px,8vw,78px);line-height:.95;letter-spacing:-.055em;margin:
 <label class="task"><input class="check" type="checkbox" data-id="fri-lhr"><div class="tasktext"><span class="time">20:10</span><b>Landning Heathrow</b><span>Följ skyltarna till Elizabeth line.</span></div><div class="icon">🇬🇧</div></label>
 <label class="task"><input class="check" type="checkbox" data-id="fri-transfer"><div class="tasktext"><span class="time">Kväll</span><b>Heathrow → Hilton</b><span>Elizabeth line → Ealing Broadway → Central line → Shepherd’s Bush → 7–10 min promenad. Varsitt kontaktlöst kort/Apple Pay.</span></div><div class="icon">🚇</div></label>
 <label class="task"><input class="check" type="checkbox" data-id="fri-hotel"><div class="tasktext"><span class="time">Kväll</span><b>Checka in på Hilton London Kensington</b><span>Twin Guest Room • frukost ingår • bokat via Agoda.</span></div><div class="icon">🏨</div></label>
-</div></section>
+</div><section class="day-ideas"><h3>✨ Om de orkar mer på fredagen</h3><p class="ideas-intro">Ingen press efter resan – men hotellet ligger bra om de fortfarande är pigga.</p><div class="idea-grid">
+<div class="idea easy"><b>🛍️ Westfield London</b><span>5–10 min från hotellet. Perfekt för en snabb första London-runda, shopping eller något att äta.</span></div>
+<div class="idea"><b>🌃 Kvällspromenad i Notting Hill</b><span>Ta en lugn sväng mot Holland Park/Notting Hill och få lite Londonkänsla direkt första kvällen.</span></div>
+</div></section></section>
 
 <section class="day" id="sat"><div class="daytitle"><h2>Lördag • London 🇬🇧</h2><span class="daytag">Fri dag</span></div><div class="tasks">
 <label class="task"><input class="check" type="checkbox" data-id="sat-breakfast"><div class="tasktext"><span class="time">Morgon</span><b>Frukost på Hilton</b><span>Frukost ingår i hotellbokningen.</span></div><div class="icon">☕</div></label>
 <label class="task"><input class="check" type="checkbox" data-id="sat-london"><div class="tasktext"><span class="time">Dag</span><b>Upptäck London</b><span>Westfield, Notting Hill, Westminster, Big Ben, Buckingham Palace eller det ni känner för.</span></div><div class="icon">📸</div></label>
 <label class="task"><input class="check" type="checkbox" data-id="sat-ready"><div class="tasktext"><span class="time">Kväll</span><b>Kolla söndagens konsertplan</b><span>Kontrollera aktuell trafik till Clapham Junction och ha konsertbiljetterna redo.</span></div><div class="icon">🎤</div></label>
-</div></section>
+</div><section class="day-ideas"><h3>✨ Fler idéer för lördagen</h3><p class="ideas-intro">Lördagen är bästa dagen att välja efter humör – shopping, klassiska London eller mat.</p><div class="idea-grid">
+<div class="idea"><b>🧥 Portobello Road</b><span>Vintage, marknad och färgglada Notting Hill. Lördagen är den stora marknadsdagen.</span></div>
+<div class="idea"><b>🎡 Big Ben + South Bank</b><span>Westminster, Big Ben, London Eye och promenad längs Themsen – mycket London på ganska liten yta.</span></div>
+<div class="idea"><b>🍜 Camden</b><span>Street food, kläder, musik och lite mer ungdomlig marknadskänsla.</span></div>
+<div class="idea"><b>🎭 Covent Garden</b><span>Butiker, gatuliv och mat – enkelt att kombinera med Soho, Chinatown och Leicester Square.</span></div>
+</div></section></section>
 
 <section class="day" id="sun"><div class="daytitle"><h2>Söndag • Lee Young Ji 🎤</h2><span class="daytag">Konsertdagen</span></div><div class="tasks">
 <label class="task"><input class="check" type="checkbox" data-id="sun-ticket"><div class="tasktext"><span class="time">Före avfärd</span><b>Konsertbiljetter redo</b><span>Öppna biljetterna i mobilen innan ni lämnar hotellet.</span></div><div class="icon">🎟️</div></label>
@@ -66,14 +84,24 @@ h1{font-size:clamp(44px,8vw,78px);line-height:.95;letter-spacing:-.055em;margin:
 <label class="task"><input class="check" type="checkbox" data-id="sun-train"><div class="tasktext"><span class="time">Därefter</span><b>Direkt till Clapham Junction</b><span>London Overground • cirka 12–15 minuter • inget byte.</span></div><div class="icon">🚆</div></label>
 <label class="task"><input class="check" type="checkbox" data-id="sun-grand"><div class="tasktext"><span class="time">Konsert</span><b>The Clapham Grand</b><span>St John’s Hill exit – arenan ligger direkt mittemot stationen.</span></div><div class="icon">♥</div></label>
 <label class="task"><input class="check" type="checkbox" data-id="sun-home"><div class="tasktext"><span class="time">Efter konserten</span><b>Tillbaka till Hilton</b><span>Overground tillbaka om den går. Reserv: buss 295 eller taxi/Uber/Bolt.</span></div><div class="icon">🌙</div></label>
-</div></section>
+</div><section class="day-ideas"><h3>✨ Gör söndagen till mer än bara konserten</h3><p class="ideas-intro">Konserten är kvällens huvudnummer, så välj något kul men inte för krävande före Clapham.</p><div class="idea-grid">
+<div class="idea easy"><b>🌿 Holland Park + Kyoto Garden</b><span>Nära hotellet och lugnt. Bra start efter frukost utan att bränna energi före konserten.</span></div>
+<div class="idea"><b>🛍️ Westfield</b><span>Shopping, fika och lunch alldeles nära hotellet. Smidigt att gå tillbaka och byta om innan konserten.</span></div>
+<div class="idea"><b>🍴 Borough Market</b><span>Street food/lunch och sedan en promenad vid Themsen. Söndagsöppet, men avsluta i god tid.</span></div>
+<div class="idea"><b>📸 Notting Hill</b><span>Färgglada hus, Portobello Road och caféer – nära nog för att hålla konsertdagen avslappnad.</span></div>
+</div></section></section>
 
 <section class="day" id="mon"><div class="daytitle"><h2>Måndag • Hemresa 🏠</h2><span class="daytag">London → Stockholm</span></div><div class="tasks">
 <label class="task"><input class="check" type="checkbox" data-id="mon-checkout"><div class="tasktext"><span class="time">Förmiddag</span><b>Checka ut från Hilton</b><span>Kontrollera rummet och att pass, biljetter och laddare är med.</span></div><div class="icon">🧳</div></label>
 <label class="task"><input class="check" type="checkbox" data-id="mon-lhr"><div class="tasktext"><span class="time">Med god marginal</span><b>Hilton → Heathrow</b><span>Shepherd’s Bush → Central line till Ealing Broadway → Elizabeth line till Heathrow.</span></div><div class="icon">🚇</div></label>
 <label class="task"><input class="check" type="checkbox" data-id="mon-flight"><div class="tasktext"><span class="time">19:05</span><b>British Airways hem</b><span>LHR → ARN • direkt • landning 22:25.</span></div><div class="icon">✈️</div></label>
 <label class="task"><input class="check" type="checkbox" data-id="mon-car"><div class="tasktext"><span class="time">Efter 22:25</span><b>Flygets → bilen</b><span>Flygets följer hemflighten för upphämtning efter landning.</span></div><div class="icon">🚗</div></label>
-</div></section>
+</div><section class="day-ideas"><h3>✨ Sista London-timmarna</h3><p class="ideas-intro">Flyget går först 19:05, så måndagen behöver inte bara bli väntan på Heathrow.</p><div class="idea-grid">
+<div class="idea easy"><b>🧳 Lämna väskorna på Hilton</b><span>Checka ut, fråga hotellet om bagageförvaring och ta några sista timmar utan resväskor.</span></div>
+<div class="idea"><b>🌸 Holland Park</b><span>En enkel sista promenad nära hotellet om de vill ha en lugn dag.</span></div>
+<div class="idea"><b>🛍️ Westfield + lunch</b><span>Sista shoppingrundan och lunch innan väskorna hämtas.</span></div>
+<div class="idea"><b>🏙️ Notting Hill</b><span>Fika och en sista promenad bland smågatorna innan det är dags att åka mot Heathrow.</span></div>
+</div></section></section>
 </section>
 
 <div class="actions">
