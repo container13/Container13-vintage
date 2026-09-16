@@ -110,3 +110,10 @@ V12 – FIX PRIVATA DEEP-LINKS
 - flightUrl och hotelUrl öppnas nu exakt som de ligger sparade i skyddade Firestore.
 - De privata länkarna är fortfarande inte inbyggda i HTML/GitHub.
 - Firebase Auth/Firestore-regler och Storage-biljetterna är oförändrade.
+
+
+V13 – MOBIL LÄSBARHET HILTON → CLAPHAM
+- Mobilfix på Reseguiden.
+- "Så hade jag åkt från Hilton" och förklaringen ligger på mobil på den mörka sidbakgrunden i stället för ovanpå bussbilden.
+- Desktoplayouten är oförändrad.
+- Min resa, Firebase Auth, Firestore, Storage och biljettfunktionerna är oförändrade från V12.

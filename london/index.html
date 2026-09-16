@@ -75,7 +75,29 @@ h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16
 .travel-dock{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:10000;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;width:min(620px,calc(100% - 24px));padding:7px;background:rgba(5,15,24,.91);border:1px solid rgba(255,255,255,.12);border-radius:20px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 16px 50px #0009}
 .travel-dock a{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:8px 10px;border-radius:14px;text-decoration:none;color:#fff;font-weight:900;text-align:center;font-size:13px}
 .travel-dock .prep{border:1px solid #d9b86c66;background:#d9b86c12}.travel-dock .sched{background:#fff;color:#07131e}.travel-dock small{display:block;font-size:10px;font-weight:800;opacity:.72}
-</style></head>
+</style>
+<style>
+/* V13 – mobilfix: Hilton → Clapham-texten ska ligga på ren mörk bakgrund,
+   inte ovanpå bussbilden. Desktop lämnas oförändrad. */
+@media (max-width: 700px) {
+  .hilton-route-copy,
+  .hilton-route-copy * {
+    text-shadow: none !important;
+  }
+  .hilton-route-copy {
+    position: relative !important;
+    inset: auto !important;
+    transform: none !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 18px 0 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    z-index: auto !important;
+  }
+}
+</style>
+</head>
 <body>
 <header class="hero">
  <div class="hero-inner">
@@ -220,8 +242,8 @@ h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16
     </div>
   </div>
 
-  <h3 style="font-size:27px;margin-bottom:6px">Så hade jag åkt från Hilton</h3>
-  <p style="font-size:18px">Det här är den enkla vägen: <b>gå till Shepherd’s Bush → direkt Overground till Clapham Junction → arenan ligger mittemot stationen.</b> Inget byte mitt i London.</p>
+  <div class="hilton-route-copy"><h3 style="font-size:27px;margin-bottom:6px">Så hade jag åkt från Hilton</h3>
+  <p style="font-size:18px">Det här är den enkla vägen: <b>gå till Shepherd’s Bush → direkt Overground till Clapham Junction → arenan ligger mittemot stationen.</b> Inget byte mitt i London.</p></div>
 
   <div class="route-steps">
     <div class="route-step">
