@@ -1,8 +1,8 @@
-LONDON DUAL V01
-- london/index.html = nya datumstyrda schemavyn med checkboxar.
-- london/old.html = föregående sida oförändrad.
-- Knappen 'Visa gamla sidan' växlar direkt till old.html.
-- Checkboxar sparas lokalt i webbläsaren med localStorage.
-- Aktuell dag väljs automatiskt efter datum 16–19 oktober 2026.
-- 'Visa hela resan' visar alla dagar.
-- Bokningsnummer/biljetter är INTE inlagda i HTML ännu.
+LONDON GUIDE + SCHEMA V02
+- index.html = den tidigare reseguiden som huvudsida.
+- schema.html = datumstyrt reseschema med checkboxar.
+- Flytande knapp längst ned på huvudsidan öppnar schema.html oavsett scrollposition.
+- Knappen ändrar text automatiskt 16–19 oktober 2026.
+- I schemat finns 'Till reseguiden' tillbaka till huvudsidan.
+- Checkboxar sparas lokalt i aktuell webbläsare/enhet.
+- Inga känsliga bokningsnummer eller biljetter är inlagda.

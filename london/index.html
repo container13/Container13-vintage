@@ -1,134 +1,269 @@
 <!doctype html>
 <html lang="sv">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<meta name="site-version" content="2026-09-16-dual-v01">
-<title>London 2026 • Min resa</title>
+  <!-- Be mobil/webbläsare att alltid kontrollera om en ny version finns -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>London 2026 • Lee Young Ji</title>
 <style>
-:root{--bg:#06101a;--card:#0b1c2b;--card2:#10283c;--gold:#d9b86c;--red:#e82743;--green:#35be69;--muted:#aebdca;--line:#243e52}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at top,#15334b 0,#07131e 34%,#050d15 100%);color:#fff;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.45}
-a{color:inherit}.topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(16px);background:#06111bd9;border-bottom:1px solid #ffffff12;padding:10px 14px}
-.topin{max-width:1050px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:900;letter-spacing:.12em}.oldbtn{border:1px solid #ffffff28;border-radius:999px;padding:9px 13px;text-decoration:none;font-size:13px;font-weight:800;background:#ffffff0a}
-.hero{max-width:1050px;margin:auto;padding:46px 18px 24px}.eyebrow{color:var(--gold);font-weight:900;letter-spacing:.18em;text-transform:uppercase;font-size:12px}
-h1{font-size:clamp(44px,8vw,78px);line-height:.95;letter-spacing:-.055em;margin:12px 0}.hero p{max-width:700px;color:#d5e0e8;font-size:18px}
-.status{display:inline-flex;gap:8px;align-items:center;background:#19875425;border:1px solid #35be6966;color:#bff0d0;border-radius:999px;padding:8px 12px;font-weight:800}
-.wrap{max-width:1050px;margin:auto;padding:0 18px 70px}.today{background:linear-gradient(145deg,#122c42,#091824);border:1px solid #38536a;border-radius:24px;padding:20px;box-shadow:0 22px 70px #0008}
-.todayhead{display:flex;justify-content:space-between;align-items:end;gap:15px;flex-wrap:wrap}.todayhead h2{font-size:31px;margin:3px 0}.date{color:var(--gold);font-weight:800}.next{background:#d9b86c14;border:1px solid #d9b86c55;border-radius:16px;padding:14px;margin:16px 0}
-.daynav{display:flex;gap:8px;overflow:auto;padding:17px 0 5px}.daybtn{border:1px solid #ffffff1c;background:#ffffff08;color:#fff;border-radius:999px;padding:10px 14px;white-space:nowrap;font-weight:800;cursor:pointer}.daybtn.active{background:#fff;color:#08131d}
-.day{display:none;margin-top:18px}.day.active{display:block}.daytitle{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:25px 0 10px}.daytitle h2{margin:0;font-size:28px}.daytag{color:#9fb2c1;font-size:13px}
-.tasks{display:grid;gap:11px}.task{display:grid;grid-template-columns:auto 1fr auto;gap:13px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:17px;padding:15px;transition:.2s}.task.done{opacity:.48;transform:scale(.99)}.task.done .tasktext{text-decoration:line-through}.check{width:27px;height:27px;accent-color:var(--green);cursor:pointer}.time{font-weight:900;color:var(--gold);font-size:14px}.tasktext b{display:block;font-size:17px}.tasktext span{color:#b9c7d2;font-size:14px}.icon{font-size:25px}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.action{background:linear-gradient(145deg,#0f2638,#091723);border:1px solid #2a4357;border-radius:18px;padding:17px}.action b{font-size:18px}.action p{color:#b9c7d2;margin:5px 0 0}
-.private{margin-top:28px;background:linear-gradient(145deg,#251f16,#11100d);border:1px solid #d9b86c66;border-radius:22px;padding:20px}.private h2{margin:0 0 8px}.lock{display:inline-block;color:#1a1408;background:var(--gold);padding:7px 11px;border-radius:999px;font-weight:900;font-size:12px}.privategrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px}.privcard{background:#ffffff08;border:1px solid #ffffff12;border-radius:15px;padding:15px}.privcard small{color:#cdbf9d}.locked{opacity:.65}
-.archive{display:none;margin-top:16px}.archive.show{display:block}.smallbtn{border:0;background:#ffffff10;color:white;border-radius:999px;padding:9px 12px;cursor:pointer;font-weight:800}.foot{text-align:center;color:#7f94a5;padding:35px 10px}
-@media(max-width:700px){.privategrid,.actions{grid-template-columns:1fr}.task{grid-template-columns:auto 1fr}.icon{display:none}.hero{padding-top:32px}.today{padding:16px}}
+:root{--ink:#07111b;--navy:#09243a;--navy2:#0d3453;--red:#e82743;--pink:#ff6c82;--white:#fff;--muted:#b9c6d2;--line:#25445c}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#06111b;color:#fff;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.45}
+a{color:inherit}.hero{min-height:690px;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;padding:90px 20px 150px;overflow:hidden;background:
+linear-gradient(180deg,rgba(2,10,18,.10),rgba(2,10,18,.30) 45%,#06111b 100%),
+url('https://images.unsplash.com/photo-1520986606214-8b456906c813?auto=format&fit=crop&w=1800&q=85') center/cover}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(2,8,15,.34),rgba(2,8,15,.05),rgba(2,8,15,.34));pointer-events:none}
+.hero-inner{position:relative;z-index:2;max-width:900px;margin:auto}.kicker{font-weight:900;letter-spacing:.26em;text-transform:uppercase;font-size:14px}
+h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16px 0 8px;text-shadow:0 4px 28px #000}
+.script{font-family:Georgia,serif;font-style:italic;color:#ff536e;font-size:clamp(28px,4vw,48px);margin:0 0 15px}
+.lead{font-size:clamp(17px,2vw,22px);max-width:720px;margin:auto;text-shadow:0 2px 12px #000}
+.hero-icons{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;margin-top:35px}.hero-icons div{min-width:140px}.hero-icons b{display:block;font-size:16px}.hero-icons span{font-size:13px}
+.wrap{max-width:1180px;margin:-105px auto 0;padding:0 18px 60px;position:relative;z-index:5}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:18px}.option{border:1px solid #2c6c9d;background:linear-gradient(145deg,#0b2b46,#071927);border-radius:20px;padding:22px;box-shadow:0 18px 55px #0008}.option.alt2{border-color:#a92a42;background:linear-gradient(145deg,#3a1520,#160d14)}
+.tag{display:inline-block;padding:5px 10px;border-radius:999px;background:#cfe8ff;color:#08223a;font-weight:900;font-size:12px}.alt2 .tag{background:var(--red);color:white}
+.option h2{font-size:25px;margin:10px 0 0}.sub{color:#d4dde5;margin-top:2px}.flightgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}.flight{background:#f7fafc;color:#101a22;border-radius:13px;padding:14px}.flight .air{font-size:12px;font-weight:900;color:#173c68}.flight b{font-size:18px}.price{font-size:37px;font-weight:950;text-align:center;margin:13px 0 0}.price small{display:block;font-size:13px;font-weight:500;color:#c8d3dc}.checks{padding:0;list-style:none}.checks li{margin:7px 0}.checks li:before{content:"✓";font-weight:900;margin-right:9px}
+.breakfast{background:#ffffff0b;border:1px solid #ffffff14;padding:10px;border-radius:11px;text-align:center;margin-top:15px}
+.section-title{text-align:center;font-size:34px;margin:45px 0 18px}
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.tile{height:255px;border-radius:17px;display:flex;align-items:end;overflow:hidden;background-size:cover;background-position:center;box-shadow:inset 0 -110px 70px #000b}.tile div{padding:15px}.tile b{font-size:18px;display:block}.tile span{font-size:13px;color:#eee}
+.bigben{background-image:url('https://images.unsplash.com/photo-1529655683826-aba9b3e77383?auto=format&fit=crop&w=900&q=80')}
+.bus{background-image:url('https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=900&q=80')}
+.taxi{background-image:url('https://images.unsplash.com/photo-1513026705753-bc3fffca8bf4?auto=format&fit=crop&w=900&q=80')}
+.flag{background-image:url('https://images.unsplash.com/photo-1486299267070-83823f5448dd?auto=format&fit=crop&w=900&q=80')}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.card{background:#0b1d2b;border:1px solid #213b4e;border-radius:18px;padding:18px}.card h3{font-size:21px;margin:0 0 10px}.card img{width:100%;height:210px;object-fit:cover;border-radius:12px}.card p{color:#d3dde5}.pill{display:inline-block;border:1px solid #5b9fd0;padding:9px 13px;border-radius:999px;text-decoration:none;font-weight:800}
+.parking{margin-top:18px;background:#f2f5f7;color:#0b1720;border-radius:20px;padding:24px;display:grid;grid-template-columns:1.2fr .8fr;gap:25px}.parking h2{margin-top:0}.parking .times{background:white;border-radius:15px;padding:17px}.parking .times b{font-size:19px}.parking a{background:#09243a;color:white;padding:12px 16px;border-radius:999px;text-decoration:none;font-weight:850;display:inline-block}
+.note{font-size:12px;color:#667783}.footer{background:linear-gradient(90deg,#bd1530,#f32c48);padding:26px;text-align:center;font-size:22px;font-weight:900}
+@media(max-width:800px){.hero{min-height:610px;padding-bottom:135px}.wrap{margin-top:-90px}.options,.cards,.parking{grid-template-columns:1fr}.gallery{grid-template-columns:1fr 1fr}.tile{height:210px}.flightgrid{grid-template-columns:1fr}.hero-icons{gap:14px}.hero-icons div{min-width:120px}}
+
+.route-hero{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin:18px 0}
+.route-hero img,.route-photo img{width:100%;height:100%;object-fit:cover;border-radius:18px;display:block}
+.route-hero .mainpic{min-height:330px}
+.route-stack{display:grid;grid-template-rows:1fr 1fr;gap:16px}
+.route-stack img{min-height:157px}
+.route-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+.route-step{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);border-radius:18px;overflow:hidden}
+.route-step img{width:100%;height:155px;object-fit:cover}
+.route-step .pad{padding:14px}
+.route-num{font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.route-big{font-size:21px;font-weight:800;margin:4px 0 7px}
+.route-arrow{text-align:center;font-size:28px;margin:-5px 0 2px}
+.route-tip{border-left:4px solid #e72b4d;padding:12px 15px;background:rgba(231,43,77,.1);border-radius:0 12px 12px 0}
+@media(max-width:760px){.route-hero{grid-template-columns:1fr}.route-hero .mainpic{min-height:260px}.route-steps{grid-template-columns:1fr}.route-step img{height:210px}}
+
+</style>  <meta name="site-version" content="2026-09-16-cache01">
+
+<style id="schedule-fab-style">
+.schedule-fab{
+ position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+ z-index:9999; display:flex; align-items:center; gap:10px;
+ padding:13px 20px; border-radius:999px; text-decoration:none;
+ color:#fff; background:rgba(8,22,34,.90);
+ border:1px solid rgba(217,184,108,.65);
+ box-shadow:0 12px 40px rgba(0,0,0,.45);
+ backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+ font-weight:900; letter-spacing:.02em; white-space:nowrap;
+}
+.schedule-fab:hover{transform:translateX(-50%) translateY(-2px)}
+.schedule-fab .fab-sub{font-size:11px;color:#d9b86c;font-weight:800}
+@media(max-width:600px){
+ .schedule-fab{bottom:12px;width:calc(100% - 28px);justify-content:center;padding:13px 15px}
+}
 </style>
+
 </head>
 <body>
-<div class="topbar"><div class="topin"><div class="brand">LONDON • 2026</div><a class="oldbtn" href="old.html">↩ Visa gamla sidan</a></div></div>
 <header class="hero">
-<div class="eyebrow">16–19 oktober 2026 • London</div>
-<h1>MIN RESA</h1>
-<p>Ett enkelt schema som följer resan dag för dag. Bocka av det som är klart – sidan kommer ihåg markeringarna på den här enheten.</p>
-<div class="status">✓ Flyg & hotell bokat och betalt</div>
+ <div class="hero-inner">
+   <div class="kicker">London • 16–19 oktober 2026</div>
+   <h1>LEE YOUNG JI</h1>
+   <div class="script">Live in London ♥</div>
+   <p class="lead">Londonweekend 16–19 oktober 2026 • British Airways • Hilton London Kensington • Lee Young Ji på The Clapham Grand.</p>
+   <div class="hero-icons">
+     <div><b>✈ Direktflyg</b><span>Stockholm → London</span></div>
+     <div><b>▰ 3 nätter</b><span>Hilton London Kensington</span></div>
+     <div><b>♫ Lee Young Ji</b><span>18 oktober 2026</span></div>
+     <div><b>♛ 2 personer</b><span>Londonweekend</span></div>
+   </div>
+ </div>
 </header>
+
 <main class="wrap">
-<section class="today">
-<div class="todayhead"><div><div class="date" id="currentLabel">Resplan</div><h2 id="headline">London väntar 🇬🇧</h2></div><button class="smallbtn" id="showAll">Visa hela resan</button></div>
-<div class="next" id="nextBox"><b>Nästa steg</b><br><span id="nextText">Öppna dagens schema nedan.</span></div>
-<div class="daynav">
-<button class="daybtn" data-day="fri">Fre 16</button><button class="daybtn" data-day="sat">Lör 17</button><button class="daybtn" data-day="sun">Sön 18</button><button class="daybtn" data-day="mon">Mån 19</button>
+
+
+<section class="card" style="max-width:1000px;margin:18px auto 28px;border:2px solid rgba(53,190,105,.55)">
+<div style="display:inline-block;background:#198754;color:white;font-weight:800;padding:8px 14px;border-radius:999px">✓ BOKAT & BETALT</div>
+<h2 style="font-size:30px;margin-bottom:6px">London 16–19 oktober 2026</h2>
+<p style="font-size:18px">Nu är både <b>flyg och Hilton London Kensington bokade</b> för resan.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px">
+<div style="background:rgba(255,255,255,.055);padding:18px;border-radius:16px">
+<h3>✈️ British Airways</h3>
+<p><b>Fre 16 okt:</b> ARN 18:35 → LHR 20:10<br>Direkt • 2 h 35 min</p>
+<p><b>Mån 19 okt:</b> LHR 19:05 → ARN 22:25<br>Direkt • 2 h 20 min</p>
+<p style="font-size:24px"><b>4 179 SEK totalt</b></p>
+<small>Tur & retur • 2 passagerare</small>
+<div style="margin-top:14px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.08)">
+<b>🧳 Handbagage ingår – 2 delar per person</b><br>
+<span>• 1 handbagage som får läggas i bagagehyllan ovanför sätena<br>
+• 1 mindre väska/personlig tillhörighet som får placeras under sätet framför</span>
 </div>
-
-<section class="day" id="fri"><div class="daytitle"><h2>Fredag • Resdagen ✈️</h2><span class="daytag">Stockholm → London</span></div><div class="tasks">
-<label class="task"><input class="check" type="checkbox" data-id="fri-park"><div class="tasktext"><span class="time">ca 15:35</span><b>Flygets långtidsparkering</b><span>Parkera bilen och ta den kostnadsfria transfern till Arlanda.</span></div><div class="icon">🚗</div></label>
-<label class="task"><input class="check" type="checkbox" data-id="fri-arn"><div class="tasktext"><span class="time">18:35</span><b>British Airways från Arlanda</b><span>ARN → LHR • direktflyg • handbagage 2 delar/person.</span></div><div class="icon">✈️</div></label>
-<label class="task"><input class="check" type="checkbox" data-id="fri-lhr"><div class="tasktext"><span class="time">20:10</span><b>Landning Heathrow</b><span>Följ skyltarna till Elizabeth line.</span></div><div class="icon">🇬🇧</div></label>
-<label class="task"><input class="check" type="checkbox" data-id="fri-transfer"><div class="tasktext"><span class="time">Kväll</span><b>Heathrow → Hilton</b><span>Elizabeth line → Ealing Broadway → Central line → Shepherd’s Bush → 7–10 min promenad. Varsitt kontaktlöst kort/Apple Pay.</span></div><div class="icon">🚇</div></label>
-<label class="task"><input class="check" type="checkbox" data-id="fri-hotel"><div class="tasktext"><span class="time">Kväll</span><b>Checka in på Hilton London Kensington</b><span>Twin Guest Room • frukost ingår • bokat via Agoda.</span></div><div class="icon">🏨</div></label>
-</div></section>
-
-<section class="day" id="sat"><div class="daytitle"><h2>Lördag • London 🇬🇧</h2><span class="daytag">Fri dag</span></div><div class="tasks">
-<label class="task"><input class="check" type="checkbox" data-id="sat-breakfast"><div class="tasktext"><span class="time">Morgon</span><b>Frukost på Hilton</b><span>Frukost ingår i hotellbokningen.</span></div><div class="icon">☕</div></label>
-<label class="task"><input class="check" type="checkbox" data-id="sat-london"><div class="tasktext"><span class="time">Dag</span><b>Upptäck London</b><span>Westfield, Notting Hill, Westminster, Big Ben, Buckingham Palace eller det ni känner för.</span></div><div class="icon">📸</div></label>
-<label class="task"><input class="check" type="checkbox" data-id="sat-ready"><div class="tasktext"><span class="time">Kväll</span><b>Kolla söndagens konsertplan</b><span>Kontrollera aktuell trafik till Clapham Junction och ha konsertbiljetterna redo.</span></div><div class="icon">🎤</div></label>
-</div></section>
-
-<section class="day" id="sun"><div class="daytitle"><h2>Söndag • Lee Young Ji 🎤</h2><span class="daytag">Konsertdagen</span></div><div class="tasks">
-<label class="task"><input class="check" type="checkbox" data-id="sun-ticket"><div class="tasktext"><span class="time">Före avfärd</span><b>Konsertbiljetter redo</b><span>Öppna biljetterna i mobilen innan ni lämnar hotellet.</span></div><div class="icon">🎟️</div></label>
-<label class="task"><input class="check" type="checkbox" data-id="sun-walk"><div class="tasktext"><span class="time">60–75 min före önskad ankomst</span><b>Hilton → Shepherd’s Bush</b><span>Promenad cirka 7–10 minuter.</span></div><div class="icon">🚶</div></label>
-<label class="task"><input class="check" type="checkbox" data-id="sun-train"><div class="tasktext"><span class="time">Därefter</span><b>Direkt till Clapham Junction</b><span>London Overground • cirka 12–15 minuter • inget byte.</span></div><div class="icon">🚆</div></label>
-<label class="task"><input class="check" type="checkbox" data-id="sun-grand"><div class="tasktext"><span class="time">Konsert</span><b>The Clapham Grand</b><span>St John’s Hill exit – arenan ligger direkt mittemot stationen.</span></div><div class="icon">♥</div></label>
-<label class="task"><input class="check" type="checkbox" data-id="sun-home"><div class="tasktext"><span class="time">Efter konserten</span><b>Tillbaka till Hilton</b><span>Overground tillbaka om den går. Reserv: buss 295 eller taxi/Uber/Bolt.</span></div><div class="icon">🌙</div></label>
-</div></section>
-
-<section class="day" id="mon"><div class="daytitle"><h2>Måndag • Hemresa 🏠</h2><span class="daytag">London → Stockholm</span></div><div class="tasks">
-<label class="task"><input class="check" type="checkbox" data-id="mon-checkout"><div class="tasktext"><span class="time">Förmiddag</span><b>Checka ut från Hilton</b><span>Kontrollera rummet och att pass, biljetter och laddare är med.</span></div><div class="icon">🧳</div></label>
-<label class="task"><input class="check" type="checkbox" data-id="mon-lhr"><div class="tasktext"><span class="time">Med god marginal</span><b>Hilton → Heathrow</b><span>Shepherd’s Bush → Central line till Ealing Broadway → Elizabeth line till Heathrow.</span></div><div class="icon">🚇</div></label>
-<label class="task"><input class="check" type="checkbox" data-id="mon-flight"><div class="tasktext"><span class="time">19:05</span><b>British Airways hem</b><span>LHR → ARN • direkt • landning 22:25.</span></div><div class="icon">✈️</div></label>
-<label class="task"><input class="check" type="checkbox" data-id="mon-car"><div class="tasktext"><span class="time">Efter 22:25</span><b>Flygets → bilen</b><span>Flygets följer hemflighten för upphämtning efter landning.</span></div><div class="icon">🚗</div></label>
-</div></section>
+</div>
+<div style="background:rgba(255,255,255,.055);padding:18px;border-radius:16px">
+<h3>🏨 Hilton London Kensington</h3><div style="display:inline-block;margin-bottom:8px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.10);font-weight:700">Bokat via Agoda</div>
+<p><b>16–19 okt • 3 nätter</b><br>Twin Guest Room<br>1 vuxen + 1 barn (16 år)<br><b>Frukost ingår</b> • Gratis Wi‑Fi</p>
+<p style="font-size:24px"><b>6 133 kr totalt</b></p><p><small>Debiterat som £464,52</small></p>
+<small>Rum £387,08 + skatter/avgifter £77,44 • betalt</small>
+</div>
+</div>
+<p style="margin-top:16px;padding:14px;background:rgba(25,135,84,.12);border-radius:12px"><b>Betalat hittills:</b> flyg <b>4 179 kr</b> + hotell <b>6 133 kr</b> = <b>10 312 kr totalt</b> för flyg + hotell.</p>
+</section>
+<h2 class="section-title">Londonkänslan</h2>
+<section class="gallery">
+ <div class="tile bigben"><div><b>Big Ben</b><span>Westminster & klassiska London</span></div></div>
+ <div class="tile bus"><div><b>Röd dubbeldäckare</b><span>Precis som det ska vara i London</span></div></div>
+ <div class="tile taxi"><div><b>Black cab</b><span>Klassisk London-taxi</span></div></div>
+ <div class="tile flag"><div><b>Union Jack</b><span>Londonweekend 2026</span></div></div>
 </section>
 
-<div class="actions">
-<div class="action"><b>🚇 Transferbudget</b><p>Räkna försiktigt med zon 6 ↔ zon 1: cirka 200 kr/person enkel resa, cirka 800 kr tur & retur för två.</p></div>
-<div class="action"><b>💳 Londontrafiken</b><p>Inget behöver förköpas. Varsitt kontaktlöst kort/Apple Pay och samma kort/enhet vid in- och utpassering.</p></div>
-</div>
-
-<section class="private">
-<span class="lock">🔐 MIN RESA • FÖRBEREDD</span>
-<h2>Bokningar & biljetter</h2>
-<p>Här kan vi i nästa steg lägga den lösenordsskyddade delen med bokningsreferenser och biljetter. Inga känsliga uppgifter ligger i den här versionen.</p>
-<div class="privategrid">
-<div class="privcard locked"><b>✈️ British Airways</b><br><small>Bokningsreferens & flygbiljetter</small></div>
-<div class="privcard locked"><b>🏨 Agoda / Hilton</b><br><small>Bokningsnummer & hotellvoucher</small></div>
-<div class="privcard locked"><b>🎤 Lee Young Ji</b><br><small>Konsertbiljetter / QR</small></div>
-</div>
+<h2 class="section-title">Hotell, konsert & resa</h2>
+<section class="cards">
+ <article class="card">
+  <img src="https://www.myhotelbreak.com/images/hotels/large1/1665486226exterior1.png" alt="Hilton London Kensington">
+  <h3>▰ Hilton London Kensington</h3>
+  <p><b>16–19 oktober • 3 nätter.</b><br>Holland Park/Shepherd’s Bush. Bra läge för Westfield, Notting Hill och vidare transport in mot centrala London.</p>
+  <p><b>Bokat:</b> Twin Guest Room, 3 nätter, frukost ingår. <b>Bokat via Agoda.</b> <b>6 133 kr totalt</b> (debiterat som £464,52).</p>
+ </article>
+ <article class="card">
+  <img src="https://www.tritonrestoration.co.uk/wp-content/uploads/2024/04/clapham-grand.jpg" alt="The Clapham Grand">
+  <h3>♫ Lee Young Ji</h3>
+  <p><b>Söndag 18 oktober 2026</b><br>The Clapham Grand vid Clapham Junction.</p>
+  <p>Från Hilton: promenad till Shepherd’s Bush och därefter direktförbindelse mot Clapham Junction. Cirka <b>25–30 minuter</b> när anslutningarna passar.</p>
+ </article>
+ <article class="card">
+  <div style="height:210px;border-radius:12px;background:linear-gradient(145deg,#183c56,#071520);display:grid;place-items:center;font-size:76px">✈︎</div>
+  <h3>Se London</h3>
+  <p>Big Ben, Westminster, Hyde Park, Buckingham Palace, Notting Hill, Oxford Street, röda bussar och svarta taxibilar.</p>
+  <p>Det bokade flyget går via Heathrow åt båda håll.</p>
+ </article>
 </section>
-<div class="foot">LONDON 2026 • sidan sparar checkboxar lokalt på enheten</div>
-</main>
-<script>
-const tripDays={fri:'2026-10-16',sat:'2026-10-17',sun:'2026-10-18',mon:'2026-10-19'};
-const order=['fri','sat','sun','mon'];
-const labels={fri:'Fredag • resdagen',sat:'Lördag • London',sun:'Söndag • Lee Young Ji',mon:'Måndag • hemresa'};
-function localYMD(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
-function chooseDay(){
- const now=localYMD(); let day='fri';
- if(now<=tripDays.fri) day='fri'; else if(now===tripDays.sat) day='sat'; else if(now===tripDays.sun) day='sun'; else if(now>=tripDays.mon) day='mon';
- return day;
-}
-function activate(day){
- document.querySelectorAll('.day').forEach(x=>x.classList.toggle('active',x.id===day));
- document.querySelectorAll('.daybtn').forEach(x=>x.classList.toggle('active',x.dataset.day===day));
- document.getElementById('currentLabel').textContent=labels[day];
- document.getElementById('headline').textContent=day==='sun'?'Ikväll: Lee Young Ji ♥':day==='fri'?'Nu börjar Londonresan ✈️':day==='mon'?'Dags för hemresan 🏠':'En hel dag i London 🇬🇧';
- updateNext(day);
- localStorage.setItem('london-active-day',day);
-}
-function updateNext(day){
- const first=[...document.querySelectorAll('#'+day+' .task')].find(t=>!t.querySelector('.check').checked);
- document.getElementById('nextText').textContent=first ? first.querySelector('.tasktext b').textContent+' – '+first.querySelector('.time').textContent : 'Allt för dagen är avbockat ✓';
-}
-document.querySelectorAll('.check').forEach(c=>{
- c.checked=localStorage.getItem('london-task-'+c.dataset.id)==='1';
- c.closest('.task').classList.toggle('done',c.checked);
- c.addEventListener('change',()=>{
-  localStorage.setItem('london-task-'+c.dataset.id,c.checked?'1':'0');
-  c.closest('.task').classList.toggle('done',c.checked);
-  const day=c.closest('.day').id; updateNext(day);
- });
-});
-document.querySelectorAll('.daybtn').forEach(b=>b.addEventListener('click',()=>activate(b.dataset.day)));
-let all=false;
-document.getElementById('showAll').addEventListener('click',e=>{
- all=!all;
- document.querySelectorAll('.day').forEach(d=>d.style.display=all?'block':'');
- e.target.textContent=all?'Visa bara aktuell dag':'Visa hela resan';
- if(!all) activate(localStorage.getItem('london-active-day')||chooseDay());
-});
-activate(chooseDay());
+
+<section class="parking">
+ <div>
+   <h2>🚗 Flygets Långtidsparkering</h2>
+   <p>Flygets ligger i Arlandastad. Transfern till Arlanda tar cirka <b>6 minuter</b>, är kostnadsfri och går dygnet runt. Flygets bokningssystem föreslår <b>3 timmar före flygets avgång</b> och följer hemflighten för upphämtning efter landning.</p>
+   <a href="https://www.flygets.se/">Boka hos Flygets →</a>
+   <p class="note">Boka den verkliga flighten i Flygets system så att deras bevakning och upphämtning kopplas till rätt flyg.</p>
+ </div>
+ </section>
+
+
+
+
+<h2 class="section-title">Transfer till och från flyg ✈️</h2>
+<section class="card" style="max-width:1000px;margin:0 auto 25px">
+  <h3 style="font-size:26px;margin-bottom:8px">Heathrow ↔ Hilton London Kensington</h3>
+  <p style="font-size:18px"><b>Ingen transfer behöver bokas i förväg.</b> Jag hade åkt kollektivt med Elizabeth line + Central line.</p>
+
+  <div class="route-steps">
+    <div class="route-step">
+      <div class="pad">
+        <div class="route-num">1 • Heathrow</div>
+        <div class="route-big">🚆 Elizabeth line</div>
+        Följ skyltarna mot <b>Elizabeth line</b> på Heathrow och åk till <b>Ealing Broadway</b>.
+      </div>
+    </div>
+    <div class="route-step">
+      <div class="pad">
+        <div class="route-num">2 • Ett byte</div>
+        <div class="route-big">🚇 Central line</div>
+        Byt vid <b>Ealing Broadway</b> till Central line österut och åk till <b>Shepherd’s Bush</b>.
+      </div>
+    </div>
+    <div class="route-step">
+      <div class="pad">
+        <div class="route-num">3 • Sista biten</div>
+        <div class="route-big">🚶 Till Hilton</div>
+        Från Shepherd’s Bush går ni längs Holland Park Avenue till <b>Hilton London Kensington</b>. Räkna ungefär <b>7–10 min promenad</b>.
+      </div>
+    </div>
+  </div>
+
+  <div class="breakfast">
+    <b>💳 Biljetter & betalning</b><br>
+    Köp <b>inget i förväg</b>. Varje resenär använder <b>varsitt kontaktlöst bankkort eller Apple Pay</b>. Blippa in och ut med <b>samma kort/enhet</b> under hela resan.
+  </div>
+
+  <div style="margin-top:14px;padding:15px 17px;border-radius:14px;background:rgba(255,255,255,.055)">
+    <b>💷 Transferbudget – ta hellre i lite</b><br>
+    Heathrow ligger i <b>zon 6</b> och centrala London i <b>zon 1</b>. Räkna ungefär <b>£15,50 / cirka 200 kr per person och enkel resa</b> som en trygg budget.<br><br>
+    <b>2 personer enkel resa: cirka 400 kr</b><br>
+    <b>2 personer tur & retur: cirka 800 kr</b><br>
+    <small>Den faktiska kostnaden till Shepherd’s Bush/Hilton kan bli lägre – detta är medvetet en försiktig budget.</small>
+  </div>
+
+  <h3 style="margin-top:24px">Hemresan måndag 19 oktober</h3>
+  <p>Gör samma resa baklänges: <b>Hilton → promenad till Shepherd’s Bush → Central line till Ealing Broadway → Elizabeth line till Heathrow</b>. Flyget hem avgår <b>19:05</b>, så åk med god marginal.</p>
+</section>
+<h2 class="section-title">Söndag 18 oktober – mot Lee Young Ji 🎤</h2>
+<section class="card" style="max-width:1000px;margin:0 auto 25px">
+  <div class="route-hero">
+    <div class="mainpic route-photo">
+      <img src="https://davidekpop.com/wp-content/uploads/2024/12/lee-young-ji-davide-kpop.png?w=1024" alt="Lee Young Ji i London">
+    </div>
+    <div class="route-stack">
+      <img src="https://www.bgphotographic.co.uk/uploads/7/0/2/0/7020207/07-378226-22-03-25-6y69-1005-stratford-claphamjn-shepardsbush_orig.jpg" alt="London Overground vid Shepherd's Bush">
+      <img src="https://static.independent.co.uk/s3fs-public/thumbnails/image/2019/02/12/10/istock-503593816.jpg?fit=crop&height=1200&width=1200" alt="Röd Londonbuss och Big Ben">
+    </div>
+  </div>
+
+  <h3 style="font-size:27px;margin-bottom:6px">Så hade jag åkt från Hilton</h3>
+  <p style="font-size:18px">Det här är den enkla vägen: <b>gå till Shepherd’s Bush → direkt Overground till Clapham Junction → arenan ligger mittemot stationen.</b> Inget byte mitt i London.</p>
+
+  <div class="route-steps">
+    <div class="route-step">
+      <img src="https://i.pinimg.com/736x/a2/e5/8c/a2e58c040e4fe436510363b78088d342.jpg" alt="London station roundel">
+      <div class="pad"><div class="route-num">Steg 1 • cirka 17:45–18:00</div><div class="route-big">🚶 Hilton → Shepherd’s Bush</div>Gå från Hilton London Kensington mot Shepherd’s Bush station. Räkna ungefär <b>7–10 minuter</b>.</div>
+    </div>
+    <div class="route-step">
+      <img src="https://www.bgphotographic.co.uk/uploads/7/0/2/0/7020207/07-378226-22-03-25-6y69-1005-stratford-claphamjn-shepardsbush_orig.jpg" alt="London Overground">
+      <div class="pad"><div class="route-num">Steg 2</div><div class="route-big">🚆 Direkt till Clapham Junction</div>Ta <b>London Overground</b> mot <b>Clapham Junction</b>. Ingen tunnelbana och inget byte. Cirka <b>12–15 minuter</b>.</div>
+    </div>
+    <div class="route-step">
+      <img src="https://anonw.com/wp-content/uploads/2015/10/dscn1812.jpg" alt="Clapham Junction">
+      <div class="pad"><div class="route-num">Steg 3</div><div class="route-big">🎤 Framme!</div>Gå av vid <b>Clapham Junction</b> och följ <b>St John’s Hill exit</b>. The Clapham Grand ligger <b>direkt mittemot stationen</b>.</div>
+    </div>
+  </div>
+
+  <div class="route-tip"><b>Min plan:</b> hellre komma fram lite tidigt, ta något att dricka/äta runt Clapham Junction och sedan gå in på konserten utan stress. Jag hade räknat med <b>60–75 minuter från hotelldörr till önskad ankomsttid</b>, trots att själva resan normalt går betydligt snabbare.</div>
+
+  <h3 style="font-size:25px;margin-top:28px">Efter konserten 🌙</h3>
+  <div class="route-steps" style="grid-template-columns:1fr 1fr">
+    <div class="route-step">
+      <img src="https://www.bgphotographic.co.uk/uploads/7/0/2/0/7020207/07-378226-22-03-25-6y69-1005-stratford-claphamjn-shepardsbush_orig.jpg" alt="Overground tillbaka">
+      <div class="pad"><div class="route-big">🚆 Först: tåget tillbaka</div>Om Overground fortfarande går: <b>Clapham Junction → Shepherd’s Bush</b> och sedan promenaden tillbaka till Hilton.</div>
+    </div>
+    <div class="route-step">
+      <img src="https://static.independent.co.uk/s3fs-public/thumbnails/image/2019/02/12/10/istock-503593816.jpg?fit=crop&height=1200&width=1200" alt="Röd Londonbuss">
+      <div class="pad"><div class="route-big">🚌 Reservplan: buss 295</div>Om tåget inte passar: <b>295 mot Shepherd’s Bush</b>. Den går mellan Clapham Junction och Shepherd’s Bush och är ett bra sent alternativ. Taxi/Uber/Bolt är den bekväma reservplanen.</div>
+    </div>
+  </div>
+  <p class="note">Kolla den exakta söndagsavgången samma dag. Helgarbeten kan påverka Londontrafiken.</p>
+</section>
+<footer class="footer">LONDON 2026 • MUSIK • RESA • UPPLEVELSER</footer>
+
+<a class="schedule-fab" href="schema.html" aria-label="Öppna reseschemat">
+  <span style="font-size:22px">📅</span>
+  <span><span id="fab-title">ÖPPNA RESESCHEMAT</span><br><span class="fab-sub" id="fab-sub">16–19 oktober • London</span></span>
+</a>
+<script id="schedule-fab-script">
+(function(){
+ const ymd=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+ const d=ymd(), t=document.getElementById('fab-title'), s=document.getElementById('fab-sub');
+ if(d==='2026-10-16'){t.textContent='FREDAG • RESEDAGEN';s.textContent='Nästa steg i reseschemat →'}
+ else if(d==='2026-10-17'){t.textContent='LÖRDAG • LONDON';s.textContent='Öppna dagens schema →'}
+ else if(d==='2026-10-18'){t.textContent='🎤 SÖNDAG • KONSERTDAGEN';s.textContent='Lee Young Ji • öppna schemat →'}
+ else if(d==='2026-10-19'){t.textContent='MÅNDAG • HEMRESA';s.textContent='Öppna dagens schema →'}
+})();
 </script>
+
 </body></html>
