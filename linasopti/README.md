@@ -421,3 +421,13 @@ Framtida TXT-rapporter och RAW/resultat-JSON blir PRELIMINÄRA vid export. De m�
 
 ## V0.2.43 – Automatisk Forward med stängd-marknadsdagsspärr (2026-09-16)
 Lina gör Forward catch-up automatiskt vid start. G2/G3 får endast behandla säkert avslutade USA-marknadsdagar. Liveprovet i V0.2.42 visade att 2026-09-16 kunde synas medan USA-sessionen fortfarande pågick; V0.2.43 korrigerar detta och innehåller en snäv, autentiserad Worker-repair för master som ligger framför säker cutoff. Handel AV, robotmognad 48/100.
+
+
+## V0.2.44 – Lina Generation 2 Research Plan (2026-09-16)
+- Nytt separat forskningsspår. Original G2/G3 och Real Forward lämnas helt orörda som kontrollspår.
+- Förregistrerad datadelning: DEV 2020–2022, validation 2023–2024, förseglad holdout 2025-01-01–2026-09-10. Holdout får inte användas för tuning/ranking och öppnas först efter kandidatfrysning.
+- Fyra strategifamiljer låses före resultat: trend/momentum, mean reversion, volatility breakout och regime ensemble.
+- Urval prioriterar robust riskjusterad prestation framför högsta historiska P/L. Minimikrav före holdout: >=80 affärer, PF >=1.20, DD <=12 %, positiv validation och koncentrationsskydd.
+- V0.2.44 producerar inga nya forskningsresultat; nästa steg är runners. Handel AV. Robotmognad 48/100.
+- V0.2.43 live-verifierad: completedThrough och G2/G3 lastMarketDate 2026-09-15 i permanent GitHub-master efter safe-close rollback.
+- Cloudflare Worker: INGEN ÄNDRING. Fortsätt använda verifierad V0.2.43 Worker.

@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='0.2.43';
+const VERSION='0.2.44';
 const ROBOT_MATURITY=48;
 
 const RECORDS=[
@@ -295,7 +295,9 @@ function records(){ return [...RECORDS,{
   },{
     id:'dev-v0242-evidence-e2e-checkpoint',family:'Utveckling',date:'2026-09-16',title:'V0.2.42 – Evidence E2E checkpoint',type:'Verifierad live-checkpoint',status:'PASS · VERIFIED',candidate:'15efd75a',summary:'V0.2.41 verifierades live på en ny dator. Ett tryck på G6 Säkra evidens gav FROZEN · GITHUB ✓ och GitHub kontrollerades därefter manuellt: både G6 TXT/RAW JSON och G7–G12 TXT/RAW JSON finns permanent under linasopti/evidence/2026-09-16/.',metrics:[['Ny dator','PASS'],['G6 ett-trycksflöde','PASS'],['GitHub TXT + RAW','VERIFIERAT'],['Evidence E2E','PASS'],['Robotmognad','48/100'],['Handel','AV']],decision:'Evidence-infrastrukturen betraktas som verifierad för detta flöde. Ingen mer historisk evidence-utbyggnad prioriteras nu; nästa fokus är Real Forward. Inga forskningsresultat eller regler ändras.'
   },{
-    id:'dev-v0243-auto-forward-safe-close',family:'Utveckling',date:'2026-09-16',title:'V0.2.43 – Automatisk Forward + stängd-marknadsdagsspärr',type:'Forward-integritet / automation',status:'BYGGD · LIVE-TEST VÄNTAR',candidate:'15efd75a',summary:'Efter V0.2.42-liveprovet upptäcktes att manuell Forward-uppdatering kunde ta med pågående USA-marknadsdag. V0.2.43 automatiserar catch-up men begränsar G2/G3 till säkert avslutade USA-marknadsdagar. Om GitHub-master ligger framför säker cutoff kan den autentiserade Workern göra en snäv rollback till omräknad säker state.',metrics:[['Auto catch-up','VID LINA-START'],['Marknadsdag','ENDAST AVSLUTAD'],['Intraday 2026-09-16','SKA REPARERAS TILL 2026-09-15 VID TEST'],['Robotmognad','48/100'],['Handel','AV']],decision:'Ingen strategi-, kandidat- eller parameterändring. Ändringen är forskningsintegritet och drift. Live-PASS får först sättas efter deploy av både frontend och Worker samt verifierad GitHub-master.'
+    id:'dev-v0243-auto-forward-safe-close',family:'Utveckling',date:'2026-09-16',title:'V0.2.43 – Automatisk Forward + stängd-marknadsdagsspärr',type:'Forward-integritet / automation',status:'PASS · LIVE VERIFIED',candidate:'15efd75a',summary:'Efter V0.2.42-liveprovet upptäcktes att manuell Forward-uppdatering kunde ta med pågående USA-marknadsdag. V0.2.43 automatiserar catch-up och begränsar G2/G3 till säkert avslutade USA-marknadsdagar. Live verifierat 2026-09-16: permanent GitHub-master korrigerades till completedThrough 2026-09-15 och både G2/G3 lastMarketDate 2026-09-15.',metrics:[['Auto catch-up','VID LINA-START'],['Marknadsdag','ENDAST AVSLUTAD'],['Intraday 2026-09-16','REPARERAD TILL 2026-09-15 · LIVE PASS'],['Robotmognad','48/100'],['Handel','AV']],decision:'LIVE PASS. Ingen strategi-, kandidat- eller parameterändring. Safe-close och permanent GitHub-master verifierades efter F5 och direkt filkontroll.'
+  },{
+    id:'dev-v0244-gen2-plan',family:'Utveckling',date:'2026-09-16',title:'V0.2.44 – Lina Generation 2 Research Plan',type:'Förregistrerad forskningsdesign',status:'PLAN · INGA RESULTAT',candidate:'Ingen kandidat ännu',summary:'Separat Generation 2-labb startas utan att röra original G2/G3. DEV 2020–2022, validation 2023–2024 och förseglad holdout 2025-01-01–2026-09-10. Fyra strategifamiljer låses före första resultat.',metrics:[['DEV','2020–2022'],['Validation','2023–2024'],['Sealed holdout','2025–2026-09-10'],['Familjer','4'],['Robotmognad','48/100'],['Handel','AV']],decision:'Nästa steg är att implementera runners. Holdout får inte öppnas eller påverka tuning/ranking före kandidatfrysning.'
   },forwardRecord(),
   {
     id:'swing-g6-cost-boundary',
