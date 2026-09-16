@@ -387,3 +387,13 @@ Framtida TXT-rapporter och RAW/resultat-JSON blir PRELIMINÄRA vid export. De m�
 - Lina Arkivs Evidence-kö är kontroll/återställning, inte normal arbetsgång.
 - TXT-rapport + resultat-RAW JSON fryses tillsammans. Ingen ny forskning, ingen ändring av frysta resultat. Robotmognad 48/100. Handel AV.
 - Cloudflare Worker: INGEN ÄNDRING.
+
+
+## V0.2.40 – Direkt evidenssäkring från Arkiv (2026-09-16)
+- Redan frysta G2/G4/G5/G6/G7–G12 kan säkras direkt från Lina Arkiv med `✓ Säkra evidens`.
+- Ett tryck skapar TXT + RAW JSON, SHA256-fryser och försöker GitHub-synk automatiskt.
+- Idempotens: redan `FROZEN · GITHUB ✓` skapas inte om eller skrivs över.
+- Vid tillfälligt synkfel visas `FROZEN · VÄNTAR PÅ SYNK`.
+- Evidence-kön är fortsatt endast kontroll/recovery.
+- Inga forskningsresultat eller regler ändrade. Robotmognad 48/100. Handel AV.
+- Cloudflare Worker: INGEN ÄNDRING.

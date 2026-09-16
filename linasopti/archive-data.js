@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='0.2.39';
+const VERSION='0.2.40';
 const ROBOT_MATURITY=48;
 
 const RECORDS=[
@@ -288,7 +288,9 @@ function forwardRecord(){
   };
 }
 
-function records(){ return [...RECORDS,forwardRecord(),
+function records(){ return [...RECORDS,{
+    id:'dev-v0240-archive-evidence-direct',family:'Utveckling',date:'2026-09-16',title:'V0.2.40 – Direkt evidenssäkring från Arkiv',type:'Evidence UX / idempotens',status:'PASS · RELEASE',candidate:'15efd75a',summary:'Redan frysta historiska resultat kan nu säkras direkt från Arkivet med ett tryck. Lina skapar rapport + RAW, SHA256-fryser och synkar till GitHub. Redan GitHub-säkrad evidens återanvänds och dupliceras inte.',metrics:[['Normal ny evidens','Godkänn & frys'],['Historisk backfill','Säkra evidens'],['Dublettskydd','Idempotent'],['Handel','AV']],decision:'Förenklar evidensflödet utan att ändra forskningsresultat, regler eller robotmognad.'
+  },forwardRecord(),
   {
     id:'swing-g6-cost-boundary',
     family:'Swing G6',
@@ -360,7 +362,7 @@ function downloadRecord(rec){
   const text=reportText(rec);
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));
-  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0239.txt`;
+  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0240.txt`;
   a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),500);
 }
