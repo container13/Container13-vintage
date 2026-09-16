@@ -126,3 +126,10 @@ V14 – ROBUST MOBILFIX HILTON-TEXT
 - Desktop lämnas oförändrad.
 - site-version bumpad till 2026-09-16-v14.
 - Min resa/Firebase/bokningar/biljetter är orörda.
+
+
+V15 – TRANSPARENT MOBILPANEL
+- Hilton→Clapham-panelen på mobil är nu mörkt transparent i stället för helsvart.
+- Bakgrunden/bussbilden syns igenom som i godkänd referensbild.
+- Lätt 2px backdrop-blur behåller läsbarheten.
+- Desktop och Min resa/Firebase/bokningar/biljetter är orörda.
