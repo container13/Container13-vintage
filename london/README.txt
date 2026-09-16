@@ -95,3 +95,11 @@ TEST
 5. Öppna hotellbokningen och kontrollera Agoda.
 6. Testa båda konsertbiljetterna.
 7. Logga ut och kontrollera att reseplånboken döljs.
+
+
+V11 – FIX FLYG/HOTELLKNAPPAR
+- V10 hade kvar flyg/hotell som <span>, därför fanns inga klickbara DOM-element med rätt id.
+- Bytt till riktiga button-element: flightBooking och hotelBooking.
+- Knapparna startar låsta och aktiveras först när flightUrl/hotelUrl lästs från skyddade Firestore.
+- Disabled-styling följer knappens faktiska status.
+- Privata länkar ligger fortfarande inte i HTML/GitHub.
