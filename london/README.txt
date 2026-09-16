@@ -117,3 +117,12 @@ V13 – MOBIL LÄSBARHET HILTON → CLAPHAM
 - "Så hade jag åkt från Hilton" och förklaringen ligger på mobil på den mörka sidbakgrunden i stället för ovanpå bussbilden.
 - Desktoplayouten är oförändrad.
 - Min resa, Firebase Auth, Firestore, Storage och biljettfunktionerna är oförändrade från V12.
+
+
+V14 – ROBUST MOBILFIX HILTON-TEXT
+- V13 gav ingen synlig skillnad eftersom textens normala position redan var relative.
+- På mobil får Hilton→Clapham-texten nu en egen helt mörk, ogenomskinlig panel.
+- Vit text, ingen textskugga, tydlig padding och kant.
+- Desktop lämnas oförändrad.
+- site-version bumpad till 2026-09-16-v14.
+- Min resa/Firebase/bokningar/biljetter är orörda.

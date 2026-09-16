@@ -51,7 +51,7 @@ h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16
 .route-tip{border-left:4px solid #e72b4d;padding:12px 15px;background:rgba(231,43,77,.1);border-radius:0 12px 12px 0}
 @media(max-width:760px){.route-hero{grid-template-columns:1fr}.route-hero .mainpic{min-height:260px}.route-steps{grid-template-columns:1fr}.route-step img{height:210px}}
 
-</style>  <meta name="site-version" content="2026-09-16-cache01">
+</style>  <meta name="site-version" content="2026-09-16-v14">
 
 <style id="schedule-fab-style">
 .schedule-fab{
@@ -79,21 +79,41 @@ h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16
 <style>
 /* V13 – mobilfix: Hilton → Clapham-texten ska ligga på ren mörk bakgrund,
    inte ovanpå bussbilden. Desktop lämnas oförändrad. */
-@media (max-width: 700px) {
-  .hilton-route-copy,
-  .hilton-route-copy * {
-    text-shadow: none !important;
-  }
+@media (max-width: 760px) {
   .hilton-route-copy {
     position: relative !important;
     inset: auto !important;
     transform: none !important;
-    width: auto !important;
+    display: block !important;
+    width: 100% !important;
     max-width: none !important;
-    margin: 18px 0 0 !important;
-    padding: 0 !important;
-    background: transparent !important;
-    z-index: auto !important;
+    box-sizing: border-box !important;
+    margin: 16px 0 20px !important;
+    padding: 18px 18px 16px !important;
+    background: #07131e !important;
+    border: 1px solid rgba(255,255,255,.14) !important;
+    border-radius: 16px !important;
+    z-index: 5 !important;
+    isolation: isolate !important;
+  }
+  .hilton-route-copy h3,
+  .hilton-route-copy p,
+  .hilton-route-copy b {
+    position: static !important;
+    transform: none !important;
+    color: #fff !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+  }
+  .hilton-route-copy h3 {
+    margin: 0 0 8px !important;
+    font-size: 25px !important;
+    line-height: 1.12 !important;
+  }
+  .hilton-route-copy p {
+    margin: 0 !important;
+    font-size: 17px !important;
+    line-height: 1.48 !important;
   }
 }
 </style>
