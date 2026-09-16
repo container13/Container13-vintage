@@ -77,3 +77,21 @@ TEST
 4. Tryck Malins biljett -> PDF ska öppnas.
 5. Tryck Agnes biljett -> den andra PDF:en ska öppnas.
 6. Logga ut -> reseplånboken och biljettknapparna ska försvinna.
+
+
+V10 – PRIVATA FLYG- OCH HOTELLBOKNINGAR
+- flightUrl och hotelUrl läses från london_private/travel_wallet efter godkänd London-inloggning.
+- Inga privata bokningslänkar är inbyggda i HTML/GitHub.
+- Flyg- och hotellknappar är avstängda tills Firestore-data har lästs.
+- Endast https-länkar öppnas.
+- V09:s autentiserade biljett-PDF-hämtning från Firebase Storage är kvar.
+- ready-fältet behöver inte ändras för V10.
+
+TEST
+1. Lägg upp V10.
+2. Logga in på Min resa.
+3. Kontrollera att Privat data verifierad visas.
+4. Öppna flygbokningen och kontrollera Flightnetwork.
+5. Öppna hotellbokningen och kontrollera Agoda.
+6. Testa båda konsertbiljetterna.
+7. Logga ut och kontrollera att reseplånboken döljs.
