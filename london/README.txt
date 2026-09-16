@@ -103,3 +103,10 @@ V11 – FIX FLYG/HOTELLKNAPPAR
 - Knapparna startar låsta och aktiveras först när flightUrl/hotelUrl lästs från skyddade Firestore.
 - Disabled-styling följer knappens faktiska status.
 - Privata länkar ligger fortfarande inte i HTML/GitHub.
+
+
+V12 – FIX PRIVATA DEEP-LINKS
+- Tog bort V11:s new URL()/https-normalisering som gav "Bokningslänken är ogiltig".
+- flightUrl och hotelUrl öppnas nu exakt som de ligger sparade i skyddade Firestore.
+- De privata länkarna är fortfarande inte inbyggda i HTML/GitHub.
+- Firebase Auth/Firestore-regler och Storage-biljetterna är oförändrade.
