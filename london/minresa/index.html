@@ -34,7 +34,7 @@ a{color:inherit}.top{padding:14px 16px;display:flex;justify-content:space-betwee
 </section>
 
 <section class="wallet" id="wallet">
- <div class="wallethead"><div><small>16–19 OKTOBER 2026</small><h2>Reseplånbok</h2></div><button class="logout" id="logout" type="button">LÅS / LOGGA UT</button></div>
+ <div class="wallethead"><div><small>16–19 OKTOBER 2026</small><h2>Reseplånbok</h2><small id="firestoreStatus">Kontrollerar privat data…</small></div><button class="logout" id="logout" type="button">LÅS / LOGGA UT</button></div>
  <div class="cards">
   <article class="card"><div class="ico">✈️</div><div><h3>British Airways</h3><div class="meta">ARN → LHR • fredag 16 oktober<br>LHR → ARN • måndag 19 oktober</div></div><div class="actions"><span class="btn disabled">ÖPPNA FLYGBOKNING</span></div></article>
   <article class="card"><div class="ico">🏨</div><div><h3>Hilton London Kensington</h3><div class="meta">16–19 oktober • 3 nätter • Agoda</div></div><div class="actions"><span class="btn disabled">ÖPPNA HOTELLBOKNING</span></div></article>
@@ -44,7 +44,7 @@ a{color:inherit}.top{padding:14px 16px;display:flex;justify-content:space-betwee
   </article>
  </div>
 </section>
-<div class="devnote">V07 testar riktig Firebase-inloggning. Privata biljettfiler och bokningslänkar läggs fortfarande inte in förrän åtkomstskyddet är verifierat.</div>
+<div class="devnote">V08 testar Firestore-skyddet. Vid rätt London-inloggning ska sidan kunna läsa london_private/travel_wallet. Inga riktiga biljetter eller bokningslänkar finns ännu.</div>
 </main>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
@@ -52,6 +52,7 @@ import {
   getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut,
   setPersistence, browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDDWaTS_Yyo5X-skYiJ5nQYX5Jc5ZSa1tw",
@@ -66,6 +67,7 @@ const LONDON_EMAIL = "london@container13.se";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 await setPersistence(auth, browserLocalPersistence);
 
 const login = document.getElementById("login");
@@ -75,16 +77,30 @@ const eye = document.getElementById("eye");
 const status = document.getElementById("status");
 const unlock = document.getElementById("unlock");
 const logout = document.getElementById("logout");
+const firestoreStatus = document.getElementById("firestoreStatus");
 
 function showLocked(){
   login.style.display = "";
   wallet.style.display = "none";
   pw.value = "";
 }
-function showWallet(){
+async function showWallet(){
   login.style.display = "none";
   wallet.style.display = "block";
   status.textContent = "";
+  firestoreStatus.textContent = "🔐 Kontrollerar privat Firestore-data…";
+  try {
+    const snap = await getDoc(doc(db, "london_private", "travel_wallet"));
+    if (!snap.exists()) throw new Error("missing-document");
+    const data = snap.data();
+    firestoreStatus.textContent = "✓ Privat data verifierad • ready = " + String(data.ready);
+  } catch (err) {
+    firestoreStatus.textContent = "⛔ Privat data kunde inte läsas";
+    wallet.style.display = "none";
+    login.style.display = "";
+    status.textContent = "Inloggningen lyckades, men åtkomst till London-bankfacket nekades.";
+    await signOut(auth);
+  }
 }
 eye.addEventListener("click",()=>{
   pw.type = pw.type === "password" ? "text" : "password";
@@ -100,7 +116,7 @@ async function doLogin(){
       await signOut(auth);
       throw new Error("wrong-user");
     }
-    showWallet();
+    await showWallet();
   }catch(e){
     status.textContent="Fel lösenord – försök igen.";
     pw.select();
@@ -113,7 +129,7 @@ pw.addEventListener("keydown",e=>{if(e.key==="Enter")doLogin()});
 logout.addEventListener("click", async()=>{await signOut(auth); showLocked()});
 
 onAuthStateChanged(auth, async user=>{
-  if(user && user.email === LONDON_EMAIL) showWallet();
+  if(user && user.email === LONDON_EMAIL) await showWallet();
   else {
     if(user) await signOut(auth);
     showLocked();
