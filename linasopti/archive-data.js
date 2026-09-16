@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='0.2.41';
+const VERSION='0.2.42';
 const ROBOT_MATURITY=48;
 
 const RECORDS=[
@@ -292,6 +292,8 @@ function records(){ return [...RECORDS,{
     id:'dev-v0240-archive-evidence-direct',family:'Utveckling',date:'2026-09-16',title:'V0.2.40 – Direkt evidenssäkring från Arkiv',type:'Evidence UX / idempotens',status:'PASS · RELEASE',candidate:'15efd75a',summary:'Redan frysta historiska resultat kan nu säkras direkt från Arkivet med ett tryck. Lina skapar rapport + RAW, SHA256-fryser och synkar till GitHub. Redan GitHub-säkrad evidens återanvänds och dupliceras inte.',metrics:[['Normal ny evidens','Godkänn & frys'],['Historisk backfill','Säkra evidens'],['Dublettskydd','Idempotent'],['Handel','AV']],decision:'Förenklar evidensflödet utan att ändra forskningsresultat, regler eller robotmognad.'
   },{
     id:'dev-v0241-cross-device-evidence',family:'Utveckling',date:'2026-09-16',title:'V0.2.41 – Datoroberoende historisk evidens',type:'Cross-device evidence / livefix',status:'PASS · RELEASE',candidate:'15efd75a',summary:'Live-test av V0.2.40 på ny dator gav FAIL: Säkra evidens letade efter lokalt engine-resultat och visade “Inget färdigt resultat finns att frysa”. V0.2.41 hämtar i stället permanenta TXT/RAW-filer som redan ingår i Lina-releasen för G4/G5/G6/G7–G12.',metrics:[['V0.2.40 live-test','FAIL'],['Orsak','lokal runtime-data saknades'],['V0.2.41 källa','permanent release-evidens'],['Handel','AV']],decision:'Historisk evidens får inte bero på localStorage/IndexedDB på den dator där säkringen utförs. Frysta forskningsresultat är oförändrade.'
+  },{
+    id:'dev-v0242-evidence-e2e-checkpoint',family:'Utveckling',date:'2026-09-16',title:'V0.2.42 – Evidence E2E checkpoint',type:'Verifierad live-checkpoint',status:'PASS · VERIFIED',candidate:'15efd75a',summary:'V0.2.41 verifierades live på en ny dator. Ett tryck på G6 Säkra evidens gav FROZEN · GITHUB ✓ och GitHub kontrollerades därefter manuellt: både G6 TXT/RAW JSON och G7–G12 TXT/RAW JSON finns permanent under linasopti/evidence/2026-09-16/.',metrics:[['Ny dator','PASS'],['G6 ett-trycksflöde','PASS'],['GitHub TXT + RAW','VERIFIERAT'],['Evidence E2E','PASS'],['Robotmognad','48/100'],['Handel','AV']],decision:'Evidence-infrastrukturen betraktas som verifierad för detta flöde. Ingen mer historisk evidence-utbyggnad prioriteras nu; nästa fokus är Real Forward. Inga forskningsresultat eller regler ändras.'
   },forwardRecord(),
   {
     id:'swing-g6-cost-boundary',
@@ -364,7 +366,7 @@ function downloadRecord(rec){
   const text=reportText(rec);
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));
-  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0241.txt`;
+  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0242.txt`;
   a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),500);
 }

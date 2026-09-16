@@ -406,3 +406,14 @@ Framtida TXT-rapporter och RAW/resultat-JSON blir PRELIMINÄRA vid export. De m�
 - G2 lämnas på befintlig engine-väg eftersom komplett permanent TXT+RAW-par inte finns i releasepaketet; ingen evidens fabriceras.
 - Handel AV. Robotmognad 48/100. Inga frysta forskningsresultat ändrade.
 - Cloudflare Worker: INGEN ÄNDRING.
+
+
+## V0.2.42 – Evidence E2E checkpoint (2026-09-16)
+- Byggd från V0.2.41 COMPLETE.
+- V0.2.41 live-verifierades på en ny dator: G6 `✓ Säkra evidens` gick i ett tryck till `FROZEN · GITHUB ✓`.
+- GitHub verifierades manuellt efteråt. Under `linasopti/evidence/2026-09-16/` finns både TXT och RAW JSON för G6 samt G7–G12.
+- Evidence-kedjan för detta historiska cross-device-flöde markeras **END-TO-END PASS**.
+- V0.2.40-livefelet förblir dokumenterat som FAIL; historiken skrivs inte om.
+- Inga forskningsresultat, parametrar eller regler ändrade. Robotmognad 48/100. Handel AV.
+- Nästa fokus: kontroll av Real Forward-status och fortsatt ny, tidsmässigt framåtriktad evidens; inga G13+-historiska tester startas här.
+- Cloudflare Worker: **INGEN ÄNDRING**.
