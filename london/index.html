@@ -119,6 +119,29 @@ h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16
   }
 }
 </style>
+
+<style>
+.grand-story{margin:26px 0;padding:28px;border:1px solid rgba(255,255,255,.13);border-radius:24px;background:linear-gradient(145deg,rgba(14,30,44,.97),rgba(6,17,27,.98))}
+.grand-story-kicker{font-size:12px;font-weight:900;letter-spacing:.16em;color:#d7b66a;margin-bottom:8px}
+.grand-story h2{margin:0 0 10px;font-size:29px;line-height:1.12}
+.grand-story-intro{margin:0;color:#dce7ef;line-height:1.55}
+.grand-numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.grand-numbers div{text-align:center;padding:15px 8px;border-radius:16px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09)}
+.grand-numbers strong{display:block;font-size:25px;color:#fff}.grand-numbers span{font-size:12px;color:#9eb2c1}
+.grand-timeline{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.grand-timeline p{margin:0;padding:15px;border-radius:15px;background:rgba(255,255,255,.04);color:#dce7ef;line-height:1.48}
+.grand-curiosity{margin-top:14px;padding:16px;border-radius:16px;background:rgba(215,182,106,.09);border:1px solid rgba(215,182,106,.22);line-height:1.5}
+.grand-curiosity b{display:block;color:#e3c77f;margin-bottom:5px}.grand-curiosity span{color:#dce7ef}
+.grand-location{margin:15px 0 0;color:#9fd9c5;font-size:13px}
+@media(max-width:760px){
+ .grand-story{margin:20px 0;padding:19px 16px;border-radius:19px}
+ .grand-story h2{font-size:25px}
+ .grand-numbers{gap:7px;margin:17px 0}
+ .grand-numbers div{padding:12px 4px}.grand-numbers strong{font-size:21px}
+ .grand-timeline{grid-template-columns:1fr;gap:8px}
+ .grand-timeline p{padding:13px}
+}
+</style>
 </head>
 <body>
 <header class="hero">
@@ -270,7 +293,35 @@ h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16
   <div class="route-steps">
     <div class="route-step">
       <img src="https://i.pinimg.com/736x/a2/e5/8c/a2e58c040e4fe436510363b78088d342.jpg" alt="London station roundel">
-      <div class="pad"><div class="route-num">Steg 1 • cirka 17:45–18:00</div><div class="route-big">🚶 Hilton → Shepherd’s Bush</div>Gå från Hilton London Kensington mot Shepherd’s Bush station. Räkna ungefär <b>7–10 minuter</b>.</div>
+      <div class="pad"><div class="route-num">Steg 1 • cirka 17:45–18:00</div>
+<section class="grand-story">
+  <div class="grand-story-kicker">🎭 THE CLAPHAM GRAND</div>
+  <h2>125+ år av shower, film, bingo & live-musik</h2>
+  <p class="grand-story-intro">Det är inte bara en konsertlokal. The Grand öppnade <b>26 november 1900</b> som <i>The New Grand Theatre of Varieties</i> och är idag en av Storbritanniens få kvarvarande riktiga viktorianska varietépalats.</p>
+
+  <div class="grand-numbers">
+    <div><strong>1900</strong><span>öppnade</span></div>
+    <div><strong>1 250</strong><span>upp till stående</span></div>
+    <div><strong>≈ 700–725</strong><span>helt sittande</span></div>
+  </div>
+
+  <div class="grand-timeline">
+    <p><b>🎩 Music Hall-eran</b><br>En ung <b>Charlie Chaplin</b> stod på scen här, tillsammans med dåtidens stora varietéstjärnor som Marie Lloyd och Little Tich.</p>
+    <p><b>🎬 Bio & en klassisk duo</b><br>Lokalen fick filmduk på 1920-talet och blev senare heltidsbio. En av de tidiga filmkvällarna bjöd på <b>Laurel & Hardy</b>. Morecambe & Wise framförde också tidigt eget material här.</p>
+    <p><b>🎱 1960–70-tal</b><br>Den pampiga teatern blev bingohall. År <b>1978 blev byggnaden Grade II-listad</b>, vilket hjälpte till att skydda den när framtiden senare var osäker.</p>
+    <p><b>🎸 Från viktoriansk scen till konserter</b><br>Efter restaureringen öppnade The Grand åter 1991 och blev på nytt en riktig livescen. Genom åren har bland andra <b>The Kinks, The Verve, Suede, Jamiroquai och Courtney Love</b> spelat här.</p>
+    <p><b>🎤 Samma scen som...</b><br>Lite mer igenkännbart idag: <b>Oasis, Muse, George Ezra, Rag’n’Bone Man och Girls Aloud</b> hör till namnen som har uppträtt på The Grand. Och långt före dem stod till och med <b>Charlie Chaplin</b> på scen här.</p>
+    <p><b>🇰🇷 K-pop på The Grand</b><br>The Grand har också blivit en scen för K-pop-evenemang. <b>Lee Young Ji har spelat här tidigare</b> – så konserten den 18 oktober 2026 blir en återkomst till samma Londonarena.</p>
+  </div>
+
+  <div class="grand-curiosity">
+    <b>💡 Kuriosa</b>
+    <span>Premiärkvällen 1900 innehöll inte bara musik och komik – publiken fick även se akrobater, uppträdande ponnyer och en man som jonglerade med banjos. En av The Grands tidiga managers, Walter Gibbons, gick senare vidare och byggde London Palladium.</span>
+  </div>
+
+  <p class="grand-location">📍 21–25 St John’s Hill • mitt emot Clapham Junction</p>
+</section>
+<div class="route-big">🚶 Hilton → Shepherd’s Bush</div>Gå från Hilton London Kensington mot Shepherd’s Bush station. Räkna ungefär <b>7–10 minuter</b>.</div>
     </div>
     <div class="route-step">
       <img src="https://www.bgphotographic.co.uk/uploads/7/0/2/0/7020207/07-378226-22-03-25-6y69-1005-stratford-claphamjn-shepardsbush_orig.jpg" alt="London Overground">

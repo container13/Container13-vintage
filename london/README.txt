@@ -133,3 +133,25 @@ V15 – TRANSPARENT MOBILPANEL
 - Bakgrunden/bussbilden syns igenom som i godkänd referensbild.
 - Lätt 2px backdrop-blur behåller läsbarheten.
 - Desktop och Min resa/Firebase/bokningar/biljetter är orörda.
+
+
+V16 – THE CLAPHAM GRAND HISTORIA & KURIOSA
+- Ny faktadel i Reseguiden om konsertarenan.
+- Historik från öppningen 1900 via bio/bingo till dagens livescen.
+- Kapacitet: upp till 1 250 stående / 725 sittande enligt venue.
+- Namn ur venuehistoriken: Charlie Chaplin, Marie Lloyd, Little Tich, Laurel & Hardy,
+  Morecambe & Wise, The Kinks, George Clinton, Nick Cave, Public Enemy, The Verve,
+  Suede, Manic Street Preachers, Jamiroquai, Courtney Love, Oasis, Muse, Brian May,
+  George Ezra och Rag'n'Bone Man.
+- Kuriosa om premiärkvällen 1900 och Walter Gibbons/London Palladium.
+- Mobilanpassad faktakort-layout.
+- Min resa/Firebase/bokningar/biljetter är orörda.
+
+
+V17 – CLAPHAM GRAND FÖR AGNES
+- Artistdelen omarbetad med mer igenkännbara namn: Oasis, Muse, George Ezra,
+  Rag'n'Bone Man och Girls Aloud.
+- Charlie Chaplin behålls som historisk kuriosa.
+- Egen K-pop-ruta: Lee Young Ji har spelat på The Grand tidigare.
+- Kapacitetstext förtydligad: upp till 1 250 stående / cirka 700–725 helt sittande.
+- Övriga London-sidor och Min resa/Firebase är orörda.
