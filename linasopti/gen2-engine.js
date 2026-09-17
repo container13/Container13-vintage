@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='V0.2.52', PLAN_HASH='1d5f8bc1', RUNNER_SPEC_HASH='c7f6a2d9';
+const VERSION='V0.2.54', PLAN_HASH='1d5f8bc1', RUNNER_SPEC_HASH='c7f6a2d9';
 const KEY='lina_clean_gen2_engine_v0246', DB='lina_gen2_market_v1', STORE='bars';
 const WINDOWS=Object.freeze({development:Object.freeze(['2020-01-01','2022-12-31']),validation:Object.freeze(['2023-01-01','2024-12-31'])});
 const SEALED_HOLDOUT=Object.freeze(['2025-01-01','2026-09-10']);
@@ -48,6 +48,38 @@ async function persistEvidence(f,result,runAt){
  const synced=await E.approveAndSync(item.id);return {status:synced?.status||'FROZEN',name,githubPath:synced?.githubPath||null,githubCommit:synced?.githubCommit||null};
 }
 async function runFamily(f){assertPlan();let x=init();if(!x.runnerSpecLocked)throw Error('Lås runnerspec före första körning');if(!FAMILIES.includes(f))throw Error('Okänd familj');if(x.familyResults?.[f])throw Error('BLOCKERAD: familjen är redan körd; negativ och positiv evidens får inte skrivas över');const dev=await data(...WINDOWS.development),val=await data(...WINDOWS.validation),rows=[];for(const p of gridFor(f)){progress(`${f} · ${rows.length+1}/${gridFor(f).length}`);const d=evalOne(f,dev,p),v=evalOne(f,val,p);rows.push({params:p,dev:d,validation:v,eligible:qualifies({...v,n:d.n+v.n})&&v.pl>0,score:rank(v)})}rows.sort((a,b)=>b.score-a.score);const best=rows[0],runAt=new Date().toISOString();x=load();x.runs.push({at:runAt,family:f,trials:rows.length,allVariantsStored:true});x.familyResults[f]={status:best?.eligible?'PASS':'FAIL',trials:rows.length,best,variants:rows,evidence:{status:'LOKALT SPARAD · SYNK PÅGÅR'}};if(!best?.eligible)x.negativeResults.push({at:runAt,family:f,status:'FAIL',reason:'Ingen variant klarade låsta minimikrav'});x.status='DEV_VALIDATION_RUNNING';save(x);progress(`${f} · alla ${rows.length} varianter lokalt sparade · fryser evidens…`);let ev;try{ev=await persistEvidence(f,x.familyResults[f],runAt)}catch(e){ev={status:'FROZEN · VÄNTAR PÅ SYNK',syncError:String(e?.message||e)}}x=load();if(x.familyResults?.[f]){x.familyResults[f].evidence=ev;save(x)}return x.familyResults[f]}
+function candidateScore(z){return z?.best?rank(z.best.validation):-Infinity}
+function selectCandidate(){
+  const x=load();if(!x?.runnerSpecLocked)throw Error('BLOCKERAD: runnerspec saknas');
+  const pass=FAMILIES.map(f=>({family:f,z:x.familyResults?.[f]})).filter(o=>o.z?.status==='PASS'&&o.z?.best);
+  if(!pass.length)throw Error('BLOCKERAD: ingen PASS-kandidat finns');
+  pass.sort((a,b)=>candidateScore(b.z)-candidateScore(a.z)||a.family.localeCompare(b.family));
+  const w=pass[0];return {family:w.family,params:w.z.best.params,dev:w.z.best.dev,validation:w.z.best.validation,score:candidateScore(w.z),selection:'LOCKED_RISK_ADJUSTED_RANK'};
+}
+async function freezeCandidate(){
+  assertPlan();let x=init();if(x.candidate?.locked)return x.candidate;
+  const c=selectCandidate(),at=new Date().toISOString();
+  const frozen={schema:'LINA-GEN2-CANDIDATE-1',locked:true,lockedAt:at,planHash:PLAN_HASH,runnerSpecHash:RUNNER_SPEC_HASH,tradeEnabled:false,holdout:'SEALED',...c,evidence:{status:'LOKALT FRYST · SYNK PÅGÅR'}};
+  x.candidate=frozen;x.status='CANDIDATE_FROZEN';save(x);
+  const E=window.LinaEvidence;if(!E?.stage||!E?.approveAndSync)throw Error('Evidence-modulen saknas');
+  const name=`LINAS_GEN2_CANDIDATE_FREEZE_V0254_${at.slice(0,10)}.json`,item=E.stage(name,JSON.stringify(frozen,null,2),'application/json','Lina Gen2 Candidate');
+  if(!item?.id)throw Error('Candidate evidence staging fail');
+  const r=await E.approveAndSync(item.id);x=load();x.candidate.evidence={status:r?.status||'FROZEN',name,githubPath:r?.githubPath||null,githubCommit:r?.githubCommit||null};save(x);
+  window.LinaGitHubSync?.queueSync?.();return x.candidate;
+}
+async function runHoldout(){
+  assertPlan();let x=init();const c=x.candidate;
+  if(!c?.locked||!String(c.evidence?.status||'').includes('GITHUB'))throw Error('BLOCKERAD: kandidat måste vara fryst och GitHub-verifierad');
+  if(x.holdoutResults)throw Error('BLOCKERAD: Holdout är redan körd och får inte köras om');
+  const a=SEALED_HOLDOUT[0],b=SEALED_HOLDOUT[1];progress('Holdout · hämtar förseglad data…');
+  const by=await data(a,b);progress('Holdout · kör exakt fryst kandidat…');const r=evalOne(c.family,by,c.params),at=new Date().toISOString();
+  const pass=r.n>=SPEC.selection.minimumTrades&&r.pf>=SPEC.selection.profitFactor&&Math.abs(r.dd)<=SPEC.selection.maxDrawdown&&r.pl>0&&r.maxSymbolGrossProfitShare<=SPEC.selection.concentrationGuard.maxSingleSymbolGrossProfitShare;
+  const result={schema:'LINA-GEN2-HOLDOUT-1',runAt:at,planHash:PLAN_HASH,runnerSpecHash:RUNNER_SPEC_HASH,candidate:{family:c.family,params:c.params,lockedAt:c.lockedAt},window:[a,b],status:pass?'PASS':'FAIL',metrics:r,tradeEnabled:false,evidence:{status:'LOKALT FRYST · SYNK PÅGÅR'}};
+  x.holdoutOpened=true;x.holdoutResults=result;x.status='HOLDOUT_COMPLETE';save(x);
+  const E=window.LinaEvidence;if(!E?.stage||!E?.approveAndSync)throw Error('Evidence-modulen saknas efter lokal holdout-låsning');
+  const name=`LINAS_GEN2_HOLDOUT_V0254_${at.slice(0,10)}.json`,item=E.stage(name,JSON.stringify(result,null,2),'application/json','Lina Gen2 Holdout');
+  if(!item?.id)throw Error('Holdout evidence staging fail');const er=await E.approveAndSync(item.id);x=load();x.holdoutResults.evidence={status:er?.status||'FROZEN',name,githubPath:er?.githubPath||null,githubCommit:er?.githubCommit||null};save(x);window.LinaGitHubSync?.queueSync?.();return x.holdoutResults;
+}
 function report(){const x=load()||fresh(),L=['LINAS OPTI – GENERATION 2 DEV/VALIDATION','Release: '+VERSION,'Plan: '+PLAN_HASH,'Runner spec: '+RUNNER_SPEC_HASH,'Handel: AV','Holdout: SEALED','','Familjer'];for(const f of FAMILIES){const z=x.familyResults[f];L.push(`${f}: ${z?z.status+' · '+z.trials+' trials · DEV '+JSON.stringify(z.best?.dev)+' · VAL '+JSON.stringify(z.best?.validation):'EJ KÖRD'}`)}L.push('','Negativa resultat bevarade: '+x.negativeResults.length,'Holdoutresultat: INGA');return L.join('\n')}
-window.LinaGen2Engine={VERSION,PLAN_HASH,RUNNER_SPEC_HASH,SPEC,WINDOWS,SEALED_HOLDOUT,FAMILIES,load,init,lockRunnerSpec,preflight,runFamily,report,assertWindow};
+window.LinaGen2Engine={VERSION,PLAN_HASH,RUNNER_SPEC_HASH,SPEC,WINDOWS,SEALED_HOLDOUT,FAMILIES,load,init,lockRunnerSpec,preflight,runFamily,selectCandidate,freezeCandidate,runHoldout,report,assertWindow};
 })();

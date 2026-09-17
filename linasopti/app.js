@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  const APP_VERSION='0.2.53';
+  const APP_VERSION='0.2.54';
   const cards=[
     ['forward','Forward','Riktig forward-validering · G2 + G3 parallellt.'],
     ['research','Forskning','Frysta originalspåret fortsätter Real Forward. Lina Generation 2 är ett separat forskningslabb för nya strategifamiljer.'],
@@ -99,16 +99,21 @@
       window.location.assign(next);
     });
   }
-  function startApp(){
+  async function startApp(){
     const app=document.querySelector('#app');
-    if(!app)return;
-    app.hidden=false;
-    installRefresh();
-    installGitHubSync();
-    installBrandHome();
-    registerRoutes();
-    window.LinaRouter.start();
-    // V0.2.43: automatisk Forward catch-up vid varje ny Lina-session. Endast avslutade USA-marknadsdagar behandlas.
+    if(!app||app.dataset.started==='1')return;
+    app.dataset.started='1';app.hidden=false;
+    installRefresh();installGitHubSync();installBrandHome();
+    const b=document.getElementById('githubSync'),label=b?.querySelector('small');
+    if(b)b.disabled=true;if(label)label.textContent='Återställer…';
+    try{
+      if(!window.LinaGitHubSync?.bootstrap)throw new Error('Cross-device-modulen saknas');
+      const r=await window.LinaGitHubSync.bootstrap();
+      if(label)label.textContent='GitHub ✓';if(b)b.title=`GitHub synkad · state återställt · ${r.keys} poster`;
+    }catch(e){
+      if(label)label.textContent='Synkfel';if(b){b.classList.add('bad');b.title='Automatisk GitHub-återställning stoppad: '+String(e?.message||e)}
+    }finally{if(b)b.disabled=false}
+    registerRoutes();window.LinaRouter.start();
     setTimeout(()=>window.LinaForwardCenter?.autoCatchUp?.().catch(e=>console.warn('Auto Forward stoppad:',e)),0);
   }
   window.LinaApp={version:APP_VERSION,start:startApp};

@@ -513,3 +513,12 @@ Gen2-moduler laddas nu före app-start. Router visar explicit renderfel i ställ
 - Holdout 2025-01-01–2026-09-10 förblir SEALED. Handel AV. Robotmognad 48/100.
 - Planhash `1d5f8bc1` och runnerspec `c7f6a2d9` är oförändrade.
 - Cloudflare Worker: ingen ändring.
+
+## V0.2.54 – Cross-device State + Candidate/Holdout Pipeline (2026-09-17)
+- GitHub app-state återställs automatiskt efter godkänd login innan router/forskningsvyer startar. Ny dator får därmed senaste beständiga `lina_clean_*`-state utan manuell Synka.
+- Gen2/evidence-förändringar köar automatisk GitHub-synk; headerns Synka finns kvar som reserv.
+- Pre-holdout-evidens från V0.2.53 förblir orörd och måste vara `FROZEN · GITHUB ✓` innan kandidatfrysning.
+- Candidate Freeze använder den redan låsta riskjusterade rankfunktionen/runnerspecen. Ingen ny parameteroptimering och ingen omkörning.
+- Kandidaten fryses och GitHub-verifieras innan Holdout-knappen blir tillgänglig.
+- Holdout 2025-01-01–2026-09-10 körs exakt en gång med fryst kandidat. PASS eller FAIL sparas lokalt först, fryses som separat evidens och synkas till GitHub. Omtag blockeras.
+- Handel AV och robotmognad 48/100. Original G2/G3 Real Forward orört. Cloudflare Worker oförändrad (V0.2.43).
