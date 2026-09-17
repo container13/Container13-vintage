@@ -514,7 +514,7 @@ Gen2-moduler laddas nu före app-start. Router visar explicit renderfel i ställ
 - Planhash `1d5f8bc1` och runnerspec `c7f6a2d9` är oförändrade.
 - Cloudflare Worker: ingen ändring.
 
-## V0.2.54 – Cross-device State + Candidate/Holdout Pipeline (2026-09-17)
+## V0.2.55 – Cross-device State + Candidate/Holdout Pipeline (2026-09-17)
 - GitHub app-state återställs automatiskt efter godkänd login innan router/forskningsvyer startar. Ny dator får därmed senaste beständiga `lina_clean_*`-state utan manuell Synka.
 - Gen2/evidence-förändringar köar automatisk GitHub-synk; headerns Synka finns kvar som reserv.
 - Pre-holdout-evidens från V0.2.53 förblir orörd och måste vara `FROZEN · GITHUB ✓` innan kandidatfrysning.

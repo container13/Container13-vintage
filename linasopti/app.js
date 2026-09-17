@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  const APP_VERSION='0.2.54';
+  const APP_VERSION='0.2.55';
   const cards=[
     ['forward','Forward','Riktig forward-validering · G2 + G3 parallellt.'],
     ['research','Forskning','Frysta originalspåret fortsätter Real Forward. Lina Generation 2 är ett separat forskningslabb för nya strategifamiljer.'],
@@ -13,7 +13,10 @@
   function registerRoutes(){
     const R=window.LinaRouter;
     R.register('dashboard',root=>{
-      shell(root,'Linas lägesbild','Clean Core är den nya tekniska basen. Ingen legacy-kod körs här.',`<div class="grid">${cards.map(([r,t,d])=>`<button class="card" data-route="${r}"><b>${t}</b><small>${d}</small></button>`).join('')}</div>`);
+      const sync=(()=>{try{return JSON.parse(sessionStorage.getItem('lina_sync_status')||'{}')}catch{return {}}})();
+      const rec=(()=>{try{return JSON.parse(sessionStorage.getItem('lina_recovery_report')||'{}')}catch{return {}}})();
+      const sys=`<div class="statusline system-health"><b>Systemstatus:</b> GitHub ${sync.ok?'✓':'?'} · State ${sync.ok?'✓':'?'} · Evidence ${sync.ok?'✓':'?'} · Handel AV${rec.recovered?.length?`<br><small>Local Recovery: ${rec.recovered.length} unik${rec.recovered.length===1?'':'a'} lokal${rec.recovered.length===1?' post':'a poster'} bevarad${rec.recovered.length===1?'':'e'} · GitHub vann ${rec.conflicts?.length||0} konflikt${(rec.conflicts?.length||0)===1?'':'er'}.</small>`:'<br><small>Local Recovery: inga unika lokala poster behövde räddas.</small>'}</div>`;
+      shell(root,'Linas lägesbild','Clean Core är den nya tekniska basen. Ingen legacy-kod körs här.',sys+`<div class="grid">${cards.map(([r,t,d])=>`<button class="card" data-route="${r}"><b>${t}</b><small>${d}</small></button>`).join('')}</div>`);
       root.querySelectorAll('[data-route]').forEach(b=>b.onclick=()=>R.navigate(b.dataset.route));
     });
     R.register('research',root=>{
@@ -102,17 +105,22 @@
   async function startApp(){
     const app=document.querySelector('#app');
     if(!app||app.dataset.started==='1')return;
-    app.dataset.started='1';app.hidden=false;
+    app.dataset.started='1';
+    const startup=document.getElementById('startupGate'),stepEl=document.getElementById('startupStep'),detailEl=document.getElementById('startupDetail'),bar=document.getElementById('startupBar');
+    if(startup)startup.hidden=false; app.hidden=true;
+    const stages={local:15,github:35,compare:52,recover:68,evidence:84,ready:100};
+    const progress=(stage,detail)=>{if(stepEl)stepEl.textContent=detail||stage;if(detailEl)detailEl.textContent=detail||'';if(bar)bar.style.width=(stages[stage]||10)+'%'};
     installRefresh();installGitHubSync();installBrandHome();
     const b=document.getElementById('githubSync'),label=b?.querySelector('small');
     if(b)b.disabled=true;if(label)label.textContent='Återställer…';
     try{
       if(!window.LinaGitHubSync?.bootstrap)throw new Error('Cross-device-modulen saknas');
-      const r=await window.LinaGitHubSync.bootstrap();
+      const r=await window.LinaGitHubSync.bootstrap(progress);
       if(label)label.textContent='GitHub ✓';if(b)b.title=`GitHub synkad · state återställt · ${r.keys} poster`;
     }catch(e){
       if(label)label.textContent='Synkfel';if(b){b.classList.add('bad');b.title='Automatisk GitHub-återställning stoppad: '+String(e?.message||e)}
     }finally{if(b)b.disabled=false}
+    if(startup){await new Promise(r=>setTimeout(r,220));startup.hidden=true} app.hidden=false;
     registerRoutes();window.LinaRouter.start();
     setTimeout(()=>window.LinaForwardCenter?.autoCatchUp?.().catch(e=>console.warn('Auto Forward stoppad:',e)),0);
   }
