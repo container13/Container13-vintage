@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  const APP_VERSION='0.2.47';
+  const APP_VERSION='0.2.48';
   const cards=[
     ['forward','Forward','Riktig forward-validering · G2 + G3 parallellt.'],
     ['research','Forskning','Frysta originalspåret fortsätter Real Forward. Lina Generation 2 är ett separat forskningslabb för nya strategifamiljer.'],
@@ -28,7 +28,7 @@
       root.querySelector('#battery').onclick=()=>R.navigate('battery');
       root.querySelector('#brokerGate').onclick=()=>R.navigate('broker-gate');
     });
-    R.register('gen2',root=>window.LinaGen2Lab.render(root,{back:()=>R.navigate('research')}));
+    R.register('gen2',root=>{if(!window.LinaGen2Lab)throw new Error('Gen2-modulen är inte laddad. Uppdatera sidan.');window.LinaGen2Lab.render(root,{back:()=>R.navigate('research')})});
     R.register('g2',root=>window.LinaG2.render(root,{back:()=>R.navigate('research'),broker:()=>R.navigate('broker-gate')}));
     R.register('g3',root=>window.LinaG3.render(root,{back:()=>R.navigate('research')}));
     R.register('g4',root=>window.LinaG4.render(root,{back:()=>R.navigate('research')}));

@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='V0.2.47', PLAN_HASH='1d5f8bc1', RUNNER_SPEC_HASH='c7f6a2d9';
+const VERSION='V0.2.48', PLAN_HASH='1d5f8bc1', RUNNER_SPEC_HASH='c7f6a2d9';
 const KEY='lina_clean_gen2_engine_v0246', DB='lina_gen2_market_v1', STORE='bars';
 const WINDOWS=Object.freeze({development:Object.freeze(['2020-01-01','2022-12-31']),validation:Object.freeze(['2023-01-01','2024-12-31'])});
 const SEALED_HOLDOUT=Object.freeze(['2025-01-01','2026-09-10']);
