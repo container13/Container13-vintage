@@ -1,3 +1,6 @@
+## V0.2.56 – Holdout closure UI
+Rättar Holdout-status, visar exakt låst FAIL-kriterium och markerar Gen2 avslutad utan rescue/omkörning. Forskningsregler/resultat oförändrade. Cloudflare: INGEN ÄNDRING.
+
 # Lina Clean Core V0.2.33
 
 ## V0.2.32 – GitHub Shared Forward State
