@@ -503,3 +503,13 @@ Gen2-moduler laddas nu före app-start. Router visar explicit renderfel i ställ
 - V0.2.52 fryser ingen kandidat och öppnar inte Holdout. Efter låst beslut markeras endast att systemet är redo för ett separat kandidatfrysningssteg.
 - Holdout 2025-01-01–2026-09-10 är fortsatt SEALED. Handel AV. Robotmognad 48/100. Original G2/G3/Real Forward orörda.
 - Cloudflare Worker: INGEN ÄNDRING. Befintlig verifierad `/evidence`-endpoint används.
+
+
+## V0.2.53 — Evidence sync recovery
+- Fixar integrationen där `LinaEvidence.stage()` skapade evidensposten men inte returnerade posten till Gen2.
+- Ett redan låst V0.2.52 pre-holdout-beslut ändras inte och körs inte om.
+- Ny återställningsknapp synkar den redan frysta/stagade Gen2-evidensen till GitHub.
+- Kandidatfrysning förblir blockerad tills status är `FROZEN · GITHUB ✓`.
+- Holdout 2025-01-01–2026-09-10 förblir SEALED. Handel AV. Robotmognad 48/100.
+- Planhash `1d5f8bc1` och runnerspec `c7f6a2d9` är oförändrade.
+- Cloudflare Worker: ingen ändring.
