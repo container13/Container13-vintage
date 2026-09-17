@@ -1,0 +1,36 @@
+{
+  "schema": "LINA-GEN2-CANDIDATE-1",
+  "locked": true,
+  "lockedAt": "2026-09-17T19:15:08.486Z",
+  "planHash": "1d5f8bc1",
+  "runnerSpecHash": "c7f6a2d9",
+  "tradeEnabled": false,
+  "holdout": "SEALED",
+  "family": "Regime ensemble",
+  "params": {
+    "trendWeight": 0.4,
+    "meanWeight": 0.3,
+    "volWeight": 0.3
+  },
+  "dev": {
+    "n": 90,
+    "pl": 6222.972919314592,
+    "pf": 1.157511323409876,
+    "dd": -0.11761287506472679,
+    "wr": 0.5307142857142857,
+    "maxSymbolGrossProfitShare": 0.2356603251107284
+  },
+  "validation": {
+    "n": 85,
+    "pl": 20418.62093954032,
+    "pf": 2.3261766155097163,
+    "dd": -0.05064874290961857,
+    "wr": 0.6350315780821167,
+    "maxSymbolGrossProfitShare": 0.1705997035990143
+  },
+  "score": 225.0053575245535,
+  "selection": "LOCKED_RISK_ADJUSTED_RANK",
+  "evidence": {
+    "status": "LOKALT FRYST · SYNK PÅGÅR"
+  }
+}
