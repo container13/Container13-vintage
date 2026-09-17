@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  const APP_VERSION='0.2.56';
+  const APP_VERSION='0.2.57';
   const cards=[
     ['forward','Forward','Riktig forward-validering · G2 + G3 parallellt.'],
     ['research','Forskning','Frysta originalspåret fortsätter Real Forward. Lina Generation 2 är ett separat forskningslabb för nya strategifamiljer.'],
@@ -20,9 +20,9 @@
       root.querySelectorAll('[data-route]').forEach(b=>b.onclick=()=>R.navigate(b.dataset.route));
     });
     R.register('research',root=>{
-      shell(root,'Forskning','Originalspåret är fryst/forward. Generation 2 är ett separat labb för nya strategifamiljer.',`<button class="back" id="home">← Dashboard</button><div class="grid"><button class="card" id="gen2"><b>🧪 Lina Generation 2</b><small>PLANLÅS · Research Engine · holdout förseglad</small></button><button class="card" disabled><b>Jägaren</b><small>Fryst · portas senare</small></button><button class="card" disabled><b>Swing G1</b><small>Fryst · portas senare</small></button><button class="card" id="g2"><b>Swing G2</b><small>KLAR · positiv kandidat</small></button><button class="card" id="g3"><b>Swing G3 Walk-Forward</b><small>PASS · metod fryst · plan 75838ed5</small></button><button class="card" id="g4"><b>Swing G4 Universe Robustness</b><small>PASS · FRYST · plan 95d2e735</small></button><button class="card" id="g5"><b>Swing G5 Stress Test</b><small>FAIL · FRYST · plan 6ec36eb2</small></button><button class="card" id="g6"><b>Swing G6 Execution Cost Boundary</b><small>PASS · FRYST · plan 1567bbbe</small></button><button class="card" id="battery"><b>G7–G12 Research Battery</b><small>6/6 PASS · FRYST</small></button><button class="card" id="brokerGate"><b>Broker/Cost Gate</b><small>Aktiv · kostnader, API och mäklarval</small></button></div>`);
+      shell(root,'Forskning','Originalspåret är fryst/forward. Generation 2 är ett separat labb för nya strategifamiljer.',`<button class="back" id="home">← Dashboard</button><div class="grid"><button class="card" id="gen2"><b>🧪 Lina Generation 2</b><small>AVSLUTAD · Holdout FAIL · permanent evidens</small></button><button class="card" id="gen3new"><b>🧪 Lina Generation 3</b><small>NY FÖRREGISTRERING · forward-only slutprov</small></button><button class="card" disabled><b>Jägaren</b><small>Fryst · portas senare</small></button><button class="card" disabled><b>Swing G1</b><small>Fryst · portas senare</small></button><button class="card" id="g2"><b>Swing G2</b><small>KLAR · positiv kandidat</small></button><button class="card" id="g3"><b>Swing G3 Walk-Forward</b><small>PASS · metod fryst · plan 75838ed5</small></button><button class="card" id="g4"><b>Swing G4 Universe Robustness</b><small>PASS · FRYST · plan 95d2e735</small></button><button class="card" id="g5"><b>Swing G5 Stress Test</b><small>FAIL · FRYST · plan 6ec36eb2</small></button><button class="card" id="g6"><b>Swing G6 Execution Cost Boundary</b><small>PASS · FRYST · plan 1567bbbe</small></button><button class="card" id="battery"><b>G7–G12 Research Battery</b><small>6/6 PASS · FRYST</small></button><button class="card" id="brokerGate"><b>Broker/Cost Gate</b><small>Aktiv · kostnader, API och mäklarval</small></button></div>`);
       root.querySelector('#home').onclick=()=>R.navigate('dashboard');
-      root.querySelector('#gen2').onclick=()=>R.navigate('gen2');
+      root.querySelector('#gen2').onclick=()=>R.navigate('gen2');root.querySelector('#gen3new').onclick=()=>R.navigate('gen3new');
       root.querySelector('#g2').onclick=()=>R.navigate('g2');
       root.querySelector('#g3').onclick=()=>R.navigate('g3');
       root.querySelector('#g4').onclick=()=>R.navigate('g4');
@@ -31,7 +31,7 @@
       root.querySelector('#battery').onclick=()=>R.navigate('battery');
       root.querySelector('#brokerGate').onclick=()=>R.navigate('broker-gate');
     });
-    R.register('gen2',root=>{if(!window.LinaGen2Lab)throw new Error('Gen2-modulen är inte laddad. Uppdatera sidan.');window.LinaGen2Lab.render(root,{back:()=>R.navigate('research')})});
+    R.register('gen2',root=>{if(!window.LinaGen2Lab)throw new Error('Gen2-modulen är inte laddad. Uppdatera sidan.');window.LinaGen2Lab.render(root,{back:()=>R.navigate('research')})});R.register('gen3new',root=>{if(!window.LinaGen3)throw new Error('Gen3-modulen är inte laddad. Uppdatera sidan.');window.LinaGen3.render(root,{back:()=>R.navigate('research')})});
     R.register('g2',root=>window.LinaG2.render(root,{back:()=>R.navigate('research'),broker:()=>R.navigate('broker-gate')}));
     R.register('g3',root=>window.LinaG3.render(root,{back:()=>R.navigate('research')}));
     R.register('g4',root=>window.LinaG4.render(root,{back:()=>R.navigate('research')}));
