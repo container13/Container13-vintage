@@ -1,0 +1,32 @@
+{
+  "schema": "LINA-GEN2-HOLDOUT-1",
+  "runAt": "2026-09-17T19:16:45.865Z",
+  "planHash": "1d5f8bc1",
+  "runnerSpecHash": "c7f6a2d9",
+  "candidate": {
+    "family": "Regime ensemble",
+    "params": {
+      "trendWeight": 0.4,
+      "meanWeight": 0.3,
+      "volWeight": 0.3
+    },
+    "lockedAt": "2026-09-17T19:15:08.486Z"
+  },
+  "window": [
+    "2025-01-01",
+    "2026-09-10"
+  ],
+  "status": "FAIL",
+  "metrics": {
+    "n": 45,
+    "pl": 14890.592695581156,
+    "pf": 1.651830012774906,
+    "dd": -0.07473027211165882,
+    "wr": 0.5253768457752257,
+    "maxSymbolGrossProfitShare": 0.31253970715026397
+  },
+  "tradeEnabled": false,
+  "evidence": {
+    "status": "LOKALT FRYST · SYNK PÅGÅR"
+  }
+}
