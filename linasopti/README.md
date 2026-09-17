@@ -465,3 +465,10 @@ Lina gör Forward catch-up automatiskt vid start. G2/G3 får endast behandla sä
 
 ## V0.2.48 – Gen2 navigation load-order fix
 Gen2-moduler laddas nu före app-start. Router visar explicit renderfel i stället för tyst återhopp. Forskningsregler, planhash 1d5f8bc1, holdout och Forward är oförändrade. Cloudflare Worker: INGEN ÄNDRING.
+
+
+## V0.2.49 – Gen2 plan-hash recovery
+- Fixar den verifierade orsaken till att Gen2-modulen inte laddades i V0.2.48.
+- Den förregistrerade PLAN-payloaden hade oavsiktligt ändrats i fältet `next`, vilket ändrade beräknad hash från låsta `1d5f8bc1` till `1b97692d` och fick `gen2-lab.js` att avbryta innan `window.LinaGen2Lab` registrerades.
+- Återställer exakt V0.2.45/V0.2.44 PLAN-payload och därmed hash `1d5f8bc1`. Runnerlogik ligger separat och ändrar inte den frysta planen.
+- Holdout fortsatt SEALED, Handel AV, robotmognad 48/100. Original G2/G3 och Real Forward orörda. Worker: ingen ändring.
