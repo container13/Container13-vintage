@@ -472,3 +472,24 @@ Gen2-moduler laddas nu före app-start. Router visar explicit renderfel i ställ
 - Den förregistrerade PLAN-payloaden hade oavsiktligt ändrats i fältet `next`, vilket ändrade beräknad hash från låsta `1d5f8bc1` till `1b97692d` och fick `gen2-lab.js` att avbryta innan `window.LinaGen2Lab` registrerades.
 - Återställer exakt V0.2.45/V0.2.44 PLAN-payload och därmed hash `1d5f8bc1`. Runnerlogik ligger separat och ändrar inte den frysta planen.
 - Holdout fortsatt SEALED, Handel AV, robotmognad 48/100. Original G2/G3 och Real Forward orörda. Worker: ingen ändring.
+
+
+## V0.2.50 – Gen2 DEV/Validation audit före kandidatfrysning (2026-09-17)
+- Byggd från V0.2.49 FLAT COMPLETE efter att alla fyra förregistrerade Gen2-familjer körts live.
+- Ingen forskningsregel, parametergrid, ranking, datadelning eller tidigare resultat ändras. Planhash `1d5f8bc1` och runnerspec `c7f6a2d9` är oförändrade.
+- Ny auditvy härleder de låsta PASS/FAIL-kriterierna från den redan sparade topprankade varianten per familj: totalt affärsantal (DEV + Validation), Validation PF, Validation DD, positiv Validation P/L och koncentrationsskydd.
+- Körjournalen visar totalt 15 registrerade parameterförsök: 4 Trend/momentum, 4 Mean reversion, 4 Volatility breakout och 3 Regime ensemble.
+- Evidensbegränsning upptäckt och bevarad: V0.2.49 sparade försöksantal + endast topprankad variant per familj; de övriga 11 variant-raderna sparades inte permanent. V0.2.50 fabricerar eller kör inte om dem.
+- Kandidatfrysning markeras därför BLOCKERAD tills variantnivå-evidensen hanteras genom ett uttryckligt senare beslut. Holdout förblir SEALED och har ingen runner/resultatyta.
+- Original G2/G3/Real Forward orörda. Handel AV. Robotmognad 48/100.
+- Cloudflare Worker: INGEN ÄNDRING. Verifierad V0.2.43 Worker används oförändrad.
+
+
+## V0.2.51 – Gen2 permanent all-variant evidence (2026-09-17)
+- Byggd från V0.2.50 COMPLETE. Forskningsregler, planhash `1d5f8bc1` och runnerspec `c7f6a2d9` är oförändrade.
+- Från och med V0.2.51 sparar varje ny Gen2-familjekörning samtliga variant-rader (DEV + Validation + eligibility + score) i engine-state innan evidenssynk försöks.
+- Varje ny familjekörning skapar därefter ett separat JSON-evidensartefakt, fryser det och försöker synka det via befintlig `/evidence`-väg till GitHub. Vid synkfel behålls artefakten lokalt som `FROZEN · VÄNTAR PÅ SYNK`; nästa vanliga GitHub-synk kan skicka den.
+- Omtag av redan körd familj blockeras i engine-lagret så positiv eller negativ evidens inte kan skrivas över.
+- Historisk lucka kvarstår: de 11 icke-topprankade variantdetaljerna från V0.2.49 kan inte återskapas utan omkörning och fabriceras inte. Kandidatfrysning förblir blockerad tills luckan hanteras genom uttryckligt beslut.
+- Holdout 2025-01-01–2026-09-10 är fortsatt SEALED. Handel AV. Robotmognad 48/100.
+- Cloudflare Worker: INGEN ÄNDRING. Befintlig verifierad `/evidence`-endpoint används.

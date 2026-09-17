@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='V0.2.49', PLAN_HASH='1d5f8bc1', RUNNER_SPEC_HASH='c7f6a2d9';
+const VERSION='V0.2.51', PLAN_HASH='1d5f8bc1', RUNNER_SPEC_HASH='c7f6a2d9';
 const KEY='lina_clean_gen2_engine_v0246', DB='lina_gen2_market_v1', STORE='bars';
 const WINDOWS=Object.freeze({development:Object.freeze(['2020-01-01','2022-12-31']),validation:Object.freeze(['2023-01-01','2024-12-31'])});
 const SEALED_HOLDOUT=Object.freeze(['2025-01-01','2026-09-10']);
@@ -38,7 +38,16 @@ function evalOne(f,by,p){return f==='Regime ensemble'?ensemble(by,p):testFamily(
 function qualifies(r){return r.n>=SPEC.selection.minimumTrades&&r.pf>=SPEC.selection.profitFactor&&Math.abs(r.dd)<=SPEC.selection.maxDrawdown&&r.pl>0&&r.maxSymbolGrossProfitShare<=SPEC.selection.concentrationGuard.maxSingleSymbolGrossProfitShare}
 function rank(r){return r.pf*100-Math.abs(r.dd)*150-r.maxSymbolGrossProfitShare*25+Math.min(r.n,200)/20}
 function progress(text){document.dispatchEvent(new CustomEvent('lina:gen2progress',{detail:{text}}))}
-async function runFamily(f){assertPlan();let x=init();if(!x.runnerSpecLocked)throw Error('Lås runnerspec före första körning');if(!FAMILIES.includes(f))throw Error('Okänd familj');const dev=await data(...WINDOWS.development),val=await data(...WINDOWS.validation),rows=[];for(const p of gridFor(f)){progress(`${f} · ${rows.length+1}/${gridFor(f).length}`);const d=evalOne(f,dev,p),v=evalOne(f,val,p);rows.push({params:p,dev:d,validation:v,eligible:qualifies({...v,n:d.n+v.n})&&v.pl>0,score:rank(v)})}rows.sort((a,b)=>b.score-a.score);const best=rows[0];x=load();x.runs.push({at:new Date().toISOString(),family:f,trials:rows.length});x.familyResults[f]={status:best?.eligible?'PASS':'FAIL',trials:rows.length,best};if(!best?.eligible)x.negativeResults.push({at:new Date().toISOString(),family:f,status:'FAIL',reason:'Ingen variant klarade låsta minimikrav'});x.status='DEV_VALIDATION_RUNNING';save(x);return x.familyResults[f]}
+async function persistEvidence(f,result,runAt){
+ const E=window.LinaEvidence;if(!E?.stage||!E?.approveAndSync)return {status:'LOKALT SPARAD · EVIDENCE-MODUL SAKNAS'};
+ const safe=f.toUpperCase().replace(/[^A-Z0-9]+/g,'_').replace(/^_|_$/g,'');
+ const name=`LINAS_GEN2_${safe}_ALL_VARIANTS_${runAt.slice(0,10)}_${runAt.replace(/[-:.TZ]/g,'').slice(8,14)}.json`;
+ const artifact={schema:'LINA-GEN2-ALL-VARIANTS-1',release:VERSION,createdAt:runAt,planHash:PLAN_HASH,runnerSpecHash:RUNNER_SPEC_HASH,family:f,windows:WINDOWS,holdout:'SEALED',tradeEnabled:false,trials:result.trials,status:result.status,variants:result.variants};
+ const item=E.stage(name,JSON.stringify(artifact,null,2),'application/json','Lina Gen2');
+ if(!item?.id)return {status:'LOKALT SPARAD · EVIDENCE STAGING FAIL'};
+ const synced=await E.approveAndSync(item.id);return {status:synced?.status||'FROZEN',name,githubPath:synced?.githubPath||null,githubCommit:synced?.githubCommit||null};
+}
+async function runFamily(f){assertPlan();let x=init();if(!x.runnerSpecLocked)throw Error('Lås runnerspec före första körning');if(!FAMILIES.includes(f))throw Error('Okänd familj');if(x.familyResults?.[f])throw Error('BLOCKERAD: familjen är redan körd; negativ och positiv evidens får inte skrivas över');const dev=await data(...WINDOWS.development),val=await data(...WINDOWS.validation),rows=[];for(const p of gridFor(f)){progress(`${f} · ${rows.length+1}/${gridFor(f).length}`);const d=evalOne(f,dev,p),v=evalOne(f,val,p);rows.push({params:p,dev:d,validation:v,eligible:qualifies({...v,n:d.n+v.n})&&v.pl>0,score:rank(v)})}rows.sort((a,b)=>b.score-a.score);const best=rows[0],runAt=new Date().toISOString();x=load();x.runs.push({at:runAt,family:f,trials:rows.length,allVariantsStored:true});x.familyResults[f]={status:best?.eligible?'PASS':'FAIL',trials:rows.length,best,variants:rows,evidence:{status:'LOKALT SPARAD · SYNK PÅGÅR'}};if(!best?.eligible)x.negativeResults.push({at:runAt,family:f,status:'FAIL',reason:'Ingen variant klarade låsta minimikrav'});x.status='DEV_VALIDATION_RUNNING';save(x);progress(`${f} · alla ${rows.length} varianter lokalt sparade · fryser evidens…`);let ev;try{ev=await persistEvidence(f,x.familyResults[f],runAt)}catch(e){ev={status:'FROZEN · VÄNTAR PÅ SYNK',syncError:String(e?.message||e)}}x=load();if(x.familyResults?.[f]){x.familyResults[f].evidence=ev;save(x)}return x.familyResults[f]}
 function report(){const x=load()||fresh(),L=['LINAS OPTI – GENERATION 2 DEV/VALIDATION','Release: '+VERSION,'Plan: '+PLAN_HASH,'Runner spec: '+RUNNER_SPEC_HASH,'Handel: AV','Holdout: SEALED','','Familjer'];for(const f of FAMILIES){const z=x.familyResults[f];L.push(`${f}: ${z?z.status+' · '+z.trials+' trials · DEV '+JSON.stringify(z.best?.dev)+' · VAL '+JSON.stringify(z.best?.validation):'EJ KÖRD'}`)}L.push('','Negativa resultat bevarade: '+x.negativeResults.length,'Holdoutresultat: INGA');return L.join('\n')}
 window.LinaGen2Engine={VERSION,PLAN_HASH,RUNNER_SPEC_HASH,SPEC,WINDOWS,SEALED_HOLDOUT,FAMILIES,load,init,lockRunnerSpec,preflight,runFamily,report,assertWindow};
 })();
