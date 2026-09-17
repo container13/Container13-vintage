@@ -1,0 +1,186 @@
+{
+  "schema": "LINA-GEN2-PREHOLDOUT-EVIDENCE-1",
+  "release": "V0.2.52",
+  "createdAt": "2026-09-17T17:57:46.942Z",
+  "planHash": "1d5f8bc1",
+  "runnerSpecHash": "c7f6a2d9",
+  "tradeEnabled": false,
+  "holdout": "SEALED",
+  "windows": {
+    "development": [
+      "2020-01-01",
+      "2022-12-31"
+    ],
+    "validation": [
+      "2023-01-01",
+      "2024-12-31"
+    ],
+    "sealedHoldout": [
+      "2025-01-01",
+      "2026-09-10"
+    ]
+  },
+  "registeredTrials": 15,
+  "families": [
+    {
+      "family": "Trend/momentum",
+      "status": "PASS",
+      "trials": 4,
+      "best": {
+        "params": {
+          "lookback": 100,
+          "trend": 200,
+          "hold": 20
+        },
+        "dev": {
+          "n": 89,
+          "pl": 14120.192231575013,
+          "pf": 1.3863492032394953,
+          "dd": -0.115739648984441,
+          "wr": 0.5056179775280899,
+          "maxSymbolGrossProfitShare": 0.21130012624619018
+        },
+        "validation": {
+          "n": 92,
+          "pl": 26007.13031330984,
+          "pf": 2.0840961550931967,
+          "dd": -0.040417437557322744,
+          "wr": 0.6304347826086957,
+          "maxSymbolGrossProfitShare": 0.1956809505985981
+        },
+        "eligible": true,
+        "score": 202.05497611075631
+      },
+      "audit": {
+        "totalTrades": 181,
+        "failed": []
+      },
+      "variantDetailCompleteness": "TOP_ONLY"
+    },
+    {
+      "family": "Mean reversion",
+      "status": "FAIL",
+      "trials": 4,
+      "best": {
+        "params": {
+          "rsi": 30,
+          "trend": 100,
+          "hold": 7
+        },
+        "dev": {
+          "n": 45,
+          "pl": 3266.9144338686274,
+          "pf": 1.2812264173227306,
+          "dd": -0.02506451950285582,
+          "wr": 0.4666666666666667,
+          "maxSymbolGrossProfitShare": 0.22928161663052704
+        },
+        "validation": {
+          "n": 34,
+          "pl": 12404.91463055607,
+          "pf": 4.1702061211316614,
+          "dd": -0.010472950940731307,
+          "wr": 0.6470588235294118,
+          "maxSymbolGrossProfitShare": 0.3052980317895104
+        },
+        "eligible": false,
+        "score": 409.5172186773187
+      },
+      "audit": {
+        "totalTrades": 79,
+        "failed": [
+          "Affärer 79/80"
+        ]
+      },
+      "variantDetailCompleteness": "TOP_ONLY"
+    },
+    {
+      "family": "Volatility breakout",
+      "status": "PASS",
+      "trials": 4,
+      "best": {
+        "params": {
+          "lookback": 55,
+          "atr": 1.5,
+          "hold": 15
+        },
+        "dev": {
+          "n": 66,
+          "pl": 12952.53467542301,
+          "pf": 1.6082211420411656,
+          "dd": -0.059024835692058075,
+          "wr": 0.6363636363636364,
+          "maxSymbolGrossProfitShare": 0.2312892361951309
+        },
+        "validation": {
+          "n": 67,
+          "pl": 17621.70224798873,
+          "pf": 2.301415168241882,
+          "dd": -0.0342617971598248,
+          "wr": 0.6268656716417911,
+          "maxSymbolGrossProfitShare": 0.18437788484855125
+        },
+        "eligible": true,
+        "score": 223.74280012900073
+      },
+      "audit": {
+        "totalTrades": 133,
+        "failed": []
+      },
+      "variantDetailCompleteness": "TOP_ONLY"
+    },
+    {
+      "family": "Regime ensemble",
+      "status": "PASS",
+      "trials": 3,
+      "best": {
+        "params": {
+          "trendWeight": 0.4,
+          "meanWeight": 0.3,
+          "volWeight": 0.3
+        },
+        "dev": {
+          "n": 90,
+          "pl": 6222.972919314592,
+          "pf": 1.157511323409876,
+          "dd": -0.11761287506472679,
+          "wr": 0.5307142857142857,
+          "maxSymbolGrossProfitShare": 0.2356603251107284
+        },
+        "validation": {
+          "n": 85,
+          "pl": 20418.62093954032,
+          "pf": 2.3261766155097163,
+          "dd": -0.05064874290961857,
+          "wr": 0.6350315780821167,
+          "maxSymbolGrossProfitShare": 0.1705997035990143
+        },
+        "eligible": true,
+        "score": 225.0053575245535
+      },
+      "audit": {
+        "totalTrades": 175,
+        "failed": []
+      },
+      "variantDetailCompleteness": "TOP_ONLY"
+    }
+  ],
+  "historicalGap": {
+    "release": "V0.2.49",
+    "missingNonTopVariantDetails": 11,
+    "policy": "PRESERVE_AS_DOCUMENTED_GAP_NO_RERUN_NO_RECONSTRUCTION",
+    "reason": "De 11 icke-topprankade variantdetaljerna sparades inte permanent vid originalkörningen. De rekonstrueras eller körs inte om efter att resultat har observerats."
+  },
+  "decision": {
+    "schema": "LINA-GEN2-EVIDENCE-GAP-DECISION-1",
+    "release": "V0.2.52",
+    "locked": true,
+    "lockedAt": "2026-09-17T17:57:46.941Z",
+    "decision": "ACCEPT_DOCUMENTED_HISTORICAL_GAP",
+    "policy": "NO_RERUN_NO_RECONSTRUCTION",
+    "missingVariantDetails": 11,
+    "holdout": "SEALED"
+  },
+  "candidateFreeze": "NOT_PERFORMED",
+  "holdoutOpened": false
+}
