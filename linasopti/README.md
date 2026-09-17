@@ -493,3 +493,13 @@ Gen2-moduler laddas nu före app-start. Router visar explicit renderfel i ställ
 - Historisk lucka kvarstår: de 11 icke-topprankade variantdetaljerna från V0.2.49 kan inte återskapas utan omkörning och fabriceras inte. Kandidatfrysning förblir blockerad tills luckan hanteras genom uttryckligt beslut.
 - Holdout 2025-01-01–2026-09-10 är fortsatt SEALED. Handel AV. Robotmognad 48/100.
 - Cloudflare Worker: INGEN ÄNDRING. Befintlig verifierad `/evidence`-endpoint används.
+
+## V0.2.52 – Gen2 pre-holdout evidence decision (2026-09-17)
+- Byggd från V0.2.51 COMPLETE efter livekontroll av 15 registrerade Gen2-försök.
+- Forskningsregler, planhash `1d5f8bc1`, runnerspec `c7f6a2d9`, parametergridar och observerade resultat ändras inte.
+- Den historiska V0.2.49-luckan med 11 icke-topprankade variantdetaljer bevaras uttryckligen som datalucka. Ingen omkörning, rekonstruktion eller fabricering tillåts.
+- Ny beslutspunkt i Gen2 låser policyn `ACCEPT_DOCUMENTED_HISTORICAL_GAP / NO_RERUN_NO_RECONSTRUCTION`.
+- När beslutet låses skapas ett separat pre-holdout JSON-evidenspaket med plan/runnerspec, dataintervall, alla fyra sparade topprankade resultaten, 15 registrerade försök och den dokumenterade luckan. Paketet fryses och försöker synkas via befintlig GitHub-evidensväg; synkfel lämnar artefakten FROZEN/VÄNTAR PÅ SYNK.
+- V0.2.52 fryser ingen kandidat och öppnar inte Holdout. Efter låst beslut markeras endast att systemet är redo för ett separat kandidatfrysningssteg.
+- Holdout 2025-01-01–2026-09-10 är fortsatt SEALED. Handel AV. Robotmognad 48/100. Original G2/G3/Real Forward orörda.
+- Cloudflare Worker: INGEN ÄNDRING. Befintlig verifierad `/evidence`-endpoint används.
