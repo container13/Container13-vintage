@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const API='https://linas-opti-api.mangaj73.workers.dev', RELEASE='V0.2.57';
+const API='https://linas-opti-api.mangaj73.workers.dev', RELEASE='V0.2.58';
 const EXCLUDE=new Set(['lina_clean_core_state_v0011','lina_clean_swing_g4_universe_result_v0213']);
 const MAX_ENTRY=400000, MAX_PACKAGE=1500000;
 function code(){return sessionStorage.getItem('linasopti_login_code')||''}
