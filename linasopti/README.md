@@ -433,12 +433,22 @@ Lina gör Forward catch-up automatiskt vid start. G2/G3 får endast behandla sä
 - Cloudflare Worker: INGEN ÄNDRING. Fortsätt använda verifierad V0.2.43 Worker.
 
 
-## V0.2.45 – Gen2 Plan Lock + Research Engine (2026-09-17)
+## V0.2.46 – Gen2 Plan Lock + Research Engine (2026-09-17)
 - Byggd från V0.2.44 FLAT COMPLETE.
-- Förregistrerad Gen2-plan ändras inte: kanonisk planhash är fortfarande `1d5f8bc1`. Planobjektets forskningsversion lämnas V0.2.44 för att hashens innehåll ska vara byte-/fältmässigt oförändrat; releasekoden är V0.2.45.
+- Förregistrerad Gen2-plan ändras inte: kanonisk planhash är fortfarande `1d5f8bc1`. Planobjektets forskningsversion lämnas V0.2.44 för att hashens innehåll ska vara byte-/fältmässigt oförändrat; releasekoden är V0.2.46.
 - `Lås Generation 2-plan` skapar nu ett verifierbart lås och vägrar fortsätta om beräknad hash avviker från `1d5f8bc1`. Ett eventuellt V0.2.44-lås migreras endast om dess hash redan är korrekt.
 - Ny `gen2-engine.js` inför hård dataguard: endast DEV 2020-01-01–2022-12-31 och Validation 2023-01-01–2024-12-31 accepteras.
-- Holdout 2025-01-01–2026-09-10 är fortsatt SEALED. V0.2.45 har ingen holdout-runner och ingen holdout-resultatyta; fel intervall blockeras.
+- Holdout 2025-01-01–2026-09-10 är fortsatt SEALED. V0.2.46 har ingen holdout-runner och ingen holdout-resultatyta; fel intervall blockeras.
 - Fyra förregistrerade familjer är registrerade i motorn, men inga resultat eller vinnare skapas av själva planlåset/preflight. Negativa framtida runnerresultat ska bevaras.
 - Original G2/G3 + Real Forward lämnas oförändrade som kontrollspår. Handel AV. Robotmognad 48/100.
 - Cloudflare Worker: INGEN ÄNDRING. Fortsätt använda live-verifierad V0.2.43 Worker.
+
+
+## V0.2.46 – Gen2 DEV/Validation Research Runners (2026-09-17)
+- Byggd från V0.2.45 COMPLETE efter live PASS. Planhash `1d5f8bc1` är oförändrad.
+- Ny separat runnerspec låses före första resultat. Fyra familjer får små, fasta parametergridar och fast 16-symbolers universum.
+- Endast DEV 2020–2022 och Validation 2023–2024 kan hämtas/köras. Holdout 2025-01-01–2026-09-10 är fortsatt SEALED utan runner/resultatyta.
+- Rå dagsdata cachas i IndexedDB; kompakt körstate/resultat i localStorage. Negativa familjer bevaras.
+- Minimikrav kvar: minst 80 affärer, PF >=1.20, DD <=12 %, positiv Validation och koncentrationsskydd. Högsta P/L är inte primär ranking.
+- Original G2/G3/Real Forward orörda. Handel AV. Robotmognad 48/100.
+- Cloudflare Worker: INGEN ÄNDRING. Verifierad V0.2.43 Worker används oförändrad.

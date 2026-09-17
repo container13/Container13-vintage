@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  const APP_VERSION='0.2.45';
+  const APP_VERSION='0.2.46';
   const cards=[
     ['forward','Forward','Riktig forward-validering · G2 + G3 parallellt.'],
     ['research','Forskning','Frysta originalspåret fortsätter Real Forward. Lina Generation 2 är ett separat forskningslabb för nya strategifamiljer.'],
