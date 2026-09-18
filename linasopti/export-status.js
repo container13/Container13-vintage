@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='V0.2.60';
+const VERSION='V0.2.61';
 const PREFIX='lina_clean_';
 const EXCLUDE=new Set(['linasopti_unlocked','linasopti_login_code']);
 function parse(v){try{return JSON.parse(v)}catch{return v}}
