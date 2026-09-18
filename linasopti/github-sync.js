@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const API='https://linas-opti-api.mangaj73.workers.dev', RELEASE='V0.2.69', DIAG='lina_clean_sync_diagnostics_v0269';
+const API='https://linas-opti-api.mangaj73.workers.dev', RELEASE='V0.2.70', DIAG='lina_clean_sync_diagnostics_v0270';
 function diag(type,data={}){let d;try{d=JSON.parse(localStorage.getItem(DIAG)||'{\"schema\":\"LINA-SYNC-DIAGNOSTICS-1\",\"release\":\"V0.2.69\",\"events\":[]}')}catch{d={schema:'LINA-SYNC-DIAGNOSTICS-1',release:RELEASE,events:[]}}d.events.push({at:new Date().toISOString(),type,...data});d.events=d.events.slice(-80);d.updatedAt=new Date().toISOString();localStorage.setItem(DIAG,JSON.stringify(d));}
 const EXCLUDE=new Set(['lina_clean_core_state_v0011','lina_clean_swing_g4_universe_result_v0213']);
 const MAX_ENTRY=400000, MAX_PACKAGE=1500000;
@@ -75,7 +75,7 @@ async function bootstrap(progress){
   const local=collect(), merged=safeRecoveryMerge(local,remote?.state||null);
   // Never apply remote state before the merged package has been accepted. If PUT/evidence sync
   // fails, the current local irreversible research snapshot must remain untouched.
-  step('recover',recovery.unique.length?`Bevarar ${recovery.unique.length} unika lokala poster…`:'Inga unika lokala poster att rädda.');
+  step('recover',recovery.unique.length?`Bevarar ${recovery.unique.length} unika lokala poster…`:'Inget nytt att spara eller återställa.');
   const wr=await put(merged); apply(wr.state||merged);
   step('evidence','Verifierar fryst evidens…');
   const evidence=window.LinaEvidence?await window.LinaEvidence.syncApproved():0;

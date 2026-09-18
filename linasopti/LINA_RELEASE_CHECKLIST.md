@@ -25,3 +25,8 @@ Körs före varje Lina-ZIP.
 - [ ] Vid synkfel ska diagnostik innehålla endpoint/metod, HTTP-status, relevant evidensnamn/payloadstorlek och sanerat API-svar; autentiseringskod får aldrig loggas/exporteras.
 
 - [ ] Immutable evidence-idempotens: exakt serverbekräftad `409 Evidencefilen finns redan – original skrivs inte över` får avsluta pending sync utan overwrite; andra 409-fel får inte sväljas.
+
+## V0.2.70 kandidatgrind
+- Kandidatknapp får endast visas efter Gen4 summary FROZEN · GITHUB ✓.
+- Urval måste vara deterministiskt från redan observerad/fryst evidens; ingen research/rerun.
+- Kandidat fryses lokalt före async GitHub-synk; Forward och Handel förblir AV.

@@ -1,10 +1,10 @@
 (function(){
 'use strict';
-const API='https://linas-opti-api.mangaj73.workers.dev', KEY='lina_clean_evidence_queue_v1', DIAG='lina_clean_sync_diagnostics_v0269', RELEASE='V0.2.69';
+const API='https://linas-opti-api.mangaj73.workers.dev', KEY='lina_clean_evidence_queue_v1', DIAG='lina_clean_sync_diagnostics_v0270', RELEASE='V0.2.70';
 function now(){return new Date().toISOString()}
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||'{"items":[]}')}catch{return {items:[]}}}
 function save(x){x.updatedAt=now();localStorage.setItem(KEY,JSON.stringify(x));return x}
-function diagLoad(){try{return JSON.parse(localStorage.getItem(DIAG)||'{"schema":"LINA-SYNC-DIAGNOSTICS-1","release":"V0.2.69","events":[]}')}catch{return{schema:'LINA-SYNC-DIAGNOSTICS-1',release:RELEASE,events:[]}}}
+function diagLoad(){try{return JSON.parse(localStorage.getItem(DIAG)||'{"schema":"LINA-SYNC-DIAGNOSTICS-1","release":"V0.2.70","events":[]}')}catch{return{schema:'LINA-SYNC-DIAGNOSTICS-1',release:RELEASE,events:[]}}}
 function diag(type,data={}){const d=diagLoad();d.events.push({at:now(),type,...data});d.events=d.events.slice(-80);d.updatedAt=now();localStorage.setItem(DIAG,JSON.stringify(d));return d}
 function idFor(name){return name.replace(/[^A-Za-z0-9._-]+/g,'_')}
 function stage(name,content,mime='text/plain',source='Lina'){if(typeof content!=='string'||!name)return null;let q=load(),id=idFor(name),old=q.items.find(x=>x.id===id);if(old?.status&&String(old.status).startsWith('FROZEN'))return old;const item={id,name,mime,source,status:'PRELIMINÄR',createdAt:old?.createdAt||now(),updatedAt:now(),content};q.items=q.items.filter(x=>x.id!==id);q.items.push(item);save(q);document.dispatchEvent(new CustomEvent('lina:evidence-changed'));return item;}

@@ -67,3 +67,12 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Irreversibelt research-state får aldrig backas av GitHub/app-state-synk. FamilyResults, fryst evidens och frysbeslut mergeas monotont: redan observerade/sparade resultat bevaras.
 - Under pågående automatiserad researchkedja pausas app-state-autosynk. Evidens får frysas/synkas separat.
 - Recovery får endast återläsa exakt redan sparad/fryst evidens; den får aldrig köra om research eller rekonstruera saknade resultat.
+
+## Lärdom Gen4 recovery/synk (permanent)
+- Irreversibelt research-state ska mergeas monotont; äldre remote state får aldrig backa senare observerad evidens.
+- Immutable evidence 409 får endast räknas som redan säkrad när svaret explicit bekräftar att originalet redan finns; aldrig overwrite.
+- Tekniska state/synkfel repareras genom exakt evidens-recovery, aldrig genom research-rerun eller rekonstruktion.
+- Diagnostik ska bära request/fil, HTTP-status och API-svar utan hemligheter.
+- Automatiska kedjor testas mot exakt slutstate de själva producerar.
+- Automatisera säkra steg mellan verkliga mänskliga beslutspunkter; recovery är en förstaklassfunktion.
+- Generation Engine ska återanvända infrastrukturen, medan nästa generations experiment definieras först från lärdomar i föregående frysta generation.

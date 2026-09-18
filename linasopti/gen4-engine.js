@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='V0.2.69', PLAN_HASH='8d51311d';
+const VERSION='V0.2.70', PLAN_HASH='8d51311d';
 const KEY='lina_clean_gen4_engine_v0261', DB='lina_gen4_market_v1', STORE='bars';
 const SYMBOLS=Object.freeze(['AMD','SHOP','ADBE','MU','FDX','TSLA','LUV','NFLX','C','NOW','QCOM','BAC','GM','DDOG','PYPL','NVDA']);
 const FAMILIES=Object.freeze(['Breddbalanserad trend','Relativ styrka med symboltak','Equal-risk pullback','Koncentrationsmedveten ensemble']);
@@ -137,6 +137,29 @@ async function runAll(){
 }
 function gateChecks(r){return[{id:'trades',label:'Affärer',pass:r.n>=100,value:r.n,rule:'≥ 100'},{id:'pf',label:'PF',pass:r.pf>=1.2,value:Number(r.pf||0).toFixed(2),rule:'≥ 1.20'},{id:'dd',label:'DD',pass:Math.abs(r.dd)<=.12,value:(Math.abs(r.dd||0)*100).toFixed(1)+' %',rule:'≤ 12 %'},{id:'oos',label:'OOS-resultat',pass:r.pl>0,value:Number(r.pl||0).toFixed(0),rule:'> 0'},{id:'concentration',label:'Koncentration',pass:r.maxSymbolGrossProfitShare<=.4,value:(Number(r.maxSymbolGrossProfitShare||0)*100).toFixed(1)+' %',rule:'≤ 40 %'},{id:'folds',label:'Positiva folds',pass:r.positiveFolds>=3,value:(r.positiveFolds||0)+'/4',rule:'≥ 3/4'}]}
 function summary(){const x=load();if(!x||!FAMILIES.every(f=>x.familyResults?.[f]))return null;const families=FAMILIES.map(f=>{const z=x.familyResults[f],r=z.best.oos,checks=gateChecks(r);return{family:f,status:z.status,trials:z.trials,params:z.best.params,score:z.best.score,oos:r,checks,failReasons:checks.filter(c=>!c.pass).map(c=>`${c.label}: ${c.value} (krav ${c.rule})`),evidence:z.evidence}}),eligible=families.filter(f=>f.status==='PASS'&&f.checks.every(c=>c.pass));return{schema:'LINA-GEN4-RESEARCH-SUMMARY-1',release:VERSION,planHash:PLAN_HASH,runnerSpecHash:RUNNER_SPEC_HASH,observedHistory:'2020-01-01 → 2024-12-31',tradeEnabled:false,families,eligibleCount:eligible.length,eligibleFamilies:eligible.map(x=>x.family),decision:eligible.length?'CANDIDATE_SELECTION_AVAILABLE':'NO_CANDIDATE_FOR_FORWARD',forwardOpened:false}}
+function selectCandidate(){
+ const x=load();
+ if(!x?.summaryFreeze?.frozen)throw Error('BLOCKERAD: Gen4-sammanställningen måste vara fryst först');
+ if(!String(x.summaryFreeze?.evidence?.status||'').includes('GITHUB'))throw Error('BLOCKERAD: Gen4-sammanställningen måste vara GitHub-verifierad först');
+ const sm=summary();if(!sm)throw Error('BLOCKERAD: komplett Gen4-sammanställning saknas');
+ const eligible=sm.families.filter(f=>f.status==='PASS'&&f.checks.every(c=>c.pass));
+ if(!eligible.length)throw Error('BLOCKERAD: ingen kvalificerad Gen4-kandidat finns');
+ // Locked deterministic rule: same preregistered risk-adjusted score; P/L is not primary.
+ eligible.sort((a,b)=>Number(b.score)-Number(a.score)||a.family.localeCompare(b.family));
+ const w=eligible[0];
+ return {schema:'LINA-GEN4-CANDIDATE-SELECTION-1',planHash:PLAN_HASH,runnerSpecHash:RUNNER_SPEC_HASH,tradeEnabled:false,family:w.family,params:w.params,score:w.score,oos:w.oos,selection:'LOCKED_DETERMINISTIC_RISK_ADJUSTED_RANK',eligibleCount:eligible.length,eligibleFamilies:eligible.map(q=>q.family),reason:`Högst låst riskjusterad score bland ${eligible.length} familj(er) som klarade samtliga förregistrerade gates. P/L är inte primärt urvalskriterium.`,forwardOpened:false};
+}
+async function freezeCandidate(){
+ let x=load();if(x?.candidate?.locked)return x.candidate;
+ const c=selectCandidate(),at=new Date().toISOString();
+ const frozen={...c,locked:true,lockedAt:at,immutable:true,evidence:{status:'LOKALT FRYST · VÄNTAR PÅ GITHUB'}};
+ // Irreversible local candidate freeze before async sync. No research is run here.
+ x.candidate=frozen;x.status='GEN4_CANDIDATE_FROZEN_WAITING_GITHUB';x.forwardOpened=false;save(x);
+ const E=window.LinaEvidence,name=`LINAS_GEN4_CANDIDATE_FREEZE_${at.slice(0,10)}.json`;
+ let ev=frozen.evidence;
+ if(E?.stage&&E?.approveAndSync){const item=E.stage(name,JSON.stringify(frozen,null,2),'application/json','Lina Gen4 Candidate');if(item?.id)try{const r=await E.approveAndSync(item.id);ev={status:r?.status||'FROZEN',name,githubPath:r?.githubPath||null,githubCommit:r?.githubCommit||null}}catch(e){ev={status:'FROZEN · VÄNTAR PÅ SYNK',name,syncError:String(e?.message||e)}}}
+ x=load()||x;if(!x.candidate?.locked)throw Error('BLOCKERAD: kandidatfrysningen saknas efter synk');x.candidate.evidence=ev;x.status=String(ev.status||'').includes('GITHUB')?'GEN4_CANDIDATE_FROZEN_GITHUB':'GEN4_CANDIDATE_FROZEN_WAITING_GITHUB';x.forwardOpened=false;save(x);return x.candidate;
+}
 async function freezeSummary(){
  // V0.2.65: freeze from the exact already-observed local snapshot. Do not rerun research.
  let x=load();
@@ -155,5 +178,5 @@ async function freezeSummary(){
  // Merge evidence status only; never replace the observed family snapshot.
  x=load()||x;x.summaryFreeze=x.summaryFreeze||{frozen:true,frozenAt:at,decision:sm.decision,eligibleCount:sm.eligibleCount,eligibleFamilies:sm.eligibleFamilies};x.summaryFreeze.evidence=ev;x.summaryFreeze.allFourFamiliesConfirmed=true;x.status=sm.eligibleCount?'GEN4_RESEARCH_FROZEN_CANDIDATE_SELECTION_AVAILABLE':'GEN4_RESEARCH_COMPLETE_NO_CANDIDATE';x.forwardOpened=false;save(x);return x.summaryFreeze
 }
-window.LinaGen4Engine={VERSION,PLAN_HASH,RUNNER_SPEC_HASH,SPEC,FOLDS,FAMILIES,load,init,lockRunnerSpec,verifyEngine,preflight,runFamily,runAll,recoverObservedEvidence,gateChecks,summary,freezeSummary};
+window.LinaGen4Engine={VERSION,PLAN_HASH,RUNNER_SPEC_HASH,SPEC,FOLDS,FAMILIES,load,init,lockRunnerSpec,verifyEngine,preflight,runFamily,runAll,recoverObservedEvidence,gateChecks,summary,selectCandidate,freezeCandidate,freezeSummary};
 })();
