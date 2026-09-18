@@ -87,3 +87,10 @@ Gen5 Data Source Probe före research. Ingen forskningskörning görs av proben;
 
 ## V0.2.77
 Gen5 Yahoo parser hotfix: prioritize top-level `rows`; prevents `symbols` array from being mistaken for bars. Plan/runnerspec unchanged.
+
+
+## V0.2.78
+- Recovery/export-hotfix efter fryst Gen5. Ingen research körs om.
+- Komplett fryst Gen5-state, familjeresultat, summary/evidence och Gen6-underlag inkluderas i Generation Engine-export.
+- Saknat Gen6-underlag härleds deterministiskt från redan fryst Gen5-summary och sparas utan rerun.
+- Robotmognad ligger kvar 48/100; ny regelbaserad modell är ännu inte låst.
