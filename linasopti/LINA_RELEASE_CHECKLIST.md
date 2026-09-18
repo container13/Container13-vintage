@@ -36,3 +36,9 @@ Körs före varje Lina-ZIP.
 - [ ] Ny generation är `NOT_DEFINED` tills en ny plan uttryckligen definierats; ingen automatisk parameter-/resultatkopiering.
 - [ ] Ingen Forward-anchor skapas före kandidatfrysning och ingen anchor backdateras.
 - [ ] Automatisering stannar vid genuin mänsklig beslutspunkt.
+
+## Nästa-generations-underlag
+- [ ] Underlaget bygger endast på fryst observerad evidens och redan dokumenterade metodpunkter.
+- [ ] Underlag/planförslag märks EJ LÅST och kan inte starta research.
+- [ ] Fryst föregående generation muteras eller körs inte om.
+- [ ] Behållna principer och metodkorrigeringar visas separat före planlås.

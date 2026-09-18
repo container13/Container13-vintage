@@ -84,3 +84,9 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Standardlivscykel: PLAN → PLAN_LOCKED → RUNNERSPEC_LOCKED → ENGINE_VERIFIED → RESEARCH_RUNNING → RESEARCH_COMPLETE → SUMMARY_FROZEN → CANDIDATE_FROZEN → FORWARD.
 - Säkra deterministiska steg automatiseras till nästa genuina mänskliga beslut. Frysning av nytt experiment/avgörande beslut kräver uttrycklig mänsklig handling.
 - Forward-anchor skapas först vid relevant kandidatfrysning och får aldrig backdateras.
+
+## Lärdomsunderlag före ny generation — från V0.2.72
+- Efter kandidatfrysning ska Generation Engine skapa ett läsbart/exportbart underlag från den frysta generationens observerade resultat och dokumenterade metodbrister.
+- Underlaget är inte en plan och får aldrig i sig öppna research, skapa runnerspec eller starta Forward.
+- Metodbrister i en fryst generation rättas endast i en ny generation; den frysta generationens evidens/semantik ändras aldrig.
+- Nästa generations plan ska uttryckligen skilja mellan vad som bevaras och vad som korrigeras innan planlås.
