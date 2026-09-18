@@ -103,3 +103,5 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Gen5 research startas med en uttrycklig mänsklig start. Därefter får kedjan automatiskt köra alla fyra familjer, spara full train/fold-evidens före continuation, frysa sammanställning, göra låst deterministiskt kandidatval och skapa Gen6-underlag.
 - Gen5 använder faktisk TRAIN-selektion före respektive OOS-fold. Kombinerad ensemble ska exekveras som en gemensam portfölj/equity curve.
 - Gen6 får inte startas av Gen5-kedjan. Forward förblir stängd.
+
+- Ny generation får inte gå in i RESEARCH_RUNNING förrän full data-preflight för låst universum och samtliga forskningsperioder är godkänd.

@@ -76,3 +76,7 @@ Generation Engine visar en komplett Gen5-plan med låst forskningsgräns, gates,
 
 ## V0.2.74
 Generation Engine: Gen5 runnerspec `db1c4d7f`, verifierad train→OOS-metod och gemensam portföljsimulering. En start kör hela Gen5-kedjan, säkrar evidens och skapar Gen6-underlag; Gen6/Forward startas inte automatiskt. Handel AV.
+
+
+## V0.2.75
+Gen5 data-preflight: årsvis datahämtning 2020–2024 och komplett universumkontroll före forskning.

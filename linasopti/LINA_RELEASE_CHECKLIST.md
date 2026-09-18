@@ -56,3 +56,5 @@ Körs före varje Lina-ZIP.
 - [ ] Ingen deklarerad `riskSlots` eller annan oanvänd grid-parameter finns kvar.
 - [ ] Varje familjs kompletta train/fold-evidens sparas före nästa familj.
 - [ ] Kedjan skapar Gen6-underlag men startar inte Gen6 eller Forward.
+
+- [ ] Data-preflight verifierar hela låsta universumet och alla forskningsperioder innan research-state öppnas.
