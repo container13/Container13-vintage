@@ -33,3 +33,13 @@ Builds on V0.2.59. Gen3 remains frozen and unchanged (`NO_CANDIDATE_FOR_FORWARD`
 - Diagnostik sparar `verificationAttempt` med varje kontroll.
 - Ingen research öppnas av hotfixen; Handel AV och hard-stop 2024-12-31 kvarstår.
 - Gen4 plan 8d51311d och runnerspec d1daab90 ändras inte.
+
+## V0.2.63 – Gen4 research runner
+- Bygger vidare på låst Gen4-plan `8d51311d` och låst runnerspec `d1daab90`; dessa ändras inte.
+- Öppnar de fyra förregistrerade Gen4-familjerna för historisk walk-forward-forskning 2021–2024 OOS, med hård data-stop 2024-12-31.
+- Varje familj kan köras exakt en gång. Alla varianter sparas i state före continuation/evidenssynk. Rerun/rescue blockeras.
+- Familjeevidens fryses/synkas till GitHub. Efter 4/4 kan sammanställningen frysas separat.
+- PASS/FAIL använder endast låsta gates: ≥100 OOS-affärer, PF ≥1.20, DD ≤12%, positiv OOS, koncentration ≤40%, positiva folds ≥3/4.
+- Forward förblir stängd. Ingen kandidat väljs eller fryses i denna release; eventuell kandidatprocess sker först efter fryst Gen4-sammanställning med separat deterministisk regel.
+- Global och Gen4-specifik export finns kvar. Handel AV.
+- Cloudflare Worker: NO CHANGE.
