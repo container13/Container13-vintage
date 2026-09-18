@@ -80,3 +80,8 @@ Körs före varje Lina-ZIP.
 - [x] Reconcile använder frysta evidensposter och ändrar inte researchresultat.
 - [x] Gen5 rerun förbjuden; Gen6/Forward stängda; Handel AV.
 - [x] JS syntaxkontrollerad och ZIP-integritet verifierad.
+
+## Gen6 proposal barrier
+- [ ] If Gen6 proposal is not explicitly locked, verify there is no Gen6 research runner/action.
+- [ ] Verify Gen5 remains immutable and no Gen5 rerun path is introduced.
+- [ ] Verify Handel AV and Forward closed.

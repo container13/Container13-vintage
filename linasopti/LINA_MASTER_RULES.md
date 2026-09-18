@@ -129,3 +129,8 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 ## Gen5 sync UX — från V0.2.80
 - Evidenssynk måste alltid ge synlig status. Ingen knapp får tyst lyckas eller tyst göra noll arbete.
 - Reconcile av redan GitHub-fryst Gen5-evidens får endast uppdatera status/referenser; forskningsresultat får aldrig räknas om.
+
+## Gen6 decision barrier (V0.2.81)
+- Gen6 plan proposal `206c11d7` is review-only until explicitly approved/locked by the user.
+- No Gen6 runnerspec, research, candidate or Forward may be created before that lock.
+- Gen5 is immutable source evidence; Gen6 must never modify or rerun Gen5.

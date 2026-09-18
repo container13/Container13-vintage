@@ -104,3 +104,12 @@ Generation Engine först under Forskning. Gen5 pending evidens/summary kan slutf
 - Hotfix för Gen5-evidensknappen: alltid synlig progress/klart/stoppad.
 - Reconcile matchar frysta Gen5-familjer deterministiskt via evidensfilnamn, även om äldre state saknar exakt name-fält.
 - Ingen Gen5-research körs om. Gen6/Forward öppnas inte. Handel AV.
+
+## V0.2.81 – Gen6 plan proposal
+
+- Generation Engine remains first under Forskning.
+- Gen5 remains frozen, immutable and is never rerun.
+- Adds a Gen6 plan proposal derived only from frozen Gen5 results: trend was closest but missed DD (13.17% vs 12%); other families had larger DD and/or quality/concentration failures.
+- Gen6 hypothesis focuses on risk/regime-controlled exposure and volatility-scaled portfolio risk while preserving the verified Gen5 TRAIN→OOS methodology and unchanged quality gates.
+- Proposal hash: `206c11d7`. The proposal is NOT locked in this release. No Gen6 runnerspec, research, Forward or trading is opened.
+- Handel AV. Worker unchanged. Robotmognad model unchanged.
