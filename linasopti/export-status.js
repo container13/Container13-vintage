@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='V0.2.67';
+const VERSION='V0.2.68';
 const PREFIX='lina_clean_';
 const EXCLUDE=new Set(['linasopti_unlocked','linasopti_login_code']);
 function parse(v){try{return JSON.parse(v)}catch{return v}}
@@ -22,6 +22,7 @@ function collect(){
     tradeEnabled:false,
     maturity:window.LinaState?.get?.().maturity??48,
     sync:session,
+    syncDiagnostics:window.LinaEvidence?.diagnostics?.()||null,
     localState:local,
     notes:[
       'Exporten innehåller endast Lina-state som används för analys och felsökning.',

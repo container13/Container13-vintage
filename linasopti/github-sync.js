@@ -1,6 +1,7 @@
 (function(){
 'use strict';
-const API='https://linas-opti-api.mangaj73.workers.dev', RELEASE='V0.2.67';
+const API='https://linas-opti-api.mangaj73.workers.dev', RELEASE='V0.2.68', DIAG='lina_clean_sync_diagnostics_v0268';
+function diag(type,data={}){let d;try{d=JSON.parse(localStorage.getItem(DIAG)||'{\"schema\":\"LINA-SYNC-DIAGNOSTICS-1\",\"release\":\"V0.2.68\",\"events\":[]}')}catch{d={schema:'LINA-SYNC-DIAGNOSTICS-1',release:RELEASE,events:[]}}d.events.push({at:new Date().toISOString(),type,...data});d.events=d.events.slice(-80);d.updatedAt=new Date().toISOString();localStorage.setItem(DIAG,JSON.stringify(d));}
 const EXCLUDE=new Set(['lina_clean_core_state_v0011','lina_clean_swing_g4_universe_result_v0213']);
 const MAX_ENTRY=400000, MAX_PACKAGE=1500000;
 function code(){return sessionStorage.getItem('linasopti_login_code')||''}
@@ -57,8 +58,8 @@ function safeRecoveryMerge(local,remote){
   }
   return {schema:'LINA-APP-SYNC-1',release:RELEASE,tradeEnabled:false,exportedAt:new Date().toISOString(),entries:out};
 }
-async function get(){const r=await fetch(API+'/app-state',{cache:'no-store'}),j=await r.json().catch(()=>({}));if(!r.ok||!j.ok)throw new Error(j.error||('HTTP '+r.status));return j}
-async function put(p){const c=code();if(!c)throw new Error('Lina-session saknas – logga in igen');const r=await fetch(API+'/app-state',{method:'POST',headers:{'Content-Type':'application/json','X-Lina-Login-Code':c},body:JSON.stringify(p)}),j=await r.json().catch(()=>({}));if(!r.ok||!j.ok)throw new Error(j.error||('HTTP '+r.status));return j}
+async function get(){let r,raw='',j={};try{diag('app-state-request',{method:'GET',endpoint:API+'/app-state'});r=await fetch(API+'/app-state',{cache:'no-store'});raw=await r.text();try{j=raw?JSON.parse(raw):{}}catch{}diag('app-state-response',{method:'GET',httpStatus:r.status,httpStatusText:r.statusText||'',ok:r.ok,apiOk:Boolean(j.ok),response:raw.slice(0,4000)});if(!r.ok||!j.ok)throw new Error(j.error||('HTTP '+r.status));return j}catch(e){diag('app-state-error',{method:'GET',httpStatus:r?.status??null,message:String(e?.message||e),response:raw.slice(0,4000)});throw e}}
+async function put(p){const c=code();if(!c){diag('app-state-blocked',{method:'POST',reason:'SESSION_MISSING'});throw new Error('Lina-session saknas – logga in igen')}const body=JSON.stringify(p);let r,raw='',j={};try{diag('app-state-request',{method:'POST',endpoint:API+'/app-state',bodyBytes:new Blob([body]).size,entryCount:Object.keys(p?.entries||{}).length});r=await fetch(API+'/app-state',{method:'POST',headers:{'Content-Type':'application/json','X-Lina-Login-Code':c},body});raw=await r.text();try{j=raw?JSON.parse(raw):{}}catch{}diag('app-state-response',{method:'POST',httpStatus:r.status,httpStatusText:r.statusText||'',ok:r.ok,apiOk:Boolean(j.ok),response:raw.slice(0,4000)});if(!r.ok||!j.ok)throw new Error(j.error||('HTTP '+r.status));return j}catch(e){diag('app-state-error',{method:'POST',httpStatus:r?.status??null,message:String(e?.message||e),response:raw.slice(0,4000)});throw e}}
 async function syncAll(){// Forward har egen strikt merge och är en del av helsynken.
   if(window.LinaForwardCenter){await window.LinaForwardCenter.remotePull();await window.LinaForwardCenter.remotePush()}
   const local=collect(), remote=await get(), merged=merge(local,remote.state||null);const wr=await put(merged);apply(wr.state||merged);const evidence=window.LinaEvidence?await window.LinaEvidence.syncApproved():0;return {ok:true,keys:Object.keys((wr.state||merged).entries||{}).length,evidence}}
