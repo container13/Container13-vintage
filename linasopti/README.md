@@ -26,3 +26,10 @@ Builds on V0.2.59. Gen3 remains frozen and unchanged (`NO_CANDIDATE_FOR_FORWARD`
 - Forward remains sealed until a future Gen4 candidate is frozen; no backdating.
 - Research execution is intentionally still closed in V0.2.61. Human sequence: lock runnerspec → verify engine → export diagnostics.
 - Permanent project rule: when ChatGPT needs exact Lina information, provide a download/export button for that diagnostic instead of relying on screenshots/manual copying. Global `📥 Exportera Lina-status` remains available; Gen4 also has `📥 Exportera Gen4-diagnostik`.
+
+## V0.2.62 — Gen4 engine verification hotfix
+- Fixar V0.2.61 där verifieringsknappen kunde tryckas utan att `engineVerified` blev beständigt true.
+- Verifieringen skrivs atomiskt till samma Gen4-engine-state och läses tillbaka före UI-render/synk.
+- Diagnostik sparar `verificationAttempt` med varje kontroll.
+- Ingen research öppnas av hotfixen; Handel AV och hard-stop 2024-12-31 kvarstår.
+- Gen4 plan 8d51311d och runnerspec d1daab90 ändras inte.

@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='V0.2.61', PLAN_HASH='8d51311d';
+const VERSION='V0.2.62', PLAN_HASH='8d51311d';
 const KEY='lina_clean_gen4_engine_v0261';
 const SYMBOLS=Object.freeze(['AMD','SHOP','ADBE','MU','FDX','TSLA','LUV','NFLX','C','NOW','QCOM','BAC','GM','DDOG','PYPL','NVDA']);
 const FAMILIES=Object.freeze(['Breddbalanserad trend','Relativ styrka med symboltak','Equal-risk pullback','Koncentrationsmedveten ensemble']);
@@ -32,15 +32,26 @@ function assertPlan(){const L=window.LinaGen4,x=L?.load?.();if(!L||L.PLAN_HASH!=
 function fresh(){return{schema:'LINA-GEN4-ENGINE-1',version:VERSION,planHash:PLAN_HASH,runnerSpecHash:RUNNER_SPEC_HASH,runnerSpecLocked:false,runnerSpecLockedAt:null,engineVerified:false,engineVerifiedAt:null,tradeEnabled:false,status:'RUNNERSPEC_REVIEW_REQUIRED',researchOpened:false,runs:[],familyResults:{},candidate:null,forwardOpened:false}}
 function init(){assertPlan();let x=load()||fresh();if(x.planHash!==PLAN_HASH||x.runnerSpecHash!==RUNNER_SPEC_HASH||x.tradeEnabled!==false||x.forwardOpened===true||x.researchOpened===true)throw Error('BLOCKERAD: Gen4 engine-state bryter mot förregistreringen');return save(x)}
 function lockRunnerSpec(){let x=init();if(x.runnerSpecLocked&&x.runnerSpecHash!==RUNNER_SPEC_HASH)throw Error('BLOCKERAD: annat Gen4-runnerspec är redan låst');x.runnerSpecLocked=true;x.runnerSpecLockedAt=x.runnerSpecLockedAt||new Date().toISOString();x.status='RUNNERSPEC_LOCKED_ENGINE_NOT_VERIFIED';return save(x)}
-function verifyEngine(){let x=init();if(!x.runnerSpecLocked)throw Error('Lås Gen4-runnerspec först');const checks=[
- {id:'plan',pass:PLAN_HASH==='8d51311d',text:'Plan 8d51311d'},
- {id:'history',pass:SPEC.historyHardStop==='2024-12-31',text:'Research hard-stop 2024-12-31'},
- {id:'trade',pass:SPEC.tradeEnabled===false&&x.tradeEnabled===false,text:'Handel AV'},
- {id:'forward',pass:x.forwardOpened===false,text:'Forward stängd'},
- {id:'gates',pass:SPEC.selection.maxSingleSymbolGrossProfitShare===.40&&SPEC.selection.minimumOOSTrades===100&&SPEC.selection.profitFactor===1.20&&SPEC.selection.maxDrawdown===.12&&SPEC.selection.minimumPositiveFolds===3,text:'Gen4 gates matchar låst plan'},
- {id:'families',pass:FAMILIES.length===4,text:'4 förregistrerade familjer'}
+function verifyEngine(){
+ let x=init();if(!x.runnerSpecLocked)throw Error('Lås Gen4-runnerspec först');
+ const at=new Date().toISOString();const checks=[
+  {id:'plan',pass:PLAN_HASH==='8d51311d',text:'Plan 8d51311d'},
+  {id:'runner',pass:x.runnerSpecHash===RUNNER_SPEC_HASH&&RUNNER_SPEC_HASH==='d1daab90',text:'Runnerspec d1daab90'},
+  {id:'history',pass:SPEC.historyHardStop==='2024-12-31',text:'Research hard-stop 2024-12-31'},
+  {id:'trade',pass:SPEC.tradeEnabled===false&&x.tradeEnabled===false,text:'Handel AV'},
+  {id:'forward',pass:x.forwardOpened===false,text:'Forward stängd'},
+  {id:'gates',pass:SPEC.selection.maxSingleSymbolGrossProfitShare===.40&&SPEC.selection.minimumOOSTrades===100&&SPEC.selection.profitFactor===1.20&&SPEC.selection.maxDrawdown===.12&&SPEC.selection.minimumPositiveFolds===3,text:'Gen4 gates matchar låst plan'},
+  {id:'families',pass:FAMILIES.length===4,text:'4 förregistrerade familjer'}
  ];
- if(checks.some(c=>!c.pass))throw Error('BLOCKERAD: engine-verifiering misslyckades');x.engineVerified=true;x.engineVerifiedAt=x.engineVerifiedAt||new Date().toISOString();x.status='READY_FOR_RESEARCH_BUILD';x.preflight={at:new Date().toISOString(),checks};return save(x)}
+ x.verificationAttempt={at,release:VERSION,checks};
+ if(checks.some(c=>!c.pass)){x.status='ENGINE_VERIFY_FAILED';save(x);throw Error('BLOCKERAD: engine-verifiering misslyckades');}
+ x.engineVerified=true;x.engineVerifiedAt=x.engineVerifiedAt||at;x.status='READY_FOR_RESEARCH_BUILD';x.preflight={at,checks};
+ // Atomic persistence check before any re-render/sync may occur.
+ x.savedAt=at;localStorage.setItem(KEY,JSON.stringify(x));
+ const persisted=load();
+ if(!persisted?.engineVerified||persisted?.runnerSpecHash!==RUNNER_SPEC_HASH){throw Error('BLOCKERAD: verifieringen kunde inte bekräftas i localStorage');}
+ document.dispatchEvent(new CustomEvent('lina:gen4change'));window.LinaGitHubSync?.queueSync?.();return persisted;
+}
 function preflight(){const x=init();return{ok:Boolean(x.runnerSpecLocked&&x.engineVerified),version:VERSION,planHash:PLAN_HASH,runnerSpecHash:RUNNER_SPEC_HASH,runnerSpecLocked:x.runnerSpecLocked,engineVerified:x.engineVerified,status:x.status,history:'2020-2024 OBSERVERAD',hardStop:SPEC.historyHardStop,forward:'SEALED UNTIL FUTURE CANDIDATE FREEZE',tradeEnabled:false,researchOpened:false,families:FAMILIES,checks:x.preflight?.checks||[]}}
 window.LinaGen4Engine={VERSION,PLAN_HASH,RUNNER_SPEC_HASH,SPEC,FOLDS,FAMILIES,load,init,lockRunnerSpec,verifyEngine,preflight};
 })();
