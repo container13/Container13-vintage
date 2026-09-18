@@ -90,3 +90,9 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Underlaget är inte en plan och får aldrig i sig öppna research, skapa runnerspec eller starta Forward.
 - Metodbrister i en fryst generation rättas endast i en ny generation; den frysta generationens evidens/semantik ändras aldrig.
 - Nästa generations plan ska uttryckligen skilja mellan vad som bevaras och vad som korrigeras innan planlås.
+
+## Gen5 planlås — från V0.2.73
+- Gen5-planen måste vara komplett och hashad före research. Planhash V0.2.73: `d501a5e1`.
+- Mänskligt godkännande låser planen men startar inte research i samma steg.
+- Full train→OOS, verklig kombinerad portfölj, använda parametrar och hashad exakt rankingformel är obligatoriska Gen5-metodkrav.
+- Efter planlås ska runnerspec + engine verifieras mot planen innan någon observerbar Gen5-körning tillåts.

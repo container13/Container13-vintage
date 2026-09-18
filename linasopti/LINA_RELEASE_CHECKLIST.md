@@ -42,3 +42,9 @@ Körs före varje Lina-ZIP.
 - [ ] Underlag/planförslag märks EJ LÅST och kan inte starta research.
 - [ ] Fryst föregående generation muteras eller körs inte om.
 - [ ] Behållna principer och metodkorrigeringar visas separat före planlås.
+
+### Generation Engine / Gen5 från V0.2.73
+- [ ] Gen5-planhash är `d501a5e1` före/efter planlås.
+- [ ] Planlås kan inte starta research eller Forward.
+- [ ] Handel AV och forskningsgräns 2024-12-31 bevaras.
+- [ ] Nästa runnerspec måste verifiera train→OOS, gemensam portfölj, parameteranvändning och hashad rankingformel innan research öppnas.

@@ -65,8 +65,11 @@ V0.2.70: Gen4 kandidatsteg. Efter FROZEN · GITHUB ✓ sammanställning väljer 
 - Fixar även intern `APP_VERSION` så den matchar release V0.2.71.
 - Cloudflare Worker: INGEN ÄNDRING.
 
-## V0.2.72 — Underlag för Generation 5
+## V0.2.73 — Underlag för Generation 5
 - Generation Engine sammanställer frysta Gen4-lärdomar och metodpunkter till ett exportbart Gen5-underlag.
 - Planförslaget är uttryckligen EJ LÅST; ingen Gen5-research, runnerspec eller Forward skapas.
 - Gen4 förblir immutable och körs inte om.
 - Cloudflare Worker: INGEN ÄNDRING.
+
+## V0.2.73 — Gen5 formellt planlås
+Generation Engine visar en komplett Gen5-plan med låst forskningsgräns, gates, familjer, metodkrav och exakt rankingformel. Ett mänskligt godkännande fryser planen (`d501a5e1`) och säkrar planevidens. Ingen Gen5-research eller Forward startas i denna release.
