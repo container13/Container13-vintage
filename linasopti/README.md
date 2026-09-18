@@ -7,3 +7,14 @@ Builds on V0.2.58 without changing the frozen Gen3 plan (`fa55540a`) or runnersp
 - If no family clears every preregistered gate, Gen3 is closed as `NO_CANDIDATE_FOR_FORWARD`; no rerun/rescue and Forward remains blocked.
 - If an eligible family exists, Forward still remains closed until a separate candidate freeze is GitHub-verified.
 - Handel AV. Cloudflare Worker unchanged.
+
+
+## V0.2.60 – Global export + Lina Generation 4 preregistration
+
+Builds on V0.2.59. Gen3 remains frozen and unchanged (`NO_CANDIDATE_FOR_FORWARD`).
+
+- Adds a permanent global `📥 Exportera Lina-status` button in the header that downloads a complete analysis JSON to Downloads without exporting login secrets.
+- Adds focused `📥 Exportera Gen3-resultat` and `📥 Exportera Gen4-plan` exports for future diagnostics and handoff.
+- Introduces Lina Generation 4 by reusing the proven generation framework while keeping research state, hashes and evidence separate from Gen3.
+- Gen4 is plan-review only in this release: plan hash `8d51311d`, four preregistered diversification hypotheses, unchanged quality gates, no runnerspec, no engine, no research runs.
+- Handel AV. Cloudflare Worker unchanged.
