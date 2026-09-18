@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='V0.2.64', PLAN_HASH='8d51311d';
+const VERSION='V0.2.65', PLAN_HASH='8d51311d';
 const KEY='lina_clean_gen4_engine_v0261', DB='lina_gen4_market_v1', STORE='bars';
 const SYMBOLS=Object.freeze(['AMD','SHOP','ADBE','MU','FDX','TSLA','LUV','NFLX','C','NOW','QCOM','BAC','GM','DDOG','PYPL','NVDA']);
 const FAMILIES=Object.freeze(['Breddbalanserad trend','Relativ styrka med symboltak','Equal-risk pullback','Koncentrationsmedveten ensemble']);
@@ -100,6 +100,23 @@ async function runAll(){
 }
 function gateChecks(r){return[{id:'trades',label:'Affärer',pass:r.n>=100,value:r.n,rule:'≥ 100'},{id:'pf',label:'PF',pass:r.pf>=1.2,value:Number(r.pf||0).toFixed(2),rule:'≥ 1.20'},{id:'dd',label:'DD',pass:Math.abs(r.dd)<=.12,value:(Math.abs(r.dd||0)*100).toFixed(1)+' %',rule:'≤ 12 %'},{id:'oos',label:'OOS-resultat',pass:r.pl>0,value:Number(r.pl||0).toFixed(0),rule:'> 0'},{id:'concentration',label:'Koncentration',pass:r.maxSymbolGrossProfitShare<=.4,value:(Number(r.maxSymbolGrossProfitShare||0)*100).toFixed(1)+' %',rule:'≤ 40 %'},{id:'folds',label:'Positiva folds',pass:r.positiveFolds>=3,value:(r.positiveFolds||0)+'/4',rule:'≥ 3/4'}]}
 function summary(){const x=load();if(!x||!FAMILIES.every(f=>x.familyResults?.[f]))return null;const families=FAMILIES.map(f=>{const z=x.familyResults[f],r=z.best.oos,checks=gateChecks(r);return{family:f,status:z.status,trials:z.trials,params:z.best.params,score:z.best.score,oos:r,checks,failReasons:checks.filter(c=>!c.pass).map(c=>`${c.label}: ${c.value} (krav ${c.rule})`),evidence:z.evidence}}),eligible=families.filter(f=>f.status==='PASS'&&f.checks.every(c=>c.pass));return{schema:'LINA-GEN4-RESEARCH-SUMMARY-1',release:VERSION,planHash:PLAN_HASH,runnerSpecHash:RUNNER_SPEC_HASH,observedHistory:'2020-01-01 → 2024-12-31',tradeEnabled:false,families,eligibleCount:eligible.length,eligibleFamilies:eligible.map(x=>x.family),decision:eligible.length?'CANDIDATE_SELECTION_AVAILABLE':'NO_CANDIDATE_FOR_FORWARD',forwardOpened:false}}
-async function freezeSummary(){let x=load(),sm=summary();if(!sm)throw Error('Alla fyra Gen4-familjer måste vara färdiga först');if(x.summaryFreeze?.frozen)return x.summaryFreeze;const at=new Date().toISOString(),artifact={...sm,createdAt:at,immutable:true,note:'Observerad Gen4-forskning. Ingen omkörning/rescue. Forward kräver senare separat deterministisk kandidatfrysning.'};let ev={status:'LOKALT FRYST · VÄNTAR PÅ GITHUB'},E=window.LinaEvidence;if(E?.stage&&E?.approveAndSync){const name=`LINAS_GEN4_RESEARCH_SUMMARY_${at.slice(0,10)}.json`,item=E.stage(name,JSON.stringify(artifact,null,2),'application/json','Lina Gen4');if(item?.id)try{const r=await E.approveAndSync(item.id);ev={status:r?.status||'FROZEN',name,githubPath:r?.githubPath||null,githubCommit:r?.githubCommit||null}}catch(e){ev={status:'FROZEN · VÄNTAR PÅ SYNK',syncError:String(e?.message||e)}}}x=load();x.summaryFreeze={frozen:true,frozenAt:at,decision:sm.decision,eligibleCount:sm.eligibleCount,evidence:ev};x.status=sm.eligibleCount?'GEN4_RESEARCH_FROZEN_CANDIDATE_SELECTION_AVAILABLE':'GEN4_RESEARCH_COMPLETE_NO_CANDIDATE';x.forwardOpened=false;save(x);return x.summaryFreeze}
+async function freezeSummary(){
+ // V0.2.65: freeze from the exact already-observed local snapshot. Do not rerun research.
+ let x=load();
+ if(x?.summaryFreeze?.frozen)return x.summaryFreeze;
+ const missing=FAMILIES.filter(f=>!x?.familyResults?.[f]);
+ if(missing.length)throw Error('BLOCKERAD: sparad Gen4-evidens saknas för: '+missing.join(', '));
+ const families=FAMILIES.map(f=>{const z=x.familyResults[f],r=z?.best?.oos;if(!r)throw Error('BLOCKERAD: ofullständig sparad evidens för '+f);const checks=gateChecks(r);return{family:f,status:z.status,trials:z.trials,params:z.best.params,score:z.best.score,oos:r,checks,failReasons:checks.filter(c=>!c.pass).map(c=>`${c.label}: ${c.value} (krav ${c.rule})`),evidence:z.evidence}});
+ const eligible=families.filter(f=>f.status==='PASS'&&f.checks.every(c=>c.pass));
+ const sm={schema:'LINA-GEN4-RESEARCH-SUMMARY-1',release:VERSION,planHash:PLAN_HASH,runnerSpecHash:RUNNER_SPEC_HASH,observedHistory:'2020-01-01 → 2024-12-31',tradeEnabled:false,families,eligibleCount:eligible.length,eligibleFamilies:eligible.map(q=>q.family),decision:eligible.length?'CANDIDATE_SELECTION_AVAILABLE':'NO_CANDIDATE_FOR_FORWARD',forwardOpened:false};
+ const at=new Date().toISOString(),artifact={...sm,createdAt:at,immutable:true,note:'Observerad Gen4-forskning. Ingen omkörning/rescue. Forward kräver senare separat deterministisk kandidatfrysning.'};
+ // Persist the irreversible local freeze BEFORE any async GitHub work can race with state.
+ x.summaryFreeze={frozen:true,frozenAt:at,decision:sm.decision,eligibleCount:sm.eligibleCount,eligibleFamilies:sm.eligibleFamilies,evidence:{status:'LOKALT FRYST · VÄNTAR PÅ GITHUB'},sourceStatus:x.status,allFourFamiliesConfirmed:true};
+ x.status=sm.eligibleCount?'GEN4_RESEARCH_FROZEN_CANDIDATE_SELECTION_AVAILABLE':'GEN4_RESEARCH_COMPLETE_NO_CANDIDATE';x.forwardOpened=false;save(x);
+ let ev=x.summaryFreeze.evidence,E=window.LinaEvidence;
+ if(E?.stage&&E?.approveAndSync){const name=`LINAS_GEN4_RESEARCH_SUMMARY_${at.slice(0,10)}.json`,item=E.stage(name,JSON.stringify(artifact,null,2),'application/json','Lina Gen4');if(item?.id)try{const r=await E.approveAndSync(item.id);ev={status:r?.status||'FROZEN',name,githubPath:r?.githubPath||null,githubCommit:r?.githubCommit||null}}catch(e){ev={status:'FROZEN · VÄNTAR PÅ SYNK',syncError:String(e?.message||e)}}}
+ // Merge evidence status only; never replace the observed family snapshot.
+ x=load()||x;x.summaryFreeze=x.summaryFreeze||{frozen:true,frozenAt:at,decision:sm.decision,eligibleCount:sm.eligibleCount,eligibleFamilies:sm.eligibleFamilies};x.summaryFreeze.evidence=ev;x.summaryFreeze.allFourFamiliesConfirmed=true;x.status=sm.eligibleCount?'GEN4_RESEARCH_FROZEN_CANDIDATE_SELECTION_AVAILABLE':'GEN4_RESEARCH_COMPLETE_NO_CANDIDATE';x.forwardOpened=false;save(x);return x.summaryFreeze
+}
 window.LinaGen4Engine={VERSION,PLAN_HASH,RUNNER_SPEC_HASH,SPEC,FOLDS,FAMILIES,load,init,lockRunnerSpec,verifyEngine,preflight,runFamily,runAll,gateChecks,summary,freezeSummary};
 })();

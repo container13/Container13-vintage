@@ -13,6 +13,7 @@ Körs före varje Lina-ZIP.
 - [ ] Negativa resultat och all variant-evidens bevaras.
 - [ ] Global/modulspecifik export fungerar eller lämnas oförsämrad.
 - [ ] GitHub/evidensflöde lämnas intakt eller verifieras efter ändring.
+- [ ] Knappar efter en automatiserad kedja verifieras mot exakt det state som kedjan producerar; inga gamla completion-flaggor får blockera nästa steg.
 - [ ] JavaScript syntaxkontrollerad.
 - [ ] CHANGED FILES ONLY innehåller endast avsedda ändringar + regel/handoff-filer.
 - [ ] FLAT COMPLETE skapad som säkerhetskopia.
