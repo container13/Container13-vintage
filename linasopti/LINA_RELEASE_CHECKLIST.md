@@ -103,3 +103,11 @@ Before packaging, fail the release if:
 3. any active asset `?v=` token in `index.html` differs from `version.js` cache value.
 4. `app.js` or `generation-engine.js` contains a numeric current-version fallback.
 Historical/frozen research version strings are excluded from this current-release gate.
+
+### V0.2.85 — Gen6 runnerspec/engine gate
+- [x] Gen6 planhash `206c11d7` oförändrad.
+- [x] Runnerspec canonical-hashad och exakt rankingformel inkluderad.
+- [x] Riskregim/volatilitetsskalning definierad som pre-execution sizing/exposure.
+- [x] Låsta gates och walk-forward 2020→2024 verifierade.
+- [x] Ingen Gen6 research-runner exponeras; researchOpened=false och Forward=false.
+- [x] Handel AV.

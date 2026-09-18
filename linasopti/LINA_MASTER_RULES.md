@@ -152,3 +152,10 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Login/header/module views must not hardcode the current release as fallback text.
 - `index.html` may contain cache-busting query tokens generated for the release, but the release audit must verify every active asset token equals `version.js` cache value before packaging.
 - Historical version numbers inside archived evidence, reports, migrations and frozen research metadata are historical facts and must not be rewritten.
+
+## Gen6 runnerspec + engine verification — från V0.2.85
+- Gen6 planhash `206c11d7` är låst och får inte ändras av runnerspec-steget.
+- Gen6 runnerspec ska hashberäknas deterministiskt från hela canonical SPEC; exakt rankingformel ingår i hashen.
+- Risk-/regimstyrning och volatilitetsskalning måste påverka positionsrisk/exponering före exekvering, aldrig efterhandsfiltrera resultat.
+- Gates förblir ≥100 OOS-affärer, PF ≥1.20, DD ≤12 %, positiv OOS, koncentration ≤40 %, positiva folds ≥3/4.
+- Runnerspec + engine-verifiering är ett säkert automatiskt steg efter planlås. V0.2.85 får inte starta Gen6-research, skapa kandidat eller öppna Forward.

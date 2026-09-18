@@ -121,5 +121,5 @@ Gen6-planförslag 206c11d7 är mänskligt godkänt. Denna release kan låsa exak
 ## V0.2.83
 Single Version Source + cache-hotfix. `version.js` är central källa för aktuell synlig release. V0.2.82:s Gen6-planlås exponeras med cachetaggar som tvingar in rätt Generation Engine-kod. Ingen research startas.
 
-## V0.2.84
+## V0.2.85
 Version Source Integrity hotfix. Current UI version is sourced from `version.js`; release audit prevents cache-token/current-version drift. Gen6 plan/state unchanged; no Gen6 research started. Handel AV.
