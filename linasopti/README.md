@@ -98,3 +98,9 @@ Gen5 Yahoo parser hotfix: prioritize top-level `rows`; prevents `symbols` array 
 
 ## V0.2.79
 Generation Engine först under Forskning. Gen5 pending evidens/summary kan slutföras utan rerun. Robotmognad 2.0 låst med modellhash `6e8908ca` och 100 verifierbara poäng. Handel AV; Worker oförändrad.
+
+
+## V0.2.80
+- Hotfix för Gen5-evidensknappen: alltid synlig progress/klart/stoppad.
+- Reconcile matchar frysta Gen5-familjer deterministiskt via evidensfilnamn, även om äldre state saknar exakt name-fält.
+- Ingen Gen5-research körs om. Gen6/Forward öppnas inte. Handel AV.

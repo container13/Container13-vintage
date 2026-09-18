@@ -124,3 +124,8 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 ## Gen5 slutlig evidenssynk — från V0.2.79
 - Gen5-resultat får aldrig köras om för att reparera synk. Pending familj/summary ska matchas mot exakt evidensnamn i evidence-kön och reconcileas till `FROZEN · GITHUB ✓` först efter lyckad synk eller explicit immutable-409.
 - Generation Engine är primär ingång under Forskning; äldre forskningsvyer bevaras som historik/evidens.
+
+
+## Gen5 sync UX — från V0.2.80
+- Evidenssynk måste alltid ge synlig status. Ingen knapp får tyst lyckas eller tyst göra noll arbete.
+- Reconcile av redan GitHub-fryst Gen5-evidens får endast uppdatera status/referenser; forskningsresultat får aldrig räknas om.

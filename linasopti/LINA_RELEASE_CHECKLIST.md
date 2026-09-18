@@ -73,3 +73,10 @@ Körs före varje Lina-ZIP.
 - [ ] Gen5-synk gör ingen research/rerun och reconcilear family/summary via exakt evidensnamn.
 - [ ] Robotmognadsmodell `6e8908ca` summerar exakt 100 och poängen härleds endast från verifierbart state.
 - [ ] Header, Generation Engine-export och Arkiv använder samma beräknade mognadspoäng.
+
+
+### V0.2.80
+- [x] Gen5 sync-knapp ger omedelbar progress och explicit KLART/STOPPAD.
+- [x] Reconcile använder frysta evidensposter och ändrar inte researchresultat.
+- [x] Gen5 rerun förbjuden; Gen6/Forward stängda; Handel AV.
+- [x] JS syntaxkontrollerad och ZIP-integritet verifierad.
