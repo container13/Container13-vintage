@@ -1,0 +1,36 @@
+{
+  "schema": "LINA-GEN4-CANDIDATE-SELECTION-1",
+  "planHash": "8d51311d",
+  "runnerSpecHash": "d1daab90",
+  "tradeEnabled": false,
+  "family": "Koncentrationsmedveten ensemble",
+  "params": {
+    "trendWeight": 0.3,
+    "rsWeight": 0.4,
+    "pullWeight": 0.3
+  },
+  "score": 213.2093740085419,
+  "oos": {
+    "n": 112,
+    "pl": 14029.067456152925,
+    "pf": 1.6144190635075553,
+    "dd": -0.04513606763495068,
+    "maxSymbolGrossProfitShare": 0.23768488787884087,
+    "positiveFolds": 3,
+    "grossProfit": 36862.127641598185,
+    "grossLoss": 22833.06018544526
+  },
+  "selection": "LOCKED_DETERMINISTIC_RISK_ADJUSTED_RANK",
+  "eligibleCount": 1,
+  "eligibleFamilies": [
+    "Koncentrationsmedveten ensemble"
+  ],
+  "reason": "Högst låst riskjusterad score bland 1 familj(er) som klarade samtliga förregistrerade gates. P/L är inte primärt urvalskriterium.",
+  "forwardOpened": false,
+  "locked": true,
+  "lockedAt": "2026-09-18T18:57:50.273Z",
+  "immutable": true,
+  "evidence": {
+    "status": "LOKALT FRYST · VÄNTAR PÅ GITHUB"
+  }
+}
