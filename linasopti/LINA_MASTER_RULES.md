@@ -134,3 +134,9 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Gen6 plan proposal `206c11d7` is review-only until explicitly approved/locked by the user.
 - No Gen6 runnerspec, research, candidate or Forward may be created before that lock.
 - Gen5 is immutable source evidence; Gen6 must never modify or rerun Gen5.
+
+
+## Gen6 planlås — från V0.2.82
+- Gen6-planhash `206c11d7` är mänskligt godkänd och får låsas immutable med GitHub-evidens.
+- Planlås får inte starta Gen6-research, skapa kandidat eller öppna Forward.
+- Efter planlås är nästa säkra automatiska steg runnerspec + engine-verifiering; research kräver därefter uttrycklig start enligt Generation Engine-kontraktet.

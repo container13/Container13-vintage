@@ -85,3 +85,5 @@ Körs före varje Lina-ZIP.
 - [ ] If Gen6 proposal is not explicitly locked, verify there is no Gen6 research runner/action.
 - [ ] Verify Gen5 remains immutable and no Gen5 rerun path is introduced.
 - [ ] Verify Handel AV and Forward closed.
+
+- V0.2.82: verifiera att Gen6-planlås endast fryser planhash 206c11d7 + evidens och inte startar runnerspec/research/Forward.

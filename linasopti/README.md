@@ -113,3 +113,7 @@ Generation Engine först under Forskning. Gen5 pending evidens/summary kan slutf
 - Gen6 hypothesis focuses on risk/regime-controlled exposure and volatility-scaled portfolio risk while preserving the verified Gen5 TRAIN→OOS methodology and unchanged quality gates.
 - Proposal hash: `206c11d7`. The proposal is NOT locked in this release. No Gen6 runnerspec, research, Forward or trading is opened.
 - Handel AV. Worker unchanged. Robotmognad model unchanged.
+
+
+## V0.2.82 — Gen6 planlås
+Gen6-planförslag 206c11d7 är mänskligt godkänt. Denna release kan låsa exakt plan och frysa/synka planevidens. Ingen runnerspec, research eller Forward skapas. Handel AV.
