@@ -1,0 +1,313 @@
+{
+  "schema": "LINA-GEN3-RESEARCH-SUMMARY-1",
+  "release": "V0.2.59",
+  "planHash": "fa55540a",
+  "runnerSpecHash": "427a8742",
+  "observedHistory": "2020-01-01 → 2024-12-31",
+  "forwardStart": "2026-09-18",
+  "tradeEnabled": false,
+  "families": [
+    {
+      "family": "Kortare trend/momentum",
+      "status": "FAIL",
+      "trials": 4,
+      "params": {
+        "lookback": 30,
+        "trend": 100,
+        "hold": 10
+      },
+      "score": 322.666956408822,
+      "oos": {
+        "n": 111,
+        "pl": 21915.866413248277,
+        "pf": 2.8121729024085185,
+        "dd": -0.06109385710672044,
+        "maxSymbolGrossProfitShare": 0.5530502106408712,
+        "positiveFolds": 3,
+        "gpProxy": 25332.999079509045
+      },
+      "checks": [
+        {
+          "id": "trades",
+          "label": "Affärer",
+          "pass": true,
+          "value": 111,
+          "rule": "≥ 100"
+        },
+        {
+          "id": "pf",
+          "label": "PF",
+          "pass": true,
+          "value": "2.81",
+          "rule": "≥ 1.20"
+        },
+        {
+          "id": "dd",
+          "label": "DD",
+          "pass": true,
+          "value": "6.1 %",
+          "rule": "≤ 12 %"
+        },
+        {
+          "id": "oos",
+          "label": "OOS-resultat",
+          "pass": true,
+          "value": "21916",
+          "rule": "> 0"
+        },
+        {
+          "id": "concentration",
+          "label": "Koncentration",
+          "pass": false,
+          "value": "55.3 %",
+          "rule": "≤ 40 %"
+        },
+        {
+          "id": "folds",
+          "label": "Positiva folds",
+          "pass": true,
+          "value": "3/4",
+          "rule": "≥ 3/4"
+        }
+      ],
+      "failReasons": [
+        "Koncentration: 55.3 % (krav ≤ 40 %)"
+      ],
+      "evidence": {
+        "status": "FROZEN · GITHUB ✓",
+        "name": "LINAS_GEN3_KORTARE_TREND_MOMENTUM_WALK_FORWARD_ALL_VARIANTS_2026-09-18.json",
+        "githubPath": null,
+        "githubCommit": null
+      }
+    },
+    {
+      "family": "Trend-pullback",
+      "status": "FAIL",
+      "trials": 4,
+      "params": {
+        "trend": 150,
+        "pullback": 5,
+        "hold": 7
+      },
+      "score": 438.2989305147655,
+      "oos": {
+        "n": 160,
+        "pl": 24829.075029233398,
+        "pf": 4.202007097345897,
+        "dd": -0.10689006234899989,
+        "maxSymbolGrossProfitShare": 0.4907307946989648,
+        "positiveFolds": 2,
+        "gpProxy": 27584.77490663029
+      },
+      "checks": [
+        {
+          "id": "trades",
+          "label": "Affärer",
+          "pass": true,
+          "value": 160,
+          "rule": "≥ 100"
+        },
+        {
+          "id": "pf",
+          "label": "PF",
+          "pass": true,
+          "value": "4.20",
+          "rule": "≥ 1.20"
+        },
+        {
+          "id": "dd",
+          "label": "DD",
+          "pass": true,
+          "value": "10.7 %",
+          "rule": "≤ 12 %"
+        },
+        {
+          "id": "oos",
+          "label": "OOS-resultat",
+          "pass": true,
+          "value": "24829",
+          "rule": "> 0"
+        },
+        {
+          "id": "concentration",
+          "label": "Koncentration",
+          "pass": false,
+          "value": "49.1 %",
+          "rule": "≤ 40 %"
+        },
+        {
+          "id": "folds",
+          "label": "Positiva folds",
+          "pass": false,
+          "value": "2/4",
+          "rule": "≥ 3/4"
+        }
+      ],
+      "failReasons": [
+        "Koncentration: 49.1 % (krav ≤ 40 %)",
+        "Positiva folds: 2/4 (krav ≥ 3/4)"
+      ],
+      "evidence": {
+        "status": "FROZEN · GITHUB ✓",
+        "name": "LINAS_GEN3_TREND_PULLBACK_WALK_FORWARD_ALL_VARIANTS_2026-09-18.json",
+        "githubPath": null,
+        "githubCommit": null
+      }
+    },
+    {
+      "family": "Multi-timeframe momentum",
+      "status": "FAIL",
+      "trials": 4,
+      "params": {
+        "fast": 50,
+        "slow": 200,
+        "mom": 30,
+        "hold": 15
+      },
+      "score": 643.9404459070646,
+      "oos": {
+        "n": 93,
+        "pl": 27085.931553911112,
+        "pf": 6.195590480647574,
+        "dd": -0.0955906810512861,
+        "maxSymbolGrossProfitShare": 1,
+        "positiveFolds": 3,
+        "gpProxy": 30266.05939611577
+      },
+      "checks": [
+        {
+          "id": "trades",
+          "label": "Affärer",
+          "pass": false,
+          "value": 93,
+          "rule": "≥ 100"
+        },
+        {
+          "id": "pf",
+          "label": "PF",
+          "pass": true,
+          "value": "6.20",
+          "rule": "≥ 1.20"
+        },
+        {
+          "id": "dd",
+          "label": "DD",
+          "pass": true,
+          "value": "9.6 %",
+          "rule": "≤ 12 %"
+        },
+        {
+          "id": "oos",
+          "label": "OOS-resultat",
+          "pass": true,
+          "value": "27086",
+          "rule": "> 0"
+        },
+        {
+          "id": "concentration",
+          "label": "Koncentration",
+          "pass": false,
+          "value": "100.0 %",
+          "rule": "≤ 40 %"
+        },
+        {
+          "id": "folds",
+          "label": "Positiva folds",
+          "pass": true,
+          "value": "3/4",
+          "rule": "≥ 3/4"
+        }
+      ],
+      "failReasons": [
+        "Affärer: 93 (krav ≥ 100)",
+        "Koncentration: 100.0 % (krav ≤ 40 %)"
+      ],
+      "evidence": {
+        "status": "FROZEN · GITHUB ✓",
+        "name": "LINAS_GEN3_MULTI_TIMEFRAME_MOMENTUM_WALK_FORWARD_ALL_VARIANTS_2026-09-18.json",
+        "githubPath": null,
+        "githubCommit": null
+      }
+    },
+    {
+      "family": "Diversifierad regime ensemble",
+      "status": "FAIL",
+      "trials": 3,
+      "params": {
+        "trendWeight": 0.4,
+        "pullWeight": 0.3,
+        "mtfWeight": 0.3
+      },
+      "score": 358.1239694410665,
+      "oos": {
+        "n": 140,
+        "pl": 17900.914999590867,
+        "pf": 3.1823334508016785,
+        "dd": -0.07245748374725963,
+        "maxSymbolGrossProfitShare": 0.5936301230804967,
+        "positiveFolds": 3,
+        "gpProxy": 22335.683802814827
+      },
+      "checks": [
+        {
+          "id": "trades",
+          "label": "Affärer",
+          "pass": true,
+          "value": 140,
+          "rule": "≥ 100"
+        },
+        {
+          "id": "pf",
+          "label": "PF",
+          "pass": true,
+          "value": "3.18",
+          "rule": "≥ 1.20"
+        },
+        {
+          "id": "dd",
+          "label": "DD",
+          "pass": true,
+          "value": "7.2 %",
+          "rule": "≤ 12 %"
+        },
+        {
+          "id": "oos",
+          "label": "OOS-resultat",
+          "pass": true,
+          "value": "17901",
+          "rule": "> 0"
+        },
+        {
+          "id": "concentration",
+          "label": "Koncentration",
+          "pass": false,
+          "value": "59.4 %",
+          "rule": "≤ 40 %"
+        },
+        {
+          "id": "folds",
+          "label": "Positiva folds",
+          "pass": true,
+          "value": "3/4",
+          "rule": "≥ 3/4"
+        }
+      ],
+      "failReasons": [
+        "Koncentration: 59.4 % (krav ≤ 40 %)"
+      ],
+      "evidence": {
+        "status": "FROZEN · GITHUB ✓",
+        "name": "LINAS_GEN3_DIVERSIFIERAD_REGIME_ENSEMBLE_WALK_FORWARD_ALL_VARIANTS_2026-09-18.json",
+        "githubPath": null,
+        "githubCommit": null
+      }
+    }
+  ],
+  "eligibleCount": 0,
+  "eligibleFamilies": [],
+  "decision": "NO_CANDIDATE_FOR_FORWARD",
+  "forwardOpened": false,
+  "createdAt": "2026-09-18T05:50:45.916Z",
+  "immutable": true,
+  "note": "Observerad Gen3-forskning. Ingen omkörning eller rescue. Forward får endast öppnas för kvalificerad kandidat."
+}
