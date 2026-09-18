@@ -80,3 +80,6 @@ Generation Engine: Gen5 runnerspec `db1c4d7f`, verifierad train→OOS-metod och 
 
 ## V0.2.75
 Gen5 data-preflight: årsvis datahämtning 2020–2024 och komplett universumkontroll före forskning.
+
+## V0.2.76
+Gen5 Data Source Probe före research. Ingen forskningskörning görs av proben; diagnostik kan exporteras för exakt rotorsaksanalys.

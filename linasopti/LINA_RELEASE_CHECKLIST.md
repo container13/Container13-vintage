@@ -58,3 +58,9 @@ Körs före varje Lina-ZIP.
 - [ ] Kedjan skapar Gen6-underlag men startar inte Gen6 eller Forward.
 
 - [ ] Data-preflight verifierar hela låsta universumet och alla forskningsperioder innan research-state öppnas.
+
+### Gen5 data source probe från V0.2.76
+- [ ] Probe startar ingen research och muterar inga familyResults/runs.
+- [ ] Probe provar exakt Gen4-kompatibla Worker-endpoints och exporterar sanerad HTTP/formatdiagnostik.
+- [ ] RUNNING används inte för ett stopp före research.
+- [ ] Researchknappen är dold tills datakällediagnos har minst en normaliserbar fungerande endpoint; full data-preflight krävs fortfarande före research.

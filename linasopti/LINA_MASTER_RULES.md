@@ -105,3 +105,9 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Gen6 får inte startas av Gen5-kedjan. Forward förblir stängd.
 
 - Ny generation får inte gå in i RESEARCH_RUNNING förrän full data-preflight för låst universum och samtliga forskningsperioder är godkänd.
+
+## Gen5 datakällediagnos — från V0.2.76
+- Datakällproblem före första observerade Gen5-resultat felsöks med read-only probe, aldrig genom research-rerun.
+- Probe ska logga endpoint/request, HTTP-status, content-type, sanerat svarsexempel, JSON-struktur, radantal och första/sista datum utan hemligheter.
+- Research-startknapp ska inte exponeras efter blockerad dataproblematik förrän probe visar en fungerande dataväg och full preflight därefter passerar.
+- Tekniskt preflight/probe-stopp före observerade resultat ska visas som STOPPED_BEFORE_RESEARCH, inte RESEARCH_RUNNING.
