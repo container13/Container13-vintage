@@ -44,5 +44,8 @@ Builds on V0.2.59. Gen3 remains frozen and unchanged (`NO_CANDIDATE_FOR_FORWARD`
 - Global och Gen4-specifik export finns kvar. Handel AV.
 - Cloudflare Worker: NO CHANGE.
 
-## Permanent project governance (V0.2.65+)
+## Permanent project governance (V0.2.66+)
 Before every Lina release, read `LINA_MASTER_RULES.md`, latest handoff, and affected base code; then complete `LINA_RELEASE_CHECKLIST.md`. Safe deterministic multi-step work must be automated to the next genuine human decision.
+
+
+V0.2.66: Gen4 evidence-recovery + monoton synk. Pågående automatkedja pausar app-state-autosynk. Recovery återläser endast exakt redan fryst ensemble-evidens och kör aldrig research.

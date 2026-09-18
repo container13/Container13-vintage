@@ -18,3 +18,6 @@ Körs före varje Lina-ZIP.
 - [ ] CHANGED FILES ONLY innehåller endast avsedda ändringar + regel/handoff-filer.
 - [ ] FLAT COMPLETE skapad som säkerhetskopia.
 - [ ] Ny handoff dokumenterar ändring, verifieringar och eventuella avvikelser från MASTER RULES.
+
+- [ ] Irreversibelt research-state testat mot synkrace: sync får inte backa familyResults/frysning; merge ska vara monoton.
+- [ ] Recovery testad utan marknadsdata-/researchanrop: endast exakt sparad/fryst evidens får återläsas.

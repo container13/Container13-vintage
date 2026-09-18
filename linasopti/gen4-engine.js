@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='V0.2.65', PLAN_HASH='8d51311d';
+const VERSION='V0.2.66', PLAN_HASH='8d51311d';
 const KEY='lina_clean_gen4_engine_v0261', DB='lina_gen4_market_v1', STORE='bars';
 const SYMBOLS=Object.freeze(['AMD','SHOP','ADBE','MU','FDX','TSLA','LUV','NFLX','C','NOW','QCOM','BAC','GM','DDOG','PYPL','NVDA']);
 const FAMILIES=Object.freeze(['Breddbalanserad trend','Relativ styrka med symboltak','Equal-risk pullback','Koncentrationsmedveten ensemble']);
@@ -76,6 +76,43 @@ function rank(r){return r.pf*100+r.positiveFolds*20-Math.abs(r.dd)*150-r.maxSymb
 function progress(text){document.dispatchEvent(new CustomEvent('lina:gen4progress',{detail:{text}}))}
 async function persistEvidence(f,result,at){const E=window.LinaEvidence;if(!E?.stage||!E?.approveAndSync)return{status:'LOKALT SPARAD · EVIDENCE-MODUL SAKNAS'};const safe=f.toUpperCase().replace(/[^A-Z0-9]+/g,'_').replace(/^_|_$/g,''),name=`LINAS_GEN4_${safe}_WALK_FORWARD_ALL_VARIANTS_${at.slice(0,10)}.json`;const artifact={schema:'LINA-GEN4-WALK-FORWARD-EVIDENCE-1',release:VERSION,createdAt:at,planHash:PLAN_HASH,runnerSpecHash:RUNNER_SPEC_HASH,family:f,folds:FOLDS,observedHistoryOnly:true,forward:'NOT OPENED',tradeEnabled:false,trials:result.trials,status:result.status,variants:result.variants};const item=E.stage(name,JSON.stringify(artifact,null,2),'application/json','Lina Gen4');if(!item?.id)return{status:'LOKALT SPARAD · EVIDENCE STAGING FAIL'};const r=await E.approveAndSync(item.id);return{status:r?.status||'FROZEN',name,githubPath:r?.githubPath||null,githubCommit:r?.githubCommit||null}}
 async function runFamily(f){assertPlan();let x=init();if(!x.runnerSpecLocked||!x.engineVerified)throw Error('BLOCKERAD: runnerspec + engine måste vara verifierade');if(!FAMILIES.includes(f))throw Error('Okänd familj');if(x.familyResults?.[f])throw Error('BLOCKERAD: familjen är redan körd; ingen rerun/rescue');const foldData=[];for(let i=0;i<FOLDS.length;i++){progress(`${f} · fold ${i+1}/4 · hämtar OOS ${FOLDS[i].oos[0].slice(0,4)}`);foldData.push(await data(...FOLDS[i].oos))}const variants=[];for(const p of gridFor(f)){const results=foldData.map(by=>evalOne(f,by,p)),agg=aggregate(results);variants.push({params:p,folds:results,oos:agg,eligible:qualifies(agg),score:rank(agg)})}variants.sort((a,b)=>b.score-a.score);const best=variants[0],at=new Date().toISOString();x=load();x.runs.push({at,family:f,trials:variants.length,allVariantsStored:true,folds:4});x.familyResults[f]={status:best?.eligible?'PASS':'FAIL',trials:variants.length,best,variants,evidence:{status:'LOKALT SPARAD · SYNK PÅGÅR'}};x.researchOpened=true;x.status='WALK_FORWARD_RUNNING';save(x);let ev;try{ev=await persistEvidence(f,x.familyResults[f],at)}catch(e){ev={status:'FROZEN · VÄNTAR PÅ SYNK',syncError:String(e?.message||e)}}x=load();x.familyResults[f].evidence=ev;if(FAMILIES.every(q=>x.familyResults[q]))x.status='WALK_FORWARD_COMPLETE';save(x);return x.familyResults[f]}
+function evidenceQueue(){try{return JSON.parse(localStorage.getItem('lina_clean_evidence_queue_v1')||'{"items":[]}')}catch{return{items:[]}}}
+function evidenceNameForFamily(f){const safe=f.toUpperCase().replace(/[^A-Z0-9]+/g,'_').replace(/^_|_$/g,'');return `LINAS_GEN4_${safe}_WALK_FORWARD_ALL_VARIANTS_2026-09-18.json`}
+async function fetchFrozenFamilyEvidence(f){
+ const name=evidenceNameForFamily(f), q=evidenceQueue(), item=(q.items||[]).find(v=>v?.name===name);
+ let text=item?.content||null, source=item?.content?'LOCAL_EVIDENCE_QUEUE':null;
+ if(!text){
+  const path=item?.githubPath||`linasopti/evidence/2026-09-18/${name}`;
+  const urls=[
+   `https://raw.githubusercontent.com/Container13/Container13-vintage/ccc-demo-public-test/${path}`,
+   `https://raw.githubusercontent.com/Container13/Container13-vintage/main/${path}`
+  ];
+  for(const url of urls){try{const r=await fetch(url,{cache:'no-store'});if(r.ok){text=await r.text();source=url;break}}catch{}}
+ }
+ if(!text)throw Error('BLOCKERAD: den redan observerade ensemble-evidensen kunde inte hittas lokalt eller på GitHub. Ingen omkörning görs.');
+ let a;try{a=JSON.parse(text)}catch{throw Error('BLOCKERAD: hittad ensemble-evidens är inte giltig JSON')}
+ if(a?.schema!=='LINA-GEN4-WALK-FORWARD-EVIDENCE-1'||a?.planHash!==PLAN_HASH||a?.runnerSpecHash!==RUNNER_SPEC_HASH||a?.family!==f)throw Error('BLOCKERAD: hittad evidens matchar inte låst Gen4 plan/runnerspec/familj');
+ if(!Array.isArray(a.variants)||a.variants.length!==gridFor(f).length)throw Error('BLOCKERAD: hittad evidens har fel variantantal');
+ return {artifact:a,item,source,name};
+}
+async function recoverObservedEvidence(){
+ assertPlan();let x=load();
+ if(!x?.runnerSpecLocked||!x?.engineVerified)throw Error('BLOCKERAD: runnerspec + engine måste vara verifierade');
+ const missing=FAMILIES.filter(f=>!x?.familyResults?.[f]);
+ if(!missing.length)return {ok:true,recovered:[],status:'ALREADY_COMPLETE'};
+ if(missing.some(f=>f!==FAMILIES[3]))throw Error('BLOCKERAD: recovery får endast återställa den redan observerade ensemble-evidensen; saknas även: '+missing.join(', '));
+ const f=FAMILIES[3], found=await fetchFrozenFamilyEvidence(f), a=found.artifact;
+ const variants=a.variants.slice();
+ // Evidence artifact contains the exact already-observed variant rows. No market-data call and no recomputation.
+ variants.sort((u,v)=>Number(v.score||-Infinity)-Number(u.score||-Infinity));
+ const best=variants[0];if(!best?.oos)throw Error('BLOCKERAD: ensemble-evidensen saknar sparat best/OOS-underlag');
+ x=load();if(x.familyResults?.[f])return {ok:true,recovered:[],status:'ALREADY_RECOVERED'};
+ x.familyResults[f]={status:a.status|| (best.eligible?'PASS':'FAIL'),trials:a.trials||variants.length,best,variants,evidence:{status:'FROZEN · GITHUB ✓',name:found.name,githubPath:found.item?.githubPath||`linasopti/evidence/2026-09-18/${found.name}`,githubCommit:found.item?.githubCommit||null,recoveredFrom:found.source}};
+ if(!x.runs.some(r=>r.family===f))x.runs.push({at:a.createdAt||new Date().toISOString(),family:f,trials:x.familyResults[f].trials,allVariantsStored:true,folds:4,recoveredEvidence:true});
+ x.researchOpened=true;x.status='WALK_FORWARD_COMPLETE';x.automation={...(x.automation||{}),mode:'RUN_ALL_GEN4',status:'COMPLETE',completedAt:new Date().toISOString(),currentFamily:null,currentIndex:4,totalFamilies:4,recoveredEvidence:true};
+ // Recovery is local-first and must not invoke research. Sync is requested only after exact evidence is restored.
+ save(x);return {ok:true,recovered:[f],status:'RECOVERED_FROM_FROZEN_EVIDENCE',source:found.source};
+}
 async function runAll(){
  assertPlan();let x=init();
  if(!x.runnerSpecLocked||!x.engineVerified)throw Error('BLOCKERAD: runnerspec + engine måste vara verifierade');
@@ -118,5 +155,5 @@ async function freezeSummary(){
  // Merge evidence status only; never replace the observed family snapshot.
  x=load()||x;x.summaryFreeze=x.summaryFreeze||{frozen:true,frozenAt:at,decision:sm.decision,eligibleCount:sm.eligibleCount,eligibleFamilies:sm.eligibleFamilies};x.summaryFreeze.evidence=ev;x.summaryFreeze.allFourFamiliesConfirmed=true;x.status=sm.eligibleCount?'GEN4_RESEARCH_FROZEN_CANDIDATE_SELECTION_AVAILABLE':'GEN4_RESEARCH_COMPLETE_NO_CANDIDATE';x.forwardOpened=false;save(x);return x.summaryFreeze
 }
-window.LinaGen4Engine={VERSION,PLAN_HASH,RUNNER_SPEC_HASH,SPEC,FOLDS,FAMILIES,load,init,lockRunnerSpec,verifyEngine,preflight,runFamily,runAll,gateChecks,summary,freezeSummary};
+window.LinaGen4Engine={VERSION,PLAN_HASH,RUNNER_SPEC_HASH,SPEC,FOLDS,FAMILIES,load,init,lockRunnerSpec,verifyEngine,preflight,runFamily,runAll,recoverObservedEvidence,gateChecks,summary,freezeSummary};
 })();

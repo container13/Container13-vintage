@@ -62,3 +62,8 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 
 ## 10. Cloudflare Worker
 - Worker ändras inte om en release inte faktiskt kräver det och behovet har verifierats.
+
+## Irreversibelt state och synk
+- Irreversibelt research-state får aldrig backas av GitHub/app-state-synk. FamilyResults, fryst evidens och frysbeslut mergeas monotont: redan observerade/sparade resultat bevaras.
+- Under pågående automatiserad researchkedja pausas app-state-autosynk. Evidens får frysas/synkas separat.
+- Recovery får endast återläsa exakt redan sparad/fryst evidens; den får aldrig köra om research eller rekonstruera saknade resultat.

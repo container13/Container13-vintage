@@ -1,13 +1,26 @@
 (function(){
 'use strict';
-const API='https://linas-opti-api.mangaj73.workers.dev', RELEASE='V0.2.64';
+const API='https://linas-opti-api.mangaj73.workers.dev', RELEASE='V0.2.66';
 const EXCLUDE=new Set(['lina_clean_core_state_v0011','lina_clean_swing_g4_universe_result_v0213']);
 const MAX_ENTRY=400000, MAX_PACKAGE=1500000;
 function code(){return sessionStorage.getItem('linasopti_login_code')||''}
 function eligible(k){return k.startsWith('lina_clean_')&&!EXCLUDE.has(k)}
 function stamp(raw){try{const x=JSON.parse(raw);return String(x?.savedAt||x?.lastRefreshAt||x?.updatedAt||x?.lockedAt||x?.createdAt||'')}catch{return ''}}
 function collect(){const entries={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!eligible(k))continue;const v=localStorage.getItem(k);if(v==null||v.length>MAX_ENTRY)continue;entries[k]={value:v,stamp:stamp(v)}}const p={schema:'LINA-APP-SYNC-1',release:RELEASE,tradeEnabled:false,exportedAt:new Date().toISOString(),entries};if(JSON.stringify(p).length>MAX_PACKAGE)throw new Error('Linas kompakta synkpaket är för stort');return p}
-function merge(local,remote){const out={...(remote?.entries||{})};for(const [k,l] of Object.entries(local.entries||{})){const r=out[k];if(!r){out[k]=l;continue}if(r.value===l.value)continue;if(l.stamp&&r.stamp){if(l.stamp>r.stamp)out[k]=l;else if(l.stamp===r.stamp)throw new Error('Synkkonflikt: '+k);continue}throw new Error('Synkkonflikt utan tidsstämpel: '+k)}return {schema:'LINA-APP-SYNC-1',release:RELEASE,tradeEnabled:false,exportedAt:new Date().toISOString(),entries:out}}
+function mergeGen4Entry(l,r){
+ try{
+  const a=JSON.parse(l.value),b=JSON.parse(r.value);if(a?.schema!=='LINA-GEN4-ENGINE-1'||b?.schema!=='LINA-GEN4-ENGINE-1')return null;
+  const out={...b,...a};out.familyResults={...(b.familyResults||{}),...(a.familyResults||{})};
+  const by=new Map();for(const z of [...(b.runs||[]),...(a.runs||[])])if(z?.family&&!by.has(z.family))by.set(z.family,z);out.runs=[...by.values()];
+  if(b.summaryFreeze?.frozen&&!a.summaryFreeze?.frozen)out.summaryFreeze=b.summaryFreeze;
+  out.forwardOpened=false;out.tradeEnabled=false;
+  const complete=['Breddbalanserad trend','Relativ styrka med symboltak','Equal-risk pullback','Koncentrationsmedveten ensemble'].every(f=>out.familyResults?.[f]);
+  if(out.summaryFreeze?.frozen)out.status=out.summaryFreeze.eligibleCount?'GEN4_RESEARCH_FROZEN_CANDIDATE_SELECTION_AVAILABLE':'GEN4_RESEARCH_COMPLETE_NO_CANDIDATE';else if(complete)out.status='WALK_FORWARD_COMPLETE';
+  out.savedAt=[a.savedAt,b.savedAt].filter(Boolean).sort().pop()||new Date().toISOString();
+  return {value:JSON.stringify(out),stamp:out.savedAt};
+ }catch{return null}
+}
+function merge(local,remote){const out={...(remote?.entries||{})};for(const [k,l] of Object.entries(local.entries||{})){const r=out[k];if(!r){out[k]=l;continue}if(r.value===l.value)continue;if(k==='lina_clean_gen4_engine_v0261'){const m=mergeGen4Entry(l,r);if(m){out[k]=m;continue}}if(l.stamp&&r.stamp){if(l.stamp>r.stamp)out[k]=l;else if(l.stamp===r.stamp)throw new Error('Synkkonflikt: '+k);continue}throw new Error('Synkkonflikt utan tidsstämpel: '+k)}return {schema:'LINA-APP-SYNC-1',release:RELEASE,tradeEnabled:false,exportedAt:new Date().toISOString(),entries:out}}
 function apply(p){for(const [k,x] of Object.entries(p?.entries||{})){if(eligible(k)&&typeof x?.value==='string'&&x.value.length<=MAX_ENTRY)localStorage.setItem(k,x.value)}}
 function localInventory(){
   const entries={};
@@ -62,7 +75,7 @@ async function bootstrap(progress){
 }
 let autoTimer=null,autoBusy=false;
 function queueSync(){
-  clearTimeout(autoTimer);autoTimer=setTimeout(async()=>{if(autoBusy||!code())return;autoBusy=true;try{await syncAll();document.dispatchEvent(new CustomEvent('lina:autosync-ok'))}catch(e){console.warn('Lina autosync stoppad:',e);document.dispatchEvent(new CustomEvent('lina:autosync-fail',{detail:{message:String(e?.message||e)}}))}finally{autoBusy=false}},700);
+  clearTimeout(autoTimer);autoTimer=setTimeout(async()=>{const g4=(()=>{try{return JSON.parse(localStorage.getItem('lina_clean_gen4_engine_v0261')||'null')}catch{return null}})();if(g4?.automation?.status==='RUNNING')return;if(autoBusy||!code())return;autoBusy=true;try{await syncAll();document.dispatchEvent(new CustomEvent('lina:autosync-ok'))}catch(e){console.warn('Lina autosync stoppad:',e);document.dispatchEvent(new CustomEvent('lina:autosync-fail',{detail:{message:String(e?.message||e)}}))}finally{autoBusy=false}},700);
 }
 document.addEventListener('lina:gen2change',queueSync);
 document.addEventListener('lina:evidence-changed',queueSync);
