@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  const APP_VERSION='0.2.63';
+  const APP_VERSION='0.2.64';
   const cards=[
     ['forward','Forward','Riktig forward-validering · G2 + G3 parallellt.'],
     ['research','Forskning','Frysta originalspåret fortsätter Real Forward. Generation 2 och 3 är avslutade; Generation 4 är nästa förregistrerade forskningsspår.'],

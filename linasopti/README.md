@@ -43,3 +43,6 @@ Builds on V0.2.59. Gen3 remains frozen and unchanged (`NO_CANDIDATE_FOR_FORWARD`
 - Forward förblir stängd. Ingen kandidat väljs eller fryses i denna release; eventuell kandidatprocess sker först efter fryst Gen4-sammanställning med separat deterministisk regel.
 - Global och Gen4-specifik export finns kvar. Handel AV.
 - Cloudflare Worker: NO CHANGE.
+
+## Permanent project governance (V0.2.64+)
+Before every Lina release, read `LINA_MASTER_RULES.md`, latest handoff, and affected base code; then complete `LINA_RELEASE_CHECKLIST.md`. Safe deterministic multi-step work must be automated to the next genuine human decision.

@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='V0.2.63', PLAN_HASH='8d51311d';
+const VERSION='V0.2.64', PLAN_HASH='8d51311d';
 const KEY='lina_clean_gen4_engine_v0261', DB='lina_gen4_market_v1', STORE='bars';
 const SYMBOLS=Object.freeze(['AMD','SHOP','ADBE','MU','FDX','TSLA','LUV','NFLX','C','NOW','QCOM','BAC','GM','DDOG','PYPL','NVDA']);
 const FAMILIES=Object.freeze(['Breddbalanserad trend','Relativ styrka med symboltak','Equal-risk pullback','Koncentrationsmedveten ensemble']);
@@ -76,8 +76,30 @@ function rank(r){return r.pf*100+r.positiveFolds*20-Math.abs(r.dd)*150-r.maxSymb
 function progress(text){document.dispatchEvent(new CustomEvent('lina:gen4progress',{detail:{text}}))}
 async function persistEvidence(f,result,at){const E=window.LinaEvidence;if(!E?.stage||!E?.approveAndSync)return{status:'LOKALT SPARAD · EVIDENCE-MODUL SAKNAS'};const safe=f.toUpperCase().replace(/[^A-Z0-9]+/g,'_').replace(/^_|_$/g,''),name=`LINAS_GEN4_${safe}_WALK_FORWARD_ALL_VARIANTS_${at.slice(0,10)}.json`;const artifact={schema:'LINA-GEN4-WALK-FORWARD-EVIDENCE-1',release:VERSION,createdAt:at,planHash:PLAN_HASH,runnerSpecHash:RUNNER_SPEC_HASH,family:f,folds:FOLDS,observedHistoryOnly:true,forward:'NOT OPENED',tradeEnabled:false,trials:result.trials,status:result.status,variants:result.variants};const item=E.stage(name,JSON.stringify(artifact,null,2),'application/json','Lina Gen4');if(!item?.id)return{status:'LOKALT SPARAD · EVIDENCE STAGING FAIL'};const r=await E.approveAndSync(item.id);return{status:r?.status||'FROZEN',name,githubPath:r?.githubPath||null,githubCommit:r?.githubCommit||null}}
 async function runFamily(f){assertPlan();let x=init();if(!x.runnerSpecLocked||!x.engineVerified)throw Error('BLOCKERAD: runnerspec + engine måste vara verifierade');if(!FAMILIES.includes(f))throw Error('Okänd familj');if(x.familyResults?.[f])throw Error('BLOCKERAD: familjen är redan körd; ingen rerun/rescue');const foldData=[];for(let i=0;i<FOLDS.length;i++){progress(`${f} · fold ${i+1}/4 · hämtar OOS ${FOLDS[i].oos[0].slice(0,4)}`);foldData.push(await data(...FOLDS[i].oos))}const variants=[];for(const p of gridFor(f)){const results=foldData.map(by=>evalOne(f,by,p)),agg=aggregate(results);variants.push({params:p,folds:results,oos:agg,eligible:qualifies(agg),score:rank(agg)})}variants.sort((a,b)=>b.score-a.score);const best=variants[0],at=new Date().toISOString();x=load();x.runs.push({at,family:f,trials:variants.length,allVariantsStored:true,folds:4});x.familyResults[f]={status:best?.eligible?'PASS':'FAIL',trials:variants.length,best,variants,evidence:{status:'LOKALT SPARAD · SYNK PÅGÅR'}};x.researchOpened=true;x.status='WALK_FORWARD_RUNNING';save(x);let ev;try{ev=await persistEvidence(f,x.familyResults[f],at)}catch(e){ev={status:'FROZEN · VÄNTAR PÅ SYNK',syncError:String(e?.message||e)}}x=load();x.familyResults[f].evidence=ev;if(FAMILIES.every(q=>x.familyResults[q]))x.status='WALK_FORWARD_COMPLETE';save(x);return x.familyResults[f]}
+async function runAll(){
+ assertPlan();let x=init();
+ if(!x.runnerSpecLocked||!x.engineVerified)throw Error('BLOCKERAD: runnerspec + engine måste vara verifierade');
+ if(x.summaryFreeze?.frozen)throw Error('BLOCKERAD: Gen4-sammanställningen är redan fryst');
+ const startedAt=new Date().toISOString();
+ x.automation=x.automation||{};
+ if(!x.automation.startedAt)x.automation.startedAt=startedAt;
+ x.automation.mode='RUN_ALL_GEN4';x.automation.status='RUNNING';x.automation.totalFamilies=FAMILIES.length;
+ save(x);
+ for(let i=0;i<FAMILIES.length;i++){
+  const f=FAMILIES[i];x=load();
+  if(x.familyResults?.[f]){progress(`Gen4 · familj ${i+1}/4 redan sparad · fortsätter`);continue;}
+  x.automation.currentFamily=f;x.automation.currentIndex=i+1;x.automation.status='RUNNING';save(x);
+  progress(`Gen4 körs · familj ${i+1}/4 · ${f}`);
+  await runFamily(f);
+ }
+ x=load();
+ if(!FAMILIES.every(f=>x.familyResults?.[f]))throw Error('BLOCKERAD: hela Gen4 kunde inte bekräftas som sparad');
+ x.automation.status='COMPLETE';x.automation.completedAt=new Date().toISOString();x.automation.currentFamily=null;x.automation.currentIndex=4;
+ x.status='WALK_FORWARD_COMPLETE';save(x);progress('Gen4 research klar · 4/4 familjer sparade · redo för granskning');
+ return summary();
+}
 function gateChecks(r){return[{id:'trades',label:'Affärer',pass:r.n>=100,value:r.n,rule:'≥ 100'},{id:'pf',label:'PF',pass:r.pf>=1.2,value:Number(r.pf||0).toFixed(2),rule:'≥ 1.20'},{id:'dd',label:'DD',pass:Math.abs(r.dd)<=.12,value:(Math.abs(r.dd||0)*100).toFixed(1)+' %',rule:'≤ 12 %'},{id:'oos',label:'OOS-resultat',pass:r.pl>0,value:Number(r.pl||0).toFixed(0),rule:'> 0'},{id:'concentration',label:'Koncentration',pass:r.maxSymbolGrossProfitShare<=.4,value:(Number(r.maxSymbolGrossProfitShare||0)*100).toFixed(1)+' %',rule:'≤ 40 %'},{id:'folds',label:'Positiva folds',pass:r.positiveFolds>=3,value:(r.positiveFolds||0)+'/4',rule:'≥ 3/4'}]}
 function summary(){const x=load();if(!x||!FAMILIES.every(f=>x.familyResults?.[f]))return null;const families=FAMILIES.map(f=>{const z=x.familyResults[f],r=z.best.oos,checks=gateChecks(r);return{family:f,status:z.status,trials:z.trials,params:z.best.params,score:z.best.score,oos:r,checks,failReasons:checks.filter(c=>!c.pass).map(c=>`${c.label}: ${c.value} (krav ${c.rule})`),evidence:z.evidence}}),eligible=families.filter(f=>f.status==='PASS'&&f.checks.every(c=>c.pass));return{schema:'LINA-GEN4-RESEARCH-SUMMARY-1',release:VERSION,planHash:PLAN_HASH,runnerSpecHash:RUNNER_SPEC_HASH,observedHistory:'2020-01-01 → 2024-12-31',tradeEnabled:false,families,eligibleCount:eligible.length,eligibleFamilies:eligible.map(x=>x.family),decision:eligible.length?'CANDIDATE_SELECTION_AVAILABLE':'NO_CANDIDATE_FOR_FORWARD',forwardOpened:false}}
 async function freezeSummary(){let x=load(),sm=summary();if(!sm)throw Error('Alla fyra Gen4-familjer måste vara färdiga först');if(x.summaryFreeze?.frozen)return x.summaryFreeze;const at=new Date().toISOString(),artifact={...sm,createdAt:at,immutable:true,note:'Observerad Gen4-forskning. Ingen omkörning/rescue. Forward kräver senare separat deterministisk kandidatfrysning.'};let ev={status:'LOKALT FRYST · VÄNTAR PÅ GITHUB'},E=window.LinaEvidence;if(E?.stage&&E?.approveAndSync){const name=`LINAS_GEN4_RESEARCH_SUMMARY_${at.slice(0,10)}.json`,item=E.stage(name,JSON.stringify(artifact,null,2),'application/json','Lina Gen4');if(item?.id)try{const r=await E.approveAndSync(item.id);ev={status:r?.status||'FROZEN',name,githubPath:r?.githubPath||null,githubCommit:r?.githubCommit||null}}catch(e){ev={status:'FROZEN · VÄNTAR PÅ SYNK',syncError:String(e?.message||e)}}}x=load();x.summaryFreeze={frozen:true,frozenAt:at,decision:sm.decision,eligibleCount:sm.eligibleCount,evidence:ev};x.status=sm.eligibleCount?'GEN4_RESEARCH_FROZEN_CANDIDATE_SELECTION_AVAILABLE':'GEN4_RESEARCH_COMPLETE_NO_CANDIDATE';x.forwardOpened=false;save(x);return x.summaryFreeze}
-window.LinaGen4Engine={VERSION,PLAN_HASH,RUNNER_SPEC_HASH,SPEC,FOLDS,FAMILIES,load,init,lockRunnerSpec,verifyEngine,preflight,runFamily,gateChecks,summary,freezeSummary};
+window.LinaGen4Engine={VERSION,PLAN_HASH,RUNNER_SPEC_HASH,SPEC,FOLDS,FAMILIES,load,init,lockRunnerSpec,verifyEngine,preflight,runFamily,runAll,gateChecks,summary,freezeSummary};
 })();
