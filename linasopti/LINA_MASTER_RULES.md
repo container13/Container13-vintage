@@ -140,3 +140,15 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Gen6-planhash `206c11d7` är mänskligt godkänd och får låsas immutable med GitHub-evidens.
 - Planlås får inte starta Gen6-research, skapa kandidat eller öppna Forward.
 - Efter planlås är nästa säkra automatiska steg runnerspec + engine-verifiering; research kräver därefter uttrycklig start enligt Generation Engine-kontraktet.
+
+## Single Version Source (från V0.2.83)
+- Aktuell Lina-release definieras en gång i `version.js` (`window.LinaVersion`).
+- Synliga aktuella versionsetiketter och modulernas aktuella releaseidentitet ska läsa denna källa; ingen modul får ha en egen aktuell hårdkodad release som kan driva isär.
+- Cache-busters är distributionsmetadata och måste verifieras automatiskt mot `version.js` före ZIP-bygge.
+- Versionsnummer får aldrig användas som forsknings-/initieringsgrind.
+
+## Single Version Source — permanent rule (V0.2.84)
+- Current UI release identity has exactly one runtime source: `version.js` / `window.LinaVersion`.
+- Login/header/module views must not hardcode the current release as fallback text.
+- `index.html` may contain cache-busting query tokens generated for the release, but the release audit must verify every active asset token equals `version.js` cache value before packaging.
+- Historical version numbers inside archived evidence, reports, migrations and frozen research metadata are historical facts and must not be rewritten.

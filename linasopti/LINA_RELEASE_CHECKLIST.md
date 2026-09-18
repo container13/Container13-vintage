@@ -87,3 +87,19 @@ Körs före varje Lina-ZIP.
 - [ ] Verify Handel AV and Forward closed.
 
 - V0.2.82: verifiera att Gen6-planlås endast fryser planhash 206c11d7 + evidens och inte startar runnerspec/research/Forward.
+
+### V0.2.83 – Single Version Source
+- [x] Synlig aktuell release hämtas från `window.LinaVersion.release` i `version.js`; Generation Engine har ingen egen aktuell versionskonstant.
+- [x] `app.js` hämtar appversion från samma källa.
+- [x] `index.html` använder `data-lina-version` för synliga versionsetiketter.
+- [x] Alla cache-busters i `index.html` matchar aktuell release före ZIP-bygge.
+- [x] Releasekontroll stoppar bygg om aktuell UI-version, Generation Engine-version och cache-busters divergerar.
+- [x] Gen6 planhash `206c11d7` och låsfunktion är oförändrade; ingen research/Forward startas.
+
+## Version-source gate (V0.2.84+)
+Before packaging, fail the release if:
+1. `version.js` release/cache do not match the intended release.
+2. any `[data-lina-version]` element contains a hardcoded current version instead of a neutral placeholder.
+3. any active asset `?v=` token in `index.html` differs from `version.js` cache value.
+4. `app.js` or `generation-engine.js` contains a numeric current-version fallback.
+Historical/frozen research version strings are excluded from this current-release gate.
