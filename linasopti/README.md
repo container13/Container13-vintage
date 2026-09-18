@@ -73,3 +73,6 @@ V0.2.70: Gen4 kandidatsteg. Efter FROZEN · GITHUB ✓ sammanställning väljer 
 
 ## V0.2.73 — Gen5 formellt planlås
 Generation Engine visar en komplett Gen5-plan med låst forskningsgräns, gates, familjer, metodkrav och exakt rankingformel. Ett mänskligt godkännande fryser planen (`d501a5e1`) och säkrar planevidens. Ingen Gen5-research eller Forward startas i denna release.
+
+## V0.2.74
+Generation Engine: Gen5 runnerspec `db1c4d7f`, verifierad train→OOS-metod och gemensam portföljsimulering. En start kör hela Gen5-kedjan, säkrar evidens och skapar Gen6-underlag; Gen6/Forward startas inte automatiskt. Handel AV.

@@ -96,3 +96,10 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Mänskligt godkännande låser planen men startar inte research i samma steg.
 - Full train→OOS, verklig kombinerad portfölj, använda parametrar och hashad exakt rankingformel är obligatoriska Gen5-metodkrav.
 - Efter planlås ska runnerspec + engine verifieras mot planen innan någon observerbar Gen5-körning tillåts.
+
+## Gen5 självkörande kedja — från V0.2.74
+- Gen5 runnerspec hash är `db1c4d7f`; exakt rankingformel ingår i den hashade runnerspecen.
+- Efter låst plan får runnerspec-lås + engine-verifiering automatiseras eftersom de är deterministiska och inte observerar forskningsresultat.
+- Gen5 research startas med en uttrycklig mänsklig start. Därefter får kedjan automatiskt köra alla fyra familjer, spara full train/fold-evidens före continuation, frysa sammanställning, göra låst deterministiskt kandidatval och skapa Gen6-underlag.
+- Gen5 använder faktisk TRAIN-selektion före respektive OOS-fold. Kombinerad ensemble ska exekveras som en gemensam portfölj/equity curve.
+- Gen6 får inte startas av Gen5-kedjan. Forward förblir stängd.

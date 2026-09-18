@@ -48,3 +48,11 @@ Körs före varje Lina-ZIP.
 - [ ] Planlås kan inte starta research eller Forward.
 - [ ] Handel AV och forskningsgräns 2024-12-31 bevaras.
 - [ ] Nästa runnerspec måste verifiera train→OOS, gemensam portfölj, parameteranvändning och hashad rankingformel innan research öppnas.
+
+### Gen5 autonom kedja från V0.2.74
+- [ ] Runnerspechash `db1c4d7f` och planhash `d501a5e1` verifierade före research.
+- [ ] TRAIN väljer parametrar före varje OOS-fold; OOS används inte för parameterurval.
+- [ ] Kombinerad ensemble går genom en gemensam portföljsimulering/equity curve.
+- [ ] Ingen deklarerad `riskSlots` eller annan oanvänd grid-parameter finns kvar.
+- [ ] Varje familjs kompletta train/fold-evidens sparas före nästa familj.
+- [ ] Kedjan skapar Gen6-underlag men startar inte Gen6 eller Forward.
