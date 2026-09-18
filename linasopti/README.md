@@ -53,3 +53,5 @@ V0.2.67: Gen4 evidence-recovery + monoton synk. Pågående automatkedja pausar a
 V0.2.67: bootstrap-synk är nu monoton för irreversibelt Gen4-state och applicerar aldrig äldre remote state före lyckad merge+PUT. Synkfel får inte backa återställd/fryst Gen4-evidens.
 
 V0.2.68: självdiagnostiserande GitHub/evidenssynk. Loggar endpoint/metod, payloadstorlek, evidensfil, HTTP-status och sanerat API-svar utan lösenkod. Gen4-diagnostik och global status-export inkluderar synkloggen. Ingen research, kandidat eller Forward ändras.
+
+V0.2.69: smal evidence-idempotensfix. Exakt HTTP 409 + `Evidencefilen finns redan – original skrivs inte över` behandlas som serverbekräftad immutable existens, inte synkfel. Ingen overwrite eller research. Gen4 evidence-status reconcileras från kön så fryst UI kan gå från VÄNTAR PÅ SYNK till GITHUB ✓.
