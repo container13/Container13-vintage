@@ -66,3 +66,10 @@ Körs före varje Lina-ZIP.
 - [ ] Researchknappen är dold tills datakällediagnos har minst en normaliserbar fungerande endpoint; full data-preflight krävs fortfarande före research.
 
 - [ ] For market-data response changes, verify metadata arrays cannot be selected instead of actual bar rows.
+
+
+### V0.2.79
+- [ ] Generation Engine ligger först under Forskning; äldre vyer finns kvar.
+- [ ] Gen5-synk gör ingen research/rerun och reconcilear family/summary via exakt evidensnamn.
+- [ ] Robotmognadsmodell `6e8908ca` summerar exakt 100 och poängen härleds endast från verifierbart state.
+- [ ] Header, Generation Engine-export och Arkiv använder samma beräknade mognadspoäng.

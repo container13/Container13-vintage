@@ -17,7 +17,7 @@ function evidenceAction(r){
 }
 function metricCards(c){
  return `<div class="archive-kpis">
-  <div><small>Robotmognad</small><b>${c.maturity}/100</b><span>Oförändrad</span></div>
+  <div><small>Robotmognad</small><b>${c.maturity}/100</b><span>Regelbaserad modell</span></div>
   <div><small>Kända Swing-affärer</small><b>${c.knownSwingHistoricalTrades}</b><span>G1 + G2 historiskt</span></div>
   <div><small>Historiska simuleringar</small><b>≥ 21 400</b><span>senast observerat före Clean Core</span></div>
   <div><small>Jägaren tidsmaskin</small><b>${c.jagarenPseudoTrades}</b><span>historiska affärer</span></div>
@@ -42,7 +42,7 @@ function render(root,ctx){
  <button class="back" id="arBack">← Dashboard</button>
  <section class="workspace archive">
   ${metricCards(c)}
-  <div class="maturity-box"><div><b>Robotmognad ${c.maturity}/100</b><span>Nästa mognadspoäng ska komma från ny forward-data, inte fler varv på samma historik.</span></div><div class="maturity-bar"><i style="width:${c.maturity}%"></i></div></div>
+  <div class="maturity-box"><div><b>Robotmognad ${c.maturity}/100</b><span>Poängen räknas från låsta verifierbara milstolpar; nästa stora poängblock kräver riktig framtida Forward, broker och paper-validering.</span></div><div class="maturity-bar"><i style="width:${c.maturity}%"></i></div></div>
   <div class="archive-note"><b>Simuleringsräknaren är återställd som historik:</b> du hade redan observerat <b>över 21 400 simuleringar</b> före Clean Core. Vi visar därför konservativt <b>≥ 21 400</b> som historiskt golv och räknar G3 separat ovanpå det, i stället för att felaktigt ersätta siffran med antal affärer. G1/G2-affärer och Jägaren-teststeg visas fortfarande som egna mått för att undvika dubbelräkning.</div>
   <div class="archive-filter"><button class="secondary active" data-filter="all">Alla</button><button class="secondary" data-filter="Utveckling">Utveckling</button><button class="secondary" data-filter="Swing G2">Swing G2</button><button class="secondary" data-filter="Swing G1">Swing G1</button><button class="secondary" data-filter="Jägaren">Jägaren</button></div>
   <div class="archive-note"><b>Evidencekö:</b> Evidence-kön är bara kontroll/recovery. Nya resultat använder “Godkänn & frys”. Redan frysta historiska resultat kan säkras till GitHub direkt här med “Säkra evidens”. Lina skapar rapport + RAW, hash-verifierar och synkar automatiskt. Om GitHub är tillfälligt otillgängligt ligger resultatet säkert som FROZEN i väntan på nästa synk.</div>

@@ -94,3 +94,7 @@ Gen5 Yahoo parser hotfix: prioritize top-level `rows`; prevents `symbols` array 
 - Komplett fryst Gen5-state, familjeresultat, summary/evidence och Gen6-underlag inkluderas i Generation Engine-export.
 - Saknat Gen6-underlag härleds deterministiskt från redan fryst Gen5-summary och sparas utan rerun.
 - Robotmognad ligger kvar 48/100; ny regelbaserad modell är ännu inte låst.
+
+
+## V0.2.79
+Generation Engine först under Forskning. Gen5 pending evidens/summary kan slutföras utan rerun. Robotmognad 2.0 låst med modellhash `6e8908ca` och 100 verifierbara poäng. Handel AV; Worker oförändrad.

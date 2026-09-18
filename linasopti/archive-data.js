@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='0.2.45';
+const VERSION='0.2.46';
 const ROBOT_MATURITY=48;
 
 const RECORDS=[
@@ -249,7 +249,7 @@ const RECORDS=[
   }
 
 ,
-  {id:'dev-v0245-gen2-engine',family:'Utveckling',date:'2026-09-17',title:'V0.2.45 – Gen2 Plan Lock + Research Engine',type:'Forskningsinfrastruktur',status:'PLANLÅS · HOLDOUT SEALED',candidate:'Ingen kandidat ännu',summary:'Planhash 1d5f8bc1 verifieras före motorstart. Endast DEV 2020–2022 och Validation 2023–2024 är tillåtna. Holdout saknar runner/resultatyta och blockeras av intervallguard.',metrics:[['Plan','1d5f8bc1'],['DEV','2020–2022'],['Validation','2023–2024'],['Holdout','SEALED'],['Robotmognad','48/100'],['Handel','AV']],decision:'Nästa forskningssteg får bygga/köra familjerunners endast bakom detta lås. Kandidat måste frysas före holdout.'},
+  {id:'dev-v0245-gen2-engine',family:'Utveckling',date:'2026-09-17',title:'V0.2.46 – Gen2 Plan Lock + Research Engine',type:'Forskningsinfrastruktur',status:'PLANLÅS · HOLDOUT SEALED',candidate:'Ingen kandidat ännu',summary:'Planhash 1d5f8bc1 verifieras före motorstart. Endast DEV 2020–2022 och Validation 2023–2024 är tillåtna. Holdout saknar runner/resultatyta och blockeras av intervallguard.',metrics:[['Plan','1d5f8bc1'],['DEV','2020–2022'],['Validation','2023–2024'],['Holdout','SEALED'],['Robotmognad','48/100'],['Handel','AV']],decision:'Nästa forskningssteg får bygga/köra familjerunners endast bakom detta lås. Kandidat måste frysas före holdout.'},
   {
     id:'dev-v0239-one-click-freeze',
     date:'2026-09-16',
@@ -298,7 +298,7 @@ function records(){ return [...RECORDS,{
   },{
     id:'dev-v0243-auto-forward-safe-close',family:'Utveckling',date:'2026-09-16',title:'V0.2.43 – Automatisk Forward + stängd-marknadsdagsspärr',type:'Forward-integritet / automation',status:'PASS · LIVE VERIFIED',candidate:'15efd75a',summary:'Efter V0.2.42-liveprovet upptäcktes att manuell Forward-uppdatering kunde ta med pågående USA-marknadsdag. V0.2.43 automatiserar catch-up och begränsar G2/G3 till säkert avslutade USA-marknadsdagar. Live verifierat 2026-09-16: permanent GitHub-master korrigerades till completedThrough 2026-09-15 och både G2/G3 lastMarketDate 2026-09-15.',metrics:[['Auto catch-up','VID LINA-START'],['Marknadsdag','ENDAST AVSLUTAD'],['Intraday 2026-09-16','REPARERAD TILL 2026-09-15 · LIVE PASS'],['Robotmognad','48/100'],['Handel','AV']],decision:'LIVE PASS. Ingen strategi-, kandidat- eller parameterändring. Safe-close och permanent GitHub-master verifierades efter F5 och direkt filkontroll.'
   },{
-    id:'dev-v0244-gen2-plan',family:'Utveckling',date:'2026-09-16',title:'V0.2.45 – Lina Generation 2 Research Plan',type:'Förregistrerad forskningsdesign',status:'PLAN · INGA RESULTAT',candidate:'Ingen kandidat ännu',summary:'Separat Generation 2-labb startas utan att röra original G2/G3. DEV 2020–2022, validation 2023–2024 och förseglad holdout 2025-01-01–2026-09-10. Fyra strategifamiljer låses före första resultat.',metrics:[['DEV','2020–2022'],['Validation','2023–2024'],['Sealed holdout','2025–2026-09-10'],['Familjer','4'],['Robotmognad','48/100'],['Handel','AV']],decision:'Nästa steg är att implementera runners. Holdout får inte öppnas eller påverka tuning/ranking före kandidatfrysning.'
+    id:'dev-v0244-gen2-plan',family:'Utveckling',date:'2026-09-16',title:'V0.2.46 – Lina Generation 2 Research Plan',type:'Förregistrerad forskningsdesign',status:'PLAN · INGA RESULTAT',candidate:'Ingen kandidat ännu',summary:'Separat Generation 2-labb startas utan att röra original G2/G3. DEV 2020–2022, validation 2023–2024 och förseglad holdout 2025-01-01–2026-09-10. Fyra strategifamiljer låses före första resultat.',metrics:[['DEV','2020–2022'],['Validation','2023–2024'],['Sealed holdout','2025–2026-09-10'],['Familjer','4'],['Robotmognad','48/100'],['Handel','AV']],decision:'Nästa steg är att implementera runners. Holdout får inte öppnas eller påverka tuning/ranking före kandidatfrysning.'
   },forwardRecord(),
   {
     id:'swing-g6-cost-boundary',
@@ -331,7 +331,7 @@ function counters(){
   const f=window.LinaG2ForwardEngine?.load?.();
   const fN=f?.stats?.n||0;
   return {
-    maturity:ROBOT_MATURITY,
+    maturity:window.LinaGenerationEngine?.maturity?.().score??ROBOT_MATURITY,
     documentedStages:109,
     g1Trades:249+323,
     g2HistoricalTrades:78+144,
@@ -363,7 +363,7 @@ function reportText(rec){
     'BESLUT',
     rec.decision,
     '',
-    'Robotmognad: 48/100',
+    `Robotmognad: ${window.LinaGenerationEngine?.maturity?.().score??ROBOT_MATURITY}/100`,
     'Handel: AV'
   ].join('\n');
 }

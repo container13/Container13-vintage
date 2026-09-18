@@ -113,3 +113,14 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Tekniskt preflight/probe-stopp före observerade resultat ska visas som STOPPED_BEFORE_RESEARCH, inte RESEARCH_RUNNING.
 
 - Data loaders must prefer explicit market-row fields (`rows`, `bars`, `data`) over generic arrays; metadata arrays such as `symbols` must never be normalized as bars.
+
+
+## Robotmognad 2.0 — från V0.2.79
+- Robotmognad får aldrig ändras manuellt per release; den beräknas från en låst 100-poängsmodell.
+- Modellhash: `6e8908ca`. Kriterierna summerar exakt 100 poäng och bygger på verifierbara state/evidens-milstolpar.
+- Forsknings-FAIL får inte i sig sänka redan intjänad processmognad. Framtida Forward, broker, paper och live-gate har egna ej förtjänade poängblock.
+- Modellens kriterier/poäng får inte ändras efter att framtida resultat observerats utan ett uttryckligt nytt modellbeslut/version.
+
+## Gen5 slutlig evidenssynk — från V0.2.79
+- Gen5-resultat får aldrig köras om för att reparera synk. Pending familj/summary ska matchas mot exakt evidensnamn i evidence-kön och reconcileas till `FROZEN · GITHUB ✓` först efter lyckad synk eller explicit immutable-409.
+- Generation Engine är primär ingång under Forskning; äldre forskningsvyer bevaras som historik/evidens.
