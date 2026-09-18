@@ -1,0 +1,316 @@
+{
+  "schema": "LINA-GEN4-RESEARCH-SUMMARY-1",
+  "release": "V0.2.66",
+  "planHash": "8d51311d",
+  "runnerSpecHash": "d1daab90",
+  "observedHistory": "2020-01-01 → 2024-12-31",
+  "tradeEnabled": false,
+  "families": [
+    {
+      "family": "Breddbalanserad trend",
+      "status": "FAIL",
+      "trials": 4,
+      "params": {
+        "lookback": 30,
+        "trend": 120,
+        "hold": 10,
+        "breadthMin": 4
+      },
+      "score": 234.0039879921471,
+      "oos": {
+        "n": 90,
+        "pl": 13999.991067936106,
+        "pf": 1.7552848639658398,
+        "dd": -0.04301754033110394,
+        "maxSymbolGrossProfitShare": 0.7468746941908517,
+        "positiveFolds": 4,
+        "grossProfit": 32536.03188626408,
+        "grossLoss": 18536.04081832798
+      },
+      "checks": [
+        {
+          "id": "trades",
+          "label": "Affärer",
+          "pass": false,
+          "value": 90,
+          "rule": "≥ 100"
+        },
+        {
+          "id": "pf",
+          "label": "PF",
+          "pass": true,
+          "value": "1.76",
+          "rule": "≥ 1.20"
+        },
+        {
+          "id": "dd",
+          "label": "DD",
+          "pass": true,
+          "value": "4.3 %",
+          "rule": "≤ 12 %"
+        },
+        {
+          "id": "oos",
+          "label": "OOS-resultat",
+          "pass": true,
+          "value": "14000",
+          "rule": "> 0"
+        },
+        {
+          "id": "concentration",
+          "label": "Koncentration",
+          "pass": false,
+          "value": "74.7 %",
+          "rule": "≤ 40 %"
+        },
+        {
+          "id": "folds",
+          "label": "Positiva folds",
+          "pass": true,
+          "value": "4/4",
+          "rule": "≥ 3/4"
+        }
+      ],
+      "failReasons": [
+        "Affärer: 90 (krav ≥ 100)",
+        "Koncentration: 74.7 % (krav ≤ 40 %)"
+      ],
+      "evidence": {
+        "status": "FROZEN · GITHUB ✓",
+        "name": "LINAS_GEN4_BREDDBALANSERAD_TREND_WALK_FORWARD_ALL_VARIANTS_2026-09-18.json",
+        "githubPath": null,
+        "githubCommit": null
+      }
+    },
+    {
+      "family": "Relativ styrka med symboltak",
+      "status": "FAIL",
+      "trials": 4,
+      "params": {
+        "momentum": 30,
+        "trend": 120,
+        "hold": 10,
+        "topN": 4
+      },
+      "score": 274.36989007889196,
+      "oos": {
+        "n": 85,
+        "pl": 22377.74741655252,
+        "pf": 2.316612506467696,
+        "dd": -0.03890703383633387,
+        "maxSymbolGrossProfitShare": 0.5942122196971021,
+        "positiveFolds": 3,
+        "grossProfit": 39374.204085940524,
+        "grossLoss": 16996.456669388
+      },
+      "checks": [
+        {
+          "id": "trades",
+          "label": "Affärer",
+          "pass": false,
+          "value": 85,
+          "rule": "≥ 100"
+        },
+        {
+          "id": "pf",
+          "label": "PF",
+          "pass": true,
+          "value": "2.32",
+          "rule": "≥ 1.20"
+        },
+        {
+          "id": "dd",
+          "label": "DD",
+          "pass": true,
+          "value": "3.9 %",
+          "rule": "≤ 12 %"
+        },
+        {
+          "id": "oos",
+          "label": "OOS-resultat",
+          "pass": true,
+          "value": "22378",
+          "rule": "> 0"
+        },
+        {
+          "id": "concentration",
+          "label": "Koncentration",
+          "pass": false,
+          "value": "59.4 %",
+          "rule": "≤ 40 %"
+        },
+        {
+          "id": "folds",
+          "label": "Positiva folds",
+          "pass": true,
+          "value": "3/4",
+          "rule": "≥ 3/4"
+        }
+      ],
+      "failReasons": [
+        "Affärer: 85 (krav ≥ 100)",
+        "Koncentration: 59.4 % (krav ≤ 40 %)"
+      ],
+      "evidence": {
+        "status": "FROZEN · GITHUB ✓",
+        "name": "LINAS_GEN4_RELATIV_STYRKA_MED_SYMBOLTAK_WALK_FORWARD_ALL_VARIANTS_2026-09-18.json",
+        "githubPath": null,
+        "githubCommit": null
+      }
+    },
+    {
+      "family": "Equal-risk pullback",
+      "status": "FAIL",
+      "trials": 4,
+      "params": {
+        "trend": 100,
+        "pullback": 5,
+        "hold": 5,
+        "riskSlots": 6
+      },
+      "score": 209.018626963257,
+      "oos": {
+        "n": 161,
+        "pl": 19803.580181491285,
+        "pf": 1.6826620740894824,
+        "dd": -0.09725469463368797,
+        "maxSymbolGrossProfitShare": 0.44397505002552345,
+        "positiveFolds": 3,
+        "grossProfit": 48812.92599567733,
+        "grossLoss": 29009.345814186043
+      },
+      "checks": [
+        {
+          "id": "trades",
+          "label": "Affärer",
+          "pass": true,
+          "value": 161,
+          "rule": "≥ 100"
+        },
+        {
+          "id": "pf",
+          "label": "PF",
+          "pass": true,
+          "value": "1.68",
+          "rule": "≥ 1.20"
+        },
+        {
+          "id": "dd",
+          "label": "DD",
+          "pass": true,
+          "value": "9.7 %",
+          "rule": "≤ 12 %"
+        },
+        {
+          "id": "oos",
+          "label": "OOS-resultat",
+          "pass": true,
+          "value": "19804",
+          "rule": "> 0"
+        },
+        {
+          "id": "concentration",
+          "label": "Koncentration",
+          "pass": false,
+          "value": "44.4 %",
+          "rule": "≤ 40 %"
+        },
+        {
+          "id": "folds",
+          "label": "Positiva folds",
+          "pass": true,
+          "value": "3/4",
+          "rule": "≥ 3/4"
+        }
+      ],
+      "failReasons": [
+        "Koncentration: 44.4 % (krav ≤ 40 %)"
+      ],
+      "evidence": {
+        "status": "LOKALT SPARAD · SYNK PÅGÅR"
+      }
+    },
+    {
+      "family": "Koncentrationsmedveten ensemble",
+      "status": "PASS",
+      "trials": 3,
+      "params": {
+        "trendWeight": 0.3,
+        "rsWeight": 0.4,
+        "pullWeight": 0.3
+      },
+      "score": 213.2093740085419,
+      "oos": {
+        "n": 112,
+        "pl": 14029.067456152925,
+        "pf": 1.6144190635075553,
+        "dd": -0.04513606763495068,
+        "maxSymbolGrossProfitShare": 0.23768488787884087,
+        "positiveFolds": 3,
+        "grossProfit": 36862.127641598185,
+        "grossLoss": 22833.06018544526
+      },
+      "checks": [
+        {
+          "id": "trades",
+          "label": "Affärer",
+          "pass": true,
+          "value": 112,
+          "rule": "≥ 100"
+        },
+        {
+          "id": "pf",
+          "label": "PF",
+          "pass": true,
+          "value": "1.61",
+          "rule": "≥ 1.20"
+        },
+        {
+          "id": "dd",
+          "label": "DD",
+          "pass": true,
+          "value": "4.5 %",
+          "rule": "≤ 12 %"
+        },
+        {
+          "id": "oos",
+          "label": "OOS-resultat",
+          "pass": true,
+          "value": "14029",
+          "rule": "> 0"
+        },
+        {
+          "id": "concentration",
+          "label": "Koncentration",
+          "pass": true,
+          "value": "23.8 %",
+          "rule": "≤ 40 %"
+        },
+        {
+          "id": "folds",
+          "label": "Positiva folds",
+          "pass": true,
+          "value": "3/4",
+          "rule": "≥ 3/4"
+        }
+      ],
+      "failReasons": [],
+      "evidence": {
+        "status": "FROZEN · GITHUB ✓",
+        "name": "LINAS_GEN4_KONCENTRATIONSMEDVETEN_ENSEMBLE_WALK_FORWARD_ALL_VARIANTS_2026-09-18.json",
+        "githubPath": "linasopti/evidence/2026-09-18/LINAS_GEN4_KONCENTRATIONSMEDVETEN_ENSEMBLE_WALK_FORWARD_ALL_VARIANTS_2026-09-18.json",
+        "githubCommit": null,
+        "recoveredFrom": "https://raw.githubusercontent.com/Container13/Container13-vintage/ccc-demo-public-test/linasopti/evidence/2026-09-18/LINAS_GEN4_KONCENTRATIONSMEDVETEN_ENSEMBLE_WALK_FORWARD_ALL_VARIANTS_2026-09-18.json"
+      }
+    }
+  ],
+  "eligibleCount": 1,
+  "eligibleFamilies": [
+    "Koncentrationsmedveten ensemble"
+  ],
+  "decision": "CANDIDATE_SELECTION_AVAILABLE",
+  "forwardOpened": false,
+  "createdAt": "2026-09-18T07:43:46.880Z",
+  "immutable": true,
+  "note": "Observerad Gen4-forskning. Ingen omkörning/rescue. Forward kräver senare separat deterministisk kandidatfrysning."
+}
