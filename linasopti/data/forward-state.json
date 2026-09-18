@@ -1,10 +1,10 @@
 {
   "schema": "LINA-FORWARD-SYNC-1",
   "release": "V0.2.43",
-  "exportedAt": "2026-09-17T19:32:59.311Z",
+  "exportedAt": "2026-09-18T05:00:21.410Z",
   "anchor": "2026-09-11",
   "tradeEnabled": false,
-  "completedThrough": "2026-09-16",
+  "completedThrough": "2026-09-17",
   "g2": {
     "schema": "LINA-G2-REAL-FORWARD-1",
     "version": "V0.2.29",
@@ -22,8 +22,8 @@
     "capital": 100000,
     "costSide": 0.001,
     "createdAt": "2026-09-15T08:35:56.083Z",
-    "lastMarketDate": "2026-09-16",
-    "lastRefreshAt": "2026-09-17T16:37:04.579Z",
+    "lastMarketDate": "2026-09-17",
+    "lastRefreshAt": "2026-09-18T05:00:16.054Z",
     "provider": "Worker Yahoo daily",
     "closed": [],
     "open": [],
@@ -74,9 +74,17 @@
         "closed": 0,
         "pl": 0,
         "pf": 0
+      },
+      {
+        "at": "2026-09-18T05:00:16.054Z",
+        "event": "REFRESH",
+        "marketDate": "2026-09-17",
+        "closed": 0,
+        "pl": 0,
+        "pf": 0
       }
     ],
-    "savedAt": "2026-09-17T16:37:04.579Z"
+    "savedAt": "2026-09-18T05:00:16.054Z"
   },
   "g3": {
     "schema": "LINA-G3-REAL-FORWARD-1",
@@ -115,8 +123,8 @@
       "open": 0,
       "equity": 100000
     },
-    "lastMarketDate": "2026-09-16",
-    "lastRefreshAt": "2026-09-17T16:37:08.961Z",
+    "lastMarketDate": "2026-09-17",
+    "lastRefreshAt": "2026-09-18T05:00:21.071Z",
     "provider": "Worker Yahoo daily",
     "milestones": {
       "60": false,
@@ -150,8 +158,17 @@
         "pl": 0,
         "pf": 0,
         "model": "69147890"
+      },
+      {
+        "at": "2026-09-18T05:00:21.071Z",
+        "event": "REFRESH",
+        "marketDate": "2026-09-17",
+        "closed": 0,
+        "pl": 0,
+        "pf": 0,
+        "model": "69147890"
       }
     ],
-    "savedAt": "2026-09-17T16:37:08.962Z"
+    "savedAt": "2026-09-18T05:00:21.071Z"
   }
 }
