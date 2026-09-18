@@ -1,7 +1,7 @@
 (function(){
   'use strict';
-  const RELEASE='V0.2.85';
-  const CACHE='0.2.85';
+  const RELEASE='V0.2.86';
+  const CACHE='0.2.86';
   window.LinaVersion=Object.freeze({release:RELEASE,cache:CACHE,number:RELEASE.replace(/^V/,'')});
   window.addEventListener('DOMContentLoaded',()=>{
     document.querySelectorAll('[data-lina-version]').forEach(el=>{el.textContent=RELEASE});

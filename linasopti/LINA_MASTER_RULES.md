@@ -159,3 +159,11 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Risk-/regimstyrning och volatilitetsskalning måste påverka positionsrisk/exponering före exekvering, aldrig efterhandsfiltrera resultat.
 - Gates förblir ≥100 OOS-affärer, PF ≥1.20, DD ≤12 %, positiv OOS, koncentration ≤40 %, positiva folds ≥3/4.
 - Runnerspec + engine-verifiering är ett säkert automatiskt steg efter planlås. V0.2.85 får inte starta Gen6-research, skapa kandidat eller öppna Forward.
+
+
+## Gen6 självkörande research — från V0.2.86
+- Gen6 research kräver explicit mänsklig start efter plan `206c11d7`, runnerspec `768e8d3e` och Engine VERIFIED.
+- Starten gör full data-preflight innan `researchOpened=true`.
+- Därefter körs fyra Gen6-familjer automatiskt; varje familjs kompletta TRAIN→OOS-evidens sparas före nästa och redan sparade resultat hoppas över vid återupptagning.
+- Summary fryses, kandidat väljs endast deterministiskt bland PASS-familjer och Gen7-underlag skapas även om ingen kandidat finns.
+- Gen7 och Forward startas aldrig av Gen6-kedjan; Handel AV.

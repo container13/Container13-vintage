@@ -111,3 +111,12 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Låsta gates och walk-forward 2020→2024 verifierade.
 - [x] Ingen Gen6 research-runner exponeras; researchOpened=false och Forward=false.
 - [x] Handel AV.
+
+
+### V0.2.86 — Gen6 autonom research
+- [x] Explicit start krävs; full 16×2020–2024 data-preflight före researchOpened.
+- [x] Planhash `206c11d7` och runnerspechash `768e8d3e` verifieras före run.
+- [x] Fyra familjer körs sekventiellt med TRAIN-val före OOS; komplett fold/variant-evidens sparas före continuation.
+- [x] Riskregim/volatilitet påverkar sizing/exponering före exekvering; deklarerade grid-parametrar konsumeras.
+- [x] Summary/kandidat/Gen7-underlag automatiseras efter 4/4; ingen Gen7-research eller Forward.
+- [x] Handel AV och Robotmognadsmodell oförändrad.

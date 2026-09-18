@@ -123,3 +123,7 @@ Single Version Source + cache-hotfix. `version.js` är central källa för aktue
 
 ## V0.2.85
 Version Source Integrity hotfix. Current UI version is sourced from `version.js`; release audit prevents cache-token/current-version drift. Gen6 plan/state unchanged; no Gen6 research started. Handel AV.
+
+
+## V0.2.86
+Gen6 research runner: en explicit start gör full data-preflight och kör därefter fyra preregistrerade Gen6-familjer självkörande. Varje familj/fold sparas före continuation. Summary fryses, kandidat väljs endast med låst deterministisk ranking och Gen7-underlag skapas. Forward/Handel förblir AV.
