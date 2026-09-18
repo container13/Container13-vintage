@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='V0.2.66', PLAN_HASH='8d51311d';
+const VERSION='V0.2.67', PLAN_HASH='8d51311d';
 const KEY='lina_clean_gen4_engine_v0261', DB='lina_gen4_market_v1', STORE='bars';
 const SYMBOLS=Object.freeze(['AMD','SHOP','ADBE','MU','FDX','TSLA','LUV','NFLX','C','NOW','QCOM','BAC','GM','DDOG','PYPL','NVDA']);
 const FAMILIES=Object.freeze(['Breddbalanserad trend','Relativ styrka med symboltak','Equal-risk pullback','Koncentrationsmedveten ensemble']);

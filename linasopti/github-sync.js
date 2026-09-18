@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const API='https://linas-opti-api.mangaj73.workers.dev', RELEASE='V0.2.66';
+const API='https://linas-opti-api.mangaj73.workers.dev', RELEASE='V0.2.67';
 const EXCLUDE=new Set(['lina_clean_core_state_v0011','lina_clean_swing_g4_universe_result_v0213']);
 const MAX_ENTRY=400000, MAX_PACKAGE=1500000;
 function code(){return sessionStorage.getItem('linasopti_login_code')||''}
@@ -42,9 +42,19 @@ function recoveryPlan(localEntries,remoteState){
   return {scannedAt:new Date().toISOString(),localCount:Object.keys(localEntries||{}).length,remoteCount:Object.keys(remote).length,unique,same,conflicts};
 }
 function safeRecoveryMerge(local,remote){
-  // GitHub wins every conflict. Only keys missing entirely on GitHub may be recovered from this computer.
+  // Normal state: GitHub is canonical on conflicts. Irreversible Gen4 research is the exception:
+  // its already-observed familyResults/summaryFreeze are merged monotonically so an older remote
+  // snapshot can never erase a newer frozen local observation during bootstrap/recovery.
   const out={...(remote?.entries||{})};
-  for(const [k,l] of Object.entries(local.entries||{})) if(!out[k]) out[k]=l;
+  for(const [k,l] of Object.entries(local.entries||{})){
+    const r=out[k];
+    if(!r){out[k]=l;continue}
+    if(r.value===l.value)continue;
+    if(k==='lina_clean_gen4_engine_v0261'){
+      const m=mergeGen4Entry(l,r); if(m){out[k]=m;continue}
+    }
+    // All other conflicts remain GitHub-canonical.
+  }
   return {schema:'LINA-APP-SYNC-1',release:RELEASE,tradeEnabled:false,exportedAt:new Date().toISOString(),entries:out};
 }
 async function get(){const r=await fetch(API+'/app-state',{cache:'no-store'}),j=await r.json().catch(()=>({}));if(!r.ok||!j.ok)throw new Error(j.error||('HTTP '+r.status));return j}
@@ -62,7 +72,8 @@ async function bootstrap(progress){
   // Canonical rule: GitHub wins conflicts. Local state may only fill keys GitHub does not have.
   step('compare',`Jämför ${recovery.localCount} lokala och ${recovery.remoteCount} GitHub-poster…`);
   const local=collect(), merged=safeRecoveryMerge(local,remote?.state||null);
-  if(remote?.state?.entries) apply(remote.state);
+  // Never apply remote state before the merged package has been accepted. If PUT/evidence sync
+  // fails, the current local irreversible research snapshot must remain untouched.
   step('recover',recovery.unique.length?`Bevarar ${recovery.unique.length} unika lokala poster…`:'Inga unika lokala poster att rädda.');
   const wr=await put(merged); apply(wr.state||merged);
   step('evidence','Verifierar fryst evidens…');
