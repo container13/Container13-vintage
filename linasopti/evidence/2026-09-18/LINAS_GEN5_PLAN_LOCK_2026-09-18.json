@@ -1,0 +1,93 @@
+{
+  "schema": "LINA-GEN5-PLAN-EVIDENCE-1",
+  "release": "V0.2.73",
+  "createdAt": "2026-09-18T19:29:15.906Z",
+  "planHash": "d501a5e1",
+  "plan": {
+    "schema": "LINA-GEN5-PLAN-1",
+    "sourceGeneration": 4,
+    "researchBoundary": "2024-12-31",
+    "tradeEnabled": false,
+    "hypothesis": "Behåll strukturell diversifiering men pröva den i en verkligt kombinerad portföljsimulering med komplett train→OOS walk-forward och fullständigt hashad urvalslogik.",
+    "folds": [
+      {
+        "train": [
+          "2020-01-01",
+          "2020-12-31"
+        ],
+        "oos": [
+          "2021-01-01",
+          "2021-12-31"
+        ]
+      },
+      {
+        "train": [
+          "2020-01-01",
+          "2021-12-31"
+        ],
+        "oos": [
+          "2022-01-01",
+          "2022-12-31"
+        ]
+      },
+      {
+        "train": [
+          "2020-01-01",
+          "2022-12-31"
+        ],
+        "oos": [
+          "2023-01-01",
+          "2023-12-31"
+        ]
+      },
+      {
+        "train": [
+          "2020-01-01",
+          "2023-12-31"
+        ],
+        "oos": [
+          "2024-01-01",
+          "2024-12-31"
+        ]
+      }
+    ],
+    "gates": {
+      "minimumOOSTrades": 100,
+      "profitFactor": 1.2,
+      "maxDrawdown": 0.12,
+      "positiveOOS": true,
+      "maxSingleSymbolGrossProfitShare": 0.4,
+      "minimumPositiveFolds": 3
+    },
+    "portfolio": {
+      "capital": 100000,
+      "costSide": 0.001,
+      "maxPositions": 8,
+      "maxPositionPct": 0.125,
+      "riskPerTrade": 0.005,
+      "maxConcurrentPerSymbol": 1,
+      "construction": "equal-risk combined portfolio"
+    },
+    "families": [
+      "Breddbalanserad trendportfölj",
+      "Relativ styrka-portfölj",
+      "Equal-risk pullback-portfölj",
+      "Kombinerad diversifieringsensemble"
+    ],
+    "requirements": [
+      "Train-data ska faktiskt användas i varje fold före OOS-utvärdering",
+      "Ensemble ska simuleras som en gemensam portfölj med gemensam equity curve",
+      "Alla deklarerade parametrar måste påverka exekveringen eller tas bort före runnerspec-lås",
+      "Exakt rankingformel ska ingå i hashad runnerspec",
+      "Komplett variant- och fold-evidens ska sparas före continuation",
+      "Ingen rerun/rescue efter observerat resultat"
+    ],
+    "selection": {
+      "method": "LOCKED_DETERMINISTIC_RISK_ADJUSTED_RANK",
+      "rankingFormula": "pf*100 + positiveFolds*20 - abs(dd)*150 - maxSingleSymbolGrossProfitShare*25 + min(n,250)/25",
+      "plPrimary": false
+    }
+  },
+  "tradeEnabled": false,
+  "forward": "NOT OPENED"
+}
