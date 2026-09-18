@@ -83,3 +83,7 @@ Gen5 data-preflight: årsvis datahämtning 2020–2024 och komplett universumkon
 
 ## V0.2.76
 Gen5 Data Source Probe före research. Ingen forskningskörning görs av proben; diagnostik kan exporteras för exakt rotorsaksanalys.
+
+
+## V0.2.77
+Gen5 Yahoo parser hotfix: prioritize top-level `rows`; prevents `symbols` array from being mistaken for bars. Plan/runnerspec unchanged.

@@ -64,3 +64,5 @@ Körs före varje Lina-ZIP.
 - [ ] Probe provar exakt Gen4-kompatibla Worker-endpoints och exporterar sanerad HTTP/formatdiagnostik.
 - [ ] RUNNING används inte för ett stopp före research.
 - [ ] Researchknappen är dold tills datakällediagnos har minst en normaliserbar fungerande endpoint; full data-preflight krävs fortfarande före research.
+
+- [ ] For market-data response changes, verify metadata arrays cannot be selected instead of actual bar rows.

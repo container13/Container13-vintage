@@ -111,3 +111,5 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Probe ska logga endpoint/request, HTTP-status, content-type, sanerat svarsexempel, JSON-struktur, radantal och första/sista datum utan hemligheter.
 - Research-startknapp ska inte exponeras efter blockerad dataproblematik förrän probe visar en fungerande dataväg och full preflight därefter passerar.
 - Tekniskt preflight/probe-stopp före observerade resultat ska visas som STOPPED_BEFORE_RESEARCH, inte RESEARCH_RUNNING.
+
+- Data loaders must prefer explicit market-row fields (`rows`, `bars`, `data`) over generic arrays; metadata arrays such as `symbols` must never be normalized as bars.
