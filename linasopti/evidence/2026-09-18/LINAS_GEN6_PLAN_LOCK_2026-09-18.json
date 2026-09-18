@@ -1,0 +1,66 @@
+{
+  "schema": "LINA-GEN6-PLAN-EVIDENCE-1",
+  "release": "V0.2.82",
+  "createdAt": "2026-09-18T23:32:30.228Z",
+  "planHash": "206c11d7",
+  "plan": {
+    "schema": "LINA-GEN6-PLAN-PROPOSAL-1",
+    "sourceGeneration": 5,
+    "researchBoundary": "2024-12-31",
+    "tradeEnabled": false,
+    "forwardOpened": false,
+    "hypothesis": "Behåll Gen5:s verifierade walk-forward-metod men minska portföljens drawdown utan att offra den kvalitet och aktivitet som redan observerats. Gen6 testar därför risk- och regimstyrd exponering som en ny generation, inte som räddning av Gen5.",
+    "sourceLearning": [
+      "Breddbalanserad trend var närmast en kandidat: 409 OOS-affärer, PF 1.31, koncentration 39.0 %, 3/4 positiva folds, men DD 13.17 % överskred låsta 12 %.",
+      "Relativ styrka hade 348 OOS-affärer och PF 1.33 men DD 28.25 % samt koncentration 40.13 %.",
+      "Equal-risk pullback hade hög aktivitet (696) och låg koncentration (20.32 %) men PF 1.03 och DD 29.69 %.",
+      "Kombinerad ensemble hade 662 OOS-affärer, PF 1.20 och koncentration 20.01 % men DD 30.03 %. Ingen Gen5-familj klarade samtliga gates."
+    ],
+    "preserve": [
+      "Faktisk TRAIN-selektion före varje OOS-fold.",
+      "Gemensam portfölj/equity curve för kombinerade signaler.",
+      "Alla deklarerade parametrar måste påverka exekveringen.",
+      "Exakt rankingformel ska ingå i hashad runnerspec.",
+      "Komplett variant/fold-evidens sparas före continuation.",
+      "Independent concentration gate och deterministiskt kandidaturval."
+    ],
+    "change": [
+      "Testa explicit exponerings-/riskregim som kan sänka drawdown i trendportföljen.",
+      "Pröva volatilitetsskalning/portföljriskbudget som påverkar faktisk positionsstorlek, inte efterhandsfiltrering.",
+      "Behåll diversifiering men låt svagare regimer reducera total exponering.",
+      "Ingen Gen5-parameter får justeras i efterhand; Gen6 får eget namespace, planhash och framtida runnerspec."
+    ],
+    "gates": {
+      "minOosTrades": 100,
+      "minPf": 1.2,
+      "maxDd": 0.12,
+      "positiveOos": true,
+      "maxConcentration": 0.4,
+      "minPositiveFolds": 3
+    },
+    "folds": [
+      [
+        "TRAIN 2020",
+        "OOS 2021"
+      ],
+      [
+        "TRAIN 2020–2021",
+        "OOS 2022"
+      ],
+      [
+        "TRAIN 2020–2022",
+        "OOS 2023"
+      ],
+      [
+        "TRAIN 2020–2023",
+        "OOS 2024"
+      ]
+    ],
+    "candidateRule": "Endast familjer som klarar samtliga låsta gates får rankas. P/L är inte primärt. Exakt rankingformel låses i runnerspec före research.",
+    "decision": "APPROVED_AND_LOCKED"
+  },
+  "sourceGeneration": 5,
+  "tradeEnabled": false,
+  "forward": "NOT OPENED",
+  "immutable": true
+}
