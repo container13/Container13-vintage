@@ -1,0 +1,103 @@
+{
+  "schema": "LINA-GEN5-RESEARCH-SUMMARY-1",
+  "release": "V0.2.77",
+  "planHash": "d501a5e1",
+  "runnerSpecHash": "db1c4d7f",
+  "families": [
+    {
+      "family": "Breddbalanserad trendportfölj",
+      "status": "FAIL",
+      "score": 171.04197887051916,
+      "oos": {
+        "n": 409,
+        "pl": 29716.51518198431,
+        "pf": 1.3053302175209744,
+        "dd": -0.1316724474049571,
+        "maxSingleSymbolGrossProfitShare": 0.3896070308333895,
+        "maxSymbolGrossProfitShare": 0.3896070308333895,
+        "positiveFolds": 3,
+        "grossProfit": 127042.33973763246,
+        "grossLoss": 97325.8245556482
+      },
+      "evidence": {
+        "status": "FROZEN · GITHUB ✓",
+        "name": "LINAS_GEN5_BREDDBALANSERAD_TRENDPORTF_LJ_WALK_FORWARD_2026-09-18.json",
+        "githubPath": null,
+        "githubCommit": null
+      }
+    },
+    {
+      "family": "Relativ styrka-portfölj",
+      "status": "FAIL",
+      "score": 150.9908116569922,
+      "oos": {
+        "n": 348,
+        "pl": 37501.700809710535,
+        "pf": 1.333973819576801,
+        "dd": -0.2825003711494837,
+        "maxSingleSymbolGrossProfitShare": 0.40126058513061386,
+        "maxSymbolGrossProfitShare": 0.40126058513061386,
+        "positiveFolds": 3,
+        "grossProfit": 149791.04390022982,
+        "grossLoss": 112289.34309051925
+      },
+      "evidence": {
+        "status": "FROZEN · GITHUB ✓",
+        "name": "LINAS_GEN5_RELATIV_STYRKA_PORTF_LJ_WALK_FORWARD_2026-09-18.json",
+        "githubPath": null,
+        "githubCommit": null
+      }
+    },
+    {
+      "family": "Equal-risk pullback-portfölj",
+      "status": "FAIL",
+      "score": 123.84598170543028,
+      "oos": {
+        "n": 696,
+        "pl": 6334.57766884167,
+        "pf": 1.0346442733301506,
+        "dd": -0.2969221918468625,
+        "maxSingleSymbolGrossProfitShare": 0.20320467402221642,
+        "maxSymbolGrossProfitShare": 0.20320467402221642,
+        "positiveFolds": 3,
+        "grossProfit": 189180.89135753753,
+        "grossLoss": 182846.3136886959
+      },
+      "evidence": {
+        "status": "FROZEN · GITHUB ✓",
+        "name": "LINAS_GEN5_EQUAL_RISK_PULLBACK_PORTF_LJ_WALK_FORWARD_2026-09-18.json",
+        "githubPath": null,
+        "githubCommit": null
+      }
+    },
+    {
+      "family": "Kombinerad diversifieringsensemble",
+      "status": "FAIL",
+      "score": 140.26889178564423,
+      "oos": {
+        "n": 662,
+        "pl": 37680.18441365004,
+        "pf": 1.203168803636017,
+        "dd": -0.3003022111392094,
+        "maxSingleSymbolGrossProfitShare": 0.20010627628304237,
+        "maxSymbolGrossProfitShare": 0.20010627628304237,
+        "positiveFolds": 3,
+        "grossProfit": 223142.6360268174,
+        "grossLoss": 185462.45161316745
+      },
+      "evidence": {
+        "status": "FROZEN · VÄNTAR PÅ SYNK",
+        "name": "LINAS_GEN5_KOMBINERAD_DIVERSIFIERINGSENSEMBLE_WALK_FORWARD_2026-09-18.json",
+        "githubPath": null,
+        "githubCommit": null
+      }
+    }
+  ],
+  "eligibleCount": 0,
+  "eligibleFamilies": [],
+  "decision": "NO_CANDIDATE_FOR_FORWARD",
+  "tradeEnabled": false,
+  "forwardOpened": false,
+  "createdAt": "2026-09-18T21:54:14.078Z",
+  "immutable": true
+}
