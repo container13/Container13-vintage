@@ -1,0 +1,105 @@
+{
+  "schema": "LINA-GEN6-RESEARCH-SUMMARY-1",
+  "release": "V0.2.86",
+  "planHash": "206c11d7",
+  "runnerSpecHash": "768e8d3e",
+  "families": [
+    {
+      "family": "Riskregim-trendportfölj",
+      "status": "PASS",
+      "score": 179.63790673250506,
+      "oos": {
+        "n": 387,
+        "pl": 10202.613536463094,
+        "pf": 1.2423636495174786,
+        "dd": -0.06423839169653389,
+        "maxSingleSymbolGrossProfitShare": 0.1985079785905092,
+        "maxSymbolGrossProfitShare": 0.1985079785905092,
+        "positiveFolds": 3,
+        "grossProfit": 52298.91616590221,
+        "grossLoss": 42096.30262943912
+      },
+      "evidence": {
+        "status": "FROZEN · GITHUB ✓",
+        "name": "LINAS_GEN6_RISKREGIM_TRENDPORTF_LJ_WALK_FORWARD_2026-09-18.json",
+        "githubPath": null,
+        "githubCommit": null
+      }
+    },
+    {
+      "family": "Volatilitetsskalad trendportfölj",
+      "status": "FAIL",
+      "score": 170.07391953468212,
+      "oos": {
+        "n": 254,
+        "pl": 8457.614708887362,
+        "pf": 1.2418022092421845,
+        "dd": -0.058731519361029605,
+        "maxSingleSymbolGrossProfitShare": 0.611862939415277,
+        "maxSymbolGrossProfitShare": 0.611862939415277,
+        "positiveFolds": 3,
+        "grossProfit": 43435.02345711088,
+        "grossLoss": 34977.40874822352
+      },
+      "evidence": {
+        "status": "FROZEN · VÄNTAR PÅ SYNK",
+        "name": "LINAS_GEN6_VOLATILITETSSKALAD_TRENDPORTF_LJ_WALK_FORWARD_2026-09-18.json",
+        "githubPath": null,
+        "githubCommit": null
+      }
+    },
+    {
+      "family": "Breddstyrd riskbudget",
+      "status": "FAIL",
+      "score": 173.807591939441,
+      "oos": {
+        "n": 240,
+        "pl": 23921.265491112496,
+        "pf": 1.3497225488050342,
+        "dd": -0.1031205963712033,
+        "maxSingleSymbolGrossProfitShare": 0.611862939415277,
+        "maxSymbolGrossProfitShare": 0.611862939415277,
+        "positiveFolds": 3,
+        "grossProfit": 92321.96076469155,
+        "grossLoss": 68400.69527357904
+      },
+      "evidence": {
+        "status": "FROZEN · GITHUB ✓",
+        "name": "LINAS_GEN6_BREDDSTYRD_RISKBUDGET_WALK_FORWARD_2026-09-18.json",
+        "githubPath": null,
+        "githubCommit": null
+      }
+    },
+    {
+      "family": "Riskregim-ensemble",
+      "status": "FAIL",
+      "score": 173.61454998953647,
+      "oos": {
+        "n": 439,
+        "pl": 7804.00818030921,
+        "pf": 1.1550625289573366,
+        "dd": -0.05435982362178371,
+        "maxSingleSymbolGrossProfitShare": 0.14950917451718562,
+        "maxSymbolGrossProfitShare": 0.14950917451718562,
+        "positiveFolds": 3,
+        "grossProfit": 58132.14504731701,
+        "grossLoss": 50328.13686700781
+      },
+      "evidence": {
+        "status": "FROZEN · GITHUB ✓",
+        "name": "LINAS_GEN6_RISKREGIM_ENSEMBLE_WALK_FORWARD_2026-09-18.json",
+        "githubPath": null,
+        "githubCommit": null
+      }
+    }
+  ],
+  "eligibleCount": 1,
+  "eligibleFamilies": [
+    "Riskregim-trendportfölj"
+  ],
+  "decision": "CANDIDATE_SELECTION_AVAILABLE",
+  "tradeEnabled": false,
+  "forwardOpened": false,
+  "createdAt": "2026-09-18T23:52:55.400Z",
+  "immutable": true
+}
