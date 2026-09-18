@@ -76,3 +76,11 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Automatiska kedjor testas mot exakt slutstate de själva producerar.
 - Automatisera säkra steg mellan verkliga mänskliga beslutspunkter; recovery är en förstaklassfunktion.
 - Generation Engine ska återanvända infrastrukturen, medan nästa generations experiment definieras först från lärdomar i föregående frysta generation.
+
+## Generation Engine — permanent kontrakt från V0.2.71
+- Generation Engine är gemensam processmotor, inte ett sätt att återanvända gamla forskningsresultat.
+- En ny generation börjar `NOT_DEFINED` och får inte automatiskt ärva plan, parametrar, resultat eller kandidat från föregående generation.
+- Fryst generation är immutable referens. Motorn får läsa dess status/lärdomsunderlag men aldrig mutera eller köra om den.
+- Standardlivscykel: PLAN → PLAN_LOCKED → RUNNERSPEC_LOCKED → ENGINE_VERIFIED → RESEARCH_RUNNING → RESEARCH_COMPLETE → SUMMARY_FROZEN → CANDIDATE_FROZEN → FORWARD.
+- Säkra deterministiska steg automatiseras till nästa genuina mänskliga beslut. Frysning av nytt experiment/avgörande beslut kräver uttrycklig mänsklig handling.
+- Forward-anchor skapas först vid relevant kandidatfrysning och får aldrig backdateras.

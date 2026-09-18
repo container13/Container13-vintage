@@ -57,3 +57,10 @@ V0.2.68: självdiagnostiserande GitHub/evidenssynk. Loggar endpoint/metod, paylo
 V0.2.69: smal evidence-idempotensfix. Exakt HTTP 409 + `Evidencefilen finns redan – original skrivs inte över` behandlas som serverbekräftad immutable existens, inte synkfel. Ingen overwrite eller research. Gen4 evidence-status reconcileras från kön så fryst UI kan gå från VÄNTAR PÅ SYNK till GITHUB ✓.
 
 V0.2.70: Gen4 kandidatsteg. Efter FROZEN · GITHUB ✓ sammanställning väljer Lina deterministiskt bland endast fullt kvalificerade familjer med den redan låsta riskjusterade rankingen, fryser kandidaten lokalt före synk och säkrar kandidat-evidens på GitHub. Ingen research, rerun, Forward eller handel. Startuptext ändrad till `Inget nytt att spara eller återställa.`
+
+## V0.2.71 — Generation Engine foundation
+- Första generella Generation Engine-modulen. Den formaliserar samma säkra livscykel för framtida generationer utan att hårdkoda Gen5–Gen99 som separata experiment.
+- Gen4 visas som immutable, fryst referens och körs aldrig om. Gen5 startar uttryckligen som `Ej definierad`; ingen plan/runnerspec/research skapas före ett nytt mänskligt planbeslut.
+- Ny global generationsstatus kan exporteras. Handel AV och Forward förblir oförändrade.
+- Fixar även intern `APP_VERSION` så den matchar release V0.2.71.
+- Cloudflare Worker: INGEN ÄNDRING.

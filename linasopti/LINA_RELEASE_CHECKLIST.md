@@ -30,3 +30,9 @@ Körs före varje Lina-ZIP.
 - Kandidatknapp får endast visas efter Gen4 summary FROZEN · GITHUB ✓.
 - Urval måste vara deterministiskt från redan observerad/fryst evidens; ingen research/rerun.
 - Kandidat fryses lokalt före async GitHub-synk; Forward och Handel förblir AV.
+
+## Generation Engine gate
+- [ ] Frysta generationer exponeras read-only och kan inte startas om från Generation Engine.
+- [ ] Ny generation är `NOT_DEFINED` tills en ny plan uttryckligen definierats; ingen automatisk parameter-/resultatkopiering.
+- [ ] Ingen Forward-anchor skapas före kandidatfrysning och ingen anchor backdateras.
+- [ ] Automatisering stannar vid genuin mänsklig beslutspunkt.
