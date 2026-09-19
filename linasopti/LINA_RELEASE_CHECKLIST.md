@@ -130,3 +130,11 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Gen7 and Forward remain closed; Handel AV.
 - [x] Completed Gen6 UI no longer says that research has not started.
 - [x] Current runtime release comes from `version.js`; active cache tokens match `0.2.87`.
+
+### V0.2.88 — Gen7 Plan Proposal
+- [x] Gen6 är read-only; ingen Gen6 rerun/recovery ändrad.
+- [x] Gen7-förslag bygger på fryst `gen7Basis`; ingen ny marknadsdata används.
+- [x] Gen7-planhash `6876470e`; plan EJ LÅST.
+- [x] Ingen Gen7 runnerspec/research/Forward exponeras.
+- [x] Historisk research boundary 2024-12-31 och befintliga gates/folds bevaras.
+- [x] Handel AV och Robotmognadsmodell oförändrad.

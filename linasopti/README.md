@@ -136,3 +136,6 @@ Builds on the already observed and frozen V0.2.86 Gen6 result. No Gen6 research 
 - Success requires all four family evidences, the frozen summary and the locked candidate evidence to be GitHub-verified.
 - Fixes the stale completed-state message that incorrectly said Gen6 research had not started.
 - Keeps plan `206c11d7`, runnerspec `768e8d3e`, Robotmognad model `6e8908ca`, Handel AV and Forward closed.
+
+## V0.2.88
+Generation Engine visar Gen7 Plan Proposal från fryst Gen6-underlag. Planen är EJ LÅST; ingen Gen7-runnerspec, research eller Forward finns i denna release.
