@@ -167,3 +167,10 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Därefter körs fyra Gen6-familjer automatiskt; varje familjs kompletta TRAIN→OOS-evidens sparas före nästa och redan sparade resultat hoppas över vid återupptagning.
 - Summary fryses, kandidat väljs endast deterministiskt bland PASS-familjer och Gen7-underlag skapas även om ingen kandidat finns.
 - Gen7 och Forward startas aldrig av Gen6-kedjan; Handel AV.
+
+
+## Generation Engine arbetsordning — permanent regel från V0.2.89
+- Aktuell/senaste generation och dess aktiva arbetssteg ska alltid visas överst i Generation Engine.
+- Tidigare generationer visas därefter i fallande generationsordning; äldre fryst historik/audit ligger längre ned.
+- När en ny generation blir aktuell ska ordningen följa state/generationsnummer automatiskt, inte kräva manuell flytt av HTML-sektioner.
+- UI-ordningen får aldrig ändra forskningsstate, evidens, planhashar, runnerspecar eller Forward/Handel-status.

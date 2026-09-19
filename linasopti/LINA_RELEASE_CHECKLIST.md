@@ -138,3 +138,11 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Ingen Gen7 runnerspec/research/Forward exponeras.
 - [x] Historisk research boundary 2024-12-31 och befintliga gates/folds bevaras.
 - [x] Handel AV och Robotmognadsmodell oförändrad.
+
+
+### V0.2.89 — aktuell generation överst
+- [x] Generation Engine-generationer renderas i fallande generationsordning; aktuell högsta generation överst.
+- [x] Regeln är generell via `data-generation`, inte hårdkodad som en engångsflytt för Gen7.
+- [x] Gen7 planförslag är fortfarande EJ LÅST; ingen runnerspec/research/Forward har lagts till.
+- [x] Gen6/Gen5 research-state och evidenslogik är oförändrade.
+- [x] Handel AV och Robotmognadsmodell `6e8908ca` oförändrade.

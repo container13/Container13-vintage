@@ -139,3 +139,7 @@ Builds on the already observed and frozen V0.2.86 Gen6 result. No Gen6 research 
 
 ## V0.2.88
 Generation Engine visar Gen7 Plan Proposal från fryst Gen6-underlag. Planen är EJ LÅST; ingen Gen7-runnerspec, research eller Forward finns i denna release.
+
+
+## V0.2.89
+Generation Engine visar nu alltid aktuell/senaste generation överst och äldre generationer under i fallande ordning. Gen7-planförslaget är fortfarande endast för granskning och är inte låst.
