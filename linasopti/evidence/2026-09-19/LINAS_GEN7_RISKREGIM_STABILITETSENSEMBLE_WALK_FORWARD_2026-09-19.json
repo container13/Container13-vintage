@@ -1,0 +1,422 @@
+{
+  "schema": "LINA-GEN7-WALK-FORWARD-EVIDENCE-1",
+  "release": "V0.2.90",
+  "createdAt": "2026-09-19T00:57:43.208Z",
+  "planHash": "6876470e",
+  "runnerSpecHash": "4c4c4cbd",
+  "family": "Riskregim stabilitetsensemble",
+  "result": {
+    "status": "FAIL",
+    "oos": {
+      "n": 418,
+      "pl": 13774.228343201534,
+      "pf": 1.3242605137393277,
+      "dd": -0.05194443312223873,
+      "maxSingleSymbolGrossProfitShare": 0.19172280475158648,
+      "maxSymbolGrossProfitShare": 0.19172280475158648,
+      "positiveFolds": 3,
+      "grossProfit": 56253.1234277711,
+      "grossLoss": 42478.895084569565,
+      "stability": {
+        "maxPositiveFoldGrossProfitShare": 0.33805696416879777,
+        "minFoldProfitFactor": 0.250823178280269,
+        "maxSelectedWeakExposure": 0.45,
+        "pass": false
+      }
+    },
+    "score": 189.84131628680728,
+    "folds": [
+      {
+        "fold": 1,
+        "trainRange": [
+          "2020-01-01",
+          "2020-12-31"
+        ],
+        "oosRange": [
+          "2021-01-01",
+          "2021-12-31"
+        ],
+        "trainVariants": [
+          {
+            "params": {
+              "trendWeight": 0.34,
+              "breadthWeight": 0.33,
+              "volWeight": 0.33,
+              "hold": 10,
+              "volTarget": 0.12,
+              "weakExposure": 0.45,
+              "maxGrossExposure": 0.7
+            },
+            "stats": {
+              "n": 35,
+              "pl": 1750.5006145364507,
+              "pf": 1.5140889362661485,
+              "dd": -0.01048770904338836,
+              "maxSymbolGrossProfitShare": 0.2541604852180917,
+              "grossProfit": 5155.554664620501,
+              "grossLoss": 3405.0540500840507
+            },
+            "score": 144.8817251396543
+          },
+          {
+            "params": {
+              "trendWeight": 0.4,
+              "breadthWeight": 0.35,
+              "volWeight": 0.25,
+              "hold": 10,
+              "volTarget": 0.13,
+              "weakExposure": 0.4,
+              "maxGrossExposure": 0.75
+            },
+            "stats": {
+              "n": 35,
+              "pl": 1740.3843652856724,
+              "pf": 1.486581542438111,
+              "dd": -0.011260167362283968,
+              "maxSymbolGrossProfitShare": 0.26101969718779716,
+              "grossProfit": 5317.1422434516635,
+              "grossLoss": 3576.7578781659904
+            },
+            "score": 141.8436367097736
+          },
+          {
+            "params": {
+              "trendWeight": 0.5,
+              "breadthWeight": 0.3,
+              "volWeight": 0.2,
+              "hold": 7,
+              "volTarget": 0.14,
+              "weakExposure": 0.35,
+              "maxGrossExposure": 0.8
+            },
+            "stats": {
+              "n": 39,
+              "pl": 982.2607402053765,
+              "pf": 1.2379318480680725,
+              "dd": -0.021423232397192238,
+              "maxSymbolGrossProfitShare": 0.25165436424929616,
+              "grossProfit": 5110.588865174812,
+              "grossLoss": 4128.328124969434
+            },
+            "score": 115.84834084099602
+          }
+        ],
+        "selectedParams": {
+          "trendWeight": 0.34,
+          "breadthWeight": 0.33,
+          "volWeight": 0.33,
+          "hold": 10,
+          "volTarget": 0.12,
+          "weakExposure": 0.45,
+          "maxGrossExposure": 0.7
+        },
+        "selectionScore": 144.8817251396543,
+        "oos": {
+          "n": 111,
+          "pl": 5508.396530125817,
+          "pf": 1.426263025587093,
+          "dd": -0.03562885699458507,
+          "maxSymbolGrossProfitShare": 0.1259148605160068,
+          "grossProfit": 18430.9260470575,
+          "grossLoss": 12922.529516931685
+        }
+      },
+      {
+        "fold": 2,
+        "trainRange": [
+          "2020-01-01",
+          "2021-12-31"
+        ],
+        "oosRange": [
+          "2022-01-01",
+          "2022-12-31"
+        ],
+        "trainVariants": [
+          {
+            "params": {
+              "trendWeight": 0.5,
+              "breadthWeight": 0.3,
+              "volWeight": 0.2,
+              "hold": 7,
+              "volTarget": 0.14,
+              "weakExposure": 0.35,
+              "maxGrossExposure": 0.8
+            },
+            "stats": {
+              "n": 173,
+              "pl": 7423.683992785927,
+              "pf": 1.436667325905558,
+              "dd": -0.03646896276297107,
+              "maxSymbolGrossProfitShare": 0.17575436682369058,
+              "grossProfit": 24424.461363501126,
+              "grossLoss": 17000.777370715197
+            },
+            "score": 140.72252900551786
+          },
+          {
+            "params": {
+              "trendWeight": 0.4,
+              "breadthWeight": 0.35,
+              "volWeight": 0.25,
+              "hold": 10,
+              "volTarget": 0.13,
+              "weakExposure": 0.4,
+              "maxGrossExposure": 0.75
+            },
+            "stats": {
+              "n": 143,
+              "pl": 6636.643676258715,
+              "pf": 1.385985108426532,
+              "dd": -0.03969203190914927,
+              "maxSymbolGrossProfitShare": 0.10145302387979523,
+              "grossProfit": 23830.68440832994,
+              "grossLoss": 17194.040732071222
+            },
+            "score": 135.82838045928594
+          },
+          {
+            "params": {
+              "trendWeight": 0.34,
+              "breadthWeight": 0.33,
+              "volWeight": 0.33,
+              "hold": 10,
+              "volTarget": 0.12,
+              "weakExposure": 0.45,
+              "maxGrossExposure": 0.7
+            },
+            "stats": {
+              "n": 143,
+              "pl": 6266.162172271412,
+              "pf": 1.3836444080607435,
+              "dd": -0.037956072412599795,
+              "maxSymbolGrossProfitShare": 0.10268970231347016,
+              "grossProfit": 22599.41776159637,
+              "grossLoss": 16333.255589324965
+            },
+            "score": 135.82378738634765
+          }
+        ],
+        "selectedParams": {
+          "trendWeight": 0.5,
+          "breadthWeight": 0.3,
+          "volWeight": 0.2,
+          "hold": 7,
+          "volTarget": 0.14,
+          "weakExposure": 0.35,
+          "maxGrossExposure": 0.8
+        },
+        "selectionScore": 140.72252900551786,
+        "oos": {
+          "n": 45,
+          "pl": -5194.443312223847,
+          "pf": 0.250823178280269,
+          "dd": -0.05194443312223873,
+          "maxSymbolGrossProfitShare": 0.13299060573487279,
+          "grossProfit": 1739.0911507084584,
+          "grossLoss": 6933.5344629323035
+        }
+      },
+      {
+        "fold": 3,
+        "trainRange": [
+          "2020-01-01",
+          "2022-12-31"
+        ],
+        "oosRange": [
+          "2023-01-01",
+          "2023-12-31"
+        ],
+        "trainVariants": [
+          {
+            "params": {
+              "trendWeight": 0.5,
+              "breadthWeight": 0.3,
+              "volWeight": 0.2,
+              "hold": 7,
+              "volTarget": 0.14,
+              "weakExposure": 0.35,
+              "maxGrossExposure": 0.8
+            },
+            "stats": {
+              "n": 217,
+              "pl": 2422.7983175959216,
+              "pf": 1.1020522893894207,
+              "dd": -0.05041561971900732,
+              "maxSymbolGrossProfitShare": 0.16931335639384826,
+              "grossProfit": 26163.552514209587,
+              "grossLoss": 23740.754196613667
+            },
+            "score": 107.09005207124477
+          },
+          {
+            "params": {
+              "trendWeight": 0.4,
+              "breadthWeight": 0.35,
+              "volWeight": 0.25,
+              "hold": 10,
+              "volTarget": 0.13,
+              "weakExposure": 0.4,
+              "maxGrossExposure": 0.75
+            },
+            "stats": {
+              "n": 180,
+              "pl": 2104.4866844869466,
+              "pf": 1.089307278221112,
+              "dd": -0.06590190957545705,
+              "maxSymbolGrossProfitShare": 0.09671160318172388,
+              "grossProfit": 25669.046330751553,
+              "grossLoss": 23564.55964626461
+            },
+            "score": 103.82765130624955
+          },
+          {
+            "params": {
+              "trendWeight": 0.34,
+              "breadthWeight": 0.33,
+              "volWeight": 0.33,
+              "hold": 10,
+              "volTarget": 0.12,
+              "weakExposure": 0.45,
+              "maxGrossExposure": 0.7
+            },
+            "stats": {
+              "n": 180,
+              "pl": 1877.7853521161492,
+              "pf": 1.083237433928659,
+              "dd": -0.0641912572922182,
+              "maxSymbolGrossProfitShare": 0.09642442126999434,
+              "grossProfit": 24437.17075707161,
+              "grossLoss": 22559.385404955472
+            },
+            "score": 103.48444426728332
+          }
+        ],
+        "selectedParams": {
+          "trendWeight": 0.5,
+          "breadthWeight": 0.3,
+          "volWeight": 0.2,
+          "hold": 7,
+          "volTarget": 0.14,
+          "weakExposure": 0.35,
+          "maxGrossExposure": 0.8
+        },
+        "selectionScore": 107.09005207124477,
+        "oos": {
+          "n": 137,
+          "pl": 7199.382703635864,
+          "pf": 1.6092200023130392,
+          "dd": -0.03547701039545581,
+          "maxSymbolGrossProfitShare": 0.12190273021689108,
+          "grossProfit": 19016.760131004972,
+          "grossLoss": 11817.377427369107
+        }
+      },
+      {
+        "fold": 4,
+        "trainRange": [
+          "2020-01-01",
+          "2023-12-31"
+        ],
+        "oosRange": [
+          "2024-01-01",
+          "2024-12-31"
+        ],
+        "trainVariants": [
+          {
+            "params": {
+              "trendWeight": 0.34,
+              "breadthWeight": 0.33,
+              "volWeight": 0.33,
+              "hold": 10,
+              "volTarget": 0.12,
+              "weakExposure": 0.45,
+              "maxGrossExposure": 0.7
+            },
+            "stats": {
+              "n": 286,
+              "pl": 9007.777090712054,
+              "pf": 1.2771091549895757,
+              "dd": -0.0641912572922182,
+              "maxSymbolGrossProfitShare": 0.10969432917770526,
+              "grossProfit": 41514.01850684591,
+              "grossLoss": 32506.241416133897
+            },
+            "score": 125.3398686756822
+          },
+          {
+            "params": {
+              "trendWeight": 0.5,
+              "breadthWeight": 0.3,
+              "volWeight": 0.2,
+              "hold": 7,
+              "volTarget": 0.14,
+              "weakExposure": 0.35,
+              "maxGrossExposure": 0.8
+            },
+            "stats": {
+              "n": 354,
+              "pl": 9349.525871118996,
+              "pf": 1.258707061370603,
+              "dd": -0.05084555836962246,
+              "maxSymbolGrossProfitShare": 0.12521026053756804,
+              "grossProfit": 45488.95639762334,
+              "grossLoss": 36139.43052650434
+            },
+            "score": 125.11361586817773
+          },
+          {
+            "params": {
+              "trendWeight": 0.4,
+              "breadthWeight": 0.35,
+              "volWeight": 0.25,
+              "hold": 10,
+              "volTarget": 0.13,
+              "weakExposure": 0.4,
+              "maxGrossExposure": 0.75
+            },
+            "stats": {
+              "n": 286,
+              "pl": 9046.539317802963,
+              "pf": 1.265042404225241,
+              "dd": -0.06590190957545705,
+              "maxSymbolGrossProfitShare": 0.1090852847679461,
+              "grossProfit": 43178.96180411179,
+              "grossLoss": 34132.42248630882
+            },
+            "score": 123.8918218670069
+          }
+        ],
+        "selectedParams": {
+          "trendWeight": 0.34,
+          "breadthWeight": 0.33,
+          "volWeight": 0.33,
+          "hold": 10,
+          "volTarget": 0.12,
+          "weakExposure": 0.45,
+          "maxGrossExposure": 0.7
+        },
+        "selectionScore": 125.3398686756822,
+        "oos": {
+          "n": 125,
+          "pl": 6260.8924216637,
+          "pf": 1.5794196716418676,
+          "dd": -0.018043744774385972,
+          "maxSymbolGrossProfitShare": 0.19172280475158648,
+          "grossProfit": 17066.34609900017,
+          "grossLoss": 10805.453677336465
+        }
+      }
+    ],
+    "stability": {
+      "maxPositiveFoldGrossProfitShare": 0.33805696416879777,
+      "minFoldProfitFactor": 0.250823178280269,
+      "maxSelectedWeakExposure": 0.45,
+      "pass": false
+    },
+    "allTrainVariantsStored": true,
+    "preExecutionRiskSizing": true,
+    "actualSharedPortfolio": true
+  },
+  "tradeEnabled": false,
+  "forward": "NOT OPENED"
+}
