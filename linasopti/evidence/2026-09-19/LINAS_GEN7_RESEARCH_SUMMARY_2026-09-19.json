@@ -1,0 +1,127 @@
+{
+  "schema": "LINA-GEN7-RESEARCH-SUMMARY-1",
+  "release": "V0.2.90",
+  "planHash": "6876470e",
+  "runnerSpecHash": "4c4c4cbd",
+  "families": [
+    {
+      "family": "Riskregim konservativ",
+      "status": "FAIL",
+      "score": 172.31547049166974,
+      "oos": {
+        "n": 291,
+        "pl": 8210.981803877974,
+        "pf": 1.2260784118431645,
+        "dd": -0.045098128498201495,
+        "maxSingleSymbolGrossProfitShare": 0.5411060567166592,
+        "maxSymbolGrossProfitShare": 0.5411060567166592,
+        "positiveFolds": 3,
+        "grossProfit": 44530.15857505119,
+        "grossLoss": 36319.1767711732,
+        "stability": {
+          "maxPositiveFoldGrossProfitShare": 0.3494498155582186,
+          "minFoldProfitFactor": 0.028576895065953987,
+          "maxSelectedWeakExposure": 0.6,
+          "pass": false
+        }
+      },
+      "evidence": {
+        "status": "FROZEN · GITHUB ✓",
+        "name": "LINAS_GEN7_RISKREGIM_KONSERVATIV_WALK_FORWARD_2026-09-19.json",
+        "githubPath": null,
+        "githubCommit": null
+      }
+    },
+    {
+      "family": "Riskregim balanserad",
+      "status": "FAIL",
+      "score": 171.53186356526828,
+      "oos": {
+        "n": 291,
+        "pl": 8060.808746509558,
+        "pf": 1.2204949384396762,
+        "dd": -0.046599859071885685,
+        "maxSingleSymbolGrossProfitShare": 0.5411060567166591,
+        "maxSymbolGrossProfitShare": 0.5411060567166591,
+        "positiveFolds": 3,
+        "grossProfit": 44618.60369432812,
+        "grossLoss": 36557.79494781856,
+        "stability": {
+          "maxPositiveFoldGrossProfitShare": 0.34875711950636346,
+          "minFoldProfitFactor": 0.04529980062656727,
+          "maxSelectedWeakExposure": 0,
+          "pass": false
+        }
+      },
+      "evidence": {
+        "status": "FROZEN · GITHUB ✓",
+        "name": "LINAS_GEN7_RISKREGIM_BALANSERAD_WALK_FORWARD_2026-09-19.json",
+        "githubPath": null,
+        "githubCommit": null
+      }
+    },
+    {
+      "family": "Riskregim dynamisk",
+      "status": "FAIL",
+      "score": 166.7143196838567,
+      "oos": {
+        "n": 292,
+        "pl": 22432.317216049258,
+        "pf": 1.281869550116764,
+        "dd": -0.11963322606602156,
+        "maxSingleSymbolGrossProfitShare": 0.5411060567166591,
+        "maxSymbolGrossProfitShare": 0.5411060567166591,
+        "positiveFolds": 3,
+        "grossProfit": 102016.35602675696,
+        "grossLoss": 79584.03881070769,
+        "stability": {
+          "maxPositiveFoldGrossProfitShare": 0.36932323339446177,
+          "minFoldProfitFactor": 0.025724434539672988,
+          "maxSelectedWeakExposure": 0.5,
+          "pass": false
+        }
+      },
+      "evidence": {
+        "status": "FROZEN · GITHUB ✓",
+        "name": "LINAS_GEN7_RISKREGIM_DYNAMISK_WALK_FORWARD_2026-09-19.json",
+        "githubPath": null,
+        "githubCommit": null
+      }
+    },
+    {
+      "family": "Riskregim stabilitetsensemble",
+      "status": "FAIL",
+      "score": 189.84131628680728,
+      "oos": {
+        "n": 418,
+        "pl": 13774.228343201534,
+        "pf": 1.3242605137393277,
+        "dd": -0.05194443312223873,
+        "maxSingleSymbolGrossProfitShare": 0.19172280475158648,
+        "maxSymbolGrossProfitShare": 0.19172280475158648,
+        "positiveFolds": 3,
+        "grossProfit": 56253.1234277711,
+        "grossLoss": 42478.895084569565,
+        "stability": {
+          "maxPositiveFoldGrossProfitShare": 0.33805696416879777,
+          "minFoldProfitFactor": 0.250823178280269,
+          "maxSelectedWeakExposure": 0.45,
+          "pass": false
+        }
+      },
+      "evidence": {
+        "status": "FROZEN · VÄNTAR PÅ SYNK",
+        "name": "LINAS_GEN7_RISKREGIM_STABILITETSENSEMBLE_WALK_FORWARD_2026-09-19.json",
+        "githubPath": null,
+        "githubCommit": null
+      }
+    }
+  ],
+  "eligibleCount": 0,
+  "eligibleFamilies": [],
+  "decision": "NO_CANDIDATE_FOR_FORWARD",
+  "tradeEnabled": false,
+  "forwardOpened": false,
+  "createdAt": "2026-09-19T00:57:44.389Z",
+  "immutable": true
+}
