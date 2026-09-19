@@ -1,0 +1,66 @@
+{
+  "schema": "LINA-GEN7-PLAN-EVIDENCE-1",
+  "release": "V0.2.90",
+  "createdAt": "2026-09-19T00:57:27.663Z",
+  "planHash": "6876470e",
+  "plan": {
+    "schema": "LINA-GEN7-PLAN-PROPOSAL-1",
+    "sourceGeneration": 6,
+    "researchBoundary": "2024-12-31",
+    "tradeEnabled": false,
+    "forwardOpened": false,
+    "hypothesis": "Pröva om Gen6-kandidatens riskregim-idé är robust när den utsätts för en ny preregistrerad generation med större regimvariation och explicita stabilitetskrav, utan att justera Gen6 efter facit.",
+    "sourceLearning": [
+      "Gen6 gav en låst kandidat: Riskregim-trendportfölj. Den klarade de preregistrerade gates som Gen6 bedömdes mot.",
+      "Gen6-underlaget visar att faktisk TRAIN-selektion användes före varje OOS-fold och att riskregim/volatilitetsskalning påverkade exponering och positionsrisk före exekvering.",
+      "Gen6-underlaget visar att riskregim-ensemble exekverades i en gemensam portfölj/equity curve och att exakt rankingformel var hashad före research.",
+      "Gen7 är ett nytt experiment. Gen6-resultat, parametrar och kandidat får inte ändras eller återanvändas som nya Gen7-resultat."
+    ],
+    "preserve": [
+      "TRAIN-selektion före varje OOS-fold.",
+      "Risk- och regimstyrning ska påverka faktisk sizing/exponering före exekvering.",
+      "Gemensam portfölj/equity curve för kombinerade signaler.",
+      "Alla deklarerade parametrar måste påverka exekveringen.",
+      "Exakt rankingformel ska ingå i hashad runnerspec före research.",
+      "Komplett variant/fold-evidens sparas före continuation och kandidatval är deterministiskt."
+    ],
+    "change": [
+      "Testa robustheten i riskregim-idén över flera fördefinierade regim-/exponeringsvarianter i stället för att optimera Gen6-kandidaten efter resultat.",
+      "Inför explicit stabilitetskontroll så att en kandidat inte får bero på en enskild OOS-fold eller en enda aggressiv exponeringsnivå.",
+      "Behåll samma historiska forskningsgräns 2024-12-31; ingen observerad 2025–2026-data får bli ny holdout.",
+      "Gen7 får eget namespace, egen planhash och framtida runnerspec; ingen Gen7 research eller Forward öppnas av planförslaget."
+    ],
+    "gates": {
+      "minOosTrades": 100,
+      "minPf": 1.2,
+      "maxDd": 0.12,
+      "positiveOos": true,
+      "maxConcentration": 0.4,
+      "minPositiveFolds": 3
+    },
+    "folds": [
+      [
+        "TRAIN 2020",
+        "OOS 2021"
+      ],
+      [
+        "TRAIN 2020–2021",
+        "OOS 2022"
+      ],
+      [
+        "TRAIN 2020–2022",
+        "OOS 2023"
+      ],
+      [
+        "TRAIN 2020–2023",
+        "OOS 2024"
+      ]
+    ],
+    "candidateRule": "Endast varianter/familjer som klarar samtliga låsta gates och den kommande hashade stabilitetskontrollen får rankas. P/L är inte primärt. Exakt rankingformel och tie-break låses i runnerspec före research.",
+    "decision": "APPROVED_AND_LOCKED"
+  },
+  "sourceGeneration": 6,
+  "tradeEnabled": false,
+  "forward": "NOT OPENED",
+  "immutable": true
+}
