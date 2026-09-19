@@ -33,14 +33,16 @@ function localInventory(){
   return entries;
 }
 function recoveryPlan(localEntries,remoteState){
-  const remote=remoteState?.entries||{}, unique=[],same=[],conflicts=[];
+  const remote=remoteState?.entries||{}, unique=[],same=[],conflicts=[],resolved=[];
   for(const [k,l] of Object.entries(localEntries||{})){
     const r=remote[k];
     if(!r){unique.push(k);continue}
     if(r.value===l.value){same.push(k);continue}
+    if(k==='lina_clean_gen4_engine_v0261'&&mergeGen4Entry(l,r)){resolved.push({key:k,policy:'MONOTONIC_GEN4_MERGE'});continue}
+    if(k===DIAG){resolved.push({key:k,policy:(l.stamp||'')>=(r.stamp||'')?'LOCAL_NEWER_DIAGNOSTICS':'REMOTE_NEWER_DIAGNOSTICS'});continue}
     conflicts.push({key:k,localStamp:l.stamp||'',remoteStamp:r.stamp||''});
   }
-  return {scannedAt:new Date().toISOString(),localCount:Object.keys(localEntries||{}).length,remoteCount:Object.keys(remote).length,unique,same,conflicts};
+  return {scannedAt:new Date().toISOString(),localCount:Object.keys(localEntries||{}).length,remoteCount:Object.keys(remote).length,unique,same,resolved,conflicts};
 }
 function safeRecoveryMerge(local,remote){
   // Normal state: GitHub is canonical on conflicts. Irreversible Gen4 research is the exception:
@@ -54,6 +56,7 @@ function safeRecoveryMerge(local,remote){
     if(k==='lina_clean_gen4_engine_v0261'){
       const m=mergeGen4Entry(l,r); if(m){out[k]=m;continue}
     }
+    if(k===DIAG){out[k]=(l.stamp||'')>=(r.stamp||'')?l:r;continue}
     // All other conflicts remain GitHub-canonical.
   }
   return {schema:'LINA-APP-SYNC-1',release:RELEASE,tradeEnabled:false,exportedAt:new Date().toISOString(),entries:out};
@@ -87,7 +90,7 @@ async function bootstrap(progress){
 }
 let autoTimer=null,autoBusy=false;
 function queueSync(){
-  clearTimeout(autoTimer);autoTimer=setTimeout(async()=>{const g4=(()=>{try{return JSON.parse(localStorage.getItem('lina_clean_gen4_engine_v0261')||'null')}catch{return null}})(),ge=(()=>{try{return JSON.parse(localStorage.getItem('lina_generation_engine_v0273')||'null')}catch{return null}})();if(g4?.automation?.status==='RUNNING'||ge?.gen5?.automation?.status==='RUNNING'||ge?.gen6?.automation?.status==='RUNNING'||ge?.gen7?.automation?.status==='RUNNING')return;if(autoBusy||!code())return;autoBusy=true;try{await syncAll();document.dispatchEvent(new CustomEvent('lina:autosync-ok'))}catch(e){console.warn('Lina autosync stoppad:',e);document.dispatchEvent(new CustomEvent('lina:autosync-fail',{detail:{message:String(e?.message||e)}}))}finally{autoBusy=false}},700);
+  clearTimeout(autoTimer);autoTimer=setTimeout(async()=>{const g4=(()=>{try{return JSON.parse(localStorage.getItem('lina_clean_gen4_engine_v0261')||'null')}catch{return null}})(),ge=(()=>{try{return JSON.parse(localStorage.getItem('lina_generation_engine_v0273')||'null')}catch{return null}})();if(g4?.automation?.status==='RUNNING'||ge?.gen5?.automation?.status==='RUNNING'||ge?.gen6?.automation?.status==='RUNNING'||(ge?.gen7?.automation?.status==='RUNNING'||ge?.gen7?.recovery?.status==='RUNNING'))return;if(window.LinaRecoveryBusy||autoBusy||!code())return;autoBusy=true;try{await syncAll();document.dispatchEvent(new CustomEvent('lina:autosync-ok'))}catch(e){console.warn('Lina autosync stoppad:',e);document.dispatchEvent(new CustomEvent('lina:autosync-fail',{detail:{message:String(e?.message||e)}}))}finally{autoBusy=false}},700);
 }
 document.addEventListener('lina:gen2change',queueSync);
 document.addEventListener('lina:evidence-changed',queueSync);

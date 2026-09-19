@@ -149,3 +149,5 @@ Gen7 Auto Pipeline och permanent regel om att kedja säkra deterministiska steg 
 
 ## V0.2.91
 Integrity & Automation Cleanup: Status Export 2.0, serialiserad evidence-sync, Gen7 reconcile/integrity och autosync-spärr under generationsautomation. Ingen research-rerun; Gen8/Forward/Handel stängda.
+
+V0.2.92: Gen7 Evidence Recovery + Integrity Finalize. Exakt evidenskompletthet per familj, SHA-verifierad recovery av två redan frysta Gen7-artefakter utan research-rerun, renare startupstatus och Gen8-planförslag först efter grön Gen7-integritet. Gen8 EJ LÅST; Forward/Handel AV.

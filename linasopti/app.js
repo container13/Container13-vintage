@@ -127,7 +127,7 @@
     const startup=document.getElementById('startupGate'),stepEl=document.getElementById('startupStep'),detailEl=document.getElementById('startupDetail'),bar=document.getElementById('startupBar');
     if(startup)startup.hidden=false; app.hidden=true;
     const stages={local:15,github:35,compare:52,recover:68,evidence:84,ready:100};
-    const progress=(stage,detail)=>{if(stepEl)stepEl.textContent=detail||stage;if(detailEl)detailEl.textContent=detail||'';if(bar)bar.style.width=(stages[stage]||10)+'%'};
+    const progress=(stage,detail)=>{if(stepEl)stepEl.textContent=detail||stage;if(detailEl)detailEl.textContent='';if(bar)bar.style.width=(stages[stage]||10)+'%'};
     installRefresh();installGitHubSync();installExport();installBrandHome();
     const b=document.getElementById('githubSync'),label=b?.querySelector('small');
     if(b)b.disabled=true;if(label)label.textContent='Återställer…';

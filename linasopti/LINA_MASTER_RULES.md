@@ -197,3 +197,9 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - HTTP 409 är endast godkänd immutable-idempotens när API-svaret exakt bekräftar `Evidencefilen finns redan – original skrivs inte över`; övriga 409 är konflikt och ska förbli blockerande tills recovery verifierat exakt fryst evidens.
 - En avslutad generations tekniska recovery får aldrig köra om forskning. Den får endast synka/reconcilea redan fryst state/evidens.
 - Global Lina-status ska använda aktuell runtime-release, aktuell låst Robotmognadsmodell och inkludera aktuell Generation Engine-state/integritetsstatus. Full rå diagnostik ska kunna exporteras separat så standardexporten förblir begriplig.
+
+## Evidence completeness och recovery — från V0.2.92
+- En generations integritet får inte avgöras enbart av statusfält i Generation Engine eller totalt antal poster i evidenskön. Varje obligatorisk evidensfil ska finnas som egen `FROZEN · GITHUB ✓`-post och matchas mot generationens exakta evidensnamn.
+- Om en fryst evidensfil behöver åter-materialiseras från redan sparat fryst research-state får det endast ske deterministiskt från exakt sparade resultat + original run-timestamp och med en förhandskänd SHA-256-kontroll. SHA-avvikelse stoppar recovery före nätverkssynk.
+- Recovery får aldrig anropa marknadsdata eller research-runner och får aldrig ändra observerade resultat, gates, ranking eller kandidatbeslut.
+- Nästa generations plan får visas först när föregående generations obligatoriska evidens är komplett och integritetsgrön.

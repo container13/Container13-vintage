@@ -166,3 +166,13 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] GitHub autosync pausas under Gen5/Gen6/Gen7 automation RUNNING.
 - [x] Ingen Gen7 research/rerun eller Gen8/Forward/Handel öppnas av cleanup.
 - [x] Aktiva cache tokens matchar version.js 0.2.91 och JS syntaxkontrolleras före ZIP.
+
+### V0.2.92 — Gen7 Evidence Recovery + Integrity Finalize
+- [x] Gen7 research körs aldrig om; recovery använder endast fryst familyResults + original run-timestamp.
+- [x] Åter-materialiserad Dynamisk/Stabletsensemble verifieras mot förhandslåst SHA-256 före synk.
+- [x] Gen7-integritet kräver exakt evidenspost per familj + summary, inte bara state-status/kötotal.
+- [x] Evidence recovery är single-flight/pausar app-autosynk medan den kör.
+- [x] Gen8-planförslag visas först efter grön Gen7-integritet; ingen Gen8 runnerspec/research/Forward startas.
+- [x] Startup-progress visar inte samma statusrad dubbelt.
+- [x] Kända Gen4/diagnostik-konflikter klassas som deterministiskt lösta i recoveryrapporten.
+- [x] Handel AV, Robotmognadsmodell `6e8908ca` och Gen7 fryst state oförändrade.
