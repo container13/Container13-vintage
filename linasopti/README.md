@@ -127,3 +127,12 @@ Version Source Integrity hotfix. Current UI version is sourced from `version.js`
 
 ## V0.2.86
 Gen6 research runner: en explicit start gör full data-preflight och kör därefter fyra preregistrerade Gen6-familjer självkörande. Varje familj/fold sparas före continuation. Summary fryses, kandidat väljs endast med låst deterministisk ranking och Gen7-underlag skapas. Forward/Handel förblir AV.
+
+## V0.2.87 — Gen6 evidence recovery/sync
+Builds on the already observed and frozen V0.2.86 Gen6 result. No Gen6 research is rerun and Gen7/Forward remain closed.
+
+- Adds Gen6 reconciliation to the existing immutable Evidence/GitHub queue for family, summary and candidate artifacts.
+- Adds one `Slutför + verifiera Gen6-evidenssynk` action after Gen6 is frozen.
+- Success requires all four family evidences, the frozen summary and the locked candidate evidence to be GitHub-verified.
+- Fixes the stale completed-state message that incorrectly said Gen6 research had not started.
+- Keeps plan `206c11d7`, runnerspec `768e8d3e`, Robotmognad model `6e8908ca`, Handel AV and Forward closed.

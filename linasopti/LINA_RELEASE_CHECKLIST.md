@@ -120,3 +120,13 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Riskregim/volatilitet påverkar sizing/exponering före exekvering; deklarerade grid-parametrar konsumeras.
 - [x] Summary/kandidat/Gen7-underlag automatiseras efter 4/4; ingen Gen7-research eller Forward.
 - [x] Handel AV och Robotmognadsmodell oförändrad.
+
+### V0.2.87 — Gen6 evidence recovery/sync
+- [x] Gen6 research/candidate state is read-only; no market-data or research call is introduced by recovery.
+- [x] Pending Gen6 family/summary/candidate evidence is synced through the existing immutable evidence queue.
+- [x] Gen6 evidence queue items reconcile monotonically back into exact family/summary/candidate state by immutable evidence filename.
+- [x] Gen6 sync success requires all 4 family evidences + summary + candidate (when locked) to be `FROZEN · GITHUB ✓`.
+- [x] Existing immutable 409 semantics remain unchanged; no overwrite.
+- [x] Gen7 and Forward remain closed; Handel AV.
+- [x] Completed Gen6 UI no longer says that research has not started.
+- [x] Current runtime release comes from `version.js`; active cache tokens match `0.2.87`.
