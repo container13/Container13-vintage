@@ -203,3 +203,18 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Om en fryst evidensfil behöver åter-materialiseras från redan sparat fryst research-state får det endast ske deterministiskt från exakt sparade resultat + original run-timestamp och med en förhandskänd SHA-256-kontroll. SHA-avvikelse stoppar recovery före nätverkssynk.
 - Recovery får aldrig anropa marknadsdata eller research-runner och får aldrig ändra observerade resultat, gates, ranking eller kandidatbeslut.
 - Nästa generations plan får visas först när föregående generations obligatoriska evidens är komplett och integritetsgrön.
+
+
+## Kompletta paket + Generation Engine — permanent regel från V0.2.93
+- Efter ett uttryckligt mänskligt godkännande ska Lina inte dela upp säkra efterföljande steg i små releaser. En release ska om möjligt bära hela den meningsfulla etappen fram till nästa genuina beslut.
+- Innan en Lina-fil/paket efterfrågas från användaren ska tidigare samtalsfiler, Library och tillgänglig arbetsyta kontrolleras. Användaren ska endast behöva ladda upp igen om filen faktiskt inte går att återfinna.
+- Generation Engine ska generaliseras: nya generationer uttrycks primärt som låst plan/runnerspec/data till motorn. Generationsspecifika specialfall ska undvikas när samma kontrakt kan uttryckas generellt.
+- Efter mänskligt godkänd generationsplan får Auto Pipeline utföra planlås → immutable evidens → runnerspec/hash → Engine verify → preflight → research → evidens före continuation → summary/frysning → deterministiskt kandidatbeslut → nästa generations underlag → GitHub-verifiering → slutintegritet, med stopp endast vid konkret fel eller nästa verkliga beslut.
+- Forward, broker/paper/live och Handel förblir separata mänskliga gates.
+
+## Gen8 preregistrering — V0.2.93
+- Gen8-planhash `be68328d` är mänskligt godkänd före första Gen8-resultat.
+- Gen8 använder stabilitetsmedveten TRAIN-selektion över fördefinierade kalenderårsdelregimer före varje OOS-fold; OOS får aldrig påverka TRAIN-valet.
+- Ordinarie gates kvarstår: ≥100 OOS-affärer, PF ≥1,20, DD ≤12 %, positiv OOS, koncentration ≤40 %, positiva folds ≥3/4.
+- Stabilitetsgate är låst före research: varje OOS-fold PF ≥0,80; max 55 % av positiv fold-bruttovinst från en fold; vald weak-regime-exponering ≤0,65. TRAIN-selektion föredrar min subregim-PF ≥0,70 och straffar PF-spread över 2,50; exakt formel ingår i runnerspec-hashen.
+- Gen8 Auto Pipeline får skapa Gen9-underlag men får inte starta Gen9, Forward eller Handel.

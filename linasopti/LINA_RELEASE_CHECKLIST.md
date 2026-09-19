@@ -176,3 +176,13 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Startup-progress visar inte samma statusrad dubbelt.
 - [x] Kända Gen4/diagnostik-konflikter klassas som deterministiskt lösta i recoveryrapporten.
 - [x] Handel AV, Robotmognadsmodell `6e8908ca` och Gen7 fryst state oförändrade.
+
+
+### V0.2.93 — Gen8 komplett Auto Pipeline
+- [x] Befintlig V0.2.92 FLAT COMPLETE använd som faktisk bas; MASTER RULES + V0.2.92 handoff lästa.
+- [x] Gen8 planhash `be68328d` bevarad från godkänt planförslag.
+- [x] Gen8 runnerspec definierar stabilitetsmedveten TRAIN-selektion och låsta OOS-stabilitetsgates före research.
+- [x] Ett Auto Pipeline-initiativ kedjar planlås → runnerspec/hash → verify → preflight → fyra familjer → evidens → summary/kandidat → Gen9-underlag → GitHub-verifiering.
+- [x] Gen7 förblir immutable; ingen Gen7 rerun.
+- [x] Forward och Handel förblir AV.
+- [x] JavaScript syntaxkontrollerad; aktiva cache tokens verifieras mot `version.js` före ZIP.
