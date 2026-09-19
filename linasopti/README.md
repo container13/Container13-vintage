@@ -143,3 +143,6 @@ Generation Engine visar Gen7 Plan Proposal från fryst Gen6-underlag. Planen är
 
 ## V0.2.89
 Generation Engine visar nu alltid aktuell/senaste generation överst och äldre generationer under i fallande ordning. Gen7-planförslaget är fortfarande endast för granskning och är inte låst.
+
+## V0.2.90
+Gen7 Auto Pipeline och permanent regel om att kedja säkra deterministiska steg utan onödiga manuella delreleaser/klick. Forward/Handel fortsatt AV.

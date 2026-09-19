@@ -174,3 +174,18 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Tidigare generationer visas därefter i fallande generationsordning; äldre fryst historik/audit ligger längre ned.
 - När en ny generation blir aktuell ska ordningen följa state/generationsnummer automatiskt, inte kräva manuell flytt av HTML-sektioner.
 - UI-ordningen får aldrig ändra forskningsstate, evidens, planhashar, runnerspecar eller Forward/Handel-status.
+
+## Automatisera säkra kedjor — permanent regel från V0.2.90
+- Om flera efterföljande steg kan genomföras deterministiskt utan en ny verklig mänsklig beslutspunkt ska Lina göra hela kedjan med ett enda användarinitiativ.
+- Tekniska mellanlägen som planlås efter redan genomförd mänsklig granskning, runnerspec-hashning, engine-verifiering, datapreflight, evidenssparning, summary, deterministiskt kandidatval och GitHub-verifiering ska inte kräva egna releaser/klick när de säkert kan kedjas.
+- Varje intern säkerhetsbarriär finns kvar och måste passera i rätt ordning. Auto Pipeline ska stoppa vid första fel och får aldrig kringgå planhash, runnerspechash, preflight, evidens-före-continuation eller immutable-regler.
+- Observerad/fryst forskning får aldrig köras om för att reparera ett senare tekniskt/synkfel. Recovery fortsätter från exakt sparad state/evidens.
+- Forward, broker/paper/live och Handel är separata verkliga beslutsgates och får inte öppnas automatiskt av generationskedjan.
+- UI ska visa aktuell generation överst och i första hand erbjuda ett begripligt Auto Pipeline-flöde i stället för många små tekniska knappar.
+
+## Gen7 Auto Pipeline — V0.2.90
+- Mänsklig granskning av Gen7-planförslag `6876470e` är genomförd före Auto Pipeline.
+- Auto Pipeline får därefter låsa exakt plan, skapa/hash-låsa runnerspec, verifiera Engine, göra data-preflight och köra hela Gen7 utan fler manuella mellanbeslut.
+- Gen7 stabilitetskontroll definieras och hash-låses före första researchresultat: max 55 % av positiv fold-bruttovinst från en positiv OOS-fold, varje OOS-fold PF minst 0,80 och vald weak-regime-exponering högst 0,65.
+- Ordinarie gates kvarstår: ≥100 OOS-affärer, PF ≥1,20, DD ≤12 %, positiv OOS, koncentration ≤40 %, positiva folds ≥3/4.
+- Komplett fold/variant-evidens sparas före continuation. Summary och kandidat fryses deterministiskt. Gen8-underlag skapas men Gen8 och Forward startas inte.

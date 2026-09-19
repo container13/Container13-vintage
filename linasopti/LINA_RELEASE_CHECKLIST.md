@@ -146,3 +146,12 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Gen7 planförslag är fortfarande EJ LÅST; ingen runnerspec/research/Forward har lagts till.
 - [x] Gen6/Gen5 research-state och evidenslogik är oförändrade.
 - [x] Handel AV och Robotmognadsmodell `6e8908ca` oförändrade.
+
+## V0.2.90 Auto Pipeline checks
+- [ ] Aktuell generation visas överst.
+- [ ] Gen7 planhash är exakt 6876470e före planlås.
+- [ ] Gen7 runnerspec + stabilitetsgates hash-låses före researchOpened.
+- [ ] Data-preflight passerar före första observerade resultat.
+- [ ] Evidens sparas före continuation och rerun av sparat/fryst resultat blockeras.
+- [ ] Gen8/Forward/Handel öppnas inte av pipeline.
+- [ ] Alla aktiva cache tokens matchar version.js.
