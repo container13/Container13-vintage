@@ -155,3 +155,14 @@ Historical/frozen research version strings are excluded from this current-releas
 - [ ] Evidens sparas före continuation och rerun av sparat/fryst resultat blockeras.
 - [ ] Gen8/Forward/Handel öppnas inte av pipeline.
 - [ ] Alla aktiva cache tokens matchar version.js.
+
+
+### V0.2.91 — Integrity & Automation Cleanup
+- [x] Global status-export använder `window.LinaVersion` och aktuell regelbaserad Robotmognad, inte V0.2.70/48 fallback.
+- [x] Generation Engine full snapshot + integrity ingår i global status-export; full syncdiagnostik finns separat.
+- [x] Evidence `syncApproved()` har single-flight-lås så parallella anrop delar samma sekventiella kö.
+- [x] Gen7 reconcile stöds för familjer, summary och kandidat; syncStatus visar Gen7.
+- [x] Endast exakt immutable-exists 409 accepteras; commit-race 409 förblir fel.
+- [x] GitHub autosync pausas under Gen5/Gen6/Gen7 automation RUNNING.
+- [x] Ingen Gen7 research/rerun eller Gen8/Forward/Handel öppnas av cleanup.
+- [x] Aktiva cache tokens matchar version.js 0.2.91 och JS syntaxkontrolleras före ZIP.

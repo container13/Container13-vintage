@@ -146,3 +146,6 @@ Generation Engine visar nu alltid aktuell/senaste generation överst och äldre 
 
 ## V0.2.90
 Gen7 Auto Pipeline och permanent regel om att kedja säkra deterministiska steg utan onödiga manuella delreleaser/klick. Forward/Handel fortsatt AV.
+
+## V0.2.91
+Integrity & Automation Cleanup: Status Export 2.0, serialiserad evidence-sync, Gen7 reconcile/integrity och autosync-spärr under generationsautomation. Ingen research-rerun; Gen8/Forward/Handel stängda.

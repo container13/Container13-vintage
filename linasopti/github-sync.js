@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const API='https://linas-opti-api.mangaj73.workers.dev', RELEASE='V0.2.70', DIAG='lina_clean_sync_diagnostics_v0270';
+const API='https://linas-opti-api.mangaj73.workers.dev', RELEASE=window.LinaVersion?.release||'VERSION_UNAVAILABLE', DIAG='lina_clean_sync_diagnostics_v0270';
 function diag(type,data={}){let d;try{d=JSON.parse(localStorage.getItem(DIAG)||'{\"schema\":\"LINA-SYNC-DIAGNOSTICS-1\",\"release\":\"V0.2.69\",\"events\":[]}')}catch{d={schema:'LINA-SYNC-DIAGNOSTICS-1',release:RELEASE,events:[]}}d.events.push({at:new Date().toISOString(),type,...data});d.events=d.events.slice(-80);d.updatedAt=new Date().toISOString();localStorage.setItem(DIAG,JSON.stringify(d));}
 const EXCLUDE=new Set(['lina_clean_core_state_v0011','lina_clean_swing_g4_universe_result_v0213']);
 const MAX_ENTRY=400000, MAX_PACKAGE=1500000;
@@ -87,7 +87,7 @@ async function bootstrap(progress){
 }
 let autoTimer=null,autoBusy=false;
 function queueSync(){
-  clearTimeout(autoTimer);autoTimer=setTimeout(async()=>{const g4=(()=>{try{return JSON.parse(localStorage.getItem('lina_clean_gen4_engine_v0261')||'null')}catch{return null}})();if(g4?.automation?.status==='RUNNING')return;if(autoBusy||!code())return;autoBusy=true;try{await syncAll();document.dispatchEvent(new CustomEvent('lina:autosync-ok'))}catch(e){console.warn('Lina autosync stoppad:',e);document.dispatchEvent(new CustomEvent('lina:autosync-fail',{detail:{message:String(e?.message||e)}}))}finally{autoBusy=false}},700);
+  clearTimeout(autoTimer);autoTimer=setTimeout(async()=>{const g4=(()=>{try{return JSON.parse(localStorage.getItem('lina_clean_gen4_engine_v0261')||'null')}catch{return null}})(),ge=(()=>{try{return JSON.parse(localStorage.getItem('lina_generation_engine_v0273')||'null')}catch{return null}})();if(g4?.automation?.status==='RUNNING'||ge?.gen5?.automation?.status==='RUNNING'||ge?.gen6?.automation?.status==='RUNNING'||ge?.gen7?.automation?.status==='RUNNING')return;if(autoBusy||!code())return;autoBusy=true;try{await syncAll();document.dispatchEvent(new CustomEvent('lina:autosync-ok'))}catch(e){console.warn('Lina autosync stoppad:',e);document.dispatchEvent(new CustomEvent('lina:autosync-fail',{detail:{message:String(e?.message||e)}}))}finally{autoBusy=false}},700);
 }
 document.addEventListener('lina:gen2change',queueSync);
 document.addEventListener('lina:evidence-changed',queueSync);

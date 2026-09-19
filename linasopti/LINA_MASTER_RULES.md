@@ -189,3 +189,11 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Gen7 stabilitetskontroll definieras och hash-låses före första researchresultat: max 55 % av positiv fold-bruttovinst från en positiv OOS-fold, varje OOS-fold PF minst 0,80 och vald weak-regime-exponering högst 0,65.
 - Ordinarie gates kvarstår: ≥100 OOS-affärer, PF ≥1,20, DD ≤12 %, positiv OOS, koncentration ≤40 %, positiva folds ≥3/4.
 - Komplett fold/variant-evidens sparas före continuation. Summary och kandidat fryses deterministiskt. Gen8-underlag skapas men Gen8 och Forward startas inte.
+
+
+## Auto Pipeline slutintegritet — permanent regel från V0.2.91
+- Auto Pipeline får lämna över till användaren först när en slutlig integritetskontroll har verifierat aktuell release/state, evidenskompletthet och att Handel/Forward-spärrarna är intakta, eller när ett konkret blockerande fel visas.
+- GitHub/evidensskrivningar ska serialiseras. Parallella sync-anrop får inte skapa commit-race eller falskt gröna slutstatusar.
+- HTTP 409 är endast godkänd immutable-idempotens när API-svaret exakt bekräftar `Evidencefilen finns redan – original skrivs inte över`; övriga 409 är konflikt och ska förbli blockerande tills recovery verifierat exakt fryst evidens.
+- En avslutad generations tekniska recovery får aldrig köra om forskning. Den får endast synka/reconcilea redan fryst state/evidens.
+- Global Lina-status ska använda aktuell runtime-release, aktuell låst Robotmognadsmodell och inkludera aktuell Generation Engine-state/integritetsstatus. Full rå diagnostik ska kunna exporteras separat så standardexporten förblir begriplig.
