@@ -16,7 +16,12 @@ a{color:inherit}.top{padding:14px 16px;display:flex;justify-content:space-betwee
 .wallet{display:none}.wallet.demo{display:block}.wallethead{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:16px}.wallethead h2{font-size:31px;margin:0}.wallethead small{color:var(--muted)}.cards{display:grid;gap:12px}.card{background:linear-gradient(135deg,#0e2030,#08141f);border:1px solid var(--line);border-radius:23px;padding:18px;display:grid;grid-template-columns:auto 1fr;gap:15px}.ico{width:48px;height:48px;border-radius:15px;background:#ffffff0b;display:grid;place-items:center;font-size:25px}.card h3{margin:1px 0 3px}.meta{color:#a8b7c3;font-size:13px}.actions{grid-column:2;display:flex;gap:8px;flex-wrap:wrap;margin-top:7px}.btn{border:0;font-family:inherit;border:1px solid #d9b86c66;background:#d9b86c12;color:#efd895;border-radius:999px;padding:10px 13px;font-size:11px;font-weight:950;text-decoration:none}.btn.disabled{opacity:.45;pointer-events:none}.ticketgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;grid-column:2}.ticket{border:1px solid #ffffff18;background:#ffffff08;border-radius:15px;padding:13px}.ticket b{display:block}.ticket small{color:#93a4b1}.ticketbtn{color:#fff;text-align:left;cursor:pointer;font:inherit}.ticketbtn:hover{border-color:#d9b86c88}.ticketbtn:disabled{opacity:.45;cursor:wait}.paper{grid-column:2;color:#9bcdb0;font-size:12px;margin-top:2px}.logout{border:1px solid #ffffff20;background:#ffffff08;color:#fff;border-radius:999px;padding:9px 12px;font-size:11px;font-weight:900;cursor:pointer}.devnote{max-width:620px;margin:24px auto 0;border:1px dashed #d9b86c55;color:#a9b8c3;border-radius:16px;padding:13px;font-size:11px;text-align:center}
 @media(max-width:600px){.wrap{padding-top:10px}.hero{margin-top:10px}.card{grid-template-columns:auto 1fr}.ticketgrid{grid-template-columns:1fr}.login{border-radius:22px}.wallethead{align-items:start;flex-direction:column}}
 </style>
-</head>
+<style>
+.paid-total{margin:18px 0;padding:16px 18px;border-radius:17px;background:rgba(113,207,171,.075);border:1px solid rgba(113,207,171,.22)}
+.paid-total span{display:block;color:#8ed8b8;font-weight:800;font-size:13px}
+.paid-total strong{display:block;margin:2px 0 4px;color:#fff;font-size:26px}
+.paid-total small{display:block;color:#aebfcb;line-height:1.4}
+</style></head>
 <body>
 <div class="top"><a class="back" href="../">← Reseguiden</a><span class="lock">🔐 PRIVAT RESEPLÅNBOK</span></div>
 <main class="wrap">
@@ -196,4 +201,4 @@ onAuthStateChanged(auth, async user=>{
   }
 });
 </script>
-</body></html>
+<div class="paid-total"><span>✓ Betalt hittills</span><strong>13 105 kr</strong><small>Flyg 4 179 kr + hotell 6 228 kr + 2 konsertbiljetter 2 698 kr</small></div></body></html>
