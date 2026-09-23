@@ -171,6 +171,65 @@ h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16
  .booking-artist>img{min-height:360px}
 }
 </style>
+
+<style>
+.concert-card.booking-artist{
+  min-height:0;
+  height:100%;
+  padding:16px;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  gap:13px;
+  border:1px solid rgba(142,216,184,.26);
+  background:rgba(255,255,255,.035);
+}
+.concert-card.booking-artist:after{display:none}
+.concert-photo-frame{
+  width:86%;
+  margin:0 auto;
+  padding:5px;
+  box-sizing:border-box;
+  border:1px solid rgba(142,216,184,.58);
+  border-radius:15px;
+  background:rgba(0,0,0,.22);
+  box-shadow:0 10px 28px rgba(0,0,0,.20);
+}
+.concert-card .concert-photo-frame img{
+  display:block;
+  width:100%;
+  height:190px;
+  min-height:0;
+  object-fit:cover;
+  object-position:center 25%;
+  border-radius:10px;
+}
+.concert-info{padding:0 4px}
+.concert-title{display:block;color:#fff;font-size:23px;line-height:1.1}
+.concert-place{display:block;margin-top:4px;color:#c9d6de;font-size:14px}
+.concert-price{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:13px;
+}
+.concert-price>div{
+  padding:10px 11px;
+  border-radius:11px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.08);
+}
+.concert-price small{display:block;color:#aebfcb;font-size:12px}
+.concert-price strong{display:block;margin-top:2px;color:#fff;font-size:19px}
+.concert-price>div:last-child strong{color:#8ed8b8}
+.concert-paid{margin-top:10px;color:#8ed8b8;font-weight:800;font-size:13px}
+@media(max-width:700px){
+  .concert-card.booking-artist{padding:14px}
+  .concert-photo-frame{width:90%}
+  .concert-card .concert-photo-frame img{height:205px}
+}
+</style>
 </head>
 <body>
 <header class="hero">
@@ -213,9 +272,19 @@ h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16
 <p><b>16–19 okt • 3 nätter</b><br>Twin Guest Room<br>1 vuxen + 1 barn (16 år)<br><b>Frukost ingår</b> • Gratis Wi‑Fi</p>
 <p style="font-size:24px"><b>6 228 kr totalt</b></p><p><small>Debiterat som £464,52</small></p>
 <small>Rum £387,08 + skatter/avgifter £77,44 • betalt</small>
-</div><div class="booking-artist">
-  <img src="https://davidekpop.com/wp-content/uploads/2024/12/lee-young-ji-davide-kpop.png?w=1024" alt="Lee Young Ji">
-  <div class="booking-artist-caption"><b>LEE YOUNG JI</b><span>The Clapham Grand • 18 oktober</span></div>
+</div><div class="booking-artist concert-card">
+  <div class="concert-photo-frame">
+    <img src="https://davidekpop.com/wp-content/uploads/2024/12/lee-young-ji-davide-kpop.png?w=1024" alt="Lee Young Ji">
+  </div>
+  <div class="concert-info">
+    <b class="concert-title">LEE YOUNG JI</b>
+    <span class="concert-place">The Clapham Grand • 18 oktober 2026</span>
+    <div class="concert-price">
+      <div><small>Pris per biljett</small><strong>1 349 kr</strong></div>
+      <div><small>2 biljetter totalt</small><strong>2 698 kr</strong></div>
+    </div>
+    <div class="concert-paid">✓ Betalt i maj</div>
+  </div>
 </div>
 </div>
 <p class="booking-total-line"><b>✓ Betalat hittills:</b> flyg <b>4 179 kr</b> + hotell <b>6 228 kr</b> + konsertbiljetter <b>2 698 kr</b> = <strong>13 105 kr totalt</strong>.</p>
