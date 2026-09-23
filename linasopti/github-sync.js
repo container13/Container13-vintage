@@ -3,9 +3,10 @@
 const API='https://linas-opti-api.mangaj73.workers.dev', RELEASE=window.LinaVersion?.release||'VERSION_UNAVAILABLE', DIAG='lina_clean_sync_diagnostics_v0270';
 function diag(type,data={}){let d;try{d=JSON.parse(localStorage.getItem(DIAG)||'{\"schema\":\"LINA-SYNC-DIAGNOSTICS-1\",\"release\":\"V0.2.69\",\"events\":[]}')}catch{d={schema:'LINA-SYNC-DIAGNOSTICS-1',release:RELEASE,events:[]}}d.events.push({at:new Date().toISOString(),type,...data});d.events=d.events.slice(-80);d.updatedAt=new Date().toISOString();localStorage.setItem(DIAG,JSON.stringify(d));}
 const EXCLUDE=new Set(['lina_clean_core_state_v0011','lina_clean_swing_g4_universe_result_v0213']);
+const GENERATION_KEY='lina_generation_engine_v0273';
 const MAX_ENTRY=400000, MAX_PACKAGE=1500000;
 function code(){return sessionStorage.getItem('linasopti_login_code')||''}
-function eligible(k){return k.startsWith('lina_clean_')&&!EXCLUDE.has(k)}
+function eligible(k){return (k.startsWith('lina_clean_')||k===GENERATION_KEY)&&!EXCLUDE.has(k)}
 function stamp(raw){try{const x=JSON.parse(raw);return String(x?.savedAt||x?.lastRefreshAt||x?.updatedAt||x?.lockedAt||x?.createdAt||'')}catch{return ''}}
 function collect(){const entries={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!eligible(k))continue;const v=localStorage.getItem(k);if(v==null||v.length>MAX_ENTRY)continue;entries[k]={value:v,stamp:stamp(v)}}const p={schema:'LINA-APP-SYNC-1',release:RELEASE,tradeEnabled:false,exportedAt:new Date().toISOString(),entries};if(JSON.stringify(p).length>MAX_PACKAGE)throw new Error('Linas kompakta synkpaket är för stort');return p}
 function mergeGen4Entry(l,r){
@@ -21,7 +22,32 @@ function mergeGen4Entry(l,r){
   return {value:JSON.stringify(out),stamp:out.savedAt};
  }catch{return null}
 }
-function merge(local,remote){const out={...(remote?.entries||{})};for(const [k,l] of Object.entries(local.entries||{})){const r=out[k];if(!r){out[k]=l;continue}if(r.value===l.value)continue;if(k==='lina_clean_gen4_engine_v0261'){const m=mergeGen4Entry(l,r);if(m){out[k]=m;continue}}if(l.stamp&&r.stamp){if(l.stamp>r.stamp)out[k]=l;else if(l.stamp===r.stamp)throw new Error('Synkkonflikt: '+k);continue}throw new Error('Synkkonflikt utan tidsstämpel: '+k)}return {schema:'LINA-APP-SYNC-1',release:RELEASE,tradeEnabled:false,exportedAt:new Date().toISOString(),entries:out}}
+function generationProgress(raw){
+ try{
+  const x=JSON.parse(raw||'null')||{}; let p=0;
+  if(x.gen5?.summaryFreeze?.frozen)p=10;
+  if(x.gen6?.summaryFreeze?.frozen)p=20;
+  if(x.gen6?.candidate?.locked)p=25;
+  if(x.gen7?.summaryFreeze?.frozen)p=30;
+  if(x.gen7?.gen8Basis)p=35;
+  const g=x.gen8||{};
+  if(g.state==='PLAN_APPROVED_AWAITING_LOCK')p=Math.max(p,40);
+  if(g.planLocked)p=Math.max(p,45);
+  if(g.runnerSpecLocked)p=Math.max(p,50);
+  if(g.engineVerified)p=Math.max(p,55);
+  if(g.researchOpened)p=Math.max(p,60);
+  if(g.summaryFreeze?.frozen)p=Math.max(p,70);
+  if(g.candidate?.locked)p=Math.max(p,75);
+  if(g.gen9Basis)p=Math.max(p,80);
+  return p;
+ }catch{return -1}
+}
+function mergeGenerationEntry(l,r){
+ const lp=generationProgress(l?.value),rp=generationProgress(r?.value);
+ if(lp>rp)return l;if(rp>lp)return r;
+ const ls=l?.stamp||'',rs=r?.stamp||''; return ls>=rs?l:r;
+}
+function merge(local,remote){const out={...(remote?.entries||{})};for(const [k,l] of Object.entries(local.entries||{})){const r=out[k];if(!r){out[k]=l;continue}if(r.value===l.value)continue;if(k==='lina_clean_gen4_engine_v0261'){const m=mergeGen4Entry(l,r);if(m){out[k]=m;continue}}if(k===GENERATION_KEY){out[k]=mergeGenerationEntry(l,r);continue}if(l.stamp&&r.stamp){if(l.stamp>r.stamp)out[k]=l;else if(l.stamp===r.stamp)throw new Error('Synkkonflikt: '+k);continue}throw new Error('Synkkonflikt utan tidsstämpel: '+k)}return {schema:'LINA-APP-SYNC-1',release:RELEASE,tradeEnabled:false,exportedAt:new Date().toISOString(),entries:out}}
 function apply(p){for(const [k,x] of Object.entries(p?.entries||{})){if(eligible(k)&&typeof x?.value==='string'&&x.value.length<=MAX_ENTRY)localStorage.setItem(k,x.value)}}
 function localInventory(){
   const entries={};
@@ -40,6 +66,7 @@ function recoveryPlan(localEntries,remoteState){
     if(r.value===l.value){same.push(k);continue}
     if(k==='lina_clean_gen4_engine_v0261'&&mergeGen4Entry(l,r)){resolved.push({key:k,policy:'MONOTONIC_GEN4_MERGE'});continue}
     if(k===DIAG){resolved.push({key:k,policy:(l.stamp||'')>=(r.stamp||'')?'LOCAL_NEWER_DIAGNOSTICS':'REMOTE_NEWER_DIAGNOSTICS'});continue}
+    if(k===GENERATION_KEY){const m=mergeGenerationEntry(l,r);resolved.push({key:k,policy:m===l?'MONOTONIC_GENERATION_LOCAL':'MONOTONIC_GENERATION_REMOTE'});continue}
     conflicts.push({key:k,localStamp:l.stamp||'',remoteStamp:r.stamp||''});
   }
   return {scannedAt:new Date().toISOString(),localCount:Object.keys(localEntries||{}).length,remoteCount:Object.keys(remote).length,unique,same,resolved,conflicts};
@@ -57,6 +84,7 @@ function safeRecoveryMerge(local,remote){
       const m=mergeGen4Entry(l,r); if(m){out[k]=m;continue}
     }
     if(k===DIAG){out[k]=(l.stamp||'')>=(r.stamp||'')?l:r;continue}
+    if(k===GENERATION_KEY){out[k]=mergeGenerationEntry(l,r);continue}
     // All other conflicts remain GitHub-canonical.
   }
   return {schema:'LINA-APP-SYNC-1',release:RELEASE,tradeEnabled:false,exportedAt:new Date().toISOString(),entries:out};
