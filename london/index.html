@@ -230,6 +230,81 @@ h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16
   .concert-card .concert-photo-frame img{height:205px}
 }
 </style>
+
+<style id="route-v24">
+.route-steps-main{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.route-steps-main .route-step{
+  display:grid;
+  grid-template-columns:minmax(250px,34%) 1fr;
+  min-height:190px;
+}
+.route-steps-main .route-step>img{
+  width:100%;
+  height:100%;
+  min-height:190px;
+  object-fit:cover;
+}
+.route-steps-main .route-step .pad{
+  padding:24px 26px;
+  align-self:center;
+  font-size:17px;
+  line-height:1.5;
+}
+.route-steps-main .route-big{
+  font-size:24px;
+}
+.grand-history-toggle{
+  margin:18px 0 22px;
+}
+.grand-history-toggle>summary{
+  list-style:none;
+  cursor:pointer;
+  padding:15px 18px;
+  border:1px solid rgba(215,182,106,.38);
+  border-radius:14px;
+  background:rgba(215,182,106,.08);
+  color:#f0d99c;
+  font-weight:850;
+  user-select:none;
+}
+.grand-history-toggle>summary::-webkit-details-marker{display:none}
+.grand-history-toggle>summary span:after{
+  content:"  ▾";
+  opacity:.8;
+}
+.grand-history-toggle[open]>summary span:after{
+  content:"  ▴";
+}
+.grand-history-toggle[open]>summary span{
+  font-size:0;
+}
+.grand-history-toggle[open]>summary span:before{
+  content:"🏛️ Dölj historiken om The Clapham Grand";
+  font-size:16px;
+}
+.grand-history-toggle .grand-story{
+  margin:12px 0 0;
+}
+@media(max-width:700px){
+  .route-steps-main .route-step{
+    display:block;
+    min-height:0;
+  }
+  .route-steps-main .route-step>img{
+    height:205px;
+    min-height:0;
+  }
+  .route-steps-main .route-step .pad{
+    padding:17px;
+    font-size:16px;
+  }
+  .route-steps-main .route-big{font-size:21px}
+}
+</style>
 </head>
 <body>
 <header class="hero">
@@ -336,7 +411,7 @@ h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16
   <h3 style="font-size:26px;margin-bottom:8px">Heathrow ↔ Hilton London Kensington</h3>
   <p style="font-size:18px"><b>Ingen transfer behöver bokas i förväg.</b> Jag hade åkt kollektivt med Elizabeth line + Central line.</p>
 
-  <div class="route-steps">
+  <div class="route-steps route-steps-main">
     <div class="route-step">
       <div class="pad">
         <div class="route-num">1 • Heathrow</div>
@@ -395,7 +470,22 @@ h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16
     <div class="route-step">
       <img src="https://i.pinimg.com/736x/a2/e5/8c/a2e58c040e4fe436510363b78088d342.jpg" alt="London station roundel">
       <div class="pad"><div class="route-num">Steg 1 • cirka 17:45–18:00</div>
-<section class="grand-story">
+
+<div class="route-big">🚶 Hilton → Shepherd’s Bush</div>Gå från Hilton London Kensington mot Shepherd’s Bush station. Räkna ungefär <b>7–10 minuter</b>.</div>
+    </div>
+    <div class="route-step">
+      <img src="https://www.bgphotographic.co.uk/uploads/7/0/2/0/7020207/07-378226-22-03-25-6y69-1005-stratford-claphamjn-shepardsbush_orig.jpg" alt="London Overground">
+      <div class="pad"><div class="route-num">Steg 2</div><div class="route-big">🚆 Direkt till Clapham Junction</div>Ta <b>London Overground</b> mot <b>Clapham Junction</b>. Ingen tunnelbana och inget byte. Cirka <b>12–15 minuter</b>.</div>
+    </div>
+    <div class="route-step">
+      <img src="https://anonw.com/wp-content/uploads/2015/10/dscn1812.jpg" alt="Clapham Junction">
+      <div class="pad"><div class="route-num">Steg 3</div><div class="route-big">🎤 Framme!</div>Gå av vid <b>Clapham Junction</b> och följ <b>St John’s Hill exit</b>. The Clapham Grand ligger <b>direkt mittemot stationen</b>.</div>
+    </div>
+  </div>
+  <details class="grand-history-toggle">
+    <summary><span>🏛️ Visa historiken om The Clapham Grand</span></summary>
+    <section class="grand-story">
+
   <div class="grand-story-kicker">🎭 THE CLAPHAM GRAND</div>
   <h2>125+ år av shower, film, bingo & live-musik</h2>
   <p class="grand-story-intro">Det är inte bara en konsertlokal. The Grand öppnade <b>26 november 1900</b> som <i>The New Grand Theatre of Varieties</i> och är idag en av Storbritanniens få kvarvarande riktiga viktorianska varietépalats.</p>
@@ -421,18 +511,9 @@ h1{font-size:clamp(54px,8vw,96px);line-height:.9;letter-spacing:-.05em;margin:16
   </div>
 
   <p class="grand-location">📍 21–25 St John’s Hill • mitt emot Clapham Junction<br><span class="concert-price">🎟️ 2 konsertbiljetter: <b>2 698 kr</b> <span class="paid-note">✓ betalt i maj</span></span></p>
-</section>
-<div class="route-big">🚶 Hilton → Shepherd’s Bush</div>Gå från Hilton London Kensington mot Shepherd’s Bush station. Räkna ungefär <b>7–10 minuter</b>.</div>
-    </div>
-    <div class="route-step">
-      <img src="https://www.bgphotographic.co.uk/uploads/7/0/2/0/7020207/07-378226-22-03-25-6y69-1005-stratford-claphamjn-shepardsbush_orig.jpg" alt="London Overground">
-      <div class="pad"><div class="route-num">Steg 2</div><div class="route-big">🚆 Direkt till Clapham Junction</div>Ta <b>London Overground</b> mot <b>Clapham Junction</b>. Ingen tunnelbana och inget byte. Cirka <b>12–15 minuter</b>.</div>
-    </div>
-    <div class="route-step">
-      <img src="https://anonw.com/wp-content/uploads/2015/10/dscn1812.jpg" alt="Clapham Junction">
-      <div class="pad"><div class="route-num">Steg 3</div><div class="route-big">🎤 Framme!</div>Gå av vid <b>Clapham Junction</b> och följ <b>St John’s Hill exit</b>. The Clapham Grand ligger <b>direkt mittemot stationen</b>.</div>
-    </div>
-  </div>
+
+    </section>
+  </details>
 
   <div class="route-tip"><b>Min plan:</b> hellre komma fram lite tidigt, ta något att dricka/äta runt Clapham Junction och sedan gå in på konserten utan stress. Jag hade räknat med <b>60–75 minuter från hotelldörr till önskad ankomsttid</b>, trots att själva resan normalt går betydligt snabbare.</div>
 
