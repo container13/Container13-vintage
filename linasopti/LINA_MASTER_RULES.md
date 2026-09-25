@@ -230,3 +230,11 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Syntaxkontroll + ZIP-integritet räcker inte som releasebevis. Generation Engine kräver end-to-end state-test av det faktiska startläget och det förväntade slutläget.
 - En blockerfix får göras separat, men efter första misslyckade blockerfixen ska rotorsaksanalys genomföras innan ytterligare release. Ingen serie gissnings-hotfixar.
 - Efter en incident ska orsak → misslyckade försök → verifierad rotorsak → permanent skydd dokumenteras i handoff och relevanta checklistor innan normal utveckling fortsätter.
+
+
+## Worker/API allowlist — permanent lärdom från V0.2.99
+- När en ny permanent app-state-nyckel läggs till i frontend-synken måste Worker/API:s exakta allowlist verifieras i samma release innan leverans.
+- Frontend `eligible()` och Worker `validateAppState()` är ett kontrakt och ska testas tillsammans; en nyckel får aldrig vara tillåten på bara ena sidan.
+- Undantag utanför `lina_clean_*` ska vara explicit namngivna, aldrig godkännas med bredare prefix. Generation Engine-nyckeln är `lina_generation_engine_v0273`.
+- Frontend- och Worker-gränser för post/paket ska vara kompatibla och releasekontrollen ska stoppa vid mismatch.
+- Exakt API-fel ska spåras till den kodrad som producerar felet innan fix byggs.

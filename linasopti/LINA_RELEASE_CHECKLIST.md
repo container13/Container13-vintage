@@ -197,3 +197,11 @@ Historical/frozen research version strings are excluded from this current-releas
 - [ ] Verifiera Robotmognad mot låst modellhash `6e8908ca` och bevarade verifierade kriterier; recovery får inte sänka redan intjänad processmognad.
 - [ ] Kör end-to-end state-test utöver JS-syntax och ZIP-integritet.
 - [ ] Vid andra blockerfixen i samma incident: STOPP tills rotorsak är dokumenterad och reproducerad.
+
+
+## App-state kontrakt (obligatoriskt från V0.2.99)
+- [ ] Lista alla nycklar som frontend `github-sync.js` kan samla in.
+- [ ] Verifiera att samma nycklar accepteras av Worker `validateAppState()`; särskilt `lina_generation_engine_v0273`.
+- [ ] Verifiera att Worker inte accepterar andra icke-`lina_clean_*`-nycklar än explicit allowlist.
+- [ ] Kontrollera att frontend/Worker har kompatibla MAX_ENTRY/MAX_PACKAGE-gränser.
+- [ ] Kör kontraktstest: Generation Engine-state accepteras; slumpmässig otillåten nyckel nekas.

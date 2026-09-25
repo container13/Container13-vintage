@@ -471,14 +471,15 @@ function validateAppState(p) {
   const keys = Object.keys(p.entries);
   if (keys.length > 40) throw new Error("För många App-state poster");
   let total = 0;
+  const allowedNonCleanKeys = new Set(["lina_generation_engine_v0273"]);
   for (const k of keys) {
-    if (!k.startsWith("lina_clean_")) throw new Error("Otillåten App-state nyckel");
+    if (!k.startsWith("lina_clean_") && !allowedNonCleanKeys.has(k)) throw new Error("Otillåten App-state nyckel: " + k);
     const x = p.entries[k];
     if (!x || typeof x.value !== "string") throw new Error("Ogiltig App-state post");
-    if (x.value.length > 400000) throw new Error("App-state post för stor");
+    if (x.value.length > 2000000) throw new Error("App-state post för stor: " + k);
     total += x.value.length;
   }
-  if (total > 1500000) throw new Error("App-state paket för stort");
+  if (total > 5000000) throw new Error("App-state paket för stort");
   return p;
 }
 function appGithubConfig(env){
