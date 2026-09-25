@@ -4,11 +4,11 @@ const API='https://linas-opti-api.mangaj73.workers.dev', RELEASE=window.LinaVers
 function diag(type,data={}){let d;try{d=JSON.parse(localStorage.getItem(DIAG)||'{\"schema\":\"LINA-SYNC-DIAGNOSTICS-1\",\"release\":\"V0.2.69\",\"events\":[]}')}catch{d={schema:'LINA-SYNC-DIAGNOSTICS-1',release:RELEASE,events:[]}}d.events.push({at:new Date().toISOString(),type,...data});d.events=d.events.slice(-80);d.updatedAt=new Date().toISOString();localStorage.setItem(DIAG,JSON.stringify(d));}
 const EXCLUDE=new Set(['lina_clean_core_state_v0011','lina_clean_swing_g4_universe_result_v0213']);
 const GENERATION_KEY='lina_generation_engine_v0273';
-const MAX_ENTRY=400000, MAX_PACKAGE=1500000;
+const MAX_ENTRY=2000000, MAX_PACKAGE=5000000; // V0.2.98: Generation Engine-state är ~1.2 MB och måste faktiskt ingå i synkpaketet.
 function code(){return sessionStorage.getItem('linasopti_login_code')||''}
 function eligible(k){return (k.startsWith('lina_clean_')||k===GENERATION_KEY)&&!EXCLUDE.has(k)}
 function stamp(raw){try{const x=JSON.parse(raw);return String(x?.savedAt||x?.lastRefreshAt||x?.updatedAt||x?.lockedAt||x?.createdAt||'')}catch{return ''}}
-function collect(){const entries={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!eligible(k))continue;const v=localStorage.getItem(k);if(v==null||v.length>MAX_ENTRY)continue;entries[k]={value:v,stamp:stamp(v)}}const p={schema:'LINA-APP-SYNC-1',release:RELEASE,tradeEnabled:false,exportedAt:new Date().toISOString(),entries};if(JSON.stringify(p).length>MAX_PACKAGE)throw new Error('Linas kompakta synkpaket är för stort');return p}
+function collect(){const entries={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!eligible(k))continue;const v=localStorage.getItem(k);if(v==null)continue;if(v.length>MAX_ENTRY)throw new Error('Synkpost för stor: '+k+' ('+v.length+' tecken)');entries[k]={value:v,stamp:stamp(v)}}if(localStorage.getItem(GENERATION_KEY)!=null&&!entries[GENERATION_KEY])throw new Error('Generation Engine-state saknas i synkpaketet');const p={schema:'LINA-APP-SYNC-1',release:RELEASE,tradeEnabled:false,exportedAt:new Date().toISOString(),entries};if(JSON.stringify(p).length>MAX_PACKAGE)throw new Error('Linas kompakta synkpaket är för stort');return p}
 function mergeGen4Entry(l,r){
  try{
   const a=JSON.parse(l.value),b=JSON.parse(r.value);if(a?.schema!=='LINA-GEN4-ENGINE-1'||b?.schema!=='LINA-GEN4-ENGINE-1')return null;

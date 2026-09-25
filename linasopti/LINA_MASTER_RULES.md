@@ -218,3 +218,15 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Ordinarie gates kvarstår: ≥100 OOS-affärer, PF ≥1,20, DD ≤12 %, positiv OOS, koncentration ≤40 %, positiva folds ≥3/4.
 - Stabilitetsgate är låst före research: varje OOS-fold PF ≥0,80; max 55 % av positiv fold-bruttovinst från en fold; vald weak-regime-exponering ≤0,65. TRAIN-selektion föredrar min subregim-PF ≥0,70 och straffar PF-spread över 2,50; exakt formel ingår i runnerspec-hashen.
 - Gen8 Auto Pipeline får skapa Gen9-underlag men får inte starta Gen9, Forward eller Handel.
+
+## Incidentlärdom V0.2.93–V0.2.97 — permanent, NON-NEGOTIABLE
+- Ingen recovery får byggas på antaganden om state. Före kodändring ska exakt producerande state-nyckel, alla läsare, alla skrivare, synkfilter och bootordning spåras.
+- En ny permanent state-nyckel räknas inte som GitHub-synkad bara för att `eligible()` accepterar namnet. Release-gaten ska verifiera att nyckelns verkliga payload ryms genom collect → merge → PUT → apply och inte filtreras bort av storleksgränser.
+- Synk får aldrig tyst hoppa över en obligatorisk state-post. Om en obligatorisk post är för stor ska synken stoppa med explicit fel och diagnostik.
+- Recovery ska testas mot minst fyra scenarier: helt saknad state, gammal/trasig state, korrekt fryst state och nyare state. Nyare irreversibelt state får aldrig backas.
+- En fryst generation får aldrig åter bli körbar. Både motor och UI ska blockera rerun av fryst generation.
+- UI får inte visa motsägande state (t.ex. GODKÄND samtidigt som "granska planen"). Aktuell generation, nästa beslut, knappar och statusrad ska härledas från samma state.
+- Robotmognad är monotont intjänad enligt låst modell. Recovery/synk får inte tappa tidigare verifierade kriterier. Verifierade mognadsbevis ska bevaras separat från flyktiga UI/state-källor.
+- Syntaxkontroll + ZIP-integritet räcker inte som releasebevis. Generation Engine kräver end-to-end state-test av det faktiska startläget och det förväntade slutläget.
+- En blockerfix får göras separat, men efter första misslyckade blockerfixen ska rotorsaksanalys genomföras innan ytterligare release. Ingen serie gissnings-hotfixar.
+- Efter en incident ska orsak → misslyckade försök → verifierad rotorsak → permanent skydd dokumenteras i handoff och relevanta checklistor innan normal utveckling fortsätter.

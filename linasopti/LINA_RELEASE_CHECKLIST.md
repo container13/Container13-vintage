@@ -186,3 +186,14 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Gen7 förblir immutable; ingen Gen7 rerun.
 - [x] Forward och Handel förblir AV.
 - [x] JavaScript syntaxkontrollerad; aktiva cache tokens verifieras mot `version.js` före ZIP.
+
+## Permanent incident-gate från V0.2.98
+- [ ] Läs senaste incidentlärdom i `LINA_MASTER_RULES.md` före ändring av state/recovery/synk.
+- [ ] Inventera alla obligatoriska localStorage/state-nycklar och verifiera att de faktiskt kommer med i `collect()`; inga tysta storleks-skippar.
+- [ ] Verifiera faktisk payloadstorlek mot per-entry- och totalpaketgräns före ZIP.
+- [ ] Testa Generation Engine recovery med: saknad state, trasig/gammal state, korrekt fryst state och nyare state.
+- [ ] Verifiera monotonicitet: fryst generation kan inte återgå till PLAN_PROPOSAL eller bli körbar.
+- [ ] Verifiera att aktuell generation, nästa beslut, statusrad och tillgängliga knappar beskriver samma state.
+- [ ] Verifiera Robotmognad mot låst modellhash `6e8908ca` och bevarade verifierade kriterier; recovery får inte sänka redan intjänad processmognad.
+- [ ] Kör end-to-end state-test utöver JS-syntax och ZIP-integritet.
+- [ ] Vid andra blockerfixen i samma incident: STOPP tills rotorsak är dokumenterad och reproducerad.
