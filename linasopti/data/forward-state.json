@@ -1,7 +1,7 @@
 {
   "schema": "LINA-FORWARD-SYNC-1",
   "release": "V0.2.33",
-  "exportedAt": "2026-09-26T06:04:29.673Z",
+  "exportedAt": "2026-09-26T06:31:12.968Z",
   "anchor": "2026-09-11",
   "tradeEnabled": false,
   "g2": {
@@ -22,7 +22,7 @@
     "costSide": 0.001,
     "createdAt": "2026-09-15T08:35:56.083Z",
     "lastMarketDate": "2026-09-25",
-    "lastRefreshAt": "2026-09-26T06:04:25.166Z",
+    "lastRefreshAt": "2026-09-26T06:30:59.134Z",
     "provider": "Worker Yahoo daily",
     "closed": [],
     "open": [
@@ -128,7 +128,7 @@
         "pf": 0
       }
     ],
-    "savedAt": "2026-09-26T06:04:25.166Z"
+    "savedAt": "2026-09-26T06:31:12.594Z"
   },
   "g3": {
     "schema": "LINA-G3-REAL-FORWARD-1",
