@@ -238,3 +238,14 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Undantag utanför `lina_clean_*` ska vara explicit namngivna, aldrig godkännas med bredare prefix. Generation Engine-nyckeln är `lina_generation_engine_v0273`.
 - Frontend- och Worker-gränser för post/paket ska vara kompatibla och releasekontrollen ska stoppa vid mismatch.
 - Exakt API-fel ska spåras till den kodrad som producerar felet innan fix byggs.
+
+
+## Gen8 state/Worker-incident — verifierad efter faktisk deploy V0.2.99
+- Permanent state måste verifieras som ett helt kontrakt: frontend save/write → sync/collect → Worker/API-validering → GitHub canonical storage → GET/restore → restore-validering → frontend hydrate → localStorage → boot → monotont slutstate. En fix i endast en riktning räcker inte.
+- Exakta feltexter ska spåras till producerande kod före ny release. Incidentens faktiska blockerare var `validateAppState()` som endast accepterade `lina_clean_*` och därför nekade `lina_generation_engine_v0273` med `Otillåten App-state nyckel`.
+- Worker-kod som användaren faktiskt kör är auktoritativ vid Worker-felsökning. Antaganden om en Worker-kopia i ett webbpaket får aldrig beskrivas som verifierad deploy.
+- Efter Worker/API-ändring ska både skrivväg och läs/restore-väg provas. Godkänt slutläge kräver att GitHub/State/Evidence är gröna, aktuell generation återställs korrekt, Robotmognad återges från låst modell och Handel/Forward-spärrar är intakta.
+- Gen8-incidenten visade att dashboard kan visa ofullständigt mognadsvärde innan Generation Engine-state hydreras. Releasekontroll ska därför verifiera mognad efter full state-hydrering, inte bara första dashboard-renderingen.
+- Dokumentation/handoff får inte påstå att en kodändring, syntaxkontroll, ZIP-kontroll eller deploy är verifierad utan faktisk verktygs-/källkontroll.
+- Leveransregel till användaren: när en hel kodfil ska klistras in ska hela färdiga filen levereras för ett-klick-kopiering; användaren ska inte behöva pussla in funktionspatchar manuellt.
+- Gen7 är immutable och får aldrig rerunnas. Gen8 får inte startas förrän dess state är återställt till godkänt beslutsläge och sync/integritet är grön.

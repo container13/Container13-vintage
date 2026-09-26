@@ -205,3 +205,15 @@ Historical/frozen research version strings are excluded from this current-releas
 - [ ] Verifiera att Worker inte accepterar andra icke-`lina_clean_*`-nycklar än explicit allowlist.
 - [ ] Kontrollera att frontend/Worker har kompatibla MAX_ENTRY/MAX_PACKAGE-gränser.
 - [ ] Kör kontraktstest: Generation Engine-state accepteras; slumpmässig otillåten nyckel nekas.
+
+
+## Gen8 state/Worker incident — obligatorisk release-gate efter V0.2.99
+- [ ] Spåra varje ny permanent state-nyckel genom hela roundtrip-kontraktet: save → collect/sync → Worker POST-validering → GitHub → Worker GET/restore-validering → hydrate → localStorage → boot.
+- [ ] Sök exakt feltext i faktisk frontend/Worker-källa innan blockerfix byggs.
+- [ ] Verifiera `lina_generation_engine_v0273` i både frontendens sync-kontrakt och Worker `validateAppState()`; slumpmässig icke-allowlistad nyckel ska fortfarande nekas.
+- [ ] Testa både POST/spara och GET/restore med samma state-paket.
+- [ ] Efter restore: verifiera aktuell generation/status, planhash, runnerspec/Engine-status, GitHub/State/Evidence, Robotmognad, Forward och Handel tillsammans.
+- [ ] Verifiera att Gen7 förblir immutable/icke-körbar och att äldre remote state inte kan backa nyare irreversibelt state.
+- [ ] Kontrollera faktisk deployad Worker-kod; webbpaketets Worker-kopia är inte i sig bevis på vad Cloudflare kör.
+- [ ] Inga påståenden om syntax/ZIP/deploy/integritet utan faktisk kontroll.
+- [ ] Kod som användaren ska klistra in levereras som hel fil med ett-klick-kopiering, inte som manuell patch.
