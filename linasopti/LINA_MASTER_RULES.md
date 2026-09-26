@@ -239,13 +239,10 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Frontend- och Worker-gränser för post/paket ska vara kompatibla och releasekontrollen ska stoppa vid mismatch.
 - Exakt API-fel ska spåras till den kodrad som producerar felet innan fix byggs.
 
-
-## Gen8 state/Worker-incident — verifierad efter faktisk deploy V0.2.99
-- Permanent state måste verifieras som ett helt kontrakt: frontend save/write → sync/collect → Worker/API-validering → GitHub canonical storage → GET/restore → restore-validering → frontend hydrate → localStorage → boot → monotont slutstate. En fix i endast en riktning räcker inte.
-- Exakta feltexter ska spåras till producerande kod före ny release. Incidentens faktiska blockerare var `validateAppState()` som endast accepterade `lina_clean_*` och därför nekade `lina_generation_engine_v0273` med `Otillåten App-state nyckel`.
-- Worker-kod som användaren faktiskt kör är auktoritativ vid Worker-felsökning. Antaganden om en Worker-kopia i ett webbpaket får aldrig beskrivas som verifierad deploy.
-- Efter Worker/API-ändring ska både skrivväg och läs/restore-väg provas. Godkänt slutläge kräver att GitHub/State/Evidence är gröna, aktuell generation återställs korrekt, Robotmognad återges från låst modell och Handel/Forward-spärrar är intakta.
-- Gen8-incidenten visade att dashboard kan visa ofullständigt mognadsvärde innan Generation Engine-state hydreras. Releasekontroll ska därför verifiera mognad efter full state-hydrering, inte bara första dashboard-renderingen.
-- Dokumentation/handoff får inte påstå att en kodändring, syntaxkontroll, ZIP-kontroll eller deploy är verifierad utan faktisk verktygs-/källkontroll.
-- Leveransregel till användaren: när en hel kodfil ska klistras in ska hela färdiga filen levereras för ett-klick-kopiering; användaren ska inte behöva pussla in funktionspatchar manuellt.
-- Gen7 är immutable och får aldrig rerunnas. Gen8 får inte startas förrän dess state är återställt till godkänt beslutsläge och sync/integritet är grön.
+## Gemensamma styrdokument — permanent regel
+- Versionsspecifika handoff-/regel-/checklistfiler ska inte skapas för varje release (t.ex. `LINA_HANDOFF_CLEAN_CORE_V0299.md`, `V0300.md`, `V0301.md`).
+- `LINA_MASTER_RULES.md` är den permanenta, gemensamma källan för regler och lärdomar som ska följa projektet mellan alla framtida releaser.
+- `LINA_RELEASE_CHECKLIST.md` är den permanenta, gemensamma releasekontrollen och ska uppdateras i stället för att versionskopieras.
+- Projektet ska ha en gemensam aktuell handoff/statusfil som uppdateras över tid. Aktuell release/version skrivs inne i filen och ska normalt inte vara en del av filnamnet.
+- Historiska incidenter och lärdomar som fortfarande påverkar framtida arbete sammanfattas i de gemensamma styrdokumenten; nya versionsfiler skapas endast om ett uttryckligt revisions-/arkivbehov beslutas av användaren.
+- Vid framtida dokumentationsändringar ska befintliga gemensamma styrdokument uppdateras i första hand. Ingen ny versionsfil får skapas slentrianmässigt.
