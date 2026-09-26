@@ -1,7 +1,7 @@
 {
   "schema": "LINA-FORWARD-SYNC-1",
   "release": "V0.2.33",
-  "exportedAt": "2026-09-26T06:31:12.968Z",
+  "exportedAt": "2026-09-26T06:33:34.626Z",
   "anchor": "2026-09-11",
   "tradeEnabled": false,
   "g2": {
@@ -192,7 +192,7 @@
       "equity": 100564.77015346895
     },
     "lastMarketDate": "2026-09-25",
-    "lastRefreshAt": "2026-09-26T06:04:29.270Z",
+    "lastRefreshAt": "2026-09-26T06:33:30.672Z",
     "provider": "Worker Yahoo daily",
     "milestones": {
       "60": false,
@@ -273,6 +273,6 @@
         "model": "69147890"
       }
     ],
-    "savedAt": "2026-09-26T06:04:29.270Z"
+    "savedAt": "2026-09-26T06:33:34.311Z"
   }
 }
