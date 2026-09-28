@@ -100,6 +100,29 @@
       }
     });
   }
+
+  function installScreenshot(){
+    const b=document.getElementById('screenshotApp');
+    if(!b||b.dataset.bound==='1')return;
+    b.dataset.bound='1';
+    b.addEventListener('click',async()=>{
+      const label=b.querySelector('small');
+      const old=label?.textContent||'Bild';
+      b.disabled=true;
+      if(label)label.textContent='Skapar…';
+      try{
+        if(!window.LinaScreenshot?.capture)throw new Error('Skärmbildsmodulen saknas');
+        const r=await window.LinaScreenshot.capture();
+        if(label)label.textContent='Sparad ✓';
+        b.title=`Skärmbild sparad: ${r.name} · ${r.width}×${r.height}px`;
+        setTimeout(()=>{if(label)label.textContent=old},2200);
+      }catch(e){
+        if(label)label.textContent='Fel';
+        b.title='Skärmbild stoppad: '+String(e?.message||e);
+        setTimeout(()=>{if(label)label.textContent=old},4500);
+      }finally{b.disabled=false}
+    });
+  }
   function installBrandHome(){
     const b=document.getElementById('brandHome');
     if(!b||b.dataset.bound==='1')return;
@@ -128,7 +151,7 @@
     if(startup)startup.hidden=false; app.hidden=true;
     const stages={local:15,github:35,compare:52,recover:68,evidence:84,ready:100};
     const progress=(stage,detail)=>{if(stepEl)stepEl.textContent=detail||stage;if(detailEl)detailEl.textContent='';if(bar)bar.style.width=(stages[stage]||10)+'%'};
-    installRefresh();installGitHubSync();installExport();installBrandHome();
+    installRefresh();installGitHubSync();installExport();installScreenshot();installBrandHome();
     const b=document.getElementById('githubSync'),label=b?.querySelector('small');
     if(b)b.disabled=true;if(label)label.textContent='Återställer…';
     try{

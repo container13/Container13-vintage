@@ -217,3 +217,12 @@ Historical/frozen research version strings are excluded from this current-releas
 - [ ] Kontrollera faktisk deployad Worker-kod; webbpaketets Worker-kopia är inte i sig bevis på vad Cloudflare kör.
 - [ ] Inga påståenden om syntax/ZIP/deploy/integritet utan faktisk kontroll.
 - [ ] Kod som användaren ska klistra in levereras som hel fil med ett-klick-kopiering, inte som manuell patch.
+
+## V0.3.00 — global skärmbild / bekvämlighet
+- [x] Skärmbild är separat UI-funktion och ändrar inte research/state/Forward/Handel.
+- [x] Global 📸-knapp ligger i headern och exkluderas själv från den sparade bilden.
+- [x] Hela aktuella Lina-vyn renderas till PNG; webbläsarens chrome/flikar/adressfält ingår inte.
+- [x] Filnamn innehåller aktuell route, central release och tidsstämpel.
+- [x] Lokala bilder bäddas in före rendering; extern resurs får inte tyst göra canvas ogiltig.
+- [x] Renderings-/PNG-fel ger explicit Fel-status och inget falskt Sparad-läge.
+- [x] Gen8-state, planhash, runnerspec, Engine-state, Gen7-evidens, Forward och Handel ändras inte av funktionen.
