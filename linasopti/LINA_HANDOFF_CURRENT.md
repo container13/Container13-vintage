@@ -1,6 +1,6 @@
 # LINA — AKTUELL HANDOFF / STATUS
 
-Aktuell release: V0.3.00
+Aktuell release: V0.3.01
 Uppdaterad: 2026-09-28
 
 ## Aktuellt säkert läge
@@ -11,7 +11,7 @@ Uppdaterad: 2026-09-28
 - Senast verifierade Generation Engine-läge efter Worker-fixen: `PLAN_APPROVED_AWAITING_LOCK`, Robotmognad 70/100, GitHub/State/Evidence grönt.
 - G2 och G3 Real Forward fortsätter separat som paper/forward och får inte påverka frysta forskningsregler.
 
-## V0.3.00 — bekvämlighet utan forskningsändring
+## V0.3.01 — bekvämlighet utan forskningsändring
 - Global 📸 Bild-knapp i headern.
 - Ett tryck sparar hela den aktuella Lina-vyn som PNG, inte webbläsarens flikar/adressfält.
 - Filnamn innehåller vy, Lina-release och tidsstämpel.
@@ -28,3 +28,10 @@ Uppdaterad: 2026-09-28
 - `LINA_MASTER_RULES.md` är permanent regelbok.
 - `LINA_RELEASE_CHECKLIST.md` är gemensam releasekontroll.
 - Denna fil, `LINA_HANDOFF_CURRENT.md`, uppdateras i stället för nya versionsspecifika handoff-filer.
+
+
+## V0.3.01 – komplett Lina-skärmdump
+- 📸 är fortfarande en enda knapp utan meny.
+- Ett tryck renderar hela aktuella Lina-vyn från topp till botten, oberoende av scrollposition.
+- Samma PNG sparas lokalt och kopieras till bildurklipp när webbläsaren tillåter det, för direkt ⌘V/Ctrl+V i aktuell ChatGPT-chatt.
+- Dashboardens Robotmognad hämtas från samma auktoritativa modell som Generation Engine.

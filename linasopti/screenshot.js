@@ -82,7 +82,13 @@
 
     // Width follows the actual Lina viewport; height includes the complete current view.
     const width=Math.max(document.documentElement.clientWidth,source.scrollWidth,document.body.scrollWidth);
-    const height=Math.max(source.scrollHeight,document.documentElement.scrollHeight,document.body.scrollHeight);
+    const view=document.getElementById('view');
+    const height=Math.max(
+      source.scrollHeight,
+      view?.scrollHeight||0,
+      document.documentElement.scrollHeight,
+      document.body.scrollHeight
+    );
     if(width<1 || height<1)throw new Error('Kunde inte mäta aktuell Lina-vy');
     if(width*height>120000000)throw new Error('Vyn är för stor för en säker PNG. Minska webbläsarens zoom och försök igen.');
 
@@ -122,8 +128,18 @@
       const route=safeName(location.hash||'dashboard');
       const version=safeName(window.LinaVersion?.release||'Lina');
       const name=`LINA_${route}_${version}_${stamp()}.png`;
+      // Save a local backup and, when the browser allows it, put the exact same
+      // full-view PNG on the clipboard so it can be pasted straight into ChatGPT.
       downloadBlob(png,name);
-      return {name,width,height,bytes:png.size};
+      let clipboard=false,clipboardError=null;
+      try{
+        if(!navigator.clipboard?.write || typeof ClipboardItem==='undefined')throw new Error('Bildurklipp stöds inte av webbläsaren');
+        await navigator.clipboard.write([new ClipboardItem({'image/png':png})]);
+        clipboard=true;
+      }catch(e){
+        clipboardError=String(e?.message||e);
+      }
+      return {name,width,height,bytes:png.size,clipboard,clipboardError};
     }finally{
       URL.revokeObjectURL(url);
     }

@@ -113,8 +113,10 @@
       try{
         if(!window.LinaScreenshot?.capture)throw new Error('Skärmbildsmodulen saknas');
         const r=await window.LinaScreenshot.capture();
-        if(label)label.textContent='Sparad ✓';
-        b.title=`Skärmbild sparad: ${r.name} · ${r.width}×${r.height}px`;
+        if(label)label.textContent=r.clipboard?'Kopierad ✓':'Sparad ✓';
+        b.title=r.clipboard
+          ? `Hela Lina-vyn sparad + kopierad: ${r.name} · ${r.width}×${r.height}px · klistra in med ⌘V/Ctrl+V`
+          : `Hela Lina-vyn sparad: ${r.name} · ${r.width}×${r.height}px · urklipp ej tillgängligt (${r.clipboardError||'okänd orsak'})`;
         setTimeout(()=>{if(label)label.textContent=old},2200);
       }catch(e){
         if(label)label.textContent='Fel';
@@ -162,6 +164,8 @@
       if(label)label.textContent='Synkfel';if(b){b.classList.add('bad');b.title='Automatisk GitHub-återställning stoppad: '+String(e?.message||e)}
     }finally{if(b)b.disabled=false}
     if(startup){await new Promise(r=>setTimeout(r,220));startup.hidden=true} app.hidden=false;
+    // Headern ska alltid använda samma auktoritativa mognadsmodell som Generation Engine, även på Dashboard.
+    try{window.LinaGenerationEngine?.updateMaturityHeader?.()}catch(e){console.warn('Robotmognad kunde inte renderas:',e)}
     registerRoutes();window.LinaRouter.start();
     setTimeout(()=>window.LinaForwardCenter?.autoCatchUp?.().catch(e=>console.warn('Auto Forward stoppad:',e)),0);
   }
