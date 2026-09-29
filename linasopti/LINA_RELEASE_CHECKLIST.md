@@ -228,7 +228,7 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Gen8-state, planhash, runnerspec, Engine-state, Gen7-evidens, Forward och Handel ändras inte av funktionen.
 
 
-## V0.3.03 — Canonical Base / Resume Never Replay
+## V0.3.04 — Canonical Base / Resume Never Replay
 - [x] Faktisk V0.3.01 FLAT COMPLETE återfunnen i Library och materialiserad som byggbas; användaren behövde inte ladda upp den igen.
 - [x] `LINA_MASTER_RULES.md` är enda regelkälla; checklist/handoff har separata roller.
 - [x] Gen8 continuation anropar inte `prepare()` igen när Engine redan är verifierad.
@@ -236,11 +236,13 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Ofullständigt checkpointat familjeresultat blockerar continuation i stället för att köras om.
 - [x] Global Generation Engine-status-export flyttad till Engine-toppen och gamla nederplaceringen borttagen.
 - [x] Handel/Forward-logik ändras inte.
-- [x] Cache tokens och central release uppdateras till V0.3.03.
+- [x] Cache tokens och central release uppdateras till V0.3.04.
 - [ ] Browser end-to-end med användarens verkliga `RESEARCH_RUNNING` state verifieras efter deploy; detta kan inte bevisas enbart av statisk byggkontroll.
 
 
-## Auto Pipeline runtime-gate från V0.3.03
+## Auto Pipeline runtime-gate från V0.3.04
 - [ ] Klick på Auto Pipeline lämnar beständigt `UI_CLICK_RECEIVED`/attempt timestamp före async-arbete.
 - [ ] STOPPED sparar exakt `lastError` + `lastUiStep` så fel överlever rerender/reload och finns i Engine-export.
 - [ ] Incoming `RESEARCH_RUNNING` med befintlig komplett familj validerar/skips den; test får inte anropa research för den familjen igen.
+
+- [ ] STATE-ROUNDTRIP-01: continuation with an already-observed family plus a newly observed family survives evidence/app-state sync without rerun or missing checkpoint.

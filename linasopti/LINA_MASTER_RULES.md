@@ -265,7 +265,7 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Skärmbild ska ge explicit fel vid misslyckad rendering och får aldrig visa falskt lyckad status.
 
 
-## Canonical Source Base + Resume Never Replay — permanent regel från V0.3.03
+## Canonical Source Base + Resume Never Replay — permanent regel från V0.3.04
 - `LINA_MASTER_RULES.md` är enda auktoritativa regelkällan. Checklist och handoff får kontrollera/beskriva regler men aldrig definiera konkurrerande regler.
 - Exakt en komplett bas ska identifieras som kanonisk utvecklingsbas (`LINA_CURRENT_BASE.zip`). Före varje bygge ska aktuell konversation, Library och tidigare genererade artefakter sökas innan användaren ombeds ladda upp något igen.
 - Ingen release får byggas från minne, rekonstruerad kod eller antagen äldre version. Faktisk bas ska materialiseras och verifieras före ändring.
@@ -277,7 +277,11 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Vid varje blockerande incident ska exakt felproducerande kod sökas i den faktiska basen. Om feltexten inte finns där ska detta dokumenteras som versions/cache/runtime-avvikelse och inte ersättas med en gissad rotorsak.
 
 
-## Auto Pipeline click-receipt och stoppdiagnostik — permanent regel från V0.3.03
+## Auto Pipeline click-receipt och stoppdiagnostik — permanent regel från V0.3.04
 - Varje Auto Pipeline-start ska checkpointa ett beständigt `UI_CLICK_RECEIVED` innan första async-steg. Därmed kan ett faktiskt klick skiljas från UI-/eventproblem efter reload/render.
 - Pipeline ska beständigt spara senaste försökstid, senaste steg och exakt stoppfel i Generation Engine-state. Ett UI-rerender får aldrig radera stopporsaken.
 - Vid `RESEARCH_RUNNING` får diagnostik/releasefix inte rerunna redan observerade familjer; endast statevalidering, continuation från första ofärdiga steg och evidens/synk får ske.
+
+
+### STATE-ROUNDTRIP-01 — Checkpoint survives sync
+A persisted research checkpoint must survive asynchronous evidence/GitHub sync. If sync replaces local Engine state with a snapshot that lacks the just-observed family, restore the exact in-memory checkpoint and attach evidence; never recompute the observation.
