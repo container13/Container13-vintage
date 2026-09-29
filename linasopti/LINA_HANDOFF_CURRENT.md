@@ -1,6 +1,6 @@
 # LINA — AKTUELL HANDOFF / STATUS
 
-Aktuell release: V0.3.05
+Aktuell release: V0.3.06
 Uppdaterad: 2026-09-29
 
 ## Aktuellt säkert läge
@@ -58,3 +58,6 @@ Root cause: after a new Gen8 family was checkpointed, asynchronous evidence/GitH
 
 ## V0.3.05 — 📸 ett klick, ett resultat
 Chrome/Windows: urklippsskrivning initieras direkt i klickgesten med asynkron PNG-rendering. Lyckad kopiering visar Kopierad utan filnedladdning. Om urklipp saknas/nekas sparas i stället en PNG och knappen visar Sparad. Renderingsfel ger Fel. Ingen Gen8-körning eller forskningsstate ändras. Faktisk Windows-browserverifiering återstår.
+
+## V0.3.06 — Chrome/Windows uppföljning
+V0.3.05 visade Fel vid 📸 på användarens Chrome/Windows. CSS-bakgrundsbilden inbäddas nu och CSS XML-escapas i SVG. Exakt återstående fel visas direkt om renderingen fortfarande misslyckas. Rotorsaken är ännu inte verifierad i faktiskt Chrome. Långsam inloggning observerades efter lösenkod: auth-kontroll och därefter seriell GET/POST/evidensverifiering blockerar Dashboard av integritetsskäl. Ingen osäker genväg förbi state-återställningen infördes.

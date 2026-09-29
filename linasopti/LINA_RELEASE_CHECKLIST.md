@@ -253,3 +253,9 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Renderingsfel går till Fel och skapar inget falskt lyckat resultat.
 - [x] Central release och alla HTML-cachetokens är V0.3.05.
 - [ ] Faktiskt Chrome/Windows-klick med urklipp och nekad behörighet verifieras efter driftsättning.
+
+## V0.3.06 — 📸 renderingskorrigering
+- [x] Lokala CSS-bakgrundsbilder bäddas in och CSS XML-escapas före SVG-rendering.
+- [x] Ett PNG-resultat: kopiera eller ladda ned; renderingsfel visas i klartext.
+- [x] Ingen research-/Gen8-/Forward-/Handelslogik ändrad.
+- [ ] Faktisk Chrome/Windows-bild och tidsmätning av inloggningsstegen återstår efter driftsättning.

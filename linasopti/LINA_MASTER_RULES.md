@@ -290,3 +290,7 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Ett klick på 📸 ska ge exakt ett resultat: kopierad PNG i bildurklipp, eller en nedladdad PNG om urklippet nekas eller saknas. Ingen dubbel leverans.
 - Begäran till urklippet måste initieras under klickets användaraktivering; asynkron rendering levererar sedan PNG via ClipboardItem-promise.
 - Renderingsfel ska ge Fel-status och får inte döljas som urklippsfel eller följas av en tom fil. Ingen research-, evidence-, Forward- eller Handelsstate ändras.
+
+## Chrome-bildrendering — kontroll från V0.3.06
+- CSS-bilder med relativa adresser ska bäddas in som data före SVG/canvas-rendering. CSS-text måste XML-escapas i SVG.
+- Om PNG-renderingen ändå misslyckas ska exakt fel visas direkt för användaren, inte enbart i knappens title.

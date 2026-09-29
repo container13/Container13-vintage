@@ -121,6 +121,7 @@
       }catch(e){
         if(label)label.textContent='Fel';
         b.title='Skärmbild stoppad: '+String(e?.message||e);
+        window.alert(b.title);
         setTimeout(()=>{if(label)label.textContent=old},4500);
       }finally{b.disabled=false}
     });

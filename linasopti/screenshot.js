@@ -55,7 +55,21 @@
       const u=new URL(href,location.href);
       if(u.origin!==location.origin)continue;
       const r=await fetch(u.href,{cache:'no-store'});
-      if(r.ok)parts.push(await r.text());
+      if(r.ok){
+        let css=await r.text();
+        // The SVG image is a separate document. Relative CSS images cannot be
+        // loaded reliably from it by Chrome's canvas renderer.
+        const urls=[...css.matchAll(/url\(\s*(['"]?)([^)'"\s]+)\1\s*\)/g)];
+        for(const match of urls){
+          if(match[2].startsWith('data:'))continue;
+          const asset=new URL(match[2],u.href);
+          if(asset.origin!==location.origin)throw new Error('Extern CSS-bild kan inte tas med i skärmbilden');
+          const assetResponse=await fetch(asset.href,{cache:'no-store'});
+          if(!assetResponse.ok)throw new Error(`Bildresurs saknas: HTTP ${assetResponse.status}`);
+          css=css.replaceAll(match[0],`url("${await blobToDataURL(await assetResponse.blob())}")`);
+        }
+        parts.push(css);
+      }
     }
     parts.push(`
       html,body{margin:0!important;padding:0!important;background:#f4f7fb!important;overflow:visible!important}
@@ -108,7 +122,8 @@
     await inlineImages(clone);
     const css=await collectCss();
     const html=new XMLSerializer().serializeToString(clone);
-    const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><foreignObject x="0" y="0" width="100%" height="100%"><div xmlns="${XHTML}" style="width:${width}px;min-height:${height}px;background:#f4f7fb"><style>${css.replace(/<\/style/gi,'<\\/style')}</style>${html}</div></foreignObject></svg>`;
+    const safeCss=css.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><foreignObject x="0" y="0" width="100%" height="100%"><div xmlns="${XHTML}" style="width:${width}px;min-height:${height}px;background:#f4f7fb"><style>${safeCss}</style>${html}</div></foreignObject></svg>`;
     const svgBlob=new Blob([svg],{type:'image/svg+xml;charset=utf-8'});
     const url=URL.createObjectURL(svgBlob);
     try{
