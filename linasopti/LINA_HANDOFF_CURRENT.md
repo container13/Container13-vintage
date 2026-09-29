@@ -1,14 +1,14 @@
 # LINA — AKTUELL HANDOFF / STATUS
 
-Aktuell release: V0.3.01
-Uppdaterad: 2026-09-28
+Aktuell release: V0.3.02
+Uppdaterad: 2026-09-29
 
 ## Aktuellt säkert läge
 - Handel AV.
 - Gen7 är immutable och får aldrig rerunnas.
-- Gen8-plan `be68328d` är mänskligt godkänd men ännu EJ LÅST.
-- Gen8 runnerspec är EJ LÅST och Engine EJ VERIFIERAD; Gen8 research har inte startat.
-- Senast verifierade Generation Engine-läge efter Worker-fixen: `PLAN_APPROVED_AWAITING_LOCK`, Robotmognad 70/100, GitHub/State/Evidence grönt.
+- Gen8-plan `be68328d` är låst.
+- Gen8 runnerspec `d26e5499` är låst och Engine verifierad. Gen8 står i `RESEARCH_RUNNING`; minst första familjen är observerad/checkpointad och får aldrig rerunnas.
+- Senaste exporterade Engine-state visar Robotmognad 70/100. Gen8 continuation stoppades tekniskt efter att forskning redan börjat; V0.3.02 inför Resume Never Replay och fortsätter endast från första ofärdiga säkra steg.
 - G2 och G3 Real Forward fortsätter separat som paper/forward och får inte påverka frysta forskningsregler.
 
 ## V0.3.01 — bekvämlighet utan forskningsändring
@@ -35,3 +35,12 @@ Uppdaterad: 2026-09-28
 - Ett tryck renderar hela aktuella Lina-vyn från topp till botten, oberoende av scrollposition.
 - Samma PNG sparas lokalt och kopieras till bildurklipp när webbläsaren tillåter det, för direkt ⌘V/Ctrl+V i aktuell ChatGPT-chatt.
 - Dashboardens Robotmognad hämtas från samma auktoritativa modell som Generation Engine.
+
+
+## V0.3.02 — Gen8 säker continuation + canonical base
+- Byggbas: återfunnen `LINA_CLEAN_CORE_V0301_FLAT_COMPLETE.zip`; ingen gissad/rekonstruerad bas.
+- Gen8 Auto Pipeline är state-aware: låst/verifierad runnerspec prepareras inte om.
+- Redan observerade familjer valideras och hoppas över; ofullständiga checkpoints stoppar recovery i stället för rerun.
+- Den tidigare observerade feltexten `specTrainingResults[0].evidence` finns inte i den återfunna V0.3.01-källbasen. Den behandlas därför som runtime/cache/versionsavvikelse tills den producerande koden kan visas; ingen gissad rotorsak påstås.
+- Global `Exportera Generation Engine-status` ligger nu i Engine-toppen.
+- Handel AV och Forward AV.

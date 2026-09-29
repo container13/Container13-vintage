@@ -218,7 +218,7 @@ Historical/frozen research version strings are excluded from this current-releas
 - [ ] Inga påståenden om syntax/ZIP/deploy/integritet utan faktisk kontroll.
 - [ ] Kod som användaren ska klistra in levereras som hel fil med ett-klick-kopiering, inte som manuell patch.
 
-## V0.3.00 — global skärmbild / bekvämlighet
+## V0.3.01 — global skärmbild / bekvämlighet
 - [x] Skärmbild är separat UI-funktion och ändrar inte research/state/Forward/Handel.
 - [x] Global 📸-knapp ligger i headern och exkluderas själv från den sparade bilden.
 - [x] Hela aktuella Lina-vyn renderas till PNG; webbläsarens chrome/flikar/adressfält ingår inte.
@@ -226,3 +226,15 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Lokala bilder bäddas in före rendering; extern resurs får inte tyst göra canvas ogiltig.
 - [x] Renderings-/PNG-fel ger explicit Fel-status och inget falskt Sparad-läge.
 - [x] Gen8-state, planhash, runnerspec, Engine-state, Gen7-evidens, Forward och Handel ändras inte av funktionen.
+
+
+## V0.3.02 — Canonical Base / Resume Never Replay
+- [x] Faktisk V0.3.01 FLAT COMPLETE återfunnen i Library och materialiserad som byggbas; användaren behövde inte ladda upp den igen.
+- [x] `LINA_MASTER_RULES.md` är enda regelkälla; checklist/handoff har separata roller.
+- [x] Gen8 continuation anropar inte `prepare()` igen när Engine redan är verifierad.
+- [x] Befintligt Gen8-familjeresultat valideras strukturellt och hoppas över utan rerun.
+- [x] Ofullständigt checkpointat familjeresultat blockerar continuation i stället för att köras om.
+- [x] Global Generation Engine-status-export flyttad till Engine-toppen och gamla nederplaceringen borttagen.
+- [x] Handel/Forward-logik ändras inte.
+- [x] Cache tokens och central release uppdateras till V0.3.02.
+- [ ] Browser end-to-end med användarens verkliga `RESEARCH_RUNNING` state verifieras efter deploy; detta kan inte bevisas enbart av statisk byggkontroll.

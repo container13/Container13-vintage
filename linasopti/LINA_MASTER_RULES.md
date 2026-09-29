@@ -259,7 +259,19 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Vid framtida dokumentationsändringar ska befintliga gemensamma styrdokument uppdateras i första hand. Ingen ny versionsfil får skapas slentrianmässigt.
 
 
-## Bekvämlighetsautomation — permanent UI-princip från V0.3.00
+## Bekvämlighetsautomation — permanent UI-princip från V0.3.01
 - Återkommande administration ska göras med ett tryck när det kan ske säkert och deterministiskt; användaren ska inte behöva göra manuella skärmbilder, filnamn eller repetitiva exportsteg i onödan.
 - Global skärmbild får endast läsa/rendera aktuell UI-vy lokalt. Den får aldrig ändra research-state, evidens, Forward, kandidatbeslut eller Handel.
 - Skärmbild ska ge explicit fel vid misslyckad rendering och får aldrig visa falskt lyckad status.
+
+
+## Canonical Source Base + Resume Never Replay — permanent regel från V0.3.02
+- `LINA_MASTER_RULES.md` är enda auktoritativa regelkällan. Checklist och handoff får kontrollera/beskriva regler men aldrig definiera konkurrerande regler.
+- Exakt en komplett bas ska identifieras som kanonisk utvecklingsbas (`LINA_CURRENT_BASE.zip`). Före varje bygge ska aktuell konversation, Library och tidigare genererade artefakter sökas innan användaren ombeds ladda upp något igen.
+- Ingen release får byggas från minne, rekonstruerad kod eller antagen äldre version. Faktisk bas ska materialiseras och verifieras före ändring.
+- **Resume Never Replay:** stoppad Auto Pipeline fortsätter från första säkert ofärdiga steg. Ett observerat/checkpointat forskningsresultat får aldrig exekveras igen för att reparera sync, UI, evidence eller continuation.
+- Ett befintligt familjeresultat får endast hoppas över efter strukturell validering av obligatoriska folds, TRAIN-varianter, selectedParams och OOS-mått. Ofullständigt checkpointat resultat ska stoppa och kräva recovery — aldrig rerun.
+- Persist-before-next-step är tvingande: observerat resultat → lokal checkpoint → evidence-state → sync/verifiering enligt kontrakt → först därefter fortsatt kedja.
+- Releasekontroll ska köras mot det verkliga inkommande state som uppgraderingen ska möta, inklusive `RESEARCH_RUNNING`, delvis synkad evidens och frysta generationer. Tom installation ensam räcker inte.
+- Globala Generation Engine-kontroller ska ligga i Engine-toppen; generationsspecifika kontroller ska ligga i respektive generation.
+- Vid varje blockerande incident ska exakt felproducerande kod sökas i den faktiska basen. Om feltexten inte finns där ska detta dokumenteras som versions/cache/runtime-avvikelse och inte ersättas med en gissad rotorsak.
