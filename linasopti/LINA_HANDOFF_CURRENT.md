@@ -1,6 +1,6 @@
 # LINA — AKTUELL HANDOFF / STATUS
 
-Aktuell release: V0.3.09
+Aktuell release: V0.3.10
 Uppdaterad: 2026-09-29
 
 ## Aktuellt säkert läge
@@ -71,3 +71,7 @@ Efter lösenkod blockeras Dashboard av app-state GET, säker merge/PUT och evide
 ## V0.3.09 — snabbare start när app-state är oförändrat
 Användarens V0.3.08-bild visar auth 0,1 s, GET 0,7 s, POST 3,4 s, evidence 0,1 s och bootstrap 4,2 s. Den inkommande V0.3.04-basen hade redan samma seriella GET/POST/evidence-kedja; screenshot-ändringar introducerade inte den. Tidigare svarstider är inte uppmätta.
 Bootstrap hoppar nu över POST när exakt samma app-innehåll redan finns i verifierad GET. Endast den namngivna diagnostikposten undantas och stannar lokalt till full synk. Förändrat Gen8-/evidence-/övrigt app-state kräver fortfarande POST. Evidensreconciliation görs idempotent så identisk metadata inte skapar nya updatedAt-värden vid varje login. Första starten kan behöva normal synk av tidigare ändringar; därefter visar Dashboard `spara state ingen ändring` när snabbvägen används. Nio regressionfall godkända lokalt; faktisk Chrome-latens återstår.
+
+## V0.3.10 — forskningsexport längst upp
+Exporter ligger i egen panel direkt efter Engine-rubriken: Exportera aktuell forskningsstatus + Exportera Gen8-resultat. Övriga exportknappar (planer, runnerspec, äldre frysta resultat) finns under stängd Fler exporter. Befintliga knappar flyttas före eventbindning och dubbla export-ID tas bort. Gen8-resultatknappen använder befintlig frozenResearchExport utan researchstart.
+V0.3.09 startoptimering verifierades i användarens Chrome: oförändrat state sparas inte, bootstrap 1,4 s. Gen8 är enligt användaren avslutad och får aldrig köras om. Nästa forskningsarbete kräver aktuell full Engine-export för analys; äldre RESEARCH_RUNNING-beskrivningar ovan är historiska.

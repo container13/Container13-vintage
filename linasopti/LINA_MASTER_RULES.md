@@ -307,3 +307,8 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Efter godkänd GET och befintlig säker merge får bootstrap avstå POST endast när samtliga app-posters värdesträngar och nyckelmängd är identiska med serverns godkända LINA-APP-SYNC-1-paket (Handel false). Alla förändrade eller nya app-poster kräver fortsatt godkänd POST före apply.
 - Enda uttryckliga undantaget vid denna jämförelse är `lina_clean_sync_diagnostics_v0270`: begäransloggar bevaras lokalt tills nästa full/manuell synk. De får inte ensamma kräva en GitHub-skrivning vid varje login och får inte rapporteras som räddade/synkade poster på snabbvägen.
 - Evidensverifiering körs även på snabbvägen. Reconciliation får bara uppdatera updatedAt när evidensmetadata verkligen ändras; oförändrade frysta resultat förblir byte-identiska.
+
+## Användarpreferens — exporter längst upp (2026-09-29)
+- Exporter ska vara enkla att hitta och samlade längst upp i den relevanta huvudvyn, direkt under rubriken. Huvudexporten ska vara tydlig; övriga exporter samlas under en utfällbar Fler exporter.
+- Samma exportåtgärd ska inte dupliceras längre ned. Befintliga exportfunktioner och forskningsspärrar bevaras när knappar flyttas.
+- I Generation Engine: Exportera aktuell forskningsstatus och Exportera Gen8-resultat är huvudknappar. Planer, runnerspec och äldre frysta resultat ligger under Fler exporter.

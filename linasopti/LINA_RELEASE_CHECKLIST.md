@@ -277,4 +277,13 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Nio lokala regressionfall: oförändrat app-state, enbart diagnostik, nytt Gen8-resultat, POST-fel, GET-fel, saknat remote-state, ny app-nyckel, identisk evidens och faktisk evidenskorrigering.
 - [x] Nyare Gen8-resultat skrivs före apply och bevaras vid skrivfel. Ingen research körs i testen.
 - [x] Evidensreconciliation skriver inte om oförändrat forskningsstate.
-- [ ] Faktisk Chrome-start efter uppgradering: vid behov första synk, därefter spara state = ingen ändring.
+- [x] Faktisk Chrome-start efter uppgradering: spara state = ingen ändring, bootstrap 1,4 s i användarens bild 2026-09-29 21:23. GET varierade mellan 1,2 s och 6,8 s i två mätningar.
+
+## V0.3.10 — samlade exporter
+- [x] Exportpanelen placeras direkt efter Generation Engine-rubriken.
+- [x] Engine-status och frysta Gen8-resultat får separata huvudknappar.
+- [x] Befintliga exportknappar flyttas, behåller sina handler-ID och avdupliceras.
+- [x] Övriga exporter samlas i Fler exporter (stängd från början).
+- [x] Gen8-resultatexport spärras om sammanfattningen inte är fryst.
+- [x] JavaScript-syntax, HTML-cachetokens, ZIP och manifest kontrollerade.
+- [ ] Visuell kontroll av exportpanelen i användarens Chrome efter deploy.

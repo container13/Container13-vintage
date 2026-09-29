@@ -141,3 +141,13 @@ body.locked #app > .lina-watermark{display:none}
 /* V0.2.58 – plain-language research help */
 .lina-info-dialog{width:min(760px,calc(100vw - 28px));max-height:86vh;overflow:auto;border:1px solid #dce3ed;border-radius:18px;padding:22px;color:#172033;background:#fff;box-shadow:0 24px 80px #17203333}.lina-info-dialog::backdrop{background:#17203366}.lina-info-dialog h2{margin:0}.lina-info-dialog h3{margin:20px 0 5px}.lina-info-dialog p{line-height:1.55;color:#475467}.lina-info-head{display:flex;align-items:center;justify-content:space-between;gap:14px;position:sticky;top:-22px;background:#fff;padding:18px 0 12px;z-index:1}
 .lina-help-dot{display:inline-grid;place-items:center;width:24px;height:24px;min-width:24px;padding:0;margin-left:5px;border:1px solid #cbd5e1;border-radius:50%;background:#fff;color:#344054;font-weight:800;font-size:13px;vertical-align:middle;cursor:pointer}.lina-help-dot:hover{background:#f2f4f7}.statusline .lina-help-dot,.forward-note .lina-help-dot{width:21px;height:21px;min-width:21px;font-size:12px}
+
+/* Research exports: visible first, secondary exports collapsed. */
+.engine-export-panel{background:#fff;border:1px solid #dce3ed;border-radius:18px;padding:20px;margin:0 0 18px;position:relative;z-index:1}
+.engine-export-panel h2{margin:0;font-size:1.1rem}
+.engine-export-primary{margin-top:12px}
+.engine-export-details{margin-top:14px}
+.engine-export-details summary{cursor:pointer;font-weight:700;color:#475467;padding:8px 0}
+.engine-export-more{margin-top:8px}
+.engine-export-panel button:disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:760px){.engine-export-primary,.engine-export-more{display:grid}.engine-export-panel button{width:100%;text-align:left}}
