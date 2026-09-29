@@ -1,6 +1,6 @@
 # LINA — AKTUELL HANDOFF / STATUS
 
-Aktuell release: V0.3.02
+Aktuell release: V0.3.03
 Uppdaterad: 2026-09-29
 
 ## Aktuellt säkert läge
@@ -8,7 +8,7 @@ Uppdaterad: 2026-09-29
 - Gen7 är immutable och får aldrig rerunnas.
 - Gen8-plan `be68328d` är låst.
 - Gen8 runnerspec `d26e5499` är låst och Engine verifierad. Gen8 står i `RESEARCH_RUNNING`; minst första familjen är observerad/checkpointad och får aldrig rerunnas.
-- Senaste exporterade Engine-state visar Robotmognad 70/100. Gen8 continuation stoppades tekniskt efter att forskning redan börjat; V0.3.02 inför Resume Never Replay och fortsätter endast från första ofärdiga säkra steg.
+- Senaste exporterade Engine-state visar Robotmognad 70/100. Gen8 continuation stoppades tekniskt efter att forskning redan börjat; V0.3.03 inför Resume Never Replay och fortsätter endast från första ofärdiga säkra steg.
 - G2 och G3 Real Forward fortsätter separat som paper/forward och får inte påverka frysta forskningsregler.
 
 ## V0.3.01 — bekvämlighet utan forskningsändring
@@ -37,10 +37,17 @@ Uppdaterad: 2026-09-29
 - Dashboardens Robotmognad hämtas från samma auktoritativa modell som Generation Engine.
 
 
-## V0.3.02 — Gen8 säker continuation + canonical base
+## V0.3.03 — Gen8 säker continuation + canonical base
 - Byggbas: återfunnen `LINA_CLEAN_CORE_V0301_FLAT_COMPLETE.zip`; ingen gissad/rekonstruerad bas.
 - Gen8 Auto Pipeline är state-aware: låst/verifierad runnerspec prepareras inte om.
 - Redan observerade familjer valideras och hoppas över; ofullständiga checkpoints stoppar recovery i stället för rerun.
 - Den tidigare observerade feltexten `specTrainingResults[0].evidence` finns inte i den återfunna V0.3.01-källbasen. Den behandlas därför som runtime/cache/versionsavvikelse tills den producerande koden kan visas; ingen gissad rotorsak påstås.
 - Global `Exportera Generation Engine-status` ligger nu i Engine-toppen.
 - Handel AV och Forward AV.
+
+
+## V0.3.03 — beständig Auto Pipeline-diagnostik
+- V0.3.02 inkommande state var intakt men ett faktiskt klick på Gen8 Auto Pipeline gav ingen beständig synlig förändring efteråt.
+- Rotorsaken är ännu inte verifierad; V0.3.03 gissar därför inte. I stället checkpointas klickmottagning, pipeline-steg och exakt stoppfel i Engine-state innan/under async-kedjan.
+- UI visar senaste pipeline-klick/steg efter rerender/reload. STOPPED-fel bevaras i state/export.
+- Resume Never Replay kvarstår: observerad första Gen8-familj får inte rerunnas. Handel/Forward AV.

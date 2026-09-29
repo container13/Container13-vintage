@@ -12,7 +12,7 @@ Status: AKTIV från Clean Core V0.2.64. Denna fil är överordnad äldre handoff
 ## 2. Start av varje ny Lina-sittning/release
 Innan kod ändras ska ChatGPT läsa:
 1. `LINA_MASTER_RULES.md`.
-2. Senaste `LINA_HANDOFF_CLEAN_CORE_*.md`.
+2. `LINA_HANDOFF_CURRENT.md` (versionsspecifika äldre handoffs är endast historik).
 3. Den faktiska kod som berörs i basversionen.
 Det krävs inte att hela historiska Linasopti läses om. Äldre material används när den aktuella ändringen kräver det.
 
@@ -265,7 +265,7 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Skärmbild ska ge explicit fel vid misslyckad rendering och får aldrig visa falskt lyckad status.
 
 
-## Canonical Source Base + Resume Never Replay — permanent regel från V0.3.02
+## Canonical Source Base + Resume Never Replay — permanent regel från V0.3.03
 - `LINA_MASTER_RULES.md` är enda auktoritativa regelkällan. Checklist och handoff får kontrollera/beskriva regler men aldrig definiera konkurrerande regler.
 - Exakt en komplett bas ska identifieras som kanonisk utvecklingsbas (`LINA_CURRENT_BASE.zip`). Före varje bygge ska aktuell konversation, Library och tidigare genererade artefakter sökas innan användaren ombeds ladda upp något igen.
 - Ingen release får byggas från minne, rekonstruerad kod eller antagen äldre version. Faktisk bas ska materialiseras och verifieras före ändring.
@@ -275,3 +275,9 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 - Releasekontroll ska köras mot det verkliga inkommande state som uppgraderingen ska möta, inklusive `RESEARCH_RUNNING`, delvis synkad evidens och frysta generationer. Tom installation ensam räcker inte.
 - Globala Generation Engine-kontroller ska ligga i Engine-toppen; generationsspecifika kontroller ska ligga i respektive generation.
 - Vid varje blockerande incident ska exakt felproducerande kod sökas i den faktiska basen. Om feltexten inte finns där ska detta dokumenteras som versions/cache/runtime-avvikelse och inte ersättas med en gissad rotorsak.
+
+
+## Auto Pipeline click-receipt och stoppdiagnostik — permanent regel från V0.3.03
+- Varje Auto Pipeline-start ska checkpointa ett beständigt `UI_CLICK_RECEIVED` innan första async-steg. Därmed kan ett faktiskt klick skiljas från UI-/eventproblem efter reload/render.
+- Pipeline ska beständigt spara senaste försökstid, senaste steg och exakt stoppfel i Generation Engine-state. Ett UI-rerender får aldrig radera stopporsaken.
+- Vid `RESEARCH_RUNNING` får diagnostik/releasefix inte rerunna redan observerade familjer; endast statevalidering, continuation från första ofärdiga steg och evidens/synk får ske.
