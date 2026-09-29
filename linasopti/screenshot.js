@@ -124,9 +124,10 @@
     const html=new XMLSerializer().serializeToString(clone);
     const safeCss=css.replace(/&/g,'&amp;').replace(/</g,'&lt;');
     const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><foreignObject x="0" y="0" width="100%" height="100%"><div xmlns="${XHTML}" style="width:${width}px;min-height:${height}px;background:#f4f7fb"><style>${safeCss}</style>${html}</div></foreignObject></svg>`;
-    const svgBlob=new Blob([svg],{type:'image/svg+xml;charset=utf-8'});
-    const url=URL.createObjectURL(svgBlob);
-    try{
+    // Chromium marks SVG <foreignObject> loaded via blob: as non-origin-clean.
+    // A self-contained data: URL keeps the canvas exportable.
+    const url='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+    {
       const img=new Image();
       img.decoding='sync';
       await new Promise((resolve,reject)=>{
@@ -144,8 +145,6 @@
       const version=safeName(window.LinaVersion?.release||'Lina');
       const name=`LINA_${route}_${version}_${stamp()}.png`;
       return {png,name,width,height,bytes:png.size};
-    }finally{
-      URL.revokeObjectURL(url);
     }
   }
 

@@ -1,6 +1,6 @@
 # LINA — AKTUELL HANDOFF / STATUS
 
-Aktuell release: V0.3.06
+Aktuell release: V0.3.07
 Uppdaterad: 2026-09-29
 
 ## Aktuellt säkert läge
@@ -61,3 +61,6 @@ Chrome/Windows: urklippsskrivning initieras direkt i klickgesten med asynkron PN
 
 ## V0.3.06 — Chrome/Windows uppföljning
 V0.3.05 visade Fel vid 📸 på användarens Chrome/Windows. CSS-bakgrundsbilden inbäddas nu och CSS XML-escapas i SVG. Exakt återstående fel visas direkt om renderingen fortfarande misslyckas. Rotorsaken är ännu inte verifierad i faktiskt Chrome. Långsam inloggning observerades efter lösenkod: auth-kontroll och därefter seriell GET/POST/evidensverifiering blockerar Dashboard av integritetsskäl. Ingen osäker genväg förbi state-återställningen infördes.
+
+## V0.3.07 — verifierad feltext, riktad korrigering
+Användaren rapporterade exakt `Failed to execute 'toBlob' on 'HTMLCanvasElement': Tainted canvases may not be exported.` i Chrome/Windows på V0.3.06. Källan använder SVG foreignObject som bild via blob:-URL. Chromium behandlar denna kombination som icke origin-clean. SVG laddas nu via självständig data:-URL, med fortsatt inbäddade resurser. Browser-utfallet är ännu inte verifierat. Gen8 och state/synk ändras inte.

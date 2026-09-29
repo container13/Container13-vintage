@@ -259,3 +259,9 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Ett PNG-resultat: kopiera eller ladda ned; renderingsfel visas i klartext.
 - [x] Ingen research-/Gen8-/Forward-/Handelslogik ändrad.
 - [ ] Faktisk Chrome/Windows-bild och tidsmätning av inloggningsstegen återstår efter driftsättning.
+
+## V0.3.07 — tainted canvas
+- [x] SVG foreignObject laddas som data:-URL, inte blob:-URL.
+- [x] CSS- och img-resurser är fortsatt inbäddade före rendering.
+- [x] JavaScript-syntax och ZIP-struktur kontrollerade.
+- [ ] Faktisk Chrome/Windows PNG-export verifieras efter driftsättning.

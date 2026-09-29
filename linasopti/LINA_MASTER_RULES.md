@@ -294,3 +294,7 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 ## Chrome-bildrendering — kontroll från V0.3.06
 - CSS-bilder med relativa adresser ska bäddas in som data före SVG/canvas-rendering. CSS-text måste XML-escapas i SVG.
 - Om PNG-renderingen ändå misslyckas ska exakt fel visas direkt för användaren, inte enbart i knappens title.
+
+## Canvas origin-clean — permanent regel från V0.3.07
+- SVG med foreignObject får inte laddas som blob:-URL före Canvas/PNG-export i Chrome. Använd en självständig data:-URL med inbäddade resurser.
+- `toBlob`-felet om tainted canvas ska spåras till SVG-bildens ursprung innan annan skärmbildslogik ändras.
