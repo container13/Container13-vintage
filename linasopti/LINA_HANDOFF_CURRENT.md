@@ -1,6 +1,6 @@
 # LINA — AKTUELL HANDOFF / STATUS
 
-Aktuell release: V0.3.08
+Aktuell release: V0.3.09
 Uppdaterad: 2026-09-29
 
 ## Aktuellt säkert läge
@@ -67,3 +67,7 @@ Användaren rapporterade exakt `Failed to execute 'toBlob' on 'HTMLCanvasElement
 
 ## V0.3.08 — långsam inloggning, mätning
 Efter lösenkod blockeras Dashboard av app-state GET, säker merge/PUT och evidensverifiering. V0.3.08 visar tider per steg på Dashboard och tar bort en fast 220 ms fördröjning. Ingen nätverks-/state-gate hoppas över. Screenshot-fixen från V0.3.07 är verifierad i användarens Chrome genom en inklistrad helvys-PNG.
+
+## V0.3.09 — snabbare start när app-state är oförändrat
+Användarens V0.3.08-bild visar auth 0,1 s, GET 0,7 s, POST 3,4 s, evidence 0,1 s och bootstrap 4,2 s. Den inkommande V0.3.04-basen hade redan samma seriella GET/POST/evidence-kedja; screenshot-ändringar introducerade inte den. Tidigare svarstider är inte uppmätta.
+Bootstrap hoppar nu över POST när exakt samma app-innehåll redan finns i verifierad GET. Endast den namngivna diagnostikposten undantas och stannar lokalt till full synk. Förändrat Gen8-/evidence-/övrigt app-state kräver fortfarande POST. Evidensreconciliation görs idempotent så identisk metadata inte skapar nya updatedAt-värden vid varje login. Första starten kan behöva normal synk av tidigare ändringar; därefter visar Dashboard `spara state ingen ändring` när snabbvägen används. Nio regressionfall godkända lokalt; faktisk Chrome-latens återstår.

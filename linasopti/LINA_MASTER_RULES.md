@@ -302,3 +302,8 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 ## Starttidsdiagnostik — från V0.3.08
 - Optimera inte bort app-state PUT eller evidensverifiering på antagande om latens. Mät auth, GET, PUT och evidence separat i användarens faktiska miljö.
 - Tidsmätning sparas endast i sessionStorage och ändrar inte Generation Engine, evidens, Forward eller Handel.
+
+## Oförändrat app-state vid uppstart — V0.3.09
+- Efter godkänd GET och befintlig säker merge får bootstrap avstå POST endast när samtliga app-posters värdesträngar och nyckelmängd är identiska med serverns godkända LINA-APP-SYNC-1-paket (Handel false). Alla förändrade eller nya app-poster kräver fortsatt godkänd POST före apply.
+- Enda uttryckliga undantaget vid denna jämförelse är `lina_clean_sync_diagnostics_v0270`: begäransloggar bevaras lokalt tills nästa full/manuell synk. De får inte ensamma kräva en GitHub-skrivning vid varje login och får inte rapporteras som räddade/synkade poster på snabbvägen.
+- Evidensverifiering körs även på snabbvägen. Reconciliation får bara uppdatera updatedAt när evidensmetadata verkligen ändras; oförändrade frysta resultat förblir byte-identiska.

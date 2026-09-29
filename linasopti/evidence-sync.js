@@ -24,7 +24,7 @@ function reconcileGen4Evidence(item){
   if(x.summaryFreeze?.frozen&&item.source==='Lina Gen4'&&/^LINAS_GEN4_RESEARCH_SUMMARY_/.test(item.name)){
    x.summaryFreeze.evidence={...(x.summaryFreeze.evidence||{}),status:'FROZEN · GITHUB ✓',name:item.name,githubPath:item.githubPath||null,githubCommit:item.githubCommit||null,existingImmutable:Boolean(item.existingImmutable)};changed=true;
   }
-  if(changed){x.updatedAt=now();localStorage.setItem(key,JSON.stringify(x));}
+  if(changed&&JSON.stringify(x)!==JSON.stringify(JSON.parse(raw))){x.updatedAt=now();localStorage.setItem(key,JSON.stringify(x));}
  }catch(e){diag('gen4-evidence-reconcile-error',{name:item?.name||null,message:String(e?.message||e)})}
 }
 
@@ -46,7 +46,7 @@ function reconcileGen5Evidence(item){
   if(x.gen5?.candidate?.locked&&/^LINAS_GEN5_CANDIDATE_FREEZE_/.test(item.name)){
    x.gen5.candidate.evidence={...(x.gen5.candidate.evidence||{}),status:'FROZEN · GITHUB ✓',name:item.name,githubPath:item.githubPath||null,githubCommit:item.githubCommit||null,existingImmutable:Boolean(item.existingImmutable)};changed=true;
   }
-  if(changed){x.updatedAt=now();localStorage.setItem(key,JSON.stringify(x));}
+  if(changed&&JSON.stringify(x)!==JSON.stringify(JSON.parse(raw))){x.updatedAt=now();localStorage.setItem(key,JSON.stringify(x));}
  }catch(e){diag('gen5-evidence-reconcile-error',{name:item?.name||null,message:String(e?.message||e)})}
 }
 
@@ -66,7 +66,7 @@ function reconcileGen6Evidence(item){
   if(x.gen6.candidate?.locked&&/^LINAS_GEN6_CANDIDATE_FREEZE_/.test(item.name)){
    x.gen6.candidate.evidence={...(x.gen6.candidate.evidence||{}),status:'FROZEN · GITHUB ✓',name:item.name,githubPath:item.githubPath||null,githubCommit:item.githubCommit||null,existingImmutable:Boolean(item.existingImmutable),verification:item.verification||null};changed=true;
   }
-  if(changed){x.updatedAt=now();localStorage.setItem(key,JSON.stringify(x));}
+  if(changed&&JSON.stringify(x)!==JSON.stringify(JSON.parse(raw))){x.updatedAt=now();localStorage.setItem(key,JSON.stringify(x));}
  }catch(e){diag('gen6-evidence-reconcile-error',{name:item?.name||null,message:String(e?.message||e)})}
 }
 
@@ -80,7 +80,7 @@ function reconcileGen7Evidence(item){
   }
   if(x.gen7.summaryFreeze?.frozen&&/^LINAS_GEN7_RESEARCH_SUMMARY_/.test(item.name)){x.gen7.summaryFreeze.evidence={...(x.gen7.summaryFreeze.evidence||{}),status:'FROZEN · GITHUB ✓',name:item.name,githubPath:item.githubPath||null,githubCommit:item.githubCommit||null,existingImmutable:Boolean(item.existingImmutable),verification:item.verification||null};changed=true}
   if(x.gen7.candidate?.locked&&/^LINAS_GEN7_CANDIDATE_FREEZE_/.test(item.name)){x.gen7.candidate.evidence={...(x.gen7.candidate.evidence||{}),status:'FROZEN · GITHUB ✓',name:item.name,githubPath:item.githubPath||null,githubCommit:item.githubCommit||null,existingImmutable:Boolean(item.existingImmutable),verification:item.verification||null};changed=true}
-  if(changed){x.updatedAt=now();localStorage.setItem(key,JSON.stringify(x))}
+  if(changed&&JSON.stringify(x)!==JSON.stringify(JSON.parse(raw))){x.updatedAt=now();localStorage.setItem(key,JSON.stringify(x))}
  }catch(e){diag('gen7-evidence-reconcile-error',{name:item?.name||null,message:String(e?.message||e)})}
 }
 
@@ -94,7 +94,7 @@ function reconcileGen8Evidence(item){
   }
   if(x.gen8.summaryFreeze?.frozen&&/^LINAS_GEN8_RESEARCH_SUMMARY_/.test(item.name)){x.gen8.summaryFreeze.evidence={...(x.gen8.summaryFreeze.evidence||{}),status:'FROZEN · GITHUB ✓',name:item.name,githubPath:item.githubPath||null,githubCommit:item.githubCommit||null,existingImmutable:Boolean(item.existingImmutable),verification:item.verification||null};changed=true}
   if(x.gen8.candidate?.locked&&/^LINAS_GEN8_CANDIDATE_FREEZE_/.test(item.name)){x.gen8.candidate.evidence={...(x.gen8.candidate.evidence||{}),status:'FROZEN · GITHUB ✓',name:item.name,githubPath:item.githubPath||null,githubCommit:item.githubCommit||null,existingImmutable:Boolean(item.existingImmutable),verification:item.verification||null};changed=true}
-  if(changed){x.updatedAt=now();localStorage.setItem(key,JSON.stringify(x))}
+  if(changed&&JSON.stringify(x)!==JSON.stringify(JSON.parse(raw))){x.updatedAt=now();localStorage.setItem(key,JSON.stringify(x))}
  }catch(e){diag('gen8-evidence-reconcile-error',{name:item?.name||null,message:String(e?.message||e)})}
 }
 

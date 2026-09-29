@@ -94,6 +94,18 @@ async function put(p){const c=code();if(!c){diag('app-state-blocked',{method:'PO
 async function syncAll(){// Forward har egen strikt merge och är en del av helsynken.
   if(window.LinaForwardCenter){await window.LinaForwardCenter.remotePull();await window.LinaForwardCenter.remotePush()}
   const local=collect(), remote=await get(), merged=merge(local,remote.state||null);const wr=await put(merged);apply(wr.state||merged);const evidence=window.LinaEvidence?await window.LinaEvidence.syncApproved():0;return {ok:true,keys:Object.keys((wr.state||merged).entries||{}).length,evidence}}
+function hasSameAppEntries(merged,remote){
+  if(remote?.schema!=='LINA-APP-SYNC-1'||remote.tradeEnabled!==false||!remote.entries||Array.isArray(remote.entries))return false;
+  const keys=new Set([...Object.keys(merged.entries||{}),...Object.keys(remote.entries)]);
+  for(const key of keys){
+    // Request diagnostics are local until the next explicit/full sync. They
+    // alone must not force a GitHub write on every login.
+    if(key===DIAG)continue;
+    const a=merged.entries[key],b=remote.entries[key];
+    if(!eligible(key)||typeof a?.value!=='string'||typeof b?.value!=='string'||a.value.length>MAX_ENTRY||b.value.length>MAX_ENTRY||a.value!==b.value)return false;
+  }
+  return true;
+}
 async function bootstrap(progress){
   const bootStarted=performance.now(), timings={};
   const step=(name,detail)=>{try{progress?.(name,detail)}catch{}};
@@ -106,10 +118,12 @@ async function bootstrap(progress){
   // Canonical rule: GitHub wins conflicts. Local state may only fill keys GitHub does not have.
   step('compare',`Jämför ${recovery.localCount} lokala och ${recovery.remoteCount} GitHub-poster…`);
   const local=collect(), merged=safeRecoveryMerge(local,remote?.state||null);
-  // Never apply remote state before the merged package has been accepted. If PUT/evidence sync
-  // fails, the current local irreversible research snapshot must remain untouched.
+  // A changed app package must be accepted before apply. An unchanged package
+  // is already accepted in the verified GET response; retain request diagnostics locally.
   step('recover',recovery.unique.length?`Bevarar ${recovery.unique.length} unika lokala poster…`:'Inget nytt att spara eller återställa.');
-  const putStarted=performance.now(), wr=await put(merged);
+  const putStarted=performance.now();
+  timings.writeSkipped=hasSameAppEntries(merged,remote?.state);
+  const wr=timings.writeSkipped?{state:merged}:await put(merged);
   timings.put=Math.round(performance.now()-putStarted);
   apply(wr.state||merged);
   step('evidence','Verifierar fryst evidens…');
@@ -118,9 +132,10 @@ async function bootstrap(progress){
   timings.evidence=Math.round(performance.now()-evidenceStarted);
   timings.total=Math.round(performance.now()-bootStarted);
   sessionStorage.setItem('lina_startup_timing',JSON.stringify(timings));
-  const report={...recovery,recovered:recovery.unique,conflictPolicy:'GITHUB_CANONICAL',release:RELEASE};
+  const recovered=timings.writeSkipped?recovery.unique.filter(k=>k!==DIAG):recovery.unique;
+  const report={...recovery,recovered,diagnosticsDeferred:timings.writeSkipped,conflictPolicy:'GITHUB_CANONICAL',release:RELEASE};
   sessionStorage.setItem('lina_recovery_report',JSON.stringify(report));
-  sessionStorage.setItem('lina_sync_status',JSON.stringify({ok:true,at:new Date().toISOString(),keys:Object.keys((wr.state||merged).entries||{}).length,evidence,recovered:recovery.unique.length,conflicts:recovery.conflicts.length}));
+  sessionStorage.setItem('lina_sync_status',JSON.stringify({ok:true,at:new Date().toISOString(),keys:Object.keys((wr.state||merged).entries||{}).length,evidence,recovered:recovered.length,diagnosticsDeferred:timings.writeSkipped,conflicts:recovery.conflicts.length}));
   step('ready','GitHub synkad ✓ · State återställt ✓ · Redo');
   return {ok:true,restored:Boolean(remote?.state),keys:Object.keys((wr.state||merged).entries||{}).length,evidence,recovery};
 }

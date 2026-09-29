@@ -271,3 +271,10 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Fast 220 ms väntan efter bootstrap borttagen.
 - [x] Inget steg i state-återställning eller evidensverifiering hoppas över.
 - [ ] Mät verklig Chrome/Windows-start och optimera den uppmätta flaskhalsen.
+
+## V0.3.09 — uppmätt startoptimering
+- [x] V0.3.08 faktisk Chrome-mätning: auth 0,1 s / GET 0,7 s / POST 3,4 s / evidence 0,1 s / bootstrap 4,2 s.
+- [x] Nio lokala regressionfall: oförändrat app-state, enbart diagnostik, nytt Gen8-resultat, POST-fel, GET-fel, saknat remote-state, ny app-nyckel, identisk evidens och faktisk evidenskorrigering.
+- [x] Nyare Gen8-resultat skrivs före apply och bevaras vid skrivfel. Ingen research körs i testen.
+- [x] Evidensreconciliation skriver inte om oförändrat forskningsstate.
+- [ ] Faktisk Chrome-start efter uppgradering: vid behov första synk, därefter spara state = ingen ändring.
