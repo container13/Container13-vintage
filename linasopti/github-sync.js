@@ -95,11 +95,13 @@ async function syncAll(){// Forward har egen strikt merge och är en del av hels
   if(window.LinaForwardCenter){await window.LinaForwardCenter.remotePull();await window.LinaForwardCenter.remotePush()}
   const local=collect(), remote=await get(), merged=merge(local,remote.state||null);const wr=await put(merged);apply(wr.state||merged);const evidence=window.LinaEvidence?await window.LinaEvidence.syncApproved():0;return {ok:true,keys:Object.keys((wr.state||merged).entries||{}).length,evidence}}
 async function bootstrap(progress){
+  const bootStarted=performance.now(), timings={};
   const step=(name,detail)=>{try{progress?.(name,detail)}catch{}};
   step('local','Inventerar lokalt Lina-state…');
   const localEntries=localInventory();
   step('github','Hämtar verifierat state från GitHub…');
-  const remote=await get();
+  const getStarted=performance.now(), remote=await get();
+  timings.get=Math.round(performance.now()-getStarted);
   const recovery=recoveryPlan(localEntries,remote?.state||null);
   // Canonical rule: GitHub wins conflicts. Local state may only fill keys GitHub does not have.
   step('compare',`Jämför ${recovery.localCount} lokala och ${recovery.remoteCount} GitHub-poster…`);
@@ -107,9 +109,15 @@ async function bootstrap(progress){
   // Never apply remote state before the merged package has been accepted. If PUT/evidence sync
   // fails, the current local irreversible research snapshot must remain untouched.
   step('recover',recovery.unique.length?`Bevarar ${recovery.unique.length} unika lokala poster…`:'Inget nytt att spara eller återställa.');
-  const wr=await put(merged); apply(wr.state||merged);
+  const putStarted=performance.now(), wr=await put(merged);
+  timings.put=Math.round(performance.now()-putStarted);
+  apply(wr.state||merged);
   step('evidence','Verifierar fryst evidens…');
+  const evidenceStarted=performance.now();
   const evidence=window.LinaEvidence?await window.LinaEvidence.syncApproved():0;
+  timings.evidence=Math.round(performance.now()-evidenceStarted);
+  timings.total=Math.round(performance.now()-bootStarted);
+  sessionStorage.setItem('lina_startup_timing',JSON.stringify(timings));
   const report={...recovery,recovered:recovery.unique,conflictPolicy:'GITHUB_CANONICAL',release:RELEASE};
   sessionStorage.setItem('lina_recovery_report',JSON.stringify(report));
   sessionStorage.setItem('lina_sync_status',JSON.stringify({ok:true,at:new Date().toISOString(),keys:Object.keys((wr.state||merged).entries||{}).length,evidence,recovered:recovery.unique.length,conflicts:recovery.conflicts.length}));

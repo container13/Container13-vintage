@@ -1,6 +1,6 @@
 # LINA — AKTUELL HANDOFF / STATUS
 
-Aktuell release: V0.3.07
+Aktuell release: V0.3.08
 Uppdaterad: 2026-09-29
 
 ## Aktuellt säkert läge
@@ -64,3 +64,6 @@ V0.3.05 visade Fel vid 📸 på användarens Chrome/Windows. CSS-bakgrundsbilden
 
 ## V0.3.07 — verifierad feltext, riktad korrigering
 Användaren rapporterade exakt `Failed to execute 'toBlob' on 'HTMLCanvasElement': Tainted canvases may not be exported.` i Chrome/Windows på V0.3.06. Källan använder SVG foreignObject som bild via blob:-URL. Chromium behandlar denna kombination som icke origin-clean. SVG laddas nu via självständig data:-URL, med fortsatt inbäddade resurser. Browser-utfallet är ännu inte verifierat. Gen8 och state/synk ändras inte.
+
+## V0.3.08 — långsam inloggning, mätning
+Efter lösenkod blockeras Dashboard av app-state GET, säker merge/PUT och evidensverifiering. V0.3.08 visar tider per steg på Dashboard och tar bort en fast 220 ms fördröjning. Ingen nätverks-/state-gate hoppas över. Screenshot-fixen från V0.3.07 är verifierad i användarens Chrome genom en inklistrad helvys-PNG.

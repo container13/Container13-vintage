@@ -15,7 +15,11 @@
     R.register('dashboard',root=>{
       const sync=(()=>{try{return JSON.parse(sessionStorage.getItem('lina_sync_status')||'{}')}catch{return {}}})();
       const rec=(()=>{try{return JSON.parse(sessionStorage.getItem('lina_recovery_report')||'{}')}catch{return {}}})();
-      const sys=`<div class="statusline system-health"><b>Systemstatus:</b> GitHub ${sync.ok?'✓':'?'} · State ${sync.ok?'✓':'?'} · Evidence ${sync.ok?'✓':'?'} · Handel AV${rec.recovered?.length?`<br><small>Local Recovery: ${rec.recovered.length} unik${rec.recovered.length===1?'':'a'} lokal${rec.recovered.length===1?' post':'a poster'} bevarad${rec.recovered.length===1?'':'e'} · GitHub vann ${rec.conflicts?.length||0} konflikt${(rec.conflicts?.length||0)===1?'':'er'}.</small>`:'<br><small>Local Recovery: inga unika lokala poster behövde räddas.</small>'}</div>`;
+      const timing=(()=>{try{return JSON.parse(sessionStorage.getItem('lina_startup_timing')||'{}')}catch{return {}}})();
+      const seconds=n=>(n/1000).toFixed(1)+' s';
+      const authRaw=sessionStorage.getItem('lina_auth_duration_ms');
+      const timingLine=Number.isFinite(timing.total)?`<br><small>Starttid: lösenkod ${authRaw!==null?seconds(Number(authRaw)):'—'} · hämta state ${seconds(timing.get)} · spara state ${seconds(timing.put)} · evidens ${seconds(timing.evidence)} · återställning totalt ${seconds(timing.total)}</small>`:'';
+      const sys=`<div class="statusline system-health"><b>Systemstatus:</b> GitHub ${sync.ok?'✓':'?'} · State ${sync.ok?'✓':'?'} · Evidence ${sync.ok?'✓':'?'} · Handel AV${rec.recovered?.length?`<br><small>Local Recovery: ${rec.recovered.length} unik${rec.recovered.length===1?'':'a'} lokal${rec.recovered.length===1?' post':'a poster'} bevarad${rec.recovered.length===1?'':'e'} · GitHub vann ${rec.conflicts?.length||0} konflikt${(rec.conflicts?.length||0)===1?'':'er'}.</small>`:'<br><small>Local Recovery: inga unika lokala poster behövde räddas.</small>'}${timingLine}</div>`;
       shell(root,'Linas lägesbild','Clean Core är den nya tekniska basen. Ingen legacy-kod körs här.',sys+`<div class="grid">${cards.map(([r,t,d])=>`<button class="card" data-route="${r}"><b>${t}</b><small>${d}</small></button>`).join('')}</div>`);
       root.querySelectorAll('[data-route]').forEach(b=>b.onclick=()=>R.navigate(b.dataset.route));
     });
@@ -164,7 +168,7 @@
     }catch(e){
       if(label)label.textContent='Synkfel';if(b){b.classList.add('bad');b.title='Automatisk GitHub-återställning stoppad: '+String(e?.message||e)}
     }finally{if(b)b.disabled=false}
-    if(startup){await new Promise(r=>setTimeout(r,220));startup.hidden=true} app.hidden=false;
+    if(startup)startup.hidden=true; app.hidden=false;
     // Headern ska alltid använda samma auktoritativa mognadsmodell som Generation Engine, även på Dashboard.
     try{window.LinaGenerationEngine?.updateMaturityHeader?.()}catch(e){console.warn('Robotmognad kunde inte renderas:',e)}
     registerRoutes();window.LinaRouter.start();

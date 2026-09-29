@@ -265,3 +265,9 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] CSS- och img-resurser är fortsatt inbäddade före rendering.
 - [x] JavaScript-syntax och ZIP-struktur kontrollerade.
 - [ ] Faktisk Chrome/Windows PNG-export verifieras efter driftsättning.
+
+## V0.3.08 — starttider
+- [x] Lösenkod, GET, PUT och evidens får separata tidsvärden i Dashboard.
+- [x] Fast 220 ms väntan efter bootstrap borttagen.
+- [x] Inget steg i state-återställning eller evidensverifiering hoppas över.
+- [ ] Mät verklig Chrome/Windows-start och optimera den uppmätta flaskhalsen.

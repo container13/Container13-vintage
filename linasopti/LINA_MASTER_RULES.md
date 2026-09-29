@@ -298,3 +298,7 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 ## Canvas origin-clean — permanent regel från V0.3.07
 - SVG med foreignObject får inte laddas som blob:-URL före Canvas/PNG-export i Chrome. Använd en självständig data:-URL med inbäddade resurser.
 - `toBlob`-felet om tainted canvas ska spåras till SVG-bildens ursprung innan annan skärmbildslogik ändras.
+
+## Starttidsdiagnostik — från V0.3.08
+- Optimera inte bort app-state PUT eller evidensverifiering på antagande om latens. Mät auth, GET, PUT och evidence separat i användarens faktiska miljö.
+- Tidsmätning sparas endast i sessionStorage och ändrar inte Generation Engine, evidens, Forward eller Handel.
