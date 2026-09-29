@@ -1,6 +1,6 @@
 # LINA — AKTUELL HANDOFF / STATUS
 
-Aktuell release: V0.3.04
+Aktuell release: V0.3.05
 Uppdaterad: 2026-09-29
 
 ## Aktuellt säkert läge
@@ -55,3 +55,6 @@ Uppdaterad: 2026-09-29
 
 ## V0.3.04 Gen8 continuation repair
 Root cause: after a new Gen8 family was checkpointed, asynchronous evidence/GitHub sync could replace Engine state with a snapshot lacking that family. After await, code dereferenced the now-missing family `.evidence`. Repair preserves the exact computed result, restores that checkpoint without recomputation, then attaches evidence; Gen8 evidence reconciliation is included.
+
+## V0.3.05 — 📸 ett klick, ett resultat
+Chrome/Windows: urklippsskrivning initieras direkt i klickgesten med asynkron PNG-rendering. Lyckad kopiering visar Kopierad utan filnedladdning. Om urklipp saknas/nekas sparas i stället en PNG och knappen visar Sparad. Renderingsfel ger Fel. Ingen Gen8-körning eller forskningsstate ändras. Faktisk Windows-browserverifiering återstår.

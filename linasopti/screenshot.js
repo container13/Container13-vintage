@@ -76,7 +76,7 @@
     setTimeout(()=>URL.revokeObjectURL(a.href),2000);
   }
 
-  async function capture(){
+  async function renderPng(){
     const source=document.getElementById('app');
     if(!source || source.hidden)throw new Error('Lina-vyn är inte öppen');
 
@@ -128,21 +128,33 @@
       const route=safeName(location.hash||'dashboard');
       const version=safeName(window.LinaVersion?.release||'Lina');
       const name=`LINA_${route}_${version}_${stamp()}.png`;
-      // Save a local backup and, when the browser allows it, put the exact same
-      // full-view PNG on the clipboard so it can be pasted straight into ChatGPT.
-      downloadBlob(png,name);
-      let clipboard=false,clipboardError=null;
-      try{
-        if(!navigator.clipboard?.write || typeof ClipboardItem==='undefined')throw new Error('Bildurklipp stöds inte av webbläsaren');
-        await navigator.clipboard.write([new ClipboardItem({'image/png':png})]);
-        clipboard=true;
-      }catch(e){
-        clipboardError=String(e?.message||e);
-      }
-      return {name,width,height,bytes:png.size,clipboard,clipboardError};
+      return {png,name,width,height,bytes:png.size};
     }finally{
       URL.revokeObjectURL(url);
     }
+  }
+
+  async function capture(){
+    // Chrome requires the clipboard request during the original click gesture.
+    // ClipboardItem accepts a promise, so rendering may finish asynchronously.
+    const result=renderPng();
+    if(navigator.clipboard?.write && typeof ClipboardItem!=='undefined'){
+      try{
+        await navigator.clipboard.write([new ClipboardItem({'image/png':result.then(r=>r.png)})]);
+        const {png,...meta}=await result;
+        return {...meta,clipboard:true};
+      }catch(e){
+        // A rendering error is not a clipboard permission failure.
+        const rendered=await result;
+        downloadBlob(rendered.png,rendered.name);
+        const {png,...meta}=rendered;
+        return {...meta,clipboard:false,clipboardError:String(e?.message||e)};
+      }
+    }
+    const rendered=await result;
+    downloadBlob(rendered.png,rendered.name);
+    const {png,...meta}=rendered;
+    return {...meta,clipboard:false,clipboardError:'Bildurklipp stöds inte av webbläsaren'};
   }
 
   window.LinaScreenshot=Object.freeze({capture});

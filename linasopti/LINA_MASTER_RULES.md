@@ -285,3 +285,8 @@ Före ZIP ska `LINA_RELEASE_CHECKLIST.md` gås igenom. Ny handoff ska ange att M
 
 ### STATE-ROUNDTRIP-01 — Checkpoint survives sync
 A persisted research checkpoint must survive asynchronous evidence/GitHub sync. If sync replaces local Engine state with a snapshot that lacks the just-observed family, restore the exact in-memory checkpoint and attach evidence; never recompute the observation.
+
+## Skärmbild i Chrome/Windows — permanent regel från V0.3.05
+- Ett klick på 📸 ska ge exakt ett resultat: kopierad PNG i bildurklipp, eller en nedladdad PNG om urklippet nekas eller saknas. Ingen dubbel leverans.
+- Begäran till urklippet måste initieras under klickets användaraktivering; asynkron rendering levererar sedan PNG via ClipboardItem-promise.
+- Renderingsfel ska ge Fel-status och får inte döljas som urklippsfel eller följas av en tom fil. Ingen research-, evidence-, Forward- eller Handelsstate ändras.

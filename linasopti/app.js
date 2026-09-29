@@ -115,7 +115,7 @@
         const r=await window.LinaScreenshot.capture();
         if(label)label.textContent=r.clipboard?'Kopierad ✓':'Sparad ✓';
         b.title=r.clipboard
-          ? `Hela Lina-vyn sparad + kopierad: ${r.name} · ${r.width}×${r.height}px · klistra in med ⌘V/Ctrl+V`
+          ? `Hela Lina-vyn kopierad: ${r.name} · ${r.width}×${r.height}px · klistra in med Ctrl+V`
           : `Hela Lina-vyn sparad: ${r.name} · ${r.width}×${r.height}px · urklipp ej tillgängligt (${r.clipboardError||'okänd orsak'})`;
         setTimeout(()=>{if(label)label.textContent=old},2200);
       }catch(e){

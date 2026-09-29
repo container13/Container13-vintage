@@ -246,3 +246,10 @@ Historical/frozen research version strings are excluded from this current-releas
 - [ ] Incoming `RESEARCH_RUNNING` med befintlig komplett familj validerar/skips den; test får inte anropa research för den familjen igen.
 
 - [ ] STATE-ROUNDTRIP-01: continuation with an already-observed family plus a newly observed family survives evidence/app-state sync without rerun or missing checkpoint.
+
+## V0.3.05 — Chrome/Windows 📸
+- [x] Urklippsbegäran startar under klickgesten; PNG-rendering levereras asynkront.
+- [x] Kopiering ger ingen parallell nedladdning; nekad/otillgänglig kopiering ger en PNG-nedladdning.
+- [x] Renderingsfel går till Fel och skapar inget falskt lyckat resultat.
+- [x] Central release och alla HTML-cachetokens är V0.3.05.
+- [ ] Faktiskt Chrome/Windows-klick med urklipp och nekad behörighet verifieras efter driftsättning.
