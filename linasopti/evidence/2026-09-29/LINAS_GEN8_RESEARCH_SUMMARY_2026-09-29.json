@@ -1,0 +1,132 @@
+{
+  "schema": "LINA-GEN8-RESEARCH-SUMMARY-1",
+  "release": "V0.3.04",
+  "planHash": "be68328d",
+  "runnerSpecHash": "d26e5499",
+  "families": [
+    {
+      "family": "Stabilitetsbalanserad riskregim",
+      "status": "FAIL",
+      "score": 182.35663486657705,
+      "oos": {
+        "n": 313,
+        "pl": 11769.421791688279,
+        "pf": 1.3264900555922374,
+        "dd": -0.045098128498201495,
+        "maxSingleSymbolGrossProfitShare": 0.5411060567166592,
+        "maxSymbolGrossProfitShare": 0.5411060567166592,
+        "positiveFolds": 3,
+        "grossProfit": 47817.75340270504,
+        "grossLoss": 36048.331611016765,
+        "stability": {
+          "maxPositiveFoldGrossProfitShare": 0.3838019787035333,
+          "minFoldProfitFactor": 0.028576895065953987,
+          "maxSelectedWeakExposure": 0.6,
+          "pass": false
+        }
+      },
+      "evidence": {
+        "status": "FROZEN · GITHUB ✓",
+        "name": "LINAS_GEN8_STABILITETSBALANSERAD_RISKREGIM_WALK_FORWARD_2026-09-29.json",
+        "githubPath": "linasopti/evidence/2026-09-29/LINAS_GEN8_STABILITETSBALANSERAD_RISKREGIM_WALK_FORWARD_2026-09-29.json",
+        "githubCommit": null,
+        "existingImmutable": true,
+        "verification": "SERVER_CONFIRMED_IMMUTABLE_EXISTS_409"
+      }
+    },
+    {
+      "family": "Subregim-robust trend",
+      "status": "FAIL",
+      "score": 181.50283107810094,
+      "oos": {
+        "n": 313,
+        "pl": 11619.248734319863,
+        "pf": 1.3202046135680026,
+        "dd": -0.046599859071885685,
+        "maxSingleSymbolGrossProfitShare": 0.5411060567166591,
+        "maxSymbolGrossProfitShare": 0.5411060567166591,
+        "positiveFolds": 3,
+        "grossProfit": 47906.198521981976,
+        "grossLoss": 36286.94978766212,
+        "stability": {
+          "maxPositiveFoldGrossProfitShare": 0.38309339791790525,
+          "minFoldProfitFactor": 0.04529980062656727,
+          "maxSelectedWeakExposure": 0,
+          "pass": false
+        }
+      },
+      "evidence": {
+        "status": "FROZEN · GITHUB ✓",
+        "name": "LINAS_GEN8_SUBREGIM_ROBUST_TREND_WALK_FORWARD_2026-09-29.json",
+        "githubPath": "linasopti/evidence/2026-09-29/LINAS_GEN8_SUBREGIM_ROBUST_TREND_WALK_FORWARD_2026-09-29.json",
+        "githubCommit": null,
+        "existingImmutable": true,
+        "verification": "SERVER_CONFIRMED_IMMUTABLE_EXISTS_409"
+      }
+    },
+    {
+      "family": "Diversifierad riskregim",
+      "status": "FAIL",
+      "score": 173.18706665248015,
+      "oos": {
+        "n": 378,
+        "pl": 31510.85694929764,
+        "pf": 1.3465970198029986,
+        "dd": -0.11963322606602156,
+        "maxSingleSymbolGrossProfitShare": 0.5411060567166591,
+        "maxSymbolGrossProfitShare": 0.5411060567166591,
+        "positiveFolds": 3,
+        "grossProfit": 122425.8249060562,
+        "grossLoss": 90914.96795675856,
+        "stability": {
+          "maxPositiveFoldGrossProfitShare": 0.3932921493391101,
+          "minFoldProfitFactor": 0.025724434539672988,
+          "maxSelectedWeakExposure": 0.5,
+          "pass": false
+        }
+      },
+      "evidence": {
+        "status": "FROZEN · GITHUB ✓",
+        "name": "LINAS_GEN8_DIVERSIFIERAD_RISKREGIM_WALK_FORWARD_2026-09-29.json",
+        "githubPath": "linasopti/evidence/2026-09-29/LINAS_GEN8_DIVERSIFIERAD_RISKREGIM_WALK_FORWARD_2026-09-29.json",
+        "githubCommit": "3a68fa986422b79c328a687afd4b455a46941bf9",
+        "existingImmutable": false,
+        "verification": null
+      }
+    },
+    {
+      "family": "Stabilitetsmedveten ensemble",
+      "status": "FAIL",
+      "score": 189.84131628680728,
+      "oos": {
+        "n": 418,
+        "pl": 13774.228343201534,
+        "pf": 1.3242605137393277,
+        "dd": -0.05194443312223873,
+        "maxSingleSymbolGrossProfitShare": 0.19172280475158648,
+        "maxSymbolGrossProfitShare": 0.19172280475158648,
+        "positiveFolds": 3,
+        "grossProfit": 56253.1234277711,
+        "grossLoss": 42478.895084569565,
+        "stability": {
+          "maxPositiveFoldGrossProfitShare": 0.33805696416879777,
+          "minFoldProfitFactor": 0.250823178280269,
+          "maxSelectedWeakExposure": 0.45,
+          "pass": false
+        }
+      },
+      "evidence": {
+        "status": "FROZEN · VÄNTAR PÅ SYNK",
+        "name": "LINAS_GEN8_STABILITETSMEDVETEN_ENSEMBLE_WALK_FORWARD_2026-09-29.json",
+        "syncError": "Rapporten är inte preliminär"
+      }
+    }
+  ],
+  "eligibleCount": 0,
+  "eligibleFamilies": [],
+  "decision": "NO_CANDIDATE_FOR_FORWARD",
+  "tradeEnabled": false,
+  "forwardOpened": false,
+  "createdAt": "2026-09-29T18:03:43.489Z",
+  "immutable": true
+}
