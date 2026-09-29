@@ -1,0 +1,66 @@
+{
+  "schema": "LINA-GEN8-PLAN-EVIDENCE-1",
+  "release": "V0.3.01",
+  "createdAt": "2026-09-29T05:35:04.188Z",
+  "planHash": "be68328d",
+  "plan": {
+    "schema": "LINA-GEN8-PLAN-PROPOSAL-1",
+    "sourceGeneration": 7,
+    "researchBoundary": "2024-12-31",
+    "tradeEnabled": false,
+    "forwardOpened": false,
+    "hypothesis": "Pröva om riskregim-idén kan göras stabil mellan OOS-folds genom att låta TRAIN-fasen välja för robusthet över flera fördefinierade delregimer, utan att justera eller köra om Gen7 efter facit.",
+    "sourceLearning": [
+      "Gen7 avslutades utan kandidat: samtliga fyra familjer föll den hash-låsta stabilitetskontrollen.",
+      "Stabilitetsensemblen hade 418 OOS-affärer, PF 1.32, DD 5.19 %, koncentration 19.17 % och 3/4 positiva folds, men sämsta foldens PF var cirka 0.25 och stabilitetsgaten föll.",
+      "Konservativ, balanserad och dynamisk riskregim hade dessutom koncentration över 40 %, medan stabilitetsensemblen höll koncentrationen klart under gränsen.",
+      "Gen8 är ett nytt preregistrerat experiment. Gen7-resultat eller parametrar får inte ändras eller återanvändas som nya Gen8-resultat."
+    ],
+    "preserve": [
+      "TRAIN-selektion före varje OOS-fold.",
+      "Risk-/regimstyrning och volatilitetsskalning före exekvering.",
+      "Gemensam portfölj/equity curve för kombinerade signaler.",
+      "Komplett variant/fold-evidens före continuation.",
+      "Samma historiska forskningsgräns 2024-12-31; observerad 2025–2026-data får inte bli ny holdout.",
+      "Deterministiskt kandidaturval med hash-låst ranking före research."
+    ],
+    "change": [
+      "Testa stabilitetsmedveten TRAIN-selektion som belönar jämnhet över fördefinierade TRAIN-delregimer i stället för högsta totalscore ensam.",
+      "Testa diversifierade kombinationer där ingen enskild regim-/exponeringsvariant får dominera portföljen.",
+      "Definiera exakt worst-fold/stabilitetskrav och tie-break i Gen8-runnerspec före research.",
+      "Ingen Gen7-parameter får justeras efter facit; Gen8 får eget namespace, planhash och runnerspec."
+    ],
+    "gates": {
+      "minOosTrades": 100,
+      "minPf": 1.2,
+      "maxDd": 0.12,
+      "positiveOos": true,
+      "maxConcentration": 0.4,
+      "minPositiveFolds": 3
+    },
+    "folds": [
+      [
+        "TRAIN 2020",
+        "OOS 2021"
+      ],
+      [
+        "TRAIN 2020–2021",
+        "OOS 2022"
+      ],
+      [
+        "TRAIN 2020–2022",
+        "OOS 2023"
+      ],
+      [
+        "TRAIN 2020–2023",
+        "OOS 2024"
+      ]
+    ],
+    "candidateRule": "Endast familjer som klarar samtliga ordinarie gates och en i runnerspecen förhandslåst stabilitetsgate får rankas. Exakt formel och tie-break låses före research.",
+    "decision": "APPROVED_AND_LOCKED"
+  },
+  "sourceGeneration": 7,
+  "tradeEnabled": false,
+  "forward": "NOT OPENED",
+  "immutable": true
+}
