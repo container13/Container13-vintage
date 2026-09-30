@@ -305,3 +305,13 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Gen9-förslag i Engine och Fler exporter; ingen kör-/låsknapp.
 - [ ] Chrome-visuell kontroll återstår.
 - [ ] Produktions-persist/resume/evidens, verifierad verklig data och plan/runnerspeclås återstår före forskning.
+
+## V0.3.12 — Gen9-kedja
+- [x] MASTER RULES, handoff och faktisk V0.3.11-bas lästa/använda.
+- [x] Separata mänskliga plan/start/frysbeslut. Gen7/8 byte-identiska.
+- [x] Syntetiskt syncfel följt av resume utan research-rerun.
+- [x] Gen9-monoton merge: äldre remote, kompletterande checkpointrefs och konfliktblockering.
+- [x] Saknad checkpoint stoppar; inga nya Worker-nycklar införda.
+- [x] 11 metodfall + 9 tidigare regressionfall; JS/ZIP/manifest kontrollerade.
+- [ ] Verklig datajustering och kalender verifierade — återstår, datagate blockerar.
+- [ ] Verklig browser/Worker/evidence roundtrip — återstår.

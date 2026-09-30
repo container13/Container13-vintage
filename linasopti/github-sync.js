@@ -44,8 +44,22 @@ function generationProgress(raw){
 }
 function mergeGenerationEntry(l,r){
  const lp=generationProgress(l?.value),rp=generationProgress(r?.value);
- if(lp>rp)return l;if(rp>lp)return r;
- const ls=l?.stamp||'',rs=r?.stamp||''; return ls>=rs?l:r;
+ const picked=lp>rp?l:rp>lp?r:(l?.stamp||'')>=(r?.stamp||'')?l:r;
+ const left=JSON.parse(l.value),right=JSON.parse(r.value),a=left.gen9,b=right.gen9;
+ if(!a&&!b)return picked;
+ if(a?.specSha256&&b?.specSha256&&a.specSha256!==b.specSha256)throw Error('Gen9 synkkonflikt: olika låsta experiment');
+ if(a?.dataManifest&&b?.dataManifest&&JSON.stringify(a.dataManifest)!==JSON.stringify(b.dataManifest))throw Error('Gen9 synkkonflikt: olika dataset');
+ const rank=g=>g?.summaryFreeze?.frozen?5:g?.summary?4:g?.researchOpened?3:g?.dataEvidence?2:g?.planLocked?1:0;
+ const newer=rank(a)>=rank(b)?a:b,older=newer===a?b:a;
+ const g={...(older||{}),...(newer||{}),checkpoints:{...(b?.checkpoints||{}),...(a?.checkpoints||{})},observationAttempts:{...(b?.observationAttempts||{}),...(a?.observationAttempts||{})}};
+ for(const key of Object.keys(a?.checkpoints||{}))if(b?.checkpoints?.[key]){
+  const x=a.checkpoints[key],y=b.checkpoints[key];if(x.resultSha256!==y.resultSha256)throw Error('Gen9 synkkonflikt: olika observerade resultat '+key);
+  g.checkpoints[key]={...y,...x,evidence:x.evidence||y.evidence};
+ }
+ g.planEvidence=a?.planEvidence||b?.planEvidence;g.dataEvidence=a?.dataEvidence||b?.dataEvidence;
+ g.tradeEnabled=false;g.forwardOpened=false;
+ const out=JSON.parse(picked.value);out.gen9=g;
+ return{value:JSON.stringify(out),stamp:picked.stamp};
 }
 function merge(local,remote){const out={...(remote?.entries||{})};for(const [k,l] of Object.entries(local.entries||{})){const r=out[k];if(!r){out[k]=l;continue}if(r.value===l.value)continue;if(k==='lina_clean_gen4_engine_v0261'){const m=mergeGen4Entry(l,r);if(m){out[k]=m;continue}}if(k===GENERATION_KEY){out[k]=mergeGenerationEntry(l,r);continue}if(l.stamp&&r.stamp){if(l.stamp>r.stamp)out[k]=l;else if(l.stamp===r.stamp)throw new Error('Synkkonflikt: '+k);continue}throw new Error('Synkkonflikt utan tidsstämpel: '+k)}return {schema:'LINA-APP-SYNC-1',release:RELEASE,tradeEnabled:false,exportedAt:new Date().toISOString(),entries:out}}
 function apply(p){for(const [k,x] of Object.entries(p?.entries||{})){if(eligible(k)&&typeof x?.value==='string'&&x.value.length<=MAX_ENTRY)localStorage.setItem(k,x.value)}}
@@ -91,7 +105,7 @@ function safeRecoveryMerge(local,remote){
 }
 async function get(){let r,raw='',j={};try{diag('app-state-request',{method:'GET',endpoint:API+'/app-state'});r=await fetch(API+'/app-state',{cache:'no-store'});raw=await r.text();try{j=raw?JSON.parse(raw):{}}catch{}diag('app-state-response',{method:'GET',httpStatus:r.status,httpStatusText:r.statusText||'',ok:r.ok,apiOk:Boolean(j.ok),response:raw.slice(0,4000)});if(!r.ok||!j.ok)throw new Error(j.error||('HTTP '+r.status));return j}catch(e){diag('app-state-error',{method:'GET',httpStatus:r?.status??null,message:String(e?.message||e),response:raw.slice(0,4000)});throw e}}
 async function put(p){const c=code();if(!c){diag('app-state-blocked',{method:'POST',reason:'SESSION_MISSING'});throw new Error('Lina-session saknas – logga in igen')}const body=JSON.stringify(p);let r,raw='',j={};try{diag('app-state-request',{method:'POST',endpoint:API+'/app-state',bodyBytes:new Blob([body]).size,entryCount:Object.keys(p?.entries||{}).length});r=await fetch(API+'/app-state',{method:'POST',headers:{'Content-Type':'application/json','X-Lina-Login-Code':c},body});raw=await r.text();try{j=raw?JSON.parse(raw):{}}catch{}diag('app-state-response',{method:'POST',httpStatus:r.status,httpStatusText:r.statusText||'',ok:r.ok,apiOk:Boolean(j.ok),response:raw.slice(0,4000)});if(!r.ok||!j.ok)throw new Error(j.error||('HTTP '+r.status));return j}catch(e){diag('app-state-error',{method:'POST',httpStatus:r?.status??null,message:String(e?.message||e),response:raw.slice(0,4000)});throw e}}
-async function syncAll(){// Forward har egen strikt merge och är en del av helsynken.
+async function syncAll(){if(window.LinaGen9Busy)throw new Error("Gen9 checkpoint/evidens pågår; app-state-synk pausad"); // Forward har egen strikt merge och är en del av helsynken.
   if(window.LinaForwardCenter){await window.LinaForwardCenter.remotePull();await window.LinaForwardCenter.remotePush()}
   const local=collect(), remote=await get(), merged=merge(local,remote.state||null);const wr=await put(merged);apply(wr.state||merged);const evidence=window.LinaEvidence?await window.LinaEvidence.syncApproved():0;return {ok:true,keys:Object.keys((wr.state||merged).entries||{}).length,evidence}}
 function hasSameAppEntries(merged,remote){
@@ -141,7 +155,7 @@ async function bootstrap(progress){
 }
 let autoTimer=null,autoBusy=false;
 function queueSync(){
-  clearTimeout(autoTimer);autoTimer=setTimeout(async()=>{const g4=(()=>{try{return JSON.parse(localStorage.getItem('lina_clean_gen4_engine_v0261')||'null')}catch{return null}})(),ge=(()=>{try{return JSON.parse(localStorage.getItem('lina_generation_engine_v0273')||'null')}catch{return null}})();if(g4?.automation?.status==='RUNNING'||ge?.gen5?.automation?.status==='RUNNING'||ge?.gen6?.automation?.status==='RUNNING'||(ge?.gen7?.automation?.status==='RUNNING'||ge?.gen7?.recovery?.status==='RUNNING'))return;if(window.LinaRecoveryBusy||autoBusy||!code())return;autoBusy=true;try{await syncAll();document.dispatchEvent(new CustomEvent('lina:autosync-ok'))}catch(e){console.warn('Lina autosync stoppad:',e);document.dispatchEvent(new CustomEvent('lina:autosync-fail',{detail:{message:String(e?.message||e)}}))}finally{autoBusy=false}},700);
+  clearTimeout(autoTimer);autoTimer=setTimeout(async()=>{const g4=(()=>{try{return JSON.parse(localStorage.getItem('lina_clean_gen4_engine_v0261')||'null')}catch{return null}})(),ge=(()=>{try{return JSON.parse(localStorage.getItem('lina_generation_engine_v0273')||'null')}catch{return null}})();if(g4?.automation?.status==='RUNNING'||ge?.gen5?.automation?.status==='RUNNING'||ge?.gen6?.automation?.status==='RUNNING'||(ge?.gen7?.automation?.status==='RUNNING'||ge?.gen7?.recovery?.status==='RUNNING'))return;if(window.LinaGen9Busy||window.LinaRecoveryBusy||autoBusy||!code())return;autoBusy=true;try{await syncAll();document.dispatchEvent(new CustomEvent('lina:autosync-ok'))}catch(e){console.warn('Lina autosync stoppad:',e);document.dispatchEvent(new CustomEvent('lina:autosync-fail',{detail:{message:String(e?.message||e)}}))}finally{autoBusy=false}},700);
 }
 document.addEventListener('lina:gen2change',queueSync);
 document.addEventListener('lina:evidence-changed',queueSync);

@@ -66,8 +66,8 @@ function proposal(){return{schema:'LINA-GEN9-BUILD-PROPOSAL-1',release:global.Li
 // No fetch, storage, plan locking or research orchestration in this pre-lock build.
 function mount(root){
  const anchor=root.querySelector('.engine-export-panel');if(!anchor)return;
- const section=document.createElement('section');section.className='workspace';
- section.innerHTML='<h2>Gen9 · byggd för metodgranskning</h2><p>Plan och runnerspec är inte låsta. Ingen forskning eller handel startas här.</p><p>A: fast trendmodell utan köpstopp. B: samma modell, men inga nya köp när färre än 5 av 16 aktier ligger över SMA180.</p><p>Fast signal: utbrott över 50 dagar + SMA180. Innehav: 12 handelsdagar. Daglig portföljvärdering och strikt periodslut.</p><p>Historiken är observerad utvecklingsdata. B kan kvalificera sig endast om alla gates klaras; A är kontroll.</p><p>Metodtester: 11 syntetiska fall godkända vid bygge. Verklig forskning och browserkontroll återstår.</p><p>Nästa beslut: granska slutligt kontrakt före planlås.</p>';
+ const section=document.createElement('section');section.className='workspace';section.setAttribute('data-gen9-build','');
+ section.innerHTML='<h2>Gen9 · byggd för metodgranskning</h2><p>Gen9 har separata beslut för planlås, forskningsstart och sammanfattningsfrysning. Handel är AV.</p><p>A: fast trendmodell utan köpstopp. B: samma modell, men inga nya köp när färre än 5 av 16 aktier ligger över SMA180.</p><p>Fast signal: utbrott över 50 dagar + SMA180. Innehav: 12 handelsdagar. Daglig portföljvärdering och strikt periodslut.</p><p>Historiken är observerad utvecklingsdata. B kan kvalificera sig endast om alla gates klaras; A är kontroll.</p><p>Metodtester: 11 syntetiska fall godkända vid bygge. Verklig forskning och browserkontroll återstår.</p><p>Granska och exportera kontraktet före planlås.</p>';
  anchor.after(section);
  const button=document.createElement('button');button.textContent='📥 Exportera Gen9-planförslag';button.onclick=()=>global.LinaStatusExport?.downloadObject?.('LINA_GEN9_PLAN_PROPOSAL',proposal());anchor.querySelector('.engine-export-more').appendChild(button);
 }

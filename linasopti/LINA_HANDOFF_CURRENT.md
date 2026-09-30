@@ -1,10 +1,10 @@
 # LINA — AKTUELL HANDOFF / STATUS
 
-Aktuell release: V0.3.11
+Aktuell release: V0.3.12
 Uppdaterad: 2026-09-30
 
 ## Aktuellt säkert läge
-- Webbversion V0.3.11; Gen9 beräkningsmodul och olåst förslagsvy tillagda.
+- Webbversion V0.3.12; Gen9 beräkningsmodul och olåst förslagsvy tillagda.
 - Handel AV, Gen8 Forward inte öppnad. Gen7 och Gen8 är frysta och får aldrig köras om.
 - Auktoritativa exporter: LINA_GENERATION_ENGINE_2026-09-29_214132.json och LINA_GEN8_FROZEN_RESEARCH_2026-09-29_214134.json.
 - Gen8: GEN8_COMPLETE_NO_CANDIDATE_GEN9_BASIS_READY. Plan be68328d, runnerspec d26e5499; fyra FAIL, ingen kandidat, summary fryst.
@@ -85,3 +85,9 @@ Lokal nästa bas inkluderar dokumentationen; tidigare V0.3.10-lagring blev block
 ## V0.3.11 — Gen9 metodbygge före lås
 Användaren godkände implementation/test, inte planlås eller forskningsstart. gen9-generation-engine.js är isolerad och skriver inte state, hämtar inte priser och anropar inte äldre generationer. Ren simulator jämför A/B, loggar affärer/skippade signaler/equity, håller periodgränser, kostnader, positionstak och mark-to-market-DD. Endast B kandidatberättigad. SPEC status NOT_LOCKED; FNV för förslagets identitet är inte lås eller kryptografiskt evidensbevis.
 Elva syntetiska metodtester och nio befintliga startup/evidence-regressionfall godkända. Syntax för alla toppnivå-JS och ZIP kontrollerade. Ingen verklig forskning eller Chrome-verifiering utförd. Produktionskedja för planlås, evidens och resume återstår före research; UI visar bara förslag och export.
+
+## V0.3.12 — Gen9 arbetskedja
+Separata UI-handlingar: planlås med evidens; datamanifest/import och evidens; forskningsstart/återupptagning; resultatexport; sammanfattningsfrysning. Inget av detta har utförts på användarens forskningsstate.
+Checkpointlagring i egen IndexedDB begränsar app-state-storlek. Checkpoints och påbörjade observationer kan inte tappas genom Gen9-monoton merge. Saknat/korrupt checkpoint eller 409 utan innehållslikhet stoppar; ingen research-rekonstruktion/rerun.
+Workflow- och synkmergetester godkända med fake IndexedDB/evidens och syntetiska beräkningsresultat. Verklig data, Worker/evidence roundtrip och Chrome har inte verifierats. Eleven simulator cases + nine prior regression cases passed. Datakvalitet är faktisk blocker före live research; ingen automatisk import av gammal overifierad cache.
+Äldre V0.3.11-status om avsaknad av orkestrering är historisk; kandidatfrysning och GitHub-recovery för borttappade lokala råcheckpoints återstår.
