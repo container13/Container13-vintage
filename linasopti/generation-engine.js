@@ -185,7 +185,7 @@ function installExportPanel(root,x){
    window.LinaStatusExport.downloadObject('LINA_GEN8_FROZEN_RESEARCH',E.frozenResearchExport());
   }catch(e){alert(String(e?.message||e))}
  };
- main.appendChild(resultButton);
+ (window.LinaGen9Engine?more:main).appendChild(resultButton);
  for(const generation of [7,6,5]){
   const E=window['LinaGen'+generation+'Engine'];
   if(!x['gen'+generation]?.summaryFreeze?.frozen||!E?.frozenResearchExport)continue;

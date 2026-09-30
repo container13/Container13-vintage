@@ -25,7 +25,7 @@ async function check(onProgress=()=>{}){
  report.finishedAt=new Date().toISOString();global.sessionStorage.setItem(KEY,JSON.stringify(report));onProgress('Datakällkontroll klar · exportera rapporten');return report;
  }finally{running=false}
 }
-function mount(root){const section=root.querySelector('[data-gen9-build]'),panel=root.querySelector('.engine-export-more');if(!section||!panel)return;
+function mount(root){const section=root.querySelector('[data-gen9-build]'),panel=root.querySelector('.engine-export-primary');if(!section||!panel)return;
  const info=document.createElement('p');info.setAttribute('aria-live','polite');const old=saved();info.textContent=old?'Datakällrapport finns att exportera.':'Kontrollera datakällan före planlås. Kontrollen läser prisdata och ändrar inget forskningsstate.';
  const button=document.createElement('button');button.textContent='🔎 Kontrollera Gen9-datakälla';section.append(button,info);
  const exp=document.createElement('button');exp.textContent='📥 Exportera Gen9-datakällkontroll';exp.disabled=!old;panel.append(exp);

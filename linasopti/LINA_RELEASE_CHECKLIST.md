@@ -322,3 +322,9 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Fyra schema-/diagnostikfall godkända. Ingen metadataflagga ger automatiskt datagodkännande.
 - [x] JS-syntax, HTML-cachetokens, ZIP och manifest kontrollerade.
 - [ ] Faktiska API-svar/browser verifieras med rapporten från användarens miljö.
+
+## V0.3.14 — exporter
+- [x] Gen9-exporter synliga; äldre Gen8-resultat under Fler exporter.
+- [x] Exporthandlers bevarade; ingen forskning/state ändrad.
+- [x] Syntax, exportcontainrar och ZIP/manifest kontrollerade.
+- [ ] Visuell browserkontroll efter deploy återstår.

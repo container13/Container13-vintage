@@ -1,6 +1,6 @@
 # LINA — AKTUELL HANDOFF / STATUS
 
-Aktuell release: V0.3.13
+Aktuell release: V0.3.14
 Uppdaterad: 2026-09-30
 
 ## Aktuellt säkert läge
@@ -96,3 +96,6 @@ Workflow- och synkmergetester godkända med fake IndexedDB/evidens och syntetisk
 Worker-kopian läser Yahoo quote OHLC men vidarebefordrar inte adjclose/split/utdelningsunderlag; kopian bevisar inte driftsatt Worker-kod. API-probe här blockerades av nätverk. Ingen Worker ändrad.
 Ny knapp före planlås läser AMD 2020 från två befintliga Worker-endpoints (Yahoo/EODHD), timeout 20 s per källa. Rapport med HTTP-status, schema, tre exempelrader och verifieringsluckor sparas endast i sessionStorage och exporteras under Fler exporter. Ingen research, localStorage-state, lås eller evidens ändras.
 Rapporten är diagnostik, aldrig datagodkännande. Full prisjusterings-/kalenderverifiering och datapaket återstår. Fyra diagnostikfall och JS/ZIP/manifest kontrollerade. Browserutfall återstår; användaren kör Kontrollera Gen9-datakälla och exporterar JSON för nästa verifiering.
+
+## V0.3.14 — aktuell generations exporter synliga
+Gen9-plan, Gen9-state/resultat och Gen9-datakällkontroll placeras i synlig primärpanel. Gen8-resultat flyttas till Fler exporter. Ingen handler eller forskningslogik ändrad; enbart målcontainer för exportknappar. Användarens bild bekräftade felplaceringen i V0.3.13. JS-syntax, målcontainer, ZIP och manifest kontrollerade; browserutseende efter uppgradering återstår.

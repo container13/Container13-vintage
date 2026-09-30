@@ -311,7 +311,7 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 ## Användarpreferens — exporter längst upp (2026-09-29)
 - Exporter ska vara enkla att hitta och samlade längst upp i den relevanta huvudvyn, direkt under rubriken. Huvudexporten ska vara tydlig; övriga exporter samlas under en utfällbar Fler exporter.
 - Samma exportåtgärd ska inte dupliceras längre ned. Befintliga exportfunktioner och forskningsspärrar bevaras när knappar flyttas.
-- I Generation Engine: Exportera aktuell forskningsstatus och Exportera Gen8-resultat är huvudknappar. Planer, runnerspec och äldre frysta resultat ligger under Fler exporter.
+- I Generation Engine: aktuell forskningsstatus och exporter för senaste aktiva generationen ligger synliga. Äldre generationers planer, runnerspec och resultat samlas under Fler exporter. När Gen9 är aktuell ska dess plan, state/resultat och datakällkontroll vara synliga; Gen8-resultat flyttas till Fler exporter.
 
 
 ## Forskningsgranskning inför Gen9 — 2026-09-30
