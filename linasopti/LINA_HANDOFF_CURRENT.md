@@ -1,15 +1,15 @@
 # LINA — AKTUELL HANDOFF / STATUS
 
 Aktuell release: V0.3.10
-Uppdaterad: 2026-09-29
+Uppdaterad: 2026-09-30
 
 ## Aktuellt säkert läge
-- Handel AV.
-- Gen7 är immutable och får aldrig rerunnas.
-- Gen8-plan `be68328d` är låst.
-- Gen8 runnerspec `d26e5499` är låst och Engine verifierad. Gen8 står i `RESEARCH_RUNNING`; minst första familjen är observerad/checkpointad och får aldrig rerunnas.
-- Senaste exporterade Engine-state visar Robotmognad 70/100. Gen8 continuation stoppades tekniskt efter att forskning redan börjat; V0.3.04 inför Resume Never Replay och fortsätter endast från första ofärdiga säkra steg.
-- G2 och G3 Real Forward fortsätter separat som paper/forward och får inte påverka frysta forskningsregler.
+- Webbversion V0.3.10; detta är en dokumentationsändring, ingen ny kodrelease.
+- Handel AV, Gen8 Forward inte öppnad. Gen7 och Gen8 är frysta och får aldrig köras om.
+- Auktoritativa exporter: LINA_GENERATION_ENGINE_2026-09-29_214132.json och LINA_GEN8_FROZEN_RESEARCH_2026-09-29_214134.json.
+- Gen8: GEN8_COMPLETE_NO_CANDIDATE_GEN9_BASIS_READY. Plan be68328d, runnerspec d26e5499; fyra FAIL, ingen kandidat, summary fryst.
+- Gen9: BASIS_READY_PLAN_NOT_DEFINED. LINA_GEN9_PLAN_PROPOSAL.md är olåst och ändrar inget app-state.
+- Robotmognad 70/100 enligt export. Äldre RESEARCH_RUNNING-noteringar nedan är historiska.
 
 ## V0.3.01 — bekvämlighet utan forskningsändring
 - Global 📸 Bild-knapp i headern.
@@ -75,3 +75,9 @@ Bootstrap hoppar nu över POST när exakt samma app-innehåll redan finns i veri
 ## V0.3.10 — forskningsexport längst upp
 Exporter ligger i egen panel direkt efter Engine-rubriken: Exportera aktuell forskningsstatus + Exportera Gen8-resultat. Övriga exportknappar (planer, runnerspec, äldre frysta resultat) finns under stängd Fler exporter. Befintliga knappar flyttas före eventbindning och dubbla export-ID tas bort. Gen8-resultatknappen använder befintlig frozenResearchExport utan researchstart.
 V0.3.09 startoptimering verifierades i användarens Chrome: oförändrat state sparas inte, bootstrap 1,4 s. Gen8 är enligt användaren avslutad och får aldrig köras om. Nästa forskningsarbete kräver aktuell full Engine-export för analys; äldre RESEARCH_RUNNING-beskrivningar ovan är historiska.
+
+## Granskning 2026-09-30
+MASTER RULES, handoff, checklist och berörd Gen8-kod lästa. Faktisk lokal V0.3.10 COMPLETE ZIP kontrollerad mot berörda filer före ändring.
+Inför 2022 får samtliga Gen8-alternativ +20 stabilitetsbonus utan avdrag; samma parametrar som Gen7 väljs. TRAIN-simulering har tillgång till testårets priser och begränsar endast signaldatum, vilket kan låta senare avslut påverka TRAIN. Faktisk omfattning kan inte fastställas från exporter utan affärslogg.
+Endast regler, handoff, checklist och nytt olåst Gen9-planförslag ändrade. Ingen JavaScript-ändring, forskning, låsning eller deploy. Dokumentationspaket jämfört mot V0.3.10-basen och ZIP-innehåll verifierat.
+Lokal nästa bas inkluderar dokumentationen; tidigare V0.3.10-lagring blev blockerad, därför görs inget påstående om uppdaterad fjärrbas.

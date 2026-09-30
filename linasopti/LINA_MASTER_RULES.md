@@ -312,3 +312,13 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Exporter ska vara enkla att hitta och samlade längst upp i den relevanta huvudvyn, direkt under rubriken. Huvudexporten ska vara tydlig; övriga exporter samlas under en utfällbar Fler exporter.
 - Samma exportåtgärd ska inte dupliceras längre ned. Befintliga exportfunktioner och forskningsspärrar bevaras när knappar flyttas.
 - I Generation Engine: Exportera aktuell forskningsstatus och Exportera Gen8-resultat är huvudknappar. Planer, runnerspec och äldre frysta resultat ligger under Fler exporter.
+
+
+## Forskningsgranskning inför Gen9 — 2026-09-30
+- TRAIN får endast använda information till och med träningsperiodens slut. Signal-, entry- och exitgränser måste definieras separat; framtida avslut får aldrig påverka TRAIN-urval.
+- En ny urvalsregel verifieras mot faktisk ranking och valda parametrar. Likadan bonus till alla alternativ ändrar inte rangordningen.
+- Familjenamn bevisar inte metod: kontrollera faktisk signalvariation, köpstopp, riskexponering och komponenternas gemensamma beroenden.
+- Frysta exporter används för analys före nya experiment. Observerad historik är utvecklingsdata, aldrig ny unseen holdout.
+- Drawdown måste ange om den bygger på avslutade affärer eller löpande mark-to-market. Dessa mått får inte presenteras som likvärdiga.
+- Granskning av metodbrister ändrar aldrig tidigare fryst evidens, gates eller resultat. Rättningar görs i en ny, förhandslåst generation.
+- Gen9-parametrar nedan är endast förslag tills uttryckligt planbeslut; inget planlås eller researchstart följer av dokumentationen.

@@ -287,3 +287,13 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Gen8-resultatexport spärras om sammanfattningen inte är fryst.
 - [x] JavaScript-syntax, HTML-cachetokens, ZIP och manifest kontrollerade.
 - [ ] Visuell kontroll av exportpanelen i användarens Chrome efter deploy.
+
+## Dokumentationspaket 2026-09-30 — Gen9 olåst förslag
+- [x] MASTER RULES, handoff, faktisk kod och inkommande exporter granskade.
+- [x] Berörda filer matchade verifierad lokal V0.3.10 COMPLETE före ändring.
+- [x] Forskningsstate, äldre evidens, JavaScript, Handel och Forward oförändrade.
+- [x] CHANGED FILES ONLY innehåller fyra dokument; inga körbara ändringar.
+- [x] ZIP CRC, exakta ändringar och lokal COMPLETE kontrollerade.
+- [ ] Gen9-plan mänskligt godkänd och låst — inte gjort.
+- [ ] Gen9-motor implementerad och syntetiska metodtester godkända — inte gjort.
+- JavaScript-/browser-/state-tester är inte nya verifieringar i detta dokumentationspaket.
