@@ -297,3 +297,11 @@ Historical/frozen research version strings are excluded from this current-releas
 - [ ] Gen9-plan mänskligt godkänd och låst — inte gjort.
 - [ ] Gen9-motor implementerad och syntetiska metodtester godkända — inte gjort.
 - JavaScript-/browser-/state-tester är inte nya verifieringar i detta dokumentationspaket.
+
+## V0.3.11 — Gen9 metodbygge
+- [x] Faktisk V0.3.10-bas och uppdaterade styrdokument användes; äldre generationskod bevarad byte-identiskt.
+- [x] Elva syntetiska metodfall; nio startup/evidence-regressionfall godkända.
+- [x] Toppnivå-JS syntax, HTML-scriptfiler/cachetokens och ZIP/diff kontrollerade.
+- [x] Gen9-förslag i Engine och Fler exporter; ingen kör-/låsknapp.
+- [ ] Chrome-visuell kontroll återstår.
+- [ ] Produktions-persist/resume/evidens, verifierad verklig data och plan/runnerspeclås återstår före forskning.

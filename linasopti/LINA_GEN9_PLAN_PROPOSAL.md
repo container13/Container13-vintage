@@ -1,6 +1,6 @@
 # LINA Gen9 — planförslag för granskning
 
-Status: PROPOSAL / NOT_LOCKED. Datum 2026-09-30. Ingen planhash, runnerspec, kandidat, forskning eller Forward skapas av detta dokument.
+Status: PROPOSAL / NOT_LOCKED. Implementation och syntetiska tester godkända som arbetsuppgift 2026-09-30; slutligt planlås återstår. Datum 2026-09-30. Ingen planhash, runnerspec, kandidat, forskning eller Forward skapas av detta dokument.
 
 ## Fråga och hypotes
 Kan ett förutbestämt köpstopp vid svag marknadsbredd förbättra robustheten hos en lång trendmodell jämfört med samma modell utan köpstopp?
@@ -31,7 +31,7 @@ Rådata ska ha dokumenterad källa, justeringsstatus och hash före experiment. 
 
 ## Gates och kandidatval — ingen lättnad
 Minst 100 avslutade OOS-affärer totalt; PF >=1.20; positiv total P/L; största fold mark-to-market-DD <=12%; största single-symbol gross-profit share inom varje fold <=40%; minst 3 positiva folds; varje fold PF >=0.80; största folds andel av summerad bruttovinst <=55%. Svagregimexponering <=0.65 gäller filtervarianten (0); kontrollens avsaknad av regimfilter redovisas uttryckligen som kontroll, den är inte kandidatberättigad under detta kontrakt.
-PF vid noll bruttovinst/noll bruttoförlust = ej definierad; inga affärer i en fold innebär att robusthetsgate inte klaras. En helt kontant period kan alltså inte rädda en kandidat. Ingen efterhandsändring av denna regel.
+PF vid noll bruttovinst/noll bruttoförlust = ej definierad. Positiv bruttovinst med noll bruttoförlust redovisas som NO_LOSSES och klarar PF-gränsen utan numeriskt ersättningsvärde; inga affärer i en fold innebär att robusthetsgate inte klaras. En helt kontant period kan alltså inte rädda en kandidat. Ingen efterhandsändring av denna regel.
 B är kandidatberättigad endast om alla gates klaras. A är diagnostisk kontroll. Rapportera bådas resultat och skillnader även om B är sämre; kandidatfrysning kräver separat mänskligt beslut. Rankingformeln behöver inte ändras eftersom endast en variant är kandidatberättigad.
 Detta upplägg byter mätmetod för DD jämfört med Gen8, vilket måste framgå; tidigare evidens rättas aldrig retroaktivt.
 
@@ -42,3 +42,7 @@ Granska och godkänn detta fullständiga kontrakt. Bygg sedan motor och verifier
 ## Begränsning och nästa mänskliga beslut
 Detta är ett avgränsat metodexperiment, inte bevis om framtida lönsamhet. Val av regler efter kännedom om 2022 ger risk för anpassning till känd historik. Verklig Forward startar först efter relevant kandidatfrysning och får aldrig backdateras.
 Godkänn eller justera planförslaget före implementation/lås. Gen7/8, tidigare kandidater och separata Forward-flöden ändras inte. Handel förblir AV.
+
+## Byggstatus V0.3.11
+Ren beräkningsmodul och Gen9-förslagsvy implementerade; inga nätverksanrop, state-skrivningar, lås eller körknappar införda. Elva syntetiska metodfall godkända. Dataförkontroll kräver verifierad justeringsstatus/kalender/källa och matchande SHA256 över kanoniska normaliserade OHLC-data till historisk gräns.
+Persist/resume/evidence-orkestrering och planlås är ännu inte införda och måste verifieras före verklig forskning. Automatisk corporate-action-verifiering är inte implementerad; ett intygat metadatafält ensamt bevisar inte datakvalitet. Verklig browserkontroll återstår.

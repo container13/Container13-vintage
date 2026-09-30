@@ -1,10 +1,10 @@
 # LINA — AKTUELL HANDOFF / STATUS
 
-Aktuell release: V0.3.10
+Aktuell release: V0.3.11
 Uppdaterad: 2026-09-30
 
 ## Aktuellt säkert läge
-- Webbversion V0.3.10; detta är en dokumentationsändring, ingen ny kodrelease.
+- Webbversion V0.3.11; Gen9 beräkningsmodul och olåst förslagsvy tillagda.
 - Handel AV, Gen8 Forward inte öppnad. Gen7 och Gen8 är frysta och får aldrig köras om.
 - Auktoritativa exporter: LINA_GENERATION_ENGINE_2026-09-29_214132.json och LINA_GEN8_FROZEN_RESEARCH_2026-09-29_214134.json.
 - Gen8: GEN8_COMPLETE_NO_CANDIDATE_GEN9_BASIS_READY. Plan be68328d, runnerspec d26e5499; fyra FAIL, ingen kandidat, summary fryst.
@@ -81,3 +81,7 @@ MASTER RULES, handoff, checklist och berörd Gen8-kod lästa. Faktisk lokal V0.3
 Inför 2022 får samtliga Gen8-alternativ +20 stabilitetsbonus utan avdrag; samma parametrar som Gen7 väljs. TRAIN-simulering har tillgång till testårets priser och begränsar endast signaldatum, vilket kan låta senare avslut påverka TRAIN. Faktisk omfattning kan inte fastställas från exporter utan affärslogg.
 Endast regler, handoff, checklist och nytt olåst Gen9-planförslag ändrade. Ingen JavaScript-ändring, forskning, låsning eller deploy. Dokumentationspaket jämfört mot V0.3.10-basen och ZIP-innehåll verifierat.
 Lokal nästa bas inkluderar dokumentationen; tidigare V0.3.10-lagring blev blockerad, därför görs inget påstående om uppdaterad fjärrbas.
+
+## V0.3.11 — Gen9 metodbygge före lås
+Användaren godkände implementation/test, inte planlås eller forskningsstart. gen9-generation-engine.js är isolerad och skriver inte state, hämtar inte priser och anropar inte äldre generationer. Ren simulator jämför A/B, loggar affärer/skippade signaler/equity, håller periodgränser, kostnader, positionstak och mark-to-market-DD. Endast B kandidatberättigad. SPEC status NOT_LOCKED; FNV för förslagets identitet är inte lås eller kryptografiskt evidensbevis.
+Elva syntetiska metodtester och nio befintliga startup/evidence-regressionfall godkända. Syntax för alla toppnivå-JS och ZIP kontrollerade. Ingen verklig forskning eller Chrome-verifiering utförd. Produktionskedja för planlås, evidens och resume återstår före research; UI visar bara förslag och export.
