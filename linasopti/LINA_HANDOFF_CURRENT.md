@@ -1,10 +1,10 @@
 # LINA — AKTUELL HANDOFF / STATUS
 
-Aktuell release: V0.3.12
+Aktuell release: V0.3.13
 Uppdaterad: 2026-09-30
 
 ## Aktuellt säkert läge
-- Webbversion V0.3.12; Gen9 beräkningsmodul och olåst förslagsvy tillagda.
+- Webbversion V0.3.13; Gen9 beräkningsmodul och olåst förslagsvy tillagda.
 - Handel AV, Gen8 Forward inte öppnad. Gen7 och Gen8 är frysta och får aldrig köras om.
 - Auktoritativa exporter: LINA_GENERATION_ENGINE_2026-09-29_214132.json och LINA_GEN8_FROZEN_RESEARCH_2026-09-29_214134.json.
 - Gen8: GEN8_COMPLETE_NO_CANDIDATE_GEN9_BASIS_READY. Plan be68328d, runnerspec d26e5499; fyra FAIL, ingen kandidat, summary fryst.
@@ -91,3 +91,8 @@ Separata UI-handlingar: planlås med evidens; datamanifest/import och evidens; f
 Checkpointlagring i egen IndexedDB begränsar app-state-storlek. Checkpoints och påbörjade observationer kan inte tappas genom Gen9-monoton merge. Saknat/korrupt checkpoint eller 409 utan innehållslikhet stoppar; ingen research-rekonstruktion/rerun.
 Workflow- och synkmergetester godkända med fake IndexedDB/evidens och syntetiska beräkningsresultat. Verklig data, Worker/evidence roundtrip och Chrome har inte verifierats. Eleven simulator cases + nine prior regression cases passed. Datakvalitet är faktisk blocker före live research; ingen automatisk import av gammal overifierad cache.
 Äldre V0.3.11-status om avsaknad av orkestrering är historisk; kandidatfrysning och GitHub-recovery för borttappade lokala råcheckpoints återstår.
+
+## V0.3.13 — läsande Gen9-datakällkontroll
+Worker-kopian läser Yahoo quote OHLC men vidarebefordrar inte adjclose/split/utdelningsunderlag; kopian bevisar inte driftsatt Worker-kod. API-probe här blockerades av nätverk. Ingen Worker ändrad.
+Ny knapp före planlås läser AMD 2020 från två befintliga Worker-endpoints (Yahoo/EODHD), timeout 20 s per källa. Rapport med HTTP-status, schema, tre exempelrader och verifieringsluckor sparas endast i sessionStorage och exporteras under Fler exporter. Ingen research, localStorage-state, lås eller evidens ändras.
+Rapporten är diagnostik, aldrig datagodkännande. Full prisjusterings-/kalenderverifiering och datapaket återstår. Fyra diagnostikfall och JS/ZIP/manifest kontrollerade. Browserutfall återstår; användaren kör Kontrollera Gen9-datakälla och exporterar JSON för nästa verifiering.

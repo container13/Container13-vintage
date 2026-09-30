@@ -315,3 +315,10 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] 11 metodfall + 9 tidigare regressionfall; JS/ZIP/manifest kontrollerade.
 - [ ] Verklig datajustering och kalender verifierade — återstår, datagate blockerar.
 - [ ] Verklig browser/Worker/evidence roundtrip — återstår.
+
+## V0.3.13 — datakällediagnostik
+- [x] MASTER RULES/handoff och faktisk bas används; inga Gen7/8-/Worker-ändringar.
+- [x] Diagnostik fungerar före planlås; skriver endast sessionStorage.
+- [x] Fyra schema-/diagnostikfall godkända. Ingen metadataflagga ger automatiskt datagodkännande.
+- [x] JS-syntax, HTML-cachetokens, ZIP och manifest kontrollerade.
+- [ ] Faktiska API-svar/browser verifieras med rapporten från användarens miljö.
