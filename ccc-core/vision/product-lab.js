@@ -1867,8 +1867,9 @@
     }
     switch (visionView) {
       case "edit":
-        if (!await flushAutosave()) return;
-        showWorkspace();
+        /* Byt vy direkt. Full IndexedDB-sparning fortsätter i bakgrunden så
+           Tillbaka aldrig känns låst av en redan pågående autosparning. */
+        saveEditedAndBack();
         return;
       case "crop":
         if (cropReturnView === "done") finishBatch();

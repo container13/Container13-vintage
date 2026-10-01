@@ -14,6 +14,8 @@ v2.10.6: Regeln ovan är genomförd i körande kod. Saknad endpoint, nätverksfe
 
 v2.10.7: Redigeringsvyns nedersta rad är `Ta bort | Flagga | Nästa →` i proportion 1/1/2, med Ta bort längst från höger tumme och fortsatt bekräftelse. Flagga autosparas i session/utkast/bildmetadata och syns på miniatyren; den gamla Ta bort-knappen i sidhuvudet är borttagen.
 
+v2.10.8: Core-Tillbaka från redigering byter omedelbart till gridden efter att formulär/flagga lästs synkront. IndexedDB-sparningen fortsätter i bakgrunden och kan inte längre få Tillbaka att verka låst; flaggsymbolen syns direkt.
+
 v2.9.72: Vision-kugghjulet öppnar /settings/?module=vision. Den gamla lokala inställnings-overlayn tas bort; funktionerna behålls i den gemensamma modulinställnings-layouten.
 
 v2.9.73: Destruktiv Vision-rensning skyddas av bekräftelsesteg i den gemensamma inställningsvyn.
