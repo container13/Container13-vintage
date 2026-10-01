@@ -4,10 +4,10 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.9.14
+CCC-version: 2.10.10
 Senaste stabila: 2.8.95 RC1 – Crop Engine 1.0
-Senaste checkpoint: 2026-08-11
-Nästa uppgift: Testa v2.9.14 på verkliga lokala utkast: miniatyr och detaljvy ska visa naturligt bildläge redan före Anpassa bild.
+Senaste checkpoint: 2026-10-01
+Nästa uppgift: Testa frivillig lokal friläggning på verklig mobil: första modellhämtning, kanter och sparad bakgrund.
 
 ARBETSPRINCIPER
 ---------------
@@ -37,6 +37,14 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.10 – frivillig lokal friläggning
+- Anpassa bild får Frilägg objekt som ett uttryckligt val.
+- Modellen hämtas först när funktionen startas och bildbehandlingen körs lokalt på enheten.
+- Originalet lämnas orört; en separat frilagd kopia och färdig publiceringskopia sparas lokalt.
+- Resultatet måste förhandsgranskas och godkännas. Bakgrund kan vara transparent, vit, ljusgrå eller mörk.
+- Transparent publiceringskopia är PNG; färgad bakgrund är WebP.
+- Root /version.js är orörd.
+
 v2.9.4 – Header Back hotfix
 - Fixar centrala tillbaka-knappar i Publicera.
 - Orsak: gamla DOM-lyssnare för borttagna #detailBack och #cropBack låg kvar och stoppade publish.js med null.addEventListener innan CCC Header Core-eventen registrerades.
