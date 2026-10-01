@@ -42,7 +42,7 @@ let channelTargetsReturnView="startView";
 let cropReturnContext={view:"gridView",itemId:""};
 let publishBackPending=false;
 let draftPreviewGesture=null,draftPreviewSuppressClick=false;
-let cropImage=null,cropState=null,cropBaseline=null,cropUsingCutout=false,cropContentDirty=false,pointer=null;
+let cropImage=null,cropState=null,cropBaseline=null,cropUsingCutout=false,cropContentDirty=false,cropBackgroundChoice={type:"transparent"},backgroundDraft=null,pointer=null;
 let activeItemId=null;
 let recentlyAdaptedItemId=null;
 let draftSelectionMode=false;const selectedDraftIds=new Set();
@@ -790,7 +790,7 @@ function helpHtmlForView(view){
       <div class="help-row"><strong>Fortsätt</strong><br>Går vidare med de färdiga ${entityTerm("plural")} till val av kanal.</div>
       <div class="help-row"><strong>Välj</strong><br>Öppnar läget där du kan markera lokala utkast för borttagning.</div>`;
   if(view==="detailView")return `<div class="help-row"><strong>Grön ✓</strong><br>Bilden har en sparad anpassning men kan ändras igen.</div><div class="help-row"><strong>Anpassa bild</strong><br>Gör den automatiska bildanpassningen när den behövs.</div><div class="help-row"><strong>Publicera</strong><br>Tar aktuellt objekt direkt till sista kontrollvyn.</div><div class="help-row"><strong>Klar – tillbaka till bilderna</strong><br>Återgår till Förbered så att du kan fortsätta med nästa bild.</div>`;
-  if(view==="cropView")return `<div class="help-row"><strong>Anpassa bild</strong><br>Dra, nypzooma eller använd verktygen för att placera bilden.</div><div class="help-row"><strong>Hela bilden / Fyll ytan</strong><br>Välj om hela originalet ska synas eller om bilden ska fylla publiceringsytan.</div><div class="help-row"><strong>Rotera / Återställ</strong><br>Rotera 90 grader eller återgå till hela originalbilden.</div><div class="help-row"><strong>Frilägg</strong><br>AI identifierar objektet och tar bort bakgrunden lokalt på enheten. Första användningen behöver hämta modellen.</div><div class="help-row"><strong>Bakgrund</strong><br>Platsen är förberedd och byggs efter att friläggningen testats.</div><div class="help-row"><strong>Spara anpassning</strong><br>Sparar en separat publiceringsvariant och bevarar originalet.</div>`;
+  if(view==="cropView")return `<div class="help-row"><strong>Anpassa bild</strong><br>Dra, nypzooma eller använd verktygen för att placera bilden.</div><div class="help-row"><strong>Hela bilden / Fyll ytan</strong><br>Välj om hela originalet ska synas eller om bilden ska fylla publiceringsytan.</div><div class="help-row"><strong>Rotera / Återställ</strong><br>Rotera 90 grader eller återgå till hela originalbilden.</div><div class="help-row"><strong>Frilägg</strong><br>AI identifierar objektet och tar bort bakgrunden lokalt på enheten. Första användningen behöver hämta modellen.</div><div class="help-row"><strong>Bakgrund</strong><br>Välj transparent, färdig bakgrund eller en egen färg efter att bilden frilagts.</div><div class="help-row"><strong>Spara anpassning</strong><br>Sparar en separat publiceringsvariant och bevarar originalet.</div>`;
   return `<div class="help-row"><strong>Tillbaka</strong><br>Går till föregående steg.</div>`;
 }
 function openPublishHelp(){
@@ -1620,7 +1620,16 @@ function geometry(){
   cropState.x=Math.max(-lx,Math.min(lx,cropState.x));cropState.y=Math.max(-ly,Math.min(ly,cropState.y));
   return{c,scale,w,h,rotation:cropState.rotation||0};
 }
-function drawCrop(){const g=geometry();if(!g)return;const ctx=g.c.getContext("2d",{alpha:true});if(cropUsingCutout)ctx.clearRect(0,0,g.c.width,g.c.height);else{ctx.fillStyle="#111";ctx.fillRect(0,0,g.c.width,g.c.height);}ctx.save();ctx.translate(g.c.width/2+cropState.x,g.c.height/2+cropState.y);ctx.rotate(g.rotation*Math.PI/180);ctx.drawImage(cropImage,-cropImage.naturalWidth*g.scale/2,-cropImage.naturalHeight*g.scale/2,cropImage.naturalWidth*g.scale,cropImage.naturalHeight*g.scale);ctx.restore();
+function fillCropBackground(ctx,width,height,choice=cropBackgroundChoice){
+  if(!choice||choice.type==="transparent")return;
+  if(choice.type==="container13"){
+    const gradient=ctx.createLinearGradient(0,0,width,height);
+    gradient.addColorStop(0,"#11141a");gradient.addColorStop(.68,"#252b36");gradient.addColorStop(.685,"#c99a32");gradient.addColorStop(.76,"#e1bd5b");gradient.addColorStop(.765,"#202631");gradient.addColorStop(1,"#101218");
+    ctx.fillStyle=gradient;
+  }else ctx.fillStyle=choice.value||"#ffffff";
+  ctx.fillRect(0,0,width,height);
+}
+function drawCrop(){const g=geometry();if(!g)return;const ctx=g.c.getContext("2d",{alpha:true});if(cropUsingCutout){ctx.clearRect(0,0,g.c.width,g.c.height);fillCropBackground(ctx,g.c.width,g.c.height);}else{ctx.fillStyle="#111";ctx.fillRect(0,0,g.c.width,g.c.height);}ctx.save();ctx.translate(g.c.width/2+cropState.x,g.c.height/2+cropState.y);ctx.rotate(g.rotation*Math.PI/180);ctx.drawImage(cropImage,-cropImage.naturalWidth*g.scale/2,-cropImage.naturalHeight*g.scale/2,cropImage.naturalWidth*g.scale,cropImage.naturalHeight*g.scale);ctx.restore();
   renderCropDiagnostics();
 }
 function smartCropSuggestion(image){
@@ -1883,6 +1892,8 @@ async function openCrop({preserveBack=false}={}){
   const cropNote=$("#cropFutureNote");
   if(cropNote)cropNote.textContent=item.cutoutBlob?"Friläggning sparad · originalbilden är orörd":"Dra för att flytta · nyp för att zooma";
   $("#cropPreview")?.classList.toggle("is-cutout",cropUsingCutout);
+  cropBackgroundChoice=cropUsingCutout?{type:"transparent",...(item.cutoutData?.background||{})}:{type:"transparent"};
+  const backgroundButton=$("#cropBackground");if(backgroundButton)backgroundButton.disabled=!cropUsingCutout;
   drawCrop();
   cropBaseline=cropStateSnapshot();
   updateCropSaveState();
@@ -1934,12 +1945,14 @@ $("#cropReset").addEventListener("click",async()=>{
       if(!originalSource)throw new Error("Originalbilden saknas.");
       cropImage=await loadImage(originalSource);
       cropUsingCutout=false;
+      cropBackgroundChoice={type:"transparent"};
       delete item.cutoutBlob;
       delete item.cutoutData;
       cropState=Object.keys(restoredState).length
         ?{zoom:1,x:0,y:0,rotation:0,...restoredState}
         :manualCropState("contain",cropImage,0);
       $("#cropPreview")?.classList.remove("is-cutout");
+      const backgroundButton=$("#cropBackground");if(backgroundButton)backgroundButton.disabled=true;
       $("#cropZoom").value=String(cropState.zoom);
       const zoomValue=$("#cropZoomValue");
       if(zoomValue)zoomValue.textContent=`${Math.round(cropState.zoom*100)} %`;
@@ -2136,13 +2149,15 @@ $("#cutoutApply")?.addEventListener("click",async()=>{
   const outputCropData={zoom:1,x:0,y:0,rotation:0};
   item.cropData={...outputCropData};
   item.cutoutBlob=blob;
-  item.cutoutData={method:"local-ai-segmentation-v1",createdAt:new Date().toISOString(),sourceCropData,outputCropData};
+  item.cutoutData={method:"local-ai-segmentation-v1",createdAt:new Date().toISOString(),sourceCropData,outputCropData,background:{type:"transparent"}};
   item.publishBlob=blob;
   item.imageProcessingState="webp-cutout";
   if(item.publishUrl&&item.publishUrl.startsWith("blob:"))URL.revokeObjectURL(item.publishUrl);
   item.publishUrl=url(blob);item.thumbUrl=await previewSrc(item);
   cropImage=await loadImage(item.publishUrl);
   cropUsingCutout=true;
+  cropBackgroundChoice={type:"transparent"};
+  const backgroundButton=$("#cropBackground");if(backgroundButton)backgroundButton.disabled=false;
   cropState={...outputCropData};
   $("#cropPreview")?.classList.add("is-cutout");
   drawCrop();
@@ -2150,6 +2165,81 @@ $("#cutoutApply")?.addEventListener("click",async()=>{
   updateCropSaveState();
   closeCutoutDialog();
   const note=$("#cropFutureNote");if(note)note.textContent="Friläggning vald · tryck Spara anpassning";
+});
+
+const BACKGROUND_PRESETS={
+  transparent:{type:"transparent"},
+  white:{type:"color",value:"#ffffff"},
+  light:{type:"color",value:"#e8e8e8"},
+  dark:{type:"color",value:"#181b22"},
+  container13:{type:"container13"}
+};
+function normalizeHex(value){
+  const text=String(value||"").trim();
+  return /^#[0-9a-f]{6}$/i.test(text)?text.toUpperCase():null;
+}
+function backgroundChoiceKey(choice){
+  if(!choice||choice.type==="transparent")return "transparent";
+  if(choice.type==="container13")return "container13";
+  const value=normalizeHex(choice.value);
+  if(value==="#FFFFFF")return "white";
+  if(value==="#E8E8E8")return "light";
+  if(value==="#181B22")return "dark";
+  return "custom";
+}
+function renderBackgroundPreview(){
+  const canvas=$("#backgroundPreview");if(!canvas||!cropImage||!cropState||!backgroundDraft)return;
+  const ctx=canvas.getContext("2d",{alpha:true});ctx.clearRect(0,0,canvas.width,canvas.height);
+  fillCropBackground(ctx,canvas.width,canvas.height,backgroundDraft);
+  const dims=cropImageDimensions(),base=Math.max(canvas.width/dims.width,canvas.height/dims.height),scale=base*cropState.zoom,ratio=canvas.width/Math.max(1,$("#cropCanvas")?.width||900);
+  ctx.save();ctx.translate(canvas.width/2+cropState.x*ratio,canvas.height/2+cropState.y*ratio);ctx.rotate((cropState.rotation||0)*Math.PI/180);ctx.drawImage(cropImage,-cropImage.naturalWidth*scale/2,-cropImage.naturalHeight*scale/2,cropImage.naturalWidth*scale,cropImage.naturalHeight*scale);ctx.restore();
+  const active=backgroundChoiceKey(backgroundDraft);
+  document.querySelectorAll("#backgroundPresets [data-background]").forEach(button=>button.classList.toggle("is-active",button.dataset.background===active));
+}
+function recentBackgroundColors(){
+  try{return JSON.parse(localStorage.getItem("ccc-publish-background-colors")||"[]").filter(normalizeHex).slice(0,5);}catch{return [];}
+}
+function renderRecentBackgroundColors(){
+  const wrap=$("#backgroundRecent");if(!wrap)return;wrap.innerHTML="";
+  for(const color of recentBackgroundColors()){
+    const button=document.createElement("button");button.type="button";button.style.background=color;button.setAttribute("aria-label",`Välj ${color}`);
+    button.addEventListener("click",()=>selectCustomBackground(color));wrap.append(button);
+  }
+}
+function selectCustomBackground(value){
+  const color=normalizeHex(value);if(!color)return false;
+  backgroundDraft={type:"color",value:color};
+  const picker=$("#backgroundColor"),hex=$("#backgroundHex");if(picker)picker.value=color.toLowerCase();if(hex)hex.value=color;
+  renderBackgroundPreview();return true;
+}
+function openBackgroundDialog(){
+  if(!cropUsingCutout)return;
+  backgroundDraft={...cropBackgroundChoice};
+  const custom=backgroundChoiceKey(backgroundDraft)==="custom"?backgroundDraft.value:"#D8D1C5";
+  const picker=$("#backgroundColor"),hex=$("#backgroundHex");if(picker)picker.value=custom.toLowerCase();if(hex)hex.value=custom.toUpperCase();
+  renderRecentBackgroundColors();renderBackgroundPreview();
+  const dialog=$("#backgroundDialog");if(dialog)dialog.hidden=false;
+}
+function closeBackgroundDialog(){const dialog=$("#backgroundDialog");if(dialog)dialog.hidden=true;backgroundDraft=null;}
+$("#cropBackground")?.addEventListener("click",openBackgroundDialog);
+$("#backgroundClose")?.addEventListener("click",closeBackgroundDialog);
+$("#backgroundCancel")?.addEventListener("click",closeBackgroundDialog);
+$("#backgroundDialog")?.addEventListener("click",event=>{if(event.target===$("#backgroundDialog"))closeBackgroundDialog();});
+document.querySelectorAll("#backgroundPresets [data-background]").forEach(button=>button.addEventListener("click",()=>{
+  backgroundDraft={...BACKGROUND_PRESETS[button.dataset.background]};renderBackgroundPreview();
+}));
+$("#backgroundColor")?.addEventListener("input",event=>selectCustomBackground(event.target.value));
+$("#backgroundHex")?.addEventListener("input",event=>{if(selectCustomBackground(event.target.value))event.target.setCustomValidity("");else event.target.setCustomValidity("Ange färg som #RRGGBB");});
+$("#backgroundApply")?.addEventListener("click",()=>{
+  const item=activeItem();if(!item||!cropUsingCutout||!backgroundDraft)return;
+  cropBackgroundChoice={...backgroundDraft};
+  if(item.cutoutData)item.cutoutData.background={...cropBackgroundChoice};
+  if(backgroundChoiceKey(cropBackgroundChoice)==="custom"){
+    const color=normalizeHex(cropBackgroundChoice.value),colors=recentBackgroundColors().filter(value=>value!==color);
+    if(color){colors.unshift(color);try{localStorage.setItem("ccc-publish-background-colors",JSON.stringify(colors.slice(0,5)));}catch{}}
+  }
+  cropContentDirty=true;drawCrop();updateCropSaveState();closeBackgroundDialog();
+  const note=$("#cropFutureNote");if(note)note.textContent="Bakgrund vald · tryck Spara anpassning";
 });
 const cropPointers=new Map();
 let pinchStart=null;
@@ -2235,6 +2325,7 @@ async function commitCropAdjustment({force=false}={}){
   const savedItemId=item.id;
   item.cropData={...cropState};
   if(cropUsingCutout&&item.cutoutData)item.cutoutData.outputCropData={...cropState};
+  if(cropUsingCutout&&item.cutoutData)item.cutoutData.background={...cropBackgroundChoice};
   /* Spara exakt det användaren ser i anpassningsrutan. Då fungerar även
      utzoomning till hela bilden med centrerad restyta. */
   const outSize=Math.max(1,Math.min(1600,Math.max(cropImage.naturalWidth,cropImage.naturalHeight)));

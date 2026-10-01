@@ -11,7 +11,7 @@
 <title>CCC Publicera v2.9.22</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}const p=new URLSearchParams(location.search);document.documentElement.classList.add("ccc-publish-booting");if(p.get("view")==="prepare")document.documentElement.classList.add("ccc-direct-prepare-loading");</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.10.135">
+<link rel="stylesheet" href="publish.css?v=2.10.136">
   <link rel="stylesheet" href="../core.css?v=2.10.132">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
@@ -322,6 +322,33 @@
   </div>
 </div>
 
+<div id="backgroundDialog" class="dialog ccc-dialog background-dialog" role="dialog" aria-modal="true" aria-labelledby="backgroundTitle" hidden>
+  <div class="dialog-box ccc-dialog-box background-dialog-box">
+    <div class="cutout-dialog-heading">
+      <div><span class="cutout-kicker">Frilagd bild</span><h2 id="backgroundTitle">Välj bakgrund</h2></div>
+      <button id="backgroundClose" class="cutout-close" type="button" aria-label="Stäng">×</button>
+    </div>
+    <div class="background-preview-wrap"><canvas id="backgroundPreview" width="500" height="500"></canvas></div>
+    <div id="backgroundPresets" class="background-presets" aria-label="Bakgrundsval">
+      <button type="button" data-background="transparent"><span class="background-swatch swatch-transparent"></span><strong>Transparent</strong></button>
+      <button type="button" data-background="white"><span class="background-swatch" style="background:#fff"></span><strong>Vit</strong></button>
+      <button type="button" data-background="light"><span class="background-swatch" style="background:#e8e8e8"></span><strong>Ljusgrå</strong></button>
+      <button type="button" data-background="dark"><span class="background-swatch" style="background:#181b22"></span><strong>Mörk</strong></button>
+      <button type="button" data-background="container13"><span class="background-swatch swatch-container13"></span><strong>Container13</strong></button>
+    </div>
+    <div class="background-custom">
+      <label for="backgroundColor">Egen färg</label>
+      <input id="backgroundColor" type="color" value="#d8d1c5">
+      <input id="backgroundHex" type="text" value="#D8D1C5" maxlength="7" inputmode="text" aria-label="Färgkod">
+    </div>
+    <div id="backgroundRecent" class="background-recent" aria-label="Senast använda färger"></div>
+    <div class="cutout-actions">
+      <button id="backgroundCancel" class="button-secondary ccc-button-secondary" type="button">Avbryt</button>
+      <button id="backgroundApply" class="button-primary ccc-button-primary" type="button">Använd bakgrund</button>
+    </div>
+  </div>
+</div>
+
 <div id="logoutDialog" class="dialog ccc-dialog" role="dialog" aria-modal="true" aria-labelledby="logoutTitle" hidden>
   <div class="dialog-box ccc-dialog-box">
     <h2 id="logoutTitle">Logga ut?</h2>
@@ -333,9 +360,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.10.135"></script>
-<script type="module" src="../core.js?v=2.10.135"></script>
-  <script src="../version.js?v=2.10.135"></script>
+<script type="module" src="publish.js?v=2.10.136"></script>
+<script type="module" src="../core.js?v=2.10.136"></script>
+  <script src="../version.js?v=2.10.136"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 

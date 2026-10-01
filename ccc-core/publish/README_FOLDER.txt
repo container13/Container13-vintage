@@ -116,3 +116,4 @@ v2.10.92: Ordinarie flöde bevarar C13-valet. Snabbvägar öppnar slutkontrollen
 v2.10.133: Frilägg objekt använder riktig lokal AI-segmentering. Modellen hämtas vid första användningen, bearbetningen sker lokalt och originalbilden lämnas orörd. Förhandsgranskning och godkännande krävs innan resultatet används.
 v2.10.134: Använd friläggning markeras som en osparad innehållsändring, aktiverar Spara anpassning och lagras först när användaren bekräftar anpassningen.
 v2.10.135: Återställ i Anpassa bild återgår från frilagd variant till den orörda originalbilden och aktiverar Spara anpassning innan ändringen lagras.
+v2.10.136: Frilagda bilder får valbar transparent, vit, ljusgrå, mörk, Container13 eller egen färgbakgrund med palett, HEX-kod, förhandsvisning och lokala senaste färger.
