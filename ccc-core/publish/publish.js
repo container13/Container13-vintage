@@ -1924,9 +1924,37 @@ $("#cropRotate")?.addEventListener("click",()=>{
   setCropZoom(cropState.zoom);
 });
 
-$("#cropReset").addEventListener("click",()=>{
+$("#cropReset").addEventListener("click",async()=>{
   const item=activeItem();
   if(!item)return;
+  if(cropUsingCutout&&item.cutoutBlob){
+    const restoredState={...item.cutoutData?.sourceCropData};
+    try{
+      const originalSource=await ensureOriginalSource(item);
+      if(!originalSource)throw new Error("Originalbilden saknas.");
+      cropImage=await loadImage(originalSource);
+      cropUsingCutout=false;
+      delete item.cutoutBlob;
+      delete item.cutoutData;
+      cropState=Object.keys(restoredState).length
+        ?{zoom:1,x:0,y:0,rotation:0,...restoredState}
+        :manualCropState("contain",cropImage,0);
+      $("#cropPreview")?.classList.remove("is-cutout");
+      $("#cropZoom").value=String(cropState.zoom);
+      const zoomValue=$("#cropZoomValue");
+      if(zoomValue)zoomValue.textContent=`${Math.round(cropState.zoom*100)} %`;
+      drawCrop();
+      cropContentDirty=true;
+      updateCropSaveState();
+      const note=$("#cropFutureNote");
+      if(note)note.textContent="Originalbild återställd · tryck Spara anpassning";
+    }catch(error){
+      console.error("[CCC Publicera] Originalbilden kunde inte återställas",error);
+      const note=$("#cropFutureNote");
+      if(note)note.textContent="Originalbilden kunde inte återställas. Försök igen.";
+    }
+    return;
+  }
   cropState=manualCropState("contain",cropImage,0);
   $("#cropZoom").value=String(cropState.zoom);
   const zoomValue=$("#cropZoomValue");
