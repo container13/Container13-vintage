@@ -1719,3 +1719,10 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Befintliga produktfält lämnas orörda. Feltexten visar meddelande, felkod och eventuell HTTP-status samt att inga fält ändrades.
 - Demodata kräver ett uttryckligt demoobjekt. Konfigurerad AI kan alltid provas igen efter fel.
 - Övriga Vision-flöden, Publicera och root `/version.js` är orörda.
+
+
+## v2.10.7 – Ta bort, Flagga och Nästa
+- Nedersta arbetsraden är `Ta bort | Flagga | Nästa →` med breddfördelning 1/1/2. Den destruktiva åtgärden ligger längst från höger tumme och kräver fortsatt bekräftelse.
+- Ta bort-knappen i redigeringshuvudet tas bort. Flagga växlar till Flaggad och ger miniatyren en synlig flaggsymbol.
+- Flaggstatus autosparas i session, utkast, batchmetadata och originalbildens metadata.
+- Övriga moduler och root `/version.js` är orörda.
