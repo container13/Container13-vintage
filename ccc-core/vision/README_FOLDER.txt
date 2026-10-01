@@ -6,6 +6,8 @@ v2.10.3: Hotfix som återställer absolut `hidden`-prioritet mellan Vision-stege
 
 v2.10.4: Kameran visar antal fotograferade plagg. Arbetsgridden är 3×2 med sex större bilder per sida; swipe kräver tydligt horisontellt drag så vanligt tryck öppnar plagget. Redigeringsvyn är kompakt utan dubblerad huvudbild, med tre bildplatser, mindre `Analysera igen` efter AI-resultat och helbred `Nästa plagg`.
 
+v2.10.5: Mobilgridden använder robusta touchstart/touchmove/touchend-gester utan pointer capture eller kvarhängande klickspärr. Tryck öppnar exakt vald miniatyr med korrekt `Plagg X av Y`; tydlig horisontell swipe byter sida.
+
 v2.9.72: Vision-kugghjulet öppnar /settings/?module=vision. Den gamla lokala inställnings-overlayn tas bort; funktionerna behålls i den gemensamma modulinställnings-layouten.
 
 v2.9.73: Destruktiv Vision-rensning skyddas av bekräftelsesteg i den gemensamma inställningsvyn.

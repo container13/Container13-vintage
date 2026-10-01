@@ -22,7 +22,6 @@
   let sessionSaveChain = Promise.resolve();
   let workspacePage = 0;
   let workspaceSwipe = null;
-  let suppressWorkspaceClick = false;
   let autosaveSequence = 0;
   let cameraZoomState = { min: 1, max: 1, current: 1, pinchStartDistance: 0, pinchStartZoom: 1 };
 
@@ -417,14 +416,7 @@
       state.className = `thumb-status ${item.visionReady ? "is-ready" : item.analysisInProgress ? "is-working" : item.analysisMode === "manual" ? (item.approved ? "is-saved" : "is-manual") : "is-working"}`;
       state.textContent = item.visionReady || item.approved ? "✓" : "";
       state.setAttribute("aria-hidden", "true");
-      wrap.addEventListener("click", () => {
-        if (suppressWorkspaceClick) return;
-        currentIndex = index;
-        workspacePage = page;
-        editReturnView = "workspace";
-        populateFormFromItem(true);
-        showStage("editCard", "edit");
-      });
+      wrap.dataset.itemIndex = String(index);
       wrap.append(img, state);
       grid.appendChild(wrap);
       });
@@ -475,39 +467,52 @@
   function installWorkspaceSwipe() {
     const strip = $("#batchStrip");
     if (!strip) return;
-    strip.addEventListener("pointerdown", (event) => {
-      if (event.pointerType === "mouse" && event.button !== 0) return;
-      const track = strip.querySelector(".vision-grid-track");
-      if (!track || Math.ceil(batchItems.length / WORKSPACE_PAGE_SIZE) <= 1) return;
-      workspaceSwipe = { id: event.pointerId, x: event.clientX, y: event.clientY, dx: 0, horizontal: false };
-      track.style.transition = "none";
-    });
-    strip.addEventListener("pointermove", (event) => {
-      if (!workspaceSwipe || workspaceSwipe.id !== event.pointerId) return;
-      const dx = event.clientX - workspaceSwipe.x;
-      const dy = event.clientY - workspaceSwipe.y;
-      if (!workspaceSwipe.horizontal && Math.abs(dx) > 14 && Math.abs(dx) > Math.abs(dy) * 1.35) {
-        workspaceSwipe.horizontal = true;
-        strip.setPointerCapture?.(event.pointerId);
-      }
-      if (!workspaceSwipe.horizontal) return;
-      event.preventDefault();
-      workspaceSwipe.dx = dx;
-      suppressWorkspaceClick = true;
-      const lastPage = Math.ceil(batchItems.length / WORKSPACE_PAGE_SIZE) - 1;
-      const atEdge = (workspacePage === 0 && dx > 0) || (workspacePage === lastPage && dx < 0);
-      const resisted = atEdge ? dx * .24 : dx;
-      strip.querySelector(".vision-grid-track").style.transform = `translate3d(calc(${-workspacePage * 100}% + ${resisted}px),0,0)`;
-    }, { passive: false });
-    const finish = (event) => {
-      if (!workspaceSwipe || workspaceSwipe.id !== event.pointerId) return;
-      const { dx, horizontal } = workspaceSwipe;
-      workspaceSwipe = null;
-      if (horizontal && Math.abs(dx) > Math.max(42, strip.clientWidth * .16)) setWorkspacePage(workspacePage + (dx < 0 ? 1 : -1), true);
-      else setWorkspacePage(workspacePage, true);
-      setTimeout(() => { suppressWorkspaceClick = false; }, 80);
+    const point = (event) => event.touches?.[0] || event.changedTouches?.[0] || event;
+    const begin = (event) => {
+      if (event.type === "mousedown" && event.button !== 0) return;
+      const p = point(event);
+      workspaceSwipe = {
+        x: p.clientX,
+        y: p.clientY,
+        dx: 0,
+        dy: 0,
+        target: event.target.closest?.(".batch-thumb") || null
+      };
     };
-    ["pointerup", "pointercancel", "lostpointercapture"].forEach((name) => strip.addEventListener(name, finish));
+    const move = (event) => {
+      if (!workspaceSwipe) return;
+      const p = point(event);
+      workspaceSwipe.dx = p.clientX - workspaceSwipe.x;
+      workspaceSwipe.dy = p.clientY - workspaceSwipe.y;
+      if (Math.abs(workspaceSwipe.dx) > 12 && Math.abs(workspaceSwipe.dx) > Math.abs(workspaceSwipe.dy) * 1.2) {
+        event.preventDefault();
+      }
+    };
+    const finish = (event) => {
+      if (!workspaceSwipe) return;
+      const gesture = workspaceSwipe;
+      workspaceSwipe = null;
+      const horizontal = Math.abs(gesture.dx) > 32 && Math.abs(gesture.dx) > Math.abs(gesture.dy) * 1.2;
+      if (horizontal) {
+        setWorkspacePage(workspacePage + (gesture.dx < 0 ? 1 : -1), true);
+        return;
+      }
+      if (Math.hypot(gesture.dx, gesture.dy) > 12 || !gesture.target) return;
+      const index = Number(gesture.target.dataset.itemIndex);
+      if (!Number.isInteger(index) || !batchItems[index]) return;
+      currentIndex = index;
+      workspacePage = Math.floor(index / WORKSPACE_PAGE_SIZE);
+      editReturnView = "workspace";
+      populateFormFromItem(true);
+      showStage("editCard", "edit");
+      if (event.cancelable) event.preventDefault();
+    };
+    strip.addEventListener("touchstart", begin, { passive: true });
+    strip.addEventListener("touchmove", move, { passive: false });
+    strip.addEventListener("touchend", finish, { passive: false });
+    strip.addEventListener("touchcancel", () => { workspaceSwipe = null; }, { passive: true });
+    strip.addEventListener("mousedown", begin);
+    strip.addEventListener("mouseup", finish);
   }
 
   function resetCaptureVisual() {

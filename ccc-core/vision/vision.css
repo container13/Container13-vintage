@@ -3070,3 +3070,14 @@ body.camera-open .ccc-app-shell{background:#050505!important}
   .edit-head-actions{gap:6px}
   .vision-autosave-state{max-width:88px;font-size:.62rem}
 }
+
+/* CCC v2.10.5 – robust touch navigation in the Vision workspace. */
+#captureCard:has(#batchStrip:not([hidden])) .batch-strip{
+  touch-action:pan-y!important;
+  -webkit-user-select:none!important;
+  user-select:none!important;
+}
+#captureCard:has(#batchStrip:not([hidden])) .batch-thumb{
+  touch-action:pan-y!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
