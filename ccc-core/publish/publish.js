@@ -42,7 +42,7 @@ let channelTargetsReturnView="startView";
 let cropReturnContext={view:"gridView",itemId:""};
 let publishBackPending=false;
 let draftPreviewGesture=null,draftPreviewSuppressClick=false;
-let cropImage=null,cropState=null,cropBaseline=null,cropUsingCutout=false,pointer=null;
+let cropImage=null,cropState=null,cropBaseline=null,cropUsingCutout=false,cropContentDirty=false,pointer=null;
 let activeItemId=null;
 let recentlyAdaptedItemId=null;
 let draftSelectionMode=false;const selectedDraftIds=new Set();
@@ -1793,6 +1793,7 @@ function cropStateSnapshot(state=cropState){
 
 function cropStateHasChanged(){
   const current=cropStateSnapshot(),baseline=cropBaseline;
+  if(cropContentDirty)return true;
   if(!current||!baseline)return false;
   return Math.abs(current.zoom-baseline.zoom)>.001
     ||Math.abs(current.x-baseline.x)>.5
@@ -1841,6 +1842,7 @@ function manualCropState(mode="contain",image=cropImage,rotation=0){
 async function openCrop({preserveBack=false}={}){
   cropBaseline=null;
   cropUsingCutout=false;
+  cropContentDirty=false;
   updateCropSaveState();
   if(!preserveBack){
     const origin=["detailView","channelConfirmView","gridView"].includes(currentPublishView)
@@ -2109,7 +2111,6 @@ $("#cutoutApply")?.addEventListener("click",async()=>{
   item.cutoutData={method:"local-ai-segmentation-v1",createdAt:new Date().toISOString(),sourceCropData,outputCropData};
   item.publishBlob=blob;
   item.imageProcessingState="webp-cutout";
-  await put(persistenceRecord(item));
   if(item.publishUrl&&item.publishUrl.startsWith("blob:"))URL.revokeObjectURL(item.publishUrl);
   item.publishUrl=url(blob);item.thumbUrl=await previewSrc(item);
   cropImage=await loadImage(item.publishUrl);
@@ -2117,9 +2118,10 @@ $("#cutoutApply")?.addEventListener("click",async()=>{
   cropState={...outputCropData};
   $("#cropPreview")?.classList.add("is-cutout");
   drawCrop();
-  cropBaseline=cropStateSnapshot();updateCropSaveState();
+  cropContentDirty=true;
+  updateCropSaveState();
   closeCutoutDialog();
-  const note=$("#cropFutureNote");if(note)note.textContent="Friläggning sparad · originalbilden är orörd";
+  const note=$("#cropFutureNote");if(note)note.textContent="Friläggning vald · tryck Spara anpassning";
 });
 const cropPointers=new Map();
 let pinchStart=null;
@@ -2221,6 +2223,7 @@ async function commitCropAdjustment({force=false}={}){
   item.publishUrl=url(blob);
   item.thumbUrl=await previewSrc(item);
   cropBaseline=cropStateSnapshot();
+  cropContentDirty=false;
   updateCropSaveState();
   recentlyAdaptedItemId=savedItemId;
   if(cropQuickPublishRequested){
