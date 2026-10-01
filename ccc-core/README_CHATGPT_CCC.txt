@@ -4,10 +4,10 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.10
+CCC-version: 2.10.12
 Senaste stabila: 2.8.95 RC1 – Crop Engine 1.0
 Senaste checkpoint: 2026-10-01
-Nästa uppgift: Testa frivillig lokal friläggning på verklig mobil: första modellhämtning, kanter och sparad bakgrund.
+Nästa uppgift: Kontrollera att Dashboardens Publicera landar direkt i Snabbpublicera och testa därefter lokal friläggning.
 
 ARBETSPRINCIPER
 ---------------
@@ -37,6 +37,17 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.12 – Dashboard till Snabbpublicera
+- Dashboardens gröna Publicera får en egen `mode=quick`-ingång.
+- Den öppnar direkt Snabbpublicera/slutkontrollen med alla redo-plagg och Container13 förvalt.
+- Andra ingångar till Publicera påverkas inte. Friläggningen är oförändrad.
+- Root /version.js är orörd.
+
+v2.10.11 – rätt landningsvy i Publicera
+- Dashboardens Publicera öppnar direkt Förbered för publicering, inte Publiceras mellanmeny.
+- Tillbaka från Förbered visar fortfarande Publiceras mellanmeny.
+- Friläggningen från v2.10.10 är oförändrad. Root /version.js är orörd.
+
 v2.10.10 – frivillig lokal friläggning
 - Anpassa bild får Frilägg objekt som ett uttryckligt val.
 - Modellen hämtas först när funktionen startas och bildbehandlingen körs lokalt på enheten.
