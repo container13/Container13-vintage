@@ -1710,3 +1710,12 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Den känsliga pointer-capture-lösningen ersätts av separata touch- och musgester utan kvarhängande klickspärr.
 - Vanligt tryck öppnar vald miniatyr och visar korrekt `Plagg X av Y`; tydlig horisontell swipe byter 3×2-sida.
 - Extrabilder, autosparning, AI, Publicera och root `/version.js` är orörda.
+- Fast produktregel: verkliga foton/importer får aldrig få demo-/testdata vid saknad eller misslyckad AI. Fälten ska lämnas oförändrade och CCC ska visa tydligt AI-fel samt verklig felorsak/statuskod. Demo tillåts bara i ett uttryckligt märkt demoläge.
+- Regeln beslutades efter att en handkräm med fram-, bak- och innehållsbild felaktigt fick demo-fallbacken `Adidas vintage träningsjacka`.
+
+
+## v2.10.6 – verkliga AI-fel utan demo-fallback
+- AI-fel på verkliga foton/importer returnerar nu tomt felresultat i stället för demoresultat.
+- Befintliga produktfält lämnas orörda. Feltexten visar meddelande, felkod och eventuell HTTP-status samt att inga fält ändrades.
+- Demodata kräver ett uttryckligt demoobjekt. Konfigurerad AI kan alltid provas igen efter fel.
+- Övriga Vision-flöden, Publicera och root `/version.js` är orörda.
