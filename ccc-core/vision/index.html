@@ -8,10 +8,10 @@
 <link rel="manifest" href="../manifest.webmanifest?v=2.9.3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>CCC Vision v2.10.9</title>
-  <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-  <link rel="stylesheet" href="vision.css?v=2.10.9">
-  <link rel="stylesheet" href="../core.css?v=2.10.2">
+  <title>CCC Vision v2.10.66</title>
+  <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}if(new URLSearchParams(location.search).get("mode")==="publish-add")document.documentElement.classList.add("ccc-vision-publish-add-loading");</script>
+  <link rel="stylesheet" href="vision.css?v=2.10.132">
+  <link rel="stylesheet" href="../core.css?v=2.10.132">
 </head>
 <body data-ccc-header-back="false" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell">
@@ -54,18 +54,19 @@
         <div class="capture-head-tools"></div>
       </div>
 
-      <section id="visionStartHome" class="ccc-mobile-home-view vision-home-view">
+      <section id="visionStartHome" class="ccc-mobile-home-view vision-home-view ccc-module-home ccc-module-home--vision">
+      <div class="ccc-home-heading"><h1>Välkommen till Vision</h1></div>
       <nav class="vision-start-actions ccc-action-grid ccc-action-grid--fill-mobile" aria-label="Vision startval">
-<button id="startCameraBtn" class="main-camera camera-trigger ccc-action-card ccc-action-card--blue ccc-action-card--arrow-desktop ccc-action-card--dense-copy" type="button" aria-label="Ta ett foto">
+<button id="startCameraBtn" class="main-camera camera-trigger ccc-action-card ccc-action-card--capture ccc-action-card--arrow-desktop ccc-action-card--dense-copy ccc-module-card ccc-module-card--vision" type="button" aria-label="Ta ett foto" data-ccc-press-delay>
         <img id="mainPreview" alt="Förhandsvisning av varan" hidden>
         <span class="action-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24"><path d="M4 8h3l1.4-2h7.2L17 8h3v11H4V8Zm8 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/></svg>
         </span>
-        <span class="action-copy"><strong>Ta ett foto</strong><small>Ett foto per plagg – avsluta när du vill</small></span>
+        <span class="action-copy"><strong>Ta ett foto</strong><small data-ccc-term="Ett foto per {singular} – avsluta när du vill">Ett foto per objekt – avsluta när du vill</small></span>
         <span class="action-arrow" aria-hidden="true">›</span>
       </button>
 
-      <button id="galleryBtn" class="ccc-action-card ccc-action-card--green ccc-action-card--arrow-desktop ccc-action-card--dense-copy" type="button" aria-label="Välj bilder från enheten">
+      <button id="galleryBtn" class="ccc-action-card ccc-action-card--import ccc-action-card--arrow-desktop ccc-action-card--dense-copy ccc-module-card ccc-module-card--vision" type="button" aria-label="Välj bilder från enheten">
         <span class="action-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4V5Zm3 11 3.5-4 2.5 3 2-2 2 3H7Zm9-7h.01"/></svg>
         </span>
@@ -73,17 +74,15 @@
         <span class="action-arrow" aria-hidden="true">›</span>
       </button>
 
-      <button id="visionStartBackBtn" class="ccc-action-card ccc-action-card--purple ccc-action-card--back ccc-action-card--arrow-desktop ccc-action-card--dense-copy" type="button" aria-label="Tillbaka till dashboard">
-        <span class="action-arrow" aria-hidden="true">‹</span>
+      <button id="resumeSessionBtn" class="ccc-action-card ccc-action-card--tools ccc-action-card--arrow-desktop ccc-action-card--dense-copy ccc-module-card ccc-module-card--vision" type="button" aria-label="Fortsätt fotosession" data-ccc-press-delay hidden>
         <span class="action-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M7 7v5h5"/><path d="M7.7 11.5a6.5 6.5 0 1 1 1.4 4.9"/><path d="M12 8.5V12l2.5 1.5"/></svg>
         </span>
-        <span class="action-copy"><strong>Tillbaka</strong><small>Till dashboard</small></span>
+        <span class="action-copy"><strong id="resumeSessionLabel">Fortsätt fotosession</strong><small id="resumeSessionMeta">Fortsätt där du slutade</small></span>
+        <span class="action-arrow" aria-hidden="true">›</span>
       </button>
       </nav>
     </section>
-
-      <button id="resumeSessionBtn" class="quiet-button vision-resume-button" type="button" hidden>Fortsätt pågående arbete</button>
 
       <input id="galleryInput" class="visually-hidden" type="file" accept="image/*" multiple>
       <input id="cameraFallbackInput" class="visually-hidden" type="file" accept="image/*" capture="environment">
@@ -93,16 +92,17 @@
       <img id="detailPreview2" alt="Extra bild 2" hidden>
 
       <div id="workspaceToolbar" class="vision-workspace-toolbar" hidden>
-        <strong id="workspaceCount">0 plagg</strong>
+        <h2 id="workspaceTitle" class="workspace-title">Välj objekt</h2>
+        <strong id="workspaceCount">Objekt 0/0</strong>
         <div class="vision-workspace-add">
-          <button id="workspaceCameraBtn" type="button">Nytt foto</button>
-          <button id="workspaceGalleryBtn" type="button">Album</button>
+          <button id="workspaceCameraBtn" class="ccc-tool-card ccc-tool-card--capture" type="button"><span class="workspace-add-icon ccc-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8h3l1.4-2h7.2L17 8h3v11H4V8Z"/><circle cx="12" cy="13" r="3.2"/></svg></span><span>Nytt foto</span></button>
+          <button id="workspaceGalleryBtn" class="ccc-tool-card ccc-tool-card--import" type="button"><span class="workspace-add-icon ccc-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="m6.5 16 4-4 2.7 2.6 2-2 2.8 3.4"/></svg></span><span>Från album</span></button>
         </div>
       </div>
-      <p id="batchHelp" class="batch-help" hidden>Välj ett plagg att granska och komplettera.</p>
-      <div id="batchStrip" class="batch-strip" hidden aria-label="Fotograferade plagg"></div>
-      <div id="batchPager" class="vision-grid-pager" hidden aria-label="Sidor med plagg"></div>
-      <button id="addToSelectedBtn" class="quiet-button workspace-detail-button" type="button" hidden>＋ Komplettera markerat plagg</button>
+      <p id="batchHelp" class="batch-help" hidden></p>
+      <div id="batchStrip" class="batch-strip" hidden data-ccc-term-aria="Fotograferade {plural}" aria-label="Fotograferade objekt"></div>
+      <div id="batchPager" class="vision-grid-pager" hidden data-ccc-term-aria="Sidor med {plural}" aria-label="Sidor med objekt"></div>
+      <button id="addToSelectedBtn" class="quiet-button workspace-detail-button" type="button" hidden data-ccc-term="＋ Komplettera markerat {singular}">＋ Komplettera markerat objekt</button>
       <button id="workspaceContinueBtn" class="primary-button workspace-continue-button" type="button" hidden>Granska &amp; komplettera</button>
       <button id="showSuggestionBtn" class="primary-button capture-next" type="button" hidden disabled>Visa förslag</button>
 
@@ -113,7 +113,7 @@
     <div id="cameraOverlay" class="camera-overlay" hidden>
       <div class="camera-topbar">
         <button id="closeCameraBtn" class="camera-close" type="button" aria-label="Stäng kameran">×</button>
-        <div class="camera-title"><span class="camera-ccc-brand" aria-label="CCC">CCC</span><small id="cameraSessionCount">0 plagg fotograferade</small></div>
+        <div class="camera-title"><span class="camera-ccc-brand" aria-label="CCC">CCC</span><small id="cameraSessionCount">0 nya foton</small></div>
         <span></span>
       </div>
       <div class="camera-viewport">
@@ -131,8 +131,12 @@
       </div>
       <div id="cameraReviewActions" class="camera-review-actions series-review-actions" hidden>
         <button id="retakeBtn" class="secondary-button" type="button">Ta om</button>
-        <button id="nextPhotoBtn" class="secondary-button" type="button">Nästa plagg</button>
+        <button id="nextPhotoBtn" class="secondary-button" type="button">Nästa objekt</button>
         <button id="usePhotoBtn" class="primary-button" type="button">Klar</button>
+        <div class="camera-autosave-status">
+          <span id="draftState" class="vision-autosave-state" role="status" aria-live="polite">✓ Sparas automatiskt</span>
+          <button id="cameraExpressPublishBtn" class="camera-express-publish" type="button">Expresspublicera 1 objekt</button>
+        </div>
       </div>
     </div>
 
@@ -155,7 +159,7 @@
 
       <p id="visionHint" class="vision-hint">Ett foto räcker oftast.</p>
       <input id="sameGarmentInput" class="visually-hidden" type="file" accept="image/*" multiple>
-      <button id="addSameGarmentBtn" class="quiet-button same-garment-button" type="button">＋ Fler bilder på samma plagg</button>
+      <button id="addSameGarmentBtn" class="quiet-button same-garment-button" type="button" data-ccc-term="＋ Fler bilder på samma {singular}">＋ Fler bilder på samma objekt</button>
 
       <div class="vision-review-actions">
         <button id="trashCurrentBtn" class="trash-button" type="button" aria-label="Lägg i papperskorgen">🗑</button>
@@ -174,53 +178,51 @@
     </section>
 
     <section id="editCard" class="card stage-card compact-edit-stage" hidden aria-labelledby="editTitle">
-      <div class="fixed-stage-head compact-edit-head">
-        <div><h2 id="editTitle">Plagg <span id="editProgress">1 av 1</span></h2></div>
-        <div class="edit-head-actions"><span id="draftState" class="vision-autosave-state" role="status" aria-live="polite">✓ Sparat automatiskt</span></div>
+      <div class="fixed-stage-head compact-edit-head edit-head-v2">
+        <h2 id="editTitle">Granska &amp; komplettera</h2>
       </div>
 
       <section class="same-garment-editor" aria-labelledby="sameGarmentEditTitle">
-        <div class="same-garment-heading">
-          <strong id="sameGarmentEditTitle">Bilder för plagget <span id="sameGarmentCount">(1/3)</span></strong>
-          <small>Huvudbild, baksida, etikett eller detalj.</small>
-        </div>
+        <span id="sameGarmentCount" hidden hidden></span>
         <div id="sameGarmentThumbs" class="same-garment-thumbs" aria-live="polite"></div>
         <input id="sameGarmentCameraInput" class="visually-hidden" type="file" accept="image/*" capture="environment">
       </section>
 
-      <button id="manualAiBtn" class="primary-button manual-ai-button" type="button">Analysera med AI</button>
+      <div class="edit-object-actions" aria-label="Objektåtgärder">
+        <div class="edit-progress-nav" aria-label="Navigera mellan objekt">
+          <button id="editPrevObjectBtn" class="edit-object-nav-btn" type="button" aria-label="Föregående objekt">‹</button>
+          <span id="editProgress" class="edit-progress-pill">1/1</span>
+          <button id="editNextObjectBtn" class="edit-object-nav-btn" type="button" aria-label="Nästa objekt">›</button>
+        </div>
+        <button id="manualAiBtn" class="edit-ai-button ccc-tool-card ccc-tool-card--ai" type="button"><span class="edit-tool-icon ccc-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 1.3 4.1L17 8.5l-3.7 1.4L12 14l-1.3-4.1L7 8.5l3.7-1.4L12 3Z"/><path d="m18.5 14 .8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z"/></svg></span><span>AI-analys</span></button>
+        <button id="editTrashBtn" class="edit-trash-button edit-trash-pill ccc-tool-card ccc-tool-card--danger" type="button"><span class="edit-tool-icon ccc-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13M10 10v7M14 10v7"/></svg></span><span>Ta bort</span></button>
+      </div>
 
       <form id="productForm" class="compact-edit-form">
-        <label class="title-field">
-          <span>Rubrik</span>
-          <input id="title" type="text" autocomplete="off" maxlength="100" placeholder="Exempel: Adidas Liverpool-tröja 1995">
+        <label class="title-field" for="title">
+          <span class="edit-field-caption">Rubrik</span>
+          <input id="title" type="text" autocomplete="off" maxlength="100" placeholder="" readonly aria-haspopup="dialog" aria-controls="textEditorDialog">
           <small class="field-help"><span id="titleCount">0</span>/100</small>
         </label>
 
-        <div class="price-row">
-          <label>
-            <span>Pris</span>
-            <div class="price-input"><input id="price" type="number" min="0" inputmode="numeric" placeholder="0"><span>kr</span></div>
-          </label>
-          <button id="usePriceSuggestionBtn" class="price-quick-button" type="button">
-            <small>Vision föreslår</small>
-            <strong id="priceSuggestion">795 kr</strong>
-          </button>
-        </div>
-
-        <label class="compact-description-field">
-          <span>Beskrivning</span>
-          <textarea id="description" rows="3" maxlength="800"></textarea>
+        <label class="compact-description-field" for="description">
+          <span class="edit-field-caption">Beskrivning</span>
+          <textarea id="description" rows="3" maxlength="800" placeholder="" readonly aria-haspopup="dialog" aria-controls="textEditorDialog"></textarea>
           <small class="field-help"><span id="descriptionCount">0</span>/800</small>
         </label>
 
-        <button id="openMoreFieldsBtn" class="secondary-button more-fields-trigger" type="button">Lägg till fler uppgifter</button>
+        <div class="price-row price-row--single">
+          <label>
+            <span>Pris</span>
+            <div class="price-input"><input id="price" type="number" min="0" inputmode="numeric" placeholder="Ej angett" readonly aria-haspopup="dialog" aria-controls="priceEditorDialog"><span>kr</span></div>
+          </label>
+        </div>
+
       </form>
 
-      <div class="fixed-stage-actions compact-edit-actions vision-item-actions">
-        <button id="editTrashBtn" class="vision-delete-button" type="button">🗑 <span>Ta bort</span></button>
-        <button id="flagItemBtn" class="vision-flag-button" type="button" aria-pressed="false">🚩 <span>Flagga</span></button>
-        <button id="previewBtn" class="primary-button" type="button">Nästa →</button>
+      <div class="editor-bottom-row">
+        <button id="openMoreFieldsBtn" class="secondary-button more-fields-trigger ccc-tool-card ccc-tool-card--info ccc-tool-card--compact" type="button">Lägg till fler uppgifter</button>
+        <button id="previewBtn" class="primary-button" type="button">Nästa objekt</button>
       </div>
       <p id="message" class="message" aria-live="polite"></p>
     </section>
@@ -229,11 +231,11 @@
     <section id="seriesDoneCard" class="card stage-card series-done-card" hidden aria-labelledby="seriesDoneTitle">
       <div class="done-icon" aria-hidden="true">✓</div>
       <h2 id="seriesDoneTitle">Klart!</h2>
-      <p id="seriesDoneText" class="vision-hint">Plaggen är klara att publiceras.</p>
+      <p id="seriesDoneText" class="vision-hint" data-ccc-term="{Plural} är klara att publiceras.">Objekt är klara att publiceras.</p>
       <div id="readyPublishList" class="ready-publish-list" aria-label="Färdiga objekt"></div>
       <div class="done-actions">
         <button id="publishReadyBtn" class="primary-button ready-publish-button" type="button" disabled title="Öppna Publicera">Publicera</button>
-        <button id="newSeriesBtn" class="secondary-button" type="button">Fota fler plagg</button>
+        <button id="newSeriesBtn" class="secondary-button" type="button" data-ccc-term="Fota fler {plural}">Fota fler objekt</button>
         <a class="secondary-button done-dashboard-link" href="../dashboard/index.html">Till startsidan</a>
       </div>
     </section>
@@ -293,9 +295,43 @@
 
   
 
+
+<div id="priceEditorDialog" class="price-editor-dialog price-editor-screen" role="region" aria-labelledby="priceEditorTitle" hidden>
+  <div class="dialog-box price-editor-dialog-box">
+    <div class="dialog-head-with-close price-editor-head">
+      <div><h2 id="priceEditorTitle">Pris</h2><p data-ccc-term="Skriv priset för {definiteSingular}.">Skriv priset för objektet.</p></div>
+      <button id="closePriceEditorBtn" class="dialog-close-x" type="button" aria-label="Stäng">×</button>
+    </div>
+    <div class="price-editor-field">
+      <input id="largePriceEditor" type="number" min="0" inputmode="numeric" placeholder="0">
+      <span>kr</span>
+    </div>
+  </div>
+</div>
+
+<div id="textEditorDialog" class="text-editor-dialog text-editor-screen" role="dialog" aria-modal="true" aria-labelledby="textEditorTitle" hidden>
+  <div class="dialog-box ccc-dialog-box text-editor-dialog-box">
+    <div class="text-editor-head dialog-head-with-close">
+      <div>
+        <h2 id="textEditorTitle">Redigera</h2>
+        <p id="textEditorHint">Skriv eller ändra texten.</p>
+      </div>
+      <button id="closeTextEditorBtn" class="dialog-close-x" type="button" aria-label="Stäng">×</button>
+    </div>
+    <div class="text-editor-field-wrap">
+      <textarea id="largeTextEditor" autocomplete="off"></textarea>
+      <small id="largeTextEditorCount" class="text-editor-count">0/100</small>
+    </div>
+
+  </div>
+</div>
+
 <div id="moreFieldsDialog" class="dialog ccc-dialog more-fields-dialog" role="dialog" aria-modal="true" aria-labelledby="moreFieldsTitle" hidden>
   <div class="dialog-box ccc-dialog-box more-fields-dialog-box">
-    <div class="more-fields-head"><h2 id="moreFieldsTitle">Fler uppgifter</h2><p>Komplettera bara det du behöver.</p></div>
+    <div class="more-fields-head dialog-head-with-close">
+      <div><h2 id="moreFieldsTitle">Fler uppgifter</h2><p>Komplettera bara det du behöver.</p></div>
+      <button id="closeMoreFieldsBtn" class="dialog-close-x" type="button" aria-label="Stäng">×</button>
+    </div>
     <div class="two-column extra-fields more-fields-scroll">
       <label><span>Kategori</span><input id="category" type="text" autocomplete="off"></label>
       <label><span>Märke / klubb</span><input id="brand" type="text" autocomplete="off"></label>
@@ -310,10 +346,7 @@
         <button id="addNewConditionBtn" class="secondary-button compact-action" type="button">Lägg till “Nyskick”</button>
       </section>
     </div>
-    <div class="more-fields-actions">
-      <button id="cancelMoreFieldsBtn" class="secondary-button" type="button">Återgå</button>
-      <button id="saveMoreFieldsBtn" class="primary-button" type="button">Klar</button>
-    </div>
+
   </div>
 </div>
 
@@ -328,13 +361,49 @@
     </div>
   </div>
 
-  <script src="../version.js?v=2.10.9"></script>
+  <script src="../version.js?v=2.10.132"></script>
   <script src="demo-data.js?v=2.9.3"></script>
-  <script src="vision-ai-config.js?v=2.10.7"></script>
+  <script src="vision-ai-config.js?v=2.9.3"></script>
   <script src="vision-ai.js?v=2.9.3"></script>
   <script src="vision-knowledge.js?v=2.9.3"></script>
-  <script src="product-lab.js?v=2.10.9"></script>
-<script type="module" src="../core.js?v=2.10.2"></script>
+  <script src="product-lab.js?v=2.10.132"></script>
+<script type="module" src="../core.js?v=2.10.132"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
+<div id="visionContextHelpDialog" class="dialog ccc-dialog vision-context-help" role="dialog" aria-modal="true" aria-labelledby="visionContextHelpTitle" hidden>
+  <div class="dialog-box">
+    <div class="dialog-head-with-close">
+      <div><h2 id="visionContextHelpTitle">Granska &amp; komplettera</h2><p>Här kontrollerar du objektets bilder och uppgifter innan du går vidare.</p></div>
+      <button id="closeVisionContextHelpBtn" class="dialog-close-x" type="button" aria-label="Stäng">×</button>
+    </div>
+    <div class="vision-help-content">
+      <p><strong>Huvudbild</strong> är bilden som används först vid publicering.</p>
+      <p><strong>Bild 2</strong> och <strong>Bild 3</strong> är extra bilder av samma objekt, till exempel baksida, etikett eller detalj.</p>
+      <p><strong>AI-analys</strong> analyserar objektets aktuella bilder tillsammans och uppdaterar förslaget.</p>
+      <p><strong>AI ✓</strong> visar att just den bilden har varit med i en AI-analys.</p>
+      <p>Rubrik, pris, beskrivning och övriga uppgifter kan ändras innan du går vidare.</p>
+      <p><strong>Publicera</strong> i footern öppnar Publicera med det här objektet redan aktivt, så du slipper välja samma objekt igen.</p>
+    </div>
+  </div>
+</div>
+
+
+<div id="visionWorkspaceHelpDialog" class="dialog ccc-dialog vision-context-help" role="dialog" aria-modal="true" aria-labelledby="visionWorkspaceHelpTitle" hidden>
+  <div class="dialog-box">
+    <div class="dialog-head-with-close">
+      <div>
+        <h2 id="visionWorkspaceHelpTitle">Objektöversikt</h2>
+        <p id="visionWorkspaceHelpIntro">Här visas objekten från din fotosession, sex åt gången.</p>
+      </div>
+      <button id="closeVisionWorkspaceHelpBtn" class="dialog-close-x" type="button" aria-label="Stäng">×</button>
+    </div>
+    <div class="vision-help-content">
+      <p id="visionWorkspaceHelpRange"></p>
+      <p>Den gula ramen visar vilket objekt du arbetar med. Tryck på ett objekt för att öppna <strong>Granska &amp; komplettera</strong>.</p>
+      <p>Svep åt sidan för att se nästa grupp när sessionen innehåller fler än sex objekt.</p>
+      <p><strong>Publicera</strong> i footern öppnar <strong>Förbered för publicering</strong> direkt. Där väljer du själv vilket eller vilka objekt du vill gå vidare med.</p>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
