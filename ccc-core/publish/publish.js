@@ -2334,6 +2334,7 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
 
 
 (async()=>{try{
+  const publishEntryMode=new URLSearchParams(window.location.search).get("mode");
   const allLocalRecords=await getAll();
   const archivedIds=new Set(allLocalRecords.filter(r=>r.readyToPublish===false).map(r=>r.id));
   let explicit=allLocalRecords.filter(r=>r.readyToPublish!==false);
@@ -2355,14 +2356,21 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
     }
   }
   $("#startDraftCount").textContent=items.length===1?"1 utkast":`${items.length} utkast`;
-  // Dashboardens Publicera ska landa direkt i arbetsytan Förbered för publicering.
-  show("gridView");
+  show(publishEntryMode==="quick"?"channelConfirmView":"startView");
 
   await Promise.all(items.map(async(item,index)=>{
     item.thumbUrl=await previewSrc(item);
     if(index===0)preloadNeighbors(0);
   }));
   await renderGrid();
+  if(publishEntryMode==="quick"){
+    channelSelectedIds.clear();
+    items.forEach(item=>channelSelectedIds.add(item.id));
+    container13ChannelSelected=true;
+    confirmPage=0;
+    await renderChannelConfirmation();
+    show("channelConfirmView");
+  }
 }catch(e){
   console.error("[CCC Publicera] Kunde inte läsa lokala utkast",{name:e?.name,message:e?.message},e);
   $("#emptyState").hidden=false;

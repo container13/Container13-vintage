@@ -63,3 +63,5 @@ v2.10.1: Publicering arkiverar lokalt original, WebP och metadata i stället fö
 v2.10.10: Anpassa bild får frivillig riktig friläggning på enheten. Modellen laddas först när Frilägg objekt startas; originalet ändras aldrig. Resultatet förhandsvisas mot transparent, vit, ljusgrå eller mörk bakgrund och sparas först efter Använd friläggning. Transparent resultat sparas som PNG, färgad bakgrund som WebP, tillsammans med separat lokal cutout-kopia.
 
 v2.10.11: Dashboardens Publicera öppnar åter direkt rätt arbetsvy, Förbered för publicering. Publiceras mellanmeny kan fortfarande nås med Tillbaka. Friläggningen från v2.10.10 är oförändrad.
+
+v2.10.12: Dashboardens gröna Publicera använder en explicit `mode=quick`-ingång och öppnar Snabbpublicera/slutkontrollen direkt. Alla redo-plagg följer med och Container13 är förvalt. Övriga ingångar till Publicera behåller sina egna startvägar.
