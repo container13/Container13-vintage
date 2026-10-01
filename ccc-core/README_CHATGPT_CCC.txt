@@ -1726,3 +1726,9 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Ta bort-knappen i redigeringshuvudet tas bort. Flagga växlar till Flaggad och ger miniatyren en synlig flaggsymbol.
 - Flaggstatus autosparas i session, utkast, batchmetadata och originalbildens metadata.
 - Övriga moduler och root `/version.js` är orörda.
+
+
+## v2.10.8 – Tillbaka från redigering
+- Core-Tillbaka läser formulär och flagga direkt, visar arbetsgridden omedelbart och slutför IndexedDB-sparningen i bakgrunden.
+- Tillbaka kan därför inte längre blockeras visuellt av en redan pågående autosparning, och flaggan blir direkt synlig i gridden.
+- Övriga Vision-funktioner och root `/version.js` är orörda.
