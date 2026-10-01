@@ -12,6 +12,8 @@ Permanent Vision-regel: riktiga foton/importer får aldrig fyllas med demoresult
 
 v2.10.6: Regeln ovan är genomförd i körande kod. Saknad endpoint, nätverksfel, timeout, Worker-fel och ogiltigt svar lämnar verkliga produktfält orörda och visar felkod/HTTP-status. Demo kräver nu `explicitDemo` och kan inte nås som fallback från riktiga bilder.
 
+v2.10.7: Redigeringsvyns nedersta rad är `Ta bort | Flagga | Nästa →` i proportion 1/1/2, med Ta bort längst från höger tumme och fortsatt bekräftelse. Flagga autosparas i session/utkast/bildmetadata och syns på miniatyren; den gamla Ta bort-knappen i sidhuvudet är borttagen.
+
 v2.9.72: Vision-kugghjulet öppnar /settings/?module=vision. Den gamla lokala inställnings-overlayn tas bort; funktionerna behålls i den gemensamma modulinställnings-layouten.
 
 v2.9.73: Destruktiv Vision-rensning skyddas av bekräftelsesteg i den gemensamma inställningsvyn.

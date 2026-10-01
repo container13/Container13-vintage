@@ -234,6 +234,7 @@
       visionResult: null,
       analysisInProgress: false,
       approved: false,
+      flagged: false,
       editedFields: null,
       analysisPromise: null,
       publishFile: null,
@@ -430,6 +431,13 @@
       state.className = `thumb-status ${item.visionReady ? "is-ready" : item.analysisInProgress ? "is-working" : item.analysisMode === "manual" ? (item.approved ? "is-saved" : "is-manual") : "is-working"}`;
       state.textContent = item.visionReady || item.approved ? "✓" : "";
       state.setAttribute("aria-hidden", "true");
+      if (item.flagged) {
+        const flag = document.createElement("span");
+        flag.className = "thumb-flag";
+        flag.textContent = "🚩";
+        flag.setAttribute("aria-label", "Flaggat plagg");
+        wrap.appendChild(flag);
+      }
       wrap.dataset.itemIndex = String(index);
       wrap.append(img, state);
       grid.appendChild(wrap);
@@ -903,6 +911,7 @@
       size:String(f?.size||"").trim(),
       price:String(f?.price||"").trim(),
       description:String(f?.description||"").trim(),
+      flagged:!!item?.flagged,
       source:"ccc-vision",
       updatedAt:new Date().toISOString()
     };
@@ -1055,6 +1064,7 @@
       extraFileKeys: [...(item.extraFileKeys || [])],
       demoKey: item.demoKey,
       approved: !!item.approved,
+      flagged: !!item.flagged,
       editedFields: item.editedFields || null,
       visionReady: !!item.visionReady,
       visionResult: item.visionResult || null,
@@ -1156,6 +1166,7 @@
         visionResult: saved.visionResult || null,
         analysisInProgress: false,
         approved: !!saved.approved,
+        flagged: !!saved.flagged,
         editedFields: saved.editedFields || null,
         analysisPromise: null,
         analysisMode: saved.analysisMode || "manual",
@@ -1209,6 +1220,7 @@
       size: (fields.size || "").trim(),
       price: (fields.price || "").trim(),
       description: (fields.description || "").trim(),
+      flagged: !!item.flagged,
       fields
     };
 
@@ -1252,6 +1264,7 @@
     });
     const progress = $("#editProgress");
     if (progress) progress.textContent = `${currentIndex + 1} av ${batchItems.length}`;
+    updateFlagUi();
     renderSameGarmentEditor();
     if (allowWhileAnalyzing && !item.visionReady && !item.editedFields) {
       item.editedFields = Object.fromEntries(fieldIds.map((id) => [id, $("#" + id).value]));
@@ -1488,6 +1501,26 @@
     );
   }
 
+  function updateFlagUi() {
+    const button = $("#flagItemBtn");
+    const item = currentItem();
+    if (!button || !item) return;
+    button.classList.toggle("is-flagged", !!item.flagged);
+    button.setAttribute("aria-pressed", String(!!item.flagged));
+    const label = button.querySelector("span");
+    if (label) label.textContent = item.flagged ? "Flaggad" : "Flagga";
+  }
+
+  function toggleCurrentFlag() {
+    const item = currentItem();
+    if (!item) return;
+    item.flagged = !item.flagged;
+    updateFlagUi();
+    updateBatchStrip();
+    saveBatchMetadata();
+    scheduleAutosave();
+  }
+
   function trashCurrent() {
     if (!batchItems.length) return;
     const [removed] = batchItems.splice(currentIndex, 1);
@@ -1579,6 +1612,7 @@
       id: item.id,
       demoKey: item.demoKey,
       approved: item.approved,
+      flagged: !!item.flagged,
       extraImageCount: item.extraFiles.length,
       publishReady: !!item.approved,
       fields: item.editedFields
@@ -1994,6 +2028,7 @@
   });
   $("#trashCurrentBtn").addEventListener("click", trashCurrent); 
   $("#editTrashBtn")?.addEventListener("click", trashCurrentFromEdit);
+  $("#flagItemBtn")?.addEventListener("click", toggleCurrentFlag);
   $("#undoTrashBtn").addEventListener("click", undoTrash);
   $("#backToSuggestionBtn")?.addEventListener("click", saveEditedAndBack);
   $("#previewBtn").addEventListener("click", saveEditedAndNext);
