@@ -1623,9 +1623,16 @@ function geometry(){
 function fillCropBackground(ctx,width,height,choice=cropBackgroundChoice){
   if(!choice||choice.type==="transparent")return;
   if(choice.type==="container13"){
-    const gradient=ctx.createLinearGradient(0,0,width,height);
-    gradient.addColorStop(0,"#11141a");gradient.addColorStop(.68,"#252b36");gradient.addColorStop(.685,"#c99a32");gradient.addColorStop(.76,"#e1bd5b");gradient.addColorStop(.765,"#202631");gradient.addColorStop(1,"#101218");
+    const gradient=ctx.createRadialGradient(width*.5,height*.38,width*.04,width*.5,height*.42,width*.78);
+    gradient.addColorStop(0,"#735d2c");gradient.addColorStop(.28,"#383126");gradient.addColorStop(.64,"#1d2026");gradient.addColorStop(1,"#0d1016");
     ctx.fillStyle=gradient;
+    ctx.fillRect(0,0,width,height);
+    const footerHeight=height*.105;
+    ctx.fillStyle="rgba(8,10,14,.78)";ctx.fillRect(0,height-footerHeight,width,footerHeight);
+    ctx.fillStyle="#d9ad42";ctx.fillRect(0,height-footerHeight,width,height*.012);
+    ctx.fillStyle="rgba(245,232,194,.92)";ctx.textAlign="center";ctx.textBaseline="middle";ctx.font=`800 ${Math.max(12,Math.round(height*.034))}px system-ui, sans-serif`;ctx.letterSpacing=`${Math.max(1,Math.round(width*.004))}px`;ctx.fillText("CONTAINER 13",width/2,height-footerHeight*.44);
+    ctx.letterSpacing="0px";
+    return;
   }else ctx.fillStyle=choice.value||"#ffffff";
   ctx.fillRect(0,0,width,height);
 }

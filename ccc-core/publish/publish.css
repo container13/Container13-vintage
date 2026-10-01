@@ -2886,6 +2886,14 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   box-shadow:inset 0 2px 7px rgba(0,0,0,.28);
 }
 #cropView .crop-tool--future{border-color:rgba(120,128,148,.15);opacity:.30;filter:saturate(.25)}
+#cropView .crop-tool--future:not(:disabled){
+  opacity:1;
+  filter:none;
+  border-color:rgba(82,178,156,.58);
+  background:linear-gradient(145deg,rgba(30,93,82,.34),rgba(24,31,37,.96));
+  color:#82d8c3;
+  box-shadow:0 0 15px rgba(82,178,156,.09);
+}
 #cropView .crop-tool--cutout{
   grid-column:span 2;
   min-height:38px;
@@ -2950,7 +2958,7 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
 .background-presets button.is-active{border-color:var(--gold);box-shadow:0 0 0 2px color-mix(in srgb,var(--gold) 28%,transparent)}
 .background-swatch{width:31px;height:31px;border:1px solid rgba(125,125,135,.45);border-radius:50%;display:block}
 .swatch-transparent{background-color:#ddd;background-image:linear-gradient(45deg,#aaa 25%,transparent 25%),linear-gradient(-45deg,#aaa 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#aaa 75%),linear-gradient(-45deg,transparent 75%,#aaa 75%);background-size:10px 10px;background-position:0 0,0 5px,5px -5px,-5px 0}
-.swatch-container13{background:linear-gradient(145deg,#171a21 0 62%,#d9ad42 63% 72%,#242936 73%)}
+.swatch-container13{background:radial-gradient(circle at 50% 38%,#765d27,#24211c 46%,#11141a 76%);box-shadow:inset 0 -5px 0 #d9ad42}
 .background-custom{display:grid;grid-template-columns:auto 48px minmax(0,1fr);align-items:center;gap:9px;margin:12px 0 8px}
 .background-custom label{font-size:12px;font-weight:850}
 .background-custom input[type="color"]{width:48px;height:42px;padding:2px;border:1px solid var(--border);border-radius:11px;background:var(--surface)}
