@@ -61,3 +61,5 @@ v2.10.0: Samlad rättning efter verkligt arbetsprov. Förbered, Välj plagg och 
 v2.10.1: Publicering arkiverar lokalt original, WebP och metadata i stället för att radera dem. Hantera publicerade bilder får fliken Sparade bilder med live/offline-status. Liveborttagning använder gråmarkerat flerval, gemensam bekräftelse, bevarad scroll och flytande kvitto; endast Firebase-posten tas bort medan lokalt arkiv ligger kvar. Gridernas kolumnmellanrum ökas och swipe-kopian försvinner innan den riktiga gridden återställs för att undvika blinkande kanter.
 
 v2.10.10: Anpassa bild får frivillig riktig friläggning på enheten. Modellen laddas först när Frilägg objekt startas; originalet ändras aldrig. Resultatet förhandsvisas mot transparent, vit, ljusgrå eller mörk bakgrund och sparas först efter Använd friläggning. Transparent resultat sparas som PNG, färgad bakgrund som WebP, tillsammans med separat lokal cutout-kopia.
+
+v2.10.11: Dashboardens Publicera öppnar åter direkt rätt arbetsvy, Förbered för publicering. Publiceras mellanmeny kan fortfarande nås med Tillbaka. Friläggningen från v2.10.10 är oförändrad.

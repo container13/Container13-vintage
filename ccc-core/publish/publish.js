@@ -2355,7 +2355,8 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
     }
   }
   $("#startDraftCount").textContent=items.length===1?"1 utkast":`${items.length} utkast`;
-  show("startView");
+  // Dashboardens Publicera ska landa direkt i arbetsytan Förbered för publicering.
+  show("gridView");
 
   await Promise.all(items.map(async(item,index)=>{
     item.thumbUrl=await previewSrc(item);
