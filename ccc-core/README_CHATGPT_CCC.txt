@@ -1704,3 +1704,9 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Swipe tar kontroll först efter ett tydligt horisontellt drag. Vanligt tryck öppnar plagget direkt.
 - Redigeringsvyn tar bort dubblerad huvudbild/ruta, visar `Plagg X av Y`, samlar tre bildplatser på en rad och gör `Analysera igen` sekundär efter färdig analys.
 - `Nästa plagg` är helbred. Övriga moduler och root `/version.js` är orörda.
+
+
+## v2.10.5 – blockerande gridnavigation på mobil
+- Den känsliga pointer-capture-lösningen ersätts av separata touch- och musgester utan kvarhängande klickspärr.
+- Vanligt tryck öppnar vald miniatyr och visar korrekt `Plagg X av Y`; tydlig horisontell swipe byter 3×2-sida.
+- Extrabilder, autosparning, AI, Publicera och root `/version.js` är orörda.
