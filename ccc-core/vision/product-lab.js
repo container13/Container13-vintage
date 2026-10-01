@@ -298,7 +298,10 @@
     item.visionReady = false;
     item.analysisInProgress = false;
     const aiAllowed = forceAi || visionSettings().aiAuto;
-    item.analysisMode = aiAllowed && window.CCC_VISION_AI?.configured?.() ? "ai" : (aiAllowed ? "demo" : "manual");
+    const explicitDemo = item.explicitDemo === true;
+    item.analysisMode = explicitDemo
+      ? "demo"
+      : (aiAllowed && window.CCC_VISION_AI?.configured?.() ? "ai" : (aiAllowed ? "error" : "manual"));
     item.analysisError = "";
     item.analysisErrorCode = "";
     item.analysisHttpStatus = 0;
@@ -306,6 +309,15 @@
 
     if (item.analysisMode === "manual") {
       item.analysisInProgress = false;
+      item.analysisPromise = Promise.resolve(null);
+      item.visionReady = false;
+      updateBatchStrip();
+      return item.analysisPromise;
+    }
+
+    if (item.analysisMode === "error") {
+      item.analysisError = "AI-endpoint saknas.";
+      item.analysisErrorCode = "AI_NOT_CONFIGURED";
       item.analysisPromise = Promise.resolve(null);
       item.visionReady = false;
       updateBatchStrip();
@@ -341,15 +353,17 @@
           console.info("[CCC Vision] AI-analys klar", { itemId: item.id, usage: item.aiUsage });
           return item.visionResult;
         } catch (error) {
-          console.error("[CCC Vision] AI-fel – demo används som fallback", error);
+          console.error("[CCC Vision] AI-fel – produktfälten lämnas oförändrade", error);
           item.analysisError = error?.message || "AI-analysen misslyckades.";
           item.analysisErrorCode = error?.code || "AI_UNKNOWN";
           item.analysisHttpStatus = Number(error?.status) || 0;
-          item.analysisMode = "demo";
-              }
+          item.analysisMode = "error";
+          item.visionReady = false;
+          return null;
+        }
       }
 
-      // Säkert demoläge tills AI-endpointen är ansluten, eller om testanropet misslyckas.
+      // Demoresultat används endast för ett uttryckligt valt, tydligt märkt demoobjekt.
       await new Promise((resolve) => setTimeout(resolve, 650 + Math.floor(Math.random() * 450)));
       item.visionResult = await applyLocalKnowledge(window.CCC_VISION_DEMOS?.[item.demoKey] || window.CCC_VISION_DEMO);
       item.visionReady = true;
@@ -1668,6 +1682,7 @@
       const file = new File([blob], `${key}.svg`, { type: "image/svg+xml" });
       const item = createBatchItem(file, batchItems.length);
       item.demoKey = key;
+      item.explicitDemo = true;
       startSilentAnalysis(item);
       batchItems.push(item);
       updateBatchStrip();
@@ -1728,10 +1743,13 @@
         scheduleAutosave();
       } else {
         const message = item.analysisError || "AI-analysen gav inget användbart resultat.";
+        const code = item.analysisErrorCode ? ` · ${item.analysisErrorCode}` : "";
+        const status = item.analysisHttpStatus ? ` · HTTP ${item.analysisHttpStatus}` : "";
         if (contextSub) {
           contextSub.hidden = false;
-          contextSub.textContent = `AI-fel: ${message}`;
+          contextSub.textContent = `AI-fel: ${message}${code}${status}. Inga produktfält ändrades.`;
         }
+        setMessage(`AI-fel: ${message}${code}${status}. Inga produktfält ändrades.`);
       }
     } catch (error) {
       const stillSelected = currentItem()?.id === itemId;

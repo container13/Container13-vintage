@@ -8,6 +8,10 @@ v2.10.4: Kameran visar antal fotograferade plagg. Arbetsgridden är 3×2 med sex
 
 v2.10.5: Mobilgridden använder robusta touchstart/touchmove/touchend-gester utan pointer capture eller kvarhängande klickspärr. Tryck öppnar exakt vald miniatyr med korrekt `Plagg X av Y`; tydlig horisontell swipe byter sida.
 
+Permanent Vision-regel: riktiga foton/importer får aldrig fyllas med demoresultat när AI saknas eller misslyckas. Behåll befintliga fält, visa tydligt AI-fel med verklig orsak/statuskod och tillåt demo endast i ett uttryckligt märkt demoläge. Bakgrund: en handkräm med tre korrekta bilder fick den fasta fallbacktexten `Adidas vintage träningsjacka`.
+
+v2.10.6: Regeln ovan är genomförd i körande kod. Saknad endpoint, nätverksfel, timeout, Worker-fel och ogiltigt svar lämnar verkliga produktfält orörda och visar felkod/HTTP-status. Demo kräver nu `explicitDemo` och kan inte nås som fallback från riktiga bilder.
+
 v2.9.72: Vision-kugghjulet öppnar /settings/?module=vision. Den gamla lokala inställnings-overlayn tas bort; funktionerna behålls i den gemensamma modulinställnings-layouten.
 
 v2.9.73: Destruktiv Vision-rensning skyddas av bekräftelsesteg i den gemensamma inställningsvyn.
