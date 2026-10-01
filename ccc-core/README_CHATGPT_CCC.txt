@@ -1732,3 +1732,8 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Core-Tillbaka läser formulär och flagga direkt, visar arbetsgridden omedelbart och slutför IndexedDB-sparningen i bakgrunden.
 - Tillbaka kan därför inte längre blockeras visuellt av en redan pågående autosparning, och flaggan blir direkt synlig i gridden.
 - Övriga Vision-funktioner och root `/version.js` är orörda.
+
+
+## v2.10.9 – synlig flagga i arbetsgridden
+- Miniatyrkortet får klassen `is-flagged`; en högprioriterad CSS-symbol och guldfärgad innerram visar statusen ovanpå bilden utan beroende av separata span-element.
+- Övrig flagglagring och Vision-funktionalitet är oförändrad. Root `/version.js` är orörd.
