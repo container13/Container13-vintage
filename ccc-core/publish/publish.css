@@ -2966,6 +2966,18 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
 .background-recent{min-height:0;display:flex;gap:7px;margin:0 0 10px}
 .background-recent:empty{display:none}
 .background-recent button{width:30px;height:30px;border:2px solid rgba(255,255,255,.7);border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.35)}
+
+/* CCC v2.10.138 – manuell korrigering av AI-masken */
+.cutout-adjust{display:grid;gap:8px;margin:9px 0 2px}
+.cutout-adjust[hidden]{display:none!important}
+.cutout-adjust-tools{display:grid;grid-template-columns:1fr 1fr auto;gap:6px}
+.cutout-adjust-tools button{min-height:38px;padding:6px 8px;border:1px solid var(--border);border-radius:11px;background:var(--surface);color:var(--text);font-size:10px;font-weight:850}
+.cutout-adjust-tools button.is-active{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 16%,var(--surface));color:var(--gold)}
+.cutout-adjust-tools button:disabled{opacity:.38}
+.cutout-brush-size{display:grid;grid-template-columns:auto 1fr 26px;align-items:center;gap:8px;color:var(--muted);font-size:10px;font-weight:800}
+.cutout-brush-size input{width:100%;accent-color:var(--gold)}
+.cutout-brush-size output{text-align:right;color:var(--text);font-variant-numeric:tabular-nums}
+#cutoutPreview.is-adjusting{touch-action:none;cursor:crosshair}
 .cutout-busy[hidden]{display:none}
 .cutout-busy span{width:28px;height:28px;border:3px solid rgba(255,255,255,.28);border-top-color:#c49cff;border-radius:50%;animation:cutout-spin .7s linear infinite}
 @keyframes cutout-spin{to{transform:rotate(360deg)}}

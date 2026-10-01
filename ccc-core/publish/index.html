@@ -11,7 +11,7 @@
 <title>CCC Publicera v2.9.22</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}const p=new URLSearchParams(location.search);document.documentElement.classList.add("ccc-publish-booting");if(p.get("view")==="prepare")document.documentElement.classList.add("ccc-direct-prepare-loading");</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.10.137">
+<link rel="stylesheet" href="publish.css?v=2.10.138">
   <link rel="stylesheet" href="../core.css?v=2.10.132">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
@@ -314,6 +314,14 @@
       <button id="cutoutShowOriginal" type="button">Original</button>
       <button id="cutoutShowResult" class="is-active" type="button">Frilagd</button>
     </div>
+    <div id="cutoutAdjust" class="cutout-adjust" hidden>
+      <div class="cutout-adjust-tools" role="group" aria-label="Justera friläggning">
+        <button id="cutoutRestoreBrush" type="button"><span aria-hidden="true">＋</span> Måla tillbaka</button>
+        <button id="cutoutEraseBrush" type="button"><span aria-hidden="true">−</span> Ta bort</button>
+        <button id="cutoutUndo" type="button" disabled aria-label="Ångra senaste penseldraget">↶ Ångra</button>
+      </div>
+      <label class="cutout-brush-size" for="cutoutBrushSize"><span>Pensel</span><input id="cutoutBrushSize" type="range" min="8" max="100" value="38"><output id="cutoutBrushValue">38</output></label>
+    </div>
     <p id="cutoutStatus" class="cutout-status">Första gången hämtas AI-modellen. Bilden behandlas sedan lokalt på enheten.</p>
     <div class="cutout-actions">
       <button id="cutoutReset" class="button-secondary ccc-button-secondary" type="button">Kör igen</button>
@@ -360,9 +368,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.10.137"></script>
-<script type="module" src="../core.js?v=2.10.137"></script>
-  <script src="../version.js?v=2.10.137"></script>
+<script type="module" src="publish.js?v=2.10.138"></script>
+<script type="module" src="../core.js?v=2.10.138"></script>
+  <script src="../version.js?v=2.10.138"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 

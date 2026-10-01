@@ -790,7 +790,7 @@ function helpHtmlForView(view){
       <div class="help-row"><strong>Fortsätt</strong><br>Går vidare med de färdiga ${entityTerm("plural")} till val av kanal.</div>
       <div class="help-row"><strong>Välj</strong><br>Öppnar läget där du kan markera lokala utkast för borttagning.</div>`;
   if(view==="detailView")return `<div class="help-row"><strong>Grön ✓</strong><br>Bilden har en sparad anpassning men kan ändras igen.</div><div class="help-row"><strong>Anpassa bild</strong><br>Gör den automatiska bildanpassningen när den behövs.</div><div class="help-row"><strong>Publicera</strong><br>Tar aktuellt objekt direkt till sista kontrollvyn.</div><div class="help-row"><strong>Klar – tillbaka till bilderna</strong><br>Återgår till Förbered så att du kan fortsätta med nästa bild.</div>`;
-  if(view==="cropView")return `<div class="help-row"><strong>Anpassa bild</strong><br>Dra, nypzooma eller använd verktygen för att placera bilden.</div><div class="help-row"><strong>Hela bilden / Fyll ytan</strong><br>Välj om hela originalet ska synas eller om bilden ska fylla publiceringsytan.</div><div class="help-row"><strong>Rotera / Återställ</strong><br>Rotera 90 grader eller återgå till hela originalbilden.</div><div class="help-row"><strong>Frilägg</strong><br>AI identifierar objektet och tar bort bakgrunden lokalt på enheten. Första användningen behöver hämta modellen.</div><div class="help-row"><strong>Bakgrund</strong><br>Välj transparent, färdig bakgrund eller en egen färg efter att bilden frilagts.</div><div class="help-row"><strong>Spara anpassning</strong><br>Sparar en separat publiceringsvariant och bevarar originalet.</div>`;
+  if(view==="cropView")return `<div class="help-row"><strong>Anpassa bild</strong><br>Dra, nypzooma eller använd verktygen för att placera bilden.</div><div class="help-row"><strong>Hela bilden / Fyll ytan</strong><br>Välj om hela originalet ska synas eller om bilden ska fylla publiceringsytan.</div><div class="help-row"><strong>Rotera / Återställ</strong><br>Rotera 90 grader eller återgå till hela originalbilden.</div><div class="help-row"><strong>Frilägg</strong><br>AI identifierar objektet och tar bort bakgrunden lokalt. I resultatvyn kan du måla tillbaka saknade delar eller ta bort kvarvarande bakgrund.</div><div class="help-row"><strong>Bakgrund</strong><br>Välj transparent, färdig bakgrund eller en egen färg efter att bilden frilagts.</div><div class="help-row"><strong>Spara anpassning</strong><br>Sparar en separat publiceringsvariant och bevarar originalet.</div>`;
   return `<div class="help-row"><strong>Tillbaka</strong><br>Går till föregående steg.</div>`;
 }
 function openPublishHelp(){
@@ -1983,7 +1983,7 @@ $("#cropReset").addEventListener("click",async()=>{
   updateCropSaveState();
 });
 
-let cutoutSourceCanvas=null,cutoutResultCanvas=null,cutoutRenderTimer=null,cutoutShowingOriginal=false,backgroundRemovalModule=null;
+let cutoutSourceCanvas=null,cutoutResultCanvas=null,cutoutRenderTimer=null,cutoutShowingOriginal=false,backgroundRemovalModule=null,cutoutBrushMode="",cutoutBrushDrawing=false,cutoutBrushLast=null,cutoutUndoStack=[];
 const BACKGROUND_REMOVAL_MODULE_URL="https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm";
 
 function setCutoutBusy(busy){
@@ -2000,6 +2000,53 @@ function drawCutoutPreview(){
   ctx.drawImage(source,0,0,preview.width,preview.height);
   $("#cutoutShowOriginal")?.classList.toggle("is-active",cutoutShowingOriginal);
   $("#cutoutShowResult")?.classList.toggle("is-active",!cutoutShowingOriginal);
+}
+
+function updateCutoutAdjustState(){
+  const adjust=$("#cutoutAdjust"),preview=$("#cutoutPreview"),undo=$("#cutoutUndo");
+  if(adjust)adjust.hidden=!cutoutResultCanvas;
+  preview?.classList.toggle("is-adjusting",!!cutoutBrushMode&&!cutoutShowingOriginal&&!!cutoutResultCanvas);
+  $("#cutoutRestoreBrush")?.classList.toggle("is-active",cutoutBrushMode==="restore");
+  $("#cutoutEraseBrush")?.classList.toggle("is-active",cutoutBrushMode==="erase");
+  if(undo)undo.disabled=!cutoutUndoStack.length;
+}
+
+function setCutoutBrushMode(mode){
+  cutoutBrushMode=cutoutBrushMode===mode?"":mode;
+  if(cutoutBrushMode){cutoutShowingOriginal=false;drawCutoutPreview();}
+  updateCutoutAdjustState();
+  const status=$("#cutoutStatus");
+  if(status&&cutoutBrushMode)status.textContent=cutoutBrushMode==="restore"?"Dra över saknade delar för att måla tillbaka dem från originalet.":"Dra över delar av bakgrunden som ska tas bort.";
+}
+
+function cutoutBrushPoint(event){
+  const preview=$("#cutoutPreview"),rect=preview.getBoundingClientRect();
+  return{x:(event.clientX-rect.left)/Math.max(1,rect.width)*cutoutResultCanvas.width,y:(event.clientY-rect.top)/Math.max(1,rect.height)*cutoutResultCanvas.height};
+}
+
+function applyCutoutBrushPoint(point){
+  if(!cutoutResultCanvas||!cutoutSourceCanvas||!cutoutBrushMode)return;
+  const radius=Number($("#cutoutBrushSize")?.value||38)/2,feather=Math.max(2,radius*.28),left=Math.max(0,Math.floor(point.x-radius)),top=Math.max(0,Math.floor(point.y-radius)),right=Math.min(cutoutResultCanvas.width,Math.ceil(point.x+radius)),bottom=Math.min(cutoutResultCanvas.height,Math.ceil(point.y+radius)),width=right-left,height=bottom-top;
+  if(width<1||height<1)return;
+  const resultCtx=cutoutResultCanvas.getContext("2d",{willReadFrequently:true}),sourceCtx=cutoutSourceCanvas.getContext("2d",{willReadFrequently:true}),result=resultCtx.getImageData(left,top,width,height),source=sourceCtx.getImageData(left,top,width,height);
+  for(let y=0;y<height;y++)for(let x=0;x<width;x++){
+    const distance=Math.hypot(left+x-point.x,top+y-point.y);if(distance>=radius)continue;
+    const weight=Math.min(1,(radius-distance)/feather),index=(y*width+x)*4;
+    if(cutoutBrushMode==="erase")result.data[index+3]=Math.round(result.data[index+3]*(1-weight));
+    else{
+      result.data[index]=Math.round(result.data[index]+(source.data[index]-result.data[index])*weight);
+      result.data[index+1]=Math.round(result.data[index+1]+(source.data[index+1]-result.data[index+1])*weight);
+      result.data[index+2]=Math.round(result.data[index+2]+(source.data[index+2]-result.data[index+2])*weight);
+      result.data[index+3]=Math.round(result.data[index+3]+(source.data[index+3]-result.data[index+3])*weight);
+    }
+  }
+  resultCtx.putImageData(result,left,top);
+}
+
+function applyCutoutBrushLine(from,to){
+  const radius=Number($("#cutoutBrushSize")?.value||38)/2,distance=Math.hypot(to.x-from.x,to.y-from.y),steps=Math.max(1,Math.ceil(distance/Math.max(2,radius*.32)));
+  for(let step=1;step<=steps;step++)applyCutoutBrushPoint({x:from.x+(to.x-from.x)*step/steps,y:from.y+(to.y-from.y)*step/steps});
+  drawCutoutPreview();
 }
 
 function cornerPalette(data,width,height){
@@ -2090,6 +2137,7 @@ async function runLocalCutout(){
   const source=cutoutSourceCanvas;
   if(!source)return;
   setCutoutBusy(true);
+  cutoutResultCanvas=null;cutoutBrushMode="";cutoutUndoStack=[];updateCutoutAdjustState();
   const status=$("#cutoutStatus");
   if(status)status.textContent="Laddar lokal AI-modell… Första gången kan ta en stund.";
   try{
@@ -2112,6 +2160,7 @@ async function runLocalCutout(){
       canvas.width=source.width;canvas.height=source.height;
       canvas.getContext("2d",{alpha:true}).drawImage(image,0,0,canvas.width,canvas.height);
       cutoutResultCanvas=canvas;cutoutShowingOriginal=false;drawCutoutPreview();
+      updateCutoutAdjustState();
       if(status)status.textContent="AI-friläggningen är klar. Jämför med originalet innan du använder resultatet.";
     }finally{URL.revokeObjectURL(resultUrl);}
   }catch(error){
@@ -2139,15 +2188,35 @@ async function openCutoutDialog(){
 function closeCutoutDialog(){
   const dialog=$("#cutoutDialog");if(dialog)dialog.hidden=true;
   cutoutSourceCanvas=null;cutoutResultCanvas=null;cutoutShowingOriginal=false;
+  cutoutBrushMode="";cutoutBrushDrawing=false;cutoutBrushLast=null;cutoutUndoStack=[];updateCutoutAdjustState();
   if(cutoutRenderTimer){clearTimeout(cutoutRenderTimer);cutoutRenderTimer=null;}
 }
 
 $("#cropCutout")?.addEventListener("click",openCutoutDialog);
 $("#cutoutClose")?.addEventListener("click",closeCutoutDialog);
 $("#cutoutDialog")?.addEventListener("click",event=>{if(event.target===$("#cutoutDialog"))closeCutoutDialog();});
-$("#cutoutShowOriginal")?.addEventListener("click",()=>{cutoutShowingOriginal=true;drawCutoutPreview();});
-$("#cutoutShowResult")?.addEventListener("click",()=>{cutoutShowingOriginal=false;drawCutoutPreview();});
+$("#cutoutShowOriginal")?.addEventListener("click",()=>{cutoutShowingOriginal=true;drawCutoutPreview();updateCutoutAdjustState();});
+$("#cutoutShowResult")?.addEventListener("click",()=>{cutoutShowingOriginal=false;drawCutoutPreview();updateCutoutAdjustState();});
 $("#cutoutReset")?.addEventListener("click",runLocalCutout);
+$("#cutoutRestoreBrush")?.addEventListener("click",()=>setCutoutBrushMode("restore"));
+$("#cutoutEraseBrush")?.addEventListener("click",()=>setCutoutBrushMode("erase"));
+$("#cutoutBrushSize")?.addEventListener("input",event=>{const output=$("#cutoutBrushValue");if(output)output.value=event.target.value;});
+$("#cutoutUndo")?.addEventListener("click",()=>{
+  if(!cutoutResultCanvas||!cutoutUndoStack.length)return;
+  cutoutResultCanvas.getContext("2d").putImageData(cutoutUndoStack.pop(),0,0);drawCutoutPreview();updateCutoutAdjustState();
+});
+$("#cutoutPreview")?.addEventListener("pointerdown",event=>{
+  if(!cutoutBrushMode||cutoutShowingOriginal||!cutoutResultCanvas)return;
+  event.preventDefault();event.currentTarget.setPointerCapture?.(event.pointerId);
+  cutoutUndoStack.push(cutoutResultCanvas.getContext("2d").getImageData(0,0,cutoutResultCanvas.width,cutoutResultCanvas.height));
+  if(cutoutUndoStack.length>8)cutoutUndoStack.shift();
+  cutoutBrushDrawing=true;cutoutBrushLast=cutoutBrushPoint(event);applyCutoutBrushPoint(cutoutBrushLast);drawCutoutPreview();updateCutoutAdjustState();
+});
+$("#cutoutPreview")?.addEventListener("pointermove",event=>{
+  if(!cutoutBrushDrawing||!cutoutBrushLast)return;event.preventDefault();const point=cutoutBrushPoint(event);applyCutoutBrushLine(cutoutBrushLast,point);cutoutBrushLast=point;
+});
+const endCutoutBrush=()=>{cutoutBrushDrawing=false;cutoutBrushLast=null;};
+["pointerup","pointercancel","lostpointercapture"].forEach(name=>$("#cutoutPreview")?.addEventListener(name,endCutoutBrush));
 $("#cutoutApply")?.addEventListener("click",async()=>{
   const item=activeItem();if(!item||!cutoutResultCanvas)return;
   setCutoutBusy(true);
