@@ -16,6 +16,8 @@ v2.10.7: Redigeringsvyns nedersta rad är `Ta bort | Flagga | Nästa →` i prop
 
 v2.10.8: Core-Tillbaka från redigering byter omedelbart till gridden efter att formulär/flagga lästs synkront. IndexedDB-sparningen fortsätter i bakgrunden och kan inte längre få Tillbaka att verka låst; flaggsymbolen syns direkt.
 
+v2.10.9: Flaggade miniatyrer märks med `is-flagged` och visar en högprioriterad 🚩 ovanpå vänster bildhörn samt guldfärgad innerram. Detta ersätter det separata flagg-element som kunde döljas av äldre miniatyr-CSS.
+
 v2.9.72: Vision-kugghjulet öppnar /settings/?module=vision. Den gamla lokala inställnings-overlayn tas bort; funktionerna behålls i den gemensamma modulinställnings-layouten.
 
 v2.9.73: Destruktiv Vision-rensning skyddas av bekräftelsesteg i den gemensamma inställningsvyn.

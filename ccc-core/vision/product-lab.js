@@ -423,6 +423,7 @@
       wrap.type = "button";
       wrap.className = "batch-thumb";
       if (index === currentIndex) wrap.classList.add("is-selected");
+      if (item.flagged) wrap.classList.add("is-flagged");
       wrap.setAttribute("aria-label", `Plagg ${index + 1}${item.visionReady ? ", analys klar" : item.analysisMode === "manual" ? ", ej AI-analyserat" : ", analyseras"}`);
       const img = document.createElement("img");
       img.src = item.previewUrl;
@@ -431,13 +432,6 @@
       state.className = `thumb-status ${item.visionReady ? "is-ready" : item.analysisInProgress ? "is-working" : item.analysisMode === "manual" ? (item.approved ? "is-saved" : "is-manual") : "is-working"}`;
       state.textContent = item.visionReady || item.approved ? "✓" : "";
       state.setAttribute("aria-hidden", "true");
-      if (item.flagged) {
-        const flag = document.createElement("span");
-        flag.className = "thumb-flag";
-        flag.textContent = "🚩";
-        flag.setAttribute("aria-label", "Flaggat plagg");
-        wrap.appendChild(flag);
-      }
       wrap.dataset.itemIndex = String(index);
       wrap.append(img, state);
       grid.appendChild(wrap);
