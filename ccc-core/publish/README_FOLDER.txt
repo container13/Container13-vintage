@@ -119,3 +119,4 @@ v2.10.135: Återställ i Anpassa bild återgår från frilagd variant till den o
 v2.10.136: Frilagda bilder får valbar transparent, vit, ljusgrå, mörk, Container13 eller egen färgbakgrund med palett, HEX-kod, förhandsvisning och lokala senaste färger.
 v2.10.137: Bakgrundsknappen visas tydligt aktiv efter friläggning och Container13-valet är nu en märkbar mörk studiobakgrund med varm glöd samt gul, namngiven nederkant.
 v2.10.138: Friläggningsresultatet får penselverktygen Måla tillbaka och Ta bort, reglerbar mjuk pensel samt ångra för de åtta senaste dragen; originalbilden påverkas inte.
+v2.10.139: Måla tillbaka-penseln blir reversibel inom samma drag och friläggningseditorn får tvåfingers zoom/flytt, 100–500 procent, zoomknappar, dubbeltryck samt Visa hela.

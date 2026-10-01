@@ -11,7 +11,7 @@
 <title>CCC Publicera v2.9.22</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}const p=new URLSearchParams(location.search);document.documentElement.classList.add("ccc-publish-booting");if(p.get("view")==="prepare")document.documentElement.classList.add("ccc-direct-prepare-loading");</script>
 <link rel="stylesheet" href="../dashboard/dashboard.css?v=2.9.3">
-<link rel="stylesheet" href="publish.css?v=2.10.138">
+<link rel="stylesheet" href="publish.css?v=2.10.139">
   <link rel="stylesheet" href="../core.css?v=2.10.132">
 </head>
 <body data-ccc-header-back="true" data-ccc-header-settings="true">
@@ -321,6 +321,12 @@
         <button id="cutoutUndo" type="button" disabled aria-label="Ångra senaste penseldraget">↶ Ångra</button>
       </div>
       <label class="cutout-brush-size" for="cutoutBrushSize"><span>Pensel</span><input id="cutoutBrushSize" type="range" min="8" max="100" value="38"><output id="cutoutBrushValue">38</output></label>
+      <div class="cutout-zoom-controls" aria-label="Zooma arbetsbilden">
+        <button id="cutoutZoomOut" type="button" aria-label="Zooma ut">−</button>
+        <span id="cutoutZoomValue">100 %</span>
+        <button id="cutoutZoomIn" type="button" aria-label="Zooma in">＋</button>
+        <button id="cutoutZoomReset" type="button">Visa hela</button>
+      </div>
     </div>
     <p id="cutoutStatus" class="cutout-status">Första gången hämtas AI-modellen. Bilden behandlas sedan lokalt på enheten.</p>
     <div class="cutout-actions">
@@ -368,9 +374,9 @@
   </div>
 </div>
 
-<script type="module" src="publish.js?v=2.10.138"></script>
-<script type="module" src="../core.js?v=2.10.138"></script>
-  <script src="../version.js?v=2.10.138"></script>
+<script type="module" src="publish.js?v=2.10.139"></script>
+<script type="module" src="../core.js?v=2.10.139"></script>
+  <script src="../version.js?v=2.10.139"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 
 

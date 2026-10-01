@@ -1983,7 +1983,7 @@ $("#cropReset").addEventListener("click",async()=>{
   updateCropSaveState();
 });
 
-let cutoutSourceCanvas=null,cutoutResultCanvas=null,cutoutRenderTimer=null,cutoutShowingOriginal=false,backgroundRemovalModule=null,cutoutBrushMode="",cutoutBrushDrawing=false,cutoutBrushLast=null,cutoutUndoStack=[];
+let cutoutSourceCanvas=null,cutoutResultCanvas=null,cutoutRenderTimer=null,cutoutShowingOriginal=false,backgroundRemovalModule=null,cutoutBrushMode="",cutoutBrushDrawing=false,cutoutBrushLast=null,cutoutUndoStack=[],cutoutStrokeBaseline=null,cutoutStrokePath=[],cutoutView={zoom:1,x:0,y:0},cutoutPointers=new Map(),cutoutPinch=null,cutoutPinchActive=false;
 const BACKGROUND_REMOVAL_MODULE_URL="https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm";
 
 function setCutoutBusy(busy){
@@ -1997,10 +1997,23 @@ function drawCutoutPreview(){
   if(!preview||!source)return;
   const ctx=preview.getContext("2d");
   ctx.clearRect(0,0,preview.width,preview.height);
-  ctx.drawImage(source,0,0,preview.width,preview.height);
+  ctx.save();ctx.translate(preview.width/2+cutoutView.x,preview.height/2+cutoutView.y);ctx.scale(cutoutView.zoom,cutoutView.zoom);ctx.drawImage(source,-preview.width/2,-preview.height/2,preview.width,preview.height);ctx.restore();
   $("#cutoutShowOriginal")?.classList.toggle("is-active",cutoutShowingOriginal);
   $("#cutoutShowResult")?.classList.toggle("is-active",!cutoutShowingOriginal);
 }
+
+function setCutoutZoom(value,anchor=null){
+  const next=Math.max(1,Math.min(5,Number(value)||1)),previous=cutoutView.zoom;
+  if(anchor&&previous!==next){
+    cutoutView.x=anchor.x-(anchor.x-cutoutView.x)*next/previous;
+    cutoutView.y=anchor.y-(anchor.y-cutoutView.y)*next/previous;
+  }
+  cutoutView.zoom=next;
+  if(next===1){cutoutView.x=0;cutoutView.y=0;}
+  const output=$("#cutoutZoomValue");if(output)output.textContent=`${Math.round(next*100)} %`;
+  drawCutoutPreview();
+}
+function resetCutoutView(){cutoutView={zoom:1,x:0,y:0};setCutoutZoom(1);}
 
 function updateCutoutAdjustState(){
   const adjust=$("#cutoutAdjust"),preview=$("#cutoutPreview"),undo=$("#cutoutUndo");
@@ -2016,12 +2029,18 @@ function setCutoutBrushMode(mode){
   if(cutoutBrushMode){cutoutShowingOriginal=false;drawCutoutPreview();}
   updateCutoutAdjustState();
   const status=$("#cutoutStatus");
-  if(status&&cutoutBrushMode)status.textContent=cutoutBrushMode==="restore"?"Dra över saknade delar för att måla tillbaka dem från originalet.":"Dra över delar av bakgrunden som ska tas bort.";
+  if(status&&cutoutBrushMode)status.textContent=cutoutBrushMode==="restore"?"Måla framåt för att återställa. Dra tillbaka längs samma väg om du går för långt.":"Dra över delar av bakgrunden som ska tas bort.";
+}
+
+function cutoutDisplayPoint(event){
+  const preview=$("#cutoutPreview"),rect=preview.getBoundingClientRect();
+  return{x:(event.clientX-rect.left)/Math.max(1,rect.width)*preview.width,y:(event.clientY-rect.top)/Math.max(1,rect.height)*preview.height};
 }
 
 function cutoutBrushPoint(event){
   const preview=$("#cutoutPreview"),rect=preview.getBoundingClientRect();
-  return{x:(event.clientX-rect.left)/Math.max(1,rect.width)*cutoutResultCanvas.width,y:(event.clientY-rect.top)/Math.max(1,rect.height)*cutoutResultCanvas.height};
+  const displayX=(event.clientX-rect.left)/Math.max(1,rect.width)*preview.width,displayY=(event.clientY-rect.top)/Math.max(1,rect.height)*preview.height;
+  return{x:(displayX-preview.width/2-cutoutView.x)/cutoutView.zoom+cutoutResultCanvas.width/2,y:(displayY-preview.height/2-cutoutView.y)/cutoutView.zoom+cutoutResultCanvas.height/2};
 }
 
 function applyCutoutBrushPoint(point){
@@ -2046,6 +2065,32 @@ function applyCutoutBrushPoint(point){
 function applyCutoutBrushLine(from,to){
   const radius=Number($("#cutoutBrushSize")?.value||38)/2,distance=Math.hypot(to.x-from.x,to.y-from.y),steps=Math.max(1,Math.ceil(distance/Math.max(2,radius*.32)));
   for(let step=1;step<=steps;step++)applyCutoutBrushPoint({x:from.x+(to.x-from.x)*step/steps,y:from.y+(to.y-from.y)*step/steps});
+  drawCutoutPreview();
+}
+
+function rebuildCutoutStroke(){
+  if(!cutoutResultCanvas||!cutoutStrokeBaseline)return;
+  cutoutResultCanvas.getContext("2d").putImageData(cutoutStrokeBaseline,0,0);
+  for(const point of cutoutStrokePath)applyCutoutBrushPoint(point);
+  drawCutoutPreview();
+}
+
+function extendReversibleCutoutStroke(point){
+  const radius=Number($("#cutoutBrushSize")?.value||38)/2,spacing=Math.max(2,radius*.32),last=cutoutStrokePath.at(-1);
+  if(!last){cutoutStrokePath=[point];applyCutoutBrushPoint(point);drawCutoutPreview();return;}
+  const previous=cutoutStrokePath.at(-2),isReversing=previous&&((last.x-previous.x)*(point.x-last.x)+(last.y-previous.y)*(point.y-last.y)<0);
+  let backIndex=-1,bestDistance=Infinity;
+  if(isReversing)for(let index=0;index<cutoutStrokePath.length-1;index++){
+    const distance=Math.hypot(point.x-cutoutStrokePath[index].x,point.y-cutoutStrokePath[index].y);
+    if(distance<bestDistance){bestDistance=distance;backIndex=index;}
+  }
+  if(backIndex>=0&&bestDistance<=spacing*1.45){
+    cutoutStrokePath=cutoutStrokePath.slice(0,backIndex+1);rebuildCutoutStroke();return;
+  }
+  const distance=Math.hypot(point.x-last.x,point.y-last.y),steps=Math.max(1,Math.ceil(distance/spacing));
+  for(let step=1;step<=steps;step++){
+    const sample={x:last.x+(point.x-last.x)*step/steps,y:last.y+(point.y-last.y)*step/steps};cutoutStrokePath.push(sample);applyCutoutBrushPoint(sample);
+  }
   drawCutoutPreview();
 }
 
@@ -2137,7 +2182,7 @@ async function runLocalCutout(){
   const source=cutoutSourceCanvas;
   if(!source)return;
   setCutoutBusy(true);
-  cutoutResultCanvas=null;cutoutBrushMode="";cutoutUndoStack=[];updateCutoutAdjustState();
+  cutoutResultCanvas=null;cutoutBrushMode="";cutoutUndoStack=[];cutoutStrokeBaseline=null;cutoutStrokePath=[];resetCutoutView();updateCutoutAdjustState();
   const status=$("#cutoutStatus");
   if(status)status.textContent="Laddar lokal AI-modell… Första gången kan ta en stund.";
   try{
@@ -2188,7 +2233,7 @@ async function openCutoutDialog(){
 function closeCutoutDialog(){
   const dialog=$("#cutoutDialog");if(dialog)dialog.hidden=true;
   cutoutSourceCanvas=null;cutoutResultCanvas=null;cutoutShowingOriginal=false;
-  cutoutBrushMode="";cutoutBrushDrawing=false;cutoutBrushLast=null;cutoutUndoStack=[];updateCutoutAdjustState();
+  cutoutBrushMode="";cutoutBrushDrawing=false;cutoutBrushLast=null;cutoutUndoStack=[];cutoutStrokeBaseline=null;cutoutStrokePath=[];cutoutPointers.clear();cutoutPinch=null;cutoutPinchActive=false;resetCutoutView();updateCutoutAdjustState();
   if(cutoutRenderTimer){clearTimeout(cutoutRenderTimer);cutoutRenderTimer=null;}
 }
 
@@ -2201,21 +2246,45 @@ $("#cutoutReset")?.addEventListener("click",runLocalCutout);
 $("#cutoutRestoreBrush")?.addEventListener("click",()=>setCutoutBrushMode("restore"));
 $("#cutoutEraseBrush")?.addEventListener("click",()=>setCutoutBrushMode("erase"));
 $("#cutoutBrushSize")?.addEventListener("input",event=>{const output=$("#cutoutBrushValue");if(output)output.value=event.target.value;});
+$("#cutoutZoomOut")?.addEventListener("click",()=>setCutoutZoom(cutoutView.zoom-.25));
+$("#cutoutZoomIn")?.addEventListener("click",()=>setCutoutZoom(cutoutView.zoom+.25));
+$("#cutoutZoomReset")?.addEventListener("click",resetCutoutView);
+$("#cutoutPreview")?.addEventListener("dblclick",event=>{event.preventDefault();resetCutoutView();});
+$("#cutoutPreview")?.addEventListener("wheel",event=>{
+  if(!cutoutResultCanvas)return;event.preventDefault();const preview=$("#cutoutPreview"),point=cutoutDisplayPoint(event);setCutoutZoom(cutoutView.zoom+(event.deltaY<0?.25:-.25),{x:point.x-preview.width/2,y:point.y-preview.height/2});
+},{passive:false});
 $("#cutoutUndo")?.addEventListener("click",()=>{
   if(!cutoutResultCanvas||!cutoutUndoStack.length)return;
   cutoutResultCanvas.getContext("2d").putImageData(cutoutUndoStack.pop(),0,0);drawCutoutPreview();updateCutoutAdjustState();
 });
 $("#cutoutPreview")?.addEventListener("pointerdown",event=>{
-  if(!cutoutBrushMode||cutoutShowingOriginal||!cutoutResultCanvas)return;
-  event.preventDefault();event.currentTarget.setPointerCapture?.(event.pointerId);
-  cutoutUndoStack.push(cutoutResultCanvas.getContext("2d").getImageData(0,0,cutoutResultCanvas.width,cutoutResultCanvas.height));
-  if(cutoutUndoStack.length>8)cutoutUndoStack.shift();
-  cutoutBrushDrawing=true;cutoutBrushLast=cutoutBrushPoint(event);applyCutoutBrushPoint(cutoutBrushLast);drawCutoutPreview();updateCutoutAdjustState();
+  if(cutoutShowingOriginal||!cutoutResultCanvas)return;
+  event.preventDefault();event.currentTarget.setPointerCapture?.(event.pointerId);cutoutPointers.set(event.pointerId,cutoutDisplayPoint(event));
+  if(cutoutPointers.size>=2){
+    if(cutoutBrushDrawing&&cutoutStrokeBaseline){cutoutResultCanvas.getContext("2d").putImageData(cutoutStrokeBaseline,0,0);cutoutUndoStack.pop();drawCutoutPreview();}
+    cutoutBrushDrawing=false;cutoutBrushLast=null;cutoutStrokeBaseline=null;cutoutStrokePath=[];cutoutPinchActive=true;
+    const [a,b]=[...cutoutPointers.values()],mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};
+    cutoutPinch={distance:Math.max(1,Math.hypot(a.x-b.x,a.y-b.y)),mid,zoom:cutoutView.zoom,x:cutoutView.x,y:cutoutView.y};updateCutoutAdjustState();return;
+  }
+  if(!cutoutBrushMode||cutoutPinchActive)return;
+  cutoutStrokeBaseline=cutoutResultCanvas.getContext("2d").getImageData(0,0,cutoutResultCanvas.width,cutoutResultCanvas.height);
+  cutoutUndoStack.push(cutoutStrokeBaseline);if(cutoutUndoStack.length>8)cutoutUndoStack.shift();
+  cutoutBrushDrawing=true;cutoutBrushLast=cutoutBrushPoint(event);cutoutStrokePath=[];extendReversibleCutoutStroke(cutoutBrushLast);updateCutoutAdjustState();
 });
 $("#cutoutPreview")?.addEventListener("pointermove",event=>{
-  if(!cutoutBrushDrawing||!cutoutBrushLast)return;event.preventDefault();const point=cutoutBrushPoint(event);applyCutoutBrushLine(cutoutBrushLast,point);cutoutBrushLast=point;
+  if(!cutoutPointers.has(event.pointerId))return;event.preventDefault();cutoutPointers.set(event.pointerId,cutoutDisplayPoint(event));
+  if(cutoutPinchActive&&cutoutPointers.size>=2&&cutoutPinch){
+    const preview=$("#cutoutPreview"),[a,b]=[...cutoutPointers.values()],mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2},distance=Math.max(1,Math.hypot(a.x-b.x,a.y-b.y)),zoom=Math.max(1,Math.min(5,cutoutPinch.zoom*distance/cutoutPinch.distance));
+    cutoutView.zoom=zoom;cutoutView.x=mid.x-preview.width/2-(cutoutPinch.mid.x-preview.width/2-cutoutPinch.x)*zoom/cutoutPinch.zoom;cutoutView.y=mid.y-preview.height/2-(cutoutPinch.mid.y-preview.height/2-cutoutPinch.y)*zoom/cutoutPinch.zoom;
+    const output=$("#cutoutZoomValue");if(output)output.textContent=`${Math.round(zoom*100)} %`;drawCutoutPreview();return;
+  }
+  if(!cutoutBrushDrawing||!cutoutBrushLast)return;const point=cutoutBrushPoint(event);extendReversibleCutoutStroke(point);cutoutBrushLast=point;
 });
-const endCutoutBrush=()=>{cutoutBrushDrawing=false;cutoutBrushLast=null;};
+const endCutoutBrush=event=>{
+  cutoutPointers.delete(event.pointerId);
+  if(cutoutPinchActive){if(!cutoutPointers.size){cutoutPinchActive=false;cutoutPinch=null;}return;}
+  cutoutBrushDrawing=false;cutoutBrushLast=null;cutoutStrokeBaseline=null;cutoutStrokePath=[];
+};
 ["pointerup","pointercancel","lostpointercapture"].forEach(name=>$("#cutoutPreview")?.addEventListener(name,endCutoutBrush));
 $("#cutoutApply")?.addEventListener("click",async()=>{
   const item=activeItem();if(!item||!cutoutResultCanvas)return;

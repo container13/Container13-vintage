@@ -2978,6 +2978,9 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
 .cutout-brush-size input{width:100%;accent-color:var(--gold)}
 .cutout-brush-size output{text-align:right;color:var(--text);font-variant-numeric:tabular-nums}
 #cutoutPreview.is-adjusting{touch-action:none;cursor:crosshair}
+.cutout-zoom-controls{display:grid;grid-template-columns:36px minmax(52px,auto) 36px 1fr;align-items:center;gap:6px}
+.cutout-zoom-controls button{min-height:34px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-weight:850}
+.cutout-zoom-controls span{text-align:center;color:var(--gold);font-size:11px;font-weight:900;font-variant-numeric:tabular-nums}
 .cutout-busy[hidden]{display:none}
 .cutout-busy span{width:28px;height:28px;border:3px solid rgba(255,255,255,.28);border-top-color:#c49cff;border-radius:50%;animation:cutout-spin .7s linear infinite}
 @keyframes cutout-spin{to{transform:rotate(360deg)}}
