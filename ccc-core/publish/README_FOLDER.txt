@@ -60,8 +60,57 @@ v2.10.0: Samlad rättning efter verkligt arbetsprov. Förbered, Välj plagg och 
 
 v2.10.1: Publicering arkiverar lokalt original, WebP och metadata i stället för att radera dem. Hantera publicerade bilder får fliken Sparade bilder med live/offline-status. Liveborttagning använder gråmarkerat flerval, gemensam bekräftelse, bevarad scroll och flytande kvitto; endast Firebase-posten tas bort medan lokalt arkiv ligger kvar. Gridernas kolumnmellanrum ökas och swipe-kopian försvinner innan den riktiga gridden återställs för att undvika blinkande kanter.
 
-v2.10.10: Anpassa bild får frivillig riktig friläggning på enheten. Modellen laddas först när Frilägg objekt startas; originalet ändras aldrig. Resultatet förhandsvisas mot transparent, vit, ljusgrå eller mörk bakgrund och sparas först efter Använd friläggning. Transparent resultat sparas som PNG, färgad bakgrund som WebP, tillsammans med separat lokal cutout-kopia.
+v2.10.66: stöd för `?view=prepare` och `?view=prepare&item=<id>`; specifikt Vision-objekt öppnas direkt.
 
-v2.10.11: Dashboardens Publicera öppnar åter direkt rätt arbetsvy, Förbered för publicering. Publiceras mellanmeny kan fortfarande nås med Tillbaka. Friläggningen från v2.10.10 är oförändrad.
+v2.10.69: orört Vision-original hydreras före detalj/crop; Förbered är 3×3 via enbart dynamisk CSS; kanal-/Nästa-logik orörd.
 
-v2.10.12: Dashboardens gröna Publicera använder en explicit `mode=quick`-ingång och öppnar Snabbpublicera/slutkontrollen direkt. Alla redo-plagg följer med och Container13 är förvalt. Övriga ingångar till Publicera behåller sina egna startvägar.
+v2.10.73: Förbered och Välj objekt delar gridklass/geometri; draftGrid är inte längre flex-squeezed; channel-pager ovanför Fortsätt; swipe-ghost rensas före async render.
+
+v2.10.74: iPhone longpress cleanup, exact swipe ghost geometry, crop quick-publish.
+
+v2.10.75: mobile Prepare 2x3/6 per page; normal workflow scroll containment; crop footer Publicera direct-to-confirm with origin-aware back.
+
+v2.10.76: Prepare corrected to 3x2; crop footer quick-publish reinforced after view activation with Core-footer fallback.
+
+v2.10.77: ghost-free shared page swipe; crop footer uses exact Vision Core footer pattern with crop-only guard.
+
+v2.10.78: mobile grid standard fixed to 3x2/6 per page in Prepare and Channel item selection.
+
+v2.10.79: Vision-like swipe; fresh preview source in channel/confirm; confirm grid 3x2/6.
+
+v2.10.80: Publishs sid-swipe använder Visions synliga tvåsidesprincip med samma tröskel och kantmotstånd, så ingen svart tomyta visas mellan sidor. Anpassa bild använder Visions direkta Core-footer-mönster för Hjälp + Publicera; Publicera sparar anpassningen och öppnar sista kontrollvyn med aktuellt objekt valt.
+
+v2.10.81: Den gamla gridden döljs vid avslutad swipe innan asynkron rendering, vilket tar bort den kvarhängande efterskuggan. Anpassa återapplicerar kort Visions Core-footer-konfiguration så Publicera-knappen inte tappas i laddningsordningen.
+
+v2.10.82: Detalj-swipe prioriterar inkommande bildlager över utgående under snapen för att ta bort efterskuggan. Publicera ligger i detaljvyns footer och går med aktuellt objekt direkt till sista kontrollvyn; Tillbaka återgår till detaljvyn.
+v2.10.83: Publicera-starten får centrerad rubrik, guld/grön modulidentitet och tydligare grafiska SVG-ikoner. Övriga Publicera-vyer och publiceringslogiken är oförändrade.
+v2.10.84: De gemensamma välkomstbrickorna får snabbare, tydligare tryckfeedback via Core. Publiceras funktioner och layout är i övrigt oförändrade.
+v2.10.85: Publicera-starten använder samma kompaktare rubrikrad som Dashboard/Vision så korten börjar högre. Funktionerna är oförändrade.
+v2.10.86: Sid-snapen använder hela avståndet inklusive gutter, så inkommande bildserie når exakt slutläge innan den gamla sidan rensas. Animationen kortas till 240 ms.
+v2.10.87: Publiceras paginerade grids använder Core:s gemensamma swipeprofil utan att ändra den skuggfria lagerhanteringen. Vision-direktvägen hoppar över startvyn och skyddas mot ett sent bakåt-event.
+v2.10.88: Aktuell och inkommande gridsida klipps inom samma Core-swipeviewport i stället för att använda ett fast helskärmslager. Vision-direktvägen öppnar sista kontrollvyn direkt.
+v2.10.89: Core-landningen efter släpp är lugnare. Slutkontrollen visar 1–6 objekt adaptivt utan tomma platshållare; 7+ använder stabil 3×2-paging med Core-swipe.
+v2.10.90: Core-landningen är 480 ms. Slutkontrollen får mer luft ovanför och under bilden utan att införa normal mobilscroll; korta skärmar använder mindre mellanrum.
+v2.10.91: Swipe landar på 580 ms och detalj-swipen använder Core fullt ut. Enkelbildens slutkontroll får en symmetrisk 14 px ram. Startkorten får Core-styrd tryckkänsla och 140 ms vyfördröjning.
+v2.10.115: När Granska öppnats från Publicera används Vision-kortets stora gula `Klar` för säker retur; lilla footer-Klar tas bort. Klar och Tillbaka inväntar samma fält- och sessionssparning och återgår till markerat objekt.
+v2.10.114: Retur från Vision `Granska & komplettera` återställer samma markerade objekt efter renderingen. Kortet ligger kvar centrerat med gul ram och aktiva verktyg; markering förändrar inte geometrin.
+v2.10.113: `Foto`, `Bilder` och `Utkast` ligger som en kompakt trekolumnsrad direkt under modulheadern. Mindre ikoner och svagare glöd gör raden sekundär till objektverktygen.
+v2.10.112: Den extra källpopupen är borttagen. Direkt i arbetsvyn finns tre jämnbreda knappar: `Foto` till CCC-kameran, `Bilder` till enhetens systemval och `Utkast` till befintliga lokala utkast.
+v2.10.111: Källmenyn skiljer på `Ta foto med CCC` och det plattformsneutrala `Välj från enheten`. Undertext: `Bildbibliotek eller filer`. v2.10.110 ska hoppas över.
+v2.10.110: Ersatt av v2.10.111 på grund av en iPhone-specifik benämning.
+v2.10.109: Lägg till objekt öppnar en kompakt flytande källmeny direkt ovanpå Publicera. Ta foto med CCC går direkt till Vision-kameran; Bildbibliotek/filer importerar flera bilder till samma Vision-/Publicera-lager. Avbryt/backdrop/Escape stänger utan ändring.
+v2.10.108: Lägg till objekt öppnar ett särskilt Vision-källval: Ta ett foto med CCC-kameran eller Från album via Visions befintliga flervalsimport. Båda återgår till samma arbetsgrupp; Välj utkast är fortsatt separat för redan sparade CCC-objekt.
+v2.10.107: Lägg till objekt öppnar Visions befintliga CCC-kamera i publish-add-läge. Klar sparar kameraomgångens nya objekt och återställer Publiceras tidigare grupp/kanal; X återgår utan staged-fotot. Publiceras gamla parallella filinput/importkod är borttagen.
+v2.10.106: Publiceras interna vyer börjar dolda och en gemensam uppstartsgrind visar först den färdigrenderade route-vyn. Dashboard-ingången blinkar därför inte längre förbi den gamla välkomstvyn; Vision/Express och legacy-fallback använder samma princip.
+v2.10.105: Slutkontrollen är Publiceras nya standardstart. Tomläget har Lägg till objekt/Välj utkast, huvudknappen kräver objekt, Historik är sekundär och gamla välkomstvyn finns kvar via `?legacyStart=1`.
+v2.10.104: Slutkontrollen kan lägga till nya objekt från mobilens kamera/bildval. Varje bild blir ett Vision-kompatibelt lokalt objekt och inkluderas direkt i aktuell publicering; terminologin styrs från Core.
+v2.10.103: Verktygskorten linjerar med huvudknappen. Objekt centreras när de ryms och använder fri Core-swipe vid overflow; kanalradens båda ändar har säker visningsyta.
+v2.10.102: Granska i slutkontrollen öppnar markerat objekt i Visions Granska & komplettera och återvänder till samma expressgrupp. Objektkort och kanaler är något större; kanalraden har säker sidluft.
+v2.10.101: Objektverktygen i slutkontrollen har grafiska SVG-ikoner, tydliga funktionsaccenter, aktivt statuspill och nedtryckt respons. Logik och publiceringsurval är oförändrade.
+v2.10.100: Sista kontrollen visar objekten i en Core-styrd fri swipe-rad. Ett separat enkelval med gul ram aktiverar Granska, Anpassa bild och Ta bort utan att påverka publiceringsurvalet.
+v2.10.99: Direktstarten accepterar flera explicita objekt-ID:n från Vision-kamerans Expresspublicera och väljer endast dem i slutkontrollen. Kanal är fortsatt aktivt val.
+v2.10.95: Publicera-starten kan tonas upp av Core när navigationen kommer från Dashboardens markerade dimmerpilot.
+v2.10.94: Slutkontrollens kanalrad använder Core `bindFree()`: fri touch-/mus-swipe med momentum, ingen sid-snap och automatisk centrering när raden ryms.
+v2.10.93: Kanalvalets visuella state, aria-state och huvudknapp synkas centralt. Vald kanal visas med grön ytterring utan bock. Pinterest/Etsy är låsta testkanaler för swipe över sex kanaler.
+v2.10.92: Ordinarie flöde bevarar C13-valet. Snabbvägar öppnar slutkontrollen utan kanal och visar Välj kanal tills användaren aktivt väljer C13.
+v2.10.133: Frilägg objekt använder riktig lokal AI-segmentering. Modellen hämtas vid första användningen, bearbetningen sker lokalt och originalbilden lämnas orörd. Förhandsgranskning och godkännande krävs innan resultatet används.

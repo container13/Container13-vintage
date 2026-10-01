@@ -2944,12 +2944,7 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
 .cutout-view-switch{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:0 auto 10px}
 .cutout-view-switch button{min-height:38px;border:1px solid rgba(120,128,148,.30);border-radius:12px;background:rgba(31,36,48,.70);color:var(--muted);font-weight:850}
 .cutout-view-switch button.is-active{border-color:rgba(169,112,255,.65);background:rgba(169,112,255,.12);color:#c49cff}
-.cutout-sensitivity{display:grid;gap:5px;padding:10px 12px;border:1px solid rgba(120,128,148,.28);border-radius:14px;background:rgba(31,36,48,.55)}
-.cutout-sensitivity>span{display:flex;justify-content:space-between;gap:12px;font-size:13px}
-.cutout-sensitivity output{color:#c49cff;font-weight:900}
-.cutout-sensitivity input{width:100%;accent-color:#a970ff}
-.cutout-sensitivity small{color:var(--muted);font-size:10px}
-.cutout-status{min-height:16px;margin:7px 2px!important;color:var(--muted)!important;text-align:center;font-size:10px}
+.cutout-status{min-height:34px;margin:9px 2px!important;color:var(--muted)!important;text-align:center;font-size:11px;line-height:1.35}
 .cutout-actions{display:grid;grid-template-columns:.8fr 1.35fr;gap:9px}
 .cutout-actions button{min-height:46px;border-radius:14px;border:1px solid var(--border);font-weight:900}
 .cutout-actions .button-primary{background:var(--gold);color:#16120a;border-color:transparent}
