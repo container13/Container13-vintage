@@ -1983,7 +1983,7 @@ $("#cropReset").addEventListener("click",async()=>{
   updateCropSaveState();
 });
 
-let cutoutSourceCanvas=null,cutoutResultCanvas=null,cutoutRenderTimer=null,cutoutShowingOriginal=false,backgroundRemovalModule=null,cutoutBrushMode="",cutoutBrushDrawing=false,cutoutBrushLast=null,cutoutUndoStack=[],cutoutStrokeBaseline=null,cutoutStrokePath=[],cutoutView={zoom:1,x:0,y:0},cutoutPointers=new Map(),cutoutPinch=null,cutoutPinchActive=false;
+let cutoutSourceCanvas=null,cutoutResultCanvas=null,cutoutRenderTimer=null,cutoutShowingOriginal=false,backgroundRemovalModule=null,cutoutBrushMode="",cutoutBrushDrawing=false,cutoutBrushLast=null,cutoutBrushCursor=null,cutoutUndoStack=[],cutoutStrokeBaseline=null,cutoutStrokePath=[],cutoutView={zoom:1,x:0,y:0},cutoutPointers=new Map(),cutoutPinch=null,cutoutPinchActive=false;
 const BACKGROUND_REMOVAL_MODULE_URL="https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm";
 
 function setCutoutBusy(busy){
@@ -1998,6 +1998,10 @@ function drawCutoutPreview(){
   const ctx=preview.getContext("2d");
   ctx.clearRect(0,0,preview.width,preview.height);
   ctx.save();ctx.translate(preview.width/2+cutoutView.x,preview.height/2+cutoutView.y);ctx.scale(cutoutView.zoom,cutoutView.zoom);ctx.drawImage(source,-preview.width/2,-preview.height/2,preview.width,preview.height);ctx.restore();
+  if(cutoutBrushCursor&&cutoutBrushMode&&!cutoutShowingOriginal&&cutoutResultCanvas){
+    const radius=Number($("#cutoutBrushSize")?.value||38)/2*cutoutView.zoom,x=(cutoutBrushCursor.x-cutoutResultCanvas.width/2)*cutoutView.zoom+preview.width/2+cutoutView.x,y=(cutoutBrushCursor.y-cutoutResultCanvas.height/2)*cutoutView.zoom+preview.height/2+cutoutView.y;
+    ctx.save();ctx.beginPath();ctx.arc(x,y,radius,0,Math.PI*2);ctx.strokeStyle="rgba(255,220,104,.98)";ctx.lineWidth=2;ctx.shadowColor="rgba(0,0,0,.8)";ctx.shadowBlur=4;ctx.stroke();ctx.beginPath();ctx.arc(x,y,2.2,0,Math.PI*2);ctx.fillStyle="#fff3bd";ctx.fill();ctx.restore();
+  }
   $("#cutoutShowOriginal")?.classList.toggle("is-active",cutoutShowingOriginal);
   $("#cutoutShowResult")?.classList.toggle("is-active",!cutoutShowingOriginal);
 }
@@ -2039,7 +2043,7 @@ function cutoutDisplayPoint(event){
 
 function cutoutBrushPoint(event){
   const preview=$("#cutoutPreview"),rect=preview.getBoundingClientRect();
-  const displayX=(event.clientX-rect.left)/Math.max(1,rect.width)*preview.width,displayY=(event.clientY-rect.top)/Math.max(1,rect.height)*preview.height;
+  const offsetCss=event.pointerType==="mouse"?0:46,displayX=(event.clientX-rect.left)/Math.max(1,rect.width)*preview.width,displayY=(event.clientY-rect.top-offsetCss)/Math.max(1,rect.height)*preview.height;
   return{x:(displayX-preview.width/2-cutoutView.x)/cutoutView.zoom+cutoutResultCanvas.width/2,y:(displayY-preview.height/2-cutoutView.y)/cutoutView.zoom+cutoutResultCanvas.height/2};
 }
 
@@ -2182,7 +2186,7 @@ async function runLocalCutout(){
   const source=cutoutSourceCanvas;
   if(!source)return;
   setCutoutBusy(true);
-  cutoutResultCanvas=null;cutoutBrushMode="";cutoutUndoStack=[];cutoutStrokeBaseline=null;cutoutStrokePath=[];resetCutoutView();updateCutoutAdjustState();
+  cutoutResultCanvas=null;cutoutBrushMode="";cutoutBrushCursor=null;cutoutUndoStack=[];cutoutStrokeBaseline=null;cutoutStrokePath=[];resetCutoutView();updateCutoutAdjustState();
   const status=$("#cutoutStatus");
   if(status)status.textContent="Laddar lokal AI-modell… Första gången kan ta en stund.";
   try{
@@ -2233,7 +2237,7 @@ async function openCutoutDialog(){
 function closeCutoutDialog(){
   const dialog=$("#cutoutDialog");if(dialog)dialog.hidden=true;
   cutoutSourceCanvas=null;cutoutResultCanvas=null;cutoutShowingOriginal=false;
-  cutoutBrushMode="";cutoutBrushDrawing=false;cutoutBrushLast=null;cutoutUndoStack=[];cutoutStrokeBaseline=null;cutoutStrokePath=[];cutoutPointers.clear();cutoutPinch=null;cutoutPinchActive=false;resetCutoutView();updateCutoutAdjustState();
+  cutoutBrushMode="";cutoutBrushDrawing=false;cutoutBrushLast=null;cutoutBrushCursor=null;cutoutUndoStack=[];cutoutStrokeBaseline=null;cutoutStrokePath=[];cutoutPointers.clear();cutoutPinch=null;cutoutPinchActive=false;resetCutoutView();updateCutoutAdjustState();
   if(cutoutRenderTimer){clearTimeout(cutoutRenderTimer);cutoutRenderTimer=null;}
 }
 
@@ -2262,14 +2266,14 @@ $("#cutoutPreview")?.addEventListener("pointerdown",event=>{
   event.preventDefault();event.currentTarget.setPointerCapture?.(event.pointerId);cutoutPointers.set(event.pointerId,cutoutDisplayPoint(event));
   if(cutoutPointers.size>=2){
     if(cutoutBrushDrawing&&cutoutStrokeBaseline){cutoutResultCanvas.getContext("2d").putImageData(cutoutStrokeBaseline,0,0);cutoutUndoStack.pop();drawCutoutPreview();}
-    cutoutBrushDrawing=false;cutoutBrushLast=null;cutoutStrokeBaseline=null;cutoutStrokePath=[];cutoutPinchActive=true;
+    cutoutBrushDrawing=false;cutoutBrushLast=null;cutoutBrushCursor=null;cutoutStrokeBaseline=null;cutoutStrokePath=[];cutoutPinchActive=true;
     const [a,b]=[...cutoutPointers.values()],mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};
     cutoutPinch={distance:Math.max(1,Math.hypot(a.x-b.x,a.y-b.y)),mid,zoom:cutoutView.zoom,x:cutoutView.x,y:cutoutView.y};updateCutoutAdjustState();return;
   }
   if(!cutoutBrushMode||cutoutPinchActive)return;
   cutoutStrokeBaseline=cutoutResultCanvas.getContext("2d").getImageData(0,0,cutoutResultCanvas.width,cutoutResultCanvas.height);
   cutoutUndoStack.push(cutoutStrokeBaseline);if(cutoutUndoStack.length>8)cutoutUndoStack.shift();
-  cutoutBrushDrawing=true;cutoutBrushLast=cutoutBrushPoint(event);cutoutStrokePath=[];extendReversibleCutoutStroke(cutoutBrushLast);updateCutoutAdjustState();
+  cutoutBrushDrawing=true;cutoutBrushLast=cutoutBrushPoint(event);cutoutBrushCursor={...cutoutBrushLast};cutoutStrokePath=[];extendReversibleCutoutStroke(cutoutBrushLast);updateCutoutAdjustState();
 });
 $("#cutoutPreview")?.addEventListener("pointermove",event=>{
   if(!cutoutPointers.has(event.pointerId))return;event.preventDefault();cutoutPointers.set(event.pointerId,cutoutDisplayPoint(event));
@@ -2278,12 +2282,12 @@ $("#cutoutPreview")?.addEventListener("pointermove",event=>{
     cutoutView.zoom=zoom;cutoutView.x=mid.x-preview.width/2-(cutoutPinch.mid.x-preview.width/2-cutoutPinch.x)*zoom/cutoutPinch.zoom;cutoutView.y=mid.y-preview.height/2-(cutoutPinch.mid.y-preview.height/2-cutoutPinch.y)*zoom/cutoutPinch.zoom;
     const output=$("#cutoutZoomValue");if(output)output.textContent=`${Math.round(zoom*100)} %`;drawCutoutPreview();return;
   }
-  if(!cutoutBrushDrawing||!cutoutBrushLast)return;const point=cutoutBrushPoint(event);extendReversibleCutoutStroke(point);cutoutBrushLast=point;
+  if(!cutoutBrushDrawing||!cutoutBrushLast)return;const point=cutoutBrushPoint(event);cutoutBrushCursor={...point};extendReversibleCutoutStroke(point);cutoutBrushLast=point;
 });
 const endCutoutBrush=event=>{
   cutoutPointers.delete(event.pointerId);
   if(cutoutPinchActive){if(!cutoutPointers.size){cutoutPinchActive=false;cutoutPinch=null;}return;}
-  cutoutBrushDrawing=false;cutoutBrushLast=null;cutoutStrokeBaseline=null;cutoutStrokePath=[];
+  cutoutBrushDrawing=false;cutoutBrushLast=null;cutoutBrushCursor=null;cutoutStrokeBaseline=null;cutoutStrokePath=[];drawCutoutPreview();
 };
 ["pointerup","pointercancel","lostpointercapture"].forEach(name=>$("#cutoutPreview")?.addEventListener(name,endCutoutBrush));
 $("#cutoutApply")?.addEventListener("click",async()=>{
@@ -2703,16 +2707,15 @@ async function ensureVisionReviewItem(item){
   if(!item?.id)throw new Error("Objektet saknar identitet.");
   const existing=await getLatestVisionSession();
   const previousItems=Array.isArray(existing?.items)?existing.items:[];
-  if(previousItems.some(entry=>String(entry.id)===String(item.id)))return;
-
   await ensurePublishSource(item);
   const originalFileKey=item.originalFileKey||`${item.id}:main`;
-  if(!item.originalFileKey){
-    const source=item.originalBlob||item.publishBlob||item.thumbnailBlob;
+  const storedOriginal=await getSourceFile(originalFileKey).catch(()=>null);
+  if(!storedOriginal){
+    const source=item.originalBlob||item.thumbnailBlob||item.publishBlob;
     if(!source)throw new Error("Originalbilden kunde inte föras tillbaka till Vision.");
     await putSourceFile(originalFileKey,source,item.imageMetadata||buildPublishMetadata(item));
-    item.originalFileKey=originalFileKey;
   }
+  item.originalFileKey=originalFileKey;
   const fields={
     ...(item.fields||{}),
     title:item.title||item.fields?.title||"",
@@ -2729,10 +2732,14 @@ async function ensureVisionReviewItem(item){
     aiModel:item.aiModel||"",aiCostUsd:Number(item.aiCostUsd||0),
     aiCostSek:Number(item.aiCostSek||0),cropData:item.cropData||null
   };
-  const sessionItems=[...previousItems,sessionItem];
+  const existingIndex=previousItems.findIndex(entry=>String(entry.id)===String(item.id));
+  const sessionItems=[...previousItems];
+  if(existingIndex>=0)sessionItems[existingIndex]={...previousItems[existingIndex],...sessionItem};
+  else sessionItems.push(sessionItem);
+  const reviewIndex=existingIndex>=0?existingIndex:sessionItems.length-1;
   await putVisionSession({
     ...(existing||{}),id:"vision-active",schemaVersion:2,savedAt:new Date().toISOString(),
-    currentIndex:sessionItems.length-1,count:sessionItems.length,items:sessionItems
+    currentIndex:reviewIndex,count:sessionItems.length,items:sessionItems
   });
 }
 document.addEventListener("ccc:core-ready",()=>{

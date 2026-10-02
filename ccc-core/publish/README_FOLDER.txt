@@ -120,3 +120,4 @@ v2.10.136: Frilagda bilder får valbar transparent, vit, ljusgrå, mörk, Contai
 v2.10.137: Bakgrundsknappen visas tydligt aktiv efter friläggning och Container13-valet är nu en märkbar mörk studiobakgrund med varm glöd samt gul, namngiven nederkant.
 v2.10.138: Friläggningsresultatet får penselverktygen Måla tillbaka och Ta bort, reglerbar mjuk pensel samt ångra för de åtta senaste dragen; originalbilden påverkas inte.
 v2.10.139: Måla tillbaka-penseln blir reversibel inom samma drag och friläggningseditorn får tvåfingers zoom/flytt, 100–500 procent, zoomknappar, dubbeltryck samt Visa hela.
+v2.10.140: Touchpenseln målar 46 px ovanför fingret med synlig gul penselring. Granska bild reparerar befintliga sessionsposter/originalfiler och Vision öppnar rätt objekt utan mellanvy.
