@@ -173,3 +173,4 @@ v2.10.92: Kamera-Avbryt återgår till verklig ursprungsvy. Parallella öppninga
 v2.10.145: Granska & komplettera ryms normalt på en iPhone-skärm genom kompakt arbetsläge, lägre bildrad och tätare fältrytm. Scroll finns kvar för små skärmar och öppet tangentbord.
 v2.10.146: Headern är återställd till v2.10.144 i samtliga vyer. Endast innehållet i Granska & komplettera är kompakt; arbetsytans höjd följer åter Core.
 v2.10.147: Mobilpassning vy för vy: Välj objekt, AI-förslag, Granska & komplettera, Klart och produktförhandsvisning har egna kompakta innehållsregler. Variabla listor scrollar internt. Header/modulrad är orörda.
+v2.10.148: Leveransfix: återställd core.css följer alltid med i ändringspaketet så en installation direkt ovanpå trasiga v2.10.145 verkligen skriver över headerregeln. Ny cacheversion tvingar omladdning.
