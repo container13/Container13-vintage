@@ -121,3 +121,5 @@ v2.10.137: Bakgrundsknappen visas tydligt aktiv efter friläggning och Container
 v2.10.138: Friläggningsresultatet får penselverktygen Måla tillbaka och Ta bort, reglerbar mjuk pensel samt ångra för de åtta senaste dragen; originalbilden påverkas inte.
 v2.10.139: Måla tillbaka-penseln blir reversibel inom samma drag och friläggningseditorn får tvåfingers zoom/flytt, 100–500 procent, zoomknappar, dubbeltryck samt Visa hela.
 v2.10.140: Touchpenseln målar 46 px ovanför fingret med synlig gul penselring. Granska bild reparerar befintliga sessionsposter/originalfiler och Vision öppnar rätt objekt utan mellanvy.
+v2.10.141: iOS långtrycksmarkering, touch-callout och förstoringsruta blockeras på penselcanvasen. Granska bild stänger Visions startskal före direktöppning av redigeringskortet.
+v2.10.142: Frilägg öppnar befintligt sparat resultat för fortsatt penseljustering utan ny AI-körning. Frilägg på nytt med AI är nu ett separat uttryckligt val; bakgrund och placering bevaras.

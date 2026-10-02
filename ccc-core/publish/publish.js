@@ -1987,9 +1987,10 @@ let cutoutSourceCanvas=null,cutoutResultCanvas=null,cutoutRenderTimer=null,cutou
 const BACKGROUND_REMOVAL_MODULE_URL="https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm";
 
 function setCutoutBusy(busy){
-  const busyLayer=$("#cutoutBusy"),apply=$("#cutoutApply");
+  const busyLayer=$("#cutoutBusy"),apply=$("#cutoutApply"),rerun=$("#cutoutReset");
   if(busyLayer)busyLayer.hidden=!busy;
   if(apply)apply.disabled=busy||!cutoutResultCanvas;
+  if(rerun)rerun.disabled=busy;
 }
 
 function drawCutoutPreview(){
@@ -2221,16 +2222,30 @@ async function runLocalCutout(){
 
 async function openCutoutDialog(){
   if(!cropImage||!cropState)return;
+  const item=activeItem();
   const source=$("#cropCanvas"),size=Math.min(600,source.width,source.height);
   cutoutSourceCanvas=document.createElement("canvas");cutoutSourceCanvas.width=size;cutoutSourceCanvas.height=size;
   if(cropUsingCutout){
-    const item=activeItem(),originalSource=await ensureOriginalSource(item),originalImage=await loadImage(originalSource);
+    const originalSource=await ensureOriginalSource(item),originalImage=await loadImage(originalSource);
     const state={zoom:1,x:0,y:0,rotation:0,...item.cutoutData?.sourceCropData};
     const sideways=Math.abs(state.rotation%180)===90,dims={width:sideways?originalImage.naturalHeight:originalImage.naturalWidth,height:sideways?originalImage.naturalWidth:originalImage.naturalHeight};
     const base=Math.max(size/dims.width,size/dims.height),scale=base*state.zoom,positionScale=size/Math.max(1,source.width),ctx=cutoutSourceCanvas.getContext("2d");
     ctx.fillStyle="#111";ctx.fillRect(0,0,size,size);ctx.save();ctx.translate(size/2+state.x*positionScale,size/2+state.y*positionScale);ctx.rotate(state.rotation*Math.PI/180);ctx.drawImage(originalImage,-originalImage.naturalWidth*scale/2,-originalImage.naturalHeight*scale/2,originalImage.naturalWidth*scale,originalImage.naturalHeight*scale);ctx.restore();
   }else cutoutSourceCanvas.getContext("2d").drawImage(source,0,0,source.width,source.height,0,0,size,size);
   const dialog=$("#cutoutDialog");if(dialog)dialog.hidden=false;
+  if(item?.cutoutBlob){
+    cutoutBrushMode="";cutoutBrushCursor=null;cutoutUndoStack=[];cutoutStrokeBaseline=null;cutoutStrokePath=[];resetCutoutView();
+    const existingUrl=URL.createObjectURL(item.cutoutBlob);
+    try{
+      const existingImage=await loadImage(existingUrl),canvas=document.createElement("canvas");canvas.width=size;canvas.height=size;
+      canvas.getContext("2d",{alpha:true}).drawImage(existingImage,0,0,size,size);
+      cutoutResultCanvas=canvas;cutoutShowingOriginal=false;drawCutoutPreview();updateCutoutAdjustState();setCutoutBusy(false);
+      const status=$("#cutoutStatus");if(status)status.textContent="Befintlig friläggning öppnad. Justera den eller välj Frilägg på nytt med AI.";
+      return;
+    }catch(error){
+      console.warn("[CCC Publicera] Sparad friläggning kunde inte öppnas, kör AI på nytt",error);
+    }finally{URL.revokeObjectURL(existingUrl);}
+  }
   await runLocalCutout();
 }
 
@@ -2254,6 +2269,15 @@ $("#cutoutZoomOut")?.addEventListener("click",()=>setCutoutZoom(cutoutView.zoom-
 $("#cutoutZoomIn")?.addEventListener("click",()=>setCutoutZoom(cutoutView.zoom+.25));
 $("#cutoutZoomReset")?.addEventListener("click",resetCutoutView);
 $("#cutoutPreview")?.addEventListener("dblclick",event=>{event.preventDefault();resetCutoutView();});
+for(const eventName of ["contextmenu","selectstart","dragstart"]){
+  $("#cutoutPreview")?.addEventListener(eventName,event=>event.preventDefault());
+}
+$("#cutoutPreview")?.addEventListener("touchstart",event=>{
+  if(cutoutResultCanvas&&!cutoutShowingOriginal)event.preventDefault();
+},{passive:false});
+$("#cutoutPreview")?.addEventListener("touchmove",event=>{
+  if(cutoutResultCanvas&&!cutoutShowingOriginal)event.preventDefault();
+},{passive:false});
 $("#cutoutPreview")?.addEventListener("wheel",event=>{
   if(!cutoutResultCanvas)return;event.preventDefault();const preview=$("#cutoutPreview"),point=cutoutDisplayPoint(event);setCutoutZoom(cutoutView.zoom+(event.deltaY<0?.25:-.25),{x:point.x-preview.width/2,y:point.y-preview.height/2});
 },{passive:false});
@@ -2295,17 +2319,18 @@ $("#cutoutApply")?.addEventListener("click",async()=>{
   setCutoutBusy(true);
   const blob=await new Promise((resolve,reject)=>cutoutResultCanvas.toBlob(value=>value?resolve(value):reject(new Error("Friläggningen kunde inte sparas.")),"image/webp",.90));
   const sourceCropData=cropUsingCutout?{...item.cutoutData?.sourceCropData}:{...cropState};
-  const outputCropData={zoom:1,x:0,y:0,rotation:0};
+  const outputCropData=cropUsingCutout?{zoom:1,x:0,y:0,rotation:0,...item.cutoutData?.outputCropData}:{zoom:1,x:0,y:0,rotation:0};
+  const background={type:"transparent",...(item.cutoutData?.background||{})};
   item.cropData={...outputCropData};
   item.cutoutBlob=blob;
-  item.cutoutData={method:"local-ai-segmentation-v1",createdAt:new Date().toISOString(),sourceCropData,outputCropData,background:{type:"transparent"}};
+  item.cutoutData={method:"local-ai-segmentation-v1",createdAt:new Date().toISOString(),sourceCropData,outputCropData,background};
   item.publishBlob=blob;
   item.imageProcessingState="webp-cutout";
   if(item.publishUrl&&item.publishUrl.startsWith("blob:"))URL.revokeObjectURL(item.publishUrl);
   item.publishUrl=url(blob);item.thumbUrl=await previewSrc(item);
   cropImage=await loadImage(item.publishUrl);
   cropUsingCutout=true;
-  cropBackgroundChoice={type:"transparent"};
+  cropBackgroundChoice={...background};
   const backgroundButton=$("#cropBackground");if(backgroundButton)backgroundButton.disabled=false;
   cropState={...outputCropData};
   $("#cropPreview")?.classList.add("is-cutout");
