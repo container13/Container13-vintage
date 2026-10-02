@@ -131,3 +131,4 @@ v2.10.147: Mobilpassning vy för vy för Förbered, Välj objekt, Välj kanal, s
 v2.10.148: Leveransfix: core.css inkluderas uttryckligen i ändringspaketet och cacheversionen höjs, så den felaktiga v2.10.145-headern inte kan ligga kvar efter direktuppdatering.
 v2.10.149: Responsiv arbetsyta: samtliga Publicera-vyer fyller tillgänglig höjd, listor/grid scrollar inom kortet och innehållsbredden anpassas för mobil, liggande 10-tums iPad, 13-tum och 24-tum utan att ändra Core-headern. I Snabbpublicera öppnar långtryck bilden i helskärm; ett tryck stänger den.
 v2.10.150: Granska i Snabbpublicera skickar aktuell publiceringsversion (friläggning, vald bakgrund, zoom och placering) till Vision via en separat granskningsfil. Originalet skrivs inte över.
+v2.10.151: Gemensam leverans med Vision-fixen som garanterar en aktiv huvudvy åt gången. Publiceras egna vyer var redan skyddade med :not([hidden]).

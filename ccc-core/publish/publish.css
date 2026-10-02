@@ -3293,3 +3293,15 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   user-select:none!important;
   -webkit-touch-callout:none!important;
 }
+
+/* v2.10.151 – samma invariant i Publicera: exakt en huvudvy får vara synlig. */
+#startView#startView[hidden],
+#gridView#gridView[hidden],
+#channelView#channelView[hidden],
+#channelTargetsView#channelTargetsView[hidden],
+#channelConfirmView#channelConfirmView[hidden],
+#publishedView#publishedView[hidden],
+#detailView#detailView[hidden],
+#cropView#cropView[hidden]{
+  display:none!important;
+}
