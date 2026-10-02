@@ -1872,3 +1872,83 @@ button,a,input,textarea,select,[role="button"]{touch-action:manipulation}
 .ccc-free-swipe.is-dragging{cursor:grabbing;user-select:none}
 .ccc-free-swipe--center:not(.is-overflowing){justify-content:center!important}
 .ccc-free-swipe.is-overflowing{justify-content:flex-start!important}
+
+/* CCC v2.10.145 – kompakt mobilhuvud i arbetsvyer.
+   Modulernas startsidor behåller den stora identiteten. När användaren arbetar
+   frigörs i stället höjd åt bilder, fält och beslut utan att tryckytorna krymper. */
+@media(max-width:480px) and (orientation:portrait){
+  body:has(#editCard:not([hidden])),
+  body:has(.publish-view:not([hidden]):not(.publish-start-view)){
+    --ccc-header-height:76px!important;
+  }
+
+  body:has(#editCard:not([hidden])) .ccc-header,
+  body:has(.publish-view:not([hidden]):not(.publish-start-view)) .ccc-header{
+    height:76px!important;
+    min-height:76px!important;
+  }
+
+  body:has(#editCard:not([hidden])) .ccc-brand-word,
+  body:has(.publish-view:not([hidden]):not(.publish-start-view)) .ccc-brand-word{
+    font-size:29px!important;
+  }
+
+  body:has(#editCard:not([hidden])) .ccc-brand-halo,
+  body:has(.publish-view:not([hidden]):not(.publish-start-view)) .ccc-brand-halo{
+    height:11px!important;
+    transform:scale(.78)!important;
+    transform-origin:center bottom!important;
+  }
+
+  body:has(#editCard:not([hidden])) .ccc-global-version,
+  body:has(.publish-view:not([hidden]):not(.publish-start-view)) .ccc-global-version{
+    font-size:8px!important;
+    margin-top:0!important;
+  }
+
+  body:has(#editCard:not([hidden])) .ccc-header .ccc-header-actions,
+  body:has(.publish-view:not([hidden]):not(.publish-start-view)) .ccc-header .ccc-header-actions{
+    right:12px!important;
+    bottom:8px!important;
+    gap:6px!important;
+  }
+
+  body:has(#editCard:not([hidden])) .ccc-header-control,
+  body:has(#editCard:not([hidden])) .ccc-header .ccc-icon-button,
+  body:has(.publish-view:not([hidden]):not(.publish-start-view)) .ccc-header-control,
+  body:has(.publish-view:not([hidden]):not(.publish-start-view)) .ccc-header .ccc-icon-button{
+    width:40px!important;
+    min-width:40px!important;
+    max-width:40px!important;
+    height:40px!important;
+    min-height:40px!important;
+    max-height:40px!important;
+  }
+
+  body:has(#editCard:not([hidden])) .ccc-module-marker,
+  body:has(.publish-view:not([hidden]):not(.publish-start-view)) .ccc-module-marker{
+    height:34px!important;
+    min-height:34px!important;
+    max-height:34px!important;
+    margin:-2px 0 0!important;
+    padding:1px 2px!important;
+    grid-template-rows:14px 13px 1px!important;
+    row-gap:0!important;
+  }
+
+  body:has(#editCard:not([hidden])) .ccc-module-kicker,
+  body:has(.publish-view:not([hidden]):not(.publish-start-view)) .ccc-module-kicker{
+    height:14px!important;
+    min-height:14px!important;
+    line-height:14px!important;
+    font-size:.72rem!important;
+  }
+
+  body:has(#editCard:not([hidden])) .ccc-module-subtitle,
+  body:has(.publish-view:not([hidden]):not(.publish-start-view)) .ccc-module-subtitle{
+    height:13px!important;
+    min-height:13px!important;
+    line-height:13px!important;
+    font-size:.66rem!important;
+  }
+}
