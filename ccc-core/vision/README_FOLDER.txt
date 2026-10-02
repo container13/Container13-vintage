@@ -174,3 +174,5 @@ v2.10.145: Granska & komplettera ryms normalt på en iPhone-skärm genom kompakt
 v2.10.146: Headern är återställd till v2.10.144 i samtliga vyer. Endast innehållet i Granska & komplettera är kompakt; arbetsytans höjd följer åter Core.
 v2.10.147: Mobilpassning vy för vy: Välj objekt, AI-förslag, Granska & komplettera, Klart och produktförhandsvisning har egna kompakta innehållsregler. Variabla listor scrollar internt. Header/modulrad är orörda.
 v2.10.148: Leveransfix: återställd core.css följer alltid med i ändringspaketet så en installation direkt ovanpå trasiga v2.10.145 verkligen skriver över headerregeln. Ny cacheversion tvingar omladdning.
+v2.10.149: Responsiv arbetsyta: aktiva vyer fyller tillgängligt arbetskort, variabelt innehåll scrollar internt och bredder skalar kontrollerat för mobil, liggande 10-tums iPad, 13-tum och 24-tum. Core-headern är orörd.
+v2.10.150: Granska från Snabbpublicera använder en separat granskningsfil med den aktuella bearbetade bilden. Originalfilens nyckel bevaras orörd för återställning.

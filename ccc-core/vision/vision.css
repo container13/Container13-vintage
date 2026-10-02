@@ -5257,6 +5257,107 @@ body.ccc-focused-text-mode #textEditorDialog #largeTextEditor.description-editor
   pointer-events:none!important;
 }
 
+/* CCC Vision v2.10.149 – en responsiv arbetsyta i stället för fasta
+   kompaktvyer. Core äger fortfarande header och modulrad. */
+.vision-shell.ccc-workspace > .stage-card:not([hidden]){
+  height:100%!important;
+  min-height:0!important;
+  max-height:100%!important;
+  box-sizing:border-box!important;
+}
+
+#visionCard:not([hidden]),
+#seriesDoneCard:not([hidden]),
+#previewCard:not([hidden]){
+  display:flex!important;
+  flex-direction:column!important;
+  min-height:0!important;
+}
+#visionCard .vision-review-actions,
+#seriesDoneCard .done-actions,
+#previewCard .full-action,
+#previewCard .back-button{
+  flex:0 0 auto!important;
+}
+#visionCard .vision-review-actions{margin-top:auto!important}
+#seriesDoneCard .ready-publish-list{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+}
+#seriesDoneCard .done-actions{margin-top:auto!important}
+#previewCard .store-product-preview{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  overflow:auto!important;
+}
+
+@media(max-width:699px){
+  #captureCard:has(#batchStrip:not([hidden])){
+    height:100%!important;
+    min-height:0!important;
+    max-height:100%!important;
+    display:flex!important;
+    flex-direction:column!important;
+  }
+  #captureCard:has(#batchStrip:not([hidden])) .batch-strip{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    height:auto!important;
+  }
+}
+
+/* Liggande 10-tums iPad, 13-tum och större skärmar använder samma modell.
+   Bredden växer kontrollerat så att 24-tum inte blir en smal mobilkolumn. */
+@media(min-width:700px){
+  .vision-shell.ccc-workspace{
+    width:min(calc(100vw - 48px),1180px)!important;
+    max-width:1180px!important;
+    margin-inline:auto!important;
+    padding:18px 0 24px!important;
+    box-sizing:border-box!important;
+  }
+  #captureCard:not(:has(#batchStrip[hidden])),
+  #visionCard,
+  #editCard,
+  #seriesDoneCard,
+  #previewCard{
+    width:100%!important;
+    max-width:none!important;
+  }
+  #captureCard:has(#batchStrip:not([hidden])){
+    display:flex!important;
+    flex-direction:column!important;
+  }
+  #captureCard:has(#batchStrip:not([hidden])) .batch-strip{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    overflow:auto!important;
+  }
+  #visionCard .vision-summary,
+  #visionCard .vision-review-actions,
+  #seriesDoneCard .ready-publish-list,
+  #seriesDoneCard .done-actions{
+    width:min(100%,860px)!important;
+    margin-inline:auto!important;
+  }
+  #previewCard .store-product-preview,
+  #previewCard .preview-publish-choice,
+  #previewCard > .full-action,
+  #previewCard > .back-button{
+    width:min(100%,900px)!important;
+    margin-inline:auto!important;
+  }
+}
+
+@media(min-width:1500px){
+  .vision-shell.ccc-workspace{
+    width:min(calc(100vw - 96px),1320px)!important;
+    max-width:1320px!important;
+  }
+}
+
 /* CCC Vision v2.10.147 – vy-för-vy mobilpassning.
    Header och modulrad ägs fortsatt helt av Core och berörs inte här. */
 @media(max-width:480px) and (orientation:portrait){

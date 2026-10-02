@@ -1475,6 +1475,7 @@
       id: item.id,
       cccItemId: item.cccItemId || cccItemId(),
       originalFileKey: item.originalFileKey,
+      reviewFileKey: item.reviewFileKey || "",
       extraFileKeys: [...(item.extraFileKeys || [])],
       aiAnalyzedMain: !!item.aiAnalyzedMain,
       aiAnalyzedExtra: [...(item.aiAnalyzedExtra || [])],
@@ -1488,7 +1489,8 @@
       aiModel: item.aiModel || "",
       aiCostUsd: Number(item.aiCostUsd || 0),
       aiCostSek: Number(item.aiCostSek || 0),
-      cropData: item.cropData || null
+      cropData: item.cropData || null,
+      reviewImageProcessingState: item.reviewImageProcessingState || ""
     }));
 
     const record = {
@@ -1536,7 +1538,10 @@
     for (const saved of record.items) {
       /* v3: referenser till vision-files. v2 fallback: Blob låg direkt i sessionen. */
       const originalKey = saved.originalFileKey || `${saved.id}:main`;
-      let file = saved.originalFileKey ? await getVisionSourceFile(saved.originalFileKey) : null;
+      const requestedReviewFileKey = saved.reviewFileKey || "";
+      let file = requestedReviewFileKey ? await getVisionSourceFile(requestedReviewFileKey) : null;
+      const reviewFileKey = file ? requestedReviewFileKey : "";
+      if (!file) file = saved.originalFileKey ? await getVisionSourceFile(saved.originalFileKey) : null;
       if (!file && saved.originalBlob) {
         file = sessionFile(saved.originalBlob, saved.originalName, saved.originalType);
         await putVisionSourceFile(originalKey, file);
@@ -1569,6 +1574,8 @@
         file,
         previewUrl: fileUrl(file),
         originalFileKey: originalKey,
+        reviewFileKey,
+        reviewImageProcessingState: saved.reviewImageProcessingState || "",
         originalFileStored: true,
         originalFileSavePromise: null,
         extraFiles,
@@ -1626,7 +1633,8 @@
       originalType: item.file.type || "image/jpeg",
       createdAt: item.createdAt || Date.now(),
       source: "vision",
-      imageProcessingState: "original",
+      imageProcessingState: item.reviewFileKey ? (item.reviewImageProcessingState || "webp-cropped") : "original",
+      ...(item.reviewFileKey ? { publishBlob: item.file, cropData: item.cropData || null } : {}),
       readyToPublish: true,
       title: (fields.title || item.visionResult?.summaryTitle || "").trim(),
       brand: (fields.brand || fields.manufacturer || "").trim(),
