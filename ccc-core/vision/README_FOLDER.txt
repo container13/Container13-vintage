@@ -171,3 +171,5 @@ v2.10.95: Vision-starten kan tonas upp av Core när navigationen kommer från Da
 v2.10.93: iOS-fallbacken återläser inte längre en sparad session bakom kameran. `cancel`, tomt `change` och återfokus återställer kamerastate och exakt ursprungsvy före nästa försök.
 v2.10.92: Kamera-Avbryt återgår till verklig ursprungsvy. Parallella öppningar blockeras och sena getUserMedia-strömmar stoppas, så upprepade öppna/avbryt inte låser Vision.
 v2.10.145: Granska & komplettera ryms normalt på en iPhone-skärm genom kompakt arbetsläge, lägre bildrad och tätare fältrytm. Scroll finns kvar för små skärmar och öppet tangentbord.
+v2.10.146: Headern är återställd till v2.10.144 i samtliga vyer. Endast innehållet i Granska & komplettera är kompakt; arbetsytans höjd följer åter Core.
+v2.10.147: Mobilpassning vy för vy: Välj objekt, AI-förslag, Granska & komplettera, Klart och produktförhandsvisning har egna kompakta innehållsregler. Variabla listor scrollar internt. Header/modulrad är orörda.

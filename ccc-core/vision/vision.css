@@ -5257,16 +5257,114 @@ body.ccc-focused-text-mode #textEditorDialog #largeTextEditor.description-editor
   pointer-events:none!important;
 }
 
+/* CCC Vision v2.10.147 – vy-för-vy mobilpassning.
+   Header och modulrad ägs fortsatt helt av Core och berörs inte här. */
+@media(max-width:480px) and (orientation:portrait){
+  /* Välj objekt: verktyg, räknare, 3×2-grid och fortsättknapp i samma vy. */
+  #captureCard:has(#batchStrip:not([hidden])){
+    gap:5px!important;
+    padding:7px 9px 18px!important;
+  }
+  #workspaceToolbar.vision-workspace-toolbar{
+    row-gap:5px!important;
+  }
+  #workspaceToolbar #workspaceTitle{
+    margin:0 0 5px!important;
+    font-size:1.32rem!important;
+  }
+  #workspaceToolbar #workspaceCount{
+    margin:4px 0 0!important;
+    font-size:.82rem!important;
+  }
+  #workspaceToolbar .vision-workspace-add .ccc-tool-card{
+    min-height:52px!important;
+  }
+  #captureCard:has(#batchStrip:not([hidden])) .workspace-detail-button,
+  #captureCard:has(#batchStrip:not([hidden])) .workspace-continue-button{
+    min-height:44px!important;
+    margin-block:3px!important;
+  }
+
+  /* AI-förslag: mindre bildsammanfattning, samma tre tydliga val. */
+  #visionCard{
+    gap:7px!important;
+    padding:10px!important;
+  }
+  #visionCard .card-heading h2{font-size:1.32rem!important}
+  #visionCard .vision-summary{
+    padding:9px!important;
+  }
+  #visionCard .product-context{
+    grid-template-columns:78px minmax(0,1fr)!important;
+    gap:10px!important;
+  }
+  #visionCard .product-thumbnail{
+    width:78px!important;
+    height:78px!important;
+  }
+  #visionCard .product-context-copy strong{font-size:1.08rem!important}
+  #visionCard .product-context-copy span{font-size:.82rem!important}
+  #visionCard .same-garment-button{
+    min-height:42px!important;
+    margin:0!important;
+  }
+  #visionCard .vision-review-actions{gap:6px!important}
+  #visionCard .vision-review-actions>button{min-height:46px!important}
+
+  /* Granska & komplettera behåller v2.10.146:s lokala komprimering. */
+
+  /* Klart: listan får plats, men scrollar själv när många objekt är färdiga. */
+  #seriesDoneCard{
+    gap:6px!important;
+    padding:11px!important;
+  }
+  #seriesDoneCard .done-icon{
+    width:50px!important;
+    height:50px!important;
+    margin-bottom:5px!important;
+    font-size:1.55rem!important;
+  }
+  #seriesDoneCard #seriesDoneTitle{margin:0!important}
+  #seriesDoneCard .ready-publish-list{
+    margin:7px auto 8px!important;
+    max-height:42dvh!important;
+    gap:6px!important;
+  }
+  #seriesDoneCard .ready-publish-item{
+    grid-template-columns:48px minmax(0,1fr) 18px!important;
+    min-height:60px!important;
+    padding:6px 8px!important;
+  }
+  #seriesDoneCard .ready-publish-item img{
+    width:48px!important;
+    height:48px!important;
+  }
+  #seriesDoneCard .done-actions{
+    gap:6px!important;
+    margin-top:7px!important;
+  }
+  #seriesDoneCard .done-actions>*{min-height:44px!important}
+
+  /* Produktförhandsvisning: kompakta rubriker, produktkortet behåller fokus. */
+  #previewCard{
+    gap:6px!important;
+    padding:10px!important;
+  }
+  #previewCard .card-heading h2{font-size:1.24rem!important}
+  #previewCard .store-product-preview{
+    min-height:150px!important;
+  }
+  #previewCard .store-product-copy{padding:9px!important}
+  #previewCard .store-product-copy h3{font-size:1.05rem!important}
+  #previewCard .preview-publish-choice{margin:0!important}
+  #previewCard .full-action,
+  #previewCard .back-button{min-height:44px!important}
+}
+
 /* CCC Vision v2.10.145 – hela Granska & komplettera på en mobilskärm.
    Scroll finns kvar som säkerhetsventil för små skärmar och öppet tangentbord,
    men normal iPhone-höjd visar hela arbetsflödet samtidigt. */
 @media(max-width:480px) and (orientation:portrait){
-  body:has(#editCard:not([hidden])) .vision-shell{
-    height:calc(100dvh - 108px)!important;
-    min-height:0!important;
-    padding:5px 10px 56px!important;
-  }
-
   #editCard.compact-edit-stage{
     gap:5px!important;
     padding:8px 9px 9px!important;
