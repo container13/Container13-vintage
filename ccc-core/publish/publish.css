@@ -2985,6 +2985,8 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   -webkit-tap-highlight-color:transparent!important;
 }
 #cutoutPreview{-webkit-user-drag:none!important}
+#cropPreview.is-cutout #cropCanvas{cursor:grab}
+#cropPreview.is-cutout #cropCanvas:active{cursor:grabbing}
 .cutout-zoom-controls{display:grid;grid-template-columns:36px minmax(52px,auto) 36px 1fr;align-items:center;gap:6px}
 .cutout-zoom-controls button{min-height:34px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-weight:850}
 .cutout-zoom-controls span{text-align:center;color:var(--gold);font-size:11px;font-weight:900;font-variant-numeric:tabular-nums}

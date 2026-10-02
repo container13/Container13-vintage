@@ -123,3 +123,4 @@ v2.10.139: Måla tillbaka-penseln blir reversibel inom samma drag och friläggni
 v2.10.140: Touchpenseln målar 46 px ovanför fingret med synlig gul penselring. Granska bild reparerar befintliga sessionsposter/originalfiler och Vision öppnar rätt objekt utan mellanvy.
 v2.10.141: iOS långtrycksmarkering, touch-callout och förstoringsruta blockeras på penselcanvasen. Granska bild stänger Visions startskal före direktöppning av redigeringskortet.
 v2.10.142: Frilägg öppnar befintligt sparat resultat för fortsatt penseljustering utan ny AI-körning. Frilägg på nytt med AI är nu ett separat uttryckligt val; bakgrund och placering bevaras.
+v2.10.143: Objekt kan flyttas fritt i alla riktningar i Anpassa bild även vid 100 % zoom; eventuell tom yta syns direkt före Spara anpassning.

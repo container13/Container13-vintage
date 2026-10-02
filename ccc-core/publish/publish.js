@@ -790,7 +790,7 @@ function helpHtmlForView(view){
       <div class="help-row"><strong>Fortsätt</strong><br>Går vidare med de färdiga ${entityTerm("plural")} till val av kanal.</div>
       <div class="help-row"><strong>Välj</strong><br>Öppnar läget där du kan markera lokala utkast för borttagning.</div>`;
   if(view==="detailView")return `<div class="help-row"><strong>Grön ✓</strong><br>Bilden har en sparad anpassning men kan ändras igen.</div><div class="help-row"><strong>Anpassa bild</strong><br>Gör den automatiska bildanpassningen när den behövs.</div><div class="help-row"><strong>Publicera</strong><br>Tar aktuellt objekt direkt till sista kontrollvyn.</div><div class="help-row"><strong>Klar – tillbaka till bilderna</strong><br>Återgår till Förbered så att du kan fortsätta med nästa bild.</div>`;
-  if(view==="cropView")return `<div class="help-row"><strong>Anpassa bild</strong><br>Dra, nypzooma eller använd verktygen för att placera bilden.</div><div class="help-row"><strong>Hela bilden / Fyll ytan</strong><br>Välj om hela originalet ska synas eller om bilden ska fylla publiceringsytan.</div><div class="help-row"><strong>Rotera / Återställ</strong><br>Rotera 90 grader eller återgå till hela originalbilden.</div><div class="help-row"><strong>Frilägg</strong><br>AI identifierar objektet och tar bort bakgrunden lokalt. I resultatvyn kan du måla tillbaka saknade delar eller ta bort kvarvarande bakgrund.</div><div class="help-row"><strong>Bakgrund</strong><br>Välj transparent, färdig bakgrund eller en egen färg efter att bilden frilagts.</div><div class="help-row"><strong>Spara anpassning</strong><br>Sparar en separat publiceringsvariant och bevarar originalet.</div>`;
+  if(view==="cropView")return `<div class="help-row"><strong>Anpassa bild</strong><br>Dra objektet åt valfritt håll med ett finger. Nyp med två fingrar för att zooma och flytta samtidigt.</div><div class="help-row"><strong>Hela bilden / Fyll ytan</strong><br>Välj om hela originalet ska synas eller om bilden ska fylla publiceringsytan.</div><div class="help-row"><strong>Rotera / Återställ</strong><br>Rotera 90 grader eller återgå till hela originalbilden.</div><div class="help-row"><strong>Frilägg</strong><br>AI identifierar objektet och tar bort bakgrunden lokalt. I resultatvyn kan du måla tillbaka saknade delar eller ta bort kvarvarande bakgrund.</div><div class="help-row"><strong>Bakgrund</strong><br>Välj transparent, färdig bakgrund eller en egen färg efter att bilden frilagts.</div><div class="help-row"><strong>Spara anpassning</strong><br>Sparar en separat publiceringsvariant och bevarar originalet.</div>`;
   return `<div class="help-row"><strong>Tillbaka</strong><br>Går till föregående steg.</div>`;
 }
 function openPublishHelp(){
@@ -1616,7 +1616,11 @@ function cropImageDimensions(image=cropImage,rotation=cropState?.rotation||0){
 }
 function geometry(){
   if(!cropImage||!cropState)return null;
-  const c=$("#cropCanvas"),dims=cropImageDimensions(),base=Math.max(c.width/dims.width,c.height/dims.height),scale=base*cropState.zoom,w=dims.width*scale,h=dims.height*scale,lx=Math.max(0,(w-c.width)/2),ly=Math.max(0,(h-c.height)/2);
+  const c=$("#cropCanvas"),dims=cropImageDimensions(),base=Math.max(c.width/dims.width,c.height/dims.height),scale=base*cropState.zoom,w=dims.width*scale,h=dims.height*scale;
+  /* Objektet ska kunna centreras fritt även när hela bildytan redan ryms
+     vid 100 % zoom. Eventuell fri yta syns direkt före sparning. */
+  const lx=Math.max(c.width*.5,(w-c.width)/2);
+  const ly=Math.max(c.height*.5,(h-c.height)/2);
   cropState.x=Math.max(-lx,Math.min(lx,cropState.x));cropState.y=Math.max(-ly,Math.min(ly,cropState.y));
   return{c,scale,w,h,rotation:cropState.rotation||0};
 }
@@ -1897,7 +1901,7 @@ async function openCrop({preserveBack=false}={}){
   updateCropCounter();
   $("#cropOriginalPreview").src=item.thumbUrl||item.fullUrl;
   const cropNote=$("#cropFutureNote");
-  if(cropNote)cropNote.textContent=item.cutoutBlob?"Friläggning sparad · originalbilden är orörd":"Dra för att flytta · nyp för att zooma";
+  if(cropNote)cropNote.textContent=item.cutoutBlob?"Dra objektet fritt · nyp för att zooma":"Dra för att flytta · nyp för att zooma";
   $("#cropPreview")?.classList.toggle("is-cutout",cropUsingCutout);
   cropBackgroundChoice=cropUsingCutout?{type:"transparent",...(item.cutoutData?.background||{})}:{type:"transparent"};
   const backgroundButton=$("#cropBackground");if(backgroundButton)backgroundButton.disabled=!cropUsingCutout;
