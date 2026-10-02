@@ -124,3 +124,4 @@ v2.10.140: Touchpenseln målar 46 px ovanför fingret med synlig gul penselring.
 v2.10.141: iOS långtrycksmarkering, touch-callout och förstoringsruta blockeras på penselcanvasen. Granska bild stänger Visions startskal före direktöppning av redigeringskortet.
 v2.10.142: Frilägg öppnar befintligt sparat resultat för fortsatt penseljustering utan ny AI-körning. Frilägg på nytt med AI är nu ett separat uttryckligt val; bakgrund och placering bevaras.
 v2.10.143: Objekt kan flyttas fritt i alla riktningar i Anpassa bild även vid 100 % zoom; eventuell tom yta syns direkt före Spara anpassning.
+v2.10.144: Ligger ute nu och lokal live-status filtreras med samma Admin-inställning som hemsidan (7/14/30, eget 1–30 eller manuellt); publiceringshistoriken behålls.

@@ -6,6 +6,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   getFirestore,
   orderBy,
@@ -1419,6 +1420,29 @@ async function fetchPublishedNewArrivals(){
     .sort((a,b)=>firestoreTime(b.createdAt)-firestoreTime(a.createdAt));
 }
 
+async function currentNewArrivalsRetention(){
+  try{
+    const snapshot=await getDoc(doc(database,"settings","site"));
+    const settings=snapshot.exists()?snapshot.data():{};
+    if(settings.newArrivalsRetentionMode==="manual")return{mode:"manual",days:0};
+    const parsed=Number(settings.newArrivalsRetentionDays);
+    return{mode:"days",days:Number.isInteger(parsed)?Math.min(30,Math.max(1,parsed)):7};
+  }catch(error){
+    console.warn("[CCC Publicera] Visningstiden kunde inte hämtas. 7 dagar används.",error);
+    return{mode:"days",days:7};
+  }
+}
+
+async function fetchVisiblePublishedNewArrivals(){
+  const [all,retention]=await Promise.all([fetchPublishedNewArrivals(),currentNewArrivalsRetention()]);
+  if(retention.mode==="manual")return all;
+  const cutoff=Date.now()-retention.days*86400000;
+  return all.filter(item=>{
+    const created=firestoreTime(item.createdAt);
+    return !created||created>=cutoff;
+  });
+}
+
 function publicationDateText(value){
   const millis=firestoreTime(value);
   if(!millis)return "Tid saknas";
@@ -1567,9 +1591,8 @@ async function loadPublishedView(message=""){
   clearTimeout(publishedResultTimer);
   if(message){result.hidden=false;result.textContent=message;publishedResultTimer=window.setTimeout(()=>{result.hidden=true;},3200);}else result.hidden=true;
   try{
-    const all=await fetchPublishedNewArrivals();
-    await syncLocalArchiveLiveState(all);
-    const visible=all.slice(0,16);
+    const visible=(await fetchVisiblePublishedNewArrivals()).slice(0,16);
+    await syncLocalArchiveLiveState(visible);
     publishedLiveItems=visible;
     summary.textContent=`${visible.length} av 16 bilder ligger ute i Nyinkommet`;
     const startCount=$("#publishedStartCount");if(startCount)startCount.textContent=`${visible.length} ligger ute · visa eller ta bort`;
