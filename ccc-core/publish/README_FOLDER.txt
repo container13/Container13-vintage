@@ -128,3 +128,4 @@ v2.10.144: Ligger ute nu och lokal live-status filtreras med samma Admin-instäl
 v2.10.145: Mobilens arbetsvyer använder ett kompakt huvud så mer av innehållet ryms utan scroll; Publiceras startsida behåller ordinarie huvud.
 v2.10.146: Återställer hela den gemensamma mobilheadern/modulraden till säker v2.10.144-geometri; tar bort den globala komprimeringen som kunde hamna under iPhones statusfält.
 v2.10.147: Mobilpassning vy för vy för Förbered, Välj objekt, Välj kanal, snabbpublicera/slutkontroll, Publicerat, objektgranskning och Anpassa bild. Endast arbetsinnehållet ändras; Core-headern är byteidentisk med v2.10.144.
+v2.10.148: Leveransfix: core.css inkluderas uttryckligen i ändringspaketet och cacheversionen höjs, så den felaktiga v2.10.145-headern inte kan ligga kvar efter direktuppdatering.
