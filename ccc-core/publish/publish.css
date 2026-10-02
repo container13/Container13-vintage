@@ -3158,3 +3158,138 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   .cutout-dialog-box{padding:11px!important}
   .cutout-preview-wrap{width:min(100%,35dvh,320px)}
 }
+
+/* CCC Publicera v2.10.149 – gemensam responsiv arbetsyta.
+   Header och modulrad lämnas till Core; varje aktiv vy fyller arbetskortet. */
+.publish-main.ccc-workspace > .publish-view:not([hidden]){
+  height:100%!important;
+  min-height:0!important;
+  max-height:100%!important;
+  box-sizing:border-box!important;
+}
+#gridView:not([hidden]),
+#channelView:not([hidden]),
+#channelTargetsView:not([hidden]),
+#channelConfirmView:not([hidden]),
+#publishedView:not([hidden]),
+#detailView:not([hidden]){
+  display:flex!important;
+  flex-direction:column!important;
+}
+#gridView .draft-grid,
+#channelView .draft-grid{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  height:auto!important;
+  overflow:auto!important;
+  overscroll-behavior:contain!important;
+}
+#gridView .prepared-continue-action,
+#channelView .channel-next-action,
+#channelTargetsView .channel-next-action,
+#detailView .detail-actions{
+  flex:0 0 auto!important;
+}
+#channelTargetsView .channel-list,
+#publishedView .published-panel:not([hidden]){
+  flex:1 1 auto!important;
+  min-height:0!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+}
+#detailView .swipe-area{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  height:auto!important;
+  max-height:none!important;
+}
+
+@media(min-width:700px){
+  .publish-main.ccc-workspace{
+    width:min(calc(100vw - 48px),1180px)!important;
+    max-width:1180px!important;
+    margin-inline:auto!important;
+    padding:18px 0 24px!important;
+    box-sizing:border-box!important;
+  }
+  .publish-main.ccc-workspace > .publish-view{
+    width:100%!important;
+    max-width:none!important;
+  }
+  #gridView .draft-grid,
+  #channelView .draft-grid,
+  #channelConfirmView .confirm-grid,
+  #publishedView .published-panel,
+  #channelTargetsView .channel-list{
+    width:min(100%,940px)!important;
+    margin-inline:auto!important;
+  }
+  #gridView .prepared-continue-action,
+  #channelView .channel-next-action,
+  #channelTargetsView .channel-next-action,
+  #channelConfirmView .confirm-source-actions,
+  #channelConfirmView .confirm-object-tools,
+  #channelConfirmView .confirm-channel-strip,
+  #channelConfirmView .confirm-display-summary,
+  #channelConfirmView .confirm-actions,
+  #channelConfirmView .confirm-history-link{
+    width:min(100%,940px)!important;
+    margin-inline:auto!important;
+  }
+  #detailView,
+  #cropView{
+    width:min(100%,900px)!important;
+    margin-inline:auto!important;
+  }
+  #detailView .swipe-area{
+    width:min(100%,680px)!important;
+    margin-inline:auto!important;
+  }
+}
+
+@media(min-width:1500px){
+  .publish-main.ccc-workspace{
+    width:min(calc(100vw - 96px),1320px)!important;
+    max-width:1320px!important;
+  }
+}
+
+/* v2.10.149 – Snabbpublicera: långtryck visar vald bild i helskärm.
+   Ett vanligt tryck på överlägget återgår till arbetsvyn. */
+.confirm-fullscreen-preview{
+  position:fixed!important;
+  inset:0!important;
+  z-index:2200!important;
+  width:100vw!important;
+  height:100dvh!important;
+  margin:0!important;
+  padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))!important;
+  border:0!important;
+  border-radius:0!important;
+  display:grid!important;
+  place-items:center!important;
+  background:rgba(2,3,6,.96)!important;
+  opacity:0;
+  cursor:zoom-out;
+  touch-action:manipulation;
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+  transition:opacity .16s ease;
+}
+.confirm-fullscreen-preview.is-open{opacity:1}
+.confirm-fullscreen-preview img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:contain!important;
+  pointer-events:none!important;
+  -webkit-user-drag:none!important;
+}
+#channelConfirmView .confirm-card{
+  -webkit-user-select:none!important;
+  user-select:none!important;
+  -webkit-touch-callout:none!important;
+}

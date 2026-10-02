@@ -129,3 +129,5 @@ v2.10.145: Mobilens arbetsvyer använder ett kompakt huvud så mer av innehålle
 v2.10.146: Återställer hela den gemensamma mobilheadern/modulraden till säker v2.10.144-geometri; tar bort den globala komprimeringen som kunde hamna under iPhones statusfält.
 v2.10.147: Mobilpassning vy för vy för Förbered, Välj objekt, Välj kanal, snabbpublicera/slutkontroll, Publicerat, objektgranskning och Anpassa bild. Endast arbetsinnehållet ändras; Core-headern är byteidentisk med v2.10.144.
 v2.10.148: Leveransfix: core.css inkluderas uttryckligen i ändringspaketet och cacheversionen höjs, så den felaktiga v2.10.145-headern inte kan ligga kvar efter direktuppdatering.
+v2.10.149: Responsiv arbetsyta: samtliga Publicera-vyer fyller tillgänglig höjd, listor/grid scrollar inom kortet och innehållsbredden anpassas för mobil, liggande 10-tums iPad, 13-tum och 24-tum utan att ändra Core-headern. I Snabbpublicera öppnar långtryck bilden i helskärm; ett tryck stänger den.
+v2.10.150: Granska i Snabbpublicera skickar aktuell publiceringsversion (friläggning, vald bakgrund, zoom och placering) till Vision via en separat granskningsfil. Originalet skrivs inte över.

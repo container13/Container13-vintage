@@ -43,6 +43,7 @@ let channelTargetsReturnView="startView";
 let cropReturnContext={view:"gridView",itemId:""};
 let publishBackPending=false;
 let draftPreviewGesture=null,draftPreviewSuppressClick=false;
+let confirmFullscreenGesture=null,confirmFullscreenSuppressClick=false,confirmFullscreenLayer=null;
 let cropImage=null,cropState=null,cropBaseline=null,cropUsingCutout=false,cropContentDirty=false,cropBackgroundChoice={type:"transparent"},backgroundDraft=null,pointer=null;
 let activeItemId=null;
 let recentlyAdaptedItemId=null;
@@ -357,6 +358,7 @@ function setPublishHeader(view){
   window.CCC_CORE?.header?.set(state);
 }
 function show(view){if(view!=="gridView"&&draftSelectionMode){draftSelectionMode=false;selectedDraftIds.clear();}
+  closeConfirmFullscreen();
   currentPublishView=view;
   ["startView","gridView","channelView","channelTargetsView","channelConfirmView","publishedView","detailView","cropView"].forEach(id=>$("#"+id).hidden=id!==view);
   setPublishHeader(view);
@@ -479,6 +481,74 @@ function bindDraftPreview(button,img){
   window.addEventListener("pointerup",globalFinish,{once:true});
   window.addEventListener("pointercancel",globalFinish,{once:true});
 }
+
+function closeConfirmFullscreen(){
+  if(confirmFullscreenGesture?.timer)window.clearTimeout(confirmFullscreenGesture.timer);
+  confirmFullscreenGesture=null;
+  if(!confirmFullscreenLayer)return;
+  const layer=confirmFullscreenLayer;
+  confirmFullscreenLayer=null;
+  layer.classList.remove("is-open");
+  window.setTimeout(()=>layer.remove(),180);
+}
+
+function openConfirmFullscreen(button,img){
+  const gesture=confirmFullscreenGesture;
+  if(!gesture||gesture.button!==button||confirmFullscreenLayer)return;
+  const layer=document.createElement("button");
+  layer.type="button";
+  layer.className="confirm-fullscreen-preview";
+  layer.setAttribute("aria-label","Stäng helskärmsbild");
+  const full=document.createElement("img");
+  full.src=img.currentSrc||img.src;
+  full.alt=img.alt||"Bild i helskärm";
+  full.draggable=false;
+  layer.append(full);
+  document.body.append(layer);
+  confirmFullscreenLayer=layer;
+  gesture.opened=true;
+  confirmFullscreenSuppressClick=true;
+  const openedAt=Date.now();
+  layer.addEventListener("click",event=>{
+    event.preventDefault();
+    event.stopPropagation();
+    if(Date.now()-openedAt<250)return;
+    closeConfirmFullscreen();
+  });
+  requestAnimationFrame(()=>layer.classList.add("is-open"));
+}
+
+function bindConfirmFullscreen(button,img){
+  button.addEventListener("contextmenu",event=>event.preventDefault());
+  button.addEventListener("pointerdown",event=>{
+    if(event.pointerType==="mouse"&&event.button!==0)return;
+    if(confirmFullscreenGesture?.timer)window.clearTimeout(confirmFullscreenGesture.timer);
+    confirmFullscreenGesture={button,id:event.pointerId,x:event.clientX,y:event.clientY,opened:false,timer:null};
+    confirmFullscreenGesture.timer=window.setTimeout(()=>openConfirmFullscreen(button,img),650);
+  });
+  button.addEventListener("pointermove",event=>{
+    const gesture=confirmFullscreenGesture;
+    if(!gesture||gesture.button!==button||gesture.id!==event.pointerId||gesture.opened)return;
+    if(Math.hypot(event.clientX-gesture.x,event.clientY-gesture.y)>12){
+      window.clearTimeout(gesture.timer);
+      confirmFullscreenGesture=null;
+    }
+  });
+  const finish=event=>{
+    const gesture=confirmFullscreenGesture;
+    if(!gesture||gesture.button!==button||gesture.id!==event.pointerId)return;
+    if(!gesture.opened){
+      window.clearTimeout(gesture.timer);
+      confirmFullscreenGesture=null;
+    }
+  };
+  button.addEventListener("pointerup",finish);
+  button.addEventListener("pointercancel",finish);
+}
+
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape"&&confirmFullscreenLayer)closeConfirmFullscreen();
+});
 
 /* Dubbeltryck tas bort: enkeltryck, långtryck och swipe ska inte konkurrera. */
 
@@ -2768,6 +2838,11 @@ async function ensureVisionReviewItem(item){
     await putSourceFile(originalFileKey,source,item.imageMetadata||buildPublishMetadata(item));
   }
   item.originalFileKey=originalFileKey;
+  let reviewFileKey="";
+  if(item.publishBlob){
+    reviewFileKey=`${item.id}:review-current`;
+    await putSourceFile(reviewFileKey,item.publishBlob,item.imageMetadata||buildPublishMetadata(item));
+  }
   const fields={
     ...(item.fields||{}),
     title:item.title||item.fields?.title||"",
@@ -2777,12 +2852,13 @@ async function ensureVisionReviewItem(item){
     description:item.description||item.fields?.description||""
   };
   const sessionItem={
-    id:item.id,cccItemId:item.cccItemId||"",originalFileKey,extraFileKeys:[],
+    id:item.id,cccItemId:item.cccItemId||"",originalFileKey,reviewFileKey,extraFileKeys:[],
     aiAnalyzedMain:false,aiAnalyzedExtra:[],demoKey:"arsenal",approved:!!item.approved,
     editedFields:fields,visionReady:!!item.visionReady,visionResult:item.visionResult||null,
     analysisMode:item.analysisMode||"manual",aiUsage:item.aiUsage||null,
     aiModel:item.aiModel||"",aiCostUsd:Number(item.aiCostUsd||0),
-    aiCostSek:Number(item.aiCostSek||0),cropData:item.cropData||null
+    aiCostSek:Number(item.aiCostSek||0),cropData:item.cropData||null,
+    reviewImageProcessingState:reviewFileKey?(item.imageProcessingState||"webp-cropped"):""
   };
   const existingIndex=previousItems.findIndex(entry=>String(entry.id)===String(item.id));
   const sessionItems=[...previousItems];
@@ -2853,7 +2929,9 @@ async function renderChannelConfirmation(resetControls=true){
     img.alt=title(item,index);
     img.decoding="async";
     card.append(img);
+    bindConfirmFullscreen(card,img);
     card.addEventListener("click",()=>{
+      if(confirmFullscreenSuppressClick){confirmFullscreenSuppressClick=false;return;}
       confirmToolItemId=item.id;
       syncConfirmToolUi();
     });
