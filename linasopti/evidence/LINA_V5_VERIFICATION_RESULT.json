@@ -1,0 +1,109 @@
+{
+  "status": "V5_DEPLOY_AND_DATE_CONTRACT_VERIFIED_DATA_APPROVAL_BLOCKED",
+  "health": {
+    "ok": true,
+    "service": "Linas Opti API",
+    "version": "0.58.8 + evidence-sync-v0235 + alpaca-history-v02 + twelve-history-v02",
+    "mode": "paper",
+    "tradingEnabled": false,
+    "alpacaConfigured": true,
+    "eodhdConfigured": true,
+    "twelveDataConfigured": true,
+    "yahooHistoricalConfigured": true,
+    "loginCodeConfigured": true,
+    "githubForwardConfigured": true
+  },
+  "nvdaFullCalendarComparison": {
+    "rowCount": 1258,
+    "firstDate": "2020-01-02",
+    "lastDate": "2024-12-31",
+    "exactDateMatchToSavedYahooCalendar": true,
+    "note": "Comparison to saved dataset calendar, not new independent calendar proof."
+  },
+  "gmFailure": {
+    "date": "2023-06-05",
+    "modes": {
+      "splits": {
+        "ok": false,
+        "error": "TWELVE_INVALID_PRICE_OR_DATE",
+        "reason": "INCONSISTENT_OHLC",
+        "symbol": "GM",
+        "adjust": "splits",
+        "rowIndex": 105,
+        "invalidRow": {
+          "d": "2023-06-05",
+          "o": 34.45000076,
+          "h": 34.375,
+          "l": 33.65999985,
+          "c": 34.13000107
+        }
+      },
+      "none": {
+        "ok": false,
+        "error": "TWELVE_INVALID_PRICE_OR_DATE",
+        "reason": "INCONSISTENT_OHLC",
+        "symbol": "GM",
+        "adjust": "none",
+        "rowIndex": 0,
+        "invalidRow": {
+          "d": "2023-06-05",
+          "o": 34.45000076,
+          "h": 34.375,
+          "l": 33.65999985,
+          "c": 34.13000107
+        }
+      },
+      "all": {
+        "ok": false,
+        "error": "TWELVE_INVALID_PRICE_OR_DATE",
+        "reason": "INCONSISTENT_OHLC",
+        "symbol": "GM",
+        "adjust": "all",
+        "rowIndex": 0,
+        "invalidRow": {
+          "d": "2023-06-05",
+          "o": 33.34412341,
+          "h": 33.27153025,
+          "l": 32.57948227,
+          "c": 33.03439601
+        }
+      }
+    },
+    "yahoo": {
+      "d": "2023-06-05",
+      "o": 33.33878779764356,
+      "h": 33.33878779764356,
+      "l": 32.57426900811007,
+      "c": 33.029109954833984,
+      "raw": {
+        "o": 34.45000076293945,
+        "h": 34.45000076293945,
+        "l": 33.65999984741211,
+        "c": 34.130001068115234,
+        "adjustedClose": 33.029109954833984
+      },
+      "adjustmentFactor": 0.967744181692695
+    },
+    "alpacaRaw": {
+      "t": "2023-06-05T04:00:00Z",
+      "symbol": "GM",
+      "o": 34.45,
+      "h": 34.49,
+      "l": 33.66,
+      "c": 34.13,
+      "v": 10067829
+    },
+    "conclusion": "Twelve high below open in all tested modes. Yahoo and Alpaca highs also differ; no replacement price chosen."
+  },
+  "fdxStatus": "Adjustment basis mismatch previously evidenced; exact vendor methodology remains unverified.",
+  "snapshotHashes": {
+    "gm-mode1.json": "6e3f8e2f1e699e2d72c90d6668b1e48e265664ebbeebcef997b259d1c344b2d5",
+    "probe0.json": "5c75965882eac683e0f72d85fbe1a9a45afefd9d81269ad3d1aa3424128e3d50",
+    "probe1.json": "c0d9cd7641e8534778ac9b25d170da2438ac0ad71a39c0ec1e095a3d709d109d",
+    "nvda-full.json": "de76c2c79e29bff2c812477d0b393b4f871421fee202380928c958009524d008",
+    "gm-mode0.json": "acdc94c86ea8e408b675a920a1d7267badfae840f19f2224688db5456814a79c",
+    "probe2.json": "b8bb509f06d4d69c24dfc612bcd205dd3735affac7b8ff6f72cf18b013605137"
+  },
+  "researchStarted": false,
+  "dataApproved": false
+}

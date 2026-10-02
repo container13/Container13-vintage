@@ -1,0 +1,145 @@
+{
+  "status": "FACTOR_BASIS_MISMATCH_SUPPORTED_NOT_VENDOR_CAUSE_PROVEN",
+  "checks": [
+    {
+      "date": "2020-03-06",
+      "receivedNormalizedDividend": 0.523771,
+      "yahooImpliedDividendOnQuoteBasis": 0.523746590102716,
+      "twelveImpliedDividendOnQuoteBasis": 0.6459894824036371,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    },
+    {
+      "date": "2020-06-26",
+      "receivedNormalizedDividend": 0.523771,
+      "yahooImpliedDividendOnQuoteBasis": 0.5237675980038513,
+      "twelveImpliedDividendOnQuoteBasis": 0.6461705009029985,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    },
+    {
+      "date": "2020-09-03",
+      "receivedNormalizedDividend": 0.523771,
+      "yahooImpliedDividendOnQuoteBasis": 0.5237596115554017,
+      "twelveImpliedDividendOnQuoteBasis": 0.6477075325812425,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    },
+    {
+      "date": "2020-12-11",
+      "receivedNormalizedDividend": 0.523771,
+      "yahooImpliedDividendOnQuoteBasis": 0.5238209855429333,
+      "twelveImpliedDividendOnQuoteBasis": 0.6482025602034815,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    },
+    {
+      "date": "2021-03-05",
+      "receivedNormalizedDividend": 0.523771,
+      "yahooImpliedDividendOnQuoteBasis": 0.5238273103162682,
+      "twelveImpliedDividendOnQuoteBasis": 0.647911964073408,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    },
+    {
+      "date": "2021-06-25",
+      "receivedNormalizedDividend": 0.604351,
+      "yahooImpliedDividendOnQuoteBasis": 0.6043280155372347,
+      "twelveImpliedDividendOnQuoteBasis": 0.7477084162384565,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    },
+    {
+      "date": "2021-09-02",
+      "receivedNormalizedDividend": 0.604351,
+      "yahooImpliedDividendOnQuoteBasis": 0.6043309662135407,
+      "twelveImpliedDividendOnQuoteBasis": 0.7473841719941897,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    },
+    {
+      "date": "2021-12-10",
+      "receivedNormalizedDividend": 0.604351,
+      "yahooImpliedDividendOnQuoteBasis": 0.6043203548317427,
+      "twelveImpliedDividendOnQuoteBasis": 0.7471644308541966,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    },
+    {
+      "date": "2022-03-04",
+      "receivedNormalizedDividend": 0.604351,
+      "yahooImpliedDividendOnQuoteBasis": 0.6043136391242061,
+      "twelveImpliedDividendOnQuoteBasis": 0.7468589736289338,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    },
+    {
+      "date": "2022-06-24",
+      "receivedNormalizedDividend": 0.926672,
+      "yahooImpliedDividendOnQuoteBasis": 0.9266365907468316,
+      "twelveImpliedDividendOnQuoteBasis": 1.142850474647275,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    },
+    {
+      "date": "2022-09-01",
+      "receivedNormalizedDividend": 0.926672,
+      "yahooImpliedDividendOnQuoteBasis": 0.9266718287914765,
+      "twelveImpliedDividendOnQuoteBasis": 1.1422670238896107,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    },
+    {
+      "date": "2022-12-09",
+      "receivedNormalizedDividend": 0.926672,
+      "yahooImpliedDividendOnQuoteBasis": 0.9266789409782747,
+      "twelveImpliedDividendOnQuoteBasis": 1.1405316136605899,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    },
+    {
+      "date": "2023-03-10",
+      "receivedNormalizedDividend": 0.926672,
+      "yahooImpliedDividendOnQuoteBasis": 0.9266890999906818,
+      "twelveImpliedDividendOnQuoteBasis": 1.1421569116225867,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    },
+    {
+      "date": "2023-06-09",
+      "receivedNormalizedDividend": 1.01531,
+      "yahooImpliedDividendOnQuoteBasis": 1.015324073523765,
+      "twelveImpliedDividendOnQuoteBasis": 1.2513043202724763,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    },
+    {
+      "date": "2023-09-08",
+      "receivedNormalizedDividend": 1.01531,
+      "yahooImpliedDividendOnQuoteBasis": 1.0152959021641927,
+      "twelveImpliedDividendOnQuoteBasis": 1.2523553323805925,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    },
+    {
+      "date": "2023-12-08",
+      "receivedNormalizedDividend": 1.01531,
+      "yahooImpliedDividendOnQuoteBasis": 1.0152984152478257,
+      "twelveImpliedDividendOnQuoteBasis": 1.2526810529573058,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    },
+    {
+      "date": "2024-03-08",
+      "receivedNormalizedDividend": 1.01531,
+      "yahooImpliedDividendOnQuoteBasis": 1.0153008844837814,
+      "twelveImpliedDividendOnQuoteBasis": 1.252175611251347,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    },
+    {
+      "date": "2024-06-24",
+      "receivedNormalizedDividend": 1.112006,
+      "yahooImpliedDividendOnQuoteBasis": 1.1119798667990253,
+      "twelveImpliedDividendOnQuoteBasis": 1.3707454362874447,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    },
+    {
+      "date": "2024-09-09",
+      "receivedNormalizedDividend": 1.112006,
+      "yahooImpliedDividendOnQuoteBasis": 1.1119836812798258,
+      "twelveImpliedDividendOnQuoteBasis": 1.3717003004526946,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    },
+    {
+      "date": "2024-12-09",
+      "receivedNormalizedDividend": 1.112006,
+      "yahooImpliedDividendOnQuoteBasis": 1.1120293259121234,
+      "twelveImpliedDividendOnQuoteBasis": 1.3716309436094931,
+      "note": "Inferred using prior-close multiplicative formula; does not prove vendor algorithm."
+    }
+  ]
+}

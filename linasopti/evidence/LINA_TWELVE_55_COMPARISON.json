@@ -1,0 +1,1065 @@
+{
+  "status": "THIRD_PROVIDER_COMPARISON_NOT_DATA_APPROVAL",
+  "summary": {
+    "splits": {
+      "available": 55,
+      "withinHalfPercent": 55
+    },
+    "all": {
+      "available": 49,
+      "withinHalfPercent": 46
+    }
+  },
+  "cases": [
+    {
+      "symbol": "NVDA",
+      "date": "2024-06-10",
+      "field": "h",
+      "yahoo": 122.74998311505551,
+      "alpaca": 195.39,
+      "splits": {
+        "twelve": 123.09999847,
+        "yahooReference": 123.0999984741211,
+        "relativeDifference": -3.347755406224451e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 122.74702613,
+        "yahooReference": 122.74998311505551,
+        "relativeDifference": -2.4089494600976202e-05,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "TSLA",
+      "date": "2021-03-04",
+      "field": "h",
+      "yahoo": 222.81666564941406,
+      "alpaca": 291.31,
+      "splits": {
+        "twelve": 222.81666565,
+        "yahooReference": 222.81666564941406,
+        "relativeDifference": 2.6296742561271458e-12,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 222.81666565,
+        "yahooReference": 222.81666564941406,
+        "relativeDifference": 2.6296742561271458e-12,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "TSLA",
+      "date": "2021-03-01",
+      "field": "h",
+      "yahoo": 239.6666717529297,
+      "alpaca": 290.67,
+      "splits": {
+        "twelve": 239.66667175,
+        "yahooReference": 239.6666717529297,
+        "relativeDifference": -1.2223999590332824e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 239.66667175,
+        "yahooReference": 239.6666717529297,
+        "relativeDifference": -1.2223999590332824e-11,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "SHOP",
+      "date": "2023-01-24",
+      "field": "h",
+      "yahoo": 45.5,
+      "alpaca": 49.88,
+      "splits": {
+        "twelve": 45.5,
+        "yahooReference": 45.5,
+        "relativeDifference": 0.0,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 45.5,
+        "yahooReference": 45.5,
+        "relativeDifference": 0.0,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "LUV",
+      "date": "2023-01-24",
+      "field": "o",
+      "yahoo": 33.672955038701886,
+      "alpaca": 35.56,
+      "splits": {
+        "twelve": 36.49000168,
+        "yahooReference": 36.4900016784668,
+        "relativeDifference": 4.2017056500753824e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 33.68758163,
+        "yahooReference": 33.672955038701886,
+        "relativeDifference": 0.00043437207341323614,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "GM",
+      "date": "2020-03-09",
+      "field": "c",
+      "yahoo": 23.66509246826172,
+      "alpaca": 24.98,
+      "splits": {
+        "twelve": 24.69000053,
+        "yahooReference": 24.690000534057617,
+        "relativeDifference": -1.643425395769782e-10,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "TSLA",
+      "date": "2020-12-18",
+      "field": "c",
+      "yahoo": 231.6666717529297,
+      "alpaca": 219.45,
+      "splits": {
+        "twelve": 231.66667175,
+        "yahooReference": 231.6666717529297,
+        "relativeDifference": -1.2646106384295308e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 231.66667175,
+        "yahooReference": 231.6666717529297,
+        "relativeDifference": -1.2646106384295308e-11,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "BAC",
+      "date": "2020-03-18",
+      "field": "c",
+      "yahoo": 17.773094177246094,
+      "alpaca": 17.02,
+      "splits": {
+        "twelve": 20.79000092,
+        "yahooReference": 20.790000915527344,
+        "relativeDifference": 2.1513502090897418e-10,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 17.79028439,
+        "yahooReference": 17.773094177246094,
+        "relativeDifference": 0.0009672042798216651,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "NOW",
+      "date": "2020-03-12",
+      "field": "c",
+      "yahoo": 52.42399978637695,
+      "alpaca": 54.64,
+      "splits": {
+        "twelve": 52.42399979,
+        "yahooReference": 52.42399978637695,
+        "relativeDifference": 6.91104951044963e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 52.42399979,
+        "yahooReference": 52.42399978637695,
+        "relativeDifference": 6.91104951044963e-11,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "LUV",
+      "date": "2023-01-24",
+      "field": "h",
+      "yahoo": 34.125124818828475,
+      "alpaca": 35.56,
+      "splits": {
+        "twelve": 36.97999954,
+        "yahooReference": 36.97999954223633,
+        "relativeDifference": -6.047395917363474e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 34.13994782,
+        "yahooReference": 34.125124818828475,
+        "relativeDifference": 0.0004343720719037769,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "LUV",
+      "date": "2022-03-08",
+      "field": "h",
+      "yahoo": 37.42030235483364,
+      "alpaca": 35.95,
+      "splits": {
+        "twelve": 40.75999832,
+        "yahooReference": 40.7599983215332,
+        "relativeDifference": -3.7615355275022466e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 37.43754707,
+        "yahooReference": 37.42030235483364,
+        "relativeDifference": 0.0004608384775419694,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "SHOP",
+      "date": "2022-01-24",
+      "field": "l",
+      "yahoo": 78,
+      "alpaca": 81,
+      "splits": {
+        "twelve": 78,
+        "yahooReference": 78,
+        "relativeDifference": 0.0,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 78,
+        "yahooReference": 78,
+        "relativeDifference": 0.0,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "GM",
+      "date": "2022-03-08",
+      "field": "h",
+      "yahoo": 40.5536659421511,
+      "alpaca": 39.14,
+      "splits": {
+        "twelve": 42.31000137,
+        "yahooReference": 42.310001373291016,
+        "relativeDifference": -7.778333532826309e-11,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "NOW",
+      "date": "2022-03-08",
+      "field": "h",
+      "yahoo": 107.18000030517578,
+      "alpaca": 103.64,
+      "splits": {
+        "twelve": 107.18000031,
+        "yahooReference": 107.18000030517578,
+        "relativeDifference": 4.501043981974817e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 107.18000031,
+        "yahooReference": 107.18000030517578,
+        "relativeDifference": 4.501043981974817e-11,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "BAC",
+      "date": "2022-03-08",
+      "field": "h",
+      "yahoo": 35.431727162351386,
+      "alpaca": 34.48,
+      "splits": {
+        "twelve": 39.65999985,
+        "yahooReference": 39.65999984741211,
+        "relativeDifference": 6.52518039601091e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 35.45716838,
+        "yahooReference": 35.431727162351386,
+        "relativeDifference": 0.0007180349276241227,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "LUV",
+      "date": "2022-03-08",
+      "field": "l",
+      "yahoo": 33.8306707914727,
+      "alpaca": 34.73,
+      "splits": {
+        "twelve": 36.84999847,
+        "yahooReference": 36.849998474121094,
+        "relativeDifference": -1.1183420856042403e-10,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 33.84626127,
+        "yahooReference": 33.8306707914727,
+        "relativeDifference": 0.0004608385870736864,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "SHOP",
+      "date": "2022-01-24",
+      "field": "h",
+      "yahoo": 96.39900207519531,
+      "alpaca": 93.85,
+      "splits": {
+        "twelve": 96.39900208,
+        "yahooReference": 96.39900207519531,
+        "relativeDifference": 4.9841686333707e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 96.39900208,
+        "yahooReference": 96.39900207519531,
+        "relativeDifference": 4.9841686333707e-11,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "FDX",
+      "date": "2022-03-08",
+      "field": "h",
+      "yahoo": 153.65648329709455,
+      "alpaca": 149.61,
+      "splits": {
+        "twelve": 168.71072388,
+        "yahooReference": 168.71072387695312,
+        "relativeDifference": 1.8059775896972496e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 150.61339759,
+        "yahooReference": 153.65648329709455,
+        "relativeDifference": -0.019804473210614515,
+        "withinHalfPercent": false
+      }
+    },
+    {
+      "symbol": "BAC",
+      "date": "2020-03-16",
+      "field": "c",
+      "yahoo": 17.47388458251953,
+      "alpaca": 17.02,
+      "splits": {
+        "twelve": 20.44000053,
+        "yahooReference": 20.440000534057617,
+        "relativeDifference": -1.9851364996270604e-10,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 17.49078434,
+        "yahooReference": 17.47388458251953,
+        "relativeDifference": 0.0009671437052627407,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "SHOP",
+      "date": "2022-01-26",
+      "field": "l",
+      "yahoo": 85.2300033569336,
+      "alpaca": 86.89,
+      "splits": {
+        "twelve": 85.23000336,
+        "yahooReference": 85.2300033569336,
+        "relativeDifference": 3.597788733600282e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 85.23000336,
+        "yahooReference": 85.2300033569336,
+        "relativeDifference": 3.597788733600282e-11,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "FDX",
+      "date": "2022-03-08",
+      "field": "l",
+      "yahoo": 146.06795601232926,
+      "alpaca": 148.87,
+      "splits": {
+        "twelve": 160.37872314,
+        "yahooReference": 160.37872314453125,
+        "relativeDifference": -2.8253399619870834e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 143.17515709,
+        "yahooReference": 146.06795601232926,
+        "relativeDifference": -0.01980447321440637,
+        "withinHalfPercent": false
+      }
+    },
+    {
+      "symbol": "BAC",
+      "date": "2020-03-12",
+      "field": "c",
+      "yahoo": 17.533729553222656,
+      "alpaca": 17.85,
+      "splits": {
+        "twelve": 20.51000023,
+        "yahooReference": 20.510000228881836,
+        "relativeDifference": 5.451794571342816e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 17.55068402,
+        "yahooReference": 17.533729553222656,
+        "relativeDifference": 0.0009669629456687812,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "DDOG",
+      "date": "2020-03-13",
+      "field": "o",
+      "yahoo": 36,
+      "alpaca": 36.6,
+      "splits": {
+        "twelve": 36,
+        "yahooReference": 36,
+        "relativeDifference": 0.0,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 36,
+        "yahooReference": 36,
+        "relativeDifference": 0.0,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "GM",
+      "date": "2021-10-25",
+      "field": "l",
+      "yahoo": 54.48050436259732,
+      "alpaca": 55.36,
+      "splits": {
+        "twelve": 56.84000015,
+        "yahooReference": 56.84000015258789,
+        "relativeDifference": -4.552935806145797e-11,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "NOW",
+      "date": "2022-01-24",
+      "field": "l",
+      "yahoo": 96.88600158691406,
+      "alpaca": 98.33,
+      "splits": {
+        "twelve": 96.88600159,
+        "yahooReference": 96.88600158691406,
+        "relativeDifference": 3.1851188353471116e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 96.88600159,
+        "yahooReference": 96.88600158691406,
+        "relativeDifference": 3.1851188353471116e-11,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "NOW",
+      "date": "2023-01-24",
+      "field": "o",
+      "yahoo": 88,
+      "alpaca": 89.2,
+      "splits": {
+        "twelve": 88,
+        "yahooReference": 88,
+        "relativeDifference": 0.0,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 88,
+        "yahooReference": 88,
+        "relativeDifference": 0.0,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "BAC",
+      "date": "2022-03-08",
+      "field": "o",
+      "yahoo": 34.90462871271274,
+      "alpaca": 34.48,
+      "splits": {
+        "twelve": 39.06999969,
+        "yahooReference": 39.06999969482422,
+        "relativeDifference": -1.2347622924124835e-10,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 34.92969146,
+        "yahooReference": 34.90462871271274,
+        "relativeDifference": 0.000718035063301814,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "GM",
+      "date": "2021-04-19",
+      "field": "l",
+      "yahoo": 54.85431765478636,
+      "alpaca": 55.48,
+      "splits": {
+        "twelve": 57.22999954,
+        "yahooReference": 57.22999954223633,
+        "relativeDifference": -3.9076075708521785e-11,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "BAC",
+      "date": "2022-03-08",
+      "field": "l",
+      "yahoo": 34.10057907495859,
+      "alpaca": 34.48,
+      "splits": {
+        "twelve": 38.16999817,
+        "yahooReference": 38.16999816894531,
+        "relativeDifference": 2.7631230636870896e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 34.12506449,
+        "yahooReference": 34.10057907495859,
+        "relativeDifference": 0.0007180351684816788,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "NOW",
+      "date": "2022-03-08",
+      "field": "l",
+      "yahoo": 100.89199829101562,
+      "alpaca": 102,
+      "splits": {
+        "twelve": 100.89199829,
+        "yahooReference": 100.89199829101562,
+        "relativeDifference": -1.0066392164276294e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 100.89199829,
+        "yahooReference": 100.89199829101562,
+        "relativeDifference": -1.0066392164276294e-11,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "LUV",
+      "date": "2021-04-19",
+      "field": "l",
+      "yahoo": 56.35080800402056,
+      "alpaca": 56.95,
+      "splits": {
+        "twelve": 61.38000107,
+        "yahooReference": 61.380001068115234,
+        "relativeDifference": 3.070654841508258e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 56.37676089,
+        "yahooReference": 56.35080800402056,
+        "relativeDifference": 0.000460559251920456,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "SHOP",
+      "date": "2021-04-19",
+      "field": "h",
+      "yahoo": 120.23400115966797,
+      "alpaca": 119.2,
+      "splits": {
+        "twelve": 120.23400116,
+        "yahooReference": 120.23400115966797,
+        "relativeDifference": 2.7615687514526144e-12,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 120.23400116,
+        "yahooReference": 120.23400115966797,
+        "relativeDifference": 2.7615687514526144e-12,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "BAC",
+      "date": "2022-01-24",
+      "field": "l",
+      "yahoo": 37.86422476524368,
+      "alpaca": 38.18,
+      "splits": {
+        "twelve": 42.59000015,
+        "yahooReference": 42.59000015258789,
+        "relativeDifference": -6.07628392046422e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 37.89230262,
+        "yahooReference": 37.86422476524368,
+        "relativeDifference": 0.0007415404628090538,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "C",
+      "date": "2022-03-08",
+      "field": "h",
+      "yahoo": 49.03317944218581,
+      "alpaca": 48.63,
+      "splits": {
+        "twelve": 57.29000092,
+        "yahooReference": 57.290000915527344,
+        "relativeDifference": 7.807043900243116e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 49.10351497,
+        "yahooReference": 49.03317944218581,
+        "relativeDifference": 0.0014344476253496108,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "LUV",
+      "date": "2020-05-11",
+      "field": "o",
+      "yahoo": 24.438879693968445,
+      "alpaca": 24.63,
+      "splits": {
+        "twelve": 26.62000084,
+        "yahooReference": 26.6200008392334,
+        "relativeDifference": 2.879785299114701e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 24.45013679,
+        "yahooReference": 24.438879693968445,
+        "relativeDifference": 0.00046062242510780393,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "LUV",
+      "date": "2021-10-25",
+      "field": "h",
+      "yahoo": 43.95693365866332,
+      "alpaca": 43.63,
+      "splits": {
+        "twelve": 47.88000107,
+        "yahooReference": 47.880001068115234,
+        "relativeDifference": 3.9364289605714475e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 43.97718026,
+        "yahooReference": 43.95693365866332,
+        "relativeDifference": 0.0004606008575098741,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "SHOP",
+      "date": "2022-03-08",
+      "field": "l",
+      "yahoo": 51.119998931884766,
+      "alpaca": 51.5,
+      "splits": {
+        "twelve": 51.11999893,
+        "yahooReference": 51.119998931884766,
+        "relativeDifference": -3.6869396424776824e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 51.11999893,
+        "yahooReference": 51.119998931884766,
+        "relativeDifference": -3.6869396424776824e-11,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "TSLA",
+      "date": "2023-10-27",
+      "field": "h",
+      "yahoo": 212.41000366210938,
+      "alpaca": 213.92,
+      "splits": {
+        "twelve": 212.41000366,
+        "yahooReference": 212.41000366210938,
+        "relativeDifference": -9.9307229106671e-12,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 212.41000366,
+        "yahooReference": 212.41000366210938,
+        "relativeDifference": -9.9307229106671e-12,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "SHOP",
+      "date": "2021-03-29",
+      "field": "o",
+      "yahoo": 105.36000061035156,
+      "alpaca": 106.1,
+      "splits": {
+        "twelve": 105.36000061,
+        "yahooReference": 105.36000061035156,
+        "relativeDifference": -3.336775300510908e-12,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 105.36000061,
+        "yahooReference": 105.36000061035156,
+        "relativeDifference": -3.336775300510908e-12,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "NOW",
+      "date": "2020-03-16",
+      "field": "o",
+      "yahoo": 50.20199966430664,
+      "alpaca": 50.55,
+      "splits": {
+        "twelve": 50.20199966,
+        "yahooReference": 50.20199966430664,
+        "relativeDifference": -8.578626697897107e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 50.20199966,
+        "yahooReference": 50.20199966430664,
+        "relativeDifference": -8.578626697897107e-11,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "BAC",
+      "date": "2021-10-25",
+      "field": "l",
+      "yahoo": 41.76169624740848,
+      "alpaca": 42.04,
+      "splits": {
+        "twelve": 47.20000076,
+        "yahooReference": 47.20000076293945,
+        "relativeDifference": -6.227651727641614e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 41.7936204,
+        "yahooReference": 41.76169624740848,
+        "relativeDifference": 0.0007644362049470388,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "NOW",
+      "date": "2021-10-25",
+      "field": "h",
+      "yahoo": 138.69400024414062,
+      "alpaca": 137.77,
+      "splits": {
+        "twelve": 138.69400024,
+        "yahooReference": 138.69400024414062,
+        "relativeDifference": -2.985434122138031e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 138.69400024,
+        "yahooReference": 138.69400024414062,
+        "relativeDifference": -2.985434122138031e-11,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "DDOG",
+      "date": "2020-12-10",
+      "field": "c",
+      "yahoo": 101.52999877929688,
+      "alpaca": 100.88,
+      "splits": {
+        "twelve": 101.52999878,
+        "yahooReference": 101.52999877929688,
+        "relativeDifference": 6.9253491830068015e-12,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 101.52999878,
+        "yahooReference": 101.52999877929688,
+        "relativeDifference": 6.9253491830068015e-12,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "NOW",
+      "date": "2021-04-19",
+      "field": "h",
+      "yahoo": 111.3759994506836,
+      "alpaca": 110.68,
+      "splits": {
+        "twelve": 111.37599945,
+        "yahooReference": 111.3759994506836,
+        "relativeDifference": -6.1377569693377154e-12,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 111.37599945,
+        "yahooReference": 111.3759994506836,
+        "relativeDifference": -6.1377569693377154e-12,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "NOW",
+      "date": "2021-04-19",
+      "field": "l",
+      "yahoo": 109.19999694824219,
+      "alpaca": 109.87,
+      "splits": {
+        "twelve": 109.19999695,
+        "yahooReference": 109.19999694824219,
+        "relativeDifference": 1.6097123634040145e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 109.19999695,
+        "yahooReference": 109.19999694824219,
+        "relativeDifference": 1.6097123634040145e-11,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "GM",
+      "date": "2022-03-08",
+      "field": "l",
+      "yahoo": 38.30121487406414,
+      "alpaca": 38.53,
+      "splits": {
+        "twelve": 39.95500183,
+        "yahooReference": 39.959999084472656,
+        "relativeDifference": -0.00012505642109983395,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "LUV",
+      "date": "2021-10-25",
+      "field": "l",
+      "yahoo": 43.341828560727926,
+      "alpaca": 43.59,
+      "splits": {
+        "twelve": 47.20999908,
+        "yahooReference": 47.209999084472656,
+        "relativeDifference": -9.473954953875818e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 43.36179185,
+        "yahooReference": 43.341828560727926,
+        "relativeDifference": 0.00046060099296707513,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "SHOP",
+      "date": "2020-03-26",
+      "field": "o",
+      "yahoo": 45.439998626708984,
+      "alpaca": 45.7,
+      "splits": {
+        "twelve": 45.43999863,
+        "yahooReference": 45.439998626708984,
+        "relativeDifference": 7.242539901142209e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 45.43999863,
+        "yahooReference": 45.439998626708984,
+        "relativeDifference": 7.242539901142209e-11,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "FDX",
+      "date": "2020-11-06",
+      "field": "o",
+      "yahoo": 201.04218294007507,
+      "alpaca": 199.9,
+      "splits": {
+        "twelve": 224.43191528,
+        "yahooReference": 224.43191528320312,
+        "relativeDifference": -1.4272139026161312e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 196.286969,
+        "yahooReference": 201.04218294007507,
+        "relativeDifference": -0.023652816889142447,
+        "withinHalfPercent": false
+      }
+    },
+    {
+      "symbol": "MU",
+      "date": "2020-03-12",
+      "field": "c",
+      "yahoo": 37.845062255859375,
+      "alpaca": 37.64,
+      "splits": {
+        "twelve": 38.81000137,
+        "yahooReference": 38.810001373291016,
+        "relativeDifference": -8.479805746475222e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 37.84860109,
+        "yahooReference": 37.845062255859375,
+        "relativeDifference": 9.350847718803124e-05,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "GM",
+      "date": "2020-04-07",
+      "field": "o",
+      "yahoo": 20.38705613889531,
+      "alpaca": 20.28,
+      "splits": {
+        "twelve": 21.27000046,
+        "yahooReference": 21.270000457763672,
+        "relativeDifference": 1.0513989678884172e-10,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "SHOP",
+      "date": "2020-10-20",
+      "field": "o",
+      "yahoo": 106.80000305175781,
+      "alpaca": 107.36,
+      "splits": {
+        "twelve": 106.80000305,
+        "yahooReference": 106.80000305175781,
+        "relativeDifference": -1.6458945317765483e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 106.80000305,
+        "yahooReference": 106.80000305175781,
+        "relativeDifference": -1.6458945317765483e-11,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "DDOG",
+      "date": "2021-08-02",
+      "field": "o",
+      "yahoo": 110.8499984741211,
+      "alpaca": 111.43,
+      "splits": {
+        "twelve": 110.84999847,
+        "yahooReference": 110.8499984741211,
+        "relativeDifference": -3.717715024720292e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 110.84999847,
+        "yahooReference": 110.8499984741211,
+        "relativeDifference": -3.717715024720292e-11,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "NOW",
+      "date": "2020-04-09",
+      "field": "o",
+      "yahoo": 55.215999603271484,
+      "alpaca": 55.5,
+      "splits": {
+        "twelve": 55.2159996,
+        "yahooReference": 55.215999603271484,
+        "relativeDifference": -5.924882806596088e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 55.2159996,
+        "yahooReference": 55.215999603271484,
+        "relativeDifference": -5.924882806596088e-11,
+        "withinHalfPercent": true
+      }
+    },
+    {
+      "symbol": "LUV",
+      "date": "2021-02-26",
+      "field": "o",
+      "yahoo": 52.715267422465864,
+      "alpaca": 52.45,
+      "splits": {
+        "twelve": 57.41999817,
+        "yahooReference": 57.41999816894531,
+        "relativeDifference": 1.836797380860844e-11,
+        "withinHalfPercent": true
+      },
+      "all": {
+        "twelve": 52.73954791,
+        "yahooReference": 52.715267422465864,
+        "relativeDifference": 0.000460596876793673,
+        "withinHalfPercent": true
+      }
+    }
+  ],
+  "caveats": [
+    "Same upstream data lineage has not been excluded; agreement does not establish independent provenance.",
+    "Splits-only and Yahoo quote may differ for spin-offs; all adjustments require corporate-action verification.",
+    "Observed endpoint excludes end date in fetched range; these are comparison samples, not an approved complete dataset.",
+    "0.5 percent is diagnostic triage only, not a locked acceptance threshold."
+  ],
+  "maxSplitRelativeDifference": 0.00012505642109983395,
+  "deploymentVerified": {
+    "version": "0.58.8 + evidence-sync-v0235 + alpaca-history-v02 + twelve-history-v01",
+    "twelveDataConfigured": true,
+    "tradingEnabled": false
+  },
+  "snapshotHashes": {
+    "BAC_all.json": "88527a05cf1fab5bbe2356cbb6cf2b0940632cdfc1c49a0893ef6675635e593c",
+    "BAC_splits.json": "c571f4aa9554fcc63ed99713699f1ef76e7cd98fbb8c3d6808e1c733d58df77b",
+    "C_all.json": "7f35e28b8d108c9b599d0b7d745556f9a4a91f1d5672763824ddb27d6743376e",
+    "C_splits.json": "c5de6c94f058e628d98f7653dcebf615c36e666cc542d327e1d1da8cf053bd4c",
+    "DDOG_all.json": "40ebd88fb2b6e5e99a5ece5ea4b7e188506d182c2cedd55eb1b2e89349b28d02",
+    "DDOG_splits.json": "6240897520d0d8a28a1174562fcd404edcb892e965f401f9dfb0017d0812543e",
+    "FDX_all.json": "49a336124ee051a8b2ad5cdebc9ee0ba3daf4167944815e9fec7b3b2c483e490",
+    "FDX_splits.json": "b8e50f0f85b523f553868218f3791f5cda25573e31e16f7d71bacf295c80a11a",
+    "GM_all.json": "e574f9eee0f9231fc15501b96cb3b1d5e2da01a098d57c063ef118a7a67e70cd",
+    "GM_checkpoint_2020-03-09.json": "cd489a51795d7a5d17c94382e8d4fd82e224467eeb611979892a34800cdae96f",
+    "GM_checkpoint_2020-04-07.json": "0411e4a79586015a8d091d99c927554d5597baf907a2e81158ba00dc7b93b607",
+    "GM_checkpoint_2021-04-19.json": "a5556041d360a9b3667c5b4af883303d6857a9e12890c5d60d4d5c159d65846b",
+    "GM_checkpoint_2021-10-25.json": "a38e069835ac1db627d08247466fe3974adc0ea37f6d946a80810d3205e4ec06",
+    "GM_checkpoint_2022-03-08.json": "158a885947f44a92cfe1d2c1024e1ca715452628f8bf398c547a2304259dc8f5",
+    "GM_splits.json": "e574f9eee0f9231fc15501b96cb3b1d5e2da01a098d57c063ef118a7a67e70cd",
+    "LUV_all.json": "36c72985ff2e9176aa944ac2f42ca4407c2ef5b700f892048981c4468c945389",
+    "LUV_splits.json": "51f665d2ce567835fb6734620a01e78e401e29b7f8dd9ad4a25a4cf1e27c1250",
+    "MU_all.json": "d7daaa6d7317bc6312e5dbfdb540b6487121166d2fcdc1ff03dd42edd2033191",
+    "MU_splits.json": "d62bedd03fa44fb0c49b2bd8d35191c0e79bf2aa7dafcdbad89a0ab7e1ef86f4",
+    "NOW_all.json": "ecae37482f11e3eeb302f4ea96432ee5b404b5e4defe849c184970e49a916331",
+    "NOW_splits.json": "4e5ee32005c53507dfa6f9f8caf7c51f9475e16f93b72204b5cfa225ec8657ed",
+    "NVDA_all.json": "068e9a8574792b508d3c29002def0ce5a5554ac79a003178c7536bb263a0e31c",
+    "NVDA_splits.json": "9520d376cdf5df9c7d7ea57feccd2b38f6e85d7808303683428438593f9ca3bd",
+    "SHOP_all.json": "6d9b568a7a8b01483e2d41b0878744899b312e74ed5c34278c447e0d78cb09b9",
+    "SHOP_splits.json": "c30ba608990c7a8195f58fcd3fd1cf6b5a37669eb687a5ed1d73a2854b377bea",
+    "TSLA_all.json": "5867b20c327770e371330046e144b43708b9aee4302851dac5f326a2bba0b66d",
+    "TSLA_splits.json": "ebee030ad15e66da4dcea1169721955d886b24c2cc3daa1f5dc28a3ffbc439b6"
+  }
+}

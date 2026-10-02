@@ -1,0 +1,222 @@
+{
+  "schema": "LINA-GEN9-DATA-AUDIT-1",
+  "status": "BLOCKED_ADJUSTMENT_BASIS_MISMATCH",
+  "sourceFileSha256": "cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c",
+  "researchStarted": false,
+  "tradeEnabled": false,
+  "calendar": {
+    "scope": "Daily session dates, early-close days included; no intraday verification",
+    "expectedCount": 1258,
+    "holidays": [
+      "2020-01-01",
+      "2020-01-20",
+      "2020-02-17",
+      "2020-04-10",
+      "2020-05-25",
+      "2020-07-03",
+      "2020-09-07",
+      "2020-11-26",
+      "2020-12-25",
+      "2021-01-01",
+      "2021-01-18",
+      "2021-02-15",
+      "2021-04-02",
+      "2021-05-31",
+      "2021-07-05",
+      "2021-09-06",
+      "2021-11-25",
+      "2021-12-24",
+      "2022-01-17",
+      "2022-02-21",
+      "2022-04-15",
+      "2022-05-30",
+      "2022-06-20",
+      "2022-07-04",
+      "2022-09-05",
+      "2022-11-24",
+      "2022-12-26",
+      "2023-01-02",
+      "2023-01-16",
+      "2023-02-20",
+      "2023-04-07",
+      "2023-05-29",
+      "2023-06-19",
+      "2023-07-04",
+      "2023-09-04",
+      "2023-11-23",
+      "2023-12-25",
+      "2024-01-01",
+      "2024-01-15",
+      "2024-02-19",
+      "2024-03-29",
+      "2024-05-27",
+      "2024-06-19",
+      "2024-07-04",
+      "2024-09-02",
+      "2024-11-28",
+      "2024-12-25"
+    ],
+    "sources": [
+      "https://ir.theice.com/press/news-details/2019/NYSE-Group-Announces-2020-2021-and-2022-Holiday-and-Early-Closings-Calendar/default.aspx",
+      "https://ir.theice.com/press/news-details/2021/NYSE-Group-Announces-2022-2023-and-2024-Holiday-and-Early-Closings-Calendar/default.aspx"
+    ]
+  },
+  "symbols": {
+    "AMD": {
+      "rows": 1258,
+      "missingSessions": [],
+      "unexpectedSessions": [],
+      "dividendCount": 0,
+      "maxDividendFactorError": 0,
+      "splitCount": 0
+    },
+    "SHOP": {
+      "rows": 1258,
+      "missingSessions": [],
+      "unexpectedSessions": [],
+      "dividendCount": 0,
+      "maxDividendFactorError": 0,
+      "splitCount": 1
+    },
+    "ADBE": {
+      "rows": 1258,
+      "missingSessions": [],
+      "unexpectedSessions": [],
+      "dividendCount": 0,
+      "maxDividendFactorError": 0,
+      "splitCount": 0
+    },
+    "MU": {
+      "rows": 1258,
+      "missingSessions": [],
+      "unexpectedSessions": [],
+      "dividendCount": 14,
+      "maxDividendFactorError": 3.8012827774380753e-07,
+      "splitCount": 0
+    },
+    "FDX": {
+      "rows": 1258,
+      "missingSessions": [],
+      "unexpectedSessions": [],
+      "dividendCount": 20,
+      "maxDividendFactorError": 2.7918935896487085e-07,
+      "splitCount": 0
+    },
+    "TSLA": {
+      "rows": 1258,
+      "missingSessions": [],
+      "unexpectedSessions": [],
+      "dividendCount": 0,
+      "maxDividendFactorError": 0,
+      "splitCount": 2
+    },
+    "LUV": {
+      "rows": 1258,
+      "missingSessions": [],
+      "unexpectedSessions": [],
+      "dividendCount": 10,
+      "maxDividendFactorError": 1.0955984730554036e-07,
+      "splitCount": 0
+    },
+    "NFLX": {
+      "rows": 1258,
+      "missingSessions": [],
+      "unexpectedSessions": [],
+      "dividendCount": 0,
+      "maxDividendFactorError": 0,
+      "splitCount": 0
+    },
+    "C": {
+      "rows": 1258,
+      "missingSessions": [],
+      "unexpectedSessions": [],
+      "dividendCount": 20,
+      "maxDividendFactorError": 4.217157172359265e-07,
+      "splitCount": 0
+    },
+    "NOW": {
+      "rows": 1258,
+      "missingSessions": [],
+      "unexpectedSessions": [],
+      "dividendCount": 0,
+      "maxDividendFactorError": 0,
+      "splitCount": 0
+    },
+    "QCOM": {
+      "rows": 1258,
+      "missingSessions": [],
+      "unexpectedSessions": [],
+      "dividendCount": 20,
+      "maxDividendFactorError": 3.7243675199416515e-07,
+      "splitCount": 0
+    },
+    "BAC": {
+      "rows": 1258,
+      "missingSessions": [],
+      "unexpectedSessions": [],
+      "dividendCount": 20,
+      "maxDividendFactorError": 4.216925357791723e-07,
+      "splitCount": 0
+    },
+    "GM": {
+      "rows": 1258,
+      "missingSessions": [],
+      "unexpectedSessions": [],
+      "dividendCount": 11,
+      "maxDividendFactorError": 1.8980213978281313e-07,
+      "splitCount": 0
+    },
+    "DDOG": {
+      "rows": 1258,
+      "missingSessions": [],
+      "unexpectedSessions": [],
+      "dividendCount": 0,
+      "maxDividendFactorError": 0,
+      "splitCount": 0
+    },
+    "PYPL": {
+      "rows": 1258,
+      "missingSessions": [],
+      "unexpectedSessions": [],
+      "dividendCount": 0,
+      "maxDividendFactorError": 0,
+      "splitCount": 0
+    },
+    "NVDA": {
+      "rows": 1258,
+      "missingSessions": [],
+      "unexpectedSessions": [],
+      "dividendCount": 20,
+      "maxDividendFactorError": 2.8826504172574374e-07,
+      "splitCount": 2
+    }
+  },
+  "limitations": [
+    "Provider quote OHLC must not be called unadjusted exchange prices.",
+    "Dividend arithmetic verifies internal consistency, not completeness against every issuer.",
+    "Post-2024 adjustment basis remains unrecorded; no research manifest approved.",
+    "PYPL later dividends plausibly explain constant factor; exact cumulative factor not independently reproduced."
+  ],
+  "issuerChecks": {
+    "FDX": {
+      "eventsChecked": 20,
+      "datesMatch": true,
+      "nominalAmountsMatch": false,
+      "providerToIssuerRatioMin": 0.8058013333333333,
+      "providerToIssuerRatioMax": 0.8058017391304348,
+      "example": {
+        "date": "2024-12-09",
+        "providerAmount": 1.112006,
+        "issuerNominalUSD": 1.38
+      },
+      "source": "https://investors.fedex.com/stock-information/dividends/default.aspx",
+      "laterCorporateAction": "FedEx Freight spin-off completed 2026-06-01; exact linkage to provider factor not established"
+    },
+    "PYPL": {
+      "firstDividendProgramAnnounced": "2025-10-28",
+      "source": "https://www.sec.gov/Archives/edgar/data/1633917/000163391725000194/pypl-20251028.htm",
+      "assessment": "No dividends within requested period is consistent with issuer; exact later adjustment factor unverified"
+    }
+  },
+  "decision": "Do not set corporateActionsVerified=true or create approved research manifest. Preserve received dataset unchanged. Require documented common price/share basis as of 2024-12-31 and issuer event reconciliation."
+}

@@ -1,0 +1,1171 @@
+{
+  "schema": "LINA-CORPORATE-ACTION-EVIDENCE-1",
+  "inputFileSHA256": "cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c",
+  "range": [
+    "2020-01-01",
+    "2024-12-31"
+  ],
+  "status": "PARTIAL_EXTERNAL_VERIFICATION",
+  "newExactExDateAndAmountMatches": 31,
+  "newRecordDateAndAmountCheckpointMatches": 8,
+  "completeDividendTableComparisons": [
+    {
+      "symbol": "GM",
+      "status": "MATCHED_FULL_DIVIDEND_TABLE_2020_2024",
+      "source": "https://investor.gm.com/shareholders/stock-information",
+      "checks": [
+        {
+          "exDate": "2020-03-05",
+          "expectedAmount": 0.38,
+          "actualAmount": 0.38,
+          "matched": true
+        },
+        {
+          "exDate": "2022-08-30",
+          "expectedAmount": 0.09,
+          "actualAmount": 0.09,
+          "matched": true
+        },
+        {
+          "exDate": "2022-12-01",
+          "expectedAmount": 0.09,
+          "actualAmount": 0.09,
+          "matched": true
+        },
+        {
+          "exDate": "2023-03-02",
+          "expectedAmount": 0.09,
+          "actualAmount": 0.09,
+          "matched": true
+        },
+        {
+          "exDate": "2023-06-01",
+          "expectedAmount": 0.09,
+          "actualAmount": 0.09,
+          "matched": true
+        },
+        {
+          "exDate": "2023-08-31",
+          "expectedAmount": 0.09,
+          "actualAmount": 0.09,
+          "matched": true
+        },
+        {
+          "exDate": "2023-11-30",
+          "expectedAmount": 0.09,
+          "actualAmount": 0.09,
+          "matched": true
+        },
+        {
+          "exDate": "2024-02-29",
+          "expectedAmount": 0.12,
+          "actualAmount": 0.12,
+          "matched": true
+        },
+        {
+          "exDate": "2024-06-07",
+          "expectedAmount": 0.12,
+          "actualAmount": 0.12,
+          "matched": true
+        },
+        {
+          "exDate": "2024-09-06",
+          "expectedAmount": 0.12,
+          "actualAmount": 0.12,
+          "matched": true
+        },
+        {
+          "exDate": "2024-12-06",
+          "expectedAmount": 0.12,
+          "actualAmount": 0.12,
+          "matched": true
+        }
+      ],
+      "unexpectedDates": [],
+      "note": "GM issuer-hosted table is supplied by Mergent and duplicates the August 2022 event under two declaration dates; deduplicated by ex-date and amount."
+    },
+    {
+      "symbol": "C",
+      "status": "MATCHED_FULL_DIVIDEND_TABLE_2020_2024",
+      "source": "https://www.citigroup.com/global/investors/stockholder-services/dividend-history",
+      "checks": [
+        {
+          "exDate": "2020-01-31",
+          "expectedAmount": 0.51,
+          "actualAmount": 0.51,
+          "matched": true
+        },
+        {
+          "exDate": "2020-05-01",
+          "expectedAmount": 0.51,
+          "actualAmount": 0.51,
+          "matched": true
+        },
+        {
+          "exDate": "2020-07-31",
+          "expectedAmount": 0.51,
+          "actualAmount": 0.51,
+          "matched": true
+        },
+        {
+          "exDate": "2020-10-30",
+          "expectedAmount": 0.51,
+          "actualAmount": 0.51,
+          "matched": true
+        },
+        {
+          "exDate": "2021-01-29",
+          "expectedAmount": 0.51,
+          "actualAmount": 0.51,
+          "matched": true
+        },
+        {
+          "exDate": "2021-04-30",
+          "expectedAmount": 0.51,
+          "actualAmount": 0.51,
+          "matched": true
+        },
+        {
+          "exDate": "2021-07-30",
+          "expectedAmount": 0.51,
+          "actualAmount": 0.51,
+          "matched": true
+        },
+        {
+          "exDate": "2021-10-29",
+          "expectedAmount": 0.51,
+          "actualAmount": 0.51,
+          "matched": true
+        },
+        {
+          "exDate": "2022-02-04",
+          "expectedAmount": 0.51,
+          "actualAmount": 0.51,
+          "matched": true
+        },
+        {
+          "exDate": "2022-04-29",
+          "expectedAmount": 0.51,
+          "actualAmount": 0.51,
+          "matched": true
+        },
+        {
+          "exDate": "2022-07-29",
+          "expectedAmount": 0.51,
+          "actualAmount": 0.51,
+          "matched": true
+        },
+        {
+          "exDate": "2022-11-04",
+          "expectedAmount": 0.51,
+          "actualAmount": 0.51,
+          "matched": true
+        },
+        {
+          "exDate": "2023-02-03",
+          "expectedAmount": 0.51,
+          "actualAmount": 0.51,
+          "matched": true
+        },
+        {
+          "exDate": "2023-04-28",
+          "expectedAmount": 0.51,
+          "actualAmount": 0.51,
+          "matched": true
+        },
+        {
+          "exDate": "2023-08-04",
+          "expectedAmount": 0.53,
+          "actualAmount": 0.53,
+          "matched": true
+        },
+        {
+          "exDate": "2023-11-03",
+          "expectedAmount": 0.53,
+          "actualAmount": 0.53,
+          "matched": true
+        },
+        {
+          "exDate": "2024-02-02",
+          "expectedAmount": 0.53,
+          "actualAmount": 0.53,
+          "matched": true
+        },
+        {
+          "exDate": "2024-05-03",
+          "expectedAmount": 0.53,
+          "actualAmount": 0.53,
+          "matched": true
+        },
+        {
+          "exDate": "2024-08-05",
+          "expectedAmount": 0.56,
+          "actualAmount": 0.56,
+          "matched": true
+        },
+        {
+          "exDate": "2024-11-04",
+          "expectedAmount": 0.56,
+          "actualAmount": 0.56,
+          "matched": true
+        }
+      ],
+      "unexpectedDates": [],
+      "note": "Issuer dividend history explicitly gives ex-date."
+    }
+  ],
+  "declarationCheckpoints": [],
+  "settlementRuleSource": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ETA2024-29",
+  "remaining": {
+    "FDX": "Earlier evidence separately stored; historical quote basis remains partially corroborated",
+    "ALL_SYMBOLS_CORPORATE_ACTION_COMPLETENESS": "Reconciled received events and cash-dividend absence evidence do not alone independently establish completeness of all adjustment-relevant corporate actions.",
+    "PRICE_BASIS": "Full independent OHLC adjustment-basis verification remains incomplete, including PYPL nearly constant factor and FDX normalized quote basis.",
+    "AMD ADBE NOW": "Complete historical cash-dividend absence evidence still required; prospective dividend policy alone is insufficient."
+  },
+  "corporateActionsVerified": false,
+  "researchStarted": false,
+  "tradeEnabled": false,
+  "fullDeclarationComparisons": [
+    {
+      "symbol": "MU",
+      "status": "ALL_RECEIVED_DIVIDENDS_RECONCILED_WITH_ISSUER_DECLARATIONS",
+      "count": 14,
+      "checks": [
+        {
+          "recordDate": "2021-10-01",
+          "expectedExDate": "2021-09-30",
+          "actualAmount": 0.1,
+          "expectedAmount": 0.1,
+          "matched": true,
+          "source": "https://investors.micron.com/news/press-release/2021/Micron-Initiates-a-Quarterly-Cash-Dividend-08-02-2021/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2022-01-03",
+          "expectedExDate": "2021-12-31",
+          "actualAmount": 0.1,
+          "expectedAmount": 0.1,
+          "matched": true,
+          "source": "https://investors.micron.com/news/press-release/2021/Micron-Technology-Inc--Reports-Results-for-the-First-Quarter-of-Fiscal-2022-12-20-2021/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2022-04-11",
+          "expectedExDate": "2022-04-08",
+          "actualAmount": 0.1,
+          "expectedAmount": 0.1,
+          "matched": true,
+          "source": "https://investors.micron.com/news/press-release/2022/Micron-Technology-Inc--Reports-Results-for-the-Second-Quarter-of-Fiscal-2022-03-29-2022/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2022-07-11",
+          "expectedExDate": "2022-07-08",
+          "actualAmount": 0.115,
+          "expectedAmount": 0.115,
+          "matched": true,
+          "source": "https://investors.micron.com/news/press-release/2022/Micron-Technology-Inc--Reports-Results-for-the-Third-Quarter-of-Fiscal-2022-06-30-2022/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2022-10-11",
+          "expectedExDate": "2022-10-07",
+          "actualAmount": 0.115,
+          "expectedAmount": 0.115,
+          "matched": true,
+          "source": "https://www.sec.gov/Archives/edgar/data/723125/000072312522000044/a2022q4ex991-pressrelease.htm",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-01-03",
+          "expectedExDate": "2022-12-30",
+          "actualAmount": 0.115,
+          "expectedAmount": 0.115,
+          "matched": true,
+          "source": "https://investors.micron.com/news/press-release/2022/Micron-Technology-Inc--Reports-Results-for-the-First-Quarter-of-Fiscal-2023-12-21-2022/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-04-10",
+          "expectedExDate": "2023-04-06",
+          "actualAmount": 0.115,
+          "expectedAmount": 0.115,
+          "matched": true,
+          "source": "https://investors.micron.com/news/press-release/2023/Micron-Technology-Inc--Reports-Results-for-the-Second-Quarter-of-Fiscal-2023-03-28-2023/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-07-10",
+          "expectedExDate": "2023-07-07",
+          "actualAmount": 0.115,
+          "expectedAmount": 0.115,
+          "matched": true,
+          "source": "https://investors.micron.com/news/press-release/2023/Micron-Technology-Inc--Reports-Results-for-the-Third-Quarter-of-Fiscal-2023-06-28-2023/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-10-10",
+          "expectedExDate": "2023-10-06",
+          "actualAmount": 0.115,
+          "expectedAmount": 0.115,
+          "matched": true,
+          "source": "https://investors.micron.com/news/press-release/2023/Micron-Technology-Inc--Reports-Results-for-the-Fourth-Quarter-and-Full-Year-of-Fiscal-2023-09-27-2023/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-01-02",
+          "expectedExDate": "2023-12-29",
+          "actualAmount": 0.115,
+          "expectedAmount": 0.115,
+          "matched": true,
+          "source": "https://investors.micron.com/news/press-release/2023/Micron-Technology-Inc--Reports-Results-for-the-First-Quarter-of-Fiscal-2024-12-20-2023/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-04-01",
+          "expectedExDate": "2024-03-28",
+          "actualAmount": 0.115,
+          "expectedAmount": 0.115,
+          "matched": true,
+          "source": "https://investors.micron.com/news/press-release/2024/Micron-Technology-Inc--Reports-Results-for-the-Second-Quarter-of-Fiscal-2024-03-20-2024/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-07-08",
+          "expectedExDate": "2024-07-08",
+          "actualAmount": 0.115,
+          "expectedAmount": 0.115,
+          "matched": true,
+          "source": "https://investors.micron.com/news/press-release/2024/Micron-Technology-Inc--Reports-Results-for-the-Third-Quarter-of-Fiscal-2024-06-26-2024/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-10-07",
+          "expectedExDate": "2024-10-07",
+          "actualAmount": 0.115,
+          "expectedAmount": 0.115,
+          "matched": true,
+          "source": "https://investors.micron.com/news/press-release/2024/Micron-Technology-Inc--Reports-Results-for-the-Fourth-Quarter-and-Full-Year-of-Fiscal-2024-09-25-2024/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-12-30",
+          "expectedExDate": "2024-12-30",
+          "actualAmount": 0.115,
+          "expectedAmount": 0.115,
+          "matched": true,
+          "source": "https://investors.micron.com/news/press-release/2024/Micron-Technology-Inc--Reports-Results-for-the-First-Quarter-of-Fiscal-2025-12-18-2024/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        }
+      ],
+      "scope": "All received ordinary cash dividends reconciled. Does not independently exclude every other corporate action.",
+      "suspensionEvidence": "Initial program evidence included in first event."
+    },
+    {
+      "symbol": "LUV",
+      "status": "ALL_RECEIVED_DIVIDENDS_RECONCILED_WITH_ISSUER_DECLARATIONS",
+      "count": 10,
+      "checks": [
+        {
+          "recordDate": "2020-03-04",
+          "expectedExDate": "2020-03-03",
+          "actualAmount": 0.18,
+          "expectedAmount": 0.18,
+          "matched": true,
+          "source": "https://investors.southwest.com/news-events/press-releases/detail/393/southwest-airlines-declares-174th-consecutive-quarterly-dividend",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-01-10",
+          "expectedExDate": "2023-01-09",
+          "actualAmount": 0.18,
+          "expectedAmount": 0.18,
+          "matched": true,
+          "source": "https://investors.southwest.com/news-events/press-releases/detail/194/southwest-airlines-reinstates-quarterly-dividend",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-03-08",
+          "expectedExDate": "2023-03-07",
+          "actualAmount": 0.18,
+          "expectedAmount": 0.18,
+          "matched": true,
+          "source": "https://www.prnewswire.com/news-releases/southwest-airlines-declares-176th-quarterly-dividend-301736422.html",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-06-21",
+          "expectedExDate": "2023-06-20",
+          "actualAmount": 0.18,
+          "expectedAmount": 0.18,
+          "matched": true,
+          "source": "https://www.swamedia.com/vforcesite/SwmDownload?boilerPlateContentKey=MCDIRMIT62VBDE7P3D2QZM7KMXLM&contentKey=MCTJYC25PINBGM7EZCFHXFSUI4VA&siteId=0DMHu000000NZBROA4",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-09-06",
+          "expectedExDate": "2023-09-05",
+          "actualAmount": 0.18,
+          "expectedAmount": 0.18,
+          "matched": true,
+          "source": "https://www.southwestairlinesinvestorrelations.com/news-events/press-releases/detail/137/southwest-airlines-declares-178th-quarterly-dividend",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-12-21",
+          "expectedExDate": "2023-12-20",
+          "actualAmount": 0.18,
+          "expectedAmount": 0.18,
+          "matched": true,
+          "source": "https://www.prnewswire.com/news-releases/southwest-airlines-declares-179th-quarterly-dividend-301991419.html",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-03-06",
+          "expectedExDate": "2024-03-05",
+          "actualAmount": 0.18,
+          "expectedAmount": 0.18,
+          "matched": true,
+          "source": "https://www.prnewswire.com/news-releases/southwest-airlines-declares-180th-quarterly-dividend-302049611.html",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-06-19",
+          "expectedExDate": "2024-06-18",
+          "actualAmount": 0.18,
+          "expectedAmount": 0.18,
+          "matched": true,
+          "source": "https://investors.southwest.com/news-events/press-releases/detail/63/southwest-airlines-declares-181st-quarterly-dividend",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-09-04",
+          "expectedExDate": "2024-09-04",
+          "actualAmount": 0.18,
+          "expectedAmount": 0.18,
+          "matched": true,
+          "source": "https://investors.southwest.com/news-events/press-releases/detail/45/southwest-airlines-declares-182nd-quarterly-dividend",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-12-26",
+          "expectedExDate": "2024-12-26",
+          "actualAmount": 0.18,
+          "expectedAmount": 0.18,
+          "matched": true,
+          "source": "https://investors.southwest.com/news-events/press-releases/detail/15/southwest-airlines-declares-183rd-quarterly-dividend",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        }
+      ],
+      "scope": "All received ordinary cash dividends reconciled. Does not independently exclude every other corporate action.",
+      "suspensionEvidence": "https://investors.southwest.com/news-events/press-releases/detail/194/southwest-airlines-reinstates-quarterly-dividend"
+    },
+    {
+      "symbol": "BAC",
+      "status": "ALL_RECEIVED_DIVIDENDS_RECONCILED_WITH_ISSUER_DECLARATIONS",
+      "count": 20,
+      "checks": [
+        {
+          "recordDate": "2020-03-06",
+          "expectedExDate": "2020-03-05",
+          "expectedAmount": 0.18,
+          "actualAmount": 0.18,
+          "matched": true,
+          "source": "https://investor.bankofamerica.com/regulatory-and-other-filings/annual-reports/content/0000070858-21-000023/0000070858-21-000023.pdf",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2020-06-05",
+          "expectedExDate": "2020-06-04",
+          "expectedAmount": 0.18,
+          "actualAmount": 0.18,
+          "matched": true,
+          "source": "https://investor.bankofamerica.com/regulatory-and-other-filings/annual-reports/content/0000070858-21-000023/0000070858-21-000023.pdf",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2020-09-04",
+          "expectedExDate": "2020-09-03",
+          "expectedAmount": 0.18,
+          "actualAmount": 0.18,
+          "matched": true,
+          "source": "https://investor.bankofamerica.com/regulatory-and-other-filings/annual-reports/content/0000070858-21-000023/0000070858-21-000023.pdf",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2020-12-04",
+          "expectedExDate": "2020-12-03",
+          "expectedAmount": 0.18,
+          "actualAmount": 0.18,
+          "matched": true,
+          "source": "https://investor.bankofamerica.com/regulatory-and-other-filings/annual-reports/content/0000070858-21-000023/0000070858-21-000023.pdf",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2021-03-05",
+          "expectedExDate": "2021-03-04",
+          "expectedAmount": 0.18,
+          "actualAmount": 0.18,
+          "matched": true,
+          "source": "https://investor.bankofamerica.com/regulatory-and-other-filings/annual-reports/content/0000070858-22-000062/0000070858-22-000062.pdf",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2021-06-04",
+          "expectedExDate": "2021-06-03",
+          "expectedAmount": 0.18,
+          "actualAmount": 0.18,
+          "matched": true,
+          "source": "https://investor.bankofamerica.com/regulatory-and-other-filings/annual-reports/content/0000070858-22-000062/0000070858-22-000062.pdf",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2021-09-03",
+          "expectedExDate": "2021-09-02",
+          "expectedAmount": 0.21,
+          "actualAmount": 0.21,
+          "matched": true,
+          "source": "https://investor.bankofamerica.com/regulatory-and-other-filings/annual-reports/content/0000070858-22-000062/0000070858-22-000062.pdf",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2021-12-03",
+          "expectedExDate": "2021-12-02",
+          "expectedAmount": 0.21,
+          "actualAmount": 0.21,
+          "matched": true,
+          "source": "https://investor.bankofamerica.com/regulatory-and-other-filings/annual-reports/content/0000070858-22-000062/0000070858-22-000062.pdf",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2022-03-04",
+          "expectedExDate": "2022-03-03",
+          "expectedAmount": 0.21,
+          "actualAmount": 0.21,
+          "matched": true,
+          "source": "https://newsroom.bankofamerica.com/content/newsroom/press-releases/2022/02/-bank-of-america-declares-first-quarter-2022-stock-dividends.html",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2022-06-03",
+          "expectedExDate": "2022-06-02",
+          "expectedAmount": 0.21,
+          "actualAmount": 0.21,
+          "matched": true,
+          "source": "https://newsroom.bankofamerica.com/content/newsroom/press-releases/2022/04/bank-of-america-declares-second-quarter-2022-stock-dividends.html",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2022-09-02",
+          "expectedExDate": "2022-09-01",
+          "expectedAmount": 0.22,
+          "actualAmount": 0.22,
+          "matched": true,
+          "source": "https://newsroom.bankofamerica.com/content/newsroom/press-releases/2022/07/-bank-of-america-increases-common-stock-dividend.html",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2022-12-02",
+          "expectedExDate": "2022-12-01",
+          "expectedAmount": 0.22,
+          "actualAmount": 0.22,
+          "matched": true,
+          "source": "https://newsroom.bankofamerica.com/content/newsroom/press-releases/2022/10/bank-of-america-declares-fourth-quarter-2022-stock-dividends-.html",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-03-03",
+          "expectedExDate": "2023-03-02",
+          "expectedAmount": 0.22,
+          "actualAmount": 0.22,
+          "matched": true,
+          "source": "https://newsroom.bankofamerica.com/content/newsroom/press-releases/2023/02/-bank-of-america-declares-first-quarter-2023-stock-dividends.html",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-06-02",
+          "expectedExDate": "2023-06-01",
+          "expectedAmount": 0.22,
+          "actualAmount": 0.22,
+          "matched": true,
+          "source": "https://newsroom.bankofamerica.com/content/newsroom/press-releases/2023/04/-bank-of-america-declares-second-quarter-2023-stock-dividends.html",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-09-01",
+          "expectedExDate": "2023-08-31",
+          "expectedAmount": 0.24,
+          "actualAmount": 0.24,
+          "matched": true,
+          "source": "https://newsroom.bankofamerica.com/content/newsroom/press-releases/2023/07/bank-of-america-increases-common-stock-dividend.html",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-12-01",
+          "expectedExDate": "2023-11-30",
+          "expectedAmount": 0.24,
+          "actualAmount": 0.24,
+          "matched": true,
+          "source": "https://newsroom.bankofamerica.com/content/newsroom/press-releases/2023/10/-bank-of-america-declares-fourth-quarter-2023-stock-dividend.html",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-03-01",
+          "expectedExDate": "2024-02-29",
+          "expectedAmount": 0.24,
+          "actualAmount": 0.24,
+          "matched": true,
+          "source": "https://newsroom.bankofamerica.com/content/newsroom/press-releases/2024/01/bank-of-america-declares-first-quarter-2024-stock-dividend.html",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-06-07",
+          "expectedExDate": "2024-06-07",
+          "expectedAmount": 0.24,
+          "actualAmount": 0.24,
+          "matched": true,
+          "source": "https://newsroom.bankofamerica.com/content/newsroom/press-releases/2024/04/bank-of-america-declares-second-quarter-2024-stock-dividends.html",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-09-06",
+          "expectedExDate": "2024-09-06",
+          "expectedAmount": 0.26,
+          "actualAmount": 0.26,
+          "matched": true,
+          "source": "https://newsroom.bankofamerica.com/content/newsroom/press-releases/2024/07/bank-of-america-increases-common-stock-dividend-8--to--0-26-per-.html",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-12-06",
+          "expectedExDate": "2024-12-06",
+          "expectedAmount": 0.26,
+          "actualAmount": 0.26,
+          "matched": true,
+          "source": "https://newsroom.bankofamerica.com/content/newsroom/press-releases/2024/10/bank-of-america-declares-fourth-quarter-2024-stock-dividends.html",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        }
+      ],
+      "scope": "All received ordinary cash dividends reconciled. Does not independently exclude every other corporate action."
+    },
+    {
+      "symbol": "QCOM",
+      "status": "ALL_RECEIVED_DIVIDENDS_RECONCILED_WITH_ISSUER_DECLARATIONS",
+      "count": 20,
+      "checks": [
+        {
+          "recordDate": "2020-03-05",
+          "expectedExDate": "2020-03-04",
+          "expectedAmount": 0.62,
+          "actualAmount": 0.62,
+          "matched": true,
+          "source": "https://investor.qualcomm.com/news-events/press-releases/news-details/2020/Qualcomm-Announces-Quarterly-Cash-Dividend-01-17-2020/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2020-06-04",
+          "expectedExDate": "2020-06-03",
+          "expectedAmount": 0.65,
+          "actualAmount": 0.65,
+          "matched": true,
+          "source": "https://investor.qualcomm.com/news-events/press-releases/news-details/2020/Qualcomm-Announces-Quarterly-Cash-Dividend-04-21-2020/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2020-09-03",
+          "expectedExDate": "2020-09-02",
+          "expectedAmount": 0.65,
+          "actualAmount": 0.65,
+          "matched": true,
+          "source": "https://investor.qualcomm.com/news-events/press-releases/news-details/2020/Qualcomm-Announces-Quarterly-Cash-Dividend-07-15-2020/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2020-12-03",
+          "expectedExDate": "2020-12-02",
+          "expectedAmount": 0.65,
+          "actualAmount": 0.65,
+          "matched": true,
+          "source": "https://investor.qualcomm.com/news-events/press-releases/news-details/2020/Qualcomm-Announces-Quarterly-Cash-Dividend-10-14-2020/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2021-03-04",
+          "expectedExDate": "2021-03-03",
+          "expectedAmount": 0.65,
+          "actualAmount": 0.65,
+          "matched": true,
+          "source": "https://investor.qualcomm.com/news-events/press-releases/news-details/2021/Qualcomm-Announces-Quarterly-Cash-Dividend-01-20-2021/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2021-06-03",
+          "expectedExDate": "2021-06-02",
+          "expectedAmount": 0.68,
+          "actualAmount": 0.68,
+          "matched": true,
+          "source": "https://investor.qualcomm.com/news-events/press-releases/news-details/2021/Qualcomm-Announces-Quarterly-Cash-Dividend-04-14-2021/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2021-09-02",
+          "expectedExDate": "2021-09-01",
+          "expectedAmount": 0.68,
+          "actualAmount": 0.68,
+          "matched": true,
+          "source": "https://investor.qualcomm.com/news-events/press-releases/news-details/2021/Qualcomm-Announces-Quarterly-Cash-Dividend-07-14-2021/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2021-12-02",
+          "expectedExDate": "2021-12-01",
+          "expectedAmount": 0.68,
+          "actualAmount": 0.68,
+          "matched": true,
+          "source": "https://investor.qualcomm.com/news-events/press-releases/news-details/2021/Qualcomm-Announces-Quarterly-Cash-Dividend-10-13-2021/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2022-03-03",
+          "expectedExDate": "2022-03-02",
+          "expectedAmount": 0.68,
+          "actualAmount": 0.68,
+          "matched": true,
+          "source": "https://investor.qualcomm.com/news-events/press-releases/news-details/2022/Qualcomm-Announces-Quarterly-Cash-Dividend-01-18-2022/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2022-06-02",
+          "expectedExDate": "2022-06-01",
+          "expectedAmount": 0.75,
+          "actualAmount": 0.75,
+          "matched": true,
+          "source": "https://investor.qualcomm.com/news-events/press-releases/news-details/2022/Qualcomm-Announces-Quarterly-Cash-Dividend-04-13-2022/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2022-09-01",
+          "expectedExDate": "2022-08-31",
+          "expectedAmount": 0.75,
+          "actualAmount": 0.75,
+          "matched": true,
+          "source": "https://investor.qualcomm.com/news-events/press-releases/news-details/2022/Qualcomm-Announces-Quarterly-Cash-Dividend-07-15-2022/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2022-12-01",
+          "expectedExDate": "2022-11-30",
+          "expectedAmount": 0.75,
+          "actualAmount": 0.75,
+          "matched": true,
+          "source": "https://investor.qualcomm.com/news-events/press-releases/news-details/2022/Qualcomm-Announces-Quarterly-Cash-Dividend-10-14-2022/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-03-02",
+          "expectedExDate": "2023-03-01",
+          "expectedAmount": 0.75,
+          "actualAmount": 0.75,
+          "matched": true,
+          "source": "https://investor.qualcomm.com/news-events/press-releases/news-details/2023/Qualcomm-Announces-Quarterly-Cash-Dividend-01-18-2023/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-06-01",
+          "expectedExDate": "2023-05-31",
+          "expectedAmount": 0.8,
+          "actualAmount": 0.8,
+          "matched": true,
+          "source": "https://investor.qualcomm.com/news-events/press-releases/news-details/2023/Qualcomm-Announces-Quarterly-Cash-Dividend-04-12-2023/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-08-31",
+          "expectedExDate": "2023-08-30",
+          "expectedAmount": 0.8,
+          "actualAmount": 0.8,
+          "matched": true,
+          "source": "https://investor.qualcomm.com/news-events/press-releases/news-details/2023/Qualcomm-Announces-Quarterly-Cash-Dividend-07-14-2023/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-11-30",
+          "expectedExDate": "2023-11-29",
+          "expectedAmount": 0.8,
+          "actualAmount": 0.8,
+          "matched": true,
+          "source": "https://investor.qualcomm.com/news-events/press-releases/news-details/2023/Qualcomm-Announces-Quarterly-Cash-Dividend-10-13-2023/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-02-29",
+          "expectedExDate": "2024-02-28",
+          "expectedAmount": 0.8,
+          "actualAmount": 0.8,
+          "matched": true,
+          "source": "https://investor.qualcomm.com/news-events/press-releases/news-details/2024/Qualcomm-Announces-Quarterly-Cash-Dividend-01-19-2024/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-05-30",
+          "expectedExDate": "2024-05-30",
+          "expectedAmount": 0.85,
+          "actualAmount": 0.85,
+          "matched": true,
+          "source": "https://investor.qualcomm.com/news-events/press-releases/news-details/2024/Qualcomm-Announces-Quarterly-Cash-Dividend-04-17-2024/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-09-05",
+          "expectedExDate": "2024-09-05",
+          "expectedAmount": 0.85,
+          "actualAmount": 0.85,
+          "matched": true,
+          "source": "https://investor.qualcomm.com/news-events/press-releases/news-details/2024/Qualcomm-Announces-Quarterly-Cash-Dividend-07-17-2024/default.aspx",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-12-05",
+          "expectedExDate": "2024-12-05",
+          "expectedAmount": 0.85,
+          "actualAmount": 0.85,
+          "matched": true,
+          "source": "https://www.sec.gov/Archives/edgar/data/804328/000080432824000075/qcom-20240929.htm",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        }
+      ],
+      "scope": "All received ordinary cash dividends reconciled. Does not independently exclude every other corporate action."
+    },
+    {
+      "symbol": "NVDA",
+      "status": "ALL_RECEIVED_DIVIDENDS_RECONCILED_WITH_ISSUER_DECLARATIONS",
+      "count": 20,
+      "checks": [
+        {
+          "recordDate": "2020-02-28",
+          "expectedExDate": "2020-02-27",
+          "issuerDeclaredAmount": 0.16,
+          "splitNormalizationDivisor": 40,
+          "expectedAmount": 0.004,
+          "actualAmount": 0.004,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2020",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2020-06-05",
+          "expectedExDate": "2020-06-04",
+          "issuerDeclaredAmount": 0.16,
+          "splitNormalizationDivisor": 40,
+          "expectedAmount": 0.004,
+          "actualAmount": 0.004,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-quarterly-cash-dividend-timing",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2020-09-02",
+          "expectedExDate": "2020-09-01",
+          "issuerDeclaredAmount": 0.16,
+          "splitNormalizationDivisor": 40,
+          "expectedAmount": 0.004,
+          "actualAmount": 0.004,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2021",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2020-12-04",
+          "expectedExDate": "2020-12-03",
+          "issuerDeclaredAmount": 0.16,
+          "splitNormalizationDivisor": 40,
+          "expectedAmount": 0.004,
+          "actualAmount": 0.004,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-third-quarter-fiscal-2021",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2021-03-10",
+          "expectedExDate": "2021-03-09",
+          "issuerDeclaredAmount": 0.16,
+          "splitNormalizationDivisor": 40,
+          "expectedAmount": 0.004,
+          "actualAmount": 0.004,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2021",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2021-06-10",
+          "expectedExDate": "2021-06-09",
+          "issuerDeclaredAmount": 0.16,
+          "splitNormalizationDivisor": 40,
+          "expectedAmount": 0.004,
+          "actualAmount": 0.004,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2022",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2021-09-01",
+          "expectedExDate": "2021-08-31",
+          "issuerDeclaredAmount": 0.04,
+          "splitNormalizationDivisor": 10,
+          "expectedAmount": 0.004,
+          "actualAmount": 0.004,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2022",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2021-12-02",
+          "expectedExDate": "2021-12-01",
+          "issuerDeclaredAmount": 0.04,
+          "splitNormalizationDivisor": 10,
+          "expectedAmount": 0.004,
+          "actualAmount": 0.004,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-third-quarter-fiscal-2022",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2022-03-03",
+          "expectedExDate": "2022-03-02",
+          "issuerDeclaredAmount": 0.04,
+          "splitNormalizationDivisor": 10,
+          "expectedAmount": 0.004,
+          "actualAmount": 0.004,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2022",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2022-06-09",
+          "expectedExDate": "2022-06-08",
+          "issuerDeclaredAmount": 0.04,
+          "splitNormalizationDivisor": 10,
+          "expectedAmount": 0.004,
+          "actualAmount": 0.004,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2023",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2022-09-08",
+          "expectedExDate": "2022-09-07",
+          "issuerDeclaredAmount": 0.04,
+          "splitNormalizationDivisor": 10,
+          "expectedAmount": 0.004,
+          "actualAmount": 0.004,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2023",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2022-12-01",
+          "expectedExDate": "2022-11-30",
+          "issuerDeclaredAmount": 0.04,
+          "splitNormalizationDivisor": 10,
+          "expectedAmount": 0.004,
+          "actualAmount": 0.004,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-third-quarter-fiscal-2023",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-03-08",
+          "expectedExDate": "2023-03-07",
+          "issuerDeclaredAmount": 0.04,
+          "splitNormalizationDivisor": 10,
+          "expectedAmount": 0.004,
+          "actualAmount": 0.004,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2023",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-06-08",
+          "expectedExDate": "2023-06-07",
+          "issuerDeclaredAmount": 0.04,
+          "splitNormalizationDivisor": 10,
+          "expectedAmount": 0.004,
+          "actualAmount": 0.004,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2024",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-09-07",
+          "expectedExDate": "2023-09-06",
+          "issuerDeclaredAmount": 0.04,
+          "splitNormalizationDivisor": 10,
+          "expectedAmount": 0.004,
+          "actualAmount": 0.004,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2024",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2023-12-06",
+          "expectedExDate": "2023-12-05",
+          "issuerDeclaredAmount": 0.04,
+          "splitNormalizationDivisor": 10,
+          "expectedAmount": 0.004,
+          "actualAmount": 0.004,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-third-quarter-fiscal-2024",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-03-06",
+          "expectedExDate": "2024-03-05",
+          "issuerDeclaredAmount": 0.04,
+          "splitNormalizationDivisor": 10,
+          "expectedAmount": 0.004,
+          "actualAmount": 0.004,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2024",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-06-11",
+          "expectedExDate": "2024-06-11",
+          "issuerDeclaredAmount": 0.1,
+          "splitNormalizationDivisor": 10,
+          "expectedAmount": 0.01,
+          "actualAmount": 0.01,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2025",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-09-12",
+          "expectedExDate": "2024-09-12",
+          "issuerDeclaredAmount": 0.01,
+          "splitNormalizationDivisor": 1,
+          "expectedAmount": 0.01,
+          "actualAmount": 0.01,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2025",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        },
+        {
+          "recordDate": "2024-12-05",
+          "expectedExDate": "2024-12-05",
+          "issuerDeclaredAmount": 0.01,
+          "splitNormalizationDivisor": 1,
+          "expectedAmount": 0.01,
+          "actualAmount": 0.01,
+          "matched": true,
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-third-quarter-fiscal-2025",
+          "exDateEvidence": "inferred_from_issuer_record_date_and_exchange_settlement_rules"
+        }
+      ],
+      "scope": "All received ordinary dividends match issuer declarations on the final split basis. Does not independently exclude other corporate actions.",
+      "splitEvidence": [
+        "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2022",
+        "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2025"
+      ]
+    }
+  ],
+  "cumulativeMatchedDistinctDividendEventsThisLedger": 115,
+  "verificationRules": {
+    "eventTimezone": "America/New_York",
+    "cashDividendT2": "Effective record day minus one settlement business day",
+    "cashDividendT1": "Effective record day from 2024-05-29",
+    "nonBusinessRecordDate": "Use preceding settlement business day",
+    "bankHolidayExceptionsUsed": [
+      "2022-10-10",
+      "2023-10-09"
+    ],
+    "sources": [
+      "https://www.nasdaqtrader.com/TraderNews.aspx?id=ETA2024-29",
+      "https://www.sec.gov/files/rules/sro/nyse/2024/34-99871-ex5.pdf",
+      "https://www.nyse.com/trade/ex-date-dividends"
+    ]
+  },
+  "resolvedInvestigation": {
+    "symbol": "LUV",
+    "date": "2024-12-26",
+    "eventTimestamp": 1735223400,
+    "actualEventDateNewYork": "2024-12-26",
+    "factorChangeDate": "2024-12-26",
+    "conclusion": "Event and adjustment align with issuer record date. Initial December 27 interpretation was incorrect; no correction to input prices/events."
+  },
+  "revision": 6,
+  "cashDividendAbsenceEvidence": [
+    {
+      "symbol": "SHOP",
+      "status": "ISSUER_HISTORY_SUPPORTS_NO_CASH_DIVIDENDS_IN_WINDOW",
+      "source": "https://www.shopify.com/investors/investor-faqs",
+      "scope": "Cash dividends only. Does not exclude splits, stock distributions, spin-offs or other corporate actions."
+    },
+    {
+      "symbol": "TSLA",
+      "status": "ISSUER_HISTORY_SUPPORTS_NO_CASH_DIVIDENDS_IN_WINDOW",
+      "source": "https://ir.tesla.com/contact-us",
+      "scope": "Cash dividends only. Does not exclude splits, stock distributions, spin-offs or other corporate actions."
+    },
+    {
+      "symbol": "NFLX",
+      "status": "ISSUER_HISTORY_SUPPORTS_NO_CASH_DIVIDENDS_IN_WINDOW",
+      "source": "https://www.sec.gov/Archives/edgar/data/1065280/000106528025000044/nflx-20241231.htm",
+      "scope": "Cash dividends only. Does not exclude splits, stock distributions, spin-offs or other corporate actions."
+    },
+    {
+      "symbol": "DDOG",
+      "status": "ISSUER_HISTORY_SUPPORTS_NO_CASH_DIVIDENDS_IN_WINDOW",
+      "source": "https://www.sec.gov/Archives/edgar/data/1561550/000156155025000025/ddog-20241231.htm",
+      "scope": "Cash dividends only. Does not exclude splits, stock distributions, spin-offs or other corporate actions."
+    },
+    {
+      "symbol": "PYPL",
+      "status": "ISSUER_HISTORY_SUPPORTS_NO_CASH_DIVIDENDS_IN_WINDOW",
+      "source": "https://www.sec.gov/Archives/edgar/data/1633917/000163391725000019/pypl-20241231.htm",
+      "scope": "No cash dividends through 2024; exact subsequent cumulative adjustment factor remains unverified."
+    }
+  ],
+  "priceFactorObservations": {
+    "AMD": {
+      "minimum": 1,
+      "maximum": 1,
+      "scope": "Observed provider adjustedClose/quoteClose; not independent price verification."
+    },
+    "SHOP": {
+      "minimum": 1,
+      "maximum": 1,
+      "scope": "Observed provider adjustedClose/quoteClose; not independent price verification."
+    },
+    "ADBE": {
+      "minimum": 1,
+      "maximum": 1,
+      "scope": "Observed provider adjustedClose/quoteClose; not independent price verification."
+    },
+    "TSLA": {
+      "minimum": 1,
+      "maximum": 1,
+      "scope": "Observed provider adjustedClose/quoteClose; not independent price verification."
+    },
+    "NFLX": {
+      "minimum": 1,
+      "maximum": 1,
+      "scope": "Observed provider adjustedClose/quoteClose; not independent price verification."
+    },
+    "NOW": {
+      "minimum": 1,
+      "maximum": 1,
+      "scope": "Observed provider adjustedClose/quoteClose; not independent price verification."
+    },
+    "DDOG": {
+      "minimum": 1,
+      "maximum": 1,
+      "scope": "Observed provider adjustedClose/quoteClose; not independent price verification."
+    },
+    "PYPL": {
+      "minimum": 0.9889709358572251,
+      "maximum": 0.9889712748240216,
+      "scope": "Observed provider adjustedClose/quoteClose; not independent price verification."
+    }
+  }
+}
