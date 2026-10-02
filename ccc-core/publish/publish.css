@@ -2916,6 +2916,155 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
   cursor:default;
   opacity:1;
 }
+
+/* CCC Publicera v2.10.147 – vy-för-vy mobilpassning.
+   Endast innehållet under modulraden ändras; Core-headern är helt orörd. */
+@media(max-width:480px) and (orientation:portrait){
+  /* Förbered: rubrik, 3×2-grid, pager och fortsättknapp. */
+  #gridView .publish-heading{
+    min-height:48px!important;
+    height:48px!important;
+    margin-bottom:4px!important;
+  }
+  #gridView .publish-heading h1{font-size:1.42rem!important}
+  #gridView .publish-heading p{margin-top:1px!important;font-size:.75rem!important}
+  #gridView .prepared-continue-action{min-height:44px!important}
+
+  /* Välj objekt: sammanfattningen tar en enda kompakt rad. */
+  #channelView .publish-heading{
+    min-height:46px!important;
+    height:46px!important;
+    margin-bottom:2px!important;
+  }
+  #channelView .publish-heading h1{font-size:1.38rem!important}
+  #channelView .channel-selection-summary{
+    min-height:30px!important;
+    margin:3px auto 5px!important;
+  }
+  #channelView .channel-selection-summary strong{font-size:.85rem!important}
+  #channelView .channel-selection-summary span{font-size:.66rem!important}
+
+  /* Välj kanal: varje kanal är kompakt men har minst 56 px tryckyta.
+     Själva listan scrollar eftersom antalet kanaler kan växa. */
+  #channelTargetsView{
+    overflow:hidden!important;
+    display:flex!important;
+    flex-direction:column!important;
+  }
+  #channelTargetsView[hidden]{display:none!important}
+  #channelTargetsView .publish-heading{
+    min-height:46px!important;
+    margin-bottom:3px!important;
+  }
+  #channelTargetsView .publish-heading h1{font-size:1.38rem!important}
+  #channelTargetsView .channel-list{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain!important;
+    margin:4px auto 6px!important;
+    gap:6px!important;
+    padding:1px 2px 5px!important;
+  }
+  #channelTargetsView .channel-option{
+    grid-template-columns:44px minmax(0,1fr) 32px!important;
+    min-height:58px!important;
+    padding:7px 10px!important;
+    border-radius:14px!important;
+  }
+  #channelTargetsView .channel-brand-icon{
+    width:42px!important;
+    height:42px!important;
+    border-radius:12px!important;
+  }
+  #channelTargetsView .channel-brand-icon svg{width:27px!important;height:27px!important}
+  #channelTargetsView .channel-option-main{gap:1px!important}
+  #channelTargetsView .channel-option-main strong{font-size:.9rem!important}
+  #channelTargetsView .channel-option-main small{font-size:.66rem!important}
+  #channelTargetsView .channel-next-action{
+    flex:0 0 auto!important;
+    min-height:46px!important;
+    margin-top:4px!important;
+  }
+
+  /* Snabbpublicera/slutkontroll: alla steg synliga utan att minska ikonerna för hårt. */
+  #channelConfirmView .confirm-source-actions{
+    margin:2px auto 4px!important;
+  }
+  #channelConfirmView .confirm-add-object{min-height:46px!important}
+  #channelConfirmView .confirm-workspace-empty{
+    min-height:76px!important;
+    margin:4px auto!important;
+    padding:12px!important;
+  }
+  #channelConfirmView #confirmGrid.confirm-object-strip{
+    margin:4px auto 3px!important;
+    padding-block:3px 5px!important;
+  }
+  #channelConfirmView .confirm-object-tools{
+    gap:5px!important;
+    margin:0 auto 4px!important;
+  }
+  #channelConfirmView .confirm-tool-status{min-height:22px!important;padding-block:2px!important}
+  #channelConfirmView .confirm-tool-actions .confirm-tool-button{
+    min-height:66px!important;
+    padding-block:5px!important;
+    gap:4px!important;
+  }
+  #channelConfirmView .confirm-tool-icon{width:30px!important;height:30px!important}
+  #channelConfirmView .confirm-channel-strip{
+    margin-top:2px!important;
+    padding-block:3px 5px!important;
+  }
+  #channelConfirmView .confirm-channel-chip .channel-brand-icon{
+    width:40px!important;
+    height:40px!important;
+    min-width:40px!important;
+    min-height:40px!important;
+  }
+  #channelConfirmView .confirm-display-summary{
+    min-height:54px!important;
+    margin-top:3px!important;
+    padding:7px 9px!important;
+  }
+  #channelConfirmView .confirm-actions{margin-top:4px!important}
+  #channelConfirmView .confirm-actions .primary-action{min-height:46px!important}
+  #channelConfirmView .confirm-history-link{min-height:28px!important;margin-top:1px!important}
+
+  /* Publicerat: rubrik och flikar hålls fasta, endast listan scrollar. */
+  #publishedView .publish-heading{
+    min-height:46px!important;
+    margin-bottom:4px!important;
+  }
+  #publishedView .publish-heading h1{font-size:1.38rem!important}
+  #publishedView .published-tabs{
+    margin-bottom:6px!important;
+    padding:3px!important;
+  }
+  #publishedView .published-tab{min-height:38px!important}
+  #publishedView .published-section-heading{
+    margin:1px 0 6px!important;
+    padding:7px 9px!important;
+  }
+
+  /* Objektgranskning: bilden får mest plats, text och åtgärder hålls täta. */
+  #detailView .detail-top{height:40px!important;min-height:40px!important}
+  #detailView .swipe-area{
+    min-height:260px!important;
+    max-height:44dvh!important;
+  }
+  #detailView .detail-copy{
+    margin-top:5px!important;
+    padding-block:6px 4px!important;
+  }
+  #detailView .detail-actions{gap:6px!important}
+  #detailView .detail-actions button{min-height:46px!important}
+
+  /* Anpassa bild var redan en-skärmsanpassad; bara yttre rytmen jämnas ut. */
+  #cropView.crop-view{row-gap:9px!important;padding-top:2px!important}
+  #cropView .crop-editor-card{gap:5px!important;padding:7px 8px 8px!important}
+  #cropView .crop-accept{min-height:46px!important}
+}
 .cutout-dialog{z-index:1800;background:rgba(5,7,12,.72);backdrop-filter:blur(10px)}
 .cutout-dialog-box{
   width:min(calc(100% - 24px),520px)!important;
