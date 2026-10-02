@@ -1,0 +1,93 @@
+{
+  "status": "STRUCTURE_HASH_CALENDAR_PASS_RESEARCH_GATE_BLOCKED",
+  "specHash": "083bcb30",
+  "sourceHashVerified": true,
+  "canonicalHash": "ae6e8ac4a54fe485ccdc207b5bdfbf63c495d08113d41c30ee7eba071f5adb12",
+  "symbolStats": {
+    "AMD": {
+      "rows": 1258,
+      "first": "2020-01-02",
+      "last": "2024-12-31"
+    },
+    "SHOP": {
+      "rows": 1258,
+      "first": "2020-01-02",
+      "last": "2024-12-31"
+    },
+    "ADBE": {
+      "rows": 1258,
+      "first": "2020-01-02",
+      "last": "2024-12-31"
+    },
+    "MU": {
+      "rows": 1258,
+      "first": "2020-01-02",
+      "last": "2024-12-31"
+    },
+    "FDX": {
+      "rows": 1258,
+      "first": "2020-01-02",
+      "last": "2024-12-31"
+    },
+    "TSLA": {
+      "rows": 1258,
+      "first": "2020-01-02",
+      "last": "2024-12-31"
+    },
+    "LUV": {
+      "rows": 1258,
+      "first": "2020-01-02",
+      "last": "2024-12-31"
+    },
+    "NFLX": {
+      "rows": 1258,
+      "first": "2020-01-02",
+      "last": "2024-12-31"
+    },
+    "C": {
+      "rows": 1258,
+      "first": "2020-01-02",
+      "last": "2024-12-31"
+    },
+    "NOW": {
+      "rows": 1258,
+      "first": "2020-01-02",
+      "last": "2024-12-31"
+    },
+    "QCOM": {
+      "rows": 1258,
+      "first": "2020-01-02",
+      "last": "2024-12-31"
+    },
+    "BAC": {
+      "rows": 1258,
+      "first": "2020-01-02",
+      "last": "2024-12-31"
+    },
+    "GM": {
+      "rows": 1258,
+      "first": "2020-01-02",
+      "last": "2024-12-31"
+    },
+    "DDOG": {
+      "rows": 1258,
+      "first": "2020-01-02",
+      "last": "2024-12-31"
+    },
+    "PYPL": {
+      "rows": 1258,
+      "first": "2020-01-02",
+      "last": "2024-12-31"
+    },
+    "NVDA": {
+      "rows": 1258,
+      "first": "2020-01-02",
+      "last": "2024-12-31"
+    }
+  },
+  "ohlcStructureValid": true,
+  "calendarDateMatch": true,
+  "realEngineGateRejectsCandidate": true,
+  "engineError": "DATA: källa, SHA256, kalender och justeringsstatus måste verifieras före forskning",
+  "researchCalled": false
+}
