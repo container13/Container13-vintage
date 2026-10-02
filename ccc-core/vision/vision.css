@@ -2398,7 +2398,7 @@ body{min-height:100dvh}
 /* CCC v2.8.40 – Vision-specifikt landscape:
    bara arbetsflödesinnehåll; skal/header/grid ägs av Core. */
 @media (orientation:landscape) and (max-height:540px) and (max-width:980px){
-  #captureCard:has(#batchStrip:not([hidden])){
+  #captureCard:not([hidden]):has(#batchStrip:not([hidden])){
     padding:10px!important;
     gap:8px!important;
   }
@@ -5257,6 +5257,16 @@ body.ccc-focused-text-mode #textEditorDialog #largeTextEditor.description-editor
   pointer-events:none!important;
 }
 
+/* v2.10.151 – huvudvy-invariant. Dubbla id-led ger avsiktligt högre
+   specificitet än äldre :has-regler: hidden får aldrig överstyras. */
+#captureCard#captureCard[hidden],
+#visionCard#visionCard[hidden],
+#editCard#editCard[hidden],
+#previewCard#previewCard[hidden],
+#seriesDoneCard#seriesDoneCard[hidden]{
+  display:none!important;
+}
+
 /* CCC Vision v2.10.149 – en responsiv arbetsyta i stället för fasta
    kompaktvyer. Core äger fortfarande header och modulrad. */
 .vision-shell.ccc-workspace > .stage-card:not([hidden]){
@@ -5294,14 +5304,14 @@ body.ccc-focused-text-mode #textEditorDialog #largeTextEditor.description-editor
 }
 
 @media(max-width:699px){
-  #captureCard:has(#batchStrip:not([hidden])){
+  #captureCard:not([hidden]):has(#batchStrip:not([hidden])){
     height:100%!important;
     min-height:0!important;
     max-height:100%!important;
     display:flex!important;
     flex-direction:column!important;
   }
-  #captureCard:has(#batchStrip:not([hidden])) .batch-strip{
+  #captureCard:not([hidden]):has(#batchStrip:not([hidden])) .batch-strip{
     flex:1 1 auto!important;
     min-height:0!important;
     height:auto!important;
@@ -5326,11 +5336,11 @@ body.ccc-focused-text-mode #textEditorDialog #largeTextEditor.description-editor
     width:100%!important;
     max-width:none!important;
   }
-  #captureCard:has(#batchStrip:not([hidden])){
+  #captureCard:not([hidden]):has(#batchStrip:not([hidden])){
     display:flex!important;
     flex-direction:column!important;
   }
-  #captureCard:has(#batchStrip:not([hidden])) .batch-strip{
+  #captureCard:not([hidden]):has(#batchStrip:not([hidden])) .batch-strip{
     flex:1 1 auto!important;
     min-height:0!important;
     overflow:auto!important;
