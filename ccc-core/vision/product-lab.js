@@ -2940,6 +2940,9 @@ $("#price")?.addEventListener("click", openPriceEditor);
       const returnIndex=batchItems.findIndex(item=>String(item.id)===String(returnItemId));
       if(returnIndex>=0){
         try{sessionStorage.removeItem("ccc-vision-return-edit-item");}catch(_){}
+        /* Stäng start-/arbetsytans skal innan redigeringskortet öppnas.
+           Båda anropen sker i samma renderingstakt och ger ingen mellanvy. */
+        showWorkspace();
         openWorkspaceItem(returnIndex,Math.floor(returnIndex/WORKSPACE_PAGE_SIZE));
       }else{
         console.warn("[CCC Vision] Returobjektet kunde inte hittas i den sparade sessionen",returnItemId);
