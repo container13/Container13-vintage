@@ -1,4 +1,14 @@
 (() => {
+  const entityTerm=(form="singular",cap=false)=>window.CCC_TERMINOLOGY?.label?.(form,cap)||
+    ({singular:"objekt",plural:"objekt",definiteSingular:"objektet",definitePlural:"objekten"}[form]||"objekt");
+  const visionEntryParams=new URLSearchParams(window.location.search);
+  const publishAddMode=visionEntryParams.get("mode")==="publish-add";
+  const publishAddSource=visionEntryParams.get("source")||"";
+  const publishConfirmMode=visionEntryParams.get("returnTo")==="publish-confirm";
+  const publishConfirmItemId=visionEntryParams.get("item")||"";
+  const PUBLISH_ADD_STATE_KEY="ccc-publish-add-camera-state";
+  const VISION_SETTINGS_RETURN_KEY="ccc-vision-settings-return";
+
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
   const fieldIds = ["title", "category", "brand", "season", "price", "manufacturer", "size", "color", "description"];
@@ -6,6 +16,10 @@
   const WORKSPACE_PAGE_SIZE = 6;
 
   let cameraStream = null;
+  let cameraRequestId = 0;
+  let cameraOpening = false;
+  let cameraReturnView = "start";
+  let cameraFallbackOpen = false;
   let stagedCameraFile = null;
   let stagedItem = null;
   let batchItems = [];
@@ -22,7 +36,53 @@
   let sessionSaveChain = Promise.resolve();
   let workspacePage = 0;
   let workspaceSwipe = null;
+  let suppressWorkspaceClick = false;
+  let cameraSessionStartCount = 0;
   let autosaveSequence = 0;
+  let editBaseline = "";
+  let editStructuralDirty = false;
+  let activeTextEditorField = null;
+  let textEditorOriginalValue = "";
+  let focusedTextScrollY = 0;
+  let focusedTextScrollGuard = false;
+  let focusedTextGuardFrame = 0;
+  let publishNavigationPending = false;
+  let visionBackPending = false;
+
+  function rememberVisionSettingsReturn(){
+    const item=currentItem();
+    try{sessionStorage.setItem(VISION_SETTINGS_RETURN_KEY,JSON.stringify({
+      createdAt:Date.now(),view:visionView,itemId:item?.id||"",index:currentIndex,
+      workspacePage,editReturnView,cropReturnView
+    }));}catch(_){ }
+  }
+
+  function takeVisionSettingsReturn(){
+    if(visionEntryParams.get("settingsReturn")!=="1")return null;
+    try{
+      const raw=sessionStorage.getItem(VISION_SETTINGS_RETURN_KEY);
+      sessionStorage.removeItem(VISION_SETTINGS_RETURN_KEY);
+      const state=raw?JSON.parse(raw):null;
+      return state&&Date.now()-Number(state.createdAt||0)<15*60*1000?state:null;
+    }catch(_){return null;}
+  }
+
+  function readPublishAddState(){
+    try{
+      const raw=sessionStorage.getItem(PUBLISH_ADD_STATE_KEY);
+      if(!raw)return null;
+      const value=JSON.parse(raw);
+      if(!value?.returnUrl||Date.now()-Number(value.createdAt||0)>15*60*1000){
+        sessionStorage.removeItem(PUBLISH_ADD_STATE_KEY);
+        return null;
+      }
+      return value;
+    }catch(_){return null;}
+  }
+
+  let editorScrollLockY = 0;
+  let editorScrollLocked = false;
+
   let cameraZoomState = { min: 1, max: 1, current: 1, pinchStartDistance: 0, pinchStartZoom: 1 };
 
   function queueVisionSessionSave() {
@@ -38,14 +98,13 @@
     return sessionSaveChain;
   }
 
-  const VISION_SETTING_DEFAULTS = { aiAuto: true, learnEdits: true };
+  const VISION_SETTING_DEFAULTS = { learnEdits: true };
   function readBoolSetting(key, fallback) {
     const value = localStorage.getItem(key);
     return value === null ? fallback : value === "true";
   }
   function visionSettings() {
     return {
-      aiAuto: readBoolSetting("ccc-vision-ai-auto", VISION_SETTING_DEFAULTS.aiAuto),
       learnEdits: readBoolSetting("ccc-vision-learn-edits", VISION_SETTING_DEFAULTS.learnEdits)
     };
   }
@@ -53,7 +112,6 @@
   const visionSettingsButton = $("#visionSettingsBtn");
   const visionSettingsOverlay = $("#visionSettingsOverlay");
   const visionSettingsCloseButton = $("#visionSettingsCloseBtn");
-  const visionAiAutoSetting = $("#visionAiAutoSetting");
   const visionLearnEditsSetting = $("#visionLearnEditsSetting");
   let visionSettingsSavedTimer;
 
@@ -76,7 +134,6 @@
 
   function syncVisionSettingsPanel() {
     const settings = visionSettings();
-    if (visionAiAutoSetting) visionAiAutoSetting.checked = settings.aiAuto;
     if (visionLearnEditsSetting) visionLearnEditsSetting.checked = settings.learnEdits;
   }
   function setVisionSettingsOpen(open) {
@@ -96,19 +153,12 @@
       clearTimeout(visionSettingsSavedTimer);
       visionSettingsSavedTimer = setTimeout(() => saved.textContent = "", 1200);
     }
-    if (key === "ccc-vision-ai-auto" && privacyNote) {
-      privacyNote.textContent = window.CCC_VISION_AI?.configured?.() && value
-        ? "Originalbilderna stannar på enheten. En komprimerad kopia skickas endast för analys."
-        : "Originalbilderna stannar på den här enheten.";
-    }
   }
 
 
   const privacyNote = $("#privacyNote");
   if (privacyNote) {
-    privacyNote.textContent = window.CCC_VISION_AI?.configured?.() && visionSettings().aiAuto
-      ? "Originalbilderna stannar på enheten. En komprimerad kopia skickas endast för analys."
-      : "Originalbilderna stannar på den här enheten.";
+    privacyNote.textContent = "Originalbilderna stannar på enheten. En komprimerad kopia skickas endast när du själv väljer AI-analys.";
   }
 
   document.addEventListener("click", (event) => { const pop=$("#visionCostPopover"); const btn=$("#visionCostBtn"); if(pop && !pop.hidden && !pop.contains(event.target) && event.target !== btn){ pop.hidden=true; btn?.setAttribute("aria-expanded","false"); } });
@@ -124,6 +174,52 @@
     return `C13-${y}${m}${day}-${entropy}`;
   };
   const currentItem = () => batchItems[currentIndex] || null;
+  const VISION_PUBLISH_RETURN_KEY="ccc-vision-publish-return";
+  function rememberVisionPublishReturn(view=visionView){
+    try{sessionStorage.setItem(VISION_PUBLISH_RETURN_KEY,JSON.stringify({
+      createdAt:Date.now(),view,itemId:currentItem()?.id||"",index:currentIndex,
+      workspacePage,editReturnView,cropReturnView
+    }));}catch(_){ }
+  }
+  function takeVisionPublishReturn(){
+    if(new URLSearchParams(location.search).get("returnFrom")!=="publish")return null;
+    try{
+      const raw=sessionStorage.getItem(VISION_PUBLISH_RETURN_KEY);
+      sessionStorage.removeItem(VISION_PUBLISH_RETURN_KEY);
+      const value=raw?JSON.parse(raw):null;
+      return value&&Date.now()-Number(value.createdAt||0)<15*60*1000?value:null;
+    }catch(_){return null;}
+  }
+  const publishConfirmReturn = () => {
+    try{
+      const raw=sessionStorage.getItem("ccc-vision-return-publish-confirm");
+      if(!raw)return null;
+      const value=JSON.parse(raw);
+      if(!value?.url||!value?.itemId||Date.now()-Number(value.createdAt||0)>15*60*1000){
+        sessionStorage.removeItem("ccc-vision-return-publish-confirm");
+        return null;
+      }
+      const expectedId=publishConfirmMode&&publishConfirmItemId?publishConfirmItemId:value.itemId;
+      if(String(value.itemId)!==String(expectedId))return null;
+      if(String(currentItem()?.id||"")!==String(expectedId))return null;
+      return value;
+    }catch(_){return null;}
+  };
+  async function returnToPublishConfirmation(){
+    const target=publishConfirmReturn();
+    if(!target)return false;
+    clearTimeout(saveTimer);
+    autosaveSequence+=1;
+    if(hasEditChanges()&&!(await flushAutosave()))return false;
+    if((await queueVisionSessionSave())===false)return false;
+    saveBatchMetadata();
+    try{
+      sessionStorage.removeItem("ccc-vision-return-publish-confirm");
+      sessionStorage.removeItem("ccc-vision-return-edit-item");
+    }catch(_){ }
+    window.location.assign(target.url);
+    return true;
+  }
   const currentDemo = () => {
     const item = currentItem();
     if (item?.visionResult) return item.visionResult;
@@ -140,13 +236,140 @@
     });
     if (viewName) visionView = viewName;
     updateHeaderContext();
+  window.addEventListener("load",()=>updateHeaderContext(),{once:true});
+  }
+
+  async function openPublishFromWorkspace() {
+    if (publishNavigationPending) return;
+    publishNavigationPending = true;
+    const forward = document.querySelector(".ccc-core-footer-forward");
+    if (forward) forward.disabled = true;
+    try {
+      await queueVisionSessionSave();
+      rememberVisionPublishReturn("workspace");
+      window.location.assign("../publish/index.html?view=prepare&from=vision-workspace");
+    } catch (error) {
+      publishNavigationPending = false;
+      if (forward) forward.disabled = false;
+      throw error;
+    }
+  }
+
+  async function openPublishFromEdit() {
+    if (publishNavigationPending) return;
+    const item = currentItem();
+    if (!item) return;
+    if(publishConfirmReturn()){
+      publishNavigationPending=true;
+      const returned=await returnToPublishConfirmation();
+      if(!returned)publishNavigationPending=false;
+      return;
+    }
+    publishNavigationPending = true;
+    clearTimeout(saveTimer);
+    autosaveSequence += 1;
+    const forward = document.querySelector(".ccc-core-footer-forward");
+    if (forward) forward.disabled = true;
+    try {
+      const ok = await saveEditedCurrent({ quiet: true });
+      if (!ok) {
+        publishNavigationPending = false;
+        if (forward) forward.disabled = false;
+        return;
+      }
+      await queueVisionSessionSave();
+      saveBatchMetadata();
+      window.location.assign(`../publish/index.html?view=prepare&item=${encodeURIComponent(item.id)}&from=vision-edit`);
+    } catch (error) {
+      publishNavigationPending = false;
+      if (forward) forward.disabled = false;
+      throw error;
+    }
+  }
+
+  async function handleEditorPrimaryAction(){
+    if(!publishConfirmReturn())return saveEditedAndNext();
+    if(publishNavigationPending)return false;
+    publishNavigationPending=true;
+    const button=$("#previewBtn");
+    if(button)button.disabled=true;
+    const returned=await returnToPublishConfirmation();
+    if(!returned){
+      publishNavigationPending=false;
+      if(button)button.disabled=false;
+      setMessage("Ändringarna kunde inte sparas. Du är kvar i Granska & komplettera.");
+    }
+    return returned;
   }
 
   function updateHeaderContext() {
-    const isModuleHome = visionView === "start";
-    const state={back:!isModuleHome,settings:true};
+    /* Startvyn är modulens ingång. Alla djupare Vision-vyer visar både
+       headerpil och den tumvänliga footerknappen för samma bakåtsteg. */
+    const state={back:visionView!=="start"||publishAddMode,settings:true};
     window.__CCC_HEADER_PENDING__=state;
     window.CCC_CORE?.header?.set(state);
+
+    const footer=window.CCC_CORE?.footer;
+    if(footer){
+      if(visionView==="edit"){
+        const returningToPublish=!!publishConfirmReturn();
+        const primary=$("#previewBtn");
+        if(primary)primary.textContent=returningToPublish?"Klar":"Nästa objekt";
+        footer.setTools({
+          help:true,
+          onHelp:()=>{const d=$("#visionContextHelpDialog");if(d)d.hidden=false;},
+          forward:!returningToPublish,
+          forwardLabel:"Publicera",
+          forwardIcon:"→",
+          onForward:openPublishFromEdit
+        });
+      }else if(visionView==="workspace"){
+        footer.setTools({
+          help:true,
+          onHelp:openWorkspaceHelp,
+          forward:true,
+          forwardLabel:"Publicera",
+          forwardIcon:"→",
+          onForward:openPublishFromWorkspace
+        });
+      }else{
+        footer.clearTools();
+      }
+    }
+  }
+
+  function workspaceVisibleRange() {
+    const total = batchItems.length;
+    if (!total) return { start: 0, end: 0, total: 0 };
+    const start = workspacePage * WORKSPACE_PAGE_SIZE + 1;
+    const end = Math.min(total, start + WORKSPACE_PAGE_SIZE - 1);
+    return { start, end, total };
+  }
+
+  function updateWorkspaceRangeLabel() {
+    const label = $("#workspaceCount");
+    if (!label) return;
+    const { start, end, total } = workspaceVisibleRange();
+    label.textContent = total ? `Visar ${start}–${end} av ${total}` : "Visar 0 av 0";
+  }
+
+  function openWorkspaceHelp() {
+    const dialog = $("#visionWorkspaceHelpDialog");
+    if (!dialog) return;
+    const { start, end, total } = workspaceVisibleRange();
+    const plural = entityTerm("plural");
+    const pluralCap = entityTerm("plural", true);
+    const intro = $("#visionWorkspaceHelpIntro");
+    const range = $("#visionWorkspaceHelpRange");
+    const title = $("#visionWorkspaceHelpTitle");
+    if (title) title.textContent = `${pluralCap}översikt`;
+    if (intro) intro.textContent = `Här visas ${plural} från din fotosession, sex åt gången.`;
+    if (range) {
+      range.innerHTML = total
+        ? `<strong>${pluralCap} ${start}–${end} av ${total}</strong> visar vilka ${plural} som syns just nu.`
+        : `När du har lagt till ${plural} visas vilka som syns just nu här.`;
+    }
+    dialog.hidden = false;
   }
 
   function applyCaptureMode() {
@@ -167,19 +390,17 @@
 
     const resumableCount = hasSession ? batchItems.length : Number(savedSessionSummary?.count || 0);
     if (resume) {
-      resume.hidden = !(startMode && resumableCount > 0);
-      if (resumableCount > 0) resume.textContent = `Fortsätt fotosession – ${resumableCount} ${resumableCount === 1 ? "plagg" : "plagg"}`;
+      resume.hidden = publishAddMode || !(startMode && resumableCount > 0);
+      const resumeLabel=$("#resumeSessionLabel");
+      const resumeMeta=$("#resumeSessionMeta");
+      if(resumeLabel)resumeLabel.textContent="Fortsätt fotosession";
+      if(resumeMeta&&resumableCount>0)resumeMeta.textContent=`${resumableCount} ${resumableCount === 1 ? entityTerm("singular") : entityTerm("plural")} väntar`;
     }
     if (saveSession) saveSession.hidden = startMode || !hasSession;
     if (startHome) startHome.hidden = !startMode;
     if (startActions) startActions.hidden = !startMode;
     if (workspaceToolbar) workspaceToolbar.hidden = startMode || !hasSession;
-    if (workspaceCount) {
-      const selectedNo = hasSession ? Math.min(currentIndex + 1, batchItems.length) : 0;
-      workspaceCount.textContent = hasSession
-        ? `${batchItems.length} ${batchItems.length === 1 ? "plagg" : "plagg"} · ${selectedNo} markerat`
-        : "0 plagg";
-    }
+    if (workspaceCount) updateWorkspaceRangeLabel();
     if (startMode) {
       if (strip) strip.hidden = true;
       if (help) help.hidden = true;
@@ -189,14 +410,14 @@
       if (saveSession) saveSession.hidden = true;
     } else if (hasSession) {
       if (strip) strip.hidden = false;
-      if (help) help.hidden = false;
+      if (help) help.hidden = true;
       if (workspaceContinue) {
         workspaceContinue.hidden = false;
         workspaceContinue.disabled = false;
       }
     }
     const cameraTitle = $("#startCameraBtn .action-copy strong");
-    if (cameraTitle) cameraTitle.textContent = startMode ? "Ta ett foto" : (hasSession ? "Fota nästa plagg" : "Ta ett foto");
+    if (cameraTitle) cameraTitle.textContent = startMode ? "Ta ett foto" : (hasSession ? `Fota nästa ${entityTerm("singular")}` : "Ta ett foto");
   }
 
   function showVisionStart() {
@@ -205,7 +426,30 @@
     applyCaptureMode();
   }
 
+  function showPublishAddChooser(){
+    showVisionStart();
+    const heading=$("#visionStartHome .ccc-home-heading h1");
+    if(heading)heading.textContent=`Lägg till ${entityTerm("singular")}`;
+    const cameraCopy=$("#startCameraBtn .action-copy small");
+    if(cameraCopy)cameraCopy.textContent="Fotografera med CCC-kameran";
+    const galleryTitle=$("#galleryBtn .action-copy strong");
+    const galleryCopy=$("#galleryBtn .action-copy small");
+    if(galleryTitle)galleryTitle.textContent="Från album";
+    if(galleryCopy)galleryCopy.textContent="Välj en eller flera bilder från enheten";
+    $("#resumeSessionBtn")?.setAttribute("hidden","");
+    document.documentElement.classList.remove("ccc-vision-publish-add-loading");
+    updateHeaderContext();
+  }
+
   function showWorkspace() {
+    stopFocusedTextGuard();
+    document.documentElement.classList.remove("ccc-focused-price-mode");
+    document.body.classList.remove("ccc-focused-price-mode");
+    $("#editCard")?.classList.remove("price-editor-active");
+    document.documentElement.classList.remove("ccc-focused-text-mode");
+    document.body.classList.remove("ccc-focused-text-mode");
+    $("#editCard")?.classList.remove("text-editor-active");
+    unlockVisionScroll();
     showStage("captureCard", batchItems.length ? "workspace" : "start");
     updateBatchStrip();
     applyCaptureMode();
@@ -229,12 +473,13 @@
       extraFileKeys: [],
       extraFileStored: [],
       extraFileSavePromises: [],
+      aiAnalyzedMain: false,
+      aiAnalyzedExtra: [],
       demoKey: demoKeys[index % demoKeys.length],
       visionReady: false,
       visionResult: null,
       analysisInProgress: false,
       approved: false,
-      flagged: false,
       editedFields: null,
       analysisPromise: null,
       publishFile: null,
@@ -260,7 +505,8 @@
       });
     /* Förlagringen får arbeta i bakgrunden; ensureItemSourceFiles avvaktar samma promise vid behov. */
     item.originalFileSavePromise.catch(() => {});
-    startSilentAnalysis(item);
+    item.analysisMode = "manual";
+    item.analysisPromise = Promise.resolve(null);
     return item;
   }
 
@@ -298,11 +544,8 @@
   function startSilentAnalysis(item, forceAi = false) {
     item.visionReady = false;
     item.analysisInProgress = false;
-    const aiAllowed = forceAi || visionSettings().aiAuto;
-    const explicitDemo = item.explicitDemo === true;
-    item.analysisMode = explicitDemo
-      ? "demo"
-      : (aiAllowed && window.CCC_VISION_AI?.configured?.() ? "ai" : (aiAllowed ? "error" : "manual"));
+    const aiAllowed = forceAi;
+    item.analysisMode = aiAllowed && window.CCC_VISION_AI?.configured?.() ? "ai" : (aiAllowed ? "demo" : "manual");
     item.analysisError = "";
     item.analysisErrorCode = "";
     item.analysisHttpStatus = 0;
@@ -310,15 +553,6 @@
 
     if (item.analysisMode === "manual") {
       item.analysisInProgress = false;
-      item.analysisPromise = Promise.resolve(null);
-      item.visionReady = false;
-      updateBatchStrip();
-      return item.analysisPromise;
-    }
-
-    if (item.analysisMode === "error") {
-      item.analysisError = "AI-endpoint saknas.";
-      item.analysisErrorCode = "AI_NOT_CONFIGURED";
       item.analysisPromise = Promise.resolve(null);
       item.visionReady = false;
       updateBatchStrip();
@@ -345,6 +579,8 @@
           item.aiCostUsd = Number(estimated.usd || 0);
           item.aiCostSek = Number(estimated.sek || 0);
           item.visionReady = true;
+          item.aiAnalyzedMain = true;
+          item.aiAnalyzedExtra = (item.extraFiles || []).map(() => true);
           window.CCC_VISION_KNOWLEDGE?.metric?.({
             type: "ai_analysis", itemId: item.id, usage: item.aiUsage, model: item.aiModel,
             estimatedUsd: item.aiCostUsd, estimatedSek: item.aiCostSek
@@ -354,17 +590,15 @@
           console.info("[CCC Vision] AI-analys klar", { itemId: item.id, usage: item.aiUsage });
           return item.visionResult;
         } catch (error) {
-          console.error("[CCC Vision] AI-fel – produktfälten lämnas oförändrade", error);
+          console.error("[CCC Vision] AI-fel – demo används som fallback", error);
           item.analysisError = error?.message || "AI-analysen misslyckades.";
           item.analysisErrorCode = error?.code || "AI_UNKNOWN";
           item.analysisHttpStatus = Number(error?.status) || 0;
-          item.analysisMode = "error";
-          item.visionReady = false;
-          return null;
-        }
+          item.analysisMode = "demo";
+              }
       }
 
-      // Demoresultat används endast för ett uttryckligt valt, tydligt märkt demoobjekt.
+      // Säkert demoläge tills AI-endpointen är ansluten, eller om testanropet misslyckas.
       await new Promise((resolve) => setTimeout(resolve, 650 + Math.floor(Math.random() * 450)));
       item.visionResult = await applyLocalKnowledge(window.CCC_VISION_DEMOS?.[item.demoKey] || window.CCC_VISION_DEMO);
       item.visionReady = true;
@@ -406,6 +640,15 @@
     if (review) { review.hidden = true; review.disabled = true; }
   }
 
+  function openWorkspaceItem(index, page = Math.floor(index / WORKSPACE_PAGE_SIZE)) {
+    if (!Number.isInteger(index) || !batchItems[index]) return;
+    currentIndex = index;
+    workspacePage = Math.max(0, page);
+    editReturnView = "workspace";
+    populateFormFromItem(true);
+    showStage("editCard", "edit");
+  }
+
   function updateBatchStrip() {
     const strip = $("#batchStrip");
     strip.innerHTML = "";
@@ -423,16 +666,20 @@
       wrap.type = "button";
       wrap.className = "batch-thumb";
       if (index === currentIndex) wrap.classList.add("is-selected");
-      if (item.flagged) wrap.classList.add("is-flagged");
-      wrap.setAttribute("aria-label", `Plagg ${index + 1}${item.visionReady ? ", analys klar" : item.analysisMode === "manual" ? ", ej AI-analyserat" : ", analyseras"}`);
+      wrap.setAttribute("aria-label", `${entityTerm("singular", true)} ${index + 1}${item.visionReady ? ", analys klar" : item.analysisMode === "manual" ? ", ej AI-analyserat" : ", analyseras"}`);
       const img = document.createElement("img");
       img.src = item.previewUrl;
-      img.alt = `Plagg ${index + 1}`;
+      img.alt = `${entityTerm("singular", true)} ${index + 1}`;
       const state = document.createElement("span");
       state.className = `thumb-status ${item.visionReady ? "is-ready" : item.analysisInProgress ? "is-working" : item.analysisMode === "manual" ? (item.approved ? "is-saved" : "is-manual") : "is-working"}`;
       state.textContent = item.visionReady || item.approved ? "✓" : "";
       state.setAttribute("aria-hidden", "true");
-      wrap.dataset.itemIndex = String(index);
+      wrap.dataset.workspaceIndex = String(index);
+      wrap.dataset.workspacePage = String(page);
+      wrap.addEventListener("click", () => {
+        if (suppressWorkspaceClick) return;
+        openWorkspaceItem(index, page);
+      });
       wrap.append(img, state);
       grid.appendChild(wrap);
       });
@@ -474,61 +721,115 @@
     const pageCount = Math.max(1, Math.ceil(batchItems.length / WORKSPACE_PAGE_SIZE));
     workspacePage = Math.max(0, Math.min(page, pageCount - 1));
     if (track) {
-      track.style.transition = animate ? "transform 320ms cubic-bezier(.22,.72,.22,1)" : "none";
+      track.style.transition = animate
+        ? (window.CCC_CORE?.swipe?.transition?.() || "transform 580ms cubic-bezier(.20,.58,.16,1)")
+        : "none";
       track.style.transform = `translate3d(${-workspacePage * 100}%,0,0)`;
     }
     renderWorkspacePager(pageCount);
+    updateWorkspaceRangeLabel();
   }
 
   function installWorkspaceSwipe() {
     const strip = $("#batchStrip");
     if (!strip) return;
-    const point = (event) => event.touches?.[0] || event.changedTouches?.[0] || event;
-    const begin = (event) => {
-      if (event.type === "mousedown" && event.button !== 0) return;
-      const p = point(event);
-      workspaceSwipe = {
-        x: p.clientX,
-        y: p.clientY,
-        dx: 0,
-        dy: 0,
-        target: event.target.closest?.(".batch-thumb") || null
-      };
+
+    const begin = (x, y, id = "touch", target = null) => {
+      const track = strip.querySelector(".vision-grid-track");
+      if (!track) return false;
+      const canSwipe = Math.ceil(batchItems.length / WORKSPACE_PAGE_SIZE) > 1;
+      const thumb = target?.closest?.(".batch-thumb") || null;
+      workspaceSwipe = { id, x, y, dx: 0, dy: 0, horizontal: false, canSwipe, thumb };
+      if (canSwipe) track.style.transition = "none";
+      return true;
     };
-    const move = (event) => {
+    const move = (x, y, event) => {
       if (!workspaceSwipe) return;
-      const p = point(event);
-      workspaceSwipe.dx = p.clientX - workspaceSwipe.x;
-      workspaceSwipe.dy = p.clientY - workspaceSwipe.y;
-      if (Math.abs(workspaceSwipe.dx) > 12 && Math.abs(workspaceSwipe.dx) > Math.abs(workspaceSwipe.dy) * 1.2) {
-        event.preventDefault();
+      const dx = x - workspaceSwipe.x;
+      const dy = y - workspaceSwipe.y;
+      workspaceSwipe.dx = dx;
+      workspaceSwipe.dy = dy;
+      if (!workspaceSwipe.canSwipe) return;
+      /* Lite fingerjitter ska vara ett vanligt tryck. Först ett tydligt
+         horisontellt drag låser gesten till swipe. */
+      const swipeCore = window.CCC_CORE?.swipe;
+      if (!workspaceSwipe.horizontal && (swipeCore?.isHorizontal?.(dx, dy) ?? (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.25))) {
+        workspaceSwipe.horizontal = true;
       }
+      if (!workspaceSwipe.horizontal) return;
+      event.preventDefault();
+      suppressWorkspaceClick = true;
+      const lastPage = Math.ceil(batchItems.length / WORKSPACE_PAGE_SIZE) - 1;
+      const atEdge = (workspacePage === 0 && dx > 0) || (workspacePage === lastPage && dx < 0);
+      const resisted = swipeCore?.offset?.(dx, strip.clientWidth, { atEdge }) ?? (atEdge ? dx * .24 : dx);
+      const track = strip.querySelector(".vision-grid-track");
+      if (track) track.style.transform = `translate3d(calc(${-workspacePage * 100}% + ${resisted}px),0,0)`;
     };
-    const finish = (event) => {
+    const finish = (event = null) => {
       if (!workspaceSwipe) return;
-      const gesture = workspaceSwipe;
+      const { dx, dy, horizontal, canSwipe, thumb } = workspaceSwipe;
       workspaceSwipe = null;
-      const horizontal = Math.abs(gesture.dx) > 32 && Math.abs(gesture.dx) > Math.abs(gesture.dy) * 1.2;
-      if (horizontal) {
-        setWorkspacePage(workspacePage + (gesture.dx < 0 ? 1 : -1), true);
+
+      if (horizontal && canSwipe) {
+        const swipeCore = window.CCC_CORE?.swipe;
+        const commit = swipeCore?.shouldCommit?.(dx, strip.clientWidth) ?? Math.abs(dx) > Math.max(72, strip.clientWidth * .24);
+        if (commit) setWorkspacePage(workspacePage + (dx < 0 ? 1 : -1), true);
+        else setWorkspacePage(workspacePage, true);
+        setTimeout(() => { suppressWorkspaceClick = false; }, 180);
         return;
       }
-      if (Math.hypot(gesture.dx, gesture.dy) > 12 || !gesture.target) return;
-      const index = Number(gesture.target.dataset.itemIndex);
-      if (!Number.isInteger(index) || !batchItems[index]) return;
-      currentIndex = index;
-      workspacePage = Math.floor(index / WORKSPACE_PAGE_SIZE);
-      editReturnView = "workspace";
-      populateFormFromItem(true);
-      showStage("editCard", "edit");
-      if (event.cancelable) event.preventDefault();
+
+      if (canSwipe) setWorkspacePage(workspacePage, true);
+
+      /* På mobil öppnar vi ett kort tryck direkt på touchend i stället för
+         att vara beroende av webbläsarens efterföljande syntetiska click. */
+      const isTap = thumb && Math.abs(dx) <= 14 && Math.abs(dy) <= 14;
+      if (isTap) {
+        if (event?.cancelable) event.preventDefault();
+        const index = Number(thumb.dataset.workspaceIndex);
+        const page = Number(thumb.dataset.workspacePage);
+        suppressWorkspaceClick = true;
+        openWorkspaceItem(index, page);
+        setTimeout(() => { suppressWorkspaceClick = false; }, 350);
+      } else {
+        suppressWorkspaceClick = false;
+      }
     };
-    strip.addEventListener("touchstart", begin, { passive: true });
-    strip.addEventListener("touchmove", move, { passive: false });
+
+    strip.addEventListener("touchstart", (event) => {
+      if (event.touches.length !== 1) return;
+      const t = event.touches[0];
+      begin(t.clientX, t.clientY, "touch", event.target);
+    }, { passive: true });
+    strip.addEventListener("touchmove", (event) => {
+      if (!workspaceSwipe || event.touches.length !== 1) return;
+      const t = event.touches[0];
+      move(t.clientX, t.clientY, event);
+    }, { passive: false });
     strip.addEventListener("touchend", finish, { passive: false });
-    strip.addEventListener("touchcancel", () => { workspaceSwipe = null; }, { passive: true });
-    strip.addEventListener("mousedown", begin);
-    strip.addEventListener("mouseup", finish);
+    strip.addEventListener("touchcancel", finish, { passive: true });
+
+    /* Musdrag på desktop, utan att blanda in touch-pointerevents på mobil. */
+    strip.addEventListener("pointerdown", (event) => {
+      if (event.pointerType !== "mouse" || event.button !== 0) return;
+      begin(event.clientX, event.clientY, event.pointerId, event.target);
+    });
+    strip.addEventListener("pointermove", (event) => {
+      if (event.pointerType !== "mouse" || !workspaceSwipe || workspaceSwipe.id !== event.pointerId) return;
+      move(event.clientX, event.clientY, event);
+    });
+    strip.addEventListener("pointerup", (event) => {
+      if (event.pointerType === "mouse" && workspaceSwipe?.id === event.pointerId) {
+        workspaceSwipe = null;
+        suppressWorkspaceClick = false;
+      }
+    });
+    strip.addEventListener("pointercancel", (event) => {
+      if (event.pointerType === "mouse" && workspaceSwipe?.id === event.pointerId) {
+        workspaceSwipe = null;
+        suppressWorkspaceClick = false;
+      }
+    });
   }
 
   function resetCaptureVisual() {
@@ -536,25 +837,38 @@
     preview.hidden = true;
     preview.removeAttribute("src");
     $("#startCameraBtn").classList.remove("has-image");
-    $("#startCameraBtn .action-copy strong").textContent = batchItems.length ? "Fota nästa plagg" : "Ta ett foto";
+    $("#startCameraBtn .action-copy strong").textContent = batchItems.length ? `Fota nästa ${entityTerm("singular")}` : "Ta ett foto";
   }
 
-  function updateCameraSessionCount(reviewing = false) {
-    const count = batchItems.length + (stagedItem ? 1 : 0);
+  function updateCameraSessionCount() {
+    const count = Math.max(0, batchItems.length - cameraSessionStartCount) + (stagedItem ? 1 : 0);
     const label = $("#cameraSessionCount");
     if (!label) return;
-    label.textContent = reviewing && stagedItem
-      ? `Foto ${count} · totalt ${count} ${count === 1 ? "plagg" : "plagg"}`
-      : `${count} ${count === 1 ? "plagg fotograferat" : "plagg fotograferade"}`;
+    label.textContent = `${count} ${count === 1 ? "nytt foto" : "nya foton"}`;
+    const express=$("#cameraExpressPublishBtn");
+    if(express){
+      express.hidden=publishAddMode;
+      if(publishAddMode)return;
+      express.disabled=count<1||publishNavigationPending;
+      express.textContent=count===1
+        ?`Expresspublicera 1 ${entityTerm("singular")}`
+        :`Expresspublicera ${count} ${entityTerm("plural")}`;
+    }
   }
 
   async function startCamera() {
-    /* Ett nytt kamerabesök ska fortsätta den aktiva lokala sessionen. Det får
-       aldrig tyst ersätta bilder som redan fotograferats. */
+    if (cameraOpening) return;
+    cameraOpening = true;
+    const requestId = ++cameraRequestId;
+    cameraReturnView = visionView;
+    /* Kameran öppnas från den vy användaren faktiskt står på. En sparad session
+       återläses först efter ett taget foto; återläsningen får inte byta vyn bakom
+       iOS-kameran när användaren bara provar och sedan trycker Avbryt. */
     if (!batchItems.length && savedSessionSummary?.count) {
-      try { await restoreSavedVisionSession(); }
+      try { await restoreSavedVisionSession({ showAfterRestore: false }); }
       catch (error) { console.error("[CCC Vision] Kunde inte återuppta session före kamera", error); }
     }
+    cameraSessionStartCount = batchItems.length;
     stagedCameraFile = null;
     stagedItem = null;
     updateCameraSessionCount(false);
@@ -564,13 +878,25 @@
     $("#cameraReviewActions").hidden = true;
     $("#cameraOverlay").hidden = false;
     document.body.classList.add("camera-open");
+    document.documentElement.classList.remove("ccc-vision-publish-add-loading");
     try {
-      cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" } }, audio: false });
-      $("#cameraVideo").srcObject = cameraStream;
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" } }, audio: false });
+      if (requestId !== cameraRequestId || $("#cameraOverlay").hidden) {
+        stream.getTracks().forEach((track) => track.stop());
+        return;
+      }
+      cameraStream = stream;
+      $("#cameraVideo").srcObject = stream;
       configureCameraZoom();
     } catch (error) {
+      if (requestId !== cameraRequestId) return;
       closeCamera();
-      $("#cameraFallbackInput").click();
+      const fallback = $("#cameraFallbackInput");
+      fallback.value = "";
+      cameraFallbackOpen = true;
+      fallback.click();
+    } finally {
+      if (requestId === cameraRequestId) cameraOpening = false;
     }
   }
 
@@ -640,17 +966,47 @@
   }
 
   function closeCamera() {
+    cameraRequestId += 1;
+    cameraOpening = false;
     stopCameraStream();
     $("#cameraOverlay").hidden = true;
     document.body.classList.remove("camera-open");
   }
 
-  function closeCameraSafely() {
+  async function closeCameraSafely() {
+    if(publishAddMode){
+      if(stagedItem?.previewUrl)URL.revokeObjectURL(stagedItem.previewUrl);
+      stagedCameraFile=null;
+      stagedItem=null;
+      await returnToPublishFromCamera(false);
+      return;
+    }
     /* X betyder lämna kameran, inte kasta fotot som redan tagits. */
+    const returnView = cameraReturnView;
     if (stagedItem) commitStagedItem();
     closeCamera();
     resetCaptureVisual();
-    if (batchItems.length) showWorkspace();
+    if (returnView === "workspace" && batchItems.length) showWorkspace();
+    else showVisionStart();
+  }
+
+  function finishFallbackCamera() {
+    cameraFallbackOpen = false;
+    cameraOpening = false;
+    const fallback = $("#cameraFallbackInput");
+    if (fallback) fallback.value = "";
+  }
+
+  async function cancelFallbackCamera() {
+    if (!cameraFallbackOpen) return;
+    finishFallbackCamera();
+    resetCaptureVisual();
+    if(publishAddMode){
+      await returnToPublishFromCamera(false);
+      return;
+    }
+    if (cameraReturnView === "workspace" && batchItems.length) showWorkspace();
+    else showVisionStart();
   }
 
   function captureFrame() {
@@ -713,26 +1069,70 @@
 
   async function finishCameraSeries() {
     commitStagedItem();
+    if(publishAddMode){
+      await returnToPublishFromCamera(true);
+      return;
+    }
     closeCamera();
     resetCaptureVisual();
     updateBatchStrip();
     showWorkspace();
   }
 
-  function handleFallbackCamera(fileList) {
+  async function expressPublishCameraSession() {
+    if (publishNavigationPending) return;
+    commitStagedItem();
+    const newItems=batchItems.slice(cameraSessionStartCount);
+    if(!newItems.length)return;
+    publishNavigationPending=true;
+    const button=$("#cameraExpressPublishBtn");
+    if(button){button.disabled=true;button.textContent="Förbereder expresspublicering…";}
+    try{
+      for(const item of newItems)await saveApprovedDraftLocally(item);
+      await saveVisionSessionLocally();
+      saveBatchMetadata();
+      closeCamera();
+      const ids=newItems.map(item=>item.id).join(",");
+      window.location.assign(`../publish/index.html?view=prepare&items=${encodeURIComponent(ids)}&from=vision-camera-express`);
+    }catch(error){
+      console.error("[CCC Vision] Expresspublicering kunde inte förberedas",error);
+      publishNavigationPending=false;
+      if(button){button.disabled=false;button.textContent="Försök expresspublicera igen";}
+      setMessage("Expresspubliceringen kunde inte förberedas. Bilderna finns kvar lokalt.");
+    }
+  }
+
+  async function handleFallbackCamera(fileList) {
     const files = [...fileList].filter((f) => f.type.startsWith("image/"));
-    if (!files.length) return;
+    if (!files.length) {
+      cancelFallbackCamera();
+      return;
+    }
+    if (!batchItems.length && savedSessionSummary?.count) {
+      try { await restoreSavedVisionSession({ showAfterRestore: false }); }
+      catch (error) { console.error("[CCC Vision] Kunde inte återuppta session efter kameran", error); }
+    }
     files.forEach((file) => batchItems.push(createBatchItem(file, batchItems.length)));
+    finishFallbackCamera();
+    if(publishAddMode){
+      await returnToPublishFromCamera(true);
+      return;
+    }
     queueVisionSessionSave();
     updateBatchStrip();
     resetCaptureVisual();
     showWorkspace();
   }
 
-  function handleGalleryFiles(fileList) {
+  async function handleGalleryFiles(fileList) {
     const files = [...fileList].filter((file) => file.type.startsWith("image/"));
     if (!files.length) return;
     files.forEach((file) => batchItems.push(createBatchItem(file, batchItems.length)));
+    if(publishAddMode){
+      $("#galleryInput").value="";
+      await returnToPublishFromCamera(true);
+      return;
+    }
     queueVisionSessionSave();
     updateBatchStrip();
     resetCaptureVisual();
@@ -776,8 +1176,8 @@
       modeNote = "Testläge – AI-endpoint är inte konfigurerad.";
     }
     $("#visionHint").textContent = item.extraFiles.length
-      ? `${item.extraFiles.length + 1} bilder används för det här plagget. ${modeNote}`
-      : `${modeNote} Vill du visa mer av just det här plagget kan du lägga till fler bilder.`;
+      ? `${item.extraFiles.length + 1} bilder används för ${entityTerm("definiteSingular")}. ${modeNote}`
+      : `${modeNote} Vill du visa mer av just ${entityTerm("definiteSingular")} kan du lägga till fler bilder.`;
     $("#correctionBox").hidden = true;
     updateBatchStrip();
     showStage("visionCard", "suggestion");
@@ -798,6 +1198,26 @@
 
     /* AI på/pågående eller färdigt förslag använder ordinarie review-flöde. */
     return openReview(index);
+  }
+
+  async function navigateEditObject(direction) {
+    if (!batchItems.length) return;
+    const target = currentIndex + direction;
+    if (target < 0 || target >= batchItems.length) return;
+    await saveEditedCurrent({ quiet: true });
+    currentIndex = target;
+    workspacePage = Math.floor(currentIndex / WORKSPACE_PAGE_SIZE);
+    editReturnView = "workspace";
+    populateFormFromItem(true);
+    showStage("editCard", "edit");
+    updateEditObjectNav();
+  }
+
+  function updateEditObjectNav() {
+    const prev = $("#editPrevObjectBtn");
+    const next = $("#editNextObjectBtn");
+    if (prev) prev.disabled = currentIndex <= 0;
+    if (next) next.disabled = currentIndex >= batchItems.length - 1;
   }
 
   function moveToNextItem() {
@@ -905,7 +1325,6 @@
       size:String(f?.size||"").trim(),
       price:String(f?.price||"").trim(),
       description:String(f?.description||"").trim(),
-      flagged:!!item?.flagged,
       source:"ccc-vision",
       updatedAt:new Date().toISOString()
     };
@@ -1017,6 +1436,7 @@
     }
   }
 
+
   async function clearVisionSessionRecord() {
     const db = await openWorkspaceDb();
     try {
@@ -1056,9 +1476,10 @@
       cccItemId: item.cccItemId || cccItemId(),
       originalFileKey: item.originalFileKey,
       extraFileKeys: [...(item.extraFileKeys || [])],
+      aiAnalyzedMain: !!item.aiAnalyzedMain,
+      aiAnalyzedExtra: [...(item.aiAnalyzedExtra || [])],
       demoKey: item.demoKey,
       approved: !!item.approved,
-      flagged: !!item.flagged,
       editedFields: item.editedFields || null,
       visionReady: !!item.visionReady,
       visionResult: item.visionResult || null,
@@ -1098,11 +1519,11 @@
     applyCaptureMode();
   }
 
-  async function restoreSavedVisionSession() {
+  async function restoreSavedVisionSession({ showAfterRestore = true } = {}) {
     const record = await getVisionSessionRecord();
     if (!record?.items?.length) {
       savedSessionSummary = null;
-      showVisionStart();
+      if (showAfterRestore) showVisionStart();
       return;
     }
 
@@ -1155,12 +1576,15 @@
         extraFileKeys: extraKeys,
         extraFileStored: extraFiles.map(() => true),
         extraFileSavePromises: extraFiles.map(() => null),
+        aiAnalyzedMain: saved.aiAnalyzedMain ?? (!!saved.visionReady && saved.analysisMode === "ai"),
+        aiAnalyzedExtra: Array.isArray(saved.aiAnalyzedExtra)
+          ? extraFiles.map((_, index) => !!saved.aiAnalyzedExtra[index])
+          : extraFiles.map(() => !!saved.visionReady && saved.analysisMode === "ai"),
         demoKey: saved.demoKey || "arsenal",
         visionReady: !!saved.visionReady,
         visionResult: saved.visionResult || null,
         analysisInProgress: false,
         approved: !!saved.approved,
-        flagged: !!saved.flagged,
         editedFields: saved.editedFields || null,
         analysisPromise: null,
         analysisMode: saved.analysisMode || "manual",
@@ -1178,13 +1602,8 @@
     currentIndex = Math.min(Number(record.currentIndex || 0), Math.max(0, batchItems.length - 1));
     savedSessionSummary = batchItems.length ? { count: batchItems.length, savedAt: record.savedAt } : null;
 
-    batchItems.forEach((item) => {
-      if (!item.visionReady && item.analysisMode !== "manual" && visionSettings().aiAuto) {
-        startSilentAnalysis(item, true);
-      }
-    });
 
-    showWorkspace();
+    if (showAfterRestore) showWorkspace();
   }
 
 
@@ -1214,7 +1633,6 @@
       size: (fields.size || "").trim(),
       price: (fields.price || "").trim(),
       description: (fields.description || "").trim(),
-      flagged: !!item.flagged,
       fields
     };
 
@@ -1232,6 +1650,38 @@
     }
   }
 
+  async function returnToPublishFromCamera(includeNewItems){
+    if(publishNavigationPending)return false;
+    const state=readPublishAddState();
+    publishNavigationPending=true;
+    const newItems=includeNewItems?batchItems.slice(cameraSessionStartCount):[];
+    try{
+      if(includeNewItems){
+        for(const item of newItems)await saveApprovedDraftLocally(item);
+      }
+      if(batchItems.length)await saveVisionSessionLocally();
+      const nextState={
+        ...(state||{}),
+        selectedIds:[...(state?.selectedIds||[])],
+        newIds:newItems.map(item=>item.id),
+        channelSelected:!!state?.channelSelected,
+        toolItemId:state?.toolItemId||"",
+        returnUrl:state?.returnUrl||new URL("../publish/index.html?from=vision-publish-add",window.location.href).href,
+        createdAt:Date.now()
+      };
+      sessionStorage.setItem(PUBLISH_ADD_STATE_KEY,JSON.stringify(nextState));
+      closeCamera();
+      window.location.assign(nextState.returnUrl);
+      return true;
+    }catch(error){
+      console.error("[CCC Vision] Kunde inte återgå till Publicera efter kameran",error);
+      publishNavigationPending=false;
+      document.documentElement.classList.remove("ccc-vision-publish-add-loading");
+      setMessage(`Kunde inte lägga till ${entityTerm("plural")} i Publicera. Bilderna finns kvar i Vision.`);
+      return false;
+    }
+  }
+
   async function approveCurrent() {
     const item = currentItem();
     if (!item) return;
@@ -1241,6 +1691,7 @@
       await saveApprovedDraftLocally(item);
       item.approved = true;
       saveBatchMetadata();
+      markEditBaseline();
       moveToNextItem();
     } catch (error) {
       console.error("[CCC Vision] Utkast kunde inte sparas lokalt", error);
@@ -1257,8 +1708,8 @@
       $("#" + id).value = fields[id] !== undefined ? fields[id] : "";
     });
     const progress = $("#editProgress");
-    if (progress) progress.textContent = `${currentIndex + 1} av ${batchItems.length}`;
-    updateFlagUi();
+    if (progress) progress.textContent = `${currentIndex + 1}/${batchItems.length}`;
+    updateEditObjectNav();
     renderSameGarmentEditor();
     if (allowWhileAnalyzing && !item.visionReady && !item.editedFields) {
       item.editedFields = Object.fromEntries(fieldIds.map((id) => [id, $("#" + id).value]));
@@ -1271,8 +1722,9 @@
       const canAnalyze = !!window.CCC_VISION_AI?.configured?.();
       manualAi.hidden = !canAnalyze;
       manualAi.disabled = !!item.analysisInProgress;
-      manualAi.textContent = item.analysisInProgress ? "Analyserar…" : (item.visionReady ? "Analysera igen" : "Analysera med AI");
+      manualAi.textContent = item.analysisInProgress ? "Analyserar…" : "AI-analys";
       manualAi.classList.toggle("is-secondary", !!item.visionReady);
+      manualAi.classList.add("is-manual-quiet");
     }
   }
 
@@ -1283,7 +1735,7 @@
     list.innerHTML = "";
     const main = document.createElement("div");
     main.className = "same-garment-thumb is-main";
-    main.innerHTML = `<img src="${item.previewUrl}" alt="Huvudbild"><span>Huvudbild</span>`;
+    main.innerHTML = `<img src="${item.previewUrl}" alt="Huvudbild"><span>Huvudbild</span>${item.aiAnalyzedMain ? '<span class="same-garment-ai-badge">AI ✓</span>' : ""}`;
     list.appendChild(main);
     (item.extraUrls || []).forEach((url, index) => {
       const cell = document.createElement("div");
@@ -1296,21 +1748,27 @@
       remove.setAttribute("aria-label", `Ta bort extrabild ${index + 1}`);
       remove.textContent = "×";
       remove.addEventListener("click", () => removeSameGarmentImage(index));
-      cell.append(img, remove);
+      const label = document.createElement("span");
+      label.className = "same-garment-slot-label";
+      label.textContent = index === 0 ? "Bild 2" : "Bild 3";
+      cell.append(img, label, remove);
+      if (item.aiAnalyzedExtra?.[index]) {
+        const aiBadge = document.createElement("span");
+        aiBadge.className = "same-garment-ai-badge";
+        aiBadge.textContent = "AI ✓";
+        cell.appendChild(aiBadge);
+      }
       list.appendChild(cell);
     });
     while (list.children.length < 3) {
       const add = document.createElement("button");
       add.type = "button";
       add.className = "same-garment-thumb same-garment-add";
-      const firstEmpty = list.children.length === 1;
-      if (firstEmpty) {
-        add.innerHTML = "<strong>＋</strong><span>Nytt foto</span>";
-        add.addEventListener("click", () => $("#sameGarmentCameraInput")?.click());
-      } else {
-        add.innerHTML = `<strong>＋</strong><span>${item.extraFiles.length ? "Lägg till" : "Album"}</span>`;
-        add.addEventListener("click", () => $("#sameGarmentInput")?.click());
-      }
+      const slotIndex = list.children.length;
+      const slotLabel = slotIndex === 1 ? "Bild 2" : "Bild 3";
+      add.setAttribute("aria-label", `Lägg till ${slotLabel.toLowerCase()}`);
+      add.innerHTML = `<span class="same-garment-slot-label">${slotLabel}</span><span class="same-garment-add-copy">Nytt foto</span>`;
+      add.addEventListener("click", () => $("#sameGarmentInput")?.click());
       list.appendChild(add);
     }
     const count = $("#sameGarmentCount");
@@ -1326,15 +1784,53 @@
     item.extraFileKeys.splice(index, 1);
     item.extraFileStored.splice(index, 1);
     item.extraFileSavePromises.splice(index, 1);
+    item.aiAnalyzedExtra ||= [];
+    item.aiAnalyzedExtra.splice(index, 1);
     renderSameGarmentEditor();
-    startSilentAnalysis(item, true);
+    item.visionReady = false;
+    item.analysisMode = "manual";
+    item.analysisInProgress = false;
+    item.analysisPromise = Promise.resolve(null);
+    item.visionResult = null;
     scheduleAutosave();
   }
 
+  function formSnapshot() {
+    return JSON.stringify(Object.fromEntries(fieldIds.map((id) => [id, $("#" + id)?.value ?? ""])));
+  }
+
+  function markEditBaseline() {
+    editBaseline = formSnapshot();
+    editStructuralDirty = false;
+  }
+
+  function hasEditChanges() {
+    return editStructuralDirty || (!!editBaseline && formSnapshot() !== editBaseline);
+  }
+
+  function returnFromEditToOrigin(){
+    if(editReturnView==="done")finishBatch();
+    else if(editReturnView==="suggestion")openReview(currentIndex);
+    else showWorkspace();
+  }
+
   function editCurrent(allowWhileAnalyzing = false) {
+    stopFocusedTextGuard();
+    document.documentElement.classList.remove("ccc-focused-price-mode");
+    document.body.classList.remove("ccc-focused-price-mode");
+    $("#editCard")?.classList.remove("price-editor-active");
+    document.documentElement.classList.remove("ccc-focused-text-mode");
+    document.body.classList.remove("ccc-focused-text-mode");
+    $("#editCard")?.classList.remove("text-editor-active");
+    unlockVisionScroll();
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     editReturnView = allowWhileAnalyzing && !currentItem()?.visionReady ? "workspace" : "suggestion";
     populateFormFromItem(allowWhileAnalyzing);
+    markEditBaseline();
+    const state = $("#draftState");
+    if (state) state.textContent = currentItem()?.approved ? "✓ Sparas automatiskt" : "";
     showStage("editCard", "edit");
+    requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
   }
 
   async function saveEditedCurrent({ advance = false, quiet = false } = {}) {
@@ -1361,8 +1857,8 @@
         else moveToNextItem();
       } else if (!quiet) {
         const state = $("#draftState");
-        if (state) state.textContent = "✓ Sparat automatiskt";
-        setMessage("Plagget är sparat. Du kan fortsätta här eller välja ett annat plagg.");
+        if (state) state.textContent = "✓ Sparas automatiskt";
+        setMessage(`${entityTerm("definiteSingular",true)} är sparat. Du kan fortsätta här eller välja ett annat ${entityTerm("singular")}.`);
       }
       return true;
     } catch (error) {
@@ -1377,31 +1873,39 @@
   }
 
   function scheduleAutosave() {
+    clearTimeout(saveTimer);
+    if (visionView !== "edit" || !currentItem() || !hasEditChanges()) return;
     const sequence = ++autosaveSequence;
     const state = $("#draftState");
     if (state) state.textContent = "Sparar…";
-    clearTimeout(saveTimer);
     saveTimer = setTimeout(async () => {
+      if (!hasEditChanges()) return;
       const ok = await saveEditedCurrent({ quiet: true });
       if (sequence !== autosaveSequence) return;
-      if (state) state.textContent = ok ? "✓ Sparat automatiskt" : "Kunde inte spara";
+      if (state) state.textContent = ok ? "✓ Sparas automatiskt" : "Kunde inte spara";
     }, 500);
   }
 
   async function flushAutosave() {
     clearTimeout(saveTimer);
     autosaveSequence += 1;
-    if (visionView !== "edit" || !currentItem()) return true;
+    if (visionView !== "edit" || !currentItem() || !hasEditChanges()) return true;
     const state = $("#draftState");
     if (state) state.textContent = "Sparar…";
     const ok = await saveEditedCurrent({ quiet: true });
-    if (state) state.textContent = ok ? "✓ Sparat automatiskt" : "Kunde inte spara";
+    if (state) state.textContent = ok ? "✓ Sparas automatiskt" : "Kunde inte spara";
     return ok;
   }
 
   function saveEditedAndBack() {
     const item = currentItem();
     if (!item) return;
+    if (!hasEditChanges()) {
+      clearTimeout(saveTimer);
+      autosaveSequence += 1;
+      returnFromEditToOrigin();
+      return;
+    }
 
     /* Läs formuläret synkront medan redigeringsvyn fortfarande är aktiv. */
     item.editedFields = Object.fromEntries(fieldIds.map((id) => [id, $("#" + id).value]));
@@ -1411,8 +1915,7 @@
 
     /* Navigation väntar inte på IndexedDB.
        Vision behåller originalbilden; slutlig bildbearbetning hör hemma i Publicera. */
-    editReturnView = "workspace";
-    showWorkspace();
+    returnFromEditToOrigin();
 
     /* Spara original + metadata med samma item.id i bakgrunden.
        put() uppdaterar befintlig post; ingen WebP skapas i Vision. */
@@ -1423,7 +1926,7 @@
       })
       .catch((error) => {
         console.error("[CCC Vision] Bakgrundssparning efter Spara & tillbaka misslyckades", error);
-        setMessage("Plagget kunde inte sparas lokalt. Öppna det igen och försök på nytt.");
+        setMessage(`${entityTerm("definiteSingular",true)} kunde inte sparas lokalt. Öppna det igen och försök på nytt.`);
       });
   }
 
@@ -1440,7 +1943,9 @@
       item.extraFileStored ||= [];
       item.extraFileSavePromises ||= [];
       item.extraFileKeys.push(key);
+      item.aiAnalyzedExtra ||= [];
       const extraIndex = item.extraFiles.length - 1;
+      item.aiAnalyzedExtra[extraIndex] = false;
       item.extraFileStored[extraIndex] = false;
       item.extraFileSavePromises[extraIndex] = putVisionSourceFile(key, file)
         .then(() => {
@@ -1459,21 +1964,20 @@
     if (files.length) {
       renderSameGarmentEditor();
       queueVisionSessionSave();
-      startSilentAnalysis(item);
-      item.analysisPromise.then(() => {
-        if (visionView === "edit") {
-          populateFormFromItem(true);
-          scheduleAutosave();
-        } else if (!$("#captureCard").hidden) updateBatchStrip();
-        else openReview(currentIndex);
-      });
+      item.visionReady = false;
+      item.analysisMode = "manual";
+      item.analysisInProgress = false;
+      item.analysisPromise = Promise.resolve(null);
+      item.visionResult = null;
+      editStructuralDirty = true;
+      scheduleAutosave();
     }
     $("#sameGarmentInput").value = "";
   }
 
   function trashCurrentFromEdit() {
     if (!batchItems.length) return;
-    if (!confirm("Ta bort plagget och bilderna från den här Vision-sessionen?")) return;
+    if (!confirm(`Ta bort ${entityTerm("definiteSingular")} och bilderna från den här Vision-sessionen?`)) return;
     const removedIndex = currentIndex;
     const [removed] = batchItems.splice(removedIndex, 1);
     trashStack.push({ item: removed, index: removedIndex });
@@ -1493,26 +1997,6 @@
     saveVisionSessionLocally().catch((error) =>
       console.warn("[CCC Vision] Session kunde inte synkas efter borttagning", error)
     );
-  }
-
-  function updateFlagUi() {
-    const button = $("#flagItemBtn");
-    const item = currentItem();
-    if (!button || !item) return;
-    button.classList.toggle("is-flagged", !!item.flagged);
-    button.setAttribute("aria-pressed", String(!!item.flagged));
-    const label = button.querySelector("span");
-    if (label) label.textContent = item.flagged ? "Flaggad" : "Flagga";
-  }
-
-  function toggleCurrentFlag() {
-    const item = currentItem();
-    if (!item) return;
-    item.flagged = !item.flagged;
-    updateFlagUi();
-    updateBatchStrip();
-    saveBatchMetadata();
-    scheduleAutosave();
   }
 
   function trashCurrent() {
@@ -1546,7 +2030,7 @@
 
   function readyItemTitle(item, index) {
     const fields = item?.editedFields || item?.visionResult?.fields || {};
-    return (fields.title || item?.visionResult?.summaryTitle || `Plagg ${index + 1}`).trim();
+    return (fields.title || item?.visionResult?.summaryTitle || `${entityTerm("singular",true)} ${index + 1}`).trim();
   }
 
   function renderReadyPublishList() {
@@ -1583,15 +2067,20 @@
       list.appendChild(button);
     });
     const publish = $("#publishReadyBtn");
-    if (publish) { publish.textContent = `Publicera ${ready.length} ${ready.length === 1 ? "plagg" : "plagg"}`; publish.disabled = ready.length === 0; }
+    if (publish) { publish.textContent = `Publicera ${ready.length} ${ready.length === 1 ? entityTerm("singular") : entityTerm("plural")}`; publish.disabled = ready.length === 0; }
   }
 
   function finishBatch() {
-    clearVisionSessionRecord().catch((error) => console.warn("[CCC Vision] Kunde inte rensa avslutad fotosession", error));
+    /* En färdig granskningsrunda betyder INTE att fotosessionen ska raderas.
+       Objekten måste ligga kvar så att användaren kan återvända en annan dag,
+       komplettera fler bilder/objekt eller gå till Publicera utan dataförlust. */
     const approved = batchItems.filter((item) => item.approved).length;
-    $("#seriesDoneText").textContent = `${approved} ${approved === 1 ? "plagg är" : "plagg är"} ${approved === 1 ? "klart" : "klara"} att publiceras.`;
+    $("#seriesDoneText").textContent = `${approved} ${approved === 1 ? entityTerm("singular") : entityTerm("plural")} ${approved === 1 ? "är klart" : "är klara"} att publiceras.`;
     renderReadyPublishList();
     saveBatchMetadata();
+    queueVisionSessionSave().catch((error) =>
+      console.warn("[CCC Vision] Kunde inte säkerhetsspara färdig fotosession", error)
+    );
     showStage("seriesDoneCard", "done");
   }
 
@@ -1606,7 +2095,6 @@
       id: item.id,
       demoKey: item.demoKey,
       approved: item.approved,
-      flagged: !!item.flagged,
       extraImageCount: item.extraFiles.length,
       publishReady: !!item.approved,
       fields: item.editedFields
@@ -1652,41 +2140,259 @@
 
   function updateSmartSuggestions() {
     const demo = currentDemo();
-    const priceSuggestion = Number(demo?.priceSuggestion || 0);
-    $("#priceSuggestion").textContent = priceSuggestion > 0 ? `${priceSuggestion} kr` : "Ingen prisbedömning";
-    $("#usePriceSuggestionBtn").disabled = priceSuggestion <= 0;
     $("#factSuggestionText").textContent = demo?.fact || "Ett kort extra fakta kan läggas till om du vill.";
+    updateFactButton();
   }
 
-  function usePriceSuggestion() {
-    const suggestion = Number(currentDemo()?.priceSuggestion || 0);
-    if (suggestion <= 0) return;
-    $("#price").value = suggestion;
+  function syncEditedFieldsFromForm() {
+    const item = currentItem();
+    if (item) item.editedFields = Object.fromEntries(fieldIds.map((fieldId) => [fieldId, $("#" + fieldId).value]));
+  }
+
+  function commitTextFieldChange(fieldId, value) {
+    const field = $("#" + fieldId);
+    if (!field) return;
+    field.value = value;
+    syncEditedFieldsFromForm();
+    updateCounters();
     updateTextPreviews();
-    scheduleSave();
+    updateFactButton();
+    updateNewConditionButton();
+    scheduleAutosave();
   }
 
   function appendToDescription(text) {
     const area = $("#description");
     if (area.value.includes(text)) return;
-    area.value = `${area.value.trim()}${area.value.trim() ? "\n\n" : ""}${text}`;
-    updateCounters();
-    updateTextPreviews();
-    scheduleSave();
+    const next = `${area.value.trim()}${area.value.trim() ? "\n\n" : ""}${text}`;
+    commitTextFieldChange("description", next);
   }
 
-  function addFact() {
+  function currentFactBlock() {
     const fact = currentDemo()?.fact;
-    if (fact) appendToDescription(`Visste du?\n${fact}`);
-    $("#addFactBtn").textContent = "Tillagt i beskrivningen ✓";
-    $("#addFactBtn").disabled = true;
+    return fact ? `Visste du?\n${fact}` : "";
   }
 
-  function addNewCondition() {
-    appendToDescription("Nyskick.");
-    $("#addNewConditionBtn").textContent = "Tillagt i beskrivningen ✓";
-    $("#addNewConditionBtn").disabled = true;
+  function descriptionHasFact() {
+    const block = currentFactBlock();
+    return !!block && $("#description").value.includes(block);
   }
+
+  function updateFactButton() {
+    const button = $("#addFactBtn");
+    if (!button) return;
+    const hasFact = descriptionHasFact();
+    button.textContent = hasFact ? "Ta bort “Visste du?”" : "Lägg till “Visste du?”";
+    button.disabled = !currentFactBlock();
+    button.classList.toggle("is-active", hasFact);
+  }
+
+  function toggleFact() {
+    const block = currentFactBlock();
+    if (!block) return;
+    const area = $("#description");
+    if (area.value.includes(block)) {
+      const next = area.value
+        .replace(block, "")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+      commitTextFieldChange("description", next);
+    } else {
+      appendToDescription(block);
+    }
+    updateFactButton();
+  }
+
+  function descriptionHasNewCondition() {
+    return /(^|\n\n)Nyskick\.(?=\n\n|$)/.test($("#description").value.trim());
+  }
+
+  function updateNewConditionButton() {
+    const button = $("#addNewConditionBtn");
+    if (!button) return;
+    const active = descriptionHasNewCondition();
+    button.textContent = active ? "Ta bort “Nyskick”" : "Lägg till “Nyskick”";
+    button.disabled = false;
+    button.classList.toggle("is-active", active);
+  }
+
+  function toggleNewCondition() {
+    const area = $("#description");
+    if (descriptionHasNewCondition()) {
+      const next = area.value
+        .replace(/(^|\n\n)Nyskick\.(?=\n\n|$)/, "$1")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+      commitTextFieldChange("description", next);
+    } else {
+      appendToDescription("Nyskick.");
+    }
+    updateNewConditionButton();
+  }
+
+  function updateFocusedTextViewportSize() {
+    const screen = $("#textEditorDialog");
+    if (!screen || screen.hidden || !document.body.classList.contains("ccc-focused-text-mode")) return;
+    const vv = window.visualViewport;
+    const height = Math.max(260, Math.round(vv?.height || window.innerHeight || 0));
+    const top = Math.max(0, Math.round(vv?.offsetTop || 0));
+    screen.style.setProperty("--focused-vv-height", `${height}px`);
+    screen.style.setProperty("--focused-vv-top", `${top}px`);
+  }
+
+  function enforceFocusedTextViewport() {
+    if (!document.body.classList.contains("ccc-focused-text-mode")) return;
+    updateFocusedTextViewportSize();
+    if (focusedTextScrollGuard) return;
+    focusedTextScrollGuard = true;
+    cancelAnimationFrame(focusedTextGuardFrame);
+    focusedTextGuardFrame = requestAnimationFrame(() => {
+      // Safari may scroll the document to reveal the focused textarea.
+      // Force the document itself back to 0; the focused screen is fixed.
+      if ((window.scrollY || document.documentElement.scrollTop || 0) !== 0) {
+        window.scrollTo(0, 0);
+      }
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      focusedTextScrollGuard = false;
+    });
+  }
+
+  function startFocusedTextGuard() {
+    window.addEventListener("scroll", enforceFocusedTextViewport, { passive: true });
+    window.visualViewport?.addEventListener("scroll", enforceFocusedTextViewport);
+    window.visualViewport?.addEventListener("resize", enforceFocusedTextViewport);
+    updateFocusedTextViewportSize();
+    enforceFocusedTextViewport();
+  }
+
+  function stopFocusedTextGuard() {
+    window.removeEventListener("scroll", enforceFocusedTextViewport);
+    window.visualViewport?.removeEventListener("scroll", enforceFocusedTextViewport);
+    window.visualViewport?.removeEventListener("resize", enforceFocusedTextViewport);
+    cancelAnimationFrame(focusedTextGuardFrame);
+    focusedTextScrollGuard = false;
+  }
+
+  function openTextEditor(fieldId) {
+    if (!["title", "description"].includes(fieldId)) return;
+    const dialog = $("#textEditorDialog");
+    if(dialog){
+      const kind = fieldId === "description" ? "description" : "title";
+      dialog.dataset.editorKind = kind;
+      dialog.classList.toggle("is-description", kind === "description");
+      dialog.classList.toggle("is-title", kind === "title");
+    }
+    const editor = $("#largeTextEditor");
+    const source = $("#" + fieldId);
+    const editCard = $("#editCard");
+    if (!dialog || !editor || !source) return;
+
+    activeTextEditorField = fieldId;
+    textEditorOriginalValue = source.value;
+    const isTitle = fieldId === "title";
+    $("#textEditorTitle").textContent = isTitle ? "Rubrik" : "Beskrivning";
+    $("#textEditorHint").textContent = isTitle
+      ? `Skriv en tydlig rubrik för ${entityTerm("definiteSingular")}.`
+      : "Skriv eller justera beskrivningen.";
+    editor.maxLength = isTitle ? 100 : 800;
+    editor.rows = isTitle ? 4 : 10;
+    editor.value = source.value;
+    editor.placeholder = isTitle ? "Rubrik" : "Beskrivning";
+    editor.classList.add("title-editor");
+    editor.classList.toggle("description-editor", !isTitle);
+    $("#largeTextEditorCount").textContent = `${editor.value.length}/${editor.maxLength}`;
+
+    focusedTextScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+    if (editCard) editCard.classList.add("text-editor-active");
+    dialog.hidden = false;
+    document.documentElement.classList.add("ccc-focused-text-mode");
+    window.scrollTo({top:0,left:0,behavior:"auto"});
+    document.body.classList.add("ccc-focused-text-mode");
+    window.scrollTo({top:0,left:0,behavior:"auto"});
+    startFocusedTextGuard();
+
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+      editor.focus();
+      editor.setSelectionRange(editor.value.length, editor.value.length);
+      setTimeout(updateFocusedTextViewportSize, 80);
+      setTimeout(updateFocusedTextViewportSize, 260);
+    });
+  }
+
+  function closeTextEditor({ save = false } = {}) {
+    const dialog = $("#textEditorDialog");
+    const editor = $("#largeTextEditor");
+    const editCard = $("#editCard");
+    if (!dialog || !editor) return;
+    if (save && activeTextEditorField) {
+      commitTextFieldChange(activeTextEditorField, editor.value);
+    }
+    dialog.hidden = true;
+    if (editCard) editCard.classList.remove("text-editor-active");
+    stopFocusedTextGuard();
+    dialog.style.removeProperty("--focused-vv-height");
+    dialog.style.removeProperty("--focused-vv-top");
+    document.documentElement.classList.remove("ccc-focused-text-mode");
+    document.body.classList.remove("ccc-focused-text-mode");
+    activeTextEditorField = null;
+    textEditorOriginalValue = "";
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: focusedTextScrollY, left: 0, behavior: "auto" });
+    });
+  }
+
+  function lockVisionScroll() {
+    if (editorScrollLocked) return;
+    editorScrollLockY = window.scrollY || document.documentElement.scrollTop || 0;
+    document.documentElement.classList.add("ccc-editor-scroll-locked");
+    document.body.classList.add("ccc-editor-scroll-locked");
+    editorScrollLocked = true;
+  }
+
+  function unlockVisionScroll() {
+    if (!editorScrollLocked) return;
+    document.documentElement.classList.remove("ccc-editor-scroll-locked");
+    document.body.classList.remove("ccc-editor-scroll-locked");
+    editorScrollLocked = false;
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: editorScrollLockY, left: 0, behavior: "auto" });
+    });
+  }
+
+  function openPriceEditor() {
+    const dialog=$("#priceEditorDialog"), editor=$("#largePriceEditor"), source=$("#price"), editCard=$("#editCard");
+    if(!dialog||!editor||!source)return;
+    editor.value=source.value;
+    if(editCard)editCard.classList.add("price-editor-active");
+    document.documentElement.classList.add("ccc-focused-price-mode");
+    document.body.classList.add("ccc-focused-price-mode");
+    dialog.hidden=false;
+    requestAnimationFrame(()=>{editor.focus();editor.select();});
+  }
+  function closePriceEditor(){
+    const dialog=$("#priceEditorDialog"), editCard=$("#editCard");
+    if(dialog)dialog.hidden=true;
+    if(editCard)editCard.classList.remove("price-editor-active");
+    document.documentElement.classList.remove("ccc-focused-price-mode");
+    document.body.classList.remove("ccc-focused-price-mode");
+  }
+
+  function syncFocusedEditorViewport(dialog=$("#textEditorDialog")){
+    if(!dialog||dialog.hidden)return;
+    const vv=window.visualViewport;
+    if(!vv){
+      dialog.style.removeProperty("--editor-vv-top");
+      dialog.style.removeProperty("--editor-vv-height");
+      return;
+    }
+    const top = Math.max(0, Math.min(vv.offsetTop || 0, 120));
+    const height = Math.max(260, vv.height || window.innerHeight);
+    dialog.style.setProperty("--editor-vv-top", `${top}px`);
+    dialog.style.setProperty("--editor-vv-height", `${height}px`);
+  }
+  function syncOpenFocusedEditors(){}
 
   function closeOptionalExtras() {
     const dialog=$("#optionalExtrasDialog");
@@ -1710,7 +2416,6 @@
       const file = new File([blob], `${key}.svg`, { type: "image/svg+xml" });
       const item = createBatchItem(file, batchItems.length);
       item.demoKey = key;
-      item.explicitDemo = true;
       startSilentAnalysis(item);
       batchItems.push(item);
       updateBatchStrip();
@@ -1734,7 +2439,7 @@
     if (button) { button.disabled = true; button.textContent = "Analyserar…"; }
     if (contextSub) {
       contextSub.hidden = false;
-      contextSub.textContent = "CCC analyserar det här plagget…";
+      contextSub.textContent = `CCC analyserar ${entityTerm("definiteSingular")}…`;
     }
 
     try {
@@ -1766,18 +2471,15 @@
           contextSub.textContent = "AI-förslag klart – ändra det du vill.";
         }
 
-        if (button) { button.hidden = false; button.textContent = "Analysera igen"; button.classList.add("is-secondary"); }
+        if (button) { button.hidden = false; button.textContent = "↻ Analysera igen"; button.classList.add("is-secondary"); }
         saveBatchMetadata();
         scheduleAutosave();
       } else {
         const message = item.analysisError || "AI-analysen gav inget användbart resultat.";
-        const code = item.analysisErrorCode ? ` · ${item.analysisErrorCode}` : "";
-        const status = item.analysisHttpStatus ? ` · HTTP ${item.analysisHttpStatus}` : "";
         if (contextSub) {
           contextSub.hidden = false;
-          contextSub.textContent = `AI-fel: ${message}${code}${status}. Inga produktfält ändrades.`;
+          contextSub.textContent = `AI-fel: ${message}`;
         }
-        setMessage(`AI-fel: ${message}${code}${status}. Inga produktfält ändrades.`);
       }
     } catch (error) {
       const stillSelected = currentItem()?.id === itemId;
@@ -1791,7 +2493,7 @@
 
       if (currentItem()?.id === itemId && button) {
         button.disabled = false;
-        button.textContent = item.visionReady ? "Analysera igen" : "Analysera med AI";
+        button.textContent = item.visionReady ? "↻ Analysera igen" : "✦ Analysera med AI";
         button.classList.toggle("is-secondary", !!item.visionReady);
         button.hidden = !window.CCC_VISION_AI?.configured?.();
       }
@@ -1849,6 +2551,19 @@
   }
 
   async function goBackFromVision() {
+    const logoutDialog=$("#logoutDialog");
+    if(logoutDialog && !logoutDialog.hidden){logoutDialog.hidden=true;return;}
+    const workspaceHelp=$("#visionWorkspaceHelpDialog");
+    if(workspaceHelp && !workspaceHelp.hidden){workspaceHelp.hidden=true;return;}
+    const contextHelp=$("#visionContextHelpDialog");
+    if(contextHelp && !contextHelp.hidden){contextHelp.hidden=true;return;}
+    const priceEditor=$("#priceEditorDialog");
+    if(visionView==="edit" && priceEditor && !priceEditor.hidden){closePriceEditor();return;}
+    const textEditor=$("#textEditorDialog");
+    if(visionView==="edit" && textEditor && !textEditor.hidden){
+      closeTextEditor({save:false});
+      return;
+    }
     const optionalExtras=$("#optionalExtrasDialog");
     if(visionView==="edit" && optionalExtras && !optionalExtras.hidden){
       optionalExtras.hidden=true;
@@ -1860,11 +2575,25 @@
       return;
     }
     switch (visionView) {
-      case "edit":
-        /* Byt vy direkt. Full IndexedDB-sparning fortsätter i bakgrunden så
-           Tillbaka aldrig känns låst av en redan pågående autosparning. */
-        saveEditedAndBack();
+      case "edit": {
+        if(publishConfirmReturn()){
+          if(await returnToPublishConfirmation())return;
+          setMessage("Ändringarna kunde inte sparas. Du är kvar i Granska & komplettera.");
+          return;
+        }
+        if (!hasEditChanges()) {
+          clearTimeout(saveTimer);
+          autosaveSequence += 1;
+          returnFromEditToOrigin();
+          return;
+        }
+        const saved = await flushAutosave();
+        returnFromEditToOrigin();
+        if (!saved) {
+          console.warn("[CCC Vision] Redigeringen kunde inte sparas, men navigation bakåt tillåts.");
+        }
         return;
+      }
       case "crop":
         if (cropReturnView === "done") finishBatch();
         else if (cropReturnView === "workspace") editCurrent(true);
@@ -1883,13 +2612,35 @@
         return;
       case "start":
       default:
+        if(publishAddMode){
+          await returnToPublishFromCamera(false);
+          return;
+        }
         if (batchItems.length) await queueVisionSessionSave();
         window.location.assign("../dashboard/index.html");
     }
   }
 
-  $("#visionStartBackBtn")?.addEventListener("click", () => window.location.assign("../dashboard/index.html?v=2.8.4"));
-  document.addEventListener("ccc:header-settings",()=>{ window.location.href="../settings/index.html?module=vision"; });
+  async function runVisionBackOnce(){
+    if(visionBackPending)return;
+    visionBackPending=true;
+    try{await goBackFromVision();}
+    finally{visionBackPending=false;}
+  }
+
+  $("#visionStartBackBtn")?.addEventListener("click", () => {
+    const navigate=window.CCC_CORE?.navigation?.dashboard;
+    if(navigate)navigate();
+    else window.location.assign("../dashboard/index.html?v=2.8.4");
+  });
+  document.addEventListener("ccc:header-settings",()=>{
+    rememberVisionSettingsReturn();
+    const target=new URL("../settings/index.html",window.location.href);
+    target.searchParams.set("module","vision");
+    target.searchParams.set("return","1");
+    target.searchParams.set("source",window.location.search);
+    window.location.href=target.href;
+  });
   $("#visionSettingsCloseBtn")?.addEventListener("click", () => setVisionSettingsOpen(false));
 
   async function renderKnowledgeList() {
@@ -1926,24 +2677,32 @@
   });
 
   $("#visionSettingsOverlay")?.addEventListener("click", (event) => { if (event.target === visionSettingsOverlay) setVisionSettingsOpen(false); });
-  $("#visionAiAutoSetting")?.addEventListener("change", (event) => saveVisionSetting("ccc-vision-ai-auto", event.target.checked));
   $("#visionLearnEditsSetting")?.addEventListener("change", (event) => saveVisionSetting("ccc-vision-learn-edits", event.target.checked));
 
   document.addEventListener("ccc:core-ready",()=>updateHeaderContext(),{once:true});
   // Kamera / fotograferingsflöde
   $("#startCameraBtn").addEventListener("click", startCamera);
   $("#galleryBtn").addEventListener("click", () => $("#galleryInput").click());
-  document.addEventListener("ccc:header-back",goBackFromVision);
-  $("#reviewBackBtn")?.addEventListener("click", () => showWorkspace());
+  document.addEventListener("ccc:header-back",runVisionBackOnce);
+  $("#reviewBackBtn")?.addEventListener("click",()=>{
+    const navigate=window.CCC_CORE?.navigation?.back;
+    if(navigate)navigate();
+    else runVisionBackOnce();
+  });
   $("#resumeSessionBtn")?.addEventListener("click", async () => {
     if (batchItems.length) showWorkspace();
     else {
       const button = $("#resumeSessionBtn");
-      if (button) { button.disabled = true; button.textContent = "Öppnar fotosession…"; }
+      const label=$("#resumeSessionLabel");
+      const meta=$("#resumeSessionMeta");
+      if (button) button.disabled=true;
+      if(label)label.textContent="Öppnar fotosession…";
+      if(meta)meta.textContent="Läser den lokala sessionen";
       try { await restoreSavedVisionSession(); }
       catch (error) {
         console.error("[CCC Vision] Kunde inte återställa fotosession", error);
-        if (button) button.textContent = "Kunde inte öppna fotosessionen";
+        if(label)label.textContent="Kunde inte öppna fotosessionen";
+        if(meta)meta.textContent="Försök igen";
       } finally {
         if (button) button.disabled = false;
       }
@@ -1976,6 +2735,13 @@
   });
   $("#galleryInput").addEventListener("change", (event) => handleGalleryFiles(event.target.files));
   $("#cameraFallbackInput").addEventListener("change", (event) => handleFallbackCamera(event.target.files));
+  $("#cameraFallbackInput").addEventListener("cancel", cancelFallbackCamera);
+  window.addEventListener("focus", () => {
+    if (!cameraFallbackOpen) return;
+    window.setTimeout(() => {
+      if (cameraFallbackOpen && !$("#cameraFallbackInput")?.files?.length) cancelFallbackCamera();
+    }, 450);
+  });
   $("#closeCameraBtn").addEventListener("click", closeCameraSafely);
   $("#shutterBtn").addEventListener("click", captureFrame);
   $("#cameraZoomControls")?.addEventListener("click", (event) => {
@@ -1985,6 +2751,7 @@
   $("#retakeBtn").addEventListener("click", retakePhoto);
   $("#nextPhotoBtn").addEventListener("click", nextPhoto);
   $("#usePhotoBtn").addEventListener("click", finishCameraSeries);
+  $("#cameraExpressPublishBtn")?.addEventListener("click",expressPublishCameraSession);
   $("#workspaceCameraBtn")?.addEventListener("click", () => $("#startCameraBtn")?.click());
   $("#workspaceGalleryBtn")?.addEventListener("click", () => $("#galleryInput")?.click());
 
@@ -2023,21 +2790,27 @@
   });
   $("#trashCurrentBtn").addEventListener("click", trashCurrent); 
   $("#editTrashBtn")?.addEventListener("click", trashCurrentFromEdit);
-  $("#flagItemBtn")?.addEventListener("click", toggleCurrentFlag);
+  $("#editPrevObjectBtn")?.addEventListener("click", () => navigateEditObject(-1));
+  $("#editNextObjectBtn")?.addEventListener("click", () => navigateEditObject(1));
   $("#undoTrashBtn").addEventListener("click", undoTrash);
   $("#backToSuggestionBtn")?.addEventListener("click", saveEditedAndBack);
-  $("#previewBtn").addEventListener("click", saveEditedAndNext);
+  $("#previewBtn").addEventListener("click", handleEditorPrimaryAction);
   $("#newSeriesBtn").addEventListener("click", newSeries);
   $("#publishReadyBtn")?.addEventListener("click", () => {
     saveBatchMetadata();
-    window.location.href = "../publish/index.html";
+    rememberVisionPublishReturn("done");
+    const ids=batchItems.filter(item=>item.approved).map(item=>item.id);
+    const target=new URL("../publish/index.html",window.location.href);
+    target.searchParams.set("view","prepare");
+    target.searchParams.set("from","vision-ready");
+    if(ids.length)target.searchParams.set("items",ids.join(","));
+    window.location.href=target.href;
   });
 
 
   // Existerande extrafunktioner
-  $("#usePriceSuggestionBtn").addEventListener("click", usePriceSuggestion);
-  $("#addFactBtn").addEventListener("click", addFact);
-  $("#addNewConditionBtn").addEventListener("click", addNewCondition);
+  $("#addFactBtn").addEventListener("click", toggleFact);
+  $("#addNewConditionBtn").addEventListener("click", toggleNewCondition);
   $("#openExtrasBtn")?.addEventListener("click",()=>{$("#optionalExtrasDialog").hidden=false;});
   $("#cancelExtrasBtn")?.addEventListener("click",closeOptionalExtras);
   $("#saveExtrasBtn")?.addEventListener("click",()=>{
@@ -2047,20 +2820,54 @@
   });
   $("#optionalExtrasDialog")?.addEventListener("click",event=>{if(event.target===$("#optionalExtrasDialog"))closeOptionalExtras();});
   $("#openMoreFieldsBtn")?.addEventListener("click",()=>{
+    updateFactButton();
+    updateNewConditionButton();
+    lockVisionScroll();
     $("#moreFieldsDialog").hidden=false;
   });
-  $("#cancelMoreFieldsBtn")?.addEventListener("click",()=>{
+  $("#closeMoreFieldsBtn")?.addEventListener("click",()=>{
     $("#moreFieldsDialog").hidden=true;
-  });
-  $("#saveMoreFieldsBtn")?.addEventListener("click",()=>{
-    const item=currentItem();
-    if(item)item.editedFields=Object.fromEntries(fieldIds.map(id=>[id,$("#"+id).value]));
-    saveBatchMetadata();
-    scheduleAutosave();
-    $("#moreFieldsDialog").hidden=true;
+    unlockVisionScroll();
   });
   $("#moreFieldsDialog")?.addEventListener("click",event=>{
     if(event.target===$("#moreFieldsDialog"))$("#moreFieldsDialog").hidden=true;
+  });
+
+  ["title", "description"].forEach((fieldId) => {
+    const field = $("#" + fieldId);
+    field?.addEventListener("click", (event) => {
+      event.preventDefault();
+      openTextEditor(fieldId);
+    });
+    field?.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openTextEditor(fieldId);
+      }
+    });
+  });
+$("#price")?.addEventListener("click", openPriceEditor);
+  $("#price")?.addEventListener("focus", (event)=>{event.target.blur();openPriceEditor();});
+  $("#largePriceEditor")?.addEventListener("input",()=>{
+    const editor=$("#largePriceEditor"),source=$("#price");
+    if(!editor||!source)return;
+    source.value=editor.value;
+    const item=currentItem();
+    if(item)item.editedFields=Object.fromEntries(fieldIds.map(id=>[id,$("#"+id).value]));
+    scheduleAutosave();
+  });
+  $("#closePriceEditorBtn")?.addEventListener("click",closePriceEditor);
+  window.visualViewport?.addEventListener("resize",syncOpenFocusedEditors);
+  window.visualViewport?.addEventListener("scroll",syncOpenFocusedEditors);
+
+  $("#largeTextEditor")?.addEventListener("input", () => {
+    const editor = $("#largeTextEditor");
+    $("#largeTextEditorCount").textContent = `${editor.value.length}/${editor.maxLength}`;
+    if (activeTextEditorField) commitTextFieldChange(activeTextEditorField, editor.value);
+  });
+  $("#closeTextEditorBtn")?.addEventListener("click", () => closeTextEditor({ save: false }));
+  $("#textEditorDialog")?.addEventListener("click", (event) => {
+    if (event.target === $("#textEditorDialog")) closeTextEditor({ save: false });
   });
 
   $$('[data-copy]').forEach((button) => button.addEventListener("click", () => copyPreview(button.dataset.copy)));
@@ -2072,6 +2879,8 @@
       if (item) item.editedFields = Object.fromEntries(fieldIds.map((fieldId) => [fieldId, $("#" + fieldId).value]));
       updateCounters();
       updateTextPreviews();
+      updateFactButton();
+      updateNewConditionButton();
       scheduleAutosave();
     });
   });
@@ -2082,11 +2891,104 @@
 
   installWorkspaceSwipe();
   installCameraPinchZoom();
-  showVisionStart();
+
+  (async()=>{
+    const settingsReturn=takeVisionSettingsReturn();
+    const publishReturn=takeVisionPublishReturn();
+    let returnItemId=publishConfirmMode?publishConfirmItemId:"";
+    if(!returnItemId)try{returnItemId=sessionStorage.getItem("ccc-vision-return-edit-item")||"";}catch(_){}
+    /* Den uttryckliga returvyn vinner alltid över äldre objektnycklar. Det
+       hindrar Inställningar/Publicera från att kasta användaren till fel vy. */
+    if(settingsReturn||publishReturn){
+      const returnState=settingsReturn||publishReturn;
+        try{
+          await restoreSavedVisionSession({showAfterRestore:false});
+          const byId=returnState.itemId?batchItems.findIndex(item=>String(item.id)===String(returnState.itemId)):-1;
+          currentIndex=byId>=0?byId:Math.max(0,Math.min(Number(returnState.index||0),Math.max(0,batchItems.length-1)));
+          workspacePage=Math.max(0,Number(returnState.workspacePage||0));
+          editReturnView=returnState.editReturnView||"workspace";
+          cropReturnView=returnState.cropReturnView||"suggestion";
+          if(returnState.view==="edit"&&batchItems.length){populateFormFromItem(true);showStage("editCard","edit");}
+          else if(returnState.view==="suggestion"&&batchItems.length)await openReview(currentIndex);
+          else if(returnState.view==="done"&&batchItems.length)finishBatch();
+          else if(returnState.view==="workspace"&&batchItems.length)showWorkspace();
+          else showVisionStart();
+        }catch(error){console.warn("[CCC Vision] Kunde inte återställa returvyn",error);showVisionStart();}
+        return;
+    }
+    if(!returnItemId){
+      if(publishAddMode){
+        try{
+          await restoreSavedVisionSession({showAfterRestore:false});
+          cameraSessionStartCount=batchItems.length;
+          if(publishAddSource==="camera")await startCamera();
+          else showPublishAddChooser();
+        }catch(error){
+          console.error("[CCC Vision] Kunde inte öppna Lägg till-vyn från Publicera",error);
+          document.documentElement.classList.remove("ccc-vision-publish-add-loading");
+          showVisionStart();
+          setMessage("Lägg till-vyn kunde inte öppnas. Försök igen.");
+        }
+        return;
+      }
+      showVisionStart();
+      return;
+    }
+
+    try{
+      await restoreSavedVisionSession({showAfterRestore:false});
+      const returnIndex=batchItems.findIndex(item=>String(item.id)===String(returnItemId));
+      if(returnIndex>=0){
+        try{sessionStorage.removeItem("ccc-vision-return-edit-item");}catch(_){}
+        openWorkspaceItem(returnIndex,Math.floor(returnIndex/WORKSPACE_PAGE_SIZE));
+      }else{
+        console.warn("[CCC Vision] Returobjektet kunde inte hittas i den sparade sessionen",returnItemId);
+        try{sessionStorage.removeItem("ccc-vision-return-edit-item");}catch(_){}
+        showWorkspace();
+      }
+    }catch(error){
+      console.error("[CCC Vision] Kunde inte återställa sessionen efter Publicera",error);
+      showVisionStart();
+    }
+  })();
+
   refreshSavedSessionSummary();
   refreshCostUi();
   updateCounters();
   updateTextPreviews();
+  // v2.10.29: delegated help close works regardless of script/DOM order.
+  document.addEventListener("click", (event) => {
+    const close = event.target.closest?.("#closeVisionContextHelpBtn");
+    const dialog = $("#visionContextHelpDialog");
+    if (close && dialog) {
+      event.preventDefault();
+      dialog.hidden = true;
+      return;
+    }
+    if (dialog && event.target === dialog) dialog.hidden = true;
+  });
+
+  // v2.10.31 – workspace contextual help close.
+  document.addEventListener("click", (event) => {
+    const dialog = $("#visionWorkspaceHelpDialog");
+    if (!dialog) return;
+    if (event.target.closest?.("#closeVisionWorkspaceHelpBtn") || event.target === dialog) {
+      event.preventDefault();
+      dialog.hidden = true;
+    }
+  });
+
+  window.addEventListener("ccc:terminologychange",()=>{
+    window.CCC_TERMINOLOGY?.apply?.();
+    updateHeaderContext();
+    if(visionView==="workspace"){
+      updateWorkspaceRangeLabel();
+      renderWorkspace();
+    }else if(visionView==="edit"){
+      populateFormFromItem();
+    }
+  });
+
 })();
 
 /* CCC cache stamp: v2.8.69 */
