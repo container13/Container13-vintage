@@ -151,3 +151,10 @@ body.locked #app > .lina-watermark{display:none}
 .engine-export-more{margin-top:8px}
 .engine-export-panel button:disabled{opacity:.55;cursor:not-allowed}
 @media(max-width:760px){.engine-export-primary,.engine-export-more{display:grid}.engine-export-panel button{width:100%;text-align:left}}
+
+/* V0.3.18 · iPhone viewport lock: appen får aldrig panorera horisontellt. */
+html,body{width:100%;max-width:100%;overflow-x:hidden;overscroll-behavior-x:none}
+#app,.header,main,#view,.workspace,.engine-export-panel,section{max-width:100%;min-width:0}
+img,svg,canvas,video,pre,code,table{max-width:100%}
+.header{width:100%}
+@supports(overflow:clip){html,body,#app{overflow-x:clip}}
