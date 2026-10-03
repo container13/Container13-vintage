@@ -177,3 +177,4 @@ v2.10.148: Leveransfix: återställd core.css följer alltid med i ändringspake
 v2.10.149: Responsiv arbetsyta: aktiva vyer fyller tillgängligt arbetskort, variabelt innehåll scrollar internt och bredder skalar kontrollerat för mobil, liggande 10-tums iPad, 13-tum och 24-tum. Core-headern är orörd.
 v2.10.150: Granska från Snabbpublicera använder en separat granskningsfil med den aktuella bearbetade bilden. Originalfilens nyckel bevaras orörd för återställning.
 v2.10.151: Dold Vision-arbetsyta kan inte längre återaktiveras av responsiva :has-regler. Alla responsiva capture-regler kräver nu att själva kortet inte har hidden, så exakt en huvudvy visas åt gången.
+v2.10.152: Tillbaka från Fortsätt fotosession döljer nu även bildsidornas pager. Prickarna kan därför inte ligga kvar ensamma längst ned på Vision-starten.

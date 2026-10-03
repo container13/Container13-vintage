@@ -378,6 +378,7 @@
     const startMode = visionView === "start";
     const resume = $("#resumeSessionBtn");
     const strip = $("#batchStrip");
+    const pager = $("#batchPager");
     const help = $("#batchHelp");
     const addDetail = $("#addToSelectedBtn");
     const review = $("#showSuggestionBtn");
@@ -403,6 +404,7 @@
     if (workspaceCount) updateWorkspaceRangeLabel();
     if (startMode) {
       if (strip) strip.hidden = true;
+      if (pager) pager.hidden = true;
       if (help) help.hidden = true;
       if (addDetail) addDetail.hidden = true;
       if (review) review.hidden = true;
