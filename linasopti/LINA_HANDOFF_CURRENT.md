@@ -30,6 +30,7 @@ Dokumentrevision: överlämning 2026-10-03
 - Aldrig force-push. Annat CCC-arbete kan samtidigt ändra samma branch: hämta senaste head och bevara det.
 - Leverera frontend som CHANGED FILES ONLY till användaren. Bygg och verifiera COMPLETE som bas när en kodrelease görs.
 - Worker-kod ska gå att kopiera i ett knapptryck via HTML-hjälpare utan att tusentals rader visas i chatten.
+- **Cloudflare-kod – obligatorisk leveransregel:** När användaren behöver klistra in komplett Worker-kod ska koden INTE skrivas ut i chatten. Leverera i stället en kompakt ett-klick-kopieringslösning/HTML-hjälpare som kopierar hela den kompletta Worker-filen till urklipp. Användaren ska bara behöva trycka på kopieringsknappen och sedan klistra in i Cloudflare. Visa full kod endast om användaren uttryckligen ber att få se den.
 - Rapporter ska gå att kopiera/klistra in; aktuell generations exporter synliga överst, äldre under Fler exporter.
 - Inget påstående om globalt minne: dessa regler är beständigt dokumenterade i repo.
 - Supportfrågor är förberedda men INTE skickade. Automatisk filöverföring är inte tillstånd att kontakta leverantörer.
