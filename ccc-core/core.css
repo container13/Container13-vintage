@@ -1890,6 +1890,11 @@ html,body,.ccc-app-shell,.ccc-workspace,
   -webkit-user-drag:none!important;
   user-drag:none!important;
 }
+/* Bilder: behåll ingen markering/callout, men låt CCC:s egna långtrycksgest få touchströmmen. */
+.ccc-app-shell img{
+  pointer-events:auto!important;
+  touch-action:manipulation;
+}
 input,textarea,[contenteditable="true"],[contenteditable="plaintext-only"]{
   -webkit-user-select:text!important;
   user-select:text!important;
