@@ -1655,6 +1655,12 @@
     currentIndex = Math.min(Number(record.currentIndex || 0), Math.max(0, batchItems.length - 1));
     savedSessionSummary = batchItems.length ? { count: batchItems.length, savedAt: record.savedAt } : null;
 
+    /* Visa aktuell publiceringsversion i Välj objekt, inte alltid originalet. */
+    await Promise.all(batchItems.map((item) =>
+      syncPublishedPreview(item).catch((error) =>
+        console.warn("[CCC Vision] Kunde inte läsa aktuell bildversion", item.id, error)
+      )
+    ));
 
     if (showAfterRestore) showWorkspace();
   }
@@ -3004,7 +3010,7 @@ $("#price")?.addEventListener("click", openPriceEditor);
         /* Stäng start-/arbetsytans skal innan redigeringskortet öppnas.
            Båda anropen sker i samma renderingstakt och ger ingen mellanvy. */
         showWorkspace();
-        openWorkspaceItem(returnIndex,Math.floor(returnIndex/WORKSPACE_PAGE_SIZE));
+        selectWorkspaceItem(returnIndex,Math.floor(returnIndex/WORKSPACE_PAGE_SIZE));
       }else{
         console.warn("[CCC Vision] Returobjektet kunde inte hittas i den sparade sessionen",returnItemId);
         try{sessionStorage.removeItem("ccc-vision-return-edit-item");}catch(_){}

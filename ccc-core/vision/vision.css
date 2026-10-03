@@ -5779,3 +5779,12 @@ body.ccc-focused-text-mode #textEditorDialog #largeTextEditor.description-editor
   #captureCard:has(#batchStrip:not([hidden])) .workspace-selected-actions{gap:6px!important;margin-block:3px!important}
   #captureCard:has(#batchStrip:not([hidden])) .workspace-selected-actions>button{min-height:44px!important;padding-inline:8px!important;font-size:.88rem!important}
 }
+
+
+/* CCC Vision v2.10.156 – renare Välj objekt och full 3x2-grid. */
+#workspaceToolbar #workspaceCount{display:none!important}
+@media(max-width:480px) and (orientation:portrait){
+#workspaceToolbar.vision-workspace-toolbar{row-gap:2px!important}
+#captureCard:has(#batchStrip:not([hidden])) .batch-strip{flex:0 0 auto!important;width:100%!important;min-height:auto!important;overflow:hidden!important}
+#captureCard:has(#batchStrip:not([hidden])) .vision-grid-page{aspect-ratio:3/2!important}
+}
