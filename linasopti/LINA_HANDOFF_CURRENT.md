@@ -202,3 +202,12 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - This is an independent comparison line only: no candidate patching, no research start, no Gen8 rerun, Handel/Forward remain OFF.
 - `independentDataLineVerified` remains false until exported data has been compared against the candidate and evidence reviewed.
 - Cloudflare: INGEN ÄNDRING. Existing complete live Worker already supports SIP/all.
+
+
+## V0.3.17 — iPhone-vänlig kopiering av exporter
+- Central export visar nu **📋 Kopiera** som primärt val för JSON/text och **⬇ Hämta fil** separat.
+- Ett tryck på Kopiera lägger hela filinnehållet i urklipp för direkt inklistring i ChatGPT på iPhone.
+- iPhone-instruktion: öppna chatten, håll i skrivfältet och välj **Klistra in**; Ctrl/⌘V-instruktioner används inte.
+- Fallback vid nekat Clipboard API markerar hela texten i en textarea för manuell Kopiera.
+- Gäller alla exporter som använder LinaStatusExport; forskningslogik, Gen8, Handel, Forward och Worker är oförändrade.
+- Cloudflare: INGEN ÄNDRING.
