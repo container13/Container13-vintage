@@ -597,101 +597,89 @@ const CCCHelp={
 // Interaktiva kontroller/ikoner/logotyper undantas automatiskt.
 // ==========================================================
 const CCCImageViewer={
-  holdMs:600,
-  timer:null,
-  source:null,
-  pointerId:null,
-  startX:0,
-  startY:0,
-  moved:false,
-  openedByHold:false,
-  suppressClickUntil:0,
+  holdMs:600,timer:null,source:null,startX:0,startY:0,moved:false,
+  suppressClickUntil:0,activeInput:null,
   eligible(img){
     if(!(img instanceof HTMLImageElement)||!(img.currentSrc||img.src))return false;
     if(img.closest(".ccc-brand-mark,.brand,.icon-button,.ccc-icon-button,.action-icon,.workspace-add-icon,.ccc-tool-icon,.thumb-status,[data-ccc-no-viewer],.ccc-no-image-viewer"))return false;
     return true;
   },
+  resolve(target,x,y){
+    if(target instanceof HTMLImageElement&&this.eligible(target))return target;
+    // Fångar även bilder med pointer-events:none, där eventet landar på kortet/containern.
+    let node=target instanceof Element?target:null;
+    for(let depth=0;node&&depth<5;depth++,node=node.parentElement){
+      const imgs=[...node.querySelectorAll(":scope > img, :scope > picture > img")];
+      for(const img of imgs){
+        if(!this.eligible(img))continue;
+        const r=img.getBoundingClientRect();
+        if(x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom)return img;
+      }
+    }
+    return null;
+  },
   ensure(){
-    let overlay=document.querySelector("#cccImageViewer");
-    if(overlay)return overlay;
-    overlay=document.createElement("div");
-    overlay.id="cccImageViewer";
-    overlay.className="ccc-image-viewer";
-    overlay.hidden=true;
-    overlay.setAttribute("role","dialog");
-    overlay.setAttribute("aria-modal","true");
-    overlay.setAttribute("aria-label","Bild i helskärm");
-    overlay.innerHTML='<img class="ccc-image-viewer-img" alt="">';
-    document.body.appendChild(overlay);
-    overlay.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();this.close();});
-    overlay.addEventListener("contextmenu",event=>event.preventDefault());
-    return overlay;
+    let o=document.querySelector("#cccImageViewer");
+    if(o)return o;
+    o=document.createElement("div");o.id="cccImageViewer";o.className="ccc-image-viewer";o.hidden=true;
+    o.setAttribute("role","dialog");o.setAttribute("aria-modal","true");o.setAttribute("aria-label","Bild i helskärm");
+    o.innerHTML='<img class="ccc-image-viewer-img" alt="">';
+    document.body.appendChild(o);
+    o.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();this.close();});
+    o.addEventListener("contextmenu",e=>e.preventDefault());
+    return o;
   },
   open(img){
     if(!this.eligible(img))return;
-    const overlay=this.ensure(),full=overlay.querySelector("img");
-    full.src=img.currentSrc||img.src;
-    full.alt=img.alt||"Bild";
-    overlay.hidden=false;
-    document.documentElement.classList.add("ccc-image-viewer-open");
-    this.openedByHold=true;
+    const o=this.ensure(),full=o.querySelector("img");
+    full.src=img.currentSrc||img.src;full.alt=img.alt||"Bild";
+    o.hidden=false;document.documentElement.classList.add("ccc-image-viewer-open");
     this.suppressClickUntil=performance.now()+1000;
   },
   close(){
-    const overlay=document.querySelector("#cccImageViewer");
-    if(!overlay||overlay.hidden)return;
-    overlay.hidden=true;
-    document.documentElement.classList.remove("ccc-image-viewer-open");
-    this.openedByHold=false;
+    const o=document.querySelector("#cccImageViewer");
+    if(!o||o.hidden)return;
+    o.hidden=true;document.documentElement.classList.remove("ccc-image-viewer-open");
   },
-  cancel(){
-    if(this.timer)clearTimeout(this.timer);
-    this.timer=null;this.source=null;this.pointerId=null;
-  },
-  arm(img,id,x,y){
-    this.cancel();
-    this.source=img;this.pointerId=id;this.startX=x;this.startY=y;this.moved=false;
-    this.timer=setTimeout(()=>{
-      const source=this.source;
-      if(!source||this.moved)return;
-      this.open(source);
-      this.timer=null;
-    },this.holdMs);
+  cancel(){if(this.timer)clearTimeout(this.timer);this.timer=null;this.source=null;this.activeInput=null;},
+  arm(img,x,y,input){
+    if(!img)return;
+    this.cancel();this.source=img;this.startX=x;this.startY=y;this.moved=false;this.activeInput=input;
+    this.timer=setTimeout(()=>{const s=this.source;if(!s||this.moved)return;this.open(s);this.timer=null;},this.holdMs);
   },
   install(){
-    // Pointer Events fungerar på modern iOS/Android och fångas före vyernas egna handlers.
-    document.addEventListener("pointerdown",event=>{
-      const overlay=document.querySelector("#cccImageViewer");
-      if(overlay&&!overlay.hidden)return;
-      if(event.pointerType==="mouse"&&event.button!==0)return;
-      const img=event.target.closest?.("img");
-      if(!this.eligible(img))return;
-      this.arm(img,event.pointerId,event.clientX,event.clientY);
+    // Touch är primär väg på mobil. Pointer finns som fallback för pen/mus och desktop.
+    document.addEventListener("touchstart",e=>{
+      const o=document.querySelector("#cccImageViewer");if(o&&!o.hidden)return;
+      if(e.touches.length!==1)return;
+      const t=e.touches[0],img=this.resolve(e.target,t.clientX,t.clientY);
+      if(img)this.arm(img,t.clientX,t.clientY,"touch");
+    },{capture:true,passive:true});
+    document.addEventListener("touchmove",e=>{
+      if(this.activeInput!=="touch"||!this.source||e.touches.length!==1)return;
+      const t=e.touches[0];if(Math.hypot(t.clientX-this.startX,t.clientY-this.startY)>16){this.moved=true;this.cancel();}
+    },{capture:true,passive:true});
+    document.addEventListener("touchend",()=>{if(this.activeInput==="touch")this.cancel();},{capture:true,passive:true});
+    document.addEventListener("touchcancel",()=>{if(this.activeInput==="touch")this.cancel();},{capture:true,passive:true});
+    document.addEventListener("pointerdown",e=>{
+      if(e.pointerType==="touch")return;
+      if(e.pointerType==="mouse"&&e.button!==0)return;
+      const img=this.resolve(e.target,e.clientX,e.clientY);if(img)this.arm(img,e.clientX,e.clientY,"pointer");
     },true);
-    document.addEventListener("pointermove",event=>{
-      if(!this.source||event.pointerId!==this.pointerId)return;
-      if(Math.hypot(event.clientX-this.startX,event.clientY-this.startY)>16){this.moved=true;this.cancel();}
+    document.addEventListener("pointermove",e=>{
+      if(this.activeInput!=="pointer"||!this.source)return;
+      if(Math.hypot(e.clientX-this.startX,e.clientY-this.startY)>16){this.moved=true;this.cancel();}
     },true);
-    const finish=event=>{
-      if(this.openedByHold){
-        // Släppet efter långtrycket ska inte stänga helskärmsbilden.
-        this.source=null;this.pointerId=null;this.timer=null;return;
-      }
-      if(this.pointerId===event.pointerId)this.cancel();
-    };
-    document.addEventListener("pointerup",finish,true);
-    document.addEventListener("pointercancel",finish,true);
-    document.addEventListener("click",event=>{
-      if(performance.now()<this.suppressClickUntil){
-        event.preventDefault();event.stopImmediatePropagation();
-        this.suppressClickUntil=0;
-      }
+    document.addEventListener("pointerup",()=>{if(this.activeInput==="pointer")this.cancel();},true);
+    document.addEventListener("pointercancel",()=>{if(this.activeInput==="pointer")this.cancel();},true);
+    document.addEventListener("click",e=>{
+      if(performance.now()<this.suppressClickUntil){e.preventDefault();e.stopImmediatePropagation();this.suppressClickUntil=0;}
     },true);
-    document.addEventListener("contextmenu",event=>{
-      const img=event.target.closest?.("img");
-      if(this.eligible(img)){event.preventDefault();event.stopPropagation();}
+    document.addEventListener("contextmenu",e=>{
+      const p=e.touches?.[0],img=this.resolve(e.target,p?.clientX??0,p?.clientY??0);
+      if(img){e.preventDefault();e.stopPropagation();}
     },true);
-    document.addEventListener("keydown",event=>{if(event.key==="Escape")this.close();});
+    document.addEventListener("keydown",e=>{if(e.key==="Escape")this.close();});
   }
 };
 CCCImageViewer.install();
