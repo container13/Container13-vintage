@@ -17,17 +17,21 @@ function collect(){
  return {schema:'LINA-STATUS-EXPORT-2',app:'Linas Opti Clean Core',release:release(),generatedAt:new Date().toISOString(),route:window.LinaRouter?.current?.()||location.hash.replace(/^#/,'')||'dashboard',tradeEnabled:false,robotMaturity,integrity,sync:session,evidenceStatus:window.LinaEvidence?.syncStatus?.()||null,evidence:compactEvidence(),generationEngine,localState:local,notes:['Status Export 2.0 använder aktuell runtime-release och aktuell Robotmognadsmodell.','Generation Engine och evidensintegritet ligger först; localState finns kvar för recovery/felsökning.','Inga lösenkoder eller inloggningssessioner exporteras.']};
 }
 function fullDiagnostics(){const x=collect();x.schema='LINA-FULL-DIAGNOSTICS-2';x.syncDiagnostics=window.LinaEvidence?.diagnostics?.()||null;return x}
-function showExportStatus(message,text){
- let box=document.getElementById('lina-export-receipt');if(!box){box=document.createElement('div');box.id='lina-export-receipt';box.setAttribute('role','status');box.style.cssText='position:fixed;bottom:16px;left:16px;right:16px;z-index:10000;background:#fff;border:1px solid #8795a9;padding:14px;border-radius:12px;box-shadow:0 4px 20px #0002;max-height:50vh;overflow:auto';document.body.appendChild(box)}
- box.replaceChildren();const msg=document.createElement('span');msg.textContent=message;box.appendChild(msg);
- if(text!==undefined){const button=document.createElement('button');button.textContent='Kopiera rapporttext';box.appendChild(button);button.onclick=async()=>{try{await navigator.clipboard.writeText(text);showExportStatus('Rapporttext kopierad · klistra in med Ctrl+V / ⌘V')}catch{const area=document.createElement('textarea');area.value=text;area.readOnly=true;area.style.width='100%';box.appendChild(area);area.focus();area.select();msg.textContent='Tryck Ctrl+C / ⌘C, sedan Ctrl+V / ⌘V här i chatten';button.remove()}}}
- const close=document.createElement('button');close.textContent='Stäng';close.onclick=()=>box.remove();box.appendChild(close);
+function showExportStatus(message,text,name,type='text/plain;charset=utf-8'){
+ let box=document.getElementById('lina-export-receipt');if(!box){box=document.createElement('div');box.id='lina-export-receipt';box.setAttribute('role','status');box.style.cssText='position:fixed;bottom:max(16px,env(safe-area-inset-bottom));left:16px;right:16px;z-index:10000;background:#fff;border:1px solid #8795a9;padding:14px;border-radius:12px;box-shadow:0 4px 20px #0002;max-height:55vh;overflow:auto';document.body.appendChild(box)}
+ box.replaceChildren();const msg=document.createElement('div');msg.textContent=message;box.appendChild(msg);
+ if(text!==undefined){
+  const actions=document.createElement('div');actions.style.cssText='display:flex;gap:8px;flex-wrap:wrap;margin-top:10px';box.appendChild(actions);
+  const copy=document.createElement('button');copy.textContent='📋 Kopiera';actions.appendChild(copy);
+  copy.onclick=async()=>{try{await copyText(text);msg.textContent='✓ Hela filinnehållet kopierat · öppna chatten, håll i skrivfältet och välj Klistra in'}catch{const area=document.createElement('textarea');area.value=text;area.readOnly=true;area.style.cssText='width:100%;min-height:120px;margin-top:10px';box.appendChild(area);area.focus();area.select();msg.textContent='Urklipp nekades · texten är markerad. Välj Kopiera och klistra sedan in i chatten.'}};
+  if(name){const save=document.createElement('button');save.textContent='⬇ Hämta fil';actions.appendChild(save);save.onclick=()=>saveText(name,text,type)}
+ }
+ const close=document.createElement('button');close.textContent='Stäng';close.style.marginTop='10px';close.onclick=()=>box.remove();box.appendChild(close);
 }
 function saveText(name,text,type){const blob=new Blob([text],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function copyText(text){try{return navigator.clipboard?.writeText?Promise.resolve(navigator.clipboard.writeText(text)):Promise.reject(Error('Urklipp saknas'))}catch(e){return Promise.reject(e)}}
 function downloadText(name,text,type='text/plain;charset=utf-8'){
- text=String(text);const copying=copyText(text);saveText(name,text,type);
- copying.then(()=>showExportStatus('Rapport sparad och text kopierad · Ctrl+V / ⌘V för att klistra in'),()=>showExportStatus('Rapport sparad · automatisk kopiering nekades',text));return name;
+ text=String(text);showExportStatus('Filen är klar · kopiera hela innehållet direkt till chatten eller hämta filen.',text,name,type);return name;
 }
 function trigger(name,obj){return downloadText(name,JSON.stringify(obj,null,2),'application/json;charset=utf-8')}
 function downloadObjectAsync(prefix,makeObject){
@@ -35,7 +39,7 @@ function downloadObjectAsync(prefix,makeObject){
  let copying;
  try{if(navigator.clipboard?.write&&window.ClipboardItem)copying=navigator.clipboard.write([new window.ClipboardItem({'text/plain':text.then(t=>new Blob([t],{type:'text/plain'}))})]);else copying=Promise.reject(Error('Asynkront urklipp saknas'))}catch(e){copying=Promise.reject(e)}
  const outcome=Promise.resolve(copying).then(()=>true,()=>false);
- return text.then(async t=>{saveText(name,t,'application/json;charset=utf-8');if(await outcome)showExportStatus('Rapport sparad och text kopierad · Ctrl+V / ⌘V för att klistra in');else showExportStatus('Rapport sparad · tryck Kopiera rapporttext',t);return name},e=>{showExportStatus('Rapportexport misslyckades: '+String(e.message||e));throw e});
+ return text.then(async t=>{if(await outcome)showExportStatus('✓ Hela filinnehållet kopierat · öppna chatten, håll i skrivfältet och välj Klistra in',t,name,'application/json;charset=utf-8');else showExportStatus('Filen är klar · tryck 📋 Kopiera för att lägga hela innehållet i urklipp.',t,name,'application/json;charset=utf-8');return name},e=>{showExportStatus('Rapportexport misslyckades: '+String(e.message||e));throw e});
 }
 function download(){return trigger(`LINA_STATUS_${release().replace(/\./g,'')}_${safeDate()}.json`,collect())}
 function downloadDiagnostics(){return trigger(`LINA_FULL_DIAGNOSTICS_${release().replace(/\./g,'')}_${safeDate()}.json`,fullDiagnostics())}
