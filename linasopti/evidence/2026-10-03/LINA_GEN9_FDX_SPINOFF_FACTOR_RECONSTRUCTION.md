@@ -20,3 +20,21 @@ Gen9 remains NOT APPROVED. Gen8 was not rerun. Trading/Forward OFF. No Worker ch
 
 Sources:
 FedEx investor releases (May 13 and June 1, 2026); Yahoo Help SLN28256; public May 29 FDX and FDXF-WI quote records.
+
+
+## Uppföljning – CRSP-metoden verifierad
+
+Yahoo Help säger uttryckligen att adjusted close använder lämpliga split- och dividendmultiplikatorer enligt CRSP-standard. CRSP Market Indexes Methodology Guide 2024 anger uttryckligen metoden för en spin-off när when-issued-handel finns före ex-dagen:
+
+Parent adjusted SOD price = parent close dagen före ex-dagen - spun-off company closing WI price dagen före ex-dagen * spin-off ratio.
+
+Detta är exakt samma strukturella formel som användes i den tidigare marknadsrekonstruktionen. FedEx distributionsdokumentet styrker dessutom att FDXF WI handlades till och med 2026-05-29 och att distributionskvoten var 1 FDXF per 2 FDX.
+
+Därmed är metodluckan stängd på standardnivå: Yahoo anger CRSP-standard och CRSP dokumenterar explicit spin-off-formeln för when-issued-fallet. Kvarvarande skillnad mellan den publikt avrundade rekonstruktionen 0.805258044930176 och kandidatmedianen 0.8058017740753254 ska däremot inte döljas eller användas som toleransbaserad verifieringsflagga. Exakt vendor-input/precision för den enskilda Yahoo-justeringen är fortfarande inte direkt observerad.
+
+Status preciseras därför till: **CRSP_SPINOFF_METHOD_VERIFIED_EXACT_VENDOR_INPUT_PRECISION_UNRESOLVED**.
+
+Källor:
+- Yahoo Help, What is the adjusted close?: https://help.yahoo.com/kb/SLN28256.html
+- CRSP Market Indexes Methodology Guide 2024, Appendix A / Price Adjustment Table: https://www.crsp.org/wp-content/uploads/guides/CRSP_Market_Indexes_Methodology_Guide_2024.pdf
+- FedEx distribution/trading details filed with SEC: https://www.sec.gov/Archives/edgar/data/1048911/000110465926060233/tm2520565d14_ex99-4.htm
