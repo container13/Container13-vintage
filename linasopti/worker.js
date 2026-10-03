@@ -319,7 +319,7 @@ export default {
         {
           ok: true,
           service: "Linas Opti API",
-          version: "0.58.8",
+          version: "0.58.9",
           mode: "paper",
           tradingEnabled: false,
           alpacaConfigured: Boolean(
@@ -347,10 +347,28 @@ export default {
       const timeframe = url.searchParams.get("timeframe") || "1Day";
       const start = url.searchParams.get("start") || "";
       const end = url.searchParams.get("end") || "";
+      const feed = (url.searchParams.get("feed") || "iex").toLowerCase();
+      const adjustment = (url.searchParams.get("adjustment") || "raw").toLowerCase();
 
       if (!symbols) {
         return json(
           { ok: false, error: "symbols saknas" },
+          400,
+          request
+        );
+      }
+
+      if (!["iex", "sip"].includes(feed)) {
+        return json(
+          { ok: false, error: "Endast feed=iex eller feed=sip stöds just nu" },
+          400,
+          request
+        );
+      }
+
+      if (!["raw", "split", "dividend", "spin-off", "all"].includes(adjustment)) {
+        return json(
+          { ok: false, error: "Ogiltig adjustment" },
           400,
           request
         );
@@ -390,8 +408,8 @@ export default {
 
           alpaca.searchParams.set("symbols", symbols);
           alpaca.searchParams.set("timeframe", timeframe);
-          alpaca.searchParams.set("feed", "iex");
-          alpaca.searchParams.set("adjustment", "raw");
+          alpaca.searchParams.set("feed", feed);
+          alpaca.searchParams.set("adjustment", adjustment);
           alpaca.searchParams.set("limit", "10000");
 
           if (start) {
@@ -478,7 +496,8 @@ export default {
           {
             ok: true,
             source: "Alpaca",
-            feed: "iex",
+            feed,
+            adjustment,
             timeframe,
             symbols: symbols.split(","),
             rows,
