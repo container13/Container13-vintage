@@ -1,0 +1,40 @@
+{
+  "schema": "LINA-GEN9-CALENDAR-VERIFY-1",
+  "reviewDate": "2026-10-03",
+  "range": [
+    "2020-01-01",
+    "2024-12-31"
+  ],
+  "status": "TARGET_CALENDAR_VERIFIED",
+  "candidateBlobSHA": "5ac082c346db53fabccb9ab5009bb99527f764e1",
+  "originalDataSHA256": "cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c",
+  "expectedTradingDaysByYear": {
+    "2020": 253,
+    "2021": 252,
+    "2022": 251,
+    "2023": 250,
+    "2024": 252
+  },
+  "expectedTotal": 1258,
+  "symbolCount": 16,
+  "allSymbols": {
+    "rows": 1258,
+    "uniqueDates": 1258,
+    "first": "2020-01-02",
+    "last": "2024-12-31",
+    "missingExpectedDates": 0,
+    "extraDates": 0,
+    "duplicateDates": 0
+  },
+  "calendarVerified": true,
+  "dataApproved": false,
+  "ohlcVerified": false,
+  "corporateActionsVerified": false,
+  "independentDataLineVerified": false,
+  "researchStarted": false,
+  "gen8Rerun": false,
+  "trading": false,
+  "forward": false,
+  "workerChanged": false,
+  "candidateDataChanged": false
+}
