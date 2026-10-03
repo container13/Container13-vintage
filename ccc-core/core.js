@@ -603,9 +603,10 @@ const CCCImageViewer={
   startX:0,
   startY:0,
   moved:false,
+  suppressClickUntil:0,
   eligible(img){
     if(!(img instanceof HTMLImageElement)||!img.currentSrc&&!img.src)return false;
-    if(img.closest("button,a,label,.ccc-brand-mark,.brand,.icon-button,.ccc-icon-button,.action-icon,.workspace-add-icon,.ccc-tool-icon,.thumb-status"))return false;
+    if(img.closest(".ccc-brand-mark,.brand,.icon-button,.ccc-icon-button,.action-icon,.workspace-add-icon,.ccc-tool-icon,.thumb-status,[data-ccc-no-viewer],.ccc-no-image-viewer"))return false;
     if(img.matches("[data-ccc-no-viewer],.ccc-no-image-viewer"))return false;
     return true;
   },
@@ -644,7 +645,8 @@ const CCCImageViewer={
   cancel(){clearTimeout(this.timer);this.timer=null;this.source=null;},
   install(){
     document.addEventListener("touchstart",event=>{
-      if(event.touches.length!==1||!document.querySelector("#cccImageViewer")?.hidden===false)return;
+      const openViewer=document.querySelector("#cccImageViewer");
+      if(event.touches.length!==1||(openViewer&&!openViewer.hidden))return;
       const img=event.target.closest?.("img");
       if(!this.eligible(img))return;
       const t=event.touches[0];
@@ -653,6 +655,7 @@ const CCCImageViewer={
       this.timer=setTimeout(()=>{
         if(!this.source||this.moved)return;
         this.open(this.source);
+        this.suppressClickUntil=performance.now()+900;
         this.timer=null;
       },this.holdMs);
     },{passive:true});
@@ -663,6 +666,13 @@ const CCCImageViewer={
     },{passive:true});
     document.addEventListener("touchend",()=>this.cancel(),{passive:true});
     document.addEventListener("touchcancel",()=>this.cancel(),{passive:true});
+    document.addEventListener("click",event=>{
+      if(performance.now()<this.suppressClickUntil){
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        this.suppressClickUntil=0;
+      }
+    },true);
     document.addEventListener("contextmenu",event=>{
       const img=event.target.closest?.("img");
       if(this.eligible(img))event.preventDefault();
