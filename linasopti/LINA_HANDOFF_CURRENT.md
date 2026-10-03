@@ -1,9 +1,86 @@
 # LINA — AKTUELL HANDOFF / STATUS
 
 Aktuell release: V0.3.15
-Uppdaterad: 2026-09-30
+Uppdaterad: 2026-10-03
+Dokumentrevision: överlämning 2026-10-03
 
-## Aktuellt säkert läge
+## Läs först – aktuell överlämning
+
+### Projekt och arbetsplats
+- Projekt: Linas Opti / Lina Clean Core. Detta arbete gäller linasopti/, inte CCC.
+- Repository: container13/Container13-vintage.
+- Branch: ccc-demo-public-test. Lina finns inte på main.
+- Webb: https://container13.se/linasopti/
+- GitHub Pages publicerar automatiskt denna branch. V0.3.15-publiceringen verifierades med lyckad Pages-körning och serverad version.js.
+- Cloudflare Worker: https://linas-opti-api.mangaj73.workers.dev
+- Senast kända driftsatta Worker: V5, 0.58.8 + evidence-sync-v0235 + alpaca-history-v02 + twelve-history-v02. Återkontrollera health före ny ändring. GitHub-uppladdning av Worker-kod innebär inte Worker-deploy.
+
+### Absoluta regler
+- Läs LINA_MASTER_RULES.md och LINA_RELEASE_CHECKLIST.md före implementation.
+- Gen7 och Gen8 är frysta. Gen8 är färdig och får ALDRIG köras om.
+- Gen9 är NOT APPROVED, plan inte låst och forskning inte startad. Handel och Forward AV.
+- Inga verifieringsflaggor får sättas på grund av leverantörsöverensstämmelse eller diagnostiska toleranser.
+- Inga prisfält får patchas genom att blanda leverantörer.
+- Fryst evidence får inte skrivas över. Nya analyser sparas separat.
+- Historiska avsnitt längre ned är bakgrund; denna toppsektion är aktuell status.
+
+### Användarens arbetsflöde och tillstånd
+- Användaren har godkänt automatisk överföring av färdiga projektfiler till rätt GitHub-repo/branch. Beslutet finns i root README, linasopti/README.md och README_WORKER_DEPLOY.md, dokumentrevision 1.1.
+- Överför endast ändrade filer för kodändringar och verifiera exakt innehåll efteråt.
+- Aldrig force-push. Annat CCC-arbete kan samtidigt ändra samma branch: hämta senaste head och bevara det.
+- Leverera frontend som CHANGED FILES ONLY till användaren. Bygg och verifiera COMPLETE som bas när en kodrelease görs.
+- Worker-kod ska gå att kopiera i ett knapptryck via HTML-hjälpare utan att tusentals rader visas i chatten.
+- Rapporter ska gå att kopiera/klistra in; aktuell generations exporter synliga överst, äldre under Fler exporter.
+- Inget påstående om globalt minne: dessa regler är beständigt dokumenterade i repo.
+- Supportfrågor är förberedda men INTE skickade. Automatisk filöverföring är inte tillstånd att kontakta leverantörer.
+
+### Bas och senaste kod
+- Frontend V0.3.15. Screenshot-fixen är verifierad av användaren i Chrome; exportfunktionen sparar fil och kopierar text.
+- Tidigare arbetsmiljö hade release/LINA_CURRENT_BASE.zip och LINA_CLEAN_CORE_V0315_FLAT_COMPLETE.zip. Lokala filer är inte garanterat tillgängliga i nästa chatt.
+- Dessa ZIP:ar föregår senare GitHub-dokument/evidence och arkivflytten. Använd dem inte som komplett aktuell repo-snapshot utan avstämning mot GitHub.
+- GitHub på rätt branch är källan för nuvarande mappstruktur och senaste handoff/evidence. Bevara nya rapporter och arkiv när nästa COMPLETE byggs.
+
+### Gen9 kandidatdata
+- Original: SOURCE_gen9-data.json. SHA-256 cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c.
+- 16 symboler: AMD SHOP ADBE MU FDX TSLA LUV NFLX C NOW QCOM BAC GM DDOG PYPL NVDA.
+- 20128 rader, 1258 datum, 2020–2024. Strukturell kontroll godkänd, datamanifest fortsatt inte godkänt.
+- Normaliserat femfältsschema d/o/h/l/c hade SHA-256 ae6e8ac4a54fe485ccdc207b5bdfbf63c495d08113d41c30ee7eba071f5adb12.
+- 2020 warmup; 2021–2024 är redan observerad utvecklingsperiod, inte ett nytt osett holdout.
+- Full OHLC-bas, corporate-action-kompletthet, oberoende datalinje och kalenderunderlag återstår. Diagnostisk 0,5%-gräns är inte ett godkännandekrav.
+
+### Senaste färdiga arbete
+1. Publicering av saknade V0.3.15-filer till GitHub och verifiering av Pages.
+2. Gen9-granskningar sparade som nya evidence-filer och exakt återlästa.
+3. Godkänd rensning: 129 äldre handoffs och sju äldre Worker-filer flyttade utan innehållsändring till history/legacy/. Ett gammalt COMPLETE-ZIP och .gitkeep borttagna. 835 övriga blobbar bevarades. README länkar arkivet. Rensningscommit c732ba0b59557939d3492fedbe217dc5c9cec913. Inga GitHub Release-poster fanns.
+4. GM 2023-06-05: Twelve none open 34.45000076 / high 34.375 underkänns av Linas OHLC-kontrakt. Yahoo raw high 34.45000076293945, Alpaca SIP daily high 34.49. Nytt SIP-femminutersprov har 78 ordinarie intervall och high 34.49 vid 09:30 ET. Samma leverantör, ingen oberoende bekräftelse. Daily open 34.45 skiljer från första femminuters-open 34.49.
+5. Alpacas primärdokumentation styrker olika villkorsregler för minut- och dagsbarer. Orsaken för just GM är inte styrkt. Benämningen ”Twelve-felet” betyder att Linas kontrakt inte uppfylls; leverantörens rotorsak är obekräftad. GM pausas i väntan på rad-specifikt besked/affärer med villkorskoder. Supportutkast finns; inte skickat.
+6. FDX/PYPL: avknoppning/utdelningsstart efter dataperioden styrkta med primärkällor, men exakta vendor-faktorer inte styrkta. FDX Form 8937 anger cirka 81,55% skattebas; observerad historisk prisskala cirka 80,58% är inte samma sak. FDX 5032 OHLC-jämförelser har median 0.8058017740753254 men spann 0.7900818914455453–0.8270538941955641.
+7. PYPL:s AdjClose/quoteClose är nästan konstant över 1258 dagar: 0.9889709358572251–0.9889712748240216, median 0.9889711061369744. PayPals 8-K 2025-10-28 styrker inledd utdelning 0.14 USD, record 2025-11-19, betalning 2025-12-10. Hela senare faktorprodukten inte rekonstruerad.
+8. Kontantutdelningsfrånvaro: ADBE 2020–2024 stängd genom retrospektiv SEC-källa; NOW corroborated men full explicit täckning kvarstår; AMD öppen. Detta godkänner inte all corporate-action-data.
+
+### Nästa konkreta steg – börja här
+Rekonstruera PYPL:s nästan konstanta justeringsfaktor med senare utdelningar och föregående stängningspriser fram till kandidatens justeringsreferens. Verifiera leverantörens formel och uttagstid; dokumentera kvarstående restskillnad. Nuvarande Gen9 Worker-endpoint är begränsad till 2020–2024, så en separat diagnostisk hämtväg behövs för 2025–2026. Ändra inte kandidatdata eller deploya en ny Worker utan att först säkra aktuell kod och följa projektreglerna. Yahoo-hjälpsidan identifierades men full läsning gav HTTP 429; algoritmen räknas inte som verifierad i senaste rapporten.
+
+Efter PYPL: styrk FDX:s vendor-specifika spin-off-faktor och full justeringskedja. Kvarstår även GM, övriga OHLC-avvikelser, AMD/NOW-frånvaro, full kalender och datalinje. Planlås/research först när samtliga datakrav är styrkta.
+
+### Läs dessa senaste filer (alla sökvägar relativt linasopti/)
+- LINA_MASTER_RULES.md
+- LINA_RELEASE_CHECKLIST.md
+- LINA_GEN9_PLAN_PROPOSAL.md
+- LINA_CLEANUP_PROPOSAL.md
+- evidence/2026-10-03/LINA_GEN9_GM_REVIEW_ae9bb251464b7fe5.md och .json
+- evidence/2026-10-03/LINA_GEN9_GM_METHODOLOGY_REVIEW.md
+- evidence/2026-10-03/LINA_GEN9_FDX_PYPL_FACTOR_REVIEW_11033f0c98e1a604.md och .json
+- evidence/2026-10-03/LINA_GEN9_DIVIDEND_ABSENCE_REVIEW_6b10570365629eec.md
+- evidence/2026-10-03/LINA_GEN9_DIVIDEND_ABSENCE_REVIEW_14c1a484f62a5630.json
+
+Senaste faktorrapportens commit före denna handoff: ca87060af5e1aeed4376d51ee0bbd2d4f786ea72. Hämta alltid senaste branch-head; andra ändringar kan ha tillkommit.
+
+---
+
+## Historiska releaseanteckningar
+
+## Historiskt säkert läge vid tidigare handoff
 - Webbversion V0.3.13; Gen9 beräkningsmodul och olåst förslagsvy tillagda.
 - Handel AV, Gen8 Forward inte öppnad. Gen7 och Gen8 är frysta och får aldrig köras om.
 - Auktoritativa exporter: LINA_GENERATION_ENGINE_2026-09-29_214132.json och LINA_GEN8_FROZEN_RESEARCH_2026-09-29_214134.json.
