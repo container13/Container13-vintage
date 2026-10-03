@@ -287,22 +287,18 @@
     }
   }
 
-  async function openImageAdjustmentFromEdit() {
+  async function openImageAdjustmentFromWorkspace() {
     if (publishNavigationPending) return;
     const item = currentItem();
     if (!item) return;
     publishNavigationPending = true;
-    clearTimeout(saveTimer);
-    autosaveSequence += 1;
-    const button = $("#visionAdaptImageBtn");
+    const button = $("#workspaceAdaptImageBtn");
     if (button) button.disabled = true;
     try {
-      const ok = await saveEditedCurrent({ quiet: true });
-      if (!ok) throw new Error("Objektet kunde inte sparas före bildanpassningen.");
       await queueVisionSessionSave();
       saveBatchMetadata();
-      try { sessionStorage.setItem("ccc-vision-return-edit-item", item.id); } catch (_) {}
-      window.location.assign(`../publish/index.html?view=adapt&item=${encodeURIComponent(item.id)}&from=vision-adapt`);
+      rememberVisionPublishReturn("workspace");
+      window.location.assign(`../publish/index.html?view=adapt&item=${encodeURIComponent(item.id)}&from=vision-adapt&workspace=1`);
     } catch (error) {
       publishNavigationPending = false;
       if (button) button.disabled = false;
@@ -649,30 +645,31 @@
   function updateWorkspaceState() {
     const review = $("#showSuggestionBtn");
     const workspaceContinue = $("#workspaceContinueBtn");
+    const workspaceAdapt = $("#workspaceAdaptImageBtn");
+    const workspaceActions = $("#workspaceSelectedActions");
     const addDetail = $("#addToSelectedBtn");
     if (!batchItems.length) {
       if (addDetail) addDetail.hidden = true;
-      if (workspaceContinue) workspaceContinue.hidden = true;
+      if (workspaceActions) workspaceActions.hidden = true;
+      if (workspaceContinue) workspaceContinue.disabled = true;
+      if (workspaceAdapt) workspaceAdapt.disabled = true;
       if (review) { review.hidden = true; review.disabled = true; }
       return;
     }
-    if (workspaceContinue) {
-      workspaceContinue.hidden = false;
-      workspaceContinue.disabled = false;
-    }
+    if (workspaceActions) workspaceActions.hidden = false;
+    if (workspaceContinue) workspaceContinue.disabled = false;
+    if (workspaceAdapt) workspaceAdapt.disabled = false;
     if (addDetail) addDetail.hidden = true;
     /* En enda framåtknapp i arbetsvyn. Den valda miniatyren och
        Granska & komplettera leder till samma plagg. */
     if (review) { review.hidden = true; review.disabled = true; }
   }
 
-  function openWorkspaceItem(index, page = Math.floor(index / WORKSPACE_PAGE_SIZE)) {
+  function selectWorkspaceItem(index, page = Math.floor(index / WORKSPACE_PAGE_SIZE)) {
     if (!Number.isInteger(index) || !batchItems[index]) return;
     currentIndex = index;
     workspacePage = Math.max(0, page);
-    editReturnView = "workspace";
-    populateFormFromItem(true);
-    showStage("editCard", "edit");
+    updateBatchStrip();
   }
 
   function updateBatchStrip() {
@@ -704,7 +701,7 @@
       wrap.dataset.workspacePage = String(page);
       wrap.addEventListener("click", () => {
         if (suppressWorkspaceClick) return;
-        openWorkspaceItem(index, page);
+        selectWorkspaceItem(index, page);
       });
       wrap.append(img, state);
       grid.appendChild(wrap);
@@ -815,7 +812,7 @@
         const index = Number(thumb.dataset.workspaceIndex);
         const page = Number(thumb.dataset.workspacePage);
         suppressWorkspaceClick = true;
-        openWorkspaceItem(index, page);
+        selectWorkspaceItem(index, page);
         setTimeout(() => { suppressWorkspaceClick = false; }, 350);
       } else {
         suppressWorkspaceClick = false;
@@ -2816,6 +2813,8 @@
   $("#workspaceCameraBtn")?.addEventListener("click", () => $("#startCameraBtn")?.click());
   $("#workspaceGalleryBtn")?.addEventListener("click", () => $("#galleryInput")?.click());
 
+  $("#workspaceAdaptImageBtn")?.addEventListener("click", openImageAdjustmentFromWorkspace);
+
   $("#workspaceContinueBtn")?.addEventListener("click", () => {
     const item=batchItems[currentIndex]||batchItems[0];
     if(!item)return;
@@ -2842,7 +2841,6 @@
   $("#useSuggestionBtn").addEventListener("click", approveCurrent);
   $("#wrongSuggestionBtn").addEventListener("click", editCurrent);
   $("#addSameGarmentBtn").addEventListener("click", () => $("#sameGarmentInput").click());
-  $("#visionAdaptImageBtn")?.addEventListener("click", openImageAdjustmentFromEdit);
   $("#sameGarmentInput").addEventListener("change", (event) => addSameGarmentFiles(event.target.files));
   $("#sameGarmentCameraBtn")?.addEventListener("click", () => $("#sameGarmentCameraInput")?.click());
   $("#sameGarmentAlbumBtn")?.addEventListener("click", () => $("#sameGarmentInput")?.click());

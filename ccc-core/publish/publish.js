@@ -3520,7 +3520,7 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
     await previewsReady;
     activeIndex=itemIndexById(directPrepareItemId);
     activeItemId=directPrepareItemId;
-    cropReturnContext={view:"visionEdit",itemId:directPrepareItemId};
+    cropReturnContext={view:directReturnWorkspace?"visionWorkspace":"visionEdit",itemId:directPrepareItemId};
     await openCrop({preserveBack:true});
     requestAnimationFrame(()=>requestAnimationFrame(finishDirectPrepareBootstrap));
   }else if(directPrepareView && directPrepareItemIds.some(id=>itemIndexById(id)>=0)){
@@ -3639,6 +3639,10 @@ async function returnFromCrop(){
   cropBaseline=null;
   cropUsingCutout=false;
   pointer=null;
+  if(context.view==="visionWorkspace"){
+    window.location.href="../vision/index.html?returnFrom=publish";
+    return;
+  }
   if(context.view==="visionEdit"){
     if(itemId)try{sessionStorage.setItem("ccc-vision-return-edit-item",itemId);}catch(_){ }
     window.location.href="../vision/index.html";

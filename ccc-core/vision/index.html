@@ -10,8 +10,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>CCC Vision v2.10.66</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}if(new URLSearchParams(location.search).get("mode")==="publish-add")document.documentElement.classList.add("ccc-vision-publish-add-loading");</script>
-  <link rel="stylesheet" href="vision.css?v=2.10.154">
-  <link rel="stylesheet" href="../core.css?v=2.10.154">
+  <link rel="stylesheet" href="vision.css?v=2.10.155">
+  <link rel="stylesheet" href="../core.css?v=2.10.155">
 </head>
 <body data-ccc-header-back="false" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell">
@@ -103,7 +103,10 @@
       <div id="batchStrip" class="batch-strip" hidden data-ccc-term-aria="Fotograferade {plural}" aria-label="Fotograferade objekt"></div>
       <div id="batchPager" class="vision-grid-pager" hidden data-ccc-term-aria="Sidor med {plural}" aria-label="Sidor med objekt"></div>
       <button id="addToSelectedBtn" class="quiet-button workspace-detail-button" type="button" hidden data-ccc-term="＋ Komplettera markerat {singular}">＋ Komplettera markerat objekt</button>
-      <button id="workspaceContinueBtn" class="primary-button workspace-continue-button" type="button" hidden>Granska &amp; komplettera</button>
+      <div id="workspaceSelectedActions" class="workspace-selected-actions" hidden>
+        <button id="workspaceContinueBtn" class="primary-button workspace-continue-button" type="button">Granska &amp; komplettera</button>
+        <button id="workspaceAdaptImageBtn" class="secondary-button workspace-adapt-image" type="button">Anpassa bild</button>
+      </div>
       <button id="showSuggestionBtn" class="primary-button capture-next" type="button" hidden disabled>Visa förslag</button>
 
 
@@ -187,11 +190,6 @@
         <div id="sameGarmentThumbs" class="same-garment-thumbs" aria-live="polite"></div>
         <input id="sameGarmentCameraInput" class="visually-hidden" type="file" accept="image/*" capture="environment">
       </section>
-
-      <button id="visionAdaptImageBtn" class="vision-adapt-image ccc-tool-card ccc-tool-card--edit ccc-tool-card--compact" type="button">
-        <span class="ccc-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7V4h3M17 4h3v3M20 17v3h-3M7 20H4v-3"/><path d="m8 15 2.8-3 2.1 2 2.3-2.6L18 15.5"/><circle cx="9" cy="8.5" r="1.2"/></svg></span>
-        <span>Anpassa bild</span>
-      </button>
 
       <div class="edit-object-actions" aria-label="Objektåtgärder">
         <div class="edit-progress-nav" aria-label="Navigera mellan objekt">
@@ -366,12 +364,12 @@
     </div>
   </div>
 
-  <script src="../version.js?v=2.10.154"></script>
+  <script src="../version.js?v=2.10.155"></script>
   <script src="demo-data.js?v=2.9.3"></script>
   <script src="vision-ai-config.js?v=2.9.3"></script>
   <script src="vision-ai.js?v=2.9.3"></script>
   <script src="vision-knowledge.js?v=2.9.3"></script>
-  <script src="product-lab.js?v=2.10.154"></script>
+  <script src="product-lab.js?v=2.10.155"></script>
 <script type="module" src="../core.js?v=2.10.132"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 <div id="visionContextHelpDialog" class="dialog ccc-dialog vision-context-help" role="dialog" aria-modal="true" aria-labelledby="visionContextHelpTitle" hidden>
