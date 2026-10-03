@@ -1,0 +1,19 @@
+{
+  "report": "LINA_GEN9_FDX_SPINOFF_FACTOR_RECONSTRUCTION",
+  "date": "2026-10-03",
+  "status": "MARKET_IMPLIED_FACTOR_CLOSELY_REPRODUCED_VENDOR_ALGORITHM_NOT_EXPLICIT",
+  "distribution": {"ex_date":"2026-06-01","fdxf_per_fdx":0.5},
+  "market_inputs": {"fdx_regular_way_close_2026_05_29":411.75,"fdxf_when_issued_close_2026_05_29":160.37},
+  "market_implied_factor": 0.805258044930176,
+  "candidate_ratio": {"median":0.8058017740753254,"min":0.7900818914455453,"max":0.8270538941955641},
+  "absolute_difference_vs_candidate_median": 0.0005437291453494,
+  "exact_yahoo_spinoff_algorithm_verified": false,
+  "tax_basis_factor_used_as_price_factor": false,
+  "verification_flag_set": false,
+  "gen9": "NOT_APPROVED",
+  "gen8_rerun": false,
+  "trading": false,
+  "forward": false,
+  "worker_changed": false,
+  "candidate_data_changed": false
+}
