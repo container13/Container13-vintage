@@ -414,7 +414,7 @@
       if (help) help.hidden = true;
       if (workspaceContinue) {
         workspaceContinue.hidden = false;
-        workspaceContinue.disabled = false;
+        workspaceContinue.disabled = !batchItems[currentIndex];
       }
     }
     const cameraTitle = $("#startCameraBtn .action-copy strong");
@@ -635,9 +635,10 @@
       if (review) { review.hidden = true; review.disabled = true; }
       return;
     }
+    const hasSelection = !!batchItems[currentIndex];
     if (workspaceActions) workspaceActions.hidden = false;
-    if (workspaceContinue) workspaceContinue.disabled = false;
-    if (workspaceAdapt) workspaceAdapt.disabled = false;
+    if (workspaceContinue) workspaceContinue.disabled = !hasSelection;
+    if (workspaceAdapt) workspaceAdapt.disabled = !hasSelection;
     if (addDetail) addDetail.hidden = true;
     /* En enda framåtknapp i arbetsvyn. Den valda miniatyren och
        Granska & komplettera leder till samma plagg. */
@@ -646,6 +647,12 @@
 
   function selectWorkspaceItem(index, page = Math.floor(index / WORKSPACE_PAGE_SIZE)) {
     if (!Number.isInteger(index) || !batchItems[index]) return;
+    if (currentIndex === index) {
+      currentIndex = -1;
+      workspacePage = Math.max(0, page);
+      updateBatchStrip();
+      return;
+    }
     currentIndex = index;
     workspacePage = Math.max(0, page);
     updateBatchStrip();
@@ -2805,9 +2812,8 @@
   $("#workspaceAdaptImageBtn")?.addEventListener("click", openImageAdjustmentFromWorkspace);
 
   $("#workspaceContinueBtn")?.addEventListener("click", () => {
-    const item=batchItems[currentIndex]||batchItems[0];
+    const item=batchItems[currentIndex];
     if(!item)return;
-    currentIndex=Math.max(0,currentIndex);
     editReturnView="workspace";
     populateFormFromItem(true);
     showStage("editCard","edit");
