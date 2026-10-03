@@ -1,0 +1,57 @@
+{
+  "report": "LINA_GEN9_PYPL_ADJUSTMENT_RECONSTRUCTION",
+  "date": "2026-10-03",
+  "status": "YAHOO_DIVIDEND_CHAIN_RECONSTRUCTED",
+  "candidate_ratio": {
+    "min": 0.9889709358572251,
+    "median": 0.9889711061369744,
+    "max": 0.9889712748240216
+  },
+  "yahoo_method": "historical pre-ex-date multiplier = 1 - dividend / previous_close",
+  "events": [
+    {
+      "ex_date": "2025-11-19",
+      "dividend": 0.14,
+      "previous_trading_date": "2025-11-18",
+      "previous_close": 60.7,
+      "multiplier": 0.9976935749588138
+    },
+    {
+      "ex_date": "2026-03-04",
+      "dividend": 0.14,
+      "previous_trading_date": "2026-03-03",
+      "previous_close": 46.38,
+      "multiplier": 0.9969814575247952
+    },
+    {
+      "ex_date": "2026-06-04",
+      "dividend": 0.14,
+      "previous_trading_date": "2026-06-03",
+      "previous_close": 42.61,
+      "multiplier": 0.9967143862942971
+    },
+    {
+      "ex_date": "2026-09-04",
+      "dividend": 0.14,
+      "previous_trading_date": "2026-09-03",
+      "previous_close": 56.82,
+      "multiplier": 0.9975360788454769
+    }
+  ],
+  "reconstructed_factor": 0.9889710881644362,
+  "absolute_residual_vs_candidate_median": 1.797253812441113e-8,
+  "relative_residual_vs_candidate_median": 1.817296579886829e-8,
+  "interpretation": "Residual is consistent with public Yahoo closes being displayed to two decimals while internal adjustment uses higher precision; no verification flag is set from tolerance.",
+  "gen9": "NOT_APPROVED",
+  "gen8_rerun": false,
+  "trading": false,
+  "forward": false,
+  "worker_changed": false,
+  "candidate_data_changed": false,
+  "sources": [
+    "https://in.help.yahoo.com/kb/adjusted-close-sln28256.html",
+    "https://finance.yahoo.com/quote/PYPL/history/",
+    "https://www.sec.gov/Archives/edgar/data/1633917/000119312526145735/d45512dars.pdf",
+    "https://www.sec.gov/Archives/edgar/data/1633917/000163391726000082/pypl-20260630.htm"
+  ]
+}
