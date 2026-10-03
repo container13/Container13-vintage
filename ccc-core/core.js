@@ -597,17 +597,18 @@ const CCCHelp={
 // Interaktiva kontroller/ikoner/logotyper undantas automatiskt.
 // ==========================================================
 const CCCImageViewer={
-  holdMs:520,
+  holdMs:600,
   timer:null,
   source:null,
+  pointerId:null,
   startX:0,
   startY:0,
   moved:false,
+  openedByHold:false,
   suppressClickUntil:0,
   eligible(img){
-    if(!(img instanceof HTMLImageElement)||!img.currentSrc&&!img.src)return false;
+    if(!(img instanceof HTMLImageElement)||!(img.currentSrc||img.src))return false;
     if(img.closest(".ccc-brand-mark,.brand,.icon-button,.ccc-icon-button,.action-icon,.workspace-add-icon,.ccc-tool-icon,.thumb-status,[data-ccc-no-viewer],.ccc-no-image-viewer"))return false;
-    if(img.matches("[data-ccc-no-viewer],.ccc-no-image-viewer"))return false;
     return true;
   },
   ensure(){
@@ -622,61 +623,74 @@ const CCCImageViewer={
     overlay.setAttribute("aria-label","Bild i helskärm");
     overlay.innerHTML='<img class="ccc-image-viewer-img" alt="">';
     document.body.appendChild(overlay);
-    overlay.addEventListener("click",()=>this.close());
+    overlay.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();this.close();});
     overlay.addEventListener("contextmenu",event=>event.preventDefault());
     return overlay;
   },
   open(img){
     if(!this.eligible(img))return;
-    const overlay=this.ensure();
-    const full=overlay.querySelector("img");
+    const overlay=this.ensure(),full=overlay.querySelector("img");
     full.src=img.currentSrc||img.src;
     full.alt=img.alt||"Bild";
     overlay.hidden=false;
     document.documentElement.classList.add("ccc-image-viewer-open");
-    if(navigator.vibrate)navigator.vibrate(12);
+    this.openedByHold=true;
+    this.suppressClickUntil=performance.now()+1000;
   },
   close(){
     const overlay=document.querySelector("#cccImageViewer");
     if(!overlay||overlay.hidden)return;
     overlay.hidden=true;
     document.documentElement.classList.remove("ccc-image-viewer-open");
+    this.openedByHold=false;
   },
-  cancel(){clearTimeout(this.timer);this.timer=null;this.source=null;},
+  cancel(){
+    if(this.timer)clearTimeout(this.timer);
+    this.timer=null;this.source=null;this.pointerId=null;
+  },
+  arm(img,id,x,y){
+    this.cancel();
+    this.source=img;this.pointerId=id;this.startX=x;this.startY=y;this.moved=false;
+    this.timer=setTimeout(()=>{
+      const source=this.source;
+      if(!source||this.moved)return;
+      this.open(source);
+      this.timer=null;
+    },this.holdMs);
+  },
   install(){
-    document.addEventListener("touchstart",event=>{
-      const openViewer=document.querySelector("#cccImageViewer");
-      if(event.touches.length!==1||(openViewer&&!openViewer.hidden))return;
+    // Pointer Events fungerar på modern iOS/Android och fångas före vyernas egna handlers.
+    document.addEventListener("pointerdown",event=>{
+      const overlay=document.querySelector("#cccImageViewer");
+      if(overlay&&!overlay.hidden)return;
+      if(event.pointerType==="mouse"&&event.button!==0)return;
       const img=event.target.closest?.("img");
       if(!this.eligible(img))return;
-      const t=event.touches[0];
-      this.source=img;this.startX=t.clientX;this.startY=t.clientY;this.moved=false;
-      clearTimeout(this.timer);
-      this.timer=setTimeout(()=>{
-        if(!this.source||this.moved)return;
-        this.open(this.source);
-        this.suppressClickUntil=performance.now()+900;
-        this.timer=null;
-      },this.holdMs);
-    },{passive:true});
-    document.addEventListener("touchmove",event=>{
-      if(!this.source||event.touches.length!==1)return;
-      const t=event.touches[0];
-      if(Math.hypot(t.clientX-this.startX,t.clientY-this.startY)>12){this.moved=true;this.cancel();}
-    },{passive:true});
-    document.addEventListener("touchend",()=>this.cancel(),{passive:true});
-    document.addEventListener("touchcancel",()=>this.cancel(),{passive:true});
+      this.arm(img,event.pointerId,event.clientX,event.clientY);
+    },true);
+    document.addEventListener("pointermove",event=>{
+      if(!this.source||event.pointerId!==this.pointerId)return;
+      if(Math.hypot(event.clientX-this.startX,event.clientY-this.startY)>16){this.moved=true;this.cancel();}
+    },true);
+    const finish=event=>{
+      if(this.openedByHold){
+        // Släppet efter långtrycket ska inte stänga helskärmsbilden.
+        this.source=null;this.pointerId=null;this.timer=null;return;
+      }
+      if(this.pointerId===event.pointerId)this.cancel();
+    };
+    document.addEventListener("pointerup",finish,true);
+    document.addEventListener("pointercancel",finish,true);
     document.addEventListener("click",event=>{
       if(performance.now()<this.suppressClickUntil){
-        event.preventDefault();
-        event.stopImmediatePropagation();
+        event.preventDefault();event.stopImmediatePropagation();
         this.suppressClickUntil=0;
       }
     },true);
     document.addEventListener("contextmenu",event=>{
       const img=event.target.closest?.("img");
-      if(this.eligible(img))event.preventDefault();
-    });
+      if(this.eligible(img)){event.preventDefault();event.stopPropagation();}
+    },true);
     document.addEventListener("keydown",event=>{if(event.key==="Escape")this.close();});
   }
 };
