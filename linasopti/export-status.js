@@ -31,7 +31,9 @@ function showExportStatus(message,text,name,type='text/plain;charset=utf-8'){
 function saveText(name,text,type){const blob=new Blob([text],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function copyText(text){try{return navigator.clipboard?.writeText?Promise.resolve(navigator.clipboard.writeText(text)):Promise.reject(Error('Urklipp saknas'))}catch(e){return Promise.reject(e)}}
 function downloadText(name,text,type='text/plain;charset=utf-8'){
- text=String(text);showExportStatus('Filen är klar · kopiera hela innehållet direkt till chatten eller hämta filen.',text,name,type);return name;
+ text=String(text);
+ copyText(text).then(()=>showExportStatus('✓ Hela filinnehållet kopierat · öppna chatten, håll i skrivfältet och välj Klistra in',text,name,type),()=>showExportStatus('Urklipp nekades · tryck 📋 Kopiera.',text,name,type));
+ return name;
 }
 function trigger(name,obj){return downloadText(name,JSON.stringify(obj,null,2),'application/json;charset=utf-8')}
 function downloadObjectAsync(prefix,makeObject){
@@ -44,5 +46,10 @@ function downloadObjectAsync(prefix,makeObject){
 function download(){return trigger(`LINA_STATUS_${release().replace(/\./g,'')}_${safeDate()}.json`,collect())}
 function downloadDiagnostics(){return trigger(`LINA_FULL_DIAGNOSTICS_${release().replace(/\./g,'')}_${safeDate()}.json`,fullDiagnostics())}
 function downloadObject(prefix,obj){return trigger(`${prefix}_${safeDate()}.json`,obj)}
-window.LinaStatusExport={get VERSION(){return release()},collect,fullDiagnostics,download,downloadDiagnostics,downloadObject,downloadText,downloadObjectAsync};
+function labelCopyButtons(root=document){
+ root.querySelectorAll?.('button').forEach(b=>{if(/^📥?\s*Exportera\b/.test(b.textContent.trim()))b.textContent=b.textContent.replace(/^📥?\s*Exportera/,'📋 Kopiera')});
+}
+const observer=new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1){labelCopyButtons(n);if(n.matches?.('button'))labelCopyButtons(n.parentElement||document)}})));
+window.addEventListener('DOMContentLoaded',()=>{labelCopyButtons();observer.observe(document.body,{childList:true,subtree:true})});
+window.LinaStatusExport={get VERSION(){return release()},collect,fullDiagnostics,download,downloadDiagnostics,downloadObject,downloadText,downloadObjectAsync,labelCopyButtons};
 })();
