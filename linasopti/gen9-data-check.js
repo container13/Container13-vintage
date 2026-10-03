@@ -1,6 +1,6 @@
 (function(global){
 'use strict';
-const KEY='lina_gen9_data_diagnostic',sources=[{label:'Yahoo via Worker',path:'/yahoo-bars?symbols=AMD&timeframe=1Day&start=2020-01-01&end=2020-12-31'},{label:'EODHD via Worker',path:'/eod-bars?symbols=AMD.US&timeframe=1Day&start=2020-01-01&end=2020-12-31'}];
+const KEY='lina_gen9_data_diagnostic',INDEPENDENT_KEY='lina_gen9_independent_line_v1',GEN9_SYMBOLS=['AMD','SHOP','ADBE','MU','FDX','TSLA','LUV','NFLX','C','NOW','QCOM','BAC','GM','DDOG','PYPL','NVDA'],sources=[{label:'Yahoo via Worker',path:'/yahoo-bars?symbols=AMD&timeframe=1Day&start=2020-01-01&end=2020-12-31'},{label:'EODHD via Worker',path:'/eod-bars?symbols=AMD.US&timeframe=1Day&start=2020-01-01&end=2020-12-31'}];
 let running=false;
 function inspect(body,start='2020-01-01',end='2020-12-31'){
  const rows=Array.isArray(body)?body:Array.isArray(body?.rows)?body.rows:Array.isArray(body?.bars)?body.bars:Array.isArray(body?.data)?body.data:[];
@@ -27,12 +27,33 @@ async function check(onProgress=()=>{}){
  report.finishedAt=new Date().toISOString();global.sessionStorage.setItem(KEY,JSON.stringify(report));onProgress('Datakällkontroll klar · exportera rapporten');return report;
  }finally{running=false}
 }
+
+async function sha256(text){const b=await global.crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function canonicalRows(rows){return rows.map(r=>({d:String(r.t||r.d||'').slice(0,10),symbol:String(r.symbol||''),o:Number(r.o),h:Number(r.h),l:Number(r.l),c:Number(r.c)})).sort((a,b)=>a.d.localeCompare(b.d)||a.symbol.localeCompare(b.symbol))}
+async function fetchIndependent(onProgress=()=>{}){
+ const base=global.LinaAPI?.workerBase;if(!base)throw Error('API-bas saknas');
+ const q=new URLSearchParams({symbols:GEN9_SYMBOLS.join(','),timeframe:'1Day',start:'2020-01-01',end:'2024-12-31',feed:'sip',adjustment:'all'});
+ onProgress('Alpaca SIP/all · hämtar 16 symboler 2020–2024');
+ const response=await global.fetch(base+'/bars?'+q.toString(),{cache:'no-store'});const body=await response.json();
+ if(!response.ok||!body?.ok)throw Error(body?.error||('HTTP '+response.status));
+ if(body.feed!=='sip'||body.adjustment!=='all'||body.timeframe!=='1Day')throw Error('Alpaca-svaret matchar inte SIP/all/1Day');
+ const rows=canonicalRows(body.rows||[]),counts=Object.fromEntries(GEN9_SYMBOLS.map(s=>[s,rows.filter(r=>r.symbol===s).length]));
+ if(rows.length!==20128||GEN9_SYMBOLS.some(s=>counts[s]!==1258))throw Error('Radantal avviker från förväntad 16 × 1258');
+ const rawText=JSON.stringify(body),normalizedText=JSON.stringify(rows);
+ const report={schema:'LINA-GEN9-INDEPENDENT-DATA-LINE-1',createdAt:new Date().toISOString(),source:{provider:'Alpaca',feed:'sip',adjustment:'all',timeframe:'1Day',range:['2020-01-01','2024-12-31'],symbols:GEN9_SYMBOLS},rowCount:rows.length,counts,rawSha256:await sha256(rawText),normalizedSha256:await sha256(normalizedText),calendarShapeVerified:true,independentDataLineFetched:true,independentDataLineVerified:false,researchStarted:false,tradeEnabled:false,forwardOpened:false,raw:body,normalizedRows:rows};
+ global.sessionStorage.setItem(INDEPENDENT_KEY,JSON.stringify(report));onProgress('Alpaca SIP/all klar · 20 128 rader hashade och redo att exportera');return report;
+}
+function savedIndependent(){try{return JSON.parse(global.sessionStorage.getItem(INDEPENDENT_KEY)||'null')}catch{return null}}
 function mount(root){const section=root.querySelector('[data-gen9-build]'),panel=root.querySelector('.engine-export-primary');if(!section||!panel)return;
  const info=document.createElement('p');info.setAttribute('aria-live','polite');const old=saved();info.textContent=old?'Datakällrapport finns att exportera.':'Kontrollera datakällan före planlås. Kontrollen läser prisdata och ändrar inget forskningsstate.';
  const button=document.createElement('button');button.textContent='🔎 Kontrollera Gen9-datakälla';section.append(button,info);
+ const independent=document.createElement('button');independent.textContent='🧪 Hämta oberoende Alpaca SIP/all';section.append(independent);
+ const independentExport=document.createElement('button');independentExport.textContent='📥 Exportera Alpaca SIP/all';independentExport.disabled=!savedIndependent();panel.append(independentExport);
+ independent.onclick=async()=>{independent.disabled=true;try{await fetchIndependent(t=>info.textContent=t);independentExport.disabled=false}catch(e){info.textContent='ALPACA STOPPAD: '+e.message}finally{independent.disabled=false}};
+ independentExport.onclick=()=>{const report=savedIndependent();if(report)global.LinaStatusExport?.downloadObject?.('LINA_GEN9_ALPACA_SIP_ALL_2020_2024',report)};
  const exp=document.createElement('button');exp.textContent='📥 Exportera Gen9-datakällkontroll';exp.disabled=!old;panel.append(exp);
  exp.onclick=()=>{const report=saved();if(report)global.LinaStatusExport?.downloadObject?.('LINA_GEN9_DATA_DIAGNOSTIC',report)};
  button.onclick=async()=>{button.disabled=true;try{const report=await check(t=>info.textContent=t);exp.disabled=false;const descriptions=report.attempts.map(a=>a.source+': '+(a.error||a.analysis?.warnings.join('; ')||'schema läst, full verifiering återstår'));info.textContent=descriptions.join(' | ')}catch(e){info.textContent='DATAKONTROLL STOPPAD: '+e.message}finally{button.disabled=false}};
 }
-const api=Object.freeze({inspect,check,saved,mount});if(typeof module==='object'&&module.exports)module.exports=api;else global.LinaGen9DataCheck=api;
+const api=Object.freeze({inspect,check,saved,fetchIndependent,savedIndependent,mount});if(typeof module==='object'&&module.exports)module.exports=api;else global.LinaGen9DataCheck=api;
 })(typeof window==='object'?window:globalThis);
