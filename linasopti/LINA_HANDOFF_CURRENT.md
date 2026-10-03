@@ -211,3 +211,12 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Fallback vid nekat Clipboard API markerar hela texten i en textarea för manuell Kopiera.
 - Gäller alla exporter som använder LinaStatusExport; forskningslogik, Gen8, Handel, Forward och Worker är oförändrade.
 - Cloudflare: INGEN ÄNDRING.
+
+
+## V0.3.18 — viewport-lås + synlig ett-klick-kopiering
+- iPhone/mobile: hela appen är globalt låst till viewportens bredd; horisontell sidpanorering är blockerad.
+- Alla centrala exportknappar som tidigare hette Exportera märks nu **📋 Kopiera** direkt i vyn.
+- Ett tryck på en vanlig JSON/text-export försöker omedelbart kopiera hela filinnehållet till urklipp; popupen bekräftar och erbjuder separat **⬇ Hämta fil**.
+- Asynkrona exporter behåller ClipboardItem-flödet under användargesten.
+- Gäller LinaStatusExport-baserade exporter centralt. Ingen forskningslogik ändrad.
+- Cloudflare: INGEN ÄNDRING. Gen8 orörd. Handel/Forward AV.
