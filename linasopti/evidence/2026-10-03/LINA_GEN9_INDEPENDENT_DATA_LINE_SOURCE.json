@@ -1,0 +1,51 @@
+{
+  "schema": "LINA-GEN9-INDEPENDENT-LINE-SOURCE-1",
+  "reviewDate": "2026-10-03",
+  "status": "SOURCE_QUALIFIED_EXECUTION_BLOCKED",
+  "source": {
+    "provider": "Alpaca",
+    "endpoint": "Historical Stock Bars",
+    "feed": "sip",
+    "timeframe": "1Day",
+    "adjustment": "all",
+    "range": [
+      "2020-01-01",
+      "2024-12-31"
+    ],
+    "symbols": [
+      "AMD",
+      "SHOP",
+      "ADBE",
+      "MU",
+      "FDX",
+      "TSLA",
+      "LUV",
+      "NFLX",
+      "C",
+      "NOW",
+      "QCOM",
+      "BAC",
+      "GM",
+      "DDOG",
+      "PYPL",
+      "NVDA"
+    ]
+  },
+  "independentSourceQualified": true,
+  "independentDatasetFetched": false,
+  "independentDataLineVerified": false,
+  "repoWorkerObserved": {
+    "route": "/bars",
+    "feed": "iex",
+    "adjustment": "raw",
+    "liveEquivalenceProven": false
+  },
+  "executionBlocker": "Current web execution environment could not access the Cloudflare Worker domain; no full dataset fetch claimed.",
+  "candidateDataChanged": false,
+  "workerChanged": false,
+  "gen9Approved": false,
+  "researchStarted": false,
+  "gen8Rerun": false,
+  "trading": false,
+  "forward": false
+}
