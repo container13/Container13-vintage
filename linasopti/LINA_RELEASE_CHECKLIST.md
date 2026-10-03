@@ -335,3 +335,12 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Datumfel i EODHD-rapporten testat; Worker/forskning oförändrade.
 - [x] Fem exportfall, fem diagnostikfall, JS-syntax, ZIP och manifest kontrollerade.
 - [ ] Verklig browserkopiering och datakällfix återstår.
+
+
+## V0.3.19 — Gen9 kandidatkopiering
+- [x] MASTER RULES, aktuell handoff och berörd kod lästa före implementation.
+- [x] Kandidatfil läses read-only och måste matcha låst SHA-256 före kopiering.
+- [x] Ingen research, Gen8, Handel, Forward eller Worker ändrad.
+- [x] Single Version Source/cachetokens uppdaterade till V0.3.19.
+- [x] Ändrade filer publicerade till rätt branch och återläses efter publicering.
+- [ ] Faktisk iPhone-kopiering av kandidatfil verifieras av användaren efter deploy.
