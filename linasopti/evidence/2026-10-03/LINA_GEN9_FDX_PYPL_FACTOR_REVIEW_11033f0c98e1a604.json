@@ -1,0 +1,83 @@
+{
+  "schema": "LINA-GEN9-POST-PERIOD-FACTOR-REVIEW-1",
+  "status": "EVENTS_VERIFIED_EXACT_VENDOR_FACTORS_UNRESOLVED",
+  "date": "2026-10-03",
+  "inputSHA256": "cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c",
+  "alpacaInputSHA256": "7fccc87b8d889578683aeb79735ab9513b383da1344ee96cb232ba8189e4c566",
+  "sources": [
+    {
+      "url": "https://investor.fedex.com/news-and-events/investor-news/investor-news-details/2026/FedEx-Completes-Spin-Off-of-FedEx-Freight/default.aspx",
+      "fact": "Spin-off completed June 1, 2026; one FDXF share per two FDX shares."
+    },
+    {
+      "url": "https://s21.q4cdn.com/665674268/files/doc_downloads/2026/06/FedEx-Fairway-Form-8937-executed.pdf",
+      "fact": "Tax allocation illustration uses VWAP values 336.39 and 152.22; 81.55% FDX / 18.45% FDXF. Not a vendor historical price adjustment rule."
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1633917/000163391725000194/pypl-20251028.htm",
+      "fact": "October 28 2025 initiation of quarterly dividend; 0.14 per share; record November 19; payable December 10."
+    }
+  ],
+  "symbols": {
+    "FDX": {
+      "rows": 1258,
+      "candidateAdjCloseOverQuoteClose": {
+        "min": 0.8845147664933829,
+        "max": 0.965512389590174,
+        "median": 0.9153833221359422,
+        "spread": 0.08099762309679115
+      },
+      "yahooQuoteOverAlpacaRaw": {
+        "comparisons": 5032,
+        "min": 0.7900818914455453,
+        "max": 0.8270538941955641,
+        "median": 0.8058017740753254,
+        "minimumCase": {
+          "date": "2022-03-08",
+          "field": "l",
+          "ratio": 0.7900818914455453
+        },
+        "maximumCase": {
+          "date": "2022-03-08",
+          "field": "h",
+          "ratio": 0.8270538941955641
+        }
+      }
+    },
+    "PYPL": {
+      "rows": 1258,
+      "candidateAdjCloseOverQuoteClose": {
+        "min": 0.9889709358572251,
+        "max": 0.9889712748240216,
+        "median": 0.9889711061369744,
+        "spread": 3.389667965203458e-07
+      },
+      "yahooQuoteOverAlpacaRaw": {
+        "comparisons": 5032,
+        "min": 0.9977704238087056,
+        "max": 1.001811755957168,
+        "median": 1.0,
+        "minimumCase": {
+          "date": "2020-06-22",
+          "field": "o",
+          "ratio": 0.9977704238087056
+        },
+        "maximumCase": {
+          "date": "2021-01-19",
+          "field": "o",
+          "ratio": 1.001811755957168
+        }
+      }
+    }
+  },
+  "candidateModified": false,
+  "adjustmentVerified": false,
+  "corporateActionsVerified": false,
+  "researchStarted": false,
+  "findings": [
+    "PYPL adjusted-close/quote-close is nearly constant across all 1258 rows; exact post-period dividend-factor product not reconstructed.",
+    "FDX quote/Alpaca-raw median is ~0.805801774, but all 5032 field comparisons are NOT identical: discrepancies remain.",
+    "FDX tax allocation 81.55% is not the observed price ratio ~80.58% and must not be substituted.",
+    "Post-period actions are compatible with backward adjustment; vendor basis, full event chain and extraction reference date remain required."
+  ]
+}
