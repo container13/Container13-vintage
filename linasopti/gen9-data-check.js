@@ -2,11 +2,13 @@
 'use strict';
 const KEY='lina_gen9_data_diagnostic',sources=[{label:'Yahoo via Worker',path:'/yahoo-bars?symbols=AMD&timeframe=1Day&start=2020-01-01&end=2020-12-31'},{label:'EODHD via Worker',path:'/eod-bars?symbols=AMD.US&timeframe=1Day&start=2020-01-01&end=2020-12-31'}];
 let running=false;
-function inspect(body){
+function inspect(body,start='2020-01-01',end='2020-12-31'){
  const rows=Array.isArray(body)?body:Array.isArray(body?.rows)?body.rows:Array.isArray(body?.bars)?body.bars:Array.isArray(body?.data)?body.data:[];
  const dates=rows.map(r=>String(r.d||r.date||r.t||r.timestamp||'').slice(0,10)).sort();
  const m=body?.manifest||body?.metadata||{},warnings=[];
  if(!rows.length)warnings.push('Inga dagsrader');
+ if(dates.some(d=>d<start||d>end))warnings.push('DATUMFEL: svar innehåller priser utanför begärd period '+start+'–'+end);
+ if(dates.some(d=>!/^\d{4}-\d{2}-\d{2}$/.test(d)))warnings.push('Ogiltiga datum i svar');
  if(m.adjustmentStatus!=='VERIFIED_ADJUSTED_OHLC')warnings.push('Verifierad justeringsstatus för samtliga OHLC-fält saknas');
  if(!m.corporateActionsVerified)warnings.push('Verifiering av split/utdelning saknas');
  if(!m.calendarVerified)warnings.push('Verifierad handelskalender saknas');

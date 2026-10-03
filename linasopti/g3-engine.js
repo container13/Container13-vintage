@@ -111,7 +111,7 @@ function report(){
  if(x.retrains?.length){L.push('','MÅNADSMODELLER');for(const q of x.retrains)L.push(`${q.month} · ${q.selectedHash} · train t.o.m. ${q.trainEnd} · PF ${Number(q.train.pf).toFixed(2)} · P/L ${f(q.train.pl)}`)}
  return L.join('\n');
 }
-function download(text,name,type='text/plain'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+function download(text,name,type='text/plain'){return window.LinaStatusExport.downloadText(name,text,type)}
 function exportReport(){download(report(),`LINAS_OPTI_G3_WALK_FORWARD_V0211_${new Date().toISOString().slice(0,10)}.txt`)}
 function exportRaw(){const x=load();if(x)download(JSON.stringify(x,null,2),`LINAS_OPTI_G3_WALK_FORWARD_RAW_V0211_${new Date().toISOString().slice(0,10)}.json`,'application/json')}
 function reset(){localStorage.removeItem(KEY);emit()}

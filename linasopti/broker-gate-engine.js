@@ -197,11 +197,7 @@
     return L.join('\n');
   }
 
-  function download(text,name){
-    const b=new Blob([text],{type:'text/plain;charset=utf-8'});
-    const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;a.click();
-    setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-  }
+  function download(text,name){return window.LinaStatusExport.downloadText(name,text,'text/plain;charset=utf-8')}
   function exportReport(){
     download(report(),`LINAS_OPTI_BROKER_COST_GATE_V0211_${new Date().toISOString().slice(0,10)}.txt`);
   }

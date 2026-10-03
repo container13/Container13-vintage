@@ -1,6 +1,6 @@
 # LINA — AKTUELL HANDOFF / STATUS
 
-Aktuell release: V0.3.14
+Aktuell release: V0.3.15
 Uppdaterad: 2026-09-30
 
 ## Aktuellt säkert läge
@@ -99,3 +99,11 @@ Rapporten är diagnostik, aldrig datagodkännande. Full prisjusterings-/kalender
 
 ## V0.3.14 — aktuell generations exporter synliga
 Gen9-plan, Gen9-state/resultat och Gen9-datakällkontroll placeras i synlig primärpanel. Gen8-resultat flyttas till Fler exporter. Ingen handler eller forskningslogik ändrad; enbart målcontainer för exportknappar. Användarens bild bekräftade felplaceringen i V0.3.13. JS-syntax, målcontainer, ZIP och manifest kontrollerade; browserutseende efter uppgradering återstår.
+
+## V0.3.15 — rapporter till fil + texturklipp
+Aktuell datakällrapport läst lokalt: Yahoo AMD 2020 gav 253 rader 2020-01-02–2020-12-31, EODHD AMD.US gav en rad 2025-09-30 trots begäran om 2020. Båda HTTP 200. Yahoo justeringsstatus är fortfarande obevisad; EODHD har konkret periodfel. Ingen Worker ändrad; aktuell driftsatt Worker-källa behöver säkras innan datakällfix.
+Central downloadText/downloadObject sparar fil och kopierar exakt text med synlig status/fallback. downloadObjectAsync begär ClipboardItem text/plain under användaraktivering före await, används av Gen9-resultat. Äldre aktiva text-exporthjälpare/arkiv/broker använder central export. Gen7/8-generationernas forskningskod oförändrad; ändringar i andra äldre moduler gäller enbart exporthjälpare. Ingen simuleringsfunktion ändrad.
+Fem urklipps/exportfall och fem diagnostikfall godkända; syntax, ZIP och manifest kontrollerade. Faktisk Chrome/Safari-kopiering återstår efter deploy. Browserklistring blir text, inte automatisk bilaga. Beständig fjärrlagring har tidigare blockerats av nätverk.
+
+## GitHub-publicering 2026-10-03 — V0.3.15
+Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-public-test. GitHub Pages kör automatiskt från denna gren; före överföring serverade container13.se/linasopti/version.js V0.3.14. Endast saknade V0.3.15-kodändringar och aktuella styrdokument överförs; nya README-rutiner och separat Gen9-evidence bevaras. Export- och diagnostiktester godkända. Gen7/8-kod bevaras; ingen forskning, planlås, datagodkännande eller Worker-deploy utförs.

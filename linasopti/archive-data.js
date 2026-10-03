@@ -367,13 +367,6 @@ function reportText(rec){
     'Handel: AV'
   ].join('\n');
 }
-function downloadRecord(rec){
-  const text=reportText(rec);
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));
-  a.download=`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0243.txt`;
-  a.click();
-  setTimeout(()=>URL.revokeObjectURL(a.href),500);
-}
+function downloadRecord(rec){return window.LinaStatusExport.downloadText(`LINAS_OPTI_ARKIV_${rec.id.toUpperCase()}_V0243.txt`,reportText(rec),'text/plain;charset=utf-8')}
 window.LinaArchiveData={VERSION,ROBOT_MATURITY,records,counters,reportText,downloadRecord};
 })();

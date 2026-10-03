@@ -322,3 +322,9 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Drawdown måste ange om den bygger på avslutade affärer eller löpande mark-to-market. Dessa mått får inte presenteras som likvärdiga.
 - Granskning av metodbrister ändrar aldrig tidigare fryst evidens, gates eller resultat. Rättningar görs i en ny, förhandslåst generation.
 - Gen9-parametrar nedan är endast förslag tills uttryckligt planbeslut; inget planlås eller researchstart följer av dokumentationen.
+
+## Rapportexport till fil och texturklipp — 2026-09-30
+- Rapportexporter ska både spara fil och försöka kopiera exakt rapporttext för Ctrl+V/⌘V i chatten. Kopiering gäller text, inte en filbilaga.
+- Urklippsbegäran initieras vid klick även när rapporten hämtas asynkront. Nekat/saknat urklipp ger synlig kopieringsknapp och manuell textmarkering, aldrig falskt Kopierad.
+- Export får inte ändra forskning eller lås. Skärmbildens separata ett-resultat-regel ändras inte.
+- Datakällans HTTP 200 eller radantal räcker inte: kontrollera att varje datum ligger inom begärd period. Datakällrapporten 2026-09-30 visade EODHD 2025-09-30 vid begäran om 2020. Ingen sådan data får användas för begärd historik.

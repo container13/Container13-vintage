@@ -328,3 +328,10 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Exporthandlers bevarade; ingen forskning/state ändrad.
 - [x] Syntax, exportcontainrar och ZIP/manifest kontrollerade.
 - [ ] Visuell browserkontroll efter deploy återstår.
+
+## V0.3.15 — texturklipp
+- [x] Rapport exakt till både fil/text; fallback vid nekat/saknat urklipp.
+- [x] Async urklippsbegäran initierad vid klick; rapportfel skapar inte fil.
+- [x] Datumfel i EODHD-rapporten testat; Worker/forskning oförändrade.
+- [x] Fem exportfall, fem diagnostikfall, JS-syntax, ZIP och manifest kontrollerade.
+- [ ] Verklig browserkopiering och datakällfix återstår.

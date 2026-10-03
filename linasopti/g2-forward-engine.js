@@ -95,7 +95,7 @@ function report(){
  'FRYSTA PARAMETRAR',JSON.stringify(PARAMS),'',
  'OBS: Forward räknar endast entries från och med 2026-09-11. Warmup-data före anchor används bara för SMA/breakout/volymhistorik. Ingen historisk affär före anchor får räknas.'].join('\n');
 }
-function download(text,name,type='text/plain'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+function download(text,name,type='text/plain'){return window.LinaStatusExport.downloadText(name,text,type)}
 function exportReport(){download(report(),`LINAS_OPTI_G2_REAL_FORWARD_V0232_${today()}.txt`)}
 function exportRaw(){const x=load()||fresh();download(JSON.stringify(x,null,2),`LINAS_OPTI_G2_REAL_FORWARD_RAW_V0232_${today()}.json`,'application/json')}
 window.LinaG2ForwardEngine={VERSION,KEY,ANCHOR,HASH,PARAMS,SYMBOLS,load,fresh,save,refresh,report,exportReport,exportRaw,tradeId,normalizeState,safeCompletedDate};
