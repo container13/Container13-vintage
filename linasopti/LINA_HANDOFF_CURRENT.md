@@ -220,3 +220,11 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Asynkrona exporter behåller ClipboardItem-flödet under användargesten.
 - Gäller LinaStatusExport-baserade exporter centralt. Ingen forskningslogik ändrad.
 - Cloudflare: INGEN ÄNDRING. Gen8 orörd. Handel/Forward AV.
+
+
+## V0.3.19 — ett-klick-kopiering av låst Gen9-kandidatdata
+- Generation Engine visar **📋 Kopiera Gen9-kandidatdata** bredvid aktuell Gen9-datakontroll.
+- Knappen läser `SOURCE_gen9-data.json` read-only och verifierar SHA-256 `cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c` före kopiering.
+- SHA-avvikelse eller ogiltig JSON stoppar exporten; ingen kandidatdata patchas eller normaliseras.
+- Syftet är att kunna klistra exakt kandidatfil i ChatGPT på iPhone för full datumvis OHLC-jämförelse mot den redan exporterade Alpaca SIP/all-linjen.
+- Ingen forskningsstate ändras. Gen8 orörd. Gen9 EJ GODKÄND. Handel/Forward AV. Cloudflare: INGEN ÄNDRING.
