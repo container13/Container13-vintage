@@ -44,16 +44,30 @@ async function fetchIndependent(onProgress=()=>{}){
  global.sessionStorage.setItem(INDEPENDENT_KEY,JSON.stringify(report));onProgress('Alpaca SIP/all klar · 20 128 rader hashade och redo att exportera');return report;
 }
 function savedIndependent(){try{return JSON.parse(global.sessionStorage.getItem(INDEPENDENT_KEY)||'null')}catch{return null}}
+async function copyCandidate(onProgress=()=>{}){
+ onProgress('Kandidatdata · läser SOURCE_gen9-data.json');
+ const response=await global.fetch('SOURCE_gen9-data.json',{cache:'no-store'});
+ if(!response.ok)throw Error('Kandidatfil kunde inte läsas · HTTP '+response.status);
+ const text=await response.text();
+ const hash=await sha256(text);
+ if(hash!=='cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c')throw Error('Kandidatfilens SHA-256 matchar inte låst original');
+ let body;try{body=JSON.parse(text)}catch{throw Error('Kandidatfilen är inte giltig JSON')}
+ onProgress('Kandidatdata verifierad · kopierar exakt originalfil');
+ global.LinaStatusExport?.downloadText?.('SOURCE_gen9-data.json',text,'application/json;charset=utf-8');
+ return{sha256:hash,body};
+}
 function mount(root){const section=root.querySelector('[data-gen9-build]'),panel=root.querySelector('.engine-export-primary');if(!section||!panel)return;
  const info=document.createElement('p');info.setAttribute('aria-live','polite');const old=saved();info.textContent=old?'Datakällrapport finns att exportera.':'Kontrollera datakällan före planlås. Kontrollen läser prisdata och ändrar inget forskningsstate.';
  const button=document.createElement('button');button.textContent='🔎 Kontrollera Gen9-datakälla';section.append(button,info);
  const independent=document.createElement('button');independent.textContent='🧪 Hämta oberoende Alpaca SIP/all';section.append(independent);
- const independentExport=document.createElement('button');independentExport.textContent='📥 Exportera Alpaca SIP/all';independentExport.disabled=!savedIndependent();panel.append(independentExport);
+ const independentExport=document.createElement('button');independentExport.textContent='📋 Kopiera Alpaca SIP/all';independentExport.disabled=!savedIndependent();panel.append(independentExport);
+ const candidateExport=document.createElement('button');candidateExport.textContent='📋 Kopiera Gen9-kandidatdata';panel.append(candidateExport);
+ candidateExport.onclick=async()=>{candidateExport.disabled=true;try{await copyCandidate(t=>info.textContent=t)}catch(e){info.textContent='KANDIDATDATA STOPPAD: '+e.message}finally{candidateExport.disabled=false}};
  independent.onclick=async()=>{independent.disabled=true;try{await fetchIndependent(t=>info.textContent=t);independentExport.disabled=false}catch(e){info.textContent='ALPACA STOPPAD: '+e.message}finally{independent.disabled=false}};
  independentExport.onclick=()=>{const report=savedIndependent();if(report)global.LinaStatusExport?.downloadObject?.('LINA_GEN9_ALPACA_SIP_ALL_2020_2024',report)};
  const exp=document.createElement('button');exp.textContent='📥 Exportera Gen9-datakällkontroll';exp.disabled=!old;panel.append(exp);
  exp.onclick=()=>{const report=saved();if(report)global.LinaStatusExport?.downloadObject?.('LINA_GEN9_DATA_DIAGNOSTIC',report)};
  button.onclick=async()=>{button.disabled=true;try{const report=await check(t=>info.textContent=t);exp.disabled=false;const descriptions=report.attempts.map(a=>a.source+': '+(a.error||a.analysis?.warnings.join('; ')||'schema läst, full verifiering återstår'));info.textContent=descriptions.join(' | ')}catch(e){info.textContent='DATAKONTROLL STOPPAD: '+e.message}finally{button.disabled=false}};
 }
-const api=Object.freeze({inspect,check,saved,fetchIndependent,savedIndependent,mount});if(typeof module==='object'&&module.exports)module.exports=api;else global.LinaGen9DataCheck=api;
+const api=Object.freeze({inspect,check,saved,fetchIndependent,savedIndependent,copyCandidate,mount});if(typeof module==='object'&&module.exports)module.exports=api;else global.LinaGen9DataCheck=api;
 })(typeof window==='object'?window:globalThis);
