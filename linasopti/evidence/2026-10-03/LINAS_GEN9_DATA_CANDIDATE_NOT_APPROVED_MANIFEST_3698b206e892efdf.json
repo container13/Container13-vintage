@@ -1,0 +1,84 @@
+{
+  "schema": "LINA-GEN9-DATA-MANIFEST-CANDIDATE-1",
+  "status": "CANDIDATE_NOT_APPROVED",
+  "source": "Yahoo chart; immutable received snapshot",
+  "contentSha256": "ae6e8ac4a54fe485ccdc207b5bdfbf63c495d08113d41c30ee7eba071f5adb12",
+  "sourceFileSha256": "cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c",
+  "historyHardStop": "2024-12-31",
+  "range": [
+    "2020-01-01",
+    "2024-12-31"
+  ],
+  "symbols": [
+    "AMD",
+    "SHOP",
+    "ADBE",
+    "MU",
+    "FDX",
+    "TSLA",
+    "LUV",
+    "NFLX",
+    "C",
+    "NOW",
+    "QCOM",
+    "BAC",
+    "GM",
+    "DDOG",
+    "PYPL",
+    "NVDA"
+  ],
+  "rowCount": 20128,
+  "adjustmentStatus": "UNVERIFIED_ADJUSTED_OHLC",
+  "corporateActionsVerified": false,
+  "calendarVerified": false,
+  "calendarAudit": {
+    "dailyDateSetMatchesPreviouslyDocumentedNYSECalendar": true,
+    "sessions": 1258,
+    "sources": [
+      "https://ir.theice.com/press/news-details/2019/NYSE-Group-Announces-2020-2021-and-2022-Holiday-and-Early-Closings-Calendar/default.aspx",
+      "https://ir.theice.com/press/news-details/2021/NYSE-Group-Announces-2022-2023-and-2024-Holiday-and-Early-Closings-Calendar/default.aspx"
+    ],
+    "note": "Date-set check passed; no new independent source retrieval or intraday-session verification in this build."
+  },
+  "hashDefinition": "SHA-256 UTF-8 engine canonical(data), sorted object keys, original finite JS number serialization; rows include d,o,h,l,c only.",
+  "transformation": "Project d,o,h,l,c from original, sort by date; no price changes, replacements, source mixing or later rows.",
+  "blockers": [
+    {
+      "id": "OHLC_ADJUSTMENT_BASIS",
+      "scope": "All 16 symbols",
+      "requirement": "Document complete common OHLC adjustment basis; numerical factor consistency is insufficient."
+    },
+    {
+      "id": "CORPORATE_ACTION_COMPLETENESS",
+      "scope": "All 16 symbols",
+      "requirement": "Close remaining full corporate-action completeness and historical absence checks, including AMD/ADBE/NOW."
+    },
+    {
+      "id": "FDX_FACTOR",
+      "scope": "FDX",
+      "requirement": "Verify later spin-off and dividend handling; Twelve all cannot substitute for Yahoo."
+    },
+    {
+      "id": "PYPL_FACTOR",
+      "scope": "PYPL",
+      "requirement": "Independently reproduce later corporate-action factor."
+    },
+    {
+      "id": "GM_2023_06_05_HIGH",
+      "scope": "GM",
+      "requirement": "Resolve Yahoo 34.45 versus Alpaca 34.49 under documented session/price definitions; Twelve 34.375 is invalid."
+    },
+    {
+      "id": "SOURCE_LINEAGE",
+      "scope": "Yahoo/Twelve comparison",
+      "requirement": "Do not claim independent lineage based on agreement; exact upstream lineage unverified."
+    },
+    {
+      "id": "OTHER_OHLC_DIFFERENCES",
+      "scope": "Full provider comparison",
+      "requirement": "55 investigated fields are diagnostic; discrepancies below triage threshold are not automatically verified."
+    }
+  ],
+  "researchStarted": false,
+  "tradeEnabled": false
+}
