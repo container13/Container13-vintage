@@ -194,3 +194,11 @@ Fem urklipps/exportfall och fem diagnostikfall godkända; syntax, ZIP och manife
 
 ## GitHub-publicering 2026-10-03 — V0.3.15
 Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-public-test. GitHub Pages kör automatiskt från denna gren; före överföring serverade container13.se/linasopti/version.js V0.3.14. Endast saknade V0.3.15-kodändringar och aktuella styrdokument överförs; nya README-rutiner och separat Gen9-evidence bevaras. Export- och diagnostiktester godkända. Gen7/8-kod bevaras; ingen forskning, planlås, datagodkännande eller Worker-deploy utförs.
+
+
+## V0.3.16 — independent Alpaca execution path
+- Gen9 Data Check has a browser-side full fetch for all 16 locked symbols, 2020–2024, via Worker `/bars` with `feed=sip&adjustment=all`.
+- Expected shape is locked to 20,128 rows = 16 × 1,258 dates; raw and normalized SHA-256 are calculated before export.
+- This is an independent comparison line only: no candidate patching, no research start, no Gen8 rerun, Handel/Forward remain OFF.
+- `independentDataLineVerified` remains false until exported data has been compared against the candidate and evidence reviewed.
+- Cloudflare: INGEN ÄNDRING. Existing complete live Worker already supports SIP/all.
