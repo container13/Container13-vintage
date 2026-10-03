@@ -228,3 +228,10 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - SHA-avvikelse eller ogiltig JSON stoppar exporten; ingen kandidatdata patchas eller normaliseras.
 - Syftet är att kunna klistra exakt kandidatfil i ChatGPT på iPhone för full datumvis OHLC-jämförelse mot den redan exporterade Alpaca SIP/all-linjen.
 - Ingen forskningsstate ändras. Gen8 orörd. Gen9 EJ GODKÄND. Handel/Forward AV. Cloudflare: INGEN ÄNDRING.
+
+
+## V0.3.20 — lokal kandidat ↔ Alpaca-jämförelse
+- Ny **🔎 Jämför kandidat ↔ Alpaca** kör exakt numerisk OHLC-jämförelse lokalt i browsern mellan låst `SOURCE_gen9-data.json` och redan hämtad Alpaca SIP/all.
+- Kandidatens SHA-256 måste vara `cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c`; annars stopp.
+- Rapporten redovisar saknade nycklar, exakta rader, avvikande rader/fält, per-symbol summering, max absolut avvikelse och högst 100 exempel. Ingen tolerans används för godkännande.
+- Rapporten sätter inte verifieringsflagga automatiskt och patchar aldrig kandidaten. Gen8 orörd; Gen9 EJ GODKÄND; forskning ej startad; Handel/Forward AV. Cloudflare: INGEN ÄNDRING.
