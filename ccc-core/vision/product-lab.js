@@ -1077,6 +1077,10 @@
     }
     closeCamera();
     resetCaptureVisual();
+    if (batchItems.length) {
+      currentIndex = batchItems.length - 1;
+      workspacePage = Math.floor(currentIndex / WORKSPACE_PAGE_SIZE);
+    }
     updateBatchStrip();
     showWorkspace();
   }
@@ -1121,6 +1125,10 @@
       return;
     }
     queueVisionSessionSave();
+    if (batchItems.length) {
+      currentIndex = batchItems.length - 1;
+      workspacePage = Math.floor(currentIndex / WORKSPACE_PAGE_SIZE);
+    }
     updateBatchStrip();
     resetCaptureVisual();
     showWorkspace();
@@ -2837,15 +2845,29 @@
   $("#backToSuggestionBtn")?.addEventListener("click", saveEditedAndBack);
   $("#previewBtn").addEventListener("click", handleEditorPrimaryAction);
   $("#newSeriesBtn").addEventListener("click", newSeries);
-  $("#publishReadyBtn")?.addEventListener("click", () => {
-    saveBatchMetadata();
-    rememberVisionPublishReturn("done");
-    const ids=batchItems.filter(item=>item.approved).map(item=>item.id);
-    const target=new URL("../publish/index.html",window.location.href);
-    target.searchParams.set("view","prepare");
-    target.searchParams.set("from","vision-ready");
-    if(ids.length)target.searchParams.set("items",ids.join(","));
-    window.location.href=target.href;
+  $("#publishReadyBtn")?.addEventListener("click", async () => {
+    if (publishNavigationPending) return;
+    const ready=batchItems.filter(item=>item.approved);
+    if (!ready.length) return;
+    publishNavigationPending=true;
+    const button=$("#publishReadyBtn");
+    if(button)button.disabled=true;
+    try{
+      for(const item of ready)await saveApprovedDraftLocally(item);
+      await queueVisionSessionSave();
+      saveBatchMetadata();
+      rememberVisionPublishReturn("done");
+      const target=new URL("../publish/index.html",window.location.href);
+      target.searchParams.set("view","prepare");
+      target.searchParams.set("from","vision-ready");
+      target.searchParams.set("items",ready.map(item=>item.id).join(","));
+      window.location.href=target.href;
+    }catch(error){
+      console.error("[CCC Vision] Kunde inte öppna Snabbpublicera",error);
+      publishNavigationPending=false;
+      if(button)button.disabled=false;
+      setMessage("Snabbpublicera kunde inte öppnas. Objektet finns kvar i Vision.");
+    }
   });
 
 
