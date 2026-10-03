@@ -42,3 +42,6 @@ Frontend ska inte ändras för att maskera detta. Worker behöver först få den
 
 ## Säkerhet
 Ingen livehandel aktiveras av denna Worker. Befintliga Alpaca/EODHD-rutter behålls.
+
+
+- **Cloudflare Worker-leverans:** När komplett Worker-kod ska lämnas till användaren ska en nedladdningsbar HTML-hjälpare skapas med knappen **Kopiera Worker-kod**. Hela Worker-koden ska ligga dold i HTML-filen och kopieras till urklipp med ett knapptryck; de tusentals kodraderna ska inte visas i chatten. HTML-hjälparen ska alltid byggas från den senast verifierade kompletta live-Worker-basen, inte från en kort/ofullständig repo-kopia.
