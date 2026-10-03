@@ -56,12 +56,12 @@ Dokumentrevision: överlämning 2026-10-03
 5. Alpacas primärdokumentation styrker olika villkorsregler för minut- och dagsbarer. Orsaken för just GM är inte styrkt. Benämningen ”Twelve-felet” betyder att Linas kontrakt inte uppfylls; leverantörens rotorsak är obekräftad. GM pausas i väntan på rad-specifikt besked/affärer med villkorskoder. Supportutkast finns; inte skickat.
 6. FDX: FedEx Freight-separationen är styrkt. Yahoo anger att adjusted close följer CRSP-standard och CRSP:s 2024-metodik dokumenterar explicit spin-off med when-issued-handel som parent close minus WI close × distributionskvot. Metodluckan är därmed stängd på standardnivå. Marknadsrekonstruktionen 411,75 - 0,5×160,37 ger faktor 0.805258044930176 mot kandidatmedian 0.8058017740753254. Exakt Yahoo vendor-input/precision för den enskilda justeringen är fortfarande inte direkt observerad, så ingen toleransbaserad verifieringsflagga sätts. Form 8937:s cirka 81,55% skattebas används inte som prisfaktor.
 7. PYPL:s AdjClose/quoteClose-faktor är nu numeriskt rekonstruerad med Yahoos dokumenterade utdelningsformel och fyra senare utdelningar om 0,14 USD: 2025-11-19, 2026-03-04, 2026-06-04 och 2026-09-04. Med publikt visade föregående stängningar 60,70 / 46,38 / 42,61 / 56,82 blir produkten 0.9889710881644362 mot kandidatmedian 0.9889711061369744; absolut rest cirka 1,80e-8. Ny separat evidence finns i LINA_GEN9_PYPL_ADJUSTMENT_RECONSTRUCTION.md/.json. Ingen verifieringsflagga sattes från toleransen.
-8. Kontantutdelningsfrånvaro: ADBE 2020–2024 stängd genom retrospektiv SEC-källa; NOW corroborated men full explicit täckning kvarstår; AMD öppen. Detta godkänner inte all corporate-action-data.
+8. Kontantutdelningsfrånvaro 2020–2024: ADBE, AMD och NOW är nu stängda på cash-dividend-nivå. AMD sluts via historisk issuer/SEC-deklaration plus reviderade 2022/2024 10-K som tillsammans täcker målperiodens finansierings-/equityflöden. NOW sluts via 2021 års explicita 'never declared or paid' och 2024 års retrospektiva 'have not declared'. NOW:s 5:1-split i december 2025 ligger utanför målperioden. Detta är inte ett godkännande av alla corporate actions.
 
 ### Nästa konkreta steg – börja här
 PYPL-steget är slutfört som separat diagnostisk evidence: Yahoo-formeln och hela fyrutdelningskedjan reproducerar kandidatfaktorn till cirka 1,80e-8 absolut rest med publikt avrundade stängningar. Ändra inte kandidatdata och sätt ingen verifieringsflagga enbart från denna numeriska överensstämmelse.
 
-Nästa konkreta steg: FDX:s spin-off-metod är nu styrkt via Yahoo→CRSP, men exakt Yahoo-input/precision lämnas öppet eftersom den inte får fyllas med ett toleransantagande. Gå vidare till nästa blockerare: AMD/NOW:s corporate-action-/utdelningsfrånvaro, därefter full kalender/datalinje och kvarvarande OHLC-avvikelser. GM förblir pausad i väntan på rad-specifikt underlag. Planlås/research först när samtliga datakrav är styrkta.
+Nästa konkreta steg: AMD/NOW:s cash-dividend-lucka är stängd för 2020–2024, men all-corporate-action-kompletthet är fortfarande separat. Gå vidare med full handelskalender för kandidatens 1258 datum och därefter den oberoende datalinjen/kvarvarande OHLC-avvikelser. FDX:s exakta Yahoo-input/precision och GM:s radspecifika orsak lämnas öppna utan antaganden. Planlås/research först när samtliga datakrav är styrkta.
 
 ### Läs dessa senaste filer (alla sökvägar relativt linasopti/)
 - LINA_MASTER_RULES.md
@@ -75,6 +75,7 @@ Nästa konkreta steg: FDX:s spin-off-metod är nu styrkt via Yahoo→CRSP, men e
 - evidence/2026-10-03/LINA_GEN9_FDX_SPINOFF_FACTOR_RECONSTRUCTION.md och .json
 - evidence/2026-10-03/LINA_GEN9_DIVIDEND_ABSENCE_REVIEW_6b10570365629eec.md
 - evidence/2026-10-03/LINA_GEN9_DIVIDEND_ABSENCE_REVIEW_14c1a484f62a5630.json
+- evidence/2026-10-03/LINA_GEN9_AMD_NOW_DIVIDEND_CLOSURE.md och .json
 
 Senaste faktorrapportens commit före denna handoff: ca87060af5e1aeed4376d51ee0bbd2d4f786ea72. Hämta alltid senaste branch-head; andra ändringar kan ha tillkommit.
 
