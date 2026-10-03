@@ -1,0 +1,40 @@
+{
+  "schema": "LINA-GEN9-AMD-NOW-DIVIDEND-CLOSURE-1",
+  "reviewDate": "2026-10-03",
+  "targetRange": [
+    "2020-01-01",
+    "2024-12-31"
+  ],
+  "status": "CASH_DIVIDEND_ABSENCE_CLOSED_FOR_TARGET_RANGE_ALL_CA_STILL_OPEN",
+  "findings": [
+    {
+      "symbol": "AMD",
+      "status": "CASH_DIVIDEND_ABSENCE_CONFIRMED_FOR_TARGET_RANGE",
+      "basis": [
+        "AMD historical issuer statement: never declared or paid cash dividends through 2016",
+        "audited 2022 10-K covers 2020-2022 financing/equity without dividend distribution",
+        "audited 2024 10-K covers 2023-2024 financing/shareholder returns without dividend distribution"
+      ],
+      "allCorporateActionsVerified": false
+    },
+    {
+      "symbol": "NOW",
+      "status": "CASH_DIVIDEND_ABSENCE_CONFIRMED_FOR_TARGET_RANGE",
+      "basis": [
+        "2021 10-K: never declared or paid cash dividends",
+        "2024 10-K: has not declared dividends; expected dividend yield zero"
+      ],
+      "laterEvent": "5-for-1 stock split December 2025, outside target range",
+      "allCorporateActionsVerified": false
+    }
+  ],
+  "dataApproved": false,
+  "corporateActionsVerified": false,
+  "researchStarted": false,
+  "gen8Rerun": false,
+  "pricesModified": false,
+  "verificationFlagsChanged": false,
+  "trading": false,
+  "forward": false,
+  "workerChanged": false
+}
