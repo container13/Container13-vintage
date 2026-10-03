@@ -61,7 +61,9 @@ Dokumentrevision: överlämning 2026-10-03
 ### Nästa konkreta steg – börja här
 Handelskalendern är nu verifierad som separat evidence: kandidatens 16 symboler har vardera exakt 1 258 unika datum 2020–2024 och datumaxeln matchar NYSE-kalendern utan saknade/extra/dubbla datum. Evidence: `LINA_GEN9_TRADING_CALENDAR_VERIFICATION.md/.json`. Detta stänger endast kalenderblocket; datamanifestet är fortsatt inte godkänt.
 
-Nästa konkreta steg: bygg den oberoende datalinjen och använd den för kvarvarande OHLC-granskning utan att patcha kandidatdata eller blanda leverantörer. GM 2023-06-05 förblir pausad tills radspecifikt underlag finns. FDX:s exakta Yahoo-input/precision lämnas öppen. All-corporate-action-kompletthet är separat. Gen9 är NOT APPROVED; Gen8 får inte köras om; Handel/Forward AV. Planlås/research först när samtliga datakrav är styrkta.
+Oberoende datalinje är nu källkvalificerad: Alpaca Historical Stock Bars med SIP, 1Day och adjustment=all för hela 16-symbolsuniversumet 2020–2024. Evidence: `LINA_GEN9_INDEPENDENT_DATA_LINE_SOURCE.md/.json`. Kandidaten är Yahoo-baserad; Alpaca ska endast vara separat kontrollinje och får inte patchas in i kandidaten. Repo-`worker.js` visar äldre /bars med IEX/raw medan handoffen dokumenterar senare SIP-kontroller live; repo-kopian får därför inte antas motsvara aktiv Worker.
+
+Nästa konkreta steg: verifiera live Worker health/route och hämta därefter hela Alpaca SIP/adjustment=all-datasetet, hash:a rå/normaliserad data och jämför datumvis OHLC mot kandidaten. Den aktuella webbkörningsmiljön kunde inte öppna Worker-domänen, så fullhämtningen är inte påstådd som genomförd. GM 2023-06-05 förblir pausad tills radspecifikt underlag finns. FDX:s exakta Yahoo-input/precision lämnas öppen. All-corporate-action-kompletthet är separat. Gen9 är NOT APPROVED; Gen8 får inte köras om; Handel/Forward AV. Planlås/research först när samtliga datakrav är styrkta.
 
 ### Läs dessa senaste filer (alla sökvägar relativt linasopti/)
 - LINA_MASTER_RULES.md
@@ -77,6 +79,7 @@ Nästa konkreta steg: bygg den oberoende datalinjen och använd den för kvarvar
 - evidence/2026-10-03/LINA_GEN9_DIVIDEND_ABSENCE_REVIEW_14c1a484f62a5630.json
 - evidence/2026-10-03/LINA_GEN9_AMD_NOW_DIVIDEND_CLOSURE.md och .json
 - evidence/2026-10-03/LINA_GEN9_TRADING_CALENDAR_VERIFICATION.md och .json
+- evidence/2026-10-03/LINA_GEN9_INDEPENDENT_DATA_LINE_SOURCE.md och .json
 
 Senaste faktorrapportens commit före denna handoff: ca87060af5e1aeed4376d51ee0bbd2d4f786ea72. Hämta alltid senaste branch-head; andra ändringar kan ha tillkommit.
 
