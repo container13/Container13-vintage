@@ -1,0 +1,73 @@
+{
+  "schema": "LINA-GEN9-DIVIDEND-ABSENCE-REVIEW-1",
+  "reviewDate": "2026-10-03",
+  "range": [
+    "2020-01-01",
+    "2024-12-31"
+  ],
+  "status": "PARTIAL_REVIEW_NOT_DATA_APPROVAL",
+  "originalDataSHA256": "cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c",
+  "findings": [
+    {
+      "symbol": "ADBE",
+      "status": "CASH_DIVIDEND_ABSENCE_CONFIRMED_FOR_TARGET_RANGE",
+      "source": "https://www.sec.gov/Archives/edgar/data/796343/000119312525005371/d904481ds3asr.htm",
+      "sourceType": "Issuer SEC S-3ASR January 2025",
+      "section": "Description of Capital Stock — Common Stock — Dividend Rights",
+      "shortExcerpt": "not declared or paid any cash dividends on our common stock since April 2005",
+      "conclusion": "The January 2025 filing retrospectively states absence of common-stock cash dividends since April 2005, covering the complete 2020–2024 calendar window.",
+      "limitation": "Cash-dividend absence only; does not prove absence of stock splits, spin-offs or all corporate actions."
+    },
+    {
+      "symbol": "NOW",
+      "status": "HISTORICAL_ABSENCE_CORROBORATED_NOT_GLOBAL_CA_APPROVAL",
+      "sources": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1373715/000137371522000024/now-20211231.htm",
+          "section": "Risks Related to Ownership of Our Common Stock",
+          "shortExcerpt": "We have never declared or paid any cash dividends on our common stock"
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1373715/000137371525000010/now-20241231.htm",
+          "section": "Note 14 Equity Awards — Valuation Assumptions — Expected dividend yield",
+          "shortExcerpt": "as we have not and do not currently intend to declare dividends"
+        }
+      ],
+      "conclusion": "The 2021 annual filing explicitly excludes prior cash dividends. The 2024 annual filing includes retrospective non-declaration language, strengthening coverage through the end of 2024.",
+      "limitation": "The later wording occurs in a valuation-assumption note and is less explicit than the Adobe historical statement. Retain corroborated status; no all-corporate-actions verification flag is changed."
+    },
+    {
+      "symbol": "AMD",
+      "status": "HISTORICAL_CASH_DIVIDEND_ABSENCE_STILL_OPEN",
+      "sources": [
+        {
+          "url": "https://ir.amd.com/contacts-faq/faq",
+          "section": "Does AMD pay a cash dividend?",
+          "shortExcerpt": "AMD does not currently pay a cash dividend at this time."
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/2488/000000248825000012/amd-20241228.htm",
+          "section": "Consolidated Statements of Cash Flows and Note 12 stock-based compensation",
+          "summary": "Cash-flow financing rows for 2022–2024 do not separately identify dividends; zero expected yield is prospective. Fiscal 2024 ends December 28, not December 31."
+        }
+      ],
+      "conclusion": "Current policy and absence of a separately labelled cash-flow row are insufficient to independently establish complete historical absence for every target date.",
+      "limitation": "No false closure; complete retrospective issuer declaration or reconciled historical statements remain required."
+    }
+  ],
+  "remainingBlockers": [
+    "AMD historical absence remains open; NOW retained as corroborated.",
+    "All 16 symbols' common OHLC adjustment basis and complete corporate-action coverage.",
+    "FDX later price basis and differing dividend adjustment factors.",
+    "PYPL nearly constant later adjustment factor.",
+    "GM 2023-06-05 competing high prices and invalid Twelve high below open.",
+    "Yahoo/Twelve shared lineage not excluded.",
+    "Full trading-calendar verification and remaining OHLC discrepancy triage."
+  ],
+  "dataApproved": false,
+  "corporateActionsVerified": false,
+  "calendarVerified": false,
+  "researchStarted": false,
+  "gen8Rerun": false,
+  "pricesModified": false
+}
