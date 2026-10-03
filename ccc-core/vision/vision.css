@@ -5788,3 +5788,24 @@ body.ccc-focused-text-mode #textEditorDialog #largeTextEditor.description-editor
 #captureCard:has(#batchStrip:not([hidden])) .batch-strip{flex:0 0 auto!important;width:100%!important;min-height:auto!important;overflow:hidden!important}
 #captureCard:has(#batchStrip:not([hidden])) .vision-grid-page{aspect-ratio:3/2!important}
 }
+
+
+/* CCC Vision v2.10.163 – tydlig aktiv/inaktiv status i Välj objekt. */
+#workspaceSelectedActions .workspace-continue-button:not(:disabled){
+  border-color:rgba(221,180,91,.82)!important;
+  background:rgba(221,180,91,.10)!important;
+  color:#f4e4bd!important;
+  box-shadow:0 0 0 1px rgba(221,180,91,.12),0 0 16px rgba(221,180,91,.08)!important;
+}
+#workspaceSelectedActions .workspace-adapt-image:not(:disabled){
+  border-color:rgba(154,118,255,.78)!important;
+  background:rgba(154,118,255,.10)!important;
+  color:#eee8ff!important;
+  box-shadow:0 0 0 1px rgba(154,118,255,.10),0 0 16px rgba(154,118,255,.08)!important;
+}
+#workspaceSelectedActions > button:disabled{
+  opacity:.34!important;
+  filter:saturate(.25)!important;
+  box-shadow:none!important;
+  cursor:default!important;
+}
