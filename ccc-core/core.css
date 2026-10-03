@@ -1872,3 +1872,26 @@ button,a,input,textarea,select,[role="button"]{touch-action:manipulation}
 .ccc-free-swipe.is-dragging{cursor:grabbing;user-select:none}
 .ccc-free-swipe--center:not(.is-overflowing){justify-content:center!important}
 .ccc-free-swipe.is-overflowing{justify-content:flex-start!important}
+
+
+/* CCC v2.10.164 – appkänsla: ingen text-/bildmarkering eller iOS callout/lupp.
+   Formfält behåller normal textmarkering så innehåll fortfarande kan redigeras. */
+html,body,.ccc-app-shell,.ccc-workspace,
+.ccc-app-shell button,.ccc-app-shell a,.ccc-app-shell img,.ccc-app-shell svg,
+.ccc-app-shell span,.ccc-app-shell strong,.ccc-app-shell small,.ccc-app-shell p,
+.ccc-app-shell h1,.ccc-app-shell h2,.ccc-app-shell h3,.ccc-app-shell label,
+.ccc-core-footer,.ccc-header,.ccc-module-marker{
+  -webkit-user-select:none!important;
+  user-select:none!important;
+  -webkit-touch-callout:none!important;
+  -webkit-tap-highlight-color:transparent;
+}
+.ccc-app-shell img,.ccc-app-shell svg{
+  -webkit-user-drag:none!important;
+  user-drag:none!important;
+}
+input,textarea,[contenteditable="true"],[contenteditable="plaintext-only"]{
+  -webkit-user-select:text!important;
+  user-select:text!important;
+  -webkit-touch-callout:default!important;
+}
