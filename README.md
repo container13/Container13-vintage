@@ -1,5 +1,7 @@
 # Automatisk GitHub-överföring — användarbeslut 2026-10-03
 
+Dokumentationsrevision: **1.1** · Uppdaterad: **2026-10-03**. Revisionen gäller README-rutinen; appens release anges fortsatt i `linasopti/version.js`.
+
 Användaren har godkänt att samtliga färdiga filer som assistenten skapar eller ändrar för användarens projekt automatiskt förs över till GitHub, utan ny bekräftelse för varje uppladdning. Detta gäller även filer som tidigare överfördes manuellt och publicering i det godkända offentliga projekt-repot.
 
 - Identifiera rätt repo, gren och sökväg för respektive projekt före skrivning. För Lina: `container13/Container13-vintage`, gren `ccc-demo-public-test`, katalog `linasopti/`.
