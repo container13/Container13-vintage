@@ -1,3 +1,7 @@
+# Aktuella filer och historik
+
+Aktuella projektfiler ligger i denna mapp. [Äldre handoff- och Worker-filer finns i historikarkivet](history/legacy/README.md). [Genomförd rensningslista](LINA_CLEANUP_PROPOSAL.md).
+
 # Automatisk GitHub-överföring — användarbeslut 2026-10-03
 
 Dokumentationsrevision: **1.1** · Uppdaterad: **2026-10-03**. Revisionen gäller README-rutinen; appens release anges fortsatt i `linasopti/version.js`.

@@ -1,12 +1,12 @@
 # Lina – rensningsförslag
 
-Dokumentrevision 1.0 • 2026-10-03
+Dokumentrevision 1.1 • 2026-10-03
 
-Status: FÖRSLAG – inga filer har flyttats eller raderats.
+Status: GENOMFÖRD efter användarens godkännande 2026-10-03. 136 filer arkiverade och två borttagna ur aktuell branch.
 Repository: container13/Container13-vintage, branch ccc-demo-public-test.
 Inventerad commit: f9195d108dfd34a43a277dc6bcd3d939dd9fbcf2.
 
-## Föreslagen åtgärd
+## Godkänd åtgärd
 
 Arkivera 129 historiska handoff-filer och sju äldre Worker-filer i `linasopti/history/legacy/`, med oförändrat innehåll och samma filnamn. De innehåller projekthistorik och ska bevaras.
 
@@ -168,3 +168,7 @@ Arkivering städar mappen men minskar inte repo-historikens storlek. ZIP-raderin
 | `linasopti/cloudflare-worker-v0243.js` | Arkivera till `linasopti/history/legacy/cloudflare-worker-v0243.js` | `719fa4a718e6fba0cc24e12cf5d6284fc5b89ae0` |
 | `linasopti/linasopti_v0588_worker_nav_fix_COMPLETE.zip` | Ta bort | `77fd5714325830decfff2a9b53b2c2deff0a4617` |
 | `linasopti/worker_eodhd_patch_v031.js` | Arkivera till `linasopti/history/legacy/worker_eodhd_patch_v031.js` | `31df9c5e36bcc2c68d43e1e399a071aca532b4ea` |
+
+## Genomförandekontroll
+
+Alla 138 källfiler kontrollerades mot inventerade blob-SHA före ändringen. Referenssökning i 111 aktuella Lina-textfiler (GitHub-innehåll verifierat mot lokal kopia eller direkt hämtat) visade inga aktiva körbara referenser till flyttade filer. MASTER RULES nämner en äldre handoff som namnexempel, inte som länk. Historiska handoff-filers Worker-namn bevaras tillsammans med Worker-filerna i samma arkivmapp. Äldre release-manifest behålls som historisk snapshot och ska inte användas som verifiering av den omorganiserade mappen.
