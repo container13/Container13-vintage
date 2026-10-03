@@ -589,9 +589,92 @@ const CCCHelp={
     setTimeout(sync,250);
   }
 };
+
+
+// ==========================================================
+// CCC IMAGE VIEWER CORE v1 — v2.10.165
+// Långtryck på innehållsbilder öppnar helskärm. Ett enkeltryck stänger.
+// Interaktiva kontroller/ikoner/logotyper undantas automatiskt.
+// ==========================================================
+const CCCImageViewer={
+  holdMs:520,
+  timer:null,
+  source:null,
+  startX:0,
+  startY:0,
+  moved:false,
+  eligible(img){
+    if(!(img instanceof HTMLImageElement)||!img.currentSrc&&!img.src)return false;
+    if(img.closest("button,a,label,.ccc-brand-mark,.brand,.icon-button,.ccc-icon-button,.action-icon,.workspace-add-icon,.ccc-tool-icon,.thumb-status"))return false;
+    if(img.matches("[data-ccc-no-viewer],.ccc-no-image-viewer"))return false;
+    return true;
+  },
+  ensure(){
+    let overlay=document.querySelector("#cccImageViewer");
+    if(overlay)return overlay;
+    overlay=document.createElement("div");
+    overlay.id="cccImageViewer";
+    overlay.className="ccc-image-viewer";
+    overlay.hidden=true;
+    overlay.setAttribute("role","dialog");
+    overlay.setAttribute("aria-modal","true");
+    overlay.setAttribute("aria-label","Bild i helskärm");
+    overlay.innerHTML='<img class="ccc-image-viewer-img" alt="">';
+    document.body.appendChild(overlay);
+    overlay.addEventListener("click",()=>this.close());
+    overlay.addEventListener("contextmenu",event=>event.preventDefault());
+    return overlay;
+  },
+  open(img){
+    if(!this.eligible(img))return;
+    const overlay=this.ensure();
+    const full=overlay.querySelector("img");
+    full.src=img.currentSrc||img.src;
+    full.alt=img.alt||"Bild";
+    overlay.hidden=false;
+    document.documentElement.classList.add("ccc-image-viewer-open");
+    if(navigator.vibrate)navigator.vibrate(12);
+  },
+  close(){
+    const overlay=document.querySelector("#cccImageViewer");
+    if(!overlay||overlay.hidden)return;
+    overlay.hidden=true;
+    document.documentElement.classList.remove("ccc-image-viewer-open");
+  },
+  cancel(){clearTimeout(this.timer);this.timer=null;this.source=null;},
+  install(){
+    document.addEventListener("touchstart",event=>{
+      if(event.touches.length!==1||!document.querySelector("#cccImageViewer")?.hidden===false)return;
+      const img=event.target.closest?.("img");
+      if(!this.eligible(img))return;
+      const t=event.touches[0];
+      this.source=img;this.startX=t.clientX;this.startY=t.clientY;this.moved=false;
+      clearTimeout(this.timer);
+      this.timer=setTimeout(()=>{
+        if(!this.source||this.moved)return;
+        this.open(this.source);
+        this.timer=null;
+      },this.holdMs);
+    },{passive:true});
+    document.addEventListener("touchmove",event=>{
+      if(!this.source||event.touches.length!==1)return;
+      const t=event.touches[0];
+      if(Math.hypot(t.clientX-this.startX,t.clientY-this.startY)>12){this.moved=true;this.cancel();}
+    },{passive:true});
+    document.addEventListener("touchend",()=>this.cancel(),{passive:true});
+    document.addEventListener("touchcancel",()=>this.cancel(),{passive:true});
+    document.addEventListener("contextmenu",event=>{
+      const img=event.target.closest?.("img");
+      if(this.eligible(img))event.preventDefault();
+    });
+    document.addEventListener("keydown",event=>{if(event.key==="Escape")this.close();});
+  }
+};
+CCCImageViewer.install();
+
 window.CCC_CORE={
   applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader,footer:CCCFooter,
-  swipe:CCCSwipe,press:CCCPress,help:CCCHelp,
+  swipe:CCCSwipe,press:CCCPress,help:CCCHelp,imageViewer:CCCImageViewer,
   navigation:{back:dispatchCCCBackOnce,dashboard:navigateCCCDashboardOnce}
 };
 CCCHelp.install();
