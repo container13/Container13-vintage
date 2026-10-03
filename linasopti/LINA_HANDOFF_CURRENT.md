@@ -55,13 +55,13 @@ Dokumentrevision: överlämning 2026-10-03
 4. GM 2023-06-05: Twelve none open 34.45000076 / high 34.375 underkänns av Linas OHLC-kontrakt. Yahoo raw high 34.45000076293945, Alpaca SIP daily high 34.49. Nytt SIP-femminutersprov har 78 ordinarie intervall och high 34.49 vid 09:30 ET. Samma leverantör, ingen oberoende bekräftelse. Daily open 34.45 skiljer från första femminuters-open 34.49.
 5. Alpacas primärdokumentation styrker olika villkorsregler för minut- och dagsbarer. Orsaken för just GM är inte styrkt. Benämningen ”Twelve-felet” betyder att Linas kontrakt inte uppfylls; leverantörens rotorsak är obekräftad. GM pausas i väntan på rad-specifikt besked/affärer med villkorskoder. Supportutkast finns; inte skickat.
 6. FDX/PYPL: avknoppning/utdelningsstart efter dataperioden styrkta med primärkällor, men exakta vendor-faktorer inte styrkta. FDX Form 8937 anger cirka 81,55% skattebas; observerad historisk prisskala cirka 80,58% är inte samma sak. FDX 5032 OHLC-jämförelser har median 0.8058017740753254 men spann 0.7900818914455453–0.8270538941955641.
-7. PYPL:s AdjClose/quoteClose är nästan konstant över 1258 dagar: 0.9889709358572251–0.9889712748240216, median 0.9889711061369744. PayPals 8-K 2025-10-28 styrker inledd utdelning 0.14 USD, record 2025-11-19, betalning 2025-12-10. Hela senare faktorprodukten inte rekonstruerad.
+7. PYPL:s AdjClose/quoteClose-faktor är nu numeriskt rekonstruerad med Yahoos dokumenterade utdelningsformel och fyra senare utdelningar om 0,14 USD: 2025-11-19, 2026-03-04, 2026-06-04 och 2026-09-04. Med publikt visade föregående stängningar 60,70 / 46,38 / 42,61 / 56,82 blir produkten 0.9889710881644362 mot kandidatmedian 0.9889711061369744; absolut rest cirka 1,80e-8. Ny separat evidence finns i LINA_GEN9_PYPL_ADJUSTMENT_RECONSTRUCTION.md/.json. Ingen verifieringsflagga sattes från toleransen.
 8. Kontantutdelningsfrånvaro: ADBE 2020–2024 stängd genom retrospektiv SEC-källa; NOW corroborated men full explicit täckning kvarstår; AMD öppen. Detta godkänner inte all corporate-action-data.
 
 ### Nästa konkreta steg – börja här
-Rekonstruera PYPL:s nästan konstanta justeringsfaktor med senare utdelningar och föregående stängningspriser fram till kandidatens justeringsreferens. Verifiera leverantörens formel och uttagstid; dokumentera kvarstående restskillnad. Nuvarande Gen9 Worker-endpoint är begränsad till 2020–2024, så en separat diagnostisk hämtväg behövs för 2025–2026. Ändra inte kandidatdata eller deploya en ny Worker utan att först säkra aktuell kod och följa projektreglerna. Yahoo-hjälpsidan identifierades men full läsning gav HTTP 429; algoritmen räknas inte som verifierad i senaste rapporten.
+PYPL-steget är slutfört som separat diagnostisk evidence: Yahoo-formeln och hela fyrutdelningskedjan reproducerar kandidatfaktorn till cirka 1,80e-8 absolut rest med publikt avrundade stängningar. Ändra inte kandidatdata och sätt ingen verifieringsflagga enbart från denna numeriska överensstämmelse.
 
-Efter PYPL: styrk FDX:s vendor-specifika spin-off-faktor och full justeringskedja. Kvarstår även GM, övriga OHLC-avvikelser, AMD/NOW-frånvaro, full kalender och datalinje. Planlås/research först när samtliga datakrav är styrkta.
+Nästa konkreta steg: styrk FDX:s vendor-specifika spin-off-faktor och full justeringskedja. Kvarstår även GM, övriga OHLC-avvikelser, AMD/NOW-frånvaro, full kalender och datalinje. Planlås/research först när samtliga datakrav är styrkta.
 
 ### Läs dessa senaste filer (alla sökvägar relativt linasopti/)
 - LINA_MASTER_RULES.md
@@ -71,6 +71,7 @@ Efter PYPL: styrk FDX:s vendor-specifika spin-off-faktor och full justeringskedj
 - evidence/2026-10-03/LINA_GEN9_GM_REVIEW_ae9bb251464b7fe5.md och .json
 - evidence/2026-10-03/LINA_GEN9_GM_METHODOLOGY_REVIEW.md
 - evidence/2026-10-03/LINA_GEN9_FDX_PYPL_FACTOR_REVIEW_11033f0c98e1a604.md och .json
+- evidence/2026-10-03/LINA_GEN9_PYPL_ADJUSTMENT_RECONSTRUCTION.md och .json
 - evidence/2026-10-03/LINA_GEN9_DIVIDEND_ABSENCE_REVIEW_6b10570365629eec.md
 - evidence/2026-10-03/LINA_GEN9_DIVIDEND_ABSENCE_REVIEW_14c1a484f62a5630.json
 
