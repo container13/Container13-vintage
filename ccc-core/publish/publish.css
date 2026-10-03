@@ -3305,3 +3305,8 @@ html.ccc-direct-prepare-loading #cccCoreFooter{
 #cropView#cropView[hidden]{
   display:none!important;
 }
+
+
+/* CCC v2.10.166 – pinch-zoom är standard i Anpassa bild; separat lupp tas bort. */
+#cropView #cropZoomToggle,
+#cropView #cropZoomControls{display:none!important}
