@@ -328,3 +328,6 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Urklippsbegäran initieras vid klick även när rapporten hämtas asynkront. Nekat/saknat urklipp ger synlig kopieringsknapp och manuell textmarkering, aldrig falskt Kopierad.
 - Export får inte ändra forskning eller lås. Skärmbildens separata ett-resultat-regel ändras inte.
 - Datakällans HTTP 200 eller radantal räcker inte: kontrollera att varje datum ligger inom begärd period. Datakällrapporten 2026-09-30 visade EODHD 2025-09-30 vid begäran om 2020. Ingen sådan data får användas för begärd historik.
+
+
+**Cloudflare-kod – obligatorisk leveransregel:** När användaren behöver klistra in komplett Worker-kod ska koden INTE skrivas ut i chatten. Leverera i stället en kompakt ett-klick-kopieringslösning/HTML-hjälpare som kopierar hela den kompletta Worker-filen till urklipp. Användaren ska bara behöva trycka på kopieringsknappen och sedan klistra in i Cloudflare. Visa full kod endast om användaren uttryckligen ber att få se den.
