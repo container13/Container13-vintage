@@ -455,35 +455,8 @@ function openDraftPreview(button,img){
 }
 
 function bindDraftPreview(button,img){
-  button.addEventListener("contextmenu",e=>e.preventDefault());
-  button.addEventListener("pointerdown",e=>{
-    if(e.pointerType==="mouse"&&e.button!==0)return;
-    clearDraftPreviewGesture();
-    draftPreviewGesture={button,id:e.pointerId,x:e.clientX,y:e.clientY,longPressed:false,preview:null,timer:null};
-    draftPreviewGesture.timer=window.setTimeout(()=>openDraftPreview(button,img),750);
-  });
-  button.addEventListener("pointermove",e=>{
-    const g=draftPreviewGesture;
-    if(!g||g.button!==button||g.id!==e.pointerId||g.longPressed)return;
-    if(Math.hypot(e.clientX-g.x,e.clientY-g.y)>12)clearDraftPreviewGesture();
-  });
-  const finish=e=>{
-    const g=draftPreviewGesture;
-    if(!g||g.button!==button||g.id!==e.pointerId)return;
-    if(g.longPressed)closeDraftPreview(); else clearDraftPreviewGesture();
-  };
-  button.addEventListener("pointerup",finish);
-  button.addEventListener("pointercancel",finish);
-  button.addEventListener("lostpointercapture",finish);
-  const globalFinish=e=>{
-    const g=draftPreviewGesture;
-    if(!g||g.id!==e.pointerId)return;
-    if(g.longPressed)closeAnyDraftPreview(); else clearDraftPreviewGesture();
-  };
-  window.addEventListener("pointerup",globalFinish,{once:true});
-  window.addEventListener("pointercancel",globalFinish,{once:true});
+  // v2.10.169: global CCCImageViewer i Core äger långtryck.
 }
-
 function closeConfirmFullscreen(){
   if(confirmFullscreenGesture?.timer)window.clearTimeout(confirmFullscreenGesture.timer);
   confirmFullscreenGesture=null;
@@ -521,31 +494,7 @@ function openConfirmFullscreen(button,img){
 }
 
 function bindConfirmFullscreen(button,img){
-  button.addEventListener("contextmenu",event=>event.preventDefault());
-  button.addEventListener("pointerdown",event=>{
-    if(event.pointerType==="mouse"&&event.button!==0)return;
-    if(confirmFullscreenGesture?.timer)window.clearTimeout(confirmFullscreenGesture.timer);
-    confirmFullscreenGesture={button,id:event.pointerId,x:event.clientX,y:event.clientY,opened:false,timer:null};
-    confirmFullscreenGesture.timer=window.setTimeout(()=>openConfirmFullscreen(button,img),650);
-  });
-  button.addEventListener("pointermove",event=>{
-    const gesture=confirmFullscreenGesture;
-    if(!gesture||gesture.button!==button||gesture.id!==event.pointerId||gesture.opened)return;
-    if(Math.hypot(event.clientX-gesture.x,event.clientY-gesture.y)>12){
-      window.clearTimeout(gesture.timer);
-      confirmFullscreenGesture=null;
-    }
-  });
-  const finish=event=>{
-    const gesture=confirmFullscreenGesture;
-    if(!gesture||gesture.button!==button||gesture.id!==event.pointerId)return;
-    if(!gesture.opened){
-      window.clearTimeout(gesture.timer);
-      confirmFullscreenGesture=null;
-    }
-  };
-  button.addEventListener("pointerup",finish);
-  button.addEventListener("pointercancel",finish);
+  // v2.10.169: global CCCImageViewer i Core äger långtryck.
 }
 
 document.addEventListener("keydown",event=>{
