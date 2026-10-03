@@ -287,6 +287,30 @@
     }
   }
 
+  async function openImageAdjustmentFromEdit() {
+    if (publishNavigationPending) return;
+    const item = currentItem();
+    if (!item) return;
+    publishNavigationPending = true;
+    clearTimeout(saveTimer);
+    autosaveSequence += 1;
+    const button = $("#visionAdaptImageBtn");
+    if (button) button.disabled = true;
+    try {
+      const ok = await saveEditedCurrent({ quiet: true });
+      if (!ok) throw new Error("Objektet kunde inte sparas före bildanpassningen.");
+      await queueVisionSessionSave();
+      saveBatchMetadata();
+      try { sessionStorage.setItem("ccc-vision-return-edit-item", item.id); } catch (_) {}
+      window.location.assign(`../publish/index.html?view=adapt&item=${encodeURIComponent(item.id)}&from=vision-adapt`);
+    } catch (error) {
+      publishNavigationPending = false;
+      if (button) button.disabled = false;
+      console.error("[CCC Vision] Anpassa bild kunde inte öppnas", error);
+      setMessage("Bildverktyget kunde inte öppnas. Försök igen.");
+    }
+  }
+
   async function handleEditorPrimaryAction(){
     if(!publishConfirmReturn())return saveEditedAndNext();
     if(publishNavigationPending)return false;
@@ -1277,6 +1301,29 @@
     };
   }
 
+  async function getPublishedDraftLocally(id) {
+    if (!id) return null;
+    const db = await openWorkspaceDb();
+    try {
+      return await new Promise((resolve, reject) => {
+        const tx = db.transaction("images", "readonly");
+        const request = tx.objectStore("images").get(id);
+        request.onsuccess = () => resolve(request.result || null);
+        request.onerror = () => reject(request.error);
+      });
+    } finally {
+      db.close();
+    }
+  }
+
+  async function syncPublishedPreview(item) {
+    if (!item) return;
+    const draft = await getPublishedDraftLocally(item.id);
+    const activeBlob = draft?.publishBlob || draft?.cutoutBlob || null;
+    item.hasImageAdjustment = !!(draft?.cropData || draft?.cutoutBlob || draft?.publishBlob);
+    if (activeBlob) item.previewUrl = fileUrl(activeBlob);
+  }
+
   async function putVisionSourceFile(id, file, metadata = null) {
     if (!id || !file) return;
     const db = await openWorkspaceDb();
@@ -1626,7 +1673,9 @@
     imageMetadata.cccItemId=item.cccItemId;
     await updateVisionSourceMetadata(item.originalFileKey,imageMetadata);
 
+    const existing = await getPublishedDraftLocally(item.id);
     const record = {
+      ...(existing || {}),
       id: item.id,
       cccItemId: item.cccItemId,
       imageMetadata,
@@ -1635,7 +1684,9 @@
       originalType: item.file.type || "image/jpeg",
       createdAt: item.createdAt || Date.now(),
       source: "vision",
-      imageProcessingState: item.reviewFileKey ? (item.reviewImageProcessingState || "webp-cropped") : "original",
+      imageProcessingState: item.reviewFileKey
+        ? (item.reviewImageProcessingState || "webp-cropped")
+        : (existing?.imageProcessingState || "original"),
       ...(item.reviewFileKey ? { publishBlob: item.file, cropData: item.cropData || null } : {}),
       readyToPublish: true,
       title: (fields.title || item.visionResult?.summaryTitle || "").trim(),
@@ -1745,7 +1796,7 @@
     list.innerHTML = "";
     const main = document.createElement("div");
     main.className = "same-garment-thumb is-main";
-    main.innerHTML = `<img src="${item.previewUrl}" alt="Huvudbild"><span>Huvudbild</span>${item.aiAnalyzedMain ? '<span class="same-garment-ai-badge">AI ✓</span>' : ""}`;
+    main.innerHTML = `<img src="${item.previewUrl}" alt="Huvudbild"><span>Huvudbild</span>${item.aiAnalyzedMain ? '<span class="same-garment-ai-badge">AI ✓</span>' : ""}${item.hasImageAdjustment ? '<span class="same-garment-adjusted-badge">Anpassad</span>' : ""}`;
     list.appendChild(main);
     (item.extraUrls || []).forEach((url, index) => {
       const cell = document.createElement("div");
@@ -2791,6 +2842,7 @@
   $("#useSuggestionBtn").addEventListener("click", approveCurrent);
   $("#wrongSuggestionBtn").addEventListener("click", editCurrent);
   $("#addSameGarmentBtn").addEventListener("click", () => $("#sameGarmentInput").click());
+  $("#visionAdaptImageBtn")?.addEventListener("click", openImageAdjustmentFromEdit);
   $("#sameGarmentInput").addEventListener("change", (event) => addSameGarmentFiles(event.target.files));
   $("#sameGarmentCameraBtn")?.addEventListener("click", () => $("#sameGarmentCameraInput")?.click());
   $("#sameGarmentAlbumBtn")?.addEventListener("click", () => $("#sameGarmentInput")?.click());
@@ -2950,6 +3002,7 @@ $("#price")?.addEventListener("click", openPriceEditor);
       const returnIndex=batchItems.findIndex(item=>String(item.id)===String(returnItemId));
       if(returnIndex>=0){
         try{sessionStorage.removeItem("ccc-vision-return-edit-item");}catch(_){}
+        await syncPublishedPreview(batchItems[returnIndex]);
         /* Stäng start-/arbetsytans skal innan redigeringskortet öppnas.
            Båda anropen sker i samma renderingstakt och ger ingen mellanvy. */
         showWorkspace();

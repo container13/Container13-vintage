@@ -1808,3 +1808,8 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Kamerans `Ta foto` ersätts av en kompakt CCC-markering. Nypgest i kameraytan styr endast riktig hårdvaruzoom när webbläsaren exponerar den.
 - Core får en global touchregel mot oavsiktlig dubbeltryckszoom och mobilens formulärfält hålls minst 16 px.
 - Root `/version.js` är fortsatt orörd. CCC-versionen hanteras i `/ccc-core/version.js`.
+## v2.10.153 – bildmotorn kan öppnas direkt från Vision (2026-10-03)
+
+- Ny direktkontext `view=adapt&from=vision-adapt` öppnar befintlig `Anpassa bild` för ett angivet Vision-objekt.
+- Både `Spara anpassning` och Tillbaka återgår till samma objekt i `Vision → Granska & komplettera`.
+- Ingen separat friläggningsmotor har skapats; Publicera förblir enda implementation och gemensam datakälla.

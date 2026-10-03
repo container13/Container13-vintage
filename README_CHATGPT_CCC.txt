@@ -4,7 +4,7 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.132
+CCC-version: 2.10.144
 Senaste stabila bas: 2.10.87 – Core-styrd swipe och stabil direktnavigation
 Senaste checkpoint: 2026-08-27
 Nästa uppgift: Testa kamera → ta ett eller flera nya foton → Expresspublicera → välj kanal → Publicera X objekt.
@@ -48,6 +48,91 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
+v2.10.144 – Ligger ute nu följer Admins visningstid
+- CCC läser samma newArrivalsRetentionMode och newArrivalsRetentionDays som Container13-webbplatsen.
+- Fliken Ligger ute nu visar endast bilder som faktiskt är synliga på hemsidan enligt 7, 14, 30, eget 1–30 dagar eller manuell borttagning.
+- Sparade lokala publiceringar får status inte ute när deras visningstid har passerat, även om en äldre Firebase-post ännu inte har städats bort av Admin.
+- Historiken över att bilden en gång publicerades behålls oförändrad.
+- Om webbplatsinställningen inte kan hämtas används samma reservvärde som hemsidan: 7 dagar.
+
+v2.10.143 – fri placering i Anpassa bild
+- Objektet kan dras åt vänster, höger, uppåt och nedåt redan vid 100 procent zoom.
+- Bildytans tidigare kantlås begränsar inte längre objektets centrering.
+- Nypzoom kan fortsatt kombinera zoom och förflyttning i samma gest.
+- Eventuell tom yta syns direkt i förhandsgranskningen innan användaren sparar.
+- Anpassa bild visar en tydlig instruktion om fri dragning.
+
+v2.10.142 – öppna och efterjustera befintlig friläggning
+- Frilägg på en redan frilagd bild öppnar den sparade friläggningen direkt utan ny AI-körning.
+- Pensel, zoom, borttagning och ångra kan användas igen på det befintliga resultatet.
+- Endast den tydliga knappen Frilägg på nytt med AI startar en ny segmentering från originalet.
+- Befintlig bakgrund och bildplacering bevaras när friläggningen efterjusteras.
+- Om den sparade friläggningen är skadad faller vyn säkert tillbaka till en ny AI-körning.
+- v2.10.141-fixarna för iPhone-callout och ren Vision-direktvy ingår.
+
+v2.10.141 – blockerad iPhone-callout och ren Vision-direktvy
+- Friläggningscanvasen blockerar iOS textmarkering, touch-callout, bilddragning och systemets långtrycksmeny.
+- Touchstart och touchmove stoppas aktivt medan friläggningspenseln används, så webbläsarens förstoringsruta inte konkurrerar med penselringen.
+- Granska bild stänger uttryckligen Visions start-/arbetsytas skal innan rätt Granska & komplettera-kort öppnas.
+- Startskal och redigeringskort kan därför inte ligga synliga samtidigt i den direkta granskningsvägen.
+
+v2.10.140 – synlig precisionspensel och säker Granska bild-route
+- Penselns träffpunkt ligger 46 pixlar ovanför fingret på touchskärm så arbetskanten inte skyms.
+- En gul penselring med mittpunkt visar exakt var och hur stort området som målas är.
+- Muspekare använder fortsatt direkt träffpunkt utan förskjutning.
+- Granska bild reparerar saknad Vision-originalreferens även om objektet redan finns i Vision-sessionen.
+- Vision öppnar direktrouten utan att först visa sin start-/arbetsvy och väljer uttryckligen rätt objekt för Granska & komplettera.
+
+v2.10.139 – reversibel pensel och precisionszoom
+- Måla tillbaka-penseln registrerar penseldragets väg och kan rulla tillbaka den senaste delen när fingret dras tillbaka längs samma väg.
+- Ångra för hela penseldraget finns kvar som extra säkerhet.
+- Två fingrar nyper och flyttar arbetsbilden utan att måla.
+- Zoom kan även styras med plus/minus från 100 till 500 procent och Visa hela återställer vyn.
+- Dubbeltryck återställer zoom och mushjul stöds vid datorarbete.
+- Penseln arbetar i bildens koordinater så storleken förblir exakt även vid hög zoom.
+
+v2.10.138 – justera AI-friläggningen med pensel
+- Friläggningsresultatet kan korrigeras direkt innan det används.
+- Måla tillbaka hämtar saknade pixlar från det orörda originalet, exempelvis en borttagen ärm.
+- Ta bort suddar manuellt bort bakgrund som AI:n har lämnat kvar.
+- Penselstorleken är reglerbar och penselkanten mjukas för mindre synliga övergångar.
+- Ångra återställer de åtta senaste penseldragen.
+- Alla korrigeringar görs på arbetskopian; originalbilden förblir orörd.
+
+v2.10.137 – tydlig bakgrundsknapp och Container13-studio
+- Bakgrundsknappen får aktiv färg och full kontrast när en frilagd bild kan använda den.
+- Låsikonen försvinner fortsatt när verktyget är tillgängligt.
+- Container13-bakgrunden blir en tydlig mörk studiobakgrund med varm centrumglöd och märkt gul nederkant.
+- Texten CONTAINER 13 i nederkanten gör valet begripligt även när produkten täcker bildens mitt.
+
+v2.10.136 – välj bakgrund efter friläggning
+- Bakgrund aktiveras endast när aktuell bild är frilagd.
+- Val finns för transparent, vit, ljusgrå, mörk och Container13-bakgrund.
+- Egen färg kan väljas med färgpalett eller exakt hexadecimal färgkod.
+- De fem senast använda egna färgerna sparas lokalt som snabbval.
+- Bakgrunden förhandsvisas med objektets aktuella placering och lagras först via Spara anpassning.
+
+v2.10.135 – återställ riktig originalbild
+- Återställ växlar från en sparad eller nyvald friläggning tillbaka till den orörda originalbilden.
+- Originalets tidigare bildplacering återanvänds när den finns sparad.
+- Återställningen räknas som en osparad ändring och aktiverar Spara anpassning.
+- Den frilagda varianten tas bort permanent först när användaren trycker Spara anpassning.
+
+v2.10.134 – friläggning aktiverar Spara anpassning
+- Använd friläggning räknas nu som en osparad bildändring i Anpassa bild.
+- Spara anpassning blir aktiv direkt efter att den frilagda bilden valts.
+- Friläggningen skrivs till lagringen först när användaren trycker Spara anpassning.
+- Hjälptexten visar tydligt att friläggningen är vald men ännu inte sparad.
+
+v2.10.133 – riktig lokal AI-friläggning
+- Hörnfärgsbaserade testmotorn ersätts av riktig motivsegmentering som identifierar objektet.
+- AI-modellen hämtas först när Frilägg används och bildbehandlingen sker därefter lokalt på enheten.
+- Känslighetsreglaget tas bort eftersom AI-masken inte bygger på bakgrundens hörnfärg.
+- Original/Frilagd-jämförelse, separat cutoutBlob, aktiv frilagd redigeringskälla och orört original behålls.
+- Vid fel visas verklig felorsak och originalbilden lämnas oförändrad.
+- Snabbpubliceras enradiga fria objekt-swipe och övrig v2.10.132-navigation är oförändrade.
+- Rootens `/version.js` är orörd; CCC-versionen finns endast i `/ccc-core/version.js`.
+
 v2.10.132 – friläggningen blir aktiv bild direkt
 - Använd friläggning byter omedelbart bildkällan i Anpassa bild i stället för att åter visa originalet.
 - Den frilagda varianten ligger kvar när Anpassa bild öppnas igen; originalbilden bevaras separat och orörd.
@@ -2744,3 +2829,53 @@ Rollback-paketet ska innehålla en kort README som anger vilken stabil version d
 - Sista kontrollvyn följer också mobilregeln 3×2 / 6 per sida.
 - Förbered och Välj objekt fortsätter vara 3×2 / 6 per sida.
 - Footer-snabbfilen från v2.10.77/.78 lämnas orörd.
+
+## v2.10.145 – mindre scroll i mobilens arbetsvyer
+- Vision Granska & komplettera använder ett kompakt arbetsläge med lägre huvud, bildrad och fältrytm.
+- Det viktigaste arbetsflödet ryms normalt på en iPhone-skärm; scroll finns kvar för små skärmar och när tangentbordet är öppet.
+- Publiceras arbetsvyer använder samma kompakta huvud, medan Dashboard och modulernas startsidor behåller den större CCC-identiteten.
+- Inga data-, AI-, publicerings- eller navigeringsflöden har ändrats.
+
+## v2.10.146 – säker headeråterställning
+- Tar bort v2.10.145:s globala headerkomprimering, som kunde flytta logga och kontroller under iPhones statusfält.
+- Alla vyer använder åter den beprövade headern och modulraden från v2.10.144.
+- Vision Granska & komplettera behåller endast den lokala innehållskomprimeringen; ingen annan vy ändrar höjd eller kontrollplacering.
+
+## v2.10.147 – mobilpassning vy för vy
+- Vision: Välj objekt, AI-förslag, Granska & komplettera, Klart och produktförhandsvisning har granskats och fått egna försiktiga innehållsregler.
+- Publicera: Förbered, Välj objekt, Välj kanal, snabbpublicera/slutkontroll, Publicerat, objektgranskning och Anpassa bild har granskats separat.
+- Rubriker, mellanrum, bildytor och åtgärdsrader komprimeras lokalt utan att minska viktiga tryckytor under cirka 44 px.
+- Långa och varierande listor som kanalval, Publicerat och Historik scrollar inuti sin egen yta när innehållet inte rimligen kan rymmas samtidigt.
+- `ccc-core/core.css`, inklusive header och modulrad, är byte för byte identisk med v2.10.144.
+
+## v2.10.148 – komplett headeråterställning även i ändringspaketet
+- Rättar ett paketeringsfel i v2.10.147: återställd `ccc-core/core.css` hade utelämnats ur CHANGED FILES eftersom den lokalt matchade v2.10.144.
+- Vid uppdatering direkt från v2.10.145 kunde därför den trasiga kompakta headerregeln ligga kvar på servern.
+- `core.css` följer nu uttryckligen med och HTML använder en ny v2.10.148-cacheadress.
+- Vy-för-vy-komprimeringen från v2.10.147 behålls endast under den återställda headern.
+
+## v2.10.149 – responsiva arbetskort på mobil, iPad och större skärmar
+- Aktiva Vision- och Publicera-vyer fyller alltid den tillgängliga arbetsytan i stället för att lämna en tom nedre halva.
+- Innehåll som kan växa (bildgrid, listor och historik) får intern scroll; åtgärdsknappar hålls stabila.
+- Kontrollerade bredder införs för liggande 10-tums iPad, 13-tum och 24-tum.
+- I Snabbpublicera öppnar långtryck på en miniatyr bilden i helskärm; ett tryck på helskärmsbilden återgår utan att markera bilden.
+- Core-headern och modulraden ändras inte.
+
+## v2.10.150 – Granska visar aktuell bearbetad bild
+- Granska från Snabbpublicera öppnar den version som faktiskt är vald för publicering, inklusive friläggning, bakgrund, zoom och placering.
+- Den aktuella versionen sparas som separat granskningsfil; originalbildens filnyckel lämnas orörd.
+- När granskningen sparas följer den bearbetade publiceringsversionen med tillbaka i stället för att ersättas av originalet.
+
+## v2.10.151 – exakt en huvudvy åt gången
+- Rättar att den dolda Vision-arbetsytan kunde visas tillsammans med Granska & komplettera på mobil.
+- Responsiva regler för fotosessionskortet gäller nu endast när själva kortet är aktivt och saknar `hidden`.
+- Samtliga Vision- och Publicera-huvudvyer är kontrollerade; Publicera var redan skyddat med `:not([hidden])`.
+
+## v2.10.152 – inga kvarvarande sidprickar på Vision-starten
+- Rättar att bildsidornas pager låg kvar längst ned efter Fortsätt fotosession → Tillbaka.
+- Startlägets återställning döljer nu både bildgrid, pager och övriga sessionskontroller.
+## CCC v2.10.153 – Anpassa bild i Vision (2026-10-03)
+
+- Vision återanvänder nu Publiceras kompletta bildeditor direkt från `Granska & komplettera`.
+- Flödet går tillbaka till samma objekt och visar den sparade bearbetningen med märkningen `Anpassad`.
+- Originalbilden förblir orörd och framtida Vision-sparningar bevarar friläggning, bakgrund och crop-data.

@@ -4,10 +4,10 @@ README_CHATGPT_CCC.txt
 
 AKTUELL STATUS
 --------------
-CCC-version: 2.10.12
+CCC-version: 2.9.14
 Senaste stabila: 2.8.95 RC1 – Crop Engine 1.0
-Senaste checkpoint: 2026-10-01
-Nästa uppgift: Kontrollera att Dashboardens Publicera landar direkt i Snabbpublicera och testa därefter lokal friläggning.
+Senaste checkpoint: 2026-08-11
+Nästa uppgift: Testa v2.9.14 på verkliga lokala utkast: miniatyr och detaljvy ska visa naturligt bildläge redan före Anpassa bild.
 
 ARBETSPRINCIPER
 ---------------
@@ -37,25 +37,6 @@ CHECKPOINTS
 
 VERSIONSLOGG
 ------------
-v2.10.12 – Dashboard till Snabbpublicera
-- Dashboardens gröna Publicera får en egen `mode=quick`-ingång.
-- Den öppnar direkt Snabbpublicera/slutkontrollen med alla redo-plagg och Container13 förvalt.
-- Andra ingångar till Publicera påverkas inte. Friläggningen är oförändrad.
-- Root /version.js är orörd.
-
-v2.10.11 – rätt landningsvy i Publicera
-- Dashboardens Publicera öppnar direkt Förbered för publicering, inte Publiceras mellanmeny.
-- Tillbaka från Förbered visar fortfarande Publiceras mellanmeny.
-- Friläggningen från v2.10.10 är oförändrad. Root /version.js är orörd.
-
-v2.10.10 – frivillig lokal friläggning
-- Anpassa bild får Frilägg objekt som ett uttryckligt val.
-- Modellen hämtas först när funktionen startas och bildbehandlingen körs lokalt på enheten.
-- Originalet lämnas orört; en separat frilagd kopia och färdig publiceringskopia sparas lokalt.
-- Resultatet måste förhandsgranskas och godkännas. Bakgrund kan vara transparent, vit, ljusgrå eller mörk.
-- Transparent publiceringskopia är PNG; färgad bakgrund är WebP.
-- Root /version.js är orörd.
-
 v2.9.4 – Header Back hotfix
 - Fixar centrala tillbaka-knappar i Publicera.
 - Orsak: gamla DOM-lyssnare för borttagna #detailBack och #cropBack låg kvar och stoppade publish.js med null.addEventListener innan CCC Header Core-eventen registrerades.
@@ -1724,35 +1705,744 @@ CCC v2.9.14 – naturligt bildläge före Anpassa bild (2026-08-16)
 - Redigeringsvyn tar bort dubblerad huvudbild/ruta, visar `Plagg X av Y`, samlar tre bildplatser på en rad och gör `Analysera igen` sekundär efter färdig analys.
 - `Nästa plagg` är helbred. Övriga moduler och root `/version.js` är orörda.
 
+## v2.10.5 – Vision touch + kameraräknare
+- Regressionfix: tryck på en miniatyr i Vision-arbetsytan öppnar plagget igen.
+- Swipe mellan gridsidor använder separat touchhantering; fingerjitter räknas inte som swipe.
+- Kamerans räknare visar endast nya foton i det aktuella kamerabesöket/fotoserien, inte äldre bilder i Vision-sessionen.
+- 3×2-layouten och redigeringsvyn från v2.10.4 lämnas i övrigt oförändrade.
 
-## v2.10.5 – blockerande gridnavigation på mobil
-- Den känsliga pointer-capture-lösningen ersätts av separata touch- och musgester utan kvarhängande klickspärr.
-- Vanligt tryck öppnar vald miniatyr och visar korrekt `Plagg X av Y`; tydlig horisontell swipe byter 3×2-sida.
-- Extrabilder, autosparning, AI, Publicera och root `/version.js` är orörda.
-- Fast produktregel: verkliga foton/importer får aldrig få demo-/testdata vid saknad eller misslyckad AI. Fälten ska lämnas oförändrade och CCC ska visa tydligt AI-fel samt verklig felorsak/statuskod. Demo tillåts bara i ett uttryckligt märkt demoläge.
-- Regeln beslutades efter att en handkräm med fram-, bak- och innehållsbild felaktigt fick demo-fallbacken `Adidas vintage träningsjacka`.
+## v2.10.6 – Vision mobil tap-hotfix
+- Mobiltryck på en miniatyr öppnar nu plagget direkt från `touchend` i stället för att förlita sig på webbläsarens syntetiska `click` efter en touch.
+- Ett kort tryck identifieras separat från horisontell swipe och vertikal rörelse; ghost-click blockeras efter den direkta öppningen.
+- Swipebeteendet och kamerans räknare för endast nya foton i aktuell fotoserie från v2.10.5 lämnas oförändrade.
+- Publicera och övriga CCC-moduler är orörda. Root `/version.js` är fortsatt orörd.
+
+## v2.10.7 – kompakt Vision-redigering
+- Pris är nu ett enda redigerbart fält; Visions förslag fylls direkt när fältet är tomt.
+- Den separata prisförslagsrutan tas bort.
+- 0/100 och 0/800 ligger inne i respektive fält.
+- Beskrivning, mellanrum och `Lägg till fler uppgifter` komprimeras.
+- Touchöppning, swipe och kameraräknare från v2.10.6 lämnas oförändrade.
+- Root `/version.js` är fortsatt orörd.
+
+## v2.10.8 – ännu kompaktare Vision-editor
+- Footern är helt orörd.
+- `Lägg till fler uppgifter` och `Nästa plagg` ligger nu på samma rad inne i editor-kortet.
+- Överkanten i editor-kortet, sparstatus och bildsektionen har mindre vertikal luft.
+- Bildrutorna i editorläget är lägre för att vinna höjd utan att ändra touch/klick-funktionerna.
+- Rubrik/pris/beskrivning har något tätare etikett- och fältspacing.
+- Klick på bilder, swipe och kameraräknaren lämnas oförändrade.
+
+## v2.10.9 – tätare Vision-editor
+- Rubrik och Beskrivning ligger som placeholders inne i fälten och försvinner när man skriver.
+- Pris ligger på en rad: Pris vänster och kort beloppsfält höger.
+- Lägg till fler uppgifter och Nästa plagg ligger på samma rad.
+- Footern, touchöppning, swipe och kameraräknare är orörda.
+
+## v2.10.10 – tillbaka/sparlogik + lite mer luft
+- Att bara öppna ett plagg räknas inte längre som en ändring och utlöser ingen ny sparning.
+- Tillbaka från ett orört plagg går direkt till arbetsytan utan felmeddelande.
+- Vid verkliga ändringar autosparas fortfarande formuläret.
+- Ett verkligt sparfel får inte längre låsa användaren kvar i editorn; navigation bakåt tillåts ändå.
+- Editorn har fått några pixlar mer luft mellan bilddel, AI-knapp, fält och nedersta knapprad, men enskärmslayouten behålls.
+- Footer, gridswipe, bildklick och kameraräknare är orörda.
+
+## v2.10.11 – stor textredigering + ångra “Visste du?”
+- Tryck på Rubrik eller Beskrivning öppnar nu en stor redigeringsdialog, i samma arbetsstil som Fler uppgifter.
+- Återgå stänger textdialogen utan att föra över ändringen; Klar för över texten till det kompakta fältet och autosparar.
+- De små Rubrik/Beskrivningsfälten är fortsatt kompakta och används som öppnare/översikt.
+- “Visste du?” är nu valbart åt båda håll: Lägg till respektive Ta bort.
+- Borttagning tar bara bort det exakta Visste du-blocket och lämnar övrig beskrivning kvar.
+- Footer, swipe, bildklick, kameraräknare och övrig editorlayout är orörda.
+
+## v2.10.12 – autosparande dialoger + reversibelt Nyskick
+- Fler uppgifter och storredigering av Rubrik/Beskrivning har nu ett stängkryss uppe till höger.
+- Återgå/Klar är borttagna ur dessa dialoger.
+- Rubrik/Beskrivning förs över löpande från storredigeraren och autosparas; X eller CCC:s Tillbaka stänger dialogen.
+- Footer/header-Tillbaka stänger först en öppen text-/fler-uppgifter-dialog utan att lämna plagget.
+- Nyskick fungerar nu likadant som Visste du?: Lägg till respektive Ta bort.
+- Borttagning av Nyskick tar bara bort just `Nyskick.`-tillägget och lämnar övrig beskrivning kvar.
+- Footerutseende, gridswipe, bildklick och kameraräknare är orörda.
+
+## v2.10.13 – enhetlig bildplats + låst textredigering
+- Alla lediga bildplatser i plaggredigeringen heter `+ Nytt foto`.
+- Alla dessa platser använder samma befintliga iOS-/filväljare som tidigare Album, så användaren kan välja Bildbibliotek, Ta bild eller Välj filer.
+- Den stora Rubrik/Beskrivning-dialogen är låst och ska inte kunna scrollas som helhet när tangentbordet visas.
+- Endast innehållet i själva stora skrivfältet får scrolla.
+- Rubrikens skrivfält har flyttats ned något för bättre luft/balans.
+- Räknaren ligger kvar i skrivfältet.
+- Befintlig autosave/X/Tillbaka-logik, Nyskick/Visste du-toggle, footerutseende, swipe och kameraräknare är orörda.
+
+## v2.10.14 – fokuserad tangentbordsredigering + diskret manuell AI
+- Rubrik/Beskrivning positioneras mot iOS visual viewport när tangentbordet är öppet, med luft mot statusfältet.
+- Dialogskalet är låst; endast innehållet i textfältet får scrolla.
+- Pris öppnas i en egen kompakt fokusdialog; bakgrunden tonas ned och kan inte råkas tryckas.
+- När automatisk AI är av blir den manuella AI-knappen liten, sekundär och vänsterställd.
+- Alla lediga bildplatser heter `+ Nytt foto` och använder samma befintliga filväljare.
+- Footer, swipe, autosave och befintliga toggles är orörda.
+
+## v2.10.15 – scroll/state-fix i Vision-editor
+- När ett plagg öppnas i editorn återställs sidans scroll alltid till toppen.
+- Föregående scrollposition från ett tidigare besök på plagget får inte följa med in igen.
+- När Rubrik, Beskrivning, Pris eller Fler uppgifter öppnas fryses Vision-sidan bakom dialogen på exakt aktuell position.
+- När dialogen stängs återställs samma scrollposition i plagget.
+- Själva sidan bakom dialogen kan inte längre scrollas medan tangentbord/dialog är aktiv.
+- Befintlig textscroll inne i skrivfältet, footer, swipe, bildklick, autosave och AI-/toggle-logik lämnas orörda.
+
+## v2.10.16 – stabil iOS-dialog för Rubrik/Beskrivning
+- Scroll-låset flyttar inte längre hela `body` med negativ top-position.
+- Bakgrunden låses med overflow i stället, vilket undviker dubbel förskjutning mot iOS visual viewport.
+- Rubrik/Beskrivning-dialogen hålls som ett enda stabilt lager ovanför tangentbordet.
+- Dialogskalet kan inte scrollas; endast själva skrivfältets innehåll får scrolla.
+- Visual viewport-värden klampas till rimliga gränser för att undvika att dialogen hamnar utanför skärmen.
+- Bakgrunden isoleras/tonas så underliggande editor inte kan blöda igenom eller ta emot tryck.
+- Övriga funktioner från v2.10.15 lämnas orörda.
+
+## v2.10.17 – separat fokusläge för Rubrik/Beskrivning
+- Den tidigare flytande Rubrik/Beskrivning-dialogen ersätts av ett eget fokuserat helskärmsläge.
+- När Rubrik/Beskrivning öppnas döljs den vanliga Vision-editorn helt; inga dubbla lager eller underliggande fält ska synas bakom.
+- Fokusskärmen använder den tillgängliga iPhone-vyn ovanför tangentbordet utan visual-viewport-positionering av textdialogen.
+- Endast innehållet i själva skrivfältet får scrolla.
+- X och CCC:s Tillbaka stänger fokusläget och återgår till samma plagg.
+- Rubrik använder en lagom stor skrivyta; Beskrivning använder återstående tillgängliga höjd.
+- Prisdialogen och övriga funktioner från v2.10.16 lämnas orörda.
+
+## v2.10.18 – separat fokusläge för Pris
+- Pris använder nu samma helskärmsprincip som den fungerande Rubrik/Beskrivning-redigeringen.
+- När Pris öppnas döljs den vanliga Vision-editorn helt; inga underliggande knappar eller fält syns eller går att trycka på.
+- Fokusvyn visar bara Pris, ett stort beloppsfält, `kr` och stängkryss ovanför siffertangentbordet.
+- X och CCC:s Tillbaka stänger prisfokusläget och återgår till samma plagg.
+- Pris autosparas fortsatt medan värdet ändras.
+- Rubrik/Beskrivning och övriga funktioner från v2.10.17 lämnas orörda.
+
+## v2.10.19 – hårt scroll-lås i Rubrik/Beskrivning
+- Fokusvyn för Rubrik/Beskrivning kan inte scrollas som helhet.
+- Rubrik, hjälpttext, X och dialogram ligger fasta.
+- Endast innehållet i det stora skrivfältet får scrolla.
+- iOS rubber-band/overscroll blockeras utanför skrivfältet.
+- Prisfokusläget och övriga funktioner från v2.10.18 lämnas orörda.
+
+## v2.10.20 – endast skrivfältet får scrolla
+- I Rubrik/Beskrivning fryses nu både `html` och `body` helt medan fokusläget är öppet.
+- Fokusvyn, rubriken, hjälptexten, X, dialogramen och ytan runt skrivfältet kan inte scrollas eller rubber-banda.
+- Endast `largeTextEditor` är en scrollcontainer.
+- Dokumentets scrollbar ska därför inte längre visas längst till höger i fokusläget.
+- Scrollpositionen i plagget sparas när fokusläget öppnas och återställs när det stängs.
+- Prisfokusläget och övriga funktioner från v2.10.19 lämnas orörda.
+
+## v2.10.21 – JS-låst dokument under Rubrik/Beskrivning
+- iOS/Safari kan flytta dokumentet när ett textarea fokuseras även när CSS overflow är låst.
+- Fokusläget bevakar därför document/window-scroll i JavaScript och tvingar dokumentet till scrollposition 0 medan Rubrik/Beskrivning är öppet.
+- VisualViewport scroll/resize bevakas också för att motverka Safaris automatiska fokus-scroll.
+- Endast `largeTextEditor` är tillåten scrollcontainer.
+- När fokusläget stängs stoppas scrollvakten och plaggets tidigare scrollposition återställs.
+- Pris och övriga funktioner lämnas orörda.
+
+## v2.10.22 – Rubrik/Beskrivning anpassas till synlig iPhone-yta
+- Fokusläget läser `visualViewport.height` när iPhone-tangentbordet öppnas och använder exakt den synliga höjden ovanför tangentbordet.
+- Hela fokusvyn, rubriken, hjälptexten, X och dialogramen är fasta och får inte scrolla.
+- Skrivfältet krymper automatiskt när tangentbordet visas så att hela tangentbordet/navigationsraden lämnas fri.
+- Endast texten inne i själva skrivfältet kan scrolla om innehållet blir längre än fältet.
+- Rubrikfältet är mindre än Beskrivning och scrollar endast internt vid ovanligt lång rubrik.
+- Pris och övriga funktioner från v2.10.21 lämnas orörda.
+
+## v2.10.23 – safe-area-finjustering för Rubrik/Beskrivning
+- Fokus-kortet flyttas ned med tydlig marginal under iPhones statusfält/Dynamic Island.
+- Rubrik/Beskrivning, hjälptext och X ligger fast i toppen av kortet utan krock med klocka/batteri.
+- Skrivfältet använder endast återstående höjd ovanför tangentbordet.
+- Hela iPhone-tangentbordet och dess navigations-/förslagsrad ska lämnas fri.
+- Endast texten i innersta skrivfältet kan scrolla; övriga fokusvyn är fortsatt låst.
+- Prisfokusläget är orört.
+
+## v2.10.24 – tydligare arbetssteg i Vision
+- Rubriken `Plagg X av Y` i arbetsvyn ändras till `Gör klart plagg · X av Y`.
+- Syftet är att direkt förklara vad användaren gör i vyn utan att lägga till ytterligare UI.
+- Övrig layout och funktionalitet, inklusive den nu fungerande Rubrik/Beskrivning-tangentbordslösningen från v2.10.23, lämnas orörd.
+
+## v2.10.25 – korrekt synlig arbetsrubrik
+- Den faktiska synliga rubriken i `ccc-core/vision/index.html` ändras från `Plagg X av Y` till `Gör klart plagg · X av Y`.
+- v2.10.24 ändrade fel kodställe och påverkade därför inte den synliga rubriken.
+- Inga andra UI- eller funktionsändringar görs.
+
+## v2.10.26 – separat yta för arbetsrubrik och status
+- Toppraden i Vision-editorn delas tydligt i två zoner.
+- Vänster zon: `Gör klart plagg · X av Y`.
+- Höger zon: sparstatus och `Ta bort`.
+- Zonerna får reserverad bredd så rubriken inte kan krocka med sparstatus/åtgärd på smala iPhone-skärmar.
+- Inga andra UI- eller funktionsändringar görs.
+
+## v2.10.27 – Objekt + kontextuell Core-hjälp
+- Arbetsrubriken förenklas till `Objekt X/Y` med underraden `Granska & komplettera`.
+- Förklarande text ovanför bildrutorna tas bort; endast den kompakta bildräknaren visas.
+- `Huvudbild` på själva huvudbilden behålls.
+- Den befintliga centrala Core-footern används för `? Hjälp` i just edit-vyn; inget separat Vision-footersystem skapas.
+- Hjälpen förklarar huvudbild, bildantal, `Analysera igen` och vad som granskas i vyn.
+- Rubrik/Beskrivning-tangentbordslösningen och Pris lämnas orörda.
+
+## v2.10.28 – hjälp-X + kompakt objekthuvud
+- Stängkrysset i `Granska & komplettera`-hjälpen stänger nu hjälprutan via en robust direkt listener.
+- Klick på hjälprutans bakgrund stänger också hjälpen.
+- Toppen förenklas visuellt till `Objekt X/Y` med underraden `Granska & komplettera`.
+- Synlig sparstatus kortas till `✓ Sparat`; `Ta bort` ligger kvar till höger.
+- Rubrikraden hålls på en rad på smala iPhone-skärmar.
+- Övrig funktionalitet lämnas orörd.
+
+## v2.10.29 – ny mobil hierarki i objektvyn
+- `Granska & komplettera` är nu huvudrubrik.
+- `Objekt X/Y` ligger som mindre sekundär rad under huvudrubriken.
+- På mobil ligger endast `Ta bort` kvar till höger i toppen.
+- Autosave-status flyttas från toppen till under knapparna och visas diskret som `✓ Sparas automatiskt`.
+- `Nästa plagg` ändras till `Nästa objekt`.
+- Bilddelen förenklas så redundant instruktionstext tas bort.
+- Hjälprutans X använder delegerad klickhantering och fungerar oberoende av script/DOM-ordning.
+
+## v2.10.30 – central objekterminologi
+- Core har nu `terminology.js` som central källa för användarsynliga objektnamn.
+- Standard är `objekt`; valbara presets är `Objekt`, `Plagg`, `Produkt` och `Vara`.
+- Inställningen exponeras i Control Center/Inställningar under `Terminologi`.
+- Vision använder Core-termen för centrala användartexter som borttagningsfrågan och fotosessionsbenämningen.
+- Målet är att återstående modultexter successivt ska kopplas till samma API när de berörs; historik/dokumentation och webbplatsens redaktionella texter ska inte massersättas.
+- Papperskorg i Core-footern på relevanta Vision-vyer ligger kvar som nästa separata UI-steg.
+
+## v2.10.31 – sidintervall i Vision-översikten + hjälp
+- Workspace-raden `14 plagg · 10 markerat` tas bort helt.
+- I stället visas det faktiska synliga intervallet: t.ex. `Objekt 1–6 av 14`, `Objekt 7–12 av 14`, `Objekt 13–14 av 14`.
+- Intervallet uppdateras direkt när användaren swipar eller byter sida.
+- Text om `markerat`/`valt` visas inte; den gula ramen räcker som visuell indikation.
+- Den tidigare synliga instruktionstexten i workspace döljs och förklaringen flyttas till `?` i den centrala Core-footern.
+- Workspace-hjälpen förklarar sex objekt per sida, intervalltexten, swipe och att tryck öppnar `Granska & komplettera`.
+- Benämningen hämtas från Core-terminologin, så `Objekt` kan senare bytas centralt till t.ex. `Plagg`, `Produkt` eller `Vara`.
+
+## v2.10.32 – central terminologimigrering
+- Bygger vidare på v2.10.31 och behåller workspace-intervallen `Objekt 1–6 av 14` samt vy-specifik hjälp.
+- Core-terminologin får mallstöd (`{singular}`, `{plural}`, `{definiteSingular}` osv.) samt automatisk uppdatering av märkta UI-element.
+- Aktiva användarsynliga Vision- och Publicera-texter migreras från hårdkodat `plagg/plagget/plaggen` till Core-terminologin.
+- Terminologivalet i Control Center (Objekt / Plagg / Produkt / Vara) kan därmed slå igenom på betydligt fler knappar, statusrader, dialoger, tomlägen och hjälprader.
+- Container13:s publika webbtexter, README/CHANGELOG, kodkommentarer och AI-domäninstruktioner massersätts inte eftersom ordet `plagg` där kan vara korrekt innehåll och inte UI-terminologi.
+- Slutkontroll v2.10.32: kvarvarande användarsynliga Publicera-texter som `Publicerar X plagg`, `Plagg:` och `Valt plagg` är också kopplade till Core-terminologin.
+
+## v2.10.33 – Granska & komplettera på iPhone
+- `Granska & komplettera` centreras som huvudrubrik.
+- Positionen visas enbart som `X/Y` längst till vänster; ordet `Objekt` tas bort.
+- `Ta bort` ligger kvar längst till höger.
+- Separat `1/3` ovanför bildrutorna tas bort.
+- De tre bildrutorna får centrerade rollnamn: `Huvudbild`, `Baksida`, `Detalj`.
+- Övriga delar från v2.10.32 lämnas orörda.
+
+## v2.10.34 – Vision översikt och edit-fält
+- `Objekt X–Y av Z` centreras i översikten.
+- Knapparna för bildkälla förtydligas till `+ Nytt foto` och `+ Från album`.
+- `Rubrik` och `Beskrivning` återgår till etiketter utanför respektive fält.
+- Bildrutorna får konsekventa centrerade bottom-badges: `Huvudbild`, `Baksida`, `Detalj`.
+- Headern `X/Y – Granska & komplettera – Ta bort` lämnas oförändrad.
+
+## v2.10.35 – korrigering efter faktisk DOM-inspektion
+- `#workspaceCount` centreras direkt i Vision-workspace, även när toolbaren går över till kolumnläge på iPhone.
+- `Rubrik` läggs som riktig yttre etikett ovanför det faktiska fältet `#title`.
+- `Beskrivning` läggs som riktig yttre etikett ovanför det faktiska fältet `#description`.
+- Placeholder-texterna i dessa två fält tas bort för att undvika dubbel märkning.
+- Inga andra funktioner eller layouter ändras.
+
+## v2.10.36 – bildrutorna
+- `+ Nytt foto` behålls i de två tomma bildrutorna.
+- Det separata stora plustecknet ovanför texten tas bort.
+- Bildrollerna visas som `Huvudbild`, `Baksida` och `Detalj`.
+- Övrig layout från v2.10.35 lämnas orörd.
+
+## v2.10.37 – Beskrivning: låst viewport
+- Beskrivning-editorn får samma princip som Rubrik: hela sidan/dialogen ska vara helt låst när tangentbordet är öppet.
+- Ingen scrollbar ska kunna visas längst ut på skärmen.
+- Endast själva textarea-fältet får scrolla om texten blir längre än fältet.
+- Beskrivningens skrivyta görs något lägre för att hela editorn ska rymmas ovanför iPhone-tangentbordet.
+- Rubrik, Pris och övriga Vision-vyer lämnas oförändrade.
+
+## v2.10.38 – rubrikhierarki
+- `Välj objekt` blir huvudrubrik i objektöversikten och görs tydligare/större.
+- Sidinformationen ändras från `Objekt 7–12 av 14` till `Visar 7–12 av 14` och visas som sekundär information under fotoknapparna.
+- `Granska & komplettera` görs något större i objektvyn.
+- Övrig funktionalitet lämnas orörd.
+
+## v2.10.39 – vyseparation och granskningsrubrik
+- `Välj objekt` ligger nu inne i workspace-vyn och visas inte på Vision-starten.
+- `Välj objekt`-översikten från v2.10.38 lämnas i övrigt orörd.
+- `Granska & komplettera` får en egen centrerad rubrikrad.
+- Objektposition (t.ex. `12/14`) och `Ta bort` ligger på raden under, vänster respektive höger.
+
+## v2.10.40 – ombyggd workspace-/review-header
+- Den dubbla `Välj objekt`-rubriken i workspace tas bort i själva HTML:n; exakt en rubrik finns kvar.
+- Workspace behåller ordningen `Välj objekt` → fotoknappar → `Visar X–Y av Z`.
+- `Granska & komplettera` byggs om i DOM, inte med positioneringshack.
+- Första raden innehåller enbart centrerad `Granska & komplettera`.
+- Andra raden innehåller positionen (t.ex. `14/14`) till vänster och `Ta bort` till höger.
+- Tidigare absoluta/överlappande headerbeteenden neutraliseras med exakta v2.10.40-regler.
+
+## CCC arbetskommando – `kör`
+- När arbete pågår i CCC betyder användarens `kör` alltid: genomför den senast överenskomna kod-/projektändringen.
+- `kör` får aldrig tolkas som en begäran att skapa en bild.
+- Bild, mockup eller annan visualisering får endast genereras när användaren uttryckligen ber om det i samma meddelande.
+- En tidigare bildbegäran får inte följa med till ett senare `kör`.
+
+## v2.10.41 – objektåtgärder under bilderna
+- `Granska & komplettera` står ensam som huvudrubrik.
+- Direkt under de tre bildrutorna ligger nu en gemensam rad med `9/14`, `AI-analys` och `Ta bort`.
+- `9/14` är neutral status/pill, `AI-analys` är sekundär gul knapp och `Ta bort` är sekundär röd knapp.
+- Den tidigare fristående `Analysera med AI`-knappen tas bort.
+- Ingen separat tipsknapp läggs till.
+
+## v2.10.42 – ren objektåtgärdsrad
+- v2.10.41-raden `9/14 | AI-analys | Ta bort` behålls i samma plats direkt under bildrutorna.
+- Gamla positionerings-, storleks- och knappregler för `manualAiBtn`, `editTrashBtn` och `editProgress` neutraliseras uttryckligen i den nya raden.
+- Raden byggs som en stabil trekolumns-grid: neutral status till vänster, AI-analys i mitten, Ta bort till höger.
+- Inga absoluta positioner används för de tre kontrollerna.
+- Övrig Vision-layout lämnas orörd.
+
+## v2.10.43 – slutlig justering av objektåtgärdsraden
+- `X/Y`, `AI-analys` och `Ta bort` tvingas till exakt samma rad direkt under bildrutorna.
+- Alla tre kontroller får samma höjd och vertikal centrering.
+- `AI-analys` är den permanenta korta texten.
+- `Rubrik` startar först efter hela actionraden och kan inte längre hamna bredvid/under `X/Y`.
+- Övrig Vision-layout lämnas orörd.
+
+## v2.10.44 – bildplatsernas roller
+- Bildplats 2 märks `Baksida`.
+- Bildplats 3 märks `Detalj`.
+- Etiketterna visas både på tomma bildplatser och på tillagda extrabilder.
+- Tomma platser visar dessutom `Nytt foto`, utan det tidigare stora/minsta plustecknet.
+- Huvudbild och övrig Granska & komplettera-layout lämnas orörda.
+
+## v2.10.45 – neutrala namn för extrabilder
+- `Baksida` ändras till `Bild 2`.
+- `Detalj` ändras till `Bild 3`.
+- `Huvudbild` behålls som primär bild.
+- Hjälpen för `Granska & komplettera` förklarar att Bild 2 och Bild 3 är extra bilder av samma objekt och kan visa valfri relevant vy.
+- Ingen ny funktion för att visa extrabilder utanför Granska byggs i denna version.
+
+## v2.10.46 – prisrad i Granska & komplettera
+- Prisraden sänks för jämnare avstånd mellan rubrikfält, prisrad och beskrivningsfält.
+- Etiketten `Pris` flyttas åt höger så den visuellt hör tydligare ihop med prisrutan.
+- Övrig layout och funktion lämnas orörd.
+
+## v2.10.47 – prisrad och fältspacing
+- `Pris` flyttas åt höger och placeras direkt intill prisrutan.
+- Rubrikfält, prisrad och beskrivningsfält får jämnare vertikalt avstånd.
+- Ingen annan Vision-layout eller funktion ändras.
+
+## v2.10.48 – jämn luft runt prisraden
+- Behåller `Pris` horisontellt intill prisrutan från v2.10.47.
+- Flyttar ned prisraden genom jämn vertikal luft ovanför och under.
+- Ingen annan layout eller funktion ändras.
+
+## v2.10.49 – Beskrivning flyttad upp
+- Hela Beskrivning-sektionen (etikett + inmatningsruta) flyttas upp på mobil.
+- Prisradens placering från v2.10.48 lämnas orörd.
+- Ingen annan layout eller funktion ändras.
+
+## v2.10.50 – navigering direkt i Granska & komplettera
+- Positionskontrollen visas som `‹ X/Y ›`.
+- Vänster/höger pil navigerar till föregående respektive nästa objekt utan att lämna Granska & komplettera.
+- Aktuella ändringar autosparas tyst innan objektbyte.
+- Vänsterpilen är inaktiv på första objektet och högerpilen på sista.
+- AI-knappens normala text är konsekvent `AI-analys`.
+
+## v2.10.51 – proportioner för objektkontroller
+- Navigeringsrutan `< X/Y >` är bredare.
+- Vänster/höger-pilarna är tydligt större och får mer egen yta.
+- `AI-analys` och `Ta bort` är något kompaktare.
+- Alla tre kontroller behåller samma höjd och visuella linjering.
 
 
-## v2.10.6 – verkliga AI-fel utan demo-fallback
-- AI-fel på verkliga foton/importer returnerar nu tomt felresultat i stället för demoresultat.
-- Befintliga produktfält lämnas orörda. Feltexten visar meddelande, felkod och eventuell HTTP-status samt att inga fält ändrades.
-- Demodata kräver ett uttryckligt demoobjekt. Konfigurerad AI kan alltid provas igen efter fel.
-- Övriga Vision-flöden, Publicera och root `/version.js` är orörda.
 
+## v2.10.52 – lägre Beskrivning-editor på mobil
+- Beskrivningens stora skrivyta görs tydligt lägre när iPhone-tangentbordet är öppet.
+- Fokusvyn förblir låst; endast själva textfältet får scrolla vid lång text.
+- Rubrik-editorn och övrig Vision-layout lämnas orörda.
 
-## v2.10.7 – Ta bort, Flagga och Nästa
-- Nedersta arbetsraden är `Ta bort | Flagga | Nästa →` med breddfördelning 1/1/2. Den destruktiva åtgärden ligger längst från höger tumme och kräver fortsatt bekräftelse.
-- Ta bort-knappen i redigeringshuvudet tas bort. Flagga växlar till Flaggad och ger miniatyren en synlig flaggsymbol.
-- Flaggstatus autosparas i session, utkast, batchmetadata och originalbildens metadata.
-- Övriga moduler och root `/version.js` är orörda.
+## v2.10.53 – Beskrivning använder Rubriks fungerande editor
+- Beskrivning använder nu samma fokuserade editor-geometri som Rubrik.
+- Samma dialog, samma placering, samma höjdprincip och samma låsning av den yttre skärmen.
+- Endast den innersta textrutan får scrolla.
+- Skillnaden mellan Rubrik och Beskrivning är endast maxlängd/innehåll: 100 respektive 800 tecken.
+- v2.10.52:s separata speciallayout för Beskrivning tas bort.
 
+## Leveransregel – rollback vid kritiska uppdateringar
+Vid kritiska eller förhöjt riskfyllda uppdateringar (t.ex. större cleanup/refaktorering, Core, lagring/state eller annan ändring där snabb återställning är viktig) ska leveransen normalt innehålla tre paket:
+1. `changed-files` – de nya/ändrade filerna.
+2. `full` – komplett projekt efter uppdateringen.
+3. `rollback-original-files` – exakt de oförändrade filerna från föregående stabila version som uppdateringen ersätter, med samma mappstruktur.
 
-## v2.10.8 – Tillbaka från redigering
-- Core-Tillbaka läser formulär och flagga direkt, visar arbetsgridden omedelbart och slutför IndexedDB-sparningen i bakgrunden.
-- Tillbaka kan därför inte längre blockeras visuellt av en redan pågående autosparning, och flaggan blir direkt synlig i gridden.
-- Övriga Vision-funktioner och root `/version.js` är orörda.
+Rollback-paketet ska innehålla en kort README som anger vilken stabil version det återställer till. ChatGPT ska själv bedöma när en uppdatering bör behandlas som kritisk och hellre skapa rollback-paket en gång för mycket än en gång för lite.
 
+## v2.10.54 – Vision cleanup
+- v2.10.53 är stabil återställningspunkt.
+- Sena CSS-patchar för pris/beskrivningsspacing (v2.10.46–49) konsoliderade utan avsiktlig beteendeförändring.
+- Objektkontrollerna under bilderna (v2.10.50–51) konsoliderade till sina slutliga värden.
+- Rubrik/Beskrivning-editorn från v2.10.53 lämnas funktionellt orörd.
+- Kritiska uppdateringar får framöver separat rollback-paket.
 
-## v2.10.9 – synlig flagga i arbetsgridden
-- Miniatyrkortet får klassen `is-flagged`; en högprioriterad CSS-symbol och guldfärgad innerram visar statusen ovanpå bilden utan beroende av separata span-element.
-- Övrig flagglagring och Vision-funktionalitet är oförändrad. Root `/version.js` är orörd.
+## v2.10.55 – objektnavigering + verifiering av extrabilder
+- `‹ X/Y ›` använder nu en robust flexrad så både vänster- och högerpilen ligger på samma rad som räknaren.
+- Kodgranskning bekräftar att Bild 2/Bild 3 läggs till i `extraFiles`.
+- När en extrabild läggs till startas `startSilentAnalysis(item)`.
+- AI-underlaget byggs som huvudbild + extrabilder, max 3 bilder totalt.
+- Vid automatisk AI av körs därför en ny analys automatiskt när Bild 2/3 läggs till. Om automatisk AI är av startas ingen riktig AI förrän användaren väljer `AI-analys`.
+
+## v2.10.56 – AI körs endast på användarens initiativ
+- Möjligheten `Automatisk AI-analys` tas bort ur Vision-inställningarna.
+- Nya huvudbilder analyseras inte automatiskt.
+- Bild 2/Bild 3 analyseras inte automatiskt när de läggs till eller tas bort.
+- Återupptagen fotosession startar inte AI automatiskt.
+- Användaren väljer själv `AI-analys` i `Granska & komplettera`.
+- Vid `AI-analys` skickas huvudbild + befintliga extrabilder tillsammans i ett enda AI-anrop, max tre bilder.
+- Om bildunderlaget ändras efter en tidigare analys markeras objektet som ej analyserat; ny AI körs först om användaren väljer `AI-analys` igen.
+- v2.10.55:s robusta `‹ X/Y ›`-pilfix ingår.
+- Syfte: tydligare användarkontroll och undvika onödiga AI-kostnader.
+
+## v2.10.57 – Objekt-räknare/pilar
+- Ren layoutfix i `Granska & komplettera`.
+- Vänster navigeringsruta delas i tre reserverade zoner: `‹ | 11/14 | ›`.
+- Räknarlogiken är orörd; hela `11/14` ska nu alltid synas mellan pilarna utan klippning/överlapp.
+- AI-beteendet från v2.10.56 är oförändrat.
+
+## v2.10.58 – Objekt-navigering isolerad
+- Backar den felaktiga v2.10.57-gridfixen.
+- `< 11/14 >` hålls nu som en enda isolerad flexkontroll i vänsterrutan.
+- Högerpilen kan inte längre flyta ut över `AI-analys`.
+- `AI-analys`, `Ta bort`, räknarlogik och övrig Granska-layout är orörda.
+
+## v2.10.59 – Objekt-räknaren finjusterad
+- `11/14` centreras självständigt i vänsterrutan.
+- Vänster/höger-pil ligger i varsin fast kantzon och kan inte gå in över räknaren.
+- Pilarna är fortfarande tydliga men något smalare för mer luft runt `11/14`.
+- Ingen räknarlogik, AI-logik eller annan Vision-layout ändras.
+
+## v2.10.60 – Navigering + AI-status
+- Vänsterrutan för `< 11/14 >` görs tydligt bredare; `AI-analys` och `Ta bort` får mindre bredd men behåller samma visuella rad.
+- Räknaren har reserverat centrum och pilarna egna kantzoner.
+- Efter lyckad AI-analys visas `AI ✓` i grönt på huvudbilden.
+- `AI ✓` försvinner automatiskt när Bild 2/3 läggs till eller tas bort, eftersom befintlig analys då ogiltigförklaras.
+
+## v2.10.61 – navigeringsrad korrigerad + Huvudbild centrerad
+- Den för breda v2.10.60-navigationen tas bort.
+- Mobilraden använder fasta, rimliga bredder: navigation 120 px, `Ta bort` 92 px och återstående bredd till `AI-analys`.
+- `< 11/14 >` har separata pilzoner och en 58 px reserverad mittzon för hela räknaren.
+- `Huvudbild` centreras horisontellt på samma sätt som Bild 2/Bild 3.
+- `AI ✓` visas endast efter en verkligt lyckad AI-analys (`analysisMode === ai`) av aktuellt bildunderlag.
+- Ändring av extrabilder fortsätter att ogiltigförklara analysen och ta bort `AI ✓`.
+
+## v2.10.62 – `AI ✓` per bild
+- `AI ✓` betyder nu att just den bilden har ingått i en verklig AI-analys.
+- Vid AI-analys får huvudbilden och alla extrabilder som faktiskt ingår i anropet varsin `AI ✓`.
+- Lägger användaren senare till en ny Bild 2/Bild 3 får den nya bilden ingen AI-bock förrän AI-analys körs igen.
+- Tar användaren bort en analyserad extrabild påverkas inte huvudbildens `AI ✓` eller andra kvarvarande analyserade bilder.
+- Om AI-analys körs igen markeras samtliga bilder som då ingår.
+- AI-bildstatus sparas i den lokala aktiva Vision-sessionen.
+- Objektets AI-resultat kan fortfarande markeras som inaktuellt när bildunderlaget ändras; bildens `AI ✓` är däremot historik för att just den bilden faktiskt analyserats.
+
+## v2.10.63 – kamerastatus + kompakt AI-bock
+- Kamerans granskningsrad är nu `Ta om` – `Nästa objekt` – `Klar`.
+- `✓ Sparas automatiskt` ligger centrerat på egen rad under samtliga tre knappar.
+- `AI ✓` på Huvudbild/Bild 2/Bild 3 är en liten kompakt grön badge i övre högra hörnet i stället för en stor mörk markering över bilden.
+- AI-statuslogiken per bild från v2.10.62 är oförändrad.
+
+## v2.10.64 – kamera hidden-state + mindre AI-badge
+- Kamerans review-rad (`Ta om` / `Nästa objekt` / `Klar` / autosparstatus) respekterar åter `hidden` i livekameraläget.
+- Därmed visas bara livekamera + zoom + avtryckare innan ett foto är taget.
+- `AI ✓` flyttas till övre vänstra hörnet på varje analyserad bild.
+- Badgen görs mindre (21 px hög, mindre text/padding) för att inte konkurrera visuellt med bildetiketter eller ×-knappar.
+- Per-bild-AI-logiken från v2.10.62 är oförändrad.
+
+## v2.10.66 – Vision → Publicera i footer med bevarat val
+- Superseder den ej uppladdade v2.10.65-snabbfilen.
+- Vision-footern får `Publicera` både i Objektöversikt och i `Granska & komplettera`.
+- Från Objektöversikt öppnas `Publicera → Förbered för publicering` normalt; användaren väljer själv objekt.
+- Från `Granska & komplettera` sparas aktuellt objekt och dess ID följer med till Publicera.
+- Publicera öppnar då just det objektet direkt i Förbered-flödets detalj/kontroll, så samma objekt behöver inte väljas en gång till.
+- Hjälptexten i Granska & komplettera uppdateras: Huvudbild → Bild 2/3 → AI-analys → AI ✓ → uppgifter → Publicera.
+- Objektöversiktens hjälptext förklarar också footer-genvägen.
+- Core-footern får ett generellt `forward`-verktyg så framåtåtgärder kan ligga konsekvent i den permanenta footerzonen.
+
+## v2.10.69 – riktad återställning av Vision↔Publicera
+- Byggd direkt från v2.10.66. v2.10.67 och v2.10.68 används inte som kodbas.
+- Vision väntar nu in full sessionssparning innan ett specifikt objekt skickas till Publicera.
+- Retur från Publicera återställer först den sparade Vision-sessionen (inklusive Blob/object-URL för miniatyrerna) och öppnar därefter exakt samma objekt i Granska & komplettera.
+- Detta ska även återställa bilderna i Vision-översikten efter en tur till Publicera.
+- Publicera hydratiserar ett helt orört Vision-original via originalFileKey innan detalj- eller Anpassa-vyn öppnas.
+- Förbered-griddens render-, klick-, kanal- och Nästa-logik är oförändrad från v2.10.66.
+- Endast den dynamiska CSS-geometrin ändras så grid-1/grid-2/grid-4/grid-9 alla visas som 3 kolumner; därmed blir Förbered konsekvent 3×3 utan att röra flödeslogiken.
+- Sidprickarnas lyckade placering mellan bilder och Fortsätt behålls.
+- Swipe-ghostens skugga/filter tas bort visuellt.
+
+## v2.10.70-diag – READ-ONLY Vision-lagringsdiagnostik
+- Detta är inte nästa funktionsfix utan ett diagnostikpaket.
+- Ingen automatisk återställning, radering eller omskrivning av Vision-data görs.
+- Exponerar `CCC_VISION_STORAGE_DIAGNOSTIC.run()` i webbläsarkonsolen.
+- Diagnostiken läser endast IndexedDB `sessions`, `vision-files` och `images`.
+- Rapporten visar antal objekt i `vision-active`, antal lagrade Vision-filer, vilka filnycklar sessionen refererar till, saknade referenser, orphan-filer samt grupper som ser återställningsbara ut via bildmetadata/internalId.
+- Syftet är att avgöra om de äldre Vision-originalen fortfarande finns kvar innan någon återställningskod byggs.
+
+## v2.10.71-diag – iPhone-vy för read-only lagringsdiagnostik
+- Bygger vidare på v2.10.70-diag.
+- Vision-starten visar tillfälligt knappen `Lagringsdiagnostik (endast läsning)`.
+- Resultatet visas direkt på iPhone: aktiv sessionsstorlek, antal Vision-original, orphan-original, möjliga återställningsbara objekt, saknade referenser och antal Publicera-poster.
+- Ingen återställning, skrivning eller radering utförs.
+
+## v2.10.72 – Vision-sessionen bevaras när granskningen är klar
+- Grundorsaken till den försvunna Vision-sessionen hittad: `finishBatch()` raderade alltid `vision-active` när alla aktuella objekt var klara.
+- Det innebar att `Fortsätt fotosession` kunde försvinna redan innan användaren tog nästa foto, trots att originalfilerna låg kvar i `vision-files`.
+- `finishBatch()` rensar inte längre sessionen. Den säkerhetssparar i stället hela aktuella sessionen.
+- `clearVisionSessionRecord()` används fortsatt när användaren uttryckligen tar bort det sista objektet ur sessionen.
+- Tillfällig read-only diagnostikknapp/vy från v2.10.70–71 är borttagen.
+- Gamla orphan-testbilder återställs inte automatiskt och raderas inte.
+- Publicera-koden är orörd i denna version.
+
+## v2.10.73 – gemensam Publicera-grid + pager/swipe
+- Bygger direkt på verifierade v2.10.72.
+- Publicera `Välj objekt` används som visuellt facit för `Förbered för publicering`.
+- Förbered och Välj objekt använder nu samma gridklass-helper och samma slutliga 3×3-geometri.
+- Den gamla skillnaden där `#draftGrid` var `flex:1` tas bort; Förbered-griden får naturlig höjd precis som Välj objekt, vilket förhindrar hoptryckta/överlappande rader.
+- 9 platser per sida och befintlig paginglogik behålls.
+- Prickarna i Förbered behålls på den fungerande platsen mellan bilder och Fortsätt.
+- Prickarna i Välj objekt får en egen rad ovanför den fasta Fortsätt-knappen.
+- Swipe-ghost tas bort före den asynkrona renderingen av nästa sida, så en gammal sida inte kan ligga kvar som en 'skugga'.
+- Ingen Vision-logik och ingen kanal-/Nästa-/urvalslogik ändras.
+
+## v2.10.74 – Publish gesture-fix + snabbfil
+- Långtrycks-preview stängs via global pointerup/pointercancel på iPhone och kvarvarande preview-noder rensas.
+- Swipe avbryter preview.
+- Swipe-ghost kopierar den riktiga gridens exakta kolumnbredd, gap, padding och bredd; skugga/filter stängs av.
+- Nästa grid fryses till samma bredd under render för att minska storlekshopp när sidan landar.
+- Anpassa bild får `Publicera detta objekt`. Knappen sparar först aktuell anpassning, väljer bara aktuellt objekt och går till sista kontrollvyn om Container13 redan är vald; annars till kanalval.
+- Vision är orörd.
+
+## v2.10.75 – Förbered 2×3 + riktig footer-snabbfil
+- Förbered för publicering visar 2×3 (6 objekt per sida) i mobil portrait, i linje med Vision.
+- Välj objekt efter kanal behåller 3×3 / 9 per sida.
+- Förbered-pager/swipe använder nu 6 som faktisk sidstorlek; placeholders följer samma sidstorlek.
+- Oavsiktlig helsides-scroll stängs av i de normala Publicera-arbetsvyerna på mobil; Anpassa bild får fortfarande scrolla om en liten skärm kräver det.
+- Den felplacerade `Publicera detta objekt`-knappen från v2.10.74 tas bort från Anpassa-vyn.
+- Anpassa bild får i stället `Publicera` som forward/snabbfil i Core-footern, samma mönster som Vision.
+- Footer-snabbfilen sparar aktuell anpassning, väljer exakt aktuellt objekt, aktiverar Container13 och går direkt till sista kontrollvyn före publicering.
+- Tillbaka från sista kontrollvyn går tillbaka till Anpassa bild när kontrollvyn nåddes via snabbfilen.
+- Normal Publicera-navigation behåller sin vanliga Tillbaka-väg.
+
+## v2.10.76 – 3×2 i Förbered + säkrad footer-snabbfil
+- Korrigerar v2.10.75: Förbered är 3 kolumner × 2 rader (6 per sida), samma orientering som Vision.
+- Sidstorleken 6 från v2.10.75 behålls.
+- `Publicera` i Anpassa säkras efter att `cropView` faktiskt blivit aktiv, så en sen Core-footer-rendering inte kan skriva över snabbfilen.
+- Ett DOM-säkerhetsnät skapar samma Core-footer-knapp om Core av någon anledning renderat om footern på iPhone.
+- Snabbfilen ligger fortfarande i footern, inte i arbetsytan.
+- Snabbfil: aktuell anpassning sparas -> exakt aktuellt objekt -> Container13 -> direkt sista kontrollvyn.
+- Tillbaka från den kontrollvyn återöppnar Anpassa för samma objekt.
+- Inga andra Publish-flöden ändras.
+
+## v2.10.77 – ghostfri Publish-swipe + Vision-mönster för footer
+- Publiceras delade swipe-motor använder inte längre ett separat ghost-grid bredvid den riktiga sidan.
+- Under drag flyttas endast den aktuella sidan. Vid godkänd swipe glider den ut, nästa sida renderas utanför vyn och glider sedan in. Därmed kan inga dubbla/överlagrade kort eller följande skuggor visas mitt i swipen.
+- Samma swipe-motor används i Förbered, Välj objekt och sista kontrollgrid.
+- Förbered behåller 3×2 / 6 per sida. Välj objekt behåller 3×3 / 9 per sida.
+- Footer-snabbfilen i Anpassa använder nu exakt samma Core-anrop som Vision: `footer.setTools({help, forward, forwardLabel:"Publicera", ...})`.
+- Ett litet MutationObserver-skydd är aktivt endast medan cropView visas och återställer Publicera-knappen om Core skulle rendera om footern på iPhone.
+- Snabbfilens route är oförändrad: aktuell anpassning sparas -> exakt aktuellt objekt -> direkt sista kontrollvyn -> Tillbaka återgår till Anpassa.
+
+## v2.10.78 – gemensam mobil gridregel 3×2
+- Fastställer CCC-regeln för mobil: 3 kolumner × 2 rader = 6 objekt per sida i Vision/Pubish arbetsgrids.
+- Förbered för publicering behåller 6 per sida.
+- Välj objekt efter kanal ändras från 9 till 6 per sida.
+- Välj objekt använder 3 kolumner och 2 rader på mobil portrait.
+- Swipe/pager använder nu samma sidstorlek 6 även i Välj objekt.
+- Footer-snabbfil och ghostfri swipe från v2.10.77 lämnas orörda.
+
+## v2.10.79 – Vision-lik swipe, korrekt bildkälla, 3×2 i kontrollvyn
+- Publish-swipen använder Visions gest-/snapprincip utan svart mellanfas.
+- Välj objekt och sista kontrollvyn använder i första hand färsk blob-backed preview.
+- Sista kontrollvyn följer också mobilregeln 3×2 / 6 per sida.
+- Förbered och Välj objekt fortsätter vara 3×2 / 6 per sida.
+- Footer-snabbfilen från v2.10.77/.78 lämnas orörd.
+
+## v2.10.89 – lugnare Core-snap + adaptiv slutkontroll
+- `CCC_CORE.swipe` styr nu en 380 ms lång landning med mjukare inbromsning efter att fingret släppts.
+- Slutkontrollen skapar inte längre tomma platshållare när alla objekt ryms på samma sida.
+- En kontrollsida använder 1×1, 2 kolumner, 2×2 eller 3×2 efter antal objekt.
+- Flera kontrollsidor behåller fast 3×2-geometri och använder Core-swipe.
+- `/version.js` i projektroten tillhör Container13s hemsida. CCC-versioner uppdaterar endast `/ccc-core/version.js`.
+
+## v2.10.90 – lugnare landning + scrollfri mobilprincip
+- `CCC_CORE.swipe` använder 480 ms och mjukare inbromsning efter släpp; fingerföljning och tröskel ändras inte.
+- Slutkontrollen får balanserad luft ovanför och under gridytan, med kompaktare mellanrum på korta skärmar.
+- Permanent regel: normala mobilvyer ska vara scrollfria när innehållet rimligen ryms och visa huvudinnehåll samt footer samtidigt. Scroll är ett medvetet undantag för verkligt längre innehåll, små skärmar och förstorad text.
+
+## v2.10.91 – Core Swipe 580 + gemensam tryckkänsla
+- `CCC_CORE.swipe` använder 580 ms. Publiceras detalj-swipe har konsoliderats till samma Core-fysik och timer.
+- Vision Välj objekt förlängs 16 px ned i den lediga footerremsan så hela 3×2-sidan syns.
+- Vision-headern visar tillbaka i workspace/edit men inte på startvyn.
+- Slutkontrollens enkelbild använder en 308 px Core-viewport med 14 px symmetrisk ram runt 280 px bild.
+- `CCC_CORE.press` ger Dashboard och modulstarter en fysisk intryckt status. Endast säkra vy-/sidbyten fördröjs 140 ms; kamera-/filväljare fördröjs aldrig.
+
+## v2.10.115 – kontextuell stor Klar och gemensam säker sparretur
+- I Publicera-returläget blir editkortets stora gula primärknapp `Klar`, medan footerns lilla framåtknapp inte renderas.
+- Klar och både header-/footer-Tillbaka går genom `returnToPublishConfirmation()`, som nu kräver lyckad autosparning och sessionssparning innan navigation.
+- Vid sparfel lämnas Granska & komplettera inte. Vanligt Vision-läge behåller `Nästa objekt` och footeråtgärden `Publicera`.
+
+## v2.10.114 – stabil returmarkering mellan Publicera och Vision
+- Returens `toolItem` appliceras efter att slutkontrollen renderats, så samma objekt förblir centrerat och gulmarkerat med aktiva verktyg.
+- Markeringsramen använder fasta kortmått utan positionsförskjutning.
+- Vision visar `Klar` i footern när redigeringsvyn öppnats från Publicera; annars visas fortsatt `Publicera`.
+
+## v2.10.113 – kompakt källrad direkt under modulheadern
+- `Foto`, `Bilder` och `Utkast` har flyttats före objektområdet.
+- Raden är cirka 50 px hög, har mindre ikoner och svagare glöd så objektverktygen behåller visuell prioritet.
+
+## v2.10.112 – direkta Foto/Bilder/Utkast-val
+- Publiceras extra källpopup är borttagen tillsammans med dess CSS- och JS-kedja.
+- Tre jämnbreda knappar visas direkt: `Foto`, `Bilder`, `Utkast`.
+- Foto använder CCC-kameran; Bilder använder enhetens systemval; Utkast behåller befintlig utkastväljare.
+
+## v2.10.111 – plattformsneutralt enhetsval
+- Publiceras gröna källval heter `Välj från enheten` och förklaras med `Bildbibliotek eller filer`.
+- CCC:s kamera är fortsatt ett eget val. v2.10.110 ersätts och ska hoppas över.
+
+## v2.10.110 – ersatt av v2.10.111
+
+## v2.10.109 – flytande Lägg till-meny i Publicera
+
+- Publiceras `Lägg till {singular}` öppnar `confirmAddSourceDialog` ovanpå samma arbetsyta; ingen källvy navigeras fram innan användaren gjort sitt val.
+- `Ta foto med CCC` sparar befintlig grupp-/kanal-/verktygsstate och öppnar Vision direkt med `?mode=publish-add&source=camera`.
+- `Bildbibliotek / filer` använder en lokal multipel bildinput. Importen skriver original till `vision-files`, ett Vision-sessionsobjekt till `vision-active` och ett Publicera-utkast till `images` innan objektet läggs i aktuell grupp.
+- Avbryt, backdrop och Escape stänger dialogen utan stateändring. iOS äger eventuell efterföljande systemmeny för Bildbibliotek/Ta bild/Välj filer.
+- v2.10.108:s generella publish-add-källvy behålls som fallback för anrop utan `source`. Rootens `/version.js` är orörd.
+
+## v2.10.108 – Vision-källval från Publiceras Lägg till
+
+- `?mode=publish-add` visar en särskild Vision-källvy i stället för att autoöppna kameran.
+- Källvyn återanvänder de befintliga Vision-korten och erbjuder `Ta ett foto` samt `Från album`; resumekortet är dolt i detta läge.
+- Albumvalet använder Visions befintliga `galleryInput`, accepterar flera bilder och skickar endast den aktuella importomgångens nya ID:n tillbaka till Publicera.
+- Kameran, native-kamerafallbacken och albumimporten använder samma `returnToPublishFromCamera()` och återställer Publiceras tidigare grupp, kanal och verktygsmarkering.
+- Header-Back från källvyn återgår utan nya objekt. `Välj utkast` är fortsatt ett separat val för redan lokalt sparade CCC-objekt.
+- Rootens `/version.js` är orörd.
+
+## v2.10.107 – Publicera återanvänder Visions CCC-kamera
+
+- Publiceras `Lägg till {singular}` navigerar till Vision med `?mode=publish-add` i stället för att öppna en egen `<input type=file>`.
+- Arbetsytans valda objekt, C13-kanal och verktygsmarkering sparas i kortlivad `sessionStorage` och återställs när kameran lämnas.
+- `Klar` sparar endast den aktuella kameraomgångens nya objekt via Visions kanoniska original-/sessions-/utkastslager och lägger deras ID:n till publiceringsgruppen.
+- X återgår utan att staged-fotot läggs till i gruppen. Objekt som redan autosparats med Nästa objekt finns fortsatt kvar i Vision.
+- Vision-starten döljs under specialbootstrapen. Den befintliga native-filkameran är endast fallback om Visions `getUserMedia` inte kan öppnas.
+- Den gamla parallella import- och sessionsskaparkoden tas bort från Publicera. Rootens `/version.js` är orörd.
+
+## v2.10.106 – blinkfri uppstartsgrind i Publicera
+
+- `startView` är dold redan i HTML i stället för att målas före JavaScriptets bootstrap.
+- `ccc-publish-booting` håller Publiceras arbetsyta och Core-footer osynliga tills lokala utkast är lästa, rätt route är avgjord och rätt vy är renderad.
+- Normal Dashboard-ingång, Vision/Express-direktvägar och `?legacyStart=1` avslutar samma uppstartsgrind efter att respektive avsedda vy visats.
+- Header och modulmarkör ligger stabilt under uppstarten. Ingen parallell Express-HTML införs och rootens `/version.js` ändras inte.
+
+## v2.10.105 – Publiceras nya arbetsstart
+
+- Normal modulstart visar `channelConfirmView` som tom/aktiv arbetsyta. Gamla `startView` behålls bakom `?legacyStart=1` under testperioden.
+- `confirmWorkspaceEmpty` beskriver nästa steg. `Lägg till {singular}` och `Välj utkast` är två jämbördiga källor; den senare återanvänder `channelView` och `channelSelectedIds`.
+- Tom publiceringsgrupp ger huvudtexten `Välj {plural}`. Kanalval kan göras före eller efter objektval.
+- Historik öppnas sekundärt från arbetsytan och Back återgår dit. Header-Back från arbetsstarten går till Dashboard.
+
+## Framtida Core-princip – valbara, låsbara och kvotstyrda verktyg
+
+- Publiceras arbetsyta är en generell Core-grund och ska kunna återanvändas av andra verksamheter med egna termer, kanaler och verktyg.
+- Verksamheten ska kunna välja vilka verktyg som erbjuds. Användaren ska kunna välja vilka av de tillåtna verktygen som visas på den egna arbetsytan.
+- Core ska centralt stödja verktygslägena aktivt, inaktivt tills rätt objekt/underlag valts, behörighetslåst, kvotlåst och helt dolt.
+- Behörighet och kvoter måste kontrolleras vid själva funktionsanropet och får inte implementeras enbart som låsta eller dolda knappar.
+- Ett låst eller förbrukat verktyg bör normalt vara synligt med lås, begriplig orsak och eventuell räknare, exempelvis `AI-sökning · 3 av 5 kvar`.
+- Roller, användningsgränser och eventuell framtida nivå-/betalmodell ligger i backlog och byggs först när Publiceras grundflöde är stabilt.
+
+## v2.10.104 – nya objekt direkt i slutkontrollen
+
+- Slutkontrollen har en alltid aktiv grafisk `Lägg till {singular}`-knapp ovanför kanalraden.
+- Filväljaren accepterar en eller flera bilder. Varje bild får eget ID, original i `vision-files`, ett Vision-sessionsobjekt och ett lokalt Publicera-utkast.
+- Nya objekt läggs i `items` och `channelSelectedIds`, så de syns direkt och ingår i aktuell publicering. Extra bilder till ett befintligt objekt hanteras fortsatt via Granska.
+- All synlig objektterminologi hämtas från Core.
+
+## v2.10.103 – linjerad och centrerad slutkontroll
+
+- Verktygsraden använder samma `min(100%, 520px)` som slutkontrollens informationskort och huvudåtgärd.
+- Core free-swipe-raden centreras när den inte har overflow och växlar explicit till `flex-start` när swipe behövs.
+- Kanalradens befintliga symmetriska slutpadding behålls som säker yta för första och sista kanal.
+
+## v2.10.102 – Vision-granskning från slutkontrollen
+
+- Granska lagrar markerat objekt och aktuell expressgrupp i sessionStorage och öppnar Visions befintliga Granska & komplettera.
+- Tillbaka eller Publicera i den Vision-kontexten säkerhetssparar och återgår till samma slutkontroll; verktygsmarkeringen återställs via `toolItem`.
+- Slutkontrollens objektkort och kanalikoner är något större. Kanalraden har explicit sidpadding som skyddar första ikonens kant och glöd.
+
+## v2.10.101 – visuellt förstärkta objektverktyg
+
+- Slutkontrollens status blir ett aktivt guldpill när ett objekt markeras.
+- Verktygskorten använder lokala SVG-linjeikoner: blå Granska, lila Anpassa bild och återhållet röd Ta bort.
+- Korten har kompakt mobilhöjd och omedelbar nedtryckning utan att ändra verktygslogiken.
+
+## v2.10.100 – kompakt slutkontroll och separata objektverktyg
+
+- Slutkontrollen använder Core `bindFree` för en enda horisontell objektrad.
+- Alla objekt i raden ingår i publiceringen. `confirmToolItemId` är ett separat, ensamt verktygsval och kan inte ändra publiceringsurvalet.
+- Granska och Anpassa återvänder till slutkontrollen. Ta bort lyfter objektet ur aktuell publicering utan att radera det lokala utkastet.
+
+## v2.10.99 – Expresspublicera från Vision-kameran
+- Kameragranskningen visar Expresspublicera bredvid autosparstatusen.
+- `cameraSessionStartCount` avgränsar exakt vilka objekt som skapats under aktuellt kamerabesök.
+- Staged foto committas först; nya objekt sparas sekventiellt med `saveApprovedDraftLocally()` och sessionen säkerhetssparas.
+- Vision navigerar med `view=prepare&items=<id-lista>&from=vision-camera-express`.
+- Publicera normaliserar en eller flera ID:n, laddar källorna och väljer bara dem i `channelConfirmView`.
+- C13 är inte förvald. Tillbaka från expresskontrollen går till Vision.
+- Dimmertestets Core-kod, Dashboard-markörer, destination bootstrap och Dashboard-reglage är borttagna. Core press behålls.
+
+## v2.10.98 – dimmersynlighet och toningsfärg
+- Dashboard-panelen har `ccc-dimmer-visibility` 0–40 % och `ccc-dimmer-color` som sexsiffrig hex-färg.
+- Core validerar värdena och sätter `--ccc-dimmer-visibility` samt `--ccc-dimmer-color`.
+- Under leave/enter-pending används färgen som body-bakgrund och app-shellens opacitet som kvarvarande synlighet.
+- Standard/återställning: 260 ms ned, 300 ms upp, 9 %, #000000.
+
+## v2.10.97 – tillfälliga Dashboard-reglage för dimmertider
+- Dashboard-inställningar visar Tona ned/Tona upp som range 150–1200 ms, steg 10 ms.
+- `ccc-dimmer-leave-ms` och `ccc-dimmer-enter-ms` sparas i localStorage.
+- Core validerar intervallet och sätter CSS-variablerna `--ccc-dimmer-leave-ms` / `--ccc-dimmer-enter-ms`.
+- Samma nedtid styr när navigationen sker, så visuell dimmer och sidbyte förblir synkade.
+- Återställning tar bort lagrade värden och återgår till 260/300 ms.
+
+## v2.10.96 – starkare Core-dimmerpilot
+- Samma pilotomfattning: endast Dashboard → CCC Vision/Publicera.
+- Nedtoning: 260 ms till opacity .09, brightness .28 och saturation .68.
+- Upptoning: 300 ms. Knappresponsen är fortsatt 320 ms.
+- Reduced-motion-fallback och övriga vyer är oförändrade.
+
+## v2.10.95 – avgränsad Core-dimmerpilot
+- Samlad leverans relativt v2.10.92; v2.10.93–94 ingår.
+- `CCC_CORE.dimmer` äger ned-/upptoning och markerade destinationsövergångar.
+- Piloten gäller endast Dashboard → CCC Vision/Publicera. Mer och interna vyer omfattas inte.
+- Ordning: 320 ms fysisk knapprespons, 190 ms nedtoning, 240 ms upptoning.
+- Destinationsflaggan ligger kort i sessionStorage så nästa dokument kan starta nedtonat utan vit blinkning.
+- `prefers-reduced-motion` hoppar över effekten.
+
+## v2.10.94 – Core free-swipe för kanalkarusellen
+- Samlad leverans relativt v2.10.92: v2.10.93-fixarna ingår.
+- `CCC_CORE.swipe.bindFree(element)` är den centrala fria swipevarianten för karuseller.
+- Touch använder plattformens naturliga momentum; musdrag får Core-styrd efterrörelse och bromsning.
+- Ingen snap eller sidindelning. `centerWhenFits` centrerar raden tills den faktiskt får overflow.
+- Publiceras slutkontroll använder free-swipe för kanalraden. Paged-bildswipe och 580 ms-profilen är orörda.
+
+## v2.10.93 – iOS-kameraåterkomst + synkat kanalval
+- Vision återläser inte längre sparad session innan iOS-kameran/fallbacken har lämnat tillbaka ett faktiskt foto.
+- Avbryt hanteras via input-cancel, tom change och återfokus; state och ursprungsvy återställs före nästa kameraförsök.
+- Core-tryckpausen är 320 ms och Ta ett foto-kortet använder hela animationen. Albumväljaren förblir direkt.
+- Publiceras C13-state styr grön ytterring, tillgänglighetsstatus och Publicera X objekt från samma funktion.
+- Pinterest och Etsy är låsta testkanaler. Kanalraden centreras när den ryms och kan swipas när den blir bredare än sex kanaler.
+
+## v2.10.92 – kamerans livscykel + kanalval i snabbväg
+- Kameran sparar `cameraReturnView` och återgår dit vid Avbryt.
+- `cameraRequestId` ogiltigförklarar sena `getUserMedia`-resultat; deras spår stoppas innan de kan återaktivera en stängd kamera.
+- `cameraOpening` blockerar parallella öppningsförsök och återställs vid både lyckat, avbrutet och misslyckat anrop.
+- Core-tryckets säkra navigationsfördröjning är 220 ms.
+- Ordinarie kanalflöde bevarar kanalvalet. Detail/Crop/Vision-snabbvägar startar utan kanal; slutknappen synkas centralt mellan `Välj kanal` och `Publicera X objekt`.
+## v2.10.153 – Anpassa bild direkt i Vision (2026-10-03)
+
+- `Vision → Granska & komplettera` har nu en tydlig `Anpassa bild`-knapp under bildraden.
+- Knappen öppnar Publiceras befintliga gemensamma bildmotor direkt för samma objekt: utsnitt, zoom, placering, friläggning, pensel och bakgrund återanvänds utan en separat Vision-kopia.
+- `Spara anpassning` och Tillbaka går tillbaka till samma objekt i Vision.
+- Vision visar den aktuella bearbetade huvudbilden efter retur och märker den med `Anpassad`; originalfilen ligger kvar som AI-/återställningskälla.
+- Senare metadataändringar i Vision bevarar befintlig `publishBlob`, `cutoutBlob`, bakgrund och crop-data i utkastet.

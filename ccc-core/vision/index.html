@@ -10,8 +10,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>CCC Vision v2.10.66</title>
   <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}if(new URLSearchParams(location.search).get("mode")==="publish-add")document.documentElement.classList.add("ccc-vision-publish-add-loading");</script>
-  <link rel="stylesheet" href="vision.css?v=2.10.152">
-  <link rel="stylesheet" href="../core.css?v=2.10.152">
+  <link rel="stylesheet" href="vision.css?v=2.10.153">
+  <link rel="stylesheet" href="../core.css?v=2.10.153">
 </head>
 <body data-ccc-header-back="false" data-ccc-header-settings="true">
 <div class="app-shell ccc-app-shell">
@@ -188,6 +188,11 @@
         <input id="sameGarmentCameraInput" class="visually-hidden" type="file" accept="image/*" capture="environment">
       </section>
 
+      <button id="visionAdaptImageBtn" class="vision-adapt-image ccc-tool-card ccc-tool-card--edit ccc-tool-card--compact" type="button">
+        <span class="ccc-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7V4h3M17 4h3v3M20 17v3h-3M7 20H4v-3"/><path d="m8 15 2.8-3 2.1 2 2.3-2.6L18 15.5"/><circle cx="9" cy="8.5" r="1.2"/></svg></span>
+        <span>Anpassa bild</span>
+      </button>
+
       <div class="edit-object-actions" aria-label="Objektåtgärder">
         <div class="edit-progress-nav" aria-label="Navigera mellan objekt">
           <button id="editPrevObjectBtn" class="edit-object-nav-btn" type="button" aria-label="Föregående objekt">‹</button>
@@ -361,12 +366,12 @@
     </div>
   </div>
 
-  <script src="../version.js?v=2.10.152"></script>
+  <script src="../version.js?v=2.10.153"></script>
   <script src="demo-data.js?v=2.9.3"></script>
   <script src="vision-ai-config.js?v=2.9.3"></script>
   <script src="vision-ai.js?v=2.9.3"></script>
   <script src="vision-knowledge.js?v=2.9.3"></script>
-  <script src="product-lab.js?v=2.10.144"></script>
+  <script src="product-lab.js?v=2.10.153"></script>
 <script type="module" src="../core.js?v=2.10.132"></script>
 <script src="../pwa.js?v=2.9.3" defer></script>
 <div id="visionContextHelpDialog" class="dialog ccc-dialog vision-context-help" role="dialog" aria-modal="true" aria-labelledby="visionContextHelpTitle" hidden>

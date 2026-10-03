@@ -292,6 +292,7 @@ function resetViewScroll(view){
 }
 const publishEntryParams = new URLSearchParams(window.location.search);
 const directPrepareView = publishEntryParams.get("view") === "prepare";
+const directAdaptView = publishEntryParams.get("view") === "adapt";
 const legacyPublishStart = publishEntryParams.get("legacyStart") === "1";
 const directPrepareItemId = publishEntryParams.get("item") || "";
 const directPrepareItemIds = (publishEntryParams.get("items")||directPrepareItemId)
@@ -305,9 +306,10 @@ const directFromVisionExpress = directPrepareOrigin === "vision-camera-express" 
 const directFromVisionWorkspace = directPrepareOrigin === "vision-workspace";
 const directFromVisionReady = directPrepareOrigin === "vision-ready";
 const directFromVisionReview = directPrepareOrigin === "vision-review-return";
+const directFromVisionAdapt = directPrepareOrigin === "vision-adapt" && !!directPrepareItemId;
 const directReturnWorkspace = publishEntryParams.get("workspace") === "1";
 const directReviewParent = publishEntryParams.get("returnParent") || "";
-let directPrepareBackGuard = directFromVisionEdit||directFromVisionExpress||directFromVisionWorkspace||directFromVisionReady||directFromVisionReview;
+let directPrepareBackGuard = directFromVisionEdit||directFromVisionExpress||directFromVisionWorkspace||directFromVisionReady||directFromVisionReview||directFromVisionAdapt;
 let currentPublishView="startView";
 const PUBLISH_SETTINGS_RETURN_KEY="ccc-publish-settings-return";
 
@@ -333,7 +335,7 @@ function takePublishSettingsReturn(){
 function finishDirectPrepareBootstrap(){
   document.documentElement.classList.remove("ccc-publish-booting");
   document.documentElement.classList.remove("ccc-direct-prepare-loading");
-  if(!directFromVisionEdit&&!directFromVisionExpress&&!directFromVisionWorkspace&&!directFromVisionReady&&!directFromVisionReview){
+  if(!directFromVisionEdit&&!directFromVisionExpress&&!directFromVisionWorkspace&&!directFromVisionReady&&!directFromVisionReview&&!directFromVisionAdapt){
     directPrepareBackGuard=false;
     return;
   }
@@ -3514,7 +3516,14 @@ $("#confirmPublishBtn")?.addEventListener("click",async()=>{
     requestAnimationFrame(()=>requestAnimationFrame(finishDirectPrepareBootstrap));
     return;
   }
-  if(directPrepareView && directPrepareItemIds.some(id=>itemIndexById(id)>=0)){
+  if(directAdaptView && directFromVisionAdapt && itemIndexById(directPrepareItemId)>=0){
+    await previewsReady;
+    activeIndex=itemIndexById(directPrepareItemId);
+    activeItemId=directPrepareItemId;
+    cropReturnContext={view:"visionEdit",itemId:directPrepareItemId};
+    await openCrop({preserveBack:true});
+    requestAnimationFrame(()=>requestAnimationFrame(finishDirectPrepareBootstrap));
+  }else if(directPrepareView && directPrepareItemIds.some(id=>itemIndexById(id)>=0)){
     if(directReturnWorkspace)workspaceStartMode=true;
     await openDirectVisionConfirmation(directPrepareItemIds);
     requestAnimationFrame(()=>requestAnimationFrame(finishDirectPrepareBootstrap));
@@ -3630,6 +3639,11 @@ async function returnFromCrop(){
   cropBaseline=null;
   cropUsingCutout=false;
   pointer=null;
+  if(context.view==="visionEdit"){
+    if(itemId)try{sessionStorage.setItem("ccc-vision-return-edit-item",itemId);}catch(_){ }
+    window.location.href="../vision/index.html";
+    return;
+  }
   if(context.view==="channelConfirmView"){
     if(itemId)confirmToolItemId=itemId;
     await renderChannelConfirmation(false);

@@ -214,3 +214,9 @@ v2.7.27
 - Fixar kostnadsrutan för kameraflödet: om AI hinner bli klar innan "Klar" trycks uppdateras kostnaden när plagget läggs till i sessionen.
 - Kostnadsrutan visar åter Session, Idag och Senaste AI-analys i stället för DEBUG-raden.
 - Senaste analysen visar input/output-token för verifiering medan 6 decimaler behålls under kostnadstestet.
+CCC Vision v2.10.153 – gemensam bildmotor i Granska & komplettera (2026-10-03)
+
+- Ny knapp `Anpassa bild` öppnar samma editor som Snabbpublicera för det aktuella objektet.
+- Sparning och avbryt/tillbaka återvänder till samma Vision-objekt.
+- Bearbetad huvudbild visas med märket `Anpassad`, medan originalet förblir orört och används för AI.
+- Vision-sparning slår inte längre bort redan sparad friläggning, bakgrund eller bildanpassning.

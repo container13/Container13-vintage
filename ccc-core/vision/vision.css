@@ -4684,6 +4684,37 @@ body.ccc-focused-text-mode #textEditorDialog .text-editor-shell{
   }
 }
 
+/* CCC Vision v2.10.153 – gemensam bildanpassning med Publicera. */
+#editCard .vision-adapt-image{
+  width:100%;
+  min-height:48px;
+  margin:2px 0 4px;
+  justify-content:center;
+  font-weight:850;
+}
+#editCard .vision-adapt-image .ccc-tool-icon{
+  width:28px!important;
+  height:28px!important;
+  min-width:28px!important;
+}
+#editCard .vision-adapt-image .ccc-tool-icon svg{
+  width:18px!important;
+  height:18px!important;
+}
+#editCard .same-garment-adjusted-badge{
+  position:absolute;
+  right:5px;
+  bottom:5px;
+  z-index:3;
+  padding:3px 6px;
+  border-radius:999px;
+  background:rgba(82,45,130,.9);
+  color:#fff;
+  font-size:.58rem;
+  font-weight:900;
+  line-height:1;
+}
+
 
 /* v2.10.42 – clean reset for the three controls under the images */
 #editCard .edit-object-actions{
