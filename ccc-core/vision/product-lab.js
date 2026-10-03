@@ -337,7 +337,6 @@
         if(primary)primary.textContent=returningToPublish?"Klar":"Nästa objekt";
         footer.setTools({
           help:true,
-          onHelp:()=>{const d=$("#visionContextHelpDialog");if(d)d.hidden=false;},
           forward:!returningToPublish,
           forwardLabel:"Publicera",
           forwardIcon:"→",
@@ -346,7 +345,6 @@
       }else if(visionView==="workspace"){
         footer.setTools({
           help:true,
-          onHelp:openWorkspaceHelp,
           forward:true,
           forwardLabel:"Publicera",
           forwardIcon:"→",
@@ -371,25 +369,6 @@
     if (!label) return;
     const { start, end, total } = workspaceVisibleRange();
     label.textContent = total ? `Visar ${start}–${end} av ${total}` : "Visar 0 av 0";
-  }
-
-  function openWorkspaceHelp() {
-    const dialog = $("#visionWorkspaceHelpDialog");
-    if (!dialog) return;
-    const { start, end, total } = workspaceVisibleRange();
-    const plural = entityTerm("plural");
-    const pluralCap = entityTerm("plural", true);
-    const intro = $("#visionWorkspaceHelpIntro");
-    const range = $("#visionWorkspaceHelpRange");
-    const title = $("#visionWorkspaceHelpTitle");
-    if (title) title.textContent = `${pluralCap}översikt`;
-    if (intro) intro.textContent = `Här visas ${plural} från din fotosession, sex åt gången.`;
-    if (range) {
-      range.innerHTML = total
-        ? `<strong>${pluralCap} ${start}–${end} av ${total}</strong> visar vilka ${plural} som syns just nu.`
-        : `När du har lagt till ${plural} visas vilka som syns just nu här.`;
-    }
-    dialog.hidden = false;
   }
 
   function applyCaptureMode() {
@@ -2617,10 +2596,6 @@
   async function goBackFromVision() {
     const logoutDialog=$("#logoutDialog");
     if(logoutDialog && !logoutDialog.hidden){logoutDialog.hidden=true;return;}
-    const workspaceHelp=$("#visionWorkspaceHelpDialog");
-    if(workspaceHelp && !workspaceHelp.hidden){workspaceHelp.hidden=true;return;}
-    const contextHelp=$("#visionContextHelpDialog");
-    if(contextHelp && !contextHelp.hidden){contextHelp.hidden=true;return;}
     const priceEditor=$("#priceEditorDialog");
     if(visionView==="edit" && priceEditor && !priceEditor.hidden){closePriceEditor();return;}
     const textEditor=$("#textEditorDialog");
@@ -3026,28 +3001,6 @@ $("#price")?.addEventListener("click", openPriceEditor);
   refreshCostUi();
   updateCounters();
   updateTextPreviews();
-  // v2.10.29: delegated help close works regardless of script/DOM order.
-  document.addEventListener("click", (event) => {
-    const close = event.target.closest?.("#closeVisionContextHelpBtn");
-    const dialog = $("#visionContextHelpDialog");
-    if (close && dialog) {
-      event.preventDefault();
-      dialog.hidden = true;
-      return;
-    }
-    if (dialog && event.target === dialog) dialog.hidden = true;
-  });
-
-  // v2.10.31 – workspace contextual help close.
-  document.addEventListener("click", (event) => {
-    const dialog = $("#visionWorkspaceHelpDialog");
-    if (!dialog) return;
-    if (event.target.closest?.("#closeVisionWorkspaceHelpBtn") || event.target === dialog) {
-      event.preventDefault();
-      dialog.hidden = true;
-    }
-  });
-
   window.addEventListener("ccc:terminologychange",()=>{
     window.CCC_TERMINOLOGY?.apply?.();
     updateHeaderContext();
