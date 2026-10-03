@@ -1,2881 +1,1 @@
-==================================================
-README_CHATGPT_CCC.txt
-==================================================
-
-AKTUELL STATUS
---------------
-CCC-version: 2.10.144
-Senaste stabila bas: 2.10.87 ‚Äì Core-styrd swipe och stabil direktnavigation
-Senaste checkpoint: 2026-08-27
-N√§sta uppgift: Testa kamera ‚Üí ta ett eller flera nya foton ‚Üí Expresspublicera ‚Üí v√§lj kanal ‚Üí Publicera X objekt.
-
-ARBETSPRINCIPER
----------------
-- Headerns ikonstorlek, klickyta, spacing och position styrs endast i /ccc-core/core.css.
-- Tillbaka/kugghjul skapas och visas/d√∂ljs centralt av /ccc-core/core.js; moduler f√•r inte pixel-positionera egna headerkontroller.
-- Dashboard visar varken tillbaka eller kugghjul. Modulstart visar kugghjul. Undervyer visar tillbaka + kugghjul.
-- Mobil f√∂rst.
-- Dashboard √§r designfacit f√∂r CCC-moduler.
-- Local-first d√§r det √§r praktiskt.
-- Kod f√∂re teori.
-- Sm√•, verifierbara √§ndringar.
-- Full ZIP + Changed-files ZIP vid varje leverans.
-- Changed-files ZIP inneh√•ller endast filer som faktiskt √§ndrats och beh√•ller korrekt mappstruktur.
-- /version.js i projektroten √§r l√•st och √§ndras inte under CCC-utveckling.
-- CCC-versioner hanteras endast i /ccc-core/version.js.
-- README_CHATGPT_CCC.txt uppdateras vid varje version och fungerar som gemensam projektjournal/arbetsmanual.
-- Ingen bildgenerering under CCC-arbete om anv√§ndaren inte uttryckligen ber om det.
-- Crop Engine 1.0 √§r fryst; nya crop-f√∂rb√§ttringar ska baseras p√• verkliga Vision-bilder.
-- Swipe ska alltid utg√• fr√•n `CCC_CORE.swipe`. Tr√∂skel, fingerf√∂ljning, kantmotst√•nd, animationstid och easing √§ndras centralt. Modulunika v√§rden kr√§ver ett dokumenterat funktionsbehov.
-- Anpassa bild √§r k√§nslofacit f√∂r direkt fingerf√∂ljning. Publiceras klippta, skuggfria sidlager √§r tekniskt facit f√∂r paginerade grids.
-- N√§r en swipevy flyttas till Core ska √§ldre konkurrerande modulv√§rden rensas eller kopplas om, inte l√§mnas som parallell motor.
-- Publiceras arbetsyta ska behandlas som en generell Core-grund: verksamheten kan v√§lja vilka verktyg som erbjuds och anv√§ndaren kan v√§lja vilka av de till√•tna verktygen som visas.
-- Core ska centralt kunna styra verktygens l√§gen: aktivt, inaktivt tills r√§tt objekt/underlag valts, beh√∂righetsl√•st, kvotl√•st eller helt dolt.
-- Beh√∂righet och anv√§ndningsgr√§nser f√•r aldrig vara enbart visuella. Core ska √§ven kontrollera √•tkomsten n√§r verktyget anropas.
-- Tillbaka √§r ett Core-event men varje modul ansvarar f√∂r ett uttryckligt, f√∂rbrukningsbart ursprung: st√§ng f√∂rst √∂versta dialogen, √•terst√§ll sedan exakt f√∂reg√•ende vy/objekt/markering och l√•t modulstart l√§mna till Dashboard. Returdata f√•r inte staplas s√• att anv√§ndaren kan fastna i en loop.
-- Header och footer ska anv√§nda Core-sp√§rren f√∂r bak√•ttryck. Ett och samma fysiska tryck f√•r aldrig f√∂rbrukas av tv√• vyer eller tv√• dokument.
-- Lokala tillbaka-knappar f√•r inte anropa modulnavigation direkt. De ska g√• genom `CCC_CORE.navigation`, √§ven n√§r m√•let √§r Dashboard eller headerpilen redan hunnit d√∂ljas.
-- L√•sta eller f√∂rbrukade verktyg b√∂r normalt ligga kvar synliga med l√•s, begriplig f√∂rklaring och eventuell kvarvarande kvot, exempelvis `AI-s√∂kning ¬∑ 3 av 5 kvar`, i st√§llet f√∂r att of√∂rklarligt f√∂rsvinna.
-- Verktygskonfiguration, roller, kvoter och eventuell framtida niv√•-/betalmodell √§r arkitektur/backlog och ska inte byggas innan Publiceras grundfl√∂de √§r stabilt.
-
-CHECKPOINTS
------------
-2026-08-11
-- Crop Engine 1.0 fryst efter v2.8.95 RC1.
-- Besk√§r-vyn byggdes om i v2.9.0 f√∂r mobil utan scroll.
-- Ny standard f√∂r versionering och leverans √§r fastst√§lld.
-- Root /version.js ska aldrig f√∂lja med i Changed-files vid normal CCC-utveckling.
-
-VERSIONSLOGG
-------------
-v2.10.144 ‚Äì Ligger ute nu f√∂ljer Admins visningstid
-- CCC l√§ser samma newArrivalsRetentionMode och newArrivalsRetentionDays som Container13-webbplatsen.
-- Fliken Ligger ute nu visar endast bilder som faktiskt √§r synliga p√• hemsidan enligt 7, 14, 30, eget 1‚Äì30 dagar eller manuell borttagning.
-- Sparade lokala publiceringar f√•r status inte ute n√§r deras visningstid har passerat, √§ven om en √§ldre Firebase-post √§nnu inte har st√§dats bort av Admin.
-- Historiken √∂ver att bilden en g√•ng publicerades beh√•lls of√∂r√§ndrad.
-- Om webbplatsinst√§llningen inte kan h√§mtas anv√§nds samma reservv√§rde som hemsidan: 7 dagar.
-
-v2.10.143 ‚Äì fri placering i Anpassa bild
-- Objektet kan dras √•t v√§nster, h√∂ger, upp√•t och ned√•t redan vid 100 procent zoom.
-- Bildytans tidigare kantl√•s begr√§nsar inte l√§ngre objektets centrering.
-- Nypzoom kan fortsatt kombinera zoom och f√∂rflyttning i samma gest.
-- Eventuell tom yta syns direkt i f√∂rhandsgranskningen innan anv√§ndaren sparar.
-- Anpassa bild visar en tydlig instruktion om fri dragning.
-
-v2.10.142 ‚Äì √∂ppna och efterjustera befintlig fril√§ggning
-- Fril√§gg p√• en redan frilagd bild √∂ppnar den sparade fril√§ggningen direkt utan ny AI-k√∂rning.
-- Pensel, zoom, borttagning och √•ngra kan anv√§ndas igen p√• det befintliga resultatet.
-- Endast den tydliga knappen Fril√§gg p√• nytt med AI startar en ny segmentering fr√•n originalet.
-- Befintlig bakgrund och bildplacering bevaras n√§r fril√§ggningen efterjusteras.
-- Om den sparade fril√§ggningen √§r skadad faller vyn s√§kert tillbaka till en ny AI-k√∂rning.
-- v2.10.141-fixarna f√∂r iPhone-callout och ren Vision-direktvy ing√•r.
-
-v2.10.141 ‚Äì blockerad iPhone-callout och ren Vision-direktvy
-- Fril√§ggningscanvasen blockerar iOS textmarkering, touch-callout, bilddragning och systemets l√•ngtrycksmeny.
-- Touchstart och touchmove stoppas aktivt medan fril√§ggningspenseln anv√§nds, s√• webbl√§sarens f√∂rstoringsruta inte konkurrerar med penselringen.
-- Granska bild st√§nger uttryckligen Visions start-/arbetsytas skal innan r√§tt Granska & komplettera-kort √∂ppnas.
-- Startskal och redigeringskort kan d√§rf√∂r inte ligga synliga samtidigt i den direkta granskningsv√§gen.
-
-v2.10.140 ‚Äì synlig precisionspensel och s√§ker Granska bild-route
-- Penselns tr√§ffpunkt ligger 46 pixlar ovanf√∂r fingret p√• touchsk√§rm s√• arbetskanten inte skyms.
-- En gul penselring med mittpunkt visar exakt var och hur stort omr√•det som m√•las √§r.
-- Muspekare anv√§nder fortsatt direkt tr√§ffpunkt utan f√∂rskjutning.
-- Granska bild reparerar saknad Vision-originalreferens √§ven om objektet redan finns i Vision-sessionen.
-- Vision √∂ppnar direktrouten utan att f√∂rst visa sin start-/arbetsvy och v√§ljer uttryckligen r√§tt objekt f√∂r Granska & komplettera.
-
-v2.10.139 ‚Äì reversibel pensel och precisionszoom
-- M√•la tillbaka-penseln registrerar penseldragets v√§g och kan rulla tillbaka den senaste delen n√§r fingret dras tillbaka l√§ngs samma v√§g.
-- √Öngra f√∂r hela penseldraget finns kvar som extra s√§kerhet.
-- Tv√• fingrar nyper och flyttar arbetsbilden utan att m√•la.
-- Zoom kan √§ven styras med plus/minus fr√•n 100 till 500 procent och Visa hela √•terst√§ller vyn.
-- Dubbeltryck √•terst√§ller zoom och mushjul st√∂ds vid datorarbete.
-- Penseln arbetar i bildens koordinater s√• storleken f√∂rblir exakt √§ven vid h√∂g zoom.
-
-v2.10.138 ‚Äì justera AI-fril√§ggningen med pensel
-- Fril√§ggningsresultatet kan korrigeras direkt innan det anv√§nds.
-- M√•la tillbaka h√§mtar saknade pixlar fr√•n det or√∂rda originalet, exempelvis en borttagen √§rm.
-- Ta bort suddar manuellt bort bakgrund som AI:n har l√§mnat kvar.
-- Penselstorleken √§r reglerbar och penselkanten mjukas f√∂r mindre synliga √∂verg√•ngar.
-- √Öngra √•terst√§ller de √•tta senaste penseldragen.
-- Alla korrigeringar g√∂rs p√• arbetskopian; originalbilden f√∂rblir or√∂rd.
-
-v2.10.137 ‚Äì tydlig bakgrundsknapp och Container13-studio
-- Bakgrundsknappen f√•r aktiv f√§rg och full kontrast n√§r en frilagd bild kan anv√§nda den.
-- L√•sikonen f√∂rsvinner fortsatt n√§r verktyget √§r tillg√§ngligt.
-- Container13-bakgrunden blir en tydlig m√∂rk studiobakgrund med varm centrumgl√∂d och m√§rkt gul nederkant.
-- Texten CONTAINER 13 i nederkanten g√∂r valet begripligt √§ven n√§r produkten t√§cker bildens mitt.
-
-v2.10.136 ‚Äì v√§lj bakgrund efter fril√§ggning
-- Bakgrund aktiveras endast n√§r aktuell bild √§r frilagd.
-- Val finns f√∂r transparent, vit, ljusgr√•, m√∂rk och Container13-bakgrund.
-- Egen f√§rg kan v√§ljas med f√§rgpalett eller exakt hexadecimal f√§rgkod.
-- De fem senast anv√§nda egna f√§rgerna sparas lokalt som snabbval.
-- Bakgrunden f√∂rhandsvisas med objektets aktuella placering och lagras f√∂rst via Spara anpassning.
-
-v2.10.135 ‚Äì √•terst√§ll riktig originalbild
-- √Öterst√§ll v√§xlar fr√•n en sparad eller nyvald fril√§ggning tillbaka till den or√∂rda originalbilden.
-- Originalets tidigare bildplacering √•teranv√§nds n√§r den finns sparad.
-- √Öterst√§llningen r√§knas som en osparad √§ndring och aktiverar Spara anpassning.
-- Den frilagda varianten tas bort permanent f√∂rst n√§r anv√§ndaren trycker Spara anpassning.
-
-v2.10.134 ‚Äì fril√§ggning aktiverar Spara anpassning
-- Anv√§nd fril√§ggning r√§knas nu som en osparad bild√§ndring i Anpassa bild.
-- Spara anpassning blir aktiv direkt efter att den frilagda bilden valts.
-- Fril√§ggningen skrivs till lagringen f√∂rst n√§r anv√§ndaren trycker Spara anpassning.
-- Hj√§lptexten visar tydligt att fril√§ggningen √§r vald men √§nnu inte sparad.
-
-v2.10.133 ‚Äì riktig lokal AI-fril√§ggning
-- H√∂rnf√§rgsbaserade testmotorn ers√§tts av riktig motivsegmentering som identifierar objektet.
-- AI-modellen h√§mtas f√∂rst n√§r Fril√§gg anv√§nds och bildbehandlingen sker d√§refter lokalt p√• enheten.
-- K√§nslighetsreglaget tas bort eftersom AI-masken inte bygger p√• bakgrundens h√∂rnf√§rg.
-- Original/Frilagd-j√§mf√∂relse, separat cutoutBlob, aktiv frilagd redigeringsk√§lla och or√∂rt original beh√•lls.
-- Vid fel visas verklig felorsak och originalbilden l√§mnas of√∂r√§ndrad.
-- Snabbpubliceras enradiga fria objekt-swipe och √∂vrig v2.10.132-navigation √§r of√∂r√§ndrade.
-- Rootens `/version.js` √§r or√∂rd; CCC-versionen finns endast i `/ccc-core/version.js`.
-
-v2.10.132 ‚Äì fril√§ggningen blir aktiv bild direkt
-- Anv√§nd fril√§ggning byter omedelbart bildk√§llan i Anpassa bild i st√§llet f√∂r att √•ter visa originalet.
-- Den frilagda varianten ligger kvar n√§r Anpassa bild √∂ppnas igen; originalbilden bevaras separat och or√∂rd.
-- Anpassningsytan visar schackrutig transparens bakom ett frilagt objekt.
-- Efterf√∂ljande flytt, zoom och rotation bevarar genomskinligheten i den publicerade varianten.
-- En ny k√∂rning av Fril√§gg utg√•r fortfarande fr√•n originalet och dess sparade ursprungsanpassning.
-- Rootens `/version.js` √§r or√∂rd; CCC-versionen finns endast i `/ccc-core/version.js`.
-
-v2.10.131 ‚Äì automatisk rensning av frist√•ende bakgrundsobjekt
-- Fril√§gg analyserar kvarvarande sammanh√§ngande ytor efter den vanliga bakgrundsborttagningen.
-- Den stora centrala ytan v√§ljs som huvudobjekt och sm√• frist√•ende ytor vid kanter eller h√∂rn tas bort automatiskt.
-- St√∂rre separata delar och mindre f√∂ljeslagare n√§ra bildens centrum skyddas f√∂r objekt som best√•r av flera delar.
-- Arbetsrutan ber√§ttar om en eller flera tydliga st√∂rande ytor har rensats.
-- K√§nslighetsskalan g√•r nu uttryckligen till 100; √∂-rensningen fungerar oberoende av k√§nslighetsv√§rdet.
-- Originalbilden och den reversibla variantlagringen √§r of√∂r√§ndrade.
-- Rootens `/version.js` √§r or√∂rd; CCC-versionen finns endast i `/ccc-core/version.js`.
-
-v2.10.130 ‚Äì Fril√§gg 1.0 med lokal testmotor
-- Fril√§gg √§r aktiverad i Anpassa bild och √∂ppnar en egen mobilanpassad arbetsruta.
-- Bildbehandlingen k√∂rs lokalt i webbl√§saren och skickar inte bilden till n√•gon extern tj√§nst.
-- F√∂rsta testmotorn tar bort kantansluten bakgrund utifr√•n bildens h√∂rnf√§rger och en justerbar k√§nslighet.
-- Original och Frilagd kan v√§xlas direkt f√∂r visuell j√§mf√∂relse innan resultatet anv√§nds.
-- √Öterst√§ll √•terg√•r till standardk√§nslighet och r√§knar om masken.
-- Anv√§nd fril√§ggning sparar en separat transparent publiceringsvariant; Vision-originalet l√§mnas or√∂rt.
-- Anpassa bild h√§mtar uttryckligen originalk√§llan √§ven efter att en fril√§ggning har sparats.
-- Bakgrund ligger kvar som n√§sta f√∂rberedda, l√•sta steg tills fril√§ggningsmotorn har stresstestats.
-- Rootens `/version.js` √§r or√∂rd; CCC-versionen finns endast i `/ccc-core/version.js`.
-
-v2.10.129 ‚Äì Spara anpassning aktiveras f√∂rst vid verklig √§ndring
-- Spara anpassning √§r gr√•tonad och tekniskt inaktiv n√§r bildverkstaden √∂ppnas utan osparade √§ndringar.
-- Knappen blir gul f√∂rst n√§r zoom, position eller rotation faktiskt skiljer sig fr√•n √∂ppningsl√§get.
-- Hela, Fyll, Rotera, √Öterst√§ll, drag och nypzoom anv√§nder samma gemensamma √§ndringskontroll.
-- Om bilden f√∂rs tillbaka till √∂ppningsl√§get blir knappen √•ter inaktiv.
-- Footer-snabbv√§gen Publicera kan fortfarande f√§rdigst√§lla bildvarianten och g√• vidare √§ven utan manuell √§ndring.
-- Rootens `/version.js` √§r or√∂rd; CCC-versionen finns endast i `/ccc-core/version.js`.
-
-v2.10.128 ‚Äì tydligare bildverkstad och synlig √Ñndra-knapp
-- Container13-sammanfattningen har √•ter en tydlig lila √Ñndra-knapp, medan hela kortet fortfarande √∂ppnar samma popup.
-- Anpassa bild anv√§nder inneh√•llsh√∂jd i st√§llet f√∂r att l√•ta redigeringskortet fylla all ledig yta.
-- Bildytan √§r f√∂rsiktigt minskad och Spara anpassning har nu en verklig, synlig egen zon.
-- Gulramen √§r tunnare, instruktionen lugnare och framtidsverktygen tydligare nedtonade.
-- Aktiva bildverktyg ger en kort fysisk tryckrespons utan att navigation eller bildfunktion √§ndrats.
-- Rootens `/version.js` √§r or√∂rd; CCC-versionen finns endast i `/ccc-core/version.js`.
-
-v2.10.127 ‚Äì modal publiceringsvisning och tydligare bildhierarki
-- Kortet Visas p√• Container13 √§r helt klickbart och √∂ppnar en centrerad modal i st√§llet f√∂r ett utf√§llt formul√§r i huvudvyn.
-- Modalens val sparas f√∂rst med Klar. Avbryt, tryck utanf√∂r eller Core-Tillbaka st√§nger utan att √§ndra publiceringen.
-- Anv√§nd standard √•terst√§ller valen i modalens tillf√§lliga utkast och verkst√§lls f√∂rst med Klar.
-- Anpassa bild visar nu `Objekt X av Y` diskret inne i bildens √∂vre v√§nstra h√∂rn.
-- Den separata r√§knarraden √§r borttagen och redigeringskortets guldram √§r lugnare.
-- Spara anpassning har tydligare avst√•nd fr√•n bildverkstaden och Core-footern.
-- Fril√§gg och Bakgrund anv√§nder riktiga l√•ssymboler.
-- Rootens `/version.js` √§r or√∂rd; CCC-versionen finns endast i `/ccc-core/version.js`.
-
-v2.10.126 ‚Äì sammanh√•llen och balanserad bildverkstad
-- Anpassa bild samlar r√§knare, bild, instruktion och verktyg i ett upph√∂jt redigeringskort med lugna marginaler.
-- Bildytan √§r mindre och l√§mnar plats √•t verktyg, sparknapp och Core-footer utan tr√§ngsel.
-- Hela, Fyll, Rotera och √Öterst√§ll ligger som fyra kompakta aktiva verktyg p√• en rad.
-- Fril√§gg och Bakgrund ligger som tv√• smalare, l√•sta framtidsval under de aktiva verktygen.
-- Instruktionen f√∂r drag och nypzoom har en tydlig plats mellan bild och verktyg.
-- Spara anpassning ligger separat som vyens tydliga huvudhandling.
-- Funktion och sparformat fr√•n v2.10.125 √§r of√∂r√§ndrade.
-- Rootens `/version.js` √§r or√∂rd; CCC-versionen finns endast i `/ccc-core/version.js`.
-
-v2.10.125 ‚Äì manuell bildverkstad i Anpassa bild
-- Anpassa bild anv√§nder en ny Publicera-inspirerad verktygslayout med Hela bilden, Fyll ytan, Rotera och √Öterst√§ll.
-- Originalbilden √∂ppnas komplett och centrerad. Ingen automatisk motivbesk√§rning k√∂rs.
-- Dra, nypzoom och de befintliga explicita zoomkontrollerna fungerar tillsammans med verktygsl√§gena.
-- Rotation sparas i bildens separata publiceringsvariant; originalbilden skrivs aldrig √∂ver.
-- Fril√§gg och Bakgrund finns som synliga, l√•sta framtidsplatser s√• layout och datafl√∂de kan byggas vidare utan ny omstrukturering.
-- Hj√§lpen f√∂r vyn beskriver de nya verktygen och framtidsplatserna.
-- Rootens `/version.js` √§r or√∂rd; CCC-versionen finns endast i `/ccc-core/version.js`.
-
-v2.10.124 ‚Äì fasta f√§ltetiketter och t√§tare formul√§rrytm
-- Rubrik och Beskrivning har nu sm√• fasta etiketter inne i respektive f√§ltruta, √§ven n√§r f√§lten inneh√•ller text.
-- F√§ltinneh√•llet b√∂rjar under etiketten och teckenr√§knaren ligger kvar nere till h√∂ger.
-- Prisraden √§r s√§nkt till 42 px och anv√§nder lugnare textvikt och storlek.
-- Mellanrummen mellan Rubrik, Beskrivning, Pris och nedersta verktygsraden f√∂ljer en t√§tare Publicera-inspirerad rytm.
-- Bildyta, objektverktyg och navigation √§r or√∂rda.
-- `/version.js` i projektroten √§r or√∂rd; CCC-versionen finns endast i `/ccc-core/version.js`.
-
-v2.10.123 ‚Äì lugnare formul√§rordning och inget automatiskt pris
-- Granska & komplettera visar f√§lten i ordningen Rubrik, Beskrivning och Pris.
-- Pris √§r en kompakt helbreddsrad som linjerar med textf√§lten och visar `Ej angett` n√§r pris saknas.
-- Valutasuffixet visas bara n√§r ett verkligt pris finns.
-- √Ñldre demodata f√•r inte l√§ngre automatiskt skriva sitt prisf√∂rslag i objektets riktiga prisf√§lt.
-- Manuellt sparade priser bevaras; AI-pris kan inf√∂ras senare som ett uttryckligt f√∂rslag som anv√§ndaren aktivt godk√§nner.
-- `/version.js` i projektroten √§r or√∂rd; CCC-versionen finns endast i `/ccc-core/version.js`.
-
-v2.10.122 ‚Äì Core-styrda verktygskort och hj√§lp endast p√• beg√§ran
-- Publiceras verktygskort √§r nu ett gemensamt Core-facit f√∂r Vision, Publicera och Inst√§llningar.
-- Core styr kortens yta, kant, gl√∂d, ikonring, tryckrespons, inaktivt l√§ge och f√§rgroller fr√•n `ccc-core/core.css`.
-- Modulerna anger bara funktionens semantiska roll, exempelvis granska, redigera, l√§gga till, AI eller ta bort. Core ensam mappar rollerna till f√§rg, form och visuellt tillst√•nd.
-- Dashboard och modulernas v√§lkomstvyer forts√§tter anv√§nda den n√§rbesl√§ktade Core-komponenten `ccc-action-card`, medan prim√§ra fram√•tknappar, bilder och kanalval beh√•ller sina tydliga egna roller.
-- Automatisk hj√§lppopup och dess f√∂rsta-g√•ngen-logik √§r borttagna. Vyhj√§lpen √∂ppnas endast aktivt med `?` i Core-footern.
-- Header/footer-f√∂rfiningen fr√•n v2.10.121 beh√•lls.
-- `/version.js` i projektroten √§r or√∂rd; CCC-versionen finns endast i `/ccc-core/version.js`.
-
-v2.10.121 ‚Äì gemensam vyhj√§lp och balanserad Core-design
-- Core visar nu en gemensam, kontextstyrd hj√§lpruta p√• Dashboard samt i Vision, Publicera och Inst√§llningar.
-- Hj√§lptexten f√∂ljer den aktiva vyn och f√∂rklarar b√•de vad som g√∂rs d√§r och vilka lokala val som finns i modulens inst√§llningar.
-- Varje vy kan visa hj√§lpen automatiskt f√∂rsta g√•ngen. D√§refter √∂ppnas den med Hj√§lp i Core-footern; beteendet kan st√§ngas av eller √•terst√§llas under Inst√§llningar.
-- Hj√§lprutans inst√§llningsknapp anv√§nder modulens befintliga returkontrakt s√• anv√§ndaren √•terkommer till samma vy och objekt.
-- Headerns mobila Core-kontroller och symboler √§r n√•got mindre, med mildare funktionsf√§rg och gl√∂d. Footer anv√§nder samma linjeikonfamilj utan att minska tryckytorna.
-- Vision- och √∂vriga arbetskort f√•r en diskret gemensam yta, kant och skugga med Publicera som visuellt facit.
-- `/version.js` i projektroten √§r or√∂rd; CCC-versionen finns endast i `/ccc-core/version.js`.
-
-v2.10.120 ‚Äì manuell Anpassa bild och ett gemensamt returursprung
-- Automatisk motivbesk√§rning √§r bortkopplad fr√•n det aktiva fl√∂det tills den kan utvecklas och verifieras separat.
-- Ett objekt utan sparad anpassning √∂ppnas med hela originalbilden centrerad; en tidigare sparad manuell anpassning √∂ppnas fortsatt exakt som den l√§mnades.
-- `√Öterst√§ll bild` anv√§nder samma centrerade grundpassning som f√∂rsta √∂ppningen och nollst√§ller b√•de zoom och X/Y-f√∂rflyttning.
-- Den √§ldre `Beh√•ll hela bilden` tas bort eftersom den dubblerade grundpassningen, sparade omedelbart och hade en egen h√•rdkodad returv√§g.
-- Anpassa bild anv√§nder ett enda returkontrakt med ursprungsvy och objekt-ID. B√•de Spara och Tillbaka g√•r d√§rf√∂r till samma vy och samma objekt.
-- Returkontraktet f√∂ljer med genom Inst√§llningar utan att skrivas √∂ver av en tillf√§llig detaljvy.
-- Snabbpublicering kan fortsatt g√• fr√•n Anpassa bild till slutkontrollen; Tillbaka d√§rifr√•n √•ter√∂ppnar samma manuella anpassning.
-
-v2.10.119 ‚Äì stabil Anpassa bild och konsekvent centrering
-- Tillf√§lliga `blob:`-adresser betraktas som dokumentlokala och sparas inte l√§ngre i Publiceras IndexedDB-poster.
-- Vid varje sidladdning skapas en ny giltig adress fr√•n sparad `publishBlob`; √§ldre sparade adresser nollst√§lls vid inl√§sningen.
-- B√•de detaljvyn och Anpassa bild kontrollerar att bildadressen skapats i det aktuella dokumentet.
-- Anpassa bild f√•ngar bildladdningsfel och visar ett begripligt meddelande i den aktuella vyn i st√§llet f√∂r att verka inaktiv.
-- Slutkontrollens fria bildrad f√•r Core-centrering direkt vid renderingen; Core √§ndrar till v√§nsterst√§llning endast n√§r inneh√•llet faktiskt √§r bredare √§n ytan.
-
-v2.10.118 ‚Äì deterministisk Klar-retur och full Core-sp√§rr
-- Core anv√§nder samma 1,2-sekunders navigationssp√§rr f√∂r header, footer, lokala bak√•tknappar och direktretur till Dashboard.
-- Ett k√∂at andra tryck kan d√§rf√∂r inte l√§mna V√§lj objekt och d√§refter omedelbart l√§mna Vision-starten.
-- Publiceras Granska s√§kerst√§ller att exakt markerat lokalt utkast finns i Vision-sessionen innan navigationen sker.
-- Vision √∂ppnas med `returnTo=publish-confirm` och objekt-ID i URL:en; sessionskontraktet inneh√•ller fortfarande slutkontrollens fullst√§ndiga returadress.
-- Klar visas endast f√∂r exakt returobjekt och √•terg√•r efter s√§kerhetssparning till samma slutkontroll, markering och ursprung.
-- Ett nytt returkontrakt ers√§tter √§ldre Granska-returv√§rden s√• att f√∂rbrukade nycklar inte styr en senare navigation.
-
-v2.10.117 ‚Äì bevarat ursprung mellan Vision och Publicera
-- Vision sparar exakt arbetsvy, sida och aktivt objekt innan Publicera √∂ppnas och √•terst√§ller samma l√§ge vid Tillbaka.
-- Inst√§llningars uttryckliga retur f√•r f√∂retr√§de framf√∂r √§ldre objektnycklar, s√• Granska & komplettera inte kastas till Vision-starten.
-- Granska fr√•n Publiceras slutkontroll beh√•ller aktiv gulmarkering och √•terv√§nder med Klar till samma slutkontroll; Anpassa bild kan √∂ppnas fr√•n det √•terst√§llda objektet.
-- Core sp√§rrar ett bak√•ttryck i 700 ms √∂ver b√•de vy- och sidbyten, s√• dubbeltryck inte hoppar tv√• steg.
-- Vision V√§lj objekt f√•r mer s√§ker luft mot Core-footern.
-
-v2.10.116 ‚Äì sammanh√•llen och loopfri Tillbaka-navigation
-- Vision √•terg√•r fr√•n Granska & komplettera till den vy som faktiskt √∂ppnade redigeringen: objekt√∂versikt, AI-f√∂rslag eller f√§rdiglista.
-- Publicera √•terg√•r fr√•n Anpassa bild till bilddetaljen och fr√•n kanalval till r√§tt startpunkt, exempelvis utkastlistan.
-- Inst√§llningar bevarar och √•terst√§ller aktuell modulvy, aktivt objekt, markeringar och relevanta arbetsval via en tidsbegr√§nsad eng√•ngsretur.
-- √ñppna hj√§lp-, raderings-, visnings- och utloggningsdialoger st√§ngs f√∂re underliggande navigation.
-- Returkontext f√∂rbrukas vid anv√§ndning och modulstart leder alltid till Dashboard, s√• navigationen kan inte fastna i en fram-och-tillbaka-loop.
-
-v2.10.88 ‚Äì Core Swipe v2 + direkt slutkontroll
-- Core-profilen skiljer nu p√• tidig r√∂relsestart och godk√§nt sidbyte: n√§sta sida b√∂rjar f√∂lja efter 12 px, men byte kr√§ver 24 % av ytan och minst 72 px.
-- Publiceras aktuella och inkommande grid ligger i samma Core-skapade `ccc-swipe-viewport` med `overflow:hidden`, rundning och egen bakgrund. Det gamla helsk√§rmslagret under `body` anv√§nds inte l√§ngre.
-- Vision-start och V√§lj objekt visar ingen headerpil; footerns Tillbaka √§r navigationen d√§r. Granska & komplettera beh√•ller headerpilen som djup undervy.
-- Publicera fr√•n Vision v√§ljer aktuellt objekt + Container13 och √∂ppnar sista kontrollvyn direkt. Detalj/Anpassa bild hoppas √∂ver och Tillbaka √•terg√•r till samma Vision-objekt.
-- Permanent regel: nya och √§ndrade swipefunktioner ska utg√• fr√•n `CCC_CORE.swipe`; modulunika avvikelser ska vara dokumenterade undantag.
-
-v2.10.87 ‚Äì Core-styrd swipe + stabil Vision ‚Üí Publicera
-- Paginerade arbetsgrids i Vision och Publicera h√§mtar nu draggr√§ns, fingerf√∂ljning, kantmotst√•nd, snap-tid och easing fr√•n en gemensam `CCC_CORE.swipe`-profil.
-
-v2.10.89 ‚Äì lugnare Core-snap + adaptiv slutkontroll
-- Core-snapen efter sl√§pp √§r 380 ms med mjukare inbromsning i alla arbetsgrids som anv√§nder `CCC_CORE.swipe`.
-- En enda kontrollsida anpassas efter antalet: 1 objekt = stort centrerat, 2 = 2 kolumner, 3‚Äì4 = 2√ó2 och 5‚Äì6 = 3√ó2.
-- Vid 7 eller fler objekt beh√•ller varje sida 3√ó2 och v√§xlar med Core-swipe, s√• inkommande och utg√•ende lager alltid har samma m√•tt.
-- Versionsregel: `/version.js` i projektroten tillh√∂r Container13s hemsida och f√•r inte √§ndras av CCC-versioner. CCC:s versionsnummer styrs enbart av `/ccc-core/version.js`.
-
-v2.10.90 ‚Äì lugnare landning + scrollfri mobilprincip
-- Core-snapen efter sl√§pp √§r 480 ms med en mjukare inbromsning. Fingerf√∂ljningen och dragtr√∂skeln √§r of√∂r√§ndrade.
-- Sista kontrollvyn f√•r mer luft ovanf√∂r och under bildytan; korta mobilsk√§rmar anv√§nder ett kompaktare mellanrum automatiskt.
-- Permanent mobilregel: normala CCC-vyer ska vara scrollfria n√§r inneh√•llet rimligen ryms. Huvudinneh√•ll och footer ska synas samtidigt. Scroll anv√§nds n√§r inneh√•llet faktiskt kr√§ver det, exempelvis √∂ppnade redigeringspaneler, ovanligt sm√• sk√§rmar eller f√∂rstorad text.
-
-v2.10.91 ‚Äì Core Swipe 580 + f√§rdiga mobilkort
-- All Core-styrd swipe landar p√• 580 ms. Publiceras √§ldre detalj-swipe anv√§nder nu ocks√• Core f√∂r transition, riktning, fingerf√∂ljning och commit.
-- Vision V√§lj objekt anv√§nder den lediga ytan ovanf√∂r footern s√• hela 3√ó2-griden syns utan att miniatyrerna krymps.
-- Vision visar headerns tillbaka-pil i alla undervyer; endast modulens startvy saknar pil. Footer-Tillbaka finns kvar.
-- Slutkontrollens enkelbild f√•r en symmetrisk Core-ram: 280 px bild och 14 px runt om.
-- Dashboard och modulstarter anv√§nder gemensam Core-tryckk√§nsla. Vy-/sidbyten v√§ntar 140 ms; kamera och filv√§ljare beh√•ller direkt anv√§ndaraktivering.
-
-v2.10.115 ‚Äì stor Klar-knapp och s√§ker retur fr√•n Vision
-- N√§r `Granska & komplettera` √∂ppnats fr√•n Publicera blir den stora gula `N√§sta objekt`-knappen `Klar`.
-- Den lilla Klar-knappen tas bort ur footern i detta l√§ge; vanligt Vision-fl√∂de √§r of√∂r√§ndrat.
-- B√•de Klar och Tillbaka inv√§ntar f√§lt- och sessionssparning f√∂re retur. Vid sparfel stannar anv√§ndaren kvar.
-
-v2.10.114 ‚Äì bevarad markering efter Vision-granskning
-- Publicera √•terst√§ller samma gulmarkerade objekt efter `Granska & komplettera`.
-- Ett eller tv√• objekt beh√•ller den centrerade Core-swipens geometri; gul markering √§ndrar inte kortets m√•tt eller placering.
-- N√§r Vision √∂ppnats fr√•n Publicera heter footer√•tg√§rden `Klar`; normalt Vision-fl√∂de beh√•ller `Publicera`.
-
-v2.10.113 ‚Äì kompakt k√§llrad √∂verst i Publicera
-- `Foto`, `Bilder` och `Utkast` ligger direkt under modulheadern, f√∂re objektomr√•det.
-- Knapparna √§r l√§gre med mindre ikoner, horisontellt inneh√•ll och diskretare gl√∂d.
-
-v2.10.112 ‚Äì tre direkta k√§llknappar i Publicera
-- Den extra CCC-popupen √§r borttagen.
-- Publicera visar tre korta, j√§mnbreda val: `Foto`, `Bilder`, `Utkast`.
-- `Foto` √∂ppnar CCC-kameran, `Bilder` √∂ppnar enhetens bildval och `Utkast` anv√§nder befintligt utkastfl√∂de.
-
-v2.10.111 ‚Äì enhetsneutral k√§lltext
-- `Ta foto med CCC` forts√§tter anv√§nda CCC-kameran.
-- Det andra valet heter `V√§lj fr√•n enheten` med f√∂rklaringen `Bildbibliotek eller filer`.
-- v2.10.110 ska hoppas √∂ver; dess iPhone-specifika text var inte plattformsneutral.
-
-v2.10.110 ‚Äì ersatt av v2.10.111
-
-v2.10.109 ‚Äì flytande k√§llmeny direkt i Publicera
-- `L√§gg till {singular}` √∂ppnar en kompakt CCC-meny ovanp√• den befintliga Publicera-arbetsytan i st√§llet f√∂r att navigera till Visions stora k√§llvy.
-- `Ta foto med CCC` √∂ppnar Visions kamera direkt via `?mode=publish-add&source=camera` och √•terst√§ller aktuell grupp/kanal efter Klar eller X.
-- `Bildbibliotek / filer` √∂ppnar enhetens s√§kra bildv√§ljare fr√•n samma meny, accepterar flera bilder och skapar Vision-kompatibla lokala objekt direkt i aktuell publiceringsgrupp.
-- Menyn st√§ngs med Avbryt, tryck utanf√∂r eller Escape. Safari kan efter enhetsvalet visa sin egen systemmeny f√∂r Bildbibliotek/Ta bild/V√§lj filer; detta styrs av iOS.
-- v2.10.108:s stora Vision-k√§llvy finns kvar som teknisk fallback men anv√§nds inte fr√•n Publiceras normala L√§gg till-knapp. Rootens `/version.js` √§r or√∂rd.
-
-v2.10.108 ‚Äì k√§llval f√∂r nya objekt i Publicera
-- `L√§gg till {singular}` √∂ppnar en s√§rskild Vision-vy med tv√• val: `Ta ett foto` och `Fr√•n album`.
-- Ta foto anv√§nder fortsatt Visions egen CCC-kamera. Fr√•n album anv√§nder Visions befintliga flervalsimport fr√•n enhetens bildbibliotek.
-- B√•da k√§llorna skapar nya Vision-kompatibla objekt, √•terg√•r till samma Publicera-arbetsyta och bevarar tidigare objekt-/kanalval.
-- Header-Tillbaka fr√•n k√§llvalet √•terg√•r utan √§ndring. `V√§lj utkast` i Publicera √§r fortsatt separat och visar redan sparade CCC-objekt.
-- Rootens `/version.js` √§r fortsatt or√∂rd.
-
-v2.10.107 ‚Äì Visions kamera fr√•n Publiceras arbetsyta
-- `L√§gg till {singular}` i Publiceras arbetsstart √∂ppnar Visions befintliga CCC-kamera via `?mode=publish-add`; Publicera har inte l√§ngre en parallell filinput som normalt √∂ppnar iPhones kamera.
-- Publicera sparar aktuell objektgrupp, kanal och verktygsmarkering tillf√§lligt. `Klar` i kameran sparar de nya Vision-objekten som Publicera-utkast, l√§gger dem till gruppen och √•terst√§ller tidigare val.
-- Kamerans X √•terg√•r till samma Publicera-arbetsyta utan att l√§gga det aktuella staged-fotot i publiceringsgruppen. Redan autosparade foton bevaras i Vision.
-- Vision-starten h√•lls dold under specialing√•ngen s√• endast CCC-kameran visas. Webbl√§sarens filkamera anv√§nds endast som befintlig teknisk fallback om `getUserMedia` saknas eller nekas.
-- Rootens `/version.js` √§r fortsatt or√∂rd.
-
-v2.10.106 ‚Äì blinkfri uppstart av Publiceras arbetsyta
-- Alla interna Publicera-vyer b√∂rjar dolda. En gemensam uppstartsgrind h√•ller arbetsyta och footer osynliga tills lokala data √§r l√§sta och r√§tt ing√•ng har valts.
-- Dashboard ‚Üí Publicera visar d√§rf√∂r inte l√§ngre den gamla v√§lkomstvyn innan den nya arbetsytan √∂ppnas.
-- Direktv√§gar fr√•n Vision/Express och fallbacken `?legacyStart=1` anv√§nder samma grind och visar endast sin avsedda slutvy.
-- Header och modulidentitet ligger stilla under den korta uppstarten. Rootens `/version.js` √§r fortsatt or√∂rd.
-
-v2.10.105 ‚Äì slutkontrollen som Publiceras arbetsstart
-- Publicera fr√•n Dashboard √∂ppnar direkt den kompletta arbetsytan; den tidigare v√§lkomstvyn finns kvar som testfallback via `?legacyStart=1`.
-- Toml√§get erbjuder sida vid sida `L√§gg till {singular}` och `V√§lj utkast`. Utkastsv√§ljaren √•teranv√§nder befintlig lokal grid och √•terg√•r till arbetsytan.
-- Huvudknappen visar `V√§lj {plural}` utan objekt. Historik finns som sekund√§r ing√•ng och Tillbaka fr√•n arbetsstarten g√•r till Dashboard.
-
-v2.10.104 ‚Äì L√§gg till objekt i slutkontrollen
-- En alltid aktiv grafisk `L√§gg till {singular}`-knapp √∂ppnar mobilens bildval f√∂r kamera/bibliotek.
-- Varje vald bild skapar ett nytt objekt, sparas i samma lokala Vision-/Publicera-lager och l√§ggs automatiskt till i aktuell publiceringsgrupp.
-- Knapptext och status anv√§nder Core-terminologins singular/plural.
-
-v2.10.103 ‚Äì linjerad och centrerad slutkontroll
-- Verktygskortens ytterkanter linjerar med informationskortet och Publicera-knappen.
-- Objekt centreras n√§r hela raden ryms och g√•r √∂ver till fri Core-swipe f√∂rst vid overflow.
-- Kanalradens symmetriska sidpadding l√•ter f√∂rsta och sista kanal visas helt i respektive √§ndl√§ge.
-
-v2.10.102 ‚Äì Granska till Vision och bredare slutkontroll
-- Granska √∂ppnar markerat objekt i Visions Granska & komplettera och √•terv√§nder d√§refter till samma expresskontroll och verktygsmarkering.
-- Objektkorten √§r n√•got st√∂rre och linjerar b√§ttre med korten nedanf√∂r.
-- Kanalikonerna √§r n√•got st√∂rre och kanalraden har s√§ker sidluft s√• v√§nster kant/gl√∂d inte klipps.
-
-v2.10.101 ‚Äì grafiska objektverktyg i slutkontrollen
-- Markerat objekt f√•r tydligare gul ram/gl√∂d och aktiv statuspill.
-- Granska, Anpassa bild och Ta bort √§r kompakta upph√∂jda verktygskort med skalbara SVG-ikoner, funktionsf√§rg och fysisk tryckrespons.
-
-v2.10.101 ‚Äì grafiska objektverktyg i slutkontrollen
-- Markerat objekt f√•r tydligare gul ram/gl√∂d och aktiv statuspill.
-- Granska, Anpassa bild och Ta bort √§r kompakta upph√∂jda verktygskort med skalbara SVG-ikoner, funktionsf√§rg och fysisk tryckrespons.
-
-v2.10.100 ‚Äì enradig slutkontroll med objektverktyg
-- Sista kontrollvyn visar alla publiceringsobjekt i en kompakt, fritt swipebar rad.
-- Enkeltryck v√§ljer exakt ett objekt f√∂r verktygen och markerar det med gul ram; urvalet p√•verkar inte vilka objekt som publiceras.
-- Granska, Anpassa bild och Ta bort √§r l√•sta tills ett objekt valts. Ta bort lyfter endast objektet ur aktuell publicering och bevarar det lokala utkastet.
-
-v2.10.99 ‚Äì Expresspublicera fr√•n kameragranskningen
-- Kamerans granskningsl√§ge har Expresspublicera bredvid Sparas automatiskt.
-- Endast objekt som tillkommit i det aktuella kamerabes√∂ket f√∂ljer med; aktuellt granskningsfoto l√§ggs till f√∂rst.
-- Nya objekt sparas lokalt och √∂ppnas direkt i Publiceras sista kontrollvy utan f√∂rvald kanal.
-- Flera objekt skickas som en explicit ID-lista och knappen visar Publicera X objekt efter kanalval.
-- Dimmerpiloten och samtliga tillf√§lliga dimmerreglage √§r borttagna. Core-knappresponsen beh√•lls.
-
-v2.10.98 ‚Äì synlighet och toningsf√§rg i dimmerpanelen
-- Dashboard-inst√§llningar kan √§ven styra slutlig synlighet 0‚Äì40 % och toningsf√§rg via f√§rgv√§ljare.
-- Core tonar den gamla vyn ovanp√• vald f√§rg. Standard √§r 9 % √∂ver svart.
-- √Öterst√§ll dimmer √•terg√•r till 260/300 ms, 9 % och #000000.
-
-v2.10.97 ‚Äì tillf√§lliga dimmerreglage
-- Dashboard-inst√§llningar har reglage f√∂r Tona ned och Tona upp, 150‚Äì1200 ms i steg om 10 ms.
-- V√§rden sparas lokalt och Core anv√§nder samma v√§rde f√∂r b√•de CSS-animation och faktisk navigationstid.
-- √Öterst√§llning ger pilotens 260/300 ms. M√∂rkhetsniv√•n √§r fortsatt 9 % opacitet/28 % ljusstyrka.
-
-v2.10.96 ‚Äì starkare dimmerpilot
-- Samma avgr√§nsning som v2.10.95: endast Dashboard ‚Üí CCC Vision/Publicera.
-- Nedtoningen √§r 260 ms till 9 % opacitet och 28 % ljusstyrka.
-- Den nya modulen tonas upp under 300 ms. Knapptrycket √§r fortsatt 320 ms.
-
-v2.10.95 ‚Äì dimmerpilot Dashboard ‚Üí moduler
-- Samlat paket relativt v2.10.92; v2.10.93 och v2.10.94 ing√•r.
-- Endast Dashboard-korten CCC Vision och Publicera anv√§nder pilot√∂verg√•ngen.
-- Efter 320 ms tryckk√§nsla tonas Dashboard ned i 190 ms och modulen tonas upp i 240 ms.
-- Mer och √∂vriga interna vybyten √§r or√∂rda tills pilotk√§nslan har godk√§nts.
-- Minska r√∂relse ger omedelbar navigation utan dimmer.
-
-v2.10.94 ‚Äì Core free-swipe f√∂r kanalraden
-- Samlat paket ovanp√• v2.10.92: inneh√•ller hela v2.10.93 samt denna √§ndring.
-- Core har nu `paged`-fysiken f√∂r bildserier och `bindFree()` f√∂r flytande karuseller.
-- Slutkontrollens kanalrad anv√§nder fri native touch-momentum utan sid-snap; musdrag f√•r Core-bromsning.
-- Raden centreras n√§r den ryms och v√§nsterst√§lls automatiskt f√∂rst n√§r den faktiskt beh√∂ver scrollas.
-
-v2.10.93 ‚Äì iOS-kamera√•terkomst + synkat kanalval
-- Sparad Vision-session √•terl√§ses inte l√§ngre bakom iOS-kameran innan ett foto faktiskt har tagits.
-- Avbruten iOS-kamera/fallback √•terg√•r uttryckligen till den vy d√§r kameran √∂ppnades och nollst√§ller n√§sta f√∂rs√∂k.
-- Core-kortens navigationsk√§nsla √§r 320 ms; Ta ett foto anv√§nder den, medan albumv√§ljaren √§r direkt.
-- Slutkontrollens C13-val har en gemensam state-synk: gr√∂n ytterring och korrekt Publicera X objekt-knapp.
-- Pinterest och Etsy ligger som l√•sta testkanaler s√• fler √§n sex kanaler och horisontell swipe kan provas.
-
-v2.10.92 ‚Äì stabil kamera-Avbryt + aktivt kanalval
-- Vision sparar vilken vy kameran √∂ppnades fr√•n. Avbryt √•terg√•r alltid till exakt den vyn i st√§llet f√∂r att gissa utifr√•n sessionsinneh√•llet.
-- Varje kamera√∂ppning f√•r ett anrops-ID. Sena resultat fr√•n avbrutna `getUserMedia`-anrop stoppas och ignoreras, och √∂ppningsl√•set √•terst√§lls s√§kert.
-- Core-navigationens intryckta paus √∂kas fr√•n 140 till 220 ms. Kamera och filv√§ljare beh√•ller direkt anv√§ndaraktivering.
-- Ordinarie Publicera-fl√∂de beh√•ller aktivt C13-val fr√•n kanalsteget.
-- Snabbv√§gar som hoppar √∂ver kanalsteget f√∂rv√§ljer ingen kanal. Slutknappen visar `V√§lj kanal` tills C13 aktivt v√§ljs och √§ndras d√§refter till `Publicera X objekt`.
-- Anpassa bild √§r k√§nslofacit: inneh√•llet f√∂ljer fingret direkt och motst√•ndet kommer f√∂rst n√§ra ytterl√§get. Sidbyte kr√§ver nu ett n√•got l√§ngre drag (18 %, minst 56 px) och landar lugnt p√• 280 ms.
-- Publiceras fungerande skuggfria tv√•lagersrendering och exakta f√∂rflyttning inklusive gutter beh√•lls; endast gestfysiken centraliseras.
-- Vision l√•ser f√∂rsta Publicera-trycket medan sessionen sparas. Direktv√§gen d√∂ljer Publiceras startvy, √∂ppnar valt objekt direkt och ignorerar ett sent bak√•t-event under bootstrap.
-- v2.10.87 √§r byggd direkt fr√•n den GitHub-uppladdade v2.10.86-basen.
-
-v2.10.86 ‚Äì Swipe utan eftersl√§pning
-- Publiceras inkommande sida och utg√•ende sida anv√§nder nu exakt samma totala f√∂rflyttning, inklusive mellanrummet mellan sidorna. N√§sta bildserie stannar d√§rf√∂r direkt i slutl√§get utan ett sent hopp n√§r den gamla sidan rensas.
-- Snap-animationen kortas till 240 ms i b√•de Publicera och Vision s√• den gamla bildserien l√§mnar sk√§rmen utan den tidigare sega avslutningen.
-- V√§lkomstkorten upp och den separerade Mer-vyn fr√•n v2.10.85 ing√•r of√∂r√§ndrade.
-
-v2.10.85 ‚Äì V√§lkomstkort upp + Mer-vy separerad
-- H√∂gspecificitetsregeln f√∂r Dashboardens `#homeView` konsolideras med den nya v√§lkomstlayouten, s√• rubriken inte l√§ngre fyller ett stort tomt omr√•de och korten b√∂rjar direkt under rubriken.
-- `.ccc-module-home[hidden]` √•terst√§ller absolut hidden-prioritet, s√• Dashboard f√∂rsvinner helt n√§r Mer √∂ppnas och den gamla Mer-vyn inte l√§ngre hamnar under Dashboardkorten.
-- Samma kompakta rubrikrad anv√§nds i Dashboard, Vision-start och Publicera-start. Inga funktioner eller kortdestinationer √§ndras.
-
-v2.10.84 ‚Äì Vision-start: Forts√§tt fotosession + snabb tryckrespons
-- Vision-startens Tillbaka-kort tas bort; Core-footerns Tillbaka √§r ensam tillbaka√•tg√§rd.
-- En verklig Forts√§tt fotosession-bricka tar tredje plats n√§r en lokal session finns och visar hur m√•nga objekt som v√§ntar.
-- Utan sparad session f√∂rdelas Vision-starten automatiskt p√• tv√• kort utan tom tredje rad.
-- V√§lkomstkortens tryckfeedback kortas till 70 ms och f√∂rst√§rks med omedelbar press/ljusrespons; destinationer och arbetsfl√∂den √§r of√∂r√§ndrade.
-
-v2.10.83 ‚Äì Levande Dashboard och modulstarter
-- Dashboard, Vision-start och Publicera-start f√•r centrerade v√§lkomstrubriker och samma upph√∂jda kortspr√•k som V√§lj kanal.
-- Modulidentiteten f√∂ljer anv√§ndaren: bl√•/lila Vision, guld/gr√∂n Publicera och turkos Mer.
-- Grafiska linjeikoner ligger som inline-SVG i gl√∂dande cirklar; inga nya bildfiler eller externa ikonberoenden tillkommer.
-- Endast v√§lkomstytorna anv√§nder den nya visuella varianten. Arbetsvyer, publiceringslogik, bildk√§llor och swipe l√§mnas or√∂rda.
-
-v2.10.82 ‚Äì Detalj-swipe utan efterskugga + Publicera i r√§tt footer
-- Det var detaljvyns tre bildlager som gav efterskuggan: inkommande bild l√§ggs nu √∂ver den utg√•ende under snap-animationen och riktningsklassen tas bort direkt vid commit.
-- Detaljvyns Core-footer visar Hj√§lp + Publicera + Tillbaka.
-- Publicera i detaljvyn tar aktuellt objekt direkt till sista kontrollvyn med Container13 valt; Tillbaka √•terg√•r till samma detaljbild.
-- Anpassa bild beh√•ller Publicera i footern efter bildanpassningen.
-
-v2.10.81 ‚Äì Swipe-efterskugga + s√§ker Anpassa-footer
-- Den bortg√•ende Publish-gridden d√∂ljs exakt n√§r swipe-animationen √§r klar; n√§sta sidkopia ligger kvar tills den riktiga sidan √§r f√§rdigrenderad och tas sedan bort direkt.
-- Anpassa bild √•teranropar Visions Core-footer-konfiguration under de f√∂rsta korta renderings√∂gonblicken, s√• Hj√§lp + Publicera visas √§ven n√§r Core och vyn blir klara samtidigt.
-- Snabbvalet √§r fortsatt avgr√§nsat till Anpassa bild. Det g√•r med aktuellt objekt direkt till sista kontrollvyn; Tillbaka d√§rifr√•n √•terg√•r till Anpassa.
-
-v2.10.80 ‚Äì Publish-swipe + Anpassa-footer
-- Publishs sid-swipe visar aktuell och angr√§nsande sida samtidigt under draget, med Visions tr√∂skel och kantmotst√•nd.
-- Den svarta tomytan mellan bildsidor tas bort; sidan byts f√∂rst efter avslutad animation.
-- Anpassa bild anv√§nder samma direkta Core-footer-konfiguration som Vision f√∂r Hj√§lp + Publicera, utan MutationObserver-snabbfixen.
-- Snabbfl√∂det Publicera sparar aktuell anpassning och g√•r direkt till sista kontrollvyn med aktuellt objekt valt.
-
-v2.9.4 ‚Äì Header Back hotfix
-- Fixar centrala tillbaka-knappar i Publicera.
-- Orsak: gamla DOM-lyssnare f√∂r borttagna #detailBack och #cropBack l√•g kvar och stoppade publish.js med null.addEventListener innan CCC Header Core-eventen registrerades.
-- Gamla lokala back-lyssnare borttagna.
-- Tidigare cleanup-beteende f√∂r Detail och Crop flyttat till leavePublishDetail()/leavePublishCrop() och anropas av ccc:header-back.
-- CCC Header Core-geometri √§r of√∂r√§ndrad.
-- Crop Engine 1.0 √§r of√∂r√§ndrad.
-- Root /version.js √§r or√∂rd.
-
-v2.9.3 ‚Äì CCC Header Core
-- Ny central headerkomponent i /ccc-core/core.js + core.css.
-- En enda upps√§ttning CSS-variabler styr storlek, klickyta, spacing och vertikal placering f√∂r tillbaka, kugghjul, tema och profil.
-- Core skapar tillbaka- och kugghjulsknapparna; moduler styr endast show/hide via CCC_CORE.header.set().
-- Dashboard: inga v√§nsterkontroller.
-- Vision start: kugghjul. Vision undervyer: tillbaka + kugghjul.
-- Publicera start: kugghjul. Publicera undervyer: tillbaka + kugghjul.
-- Tema- och profilikoner standardiseras centralt.
-- Lokala fixed/pixel-hack f√∂r header tas bort fr√•n Publicera.
-- F√∂rhandsgranskningens x av y ligger inne i bilden.
-- Publicera-vyer balanseras utan att module-CSS styr headerns geometri.
-- Crop Engine 1.0 √§r of√∂r√§ndrad.
-- Root /version.js √§r or√∂rd och f√∂ljer inte med i Changed-files ZIP.
-
-v2.9.0 ‚Äì Besk√§r Layout
-- Hj√§lptext och synlig crop-data bort fr√•n Besk√§r-vyn.
-- Tillbaka-knappen placerad i headeromr√•det till v√§nster.
-- Bildr√§knaren visas inne i crop-bilden.
-- Zoom-slider borttagen.
-- Pinch och drag beh√•lls.
-- Dubbeltryck v√§xlar zoom 100 % ‚Üí 130 % ‚Üí 180 % ‚Üí 100 %.
-- Diskret zoomknapp √∂ppnar [-] procent [+] f√∂r finjustering.
-- Original / √Öterst√§ll / OK ligger p√• samma rad.
-- Crop Engine 1.0 √§r funktionellt of√∂r√§ndrad.
-
-v2.8.95 RC1 ‚Äì Crop Engine 1.0
-- Paired collar/shoulder lock f√∂rb√§ttrade Zidane-fallet.
-- Adaptiv X-centrering och √∂vrig crop-logik fr√•n v2.8.94 beh√∂lls.
-- Crop Engine 1.0 fryst efter test.
-
-ATT G√ñRA
----------
-- Testa v2.9.0 Besk√§r Layout p√• mobil.
-- Om layouten fungerar utan scroll: g√• vidare till Publicera-fl√∂det.
-- Skapa testkopia av nyinkommet.html under ccc-core f√∂r publiceringstester.
-
-
-√ÑLDRE PROJEKTANTECKNINGAR
--------------------------
-==================================================
-VIKTIGASTE REGELN
-==================================================
-
-Mycket snack och lite verkstad vill vi inte ha.
-
-- Prioritera att l√∂sa uppgiften framf√∂r l√•nga f√∂rklaringar.
-- Undvik upprepningar.
-- Beskriv planen kort och genomf√∂r sedan arbetet.
-- Resonera bara s√• mycket som beh√∂vs.
-- Leverera resultat.
-
-
-==================================================
-LEVERANSKONTROLL
-==================================================
-
-En leverans √§r inte klar f√∂rr√§n inneh√•llet √§r kontrollerat.
-
-- Det som utlovats ska faktiskt finnas med.
-- Alla √§ndrade filer ska finnas i ZIP:en med endast √§ndrade filer.
-- Komplett ZIP ska inneh√•lla samma √§ndringar.
-- Filstruktur och s√∂kv√§gar ska vara korrekta.
-- Versionsnummer och cachebrytning ska uppdateras n√§r det beh√∂vs.
-
-Kontrollera f√∂rst. Leverera sedan.
-
-==================================================
-LEVERANSSTANDARD
-==================================================
-
-- Leverera normalt en komplett projekt-ZIP och en ZIP med endast √§ndrade filer.
-- ZIP:en med √§ndrade filer ska spegla projektets mappstruktur.
-- README_FOLDER.txt ska f√∂lja med och uppdateras i modul-/undermappar d√§r filen redan ing√•r i projektstrukturen. Skapa inte nya README_FOLDER.txt enbart f√∂r att en mapp ber√∂rs. Projektroten och /ccc-core ska inte ha README_FOLDER.txt.
-
-
-CCC arbetsinstruktioner
-
-Senaste beslut:
-- Mobil f√∂rst, touch f√∂rst.
-- C13-admin √§r funktionell referens.
-- L√§s ccc-core f√∂re st√∂rre √§ndringar.
-- Inga bilder/mockups om inte anv√§ndaren uttryckligen ber om det.
-- Prioritera arbete och resultat framf√∂r l√•nga genomg√•ngar.
-- Inspektera f√∂re leverans.
-
-Auth UX:
-- L√∂senord ska inte visas automatiskt vid autofyll.
-- Enter ska kunna logga in.
-- Logout-menyer f√•r inte √∂verlappa dialoger.
-- Mobilmenyer ska ha stora touchytor.
-
-Dashboard/designbeslut 2026-08-05:
-- Mobilversionen √§r huvudprodukten; desktop f√•r anv√§nda st√∂rre yta.
-- H√∂gst tre prim√§ra val per vy.
-- Sm√• dagliga vyer byts inom dashboarden; st√∂rre arbetsfl√∂den kan vara egna sidor.
-- Permanent CCC-header p√• alla framtida vyer: CCC med gloria som hemknapp, direkt temav√§xling och anv√§ndarknapp.
-- Startvyn prioriterar L√§gg till bilder, Publicera och Mer.
-- Dashboardens grundvy ska normalt rymmas utan sidscroll p√• mobil; inneh√•llsrika moduler f√•r egen paginering eller kontrollerad scroll.
-
-Dashboard/designbeslut 2026-08-05 ‚Äì komplettering:
-- Mobilens dashboard ska vara l√•st i h√∂jd och inte kunna dras upp eller ned n√§r inneh√•llet ryms.
-- Text och tryckytor i mobilens prim√§ra kort ska vara tydligt stora.
-- P√• stor sk√§rm ska CCC-loggan vara stor och centrerad; tema och anv√§ndare ska ligga l√§ngst ut till h√∂ger.
-- Desktopkorten f√•r anv√§nda betydligt mer yta och st√∂rre inneh√•ll √§n mobilkorten.
-
-Dashboard/arbetsfl√∂desbeslut 2026-08-05:
-- L√§gg till bilder samlar b√•de kamera, album och filval i samma vy.
-- Bilder ska f√∂rst hamna i en framtida Inkorg/utkast och inte publiceras automatiskt.
-- Publicera ska senare l√•ta anv√§ndaren v√§lja bilder, text och anslutna publiceringskanaler.
-- Anslutning av webbplats, Instagram, Facebook, Google F√∂retagsprofil och andra kanaler h√∂r hemma under Inst√§llningar.
-
-Dashboard/arbetsfl√∂desbeslut 2026-08-05 ‚Äì Bilder:
-- Ben√§mningen ska vara "Bilder", inte Inkorg eller Album, eftersom den ska f√∂rst√•s direkt utan fackord.
-- Fl√∂det √§r L√§gg till bilder ‚Üí Bilder ‚Üí Publicera.
-- Bilder-vyn visar antal bilder, markering, Markera alla och Publicera.
-- Tryck p√• en bild √∂ppnar en enkel detaljvy med titel, m√§rke, storlek, pris och beskrivning.
-- Enkelhet och omedelbar begriplighet prioriteras framf√∂r intern systemterminologi.
-
-Dashboard/arbetsfl√∂desbeslut 2026-08-06 ‚Äì kamera:
-- Kamerafl√∂det ska √•teranv√§nda fungerande id√©er fr√•n C13-admin.
-- Efter ett foto ska anv√§ndaren kunna v√§lja Ta n√§sta foto eller Klar.
-- Snabbfotol√§ge och Spara kopia p√• mobilen ska inte ligga i vyn L√§gg till bilder; s√•dana val h√∂r hemma under Inst√§llningar.
-- Bilder fr√•n CCC ska alltid hamna i Mina bilder och aldrig publiceras automatiskt.
-- Ben√§mningen i fl√∂det √§r Mina bilder.
-- Kamerafunktionen ska f√∂lja fungerande C13-admin-fl√∂de. Spara kopia p√• mobilen √§r avst√§ngt som standard och aktiveras endast uttryckligen av anv√§ndaren.
-
-
-Dashboard/arbetsfl√∂desbeslut 2026-08-06 ‚Äì Lokal arbetsyta:
-- Mina bilder √§r en lokal arbetsyta p√• anv√§ndarens enhet.
-- Originalbilder och bildinformation sparas lokalt i IndexedDB tills anv√§ndaren v√§ljer att publicera.
-- Firebase ska inte anv√§ndas som mellanlager f√∂r opublicerade bilder.
-- Mina bilder visar sm√• WebP-miniatyrer f√∂r snabb och resurssn√•l scroll.
-- Originalbilden anv√§nds f√∂rst n√§r en bild √∂ppnas eller en publiceringsversion ska skapas.
-- Kamerafl√∂det ska erbjuda Ta n√§sta foto, V√§lj fr√•n album, √Öngra senaste, Klar ‚Äì Mina bilder och Till startsidan.
-- Arbetsvyer som Mina bilder f√•r scrolla; dashboardens startvy ska normalt inte scrolla n√§r inneh√•llet ryms.
-
-Dashboard/arbetsfl√∂desbeslut 2026-08-06 ‚Äì rent kamerafl√∂de:
-- Vyn L√§gg till bilder ska endast visa Ta foto, V√§lj fr√•n album och V√§lj filer.
-- Efter taget foto visas en enkel meny med Ta n√§sta foto, V√§lj fr√•n album, √Öngra senaste, Klar och Till startsidan.
-- Gamla sparade val f√•r inte automatiskt √∂ppna kameran igen eller f√∂rs√∂ka spara en kopia p√• enheten.
-- Klar g√•r till Mina bilder.
-
-CCC Local Workspace 1.2
-- Efter-foto-rutan √§r kompakt p√• mobil.
-- Mina bilder har separata omr√•den f√∂r rubrik, verktyg, scrollbar bildlista och publiceringsknapp.
-- Vyernas scroll√§ge √•terst√§lls vid navigering.
-
-
-CCC Local Workspace 1.3
-- Mina bilder visar aldrig toml√§get n√§r lokala bilder finns.
-- Rubrik, L√§gg till-knapp, markeringsrad, bildlista och Publicera h√•lls visuellt √•tskilda p√• mobil.
-- Bildlistan har s√§ker nederkant s√• sista kortet inte hamnar bakom Publicera.
-
-CCC v2.7.0 ‚Äì Vision arbetsyta + kunskapsbank grund
-- Efter Klar stannar anv√§ndaren p√• Vision-arbetsytan medan analys k√∂rs i bakgrunden.
-- Miniatyr = ett plagg. Klick markerar plagg; "Komplettera markerat plagg" l√§gger extra bilder p√• just det plagget.
-- Visa f√∂rslag √§r gr√•/inaktiv tills minst ett resultat √§r klart; d√§refter kan f√§rdiga plagg granskas medan √∂vriga forts√§tter analyseras.
-- IndexedDB-grund f√∂r lokal learned knowledge och Vision-m√§tv√§rden.
-- football-base.json seedar bankformatet; 1986 √§r startgr√§ns, aldrig utrensningsgr√§ns; landslag separat.
-- Fixat API-kontrakt: klient skickar images[] (1‚Äì3) som Workern kr√§ver och l√§ser Worker-resultat fr√•n result.
-- Worker returnerar OpenAI usage/model f√∂r framtida faktisk kostnadsber√§kning.
-- OBS: cloudflare-worker.js m√•ste deployas i Cloudflare Worker separat f√∂r att usage/model-√§ndringen ska bli aktiv.
-
-CCC Vision v2.7.6: header-bak√•t, bort med plaggantal och gamla gula nummermark√∂rer.
-
-
-CCC v2.7.12 ‚Äì Vision-inst√§llningar och kostnad
-- Automatisk AI-analys kan sl√•s av/p√• lokalt i Inst√§llningar.
-- N√§r automatisk AI √§r av g√∂rs inga AI-anrop utan aktivt val via "Analysera med AI".
-- AI-kostnad m√§ts fr√•n faktisk tokenanv√§ndning och kan visas/d√∂ljas i Vision.
-- Kostnadsvisningen √§r ungef√§rlig i SEK; underlaget sparas lokalt i IndexedDB.
-- Lokalt l√§rande fr√•n godk√§nnanden/r√§ttningar kan sl√•s av/p√•.
-- N√§sta planerade steg: fylla CCC:s lokala/base football knowledge bank fr√•n 1986 och fram√•t, inkl. landslag.
-
-
-CCC v2.7.14 ‚Äì kostnadsdiagnostik
-- Tillf√§llig diagnostik i Vision kostnadsruta visar om OpenAI usage mottas, modell samt input/output/total tokens.
-- Kostnadsvisning kvar med 6 decimaler under fels√∂kningen.
-- Ingen AI-, Worker- eller fl√∂deslogik √§ndrad.
-
-CCC v2.8.1 ‚Äì Skapa och Publicera separeras (2026-08-09)
-- Grundregel: Skapa n√§r du har tid. Publicera n√§r du vill.
-- Vision skapar/godk√§nner produktutkast men besk√§r inte l√§ngre publiceringsbilden.
-- Godk√§nt Vision-plagg sparas lokalt i befintliga IndexedDB ccc-local-workspace/images med huvudbild + godk√§nda f√§lt.
-- Opublicerade bilder g√•r inte via Firebase.
-- Ny modul ccc-core/publish: mobil f√∂rst, visar lokala utkast som stora miniatyrer.
-- Tryck p√• miniatyr √∂ppnar stor mobilanpassad bild; svep v√§nster/h√∂ger bl√§ddrar mellan alla utkast.
-- Besk√§rning g√∂rs f√∂rst i Publicera n√§r anv√§ndaren faktiskt vill g√∂ra bilden klar.
-- Publiceringsbild skapas lokalt som 1:1 WebP, max 1600 px, kvalitet 0.84. Originalet l√§mnas or√∂rt.
-- Dashboardens Publicera g√•r till samma Publish-modul; Vision kan ocks√• g√• dit fr√•n sin slutvy.
-- v2.8.1 publicerar √§nnu inte till Firebase/Container13: sista knappen markerar n√§sta integrationspunkt. N√§sta steg √§r verklig publicering till Container13 Nyinkommet via befintligt C13-admin/Firebase-fl√∂de.
-- Framtidsid√©er (ej nu): √•teranv√§nd redan publicerade bilder samt CCC-genererade kollage/bildspel med anv√§ndargodk√§nnande.
-
-CCC v2.8.2 ‚Äì demo-ui avvecklad (2026-08-09)
-- /ccc-core/demo-ui √§r borttagen ur den aktiva strukturen.
-- Aktiva moduler ligger nu i egna mappar: auth, dashboard, vision, publish, profile, settings, store och statistics.
-- Dashboard och Vision l√§nkar inte l√§ngre till demo-ui.
-- Inst√§llningar flyttad till /ccc-core/settings/ med den senaste aktiva versionen som grund.
-- Min profil ligger i /ccc-core/profile/.
-- Butiken ligger i /ccc-core/store/.
-- Statistik ligger i /ccc-core/statistics/.
-- Dashboardens √§ldre relativa publicera-l√§nk √§r r√§ttad till /ccc-core/publish/index.html.
-- Grundregel fram√•t: ingen ny aktiv CCC-funktion f√•r l√§ggas i demo-/testmappar.
-
-
-CCC v2.8.3 ‚Äì Auth-logo + s√§ker Publish-v√§g (2026-08-09)
-- Auth/inloggning anv√§nder nu samma CCC-logo med aura/halo som Vision, som √§r visuellt facit.
-- Dashboardens Publicera-l√§nkar g√•r explicit till ../publish/index.html?v=2.8.3 f√∂r att undvika att √§ldre cachad publiceringsvy √•teranv√§nds under test.
-- Dashboardens JS-redirect till Publicera anv√§nder samma versionssatta v√§g.
-- Publish-vyn har ocks√• samma Vision-aura i headern s√• den nya modulen visuellt k√§nns igen.
-- Ingen publiceringslogik eller Firebase-funktion har √§ndrats i denna patch.
-
-CCC v2.8.4 ‚Äì tydlig Tillbaka i Vision (2026-08-09)
-- Vision-starten har √•ter en egen tydlig tredje ruta: "Tillbaka".
-- De tv√• fram√•triktade rutorna beh√•ller pil √•t h√∂ger; Tillbaka har pil √•t v√§nster.
-- Tillbaka leder explicit till Dashboard. CCC-loggan √§r fortfarande klickbar som extra genv√§g, men viktig navigation ska aldrig kr√§va att anv√§ndaren k√§nner till ett dolt loggbeteende.
-- Mobile-first: Tillbaka-rutan anv√§nder den redan f√∂rberedda kompakta kortdesignen i Vision och ligger under foto/kamerarulle.
-
-CCC v2.8.5 ‚Äì gemensamt visuellt shell p√• mobil + desktop (2026-08-09)
-- Dashboard √§r fortsatt visuellt layoutfacit f√∂r CCC.
-- Vision-loggans guldb√•ge/aura √§r logofacit och anv√§nds nu √§ven p√• Dashboard.
-- Vision desktop g√∂rs mer kompakt och dashboardlik: tre tydliga arbetskort i samma samlade arbetsyta. Mobilfl√∂det l√§mnas i huvudsak or√∂rt.
-- Publicera har f√•tt full CCC-header med tema + profil, modulmark√∂r PUBLICERA och undertitel. Den gamla flytande versionsbrickan √§r borttagen.
-- M√•let √§r inte desktop-pixelpolering nu, utan ett gemensamt skal s√• nya moduler inte beh√∂ver byggas om senare.
-
-CCC v2.8.6 ‚Äì Vision UI-polish (2026-08-09)
-- Vision-flikens versionsnummer synkas med aktuell build.
-- Desktop-hover f√∂rst√§rks p√• alla tre startkort: tydligare lyft, skugga och kant.
-- "Tillbaka" f√•r samma visuella hierarki som √∂vriga val: stor v√§nsterst√§lld rubrik och mindre f√∂rklarande text "Till dashboard".
-- Tillbaka-pilen ligger fortsatt till v√§nster f√∂r att signalera bak√•triktning; de tv√• fram√•tvalen beh√•ller pil √•t h√∂ger.
-- Touch/mobile p√•verkas inte av hover-reglerna.
-
-CCC v2.8.7 ‚Äì maxsynk header/profil/feedback (2026-08-09)
-- CCC-loggans guldb√•ge/aura skalar nu responsivt: mobil beh√•ller den fungerande lilla b√•gen; desktop anv√§nder en betydligt bredare b√•ge som t√§cker hela CCC-ordm√§rket.
-- Samma auraregler finns p√• Dashboard, Vision och Publicera.
-- Dashboardens hover/focus-feedback p√• huvudkorten synkas med Vision: tydligare lyft, skugga och markerad kant p√• desktop.
-- Vision och Publicera har nu "Logga ut" i profilmenyn, med samma bekr√§ftelsedialog som Dashboard.
-- M√•l: l√•sa Dashboard/Vision/Publicera som gemensamt CCC-shell innan resterande moduler byggs vidare.
-
-CCC v2.8.8 ‚Äì Publicera aura-fix (2026-08-09)
-- Publicera hade √§ldre, mer specifika publish-shell-regler som √∂verstyrde den gemensamma desktop-auran.
-- Publicera f√•r nu exakt samma slutliga aurageometri som Vision: liten mobilb√•ge och bred desktopb√•ge √∂ver hela CCC-ordm√§rket.
-- Inga andra funktioner eller layouter √§ndrades i denna patch.
-
-CCC v2.8.9 ‚Äì Vision logout-fix (2026-08-09)
-- Vision hade Logga ut-knappen och JS-hanteringen, men den faktiska bekr√§ftelsedialogen saknades i HTML.
-- Den saknade logout-dialogen √§r nu tillagd i Vision med samma beteende som Dashboard/Publicera.
-- Ingen annan funktionalitet eller layout √§ndrades i denna patch.
-
-CCC v2.8.10 ‚Äì linjerade handlingskort / generell designregel (2026-08-09)
-- Vision-startens tre kort anv√§nder samma visuella struktur: ikonrad, rubrikrad och hj√§lprad ligger p√• samma niv√• n√§r korten j√§mf√∂rs.
-- Tillbaka-kortet har nu en stor v√§nsterpilsikon i samma ikonposition som kamera/galleri, plus en liten navigationspil vid v√§nsterkanten.
-- Fram√•tkort har liten navigationspil till h√∂ger; bak√•tkort har liten navigationspil till v√§nster.
-- Generell CCC-regel: parallella action-kort inom samma vy ska linjera ikon, rubrik, hj√§lprad och √∂vriga √•terkommande element. Skillnader ska uttrycka funktion/riktning, inte skapa slumpm√§ssiga f√∂rskjutningar.
-- Regeln g√§ller alla nuvarande och framtida CCC-moduler.
-
-CCC v2.8.11 ‚Äì gemensam Action Card-komponent (2026-08-09)
-- Dashboard √§r fortfarande visuellt facit, men kortgeometrin √§r nu faktiskt delad i `ccc-core/action-cards.css`.
-- Dashboard och Vision laddar samma action-card-fil sist. D√§r styrs storlek, ikonposition, rubrikniv√•, hj√§lprad, hover/focus, rundning, skugga och mobil/desktop-geometri.
-- Vision f√•r endast l√§gga till inneh√•ll, f√§rg och riktning. Fram√•tkort kan visa liten pil h√∂ger; bak√•tkort liten pil v√§nster utan att flytta ikon eller text.
-- Parallella action-kort ska ligga i linje: samma ikonrad, rubrikrad och hj√§lprad. Detta √§r en generell regel f√∂r alla nuvarande och framtida CCC-moduler.
-- Nya moduler ska √•teranv√§nda `action-cards.css` i st√§llet f√∂r att kopiera kort-CSS lokalt.
-
-CCC v2.8.12 ‚Äì Vision/Dashboard exaktare kortsynk (2026-08-09)
-- Vision-startens tre kort flyttas ned till samma vertikala arbetsniv√• som Dashboard p√• desktop.
-- √Ñldre Vision-CSS neutraliseras f√∂r startkorten s√• att den gemensamma action-card-geometrin inte l√§ngre kan f√∂rvr√§ngas lokalt.
-- Desktop anv√§nder samma 3-kolumnsgap, korth√∂jd, ikonstorlek, rubrikniv√• och hj√§lprad som Dashboard.
-- P√• mobil d√∂ljs den lilla extra v√§nsterpilen i Tillbaka-kortet; den stora v√§nsterpilen i ikoncirkeln r√§cker.
-- Grundregel kvarst√•r: Dashboard √§r facit och parallella kort ska styras fr√•n gemensam komponent, inte lokal modulgeometri.
-
-CCC v2.8.13 ‚Äì Vision desktop ytterm√•tt mot Dashboard-facit (2026-08-09)
-- Vision-startens desktopgrupp begr√§nsas till samma kompakta bredd som Dashboard i st√§llet f√∂r att fylla √∂ver 1000 px.
-- Tre kort √§r 180 px breda med kompakt h√∂jd och gemensamt mellanrum; intern linjering fr√•n v2.8.12 beh√•lls.
-- Vertikala placeringen fr√•n v2.8.12 beh√•lls.
-- Mobilregeln fr√•n v2.8.12 beh√•lls: ingen liten extra v√§nsterpil i Tillbaka-kortet.
-- Dashboard √§ndras inte i denna patch.
-
-CCC v2.8.14 ‚Äì CCC Core konsolidering (2026-08-09)
-- Nu agerar vi p√• arkitekturen innan fler moduler byggs.
-- Ny gemensam grund i `ccc-core/core.css` och `ccc-core/core.js`.
-- `core.css` √§ger gemensamt: f√§rger/tokens, header, CCC-logga/aura, tema/profilskal, modulrad, arbetsbredd, action-kort, hover/focus och logout-dialog.
-- `core.js` √§ger gemensamt: tema, profilmeny och logout.
-- Dashboard, Vision och Publicera laddar samma core-filer. Modulmapparna beh√•ller sin egen funktionslogik och modulunika layout.
-- Gemensam desktop-arbetsbredd √§r 720 px, h√§mtad fr√•n Dashboard-facitet; action-kort anv√§nder samma grid och m√•tt d√§rifr√•n.
-- `action-cards.css` tas bort som separat fil eftersom komponenten nu ing√•r i `core.css`.
-- Gamla dubbla tema/profil/logout-hanterare tas bort ur Dashboard/Vision/Publicera-JS f√∂r att undvika dubbelbindningar.
-- Regel fram√•t: gemensam CCC-design/UX ska f√∂rst in i core; modul-CSS f√•r inte kopiera eller √∂verstyra k√§rngeometri utan ett verkligt modulbehov.
-
-CCC v2.8.15 ‚Äì Vision f√∂ljer Core/Dashboard utan egna desktopm√•tt (2026-08-09)
-- Dashboard √§r fortsatt visuellt facit och √§ndras inte layoutm√§ssigt.
-- `core.css` l√•ser gemensam desktop-arbetsbredd, modulrad, 3-kortsgrid, gap och kortgeometri f√∂r alla moduler.
-- De ackumulerade Vision-specialblocken fr√•n v2.8.10/v2.8.12/v2.8.13 tas bort ur `vision.css`.
-- Vision-starten f√•r bara en minimal reset som l√•ter `core.css` styra geometri och placering.
-- Vision-kugghjulet √§r modulunikt och placeras separat till v√§nster utan att p√•verka CCC-loggans centrering.
-- Mobil: den lilla extra v√§nsterpilen i Tillbaka-kortet √§r fortsatt dold.
-- Regel: inga nya modulunika px-m√•tt f√∂r gemensam header/action-card-layout; s√•dant ska √§ndras i Core.
-
-CCC v2.8.16 ‚Äì Vision ren Core-markup + central logout-l√§nk (2026-08-09)
-- Vision-startens tre kort anv√§nder nu samma rena DOM-struktur som Dashboard: `action-icon` + `action-copy` + `action-arrow`.
-- √Ñldre Vision-specifika kortklasser tas bort fr√•n startkorten s√• gammal modul-CSS inte l√§ngre kan p√•verka deras geometri.
-- F√∂rsta kamerakortets extra `camera-content`-wrapper tas bort; Vision-JS uppdateras till den gemensamma `action-copy`-strukturen.
-- Ingen ny Vision-specifik kortgeometri l√§ggs till. `core.css` forts√§tter vara ensam k√§lla f√∂r gemensamma kortm√•tt.
-- Logout i `core.js` anv√§nder nu `import.meta.url` f√∂r att alltid l√∂sa `ccc-core/auth/index.html` korrekt oavsett om anv√§ndaren √§r i Dashboard, Vision eller Publicera.
-
-CCC v2.8.17 ‚Äì textpassning + stabil modulrad (2026-08-09)
-- Vision-startkorten anv√§nder en ny gemensam Core-variant `ccc-action-card--dense-copy` f√∂r l√§ngre rubriker/hj√§lptexter.
-- Varianten √§ndrar endast typografin, inte kortens gemensamma geometri.
-- Modulundertiteln reserverar nu alltid samma h√∂jd √§ven n√§r texten √§r tom. Dashboardens ARBETSYTA hoppar d√§rf√∂r inte i h√∂jd n√§r man byter till/fr√•n Vision p√• mobil.
-- Regeln ligger i `ccc-core/core.css` och kan √•teranv√§ndas av framtida moduler med l√§ngre korttexter.
-
-CCC v2.8.18 ‚Äì korrigerad cache-busting (2026-08-09)
-- Dashboard, Vision och Publicera laddar nu samma `core.css?v=2.8.18`, `core.js?v=2.8.18` och `version.js?v=2.8.18`.
-- Publicera saknade tidigare en konsekvent `version.js`-referens; den √§r nu tillagd.
-- Modulernas egna CSS/JS-referenser √§r ocks√• normaliserade till v2.8.18.
-- Core och modul-CSS har dessutom f√•tt en faktisk v2.8.18 cache-st√§mpel i filinneh√•llet.
-
-CCC v2.8.18 ‚Äì konsekvent cache-busting (2026-08-09)
-- Dashboard, Vision och Publicera anv√§nder nu genomg√•ende v2.8.18 i alla lokala CSS/JS-referenser.
-- Gemensamma `core.css`, `core.js` och `version.js` laddas med v2.8.18 p√• samtliga tre sidor.
-- Visionens faktiska scriptfiler (`demo-data.js`, `vision-ai-config.js`, `vision-ai.js`, `vision-knowledge.js`, `product-lab.js`) √§r ocks√• cache-bustade till v2.8.18.
-- CSS-filerna har en faktisk v2.8.18 cache-st√§mpel i filinneh√•llet.
-- Syfte: det ska inte g√• att visa v2.8.18 i sidan men samtidigt k√∂ra √§ldre CSS/JS fr√•n webbl√§sarcache.
-
-CCC v2.8.19 ‚Äì Vision kortstorlek + total kostnad (2026-08-09)
-- Desktop-actionkort l√•ses centralt i `core.css` till exakt 320 px h√∂jd f√∂r alla moduler; Vision och Dashboard f√•r d√§rmed samma ytterm√•tt fr√•n samma regel.
-- Vision-inst√§llningar visar nu endast `Total Vision-kostnad` i SEK med tv√• decimaler.
-- Kostnaden h√§mtas fr√•n den redan befintliga lokala Vision-m√§tningen i `CCC_VISION_KNOWLEDGE.costSummarySince(...)`; ingen ny r√§knare skapas.
-- Totalen summerar all sparad AI-analyskostnad och uppdateras varje g√•ng Vision-inst√§llningar √∂ppnas.
-- Detaljerad kostnadsstatistik l√§mnas till framtida Statistik-modul.
-
-CCC v2.8.20 ‚Äì verklig orsak till mindre Vision-kort fixad (2026-08-09)
-- Grundfelet var inte l√§ngre kortens egna m√•tt utan Visions √§ldre desktopregel `.app-shell{width:430px}`.
-- Den regeln begr√§nsade hela Vision-modulen innan den gemensamma 720 px arbetsytan kunde anv√§ndas.
-- `core.css` √§ger nu √§ven `.ccc-app-shell` med full bredd p√• desktop och √∂verstyr gamla modulbredder centralt.
-- Dashboardens och Visions action-kort kan d√§rmed anv√§nda exakt samma Core-grid i samma tillg√§ngliga arbetsbredd.
-- Vision-kostnaden fr√•n v2.8.19 beh√•lls of√∂r√§ndrad.
-
-CCC v2.8.21 ‚Äì Vision-starten f√•r samma strukturella grid som Dashboard (2026-08-09)
-- Grundorsaken till fortsatt l√§gre Vision-kort var att `#captureCard` b√•de fungerade som stage/arbetskort och som action-grid.
-- Dashboard anv√§nder en separat ren `primary-actions`-grid; Vision g√∂r nu motsvarande med `.vision-start-actions.c‚Äãcc-action-grid`.
-- De tre startkorten ligger i den nya wrappern. `#captureCard` √§r inte l√§ngre action-grid i startl√§get.
-- N√§r bildfl√∂det har startat blir wrappern `display: contents`, s√• Visions befintliga arbetsfl√∂de beh√•ller sin layout.
-- Core forts√§tter √§ga 720 px desktop-grid, 28 px gap och 320 px action-korth√∂jd.
-- Vision-kostnadsvisningen fr√•n v2.8.19/v2.8.20 beh√•lls.
-
-CCC v2.8.22 ‚Äì Vision-kortens faktiska desktop-h√∂jd l√•st mot Dashboard (2026-08-09)
-- Orsak: Vision-starten l√•g fortfarande inuti captureCard/stage-card, som har √§ldre egna h√∂jd/layoutregler.
-- P√• desktop tas den extra layoutniv√•n bort med display:contents n√§r Vision √§r i startl√§ge.
-- Sj√§lva action-korten forts√§tter styras centralt av ccc-core/core.css: 720px grid, 28px gap, 320px kort.
-- Textm√§ngden i Vision f√•r inte l√§ngre p√•verka kortens ytterm√•tt.
-- Mobilreglerna l√§mnas or√∂rda.
-
-CCC v2.8.23 ‚Äì central desktop-korth√∂jd fr√•n uppm√§tt Dashboard-facit (2026-08-09)
-- Sk√§rmdumparna m√§ttes direkt: Dashboard och Vision har redan samma kortbredd, men Dashboardens synliga kortbox √§r cirka 368 px h√∂g medan Vision ligger omkring 320 px.
-- Core f√•r nu variabeln `--ccc-action-card-height-desktop: 368px`.
-- Alla `.ccc-action-grid > .ccc-action-card` p√• desktop anv√§nder exakt denna variabel f√∂r `height`, `min-height` och `max-height`.
-- Detta √§r den enda auktoritativa desktop-korth√∂jden fram√•t. Vill vi senare g√∂ra alla CCC-kort st√∂rre/mindre √§ndras variabeln p√• ett enda st√§lle i `ccc-core/core.css`.
-- Ingen mobilgeometri √§ndras.
-- Vision-kostnadsvisningen beh√•lls.
-
-CCC v2.8.24 ‚Äì identisk modulheader och vertikal startposition (2026-08-09)
-- `ccc-module-marker` f√•r nu en fast gemensam h√∂jd i Core.
-- Kicker-raden, undertitel-raden och skiljelinjen har reserverade fasta rader i alla moduler.
-- Dashboard beh√•ller tom undertitelplats under `ARBETSYTA`; Vision anv√§nder samma plats f√∂r `Foto & produktanalys`.
-- D√§rmed flyttas inte skiljelinjen eller action-korten n√§r man v√§xlar Dashboard ‚Üî Vision, vare sig p√• desktop eller mobil.
-- Ingen Vision-specifik pixel-flytt anv√§nds; l√∂sningen ligger centralt i `ccc-core/core.css`.
-- Desktop-korth√∂jden 368 px fr√•n v2.8.23 beh√•lls.
-
-CCC v2.8.25 ‚Äì samlad v2.8.24 + gemensam tema/profil-position (2026-08-09)
-- Inneh√•ller v2.8.24-fixen med identisk fast modulheader, reserverad undertitelrad och gemensam skiljelinje.
-- Tema- och profilknapparna styrs nu centralt fr√•n `ccc-core/core.css` med h√∂gre specificitet √§n √§ldre modul-CSS.
-- Dashboard, Vision och Publicera f√•r exakt samma right/bottom-position, gap, knappstorlek och ikonstorlek p√• desktop och mobil.
-- Visions √§ldre `.app-header .header-actions`-regler kan d√§rmed inte l√§ngre flytta eller krympa tema/profil.
-- Vision-kugghjulet √§r fortsatt modulunikt och p√•verkas inte.
-
-CCC v2.8.26 ‚Äì hela headerboxen centraliserad i Core (2026-08-09)
-- Orsak hittad: Vision hade kvar `.app-header.ccc-header{...!important}` med annan padding √§n Dashboard.
-- Core styr nu med h√∂gre specificitet hela headerns bredd, h√∂jd, padding, centrering och boxmodell.
-- Tema + profil f√∂rankras med direkt-child-selector mot exakt samma headerbox i Dashboard, Vision och Publicera.
-- Desktop: samma 48 px h√∂gerinset, 42 px botteninset, 14 px gap och 58 px knappar.
-- Mobil: samma 16 px h√∂gerinset, 14 px botteninset, 8 px gap och 44 px knappar.
-- v2.8.24 modulheaderfix och senare kort/kostnadsfixar beh√•lls.
-
-CCC v2.8.27 ‚Äì Vision CSS-st√§dning / en k√§lla f√∂r gemensam UI (2026-08-09)
-- Grundorsaken bakom b√•de kort- och headeravvikelser var samma: Vision hade √§ldre egna CSS-regler som duplicerade och konkurrerade med Core.
-- `vision.css` rensas nu fr√•n delade headerregler f√∂r `.app-header.ccc-header`, `.header-actions/.ccc-header-actions`, CCC-brand/aura och gemensam ikonknappsgeometri.
-- √Ñldre Vision-startregler f√∂r gamla `vision-dashboard-card` / `vision-card-*`-klasser rensas d√§r Core nu √§ger action-korten.
-- Vision beh√•ller endast Vision-specifika headerkontroller (kugghjul/bak√•t), kamera, analys, thumbnails, settings-paneler och arbetsfl√∂deslayout.
-- `core.css` √§r ensam auktoritativ k√§lla f√∂r gemensam CCC-header, logga/aura, tema/profil och action-card-geometri.
-- Regel fram√•t: n√§r en komponent flyttas till Core ska motsvarande modul-CSS tas bort, inte √∂verstyras med ytterligare `!important`.
-
-CCC v2.8.28 ‚Äì central headergeometri enligt samma modell som kortfixen (2026-08-09)
-- Samma l√∂sningsprincip som f√∂r action-korten anv√§nds nu f√∂r headern: ett enda centralt m√•ttsystem i `ccc-core/core.css`.
-- CCC-logga/aura f√∂rankras absolut i mitten av den gemensamma headerboxen och kan inte flyttas av modulens inneh√•ll.
-- Tema + profil anv√§nder centrala Core-variabler f√∂r h√∂ger-/botteninset, knappstorlek och gap.
-- Desktopvariabler: right 48 px, bottom 42 px, knapp 58 px, gap 14 px, brand 78 px.
-- Mobilvariabler: right 16 px, bottom 14 px, knapp 44 px, gap 8 px, brand 35 px.
-- Vill vi senare √§ndra loggan eller tema/profil i hela CCC g√∂rs det p√• ett enda st√§lle i Core.
-- Vision-kugghjul/bak√•t √§r fortsatt modulunika och p√•verkar inte brand/tema/profil.
-
-CCC v2.8.29 ‚Äì exakt samma gemensamma header-markup (2026-08-09)
-- Dashboard-headerns faktiska markup √§r nu facit f√∂r den delade CCC-headern.
-- Vision och Publicera anv√§nder samma struktur f√∂r CCC-logga/aura, tema, profil och profilmeny.
-- Visionens kugghjul och kontext-bak√•t ligger i en separat `ccc-module-header-tools`-wrapper och kan inte p√•verka den gemensamma headerns centrering eller h√∂gerkontroller.
-- Core √§ger wrapperns position; Vision-knapparna sj√§lva positioneras inte l√§ngre mot viewport/header.
-- Detta f√∂ljer samma princip som l√∂ste action-korten: samma struktur + samma Core-komponent, inte tre imitationer.
-- Framtida √§ndring av logga/aura/tema/profil g√∂rs centralt i Core och samma headerstruktur anv√§nds av alla moduler.
-
-CCC v2.8.30 ‚Äì strukturell headerfix: samma yttre app-shell (2026-08-09)
-- Grundorsaken till att Vision-headern fortsatt avvek hittades i HTML-strukturen: Vision saknade helt Dashboard/Publiceras yttre `<div class="app-shell ccc-app-shell">`.
-- D√§rmed f√∂rankrades Vision-headerns absoluta kontroller mot en annan layoutbox trots identiska Core-regler.
-- Vision har nu samma yttre app-shell som Dashboard och Publicera; globala overlays ligger fortsatt utanf√∂r app-shell.
-- Dashboardens stylesheet-tag i `<head>` saknade ett avslutande `>` och √§r samtidigt korrigerad.
-- Detta f√∂ljer samma l√∂sning som action-korten: samma struktur f√∂rst, sedan samma Core-regler.
-- Logga/aura, tema och profil forts√§tter styras centralt fr√•n `ccc-core/core.css`.
-
-CCC v2.8.31 ‚Äì Publicera utan on√∂dig PC-scroll (2026-08-09)
-- Publiceras f√∂rsta PC-vy ska rymmas i viewporten och f√•r inte skapa sidans vertikala scrollbar.
-- `publish-shell` l√•ses till exakt 100dvh och yttre document-scroll st√§ngs av p√• desktop.
-- `publish-main` r√§knas som √•terst√•ende yta efter gemensam CCC-header + modulrad och f√•r ingen egen √∂verh√∂jd fr√•n Core-padding.
-- `gridView` √§r fast utan scroll. `detailView` och `cropView` f√•r d√§remot intern vertikal scroll n√§r deras faktiska inneh√•ll kr√§ver det.
-- D√§rmed ska Publiceras scrollbar f√∂rsvinna i huvudvyn och headern ligga p√• samma horisontella position som Dashboard/Vision.
-
-CCC v2.8.32 ‚Äì loggtest + v2.8.31 samlat (2026-08-09)
-- Inneh√•ller Publicera-fixen fr√•n v2.8.31 eftersom den patchen √§nnu inte var uppladdad.
-- Gemensam CCC-brand markup delar nu upp de tre C:na i spans.
-- Mitten-C har klassen `ccc-brand-middle` och g√∂rs tillf√§lligt 1.34em stort via en enda regel i `ccc-core/core.css`.
-- Testm√•l: Dashboard, Vision och Publicera ska visa exakt samma st√∂rre mitten-C. Om alla tre f√∂ljer med √§r central loggstyrning verifierad.
-- Efter verifiering kan testutseendet √•terst√§llas centralt utan att √§ndra varje modul.
-
-CCC v2.8.33 ‚Äì mobilstart: bredare aura + samma huvudkort Dashboard/Vision (2026-08-09)
-- Den nya st√∂rre mitten-C-loggan fr√•n v2.8.32 beh√•lls permanent.
-- Mobilauran breddas centralt i Core s√• den visuellt str√§cker sig l√§ngre ut fr√•n loggan, n√§rmare desktop-proportionen.
-- Dashboardens f√∂rsta tre kort och Vision-startens tre kort anv√§nder nu samma √•teranv√§ndbara Core-klass `ccc-action-grid--fill-mobile`.
-- Klassen √§ger mobilgridens h√∂jd, tre lika rader, gap och kortens fulla h√∂jd.
-- Dashboard och Vision f√•r samma ber√§knade mobila arbetsyta efter gemensam header + 58 px modulrad.
-- Visions gamla `main-camera`-minh√∂jder neutraliseras i startl√§get s√• kamera-kortet inte kan bli en annan storlek √§n de andra.
-- Regel fram√•t: huvudkort som ska fylla mobil arbetsyta anv√§nder Core-modifieraren i st√§llet f√∂r egna modulm√•tt.
-
-CCC v2.8.34 ‚Äì mobil finjustering aura + Vision-bredd (2026-08-09)
-- Mobilauran fr√•n v2.8.33 minskad ett litet steg.
-- Vision-startens wrapper, grid och kort anv√§nder nu 100% av exakt samma 16px-paddade arbetsbredd som Dashboard p√• mobil.
-- H√∂jden fr√•n v2.8.33 beh√•lls of√∂r√§ndrad.
-
-CCC v2.8.35 ‚Äì mobilstruktur centraliserad, Dashboard = facit (2026-08-09)
-- F√∂r att undvika samma rundg√•ng som p√• desktop centraliseras nu hela mobilkedjan: workspace -> home view -> action grid -> action card.
-- Dashboardens mobilstruktur √§r facit. Vision-starten f√•r motsvarande `.ccc-mobile-home-view` runt sin gemensamma `ccc-action-grid--fill-mobile`.
-- Core √§ger bredd, h√∂jd, sidpadding, gridrader, gap och kortens fulla storlek f√∂r gemensamma mobil-huvudvyer.
-- Vision `#captureCard` blir `display: contents` i startl√§ge p√• mobil och f√•r d√§rmed inte fungera som extra breddbegr√§nsande wrapper.
-- √Ñldre Vision-startregler f√∂r width/max-width/margin/padding/min-height neutraliseras i startl√§ge.
-- Permanent arkitekturregel: modul-CSS f√•r inte √•terdefiniera gemensam header, workspace, home-view, action-grid eller action-card-geometri. Avvikelse ska ske via en uttrycklig namngiven modifierarklass i Core.
-- Den nya st√∂rre mitten-C-loggan och mobilauran fr√•n v2.8.34 beh√•lls.
-
-CCC v2.8.36 ‚Äì mobil rotfix: Core √§ger hela app-shell (2026-08-09)
-- Inspektion visade den konkreta orsaken till b√•de smalare Vision-kort och flyttad tema/profil p√• mobil.
-- `vision.css` inneh√∂ll 20 √§ldre separata `.app-shell`-regler med egna bredder, h√∂jder, marginaler, gridl√§gen och framf√∂r allt padding.
-- Vision-headern och Vision-workspace l√•g d√§rf√∂r i en annan faktisk inneh√•llsbox √§n Dashboard trots samma Core-klasser.
-- Samtliga standalone `.app-shell`-regler tas bort ur `vision.css`.
-- `.app-shell.ccc-app-shell` √§gs nu centralt av Core p√• ALLA breakpoints: 100% bredd, 100dvh h√∂jd, padding 0, margin auto, border-box och overflow hidden.
-- Vision b√∂rjar layoutm√§ssigt f√∂rst vid `.vision-shell`; den yttre app-boxen f√•r aldrig styras av modul-CSS.
-- Detta ska samtidigt korrigera b√•de headerns tema/profil-position och startkortens mobilbredd.
-- Permanent regel: modul-CSS f√•r inte definiera `.app-shell`, `.ccc-app-shell` eller gemensam header/workspace-geometri.
-
-
-CCC v2.8.37 ‚Äì Publicera startvy
-- Publiceras f√∂rsta vy anv√§nder nu tre gemensamma Core-actionkort.
-- Kort 1: Lokala utkast med dynamiskt antal lokala utkast.
-- Kort 2: Publicerade, f√∂r historik/status; tom historik visas tills publiceringslogg kopplas in.
-- Kort 3: Tillbaka till Dashboard.
-- Den tidigare dubbla rubriken/toml√§get p√• startsidan √§r borttaget; utkastens toml√§ge visas f√∂rst n√§r Lokala utkast √∂ppnas.
-- Befintlig detaljvy, besk√§rning och lokal IndexedDB-hantering √§r bevarad.
-
-CCC v2.8.38 ‚Äì Publicera samma Core-kort + fullbred modul-linje (2026-08-10)
-- Publiceras startsida anv√§nder nu exakt samma Core-kedja som Dashboard/Vision: `ccc-mobile-home-view` -> `ccc-action-grid--fill-mobile` -> `ccc-action-card`.
-- Publiceras workspace ing√•r i samma centrala mobilregel f√∂r bredd, h√∂jd, 16px sidpadding och overflow.
-- Lokala Publicera-regler f√∂r startvyns/gridens geometri tas bort; Core √§r ensam k√§lla.
-- Den tunna linjen under modulrubriken g√•r nu √∂ver hela appens bredd i Dashboard, Vision, Publicera och framtida moduler.
-- Permanent modulregel: nya moduler ska fr√•n start anv√§nda Core-kedjan f√∂r gemensam layout och f√•r inte skapa egna kopior av workspace/grid/action-card-geometri.
-
-CCC v2.8.39 ‚Äì fullbreddslinje korrigerad (2026-08-10)
-- Orsaken till att v2.8.38 inte syntes var att `ccc-module-marker::after` l√•g som grid-item.
-- `width:100%` fyllde d√• gridsp√•ret i st√§llet f√∂r hela modulradens box.
-- Linjen √§r nu absolut positionerad med `left:0; right:0; bottom:0` och g√•r d√§rf√∂r verkligt kant-till-kant.
-- Regeln ligger centralt i Core och g√§ller Dashboard, Vision, Publicera och framtida moduler.
-
-CCC v2.8.40 ‚Äì gemensamt landscape-l√§ge (2026-08-10)
-- CCC f√•r nu ett centralt landscape-l√§ge f√∂r telefoner/sm√• sk√§rmar i `ccc-core/core.css`.
-- Permanent princip: `CCC-skalet √§r fast. Inneh√•llet f√•r scrolla vid behov.`
-- Vid landscape med l√•g sk√§rmh√∂jd komprimeras header och modulrad centralt.
-- Dashboard, Vision och Publiceras tre huvudkort l√§ggs sida vid sida och fyller √•terst√•ende viewport utan sidscroll.
-- Logga/aura, tema/profil och Vision-verktyg f√•r gemensamma landscape-positioner fr√•n Core.
-- Detalj-/arbetsvyer i Vision och Publicera f√•r intern vertikal scroll n√§r inneh√•llet faktiskt kr√§ver det.
-- Nya moduler ska automatiskt st√∂dja portrait, landscape och desktop via Core fr√•n start; modul-CSS f√•r bara komplettera med verkligt modulunikt landscape-inneh√•ll.
-
-CCC v2.8.41 ‚Äì Auth anv√§nder gemensam cCc-logga (2026-08-10)
-- Auth laddar nu `ccc-core/core.css` och anv√§nder samma delade brand-markup som Dashboard, Vision och Publicera.
-- Den st√∂rre mitten-C-loggan √§r d√§rmed gemensam √§ven p√• inloggningssidan.
-- Auran kommer fr√•n Core-komponenten; Auth beh√•ller endast sin egen placering/animering av login-brand.
-- Framtida √§ndringar av den gemensamma CCC-loggan ska sl√• igenom √§ven i Auth utan separat loggvariant.
-
-CCC v2.8.42 ‚Äì PWA safe-area f√∂ljer tema (2026-08-10)
-- Installerad webbapp ska inte visa vita remsor ovanf√∂r eller under CCC.
-- `html`, `body` och gemensam `ccc-app-shell` m√•las nu med `--ccc-bg`.
-- Core-temav√§xlingen uppdaterar b√•de `meta[name=theme-color]` och viewportens faktiska bakgrundsf√§rg.
-- iOS-webbappmetataggar l√§ggs till, inklusive `black-translucent`, s√• appbakgrunden kan forts√§tta bakom status/safe-area.
-- Dashboard, Vision, Publicera och Auth anv√§nder `viewport-fit=cover` och tidig temainitiering f√∂r att minska vit flash vid uppstart.
-- Auth safe-area anv√§nder ocks√• Core-temats bakgrund.
-
-CCC v2.8.43 ‚Äì egen CCC-PWA, separerad fr√•n Container13 (2026-08-10)
-- Grundorsak hittad: CCC saknade eget manifest och egen service worker, medan Container13:s root-service-worker kunde kontrollera `/ccc-core/`.
-- Root-service-workern anv√§nder `ignoreSearch:true`, vilket kan g√∂ra att gamla CCC CSS/JS serveras trots nya `?v=`-suffix.
-- CCC f√•r nu `ccc-core/manifest.webmanifest` med eget namn, scope `/ccc-core/`, `display: standalone`, `orientation: any` och m√∂rk neutral PWA-startbakgrund.
-- CCC f√•r egen `ccc-core/sw.js` med smalare scope. Den anv√§nder network-first och exakta request-URL:er; versionssuffix ignoreras inte.
-- `ccc-core/pwa.js` registrerar den dedikerade CCC-service-workern. Den smalare registreringen tar √∂ver `/ccc-core/` fr√•n Container13:s root-worker.
-- Auth, Dashboard, Vision och Publicera l√§nkar nu CCC-manifestet och PWA-bootstrap.
-- Detta ska f√∂rhindra att gamla cacheade Core-filer g√∂r att PWA-temat inte f√∂ljer aktuell version.
-- Landscape till√•ts √§ven i manifestet (`orientation: any`).
-
-CCC v2.8.44 ‚Äì PWA safe-area f√∂r logga + Auth brand-rensning (2026-08-10)
-- iPhone standalone visade auran/loggans √∂verkant bakom status-/kameraomr√•det.
-- Core-headern tar nu h√§nsyn till `env(safe-area-inset-top)` i installerad PWA och flyttar branden ned√•t utan modulunika justeringar.
-- Landscape respekterar √§ven v√§nster/h√∂ger safe-area.
-- Auth hade fortfarande √§ldre egna regler f√∂r `.ccc-brand-word`, `.ccc-brand-halo` och `.ccc-aura-arc`; 2 s√•dana brandregler togs bort/neutraliserades.
-- Auth anv√§nder nu samma Core-styrda cCc-logga, mitten-C och aura som √∂vriga CCC.
-- Permanent regel: modul-CSS f√•r inte √§ga gemensam CCC-brandgeometri.
-
-CCC v2.8.45 ‚Äì landscape finjustering (2026-08-10)
-- P√• mobil i landscape flyttas den gemensamma CCC-loggan 5 px ned√•t.
-- Gemensamma huvudkort i landscape minskas 20 px p√• h√∂jden.
-- √Ñndringen ligger i Core s√• nya moduler som anv√§nder CCC:s gemensamma header/kort √§rver samma landscape-geometri.
-
-CCC v2.8.46 ‚Äì gemensam kortbredd i mobil landscape (2026-08-10)
-- Vision anv√§nds som visuell breddreferens f√∂r huvudkorten i mobil landscape.
-- Core begr√§nsar den gemensamma tre-kortsgriden till 720 px och centrerar den.
-- Dashboard, Vision och Publicera f√•r d√§rmed samma landscape-bredd och centrering.
-- Permanent regel f√∂r nya moduler i mobil landscape: b√∂rja med samma Core-styrda kortbredd, h√∂jd, spacing och centrerade tre-kortsrad; avvik f√∂rst n√§r modulens inneh√•ll faktiskt kr√§ver det.
-- Denna regel g√§ller specifikt mobil landscape och √§ndrar inte portrait- eller desktopgeometrin.
-
-
-CCC v2.8.47 ‚Äì landscape slutjustering (2026-08-10)
-- Loggan ytterligare 6 px ned fr√•n v2.8.46.
-- Korten ytterligare 20 px l√§gre fr√•n v2.8.46.
-- Endast mobil landscape p√•verkas; gemensamt via Core.
-
-CCC v2.8.48 ‚Äì portrait header/logga centraliserad p√• riktigt (2026-08-10)
-- Vision hade kvar √§ldre modulregler f√∂r `.app-header`, `.brand-word` och `.brand-halo`; Dashboard hade ocks√• legacy-headerregler.
-- Rensning: 29 gemensamma header/brand-regler borttagna ur `dashboard.css` och 22 ur `vision.css`.
-- Mobil portrait-header och CCC-brandens position definieras nu uttryckligen endast i `ccc-core/core.css`.
-- Installerad PWA:s safe-area-f√∂rskjutning ligger i samma centrala portrait-regel och g√§ller d√§rf√∂r Dashboard, Vision och Publicera identiskt.
-- Permanent regel: modul-CSS f√•r inte definiera `.app-header`, `.ccc-header`, `brand-word`, `brand-halo` eller CCC-aura-geometri.
-
-CCC v2.8.48 ‚Äì slutverifiering header single-source
-- Efter selector-audit togs de sista 4 Vision-reglerna som fortfarande refererade `.app-header` bort.
-- Slutkontroll: varken `dashboard.css` eller `vision.css` inneh√•ller l√§ngre selectors som √§ger gemensam app-header, brand-word, brand-halo eller CCC-aura.
-- Mobil portrait-positionen f√∂r loggan/headern styrs d√§rmed fr√•n `ccc-core/core.css` som enda k√§lla.
-
-CCC v2.8.48 ‚Äì portrait header/logga single-source (2026-08-10)
-- Dashboard och Vision rensade fr√•n modul√§gda header/logga/aura-regler.
-- Borttagna regler i denna slutk√∂rning: dashboard.css 0 st, vision.css 0 st.
-- Mobil portrait-positionen f√∂r CCC-loggan och PWA safe-area-f√∂rskjutningen styrs nu endast fr√•n `ccc-core/core.css`.
-- Permanent regel: modul-CSS f√•r inte definiera gemensam app-header, brand-word, brand-halo eller aura-geometri.
-
-CCC v2.8.49 ‚Äì faktisk grundorsak f√∂r Vision-loggan i portrait (2026-08-10)
-- Grundorsaken hittad: `vision.css` hade kvar `--ccc-header-height:105px!important`, vilket blockerade Core:s standalone/PWA-safe-area-h√∂jd.
-- D√§rf√∂r fick Vision en kortare faktisk header √§n Dashboard/Publicera trots samma brand-position i Core.
-- Alla modul√§gda `--ccc-header-height`-deklarationer √§r nu borttagna ur Dashboard och Vision.
-- Borttaget ur dashboard.css: 3 deklarationer.
-- Borttaget ur vision.css: 4 deklarationer.
-- `--ccc-header-height` f√•r nu endast definieras i `ccc-core/core.css`; moduler f√•r bara l√§sa variabeln.
-- Detta g√∂r headerh√∂jd, PWA safe-area och loggposition till verklig single-source.
-
-CCC v2.8.50 ‚Äì f√∂renklad Vision-arbetsvy (2026-08-10)
-- N√§r minst ett plagg finns d√∂ljs startens tre stora actionkort i arbetsl√§get.
-- Aktiv serie visar i st√§llet kompakt antal/markering samt `+ Fota plagg` och `+ V√§lj bilder`.
-- Miniatyrremsan √§r huvudnavigation mellan plagg.
-- Hj√§lptexten kortad till `V√§lj ett plagg`.
-- `Komplettera markerat plagg` tas bort fr√•n huvudytan; komplettering h√∂r till det valda plaggets granskningsfl√∂de.
-- `Visa f√∂rslag` beh√•lls som prim√§r handling f√∂r markerat/klart plagg.
-- Local-first-notisen beh√•lls diskret l√§ngst ned.
-
-CCC v2.8.51 ‚Äì Vision gamla startkort bort ur arbetslayout (2026-08-10)
-- Grundorsak: v2.8.50 g√∂mde `.vision-start-actions`, men √§ldre `:has()`-regler kunde fortfarande h√•lla startsektionen/layouten aktiv.
-- Hela startsektionen har nu id `visionStartHome`.
-- N√§r Vision g√•r till workspace s√§tts `visionStartHome.hidden = true`.
-- Core/legacy display-regler neutraliseras med `#visionStartHome[hidden]{display:none!important}`.
-- Arbetsvyn best√•r d√§rmed bara av kompakt plaggstatus, + Fota plagg, + V√§lj bilder, miniatyrer och Visa f√∂rslag.
-
-CCC v2.8.52 ‚Äì Vision arbetsvy + manuell AI-layout (2026-08-10)
-- Inneh√•ller v2.8.51-fixen d√§r hela gamla tre-kortssektionen tas ur layouten i aktiv fotosession.
-- N√§r Automatisk AI-analys √§r av beh√•lls `Analysera med AI` som frivillig √•tg√§rd f√∂r det valda plagget.
-- Redigeringsvyn har nu en uttrycklig egen grid-rad f√∂r AI-knappen.
-- AI-knappen √§r statisk i dokumentfl√∂det och kan inte l√§ngre hamna bakom Rubrik-f√§ltet.
-- N√§r AI-knappen √§r dold tas raden bort naturligt utan att p√•verka formul√§rets geometri.
-
-CCC v2.8.53 ‚Äì kompakt Vision-redigering mobil portrait (2026-08-10)
-- Redigeringsvyn komprimeras vertikalt i mobil portrait i st√§llet f√∂r att b√∂rja scrolla i on√∂dan.
-- Statusrad/miniatyr, AI-knapp, Rubrik, Pris, Beskrivning och sekund√§ra val har mindre h√∂jd och t√§tare spacing.
-- Beskrivningsf√§ltet √§r l√§gre men fortfarande tydligt redigerbart.
-- `Frivilliga till√§gg` och `Fler uppgifter` f√•r kompaktare summary-rader.
-- `Tillbaka` och `Spara & n√§sta` ligger i normal grid-flow och har reserverad plats l√§ngst ned; de ska inte √∂verlappas av sekund√§rvalen.
-- Extra kompakt breakpoint anv√§nds p√• portrait-sk√§rmar under 760 px h√∂jd.
-- Grundprincip: f√∂rs√∂k f√∂rst f√• k√§rnfl√∂det scrollfritt; intern scroll anv√§nds f√∂rst n√§r inneh√•llet faktiskt kr√§ver det.
-
-CCC v2.8.54 ‚Äì spara och √•teruppta Vision-fotosession lokalt (2026-08-10)
-- Aktiv Vision-session kan pausas med `Spara och forts√§tt senare`.
-- Sessionen lagras lokalt i IndexedDB (`ccc-local-workspace`, store `sessions`) inklusive originalbilder, extra bilder, ordning, markerat plagg, redigeringar, AI-resultat/status och relevanta metadata.
-- Inget Firebase anv√§nds f√∂r pausade Vision-sessioner.
-- N√§r Vision √∂ppnas igen visas t.ex. `Forts√§tt fotosession ‚Äì 7 plagg`.
-- √Öterupptagning √•terst√§ller bilderna och arbetsl√§get fr√•n den lokala sessionen.
-- Funktionen g√§ller b√•de Automatisk AI p√• och av.
-- Om en p√•g√•ende AI-session sparats innan analysen blev klar kan analysen √•terstartas vid √•terupptagning n√§r auto-AI fortfarande √§r aktivt.
-- N√§r hela serien avslutas rensas den aktiva sessionsposten; godk√§nda Publicera-utkast ligger kvar separat.
-- Local workspace-databasen uppgraderad fr√•n version 1 till 2; Publicera synkad till samma DB-version och skapar √§ven `sessions`-store vid behov.
-
-CCC v2.8.55 ‚Äì AI av: Spara & n√§sta f√•r inte visa demo (2026-08-10)
-- Grundorsak: `moveToNextItem()` skickade alltid n√§sta plagg till `openReview()`.
-- Ett plagg i manuellt l√§ge saknar Vision-resultat, och review-fl√∂det kunde d√§rf√∂r falla tillbaka p√• demodata.
-- Ny `openItemForWork()` v√§ljer arbetsvy efter plaggets faktiska analysl√§ge.
-- AI av + ej analyserat ‚Üí tom manuell redigering direkt.
-- AI/f√§rdigt f√∂rslag ‚Üí ordinarie f√∂rslagsvy.
-- `openReview()` har dessutom en skyddsregel som stoppar demo-fallback om ett manuellt oanalys¬≠erat plagg skulle skickas dit fr√•n n√•gon annan v√§g.
-- Ingen AI startas automatiskt av `Spara & n√§sta` n√§r Automatisk AI-analys √§r av.
-
-CCC v2.8.56 ‚Äì Spara eller Spara & n√§sta (2026-08-10)
-- Inneh√•ller v2.8.55-fixen: AI av f√•r inte √∂ppna demo-/AI-f√∂rslag f√∂r n√§sta plagg.
-- Redigeringsvyn har nu tre val: `Tillbaka`, `Spara`, `Spara & n√§sta`.
-- `Spara` sparar aktuellt plagg lokalt och stannar kvar p√• samma plagg.
-- `Spara & n√§sta` sparar och g√•r vidare enligt befintligt fl√∂de.
-- Efter `Spara` kan anv√§ndaren forts√§tta redigera, g√• tillbaka, v√§lja annat plagg eller pausa hela fotosessionen.
-- Aktiv Vision-session synkas lokalt efter Spara s√• √•terupptagning beh√•ller senaste status.
-
-CCC v2.8.57 ‚Äì Spara & tillbaka (2026-08-10)
-- Redigeringsvyns gamla `Tillbaka` ers√§tts med `Spara & tillbaka`.
-- Knappen sparar aktuellt plagg lokalt via samma s√§kra save-path som `Spara`.
-- Efter lyckad sparning √•terg√•r Vision till arbetsvyn med miniatyrerna och samma fotosession.
-- `Spara` stannar kvar p√• aktuellt plagg.
-- `Spara & n√§sta` sparar och g√•r vidare till n√§sta plagg.
-
-CCC v2.8.58 ‚Äì f√∂renklade sparval (2026-08-10)
-- Frist√•ende `Spara` borttagen eftersom den sparade men stannade kvar p√• samma plagg utan tydlig nytta.
-- Redigeringsvyn har nu tv√• tydliga val: `Spara & tillbaka` och `Spara & n√§sta`.
-- `Spara & tillbaka` sparar och √•terg√•r till Vision-arbetsvyn/miniatyrerna.
-- `Spara & n√§sta` sparar och √∂ppnar n√§sta plagg.
-
-CCC v2.8.59 ‚Äì manuellt Vision-l√§ge st√§dat + √•terredigering (2026-08-10)
-- N√§r valt plagg k√∂rs i manuellt l√§ge (`Automatisk AI-analys` av) d√∂ljs `Visa f√∂rslag` helt.
-- Manuella plagg √∂ppnas direkt fr√•n miniatyren i redigeringsvyn.
-- `approved` betyder nu bara att plagget √§r sparat till Publicera; det l√•ser inte plagget i Vision.
-- Ett redan sparat manuellt plagg kan √∂ppnas, √§ndras och `Spara & tillbaka` hur m√•nga g√•nger som helst.
-- Samma `item.id` anv√§nds vid IndexedDB `put()`, s√• senare sparning uppdaterar befintlig lokal Publicera-post i st√§llet f√∂r att skapa en dubblett.
-- Sparade manuella plagg f√•r en bock i miniatyren utan att markeras som AI-analyserade.
-
-CCC v2.8.60 ‚Äì fels√∂kning/fix Spara & tillbaka mobil (2026-08-10)
-- Grundorsak identifierad: `Spara & tillbaka` v√§ntade p√• thumbnail/WebP-konvertering och IndexedDB innan navigation. P√• mobil kunde den asynkrona bildbearbetningen stanna/l√•ngdra och l√§mna knappen l√•st p√• `Sparar‚Ä¶`.
-- `Spara & tillbaka` l√§ser nu formul√§rv√§rdena direkt, markerar plagget sparat och √•terg√•r omedelbart till Vision-arbetsvyn.
-- Sj√§lva bild-/IndexedDB-sparningen sker d√§refter i bakgrunden med samma item-id, s√• √•terredigering uppdaterar samma post.
-- Thumbnail-konverteringen har dessutom timeout/fallback: om WebP-konvertering inte svarar anv√§nds originalfilen i st√§llet f√∂r att l√•sa fl√∂det.
-- `Visa f√∂rslag`-fixen fr√•n v2.8.59 √§r kvar: manuellt AI-av-l√§ge visar ingen s√•dan knapp.
-
-CCC v2.8.61 ‚Äì Vision sparar original, Publicera √§ger bildbearbetningen (2026-08-10)
-- Arkitekturen √•terst√§lld till beslutad local-first-princip: Vision samlar foton, analys/redigering och metadata men f√∂r√§ndrar inte originalbilden.
-- WebP-/thumbnail-konverteringen har tagits bort helt ur `saveApprovedDraftLocally()`.
-- Vision sparar `originalBlob` + metadata i IndexedDB och markerar posten `imageProcessingState: "original"`.
-- `Spara & tillbaka` g√•r tillbaka direkt och sparar original + metadata i bakgrunden; ingen bildkonvertering kan l√§ngre blockera den v√§gen.
-- Besk√§rning/anpassning till plagget, slutlig storlek/uppl√∂sning och WebP-komprimering ska g√∂ras i Publicera-fl√∂det n√§r publiceringsbilden faktiskt f√∂rbereds.
-- Originalbilden f√∂rblir lokal och or√∂rd tills dess.
-
-CCC v2.8.62 ‚Äì papperskorg + renare manuellt redigeringsl√§ge (2026-08-10)
-- Papperskorg tillagd vid plaggets miniatyr i redigeringsvyn.
-- Borttagning tar bort plagget ur den lokala fotosessionen, √•terg√•r till plagg√∂versikten och anv√§nder befintlig √Öngra-funktion.
-- I AI-av/manuellt l√§ge visas inte l√§ngre `Redigera medan CCC arbetar`; rubriken blir `Redigera plagg`.
-- Status-underraden d√∂ljs i manuellt l√§ge.
-- `Analysera med AI` finns kvar som frivillt val n√§r AI √§r tillg√§ngligt.
-
-CCC v2.8.63 ‚Äì normaliserad local-first-lagring f√∂r Vision/Publicera (2026-08-10)
-- Grundproblemet i v2.8.54‚Äìv2.8.62 √•tg√§rdat: fotosessionen b√§ddar inte l√§ngre in alla originalbilder i en stor IndexedDB-post.
-- Databasen `ccc-local-workspace` uppgraderad till version 3 med separat store `vision-files`.
-- Varje originalbild sparas separat med stabil filnyckel (`<item-id>:main`); extra bilder f√•r egna nycklar.
-- Vision-sessionen (`sessions`) inneh√•ller bara sm√• referenser och metadata: filnycklar, ordning, markerat plagg, redigeringar, AI-status/resultat och godk√§nd-status.
-- Publicera-utkast (`images`) inneh√•ller ocks√• bara referens till originalbilden (`originalFileKey`) + publiceringsmetadata; originalet dupliceras inte d√§r.
-- Publicera hydratiserar originalbilden fr√•n `vision-files` n√§r utkastet √∂ppnas.
-- N√§r Publicera senare sparar crop/WebP tas den hydrerade `originalBlob` bort innan `images`-posten skrivs tillbaka, s√• originalet forts√§tter lagras endast en g√•ng.
-- Gamla v2-sessioner med Blob direkt i sessionen kan √•terst√§llas och migreras automatiskt till `vision-files`.
-- Gamla Publicera-utkast som redan inneh√•ller `originalBlob` forts√§tter fungera.
-- `Spara och forts√§tt senare` rapporterar nu IndexedDB-fel med `error.name` och `error.message` i konsol/meddelande i st√§llet f√∂r enbart generisk feltext.
-
-CCC v2.8.64 ‚Äì manuell `Analysera med AI` kan inte fastna permanent (2026-08-10)
-- Fels√∂kning visade att n√§tverksanropet redan hade timeout, men stegen f√∂re fetch (FileReader, bilddekodning och skapandet av analyskopian) saknade timeout. P√• mobil kunde UI d√§rf√∂r bli kvar p√• `Analyserar‚Ä¶` utan att fetch-timeouten n√•gonsin startade.
-- FileReader och bilddekodning har nu 12 s timeout.
-- Analyskopian skapas asynkront via canvas.toBlob med 12 s timeout i st√§llet f√∂r synkron toDataURL.
-- Hela AI-kedjan har dessutom en yttre s√§kerhetstimeout p√• 105 s.
-- `Analysera med AI` √•terst√§lls alltid i `finally`, √§ven vid ov√§ntade fel, s√• knappen kan inte permanent l√•sas p√• `Analyserar‚Ä¶`.
-- Vid fel visas ett begripligt AI-fel och befintlig fallback-logik kan forts√§tta.
-
-CCC v2.8.65 ‚Äì manuell AI l√•st till r√§tt plagg (2026-08-10)
-- Grundorsak: `Analysera med AI` anv√§nde en gemensam DOM-knapp och efter await anv√§ndes det f√∂r√§nderliga `currentIndex`. Om anv√§ndaren bytte miniatyr medan analysen p√•gick kunde n√§sta plagg d√§rf√∂r se ut att analysera eller f√• fel vy/status.
-- Varje plagg har nu egen `analysisInProgress`-status.
-- Manuell AI f√•ngar plaggets stabila `item.id` n√§r analysen startas.
-- Analysresultatet √∂ppnas automatiskt endast om samma plagg fortfarande √§r markerat n√§r analysen blir klar.
-- Byter anv√§ndaren till n√§sta bild under tiden visas den bildens egen manuella status och `Analysera med AI`; den startar inte AI automatiskt.
-- Den gemensamma AI-knappens text/disabled-l√§ge uppdateras endast f√∂r aktuellt valt plagg.
-
-CCC v2.8.66 ‚Äì manuellt AI-resultat visas direkt (2026-08-10)
-- Grundbrist: `Analysera med AI` startades i redigeringsvyn men resultatet f√∂rs√∂kte √∂ppna separat f√∂rslagsvy; AI-fel skrevs dessutom till ett message-element som den kompakta mobil-CSS:en d√∂ljer.
-- Manuell AI stannar nu i redigeringsvyn.
-- N√§r analysen blir klar fyller AI endast tomma formul√§rf√§lt; v√§rden anv√§ndaren redan skrivit bevaras.
-- Statusraden vid plagget visar `AI-f√∂rslag klart ‚Äì √§ndra det du vill`.
-- AI-knappen d√∂ljs n√§r resultatet √§r klart.
-- Vid AI-fel visas feltexten i samma synliga statusrad i st√§llet f√∂r i det dolda message-elementet.
-- Per-item-race-fixen fr√•n v2.8.65 √§r kvar: resultatet p√•verkar endast plagget som faktiskt analyserades.
-
-CCC v2.8.67 ‚Äì kritisk fix: AI-resultatet stoppades av saknad funktion (2026-08-10)
-- Faktisk grundorsak hittad: `startSilentAnalysis()` anropade `applyLocalKnowledge(...)`, men funktionen fanns inte l√§ngre definierad i `product-lab.js`.
-- F√∂ljden var att ett lyckat manuellt AI-svar f√∂rst kom tillbaka, d√§refter kastades `ReferenceError` innan `visionResult` kunde f√§rdigst√§llas. Fallbacken anropade samma saknade funktion och kunde d√§rf√∂r inte heller ge resultat.
-- `applyLocalKnowledge()` √§r √•terinf√∂rd.
-- Den anv√§nder befintliga `CCC_VISION_KNOWLEDGE.bestMatch()` f√∂r att komplettera endast tomma f√§lt; ett AI-resultat f√•r alltid g√• vidare √§ven om kunskapslagret skulle ge fel.
-- Manuellt AI-resultat kan nu n√• v2.8.66-fl√∂det och fylla de tomma redigeringsf√§lten direkt.
-
-CCC v2.8.68 ‚Äì originalbilder skrivs faktiskt bara en g√•ng (2026-08-10)
-- Fels√∂kning efter `Kunde inte spara ‚Äì f√∂rs√∂k igen` visade ett implementationsfel i v2.8.63: trots normaliserad databas k√∂rde `saveVisionSessionLocally()` fortfarande `put()` p√• varje originalfil vid varje sessionssparning.
-- Dessutom kunde sessionssparningen starta en ny `put()` samtidigt som den f√∂rsta bakgrundsf√∂rlagringen av samma foto fortfarande p√•gick.
-- Varje plagg har nu `originalFileStored` + `originalFileSavePromise`. Om originalet redan √§r sparat g√∂rs ingen ny skrivning; om f√∂rsta skrivningen p√•g√•r avvaktas exakt samma promise.
-- Extra bilder anv√§nder samma modell per bild.
-- √Öterst√§llda sessioner markeras direkt som redan lagrade eftersom filerna precis l√§sts fr√•n `vision-files`.
-- `Spara och forts√§tt senare` uppdaterar d√§rf√∂r i normalfallet endast den lilla sessionsposten efter att k√§nda filskrivningar √§r klara.
-- Vid lagringsfel visar knappen nu √§ven feltypen, t.ex. `QuotaExceededError`, s√• n√§sta fel kan identifieras direkt.
-
-CCC v2.8.69 ‚Äì Tillbaka under f√∂rslagsvyn (2026-08-10)
-- F√∂rslagsvyn beh√•ller raden: papperskorg, √Ñndra, Godk√§nn & n√§sta.
-- En separat diskret `‚Üê Tillbaka` ligger direkt under raden.
-- Tillbaka g√•r till plaggets/sessionens workspace, samma destination som headerns bak√•tpil fr√•n f√∂rslagsvyn.
-
-CCC v2.8.70 ‚Äì Publicera l√§ser Vision-sessionen direkt (2026-08-10)
-- F√∂rsta riktiga Vision ‚Üí Publicera-kopplingen.
-- Publicera l√§ser b√•de explicita poster i `images` och bilderna/metadata i den aktiva lokala Vision-sessionen.
-- Poster sl√•s ihop p√• samma `item.id`, s√• ett redan godk√§nt Publicera-utkast dupliceras inte.
-- Vision-originalet h√§mtas fr√•n `vision-files` och l√§mnas of√∂r√§ndrat.
-- Ingen WebP skapas n√§r Publicera √∂ppnas. WebP/besk√§rning ligger fortsatt i Publicera och skapas f√∂rst i bildbearbetningssteget.
-- Lokala utkast visar nu √§ven titel/plaggnummer ovanp√• miniatyren f√∂r enklare test.
-
-CCC v2.8.71 ‚Äì Publicera visar lokala bilder robust p√• mobil/PWA (2026-08-10)
-- 4-utkast-r√§knaren i v2.8.70 visade att metadata/IndexedDB-kopplingen fungerade, men sj√§lva bildf√∂rhandsvisningen byggde p√• `URL.createObjectURL()` f√∂r persistenta Blob-filer.
-- Grid-miniatyrer skapas nu prim√§rt som Data-URL fr√•n den lokala Blob-filen, vilket √§r robustare f√∂r lokala/persistenta bilder i iOS/PWA.
-- Detaljvyn √•teranv√§nder samma verifierade bildk√§lla.
-- Bildfel loggas med plagg-ID/MIME och g√∂r ett enda fallback-f√∂rs√∂k.
-- Utkastskorten har minsta h√∂jd s√• vi kan skilja ett renderingsfel fr√•n ett tomt grid.
-
-CCC v2.8.72 ‚Äì Publicera Lokala utkast: topposition + bildfix samlad (2026-08-10)
-- Inneh√•ller v2.8.71-fixen f√∂r robusta lokala bildf√∂rhandsvisningar.
-- `Lokala utkast`-vyn g√∂rs till en tydlig flex-kolumn d√§r rubriken alltid ligger √∂verst och miniatyrgridden fyller √•terst√•ende yta.
-- Vid byte till `gridView` nollst√§lls intern scroll och vyn scrollas till sin startposition.
-- Klick p√• `Lokala utkast` renderar gridden f√∂rst och √∂ppnar sedan vyn fr√•n toppen.
-- Fokus flyttas till bak√•tknappen utan att orsaka scroll, vilket minskar risken att mobilwebbl√§saren placerar rubriken l√§ngst ned.
-
-CCC v2.8.73 ‚Äì st√§dad Lokala utkast-vy (2026-08-10)
-- Falska tomstatusen `Inget v√§ntar p√• publicering` d√∂ljs explicit n√§r utkast finns.
-- `renderGrid()` styr b√•de `hidden` och `display`, s√• √§ldre CSS kan inte l√§mna tomstatusen synlig.
-- Miniatyrgridden b√∂rjar direkt under rubrik/antal utan reserverad tomstatus-yta.
-- Vision ‚Üí Publicera-datafl√∂det och v2.8.71-bildvisningen beh√•lls of√∂r√§ndrade.
-
-CCC v2.8.74 ‚Äì valfri besk√§rning i Publicera (2026-08-10)
-- Besk√§rningsvyn visar CCC:s f√∂reslagna kvadratiska utsnitt och hela originalet bakom som m√∂rk/suddig referens.
-- Anv√§ndaren kan dra/zooma och v√§lja `Godk√§nn besk√§rning`.
-- Nytt val `Beh√•ll original` hoppar √∂ver besk√§rningen men skapar √§nd√• en max 1600 px WebP-kopia lokalt.
-- `√Öterst√§ll f√∂rslag` √•terg√•r till CCC:s ursprungliga centrering.
-- Vision-originalet √§ndras aldrig. Publiceringskopian m√§rks `webp-cropped` eller `webp-original`.
-
-CCC v2.8.75 ‚Äì miniatyr √∂ppnar r√§tt detaljvy i Publicera (2026-08-10)
-- Grundorsak hittad: `openDetail()` anropade `show("detail")`, men den faktiska sektionens id √§r `detailView`.
-- `show()` g√∂mde d√§rf√∂r samtliga riktiga Publicera-vyer och UI f√∂ll visuellt tillbaka till skalet/startl√§get.
-- Anropet √§r korrigerat till `show("detailView")`.
-- v2.8.74-funktionerna f√∂r valfri besk√§rning, synligt bortklippt omr√•de och Beh√•ll original ing√•r.
-
-CCC v2.8.76 ‚Äì kompakt Publicera-detaljvy p√• mobil (2026-08-10)
-- Detaljbildens maxh√∂jd i portrait s√§nkt s√• titel och huvudknappar ryms p√• samma sk√§rm.
-- Detaljvyn √§r en fast flex-kolumn utan on√∂dig huvudscroll p√• normal mobilh√∂jd.
-- Titel/meta och actions har kompaktare spacing/typografi.
-- `Besk√§r` har bytt namn till `Anpassa bild`, eftersom n√§sta vy √§ven erbjuder `Beh√•ll original`.
-- Swipe mellan utkast och v2.8.74-bildanpassningen √§r of√∂r√§ndrade.
-
-CCC v2.8.77 ‚Äì motivstyrt besk√§rningsf√∂rslag i Publicera (2026-08-10)
-- Ers√§tter ren center-crop med en lokal motiv/saliency-analys som f√∂rs√∂ker hitta bildens huvudsakliga plagg/motiv.
-- F√∂rslaget ber√§knar motivcentrum, zoom och luft runt motivet innan besk√§rningsvyn visas.
-- Analysen k√∂rs helt lokalt i webbl√§saren och √§ndrar inte originalbilden.
-- `√Öterst√§ll f√∂rslag` √•terg√•r nu till CCC:s motivstyrda f√∂rslag, inte till en generisk center-crop.
-- Anv√§ndaren kan fortfarande dra, zooma, Beh√•ll original eller Godk√§nn besk√§rning.
-- WebP skapas fortfarande f√∂rst efter anv√§ndarens val.
-
-CCC v2.8.78 ‚Äì tajtare motivbesk√§rning + pinch-zoom + knappfix (2026-08-10)
-- Motivf√∂rslaget anv√§nder en mindre central saliency-kluster och trimmar extrema utliggare, s√• webbsida/bakgrund runt plagget p√•verkar utsnittet mindre.
-- S√§kerhetsmarginalen runt motivet har minskats och f√∂reslagen zoom f√∂rst√§rkts, s√• plagget fyller st√∂rre del av publiceringsbilden.
-- Mobil besk√§rning st√∂der nu riktig tv√•fingers pinch-zoom p√• sj√§lva bilden.
-- Ett finger forts√§tter flytta bilden.
-- Zoomreglaget synkas √§ven n√§r pinch anv√§nds.
-- `√Öterst√§ll f√∂rslag` r√§knar fram CCC:s motivf√∂rslag igen.
-- Besk√§rningsvyn f√•r intern scroll vid sm√• sk√§rmar och `Godk√§nn besk√§rning` har egen luft under bildytan s√• den inte hamnar bakom previewn.
-- Originalbilden f√∂rblir or√∂rd; WebP skapas f√∂rst efter anv√§ndarens val.
-
-CCC v2.8.79 ‚Äì balanserat motivf√∂rslag + stabil portrait-layout (2026-08-10)
-- v2.8.78 besk√§rde f√∂r aggressivt. Motivklustret √§r nu n√•got st√∂rre, fler ytterkanter beh√•lls och s√§kerhetsmarginalen runt plagget √∂kas.
-- Zoomf√∂rst√§rkningen s√§nks och maxzoom f√∂r automatiskt f√∂rslag begr√§nsas till 2.55.
-- M√•let √§r hela plagget med lagom luft, inte extrem n√§rbild.
-- Portrait-besk√§rningsvyn anv√§nder vanligt vertikalt dokumentfl√∂de i st√§llet f√∂r grid, s√• kontroller och knappar aldrig kan hamna bakom previewn.
-- Previewn begr√§nsas till h√∂gst ca 46 % av viewport-h√∂jden och beh√•ller kvadratisk form.
-- `Godk√§nn besk√§rning`, `Beh√•ll original`, `√Öterst√§ll f√∂rslag` och zoomkontrollen ligger alltid efter bildytan och kan n√•s via intern scroll vid behov.
-- Pinch-zoom och drag fr√•n v2.8.78 finns kvar.
-
-CCC v2.8.81 ‚Äì Publicera prestandagrund (2026-08-10)
-- Byggd p√• v2.8.79:s stabila besk√§rnings/layout-bas; v2.8.80:s s√§mre auto-crop tas inte vidare.
-- Publicera visar antal utkast direkt och bygger f√∂rhandsvisningar i bakgrunden.
-- En liten decoded-image-cache h√•ller aktuell + n√§rmaste grannbilder redo (max 3).
-- N√§r detaljvyn √∂ppnas f√∂rladdas aktuell, f√∂reg√•ende och n√§sta bild.
-- N√§r Lokala utkast √∂ppnas v√§rms f√∂rsta bildgruppen upp direkt.
-- Ingen visuell redesign i denna version; fokus √§r snabbare √∂ppning och grund f√∂r levande swipe.
-
-CCC v2.8.82 ‚Äì levande swipe mellan plagg i Publicera (2026-08-10)
-- Detaljvyn har nu tre bildlager: f√∂reg√•ende, aktuell och n√§sta bild.
-- Aktuell bild f√∂ljer fingret horisontellt medan anv√§ndaren drar.
-- N√§sta/f√∂reg√•ende bild kommer samtidigt in fr√•n r√§tt sida.
-- Svep under ca 26 % av bildbredden fj√§drar tillbaka till aktuell bild.
-- Tillr√§ckligt l√•ngt svep animerar f√§rdigt p√• ca 260 ms och byter sedan aktivt plagg.
-- Vertikal gest l√§mnas fri f√∂r vanlig scroll.
-- v2.8.81:s cache/f√∂rladdning anv√§nds f√∂r grannbilderna s√• animationen inte beh√∂ver v√§nta p√• bildinl√§sning.
-- Byggd fortsatt p√• v2.8.79:s stabila besk√§rningsbas.
-
-CCC v2.8.83 ‚Äì mjukare swipe + besk√§rningsfinputs (2026-08-10)
-- Levande swipe fr√•n v2.8.82 √§r kvar men avslut/√•terfj√§dring √§r mjukare: 340 ms och rundare easing.
-- Draget har l√§tt d√§mpning i ytterl√§get s√• √∂verg√•ngen k√§nns mindre mekanisk.
-- Swipe-tr√∂skeln s√§nkt n√•got till ca 23 % av bildbredden.
-- Besk√§rningen forts√§tter p√• v2.8.79:s stabila heuristik, inte v2.8.80:s konturf√∂rs√∂k.
-- Besk√§rningsf√∂rslaget har endast f√∂rsiktig finputs: lite mer s√§kerhetsmarginal och n√•got l√§gre automatisk zoom f√∂r att minska risken att √§rmar kapas.
-- Portrait-previewn √§r marginellt mindre och Godk√§nn besk√§rning h√•lls tydligt i normalt vertikalt fl√∂de under bilden.
-- F√∂rladdning/cache fr√•n v2.8.81 √§r kvar.
-
-CCC v2.8.84 ‚Äì tyngre swipe + sidberoende √§rms√§kerhet (2026-08-10)
-- Swipe-animationen √§r nu 480 ms med mjukare inbromsning och mindre sn√§rt.
-- Under sj√§lva draget f√∂ljer bilden fingret n√§stan 1:1; motst√•nd kommer fr√§mst n√§ra ytterl√§get.
-- Slutanimationen v√§ntar 490 ms innan aktivt plagg byts, synkat med animationen.
-- Besk√§rningen bygger fortsatt p√• v2.8.83/v2.8.79-baslinjen som hittills fungerat b√§st.
-- Ny sidberoende s√§kerhetsmarginal: om plaggets f√∂reslagna motivcentrum ligger tydligt √•t v√§nster/h√∂ger f√•r samma yttersida extra horisontell luft.
-- Syftet √§r att minska risken att en fotbollstr√∂jas yttersta √§rm kapas utan att ge alla centrerade plagg on√∂digt stor bakgrund.
-- Automatisk zoom s√§nks marginellt n√§r s√§kerhetsmarginalen anv√§nds.
-
-CCC v2.8.85 ‚Äì stabil bildidentitet + asymmetrisk √§rms√§kerhet (2026-08-10)
-- Miniatyrer √∂ppnar nu utkast via stabilt `item.id` i st√§llet f√∂r ett f√•ngat numeriskt index.
-- Efter flera swipe och tillbaka till miniatyrerna renderas gridden om; klicket l√∂ser alltid aktuellt index fr√•n plaggets id.
-- Swipe l√•ser ocks√• m√•lplaggets id n√§r animationen startar och l√∂ser indexet igen n√§r animationen avslutas.
-- Detta f√∂rhindrar att fel bild kan √∂ppnas efter en l√§ngre swipe-session.
-- Besk√§rningens √§rms√§kerhet √§ndrad fr√•n symmetrisk extra marginal till asymmetrisk omcentrering.
-- Om plagget ligger √•t v√§nster flyttas crop-f√∂rslaget v√§nster f√∂r att f√• med v√§nster √§rm och samtidigt kapa mer skr√§p p√• h√∂ger sida; spegelv√§nt √•t h√∂ger.
-- Automatisk zoom √§r marginellt f√∂rsiktigare. Grundalgoritmen fr√•n v2.8.79/v2.8.83 beh√•lls.
-- Den tyngre/mjukare swipen fr√•n v2.8.84 √§r kvar.
-
-CCC v2.8.86 ‚Äì swipe-race fix + f√∂rsiktig crop-bas f√∂r j√§mf√∂relsetest (2026-08-10)
-- Kvarvarande felbildsbugg identifierad som en race: en p√•g√•ende swipe hade ett f√∂rdr√∂jt commit-timeranrop som kunde k√∂ras efter att anv√§ndaren g√•tt tillbaka till miniatyrerna och klickat p√• ett nytt plagg.
-- Swipe-commit-timern sp√•ras nu explicit och avbryts b√•de vid `Tillbaka` och n√§r ett plagg √∂ppnas direkt fr√•n miniatyrerna.
-- `syncSwipeNeighbors()` h√•rdsynkar √§ven aktuell huvudbild till det aktiva item-id:t.
-- Besk√§rningen g√∂rs medvetet mer f√∂rsiktig inf√∂r 4-bildstestet: st√∂rre s√§kerhetsmarginal, l√§gre sidf√∂rskjutning och max automatisk zoom 1.85.
-- Auto-crop prioriterar nu hellre lite extra bakgrund √§n att kapa en √§rm. Manuell drag/pinch finns kvar f√∂r sista justeringen.
-- Mjuk/tyngre swipe fr√•n v2.8.84/v2.8.85 beh√•lls.
-
-CCC v2.8.87 ‚Äì r√§tt detaljbild + direkt tillbaka + balanserad crop (2026-08-10)
-- Grundorsaken till `r√§tt text men fel bild` hittad: `syncSwipeNeighbors()` k√∂rdes medan `detailView` fortfarande var hidden. Swipe-ytans bredd blev d√• ~0 px och n√§sta/f√∂reg√•ende lager kunde hamna n√§stan ovanp√• aktuell bild.
-- `openDetail()` visar nu detaljvyn f√∂rst och synkar swipe-lagren i n√§sta animation frame n√§r verklig bredd finns.
-- Aktuell bild har explicit z-index √∂ver grannbilder n√§r vyn √§r centrerad.
-- Crop-pilen g√•r nu direkt tillbaka till `Lokala utkast`/miniatyrgridden, inte via detaljvyn.
-- Auto-crop backar fr√•n v2.8.86:s alltf√∂r l√∂sa maxzoom: max 2.08 och n√§ra neutral zoomfaktor.
-- √Ñrmskydd sker fr√§mst genom starkare asymmetrisk omcentrering mot plaggets sida, s√• motsatt sida kan tappa mer skr√§p utan att ytter√§rmen offras.
-
-CCC v2.8.88 ‚Äì single-source detail state + crop calibration (2026-08-10)
-- Detaljvyn har nu `activeItemId` som enda identitet f√∂r aktivt plagg.
-- Titel, metadata, huvudbild, swipe, crop, Beh√•ll original och publiceringsstatus resolveras fr√•n samma aktiva item.
-- `activeIndex` synkas fr√•n `activeItemId` och anv√§nds endast som positionsinformation i listan.
-- Swipe-commit uppdaterar item-id och index tillsammans; direkt miniatyrklick etablerar nytt aktivt item innan UI synkas.
-- Vid tillbaka till miniatyrgridden nollst√§lls aktiv detaljidentitet.
-- Crop-algoritmen byts inte ut igen. v2.8.87-baslinjen kalibreras f√∂rsiktigt: l√§gre max autozoom (1.96), mildare sidf√∂rskjutning och liten extra horisontell sleeve-safety.
-- Syftet med v2.8.88 √§r stabil grund inf√∂r de fyra fasta tr√∂jtesterna, inte ny funktionalitet.
-
-CCC v2.8.91 ‚Äì kontrollerad crop-rollback + en enda √§ndring (2026-08-10)
-- Alla senare stabilitetsfixar fr√•n v2.8.88 beh√•lls: activeItemId/single-source detail state, r√§tt bild/text/crop, swipe, tillbaka till miniatyrer och cache.
-- Crop-algoritmen √§r √•terst√§lld exakt till v2.8.83-baslinjen, som anv√§ndaren bed√∂mde som b√§st hittills.
-- Endast en crop-√§ndring g√∂rs j√§mf√∂rt med v2.8.83: den befintliga s√§kerhetspaddingen √∂kas fr√•n 16 % till 20 % f√∂r lite mer luft kring √§rmarna.
-- Ingen normal/sv√•r-bild-klassificering, ingen tv√•passmotor och inga andra nya crop-regler finns med.
-- Syfte: testa en variabel i taget mot de fyra fasta fotbollstr√∂jorna.
-
-CCC v2.8.92 ‚Äì crop diagnostics (2026-08-10)
-- Ingen √§ndring av crop-algoritmen j√§mf√∂rt med v2.8.91.
-- Ny utvecklingsknapp `Visa crop-data` i Anpassa bild.
-- Diagnostiken visar k√§lla, zoom, X/Y-f√∂rskjutning, bildens fyllnadsgrad i crop-rutan samt v√§nster/h√∂ger/topp/botten-marginal.
-- Diagnostiken uppdateras live n√§r anv√§ndaren drar eller zoomar.
-- Syftet √§r att m√§ta de fyra referenstr√∂jorna innan n√§sta crop-parameter √§ndras.
-
-CCC v2.8.93 ‚Äì X-only optical centering (2026-08-10)
-- Bygger exakt vidare p√• v2.8.92/v2.8.91 crop-baslinje.
-- Endast en crop-√§ndring: om det detekterade motivets centrum ligger mer √§n ca 4 % fr√•n bildens horisontella centrum f√•r cropen en mild X-korrigering mot motivet.
-- Zoom, Y-position, motivdetektion, crop-storlek och 20 % s√§kerhetspadding fr√•n v2.8.91 √§r of√∂r√§ndrade.
-- `Visa crop-data` fr√•n v2.8.92 finns kvar f√∂r j√§mf√∂relse mot de fyra referenstr√∂jorna.
-- Alla senare stabilitetsfixar f√∂r activeItemId, r√§tt bild/text/crop, swipe och navigation √§r kvar.
-
-CCC v2.8.94 ‚Äì adaptiv X-centrering (2026-08-10)
-- Bygger direkt p√• v2.8.93.
-- Endast X-centreringen √§ndras.
-- Horisontell motivf√∂rskjutning under 4 % l√§mnas or√∂rd.
-- 4‚Äì8 % ger mild korrigering, 8‚Äì12 % medelstark korrigering och √∂ver 12 % starkare korrigering.
-- X-korrigeringen har ett h√•rt tak p√• 8,5 % av crop-bredden f√∂r att undvika √∂verkorrigering.
-- Zoom, Y-position, crop-storlek, motivdetektion, 20 % √§rm/s√§kerhetspadding och diagnostiken √§r of√∂r√§ndrade.
-- Alla stabilitetsfixar f√∂r activeItemId, swipe och navigation √§r kvar.
-
-RC1 2.8.95
-- top inset heuristic
-
-CCC v2.8.95 RC1 ‚Äì paired collar/shoulder lock (2026-08-10)
-- Full project package built from the complete GitHub ZIP.
-- Crop baseline restored to the known-good v2.8.94 implementation before this change.
-- One crop change: paired upper-edge detection. If strong top-edge points occur on both sides of the subject at similar height, minY is extended upward slightly so a V-neck/collar is not discarded when its centre blends into the background.
-- Adaptiv X-centrering, zoom, 20 % crop padding, swipe, navigation, diagnostics and activeItemId are unchanged from v2.8.94.
-- Previous experimental RC1 topInset/low-contrast code is not included.
-- Root /version.js is preserved byte-for-byte from the complete GitHub ZIP.
-
-CCC v2.9.0 ‚Äì Besk√§r Layout (2026-08-11)
-- Crop Engine 1.0 fr√•n v2.8.95 RC1 √§r of√∂r√§ndrad.
-- Besk√§r-vyn komprimerad f√∂r mobil utan scroll.
-- Hj√§lptext, crop-note och synlig crop-data bort fr√•n vyn.
-- Tillbaka-knappen flyttad visuellt till headerns v√§nstersida.
-- Bildr√§knaren visas inne i crop-bilden.
-- Zoom-slidern borttagen. Pinch och drag kvar.
-- Dubbeltryck v√§xlar zoom 100 % ‚Üí 130 % ‚Üí 180 % ‚Üí 100 %.
-- Diskret zoomknapp √∂ppnar [-] procent [+] f√∂r finjustering.
-- Original / √Öterst√§ll / OK ligger p√• samma rad.
-- Root /version.js bevarad exakt fr√•n tidigare fulla projektpaket.
-
-
-CCC v2.9.5 ‚Äì kompakt utkastgrid (2026-08-11)
-- Publicera > Lokala utkast visar nu rena miniatyrer utan titeltext.
-- Mobilvyn anv√§nder 4 x 4 miniatyrer, 16 utkast per sida.
-- Fler √§n 16 utkast delas upp i sidor som kan bytas med horisontell swipe; diskreta sidprickar visar aktuell sida.
-- Tryck p√• en miniatyr √∂ppnar befintlig detaljvy d√§r stor bild, titel/metadata och swipe mellan utkast finns kvar.
-- Ingen √§ndring av Vision-original, crop engine eller publiceringsbildens behandling.
-
-
-CCC v2.9.6 ‚Äì 3x3 utkastgrid + fokusmarkering (2026-08-11)
-- Publicera > Lokala utkast anv√§nder nu 3 x 3 miniatyrer, 9 utkast per sida.
-- Fler √§n 9 utkast delas upp i swipebara sidor; sidprickarna √§r kvar.
-- Titeltext √§r fortsatt borttagen fr√•n miniatyrerna; titel/metadata visas i detaljvyn.
-- Webbl√§sarens tillf√§lliga bl√• fokusram p√• bland annat Tillbaka-knappen d√∂ljs f√∂r touch/musklick.
-- Vid riktig tangentbordsnavigation anv√§nds i st√§llet en guldf√§rgad CCC-fokusmarkering.
-- Vision-original, crop engine och publiceringsbildens behandling √§r of√∂r√§ndrade.
-
-
-CCC v2.9.7 ‚Äì l√•ngtryck snabbkoll i utkastgrid (2026-08-11)
-- Publicera > Lokala utkast beh√•ller 3 x 3-grid och 9 utkast per sida.
-- Vanligt tryck p√• miniatyr √∂ppnar detaljvyn som tidigare.
-- H√•ll fingret stilla p√• en miniatyr i ca 0,75 s f√∂r en snabb stor f√∂rhandsvisning ovanp√• gridden.
-- F√∂rhandsvisningen ligger kvar medan fingret h√•lls nere och krymper tillbaka snabbt n√§r fingret sl√§pps.
-- En r√∂relse √∂ver ca 12 px avbryter l√•ngtrycket s√• swipe mellan gridsidor inte blockeras.
-- L√•ngtryck √∂ppnar inte detaljvyn efter√•t; webbl√§sarens native touch-callout/contextmeny blockeras p√• miniatyrerna.
-- Vision-original, crop engine, detalj-swipe och publiceringsbildens behandling √§r of√∂r√§ndrade.
-
-
-CCC v2.9.8 ‚Äì mjukare snabbkoll + bl√•markering bort (2026-08-11)
-- L√•ngtryckets stora f√∂rhandsvisning v√§xer nu upp mjukare och lite l√•ngsammare (ca 0,32 s).
-- N√§r fingret sl√§pps krymper bilden tillbaka snabbt (ca 0,22 s).
-- WebKit/iOS/Chrome tap-highlight och text/bildmarkering blockeras p√• miniatyrkorten f√∂r att undvika bl√• markering vid l√•ngtryck.
-- Riktig tangentbordsfokus beh√•ller CCC:s guldf√§rgade fokusindikering.
-- 3 x 3-grid, 0,75 s l√•ngtryck, swipe, detaljvy, Vision-original och crop engine √§r of√∂r√§ndrade.
-
-
-CCC v2.9.9 ‚Äì pilnavigation i detalj/Anpassa bild (2026-08-11)
-- Fixar att v√§nster/h√∂ger-pilarna i bildens detaljvy inte bytte aktivt utkast trots att swipe fungerade.
-- Piltangenterna anv√§nder nu samma `next(delta)`/`openDetail()`-fl√∂de som den fungerande swipe-navigationen, s√• bild, titel, metadata och activeItemId h√•lls synkade.
-- Bindningen k√§nner igen befintliga f√∂reg√•ende/n√§sta-knappar via id, klass, aria-label/text eller √§ldre inline-anrop och kr√§ver ingen √§ndring av crop engine.
-- Swipe, 3 x 3-grid, l√•ngtrycks-preview, Vision-original och crop-beteende √§r of√∂r√§ndrade.
-
-
-CCC v2.9.10 ‚Äì Publicera-start f√∂renklad
-- v2.9.9 pilfix i Anpassa bild ing√•r.
-- Publicera-start: F√∂rbered f√∂r publicering / V√§lj kanal / Historik.
-- Tillbaka-kortet borttaget. Headerns tillbaka-pil √§r aktiv √§ven p√• startvyn och g√•r d√§r till Dashboard.
-- V√§lj kanal har egen vy; Hemsidan/Container13 √§r f√∂rsta kanalen, fler kanaler senare.
-- Historik ers√§tter tidigare Publicerade.
-- Befintlig 3x3-grid, l√•ngtrycks-preview, fokusfix och cropfl√∂de beh√•llna.
-
-
-CCC v2.9.11
-- Fix: synliga v√§nster/h√∂ger-pilar i detaljvyn √§r nu riktiga interaktiva kontroller och anv√§nder samma openDetail/next-fl√∂de som swipe.
-- Fix: l√•ngtrycks-snabbkoll anv√§nder en sammanh√§ngande transform-animation tillbaka till miniatyren f√∂r att undvika slutligt hopp/hack.
-
-
-CCC v2.9.12 ‚Äì sparad bildanpassning (2026-08-11)
-- Anpassa bild sparar zoom/position icke-destruktivt; Vision-originalet l√§mnas or√∂rt.
-- Knapparna heter Beh√•ll hela bilden / √Öterst√§ll anpassning / Spara anpassning och har luftigare layout.
-- √Öterst√§ll anpassning √•terg√•r till CCC:s ursprungliga besk√§rningsf√∂rslag.
-
-CCC v2.9.13 ‚Äì stabil detaljvy + fri utzoomning (2026-08-11)
-- Detaljvyn reserverar fasta zoner f√∂r bild, titel/metadata, √•tg√§rdsknappar och status s√• pris eller varierande metadata inte flyttar knapparna vid swipe.
-- Synliga v√§nster/h√∂ger-pilar √§r klick-/touchbara ovanp√• swipeytan och anv√§nder samma next/openDetail-fl√∂de som swipe.
-- Anpassa bild till√•ter utzoomning under cover-niv√•n utan att tvinga tillbaka zoom till 100 % n√§r fingrarna sl√§pps.
-- Miniatyrerna anv√§nder contain-visning och prioriterar sparad publiceringsbild n√§r s√•dan finns, s√• de b√§ttre speglar den sparade bildanpassningen.
-- README_CHATGPT_CCC √•ter ikapp med leveransregeln.
-
-
-CCC v2.9.14 ‚Äì naturligt bildl√§ge f√∂re Anpassa bild (2026-08-16)
-- Fixar fel d√§r ett utkast med sparad publicerings-WebP kunde visas redan zoomat/beskuret i miniatyrgridden och detaljvyn.
-- Miniatyr och detaljvy prioriterar nu lokal thumbnail/originalbild f√∂r visning; sparad publishBlob anv√§nds fortsatt som publiceringskopia och status.
-- Efter Spara anpassning √•terg√•r detaljvisningen till samma naturliga preview-k√§lla i st√§llet f√∂r att byta till den beskurna WebP-kopian.
-- Anpassa bild forts√§tter att √∂ppna Vision-originalet och Crop Engine 1.0 √§r of√∂r√§ndrad.
-- Root /version.js √§r or√∂rd.
-
-
-## v2.9.33 ‚Äì global CCC-footer i Core
-- Publiceras lokala Tillbaka-f√§lt √§r borttaget.
-- Ny global `CCC FOOTER CORE v1` skapas av `ccc-core/core.js` p√• alla moderna Core-arbetsvyer utom Dashboard.
-- Footern ligger konsekvent l√§ngst ned, h√∂gerjusterad f√∂r h√∂ger tumme och anv√§nder iPhones safe-area.
-- `Tillbaka / Till f√∂reg√•ende steg` anv√§nder exakt samma `ccc:header-back` som headerpilen n√§r modulens back-state √§r aktiv. P√• modulstart utan aktiv header-back g√•r footerknappen till Dashboard.
-- Dashboard skapar ingen footer.
-- Core reserverar gemensam bottenyta p√• `.ccc-workspace`; detta r√§ttar felet d√§r `Spara anpassning` kunde klippas/hamna bakom nederf√§ltet.
-- Publicera, Vision och Dashboard cache-bustar nu `core.css`/`core.js` till v2.9.33.
-- N√§sta steg efter test √§r att l√•ta √§ldre modulsidor som √§nnu inte anv√§nder Core-header/Core-CSS migrera till samma globala footer.
-
-
-## v2.9.34 ‚Äì footer som permanent Core-del utan ihoptryckt arbetsyta
-- CCC-footern skapas nu √§ven p√• Dashboard. Dashboard visar en tom footer i nul√§get.
-- √ñvriga moduler visar samma Core-footer med tumv√§nlig Tillbaka-knapp.
-- Footern ligger fast l√§ngst ner och anv√§nder samma bakgrund som arbetsytan.
-- Den globala `padding-bottom` p√• `.ccc-workspace` fr√•n v2.9.33 √§r borttagen; footern f√•r inte l√§ngre krympa eller trycka ihop Dashboard/Publicera/Vision.
-- Publiceras miniatyrer beh√•ller sin normala geometri. Extra utrymme l√§ggs bara som scrollm√•n efter inneh√•llet s√• sista raden och √•tg√§rdsknappar kan komma ovanf√∂r footern utan att bilderna pressas ihop.
-- `Spara anpassning` f√•r extra avslutande scrollm√•n s√• hela knappen kan visas, inklusive rundad nederkant.
-- Tillbaka-knappen ligger s√• l√•ngt ned som Core-footerns safe-area till√•ter.
-- Dashboard, Publicera och Vision anv√§nder `core.js/core.css?v=2.9.34` f√∂r att undvika gammal cache.
-
-
-## v2.9.35 ‚Äì footer utan maskering eller ihoptryckning
-- Efter kontroll av IMG_1927‚ÄìIMG_1929 √§r Core-footern √§ndrad s√• den inte l√§ngre har en ogenomskinlig fullbreddsyta som kan maskera nederdelen av Dashboard-kort, Historik eller `Spara anpassning`.
-- Footerbeh√•llaren √§r nu transparent och p√•verkar aldrig `.ccc-workspace`-h√∂jd, padding eller kortgeometri.
-- Dashboard beh√•ller footerstrukturen men den √§r tom och 0 px h√∂g, s√• Dashboard ska se exakt ut som f√∂re footerinf√∂randet.
-- Tillbaka-knappen ligger fast l√§ngst ned till h√∂ger med endast 6 px bottenmarginal och flyttas d√§rmed tydligt l√§ngre ned √§n tidigare safe-area-lyfta placering.
-- Publiceras tidigare kompensationsmarginaler p√• draft-grid, status och crop-actions √§r borttagna eftersom de kunde ge oj√§mn geometri.
-- Djupa detalj/crop-vyer f√•r endast `scroll-padding-bottom`, vilket inte flyttar eller krymper deras synliga inneh√•ll.
-- Back-logiken √§r of√∂r√§ndrad och anv√§nder samma `ccc:header-back` som headerpilen.
-
-## v2.9.36 ‚Äì footer, V√§lj/radera och kontexttips
-- Core-footern √§r gemensam CCC-standard. Dashboard har tom footer utan √§ndrad arbetsyta. Tillbaka ligger √§nnu l√§gre (2 px) och anv√§nder samma back-event som headerpilen.
-- Publicera: tryck=miniatyr √∂ppnas, l√•ngtryck=snabbzoom, dubbeltryck=helsk√§rm. Gesterna beh√•lls.
-- Separat V√§lj-l√§ge f√∂r markering/radering. Flerval st√∂ds; footern visar Avbryt, antal markerade och Ta bort. Radering bekr√§ftas och rensar lokal Publicera/Vision-data.
-- Gr√∂n ‚úì betyder endast sparad bildanpassning; markering anv√§nder separat gul markering.
-- Kontexttips √§r CCC-standard: max tre visningar per tips-ID. Publicera har tips f√∂r miniatyrgester/V√§lj, detaljvy/anpassningsbock och Anpassa bild.
-- Inst√§llningar ‚Üí Hj√§lp & tips: Visa anv√§ndningstips p√•/av och Visa alla tips igen. Dashboard/Publicera-start har inga tips; Vision g√•s igenom senare.
-- Mobilprincip: viktiga kommandon ska vara tumv√§nliga och dolda gester f√•r inte vara enda v√§gen till viktiga funktioner.
-
-
-## v2.9.37 ‚Äì footerdriven Hj√§lp/V√§lj och ren arbetsyta
-- Automatiska tipsrutor i Publicera √§r borttagna eftersom de tog plats och flyttade miniatyrerna.
-- Hj√§lp visas nu p√• beg√§ran via `? Hj√§lp` i Core-footern. Hj√§lpen √§r kontextuell f√∂r aktuell vy och √∂ppnas som overlay/dialog, s√• arbetsytans geometri p√•verkas inte.
-- `V√§lj` √§r flyttad fr√•n rubriken till footern i Publiceras miniatyrvy.
-- Normal footer i miniatyrvyn: `? Hj√§lp`, `V√§lj`, `Tillbaka`.
-- I markeringsl√§ge v√§xlar footern till `Avbryt`, antal markerade och `Ta bort`.
-- Bildgesterna √§r of√∂r√§ndrade: tryck = √∂ppna, l√•ngtryck = snabbzoom, dubbeltryck = helsk√§rm.
-- Gr√∂n ‚úì betyder fortsatt sparad bildanpassning; markeringsl√§ge anv√§nder separat gul markering.
-- Tillbaka-knappen √§r flyttad √§nnu l√§ngre ned: Core-footern har nu 0 px extra bottenpadding.
-- Inst√§llningar ‚Üí Hj√§lp & tips styr nu om `? Hj√§lp` ska visas i footern. Det tidigare tre-g√•ngerssystemet f√∂r automatiska tips √§r pausat.
-- CCC-princip: arbetsytan ska h√•llas ren; kontextuella verktyg som Hj√§lp/V√§lj h√∂r hemma i footern n√§r de inte √§r en del av huvuduppgiften.
-
-
-## v2.9.38 ‚Äì stor footerf√∂rflyttning + √Öngra raderat utkast
-- Footerplaceringen justeras nu p√• riktigt, inte med 2‚Äì4 px: hela Core-footern flyttas 72 px ned visuellt p√• arbetsvyer. Dashboardens tomma footer p√•verkas inte.
-- Syftet √§r att f√• samma naturliga luft efter sista stora kortet/arbetsknappen som mellan √∂vriga CCC-kort, och att sluta ligga ovanp√• Historik/Spara anpassning.
-- Footerverktygen `? Hj√§lp`, `V√§lj` och `Tillbaka` f√∂ljer med samma f√∂rflyttning.
-- Radering av lokala utkast √§r nu tv√•stegad: efter bekr√§ftelse f√∂rsvinner utkasten direkt ur gridden men permanent IndexedDB-radering v√§ntar 8 sekunder.
-- Under de 8 sekunderna visar Core-footern `X utkast borttagna` + `√Öngra`.
-- `√Öngra` √•terst√§ller bilderna till sina tidigare positioner i miniatyrgridden och permanent radering sker inte.
-- Om ingen √•ngrar inom 8 sekunder rensas Publicera/Vision-data permanent med befintlig delete-logik.
-- Om en ny radering g√∂rs innan f√∂reg√•ende √Öngra-period √§r slut slutf√∂rs den √§ldre raderingen f√∂rst.
-
-
-## v2.9.39 ‚Äì √•terst√§lld synlig Core-footer
-- v2.9.38 flyttade hela footern med `transform: translateY(72px)`, vilket p√• iOS/PWA kunde l√§gga den helt utanf√∂r den visuella viewporten. Den l√∂sningen √§r borttagen.
-- Footern h√•lls nu synlig och placeras l√•gt med `bottom:-18px` i st√§llet f√∂r transform.
-- Safe-area hanteras separat s√• kontrollerna fortfarande ligger inom den synliga ytan.
-- Dashboardens tomma footer √§r fortsatt 0 px och p√•verkar inte arbetsytan.
-- Hj√§lp/V√§lj/Tillbaka och √Öngra-radering fr√•n v2.9.38 beh√•lls.
-
-
-## v2.9.40 ‚Äì l√§gre footer, kontextuell hj√§lp och s√§ker raderingsdialog
-- Core-footern flyttas tydligt l√§ngre ned: `bottom:-42px` i st√§llet f√∂r `-18px`.
-- Publicera-starten visar ingen Hj√§lp-knapp; d√§r √§r korten sj√§lvf√∂rklarande. Hj√§lp visas endast i miniatyr-, detalj- och Anpassa bild-vyerna.
-- Hj√§lprutans St√§ng-knapp har flyttats l√§ngre ned fr√•n hj√§lptexten och centrerats horisontellt.
-- Native `confirm()` f√∂r radering √§r borttagen.
-- Ny CCC-raderingsdialog visar exakt vilka bilder som √§r markerade som mini-miniatyrer innan borttagning.
-- Upp till fem mini-miniatyrer visas; vid fler visas `+N`.
-- Dialogen har tydliga `Avbryt` och `Ta bort`-knappar.
-- √Öngra-radering i 8 sekunder fr√•n v2.9.38/v2.9.39 beh√•lls efter bekr√§ftad borttagning.
-
-
-## v2.9.41 ‚Äì footerposition finjusterad efter IMG_1938‚ÄìIMG_1939
-- v2.9.40 placerade Core-footern f√∂r l√•ngt ned (`bottom:-42px`), vilket kapade nederdelen av `Tillbaka`, `? Hj√§lp` och `V√§lj` p√• iPhone.
-- Footern lyfts ca 28 px och anv√§nder nu `bottom:-14px`.
-- M√•let √§r att beh√•lla den tydligt l√§gre tumv√§nliga placeringen, men med hela knapparna synliga och en liten fri marginal under.
-- Ingen √§ndring av miniatyrstorlek, grid, hj√§lpruta, V√§lj/radera, mini-miniatyrer i raderingsdialogen eller √Öngra-fl√∂det.
-
-
-## v2.9.42 ‚Äì riktig global Core-footerzon
-- Footerplaceringen √§r ombyggd enligt CCC:s Core-princip: EN enda central geometri i `ccc-core`, inga vy-specifika `bottom`-v√§rden.
-- Tidigare `bottom:-14/-18/-42` och transform-hack √§r borttagna.
-- Core anv√§nder nu `window.visualViewport` f√∂r att k√§nna den faktiskt synliga iPhone/PWA-ytan och placerar footerzonen mot dess nederkant.
-- Alla footerl√§gen (`Tillbaka`, `? Hj√§lp`, `V√§lj`, markeringsl√§ge, `√Öngra`) anv√§nder samma Core-zon och samma vertikala niv√•.
-- Dashboard har samma footerzon men den √§r osynlig/tom.
-- Footerzonen har central h√∂jd `--ccc-footer-zone-height:62px` och kontrollh√∂jd `50px`. Framtida h√∂jd/placering √§ndras p√• ett enda st√§lle i Core och sl√•r igenom i hela CCC.
-- Arbetsytornas/miniatyrernas geometri √§ndras inte av denna fix.
-
-
-## v2.9.43 ‚Äì central Core-justering av header och footer
-- Footer och header justeras nu endast i `ccc-core`, enligt CCC-principen att gemensamma element ska √§ndras p√• ett enda st√§lle.
-- Footerpositionen styrs fortsatt av en enda Core-variabel: `--ccc-footer-zone-height`.
-- Footerzonen s√§nks fr√•n 62 px till 52 px. Eftersom footerknapparna √§r 50 px h√∂ga ger det ca 2 px kvar till den synliga nederkanten i alla footerl√§gen.
-- `Tillbaka`, `? Hj√§lp`, `V√§lj`, markeringsl√§ge och `√Öngra` √§rver exakt samma vertikala niv√•.
-- Den gemensamma modulraden i headern (`PUBLICERA/VISION/ARBETSYTA`, undertitel och linje) flyttas upp centralt: topmarginal 6‚Üí0 px, minh√∂jd 52‚Üí48 px och padding 7/8‚Üí5/6 px.
-- Resultatet ska ge mindre on√∂dig luft under headerkontrollerna och samtidigt mer plats √•t arbetsytan.
-- Ingen modul f√•r en lokal footer- eller headerposition i denna version.
-
-
-## v2.9.44 ‚Äì footer f√∂rankrad i CCC-appskalet + tydligare lyft av modulraden
-- v2.9.42‚Äì2.9.43 anv√§nde `visualViewport` som referens f√∂r footerpositionen. Det gav fortfarande fel faktisk niv√• p√• iPhone/PWA.
-- `visualViewport`-l√∂sningen √§r nu helt borttagen.
-- `.ccc-app-shell/.app-shell` √§r nu den enda centrala positioneringskontexten f√∂r footern.
-- Core skapar footern inne i appskalet, inte direkt under `body`.
-- Footern anv√§nder `position:absolute` och den centrala variabeln `--ccc-footer-bottom:8px`.
-- Alla footerl√§gen (`Tillbaka`, `? Hj√§lp`, `V√§lj`, markeringsl√§ge, `√Öngra`) anv√§nder exakt samma ankare och nederniv√•.
-- Dashboard f√•r samma Core-footerstruktur men den √§r tom/osynlig.
-- Inga negativa `bottom`-v√§rden, transforms eller vy-/modulspecifika footerpositioner anv√§nds.
-- Den gemensamma modulraden (`PUBLICERA/VISION/ARBETSYTA`, undertitel och linje) flyttas upp tydligt med `margin-top:-18px` i EN Core-regel.
-- Detta √§r nu den avsedda CCC-arkitekturen: gemensam header/footer-geometri √§ndras p√• ett enda st√§lle i Core.
-
-
-## v2.9.45 ‚Äì rotorsaken hittad och borttagen
-- Footerproblemet berodde p√• en √§ldre senare Core-regel: `@supports ... padding-bottom: env(safe-area-inset-bottom)`. Den lade tillbaka safe-area-padding p√• footern och flyttade knapparna upp√•t, vilket motverkade v√•ra footerjusteringar. Regeln √§r nu borttagen.
-- Footern skapas √•ter direkt under `body` och anv√§nder en enda `position:fixed` Core-geometri.
-- Safe-area anv√§nds nu som faktisk ned√•triktad offset: `bottom: calc(2px - env(safe-area-inset-bottom))`. Ingen footer-padding anv√§nds f√∂r safe-area.
-- `Tillbaka`, `? Hj√§lp`, `V√§lj`, markeringsl√§ge och `√Öngra` anv√§nder samma 50 px h√∂ga footerlinje och exakt samma nederposition.
-- Headerproblemet berodde ocks√• p√• kaskaden: flera senare `.ccc-module-marker`-regler med `!important`, bland annat mobilregeln med `margin-top:2px`, skrev √∂ver den tidigare Core-√§ndringen.
-- v2.9.45 l√§gger den kanoniska mobila modulradsgeometrin SIST i `core.css`, s√• den vinner √∂ver samtliga √§ldre regler: 44 px h√∂g och `margin-top:-18px`.
-- Detta √§r en korrigering av CSS-kaskaden, inte √§nnu en blind pixeljustering.
-
-
-## v2.9.46 ‚Äì kalibrering efter verifierad v2.9.45 p√• iPhone
-- v2.9.45 bekr√§ftade att den nya Core-kaskaden verkligen styr layouten.
-- Footern hamnade d√• f√∂r l√•ngt ned eftersom safe-area subtraherades fr√•n `bottom`. Det gjorde att n√§stan hela 50 px-knappen hamnade under den synliga ytan.
-- Core anv√§nder nu `bottom: calc(env(safe-area-inset-bottom) + 4px)`. Safe-area l√§ggs allts√• TILL, s√• hela footerknappen ligger synlig strax ovanf√∂r iPhones nederkant.
-- Samma footerformel g√§ller `Tillbaka`, `? Hj√§lp`, `V√§lj`, markeringsl√§ge och `√Öngra`.
-- Headerns kanoniska mobilregel justeras fr√•n `margin-top:-18px` till `-6px`. v2.9.45 lyfte hela modulraden s√• mycket att kickertexten (t.ex. VISION/PUBLICERA) gled in under den sticky headern.
-- Modulraden f√•r samtidigt 48 px h√∂jd i st√§llet f√∂r 44 px s√• b√•de kicker, undertitel och linje f√•r plats utan att √•terg√• till den gamla h√∂ga positionen.
-- Detta √§r endast kalibrering av de tv√• centrala Core-v√§rdena; inga modulunika positioner inf√∂rs.
-
-
-## v2.9.48 ‚Äì footer kalibrerad utan safe-area-matematik
-- v2.9.47 √•terkallas som footerexperiment eftersom den negativa offseten flyttade footern helt utanf√∂r den synliga ytan.
-- v2.9.48 bygger d√§rf√∂r fr√•n v2.9.46, d√§r footern var helt synlig och headern var korrekt.
-- Rotkalibreringen g√∂rs nu enklare: footern anv√§nder direkt `bottom:10px` i den enda centrala Core-regeln.
-- `env(safe-area-inset-bottom)` anv√§nds inte l√§ngre f√∂r footerpositionen. D√§rmed slipper vi pendlingen mellan v2.9.45 (f√∂r l√•ngt ned) och v2.9.46 (f√∂r h√∂gt).
-- Headern √§r exakt of√∂r√§ndrad fr√•n v2.9.46.
-- `Tillbaka`, `? Hj√§lp`, `V√§lj`, markeringsl√§ge och `√Öngra` √§rver samma `bottom:10px`.
-
-
-## v2.9.49 ‚Äì slutlig footerfinjustering
-- Enda layout√§ndringen fr√•n v2.9.48 √§r den globala Core-footerpositionen: `bottom:10px` ‚Üí `bottom:2px`.
-- Footern s√§nks allts√• 8 px p√• alla vyer.
-- Header, kort, arbetsytor och √∂vrig geometri √§r helt of√∂r√§ndrade fr√•n v2.9.48.
-
-
-## v2.9.50 ‚Äì site-preview s√§ker grund
-- `ccc-core/site-preview/` anv√§nds som isolerad kopia av den publika Container13-sajten inf√∂r framtida CCC-f√∂rhandsvisning.
-- Den uppladdade preview-kopian refererade till `manifest.webmanifest` men filen saknades. Publika sajtens manifest kopieras d√§rf√∂r in f√∂r att undvika 404 och beh√•lla samma metadatareferenser.
-- `site-preview/pwa.js` √§r neutraliserad: ingen service worker registreras, ingen installationsprompt visas och ingen PWA-relaterad lokal state skrivs.
-- `site-preview/sw.js` √§r inert och cachear/f√•ngar inga requests.
-- Den visuella sajtkopian, HTML, CSS, JS, bilder och befintlig Firestore-l√§sning √§r i √∂vrigt or√∂rda i detta steg.
-- Detta steg publicerar ingenting och skriver ingenting till Container13:s live-data; det g√∂r endast preview-kopian s√§ker att anv√§nda som n√§sta byggblock.
-
-
-## v2.9.51 ‚Äì f√∂rsta riktiga site-preview fr√•n Publicera
-- Detaljvyn i Publicera f√•r knappen `F√∂rhandsvisa p√• hemsidan`.
-- Knappen publicerar ingenting. Den sparar endast l√§tt metadata i `sessionStorage` och √∂ppnar `ccc-core/site-preview/nyinkommet.html?cccPreview=1`.
-- Sj√§lva bilden skickas inte till Firebase eller via URL. Site-preview h√§mtar det valda utkastet lokalt ur CCC:s befintliga IndexedDB (`ccc-local-workspace`).
-- Site-preview prioriterar `publishBlob`, d√§refter thumbnail/original och kan √§ven l√§sa Vision-original via `originalFileKey`.
-- Det lokala plagget injiceras h√∂gst upp p√• Nyinkommet med samma befintliga kort-rendering som live-sidan anv√§nder.
-- En tydlig banner `F√ñRHANDSVISNING ‚Äì INGET √ÑR PUBLICERAT` visas endast i preview-l√§ge.
-- Om live-galleriet kan h√§mtas visas preview-plagget √∂verst tillsammans med den vanliga sajtkopian. Om live-h√§mtningen misslyckas ska det lokala preview-plagget √§nd√• visas.
-- Ingen write/upload till Firestore, Storage eller riktiga Container13-sajten inf√∂rs i denna version.
-- `site-preview` beh√•ller den neutraliserade PWA/service-worker-grunden fr√•n v2.9.50.
-
-
-## v2.9.52 ‚Äì site-preview flyttad till V√§lj kanal
-- Den tillf√§lliga knappen `F√∂rhandsvisa p√• hemsidan` tas bort fr√•n plaggdetaljen/F√∂rbered f√∂r publicering.
-- `V√§lj kanal` f√•r ett riktigt kanal-kort f√∂r `Container13 hemsida`.
-- `F√∂rhandsvisa p√• hemsidan` ligger nu i kanalsteget, d√§r f√∂rhandsvisning och senare faktisk publicering h√∂r hemma.
-- Den fungerande lokala preview-tekniken fr√•n v2.9.51 √•teranv√§nds: inget skrivs till Firebase eller livesajten.
-- I detta f√∂rsta kanaltest anv√§nds senast aktiva lokala plagg om ett s√•dant finns, annars f√∂rsta lokala utkastet. Explicit val av vilka f√§rdigst√§llda plagg som ska publiceras byggs som separat n√§sta steg.
-- `README_CHATGPT_CCC.txt` √•terst√§lls som kanonisk fil i projektroten och ska forts√§ttningsvis levereras d√§r i changed-files.
-
-
-## v2.9.53 ‚Äì CCC-standard f√∂r adaptiv miniatyrgrid
-- `F√∂rbered f√∂r publicering` anv√§nder nu adaptiv grid beroende p√• antal synliga bilder p√• aktuell sida:
-  - 1 bild ‚Üí 1√ó1
-  - 2 bilder ‚Üí 2√ó1
-  - 3‚Äì4 bilder ‚Üí 2√ó2
-  - 5‚Äì9 bilder ‚Üí 3√ó3
-  - 10+ bilder ‚Üí 3√ó3, max 9 per sida + swipe/pager
-- Samma reserverade gridyta beh√•lls s√• f√§rre bilder f√•r st√∂rre, mer l√§tttryckta miniatyrer i st√§llet f√∂r sm√• 3√ó3-rutor.
-- Befintliga bildinteraktioner l√§mnas of√∂r√§ndrade: enkeltryck, l√•ngtryck/snabbf√∂rstoring, dubbeltryck/quick-look och swipe mellan gridsidor.
-- Den adaptiva griden √§r nu t√§nkt som √•teranv√§ndbar CCC-standard och ska √§ven anv√§ndas i kommande `V√§lj plagg f√∂r publicering`.
-- Ingen √§ndring i site-preview, kanalval eller publiceringsmotor i denna version.
-- `README_CHATGPT_CCC.txt` ligger fortsatt i projektroten och `ccc-core/version.js` ing√•r i changed-files.
-
-
-## v2.9.54 ‚Äì publiceringsfl√∂de: V√§lj plagg ‚Üí V√§lj kanal
-- `V√§lj kanal` b√∂rjar nu med ett riktigt plaggval i en adaptiv miniatyrgrid.
-- Griden f√∂ljer CCC-standarden: 1‚Üí1√ó1, 2‚Üí2√ó1, 3‚Äì4‚Üí2√ó2, 5‚Äì9‚Üí3√ó3, 10+‚Üí3√ó3 med max 9 per sida.
-- Enkeltryck markerar/avmarkerar plagg och visar gr√∂n rund bock; minst ett plagg kr√§vs f√∂r `Forts√§tt`.
-- L√•ngtryck/snabbf√∂rstoring och dubbeltryck/quick-look √•teranv√§nds √§ven i denna grid.
-- Efter `Forts√§tt` visas kanalalternativ.
-- `Container13 hemsida` visas som ansluten och aktiv.
-- Instagram, Facebook och Tradera visas gr√•markerade som `Inte ansluten √§nnu` f√∂r att g√∂ra framtida m√∂jligheter synliga utan att kunna v√§ljas.
-- N√§r Container13 v√§ljs visas `F√∂rhandsvisa p√• hemsidan` samt en avsiktligt inaktiv `Publicera`-knapp; riktig live-publicering kopplas inte in i denna version.
-- Site-preview kan nu ta emot flera markerade lokala plagg och injicera dem h√∂gst upp i Nyinkommet utan Firebase-write.
-- Expresspublicering ligger kvar som senare snabbsp√•r ovanp√• samma publiceringsmotor n√§r normalfl√∂det √§r stabilt.
-
-
-## v2.9.55 ‚Äì Forts√§tt synlig i V√§lj plagg
-- v2.9.54 hade fungerande markering av miniatyrer, men `Forts√§tt` l√•g efter den reserverade gridytan och kunde hamna bakom/under den fasta Core-footern p√• mobil.
-- `Forts√§tt` √§r nu fast placerad ovanf√∂r Core-footern i `V√§lj plagg`, med tumv√§nlig fullbredd inom max 520 px.
-- Knappen √§r alltid synlig medan anv√§ndaren v√§ljer plagg, men √§r fortsatt inaktiv tills minst ett plagg markerats.
-- Ingen √§ndring i sj√§lva markeringen, adaptiva griden, kanalvalet eller site-preview-logiken.
-
-
-## v2.9.56 ‚Äì kanalidentitet + bort med gul pager-prick
-- Den gula ensamma pricken som kunde synas under `Forts√§tt` vid bara en sida var kanalgridens pager-indikator. CSS-regeln f√∂r pagern skrev √∂ver HTML-attributet `hidden`.
-- `.ccc-draft-pager[hidden]` d√∂ljs nu explicit med `display:none!important`, s√• ingen pager-prick visas n√§r det bara finns en sida.
-- Kanalvyn f√•r tydliga visuella kanalidentiteter:
-  - Container13 hemsida: lokal `C13`-mark√∂r.
-  - Instagram: igenk√§nnbar kamera/Instagram-symbol.
-  - Facebook: igenk√§nnbar `f`-symbol.
-  - Tradera: enkel `T`-mark√∂r tills eventuell officiell asset kopplas in.
-- Ej anslutna kanaler √§r fortsatt synliga men gr√•markerade/inaktiva f√∂r att visa vad CCC kan st√∂dja fram√∂ver.
-- Ingen √§ndring i urval, preview-data, site-preview eller publiceringslogik.
-
-
-## v2.9.57 ‚Äì st√∂rre f√§rgkanaler + l√•st valbox
-- Kanalikonerna √§r st√∂rre (~50 px) och mer f√§rgstarka f√∂r snabb visuell igenk√§nning.
-- Instagram och Facebook anv√§nder f√§rgm√§ssigt igenk√§nnbara lokala SVG/CSS-symboler; inga externa bildresurser kr√§vs.
-- Container13 f√•r en st√∂rre gul/guldig `C13`-mark√∂r och Tradera en f√§rgstark lokal `T`-mark√∂r.
-- Ej anslutna kanalrader gr√•as inte l√§ngre ned. Kanalnamn och ikon visas normalt.
-- Endast valboxen l√§ngst till h√∂ger √§r gr√•/l√•st f√∂r en ej ansluten kanal.
-- Tryck p√• Instagram/Facebook/Tradera visar en liten tillf√§llig popup som f√∂rklarar att kanalen inte √§r ansluten √§nnu och att anslutning senare ska kunna g√∂ras direkt h√§rifr√•n.
-- UI:t f√∂rbereds d√§rmed f√∂r framtida `Anslut kanal`-fl√∂de utan att n√•gon riktig kontointegration kopplas in √§nnu.
-
-
-## v2.9.58 ‚Äì sista kontrollvy f√∂re publicering
-- Tryck p√• den anslutna kanalen `Container13 hemsida` leder nu till en separat `Redo att publicera`-vy.
-- Kontrollvyn visar vald kanal, antal valda plagg och de valda plaggen som adaptiva miniatyrer.
-- `F√∂rhandsvisa p√• hemsidan` √•teranv√§nder befintlig multi-item site-preview.
-- `Publicera` visar dynamiskt `Publicera 1 plagg` / `Publicera X plagg`.
-- Skarp publicering √§r fortfarande medvetet avst√§ngd: tryck p√• Publicera ger endast status om vad som skulle publiceras. Ingen Firebase-write/live-publicering g√∂rs i v2.9.58.
-- Headerns tillbaka-pil g√•r fr√•n kontrollvyn tillbaka exakt ett steg till kanalvalet.
-- Kontrollvyn √§r avsedd som sista s√§kerhetskontroll innan publiceringsmotorn kopplas in.
-
-
-## v2.9.59 ‚Äì standardfl√∂det byter ordning: kanal f√∂rst
-- Publicera-standardfl√∂det √§r nu: `V√§lj kanal` ‚Üí `V√§lj plagg` ‚Üí `Redo att publicera` ‚Üí `F√∂rhandsvisa/Publicera`.
-- Motivet √§r framtidss√§kerhet: olika kanaler kan senare kr√§va olika bildformat, metadata eller f√∂rberedelser, s√• kanalvalet b√∂r s√§tta ramarna f√∂re plaggurvalet.
-- Startkortet `V√§lj kanal` √∂ppnar d√§rf√∂r kanalvyn direkt.
-- Val av `Container13 hemsida` leder d√§refter till den adaptiva miniatyrgriden f√∂r plaggurval.
-- `Forts√§tt` fr√•n plaggurvalet g√•r direkt till sista kontrollvyn.
-- Tillbaka-pilen f√∂ljer exakt samma logiska steg bak√•t: kontroll ‚Üí plaggval ‚Üí kanalval ‚Üí Publicera-start.
-- Expresspublicering ligger kvar som ett separat framtida snabbsp√•r f√∂r fall d√§r anv√§ndaren redan vet kanal och inte beh√∂ver normalfl√∂dets alla steg.
-- Ingen √§ndring i live-publiceringsmotorn; skarp publicering √§r fortsatt avst√§ngd.
-
-
-## v2.9.60 ‚Äì kanalvyn renodlad
-- Den gamla actiondelen med `F√∂rhandsvisa p√• hemsidan` och `Publicera` har tagits bort fr√•n `V√§lj kanal`.
-- Standardfl√∂det √§r nu visuellt och funktionellt konsekvent: `V√§lj kanal` ‚Üí `V√§lj plagg` ‚Üí `Forts√§tt` ‚Üí `Redo att publicera`.
-- `F√∂rhandsvisa p√• hemsidan` och `Publicera X plagg` visas endast i sista kontrollvyn, efter att plagg faktiskt har valts.
-- Kanalvyns visuella utformning fr√•n v2.9.59/v2.9.57 beh√•lls.
-- Skarp publicering √§r fortsatt avst√§ngd.
-
-
-## v2.9.61 ‚Äì explicit kanalval + tydligare publiceringssteg
-- `Container13 hemsida` √§r nu ett riktigt val, inte en dold N√§sta-funktion.
-- Kanalens valbox √§r tom tills anv√§ndaren v√§ljer kanalen; d√§refter visas gr√∂n bock.
-- En tydlig `N√§sta`-knapp ligger under kanalerna och √§r inaktiv tills minst en tillg√§nglig kanal valts.
-- Ej anslutna kanaler beh√•ller sina l√•sta/gr√• valboxar och informations-popup.
-- `Redo att publicera` visar tydligare vald kanal, antal valda plagg och vad anv√§ndaren f√∂rv√§ntas g√∂ra.
-- Slutvyn har `F√∂rhandsvisa` som sekund√§rt val och `Publicera X plagg` som tydlig huvud√•tg√§rd.
-- Skarp publicering √§r fortsatt avst√§ngd i denna testversion.
-
-
-## v2.9.62 ‚Äì avskalad slutvy + snabbval av kanaler
-- Sista kontrollvyn f√∂renklas: rubriken `Redo att publicera`, antalstexten och det stora Container13-kortet tas bort eftersom informationen redan framg√•r av fl√∂det och miniatyrerna.
-- Valda plagg visas f√∂rst som miniatyrer.
-- Under miniatyrerna finns en kompakt, horisontellt scrollbar kanalrad: `Container13`, `Instagram`, `Facebook`, `TikTok`, `X` och `Tradera`.
-- Container13 visas aktiv med gr√∂n markering och kan sl√•s av/p√• direkt i slutvyn. Om ingen kanal √§r vald inaktiveras `F√∂rhandsvisa` och `Publicera`.
-- Ej anslutna kanaler visas nedtonade med l√•s och √•teranv√§nder informations-popupen vid tryck.
-- TikTok och X l√§ggs √§ven till i den ordinarie `V√§lj kanal`-vyn som framtida, √§nnu ej anslutna kanaler.
-- Slutvyn avslutas med `F√∂rhandsvisa` och den tydliga huvud√•tg√§rden `Publicera X plagg`.
-- Skarp publicering √§r fortsatt avst√§ngd i denna testversion.
-
-## v2.9.63 ‚Äì V√§lj kanal: scrollbara kanaler, N√§sta alltid synlig
-- `V√§lj kanal` fick en egen vertikalt scrollande kanallista s√• l√•nga kanallistor inte ska trycka bort `N√§sta`.
-- `N√§sta` ligger separat efter kanalytan och ska vara synlig √§ven p√• kortare mobilsk√§rmar.
-- √Ñndringen g√§ller kanalsteget; Core-footer och √∂vriga publiceringssteg ska inte flyttas lokalt.
-
-## v2.9.64 ‚Äì kompakt kanalrad i sista kontrollvyn
-- Sista kontrollvyn f√∂re publicering beh√•ller ordningen valda miniatyrer ‚Üí kanalrad ‚Üí `F√∂rhandsvisa` ‚Üí `Publicera X plagg` ‚Üí global Core-footer.
-- Det stora tomrummet mellan miniatyrerna och kanalraden tas bort genom att kontrollvyns grid inte l√§ngre fyller all kvarvarande h√∂jd.
-- Kanalikonerna g√∂rs tydligt mindre s√• kanalvalet fungerar som ett kompakt snabbval och inte dominerar slutvyn.
-- Kanalraden √§r en enda horisontellt scrollbar rad med osynlig scrollbar. P√• smal mobil visas s√• m√•nga kanaler som ryms; resten n√•s genom svep √•t sidan.
-- Kanalerna √§r fortsatt `Container13`, `Instagram`, `Facebook`, `TikTok`, `X` och `Tradera`.
-- `Tillbaka` √§r fortsatt den globala Core-footern och dess geometri √§ndras inte lokalt i Publicera.
-- `F√∂rhandsvisa` och `Publicera X plagg` beh√•lls som slutvyns √•tg√§rder. Skarp publicering √§r fortsatt avst√§ngd.
-
-
-## v2.9.65 ‚Äì luftigare sista kontrollvy
-- Sista kontrollvyn f√∂re publicering komprimeras varsamt f√∂r b√§ttre mobilbalans utan att √§ndra fl√∂de eller logik.
-- Miniatyrgriden g√∂rs cirka 14 % smalare och centreras, s√• bilderna tar mindre vertikal h√∂jd men beh√•ller samma kolumnlogik.
-- Kanalraden beh√•ller mindre ikoner, en rad, horisontell svepning och helt dold scrollbar.
-- `F√∂rhandsvisa` g√∂rs n√•got l√§gre och `Publicera X plagg` n√•got mindre h√∂g men beh√•ller tydlig huvudprioritet.
-- Extra nederluft reserveras i Publicera-inneh√•llet s√• huvudknappen inte upplevs tr√§nga mot den globala Core-footern. Core-footerns geometri √§ndras inte.
-- Leveransstandarden f√∂rtydligas: README_FOLDER ska bevaras/uppdateras d√§r den redan anv√§nds i modul-/undermappar, men ska inte skapas i projektroten eller direkt i `/ccc-core`.
-- Root `/version.js` √§r fortsatt or√∂rd.
-
-
-## v2.9.66 ‚Äì F√∂rhandsvisa: riktig kundvy + trygg √•terg√•ng
-- `F√∂rhandsvisa` fr√•n sista kontrollvyn forts√§tter att √∂ppna den isolerade kopian av Container13 `Nyinkommet`, allts√• samma presentation som kunden m√∂ter i st√§llet f√∂r en ny CCC-kontrollvy.
-- Preview-l√§get √§r fortsatt read-only och skriver ingenting till Firestore/Storage eller den publika sajten.
-- Preview-bannern beh√•ller markeringen `F√∂rhandsvisning ‚Äì inget √§r publicerat` och f√•r en kompakt `Tillbaka till CCC`-knapp.
-- √Öterg√•ng anv√§nder webbl√§sarhistoriken n√§r den finns, s√• anv√§ndaren kommer tillbaka till publiceringsfl√∂det utan ett parallellt redigeringsfl√∂de.
-- Lightboxen i preview f√•r touch-swipe v√§nster/h√∂ger mellan plaggen, ut√∂ver befintliga pilar/tangentbord.
-- Ingen skarp publicering kopplas in i denna version.
-- Inga nya `README_FOLDER.txt` skapas i projektroten eller direkt i `/ccc-core`; endast befintlig modul-README uppdateras.
-- Root `/version.js` √§r fortsatt or√∂rd.
-
-
-## v2.9.67 ‚Äì F√∂rhandsvisa: j√§mna produktkort
-- Produktkorten i den isolerade Container13-f√∂rhandsvisningen ska ha en enhetlig visuell h√∂jd √§ven n√§r vissa plagg saknar text eller har olika mycket text.
-- Bildytan och kortstrukturen beh√•lls; textytan reserveras s√• att kortens nederkanter linjerar.
-- Titel/br√∂dtext begr√§nsas visuellt till ett kompakt antal rader s√• ett enskilt l√•ngt inneh√•ll inte f√•r kortet att v√§xa.
-- Ingen √§ndring g√∂rs i Publicera-fl√∂dets logik eller i skarp publicering.
-- `site-preview` √§r fortsatt en utvecklingsbrygga och ska inte betraktas som permanent produktionsarkitektur.
-- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`.
-- Root `/version.js` √§r or√∂rd.
-
-
-## v2.9.68 ‚Äì F√∂rhandsvisa: fast kortgeometri
-- v2.9.67:s generella equal-height-regler ers√§tts; de tr√§ffade inte den faktiska `#nyGallery`-strukturen tillr√§ckligt precist.
-- Container13-f√∂rhandsvisningens Nyinkommet-kort anv√§nder nu fast geometri: kvadratisk bildyta + informationsyta med fast h√∂jd.
-- Titeln reserverar plats f√∂r h√∂gst tv√• rader. Enradig eller saknad titel √§ndrar d√§rf√∂r inte kortets totalh√∂jd.
-- `Nyinkommen ...` f√∂rankras l√§ngst ned i informationsytan s√• datumraden ligger p√• samma niv√• i alla kort.
-- Detta √§r fortfarande en site-preview-fix, men principen ska tas med n√§r den riktiga Container13-renderingen sj√∂s√§tts.
-- Publicera-fl√∂de, preview-data, lightbox och skarp publicering √§r or√∂rda.
-- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`.
-- Root `/version.js` √§r or√∂rd.
-
-
-## v2.9.69 ‚Äì Arkitektur: permanent identitet per plagg
-- Beslut: varje plagg/exemplar i CCC ska l√•ngsiktigt ha en permanent unik intern identitet som f√∂ljer samma fysiska vara genom hela livscykeln.
-- Identiteten ska skapas tidigt i plaggfl√∂det och inte bytas n√§r plagget redigeras, publiceras p√• en ny kanal eller senare f√•r annan status.
-- Detta √§r en intern grundprincip; anv√§ndaren beh√∂ver inte exponeras f√∂r tekniska ID:n i dagens arbetsfl√∂de.
-- Framtida funktioner som QR/streckkod, lagerstatus, reservation, f√∂rs√§ljning, automatisk avpublicering, webbshop och historik ska kunna kopplas till samma identitet utan att dagens CCC beh√∂ver byggas om fr√•n grunden.
-- QR-kod byggs INTE nu. v2.9.69 tar endast h√∂jd f√∂r framtiden och l√§gger inte till n√•gon ny komplexitet i anv√§ndargr√§nssnittet.
-- Princip: CCC:s information om ett plagg √§r en sak; hur mycket av informationen som visas publikt per kanal √§r en separat presentationsregel.
-- N√§sta produktsteg √§r fortsatt Container13:s publika visningsinst√§llningar (t.ex. titel/text p√• eller av), d√§r previewn ska kunna visa resultatet innan skarp publicering.
-- Ingen √§ndring g√∂rs i Publicera-, Vision- eller site-preview-logik i denna version.
-- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`.
-- Root `/version.js` √§r or√∂rd.
-
-
-## v2.9.70 ‚Äì Container13: publika visningsinst√§llningar
-- `Publicera`-modulens kugghjul √∂ppnar fortsatt `/settings/?module=publish`. I detta l√§ge visas nu `Publicera ‚Äì Container13` med sektionen `Visning p√• hemsidan`.
-- Tv√• kanalinst√§llningar inf√∂rs: `Visa titel` och `Visa beskrivning`.
-- Standardv√§rden bevarar dagens beteende: titel P√Ö, beskrivning AV.
-- Inst√§llningarna √§r presentationsregler f√∂r Container13. De √§ndrar eller raderar aldrig CCC:s interna titel/beskrivning f√∂r plagget.
-- F√∂rhandsvisa l√§ser samma visningsregler. Preview-payloaden f√•r √§ven med plaggets beskrivning, s√• valet kan testas innan skarp publicering.
-- Kortgeometrin i site-preview √§r nu adaptiv per rad: fast kvadratisk bildyta, men informationsytan v√§xer bara n√§r synlig titel/beskrivning kr√§ver det. CSS-gridens stretch h√•ller korten i samma rad lika h√∂ga.
-- Om titel/beskrivning d√∂ljs blir raden kompaktare i st√§llet f√∂r att reservera tom textyta.
-- Individuella undantag per plagg byggs inte i denna version; v2.9.70 etablerar kanalens grundregel f√∂rst.
-- Skarp publicering √§r fortfarande inte inkopplad.
-- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`; endast redan befintliga modul-README uppdateras.
-- Root `/version.js` √§r or√∂rd.
-
-
-## v2.9.71 ‚Äì Modulrena inst√§llningar + Core-layout
-- Inst√§llningar ska inte vara en blandad global sida. Dashboard, L√§gg till bilder/Vision och Publicera har varsin egen inst√§llningskontext via respektive kugghjul.
-- N√§r `/settings/?module=publish` √∂ppnas visas endast Publicera/Container13-inst√§llningarna; Dashboard-kort och Dashboard-hj√§lp d√∂ljs.
-- N√§r Inst√§llningar √∂ppnas utan Publicera-kontext behandlas sidan som Dashboardens inst√§llningsyta.
-- En framtida gemensam `Kontrollpanel` kan senare n√•s fr√•n Dashboard och samla verkligt √∂vergripande CCC-funktioner. Den byggs inte i v2.9.71.
-- Inst√§llningar anv√§nder nu samma Core-header och permanenta Core-footer som √∂vriga CCC-vyer.
-- Arbetsytan mellan header och footer √§r vertikalt scrollbar; header/footer ligger kvar.
-- Headerns tillbaka-pil och footerns permanenta Tillbaka-kort anv√§nder samma Core-back-event och g√•r tillbaka till den modul som √∂ppnade inst√§llningarna.
-- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`; befintlig `/ccc-core/settings/README_FOLDER.txt` uppdateras.
-- Root `/version.js` √§r or√∂rd.
-
-
-## v2.9.72 ‚Äì Vision-inst√§llningar standardiseras
-- Vision och Publicera anv√§nder nu samma inst√§llningsm√∂nster: modulens kugghjul √∂ppnar `/settings/?module=<modul>`.
-- Vision-kugghjulet √∂ppnar `/settings/?module=vision`; den tidigare Vision-specifika overlay/popup-inst√§llningen tas bort.
-- Vision beh√•ller sina befintliga funktioner: `Automatisk AI-analys`, `L√•t CCC l√§ra sig av mina √§ndringar`, `Total Vision-kostnad`, visa lokal kunskap och rensa lokal kunskapsbas.
-- Inst√§llningarnas v√§rden anv√§nder samma befintliga localStorage-nycklar som Vision redan anv√§nde, s√• anv√§ndarens val f√∂ljer med vid flytten.
-- Vision-inst√§llningsvyn anv√§nder samma Core-header, scrollbar arbetsyta och permanenta Core-footer/Tillbaka som Publicera-inst√§llningar.
-- Inst√§llningssidan √§r fortsatt modulren: Vision visar bara Vision, Publicera bara Publicera och Dashboard bara Dashboard.
-- En framtida gemensam Kontrollpanel fr√•n Dashboard √§r fortfarande en separat id√© och byggs inte h√§r.
-- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`; endast befintliga modul-README uppdateras.
-- Root `/version.js` √§r or√∂rd.
-
-
-## v2.9.73 ‚Äì S√§kerhet: bekr√§ftelse f√∂re destruktiv rensning
-- `Rensa lokal kunskapsbas` i Vision f√•r inte l√§ngre utf√∂ra rensningen direkt p√• f√∂rsta trycket.
-- F√∂rsta trycket √∂ppnar en tydlig bekr√§ftelsedialog som f√∂rklarar att lokalt inl√§rd kunskap fr√•n tidigare godk√§nnanden och √§ndringar tas bort.
-- Dialogen har `Avbryt` och en separat destruktiv `Rensa kunskapsbas`-knapp.
-- Sj√§lva rensningen sker f√∂rst efter det andra, uttryckliga bekr√§ftelsetrycket.
-- Dialogen kan √§ven st√§ngas genom att trycka utanf√∂r den.
-- Generell CCC-princip: destruktiva √•tg√§rder som inte enkelt kan √•ngras ska kr√§va ett tydligt bekr√§ftelsesteg.
-- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`; endast befintliga modul-README uppdateras.
-- Root `/version.js` √§r or√∂rd.
-
-
-## v2.9.74 ‚Äì F√∂rbered-vyn blir tydligt publiceringsl√§ge
-- Bygger vidare p√• v2.9.73 och inneh√•ller allts√• √§ven s√§kerhetsfixen d√§r `Rensa lokal kunskapsbas` kr√§ver separat bekr√§ftelse.
-- N√§r plagg redan ligger i `F√∂rbered f√∂r publicering` betraktas de som klara f√∂r n√§sta steg. Vyn f√•r d√§rf√∂r en tydlig prim√§r `Forts√§tt`-knapp.
-- `Forts√§tt` tar med alla aktuella f√∂rberedda plagg vidare till kanalvalet; anv√§ndaren beh√∂ver inte f√∂rst g√• in i ett markeringsl√§ge f√∂r att kunna forts√§tta.
-- M√∂jligheten att ta bort utkast finns kvar som en sekund√§r hanteringsfunktion. N√§r hanterings-/raderingsl√§get √§r aktivt d√∂ljs `Forts√§tt` tillf√§lligt och footern visar `Avbryt`, antal markerade och `Ta bort`.
-- Publiceringsfl√∂de och inneh√•llshantering ska visuellt och funktionellt h√•llas is√§r.
-- Framtida bild-/produktbibliotek √§r en separat backlogpunkt och byggs inte nu.
-- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`.
-- Root `/version.js` √§r or√∂rd.
-
-
-## v2.9.75 ‚Äì Hj√§lp i F√∂rbered f√∂r publicering
-- Huvudvyn h√•lls ren utan ny permanent instruktionstext.
-- `Hj√§lp` f√∂rklarar att ett plagg kan tryckas f√∂r att √∂ppnas och bilden fortfarande kan kontrolleras/anpassas f√∂re publicering.
-- Hj√§lpen beskriver ocks√• `Forts√§tt` till kanalval och `V√§lj` f√∂r borttagning av lokala utkast.
-- v2.9.74:s Vision-s√§kerhetsfix och publiceringsl√§ge finns fortsatt med.
-- Root `/version.js` √§r or√∂rd.
-
-
-## v2.9.76 ‚Äì Forts√§tt-fix + tydligt bockspr√•k i Publicera
-- `Forts√§tt` i `F√∂rbered f√∂r publicering` √§r korrigerad s√• att knappen faktiskt √∂ppnar `V√§lj kanal`.
-- Alla plagg som ligger i F√∂rbered-vyn f√∂rs med fram√•t genom den befintliga `channelSelectedIds`-m√§ngden; m√§ngden √•teranv√§nds i st√§llet f√∂r att ers√§ttas.
-- Gr√∂n ‚úì p√• ett plagg beh√•ller sin etablerade betydelse: bilden har en sparad bildanpassning.
-- I `V√§lj`/borttagningsl√§get visas markerade utkast med r√∂d ‚úì och r√∂d markeringsram.
-- Hj√§lp i F√∂rbered-vyn f√∂rklarar nu gr√∂n ‚úì, r√∂d ‚úì, `Forts√§tt` och `V√§lj`.
-- R√∂d markering inneb√§r endast `markerad f√∂r borttagning`; inget raderas innan anv√§ndaren trycker `Ta bort` och bekr√§ftar.
-- v2.9.73:s bekr√§ftelse f√∂re `Rensa lokal kunskapsbas` finns fortsatt med.
-- Inga nya `README_FOLDER.txt` skapas i root eller direkt i `/ccc-core`.
-- Root `/version.js` √§r or√∂rd.
-
-
-## v2.9.77 ‚Äì Synlig Hj√§lp i F√∂rbered f√∂r publicering
-- `? Hj√§lp` ska alltid vara synlig i Core-footern p√• `F√∂rbered f√∂r publicering` och ska inte bero p√• Dashboardens separata hj√§lpinst√§llning.
-- Footern ska kunna visa `? Hj√§lp` och `V√§lj` samtidigt som den permanenta `Tillbaka`-knappen.
-- `Forts√§tt` ligger fortsatt som tydlig huvud√•tg√§rd i arbetsytan ovanf√∂r footern.
-- Hj√§lpinneh√•llet fr√•n v2.9.76 beh√•lls: bilder kan √∂ppnas/anpassas, gr√∂n ‚úì = sparad bildanpassning, r√∂d ‚úì = markerad f√∂r borttagning, samt f√∂rklaring av Forts√§tt/V√§lj.
-- Ingen annan Publicera-logik √§ndras.
-- Root `/version.js` √§r or√∂rd.
-
-
-## v2.9.78 ‚Äì Publicera-footer: robust Core-init
-- Inspektion av v2.9.77 visade att Core-footern i sig redan kan rendera b√•de `? Hj√§lp` och `V√§lj` samtidigt.
-- Den verkliga svagheten √§r laddningsordningen: `publish.js` ligger f√∂re `core.js`, `configureFooterForView()` kunde d√§rf√∂r returnera innan `CCC_CORE.footer` fanns.
-- Tidigare `ccc:core-ready` √•terst√§llde endast Publicera-headern; footern konfigurerades inte om.
-- Publicera v√§ntar nu in `ccc:core-ready` om footer-Core saknas och k√∂r d√§refter `configureFooterForView(currentPublishView)` igen.
-- Det ordinarie `ccc:core-ready`-steget √•terst√§ller nu b√•de header och footer f√∂r den aktuella Publicera-vyn.
-- P√• `F√∂rbered f√∂r publicering` ska footern d√§rf√∂r rendera `? Hj√§lp`, `V√§lj` och permanenta `Tillbaka`, medan `Forts√§tt` ligger i arbetsytan.
-- Ingen CSS-hack eller separat lokal footer inf√∂rs; Core f√∂rblir enda footer-√§gare.
-- Root `/version.js` √§r or√∂rd.
-
-
-## v2.9.79 ‚Äì CCC utvecklings- och arkitekturprinciper
-
-### Core-init och gemensamt UI
-- Nya moduler f√•r inte f√∂ruts√§tta att `CCC_CORE` √§r f√§rdigladdat n√§r modulens JavaScript startar.
-- Funktioner som √§r beroende av Core ‚Äì s√§rskilt header, footer, hj√§lp, inst√§llningar och gemensam navigation ‚Äì ska initieras eller √•terst√§llas n√§r `ccc:core-ready` har k√∂rts.
-- N√§r Core blir redo ska modulens aktuella vy/state anv√§ndas f√∂r att konfigurera Core-komponenterna korrekt.
-- Modulstate och Core-state ska h√•llas synkroniserade vid init, vybyte, tillbaka-navigation och √•terst√§llning efter tillf√§lliga l√§gen.
-- Core √§r ensam √§gare av gemensam header/footer. Undvik lokala speciall√∂sningar f√∂r s√•dant Core redan ansvarar f√∂r.
-
-### Checklista f√∂r nya moduler och nya huvudvyer
-- Kontrollera f√∂rsta vyn efter Core-ready.
-- Kontrollera att header och modulrad visar r√§tt sammanhang.
-- Kontrollera att den permanenta Tillbaka-funktionen finns och leder r√§tt.
-- Kontrollera att footer visar r√§tt kontextverktyg, t.ex. Hj√§lp/V√§lj.
-- Byt mellan modulens viktigaste vyer och kontrollera att Core-komponenterna uppdateras.
-- G√• tillbaka och kontrollera att r√§tt state och r√§tt Core-UI √•terst√§lls.
-- Testa mobil portrait f√∂rst och kontrollera d√§refter √∂vriga relevanta storlekar/orienteringar.
-
-### Status, f√§rger och destruktiva √•tg√§rder
-- Positiv status/sparat/godk√§nt f√•r anv√§nda gr√∂nt; destruktivt urval/√•tg√§rd ska ha ett tydligt r√∂tt visuellt spr√•k.
-- Samma symbol eller f√§rg ska inte f√• godtyckligt olika betydelser mellan moduler. Befintlig etablerad betydelse ska inventeras innan en symbol √•teranv√§nds.
-- Destruktiva √•tg√§rder ska inte ske av misstag: anv√§nd bekr√§ftelse n√§r √•tg√§rden √§r sv√•r att √•terst√§lla och erbjud √•ngra d√§r det √§r praktiskt m√∂jligt.
-- Markering f√∂r borttagning √§r inte samma sak som att objektet redan √§r borttaget.
-- Hj√§lp ska f√∂rklara statusmarkeringar och beteenden som inte √§r sj√§lvklara, men sj√§lva huvudfl√∂det ska vara begripligt utan att anv√§ndaren m√•ste l√§sa Hj√§lp.
-
-### Fl√∂de f√∂re administration
-- Varje arbetsvy ska prioritera n√§sta naturliga steg i anv√§ndarens huvudfl√∂de.
-- Administration, radering och framtida bibliotek ska vara sekund√§ra funktioner och f√•r inte skymma huvud√•tg√§rden.
-- I Publicera ska f√§rdiga plagg r√∂ra sig fram√•t genom fl√∂det; ett framtida plagg-/produktbibliotek √§r en separat funktion och ska inte blandas ihop med publiceringssteget.
-
-### Plagget som master och kanalernas presentation
-- Plagget √§r masterobjektet. Bilder, permanent identitet, Vision-data och intern produktinformation h√∂r till plagget.
-- Publiceringskanaler √§r destinationer och ska inte skapa on√∂diga kopior av samma plaggdata.
-- Intern CCC-data och publik presentation √§r separata lager. En kanal best√§mmer vilka delar av plagginformationen som ska visas.
-- Kanalunika regler ska kunna utvecklas senare utan att masterobjektet beh√∂ver dupliceras.
-- Arkitekturen ska ta h√∂jd f√∂r framtida permanent plagg-ID, lagerstatus, s√•ld/reserverad-status, produktbibliotek, webshop och eventuell QR-koppling utan att dessa funktioner beh√∂ver byggas nu.
-
-### Leverans- och README-arbetss√§tt
-- `changed-files` ska vara komplett ovanp√• den senast levererade version som anv√§ndaren f√∂rv√§ntas ha laddat upp. En tidigare fix f√•r inte oavsiktligt saknas i n√§sta changed-files-paket om den fortfarande beh√∂ver f√∂lja med.
-- Vid versionsuppdatering ska `README_CHATGPT_CCC.txt` i root och `ccc-core/version.js` f√∂lja med i changed-files n√§r de h√∂r till uppdateringen.
-- Root `README_CHATGPT_CCC.txt` beskriver projekt√∂vergripande arbetss√§tt, arkitekturprinciper, checkpoints och beslut.
-- Befintlig modul-`README_FOLDER.txt` beskriver det modulspecifika. Skapa inte nya README-mappar eller nya dokumentstrukturer utan ett verkligt behov.
-- README √§r inte ett of√∂r√§nderligt facit. Det √§r CCC:s levande arbetss√§tt och ska f√∂rb√§ttras n√§r tester och verklig anv√§ndning ger b√§ttre kunskap.
-- Innan n√§sta √§ndring ska senaste kompletta projektets root-README l√§sas s√• att dokumenterade beslut och arbetss√§tt f√∂ljs.
-
-
-## v2.9.80 ‚Äì Publicera: Neon Gl√∂d p√• kanalraden
-- Kanalraden i Publicera f√•r den valda visuella riktningen `Alternativ 2 ‚Äì Neon Gl√∂d`.
-- Kanalikonerna f√•r en mer enhetlig rund grundform och diskret kanalidentifierande gl√∂d.
-- Aktiv kanal f√∂rst√§rks l√§tt; l√•sta kanaler h√•lls n√•got d√§mpade.
-- Befintlig gr√∂n statusbock och l√•s beh√•lls som separata statuslager.
-- √Ñndringen √§r medvetet visuell. Publiceringslogiken l√§mnas or√∂rd.
-- Fokus ligger fortsatt p√• Container13:s dagliga behov. Framtida webshop/QR/biblioteksfunktioner ligger p√• sparl√•ga.
-- Efter stabil Container13-publicering √§r √ñppettider n√§sta prioriterade omr√•de, med fungerande `c13-admin` som f√∂rlaga.
-
-
-## v2.9.81 ‚Äì Neon Gl√∂d tr√§ffar r√§tt kanalvy
-- Inspektion visade att v2.9.80 stylade `#channelTargetsView`, medan sk√§rmbilden anv√§ndaren bed√∂mde var slutkontrollen `#channelConfirmView`.
-- Den valda visuella riktningen `Alternativ 2 ‚Äì Neon Gl√∂d` appliceras nu p√• de faktiska `.confirm-channel-chip .channel-brand-icon`-elementen.
-- Samma kanalidentitet anv√§nds √§ven i `V√§lj kanal`, s√• kanalval och slutkontroll k√§nns som samma system.
-- Samtliga kanalbrickor f√•r rund form.
-- C13/Tradera anv√§nder guldig ton, Instagram sin gradient, Facebook bl√•tt, TikTok cyan/rosa gl√∂d och X vit/gr√• gl√∂d.
-- L√•sta kanaler beh√•ller f√§rg och en n√•got d√§mpad gl√∂d; l√•sikonen √§r det prim√§ra tecknet f√∂r otillg√§nglig status i st√§llet f√∂r full gr√•skala.
-- Aktiv kanal f√•r l√§tt f√∂rst√§rkt gl√∂d/skalning. Befintlig gr√∂n bock och l√•s ligger kvar som separata statuslager.
-- Ingen publiceringslogik √§ndras.
-
-
-## v2.9.82 ‚Äì F√∂rsta riktiga publiceringsm√•let: Container13 staging
-- `site-preview` beh√•lls som permanent staging/testmilj√∂ mellan CCC-utveckling och skarpa Container13.
-- `F√∂rhandsvisa` √§r fortsatt ett tillf√§lligt read-only-l√§ge via `cccPreview=1`.
-- `Publicera` i slutkontrollen publicerar nu de valda plaggen till lokal Container13 staging via `cccStage=1`; ingen data skrivs √§nnu till skarpa Container13/Firebase.
-- Staging-publiceringen anv√§nder samma plagg-ID och samma lokala IndexedDB-bilder som CCC redan arbetar med. Ingen parallell bildkopia skapas.
-- Staging-metadata och Container13:s valda publikvisning sparas lokalt s√• staging-l√§get kan √•terge den publicerade upps√§ttningen p√• samma enhet.
-- Valda plagg f√•r `stagingPublishedAt` och `stagingChannel=container13` lokalt.
-- Publicera-knappen l√•ses under p√•g√•ende staging-publicering f√∂r att undvika dubbeltryck.
-- Staging-bannern visar tydligt `Staging ‚Äì publicerat fr√•n CCC, inte live`.
-- Externa kanaler (Instagram, Facebook, TikTok, X och Tradera) ligger kvar l√•sta och riktig integration skjuts upp tills Container13:s dagliga k√§rnfl√∂de √§r stabilt.
-- N√§r stagingfl√∂det √§r verifierat blir n√§sta steg att koppla samma publiceringsadapter till skarpa Container13. D√§refter √§r √ñppettider n√§sta prioriterade Container13-behov.
-- Temaprincip: Core ska √§ga gemensamma design tokens/grundutseende; moduler ska endast h√•rdkoda f√§rger/stilar som faktiskt √§r modulspecifika, t.ex. kanalidentiteter.
-
-
-## v2.9.83 ‚Äì Stagingplagg f√∂rsvann efter rendering
-- Konkret fel hittat i `site-preview`: lokala preview/staging-plagg renderades f√∂rst, men om vanlig gallericache saknades ersatte n√§sta steg omedelbart gridden med `H√§mtar bilder...`.
-- `H√§mtar bilder...` f√•r nu endast ers√§tta gridden n√§r det inte redan finns lokalt laddade preview/staging-plagg.
-- Stagingplaggen ligger d√§rf√∂r kvar synliga medan eventuell live-galleridata h√§mtas och kan d√§refter kombineras med denna.
-- Preview/staging-payloaden inneh√•ller nu √§ven `originalFileKey` som intern reservreferens.
-- `site-preview` kan d√§rmed l√§sa bilden fr√•n `vision-files` √§ven om en komplett post i `images` saknas eller inte inneh√•ller ett inb√§ddat blobf√§lt.
-- Staging-bannern visar hur m√•nga lokala stagingplagg som faktiskt laddades, vilket g√∂r testet l√§ttare att verifiera.
-- Ingen skarp Container13/Firebase-publicering sker √§nnu.
-
-
-## v2.9.84 ‚Äì Staging √•teranv√§nder F√∂rhandsvisas bildtransport
-- Efter fortsatt tom staging identifierades en on√∂dig risk i v2.9.82/.83: staging skrev tillbaka hela plaggposten till IndexedDB enbart f√∂r att l√§gga till staging-status.
-- Staging f√•r nu inte mutera/skriva om CCC:s originala `images`-poster alls.
-- `Publicera till staging` anv√§nder exakt samma `sessionStorage`-metadata som den redan fungerande `F√∂rhandsvisa`-v√§gen anv√§nder innan navigation till `site-preview`.
-- Ett separat persistent staging-manifest sparar endast plagg-ID, publik metadata, kanal och publiceringstid; inga bildblobbar dupliceras.
-- `site-preview` prioriterar den aktuella sessionens metadata √§ven i staging-l√§ge och faller d√§refter tillbaka till persistent staging-manifest.
-- Bilden h√§mtas fortsatt fr√•n CCC:s befintliga IndexedDB (`images` / `vision-files`) utan att staging f√∂r√§ndrar k√§lldatan.
-- Staging-bannern visar `0 av X` eller `Y av X` om bildladdningen misslyckas delvis, vilket g√∂r n√§sta fels√∂kning konkret.
-- Ingen skarp Container13/Firebase-data √§ndras.
-
-
-## v2.9.85 ‚Äì Robust gemensam bildtransport till site-preview
-- N√§r b√•de `F√∂rhandsvisa` och staging fastnade p√• `H√§mtar bilder‚Ä¶` blev det tydligt att felet l√•g i den gemensamma √•terl√§sningen efter navigation, inte i stagingstatusen.
-- Publicera har redan r√§tt valda bildblobbar i minnet. Dessa anv√§nds nu direkt som k√§lla f√∂r site-preview i st√§llet f√∂r att site-preview f√∂rst m√•ste √•terfinna samma blob via IndexedDB.
-- F√∂re navigation l√§gger Publicera de valda blobbarna i lokal `Cache Storage` (`ccc-site-preview-local-v1`) och skickar endast cache-nyckeln tillsammans med metadata.
-- Samma transport anv√§nds av b√•de `F√∂rhandsvisa` och `Publicera ‚Üí staging`.
-- Site-preview f√∂rs√∂ker f√∂rst l√§sa den exakta transporterade blobben. Befintlig IndexedDB-v√§g (`images` / `vision-files`) finns kvar som reserv.
-- Vid varje ny preview/staging-k√∂rning ers√§tts den tillf√§lliga blobcachen s√• gamla testbilder inte blandas in.
-- L√∂sningen √§r fortsatt local-first: inga bilder skickas till Firebase/n√§tet f√∂r staging eller f√∂rhandsvisning.
-- Ingen skarp Container13-publicering sker √§nnu.
-
-
-## v2.9.86 ‚Äì Skarp Container13-publicering
-- Efter att lokal `site-preview`-bildtransport blivit on√∂digt komplex byter CCC till den riktiga publiceringskedjan som Container13-admin redan anv√§nder och som √§r bepr√∂vad i drift.
-- CCC och `c13-admin` anv√§nder samma Firebase-projekt och samma autentiserade anv√§ndarsession.
-- `Publicera` laddar vald f√§rdig bildblob till Firebase Storage under `nyinkommet/`, h√§mtar `downloadURL` och skapar d√§refter en Firestore-post i `gallery` med `category: nyinkommet`.
-- Firestore-posten inneh√•ller √§ven `cccItemId` och `source: ccc` f√∂r framtida sp√•rbarhet utan att √§ndra befintlig publika datamodell.
-- Container13-visningsinst√§llningen sparas per publicerad post som `showTitle` och `showDescription`; gamla poster utan f√§lten forts√§tter visa titel som tidigare.
-- Beskrivning kan lagras i posten √§ven n√§r den inte visas publikt.
-- Om Storage-uppladdningen lyckas men Firestore-skrivningen misslyckas f√∂rs√∂ker CCC radera den nyuppladdade Storage-filen f√∂r att undvika f√∂r√§ldral√∂sa filer.
-- Publicera-knappen l√•ses under k√∂rning. Vid full framg√•ng √∂ppnas riktiga `/nyinkommet.html` f√∂r direkt kontroll.
-- Delvis misslyckad flerbildspublicering rapporteras och anv√§ndaren stannar kvar i CCC; lyckade poster l√§mnas publicerade och misslyckade kan provas igen.
-- `site-preview` beh√•lls i projektet som visuell test/stagingmilj√∂ men ligger inte l√§ngre i v√§gen f√∂r den dagliga publiceringskedjan.
-- Externa kanaler ligger fortsatt p√• sparl√•ga. Efter stabil Container13-publicering √§r √ñppettider n√§sta prioriterade Container13-behov.
-
-
-## v2.9.87 ‚Äì Permanent plaggidentitet + bildmetadata-kuvert
-- Varje nytt plagg f√•r ett permanent m√§nskligt l√§sbart `cccItemId` redan n√§r fotot tas/importeras i Vision. Formatet √§r `C13-YYYYMMDD-XXXXXX`.
-- Det befintliga tekniska `id` beh√•lls internt f√∂r kompatibilitet; `cccItemId` √§r plaggets l√•nglivade identitet genom Vision ‚Üí Publicera ‚Üí Container13 och framtida lager/webshop/QR.
-- Kamerans/importens originalbytes skrivs aldrig om. CCC f√∂ljer fortsatt principen att originalfilen ska vara or√∂rd.
-- I st√§llet lagras ett `metadata`-kuvert i samma lokala `vision-files`-record som originalbilden. Kuvertet inneh√•ller bl.a. `cccItemId`, titel, m√§rke, storlek, pris, beskrivning, schemaVersion och updatedAt.
-- Kuvertet skapas direkt med identiteten och uppdateras n√§r Vision/anv√§ndaren godk√§nner eller √§ndrar produktdata.
-- Sparade Vision-sessioner och Publicera-utkast bevarar samma `cccItemId`.
-- √Ñldre lokala Publicera-utkast utan permanent identitet f√•r ett `cccItemId` en g√•ng vid inl√§sning och sparas d√§refter med detta ID.
-- Vid skarp Container13-publicering anv√§nds `cccItemId` i Storage-filnamnet och som Firebase Storage `customMetadata`; samma ID sparas i Firestore-posten.
-- Storage-metadata inneh√•ller endast kompakt stabil information (ID, schemaVersion, titel, m√§rke, storlek, source). Full levande produktdata forts√§tter ligga i CCC/Firestore och √§r inte beroende av bildmetadata.
-- Detta ger bilden/plagget ett digitalt bagagekort genom CCC utan att g√∂ra EXIF/XMP i originalfilen till databas eller riskera att originalet f√∂r√§ndras.
-- Framtida bin√§r EXIF/XMP-inb√§ddning kan l√§ggas p√• CCC:s genererade master/publiceringskopior om det ger praktisk nytta, men √§r inte ett krav f√∂r identitetskedjan.
-- QR, webshop och avancerad lagerhantering byggs inte nu; v2.9.87 l√§gger endast fundamentet s√• dagens Container13-fl√∂de inte beh√∂ver byggas om senare.
-
-
-## v2.9.88 ‚Äì Kanalstandard + override vid publicering
-- Container13 skiljer p√• vad CCC vet om plagget och vad som visas publikt.
-- Standard omfattar titel, beskrivning, m√§rke, storlek och pris; grundstandard √§r bild + titel.
-- Slutsteget visar `Visas p√• Container13 ‚Äì Bild + ...`.
-- `√Ñndra` ger snabbval som endast g√§ller aktuell publicering. `Anv√§nd standard` √•terg√•r utan att √§ndra kanalens standard.
-- Firestore sparar tillg√§nglig titel, beskrivning, m√§rke, storlek och pris tillsammans med separata show-flaggor.
-- Nyinkommet visar m√§rke/storlek/pris endast n√§r respektive flagga √§r true. √Ñldre poster p√•verkas inte.
-
-
-## v2.9.89 ‚Äì Mobilpolish + s√§ker demovattenst√§mpel
-- Real-device-test gav fyra konkreta UI-fixar som ska ses som generell CCC-princip: safe-area f√•r aldrig krocka med prim√§ra handlingar, n√§sta steg ska vara explicit √§ven om en bild ocks√• √§r klickbar, avslutningsvyer ska rymmas i mobil viewport och bildgrids ska prioritera j√§mn geometri/luft.
-- Vision-kamerans granskningsrad `Ta om / N√§sta plagg / Klar` ligger nu i en reserverad helsk√§rmsbotten med samma bakgrund och iPhone safe-area.
-- Vision-arbetsvyn efter foto s√§ger uttryckligen att bilden kan tryckas och har √§ven `Forts√§tt`, som g√∂r samma sak f√∂r markerat plagg.
-- Vision `Klart!` komprimeras p√• portrait-mobil s√• listan f√•r intern scroll vid behov och huvudhandlingarna inte hamnar utanf√∂r sk√§rmen.
-- Publicera `F√∂rbered` h√•ller 3√ó3-miniatyrerna kvadratiska med `object-fit: cover`, j√§mna gap och mer luft vid 5‚Äì9 bilder; detta p√•verkar inte original eller publiceringsbesk√§rning.
-- `Anpassa bild` har nu ett kugghjul f√∂r bildinst√§llningar. `Demobild / vattenst√§mpel` kan sl√•s p√• per plagg.
-- Demom√§rkningen √§r en upprepad diagonal, halvtransparent `DEMO ¬∑ CONTAINER13`-vattenst√§mpel som ritas p√• CCC:s genererade WebP-publiceringskopia. Originalbildens bytes √§ndras aldrig.
-- Demostatus sparas med plagget, visas som `DEMO` i F√∂rbered och r√§knas i slutkontrollen f√∂re publicering. Firestore f√•r √§ven `demoWatermark` f√∂r sp√•rbarhet.
-- Vattenst√§mpeln √§r en utvecklar-/testfunktion f√∂r bilder som inte ska kunna misstas f√∂r riktiga Container13-produktbilder; den √§r inte en ers√§ttning f√∂r r√§ttigheter/licenser till k√§llmaterial.
-
-
-## v2.9.90 ‚Äì korrigering efter sju real-device-bilder
-- Kamera-overlay √§r ett tillf√§lligt helsk√§rmsl√§ge och f√•r inte samsas med Core-footern. Core-Tillbaka d√∂ljs d√§rf√∂r helt under b√•de livekamera och kamerans review; hela nederkanten √§r kamera-svart inklusive safe-area.
-- Vision workspace efter foto har en verklig, explicit `Forts√§tt`-knapp. Knappen och klick p√• vald miniatyr leder till samma n√§sta arbetssteg.
-- `F√∂rbered` prioriterar nu st√∂rre touch-/bildytor f√∂re 3√ó3-kompakthet p√• telefon: 5‚Äì9 plagg visas i tv√• kolumner med vertikal scroll. Desktop/tablet kan fortsatt anv√§nda t√§tare grid.
-- Demovattenst√§mpel h√∂r till Publiceras modulinst√§llningar och anv√§nder befintligt inst√§llningskugghjul i Core. Det separata kugghjulet i `Anpassa bild` tas bort.
-- Publicera-inst√§llningar omfattar standard f√∂r titel, beskrivning, m√§rke, storlek, pris och `Demobild / vattenst√§mpel`.
-- Om ett demom√§rkt plagg publiceras utan att anv√§ndaren f√∂rst anpassat bilden skapar CCC √§nd√• en genererad WebP-kopia med vattenst√§mpel; originalbytes √§ndras aldrig.
-- Detaljvyns gula knapp √§r ett fl√∂dessteg, inte en publiceringsknapp: `Forts√§tt till kanalval` √∂ppnar `V√§lj kanal`.
-- Container13 `Nyinkommet` str√§cker kort till samma h√∂jd inom gridraden. Bildytan √§r fortsatt kvadratisk och datumraden f√∂rankras i kortets botten, s√• olika m√§ngd titel/metadata inte ger oj√§mna kort.
-
-
-## v2.9.91 ‚Äì samlad mobilkorrigering
-- Vision workspace: svarta snabbknappar heter `Nytt foto` och `Album`.
-- `Fler uppgifter` i `G√∂r f√∂rslaget klart` beter sig som en t√§ckande intern panel med `√Öterg√•` och `Spara & √•terg√•`. Core-Tillbaka st√§nger panelen f√∂rst i st√§llet f√∂r att l√§mna redigeringsvyn; formul√§rv√§rden bevaras.
-- F√∂rbered-gridens faktiska JS-injicerade `grid-9`-regel √§r √§ndrad fr√•n tre till tv√• kolumner, s√• tidigare CSS-krock kan inte h√•lla kvar den tr√•nga 3√ó3-layouten p√• telefon.
-- Slutkontrollen f√∂re publicering √§r viewport-bunden p√• portrait-mobil; hela sidan ska inte scrolla. Vid behov scrollar endast bildomr√•det internt.
-- Demobild/vattenst√§mpel tas bort fr√•n generella Publicera-inst√§llningar. I `Anpassa bild` visar Core-footern i st√§llet en kontextuell `Inst√§llningar`-knapp som √∂ppnar demoval ovanp√• samma vy och √•terg√•r dit efter spara/avbryt.
-- Container13 Nyinkommet f√•r fast 142 px informationsyta per kort och titel klampas till h√∂gst tre rader. Kortens yttergeometri styrs d√§rmed inte l√§ngre av textl√§ngden.
-
-
-## v2.9.92 ‚Äì korrigering av .91
-- Fler uppgifter √§r en riktig flytande modal ovanp√• G√∂r f√∂rslaget klart, med scrollbar inneh√•llsyta och fasta √Öterg√• / Spara & √•terg√•.
-- Core-footerns setTools har native st√∂d f√∂r settings/onSettings. Anpassa bild anv√§nder detta f√∂r Demobild/vattenst√§mpel.
-- F√∂rbered √•terg√•r till 3√ó3 per sida med luftigare gap. Befintlig pager beh√•ller max nio per sida och fler √§n nio n√•s sidledes.
-- .91:s viewport-l√•s av slutkontrollen backas; sidpager √§r principen f√∂r m√•nga bilder.
-- Nyinkommet f√•r kvadratisk bildyta + exakt 150 px informationsyta och titel klampad till tre rader f√∂r lika kortgeometri.
-
-
-## v2.9.93 ‚Äì Vision navigation hotfix
-- Regression i v2.9.92: `Fler uppgifter`-modalen ersatte de kanoniska Vision-f√§lten `category`, `brand`, `season`, `manufacturer`, `size`, `color` med separata modal-ID:n.
-- `populateFormFromItem()` och √∂vrig Vision-logik anv√§nder `fieldIds` och kunde d√§rf√∂r inte hitta dessa f√§lt n√§r anv√§ndaren tryckte p√• miniatyren eller `Forts√§tt`.
-- Resultatet var att fl√∂det stannade innan `G√∂r f√∂rslaget klart`.
-- Modalen anv√§nder nu samma riktiga formul√§rf√§lt direkt. Den flytande modaldesignen beh√•lls, men ingen kopierings-/speglingslogik beh√∂vs.
-- Denna version √§r avsiktligt en begr√§nsad hotfix och √§ndrar inga √∂vriga .92-layoutbeslut.
-
-
-## v2.9.94 ‚Äì modalparitet, footer-demo, renare slutkontroll och indexkort som facit
-- `Frivilliga till√§gg` anv√§nder samma flytande modalprincip som `Fler uppgifter`: bakgrunden ligger kvar, inneh√•llet kan scrolla och `√Öterg√•` / `Spara & √•terg√•` ligger fast.
-- I `Anpassa bild` prioriteras footerverktyget `‚öô Demobild`; Hj√§lp visas inte samtidigt d√§r, s√• verktyget f√•r en tydlig plats i Core-footern.
-- Core-footer visar modulens egna `settingsLabel`, vilket g√∂r samma mekanism √•teranv√§ndbar.
-- `F√∂rhandsvisa` tas bort fr√•n sista publiceringssteget. Slutkontrollen √§r sj√§lv kontrollvyn f√∂re den skarpa `Publicera`-knappen.
-- Slutkontrollen komprimerar kanalrad, sammanfattning och knapprad n√•got f√∂r att ge bilderna mer luft. 9-per-sida och sidledes paging f√∂r fler bilder beh√•lls som princip.
-- Nyinkommet slutar anv√§nda de misslyckade fasta h√∂jdexperimenten och speglar i st√§llet geometrin fr√•n root-indexets `Senast inkommet`: grid stretch, blockkort, kvadratisk bildyta och `min-height:83px` f√∂r infotext. Root-index anv√§nds som visuellt facit.
-
-
-## v2.9.95 ‚Äì gemensam miniatyrgrid + fysisk swipe + indexkort p√• riktigt
-- `F√∂rbered f√∂r publicering` och `V√§lj plagg` anv√§nder samma kanoniska 3√ó3-geometri (samma kolumner, gap, kvadratiska cover-miniatyrer).
-- B√•da miniatyrvyerna har nu fingerf√∂ljande sid-swipe modellerad p√• detaljvyn: n√§stan 1:1-r√∂relse med fingret, mjukt motst√•nd, 23 % snap-tr√∂skel och 480 ms cubic-bezier-snap.
-- Under swipen renderas n√§sta/f√∂reg√•ende 9-grid som en visuell grannsida, s√• man ser den komma in p√• samma s√§tt som grannbilden i detaljvyn. F√∂r fler √§n nio beh√•lls pager/dots.
-- `V√§lj plagg` f√•r d√§rmed den saknade sid-swipen utan att √§ndra den miniatyrgeometri som redan s√•g r√§tt ut.
-- `Frivilliga till√§gg` byggs om med ren modal-DOM. Rubrik, scrollbar inneh√•llsyta och `√Öterg√•` / `Spara & √•terg√•` ligger nu i samma flytande box.
-- Nyinkommet anv√§nder nu faktiskt samma kortanatomi och klassmodell som root-indexets `Senast inkommet` (`senaste-nytt-kort`, `senaste-nytt-bild`, `senaste-nytt-info`, titel och datum), samtidigt som Nyinkommet beh√•ller sin lightbox och valbara metadata.
-- Nyinkommets grid f√•r dessutom `grid-auto-rows:1fr` och korten `height:100%`, s√• raderna f√•r enhetlig kortgeometri √§ven n√§r titeltextens l√§ngd varierar.
-- Demobild/footer-fl√∂det fr√•n v2.9.94 l√§mnas or√∂rt eftersom det √§r godk√§nt.
-
-
-## v2.9.96 ‚Äì kompakt grid + swipe/preview-separation + G√• vidare
-- Knappen som tidigare visade `Publicera (antal) plagg` heter nu `G√• vidare`, eftersom den navigerar till n√§sta kontrollsteg och inte publicerar direkt.
-- F√∂rbered, V√§lj plagg och slutkontrollen f√•r samma kompakta 3√ó3-geometri med reserverade kvadratiska gridceller och mindre total bredd p√• mobil.
-- Den fungerande swipe-easingen fr√•n v2.9.95 l√§mnas or√∂rd.
-- N√§r en horisontell swipe identifieras avbryts pending l√•ngtrycks-/quick-preview direkt, s√• ett kort inte ska f√∂rstoras mitt under swipe.
-- Nyinkommet anv√§nder nu enbart root-indexets `senaste-nytt-*`-kortklasser f√∂r sj√§lva kortet/bilden/info/titel/datum. De gamla `nyinkommet-*` layoutklasserna tas bort fr√•n DOM f√∂r att inte kunna konkurrera med indexgeometrin.
-- Demobild och Frivilliga till√§gg l√§mnas or√∂rda.
-
-
-## v2.9.97 ‚Äì stabilisering efter verkligt Container13-arbete
-- Vision s√§kerhetssparar nu den aktiva fotosessionen efter varje godk√§nt kamera-/albumfoto. Sessionslistan och originalfilen h√•lls ihop i IndexedDB; Tillbaka f√•r inte l√§ngre l√§mna f√∂r√§ldral√∂sa bilder.
-- Om Vision √∂ppnas igen och en sparad session finns √•terupptas den innan n√§sta kamerafoto l√§ggs till. Tre tidigare bilder + ett nytt foto ska d√§rf√∂r bli fyra, inte en ny serie med endast det sista.
-- Kamerans X sparar ett redan taget granskningsfoto innan kameran l√§mnas. `Ta om` √§r fortsatt det uttryckliga s√§ttet att kasta den aktuella tagningen.
-- Kameran visar 0,5√ó / 1√ó / 2√ó n√§r enhetens webbl√§sare exponerar motsvarande riktiga zoomniv√•er. Otillg√§ngliga h√•rdvaruniv√•er d√∂ljs i st√§llet f√∂r att ers√§ttas med falsk digital zoom.
-- Publicera l√§ser nu Visionens kanoniska sessionsnyckel `vision-active` (med st√∂d f√∂r den √§ldre nyckeln som fallback). Tidigare l√§ste modulen endast ett gammalt namn.
-- Anpassa bild √∂ppnar en oanpassad bild med hela originalet synligt. Pinch kan zooma ut under 1√ó och sparningen anv√§nder exakt det utsnitt/restyta som visas i crop-rutan. `Beh√•ll hela bilden` finns kvar.
-- Dubbeltryck tas bort fr√•n miniatyr-/detaljinteraktionerna. Enkeltryck, l√•ngtryck och horisontell swipe har separata uppgifter; swipe avbryter samma long-press-state som miniatyren faktiskt anv√§nder.
-- `Historik` ers√§tts av `Publicerade p√• Container13`. Vyn h√§mtar de verkliga posterna fr√•n Firebase, visar aktuella Nyinkommet-bilder och kan ta bort bild + Firestore-post.
-- Lyckat publicerade plagg tas bort ur den lokala redo-k√∂n. Kvittensen visar hur m√•nga som publicerades och hur m√•nga som finns kvar redo.
-- Efter CCC-publicering h√•lls Nyinkommet automatiskt till de 16 senaste posterna; lika m√•nga √§ldsta poster tas bort n√§r nya tillkommer. Webbvisningen har dessutom en 16-posters s√§kerhetsgr√§ns.
-
-
-## v2.9.98 ‚Äì demobild/vattenst√§mpel borttagen
-- Hela demobildsfunktionen tas bort ur Publicera: footerverktyg, dialog, DEMO-markeringar, varning i slutkontrollen och vattenst√§mpelgenerering.
-- Nya Firebase-poster och CCC-metadata f√•r inte l√§ngre n√•got `demoWatermark`-f√§lt.
-- √Ñldre lokala utkast som var demom√§rkta √•terst√§lls s√§kert till originalbilden. En tidigare genererad publiceringskopia med inbr√§nd vattenst√§mpel kastas, s√• anv√§ndaren kan anpassa bilden p√• nytt utan att m√§rkningen f√∂ljer med.
-- Redan publicerade bilder p√•verkas inte automatiskt; en vattenst√§mplad livebild m√•ste tas bort och publiceras om fr√•n originalet.
-
-
-## v2.9.99 ‚Äì ren grid √§ven mitt under swipe
-- F√∂rbered- och V√§lj-gridens tre kolumner och tre rader f√•r tydliga, lika stora mellanrum och strikt kvadratiska bildceller.
-- Swipe-sidorna f√•r en ogenomskinlig egen yta och en liten fysisk spalt mellan sidorna. Bilder fr√•n f√∂reg√•ende och n√§sta sida kan d√§rf√∂r inte l√§ngre lysa igenom eller se √∂verlappade ut mitt under fingerdraget.
-- Ghost-sidan l√•ses till exakt samma uppm√§tta storlek som den riktiga gridden, i st√§llet f√∂r att p√•verkas av mobilens procentbreddsregler.
-- Snap-animeringen kortas fr√•n 480 till 360 ms. Tr√∂skeln s√§nks n√•got och en tydlig snabb flick r√§cker f√∂r sidbyte, vilket g√∂r swipen mindre seg.
-
-
-## v2.10.0 ‚Äì samlad r√§ttning efter verkligt arbetsprov
-- Demobild/vattenst√§mpel √§r fortsatt helt borttagen ur gr√§nssnitt, publiceringsbild och metadata. √Ñldre lokala demoutkast √•terg√•r s√§kert till originalet.
-- F√∂rbered, V√§lj plagg och Slutkontroll anv√§nder samma gemensamma paginerade 3√ó3-komponent p√• mobil. En sida med exempelvis endast bild 10 beh√•ller samma cellstorlek och reserverade 3√ó3-yta som sidan med bild 1‚Äì9.
-- Swipe-kopian l√•ses till exakt samma uppm√§tta bredd och h√∂jd som den riktiga gridden. Sidorna √§r ogenomskinliga, har fysisk spalt, snabbare snap och st√∂d f√∂r kort tydlig flick; bytet tillbaka till den riktiga gridden ska inte l√§ngre ge ett storlekshopp. Swipe fungerar √•t v√§nster f√∂r n√§sta och √•t h√∂ger f√∂r f√∂reg√•ende sida, med mjukt motst√•nd i √§ndl√§gen men utan rundg√•ng.
-- Dubbeltryck/quicklook tas faktiskt bort √§ven ur F√∂rbered och V√§lj plagg. Enkeltryck utf√∂r sin uppgift direkt, l√•ngtryck ger f√∂rhandsvisning och horisontellt drag √§ger swipe; ingen 340 ms v√§ntan finns kvar f√∂r att avg√∂ra om ett andra tryck kommer.
-- Detaljvyn g√•r inte l√§ngre direkt till kanalval. Huvudknappen heter `Klar ‚Äì tillbaka till bilderna`; `Spara anpassning` och `Beh√•ll hela bilden` √•terg√•r ocks√• till F√∂rbered. Kanalval √∂ppnas endast via `Forts√§tt` i gridden.
-- Publicerat byggs om till tv√• tydliga l√§gen: `Ligger ute nu` visar de verkliga maximalt 16 Firebase-posterna i Container13/Nyinkommet, och `Historik` visar CCC:s lokalt sparade publiceringsbatcher med datum, tid, kanal och bilder.
-- Varje livepost har eget rektangul√§rt kort med bild, titel, kanal, publiceringstid och den uttryckliga knappen `Ta bort fr√•n hemsidan`. Tomstatus kan inte visas samtidigt som livekort.
-- Nya lyckade publiceringar sparar ett lokalt batchkvitto (upp till 30 batcher). Historiken √§r ett arbetskvitto p√• enheten; livefliken √§r alltid facit f√∂r vad som faktiskt ligger p√• hemsidan.
-- Index och Nyinkommet anv√§nder nu samma gemensamma `css/new-arrival-cards.css` i st√§llet f√∂r kopierade kortregler. Bildytan √§r kvadratisk, hela kortet st√•ende rektangul√§rt och informationsdelen dynamisk.
-- Korten f√•r ingen fast totalh√∂jd och information kapas inte. Det h√∂gsta kortet best√§mmer h√∂jden f√∂r sin gridrad; √∂vriga kort i samma rad str√§cks till samma h√∂jd och datum ligger l√§ngst ned. N√§sta rad anpassas separat.
-
-
-## v2.10.1 ‚Äì publicering bevarar originalet
-- Lyckad publicering raderar inte l√§ngre det lokala utkastet eller Vision-originalet. Posten arkiveras med `readyToPublish:false`, publiceringstid, kanal, Firebase-dokument-ID och liveadress medan originalfil och genererad WebP ligger kvar i IndexedDB.
-- Arkiverade poster filtreras bort b√•de fr√•n den vanliga redo-k√∂n och fr√•n √•terupptagen Vision-session, s√• de kan inte dyka upp som opublicerade igen.
-- `Hantera publicerade bilder` f√•r tre tydliga flikar: `Ligger ute nu`, `Sparade bilder` och `Historik`. Sparade bilder visar lokala original/publiceringskopior och om respektive bild fortfarande ligger ute.
-- Bilder som publicerades f√∂re v2.10.1 kan inte √•terskapas lokalt automatiskt om deras original redan raderats; det nya bevarandet g√§ller kommande publiceringar.
-- Borttagning fr√•n hemsidan blir ett fl√∂de med flerval. Kort gr√•markeras f√∂rst, flera bilder kan v√§ljas och en fast knapp genomf√∂r borttagningen efter gemensam bekr√§ftelse. Lokala arkivbilder l√§mnas or√∂rda och markeras som inte l√§ngre live.
-- Livevyn beh√•ller sin scrollposition efter borttagning. Kvittot visas flytande och skjuter inte listan upp√•t.
-- Kolumnmellanrummet i samtliga 3√ó3-grids √∂kas utan att √§ndra radmellanrummet. Swipe-kopian tas bort i samma renderings√∂gonblick som den riktiga gridden √•terst√§lls, s√• gridkanter inte ska blinka efter snap.
-
-
-## v2.10.2 ‚Äì Vision f√∂renklas och autosparas
-- Vision-arbetsytan anv√§nder en paginerad 3√ó3-grid p√• mobil. Nio plagg visas per sida och fler plagg n√•s med fingerf√∂ljande swipe √•t b√•da h√•llen utan rundg√•ng.
-- `Forts√§tt` heter nu `Granska & komplettera`. B√•de knappen och vald miniatyr g√•r direkt till samma redigeringsvy; den extra f√∂rslagssidan ligger inte l√§ngre i normalfl√∂dets v√§g.
-- `Spara och forts√§tt senare` och `Spara & tillbaka` tas bort. Formul√§r, extrabilder, plaggmetadata och aktiv Vision-session s√§kerhetssparas automatiskt lokalt med statusen `Sparar‚Ä¶` / `Sparat automatiskt`.
-- Redigeringsvyn f√•r st√∂rre f√§ltrubriker, tydligare luft, exempeltext och direkt prisval. `Frivilliga till√§gg` och `Fler uppgifter` samlas under `L√§gg till fler uppgifter`.
-- `Fler bilder av samma plagg (0/2)` ligger tidigt med `Nytt foto` och `Album`. Huvudbild plus h√∂gst tv√• extrabilder h√•lls ihop med samma plagg-ID och anv√§nds gemensamt vid AI-analys.
-- `Analysera med AI` √§r en tydlig knapp som kan k√∂ras igen efter komplettering. AI skriver inte √∂ver redan ifyllda anv√§ndarf√§lt.
-- `Redigerbart` tas bort. `Ta bort` kr√§ver bekr√§ftelse. Enda fram√•t√•tg√§rden √§r `N√§sta plagg`; Core-Tillbaka autosparar och √•terg√•r till gridden.
-- Kamerans `Ta foto` ers√§tts av en kompakt CCC-markering. Nypgest i kameraytan styr endast riktig h√•rdvaruzoom n√§r webbl√§saren exponerar den.
-- Core f√•r en global touchregel mot oavsiktlig dubbeltryckszoom och mobilens formul√§rf√§lt h√•lls minst 16 px.
-- Root `/version.js` √§r fortsatt or√∂rd. CCC-versionen hanteras i `/ccc-core/version.js`.
-
-
-## v2.10.3 ‚Äì blockerande Vision-vy/gridhotfix
-- v2.10.2:s nya `display:flex!important` p√• redigeringskortet kunde vinna √∂ver HTML-attributet `hidden`. Resultatet var att startsida/arbetsyta och `G√∂r f√∂rslaget klart` visades samtidigt.
-- `#editCard[hidden]` och √∂vriga Vision-steg f√•r nu explicita starka hidden-regler, s√• endast den vy som Vision-state aktiverar kan renderas.
-- Visionens 3√ó3-sida f√•r explicit kvadratisk yta och tre reserverade gridrader. √Öterupptagna miniatyrer kan d√§rf√∂r inte kollapsa till en tunn rest mellan instruktionen och huvudknappen.
-- Hotfixen √§ndrar inte autosparning, extrabilder, AI-fl√∂de eller √∂vriga v2.10.2-beslut.
-- Root `/version.js` √§r fortsatt or√∂rd.
-
-
-## v2.10.4 ‚Äì kamerar√§knare, 3√ó2 och kompakt redigering
-- Kameratoppen visar hur m√•nga plagg som redan fotograferats. Vid granskning av en ny tagning visas √§ven det nya fotots l√∂pnummer och totalt antal plagg.
-- Vision-arbetsytan byter fr√•n tr√•ng 3√ó3 till 3√ó2: sex st√∂rre miniatyrer per sida. Swipe, sidprickar, motst√•nd i √§ndl√§gen och swipe √•t b√•da h√•llen beh√•lls.
-- Vanligt tryck och swipe separeras tydligare. Pointer capture aktiveras f√∂rst efter ett tydligt horisontellt drag p√• minst 14 px; ett vanligt tryck eller l√§tt fingerdarr ska √∂ppna plagget.
-- Miniatyrtrycket √∂ppnar redigeringsvyn direkt utan att f√∂rst rendera om gridden under samma klickh√§ndelse.
-- Redigeringsvyn f√•r kompakt rubrik `Plagg X av Y`. Den separata dubblerade `Redigera plagg`-rutan och dess extra huvudbild tas bort.
-- Bilddelen visar en enda rad med huvudbild och upp till tv√• kompletterande platser. Tomma platser fungerar direkt som `Nytt foto` och `Album/L√§gg till`.
-- `Analysera med AI` √§r guldig f√∂re f√∂rsta analysen. N√§r ett AI-resultat redan finns blir √•tg√§rden mindre och heter `Analysera igen`.
-- `N√§sta plagg` √•terg√•r till en helbred huvudknapp l√§ngst ned. Autosparning och Core-Tillbaka beh√•lls.
-- Publicera och √∂vriga CCC-moduler √§r or√∂rda. Root `/version.js` √§r fortsatt or√∂rd.
-
-## v2.10.5 ‚Äì Vision touch + kamerar√§knare
-- Regressionfix: tryck p√• en miniatyr i Vision-arbetsytan √∂ppnar plagget igen.
-- Swipe mellan gridsidor anv√§nder separat touchhantering; fingerjitter r√§knas inte som swipe.
-- Kamerans r√§knare visar endast nya foton i det aktuella kamerabes√∂ket/fotoserien, inte √§ldre bilder i Vision-sessionen.
-- 3√ó2-layouten och redigeringsvyn fr√•n v2.10.4 l√§mnas i √∂vrigt of√∂r√§ndrade.
-
-## v2.10.6 ‚Äì Vision mobil tap-hotfix
-- Mobiltryck p√• en miniatyr √∂ppnar nu plagget direkt fr√•n `touchend` i st√§llet f√∂r att f√∂rlita sig p√• webbl√§sarens syntetiska `click` efter en touch.
-- Ett kort tryck identifieras separat fr√•n horisontell swipe och vertikal r√∂relse; ghost-click blockeras efter den direkta √∂ppningen.
-- Swipebeteendet och kamerans r√§knare f√∂r endast nya foton i aktuell fotoserie fr√•n v2.10.5 l√§mnas of√∂r√§ndrade.
-- Publicera och √∂vriga CCC-moduler √§r or√∂rda. Root `/version.js` √§r fortsatt or√∂rd.
-
-## v2.10.7 ‚Äì kompakt Vision-redigering
-- Pris √§r nu ett enda redigerbart f√§lt; Visions f√∂rslag fylls direkt n√§r f√§ltet √§r tomt.
-- Den separata prisf√∂rslagsrutan tas bort.
-- 0/100 och 0/800 ligger inne i respektive f√§lt.
-- Beskrivning, mellanrum och `L√§gg till fler uppgifter` komprimeras.
-- Touch√∂ppning, swipe och kamerar√§knare fr√•n v2.10.6 l√§mnas of√∂r√§ndrade.
-- Root `/version.js` √§r fortsatt or√∂rd.
-
-## v2.10.8 ‚Äì √§nnu kompaktare Vision-editor
-- Footern √§r helt or√∂rd.
-- `L√§gg till fler uppgifter` och `N√§sta plagg` ligger nu p√• samma rad inne i editor-kortet.
-- √ñverkanten i editor-kortet, sparstatus och bildsektionen har mindre vertikal luft.
-- Bildrutorna i editorl√§get √§r l√§gre f√∂r att vinna h√∂jd utan att √§ndra touch/klick-funktionerna.
-- Rubrik/pris/beskrivning har n√•got t√§tare etikett- och f√§ltspacing.
-- Klick p√• bilder, swipe och kamerar√§knaren l√§mnas of√∂r√§ndrade.
-
-## v2.10.9 ‚Äì t√§tare Vision-editor
-- Rubrik och Beskrivning ligger som placeholders inne i f√§lten och f√∂rsvinner n√§r man skriver.
-- Pris ligger p√• en rad: Pris v√§nster och kort beloppsf√§lt h√∂ger.
-- L√§gg till fler uppgifter och N√§sta plagg ligger p√• samma rad.
-- Footern, touch√∂ppning, swipe och kamerar√§knare √§r or√∂rda.
-
-## v2.10.10 ‚Äì tillbaka/sparlogik + lite mer luft
-- Att bara √∂ppna ett plagg r√§knas inte l√§ngre som en √§ndring och utl√∂ser ingen ny sparning.
-- Tillbaka fr√•n ett or√∂rt plagg g√•r direkt till arbetsytan utan felmeddelande.
-- Vid verkliga √§ndringar autosparas fortfarande formul√§ret.
-- Ett verkligt sparfel f√•r inte l√§ngre l√•sa anv√§ndaren kvar i editorn; navigation bak√•t till√•ts √§nd√•.
-- Editorn har f√•tt n√•gra pixlar mer luft mellan bilddel, AI-knapp, f√§lt och nedersta knapprad, men ensk√§rmslayouten beh√•lls.
-- Footer, gridswipe, bildklick och kamerar√§knare √§r or√∂rda.
-
-## v2.10.11 ‚Äì stor textredigering + √•ngra ‚ÄúVisste du?‚Äù
-- Tryck p√• Rubrik eller Beskrivning √∂ppnar nu en stor redigeringsdialog, i samma arbetsstil som Fler uppgifter.
-- √Öterg√• st√§nger textdialogen utan att f√∂ra √∂ver √§ndringen; Klar f√∂r √∂ver texten till det kompakta f√§ltet och autosparar.
-- De sm√• Rubrik/Beskrivningsf√§lten √§r fortsatt kompakta och anv√§nds som √∂ppnare/√∂versikt.
-- ‚ÄúVisste du?‚Äù √§r nu valbart √•t b√•da h√•ll: L√§gg till respektive Ta bort.
-- Borttagning tar bara bort det exakta Visste du-blocket och l√§mnar √∂vrig beskrivning kvar.
-- Footer, swipe, bildklick, kamerar√§knare och √∂vrig editorlayout √§r or√∂rda.
-
-## v2.10.12 ‚Äì autosparande dialoger + reversibelt Nyskick
-- Fler uppgifter och storredigering av Rubrik/Beskrivning har nu ett st√§ngkryss uppe till h√∂ger.
-- √Öterg√•/Klar √§r borttagna ur dessa dialoger.
-- Rubrik/Beskrivning f√∂rs √∂ver l√∂pande fr√•n storredigeraren och autosparas; X eller CCC:s Tillbaka st√§nger dialogen.
-- Footer/header-Tillbaka st√§nger f√∂rst en √∂ppen text-/fler-uppgifter-dialog utan att l√§mna plagget.
-- Nyskick fungerar nu likadant som Visste du?: L√§gg till respektive Ta bort.
-- Borttagning av Nyskick tar bara bort just `Nyskick.`-till√§gget och l√§mnar √∂vrig beskrivning kvar.
-- Footerutseende, gridswipe, bildklick och kamerar√§knare √§r or√∂rda.
-
-## v2.10.13 ‚Äì enhetlig bildplats + l√•st textredigering
-- Alla lediga bildplatser i plaggredigeringen heter `+ Nytt foto`.
-- Alla dessa platser anv√§nder samma befintliga iOS-/filv√§ljare som tidigare Album, s√• anv√§ndaren kan v√§lja Bildbibliotek, Ta bild eller V√§lj filer.
-- Den stora Rubrik/Beskrivning-dialogen √§r l√•st och ska inte kunna scrollas som helhet n√§r tangentbordet visas.
-- Endast inneh√•llet i sj√§lva stora skrivf√§ltet f√•r scrolla.
-- Rubrikens skrivf√§lt har flyttats ned n√•got f√∂r b√§ttre luft/balans.
-- R√§knaren ligger kvar i skrivf√§ltet.
-- Befintlig autosave/X/Tillbaka-logik, Nyskick/Visste du-toggle, footerutseende, swipe och kamerar√§knare √§r or√∂rda.
-
-## v2.10.14 ‚Äì fokuserad tangentbordsredigering + diskret manuell AI
-- Rubrik/Beskrivning positioneras mot iOS visual viewport n√§r tangentbordet √§r √∂ppet, med luft mot statusf√§ltet.
-- Dialogskalet √§r l√•st; endast inneh√•llet i textf√§ltet f√•r scrolla.
-- Pris √∂ppnas i en egen kompakt fokusdialog; bakgrunden tonas ned och kan inte r√•kas tryckas.
-- N√§r automatisk AI √§r av blir den manuella AI-knappen liten, sekund√§r och v√§nsterst√§lld.
-- Alla lediga bildplatser heter `+ Nytt foto` och anv√§nder samma befintliga filv√§ljare.
-- Footer, swipe, autosave och befintliga toggles √§r or√∂rda.
-
-## v2.10.15 ‚Äì scroll/state-fix i Vision-editor
-- N√§r ett plagg √∂ppnas i editorn √•terst√§lls sidans scroll alltid till toppen.
-- F√∂reg√•ende scrollposition fr√•n ett tidigare bes√∂k p√• plagget f√•r inte f√∂lja med in igen.
-- N√§r Rubrik, Beskrivning, Pris eller Fler uppgifter √∂ppnas fryses Vision-sidan bakom dialogen p√• exakt aktuell position.
-- N√§r dialogen st√§ngs √•terst√§lls samma scrollposition i plagget.
-- Sj√§lva sidan bakom dialogen kan inte l√§ngre scrollas medan tangentbord/dialog √§r aktiv.
-- Befintlig textscroll inne i skrivf√§ltet, footer, swipe, bildklick, autosave och AI-/toggle-logik l√§mnas or√∂rda.
-
-## v2.10.16 ‚Äì stabil iOS-dialog f√∂r Rubrik/Beskrivning
-- Scroll-l√•set flyttar inte l√§ngre hela `body` med negativ top-position.
-- Bakgrunden l√•ses med overflow i st√§llet, vilket undviker dubbel f√∂rskjutning mot iOS visual viewport.
-- Rubrik/Beskrivning-dialogen h√•lls som ett enda stabilt lager ovanf√∂r tangentbordet.
-- Dialogskalet kan inte scrollas; endast sj√§lva skrivf√§ltets inneh√•ll f√•r scrolla.
-- Visual viewport-v√§rden klampas till rimliga gr√§nser f√∂r att undvika att dialogen hamnar utanf√∂r sk√§rmen.
-- Bakgrunden isoleras/tonas s√• underliggande editor inte kan bl√∂da igenom eller ta emot tryck.
-- √ñvriga funktioner fr√•n v2.10.15 l√§mnas or√∂rda.
-
-## v2.10.17 ‚Äì separat fokusl√§ge f√∂r Rubrik/Beskrivning
-- Den tidigare flytande Rubrik/Beskrivning-dialogen ers√§tts av ett eget fokuserat helsk√§rmsl√§ge.
-- N√§r Rubrik/Beskrivning √∂ppnas d√∂ljs den vanliga Vision-editorn helt; inga dubbla lager eller underliggande f√§lt ska synas bakom.
-- Fokussk√§rmen anv√§nder den tillg√§ngliga iPhone-vyn ovanf√∂r tangentbordet utan visual-viewport-positionering av textdialogen.
-- Endast inneh√•llet i sj√§lva skrivf√§ltet f√•r scrolla.
-- X och CCC:s Tillbaka st√§nger fokusl√§get och √•terg√•r till samma plagg.
-- Rubrik anv√§nder en lagom stor skrivyta; Beskrivning anv√§nder √•terst√•ende tillg√§ngliga h√∂jd.
-- Prisdialogen och √∂vriga funktioner fr√•n v2.10.16 l√§mnas or√∂rda.
-
-## v2.10.18 ‚Äì separat fokusl√§ge f√∂r Pris
-- Pris anv√§nder nu samma helsk√§rmsprincip som den fungerande Rubrik/Beskrivning-redigeringen.
-- N√§r Pris √∂ppnas d√∂ljs den vanliga Vision-editorn helt; inga underliggande knappar eller f√§lt syns eller g√•r att trycka p√•.
-- Fokusvyn visar bara Pris, ett stort beloppsf√§lt, `kr` och st√§ngkryss ovanf√∂r siffertangentbordet.
-- X och CCC:s Tillbaka st√§nger prisfokusl√§get och √•terg√•r till samma plagg.
-- Pris autosparas fortsatt medan v√§rdet √§ndras.
-- Rubrik/Beskrivning och √∂vriga funktioner fr√•n v2.10.17 l√§mnas or√∂rda.
-
-## v2.10.19 ‚Äì h√•rt scroll-l√•s i Rubrik/Beskrivning
-- Fokusvyn f√∂r Rubrik/Beskrivning kan inte scrollas som helhet.
-- Rubrik, hj√§lpttext, X och dialogram ligger fasta.
-- Endast inneh√•llet i det stora skrivf√§ltet f√•r scrolla.
-- iOS rubber-band/overscroll blockeras utanf√∂r skrivf√§ltet.
-- Prisfokusl√§get och √∂vriga funktioner fr√•n v2.10.18 l√§mnas or√∂rda.
-
-## v2.10.20 ‚Äì endast skrivf√§ltet f√•r scrolla
-- I Rubrik/Beskrivning fryses nu b√•de `html` och `body` helt medan fokusl√§get √§r √∂ppet.
-- Fokusvyn, rubriken, hj√§lptexten, X, dialogramen och ytan runt skrivf√§ltet kan inte scrollas eller rubber-banda.
-- Endast `largeTextEditor` √§r en scrollcontainer.
-- Dokumentets scrollbar ska d√§rf√∂r inte l√§ngre visas l√§ngst till h√∂ger i fokusl√§get.
-- Scrollpositionen i plagget sparas n√§r fokusl√§get √∂ppnas och √•terst√§lls n√§r det st√§ngs.
-- Prisfokusl√§get och √∂vriga funktioner fr√•n v2.10.19 l√§mnas or√∂rda.
-
-## v2.10.21 ‚Äì JS-l√•st dokument under Rubrik/Beskrivning
-- iOS/Safari kan flytta dokumentet n√§r ett textarea fokuseras √§ven n√§r CSS overflow √§r l√•st.
-- Fokusl√§get bevakar d√§rf√∂r document/window-scroll i JavaScript och tvingar dokumentet till scrollposition 0 medan Rubrik/Beskrivning √§r √∂ppet.
-- VisualViewport scroll/resize bevakas ocks√• f√∂r att motverka Safaris automatiska fokus-scroll.
-- Endast `largeTextEditor` √§r till√•ten scrollcontainer.
-- N√§r fokusl√§get st√§ngs stoppas scrollvakten och plaggets tidigare scrollposition √•terst√§lls.
-- Pris och √∂vriga funktioner l√§mnas or√∂rda.
-
-## v2.10.22 ‚Äì Rubrik/Beskrivning anpassas till synlig iPhone-yta
-- Fokusl√§get l√§ser `visualViewport.height` n√§r iPhone-tangentbordet √∂ppnas och anv√§nder exakt den synliga h√∂jden ovanf√∂r tangentbordet.
-- Hela fokusvyn, rubriken, hj√§lptexten, X och dialogramen √§r fasta och f√•r inte scrolla.
-- Skrivf√§ltet krymper automatiskt n√§r tangentbordet visas s√• att hela tangentbordet/navigationsraden l√§mnas fri.
-- Endast texten inne i sj√§lva skrivf√§ltet kan scrolla om inneh√•llet blir l√§ngre √§n f√§ltet.
-- Rubrikf√§ltet √§r mindre √§n Beskrivning och scrollar endast internt vid ovanligt l√•ng rubrik.
-- Pris och √∂vriga funktioner fr√•n v2.10.21 l√§mnas or√∂rda.
-
-## v2.10.23 ‚Äì safe-area-finjustering f√∂r Rubrik/Beskrivning
-- Fokus-kortet flyttas ned med tydlig marginal under iPhones statusf√§lt/Dynamic Island.
-- Rubrik/Beskrivning, hj√§lptext och X ligger fast i toppen av kortet utan krock med klocka/batteri.
-- Skrivf√§ltet anv√§nder endast √•terst√•ende h√∂jd ovanf√∂r tangentbordet.
-- Hela iPhone-tangentbordet och dess navigations-/f√∂rslagsrad ska l√§mnas fri.
-- Endast texten i innersta skrivf√§ltet kan scrolla; √∂vriga fokusvyn √§r fortsatt l√•st.
-- Prisfokusl√§get √§r or√∂rt.
-
-## v2.10.24 ‚Äì tydligare arbetssteg i Vision
-- Rubriken `Plagg X av Y` i arbetsvyn √§ndras till `G√∂r klart plagg ¬∑ X av Y`.
-- Syftet √§r att direkt f√∂rklara vad anv√§ndaren g√∂r i vyn utan att l√§gga till ytterligare UI.
-- √ñvrig layout och funktionalitet, inklusive den nu fungerande Rubrik/Beskrivning-tangentbordsl√∂sningen fr√•n v2.10.23, l√§mnas or√∂rd.
-
-## v2.10.25 ‚Äì korrekt synlig arbetsrubrik
-- Den faktiska synliga rubriken i `ccc-core/vision/index.html` √§ndras fr√•n `Plagg X av Y` till `G√∂r klart plagg ¬∑ X av Y`.
-- v2.10.24 √§ndrade fel kodst√§lle och p√•verkade d√§rf√∂r inte den synliga rubriken.
-- Inga andra UI- eller funktions√§ndringar g√∂rs.
-
-## v2.10.26 ‚Äì separat yta f√∂r arbetsrubrik och status
-- Toppraden i Vision-editorn delas tydligt i tv√• zoner.
-- V√§nster zon: `G√∂r klart plagg ¬∑ X av Y`.
-- H√∂ger zon: sparstatus och `Ta bort`.
-- Zonerna f√•r reserverad bredd s√• rubriken inte kan krocka med sparstatus/√•tg√§rd p√• smala iPhone-sk√§rmar.
-- Inga andra UI- eller funktions√§ndringar g√∂rs.
-
-## v2.10.27 ‚Äì Objekt + kontextuell Core-hj√§lp
-- Arbetsrubriken f√∂renklas till `Objekt X/Y` med underraden `Granska & komplettera`.
-- F√∂rklarande text ovanf√∂r bildrutorna tas bort; endast den kompakta bildr√§knaren visas.
-- `Huvudbild` p√• sj√§lva huvudbilden beh√•lls.
-- Den befintliga centrala Core-footern anv√§nds f√∂r `? Hj√§lp` i just edit-vyn; inget separat Vision-footersystem skapas.
-- Hj√§lpen f√∂rklarar huvudbild, bildantal, `Analysera igen` och vad som granskas i vyn.
-- Rubrik/Beskrivning-tangentbordsl√∂sningen och Pris l√§mnas or√∂rda.
-
-## v2.10.28 ‚Äì hj√§lp-X + kompakt objekthuvud
-- St√§ngkrysset i `Granska & komplettera`-hj√§lpen st√§nger nu hj√§lprutan via en robust direkt listener.
-- Klick p√• hj√§lprutans bakgrund st√§nger ocks√• hj√§lpen.
-- Toppen f√∂renklas visuellt till `Objekt X/Y` med underraden `Granska & komplettera`.
-- Synlig sparstatus kortas till `‚úì Sparat`; `Ta bort` ligger kvar till h√∂ger.
-- Rubrikraden h√•lls p√• en rad p√• smala iPhone-sk√§rmar.
-- √ñvrig funktionalitet l√§mnas or√∂rd.
-
-## v2.10.29 ‚Äì ny mobil hierarki i objektvyn
-- `Granska & komplettera` √§r nu huvudrubrik.
-- `Objekt X/Y` ligger som mindre sekund√§r rad under huvudrubriken.
-- P√• mobil ligger endast `Ta bort` kvar till h√∂ger i toppen.
-- Autosave-status flyttas fr√•n toppen till under knapparna och visas diskret som `‚úì Sparas automatiskt`.
-- `N√§sta plagg` √§ndras till `N√§sta objekt`.
-- Bilddelen f√∂renklas s√• redundant instruktionstext tas bort.
-- Hj√§lprutans X anv√§nder delegerad klickhantering och fungerar oberoende av script/DOM-ordning.
-
-## v2.10.30 ‚Äì central objekterminologi
-- Core har nu `terminology.js` som central k√§lla f√∂r anv√§ndarsynliga objektnamn.
-- Standard √§r `objekt`; valbara presets √§r `Objekt`, `Plagg`, `Produkt` och `Vara`.
-- Inst√§llningen exponeras i Control Center/Inst√§llningar under `Terminologi`.
-- Vision anv√§nder Core-termen f√∂r centrala anv√§ndartexter som borttagningsfr√•gan och fotosessionsben√§mningen.
-- M√•let √§r att √•terst√•ende modultexter successivt ska kopplas till samma API n√§r de ber√∂rs; historik/dokumentation och webbplatsens redaktionella texter ska inte massers√§ttas.
-- Papperskorg i Core-footern p√• relevanta Vision-vyer ligger kvar som n√§sta separata UI-steg.
-
-## v2.10.31 ‚Äì sidintervall i Vision-√∂versikten + hj√§lp
-- Workspace-raden `14 plagg ¬∑ 10 markerat` tas bort helt.
-- I st√§llet visas det faktiska synliga intervallet: t.ex. `Objekt 1‚Äì6 av 14`, `Objekt 7‚Äì12 av 14`, `Objekt 13‚Äì14 av 14`.
-- Intervallet uppdateras direkt n√§r anv√§ndaren swipar eller byter sida.
-- Text om `markerat`/`valt` visas inte; den gula ramen r√§cker som visuell indikation.
-- Den tidigare synliga instruktionstexten i workspace d√∂ljs och f√∂rklaringen flyttas till `?` i den centrala Core-footern.
-- Workspace-hj√§lpen f√∂rklarar sex objekt per sida, intervalltexten, swipe och att tryck √∂ppnar `Granska & komplettera`.
-- Ben√§mningen h√§mtas fr√•n Core-terminologin, s√• `Objekt` kan senare bytas centralt till t.ex. `Plagg`, `Produkt` eller `Vara`.
-
-## v2.10.32 ‚Äì central terminologimigrering
-- Bygger vidare p√• v2.10.31 och beh√•ller workspace-intervallen `Objekt 1‚Äì6 av 14` samt vy-specifik hj√§lp.
-- Core-terminologin f√•r mallst√∂d (`{singular}`, `{plural}`, `{definiteSingular}` osv.) samt automatisk uppdatering av m√§rkta UI-element.
-- Aktiva anv√§ndarsynliga Vision- och Publicera-texter migreras fr√•n h√•rdkodat `plagg/plagget/plaggen` till Core-terminologin.
-- Terminologivalet i Control Center (Objekt / Plagg / Produkt / Vara) kan d√§rmed sl√• igenom p√• betydligt fler knappar, statusrader, dialoger, toml√§gen och hj√§lprader.
-- Container13:s publika webbtexter, README/CHANGELOG, kodkommentarer och AI-dom√§ninstruktioner massers√§tts inte eftersom ordet `plagg` d√§r kan vara korrekt inneh√•ll och inte UI-terminologi.
-- Slutkontroll v2.10.32: kvarvarande anv√§ndarsynliga Publicera-texter som `Publicerar X plagg`, `Plagg:` och `Valt plagg` √§r ocks√• kopplade till Core-terminologin.
-
-## v2.10.33 ‚Äì Granska & komplettera p√• iPhone
-- `Granska & komplettera` centreras som huvudrubrik.
-- Positionen visas enbart som `X/Y` l√§ngst till v√§nster; ordet `Objekt` tas bort.
-- `Ta bort` ligger kvar l√§ngst till h√∂ger.
-- Separat `1/3` ovanf√∂r bildrutorna tas bort.
-- De tre bildrutorna f√•r centrerade rollnamn: `Huvudbild`, `Baksida`, `Detalj`.
-- √ñvriga delar fr√•n v2.10.32 l√§mnas or√∂rda.
-
-## v2.10.34 ‚Äì Vision √∂versikt och edit-f√§lt
-- `Objekt X‚ÄìY av Z` centreras i √∂versikten.
-- Knapparna f√∂r bildk√§lla f√∂rtydligas till `+ Nytt foto` och `+ Fr√•n album`.
-- `Rubrik` och `Beskrivning` √•terg√•r till etiketter utanf√∂r respektive f√§lt.
-- Bildrutorna f√•r konsekventa centrerade bottom-badges: `Huvudbild`, `Baksida`, `Detalj`.
-- Headern `X/Y ‚Äì Granska & komplettera ‚Äì Ta bort` l√§mnas of√∂r√§ndrad.
-
-## v2.10.35 ‚Äì korrigering efter faktisk DOM-inspektion
-- `#workspaceCount` centreras direkt i Vision-workspace, √§ven n√§r toolbaren g√•r √∂ver till kolumnl√§ge p√• iPhone.
-- `Rubrik` l√§ggs som riktig yttre etikett ovanf√∂r det faktiska f√§ltet `#title`.
-- `Beskrivning` l√§ggs som riktig yttre etikett ovanf√∂r det faktiska f√§ltet `#description`.
-- Placeholder-texterna i dessa tv√• f√§lt tas bort f√∂r att undvika dubbel m√§rkning.
-- Inga andra funktioner eller layouter √§ndras.
-
-## v2.10.36 ‚Äì bildrutorna
-- `+ Nytt foto` beh√•lls i de tv√• tomma bildrutorna.
-- Det separata stora plustecknet ovanf√∂r texten tas bort.
-- Bildrollerna visas som `Huvudbild`, `Baksida` och `Detalj`.
-- √ñvrig layout fr√•n v2.10.35 l√§mnas or√∂rd.
-
-## v2.10.37 ‚Äì Beskrivning: l√•st viewport
-- Beskrivning-editorn f√•r samma princip som Rubrik: hela sidan/dialogen ska vara helt l√•st n√§r tangentbordet √§r √∂ppet.
-- Ingen scrollbar ska kunna visas l√§ngst ut p√• sk√§rmen.
-- Endast sj√§lva textarea-f√§ltet f√•r scrolla om texten blir l√§ngre √§n f√§ltet.
-- Beskrivningens skrivyta g√∂rs n√•got l√§gre f√∂r att hela editorn ska rymmas ovanf√∂r iPhone-tangentbordet.
-- Rubrik, Pris och √∂vriga Vision-vyer l√§mnas of√∂r√§ndrade.
-
-## v2.10.38 ‚Äì rubrikhierarki
-- `V√§lj objekt` blir huvudrubrik i objekt√∂versikten och g√∂rs tydligare/st√∂rre.
-- Sidinformationen √§ndras fr√•n `Objekt 7‚Äì12 av 14` till `Visar 7‚Äì12 av 14` och visas som sekund√§r information under fotoknapparna.
-- `Granska & komplettera` g√∂rs n√•got st√∂rre i objektvyn.
-- √ñvrig funktionalitet l√§mnas or√∂rd.
-
-## v2.10.39 ‚Äì vyseparation och granskningsrubrik
-- `V√§lj objekt` ligger nu inne i workspace-vyn och visas inte p√• Vision-starten.
-- `V√§lj objekt`-√∂versikten fr√•n v2.10.38 l√§mnas i √∂vrigt or√∂rd.
-- `Granska & komplettera` f√•r en egen centrerad rubrikrad.
-- Objektposition (t.ex. `12/14`) och `Ta bort` ligger p√• raden under, v√§nster respektive h√∂ger.
-
-## v2.10.40 ‚Äì ombyggd workspace-/review-header
-- Den dubbla `V√§lj objekt`-rubriken i workspace tas bort i sj√§lva HTML:n; exakt en rubrik finns kvar.
-- Workspace beh√•ller ordningen `V√§lj objekt` ‚Üí fotoknappar ‚Üí `Visar X‚ÄìY av Z`.
-- `Granska & komplettera` byggs om i DOM, inte med positioneringshack.
-- F√∂rsta raden inneh√•ller enbart centrerad `Granska & komplettera`.
-- Andra raden inneh√•ller positionen (t.ex. `14/14`) till v√§nster och `Ta bort` till h√∂ger.
-- Tidigare absoluta/√∂verlappande headerbeteenden neutraliseras med exakta v2.10.40-regler.
-
-## CCC arbetskommando ‚Äì `k√∂r`
-- N√§r arbete p√•g√•r i CCC betyder anv√§ndarens `k√∂r` alltid: genomf√∂r den senast √∂verenskomna kod-/projekt√§ndringen.
-- `k√∂r` f√•r aldrig tolkas som en beg√§ran att skapa en bild.
-- Bild, mockup eller annan visualisering f√•r endast genereras n√§r anv√§ndaren uttryckligen ber om det i samma meddelande.
-- En tidigare bildbeg√§ran f√•r inte f√∂lja med till ett senare `k√∂r`.
-
-## v2.10.41 ‚Äì objekt√•tg√§rder under bilderna
-- `Granska & komplettera` st√•r ensam som huvudrubrik.
-- Direkt under de tre bildrutorna ligger nu en gemensam rad med `9/14`, `AI-analys` och `Ta bort`.
-- `9/14` √§r neutral status/pill, `AI-analys` √§r sekund√§r gul knapp och `Ta bort` √§r sekund√§r r√∂d knapp.
-- Den tidigare frist√•ende `Analysera med AI`-knappen tas bort.
-- Ingen separat tipsknapp l√§ggs till.
-
-## v2.10.42 ‚Äì ren objekt√•tg√§rdsrad
-- v2.10.41-raden `9/14 | AI-analys | Ta bort` beh√•lls i samma plats direkt under bildrutorna.
-- Gamla positionerings-, storleks- och knappregler f√∂r `manualAiBtn`, `editTrashBtn` och `editProgress` neutraliseras uttryckligen i den nya raden.
-- Raden byggs som en stabil trekolumns-grid: neutral status till v√§nster, AI-analys i mitten, Ta bort till h√∂ger.
-- Inga absoluta positioner anv√§nds f√∂r de tre kontrollerna.
-- √ñvrig Vision-layout l√§mnas or√∂rd.
-
-## v2.10.43 ‚Äì slutlig justering av objekt√•tg√§rdsraden
-- `X/Y`, `AI-analys` och `Ta bort` tvingas till exakt samma rad direkt under bildrutorna.
-- Alla tre kontroller f√•r samma h√∂jd och vertikal centrering.
-- `AI-analys` √§r den permanenta korta texten.
-- `Rubrik` startar f√∂rst efter hela actionraden och kan inte l√§ngre hamna bredvid/under `X/Y`.
-- √ñvrig Vision-layout l√§mnas or√∂rd.
-
-## v2.10.44 ‚Äì bildplatsernas roller
-- Bildplats 2 m√§rks `Baksida`.
-- Bildplats 3 m√§rks `Detalj`.
-- Etiketterna visas b√•de p√• tomma bildplatser och p√• tillagda extrabilder.
-- Tomma platser visar dessutom `Nytt foto`, utan det tidigare stora/minsta plustecknet.
-- Huvudbild och √∂vrig Granska & komplettera-layout l√§mnas or√∂rda.
-
-## v2.10.45 ‚Äì neutrala namn f√∂r extrabilder
-- `Baksida` √§ndras till `Bild 2`.
-- `Detalj` √§ndras till `Bild 3`.
-- `Huvudbild` beh√•lls som prim√§r bild.
-- Hj√§lpen f√∂r `Granska & komplettera` f√∂rklarar att Bild 2 och Bild 3 √§r extra bilder av samma objekt och kan visa valfri relevant vy.
-- Ingen ny funktion f√∂r att visa extrabilder utanf√∂r Granska byggs i denna version.
-
-## v2.10.46 ‚Äì prisrad i Granska & komplettera
-- Prisraden s√§nks f√∂r j√§mnare avst√•nd mellan rubrikf√§lt, prisrad och beskrivningsf√§lt.
-- Etiketten `Pris` flyttas √•t h√∂ger s√• den visuellt h√∂r tydligare ihop med prisrutan.
-- √ñvrig layout och funktion l√§mnas or√∂rd.
-
-## v2.10.47 ‚Äì prisrad och f√§ltspacing
-- `Pris` flyttas √•t h√∂ger och placeras direkt intill prisrutan.
-- Rubrikf√§lt, prisrad och beskrivningsf√§lt f√•r j√§mnare vertikalt avst√•nd.
-- Ingen annan Vision-layout eller funktion √§ndras.
-
-## v2.10.48 ‚Äì j√§mn luft runt prisraden
-- Beh√•ller `Pris` horisontellt intill prisrutan fr√•n v2.10.47.
-- Flyttar ned prisraden genom j√§mn vertikal luft ovanf√∂r och under.
-- Ingen annan layout eller funktion √§ndras.
-
-## v2.10.49 ‚Äì Beskrivning flyttad upp
-- Hela Beskrivning-sektionen (etikett + inmatningsruta) flyttas upp p√• mobil.
-- Prisradens placering fr√•n v2.10.48 l√§mnas or√∂rd.
-- Ingen annan layout eller funktion √§ndras.
-
-## v2.10.50 ‚Äì navigering direkt i Granska & komplettera
-- Positionskontrollen visas som `‚Äπ X/Y ‚Ä∫`.
-- V√§nster/h√∂ger pil navigerar till f√∂reg√•ende respektive n√§sta objekt utan att l√§mna Granska & komplettera.
-- Aktuella √§ndringar autosparas tyst innan objektbyte.
-- V√§nsterpilen √§r inaktiv p√• f√∂rsta objektet och h√∂gerpilen p√• sista.
-- AI-knappens normala text √§r konsekvent `AI-analys`.
-
-## v2.10.51 ‚Äì proportioner f√∂r objektkontroller
-- Navigeringsrutan `< X/Y >` √§r bredare.
-- V√§nster/h√∂ger-pilarna √§r tydligt st√∂rre och f√•r mer egen yta.
-- `AI-analys` och `Ta bort` √§r n√•got kompaktare.
-- Alla tre kontroller beh√•ller samma h√∂jd och visuella linjering.
-
-
-
-## v2.10.52 ‚Äì l√§gre Beskrivning-editor p√• mobil
-- Beskrivningens stora skrivyta g√∂rs tydligt l√§gre n√§r iPhone-tangentbordet √§r √∂ppet.
-- Fokusvyn f√∂rblir l√•st; endast sj√§lva textf√§ltet f√•r scrolla vid l√•ng text.
-- Rubrik-editorn och √∂vrig Vision-layout l√§mnas or√∂rda.
-
-## v2.10.53 ‚Äì Beskrivning anv√§nder Rubriks fungerande editor
-- Beskrivning anv√§nder nu samma fokuserade editor-geometri som Rubrik.
-- Samma dialog, samma placering, samma h√∂jdprincip och samma l√•sning av den yttre sk√§rmen.
-- Endast den innersta textrutan f√•r scrolla.
-- Skillnaden mellan Rubrik och Beskrivning √§r endast maxl√§ngd/inneh√•ll: 100 respektive 800 tecken.
-- v2.10.52:s separata speciallayout f√∂r Beskrivning tas bort.
-
-## Leveransregel ‚Äì rollback vid kritiska uppdateringar
-Vid kritiska eller f√∂rh√∂jt riskfyllda uppdateringar (t.ex. st√∂rre cleanup/refaktorering, Core, lagring/state eller annan √§ndring d√§r snabb √•terst√§llning √§r viktig) ska leveransen normalt inneh√•lla tre paket:
-1. `changed-files` ‚Äì de nya/√§ndrade filerna.
-2. `full` ‚Äì komplett projekt efter uppdateringen.
-3. `rollback-original-files` ‚Äì exakt de of√∂r√§ndrade filerna fr√•n f√∂reg√•ende stabila version som uppdateringen ers√§tter, med samma mappstruktur.
-
-Rollback-paketet ska inneh√•lla en kort README som anger vilken stabil version det √•terst√§ller till. ChatGPT ska sj√§lv bed√∂ma n√§r en uppdatering b√∂r behandlas som kritisk och hellre skapa rollback-paket en g√•ng f√∂r mycket √§n en g√•ng f√∂r lite.
-
-## v2.10.54 ‚Äì Vision cleanup
-- v2.10.53 √§r stabil √•terst√§llningspunkt.
-- Sena CSS-patchar f√∂r pris/beskrivningsspacing (v2.10.46‚Äì49) konsoliderade utan avsiktlig beteendef√∂r√§ndring.
-- Objektkontrollerna under bilderna (v2.10.50‚Äì51) konsoliderade till sina slutliga v√§rden.
-- Rubrik/Beskrivning-editorn fr√•n v2.10.53 l√§mnas funktionellt or√∂rd.
-- Kritiska uppdateringar f√•r fram√∂ver separat rollback-paket.
-
-## v2.10.55 ‚Äì objektnavigering + verifiering av extrabilder
-- `‚Äπ X/Y ‚Ä∫` anv√§nder nu en robust flexrad s√• b√•de v√§nster- och h√∂gerpilen ligger p√• samma rad som r√§knaren.
-- Kodgranskning bekr√§ftar att Bild 2/Bild 3 l√§ggs till i `extraFiles`.
-- N√§r en extrabild l√§ggs till startas `startSilentAnalysis(item)`.
-- AI-underlaget byggs som huvudbild + extrabilder, max 3 bilder totalt.
-- Vid automatisk AI av k√∂rs d√§rf√∂r en ny analys automatiskt n√§r Bild 2/3 l√§ggs till. Om automatisk AI √§r av startas ingen riktig AI f√∂rr√§n anv√§ndaren v√§ljer `AI-analys`.
-
-## v2.10.56 ‚Äì AI k√∂rs endast p√• anv√§ndarens initiativ
-- M√∂jligheten `Automatisk AI-analys` tas bort ur Vision-inst√§llningarna.
-- Nya huvudbilder analyseras inte automatiskt.
-- Bild 2/Bild 3 analyseras inte automatiskt n√§r de l√§ggs till eller tas bort.
-- √Öterupptagen fotosession startar inte AI automatiskt.
-- Anv√§ndaren v√§ljer sj√§lv `AI-analys` i `Granska & komplettera`.
-- Vid `AI-analys` skickas huvudbild + befintliga extrabilder tillsammans i ett enda AI-anrop, max tre bilder.
-- Om bildunderlaget √§ndras efter en tidigare analys markeras objektet som ej analyserat; ny AI k√∂rs f√∂rst om anv√§ndaren v√§ljer `AI-analys` igen.
-- v2.10.55:s robusta `‚Äπ X/Y ‚Ä∫`-pilfix ing√•r.
-- Syfte: tydligare anv√§ndarkontroll och undvika on√∂diga AI-kostnader.
-
-## v2.10.57 ‚Äì Objekt-r√§knare/pilar
-- Ren layoutfix i `Granska & komplettera`.
-- V√§nster navigeringsruta delas i tre reserverade zoner: `‚Äπ | 11/14 | ‚Ä∫`.
-- R√§knarlogiken √§r or√∂rd; hela `11/14` ska nu alltid synas mellan pilarna utan klippning/√∂verlapp.
-- AI-beteendet fr√•n v2.10.56 √§r of√∂r√§ndrat.
-
-## v2.10.58 ‚Äì Objekt-navigering isolerad
-- Backar den felaktiga v2.10.57-gridfixen.
-- `< 11/14 >` h√•lls nu som en enda isolerad flexkontroll i v√§nsterrutan.
-- H√∂gerpilen kan inte l√§ngre flyta ut √∂ver `AI-analys`.
-- `AI-analys`, `Ta bort`, r√§knarlogik och √∂vrig Granska-layout √§r or√∂rda.
-
-## v2.10.59 ‚Äì Objekt-r√§knaren finjusterad
-- `11/14` centreras sj√§lvst√§ndigt i v√§nsterrutan.
-- V√§nster/h√∂ger-pil ligger i varsin fast kantzon och kan inte g√• in √∂ver r√§knaren.
-- Pilarna √§r fortfarande tydliga men n√•got smalare f√∂r mer luft runt `11/14`.
-- Ingen r√§knarlogik, AI-logik eller annan Vision-layout √§ndras.
-
-## v2.10.60 ‚Äì Navigering + AI-status
-- V√§nsterrutan f√∂r `< 11/14 >` g√∂rs tydligt bredare; `AI-analys` och `Ta bort` f√•r mindre bredd men beh√•ller samma visuella rad.
-- R√§knaren har reserverat centrum och pilarna egna kantzoner.
-- Efter lyckad AI-analys visas `AI ‚úì` i gr√∂nt p√• huvudbilden.
-- `AI ‚úì` f√∂rsvinner automatiskt n√§r Bild 2/3 l√§ggs till eller tas bort, eftersom befintlig analys d√• ogiltigf√∂rklaras.
-
-## v2.10.61 ‚Äì navigeringsrad korrigerad + Huvudbild centrerad
-- Den f√∂r breda v2.10.60-navigationen tas bort.
-- Mobilraden anv√§nder fasta, rimliga bredder: navigation 120 px, `Ta bort` 92 px och √•terst√•ende bredd till `AI-analys`.
-- `< 11/14 >` har separata pilzoner och en 58 px reserverad mittzon f√∂r hela r√§knaren.
-- `Huvudbild` centreras horisontellt p√• samma s√§tt som Bild 2/Bild 3.
-- `AI ‚úì` visas endast efter en verkligt lyckad AI-analys (`analysisMode === ai`) av aktuellt bildunderlag.
-- √Ñndring av extrabilder forts√§tter att ogiltigf√∂rklara analysen och ta bort `AI ‚úì`.
-
-## v2.10.62 ‚Äì `AI ‚úì` per bild
-- `AI ‚úì` betyder nu att just den bilden har ing√•tt i en verklig AI-analys.
-- Vid AI-analys f√•r huvudbilden och alla extrabilder som faktiskt ing√•r i anropet varsin `AI ‚úì`.
-- L√§gger anv√§ndaren senare till en ny Bild 2/Bild 3 f√•r den nya bilden ingen AI-bock f√∂rr√§n AI-analys k√∂rs igen.
-- Tar anv√§ndaren bort en analyserad extrabild p√•verkas inte huvudbildens `AI ‚úì` eller andra kvarvarande analyserade bilder.
-- Om AI-analys k√∂rs igen markeras samtliga bilder som d√• ing√•r.
-- AI-bildstatus sparas i den lokala aktiva Vision-sessionen.
-- Objektets AI-resultat kan fortfarande markeras som inaktuellt n√§r bildunderlaget √§ndras; bildens `AI ‚úì` √§r d√§remot historik f√∂r att just den bilden faktiskt analyserats.
-
-## v2.10.63 ‚Äì kamerastatus + kompakt AI-bock
-- Kamerans granskningsrad √§r nu `Ta om` ‚Äì `N√§sta objekt` ‚Äì `Klar`.
-- `‚úì Sparas automatiskt` ligger centrerat p√• egen rad under samtliga tre knappar.
-- `AI ‚úì` p√• Huvudbild/Bild 2/Bild 3 √§r en liten kompakt gr√∂n badge i √∂vre h√∂gra h√∂rnet i st√§llet f√∂r en stor m√∂rk markering √∂ver bilden.
-- AI-statuslogiken per bild fr√•n v2.10.62 √§r of√∂r√§ndrad.
-
-## v2.10.64 ‚Äì kamera hidden-state + mindre AI-badge
-- Kamerans review-rad (`Ta om` / `N√§sta objekt` / `Klar` / autosparstatus) respekterar √•ter `hidden` i livekameral√§get.
-- D√§rmed visas bara livekamera + zoom + avtryckare innan ett foto √§r taget.
-- `AI ‚úì` flyttas till √∂vre v√§nstra h√∂rnet p√• varje analyserad bild.
-- Badgen g√∂rs mindre (21 px h√∂g, mindre text/padding) f√∂r att inte konkurrera visuellt med bildetiketter eller √ó-knappar.
-- Per-bild-AI-logiken fr√•n v2.10.62 √§r of√∂r√§ndrad.
-
-## v2.10.66 ‚Äì Vision ‚Üí Publicera i footer med bevarat val
-- Superseder den ej uppladdade v2.10.65-snabbfilen.
-- Vision-footern f√•r `Publicera` b√•de i Objekt√∂versikt och i `Granska & komplettera`.
-- Fr√•n Objekt√∂versikt √∂ppnas `Publicera ‚Üí F√∂rbered f√∂r publicering` normalt; anv√§ndaren v√§ljer sj√§lv objekt.
-- Fr√•n `Granska & komplettera` sparas aktuellt objekt och dess ID f√∂ljer med till Publicera.
-- Publicera √∂ppnar d√• just det objektet direkt i F√∂rbered-fl√∂dets detalj/kontroll, s√• samma objekt beh√∂ver inte v√§ljas en g√•ng till.
-- Hj√§lptexten i Granska & komplettera uppdateras: Huvudbild ‚Üí Bild 2/3 ‚Üí AI-analys ‚Üí AI ‚úì ‚Üí uppgifter ‚Üí Publicera.
-- Objekt√∂versiktens hj√§lptext f√∂rklarar ocks√• footer-genv√§gen.
-- Core-footern f√•r ett generellt `forward`-verktyg s√• fram√•t√•tg√§rder kan ligga konsekvent i den permanenta footerzonen.
-
-## v2.10.69 ‚Äì riktad √•terst√§llning av Vision‚ÜîPublicera
-- Byggd direkt fr√•n v2.10.66. v2.10.67 och v2.10.68 anv√§nds inte som kodbas.
-- Vision v√§ntar nu in full sessionssparning innan ett specifikt objekt skickas till Publicera.
-- Retur fr√•n Publicera √•terst√§ller f√∂rst den sparade Vision-sessionen (inklusive Blob/object-URL f√∂r miniatyrerna) och √∂ppnar d√§refter exakt samma objekt i Granska & komplettera.
-- Detta ska √§ven √•terst√§lla bilderna i Vision-√∂versikten efter en tur till Publicera.
-- Publicera hydratiserar ett helt or√∂rt Vision-original via originalFileKey innan detalj- eller Anpassa-vyn √∂ppnas.
-- F√∂rbered-griddens render-, klick-, kanal- och N√§sta-logik √§r of√∂r√§ndrad fr√•n v2.10.66.
-- Endast den dynamiska CSS-geometrin √§ndras s√• grid-1/grid-2/grid-4/grid-9 alla visas som 3 kolumner; d√§rmed blir F√∂rbered konsekvent 3√ó3 utan att r√∂ra fl√∂deslogiken.
-- Sidprickarnas lyckade placering mellan bilder och Forts√§tt beh√•lls.
-- Swipe-ghostens skugga/filter tas bort visuellt.
-
-## v2.10.70-diag ‚Äì READ-ONLY Vision-lagringsdiagnostik
-- Detta √§r inte n√§sta funktionsfix utan ett diagnostikpaket.
-- Ingen automatisk √•terst√§llning, radering eller omskrivning av Vision-data g√∂rs.
-- Exponerar `CCC_VISION_STORAGE_DIAGNOSTIC.run()` i webbl√§sarkonsolen.
-- Diagnostiken l√§ser endast IndexedDB `sessions`, `vision-files` och `images`.
-- Rapporten visar antal objekt i `vision-active`, antal lagrade Vision-filer, vilka filnycklar sessionen refererar till, saknade referenser, orphan-filer samt grupper som ser √•terst√§llningsbara ut via bildmetadata/internalId.
-- Syftet √§r att avg√∂ra om de √§ldre Vision-originalen fortfarande finns kvar innan n√•gon √•terst√§llningskod byggs.
-
-## v2.10.71-diag ‚Äì iPhone-vy f√∂r read-only lagringsdiagnostik
-- Bygger vidare p√• v2.10.70-diag.
-- Vision-starten visar tillf√§lligt knappen `Lagringsdiagnostik (endast l√§sning)`.
-- Resultatet visas direkt p√• iPhone: aktiv sessionsstorlek, antal Vision-original, orphan-original, m√∂jliga √•terst√§llningsbara objekt, saknade referenser och antal Publicera-poster.
-- Ingen √•terst√§llning, skrivning eller radering utf√∂rs.
-
-## v2.10.72 ‚Äì Vision-sessionen bevaras n√§r granskningen √§r klar
-- Grundorsaken till den f√∂rsvunna Vision-sessionen hittad: `finishBatch()` raderade alltid `vision-active` n√§r alla aktuella objekt var klara.
-- Det innebar att `Forts√§tt fotosession` kunde f√∂rsvinna redan innan anv√§ndaren tog n√§sta foto, trots att originalfilerna l√•g kvar i `vision-files`.
-- `finishBatch()` rensar inte l√§ngre sessionen. Den s√§kerhetssparar i st√§llet hela aktuella sessionen.
-- `clearVisionSessionRecord()` anv√§nds fortsatt n√§r anv√§ndaren uttryckligen tar bort det sista objektet ur sessionen.
-- Tillf√§llig read-only diagnostikknapp/vy fr√•n v2.10.70‚Äì71 √§r borttagen.
-- Gamla orphan-testbilder √•terst√§lls inte automatiskt och raderas inte.
-- Publicera-koden √§r or√∂rd i denna version.
-
-## v2.10.73 ‚Äì gemensam Publicera-grid + pager/swipe
-- Bygger direkt p√• verifierade v2.10.72.
-- Publicera `V√§lj objekt` anv√§nds som visuellt facit f√∂r `F√∂rbered f√∂r publicering`.
-- F√∂rbered och V√§lj objekt anv√§nder nu samma gridklass-helper och samma slutliga 3√ó3-geometri.
-- Den gamla skillnaden d√§r `#draftGrid` var `flex:1` tas bort; F√∂rbered-griden f√•r naturlig h√∂jd precis som V√§lj objekt, vilket f√∂rhindrar hoptryckta/√∂verlappande rader.
-- 9 platser per sida och befintlig paginglogik beh√•lls.
-- Prickarna i F√∂rbered beh√•lls p√• den fungerande platsen mellan bilder och Forts√§tt.
-- Prickarna i V√§lj objekt f√•r en egen rad ovanf√∂r den fasta Forts√§tt-knappen.
-- Swipe-ghost tas bort f√∂re den asynkrona renderingen av n√§sta sida, s√• en gammal sida inte kan ligga kvar som en 'skugga'.
-- Ingen Vision-logik och ingen kanal-/N√§sta-/urvalslogik √§ndras.
-
-## v2.10.74 ‚Äì Publish gesture-fix + snabbfil
-- L√•ngtrycks-preview st√§ngs via global pointerup/pointercancel p√• iPhone och kvarvarande preview-noder rensas.
-- Swipe avbryter preview.
-- Swipe-ghost kopierar den riktiga gridens exakta kolumnbredd, gap, padding och bredd; skugga/filter st√§ngs av.
-- N√§sta grid fryses till samma bredd under render f√∂r att minska storlekshopp n√§r sidan landar.
-- Anpassa bild f√•r `Publicera detta objekt`. Knappen sparar f√∂rst aktuell anpassning, v√§ljer bara aktuellt objekt och g√•r till sista kontrollvyn om Container13 redan √§r vald; annars till kanalval.
-- Vision √§r or√∂rd.
-
-## v2.10.75 ‚Äì F√∂rbered 2√ó3 + riktig footer-snabbfil
-- F√∂rbered f√∂r publicering visar 2√ó3 (6 objekt per sida) i mobil portrait, i linje med Vision.
-- V√§lj objekt efter kanal beh√•ller 3√ó3 / 9 per sida.
-- F√∂rbered-pager/swipe anv√§nder nu 6 som faktisk sidstorlek; placeholders f√∂ljer samma sidstorlek.
-- Oavsiktlig helsides-scroll st√§ngs av i de normala Publicera-arbetsvyerna p√• mobil; Anpassa bild f√•r fortfarande scrolla om en liten sk√§rm kr√§ver det.
-- Den felplacerade `Publicera detta objekt`-knappen fr√•n v2.10.74 tas bort fr√•n Anpassa-vyn.
-- Anpassa bild f√•r i st√§llet `Publicera` som forward/snabbfil i Core-footern, samma m√∂nster som Vision.
-- Footer-snabbfilen sparar aktuell anpassning, v√§ljer exakt aktuellt objekt, aktiverar Container13 och g√•r direkt till sista kontrollvyn f√∂re publicering.
-- Tillbaka fr√•n sista kontrollvyn g√•r tillbaka till Anpassa bild n√§r kontrollvyn n√•ddes via snabbfilen.
-- Normal Publicera-navigation beh√•ller sin vanliga Tillbaka-v√§g.
-
-## v2.10.76 ‚Äì 3√ó2 i F√∂rbered + s√§krad footer-snabbfil
-- Korrigerar v2.10.75: F√∂rbered √§r 3 kolumner √ó 2 rader (6 per sida), samma orientering som Vision.
-- Sidstorleken 6 fr√•n v2.10.75 beh√•lls.
-- `Publicera` i Anpassa s√§kras efter att `cropView` faktiskt blivit aktiv, s√• en sen Core-footer-rendering inte kan skriva √∂ver snabbfilen.
-- Ett DOM-s√§kerhetsn√§t skapar samma Core-footer-knapp om Core av n√•gon anledning renderat om footern p√• iPhone.
-- Snabbfilen ligger fortfarande i footern, inte i arbetsytan.
-- Snabbfil: aktuell anpassning sparas -> exakt aktuellt objekt -> Container13 -> direkt sista kontrollvyn.
-- Tillbaka fr√•n den kontrollvyn √•ter√∂ppnar Anpassa f√∂r samma objekt.
-- Inga andra Publish-fl√∂den √§ndras.
-
-## v2.10.77 ‚Äì ghostfri Publish-swipe + Vision-m√∂nster f√∂r footer
-- Publiceras delade swipe-motor anv√§nder inte l√§ngre ett separat ghost-grid bredvid den riktiga sidan.
-- Under drag flyttas endast den aktuella sidan. Vid godk√§nd swipe glider den ut, n√§sta sida renderas utanf√∂r vyn och glider sedan in. D√§rmed kan inga dubbla/√∂verlagrade kort eller f√∂ljande skuggor visas mitt i swipen.
-- Samma swipe-motor anv√§nds i F√∂rbered, V√§lj objekt och sista kontrollgrid.
-- F√∂rbered beh√•ller 3√ó2 / 6 per sida. V√§lj objekt beh√•ller 3√ó3 / 9 per sida.
-- Footer-snabbfilen i Anpassa anv√§nder nu exakt samma Core-anrop som Vision: `footer.setTools({help, forward, forwardLabel:"Publicera", ...})`.
-- Ett litet MutationObserver-skydd √§r aktivt endast medan cropView visas och √•terst√§ller Publicera-knappen om Core skulle rendera om footern p√• iPhone.
-- Snabbfilens route √§r of√∂r√§ndrad: aktuell anpassning sparas -> exakt aktuellt objekt -> direkt sista kontrollvyn -> Tillbaka √•terg√•r till Anpassa.
-
-## v2.10.78 ‚Äì gemensam mobil gridregel 3√ó2
-- Fastst√§ller CCC-regeln f√∂r mobil: 3 kolumner √ó 2 rader = 6 objekt per sida i Vision/Pubish arbetsgrids.
-- F√∂rbered f√∂r publicering beh√•ller 6 per sida.
-- V√§lj objekt efter kanal √§ndras fr√•n 9 till 6 per sida.
-- V√§lj objekt anv√§nder 3 kolumner och 2 rader p√• mobil portrait.
-- Swipe/pager anv√§nder nu samma sidstorlek 6 √§ven i V√§lj objekt.
-- Footer-snabbfil och ghostfri swipe fr√•n v2.10.77 l√§mnas or√∂rda.
-
-## v2.10.79 ‚Äì Vision-lik swipe, korrekt bildk√§lla, 3√ó2 i kontrollvyn
-- Publish-swipen anv√§nder Visions gest-/snapprincip utan svart mellanfas.
-- V√§lj objekt och sista kontrollvyn anv√§nder i f√∂rsta hand f√§rsk blob-backed preview.
-- Sista kontrollvyn f√∂ljer ocks√• mobilregeln 3√ó2 / 6 per sida.
-- F√∂rbered och V√§lj objekt forts√§tter vara 3√ó2 / 6 per sida.
-- Footer-snabbfilen fr√•n v2.10.77/.78 l√§mnas or√∂rd.
-
-## v2.10.145 ‚Äì mindre scroll i mobilens arbetsvyer
-- Vision Granska & komplettera anv√§nder ett kompakt arbetsl√§ge med l√§gre huvud, bildrad och f√§ltrytm.
-- Det viktigaste arbetsfl√∂det ryms normalt p√• en iPhone-sk√§rm; scroll finns kvar f√∂r sm√• sk√§rmar och n√§r tangentbordet √§r √∂ppet.
-- Publiceras arbetsvyer anv√§nder samma kompakta huvud, medan Dashboard och modulernas startsidor beh√•ller den st√∂rre CCC-identiteten.
-- Inga data-, AI-, publicerings- eller navigeringsfl√∂den har √§ndrats.
-
-## v2.10.146 ‚Äì s√§ker header√•terst√§llning
-- Tar bort v2.10.145:s globala headerkomprimering, som kunde flytta logga och kontroller under iPhones statusf√§lt.
-- Alla vyer anv√§nder √•ter den bepr√∂vade headern och modulraden fr√•n v2.10.144.
-- Vision Granska & komplettera beh√•ller endast den lokala inneh√•llskomprimeringen; ingen annan vy √§ndrar h√∂jd eller kontrollplacering.
-
-## v2.10.147 ‚Äì mobilpassning vy f√∂r vy
-- Vision: V√§lj objekt, AI-f√∂rslag, Granska & komplettera, Klart och produktf√∂rhandsvisning har granskats och f√•tt egna f√∂rsiktiga inneh√•llsregler.
-- Publicera: F√∂rbered, V√§lj objekt, V√§lj kanal, snabbpublicera/slutkontroll, Publicerat, objektgranskning och Anpassa bild har granskats separat.
-- Rubriker, mellanrum, bildytor och √•tg√§rdsrader komprimeras lokalt utan att minska viktiga tryckytor under cirka 44 px.
-- L√•nga och varierande listor som kanalval, Publicerat och Historik scrollar inuti sin egen yta n√§r inneh√•llet inte rimligen kan rymmas samtidigt.
-- `ccc-core/core.css`, inklusive header och modulrad, √§r byte f√∂r byte identisk med v2.10.144.
-
-## v2.10.148 ‚Äì komplett header√•terst√§llning √§ven i √§ndringspaketet
-- R√§ttar ett paketeringsfel i v2.10.147: √•terst√§lld `ccc-core/core.css` hade utel√§mnats ur CHANGED FILES eftersom den lokalt matchade v2.10.144.
-- Vid uppdatering direkt fr√•n v2.10.145 kunde d√§rf√∂r den trasiga kompakta headerregeln ligga kvar p√• servern.
-- `core.css` f√∂ljer nu uttryckligen med och HTML anv√§nder en ny v2.10.148-cacheadress.
-- Vy-f√∂r-vy-komprimeringen fr√•n v2.10.147 beh√•lls endast under den √•terst√§llda headern.
-
-## v2.10.149 ‚Äì responsiva arbetskort p√• mobil, iPad och st√∂rre sk√§rmar
-- Aktiva Vision- och Publicera-vyer fyller alltid den tillg√§ngliga arbetsytan i st√§llet f√∂r att l√§mna en tom nedre halva.
-- Inneh√•ll som kan v√§xa (bildgrid, listor och historik) f√•r intern scroll; √•tg√§rdsknappar h√•lls stabila.
-- Kontrollerade bredder inf√∂rs f√∂r liggande 10-tums iPad, 13-tum och 24-tum.
-- I Snabbpublicera √∂ppnar l√•ngtryck p√• en miniatyr bilden i helsk√§rm; ett tryck p√• helsk√§rmsbilden √•terg√•r utan att markera bilden.
-- Core-headern och modulraden √§ndras inte.
-
-## v2.10.150 ‚Äì Granska visar aktuell bearbetad bild
-- Granska fr√•n Snabbpublicera √∂ppnar den version som faktiskt √§r vald f√∂r publicering, inklusive fril√§ggning, bakgrund, zoom och placering.
-- Den aktuella versionen sparas som separat granskningsfil; originalbildens filnyckel l√§mnas or√∂rd.
-- N√§r granskningen sparas f√∂ljer den bearbetade publiceringsversionen med tillbaka i st√§llet f√∂r att ers√§ttas av originalet.
-
-## v2.10.151 ‚Äì exakt en huvudvy √•t g√•ngen
-- R√§ttar att den dolda Vision-arbetsytan kunde visas tillsammans med Granska & komplettera p√• mobil.
-- Responsiva regler f√∂r fotosessionskortet g√§ller nu endast n√§r sj√§lva kortet √§r aktivt och saknar `hidden`.
-- Samtliga Vision- och Publicera-huvudvyer √§r kontrollerade; Publicera var redan skyddat med `:not([hidden])`.
-
-## v2.10.152 ‚Äì inga kvarvarande sidprickar p√• Vision-starten
-- R√§ttar att bildsidornas pager l√•g kvar l√§ngst ned efter Forts√§tt fotosession ‚Üí Tillbaka.
-- Startl√§gets √•terst√§llning d√∂ljer nu b√•de bildgrid, pager och √∂vriga sessionskontroller.
-## CCC v2.10.153 ‚Äì Anpassa bild i Vision (2026-10-03)
-
-- Vision √•teranv√§nder nu Publiceras kompletta bildeditor direkt fr√•n `Granska & komplettera`.
-- Fl√∂det g√•r tillbaka till samma objekt och visar den sparade bearbetningen med m√§rkningen `Anpassad`.
-- Originalbilden f√∂rblir or√∂rd och framtida Vision-sparningar bevarar fril√§ggning, bakgrund och crop-data.
+Y™Áäx-ÆÈ‹j◊ù¢Îi∫⁄+äßj[hëÈ‹¢ÈÌÔœ}Ì:-jZ.∂õ≠ñ)ﬁ≥S”””””””””””””””””””””””””””””””””””””””””””””””””–•$TD‘UÙ4ÑDuEÙ442ÁGá@£”””””””””””””””””””””””””””””””””””””””””””””””””–†§µETTƒ¬5DEU0¢“““““““““““““–§442◊fW'6ñˆ„¢"„„S@•6VÊ7FR7F&ñ∆&3¢"„„Ér(	26˜&R◊7Gó&B7vóRˆ6Ç7F&ñ¬Fó&V∑FÊfñvFñˆ‡•6VÊ7FR6ÜV6∑ˆñÁC¢##b”Ç”#p§Ï:G7FWvñgC¢FW7F∂÷W&(i"FWGBV∆∆W"f∆W&Áñf˜Fˆ‚(i"Wá&W77V&∆ñ6W&(i"l:F∆¢∂Ê¬(i"V&∆ñ6W&Çˆ&¶V∑B‡†§$$UE5$î‰4ïU ¢““““““““““““““–¢“ÜVFW&Á2ñ∂ˆÁ7F˜&∆V≤¬∂∆ñ6∑óF¬76ñÊrˆ6Ç˜6óFñˆ‚7Gó'2VÊF7Bíˆ662÷6˜&Rˆ6˜&RÊ772‡¢“Fñ∆∆&∂ˆ∑VvvÜßV¬6∂2ˆ6Çfó62ˆL;f∆ß26VÁG&«Bbˆ662÷6˜&Rˆ6˜&RÊß3≤÷ˆGV∆W"l:W"ñÁFRóÜV¬◊˜6óFñˆÊW&VvÊÜVFW&∂ˆÁG&ˆ∆∆W"‡¢“F6Ü&ˆ&Bfó6"f&∂V‚Fñ∆∆&∂V∆∆W"∑VvvÜßV¬‚÷ˆGV«7F'Bfó6"∑VvvÜßV¬‚VÊFW'gñW"fó6"Fñ∆∆&∂≤∑VvvÜßV¬‡¢“÷ˆ&ñ¬l;g'7B‡¢“F6Ü&ˆ&B:G"FW6ñvÊf6óBl;g"442÷÷ˆGV∆W"‡¢“∆ˆ6¬÷fó'7BL:G"FWB:G"&∑Fó6∑B‡¢“∂ˆBl;g&RFV˜&í‡¢“6‹:R¬fW&ñfñW&&&:FÊG&ñÊv"‡¢“gV∆¬§ï≤6ÜÊvVB÷fñ∆W2§ïfñBf&¶R∆WfW&Á2‡¢“6ÜÊvVB÷fñ∆W2§ïñÊÊVå:V∆∆W"VÊF7Bfñ∆W"6ˆ“f∑Fó6∑B:FÊG&G2ˆ6Ç&Vå:V∆∆W"∂˜'&V∑B÷7G'V∑GW"‡¢“˜fW'6ñˆ‚Êß2í&ˆ¶V∑G&˜FV‚:G"Ã:W7Bˆ6Ç:FÊG&2ñÁFRVÊFW"442◊WGfV6∂∆ñÊr‡¢“442◊fW'6ñˆÊW"ÜÁFW&2VÊF7Bíˆ662÷6˜&R˜fW'6ñˆ‚Êß2‡¢“$TD‘UÙ4ÑDuEÙ442ÁGáBWFFW&2fñBf&¶RfW'6ñˆ‚ˆ6ÇgVÊvW&"6ˆ“vV÷VÁ6“&ˆ¶V∑F¶˜W&Ê¬ˆ&&WG6÷ÁV¬‡¢“ñÊvV‚&ñ∆FvVÊW&W&ñÊrVÊFW"442÷&&WFRˆ“Ál:FÊF&V‚ñÁFRWGG'ñ6∂∆ñvV‚&W"ˆ“FWB‡¢“7&˜VÊvñÊR„:G"g'ó7C≤Áñ7&˜÷l;g&,:GGG&ñÊv"6∂&6W&2:RfW&∂∆ñvfó6ñˆ‚÷&ñ∆FW"‡¢“7vóR6∂∆«FñBWF|:Rg,:V‚445Ù4ı$RÁ7vóV‚G,;g6∂V¬¬fñÊvW&l;f∆¶ÊñÊr¬∂ÁF÷˜G7L:VÊB¬Êñ÷FñˆÁ7FñBˆ6ÇV6ñÊr:FÊG&26VÁG&«B‚÷ˆGV«VÊñ∂l:G&FV‚∑,:GfW"WGBFˆ∑V÷VÁFW&BgVÊ∑FñˆÁ6&VÜ˜b‡¢“Á76&ñ∆B:G"º:FÁ6∆ˆf6óBl;g"Fó&V∑BfñÊvW&l;f∆¶ÊñÊr‚V&∆ñ6W&2∂∆óF¬6∑Vvvg&ñ6ñF∆vW":G"FV∂Êó6∑Bf6óBl;g"vñÊW&FRw&ñG2‡¢“Ï:G"V‚7vóWgíf«óGF2Fñ∆¬6˜&R6∂:F∆G&R∂ˆÊ∑W'&W&ÊFR÷ˆGV«l:G&FV‚&VÁ62V∆∆W"∂˜∆2ˆ“¬ñÁFRÃ:F÷Ê26ˆ“&∆∆V∆¬÷˜F˜"‡¢“V&∆ñ6W&2&&WG7óF6∂&VÜÊF∆26ˆ“V‚vVÊW&V∆¬6˜&R÷w'VÊC¢fW&∑6÷ÜWFV‚∂‚l:F∆¶fñ∆∂fW&∑Gñr6ˆ“W&&ßVG2ˆ6ÇÁl:FÊF&V‚∂‚l:F∆¶fñ∆∂bFRFñ∆Ã:WFÊfW&∑GñvV‚6ˆ“fó62‡¢“6˜&R6∂6VÁG&«B∑VÊÊ7Gó&fW&∑GñvVÁ2Ã:FvV„¢∑FógB¬ñÊ∑FógBFñ∆«2,:GGBˆ&¶V∑B˜VÊFW&∆rf«G2¬&Vå;g&ñvÜWG6Ã:W7B¬∑f˜FÃ:W7BV∆∆W"ÜV«BFˆ«B‡¢“&Vå;g&ñvÜWBˆ6ÇÁl:FÊFÊñÊw6w,:FÁ6W"l:W"∆G&ñrf&VÊ&'Bfó7VV∆∆‚6˜&R6∂:GfV‚∂ˆÁG&ˆ∆∆W&:WF∂ˆ◊7FV‚Ï:G"fW&∑GñvWBÁ&˜2‡¢“Fñ∆∆&∂:G"WGB6˜&R÷WfVÁB÷V‚f&¶R÷ˆGV¬Á7f&"l;g"WGBWGG'ñ6∂∆ñwB¬l;g&''V∂ÊñÊw6&'BW'7'VÊs¢7L:FÊrl;g'7B;gfW'7FFñ∆ˆvV‚¬:WFW'7L:F∆¬6VF‚WÜ∑Bl;g&V|:VVÊFRgíˆˆ&¶V∑Bˆ÷&∂W&ñÊrˆ6ÇÃ:WB÷ˆGV«7F'BÃ:F÷ÊFñ∆¬F6Ü&ˆ&B‚&WGW&FFl:W"ñÁFR7F∆2<:RGBÁl:FÊF&V‚∂‚f7FÊíV‚∆ˆ˜‡¢“ÜVFW"ˆ6Çfˆ˜FW"6∂Ál:FÊF6˜&R◊7:G'&V‚l;g"&º:WGG'ñ6≤‚WGBˆ6Ç6÷÷gó6ó6∂G'ñ6≤l:W"∆G&ñrl;g&''V∂2bGl:RgñW"V∆∆W"Gl:RFˆ∑V÷VÁB‡¢“∆ˆ∂∆Fñ∆∆&∂÷∂Ê"l:W"ñÁFRÁ&˜÷ˆGV∆ÊfñvFñˆ‚Fó&V∑B‚FR6∂|:RvVÊˆ“445Ù4ı$RÊÊfñvFñˆÊ¬:GfV‚Ï:G"‹:V∆WB:G"F6Ü&ˆ&BV∆∆W"ÜVFW'ñ∆V‚&VF‚áVÊÊóBL;f∆¶2‡¢“Ã:W7FV∆∆W"l;g&''V∂FRfW&∑Gñr,;g"Ê˜&÷«B∆ñvv∑f"7ñÊ∆ñv÷VBÃ:W2¬&Vw&ó∆ñrl;g&∂∆&ñÊrˆ6ÇWfVÁGVV∆¬∑f'f&ÊFR∑f˜B¬WÜV◊V«fó2í◊<;f∂ÊñÊr+r2bR∑f&¬í7L:F∆∆WBl;g"GBˆl;g&∂∆&∆ñwBl;g'7fñÊÊ‡¢“fW&∑Gñw6∂ˆÊfñwW&Fñˆ‚¬&ˆ∆∆W"¬∑f˜FW"ˆ6ÇWfVÁGVV∆¬g&◊FñFÊól:R“ˆ&WF∆÷ˆFV∆¬:G"&∂óFV∑GW"ˆ&6∂∆ˆrˆ6Ç6∂ñÁFR'ñvv2ñÊÊ‚V&∆ñ6W&2w'VÊFfÃ;fFR:G"7F&ñ«B‡†§4ÑT4µÙîÂE0¢““““““““““–£##b”Ç”¢“7&˜VÊvñÊR„g'ó7BVgFW"c"„Ç„ìR$3‡¢“&W6º:G"◊gñ‚'ñvvFW2ˆ“íc"„í„l;g"÷ˆ&ñ¬WF‚67&ˆ∆¬‡¢“Áí7FÊF&Bl;g"fW'6ñˆÊW&ñÊrˆ6Ç∆WfW&Á2:G"f7G7L:F∆∆B‡¢“&ˆ˜B˜fW'6ñˆ‚Êß26∂∆G&ñrl;f∆¶÷VBí6ÜÊvVB÷fñ∆W2fñBÊ˜&÷¬442◊WGfV6∂∆ñÊr‡†•dU%4îÙÂ4ƒÙtp¢“““““““““““–ßc"„„SB(	2∂ˆÁ6W'fFób4426˜&R◊7L:FFÊñÊp¢“ÉífW&ñfñW&BˆÁl:FÊF&˜F˜Gó“¬GV&&∆WGB“¬fW'6ñˆÁ2’$TD‘R“ˆ6Ç∆G6å:V∆∆&fñ∆W"Ü"FvóG2&˜'B‡¢“∑Fób6óFR◊&WfñWr¬WFVÁFó6W&ñÊr¬fó6ñˆ‚‘í¬F6Ü&ˆ&F÷ˆGV∆W"ˆ6Çg&◊FñG6&∂óFV∑GW&V‚:G"˜,;g&F‡¢“&˜'GFvÊfñ∆W"fñÊÁ2∑f"ívóB÷Üó7F˜&ñ∂V‚ˆ6Çí∂ˆ◊∆WGBc"„„S2÷&6∑W‡†ßc"„„CB(	2∆ñvvW"WFRÁRl;f∆¶W"F÷ñÁ2fó6ÊñÊw7Fñ@¢“442Ã:G6W"6÷÷ÊWt'&óf«5&WFVÁFñˆ‰÷ˆFRˆ6ÇÊWt'&óf«5&WFVÁFñˆ‰Fó26ˆ“6ˆÁFñÊW#2◊vV&'∆G6V‚‡¢“f∆ñ∂V‚∆ñvvW"WFRÁRfó6"VÊF7B&ñ∆FW"6ˆ“f∑Fó6∑B:G"7ñÊ∆ñv:RÜV◊6ñF‚VÊ∆ñwBr¬B¬3¬VvWB(	33Fv"V∆∆W"÷ÁVV∆¬&˜'GFvÊñÊr‡¢“7&FR∆ˆ∂∆V&∆ñ6W&ñÊv"l:W"7FGW2ñÁFRWFRÏ:G"FW&2fó6ÊñÊw7FñBÜ"76W&B¬:GfV‚ˆ“V‚:F∆G&Rfó&V&6R◊˜7B:FÊÁRñÁFRÜ"7L:FFG2&˜'BbF÷ñ‚‡¢“Üó7F˜&ñ∂V‚;gfW"GB&ñ∆FV‚V‚|:VÊrV&∆ñ6W&FW2&Vå:V∆«2ˆl;g,:FÊG&B‡¢“ˆ“vV&'∆G6ñÁ7L:F∆∆ÊñÊvV‚ñÁFR∂‚å:F◊F2Ál:FÊG26÷÷&W6W'gl:G&FR6ˆ“ÜV◊6ñF„¢rFv"‡†ßc"„„C2(	2g&í∆6W&ñÊríÁ76&ñ∆@¢“ˆ&¶V∑FWB∂‚G&2:WBl:FÁ7FW"¬å;fvW"¬W:WBˆ6ÇÊVL:WB&VF‚fñB&ˆ6VÁB¶ˆˆ“‡¢“&ñ∆GóFÁ2FñFñv&R∂ÁFÃ:W2&Vw,:FÁ6"ñÁFRÃ:FÊw&Rˆ&¶V∑FWG26VÁG&W&ñÊr‡¢“Áó¶ˆˆ“∂‚f˜'G6GB∂ˆ÷&ñÊW&¶ˆˆ“ˆ6Çl;g&f«óGFÊñÊrí6÷÷vW7B‡¢“WfVÁGVV∆¬Fˆ“óF7ñÁ2Fó&V∑Bíl;g&ÜÊG6w&Á6∂ÊñÊvV‚ñÊÊ‚Ál:FÊF&V‚7&"‡¢“Á76&ñ∆Bfó6"V‚GñF∆ñrñÁ7G'V∑Fñˆ‚ˆ“g&íG&vÊñÊr‡†ßc"„„C"(	2;gÊˆ6ÇVgFW&ßW7FW&&VfñÁF∆ñrg&ñÃ:FvvÊñÊp¢“g&ñÃ:Fvr:RV‚&VF‚g&ñ∆vB&ñ∆B;gÊ"FV‚7&FRg&ñÃ:FvvÊñÊvV‚Fó&V∑BWF‚Áíí÷º;g&ÊñÊr‡¢“VÁ6V¬¬¶ˆˆ“¬&˜'GFvÊñÊrˆ6Ç:VÊw&∂‚Ál:FÊF2ñvV‚:RFWB&VfñÁF∆ñv&W7V«FFWB‡¢“VÊF7BFV‚GñF∆ñv∂ÊV‚g&ñÃ:Fvr:RÁóGB÷VBí7F'F"V‚Áí6Vv÷VÁFW&ñÊrg,:V‚˜&ñvñÊ∆WB‡¢“&VfñÁF∆ñr&∂w'VÊBˆ6Ç&ñ∆G∆6W&ñÊr&Wf&2Ï:G"g&ñÃ:FvvÊñÊvV‚VgFW&ßW7FW&2‡¢“ˆ“FV‚7&FRg&ñÃ:FvvÊñÊvV‚:G"6∂FBf∆∆W"gñ‚<:F∂W'BFñ∆∆&∂Fñ∆¬V‚Áíí÷º;g&ÊñÊr‡¢“c"„„C÷fóÜ&Êl;g"ïÜˆÊR÷6∆∆˜WBˆ6Ç&V‚fó6ñˆ‚÷Fó&V∑GgíñÊ|:W"‡†ßc"„„C(	2&∆ˆ6∂W&BïÜˆÊR÷6∆∆˜WBˆ6Ç&V‚fó6ñˆ‚÷Fó&V∑Ggê¢“g&ñÃ:FvvÊñÊw66Áf6V‚&∆ˆ6∂W&"îı2FWáF÷&∂W&ñÊr¬F˜V6Ç÷6∆∆˜WB¬&ñ∆FG&vÊñÊrˆ6Ç7ó7FV÷WG2Ã:VÊwG'ñ6∑6÷VÁí‡¢“F˜V6á7F'Bˆ6ÇF˜V6Ü÷˜fR7F˜2∑FógB÷VF‚g&ñÃ:FvvÊñÊw7VÁ6V∆‚Ál:FÊG2¬<:RvV&&Ã:G6&VÁ2l;g'7F˜&ñÊw7'WFñÁFR∂ˆÊ∑W'&W&"÷VBVÁ6V«&ñÊvV‚‡¢“w&Á6∂&ñ∆B7L:FÊvW"WGG'ñ6∂∆ñvV‚fó6ñˆÁ27F'B“ˆ&&WG7óF26∂¬ñÊÊ‚,:GGBw&Á6∂b∂ˆ◊∆WGFW&÷∂˜'B;gÊ2‡¢“7F'G6∂¬ˆ6Ç&VFñvW&ñÊw6∂˜'B∂‚L:G&l;g"ñÁFR∆ñvv7ñÊ∆ñv6◊FñFñwBíFV‚Fó&V∑Fw&Á6∂ÊñÊw7l:FvV‚‡†ßc"„„C(	27ñÊ∆ñr&V6ó6ñˆÁ7VÁ6V¬ˆ6Ç<:F∂W"w&Á6∂&ñ∆B◊&˜WFP¢“VÁ6V∆Á2G,:FfgVÊ∑B∆ñvvW"CbóÜ∆"˜fÊl;g"fñÊw&WB:RF˜V6á6º:G&“<:R&&WG6∂ÁFV‚ñÁFR6∑ñ◊2‡¢“V‚wV¬VÁ6V«&ñÊr÷VB÷óGGVÊ∑Bfó6"WÜ∑Bf"ˆ6ÇáW"7F˜'Bˆ◊,:VFWB6ˆ“‹:V∆2:G"‡¢“◊W7V∂&RÁl:FÊFW"f˜'G6GBFó&V∑BG,:FfgVÊ∑BWF‚l;g'6∂ßWFÊñÊr‡¢“w&Á6∂&ñ∆B&W&W&"6∂ÊBfó6ñˆ‚÷˜&ñvñÊ«&VfW&VÁ2:GfV‚ˆ“ˆ&¶V∑FWB&VF‚fñÊÁ2ífó6ñˆ‚◊6W76ñˆÊV‚‡¢“fó6ñˆ‚;gÊ"Fó&V∑G&˜WFV‚WF‚GBl;g'7Bfó66ñ‚7F'B“ˆ&&WG7gíˆ6Çl:F∆¶W"WGG'ñ6∂∆ñvV‚,:GGBˆ&¶V∑Bl;g"w&Á6∂b∂ˆ◊∆WGFW&‡†ßc"„„3í(	2&WfW'6ñ&V¬VÁ6V¬ˆ6Ç&V6ó6ñˆÁ7¶ˆˆ–¢“‹:V∆Fñ∆∆&∂◊VÁ6V∆‚&Vvó7G&W&"VÁ6V∆G&vWG2l:Frˆ6Ç∂‚'V∆∆Fñ∆∆&∂FV‚6VÊ7FRFV∆V‚Ï:G"fñÊw&WBG&2Fñ∆∆&∂Ã:FÊw26÷÷l:Fr‡¢“8VÊw&l;g"ÜV∆VÁ6V∆G&vWBfñÊÁ2∑f"6ˆ“WáG&<:F∂W&ÜWB‡¢“Gl:RfñÊw&"ÁóW"ˆ6Çf«óGF"&&WG6&ñ∆FV‚WF‚GB‹:V∆‡¢“¶ˆˆ“∂‚:GfV‚7Gó&2÷VB«W2ˆ÷ñÁW2g,:V‚Fñ∆¬S&ˆ6VÁBˆ6Çfó6ÜV∆:WFW'7L:F∆∆W"gñ‚‡¢“GV&&V«G'ñ6≤:WFW'7L:F∆∆W"¶ˆˆ“ˆ6Ç◊W6ÜßV¬7L;fG2fñBFF˜&&&WFR‡¢“VÁ6V∆‚&&WF"í&ñ∆FVÁ2∂ˆ˜&FñÊFW"<:R7F˜&∆V∂V‚l;g&&∆ó"WÜ∑B:GfV‚fñBå;fr¶ˆˆ“‡†ßc"„„3Ç(	2ßW7FW&í÷g&ñÃ:FvvÊñÊvV‚÷VBVÁ6V¿¢“g&ñÃ:FvvÊñÊw7&W7V«FFWB∂‚∂˜'&ñvW&2Fó&V∑BñÊÊ‚FWBÁl:FÊG2‡¢“‹:V∆Fñ∆∆&∂å:F◊F"6∂ÊFRóÜ∆"g,:V‚FWB˜,;g&F˜&ñvñÊ∆WB¬WÜV◊V«fó2V‚&˜'GFvV‚:G&“‡¢“F&˜'B7VFF"÷ÁVV∆«B&˜'B&∂w'VÊB6ˆ“ì¶‚Ü"Ã:F÷ÊB∑f"‡¢“VÁ6V«7F˜&∆V∂V‚:G"&Vv∆W&&"ˆ6ÇVÁ6V∆∂ÁFV‚÷ßV∂2l;g"÷ñÊG&R7ñÊ∆ñv;gfW&|:VÊv"‡¢“8VÊw&:WFW'7L:F∆∆W"FR:WGF6VÊ7FRVÁ6V∆G&vV‚‡¢“∆∆∂˜'&ñvW&ñÊv"|;g'2:R&&WG6∂˜ñ„≤˜&ñvñÊ∆&ñ∆FV‚l;g&&∆ó"˜,;g&B‡†ßc"„„3r(	2GñF∆ñr&∂w'VÊG6∂Êˆ6Ç6ˆÁFñÊW#2◊7GVFñ¢“&∂w'VÊG6∂ÊV‚l:W"∑Fóbl:G&rˆ6ÇgV∆¬∂ˆÁG&7BÏ:G"V‚g&ñ∆vB&ñ∆B∂‚Ál:FÊFFV‚‡¢“Ã:W6ñ∂ˆÊV‚l;g'7fñÊÊW"f˜'G6GBÏ:G"fW&∑GñvWB:G"Fñ∆∆|:FÊv∆ñwB‡¢“6ˆÁFñÊW#2÷&∂w'VÊFV‚&∆ó"V‚GñF∆ñr‹;g&≤7GVFñˆ&∂w'VÊB÷VBf&“6VÁG'V÷vÃ;fBˆ6Ç‹:G&∑BwV¬ÊVFW&∂ÁB‡¢“FWáFV‚4ÙÂDî‰U"2íÊVFW&∂ÁFV‚|;g"f∆WB&Vw&ó∆ñwB:GfV‚Ï:G"&ˆGV∑FV‚L:F6∂W"&ñ∆FVÁ2÷óGB‡†ßc"„„3b(	2l:F∆¢&∂w'VÊBVgFW"g&ñÃ:FvvÊñÊp¢“&∂w'VÊB∑FófW&2VÊF7BÏ:G"∑GVV∆¬&ñ∆B:G"g&ñ∆vB‡¢“f¬fñÊÁ2l;g"G&Á7&VÁB¬fóB¬∆ßW6w,:R¬‹;g&≤ˆ6Ç6ˆÁFñÊW#2÷&∂w'VÊB‡¢“VvV‚l:G&r∂‚l:F∆¶2÷VBl:G&w∆WGBV∆∆W"WÜ∑BÜWÜFV6ñ÷¬l:G&v∂ˆB‡¢“FRfV“6VÊ7BÁl:FÊFVvÊl:G&vW&Ê7&2∆ˆ∂«B6ˆ“6Ê&'f¬‡¢“&∂w'VÊFV‚l;g&ÜÊG7fó62÷VBˆ&¶V∑FWG2∑GVV∆∆∆6W&ñÊrˆ6Ç∆w&2l;g'7Bfñ7&Á76ÊñÊr‡†ßc"„„3R(	2:WFW'7L:F∆¬&ñ∑Fñr˜&ñvñÊ∆&ñ∆@¢“8WFW'7L:F∆¬l:GÜ∆"g,:V‚V‚7&BV∆∆W"Áóf∆Bg&ñÃ:FvvÊñÊrFñ∆∆&∂Fñ∆¬FV‚˜,;g&F˜&ñvñÊ∆&ñ∆FV‚‡¢“˜&ñvñÊ∆WG2FñFñv&R&ñ∆G∆6W&ñÊr:WFW&Ál:FÊG2Ï:G"FV‚fñÊÁ27&B‡¢“8WFW'7L:F∆∆ÊñÊvV‚,:F∂Ê26ˆ“V‚˜7&B:FÊG&ñÊrˆ6Ç∑FófW&"7&Á76ÊñÊr‡¢“FV‚g&ñ∆vFf&ñÁFV‚F2&˜'BW&÷ÊVÁBl;g'7BÏ:G"Ál:FÊF&V‚G'ñ6∂W"7&Á76ÊñÊr‡†ßc"„„3B(	2g&ñÃ:FvvÊñÊr∑FófW&"7&Á76ÊñÊp¢“Ál:FÊBg&ñÃ:FvvÊñÊr,:F∂Ê2ÁR6ˆ“V‚˜7&B&ñ∆L:FÊG&ñÊríÁ76&ñ∆B‡¢“7&Á76ÊñÊr&∆ó"∑FóbFó&V∑BVgFW"GBFV‚g&ñ∆vF&ñ∆FV‚f«G2‡¢“g&ñÃ:FvvÊñÊvV‚6∑&óg2Fñ∆¬∆w&ñÊvV‚l;g'7BÏ:G"Ál:FÊF&V‚G'ñ6∂W"7&Á76ÊñÊr‡¢“Ü¨:F«FWáFV‚fó6"GñF∆ñwBGBg&ñÃ:FvvÊñÊvV‚:G"f∆B÷V‚:FÊÁRñÁFR7&B‡†ßc"„„32(	2&ñ∑Fñr∆ˆ∂¬í÷g&ñÃ:FvvÊñÊp¢“å;g&Êl:G&w6&6W&FRFW7F÷˜F˜&‚W'<:GGG2b&ñ∑Fñr÷˜Fóg6Vv÷VÁFW&ñÊr6ˆ“ñFVÁFñfñW&"ˆ&¶V∑FWB‡¢“í÷÷ˆFV∆∆V‚å:F◊F2l;g'7BÏ:G"g&ñÃ:FvrÁl:FÊG2ˆ6Ç&ñ∆F&VÜÊF∆ñÊvV‚6∂W"L:G&VgFW"∆ˆ∂«B:RVÊÜWFV‚‡¢“º:FÁ6∆ñvÜWG7&Vv∆vWBF2&˜'BVgFW'6ˆ“í÷÷6∂V‚ñÁFR'ñvvW":R&∂w'VÊFVÁ2å;g&Êl:G&r‡¢“˜&ñvñÊ¬Ùg&ñ∆vB÷¨:F÷l;g&V«6R¬6W&B7WF˜WD&∆ˆ"¬∑Fóbg&ñ∆vB&VFñvW&ñÊw6º:F∆∆ˆ6Ç˜,;g'B˜&ñvñÊ¬&Vå:V∆«2‡¢“fñBfV¬fó62fW&∂∆ñrfV∆˜'6≤ˆ6Ç˜&ñvñÊ∆&ñ∆FV‚Ã:F÷Ê2ˆl;g,:FÊG&B‡¢“6Ê&'V&∆ñ6W&2VÁ&Fñvg&ñˆ&¶V∑B◊7vóRˆ6Ç;gg&ñrc"„„3"÷ÊfñvFñˆ‚:G"ˆl;g,:FÊG&FR‡¢“&ˆ˜FVÁ2˜fW'6ñˆ‚Êß6:G"˜,;g&C≤442◊fW'6ñˆÊV‚fñÊÁ2VÊF7Bíˆ662÷6˜&R˜fW'6ñˆ‚Êß6‡†ßc"„„3"(	2g&ñÃ:FvvÊñÊvV‚&∆ó"∑Fób&ñ∆BFó&V∑@¢“Ál:FÊBg&ñÃ:FvvÊñÊr'óFW"ˆ÷VFV∆&'B&ñ∆Fº:F∆∆‚íÁ76&ñ∆Bí7L:F∆∆WBl;g"GB:WFW"fó6˜&ñvñÊ∆WB‡¢“FV‚g&ñ∆vFf&ñÁFV‚∆ñvvW"∑f"Ï:G"Á76&ñ∆B;gÊ2ñvV„≤˜&ñvñÊ∆&ñ∆FV‚&Wf&26W&Bˆ6Ç˜,;g&B‡¢“Á76ÊñÊw7óF‚fó6"66Ü6∑'WFñrG&Á7&VÁ2&∂ˆ“WGBg&ñ∆wBˆ&¶V∑B‡¢“VgFW&l;f∆¶ÊFRf«óGB¬¶ˆˆ“ˆ6Ç&˜FFñˆ‚&Wf&"vVÊˆ◊6∂ñÊ∆ñvÜWFV‚íFV‚V&∆ñ6W&FRf&ñÁFV‚‡¢“V‚Áíº;g&ÊñÊrbg&ñÃ:FvrWF|:W"f˜'Ff&ÊFRg,:V‚˜&ñvñÊ∆WBˆ6ÇFW727&FRW'7'VÊw6Á76ÊñÊr‡¢“&ˆ˜FVÁ2˜fW'6ñˆ‚Êß6:G"˜,;g&C≤442◊fW'6ñˆÊV‚fñÊÁ2VÊF7Bíˆ662÷6˜&R˜fW'6ñˆ‚Êß6‡†ßc"„„3(	2WFˆ÷Fó6≤&VÁ6ÊñÊrbg&ó7L:VVÊFR&∂w'VÊG6ˆ&¶V∑@¢“g&ñÃ:FvrÊ«ó6W&"∑f'f&ÊFR6÷÷Êå:FÊvÊFRóF˜"VgFW"FV‚fÊ∆ñv&∂w'VÊG6&˜'GFvÊñÊvV‚‡¢“FV‚7F˜&6VÁG&∆óF‚l:F∆ß26ˆ“áWgVFˆ&¶V∑Bˆ6Ç6‹:Rg&ó7L:VVÊFRóF˜"fñB∂ÁFW"V∆∆W"å;g&‚F2&˜'BWFˆ÷Fó6∑B‡¢“7L;g'&R6W&FFV∆"ˆ6Ç÷ñÊG&Rl;f∆¶W6∆v&RÏ:G&&ñ∆FVÁ26VÁG'V“6∑ñFF2l;g"ˆ&¶V∑B6ˆ“&W7L:W"bf∆W&FV∆"‡¢“&&WG7'WF‚&W,:GGF"ˆ“V‚V∆∆W"f∆W&GñF∆ñv7L;g&ÊFRóF˜"Ü"&VÁ6G2‡¢“º:FÁ6∆ñvÜWG76∂∆‚|:W"ÁRWGG'ñ6∂∆ñvV‚Fñ∆¬≤;b◊&VÁ6ÊñÊvV‚gVÊvW&"ˆ&W&ˆVÊFRbº:FÁ6∆ñvÜWG7l:G&FWB‡¢“˜&ñvñÊ∆&ñ∆FV‚ˆ6ÇFV‚&WfW'6ñ&∆f&ñÁF∆w&ñÊvV‚:G"ˆl;g,:FÊG&FR‡¢“&ˆ˜FVÁ2˜fW'6ñˆ‚Êß6:G"˜,;g&C≤442◊fW'6ñˆÊV‚fñÊÁ2VÊF7Bíˆ662÷6˜&R˜fW'6ñˆ‚Êß6‡†ßc"„„3(	2g&ñÃ:Fvr„÷VB∆ˆ∂¬FW7F÷˜F˜ ¢“g&ñÃ:Fvr:G"∑FófW&BíÁ76&ñ∆Bˆ6Ç;gÊ"V‚VvV‚÷ˆ&ñ∆Á76B&&WG7'WF‡¢“&ñ∆F&VÜÊF∆ñÊvV‚º;g'2∆ˆ∂«BívV&&Ã:G6&V‚ˆ6Ç6∂ñ6∂"ñÁFR&ñ∆FV‚Fñ∆¬Ï:Vvˆ‚WáFW&‚F¨:FÁ7B‡¢“l;g'7FFW7F÷˜F˜&‚F"&˜'B∂ÁFÁ6«WFV‚&∂w'VÊBWFñg,:V‚&ñ∆FVÁ2å;g&Êl:G&vW"ˆ6ÇV‚ßW7FW&&"º:FÁ6∆ñvÜWB‡¢“˜&ñvñÊ¬ˆ6Çg&ñ∆vB∂‚l:GÜ∆2Fó&V∑Bl;g"fó7VV∆¬¨:F÷l;g&V«6RñÊÊ‚&W7V«FFWBÁl:FÊG2‡¢“8WFW'7L:F∆¬:WFW&|:W"Fñ∆¬7FÊF&Fº:FÁ6∆ñvÜWBˆ6Ç,:F∂Ê"ˆ“÷6∂V‚‡¢“Ál:FÊBg&ñÃ:FvvÊñÊr7&"V‚6W&BG&Á7&VÁBV&∆ñ6W&ñÊw7f&ñÁC≤fó6ñˆ‚÷˜&ñvñÊ∆WBÃ:F÷Ê2˜,;g'B‡¢“Á76&ñ∆Bå:F◊F"WGG'ñ6∂∆ñvV‚˜&ñvñÊ∆º:F∆∆‚:GfV‚VgFW"GBV‚g&ñÃ:FvvÊñÊrÜ"7&G2‡¢“&∂w'VÊB∆ñvvW"∑f"6ˆ“Ï:G7Fl;g&&W&VFF¬Ã:W7F7FVrFñ∆«2g&ñÃ:FvvÊñÊw6÷˜F˜&‚Ü"7G&W77FW7FG2‡¢“&ˆ˜FVÁ2˜fW'6ñˆ‚Êß6:G"˜,;g&C≤442◊fW'6ñˆÊV‚fñÊÁ2VÊF7Bíˆ662÷6˜&R˜fW'6ñˆ‚Êß6‡†ßc"„„#í(	27&Á76ÊñÊr∑FófW&2l;g'7BfñBfW&∂∆ñr:FÊG&ñÊp¢“7&Á76ÊñÊr:G"w,:WFˆÊBˆ6ÇFV∂Êó6∑BñÊ∑FóbÏ:G"&ñ∆GfW&∑7FFV‚;gÊ2WF‚˜7&FR:FÊG&ñÊv"‡¢“∂ÊV‚&∆ó"wV¬l;g'7BÏ:G"¶ˆˆ“¬˜6óFñˆ‚V∆∆W"&˜FFñˆ‚f∑Fó6∑B6∂ñ∆¶W"6ñrg,:V‚;gÊñÊw6Ã:FvWB‡¢“ÜV∆¬gñ∆¬¬&˜FW&¬8WFW'7L:F∆¬¬G&rˆ6ÇÁó¶ˆˆ“Ál:FÊFW"6÷÷vV÷VÁ6÷÷:FÊG&ñÊw6∂ˆÁG&ˆ∆¬‡¢“ˆ“&ñ∆FV‚l;g'2Fñ∆∆&∂Fñ∆¬;gÊñÊw6Ã:FvWB&∆ó"∂ÊV‚:WFW"ñÊ∑Fób‡¢“fˆ˜FW"◊6Ê&'l:FvV‚V&∆ñ6W&∂‚f˜'Ff&ÊFRl:G&Fñw7L:F∆∆&ñ∆Gf&ñÁFV‚ˆ6Ç|:RfñF&R:GfV‚WF‚÷ÁVV∆¬:FÊG&ñÊr‡¢“&ˆ˜FVÁ2˜fW'6ñˆ‚Êß6:G"˜,;g&C≤442◊fW'6ñˆÊV‚fñÊÁ2VÊF7Bíˆ662÷6˜&R˜fW'6ñˆ‚Êß6‡†ßc"„„#Ç(	2GñF∆ñv&R&ñ∆GfW&∑7FBˆ6Ç7ñÊ∆ñr8FÊG&÷∂Ê ¢“6ˆÁFñÊW#2◊6÷÷ÊfGFÊñÊvV‚Ü":WFW"V‚GñF∆ñr∆ñ∆8FÊG&÷∂Ê¬÷VF‚ÜV∆∂˜'FWBf˜'Ff&ÊFR;gÊ"6÷÷˜W‡¢“Á76&ñ∆BÁl:FÊFW"ñÊÊVå:V∆«6å;f¶Bí7L:F∆∆WBl;g"GBÃ:WF&VFñvW&ñÊw6∂˜'FWBgñ∆∆∆¬∆VFñróF‡¢“&ñ∆GóF‚:G"l;g'6ñ∑FñwB÷ñÁ6∂Bˆ6Ç7&Á76ÊñÊrÜ"ÁRV‚fW&∂∆ñr¬7ñÊ∆ñrVvV‚¶ˆ‚‡¢“wV«&÷V‚:G"GVÊÊ&R¬ñÁ7G'V∑FñˆÊV‚«VvÊ&Rˆ6Çg&◊FñG7fW&∑GñvV‚GñF∆ñv&RÊVGFˆÊFR‡¢“∑Fóf&ñ∆GfW&∑GñrvW"V‚∂˜'Bgó6ó6≤G'ñ6∑&W7ˆÁ2WF‚GBÊfñvFñˆ‚V∆∆W"&ñ∆FgVÊ∑Fñˆ‚:FÊG&G2‡¢“&ˆ˜FVÁ2˜fW'6ñˆ‚Êß6:G"˜,;g&C≤442◊fW'6ñˆÊV‚fñÊÁ2VÊF7Bíˆ662÷6˜&R˜fW'6ñˆ‚Êß6‡†ßc"„„#r(	2÷ˆF¬V&∆ñ6W&ñÊw7fó6ÊñÊrˆ6ÇGñF∆ñv&R&ñ∆FÜñW&&∂ê¢“∂˜'FWBfó62:R6ˆÁFñÊW#2:G"ÜV«B∂∆ñ6∂&'Bˆ6Ç;gÊ"V‚6VÁG&W&B÷ˆF¬í7L:F∆∆WBl;g"WGBWFl:F∆«Bf˜&◊VÃ:G"íáWgVGgñ‚‡¢“÷ˆF∆VÁ2f¬7&2l;g'7B÷VB∂∆"‚f''óB¬G'ñ6≤WFÊl;g"V∆∆W"6˜&R’Fñ∆∆&∂7L:FÊvW"WF‚GB:FÊG&V&∆ñ6W&ñÊvV‚‡¢“Ál:FÊB7FÊF&B:WFW'7L:F∆∆W"f∆V‚í÷ˆF∆VÁ2Fñ∆∆l:F∆∆ñvWF∂7Bˆ6ÇfW&∑7L:F∆«2l;g'7B÷VB∂∆"‡¢“Á76&ñ∆Bfó6"ÁRˆ&¶V∑BÇbñFó6∑&WBñÊÊRí&ñ∆FVÁ2;gg&Rl:FÁ7G&å;g&‚‡¢“FV‚6W&F,:F∂Ê'&FV‚:G"&˜'GFvV‚ˆ6Ç&VFñvW&ñÊw6∂˜'FWG2wV∆G&“:G"«VvÊ&R‡¢“7&Á76ÊñÊrÜ"GñF∆ñv&Rg7L:VÊBg,:V‚&ñ∆GfW&∑7FFV‚ˆ6Ç6˜&R÷fˆ˜FW&‚‡¢“g&ñÃ:Fvrˆ6Ç&∂w'VÊBÁl:FÊFW"&ñ∑FñvÃ:W77ñ÷&ˆ∆W"‡¢“&ˆ˜FVÁ2˜fW'6ñˆ‚Êß6:G"˜,;g&C≤442◊fW'6ñˆÊV‚fñÊÁ2VÊF7Bíˆ662÷6˜&R˜fW'6ñˆ‚Êß6‡†ßc"„„#b(	26÷÷Êå:V∆∆V‚ˆ6Ç&∆Á6W&B&ñ∆GfW&∑7F@¢“Á76&ñ∆B6÷∆",:F∂Ê&R¬&ñ∆B¬ñÁ7G'V∑Fñˆ‚ˆ6ÇfW&∑GñríWGBWå;fßB&VFñvW&ñÊw6∂˜'B÷VB«VvÊ÷&vñÊ∆W"‡¢“&ñ∆GóF‚:G"÷ñÊG&Rˆ6ÇÃ:F÷Ê"∆G2:WBfW&∑Gñr¬7&∂Êˆ6Ç6˜&R÷fˆ˜FW"WF‚G,:FÊw6V¬‡¢“ÜV∆¬gñ∆¬¬&˜FW&ˆ6Ç8WFW'7L:F∆¬∆ñvvW"6ˆ“gó&∂ˆ◊∑F∑FóffW&∑Gñr:RV‚&B‡¢“g&ñÃ:Fvrˆ6Ç&∂w'VÊB∆ñvvW"6ˆ“Gl:R6÷∆&R¬Ã:W7Fg&◊FñG7f¬VÊFW"FR∑FóffW&∑GñvV‚‡¢“ñÁ7G'V∑FñˆÊV‚l;g"G&rˆ6ÇÁó¶ˆˆ“Ü"V‚GñF∆ñr∆G2÷V∆∆‚&ñ∆Bˆ6ÇfW&∑Gñr‡¢“7&Á76ÊñÊr∆ñvvW"6W&B6ˆ“gñVÁ2GñF∆ñváWgVFÜÊF∆ñÊr‡¢“gVÊ∑Fñˆ‚ˆ6Ç7&f˜&÷Bg,:V‚c"„„#R:G"ˆl;g,:FÊG&FR‡¢“&ˆ˜FVÁ2˜fW'6ñˆ‚Êß6:G"˜,;g&C≤442◊fW'6ñˆÊV‚fñÊÁ2VÊF7Bíˆ662÷6˜&R˜fW'6ñˆ‚Êß6‡†ßc"„„#R(	2÷ÁVV∆¬&ñ∆GfW&∑7FBíÁ76&ñ∆@¢“Á76&ñ∆BÁl:FÊFW"V‚ÁíV&∆ñ6W&÷ñÁ7ó&W&BfW&∑Gñw6∆ñ˜WB÷VBÜV∆&ñ∆FV‚¬gñ∆¬óF‚¬&˜FW&ˆ6Ç8WFW'7L:F∆¬‡¢“˜&ñvñÊ∆&ñ∆FV‚;gÊ2∂ˆ◊∆WGBˆ6Ç6VÁG&W&B‚ñÊvV‚WFˆ÷Fó6≤÷˜Fóf&W6º:G&ÊñÊrº;g'2‡¢“G&¬Áó¶ˆˆ“ˆ6ÇFR&VfñÁF∆ñvWá∆ñ6óF¶ˆˆ÷∂ˆÁG&ˆ∆∆W&ÊgVÊvW&"Fñ∆«6÷÷Á2÷VBfW&∑Gñw6Ã:FvVÊ‡¢“&˜FFñˆ‚7&2í&ñ∆FVÁ26W&FV&∆ñ6W&ñÊw7f&ñÁC≤˜&ñvñÊ∆&ñ∆FV‚6∑&óg2∆G&ñr;gfW"‡¢“g&ñÃ:Fvrˆ6Ç&∂w'VÊBfñÊÁ26ˆ“7ñÊ∆ñv¬Ã:W7Fg&◊FñG7∆G6W"<:R∆ñ˜WBˆ6ÇFFfÃ;fFR∂‚'ñvv2fñF&RWF‚Áíˆ◊7G'V∑GW&W&ñÊr‡¢“Ü¨:F«V‚l;g"gñ‚&W6∑&ófW"FRÁñfW&∑GñvV‚ˆ6Çg&◊FñG7∆G6W&Ê‡¢“&ˆ˜FVÁ2˜fW'6ñˆ‚Êß6:G"˜,;g&C≤442◊fW'6ñˆÊV‚fñÊÁ2VÊF7Bíˆ662÷6˜&R˜fW'6ñˆ‚Êß6‡†ßc"„„#B(	2f7Fl:F«FWFñ∂WGFW"ˆ6ÇL:GF&Rf˜&◊VÃ:G''óF–¢“'V'&ñ≤ˆ6Ç&W6∑&ófÊñÊrÜ"ÁR6‹:Rf7FWFñ∂WGFW"ñÊÊRí&W7V∑FófRl:F«G'WF¬:GfV‚Ï:G"l:F«FV‚ñÊÊVå:V∆∆W"FWáB‡¢“l:F«FñÊÊVå:V∆∆WB,;g&¶"VÊFW"WFñ∂WGFV‚ˆ6ÇFV6∂VÁ,:F∂Ê&V‚∆ñvvW"∑f"ÊW&RFñ∆¬å;fvW"‡¢“&ó7&FV‚:G"<:FÊ∑BFñ∆¬C"Çˆ6ÇÁl:FÊFW"«VvÊ&RFWáGfñ∑Bˆ6Ç7F˜&∆V≤‡¢“÷V∆∆Á'V÷÷V‚÷V∆∆‚'V'&ñ≤¬&W6∑&ófÊñÊr¬&ó2ˆ6ÇÊVFW'7FfW&∑Gñw7&FV‚l;f∆¶W"V‚L:GF&RV&∆ñ6W&÷ñÁ7ó&W&B'óF“‡¢“&ñ∆GóF¬ˆ&¶V∑GfW&∑Gñrˆ6ÇÊfñvFñˆ‚:G"˜,;g&F‡¢“˜fW'6ñˆ‚Êß6í&ˆ¶V∑G&˜FV‚:G"˜,;g&C≤442◊fW'6ñˆÊV‚fñÊÁ2VÊF7Bíˆ662÷6˜&R˜fW'6ñˆ‚Êß6‡†ßc"„„#2(	2«VvÊ&Rf˜&◊VÃ:G&˜&FÊñÊrˆ6ÇñÊvWBWFˆ÷Fó6∑B&ó0¢“w&Á6∂b∂ˆ◊∆WGFW&fó6"l:F«FV‚í˜&FÊñÊvV‚'V'&ñ≤¬&W6∑&ófÊñÊrˆ6Ç&ó2‡¢“&ó2:G"V‚∂ˆ◊∑BÜV∆'&VFG7&B6ˆ“∆ñÊ¶W&"÷VBFWáFl:F«FV‚ˆ6Çfó6"V¢ÊvWGFÏ:G"&ó26∂Ê2‡¢“f«WF7VffóÜWBfó62&&Ï:G"WGBfW&∂∆ñwB&ó2fñÊÁ2‡¢“8F∆G&RFV÷ˆFFl:W"ñÁFRÃ:FÊw&RWFˆ÷Fó6∑B6∑&óf6óGB&ó6l;g'6∆ríˆ&¶V∑FWG2&ñ∑Fñv&ó6l:F«B‡¢“÷ÁVV∆«B7&FR&ó6W"&Wf&3≤í◊&ó2∂‚ñÊl;g&26VÊ&R6ˆ“WGBWGG'ñ6∂∆ñwBl;g'6∆r6ˆ“Ál:FÊF&V‚∑FógBvˆFº:FÊÊW"‡¢“˜fW'6ñˆ‚Êß6í&ˆ¶V∑G&˜FV‚:G"˜,;g&C≤442◊fW'6ñˆÊV‚fñÊÁ2VÊF7Bíˆ662÷6˜&R˜fW'6ñˆ‚Êß6‡†ßc"„„#"(	26˜&R◊7Gó&FfW&∑Gñw6∂˜'Bˆ6ÇÜ¨:F«VÊF7B:R&V|:G&‡¢“V&∆ñ6W&2fW&∑Gñw6∂˜'B:G"ÁRWGBvV÷VÁ6◊B6˜&R÷f6óBl;g"fó6ñˆ‚¬V&∆ñ6W&ˆ6ÇñÁ7L:F∆∆ÊñÊv"‡¢“6˜&R7Gó"∂˜'FVÁ2óF¬∂ÁB¬vÃ;fB¬ñ∂ˆÁ&ñÊr¬G'ñ6∑&W7ˆÁ2¬ñÊ∑FógBÃ:FvRˆ6Çl:G&w&ˆ∆∆W"g,:V‚662÷6˜&Rˆ6˜&RÊ776‡¢“÷ˆGV∆W&ÊÊvW"&&gVÊ∑FñˆÊVÁ26V÷ÁFó6∂&ˆ∆¬¬WÜV◊V«fó2w&Á6∂¬&VFñvW&¬Ã:FvvFñ∆¬¬íV∆∆W"F&˜'B‚6˜&RVÁ6“÷"&ˆ∆∆W&ÊFñ∆¬l:G&r¬f˜&“ˆ6Çfó7VV∆«BFñ∆«7L:VÊB‡¢“F6Ü&ˆ&Bˆ6Ç÷ˆGV∆W&Ê2l:F∆∂ˆ◊7GgñW"f˜'G<:GGFW"Ál:FÊFFV‚Ï:G&&W6Ã:F∑FFR6˜&R÷∂ˆ◊ˆÊVÁFV‚662÷7Fñˆ‚÷6&F¬÷VF‚&ñ‹:G&g&‹:WF∂Ê"¬&ñ∆FW"ˆ6Ç∂Ê«f¬&Vå:V∆∆W"6ñÊGñF∆ñvVvÊ&ˆ∆∆W"‡¢“WFˆ÷Fó6≤Ü¨:F«˜Wˆ6ÇFW72l;g'7F÷|:VÊvV‚÷∆ˆvñ≤:G"&˜'GFvÊ‚gñÜ¨:F«V‚;gÊ2VÊF7B∑FógB÷VBˆí6˜&R÷fˆ˜FW&‚‡¢“ÜVFW"ˆfˆ˜FW"÷l;g&fñÊñÊvV‚g,:V‚c"„„#&Vå:V∆«2‡¢“˜fW'6ñˆ‚Êß6í&ˆ¶V∑G&˜FV‚:G"˜,;g&C≤442◊fW'6ñˆÊV‚fñÊÁ2VÊF7Bíˆ662÷6˜&R˜fW'6ñˆ‚Êß6‡†ßc"„„#(	2vV÷VÁ6“gñÜ¨:F«ˆ6Ç&∆Á6W&B6˜&R÷FW6ñv‡¢“6˜&Rfó6"ÁRV‚vV÷VÁ6“¬∂ˆÁFWáG7Gó&BÜ¨:F«'WF:RF6Ü&ˆ&B6◊Bífó6ñˆ‚¬V&∆ñ6W&ˆ6ÇñÁ7L:F∆∆ÊñÊv"‡¢“Ü¨:F«FWáFV‚l;f∆¶W"FV‚∑Fófgñ‚ˆ6Çl;g&∂∆&",:VFRfB6ˆ“|;g'2L:G"ˆ6Çfñ∆∂∆ˆ∂∆f¬6ˆ“fñÊÁ2í÷ˆGV∆VÁ2ñÁ7L:F∆∆ÊñÊv"‡¢“f&¶Rgí∂‚fó6Ü¨:F«V‚WFˆ÷Fó6∑Bl;g'7F|:VÊvV‚‚L:G&VgFW";gÊ2FV‚÷VBÜ¨:F«í6˜&R÷fˆ˜FW&„≤&WFVVÊFWB∂‚7L:FÊv2bV∆∆W":WFW'7L:F∆∆2VÊFW"ñÁ7L:F∆∆ÊñÊv"‡¢“Ü¨:F«'WFÁ2ñÁ7L:F∆∆ÊñÊw6∂ÊÁl:FÊFW"÷ˆGV∆VÁ2&VfñÁF∆ñv&WGW&∂ˆÁG&∑B<:RÁl:FÊF&V‚:WFW&∂ˆ÷÷W"Fñ∆¬6÷÷gíˆ6Çˆ&¶V∑B‡¢“ÜVFW&Á2÷ˆ&ñ∆6˜&R÷∂ˆÁG&ˆ∆∆W"ˆ6Ç7ñ÷&ˆ∆W":G"Ï:Vv˜B÷ñÊG&R¬÷VB÷ñ∆F&RgVÊ∑FñˆÁ6l:G&rˆ6ÇvÃ;fB‚fˆ˜FW"Ál:FÊFW"6÷÷∆ñÊ¶Vñ∂ˆÊf÷ñ∆¢WF‚GB÷ñÁ6∂G'ñ6∑óF˜&Ê‡¢“fó6ñˆ‚“ˆ6Ç;gg&ñv&&WG6∂˜'Bl:W"V‚Fó6∑&WBvV÷VÁ6“óF¬∂ÁBˆ6Ç6∑Vvv÷VBV&∆ñ6W&6ˆ“fó7VV∆«Bf6óB‡¢“˜fW'6ñˆ‚Êß6í&ˆ¶V∑G&˜FV‚:G"˜,;g&C≤442◊fW'6ñˆÊV‚fñÊÁ2VÊF7Bíˆ662÷6˜&R˜fW'6ñˆ‚Êß6‡†ßc"„„#(	2÷ÁVV∆¬Á76&ñ∆Bˆ6ÇWGBvV÷VÁ6◊B&WGW'W'7'VÊp¢“WFˆ÷Fó6≤÷˜Fóf&W6º:G&ÊñÊr:G"&˜'F∂˜∆Bg,:V‚FWB∑FóffÃ;fFWBFñ∆«2FV‚∂‚WGfV6∂∆2ˆ6ÇfW&ñfñW&26W&B‡¢“WGBˆ&¶V∑BWF‚7&BÁ76ÊñÊr;gÊ2÷VBÜV∆˜&ñvñÊ∆&ñ∆FV‚6VÁG&W&C≤V‚FñFñv&R7&B÷ÁVV∆¬Á76ÊñÊr;gÊ2f˜'G6GBWÜ∑B6ˆ“FV‚Ã:F÷ÊFW2‡¢“8WFW'7L:F∆¬&ñ∆FÁl:FÊFW"6÷÷6VÁG&W&FRw'VÊG76ÊñÊr6ˆ“l;g'7F;gÊñÊvV‚ˆ6ÇÊˆ∆«7L:F∆∆W",:VFR¶ˆˆ“ˆ6ÇÇıí÷l;g&f«óGFÊñÊr‡¢“FV‚:F∆G&R&Vå:V∆¬ÜV∆&ñ∆FVÊF2&˜'BVgFW'6ˆ“FV‚GV&&∆W&FRw'VÊG76ÊñÊvV‚¬7&FRˆ÷VFV∆&'Bˆ6ÇÜFRV‚VvV‚å:W&F∂ˆFB&WGW'l:Fr‡¢“Á76&ñ∆BÁl:FÊFW"WGBVÊF&WGW&∂ˆÁG&∑B÷VBW'7'VÊw7gíˆ6Çˆ&¶V∑B‘îB‚,:VFR7&ˆ6ÇFñ∆∆&∂|:W"L:G&l;g"Fñ∆¬6÷÷gíˆ6Ç6÷÷ˆ&¶V∑B‡¢“&WGW&∂ˆÁG&∑FWBl;f∆¶W"÷VBvVÊˆ“ñÁ7L:F∆∆ÊñÊv"WF‚GB6∑&óf2;gfW"bV‚Fñ∆∆l:F∆∆ñrFWF∆ßgí‡¢“6Ê&'V&∆ñ6W&ñÊr∂‚f˜'G6GB|:Rg,:V‚Á76&ñ∆BFñ∆¬6«WF∂ˆÁG&ˆ∆∆V„≤Fñ∆∆&∂L:G&ñg,:V‚:WFW,;gÊ"6÷÷÷ÁVV∆∆Á76ÊñÊr‡†ßc"„„í(	27F&ñ¬Á76&ñ∆Bˆ6Ç∂ˆÁ6V∑fVÁB6VÁG&W&ñÊp¢“Fñ∆∆l:F∆∆ñv&∆ˆ#¶÷G&W76W"&WG&∑F26ˆ“Fˆ∑V÷VÁF∆ˆ∂∆ˆ6Ç7&2ñÁFRÃ:FÊw&RíV&∆ñ6W&2ñÊFWÜVDD"◊˜7FW"‡¢“fñBf&¶R6ñF∆FFÊñÊr6∂2V‚Áívñ«FñrG&W72g,:V‚7&BV&∆ó6Ñ&∆ˆ&≤:F∆G&R7&FRG&W76W"Êˆ∆«7L:F∆«2fñBñÊÃ:G6ÊñÊvV‚‡¢“,:VFRFWF∆ßgñ‚ˆ6ÇÁ76&ñ∆B∂ˆÁG&ˆ∆∆W&"GB&ñ∆FG&W76V‚6∂G2íFWB∑GVV∆∆Fˆ∑V÷VÁFWB‡¢“Á76&ñ∆Bl:VÊv"&ñ∆F∆FFÊñÊw6fV¬ˆ6Çfó6"WGB&Vw&ó∆ñwB÷VFFV∆ÊFRíFV‚∑GVV∆∆gñ‚í7L:F∆∆WBl;g"GBfW&∂ñÊ∑Fób‡¢“6«WF∂ˆÁG&ˆ∆∆VÁ2g&ñ&ñ∆G&Bl:W"6˜&R÷6VÁG&W&ñÊrFó&V∑BfñB&VÊFW&ñÊvV„≤6˜&R:FÊG&"Fñ∆¬l:FÁ7FW'7L:F∆∆ÊñÊrVÊF7BÏ:G"ñÊÊVå:V∆∆WBf∑Fó6∑B:G"'&VF&R:F‚óF‚‡†ßc"„„Ç(	2FWFW&÷ñÊó7Fó6≤∂∆"◊&WGW"ˆ6ÇgV∆¬6˜&R◊7:G' ¢“6˜&RÁl:FÊFW"6÷÷√"◊6V∑VÊFW'2ÊfñvFñˆÁ77:G'"l;g"ÜVFW"¬fˆ˜FW"¬∆ˆ∂∆&º:WF∂Ê"ˆ6ÇFó&V∑G&WGW"Fñ∆¬F6Ü&ˆ&B‡¢“WGBº;fBÊG&G'ñ6≤∂‚L:G&l;g"ñÁFRÃ:F÷Êl:F∆¢ˆ&¶V∑Bˆ6ÇL:G&VgFW"ˆ÷VFV∆&'BÃ:F÷Êfó6ñˆ‚◊7F'FV‚‡¢“V&∆ñ6W&2w&Á6∂<:F∂W'7L:F∆∆W"GBWÜ∑B÷&∂W&B∆ˆ∂«BWF∂7BfñÊÁ2ífó6ñˆ‚◊6W76ñˆÊV‚ñÊÊ‚ÊfñvFñˆÊV‚6∂W"‡¢“fó6ñˆ‚;gÊ2÷VB&WGW&ÂFÛ◊V&∆ó6Ç÷6ˆÊfó&÷ˆ6Çˆ&¶V∑B‘îBíU$√¶V„≤6W76ñˆÁ6∂ˆÁG&∑FWBñÊÊVå:V∆∆W"f˜'Ff&ÊFR6«WF∂ˆÁG&ˆ∆∆VÁ2gV∆«7L:FÊFñv&WGW&G&W72‡¢“∂∆"fó62VÊF7Bl;g"WÜ∑B&WGW&ˆ&¶V∑Bˆ6Ç:WFW&|:W"VgFW"<:F∂W&ÜWG77&ÊñÊrFñ∆¬6÷÷6«WF∂ˆÁG&ˆ∆¬¬÷&∂W&ñÊrˆ6ÇW'7'VÊr‡¢“WGBÁóGB&WGW&∂ˆÁG&∑BW'<:GGFW":F∆G&Rw&Á6∂◊&WGW'l:G&FV‚<:RGBl;g&''V∂FRÁñ6∂∆"ñÁFR7Gó"V‚6VÊ&RÊfñvFñˆ‚‡†ßc"„„r(	2&Wf&BW'7'VÊr÷V∆∆‚fó6ñˆ‚ˆ6ÇV&∆ñ6W&¢“fó6ñˆ‚7&"WÜ∑B&&WG7gí¬6ñFˆ6Ç∑FógBˆ&¶V∑BñÊÊ‚V&∆ñ6W&;gÊ2ˆ6Ç:WFW'7L:F∆∆W"6÷÷Ã:FvRfñBFñ∆∆&∂‡¢“ñÁ7L:F∆∆ÊñÊv'2WGG'ñ6∂∆ñv&WGW"l:W"l;g&WG,:FFRg&÷l;g":F∆G&Rˆ&¶V∑FÁñ6∂∆"¬<:Rw&Á6∂b∂ˆ◊∆WGFW&ñÁFR∂7F2Fñ∆¬fó6ñˆ‚◊7F'FV‚‡¢“w&Á6∂g,:V‚V&∆ñ6W&26«WF∂ˆÁG&ˆ∆¬&Vå:V∆∆W"∑FóbwV∆÷&∂W&ñÊrˆ6Ç:WFW'l:FÊFW"÷VB∂∆"Fñ∆¬6÷÷6«WF∂ˆÁG&ˆ∆√≤Á76&ñ∆B∂‚;gÊ2g,:V‚FWB:WFW'7L:F∆∆Fˆ&¶V∑FWB‡¢“6˜&R7:G'&"WGB&º:WGG'ñ6≤ís◊2;gfW",:VFRgí“ˆ6Ç6ñF'óFV‚¬<:RGV&&V«G'ñ6≤ñÁFRÜ˜"Gl:R7FVr‡¢“fó6ñˆ‚l:F∆¢ˆ&¶V∑Bl:W"÷W"<:F∂W"«VgB÷˜B6˜&R÷fˆ˜FW&‚‡†ßc"„„b(	26÷÷Êå:V∆∆V‚ˆ6Ç∆ˆ˜g&íFñ∆∆&∂÷ÊfñvFñˆ‡¢“fó6ñˆ‚:WFW&|:W"g,:V‚w&Á6∂b∂ˆ◊∆WGFW&Fñ∆¬FV‚gí6ˆ“f∑Fó6∑B;gÊFR&VFñvW&ñÊvV„¢ˆ&¶V∑L;gfW'6ñ∑B¬í÷l;g'6∆rV∆∆W"l:G&Fñv∆ó7F‡¢“V&∆ñ6W&:WFW&|:W"g,:V‚Á76&ñ∆BFñ∆¬&ñ∆FFWF∆¶V‚ˆ6Çg,:V‚∂Ê«f¬Fñ∆¬,:GGB7F'GVÊ∑B¬WÜV◊V«fó2WF∂7F∆ó7F‚‡¢“ñÁ7L:F∆∆ÊñÊv"&Wf&"ˆ6Ç:WFW'7L:F∆∆W"∑GVV∆¬÷ˆGV«gí¬∑FógBˆ&¶V∑B¬÷&∂W&ñÊv"ˆ6Ç&V∆WfÁF&&WG7f¬fñV‚FñG6&Vw,:FÁ6BVÊ|:VÊw7&WGW"‡¢“9gÊÜ¨:F«“¬&FW&ñÊw2“¬fó6ÊñÊw2“ˆ6ÇWF∆ˆvvÊñÊw6Fñ∆ˆvW"7L:FÊw2l;g&RVÊFW&∆ñvvÊFRÊfñvFñˆ‚‡¢“&WGW&∂ˆÁFWáBl;g&''V∂2fñBÁl:FÊFÊñÊrˆ6Ç÷ˆGV«7F'B∆VFW"∆«FñBFñ∆¬F6Ü&ˆ&B¬<:RÊfñvFñˆÊV‚∂‚ñÁFRf7FÊíV‚g&“÷ˆ6Ç◊Fñ∆∆&∂÷∆ˆ˜‡†ßc"„„ÉÇ(	26˜&R7vóRc"≤Fó&V∑B6«WF∂ˆÁG&ˆ∆¿¢“6˜&R◊&ˆfñ∆V‚6∂ñ∆¶W"ÁR:RFñFñr,;g&V«6W7F'Bˆ6ÇvˆFº:FÁB6ñF'óFS¢Ï:G7F6ñF,;g&¶"l;f∆¶VgFW""Ç¬÷V‚'óFR∑,:GfW"#BRbóF‚ˆ6Ç÷ñÁ7Bs"Ç‡¢“V&∆ñ6W&2∑GVV∆∆ˆ6ÇñÊ∂ˆ÷÷ÊFRw&ñB∆ñvvW"í6÷÷6˜&R◊6∂FR662◊7vóR◊fñWw˜'F÷VB˜fW&f∆˜s¶ÜñFFVÊ¬'VÊFÊñÊrˆ6ÇVvV‚&∂w'VÊB‚FWBv÷∆ÜV«6º:G&◊6∆w&WBVÊFW"&ˆGñÁl:FÊG2ñÁFRÃ:FÊw&R‡¢“fó6ñˆ‚◊7F'Bˆ6Çl:F∆¢ˆ&¶V∑Bfó6"ñÊvV‚ÜVFW'ñ√≤fˆ˜FW&Á2Fñ∆∆&∂:G"ÊfñvFñˆÊV‚L:G"‚w&Á6∂b∂ˆ◊∆WGFW&&Vå:V∆∆W"ÜVFW'ñ∆V‚6ˆ“FßWVÊFW'gí‡¢“V&∆ñ6W&g,:V‚fó6ñˆ‚l:F∆¶W"∑GVV∆«Bˆ&¶V∑B≤6ˆÁFñÊW#2ˆ6Ç;gÊ"6ó7F∂ˆÁG&ˆ∆«gñ‚Fó&V∑B‚FWF∆¢ÙÁ76&ñ∆BÜ˜2;gfW"ˆ6ÇFñ∆∆&∂:WFW&|:W"Fñ∆¬6÷÷fó6ñˆ‚÷ˆ&¶V∑B‡¢“W&÷ÊVÁB&VvV√¢Áñˆ6Ç:FÊG&FR7vóVgVÊ∑FñˆÊW"6∂WF|:Rg,:V‚445Ù4ı$RÁ7vóV≤÷ˆGV«VÊñ∂gfñ∂V«6W"6∂f&Fˆ∑V÷VÁFW&FRVÊFÁFr‡†ßc"„„Ér(	26˜&R◊7Gó&B7vóR≤7F&ñ¬fó6ñˆ‚(i"V&∆ñ6W&¢“vñÊW&FR&&WG6w&ñG2ífó6ñˆ‚ˆ6ÇV&∆ñ6W&å:F◊F"ÁRG&vw,:FÁ2¬fñÊvW&l;f∆¶ÊñÊr¬∂ÁF÷˜G7L:VÊB¬6Ê◊FñBˆ6ÇV6ñÊrg,:V‚V‚vV÷VÁ6“445Ù4ı$RÁ7vóV◊&ˆfñ¬‡†ßc"„„Éí(	2«VvÊ&R6˜&R◊6Ê≤FFób6«WF∂ˆÁG&ˆ∆¿¢“6˜&R◊6ÊV‚VgFW"6Ã:G:G"3É◊2÷VB÷ßV∂&RñÊ'&ˆ◊6ÊñÊrí∆∆&&WG6w&ñG26ˆ“Ál:FÊFW"445Ù4ı$RÁ7vóV‡¢“V‚VÊF∂ˆÁG&ˆ∆«6ñFÁ762VgFW"ÁF∆WC¢ˆ&¶V∑B“7F˜'B6VÁG&W&B¬"“"∂ˆ«V÷ÊW"¬>(	3B“,9s"ˆ6Ç^(	3b“<9s"‡¢“fñBrV∆∆W"f∆W"ˆ&¶V∑B&Vå:V∆∆W"f&¶R6ñF<9s"ˆ6Çl:GÜ∆"÷VB6˜&R◊7vóR¬<:RñÊ∂ˆ÷÷ÊFRˆ6ÇWF|:VVÊFR∆vW"∆«FñBÜ"6÷÷‹:WGB‡¢“fW'6ñˆÁ7&VvV√¢˜fW'6ñˆ‚Êß6í&ˆ¶V∑G&˜FV‚Fñ∆∆å;g"6ˆÁFñÊW#72ÜV◊6ñFˆ6Çl:W"ñÁFR:FÊG&2b442◊fW'6ñˆÊW"‚443ß2fW'6ñˆÁ6ÁV÷÷W"7Gó'2VÊ&'Bbˆ662÷6˜&R˜fW'6ñˆ‚Êß6‡†ßc"„„ì(	2«VvÊ&R∆ÊFÊñÊr≤67&ˆ∆∆g&í÷ˆ&ñ«&ñÊ6ó ¢“6˜&R◊6ÊV‚VgFW"6Ã:G:G"CÉ◊2÷VBV‚÷ßV∂&RñÊ'&ˆ◊6ÊñÊr‚fñÊvW&l;f∆¶ÊñÊvV‚ˆ6ÇG&wG,;g6∂V∆‚:G"ˆl;g,:FÊG&FR‡¢“6ó7F∂ˆÁG&ˆ∆«gñ‚l:W"÷W"«VgB˜fÊl;g"ˆ6ÇVÊFW"&ñ∆GóF„≤∂˜'F÷ˆ&ñ«6º:G&÷"Ál:FÊFW"WGB∂ˆ◊∑F&R÷V∆∆Á'V“WFˆ÷Fó6∑B‡¢“W&÷ÊVÁB÷ˆ&ñ«&VvV√¢Ê˜&÷∆442◊gñW"6∂f&67&ˆ∆∆g&ñÏ:G"ñÊÊVå:V∆∆WB&ñ÷∆ñvV‚'ñ◊2‚áWgVFñÊÊVå:V∆¬ˆ6Çfˆ˜FW"6∂7ñÊ26◊FñFñwB‚67&ˆ∆¬Ál:FÊG2Ï:G"ñÊÊVå:V∆∆WBf∑Fó6∑B∑,:GfW"FWB¬WÜV◊V«fó2;gÊFR&VFñvW&ñÊw7ÊV∆W"¬˜fÊ∆ñwB6‹:R6º:G&÷"V∆∆W"l;g'7F˜&BFWáB‡†ßc"„„ì(	26˜&R7vóRSÉ≤l:G&Fñv÷ˆ&ñ∆∂˜'@¢“∆¬6˜&R◊7Gó&B7vóR∆ÊF":RSÉ◊2‚V&∆ñ6W&2:F∆G&RFWF∆¢◊7vóRÁl:FÊFW"ÁRˆ6∑<:R6˜&Rl;g"G&Á6óFñˆ‚¬&ñ∑FÊñÊr¬fñÊvW&l;f∆¶ÊñÊrˆ6Ç6ˆ÷÷óB‡¢“fó6ñˆ‚l:F∆¢ˆ&¶V∑BÁl:FÊFW"FV‚∆VFñvóF‚˜fÊl;g"fˆ˜FW&‚<:RÜV∆<9s"÷w&ñFV‚7ñÁ2WF‚GB÷ñÊñGó&W&Ê∑'ñ◊2‡¢“fó6ñˆ‚fó6"ÜVFW&Á2Fñ∆∆&∂◊ñ¬í∆∆VÊFW'gñW#≤VÊF7B÷ˆGV∆VÁ27F'Ggí6∂Ê"ñ¬‚fˆ˜FW"’Fñ∆∆&∂fñÊÁ2∑f"‡¢“6«WF∂ˆÁG&ˆ∆∆VÁ2VÊ∂V∆&ñ∆Bl:W"V‚7ñ÷÷WG&ó6≤6˜&R◊&”¢#ÉÇ&ñ∆Bˆ6ÇBÇ'VÁBˆ“‡¢“F6Ü&ˆ&Bˆ6Ç÷ˆGV«7F'FW"Ál:FÊFW"vV÷VÁ6“6˜&R◊G'ñ6∂º:FÁ6∆‚gí“˜6ñF'óFV‚l:FÁF"C◊3≤∂÷W&ˆ6Çfñ«l:F∆¶&R&Vå:V∆∆W"Fó&V∑BÁl:FÊF&∑FófW&ñÊr‡†ßc"„„R(	27F˜"∂∆"÷∂Êˆ6Ç<:F∂W"&WGW"g,:V‚fó6ñˆ‡¢“Ï:G"w&Á6∂b∂ˆ◊∆WGFW&;gÊG2g,:V‚V&∆ñ6W&&∆ó"FV‚7F˜&wV∆Ï:G7Fˆ&¶V∑F÷∂ÊV‚∂∆&‡¢“FV‚∆ñ∆∆∂∆"÷∂ÊV‚F2&˜'BW"fˆ˜FW&‚íFWGFÃ:FvS≤fÊ∆ñwBfó6ñˆ‚÷fÃ;fFR:G"ˆl;g,:FÊG&B‡¢“,:VFR∂∆"ˆ6ÇFñ∆∆&∂ñÁl:FÁF"l:F«B“ˆ6Ç6W76ñˆÁ77&ÊñÊrl;g&R&WGW"‚fñB7&fV¬7FÊÊ"Ál:FÊF&V‚∑f"‡†ßc"„„B(	2&Wf&B÷&∂W&ñÊrVgFW"fó6ñˆ‚÷w&Á6∂ÊñÊp¢“V&∆ñ6W&:WFW'7L:F∆∆W"6÷÷wV∆÷&∂W&FRˆ&¶V∑BVgFW"w&Á6∂b∂ˆ◊∆WGFW&‡¢“WGBV∆∆W"Gl:Rˆ&¶V∑B&Vå:V∆∆W"FV‚6VÁG&W&FR6˜&R◊7vóVÁ2vVˆ÷WG&ì≤wV¬÷&∂W&ñÊr:FÊG&"ñÁFR∂˜'FWG2‹:WGBV∆∆W"∆6W&ñÊr‡¢“Ï:G"fó6ñˆ‚;gÊG2g,:V‚V&∆ñ6W&ÜWFW"fˆ˜FW,:WF|:G&FV‚∂∆&≤Ê˜&÷«Bfó6ñˆ‚÷fÃ;fFR&Vå:V∆∆W"V&∆ñ6W&‡†ßc"„„2(	2∂ˆ◊∑Bº:F∆«&B;gfW'7BíV&∆ñ6W&¢“f˜Fˆ¬&ñ∆FW&ˆ6ÇWF∂7F∆ñvvW"Fó&V∑BVÊFW"÷ˆGV∆ÜVFW&‚¬l;g&Rˆ&¶V∑Fˆ◊,:VFWB‡¢“∂Ê&Ê:G"Ã:Fw&R÷VB÷ñÊG&Rñ∂ˆÊW"¬Ü˜&ó6ˆÁFV∆«BñÊÊVå:V∆¬ˆ6ÇFó6∑&WF&RvÃ;fB‡†ßc"„„"(	2G&RFó&V∑Fº:F∆∆∂Ê"íV&∆ñ6W&¢“FV‚WáG&442◊˜WV‚:G"&˜'GFvV‚‡¢“V&∆ñ6W&fó6"G&R∂˜'F¬¨:F÷Ê'&VFf√¢f˜Fˆ¬&ñ∆FW&¬WF∂7F‡¢“f˜Fˆ;gÊ"442÷∂÷W&‚¬&ñ∆FW&;gÊ"VÊÜWFVÁ2&ñ∆Gf¬ˆ6ÇWF∂7FÁl:FÊFW"&VfñÁF∆ñwBWF∂7FfÃ;fFR‡†ßc"„„(	2VÊÜWG6ÊWWG&¬º:F∆«FWá@¢“Ff˜FÚ÷VB446f˜'G<:GGFW"Ál:FÊF442÷∂÷W&‚‡¢“FWBÊG&f∆WBÜWFW"l:F∆¢g,:V‚VÊÜWFVÊ÷VBl;g&∂∆&ñÊvV‚&ñ∆F&ñ&∆ñ˜FV≤V∆∆W"fñ∆W&‡¢“c"„„6∂Ü˜2;gfW#≤FW72ïÜˆÊR◊7V6ñfñ∂FWáBf"ñÁFR∆GFf˜&◊6ÊWWG&¬‡†ßc"„„(	2W'6GBbc"„„†ßc"„„í(	2f«óFÊFRº:F∆∆÷VÁíFó&V∑BíV&∆ñ6W&¢“Ã:FvrFñ∆¬∑6ñÊwV∆'÷;gÊ"V‚∂ˆ◊∑B442÷÷VÁí˜fÁ:RFV‚&VfñÁF∆ñvV&∆ñ6W&÷&&WG7óF‚í7L:F∆∆WBl;g"GBÊfñvW&Fñ∆¬fó6ñˆÁ27F˜&º:F∆«gí‡¢“Ff˜FÚ÷VB446;gÊ"fó6ñˆÁ2∂÷W&Fó&V∑Bfñˆ÷ˆFS◊V&∆ó6Ç÷FBg6˜W&6S÷6÷W&ˆ6Ç:WFW'7L:F∆∆W"∑GVV∆¬w'Wˆ∂Ê¬VgFW"∂∆"V∆∆W"Ç‡¢“&ñ∆F&ñ&∆ñ˜FV≤Úfñ∆W&;gÊ"VÊÜWFVÁ2<:F∑&&ñ∆Gl:F∆¶&Rg,:V‚6÷÷÷VÁí¬66WFW&"f∆W&&ñ∆FW"ˆ6Ç6∂"fó6ñˆ‚÷∂ˆ◊Fñ&∆∆ˆ∂∆ˆ&¶V∑BFó&V∑Bí∑GVV∆¬V&∆ñ6W&ñÊw6w'W‡¢“÷VÁñ‚7L:FÊw2÷VBf''óB¬G'ñ6≤WFÊl;g"V∆∆W"W66R‚6f&í∂‚VgFW"VÊÜWG7f∆WBfó66ñ‚VvV‚7ó7FV÷÷VÁíl;g"&ñ∆F&ñ&∆ñ˜FV≤ıF&ñ∆Bıl:F∆¢fñ∆W#≤FWGF7Gó'2bîı2‡¢“c"„„Éß27F˜&fó6ñˆ‚÷º:F∆«gífñÊÁ2∑f"6ˆ“FV∂Êó6≤f∆∆&6≤÷V‚Ál:FÊG2ñÁFRg,:V‚V&∆ñ6W&2Ê˜&÷∆Ã:FvrFñ∆¬÷∂Ê‚&ˆ˜FVÁ2˜fW'6ñˆ‚Êß6:G"˜,;g&B‡†ßc"„„Ç(	2º:F∆«f¬l;g"Áñˆ&¶V∑BíV&∆ñ6W&¢“Ã:FvrFñ∆¬∑6ñÊwV∆'÷;gÊ"V‚<:G'6∂ñ∆Bfó6ñˆ‚◊gí÷VBGl:Rf√¢FWGBf˜Fˆˆ6Çg,:V‚∆'V÷‡¢“Ff˜FÚÁl:FÊFW"f˜'G6GBfó6ñˆÁ2VvV‚442÷∂÷W&‚g,:V‚∆'V“Ál:FÊFW"fó6ñˆÁ2&VfñÁF∆ñvf∆W'f«6ñ◊˜'Bg,:V‚VÊÜWFVÁ2&ñ∆F&ñ&∆ñ˜FV≤‡¢“,:VFº:F∆∆˜&Ê6∂"Áñfó6ñˆ‚÷∂ˆ◊Fñ&∆ˆ&¶V∑B¬:WFW&|:W"Fñ∆¬6÷÷V&∆ñ6W&÷&&WG7óFˆ6Ç&Wf&"FñFñv&Rˆ&¶V∑B“ˆ∂Ê«f¬‡¢“ÜVFW"’Fñ∆∆&∂g,:V‚º:F∆«f∆WB:WFW&|:W"WF‚:FÊG&ñÊr‚l:F∆¢WF∂7FíV&∆ñ6W&:G"f˜'G6GB6W&Bˆ6Çfó6"&VF‚7&FR442÷ˆ&¶V∑B‡¢“&ˆ˜FVÁ2˜fW'6ñˆ‚Êß6:G"f˜'G6GB˜,;g&B‡†ßc"„„r(	2fó6ñˆÁ2∂÷W&g,:V‚V&∆ñ6W&2&&WG7óF¢“Ã:FvrFñ∆¬∑6ñÊwV∆'÷íV&∆ñ6W&2&&WG77F'B;gÊ"fó6ñˆÁ2&VfñÁF∆ñv442÷∂÷W&fñˆ÷ˆFS◊V&∆ó6Ç÷FF≤V&∆ñ6W&Ü"ñÁFRÃ:FÊw&RV‚&∆∆V∆¬fñ∆ñÁWB6ˆ“Ê˜&÷«B;gÊ"ïÜˆÊW2∂÷W&‡¢“V&∆ñ6W&7&"∑GVV∆¬ˆ&¶V∑Fw'W¬∂Ê¬ˆ6ÇfW&∑Gñw6÷&∂W&ñÊrFñ∆∆l:F∆∆ñwB‚∂∆&í∂÷W&‚7&"FRÁñfó6ñˆ‚÷ˆ&¶V∑FV‚6ˆ“V&∆ñ6W&◊WF∂7B¬Ã:FvvW"FV“Fñ∆¬w'WV‚ˆ6Ç:WFW'7L:F∆∆W"FñFñv&Rf¬‡¢“∂÷W&Á2é|˜ﬁÌ¢Gß≤⁄Óù∆≠y“ˆ6ÇgVÊvW&"ˆ&W&ˆVÊFRb67&óBÙDÙ“÷˜&FÊñÊr‡†¢22c"„„3(	26VÁG&¬ˆ&¶V∑FW&÷ñÊˆ∆ˆvê¢“6˜&RÜ"ÁRFW&÷ñÊˆ∆ˆwíÊß66ˆ“6VÁG&¬º:F∆∆l;g"Ál:FÊF'7ñÊ∆ñvˆ&¶V∑FÊ÷‚‡¢“7FÊF&B:G"ˆ&¶V∑F≤f∆&&&W6WG2:G"ˆ&¶V∑F¬∆vv¬&ˆGV∑Fˆ6Çf&‡¢“ñÁ7L:F∆∆ÊñÊvV‚WáˆÊW&2í6ˆÁG&ˆ¬6VÁFW"ÙñÁ7L:F∆∆ÊñÊv"VÊFW"FW&÷ñÊˆ∆ˆvñ‡¢“fó6ñˆ‚Ál:FÊFW"6˜&R◊FW&÷V‚l;g"6VÁG&∆Ál:FÊF'FWáFW"6ˆ“&˜'GFvÊñÊw6g,:Vv‚ˆ6Çf˜F˜6W76ñˆÁ6&VÏ:F÷ÊñÊvV‚‡¢“‹:V∆WB:G"GB:WFW'7L:VVÊFR÷ˆGV«FWáFW"7V66W76ógB6∂∂˜∆2Fñ∆¬6÷÷íÏ:G"FR&W,;g'3≤Üó7F˜&ñ≤ˆFˆ∑V÷VÁFFñˆ‚ˆ6ÇvV&'∆G6VÁ2&VF∑FñˆÊV∆∆FWáFW"6∂ñÁFR÷76W'<:GGF2‡¢“W'6∂˜&rí6˜&R÷fˆ˜FW&‚:R&V∆WfÁFfó6ñˆ‚◊gñW"∆ñvvW"∑f"6ˆ“Ï:G7F6W&FTí◊7FVr‡†¢22c"„„3(	26ñFñÁFW'f∆¬ífó6ñˆ‚‹;gfW'6ñ∑FV‚≤Ü¨:F« ¢“v˜&∑76R◊&FV‚B∆vr+r÷&∂W&FF2&˜'BÜV«B‡¢“í7L:F∆∆WBfó62FWBf∑Fó6∂7ñÊ∆ñvñÁFW'f∆∆WC¢BÊWÇ‚ˆ&¶V∑B(	3bbF¬ˆ&¶V∑B~(	3"bF¬ˆ&¶V∑B>(	3BbF‡¢“ñÁFW'f∆∆WBWFFW&2Fó&V∑BÏ:G"Ál:FÊF&V‚7vó"V∆∆W"'óFW"6ñF‡¢“FWáBˆ“÷&∂W&Fˆf«Ffó62ñÁFS≤FV‚wV∆&÷V‚,:F6∂W"6ˆ“fó7VV∆¬ñÊFñ∂Fñˆ‚‡¢“FV‚FñFñv&R7ñÊ∆ñvñÁ7G'V∑FñˆÁ7FWáFV‚ív˜&∑76RL;f∆ß2ˆ6Çl;g&∂∆&ñÊvV‚f«óGF2Fñ∆¬ˆíFV‚6VÁG&∆6˜&R÷fˆ˜FW&‚‡¢“v˜&∑76R÷Ü¨:F«V‚l;g&∂∆&"6WÇˆ&¶V∑BW"6ñF¬ñÁFW'f∆«FWáFV‚¬7vóRˆ6ÇGBG'ñ6≤;gÊ"w&Á6∂b∂ˆ◊∆WGFW&‡¢“&VÏ:F÷ÊñÊvV‚å:F◊F2g,:V‚6˜&R◊FW&÷ñÊˆ∆ˆvñ‚¬<:Rˆ&¶V∑F∂‚6VÊ&R'óF26VÁG&«BFñ∆¬BÊWÇ‚∆vv¬&ˆGV∑FV∆∆W"f&‡†¢22c"„„3"(	26VÁG&¬FW&÷ñÊˆ∆ˆvñ÷ñw&W&ñÊp¢“'ñvvW"fñF&R:Rc"„„3ˆ6Ç&Vå:V∆∆W"v˜&∑76R÷ñÁFW'f∆∆V‚ˆ&¶V∑B(	3bbF6◊Bgí◊7V6ñfñ≤Ü¨:F«‡¢“6˜&R◊FW&÷ñÊˆ∆ˆvñ‚l:W"÷∆«7L;fBÜ∑6ñÊwV∆'÷¬∑«W&«÷¬∂FVfñÊóFU6ñÊwV∆'÷˜7b‚í6◊BWFˆ÷Fó6≤WFFW&ñÊrb‹:G&∑FTí÷V∆V÷VÁB‡¢“∑FófÁl:FÊF'7ñÊ∆ñvfó6ñˆ‚“ˆ6ÇV&∆ñ6W&◊FWáFW"÷ñw&W&2g,:V‚å:W&F∂ˆFB∆vr˜∆vvWB˜∆vvVÊFñ∆¬6˜&R◊FW&÷ñÊˆ∆ˆvñ‚‡¢“FW&÷ñÊˆ∆ˆvóf∆WBí6ˆÁG&ˆ¬6VÁFW"Ñˆ&¶V∑BÚ∆vrÚ&ˆGV∑BÚf&í∂‚L:G&÷VB6Ã:RñvVÊˆ“:R&WGñF∆ñwBf∆W"∂Ê"¬7FGW7&FW"¬Fñ∆ˆvW"¬Fˆ÷Ã:FvV‚ˆ6ÇÜ¨:F«&FW"‡¢“6ˆÁFñÊW#3ß2V&∆ñ∂vV&'FWáFW"¬$TD‘RÙ4Ñ‰tTƒÙr¬∂ˆF∂ˆ÷÷VÁF&W"ˆ6Çí÷Fˆ‹:FÊñÁ7G'V∑FñˆÊW"÷76W'<:GGG2ñÁFRVgFW'6ˆ“˜&FWB∆vvL:G"∂‚f&∂˜'&V∑BñÊÊVå:V∆¬ˆ6ÇñÁFRTí◊FW&÷ñÊˆ∆ˆví‡¢“6«WF∂ˆÁG&ˆ∆¬c"„„3#¢∑f'f&ÊFRÁl:FÊF'7ñÊ∆ñvV&∆ñ6W&◊FWáFW"6ˆ“V&∆ñ6W&"Ç∆vv¬∆vs¶ˆ6Çf«B∆vv:G"ˆ6∑<:R∂˜∆FRFñ∆¬6˜&R◊FW&÷ñÊˆ∆ˆvñ‚‡†¢22c"„„32(	2w&Á6∂b∂ˆ◊∆WGFW&:RïÜˆÊP¢“w&Á6∂b∂ˆ◊∆WGFW&6VÁG&W&26ˆ“áWgVG'V'&ñ≤‡¢“˜6óFñˆÊV‚fó62VÊ&'B6ˆ“ÇıñÃ:FÊw7BFñ∆¬l:FÁ7FW#≤˜&FWBˆ&¶V∑FF2&˜'B‡¢“F&˜'F∆ñvvW"∑f"Ã:FÊw7BFñ∆¬å;fvW"‡¢“6W&BÛ6˜fÊl;g"&ñ∆G'WF˜&ÊF2&˜'B‡¢“FRG&R&ñ∆G'WF˜&Êl:W"6VÁG&W&FR&ˆ∆∆Ê÷„¢áWgVF&ñ∆F¬&∑6ñF¬FWF∆¶‡¢“9gg&ñvFV∆"g,:V‚c"„„3"Ã:F÷Ê2˜,;g&F‡†¢22c"„„3B(	2fó6ñˆ‚;gfW'6ñ∑Bˆ6ÇVFóB÷l:F«@¢“ˆ&¶V∑Bé(	5íb¶6VÁG&W&2í;gfW'6ñ∑FV‚‡¢“∂Ê&Êl;g"&ñ∆Fº:F∆∆l;g'GñF∆ñv2Fñ∆¬≤ÁóGBf˜Fˆˆ6Ç≤g,:V‚∆'V÷‡¢“'V'&ñ∂ˆ6Ç&W6∑&ófÊñÊv:WFW&|:W"Fñ∆¬WFñ∂WGFW"WFÊl;g"&W7V∑FófRl:F«B‡¢“&ñ∆G'WF˜&Êl:W"∂ˆÁ6V∑fVÁF6VÁG&W&FR&˜GFˆ“÷&FvW3¢áWgVF&ñ∆F¬&∑6ñF¬FWF∆¶‡¢“ÜVFW&‚Çıí(	2w&Á6∂b∂ˆ◊∆WGFW&(	2F&˜'FÃ:F÷Ê2ˆl;g,:FÊG&B‡†¢22c"„„3R(	2∂˜'&ñvW&ñÊrVgFW"f∑Fó6≤DÙ“÷ñÁ7V∑Fñˆ‡¢“7v˜&∑76T6˜VÁF6VÁG&W&2Fó&V∑Bífó6ñˆ‚◊v˜&∑76R¬:GfV‚Ï:G"Fˆˆ∆&&V‚|:W";gfW"Fñ∆¬∂ˆ«V÷ÊÃ:FvR:RïÜˆÊR‡¢“'V'&ñ∂Ã:Fvw26ˆ“&ñ∑FñróGG&RWFñ∂WGB˜fÊl;g"FWBf∑Fó6∂l:F«FWB7FóF∆V‡¢“&W6∑&ófÊñÊvÃ:Fvw26ˆ“&ñ∑FñróGG&RWFñ∂WGB˜fÊl;g"FWBf∑Fó6∂l:F«FWB6FW67&óFñˆÊ‡¢“∆6VÜˆ∆FW"◊FWáFW&ÊíFW76Gl:Rl:F«BF2&˜'Bl;g"GBVÊGfñ∂GV&&V¬‹:G&∂ÊñÊr‡¢“ñÊvÊG&gVÊ∑FñˆÊW"V∆∆W"∆ñ˜WFW":FÊG&2‡†¢22c"„„3b(	2&ñ∆G'WF˜&Ê¢“≤ÁóGBf˜Fˆ&Vå:V∆«2íFRGl:RFˆ÷÷&ñ∆G'WF˜&Ê‡¢“FWB6W&F7F˜&«W7FV6∂ÊWB˜fÊl;g"FWáFV‚F2&˜'B‡¢“&ñ∆G&ˆ∆∆W&Êfó626ˆ“áWgVF&ñ∆F¬&∑6ñFˆ6ÇFWF∆¶‡¢“9gg&ñr∆ñ˜WBg,:V‚c"„„3RÃ:F÷Ê2˜,;g&B‡†¢22c"„„3r(	2&W6∑&ófÊñÊs¢Ã:W7BfñWw˜'@¢“&W6∑&ófÊñÊr÷VFóF˜&‚l:W"6÷÷&ñÊ6ó6ˆ“'V'&ñ≥¢ÜV∆6ñF‚ˆFñ∆ˆvV‚6∂f&ÜV«BÃ:W7BÏ:G"FÊvVÁF&˜&FWB:G";gWB‡¢“ñÊvV‚67&ˆ∆∆&"6∂∑VÊÊfó62Ã:FÊw7BWB:R6º:G&÷V‚‡¢“VÊF7B6¨:F«fFWáF&V÷l:F«FWBl:W"67&ˆ∆∆ˆ“FWáFV‚&∆ó"Ã:FÊw&R:F‚l:F«FWB‡¢“&W6∑&ófÊñÊvVÁ26∑&ógóF|;g'2Ï:Vv˜BÃ:Fw&Rl;g"GBÜV∆VFóF˜&‚6∂'ñ÷÷2˜fÊl;g"ïÜˆÊR◊FÊvVÁF&˜&FWB‡¢“'V'&ñ≤¬&ó2ˆ6Ç;gg&ñvfó6ñˆ‚◊gñW"Ã:F÷Ê2ˆl;g,:FÊG&FR‡†¢22c"„„3Ç(	2'V'&ñ∂ÜñW&&∂ê¢“l:F∆¢ˆ&¶V∑F&∆ó"áWgVG'V'&ñ≤íˆ&¶V∑L;gfW'6ñ∑FV‚ˆ6Ç|;g'2GñF∆ñv&R˜7L;g'&R‡¢“6ñFñÊf˜&÷FñˆÊV‚:FÊG&2g,:V‚ˆ&¶V∑B~(	3"bFFñ∆¬fó6"~(	3"bFˆ6Çfó626ˆ“6V∑VÊL:G"ñÊf˜&÷Fñˆ‚VÊFW"f˜Fˆ∂Ê&Ê‡¢“w&Á6∂b∂ˆ◊∆WGFW&|;g'2Ï:Vv˜B7L;g'&Ríˆ&¶V∑Ggñ‚‡¢“9gg&ñrgVÊ∑FñˆÊ∆óFWBÃ:F÷Ê2˜,;g&B‡†¢22c"„„3í(	2gó6W&Fñˆ‚ˆ6Çw&Á6∂ÊñÊw7'V'&ñ∞¢“l:F∆¢ˆ&¶V∑F∆ñvvW"ÁRñÊÊRív˜&∑76R◊gñ‚ˆ6Çfó62ñÁFR:Rfó6ñˆ‚◊7F'FV‚‡¢“l:F∆¢ˆ&¶V∑F‹;gfW'6ñ∑FV‚g,:V‚c"„„3ÇÃ:F÷Ê2í;gg&ñwB˜,;g&B‡¢“w&Á6∂b∂ˆ◊∆WGFW&l:W"V‚VvV‚6VÁG&W&B'V'&ñ∑&B‡¢“ˆ&¶V∑G˜6óFñˆ‚áBÊWÇ‚"ÛFíˆ6ÇF&˜'F∆ñvvW":R&FV‚VÊFW"¬l:FÁ7FW"&W7V∑FófRå;fvW"‡†¢22c"„„C(	2ˆ÷'ñvvBv˜&∑76R“˜&WfñWr÷ÜVFW ¢“FV‚GV&&∆l:F∆¢ˆ&¶V∑F◊'V'&ñ∂V‚ív˜&∑76RF2&˜'Bí6¨:F«fÖD‘√¶„≤WÜ∑BV‚'V'&ñ≤fñÊÁ2∑f"‡¢“v˜&∑76R&Vå:V∆∆W"˜&FÊñÊvV‚l:F∆¢ˆ&¶V∑F(i"f˜Fˆ∂Ê"(i"fó6"é(	5íb¶‡¢“w&Á6∂b∂ˆ◊∆WGFW&'ñvw2ˆ“íDÙ“¬ñÁFR÷VB˜6óFñˆÊW&ñÊw6Ü6≤‡¢“l;g'7F&FV‚ñÊÊVå:V∆∆W"VÊ&'B6VÁG&W&Bw&Á6∂b∂ˆ◊∆WGFW&‡¢“ÊG&&FV‚ñÊÊVå:V∆∆W"˜6óFñˆÊV‚áBÊWÇ‚BÛFíFñ∆¬l:FÁ7FW"ˆ6ÇF&˜'FFñ∆¬å;fvW"‡¢“FñFñv&R'6ˆ«WF¸;gfW&∆ÊFRÜVFW&&WFVVÊFV‚ÊWWG&∆ó6W&2÷VBWÜ∑Fc"„„C◊&Vv∆W"‡†¢22442&&WG6∂ˆ÷÷ÊFÚ(	2º;g& ¢“Ï:G"&&WFR:V|:W"í442&WGñFW"Ál:FÊF&VÁ2º;g&∆«FñC¢vVÊˆ÷l;g"FV‚6VÊ7B;gfW&VÁ6∂ˆ÷Ê∂ˆB“˜&ˆ¶V∑L:FÊG&ñÊvV‚‡¢“º;g&l:W"∆G&ñrFˆ∆∂26ˆ“V‚&V|:G&‚GB6∂V‚&ñ∆B‡¢“&ñ∆B¬÷ˆ6∑WV∆∆W"ÊÊ‚fó7V∆ó6W&ñÊrl:W"VÊF7BvVÊW&W&2Ï:G"Ál:FÊF&V‚WGG'ñ6∂∆ñvV‚&W"ˆ“FWBí6÷÷÷VFFV∆ÊFR‡¢“V‚FñFñv&R&ñ∆F&V|:G&‚l:W"ñÁFRl;f∆¶÷VBFñ∆¬WGB6VÊ&Rº;g&‡†¢22c"„„C(	2ˆ&¶V∑L:WF|:G&FW"VÊFW"&ñ∆FW&Ê¢“w&Á6∂b∂ˆ◊∆WGFW&7L:W"VÁ6“6ˆ“áWgVG'V'&ñ≤‡¢“Fó&V∑BVÊFW"FRG&R&ñ∆G'WF˜&Ê∆ñvvW"ÁRV‚vV÷VÁ6“&B÷VBíÛF¬í÷Ê«ó6ˆ6ÇF&˜'F‡¢“íÛF:G"ÊWWG&¬7FGW2˜ñ∆¬¬í÷Ê«ó6:G"6V∑VÊL:G"wV¬∂Êˆ6ÇF&˜'F:G"6V∑VÊL:G",;fB∂Ê‡¢“FV‚FñFñv&Rg&ó7L:VVÊFRÊ«ó6W&÷VBñ÷∂ÊV‚F2&˜'B‡¢“ñÊvV‚6W&BFó6∂ÊÃ:Fvw2Fñ∆¬‡†¢22c"„„C"(	2&V‚ˆ&¶V∑L:WF|:G&G7&@¢“c"„„C◊&FV‚íÛB¬í÷Ê«ó2¬F&˜'F&Vå:V∆«2í6÷÷∆G2Fó&V∑BVÊFW"&ñ∆G'WF˜&Ê‡¢“v÷∆˜6óFñˆÊW&ñÊw2“¬7F˜&∆V∑2“ˆ6Ç∂Ê&Vv∆W"l;g"÷ÁVƒî'FÊ¬VFóEG&6Ñ'FÊˆ6ÇVFóE&ˆw&W76ÊWWG&∆ó6W&2WGG'ñ6∂∆ñvV‚íFV‚Áñ&FV‚‡¢“&FV‚'ñvw26ˆ“V‚7F&ñ¬G&V∂ˆ«V÷Á2÷w&ñC¢ÊWWG&¬7FGW2Fñ∆¬l:FÁ7FW"¬í÷Ê«ó2í÷óGFV‚¬F&˜'BFñ∆¬å;fvW"‡¢“ñÊv'6ˆ«WF˜6óFñˆÊW"Ál:FÊG2l;g"FRG&R∂ˆÁG&ˆ∆∆W&Ê‡¢“9gg&ñrfó6ñˆ‚÷∆ñ˜WBÃ:F÷Ê2˜,;g&B‡†¢22c"„„C2(	26«WF∆ñrßW7FW&ñÊrbˆ&¶V∑L:WF|:G&G7&FV‡¢“Çıñ¬í÷Ê«ó6ˆ6ÇF&˜'FGfñÊv2Fñ∆¬WÜ∑B6÷÷&BFó&V∑BVÊFW"&ñ∆G'WF˜&Ê‡¢“∆∆G&R∂ˆÁG&ˆ∆∆W"l:W"6÷÷å;f¶Bˆ6ÇfW'Fñ∂¬6VÁG&W&ñÊr‡¢“í÷Ê«ó6:G"FV‚W&÷ÊVÁF∂˜'FFWáFV‚‡¢“'V'&ñ∂7F'F"l;g'7BVgFW"ÜV∆7FñˆÁ&FV‚ˆ6Ç∂‚ñÁFRÃ:FÊw&RÜ÷Ê'&VGfñB˜VÊFW"Çıñ‡¢“9gg&ñrfó6ñˆ‚÷∆ñ˜WBÃ:F÷Ê2˜,;g&B‡†¢22c"„„CB(	2&ñ∆G∆G6W&Ê2&ˆ∆∆W ¢“&ñ∆G∆G2"‹:G&∑2&∑6ñF‡¢“&ñ∆G∆G22‹:G&∑2FWF∆¶‡¢“WFñ∂WGFW&Êfó62,:VFR:RFˆ÷÷&ñ∆G∆G6W"ˆ6Ç:RFñ∆∆vFWáG&&ñ∆FW"‡¢“Fˆ÷÷∆G6W"fó6"FW77WFˆ“ÁóGBf˜Fˆ¬WF‚FWBFñFñv&R7F˜&ˆ÷ñÁ7F«W7FV6∂ÊWB‡¢“áWgVF&ñ∆Bˆ6Ç;gg&ñrw&Á6∂b∂ˆ◊∆WGFW&÷∆ñ˜WBÃ:F÷Ê2˜,;g&F‡†¢22c"„„CR(	2ÊWWG&∆Ê÷‚l;g"WáG&&ñ∆FW ¢“&∑6ñF:FÊG&2Fñ∆¬&ñ∆B&‡¢“FWF∆¶:FÊG&2Fñ∆¬&ñ∆B6‡¢“áWgVF&ñ∆F&Vå:V∆«26ˆ“&ñ‹:G"&ñ∆B‡¢“Ü¨:F«V‚l;g"w&Á6∂b∂ˆ◊∆WGFW&l;g&∂∆&"GB&ñ∆B"ˆ6Ç&ñ∆B2:G"WáG&&ñ∆FW"b6÷÷ˆ&¶V∑Bˆ6Ç∂‚fó6f∆g&í&V∆WfÁBgí‡¢“ñÊvV‚ÁígVÊ∑Fñˆ‚l;g"GBfó6WáG&&ñ∆FW"WFÊl;g"w&Á6∂'ñvw2íFVÊÊfW'6ñˆ‚‡†¢22c"„„Cb(	2&ó7&Bíw&Á6∂b∂ˆ◊∆WGFW&¢“&ó7&FV‚<:FÊ∑2l;g"¨:F÷Ê&Rg7L:VÊB÷V∆∆‚'V'&ñ∂l:F«B¬&ó7&Bˆ6Ç&W6∑&ófÊñÊw6l:F«B‡¢“WFñ∂WGFV‚&ó6f«óGF2:WBå;fvW"<:RFV‚fó7VV∆«Bå;g"GñF∆ñv&RñÜ˜÷VB&ó7'WF‚‡¢“9gg&ñr∆ñ˜WBˆ6ÇgVÊ∑Fñˆ‚Ã:F÷Ê2˜,;g&B‡†¢22c"„„Cr(	2&ó7&Bˆ6Çl:F«G76ñÊp¢“&ó6f«óGF2:WBå;fvW"ˆ6Ç∆6W&2Fó&V∑BñÁFñ∆¬&ó7'WF‚‡¢“'V'&ñ∂l:F«B¬&ó7&Bˆ6Ç&W6∑&ófÊñÊw6l:F«Bl:W"¨:F÷Ê&RfW'Fñ∂«Bg7L:VÊB‡¢“ñÊvV‚ÊÊ‚fó6ñˆ‚÷∆ñ˜WBV∆∆W"gVÊ∑Fñˆ‚:FÊG&2‡†¢22c"„„CÇ(	2¨:F÷‚«VgB'VÁB&ó7&FV‡¢“&Vå:V∆∆W"&ó6Ü˜&ó6ˆÁFV∆«BñÁFñ∆¬&ó7'WF‚g,:V‚c"„„Cr‡¢“f«óGF"ÊVB&ó7&FV‚vVÊˆ“¨:F÷‚fW'Fñ∂¬«VgB˜fÊl;g"ˆ6ÇVÊFW"‡¢“ñÊvV‚ÊÊ‚∆ñ˜WBV∆∆W"gVÊ∑Fñˆ‚:FÊG&2‡†¢22c"„„Cí(	2&W6∑&ófÊñÊrf«óGFBW ¢“ÜV∆&W6∑&ófÊñÊr◊6V∑FñˆÊV‚ÜWFñ∂WGB≤ñÊ÷FÊñÊw7'WFíf«óGF2W:R÷ˆ&ñ¬‡¢“&ó7&FVÁ2∆6W&ñÊrg,:V‚c"„„CÇÃ:F÷Ê2˜,;g&B‡¢“ñÊvV‚ÊÊ‚∆ñ˜WBV∆∆W"gVÊ∑Fñˆ‚:FÊG&2‡†¢22c"„„S(	2ÊfñvW&ñÊrFó&V∑Bíw&Á6∂b∂ˆ◊∆WGFW&¢“˜6óFñˆÁ6∂ˆÁG&ˆ∆∆V‚fó626ˆ“(íÇıí(¶‡¢“l:FÁ7FW"ˆå;fvW"ñ¬ÊfñvW&"Fñ∆¬l;g&V|:VVÊFR&W7V∑FófRÏ:G7Fˆ&¶V∑BWF‚GBÃ:F÷Êw&Á6∂b∂ˆ◊∆WGFW&‡¢“∑GVV∆∆:FÊG&ñÊv"WF˜7&2Gó7BñÊÊ‚ˆ&¶V∑F'óFR‡¢“l:FÁ7FW'ñ∆V‚:G"ñÊ∑Fób:Rl;g'7Fˆ&¶V∑FWBˆ6Çå;fvW'ñ∆V‚:R6ó7F‡¢“í÷∂ÊVÁ2Ê˜&÷∆FWáB:G"∂ˆÁ6V∑fVÁBí÷Ê«ó6‡†¢22c"„„S(	2&˜˜'FñˆÊW"l;g"ˆ&¶V∑F∂ˆÁG&ˆ∆∆W ¢“ÊfñvW&ñÊw7'WF‚¬ÇıíÊ:G"'&VF&R‡¢“l:FÁ7FW"ˆå;fvW"◊ñ∆&Ê:G"GñF∆ñwB7L;g'&Rˆ6Çl:W"÷W"VvV‚óF‡¢“í÷Ê«ó6ˆ6ÇF&˜'F:G"Ï:Vv˜B∂ˆ◊∑F&R‡¢“∆∆G&R∂ˆÁG&ˆ∆∆W"&Vå:V∆∆W"6÷÷å;f¶Bˆ6Çfó7VV∆∆∆ñÊ¶W&ñÊr‡†††¢22c"„„S"(	2Ã:Fw&R&W6∑&ófÊñÊr÷VFóF˜":R÷ˆ&ñ¿¢“&W6∑&ófÊñÊvVÁ27F˜&6∑&ógóF|;g'2GñF∆ñwBÃ:Fw&RÏ:G"ïÜˆÊR◊FÊvVÁF&˜&FWB:G";gWB‡¢“fˆ∑W7gñ‚l;g&&∆ó"Ã:W7C≤VÊF7B6¨:F«fFWáFl:F«FWBl:W"67&ˆ∆∆fñBÃ:VÊrFWáB‡¢“'V'&ñ≤÷VFóF˜&‚ˆ6Ç;gg&ñrfó6ñˆ‚÷∆ñ˜WBÃ:F÷Ê2˜,;g&F‡†¢22c"„„S2(	2&W6∑&ófÊñÊrÁl:FÊFW"'V'&ñ∑2gVÊvW&ÊFRVFóF˜ ¢“&W6∑&ófÊñÊrÁl:FÊFW"ÁR6÷÷fˆ∑W6W&FRVFóF˜"÷vVˆ÷WG&í6ˆ“'V'&ñ≤‡¢“6÷÷Fñ∆ˆr¬6÷÷∆6W&ñÊr¬6÷÷å;f¶G&ñÊ6óˆ6Ç6÷÷Ã:W6ÊñÊrbFV‚óGG&R6º:G&÷V‚‡¢“VÊF7BFV‚ñÊÊW'7FFWáG'WF‚l:W"67&ˆ∆∆‡¢“6∂ñ∆∆ÊFV‚÷V∆∆‚'V'&ñ≤ˆ6Ç&W6∑&ófÊñÊr:G"VÊF7B÷ÜÃ:FÊvBˆñÊÊVå:V∆√¢&W7V∑FófRÉFV6∂V‚‡¢“c"„„S#ß26W&F7V6ñ∆∆ñ˜WBl;g"&W6∑&ófÊñÊrF2&˜'B‡†¢22∆WfW&Á7&VvV¬(	2&ˆ∆∆&6≤fñB∑&óFó6∂WFFW&ñÊv •fñB∑&óFó6∂V∆∆W"l;g&å;fßB&ó6∂gñ∆∆FWFFW&ñÊv"áBÊWÇ‚7L;g'&R6∆VÁW˜&Vf∑F˜&W&ñÊr¬6˜&R¬∆w&ñÊr˜7FFRV∆∆W"ÊÊ‚:FÊG&ñÊrL:G"6Ê&":WFW'7L:F∆∆ÊñÊr:G"fñ∑Fñrí6∂∆WfW&Á6V‚Ê˜&÷«BñÊÊVå:V∆∆G&R∂WC†£‚6ÜÊvVB÷fñ∆W6(	2FRÁñ¸:FÊG&FRfñ∆W&Ê‡£"‚gV∆∆(	2∂ˆ◊∆WGB&ˆ¶V∑BVgFW"WFFW&ñÊvV‚‡£2‚&ˆ∆∆&6≤÷˜&ñvñÊ¬÷fñ∆W6(	2WÜ∑BFRˆl;g,:FÊG&FRfñ∆W&Êg,:V‚l;g&V|:VVÊFR7F&ñ∆fW'6ñˆ‚6ˆ“WFFW&ñÊvV‚W'<:GGFW"¬÷VB6÷÷÷7G'V∑GW"‡†•&ˆ∆∆&6≤◊∂WFWB6∂ñÊÊVå:V∆∆V‚∂˜'B$TD‘R6ˆ“ÊvW"fñ∆∂V‚7F&ñ¬fW'6ñˆ‚FWB:WFW'7L:F∆∆W"Fñ∆¬‚6ÜDuB6∂6¨:F«b&VL;f÷Ï:G"V‚WFFW&ñÊr,;g"&VÜÊF∆26ˆ“∑&óFó6≤ˆ6ÇÜV∆«&R6∂&ˆ∆∆&6≤◊∂WBV‚|:VÊrl;g"◊ñ6∂WB:F‚V‚|:VÊrl;g"∆óFR‡†¢22c"„„SB(	2fó6ñˆ‚6∆VÁW ¢“c"„„S2:G"7F&ñ¬:WFW'7L:F∆∆ÊñÊw7VÊ∑B‡¢“6VÊ552◊F6Ü"l;g"&ó2ˆ&W6∑&ófÊñÊw776ñÊrác"„„Cn(	3Cíí∂ˆÁ6ˆ∆ñFW&FRWF‚g6ñ∑F∆ñr&WFVVÊFVl;g,:FÊG&ñÊr‡¢“ˆ&¶V∑F∂ˆÁG&ˆ∆∆W&ÊVÊFW"&ñ∆FW&Êác"„„S(	3Sí∂ˆÁ6ˆ∆ñFW&FRFñ∆¬6ñÊ6«WF∆ñvl:G&FV‚‡¢“'V'&ñ≤Ù&W6∑&ófÊñÊr÷VFóF˜&‚g,:V‚c"„„S2Ã:F÷Ê2gVÊ∑FñˆÊV∆«B˜,;g&B‡¢“∑&óFó6∂WFFW&ñÊv"l:W"g&‹;gfW"6W&B&ˆ∆∆&6≤◊∂WB‡†¢22c"„„SR(	2ˆ&¶V∑FÊfñvW&ñÊr≤fW&ñfñW&ñÊrbWáG&&ñ∆FW ¢“(íÇıí(¶Ál:FÊFW"ÁRV‚&ˆ'W7Bf∆Wá&B<:R,:VFRl:FÁ7FW"“ˆ6Çå;fvW'ñ∆V‚∆ñvvW":R6÷÷&B6ˆ“,:F∂Ê&V‚‡¢“∂ˆFw&Á6∂ÊñÊr&V∑,:FgF"GB&ñ∆B"Ù&ñ∆B2Ã:Fvw2Fñ∆¬íWáG&fñ∆W6‡¢“Ï:G"V‚WáG&&ñ∆BÃ:Fvw2Fñ∆¬7F'F27F'E6ñ∆VÁDÊ«ó6ó2ÜóFV“ñ‡¢“í◊VÊFW&∆vWB'ñvw26ˆ“áWgVF&ñ∆B≤WáG&&ñ∆FW"¬÷Ç2&ñ∆FW"F˜F«B‡¢“fñBWFˆ÷Fó6≤íbº;g'2L:G&l;g"V‚ÁíÊ«ó2WFˆ÷Fó6∑BÏ:G"&ñ∆B"Û2Ã:Fvw2Fñ∆¬‚ˆ“WFˆ÷Fó6≤í:G"b7F'F2ñÊvV‚&ñ∑Fñríl;g',:F‚Ál:FÊF&V‚l:F∆¶W"í÷Ê«ó6‡†¢22c"„„Sb(	2íº;g'2VÊF7B:RÁl:FÊF&VÁ2ñÊóFñFó`¢“‹;f¶∆ñvÜWFV‚WFˆ÷Fó6≤í÷Ê«ó6F2&˜'BW"fó6ñˆ‚÷ñÁ7L:F∆∆ÊñÊv&Ê‡¢“ÁñáWgVF&ñ∆FW"Ê«ó6W&2ñÁFRWFˆ÷Fó6∑B‡¢“&ñ∆B"Ù&ñ∆B2Ê«ó6W&2ñÁFRWFˆ÷Fó6∑BÏ:G"FRÃ:Fvw2Fñ∆¬V∆∆W"F2&˜'B‡¢“8WFW'WFvV‚f˜F˜6W76ñˆ‚7F'F"ñÁFRíWFˆ÷Fó6∑B‡¢“Ál:FÊF&V‚l:F∆¶W"6¨:F«bí÷Ê«ó6íw&Á6∂b∂ˆ◊∆WGFW&‡¢“fñBí÷Ê«ó66∂ñ6∂2áWgVF&ñ∆B≤&VfñÁF∆ñvWáG&&ñ∆FW"Fñ∆«6÷÷Á2íWGBVÊFí÷Á&˜¬÷ÇG&R&ñ∆FW"‡¢“ˆ“&ñ∆GVÊFW&∆vWB:FÊG&2VgFW"V‚FñFñv&RÊ«ó2÷&∂W&2ˆ&¶V∑FWB6ˆ“V¢Ê«ó6W&C≤Áííº;g'2l;g'7Bˆ“Ál:FÊF&V‚l:F∆¶W"í÷Ê«ó6ñvV‚‡¢“c"„„SSß2&ˆ'W7F(íÇıí(¶◊ñ∆fóÇñÊ|:W"‡¢“7ñgFS¢GñF∆ñv&RÁl:FÊF&∂ˆÁG&ˆ∆¬ˆ6ÇVÊGfñ∂ˆÏ;fFñví÷∂˜7FÊFW"‡†¢22c"„„Sr(	2ˆ&¶V∑B◊,:F∂Ê&R˜ñ∆ ¢“&V‚∆ñ˜WFfóÇíw&Á6∂b∂ˆ◊∆WGFW&‡¢“l:FÁ7FW"ÊfñvW&ñÊw7'WFFV∆2íG&R&W6W'fW&FR¶ˆÊW#¢(í¬ÛB¬(¶‡¢“,:F∂Ê&∆ˆvñ∂V‚:G"˜,;g&C≤ÜV∆ÛF6∂ÁR∆«FñB7ñÊ2÷V∆∆‚ñ∆&ÊWF‚∂∆óÊñÊr¸;gfW&∆‡¢“í÷&WFVVÊFWBg,:V‚c"„„Sb:G"ˆl;g,:FÊG&B‡†¢22c"„„SÇ(	2ˆ&¶V∑B÷ÊfñvW&ñÊró6ˆ∆W&@¢“&6∂"FV‚fV∆∑Fñvc"„„Sr÷w&ñFfóÜV‚‡¢“¬ÛBÊå:V∆«2ÁR6ˆ“V‚VÊFó6ˆ∆W&Bf∆WÜ∂ˆÁG&ˆ∆¬íl:FÁ7FW''WF‚‡¢“å;fvW'ñ∆V‚∂‚ñÁFRÃ:FÊw&Rf«óFWB;gfW"í÷Ê«ó6‡¢“í÷Ê«ó6¬F&˜'F¬,:F∂Ê&∆ˆvñ≤ˆ6Ç;gg&ñrw&Á6∂÷∆ñ˜WB:G"˜,;g&F‡†¢22c"„„Sí(	2ˆ&¶V∑B◊,:F∂Ê&V‚fñÊßW7FW&@¢“ÛF6VÁG&W&26¨:F«g7L:FÊFñwBíl:FÁ7FW''WF‚‡¢“l:FÁ7FW"ˆå;fvW"◊ñ¬∆ñvvW"íf'6ñ‚f7B∂ÁG¶ˆ‚ˆ6Ç∂‚ñÁFR|:Rñ‚;gfW",:F∂Ê&V‚‡¢“ñ∆&Ê:G"f˜'Ff&ÊFRGñF∆ñv÷V‚Ï:Vv˜B6÷∆&Rl;g"÷W"«VgB'VÁBÛF‡¢“ñÊvV‚,:F∂Ê&∆ˆvñ≤¬í÷∆ˆvñ≤V∆∆W"ÊÊ‚fó6ñˆ‚÷∆ñ˜WB:FÊG&2‡†¢22c"„„c(	2ÊfñvW&ñÊr≤í◊7FGW0¢“l:FÁ7FW''WF‚l;g"¬ÛBÊ|;g'2GñF∆ñwB'&VF&S≤í÷Ê«ó6ˆ6ÇF&˜'Fl:W"÷ñÊG&R'&VFB÷V‚&Vå:V∆∆W"6÷÷fó7VV∆∆&B‡¢“,:F∂Ê&V‚Ü"&W6W'fW&B6VÁG'V“ˆ6Çñ∆&ÊVvÊ∂ÁG¶ˆÊW"‡¢“VgFW"«ñ6∂Bí÷Ê«ó2fó62í)…6íw,;fÁB:RáWgVF&ñ∆FV‚‡¢“í)…6l;g'7fñÊÊW"WFˆ÷Fó6∑BÏ:G"&ñ∆B"Û2Ã:Fvw2Fñ∆¬V∆∆W"F2&˜'B¬VgFW'6ˆ“&VfñÁF∆ñrÊ«ó2L:Rˆvñ«Fñvl;g&∂∆&2‡†¢22c"„„c(	2ÊfñvW&ñÊw7&B∂˜'&ñvW&B≤áWgVF&ñ∆B6VÁG&W&@¢“FV‚l;g"'&VFc"„„c÷ÊfñvFñˆÊV‚F2&˜'B‡¢“÷ˆ&ñ«&FV‚Ál:FÊFW"f7F¬&ñ÷∆ñv'&VFFW#¢ÊfñvFñˆ‚#Ç¬F&˜'Fì"Çˆ6Ç:WFW'7L:VVÊFR'&VFBFñ∆¬í÷Ê«ó6‡¢“¬ÛBÊÜ"6W&Fñ«¶ˆÊW"ˆ6ÇV‚SÇÇ&W6W'fW&B÷óGG¶ˆ‚l;g"ÜV∆,:F∂Ê&V‚‡¢“áWgVF&ñ∆F6VÁG&W&2Ü˜&ó6ˆÁFV∆«B:R6÷÷<:GGB6ˆ“&ñ∆B"Ù&ñ∆B2‡¢“í)…6fó62VÊF7BVgFW"V‚fW&∂∆ñwB«ñ6∂Bí÷Ê«ó2ÜÊ«ó6ó4÷ˆFR””“ñíb∑GVV∆«B&ñ∆GVÊFW&∆r‡¢“8FÊG&ñÊrbWáG&&ñ∆FW"f˜'G<:GGFW"GBˆvñ«Fñvl;g&∂∆&Ê«ó6V‚ˆ6ÇF&˜'Bí)…6‡†¢22c"„„c"(	2í)…6W"&ñ∆@¢“í)…6&WGñFW"ÁRGBßW7BFV‚&ñ∆FV‚Ü"ñÊ|:WGBíV‚fW&∂∆ñrí÷Ê«ó2‡¢“fñBí÷Ê«ó2l:W"áWgVF&ñ∆FV‚ˆ6Ç∆∆WáG&&ñ∆FW"6ˆ“f∑Fó6∑BñÊ|:W"íÁ&˜WBf'6ñ‚í)…6‡¢“Ã:FvvW"Ál:FÊF&V‚6VÊ&RFñ∆¬V‚Áí&ñ∆B"Ù&ñ∆B2l:W"FV‚Áñ&ñ∆FV‚ñÊvV‚í÷&ˆ6≤l;g',:F‚í÷Ê«ó2º;g'2ñvV‚‡¢“F"Ál:FÊF&V‚&˜'BV‚Ê«ó6W&BWáG&&ñ∆B:WfW&∂2ñÁFRáWgVF&ñ∆FVÁ2í)…6V∆∆W"ÊG&∑f'f&ÊFRÊ«ó6W&FR&ñ∆FW"‡¢“ˆ“í÷Ê«ó2º;g'2ñvV‚÷&∂W&26◊F∆ñv&ñ∆FW"6ˆ“L:RñÊ|:W"‡¢“í÷&ñ∆G7FGW27&2íFV‚∆ˆ∂∆∑Fóffó6ñˆ‚◊6W76ñˆÊV‚‡¢“ˆ&¶V∑FWG2í◊&W7V«FB∂‚f˜'Ff&ÊFR÷&∂W&26ˆ“ñÊ∑GVV∆«BÏ:G"&ñ∆GVÊFW&∆vWB:FÊG&3≤&ñ∆FVÁ2í)…6:G"L:G&V÷˜BÜó7F˜&ñ≤l;g"GBßW7BFV‚&ñ∆FV‚f∑Fó6∑BÊ«ó6W&G2‡†¢22c"„„c2(	2∂÷W&7FGW2≤∂ˆ◊∑Bí÷&ˆ6∞¢“∂÷W&Á2w&Á6∂ÊñÊw7&B:G"ÁRFˆ÷(	2Ï:G7Fˆ&¶V∑F(	2∂∆&‡¢“)…27&2WFˆ÷Fó6∑F∆ñvvW"6VÁG&W&B:RVvV‚&BVÊFW"6◊F∆ñvG&R∂Ê"‡¢“í)…6:RáWgVF&ñ∆BÙ&ñ∆B"Ù&ñ∆B2:G"V‚∆óFV‚∂ˆ◊∑Bw,;f‚&FvRí;gg&Rå;fw&å;g&ÊWBí7L:F∆∆WBl;g"V‚7F˜"‹;g&≤÷&∂W&ñÊr;gfW"&ñ∆FV‚‡¢“í◊7FGW6∆ˆvñ∂V‚W"&ñ∆Bg,:V‚c"„„c":G"ˆl;g,:FÊG&B‡†¢22c"„„cB(	2∂÷W&ÜñFFV‚◊7FFR≤÷ñÊG&Rí÷&FvP¢“∂÷W&Á2&WfñWr◊&BÜFˆ÷ÚÏ:G7Fˆ&¶V∑FÚ∂∆&ÚWF˜7'7FGW2í&W7V∑FW&":WFW"ÜñFFVÊí∆ófV∂÷W&Ã:FvWB‡¢“L:G&÷VBfó62&&∆ófV∂÷W&≤¶ˆˆ“≤gG'ñ6∂&RñÊÊ‚WGBf˜FÚ:G"FvWB‡¢“í)…6f«óGF2Fñ∆¬;gg&Rl:FÁ7G&å;g&ÊWB:Rf&¶RÊ«ó6W&B&ñ∆B‡¢“&FvV‚|;g'2÷ñÊG&RÉ#Çå;fr¬÷ñÊG&RFWáB˜FFñÊríl;g"GBñÁFR∂ˆÊ∑W'&W&fó7VV∆«B÷VB&ñ∆FWFñ∂WGFW"V∆∆W"9r÷∂Ê"‡¢“W"÷&ñ∆B‘í÷∆ˆvñ∂V‚g,:V‚c"„„c":G"ˆl;g,:FÊG&B‡†¢22c"„„cb(	2fó6ñˆ‚(i"V&∆ñ6W&ífˆ˜FW"÷VB&Wf&Bf¿¢“7WW'6VFW"FV‚V¢W∆FFFRc"„„cR◊6Ê&&fñ∆V‚‡¢“fó6ñˆ‚÷fˆ˜FW&‚l:W"V&∆ñ6W&,:VFRíˆ&¶V∑L;gfW'6ñ∑Bˆ6Çíw&Á6∂b∂ˆ◊∆WGFW&‡¢“g,:V‚ˆ&¶V∑L;gfW'6ñ∑B;gÊ2V&∆ñ6W&(i"l;g&&W&VBl;g"V&∆ñ6W&ñÊvÊ˜&÷«C≤Ál:FÊF&V‚l:F∆¶W"6¨:F«bˆ&¶V∑B‡¢“g,:V‚w&Á6∂b∂ˆ◊∆WGFW&7&2∑GVV∆«Bˆ&¶V∑Bˆ6ÇFW72îBl;f∆¶W"÷VBFñ∆¬V&∆ñ6W&‡¢“V&∆ñ6W&;gÊ"L:RßW7BFWBˆ&¶V∑FWBFó&V∑Bíl;g&&W&VB÷fÃ;fFWG2FWF∆¢ˆ∂ˆÁG&ˆ∆¬¬<:R6÷÷ˆ&¶V∑B&Vå;gfW"ñÁFRl:F∆¶2V‚|:VÊrFñ∆¬‡¢“Ü¨:F«FWáFV‚íw&Á6∂b∂ˆ◊∆WGFW&WFFW&3¢áWgVF&ñ∆B(i"&ñ∆B"Û2(i"í÷Ê«ó2(i"í)…2(i"WvñgFW"(i"V&∆ñ6W&‡¢“ˆ&¶V∑L;gfW'6ñ∑FVÁ2Ü¨:F«FWáBl;g&∂∆&"ˆ6∑<:Rfˆ˜FW"÷vVÁl:FvV‚‡¢“6˜&R÷fˆ˜FW&‚l:W"WGBvVÊW&V∆«Bf˜'v&F◊fW&∑Gñr<:Rg&‹:WL:WF|:G&FW"∂‚∆ñvv∂ˆÁ6V∑fVÁBíFV‚W&÷ÊVÁFfˆ˜FW'¶ˆÊV‚‡†¢22c"„„cí(	2&ñ∑FB:WFW'7L:F∆∆ÊñÊrbfó6ñˆÓ(iEV&∆ñ6W&¢“'ñvvBFó&V∑Bg,:V‚c"„„cb‚c"„„crˆ6Çc"„„cÇÁl:FÊG2ñÁFR6ˆ“∂ˆF&2‡¢“fó6ñˆ‚l:FÁF"ÁRñ‚gV∆¬6W76ñˆÁ77&ÊñÊrñÊÊ‚WGB7V6ñfñ∑Bˆ&¶V∑B6∂ñ6∂2Fñ∆¬V&∆ñ6W&‡¢“&WGW"g,:V‚V&∆ñ6W&:WFW'7L:F∆∆W"l;g'7BFV‚7&FRfó6ñˆ‚◊6W76ñˆÊV‚ÜñÊ∂«W6ófR&∆ˆ"ˆˆ&¶V7B’U$¬l;g"÷ñÊñGó&W&Êíˆ6Ç;gÊ"L:G&VgFW"WÜ∑B6÷÷ˆ&¶V∑Bíw&Á6∂b∂ˆ◊∆WGFW&‡¢“FWGF6∂:GfV‚:WFW'7L:F∆∆&ñ∆FW&Êífó6ñˆ‚‹;gfW'6ñ∑FV‚VgFW"V‚GW"Fñ∆¬V&∆ñ6W&‡¢“V&∆ñ6W&áñG&Fó6W&"WGBÜV«B˜,;g'Bfó6ñˆ‚÷˜&ñvñÊ¬fñ˜&ñvñÊƒfñ∆T∂WíñÊÊ‚FWF∆¢“V∆∆W"Á76◊gñ‚;gÊ2‡¢“l;g&&W&VB÷w&ñFFVÁ2&VÊFW"“¬∂∆ñ6≤“¬∂Ê¬“ˆ6ÇÏ:G7F÷∆ˆvñ≤:G"ˆl;g,:FÊG&Bg,:V‚c"„„cb‡¢“VÊF7BFV‚GñÊ÷ó6∂552÷vVˆ÷WG&ñ‚:FÊG&2<:Rw&ñB”ˆw&ñB”"ˆw&ñB”Bˆw&ñB”í∆∆fó626ˆ“2∂ˆ«V÷ÊW#≤L:G&÷VB&∆ó"l;g&&W&VB∂ˆÁ6V∑fVÁB<9s2WF‚GB,;g&fÃ;fFW6∆ˆvñ∂V‚‡¢“6ñG&ñ6∂&Ê2«ñ6∂FR∆6W&ñÊr÷V∆∆‚&ñ∆FW"ˆ6Çf˜'G<:GGB&Vå:V∆«2‡¢“7vóR÷vÜ˜7FVÁ26∑Vvvˆfñ«FW"F2&˜'Bfó7VV∆«B‡†¢22c"„„s÷Fñr(	2$TB‘Ù‰≈ífó6ñˆ‚÷∆w&ñÊw6FñvÊ˜7Fñ∞¢“FWGF:G"ñÁFRÏ:G7FgVÊ∑FñˆÁ6fóÇWF‚WGBFñvÊ˜7Fñ∑∂WB‡¢“ñÊvV‚WFˆ÷Fó6≤:WFW'7L:F∆∆ÊñÊr¬&FW&ñÊrV∆∆W"ˆ◊6∑&ófÊñÊrbfó6ñˆ‚÷FF|;g'2‡¢“WáˆÊW&"445ıdï4îÙÂı5Dı$tUÙDît‰ı5Dî2Á'V‚ÇñívV&&Ã:G6&∂ˆÁ6ˆ∆V‚‡¢“FñvÊ˜7Fñ∂V‚Ã:G6W"VÊF7BñÊFWÜVDD"6W76ñˆÁ6¬fó6ñˆ‚÷fñ∆W6ˆ6Çñ÷vW6‡¢“&˜'FV‚fó6"ÁF¬ˆ&¶V∑Bífó6ñˆ‚÷7FófV¬ÁF¬∆w&FRfó6ñˆ‚÷fñ∆W"¬fñ∆∂fñ∆Áñ6∂∆"6W76ñˆÊV‚&VfW&W&"Fñ∆¬¬6∂ÊFR&VfW&VÁ6W"¬˜'Ü‚÷fñ∆W"6◊Bw'WW"6ˆ“6W":WFW'7L:F∆∆ÊñÊw6&&WBfñ&ñ∆F÷WFFFˆñÁFW&ÊƒñB‡¢“7ñgFWB:G"GBf|;g&ˆ“FR:F∆G&Rfó6ñˆ‚÷˜&ñvñÊ∆V‚f˜'Ff&ÊFRfñÊÁ2∑f"ñÊÊ‚Ï:Vvˆ‚:WFW'7L:F∆∆ÊñÊw6∂ˆB'ñvw2‡†¢22c"„„s÷Fñr(	2ïÜˆÊR◊gíl;g"&VB÷ˆÊ«í∆w&ñÊw6FñvÊ˜7Fñ∞¢“'ñvvW"fñF&R:Rc"„„s÷Fñr‡¢“fó6ñˆ‚◊7F'FV‚fó6"Fñ∆∆l:F∆∆ñwB∂ÊV‚∆w&ñÊw6FñvÊ˜7Fñ≤ÜVÊF7BÃ:G6ÊñÊrñ‡¢“&W7V«FFWBfó62Fó&V∑B:RïÜˆÊS¢∑Fób6W76ñˆÁ77F˜&∆V≤¬ÁF¬fó6ñˆ‚÷˜&ñvñÊ¬¬˜'Ü‚÷˜&ñvñÊ¬¬‹;f¶∆ñv:WFW'7L:F∆∆ÊñÊw6&&ˆ&¶V∑B¬6∂ÊFR&VfW&VÁ6W"ˆ6ÇÁF¬V&∆ñ6W&◊˜7FW"‡¢“ñÊvV‚:WFW'7L:F∆∆ÊñÊr¬6∑&ófÊñÊrV∆∆W"&FW&ñÊrWFl;g'2‡†¢22c"„„s"(	2fó6ñˆ‚◊6W76ñˆÊV‚&Wf&2Ï:G"w&Á6∂ÊñÊvV‚:G"∂∆ ¢“w'VÊF˜'6∂V‚Fñ∆¬FV‚l;g'7gVÊÊfó6ñˆ‚◊6W76ñˆÊV‚ÜóGFC¢fñÊó6Ñ&F6ÇÇñ&FW&FR∆«FñBfó6ñˆ‚÷7FófVÏ:G"∆∆∑GVV∆∆ˆ&¶V∑Bf"∂∆&‡¢“FWBñÊÊV&"GBf˜'G<:GGBf˜F˜6W76ñˆÊ∑VÊFRl;g'7fñÊÊ&VF‚ñÊÊ‚Ál:FÊF&V‚FˆrÏ:G7Ff˜FÚ¬G&˜G2GB˜&ñvñÊ∆fñ∆W&ÊÃ:Vr∑f"ífó6ñˆ‚÷fñ∆W6‡¢“fñÊó6Ñ&F6ÇÇñ&VÁ6"ñÁFRÃ:FÊw&R6W76ñˆÊV‚‚FV‚<:F∂W&ÜWG77&"í7L:F∆∆WBÜV∆∑GVV∆∆6W76ñˆÊV‚‡¢“6∆V%fó6ñˆÂ6W76ñˆÂ&V6˜&BÇñÁl:FÊG2f˜'G6GBÏ:G"Ál:FÊF&V‚WGG'ñ6∂∆ñvV‚F"&˜'BFWB6ó7Fˆ&¶V∑FWBW"6W76ñˆÊV‚‡¢“Fñ∆∆l:F∆∆ñr&VB÷ˆÊ«íFñvÊ˜7Fñ∂∂Ê˜gíg,:V‚c"„„s(	3s:G"&˜'GFvV‚‡¢“v÷∆˜'Ü‚◊FW7F&ñ∆FW":WFW'7L:F∆«2ñÁFRWFˆ÷Fó6∑Bˆ6Ç&FW&2ñÁFR‡¢“V&∆ñ6W&÷∂ˆFV‚:G"˜,;g&BíFVÊÊfW'6ñˆ‚‡†¢22c"„„s2(	2vV÷VÁ6“V&∆ñ6W&÷w&ñB≤vW"˜7vóP¢“'ñvvW"Fó&V∑B:RfW&ñfñW&FRc"„„s"‡¢“V&∆ñ6W&l:F∆¢ˆ&¶V∑FÁl:FÊG26ˆ“fó7VV∆«Bf6óBl;g"l;g&&W&VBl;g"V&∆ñ6W&ñÊv‡¢“l;g&&W&VBˆ6Çl:F∆¢ˆ&¶V∑BÁl:FÊFW"ÁR6÷÷w&ñF∂∆72÷ÜV«W"ˆ6Ç6÷÷6«WF∆ñv<9s2÷vVˆ÷WG&í‡¢“FV‚v÷∆6∂ñ∆∆ÊFV‚L:G"6G&gDw&ñFf"f∆WÉ£F2&˜'C≤l;g&&W&VB÷w&ñFV‚l:W"ÊGW&∆ñrå;f¶B&V6ó26ˆ“l:F∆¢ˆ&¶V∑B¬fñ∆∂WBl;g&ÜñÊG&"Ü˜G'ñ6∑F¸;gfW&∆ÊFR&FW"‡¢“í∆G6W"W"6ñFˆ6Ç&VfñÁF∆ñrvñÊv∆ˆvñ≤&Vå:V∆«2‡¢“&ñ6∂&Êíl;g&&W&VB&Vå:V∆«2:RFV‚gVÊvW&ÊFR∆G6V‚÷V∆∆‚&ñ∆FW"ˆ6Çf˜'G<:GGB‡¢“&ñ6∂&Êíl:F∆¢ˆ&¶V∑Bl:W"V‚VvV‚&B˜fÊl;g"FV‚f7Ff˜'G<:GGB÷∂ÊV‚‡¢“7vóR÷vÜ˜7BF2&˜'Bl;g&RFV‚7ñÊ∑&ˆÊ&VÊFW&ñÊvV‚bÏ:G7F6ñF¬<:RV‚v÷÷¬6ñFñÁFR∂‚∆ñvv∑f"6ˆ“V‚w6∑Vvvr‡¢“ñÊvV‚fó6ñˆ‚÷∆ˆvñ≤ˆ6ÇñÊvV‚∂Ê¬“ÙÏ:G7F“˜W'f«6∆ˆvñ≤:FÊG&2‡†¢22c"„„sB(	2V&∆ó6ÇvW7GW&R÷fóÇ≤6Ê&&fñ¿¢“Ã:VÊwG'ñ6∑2◊&WfñWr7L:FÊw2fñv∆ˆ&¬ˆñÁFW'W˜ˆñÁFW&6Ê6V¬:RïÜˆÊRˆ6Ç∑f'f&ÊFR&WfñWr÷ÊˆFW"&VÁ62‡¢“7vóRf''óFW"&WfñWr‡¢“7vóR÷vÜ˜7B∂˜ñW&"FV‚&ñ∑Fñvw&ñFVÁ2WÜ∑F∂ˆ«V÷Ê'&VFB¬v¬FFñÊrˆ6Ç'&VFC≤6∑Vvvˆfñ«FW"7L:FÊw2b‡¢“Ï:G7Fw&ñBg'ó6W2Fñ∆¬6÷÷'&VFBVÊFW"&VÊFW"l;g"GB÷ñÁ6∂7F˜&∆V∑6Ü˜Ï:G"6ñF‚∆ÊF"‡¢“Á76&ñ∆Bl:W"V&∆ñ6W&FWGFˆ&¶V∑F‚∂ÊV‚7&"l;g'7B∑GVV∆¬Á76ÊñÊr¬l:F∆¶W"&&∑GVV∆«Bˆ&¶V∑Bˆ6Ç|:W"Fñ∆¬6ó7F∂ˆÁG&ˆ∆«gñ‚ˆ“6ˆÁFñÊW#2&VF‚:G"f∆C≤ÊÊ'2Fñ∆¬∂Ê«f¬‡¢“fó6ñˆ‚:G"˜,;g&B‡†¢22c"„„sR(	2l;g&&W&VB,9s2≤&ñ∑Fñrfˆ˜FW"◊6Ê&&fñ¿¢“l;g&&W&VBl;g"V&∆ñ6W&ñÊrfó6",9s2Ébˆ&¶V∑BW"6ñFíí÷ˆ&ñ¬˜'G&óB¬í∆ñÊ¶R÷VBfó6ñˆ‚‡¢“l:F∆¢ˆ&¶V∑BVgFW"∂Ê¬&Vå:V∆∆W"<9s2ÚíW"6ñF‡¢“l;g&&W&VB◊vW"˜7vóRÁl:FÊFW"ÁRb6ˆ“f∑Fó6≤6ñG7F˜&∆V≥≤∆6VÜˆ∆FW'2l;f∆¶W"6÷÷6ñG7F˜&∆V≤‡¢“ˆg6ñ∑F∆ñrÜV«6ñFW2◊67&ˆ∆¬7L:FÊw2bíFRÊ˜&÷∆V&∆ñ6W&÷&&WG7gñW&Ê:R÷ˆ&ñ√≤Á76&ñ∆Bl:W"f˜'Ff&ÊFR67&ˆ∆∆ˆ“V‚∆óFV‚6º:G&“∑,:GfW"FWB‡¢“FV‚fV«∆6W&FRV&∆ñ6W&FWGFˆ&¶V∑F÷∂ÊV‚g,:V‚c"„„sBF2&˜'Bg,:V‚Á76◊gñ‚‡¢“Á76&ñ∆Bl:W"í7L:F∆∆WBV&∆ñ6W&6ˆ“f˜'v&B˜6Ê&&fñ¬í6˜&R÷fˆ˜FW&‚¬6÷÷‹;fÁ7FW"6ˆ“fó6ñˆ‚‡¢“fˆ˜FW"◊6Ê&&fñ∆V‚7&"∑GVV∆¬Á76ÊñÊr¬l:F∆¶W"WÜ∑B∑GVV∆«Bˆ&¶V∑B¬∑FófW&"6ˆÁFñÊW#2ˆ6Ç|:W"Fó&V∑BFñ∆¬6ó7F∂ˆÁG&ˆ∆«gñ‚l;g&RV&∆ñ6W&ñÊr‡¢“Fñ∆∆&∂g,:V‚6ó7F∂ˆÁG&ˆ∆«gñ‚|:W"Fñ∆∆&∂Fñ∆¬Á76&ñ∆BÏ:G"∂ˆÁG&ˆ∆«gñ‚Ï:VFFW2fñ6Ê&&fñ∆V‚‡¢“Ê˜&÷¬V&∆ñ6W&÷ÊfñvFñˆ‚&Vå:V∆∆W"6ñ‚fÊ∆ñvFñ∆∆&∂◊l:Fr‡†¢22c"„„sb(	2<9s"íl;g&&W&VB≤<:F∑&Bfˆ˜FW"◊6Ê&&fñ¿¢“∂˜'&ñvW&"c"„„sS¢l;g&&W&VB:G"2∂ˆ«V÷ÊW"9r"&FW"ÉbW"6ñFí¬6÷÷˜&ñVÁFW&ñÊr6ˆ“fó6ñˆ‚‡¢“6ñG7F˜&∆V∂V‚bg,:V‚c"„„sR&Vå:V∆«2‡¢“V&∆ñ6W&íÁ76<:F∑&2VgFW"GB7&˜fñWvf∑Fó6∑B&∆ófóB∑Fób¬<:RV‚6V‚6˜&R÷fˆ˜FW"◊&VÊFW&ñÊrñÁFR∂‚6∑&óf;gfW"6Ê&&fñ∆V‚‡¢“WGBDÙ“◊<:F∂W&ÜWG6Ï:GB6∂"6÷÷6˜&R÷fˆ˜FW"÷∂Êˆ“6˜&RbÏ:Vvˆ‚Ê∆VFÊñÊr&VÊFW&Bˆ“fˆ˜FW&‚:RïÜˆÊR‡¢“6Ê&&fñ∆V‚∆ñvvW"f˜'Ff&ÊFRífˆ˜FW&‚¬ñÁFRí&&WG7óF‚‡¢“6Ê&&fñ√¢∑GVV∆¬Á76ÊñÊr7&2”‚WÜ∑B∑GVV∆«Bˆ&¶V∑B”‚6ˆÁFñÊW#2”‚Fó&V∑B6ó7F∂ˆÁG&ˆ∆«gñ‚‡¢“Fñ∆∆&∂g,:V‚FV‚∂ˆÁG&ˆ∆«gñ‚:WFW,;gÊ"Á76l;g"6÷÷ˆ&¶V∑B‡¢“ñÊvÊG&V&∆ó6Ç÷fÃ;fFV‚:FÊG&2‡†¢22c"„„sr(	2vÜ˜7Fg&íV&∆ó6Ç◊7vóR≤fó6ñˆ‚÷‹;fÁ7FW"l;g"fˆ˜FW ¢“V&∆ñ6W&2FV∆FR7vóR÷÷˜F˜"Ál:FÊFW"ñÁFRÃ:FÊw&RWGB6W&BvÜ˜7B÷w&ñB'&VGfñBFV‚&ñ∑Fñv6ñF‚‡¢“VÊFW"G&rf«óGF2VÊF7BFV‚∑GVV∆∆6ñF‚‚fñBvˆFº:FÊB7vóRv∆ñFW"FV‚WB¬Ï:G7F6ñF&VÊFW&2WFÊl;g"gñ‚ˆ6Çv∆ñFW"6VF‚ñ‚‚L:G&÷VB∂‚ñÊvGV&&∆¸;gfW&∆w&FR∂˜'BV∆∆W"l;f∆¶ÊFR6∑Vvv˜"fó62÷óGBí7vóV‚‡¢“6÷÷7vóR÷÷˜F˜"Ál:FÊG2íl;g&&W&VB¬l:F∆¢ˆ&¶V∑Bˆ6Ç6ó7F∂ˆÁG&ˆ∆∆w&ñB‡¢“l;g&&W&VB&Vå:V∆∆W"<9s"ÚbW"6ñF‚l:F∆¢ˆ&¶V∑B&Vå:V∆∆W"<9s2ÚíW"6ñF‡¢“fˆ˜FW"◊6Ê&&fñ∆V‚íÁ76Ál:FÊFW"ÁRWÜ∑B6÷÷6˜&R÷Á&˜6ˆ“fó6ñˆ„¢fˆ˜FW"Á6WEFˆˆ«2á∂ÜV«¬f˜'v&B¬f˜'v&D∆&V√¢%V&∆ñ6W&"¬‚‚Á“ñ‡¢“WGB∆óFWB◊WFFñˆ‰ˆ'6W'fW"◊6∑ñFB:G"∑FógBVÊF7B÷VF‚7&˜fñWrfó62ˆ6Ç:WFW'7L:F∆∆W"V&∆ñ6W&÷∂ÊV‚ˆ“6˜&R6∑V∆∆R&VÊFW&ˆ“fˆ˜FW&‚:RïÜˆÊR‡¢“6Ê&&fñ∆VÁ2&˜WFR:G"ˆl;g,:FÊG&C¢∑GVV∆¬Á76ÊñÊr7&2”‚WÜ∑B∑GVV∆«Bˆ&¶V∑B”‚Fó&V∑B6ó7F∂ˆÁG&ˆ∆«gñ‚”‚Fñ∆∆&∂:WFW&|:W"Fñ∆¬Á76‡†¢22c"„„sÇ(	2vV÷VÁ6“÷ˆ&ñ¬w&ñG&VvV¬<9s ¢“f7G7L:F∆∆W"442◊&VvV∆‚l;g"÷ˆ&ñ√¢2∂ˆ«V÷ÊW"9r"&FW"“bˆ&¶V∑BW"6ñFífó6ñˆ‚ıV&ó6Ç&&WG6w&ñG2‡¢“l;g&&W&VBl;g"V&∆ñ6W&ñÊr&Vå:V∆∆W"bW"6ñF‡¢“l:F∆¢ˆ&¶V∑BVgFW"∂Ê¬:FÊG&2g,:V‚íFñ∆¬bW"6ñF‡¢“l:F∆¢ˆ&¶V∑BÁl:FÊFW"2∂ˆ«V÷ÊW"ˆ6Ç"&FW":R÷ˆ&ñ¬˜'G&óB‡¢“7vóR˜vW"Ál:FÊFW"ÁR6÷÷6ñG7F˜&∆V≤b:GfV‚íl:F∆¢ˆ&¶V∑B‡¢“fˆ˜FW"◊6Ê&&fñ¬ˆ6ÇvÜ˜7Fg&í7vóRg,:V‚c"„„srÃ:F÷Ê2˜,;g&F‡†¢22c"„„sí(	2fó6ñˆ‚÷∆ñ≤7vóR¬∂˜'&V∑B&ñ∆Fº:F∆∆¬<9s"í∂ˆÁG&ˆ∆«gñ‡¢“V&∆ó6Ç◊7vóV‚Ál:FÊFW"fó6ñˆÁ2vW7B“˜6Ê&ñÊ6óWF‚7f'B÷V∆∆Êf2‡¢“l:F∆¢ˆ&¶V∑Bˆ6Ç6ó7F∂ˆÁG&ˆ∆«gñ‚Ál:FÊFW"íl;g'7FÜÊBl:G'6≤&∆ˆ"÷&6∂VB&WfñWr‡¢“6ó7F∂ˆÁG&ˆ∆«gñ‚l;f∆¶W"ˆ6∑<:R÷ˆ&ñ«&VvV∆‚<9s"ÚbW"6ñF‡¢“l;g&&W&VBˆ6Çl:F∆¢ˆ&¶V∑Bf˜'G<:GGFW"f&<9s"ÚbW"6ñF‡¢“fˆ˜FW"◊6Ê&&fñ∆V‚g,:V‚c"„„srÚ„sÇÃ:F÷Ê2˜,;g&B‡†¢22c"„„CR(	2÷ñÊG&R67&ˆ∆¬í÷ˆ&ñ∆VÁ2&&WG7gñW ¢“fó6ñˆ‚w&Á6∂b∂ˆ◊∆WGFW&Ál:FÊFW"WGB∂ˆ◊∑B&&WG6Ã:FvR÷VBÃ:Fw&RáWgVB¬&ñ∆G&Bˆ6Çl:F«G'óF“‡¢“FWBfñ∑Fñv7FR&&WG6fÃ;fFWB'ñ◊2Ê˜&÷«B:RV‚ïÜˆÊR◊6º:G&”≤67&ˆ∆¬fñÊÁ2∑f"l;g"6‹:R6º:G&÷"ˆ6ÇÏ:G"FÊvVÁF&˜&FWB:G";gWB‡¢“V&∆ñ6W&2&&WG7gñW"Ál:FÊFW"6÷÷∂ˆ◊∑FáWgVB¬÷VF‚F6Ü&ˆ&Bˆ6Ç÷ˆGV∆W&Ê27F'G6ñF˜"&Vå:V∆∆W"FV‚7L;g'&R442÷ñFVÁFóFWFV‚‡¢“ñÊvFF“¬í“¬V&∆ñ6W&ñÊw2“V∆∆W"ÊfñvW&ñÊw6fÃ;fFV‚Ü":FÊG&G2‡†¢22c"„„Cb(	2<:F∂W"ÜVFW,:WFW'7L:F∆∆ÊñÊp¢“F"&˜'Bc"„„CSß2v∆ˆ&∆ÜVFW&∂ˆ◊&ñ÷W&ñÊr¬6ˆ“∑VÊFRf«óGF∆ˆvvˆ6Ç∂ˆÁG&ˆ∆∆W"VÊFW"ïÜˆÊW27FGW6l:F«B‡¢“∆∆gñW"Ál:FÊFW":WFW"FV‚&W,;gfFRÜVFW&‚ˆ6Ç÷ˆGV«&FV‚g,:V‚c"„„CB‡¢“fó6ñˆ‚w&Á6∂b∂ˆ◊∆WGFW&&Vå:V∆∆W"VÊF7BFV‚∆ˆ∂∆ñÊÊVå:V∆«6∂ˆ◊&ñ÷W&ñÊvV„≤ñÊvV‚ÊÊ‚gí:FÊG&"å;f¶BV∆∆W"∂ˆÁG&ˆ∆«∆6W&ñÊr‡†¢22c"„„Cr(	2÷ˆ&ñ«76ÊñÊrgíl;g"gê¢“fó6ñˆ„¢l:F∆¢ˆ&¶V∑B¬í÷l;g'6∆r¬w&Á6∂b∂ˆ◊∆WGFW&¬∂∆'Bˆ6Ç&ˆGV∑Fl;g&ÜÊG7fó6ÊñÊrÜ"w&Á6∂G2ˆ6Çl:WGBVvÊl;g'6ñ∑FñvñÊÊVå:V∆«7&Vv∆W"‡¢“V&∆ñ6W&¢l;g&&W&VB¬l:F∆¢ˆ&¶V∑B¬l:F∆¢∂Ê¬¬6Ê&'V&∆ñ6W&˜6«WF∂ˆÁG&ˆ∆¬¬V&∆ñ6W&B¬ˆ&¶V∑Fw&Á6∂ÊñÊrˆ6ÇÁ76&ñ∆BÜ"w&Á6∂G26W&B‡¢“'V'&ñ∂W"¬÷V∆∆Á'V“¬&ñ∆GóF˜"ˆ6Ç:WF|:G&G7&FW"∂ˆ◊&ñ÷W&2∆ˆ∂«BWF‚GB÷ñÁ6∂fñ∑FñvG'ñ6∑óF˜"VÊFW"6ó&∂CBÇ‡¢“Ã:VÊvˆ6Çf&ñW&ÊFR∆ó7F˜"6ˆ“∂Ê«f¬¬V&∆ñ6W&Bˆ6ÇÜó7F˜&ñ≤67&ˆ∆∆"ñÁWFí6ñ‚VvV‚óFÏ:G"ñÊÊVå:V∆∆WBñÁFR&ñ÷∆ñvV‚∂‚'ñ÷÷26◊FñFñwB‡¢“662÷6˜&Rˆ6˜&RÊ776¬ñÊ∂«W6ófRÜVFW"ˆ6Ç÷ˆGV«&B¬:G"'óFRl;g"'óFRñFVÁFó6≤÷VBc"„„CB‡†¢22c"„„CÇ(	2∂ˆ◊∆WGBÜVFW,:WFW'7L:F∆∆ÊñÊr:GfV‚í:FÊG&ñÊw7∂WFW@¢“,:GGF"WGB∂WFW&ñÊw6fV¬íc"„„Cs¢:WFW'7L:F∆∆B662÷6˜&Rˆ6˜&RÊ776ÜFRWFVÃ:F÷ÊG2W"4Ñ‰tTBdîƒU2VgFW'6ˆ“FV‚∆ˆ∂«B÷F6ÜFRc"„„CB‡¢“fñBWFFW&ñÊrFó&V∑Bg,:V‚c"„„CR∑VÊFRL:G&l;g"FV‚G&6ñv∂ˆ◊∑FÜVFW'&VvV∆‚∆ñvv∑f":R6W'fW&‚‡¢“6˜&RÊ776l;f∆¶W"ÁRWGG'ñ6∂∆ñvV‚÷VBˆ6ÇÖD‘¬Ál:FÊFW"V‚Áíc"„„CÇ÷66ÜVG&W72‡¢“gí÷l;g"◊gí÷∂ˆ◊&ñ÷W&ñÊvV‚g,:V‚c"„„Cr&Vå:V∆«2VÊF7BVÊFW"FV‚:WFW'7L:F∆∆FÜVFW&‚‡†¢22c"„„Cí(	2&W7ˆÁ6óf&&WG6∂˜'B:R÷ˆ&ñ¬¬ïBˆ6Ç7L;g'&R6º:G&÷ ¢“∑Fóffó6ñˆ‚“ˆ6ÇV&∆ñ6W&◊gñW"gñ∆∆W"∆«FñBFV‚Fñ∆∆|:FÊv∆ñv&&WG7óF‚í7L:F∆∆WBl;g"GBÃ:F÷ÊV‚Fˆ“ÊVG&RÜ«f‡¢“ñÊÊVå:V∆¬6ˆ“∂‚l:GÜÜ&ñ∆Fw&ñB¬∆ó7F˜"ˆ6ÇÜó7F˜&ñ≤íl:W"ñÁFW&‚67&ˆ∆√≤:WF|:G&G6∂Ê"å:V∆«27F&ñ∆‡¢“∂ˆÁG&ˆ∆∆W&FR'&VFFW"ñÊl;g'2l;g"∆ñvvÊFR◊GV◊2ïB¬2◊GV“ˆ6Ç#B◊GV“‡¢“í6Ê&'V&∆ñ6W&;gÊ"Ã:VÊwG'ñ6≤:RV‚÷ñÊñGó"&ñ∆FV‚íÜV«6º:G&”≤WGBG'ñ6≤:RÜV«6º:G&◊6&ñ∆FV‚:WFW&|:W"WF‚GB÷&∂W&&ñ∆FV‚‡¢“6˜&R÷ÜVFW&‚ˆ6Ç÷ˆGV«&FV‚:FÊG&2ñÁFR‡†¢22c"„„S(	2w&Á6∂fó6"∑GVV∆¬&V&&WFB&ñ∆@¢“w&Á6∂g,:V‚6Ê&'V&∆ñ6W&;gÊ"FV‚fW'6ñˆ‚6ˆ“f∑Fó6∑B:G"f∆Bl;g"V&∆ñ6W&ñÊr¬ñÊ∂«W6ófRg&ñÃ:FvvÊñÊr¬&∂w'VÊB¬¶ˆˆ“ˆ6Ç∆6W&ñÊr‡¢“FV‚∑GVV∆∆fW'6ñˆÊV‚7&26ˆ“6W&Bw&Á6∂ÊñÊw6fñ√≤˜&ñvñÊ∆&ñ∆FVÁ2fñ∆Áñ6∂V¬Ã:F÷Ê2˜,;g&B‡¢“Ï:G"w&Á6∂ÊñÊvV‚7&2l;f∆¶W"FV‚&V&&WFFRV&∆ñ6W&ñÊw7fW'6ñˆÊV‚÷VBFñ∆∆&∂í7L:F∆∆WBl;g"GBW'<:GGF2b˜&ñvñÊ∆WB‡†¢22c"„„S(	2WÜ∑BV‚áWgVGgí:WB|:VÊvV‡¢“,:GGF"GBFV‚Fˆ∆Ffó6ñˆ‚÷&&WG7óF‚∑VÊFRfó62Fñ∆«6÷÷Á2÷VBw&Á6∂b∂ˆ◊∆WGFW&:R÷ˆ&ñ¬‡¢“&W7ˆÁ6óf&Vv∆W"l;g"f˜F˜6W76ñˆÁ6∂˜'FWB|:F∆∆W"ÁRVÊF7BÏ:G"6¨:F«f∂˜'FWB:G"∑FógBˆ6Ç6∂Ê"ÜñFFVÊ‡¢“6◊F∆ñvfó6ñˆ‚“ˆ6ÇV&∆ñ6W&÷áWgVGgñW":G"∂ˆÁG&ˆ∆∆W&FS≤V&∆ñ6W&f"&VF‚6∑ñFFB÷VB¶Ê˜BÖ∂ÜñFFVÂ“ñ‡†¢22c"„„S"(	2ñÊv∑f'f&ÊFR6ñG&ñ6∂":Rfó6ñˆ‚◊7F'FV‡¢“,:GGF"GB&ñ∆G6ñF˜&Ê2vW"Ã:Vr∑f"Ã:FÊw7BÊVBVgFW"f˜'G<:GGBf˜F˜6W76ñˆ‚(i"Fñ∆∆&∂‡¢“7F'FÃ:FvWG2:WFW'7L:F∆∆ÊñÊrL;f∆¶W"ÁR,:VFR&ñ∆Fw&ñB¬vW"ˆ6Ç;gg&ñv6W76ñˆÁ6∂ˆÁG&ˆ∆∆W"‡¢22442c"„„S2(	2Á76&ñ∆Bífó6ñˆ‚É##b””2ê†¢“fó6ñˆ‚:WFW&Ál:FÊFW"ÁRV&∆ñ6W&2∂ˆ◊∆WGF&ñ∆FVFóF˜"Fó&V∑Bg,:V‚w&Á6∂b∂ˆ◊∆WGFW&‡¢“fÃ;fFWB|:W"Fñ∆∆&∂Fñ∆¬6÷÷ˆ&¶V∑Bˆ6Çfó6"FV‚7&FR&V&&WFÊñÊvV‚÷VB‹:G&∂ÊñÊvV‚Á76F‡¢“˜&ñvñÊ∆&ñ∆FV‚l;g&&∆ó"˜,;g&Bˆ6Çg&◊FñFfó6ñˆ‚◊7&ÊñÊv"&Wf&"g&ñÃ:FvvÊñÊr¬&∂w'VÊBˆ6Ç7&˜÷FF‡

@@ -1,5 +1,7 @@
 CCC Vision-modul. v2.8.1 sparar godkända produkter lokalt och beskär inte längre bilder.
 
+v2.10.154: Gamla versions-README, den olänkade `product-lab.css`, tre oanvända demo-SVG och tomma platshållare är borttagna. Aktiv Vision-kod, AI-data, kunskapsbas och Worker är orörda.
+
 v2.10.153: Granska & komplettera har `Anpassa bild`, som öppnar Publiceras gemensamma editor för utsnitt, friläggning, pensel, bakgrund, zoom och placering. Spara/Tillbaka återgår till samma Vision-objekt. Bearbetad huvudbild visas som `Anpassad`, originalet bevaras och Vision-sparning behåller befintlig bildbearbetning.
 
 v2.10.2: 3×3-arbetsgrid med swipe. `Granska & komplettera` öppnar en förenklad autosparad redigeringsvy. Upp till två extrabilder läggs till tidigt via `Nytt foto` eller `Album` och analyseras med huvudbilden. Manuella sparknappar tas bort. Kameranypzoom isoleras till kameran och kameratoppen använder CCC.

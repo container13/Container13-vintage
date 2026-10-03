@@ -1,4 +1,5 @@
 CCC Publish-modul.
+v2.10.154: Den gamla olänkade top-level-filen `/ccc-core/publish.js` är borttagen. Aktiv modulfil `/ccc-core/publish/publish.js` är orörd.
 v2.10.153: Bildmotorn kan öppnas direkt från Vision via `view=adapt&from=vision-adapt`; Spara och Tillbaka återgår till samma Vision-objekt utan att skapa en separat editorimplementation.
 Mobil först. Normalflöde: Välj kanal → Välj plagg → sista kontrollvy → Förhandsvisa/Publicera.
 v2.9.65: sista kontrollvyn har mindre centrerade miniatyrer, kompakt horisontell kanalrad samt lägre åtgärdsknappar med bättre luft mot Core-footern.
