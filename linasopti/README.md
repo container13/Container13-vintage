@@ -33,3 +33,6 @@ manifest.json innehåller alla verifieringsluckor och definition av hashen. SOUR
 FDX: utdelningsskala skiljer mellan källorna; ingen leverantörsorsak bevisad. GM 2023-06-05: Yahoo H 34,45, Alpaca H 34,49; Twelve H under O och därför ogiltig. Överensstämmelse mellan Yahoo/Twelve bevisar inte oberoende källa. Övriga OHLC-/corporate-action-luckor anges i manifestet.
 
 Gen8 är orörd. Gen9 olåst/inte startad. Ingen frontend- eller Workerändring krävs för detta granskningspaket.
+
+
+**Cloudflare-kod – obligatorisk leveransregel:** När användaren behöver klistra in komplett Worker-kod ska koden INTE skrivas ut i chatten. Leverera i stället en kompakt ett-klick-kopieringslösning/HTML-hjälpare som kopierar hela den kompletta Worker-filen till urklipp. Användaren ska bara behöva trycka på kopieringsknappen och sedan klistra in i Cloudflare. Visa full kod endast om användaren uttryckligen ber att få se den.
