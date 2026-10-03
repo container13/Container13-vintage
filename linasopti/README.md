@@ -36,3 +36,6 @@ Gen8 är orörd. Gen9 olåst/inte startad. Ingen frontend- eller Workerändring 
 
 
 **Cloudflare-kod – obligatorisk leveransregel:** När användaren behöver klistra in komplett Worker-kod ska koden INTE skrivas ut i chatten. Leverera i stället en kompakt ett-klick-kopieringslösning/HTML-hjälpare som kopierar hela den kompletta Worker-filen till urklipp. Användaren ska bara behöva trycka på kopieringsknappen och sedan klistra in i Cloudflare. Visa full kod endast om användaren uttryckligen ber att få se den.
+
+
+- **Cloudflare Worker-leverans:** När komplett Worker-kod ska lämnas till användaren ska en nedladdningsbar HTML-hjälpare skapas med knappen **Kopiera Worker-kod**. Hela Worker-koden ska ligga dold i HTML-filen och kopieras till urklipp med ett knapptryck; de tusentals kodraderna ska inte visas i chatten. HTML-hjälparen ska alltid byggas från den senast verifierade kompletta live-Worker-basen, inte från en kort/ofullständig repo-kopia.
