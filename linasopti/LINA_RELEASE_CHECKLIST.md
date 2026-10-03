@@ -344,3 +344,12 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Single Version Source/cachetokens uppdaterade till V0.3.19.
 - [x] Ändrade filer publicerade till rätt branch och återläses efter publicering.
 - [ ] Faktisk iPhone-kopiering av kandidatfil verifieras av användaren efter deploy.
+
+
+## V0.3.20 — lokal kandidat ↔ Alpaca-jämförelse
+- [x] Exakt numerisk OHLC-jämförelse utan toleransbaserat godkännande.
+- [x] Låst kandidat-SHA kontrolleras före jämförelse.
+- [x] Rapport begränsar exempel till 100 men behåller kompletta summeringar per symbol/fält.
+- [x] Ingen kandidatpatchning, researchstart, Gen8-, Handel-, Forward- eller Worker-ändring.
+- [x] Single Version Source/cachetokens V0.3.20.
+- [ ] Faktiskt Safari/iPhone-resultat verifieras via kopierad jämförelserapport.
