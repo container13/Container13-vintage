@@ -59,9 +59,9 @@ Dokumentrevision: överlämning 2026-10-03
 8. Kontantutdelningsfrånvaro 2020–2024: ADBE, AMD och NOW är nu stängda på cash-dividend-nivå. AMD sluts via historisk issuer/SEC-deklaration plus reviderade 2022/2024 10-K som tillsammans täcker målperiodens finansierings-/equityflöden. NOW sluts via 2021 års explicita 'never declared or paid' och 2024 års retrospektiva 'have not declared'. NOW:s 5:1-split i december 2025 ligger utanför målperioden. Detta är inte ett godkännande av alla corporate actions.
 
 ### Nästa konkreta steg – börja här
-PYPL-steget är slutfört som separat diagnostisk evidence: Yahoo-formeln och hela fyrutdelningskedjan reproducerar kandidatfaktorn till cirka 1,80e-8 absolut rest med publikt avrundade stängningar. Ändra inte kandidatdata och sätt ingen verifieringsflagga enbart från denna numeriska överensstämmelse.
+Handelskalendern är nu verifierad som separat evidence: kandidatens 16 symboler har vardera exakt 1 258 unika datum 2020–2024 och datumaxeln matchar NYSE-kalendern utan saknade/extra/dubbla datum. Evidence: `LINA_GEN9_TRADING_CALENDAR_VERIFICATION.md/.json`. Detta stänger endast kalenderblocket; datamanifestet är fortsatt inte godkänt.
 
-Nästa konkreta steg: AMD/NOW:s cash-dividend-lucka är stängd för 2020–2024, men all-corporate-action-kompletthet är fortfarande separat. Gå vidare med full handelskalender för kandidatens 1258 datum och därefter den oberoende datalinjen/kvarvarande OHLC-avvikelser. FDX:s exakta Yahoo-input/precision och GM:s radspecifika orsak lämnas öppna utan antaganden. Planlås/research först när samtliga datakrav är styrkta.
+Nästa konkreta steg: bygg den oberoende datalinjen och använd den för kvarvarande OHLC-granskning utan att patcha kandidatdata eller blanda leverantörer. GM 2023-06-05 förblir pausad tills radspecifikt underlag finns. FDX:s exakta Yahoo-input/precision lämnas öppen. All-corporate-action-kompletthet är separat. Gen9 är NOT APPROVED; Gen8 får inte köras om; Handel/Forward AV. Planlås/research först när samtliga datakrav är styrkta.
 
 ### Läs dessa senaste filer (alla sökvägar relativt linasopti/)
 - LINA_MASTER_RULES.md
@@ -76,6 +76,7 @@ Nästa konkreta steg: AMD/NOW:s cash-dividend-lucka är stängd för 2020–2024
 - evidence/2026-10-03/LINA_GEN9_DIVIDEND_ABSENCE_REVIEW_6b10570365629eec.md
 - evidence/2026-10-03/LINA_GEN9_DIVIDEND_ABSENCE_REVIEW_14c1a484f62a5630.json
 - evidence/2026-10-03/LINA_GEN9_AMD_NOW_DIVIDEND_CLOSURE.md och .json
+- evidence/2026-10-03/LINA_GEN9_TRADING_CALENDAR_VERIFICATION.md och .json
 
 Senaste faktorrapportens commit före denna handoff: ca87060af5e1aeed4376d51ee0bbd2d4f786ea72. Hämta alltid senaste branch-head; andra ändringar kan ha tillkommit.
 
