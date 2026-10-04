@@ -62,7 +62,8 @@ async function validateApprovedDataset(rawText,gate){
  if(!gate||gate.schema!==APPROVED_DATA.schema||gate.datasetGate!=='PASSED'||gate.candidateSha256!==APPROVED_DATA.sha256||gate.rowCount!==APPROVED_DATA.rowCount||gate.nextStageStarted!==false)throw Error('DATA: godkänd Gen9-datasetgate saknas eller matchar inte låst kandidat');
  if(await sha256Text(rawText)!==APPROVED_DATA.sha256)throw Error('DATA: SOURCE_gen9-data.json matchar inte godkänd SHA256');
  let input;try{input=JSON.parse(rawText)}catch(_){throw Error('DATA: kandidatfilen är inte giltig JSON')}
- const normalized=normalize(input,APPROVED_DATA.historyHardStop),rows=SPEC.symbols.reduce((n,s)=>n+normalized.by[s].length,0);
+ if(input?.ok!==true||input?.schema!=='LINA-GEN9-RAW-DATA-1'||!input.data||typeof input.data!=='object'||Array.isArray(input.data))throw Error('DATA: låst Gen9-kandidat har oväntat wrapper-schema');
+ const normalized=normalize(input.data,APPROVED_DATA.historyHardStop),rows=SPEC.symbols.reduce((n,s)=>n+normalized.by[s].length,0);
  if(rows!==APPROVED_DATA.rowCount||SPEC.symbols.some(s=>normalized.by[s].length!==1258))throw Error('DATA: kandidat måste vara exakt 20 128 rader, 1 258 per symbol');
  return{normalized,manifest:{schema:'LINA-GEN9-APPROVED-DATASET-1',source:APPROVED_DATA.path,gatePath:APPROVED_DATA.gatePath,contentSha256:APPROVED_DATA.sha256,rowCount:rows,historyHardStop:APPROVED_DATA.historyHardStop,datasetGate:'PASSED'}};
 }
