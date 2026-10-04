@@ -342,3 +342,10 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Locked candidate SHA cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c, 20 128 rows, is accepted as Gen9 research data input.
 - Candidate remains unchanged. This gate does not start Gen9 research and does not lock a Gen9 research plan.
 - Gen8 remains frozen. Handel/Forward remain OFF. Worker unchanged.
+
+
+## V0.3.35 — approved Gen9 dataset wired into research gate
+- Gen9 engine now accepts only the approved SOURCE_gen9-data.json bound to SHA-256 cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c and evidence/GEN9_DATASET_GATE_2026-10-05.json.
+- Browser verifies exact file bytes SHA before JSON parsing, then requires 20,128 rows / 1,258 per each of 16 symbols and aligned valid OHLC dates.
+- Workflow fetches the approved candidate + gate automatically after plan evidence; manual iPhone JSON import is no longer the normal path.
+- Research method/spec unchanged. Plan remains NOT LOCKED and research NOT STARTED. Gen8 frozen; Handel/Forward OFF; Worker unchanged.
