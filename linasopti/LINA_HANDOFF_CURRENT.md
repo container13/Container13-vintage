@@ -288,3 +288,10 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Runtime-report upload is blocked unless candidateRows, alpacaRows and matchedKeys are all 20,128.
 - The V0.3.25 report with candidateRows=0 is invalid as a Gen9 comparison and approves nothing.
 - Gen8 frozen; Gen9 NOT APPROVED; research not started; Handel/Forward OFF. Cloudflare Worker unchanged.
+
+
+## V0.3.27 — Gen9 synlig körstatus på mobil
+- Rotorsak i UI: primärknappen låg direkt under Gen9-rubriken men statusfältet som uppdaterades låg längre ned i sektionen; på iPhone gav klick därför ingen synlig återkoppling i aktuell viewport.
+- Statusfältet ligger nu direkt under `▶ Kör Gen9-kontroll` och använder `aria-live="assertive"`.
+- Körlogik, kandidatparser och hård 20 128 / 16×1 258-preflight är oförändrade från V0.3.26.
+- Gen8 är fryst och orörd. Gen9 är fortsatt NOT APPROVED; research ej startad. Handel/Forward AV. Cloudflare: INGEN ÄNDRING.
