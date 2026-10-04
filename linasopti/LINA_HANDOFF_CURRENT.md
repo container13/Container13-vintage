@@ -316,3 +316,8 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - RAW-modulen är syntaktiskt reparerad och mount söker nu Gen9-sektionen från document, samma faktiska DOM som Gen9 byggs i.
 - RAW-knappen monteras direkt efter Gen9-statusen och statusen används för all feedback.
 - Gen8 fryst/orörd; Gen9 EJ GODKÄND; research ej startad; Handel/Forward AV; Worker INGEN ÄNDRING.
+
+
+## V0.3.32 — synlig \\n\\n-text borttagen
+- Två bokstavliga backslash-n mellan Gen9-script-taggarna i index.html togs bort; Safari renderade dem som synlig text under login-kortet.
+- Version/cache V0.3.32. Ingen logik ändrad.
