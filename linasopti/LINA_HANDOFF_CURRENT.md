@@ -309,3 +309,10 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Ingen sessionStorage-växling via ALL-uploadfunktionen används längre; ALL-rapporten kan därför inte maskera RAW-resultatet.
 - Ingen Worker-ändring krävs: runtime-report accepterar säkra separata rapportnamn.
 - Gen8 fryst/orörd; Gen9 EJ GODKÄND; research ej startad; Handel/Forward AV.
+
+
+## V0.3.31 — RAW-knappens montering reparerad
+- Rotorsak: gen9-raw.js innehöll ett bokstavligt \\n i JavaScript-källan och boot sökte dessutom en specifik #view-root som inte är Gen9-mountens kontrakt.
+- RAW-modulen är syntaktiskt reparerad och mount söker nu Gen9-sektionen från document, samma faktiska DOM som Gen9 byggs i.
+- RAW-knappen monteras direkt efter Gen9-statusen och statusen används för all feedback.
+- Gen8 fryst/orörd; Gen9 EJ GODKÄND; research ej startad; Handel/Forward AV; Worker INGEN ÄNDRING.
