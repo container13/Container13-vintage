@@ -335,3 +335,10 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - All four Alpaca SIP/all differences >=10 are independently supported on the candidate side: NVDA 2024-06-10 high ~122.75; TSLA 2021-03-04 high ~222.82; TSLA 2021-03-01 high ~239.67; TSLA 2020-12-18 close ~231.67.
 - Conclusion: these four are Alpaca comparison anomalies, not grounds to patch the locked candidate.
 - Evidence complete for this diagnostic stage, but Gen9 remains NOT APPROVED pending explicit gate decision; research not started; Handel/Forward OFF.
+
+
+## V0.3.34 — Gen9 dataset gate passed
+- Explicit user gate recorded in evidence/GEN9_DATASET_GATE_2026-10-05.json.
+- Locked candidate SHA cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c, 20 128 rows, is accepted as Gen9 research data input.
+- Candidate remains unchanged. This gate does not start Gen9 research and does not lock a Gen9 research plan.
+- Gen8 remains frozen. Handel/Forward remain OFF. Worker unchanged.
