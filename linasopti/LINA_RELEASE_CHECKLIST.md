@@ -468,3 +468,11 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Separat GitHub-rapport GEN9_ADJUSTMENT_DIAGNOSTIC och returväg verifieras.
 - [x] Status visas vid Gen9 primärkontroller.
 - [x] Version/cache V0.3.33; Worker INGEN ÄNDRING; Gen8 fryst; Gen9 EJ GODKÄND; research ej startad; Handel/Forward AV.
+
+
+## Gen9 four-anomaly evidence check — 2026-10-05
+- [x] Four >=10 Alpaca/all anomalies checked independently.
+- [x] All four support candidate values at displayed historical precision.
+- [x] Corporate-action timing checked for NVDA 10:1 and TSLA 5:1 split context.
+- [x] Separate immutable evidence file saved; candidate untouched.
+- [x] Gen9 still NOT APPROVED; research not started; Handel/Forward OFF.
