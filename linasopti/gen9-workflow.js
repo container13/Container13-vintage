@@ -60,6 +60,15 @@ async function importData(pkg){return single(async()=>{
  await put('data:'+pkg.manifest.contentSha256,{manifest:pkg.manifest,data});g.dataManifest=copy(pkg.manifest);g.state='DATA_STAGED_AWAITING_EVIDENCE';save(g);
  g.dataEvidence=await secure('LINAS_GEN9_DATA_'+pkg.manifest.contentSha256+'.json',{schema:'LINA-GEN9-DATA-MANIFEST-1',specHash:E.SPEC_HASH,manifest:pkg.manifest});g.state='READY_FOR_RESEARCH';save(g);return g;
  })}
+async function authorizedAutoStart(){
+ let g=state();if(g.summaryFreeze?.frozen||g.summary||g.researchOpened||Object.keys(g.checkpoints||{}).length)return null;
+ const r=await fetch('evidence/GEN9_RESEARCH_START_2026-10-05.json',{cache:'no-store'});if(!r.ok)return null;
+ const a=await r.json(),specSha=await digest(E.SPEC);
+ if(a.schema!=='LINA-GEN9-RESEARCH-START-1'||a.decision!=='START_AUTHORIZED'||a.explicitUserGate!==true||a.singleUse!==true||a.specHash!==E.SPEC_HASH||a.specSha256!==specSha||a.datasetSha256!==E.APPROVED_DATA.sha256||a.tradeEnabled!==false||a.forwardOpened!==false)throw Error('START: researchgaten matchar inte låst kontrakt');
+ if(!g.planLocked)await adoptLockedPlan();g=state();if(!g.dataEvidence)await importApprovedData();g=state();
+ if(g.researchOpened||Object.keys(g.checkpoints||{}).length)throw Error('START: observation finns redan; automatisk omstart blockerad');
+ report('Gen9 · explicit startgate verifierad · forskningen startar');return run();
+}
 async function validateCheckpoint(cp,ref){
  if(!cp||cp.key!==ref.key||cp.variant!==ref.variant||cp.year!==ref.year||cp.specHash!==E.SPEC_HASH||!Array.isArray(cp.result?.trades)||!Array.isArray(cp.result?.equity)||!Array.isArray(cp.result?.events)||!cp.result?.oos||await digest(cp.result)!==ref.resultSha256)throw Error('Checkpoint saknas/är trasigt: recovery krävs, ingen rerun');
  return cp;
@@ -105,6 +114,7 @@ function mount(root){
  if(g.summary&&!g.summaryFreeze?.frozen)act('❄ Godkänn och frys Gen9-sammanfattning',()=>{if(!global.confirm('Har du granskat resultatsexporten och vill frysa sammanfattningen? Ingen kandidat eller Forward startas.'))return;return freezeSummary()});
  const exp=document.createElement('button');exp.textContent='📥 Exportera Gen9-state och resultat';exp.onclick=async()=>{try{await global.LinaStatusExport.downloadObjectAsync('LINA_GEN9_RESULTS',exportResults)}catch(e){info.textContent='EXPORT STOPPAD: '+e.message}};root.querySelector('.engine-export-primary')?.append(exp);
  const explanation=document.createElement('p');explanation.textContent='Gen9 använder endast den separat godkända SOURCE_gen9-data.json vars fil-SHA256 och datasetgate måste matcha exakt. Ingen kandidat fryses automatiskt.';section.append(explanation);
+ setTimeout(()=>authorizedAutoStart().catch(e=>{info.textContent='START STOPPAD: '+e.message}),0);
 }
-global.LinaGen9Workflow=Object.freeze({state,adoptLockedPlan,lockPlan,resumePlan,importApprovedData,importData,run,freezeSummary,exportResults,mount,validateCheckpoint});
+global.LinaGen9Workflow=Object.freeze({state,adoptLockedPlan,lockPlan,resumePlan,importApprovedData,importData,authorizedAutoStart,run,freezeSummary,exportResults,mount,validateCheckpoint});
 })(window);
