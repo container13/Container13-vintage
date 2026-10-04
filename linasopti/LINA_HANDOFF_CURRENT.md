@@ -266,3 +266,10 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Permanent rule added: every Lina change increments the release/version and cache token, even the smallest change.
 - Gen8 unchanged/frozen. Gen9 remains NOT APPROVED. Research not started. Handel/Forward OFF.
 - Cloudflare Worker unchanged.
+
+
+## V0.3.24 — Gen9 primary-run mount fix
+- Fixed Gen9 Data Check mount so the primary `▶ Kör Gen9-kontroll` action does not disappear when the export-primary panel is unavailable at mount time.
+- Export/diagnostic controls attach when their panel exists; the Gen9 primary run depends only on the Gen9 section itself.
+- No Gen9 approval/research gate changed. Gen8 remains frozen. Handel/Forward OFF.
+- Cloudflare Worker unchanged.
