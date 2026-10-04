@@ -400,3 +400,12 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Version/cache bumped to V0.3.24.
 - [x] Gen8 frozen; Gen9 NOT APPROVED; research not started; Handel/Forward OFF.
 - [x] Cloudflare: INGEN ÄNDRING.
+
+
+## V0.3.25 release check
+- [x] Removed both invalid literal backslash-n sequences from gen9-data-check.js.
+- [x] Verified no literal backslash-n remains in gen9-data-check.js.
+- [x] Version/cache bumped to V0.3.25.
+- [x] Gen9 primary-run placement and safe gates retained.
+- [x] Gen8 frozen; Gen9 NOT APPROVED; research not started; Handel/Forward OFF.
+- [x] Cloudflare: INGEN ÄNDRING.
