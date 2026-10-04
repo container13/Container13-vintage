@@ -446,3 +446,10 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Returvägen måste innehålla /GEN9_COMPARE_RAW_ innan UI visar klart.
 - [x] Version/cache V0.3.30.
 - [x] Worker INGEN ÄNDRING; Gen8 fryst; Gen9 EJ GODKÄND; research ej startad; Handel/Forward AV.
+
+
+## V0.3.31 release check
+- [x] Bokstavligt \\n i gen9-raw.js borttaget.
+- [x] RAW mount använder document och befintlig [data-gen9-build]/[data-gen9-run-status].
+- [x] Version/cache V0.3.31.
+- [x] Worker INGEN ÄNDRING; Gen8 fryst; Gen9 EJ GODKÄND; research ej startad; Handel/Forward AV.
