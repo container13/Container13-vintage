@@ -347,3 +347,9 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - The primary run action SHOULD orchestrate the safe mechanical steps for that Gen when those steps can be automated.
 - Detailed/manual controls remain available as fallback and diagnostics.
 - Automation of the run MUST NOT bypass approval gates, start research, enable Handel/Forward, or convert diagnostics/comparisons into verification unless the applicable gate is explicitly satisfied.
+
+
+## Mandatory version increment
+- Every Lina change MUST increment the visible release/version number, including the smallest UI, text, cache, documentation, bug-fix, or placement change that is shipped as part of Lina.
+- The version bump and cache-token bump are part of the same change and must not be deferred.
+- After writing, read back `version.js` and `index.html` and verify the new version/cache before calling the change complete.
