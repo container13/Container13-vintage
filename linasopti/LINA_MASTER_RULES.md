@@ -340,3 +340,10 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Prepared/pending Worker får aldrig skriva över CURRENT eller PREVIOUS. Pending kod lagras separat.
 - Vid misslyckad deploy ändras varken CURRENT eller PREVIOUS.
 - Om historisk PREVIOUS saknas när regeln införs får den inte fabriceras från en äldre repo-kopia; PREVIOUS etableras vid nästa verifierade Worker-byte.
+
+
+## Primary run placement for every Gen
+- Every Gen view MUST place its primary run action high in the Gen section, directly after the Gen heading/status and before long descriptions, exports, diagnostics, or fallback controls.
+- The primary run action SHOULD orchestrate the safe mechanical steps for that Gen when those steps can be automated.
+- Detailed/manual controls remain available as fallback and diagnostics.
+- Automation of the run MUST NOT bypass approval gates, start research, enable Handel/Forward, or convert diagnostics/comparisons into verification unless the applicable gate is explicitly satisfied.
