@@ -259,3 +259,10 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Full comparison report auto-save uses the already deployed `/runtime-report` endpoint; Cloudflare Worker unchanged in this release.
 - Permanent MASTER RULE: every Gen places its primary run action high in the Gen section.
 - No automatic Gen9 approval. Research remains not started. Handel/Forward remain OFF. Gen8 remains frozen and must never be rerun.
+
+
+## V0.3.23 — Gen9 primary-button placement + mandatory versioning
+- Corrected the Gen9 primary-run placement so `▶ Kör Gen9-kontroll` is inserted directly after the Gen9 heading.
+- Permanent rule added: every Lina change increments the release/version and cache token, even the smallest change.
+- Gen8 unchanged/frozen. Gen9 remains NOT APPROVED. Research not started. Handel/Forward OFF.
+- Cloudflare Worker unchanged.
