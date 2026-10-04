@@ -4,4 +4,5 @@
   "main": "./WORKER_PENDING_RUNTIME_REPORT.js",
   "compatibility_date": "2026-10-04",
   "keep_vars": true
+  // Cloudflare Builds: Git-connected deployment
 }
