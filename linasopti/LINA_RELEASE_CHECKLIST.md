@@ -453,3 +453,9 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] RAW mount använder document och befintlig [data-gen9-build]/[data-gen9-run-status].
 - [x] Version/cache V0.3.31.
 - [x] Worker INGEN ÄNDRING; Gen8 fryst; Gen9 EJ GODKÄND; research ej startad; Handel/Forward AV.
+
+
+## V0.3.32 release check
+- [x] index.html innehåller inga bokstavliga \\n-sekvenser.
+- [x] Version/cache V0.3.32.
+- [x] Ingen Gen9/Worker/forskningslogik ändrad.
