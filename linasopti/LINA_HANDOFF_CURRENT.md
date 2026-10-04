@@ -370,3 +370,10 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - On Lina mount, the gate can mechanically adopt the immutable plan, verify/freeze approved data evidence and invoke the locked runner without another iPhone confirmation.
 - Auto-start is blocked if researchOpened, any checkpoint, summary or summaryFreeze already exists; no rerun/rescue path added.
 - Fold evidence/checkpoint discipline remains unchanged. Handel/Forward OFF; Gen8 frozen; Worker unchanged.
+
+
+## V0.3.39 — Gen9 global post-login start fix
+- Root cause of V0.3.38 no-op confirmed: authorizedAutoStart was invoked only from Gen9 mount, while clean login always opens Dashboard.
+- Explicit Gen9 start gate is now checked globally in startApp after GitHub bootstrap/recovery and normal route start.
+- Dashboard gets a visible high status line for Gen9 progress/completion/error.
+- Existing single-use/no-rerun guards remain unchanged. Handel/Forward OFF; Gen8 frozen; Worker unchanged.
