@@ -409,3 +409,12 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Gen9 primary-run placement and safe gates retained.
 - [x] Gen8 frozen; Gen9 NOT APPROVED; research not started; Handel/Forward OFF.
 - [x] Cloudflare: INGEN ÄNDRING.
+
+
+## V0.3.26 release check
+- [x] Candidate parser matches SOURCE_gen9-data.json object-by-symbol shape.
+- [x] Hard 20,128 / 16×1,258 comparison preflight added.
+- [x] Runtime-report upload blocked for incomplete comparison.
+- [x] Version/cache V0.3.26.
+- [x] Gen8 frozen; Gen9 NOT APPROVED; research not started; Handel/Forward OFF.
+- [x] Cloudflare: INGEN ÄNDRING.
