@@ -84,6 +84,15 @@ function compactComparison(report){
  for(const [symbol,s] of Object.entries(c.bySymbol||{}))symbols[symbol]={rows:s.rowsCompared,diffRows:s.rowsWithDifference,fieldDiffs:s.fieldDifferences,maxAbs:s.maxAbsDifference};
  return{schema:'LINA-GEN9-COMPARE-CHAT-1',release:report?.release,candidateSha256:report?.candidate?.sha256,alpacaNormalizedSha256:report?.alpaca?.normalizedSha256,method:c.method,candidateRows:report?.candidate?.rowCount,alpacaRows:report?.alpaca?.rowCount,matchedKeys:c.matchedKeys,exactRows:c.exactRows,rowsWithDifference:c.rowsWithDifference,fieldDifferences:c.fieldDifferences,missingCandidateCount:c.missingCandidateCount,missingAlpacaCount:c.missingAlpacaCount,bySymbol:symbols,decision:report?.decision,independentDataLineVerified:false,verifiedForResearch:false,researchStarted:false,tradeEnabled:false,forwardOpened:false};
 }
+async function uploadComparisonReport(onProgress=()=>{}) {
+ const report=savedComparison();if(!report)throw Error('Ingen full jämförelserapport finns');
+ const base=global.LinaAPI?.workerBase;if(!base)throw Error('API-bas saknas');
+ const code=global.sessionStorage.getItem('linasopti_login_code')||'';if(!code)throw Error('Lina-session saknas · logga in igen');
+ onProgress('Sparar full jämförelserapport till GitHub…');
+ const response=await global.fetch(base+'/runtime-report',{method:'POST',headers:{'Content-Type':'application/json','X-Lina-Login-Code':code},body:JSON.stringify({schema:'LINA-RUNTIME-REPORT-1',name:'GEN9_COMPARE',report})});
+ const body=await response.json().catch(()=>({}));if(!response.ok||!body?.ok)throw Error(body?.error||('HTTP '+response.status));
+ onProgress('Rapport sparad · '+body.path);return body;
+}
 function mount(root){const section=root.querySelector('[data-gen9-build]'),panel=root.querySelector('.engine-export-primary');if(!section||!panel)return;
  const info=document.createElement('p');info.setAttribute('aria-live','polite');const old=saved();info.textContent=old?'Datakällrapport finns att exportera.':'Kontrollera datakällan före planlås. Kontrollen läser prisdata och ändrar inget forskningsstate.';
  const button=document.createElement('button');button.textContent='🔎 Kontrollera Gen9-datakälla';section.append(button,info);
@@ -91,9 +100,9 @@ function mount(root){const section=root.querySelector('[data-gen9-build]'),panel
  const independentExport=document.createElement('button');independentExport.textContent='📋 Kopiera Alpaca SIP/all';independentExport.disabled=!savedIndependent();panel.append(independentExport);
  const candidateExport=document.createElement('button');candidateExport.textContent='📋 Kopiera Gen9-kandidatdata';panel.append(candidateExport);
  const compare=document.createElement('button');compare.textContent='🔎 Jämför kandidat ↔ Alpaca';section.append(compare);
- const compareExport=document.createElement('button');compareExport.textContent='📋 Kopiera jämförelserapport';compareExport.disabled=!savedComparison();panel.append(compareExport);
- compare.onclick=async()=>{compare.disabled=true;try{await compareCandidateIndependent(t=>info.textContent=t);compareExport.disabled=false}catch(e){info.textContent='JÄMFÖRELSE STOPPAD: '+e.message}finally{compare.disabled=false}};
- compareExport.onclick=()=>{const report=savedComparison();if(report)global.LinaStatusExport?.downloadObject?.('LINA_GEN9_COMPARE_CHAT',compactComparison(report))};
+ const compareExport=document.createElement('button');compareExport.textContent='📋 Kopiera jämförelserapport';compareExport.disabled=!savedComparison();panel.append(compareExport);\n const compareUpload=document.createElement('button');compareUpload.textContent='☁️ Spara full rapport till GitHub';compareUpload.disabled=!savedComparison();panel.append(compareUpload);
+ compare.onclick=async()=>{compare.disabled=true;try{await compareCandidateIndependent(t=>info.textContent=t);compareExport.disabled=false;compareUpload.disabled=false}catch(e){info.textContent='JÄMFÖRELSE STOPPAD: '+e.message}finally{compare.disabled=false}};
+ compareExport.onclick=()=>{const report=savedComparison();if(report)global.LinaStatusExport?.downloadObject?.('LINA_GEN9_COMPARE_CHAT',compactComparison(report))};\n compareUpload.onclick=async()=>{compareUpload.disabled=true;try{await uploadComparisonReport(t=>info.textContent=t)}catch(e){info.textContent='RAPPORTUPLOAD STOPPAD: '+e.message}finally{compareUpload.disabled=false}};
  candidateExport.onclick=async()=>{candidateExport.disabled=true;try{await copyCandidate(t=>info.textContent=t)}catch(e){info.textContent='KANDIDATDATA STOPPAD: '+e.message}finally{candidateExport.disabled=false}};
  independent.onclick=async()=>{independent.disabled=true;try{await fetchIndependent(t=>info.textContent=t);independentExport.disabled=false}catch(e){info.textContent='ALPACA STOPPAD: '+e.message}finally{independent.disabled=false}};
  independentExport.onclick=()=>{const report=savedIndependent();if(report)global.LinaStatusExport?.downloadObject?.('LINA_GEN9_ALPACA_SIP_ALL_2020_2024',report)};
@@ -101,5 +110,5 @@ function mount(root){const section=root.querySelector('[data-gen9-build]'),panel
  exp.onclick=()=>{const report=saved();if(report)global.LinaStatusExport?.downloadObject?.('LINA_GEN9_DATA_DIAGNOSTIC',report)};
  button.onclick=async()=>{button.disabled=true;try{const report=await check(t=>info.textContent=t);exp.disabled=false;const descriptions=report.attempts.map(a=>a.source+': '+(a.error||a.analysis?.warnings.join('; ')||'schema läst, full verifiering återstår'));info.textContent=descriptions.join(' | ')}catch(e){info.textContent='DATAKONTROLL STOPPAD: '+e.message}finally{button.disabled=false}};
 }
-const api=Object.freeze({inspect,check,saved,fetchIndependent,savedIndependent,copyCandidate,compareCandidateIndependent,savedComparison,compactComparison,mount});if(typeof module==='object'&&module.exports)module.exports=api;else global.LinaGen9DataCheck=api;
+const api=Object.freeze({inspect,check,saved,fetchIndependent,savedIndependent,copyCandidate,compareCandidateIndependent,savedComparison,compactComparison,uploadComparisonReport,mount});if(typeof module==='object'&&module.exports)module.exports=api;else global.LinaGen9DataCheck=api;
 })(typeof window==='object'?window:globalThis);
