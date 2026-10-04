@@ -331,3 +331,12 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 
 
 **Cloudflare-kod – obligatorisk leveransregel:** När användaren behöver klistra in komplett Worker-kod ska koden INTE skrivas ut i chatten. Leverera i stället en kompakt ett-klick-kopieringslösning/HTML-hjälpare som kopierar hela den kompletta Worker-filen till urklipp. Användaren ska bara behöva trycka på kopieringsknappen och sedan klistra in i Cloudflare. Visa full kod endast om användaren uttryckligen ber att få se den.
+
+
+## Worker CURRENT/PREVIOUS — permanent regel från V0.3.21
+- Exakt komplett senast verifierad och deployad Cloudflare Worker sparas som `linasopti/worker/WORKER_CURRENT.js`.
+- Exakt föregående verifierad/deployad Worker sparas som `linasopti/worker/WORKER_PREVIOUS.js` för snabb rollback.
+- Före en ny verifierad Worker görs CURRENT till PREVIOUS; först efter lyckad deploy + verifiering får den nya koden bli CURRENT.
+- Prepared/pending Worker får aldrig skriva över CURRENT eller PREVIOUS. Pending kod lagras separat.
+- Vid misslyckad deploy ändras varken CURRENT eller PREVIOUS.
+- Om historisk PREVIOUS saknas när regeln införs får den inte fabriceras från en äldre repo-kopia; PREVIOUS etableras vid nästa verifierade Worker-byte.
