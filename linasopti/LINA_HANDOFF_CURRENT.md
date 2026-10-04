@@ -321,3 +321,10 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 ## V0.3.32 — synlig \\n\\n-text borttagen
 - Två bokstavliga backslash-n mellan Gen9-script-taggarna i index.html togs bort; Safari renderade dem som synlig text under login-kortet.
 - Version/cache V0.3.32. Ingen logik ändrad.
+
+
+## V0.3.33 — automatiserad Gen9-justeringsdiagnos
+- Ny kontroll kör Alpaca SIP med adjustment split, dividend, spin-off och all mot samma låsta kandidat (SHA cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c), 20 128 rader per variant.
+- Exakt OHLC utan tolerans; fulla diagnostiska summeringar och största avvikelser sparas separat som GEN9_ADJUSTMENT_DIAGNOSTIC.
+- Resultaten rankas diagnostiskt efter >=10-avvikelser och därefter totalt antal fältavvikelser. Ingen kandidat patchas och diagnosen kan inte godkänna Gen9 eller starta research.
+- Gen8 fryst/orörd; Gen9 EJ GODKÄND; research ej startad; Handel/Forward AV; Worker INGEN ÄNDRING.
