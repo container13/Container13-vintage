@@ -1,0 +1,2869 @@
+{
+  "schema": "LINA-GEN9-CANDIDATE-ALPACA-COMPARE-1",
+  "createdAt": "2026-10-04T22:20:43.882Z",
+  "release": "V0.3.26",
+  "candidate": {
+    "sha256": "cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c",
+    "rowCount": 20128
+  },
+  "alpaca": {
+    "rawSha256": "d77ac62c625ffc9d9b1b37c967f9e8a5d66113b05ca726ca5ef3aaa8cb46fb83",
+    "normalizedSha256": "154a64197b8fcdfbe005d5356565143c0df2d4bced3e22f288e264d00f73815f",
+    "rowCount": 20128,
+    "feed": "sip",
+    "adjustment": "all"
+  },
+  "comparison": {
+    "method": "EXACT_NUMERIC_OHLC_NO_TOLERANCE",
+    "keysCompared": 20128,
+    "matchedKeys": 20128,
+    "exactRows": 1,
+    "rowsWithDifference": 20127,
+    "fieldDifferences": 78306,
+    "missingCandidateCount": 0,
+    "missingAlpacaCount": 0,
+    "missingCandidate": [],
+    "missingAlpaca": [],
+    "bySymbol": {
+      "AMD": {
+        "rowsCompared": 1258,
+        "rowsWithDifference": 1258,
+        "fieldDifferences": {
+          "o": 1174,
+          "h": 1180,
+          "l": 1198,
+          "c": 1198
+        },
+        "maxAbsDifference": {
+          "o": 0.1700000000000017,
+          "h": 0.0050067138671749944,
+          "l": 0.0050067138671749944,
+          "c": 0.10000061035155738
+        }
+      },
+      "SHOP": {
+        "rowsCompared": 1258,
+        "rowsWithDifference": 1258,
+        "fieldDifferences": {
+          "o": 1121,
+          "h": 1194,
+          "l": 1177,
+          "c": 1216
+        },
+        "maxAbsDifference": {
+          "o": 0.7399993896484318,
+          "h": 4.380000000000003,
+          "l": 3,
+          "c": 0.005007324218752274
+        }
+      },
+      "ADBE": {
+        "rowsCompared": 1258,
+        "rowsWithDifference": 1257,
+        "fieldDifferences": {
+          "o": 1086,
+          "h": 1138,
+          "l": 1145,
+          "c": 1200
+        },
+        "maxAbsDifference": {
+          "o": 0.9449902343749841,
+          "h": 0.005029296875022737,
+          "l": 0.005029296875022737,
+          "c": 0.25
+        }
+      },
+      "MU": {
+        "rowsCompared": 1258,
+        "rowsWithDifference": 1258,
+        "fieldDifferences": {
+          "o": 1258,
+          "h": 1258,
+          "l": 1258,
+          "c": 1258
+        },
+        "maxAbsDifference": {
+          "o": 0.12049445122327285,
+          "h": 0.009825692084930893,
+          "l": 0.009922581731473201,
+          "c": 0.20506225585937443
+        }
+      },
+      "FDX": {
+        "rowsCompared": 1258,
+        "rowsWithDifference": 1258,
+        "fieldDifferences": {
+          "o": 1258,
+          "h": 1258,
+          "l": 1258,
+          "c": 1258
+        },
+        "maxAbsDifference": {
+          "o": 1.1421829400750596,
+          "h": 4.0464832970945395,
+          "l": 2.802043987670743,
+          "c": 0.1710931396484341
+        }
+      },
+      "TSLA": {
+        "rowsCompared": 1258,
+        "rowsWithDifference": 1258,
+        "fieldDifferences": {
+          "o": 1163,
+          "h": 1149,
+          "l": 1177,
+          "c": 1218
+        },
+        "maxAbsDifference": {
+          "o": 0.3366564941406409,
+          "h": 68.49333435058594,
+          "l": 0.00666381835935681,
+          "c": 12.216671752929699
+        }
+      },
+      "LUV": {
+        "rowsCompared": 1258,
+        "rowsWithDifference": 1258,
+        "fieldDifferences": {
+          "o": 1258,
+          "h": 1258,
+          "l": 1258,
+          "c": 1258
+        },
+        "maxAbsDifference": {
+          "o": 1.8870449612981162,
+          "h": 1.4703023548336347,
+          "l": 0.8993292085272984,
+          "c": 0.007021484375002274
+        }
+      },
+      "NFLX": {
+        "rowsCompared": 1258,
+        "rowsWithDifference": 1258,
+        "fieldDifferences": {
+          "o": 1190,
+          "h": 1239,
+          "l": 1234,
+          "c": 1250
+        },
+        "maxAbsDifference": {
+          "o": 0.1100015258789071,
+          "h": 0.005003662109373863,
+          "l": 0.005003356933599434,
+          "c": 0.025999755859373863
+        }
+      },
+      "C": {
+        "rowsCompared": 1258,
+        "rowsWithDifference": 1258,
+        "fieldDifferences": {
+          "o": 1258,
+          "h": 1258,
+          "l": 1258,
+          "c": 1258
+        },
+        "maxAbsDifference": {
+          "o": 0.29501519520336217,
+          "h": 0.4031794421858095,
+          "l": 0.20323542468449318,
+          "c": 0.00499923706054517
+        }
+      },
+      "NOW": {
+        "rowsCompared": 1258,
+        "rowsWithDifference": 1258,
+        "fieldDifferences": {
+          "o": 1116,
+          "h": 1222,
+          "l": 1211,
+          "c": 1240
+        },
+        "maxAbsDifference": {
+          "o": 1.2000000000000028,
+          "h": 3.5400003051757807,
+          "l": 1.4439984130859358,
+          "c": 2.2160002136230474
+        }
+      },
+      "QCOM": {
+        "rowsCompared": 1258,
+        "rowsWithDifference": 1258,
+        "fieldDifferences": {
+          "o": 1258,
+          "h": 1258,
+          "l": 1258,
+          "c": 1258
+        },
+        "maxAbsDifference": {
+          "o": 0.42126970807655084,
+          "h": 0.009510778633966765,
+          "l": 0.009696673047443483,
+          "c": 0.024335327148435226
+        }
+      },
+      "BAC": {
+        "rowsCompared": 1258,
+        "rowsWithDifference": 1258,
+        "fieldDifferences": {
+          "o": 1258,
+          "h": 1258,
+          "l": 1258,
+          "c": 1258
+        },
+        "maxAbsDifference": {
+          "o": 0.42462871271274594,
+          "h": 0.9517271623513892,
+          "l": 0.37942092504140845,
+          "c": 0.7530941772460942
+        }
+      },
+      "GM": {
+        "rowsCompared": 1258,
+        "rowsWithDifference": 1258,
+        "fieldDifferences": {
+          "o": 1258,
+          "h": 1258,
+          "l": 1258,
+          "c": 1258
+        },
+        "maxAbsDifference": {
+          "o": 0.1797250493769127,
+          "h": 1.4136659421510984,
+          "l": 0.8794956374026768,
+          "c": 1.3149075317382817
+        }
+      },
+      "DDOG": {
+        "rowsCompared": 1258,
+        "rowsWithDifference": 1258,
+        "fieldDifferences": {
+          "o": 1080,
+          "h": 1161,
+          "l": 1159,
+          "c": 1182
+        },
+        "maxAbsDifference": {
+          "o": 0.6000000000000014,
+          "h": 0.0005036010742145436,
+          "l": 0.0005032958984401148,
+          "c": 0.6499987792968795
+        }
+      },
+      "PYPL": {
+        "rowsCompared": 1258,
+        "rowsWithDifference": 1258,
+        "fieldDifferences": {
+          "o": 1258,
+          "h": 1258,
+          "l": 1258,
+          "c": 1258
+        },
+        "maxAbsDifference": {
+          "o": 0.4366690223698697,
+          "h": 0.005465705439107182,
+          "l": 0.005187334415950318,
+          "c": 0.08064025878906023
+        }
+      },
+      "NVDA": {
+        "rowsCompared": 1258,
+        "rowsWithDifference": 1258,
+        "fieldDifferences": {
+          "o": 1258,
+          "h": 1258,
+          "l": 1258,
+          "c": 1258
+        },
+        "maxAbsDifference": {
+          "o": 0.011798991693884986,
+          "h": 72.64001688494447,
+          "l": 0.008811984568353637,
+          "c": 0.007117309570304542
+        }
+      }
+    },
+    "examplesFirst100": [
+      {
+        "d": "2020-01-02",
+        "symbol": "ADBE",
+        "differences": {
+          "h": {
+            "candidate": 334.4800109863281,
+            "alpaca": 334.48,
+            "absDifference": 0.000010986328106810106
+          },
+          "l": {
+            "candidate": 329.1700134277344,
+            "alpaca": 329.17,
+            "absDifference": 0.000013427734359083843
+          },
+          "c": {
+            "candidate": 334.42999267578125,
+            "alpaca": 334.43,
+            "absDifference": 0.00000732421875682121
+          }
+        }
+      },
+      {
+        "d": "2020-01-02",
+        "symbol": "AMD",
+        "differences": {
+          "o": {
+            "candidate": 46.86000061035156,
+            "alpaca": 46.86,
+            "absDifference": 6.103515630684342e-7
+          },
+          "l": {
+            "candidate": 46.630001068115234,
+            "alpaca": 46.63,
+            "absDifference": 0.0000010681152318170462
+          },
+          "c": {
+            "candidate": 49.099998474121094,
+            "alpaca": 49.1,
+            "absDifference": 0.0000015258789076710855
+          }
+        }
+      },
+      {
+        "d": "2020-01-02",
+        "symbol": "BAC",
+        "differences": {
+          "o": {
+            "candidate": 30.028630739333007,
+            "alpaca": 30.03,
+            "absDifference": 0.0013692606669941654
+          },
+          "h": {
+            "candidate": 30.291966444256925,
+            "alpaca": 30.29,
+            "absDifference": 0.0019664442569258256
+          },
+          "l": {
+            "candidate": 29.977664838058864,
+            "alpaca": 29.98,
+            "absDifference": 0.0023351619411364766
+          },
+          "c": {
+            "candidate": 30.27497673034668,
+            "alpaca": 30.27,
+            "absDifference": 0.004976730346680114
+          }
+        }
+      },
+      {
+        "d": "2020-01-02",
+        "symbol": "C",
+        "differences": {
+          "o": {
+            "candidate": 63.468035157939966,
+            "alpaca": 63.47,
+            "absDifference": 0.001964842060033334
+          },
+          "h": {
+            "candidate": 64.36307062641964,
+            "alpaca": 64.36,
+            "absDifference": 0.003070626419642508
+          },
+          "l": {
+            "candidate": 63.38883003016259,
+            "alpaca": 63.39,
+            "absDifference": 0.0011699698374130207
+          },
+          "c": {
+            "candidate": 64.33930969238281,
+            "alpaca": 64.34,
+            "absDifference": 0.0006903076171909106
+          }
+        }
+      },
+      {
+        "d": "2020-01-02",
+        "symbol": "DDOG",
+        "differences": {
+          "o": {
+            "candidate": 38.220001220703125,
+            "alpaca": 38.22,
+            "absDifference": 0.0000012207031261368684
+          },
+          "l": {
+            "candidate": 36.599998474121094,
+            "alpaca": 36.6,
+            "absDifference": 0.0000015258789076710855
+          },
+          "c": {
+            "candidate": 36.70000076293945,
+            "alpaca": 36.7,
+            "absDifference": 7.629394502828291e-7
+          }
+        }
+      },
+      {
+        "d": "2020-01-02",
+        "symbol": "FDX",
+        "differences": {
+          "o": {
+            "candidate": 108.63641965387704,
+            "alpaca": 108.56,
+            "absDifference": 0.0764196538770392
+          },
+          "h": {
+            "candidate": 110.54657745361328,
+            "alpaca": 110.47,
+            "absDifference": 0.07657745361328239
+          },
+          "l": {
+            "candidate": 108.05196833643299,
+            "alpaca": 107.98,
+            "absDifference": 0.07196833643298817
+          },
+          "c": {
+            "candidate": 110.54657745361328,
+            "alpaca": 110.47,
+            "absDifference": 0.07657745361328239
+          }
+        }
+      },
+      {
+        "d": "2020-01-02",
+        "symbol": "GM",
+        "differences": {
+          "o": {
+            "candidate": 35.0366701796306,
+            "alpaca": 35.04,
+            "absDifference": 0.0033298203694016593
+          },
+          "h": {
+            "candidate": 35.396507263183594,
+            "alpaca": 35.4,
+            "absDifference": 0.003492736816404829
+          },
+          "l": {
+            "candidate": 34.610547792828115,
+            "alpaca": 34.61,
+            "absDifference": 0.0005477928281152344
+          },
+          "c": {
+            "candidate": 35.396507263183594,
+            "alpaca": 35.4,
+            "absDifference": 0.003492736816404829
+          }
+        }
+      },
+      {
+        "d": "2020-01-02",
+        "symbol": "LUV",
+        "differences": {
+          "o": {
+            "candidate": 49.73295094469193,
+            "alpaca": 49.73,
+            "absDifference": 0.0029509446919320226
+          },
+          "h": {
+            "candidate": 50.18107597674792,
+            "alpaca": 50.18,
+            "absDifference": 0.0010759767479200377
+          },
+          "l": {
+            "candidate": 49.6506417669473,
+            "alpaca": 49.65,
+            "absDifference": 0.000641766947303779
+          },
+          "c": {
+            "candidate": 50.15364074707031,
+            "alpaca": 50.15,
+            "absDifference": 0.003640747070313921
+          }
+        }
+      },
+      {
+        "d": "2020-01-02",
+        "symbol": "MU",
+        "differences": {
+          "o": {
+            "candidate": 53.48627292949614,
+            "alpaca": 53.49,
+            "absDifference": 0.003727070503863672
+          },
+          "h": {
+            "candidate": 54.110363850474684,
+            "alpaca": 54.11,
+            "absDifference": 0.0003638504746845683
+          },
+          "l": {
+            "candidate": 53.154726138916615,
+            "alpaca": 53.15,
+            "absDifference": 0.004726138916616662
+          },
+          "c": {
+            "candidate": 54.012847900390625,
+            "alpaca": 54.01,
+            "absDifference": 0.0028479003906269895
+          }
+        }
+      },
+      {
+        "d": "2020-01-02",
+        "symbol": "NFLX",
+        "differences": {
+          "o": {
+            "candidate": 32.61000061035156,
+            "alpaca": 32.61,
+            "absDifference": 6.103515630684342e-7
+          },
+          "h": {
+            "candidate": 32.99800109863281,
+            "alpaca": 33,
+            "absDifference": 0.0019989013671875
+          },
+          "l": {
+            "candidate": 32.47800064086914,
+            "alpaca": 32.48,
+            "absDifference": 0.0019993591308562486
+          },
+          "c": {
+            "candidate": 32.98099899291992,
+            "alpaca": 32.98,
+            "absDifference": 0.0009989929199250014
+          }
+        }
+      },
+      {
+        "d": "2020-01-02",
+        "symbol": "NOW",
+        "differences": {
+          "o": {
+            "candidate": 56.992000579833984,
+            "alpaca": 56.99,
+            "absDifference": 0.0020005798339823855
+          },
+          "h": {
+            "candidate": 58.33599853515625,
+            "alpaca": 58.34,
+            "absDifference": 0.004001464843753411
+          },
+          "l": {
+            "candidate": 56.84400177001953,
+            "alpaca": 56.84,
+            "absDifference": 0.004001770019527839
+          },
+          "c": {
+            "candidate": 58.24800109863281,
+            "alpaca": 58.25,
+            "absDifference": 0.0019989013671875
+          }
+        }
+      },
+      {
+        "d": "2020-01-02",
+        "symbol": "NVDA",
+        "differences": {
+          "o": {
+            "candidate": 5.928333194899299,
+            "alpaca": 5.928,
+            "absDifference": 0.0003331948992988387
+          },
+          "h": {
+            "candidate": 5.957136631011963,
+            "alpaca": 5.957,
+            "absDifference": 0.00013663101196303984
+          },
+          "l": {
+            "candidate": 5.877927063300062,
+            "alpaca": 5.878,
+            "absDifference": 0.00007293669993835294
+          },
+          "c": {
+            "candidate": 5.957136631011963,
+            "alpaca": 5.957,
+            "absDifference": 0.00013663101196303984
+          }
+        }
+      },
+      {
+        "d": "2020-01-02",
+        "symbol": "PYPL",
+        "differences": {
+          "o": {
+            "candidate": 108.26266739508621,
+            "alpaca": 108.26,
+            "absDifference": 0.00266739508620617
+          },
+          "h": {
+            "candidate": 109.98347499436315,
+            "alpaca": 109.98,
+            "absDifference": 0.003474994363145356
+          },
+          "l": {
+            "candidate": 108.0698183326263,
+            "alpaca": 108.07,
+            "absDifference": 0.00018166737369540442
+          },
+          "c": {
+            "candidate": 109.52854919433594,
+            "alpaca": 109.53,
+            "absDifference": 0.0014508056640636369
+          }
+        }
+      },
+      {
+        "d": "2020-01-02",
+        "symbol": "QCOM",
+        "differences": {
+          "o": {
+            "candidate": 76.76137907779238,
+            "alpaca": 76.76,
+            "absDifference": 0.00137907779237878
+          },
+          "h": {
+            "candidate": 77.41649670201488,
+            "alpaca": 77.42,
+            "absDifference": 0.0035032979851195023
+          },
+          "l": {
+            "candidate": 75.92523501427071,
+            "alpaca": 75.93,
+            "absDifference": 0.00476498572929529
+          },
+          "c": {
+            "candidate": 76.45105743408203,
+            "alpaca": 76.45,
+            "absDifference": 0.0010574340820284078
+          }
+        }
+      },
+      {
+        "d": "2020-01-02",
+        "symbol": "SHOP",
+        "differences": {
+          "o": {
+            "candidate": 40.39899826049805,
+            "alpaca": 40.4,
+            "absDifference": 0.001001739501951704
+          },
+          "h": {
+            "candidate": 40.82400131225586,
+            "alpaca": 40.82,
+            "absDifference": 0.004001312255859091
+          },
+          "l": {
+            "candidate": 39.83599853515625,
+            "alpaca": 39.84,
+            "absDifference": 0.004001464843753411
+          },
+          "c": {
+            "candidate": 40.78099822998047,
+            "alpaca": 40.78,
+            "absDifference": 0.0009982299804676131
+          }
+        }
+      },
+      {
+        "d": "2020-01-02",
+        "symbol": "TSLA",
+        "differences": {
+          "o": {
+            "candidate": 28.299999237060547,
+            "alpaca": 28.3,
+            "absDifference": 7.629394538355427e-7
+          },
+          "h": {
+            "candidate": 28.713333129882812,
+            "alpaca": 28.71,
+            "absDifference": 0.0033331298828116473
+          },
+          "l": {
+            "candidate": 28.11400032043457,
+            "alpaca": 28.11,
+            "absDifference": 0.004000320434570881
+          },
+          "c": {
+            "candidate": 28.68400001525879,
+            "alpaca": 28.68,
+            "absDifference": 0.004000015258789347
+          }
+        }
+      },
+      {
+        "d": "2020-01-03",
+        "symbol": "ADBE",
+        "differences": {
+          "o": {
+            "candidate": 329.1700134277344,
+            "alpaca": 329.17,
+            "absDifference": 0.000013427734359083843
+          },
+          "h": {
+            "candidate": 332.9800109863281,
+            "alpaca": 332.98,
+            "absDifference": 0.000010986328106810106
+          },
+          "l": {
+            "candidate": 328.69000244140625,
+            "alpaca": 328.69,
+            "absDifference": 0.0000024414062522737368
+          },
+          "c": {
+            "candidate": 331.80999755859375,
+            "alpaca": 331.81,
+            "absDifference": 0.0000024414062522737368
+          }
+        }
+      },
+      {
+        "d": "2020-01-03",
+        "symbol": "AMD",
+        "differences": {
+          "o": {
+            "candidate": 48.029998779296875,
+            "alpaca": 48.03,
+            "absDifference": 0.0000012207031261368684
+          },
+          "h": {
+            "candidate": 49.38999938964844,
+            "alpaca": 49.39,
+            "absDifference": 6.103515630684342e-7
+          },
+          "l": {
+            "candidate": 47.540000915527344,
+            "alpaca": 47.54,
+            "absDifference": 9.155273446026513e-7
+          },
+          "c": {
+            "candidate": 48.599998474121094,
+            "alpaca": 48.6,
+            "absDifference": 0.0000015258789076710855
+          }
+        }
+      },
+      {
+        "d": "2020-01-03",
+        "symbol": "BAC",
+        "differences": {
+          "o": {
+            "candidate": 29.714337011375473,
+            "alpaca": 29.71,
+            "absDifference": 0.004337011375472599
+          },
+          "h": {
+            "candidate": 29.858747997672328,
+            "alpaca": 29.86,
+            "absDifference": 0.0012520023276714198
+          },
+          "l": {
+            "candidate": 29.52745334927041,
+            "alpaca": 29.53,
+            "absDifference": 0.002546650729591704
+          },
+          "c": {
+            "candidate": 29.646381378173828,
+            "alpaca": 29.65,
+            "absDifference": 0.003618621826170454
+          }
+        }
+      },
+      {
+        "d": "2020-01-03",
+        "symbol": "C",
+        "differences": {
+          "o": {
+            "candidate": 63.20667166655124,
+            "alpaca": 63.21,
+            "absDifference": 0.0033283334487634875
+          },
+          "h": {
+            "candidate": 63.77695232804879,
+            "alpaca": 63.77,
+            "absDifference": 0.00695232804878998
+          },
+          "l": {
+            "candidate": 62.929444598629296,
+            "alpaca": 62.93,
+            "absDifference": 0.0005554013707040895
+          },
+          "c": {
+            "candidate": 63.12746047973633,
+            "alpaca": 63.13,
+            "absDifference": 0.002539520263674433
+          }
+        }
+      },
+      {
+        "d": "2020-01-03",
+        "symbol": "DDOG",
+        "differences": {
+          "o": {
+            "candidate": 36.11000061035156,
+            "alpaca": 36.11,
+            "absDifference": 6.103515630684342e-7
+          },
+          "h": {
+            "candidate": 37.69900131225586,
+            "alpaca": 37.699,
+            "absDifference": 0.0000013122558613076762
+          },
+          "l": {
+            "candidate": 35.95800018310547,
+            "alpaca": 35.9584,
+            "absDifference": 0.00039981689452872615
+          },
+          "c": {
+            "candidate": 37.41999816894531,
+            "alpaca": 37.42,
+            "absDifference": 0.0000018310546892053026
+          }
+        }
+      },
+      {
+        "d": "2020-01-03",
+        "symbol": "FDX",
+        "differences": {
+          "o": {
+            "candidate": 108.69343663046492,
+            "alpaca": 108.62,
+            "absDifference": 0.07343663046491145
+          },
+          "h": {
+            "candidate": 109.2921403545748,
+            "alpaca": 109.22,
+            "absDifference": 0.07214035457479895
+          },
+          "l": {
+            "candidate": 108.223025115454,
+            "alpaca": 108.15,
+            "absDifference": 0.07302511545400137
+          },
+          "c": {
+            "candidate": 109.1781005859375,
+            "alpaca": 109.1,
+            "absDifference": 0.07810058593750568
+          }
+        }
+      },
+      {
+        "d": "2020-01-03",
+        "symbol": "GM",
+        "differences": {
+          "o": {
+            "candidate": 34.780993791965614,
+            "alpaca": 34.78,
+            "absDifference": 0.000993791965612445
+          },
+          "h": {
+            "candidate": 34.96091051231428,
+            "alpaca": 34.96,
+            "absDifference": 0.0009105123142774119
+          },
+          "l": {
+            "candidate": 34.19389389352667,
+            "alpaca": 34.19,
+            "absDifference": 0.003893893526672798
+          },
+          "c": {
+            "candidate": 34.39274978637695,
+            "alpaca": 34.39,
+            "absDifference": 0.0027497863769525566
+          }
+        }
+      },
+      {
+        "d": "2020-01-03",
+        "symbol": "LUV",
+        "differences": {
+          "o": {
+            "candidate": 49.0196005761138,
+            "alpaca": 49.02,
+            "absDifference": 0.00039942388620062275
+          },
+          "h": {
+            "candidate": 49.7695270435973,
+            "alpaca": 49.77,
+            "absDifference": 0.00047295640270306194
+          },
+          "l": {
+            "candidate": 48.50745771366357,
+            "alpaca": 48.51,
+            "absDifference": 0.00254228633642839
+          },
+          "c": {
+            "candidate": 49.705509185791016,
+            "alpaca": 49.71,
+            "absDifference": 0.004490814208985228
+          }
+        }
+      },
+      {
+        "d": "2020-01-03",
+        "symbol": "MU",
+        "differences": {
+          "o": {
+            "candidate": 52.813425168204226,
+            "alpaca": 52.81,
+            "absDifference": 0.003425168204223894
+          },
+          "h": {
+            "candidate": 53.93483432074189,
+            "alpaca": 53.93,
+            "absDifference": 0.004834320741892384
+          },
+          "l": {
+            "candidate": 52.65740338105448,
+            "alpaca": 52.66,
+            "absDifference": 0.002596618945517548
+          },
+          "c": {
+            "candidate": 53.174224853515625,
+            "alpaca": 53.17,
+            "absDifference": 0.004224853515623295
+          }
+        }
+      },
+      {
+        "d": "2020-01-03",
+        "symbol": "NFLX",
+        "differences": {
+          "o": {
+            "candidate": 32.678001403808594,
+            "alpaca": 32.68,
+            "absDifference": 0.0019985961914059658
+          },
+          "h": {
+            "candidate": 32.986000061035156,
+            "alpaca": 32.99,
+            "absDifference": 0.0039999389648457395
+          },
+          "l": {
+            "candidate": 32.553001403808594,
+            "alpaca": 32.55,
+            "absDifference": 0.003001403808596592
+          },
+          "c": {
+            "candidate": 32.59000015258789,
+            "alpaca": 32.59,
+            "absDifference": 1.5258788721439487e-7
+          }
+        }
+      },
+      {
+        "d": "2020-01-03",
+        "symbol": "NOW",
+        "differences": {
+          "o": {
+            "candidate": 57.380001068115234,
+            "alpaca": 57.38,
+            "absDifference": 0.0000010681152318170462
+          },
+          "h": {
+            "candidate": 58.61199951171875,
+            "alpaca": 58.61,
+            "absDifference": 0.0019995117187505684
+          },
+          "l": {
+            "candidate": 57.29999923706055,
+            "alpaca": 57.3,
+            "absDifference": 7.629394502828291e-7
+          },
+          "c": {
+            "candidate": 58.220001220703125,
+            "alpaca": 58.22,
+            "absDifference": 0.0000012207031261368684
+          }
+        }
+      },
+      {
+        "d": "2020-01-03",
+        "symbol": "NVDA",
+        "differences": {
+          "o": {
+            "candidate": 5.837701968795054,
+            "alpaca": 5.838,
+            "absDifference": 0.00029803120494609203
+          },
+          "h": {
+            "candidate": 5.905490008291012,
+            "alpaca": 5.905,
+            "absDifference": 0.0004900082910115344
+          },
+          "l": {
+            "candidate": 5.812871155604805,
+            "alpaca": 5.813,
+            "absDifference": 0.00012884439519478263
+          },
+          "c": {
+            "candidate": 5.861787796020508,
+            "alpaca": 5.862,
+            "absDifference": 0.00021220397949228698
+          }
+        }
+      },
+      {
+        "d": "2020-01-03",
+        "symbol": "PYPL",
+        "differences": {
+          "o": {
+            "candidate": 108.28244579072295,
+            "alpaca": 108.16,
+            "absDifference": 0.12244579072294925
+          },
+          "h": {
+            "candidate": 109.20218923391717,
+            "alpaca": 109.2,
+            "absDifference": 0.0021892339171643016
+          },
+          "l": {
+            "candidate": 107.56050109863281,
+            "alpaca": 107.56,
+            "absDifference": 0.0005010986328102263
+          },
+          "c": {
+            "candidate": 107.56050109863281,
+            "alpaca": 107.56,
+            "absDifference": 0.0005010986328102263
+          }
+        }
+      },
+      {
+        "d": "2020-01-03",
+        "symbol": "QCOM",
+        "differences": {
+          "o": {
+            "candidate": 75.21839060127482,
+            "alpaca": 75.22,
+            "absDifference": 0.0016093987251792896
+          },
+          "h": {
+            "candidate": 75.54594940410846,
+            "alpaca": 75.55,
+            "absDifference": 0.004050595891541775
+          },
+          "l": {
+            "candidate": 74.51154833874632,
+            "alpaca": 74.51,
+            "absDifference": 0.0015483387463177678
+          },
+          "c": {
+            "candidate": 75.01150512695312,
+            "alpaca": 75.01,
+            "absDifference": 0.001505126953119884
+          }
+        }
+      },
+      {
+        "d": "2020-01-03",
+        "symbol": "SHOP",
+        "differences": {
+          "o": {
+            "candidate": 40.15999984741211,
+            "alpaca": 40.16,
+            "absDifference": 1.5258788721439487e-7
+          },
+          "h": {
+            "candidate": 40.840301513671875,
+            "alpaca": 40.84,
+            "absDifference": 0.0003015136718715894
+          },
+          "l": {
+            "candidate": 39.70000076293945,
+            "alpaca": 39.7,
+            "absDifference": 7.629394502828291e-7
+          },
+          "c": {
+            "candidate": 40.42900085449219,
+            "alpaca": 40.43,
+            "absDifference": 0.0009991455078122158
+          }
+        }
+      },
+      {
+        "d": "2020-01-03",
+        "symbol": "TSLA",
+        "differences": {
+          "o": {
+            "candidate": 29.366666793823242,
+            "alpaca": 29.37,
+            "absDifference": 0.0033332061767588073
+          },
+          "h": {
+            "candidate": 30.266666412353516,
+            "alpaca": 30.27,
+            "absDifference": 0.0033335876464839487
+          },
+          "l": {
+            "candidate": 29.128000259399414,
+            "alpaca": 29.13,
+            "absDifference": 0.0019997406005849427
+          },
+          "c": {
+            "candidate": 29.534000396728516,
+            "alpaca": 29.53,
+            "absDifference": 0.004000396728514488
+          }
+        }
+      },
+      {
+        "d": "2020-01-06",
+        "symbol": "ADBE",
+        "differences": {
+          "o": {
+            "candidate": 328.2900085449219,
+            "alpaca": 328.29,
+            "absDifference": 0.00000854492185453637
+          },
+          "h": {
+            "candidate": 333.9100036621094,
+            "alpaca": 333.91,
+            "absDifference": 0.0000036621093499888957
+          },
+          "l": {
+            "candidate": 328.19000244140625,
+            "alpaca": 328.19,
+            "absDifference": 0.0000024414062522737368
+          },
+          "c": {
+            "candidate": 333.7099914550781,
+            "alpaca": 333.71,
+            "absDifference": 0.00000854492185453637
+          }
+        }
+      },
+      {
+        "d": "2020-01-06",
+        "symbol": "AMD",
+        "differences": {
+          "o": {
+            "candidate": 48.02000045776367,
+            "alpaca": 48.02,
+            "absDifference": 4.5776366874861196e-7
+          },
+          "h": {
+            "candidate": 48.86000061035156,
+            "alpaca": 48.86,
+            "absDifference": 6.103515630684342e-7
+          },
+          "l": {
+            "candidate": 47.86000061035156,
+            "alpaca": 47.86,
+            "absDifference": 6.103515630684342e-7
+          },
+          "c": {
+            "candidate": 48.38999938964844,
+            "alpaca": 48.39,
+            "absDifference": 6.103515630684342e-7
+          }
+        }
+      },
+      {
+        "d": "2020-01-06",
+        "symbol": "BAC",
+        "differences": {
+          "o": {
+            "candidate": 29.230138766415937,
+            "alpaca": 29.23,
+            "absDifference": 0.00013876641593668637
+          },
+          "h": {
+            "candidate": 29.646378729242862,
+            "alpaca": 29.65,
+            "absDifference": 0.0036212707571365854
+          },
+          "l": {
+            "candidate": 29.196159332622482,
+            "alpaca": 29.2,
+            "absDifference": 0.003840667377517093
+          },
+          "c": {
+            "candidate": 29.60390281677246,
+            "alpaca": 29.6,
+            "absDifference": 0.0039028167724595164
+          }
+        }
+      },
+      {
+        "d": "2020-01-06",
+        "symbol": "C",
+        "differences": {
+          "o": {
+            "candidate": 62.35123282269457,
+            "alpaca": 62.35,
+            "absDifference": 0.0012328226945683696
+          },
+          "h": {
+            "candidate": 63.00864690563215,
+            "alpaca": 63.01,
+            "absDifference": 0.0013530943678503604
+          },
+          "l": {
+            "candidate": 62.35123282269457,
+            "alpaca": 62.35,
+            "absDifference": 0.0012328226945683696
+          },
+          "c": {
+            "candidate": 62.92943572998047,
+            "alpaca": 62.93,
+            "absDifference": 0.0005642700195309658
+          }
+        }
+      },
+      {
+        "d": "2020-01-06",
+        "symbol": "DDOG",
+        "differences": {
+          "o": {
+            "candidate": 37.5099983215332,
+            "alpaca": 37.51,
+            "absDifference": 0.0000016784667948854803
+          },
+          "h": {
+            "candidate": 40.06999969482422,
+            "alpaca": 40.07,
+            "absDifference": 3.051757815342171e-7
+          },
+          "l": {
+            "candidate": 37.380001068115234,
+            "alpaca": 37.38,
+            "absDifference": 0.0000010681152318170462
+          },
+          "c": {
+            "candidate": 39.900001525878906,
+            "alpaca": 39.9,
+            "absDifference": 0.0000015258789076710855
+          }
+        }
+      },
+      {
+        "d": "2020-01-06",
+        "symbol": "FDX",
+        "differences": {
+          "o": {
+            "candidate": 107.80247118931246,
+            "alpaca": 107.73,
+            "absDifference": 0.07247118931245211
+          },
+          "h": {
+            "candidate": 109.44178477434644,
+            "alpaca": 109.37,
+            "absDifference": 0.07178477434644037
+          },
+          "l": {
+            "candidate": 107.03271141990469,
+            "alpaca": 106.96,
+            "absDifference": 0.07271141990469232
+          },
+          "c": {
+            "candidate": 109.26359558105469,
+            "alpaca": 109.19,
+            "absDifference": 0.07359558105468977
+          }
+        }
+      },
+      {
+        "d": "2020-01-06",
+        "symbol": "GM",
+        "differences": {
+          "o": {
+            "candidate": 34.04238079551588,
+            "alpaca": 34.04,
+            "absDifference": 0.002380795515882994
+          },
+          "h": {
+            "candidate": 34.26017583956147,
+            "alpaca": 34.26,
+            "absDifference": 0.00017583956147149138
+          },
+          "l": {
+            "candidate": 33.90033882178824,
+            "alpaca": 33.9,
+            "absDifference": 0.0003388217882402955
+          },
+          "c": {
+            "candidate": 33.93821716308594,
+            "alpaca": 33.94,
+            "absDifference": 0.0017828369140602263
+          }
+        }
+      },
+      {
+        "d": "2020-01-06",
+        "symbol": "LUV",
+        "differences": {
+          "o": {
+            "candidate": 49.101901098950684,
+            "alpaca": 49.1,
+            "absDifference": 0.0019010989506824671
+          },
+          "h": {
+            "candidate": 49.89755745788445,
+            "alpaca": 49.9,
+            "absDifference": 0.0024425421155456206
+          },
+          "l": {
+            "candidate": 48.90984755936432,
+            "alpaca": 48.91,
+            "absDifference": 0.0001524406356736563
+          },
+          "c": {
+            "candidate": 49.504302978515625,
+            "alpaca": 49.5,
+            "absDifference": 0.004302978515625
+          }
+        }
+      },
+      {
+        "d": "2020-01-06",
+        "symbol": "MU",
+        "differences": {
+          "o": {
+            "candidate": 52.41361165099842,
+            "alpaca": 52.41,
+            "absDifference": 0.003611650998422533
+          },
+          "h": {
+            "candidate": 52.79391447059209,
+            "alpaca": 52.79,
+            "absDifference": 0.0039144705920932665
+          },
+          "l": {
+            "candidate": 51.838280695244535,
+            "alpaca": 51.84,
+            "absDifference": 0.0017193047554684426
+          },
+          "c": {
+            "candidate": 52.23808670043945,
+            "alpaca": 52.23,
+            "absDifference": 0.008086700439456251
+          }
+        }
+      },
+      {
+        "d": "2020-01-06",
+        "symbol": "NFLX",
+        "differences": {
+          "o": {
+            "candidate": 32.3120002746582,
+            "alpaca": 32.31,
+            "absDifference": 0.0020002746582008513
+          },
+          "h": {
+            "candidate": 33.63600158691406,
+            "alpaca": 33.64,
+            "absDifference": 0.0039984130859380684
+          },
+          "l": {
+            "candidate": 32.119998931884766,
+            "alpaca": 32.12,
+            "absDifference": 0.0000010681152318170462
+          },
+          "c": {
+            "candidate": 33.58300018310547,
+            "alpaca": 33.58,
+            "absDifference": 0.0030001831054704553
+          }
+        }
+      },
+      {
+        "d": "2020-01-06",
+        "symbol": "NOW",
+        "differences": {
+          "o": {
+            "candidate": 57.03799819946289,
+            "alpaca": 57.15,
+            "absDifference": 0.11200180053710795
+          },
+          "h": {
+            "candidate": 58.68199920654297,
+            "alpaca": 58.68,
+            "absDifference": 0.0019992065429690342
+          },
+          "l": {
+            "candidate": 56.91999816894531,
+            "alpaca": 56.92,
+            "absDifference": 0.0000018310546892053026
+          },
+          "c": {
+            "candidate": 58.57400131225586,
+            "alpaca": 58.57,
+            "absDifference": 0.004001312255859091
+          }
+        }
+      },
+      {
+        "d": "2020-01-06",
+        "symbol": "NVDA",
+        "differences": {
+          "o": {
+            "candidate": 5.768671412731947,
+            "alpaca": 5.769,
+            "absDifference": 0.0003285872680534041
+          },
+          "h": {
+            "candidate": 5.891583178596287,
+            "alpaca": 5.892,
+            "absDifference": 0.0004168214037134632
+          },
+          "l": {
+            "candidate": 5.742599277379908,
+            "alpaca": 5.743,
+            "absDifference": 0.0004007226200926084
+          },
+          "c": {
+            "candidate": 5.886368751525879,
+            "alpaca": 5.886,
+            "absDifference": 0.00036875152587878546
+          }
+        }
+      },
+      {
+        "d": "2020-01-06",
+        "symbol": "PYPL",
+        "differences": {
+          "o": {
+            "candidate": 106.38361752708185,
+            "alpaca": 106.38,
+            "absDifference": 0.0036175270818574745
+          },
+          "h": {
+            "candidate": 109.00439236741913,
+            "alpaca": 109,
+            "absDifference": 0.004392367419129073
+          },
+          "l": {
+            "candidate": 106.25505400447868,
+            "alpaca": 106.26,
+            "absDifference": 0.0049459955213251305
+          },
+          "c": {
+            "candidate": 108.95494079589844,
+            "alpaca": 108.95,
+            "absDifference": 0.004940795898434658
+          }
+        }
+      },
+      {
+        "d": "2020-01-06",
+        "symbol": "QCOM",
+        "differences": {
+          "o": {
+            "candidate": 74.0546912277582,
+            "alpaca": 74.05,
+            "absDifference": 0.0046912277582009665
+          },
+          "h": {
+            "candidate": 74.60637269867021,
+            "alpaca": 74.61,
+            "absDifference": 0.003627301329785837
+          },
+          "l": {
+            "candidate": 73.73574770565892,
+            "alpaca": 73.74,
+            "absDifference": 0.004252294341071661
+          },
+          "c": {
+            "candidate": 74.57189178466797,
+            "alpaca": 74.57,
+            "absDifference": 0.0018917846679755712
+          }
+        }
+      },
+      {
+        "d": "2020-01-06",
+        "symbol": "SHOP",
+        "differences": {
+          "o": {
+            "candidate": 39.85900115966797,
+            "alpaca": 39.86,
+            "absDifference": 0.0009988403320306816
+          },
+          "h": {
+            "candidate": 41.35200119018555,
+            "alpaca": 41.35,
+            "absDifference": 0.002001190185545454
+          },
+          "l": {
+            "candidate": 39.54199981689453,
+            "alpaca": 39.54,
+            "absDifference": 0.0019998168945321027
+          },
+          "c": {
+            "candidate": 41.33300018310547,
+            "alpaca": 41.33,
+            "absDifference": 0.0030001831054704553
+          }
+        }
+      },
+      {
+        "d": "2020-01-06",
+        "symbol": "TSLA",
+        "differences": {
+          "o": {
+            "candidate": 29.364667892456055,
+            "alpaca": 29.36,
+            "absDifference": 0.004667892456055256
+          },
+          "h": {
+            "candidate": 30.104000091552734,
+            "alpaca": 30.1,
+            "absDifference": 0.004000091552732954
+          },
+          "l": {
+            "candidate": 29.333332061767578,
+            "alpaca": 29.33,
+            "absDifference": 0.0033320617675798303
+          },
+          "c": {
+            "candidate": 30.1026668548584,
+            "alpaca": 30.1,
+            "absDifference": 0.0026668548583970164
+          }
+        }
+      },
+      {
+        "d": "2020-01-07",
+        "symbol": "ADBE",
+        "differences": {
+          "o": {
+            "candidate": 334.1499938964844,
+            "alpaca": 334.15,
+            "absDifference": 0.0000061035156022626325
+          },
+          "h": {
+            "candidate": 334.7900085449219,
+            "alpaca": 334.79,
+            "absDifference": 0.00000854492185453637
+          },
+          "l": {
+            "candidate": 332.30999755859375,
+            "alpaca": 332.305,
+            "absDifference": 0.004997558593743179
+          },
+          "c": {
+            "candidate": 333.3900146484375,
+            "alpaca": 333.39,
+            "absDifference": 0.00001464843751364242
+          }
+        }
+      },
+      {
+        "d": "2020-01-07",
+        "symbol": "AMD",
+        "differences": {
+          "o": {
+            "candidate": 49.349998474121094,
+            "alpaca": 49.35,
+            "absDifference": 0.0000015258789076710855
+          },
+          "h": {
+            "candidate": 49.38999938964844,
+            "alpaca": 49.39,
+            "absDifference": 6.103515630684342e-7
+          },
+          "l": {
+            "candidate": 48.040000915527344,
+            "alpaca": 48.04,
+            "absDifference": 9.155273446026513e-7
+          }
+        }
+      },
+      {
+        "d": "2020-01-07",
+        "symbol": "BAC",
+        "differences": {
+          "o": {
+            "candidate": 29.476495803965918,
+            "alpaca": 29.48,
+            "absDifference": 0.003504196034082696
+          },
+          "h": {
+            "candidate": 29.66337627867591,
+            "alpaca": 29.66,
+            "absDifference": 0.003376278675908395
+          },
+          "l": {
+            "candidate": 29.332084776665358,
+            "alpaca": 29.33,
+            "absDifference": 0.0020847766653595556
+          },
+          "c": {
+            "candidate": 29.408536911010742,
+            "alpaca": 29.41,
+            "absDifference": 0.0014630889892579546
+          }
+        }
+      },
+      {
+        "d": "2020-01-07",
+        "symbol": "C",
+        "differences": {
+          "o": {
+            "candidate": 62.80271197515103,
+            "alpaca": 62.8,
+            "absDifference": 0.002711975151029833
+          },
+          "h": {
+            "candidate": 62.810634301718885,
+            "alpaca": 62.81,
+            "absDifference": 0.0006343017188825684
+          },
+          "l": {
+            "candidate": 62.35915837478446,
+            "alpaca": 62.36,
+            "absDifference": 0.0008416252155427628
+          },
+          "c": {
+            "candidate": 62.38291931152344,
+            "alpaca": 62.38,
+            "absDifference": 0.002919311523434942
+          }
+        }
+      },
+      {
+        "d": "2020-01-07",
+        "symbol": "DDOG",
+        "differences": {
+          "o": {
+            "candidate": 39.95000076293945,
+            "alpaca": 39.95,
+            "absDifference": 7.629394502828291e-7
+          },
+          "h": {
+            "candidate": 41.540000915527344,
+            "alpaca": 41.54,
+            "absDifference": 9.155273446026513e-7
+          },
+          "l": {
+            "candidate": 39.20000076293945,
+            "alpaca": 39.2,
+            "absDifference": 7.629394502828291e-7
+          },
+          "c": {
+            "candidate": 40.060001373291016,
+            "alpaca": 40.06,
+            "absDifference": 0.0000013732910133512632
+          }
+        }
+      },
+      {
+        "d": "2020-01-07",
+        "symbol": "FDX",
+        "differences": {
+          "o": {
+            "candidate": 109.30636696858855,
+            "alpaca": 109.23,
+            "absDifference": 0.07636696858854464
+          },
+          "h": {
+            "candidate": 110.6320730609897,
+            "alpaca": 110.56,
+            "absDifference": 0.07207306098969468
+          },
+          "l": {
+            "candidate": 108.57937120715117,
+            "alpaca": 108.51,
+            "absDifference": 0.06937120715116407
+          },
+          "c": {
+            "candidate": 110.33271789550781,
+            "alpaca": 110.26,
+            "absDifference": 0.07271789550780738
+          }
+        }
+      },
+      {
+        "d": "2020-01-07",
+        "symbol": "GM",
+        "differences": {
+          "o": {
+            "candidate": 33.85300431001083,
+            "alpaca": 33.84,
+            "absDifference": 0.013004310010828135
+          },
+          "h": {
+            "candidate": 33.93822880101669,
+            "alpaca": 33.94,
+            "absDifference": 0.0017711989833060215
+          },
+          "l": {
+            "candidate": 32.89659934408168,
+            "alpaca": 32.9,
+            "absDifference": 0.0034006559183197282
+          },
+          "c": {
+            "candidate": 33.28484344482422,
+            "alpaca": 33.28,
+            "absDifference": 0.004843444824217613
+          }
+        }
+      },
+      {
+        "d": "2020-01-07",
+        "symbol": "LUV",
+        "differences": {
+          "o": {
+            "candidate": 49.68722121001904,
+            "alpaca": 49.69,
+            "absDifference": 0.0027787899809581518
+          },
+          "h": {
+            "candidate": 49.751239067632596,
+            "alpaca": 49.75,
+            "absDifference": 0.0012390676325964023
+          },
+          "l": {
+            "candidate": 49.275675347709324,
+            "alpaca": 49.28,
+            "absDifference": 0.004324652290677022
+          },
+          "c": {
+            "candidate": 49.650638580322266,
+            "alpaca": 49.65,
+            "absDifference": 0.0006385803222670461
+          }
+        }
+      },
+      {
+        "d": "2020-01-07",
+        "symbol": "MU",
+        "differences": {
+          "o": {
+            "candidate": 54.00310471379592,
+            "alpaca": 54,
+            "absDifference": 0.0031047137959205884
+          },
+          "h": {
+            "candidate": 56.94801980608221,
+            "alpaca": 56.95,
+            "absDifference": 0.0019801939177952477
+          },
+          "l": {
+            "candidate": 53.98360152141413,
+            "alpaca": 53.98,
+            "absDifference": 0.0036015214141329466
+          },
+          "c": {
+            "candidate": 56.821250915527344,
+            "alpaca": 56.82,
+            "absDifference": 0.0012509155273434658
+          }
+        }
+      },
+      {
+        "d": "2020-01-07",
+        "symbol": "NFLX",
+        "differences": {
+          "o": {
+            "candidate": 33.64699935913086,
+            "alpaca": 33.65,
+            "absDifference": 0.003000640869139204
+          },
+          "h": {
+            "candidate": 33.66999816894531,
+            "alpaca": 33.67,
+            "absDifference": 0.0000018310546892053026
+          },
+          "l": {
+            "candidate": 33.029998779296875,
+            "alpaca": 33.03,
+            "absDifference": 0.0000012207031261368684
+          },
+          "c": {
+            "candidate": 33.07500076293945,
+            "alpaca": 33.08,
+            "absDifference": 0.00499923706054517
+          }
+        }
+      },
+      {
+        "d": "2020-01-07",
+        "symbol": "NOW",
+        "differences": {
+          "o": {
+            "candidate": 58.64400100708008,
+            "alpaca": 58.64,
+            "absDifference": 0.0040010070800775566
+          },
+          "h": {
+            "candidate": 58.91600036621094,
+            "alpaca": 58.92,
+            "absDifference": 0.003999633789064205
+          },
+          "l": {
+            "candidate": 57.60599899291992,
+            "alpaca": 57.61,
+            "absDifference": 0.0040010070800775566
+          },
+          "c": {
+            "candidate": 58.582000732421875,
+            "alpaca": 58.58,
+            "absDifference": 0.0020007324218767053
+          }
+        }
+      },
+      {
+        "d": "2020-01-07",
+        "symbol": "NVDA",
+        "differences": {
+          "o": {
+            "candidate": 5.9146772215510675,
+            "alpaca": 5.915,
+            "absDifference": 0.00032277844893258134
+          },
+          "h": {
+            "candidate": 6.003322975997539,
+            "alpaca": 6.003,
+            "absDifference": 0.00032297599753849937
+          },
+          "l": {
+            "candidate": 5.869733680543367,
+            "alpaca": 5.87,
+            "absDifference": 0.0002663194566334681
+          },
+          "c": {
+            "candidate": 5.957634449005127,
+            "alpaca": 5.958,
+            "absDifference": 0.0003655509948732316
+          }
+        }
+      },
+      {
+        "d": "2020-01-07",
+        "symbol": "PYPL",
+        "differences": {
+          "o": {
+            "candidate": 110.27027574066764,
+            "alpaca": 110.27,
+            "absDifference": 0.00027574066764657346
+          },
+          "h": {
+            "candidate": 110.32961159116002,
+            "alpaca": 110.33,
+            "absDifference": 0.00038840883998148
+          },
+          "l": {
+            "candidate": 108.32200150016195,
+            "alpaca": 108.32,
+            "absDifference": 0.002001500161952663
+          },
+          "c": {
+            "candidate": 108.46045684814453,
+            "alpaca": 108.46,
+            "absDifference": 0.0004568481445375028
+          }
+        }
+      },
+      {
+        "d": "2020-01-07",
+        "symbol": "QCOM",
+        "differences": {
+          "o": {
+            "candidate": 75.02873969668066,
+            "alpaca": 75.03,
+            "absDifference": 0.0012603033193414603
+          },
+          "h": {
+            "candidate": 77.14064435377875,
+            "alpaca": 77.14,
+            "absDifference": 0.0006443537787532705
+          },
+          "l": {
+            "candidate": 74.91668167754706,
+            "alpaca": 74.92,
+            "absDifference": 0.003318322452940947
+          },
+          "c": {
+            "candidate": 76.6924057006836,
+            "alpaca": 76.69,
+            "absDifference": 0.0024057006835960237
+          }
+        }
+      },
+      {
+        "d": "2020-01-07",
+        "symbol": "SHOP",
+        "differences": {
+          "o": {
+            "candidate": 41.57500076293945,
+            "alpaca": 41.58,
+            "absDifference": 0.00499923706054517
+          },
+          "h": {
+            "candidate": 42.24800109863281,
+            "alpaca": 42.25,
+            "absDifference": 0.0019989013671875
+          },
+          "l": {
+            "candidate": 41.012001037597656,
+            "alpaca": 41.01,
+            "absDifference": 0.0020010375976582395
+          },
+          "c": {
+            "candidate": 41.45000076293945,
+            "alpaca": 41.45,
+            "absDifference": 7.629394502828291e-7
+          }
+        }
+      },
+      {
+        "d": "2020-01-07",
+        "symbol": "TSLA",
+        "differences": {
+          "o": {
+            "candidate": 30.760000228881836,
+            "alpaca": 30.76,
+            "absDifference": 2.2888183437430598e-7
+          },
+          "h": {
+            "candidate": 31.441999435424805,
+            "alpaca": 31.44,
+            "absDifference": 0.0019994354248034085
+          },
+          "l": {
+            "candidate": 30.224000930786133,
+            "alpaca": 30.22,
+            "absDifference": 0.004000930786133949
+          },
+          "c": {
+            "candidate": 31.270666122436523,
+            "alpaca": 31.27,
+            "absDifference": 0.0006661224365238638
+          }
+        }
+      },
+      {
+        "d": "2020-01-08",
+        "symbol": "ADBE",
+        "differences": {
+          "o": {
+            "candidate": 333.80999755859375,
+            "alpaca": 333.81,
+            "absDifference": 0.0000024414062522737368
+          },
+          "h": {
+            "candidate": 339.2300109863281,
+            "alpaca": 339.23,
+            "absDifference": 0.000010986328106810106
+          },
+          "l": {
+            "candidate": 333.3999938964844,
+            "alpaca": 333.4,
+            "absDifference": 0.0000061035156022626325
+          },
+          "c": {
+            "candidate": 337.8699951171875,
+            "alpaca": 337.87,
+            "absDifference": 0.0000048828125045474735
+          }
+        }
+      },
+      {
+        "d": "2020-01-08",
+        "symbol": "AMD",
+        "differences": {
+          "o": {
+            "candidate": 47.849998474121094,
+            "alpaca": 47.85,
+            "absDifference": 0.0000015258789076710855
+          },
+          "h": {
+            "candidate": 48.29999923706055,
+            "alpaca": 48.3,
+            "absDifference": 7.629394502828291e-7
+          },
+          "l": {
+            "candidate": 47.13999938964844,
+            "alpaca": 47.14,
+            "absDifference": 6.103515630684342e-7
+          },
+          "c": {
+            "candidate": 47.83000183105469,
+            "alpaca": 47.83,
+            "absDifference": 0.0000018310546892053026
+          }
+        }
+      },
+      {
+        "d": "2020-01-08",
+        "symbol": "BAC",
+        "differences": {
+          "o": {
+            "candidate": 29.366062635705035,
+            "alpaca": 29.37,
+            "absDifference": 0.003937364294966272
+          },
+          "h": {
+            "candidate": 29.8927310658041,
+            "alpaca": 29.89,
+            "absDifference": 0.0027310658040988756
+          },
+          "l": {
+            "candidate": 29.349072913384653,
+            "alpaca": 29.35,
+            "absDifference": 0.0009270866153485713
+          },
+          "c": {
+            "candidate": 29.70585060119629,
+            "alpaca": 29.71,
+            "absDifference": 0.00414939880371179
+          }
+        }
+      },
+      {
+        "d": "2020-01-08",
+        "symbol": "C",
+        "differences": {
+          "o": {
+            "candidate": 62.390833730769295,
+            "alpaca": 62.39,
+            "absDifference": 0.0008337307692940499
+          },
+          "h": {
+            "candidate": 63.36507440870751,
+            "alpaca": 63.37,
+            "absDifference": 0.004925591292490594
+          },
+          "l": {
+            "candidate": 62.31955092268241,
+            "alpaca": 62.32,
+            "absDifference": 0.0004490773175902518
+          },
+          "c": {
+            "candidate": 62.858154296875,
+            "alpaca": 62.86,
+            "absDifference": 0.0018457031249994316
+          }
+        }
+      },
+      {
+        "d": "2020-01-08",
+        "symbol": "DDOG",
+        "differences": {
+          "o": {
+            "candidate": 40.29999923706055,
+            "alpaca": 40.3,
+            "absDifference": 7.629394502828291e-7
+          },
+          "h": {
+            "candidate": 41.08000183105469,
+            "alpaca": 41.08,
+            "absDifference": 0.0000018310546892053026
+          },
+          "l": {
+            "candidate": 39.150001525878906,
+            "alpaca": 39.15,
+            "absDifference": 0.0000015258789076710855
+          },
+          "c": {
+            "candidate": 39.95000076293945,
+            "alpaca": 39.95,
+            "absDifference": 7.629394502828291e-7
+          }
+        }
+      },
+      {
+        "d": "2020-01-08",
+        "symbol": "FDX",
+        "differences": {
+          "o": {
+            "candidate": 110.16880838124051,
+            "alpaca": 110.09,
+            "absDifference": 0.07880838124050626
+          },
+          "h": {
+            "candidate": 112.43533095492151,
+            "alpaca": 112.36,
+            "absDifference": 0.07533095492151176
+          },
+          "l": {
+            "candidate": 109.71264932956636,
+            "alpaca": 109.64,
+            "absDifference": 0.07264932956636017
+          },
+          "c": {
+            "candidate": 111.9934310913086,
+            "alpaca": 111.92,
+            "absDifference": 0.07343109130859204
+          }
+        }
+      },
+      {
+        "d": "2020-01-08",
+        "symbol": "GM",
+        "differences": {
+          "o": {
+            "candidate": 33.18067187051477,
+            "alpaca": 33.18,
+            "absDifference": 0.0006718705147719106
+          },
+          "h": {
+            "candidate": 33.332181639281956,
+            "alpaca": 33.33,
+            "absDifference": 0.0021816392819573593
+          },
+          "l": {
+            "candidate": 32.584100575622415,
+            "alpaca": 32.58,
+            "absDifference": 0.0041005756224166134
+          },
+          "c": {
+            "candidate": 32.81136703491211,
+            "alpaca": 32.81,
+            "absDifference": 0.0013670349121071013
+          }
+        }
+      },
+      {
+        "d": "2020-01-08",
+        "symbol": "LUV",
+        "differences": {
+          "o": {
+            "candidate": 49.0927622259158,
+            "alpaca": 49.09,
+            "absDifference": 0.0027622259157951135
+          },
+          "h": {
+            "candidate": 49.98901565801341,
+            "alpaca": 49.99,
+            "absDifference": 0.0009843419865944725
+          },
+          "l": {
+            "candidate": 49.056179598798835,
+            "alpaca": 49.06,
+            "absDifference": 0.003820401201167556
+          },
+          "c": {
+            "candidate": 49.72379684448242,
+            "alpaca": 49.72,
+            "absDifference": 0.003796844482423012
+          }
+        }
+      },
+      {
+        "d": "2020-01-08",
+        "symbol": "MU",
+        "differences": {
+          "o": {
+            "candidate": 56.645717406379624,
+            "alpaca": 56.65,
+            "absDifference": 0.004282593620374087
+          },
+          "h": {
+            "candidate": 56.93825780851464,
+            "alpaca": 56.94,
+            "absDifference": 0.0017421914853557041
+          },
+          "l": {
+            "candidate": 55.641327328436624,
+            "alpaca": 55.64,
+            "absDifference": 0.0013273284366235316
+          },
+          "c": {
+            "candidate": 56.08988952636719,
+            "alpaca": 56.09,
+            "absDifference": 0.0001104736328159106
+          }
+        }
+      },
+      {
+        "d": "2020-01-08",
+        "symbol": "NFLX",
+        "differences": {
+          "o": {
+            "candidate": 33.14899826049805,
+            "alpaca": 33.15,
+            "absDifference": 0.001001739501951704
+          },
+          "h": {
+            "candidate": 34.27000045776367,
+            "alpaca": 34.27,
+            "absDifference": 4.5776366874861196e-7
+          },
+          "l": {
+            "candidate": 33.10499954223633,
+            "alpaca": 33.11,
+            "absDifference": 0.0050004577636713066
+          },
+          "c": {
+            "candidate": 33.92599868774414,
+            "alpaca": 33.93,
+            "absDifference": 0.004001312255859091
+          }
+        }
+      },
+      {
+        "d": "2020-01-08",
+        "symbol": "NOW",
+        "differences": {
+          "o": {
+            "candidate": 58.9119987487793,
+            "alpaca": 58.91,
+            "absDifference": 0.0019987487793002856
+          },
+          "h": {
+            "candidate": 59.53799819946289,
+            "alpaca": 59.54,
+            "absDifference": 0.0020018005371085223
+          },
+          "l": {
+            "candidate": 58.64799880981445,
+            "alpaca": 58.65,
+            "absDifference": 0.002001190185545454
+          },
+          "c": {
+            "candidate": 59.130001068115234,
+            "alpaca": 59.13,
+            "absDifference": 0.0000010681152318170462
+          }
+        }
+      },
+      {
+        "d": "2020-01-08",
+        "symbol": "NVDA",
+        "differences": {
+          "o": {
+            "candidate": 5.95341258476723,
+            "alpaca": 5.953,
+            "absDifference": 0.0004125847672300509
+          },
+          "h": {
+            "candidate": 6.010026777884842,
+            "alpaca": 6.01,
+            "absDifference": 0.000026777884841955313
+          },
+          "l": {
+            "candidate": 5.913435305232208,
+            "alpaca": 5.913,
+            "absDifference": 0.0004353052322079165
+          },
+          "c": {
+            "candidate": 5.968807697296143,
+            "alpaca": 5.969,
+            "absDifference": 0.0001923027038577274
+          }
+        }
+      },
+      {
+        "d": "2020-01-08",
+        "symbol": "PYPL",
+        "differences": {
+          "o": {
+            "candidate": 109.18240908861003,
+            "alpaca": 109.18,
+            "absDifference": 0.002409088610022536
+          },
+          "h": {
+            "candidate": 111.39770220219181,
+            "alpaca": 111.4,
+            "absDifference": 0.002297797808196833
+          },
+          "l": {
+            "candidate": 108.60880404952394,
+            "alpaca": 108.61,
+            "absDifference": 0.0011959504760596928
+          },
+          "c": {
+            "candidate": 110.58674621582031,
+            "alpaca": 110.59,
+            "absDifference": 0.0032537841796909106
+          }
+        }
+      },
+      {
+        "d": "2020-01-08",
+        "symbol": "QCOM",
+        "differences": {
+          "o": {
+            "candidate": 76.63206727986126,
+            "alpaca": 76.63,
+            "absDifference": 0.0020672798612650922
+          },
+          "h": {
+            "candidate": 77.12340872208333,
+            "alpaca": 77.12,
+            "absDifference": 0.003408722083321436
+          },
+          "l": {
+            "candidate": 75.78730145428179,
+            "alpaca": 75.79,
+            "absDifference": 0.002698545718217815
+          },
+          "c": {
+            "candidate": 76.4682846069336,
+            "alpaca": 76.47,
+            "absDifference": 0.0017153930664051131
+          }
+        }
+      },
+      {
+        "d": "2020-01-08",
+        "symbol": "SHOP",
+        "differences": {
+          "o": {
+            "candidate": 41.393001556396484,
+            "alpaca": 41.39,
+            "absDifference": 0.0030015563964838066
+          },
+          "h": {
+            "candidate": 42.25450134277344,
+            "alpaca": 42.25,
+            "absDifference": 0.0045013427734375
+          },
+          "l": {
+            "candidate": 41.18600082397461,
+            "alpaca": 41.19,
+            "absDifference": 0.003999176025388351
+          },
+          "c": {
+            "candidate": 41.810001373291016,
+            "alpaca": 41.81,
+            "absDifference": 0.0000013732910133512632
+          }
+        }
+      },
+      {
+        "d": "2020-01-08",
+        "symbol": "TSLA",
+        "differences": {
+          "o": {
+            "candidate": 31.579999923706055,
+            "alpaca": 31.58,
+            "absDifference": 7.629394360719743e-8
+          },
+          "h": {
+            "candidate": 33.232666015625,
+            "alpaca": 33.23,
+            "absDifference": 0.0026660156250031264
+          },
+          "l": {
+            "candidate": 31.215333938598633,
+            "alpaca": 31.22,
+            "absDifference": 0.004666061401366051
+          },
+          "c": {
+            "candidate": 32.80933380126953,
+            "alpaca": 32.81,
+            "absDifference": 0.0006661987304710237
+          }
+        }
+      },
+      {
+        "d": "2020-01-09",
+        "symbol": "ADBE",
+        "differences": {
+          "o": {
+            "candidate": 340.1400146484375,
+            "alpaca": 340.14,
+            "absDifference": 0.00001464843751364242
+          },
+          "h": {
+            "candidate": 341.80999755859375,
+            "alpaca": 341.8099,
+            "absDifference": 0.00009755859372262421
+          },
+          "l": {
+            "candidate": 338.19000244140625,
+            "alpaca": 338.19,
+            "absDifference": 0.0000024414062522737368
+          },
+          "c": {
+            "candidate": 340.45001220703125,
+            "alpaca": 340.45,
+            "absDifference": 0.000012207031261368684
+          }
+        }
+      },
+      {
+        "d": "2020-01-09",
+        "symbol": "AMD",
+        "differences": {
+          "o": {
+            "candidate": 48.939998626708984,
+            "alpaca": 48.94,
+            "absDifference": 0.0000013732910133512632
+          },
+          "h": {
+            "candidate": 49.959999084472656,
+            "alpaca": 49.96,
+            "absDifference": 9.155273446026513e-7
+          },
+          "l": {
+            "candidate": 48.38999938964844,
+            "alpaca": 48.39,
+            "absDifference": 6.103515630684342e-7
+          },
+          "c": {
+            "candidate": 48.970001220703125,
+            "alpaca": 48.97,
+            "absDifference": 0.0000012207031261368684
+          }
+        }
+      },
+      {
+        "d": "2020-01-09",
+        "symbol": "BAC",
+        "differences": {
+          "o": {
+            "candidate": 29.986169413143966,
+            "alpaca": 29.99,
+            "absDifference": 0.0038305868560328804
+          },
+          "h": {
+            "candidate": 30.011655613874463,
+            "alpaca": 30.01,
+            "absDifference": 0.001655613874461892
+          },
+          "l": {
+            "candidate": 29.68036092804055,
+            "alpaca": 29.68,
+            "absDifference": 0.00036092804054987937
+          },
+          "c": {
+            "candidate": 29.756813049316406,
+            "alpaca": 29.76,
+            "absDifference": 0.003186950683595313
+          }
+        }
+      },
+      {
+        "d": "2020-01-09",
+        "symbol": "C",
+        "differences": {
+          "o": {
+            "candidate": 64.14130609539039,
+            "alpaca": 64.14,
+            "absDifference": 0.0013060953903902828
+          },
+          "h": {
+            "candidate": 64.14130609539039,
+            "alpaca": 64.14,
+            "absDifference": 0.0013060953903902828
+          },
+          "l": {
+            "candidate": 63.15122670176718,
+            "alpaca": 63.15,
+            "absDifference": 0.001226701767180316
+          },
+          "c": {
+            "candidate": 63.42844772338867,
+            "alpaca": 63.43,
+            "absDifference": 0.0015522766113278408
+          }
+        }
+      },
+      {
+        "d": "2020-01-09",
+        "symbol": "DDOG",
+        "differences": {
+          "o": {
+            "candidate": 40.45000076293945,
+            "alpaca": 40.45,
+            "absDifference": 7.629394502828291e-7
+          },
+          "h": {
+            "candidate": 40.96500015258789,
+            "alpaca": 40.965,
+            "absDifference": 1.5258788721439487e-7
+          },
+          "l": {
+            "candidate": 39.880001068115234,
+            "alpaca": 39.88,
+            "absDifference": 0.0000010681152318170462
+          },
+          "c": {
+            "candidate": 40.209999084472656,
+            "alpaca": 40.21,
+            "absDifference": 9.155273446026513e-7
+          }
+        }
+      },
+      {
+        "d": "2020-01-09",
+        "symbol": "FDX",
+        "differences": {
+          "o": {
+            "candidate": 112.57787896985985,
+            "alpaca": 112.5,
+            "absDifference": 0.07787896985985299
+          },
+          "h": {
+            "candidate": 112.83447011581093,
+            "alpaca": 112.76,
+            "absDifference": 0.07447011581092511
+          },
+          "l": {
+            "candidate": 111.60854438827612,
+            "alpaca": 111.53,
+            "absDifference": 0.07854438827611432
+          },
+          "c": {
+            "candidate": 112.64915466308594,
+            "alpaca": 112.57,
+            "absDifference": 0.07915466308594432
+          }
+        }
+      },
+      {
+        "d": "2020-01-09",
+        "symbol": "GM",
+        "differences": {
+          "o": {
+            "candidate": 33.13333857613145,
+            "alpaca": 33.13,
+            "absDifference": 0.0033385761314477236
+          },
+          "h": {
+            "candidate": 33.23749864751968,
+            "alpaca": 33.24,
+            "absDifference": 0.0025013524803227938
+          },
+          "l": {
+            "candidate": 32.69774466149673,
+            "alpaca": 32.7,
+            "absDifference": 0.002255338503275084
+          },
+          "c": {
+            "candidate": 33.218563079833984,
+            "alpaca": 33.22,
+            "absDifference": 0.0014369201660144881
+          }
+        }
+      },
+      {
+        "d": "2020-01-09",
+        "symbol": "LUV",
+        "differences": {
+          "o": {
+            "candidate": 49.842695897879636,
+            "alpaca": 49.84,
+            "absDifference": 0.0026958978796329802
+          },
+          "h": {
+            "candidate": 50.13534998001795,
+            "alpaca": 50.14,
+            "absDifference": 0.00465001998205139
+          },
+          "l": {
+            "candidate": 49.56833313196395,
+            "alpaca": 49.57,
+            "absDifference": 0.0016668680360467647
+          },
+          "c": {
+            "candidate": 49.659786224365234,
+            "alpaca": 49.66,
+            "absDifference": 0.0002137756347622144
+          }
+        }
+      },
+      {
+        "d": "2020-01-09",
+        "symbol": "MU",
+        "differences": {
+          "o": {
+            "candidate": 56.869999671127374,
+            "alpaca": 56.87,
+            "absDifference": 3.288726233563466e-7
+          },
+          "h": {
+            "candidate": 57.02602147012122,
+            "alpaca": 57.03,
+            "absDifference": 0.0039785298787791135
+          },
+          "l": {
+            "candidate": 55.07574712277158,
+            "alpaca": 55.08,
+            "absDifference": 0.004252877228417162
+          },
+          "c": {
+            "candidate": 55.88511276245117,
+            "alpaca": 55.89,
+            "absDifference": 0.0048872375488286934
+          }
+        }
+      },
+      {
+        "d": "2020-01-09",
+        "symbol": "NFLX",
+        "differences": {
+          "o": {
+            "candidate": 34.20000076293945,
+            "alpaca": 34.2,
+            "absDifference": 7.629394502828291e-7
+          },
+          "h": {
+            "candidate": 34.34199905395508,
+            "alpaca": 34.34,
+            "absDifference": 0.0019990539550747144
+          },
+          "l": {
+            "candidate": 33.46099853515625,
+            "alpaca": 33.46,
+            "absDifference": 0.0009985351562491473
+          },
+          "c": {
+            "candidate": 33.566001892089844,
+            "alpaca": 33.57,
+            "absDifference": 0.003998107910156534
+          }
+        }
+      },
+      {
+        "d": "2020-01-09",
+        "symbol": "NOW",
+        "differences": {
+          "o": {
+            "candidate": 59.459999084472656,
+            "alpaca": 59.46,
+            "absDifference": 9.155273446026513e-7
+          },
+          "h": {
+            "candidate": 59.95399856567383,
+            "alpaca": 59.95,
+            "absDifference": 0.003998565673825283
+          },
+          "l": {
+            "candidate": 58.84600067138672,
+            "alpaca": 58.85,
+            "absDifference": 0.003999328613282671
+          },
+          "c": {
+            "candidate": 59.86199951171875,
+            "alpaca": 59.86,
+            "absDifference": 0.0019995117187505684
+          }
+        }
+      },
+      {
+        "d": "2020-01-09",
+        "symbol": "NVDA",
+        "differences": {
+          "o": {
+            "candidate": 6.054971861692461,
+            "alpaca": 6.055,
+            "absDifference": 0.00002813830753911617
+          },
+          "h": {
+            "candidate": 6.106619811010042,
+            "alpaca": 6.107,
+            "absDifference": 0.0003801889899586186
+          },
+          "l": {
+            "candidate": 5.9807280529505515,
+            "alpaca": 5.981,
+            "absDifference": 0.0002719470494483289
+          },
+          "c": {
+            "candidate": 6.034362316131592,
+            "alpaca": 6.034,
+            "absDifference": 0.0003623161315919887
+          }
+        }
+      },
+      {
+        "d": "2020-01-09",
+        "symbol": "PYPL",
+        "differences": {
+          "o": {
+            "candidate": 111.74384965938312,
+            "alpaca": 111.74,
+            "absDifference": 0.0038496593831212067
+          },
+          "h": {
+            "candidate": 112.30756292080939,
+            "alpaca": 112.31,
+            "absDifference": 0.0024370791906136446
+          },
+          "l": {
+            "candidate": 110.35928852133142,
+            "alpaca": 110.36,
+            "absDifference": 0.0007114786685775698
+          },
+          "c": {
+            "candidate": 111.32848358154297,
+            "alpaca": 111.33,
+            "absDifference": 0.0015164184570295447
+          }
+        }
+      },
+      {
+        "d": "2020-01-09",
+        "symbol": "QCOM",
+        "differences": {
+          "o": {
+            "candidate": 77.28716960092284,
+            "alpaca": 77.29,
+            "absDifference": 0.002830399077168977
+          },
+          "h": {
+            "candidate": 78.2008904099955,
+            "alpaca": 78.2,
+            "absDifference": 0.0008904099954918365
+          },
+          "l": {
+            "candidate": 76.57170574116718,
+            "alpaca": 76.57,
+            "absDifference": 0.0017057411671856926
+          },
+          "c": {
+            "candidate": 77.50267028808594,
+            "alpaca": 77.5,
+            "absDifference": 0.0026702880859375
+          }
+        }
+      },
+      {
+        "d": "2020-01-09",
+        "symbol": "SHOP",
+        "differences": {
+          "o": {
+            "candidate": 42.310001373291016,
+            "alpaca": 42.4,
+            "absDifference": 0.08999862670898295
+          },
+          "h": {
+            "candidate": 43.17100143432617,
+            "alpaca": 43.17,
+            "absDifference": 0.0010014343261701697
+          },
+          "l": {
+            "candidate": 42.17900085449219,
+            "alpaca": 42.18,
+            "absDifference": 0.0009991455078122158
+          },
+          "c": {
+            "candidate": 43.02000045776367,
+            "alpaca": 43.02,
+            "absDifference": 4.5776366874861196e-7
+          }
+        }
+      },
+      {
+        "d": "2020-01-09",
+        "symbol": "TSLA",
+        "differences": {
+          "o": {
+            "candidate": 33.13999938964844,
+            "alpaca": 33.14,
+            "absDifference": 6.103515630684342e-7
+          },
+          "h": {
+            "candidate": 33.253334045410156,
+            "alpaca": 33.25,
+            "absDifference": 0.00333404541015625
+          },
+          "l": {
+            "candidate": 31.524667739868164,
+            "alpaca": 31.52,
+            "absDifference": 0.004667739868164489
+          },
+          "c": {
+            "candidate": 32.089332580566406,
+            "alpaca": 32.09,
+            "absDifference": 0.0006674194335971606
+          }
+        }
+      },
+      {
+        "d": "2020-01-10",
+        "symbol": "ADBE",
+        "differences": {
+          "o": {
+            "candidate": 342.04998779296875,
+            "alpaca": 342.05,
+            "absDifference": 0.000012207031261368684
+          },
+          "h": {
+            "candidate": 343.3599853515625,
+            "alpaca": 343.36,
+            "absDifference": 0.00001464843751364242
+          },
+          "l": {
+            "candidate": 339.6199951171875,
+            "alpaca": 339.62,
+            "absDifference": 0.0000048828125045474735
+          },
+          "c": {
+            "candidate": 339.80999755859375,
+            "alpaca": 339.81,
+            "absDifference": 0.0000024414062522737368
+          }
+        }
+      },
+      {
+        "d": "2020-01-10",
+        "symbol": "AMD",
+        "differences": {
+          "o": {
+            "candidate": 49.2599983215332,
+            "alpaca": 49.26,
+            "absDifference": 0.0000016784667948854803
+          },
+          "h": {
+            "candidate": 49.290000915527344,
+            "alpaca": 49.29,
+            "absDifference": 9.155273446026513e-7
+          },
+          "c": {
+            "candidate": 48.16999816894531,
+            "alpaca": 48.165,
+            "absDifference": 0.004998168945313353
+          }
+        }
+      },
+      {
+        "d": "2020-01-10",
+        "symbol": "BAC",
+        "differences": {
+          "o": {
+            "candidate": 29.731331235945383,
+            "alpaca": 29.73,
+            "absDifference": 0.0013312359453827582
+          },
+          "h": {
+            "candidate": 29.79079363918064,
+            "alpaca": 29.79,
+            "absDifference": 0.0007936391806424581
+          },
+          "l": {
+            "candidate": 29.442512460035026,
+            "alpaca": 29.44,
+            "absDifference": 0.0025124600350245885
+          },
+          "c": {
+            "candidate": 29.51047134399414,
+            "alpaca": 29.51,
+            "absDifference": 0.0004713439941390618
+          }
+        }
+      },
+      {
+        "d": "2020-01-10",
+        "symbol": "C",
+        "differences": {
+          "o": {
+            "candidate": 63.36507033098384,
+            "alpaca": 63.37,
+            "absDifference": 0.004929669016156879
+          },
+          "h": {
+            "candidate": 63.37299265680513,
+            "alpaca": 63.37,
+            "absDifference": 0.00299265680513372
+          },
+          "l": {
+            "candidate": 62.62845114666759,
+            "alpaca": 62.63,
+            "absDifference": 0.0015488533324159448
+          },
+          "c": {
+            "candidate": 62.77102279663086,
+            "alpaca": 62.77,
+            "absDifference": 0.0010227966308562486
+          }
+        }
+      }
+    ]
+  },
+  "independentDataLineVerified": false,
+  "verifiedForResearch": false,
+  "decision": "REVIEW_REQUIRED_NO_AUTOMATIC_APPROVAL",
+  "researchStarted": false,
+  "tradeEnabled": false,
+  "forwardOpened": false
+}
