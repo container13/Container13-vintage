@@ -504,3 +504,11 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Approved dataset SHA unchanged.
 - [x] Research not started; Gen8 frozen; Handel/Forward OFF; Worker unchanged.
 - [x] Version/cache V0.3.36.
+
+
+## V0.3.37 pre-research start check
+- [x] Immutable GitHub plan lock can be adopted only when SPEC hash, canonical SPEC SHA and dataset SHA all match.
+- [x] Local plan checkpoint is reconstructed from exact current SPEC only after gate verification.
+- [x] No fold is observed during adoption; no rerun/rescue introduced.
+- [x] Handel/Forward OFF; Gen8 frozen; Worker unchanged.
+- [x] Version/cache V0.3.37.
