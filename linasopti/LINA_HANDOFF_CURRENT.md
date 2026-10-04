@@ -295,3 +295,10 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Statusfältet ligger nu direkt under `▶ Kör Gen9-kontroll` och använder `aria-live="assertive"`.
 - Körlogik, kandidatparser och hård 20 128 / 16×1 258-preflight är oförändrade från V0.3.26.
 - Gen8 är fryst och orörd. Gen9 är fortsatt NOT APPROVED; research ej startad. Handel/Forward AV. Cloudflare: INGEN ÄNDRING.
+
+
+## V0.3.28 — Gen9 full avvikelsediagnostik
+- Kandidat↔Alpaca-jämförelsen samlar nu alla OHLC-fältskillnader diagnostiskt och redovisar kumulativa storleksband från <0.00001 till <10 samt >=10.
+- De 100 största absoluta avvikelserna sparas med exakt datum, symbol, OHLC-fält, kandidatvärde, Alpaca-värde och absolut skillnad; kompakt ChatGPT-rapport tar med de 20 största.
+- Ingen tolerans används för godkännande och ingen kandidatdata patchas. Gen9 förblir NOT APPROVED och research ej startad.
+- Gen8 fryst/orörd; Handel/Forward AV; Cloudflare INGEN ÄNDRING. Version/cache V0.3.28.
