@@ -273,3 +273,10 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Export/diagnostic controls attach when their panel exists; the Gen9 primary run depends only on the Gen9 section itself.
 - No Gen9 approval/research gate changed. Gen8 remains frozen. Handel/Forward OFF.
 - Cloudflare Worker unchanged.
+
+
+## V0.3.25 — Gen9 Data Check syntax repair
+- Root cause of the missing Gen9 controls identified: two literal backslash-n sequences existed between JavaScript statements in `gen9-data-check.js`, causing the entire file to fail parsing in the browser.
+- Replaced those invalid literal sequences with real line breaks.
+- Primary Gen9 run remains directly after the Gen9 heading and retains the automated diagnostic → Alpaca → comparison → GitHub report flow.
+- Gen8 frozen; Gen9 NOT APPROVED; research not started; Handel/Forward OFF. Cloudflare Worker unchanged.
