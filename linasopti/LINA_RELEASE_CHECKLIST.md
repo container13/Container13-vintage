@@ -459,3 +459,12 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] index.html innehåller inga bokstavliga \\n-sekvenser.
 - [x] Version/cache V0.3.32.
 - [x] Ingen Gen9/Worker/forskningslogik ändrad.
+
+
+## V0.3.33 release check
+- [x] Alpaca SIP split/dividend/spin-off/all körs separat mot låst kandidat.
+- [x] 20 128 rader krävs för kandidat och varje provider-variant.
+- [x] Exakt OHLC, ingen tolerans/patchning.
+- [x] Separat GitHub-rapport GEN9_ADJUSTMENT_DIAGNOSTIC och returväg verifieras.
+- [x] Status visas vid Gen9 primärkontroller.
+- [x] Version/cache V0.3.33; Worker INGEN ÄNDRING; Gen8 fryst; Gen9 EJ GODKÄND; research ej startad; Handel/Forward AV.
