@@ -95,7 +95,7 @@ async function uploadComparisonReport(onProgress=()=>{}) {
 }
 function mount(root){const section=root.querySelector('[data-gen9-build]'),panel=root.querySelector('.engine-export-primary');if(!section||!panel)return;
  const info=document.createElement('p');info.setAttribute('aria-live','polite');const old=saved();info.textContent=old?'Datakällrapport finns att exportera.':'Kontrollera datakällan före planlås. Kontrollen läser prisdata och ändrar inget forskningsstate.';
- const runAll=document.createElement('button');runAll.textContent='▶ Kör Gen9-kontroll';runAll.setAttribute('data-gen-primary-run','9');section.prepend(runAll);
+ const runAll=document.createElement('button');runAll.textContent='▶ Kör Gen9-kontroll';runAll.setAttribute('data-gen-primary-run','9');const gen9Title=section.querySelector('h2');if(gen9Title)gen9Title.insertAdjacentElement('afterend',runAll);else section.prepend(runAll);
  const button=document.createElement('button');button.textContent='🔎 Kontrollera Gen9-datakälla';section.append(button,info);
  const independent=document.createElement('button');independent.textContent='🧪 Hämta oberoende Alpaca SIP/all';section.append(independent);
  const independentExport=document.createElement('button');independentExport.textContent='📋 Kopiera Alpaca SIP/all';independentExport.disabled=!savedIndependent();panel.append(independentExport);
