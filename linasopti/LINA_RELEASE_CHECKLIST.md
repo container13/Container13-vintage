@@ -521,3 +521,12 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Existing per-fold checkpoint then immutable evidence sequence unchanged.
 - [x] Handel/Forward OFF; Gen8 frozen; Worker unchanged.
 - [x] Version/cache V0.3.38.
+
+
+## V0.3.39 global start fix
+- [x] Confirmed Dashboard is normal post-login route and Gen9 mount is not called there.
+- [x] Authorized Gen9 start moved to global startApp after GitHub bootstrap/recovery.
+- [x] Visible Dashboard Gen9 status added for progress/stop/completion.
+- [x] No-rerun guards unchanged; no fold observed by this code change itself.
+- [x] Handel/Forward OFF; Gen8 frozen; Worker unchanged.
+- [x] Version/cache V0.3.39.
