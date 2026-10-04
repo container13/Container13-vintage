@@ -235,3 +235,9 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Kandidatens SHA-256 måste vara `cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c`; annars stopp.
 - Rapporten redovisar saknade nycklar, exakta rader, avvikande rader/fält, per-symbol summering, max absolut avvikelse och högst 100 exempel. Ingen tolerans används för godkännande.
 - Rapporten sätter inte verifieringsflagga automatiskt och patchar aldrig kandidaten. Gen8 orörd; Gen9 EJ GODKÄND; forskning ej startad; Handel/Forward AV. Cloudflare: INGEN ÄNDRING.
+
+
+## V0.3.21 — kompakt ChatGPT-jämförelserapport
+- Full V0.3.20-jämförelse behålls lokalt oförändrad.
+- **📋 Kopiera jämförelserapport** exporterar nu en separat kompakt ChatGPT-rapport: hashar, totaler och 16 per-symbol-summeringar; inga 100 exempelrader eller datumlistor.
+- Ingen verifieringsflagga ändras automatiskt. Gen8 orörd; Gen9 EJ GODKÄND; Handel/Forward AV. Cloudflare: INGEN ÄNDRING.
