@@ -1,0 +1,10 @@
+{
+  "schema": "LINA-GEN9-DATASET-GATE-1",
+  "candidateSha256": "cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c",
+  "rowCount": 20128,
+  "datasetGate": "PASSED",
+  "scope": "RESEARCH_DATA_INPUT",
+  "nextStageStarted": false,
+  "evidenceComplete": true,
+  "note": "Explicit user gate. Dataset unchanged."
+}
