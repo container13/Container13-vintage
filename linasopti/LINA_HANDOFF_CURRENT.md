@@ -303,3 +303,9 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Ingen tolerans används för godkännande och ingen kandidatdata patchas. Gen9 förblir NOT APPROVED och research ej startad.
 - Gen8 fryst/orörd; Handel/Forward AV; Cloudflare INGEN ÄNDRING. Version/cache V0.3.28.
 \n\n## V0.3.29 — automatiserad Gen9 RAW-diagnostik\n- Ny primär RAW-kontroll hämtar Alpaca SIP/raw för samma 16 symboler 2020–2024, kräver 20 128 rader, verifierar låst kandidat-SHA, gör exakt OHLC-diagnostik och sparar rapport automatiskt via befintlig runtime-report-transport.\n- ALL-resultatet bevaras i sessionen efter RAW-upload; RAW är separat diagnostik och ger inget automatiskt godkännande.\n- Permanent regel om maximal säker automatisering och synlig status vid primärknappen tillagd.\n- Gen8 fryst/orörd; Gen9 EJ GODKÄND; research ej startad; Handel/Forward AV; Worker INGEN ÄNDRING.\n
+
+## V0.3.30 — RAW-rapport får egen sparväg
+- RAW-diagnostiken använder nu runtime-report direkt med namnet GEN9_COMPARE_RAW och verifierar att returvägen faktiskt är en GEN9_COMPARE_RAW-fil.
+- Ingen sessionStorage-växling via ALL-uploadfunktionen används längre; ALL-rapporten kan därför inte maskera RAW-resultatet.
+- Ingen Worker-ändring krävs: runtime-report accepterar säkra separata rapportnamn.
+- Gen8 fryst/orörd; Gen9 EJ GODKÄND; research ej startad; Handel/Forward AV.
