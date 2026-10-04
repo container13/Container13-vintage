@@ -439,3 +439,10 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Version/cache V0.3.28; inga aktiva 0.3.27-cachetokens kvar.
 - [x] Gen8 frozen; Gen9 NOT APPROVED; Handel/Forward OFF; Cloudflare INGEN ÄNDRING.
 \n\n## V0.3.29 release check\n- [x] Separat Alpaca SIP/raw-modul och exakt RAW-jämförelse tillagd.\n- [x] En knapp automatiserar RAW-hämtning → kandidat-SHA/radkontroll → jämförelse → runtime-report upload.\n- [x] Befintlig ALL-jämförelse återställs i sessionen efter RAW-upload.\n- [x] Permanent regel för maximal säker automatisering och status vid primärknapp tillagd.\n- [x] Version/cache V0.3.29.\n- [x] Gen8 fryst; Gen9 EJ GODKÄND; research ej startad; Handel/Forward AV; Worker INGEN ÄNDRING.\n
+
+## V0.3.30 release check
+- [x] RAW-upload frikopplad från ALL-upload.
+- [x] Eget runtime-report-namn: GEN9_COMPARE_RAW.
+- [x] Returvägen måste innehålla /GEN9_COMPARE_RAW_ innan UI visar klart.
+- [x] Version/cache V0.3.30.
+- [x] Worker INGEN ÄNDRING; Gen8 fryst; Gen9 EJ GODKÄND; research ej startad; Handel/Forward AV.
