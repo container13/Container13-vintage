@@ -349,3 +349,11 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Browser verifies exact file bytes SHA before JSON parsing, then requires 20,128 rows / 1,258 per each of 16 symbols and aligned valid OHLC dates.
 - Workflow fetches the approved candidate + gate automatically after plan evidence; manual iPhone JSON import is no longer the normal path.
 - Research method/spec unchanged. Plan remains NOT LOCKED and research NOT STARTED. Gen8 frozen; Handel/Forward OFF; Worker unchanged.
+
+
+## V0.3.36 — Gen9 plan locked
+- Explicit user decision locked the reviewed Gen9 plan before research.
+- Locked SPEC hash: 083bcb30; canonical SPEC SHA-256: a1362ccffcf76b4d4fb548c1db115d5def35cc3f0a41252f1e43465ef56b135f.
+- Immutable gate evidence: evidence/GEN9_PLAN_LOCK_2026-10-05.json.
+- Dataset remains locked to SHA-256 cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c.
+- Research NOT started. Gen8 frozen. Handel/Forward OFF. Worker unchanged.
