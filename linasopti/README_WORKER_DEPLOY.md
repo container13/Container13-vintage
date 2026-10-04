@@ -45,3 +45,12 @@ Ingen livehandel aktiveras av denna Worker. Befintliga Alpaca/EODHD-rutter behå
 
 
 - **Cloudflare Worker-leverans:** När komplett Worker-kod ska lämnas till användaren ska en nedladdningsbar HTML-hjälpare skapas med knappen **Kopiera Worker-kod**. Hela Worker-koden ska ligga dold i HTML-filen och kopieras till urklipp med ett knapptryck; de tusentals kodraderna ska inte visas i chatten. HTML-hjälparen ska alltid byggas från den senast verifierade kompletta live-Worker-basen, inte från en kort/ofullständig repo-kopia.
+
+
+## CURRENT / PREVIOUS / PENDING (V0.3.21)
+- `worker/WORKER_CURRENT.js`: exakt komplett senast verifierad/deployad Worker.
+- `worker/WORKER_PREVIOUS.js`: exakt föregående verifierad/deployad Worker. Används för rollback.
+- Pending kod hålls separat och får inte ersätta CURRENT/PREVIOUS före verifierad Cloudflare-deploy.
+- Vid lyckad ny deploy: gamla CURRENT → PREVIOUS, verifierad ny Worker → CURRENT.
+- Vid misslyckad deploy lämnas båda orörda.
+- Första införandet har ingen fabricerad PREVIOUS; den skapas vid nästa verifierade Worker-byte.
