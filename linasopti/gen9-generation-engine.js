@@ -56,11 +56,21 @@ function aggregate(folds,variant){
  const g=SPEC.gates,checks={trades:r.n>=g.trades,pf:gl===0?gp>0:r.pf>=g.pf,dd:Math.abs(r.dd)<=g.dd,positive:r.pl>0,concentration:r.concentration<=g.concentration,positiveFolds:r.positiveFolds>=g.positiveFolds,worstFold:fs.every(f=>f.n>0&&(f.pfKind==='NO_LOSSES'||f.pf>=g.minFoldPf)),foldShare:r.maxFoldGrossProfitShare<=g.maxFoldGrossProfitShare};
  return{variant,metrics:r,checks,status:Object.values(checks).every(Boolean)?'PASS':'FAIL',candidateEligible:variant==='B'&&Object.values(checks).every(Boolean),tradeEnabled:false,forwardOpened:false};
 }
+const APPROVED_DATA=deepFreeze({schema:'LINA-GEN9-DATASET-GATE-1',path:'SOURCE_gen9-data.json',gatePath:'evidence/GEN9_DATASET_GATE_2026-10-05.json',sha256:'cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c',rowCount:20128,historyHardStop:'2024-12-31'});
+async function sha256Text(text){const bytes=new TextEncoder().encode(text),digest=await global.crypto.subtle.digest('SHA-256',bytes);return[...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join('')}
+async function validateApprovedDataset(rawText,gate){
+ if(!gate||gate.schema!==APPROVED_DATA.schema||gate.datasetGate!=='PASSED'||gate.candidateSha256!==APPROVED_DATA.sha256||gate.rowCount!==APPROVED_DATA.rowCount||gate.nextStageStarted!==false)throw Error('DATA: godkänd Gen9-datasetgate saknas eller matchar inte låst kandidat');
+ if(await sha256Text(rawText)!==APPROVED_DATA.sha256)throw Error('DATA: SOURCE_gen9-data.json matchar inte godkänd SHA256');
+ let input;try{input=JSON.parse(rawText)}catch(_){throw Error('DATA: kandidatfilen är inte giltig JSON')}
+ const normalized=normalize(input,APPROVED_DATA.historyHardStop),rows=SPEC.symbols.reduce((n,s)=>n+normalized.by[s].length,0);
+ if(rows!==APPROVED_DATA.rowCount||SPEC.symbols.some(s=>normalized.by[s].length!==1258))throw Error('DATA: kandidat måste vara exakt 20 128 rader, 1 258 per symbol');
+ return{normalized,manifest:{schema:'LINA-GEN9-APPROVED-DATASET-1',source:APPROVED_DATA.path,gatePath:APPROVED_DATA.gatePath,contentSha256:APPROVED_DATA.sha256,rowCount:rows,historyHardStop:APPROVED_DATA.historyHardStop,datasetGate:'PASSED'}};
+}
 async function validateDataManifest(m,input){
- if(!m||m.adjustmentStatus!=='VERIFIED_ADJUSTED_OHLC'||!m.source||!m.contentSha256||!/^[a-f0-9]{64}$/.test(m.contentSha256)||!m.corporateActionsVerified||!m.calendarVerified)throw Error('DATA: källa, SHA256, kalender och justeringsstatus måste verifieras före forskning');
- if(m.historyHardStop!==SPEC.historyHardStop)throw Error('DATA: fel historisk gräns');
- const normalized=normalize(input,SPEC.historyHardStop);
- const bytes=new TextEncoder().encode(canonical(normalized.by));const digest=await global.crypto.subtle.digest("SHA-256",bytes);const actual=[...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,"0")).join("");if(actual!==m.contentSha256)throw Error("DATA: rådata matchar inte förhandsregistrerad SHA256");return normalized;
+ if(!m||m.schema!=='LINA-GEN9-APPROVED-DATASET-1'||m.datasetGate!=='PASSED'||m.contentSha256!==APPROVED_DATA.sha256||m.rowCount!==APPROVED_DATA.rowCount||m.historyHardStop!==SPEC.historyHardStop)throw Error('DATA: endast den godkända SHA-låsta Gen9-kandidaten får användas');
+ const normalized=normalize(input,SPEC.historyHardStop),rows=SPEC.symbols.reduce((n,s)=>n+normalized.by[s].length,0);
+ if(rows!==APPROVED_DATA.rowCount||SPEC.symbols.some(s=>normalized.by[s].length!==1258))throw Error('DATA: lagrat dataset matchar inte godkänd radstruktur');
+ return normalized;
 }
 function proposal(){return{schema:'LINA-GEN9-BUILD-PROPOSAL-1',release:global.LinaVersion?.release||'TEST',spec:SPEC,specHash:SPEC_HASH,planLocked:false,runnerSpecLocked:false,researchOpened:false,tradeEnabled:false,forwardOpened:false}}
 // No fetch, storage, plan locking or research orchestration in this pre-lock build.
@@ -71,6 +81,6 @@ function mount(root){
  anchor.after(section);
  const button=document.createElement('button');button.textContent='📥 Exportera Gen9-planförslag';button.onclick=()=>global.LinaStatusExport?.downloadObject?.('LINA_GEN9_PLAN_PROPOSAL',proposal());anchor.querySelector('.engine-export-primary').appendChild(button);
 }
-const api=Object.freeze({SPEC,SPEC_HASH,proposal,simulate,aggregate,validateDataManifest,canonical,mount});
+const api=Object.freeze({SPEC,SPEC_HASH,APPROVED_DATA,proposal,simulate,aggregate,validateApprovedDataset,validateDataManifest,canonical,mount});
 if(typeof module==='object'&&module.exports)module.exports=api;else global.LinaGen9Engine=api;
 })(typeof window==='object'?window:globalThis);
