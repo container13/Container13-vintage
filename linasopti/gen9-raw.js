@@ -18,5 +18,5 @@ function mount(root){
  const b=document.createElement('button');b.textContent='🧪 Kör RAW-kontroll';b.dataset.gen9RawRun='1';status.insertAdjacentElement('afterend',b);
  b.onclick=async()=>{b.disabled=true;try{await run(t=>status.textContent=t)}catch(e){status.textContent='RAW STOPPAD: '+e.message}finally{b.disabled=false}};
 }
-w.LinaGen9Raw=Object.freeze({run,mount});
+w.LinaGen9Raw=Object.freeze({run,mount});\nconst boot=()=>{const root=document.getElementById('view');if(root)mount(root)};document.addEventListener('lina:unlocked',()=>setTimeout(boot,0));new MutationObserver(boot).observe(document.documentElement,{childList:true,subtree:true});setTimeout(boot,0);
 })(window);
