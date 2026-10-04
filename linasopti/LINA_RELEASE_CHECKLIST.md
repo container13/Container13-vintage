@@ -476,3 +476,12 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Corporate-action timing checked for NVDA 10:1 and TSLA 5:1 split context.
 - [x] Separate immutable evidence file saved; candidate untouched.
 - [x] Gen9 still NOT APPROVED; research not started; Handel/Forward OFF.
+
+
+## V0.3.34 dataset gate check
+- [x] Explicit user dataset gate recorded separately.
+- [x] Gate bound to locked candidate SHA and 20 128 rows.
+- [x] Candidate unchanged; existing evidence preserved.
+- [x] Gen9 research not started; plan not locked.
+- [x] Gen8 frozen; Handel/Forward OFF; Worker unchanged.
+- [x] Version/cache V0.3.34.
