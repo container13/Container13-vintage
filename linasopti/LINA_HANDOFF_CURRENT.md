@@ -357,3 +357,9 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Immutable gate evidence: evidence/GEN9_PLAN_LOCK_2026-10-05.json.
 - Dataset remains locked to SHA-256 cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c.
 - Research NOT started. Gen8 frozen. Handel/Forward OFF. Worker unchanged.
+
+
+## V0.3.37 — immutable Gen9 plan-lock adoption
+- Browser workflow can now adopt the already-approved immutable GitHub plan lock after exact SPEC hash/SHA and dataset SHA verification.
+- Adoption writes only the matching local plan checkpoint/state; it does not create a new plan decision or change SPEC.
+- This closes the GitHub-lock/localStorage gap before Gen9 research start. Research remains unobserved until the runner is actually invoked. Handel/Forward OFF; Gen8 frozen; Worker unchanged.
