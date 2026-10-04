@@ -250,3 +250,12 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Worker-kandidat: `worker/WORKER_PENDING_RUNTIME_REPORT.js`. En-klickskopia: `worker/COPY_WORKER_RUNTIME_REPORT.html`.
 - Cloudflare: ÄNDRING KRÄVS. Pending Worker är inte CURRENT förrän deploy och /health verifierats.
 - Gen8 får aldrig köras om. Gen9 är fortsatt NOT APPROVED. Handel/Forward AV.
+
+
+## V0.3.22 — Gen primary run + automatic report persistence
+- Gen9 has a primary action high in the Gen section: `▶ Kör Gen9-kontroll`.
+- One run orchestrates data-source check → independent Alpaca SIP/all fetch → candidate/Alpaca comparison → automatic full-report persistence to GitHub.
+- Manual detailed controls remain as fallback/diagnostics.
+- Full comparison report auto-save uses the already deployed `/runtime-report` endpoint; Cloudflare Worker unchanged in this release.
+- Permanent MASTER RULE: every Gen places its primary run action high in the Gen section.
+- No automatic Gen9 approval. Research remains not started. Handel/Forward remain OFF. Gen8 remains frozen and must never be rerun.
