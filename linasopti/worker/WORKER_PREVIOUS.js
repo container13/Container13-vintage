@@ -2332,38 +2332,6 @@ async function handleEvidence(request,env) {
 
 
 
-function safeRuntimeReportName(name) {
-  const n = String(name || "").trim().toUpperCase();
-  if (!/^[A-Z0-9_-]{1,80}$/.test(n)) throw new Error("Ogiltigt runtime-report namn");
-  return n;
-}
-
-async function handleRuntimeReport(request, env) {
-  if (request.method !== "POST") return json({ok:false,error:"Method not allowed"},405,request);
-  if (!env.LINA_LOGIN_CODE) return json({ok:false,error:"LINA_LOGIN_CODE saknas i Worker"},503,request);
-  if (request.headers.get("X-Lina-Login-Code") !== env.LINA_LOGIN_CODE) return json({ok:false,error:"Lina-sessionen är inte godkänd"},401,request);
-  try {
-    const x = await request.json();
-    if (x?.schema !== "LINA-RUNTIME-REPORT-1") throw new Error("Fel runtime-report schema");
-    const name = safeRuntimeReportName(x.name);
-    if (!x.report || typeof x.report !== "object" || Array.isArray(x.report)) throw new Error("Runtime-report saknas");
-    const content = JSON.stringify(x.report,null,2) + "\n";
-    if (content.length > 2000000) throw new Error("Runtime-report är för stor");
-    const hash = await sha256Hex(content);
-    const stamp = new Date().toISOString().replace(/[:.]/g,"-");
-    const path = `linasopti/runtime-reports/${name}_${stamp}_${hash.slice(0,12)}.json`;
-    const cfg = githubConfig(env);
-    if (!cfg.token || !cfg.owner || !cfg.repo || !cfg.branch) throw new Error("GitHub-konfiguration saknas");
-    const api = `https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${path.split("/").map(encodeURIComponent).join("/")}`;
-    const wrResp = await fetch(api,{method:"PUT",headers:{...githubHeaders(cfg),"Content-Type":"application/json"},body:JSON.stringify({message:`Lina runtime report ${name}`,content:b64encode(content),branch:cfg.branch})});
-    const wr = await wrResp.json();
-    if (!wrResp.ok) throw new Error(wr?.message || `GitHub write HTTP ${wrResp.status}`);
-    return json({ok:true,path,sha256:hash,commit:wr?.commit?.sha||null,contentSha:wr?.content?.sha||null},200,request);
-  } catch(e) {
-    return json({ok:false,error:String(e?.message||e)},409,request);
-  }
-}
-
 async function handleAuthCheck(request,env) {
 
   if(request.method!=="POST") {
@@ -2522,10 +2490,6 @@ export default {
 
 
 
-    if (preUrl.pathname === "/runtime-report") {
-      return handleRuntimeReport(request, env);
-    }
-
     if (preUrl.pathname === "/forward-state") {
 
       return handleForwardState(request, env);
@@ -2576,7 +2540,7 @@ export default {
 
           service: "Linas Opti API",
 
-          version: "0.58.8 + evidence-sync-v0235 + alpaca-history-v02 + twelve-history-v02 + runtime-report-v0321",
+          version: "0.58.8 + evidence-sync-v0235 + alpaca-history-v02 + twelve-history-v02",
 
           mode: "paper",
 
