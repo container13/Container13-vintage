@@ -428,3 +428,13 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] `gen9-data-check.js` syntaxkontrollerad efter publicering.
 - [x] Gen8 frozen; Gen9 NOT APPROVED; research not started; Handel/Forward OFF.
 - [x] Cloudflare: INGEN ÄNDRING.
+
+
+## V0.3.28 release check
+- [x] Full fältnivådiagnostik byggd ovanpå kandidat↔Alpaca-jämförelsen.
+- [x] Storleksband och 100 största avvikelser med datum/symbol/fält sparas i fullrapport.
+- [x] Kompakt rapport inkluderar storleksband + 20 största avvikelser.
+- [x] Ingen toleransbaserad verifiering, kandidatpatchning eller researchstart infördes.
+- [x] JavaScript syntaxkontrollerad efter publicering.
+- [x] Version/cache V0.3.28; inga aktiva 0.3.27-cachetokens kvar.
+- [x] Gen8 frozen; Gen9 NOT APPROVED; Handel/Forward OFF; Cloudflare INGEN ÄNDRING.
