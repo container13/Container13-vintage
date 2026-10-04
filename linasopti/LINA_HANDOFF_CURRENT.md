@@ -328,3 +328,10 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Exakt OHLC utan tolerans; fulla diagnostiska summeringar och största avvikelser sparas separat som GEN9_ADJUSTMENT_DIAGNOSTIC.
 - Resultaten rankas diagnostiskt efter >=10-avvikelser och därefter totalt antal fältavvikelser. Ingen kandidat patchas och diagnosen kan inte godkänna Gen9 eller starta research.
 - Gen8 fryst/orörd; Gen9 EJ GODKÄND; research ej startad; Handel/Forward AV; Worker INGEN ÄNDRING.
+
+
+## Gen9 four-anomaly independent evidence — 2026-10-05
+- Saved: evidence/GEN9_FOUR_ANOMALIES_INDEPENDENT_2026-10-05.json.
+- All four Alpaca SIP/all differences >=10 are independently supported on the candidate side: NVDA 2024-06-10 high ~122.75; TSLA 2021-03-04 high ~222.82; TSLA 2021-03-01 high ~239.67; TSLA 2020-12-18 close ~231.67.
+- Conclusion: these four are Alpaca comparison anomalies, not grounds to patch the locked candidate.
+- Evidence complete for this diagnostic stage, but Gen9 remains NOT APPROVED pending explicit gate decision; research not started; Handel/Forward OFF.
