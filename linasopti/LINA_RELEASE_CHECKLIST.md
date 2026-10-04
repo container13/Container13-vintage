@@ -361,3 +361,13 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Detaljexempel/datumlistor exkluderas från chattexporten.
 - [x] Ingen research-/verifieringsflagga, Gen8, Handel, Forward eller Worker ändrad.
 - [ ] Verklig inklistring i ChatGPT på iPhone verifieras av användaren.
+
+
+## V0.3.21 runtime-report kontroll
+- [x] Runtime-report använder separat endpoint och separat GitHub-sökväg; evidence/app-state återanvänds inte som transport.
+- [x] Handel/Forward förblir AV och Gen8/Gen9 research-state ändras inte.
+- [x] Pending Worker hålls separat från CURRENT.
+- [ ] Cloudflare pending Worker deployad.
+- [ ] `/health` verifierad med `runtime-report-v0321`.
+- [ ] Runtime-report POST verifierad från inloggad Lina.
+- [ ] Efter verifiering: gamla CURRENT → PREVIOUS och deployad kod → CURRENT.
