@@ -1,0 +1,11 @@
+{
+  "schema": "LINA-GEN9-RESEARCH-START-1",
+  "decision": "START_AUTHORIZED",
+  "explicitUserGate": true,
+  "specHash": "083bcb30",
+  "specSha256": "a1362ccffcf76b4d4fb548c1db115d5def35cc3f0a41252f1e43465ef56b135f",
+  "datasetSha256": "cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c",
+  "singleUse": true,
+  "tradeEnabled": false,
+  "forwardOpened": false
+}
