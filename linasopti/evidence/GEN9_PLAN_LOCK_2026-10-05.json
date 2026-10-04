@@ -1,0 +1,18 @@
+{
+  "schema": "LINA-GEN9-PLAN-LOCK-1",
+  "decision": "APPROVED_AND_LOCKED",
+  "explicitUserGate": true,
+  "specHash": "083bcb30",
+  "specSha256": "a1362ccffcf76b4d4fb548c1db115d5def35cc3f0a41252f1e43465ef56b135f",
+  "datasetSha256": "cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c",
+  "historyHardStop": "2024-12-31",
+  "foldYears": [2021, 2022, 2023, 2024],
+  "variants": ["A", "B"],
+  "candidateVariant": "B",
+  "planLocked": true,
+  "runnerSpecLocked": true,
+  "researchStarted": false,
+  "tradeEnabled": false,
+  "forwardOpened": false,
+  "note": "Exact V0.3.35 Gen9 SPEC reviewed before lock. Lock does not start research."
+}
