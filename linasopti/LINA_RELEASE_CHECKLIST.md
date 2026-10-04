@@ -512,3 +512,12 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] No fold is observed during adoption; no rerun/rescue introduced.
 - [x] Handel/Forward OFF; Gen8 frozen; Worker unchanged.
 - [x] Version/cache V0.3.37.
+
+
+## V0.3.38 research-start authorization
+- [x] Explicit start gate bound to exact locked SPEC + approved dataset.
+- [x] Mechanical plan/data preparation automated after authorization.
+- [x] Auto-start blocked by any prior observation/checkpoint/summary.
+- [x] Existing per-fold checkpoint then immutable evidence sequence unchanged.
+- [x] Handel/Forward OFF; Gen8 frozen; Worker unchanged.
+- [x] Version/cache V0.3.38.
