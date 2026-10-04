@@ -353,3 +353,11 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Ingen kandidatpatchning, researchstart, Gen8-, Handel-, Forward- eller Worker-ändring.
 - [x] Single Version Source/cachetokens V0.3.20.
 - [ ] Faktiskt Safari/iPhone-resultat verifieras via kopierad jämförelserapport.
+
+
+## V0.3.21 — kompakt ChatGPT-rapport
+- [x] Full jämförelse bevaras lokalt.
+- [x] Chattexport reducerad till hashar, totaler och 16 symbolsummeringar.
+- [x] Detaljexempel/datumlistor exkluderas från chattexporten.
+- [x] Ingen research-/verifieringsflagga, Gen8, Handel, Forward eller Worker ändrad.
+- [ ] Verklig inklistring i ChatGPT på iPhone verifieras av användaren.
