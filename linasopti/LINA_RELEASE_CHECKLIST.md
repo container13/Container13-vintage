@@ -418,3 +418,13 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Version/cache V0.3.26.
 - [x] Gen8 frozen; Gen9 NOT APPROVED; research not started; Handel/Forward OFF.
 - [x] Cloudflare: INGEN ÄNDRING.
+
+
+## V0.3.27 release check
+- [x] Gen9 primär statusrad flyttad direkt under `▶ Kör Gen9-kontroll` för omedelbar synlig mobil återkoppling.
+- [x] Statusrad använder `aria-live="assertive"`.
+- [x] Gen9-körlogik och V0.3.26 data/preflight-gates oförändrade.
+- [x] Version/cache V0.3.27; aktiva index-cachetokens har inga 0.3.26-rester.
+- [x] `gen9-data-check.js` syntaxkontrollerad efter publicering.
+- [x] Gen8 frozen; Gen9 NOT APPROVED; research not started; Handel/Forward OFF.
+- [x] Cloudflare: INGEN ÄNDRING.
