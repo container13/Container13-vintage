@@ -241,3 +241,12 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Full V0.3.20-jämförelse behålls lokalt oförändrad.
 - **📋 Kopiera jämförelserapport** exporterar nu en separat kompakt ChatGPT-rapport: hashar, totaler och 16 per-symbol-summeringar; inga 100 exempelrader eller datumlistor.
 - Ingen verifieringsflagga ändras automatiskt. Gen8 orörd; Gen9 EJ GODKÄND; Handel/Forward AV. Cloudflare: INGEN ÄNDRING.
+
+
+## V0.3.21 — runtime-report transport (2026-10-04)
+- Full Gen9 kandidat↔Alpaca-jämförelse kan skickas från Lina till separat Worker-endpoint `POST /runtime-report` och sparas under `linasopti/runtime-reports/`.
+- Runtime-report är transport/scratch, inte frozen evidence och ändrar inga forsknings-/verifieringsflaggor.
+- Browserklienten har knapp `☁️ Spara full rapport till GitHub`.
+- Worker-kandidat: `worker/WORKER_PENDING_RUNTIME_REPORT.js`. En-klickskopia: `worker/COPY_WORKER_RUNTIME_REPORT.html`.
+- Cloudflare: ÄNDRING KRÄVS. Pending Worker är inte CURRENT förrän deploy och /health verifierats.
+- Gen8 får aldrig köras om. Gen9 är fortsatt NOT APPROVED. Handel/Forward AV.
