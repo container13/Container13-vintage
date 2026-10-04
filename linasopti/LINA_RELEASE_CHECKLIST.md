@@ -530,3 +530,12 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] No-rerun guards unchanged; no fold observed by this code change itself.
 - [x] Handel/Forward OFF; Gen8 frozen; Worker unchanged.
 - [x] Version/cache V0.3.39.
+
+
+## V0.3.40 dataset-wrapper fix
+- [x] Exact SOURCE_gen9-data.json Git blob inspected: LINA-GEN9-RAW-DATA-1 wrapper, symbols under data.
+- [x] Parser requires exact wrapper before accessing input.data.
+- [x] Candidate file/SHA/values unchanged; 20,128-row and 1,258-per-symbol checks remain.
+- [x] Prior stop occurred in data validation before first fold observation.
+- [x] Handel/Forward OFF; Gen8 frozen; Worker unchanged.
+- [x] Version/cache V0.3.40.
