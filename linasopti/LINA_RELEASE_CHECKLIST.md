@@ -371,3 +371,16 @@ Historical/frozen research version strings are excluded from this current-releas
 - [ ] `/health` verifierad med `runtime-report-v0321`.
 - [ ] Runtime-report POST verifierad från inloggad Lina.
 - [ ] Efter verifiering: gamla CURRENT → PREVIOUS och deployad kod → CURRENT.
+
+
+## V0.3.22 release check
+- [x] Version bumped to V0.3.22.
+- [x] index.html cache tokens bumped to 0.3.22.
+- [x] Gen9 primary run action added high in Gen section.
+- [x] Gen9 primary run chains diagnostic → Alpaca → comparison → GitHub report persistence.
+- [x] Manual fallback controls retained.
+- [x] MASTER RULE updated for primary Gen run placement.
+- [x] Gen8 unchanged/frozen; no rerun.
+- [x] Gen9 remains NOT APPROVED; research not started.
+- [x] Handel/Forward remain OFF.
+- [x] Cloudflare: INGEN ÄNDRING.
