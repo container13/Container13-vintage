@@ -495,3 +495,12 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Gen9 spec/method unchanged; plan not locked; research not started.
 - [x] Gen8 frozen; Handel/Forward OFF; Worker unchanged.
 - [x] Version/cache V0.3.35.
+
+
+## V0.3.36 Gen9 plan-lock check
+- [x] Explicit human plan-lock decision received after contract review.
+- [x] Exact SPEC locked: hash 083bcb30; canonical SHA-256 a1362ccffcf76b4d4fb548c1db115d5def35cc3f0a41252f1e43465ef56b135f.
+- [x] Immutable plan-lock evidence written to GitHub.
+- [x] Approved dataset SHA unchanged.
+- [x] Research not started; Gen8 frozen; Handel/Forward OFF; Worker unchanged.
+- [x] Version/cache V0.3.36.
