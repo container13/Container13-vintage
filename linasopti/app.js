@@ -172,6 +172,20 @@
     // Headern ska alltid använda samma auktoritativa mognadsmodell som Generation Engine, även på Dashboard.
     try{window.LinaGenerationEngine?.updateMaturityHeader?.()}catch(e){console.warn('Robotmognad kunde inte renderas:',e)}
     registerRoutes();window.LinaRouter.start();
+    // Gen9 explicit research-start gate is global: Dashboard is the normal post-login route.
+    // Run only after GitHub bootstrap/recovery has restored authoritative local state.
+    setTimeout(async()=>{
+      try{
+        const w=window.LinaGen9Workflow;if(!w?.authorizedAutoStart)return;
+        const before=w.state(),eligible=!before.summaryFreeze?.frozen&&!before.summary&&!before.researchOpened&&!Object.keys(before.checkpoints||{}).length;
+        if(!eligible)return;
+        const root=document.querySelector('#view'),box=document.createElement('div');box.className='statusline';box.setAttribute('data-gen9-global-start','');box.textContent='Gen9 · verifierar låst researchstart…';root?.prepend(box);
+        const on=e=>{box.textContent=e.detail.text};document.addEventListener('lina:gen9progress',on);
+        try{const result=await w.authorizedAutoStart();box.textContent=result?'Gen9 klar · granska sammanfattning före frysbeslut':'Gen9 · ingen ny start behövdes';}
+        catch(e){box.textContent='Gen9 STOPPAD · '+String(e?.message||e);box.classList.add('bad');}
+        finally{document.removeEventListener('lina:gen9progress',on)}
+      }catch(e){console.warn('Gen9 global start stoppad:',e)}
+    },0);
     setTimeout(()=>window.LinaForwardCenter?.autoCatchUp?.().catch(e=>console.warn('Auto Forward stoppad:',e)),0);
   }
   window.LinaApp={version:APP_VERSION,start:startApp};
