@@ -32,6 +32,16 @@ async function lockPlan(){return single(async()=>{
  g.planEvidence=await secure('LINAS_GEN9_PLAN_'+g.specSha256+'.json',content);g.state='PLAN_LOCKED_DATA_REQUIRED';save(g);return g;
  })}
 async function resumePlan(){return single(async()=>{const g=state();assertContract(g);const p=await get('plan:'+g.specSha256);if(!p)throw Error('Exakt plancheckpoint saknas; ingen rekonstruktion');g.planEvidence=await secure('LINAS_GEN9_PLAN_'+g.specSha256+'.json',p);g.state='PLAN_LOCKED_DATA_REQUIRED';return save(g)})}
+async function importApprovedData(){return single(async()=>{
+ const g=state();assertContract(g);if(g.researchOpened||Object.keys(g.checkpoints||{}).length)throw Error('Observerad forskning: data får inte ersättas');if(!g.planEvidence)throw Error('Planens evidens inte verifierad');
+ report('Gen9 · verifierar godkänd datasetgate och kandidat-SHA');
+ const [dataResponse,gateResponse]=await Promise.all([fetch(E.APPROVED_DATA.path,{cache:'no-store'}),fetch(E.APPROVED_DATA.gatePath,{cache:'no-store'})]);
+ if(!dataResponse.ok||!gateResponse.ok)throw Error('DATA: kunde inte läsa godkänd kandidat/evidence från samma release');
+ const rawText=await dataResponse.text(),gate=await gateResponse.json(),checked=await E.validateApprovedDataset(rawText,gate),pkg={manifest:checked.manifest,data:checked.normalized.by};
+ if(g.dataManifest&&E.canonical(g.dataManifest)!==E.canonical(pkg.manifest))throw Error('Annan dataset är redan registrerad');
+ await put('data:'+pkg.manifest.contentSha256,pkg);g.dataManifest=copy(pkg.manifest);g.state='DATA_STAGED_AWAITING_EVIDENCE';save(g);
+ g.dataEvidence=await secure('LINAS_GEN9_DATA_'+pkg.manifest.contentSha256+'.json',{schema:'LINA-GEN9-DATA-MANIFEST-1',specHash:E.SPEC_HASH,manifest:pkg.manifest,gate});g.state='READY_FOR_RESEARCH';save(g);report('Gen9 · godkänd kandidat verifierad och dataevidens fryst');return g;
+ })}
 async function importData(pkg){return single(async()=>{
  const g=state();assertContract(g);if(g.researchOpened||Object.keys(g.checkpoints||{}).length)throw Error('Observerad forskning: data får inte ersättas');if(!g.planEvidence)throw Error('Planens evidens inte verifierad');
  const normalized=await E.validateDataManifest(pkg.manifest,pkg.data);const data=normalized.by;
@@ -78,12 +88,12 @@ function mount(root){
  const act=(label,fn)=>{const b=document.createElement('button');b.textContent=label;controls.append(b);b.onclick=async()=>{b.disabled=true;const on=e=>info.textContent=e.detail.text;global.document.addEventListener('lina:gen9progress',on);try{await fn();info.textContent='Klart: '+state().state}catch(e){info.textContent='STOPPAD: '+e.message}finally{b.disabled=false;global.document.removeEventListener('lina:gen9progress',on)}};return b};
  if(!g.planLocked)act('🔒 Godkänn och lås Gen9-plan',()=>{if(!global.confirm('Lås det exporterade Gen9-kontraktet? Detta är permanent och startar inte forskning.'))return;return lockPlan()});
  else if(!g.planEvidence)act('☁ Fortsätt planens evidenssynk',resumePlan);
- if(g.planLocked&&g.planEvidence&&!g.researchOpened){const label=document.createElement('label');label.textContent='Läs verifierat Gen9-datapaket (JSON)';const input=document.createElement('input');input.type='file';input.accept='.json,application/json';label.append(input);section.append(label);input.onchange=async()=>{try{await importData(JSON.parse(await input.files[0].text()));info.textContent='Data verifierad. Öppna Engine igen för körknapp.'}catch(e){info.textContent='DATA STOPPAD: '+e.message}}}
+ if(g.planLocked&&g.planEvidence&&!g.dataEvidence&&!g.researchOpened)act('✓ Verifiera godkänt Gen9-dataset',importApprovedData);
  if(g.dataManifest&&!g.dataEvidence&&!g.researchOpened)act('☁ Fortsätt dataevidens',async()=>{const pkg=await get('data:'+g.dataManifest.contentSha256);if(!pkg)throw Error('Exakt datapaket saknas');return importData(pkg)});
  if(g.dataEvidence&&!g.summaryFreeze?.frozen&&g.state!=='RESEARCH_COMPLETE_REVIEW_REQUIRED')act('▶ Starta / fortsätt Gen9',()=>{if(!global.confirm('Starta det låsta Gen9-experimentet på verifierad observerad historik? Handel och Forward är AV.'))return;return run()});
  if(g.summary&&!g.summaryFreeze?.frozen)act('❄ Godkänn och frys Gen9-sammanfattning',()=>{if(!global.confirm('Har du granskat resultatsexporten och vill frysa sammanfattningen? Ingen kandidat eller Forward startas.'))return;return freezeSummary()});
  const exp=document.createElement('button');exp.textContent='📥 Exportera Gen9-state och resultat';exp.onclick=async()=>{try{await global.LinaStatusExport.downloadObjectAsync('LINA_GEN9_RESULTS',exportResults)}catch(e){info.textContent='EXPORT STOPPAD: '+e.message}};root.querySelector('.engine-export-primary')?.append(exp);
- const explanation=document.createElement('p');explanation.textContent='Datapaket kräver dokumenterad källa, justerad OHLC, verifierad kalender/corporate actions och SHA256. Äldre cache är inte automatiskt verifierad data. Ingen kandidat fryses automatiskt.';section.append(explanation);
+ const explanation=document.createElement('p');explanation.textContent='Gen9 använder endast den separat godkända SOURCE_gen9-data.json vars fil-SHA256 och datasetgate måste matcha exakt. Ingen kandidat fryses automatiskt.';section.append(explanation);
 }
-global.LinaGen9Workflow=Object.freeze({state,lockPlan,resumePlan,importData,run,freezeSummary,exportResults,mount,validateCheckpoint});
+global.LinaGen9Workflow=Object.freeze({state,lockPlan,resumePlan,importApprovedData,importData,run,freezeSummary,exportResults,mount,validateCheckpoint});
 })(window);
