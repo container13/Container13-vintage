@@ -384,3 +384,12 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Gen9 remains NOT APPROVED; research not started.
 - [x] Handel/Forward remain OFF.
 - [x] Cloudflare: INGEN ÄNDRING.
+
+
+## V0.3.23 release check
+- [x] Gen9 primary run placed directly after Gen9 heading.
+- [x] Version bumped to V0.3.23.
+- [x] index.html cache tokens bumped to 0.3.23.
+- [x] Permanent every-change version rule added to MASTER RULES.
+- [x] Gen8 frozen; Gen9 NOT APPROVED; research not started; Handel/Forward OFF.
+- [x] Cloudflare: INGEN ÄNDRING.
