@@ -393,3 +393,10 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Permanent every-change version rule added to MASTER RULES.
 - [x] Gen8 frozen; Gen9 NOT APPROVED; research not started; Handel/Forward OFF.
 - [x] Cloudflare: INGEN ÄNDRING.
+
+
+## V0.3.24 release check
+- [x] Gen9 primary run mount no longer depends on export-primary panel.
+- [x] Version/cache bumped to V0.3.24.
+- [x] Gen8 frozen; Gen9 NOT APPROVED; research not started; Handel/Forward OFF.
+- [x] Cloudflare: INGEN ÄNDRING.
