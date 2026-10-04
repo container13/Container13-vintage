@@ -363,3 +363,10 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Browser workflow can now adopt the already-approved immutable GitHub plan lock after exact SPEC hash/SHA and dataset SHA verification.
 - Adoption writes only the matching local plan checkpoint/state; it does not create a new plan decision or change SPEC.
 - This closes the GitHub-lock/localStorage gap before Gen9 research start. Research remains unobserved until the runner is actually invoked. Handel/Forward OFF; Gen8 frozen; Worker unchanged.
+
+
+## V0.3.38 — Gen9 research start authorized
+- Explicit user research-start gate saved as evidence/GEN9_RESEARCH_START_2026-10-05.json, bound to locked SPEC hash/SHA and approved dataset SHA.
+- On Lina mount, the gate can mechanically adopt the immutable plan, verify/freeze approved data evidence and invoke the locked runner without another iPhone confirmation.
+- Auto-start is blocked if researchOpened, any checkpoint, summary or summaryFreeze already exists; no rerun/rescue path added.
+- Fold evidence/checkpoint discipline remains unchanged. Handel/Forward OFF; Gen8 frozen; Worker unchanged.
