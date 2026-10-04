@@ -485,3 +485,13 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Gen9 research not started; plan not locked.
 - [x] Gen8 frozen; Handel/Forward OFF; Worker unchanged.
 - [x] Version/cache V0.3.34.
+
+
+## V0.3.35 approved-dataset gate check
+- [x] Exact SOURCE file SHA verified before parsing.
+- [x] Dataset gate must be PASSED and match locked SHA + 20,128 rows.
+- [x] 16 symbols × 1,258 aligned valid OHLC rows required.
+- [x] Approved dataset is fetched automatically; no normal manual file import.
+- [x] Gen9 spec/method unchanged; plan not locked; research not started.
+- [x] Gen8 frozen; Handel/Forward OFF; Worker unchanged.
+- [x] Version/cache V0.3.35.
