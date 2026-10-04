@@ -377,3 +377,11 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Explicit Gen9 start gate is now checked globally in startApp after GitHub bootstrap/recovery and normal route start.
 - Dashboard gets a visible high status line for Gen9 progress/completion/error.
 - Existing single-use/no-rerun guards remain unchanged. Handel/Forward OFF; Gen8 frozen; Worker unchanged.
+
+
+## V0.3.40 — Gen9 locked dataset wrapper parser fix
+- V0.3.39 global start correctly stopped before any fold with DATA: symbol saknas AMD.
+- Root cause verified from exact Git blob: SOURCE_gen9-data.json is wrapper schema LINA-GEN9-RAW-DATA-1 with symbol arrays under data.AMD etc.
+- validateApprovedDataset now requires ok=true + exact wrapper schema + object data, then normalizes input.data.
+- Locked source file, source SHA, row requirements, SPEC and research method unchanged. This is parser/transport only.
+- No Gen9 fold had been observed before this fix. Handel/Forward OFF; Gen8 frozen; Worker unchanged.
