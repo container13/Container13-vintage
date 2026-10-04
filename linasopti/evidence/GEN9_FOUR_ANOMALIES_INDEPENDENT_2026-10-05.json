@@ -1,0 +1,65 @@
+{
+  "schema": "LINA-GEN9-FOUR-ANOMALY-INDEPENDENT-EVIDENCE-1",
+  "createdAt": "2026-10-04T22:57:44.419Z",
+  "candidateSha256": "cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c",
+  "basis": "Independent public historical-price and issuer/SEC corporate-action evidence; no candidate patching.",
+  "anomalies": [
+    {
+      "d": "2024-06-10",
+      "symbol": "NVDA",
+      "field": "h",
+      "candidate": 122.74998311505551,
+      "alpacaAll": 195.39,
+      "independentApprox": 122.75,
+      "assessment": "CANDIDATE_SUPPORTED_ALPACA_ANOMALY",
+      "evidence": [
+        "NVIDIA/SEC: 10:1 split-adjusted trading began 2024-06-10",
+        "Independent historical daily data: high ~122.75"
+      ]
+    },
+    {
+      "d": "2021-03-04",
+      "symbol": "TSLA",
+      "field": "h",
+      "candidate": 222.81666564941406,
+      "alpacaAll": 291.31,
+      "independentApprox": 222.82,
+      "assessment": "CANDIDATE_SUPPORTED_ALPACA_ANOMALY",
+      "evidence": [
+        "Yahoo historical daily data: high 222.82"
+      ]
+    },
+    {
+      "d": "2021-03-01",
+      "symbol": "TSLA",
+      "field": "h",
+      "candidate": 239.6666717529297,
+      "alpacaAll": 290.67,
+      "independentApprox": 239.67,
+      "assessment": "CANDIDATE_SUPPORTED_ALPACA_ANOMALY",
+      "evidence": [
+        "Yahoo historical daily data: high 239.67"
+      ]
+    },
+    {
+      "d": "2020-12-18",
+      "symbol": "TSLA",
+      "field": "c",
+      "candidate": 231.6666717529297,
+      "alpacaAll": 219.45,
+      "independentApprox": 231.67,
+      "assessment": "CANDIDATE_SUPPORTED_ALPACA_ANOMALY",
+      "evidence": [
+        "Independent historical daily data: close 231.67",
+        "Tesla/SEC confirms 5:1 split-adjusted trading began 2020-08-31"
+      ]
+    }
+  ],
+  "conclusion": "ALL_FOUR_GTE10_ALPACA_ALL_OUTLIERS_INDEPENDENTLY_SUPPORT_CANDIDATE",
+  "diagnosticOnly": true,
+  "verifiedForResearch": false,
+  "decision": "EVIDENCE_COMPLETE_PENDING_EXPLICIT_GEN9_APPROVAL",
+  "researchStarted": false,
+  "tradeEnabled": false,
+  "forwardOpened": false
+}
