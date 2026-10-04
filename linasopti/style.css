@@ -174,3 +174,18 @@ html[data-theme="dark"] .broker-warning,html[data-theme="dark"] .forward-note,ht
 html[data-theme="dark"] .broker-decision,html[data-theme="dark"] .forward-lock,html[data-theme="dark"] .g3-result,html[data-theme="dark"] .g2-stage.done{background:#10291f!important;border-color:#285e49!important;color:#c8f3df!important}
 html[data-theme="dark"] #app>.lina-watermark{mix-blend-mode:screen!important;opacity:.075!important;filter:grayscale(.35) brightness(.72) contrast(.95)!important}
 .theme-toggle{min-width:76px}.theme-toggle span{background:transparent!important;padding:0!important}
+
+
+/* V0.3.42 · dark-theme contrast audit + priority-action placement */
+html[data-theme="dark"] .gate-card h1,html[data-theme="dark"] .gate-card p,html[data-theme="dark"] .gate-card .version,html[data-theme="dark"] .login-msg,html[data-theme="dark"] .startup-card h2,html[data-theme="dark"] .startup-step,html[data-theme="dark"] .startup-card small{color:var(--lina-text)!important}
+html[data-theme="dark"] .gate-card p,html[data-theme="dark"] .gate-card .version,html[data-theme="dark"] .startup-card small{color:var(--lina-muted)!important}
+html[data-theme="dark"] .gate input::placeholder{color:#91a1b6!important;opacity:1}
+html[data-theme="dark"] .gate input{background:#0d1724!important;color:#f2f6fc!important;border-color:#40516a!important}
+html[data-theme="dark"] .gate .primary{background:#e8eef7!important;color:#101722!important}
+html[data-theme="dark"] .login-msg.bad{color:#ffaaa3!important}
+html[data-theme="dark"] .card,html[data-theme="dark"] .kpi,html[data-theme="dark"] .v014-audit,html[data-theme="dark"] .v17-export,html[data-theme="dark"] .v19-ab,html[data-theme="dark"] .v19-variant,html[data-theme="dark"] .status-box,html[data-theme="dark"] .status,html[data-theme="dark"] section>.grid>div{background-color:rgba(18,27,41,.94)!important;color:var(--lina-text)!important}
+html[data-theme="dark"] .primary{background:#e8eef7!important;color:#101722!important;border-color:#e8eef7!important}
+html[data-theme="dark"] button:disabled{color:#8391a5!important}
+.gen9-priority-actions{margin:14px 0 18px;padding:14px;border:1px solid var(--lina-line,#dce3ed);border-radius:14px;background:var(--lina-surface-soft,#f8fafc)}
+.gen9-priority-actions .actions{margin-top:8px}
+@media(max-width:760px){.gen9-priority-actions{position:relative}.gen9-priority-actions .actions{display:grid}.gen9-priority-actions button{width:100%}}
