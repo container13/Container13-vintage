@@ -25,6 +25,17 @@ async function secure(name,content){
  if(item.existingImmutable)throw Error('Befintlig immutable evidens behöver innehållsverifiering: '+name);
  return{status:item.status,name,githubPath:item.githubPath,githubCommit:item.githubCommit||null,sha256:item.sha256||null};
 }
+async function adoptLockedPlan(){return single(async()=>{
+ let g=state();if(g.planLocked){assertContract(g);return g}
+ report('Gen9 · verifierar låst GitHub-plan');
+ const r=await fetch('evidence/GEN9_PLAN_LOCK_2026-10-05.json',{cache:'no-store'});if(!r.ok)throw Error('PLAN: immutable GitHub-lås saknas');
+ const lock=await r.json(),specSha=await digest(E.SPEC);
+ if(lock.schema!=='LINA-GEN9-PLAN-LOCK-1'||lock.decision!=='APPROVED_AND_LOCKED'||lock.planLocked!==true||lock.runnerSpecLocked!==true||lock.specHash!==E.SPEC_HASH||lock.specSha256!==specSha||lock.datasetSha256!==E.APPROVED_DATA.sha256)throw Error('PLAN: GitHub-låset matchar inte exakt aktuell SPEC/dataset');
+ const stamp=lock.approvedAt||now(),content={schema:'LINA-GEN9-PLAN-LOCK-1',approvedAt:stamp,spec:copy(E.SPEC),specHash:E.SPEC_HASH,specSha256:specSha,tradeEnabled:false,forwardOpened:false};
+ await put('plan:'+specSha,content);
+ g={...g,state:'PLAN_LOCKED_DATA_REQUIRED',planLocked:true,runnerSpecLocked:true,specHash:E.SPEC_HASH,specSha256:specSha,lockedAt:stamp,spec:copy(E.SPEC),tradeEnabled:false,forwardOpened:false,checkpoints:g.checkpoints||{},planEvidence:{status:'FROZEN · GITHUB ✓',name:'GEN9_PLAN_LOCK_2026-10-05.json',githubPath:'linasopti/evidence/GEN9_PLAN_LOCK_2026-10-05.json',sha256:lock.specSha256,immutableGate:true}};
+ save(g);report('Gen9 · GitHub-planlås verifierat lokalt');return g;
+ })}
 async function lockPlan(){return single(async()=>{
  let g=state();if(g.planLocked){assertContract(g);if(g.planEvidence)return g;throw Error('Planlås finns med ofullständig evidens; använd evidensåterupptagning')}
  const stamp=now();g={...g,state:'PLAN_LOCKED_AWAITING_EVIDENCE',planLocked:true,runnerSpecLocked:true,specHash:E.SPEC_HASH,lockedAt:stamp,specSha256:await digest(E.SPEC),spec:copy(E.SPEC),tradeEnabled:false,forwardOpened:false,checkpoints:{}};save(g);
@@ -86,7 +97,7 @@ function mount(root){
  const section=root.querySelector('[data-gen9-build]');if(!section)return;let g;try{g=state()}catch(e){section.append(' · '+e.message);return}
  const info=document.createElement('p');info.textContent='Status: '+g.state;section.append(info);const controls=document.createElement('div');controls.className='actions';section.append(controls);
  const act=(label,fn)=>{const b=document.createElement('button');b.textContent=label;controls.append(b);b.onclick=async()=>{b.disabled=true;const on=e=>info.textContent=e.detail.text;global.document.addEventListener('lina:gen9progress',on);try{await fn();info.textContent='Klart: '+state().state}catch(e){info.textContent='STOPPAD: '+e.message}finally{b.disabled=false;global.document.removeEventListener('lina:gen9progress',on)}};return b};
- if(!g.planLocked)act('🔒 Godkänn och lås Gen9-plan',()=>{if(!global.confirm('Lås det exporterade Gen9-kontraktet? Detta är permanent och startar inte forskning.'))return;return lockPlan()});
+ if(!g.planLocked)act('✓ Läs in låst Gen9-plan',adoptLockedPlan);
  else if(!g.planEvidence)act('☁ Fortsätt planens evidenssynk',resumePlan);
  if(g.planLocked&&g.planEvidence&&!g.dataEvidence&&!g.researchOpened)act('✓ Verifiera godkänt Gen9-dataset',importApprovedData);
  if(g.dataManifest&&!g.dataEvidence&&!g.researchOpened)act('☁ Fortsätt dataevidens',async()=>{const pkg=await get('data:'+g.dataManifest.contentSha256);if(!pkg)throw Error('Exakt datapaket saknas');return importData(pkg)});
@@ -95,5 +106,5 @@ function mount(root){
  const exp=document.createElement('button');exp.textContent='📥 Exportera Gen9-state och resultat';exp.onclick=async()=>{try{await global.LinaStatusExport.downloadObjectAsync('LINA_GEN9_RESULTS',exportResults)}catch(e){info.textContent='EXPORT STOPPAD: '+e.message}};root.querySelector('.engine-export-primary')?.append(exp);
  const explanation=document.createElement('p');explanation.textContent='Gen9 använder endast den separat godkända SOURCE_gen9-data.json vars fil-SHA256 och datasetgate måste matcha exakt. Ingen kandidat fryses automatiskt.';section.append(explanation);
 }
-global.LinaGen9Workflow=Object.freeze({state,lockPlan,resumePlan,importApprovedData,importData,run,freezeSummary,exportResults,mount,validateCheckpoint});
+global.LinaGen9Workflow=Object.freeze({state,adoptLockedPlan,lockPlan,resumePlan,importApprovedData,importData,run,freezeSummary,exportResults,mount,validateCheckpoint});
 })(window);
