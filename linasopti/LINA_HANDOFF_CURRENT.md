@@ -280,3 +280,11 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Replaced those invalid literal sequences with real line breaks.
 - Primary Gen9 run remains directly after the Gen9 heading and retains the automated diagnostic → Alpaca → comparison → GitHub report flow.
 - Gen8 frozen; Gen9 NOT APPROVED; research not started; Handel/Forward OFF. Cloudflare Worker unchanged.
+
+
+## V0.3.26 — Gen9 candidate parser + hard comparison preflight
+- Candidate parsing now supports the locked source shape where data is keyed by the 16 symbols; the symbol key is attached before canonical normalization.
+- Comparison is blocked unless candidate and Alpaca each contain exactly 20,128 rows and 1,258 rows per expected symbol.
+- Runtime-report upload is blocked unless candidateRows, alpacaRows and matchedKeys are all 20,128.
+- The V0.3.25 report with candidateRows=0 is invalid as a Gen9 comparison and approves nothing.
+- Gen8 frozen; Gen9 NOT APPROVED; research not started; Handel/Forward OFF. Cloudflare Worker unchanged.
