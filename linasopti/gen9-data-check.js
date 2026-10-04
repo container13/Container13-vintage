@@ -57,6 +57,15 @@ async function copyCandidate(onProgress=()=>{}){
  return{sha256:hash,body};
 }
 function candidateRows(body){
+ if(body?.data&&typeof body.data==='object'&&!Array.isArray(body.data)){
+  const rows=[];
+  for(const symbol of GEN9_SYMBOLS){
+   const symbolRows=body.data[symbol];
+   if(!Array.isArray(symbolRows))throw Error('Kandidatdata saknar array för '+symbol);
+   for(const row of symbolRows)rows.push({...row,symbol});
+  }
+  return canonicalRows(rows);
+ }
  const rows=Array.isArray(body)?body:Array.isArray(body?.rows)?body.rows:Array.isArray(body?.data)?body.data:Array.isArray(body?.prices)?body.prices:[];
  return canonicalRows(rows);
 }
@@ -67,7 +76,11 @@ async function compareCandidateIndependent(onProgress=()=>{}){
  const text=await response.text(),candidateSha256=await sha256(text);
  if(candidateSha256!=='cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c')throw Error('Kandidatfilens SHA-256 matchar inte låst original');
  let body;try{body=JSON.parse(text)}catch{throw Error('Kandidatfilen är inte giltig JSON')}
- const a=candidateRows(body),b=canonicalRows(independent.normalizedRows),mapA=new Map(a.map(r=>[r.d+'|'+r.symbol,r])),mapB=new Map(b.map(r=>[r.d+'|'+r.symbol,r]));
+ const a=candidateRows(body),b=canonicalRows(independent.normalizedRows);
+ const countsA=Object.fromEntries(GEN9_SYMBOLS.map(s=>[s,a.filter(r=>r.symbol===s).length])),countsB=Object.fromEntries(GEN9_SYMBOLS.map(s=>[s,b.filter(r=>r.symbol===s).length]));
+ if(a.length!==20128||GEN9_SYMBOLS.some(s=>countsA[s]!==1258))throw Error('JÄMFÖRELSE BLOCKERAD: kandidat måste vara exakt 20 128 rader (16 × 1258)');
+ if(b.length!==20128||GEN9_SYMBOLS.some(s=>countsB[s]!==1258))throw Error('JÄMFÖRELSE BLOCKERAD: Alpaca måste vara exakt 20 128 rader (16 × 1258)');
+ const mapA=new Map(a.map(r=>[r.d+'|'+r.symbol,r])),mapB=new Map(b.map(r=>[r.d+'|'+r.symbol,r]));
  const keys=[...new Set([...mapA.keys(),...mapB.keys()])].sort(),fields=['o','h','l','c'],bySymbol=Object.fromEntries(GEN9_SYMBOLS.map(s=>[s,{rowsCompared:0,rowsWithDifference:0,fieldDifferences:{o:0,h:0,l:0,c:0},maxAbsDifference:{o:0,h:0,l:0,c:0}}]));
  let exactRows=0,rowsWithDifference=0,fieldDifferences=0;const missingCandidate=[],missingAlpaca=[],examples=[];
  for(const key of keys){const x=mapA.get(key),y=mapB.get(key),symbol=(x||y)?.symbol;if(!x){missingCandidate.push(key);continue}if(!y){missingAlpaca.push(key);continue}
@@ -85,7 +98,7 @@ function compactComparison(report){
  return{schema:'LINA-GEN9-COMPARE-CHAT-1',release:report?.release,candidateSha256:report?.candidate?.sha256,alpacaNormalizedSha256:report?.alpaca?.normalizedSha256,method:c.method,candidateRows:report?.candidate?.rowCount,alpacaRows:report?.alpaca?.rowCount,matchedKeys:c.matchedKeys,exactRows:c.exactRows,rowsWithDifference:c.rowsWithDifference,fieldDifferences:c.fieldDifferences,missingCandidateCount:c.missingCandidateCount,missingAlpacaCount:c.missingAlpacaCount,bySymbol:symbols,decision:report?.decision,independentDataLineVerified:false,verifiedForResearch:false,researchStarted:false,tradeEnabled:false,forwardOpened:false};
 }
 async function uploadComparisonReport(onProgress=()=>{}) {
- const report=savedComparison();if(!report)throw Error('Ingen full jämförelserapport finns');
+ const report=savedComparison();if(!report)throw Error('Ingen full jämförelserapport finns');if(report?.candidate?.rowCount!==20128||report?.alpaca?.rowCount!==20128||report?.comparison?.matchedKeys!==20128)throw Error('Rapportupload blockerad: jämförelsen är inte komplett 20 128 ↔ 20 128');
  const base=global.LinaAPI?.workerBase;if(!base)throw Error('API-bas saknas');
  const code=global.sessionStorage.getItem('linasopti_login_code')||'';if(!code)throw Error('Lina-session saknas · logga in igen');
  onProgress('Sparar full jämförelserapport till GitHub…');
