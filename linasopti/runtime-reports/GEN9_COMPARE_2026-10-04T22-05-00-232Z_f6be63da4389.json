@@ -1,0 +1,394 @@
+{
+  "schema": "LINA-GEN9-CANDIDATE-ALPACA-COMPARE-1",
+  "createdAt": "2026-10-04T22:05:00.139Z",
+  "release": "V0.3.25",
+  "candidate": {
+    "sha256": "cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c",
+    "rowCount": 0
+  },
+  "alpaca": {
+    "rawSha256": "d77ac62c625ffc9d9b1b37c967f9e8a5d66113b05ca726ca5ef3aaa8cb46fb83",
+    "normalizedSha256": "154a64197b8fcdfbe005d5356565143c0df2d4bced3e22f288e264d00f73815f",
+    "rowCount": 20128,
+    "feed": "sip",
+    "adjustment": "all"
+  },
+  "comparison": {
+    "method": "EXACT_NUMERIC_OHLC_NO_TOLERANCE",
+    "keysCompared": 20128,
+    "matchedKeys": 0,
+    "exactRows": 0,
+    "rowsWithDifference": 0,
+    "fieldDifferences": 0,
+    "missingCandidateCount": 20128,
+    "missingAlpacaCount": 0,
+    "missingCandidate": [
+      "2020-01-02|ADBE",
+      "2020-01-02|AMD",
+      "2020-01-02|BAC",
+      "2020-01-02|C",
+      "2020-01-02|DDOG",
+      "2020-01-02|FDX",
+      "2020-01-02|GM",
+      "2020-01-02|LUV",
+      "2020-01-02|MU",
+      "2020-01-02|NFLX",
+      "2020-01-02|NOW",
+      "2020-01-02|NVDA",
+      "2020-01-02|PYPL",
+      "2020-01-02|QCOM",
+      "2020-01-02|SHOP",
+      "2020-01-02|TSLA",
+      "2020-01-03|ADBE",
+      "2020-01-03|AMD",
+      "2020-01-03|BAC",
+      "2020-01-03|C",
+      "2020-01-03|DDOG",
+      "2020-01-03|FDX",
+      "2020-01-03|GM",
+      "2020-01-03|LUV",
+      "2020-01-03|MU",
+      "2020-01-03|NFLX",
+      "2020-01-03|NOW",
+      "2020-01-03|NVDA",
+      "2020-01-03|PYPL",
+      "2020-01-03|QCOM",
+      "2020-01-03|SHOP",
+      "2020-01-03|TSLA",
+      "2020-01-06|ADBE",
+      "2020-01-06|AMD",
+      "2020-01-06|BAC",
+      "2020-01-06|C",
+      "2020-01-06|DDOG",
+      "2020-01-06|FDX",
+      "2020-01-06|GM",
+      "2020-01-06|LUV",
+      "2020-01-06|MU",
+      "2020-01-06|NFLX",
+      "2020-01-06|NOW",
+      "2020-01-06|NVDA",
+      "2020-01-06|PYPL",
+      "2020-01-06|QCOM",
+      "2020-01-06|SHOP",
+      "2020-01-06|TSLA",
+      "2020-01-07|ADBE",
+      "2020-01-07|AMD",
+      "2020-01-07|BAC",
+      "2020-01-07|C",
+      "2020-01-07|DDOG",
+      "2020-01-07|FDX",
+      "2020-01-07|GM",
+      "2020-01-07|LUV",
+      "2020-01-07|MU",
+      "2020-01-07|NFLX",
+      "2020-01-07|NOW",
+      "2020-01-07|NVDA",
+      "2020-01-07|PYPL",
+      "2020-01-07|QCOM",
+      "2020-01-07|SHOP",
+      "2020-01-07|TSLA",
+      "2020-01-08|ADBE",
+      "2020-01-08|AMD",
+      "2020-01-08|BAC",
+      "2020-01-08|C",
+      "2020-01-08|DDOG",
+      "2020-01-08|FDX",
+      "2020-01-08|GM",
+      "2020-01-08|LUV",
+      "2020-01-08|MU",
+      "2020-01-08|NFLX",
+      "2020-01-08|NOW",
+      "2020-01-08|NVDA",
+      "2020-01-08|PYPL",
+      "2020-01-08|QCOM",
+      "2020-01-08|SHOP",
+      "2020-01-08|TSLA",
+      "2020-01-09|ADBE",
+      "2020-01-09|AMD",
+      "2020-01-09|BAC",
+      "2020-01-09|C",
+      "2020-01-09|DDOG",
+      "2020-01-09|FDX",
+      "2020-01-09|GM",
+      "2020-01-09|LUV",
+      "2020-01-09|MU",
+      "2020-01-09|NFLX",
+      "2020-01-09|NOW",
+      "2020-01-09|NVDA",
+      "2020-01-09|PYPL",
+      "2020-01-09|QCOM",
+      "2020-01-09|SHOP",
+      "2020-01-09|TSLA",
+      "2020-01-10|ADBE",
+      "2020-01-10|AMD",
+      "2020-01-10|BAC",
+      "2020-01-10|C"
+    ],
+    "missingAlpaca": [],
+    "bySymbol": {
+      "AMD": {
+        "rowsCompared": 0,
+        "rowsWithDifference": 0,
+        "fieldDifferences": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        },
+        "maxAbsDifference": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        }
+      },
+      "SHOP": {
+        "rowsCompared": 0,
+        "rowsWithDifference": 0,
+        "fieldDifferences": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        },
+        "maxAbsDifference": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        }
+      },
+      "ADBE": {
+        "rowsCompared": 0,
+        "rowsWithDifference": 0,
+        "fieldDifferences": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        },
+        "maxAbsDifference": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        }
+      },
+      "MU": {
+        "rowsCompared": 0,
+        "rowsWithDifference": 0,
+        "fieldDifferences": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        },
+        "maxAbsDifference": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        }
+      },
+      "FDX": {
+        "rowsCompared": 0,
+        "rowsWithDifference": 0,
+        "fieldDifferences": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        },
+        "maxAbsDifference": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        }
+      },
+      "TSLA": {
+        "rowsCompared": 0,
+        "rowsWithDifference": 0,
+        "fieldDifferences": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        },
+        "maxAbsDifference": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        }
+      },
+      "LUV": {
+        "rowsCompared": 0,
+        "rowsWithDifference": 0,
+        "fieldDifferences": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        },
+        "maxAbsDifference": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        }
+      },
+      "NFLX": {
+        "rowsCompared": 0,
+        "rowsWithDifference": 0,
+        "fieldDifferences": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        },
+        "maxAbsDifference": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        }
+      },
+      "C": {
+        "rowsCompared": 0,
+        "rowsWithDifference": 0,
+        "fieldDifferences": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        },
+        "maxAbsDifference": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        }
+      },
+      "NOW": {
+        "rowsCompared": 0,
+        "rowsWithDifference": 0,
+        "fieldDifferences": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        },
+        "maxAbsDifference": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        }
+      },
+      "QCOM": {
+        "rowsCompared": 0,
+        "rowsWithDifference": 0,
+        "fieldDifferences": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        },
+        "maxAbsDifference": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        }
+      },
+      "BAC": {
+        "rowsCompared": 0,
+        "rowsWithDifference": 0,
+        "fieldDifferences": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        },
+        "maxAbsDifference": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        }
+      },
+      "GM": {
+        "rowsCompared": 0,
+        "rowsWithDifference": 0,
+        "fieldDifferences": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        },
+        "maxAbsDifference": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        }
+      },
+      "DDOG": {
+        "rowsCompared": 0,
+        "rowsWithDifference": 0,
+        "fieldDifferences": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        },
+        "maxAbsDifference": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        }
+      },
+      "PYPL": {
+        "rowsCompared": 0,
+        "rowsWithDifference": 0,
+        "fieldDifferences": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        },
+        "maxAbsDifference": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        }
+      },
+      "NVDA": {
+        "rowsCompared": 0,
+        "rowsWithDifference": 0,
+        "fieldDifferences": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        },
+        "maxAbsDifference": {
+          "o": 0,
+          "h": 0,
+          "l": 0,
+          "c": 0
+        }
+      }
+    },
+    "examplesFirst100": []
+  },
+  "independentDataLineVerified": false,
+  "verifiedForResearch": false,
+  "decision": "REVIEW_REQUIRED_NO_AUTOMATIC_APPROVAL",
+  "researchStarted": false,
+  "tradeEnabled": false,
+  "forwardOpened": false
+}
