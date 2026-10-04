@@ -93,21 +93,21 @@ async function uploadComparisonReport(onProgress=()=>{}) {
  const body=await response.json().catch(()=>({}));if(!response.ok||!body?.ok)throw Error(body?.error||('HTTP '+response.status));
  onProgress('Rapport sparad · '+body.path);return body;
 }
-function mount(root){const section=root.querySelector('[data-gen9-build]'),panel=root.querySelector('.engine-export-primary');if(!section||!panel)return;
+function mount(root){const section=root.querySelector('[data-gen9-build]'),panel=root.querySelector('.engine-export-primary');if(!section)return;
  const info=document.createElement('p');info.setAttribute('aria-live','polite');const old=saved();info.textContent=old?'Datakällrapport finns att exportera.':'Kontrollera datakällan före planlås. Kontrollen läser prisdata och ändrar inget forskningsstate.';
  const runAll=document.createElement('button');runAll.textContent='▶ Kör Gen9-kontroll';runAll.setAttribute('data-gen-primary-run','9');const gen9Title=section.querySelector('h2');if(gen9Title)gen9Title.insertAdjacentElement('afterend',runAll);else section.prepend(runAll);
  const button=document.createElement('button');button.textContent='🔎 Kontrollera Gen9-datakälla';section.append(button,info);
  const independent=document.createElement('button');independent.textContent='🧪 Hämta oberoende Alpaca SIP/all';section.append(independent);
- const independentExport=document.createElement('button');independentExport.textContent='📋 Kopiera Alpaca SIP/all';independentExport.disabled=!savedIndependent();panel.append(independentExport);
- const candidateExport=document.createElement('button');candidateExport.textContent='📋 Kopiera Gen9-kandidatdata';panel.append(candidateExport);
+ const independentExport=document.createElement('button');independentExport.textContent='📋 Kopiera Alpaca SIP/all';independentExport.disabled=!savedIndependent();panel?.append(independentExport);
+ const candidateExport=document.createElement('button');candidateExport.textContent='📋 Kopiera Gen9-kandidatdata';panel?.append(candidateExport);
  const compare=document.createElement('button');compare.textContent='🔎 Jämför kandidat ↔ Alpaca';section.append(compare);
- const compareExport=document.createElement('button');compareExport.textContent='📋 Kopiera jämförelserapport';compareExport.disabled=!savedComparison();panel.append(compareExport);\n const compareUpload=document.createElement('button');compareUpload.textContent='☁️ Spara full rapport till GitHub';compareUpload.disabled=!savedComparison();panel.append(compareUpload);
+ const compareExport=document.createElement('button');compareExport.textContent='📋 Kopiera jämförelserapport';compareExport.disabled=!savedComparison();panel?.append(compareExport);\n const compareUpload=document.createElement('button');compareUpload.textContent='☁️ Spara full rapport till GitHub';compareUpload.disabled=!savedComparison();panel?.append(compareUpload);
  compare.onclick=async()=>{compare.disabled=true;compareUpload.disabled=true;try{await compareCandidateIndependent(t=>info.textContent=t);compareExport.disabled=false;try{await uploadComparisonReport(t=>info.textContent=t)}catch(uploadError){info.textContent='Jämförelse klar · automatisk GitHub-sparning misslyckades: '+uploadError.message+' · använd reservknappen';compareUpload.disabled=false}}catch(e){info.textContent='JÄMFÖRELSE STOPPAD: '+e.message}finally{compare.disabled=false}};
  compareExport.onclick=()=>{const report=savedComparison();if(report)global.LinaStatusExport?.downloadObject?.('LINA_GEN9_COMPARE_CHAT',compactComparison(report))};\n compareUpload.onclick=async()=>{compareUpload.disabled=true;try{await uploadComparisonReport(t=>info.textContent=t)}catch(e){info.textContent='RAPPORTUPLOAD STOPPAD: '+e.message}finally{compareUpload.disabled=false}};
  candidateExport.onclick=async()=>{candidateExport.disabled=true;try{await copyCandidate(t=>info.textContent=t)}catch(e){info.textContent='KANDIDATDATA STOPPAD: '+e.message}finally{candidateExport.disabled=false}};
  independent.onclick=async()=>{independent.disabled=true;try{await fetchIndependent(t=>info.textContent=t);independentExport.disabled=false}catch(e){info.textContent='ALPACA STOPPAD: '+e.message}finally{independent.disabled=false}};
  independentExport.onclick=()=>{const report=savedIndependent();if(report)global.LinaStatusExport?.downloadObject?.('LINA_GEN9_ALPACA_SIP_ALL_2020_2024',report)};
- const exp=document.createElement('button');exp.textContent='📥 Exportera Gen9-datakällkontroll';exp.disabled=!old;panel.append(exp);
+ const exp=document.createElement('button');exp.textContent='📥 Exportera Gen9-datakällkontroll';exp.disabled=!old;panel?.append(exp);
  runAll.onclick=async()=>{runAll.disabled=true;button.disabled=true;independent.disabled=true;compare.disabled=true;compareUpload.disabled=true;try{
   info.textContent='Gen9-kontroll · steg 1/3 · kontrollerar datakällor…';await check(t=>info.textContent='Gen9-kontroll · steg 1/3 · '+t);exp.disabled=false;
   info.textContent='Gen9-kontroll · steg 2/3 · hämtar oberoende Alpaca SIP/all…';await fetchIndependent(t=>info.textContent='Gen9-kontroll · steg 2/3 · '+t);independentExport.disabled=false;
