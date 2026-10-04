@@ -12,9 +12,13 @@ async function compare(status){
  for(const x of A){const y=m.get(x.d+'|'+x.symbol);if(!y)continue;let d=false;for(const f of ['o','h','l','c'])if(!Object.is(x[f],y[f])){d=true;ds.push({d:x.d,symbol:x.symbol,field:f,candidate:x[f],alpaca:y[f],absDifference:Math.abs(x[f]-y[f])})}d?diffRows++:exact++}
  ds.sort((a,b)=>b.absDifference-a.absDifference);const ts=[.00001,.0001,.001,.01,.1,1,10],bands=Object.fromEntries(ts.map(n=>['lt_'+n,ds.filter(x=>x.absDifference<n).length]));bands.gte_10=ds.filter(x=>x.absDifference>=10).length;
  const report={schema:'LINA-GEN9-CANDIDATE-ALPACA-RAW-DIAGNOSTIC-1',createdAt:new Date().toISOString(),release:w.LinaVersion?.release,candidate:{sha256:h,rowCount:A.length},alpaca:{rowCount:B.length,feed:'sip',adjustment:'raw'},comparison:{method:'EXACT_NUMERIC_OHLC_NO_TOLERANCE_DIAGNOSTIC',matchedKeys:A.length,exactRows:exact,rowsWithDifference:diffRows,fieldDifferences:ds.length,differenceBands:bands,largestDifferences:ds.slice(0,100)},diagnosticOnly:true,verifiedForResearch:false,decision:'DIAGNOSTIC_ONLY_NO_APPROVAL',researchStarted:false,tradeEnabled:false,forwardOpened:false};
- sessionStorage.setItem(RK,JSON.stringify(report));const old=sessionStorage.getItem(K);sessionStorage.setItem(K,JSON.stringify(report));
- try{await w.LinaGen9DataCheck.uploadComparisonReport(t=>status('RAW · '+t))}finally{if(old===null)sessionStorage.removeItem(K);else sessionStorage.setItem(K,old)}
- status('RAW-kontroll klar · separat rapport automatiskt sparad');return report;
+ sessionStorage.setItem(RK,JSON.stringify(report));
+ const base=w.LinaAPI&&w.LinaAPI.workerBase,code=sessionStorage.getItem('linasopti_login_code')||'';if(!base||!code)throw Error('Lina-session/API saknas');
+ status('RAW · sparar separat GEN9_COMPARE_RAW-rapport till GitHub…');
+ const ur=await fetch(base+'/runtime-report',{method:'POST',headers:{'Content-Type':'application/json','X-Lina-Login-Code':code},body:JSON.stringify({schema:'LINA-RUNTIME-REPORT-1',name:'GEN9_COMPARE_RAW',report})});
+ const ub=await ur.json().catch(()=>({}));if(!ur.ok||!ub.ok)throw Error(ub.error||('RAW-upload HTTP '+ur.status));
+ if(!String(ub.path||'').includes('/GEN9_COMPARE_RAW_'))throw Error('RAW-upload gav oväntad rapportsökväg');
+ status('RAW-kontroll klar · separat rapport sparad: '+ub.path);return report;
 }
 document.addEventListener('lina:gen9-raw-ready',async()=>{const s=document.querySelector('[data-gen9-run-status]');try{await compare(t=>{if(s)s.textContent=t})}catch(e){if(s)s.textContent='RAW-JÄMFÖRELSE STOPPAD: '+e.message}});
 w.LinaGen9RawCompare=Object.freeze({compare});
