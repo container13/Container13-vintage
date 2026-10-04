@@ -1,0 +1,39 @@
+name: Promote verified Lina Worker
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ccc-demo-public-test
+      - name: Verify candidate and rotate archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd linasopti/worker
+          test -s WORKER_CURRENT.js
+          test -s WORKER_PENDING_RUNTIME_REPORT.js
+          grep -q 'runtime-report-v0321' WORKER_PENDING_RUNTIME_REPORT.js
+          cp WORKER_CURRENT.js WORKER_PREVIOUS.js
+          cp WORKER_PENDING_RUNTIME_REPORT.js WORKER_CURRENT.js
+          cmp -s WORKER_CURRENT.js WORKER_PENDING_RUNTIME_REPORT.js
+      - name: Commit verified archive rotation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add linasopti/worker/WORKER_CURRENT.js linasopti/worker/WORKER_PREVIOUS.js
+          if git diff --cached --quiet; then
+            echo "No archive changes to commit."
+            exit 0
+          fi
+          git commit -m "Promote verified Lina Worker archive"
+          git push origin HEAD:ccc-demo-public-test
