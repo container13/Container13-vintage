@@ -52,7 +52,7 @@ function mergeGenerationEntry(l,r){
  const lp=generationProgress(l?.value),rp=generationProgress(r?.value);
  const picked=lp>rp?l:rp>lp?r:(l?.stamp||'')>=(r?.stamp||'')?l:r;
  const left=JSON.parse(l.value),right=JSON.parse(r.value),a=left.gen9,b=right.gen9;
- if(!a&&!b)return picked;
+ if(!a&&!b&&!left.gen10&&!right.gen10)return picked;
  if(a?.specSha256&&b?.specSha256&&a.specSha256!==b.specSha256)throw Error('Gen9 synkkonflikt: olika låsta experiment');
  if(a?.dataManifest&&b?.dataManifest&&JSON.stringify(a.dataManifest)!==JSON.stringify(b.dataManifest))throw Error('Gen9 synkkonflikt: olika dataset');
  const rank=g=>g?.summaryFreeze?.frozen?5:g?.summary?4:g?.researchOpened?3:g?.dataEvidence?2:g?.planLocked?1:0;
