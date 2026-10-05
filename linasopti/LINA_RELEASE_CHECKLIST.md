@@ -666,3 +666,13 @@ Historical/frozen research version strings are excluded from this current-releas
 - Gen13 tar nu research/write-ownership redan före dataset-evidence. Ordinarie app-state autosync är blockerad från godkänt Gen13 startReceipt tills summaryFreeze är klar.
 - Befintlig immutable Gen13 DATA-evidence återanvänds via exakt SHA/read-back. Eventuellt lokalt fold-checkpoint får endast återupptas; aldrig simuleras om.
 - Ingen Worker-ändring krävdes. Runnerspec/hash och Gen13-metod är oförändrade. Handel/Forward AV.
+
+
+## V0.3.84 — Gen14 explicit research start
+- V0.3.83 browser verifierades: Gen14 ENGINE VERIFIED, exact runnerspec 5792360ae36b56390f480a9b846ed2a15b504145a06b8a03a36e676247e03fc5, Release Gate PASS och research blockerad.
+- Användaren gav därefter separat uttryckligt startbeslut `Kör` för Gen14 research.
+- Metod/runnerspec är oförändrad: PERSISTENCE_CONFIRMATION, exakt två konsekutiva signal-closes, inga nya tunable numeric parameters.
+- V0.3.84 kräver eget Release Gate PASS + human-start receipt före dataset/observation.
+- Gen14 använder samma no-rerun/checkpoint/immutable-evidence/read-back-disciplin som Gen13, med egen IndexedDB och egna evidence-namn.
+- App-state merge är monotont utökad för Gen14 och ordinarie autosync pausas från godkänt Gen14 startReceipt tills summaryFreeze.
+- Gen10–Gen13 förblir permanent frysta. Handel/Forward AV.
