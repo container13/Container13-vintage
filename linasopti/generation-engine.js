@@ -246,6 +246,21 @@ function installExportPanel(root,x){
 }
 
 // V0.3.43 · Gen10 proposal is deliberately UI-only until human review/plan lock.
+let gen10BuildPromise=null;
+async function buildGen10PreResearch(root,ctx){
+ if(gen10BuildPromise)return gen10BuildPromise;
+ gen10BuildPromise=(async()=>{
+  let x=state(),g=x.gen10||{};if(!g.humanApproved||g.engineVerified||g.researchOpened)return;
+  const status=root.querySelector('[data-gen10-live]');if(status)status.innerHTML='<b>PÅGÅR:</b> verifierar exakt runnerspec + SHA-256 + kontraktstester…';
+  try{
+   const E=window.LinaGen10Engine;if(!E?.verify)throw Error('Gen10 Engine saknas');
+   const r=await fetch('LINA_GEN10_RUNNERSPEC.json',{cache:'no-store'});if(!r.ok)throw Error('Runnerspecfil saknas HTTP '+r.status);
+   const locked=await r.json();if(locked.sha256!==E.SPEC_SHA256||E.canonical(locked.runnerspec)!==E.canonical(E.SPEC))throw Error('Runnerspecfil matchar inte kompilerat kontrakt');
+   const verify=await E.verify();if(verify.status!=='PASS')throw Error('Engine verify FAIL: '+verify.failed.join(', '));
+   x=state();x.gen10={...(x.gen10||{}),state:'READY_FOR_RESEARCH_START_DECISION',planLocked:true,runnerSpecLocked:true,runnerSpecSha256:E.SPEC_SHA256,runnerSpecPath:'linasopti/LINA_GEN10_RUNNERSPEC.json',engineVerified:true,engineVerify:verify,researchOpened:false,tradeEnabled:false,forwardOpened:false,preResearchBuiltAt:new Date().toISOString()};save(x);render(root,ctx);
+  }catch(e){x=state();x.gen10={...(x.gen10||{}),state:'PRE_RESEARCH_BUILD_BLOCKED',engineVerified:false,researchOpened:false,tradeEnabled:false,forwardOpened:false,buildError:String(e?.message||e),buildFailedAt:new Date().toISOString()};save(x);render(root,ctx)}
+ })().finally(()=>{gen10BuildPromise=null});return gen10BuildPromise;
+}
 function mountGen10Proposal(root,x,ctx){
  if(!x.gen9?.summaryFreeze?.frozen||x.gen9?.state!=='GEN9_COMPLETE_NO_CANDIDATE')return;
  const workspace=root.querySelector('.workspace');if(!workspace)return;
