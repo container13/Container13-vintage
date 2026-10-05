@@ -220,6 +220,18 @@
         finally{document.removeEventListener('lina:gen10progress',on)}
       }catch(e){try{const box=document.querySelector('[data-gen10-global-resume]');if(box){box.textContent='Gen10 DIAG STOPP · '+String(e?.message||e);box.classList.add('bad');box.dataset.gen10Diag='STOPP'}}catch{}console.warn('Gen10 global resume stoppad:',e)}
     },0);
+    setTimeout(async()=>{
+      try{
+        if(!window.LinaReleaseGate?.allowResearch?.())return;
+        const g=window.LinaGen11Workflow?.state?.();
+        if(!g||g.summaryFreeze?.frozen||g.researchOpened||Object.keys(g.checkpoints||{}).length)return;
+        const box=document.querySelector('[data-gen11-preflight]');if(box)box.textContent='Gen11 · startbeslut verifierat · förbereder låst dataset…';
+        const on=e=>{if(box)box.textContent=e.detail.text};document.addEventListener('lina:gen11progress',on);
+        try{const result=await window.LinaGen11Workflow.startApprovedResearch();if(box)box.textContent='Gen11 klar · '+result.decision+' · Handel/Forward AV';}
+        catch(e){if(box){box.textContent='Gen11 STOPPAD · '+String(e?.message||e);box.classList.add('bad')}}
+        finally{document.removeEventListener('lina:gen11progress',on)}
+      }catch(e){console.warn('Gen11 research-start stoppad:',e)}
+    },0);
     setTimeout(()=>window.LinaForwardCenter?.autoCatchUp?.().catch(e=>console.warn('Auto Forward stoppad:',e)),0);
   }
   window.LinaApp={version:APP_VERSION,start:startApp};
