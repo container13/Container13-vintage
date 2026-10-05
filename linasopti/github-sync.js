@@ -50,6 +50,10 @@ function generationProgress(raw){
   if(k.planLocked)p=Math.max(p,150);if(k.engineVerified)p=Math.max(p,155);if(k.researchOpened)p=Math.max(p,160);
   p=Math.max(p,160+Object.keys(k.checkpoints||{}).length);
   if(k.summary)p=Math.max(p,180);if(k.summaryFreeze?.frozen)p=Math.max(p,190);
+  const m=x.gen12||{};
+  if(m.planLocked)p=Math.max(p,200);if(m.engineVerified)p=Math.max(p,205);if(m.researchOpened)p=Math.max(p,210);
+  p=Math.max(p,210+Object.keys(m.checkpoints||{}).length);
+  if(m.summary)p=Math.max(p,230);if(m.summaryFreeze?.frozen)p=Math.max(p,240);
   return p;
  }catch{return -1}
 }
@@ -71,6 +75,7 @@ function mergeGenerationEntry(l,r){
  const gen9=mergeGen(left.gen9,right.gen9,'Gen9');if(gen9)out.gen9=gen9;else delete out.gen9;
  const gen10=mergeGen(left.gen10,right.gen10,'Gen10');if(gen10)out.gen10=gen10;else delete out.gen10;
  const gen11=mergeGen(left.gen11,right.gen11,'Gen11');if(gen11)out.gen11=gen11;else delete out.gen11;
+ const gen12=mergeGen(left.gen12,right.gen12,'Gen12');if(gen12)out.gen12=gen12;else delete out.gen12;
  out.tradeEnabled=false;out.savedAt=[left.savedAt,right.savedAt].filter(Boolean).sort().pop()||out.savedAt;
  return{value:JSON.stringify(out),stamp:out.savedAt||picked.stamp};
 }
