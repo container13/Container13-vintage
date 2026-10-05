@@ -1,8 +1,8 @@
 (function(global){
 'use strict';
-const KEY='lina_release_gate_v0373';
-const REQUIRED_RELEASE='V0.3.73';
-const REQUIRED_CACHE='0.3.73';
+const KEY='lina_release_gate_v0374';
+const REQUIRED_RELEASE='V0.3.74';
+const REQUIRED_CACHE='0.3.74';
 function item(id,pass,detail){return{id,pass:Boolean(pass),detail};}
 function directChildren(root){return root?[...root.children]:[];}
 async function run(){
@@ -11,7 +11,7 @@ async function run(){
  const current=root?.querySelector('[data-gen11-preflight]');
  const oldDiag=root?.querySelector('[data-gen10-global-resume]');
  const children=directChildren(root);
- tests.push(item('release_source',global.LinaVersion?.release===REQUIRED_RELEASE&&global.LinaVersion?.cache===REQUIRED_CACHE,'Central version/cache must be V0.3.73/0.3.73.'));
+ tests.push(item('release_source',global.LinaVersion?.release===REQUIRED_RELEASE&&global.LinaVersion?.cache===REQUIRED_CACHE,'Central version/cache must be V0.3.74/0.3.74.'));
  tests.push(item('final_view_exists',Boolean(root),'Final #view must exist after bootstrap.'));
  tests.push(item('current_action_visible',Boolean(current&&current.textContent.includes('ENGINE VERIFIED')&&current.textContent.includes('research EJ startad')),'Gen11 verified/current action must be visible.'));
  tests.push(item('current_action_first',Boolean(current&&children[0]===current),'Gen11 current action must be the first direct child in final view.'));
