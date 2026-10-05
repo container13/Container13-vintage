@@ -223,6 +223,16 @@
         console.warn('Gen12 explicit startkedja stoppad:',e);
       }
     },0);
+    // Gen13 pre-research gate: synthetic verification only. Never starts research.
+    setTimeout(async()=>{
+      const box=()=>document.querySelector('[data-gen13-preflight]');
+      try{
+        await window.LinaGen13Preflight?.visibleVerify?.();
+        const gate=await window.LinaReleaseGate?.verifyFinal?.();
+        if(gate?.status!=='PASS')throw Error('Gen13 Release Gate FAIL');
+        if(gate?.allowResearch!==false)throw Error('Gen13 researchspärr saknas');
+      }catch(e){const b=box();if(b){b.textContent='Gen13 STOPPAD · '+String(e?.message||e);b.classList.add('bad')}console.warn('Gen13 pre-research gate stoppad:',e)}
+    },0);
     // Gen9 explicit research-start gate is global: Dashboard is the normal post-login route.
     // Run only after GitHub bootstrap/recovery has restored authoritative local state.
     setTimeout(async()=>{
