@@ -1,6 +1,7 @@
 (function(){
 'use strict';
-const API='https://linas-opti-api.mangaj73.workers.dev', RELEASE=window.LinaVersion?.release||'VERSION_UNAVAILABLE', DIAG='lina_clean_sync_diagnostics_v0270';
+const API='https://linas-opti-api.mangaj73.workers.dev', RELEASE=window.LinaVersion?.release||'VERSION_UNAVAILABLE', DIAG='lina_clean_sync_diagnostics_v0270', BUILD='github-sync-0362-a';
+window.LinaGitHubSyncBuild=BUILD;
 function diag(type,data={}){let d;try{d=JSON.parse(localStorage.getItem(DIAG)||'{\"schema\":\"LINA-SYNC-DIAGNOSTICS-1\",\"release\":\"V0.2.69\",\"events\":[]}')}catch{d={schema:'LINA-SYNC-DIAGNOSTICS-1',release:RELEASE,events:[]}}d.events.push({at:new Date().toISOString(),type,...data});d.events=d.events.slice(-80);d.updatedAt=new Date().toISOString();localStorage.setItem(DIAG,JSON.stringify(d));}
 const EXCLUDE=new Set(['lina_clean_core_state_v0011','lina_clean_swing_g4_universe_result_v0213']);
 const GENERATION_KEY='lina_generation_engine_v0273';
