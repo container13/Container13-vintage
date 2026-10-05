@@ -375,3 +375,12 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Uppdelningen får aldrig ändra det avsedda slutresultatet eller skapa en halv release som betraktas som klar.
 - Varje del ska vara deterministisk, återupptagningsbar och verifierbar. Beroenden och laddningsordning ska bestämmas före skrivning.
 - Irreversibla/observerade steg får starta först när samtliga nödvändiga delar är skrivna, återlästa och verifierade som en komplett release.
+
+
+## 14. END-TO-END RELEASE VERIFICATION
+- **END-TO-END RELEASE VERIFICATION:** Ingen release får kallas COMPLETE enbart för att kod är skriven, syntaxkontrollerad, committad eller deployad. Den verkliga kedjan GitHub → deploy → webbläsare → bootstrap/auktoritativt state → synlig UI → avsedd åtgärd → nytt permanent state/evidens ska verifieras för de delar releasen påverkar.
+- UI är aldrig sanningskälla för kritiskt workflow-state. Permanent GitHub/app-state/evidens är auktoritativt och UI ska rekonstrueras från detta efter bootstrap.
+- Resume/idempotens är ett obligatoriskt release-scenario för återupptagningsbara flöden: start → säkert checkpoint → avbrott/reload → återuppta exakt checkpoint → ingen rerun → fortsätt.
+- Versionsbyte ska verifieras från föregående verkliga release med befintlig cache/localStorage, inte endast i en ren session.
+- Efter en state-ändrande release ska permanent state/evidens återläsas och jämföras med synlig UI innan releasen rapporteras som fungerande.
+- Regeln är generell och ska återanvändas i andra projekt där samma bygg-/releaseprincip är relevant.
