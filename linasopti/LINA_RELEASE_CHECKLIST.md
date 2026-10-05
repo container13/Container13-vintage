@@ -625,3 +625,13 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Trade and Forward remain OFF.
 - [x] Changed JavaScript reread from GitHub and syntax checked.
 - [ ] Browser V0.3.76 must PASS its own Release Gate before first observation.
+
+
+## Gen12 closeout / next-generation integrity gate
+- [x] Permanent app-state verified: GEN12_COMPLETE_NO_CANDIDATE, 8/8, frozen summary, COMPLETE/SUMMARY_FROZEN.
+- [x] Gen12 is no-rerun forever; recovery used immutable evidence only.
+- [x] Gen10–12 compared on identical recurring failure gates before proposing another generation.
+- [x] Gen12 higher aggregate PF is not treated as success because concentration=1.0 and minFoldPf=0.0 failed harder.
+- [x] Next generation may not tune breadth threshold, sector cap, graded sizing or rescue Gen10–12 using observed 2021–2024 outcomes.
+- [x] Any cross-sectional hypothesis must use an already-defined signal measure or separately justify a new measure before observation; no observed-result rank tuning.
+- [x] No Gen13 runnerspec/engine/research exists at this checkpoint.
