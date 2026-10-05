@@ -13,6 +13,6 @@ async function put(k,v){const d=await store();return new Promise((resolve,reject
 async function digest(v){const b=await global.crypto.subtle.digest('SHA-256',new TextEncoder().encode(E.canonical(v)));return[...new Uint8Array(b)].map(n=>n.toString(16).padStart(2,'0')).join('')}
 async function shaText(t){const b=await global.crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return[...new Uint8Array(b)].map(n=>n.toString(16).padStart(2,'0')).join('')}
 function report(t){global.document.dispatchEvent(new CustomEvent('lina:gen10progress',{detail:{text:t}}))}
-async function single(fn){if(busy)throw Error('Gen10-operation pågår redan');busy=true;try{return await fn()}finally{busy=false}}
+async function single(fn){if(busy)throw Error('Gen10-operation pågår redan');if(!global.navigator?.locks?.request)throw Error('Gen10 STOPP: säkert cross-tab-lås saknas');busy=true;try{return await global.navigator.locks.request('lina-gen10-research-v1',{mode:'exclusive',ifAvailable:true},async lock=>{if(!lock)throw Error('Gen10-operation pågår redan i annan vy/flik');return await fn()})}finally{busy=false}}
 global.LinaGen10WorkflowCore=Object.freeze({E,DATA_SHA,now,state,save,assertContract,get,put,digest,shaText,report,single});
 })(window);
