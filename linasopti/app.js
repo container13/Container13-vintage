@@ -223,15 +223,36 @@
         console.warn('Gen12 explicit startkedja stoppad:',e);
       }
     },0);
-    // Gen13 pre-research gate: synthetic verification only. Never starts research.
+    // Gen13 explicit dependency chain: preflight -> Release Gate -> human start receipt -> dataset -> resumable research.
     setTimeout(async()=>{
       const box=()=>document.querySelector('[data-gen13-preflight]');
       try{
         await window.LinaGen13Preflight?.visibleVerify?.();
+        const w=window.LinaGen13Workflow;if(!w?.startApprovedResearch||!w?.recoverFinalStateFromImmutableEvidence)throw Error('Gen13 workflow saknas');
+        let g=w.state();
+        if(g.summaryFreeze?.frozen){const b=box();if(b)b.textContent='Gen13 klar · '+(g.summary?.decision||g.state)+' · Handel/Forward AV';return}
         const gate=await window.LinaReleaseGate?.verifyFinal?.();
-        if(gate?.status!=='PASS')throw Error('Gen13 Release Gate FAIL');
-        if(gate?.allowResearch!==false)throw Error('Gen13 researchspärr saknas');
-      }catch(e){const b=box();if(b){b.textContent='Gen13 STOPPAD · '+String(e?.message||e);b.classList.add('bad')}console.warn('Gen13 pre-research gate stoppad:',e)}
+        if(gate?.status!=='PASS'||gate?.allowResearch!==true)throw Error('Gen13 Release Gate saknar PASS/allowResearch');
+        try{
+          const b=box();if(b)b.textContent='Gen13 · kontrollerar permanent slut-evidens före research/resume…';
+          g=await w.recoverFinalStateFromImmutableEvidence();
+          await window.LinaGitHubSync?.syncAll?.();
+          if(b)b.textContent='Gen13 klar · '+(g.summary?.decision||g.state)+' · permanent state återställd/synkad · Handel/Forward AV';
+          return;
+        }catch(recoveryError){
+          if(!String(recoveryError?.message||recoveryError).includes('summary-evidence saknas'))throw recoveryError;
+        }
+        const b=box();if(b)b.textContent='Gen13 · Release Gate PASS · startbeslut verifierat · förbereder/återupptar låst research…';
+        const on=e=>{const x=box();if(x)x.textContent=e.detail.text};document.addEventListener('lina:gen13progress',on);
+        try{
+          const result=await w.startApprovedResearch();
+          await window.LinaGitHubSync?.syncAll?.();
+          const x=box();if(x)x.textContent='Gen13 klar · '+result.decision+' · permanent state synkat · Handel/Forward AV';
+        }finally{document.removeEventListener('lina:gen13progress',on)}
+      }catch(e){
+        const b=box();if(b){b.textContent='Gen13 STOPPAD · '+String(e?.message||e);b.classList.add('bad')}
+        console.warn('Gen13 explicit startkedja stoppad:',e);
+      }
     },0);
     // Gen9 explicit research-start gate is global: Dashboard is the normal post-login route.
     // Run only after GitHub bootstrap/recovery has restored authoritative local state.
