@@ -4,7 +4,7 @@ const KEY='lina_release_gate_v0386',REQUIRED_RELEASE='V0.3.86',REQUIRED_CACHE='0
 const item=(id,pass,detail)=>({id,pass:Boolean(pass),detail});
 async function run(){
  const tests=[],root=document.querySelector('#view'),current=root?.querySelector('[data-gen15-preflight]'),children=root?[...root.children]:[];
- tests.push(item('release_source',global.LinaVersion?.release===REQUIRED_RELEASE&&global.LinaVersion?.cache===REQUIRED_CACHE,'Central version/cache exact.'));
+ tests.push(item('release_source',global.LinaVersion?.release===REQUIRED_RELEASE&&global.LinaVersion?.cache===REQUIRED_CACHE,'loadedRelease='+String(global.LinaVersion?.release)+' loadedCache='+String(global.LinaVersion?.cache)+' requiredRelease='+REQUIRED_RELEASE+' requiredCache='+REQUIRED_CACHE));
  tests.push(item('final_view_exists',Boolean(root),'Final #view exists.'));
  tests.push(item('current_action_visible',Boolean(current&&current.textContent.includes('ENGINE VERIFIED')),'Gen15 verified visible.'));
  tests.push(item('current_action_first',Boolean(current&&children[0]===current),'Gen15 current action first.'));
@@ -17,7 +17,7 @@ async function run(){
  const failed=tests.filter(t=>!t.pass),result={schema:'LINA-RELEASE-GATE-1',release:REQUIRED_RELEASE,status:failed.length?'FAIL':'PASS',allowResearch:false,tests,failed:failed.map(t=>t.id),checkedAt:new Date().toISOString()};
  try{sessionStorage.setItem(KEY,JSON.stringify(result))}catch{}return result;
 }
-function render(r){const root=document.querySelector('#view');if(!root)return;let box=root.querySelector('[data-release-gate]');if(!box){box=document.createElement('div');box.className='statusline';box.setAttribute('data-release-gate','')}const current=root.querySelector('[data-gen15-preflight]');if(current)current.insertAdjacentElement('afterend',box);else root.prepend(box);box.classList.toggle('bad',r.status!=='PASS');global.LinaStatusOrder?.apply?.();box.textContent=r.status==='PASS'?'Release Gate ✓ · Gen15 TREND_INVALIDATION_EXIT preregistrerad · research BLOCKERAD · Handel/Forward AV':'RELEASE GATE STOPPAD · '+r.failed.join(', ')+' · research BLOCKERAD';global.LinaStatusOrder?.apply?.()}
+function render(r){const root=document.querySelector('#view');if(!root)return;let box=root.querySelector('[data-release-gate]');if(!box){box=document.createElement('div');box.className='statusline';box.setAttribute('data-release-gate','')}const current=root.querySelector('[data-gen15-preflight]');if(current)current.insertAdjacentElement('afterend',box);else root.prepend(box);box.classList.toggle('bad',r.status!=='PASS');global.LinaStatusOrder?.apply?.();box.textContent=r.status==='PASS'?'Release Gate ✓ · Gen15 TREND_INVALIDATION_EXIT preregistrerad · research BLOCKERAD · Handel/Forward AV':'RELEASE GATE STOPPAD · '+r.failed.map(id=>id+(r.tests.find(t=>t.id===id)?.detail?' ['+r.tests.find(t=>t.id===id).detail+']':'')).join(', ')+' · research BLOCKERAD';global.LinaStatusOrder?.apply?.()}
 async function verifyFinal(){const r=await run();render(r);if(r.status!=='PASS')throw Error('Release Gate FAIL: '+r.failed.join(', '));return r}
 function allowResearch(){return false}
 global.LinaReleaseGate=Object.freeze({run,verifyFinal,allowResearch,KEY,REQUIRED_RELEASE});
