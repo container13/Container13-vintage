@@ -646,3 +646,15 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Isolated engine reread from GitHub and JavaScript syntax checked.
 - [x] Engine contains no research-start/dataset loader and cannot enable Trade/Forward.
 - [ ] Browser synthetic Engine Verification and Release Gate PASS required before any separate research-start decision.
+
+
+## V0.3.80 — Gen13 research-start
+- [x] V0.3.79 browser: Gen13 ENGINE VERIFIED + Release Gate PASS verifierat av användaren.
+- [x] Separat uttryckligt mänskligt research-startbeslut mottaget.
+- [x] Gen13 runnerspec/hash och RANK_TO_CAPACITY oförändrade.
+- [x] Dataset SHA/20 128-raders gate före första observation.
+- [x] Fold checkpointas före immutable evidence; verifierat serverkvitto krävs före continuation.
+- [x] Resume använder checkpoint/evidence och observationAttempts blockerar rerun.
+- [x] Gen13 monotonic app-state merge och autosync-paus under RUNNING.
+- [x] Gen10–Gen12 frysta; Handel/Forward AV.
+- [ ] Browser V0.3.80 måste PASS sin egen Release Gate innan första Gen13-observation.
