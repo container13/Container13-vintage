@@ -570,3 +570,13 @@ Historical/frozen research version strings are excluded from this current-releas
 - [ ] Flight recorder visar exakt sista lyckade steg vid bootstrap/resume-stopp.
 - [ ] Semantiskt slutstate jämfört mot förväntat state; syntax/deploy ensam räcker inte.
 
+
+
+## Permanent authoritative write receipt gate
+- [ ] Permanent write verifieras av samma serverkomponent som utför write, mot auktoritativ backend.
+- [ ] GitHub-write har read-back av exakt blob-SHA och SHA-256-match mot avsett innehåll innan success.
+- [ ] Receipt innehåller path + gitBlobSha + contentSha256 + verifiedAt (+ commitSha när tillgänglig).
+- [ ] Existing immutable adopteras endast efter exakt blob/SHA-256-match; existens/409 ensam räcker inte.
+- [ ] Klienten använder receipt som completion-gate och verifierar inte via statisk deploy/Pages-fil.
+- [ ] State/checkpoint sparas före continuation och nästa observerade steg är spärrat tills receipt är verifierat.
+- [ ] Återkommande felklass två gånger utlöser arkitekturgranskning i stället för ytterligare lokal retry/specialpatch.
