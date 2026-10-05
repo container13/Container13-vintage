@@ -1,0 +1,46 @@
+{
+  "canonicalization": "UTF-8 JSON, recursively sorted object keys, compact separators",
+  "sha256": "a065ce8ad2285010493f8491c86116f01025ed3554be18744471de394dbdeafa",
+  "runnerspec": {
+    "schema": "LINA-GEN16-RUNNERSPEC-1",
+    "status": "LOCKED_PRE_RESEARCH",
+    "sourceGeneration": 15,
+    "sourceGen15SpecSha256": "726b1631365c5df4880dd926b32461f870eacd1bdf2f610f00b5ad844c61b43c",
+    "historyHardStop": "2024-12-31",
+    "symbols": ["AMD","SHOP","ADBE","MU","FDX","TSLA","LUV","NFLX","C","NOW","QCOM","BAC","GM","DDOG","PYPL","NVDA"],
+    "foldYears": [2021,2022,2023,2024],
+    "variants": ["CONTROL","PRICE_CHANNEL_BREAKOUT"],
+    "candidateVariant": "PRICE_CHANNEL_BREAKOUT",
+    "params": {"lookback":50,"trend":180,"hold":12,"volDays":20,"volTarget":0.12,"volMin":0.35},
+    "priceChannelBreakout": {
+      "controlReference": "max close of prior 50 sessions",
+      "candidateReference": "max high of prior 50 sessions",
+      "trigger": "close(t) > SMA180(t) and close(t) > max(high[t-50 ... t-1])",
+      "currentBarExcluded": true,
+      "execution": "enter at open(t+1)",
+      "newNumericParameters": 0
+    },
+    "capital": 100000,
+    "costSide": 0.001,
+    "maxPositions": 8,
+    "maxPositionPct": 0.125,
+    "baseRiskPerTrade": 0.005,
+    "sizingDistance": 0.05,
+    "gates": {"minOosTrades":100,"minPf":1.2,"maxDd":0.12,"positiveOos":true,"maxConcentration":0.4,"minPositiveFolds":3,"minFoldPf":0.8,"maxFoldGrossProfitShare":0.55},
+    "method": {
+      "selection": "FIXED_PARAMS_NO_TRAIN_SELECTION",
+      "entry": "CONTROL original close-channel breakout; candidate exact prior-high price-channel breakout; both next-open",
+      "exit": "both variants original 12th session close inclusive of entry; fold-end liquidation",
+      "equity": "daily cash plus marked positions",
+      "control": "CONTROL diagnostic only; PRICE_CHANNEL_BREAKOUT candidate eligible",
+      "missingData": "aligned complete symbol bars required",
+      "simultaneousEntryOrder": "strength descending, symbol ascending tie-break",
+      "noRescue": true,
+      "observedHistory": "2021-2024 development data, never unseen holdout",
+      "noParameterGrid": true
+    },
+    "researchOpened": false,
+    "tradeEnabled": false,
+    "forwardOpened": false
+  }
+}
