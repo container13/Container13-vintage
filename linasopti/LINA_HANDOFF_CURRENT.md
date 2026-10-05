@@ -461,3 +461,16 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - GitHub-workflow `.github/workflows/lina-worker-promote.yml` är den befintliga promotionskedjan för PENDING → CURRENT → PREVIOUS och ska kontrolleras/användas före manuellt Cloudflare-flöde.
 - Före varje Worker-ändring ska `wrangler.jsonc` och promotionsworkflowen verifieras på aktuell branch så att kedjan inte antas från historik.
 - Gen10 är fryst och får inte köras om eller ändras av Worker-/deployarbete.
+
+
+## V0.3.75 — Gen12 preregistrerad och maskinbyggd, research blockerad
+- Gen11 är permanent fryst som GEN11_COMPLETE_NO_CANDIDATE; ingen rerun.
+- Gen10/Gen11 visar samma strukturella FAIL: koncentration + worst-fold. Gen11:s sektortak ändrade inte 2022-folden: 18 trades, PF 0.04193405056618428.
+- Gen12 testar exakt en preregistrerad hypotes: BREADTH_50_GATE. Nya entries tillåts endast när minst 8 av 16 symboler ligger strikt över SMA180 vid föregående close.
+- Ingen parametergrid, alternativ threshold, sektorgate eller graderad sizing får provas inom Gen12 efter observation.
+- Gen12 runnerspec SHA-256: 7e02f720254ee8bf3139a405aa33cd66d7e88d71493c74d7c035f8305c0c4557.
+- gen12-generation-engine.js är isolerad utan nätverks-/researchstart. gen12-preflight.js verifierar endast engine.
+- V0.3.75 Release Gate är Gen12-specifik och håller allowResearch:false. Ingen sidladdning får starta Gen12 research.
+- GitHub-återläsning: berörda JS syntax PASS; inga gamla 0.3.74-cachetokens i aktiva releasefiler.
+- Handel/Forward AV. Worker oförändrad.
+- Nästa genuina beslut: efter synlig browserverifiering av Gen12 ENGINE VERIFIED + Release Gate PASS kan separat uttryckligt beslut tas om research-start.
