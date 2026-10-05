@@ -2,8 +2,10 @@
 'use strict';const C=global.LinaGen13WorkflowCore,D=global.LinaGen13WorkflowData,E=C.E;
 async function run(){return C.single(async()=>{let g=C.state();C.assertContract(g);if(g.summaryFreeze?.frozen)return g.summary;
 if(!g.startReceipt?.approved)throw Error('Gen13 STOPP: mänskligt startkvitto saknas');
+// Research ownership starts BEFORE dataset evidence. This prevents ordinary app-state autosync from racing immutable evidence writes.
+g.researchAuthorized=true;g.researchAuthorizedAt=g.researchAuthorizedAt||C.now();g.state='RESEARCH_STARTING';g.automation={status:'RUNNING',lastStep:'START_AUTHORIZED',attemptAt:C.now()};C.save(g);
 if(!g.dataEvidence)await D.prepareData();g=C.state();const pkg=await D.restoreDataCheckpoint();
-g.researchOpened=true;g.researchAuthorized=true;g.researchAuthorizedAt=g.researchAuthorizedAt||C.now();g.state='RESEARCH_RUNNING';g.automation={status:'RUNNING',lastStep:'START_AUTHORIZED',attemptAt:C.now()};C.save(g);
+g.researchOpened=true;g.state='RESEARCH_RUNNING';g.automation={...(g.automation||{}),status:'RUNNING',lastStep:'DATA_EVIDENCE_VERIFIED',attemptAt:C.now()};C.save(g);
 try{
  for(const variant of E.SPEC.variants)for(const year of E.SPEC.foldYears){
   g=C.state();const key=variant+'_'+year,storageKey='fold:'+E.SPEC_SHA256+':'+C.DATA_SHA+':'+key;C.report('Gen13 '+key+' · checkpoint/evidens');
