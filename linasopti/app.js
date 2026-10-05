@@ -190,11 +190,12 @@
     setTimeout(async()=>{
       const root=document.querySelector('#view'),box=document.createElement('div');box.className='statusline';box.setAttribute('data-gen10-global-resume','');root?.prepend(box);
       const mark=(step,detail='')=>{const rec={release:window.LinaVersion?.release||'',step,detail,at:new Date().toISOString()};try{sessionStorage.setItem('lina_gen10_flight',JSON.stringify(rec))}catch{}box.textContent='Gen10 DIAG · '+step+(detail?' · '+detail:'');box.dataset.gen10Diag=step;return rec};
-      mark('BOOTSTRAP_KLAR');
+      let rd={},ld={};try{rd=JSON.parse(sessionStorage.getItem('lina_gen10_remote_diag')||'{}');ld=JSON.parse(sessionStorage.getItem('lina_gen10_local_diag')||'{}')}catch{}
+      mark('BOOTSTRAP_KLAR','REMOTE='+(rd.exists?'FINNS':'SAKNAS')+'['+(rd.state??'∅')+',cp='+(rd.checkpoints??0)+'] · LOCAL='+(ld.exists?'FINNS':'SAKNAS')+'['+(ld.state??'∅')+',cp='+(ld.checkpoints??0)+']');
       try{
         const w=window.LinaGen10Workflow;if(!w?.run){mark('MODUL_SAKNAS');return}mark('GEN10_MODUL_FUNNEN');
         const g=w.state();mark('STATE_LÄST',g.state||'STATE_SAKNAS');const resumable=g.engineVerified&&!g.summaryFreeze?.frozen&&(g.state==='RESEARCH_RUNNING'||g.state==='RESEARCH_STOPPED');
-        if(!resumable){mark('RESUME_EJ_ELIGIBLE','state='+(g.state??'∅')+' · engineVerified='+String(g.engineVerified)+' · frozen='+String(Boolean(g.summaryFreeze?.frozen))+' · researchOpened='+String(g.researchOpened)+' · checkpoints='+Object.keys(g.checkpoints||{}).length);return}mark('RESUME_ELIGIBLE');
+        if(!resumable){mark('RESUME_EJ_ELIGIBLE','REMOTE='+(rd.exists?'FINNS':'SAKNAS')+'['+(rd.state??'∅')+',cp='+(rd.checkpoints??0)+'] · LOCAL='+(ld.exists?'FINNS':'SAKNAS')+'['+(ld.state??'∅')+',cp='+(ld.checkpoints??0)+'] · state='+(g.state??'∅')+' · engineVerified='+String(g.engineVerified)+' · frozen='+String(Boolean(g.summaryFreeze?.frozen)));return}mark('RESUME_ELIGIBLE');
         box.textContent='Gen10 · återupptar från permanent checkpoint…';mark('RUN_ANROPAS');
         const on=e=>{box.textContent=e.detail.text};document.addEventListener('lina:gen10progress',on);
         try{const result=await w.run();box.textContent='Gen10 klar · '+(result?.decision||w.state().state);}
