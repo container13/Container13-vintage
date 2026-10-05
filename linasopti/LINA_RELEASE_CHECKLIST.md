@@ -676,3 +676,9 @@ Historical/frozen research version strings are excluded from this current-releas
 - Gen14 använder samma no-rerun/checkpoint/immutable-evidence/read-back-disciplin som Gen13, med egen IndexedDB och egna evidence-namn.
 - App-state merge är monotont utökad för Gen14 och ordinarie autosync pausas från godkänt Gen14 startReceipt tills summaryFreeze.
 - Gen10–Gen13 förblir permanent frysta. Handel/Forward AV.
+
+## Versionsdisciplin — permanent regel från V0.3.87
+- Minsta ändring i Lina-projektet kräver ett nytt versionsnummer. Detta gäller kod, HTML/CSS, konfiguration, dokumentation, diagnostik, cache-/asset-revisioner och deploy-only/deploy-touch-ändringar.
+- Ingen `r2`, `hotfix`, query-token eller annan ändring får publiceras under ett redan använt versionsnummer.
+- Ny ändring => höj `version.js` och alla aktiva cachetokens konsekvent före deploy.
+- Releasekontrollen ska stoppa publicering om ändrade Lina-filer förekommer utan nytt versionsnummer.
