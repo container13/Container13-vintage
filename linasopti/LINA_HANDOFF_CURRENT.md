@@ -505,3 +505,14 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - gen13-generation-engine.js är isolerad och återläst: syntax OK, exakt spec-hash, ingen Gen12 breadthlogik, ingen dataset/research-startkod, Handel/Forward AV.
 - Gen10–Gen12 förblir permanent frysta. Ingen Gen13 2021–2024-research har startats.
 - Nästa steg är syntetisk Gen13 Engine Verification + Release Gate. Separat uttryckligt research-startbeslut krävs därefter.
+
+
+## V0.3.80 — Gen13 research-start godkänd
+- V0.3.79 verifierades synligt i browser: Gen13 ENGINE VERIFIED och Release Gate PASS, med research fortfarande blockerad.
+- Användaren gav därefter separat uttryckligt beslut `Kör` för Gen13 research-start.
+- V0.3.80 behåller exakt runnerspec SHA-256 `e8cd7a717f3240f3650c326e610457d122a3b144a2c5494036f0618db4afbb42` och enda kandidat RANK_TO_CAPACITY.
+- Kedjan är: Gen13 preflight → V0.3.80 Release Gate PASS/allowResearch → human start receipt → låst dataset SHA/20 128 rader → CONTROL + RANK_TO_CAPACITY årsvis 2021–2024 → checkpoint → immutable evidence med auktoritativt receipt före continuation → summary/frysning.
+- Resume får endast fortsätta från exakt checkpoint/immutable evidence. observationAttempts utan checkpoint ger hårdstopp; ingen rerun/rescue.
+- Gen13 är tillagd i monotonic GitHub app-state merge och autosync pausas medan Gen13 automation RUNNING.
+- Gen10–Gen12 förblir permanent frysta. Handel/Forward AV. Worker oförändrad.
+- Nästa steg: browser V0.3.80 måste först visa Gen13 ENGINE VERIFIED + Release Gate PASS. Därefter får den redan godkända automatiska researchkedjan börja; vid stopp används endast checkpoint/evidence recovery.
