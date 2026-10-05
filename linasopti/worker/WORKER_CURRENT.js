@@ -2128,6 +2128,24 @@ function safeEvidenceName(name) {
 
 
 
+async function handleEvidenceRead(request,env) {
+  if(request.method!=="GET")return json({ok:false,error:"Method not allowed"},405,request);
+  try{
+    const url=new URL(request.url),name=safeEvidenceName(url.searchParams.get("name")),date=String(url.searchParams.get("date")||"");
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(date))throw new Error("Ogiltigt evidence-datum");
+    const path=`linasopti/evidence/${date}/${name}`,cfg=githubConfig(env);
+    const api=`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${path.split("/").map(encodeURIComponent).join("/")}?ref=${encodeURIComponent(cfg.branch)}`;
+    const r=await fetch(api,{headers:githubHeaders(cfg)}),body=await r.json();
+    if(r.status===404)return json({ok:false,error:"Evidence saknas"},404,request);
+    if(!r.ok)throw new Error(body?.message||`GitHub evidence read HTTP ${r.status}`);
+    const br=await fetch(`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/git/blobs/${encodeURIComponent(body.sha)}`,{headers:githubHeaders(cfg)}),blob=await br.json();
+    if(!br.ok)throw new Error(blob?.message||`GitHub evidence blob HTTP ${br.status}`);
+    if(blob?.encoding!=="base64"||typeof blob?.content!=="string")throw new Error("Evidence blob saknar base64-innehåll");
+    const content=b64decode(blob.content),contentSha256=await sha256Hex(content);
+    return json({ok:true,path,content,receipt:{schema:"LINA-GITHUB-COMMIT-RECEIPT-1",path,gitBlobSha:body.sha,contentSha256,verifiedAt:new Date().toISOString()}},200,request);
+  }catch(e){return json({ok:false,error:String(e?.message||e)},409,request)}
+}
+
 async function handleEvidence(request,env) {
 
   if(request.method!=="POST") {
@@ -2583,6 +2601,12 @@ export default {
     }
 
 
+
+    if (preUrl.pathname === "/evidence-read") {
+
+      return handleEvidenceRead(request, env);
+
+    }
 
     if (preUrl.pathname === "/evidence") {
 
