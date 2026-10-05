@@ -49,32 +49,22 @@ function generationProgress(raw){
  }catch{return -1}
 }
 function mergeGenerationEntry(l,r){
- const lp=generationProgress(l?.value),rp=generationProgress(r?.value);
- const picked=lp>rp?l:rp>lp?r:(l?.stamp||'')>=(r?.stamp||'')?l:r;
- const left=JSON.parse(l.value),right=JSON.parse(r.value),a=left.gen9,b=right.gen9;
- if(!a&&!b&&!left.gen10&&!right.gen10)return picked;
- if(a?.specSha256&&b?.specSha256&&a.specSha256!==b.specSha256)throw Error('Gen9 synkkonflikt: olika låsta experiment');
- if(a?.dataManifest&&b?.dataManifest&&JSON.stringify(a.dataManifest)!==JSON.stringify(b.dataManifest))throw Error('Gen9 synkkonflikt: olika dataset');
- const rank=g=>g?.summaryFreeze?.frozen?5:g?.summary?4:g?.researchOpened?3:g?.dataEvidence?2:g?.planLocked?1:0;
- const newer=rank(a)>=rank(b)?a:b,older=newer===a?b:a;
- const g={...(older||{}),...(newer||{}),checkpoints:{...(b?.checkpoints||{}),...(a?.checkpoints||{})},observationAttempts:{...(b?.observationAttempts||{}),...(a?.observationAttempts||{})}};
- for(const key of Object.keys(a?.checkpoints||{}))if(b?.checkpoints?.[key]){
-  const x=a.checkpoints[key],y=b.checkpoints[key];if(x.resultSha256!==y.resultSha256)throw Error('Gen9 synkkonflikt: olika observerade resultat '+key);
-  g.checkpoints[key]={...y,...x,evidence:x.evidence||y.evidence};
- }
- g.planEvidence=a?.planEvidence||b?.planEvidence;g.dataEvidence=a?.dataEvidence||b?.dataEvidence;
- g.tradeEnabled=false;g.forwardOpened=false;
- const out=JSON.parse(picked.value);out.gen9=g;
- const ga=left.gen10,gb=right.gen10;
- if(ga||gb){
-  if(ga?.runnerSpecSha256&&gb?.runnerSpecSha256&&ga.runnerSpecSha256!==gb.runnerSpecSha256)throw Error('Gen10 synkkonflikt: olika låsta experiment');
-  if(ga?.dataManifest&&gb?.dataManifest&&JSON.stringify(ga.dataManifest)!==JSON.stringify(gb.dataManifest))throw Error('Gen10 synkkonflikt: olika dataset');
-  const grank=z=>z?.summaryFreeze?.frozen?100:z?.summary?90:80+Object.keys(z?.checkpoints||{}).length+(z?.researchOpened?5:0)+(z?.dataEvidence?2:0)+(z?.planLocked?1:0);
-  const gn=grank(ga)>=grank(gb)?ga:gb,go=gn===ga?gb:ga;
-  const gj={...(go||{}),...(gn||{}),checkpoints:{...(gb?.checkpoints||{}),...(ga?.checkpoints||{})},observationAttempts:{...(gb?.observationAttempts||{}),...(ga?.observationAttempts||{})}};
-  for(const key of Object.keys(ga?.checkpoints||{}))if(gb?.checkpoints?.[key]){const x=ga.checkpoints[key],y=gb.checkpoints[key];if(x.resultSha256!==y.resultSha256)throw Error('Gen10 synkkonflikt: olika observerade resultat '+key);gj.checkpoints[key]={...y,...x,evidence:x.evidence||y.evidence}}
-  gj.dataEvidence=ga?.dataEvidence||gb?.dataEvidence;gj.tradeEnabled=false;gj.forwardOpened=false;out.gen10=gj;
- }
+ const left=JSON.parse(l.value),right=JSON.parse(r.value);
+ const lp=generationProgress(l.value),rp=generationProgress(r.value),picked=lp>rp?l:rp>lp?r:(l.stamp||'')>=(r.stamp||'')?l:r;
+ const out=JSON.parse(picked.value);
+ const mergeGen=(a,b,label)=>{
+  if(!a&&!b)return null;if(!a)return structuredClone(b);if(!b)return structuredClone(a);
+  if(a.runnerSpecSha256&&b.runnerSpecSha256&&a.runnerSpecSha256!==b.runnerSpecSha256)throw Error(label+' synkkonflikt: olika låsta experiment');
+  if(a.specSha256&&b.specSha256&&a.specSha256!==b.specSha256)throw Error(label+' synkkonflikt: olika låsta experiment');
+  if(a.dataManifest&&b.dataManifest&&JSON.stringify(a.dataManifest)!==JSON.stringify(b.dataManifest))throw Error(label+' synkkonflikt: olika dataset');
+  const rank=z=>z?.summaryFreeze?.frozen?1000:z?.summary?900:800+Object.keys(z?.checkpoints||{}).length+(z?.researchOpened?50:0)+(z?.engineVerified?20:0)+(z?.dataEvidence?10:0)+(z?.planLocked?5:0);
+  const newer=rank(a)>=rank(b)?a:b,older=newer===a?b:a;
+  const g={...older,...newer,checkpoints:{...(b.checkpoints||{}),...(a.checkpoints||{})},observationAttempts:{...(b.observationAttempts||{}),...(a.observationAttempts||{})}};
+  for(const key of Object.keys(a.checkpoints||{}))if(b.checkpoints?.[key]){const x=a.checkpoints[key],y=b.checkpoints[key];if(x.resultSha256!==y.resultSha256)throw Error(label+' synkkonflikt: olika observerade resultat '+key);g.checkpoints[key]={...y,...x,evidence:x.evidence||y.evidence}}
+  g.planEvidence=a.planEvidence||b.planEvidence;g.dataEvidence=a.dataEvidence||b.dataEvidence;g.tradeEnabled=false;g.forwardOpened=false;return g;
+ };
+ const gen9=mergeGen(left.gen9,right.gen9,'Gen9');if(gen9)out.gen9=gen9;else delete out.gen9;
+ const gen10=mergeGen(left.gen10,right.gen10,'Gen10');if(gen10)out.gen10=gen10;else delete out.gen10;
  out.tradeEnabled=false;out.savedAt=[left.savedAt,right.savedAt].filter(Boolean).sort().pop()||out.savedAt;
  return{value:JSON.stringify(out),stamp:out.savedAt||picked.stamp};
 }
