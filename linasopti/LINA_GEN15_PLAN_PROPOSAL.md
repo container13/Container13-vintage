@@ -1,6 +1,6 @@
 # LINA GEN15 — PLAN PROPOSAL
 
-Status: PROPOSAL_NOT_APPROVED
+Status: HUMAN_APPROVED_FOR_PREREGISTRATION_NOT_RESEARCH
 Datum: 2026-10-05
 Research: EJ STARTAD
 Handel: AV
@@ -43,6 +43,19 @@ minOosTrades 100; minPf 1.2; maxDd 0.12; positiveOos true; maxConcentration 0.4;
 - Handel/Forward remain OFF.
 - This document is plan proposal only. It creates no runnerspec, engine or research permission.
 
+## Human approval
+TREND_INVALIDATION_EXIT was explicitly approved by the user for preregistration only. This approval does not authorize research.
+
+## Locked design semantics for preregistration
+- Candidate exit trigger: at close(t), compute the existing 180-session SMA using data through close(t). If close(t) <= SMA180(t), the position is marked for exit.
+- Normal candidate exit execution: open(t+1) with the unchanged 0.1% exit-side cost. No same-close execution and no future data in the trigger.
+- A position entered at open(t) may first be evaluated for trend invalidation at close(t).
+- Candidate has no 12-session time exit and no other maximum holding period.
+- Fold final session is a hard boundary: all still-open positions are liquidated at that final close with ordinary exit-side cost; no next-fold open may be read.
+- CONTROL remains the original one-signal next-open entry plus 12th-session-close exit.
+- Candidate entry is the same original CONTROL entry; Gen14 persistence is not inherited.
+- Same-symbol re-entry remains prohibited while a position is open. After an executed exit, future entries require a new ordinary valid breakout signal under the unchanged entry rules.
+- No stop, target, trailing rule, ATR rule, alternate SMA, threshold grid or rescue variant.
+
 ## Next human gate
-Approve or reject TREND_INVALIDATION_EXIT as the Gen15 design direction.
-Approval means preregistration work only. Research requires a later separate explicit human start decision.
+After canonical runnerspec/hash, isolated engine, synthetic Engine Verification and executable Release Gate pass, Gen15 research requires a separate explicit human start decision.
