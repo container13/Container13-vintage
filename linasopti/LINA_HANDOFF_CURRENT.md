@@ -16,6 +16,15 @@ Dokumentrevision: Gen10 pre-research Auto Pipeline
 - Nästa genuina beslut efter lyckad Engine VERIFIED är separat Gen10 research-start. Ingen research får startas enbart genom sidladdning.
 - Permanenta UI/workflow-regler finns i `LINA_MASTER_RULES.md` och verifieras i `LINA_RELEASE_CHECKLIST.md`, inklusive PRIORITY UI, ACTION FEEDBACK, NO SILENT FAILURE, SAVED ≠ VISIBLE ≠ VERIFIED, ONE CLICK = ONE RESULT, RESUME NEVER REPEAT, GITHUB PERMANENT STATE, NO FALSE BUTTON PROMISES och CURRENT ACTION CONTRACT.
 
+
+## V0.3.47 — Gen10 research workflow
+- SIZE-AWARE EXECUTION är permanent MASTER RULE + releasekontroll.
+- Gen10 research är uppdelad i fyra små moduler: workflow-core, workflow-data, research och workflow UI.
+- Observerat steg markeras före simulering, checkpoint skrivs före evidens, checkpointreferens sparas före nästa steg och saknad checkpoint efter påbörjat steg ger STOPPAD/ingen rerun.
+- Varje fold får immutable GitHub-evidens innan nästa fold fortsätter. Summary checkpointas och GitHub-fryses innan COMPLETE.
+- Auto-resume startar endast från redan godkänt/ENGINE VERIFIED Gen10-state. Handel och Forward förblir AV.
+- Release: V0.3.47.
+
 ---
 
 # HISTORISK ÄLDRE HANDOFF — EJ AUKTORITATIV
