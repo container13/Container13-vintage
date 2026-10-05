@@ -173,7 +173,12 @@
     try{window.LinaGenerationEngine?.updateMaturityHeader?.()}catch(e){console.warn('Robotmognad kunde inte renderas:',e)}
     registerRoutes();window.LinaRouter.start();
     // Gen11 final-render gate: verify only after authoritative bootstrap + final route render.
-    setTimeout(()=>window.LinaGen11Preflight?.visibleVerify?.().catch(e=>console.warn('Gen11 preflight stoppad:',e)),0);
+    setTimeout(async()=>{
+      try{
+        await window.LinaGen11Preflight?.visibleVerify?.();
+        await window.LinaReleaseGate?.verifyFinal?.();
+      }catch(e){console.warn('Release Gate stoppad:',e)}
+    },0);
     // Gen9 explicit research-start gate is global: Dashboard is the normal post-login route.
     // Run only after GitHub bootstrap/recovery has restored authoritative local state.
     setTimeout(async()=>{
@@ -190,7 +195,7 @@
     },0);
     // Gen10 resume flight recorder: visible first, then exact resume checkpoints.
     setTimeout(async()=>{
-      const root=document.querySelector('#view'),box=document.createElement('div');box.className='statusline';box.setAttribute('data-gen10-global-resume','');root?.prepend(box);
+      const root=document.querySelector('#view'),box=document.createElement('div');box.className='statusline';box.setAttribute('data-gen10-global-resume','');
       const mark=(step,detail='')=>{const rec={release:window.LinaVersion?.release||'',step,detail,at:new Date().toISOString()};try{sessionStorage.setItem('lina_gen10_flight',JSON.stringify(rec))}catch{}box.textContent='Gen10 DIAG · '+step+(detail?' · '+detail:'');box.dataset.gen10Diag=step;return rec};
       let rd={},ld={},appGetErr={};try{rd=JSON.parse(sessionStorage.getItem('lina_gen10_remote_diag')||'{}');ld=JSON.parse(sessionStorage.getItem('lina_gen10_local_diag')||'{}');appGetErr=JSON.parse(sessionStorage.getItem('lina_app_state_get_error')||'{}')}catch{}
       try{
@@ -207,7 +212,7 @@
       try{
         const w=window.LinaGen10Workflow;if(!w?.run){mark('MODUL_SAKNAS');return}mark('GEN10_MODUL_FUNNEN');
         const g=w.state();mark('STATE_LÄST',g.state||'STATE_SAKNAS');const resumable=g.engineVerified&&!g.summaryFreeze?.frozen&&(g.state==='RESEARCH_RUNNING'||g.state==='RESEARCH_STOPPED');
-        if(!resumable){mark('RESUME_EJ_ELIGIBLE','REMOTE='+(rd.exists?'FINNS':'SAKNAS')+'['+(rd.state??'∅')+',cp='+(rd.checkpoints??0)+'] · Worker='+String(rd.branch??'?')+' · '+String(rd.path??'?')+' · remoteRelease='+String(rd.remoteRelease??'?')+' · APP_STATE_GET='+(appGetErr.message?('STOPP HTTP '+String(appGetErr.httpStatus??'?')+' '+String(appGetErr.message)):'OK/INGET FEL')+' · SYNC_BUILD='+String(window.LinaGitHubSyncBuild??'SAKNAS')+' · API[exists='+String(rd.apiExists??'?')+',state='+String(rd.apiStatePresent??'?')+',entries='+String(rd.apiEntryCount??'?')+',gen10='+String(rd.apiGen10Key??'?')+',source='+String(rd.apiSource??'?')+'] · LIVE_WORKER='+String(rd.workerVersion??'SAKNAS')+' · canonical=0.58.8 · LOCAL='+(ld.exists?'FINNS':'SAKNAS')+'['+(ld.state??'∅')+',cp='+(ld.checkpoints??0)+'] · state='+(g.state??'∅')+' · engineVerified='+String(g.engineVerified)+' · frozen='+String(Boolean(g.summaryFreeze?.frozen)));return}mark('RESUME_ELIGIBLE');
+        if(!resumable){box.remove();mark('RESUME_EJ_ELIGIBLE','REMOTE='+(rd.exists?'FINNS':'SAKNAS')+'['+(rd.state??'∅')+',cp='+(rd.checkpoints??0)+'] · Worker='+String(rd.branch??'?')+' · '+String(rd.path??'?')+' · remoteRelease='+String(rd.remoteRelease??'?')+' · APP_STATE_GET='+(appGetErr.message?('STOPP HTTP '+String(appGetErr.httpStatus??'?')+' '+String(appGetErr.message)):'OK/INGET FEL')+' · SYNC_BUILD='+String(window.LinaGitHubSyncBuild??'SAKNAS')+' · API[exists='+String(rd.apiExists??'?')+',state='+String(rd.apiStatePresent??'?')+',entries='+String(rd.apiEntryCount??'?')+',gen10='+String(rd.apiGen10Key??'?')+',source='+String(rd.apiSource??'?')+'] · LIVE_WORKER='+String(rd.workerVersion??'SAKNAS')+' · canonical=0.58.8 · LOCAL='+(ld.exists?'FINNS':'SAKNAS')+'['+(ld.state??'∅')+',cp='+(ld.checkpoints??0)+'] · state='+(g.state??'∅')+' · engineVerified='+String(g.engineVerified)+' · frozen='+String(Boolean(g.summaryFreeze?.frozen)));return}mark('RESUME_ELIGIBLE');
         box.textContent='Gen10 · återupptar från permanent checkpoint…';mark('RUN_ANROPAS');
         const on=e=>{box.textContent=e.detail.text};document.addEventListener('lina:gen10progress',on);
         try{const result=await w.run();box.textContent='Gen10 klar · '+(result?.decision||w.state().state);}
