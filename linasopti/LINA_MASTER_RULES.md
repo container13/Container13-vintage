@@ -444,3 +444,10 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Ett dependency-steg som ännu inte är klart ska ge synlig WAIT/STOP-status; det får inte tyst `return` och sedan lämna workflowet utan continuation.
 - Release Gate → startkvitto → observerad research är en strikt sekvens och ska implementeras som en enda await-kedja.
 - Regeln gäller alla våra projekt.
+
+
+## Gen13 research-start — V0.3.80
+- Gen13 research-start är uttryckligen mänskligt godkänd efter synlig V0.3.79 Engine Verification + Release Gate PASS.
+- Låst runnerspec SHA-256 `e8cd7a717f3240f3650c326e610457d122a3b144a2c5494036f0618db4afbb42` och RANK_TO_CAPACITY får inte ändras under körningen.
+- Researchkedjan ska vara resumable utan rerun: varje observerad fold checkpointas före immutable evidence och nästa fold får inte börja innan auktoritativt GitHub-kvitto verifierats.
+- Gen10–Gen12 är frysta och får aldrig köras om. Handel/Forward förblir AV efter Gen13 closeout tills separat mänskligt beslut.
