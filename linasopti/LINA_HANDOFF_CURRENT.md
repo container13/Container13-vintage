@@ -484,3 +484,15 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - github-sync is monotonic through Gen12 and autosync pauses while Gen12 automation is RUNNING.
 - Trade/Forward remain OFF. Worker unchanged.
 - Static GitHub reread passed syntax/version checks. Browser runtime PASS is still required before first observation.
+
+
+## V0.3.77 — Gen12 permanent avslutad; research boundary för nästa generation
+- GitHub app-state verifierad: GEN12_COMPLETE_NO_CANDIDATE, 8/8 checkpoints, summaryFrozen=true, automation COMPLETE/SUMMARY_FROZEN, Handel/Forward AV.
+- Gen12 får aldrig köras om. Recovery från immutable DATA + 8 folds + SUMMARY lyckades utan simulation-rerun.
+- Gen10 GRADED: PF 1.3738209095, concentration 0.6624062769, minFoldPf 0.0158828327.
+- Gen11 SECTOR_CAP: PF 1.2688501212, concentration 0.6628799172, minFoldPf 0.0419340506.
+- Gen12 BREADTH_50_GATE: PF 1.4111639414, concentration 1.0, minFoldPf 0.0. 2022 reducerades från 18 CONTROL-trades till 4 candidate-trades; samtliga fyra förlorade. 2021 och 2024 var candidate identisk med CONTROL i trade count/resultatstruktur; 2023 ändrades endast marginellt.
+- Robust lärdom: portfölj-/regimfilter ovanpå samma breakout-entry har inte löst de två återkommande FAIL-gates: symbolkoncentration och worst-fold. Gen12 förbättrade total PF men försämrade båda robusthetsproblemen.
+- Research boundary: nästa generation får INTE vara threshold-tuning av breadth, sector cap, graded sizing eller annan efterhandsvariant av Gen10–12. Ingen parametergrid/rescue mot 2021–2024.
+- Befintligt signalmått strength = 50-dagars prisförändring är redan preregistrerat i basmotorn och används för deterministisk simultan ranking. Om nästa hypotes använder cross-sectional selection ska den använda redan definierat mått och en enda ex ante regel, inte välja rankgräns från observerade resultat.
+- Ingen Gen13 runnerspec, engine eller research har skapats i detta steg.
