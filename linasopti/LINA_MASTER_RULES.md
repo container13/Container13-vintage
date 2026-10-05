@@ -360,3 +360,12 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - **UI ACTION FEEDBACK RULE:** Varje användaråtgärd som ändrar state måste omedelbart ge en tydlig synlig förändring i samma vy. Ett lyckat klick får aldrig vara tyst eller se ut som om inget hände.
 - Efter state-ändrande klick ska UI återrenderas från det faktiskt sparade state-värdet och visa ny status/knapptext eller tydligt KLART/STOPPAD-resultat.
 - Vid releaseverifiering ska faktisk DOM-placering kontrolleras; det räcker inte att anta att en prioriterad komponent ligger högst på grund av sin generationsordning eller CSS-klass.
+
+## 12. Workflow-kontrakt: fel, state och knappar
+- **NO SILENT FAILURE:** Fel eller blockerade steg måste omedelbart visas högt i aktuell vy som STOPPAD/BLOCKERAD med begriplig orsak och nästa möjliga steg. Lina får aldrig lämna användaren med en oförändrad vy som kan tolkas som att klicket inte registrerades.
+- **SAVED ≠ VISIBLE ≠ VERIFIED:** Sparat state, synlig UI-status och verifierad funktion är tre separata nivåer. En ändring får inte rapporteras som fungerande enbart för att kod/state sparats. Relevant nivå ska verifieras före KLART.
+- **ONE CLICK = ONE RESULT:** Ett användarklick ska utlösa exakt en avsedd åtgärd. Primärknappen ska skyddas mot dubbelstart medan åtgärden pågår och därefter visa ett entydigt resultat.
+- **RESUME, NEVER REPEAT:** Efter reload, avbrott, enhets- eller chatbyte ska workflow återuppta från senaste säkert beständiga steg. Redan observerat/sparat forskningsresultat får aldrig köras om; samma princip gäller mekaniska delsteg när säkert completion-state finns.
+- **GITHUB = PERMANENT STATE:** Beslut, godkännanden, lås, frysningar och annat state som måste överleva webbläsar-/enhetsbyte ska göras beständigt via kanonisk GitHub/app-state-synk. localStorage får vara cache/arbetsstate men får inte vara enda permanenta källa för kritiskt state.
+- **NO FALSE BUTTON PROMISES:** Knapptext ska beskriva exakt den åtgärd som den aktuella releasen faktiskt utför. En knapp får inte lova nästa pipeline-/research-/synksteg om den endast registrerar ett godkännande eller utför ett delsteg.
+- **CURRENT ACTION CONTRACT:** Högst upp i varje huvudvy ska användaren kunna se aktuell status, vad Lina väntar på och exakt nästa åtgärd. Om ingen mänsklig åtgärd behövs ska det uttryckligen framgå.
