@@ -186,6 +186,19 @@
         finally{document.removeEventListener('lina:gen9progress',on)}
       }catch(e){console.warn('Gen9 global start stoppad:',e)}
     },0);
+    // Gen10 resume is global too: authoritative GitHub state has already been restored by bootstrap.
+    setTimeout(async()=>{
+      try{
+        const w=window.LinaGen10Workflow;if(!w?.run)return;
+        const g=w.state(),resumable=g.engineVerified&&!g.summaryFreeze?.frozen&&(g.state==='RESEARCH_RUNNING'||g.state==='RESEARCH_STOPPED');
+        if(!resumable)return;
+        const root=document.querySelector('#view'),box=document.createElement('div');box.className='statusline';box.setAttribute('data-gen10-global-resume','');box.textContent='Gen10 · återupptar från permanent checkpoint…';root?.prepend(box);
+        const on=e=>{box.textContent=e.detail.text};document.addEventListener('lina:gen10progress',on);
+        try{const result=await w.run();box.textContent='Gen10 klar · '+(result?.decision||w.state().state);}
+        catch(e){box.textContent='Gen10 STOPPAD · '+String(e?.message||e);box.classList.add('bad');}
+        finally{document.removeEventListener('lina:gen10progress',on)}
+      }catch(e){console.warn('Gen10 global resume stoppad:',e)}
+    },0);
     setTimeout(()=>window.LinaForwardCenter?.autoCatchUp?.().catch(e=>console.warn('Auto Forward stoppad:',e)),0);
   }
   window.LinaApp={version:APP_VERSION,start:startApp};
