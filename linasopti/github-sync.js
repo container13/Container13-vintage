@@ -135,6 +135,8 @@ async function bootstrap(progress){
   step('github','Hämtar verifierat state från GitHub…');
   const getStarted=performance.now(), remote=await get();
   timings.get=Math.round(performance.now()-getStarted);
+  const remoteGen=(()=>{try{const e=remote?.state?.entries?.[GENERATION_KEY];return e?.value?JSON.parse(e.value).gen10||null:null}catch{return null}})();
+  sessionStorage.setItem('lina_gen10_remote_diag',JSON.stringify({exists:Boolean(remoteGen),state:remoteGen?.state??null,engineVerified:remoteGen?.engineVerified,checkpoints:Object.keys(remoteGen?.checkpoints||{}).length}));
   const recovery=recoveryPlan(localEntries,remote?.state||null);
   // Canonical rule: GitHub wins conflicts. Local state may only fill keys GitHub does not have.
   step('compare',`Jämför ${recovery.localCount} lokala och ${recovery.remoteCount} GitHub-poster…`);
@@ -147,6 +149,8 @@ async function bootstrap(progress){
   const wr=timings.writeSkipped?{state:merged}:await put(merged);
   timings.put=Math.round(performance.now()-putStarted);
   apply(wr.state||merged);
+  const localGen=(()=>{try{return JSON.parse(localStorage.getItem(GENERATION_KEY)||'null')?.gen10||null}catch{return null}})();
+  sessionStorage.setItem('lina_gen10_local_diag',JSON.stringify({exists:Boolean(localGen),state:localGen?.state??null,engineVerified:localGen?.engineVerified,checkpoints:Object.keys(localGen?.checkpoints||{}).length}));
   step('evidence','Verifierar fryst evidens…');
   const evidenceStarted=performance.now();
   const evidence=window.LinaEvidence?await window.LinaEvidence.syncApproved():0;
