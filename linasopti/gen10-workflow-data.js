@@ -3,16 +3,16 @@
 async function secure(name,content){
  const ev=global.LinaEvidence;if(!ev?.stage||!ev?.approve||!ev?.syncApproved)throw Error('Evidence-modul saknas');
  const expected=JSON.parse(JSON.stringify(content)),path='evidence/2026-10-05/'+name;
- const adopt=async()=>{const r=await fetch(path,{cache:'no-store'});if(r.status===404)return null;if(!r.ok)throw Error('Immutable evidenskontroll HTTP '+r.status+': '+name);let existing;try{existing=await r.json()}catch{throw Error('Immutable evidens är inte giltig JSON: '+name)}if(E.canonical(existing)!==E.canonical(expected))throw Error('Immutable evidens matchar inte checkpoint: '+name);return{status:'FROZEN · GITHUB ✓',name,githubPath:'linasopti/'+path,githubCommit:null,sha256:null,adoptedImmutable:true}};
+ const adopt=async(retries=0)=>{for(let attempt=0;;attempt++){const r=await fetch(path+'?verify='+Date.now()+'_'+attempt,{cache:'no-store'});if(r.status===404){if(attempt<retries){await new Promise(resolve=>setTimeout(resolve,400*(attempt+1)));continue}return null}if(!r.ok)throw Error('Immutable evidenskontroll HTTP '+r.status+': '+name);let existing;try{existing=await r.json()}catch{throw Error('Immutable evidens är inte giltig JSON: '+name)}if(E.canonical(existing)!==E.canonical(expected))throw Error('Immutable evidens matchar inte checkpoint: '+name);return{status:'FROZEN · GITHUB ✓',name,githubPath:'linasopti/'+path,githubCommit:null,sha256:null,adoptedImmutable:true}}};
  let adopted=await adopt();if(adopted)return adopted;
  let item=ev.items().find(i=>i.name===name);
  if(!item)item=ev.stage(name,JSON.stringify(content,null,2),'application/json','Lina Gen10');
  if(!item)throw Error('Evidence staging misslyckades');
  if(item.status==='PRELIMINÄR')await ev.approve(item.id);
- try{await ev.syncApproved()}catch(syncError){adopted=await adopt();if(adopted)return adopted;throw syncError}
+ try{await ev.syncApproved()}catch(syncError){adopted=await adopt(4);if(adopted)return adopted;throw syncError}
  item=ev.items().find(i=>i.name===name);
- if(item?.status!=='FROZEN · GITHUB ✓'||!item.githubPath){adopted=await adopt();if(adopted)return adopted;throw Error('Evidens ej GitHub-verifierad efter synk: '+name)}
- adopted=await adopt();if(!adopted)throw Error('Evidens saknas på GitHub efter grön synkstatus: '+name);
+ if(item?.status!=='FROZEN · GITHUB ✓'||!item.githubPath){adopted=await adopt(4);if(adopted)return adopted;throw Error('Evidens ej GitHub-verifierad efter synk: '+name)}
+ adopted=await adopt(4);if(!adopted)throw Error('Evidens saknas på GitHub efter grön synkstatus: '+name);
  return{...adopted,githubCommit:item.githubCommit||null,sha256:item.sha256||null,adoptedImmutable:Boolean(item.existingImmutable)}
 }
 async function prepareData(){let g=C.state();C.assertContract(g);if(g.dataEvidence)return g;if(g.researchOpened||Object.keys(g.checkpoints||{}).length)throw Error('Observerad forskning finns; dataset får inte förberedas igen');C.report('Gen10 · verifierar exakt låst Gen9-dataset');const [r,gr]=await Promise.all([fetch('SOURCE_gen9-data.json',{cache:'no-store'}),fetch('evidence/GEN9_DATASET_GATE_2026-10-05.json',{cache:'no-store'})]);if(!r.ok||!gr.ok)throw Error('Dataset/gate saknas');const text=await r.text(),gate=await gr.json();if(await C.shaText(text)!==C.DATA_SHA||gate.datasetGate!=='PASSED'||gate.candidateSha256!==C.DATA_SHA||gate.rowCount!==20128)throw Error('Dataset matchar inte låst Gen9-kandidat');const raw=JSON.parse(text),data=raw?.data;if(!data||E.SPEC.symbols.some(s=>!Array.isArray(data[s])||data[s].length!==1258))throw Error('Dataset måste vara exakt 16 × 1258 bars');const manifest={schema:'LINA-GEN10-DATA-MANIFEST-1',source:'SOURCE_gen9-data.json',contentSha256:C.DATA_SHA,rowCount:20128,historyHardStop:'2024-12-31',reusedFromFrozenGen9:true};await C.put('data:'+C.DATA_SHA,{manifest,data});g={...C.state(),dataManifest:manifest,state:'DATA_STAGED_AWAITING_EVIDENCE'};C.save(g);g=C.state();g.dataEvidence=await secure('LINAS_GEN10_DATA_'+C.DATA_SHA+'.json',{schema:'LINA-GEN10-DATA-EVIDENCE-1',specSha256:E.SPEC_SHA256,manifest,sourceGen9Frozen:true});g.state='READY_FOR_RESEARCH';return C.save(g)}
