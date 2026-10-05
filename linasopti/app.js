@@ -196,11 +196,11 @@
       const box=()=>document.querySelector('[data-gen12-preflight]');
       try{
         await window.LinaGen12Preflight?.visibleVerify?.();
-        const gate=await window.LinaReleaseGate?.verifyFinal?.();
-        if(gate?.status!=='PASS'||gate?.allowResearch!==true)throw Error('Gen12 Release Gate saknar PASS/allowResearch');
         const w=window.LinaGen12Workflow;if(!w?.startApprovedResearch||!w?.recoverFinalStateFromImmutableEvidence)throw Error('Gen12 workflow saknas');
         let g=w.state();
         if(g.summaryFreeze?.frozen){const b=box();if(b)b.textContent='Gen12 klar · '+(g.summary?.decision||g.state)+' · Handel/Forward AV';return}
+        const gate=await window.LinaReleaseGate?.verifyFinal?.();
+        if(gate?.status!=='PASS'||gate?.allowResearch!==true)throw Error('Gen12 Release Gate saknar PASS/allowResearch');
         // Immutable final evidence always wins over research continuation. This recovery path contains no simulate().
         try{
           const b=box();if(b)b.textContent='Gen12 · kontrollerar permanent slut-evidens före research…';
