@@ -241,7 +241,7 @@
         await window.LinaGen13Preflight?.visibleVerify?.();
         const w=window.LinaGen13Workflow;if(!w?.startApprovedResearch||!w?.recoverFinalStateFromImmutableEvidence)throw Error('Gen13 workflow saknas');
         let g=w.state();
-        if(g.summaryFreeze?.frozen){const b=box();if(b)b.textContent='Gen13 klar · '+(g.summary?.decision||g.state)+' · Handel/Forward AV';return}
+        if(g.summaryFreeze?.frozen){const b=box();if(b)b.textContent='Gen13 klar · '+(g.summary?.decision||g.state)+' · Handel/Forward AV';const current=document.querySelector('[data-gen14-preflight]');if(current&&current.parentElement)current.parentElement.prepend(current);return}
         const gate=await window.LinaReleaseGate?.verifyFinal?.();
         if(gate?.status!=='PASS'||gate?.allowResearch!==true)throw Error('Gen13 Release Gate saknar PASS/allowResearch');
         try{
