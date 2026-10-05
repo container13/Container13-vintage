@@ -1,0 +1,99 @@
+{
+  "canonicalization": "UTF-8 JSON, recursively sorted object keys, compact separators",
+  "sha256": "56cb0d0d3c867542421e8ad9ab84ec54d86944687502d108729b733b8f10c52b",
+  "runnerspec": {
+    "schema": "LINA-GEN11-RUNNERSPEC-1",
+    "status": "LOCK_CANDIDATE_PRE_RESEARCH",
+    "sourceGeneration": 10,
+    "sourceGen10SpecSha256": "29e3034d221d675f15d08e704fffe551ebc1b49aee83d083e9ca4595336d5e0b",
+    "historyHardStop": "2024-12-31",
+    "symbols": [
+      "AMD",
+      "SHOP",
+      "ADBE",
+      "MU",
+      "FDX",
+      "TSLA",
+      "LUV",
+      "NFLX",
+      "C",
+      "NOW",
+      "QCOM",
+      "BAC",
+      "GM",
+      "DDOG",
+      "PYPL",
+      "NVDA"
+    ],
+    "foldYears": [
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "variants": [
+      "CONTROL",
+      "SECTOR_CAP"
+    ],
+    "candidateVariant": "SECTOR_CAP",
+    "params": {
+      "lookback": 50,
+      "trend": 180,
+      "hold": 12,
+      "volDays": 20,
+      "volTarget": 0.12,
+      "volMin": 0.35
+    },
+    "sectorDiversification": {
+      "maxOpenPositionsPerSector": 2,
+      "sectorMap": {
+        "AMD": "Semiconductors",
+        "SHOP": "SoftwareCommerce",
+        "ADBE": "SoftwareCommerce",
+        "MU": "Semiconductors",
+        "FDX": "Transport",
+        "TSLA": "Automotive",
+        "LUV": "Transport",
+        "NFLX": "Media",
+        "C": "Banks",
+        "NOW": "SoftwareCommerce",
+        "QCOM": "Semiconductors",
+        "BAC": "Banks",
+        "GM": "Automotive",
+        "DDOG": "SoftwareCommerce",
+        "PYPL": "Payments",
+        "NVDA": "Semiconductors"
+      },
+      "application": "before each new entry, count currently open positions in candidate symbol sector; skip entry when count >= 2; never alter signal ranking, accepted-entry sizing, existing positions or exits"
+    },
+    "capital": 100000,
+    "costSide": 0.001,
+    "maxPositions": 8,
+    "maxPositionPct": 0.125,
+    "baseRiskPerTrade": 0.005,
+    "sizingDistance": 0.05,
+    "gates": {
+      "minOosTrades": 100,
+      "minPf": 1.2,
+      "maxDd": 0.12,
+      "positiveOos": true,
+      "maxConcentration": 0.4,
+      "minPositiveFolds": 3,
+      "minFoldPf": 0.8,
+      "maxFoldGrossProfitShare": 0.55
+    },
+    "method": {
+      "selection": "FIXED_PARAMS_NO_TRAIN_SELECTION",
+      "entry": "next open using previous-close signal only",
+      "exit": "12th session close inclusive of entry; liquidate at fold end",
+      "equity": "daily cash plus marked positions",
+      "control": "CONTROL diagnostic only; SECTOR_CAP candidate eligible",
+      "missingData": "aligned complete symbol bars required",
+      "simultaneousEntryOrder": "strength descending, symbol ascending tie-break",
+      "noRescue": true,
+      "observedHistory": "2021-2024 development data, never unseen holdout"
+    },
+    "tradeEnabled": false,
+    "forwardOpened": false
+  }
+}
