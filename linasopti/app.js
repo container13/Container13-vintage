@@ -177,11 +177,11 @@
       const box=()=>document.querySelector('[data-gen11-preflight]');
       try{
         await window.LinaGen11Preflight?.visibleVerify?.();
-        const gate=await window.LinaReleaseGate?.verifyFinal?.();
-        if(gate?.status!=='PASS'||gate?.allowResearch!==true)throw Error('Release Gate saknar PASS/allowResearch');
         const g=window.LinaGen11Workflow?.state?.();
         if(!g)throw Error('Gen11 workflow-state saknas');
         if(g.summaryFreeze?.frozen)return;
+        const gate=await window.LinaReleaseGate?.verifyFinal?.();
+        if(gate?.status!=='PASS'||gate?.allowResearch!==true)throw Error('Release Gate saknar PASS/allowResearch');
         if(g.researchOpened||Object.keys(g.checkpoints||{}).length){const b=box();if(b)b.textContent='Gen11 · verifierar immutable evidence för säker slutstate-recovery…';await window.LinaGen11Workflow.recoverFinalStateFromImmutableEvidence();await window.LinaGitHubSync?.syncAll?.();const x=box();if(x)x.textContent='Gen11 klar · NO_CANDIDATE · permanent state synkat · Handel/Forward AV';return}
         // If local state was lost after completed research, immutable evidence is authoritative recovery; never rerun.
         try{const recovered=await window.LinaGen11Workflow.recoverFinalStateFromImmutableEvidence();if(recovered?.summaryFreeze?.frozen){await window.LinaGitHubSync?.syncAll?.();const x=box();if(x)x.textContent='Gen11 klar · NO_CANDIDATE · permanent state återställd/synkad · Handel/Forward AV';return}}catch(e){if(!String(e?.message||e).includes('summary-evidence saknas'))throw e}
@@ -190,6 +190,15 @@
         try{const result=await window.LinaGen11Workflow.startApprovedResearch();const x=box();if(x)x.textContent='Gen11 klar · '+result.decision+' · Handel/Forward AV';}
         finally{document.removeEventListener('lina:gen11progress',on)}
       }catch(e){const b=box();if(b){b.textContent='Gen11 STOPPAD · '+String(e?.message||e);b.classList.add('bad')}console.warn('Gen11 explicit startkedja stoppad:',e)}
+    },0);
+    // Gen12 pre-research gate: verification only. Never starts research.
+    setTimeout(async()=>{
+      try{
+        await window.LinaGen12Preflight?.visibleVerify?.();
+        const gate=await window.LinaReleaseGate?.verifyFinal?.();
+        if(gate?.status!=='PASS')throw Error('Gen12 Release Gate FAIL');
+        if(gate?.allowResearch!==false)throw Error('Gen12 researchspärr saknas');
+      }catch(e){console.warn('Gen12 pre-research gate stoppad:',e)}
     },0);
     // Gen9 explicit research-start gate is global: Dashboard is the normal post-login route.
     // Run only after GitHub bootstrap/recovery has restored authoritative local state.
