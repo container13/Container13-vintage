@@ -22,4 +22,4 @@ async function visibleVerify(){
 document.addEventListener('lina:unlocked',()=>setTimeout(()=>visibleVerify().catch(()=>{}),0));
 if(sessionStorage.getItem('linasopti_unlocked')==='1')setTimeout(()=>visibleVerify().catch(()=>{}),0);
 global.LinaGen11Preflight=Object.freeze({run,visibleVerify,KEY});
-})(typeof window==='object'?window:globalThis);\n
+})(typeof window==='object'?window:globalThis);
