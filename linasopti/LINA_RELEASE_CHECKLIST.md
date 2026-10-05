@@ -549,3 +549,10 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Prior stop occurred in data validation before first fold observation.
 - [x] Handel/Forward OFF; Gen8 frozen; Worker unchanged.
 - [x] Version/cache V0.3.40.
+
+
+## Permanent end-to-end release gate
+- [ ] END-TO-END verifierad för ändringen: GitHub → deploy → verkligt laddad release → bootstrap/auktoritativt state → UI → avsedd effekt → permanent state/evidens.
+- [ ] UI-status överensstämmer med permanent GitHub/app-state/evidens efter bootstrap.
+- [ ] Resume/idempotens testad när releasen påverkar återupptagningsbart workflow; befintlig checkpoint återanvänds utan rerun.
+- [ ] Versionsbyte/cache testat från föregående verkliga release när laddningskedjan ändras.
