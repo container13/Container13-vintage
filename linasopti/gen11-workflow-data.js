@@ -7,5 +7,27 @@ async function restoreDataCheckpoint(){let pkg=await C.get('data:'+C.DATA_SHA);i
 async function validateCheckpoint(cp,ref){if(!cp||cp.key!==ref.key||cp.variant!==ref.variant||cp.year!==ref.year||cp.specSha256!==E.SPEC_SHA256||await C.digest(cp.result)!==ref.resultSha256)throw Error('Checkpoint saknas/trasigt: ingen rerun tillåts');return cp}
 async function recoverImmutableCheckpoint(key,variant,year,storageKey){const name='LINAS_GEN11_'+E.SPEC_SHA256+'_'+key+'.json',read=await readImmutableEvidence(name);if(!read)return null;const cp=JSON.parse(read.content);if(cp.key!==key||cp.variant!==variant||Number(cp.year)!==Number(year)||cp.specSha256!==E.SPEC_SHA256)throw Error('Immutable checkpoint har fel identitet: '+key);const resultSha256=await C.digest(cp.result);if(resultSha256!==cp.resultSha256)throw Error('Immutable checkpoint SHA mismatch: '+key);const ref={key,variant,year,resultSha256,storageKey,observedAt:cp.observedAt,evidence:{status:'FROZEN · GITHUB ✓',name,githubPath:read.path,sha256:read.receipt.contentSha256,verificationReceipt:read.receipt,adoptedImmutable:true}};await C.put(storageKey,cp);return{cp,ref}}
 async function restoreCheckpoint(ref){let cp=await C.get(ref.storageKey);if(cp)return validateCheckpoint(cp,ref);const read=await readImmutableEvidence('LINAS_GEN11_'+E.SPEC_SHA256+'_'+ref.key+'.json');if(!read)throw Error('Permanent Gen11-checkpoint saknas: '+ref.key);cp=JSON.parse(read.content);await validateCheckpoint(cp,ref);await C.put(ref.storageKey,cp);return cp}
-global.LinaGen11WorkflowData=Object.freeze({secure,prepareData,restoreDataCheckpoint,validateCheckpoint,recoverImmutableCheckpoint,restoreCheckpoint});
+
+async function recoverFinalStateFromImmutableEvidence(){
+ let g=C.state();if(g.summaryFreeze?.frozen&&Object.keys(g.checkpoints||{}).length===8)return g;
+ const summaryName='LINAS_GEN11_SUMMARY_'+E.SPEC_SHA256+'.json',sr=await readImmutableEvidence(summaryName);
+ if(!sr)throw Error('Gen11 summary-evidence saknas');
+ const summary=JSON.parse(sr.content);
+ if(summary.schema!=='LINA-GEN11-RESEARCH-SUMMARY-1'||summary.specSha256!==E.SPEC_SHA256||summary.decision!=='NO_CANDIDATE'||summary.tradeEnabled!==false||summary.forwardOpened!==false)throw Error('Gen11 summary-evidence matchar inte fryst NO_CANDIDATE-kontrakt');
+ const checkpoints={};
+ for(const variant of E.SPEC.variants)for(const year of E.SPEC.foldYears){
+  const key=variant+'_'+year,storageKey='fold:'+E.SPEC_SHA256+':'+C.DATA_SHA+':'+key;
+  const recovered=await recoverImmutableCheckpoint(key,variant,year,storageKey);
+  if(!recovered?.ref?.evidence?.verificationReceipt)throw Error('Gen11 immutable fold-evidence saknas: '+key);
+  checkpoints[key]=recovered.ref;
+ }
+ const dataRead=await readImmutableEvidence('LINAS_GEN11_DATA_'+C.DATA_SHA+'.json');
+ if(!dataRead)throw Error('Gen11 DATA-evidence saknas');
+ const dataEvidenceBody=JSON.parse(dataRead.content);
+ if(dataEvidenceBody?.specSha256!==E.SPEC_SHA256||dataEvidenceBody?.manifest?.contentSha256!==C.DATA_SHA)throw Error('Gen11 DATA-evidence mismatch');
+ g={...g,humanApproved:true,planLocked:true,runnerSpecLocked:true,runnerSpecSha256:E.SPEC_SHA256,engineVerified:true,researchOpened:true,researchAuthorized:true,checkpoints,summary,dataManifest:summary.dataManifest,dataEvidence:{status:'FROZEN · GITHUB ✓',name:'LINAS_GEN11_DATA_'+C.DATA_SHA+'.json',githubPath:dataRead.path,sha256:dataRead.receipt.contentSha256,verificationReceipt:dataRead.receipt,adoptedImmutable:true},summaryFreeze:{frozen:true,frozenAt:sr.receipt.verifiedAt||C.now(),evidence:{status:'FROZEN · GITHUB ✓',name:summaryName,githubPath:sr.path,sha256:sr.receipt.contentSha256,verificationReceipt:sr.receipt,adoptedImmutable:true}},state:'GEN11_COMPLETE_NO_CANDIDATE',automation:{status:'COMPLETE',lastStep:'SUMMARY_FROZEN',attemptAt:C.now(),recoveredFromImmutableEvidence:true},tradeEnabled:false,forwardOpened:false,recoveredAt:C.now()};
+ return C.save(g);
+}
+
+global.LinaGen11WorkflowData=Object.freeze({secure,prepareData,restoreDataCheckpoint,validateCheckpoint,recoverImmutableCheckpoint,restoreCheckpoint,recoverFinalStateFromImmutableEvidence});
 })(window);
