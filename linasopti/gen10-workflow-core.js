@@ -3,7 +3,7 @@
 const E=global.LinaGen10Engine,KEY='lina_generation_engine_v0273',DB='lina_gen10_checkpoint_v1';
 const DATA_SHA='cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c';
 let busy=false;const now=()=>new Date().toISOString();
-function load(){const x=JSON.parse(global.localStorage.getItem(KEY)||'null');if(!x?.gen9?.summaryFreeze?.frozen||x.gen9.state!=='GEN9_COMPLETE_NO_CANDIDATE')throw Error('Gen9 måste vara fryst NO_CANDIDATE');if(x.tradeEnabled!==false||x.gen10?.tradeEnabled!==false||x.gen10?.forwardOpened!==false)throw Error('Handel/Forward måste vara AV');return x}
+function load(){const x=JSON.parse(global.localStorage.getItem(KEY)||'null');if(!x?.gen9?.summaryFreeze?.frozen||x.gen9.state!=='GEN9_COMPLETE_NO_CANDIDATE')throw Error('Gen9 måste vara fryst NO_CANDIDATE');if(x.tradeEnabled===true||x.gen10?.tradeEnabled===true||x.gen10?.forwardOpened===true)throw Error('Handel/Forward måste vara AV');x.tradeEnabled=false;if(x.gen10){x.gen10.tradeEnabled=false;x.gen10.forwardOpened=false}return x}
 function state(){return load().gen10||{}}
 function save(g){const x=load();x.gen10={...g,tradeEnabled:false,forwardOpened:false};x.tradeEnabled=false;x.release=global.LinaVersion.release;x.savedAt=now();global.localStorage.setItem(KEY,JSON.stringify(x));global.LinaGitHubSync?.queueSync?.();return x.gen10}
 function assertContract(g){if(!g.humanApproved||!g.planLocked||!g.runnerSpecLocked||!g.engineVerified||g.runnerSpecSha256!==E.SPEC_SHA256)throw Error('Gen10 pre-research-kontrakt ej verifierat')}
