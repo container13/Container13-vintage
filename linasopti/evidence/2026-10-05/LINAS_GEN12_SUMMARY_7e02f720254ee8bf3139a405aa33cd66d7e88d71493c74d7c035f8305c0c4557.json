@@ -1,0 +1,71 @@
+{
+  "schema": "LINA-GEN12-RESEARCH-SUMMARY-1",
+  "specSha256": "7e02f720254ee8bf3139a405aa33cd66d7e88d71493c74d7c035f8305c0c4557",
+  "dataManifest": {
+    "schema": "LINA-GEN12-DATA-MANIFEST-1",
+    "source": "SOURCE_gen9-data.json",
+    "contentSha256": "cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c",
+    "rowCount": 20128,
+    "historyHardStop": "2024-12-31",
+    "reusedFromFrozenDataset": true
+  },
+  "results": {
+    "CONTROL": {
+      "variant": "CONTROL",
+      "metrics": {
+        "n": 320,
+        "pl": 12163.594617229792,
+        "pf": 1.3317637986389308,
+        "dd": -0.057402126031098843,
+        "concentration": 0.6628799171763253,
+        "positiveFolds": 3,
+        "minFoldPf": 0.04193405056618428,
+        "maxFoldGrossProfitShare": 0.3718218363887288
+      },
+      "checks": {
+        "trades": true,
+        "pf": true,
+        "dd": true,
+        "positive": true,
+        "concentration": false,
+        "positiveFolds": true,
+        "worstFold": false,
+        "foldShare": true
+      },
+      "status": "FAIL",
+      "candidateEligible": false,
+      "tradeEnabled": false,
+      "forwardOpened": false
+    },
+    "BREADTH_50_GATE": {
+      "variant": "BREADTH_50_GATE",
+      "metrics": {
+        "n": 303,
+        "pl": 13674.248562225475,
+        "pf": 1.4111639413884611,
+        "dd": -0.057402126031098843,
+        "concentration": 1,
+        "positiveFolds": 3,
+        "minFoldPf": 0,
+        "maxFoldGrossProfitShare": 0.3868379912052278
+      },
+      "checks": {
+        "trades": true,
+        "pf": true,
+        "dd": true,
+        "positive": true,
+        "concentration": false,
+        "positiveFolds": true,
+        "worstFold": false,
+        "foldShare": true
+      },
+      "status": "FAIL",
+      "candidateEligible": false,
+      "tradeEnabled": false,
+      "forwardOpened": false
+    }
+  },
+  "decision": "NO_CANDIDATE",
+  "tradeEnabled": false,
+  "forwardOpened": false
+}
