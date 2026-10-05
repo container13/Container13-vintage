@@ -496,3 +496,12 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - Research boundary: nästa generation får INTE vara threshold-tuning av breadth, sector cap, graded sizing eller annan efterhandsvariant av Gen10–12. Ingen parametergrid/rescue mot 2021–2024.
 - Befintligt signalmått strength = 50-dagars prisförändring är redan preregistrerat i basmotorn och används för deterministisk simultan ranking. Om nästa hypotes använder cross-sectional selection ska den använda redan definierat mått och en enda ex ante regel, inte välja rankgräns från observerade resultat.
 - Ingen Gen13 runnerspec, engine eller research har skapats i detta steg.
+
+
+## Gen13 — mänskligt godkänd plan och preregistrering
+- Gen13-planen RANK_TO_CAPACITY godkändes uttryckligen av användaren 2026-10-05 för preregistrering, inte för research-start.
+- Canonical runnerspec är låst i LINA_GEN13_RUNNERSPEC.json med SHA-256 e8cd7a717f3240f3650c326e610457d122a3b144a2c5494036f0618db4afbb42.
+- Kandidaten inför 0 nya numeriska parametrar. Befintligt strength = 50-session price change och maxPositions=8 används för rank-to-free-capacity. CONTROL är diagnostisk.
+- gen13-generation-engine.js är isolerad och återläst: syntax OK, exakt spec-hash, ingen Gen12 breadthlogik, ingen dataset/research-startkod, Handel/Forward AV.
+- Gen10–Gen12 förblir permanent frysta. Ingen Gen13 2021–2024-research har startats.
+- Nästa steg är syntetisk Gen13 Engine Verification + Release Gate. Separat uttryckligt research-startbeslut krävs därefter.
