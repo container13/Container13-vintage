@@ -62,6 +62,10 @@ function generationProgress(raw){
   if(o.planLocked)p=Math.max(p,300);if(o.engineVerified)p=Math.max(p,305);if(o.researchOpened)p=Math.max(p,310);
   p=Math.max(p,310+Object.keys(o.checkpoints||{}).length);
   if(o.summary)p=Math.max(p,330);if(o.summaryFreeze?.frozen)p=Math.max(p,340);
+  const q=x.gen15||{};
+  if(q.planLocked)p=Math.max(p,350);if(q.engineVerified)p=Math.max(p,355);if(q.researchOpened)p=Math.max(p,360);
+  p=Math.max(p,360+Object.keys(q.checkpoints||{}).length);
+  if(q.summary)p=Math.max(p,380);if(q.summaryFreeze?.frozen)p=Math.max(p,390);
   return p;
  }catch{return -1}
 }
@@ -86,6 +90,7 @@ function mergeGenerationEntry(l,r){
  const gen12=mergeGen(left.gen12,right.gen12,'Gen12');if(gen12)out.gen12=gen12;else delete out.gen12;
  const gen13=mergeGen(left.gen13,right.gen13,'Gen13');if(gen13)out.gen13=gen13;else delete out.gen13;
  const gen14=mergeGen(left.gen14,right.gen14,'Gen14');if(gen14)out.gen14=gen14;else delete out.gen14;
+ const gen15=mergeGen(left.gen15,right.gen15,'Gen15');if(gen15)out.gen15=gen15;else delete out.gen15;
  out.tradeEnabled=false;out.savedAt=[left.savedAt,right.savedAt].filter(Boolean).sort().pop()||out.savedAt;
  return{value:JSON.stringify(out),stamp:out.savedAt||picked.stamp};
 }
@@ -187,7 +192,7 @@ async function bootstrap(progress){
 }
 let autoTimer=null,autoBusy=false;
 function queueSync(){
-  clearTimeout(autoTimer);autoTimer=setTimeout(async()=>{const g4=(()=>{try{return JSON.parse(localStorage.getItem('lina_clean_gen4_engine_v0261')||'null')}catch{return null}})(),ge=(()=>{try{return JSON.parse(localStorage.getItem('lina_generation_engine_v0273')||'null')}catch{return null}})();if(g4?.automation?.status==='RUNNING'||ge?.gen5?.automation?.status==='RUNNING'||ge?.gen6?.automation?.status==='RUNNING'||ge?.gen7?.automation?.status==='RUNNING'||ge?.gen7?.recovery?.status==='RUNNING'||ge?.gen12?.automation?.status==='RUNNING'||ge?.gen13?.automation?.status==='RUNNING'||(ge?.gen13?.startReceipt?.approved&&!ge?.gen13?.summaryFreeze?.frozen)||ge?.gen14?.automation?.status==='RUNNING'||(ge?.gen14?.startReceipt?.approved&&!ge?.gen14?.summaryFreeze?.frozen))return;if(window.LinaGen9Busy||window.LinaRecoveryBusy||autoBusy||!code())return;autoBusy=true;try{await syncAll();document.dispatchEvent(new CustomEvent('lina:autosync-ok'))}catch(e){console.warn('Lina autosync stoppad:',e);document.dispatchEvent(new CustomEvent('lina:autosync-fail',{detail:{message:String(e?.message||e)}}))}finally{autoBusy=false}},700);
+  clearTimeout(autoTimer);autoTimer=setTimeout(async()=>{const g4=(()=>{try{return JSON.parse(localStorage.getItem('lina_clean_gen4_engine_v0261')||'null')}catch{return null}})(),ge=(()=>{try{return JSON.parse(localStorage.getItem('lina_generation_engine_v0273')||'null')}catch{return null}})();if(g4?.automation?.status==='RUNNING'||ge?.gen5?.automation?.status==='RUNNING'||ge?.gen6?.automation?.status==='RUNNING'||ge?.gen7?.automation?.status==='RUNNING'||ge?.gen7?.recovery?.status==='RUNNING'||ge?.gen12?.automation?.status==='RUNNING'||ge?.gen13?.automation?.status==='RUNNING'||(ge?.gen13?.startReceipt?.approved&&!ge?.gen13?.summaryFreeze?.frozen)||ge?.gen14?.automation?.status==='RUNNING'||(ge?.gen14?.startReceipt?.approved&&!ge?.gen14?.summaryFreeze?.frozen)||ge?.gen15?.automation?.status==='RUNNING'||(ge?.gen15?.startReceipt?.approved&&!ge?.gen15?.summaryFreeze?.frozen))return;if(window.LinaGen9Busy||window.LinaRecoveryBusy||autoBusy||!code())return;autoBusy=true;try{await syncAll();document.dispatchEvent(new CustomEvent('lina:autosync-ok'))}catch(e){console.warn('Lina autosync stoppad:',e);document.dispatchEvent(new CustomEvent('lina:autosync-fail',{detail:{message:String(e?.message||e)}}))}finally{autoBusy=false}},700);
 }
 document.addEventListener('lina:gen2change',queueSync);
 document.addEventListener('lina:evidence-changed',queueSync);
