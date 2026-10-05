@@ -1,5 +1,25 @@
 # LINA — AKTUELL HANDOFF / STATUS
 
+Aktuell release: V0.3.46
+Uppdaterad: 2026-10-05
+Dokumentrevision: Gen10 pre-research Auto Pipeline
+
+## AKTUELL STATUS — denna sektion ersätter äldre status längre ned
+- Gen8 är permanent fryst och får aldrig köras om.
+- Gen9 är permanent fryst som `GEN9_COMPLETE_NO_CANDIDATE`; Gen9 får aldrig köras om.
+- Gen10 Auto Review PASS och mänskligt godkännande är beständigt verifierat i GitHub app-state (`humanApproved:true`).
+- V0.3.46 inför exakt maskinläsbar Gen10-runnerspec: `LINA_GEN10_RUNNERSPEC.json`.
+- Gen10 runnerspec SHA-256: `29e3034d221d675f15d08e704fffe551ebc1b49aee83d083e9ca4595336d5e0b`.
+- Graderad kandidatregel: breadth 8–16 → 100 %, 5–7 → 50 %, 0–4 → 25 % av ny positionsstorlek/riskbudget. Breadth beräknas från föregående close mot SMA180. CONTROL är ofiltrerad och endast diagnostisk.
+- `gen10-generation-engine.js` återanvänder Gen9:s fasta signal/exit/kostnad/mark-to-market/gates men ersätter endast binärt köpstopp med den låsta graderade sizingregeln.
+- V0.3.46 Auto Pipeline verifierar runnerspecfil mot kompilerad spec, SHA-256 och kontraktstester. Den stannar före forskning. Handel och Forward är AV.
+- Nästa genuina beslut efter lyckad Engine VERIFIED är separat Gen10 research-start. Ingen research får startas enbart genom sidladdning.
+- Permanenta UI/workflow-regler finns i `LINA_MASTER_RULES.md` och verifieras i `LINA_RELEASE_CHECKLIST.md`, inklusive PRIORITY UI, ACTION FEEDBACK, NO SILENT FAILURE, SAVED ≠ VISIBLE ≠ VERIFIED, ONE CLICK = ONE RESULT, RESUME NEVER REPEAT, GITHUB PERMANENT STATE, NO FALSE BUTTON PROMISES och CURRENT ACTION CONTRACT.
+
+---
+
+# HISTORISK ÄLDRE HANDOFF — EJ AUKTORITATIV
+
 Aktuell release: V0.3.15
 Uppdaterad: 2026-10-03
 Dokumentrevision: överlämning 2026-10-03
