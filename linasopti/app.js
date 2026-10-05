@@ -223,15 +223,33 @@
         console.warn('Gen12 explicit startkedja stoppad:',e);
       }
     },0);
-    // Gen15 preregistration gate only. Research remains blocked pending a separate human start decision.
+    // Gen15 explicit dependency chain: V0.3.87 preflight -> audited Release Gate -> immutable recovery -> approved research.
     setTimeout(async()=>{
       const box=()=>document.querySelector('[data-gen15-preflight]');
       try{
         await window.LinaGen15Preflight?.visibleVerify?.();
+        const w=window.LinaGen15Workflow;if(!w?.startApprovedResearch||!w?.recoverFinalStateFromImmutableEvidence)throw Error('Gen15 workflow saknas');
+        let g=w.state();
+        if(g.summaryFreeze?.frozen){const b=box();if(b)b.textContent='Gen15 klar · '+(g.summary?.decision||g.state)+' · Handel/Forward AV';return}
         const gate=await window.LinaReleaseGate?.verifyFinal?.();
-        if(gate?.status!=='PASS')throw Error('Gen15 Release Gate FAIL');
-        if(gate?.allowResearch!==false||window.LinaReleaseGate?.allowResearch?.()!==false)throw Error('Gen15 researchspärr saknas');
-      }catch(e){const b=box();if(b){b.textContent='Gen15 STOPPAD · '+String(e?.message||e);b.classList.add('bad')}console.warn('Gen15 preregistration gate stoppad:',e)}
+        if(gate?.status!=='PASS'||gate?.allowResearch!==true||window.LinaReleaseGate?.allowResearch?.()!==true)throw Error('Gen15 Release Gate saknar PASS/allowResearch');
+        try{
+          const b=box();if(b)b.textContent='Gen15 · kontrollerar permanent slut-evidens före research…';
+          g=await w.recoverFinalStateFromImmutableEvidence();
+          await window.LinaGitHubSync?.syncAll?.();
+          if(b)b.textContent='Gen15 klar · '+(g.summary?.decision||g.state)+' · permanent state återställd/synkad · Handel/Forward AV';
+          return;
+        }catch(recoveryError){
+          if(g.researchOpened||Object.keys(g.checkpoints||{}).length)throw recoveryError;
+        }
+        const b=box();if(b)b.textContent='Gen15 · Release Gate PASS · startgodkännande verifierat · startar låst research…';
+        const on=e=>{const x=box();if(x)x.textContent=e.detail.text};document.addEventListener('lina:gen15progress',on);
+        try{
+          const result=await w.startApprovedResearch();
+          await window.LinaGitHubSync?.syncAll?.();
+          const x=box();if(x)x.textContent='Gen15 klar · '+result.decision+' · permanent state synkat · Handel/Forward AV';
+        }finally{document.removeEventListener('lina:gen15progress',on)}
+      }catch(e){const b=box();if(b){b.textContent='Gen15 STOPPAD · '+String(e?.message||e);b.classList.add('bad')}console.warn('Gen15 explicit startkedja stoppad:',e)}
     },0);
 
     // Gen14 explicit dependency chain: preflight -> Release Gate -> human start receipt -> dataset -> resumable research.
