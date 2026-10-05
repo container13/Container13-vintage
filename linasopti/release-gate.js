@@ -1,14 +1,14 @@
 (function(global){
 'use strict';
-const KEY='lina_release_gate_v0380';
-const REQUIRED_RELEASE='V0.3.80';
-const REQUIRED_CACHE='0.3.80';
+const KEY='lina_release_gate_v0381';
+const REQUIRED_RELEASE='V0.3.81';
+const REQUIRED_CACHE='0.3.81';
 const HUMAN_GEN13_RESEARCH_APPROVED=true;
 function item(id,pass,detail){return{id,pass:Boolean(pass),detail};}
 function directChildren(root){return root?[...root.children]:[];}
 async function run(){
  const tests=[],root=document.querySelector('#view'),current=root?.querySelector('[data-gen13-preflight]'),children=directChildren(root);
- tests.push(item('release_source',global.LinaVersion?.release===REQUIRED_RELEASE&&global.LinaVersion?.cache===REQUIRED_CACHE,'Central version/cache must be V0.3.80/0.3.80.'));
+ tests.push(item('release_source',global.LinaVersion?.release===REQUIRED_RELEASE&&global.LinaVersion?.cache===REQUIRED_CACHE,'Central version/cache must be V0.3.81/0.3.81.'));
  tests.push(item('final_view_exists',Boolean(root),'Final #view must exist after bootstrap.'));
  tests.push(item('current_action_visible',Boolean(current&&current.textContent.includes('ENGINE VERIFIED')),'Gen13 verified/current action must be visible.'));
  tests.push(item('current_action_first',Boolean(current&&children[0]===current),'Gen13 current action must be first direct child.'));
