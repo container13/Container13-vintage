@@ -1,6 +1,6 @@
 # LINA GEN14 — PLAN PROPOSAL
 
-Status: PROPOSAL_NOT_APPROVED
+Status: HUMAN_APPROVED_FOR_PREREGISTRATION_NOT_RESEARCH
 Datum: 2026-10-05
 Research: EJ STARTAD
 Handel: AV
@@ -33,8 +33,19 @@ Ett enskilt previous-close breakout kan vara för känsligt för kortlivade utbr
 - Sizing, volTarget, volMin, maxPositions, maxPositionPct, risk, kostnader och exitprincip ska inte ändras som del av hypotesen.
 - Ingen alternativ persistence-längd får provas efter observation.
 
-## Viktig designfråga före preregistrering
-Exakt semantik för hold/exit efter den fördröjda entryn måste väljas ex ante och maskinverifieras. Ingen implementation eller research får starta innan det finns en entydig regel för entry-index, 12-sessioners hold, fold-end liquidation och samtidighet.
+## Mänskligt plangodkännande och låst designsemantik
+PERSISTENCE_CONFIRMATION godkändes uttryckligen av användaren 2026-10-05 för preregistrering, inte research.
+
+Exakt semantik som ska preregistreras:
+- För varje symbol beräknas den oförändrade breakout/trend-signalen på previous close t.
+- Första giltiga signalen på t skapar endast en pending confirmation; ingen entry sker nästa open.
+- På nästa handelssessions close t+1 måste samma symbol åter uppfylla exakt samma befintliga villkor: close > SMA180 och close > högsta close under de 50 föregående sessionerna, med endast data till och med t+1.
+- Endast då får entry ske på open t+2. Om villkoret inte kvarstår på t+1 förfaller pending-signalen utan entry.
+- Två giltiga closes måste alltså vara konsekutiva handelssessioner; ingen alternativ väntelängd eller grace-period finns.
+- Entry-signalens strength och volScale tas från den andra/bekräftande close t+1, så all sizing använder endast information känd före entry.
+- 12-sessioners hold räknas från faktisk entry-session t+2 inklusive entry-sessionen, identiskt med befintlig `exitIndex = entryIndex + hold - 1`.
+- Fold-end liquidation är oförändrad. Pending signal som inte hinner bekräftas och få en next-open entry inom folden ger ingen trade.
+- Samtidiga bekräftade kandidater använder oförändrad strength-descending/symbol-ascending ordning och befintligt maxPositions=8; ingen Gen13 RANK_TO_CAPACITY-regel förs in som kandidatmekanism.
 
 ## Oförändrade robusthetsgates
 minOosTrades 100; minPf 1.2; maxDd 0.12; positiveOos true; maxConcentration 0.4; minPositiveFolds 3; minFoldPf 0.8; maxFoldGrossProfitShare 0.55.
@@ -47,6 +58,5 @@ minOosTrades 100; minPf 1.2; maxDd 0.12; positiveOos true; maxConcentration 0.4;
 - Handel/Forward förblir AV.
 - Detta dokument är endast ett planförslag. Det skapar ingen runnerspec, engine, research-state eller research-start.
 
-## Nästa mänskliga beslut
-Godkänn eller förkasta PERSISTENCE_CONFIRMATION som Gen14-designriktning.
-Vid godkännande: formulera exakt semantik, bygg canonical runnerspec/hash och isolerad engine, kör synthetic Engine Verification + executable Release Gate och kräv därefter ett separat uttryckligt research-startbeslut.
+## Nästa beslut
+Plangodkännandet är klart. Nästa säkra steg är canonical runnerspec/hash + isolerad engine + synthetic Engine Verification och executable Release Gate. Gen14-research kräver därefter ett separat uttryckligt mänskligt startbeslut.
