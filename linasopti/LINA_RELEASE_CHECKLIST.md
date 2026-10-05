@@ -580,3 +580,10 @@ Historical/frozen research version strings are excluded from this current-releas
 - [ ] Klienten använder receipt som completion-gate och verifierar inte via statisk deploy/Pages-fil.
 - [ ] State/checkpoint sparas före continuation och nästa observerade steg är spärrat tills receipt är verifierat.
 - [ ] Återkommande felklass två gånger utlöser arkitekturgranskning i stället för ytterligare lokal retry/specialpatch.
+
+
+## V0.3.68 — Gen10 immutable receipt recovery
+- [x] Befintlig immutable Gen10-evidens adopteras före ny sync endast via auktoritativ evidence-read.
+- [x] Exakt content SHA-256 och LINA-GITHUB-COMMIT-RECEIPT-1 krävs; existens/409 räcker inte.
+- [x] GRADED_2024 får återupptas från checkpoint/evidens utan simulering/rerun.
+- [x] Version/cache V0.3.68; Gen8/Gen9 frysta; Handel/Forward AV.
