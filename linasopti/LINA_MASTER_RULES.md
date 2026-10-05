@@ -435,3 +435,12 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Försvunnen status betyder att UI-verifieringen har misslyckats och blockerar nästa observerade eller irreversibla steg.
 - Frysta gamla diagnostikrader får inte dominera över aktuell generations status och nästa beslut.
 - Regeln gäller alla våra nuvarande och framtida projekt med bootstrap, routing eller asynkron state-recovery.
+
+
+## 18. EXPLICIT ASYNC DEPENDENCY CHAIN — UNIVERSAL REGEL
+- Två asynkrona steg där B kräver resultat/kvitto från A får aldrig startas som oberoende timers, events eller fire-and-forget-anrop.
+- B ska `await` A:s auktoritativa resultat i samma explicit kedja, eller triggas av ett unikt verifierat completion-kvitto från A.
+- Timing, timeoutordning, nätverkshastighet eller renderhastighet får aldrig användas som implicit synkronisering.
+- Ett dependency-steg som ännu inte är klart ska ge synlig WAIT/STOP-status; det får inte tyst `return` och sedan lämna workflowet utan continuation.
+- Release Gate → startkvitto → observerad research är en strikt sekvens och ska implementeras som en enda await-kedja.
+- Regeln gäller alla våra projekt.
