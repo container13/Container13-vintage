@@ -223,6 +223,17 @@
         console.warn('Gen12 explicit startkedja stoppad:',e);
       }
     },0);
+    // Gen15 preregistration gate only. Research remains blocked pending a separate human start decision.
+    setTimeout(async()=>{
+      const box=()=>document.querySelector('[data-gen15-preflight]');
+      try{
+        await window.LinaGen15Preflight?.visibleVerify?.();
+        const gate=await window.LinaReleaseGate?.verifyFinal?.();
+        if(gate?.status!=='PASS')throw Error('Gen15 Release Gate FAIL');
+        if(gate?.allowResearch!==false||window.LinaReleaseGate?.allowResearch?.()!==false)throw Error('Gen15 researchspärr saknas');
+      }catch(e){const b=box();if(b){b.textContent='Gen15 STOPPAD · '+String(e?.message||e);b.classList.add('bad')}console.warn('Gen15 preregistration gate stoppad:',e)}
+    },0);
+
     // Gen14 explicit dependency chain: preflight -> Release Gate -> human start receipt -> dataset -> resumable research.
     setTimeout(async()=>{
       const box=()=>document.querySelector('[data-gen14-preflight]');
