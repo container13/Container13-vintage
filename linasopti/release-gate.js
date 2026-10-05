@@ -1,6 +1,6 @@
 (function(global){
 'use strict';
-const KEY='lina_release_gate_v0385',REQUIRED_RELEASE='V0.3.85',REQUIRED_CACHE='0.3.85';
+const KEY='lina_release_gate_v0386',REQUIRED_RELEASE='V0.3.86',REQUIRED_CACHE='0.3.86';
 const item=(id,pass,detail)=>({id,pass:Boolean(pass),detail});
 async function run(){
  const tests=[],root=document.querySelector('#view'),current=root?.querySelector('[data-gen15-preflight]'),children=root?[...root.children]:[];
