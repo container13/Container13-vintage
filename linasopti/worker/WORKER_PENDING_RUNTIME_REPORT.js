@@ -1347,6 +1347,7 @@ async function githubWriteForward(env,state,sha) {
 
 
 
+  body.receipt=await verifyGithubBlobReceipt(cfg,cfg.path,stateSha256,body?.content?.sha||null);
   return body;
 
 }
@@ -1827,6 +1828,25 @@ async function githubReadAppState(env) {
 
 
 
+async function verifyGithubBlobReceipt(cfg,path,expectedSha256,knownBlobSha=null) {
+  let blobSha=knownBlobSha;
+  if(!blobSha){
+    const api=`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${path.split("/").map(encodeURIComponent).join("/")}?ref=${encodeURIComponent(cfg.branch)}`;
+    const r=await fetch(api,{headers:githubHeaders(cfg)});
+    const body=await r.json();
+    if(!r.ok)throw new Error(body?.message||`GitHub verify HTTP ${r.status}`);
+    blobSha=body?.sha;
+  }
+  if(!blobSha)throw new Error("GitHub verify saknar blob SHA");
+  const br=await fetch(`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/git/blobs/${encodeURIComponent(blobSha)}`,{headers:githubHeaders(cfg)});
+  const blob=await br.json();
+  if(!br.ok)throw new Error(blob?.message||`GitHub blob verify HTTP ${br.status}`);
+  if(blob?.encoding!=="base64"||typeof blob?.content!=="string")throw new Error("GitHub blob verify saknar base64-innehåll");
+  const content=b64decode(blob.content),actualSha256=await sha256Hex(content);
+  if(actualSha256!==String(expectedSha256||"").toLowerCase())throw new Error("GitHub read-back SHA256 mismatch");
+  return{schema:"LINA-GITHUB-COMMIT-RECEIPT-1",path,gitBlobSha:blobSha,contentSha256:actualSha256,verifiedAt:new Date().toISOString()};
+}
+
 async function githubWriteAppState(env,state,sha) {
 
   const cfg = appGithubConfig(env);
@@ -1843,11 +1863,13 @@ async function githubWriteAppState(env,state,sha) {
 
 
 
+  const stateText=JSON.stringify(state,null,2)+"\n";
+  const stateSha256=await sha256Hex(stateText);
   const payload = {
 
     message:`Lina App state ${new Date().toISOString()}`,
 
-    content:b64encode(JSON.stringify(state,null,2)+"\n"),
+    content:b64encode(stateText),
 
     branch:cfg.branch
 
@@ -2281,13 +2303,9 @@ async function handleEvidence(request,env) {
 
 
     if(chk.ok) {
-
-      throw new Error(
-
-        "Evidencefilen finns redan – original skrivs inte över"
-
-      );
-
+      const existing=await chk.json();
+      const receipt=await verifyGithubBlobReceipt(cfg,path,hash,existing?.sha||null);
+      return json({ok:true,path,sha256:hash,commit:null,contentSha:receipt.gitBlobSha,verified:true,existingImmutable:true,receipt},200,request);
     }
 
 
@@ -2348,6 +2366,7 @@ async function handleEvidence(request,env) {
 
 
 
+    const receipt=await verifyGithubBlobReceipt(cfg,path,hash,wr?.content?.sha||null);
     return json({
 
       ok:true,
@@ -2356,7 +2375,13 @@ async function handleEvidence(request,env) {
 
       sha256:hash,
 
-      commit:wr?.commit?.sha||null
+      commit:wr?.commit?.sha||null,
+
+      contentSha:receipt.gitBlobSha,
+
+      verified:true,
+
+      receipt
 
     },200,request);
 
@@ -2402,7 +2427,8 @@ async function handleRuntimeReport(request, env) {
     const wrResp = await fetch(api,{method:"PUT",headers:{...githubHeaders(cfg),"Content-Type":"application/json"},body:JSON.stringify({message:`Lina runtime report ${name}`,content:b64encode(content),branch:cfg.branch})});
     const wr = await wrResp.json();
     if (!wrResp.ok) throw new Error(wr?.message || `GitHub write HTTP ${wrResp.status}`);
-    return json({ok:true,path,sha256:hash,commit:wr?.commit?.sha||null,contentSha:wr?.content?.sha||null},200,request);
+    const receipt=await verifyGithubBlobReceipt(cfg,path,hash,wr?.content?.sha||null);
+    return json({ok:true,path,sha256:hash,commit:wr?.commit?.sha||null,contentSha:receipt.gitBlobSha,verified:true,receipt},200,request);
   } catch(e) {
     return json({ok:false,error:String(e?.message||e)},409,request);
   }
