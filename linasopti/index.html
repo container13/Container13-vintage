@@ -9,20 +9,57 @@
 (function(){
   const gate=document.getElementById('loginGate'),form=document.getElementById('loginForm'),input=document.getElementById('loginCode'),msg=document.getElementById('loginMsg');
   const deployStatus=document.getElementById('loginDeployStatus');
-  async function checkLiveStatus(){
-    if(!deployStatus)return;
-    deployStatus.textContent='Kontrollerar live-status…';deployStatus.className='login-msg';
-    try{
-      const t=Date.now();
-      const txt=await (await fetch('version.js?live_status='+t,{cache:'no-store'})).text();
-      const m=txt.match(/RELEASE='(V[^']+)'/),live=m&&m[1],loaded=window.LinaVersion?.release;
-      if(live&&loaded&&live===loaded){deployStatus.textContent='Live ✓ · '+live;deployStatus.className='login-msg';}
-      else if(live){deployStatus.textContent='Ny version publiceras… · live '+live+' / laddad '+String(loaded||'—');deployStatus.className='login-msg';}
-      else throw new Error('release unreadable');
-    }catch(e){deployStatus.textContent='Live-status kunde inte verifieras';deployStatus.className='login-msg bad';}
+  let deployPoll=null;
+  const GH_API='https://api.github.com/repos/container13/Container13-vintage';
+  const statusWord=s=>s==='queued'?'Köad':s==='in_progress'?'Pågår':s==='completed'?'Klar':s||'—';
+  async function ghJson(url){
+    const res=await fetch(url,{cache:'no-store',headers:{Accept:'application/vnd.github+json'}});
+    if(!res.ok)throw Error('GitHub API '+res.status);
+    return res.json();
   }
-  checkLiveStatus();
-  window.addEventListener('pageshow',checkLiveStatus);
+  function activeStep(job){
+    const steps=job?.steps||[];
+    return steps.find(s=>s.status==='in_progress')?.name||steps.find(s=>s.status==='queued')?.name||'';
+  }
+  async function checkDeployStatus(){
+    if(!deployStatus)return;
+    if(deployPoll){clearTimeout(deployPoll);deployPoll=null}
+    deployStatus.textContent='GitHub Actions · kontrollerar senaste commit…';deployStatus.className='login-msg';
+    try{
+      const branch='ccc-demo-public-test';
+      const [commit,runs]=await Promise.all([
+        ghJson(GH_API+'/commits/'+encodeURIComponent(branch)),
+        ghJson(GH_API+'/actions/runs?branch='+encodeURIComponent(branch)+'&per_page=10')
+      ]);
+      const sha=commit.sha,short=sha.slice(0,8);
+      const run=(runs.workflow_runs||[]).find(x=>x.name==='pages build and deployment'&&x.head_sha===sha);
+      if(!run){
+        deployStatus.textContent='Commit '+short+' · väntar på Pages Actions-run…';
+        deployPoll=setTimeout(checkDeployStatus,5000);return;
+      }
+      const jobs=await ghJson(GH_API+'/actions/runs/'+run.id+'/jobs?per_page=20');
+      const list=jobs.jobs||[],build=list.find(j=>j.name==='build'),deploy=list.find(j=>j.name==='deploy');
+      let detail='';
+      if(run.status==='queued')detail='Köad';
+      else if(run.status==='in_progress'){
+        const active=list.find(j=>j.status==='in_progress')||list.find(j=>j.status==='queued');
+        detail=(active?.name||'Actions')+(activeStep(active)?' · '+activeStep(active):'')+'…';
+      }else if(run.conclusion==='success')detail='Completed ✓';
+      else detail='Completed · '+String(run.conclusion||'okänd').toUpperCase()+' ✕';
+      deployStatus.textContent='Commit '+short+' · '+detail;
+      deployStatus.className='login-msg'+(run.status==='completed'&&run.conclusion!=='success'?' bad':'');
+      deployStatus.title='Pages build and deployment #'+run.run_number+' · build '+statusWord(build?.status)+' · deploy '+statusWord(deploy?.status);
+      deployStatus.style.cursor='pointer';
+      deployStatus.onclick=()=>window.open(run.html_url,'_blank','noopener');
+      if(run.status!=='completed')deployPoll=setTimeout(checkDeployStatus,5000);
+    }catch(e){
+      deployStatus.textContent='GitHub Actions-status kunde inte läsas';
+      deployStatus.className='login-msg bad';deployStatus.title=String(e?.message||e);
+      deployPoll=setTimeout(checkDeployStatus,15000);
+    }
+  }
+  checkDeployStatus();
+  window.addEventListener('pageshow',checkDeployStatus);
   const params=new URLSearchParams(window.location.search);
   const forceLogin=params.get('force_login')==='1';
   const navEntry=performance.getEntriesByType?.('navigation')?.[0];
