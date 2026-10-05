@@ -474,3 +474,13 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - GitHub-återläsning: berörda JS syntax PASS; inga gamla 0.3.74-cachetokens i aktiva releasefiler.
 - Handel/Forward AV. Worker oförändrad.
 - Nästa genuina beslut: efter synlig browserverifiering av Gen12 ENGINE VERIFIED + Release Gate PASS kan separat uttryckligt beslut tas om research-start.
+
+
+## V0.3.76 — Gen12 research approved, runtime-gated
+- Human research start approval was given only after V0.3.75 showed Gen12 ENGINE VERIFIED and Release Gate PASS with research blocked.
+- Locked runnerspec remains 7e02f720254ee8bf3139a405aa33cd66d7e88d71493c74d7c035f8305c0c4557. Candidate remains BREADTH_50_GATE at exactly 8/16; no parameter grid or rescue.
+- V0.3.76 adds isolated Gen12 workflow core/data/research/start modules. Runtime chain is preflight -> Release Gate -> start receipt -> exact dataset verification -> research.
+- Each observed fold must be checkpointed and immutable evidence verified before continuation. observationAttempts prevents rerun after an incomplete observed step.
+- github-sync is monotonic through Gen12 and autosync pauses while Gen12 automation is RUNNING.
+- Trade/Forward remain OFF. Worker unchanged.
+- Static GitHub reread passed syntax/version checks. Browser runtime PASS is still required before first observation.
