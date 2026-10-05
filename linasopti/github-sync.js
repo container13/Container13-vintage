@@ -39,6 +39,12 @@ function generationProgress(raw){
   if(g.summaryFreeze?.frozen)p=Math.max(p,70);
   if(g.candidate?.locked)p=Math.max(p,75);
   if(g.gen9Basis)p=Math.max(p,80);
+  const h=x.gen9||{};
+  if(h.planLocked)p=Math.max(p,85);if(h.researchOpened)p=Math.max(p,90);if(h.summaryFreeze?.frozen)p=Math.max(p,95);
+  const j=x.gen10||{};
+  if(j.planLocked)p=Math.max(p,100);if(j.engineVerified)p=Math.max(p,105);if(j.researchOpened)p=Math.max(p,110);
+  p=Math.max(p,110+Object.keys(j.checkpoints||{}).length);
+  if(j.summary)p=Math.max(p,130);if(j.summaryFreeze?.frozen)p=Math.max(p,140);
   return p;
  }catch{return -1}
 }
@@ -59,7 +65,18 @@ function mergeGenerationEntry(l,r){
  g.planEvidence=a?.planEvidence||b?.planEvidence;g.dataEvidence=a?.dataEvidence||b?.dataEvidence;
  g.tradeEnabled=false;g.forwardOpened=false;
  const out=JSON.parse(picked.value);out.gen9=g;
- return{value:JSON.stringify(out),stamp:picked.stamp};
+ const ga=left.gen10,gb=right.gen10;
+ if(ga||gb){
+  if(ga?.runnerSpecSha256&&gb?.runnerSpecSha256&&ga.runnerSpecSha256!==gb.runnerSpecSha256)throw Error('Gen10 synkkonflikt: olika låsta experiment');
+  if(ga?.dataManifest&&gb?.dataManifest&&JSON.stringify(ga.dataManifest)!==JSON.stringify(gb.dataManifest))throw Error('Gen10 synkkonflikt: olika dataset');
+  const grank=z=>z?.summaryFreeze?.frozen?100:z?.summary?90:80+Object.keys(z?.checkpoints||{}).length+(z?.researchOpened?5:0)+(z?.dataEvidence?2:0)+(z?.planLocked?1:0);
+  const gn=grank(ga)>=grank(gb)?ga:gb,go=gn===ga?gb:ga;
+  const gj={...(go||{}),...(gn||{}),checkpoints:{...(gb?.checkpoints||{}),...(ga?.checkpoints||{})},observationAttempts:{...(gb?.observationAttempts||{}),...(ga?.observationAttempts||{})}};
+  for(const key of Object.keys(ga?.checkpoints||{}))if(gb?.checkpoints?.[key]){const x=ga.checkpoints[key],y=gb.checkpoints[key];if(x.resultSha256!==y.resultSha256)throw Error('Gen10 synkkonflikt: olika observerade resultat '+key);gj.checkpoints[key]={...y,...x,evidence:x.evidence||y.evidence}}
+  gj.dataEvidence=ga?.dataEvidence||gb?.dataEvidence;gj.tradeEnabled=false;gj.forwardOpened=false;out.gen10=gj;
+ }
+ out.tradeEnabled=false;out.savedAt=[left.savedAt,right.savedAt].filter(Boolean).sort().pop()||out.savedAt;
+ return{value:JSON.stringify(out),stamp:out.savedAt||picked.stamp};
 }
 function merge(local,remote){const out={...(remote?.entries||{})};for(const [k,l] of Object.entries(local.entries||{})){const r=out[k];if(!r){out[k]=l;continue}if(r.value===l.value)continue;if(k==='lina_clean_gen4_engine_v0261'){const m=mergeGen4Entry(l,r);if(m){out[k]=m;continue}}if(k===GENERATION_KEY){out[k]=mergeGenerationEntry(l,r);continue}if(l.stamp&&r.stamp){if(l.stamp>r.stamp)out[k]=l;else if(l.stamp===r.stamp)throw new Error('Synkkonflikt: '+k);continue}throw new Error('Synkkonflikt utan tidsstämpel: '+k)}return {schema:'LINA-APP-SYNC-1',release:RELEASE,tradeEnabled:false,exportedAt:new Date().toISOString(),entries:out}}
 function apply(p){for(const [k,x] of Object.entries(p?.entries||{})){if(eligible(k)&&typeof x?.value==='string'&&x.value.length<=MAX_ENTRY)localStorage.setItem(k,x.value)}}
