@@ -397,3 +397,14 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Flight recorder/diagnostik för bootstrap → state → eligibility → run → data/checkpoint restore ska finnas återanvändbar och kunna visas högt i UI vid stopp utan att ändra forskningslogik.
 - En release som berör state/synk/resume får inte markeras COMPLETE förrän State Compatibility Gate och END-TO-END RELEASE VERIFICATION båda är godkända.
 
+
+
+## 16. AUTHORITATIVE WRITE RECEIPT
+- Den komponent som utför en permanent write ansvarar också för auktoritativ read-back-verifiering innan den får rapportera success.
+- GitHub-write via Worker får inte räknas som VERIFIED enbart för att Contents API PUT lyckades eller för att en statisk/deployad fil-URL går att läsa.
+- Worker ska efter write läsa exakt GitHub-blob via blob-SHA, beräkna innehållets SHA-256 och jämföra mot det avsedda innehållet.
+- Ett permanent write-kvitto ska minst innehålla path, gitBlobSha, contentSha256 och verifiedAt; commitSha ska sparas när GitHub returnerar den.
+- En redan existerande immutable fil får endast adopteras om dess GitHub-blob read-back matchar exakt förväntad SHA-256. Existens eller HTTP 409 ensam är aldrig verifiering.
+- Klient/state får låsa upp nästa irreversibla eller observerade steg först efter verifierat auktoritativt kvitto.
+- Retry/polling får inte användas för att kompensera för verifiering mot fel källa. Eventual consistency hanteras endast efter att rätt auktoritativ källa valts.
+- Om samma felklass återkommer två gånger ska lokal patchning stoppas och write/read/verify-arkitekturen granskas end-to-end före nästa fix.
