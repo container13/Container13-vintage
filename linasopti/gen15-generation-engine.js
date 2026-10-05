@@ -66,6 +66,21 @@ function aggregate(folds,variant){
  const g=SPEC.gates,checks={trades:r.n>=g.minOosTrades,pf:gl===0?gp>0:r.pf>=g.minPf,dd:Math.abs(r.dd)<=g.maxDd,positive:r.pl>0,concentration:r.concentration<=g.maxConcentration,positiveFolds:r.positiveFolds>=g.minPositiveFolds,worstFold:fs.every(f=>f.n>0&&(f.pfKind==='NO_LOSSES'||f.pf>=g.minFoldPf)),foldShare:r.maxFoldGrossProfitShare<=g.maxFoldGrossProfitShare};
  return{variant,metrics:r,checks,status:Object.values(checks).every(Boolean)?'PASS':'FAIL',candidateEligible:variant==='TREND_INVALIDATION_EXIT'&&Object.values(checks).every(Boolean),tradeEnabled:false,forwardOpened:false};
 }
+async function verifySynthetic(){
+ const tests=[];const add=(id,pass,detail)=>tests.push({id,pass:Boolean(pass),detail});
+ // Contract-level synthetic checks only: no locked 2021–2024 dataset is read here.
+ const rows=Array.from({length:181},(_,i)=>({d:'S'+String(i).padStart(3,'0'),o:100,h:101,l:99,c:100}));
+ rows[180].c=99;
+ add('trend_trigger_close_lte_sma180',trendInvalidated(rows,180)===true,'Synthetic close <= SMA180 must mark invalidation.');
+ rows[180].c=101;
+ add('trend_no_trigger_above_sma180',trendInvalidated(rows,180)===false,'Synthetic close > SMA180 must remain open.');
+ add('candidate_has_no_time_exit',SPEC.trendInvalidationExit.timeExit.startsWith('none for candidate'),'Candidate has no 12-session time exit.');
+ add('next_open_execution_locked',SPEC.trendInvalidationExit.execution.includes('open(t+1)'),'Marked exit executes next open.');
+ add('entry_day_evaluation_locked',SPEC.trendInvalidationExit.firstEvaluation.includes('entered at open(t)')&&SPEC.trendInvalidationExit.firstEvaluation.includes('close(t)'),'Entry may be evaluated same close.');
+ add('fold_boundary_no_future_read',SPEC.trendInvalidationExit.foldBoundary.includes('final fold session')&&SPEC.trendInvalidationExit.foldBoundary.includes('never read next-fold open'),'Final fold exits at close without future fold read.');
+ add('same_symbol_reentry_locked',SPEC.trendInvalidationExit.reentry.includes('while open')&&SPEC.trendInvalidationExit.reentry.includes('new ordinary valid breakout signal'),'No same-symbol re-entry while open.');
+ const failed=tests.filter(t=>!t.pass);return{schema:'LINA-GEN15-SYNTHETIC-VERIFY-1',specSha256:SPEC_SHA256,status:failed.length?'FAIL':'PASS',tests,failed:failed.map(t=>t.id),usesObservedDataset:false};
+}
 async function verify(){
  const tests=[];const add=(id,pass,detail)=>tests.push({id,pass:Boolean(pass),detail});
  add('sha256',await sha256(SPEC)===SPEC_SHA256,'Canonical runnerspec SHA-256 måste matcha låst fil.');
@@ -84,5 +99,5 @@ async function verify(){
  add('trade_forward_off',SPEC.tradeEnabled===false&&SPEC.forwardOpened===false,'Handel/Forward AV.');
  const failed=tests.filter(t=>!t.pass);return{schema:'LINA-GEN15-ENGINE-VERIFY-1',specSha256:SPEC_SHA256,status:failed.length?'FAIL':'PASS',tests,failed:failed.map(t=>t.id),researchOpened:false,tradeEnabled:false,forwardOpened:false};
 }
-global.LinaGen15Engine=Object.freeze({SPEC,SPEC_SHA256,canonical,smaAt,trendInvalidated,signalAt,simulate,aggregate,verify});
+global.LinaGen15Engine=Object.freeze({SPEC,SPEC_SHA256,canonical,smaAt,trendInvalidated,signalAt,simulate,aggregate,verifySynthetic,verify});
 })(typeof window==='object'?window:globalThis);
