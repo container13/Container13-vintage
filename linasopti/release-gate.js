@@ -1,10 +1,10 @@
 (function(global){
 'use strict';
-const KEY='lina_release_gate_v0382',REQUIRED_RELEASE='V0.3.82',REQUIRED_CACHE='0.3.82';
+const KEY='lina_release_gate_v0383',REQUIRED_RELEASE='V0.3.83',REQUIRED_CACHE='0.3.83';
 const item=(id,pass,detail)=>({id,pass:Boolean(pass),detail});
 async function run(){
  const tests=[],root=document.querySelector('#view'),current=root?.querySelector('[data-gen14-preflight]'),children=root?[...root.children]:[];
- tests.push(item('release_source',global.LinaVersion?.release===REQUIRED_RELEASE&&global.LinaVersion?.cache===REQUIRED_CACHE,'Central version/cache must be V0.3.82/0.3.82.'));
+ tests.push(item('release_source',global.LinaVersion?.release===REQUIRED_RELEASE&&global.LinaVersion?.cache===REQUIRED_CACHE,'Central version/cache must be V0.3.83/0.3.83.'));
  tests.push(item('final_view_exists',Boolean(root),'Final #view must exist.'));
  tests.push(item('current_action_visible',Boolean(current&&current.textContent.includes('ENGINE VERIFIED')),'Gen14 verified/current action must be visible.'));
  tests.push(item('current_action_first',Boolean(current&&children[0]===current),'Gen14 current action must be first direct child.'));
