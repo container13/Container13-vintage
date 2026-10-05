@@ -5,6 +5,13 @@ Körs före varje Lina-ZIP.
 - [ ] `LINA_MASTER_RULES.md` läst.
 - [ ] PRIORITY UI RULE verifierad: aktuell mänsklig åtgärd ligger faktiskt allra högst upp i vyn före export/historik/äldre state.
 - [ ] UI ACTION FEEDBACK RULE verifierad: varje state-ändrande klick ger omedelbar synlig återkoppling och återrenderar från sparat state; inget lyckat klick får vara tyst.
+- [ ] NO SILENT FAILURE verifierad: fel/blockering ger synligt STOPPAD/BLOCKERAD + orsak + nästa steg högt i vyn.
+- [ ] SAVED ≠ VISIBLE ≠ VERIFIED verifierad: releasepåstående motsvarar faktiskt testad nivå; sparad kod/state räknas inte ensam som fungerande UI.
+- [ ] ONE CLICK = ONE RESULT verifierad: dubbelstart förhindras och exakt ett entydigt resultat visas per klick.
+- [ ] RESUME, NEVER REPEAT verifierad: reload/avbrott återupptar från beständigt completion-state utan omkörning av observerat resultat.
+- [ ] GITHUB = PERMANENT STATE verifierad för kritiska beslut/godkännanden/lås/frysningar; localStorage är inte enda permanenta källa.
+- [ ] NO FALSE BUTTON PROMISES verifierad: varje primärknapps text motsvarar exakt vad den releasen faktiskt gör.
+- [ ] CURRENT ACTION CONTRACT verifierad: högst upp visas status + vad Lina väntar på + exakt nästa åtgärd, eller tydligt att ingen mänsklig åtgärd behövs.
 - [ ] Senaste handoff läst.
 - [ ] Faktisk berörd baskod inspekterad; inga antaganden om filer/version.
 - [ ] Ändringen automatiserar säkra delsteg fram till nästa verkliga mänskliga beslut.
