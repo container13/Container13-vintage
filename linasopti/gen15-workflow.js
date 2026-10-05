@@ -1,0 +1,12 @@
+(function(global){
+'use strict';
+const C=global.LinaGen15WorkflowCore,D=global.LinaGen15WorkflowData,R=global.LinaGen15Research;
+function approveStart(){
+ let g=C.state();C.assertContract(g);
+ if(g.researchOpened||Object.keys(g.checkpoints||{}).length)throw Error('Gen15 start får inte godkännas om observerad state redan finns');
+ g.startReceipt={schema:'LINA-GEN15-HUMAN-START-1',approved:true,approvedAt:C.now(),release:global.LinaVersion.release,specSha256:C.E.SPEC_SHA256,releaseGateKey:global.LinaReleaseGate.KEY};
+ g.state='START_APPROVED';return C.save(g);
+}
+async function startApprovedResearch(){let g=C.state();if(!g.startReceipt?.approved)approveStart();return R.run()}
+global.LinaGen15Workflow=Object.freeze({state:C.state,approveStart,startApprovedResearch,run:R.run,prepareData:D.prepareData,recoverFinalStateFromImmutableEvidence:D.recoverFinalStateFromImmutableEvidence});
+})(window);
