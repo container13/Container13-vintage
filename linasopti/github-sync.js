@@ -136,7 +136,7 @@ async function bootstrap(progress){
   const getStarted=performance.now(), remote=await get();
   timings.get=Math.round(performance.now()-getStarted);
   const remoteGen=(()=>{try{const e=remote?.state?.entries?.[GENERATION_KEY];return e?.value?JSON.parse(e.value).gen10||null:null}catch{return null}})();
-  sessionStorage.setItem('lina_gen10_remote_diag',JSON.stringify({exists:Boolean(remoteGen),state:remoteGen?.state??null,engineVerified:remoteGen?.engineVerified,checkpoints:Object.keys(remoteGen?.checkpoints||{}).length}));
+  sessionStorage.setItem('lina_gen10_remote_diag',JSON.stringify({exists:Boolean(remoteGen),state:remoteGen?.state??null,engineVerified:remoteGen?.engineVerified,checkpoints:Object.keys(remoteGen?.checkpoints||{}).length,branch:remote?.branch??null,path:remote?.path??null,remoteRelease:remote?.state?.release??null,remoteExportedAt:remote?.state?.exportedAt??null}));
   const recovery=recoveryPlan(localEntries,remote?.state||null);
   // Canonical rule: GitHub wins conflicts. Local state may only fill keys GitHub does not have.
   step('compare',`Jämför ${recovery.localCount} lokala och ${recovery.remoteCount} GitHub-poster…`);
