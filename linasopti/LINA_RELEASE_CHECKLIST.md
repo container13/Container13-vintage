@@ -596,3 +596,18 @@ Historical/frozen research version strings are excluded from this current-releas
 - [ ] Central version/cache, aktuellt engine-kvitto, fryst föregående generation, Handel AV, Forward stängd och research ej öppnad verifieras maskinellt där de kan kontrolleras.
 - [ ] Framtida research-start måste kräva giltigt PASS-kvitto från aktuell release; dokumentation/checklista ensam får aldrig öppna research.
 - [ ] Release Gate kompletterar mänskliga/semantiska regler som inte kan maskintestas; den ersätter inte MASTER RULES.
+
+
+## V0.3.75 — Gen12 pre-research release check
+- [x] MASTER RULES och aktuell handoff lästa före implementation.
+- [x] Gen11 fryst; ingen Gen8–Gen11 research körs om.
+- [x] Gen12-plan mänskligt godkänd via uttryckligt Kör efter preregistrerat planförslag.
+- [x] Canonical runnerspec före research: SHA-256 7e02f720254ee8bf3139a405aa33cd66d7e88d71493c74d7c035f8305c0c4557.
+- [x] Enda kandidatregel BREADTH_50_GATE: exakt 8/16 över SMA180 från föregående close. Ingen parametergrid.
+- [x] Isolerad Gen12-engine utan fetch/research-workflow; gamla SECTOR_CAP-referenser borttagna.
+- [x] Gen12 preflight verifierar endast engine och kan inte starta research.
+- [x] Release Gate är Gen12-specifik och sätter allowResearch:false.
+- [x] Berörda JS-filer syntaxkontrollerade efter GitHub-återläsning.
+- [x] Version/cache V0.3.75; inga aktiva 0.3.74-cachetokens kvar.
+- [x] Handel/Forward AV. Worker INGEN ÄNDRING.
+- [ ] Browser runtime: Gen12 ENGINE VERIFIED + Release Gate PASS verifieras synligt före separat research-startbeslut.
