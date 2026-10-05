@@ -186,18 +186,21 @@
         finally{document.removeEventListener('lina:gen9progress',on)}
       }catch(e){console.warn('Gen9 global start stoppad:',e)}
     },0);
-    // Gen10 resume is global too: authoritative GitHub state has already been restored by bootstrap.
+    // Gen10 resume flight recorder: visible first, then exact resume checkpoints.
     setTimeout(async()=>{
+      const root=document.querySelector('#view'),box=document.createElement('div');box.className='statusline';box.setAttribute('data-gen10-global-resume','');root?.prepend(box);
+      const mark=(step,detail='')=>{const rec={release:window.LinaVersion?.release||'',step,detail,at:new Date().toISOString()};try{sessionStorage.setItem('lina_gen10_flight',JSON.stringify(rec))}catch{}box.textContent='Gen10 DIAG · '+step+(detail?' · '+detail:'');box.dataset.gen10Diag=step;return rec};
+      mark('BOOTSTRAP_KLAR');
       try{
-        const w=window.LinaGen10Workflow;if(!w?.run)return;
-        const g=w.state(),resumable=g.engineVerified&&!g.summaryFreeze?.frozen&&(g.state==='RESEARCH_RUNNING'||g.state==='RESEARCH_STOPPED');
-        if(!resumable)return;
-        const root=document.querySelector('#view'),box=document.createElement('div');box.className='statusline';box.setAttribute('data-gen10-global-resume','');box.textContent='Gen10 · återupptar från permanent checkpoint…';root?.prepend(box);
+        const w=window.LinaGen10Workflow;if(!w?.run){mark('MODUL_SAKNAS');return}mark('GEN10_MODUL_FUNNEN');
+        const g=w.state();mark('STATE_LÄST',g.state||'STATE_SAKNAS');const resumable=g.engineVerified&&!g.summaryFreeze?.frozen&&(g.state==='RESEARCH_RUNNING'||g.state==='RESEARCH_STOPPED');
+        if(!resumable){mark('RESUME_EJ_ELIGIBLE');return}mark('RESUME_ELIGIBLE');
+        box.textContent='Gen10 · återupptar från permanent checkpoint…';mark('RUN_ANROPAS');
         const on=e=>{box.textContent=e.detail.text};document.addEventListener('lina:gen10progress',on);
         try{const result=await w.run();box.textContent='Gen10 klar · '+(result?.decision||w.state().state);}
         catch(e){box.textContent='Gen10 STOPPAD · '+String(e?.message||e);box.classList.add('bad');}
         finally{document.removeEventListener('lina:gen10progress',on)}
-      }catch(e){console.warn('Gen10 global resume stoppad:',e)}
+      }catch(e){try{const box=document.querySelector('[data-gen10-global-resume]');if(box){box.textContent='Gen10 DIAG STOPP · '+String(e?.message||e);box.classList.add('bad');box.dataset.gen10Diag='STOPP'}}catch{}console.warn('Gen10 global resume stoppad:',e)}
     },0);
     setTimeout(()=>window.LinaForwardCenter?.autoCatchUp?.().catch(e=>console.warn('Auto Forward stoppad:',e)),0);
   }
