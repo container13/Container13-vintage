@@ -1637,7 +1637,7 @@ function validateAppState(p) {
 
 
 
-    if (x.value.length > 400000) {
+    if (x.value.length > 2000000) {
 
       throw new Error("App-state post för stor");
 
@@ -1651,7 +1651,7 @@ function validateAppState(p) {
 
 
 
-  if (total > 1500000) {
+  if (total > 5000000) {
 
     throw new Error("App-state paket för stort");
 
@@ -1765,13 +1765,57 @@ async function githubReadAppState(env) {
 
 
 
+  let decoded = "";
+
+  if (typeof body.content === "string" && body.content) {
+
+    decoded = b64decode(body.content);
+
+  }
+
+  let parsed;
+
+  try {
+
+    parsed = JSON.parse(decoded);
+
+  } catch (contentError) {
+
+    if (!body.sha) throw contentError;
+
+    const blobApi =
+
+      `https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/` +
+
+      `${encodeURIComponent(cfg.repo)}/git/blobs/${encodeURIComponent(body.sha)}`;
+
+    const br = await fetch(blobApi,{
+
+      headers:githubHeaders(cfg)
+
+    });
+
+    const blob = await br.json();
+
+    if (!br.ok) {
+
+      throw new Error(blob?.message||`GitHub blob HTTP ${br.status}`);
+
+    }
+
+    if (blob?.encoding !== "base64" || typeof blob?.content !== "string") {
+
+      throw new Error("GitHub blob saknar komplett base64-innehåll");
+
+    }
+
+    parsed = JSON.parse(b64decode(blob.content));
+
+  }
+
   return {
 
-    state:validateAppState(
-
-      JSON.parse(b64decode(body.content))
-
-    ),
+    state:validateAppState(parsed),
 
     sha:body.sha,
 
