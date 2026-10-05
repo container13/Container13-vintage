@@ -194,7 +194,7 @@
       try{
         const w=window.LinaGen10Workflow;if(!w?.run){mark('MODUL_SAKNAS');return}mark('GEN10_MODUL_FUNNEN');
         const g=w.state();mark('STATE_LÄST',g.state||'STATE_SAKNAS');const resumable=g.engineVerified&&!g.summaryFreeze?.frozen&&(g.state==='RESEARCH_RUNNING'||g.state==='RESEARCH_STOPPED');
-        if(!resumable){mark('RESUME_EJ_ELIGIBLE');return}mark('RESUME_ELIGIBLE');
+        if(!resumable){mark('RESUME_EJ_ELIGIBLE','state='+(g.state??'∅')+' · engineVerified='+String(g.engineVerified)+' · frozen='+String(Boolean(g.summaryFreeze?.frozen))+' · researchOpened='+String(g.researchOpened)+' · checkpoints='+Object.keys(g.checkpoints||{}).length);return}mark('RESUME_ELIGIBLE');
         box.textContent='Gen10 · återupptar från permanent checkpoint…';mark('RUN_ANROPAS');
         const on=e=>{box.textContent=e.detail.text};document.addEventListener('lina:gen10progress',on);
         try{const result=await w.run();box.textContent='Gen10 klar · '+(result?.decision||w.state().state);}
