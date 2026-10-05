@@ -384,3 +384,16 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Versionsbyte ska verifieras från föregående verkliga release med befintlig cache/localStorage, inte endast i en ren session.
 - Efter en state-ändrande release ska permanent state/evidens återläsas och jämföras med synlig UI innan releasen rapporteras som fungerande.
 - Regeln är generell och ska återanvändas i andra projekt där samma bygg-/releaseprincip är relevant.
+
+## 15. STATE COMPATIBILITY GATE
+- **STATE COMPATIBILITY GATE:** Varje release som ändrar state-schema, bootstrap, merge, migrering, cache eller resume måste före versionssättning testas mot både aktuellt och verkligt legacy-state. Produktionsstart får aldrig vara första testet av state-migrering.
+- Permanent state ska ha explicit schemaVersion när strukturen kan utvecklas. Schemaändringar ska hanteras med deterministiska, versionsbundna migreringar; övrig kod får inte förutsätta att nya fält redan finns.
+- Saknat fält (undefined), false och true är tre skilda tillstånd. För varje säkerhetskritiskt fält ska legacy-default och hårdstopp vara explicit definierade. Faktiskt true för Handel/Forward får aldrig normaliseras bort.
+- Merge för oberoende generationer/domäner ska vara separerad. GenN får inte kunna raderas, nedgraderas eller påverkas av att GenN-1 saknas eller har annan struktur.
+- Obligatoriska merge-scenarier: gammalt lokalt + nytt remote; nytt lokalt + gammalt remote; remote GenN + saknat lokalt GenN; lokalt GenN + saknat remote GenN; båda med olika antal checkpoints; saknade nya fält; verklig konflikt i samma observerade checkpoint.
+- För observerade checkpoints gäller monoton merge: union får bevara identiska observationer/evidens, men olika result-SHA för samma checkpoint är alltid hårdstopp.
+- Cross-device resume ska verifieras från tom lokal cache/IndexedDB: bootstrap från permanent state → verifierad rekonstruktion av lokalt arbetsstate → exakt befintlig checkpoint → ingen rerun → nästa steg.
+- State Compatibility Suite ska kontrollera semantiskt slutresultat, inte bara syntax eller att funktionen inte kastar fel. Förväntat state ska jämföras fält för fält för kritiska workflowfält.
+- Flight recorder/diagnostik för bootstrap → state → eligibility → run → data/checkpoint restore ska finnas återanvändbar och kunna visas högt i UI vid stopp utan att ändra forskningslogik.
+- En release som berör state/synk/resume får inte markeras COMPLETE förrän State Compatibility Gate och END-TO-END RELEASE VERIFICATION båda är godkända.
+
