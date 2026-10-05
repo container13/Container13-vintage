@@ -198,19 +198,25 @@
         await window.LinaGen12Preflight?.visibleVerify?.();
         const gate=await window.LinaReleaseGate?.verifyFinal?.();
         if(gate?.status!=='PASS'||gate?.allowResearch!==true)throw Error('Gen12 Release Gate saknar PASS/allowResearch');
-        const w=window.LinaGen12Workflow;if(!w?.startApprovedResearch)throw Error('Gen12 workflow saknas');
+        const w=window.LinaGen12Workflow;if(!w?.startApprovedResearch||!w?.recoverFinalStateFromImmutableEvidence)throw Error('Gen12 workflow saknas');
         let g=w.state();
         if(g.summaryFreeze?.frozen){const b=box();if(b)b.textContent='Gen12 klar · '+(g.summary?.decision||g.state)+' · Handel/Forward AV';return}
-        if(g.researchOpened||Object.keys(g.checkpoints||{}).length){
-          const b=box();if(b)b.textContent='Gen12 · återupptar endast från verifierade checkpoints/evidence…';
-        }else{
-          const b=box();if(b)b.textContent='Gen12 · Release Gate PASS · startbeslut verifierat · förbereder låst dataset…';
+        // Immutable final evidence always wins over research continuation. This recovery path contains no simulate().
+        try{
+          const b=box();if(b)b.textContent='Gen12 · kontrollerar permanent slut-evidens före research…';
+          g=await w.recoverFinalStateFromImmutableEvidence();
+          await window.LinaGitHubSync?.syncAll?.();
+          if(b)b.textContent='Gen12 klar · '+(g.summary?.decision||g.state)+' · permanent state återställd/synkad · Handel/Forward AV';
+          return;
+        }catch(recoveryError){
+          if(g.researchOpened||Object.keys(g.checkpoints||{}).length)throw recoveryError;
         }
-        const on=e=>{const b=box();if(b)b.textContent=e.detail.text};document.addEventListener('lina:gen12progress',on);
+        const b=box();if(b)b.textContent='Gen12 · Release Gate PASS · startbeslut verifierat · förbereder låst dataset…';
+        const on=e=>{const x=box();if(x)x.textContent=e.detail.text};document.addEventListener('lina:gen12progress',on);
         try{
           const result=await w.startApprovedResearch();
           await window.LinaGitHubSync?.syncAll?.();
-          const b=box();if(b)b.textContent='Gen12 klar · '+result.decision+' · permanent state synkat · Handel/Forward AV';
+          const x=box();if(x)x.textContent='Gen12 klar · '+result.decision+' · permanent state synkat · Handel/Forward AV';
         }finally{document.removeEventListener('lina:gen12progress',on)}
       }catch(e){
         const b=box();if(b){b.textContent='Gen12 STOPPAD · '+String(e?.message||e);b.classList.add('bad')}
