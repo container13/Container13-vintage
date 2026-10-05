@@ -1293,11 +1293,13 @@ async function githubWriteForward(env,state,sha) {
 
 
 
+  const stateText=JSON.stringify(state,null,2)+"\n";
+  const stateSha256=await sha256Hex(stateText);
   const payload = {
 
     message:`Lina Forward state ${new Date().toISOString()}`,
 
-    content:b64encode(JSON.stringify(state,null,2)+"\n"),
+    content:b64encode(stateText),
 
     branch:cfg.branch
 
@@ -1919,6 +1921,7 @@ async function githubWriteAppState(env,state,sha) {
 
 
 
+  body.receipt=await verifyGithubBlobReceipt(cfg,cfg.path,stateSha256,body?.content?.sha||null);
   return body;
 
 }
