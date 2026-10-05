@@ -635,3 +635,14 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Next generation may not tune breadth threshold, sector cap, graded sizing or rescue Gen10–12 using observed 2021–2024 outcomes.
 - [x] Any cross-sectional hypothesis must use an already-defined signal measure or separately justify a new measure before observation; no observed-result rank tuning.
 - [x] No Gen13 runnerspec/engine/research exists at this checkpoint.
+
+
+## Gen13 preregistration gate
+- [x] Human plan approval recorded separately from research approval.
+- [x] RANK_TO_CAPACITY is the only candidate; CONTROL diagnostic only.
+- [x] Canonical runnerspec SHA-256: e8cd7a717f3240f3650c326e610457d122a3b144a2c5494036f0618db4afbb42.
+- [x] Zero new numeric ranking parameters; capacity derives only from locked maxPositions=8 and current open positions.
+- [x] Existing 50-session strength ranking retained; no Top-N/percentile/threshold grid.
+- [x] Isolated engine reread from GitHub and JavaScript syntax checked.
+- [x] Engine contains no research-start/dataset loader and cannot enable Trade/Forward.
+- [ ] Browser synthetic Engine Verification and Release Gate PASS required before any separate research-start decision.
