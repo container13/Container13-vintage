@@ -556,3 +556,17 @@ Historical/frozen research version strings are excluded from this current-releas
 - [ ] UI-status överensstämmer med permanent GitHub/app-state/evidens efter bootstrap.
 - [ ] Resume/idempotens testad när releasen påverkar återupptagningsbart workflow; befintlig checkpoint återanvänds utan rerun.
 - [ ] Versionsbyte/cache testat från föregående verkliga release när laddningskedjan ändras.
+
+## Permanent state compatibility gate
+- [ ] State/schema/bootstrap/merge/resume ändrat? Kör State Compatibility Suite före versionssättning.
+- [ ] Verkligt state från föregående release testat; inte endast ren session.
+- [ ] Legacy saknade fält testade explicit: undefined, false och true behandlas enligt definierat kontrakt.
+- [ ] Gammalt lokalt + nytt remote samt nytt lokalt + gammalt remote ger förväntat monotont state.
+- [ ] Remote GenN + saknat lokalt GenN återställer GenN komplett; lokal GenN + saknat remote GenN bevaras enligt permanent-state-regeln.
+- [ ] Oberoende generationer mergas oberoende; GenN-1 får inte radera/nedgradera GenN.
+- [ ] Olika checkpointantal mergas monotont; identisk checkpoint bevaras och olika result-SHA för samma checkpoint ger hårdstopp.
+- [ ] Cross-device test från tom localStorage/IndexedDB: bootstrap → rekonstruktion → exakt checkpoint → ingen rerun → fortsättning.
+- [ ] Handel/Forward: explicit true ger hårdstopp; legacy-default får aldrig slå på Handel/Forward.
+- [ ] Flight recorder visar exakt sista lyckade steg vid bootstrap/resume-stopp.
+- [ ] Semantiskt slutstate jämfört mot förväntat state; syntax/deploy ensam räcker inte.
+
