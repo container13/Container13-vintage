@@ -369,3 +369,9 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - **GITHUB = PERMANENT STATE:** Beslut, godkännanden, lås, frysningar och annat state som måste överleva webbläsar-/enhetsbyte ska göras beständigt via kanonisk GitHub/app-state-synk. localStorage får vara cache/arbetsstate men får inte vara enda permanenta källa för kritiskt state.
 - **NO FALSE BUTTON PROMISES:** Knapptext ska beskriva exakt den åtgärd som den aktuella releasen faktiskt utför. En knapp får inte lova nästa pipeline-/research-/synksteg om den endast registrerar ett godkännande eller utför ett delsteg.
 - **CURRENT ACTION CONTRACT:** Högst upp i varje huvudvy ska användaren kunna se aktuell status, vad Lina väntar på och exakt nästa åtgärd. Om ingen mänsklig åtgärd behövs ska det uttryckligen framgå.
+
+## 13. SIZE-AWARE EXECUTION
+- **SIZE-AWARE EXECUTION:** Planera stora filer, kodändringar, GitHub-skrivningar, Worker-kod, state/evidence, exporter och artefakter i logiska verifierbara delsteg redan innan första skrivningen. Försök inte först med ett onödigt stort verktygsanrop och dela upp först efter fel.
+- Uppdelningen får aldrig ändra det avsedda slutresultatet eller skapa en halv release som betraktas som klar.
+- Varje del ska vara deterministisk, återupptagningsbar och verifierbar. Beroenden och laddningsordning ska bestämmas före skrivning.
+- Irreversibla/observerade steg får starta först när samtliga nödvändiga delar är skrivna, återlästa och verifierade som en komplett release.
