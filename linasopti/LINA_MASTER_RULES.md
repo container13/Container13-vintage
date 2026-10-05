@@ -354,3 +354,9 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - The version bump and cache-token bump are part of the same change and must not be deferred.
 - After writing, read back `version.js` and `index.html` and verify the new version/cache before calling the change complete.
 \n\n## Maximal säker automatisering — permanent regel från V0.3.29\n- När flera mekaniska steg kan genomföras säkert utan ett nytt mänskligt beslut ska Linas primära knapp automatisera hela kedjan: hämtning, validering, jämförelse, rapportskapande och beständig rapportsparning.\n- Manuella detaljknappar är reserv/felsökning, inte normalflöde.\n- Automatisering får aldrig kringgå beslutsgates, godkänna en generation, starta forskning, öppna Forward/Handel, skriva över fryst evidens eller patcha kandidatdata.\n- Status, fel, klart-resultat och nästa steg ska visas direkt vid den aktiva primära knappen högt i aktuell viewport.\n
+
+## 11. UI-prioritet och synlig återkoppling
+- **PRIORITY UI RULE:** Det som kräver användarens uppmärksamhet, beslut eller åtgärd ska alltid visas allra högst upp i den aktuella vyn, före export, historik, tidigare generationer och sekundär statusinformation.
+- **UI ACTION FEEDBACK RULE:** Varje användaråtgärd som ändrar state måste omedelbart ge en tydlig synlig förändring i samma vy. Ett lyckat klick får aldrig vara tyst eller se ut som om inget hände.
+- Efter state-ändrande klick ska UI återrenderas från det faktiskt sparade state-värdet och visa ny status/knapptext eller tydligt KLART/STOPPAD-resultat.
+- Vid releaseverifiering ska faktisk DOM-placering kontrolleras; det räcker inte att anta att en prioriterad komponent ligger högst på grund av sin generationsordning eller CSS-klass.
