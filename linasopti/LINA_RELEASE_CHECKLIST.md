@@ -587,3 +587,12 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Exakt content SHA-256 och LINA-GITHUB-COMMIT-RECEIPT-1 krävs; existens/409 räcker inte.
 - [x] GRADED_2024 får återupptas från checkpoint/evidens utan simulering/rerun.
 - [x] Version/cache V0.3.68; Gen8/Gen9 frysta; Handel/Forward AV.
+
+
+## Executable Release Gate — obligatorisk från V0.3.71
+- [ ] `release-gate.js` körs efter auktoritativ bootstrap, slutlig route-render och aktuell generations engine/preflight.
+- [ ] Gate-resultat är maskinläsbart PASS/FAIL; `allowResearch` får endast vara true vid full PASS för aktuell release.
+- [ ] Aktuell CURRENT ACTION är första direkta elementet i slutlig `#view`; fryst äldre diagnostik får inte ligga ovanför.
+- [ ] Central version/cache, aktuellt engine-kvitto, fryst föregående generation, Handel AV, Forward stängd och research ej öppnad verifieras maskinellt där de kan kontrolleras.
+- [ ] Framtida research-start måste kräva giltigt PASS-kvitto från aktuell release; dokumentation/checklista ensam får aldrig öppna research.
+- [ ] Release Gate kompletterar mänskliga/semantiska regler som inte kan maskintestas; den ersätter inte MASTER RULES.
