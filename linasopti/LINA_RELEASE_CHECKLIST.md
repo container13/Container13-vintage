@@ -611,3 +611,17 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Version/cache V0.3.75; inga aktiva 0.3.74-cachetokens kvar.
 - [x] Handel/Forward AV. Worker INGEN ÄNDRING.
 - [ ] Browser runtime: Gen12 ENGINE VERIFIED + Release Gate PASS verifieras synligt före separat research-startbeslut.
+
+
+## V0.3.76 Gen12 research gate
+- [x] Explicit human approval received after V0.3.75 browser verification.
+- [x] Locked Gen12 spec/hash and 8-of-16 breadth rule unchanged.
+- [x] Runtime order: preflight, Release Gate PASS, start receipt, dataset verification, research.
+- [x] Dataset SHA and 20128-row gate precede observed research.
+- [x] Every fold is checkpointed and immutable evidence is verified before continuation.
+- [x] Missing checkpoint after observation attempt blocks rerun.
+- [x] App-state autosync pauses while Gen12 automation is RUNNING.
+- [x] Gen12 state merge is monotonic.
+- [x] Trade and Forward remain OFF.
+- [x] Changed JavaScript reread from GitHub and syntax checked.
+- [ ] Browser V0.3.76 must PASS its own Release Gate before first observation.
