@@ -13,7 +13,7 @@ function mount(root){
  if(!info){info=document.createElement('div');info.dataset.gen10ResearchStatus='';box.append(info)}
  const show=()=>{g=C.state();info.textContent=(g.automation?.status==='STOPPED'?'STOPPAD: '+(g.automation.lastError||'okänt fel'):'Gen10 research: '+g.state+(g.summary?' · '+g.summary.decision:''))};show();
  global.document.addEventListener('lina:gen10progress',e=>{info.textContent='PÅGÅR: '+e.detail.text});
- if(g.engineVerified&&!g.researchOpened&&!g.summaryFreeze?.frozen)setTimeout(()=>R.run().then(show).catch(show),0);
+ const resumable=g.engineVerified&&!g.summaryFreeze?.frozen&&(!g.researchOpened||g.state==='RESEARCH_RUNNING'||g.state==='RESEARCH_STOPPED');if(resumable)setTimeout(()=>R.run().then(show).catch(show),0);
  const panel=root.querySelector('.engine-export-primary');
  if(panel&&!panel.querySelector('[data-gen10-export]')){const b=document.createElement('button');b.dataset.gen10Export='';b.textContent='Exportera Gen10-state och resultat';b.onclick=async()=>{try{await global.LinaStatusExport.downloadObjectAsync('LINA_GEN10_RESULTS',exportResults)}catch(e){info.textContent='EXPORT STOPPAD: '+e.message}};panel.append(b)}
 }
