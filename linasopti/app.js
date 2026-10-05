@@ -172,6 +172,8 @@
     // Headern ska alltid använda samma auktoritativa mognadsmodell som Generation Engine, även på Dashboard.
     try{window.LinaGenerationEngine?.updateMaturityHeader?.()}catch(e){console.warn('Robotmognad kunde inte renderas:',e)}
     registerRoutes();window.LinaRouter.start();
+    // Gen11 final-render gate: verify only after authoritative bootstrap + final route render.
+    setTimeout(()=>window.LinaGen11Preflight?.visibleVerify?.().catch(e=>console.warn('Gen11 preflight stoppad:',e)),0);
     // Gen9 explicit research-start gate is global: Dashboard is the normal post-login route.
     // Run only after GitHub bootstrap/recovery has restored authoritative local state.
     setTimeout(async()=>{
