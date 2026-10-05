@@ -179,7 +179,7 @@
         await window.LinaGen11Preflight?.visibleVerify?.();
         const g=window.LinaGen11Workflow?.state?.();
         if(!g)throw Error('Gen11 workflow-state saknas');
-        if(g.summaryFreeze?.frozen)return;
+        if(g.summaryFreeze?.frozen){const b=box();if(b)b.textContent='Gen11 klar · '+(g.summary?.decision||g.state)+' · Handel/Forward AV';return}
         const gate=await window.LinaReleaseGate?.verifyFinal?.();
         if(gate?.status!=='PASS'||gate?.allowResearch!==true)throw Error('Release Gate saknar PASS/allowResearch');
         if(g.researchOpened||Object.keys(g.checkpoints||{}).length){const b=box();if(b)b.textContent='Gen11 · verifierar immutable evidence för säker slutstate-recovery…';await window.LinaGen11Workflow.recoverFinalStateFromImmutableEvidence();await window.LinaGitHubSync?.syncAll?.();const x=box();if(x)x.textContent='Gen11 klar · NO_CANDIDATE · permanent state synkat · Handel/Forward AV';return}
