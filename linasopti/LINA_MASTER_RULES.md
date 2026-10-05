@@ -459,3 +459,9 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Gen13 tar nu research/write-ownership redan före dataset-evidence. Ordinarie app-state autosync är blockerad från godkänt Gen13 startReceipt tills summaryFreeze är klar.
 - Befintlig immutable Gen13 DATA-evidence återanvänds via exakt SHA/read-back. Eventuellt lokalt fold-checkpoint får endast återupptas; aldrig simuleras om.
 - Ingen Worker-ändring krävdes. Runnerspec/hash och Gen13-metod är oförändrade. Handel/Forward AV.
+
+## Versionsdisciplin — permanent regel från V0.3.87
+- Minsta ändring i Lina-projektet kräver ett nytt versionsnummer. Detta gäller kod, HTML/CSS, konfiguration, dokumentation, diagnostik, cache-/asset-revisioner och deploy-only/deploy-touch-ändringar.
+- Ingen `r2`, `hotfix`, query-token eller annan ändring får publiceras under ett redan använt versionsnummer.
+- Ny ändring => höj `version.js` och alla aktiva cachetokens konsekvent före deploy.
+- Releasekontrollen ska stoppa publicering om ändrade Lina-filer förekommer utan nytt versionsnummer.
