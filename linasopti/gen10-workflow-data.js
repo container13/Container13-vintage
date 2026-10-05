@@ -11,6 +11,13 @@ async function readImmutableEvidence(name){
 async function secure(name,content){
  const ev=global.LinaEvidence;if(!ev?.stage||!ev?.approve||!ev?.syncApproved)throw Error('Evidence-modul saknas');
  const expectedText=JSON.stringify(content,null,2),expectedSha256=await C.shaText(expectedText);
+ const immutable=await readImmutableEvidence(name);
+ if(immutable){
+  const immutableSha256=await C.shaText(immutable.content);
+  if(immutableSha256!==expectedSha256||immutable.receipt.contentSha256!==expectedSha256)throw Error('Befintlig immutable evidens matchar inte förväntad SHA: '+name);
+  C.report('DIAG EVIDENCE_IMMUTABLE_ADOPTED '+name);
+  return{status:'FROZEN · GITHUB ✓',name,githubPath:immutable.path,githubCommit:immutable.receipt.commitSha||immutable.receipt.githubCommit||null,gitBlobSha:immutable.receipt.gitBlobSha,sha256:expectedSha256,verificationReceipt:immutable.receipt,adoptedImmutable:true};
+ }
  let item=ev.items().find(i=>i.name===name);
  if(item?.status==='FROZEN · GITHUB ✓'&&item.verificationReceipt?.schema==='LINA-GITHUB-COMMIT-RECEIPT-1'&&item.verificationReceipt.contentSha256===item.sha256&&item.sha256===expectedSha256)return{status:item.status,name,githubPath:item.githubPath,githubCommit:item.githubCommit||null,gitBlobSha:item.githubBlobSha||item.verificationReceipt.gitBlobSha,sha256:item.sha256,verificationReceipt:item.verificationReceipt,adoptedImmutable:Boolean(item.existingImmutable)};
  if(!item||item.status==='FROZEN · GITHUB ✓'){item=ev.stage(name,expectedText,'application/json','Lina Gen10')}
