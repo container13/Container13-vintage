@@ -54,6 +54,10 @@ function generationProgress(raw){
   if(m.planLocked)p=Math.max(p,200);if(m.engineVerified)p=Math.max(p,205);if(m.researchOpened)p=Math.max(p,210);
   p=Math.max(p,210+Object.keys(m.checkpoints||{}).length);
   if(m.summary)p=Math.max(p,230);if(m.summaryFreeze?.frozen)p=Math.max(p,240);
+  const n=x.gen13||{};
+  if(n.planLocked)p=Math.max(p,250);if(n.engineVerified)p=Math.max(p,255);if(n.researchOpened)p=Math.max(p,260);
+  p=Math.max(p,260+Object.keys(n.checkpoints||{}).length);
+  if(n.summary)p=Math.max(p,280);if(n.summaryFreeze?.frozen)p=Math.max(p,290);
   return p;
  }catch{return -1}
 }
@@ -76,6 +80,7 @@ function mergeGenerationEntry(l,r){
  const gen10=mergeGen(left.gen10,right.gen10,'Gen10');if(gen10)out.gen10=gen10;else delete out.gen10;
  const gen11=mergeGen(left.gen11,right.gen11,'Gen11');if(gen11)out.gen11=gen11;else delete out.gen11;
  const gen12=mergeGen(left.gen12,right.gen12,'Gen12');if(gen12)out.gen12=gen12;else delete out.gen12;
+ const gen13=mergeGen(left.gen13,right.gen13,'Gen13');if(gen13)out.gen13=gen13;else delete out.gen13;
  out.tradeEnabled=false;out.savedAt=[left.savedAt,right.savedAt].filter(Boolean).sort().pop()||out.savedAt;
  return{value:JSON.stringify(out),stamp:out.savedAt||picked.stamp};
 }
@@ -177,7 +182,7 @@ async function bootstrap(progress){
 }
 let autoTimer=null,autoBusy=false;
 function queueSync(){
-  clearTimeout(autoTimer);autoTimer=setTimeout(async()=>{const g4=(()=>{try{return JSON.parse(localStorage.getItem('lina_clean_gen4_engine_v0261')||'null')}catch{return null}})(),ge=(()=>{try{return JSON.parse(localStorage.getItem('lina_generation_engine_v0273')||'null')}catch{return null}})();if(g4?.automation?.status==='RUNNING'||ge?.gen5?.automation?.status==='RUNNING'||ge?.gen6?.automation?.status==='RUNNING'||ge?.gen7?.automation?.status==='RUNNING'||ge?.gen7?.recovery?.status==='RUNNING'||ge?.gen12?.automation?.status==='RUNNING')return;if(window.LinaGen9Busy||window.LinaRecoveryBusy||autoBusy||!code())return;autoBusy=true;try{await syncAll();document.dispatchEvent(new CustomEvent('lina:autosync-ok'))}catch(e){console.warn('Lina autosync stoppad:',e);document.dispatchEvent(new CustomEvent('lina:autosync-fail',{detail:{message:String(e?.message||e)}}))}finally{autoBusy=false}},700);
+  clearTimeout(autoTimer);autoTimer=setTimeout(async()=>{const g4=(()=>{try{return JSON.parse(localStorage.getItem('lina_clean_gen4_engine_v0261')||'null')}catch{return null}})(),ge=(()=>{try{return JSON.parse(localStorage.getItem('lina_generation_engine_v0273')||'null')}catch{return null}})();if(g4?.automation?.status==='RUNNING'||ge?.gen5?.automation?.status==='RUNNING'||ge?.gen6?.automation?.status==='RUNNING'||ge?.gen7?.automation?.status==='RUNNING'||ge?.gen7?.recovery?.status==='RUNNING'||ge?.gen12?.automation?.status==='RUNNING'||ge?.gen13?.automation?.status==='RUNNING')return;if(window.LinaGen9Busy||window.LinaRecoveryBusy||autoBusy||!code())return;autoBusy=true;try{await syncAll();document.dispatchEvent(new CustomEvent('lina:autosync-ok'))}catch(e){console.warn('Lina autosync stoppad:',e);document.dispatchEvent(new CustomEvent('lina:autosync-fail',{detail:{message:String(e?.message||e)}}))}finally{autoBusy=false}},700);
 }
 document.addEventListener('lina:gen2change',queueSync);
 document.addEventListener('lina:evidence-changed',queueSync);
