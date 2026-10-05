@@ -223,6 +223,12 @@
         console.warn('Gen12 explicit startkedja stoppad:',e);
       }
     },0);
+    // Gen16 preregistration only: verify exact locked spec + synthetic semantics. NEVER starts or reads research.
+    setTimeout(async()=>{
+      try{await window.LinaGen16Preflight?.visibleVerify?.()}
+      catch(e){console.warn('Gen16 preregistrering stoppad:',e)}
+    },0);
+
     // Gen15 explicit dependency chain: V0.3.87 preflight -> audited Release Gate -> immutable recovery -> approved research.
     setTimeout(async()=>{
       const box=()=>document.querySelector('[data-gen15-preflight]');
