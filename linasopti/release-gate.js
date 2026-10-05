@@ -1,6 +1,6 @@
 (function(global){
 'use strict';
-const KEY='lina_release_gate_v0387',REQUIRED_RELEASE='V0.3.87',REQUIRED_CACHE='0.3.87';
+const KEY='lina_release_gate_v0388',REQUIRED_RELEASE='V0.3.88',REQUIRED_CACHE='0.3.88';
 const item=(id,pass,detail)=>({id,pass:Boolean(pass),detail});
 async function run(){
  const tests=[],root=document.querySelector('#view'),current=root?.querySelector('[data-gen15-preflight]'),children=root?[...root.children]:[];
@@ -9,7 +9,7 @@ async function run(){
  tests.push(item('current_action_visible',Boolean(current&&current.textContent.includes('ENGINE VERIFIED')),'Gen15 verified visible.'));
  tests.push(item('current_action_first',Boolean(current&&children[0]===current),'Gen15 current action first.'));
  tests.push(item('gen15_engine_receipt',(()=>{try{const x=JSON.parse(sessionStorage.getItem(global.LinaGen15Preflight?.KEY)||'null');return x?.status==='PASS'&&x?.synthetic?.status==='PASS'&&x?.synthetic?.usesObservedDataset===false&&x?.specSha256==='726b1631365c5df4880dd926b32461f870eacd1bdf2f610f00b5ad844c61b43c'}catch{return false}})(),'Gen15 engine receipt exact.'));
- tests.push(item('gen15_human_start_auth',global.LinaGen15Workflow?.AUTH?.approved===true&&global.LinaGen15Workflow?.AUTH?.approvedRelease===REQUIRED_RELEASE&&global.LinaGen15Workflow?.AUTH?.specSha256==='726b1631365c5df4880dd926b32461f870eacd1bdf2f610f00b5ad844c61b43c','Explicit human start authorization bound to exact release/spec.'));
+ tests.push(item('gen15_human_start_auth',global.LinaGen15Workflow?.AUTH?.approved===true&&global.LinaGen15Workflow?.AUTH?.approvedRelease==='V0.3.87'&&global.LinaGen15Workflow?.AUTH?.specSha256==='726b1631365c5df4880dd926b32461f870eacd1bdf2f610f00b5ad844c61b43c','Explicit human start authorization bound to exact release/spec.'));
  tests.push(item('gen15_locked_spec',global.LinaGen15Engine?.SPEC?.status==='LOCKED_PRE_RESEARCH','Gen15 spec locked.'));
  tests.push(item('gen15_exit_exact',global.LinaGen15Engine?.SPEC?.candidateVariant==='TREND_INVALIDATION_EXIT'&&global.LinaGen15Engine?.SPEC?.trendInvalidationExit?.newNumericParameters===0,'Trend invalidation exact; zero new numeric params.'));
  tests.push(item('gen14_frozen',(()=>{try{const g=global.LinaGen14Workflow?.state?.();return g?.state==='GEN14_COMPLETE_NO_CANDIDATE'&&Boolean(g?.summaryFreeze?.frozen)&&Object.keys(g?.checkpoints||{}).length===8}catch{return false}})(),'Gen14 frozen NO_CANDIDATE 8/8.'));
