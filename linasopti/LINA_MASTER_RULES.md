@@ -427,3 +427,11 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - GitHub-workflow `.github/workflows/lina-worker-promote.yml` är den befintliga promotionskedjan för PENDING → CURRENT → PREVIOUS och ska kontrolleras/användas före manuellt Cloudflare-flöde.
 - Före varje Worker-ändring ska `wrangler.jsonc` och promotionsworkflowen verifieras på aktuell branch så att kedjan inte antas från historik.
 - Gen10 är fryst och får inte köras om eller ändras av Worker-/deployarbete.
+
+## 17. FINAL RENDER GATE
+- Prioriterad status ska monteras efter sista bootstrap och route-render som kan ersätta aktuell vy.
+- Ett tidigt start-event bevisar inte synlig funktion om appen renderar om senare.
+- Releasekontroll ska verifiera att statusen fortfarande syns efter bootstrap och slutlig render.
+- Försvunnen status betyder att UI-verifieringen har misslyckats och blockerar nästa observerade eller irreversibla steg.
+- Frysta gamla diagnostikrader får inte dominera över aktuell generations status och nästa beslut.
+- Regeln gäller alla våra nuvarande och framtida projekt med bootstrap, routing eller asynkron state-recovery.
