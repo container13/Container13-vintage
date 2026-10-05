@@ -1,6 +1,6 @@
 (function(global){
 'use strict';
-const KEY='lina_gen11_engine_verify_v0369';
+const KEY='lina_gen11_engine_verify_v0370';
 async function run(){
  const E=global.LinaGen11Engine;
  if(!E?.verify)throw Error('Gen11 Engine saknas');
@@ -19,7 +19,5 @@ async function visibleVerify(){
  try{const r=await run();show('Gen11 · ENGINE VERIFIED ✓ · runnerspec 56cb0d0d…f10c52b · research EJ startad · Handel/Forward AV');return r}
  catch(e){show('Gen11 STOPPAD · '+String(e?.message||e),true);throw e}
 }
-document.addEventListener('lina:unlocked',()=>setTimeout(()=>visibleVerify().catch(()=>{}),0));
-if(sessionStorage.getItem('linasopti_unlocked')==='1')setTimeout(()=>visibleVerify().catch(()=>{}),0);
 global.LinaGen11Preflight=Object.freeze({run,visibleVerify,KEY});
 })(typeof window==='object'?window:globalThis);
