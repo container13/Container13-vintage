@@ -1,6 +1,6 @@
 # LINA GEN13 — PLAN PROPOSAL
 
-Status: PROPOSAL_ONLY_NOT_APPROVED_NOT_LOCKED
+Status: HUMAN_APPROVED_FOR_PREREGISTRATION_NOT_RESEARCH
 Datum: 2026-10-05
 Källa: frysta Gen10–Gen12-resultat och permanent research boundary. Ingen tidigare generation får köras om.
 
@@ -37,4 +37,4 @@ minOosTrades 100; minPf 1.2; maxDd 0.12; positiveOos true; maxConcentration 0.4;
 - FAIL innebär NO_CANDIDATE. PASS innebär endast CANDIDATE_REVIEW_REQUIRED; Handel/Forward förblir AV tills separat beslut.
 - Gen10, Gen11 och Gen12 är permanent frysta och får aldrig rerunnas.
 - Denna fil är endast ett planförslag. Den skapar inte runnerspec, engine, research-state eller starttillstånd.
-- Nästa genuina beslut är mänskligt godkännande eller avslag av denna plan. Först efter uttryckligt godkännande får canonical runnerspec/hash och isolerad engine byggas. Research kräver därefter fortfarande separat startbeslut efter synlig Engine/Release Gate-verifiering.
+- Mänskligt plangodkännande gavs uttryckligen 2026-10-05. Canonical runnerspec/hash och isolerad engine får nu byggas. Research är fortfarande INTE godkänd och kräver separat uttryckligt startbeslut efter synlig Engine/Release Gate-verifiering.
