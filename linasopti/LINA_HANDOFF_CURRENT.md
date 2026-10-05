@@ -1,5 +1,12 @@
 # LINA — AKTUELL HANDOFF / STATUS
 
+## V0.3.68 — Gen10 immutable evidence receipt recovery
+- Rotorsak för stoppet efter GRADED_2024: själva immutable GitHub-evidensfilen var redan sparad, men den lokala evidence-kön saknade verifierat commit-kvitto och `secure()` försökte därför synka samma immutable fil igen.
+- `secure()` gör nu först auktoritativ `evidence-read` och adopterar endast en redan existerande immutable fil när exakt content SHA-256 och serverns `LINA-GITHUB-COMMIT-RECEIPT-1` matchar förväntat innehåll.
+- Därmed kan Gen10 återuppta från befintlig GRADED_2024-checkpoint/evidens utan att simulera om folden. Ingen forskningsrerun införs.
+- Gen8/Gen9 förblir frysta. Handel/Forward AV.
+
+
 Aktuell release: V0.3.46
 Uppdaterad: 2026-10-05
 Dokumentrevision: Gen10 pre-research Auto Pipeline
