@@ -451,3 +451,11 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Låst runnerspec SHA-256 `e8cd7a717f3240f3650c326e610457d122a3b144a2c5494036f0618db4afbb42` och RANK_TO_CAPACITY får inte ändras under körningen.
 - Researchkedjan ska vara resumable utan rerun: varje observerad fold checkpointas före immutable evidence och nästa fold får inte börja innan auktoritativt GitHub-kvitto verifierats.
 - Gen10–Gen12 är frysta och får aldrig köras om. Handel/Forward förblir AV efter Gen13 closeout tills separat mänskligt beslut.
+
+
+## V0.3.81 — Gen13 GitHub write-race fix
+- V0.3.80 nådde Release Gate PASS men stoppades säkert under Gen13 innan någon immutable fold-evidence skapades.
+- Rotorsak: Gen13 immutable evidence och ordinarie app-state autosync kunde skriva samtidigt till samma GitHub-branch. GitHub avvisade stale branch-head med `is at … but expected …`.
+- Gen13 tar nu research/write-ownership redan före dataset-evidence. Ordinarie app-state autosync är blockerad från godkänt Gen13 startReceipt tills summaryFreeze är klar.
+- Befintlig immutable Gen13 DATA-evidence återanvänds via exakt SHA/read-back. Eventuellt lokalt fold-checkpoint får endast återupptas; aldrig simuleras om.
+- Ingen Worker-ändring krävdes. Runnerspec/hash och Gen13-metod är oförändrade. Handel/Forward AV.
