@@ -11,6 +11,7 @@ Körs före varje Lina-ZIP.
 - [ ] RESUME, NEVER REPEAT verifierad: reload/avbrott återupptar från beständigt completion-state utan omkörning av observerat resultat.
 - [ ] GITHUB = PERMANENT STATE verifierad för kritiska beslut/godkännanden/lås/frysningar; localStorage är inte enda permanenta källa.
 - [ ] NO FALSE BUTTON PROMISES verifierad: varje primärknapps text motsvarar exakt vad den releasen faktiskt gör.
+- [ ] SIZE-AWARE EXECUTION verifierad: stora filer/skrivningar är förplanerade som logiska verifierbara delsteg; komplett release verifieras innan irreversibelt/observerat steg får starta.
 - [ ] CURRENT ACTION CONTRACT verifierad: högst upp visas status + vad Lina väntar på + exakt nästa åtgärd, eller tydligt att ingen mänsklig åtgärd behövs.
 - [ ] Senaste handoff läst.
 - [ ] Faktisk berörd baskod inspekterad; inga antaganden om filer/version.
