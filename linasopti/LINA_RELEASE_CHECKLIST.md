@@ -658,3 +658,11 @@ Historical/frozen research version strings are excluded from this current-releas
 - [x] Gen13 monotonic app-state merge och autosync-paus under RUNNING.
 - [x] Gen10–Gen12 frysta; Handel/Forward AV.
 - [ ] Browser V0.3.80 måste PASS sin egen Release Gate innan första Gen13-observation.
+
+
+## V0.3.81 — Gen13 GitHub write-race fix
+- V0.3.80 nådde Release Gate PASS men stoppades säkert under Gen13 innan någon immutable fold-evidence skapades.
+- Rotorsak: Gen13 immutable evidence och ordinarie app-state autosync kunde skriva samtidigt till samma GitHub-branch. GitHub avvisade stale branch-head med `is at … but expected …`.
+- Gen13 tar nu research/write-ownership redan före dataset-evidence. Ordinarie app-state autosync är blockerad från godkänt Gen13 startReceipt tills summaryFreeze är klar.
+- Befintlig immutable Gen13 DATA-evidence återanvänds via exakt SHA/read-back. Eventuellt lokalt fold-checkpoint får endast återupptas; aldrig simuleras om.
+- Ingen Worker-ändring krävdes. Runnerspec/hash och Gen13-metod är oförändrade. Handel/Forward AV.
