@@ -191,14 +191,31 @@
         finally{document.removeEventListener('lina:gen11progress',on)}
       }catch(e){const b=box();if(b){b.textContent='Gen11 STOPPAD · '+String(e?.message||e);b.classList.add('bad')}console.warn('Gen11 explicit startkedja stoppad:',e)}
     },0);
-    // Gen12 pre-research gate: verification only. Never starts research.
+    // Gen12 explicit dependency chain: preflight -> Release Gate -> human start receipt -> research.
     setTimeout(async()=>{
+      const box=()=>document.querySelector('[data-gen12-preflight]');
       try{
         await window.LinaGen12Preflight?.visibleVerify?.();
         const gate=await window.LinaReleaseGate?.verifyFinal?.();
-        if(gate?.status!=='PASS')throw Error('Gen12 Release Gate FAIL');
-        if(gate?.allowResearch!==false)throw Error('Gen12 researchspärr saknas');
-      }catch(e){console.warn('Gen12 pre-research gate stoppad:',e)}
+        if(gate?.status!=='PASS'||gate?.allowResearch!==true)throw Error('Gen12 Release Gate saknar PASS/allowResearch');
+        const w=window.LinaGen12Workflow;if(!w?.startApprovedResearch)throw Error('Gen12 workflow saknas');
+        let g=w.state();
+        if(g.summaryFreeze?.frozen){const b=box();if(b)b.textContent='Gen12 klar · '+(g.summary?.decision||g.state)+' · Handel/Forward AV';return}
+        if(g.researchOpened||Object.keys(g.checkpoints||{}).length){
+          const b=box();if(b)b.textContent='Gen12 · återupptar endast från verifierade checkpoints/evidence…';
+        }else{
+          const b=box();if(b)b.textContent='Gen12 · Release Gate PASS · startbeslut verifierat · förbereder låst dataset…';
+        }
+        const on=e=>{const b=box();if(b)b.textContent=e.detail.text};document.addEventListener('lina:gen12progress',on);
+        try{
+          const result=await w.startApprovedResearch();
+          await window.LinaGitHubSync?.syncAll?.();
+          const b=box();if(b)b.textContent='Gen12 klar · '+result.decision+' · permanent state synkat · Handel/Forward AV';
+        }finally{document.removeEventListener('lina:gen12progress',on)}
+      }catch(e){
+        const b=box();if(b){b.textContent='Gen12 STOPPAD · '+String(e?.message||e);b.classList.add('bad')}
+        console.warn('Gen12 explicit startkedja stoppad:',e);
+      }
     },0);
     // Gen9 explicit research-start gate is global: Dashboard is the normal post-login route.
     // Run only after GitHub bootstrap/recovery has restored authoritative local state.
