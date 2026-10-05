@@ -1,5 +1,26 @@
 # LINA — AKTUELL HANDOFF / STATUS
 
+## V0.3.69 — Gen11 preregistrerad Engine Verification före research
+- Gen10 är permanent avslutad/fryst som `GEN10_COMPLETE_NO_CANDIDATE`: 8/8 checkpoints, summary frozen, automation COMPLETE/SUMMARY_FROZEN. Handel/Forward AV. Gen8–Gen10 får aldrig köras om.
+- Gen11-hypotesen är mänskligt godkänd. `LINA_GEN11_PLAN_PROPOSAL.md` finns permanent i GitHub.
+- Exakt Gen11-runnerspec är preregistrerad i `LINA_GEN11_RUNNERSPEC.json`, canonical SHA-256 `56cb0d0d3c867542421e8ad9ab84ec54d86944687502d108729b733b8f10c52b`.
+- Enda kandidatvariant: `SECTOR_CAP`. Max 2 samtidiga öppna positioner per förutbestämd sektor; total max 8. CONTROL är diagnostisk. Signal, ranking, sizing för accepterad entry, exit, kostnad och gates får inte ändras.
+- `gen11-generation-engine.js` är isolerad från research-start. `gen11-preflight.js` får endast köra syntetisk `verify()`, visa status och spara sessionsdiagnostik; den kan inte starta 2021–2024-research.
+- V0.3.69 laddar faktisk Gen11-engine + preflight från `index.html`; samtliga aktiva cachetokens är 0.3.69 och `version.js` är V0.3.69 / 0.3.69.
+- GitHub-återläsning och JS-syntaxkontroll PASS för båda nya Gen11-filerna. Browser-preflight måste visa `ENGINE VERIFIED ✓` innan research-start får övervägas.
+- Ingen Workerändring gjordes; Gen11 Engine Verification kräver inte Worker.
+- Ingen Gen11 research har startats. Nästa genuina beslut är uttrycklig Gen11 research-start efter synlig browser-verifiering.
+
+### Incidentlärdom V0.3.69
+- Deklarerad runnerspec-hash accepterades inte blint; canonical SPEC hashades om och matchade exakt före enginebygge.
+- Första indexpatchen innehöll bokstavliga `\\n` mellan script-taggar. Återläsning av faktisk runtimefil upptäckte detta och det rättades före releaseklar-status.
+- Första preflightfilen hade motsvarande avslutande literal `\\n`; riktig JS-syntaxkontroll gav FAIL och stoppade kedjan. Filen rättades och kontrollerades om till PASS.
+- Permanent princip: GitHub-write ≠ runtime-verifierad. Varje release ska verifiera faktisk laddad fil, cache/version, syntax/kontrakt och synlig runtime-status före nästa irreversibla steg.
+
+---
+
+# LINA — AKTUELL HANDOFF / STATUS
+
 ## V0.3.68 — Gen10 immutable evidence receipt recovery
 - Rotorsak för stoppet efter GRADED_2024: själva immutable GitHub-evidensfilen var redan sparad, men den lokala evidence-kön saknade verifierat commit-kvitto och `secure()` försökte därför synka samma immutable fil igen.
 - `secure()` gör nu först auktoritativ `evidence-read` och adopterar endast en redan existerande immutable fil när exakt content SHA-256 och serverns `LINA-GITHUB-COMMIT-RECEIPT-1` matchar förväntat innehåll.
