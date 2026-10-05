@@ -182,7 +182,9 @@
         const g=window.LinaGen11Workflow?.state?.();
         if(!g)throw Error('Gen11 workflow-state saknas');
         if(g.summaryFreeze?.frozen)return;
-        if(g.researchOpened||Object.keys(g.checkpoints||{}).length){const b=box();if(b)b.textContent='Gen11 · befintlig observerad state kräver säker resume, ingen autostart';return}
+        if(g.researchOpened||Object.keys(g.checkpoints||{}).length){const b=box();if(b)b.textContent='Gen11 · verifierar immutable evidence för säker slutstate-recovery…';await window.LinaGen11Workflow.recoverFinalStateFromImmutableEvidence();await window.LinaGitHubSync?.syncAll?.();const x=box();if(x)x.textContent='Gen11 klar · NO_CANDIDATE · permanent state synkat · Handel/Forward AV';return}
+        // If local state was lost after completed research, immutable evidence is authoritative recovery; never rerun.
+        try{const recovered=await window.LinaGen11Workflow.recoverFinalStateFromImmutableEvidence();if(recovered?.summaryFreeze?.frozen){await window.LinaGitHubSync?.syncAll?.();const x=box();if(x)x.textContent='Gen11 klar · NO_CANDIDATE · permanent state återställd/synkad · Handel/Forward AV';return}}catch(e){if(!String(e?.message||e).includes('summary-evidence saknas'))throw e}
         const b=box();if(b)b.textContent='Gen11 · Release Gate PASS · startbeslut verifierat · förbereder låst dataset…';
         const on=e=>{const x=box();if(x)x.textContent=e.detail.text};document.addEventListener('lina:gen11progress',on);
         try{const result=await window.LinaGen11Workflow.startApprovedResearch();const x=box();if(x)x.textContent='Gen11 klar · '+result.decision+' · Handel/Forward AV';}
