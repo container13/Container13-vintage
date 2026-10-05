@@ -1,0 +1,12 @@
+{
+  "schema": "LINA-GEN15-DATA-EVIDENCE-1",
+  "specSha256": "726b1631365c5df4880dd926b32461f870eacd1bdf2f610f00b5ad844c61b43c",
+  "manifest": {
+    "schema": "LINA-GEN15-DATA-MANIFEST-1",
+    "source": "SOURCE_gen9-data.json",
+    "contentSha256": "cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c",
+    "rowCount": 20128,
+    "historyHardStop": "2024-12-31",
+    "reusedFromFrozenDataset": true
+  }
+}
