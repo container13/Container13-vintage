@@ -174,10 +174,20 @@
     registerRoutes();window.LinaRouter.start();
     // Gen11 final-render gate: verify only after authoritative bootstrap + final route render.
     setTimeout(async()=>{
+      const box=()=>document.querySelector('[data-gen11-preflight]');
       try{
         await window.LinaGen11Preflight?.visibleVerify?.();
-        await window.LinaReleaseGate?.verifyFinal?.();
-      }catch(e){console.warn('Release Gate stoppad:',e)}
+        const gate=await window.LinaReleaseGate?.verifyFinal?.();
+        if(gate?.status!=='PASS'||gate?.allowResearch!==true)throw Error('Release Gate saknar PASS/allowResearch');
+        const g=window.LinaGen11Workflow?.state?.();
+        if(!g)throw Error('Gen11 workflow-state saknas');
+        if(g.summaryFreeze?.frozen)return;
+        if(g.researchOpened||Object.keys(g.checkpoints||{}).length){const b=box();if(b)b.textContent='Gen11 · befintlig observerad state kräver säker resume, ingen autostart';return}
+        const b=box();if(b)b.textContent='Gen11 · Release Gate PASS · startbeslut verifierat · förbereder låst dataset…';
+        const on=e=>{const x=box();if(x)x.textContent=e.detail.text};document.addEventListener('lina:gen11progress',on);
+        try{const result=await window.LinaGen11Workflow.startApprovedResearch();const x=box();if(x)x.textContent='Gen11 klar · '+result.decision+' · Handel/Forward AV';}
+        finally{document.removeEventListener('lina:gen11progress',on)}
+      }catch(e){const b=box();if(b){b.textContent='Gen11 STOPPAD · '+String(e?.message||e);b.classList.add('bad')}console.warn('Gen11 explicit startkedja stoppad:',e)}
     },0);
     // Gen9 explicit research-start gate is global: Dashboard is the normal post-login route.
     // Run only after GitHub bootstrap/recovery has restored authoritative local state.
@@ -220,18 +230,7 @@
         finally{document.removeEventListener('lina:gen10progress',on)}
       }catch(e){try{const box=document.querySelector('[data-gen10-global-resume]');if(box){box.textContent='Gen10 DIAG STOPP · '+String(e?.message||e);box.classList.add('bad');box.dataset.gen10Diag='STOPP'}}catch{}console.warn('Gen10 global resume stoppad:',e)}
     },0);
-    setTimeout(async()=>{
-      try{
-        if(!window.LinaReleaseGate?.allowResearch?.())return;
-        const g=window.LinaGen11Workflow?.state?.();
-        if(!g||g.summaryFreeze?.frozen||g.researchOpened||Object.keys(g.checkpoints||{}).length)return;
-        const box=document.querySelector('[data-gen11-preflight]');if(box)box.textContent='Gen11 · startbeslut verifierat · förbereder låst dataset…';
-        const on=e=>{if(box)box.textContent=e.detail.text};document.addEventListener('lina:gen11progress',on);
-        try{const result=await window.LinaGen11Workflow.startApprovedResearch();if(box)box.textContent='Gen11 klar · '+result.decision+' · Handel/Forward AV';}
-        catch(e){if(box){box.textContent='Gen11 STOPPAD · '+String(e?.message||e);box.classList.add('bad')}}
-        finally{document.removeEventListener('lina:gen11progress',on)}
-      }catch(e){console.warn('Gen11 research-start stoppad:',e)}
-    },0);
+
     setTimeout(()=>window.LinaForwardCenter?.autoCatchUp?.().catch(e=>console.warn('Auto Forward stoppad:',e)),0);
   }
   window.LinaApp={version:APP_VERSION,start:startApp};
