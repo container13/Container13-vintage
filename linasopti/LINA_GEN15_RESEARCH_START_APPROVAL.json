@@ -1,0 +1,10 @@
+{
+  "schema": "LINA-GEN15-HUMAN-RESEARCH-START-1",
+  "approved": true,
+  "approvedAt": "2026-10-06",
+  "specSha256": "726b1631365c5df4880dd926b32461f870eacd1bdf2f610f00b5ad844c61b43c",
+  "candidateVariant": "TREND_INVALIDATION_EXIT",
+  "tradeEnabled": false,
+  "forwardOpened": false,
+  "note": "Explicit human research-start approval given in ChatGPT after browser Release Gate PASS."
+}
