@@ -421,3 +421,22 @@ Verifierad lokal V0.3.15 COMPLETE jämförd med publiceringsgrenen ccc-demo-publ
 - validateApprovedDataset now requires ok=true + exact wrapper schema + object data, then normalizes input.data.
 - Locked source file, source SHA, row requirements, SPEC and research method unchanged. This is parser/transport only.
 - No Gen9 fold had been observed before this fix. Handel/Forward OFF; Gen8 frozen; Worker unchanged.
+
+
+## Deploykedja före ändring — UNIVERSAL REGEL FÖR ALLA PROJEKT
+- Ändra aldrig en antagen produktionsfil. Bevisa först vilken fil och vilken kedja som faktiskt leder till den körande versionen.
+- Före första write ska hela leveranskedjan spåras och verifieras: faktisk runtime → källfil → build/config → deployautomation → live-mål.
+- Filnamn som CURRENT, PRODUCTION, LIVE, PENDING eller liknande är aldrig bevis för vad som körs eller deployas.
+- Befintlig automation och projektkonfiguration ska alltid kontrolleras före manuella lösningar, inklusive relevanta buildfiler, deploykonfiguration och CI/CD-workflows.
+- E2E-verifiering börjar före ändringen: dependency- och deployspårning är en release-gate, inte bara efterkontroll.
+- Om något tidigare fungerat automatiskt ska orsaken till att automatiken verkar ha slutat fungera utredas innan ett manuellt arbetsflöde införs.
+- Om samma felklass återkommer ska arbetet stoppas på punktfixnivå och den gemensamma systemorsaken spåras.
+- Regeln gäller Lina och alla nuvarande och framtida projekt där ChatGPT gör kod-, build-, deploy- eller produktionsändringar.
+
+
+## Lina Worker deploykedja — verifierad 2026-10-05
+- Cloudflares deploykälla styrs av `linasopti/worker/wrangler.jsonc` och är `linasopti/worker/WORKER_PENDING_RUNTIME_REPORT.js`.
+- `WORKER_CURRENT.js` får inte antas vara deploykälla enbart på grund av namnet.
+- GitHub-workflow `.github/workflows/lina-worker-promote.yml` är den befintliga promotionskedjan för PENDING → CURRENT → PREVIOUS och ska kontrolleras/användas före manuellt Cloudflare-flöde.
+- Före varje Worker-ändring ska `wrangler.jsonc` och promotionsworkflowen verifieras på aktuell branch så att kedjan inte antas från historik.
+- Gen10 är fryst och får inte köras om eller ändras av Worker-/deployarbete.
