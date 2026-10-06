@@ -43,13 +43,35 @@ function downloadObjectAsync(prefix,makeObject){
  const outcome=Promise.resolve(copying).then(()=>true,()=>false);
  return text.then(async t=>{if(await outcome)showExportStatus('✓ Hela filinnehållet kopierat · öppna chatten, håll i skrivfältet och välj Klistra in',t,name,'application/json;charset=utf-8');else showExportStatus('Filen är klar · tryck 📋 Kopiera för att lägga hela innehållet i urklipp.',t,name,'application/json;charset=utf-8');return name},e=>{showExportStatus('Rapportexport misslyckades: '+String(e.message||e));throw e});
 }
-function download(){return trigger(`LINA_STATUS_${release().replace(/\./g,'')}_${safeDate()}.json`,collect())}
-function downloadDiagnostics(){return trigger(`LINA_FULL_DIAGNOSTICS_${release().replace(/\./g,'')}_${safeDate()}.json`,fullDiagnostics())}
+async function saveRuntimeReport(name,report){
+ const code=sessionStorage.getItem('linasopti_login_code')||'';
+ if(!code)throw new Error('Lina-session saknas');
+ const r=await fetch('https://linas-opti-api.mangaj73.workers.dev/runtime-report',{method:'POST',headers:{'Content-Type':'application/json','X-Lina-Login-Code':code},body:JSON.stringify({schema:'LINA-RUNTIME-REPORT-1',name,report})});
+ const j=await r.json().catch(()=>({}));
+ if(!r.ok||!j.ok||j.verified!==true||j.receipt?.schema!=='LINA-GITHUB-COMMIT-RECEIPT-1')throw new Error(j.error||'Runtime-report saknar verifierat GitHub-kvitto');
+ return j;
+}
+async function saveVerified(prefix,makeObject){
+ const report=makeObject(),name=String(prefix||'LINA_SUPPORT').toUpperCase().replace(/[^A-Z0-9_-]/g,'_').slice(0,80);
+ try{
+  showExportStatus('Sparar verifierad rapport till GitHub…');
+  const j=await saveRuntimeReport(name,report);
+  const summary='✓ Verifierad rapport sparad i GitHub\\n'+j.path+'\\nSHA-256 '+j.receipt.contentSha256+'\\nCommit '+(j.commit||'—');
+  showExportStatus(summary,JSON.stringify(report,null,2),null,'application/json;charset=utf-8');
+  return j;
+ }catch(e){
+  const text=JSON.stringify(report,null,2),file=`${name}_${safeDate()}.json`;
+  showExportStatus('Automatisk GitHub-rapport stoppades: '+String(e.message||e)+' · reservväg: kopiera eller hämta filen.',text,file,'application/json;charset=utf-8');
+  throw e;
+ }
+}
+function download(){return saveVerified('LINA_STATUS',collect)}
+function downloadDiagnostics(){return saveVerified('LINA_FULL_DIAGNOSTICS',fullDiagnostics)}
 function downloadObject(prefix,obj){return trigger(`${prefix}_${safeDate()}.json`,obj)}
 function labelCopyButtons(root=document){
  root.querySelectorAll?.('button').forEach(b=>{if(/^📥?\s*Exportera\b/.test(b.textContent.trim()))b.textContent=b.textContent.replace(/^📥?\s*Exportera/,'📋 Kopiera')});
 }
 const observer=new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1){labelCopyButtons(n);if(n.matches?.('button'))labelCopyButtons(n.parentElement||document)}})));
 window.addEventListener('DOMContentLoaded',()=>{labelCopyButtons();observer.observe(document.body,{childList:true,subtree:true})});
-window.LinaStatusExport={get VERSION(){return release()},collect,fullDiagnostics,download,downloadDiagnostics,downloadObject,downloadText,downloadObjectAsync,labelCopyButtons};
+window.LinaStatusExport={get VERSION(){return release()},collect,fullDiagnostics,saveRuntimeReport,saveVerified,download,downloadDiagnostics,downloadObject,downloadText,downloadObjectAsync,labelCopyButtons};
 })();
