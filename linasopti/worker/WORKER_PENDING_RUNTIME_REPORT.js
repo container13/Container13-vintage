@@ -2135,12 +2135,23 @@ async function handleEvidenceRead(request,env) {
   if(request.method!=="GET")return json({ok:false,error:"Method not allowed"},405,request);
   try{
     const url=new URL(request.url),name=safeEvidenceName(url.searchParams.get("name")),date=String(url.searchParams.get("date")||"");
-    if(!/^\d{4}-\d{2}-\d{2}$/.test(date))throw new Error("Ogiltigt evidence-datum");
-    const path=`linasopti/evidence/${date}/${name}`,cfg=githubConfig(env);
+    const cfg=githubConfig(env);let path="";
+    if(date){
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(date))throw new Error("Ogiltigt evidence-datum");
+      path=`linasopti/evidence/${date}/${name}`;
+    }else{
+      const treeApi=`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/git/trees/${encodeURIComponent(cfg.branch)}?recursive=1`;
+      const tr=await fetch(treeApi,{headers:githubHeaders(cfg)}),tree=await tr.json();
+      if(!tr.ok)throw new Error(tree?.message||`GitHub evidence tree HTTP ${tr.status}`);
+      const suffix="/"+name,matches=(tree?.tree||[]).filter(x=>x?.type==="blob"&&String(x.path||"").startsWith("linasopti/evidence/")&&String(x.path||"").endsWith(suffix));
+      if(matches.length===0)return json({ok:false,error:"Evidence saknas"},404,request);
+      if(matches.length!==1)throw new Error("Evidence-namn är tvetydigt över datum: "+name);
+      path=matches[0].path;
+    }
     const api=`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${path.split("/").map(encodeURIComponent).join("/")}?ref=${encodeURIComponent(cfg.branch)}`;
-    const r=await fetch(api,{headers:githubHeaders(cfg)}),body=await r.json();
-    if(r.status===404)return json({ok:false,error:"Evidence saknas"},404,request);
-    if(!r.ok)throw new Error(body?.message||`GitHub evidence read HTTP ${r.status}`);
+    const rr=await fetch(api,{headers:githubHeaders(cfg)}),body=await rr.json();
+    if(rr.status===404)return json({ok:false,error:"Evidence saknas"},404,request);
+    if(!rr.ok)throw new Error(body?.message||`GitHub evidence read HTTP ${rr.status}`);
     const br=await fetch(`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/git/blobs/${encodeURIComponent(body.sha)}`,{headers:githubHeaders(cfg)}),blob=await br.json();
     if(!br.ok)throw new Error(blob?.message||`GitHub evidence blob HTTP ${br.status}`);
     if(blob?.encoding!=="base64"||typeof blob?.content!=="string")throw new Error("Evidence blob saknar base64-innehåll");
