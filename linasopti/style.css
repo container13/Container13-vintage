@@ -189,3 +189,10 @@ html[data-theme="dark"] button:disabled{color:#8391a5!important}
 .gen9-priority-actions{margin:14px 0 18px;padding:14px;border:1px solid var(--lina-line,#dce3ed);border-radius:14px;background:var(--lina-surface-soft,#f8fafc)}
 .gen9-priority-actions .actions{margin-top:8px}
 @media(max-width:760px){.gen9-priority-actions{position:relative}.gen9-priority-actions .actions{display:grid}.gen9-priority-actions button{width:100%}}
+
+/* V0.4.05 mobile login is top-anchored from first paint; no focus-time viewport repositioning. */
+@media (pointer:coarse) and (max-width:760px){
+  body.locked{overflow:hidden}
+  body.locked .gate{display:flex;align-items:flex-start;justify-content:center;padding:20px;padding-top:20px;overflow:hidden}
+  body.locked .gate-card{margin:0}
+}
