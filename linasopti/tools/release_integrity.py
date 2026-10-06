@@ -9,8 +9,8 @@ def check(name, ok, detail):
     if not ok: fails.append(name)
 def read(p): return (ROOT/p).read_text(encoding="utf-8")
 version=read("version.js")
-mrel=re.search(r"const\\s+RELEASE\\s*=\\s*['\"](V[0-9.]+)['\"]",version)
-mcache=re.search(r"const\\s+CACHE\\s*=\\s*['\"]([0-9.]+)['\"]",version)
+mrel=re.search(r"const\s+RELEASE\s*=\s*['\"](V[0-9.]+)['\"]",version)
+mcache=re.search(r"const\s+CACHE\s*=\s*['\"]([0-9.]+)['\"]",version)
 release=mrel.group(1) if mrel else ""; cache=mcache.group(1) if mcache else ""
 check("version_source", bool(release and cache and release=="V"+cache), release+"/"+cache)
 index=read("index.html"); app=read("app.js"); gate=read("release-gate.js")
