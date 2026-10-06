@@ -1,3 +1,5 @@
+> **STATUS:** ARBETSLOGG/HISTORIK. För aktuell operativ start, använd [LINA_SYSTEM_MANUAL.md](LINA_SYSTEM_MANUAL.md), `version.js`, MASTER RULES och RELEASE CHECKLIST. Äldre avsnitt som kallas “aktuell” nedan är snapshots från sin tid och får inte överstyra live/readback.
+
 # LINA — AKTUELL HANDOFF / STATUS
 
 ## V0.3.69 — Gen11 preregistrerad Engine Verification före research
