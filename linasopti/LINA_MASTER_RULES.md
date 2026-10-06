@@ -493,3 +493,10 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - För jämförelsetester ska relevanta referensvärden kunna härledas före assertionen; ett test får inte bara anta att en konstruerad siffra ligger mellan två nivåer.
 - Browser/produktion får inte vara första miljön som avslöjar ett deterministiskt fixture-fel när samma test kan verifieras före deploy.
 - Vid fixture-fel ska produktions-/forskningslogiken och låst spec lämnas orörda om rotorsaken endast är testdatan. Rättelsen får inte användas för att ändra hypotesen efter observation.
+
+## Fix → Learn: recovery-identitet får inte gissas (V0.3.96)
+- När en teknisk korrigering avslöjar en återanvändbar felklass ska lärdomen sparas som permanent regel samtidigt som fixen görs; framtida implementationer ska kontrolleras mot regeln.
+- Immutable evidence-recovery får aldrig gissa servervald sökmetadata såsom kalenderdatum, katalog eller commit. Recovery ska utgå från den frysta evidensens stabila identitet/filnamn och låta den auktoritativa GitHub-vägen upptäckas och verifieras.
+- Om write-sidan väljer lagringsmetadata måste read-sidan antingen få tillbaka den exakta metadata som del av ett verifierat kvitto eller kunna slå upp objektet auktoritativt utan gissning.
+- Namnbaserad recovery ska stoppa vid noll träffar eller tvetydiga flera träffar; den får aldrig välja "senaste" eller första matchningen.
+- Recovery är read-only beträffande observerade forskningsresultat: tekniska lookup-/path-fixar får aldrig utlösa research-rerun, ändra fryst evidence eller rekonstruera saknade resultat.
