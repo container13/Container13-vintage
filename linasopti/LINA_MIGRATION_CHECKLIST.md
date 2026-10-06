@@ -1,3 +1,5 @@
+> **STATUS:** HISTORISK MIGRATIONSCHECKLISTA. Den beskriver Clean Core-migrationen och är inte aktuell release-/driftstatus. Aktuell arbetsgång finns i [LINA_SYSTEM_MANUAL.md](LINA_SYSTEM_MANUAL.md) och `LINA_RELEASE_CHECKLIST.md`.
+
 # Lina Clean Core Migration Checklist
 
 - [x] Flat filstruktur.
