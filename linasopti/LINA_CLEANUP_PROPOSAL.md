@@ -1,3 +1,5 @@
+> **STATUS:** GENOMFÖRD HISTORISK RENSNINGSPLAN. Används som audit trail, inte som aktuell arbetsinstruktion. Se [LINA_SYSTEM_MANUAL.md](LINA_SYSTEM_MANUAL.md) för dagens dokumentkarta.
+
 # Lina – rensningsförslag
 
 Dokumentrevision 1.1 • 2026-10-03
