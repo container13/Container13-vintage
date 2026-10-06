@@ -40,17 +40,17 @@
       {
         "id": 2,
         "task": "Define checkpoint contract and new-chat resume rules in manual",
-        "status": "NEXT"
+        "status": "DONE"
       },
       {
         "id": 3,
         "task": "Enforce checkpoint semantics in Release Integrity",
-        "status": "PENDING"
+        "status": "DONE"
       },
       {
         "id": 4,
         "task": "Bump runtime release coherently to V0.4.21",
-        "status": "PENDING"
+        "status": "NEXT"
       },
       {
         "id": 5,
