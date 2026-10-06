@@ -1,6 +1,6 @@
 (function(global){
 'use strict';
-const KEY='lina_release_gate_v0397',REQUIRED_RELEASE='V0.3.97',REQUIRED_CACHE='0.3.97',SPEC_SHA='a065ce8ad2285010493f8491c86116f01025ed3554be18744471de394dbdeafa';
+const KEY='lina_release_gate_v0398',REQUIRED_RELEASE='V0.3.98',REQUIRED_CACHE='0.3.98',SPEC_SHA='a065ce8ad2285010493f8491c86116f01025ed3554be18744471de394dbdeafa';
 const item=(id,pass,detail)=>({id,pass:Boolean(pass),detail});
 async function run(){
  const tests=[],root=document.querySelector('#view'),current=root?.querySelector('[data-gen16-preflight]'),children=root?[...root.children]:[];
