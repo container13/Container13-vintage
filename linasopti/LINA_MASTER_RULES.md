@@ -521,3 +521,8 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Verklig enhetsmätning V0.4.01 visade: focus/input-sync/input-raf låg kvar vid scrollY 0, innerHeight 812 och cardTop 20. Först cirka 100 ms efter första input ändrades innerHeight till 410, scrollY/offsetTop till 402 och cardTop till -382.
 - Skärmdumpsinitiering kan ändra/dölja iOS-tangentbordet och får därför inte användas som enda bevis för tangentbordets aktiva geometri. Mätningar ska fångas innan screenshot-UI påverkar viewporten.
 - visualViewport.height gav på den aktuella klienten ett ogiltigt negativt sentinelvärde och får inte användas som styrsignal. För denna felklass används verifierad innerHeight-övergång och faktisk elementgeometri.
+
+## Komponentrollback måste vara tvärfil-verifierad — V0.4.03
+- När en regression ska återställas till en bevisat fungerande commit ska hela komponentens implementationsyta jämföras: HTML, CSS, JS och relevanta konfigurations-/assetkopplingar. Att endast återställa ett JS-block är inte en verifierad komponentrollback.
+- Rollback är klar först när berörda delar maskinellt jämförts mot den bevisat fungerande referensen och experimentella rester är bevisat borta, samtidigt som orelaterade senare ändringar bevarats.
+- För loginregressionen V0.4.03 verifierades login-JS exakt mot morgonreferensen och hela style.css exakt mot samma referens; keyboard-open/touchLogin-rester finns inte kvar.
