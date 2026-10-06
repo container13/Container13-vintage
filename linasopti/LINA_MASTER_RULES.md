@@ -516,3 +516,8 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Om användaren uppger att ett UI-beteende fungerade tidigare samma arbetsperiod ska Git-historiken jämföras före ny browser-/plattformsspecialkod.
 - V0.3.97–V0.3.99 var en felaktig fixkedja: den fungerande morgonimplementationen i V0.3.94/V0.3.95 hade ingen visualViewport-, touch- eller scrollkompensation. Regressionen introducerades först av vår egen V0.3.97-loginändring och efterföljande försök byggde vidare på den.
 - Vid sådan verifierad regression ska den minsta berörda implementationen återställas från senast bevisat fungerande commit medan orelaterat senare arbete bevaras. En plattformsförklaring får inte prioriteras över repo-historik som visar en lokal regression.
+
+## iOS first-input keyboard transition — verifierad V0.4.02
+- Verklig enhetsmätning V0.4.01 visade: focus/input-sync/input-raf låg kvar vid scrollY 0, innerHeight 812 och cardTop 20. Först cirka 100 ms efter första input ändrades innerHeight till 410, scrollY/offsetTop till 402 och cardTop till -382.
+- Skärmdumpsinitiering kan ändra/dölja iOS-tangentbordet och får därför inte användas som enda bevis för tangentbordets aktiva geometri. Mätningar ska fångas innan screenshot-UI påverkar viewporten.
+- visualViewport.height gav på den aktuella klienten ett ogiltigt negativt sentinelvärde och får inte användas som styrsignal. För denna felklass används verifierad innerHeight-övergång och faktisk elementgeometri.
