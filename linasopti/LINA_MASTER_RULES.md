@@ -552,3 +552,11 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Om en befintlig kedja redan uppfyller kontraktet ska den återanvändas i stället för att skapa en parallell mekanism.
 - Login-/runtime-diagnostik ska använda den befintliga /runtime-report-kedjan när den passar: Worker-write, GitHub readback, blob-SHA och SHA-256-receipt. Generell evidence-kö får inte användas som ersättning utan verifierat behov.
 - En grön Pages-deploy och ett klientanrop direkt mot GitHub API är separata saker. Direkt GitHub-API-fel i Safari får inte tolkas som att Pages-deployen misslyckats.
+
+
+## Automation-first support/diagnostik — från V0.4.22
+- Användaren ska inte fungera som transportlager mellan Lina, GitHub och ChatGPT när befintlig säker automation kan bära informationen.
+- Status, diagnostik och supportunderlag ska i första hand sparas automatiskt till GitHub via befintlig verifierad runtime-report-kedja med `LINA-GITHUB-COMMIT-RECEIPT-1`.
+- Manuell kopiering, filhämtning och skärmbilder är reservväg när den automatiska verifierade kedjan faktiskt har stoppat, inte normal arbetsgång.
+- Före ny support-/diagnostiktransport ska befintliga endpoints och synkvägar inventeras och återanvändas; bygg inte en parallell kedja utan verifierat behov.
+- UI ska visa tydligt om rapporten är verifierat sparad, inklusive GitHub-sökväg och SHA-256-kvitto, eller tydligt STOPPAD med reservväg.
