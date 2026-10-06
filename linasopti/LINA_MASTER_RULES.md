@@ -526,3 +526,7 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - När en regression ska återställas till en bevisat fungerande commit ska hela komponentens implementationsyta jämföras: HTML, CSS, JS och relevanta konfigurations-/assetkopplingar. Att endast återställa ett JS-block är inte en verifierad komponentrollback.
 - Rollback är klar först när berörda delar maskinellt jämförts mot den bevisat fungerande referensen och experimentella rester är bevisat borta, samtidigt som orelaterade senare ändringar bevarats.
 - För loginregressionen V0.4.03 verifierades login-JS exakt mot morgonreferensen och hela style.css exakt mot samma referens; keyboard-open/touchLogin-rester finns inte kvar.
+
+## Login-position: lås mot initial render — V0.4.04
+- När önskat mobilbeteende uttryckligen är att ett login-kort ska ligga kvar där det först målas upp ska referensen vara kortets faktiska initiala getBoundingClientRect().top, inte uppskattad keyboard-/viewportgeometri.
+- Positionslåset ska vara lokalt till själva login-kortet och endast aktivt medan input har fokus; övrig loginlogik och sidlayout ska lämnas oförändrad.
