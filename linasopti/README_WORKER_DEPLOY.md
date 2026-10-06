@@ -1,3 +1,5 @@
+> **STATUS:** WORKER-HISTORIK OCH BAKGRUND. Äldre manuella deployinstruktioner nedan är inte auktoritativ aktuell deploykedja. Före Workerändring: läs [LINA_SYSTEM_MANUAL.md](LINA_SYSTEM_MANUAL.md), kontrollera faktisk `worker/wrangler.jsonc` och spåra source → automation → live target.
+
 # Automatisk GitHub-överföring — användarbeslut 2026-10-03
 
 Dokumentationsrevision: **1.1** · Uppdaterad: **2026-10-03**. Revisionen gäller README-rutinen; appens release anges fortsatt i `linasopti/version.js`.
