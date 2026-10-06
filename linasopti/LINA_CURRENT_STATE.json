@@ -16,12 +16,12 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PASS_V0.4.21",
+    "releaseIntegrity": "PASS_V0.4.22_REPO",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
     "completed": "V0.4.22 automation-first support diagnostics implemented: status/diagnostics now use the existing verified /runtime-report → GitHub receipt chain first, with manual copy/download only as fallback.",
-    "next": "Verify V0.4.22 Release Integrity and then test the new automatic status-report path on the real iPhone.",
+    "next": "Test V0.4.22 on iPhone: tap Export once and confirm a verified GitHub report is saved automatically.",
     "blocked": false
   },
   "bootstrap": {
@@ -33,7 +33,7 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
+    "status": "IDLE",
     "targetRelease": "V0.4.22",
     "goal": "Reduce manual Lina support work by connecting the existing status/diagnostics collector to the existing verified /runtime-report → GitHub chain.",
     "plan": [
@@ -60,17 +60,17 @@
       {
         "id": 5,
         "task": "Repo readback and Release Integrity verification",
-        "status": "NEXT"
+        "status": "DONE"
       },
       {
         "id": 6,
         "task": "Mark checkpoint IDLE only after verification",
-        "status": "PENDING"
+        "status": "DONE"
       }
     ],
-    "lastSafeRelease": "V0.4.21",
-    "lastSafeCommit": "d4cb6869ab6a73687500c2b4604db1c1c5161d4a",
-    "resumeInstruction": "Verify repo first, then resume at first non-DONE step. Do not rerun any frozen research.",
-    "verifiedThrough": "V0.4.21 plus real separate-chat bootstrap PASS"
+    "lastSafeRelease": "V0.4.22",
+    "lastSafeCommit": "fafe4a21d3ad7283c650e8a558791593787231a7",
+    "resumeInstruction": "No interrupted work. Next: real-iPhone automatic report test.",
+    "verifiedThrough": "V0.4.22 repo readback PASS."
   }
 }
