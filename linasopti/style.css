@@ -189,17 +189,3 @@ html[data-theme="dark"] button:disabled{color:#8391a5!important}
 .gen9-priority-actions{margin:14px 0 18px;padding:14px;border:1px solid var(--lina-line,#dce3ed);border-radius:14px;background:var(--lina-surface-soft,#f8fafc)}
 .gen9-priority-actions .actions{margin-top:8px}
 @media(max-width:760px){.gen9-priority-actions{position:relative}.gen9-priority-actions .actions{display:grid}.gen9-priority-actions button{width:100%}}
-
-/* V0.4.02 iOS login: measured keyboard viewport is ~410px; keep login content inside it so Safari has no off-screen focused target to pan toward. */
-@media (pointer:coarse){
-  body.locked{overflow:hidden;overscroll-behavior:none}
-  .gate.keyboard-open{overflow:hidden;place-items:start center;padding:8px 20px;background:#f4f7fb}
-  .gate.keyboard-open .gate-card{max-height:100%;overflow:hidden;padding:10px 20px;border-radius:18px;box-shadow:none}
-  .gate.keyboard-open .logo{width:38px;height:38px}
-  .gate.keyboard-open h1{font-size:24px;margin:2px 0}
-  .gate.keyboard-open .version{font-size:11px}
-  .gate.keyboard-open p{margin:4px 0;font-size:13px}
-  .gate.keyboard-open .login-msg{min-height:16px;margin-top:3px;font-size:11px}
-  .gate.keyboard-open input{margin:4px 0 6px;padding:10px 12px;font-size:17px}
-  .gate.keyboard-open .primary{padding:10px 14px}
-}
