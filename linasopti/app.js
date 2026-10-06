@@ -223,10 +223,33 @@
         console.warn('Gen12 explicit startkedja stoppad:',e);
       }
     },0);
-    // Gen16 preregistration only: verify exact locked spec + synthetic semantics. NEVER starts or reads research.
+    // Gen16 explicit dependency chain: preflight -> Gen16 Release Gate -> immutable recovery -> approved research.
     setTimeout(async()=>{
-      try{await window.LinaGen16Preflight?.visibleVerify?.()}
-      catch(e){console.warn('Gen16 preregistrering stoppad:',e)}
+      const box=()=>document.querySelector('[data-gen16-preflight]');
+      try{
+        await window.LinaGen16Preflight?.visibleVerify?.();
+        const w=window.LinaGen16Workflow;if(!w?.startApprovedResearch||!w?.recoverFinalStateFromImmutableEvidence)throw Error('Gen16 workflow saknas');
+        let g=w.state();
+        if(g.summaryFreeze?.frozen){const b=box();if(b)b.textContent='Gen16 klar · '+(g.summary?.decision||g.state)+' · Handel/Forward AV';return}
+        const gate=await window.LinaReleaseGate?.verifyFinal?.();
+        if(gate?.status!=='PASS'||gate?.allowResearch!==true||window.LinaReleaseGate?.allowResearch?.()!==true)throw Error('Gen16 Release Gate saknar PASS/allowResearch');
+        try{
+          const b=box();if(b)b.textContent='Gen16 · kontrollerar permanent slut-evidens före research…';
+          g=await w.recoverFinalStateFromImmutableEvidence();
+          await window.LinaGitHubSync?.syncAll?.();
+          if(b)b.textContent='Gen16 klar · '+(g.summary?.decision||g.state)+' · permanent state återställd/synkad · Handel/Forward AV';
+          return;
+        }catch(recoveryError){
+          if(g.researchOpened||Object.keys(g.checkpoints||{}).length)throw recoveryError;
+        }
+        const b=box();if(b)b.textContent='Gen16 · Release Gate PASS · startgodkännande verifierat · startar låst research…';
+        const on=e=>{const x=box();if(x)x.textContent=e.detail.text};document.addEventListener('lina:gen16progress',on);
+        try{
+          const result=await w.startApprovedResearch();
+          await window.LinaGitHubSync?.syncAll?.();
+          const x=box();if(x)x.textContent='Gen16 klar · '+result.decision+' · permanent state synkat · Handel/Forward AV';
+        }finally{document.removeEventListener('lina:gen16progress',on)}
+      }catch(e){const b=box();if(b){b.textContent='Gen16 STOPPAD · '+String(e?.message||e);b.classList.add('bad')}console.warn('Gen16 explicit startkedja stoppad:',e)}
     },0);
 
     // Gen15 explicit dependency chain: V0.3.87 preflight -> audited Release Gate -> immutable recovery -> approved research.
