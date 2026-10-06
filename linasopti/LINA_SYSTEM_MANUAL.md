@@ -8,6 +8,22 @@ Projektrot: `linasopti/`
 
 > Den här manualen beskriver **hur Lina ska förstås och arbetas med**. Aktuell release ska alltid läsas från `version.js`; historiska versionsnummer i dokumentation är inte runtime-sanning.
 
+## 0. Ny chatt — automatisk bootstrap
+
+Om användaren i en ny ChatGPT-chatt skriver **”Läs Linas manual”** ska det behandlas som en komplett återstartsorder. Fråga inte användaren efter handoff, version, senaste steg eller vad som gjordes i förra chatten om uppgiften redan kan hämtas ur projektet.
+
+Gör automatiskt i denna ordning:
+
+1. Läs hela denna manual.
+2. Läs `LINA_CURRENT_STATE.json` för kompakt aktuellt arbetsläge.
+3. Läs `version.js` och verifiera att dess release matchar CURRENT_STATE. Vid konflikt är faktisk repo/runtime + `version.js` överordnad; stoppa beroende arbete tills state korrigerats.
+4. Läs `LINA_MASTER_RULES.md` och relevant `LINA_RELEASE_CHECKLIST.md`.
+5. Läs endast de runnerspec/evidence/kod/config-filer som CURRENT_STATE och aktuell uppgift kräver. Dra inte in hela historiken utan behov.
+6. Verifiera aktuell branch/head och senaste relevanta Release Integrity-resultat innan ny skrivning.
+7. Fortsätt från `currentWork.next` om användaren inte ger en ny prioritet. En ny uttrycklig användarinstruktion ersätter endast nästa arbetsuppgift, aldrig permanenta regler/lås.
+
+**Projektminnesregel:** Kritisk information som krävs för fortsatt arbete får inte endast finnas i ChatGPT-chatten. När ett verifierat arbetssteg ändrar aktuellt läge ska `LINA_CURRENT_STATE.json` uppdateras som del av samma release. Manualen innehåller permanent kunskap; CURRENT_STATE innehåller bara nuläge; kod/evidence/receipts bevisar vad som faktiskt är sant. Git-historiken är historiken — skapa inte parallella chattloggar som primär sanningskälla.
+
 ## 1. Sanningsordning
 
 Vid konflikt gäller följande ordning:
@@ -133,7 +149,8 @@ På sikt bör status hämtas via en verifierad server/Worker-väg om direkt klie
 
 ## 16. Dokumentkarta
 
-- `LINA_SYSTEM_MANUAL.md`: denna operativa manual.
+- `LINA_SYSTEM_MANUAL.md`: denna operativa manual och enda bootstrap-ingång för ny chatt.
+- `LINA_CURRENT_STATE.json`: minimalt maskinläsbart nuläge; ska matcha `version.js` och uppdateras när ett verifierat steg ändrar arbetsläget.
 - `LINA_MASTER_RULES.md`: permanenta normativa regler och incidentlärdomar.
 - `LINA_RELEASE_CHECKLIST.md`: releasekontroller; flytta maskintestbara regler till executable gate.
 - `version.js`: aktuell runtimeversion.
