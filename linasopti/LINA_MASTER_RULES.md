@@ -535,3 +535,8 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - V0.4.04 verifierade att CSS position:fixed på ett fokuserat login-kort fortfarande följer iOS/Safaris panorerade viewport och därför inte låser elementet mot den fysiska skärmen.
 - För mobil login ska stabil layout därför, när möjligt, bestämmas före fokus och förbli densamma under keyboardövergången; undvik att byta positioneringsmodell som reaktion på focus/input.
 - V0.4.05 använder toppförankrad mobil gate från första paint och tar bort V0.4.04:s focus-time fixed-position-kod.
+
+## Live recovery-verifiering — V0.4.06
+- När verktygsmiljön inte kan nå Worker-endpointen direkt ska live-verifieringen köras read-only från den redan tillåtna produktionsorigin som faktiskt använder Worker, inte ersättas med antaganden om deploystatus.
+- Evidence recovery PASS kräver samtidigt: datumfri name-only read, exakt förväntad upptäckt path, exakt Git blob SHA och lokalt omräknad SHA-256 som matchar Worker-receiptens contentSha256.
+- Ett HTTP 200 eller synlig Cloudflare-version är inte ensamt tillräckligt recovery-bevis.
