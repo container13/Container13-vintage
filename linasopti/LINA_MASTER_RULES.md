@@ -545,3 +545,10 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Loginvyn ska hållas ren från recovery-, test-, debug- och övrig intern systemstatus.
 - Deploystatus är uttryckligen tillåten och ska finnas kvar på login, eftersom användaren behöver se om den version som ska öppnas faktiskt är publicerad.
 - Tillfälliga verifieringsresultat får användas för att bevisa en fix men ska tas bort från login efter verifierad PASS; beständig teknisk status hör hemma inne i Lina.
+
+
+## Återanvänd verifierad permanent kedja före ny implementation — V0.4.15
+- Innan ny synk-, evidence-, diagnostik-, deploy- eller recovery-väg byggs ska befintliga Worker-endpoints, repo-moduler och verifierade receipts inventeras först.
+- Om en befintlig kedja redan uppfyller kontraktet ska den återanvändas i stället för att skapa en parallell mekanism.
+- Login-/runtime-diagnostik ska använda den befintliga /runtime-report-kedjan när den passar: Worker-write, GitHub readback, blob-SHA och SHA-256-receipt. Generell evidence-kö får inte användas som ersättning utan verifierat behov.
+- En grön Pages-deploy och ett klientanrop direkt mot GitHub API är separata saker. Direkt GitHub-API-fel i Safari får inte tolkas som att Pages-deployen misslyckats.
