@@ -21,7 +21,7 @@
   },
   "currentWork": {
     "completed": "V0.4.21 real separate-chat bootstrap test PASS: with only 'Läs Linas manual', a new chat reconstructed release, CURRENT_STATE, checkpoint, frozen generations, Trade/Forward and next step without user reconstruction.",
-    "next": "Chat handoff/bootstrap problem closed. Continue with the next substantive Lina improvement chosen from current verified system state.",
+    "next": "V0.4.22 in progress: automate verified support diagnostics to GitHub so the user does not manually shuttle status files into ChatGPT.",
     "blocked": false
   },
   "bootstrap": {
@@ -33,9 +33,9 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "IDLE",
-    "targetRelease": "V0.4.21",
-    "goal": "Build crash-safe chat handoff/work checkpoint.",
+    "status": "IN_PROGRESS",
+    "targetRelease": "V0.4.22",
+    "goal": "Reduce manual Lina support work by connecting the existing status/diagnostics collector to the existing verified /runtime-report → GitHub chain.",
     "plan": [
       {
         "id": 1,
@@ -44,33 +44,33 @@
       },
       {
         "id": 2,
-        "task": "Define checkpoint contract and new-chat resume rules in manual",
-        "status": "DONE"
+        "task": "Add verified GitHub runtime-report save path to status/diagnostics export with manual copy only as fallback",
+        "status": "NEXT"
       },
       {
         "id": 3,
-        "task": "Enforce checkpoint semantics in Release Integrity",
-        "status": "DONE"
+        "task": "Bump release/cache coherently to V0.4.22 and update active asset tokens",
+        "status": "PENDING"
       },
       {
         "id": 4,
-        "task": "Bump runtime release coherently to V0.4.21",
-        "status": "DONE"
+        "task": "Document automation-first support rule and update current state",
+        "status": "PENDING"
       },
       {
         "id": 5,
-        "task": "Read back exact repo state and verify Release Integrity on final commit",
-        "status": "DONE"
+        "task": "Repo readback and Release Integrity verification",
+        "status": "PENDING"
       },
       {
         "id": 6,
         "task": "Mark checkpoint IDLE only after verification",
-        "status": "DONE"
+        "status": "PENDING"
       }
     ],
     "lastSafeRelease": "V0.4.21",
-    "lastSafeCommit": "ec190a6dad074e03cef05e685eea991c6a5699d9",
-    "resumeInstruction": "No interrupted work. Follow currentWork.next or the user's new explicit priority.",
-    "verifiedThrough": "V0.4.21 Release Integrity PASS on exact implementation/state commit"
+    "lastSafeCommit": "d4cb6869ab6a73687500c2b4604db1c1c5161d4a",
+    "resumeInstruction": "Verify repo first, then resume at first non-DONE step. Do not rerun any frozen research.",
+    "verifiedThrough": "V0.4.21 plus real separate-chat bootstrap PASS"
   }
 }
