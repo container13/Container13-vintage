@@ -682,3 +682,14 @@ Historical/frozen research version strings are excluded from this current-releas
 - Ingen `r2`, `hotfix`, query-token eller annan ändring får publiceras under ett redan använt versionsnummer.
 - Ny ändring => höj `version.js` och alla aktiva cachetokens konsekvent före deploy.
 - Releasekontrollen ska stoppa publicering om ändrade Lina-filer förekommer utan nytt versionsnummer.
+
+## Synthetic Fixture Validity Gate — permanent från V0.3.94
+- [ ] Varje syntetisk fixture verifierar sina egna matematiska/logiska premisser separat före test av produktionsfunktionen.
+- [ ] Boundary-fixtures använder beräknade referensnivåer eller explicit oracle; handvalda testtal har kontrollerats mot faktiska gränser.
+- [ ] Ogiltig fixture kan särskiljas maskinellt från FAIL i system under test.
+- [ ] Negativt, positivt och relevant gränsfall finns för den ändrade semantiken.
+- [ ] Exakt publicerad JS/engine kör syntetiska kontroller före browser/live-test.
+- [ ] Browser/live är verifiering av integration/render/deploy, inte första exekvering av deterministiskt testbar logik.
+- [ ] Vid synthetic FAIL klassificeras först fixture/oracle kontra produktionslogik; låst runnerspec ändras aldrig för att rädda en felaktig fixture.
+- [ ] Fixture-fix efter preregistrering har bevisats lämna produktionssemantik och canonical runnerspec/hash oförändrade.
+
