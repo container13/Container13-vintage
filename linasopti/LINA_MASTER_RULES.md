@@ -511,3 +511,8 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - På den verkliga iPhone-klienten mättes login före tangentbord till scrollY 0 / visualViewport.offsetTop 0 / gate-card top 20 och under lösenkodsfokus till scrollY cirka 402 / visualViewport.offsetTop cirka 402 / gate-card top cirka -382.
 - Felklassen är därför Safari keyboard-pan av visual/layout viewport, inte initial autofokus. En mobil loginfix ska kompensera den uppmätta visualViewport-förskjutningen medan input har fokus och återställa normal transform/scroll efter blur.
 - En misslyckad hypotes får inte beskrivas som rotorsak efter att verklig enhetsmätning motsäger den. Diagnostik tas bort när den har gett tillräckligt rotorsaksbevis.
+
+## Regression trace före plattformsfix — verifierad V0.4.00
+- Om användaren uppger att ett UI-beteende fungerade tidigare samma arbetsperiod ska Git-historiken jämföras före ny browser-/plattformsspecialkod.
+- V0.3.97–V0.3.99 var en felaktig fixkedja: den fungerande morgonimplementationen i V0.3.94/V0.3.95 hade ingen visualViewport-, touch- eller scrollkompensation. Regressionen introducerades först av vår egen V0.3.97-loginändring och efterföljande försök byggde vidare på den.
+- Vid sådan verifierad regression ska den minsta berörda implementationen återställas från senast bevisat fungerande commit medan orelaterat senare arbete bevaras. En plattformsförklaring får inte prioriteras över repo-historik som visar en lokal regression.
