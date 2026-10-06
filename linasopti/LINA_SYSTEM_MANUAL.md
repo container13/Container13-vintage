@@ -20,9 +20,21 @@ Gör automatiskt i denna ordning:
 4. Läs `LINA_MASTER_RULES.md` och relevant `LINA_RELEASE_CHECKLIST.md`.
 5. Läs endast de runnerspec/evidence/kod/config-filer som CURRENT_STATE och aktuell uppgift kräver. Dra inte in hela historiken utan behov.
 6. Verifiera aktuell branch/head och senaste relevanta Release Integrity-resultat innan ny skrivning.
-7. Fortsätt från `currentWork.next` om användaren inte ger en ny prioritet. En ny uttrycklig användarinstruktion ersätter endast nästa arbetsuppgift, aldrig permanenta regler/lås.
+7. Om `workCheckpoint.status` är `IN_PROGRESS` eller `UNVERIFIED`: verifiera repo och återuppta från första icke-DONE steg. Annars fortsätt från `currentWork.next` om användaren inte ger en ny prioritet. En ny uttrycklig användarinstruktion ersätter endast nästa arbetsuppgift, aldrig permanenta regler/lås.
 
 **Projektminnesregel:** Kritisk information som krävs för fortsatt arbete får inte endast finnas i ChatGPT-chatten. När ett verifierat arbetssteg ändrar aktuellt läge ska `LINA_CURRENT_STATE.json` uppdateras som del av samma release. Manualen innehåller permanent kunskap; CURRENT_STATE innehåller bara nuläge; kod/evidence/receipts bevisar vad som faktiskt är sant. Git-historiken är historiken — skapa inte parallella chattloggar som primär sanningskälla.
+
+## 0A. Crash-safe arbetscheckpoint
+
+`LINA_CURRENT_STATE.json.workCheckpoint` är projektets enda operativa checkpoint för pågående ChatGPT-arbete. Tillåtna lägen är `IDLE`, `IN_PROGRESS` och `UNVERIFIED`.
+
+Före en större fler-stegsändring ska checkpointen skrivas **innan implementationen börjar** med mål, målrelease, planerade delsteg, senaste säkra release/commit och resume-instruktion. Efter ett betydande delsteg markeras endast faktiskt verifierade steg `DONE`; nästa steg markeras `NEXT`. Om ett write/resultat inte hunnit verifieras ska läget vara `UNVERIFIED`, aldrig `DONE`.
+
+Vid ny chatt och `IN_PROGRESS` eller `UNVERIFIED`: verifiera först faktisk branch/head och berörda filer mot checkpointen. Återuppta från första icke-DONE steg. Kör aldrig om forskning eller irreversibelt steg bara för att checkpointen är osäker.
+
+När hela ändringen har repo-readback och obligatoriska gates PASS sätts checkpointen till `IDLE`; `lastSafeRelease` och `lastSafeCommit` flyttas då till den verifierade slutpunkten.
+
+**Checkpoint/version-regel:** en ren operativ checkpointuppdatering i `LINA_CURRENT_STATE.json` är journalföring av pågående arbete och skapar inte i sig en ny runtime-release. Den får inte ändra kod, regler, forskningsstate eller releasefältet. `release` ska fortsätta peka på senaste säkra release medan `targetRelease` anger den pågående ändringens avsedda version. Själva system-/kod-/dokumentändringen följer ordinarie versionsdisciplin.
 
 ## 1. Sanningsordning
 
