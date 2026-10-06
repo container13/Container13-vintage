@@ -693,3 +693,17 @@ Historical/frozen research version strings are excluded from this current-releas
 - [ ] Vid synthetic FAIL klassificeras först fixture/oracle kontra produktionslogik; låst runnerspec ändras aldrig för att rädda en felaktig fixture.
 - [ ] Fixture-fix efter preregistrering har bevisats lämna produktionssemantik och canonical runnerspec/hash oförändrade.
 
+
+
+## Fix → Learn gate — permanent
+- [ ] För varje rättat fel: rotorsak identifierad innan nästa beroende steg.
+- [ ] Generell felklass/lärdom formulerad; inte bara den konkreta patchen beskriven.
+- [ ] Lärdomen sparad permanent i auktoritativ regel/checklista, eller befintlig regel förstärkt utan duplicerad specialregel.
+- [ ] Där lärdomen kan maskintestas finns executable kontroll/preflight/release-gate, eller skäl dokumenterat varför den endast kan vara manuell.
+- [ ] Fix verifierad efter att lärdomen införts.
+
+## Synthetic fixture validity gate — från V0.3.94
+- [ ] Varje syntetiskt test-fixture har verifierade numeriska/semantiska premisser före assertion.
+- [ ] Positivt och negativt gränsfall bevisar att input faktiskt ligger på avsedd sida om relevant tröskel.
+- [ ] Deterministiska fixture-tester körs/verifieras före deploy; browser/produktion är inte första testmiljö.
+- [ ] Fixture-fix ändrar inte låst forskningsspec/hypotes när rotorsaken endast är testdata.
