@@ -1,3 +1,5 @@
+> **STATUS:** ARKITEKTURBAKGRUND från Clean Core-brytningen. Rubrikens V0.2.9 är historisk, inte aktuell release. Börja i [LINA_SYSTEM_MANUAL.md](LINA_SYSTEM_MANUAL.md) och verifiera faktisk kod/config före ändring.
+
 # Lina Clean Core Architecture V0.2.9
 
 - `index.html`: skal + robust login gate.
