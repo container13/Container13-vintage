@@ -1,5 +1,7 @@
 # Aktuella filer och historik
 
+**Börja här:** [LINA_SYSTEM_MANUAL.md](LINA_SYSTEM_MANUAL.md) är den sammanhållna operativa manualen och dokumentkartan. Aktuell release läses alltid från `version.js`; äldre versionsrubriker i README/handoff/arkitekturdokument är historik.
+
 Aktuella projektfiler ligger i denna mapp. [Äldre handoff- och Worker-filer finns i historikarkivet](history/legacy/README.md). [Genomförd rensningslista](LINA_CLEANUP_PROPOSAL.md).
 
 # Automatisk GitHub-överföring — användarbeslut 2026-10-03
