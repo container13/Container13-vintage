@@ -1,0 +1,30 @@
+{
+  "schema": "LINA-CURRENT-STATE-1",
+  "release": "V0.4.20",
+  "project": "LinaSopti / Lina Clean Core",
+  "repo": "container13/Container13-vintage",
+  "branch": "ccc-demo-public-test",
+  "status": "ACTIVE",
+  "research": {
+    "latestGeneration": 16,
+    "gen8Through16Frozen": true,
+    "gen16Result": "NO_CANDIDATE",
+    "trade": "OFF",
+    "forward": "OFF",
+    "noRerun": true
+  },
+  "verified": {
+    "loginFix": "PASS_REAL_IPHONE_V0.4.13",
+    "recovery": "PASS_LIVE_V0.4.06",
+    "releaseIntegrity": "PASS_V0.4.19"
+  },
+  "currentWork": {
+    "completed": "Bootstrap for chat changes: LINA_SYSTEM_MANUAL.md is the single entry point and LINA_CURRENT_STATE.json carries only current working state.",
+    "next": "Verify V0.4.20 Release Integrity and deploy/live coherence. Then continue with the next user-approved Lina task.",
+    "blocked": false
+  },
+  "bootstrap": {
+    "triggerPhrase": "Läs Linas manual",
+    "instruction": "Read LINA_SYSTEM_MANUAL.md and follow its New Chat Bootstrap. Do not ask the user to reconstruct prior context already stored in the repository."
+  }
+}
