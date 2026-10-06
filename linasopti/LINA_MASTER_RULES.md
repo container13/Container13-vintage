@@ -476,3 +476,20 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - En fixture-fix efter preregistrering får endast ändra testdata/oracle när den låsta produktionssemantiken är bevisat oförändrad; annars krävs ny metodprövning/runnerspec.
 - Regeln gäller alla framtida generationer och återanvändbara release-gates.
 
+
+
+## 19. FIX → LEARN → PERMANENT RULE — UNIVERSAL REGEL
+- Varje gång ett fel, en felaktig implementation, ett felaktigt testantagande eller en brist i arbetsflödet upptäcks och rättas ska arbetet, innan nästa beroende steg, också göra en kort rotorsaksanalys.
+- Frågan är inte bara "vad rättades?" utan "vilken generell felklass gjorde att detta kunde hända?".
+- Den återanvändbara lärdomen ska permanent sparas i MASTER RULES, RELEASE CHECKLIST eller annan auktoritativ projektdokumentation där den faktiskt kan förebygga samma felklass.
+- Spara generell orsak/princip, inte en smal regel för exakt den enskilda buggen. Om en befintlig regel redan täcker felklassen ska den förstärkas i stället för att skapa duplicerade specialregler.
+- En fix är därför inte metodiskt COMPLETE förrän kedjan **FIX → ROOT CAUSE → GENERAL LESSON → PERMANENT RULE/CHECK → VERIFY** är genomförd.
+- Om lärdomen kan maskintestas ska den så långt möjligt flyttas från enbart dokumentation till executable preflight/release-gate/test.
+- Denna metaregel gäller Lina och alla nuvarande och framtida projekt där ChatGPT gör ändringar.
+
+## 20. SYNTHETIC TEST FIXTURE VALIDITY GATE — lärdom V0.3.92 → V0.3.94
+- Ett syntetiskt säkerhets-/kontraktstest får inte användas som release-gate innan själva test-fixturens premisser har verifierats numeriskt/semantiskt.
+- Varje testfall ska bevisa både sin avsedda positiva/negativa gräns och varför inputen faktiskt ligger på rätt sida om de trösklar testnamnet påstår.
+- För jämförelsetester ska relevanta referensvärden kunna härledas före assertionen; ett test får inte bara anta att en konstruerad siffra ligger mellan två nivåer.
+- Browser/produktion får inte vara första miljön som avslöjar ett deterministiskt fixture-fel när samma test kan verifieras före deploy.
+- Vid fixture-fel ska produktions-/forskningslogiken och låst spec lämnas orörda om rotorsaken endast är testdatan. Rättelsen får inte användas för att ändra hypotesen efter observation.
