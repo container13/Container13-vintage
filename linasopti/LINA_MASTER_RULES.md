@@ -530,3 +530,8 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 ## Login-position: lås mot initial render — V0.4.04
 - När önskat mobilbeteende uttryckligen är att ett login-kort ska ligga kvar där det först målas upp ska referensen vara kortets faktiska initiala getBoundingClientRect().top, inte uppskattad keyboard-/viewportgeometri.
 - Positionslåset ska vara lokalt till själva login-kortet och endast aktivt medan input har fokus; övrig loginlogik och sidlayout ska lämnas oförändrad.
+
+## iOS login: focus-time fixed-position är inte skärmlås — V0.4.05
+- V0.4.04 verifierade att CSS position:fixed på ett fokuserat login-kort fortfarande följer iOS/Safaris panorerade viewport och därför inte låser elementet mot den fysiska skärmen.
+- För mobil login ska stabil layout därför, när möjligt, bestämmas före fokus och förbli densamma under keyboardövergången; undvik att byta positioneringsmodell som reaktion på focus/input.
+- V0.4.05 använder toppförankrad mobil gate från första paint och tar bort V0.4.04:s focus-time fixed-position-kod.
