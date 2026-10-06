@@ -506,3 +506,8 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Före andra korrigeringsförsöket ska den verkliga klienten instrumenteras för de variabler som kan skilja hypoteserna åt (för mobil viewport minst layout viewport, visual viewport, scroll-offset, fokus och berört elements position).
 - Diagnostik ska vara read-only och synlig/kopierbar utan att ändra research-state, evidence, Handel eller Forward.
 - Den verifierade rotorsaken ska därefter ersätta tillfällig diagnostik med minsta generella fix; diagnostiken får inte permanent döljas som en påstådd lösning.
+
+## iOS keyboard viewport — verifierad rotorsak V0.3.99
+- På den verkliga iPhone-klienten mättes login före tangentbord till scrollY 0 / visualViewport.offsetTop 0 / gate-card top 20 och under lösenkodsfokus till scrollY cirka 402 / visualViewport.offsetTop cirka 402 / gate-card top cirka -382.
+- Felklassen är därför Safari keyboard-pan av visual/layout viewport, inte initial autofokus. En mobil loginfix ska kompensera den uppmätta visualViewport-förskjutningen medan input har fokus och återställa normal transform/scroll efter blur.
+- En misslyckad hypotes får inte beskrivas som rotorsak efter att verklig enhetsmätning motsäger den. Diagnostik tas bort när den har gett tillräckligt rotorsaksbevis.
