@@ -67,12 +67,12 @@ async function verifySynthetic(){
  const tests=[];const add=(id,pass,detail)=>tests.push({id,pass:Boolean(pass),detail});
  const rows=Array.from({length:231},(_,i)=>({d:'S'+String(i).padStart(3,'0'),o:100,h:101,l:99,c:100}));
  for(let i=180;i<230;i++){rows[i].c=100+i/1000;rows[i].h=rows[i].c+1}
- rows[230]={d:'S230',o:102,h:103,l:101,c:102.5};
+ rows[230]={d:'S230',o:100.5,h:101.5,l:100.25,c:100.75};
  const by={};for(const s of SPEC.symbols)by[s]=rows.map(r=>({...r}));
  const control=signalAt(by,230,'CONTROL'),candidate=signalAt(by,230,'PRICE_CHANNEL_BREAKOUT');
  add('candidate_uses_prior_high',candidate.candidates.length===0,'Close above prior closes but below prior highs must not trigger candidate.');
  add('control_remains_close_channel',control.candidates.length===SPEC.symbols.length,'CONTROL remains prior-close breakout.');
- for(const s of SPEC.symbols)by[s][230].c=104;
+ for(const s of SPEC.symbols){by[s][230].o=101.5;by[s][230].h=102.5;by[s][230].l=101;by[s][230].c=102;}
  const candidate2=signalAt(by,230,'PRICE_CHANNEL_BREAKOUT');
  add('candidate_triggers_above_prior_high',candidate2.candidates.length===SPEC.symbols.length,'Close above prior 50 highs must trigger candidate.');
  add('zero_new_numeric',SPEC.priceChannelBreakout.newNumericParameters===0&&SPEC.params.lookback===50,'Existing 50-session horizon reused.');
