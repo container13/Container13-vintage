@@ -540,3 +540,8 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - När verktygsmiljön inte kan nå Worker-endpointen direkt ska live-verifieringen köras read-only från den redan tillåtna produktionsorigin som faktiskt använder Worker, inte ersättas med antaganden om deploystatus.
 - Evidence recovery PASS kräver samtidigt: datumfri name-only read, exakt förväntad upptäckt path, exakt Git blob SHA och lokalt omräknad SHA-256 som matchar Worker-receiptens contentSha256.
 - Ett HTTP 200 eller synlig Cloudflare-version är inte ensamt tillräckligt recovery-bevis.
+
+## Login status scope — V0.4.08
+- Loginvyn ska hållas ren från recovery-, test-, debug- och övrig intern systemstatus.
+- Deploystatus är uttryckligen tillåten och ska finnas kvar på login, eftersom användaren behöver se om den version som ska öppnas faktiskt är publicerad.
+- Tillfälliga verifieringsresultat får användas för att bevisa en fix men ska tas bort från login efter verifierad PASS; beständig teknisk status hör hemma inne i Lina.
