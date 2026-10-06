@@ -13,6 +13,16 @@ mrel=re.search(r"const\s+RELEASE\s*=\s*['\"](V[0-9.]+)['\"]",version)
 mcache=re.search(r"const\s+CACHE\s*=\s*['\"]([0-9.]+)['\"]",version)
 release=mrel.group(1) if mrel else ""; cache=mcache.group(1) if mcache else ""
 check("version_source", bool(release and cache and release=="V"+cache), release+"/"+cache)
+state_path=ROOT/"LINA_CURRENT_STATE.json"
+try:
+    current_state=json.loads(state_path.read_text(encoding="utf-8"))
+except Exception as e:
+    current_state={}
+    check("current_state_readable", False, str(e))
+else:
+    check("current_state_readable", current_state.get("schema")=="LINA-CURRENT-STATE-1", current_state.get("schema","missing schema"))
+    check("current_state_release", current_state.get("release")==release, str(current_state.get("release"))+" / "+release)
+    check("chat_bootstrap_contract", current_state.get("bootstrap",{}).get("triggerPhrase")=="Läs Linas manual", "single new-chat trigger")
 index=read("index.html"); app=read("app.js"); gate=read("release-gate.js")
 tokens=re.findall(r"[?&]v=([0-9]+(?:\.[0-9]+){2})",index)
 check("index_cache_tokens", bool(tokens) and all(x==cache for x in tokens), str(sorted(set(tokens))))
