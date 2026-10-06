@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.20",
+  "release": "V0.4.21",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -20,7 +20,7 @@
   },
   "currentWork": {
     "completed": "Bootstrap for chat changes: LINA_SYSTEM_MANUAL.md is the single entry point and LINA_CURRENT_STATE.json carries only current working state.",
-    "next": "Resume crash-safe checkpoint implementation from the first non-DONE workCheckpoint step.",
+    "next": "Verify exact V0.4.21 repository state and Release Integrity; then close checkpoint only on PASS.",
     "blocked": false
   },
   "bootstrap": {
@@ -28,7 +28,7 @@
     "instruction": "Read LINA_SYSTEM_MANUAL.md and follow its New Chat Bootstrap. Do not ask the user to reconstruct prior context already stored in the repository."
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
+    "status": "UNVERIFIED",
     "targetRelease": "V0.4.21",
     "goal": "Build crash-safe chat handoff/work checkpoint.",
     "plan": [
@@ -50,12 +50,12 @@
       {
         "id": 4,
         "task": "Bump runtime release coherently to V0.4.21",
-        "status": "NEXT"
+        "status": "DONE"
       },
       {
         "id": 5,
         "task": "Read back exact repo state and verify Release Integrity on final commit",
-        "status": "PENDING"
+        "status": "NEXT"
       },
       {
         "id": 6,
