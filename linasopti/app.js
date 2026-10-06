@@ -61,8 +61,8 @@
     });
     R.register('archive',root=>window.LinaArchive.render(root,{back:()=>R.navigate('dashboard')}));
     R.register('tools',root=>{
-      let trace=null;try{trace=JSON.parse(sessionStorage.getItem('lina_login_first_input_trace_v0414')||'null')}catch{}
-      const rows=trace?.trace?.map(x=>`${x.stage}: scrollY ${x.scrollY}, innerH ${x.innerH}, card ${x.cardTop}..${x.cardBottom} h${x.cardHeight}, input ${x.inputTop}..${x.inputBottom}`).join('\n')||'Ingen V0.4.14-mätning hittades i denna session.';
+      let trace=null;try{trace=JSON.parse(sessionStorage.getItem('lina_login_first_input_trace_v0415')||'null')}catch{}
+      const rows=trace?.trace?.map(x=>`${x.stage}: scrollY ${x.scrollY}, innerH ${x.innerH}, card ${x.cardTop}..${x.cardBottom} h${x.cardHeight}, input ${x.inputTop}..${x.inputBottom}`).join('\n')||'Ingen V0.4.15-mätning hittades i denna session.';
       shell(root,'Verktyg','Backup, export och diagnostik.',`<button class="back" id="home">← Dashboard</button><section class="workspace"><div class="statusline"><b>Login first-input trace</b><pre id="loginTrace" style="white-space:pre-wrap;overflow-wrap:anywhere">${rows}</pre><button class="back" id="copyLoginTrace">Kopiera mätning</button></div></section>`);
       root.querySelector('#home').onclick=()=>R.navigate('dashboard');
       root.querySelector('#copyLoginTrace').onclick=async()=>{try{await navigator.clipboard.writeText(JSON.stringify(trace,null,2));root.querySelector('#copyLoginTrace').textContent='Kopierad ✓'}catch{root.querySelector('#copyLoginTrace').textContent='Kopiering misslyckades'}};
@@ -77,16 +77,12 @@
   // Bevarar all persistent Lina-data i localStorage, men rensar endast login-sessionen.
   // Navigerar sedan till en ren, cache-bustad index-URL så login visas och senaste index/scripts hämtas.
   async function syncLoginTraceEvidence(){
-    const key='lina_login_trace_pending_v0414',raw=sessionStorage.getItem(key);if(!raw)return null;
-    const ev=window.LinaEvidence;if(!ev?.stage||!ev?.approve||!ev?.syncApproved)throw new Error('Evidence-modul saknas');
-    const report=JSON.parse(raw),stamp=String(report.capturedAt||new Date().toISOString()).replace(/[:.]/g,'-');
-    const name='LINA_LOGIN_FIRST_INPUT_TRACE_V0414_'+stamp+'.json',content=JSON.stringify(report,null,2);
-    let item=ev.stage(name,content,'application/json','Lina Login Diagnostics');if(!item)throw new Error('Login-trace staging misslyckades');
-    if(item.status==='PRELIMINÄR')item=await ev.approve(item.id);
-    await ev.syncApproved();item=ev.items().find(x=>x.name===name);
-    if(item?.status!=='FROZEN · GITHUB ✓'||item.verificationReceipt?.schema!=='LINA-GITHUB-COMMIT-RECEIPT-1')throw new Error('Login-trace saknar verifierat GitHub-kvitto');
-    sessionStorage.setItem('lina_login_trace_receipt_v0414',JSON.stringify({name,path:item.githubPath,blob:item.githubBlobSha,receipt:item.verificationReceipt}));
-    sessionStorage.removeItem(key);return item;
+    const key='lina_login_trace_pending_v0415',raw=sessionStorage.getItem(key);if(!raw)return null;
+    const code=sessionStorage.getItem('linasopti_login_code')||'';if(!code)throw new Error('Lina-session saknas');
+    const report=JSON.parse(raw),body=JSON.stringify({schema:'LINA-RUNTIME-REPORT-1',name:'LOGIN_FIRST_INPUT_TRACE_V0415',report});
+    const r=await fetch('https://linas-opti-api.mangaj73.workers.dev/runtime-report',{method:'POST',headers:{'Content-Type':'application/json','X-Lina-Login-Code':code},body});
+    const j=await r.json();if(!r.ok||!j.ok||j.verified!==true||j.receipt?.schema!=='LINA-GITHUB-COMMIT-RECEIPT-1')throw new Error(j.error||'Runtime-report saknar verifierat GitHub-kvitto');
+    sessionStorage.setItem('lina_login_trace_receipt_v0415',JSON.stringify(j.receipt));sessionStorage.removeItem(key);return j;
   }
   function installGitHubSync(){
     const b=document.getElementById('githubSync');
