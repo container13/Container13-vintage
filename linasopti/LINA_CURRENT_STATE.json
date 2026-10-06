@@ -16,16 +16,21 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PASS_V0.4.21"
+    "releaseIntegrity": "PASS_V0.4.21",
+    "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
-    "completed": "V0.4.21 crash-safe chat handoff/work checkpoint implemented and Release Integrity PASS.",
-    "next": "Run a deliberate new-chat recovery test: user writes only 'Läs Linas manual'; verify the new chat reconstructs the current state without help.",
+    "completed": "V0.4.21 real separate-chat bootstrap test PASS: with only 'Läs Linas manual', a new chat reconstructed release, CURRENT_STATE, checkpoint, frozen generations, Trade/Forward and next step without user reconstruction.",
+    "next": "Chat handoff/bootstrap problem closed. Continue with the next substantive Lina improvement chosen from current verified system state.",
     "blocked": false
   },
   "bootstrap": {
     "triggerPhrase": "Läs Linas manual",
-    "instruction": "Read LINA_SYSTEM_MANUAL.md and follow its New Chat Bootstrap. Do not ask the user to reconstruct prior context already stored in the repository."
+    "instruction": "Read LINA_SYSTEM_MANUAL.md and follow its New Chat Bootstrap. Do not ask the user to reconstruct prior context already stored in the repository.",
+    "realNewChatTest": "PASS",
+    "realNewChatTestRelease": "V0.4.21",
+    "realNewChatTestInput": "Läs Linas manual",
+    "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
     "status": "IDLE",
