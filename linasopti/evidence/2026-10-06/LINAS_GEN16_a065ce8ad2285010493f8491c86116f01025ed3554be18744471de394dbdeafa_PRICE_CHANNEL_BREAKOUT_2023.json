@@ -1,0 +1,5371 @@
+{
+  "key": "PRICE_CHANNEL_BREAKOUT_2023",
+  "variant": "PRICE_CHANNEL_BREAKOUT",
+  "year": 2023,
+  "specSha256": "a065ce8ad2285010493f8491c86116f01025ed3554be18744471de394dbdeafa",
+  "observedAt": "2026-10-06T05:35:06.792Z",
+  "result": {
+    "schema": "LINA-GEN16-FOLD-1",
+    "variant": "PRICE_CHANNEL_BREAKOUT",
+    "range": [
+      "2023-01-01",
+      "2023-12-31"
+    ],
+    "specSha256": "a065ce8ad2285010493f8491c86116f01025ed3554be18744471de394dbdeafa",
+    "oos": {
+      "n": 72,
+      "pl": 7390.413624225469,
+      "grossProfit": 12679.573849350361,
+      "grossLoss": 5289.160225124892,
+      "pf": 2.397275429305218,
+      "pfKind": "FINITE",
+      "dd": -0.031166044503433965,
+      "maxSymbolGrossProfitShare": 0.16582830907384047
+    },
+    "trades": [
+      {
+        "s": "NFLX",
+        "signalDate": "2023-01-20",
+        "strength": 0.32443925721679934,
+        "volScale": 0.35,
+        "qty": 102.3207130384135,
+        "entry": "2023-01-23",
+        "entryPrice": 34.20617288589477,
+        "notional": 3499.9999999999995,
+        "entryIndex": 769,
+        "exitIndex": 780,
+        "pendingTrendExit": false,
+        "exit": "2023-02-07",
+        "exitPrice": 36.258703170776364,
+        "pnl": 210.0163622820224,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-01-20",
+        "strength": 0.21649226399973953,
+        "volScale": 0.35,
+        "qty": 39.6428981574152,
+        "entry": "2023-01-23",
+        "entryPrice": 88.28819694519042,
+        "notional": 3500,
+        "entryIndex": 769,
+        "exitIndex": 780,
+        "pendingTrendExit": false,
+        "exit": "2023-02-07",
+        "exitPrice": 92.55934842681884,
+        "pnl": 169.3208232010886,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "C",
+        "signalDate": "2023-01-20",
+        "strength": 0.11721012484274018,
+        "volScale": 0.5961221465155834,
+        "qty": 132.06413043422367,
+        "entry": "2023-01-23",
+        "entryPrice": 45.13883857452801,
+        "notional": 5961.221465155834,
+        "entryIndex": 769,
+        "exitIndex": 780,
+        "pendingTrendExit": false,
+        "exit": "2023-02-07",
+        "exitPrice": 45.56424198532105,
+        "pnl": 56.180531530135404,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-01-23",
+        "strength": 0.3147453963855913,
+        "volScale": 0.35,
+        "qty": 186.8370988130429,
+        "entry": "2023-01-24",
+        "entryPrice": 18.783025949994247,
+        "notional": 3509.366075427024,
+        "entryIndex": 770,
+        "exitIndex": 781,
+        "pendingTrendExit": false,
+        "exit": "2023-02-08",
+        "exitPrice": 22.108875234603882,
+        "pnl": 621.3920314258985,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-01-23",
+        "strength": 0.20786310609082026,
+        "volScale": 0.41160840417010564,
+        "qty": 11.32374547209689,
+        "entry": "2023-01-24",
+        "entryPrice": 364.4641061096191,
+        "notional": 4127.09877130064,
+        "entryIndex": 770,
+        "exitIndex": 781,
+        "pendingTrendExit": false,
+        "exit": "2023-02-08",
+        "exitPrice": 377.98162536621095,
+        "pnl": 153.0689474758147,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-01-23",
+        "strength": 0.1717206893055372,
+        "volScale": 0.35,
+        "qty": 29.19570063185229,
+        "entry": "2023-01-24",
+        "entryPrice": 120.20146800650271,
+        "notional": 3509.366075427024,
+        "entryIndex": 770,
+        "exitIndex": 781,
+        "pendingTrendExit": false,
+        "exit": "2023-02-08",
+        "exitPrice": 121.44990831756591,
+        "pnl": 36.44908957853791,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-01-25",
+        "strength": 0.29635727217056496,
+        "volScale": 0.35,
+        "qty": 72.11773959111936,
+        "entry": "2023-01-26",
+        "entryPrice": 48.74870076370239,
+        "notional": 3515.64610708209,
+        "entryIndex": 772,
+        "exitIndex": 783,
+        "pendingTrendExit": false,
+        "exit": "2023-02-10",
+        "exitPrice": 48.25169923782349,
+        "pnl": -35.84262661972351,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-02-01",
+        "strength": 0.1861438518364824,
+        "volScale": 0.3598962501245891,
+        "qty": 23.35659745032992,
+        "entry": "2023-02-02",
+        "entryPrice": 156.41689420891814,
+        "notional": 3653.3664324685424,
+        "entryIndex": 777,
+        "exitIndex": 788,
+        "pendingTrendExit": false,
+        "exit": "2023-02-17",
+        "exitPrice": 156.8652098236084,
+        "pnl": 10.47112734301792,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "GM",
+        "signalDate": "2023-02-16",
+        "strength": 0.11111078199173163,
+        "volScale": 0.35,
+        "qty": 85.50911517896034,
+        "entry": "2023-02-17",
+        "entryPrice": 41.44238356097807,
+        "notional": 3543.7015492063265,
+        "entryIndex": 788,
+        "exitIndex": 799,
+        "pendingTrendExit": false,
+        "exit": "2023-03-07",
+        "exitPrice": 38.31300133895874,
+        "pnl": -267.59070486164177,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-02-23",
+        "strength": 0.3919182261300955,
+        "volScale": 0.35,
+        "qty": 152.4252318744457,
+        "entry": "2023-02-24",
+        "entryPrice": 23.17075268837151,
+        "notional": 3531.8073512304636,
+        "entryIndex": 792,
+        "exitIndex": 803,
+        "pendingTrendExit": false,
+        "exit": "2023-03-13",
+        "exitPrice": 22.87046487236023,
+        "pnl": -45.77143998459035,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-03-15",
+        "strength": 0.38459170840139256,
+        "volScale": 0.35,
+        "qty": 39.325022357221336,
+        "entry": "2023-03-16",
+        "entryPrice": 89.80972122192382,
+        "notional": 3531.7692949479697,
+        "entryIndex": 806,
+        "exitIndex": 817,
+        "pendingTrendExit": false,
+        "exit": "2023-03-31",
+        "exitPrice": 97.91199213409423,
+        "pnl": 318.62198476536554,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-03-16",
+        "strength": 0.7845156645785909,
+        "volScale": 0.35,
+        "qty": 136.5869707615462,
+        "entry": "2023-03-17",
+        "entryPrice": 25.925717865845773,
+        "notional": 3541.1152681143726,
+        "entryIndex": 807,
+        "exitIndex": 818,
+        "pendingTrendExit": false,
+        "exit": "2023-04-03",
+        "exitPrice": 27.84867031288147,
+        "pnl": 262.65024965910857,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-03-17",
+        "strength": 0.22091943218597176,
+        "volScale": 0.35,
+        "qty": 21.41979644022804,
+        "entry": "2023-03-20",
+        "entryPrice": 165.33646583760924,
+        "notional": 3541.4734423883074,
+        "entryIndex": 808,
+        "exitIndex": 819,
+        "pendingTrendExit": false,
+        "exit": "2023-04-04",
+        "exitPrice": 169.88155361938476,
+        "pnl": 97.35485508859927,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-04-03",
+        "strength": 0.5678990757709481,
+        "volScale": 0.351382937273389,
+        "qty": 127.96889059221306,
+        "entry": "2023-04-04",
+        "entryPrice": 27.905422514631,
+        "notional": 3571.025960704293,
+        "entryIndex": 819,
+        "exitIndex": 830,
+        "pendingTrendExit": false,
+        "exit": "2023-04-20",
+        "exitPrice": 26.991250316619873,
+        "pnl": -116.98560198972876,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-04-05",
+        "strength": 0.2217137582552955,
+        "volScale": 0.35,
+        "qty": 20.450286602930454,
+        "entry": "2023-04-06",
+        "entryPrice": 173.6186984092627,
+        "notional": 3550.5521420971677,
+        "entryIndex": 821,
+        "exitIndex": 832,
+        "pendingTrendExit": false,
+        "exit": "2023-04-24",
+        "exitPrice": 174.13439186096193,
+        "pnl": 10.54607888650383,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-05-01",
+        "strength": 0.3141945695839574,
+        "volScale": 0.37791581435853017,
+        "qty": 134.0101308046372,
+        "entry": "2023-05-02",
+        "entryPrice": 28.617875310122503,
+        "notional": 3835.0852136603144,
+        "entryIndex": 838,
+        "exitIndex": 849,
+        "pendingTrendExit": false,
+        "exit": "2023-05-17",
+        "exitPrice": 30.05246368789673,
+        "pnl": 192.24937615633633,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-05-04",
+        "strength": 0.3633119415003496,
+        "volScale": 0.35,
+        "qty": 61.83057058730879,
+        "entry": "2023-05-05",
+        "entryPrice": 57.3572992362976,
+        "notional": 3546.4345391272914,
+        "entryIndex": 841,
+        "exitIndex": 852,
+        "pendingTrendExit": false,
+        "exit": "2023-05-22",
+        "exitPrice": 61.997941371917726,
+        "pnl": 286.93355113689967,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-05-09",
+        "strength": 0.025644302872418034,
+        "volScale": 0.35,
+        "qty": 43.216981979815095,
+        "entry": "2023-05-10",
+        "entryPrice": 82.49741591644286,
+        "notional": 3565.289337042222,
+        "entryIndex": 844,
+        "exitIndex": 855,
+        "pendingTrendExit": false,
+        "exit": "2023-05-25",
+        "exitPrice": 92.31759365844727,
+        "pnl": 424.39844451478564,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "MU",
+        "signalDate": "2023-05-15",
+        "strength": 0.14072977973508793,
+        "volScale": 0.35,
+        "qty": 55.9914083680407,
+        "entry": "2023-05-16",
+        "entryPrice": 63.78042597982495,
+        "notional": 3571.155876923971,
+        "entryIndex": 848,
+        "exitIndex": 859,
+        "pendingTrendExit": false,
+        "exit": "2023-06-01",
+        "exitPrice": 68.1298991317749,
+        "pnl": 243.53312743665924,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-05-17",
+        "strength": 0.29586038157420247,
+        "volScale": 0.35,
+        "qty": 117.97220404748985,
+        "entry": "2023-05-18",
+        "entryPrice": 30.34412747860823,
+        "notional": 3579.763598549414,
+        "entryIndex": 850,
+        "exitIndex": 861,
+        "pendingTrendExit": false,
+        "exit": "2023-06-05",
+        "exitPrice": 39.008052967071535,
+        "pnl": 1022.1023855772413,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-05-17",
+        "strength": 0.26354888842760893,
+        "volScale": 0.35,
+        "qty": 34.39303034894361,
+        "entry": "2023-05-18",
+        "entryPrice": 104.08398336029052,
+        "notional": 3579.7635985494135,
+        "entryIndex": 850,
+        "exitIndex": 861,
+        "pendingTrendExit": false,
+        "exit": "2023-06-05",
+        "exitPrice": 117.8120703048706,
+        "pnl": 472.15051091787944,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-05-17",
+        "strength": 0.10815856057415396,
+        "volScale": 0.35,
+        "qty": 35.76187411138276,
+        "entry": "2023-05-18",
+        "entryPrice": 100.1,
+        "notional": 3579.763598549414,
+        "entryIndex": 850,
+        "exitIndex": 861,
+        "pendingTrendExit": false,
+        "exit": "2023-06-05",
+        "exitPrice": 111.23066086578369,
+        "pnl": 398.0532926586512,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-05-18",
+        "strength": 0.19083359311952397,
+        "volScale": 0.35,
+        "qty": 97.29522710705714,
+        "entry": "2023-05-19",
+        "entryPrice": 37.02298606109619,
+        "notional": 3602.159836995765,
+        "entryIndex": 851,
+        "exitIndex": 862,
+        "pendingTrendExit": false,
+        "exit": "2023-06-06",
+        "exitPrice": 39.889071853637695,
+        "pnl": 278.85646809363556,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-05-25",
+        "strength": 0.17520462448219543,
+        "volScale": 0.35,
+        "qty": 9.185469976640602,
+        "entry": "2023-05-26",
+        "entryPrice": 397.1167212219238,
+        "notional": 3647.703720005937,
+        "entryIndex": 856,
+        "exitIndex": 867,
+        "pendingTrendExit": false,
+        "exit": "2023-06-13",
+        "exitPrice": 478.51100024414063,
+        "pnl": 747.6447062288808,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-06-02",
+        "strength": 0.49221926272779837,
+        "volScale": 0.35,
+        "qty": 37.65524743050207,
+        "entry": "2023-06-05",
+        "entryPrice": 97.72762725067138,
+        "notional": 3679.9579849199076,
+        "entryIndex": 861,
+        "exitIndex": 872,
+        "pendingTrendExit": false,
+        "exit": "2023-06-21",
+        "exitPrice": 91.84806243896485,
+        "pnl": -221.3964677684827,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2023-06-02",
+        "strength": 0.1193827258847664,
+        "volScale": 0.35,
+        "qty": 16.879162771834594,
+        "entry": "2023-06-05",
+        "entryPrice": 218.01780305480955,
+        "notional": 3679.9579849199076,
+        "entryIndex": 861,
+        "exitIndex": 872,
+        "pendingTrendExit": false,
+        "exit": "2023-06-21",
+        "exitPrice": 259.20053146362307,
+        "pnl": 695.12997620062,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-06-05",
+        "strength": 0.2638999322487885,
+        "volScale": 0.3978056663187192,
+        "qty": 37.58978577383064,
+        "entry": "2023-06-06",
+        "entryPrice": 111.41130305480957,
+        "notional": 4187.927014613615,
+        "entryIndex": 862,
+        "exitIndex": 873,
+        "pendingTrendExit": false,
+        "exit": "2023-06-22",
+        "exitPrice": 109.86402502441406,
+        "pnl": -58.16184969512159,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-06-09",
+        "strength": 0.26500617477065336,
+        "volScale": 0.35,
+        "qty": 88.08576649914106,
+        "entry": "2023-06-12",
+        "entryPrice": 41.924882419586176,
+        "notional": 3692.985403315612,
+        "entryIndex": 866,
+        "exitIndex": 877,
+        "pendingTrendExit": false,
+        "exit": "2023-06-28",
+        "exitPrice": 42.9410171585083,
+        "pnl": 89.50700734436008,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-06-13",
+        "strength": 0.242935351229715,
+        "volScale": 0.35,
+        "qty": 7.810395553836548,
+        "entry": "2023-06-14",
+        "entryPrice": 476.62614389038083,
+        "notional": 3722.638715083689,
+        "entryIndex": 868,
+        "exitIndex": 879,
+        "pendingTrendExit": false,
+        "exit": "2023-06-30",
+        "exitPrice": 488.50100024414064,
+        "pnl": 92.7473252678533,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-06-14",
+        "strength": 0.5376881781531033,
+        "volScale": 0.35,
+        "qty": 87.62395972597133,
+        "entry": "2023-06-15",
+        "entryPrice": 42.514116646518,
+        "notional": 3725.2552448197403,
+        "entryIndex": 869,
+        "exitIndex": 880,
+        "pendingTrendExit": false,
+        "exit": "2023-07-03",
+        "exitPrice": 42.24094278717041,
+        "pnl": -23.9365752496611,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2023-06-14",
+        "strength": 0.05932467124006546,
+        "volScale": 0.40148938186346345,
+        "qty": 137.23513472879083,
+        "entry": "2023-06-15",
+        "entryPrice": 31.138432140720962,
+        "notional": 4273.286930075152,
+        "entryIndex": 869,
+        "exitIndex": 880,
+        "pendingTrendExit": false,
+        "exit": "2023-07-03",
+        "exitPrice": 34.51071993255615,
+        "pnl": 462.7963694567585,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-06-15",
+        "strength": 0.04980994215802559,
+        "volScale": 0.5020607069880383,
+        "qty": 29.869839679592722,
+        "entry": "2023-06-16",
+        "entryPrice": 179.38816714063015,
+        "notional": 5358.295792906606,
+        "entryIndex": 870,
+        "exitIndex": 881,
+        "pendingTrendExit": false,
+        "exit": "2023-07-05",
+        "exitPrice": 187.30426849365233,
+        "pnl": 236.4526783021797,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2023-07-03",
+        "strength": 0.7167924283305496,
+        "volScale": 0.35,
+        "qty": 13.394005298557724,
+        "entry": "2023-07-05",
+        "entryPrice": 279.09882733154296,
+        "notional": 3738.2511720999337,
+        "entryIndex": 881,
+        "exitIndex": 892,
+        "pendingTrendExit": false,
+        "exit": "2023-07-20",
+        "exitPrice": 262.6370939025879,
+        "pnl": -220.48854477086923,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "GM",
+        "signalDate": "2023-07-03",
+        "strength": 0.16483303569313512,
+        "volScale": 0.5066599638717971,
+        "qty": 142.87151763011047,
+        "entry": "2023-07-05",
+        "entryPrice": 37.87663280001617,
+        "notional": 5411.49201085673,
+        "entryIndex": 881,
+        "exitIndex": 892,
+        "pendingTrendExit": false,
+        "exit": "2023-07-20",
+        "exitPrice": 37.95564344787598,
+        "pnl": 11.288371168669364,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2023-07-03",
+        "strength": 0.1560287666998379,
+        "volScale": 0.5565936176736141,
+        "qty": 172.33460159246974,
+        "entry": "2023-07-05",
+        "entryPrice": 34.49579604236678,
+        "notional": 5944.819267576373,
+        "entryIndex": 881,
+        "exitIndex": 892,
+        "pendingTrendExit": false,
+        "exit": "2023-07-20",
+        "exitPrice": 34.54799798583984,
+        "pnl": 8.996201130783312,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-07-07",
+        "strength": 0.1206136765193413,
+        "volScale": 0.45322772706262765,
+        "qty": 25.59919069539518,
+        "entry": "2023-07-10",
+        "entryPrice": 189.29661788632333,
+        "notional": 4845.840219265345,
+        "entryIndex": 884,
+        "exitIndex": 895,
+        "pendingTrendExit": false,
+        "exit": "2023-07-25",
+        "exitPrice": 195.85782490539552,
+        "pnl": 167.96158967319423,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-07-11",
+        "strength": 0.4952286672248445,
+        "volScale": 0.35,
+        "qty": 34.672705551089344,
+        "entry": "2023-07-12",
+        "entryPrice": 108.3232113342285,
+        "notional": 3755.858810940129,
+        "entryIndex": 886,
+        "exitIndex": 897,
+        "pendingTrendExit": false,
+        "exit": "2023-07-27",
+        "exitPrice": 109.35053908538818,
+        "pnl": 35.62023262042218,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-07-13",
+        "strength": 0.5905139800693933,
+        "volScale": 0.35,
+        "qty": 80.69539883881716,
+        "entry": "2023-07-14",
+        "entryPrice": 46.48690621811611,
+        "notional": 3751.279438053569,
+        "entryIndex": 888,
+        "exitIndex": 899,
+        "pendingTrendExit": false,
+        "exit": "2023-07-31",
+        "exitPrice": 46.539427780151364,
+        "pnl": 4.238248396072386,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-07-13",
+        "strength": 0.48836727080026665,
+        "volScale": 0.35,
+        "qty": 53.073670496442766,
+        "entry": "2023-07-14",
+        "entryPrice": 70.6806106109619,
+        "notional": 3751.2794380535684,
+        "entryIndex": 888,
+        "exitIndex": 899,
+        "pendingTrendExit": false,
+        "exit": "2023-07-31",
+        "exitPrice": 67.51242182922363,
+        "pnl": -168.14740747250391,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-07-13",
+        "strength": 0.28205409432256245,
+        "volScale": 0.49869857497065956,
+        "qty": 46.27107691362658,
+        "entry": "2023-07-14",
+        "entryPrice": 115.51540152740478,
+        "notional": 5345.022028783003,
+        "entryIndex": 888,
+        "exitIndex": 899,
+        "pendingTrendExit": false,
+        "exit": "2023-07-31",
+        "exitPrice": 116.48339847564698,
+        "pnl": 44.79026124427075,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2023-07-21",
+        "strength": 0.16540817380102157,
+        "volScale": 0.4879127149497499,
+        "qty": 175.64666972928856,
+        "entry": "2023-07-24",
+        "entryPrice": 29.563858068499105,
+        "notional": 5192.793214081225,
+        "entryIndex": 894,
+        "exitIndex": 905,
+        "pendingTrendExit": false,
+        "exit": "2023-08-08",
+        "exitPrice": 28.831712242126464,
+        "pnl": -128.59897615855226,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-07-26",
+        "strength": 0.20952729109252788,
+        "volScale": 0.5638947501888929,
+        "qty": 29.569550638211613,
+        "entry": "2023-07-27",
+        "entryPrice": 203.12010571175145,
+        "notional": 6006.17025148253,
+        "entryIndex": 897,
+        "exitIndex": 908,
+        "pendingTrendExit": false,
+        "exit": "2023-08-11",
+        "exitPrice": 200.4665538482666,
+        "pnl": -78.46433619843565,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-07-28",
+        "strength": 0.2561821667835098,
+        "volScale": 0.4347992781084917,
+        "qty": 38.18465156640706,
+        "entry": "2023-07-31",
+        "entryPrice": 121.2531967188657,
+        "notional": 4630.011068022899,
+        "entryIndex": 899,
+        "exitIndex": 910,
+        "pendingTrendExit": false,
+        "exit": "2023-08-15",
+        "exitPrice": 103.96569342041016,
+        "pnl": -660.1172899046373,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-07-31",
+        "strength": 0.5314751294962576,
+        "volScale": 0.5006394054861784,
+        "qty": 9.786130830852569,
+        "entry": "2023-08-01",
+        "entryPrice": 546.3258093261718,
+        "notional": 5346.4158463373315,
+        "entryIndex": 900,
+        "exitIndex": 911,
+        "pendingTrendExit": false,
+        "exit": "2023-08-16",
+        "exitPrice": 513.9755002441407,
+        "pnl": -316.5843570952746,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2023-07-31",
+        "strength": 0.23364784531884664,
+        "volScale": 0.4093846840453012,
+        "qty": 57.963366506761446,
+        "entry": "2023-08-01",
+        "entryPrice": 75.4250652736885,
+        "notional": 4371.890702255212,
+        "entryIndex": 900,
+        "exitIndex": 911,
+        "pendingTrendExit": false,
+        "exit": "2023-08-16",
+        "exitPrice": 58.962771572113034,
+        "pnl": -954.2099633663694,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-08-31",
+        "strength": 0.1714417650700033,
+        "volScale": 0.4437304392883948,
+        "qty": 8.206873632444191,
+        "entry": "2023-09-01",
+        "entryPrice": 565.3647877807616,
+        "notional": 4639.877369550339,
+        "entryIndex": 923,
+        "exitIndex": 934,
+        "pendingTrendExit": false,
+        "exit": "2023-09-19",
+        "exitPrice": 541.1483124389648,
+        "pnl": -198.74155295332716,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-11-02",
+        "strength": 0.0631555016068972,
+        "volScale": 0.3737109975404404,
+        "qty": 35.20071122768603,
+        "entry": "2023-11-03",
+        "entryPrice": 110.80146302724742,
+        "notional": 3900.290303627267,
+        "entryIndex": 967,
+        "exitIndex": 978,
+        "pendingTrendExit": false,
+        "exit": "2023-11-20",
+        "exitPrice": 121.41776733398437,
+        "pnl": 373.70146220668687,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "MU",
+        "signalDate": "2023-11-03",
+        "strength": 0.14148370449848424,
+        "volScale": 0.43510306145256317,
+        "qty": 63.12542164802259,
+        "entry": "2023-11-06",
+        "entryPrice": 71.9694958241987,
+        "notional": 4543.104769698144,
+        "entryIndex": 968,
+        "exitIndex": 979,
+        "pendingTrendExit": false,
+        "exit": "2023-11-21",
+        "exitPrice": 75.91278076171875,
+        "pnl": 248.92152435924942,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-11-03",
+        "strength": 0.10265222627674309,
+        "volScale": 0.35,
+        "qty": 32.423223909857256,
+        "entry": "2023-11-06",
+        "entryPrice": 112.7125984725952,
+        "notional": 3654.505817738789,
+        "entryIndex": 968,
+        "exitIndex": 979,
+        "pendingTrendExit": false,
+        "exit": "2023-11-21",
+        "exitPrice": 119.04084365844727,
+        "pnl": 205.18211061735786,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-11-07",
+        "strength": 0.10438724807807942,
+        "volScale": 0.35,
+        "qty": 35.92329811662795,
+        "entry": "2023-11-08",
+        "entryPrice": 101.80169694519041,
+        "notional": 3657.052708140688,
+        "entryIndex": 970,
+        "exitIndex": 981,
+        "pendingTrendExit": false,
+        "exit": "2023-11-24",
+        "exitPrice": 112.75713274383546,
+        "pnl": 393.5553861923038,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-11-07",
+        "strength": 0.10431769149993975,
+        "volScale": 0.3749243034040575,
+        "qty": 6.644424889258546,
+        "entry": "2023-11-08",
+        "entryPrice": 589.5889999999999,
+        "notional": 3917.4798260330563,
+        "entryIndex": 970,
+        "exitIndex": 981,
+        "pendingTrendExit": false,
+        "exit": "2023-11-24",
+        "exitPrice": 618.8105626831054,
+        "pnl": 194.16047839465494,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-11-07",
+        "strength": 0.08023785356143343,
+        "volScale": 0.35,
+        "qty": 29.6503636499143,
+        "entry": "2023-11-08",
+        "entryPrice": 123.3392194213867,
+        "notional": 3657.052708140688,
+        "entryIndex": 970,
+        "exitIndex": 981,
+        "pendingTrendExit": false,
+        "exit": "2023-11-24",
+        "exitPrice": 134.64521878051758,
+        "pnl": 335.2269924239286,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "C",
+        "signalDate": "2023-11-14",
+        "strength": 0.08645969386687358,
+        "volScale": 0.38481574631502286,
+        "qty": 98.91835354389568,
+        "entry": "2023-11-15",
+        "entryPrice": 41.14616618876287,
+        "notional": 4070.111014035932,
+        "entryIndex": 975,
+        "exitIndex": 986,
+        "pendingTrendExit": false,
+        "exit": "2023-12-01",
+        "exitPrice": 43.602761672973635,
+        "pnl": 243.00238062149813,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-11-14",
+        "strength": 0.02290704344532224,
+        "volScale": 0.35,
+        "qty": 74.2809539907987,
+        "entry": "2023-11-15",
+        "entryPrice": 49.83609349153646,
+        "notional": 3701.8725677259617,
+        "entryIndex": 975,
+        "exitIndex": 986,
+        "pendingTrendExit": false,
+        "exit": "2023-12-01",
+        "exitPrice": 46.57911431121826,
+        "pnl": -241.93152064220524,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-11-20",
+        "strength": 0.0766729362581553,
+        "volScale": 0.35,
+        "qty": 53.87015040973716,
+        "entry": "2023-11-21",
+        "entryPrice": 69.06899999999999,
+        "notional": 3720.757418650135,
+        "entryIndex": 979,
+        "exitIndex": 990,
+        "pendingTrendExit": false,
+        "exit": "2023-12-07",
+        "exitPrice": 71.7881406097412,
+        "pnl": 146.48051363198377,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-11-22",
+        "strength": 0.15951873591604548,
+        "volScale": 0.5581567780248032,
+        "qty": 124.03755302456635,
+        "entry": "2023-11-24",
+        "entryPrice": 47.7587095336914,
+        "notional": 5923.87346617011,
+        "entryIndex": 981,
+        "exitIndex": 992,
+        "pendingTrendExit": false,
+        "exit": "2023-12-11",
+        "exitPrice": 45.94300941467285,
+        "pnl": -225.21499978947497,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-11-22",
+        "strength": 0.13740602708714866,
+        "volScale": 0.35,
+        "qty": 30.410035726728164,
+        "entry": "2023-11-24",
+        "entryPrice": 122.15202877807616,
+        "notional": 3714.647559233623,
+        "entryIndex": 981,
+        "exitIndex": 992,
+        "pendingTrendExit": false,
+        "exit": "2023-12-11",
+        "exitPrice": 134.27559365844726,
+        "pnl": 368.6780411473922,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-11-28",
+        "strength": 0.20888886628327552,
+        "volScale": 0.35,
+        "qty": 32.251157423917746,
+        "entry": "2023-11-29",
+        "entryPrice": 115.29518030548094,
+        "notional": 3718.403010251047,
+        "entryIndex": 984,
+        "exitIndex": 995,
+        "pendingTrendExit": false,
+        "exit": "2023-12-14",
+        "exitPrice": 120.52935152435303,
+        "pnl": 168.80807996358325,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-11-29",
+        "strength": 0.18625610599489928,
+        "volScale": 0.7198928988421949,
+        "qty": 56.10639869143335,
+        "entry": "2023-11-30",
+        "entryPrice": 136.53639389038085,
+        "notional": 7660.565351504292,
+        "entryIndex": 985,
+        "exitIndex": 996,
+        "pendingTrendExit": false,
+        "exit": "2023-12-15",
+        "exitPrice": 139.50834700012206,
+        "pnl": 166.74558606738535,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2023-11-29",
+        "strength": 0.057940746497529005,
+        "volScale": 0.41372222016263327,
+        "qty": 155.19699888247655,
+        "entry": "2023-11-30",
+        "entryPrice": 28.367329938530016,
+        "notional": 4402.524472768887,
+        "entryIndex": 985,
+        "exitIndex": 996,
+        "pendingTrendExit": false,
+        "exit": "2023-12-15",
+        "exitPrice": 31.4875182094574,
+        "pnl": 484.2438555962334,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "C",
+        "signalDate": "2023-12-01",
+        "strength": 0.14704462906357874,
+        "volScale": 0.549039674530192,
+        "qty": 135.10565165236267,
+        "entry": "2023-12-04",
+        "entryPrice": 43.283029098040565,
+        "notional": 5847.781851778946,
+        "entryIndex": 987,
+        "exitIndex": 998,
+        "pendingTrendExit": false,
+        "exit": "2023-12-19",
+        "exitPrice": 47.01859672164917,
+        "pnl": 504.6962980791081,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-12-05",
+        "strength": 0.1915380347752238,
+        "volScale": 0.629217223969275,
+        "qty": 53.56391697894417,
+        "entry": "2023-12-06",
+        "entryPrice": 124.76965185998883,
+        "notional": 6683.151273720208,
+        "entryIndex": 989,
+        "exitIndex": 1000,
+        "pendingTrendExit": false,
+        "exit": "2023-12-21",
+        "exitPrice": 134.38915795898438,
+        "pnl": 515.2584260650451,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-12-08",
+        "strength": 0.026488671169211164,
+        "volScale": 0.6299338079518041,
+        "qty": 32.39107933695981,
+        "entry": "2023-12-11",
+        "entryPrice": 207.53936080391767,
+        "notional": 6722.423901341625,
+        "entryIndex": 992,
+        "exitIndex": 1003,
+        "pendingTrendExit": false,
+        "exit": "2023-12-27",
+        "exitPrice": 191.11588275146485,
+        "pnl": -531.9741805858176,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-12-11",
+        "strength": 0.3072359858106024,
+        "volScale": 0.35,
+        "qty": 28.309184648265408,
+        "entry": "2023-12-12",
+        "entryPrice": 132.38225,
+        "notional": 3747.6335594028333,
+        "entryIndex": 993,
+        "exitIndex": 1004,
+        "pendingTrendExit": false,
+        "exit": "2023-12-28",
+        "exitPrice": 148.6112345123291,
+        "pnl": 459.4293192133642,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-12-12",
+        "strength": 0.21593454072371743,
+        "volScale": 0.6070840320165413,
+        "qty": 10.33138913896464,
+        "entry": "2023-12-13",
+        "entryPrice": 631.0403831176757,
+        "notional": 6519.5237603900405,
+        "entryIndex": 994,
+        "exitIndex": 1005,
+        "pendingTrendExit": false,
+        "exit": "2023-12-29",
+        "exitPrice": 596.0033756103516,
+        "pnl": -361.980958822991,
+        "exitReason": "FOLD_BOUNDARY",
+        "boundaryExit": true
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-12-14",
+        "strength": 0.47470517716358906,
+        "volScale": 0.35,
+        "qty": 48.52537276551584,
+        "entry": "2023-12-15",
+        "entryPrice": 77.78770908355712,
+        "notional": 3774.6775798551116,
+        "entryIndex": 996,
+        "exitIndex": 1007,
+        "pendingTrendExit": false,
+        "exit": "2023-12-29",
+        "exitPrice": 77.82210152435303,
+        "pnl": 1.6689060099375734,
+        "exitReason": "FOLD_BOUNDARY",
+        "boundaryExit": true
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-12-15",
+        "strength": 0.36922042908825503,
+        "volScale": 0.5300596067289663,
+        "qty": 46.72893955733138,
+        "entry": "2023-12-18",
+        "entryPrice": 122.56244244384764,
+        "notional": 5727.212964957463,
+        "entryIndex": 997,
+        "exitIndex": 1008,
+        "pendingTrendExit": false,
+        "exit": "2023-12-29",
+        "exitPrice": 121.25861725616456,
+        "pnl": -60.92636838856928,
+        "exitReason": "FOLD_BOUNDARY",
+        "boundaryExit": true
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-12-18",
+        "strength": 0.2741998444964211,
+        "volScale": 0.48077848207316476,
+        "qty": 106.36406965461504,
+        "entry": "2023-12-19",
+        "entryPrice": 48.88884015274047,
+        "notional": 5200.015999339428,
+        "entryIndex": 998,
+        "exitIndex": 1009,
+        "pendingTrendExit": false,
+        "exit": "2023-12-29",
+        "exitPrice": 48.63931172561645,
+        "pnl": -26.540859003425737,
+        "exitReason": "FOLD_BOUNDARY",
+        "boundaryExit": true
+      },
+      {
+        "s": "MU",
+        "signalDate": "2023-12-21",
+        "strength": 0.21749035573666253,
+        "volScale": 0.35,
+        "qty": 44.03316950113543,
+        "entry": "2023-12-22",
+        "entryPrice": 85.4253439607061,
+        "notional": 3761.548650314568,
+        "entryIndex": 1001,
+        "exitIndex": 1012,
+        "pendingTrendExit": false,
+        "exit": "2023-12-29",
+        "exitPrice": 84.56615180969239,
+        "pnl": -37.832953619632086,
+        "exitReason": "FOLD_BOUNDARY",
+        "boundaryExit": true
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-12-22",
+        "strength": 0.295555018403143,
+        "volScale": 0.6504597914578018,
+        "qty": 51.28498117366512,
+        "entry": "2023-12-26",
+        "entryPrice": 136.2936824568227,
+        "notional": 6989.818938887644,
+        "entryIndex": 1002,
+        "exitIndex": 1013,
+        "pendingTrendExit": false,
+        "exit": "2023-12-29",
+        "exitPrice": 136.455372756958,
+        "pnl": 8.292283998404118,
+        "exitReason": "FOLD_BOUNDARY",
+        "boundaryExit": true
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2023-12-27",
+        "strength": 0.02961564400869876,
+        "volScale": 0.3857120212812772,
+        "qty": 15.77420004169422,
+        "entry": "2023-12-28",
+        "entryPrice": 263.92366366577147,
+        "notional": 4163.1846664007035,
+        "entryIndex": 1004,
+        "exitIndex": 1015,
+        "pendingTrendExit": false,
+        "exit": "2023-12-29",
+        "exitPrice": 248.23151573181153,
+        "pnl": -247.53108059414282,
+        "exitReason": "FOLD_BOUNDARY",
+        "boundaryExit": true
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-12-28",
+        "strength": 0.41487536019029214,
+        "volScale": 0.35,
+        "qty": 25.216577853054336,
+        "entry": "2023-12-29",
+        "entryPrice": 149.6495,
+        "notional": 3773.6482674206545,
+        "entryIndex": 1005,
+        "exitIndex": 1016,
+        "pendingTrendExit": false,
+        "exit": "2023-12-29",
+        "exitPrice": 147.26259365844726,
+        "pnl": -60.18960958971354,
+        "exitReason": "FOLD_BOUNDARY",
+        "boundaryExit": true
+      }
+    ],
+    "equity": [
+      {
+        "d": "2023-01-03",
+        "value": 100000,
+        "cash": 100000,
+        "positions": 0
+      },
+      {
+        "d": "2023-01-04",
+        "value": 100000,
+        "cash": 100000,
+        "positions": 0
+      },
+      {
+        "d": "2023-01-05",
+        "value": 100000,
+        "cash": 100000,
+        "positions": 0
+      },
+      {
+        "d": "2023-01-06",
+        "value": 100000,
+        "cash": 100000,
+        "positions": 0
+      },
+      {
+        "d": "2023-01-09",
+        "value": 100000,
+        "cash": 100000,
+        "positions": 0
+      },
+      {
+        "d": "2023-01-10",
+        "value": 100000,
+        "cash": 100000,
+        "positions": 0
+      },
+      {
+        "d": "2023-01-11",
+        "value": 100000,
+        "cash": 100000,
+        "positions": 0
+      },
+      {
+        "d": "2023-01-12",
+        "value": 100000,
+        "cash": 100000,
+        "positions": 0
+      },
+      {
+        "d": "2023-01-13",
+        "value": 100000,
+        "cash": 100000,
+        "positions": 0
+      },
+      {
+        "d": "2023-01-17",
+        "value": 100000,
+        "cash": 100000,
+        "positions": 0
+      },
+      {
+        "d": "2023-01-18",
+        "value": 100000,
+        "cash": 100000,
+        "positions": 0
+      },
+      {
+        "d": "2023-01-19",
+        "value": 100000,
+        "cash": 100000,
+        "positions": 0
+      },
+      {
+        "d": "2023-01-20",
+        "value": 100000,
+        "cash": 100000,
+        "positions": 0
+      },
+      {
+        "d": "2023-01-23",
+        "value": 100267.60215505784,
+        "cash": 87038.77853484417,
+        "positions": 3
+      },
+      {
+        "d": "2023-01-24",
+        "value": 100318.52829433669,
+        "cash": 75892.94761268947,
+        "positions": 6
+      },
+      {
+        "d": "2023-01-25",
+        "value": 100447.0316309169,
+        "cash": 75892.94761268947,
+        "positions": 6
+      },
+      {
+        "d": "2023-01-26",
+        "value": 100783.17548186147,
+        "cash": 72377.30150560738,
+        "positions": 7
+      },
+      {
+        "d": "2023-01-27",
+        "value": 100940.72710188129,
+        "cash": 72377.30150560738,
+        "positions": 7
+      },
+      {
+        "d": "2023-01-30",
+        "value": 100157.84207260312,
+        "cash": 72377.30150560738,
+        "positions": 7
+      },
+      {
+        "d": "2023-01-31",
+        "value": 100660.55365941586,
+        "cash": 72377.30150560738,
+        "positions": 7
+      },
+      {
+        "d": "2023-02-01",
+        "value": 101511.65596206735,
+        "cash": 72377.30150560738,
+        "positions": 7
+      },
+      {
+        "d": "2023-02-02",
+        "value": 102205.463620436,
+        "cash": 68723.93507313884,
+        "positions": 8
+      },
+      {
+        "d": "2023-02-03",
+        "value": 101625.47260742968,
+        "cash": 68723.93507313884,
+        "positions": 8
+      },
+      {
+        "d": "2023-02-06",
+        "value": 101161.02521825701,
+        "cash": 68723.93507313884,
+        "positions": 8
+      },
+      {
+        "d": "2023-02-07",
+        "value": 101628.97346132417,
+        "cash": 82120.67425530792,
+        "positions": 5
+      },
+      {
+        "d": "2023-02-08",
+        "value": 101322.08304611949,
+        "cash": 94077.41524594287,
+        "positions": 2
+      },
+      {
+        "d": "2023-02-09",
+        "value": 101295.5468283884,
+        "cash": 94077.41524594287,
+        "positions": 2
+      },
+      {
+        "d": "2023-02-10",
+        "value": 101208.5057535074,
+        "cash": 97557.21872640523,
+        "positions": 1
+      },
+      {
+        "d": "2023-02-13",
+        "value": 101248.44105884644,
+        "cash": 97557.21872640523,
+        "positions": 1
+      },
+      {
+        "d": "2023-02-14",
+        "value": 101266.05508954388,
+        "cash": 97557.21872640523,
+        "positions": 1
+      },
+      {
+        "d": "2023-02-15",
+        "value": 101272.50687915026,
+        "cash": 97557.21872640523,
+        "positions": 1
+      },
+      {
+        "d": "2023-02-16",
+        "value": 101248.61569160936,
+        "cash": 97557.21872640523,
+        "positions": 1
+      },
+      {
+        "d": "2023-02-17",
+        "value": 101231.51196096155,
+        "cash": 97677.35473701048,
+        "positions": 1
+      },
+      {
+        "d": "2023-02-21",
+        "value": 101063.56025584089,
+        "cash": 97677.35473701048,
+        "positions": 1
+      },
+      {
+        "d": "2023-02-22",
+        "value": 101043.80121252131,
+        "cash": 97677.35473701048,
+        "positions": 1
+      },
+      {
+        "d": "2023-02-23",
+        "value": 100908.78146372754,
+        "cash": 97677.35473701048,
+        "positions": 1
+      },
+      {
+        "d": "2023-02-24",
+        "value": 100908.75649900912,
+        "cash": 94145.54738578001,
+        "positions": 2
+      },
+      {
+        "d": "2023-02-27",
+        "value": 100952.12191591719,
+        "cash": 94145.54738578001,
+        "positions": 2
+      },
+      {
+        "d": "2023-02-28",
+        "value": 100861.89865903233,
+        "cash": 94145.54738578001,
+        "positions": 2
+      },
+      {
+        "d": "2023-03-01",
+        "value": 100781.5588662549,
+        "cash": 94145.54738578001,
+        "positions": 2
+      },
+      {
+        "d": "2023-03-02",
+        "value": 100949.40875322724,
+        "cash": 94145.54738578001,
+        "positions": 2
+      },
+      {
+        "d": "2023-03-03",
+        "value": 101159.043649415,
+        "cash": 94145.54738578001,
+        "positions": 2
+      },
+      {
+        "d": "2023-03-06",
+        "value": 101061.78902588366,
+        "cash": 94145.54738578001,
+        "positions": 2
+      },
+      {
+        "d": "2023-03-07",
+        "value": 100960.10971016831,
+        "cash": 97421.6582301247,
+        "positions": 1
+      },
+      {
+        "d": "2023-03-08",
+        "value": 101095.79452975684,
+        "cash": 97421.6582301247,
+        "positions": 1
+      },
+      {
+        "d": "2023-03-09",
+        "value": 100982.59694396926,
+        "cash": 97421.6582301247,
+        "positions": 1
+      },
+      {
+        "d": "2023-03-10",
+        "value": 100911.03219748923,
+        "cash": 97421.6582301247,
+        "positions": 1
+      },
+      {
+        "d": "2023-03-13",
+        "value": 100907.69414137056,
+        "cash": 100907.69414137056,
+        "positions": 0
+      },
+      {
+        "d": "2023-03-14",
+        "value": 100907.69414137056,
+        "cash": 100907.69414137056,
+        "positions": 0
+      },
+      {
+        "d": "2023-03-15",
+        "value": 100907.69414137056,
+        "cash": 100907.69414137056,
+        "positions": 0
+      },
+      {
+        "d": "2023-03-16",
+        "value": 101174.72194612496,
+        "cash": 97375.9248464226,
+        "positions": 1
+      },
+      {
+        "d": "2023-03-17",
+        "value": 101184.95549680878,
+        "cash": 93834.80957830822,
+        "positions": 2
+      },
+      {
+        "d": "2023-03-20",
+        "value": 101104.4316961163,
+        "cash": 90293.33613591992,
+        "positions": 3
+      },
+      {
+        "d": "2023-03-21",
+        "value": 101168.27156929251,
+        "cash": 90293.33613591992,
+        "positions": 3
+      },
+      {
+        "d": "2023-03-22",
+        "value": 101225.2359036829,
+        "cash": 90293.33613591992,
+        "positions": 3
+      },
+      {
+        "d": "2023-03-23",
+        "value": 101427.60235514204,
+        "cash": 90293.33613591992,
+        "positions": 3
+      },
+      {
+        "d": "2023-03-24",
+        "value": 101290.81467237548,
+        "cash": 90293.33613591992,
+        "positions": 3
+      },
+      {
+        "d": "2023-03-27",
+        "value": 101240.05620003893,
+        "cash": 90293.33613591992,
+        "positions": 3
+      },
+      {
+        "d": "2023-03-28",
+        "value": 101152.93416967816,
+        "cash": 90293.33613591992,
+        "positions": 3
+      },
+      {
+        "d": "2023-03-29",
+        "value": 101342.87830749812,
+        "cash": 90293.33613591992,
+        "positions": 3
+      },
+      {
+        "d": "2023-03-30",
+        "value": 101479.65943172321,
+        "cash": 90293.33613591992,
+        "positions": 3
+      },
+      {
+        "d": "2023-03-31",
+        "value": 101600.33832287142,
+        "cash": 94143.72741563326,
+        "positions": 2
+      },
+      {
+        "d": "2023-04-03",
+        "value": 101627.75655568906,
+        "cash": 97947.49293340674,
+        "positions": 1
+      },
+      {
+        "d": "2023-04-04",
+        "value": 101517.31330969409,
+        "cash": 98015.29527017935,
+        "positions": 1
+      },
+      {
+        "d": "2023-04-05",
+        "value": 101444.34691706196,
+        "cash": 98015.29527017935,
+        "positions": 1
+      },
+      {
+        "d": "2023-04-06",
+        "value": 101477.4356444843,
+        "cash": 94464.74312808219,
+        "positions": 2
+      },
+      {
+        "d": "2023-04-10",
+        "value": 101538.89829202183,
+        "cash": 94464.74312808219,
+        "positions": 2
+      },
+      {
+        "d": "2023-04-11",
+        "value": 101485.52242112378,
+        "cash": 94464.74312808219,
+        "positions": 2
+      },
+      {
+        "d": "2023-04-12",
+        "value": 101367.91456268058,
+        "cash": 94464.74312808219,
+        "positions": 2
+      },
+      {
+        "d": "2023-04-13",
+        "value": 101388.39917657153,
+        "cash": 94464.74312808219,
+        "positions": 2
+      },
+      {
+        "d": "2023-04-14",
+        "value": 101420.19600580419,
+        "cash": 94464.74312808219,
+        "positions": 2
+      },
+      {
+        "d": "2023-04-17",
+        "value": 101430.13308303159,
+        "cash": 94464.74312808219,
+        "positions": 2
+      },
+      {
+        "d": "2023-04-18",
+        "value": 101513.42739736104,
+        "cash": 94464.74312808219,
+        "positions": 2
+      },
+      {
+        "d": "2023-04-19",
+        "value": 101551.40364724868,
+        "cash": 94464.74312808219,
+        "positions": 2
+      },
+      {
+        "d": "2023-04-20",
+        "value": 101440.76089085186,
+        "cash": 97918.78348679676,
+        "positions": 1
+      },
+      {
+        "d": "2023-04-21",
+        "value": 101457.03692995895,
+        "cash": 97918.78348679676,
+        "positions": 1
+      },
+      {
+        "d": "2023-04-24",
+        "value": 101479.88170778043,
+        "cash": 101479.88170778043,
+        "positions": 0
+      },
+      {
+        "d": "2023-04-25",
+        "value": 101479.88170778043,
+        "cash": 101479.88170778043,
+        "positions": 0
+      },
+      {
+        "d": "2023-04-26",
+        "value": 101479.88170778043,
+        "cash": 101479.88170778043,
+        "positions": 0
+      },
+      {
+        "d": "2023-04-27",
+        "value": 101479.88170778043,
+        "cash": 101479.88170778043,
+        "positions": 0
+      },
+      {
+        "d": "2023-04-28",
+        "value": 101479.88170778043,
+        "cash": 101479.88170778043,
+        "positions": 0
+      },
+      {
+        "d": "2023-05-01",
+        "value": 101479.88170778043,
+        "cash": 101479.88170778043,
+        "positions": 0
+      },
+      {
+        "d": "2023-05-02",
+        "value": 101413.26474884435,
+        "cash": 97644.7964941201,
+        "positions": 1
+      },
+      {
+        "d": "2023-05-03",
+        "value": 101358.76229944351,
+        "cash": 97644.7964941201,
+        "positions": 1
+      },
+      {
+        "d": "2023-05-04",
+        "value": 101326.70111792262,
+        "cash": 97644.7964941201,
+        "positions": 1
+      },
+      {
+        "d": "2023-05-05",
+        "value": 101764.96623728883,
+        "cash": 94098.36195499281,
+        "positions": 2
+      },
+      {
+        "d": "2023-05-08",
+        "value": 101973.1867074415,
+        "cash": 94098.36195499281,
+        "positions": 2
+      },
+      {
+        "d": "2023-05-09",
+        "value": 101865.40962977777,
+        "cash": 94098.36195499281,
+        "positions": 2
+      },
+      {
+        "d": "2023-05-10",
+        "value": 102014.20932445912,
+        "cash": 90533.07261795059,
+        "positions": 3
+      },
+      {
+        "d": "2023-05-11",
+        "value": 101984.59548082293,
+        "cash": 90533.07261795059,
+        "positions": 3
+      },
+      {
+        "d": "2023-05-12",
+        "value": 101881.65780741877,
+        "cash": 90533.07261795059,
+        "positions": 3
+      },
+      {
+        "d": "2023-05-15",
+        "value": 102033.02505497061,
+        "cash": 90533.07261795059,
+        "positions": 3
+      },
+      {
+        "d": "2023-05-16",
+        "value": 101910.01364803276,
+        "cash": 86961.91674102662,
+        "positions": 4
+      },
+      {
+        "d": "2023-05-17",
+        "value": 102278.95995855468,
+        "cash": 90989.25133084327,
+        "positions": 3
+      },
+      {
+        "d": "2023-05-18",
+        "value": 102918.85248559329,
+        "cash": 80249.96053519503,
+        "positions": 6
+      },
+      {
+        "d": "2023-05-19",
+        "value": 102638.2357364083,
+        "cash": 76647.80069819927,
+        "positions": 7
+      },
+      {
+        "d": "2023-05-22",
+        "value": 102768.6683985609,
+        "cash": 80481.16878846346,
+        "positions": 6
+      },
+      {
+        "d": "2023-05-23",
+        "value": 102519.90914122487,
+        "cash": 80481.16878846346,
+        "positions": 6
+      },
+      {
+        "d": "2023-05-24",
+        "value": 102655.59923387553,
+        "cash": 80481.16878846346,
+        "positions": 6
+      },
+      {
+        "d": "2023-05-25",
+        "value": 104220.10628588394,
+        "cash": 84470.85657002046,
+        "positions": 5
+      },
+      {
+        "d": "2023-05-26",
+        "value": 105204.10854044478,
+        "cash": 80823.15285001452,
+        "positions": 6
+      },
+      {
+        "d": "2023-05-30",
+        "value": 105394.07842543934,
+        "cash": 80823.15285001452,
+        "positions": 6
+      },
+      {
+        "d": "2023-05-31",
+        "value": 104686.78105077575,
+        "cash": 80823.15285001452,
+        "positions": 6
+      },
+      {
+        "d": "2023-06-01",
+        "value": 105149.3074720336,
+        "cash": 84637.84185437515,
+        "positions": 5
+      },
+      {
+        "d": "2023-06-02",
+        "value": 105141.65671199738,
+        "cash": 84637.84185437515,
+        "positions": 5
+      },
+      {
+        "d": "2023-06-05",
+        "value": 105275.70040337928,
+        "cash": 89909.52286933734,
+        "positions": 4
+      },
+      {
+        "d": "2023-06-06",
+        "value": 105328.1054819959,
+        "cash": 89602.61215981313,
+        "positions": 4
+      },
+      {
+        "d": "2023-06-07",
+        "value": 104731.67338320764,
+        "cash": 89602.61215981313,
+        "positions": 4
+      },
+      {
+        "d": "2023-06-08",
+        "value": 105239.86915626924,
+        "cash": 89602.61215981313,
+        "positions": 4
+      },
+      {
+        "d": "2023-06-09",
+        "value": 105513.86866616036,
+        "cash": 89602.61215981313,
+        "positions": 4
+      },
+      {
+        "d": "2023-06-12",
+        "value": 106007.17319273352,
+        "cash": 85909.62675649751,
+        "positions": 5
+      },
+      {
+        "d": "2023-06-13",
+        "value": 106361.10614524827,
+        "cash": 90304.97518273233,
+        "positions": 4
+      },
+      {
+        "d": "2023-06-14",
+        "value": 106435.86413770689,
+        "cash": 86582.33646764865,
+        "positions": 5
+      },
+      {
+        "d": "2023-06-15",
+        "value": 106726.05360917575,
+        "cash": 78583.79429275377,
+        "positions": 7
+      },
+      {
+        "d": "2023-06-16",
+        "value": 106507.73894175673,
+        "cash": 73225.49849984716,
+        "positions": 8
+      },
+      {
+        "d": "2023-06-20",
+        "value": 106791.7241677795,
+        "cash": 73225.49849984716,
+        "positions": 8
+      },
+      {
+        "d": "2023-06-21",
+        "value": 105888.19003013981,
+        "cash": 81059.14797811912,
+        "positions": 6
+      },
+      {
+        "d": "2023-06-22",
+        "value": 106039.75898138242,
+        "cash": 85188.91314303761,
+        "positions": 5
+      },
+      {
+        "d": "2023-06-23",
+        "value": 105979.7051924586,
+        "cash": 85188.91314303761,
+        "positions": 5
+      },
+      {
+        "d": "2023-06-26",
+        "value": 105797.45201532968,
+        "cash": 85188.91314303761,
+        "positions": 5
+      },
+      {
+        "d": "2023-06-27",
+        "value": 106419.18429350067,
+        "cash": 85188.91314303761,
+        "positions": 5
+      },
+      {
+        "d": "2023-06-28",
+        "value": 106474.11632070565,
+        "cash": 88971.40555369758,
+        "positions": 4
+      },
+      {
+        "d": "2023-06-29",
+        "value": 106554.98005839375,
+        "cash": 88971.40555369758,
+        "positions": 4
+      },
+      {
+        "d": "2023-06-30",
+        "value": 106707.58467700571,
+        "cash": 92786.79159404912,
+        "positions": 3
+      },
+      {
+        "d": "2023-07-03",
+        "value": 106807.1763457124,
+        "cash": 101224.19356315112,
+        "positions": 1
+      },
+      {
+        "d": "2023-07-05",
+        "value": 106940.52529313813,
+        "cash": 91724.37958382687,
+        "positions": 3
+      },
+      {
+        "d": "2023-07-06",
+        "value": 106847.20729101918,
+        "cash": 91724.37958382687,
+        "positions": 3
+      },
+      {
+        "d": "2023-07-07",
+        "value": 106918.44143497736,
+        "cash": 91724.37958382687,
+        "positions": 3
+      },
+      {
+        "d": "2023-07-10",
+        "value": 107008.75978437802,
+        "cash": 86878.53936456153,
+        "positions": 4
+      },
+      {
+        "d": "2023-07-11",
+        "value": 107310.25174114654,
+        "cash": 86878.53936456153,
+        "positions": 4
+      },
+      {
+        "d": "2023-07-12",
+        "value": 107261.54579049534,
+        "cash": 83122.6805536214,
+        "positions": 5
+      },
+      {
+        "d": "2023-07-13",
+        "value": 107179.41251581626,
+        "cash": 83122.6805536214,
+        "positions": 5
+      },
+      {
+        "d": "2023-07-14",
+        "value": 106819.37900727011,
+        "cash": 70275.09964873127,
+        "positions": 8
+      },
+      {
+        "d": "2023-07-17",
+        "value": 107050.12743041341,
+        "cash": 70275.09964873127,
+        "positions": 8
+      },
+      {
+        "d": "2023-07-18",
+        "value": 107445.90208688736,
+        "cash": 70275.09964873127,
+        "positions": 8
+      },
+      {
+        "d": "2023-07-19",
+        "value": 107619.97101589738,
+        "cash": 70275.09964873127,
+        "positions": 8
+      },
+      {
+        "d": "2023-07-20",
+        "value": 106566.03979286761,
+        "cash": 85169.45812679289,
+        "positions": 5
+      },
+      {
+        "d": "2023-07-21",
+        "value": 106428.73315191283,
+        "cash": 85169.45812679289,
+        "positions": 5
+      },
+      {
+        "d": "2023-07-24",
+        "value": 106587.08188134478,
+        "cash": 79976.66491271167,
+        "positions": 6
+      },
+      {
+        "d": "2023-07-25",
+        "value": 106713.6871842153,
+        "cash": 84990.46672165021,
+        "positions": 5
+      },
+      {
+        "d": "2023-07-26",
+        "value": 106512.25693217732,
+        "cash": 84990.46672165021,
+        "positions": 5
+      },
+      {
+        "d": "2023-07-27",
+        "value": 106148.50322791579,
+        "cash": 82775.77551372824,
+        "positions": 5
+      },
+      {
+        "d": "2023-07-28",
+        "value": 106486.1719220153,
+        "cash": 82775.77551372824,
+        "positions": 5
+      },
+      {
+        "d": "2023-07-31",
+        "value": 106791.75046449545,
+        "cash": 90874.22645276332,
+        "positions": 3
+      },
+      {
+        "d": "2023-08-01",
+        "value": 106671.92769553239,
+        "cash": 81155.91990417078,
+        "positions": 5
+      },
+      {
+        "d": "2023-08-02",
+        "value": 106124.18404890547,
+        "cash": 81155.91990417078,
+        "positions": 5
+      },
+      {
+        "d": "2023-08-03",
+        "value": 105159.58558256726,
+        "cash": 81155.91990417078,
+        "positions": 5
+      },
+      {
+        "d": "2023-08-04",
+        "value": 105178.33486130659,
+        "cash": 81155.91990417078,
+        "positions": 5
+      },
+      {
+        "d": "2023-08-07",
+        "value": 105349.48676435548,
+        "cash": 81155.91990417078,
+        "positions": 5
+      },
+      {
+        "d": "2023-08-08",
+        "value": 105112.96655961164,
+        "cash": 86220.11414209344,
+        "positions": 4
+      },
+      {
+        "d": "2023-08-09",
+        "value": 104878.30425866571,
+        "cash": 86220.11414209344,
+        "positions": 4
+      },
+      {
+        "d": "2023-08-10",
+        "value": 104931.78799165026,
+        "cash": 86220.11414209344,
+        "positions": 4
+      },
+      {
+        "d": "2023-08-11",
+        "value": 104729.42812479974,
+        "cash": 92147.82005737754,
+        "positions": 3
+      },
+      {
+        "d": "2023-08-14",
+        "value": 104942.65310220332,
+        "cash": 92147.82005737754,
+        "positions": 3
+      },
+      {
+        "d": "2023-08-15",
+        "value": 104602.84404026782,
+        "cash": 96117.7138354958,
+        "positions": 2
+      },
+      {
+        "d": "2023-08-16",
+        "value": 104565.2260636267,
+        "cash": 104565.2260636267,
+        "positions": 0
+      },
+      {
+        "d": "2023-08-17",
+        "value": 104565.2260636267,
+        "cash": 104565.2260636267,
+        "positions": 0
+      },
+      {
+        "d": "2023-08-18",
+        "value": 104565.2260636267,
+        "cash": 104565.2260636267,
+        "positions": 0
+      },
+      {
+        "d": "2023-08-21",
+        "value": 104565.2260636267,
+        "cash": 104565.2260636267,
+        "positions": 0
+      },
+      {
+        "d": "2023-08-22",
+        "value": 104565.2260636267,
+        "cash": 104565.2260636267,
+        "positions": 0
+      },
+      {
+        "d": "2023-08-23",
+        "value": 104565.2260636267,
+        "cash": 104565.2260636267,
+        "positions": 0
+      },
+      {
+        "d": "2023-08-24",
+        "value": 104565.2260636267,
+        "cash": 104565.2260636267,
+        "positions": 0
+      },
+      {
+        "d": "2023-08-25",
+        "value": 104565.2260636267,
+        "cash": 104565.2260636267,
+        "positions": 0
+      },
+      {
+        "d": "2023-08-28",
+        "value": 104565.2260636267,
+        "cash": 104565.2260636267,
+        "positions": 0
+      },
+      {
+        "d": "2023-08-29",
+        "value": 104565.2260636267,
+        "cash": 104565.2260636267,
+        "positions": 0
+      },
+      {
+        "d": "2023-08-30",
+        "value": 104565.2260636267,
+        "cash": 104565.2260636267,
+        "positions": 0
+      },
+      {
+        "d": "2023-08-31",
+        "value": 104565.2260636267,
+        "cash": 104565.2260636267,
+        "positions": 0
+      },
+      {
+        "d": "2023-09-01",
+        "value": 104547.54217293208,
+        "cash": 99925.34869407637,
+        "positions": 1
+      },
+      {
+        "d": "2023-09-05",
+        "value": 104561.24751164406,
+        "cash": 99925.34869407637,
+        "positions": 1
+      },
+      {
+        "d": "2023-09-06",
+        "value": 104537.11928312837,
+        "cash": 99925.34869407637,
+        "positions": 1
+      },
+      {
+        "d": "2023-09-07",
+        "value": 104524.97327044286,
+        "cash": 99925.34869407637,
+        "positions": 1
+      },
+      {
+        "d": "2023-09-08",
+        "value": 104524.15228253492,
+        "cash": 99925.34869407637,
+        "positions": 1
+      },
+      {
+        "d": "2023-09-11",
+        "value": 104558.12885959112,
+        "cash": 99925.34869407637,
+        "positions": 1
+      },
+      {
+        "d": "2023-09-12",
+        "value": 104375.19782665075,
+        "cash": 99925.34869407637,
+        "positions": 1
+      },
+      {
+        "d": "2023-09-13",
+        "value": 104468.34564201586,
+        "cash": 99925.34869407637,
+        "positions": 1
+      },
+      {
+        "d": "2023-09-14",
+        "value": 104456.85581856732,
+        "cash": 99925.34869407637,
+        "positions": 1
+      },
+      {
+        "d": "2023-09-15",
+        "value": 104265.88220975765,
+        "cash": 99925.34869407637,
+        "positions": 1
+      },
+      {
+        "d": "2023-09-18",
+        "value": 104294.85221320811,
+        "cash": 99925.34869407637,
+        "positions": 1
+      },
+      {
+        "d": "2023-09-19",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-09-20",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-09-21",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-09-22",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-09-25",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-09-26",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-09-27",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-09-28",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-09-29",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-02",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-03",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-04",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-05",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-06",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-09",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-10",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-11",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-12",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-13",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-16",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-17",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-18",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-19",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-20",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-23",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-24",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-25",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-26",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-27",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-30",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-10-31",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-11-01",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-11-02",
+        "value": 104366.48451067338,
+        "cash": 104366.48451067338,
+        "positions": 0
+      },
+      {
+        "d": "2023-11-03",
+        "value": 104414.451935394,
+        "cash": 100466.19420704612,
+        "positions": 1
+      },
+      {
+        "d": "2023-11-06",
+        "value": 104413.50800484244,
+        "cash": 92268.5836196092,
+        "positions": 3
+      },
+      {
+        "d": "2023-11-07",
+        "value": 104487.2202325911,
+        "cash": 92268.5836196092,
+        "positions": 3
+      },
+      {
+        "d": "2023-11-08",
+        "value": 104395.1257007537,
+        "cash": 81036.99837729476,
+        "positions": 6
+      },
+      {
+        "d": "2023-11-09",
+        "value": 104399.16457332706,
+        "cash": 81036.99837729476,
+        "positions": 6
+      },
+      {
+        "d": "2023-11-10",
+        "value": 105153.46865546964,
+        "cash": 81036.99837729476,
+        "positions": 6
+      },
+      {
+        "d": "2023-11-13",
+        "value": 105044.4314047108,
+        "cash": 81036.99837729476,
+        "positions": 6
+      },
+      {
+        "d": "2023-11-14",
+        "value": 105767.7876493132,
+        "cash": 81036.99837729476,
+        "positions": 6
+      },
+      {
+        "d": "2023-11-15",
+        "value": 105643.51269796195,
+        "cash": 73265.01479553286,
+        "positions": 8
+      },
+      {
+        "d": "2023-11-16",
+        "value": 105732.37559074923,
+        "cash": 73265.01479553286,
+        "positions": 8
+      },
+      {
+        "d": "2023-11-17",
+        "value": 105920.08427363445,
+        "cash": 73265.01479553286,
+        "positions": 8
+      },
+      {
+        "d": "2023-11-20",
+        "value": 106307.35481857529,
+        "cash": 77539.00656136681,
+        "positions": 7
+      },
+      {
+        "d": "2023-11-21",
+        "value": 106091.20919461001,
+        "cash": 82469.96336513021,
+        "positions": 6
+      },
+      {
+        "d": "2023-11-22",
+        "value": 106132.78740667494,
+        "cash": 82469.96336513021,
+        "positions": 6
+      },
+      {
+        "d": "2023-11-24",
+        "value": 106116.41530326148,
+        "cash": 84985.97043905179,
+        "positions": 5
+      },
+      {
+        "d": "2023-11-27",
+        "value": 106328.03161228777,
+        "cash": 84985.97043905179,
+        "positions": 5
+      },
+      {
+        "d": "2023-11-28",
+        "value": 106240.0860071728,
+        "cash": 84985.97043905179,
+        "positions": 5
+      },
+      {
+        "d": "2023-11-29",
+        "value": 106412.57003402582,
+        "cash": 81267.56742880074,
+        "positions": 6
+      },
+      {
+        "d": "2023-11-30",
+        "value": 106261.9865368462,
+        "cash": 69204.47760452756,
+        "positions": 8
+      },
+      {
+        "d": "2023-12-01",
+        "value": 106509.27652510427,
+        "cash": 76977.53204626875,
+        "positions": 6
+      },
+      {
+        "d": "2023-12-04",
+        "value": 106200.90301020107,
+        "cash": 71129.75019448981,
+        "positions": 7
+      },
+      {
+        "d": "2023-12-05",
+        "value": 106213.73699151234,
+        "cash": 71129.75019448981,
+        "positions": 7
+      },
+      {
+        "d": "2023-12-06",
+        "value": 105754.09819054668,
+        "cash": 64446.598920769604,
+        "positions": 8
+      },
+      {
+        "d": "2023-12-07",
+        "value": 106493.72272618157,
+        "cash": 68313.83685305172,
+        "positions": 7
+      },
+      {
+        "d": "2023-12-08",
+        "value": 106716.35363085568,
+        "cash": 68313.83685305172,
+        "positions": 7
+      },
+      {
+        "d": "2023-12-11",
+        "value": 107075.24455436667,
+        "cash": 71373.39701847173,
+        "positions": 6
+      },
+      {
+        "d": "2023-12-12",
+        "value": 107390.79627468115,
+        "cash": 67625.7634590689,
+        "positions": 7
+      },
+      {
+        "d": "2023-12-13",
+        "value": 107887.19057772253,
+        "cash": 61106.23969867886,
+        "positions": 8
+      },
+      {
+        "d": "2023-12-14",
+        "value": 107847.93085300321,
+        "cash": 64993.45078889349,
+        "positions": 7
+      },
+      {
+        "d": "2023-12-15",
+        "value": 108048.47025225108,
+        "cash": 73932.85247497517,
+        "positions": 6
+      },
+      {
+        "d": "2023-12-18",
+        "value": 108158.25152815579,
+        "cash": 68205.6395100177,
+        "positions": 7
+      },
+      {
+        "d": "2023-12-19",
+        "value": 108519.51889690025,
+        "cash": 69358.10166053633,
+        "positions": 7
+      },
+      {
+        "d": "2023-12-20",
+        "value": 107036.85240189855,
+        "cash": 69358.10166053633,
+        "positions": 7
+      },
+      {
+        "d": "2023-12-21",
+        "value": 107472.81858041623,
+        "cash": 76556.51136032157,
+        "positions": 6
+      },
+      {
+        "d": "2023-12-22",
+        "value": 107459.6620833727,
+        "cash": 72794.962710007,
+        "positions": 7
+      },
+      {
+        "d": "2023-12-26",
+        "value": 107904.69130116681,
+        "cash": 65805.14377111936,
+        "positions": 8
+      },
+      {
+        "d": "2023-12-27",
+        "value": 107935.05093699781,
+        "cash": 71995.59349187516,
+        "positions": 7
+      },
+      {
+        "d": "2023-12-28",
+        "value": 107818.52192630441,
+        "cash": 72039.47170409065,
+        "positions": 7
+      },
+      {
+        "d": "2023-12-29",
+        "value": 107390.41362422549,
+        "cash": 107390.41362422549,
+        "positions": 0
+      }
+    ],
+    "events": [
+      {
+        "s": "NFLX",
+        "signalDate": "2023-01-20",
+        "strength": 0.32443925721679934,
+        "volScale": 0.35,
+        "day": "2023-01-23",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3499.9999999999995,
+        "previousEquity": 100000
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-01-20",
+        "strength": 0.21649226399973953,
+        "volScale": 0.35,
+        "day": "2023-01-23",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3500,
+        "previousEquity": 100000
+      },
+      {
+        "s": "C",
+        "signalDate": "2023-01-20",
+        "strength": 0.11721012484274018,
+        "volScale": 0.5961221465155834,
+        "day": "2023-01-23",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5961.221465155834,
+        "previousEquity": 100000
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-01-23",
+        "strength": 0.3566385663480174,
+        "volScale": 0.35,
+        "day": "2023-01-24",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-01-23",
+        "strength": 0.3147453963855913,
+        "volScale": 0.35,
+        "day": "2023-01-24",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3509.366075427024,
+        "previousEquity": 100267.60215505784
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-01-23",
+        "strength": 0.20786310609082026,
+        "volScale": 0.41160840417010564,
+        "day": "2023-01-24",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4127.09877130064,
+        "previousEquity": 100267.60215505784
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-01-23",
+        "strength": 0.1717206893055372,
+        "volScale": 0.35,
+        "day": "2023-01-24",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3509.366075427024,
+        "previousEquity": 100267.60215505784
+      },
+      {
+        "s": "C",
+        "signalDate": "2023-01-23",
+        "strength": 0.1270601562680691,
+        "volScale": 0.6093347609333392,
+        "day": "2023-01-24",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-01-24",
+        "strength": 0.4286892321906768,
+        "volScale": 0.35,
+        "day": "2023-01-25",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-01-24",
+        "strength": 0.3988040463360658,
+        "volScale": 0.35,
+        "day": "2023-01-25",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-01-25",
+        "strength": 0.33818241195220944,
+        "volScale": 0.35,
+        "day": "2023-01-26",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-01-25",
+        "strength": 0.29635727217056496,
+        "volScale": 0.35,
+        "day": "2023-01-26",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3515.64610708209,
+        "previousEquity": 100447.0316309169
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-01-26",
+        "strength": 0.22540576860784522,
+        "volScale": 0.35,
+        "day": "2023-01-27",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-01-26",
+        "strength": 0.21314766843174948,
+        "volScale": 0.35,
+        "day": "2023-01-27",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-01-26",
+        "strength": 0.129686953988839,
+        "volScale": 0.35,
+        "day": "2023-01-27",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-01-26",
+        "strength": 0.11022108629009275,
+        "volScale": 0.35,
+        "day": "2023-01-27",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-01-27",
+        "strength": 0.3041666625274553,
+        "volScale": 0.35,
+        "day": "2023-01-30",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-01-27",
+        "strength": 0.25008980777494516,
+        "volScale": 0.35,
+        "day": "2023-01-30",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-01-27",
+        "strength": 0.08913828120320866,
+        "volScale": 0.4274241835305581,
+        "day": "2023-01-30",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-02-01",
+        "strength": 0.33624798277511414,
+        "volScale": 0.35,
+        "day": "2023-02-02",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-02-01",
+        "strength": 0.33244954122502346,
+        "volScale": 0.35,
+        "day": "2023-02-02",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-02-01",
+        "strength": 0.1861438518364824,
+        "volScale": 0.3598962501245891,
+        "day": "2023-02-02",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3653.3664324685424,
+        "previousEquity": 101511.65596206735
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-02-01",
+        "strength": 0.14533149718553817,
+        "volScale": 0.35,
+        "day": "2023-02-02",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "POSITION_CAP"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-02-01",
+        "strength": 0.13642965008261498,
+        "volScale": 0.3912859082718143,
+        "day": "2023-02-02",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-02-01",
+        "strength": 0.13415922317907025,
+        "volScale": 0.35,
+        "day": "2023-02-02",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-02-02",
+        "strength": 0.4657010342844221,
+        "volScale": 0.35,
+        "day": "2023-02-03",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-02-02",
+        "strength": 0.40921205872213817,
+        "volScale": 0.35,
+        "day": "2023-02-03",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-02-02",
+        "strength": 0.23594646023847266,
+        "volScale": 0.35,
+        "day": "2023-02-03",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-02-02",
+        "strength": 0.23008160747206152,
+        "volScale": 0.35,
+        "day": "2023-02-03",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-02-02",
+        "strength": 0.20035337671486375,
+        "volScale": 0.35,
+        "day": "2023-02-03",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "POSITION_CAP"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-02-02",
+        "strength": 0.18548639409977485,
+        "volScale": 0.38659322122442,
+        "day": "2023-02-03",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "GM",
+        "signalDate": "2023-02-02",
+        "strength": 0.04582074119455548,
+        "volScale": 0.35,
+        "day": "2023-02-03",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "POSITION_CAP"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-02-07",
+        "strength": 0.3426157524172193,
+        "volScale": 0.35,
+        "day": "2023-02-08",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "GM",
+        "signalDate": "2023-02-16",
+        "strength": 0.11111078199173163,
+        "volScale": 0.35,
+        "day": "2023-02-17",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3543.7015492063265,
+        "previousEquity": 101248.61569160936
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-02-23",
+        "strength": 0.3919182261300955,
+        "volScale": 0.35,
+        "day": "2023-02-24",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3531.8073512304636,
+        "previousEquity": 100908.78146372754
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-03-03",
+        "strength": 0.4697920580254338,
+        "volScale": 0.35,
+        "day": "2023-03-06",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-03-15",
+        "strength": 0.38459170840139256,
+        "volScale": 0.35,
+        "day": "2023-03-16",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3531.7692949479697,
+        "previousEquity": 100907.69414137056
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-03-16",
+        "strength": 0.7845156645785909,
+        "volScale": 0.35,
+        "day": "2023-03-17",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3541.1152681143726,
+        "previousEquity": 101174.72194612496
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-03-16",
+        "strength": 0.5089035229523589,
+        "volScale": 0.35,
+        "day": "2023-03-17",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-03-17",
+        "strength": 0.7444822573270173,
+        "volScale": 0.35,
+        "day": "2023-03-20",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-03-17",
+        "strength": 0.5131455427866709,
+        "volScale": 0.35,
+        "day": "2023-03-20",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-03-17",
+        "strength": 0.22091943218597176,
+        "volScale": 0.35,
+        "day": "2023-03-20",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3541.4734423883074,
+        "previousEquity": 101184.95549680878
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-03-22",
+        "strength": 0.6939142537587997,
+        "volScale": 0.35,
+        "day": "2023-03-23",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-03-31",
+        "strength": 0.6571257020227388,
+        "volScale": 0.35,
+        "day": "2023-04-03",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-03-31",
+        "strength": 0.24714426354073948,
+        "volScale": 0.35,
+        "day": "2023-04-03",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-04-03",
+        "strength": 0.5678990757709481,
+        "volScale": 0.351382937273389,
+        "day": "2023-04-04",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3571.025960704293,
+        "previousEquity": 101627.75655568906
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-04-05",
+        "strength": 0.2217137582552955,
+        "volScale": 0.35,
+        "day": "2023-04-06",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3550.5521420971677,
+        "previousEquity": 101444.34691706196
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-05-01",
+        "strength": 0.3141945695839574,
+        "volScale": 0.37791581435853017,
+        "day": "2023-05-02",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3835.0852136603144,
+        "previousEquity": 101479.88170778043
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-05-04",
+        "strength": 0.3633119415003496,
+        "volScale": 0.35,
+        "day": "2023-05-05",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3546.4345391272914,
+        "previousEquity": 101326.70111792262
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-05-05",
+        "strength": 0.4636620390735524,
+        "volScale": 0.35,
+        "day": "2023-05-08",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-05-08",
+        "strength": 0.5798772332127109,
+        "volScale": 0.35,
+        "day": "2023-05-09",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-05-08",
+        "strength": 0.2520808462538193,
+        "volScale": 0.35,
+        "day": "2023-05-09",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-05-09",
+        "strength": 0.025644302872418034,
+        "volScale": 0.35,
+        "day": "2023-05-10",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3565.289337042222,
+        "previousEquity": 101865.40962977777
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-05-10",
+        "strength": 0.12388922860456764,
+        "volScale": 0.35,
+        "day": "2023-05-11",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-05-12",
+        "strength": 0.1774629122357061,
+        "volScale": 0.35,
+        "day": "2023-05-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-05-15",
+        "strength": 0.1496492094141848,
+        "volScale": 0.35,
+        "day": "2023-05-16",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "MU",
+        "signalDate": "2023-05-15",
+        "strength": 0.14072977973508793,
+        "volScale": 0.35,
+        "day": "2023-05-16",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3571.155876923971,
+        "previousEquity": 102033.02505497061
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-05-17",
+        "strength": 0.29586038157420247,
+        "volScale": 0.35,
+        "day": "2023-05-18",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3579.763598549414,
+        "previousEquity": 102278.95995855468
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-05-17",
+        "strength": 0.26354888842760893,
+        "volScale": 0.35,
+        "day": "2023-05-18",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3579.7635985494135,
+        "previousEquity": 102278.95995855468
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-05-17",
+        "strength": 0.21999464249678824,
+        "volScale": 0.35,
+        "day": "2023-05-18",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-05-17",
+        "strength": 0.10815856057415396,
+        "volScale": 0.35,
+        "day": "2023-05-18",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3579.763598549414,
+        "previousEquity": 102278.95995855468
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-05-18",
+        "strength": 0.3134203460192062,
+        "volScale": 0.35,
+        "day": "2023-05-19",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-05-18",
+        "strength": 0.31003683579332586,
+        "volScale": 0.35,
+        "day": "2023-05-19",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-05-18",
+        "strength": 0.26426141305819484,
+        "volScale": 0.35,
+        "day": "2023-05-19",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-05-18",
+        "strength": 0.19083359311952397,
+        "volScale": 0.35,
+        "day": "2023-05-19",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3602.159836995765,
+        "previousEquity": 102918.85248559329
+      },
+      {
+        "s": "MU",
+        "signalDate": "2023-05-18",
+        "strength": 0.19013085487253178,
+        "volScale": 0.35,
+        "day": "2023-05-19",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-05-18",
+        "strength": 0.1413965119206626,
+        "volScale": 0.35,
+        "day": "2023-05-19",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-05-25",
+        "strength": 0.5676076483266472,
+        "volScale": 0.35,
+        "day": "2023-05-26",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-05-25",
+        "strength": 0.3419937339939463,
+        "volScale": 0.35,
+        "day": "2023-05-26",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "MU",
+        "signalDate": "2023-05-25",
+        "strength": 0.2885770750281238,
+        "volScale": 0.35,
+        "day": "2023-05-26",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-05-25",
+        "strength": 0.25936624859419655,
+        "volScale": 0.35,
+        "day": "2023-05-26",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-05-25",
+        "strength": 0.17520462448219543,
+        "volScale": 0.35,
+        "day": "2023-05-26",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3647.703720005937,
+        "previousEquity": 104220.10628588394
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-05-26",
+        "strength": 0.315010360101899,
+        "volScale": 0.35,
+        "day": "2023-05-30",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "MU",
+        "signalDate": "2023-05-26",
+        "strength": 0.30951742219012535,
+        "volScale": 0.35,
+        "day": "2023-05-30",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-05-26",
+        "strength": 0.2219570358747136,
+        "volScale": 0.35,
+        "day": "2023-05-30",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-05-26",
+        "strength": 0.17577628747352314,
+        "volScale": 0.35,
+        "day": "2023-05-30",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-05-30",
+        "strength": 0.5592225248292109,
+        "volScale": 0.35,
+        "day": "2023-05-31",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-05-30",
+        "strength": 0.29482701290794244,
+        "volScale": 0.35,
+        "day": "2023-05-31",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-05-30",
+        "strength": 0.16493542857707677,
+        "volScale": 0.35,
+        "day": "2023-05-31",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-06-02",
+        "strength": 0.49221926272779837,
+        "volScale": 0.35,
+        "day": "2023-06-05",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3679.9579849199076,
+        "previousEquity": 105141.65671199738
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-06-02",
+        "strength": 0.2064084637578545,
+        "volScale": 0.35,
+        "day": "2023-06-05",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2023-06-02",
+        "strength": 0.1193827258847664,
+        "volScale": 0.35,
+        "day": "2023-06-05",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3679.9579849199076,
+        "previousEquity": 105141.65671199738
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-06-05",
+        "strength": 0.2638999322487885,
+        "volScale": 0.3978056663187192,
+        "day": "2023-06-06",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4187.927014613615,
+        "previousEquity": 105275.70040337928
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2023-06-05",
+        "strength": 0.1320882282197895,
+        "volScale": 0.35,
+        "day": "2023-06-06",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2023-06-06",
+        "strength": 0.16228135760827844,
+        "volScale": 0.35,
+        "day": "2023-06-07",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2023-06-07",
+        "strength": 0.17079406799751173,
+        "volScale": 0.35943041645512414,
+        "day": "2023-06-08",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2023-06-08",
+        "strength": 0.24139752407418946,
+        "volScale": 0.35,
+        "day": "2023-06-09",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-06-09",
+        "strength": 0.26500617477065336,
+        "volScale": 0.35,
+        "day": "2023-06-12",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3692.985403315612,
+        "previousEquity": 105513.86866616036
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2023-06-09",
+        "strength": 0.2605734874218093,
+        "volScale": 0.35,
+        "day": "2023-06-12",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-06-09",
+        "strength": 0.1973836786977794,
+        "volScale": 0.35,
+        "day": "2023-06-12",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-06-12",
+        "strength": 0.24281228716506087,
+        "volScale": 0.35,
+        "day": "2023-06-13",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-06-13",
+        "strength": 0.26123079304693375,
+        "volScale": 0.35,
+        "day": "2023-06-14",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2023-06-13",
+        "strength": 0.24703549157740023,
+        "volScale": 0.398341572771804,
+        "day": "2023-06-14",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-06-13",
+        "strength": 0.242935351229715,
+        "volScale": 0.35,
+        "day": "2023-06-14",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3722.638715083689,
+        "previousEquity": 106361.10614524827
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-06-14",
+        "strength": 0.5376881781531033,
+        "volScale": 0.35,
+        "day": "2023-06-15",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3725.2552448197403,
+        "previousEquity": 106435.86413770689
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-06-14",
+        "strength": 0.26582059421786597,
+        "volScale": 0.35,
+        "day": "2023-06-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-06-14",
+        "strength": 0.22136100648413937,
+        "volScale": 0.35,
+        "day": "2023-06-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2023-06-14",
+        "strength": 0.05932467124006546,
+        "volScale": 0.40148938186346345,
+        "day": "2023-06-15",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4273.286930075152,
+        "previousEquity": 106435.86413770689
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-06-15",
+        "strength": 0.20653294458492089,
+        "volScale": 0.35,
+        "day": "2023-06-16",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2023-06-15",
+        "strength": 0.07093331490891619,
+        "volScale": 0.45410160366274743,
+        "day": "2023-06-16",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-06-15",
+        "strength": 0.04980994215802559,
+        "volScale": 0.5020607069880383,
+        "day": "2023-06-16",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5358.295792906606,
+        "previousEquity": 106726.05360917575
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2023-06-16",
+        "strength": 0.08454716658819805,
+        "volScale": 0.4546331512853942,
+        "day": "2023-06-20",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-06-20",
+        "strength": 0.6204659789454434,
+        "volScale": 0.35,
+        "day": "2023-06-21",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2023-06-20",
+        "strength": 0.4830326155177582,
+        "volScale": 0.36093510363698195,
+        "day": "2023-06-21",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2023-06-20",
+        "strength": 0.09693287675414086,
+        "volScale": 0.47975263798584095,
+        "day": "2023-06-21",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2023-06-27",
+        "strength": 0.11892143591205695,
+        "volScale": 0.4585803353734186,
+        "day": "2023-06-28",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-06-27",
+        "strength": 0.0756840443852278,
+        "volScale": 0.3799571900970417,
+        "day": "2023-06-28",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2023-06-28",
+        "strength": 0.10360241039215157,
+        "volScale": 0.4589262058576291,
+        "day": "2023-06-29",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-06-28",
+        "strength": 0.08952518248049035,
+        "volScale": 0.3802457067488376,
+        "day": "2023-06-29",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2023-06-29",
+        "strength": 0.12725940062254004,
+        "volScale": 0.46027134050011387,
+        "day": "2023-06-30",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-06-29",
+        "strength": 0.09675724412965425,
+        "volScale": 0.43733326810907797,
+        "day": "2023-06-30",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2023-06-30",
+        "strength": 0.1217658065212226,
+        "volScale": 0.5324352084770825,
+        "day": "2023-07-03",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2023-07-03",
+        "strength": 0.7167924283305496,
+        "volScale": 0.35,
+        "day": "2023-07-05",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3738.2511720999337,
+        "previousEquity": 106807.1763457124
+      },
+      {
+        "s": "GM",
+        "signalDate": "2023-07-03",
+        "strength": 0.16483303569313512,
+        "volScale": 0.5066599638717971,
+        "day": "2023-07-05",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5411.49201085673,
+        "previousEquity": 106807.1763457124
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2023-07-03",
+        "strength": 0.1560287666998379,
+        "volScale": 0.5565936176736141,
+        "day": "2023-07-05",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5944.819267576373,
+        "previousEquity": 106807.1763457124
+      },
+      {
+        "s": "GM",
+        "signalDate": "2023-07-05",
+        "strength": 0.17823468970700462,
+        "volScale": 0.5128067064536309,
+        "day": "2023-07-06",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2023-07-05",
+        "strength": 0.16381486636554476,
+        "volScale": 0.5678818549255991,
+        "day": "2023-07-06",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2023-07-07",
+        "strength": 0.20768916600436493,
+        "volScale": 0.5526987066919327,
+        "day": "2023-07-10",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "GM",
+        "signalDate": "2023-07-07",
+        "strength": 0.2069372441806081,
+        "volScale": 0.601052489571711,
+        "day": "2023-07-10",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-07-07",
+        "strength": 0.1206136765193413,
+        "volScale": 0.45322772706262765,
+        "day": "2023-07-10",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4845.840219265345,
+        "previousEquity": 106918.44143497736
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2023-07-10",
+        "strength": 0.2496094298124365,
+        "volScale": 0.5682372633347063,
+        "day": "2023-07-11",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-07-11",
+        "strength": 0.4952286672248445,
+        "volScale": 0.35,
+        "day": "2023-07-12",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3755.858810940129,
+        "previousEquity": 107310.25174114654
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2023-07-11",
+        "strength": 0.3181725513913587,
+        "volScale": 0.5737467886815049,
+        "day": "2023-07-12",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-07-11",
+        "strength": 0.15010679618811462,
+        "volScale": 0.4389553320294966,
+        "day": "2023-07-12",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "GM",
+        "signalDate": "2023-07-12",
+        "strength": 0.22646880704463657,
+        "volScale": 0.6271048717004313,
+        "day": "2023-07-13",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-07-12",
+        "strength": 0.15498822534741774,
+        "volScale": 0.4385999235494413,
+        "day": "2023-07-13",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-07-13",
+        "strength": 0.6695718638202104,
+        "volScale": 0.35,
+        "day": "2023-07-14",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-07-13",
+        "strength": 0.5905139800693933,
+        "volScale": 0.35,
+        "day": "2023-07-14",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3751.279438053569,
+        "previousEquity": 107179.41251581626
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-07-13",
+        "strength": 0.48836727080026665,
+        "volScale": 0.35,
+        "day": "2023-07-14",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3751.2794380535684,
+        "previousEquity": 107179.41251581626
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-07-13",
+        "strength": 0.28205409432256245,
+        "volScale": 0.49869857497065956,
+        "day": "2023-07-14",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5345.022028783003,
+        "previousEquity": 107179.41251581626
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-07-14",
+        "strength": 0.30810489901601823,
+        "volScale": 0.5247933122546063,
+        "day": "2023-07-17",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2023-07-17",
+        "strength": 0.8079820918953229,
+        "volScale": 0.35,
+        "day": "2023-07-18",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-07-17",
+        "strength": 0.7127886226531848,
+        "volScale": 0.35,
+        "day": "2023-07-18",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-07-17",
+        "strength": 0.3553124991817793,
+        "volScale": 0.509260944855,
+        "day": "2023-07-18",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2023-07-18",
+        "strength": 0.8197270588787648,
+        "volScale": 0.35,
+        "day": "2023-07-19",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-07-18",
+        "strength": 0.5848197056525266,
+        "volScale": 0.5531596629558994,
+        "day": "2023-07-19",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "POSITION_CAP"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-07-18",
+        "strength": 0.5095490370216869,
+        "volScale": 0.35,
+        "day": "2023-07-19",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-07-18",
+        "strength": 0.4801421800666068,
+        "volScale": 0.4065180892680071,
+        "day": "2023-07-19",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "POSITION_CAP"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-07-18",
+        "strength": 0.3870294086399426,
+        "volScale": 0.5272081686226355,
+        "day": "2023-07-19",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-07-19",
+        "strength": 0.5047669019187873,
+        "volScale": 0.35,
+        "day": "2023-07-20",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-07-19",
+        "strength": 0.3874195353737284,
+        "volScale": 0.537252105117713,
+        "day": "2023-07-20",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2023-07-19",
+        "strength": 0.146936218976772,
+        "volScale": 0.442656798949831,
+        "day": "2023-07-20",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "POSITION_CAP"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2023-07-21",
+        "strength": 0.16540817380102157,
+        "volScale": 0.4879127149497499,
+        "day": "2023-07-24",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5192.793214081225,
+        "previousEquity": 106428.73315191283
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2023-07-24",
+        "strength": 0.20463182187911633,
+        "volScale": 0.4904303877007685,
+        "day": "2023-07-25",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-07-26",
+        "strength": 0.20952729109252788,
+        "volScale": 0.5638947501888929,
+        "day": "2023-07-27",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 6006.17025148253,
+        "previousEquity": 106512.25693217732
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-07-28",
+        "strength": 0.2561821667835098,
+        "volScale": 0.4347992781084917,
+        "day": "2023-07-31",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4630.011068022899,
+        "previousEquity": 106486.1719220153
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-07-31",
+        "strength": 0.5314751294962576,
+        "volScale": 0.5006394054861784,
+        "day": "2023-08-01",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5346.4158463373315,
+        "previousEquity": 106791.75046449545
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-07-31",
+        "strength": 0.2698009681558804,
+        "volScale": 0.4262247430570948,
+        "day": "2023-08-01",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2023-07-31",
+        "strength": 0.23364784531884664,
+        "volScale": 0.4093846840453012,
+        "day": "2023-08-01",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4371.890702255212,
+        "previousEquity": 106791.75046449545
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-08-31",
+        "strength": 0.1714417650700033,
+        "volScale": 0.4437304392883948,
+        "day": "2023-09-01",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4639.877369550339,
+        "previousEquity": 104565.2260636267
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-09-01",
+        "strength": 0.17929988234009353,
+        "volScale": 0.44349165753785585,
+        "day": "2023-09-05",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-11-02",
+        "strength": 0.0631555016068972,
+        "volScale": 0.3737109975404404,
+        "day": "2023-11-03",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3900.290303627267,
+        "previousEquity": 104366.48451067338
+      },
+      {
+        "s": "MU",
+        "signalDate": "2023-11-03",
+        "strength": 0.14148370449848424,
+        "volScale": 0.43510306145256317,
+        "day": "2023-11-06",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4543.104769698144,
+        "previousEquity": 104414.451935394
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-11-03",
+        "strength": 0.10926447215849033,
+        "volScale": 0.3695286635190083,
+        "day": "2023-11-06",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-11-03",
+        "strength": 0.10265222627674309,
+        "volScale": 0.35,
+        "day": "2023-11-06",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3654.505817738789,
+        "previousEquity": 104414.451935394
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-11-07",
+        "strength": 0.10564268856262982,
+        "volScale": 0.35,
+        "day": "2023-11-08",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-11-07",
+        "strength": 0.10438724807807942,
+        "volScale": 0.35,
+        "day": "2023-11-08",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3657.052708140688,
+        "previousEquity": 104487.2202325911
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-11-07",
+        "strength": 0.10431769149993975,
+        "volScale": 0.3749243034040575,
+        "day": "2023-11-08",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3917.4798260330563,
+        "previousEquity": 104487.2202325911
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-11-07",
+        "strength": 0.08859956048957263,
+        "volScale": 0.36983963376525963,
+        "day": "2023-11-08",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-11-07",
+        "strength": 0.08023785356143343,
+        "volScale": 0.35,
+        "day": "2023-11-08",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3657.052708140688,
+        "previousEquity": 104487.2202325911
+      },
+      {
+        "s": "MU",
+        "signalDate": "2023-11-09",
+        "strength": 0.0822839502885715,
+        "volScale": 0.43814296918907086,
+        "day": "2023-11-10",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-11-10",
+        "strength": 0.12173661529117696,
+        "volScale": 0.35,
+        "day": "2023-11-13",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-11-10",
+        "strength": 0.08451946736264548,
+        "volScale": 0.37559551043775935,
+        "day": "2023-11-13",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-11-10",
+        "strength": 0.0780021799936188,
+        "volScale": 0.35,
+        "day": "2023-11-13",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-11-10",
+        "strength": 0.06772256950859035,
+        "volScale": 0.38366239207564407,
+        "day": "2023-11-13",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-11-13",
+        "strength": 0.08043931511310998,
+        "volScale": 0.35,
+        "day": "2023-11-14",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-11-14",
+        "strength": 0.11244894533741223,
+        "volScale": 0.35,
+        "day": "2023-11-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "MU",
+        "signalDate": "2023-11-14",
+        "strength": 0.0997118061363409,
+        "volScale": 0.40154086556289953,
+        "day": "2023-11-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-11-14",
+        "strength": 0.09546855535364296,
+        "volScale": 0.35,
+        "day": "2023-11-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-11-14",
+        "strength": 0.09274995457321311,
+        "volScale": 0.36698353495373087,
+        "day": "2023-11-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "C",
+        "signalDate": "2023-11-14",
+        "strength": 0.08645969386687358,
+        "volScale": 0.38481574631502286,
+        "day": "2023-11-15",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4070.111014035932,
+        "previousEquity": 105767.7876493132
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-11-14",
+        "strength": 0.08214477860981662,
+        "volScale": 0.35,
+        "day": "2023-11-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-11-14",
+        "strength": 0.06983786267176395,
+        "volScale": 0.3723367586067526,
+        "day": "2023-11-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-11-14",
+        "strength": 0.02290704344532224,
+        "volScale": 0.35,
+        "day": "2023-11-15",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3701.8725677259617,
+        "previousEquity": 105767.7876493132
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-11-15",
+        "strength": 0.1241716251126983,
+        "volScale": 0.3737885751129106,
+        "day": "2023-11-16",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-11-15",
+        "strength": 0.1206225510706933,
+        "volScale": 0.35,
+        "day": "2023-11-16",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "C",
+        "signalDate": "2023-11-15",
+        "strength": 0.0989295078222443,
+        "volScale": 0.39817481325230536,
+        "day": "2023-11-16",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2023-11-15",
+        "strength": 0.04332518127718843,
+        "volScale": 0.35,
+        "day": "2023-11-16",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "POSITION_CAP"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-11-15",
+        "strength": 0.03629755973536386,
+        "volScale": 0.35,
+        "day": "2023-11-16",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "POSITION_CAP"
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-11-15",
+        "strength": 0.03084167105300839,
+        "volScale": 0.35,
+        "day": "2023-11-16",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "POSITION_CAP"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-11-16",
+        "strength": 0.0537302108379103,
+        "volScale": 0.5460106457486664,
+        "day": "2023-11-17",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "POSITION_CAP"
+      },
+      {
+        "s": "C",
+        "signalDate": "2023-11-17",
+        "strength": 0.1320262757615731,
+        "volScale": 0.4083405113540269,
+        "day": "2023-11-20",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "MU",
+        "signalDate": "2023-11-17",
+        "strength": 0.10700153853392091,
+        "volScale": 0.42801288755822325,
+        "day": "2023-11-20",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2023-11-17",
+        "strength": 0.05712279157006006,
+        "volScale": 0.35,
+        "day": "2023-11-20",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "POSITION_CAP"
+      },
+      {
+        "s": "MU",
+        "signalDate": "2023-11-20",
+        "strength": 0.12453446847362715,
+        "volScale": 0.4326223384497384,
+        "day": "2023-11-21",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2023-11-20",
+        "strength": 0.11578635177178764,
+        "volScale": 0.35554164326169896,
+        "day": "2023-11-21",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-11-20",
+        "strength": 0.10063701677764181,
+        "volScale": 0.43141237886230765,
+        "day": "2023-11-21",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-11-20",
+        "strength": 0.0766729362581553,
+        "volScale": 0.35,
+        "day": "2023-11-21",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3720.757418650135,
+        "previousEquity": 106307.35481857529
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-11-20",
+        "strength": 0.06536283779356378,
+        "volScale": 0.5409714436738863,
+        "day": "2023-11-21",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "POSITION_CAP"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2023-11-20",
+        "strength": 0.053721919789960326,
+        "volScale": 0.3658830387749858,
+        "day": "2023-11-21",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "POSITION_CAP"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-11-22",
+        "strength": 0.15951873591604548,
+        "volScale": 0.5581567780248032,
+        "day": "2023-11-24",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5923.87346617011,
+        "previousEquity": 106132.78740667494
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-11-22",
+        "strength": 0.13740602708714866,
+        "volScale": 0.35,
+        "day": "2023-11-24",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3714.647559233623,
+        "previousEquity": 106132.78740667494
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-11-22",
+        "strength": 0.1331842908790173,
+        "volScale": 0.35,
+        "day": "2023-11-24",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-11-22",
+        "strength": 0.11951725817674941,
+        "volScale": 0.4447456271055504,
+        "day": "2023-11-24",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-11-27",
+        "strength": 0.18291118390576933,
+        "volScale": 0.35,
+        "day": "2023-11-28",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-11-28",
+        "strength": 0.20888886628327552,
+        "volScale": 0.35,
+        "day": "2023-11-29",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3718.403010251047,
+        "previousEquity": 106240.0860071728
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-11-29",
+        "strength": 0.25578643871622475,
+        "volScale": 0.35,
+        "day": "2023-11-30",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-11-29",
+        "strength": 0.18625610599489928,
+        "volScale": 0.7198928988421949,
+        "day": "2023-11-30",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 7660.565351504292,
+        "previousEquity": 106412.57003402582
+      },
+      {
+        "s": "C",
+        "signalDate": "2023-11-29",
+        "strength": 0.0858482095969928,
+        "volScale": 0.4848794922951672,
+        "day": "2023-11-30",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2023-11-29",
+        "strength": 0.057940746497529005,
+        "volScale": 0.41372222016263327,
+        "day": "2023-11-30",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4402.524472768887,
+        "previousEquity": 106412.57003402582
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-11-30",
+        "strength": 0.20189286006081852,
+        "volScale": 0.7462740968039209,
+        "day": "2023-12-01",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "C",
+        "signalDate": "2023-11-30",
+        "strength": 0.10398501935451465,
+        "volScale": 0.4863711496175564,
+        "day": "2023-12-01",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2023-11-30",
+        "strength": 0.07647451073376788,
+        "volScale": 0.4131458818463079,
+        "day": "2023-12-01",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-12-01",
+        "strength": 0.25705609325929446,
+        "volScale": 0.7477913956731305,
+        "day": "2023-12-04",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "C",
+        "signalDate": "2023-12-01",
+        "strength": 0.14704462906357874,
+        "volScale": 0.549039674530192,
+        "day": "2023-12-04",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5847.781851778946,
+        "previousEquity": 106509.27652510427
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2023-12-01",
+        "strength": 0.11255281950503249,
+        "volScale": 0.46770361690651957,
+        "day": "2023-12-04",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "C",
+        "signalDate": "2023-12-04",
+        "strength": 0.17265495485727866,
+        "volScale": 0.620401222510875,
+        "day": "2023-12-05",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-12-05",
+        "strength": 0.1915380347752238,
+        "volScale": 0.629217223969275,
+        "day": "2023-12-06",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 6683.151273720208,
+        "previousEquity": 106213.73699151234
+      },
+      {
+        "s": "C",
+        "signalDate": "2023-12-06",
+        "strength": 0.2054056335679424,
+        "volScale": 0.5666857851469601,
+        "day": "2023-12-07",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-12-07",
+        "strength": 0.3089629399067124,
+        "volScale": 0.35,
+        "day": "2023-12-08",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-12-07",
+        "strength": 0.22525399570067184,
+        "volScale": 0.5952861141344366,
+        "day": "2023-12-08",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-12-08",
+        "strength": 0.2629714486952106,
+        "volScale": 0.7588688963641353,
+        "day": "2023-12-11",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-12-08",
+        "strength": 0.2545737202110423,
+        "volScale": 0.35,
+        "day": "2023-12-11",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-12-08",
+        "strength": 0.026488671169211164,
+        "volScale": 0.6299338079518041,
+        "day": "2023-12-11",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 6722.423901341625,
+        "previousEquity": 106716.35363085568
+      },
+      {
+        "s": "GM",
+        "signalDate": "2023-12-08",
+        "strength": 0.020699244888169988,
+        "volScale": 0.35,
+        "day": "2023-12-11",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "POSITION_CAP"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-12-11",
+        "strength": 0.3072359858106024,
+        "volScale": 0.35,
+        "day": "2023-12-12",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3747.6335594028333,
+        "previousEquity": 107075.24455436667
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-12-11",
+        "strength": 0.26148563677347414,
+        "volScale": 0.8342254181174297,
+        "day": "2023-12-12",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-12-11",
+        "strength": 0.23325743333666638,
+        "volScale": 0.6485942331266221,
+        "day": "2023-12-12",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-12-12",
+        "strength": 0.33252643636636314,
+        "volScale": 0.35,
+        "day": "2023-12-13",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2023-12-12",
+        "strength": 0.29042026115936204,
+        "volScale": 0.8063873611491501,
+        "day": "2023-12-13",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-12-12",
+        "strength": 0.23806728525855214,
+        "volScale": 0.6566381570697402,
+        "day": "2023-12-13",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2023-12-12",
+        "strength": 0.21593454072371743,
+        "volScale": 0.6070840320165413,
+        "day": "2023-12-13",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 6519.5237603900405,
+        "previousEquity": 107390.79627468115
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2023-12-12",
+        "strength": 0.11474812668184331,
+        "volScale": 0.35781997531169296,
+        "day": "2023-12-13",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "POSITION_CAP"
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-12-13",
+        "strength": 0.2676535924127159,
+        "volScale": 0.7194142458807803,
+        "day": "2023-12-14",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "C",
+        "signalDate": "2023-12-13",
+        "strength": 0.2539042105058871,
+        "volScale": 0.6101282483469107,
+        "day": "2023-12-14",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2023-12-13",
+        "strength": 0.24645813765743263,
+        "volScale": 0.5880894514802842,
+        "day": "2023-12-14",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "MU",
+        "signalDate": "2023-12-13",
+        "strength": 0.17828570141739064,
+        "volScale": 0.5062612318291471,
+        "day": "2023-12-14",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "POSITION_CAP"
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-12-14",
+        "strength": 0.47470517716358906,
+        "volScale": 0.35,
+        "day": "2023-12-15",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3774.6775798551116,
+        "previousEquity": 107847.93085300321
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-12-14",
+        "strength": 0.36281490104451963,
+        "volScale": 0.5332153846701708,
+        "day": "2023-12-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "POSITION_CAP"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2023-12-14",
+        "strength": 0.3188467435907747,
+        "volScale": 0.43506956098295047,
+        "day": "2023-12-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-12-14",
+        "strength": 0.29631234772929793,
+        "volScale": 0.694232144824448,
+        "day": "2023-12-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "C",
+        "signalDate": "2023-12-14",
+        "strength": 0.2783802667631321,
+        "volScale": 0.5978972632938161,
+        "day": "2023-12-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "MU",
+        "signalDate": "2023-12-14",
+        "strength": 0.2087378734249994,
+        "volScale": 0.4674423010479237,
+        "day": "2023-12-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "POSITION_CAP"
+      },
+      {
+        "s": "GM",
+        "signalDate": "2023-12-14",
+        "strength": 0.17118352697397343,
+        "volScale": 0.35,
+        "day": "2023-12-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "POSITION_CAP"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2023-12-14",
+        "strength": 0.07972296779652588,
+        "volScale": 0.7730724469769675,
+        "day": "2023-12-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2023-12-15",
+        "strength": 0.36922042908825503,
+        "volScale": 0.5300596067289663,
+        "day": "2023-12-18",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5727.212964957463,
+        "previousEquity": 108048.47025225108
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-12-15",
+        "strength": 0.31184219362564813,
+        "volScale": 0.6959770604768427,
+        "day": "2023-12-18",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-12-18",
+        "strength": 0.2741998444964211,
+        "volScale": 0.48077848207316476,
+        "day": "2023-12-19",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5200.015999339428,
+        "previousEquity": 108158.25152815579
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2023-12-19",
+        "strength": 0.4642123141796457,
+        "volScale": 0.35,
+        "day": "2023-12-20",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2023-12-19",
+        "strength": 0.2826013042024036,
+        "volScale": 0.4808824286719706,
+        "day": "2023-12-20",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "MU",
+        "signalDate": "2023-12-21",
+        "strength": 0.21749035573666253,
+        "volScale": 0.35,
+        "day": "2023-12-22",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3761.548650314568,
+        "previousEquity": 107472.81858041623
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-12-22",
+        "strength": 0.295555018403143,
+        "volScale": 0.6504597914578018,
+        "day": "2023-12-26",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 6989.818938887644,
+        "previousEquity": 107459.6620833727
+      },
+      {
+        "s": "MU",
+        "signalDate": "2023-12-22",
+        "strength": 0.23999979682687744,
+        "volScale": 0.35,
+        "day": "2023-12-26",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2023-12-26",
+        "strength": 0.3471848141925218,
+        "volScale": 0.6448974313736631,
+        "day": "2023-12-27",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-12-27",
+        "strength": 0.37206470580858064,
+        "volScale": 0.35,
+        "day": "2023-12-28",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2023-12-27",
+        "strength": 0.02961564400869876,
+        "volScale": 0.3857120212812772,
+        "day": "2023-12-28",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4163.1846664007035,
+        "previousEquity": 107935.05093699781
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2023-12-28",
+        "strength": 0.41487536019029214,
+        "volScale": 0.35,
+        "day": "2023-12-29",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3773.6482674206545,
+        "previousEquity": 107818.52192630441
+      }
+    ]
+  },
+  "resultSha256": "2f0659f52ed695a2a8337684dd0b23375e00f04f1885e295e9e2cfd3412c5406"
+}
