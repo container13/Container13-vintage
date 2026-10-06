@@ -20,11 +20,52 @@
   },
   "currentWork": {
     "completed": "Bootstrap for chat changes: LINA_SYSTEM_MANUAL.md is the single entry point and LINA_CURRENT_STATE.json carries only current working state.",
-    "next": "Verify V0.4.20 Release Integrity and deploy/live coherence. Then continue with the next user-approved Lina task.",
+    "next": "Resume crash-safe checkpoint implementation from the first non-DONE workCheckpoint step.",
     "blocked": false
   },
   "bootstrap": {
     "triggerPhrase": "Läs Linas manual",
     "instruction": "Read LINA_SYSTEM_MANUAL.md and follow its New Chat Bootstrap. Do not ask the user to reconstruct prior context already stored in the repository."
+  },
+  "workCheckpoint": {
+    "status": "IN_PROGRESS",
+    "targetRelease": "V0.4.21",
+    "goal": "Build crash-safe chat handoff/work checkpoint.",
+    "plan": [
+      {
+        "id": 1,
+        "task": "Persist IN_PROGRESS checkpoint before implementation",
+        "status": "DONE"
+      },
+      {
+        "id": 2,
+        "task": "Define checkpoint contract and new-chat resume rules in manual",
+        "status": "NEXT"
+      },
+      {
+        "id": 3,
+        "task": "Enforce checkpoint semantics in Release Integrity",
+        "status": "PENDING"
+      },
+      {
+        "id": 4,
+        "task": "Bump runtime release coherently to V0.4.21",
+        "status": "PENDING"
+      },
+      {
+        "id": 5,
+        "task": "Read back exact repo state and verify Release Integrity on final commit",
+        "status": "PENDING"
+      },
+      {
+        "id": 6,
+        "task": "Mark checkpoint IDLE only after verification",
+        "status": "PENDING"
+      }
+    ],
+    "lastSafeRelease": "V0.4.20",
+    "lastSafeCommit": "9973786070f237e02e2bbcf44db39e4463b0d206",
+    "resumeInstruction": "Verify repository truth first. Resume from the first non-DONE step. Never assume a partially written step completed.",
+    "verifiedThrough": "V0.4.20 Release Integrity PASS"
   }
 }
