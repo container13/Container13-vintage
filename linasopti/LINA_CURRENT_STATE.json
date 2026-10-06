@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.21",
+  "release": "V0.4.22",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -20,8 +20,8 @@
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
-    "completed": "V0.4.21 real separate-chat bootstrap test PASS: with only 'Läs Linas manual', a new chat reconstructed release, CURRENT_STATE, checkpoint, frozen generations, Trade/Forward and next step without user reconstruction.",
-    "next": "V0.4.22 in progress: automate verified support diagnostics to GitHub so the user does not manually shuttle status files into ChatGPT.",
+    "completed": "V0.4.22 automation-first support diagnostics implemented: status/diagnostics now use the existing verified /runtime-report → GitHub receipt chain first, with manual copy/download only as fallback.",
+    "next": "Verify V0.4.22 Release Integrity and then test the new automatic status-report path on the real iPhone.",
     "blocked": false
   },
   "bootstrap": {
@@ -45,22 +45,22 @@
       {
         "id": 2,
         "task": "Add verified GitHub runtime-report save path to status/diagnostics export with manual copy only as fallback",
-        "status": "NEXT"
+        "status": "DONE"
       },
       {
         "id": 3,
         "task": "Bump release/cache coherently to V0.4.22 and update active asset tokens",
-        "status": "PENDING"
+        "status": "DONE"
       },
       {
         "id": 4,
         "task": "Document automation-first support rule and update current state",
-        "status": "PENDING"
+        "status": "DONE"
       },
       {
         "id": 5,
         "task": "Repo readback and Release Integrity verification",
-        "status": "PENDING"
+        "status": "NEXT"
       },
       {
         "id": 6,
