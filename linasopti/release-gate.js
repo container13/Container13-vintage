@@ -1,6 +1,6 @@
 (function(global){
 'use strict';
-const KEY='lina_release_gate_v0395',REQUIRED_RELEASE='V0.3.95',REQUIRED_CACHE='0.3.95',SPEC_SHA='a065ce8ad2285010493f8491c86116f01025ed3554be18744471de394dbdeafa';
+const KEY='lina_release_gate_v0396',REQUIRED_RELEASE='V0.3.96',REQUIRED_CACHE='0.3.96',SPEC_SHA='a065ce8ad2285010493f8491c86116f01025ed3554be18744471de394dbdeafa';
 const item=(id,pass,detail)=>({id,pass:Boolean(pass),detail});
 async function run(){
  const tests=[],root=document.querySelector('#view'),current=root?.querySelector('[data-gen16-preflight]'),children=root?[...root.children]:[];
@@ -9,7 +9,7 @@ async function run(){
  tests.push(item('current_action_visible',Boolean(current&&current.textContent.includes('ENGINE VERIFIED')),'Gen16 verified visible.'));
  tests.push(item('current_action_first',Boolean(current&&children[0]===current),'Gen16 current action first.'));
  tests.push(item('gen16_engine_receipt',(()=>{try{const x=JSON.parse(sessionStorage.getItem(global.LinaGen16Preflight?.KEY)||'null');return x?.status==='PASS'&&x?.synthetic?.status==='PASS'&&x?.synthetic?.usesObservedDataset===false&&x?.specSha256===SPEC_SHA}catch{return false}})(),'Gen16 engine/synthetic receipt exact.'));
- tests.push(item('gen16_human_start_auth',global.LinaGen16Workflow?.AUTH?.approved===true&&global.LinaGen16Workflow?.AUTH?.approvedRelease===REQUIRED_RELEASE&&global.LinaGen16Workflow?.AUTH?.specSha256===SPEC_SHA,'Explicit human start authorization exact.'));
+ tests.push(item('gen16_human_start_auth',global.LinaGen16Workflow?.AUTH?.approved===true&&global.LinaGen16Workflow?.AUTH?.approvedRelease==='V0.3.95'&&global.LinaGen16Workflow?.AUTH?.specSha256===SPEC_SHA,'Explicit human start authorization exact.'));
  tests.push(item('gen16_locked_spec',global.LinaGen16Engine?.SPEC?.status==='LOCKED_PRE_RESEARCH'&&global.LinaGen16Engine?.SPEC_SHA256===SPEC_SHA,'Gen16 exact locked spec.'));
  tests.push(item('gen16_signal_exact',global.LinaGen16Engine?.SPEC?.candidateVariant==='PRICE_CHANNEL_BREAKOUT'&&global.LinaGen16Engine?.SPEC?.priceChannelBreakout?.newNumericParameters===0&&global.LinaGen16Engine?.SPEC?.priceChannelBreakout?.currentBarExcluded===true,'Price channel exact; zero new numeric params.'));
  tests.push(item('gen15_frozen',(()=>{try{const g=global.LinaGen15Workflow?.state?.();return g?.state==='GEN15_COMPLETE_NO_CANDIDATE'&&Boolean(g?.summaryFreeze?.frozen)&&Object.keys(g?.checkpoints||{}).length===8}catch{return false}})(),'Gen15 frozen NO_CANDIDATE 8/8.'));
