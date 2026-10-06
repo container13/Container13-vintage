@@ -1,0 +1,20 @@
+name: Lina Release Integrity
+
+on:
+  push:
+    branches: [ccc-demo-public-test]
+    paths:
+      - 'linasopti/**'
+      - '.github/workflows/lina-release-integrity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run static release integrity gate
+        run: python3 linasopti/tools/release_integrity.py
