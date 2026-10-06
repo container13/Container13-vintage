@@ -1,7 +1,7 @@
 (function(global){
 'use strict';const C=global.LinaGen10WorkflowCore,E=C.E;
 async function readImmutableEvidence(name){
- const r=await fetch('https://linas-opti-api.mangaj73.workers.dev/evidence-read?date=2026-10-05&name='+encodeURIComponent(name),{cache:'no-store'}),j=await r.json();
+ const r=await fetch('https://linas-opti-api.mangaj73.workers.dev/evidence-read?name='+encodeURIComponent(name),{cache:'no-store'}),j=await r.json();
  if(r.status===404)return null;if(!r.ok||!j.ok)throw Error(j.error||('Evidence read HTTP '+r.status));
  if(j.receipt?.schema!=='LINA-GITHUB-COMMIT-RECEIPT-1'||typeof j.content!=='string')throw Error('Evidence read saknar auktoritativt kvitto: '+name);
  if(await C.shaText(j.content)!==j.receipt.contentSha256)throw Error('Evidence read receipt SHA mismatch: '+name);
