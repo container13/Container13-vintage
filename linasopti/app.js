@@ -60,7 +60,14 @@
       root.querySelector('#archive').onclick=()=>R.navigate('archive');
     });
     R.register('archive',root=>window.LinaArchive.render(root,{back:()=>R.navigate('dashboard')}));
-    for(const [r,t,d] of cards.filter(x=>!['research','forward','history'].includes(x[0])))R.register(r,root=>{
+    R.register('tools',root=>{
+      let trace=null;try{trace=JSON.parse(sessionStorage.getItem('lina_login_first_input_trace_v0412')||'null')}catch{}
+      const rows=trace?.trace?.map(x=>`${x.stage}: scrollY ${x.scrollY}, innerH ${x.innerH}, card ${x.cardTop}..${x.cardBottom} h${x.cardHeight}, input ${x.inputTop}..${x.inputBottom}`).join('\n')||'Ingen V0.4.12-mätning hittades i denna session.';
+      shell(root,'Verktyg','Backup, export och diagnostik.',`<button class="back" id="home">← Dashboard</button><section class="workspace"><div class="statusline"><b>Login first-input trace</b><pre id="loginTrace" style="white-space:pre-wrap;overflow-wrap:anywhere">${rows}</pre><button class="back" id="copyLoginTrace">Kopiera mätning</button></div></section>`);
+      root.querySelector('#home').onclick=()=>R.navigate('dashboard');
+      root.querySelector('#copyLoginTrace').onclick=async()=>{try{await navigator.clipboard.writeText(JSON.stringify(trace,null,2));root.querySelector('#copyLoginTrace').textContent='Kopierad ✓'}catch{root.querySelector('#copyLoginTrace').textContent='Kopiering misslyckades'}};
+    });
+    for(const [r,t,d] of cards.filter(x=>!['research','forward','history','tools'].includes(x[0])))R.register(r,root=>{
       shell(root,t,d,`<button class="back" id="home">← Dashboard</button><section class="workspace"><div class="statusline">Modulen väntar på kontrollerad migrering.</div></section>`);
       root.querySelector('#home').onclick=()=>R.navigate('dashboard');
     });
