@@ -1,0 +1,5544 @@
+{
+  "key": "PRICE_CHANNEL_BREAKOUT_2021",
+  "variant": "PRICE_CHANNEL_BREAKOUT",
+  "year": 2021,
+  "specSha256": "a065ce8ad2285010493f8491c86116f01025ed3554be18744471de394dbdeafa",
+  "observedAt": "2026-10-06T05:35:00.747Z",
+  "result": {
+    "schema": "LINA-GEN16-FOLD-1",
+    "variant": "PRICE_CHANNEL_BREAKOUT",
+    "range": [
+      "2021-01-01",
+      "2021-12-31"
+    ],
+    "specSha256": "a065ce8ad2285010493f8491c86116f01025ed3554be18744471de394dbdeafa",
+    "oos": {
+      "n": 81,
+      "pl": 7981.406850104642,
+      "grossProfit": 16059.331439118294,
+      "grossLoss": 8077.924589013652,
+      "pf": 1.9880516662608763,
+      "pfKind": "FINITE",
+      "dd": -0.01987946646994898,
+      "maxSymbolGrossProfitShare": 0.21106337428451302
+    },
+    "trades": [
+      {
+        "s": "TSLA",
+        "signalDate": "2020-12-31",
+        "strength": 0.6724415291914658,
+        "volScale": 0.35,
+        "qty": 14.579698898000968,
+        "entry": "2021-01-04",
+        "entryPrice": 240.05982733154295,
+        "notional": 3499.9999999999995,
+        "entryIndex": 253,
+        "exitIndex": 264,
+        "pendingTrendExit": false,
+        "exit": "2021-01-20",
+        "exitPrice": 283.1998540649414,
+        "pnl": 628.9686002246618,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "MU",
+        "signalDate": "2020-12-31",
+        "strength": 0.40444598269222776,
+        "volScale": 0.3989637764559008,
+        "qty": 53.44238595748595,
+        "entry": "2021-01-04",
+        "entryPrice": 74.65306222916043,
+        "notional": 3989.6377645590082,
+        "entryIndex": 253,
+        "exitIndex": 264,
+        "pendingTrendExit": false,
+        "exit": "2021-01-20",
+        "exitPrice": 81.34253386688232,
+        "pnl": 357.5013251147891,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2020-12-31",
+        "strength": 0.029138632903451978,
+        "volScale": 0.39559163452239243,
+        "qty": 73.32030183608866,
+        "entry": "2021-01-04",
+        "entryPrice": 53.95390152740478,
+        "notional": 3955.9163452239236,
+        "entryIndex": 253,
+        "exitIndex": 264,
+        "pendingTrendExit": false,
+        "exit": "2021-01-20",
+        "exitPrice": 58.575364871978756,
+        "pnl": 338.84708734858367,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "C",
+        "signalDate": "2021-01-06",
+        "strength": 0.5030416751132463,
+        "volScale": 0.35,
+        "qty": 63.21240777275572,
+        "entry": "2021-01-07",
+        "entryPrice": 55.322657322611356,
+        "notional": 3497.078373749339,
+        "entryIndex": 256,
+        "exitIndex": 267,
+        "pendingTrendExit": false,
+        "exit": "2021-01-25",
+        "exitPrice": 49.85308163452149,
+        "pnl": -345.7450487394877,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-01-06",
+        "strength": 0.29921243978244805,
+        "volScale": 0.3966194564723889,
+        "qty": 136.2581320456809,
+        "entry": "2021-01-07",
+        "entryPrice": 29.08364970881277,
+        "notional": 3962.8837823937392,
+        "entryIndex": 256,
+        "exitIndex": 267,
+        "pendingTrendExit": false,
+        "exit": "2021-01-25",
+        "exitPrice": 27.15207146644592,
+        "pnl": -263.19324320498646,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "GM",
+        "signalDate": "2021-01-12",
+        "strength": 0.3705935127162556,
+        "volScale": 0.35,
+        "qty": 72.16899548690928,
+        "entry": "2021-01-13",
+        "entryPrice": 48.720734411843594,
+        "notional": 3516.126461887246,
+        "entryIndex": 260,
+        "exitIndex": 271,
+        "pendingTrendExit": false,
+        "exit": "2021-01-29",
+        "exitPrice": 48.52764143371582,
+        "pnl": -13.935326267057093,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-01-13",
+        "strength": 0.315747106418496,
+        "volScale": 0.36610214093389437,
+        "qty": 15.047330375315289,
+        "entry": "2021-01-14",
+        "entryPrice": 244.3914619596965,
+        "notional": 3677.439069013852,
+        "entryIndex": 261,
+        "exitIndex": 272,
+        "pendingTrendExit": false,
+        "exit": "2021-02-01",
+        "exitPrice": 238.94348030090333,
+        "pnl": -81.97757989851901,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2021-01-19",
+        "strength": 0.2753102790529012,
+        "volScale": 0.4269405089187487,
+        "qty": 29.53028127343145,
+        "entry": "2021-01-20",
+        "entryPrice": 145.77024858209927,
+        "notional": 4304.636441927413,
+        "entryIndex": 264,
+        "exitIndex": 275,
+        "pendingTrendExit": false,
+        "exit": "2021-02-04",
+        "exitPrice": 130.68551362609864,
+        "pnl": -445.4564661858622,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-01-20",
+        "strength": 0.14127217957351967,
+        "volScale": 0.35,
+        "qty": 60.81229166834299,
+        "entry": "2021-01-21",
+        "entryPrice": 58.30324393081664,
+        "notional": 3545.55387513137,
+        "entryIndex": 265,
+        "exitIndex": 276,
+        "pendingTrendExit": false,
+        "exit": "2021-02-05",
+        "exitPrice": 55.02391956710815,
+        "pnl": -199.423229680944,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2021-02-02",
+        "strength": 0.15063495164341822,
+        "volScale": 0.35,
+        "qty": 30.108813010357,
+        "entry": "2021-02-03",
+        "entryPrice": 116.71659847259521,
+        "notional": 3514.1982386162886,
+        "entryIndex": 274,
+        "exitIndex": 285,
+        "pendingTrendExit": false,
+        "exit": "2021-02-19",
+        "exitPrice": 114.03185771942138,
+        "pnl": -80.83435731859578,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-02-04",
+        "strength": 0.4035916220949791,
+        "volScale": 0.35,
+        "qty": 13.164793020626083,
+        "entry": "2021-02-05",
+        "entryPrice": 265.91316837031906,
+        "notional": 3500.691823054145,
+        "entryIndex": 276,
+        "exitIndex": 287,
+        "pendingTrendExit": false,
+        "exit": "2021-02-23",
+        "exitPrice": 261.8152542114258,
+        "pnl": -53.94819171812299,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2021-02-05",
+        "strength": 0.3140171489912915,
+        "volScale": 0.35,
+        "qty": 26.821895372852754,
+        "entry": "2021-02-08",
+        "entryPrice": 130.51638758850098,
+        "notional": 3500.696892341471,
+        "entryIndex": 277,
+        "exitIndex": 288,
+        "pendingTrendExit": false,
+        "exit": "2021-02-24",
+        "exitPrice": 129.9848904876709,
+        "pnl": -14.255759629438982,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-02-05",
+        "strength": 0.2620826051231082,
+        "volScale": 0.35,
+        "qty": 30.176368897074568,
+        "entry": "2021-02-08",
+        "entryPrice": 116.00789028930663,
+        "notional": 3500.6968923414715,
+        "entryIndex": 277,
+        "exitIndex": 288,
+        "pendingTrendExit": false,
+        "exit": "2021-02-24",
+        "exitPrice": 99.26064060974122,
+        "pnl": -505.37118434197976,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2021-02-05",
+        "strength": 0.06921616580413903,
+        "volScale": 0.35,
+        "qty": 75.4021735904832,
+        "entry": "2021-02-08",
+        "entryPrice": 46.42700237468098,
+        "notional": 3500.696892341471,
+        "entryIndex": 277,
+        "exitIndex": 288,
+        "pendingTrendExit": false,
+        "exit": "2021-02-24",
+        "exitPrice": 54.37760912704468,
+        "pnl": 599.4930304913954,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-02-08",
+        "strength": 0.11462361646307828,
+        "volScale": 0.35,
+        "qty": 246.07796222249087,
+        "entry": "2021-02-09",
+        "entryPrice": 14.28141893302788,
+        "notional": 3514.3424686852004,
+        "entryIndex": 278,
+        "exitIndex": 289,
+        "pendingTrendExit": false,
+        "exit": "2021-02-25",
+        "exitPrice": 13.225963296890258,
+        "pnl": -259.7243721569886,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "MU",
+        "signalDate": "2021-02-12",
+        "strength": 0.31201540803582306,
+        "volScale": 0.35,
+        "qty": 40.55695254215297,
+        "entry": "2021-02-16",
+        "entryPrice": 87.0887484963541,
+        "notional": 3532.0542397221293,
+        "entryIndex": 282,
+        "exitIndex": 293,
+        "pendingTrendExit": false,
+        "exit": "2021-03-03",
+        "exitPrice": 86.80759098815918,
+        "pnl": -11.402891716731473,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-02-22",
+        "strength": 0.21500149773706778,
+        "volScale": 0.42130674995581857,
+        "qty": 136.01843677190996,
+        "entry": "2021-02-23",
+        "entryPrice": 30.925926053738124,
+        "notional": 4206.496117553142,
+        "entryIndex": 287,
+        "exitIndex": 298,
+        "pendingTrendExit": false,
+        "exit": "2021-03-10",
+        "exitPrice": 32.72505087661743,
+        "pnl": 244.7141459655827,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2021-02-24",
+        "strength": 0.2668802367228924,
+        "volScale": 0.35,
+        "qty": 64.51215295983859,
+        "entry": "2021-02-25",
+        "entryPrice": 54.357822694288416,
+        "notional": 3506.7401722177196,
+        "entryIndex": 289,
+        "exitIndex": 300,
+        "pendingTrendExit": false,
+        "exit": "2021-03-12",
+        "exitPrice": 55.97345050048828,
+        "pnl": 104.22762815973432,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "C",
+        "signalDate": "2021-03-01",
+        "strength": 0.17534399083285912,
+        "volScale": 0.3915987168785679,
+        "qty": 67.93238388931842,
+        "entry": "2021-03-02",
+        "entryPrice": 57.55783239899883,
+        "notional": 3910.040766365838,
+        "entryIndex": 292,
+        "exitIndex": 303,
+        "pendingTrendExit": false,
+        "exit": "2021-03-17",
+        "exitPrice": 61.10408362197876,
+        "pnl": 240.90529944743724,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "GM",
+        "signalDate": "2021-03-12",
+        "strength": 0.42554723735311706,
+        "volScale": 0.35,
+        "qty": 61.71086790087422,
+        "entry": "2021-03-15",
+        "entryPrice": 56.90482379644265,
+        "notional": 3511.646064224796,
+        "entryIndex": 301,
+        "exitIndex": 312,
+        "pendingTrendExit": false,
+        "exit": "2021-03-30",
+        "exitPrice": 56.02510320281982,
+        "pnl": -54.28832134273699,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2021-03-12",
+        "strength": 0.3224267594971537,
+        "volScale": 0.35,
+        "qty": 61.58311283777036,
+        "entry": "2021-03-15",
+        "entryPrice": 57.0228736809001,
+        "notional": 3511.646064224796,
+        "entryIndex": 301,
+        "exitIndex": 312,
+        "pendingTrendExit": false,
+        "exit": "2021-03-30",
+        "exitPrice": 56.780534454345705,
+        "pnl": -14.924003933917144,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-03-12",
+        "strength": 0.2705247237091104,
+        "volScale": 0.4323637745853384,
+        "qty": 129.9989140810876,
+        "entry": "2021-03-15",
+        "entryPrice": 33.369697367272444,
+        "notional": 4338.024420959946,
+        "entryIndex": 301,
+        "exitIndex": 312,
+        "pendingTrendExit": false,
+        "exit": "2021-03-30",
+        "exitPrice": 34.143701454162596,
+        "pnl": 100.61969079004349,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2021-03-12",
+        "strength": 0.035722133640020415,
+        "volScale": 0.3813101093370684,
+        "qty": 19.444017014486437,
+        "entry": "2021-03-15",
+        "entryPrice": 196.75918726127193,
+        "notional": 3825.7889848646946,
+        "entryIndex": 301,
+        "exitIndex": 312,
+        "pendingTrendExit": false,
+        "exit": "2021-03-30",
+        "exitPrice": 207.17701501464845,
+        "pnl": 202.56442009064196,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2021-03-30",
+        "strength": 0.13503461731215527,
+        "volScale": 0.35,
+        "qty": 16.935084190049363,
+        "entry": "2021-03-31",
+        "entryPrice": 207.64984716572366,
+        "notional": 3516.5676438024134,
+        "entryIndex": 313,
+        "exitIndex": 324,
+        "pendingTrendExit": false,
+        "exit": "2021-04-16",
+        "exitPrice": 208.38715315246583,
+        "pnl": 12.486338959306096,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2021-04-05",
+        "strength": 0.3181914574187854,
+        "volScale": 0.35,
+        "qty": 60.22648678429456,
+        "entry": "2021-04-06",
+        "entryPrice": 58.35539072272744,
+        "notional": 3514.5401681546896,
+        "entryIndex": 316,
+        "exitIndex": 327,
+        "pendingTrendExit": false,
+        "exit": "2021-04-21",
+        "exitPrice": 56.89976934814453,
+        "pnl": -87.66696147925438,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-04-13",
+        "strength": 0.20748381926279813,
+        "volScale": 0.35,
+        "qty": 226.00309197270306,
+        "entry": "2021-04-14",
+        "entryPrice": 15.565723463343375,
+        "notional": 3517.9016315076547,
+        "entryIndex": 322,
+        "exitIndex": 333,
+        "pendingTrendExit": false,
+        "exit": "2021-04-29",
+        "exitPrice": 15.236110485076905,
+        "pnl": -74.4935522425535,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-04-13",
+        "strength": 0.1222616947078008,
+        "volScale": 0.5056446746023054,
+        "qty": 9.87788323819931,
+        "entry": "2021-04-14",
+        "entryPrice": 514.5139999999999,
+        "notional": 5082.309216418878,
+        "entryIndex": 322,
+        "exitIndex": 333,
+        "pendingTrendExit": false,
+        "exit": "2021-04-29",
+        "exitPrice": 515.5739368286132,
+        "pnl": 10.469932232909759,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-04-29",
+        "strength": 0.20064433089599443,
+        "volScale": 0.4898533716871297,
+        "qty": 137.1523517482765,
+        "entry": "2021-04-30",
+        "entryPrice": 35.83534987167759,
+        "notional": 4914.90251062288,
+        "entryIndex": 334,
+        "exitIndex": 345,
+        "pendingTrendExit": false,
+        "exit": "2021-05-17",
+        "exitPrice": 37.42759231567383,
+        "pnl": 218.37979574750693,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2021-04-29",
+        "strength": 0.1456669981329075,
+        "volScale": 0.505522129456402,
+        "qty": 23.800477713378555,
+        "entry": "2021-04-30",
+        "entryPrice": 213.1097422463728,
+        "notional": 5072.113670838644,
+        "entryIndex": 334,
+        "exitIndex": 345,
+        "pendingTrendExit": false,
+        "exit": "2021-05-17",
+        "exitPrice": 224.08916308593749,
+        "pnl": 261.3154609978633,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "C",
+        "signalDate": "2021-05-17",
+        "strength": 0.11004483221074701,
+        "volScale": 0.5078098230060176,
+        "qty": 78.98079794514224,
+        "entry": "2021-05-18",
+        "entryPrice": 64.818621497297,
+        "notional": 5119.426447560668,
+        "entryIndex": 346,
+        "exitIndex": 357,
+        "pendingTrendExit": false,
+        "exit": "2021-06-03",
+        "exitPrice": 66.57009727478027,
+        "pnl": 138.33295448721663,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-05-28",
+        "strength": 0.27683231472583913,
+        "volScale": 0.35,
+        "qty": 217.87521827690054,
+        "entry": "2021-06-01",
+        "entryPrice": 16.208279621966522,
+        "notional": 3531.382460528995,
+        "entryIndex": 355,
+        "exitIndex": 366,
+        "pendingTrendExit": false,
+        "exit": "2021-06-16",
+        "exitPrice": 17.71129395675659,
+        "pnl": 327.4695762656969,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-06-03",
+        "strength": 0.17702080947365362,
+        "volScale": 0.7566869828180968,
+        "qty": 200.78586275490733,
+        "entry": "2021-06-04",
+        "entryPrice": 38.10096173541957,
+        "notional": 7650.134473837928,
+        "entryIndex": 358,
+        "exitIndex": 369,
+        "pendingTrendExit": false,
+        "exit": "2021-06-21",
+        "exitPrice": 34.955762420654295,
+        "pnl": -631.5115579512884,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "GM",
+        "signalDate": "2021-06-03",
+        "strength": 0.12998596756246972,
+        "volScale": 0.35,
+        "qty": 58.01595873938799,
+        "entry": "2021-06-04",
+        "entryPrice": 60.99207056976875,
+        "notional": 3538.5134496055443,
+        "entryIndex": 358,
+        "exitIndex": 369,
+        "pendingTrendExit": false,
+        "exit": "2021-06-21",
+        "exitPrice": 56.781548149108886,
+        "pnl": -244.2774950282707,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-06-10",
+        "strength": 0.15051783045231604,
+        "volScale": 0.5045971376981454,
+        "qty": 9.590930306666737,
+        "entry": "2021-06-11",
+        "entryPrice": 530.2797499999999,
+        "notional": 5085.87612528666,
+        "entryIndex": 363,
+        "exitIndex": 374,
+        "pendingTrendExit": false,
+        "exit": "2021-06-28",
+        "exitPrice": 588.2111878051758,
+        "pnl": 555.6163825544402,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2021-06-14",
+        "strength": 0.1308886114080714,
+        "volScale": 0.386415246158275,
+        "qty": 29.81079974822474,
+        "entry": "2021-06-15",
+        "entryPrice": 131.03089389038084,
+        "notional": 3906.1357385970273,
+        "entryIndex": 365,
+        "exitIndex": 376,
+        "pendingTrendExit": false,
+        "exit": "2021-06-30",
+        "exitPrice": 145.9519091949463,
+        "pnl": 444.8073992845974,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-06-14",
+        "strength": 0.11525233260871581,
+        "volScale": 0.4005482938634898,
+        "qty": 41.73500684964548,
+        "entry": "2021-06-15",
+        "entryPrice": 97.01691816711424,
+        "notional": 4049.0017442360077,
+        "entryIndex": 365,
+        "exitIndex": 376,
+        "pendingTrendExit": false,
+        "exit": "2021-06-30",
+        "exitPrice": 103.97592182922364,
+        "pnl": 290.4340655048436,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-06-17",
+        "strength": 0.31944199781130966,
+        "volScale": 0.37637042522419756,
+        "qty": 203.65917084383852,
+        "entry": "2021-06-18",
+        "entryPrice": 18.717023791022086,
+        "notional": 3811.893545943957,
+        "entryIndex": 368,
+        "exitIndex": 379,
+        "pendingTrendExit": false,
+        "exit": "2021-07-06",
+        "exitPrice": 20.583495174407958,
+        "pnl": 380.1240143441188,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-06-17",
+        "strength": 0.0880672683032746,
+        "volScale": 0.5255506080369896,
+        "qty": 19.53061599158432,
+        "entry": "2021-06-18",
+        "entryPrice": 272.5359989171895,
+        "notional": 5322.795938734468,
+        "entryIndex": 368,
+        "exitIndex": 379,
+        "pendingTrendExit": false,
+        "exit": "2021-07-06",
+        "exitPrice": 289.1230935974121,
+        "pnl": 323.9561766154788,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-06-28",
+        "strength": 0.12135287695060426,
+        "volScale": 0.5150209332264144,
+        "qty": 8.986815728074669,
+        "entry": "2021-06-29",
+        "entryPrice": 587.3668093261718,
+        "notional": 5278.557280201477,
+        "entryIndex": 375,
+        "exitIndex": 386,
+        "pendingTrendExit": false,
+        "exit": "2021-07-15",
+        "exitPrice": 605.5638129272461,
+        "pnl": 163.5331181659654,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-06-29",
+        "strength": 0.10368630217519104,
+        "volScale": 0.40450025844770193,
+        "qty": 45.610859983524925,
+        "entry": "2021-06-30",
+        "entryPrice": 90.91081969451903,
+        "notional": 4146.520668074188,
+        "entryIndex": 376,
+        "exitIndex": 387,
+        "pendingTrendExit": false,
+        "exit": "2021-07-16",
+        "exitPrice": 85.80410939025879,
+        "pnl": -232.92144866403808,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-07-06",
+        "strength": 0.3562336853855266,
+        "volScale": 0.4425595918209548,
+        "qty": 218.61979290883005,
+        "entry": "2021-07-07",
+        "entryPrice": 20.779148886820966,
+        "notional": 4542.733226458546,
+        "entryIndex": 380,
+        "exitIndex": 391,
+        "pendingTrendExit": false,
+        "exit": "2021-07-22",
+        "exitPrice": 19.48512641143799,
+        "pnl": -282.89892558759817,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-07-06",
+        "strength": 0.21335269259195755,
+        "volScale": 0.49120264487524035,
+        "qty": 45.99161635184718,
+        "entry": "2021-07-07",
+        "entryPrice": 109.62951663970946,
+        "notional": 5042.038670131964,
+        "entryIndex": 380,
+        "exitIndex": 391,
+        "pendingTrendExit": false,
+        "exit": "2021-07-22",
+        "exitPrice": 110.08979695129395,
+        "pnl": 21.169035504702247,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-07-06",
+        "strength": 0.07138762017371558,
+        "volScale": 0.6803049893252532,
+        "qty": 128.1812781902288,
+        "entry": "2021-07-07",
+        "entryPrice": 54.478423786163326,
+        "notional": 6983.113994699379,
+        "entryIndex": 380,
+        "exitIndex": 391,
+        "pendingTrendExit": false,
+        "exit": "2021-07-22",
+        "exitPrice": 51.125821140289304,
+        "pnl": -429.74089241207514,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-07-07",
+        "strength": 0.09351552355442405,
+        "volScale": 0.6030036491882884,
+        "qty": 21.315646849908394,
+        "entry": "2021-07-08",
+        "entryPrice": 289.1673606211255,
+        "notional": 6163.789339520018,
+        "entryIndex": 381,
+        "exitIndex": 392,
+        "pendingTrendExit": false,
+        "exit": "2021-07-23",
+        "exitPrice": 304.82213104248046,
+        "pnl": 333.69155781799384,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2021-07-09",
+        "strength": 0.016384359165898088,
+        "volScale": 0.581120624641736,
+        "qty": 52.12408002403612,
+        "entry": "2021-07-12",
+        "entryPrice": 114.11399999999999,
+        "notional": 5948.0872678628575,
+        "entryIndex": 383,
+        "exitIndex": 394,
+        "pendingTrendExit": false,
+        "exit": "2021-07-27",
+        "exitPrice": 116.34154218292237,
+        "pnl": 116.10858699956209,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2021-07-14",
+        "strength": 0.05132439021753199,
+        "volScale": 0.6091983085244914,
+        "qty": 48.3337069962686,
+        "entry": "2021-07-15",
+        "entryPrice": 128.8018108665295,
+        "notional": 6225.468987011643,
+        "entryIndex": 386,
+        "exitIndex": 397,
+        "pendingTrendExit": false,
+        "exit": "2021-07-30",
+        "exitPrice": 133.61064038085937,
+        "pnl": 232.428556740628,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2021-07-22",
+        "strength": 0.43585841652056034,
+        "volScale": 0.35,
+        "qty": 22.149152911865983,
+        "entry": "2021-07-23",
+        "entryPrice": 160.96080305480956,
+        "notional": 3565.145439677722,
+        "entryIndex": 392,
+        "exitIndex": 403,
+        "pendingTrendExit": false,
+        "exit": "2021-08-09",
+        "exitPrice": 154.84399392700195,
+        "pnl": -135.48214070450842,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-07-22",
+        "strength": 0.28543455045964117,
+        "volScale": 0.9404610865947012,
+        "qty": 15.29354463039939,
+        "entry": "2021-07-23",
+        "entryPrice": 626.3857697753906,
+        "notional": 9579.658725907013,
+        "entryIndex": 392,
+        "exitIndex": 403,
+        "pendingTrendExit": false,
+        "exit": "2021-08-09",
+        "exitPrice": 628.5907507324218,
+        "pnl": 33.721974675538014,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-07-23",
+        "strength": 0.2860238808880482,
+        "volScale": 0.7540206941949085,
+        "qty": 25.144857615338843,
+        "entry": "2021-07-26",
+        "entryPrice": 306.5510386290811,
+        "notional": 7708.182218162482,
+        "entryIndex": 393,
+        "exitIndex": 404,
+        "pendingTrendExit": false,
+        "exit": "2021-08-10",
+        "exitPrice": 271.07265014648436,
+        "pnl": -892.099026816573,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-07-28",
+        "strength": 0.31185530212248413,
+        "volScale": 0.35,
+        "qty": 36.77090303572156,
+        "entry": "2021-07-29",
+        "entryPrice": 96.67658183288573,
+        "notional": 3554.885216402042,
+        "entryIndex": 396,
+        "exitIndex": 407,
+        "pendingTrendExit": false,
+        "exit": "2021-08-13",
+        "exitPrice": 110.43945304870606,
+        "pnl": 506.0732029700525,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-08-02",
+        "strength": 0.20943112657151963,
+        "volScale": 0.35,
+        "qty": 14.810266866773594,
+        "entry": "2021-08-03",
+        "entryPrice": 239.9063384246826,
+        "notional": 3553.076895100049,
+        "entryIndex": 399,
+        "exitIndex": 410,
+        "pendingTrendExit": false,
+        "exit": "2021-08-18",
+        "exitPrice": 229.43366674804687,
+        "pnl": -155.10306233907616,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-08-03",
+        "strength": 0.2892636789173275,
+        "volScale": 0.5855470086170846,
+        "qty": 51.782411588260366,
+        "entry": "2021-08-04",
+        "entryPrice": 114.9748606109619,
+        "notional": 5953.675554459694,
+        "entryIndex": 400,
+        "exitIndex": 411,
+        "pendingTrendExit": false,
+        "exit": "2021-08-19",
+        "exitPrice": 132.28757817077636,
+        "pnl": 896.494266393615,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-08-13",
+        "strength": 0.29235101315583956,
+        "volScale": 0.9841337228162911,
+        "qty": 15.878156073491292,
+        "entry": "2021-08-16",
+        "entryPrice": 637.6670593261719,
+        "notional": 10124.977090905188,
+        "entryIndex": 408,
+        "exitIndex": 419,
+        "pendingTrendExit": false,
+        "exit": "2021-08-31",
+        "exitPrice": 663.0363121948242,
+        "pnl": 402.8169565163283,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2021-08-23",
+        "strength": 0.24381041396065406,
+        "volScale": 0.6009332332205776,
+        "qty": 49.807551943727915,
+        "entry": "2021-08-24",
+        "entryPrice": 124.12399999999998,
+        "notional": 6182.312577463283,
+        "entryIndex": 414,
+        "exitIndex": 425,
+        "pendingTrendExit": false,
+        "exit": "2021-09-09",
+        "exitPrice": 129.90795639038086,
+        "pnl": 288.08470835415267,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-08-23",
+        "strength": 0.23184797151782433,
+        "volScale": 0.35,
+        "qty": 166.12110309623372,
+        "entry": "2021-08-24",
+        "entryPrice": 21.675442631726494,
+        "notional": 3600.7484400815365,
+        "entryIndex": 414,
+        "exitIndex": 425,
+        "pendingTrendExit": false,
+        "exit": "2021-09-09",
+        "exitPrice": 22.05766459465027,
+        "pnl": 63.495134108505376,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-08-27",
+        "strength": 0.1215635650709248,
+        "volScale": 0.6284531512828385,
+        "qty": 116.23038583319439,
+        "entry": "2021-08-30",
+        "entryPrice": 55.780723472595206,
+        "notional": 6483.415011274464,
+        "entryIndex": 418,
+        "exitIndex": 429,
+        "pendingTrendExit": false,
+        "exit": "2021-09-15",
+        "exitPrice": 58.22871175003052,
+        "pnl": 284.5306220014435,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-08-30",
+        "strength": 0.17262678906305373,
+        "volScale": 0.3547594654684377,
+        "qty": 15.009946987857138,
+        "entry": "2021-08-31",
+        "entryPrice": 244.57766157531736,
+        "notional": 3671.0977346595773,
+        "entryIndex": 419,
+        "exitIndex": 430,
+        "pendingTrendExit": false,
+        "exit": "2021-09-16",
+        "exitPrice": 252.07767182922365,
+        "pnl": 112.57475631951824,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-09-16",
+        "strength": 0.3432112819771955,
+        "volScale": 0.43333595462433055,
+        "qty": 30.982538353872922,
+        "entry": "2021-09-17",
+        "entryPrice": 145.07492266845702,
+        "notional": 4494.789355760618,
+        "entryIndex": 431,
+        "exitIndex": 442,
+        "pendingTrendExit": false,
+        "exit": "2021-10-04",
+        "exitPrice": 136.96290609741212,
+        "pnl": -251.33086453965146,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-09-24",
+        "strength": 0.19027053086935553,
+        "volScale": 0.47301125252525694,
+        "qty": 19.032134772495247,
+        "entry": "2021-09-27",
+        "entryPrice": 257.96437170410155,
+        "notional": 4909.61268877452,
+        "entryIndex": 437,
+        "exitIndex": 448,
+        "pendingTrendExit": false,
+        "exit": "2021-10-12",
+        "exitPrice": 268.30476040649415,
+        "pnl": 196.79967138392325,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-09-27",
+        "strength": 0.14666875420698422,
+        "volScale": 0.4156595865323791,
+        "qty": 112.1056542704094,
+        "entry": "2021-09-28",
+        "entryPrice": 38.464489425251564,
+        "notional": 4312.086753195071,
+        "entryIndex": 438,
+        "exitIndex": 449,
+        "pendingTrendExit": false,
+        "exit": "2021-10-13",
+        "exitPrice": 38.13130226898193,
+        "pnl": -37.35216414810409,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2021-10-04",
+        "strength": 0.08599589467781676,
+        "volScale": 0.38167803059515537,
+        "qty": 78.24922127611477,
+        "entry": "2021-10-05",
+        "entryPrice": 50.488903502710386,
+        "notional": 3950.7173821719907,
+        "entryIndex": 443,
+        "exitIndex": 454,
+        "pendingTrendExit": false,
+        "exit": "2021-10-20",
+        "exitPrice": 45.37123602676392,
+        "pnl": -400.453494742911,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-10-05",
+        "strength": 0.2290848057254804,
+        "volScale": 0.4088173110247816,
+        "qty": 67.32445315396743,
+        "entry": "2021-10-06",
+        "entryPrice": 62.88081879425048,
+        "notional": 4233.416739196631,
+        "entryIndex": 444,
+        "exitIndex": 455,
+        "pendingTrendExit": false,
+        "exit": "2021-10-21",
+        "exitPrice": 65.25068589019776,
+        "pnl": 159.55000628223132,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-10-13",
+        "strength": 0.35934774132201275,
+        "volScale": 0.35,
+        "qty": 22.948335496686003,
+        "entry": "2021-10-14",
+        "entryPrice": 157.65749999999997,
+        "notional": 3617.977203568773,
+        "entryIndex": 450,
+        "exitIndex": 461,
+        "pendingTrendExit": false,
+        "exit": "2021-10-29",
+        "exitPrice": 166.88295304870604,
+        "pnl": 211.70879167063165,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-10-14",
+        "strength": 0.1837197575793812,
+        "volScale": 0.4047649002391319,
+        "qty": 103.16395728757043,
+        "entry": "2021-10-15",
+        "entryPrice": 40.53694217969197,
+        "notional": 4181.951371594454,
+        "entryIndex": 451,
+        "exitIndex": 462,
+        "pendingTrendExit": false,
+        "exit": "2021-11-01",
+        "exitPrice": 42.29445138931274,
+        "pnl": 181.3116050338289,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-10-14",
+        "strength": 0.15107193145984965,
+        "volScale": 0.5110150020255367,
+        "qty": 19.209091558302088,
+        "entry": "2021-10-15",
+        "entryPrice": 274.85456655883786,
+        "notional": 5279.706534246152,
+        "entryIndex": 451,
+        "exitIndex": 462,
+        "pendingTrendExit": false,
+        "exit": "2021-11-01",
+        "exitPrice": 402.4604789428711,
+        "pnl": 2451.1936543655684,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-10-18",
+        "strength": 0.057397145216526946,
+        "volScale": 0.35,
+        "qty": 31.198914824979425,
+        "entry": "2021-10-19",
+        "entryPrice": 116.27616366577148,
+        "notional": 3627.6901263837717,
+        "entryIndex": 453,
+        "exitIndex": 464,
+        "pendingTrendExit": false,
+        "exit": "2021-11-03",
+        "exitPrice": 130.39946878051757,
+        "pnl": 440.63179332215947,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-10-21",
+        "strength": 0.27470725512365424,
+        "volScale": 0.4019339070842786,
+        "qty": 64.12827045194071,
+        "entry": "2021-10-22",
+        "entryPrice": 65.24618075561523,
+        "notional": 4184.124725452302,
+        "entryIndex": 456,
+        "exitIndex": 467,
+        "pendingTrendExit": false,
+        "exit": "2021-11-08",
+        "exitPrice": 65.07985164642334,
+        "pnl": -10.666398098288036,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-10-25",
+        "strength": 0.14771556293424104,
+        "volScale": 0.35,
+        "qty": 154.05675012731405,
+        "entry": "2021-10-26",
+        "entryPrice": 23.907685788080062,
+        "notional": 3683.1403755765873,
+        "entryIndex": 458,
+        "exitIndex": 469,
+        "pendingTrendExit": false,
+        "exit": "2021-11-10",
+        "exitPrice": 29.300485095977784,
+        "pnl": 830.7971354635514,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-10-29",
+        "strength": 0.2615164277425115,
+        "volScale": 0.35,
+        "qty": 22.182770150111526,
+        "entry": "2021-11-01",
+        "entryPrice": 167.62746672058103,
+        "notional": 3718.441565108118,
+        "entryIndex": 462,
+        "exitIndex": 473,
+        "pendingTrendExit": false,
+        "exit": "2021-11-16",
+        "exitPrice": 193.0667345123291,
+        "pnl": 564.3134302114829,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2021-10-29",
+        "strength": 0.18885025864182436,
+        "volScale": 0.4290571427786908,
+        "qty": 32.5271445598241,
+        "entry": "2021-11-01",
+        "entryPrice": 140.14,
+        "notional": 4558.354038613749,
+        "entryIndex": 462,
+        "exitIndex": 473,
+        "pendingTrendExit": false,
+        "exit": "2021-11-16",
+        "exitPrice": 138.3714845123291,
+        "pnl": -57.524758923759066,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-11-01",
+        "strength": 0.7766590182057058,
+        "volScale": 0.35,
+        "qty": 9.663164932906067,
+        "entry": "2021-11-02",
+        "entryPrice": 386.8397919616699,
+        "notional": 3738.096712336687,
+        "entryIndex": 463,
+        "exitIndex": 474,
+        "pendingTrendExit": false,
+        "exit": "2021-11-17",
+        "exitPrice": 362.64032308959963,
+        "pnl": -233.84345899954135,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-11-03",
+        "strength": 0.21254061243944933,
+        "volScale": 0.43986714629337836,
+        "qty": 35.71189374050194,
+        "entry": "2021-11-04",
+        "entryPrice": 132.14200450134277,
+        "notional": 4719.041223408883,
+        "entryIndex": 465,
+        "exitIndex": 476,
+        "pendingTrendExit": false,
+        "exit": "2021-11-19",
+        "exitPrice": 155.25459365844728,
+        "pnl": 825.3943280463935,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2021-11-04",
+        "strength": 0.09013035726843688,
+        "volScale": 0.35,
+        "qty": 26.821288604486636,
+        "entry": "2021-11-05",
+        "entryPrice": 141.0291919538783,
+        "notional": 3782.5846590525143,
+        "entryIndex": 466,
+        "exitIndex": 477,
+        "pendingTrendExit": false,
+        "exit": "2021-11-22",
+        "exitPrice": 162.54904971313476,
+        "pnl": 577.1903156885188,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-11-04",
+        "strength": 0.026309423900783946,
+        "volScale": 0.5841567447837163,
+        "qty": 9.319531697036776,
+        "entry": "2021-11-05",
+        "entryPrice": 677.4167302246093,
+        "notional": 6313.2066894312575,
+        "entryIndex": 466,
+        "exitIndex": 477,
+        "pendingTrendExit": false,
+        "exit": "2021-11-22",
+        "exitPrice": 672.8964373168945,
+        "pnl": -42.12701303333812,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "GM",
+        "signalDate": "2021-11-08",
+        "strength": 0.19678720700821906,
+        "volScale": 0.37916786844424744,
+        "qty": 71.97687024766539,
+        "entry": "2021-11-09",
+        "entryPrice": 57.3845501693063,
+        "notional": 4130.360321756804,
+        "entryIndex": 468,
+        "exitIndex": 479,
+        "pendingTrendExit": false,
+        "exit": "2021-11-24",
+        "exitPrice": 59.548801471710206,
+        "pnl": 155.77603517646668,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2021-11-12",
+        "strength": 0.08227668737671978,
+        "volScale": 0.35,
+        "qty": 22.923285044981913,
+        "entry": "2021-11-15",
+        "entryPrice": 165.5053363342285,
+        "notional": 3793.9260012551217,
+        "entryIndex": 472,
+        "exitIndex": 483,
+        "pendingTrendExit": false,
+        "exit": "2021-12-01",
+        "exitPrice": 145.8250220489502,
+        "pnl": -451.1374541362643,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-11-17",
+        "strength": 0.1413084603697925,
+        "volScale": 0.38186498789922074,
+        "qty": 60.296061243340574,
+        "entry": "2021-11-18",
+        "entryPrice": 69.23016411590575,
+        "notional": 4174.306215419172,
+        "entryIndex": 475,
+        "exitIndex": 486,
+        "pendingTrendExit": false,
+        "exit": "2021-12-06",
+        "exitPrice": 61.207732006072995,
+        "pnl": -483.72105781501784,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-11-19",
+        "strength": 0.4674349780248701,
+        "volScale": 0.35,
+        "qty": 114.7331259184193,
+        "entry": "2021-11-22",
+        "entryPrice": 33.403388138708,
+        "notional": 3832.475137420219,
+        "entryIndex": 477,
+        "exitIndex": 488,
+        "pendingTrendExit": false,
+        "exit": "2021-12-08",
+        "exitPrice": 31.65862493133545,
+        "pnl": -200.18213676930034,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "MU",
+        "signalDate": "2021-11-19",
+        "strength": 0.13123896401507817,
+        "volScale": 0.35,
+        "qty": 46.86569095013241,
+        "entry": "2021-11-22",
+        "entryPrice": 81.7757096870326,
+        "notional": 3832.475137420219,
+        "entryIndex": 477,
+        "exitIndex": 488,
+        "pendingTrendExit": false,
+        "exit": "2021-12-08",
+        "exitPrice": 83.91454424285888,
+        "pnl": 100.2379592868181,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-11-29",
+        "strength": 0.5586254133904691,
+        "volScale": 0.35,
+        "qty": 23.34206625065384,
+        "entry": "2021-11-30",
+        "entryPrice": 163.44327877807615,
+        "notional": 3815.1038414619384,
+        "entryIndex": 482,
+        "exitIndex": 493,
+        "pendingTrendExit": false,
+        "exit": "2021-12-15",
+        "exitPrice": 146.3535,
+        "pnl": -398.91074844687154,
+        "exitReason": "TIME_12",
+        "boundaryExit": false
+      },
+      {
+        "s": "MU",
+        "signalDate": "2021-12-21",
+        "strength": 0.3100256490250797,
+        "volScale": 0.35,
+        "qty": 42.90926237219511,
+        "entry": "2021-12-22",
+        "entryPrice": 87.972911887668,
+        "notional": 3774.8527578339485,
+        "entryIndex": 498,
+        "exitIndex": 509,
+        "pendingTrendExit": false,
+        "exit": "2021-12-31",
+        "exitPrice": 90.96692541503906,
+        "pnl": 128.47091199186585,
+        "exitReason": "FOLD_BOUNDARY",
+        "boundaryExit": true
+      }
+    ],
+    "equity": [
+      {
+        "d": "2021-01-04",
+        "value": 99793.69604375339,
+        "cash": 88554.44589021706,
+        "positions": 3
+      },
+      {
+        "d": "2021-01-05",
+        "value": 99971.83003132178,
+        "cash": 88554.44589021706,
+        "positions": 3
+      },
+      {
+        "d": "2021-01-06",
+        "value": 99916.52496426685,
+        "cash": 88554.44589021706,
+        "positions": 3
+      },
+      {
+        "d": "2021-01-07",
+        "value": 100258.59808281955,
+        "cash": 81094.48373407399,
+        "positions": 5
+      },
+      {
+        "d": "2021-01-08",
+        "value": 100419.45374241678,
+        "cash": 81094.48373407399,
+        "positions": 5
+      },
+      {
+        "d": "2021-01-11",
+        "value": 100187.15181941335,
+        "cash": 81094.48373407399,
+        "positions": 5
+      },
+      {
+        "d": "2021-01-12",
+        "value": 100460.75605392133,
+        "cash": 81094.48373407399,
+        "positions": 5
+      },
+      {
+        "d": "2021-01-13",
+        "value": 100448.44478737624,
+        "cash": 77578.35727218674,
+        "positions": 6
+      },
+      {
+        "d": "2021-01-14",
+        "value": 100717.7527384946,
+        "cash": 73900.91820317289,
+        "positions": 7
+      },
+      {
+        "d": "2021-01-15",
+        "value": 100067.70283315472,
+        "cash": 73900.91820317289,
+        "positions": 7
+      },
+      {
+        "d": "2021-01-19",
+        "value": 100825.2051984749,
+        "cash": 73900.91820317289,
+        "positions": 7
+      },
+      {
+        "d": "2021-01-20",
+        "value": 101301.53928946772,
+        "cash": 82367.15288371644,
+        "positions": 5
+      },
+      {
+        "d": "2021-01-21",
+        "value": 101157.63833699533,
+        "cash": 78821.59900858506,
+        "positions": 6
+      },
+      {
+        "d": "2021-01-22",
+        "value": 101025.45901562039,
+        "cash": 78821.59900858506,
+        "positions": 6
+      },
+      {
+        "d": "2021-01-25",
+        "value": 100730.5276352175,
+        "cash": 85672.62287278367,
+        "positions": 4
+      },
+      {
+        "d": "2021-01-26",
+        "value": 100519.71492833161,
+        "cash": 85672.62287278367,
+        "positions": 4
+      },
+      {
+        "d": "2021-01-27",
+        "value": 99701.49051178369,
+        "cash": 85672.62287278367,
+        "positions": 4
+      },
+      {
+        "d": "2021-01-28",
+        "value": 100078.14911577589,
+        "cash": 85672.62287278367,
+        "positions": 4
+      },
+      {
+        "d": "2021-01-29",
+        "value": 99979.24648586824,
+        "cash": 89174.81400840386,
+        "positions": 3
+      },
+      {
+        "d": "2021-02-01",
+        "value": 100266.6610826629,
+        "cash": 92770.2754975192,
+        "positions": 2
+      },
+      {
+        "d": "2021-02-02",
+        "value": 100405.66396046539,
+        "cash": 92770.2754975192,
+        "positions": 2
+      },
+      {
+        "d": "2021-02-03",
+        "value": 100246.20225591774,
+        "cash": 89256.07725890291,
+        "positions": 3
+      },
+      {
+        "d": "2021-02-04",
+        "value": 100019.76637297559,
+        "cash": 93115.25723464446,
+        "positions": 2
+      },
+      {
+        "d": "2021-02-05",
+        "value": 100019.91120975632,
+        "cash": 92960.69605704074,
+        "positions": 2
+      },
+      {
+        "d": "2021-02-08",
+        "value": 100409.78481957717,
+        "cash": 82458.60538001634,
+        "positions": 5
+      },
+      {
+        "d": "2021-02-09",
+        "value": 100582.35595976528,
+        "cash": 78944.26291133114,
+        "positions": 6
+      },
+      {
+        "d": "2021-02-10",
+        "value": 100753.82584048323,
+        "cash": 78944.26291133114,
+        "positions": 6
+      },
+      {
+        "d": "2021-02-11",
+        "value": 101001.72668671394,
+        "cash": 78944.26291133114,
+        "positions": 6
+      },
+      {
+        "d": "2021-02-12",
+        "value": 100915.83542063227,
+        "cash": 78944.26291133114,
+        "positions": 6
+      },
+      {
+        "d": "2021-02-16",
+        "value": 100926.90872139146,
+        "cash": 75412.20867160901,
+        "positions": 7
+      },
+      {
+        "d": "2021-02-17",
+        "value": 100395.09628593373,
+        "cash": 75412.20867160901,
+        "positions": 7
+      },
+      {
+        "d": "2021-02-18",
+        "value": 100318.39876690564,
+        "cash": 75412.20867160901,
+        "positions": 7
+      },
+      {
+        "d": "2021-02-19",
+        "value": 100507.44801778013,
+        "cash": 78845.5725529067,
+        "positions": 6
+      },
+      {
+        "d": "2021-02-22",
+        "value": 99844.02381386643,
+        "cash": 78845.5725529067,
+        "positions": 6
+      },
+      {
+        "d": "2021-02-23",
+        "value": 99642.90680535458,
+        "cash": 78085.82006668959,
+        "positions": 6
+      },
+      {
+        "d": "2021-02-24",
+        "value": 100192.5763490777,
+        "cash": 88667.77683023398,
+        "positions": 3
+      },
+      {
+        "d": "2021-02-25",
+        "value": 99616.96491987306,
+        "cash": 88415.65475454448,
+        "positions": 3
+      },
+      {
+        "d": "2021-02-26",
+        "value": 99596.4209262452,
+        "cash": 88415.65475454448,
+        "positions": 3
+      },
+      {
+        "d": "2021-03-01",
+        "value": 99848.15061532275,
+        "cash": 88415.65475454448,
+        "positions": 3
+      },
+      {
+        "d": "2021-03-02",
+        "value": 99637.64085442854,
+        "cash": 84505.61398817864,
+        "positions": 4
+      },
+      {
+        "d": "2021-03-03",
+        "value": 99744.98206512365,
+        "cash": 88026.26533618403,
+        "positions": 3
+      },
+      {
+        "d": "2021-03-04",
+        "value": 99640.74903865534,
+        "cash": 88026.26533618403,
+        "positions": 3
+      },
+      {
+        "d": "2021-03-05",
+        "value": 99765.48193234789,
+        "cash": 88026.26533618403,
+        "positions": 3
+      },
+      {
+        "d": "2021-03-08",
+        "value": 100116.66388533925,
+        "cash": 88026.26533618403,
+        "positions": 3
+      },
+      {
+        "d": "2021-03-09",
+        "value": 99854.70043964565,
+        "cash": 88026.26533618403,
+        "positions": 3
+      },
+      {
+        "d": "2021-03-10",
+        "value": 100106.3778451197,
+        "cash": 92477.47559970275,
+        "positions": 2
+      },
+      {
+        "d": "2021-03-11",
+        "value": 100079.16867544774,
+        "cash": 92477.47559970275,
+        "positions": 2
+      },
+      {
+        "d": "2021-03-12",
+        "value": 100332.74469213706,
+        "cash": 96088.44340008021,
+        "positions": 1
+      },
+      {
+        "d": "2021-03-15",
+        "value": 100095.15489369049,
+        "cash": 80901.33786580598,
+        "positions": 5
+      },
+      {
+        "d": "2021-03-16",
+        "value": 99809.92622146811,
+        "cash": 80901.33786580598,
+        "positions": 5
+      },
+      {
+        "d": "2021-03-17",
+        "value": 100170.26891316377,
+        "cash": 85052.28393161925,
+        "positions": 4
+      },
+      {
+        "d": "2021-03-18",
+        "value": 100157.16016286318,
+        "cash": 85052.28393161925,
+        "positions": 4
+      },
+      {
+        "d": "2021-03-19",
+        "value": 100375.82773254382,
+        "cash": 85052.28393161925,
+        "positions": 4
+      },
+      {
+        "d": "2021-03-22",
+        "value": 100006.64250819416,
+        "cash": 85052.28393161925,
+        "positions": 4
+      },
+      {
+        "d": "2021-03-23",
+        "value": 99599.57481281072,
+        "cash": 85052.28393161925,
+        "positions": 4
+      },
+      {
+        "d": "2021-03-24",
+        "value": 99604.26817273193,
+        "cash": 85052.28393161925,
+        "positions": 4
+      },
+      {
+        "d": "2021-03-25",
+        "value": 99945.61777339265,
+        "cash": 85052.28393161925,
+        "positions": 4
+      },
+      {
+        "d": "2021-03-26",
+        "value": 100236.11942391,
+        "cash": 85052.28393161925,
+        "positions": 4
+      },
+      {
+        "d": "2021-03-29",
+        "value": 100111.0948936164,
+        "cash": 85052.28393161925,
+        "positions": 4
+      },
+      {
+        "d": "2021-03-30",
+        "value": 100473.36125149752,
+        "cash": 100473.36125149752,
+        "positions": 0
+      },
+      {
+        "d": "2021-03-31",
+        "value": 100445.77264532744,
+        "cash": 96956.79360769512,
+        "positions": 1
+      },
+      {
+        "d": "2021-04-01",
+        "value": 100439.6320751735,
+        "cash": 96956.79360769512,
+        "positions": 1
+      },
+      {
+        "d": "2021-04-05",
+        "value": 100415.4333758483,
+        "cash": 96956.79360769512,
+        "positions": 1
+      },
+      {
+        "d": "2021-04-06",
+        "value": 100452.46793722999,
+        "cash": 93442.25343954042,
+        "positions": 2
+      },
+      {
+        "d": "2021-04-07",
+        "value": 100382.8119184663,
+        "cash": 93442.25343954042,
+        "positions": 2
+      },
+      {
+        "d": "2021-04-08",
+        "value": 100444.96463234078,
+        "cash": 93442.25343954042,
+        "positions": 2
+      },
+      {
+        "d": "2021-04-09",
+        "value": 100469.04002925748,
+        "cash": 93442.25343954042,
+        "positions": 2
+      },
+      {
+        "d": "2021-04-12",
+        "value": 100478.7301506399,
+        "cash": 93442.25343954042,
+        "positions": 2
+      },
+      {
+        "d": "2021-04-13",
+        "value": 100511.475185933,
+        "cash": 93442.25343954042,
+        "positions": 2
+      },
+      {
+        "d": "2021-04-14",
+        "value": 100342.4310998587,
+        "cash": 84842.04259161389,
+        "positions": 4
+      },
+      {
+        "d": "2021-04-15",
+        "value": 100697.24238689063,
+        "cash": 84842.04259161389,
+        "positions": 4
+      },
+      {
+        "d": "2021-04-16",
+        "value": 100586.48347284505,
+        "cash": 88371.09657437561,
+        "positions": 3
+      },
+      {
+        "d": "2021-04-19",
+        "value": 100354.69059946868,
+        "cash": 88371.09657437561,
+        "positions": 3
+      },
+      {
+        "d": "2021-04-20",
+        "value": 100171.94745698781,
+        "cash": 88371.09657437561,
+        "positions": 3
+      },
+      {
+        "d": "2021-04-21",
+        "value": 100313.70015019154,
+        "cash": 91797.96978105104,
+        "positions": 2
+      },
+      {
+        "d": "2021-04-22",
+        "value": 100149.05118809355,
+        "cash": 91797.96978105104,
+        "positions": 2
+      },
+      {
+        "d": "2021-04-23",
+        "value": 100326.84915817418,
+        "cash": 91797.96978105104,
+        "positions": 2
+      },
+      {
+        "d": "2021-04-26",
+        "value": 100373.31839184738,
+        "cash": 91797.96978105104,
+        "positions": 2
+      },
+      {
+        "d": "2021-04-27",
+        "value": 100367.67169876563,
+        "cash": 91797.96978105104,
+        "positions": 2
+      },
+      {
+        "d": "2021-04-28",
+        "value": 100325.8792776701,
+        "cash": 91797.96978105104,
+        "positions": 2
+      },
+      {
+        "d": "2021-04-29",
+        "value": 100334.15700896793,
+        "cash": 100334.15700896793,
+        "positions": 0
+      },
+      {
+        "d": "2021-04-30",
+        "value": 100231.49566955335,
+        "cash": 90347.1408275064,
+        "positions": 2
+      },
+      {
+        "d": "2021-05-03",
+        "value": 100480.92975356148,
+        "cash": 90347.1408275064,
+        "positions": 2
+      },
+      {
+        "d": "2021-05-04",
+        "value": 100529.16643225176,
+        "cash": 90347.1408275064,
+        "positions": 2
+      },
+      {
+        "d": "2021-05-05",
+        "value": 100614.8962015099,
+        "cash": 90347.1408275064,
+        "positions": 2
+      },
+      {
+        "d": "2021-05-06",
+        "value": 100765.91098246693,
+        "cash": 90347.1408275064,
+        "positions": 2
+      },
+      {
+        "d": "2021-05-07",
+        "value": 100850.7399278964,
+        "cash": 90347.1408275064,
+        "positions": 2
+      },
+      {
+        "d": "2021-05-10",
+        "value": 100741.54557303838,
+        "cash": 90347.1408275064,
+        "positions": 2
+      },
+      {
+        "d": "2021-05-11",
+        "value": 100621.17230007405,
+        "cash": 90347.1408275064,
+        "positions": 2
+      },
+      {
+        "d": "2021-05-12",
+        "value": 100408.04296404246,
+        "cash": 90347.1408275064,
+        "positions": 2
+      },
+      {
+        "d": "2021-05-13",
+        "value": 100614.96535924441,
+        "cash": 90347.1408275064,
+        "positions": 2
+      },
+      {
+        "d": "2021-05-14",
+        "value": 100781.5777948791,
+        "cash": 90347.1408275064,
+        "positions": 2
+      },
+      {
+        "d": "2021-05-17",
+        "value": 100813.8522657133,
+        "cash": 100813.8522657133,
+        "positions": 0
+      },
+      {
+        "d": "2021-05-18",
+        "value": 100758.50728328672,
+        "cash": 95694.42581815264,
+        "positions": 1
+      },
+      {
+        "d": "2021-05-19",
+        "value": 100747.93087516345,
+        "cash": 95694.42581815264,
+        "positions": 1
+      },
+      {
+        "d": "2021-05-20",
+        "value": 100730.74601969014,
+        "cash": 95694.42581815264,
+        "positions": 1
+      },
+      {
+        "d": "2021-05-21",
+        "value": 100826.58326936958,
+        "cash": 95694.42581815264,
+        "positions": 1
+      },
+      {
+        "d": "2021-05-24",
+        "value": 100851.697418057,
+        "cash": 95694.42581815264,
+        "positions": 1
+      },
+      {
+        "d": "2021-05-25",
+        "value": 100802.12773588719,
+        "cash": 95694.42581815264,
+        "positions": 1
+      },
+      {
+        "d": "2021-05-26",
+        "value": 100817.99114292076,
+        "cash": 95694.42581815264,
+        "positions": 1
+      },
+      {
+        "d": "2021-05-27",
+        "value": 100899.94806208974,
+        "cash": 95694.42581815264,
+        "positions": 1
+      },
+      {
+        "d": "2021-05-28",
+        "value": 100896.64172939988,
+        "cash": 95694.42581815264,
+        "positions": 1
+      },
+      {
+        "d": "2021-06-01",
+        "value": 100961.32036971796,
+        "cash": 92163.04335762364,
+        "positions": 2
+      },
+      {
+        "d": "2021-06-02",
+        "value": 101079.32471581703,
+        "cash": 92163.04335762364,
+        "positions": 2
+      },
+      {
+        "d": "2021-06-03",
+        "value": 101100.38427444414,
+        "cash": 97420.80275967153,
+        "positions": 1
+      },
+      {
+        "d": "2021-06-04",
+        "value": 101215.32979257176,
+        "cash": 86232.15483622806,
+        "positions": 3
+      },
+      {
+        "d": "2021-06-07",
+        "value": 101189.86981970421,
+        "cash": 86232.15483622806,
+        "positions": 3
+      },
+      {
+        "d": "2021-06-08",
+        "value": 101150.69201736194,
+        "cash": 86232.15483622806,
+        "positions": 3
+      },
+      {
+        "d": "2021-06-09",
+        "value": 100967.21712653463,
+        "cash": 86232.15483622806,
+        "positions": 3
+      },
+      {
+        "d": "2021-06-10",
+        "value": 100790.82391325569,
+        "cash": 86232.15483622806,
+        "positions": 3
+      },
+      {
+        "d": "2021-06-11",
+        "value": 101021.3300146221,
+        "cash": 81146.2787109414,
+        "positions": 4
+      },
+      {
+        "d": "2021-06-14",
+        "value": 101086.48086305273,
+        "cash": 81146.2787109414,
+        "positions": 4
+      },
+      {
+        "d": "2021-06-15",
+        "value": 100975.82309919769,
+        "cash": 73191.14122810836,
+        "positions": 6
+      },
+      {
+        "d": "2021-06-16",
+        "value": 101230.46603359774,
+        "cash": 77049.99326490305,
+        "positions": 5
+      },
+      {
+        "d": "2021-06-17",
+        "value": 101280.36876630984,
+        "cash": 77049.99326490305,
+        "positions": 5
+      },
+      {
+        "d": "2021-06-18",
+        "value": 101396.14646118133,
+        "cash": 67915.30378022463,
+        "positions": 7
+      },
+      {
+        "d": "2021-06-21",
+        "value": 101557.73865641105,
+        "cash": 78228.16265068855,
+        "positions": 5
+      },
+      {
+        "d": "2021-06-22",
+        "value": 101977.35693606606,
+        "cash": 78228.16265068855,
+        "positions": 5
+      },
+      {
+        "d": "2021-06-23",
+        "value": 102083.37372717219,
+        "cash": 78228.16265068855,
+        "positions": 5
+      },
+      {
+        "d": "2021-06-24",
+        "value": 102182.42720113113,
+        "cash": 78228.16265068855,
+        "positions": 5
+      },
+      {
+        "d": "2021-06-25",
+        "value": 102058.6433537472,
+        "cash": 78228.16265068855,
+        "positions": 5
+      },
+      {
+        "d": "2021-06-28",
+        "value": 102492.09186766992,
+        "cash": 83869.65515852965,
+        "positions": 4
+      },
+      {
+        "d": "2021-06-29",
+        "value": 102509.71616153602,
+        "cash": 78591.09787832818,
+        "positions": 5
+      },
+      {
+        "d": "2021-06-30",
+        "value": 102367.3355657941,
+        "cash": 83134.95615787647,
+        "positions": 4
+      },
+      {
+        "d": "2021-07-01",
+        "value": 102325.44755267962,
+        "cash": 83134.95615787647,
+        "positions": 4
+      },
+      {
+        "d": "2021-07-02",
+        "value": 102543.49807164798,
+        "cash": 83134.95615787647,
+        "positions": 4
+      },
+      {
+        "d": "2021-07-06",
+        "value": 102646.81435932787,
+        "cash": 92973.72583351449,
+        "positions": 2
+      },
+      {
+        "d": "2021-07-07",
+        "value": 102218.11008635156,
+        "cash": 76405.8399422246,
+        "positions": 5
+      },
+      {
+        "d": "2021-07-08",
+        "value": 102060.89030325682,
+        "cash": 70242.05060270458,
+        "positions": 6
+      },
+      {
+        "d": "2021-07-09",
+        "value": 102355.46658716313,
+        "cash": 70242.05060270458,
+        "positions": 6
+      },
+      {
+        "d": "2021-07-12",
+        "value": 102381.91795048954,
+        "cash": 64293.96333484172,
+        "positions": 7
+      },
+      {
+        "d": "2021-07-13",
+        "value": 102267.68965047417,
+        "cash": 64293.96333484172,
+        "positions": 7
+      },
+      {
+        "d": "2021-07-14",
+        "value": 102191.1732173065,
+        "cash": 64293.96333484172,
+        "positions": 7
+      },
+      {
+        "d": "2021-07-15",
+        "value": 101496.86434837423,
+        "cash": 63510.58474619752,
+        "positions": 7
+      },
+      {
+        "d": "2021-07-16",
+        "value": 101026.43416478604,
+        "cash": 67424.18396560768,
+        "positions": 6
+      },
+      {
+        "d": "2021-07-19",
+        "value": 101146.77546832667,
+        "cash": 67424.18396560768,
+        "positions": 6
+      },
+      {
+        "d": "2021-07-20",
+        "value": 101424.81228391132,
+        "cash": 67424.18396560768,
+        "positions": 6
+      },
+      {
+        "d": "2021-07-21",
+        "value": 101625.8555371684,
+        "cash": 67424.18396560768,
+        "positions": 6
+      },
+      {
+        "d": "2021-07-22",
+        "value": 101861.29827650636,
+        "cash": 83300.59907440259,
+        "positions": 3
+      },
+      {
+        "d": "2021-07-23",
+        "value": 102227.72766724593,
+        "cash": 76653.27580615587,
+        "positions": 4
+      },
+      {
+        "d": "2021-07-26",
+        "value": 101855.9753748391,
+        "cash": 68945.09358799338,
+        "positions": 5
+      },
+      {
+        "d": "2021-07-27",
+        "value": 101463.18745388782,
+        "cash": 75009.2894428558,
+        "positions": 4
+      },
+      {
+        "d": "2021-07-28",
+        "value": 101568.14904005834,
+        "cash": 75009.2894428558,
+        "positions": 4
+      },
+      {
+        "d": "2021-07-29",
+        "value": 101683.1673781229,
+        "cash": 71454.40422645377,
+        "positions": 5
+      },
+      {
+        "d": "2021-07-30",
+        "value": 101497.9000186004,
+        "cash": 77912.30177020605,
+        "positions": 4
+      },
+      {
+        "d": "2021-08-02",
+        "value": 101516.48271714426,
+        "cash": 77912.30177020605,
+        "positions": 4
+      },
+      {
+        "d": "2021-08-03",
+        "value": 101677.15771481412,
+        "cash": 74359.224875106,
+        "positions": 5
+      },
+      {
+        "d": "2021-08-04",
+        "value": 102099.03771609435,
+        "cash": 68405.5493206463,
+        "positions": 6
+      },
+      {
+        "d": "2021-08-05",
+        "value": 102993.90811585235,
+        "cash": 68405.5493206463,
+        "positions": 6
+      },
+      {
+        "d": "2021-08-06",
+        "value": 102722.20315645359,
+        "cash": 68405.5493206463,
+        "positions": 6
+      },
+      {
+        "d": "2021-08-09",
+        "value": 102576.68472297359,
+        "cash": 81448.59332020207,
+        "positions": 4
+      },
+      {
+        "d": "2021-08-10",
+        "value": 102173.42579630185,
+        "cash": 88264.67651154798,
+        "positions": 3
+      },
+      {
+        "d": "2021-08-11",
+        "value": 102357.5250997516,
+        "cash": 88264.67651154798,
+        "positions": 3
+      },
+      {
+        "d": "2021-08-12",
+        "value": 102492.56195153568,
+        "cash": 88264.67651154798,
+        "positions": 3
+      },
+      {
+        "d": "2021-08-13",
+        "value": 102882.12725736687,
+        "cash": 92325.63493092007,
+        "positions": 2
+      },
+      {
+        "d": "2021-08-16",
+        "value": 102615.5319456886,
+        "cash": 82200.65784001489,
+        "positions": 3
+      },
+      {
+        "d": "2021-08-17",
+        "value": 102456.95424297935,
+        "cash": 82200.65784001489,
+        "positions": 3
+      },
+      {
+        "d": "2021-08-18",
+        "value": 102421.0738553429,
+        "cash": 85598.63167277585,
+        "positions": 2
+      },
+      {
+        "d": "2021-08-19",
+        "value": 102573.66606903629,
+        "cash": 92448.80149362916,
+        "positions": 1
+      },
+      {
+        "d": "2021-08-20",
+        "value": 102727.36747265834,
+        "cash": 92448.80149362916,
+        "positions": 1
+      },
+      {
+        "d": "2021-08-23",
+        "value": 102878.52685947248,
+        "cash": 92448.80149362916,
+        "positions": 1
+      },
+      {
+        "d": "2021-08-24",
+        "value": 102899.83065380644,
+        "cash": 82665.74047608435,
+        "positions": 3
+      },
+      {
+        "d": "2021-08-25",
+        "value": 102954.52766468943,
+        "cash": 82665.74047608435,
+        "positions": 3
+      },
+      {
+        "d": "2021-08-26",
+        "value": 102890.01268030333,
+        "cash": 82665.74047608435,
+        "positions": 3
+      },
+      {
+        "d": "2021-08-27",
+        "value": 103164.65114448238,
+        "cash": 82665.74047608435,
+        "positions": 3
+      },
+      {
+        "d": "2021-08-30",
+        "value": 103481.31880884765,
+        "cash": 76182.32546480988,
+        "positions": 4
+      },
+      {
+        "d": "2021-08-31",
+        "value": 103449.71871464886,
+        "cash": 83039.02177757182,
+        "positions": 4
+      },
+      {
+        "d": "2021-09-01",
+        "value": 103672.35236413624,
+        "cash": 83039.02177757182,
+        "positions": 4
+      },
+      {
+        "d": "2021-09-02",
+        "value": 103825.95687094519,
+        "cash": 83039.02177757182,
+        "positions": 4
+      },
+      {
+        "d": "2021-09-03",
+        "value": 104111.30120793864,
+        "cash": 83039.02177757182,
+        "positions": 4
+      },
+      {
+        "d": "2021-09-07",
+        "value": 104191.51502869395,
+        "cash": 83039.02177757182,
+        "positions": 4
+      },
+      {
+        "d": "2021-09-08",
+        "value": 104062.55461585651,
+        "cash": 83039.02177757182,
+        "positions": 4
+      },
+      {
+        "d": "2021-09-09",
+        "value": 103895.69608844456,
+        "cash": 93173.6626375793,
+        "positions": 2
+      },
+      {
+        "d": "2021-09-10",
+        "value": 103816.39981036363,
+        "cash": 93173.6626375793,
+        "positions": 2
+      },
+      {
+        "d": "2021-09-13",
+        "value": 103740.46675733206,
+        "cash": 93173.6626375793,
+        "positions": 2
+      },
+      {
+        "d": "2021-09-14",
+        "value": 103613.90795178692,
+        "cash": 93173.6626375793,
+        "positions": 2
+      },
+      {
+        "d": "2021-09-15",
+        "value": 103723.26428094937,
+        "cash": 99941.60827085521,
+        "positions": 1
+      },
+      {
+        "d": "2021-09-16",
+        "value": 103725.2807618343,
+        "cash": 103725.2807618343,
+        "positions": 0
+      },
+      {
+        "d": "2021-09-17",
+        "value": 103665.02227194545,
+        "cash": 99230.49140607369,
+        "positions": 1
+      },
+      {
+        "d": "2021-09-20",
+        "value": 103637.75748691212,
+        "cash": 99230.49140607369,
+        "positions": 1
+      },
+      {
+        "d": "2021-09-21",
+        "value": 103734.73298324166,
+        "cash": 99230.49140607369,
+        "positions": 1
+      },
+      {
+        "d": "2021-09-22",
+        "value": 103837.28510955202,
+        "cash": 99230.49140607369,
+        "positions": 1
+      },
+      {
+        "d": "2021-09-23",
+        "value": 103800.41581326995,
+        "cash": 99230.49140607369,
+        "positions": 1
+      },
+      {
+        "d": "2021-09-24",
+        "value": 103794.83918328914,
+        "cash": 99230.49140607369,
+        "positions": 1
+      },
+      {
+        "d": "2021-09-27",
+        "value": 103740.82284901584,
+        "cash": 94320.87871729917,
+        "positions": 2
+      },
+      {
+        "d": "2021-09-28",
+        "value": 103479.66618879998,
+        "cash": 90008.79196410411,
+        "positions": 3
+      },
+      {
+        "d": "2021-09-29",
+        "value": 103517.45600254316,
+        "cash": 90008.79196410411,
+        "positions": 3
+      },
+      {
+        "d": "2021-09-30",
+        "value": 103518.42766135417,
+        "cash": 90008.79196410411,
+        "positions": 3
+      },
+      {
+        "d": "2021-10-01",
+        "value": 103682.74823129563,
+        "cash": 90008.79196410411,
+        "positions": 3
+      },
+      {
+        "d": "2021-10-04",
+        "value": 103509.16388903988,
+        "cash": 94252.25045532508,
+        "positions": 2
+      },
+      {
+        "d": "2021-10-05",
+        "value": 103552.77589847488,
+        "cash": 90301.53307315308,
+        "positions": 3
+      },
+      {
+        "d": "2021-10-06",
+        "value": 103636.31517902296,
+        "cash": 86068.11633395645,
+        "positions": 4
+      },
+      {
+        "d": "2021-10-07",
+        "value": 103615.04563640976,
+        "cash": 86068.11633395645,
+        "positions": 4
+      },
+      {
+        "d": "2021-10-08",
+        "value": 103582.18560829089,
+        "cash": 86068.11633395645,
+        "positions": 4
+      },
+      {
+        "d": "2021-10-11",
+        "value": 103368.0874596453,
+        "cash": 86068.11633395645,
+        "positions": 4
+      },
+      {
+        "d": "2021-10-12",
+        "value": 103449.09061619594,
+        "cash": 91174.5286941149,
+        "positions": 3
+      },
+      {
+        "d": "2021-10-13",
+        "value": 103370.77724482208,
+        "cash": 95449.26328316185,
+        "positions": 2
+      },
+      {
+        "d": "2021-10-14",
+        "value": 103318.03397784222,
+        "cash": 91831.28607959308,
+        "positions": 3
+      },
+      {
+        "d": "2021-10-15",
+        "value": 103392.8561996215,
+        "cash": 82369.62817375247,
+        "positions": 5
+      },
+      {
+        "d": "2021-10-18",
+        "value": 103648.28932525063,
+        "cash": 82369.62817375247,
+        "positions": 5
+      },
+      {
+        "d": "2021-10-19",
+        "value": 103621.68219939957,
+        "cash": 78741.93804736869,
+        "positions": 6
+      },
+      {
+        "d": "2021-10-20",
+        "value": 103619.51190751525,
+        "cash": 82292.20193479778,
+        "positions": 5
+      },
+      {
+        "d": "2021-10-21",
+        "value": 104099.81968938399,
+        "cash": 86685.16868027663,
+        "positions": 4
+      },
+      {
+        "d": "2021-10-22",
+        "value": 104395.7797944371,
+        "cash": 82501.04395482433,
+        "positions": 5
+      },
+      {
+        "d": "2021-10-25",
+        "value": 105232.58215933108,
+        "cash": 82501.04395482433,
+        "positions": 5
+      },
+      {
+        "d": "2021-10-26",
+        "value": 105390.66567173802,
+        "cash": 78817.90357924774,
+        "positions": 6
+      },
+      {
+        "d": "2021-10-27",
+        "value": 105178.52065087002,
+        "cash": 78817.90357924774,
+        "positions": 6
+      },
+      {
+        "d": "2021-10-28",
+        "value": 105698.25360188299,
+        "cash": 78817.90357924774,
+        "positions": 6
+      },
+      {
+        "d": "2021-10-29",
+        "value": 106241.18757451768,
+        "cash": 82647.58957448714,
+        "positions": 5
+      },
+      {
+        "d": "2021-11-01",
+        "value": 106802.76320961965,
+        "cash": 86464.95713600527,
+        "positions": 5
+      },
+      {
+        "d": "2021-11-02",
+        "value": 107003.42990053936,
+        "cash": 82726.86042366858,
+        "positions": 6
+      },
+      {
+        "d": "2021-11-03",
+        "value": 107283.3300503289,
+        "cash": 86795.18234337452,
+        "positions": 5
+      },
+      {
+        "d": "2021-11-04",
+        "value": 108073.84740150042,
+        "cash": 82076.14111996563,
+        "positions": 6
+      },
+      {
+        "d": "2021-11-05",
+        "value": 108205.39489776056,
+        "cash": 71980.34977148185,
+        "positions": 8
+      },
+      {
+        "d": "2021-11-08",
+        "value": 108932.23465121043,
+        "cash": 76153.80809883587,
+        "positions": 7
+      },
+      {
+        "d": "2021-11-09",
+        "value": 108478.15786087303,
+        "cash": 72023.44777707907,
+        "positions": 8
+      },
+      {
+        "d": "2021-11-10",
+        "value": 107492.85743309968,
+        "cash": 76537.38528811921,
+        "positions": 7
+      },
+      {
+        "d": "2021-11-11",
+        "value": 108032.96154972141,
+        "cash": 76537.38528811921,
+        "positions": 7
+      },
+      {
+        "d": "2021-11-12",
+        "value": 108397.88575014636,
+        "cash": 76537.38528811921,
+        "positions": 7
+      },
+      {
+        "d": "2021-11-15",
+        "value": 108260.2855444912,
+        "cash": 72743.45928686409,
+        "positions": 8
+      },
+      {
+        "d": "2021-11-16",
+        "value": 109156.14021611742,
+        "cash": 81527.04356187368,
+        "positions": 6
+      },
+      {
+        "d": "2021-11-17",
+        "value": 109313.66707336958,
+        "cash": 85031.29681521082,
+        "positions": 5
+      },
+      {
+        "d": "2021-11-18",
+        "value": 109395.0763821097,
+        "cash": 80856.99059979165,
+        "positions": 6
+      },
+      {
+        "d": "2021-11-19",
+        "value": 109499.28964057771,
+        "cash": 86401.42615124692,
+        "positions": 5
+      },
+      {
+        "d": "2021-11-22",
+        "value": 108905.90369644214,
+        "cash": 89367.33052754543,
+        "positions": 5
+      },
+      {
+        "d": "2021-11-23",
+        "value": 108801.86143315298,
+        "cash": 89367.33052754543,
+        "positions": 5
+      },
+      {
+        "d": "2021-11-24",
+        "value": 109033.90838188426,
+        "cash": 93653.46688447871,
+        "positions": 4
+      },
+      {
+        "d": "2021-11-26",
+        "value": 108697.57821226958,
+        "cash": 93653.46688447871,
+        "positions": 4
+      },
+      {
+        "d": "2021-11-29",
+        "value": 109002.9668989125,
+        "cash": 93653.46688447871,
+        "positions": 4
+      },
+      {
+        "d": "2021-11-30",
+        "value": 108470.67793395612,
+        "cash": 89838.36304301677,
+        "positions": 5
+      },
+      {
+        "d": "2021-12-01",
+        "value": 107874.69085861545,
+        "cash": 93181.15159013563,
+        "positions": 4
+      },
+      {
+        "d": "2021-12-02",
+        "value": 107878.55642897014,
+        "cash": 93181.15159013563,
+        "positions": 4
+      },
+      {
+        "d": "2021-12-03",
+        "value": 107415.02643255133,
+        "cash": 93181.15159013563,
+        "positions": 4
+      },
+      {
+        "d": "2021-12-06",
+        "value": 107322.50218368461,
+        "cash": 96871.7367477398,
+        "positions": 3
+      },
+      {
+        "d": "2021-12-07",
+        "value": 107885.3807207402,
+        "cash": 96871.7367477398,
+        "positions": 3
+      },
+      {
+        "d": "2021-12-08",
+        "value": 107826.9446755645,
+        "cash": 104436.74284509775,
+        "positions": 1
+      },
+      {
+        "d": "2021-12-09",
+        "value": 107660.2823367817,
+        "cash": 104436.74284509775,
+        "positions": 1
+      },
+      {
+        "d": "2021-12-10",
+        "value": 107670.78619536017,
+        "cash": 104436.74284509775,
+        "positions": 1
+      },
+      {
+        "d": "2021-12-13",
+        "value": 107559.91138066957,
+        "cash": 104436.74284509775,
+        "positions": 1
+      },
+      {
+        "d": "2021-12-14",
+        "value": 107601.92717115507,
+        "cash": 104436.74284509775,
+        "positions": 1
+      },
+      {
+        "d": "2021-12-15",
+        "value": 107852.93593811282,
+        "cash": 107852.93593811282,
+        "positions": 0
+      },
+      {
+        "d": "2021-12-16",
+        "value": 107852.93593811282,
+        "cash": 107852.93593811282,
+        "positions": 0
+      },
+      {
+        "d": "2021-12-17",
+        "value": 107852.93593811282,
+        "cash": 107852.93593811282,
+        "positions": 0
+      },
+      {
+        "d": "2021-12-20",
+        "value": 107852.93593811282,
+        "cash": 107852.93593811282,
+        "positions": 0
+      },
+      {
+        "d": "2021-12-21",
+        "value": 107852.93593811282,
+        "cash": 107852.93593811282,
+        "positions": 0
+      },
+      {
+        "d": "2021-12-22",
+        "value": 107863.41101154534,
+        "cash": 104078.08318027887,
+        "positions": 1
+      },
+      {
+        "d": "2021-12-23",
+        "value": 108034.36614580033,
+        "cash": 104078.08318027887,
+        "positions": 1
+      },
+      {
+        "d": "2021-12-27",
+        "value": 108034.78518156569,
+        "cash": 104078.08318027887,
+        "positions": 1
+      },
+      {
+        "d": "2021-12-28",
+        "value": 107972.35441784679,
+        "cash": 104078.08318027887,
+        "positions": 1
+      },
+      {
+        "d": "2021-12-29",
+        "value": 108107.69314890521,
+        "cash": 104078.08318027887,
+        "positions": 1
+      },
+      {
+        "d": "2021-12-30",
+        "value": 108012.15921446675,
+        "cash": 104078.08318027887,
+        "positions": 1
+      },
+      {
+        "d": "2021-12-31",
+        "value": 107981.40685010469,
+        "cash": 107981.40685010469,
+        "positions": 0
+      }
+    ],
+    "events": [
+      {
+        "s": "TSLA",
+        "signalDate": "2020-12-31",
+        "strength": 0.6724415291914658,
+        "volScale": 0.35,
+        "day": "2021-01-04",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3499.9999999999995,
+        "previousEquity": 100000
+      },
+      {
+        "s": "MU",
+        "signalDate": "2020-12-31",
+        "strength": 0.40444598269222776,
+        "volScale": 0.3989637764559008,
+        "day": "2021-01-04",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3989.6377645590082,
+        "previousEquity": 100000
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2020-12-31",
+        "strength": 0.029138632903451978,
+        "volScale": 0.39559163452239243,
+        "day": "2021-01-04",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3955.9163452239236,
+        "previousEquity": 100000
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-01-04",
+        "strength": 0.7266940634561112,
+        "volScale": 0.35,
+        "day": "2021-01-05",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-01-06",
+        "strength": 0.7972563999902926,
+        "volScale": 0.35,
+        "day": "2021-01-07",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "C",
+        "signalDate": "2021-01-06",
+        "strength": 0.5030416751132463,
+        "volScale": 0.35,
+        "day": "2021-01-07",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3497.078373749339,
+        "previousEquity": 99916.52496426685
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-01-06",
+        "strength": 0.29921243978244805,
+        "volScale": 0.3966194564723889,
+        "day": "2021-01-07",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3962.8837823937392,
+        "previousEquity": 99916.52496426685
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-01-07",
+        "strength": 0.941657897800898,
+        "volScale": 0.35,
+        "day": "2021-01-08",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "MU",
+        "signalDate": "2021-01-07",
+        "strength": 0.5172612022230194,
+        "volScale": 0.3949020777073325,
+        "day": "2021-01-08",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-01-07",
+        "strength": 0.3473843206826448,
+        "volScale": 0.39277799575372263,
+        "day": "2021-01-08",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-01-08",
+        "strength": 1.0721955453303318,
+        "volScale": 0.35,
+        "day": "2021-01-11",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-01-12",
+        "strength": 0.4388185168900276,
+        "volScale": 0.4024035830086998,
+        "day": "2021-01-13",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "GM",
+        "signalDate": "2021-01-12",
+        "strength": 0.3705935127162556,
+        "volScale": 0.35,
+        "day": "2021-01-13",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3516.126461887246,
+        "previousEquity": 100460.75605392133
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-01-13",
+        "strength": 0.315747106418496,
+        "volScale": 0.36610214093389437,
+        "day": "2021-01-14",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3677.439069013852,
+        "previousEquity": 100448.44478737624
+      },
+      {
+        "s": "C",
+        "signalDate": "2021-01-14",
+        "strength": 0.6349202954532194,
+        "volScale": 0.3580509433950306,
+        "day": "2021-01-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "GM",
+        "signalDate": "2021-01-14",
+        "strength": 0.4914619154430129,
+        "volScale": 0.35,
+        "day": "2021-01-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-01-14",
+        "strength": 0.4203426452132979,
+        "volScale": 0.40886386250629286,
+        "day": "2021-01-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "MU",
+        "signalDate": "2021-01-19",
+        "strength": 0.6454968120842508,
+        "volScale": 0.3505047248823589,
+        "day": "2021-01-20",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "GM",
+        "signalDate": "2021-01-19",
+        "strength": 0.5561863224671542,
+        "volScale": 0.35,
+        "day": "2021-01-20",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2021-01-19",
+        "strength": 0.2753102790529012,
+        "volScale": 0.4269405089187487,
+        "day": "2021-01-20",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4304.636441927413,
+        "previousEquity": 100825.2051984749
+      },
+      {
+        "s": "GM",
+        "signalDate": "2021-01-20",
+        "strength": 0.5040391141199629,
+        "volScale": 0.35,
+        "day": "2021-01-21",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-01-20",
+        "strength": 0.14127217957351967,
+        "volScale": 0.35,
+        "day": "2021-01-21",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3545.55387513137,
+        "previousEquity": 101301.53928946772
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2021-01-20",
+        "strength": 0.1368569486152551,
+        "volScale": 0.4408615196698591,
+        "day": "2021-01-21",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-01-22",
+        "strength": 0.36422696197955684,
+        "volScale": 0.37349048312589944,
+        "day": "2021-01-25",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2021-02-02",
+        "strength": 0.15063495164341822,
+        "volScale": 0.35,
+        "day": "2021-02-03",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3514.1982386162886,
+        "previousEquity": 100405.66396046539
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-02-04",
+        "strength": 0.4035916220949791,
+        "volScale": 0.35,
+        "day": "2021-02-05",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3500.691823054145,
+        "previousEquity": 100019.76637297559
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2021-02-04",
+        "strength": 0.13689532269190408,
+        "volScale": 0.35,
+        "day": "2021-02-05",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2021-02-05",
+        "strength": 0.3140171489912915,
+        "volScale": 0.35,
+        "day": "2021-02-08",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3500.696892341471,
+        "previousEquity": 100019.91120975632
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-02-05",
+        "strength": 0.2620826051231082,
+        "volScale": 0.35,
+        "day": "2021-02-08",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3500.6968923414715,
+        "previousEquity": 100019.91120975632
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2021-02-05",
+        "strength": 0.12951296139345936,
+        "volScale": 0.35,
+        "day": "2021-02-08",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2021-02-05",
+        "strength": 0.06921616580413903,
+        "volScale": 0.35,
+        "day": "2021-02-08",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3500.696892341471,
+        "previousEquity": 100019.91120975632
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2021-02-08",
+        "strength": 0.38492032787763497,
+        "volScale": 0.35,
+        "day": "2021-02-09",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-02-08",
+        "strength": 0.369757245653342,
+        "volScale": 0.35,
+        "day": "2021-02-09",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-02-08",
+        "strength": 0.30544962738903014,
+        "volScale": 0.35,
+        "day": "2021-02-09",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-02-08",
+        "strength": 0.11462361646307828,
+        "volScale": 0.35,
+        "day": "2021-02-09",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3514.3424686852004,
+        "previousEquity": 100409.78481957717
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2021-02-08",
+        "strength": 0.08269431554624274,
+        "volScale": 0.35,
+        "day": "2021-02-09",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2021-02-09",
+        "strength": 0.4055535063731319,
+        "volScale": 0.35,
+        "day": "2021-02-10",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-02-09",
+        "strength": 0.32518873236113044,
+        "volScale": 0.35,
+        "day": "2021-02-10",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-02-09",
+        "strength": 0.2602929716805138,
+        "volScale": 0.35,
+        "day": "2021-02-10",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2021-02-10",
+        "strength": 0.4137994389567692,
+        "volScale": 0.35,
+        "day": "2021-02-11",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-02-10",
+        "strength": 0.11366664699924289,
+        "volScale": 0.35,
+        "day": "2021-02-11",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-02-11",
+        "strength": 0.1383246952202235,
+        "volScale": 0.35,
+        "day": "2021-02-12",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "MU",
+        "signalDate": "2021-02-12",
+        "strength": 0.31201540803582306,
+        "volScale": 0.35,
+        "day": "2021-02-16",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3532.0542397221293,
+        "previousEquity": 100915.83542063227
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-02-16",
+        "strength": 0.4339013820078037,
+        "volScale": 0.35,
+        "day": "2021-02-17",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-02-16",
+        "strength": 0.1321776162779995,
+        "volScale": 0.35,
+        "day": "2021-02-17",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "MU",
+        "signalDate": "2021-02-19",
+        "strength": 0.25272053955643825,
+        "volScale": 0.35,
+        "day": "2021-02-22",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-02-22",
+        "strength": 0.21500149773706778,
+        "volScale": 0.42130674995581857,
+        "day": "2021-02-23",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4206.496117553142,
+        "previousEquity": 99844.02381386643
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2021-02-22",
+        "strength": 0.15884104312586933,
+        "volScale": 0.35,
+        "day": "2021-02-23",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2021-02-23",
+        "strength": 0.23951078541440185,
+        "volScale": 0.35,
+        "day": "2021-02-24",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-02-23",
+        "strength": 0.23333338648238833,
+        "volScale": 0.4327365144984954,
+        "day": "2021-02-24",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "MU",
+        "signalDate": "2021-02-24",
+        "strength": 0.29797978689260907,
+        "volScale": 0.35,
+        "day": "2021-02-25",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2021-02-24",
+        "strength": 0.2668802367228924,
+        "volScale": 0.35,
+        "day": "2021-02-25",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3506.7401722177196,
+        "previousEquity": 100192.5763490777
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-02-24",
+        "strength": 0.24974245572168963,
+        "volScale": 0.4302224515158974,
+        "day": "2021-02-25",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "MU",
+        "signalDate": "2021-03-01",
+        "strength": 0.2954201149661331,
+        "volScale": 0.35,
+        "day": "2021-03-02",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "C",
+        "signalDate": "2021-03-01",
+        "strength": 0.17534399083285912,
+        "volScale": 0.3915987168785679,
+        "day": "2021-03-02",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3910.040766365838,
+        "previousEquity": 99848.15061532275
+      },
+      {
+        "s": "C",
+        "signalDate": "2021-03-03",
+        "strength": 0.18201332834294592,
+        "volScale": 0.3821808598440683,
+        "day": "2021-03-04",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-03-05",
+        "strength": 0.2479297819568116,
+        "volScale": 0.47241948364322683,
+        "day": "2021-03-08",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2021-03-08",
+        "strength": 0.3360547805241836,
+        "volScale": 0.35,
+        "day": "2021-03-09",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "C",
+        "signalDate": "2021-03-08",
+        "strength": 0.22908546176878097,
+        "volScale": 0.37833134788364875,
+        "day": "2021-03-09",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "C",
+        "signalDate": "2021-03-10",
+        "strength": 0.22797881920151486,
+        "volScale": 0.35139078031480253,
+        "day": "2021-03-11",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "GM",
+        "signalDate": "2021-03-12",
+        "strength": 0.42554723735311706,
+        "volScale": 0.35,
+        "day": "2021-03-15",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3511.646064224796,
+        "previousEquity": 100332.74469213706
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2021-03-12",
+        "strength": 0.3224267594971537,
+        "volScale": 0.35,
+        "day": "2021-03-15",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3511.646064224796,
+        "previousEquity": 100332.74469213706
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-03-12",
+        "strength": 0.2705247237091104,
+        "volScale": 0.4323637745853384,
+        "day": "2021-03-15",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4338.024420959946,
+        "previousEquity": 100332.74469213706
+      },
+      {
+        "s": "C",
+        "signalDate": "2021-03-12",
+        "strength": 0.2448013562584752,
+        "volScale": 0.35,
+        "day": "2021-03-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2021-03-12",
+        "strength": 0.035722133640020415,
+        "volScale": 0.3813101093370684,
+        "day": "2021-03-15",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3825.7889848646946,
+        "previousEquity": 100332.74469213706
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2021-03-15",
+        "strength": 0.33807384137204344,
+        "volScale": 0.35,
+        "day": "2021-03-16",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "GM",
+        "signalDate": "2021-03-17",
+        "strength": 0.4823497823085783,
+        "volScale": 0.35,
+        "day": "2021-03-18",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-03-18",
+        "strength": 0.2932388507737289,
+        "volScale": 0.4337054993555562,
+        "day": "2021-03-19",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2021-03-19",
+        "strength": 0.10548960955345454,
+        "volScale": 0.35,
+        "day": "2021-03-22",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2021-03-30",
+        "strength": 0.13503461731215527,
+        "volScale": 0.35,
+        "day": "2021-03-31",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3516.5676438024134,
+        "previousEquity": 100473.36125149752
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2021-04-05",
+        "strength": 0.3181914574187854,
+        "volScale": 0.35,
+        "day": "2021-04-06",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3514.5401681546896,
+        "previousEquity": 100415.4333758483
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2021-04-12",
+        "strength": 0.20081970275046435,
+        "volScale": 0.3659214273129071,
+        "day": "2021-04-13",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-04-13",
+        "strength": 0.20748381926279813,
+        "volScale": 0.35,
+        "day": "2021-04-14",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3517.9016315076547,
+        "previousEquity": 100511.475185933
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-04-13",
+        "strength": 0.1222616947078008,
+        "volScale": 0.5056446746023054,
+        "day": "2021-04-14",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5082.309216418878,
+        "previousEquity": 100511.475185933
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-04-15",
+        "strength": 0.190758551208825,
+        "volScale": 0.35,
+        "day": "2021-04-16",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-04-15",
+        "strength": 0.07902173077143337,
+        "volScale": 0.47844945571186204,
+        "day": "2021-04-16",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-04-16",
+        "strength": 0.08955843803855923,
+        "volScale": 0.5525109518755661,
+        "day": "2021-04-19",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-04-29",
+        "strength": 0.20064433089599443,
+        "volScale": 0.4898533716871297,
+        "day": "2021-04-30",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4914.90251062288,
+        "previousEquity": 100334.15700896793
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2021-04-29",
+        "strength": 0.1456669981329075,
+        "volScale": 0.505522129456402,
+        "day": "2021-04-30",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5072.113670838644,
+        "previousEquity": 100334.15700896793
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2021-05-03",
+        "strength": 0.19911631272983965,
+        "volScale": 0.4039796406716607,
+        "day": "2021-05-04",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2021-05-05",
+        "strength": 0.20695937410694687,
+        "volScale": 0.4101824035912584,
+        "day": "2021-05-06",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-05-05",
+        "strength": 0.1710466616259203,
+        "volScale": 0.49153111096649094,
+        "day": "2021-05-06",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2021-05-06",
+        "strength": 0.198836947505052,
+        "volScale": 0.413729786125039,
+        "day": "2021-05-07",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-05-06",
+        "strength": 0.16049070158083412,
+        "volScale": 0.48945213384496605,
+        "day": "2021-05-07",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "FDX",
+        "signalDate": "2021-05-07",
+        "strength": 0.2410874450018845,
+        "volScale": 0.4122525799742761,
+        "day": "2021-05-10",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-05-07",
+        "strength": 0.17978017569341898,
+        "volScale": 0.49047407828085465,
+        "day": "2021-05-10",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "C",
+        "signalDate": "2021-05-17",
+        "strength": 0.11004483221074701,
+        "volScale": 0.5078098230060176,
+        "day": "2021-05-18",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5119.426447560668,
+        "previousEquity": 100813.8522657133
+      },
+      {
+        "s": "C",
+        "signalDate": "2021-05-24",
+        "strength": 0.045127164164669775,
+        "volScale": 0.6398720871334441,
+        "day": "2021-05-25",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-05-28",
+        "strength": 0.27683231472583913,
+        "volScale": 0.35,
+        "day": "2021-06-01",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3531.382460528995,
+        "previousEquity": 100896.64172939988
+      },
+      {
+        "s": "C",
+        "signalDate": "2021-06-01",
+        "strength": 0.10005090668534855,
+        "volScale": 0.7735018865597019,
+        "day": "2021-06-02",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-06-02",
+        "strength": 0.27240503444334574,
+        "volScale": 0.35,
+        "day": "2021-06-03",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-06-03",
+        "strength": 0.2982991329279534,
+        "volScale": 0.35,
+        "day": "2021-06-04",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-06-03",
+        "strength": 0.17702080947365362,
+        "volScale": 0.7566869828180968,
+        "day": "2021-06-04",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 7650.134473837928,
+        "previousEquity": 101100.38427444414
+      },
+      {
+        "s": "GM",
+        "signalDate": "2021-06-03",
+        "strength": 0.12998596756246972,
+        "volScale": 0.35,
+        "day": "2021-06-04",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3538.5134496055443,
+        "previousEquity": 101100.38427444414
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-06-04",
+        "strength": 0.39035426033066334,
+        "volScale": 0.35,
+        "day": "2021-06-07",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-06-10",
+        "strength": 0.15051783045231604,
+        "volScale": 0.5045971376981454,
+        "day": "2021-06-11",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5085.87612528666,
+        "previousEquity": 100790.82391325569
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-06-11",
+        "strength": 0.33570568687876556,
+        "volScale": 0.3791722319233685,
+        "day": "2021-06-14",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-06-11",
+        "strength": 0.13860785351459626,
+        "volScale": 0.5038121102602078,
+        "day": "2021-06-14",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-06-14",
+        "strength": 0.30489448852637224,
+        "volScale": 0.4019240371434129,
+        "day": "2021-06-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-06-14",
+        "strength": 0.1522944850971566,
+        "volScale": 0.4972737063934983,
+        "day": "2021-06-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2021-06-14",
+        "strength": 0.1308886114080714,
+        "volScale": 0.386415246158275,
+        "day": "2021-06-15",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3906.1357385970273,
+        "previousEquity": 101086.48086305273
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-06-14",
+        "strength": 0.11525233260871581,
+        "volScale": 0.4005482938634898,
+        "day": "2021-06-15",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4049.0017442360077,
+        "previousEquity": 101086.48086305273
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2021-06-15",
+        "strength": 0.15282516952508485,
+        "volScale": 0.3863736803517278,
+        "day": "2021-06-16",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2021-06-16",
+        "strength": 0.1817773518621586,
+        "volScale": 0.3857444997796594,
+        "day": "2021-06-17",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-06-16",
+        "strength": 0.10676114218620048,
+        "volScale": 0.42157410275194585,
+        "day": "2021-06-17",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-06-17",
+        "strength": 0.31944199781130966,
+        "volScale": 0.37637042522419756,
+        "day": "2021-06-18",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3811.893545943957,
+        "previousEquity": 101280.36876630984
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2021-06-17",
+        "strength": 0.24994181572446084,
+        "volScale": 0.35,
+        "day": "2021-06-18",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-06-17",
+        "strength": 0.17494228398175116,
+        "volScale": 0.40233732119161764,
+        "day": "2021-06-18",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-06-17",
+        "strength": 0.0880672683032746,
+        "volScale": 0.5255506080369896,
+        "day": "2021-06-18",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5322.795938734468,
+        "previousEquity": 101280.36876630984
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2021-06-18",
+        "strength": 0.19970720156605104,
+        "volScale": 0.35819864306246024,
+        "day": "2021-06-21",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-06-18",
+        "strength": 0.16915763692288333,
+        "volScale": 0.4709235403983768,
+        "day": "2021-06-21",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-06-18",
+        "strength": 0.13154215548835602,
+        "volScale": 0.4707744797373147,
+        "day": "2021-06-21",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-06-18",
+        "strength": 0.07137999709970666,
+        "volScale": 0.5476720900235237,
+        "day": "2021-06-21",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-06-22",
+        "strength": 0.15564892741051883,
+        "volScale": 0.45059565421226005,
+        "day": "2021-06-23",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-06-22",
+        "strength": 0.1377586143573315,
+        "volScale": 0.48573131752363025,
+        "day": "2021-06-23",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-06-22",
+        "strength": 0.06586625518203038,
+        "volScale": 0.5789057320627201,
+        "day": "2021-06-23",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-06-23",
+        "strength": 0.13077167832023417,
+        "volScale": 0.450101352081866,
+        "day": "2021-06-24",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-06-23",
+        "strength": 0.04607320481232291,
+        "volScale": 0.5788767039698958,
+        "day": "2021-06-24",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-06-24",
+        "strength": 0.09730177799329254,
+        "volScale": 0.5685579990736511,
+        "day": "2021-06-25",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-06-28",
+        "strength": 0.2562187604633628,
+        "volScale": 0.4045493866393214,
+        "day": "2021-06-29",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-06-28",
+        "strength": 0.12135287695060426,
+        "volScale": 0.5150209332264144,
+        "day": "2021-06-29",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5278.557280201477,
+        "previousEquity": 102492.09186766992
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-06-29",
+        "strength": 0.14448731921481195,
+        "volScale": 0.5598548980100829,
+        "day": "2021-06-30",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-06-29",
+        "strength": 0.10368630217519104,
+        "volScale": 0.40450025844770193,
+        "day": "2021-06-30",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4146.520668074188,
+        "previousEquity": 102509.71616153602
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-06-30",
+        "strength": 0.18493760922079794,
+        "volScale": 0.36077910047467177,
+        "day": "2021-07-01",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-07-01",
+        "strength": 0.3161442107082828,
+        "volScale": 0.41611522865515965,
+        "day": "2021-07-02",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-07-02",
+        "strength": 0.3798884884182758,
+        "volScale": 0.4415636781806997,
+        "day": "2021-07-06",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-07-02",
+        "strength": 0.1978244355251486,
+        "volScale": 0.3748399673390807,
+        "day": "2021-07-06",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-07-02",
+        "strength": 0.16909459546688632,
+        "volScale": 0.5635633680933296,
+        "day": "2021-07-06",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-07-06",
+        "strength": 0.3562336853855266,
+        "volScale": 0.4425595918209548,
+        "day": "2021-07-07",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4542.733226458546,
+        "previousEquity": 102646.81435932787
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-07-06",
+        "strength": 0.21335269259195755,
+        "volScale": 0.49120264487524035,
+        "day": "2021-07-07",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5042.038670131964,
+        "previousEquity": 102646.81435932787
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-07-06",
+        "strength": 0.1571417364657235,
+        "volScale": 0.5636283467894326,
+        "day": "2021-07-07",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-07-06",
+        "strength": 0.07138762017371558,
+        "volScale": 0.6803049893252532,
+        "day": "2021-07-07",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 6983.113994699379,
+        "previousEquity": 102646.81435932787
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-07-07",
+        "strength": 0.1746558177083377,
+        "volScale": 0.5666529238850846,
+        "day": "2021-07-08",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-07-07",
+        "strength": 0.09351552355442405,
+        "volScale": 0.6030036491882884,
+        "day": "2021-07-08",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 6163.789339520018,
+        "previousEquity": 102218.11008635156
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-07-09",
+        "strength": 0.10741815665990173,
+        "volScale": 0.6014014289116274,
+        "day": "2021-07-12",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2021-07-09",
+        "strength": 0.016384359165898088,
+        "volScale": 0.581120624641736,
+        "day": "2021-07-12",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5948.0872678628575,
+        "previousEquity": 102355.46658716313
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-07-12",
+        "strength": 0.1311182843441252,
+        "volScale": 0.6003809907648713,
+        "day": "2021-07-13",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-07-14",
+        "strength": 0.07628997514089031,
+        "volScale": 0.7957505392312952,
+        "day": "2021-07-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2021-07-14",
+        "strength": 0.05132439021753199,
+        "volScale": 0.6091983085244914,
+        "day": "2021-07-15",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 6225.468987011643,
+        "previousEquity": 102191.1732173065
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2021-07-22",
+        "strength": 0.43585841652056034,
+        "volScale": 0.35,
+        "day": "2021-07-23",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3565.145439677722,
+        "previousEquity": 101861.29827650636
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-07-22",
+        "strength": 0.28543455045964117,
+        "volScale": 0.9404610865947012,
+        "day": "2021-07-23",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 9579.658725907013,
+        "previousEquity": 101861.29827650636
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2021-07-22",
+        "strength": 0.19771539649795744,
+        "volScale": 0.7414983922804739,
+        "day": "2021-07-23",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2021-07-23",
+        "strength": 0.5161177383318267,
+        "volScale": 0.35,
+        "day": "2021-07-26",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-07-23",
+        "strength": 0.3257429726793688,
+        "volScale": 0.9437016466874409,
+        "day": "2021-07-26",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "PYPL",
+        "signalDate": "2021-07-23",
+        "strength": 0.2860238808880482,
+        "volScale": 0.7540206941949085,
+        "day": "2021-07-26",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 7708.182218162482,
+        "previousEquity": 102227.72766724593
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2021-07-23",
+        "strength": 0.26138880556987987,
+        "volScale": 0.7089861327579526,
+        "day": "2021-07-26",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-07-28",
+        "strength": 0.31185530212248413,
+        "volScale": 0.35,
+        "day": "2021-07-29",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3554.885216402042,
+        "previousEquity": 101568.14904005834
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-07-29",
+        "strength": 0.38299292815414576,
+        "volScale": 0.35,
+        "day": "2021-07-30",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2021-07-29",
+        "strength": 0.17725909115197647,
+        "volScale": 0.40651232530680864,
+        "day": "2021-07-30",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-07-30",
+        "strength": 0.3930210909763472,
+        "volScale": 0.35,
+        "day": "2021-08-02",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-08-02",
+        "strength": 0.39162183770089953,
+        "volScale": 0.35,
+        "day": "2021-08-03",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-08-02",
+        "strength": 0.20943112657151963,
+        "volScale": 0.35,
+        "day": "2021-08-03",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3553.076895100049,
+        "previousEquity": 101516.48271714426
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-08-03",
+        "strength": 0.45859790371084985,
+        "volScale": 0.35,
+        "day": "2021-08-04",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-08-03",
+        "strength": 0.2892636789173275,
+        "volScale": 0.5855470086170846,
+        "day": "2021-08-04",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5953.675554459694,
+        "previousEquity": 101677.15771481412
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-08-04",
+        "strength": 0.5337034206956779,
+        "volScale": 0.35,
+        "day": "2021-08-05",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-08-04",
+        "strength": 0.28041441142953993,
+        "volScale": 0.6098247643714862,
+        "day": "2021-08-05",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-08-05",
+        "strength": 0.4787898918615534,
+        "volScale": 0.35,
+        "day": "2021-08-06",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-08-05",
+        "strength": 0.2514453826996119,
+        "volScale": 1,
+        "day": "2021-08-06",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-08-13",
+        "strength": 0.5276807054174635,
+        "volScale": 0.35,
+        "day": "2021-08-16",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-08-13",
+        "strength": 0.29235101315583956,
+        "volScale": 0.9841337228162911,
+        "day": "2021-08-16",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 10124.977090905188,
+        "previousEquity": 102882.12725736687
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-08-20",
+        "strength": 0.20880639984681948,
+        "volScale": 0.9000435883416197,
+        "day": "2021-08-23",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2021-08-23",
+        "strength": 0.24381041396065406,
+        "volScale": 0.6009332332205776,
+        "day": "2021-08-24",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 6182.312577463283,
+        "previousEquity": 102878.52685947248
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-08-23",
+        "strength": 0.23184797151782433,
+        "volScale": 0.35,
+        "day": "2021-08-24",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3600.7484400815365,
+        "previousEquity": 102878.52685947248
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-08-23",
+        "strength": 0.21357568174303942,
+        "volScale": 0.885475448996774,
+        "day": "2021-08-24",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2021-08-24",
+        "strength": 0.22089377789554576,
+        "volScale": 0.6049814665349329,
+        "day": "2021-08-25",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-08-25",
+        "strength": 0.24872864011995133,
+        "volScale": 0.35,
+        "day": "2021-08-26",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-08-27",
+        "strength": 0.21325499426937622,
+        "volScale": 0.35,
+        "day": "2021-08-30",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2021-08-27",
+        "strength": 0.19230770337248293,
+        "volScale": 0.593663528445981,
+        "day": "2021-08-30",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-08-27",
+        "strength": 0.1215635650709248,
+        "volScale": 0.6284531512828385,
+        "day": "2021-08-30",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 6483.415011274464,
+        "previousEquity": 103164.65114448238
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2021-08-30",
+        "strength": 0.20217709474934886,
+        "volScale": 0.5922614317734418,
+        "day": "2021-08-31",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-08-30",
+        "strength": 0.17751367352975356,
+        "volScale": 0.8575182139524408,
+        "day": "2021-08-31",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-08-30",
+        "strength": 0.17262678906305373,
+        "volScale": 0.3547594654684377,
+        "day": "2021-08-31",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3671.0977346595773,
+        "previousEquity": 103481.31880884765
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-08-30",
+        "strength": 0.13061885516422356,
+        "volScale": 0.6291515390915556,
+        "day": "2021-08-31",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2021-08-31",
+        "strength": 0.2036278681566397,
+        "volScale": 0.5941699267254991,
+        "day": "2021-09-01",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-08-31",
+        "strength": 0.1850587639001764,
+        "volScale": 0.3543105403047504,
+        "day": "2021-09-01",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-08-31",
+        "strength": 0.145251465684189,
+        "volScale": 0.6511736708819122,
+        "day": "2021-09-01",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2021-09-01",
+        "strength": 0.1919674435576344,
+        "volScale": 0.6004151499261604,
+        "day": "2021-09-02",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-09-01",
+        "strength": 0.14396055122308038,
+        "volScale": 0.6237601803167278,
+        "day": "2021-09-02",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2021-09-02",
+        "strength": 0.20012718430763066,
+        "volScale": 0.5917508903410374,
+        "day": "2021-09-03",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2021-09-03",
+        "strength": 0.22924625612830796,
+        "volScale": 0.5689730117669393,
+        "day": "2021-09-07",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-09-07",
+        "strength": 0.151099485670513,
+        "volScale": 0.6139880615825217,
+        "day": "2021-09-08",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-09-07",
+        "strength": 0.12063343858484421,
+        "volScale": 0.36128145610344437,
+        "day": "2021-09-08",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-09-16",
+        "strength": 0.3432112819771955,
+        "volScale": 0.43333595462433055,
+        "day": "2021-09-17",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4494.789355760618,
+        "previousEquity": 103725.2807618343
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-09-22",
+        "strength": 0.39497145651509813,
+        "volScale": 0.42313701657105207,
+        "day": "2021-09-23",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-09-24",
+        "strength": 0.19027053086935553,
+        "volScale": 0.47301125252525694,
+        "day": "2021-09-27",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4909.61268877452,
+        "previousEquity": 103794.83918328914
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-09-27",
+        "strength": 0.22840027652557504,
+        "volScale": 0.46485211179901276,
+        "day": "2021-09-28",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-09-27",
+        "strength": 0.14666875420698422,
+        "volScale": 0.4156595865323791,
+        "day": "2021-09-28",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4312.086753195071,
+        "previousEquity": 103740.82284901584
+      },
+      {
+        "s": "LUV",
+        "signalDate": "2021-10-04",
+        "strength": 0.08599589467781676,
+        "volScale": 0.38167803059515537,
+        "day": "2021-10-05",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3950.7173821719907,
+        "previousEquity": 103509.16388903988
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-10-05",
+        "strength": 0.2290848057254804,
+        "volScale": 0.4088173110247816,
+        "day": "2021-10-06",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4233.416739196631,
+        "previousEquity": 103552.77589847488
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-10-05",
+        "strength": 0.1656594638968012,
+        "volScale": 0.41391227900161986,
+        "day": "2021-10-06",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-10-13",
+        "strength": 0.35934774132201275,
+        "volScale": 0.35,
+        "day": "2021-10-14",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3617.977203568773,
+        "previousEquity": 103370.77724482208
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-10-14",
+        "strength": 0.1837197575793812,
+        "volScale": 0.4047649002391319,
+        "day": "2021-10-15",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4181.951371594454,
+        "previousEquity": 103318.03397784222
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-10-14",
+        "strength": 0.15107193145984965,
+        "volScale": 0.5110150020255367,
+        "day": "2021-10-15",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 5279.706534246152,
+        "previousEquity": 103318.03397784222
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-10-15",
+        "strength": 0.19445460949562987,
+        "volScale": 0.3909699303987485,
+        "day": "2021-10-18",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-10-15",
+        "strength": 0.17967340516961694,
+        "volScale": 0.47605456422468184,
+        "day": "2021-10-18",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-10-18",
+        "strength": 0.24461453268328404,
+        "volScale": 0.5781930341498647,
+        "day": "2021-10-19",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-10-18",
+        "strength": 0.057397145216526946,
+        "volScale": 0.35,
+        "day": "2021-10-19",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3627.6901263837717,
+        "previousEquity": 103648.28932525063
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-10-20",
+        "strength": 0.14244032948369467,
+        "volScale": 0.46290473375353475,
+        "day": "2021-10-21",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-10-21",
+        "strength": 0.27470725512365424,
+        "volScale": 0.4019339070842786,
+        "day": "2021-10-22",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4184.124725452302,
+        "previousEquity": 104099.81968938399
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-10-21",
+        "strength": 0.2630329614157134,
+        "volScale": 0.5238595300942063,
+        "day": "2021-10-22",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-10-21",
+        "strength": 0.25512822511645816,
+        "volScale": 0.35,
+        "day": "2021-10-22",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-10-21",
+        "strength": 0.10819094997085488,
+        "volScale": 0.35,
+        "day": "2021-10-22",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-10-22",
+        "strength": 0.3016525425564478,
+        "volScale": 0.39877714260489755,
+        "day": "2021-10-25",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-10-22",
+        "strength": 0.25950842804874097,
+        "volScale": 0.5429449360372053,
+        "day": "2021-10-25",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-10-22",
+        "strength": 0.24646915037778028,
+        "volScale": 0.35,
+        "day": "2021-10-25",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "BAC",
+        "signalDate": "2021-10-22",
+        "strength": 0.1343719461447077,
+        "volScale": 0.5005708428737359,
+        "day": "2021-10-25",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-10-22",
+        "strength": 0.125070419669711,
+        "volScale": 0.35,
+        "day": "2021-10-25",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-10-25",
+        "strength": 0.4290335152932778,
+        "volScale": 0.35,
+        "day": "2021-10-26",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-10-25",
+        "strength": 0.30186853771586786,
+        "volScale": 0.39915390762585673,
+        "day": "2021-10-26",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-10-25",
+        "strength": 0.14771556293424104,
+        "volScale": 0.35,
+        "day": "2021-10-26",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3683.1403755765873,
+        "previousEquity": 105232.58215933108
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-10-25",
+        "strength": 0.10682946388580827,
+        "volScale": 0.35,
+        "day": "2021-10-26",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-10-26",
+        "strength": 0.23916586893710723,
+        "volScale": 0.35,
+        "day": "2021-10-27",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-10-29",
+        "strength": 0.6541197132144345,
+        "volScale": 0.35,
+        "day": "2021-11-01",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-10-29",
+        "strength": 0.2916205097810658,
+        "volScale": 0.35,
+        "day": "2021-11-01",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-10-29",
+        "strength": 0.2696290353960502,
+        "volScale": 0.40621437428207496,
+        "day": "2021-11-01",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-10-29",
+        "strength": 0.2615164277425115,
+        "volScale": 0.35,
+        "day": "2021-11-01",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3718.441565108118,
+        "previousEquity": 106241.18757451768
+      },
+      {
+        "s": "NOW",
+        "signalDate": "2021-10-29",
+        "strength": 0.18885025864182436,
+        "volScale": 0.4290571427786908,
+        "day": "2021-11-01",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4558.354038613749,
+        "previousEquity": 106241.18757451768
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-11-01",
+        "strength": 0.7766590182057058,
+        "volScale": 0.35,
+        "day": "2021-11-02",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3738.096712336687,
+        "previousEquity": 106802.76320961965
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-11-01",
+        "strength": 0.2409469095723744,
+        "volScale": 0.4005479070176463,
+        "day": "2021-11-02",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-11-02",
+        "strength": 0.20255320136661958,
+        "volScale": 0.4140965832722913,
+        "day": "2021-11-03",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-11-03",
+        "strength": 0.7133057659008089,
+        "volScale": 0.35,
+        "day": "2021-11-04",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-11-03",
+        "strength": 0.21254061243944933,
+        "volScale": 0.43986714629337836,
+        "day": "2021-11-04",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4719.041223408883,
+        "previousEquity": 107283.3300503289
+      },
+      {
+        "s": "TSLA",
+        "signalDate": "2021-11-04",
+        "strength": 0.7293447819736372,
+        "volScale": 0.35,
+        "day": "2021-11-05",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-11-04",
+        "strength": 0.34183793748879165,
+        "volScale": 0.35,
+        "day": "2021-11-05",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-11-04",
+        "strength": 0.2696213861996586,
+        "volScale": 0.39419369588535447,
+        "day": "2021-11-05",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2021-11-04",
+        "strength": 0.09013035726843688,
+        "volScale": 0.35,
+        "day": "2021-11-05",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3782.5846590525143,
+        "previousEquity": 108073.84740150042
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-11-04",
+        "strength": 0.026309423900783946,
+        "volScale": 0.5841567447837163,
+        "day": "2021-11-05",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 6313.2066894312575,
+        "previousEquity": 108073.84740150042
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-11-05",
+        "strength": 0.41287121245312397,
+        "volScale": 0.35,
+        "day": "2021-11-08",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2021-11-05",
+        "strength": 0.15036717459812943,
+        "volScale": 0.35,
+        "day": "2021-11-08",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-11-08",
+        "strength": 0.3479353824535296,
+        "volScale": 0.35,
+        "day": "2021-11-09",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "GM",
+        "signalDate": "2021-11-08",
+        "strength": 0.19678720700821906,
+        "volScale": 0.37916786844424744,
+        "day": "2021-11-09",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4130.360321756804,
+        "previousEquity": 108932.23465121043
+      },
+      {
+        "s": "DDOG",
+        "signalDate": "2021-11-09",
+        "strength": 0.4386298070265253,
+        "volScale": 0.35,
+        "day": "2021-11-10",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "GM",
+        "signalDate": "2021-11-11",
+        "strength": 0.25880671013526246,
+        "volScale": 0.35,
+        "day": "2021-11-12",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "GM",
+        "signalDate": "2021-11-12",
+        "strength": 0.29519931248008024,
+        "volScale": 0.35,
+        "day": "2021-11-15",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "SHOP",
+        "signalDate": "2021-11-12",
+        "strength": 0.08227668737671978,
+        "volScale": 0.35,
+        "day": "2021-11-15",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3793.9260012551217,
+        "previousEquity": 108397.88575014636
+      },
+      {
+        "s": "QCOM",
+        "signalDate": "2021-11-16",
+        "strength": 0.26476551513819646,
+        "volScale": 0.35,
+        "day": "2021-11-17",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "GM",
+        "signalDate": "2021-11-17",
+        "strength": 0.3193790043908207,
+        "volScale": 0.35,
+        "day": "2021-11-18",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "NFLX",
+        "signalDate": "2021-11-17",
+        "strength": 0.1413084603697925,
+        "volScale": 0.38186498789922074,
+        "day": "2021-11-18",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 4174.306215419172,
+        "previousEquity": 109313.66707336958
+      },
+      {
+        "s": "NVDA",
+        "signalDate": "2021-11-19",
+        "strength": 0.4674349780248701,
+        "volScale": 0.35,
+        "day": "2021-11-22",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3832.475137420219,
+        "previousEquity": 109499.28964057771
+      },
+      {
+        "s": "MU",
+        "signalDate": "2021-11-19",
+        "strength": 0.13123896401507817,
+        "volScale": 0.35,
+        "day": "2021-11-22",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3832.475137420219,
+        "previousEquity": 109499.28964057771
+      },
+      {
+        "s": "ADBE",
+        "signalDate": "2021-11-19",
+        "strength": 0.04466262871694182,
+        "volScale": 0.4902967441412211,
+        "day": "2021-11-22",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "MU",
+        "signalDate": "2021-11-22",
+        "strength": 0.12948517875050913,
+        "volScale": 0.35,
+        "day": "2021-11-23",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "AMD",
+        "signalDate": "2021-11-29",
+        "strength": 0.5586254133904691,
+        "volScale": 0.35,
+        "day": "2021-11-30",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3815.1038414619384,
+        "previousEquity": 109002.9668989125
+      },
+      {
+        "s": "MU",
+        "signalDate": "2021-12-21",
+        "strength": 0.3100256490250797,
+        "volScale": 0.35,
+        "day": "2021-12-22",
+        "exposureScale": 1,
+        "action": "ENTRY",
+        "notional": 3774.8527578339485,
+        "previousEquity": 107852.93593811282
+      },
+      {
+        "s": "MU",
+        "signalDate": "2021-12-23",
+        "strength": 0.422416266855679,
+        "volScale": 0.35,
+        "day": "2021-12-27",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      },
+      {
+        "s": "MU",
+        "signalDate": "2021-12-29",
+        "strength": 0.4298247244367055,
+        "volScale": 0.35,
+        "day": "2021-12-30",
+        "exposureScale": 1,
+        "action": "SKIP",
+        "reason": "SYMBOL_OPEN"
+      }
+    ]
+  },
+  "resultSha256": "9eef953a9acabb3c53053dd02e5f297e2c3b21e35aea96308fb146302f6c9ebb"
+}
