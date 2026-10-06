@@ -500,3 +500,9 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Om write-sidan väljer lagringsmetadata måste read-sidan antingen få tillbaka den exakta metadata som del av ett verifierat kvitto eller kunna slå upp objektet auktoritativt utan gissning.
 - Namnbaserad recovery ska stoppa vid noll träffar eller tvetydiga flera träffar; den får aldrig välja "senaste" eller första matchningen.
 - Recovery är read-only beträffande observerade forskningsresultat: tekniska lookup-/path-fixar får aldrig utlösa research-rerun, ändra fryst evidence eller rekonstruera saknade resultat.
+
+## Fix → Learn: verklig enhetsmätning före andra UI-fix (V0.3.98)
+- Om en UI-/viewportfix inte ändrar det rapporterade beteendet är den bakomliggande hypotesen inte verifierad. Nästa release får inte vara ännu en gissningsfix av samma felklass.
+- Före andra korrigeringsförsöket ska den verkliga klienten instrumenteras för de variabler som kan skilja hypoteserna åt (för mobil viewport minst layout viewport, visual viewport, scroll-offset, fokus och berört elements position).
+- Diagnostik ska vara read-only och synlig/kopierbar utan att ändra research-state, evidence, Handel eller Forward.
+- Den verifierade rotorsaken ska därefter ersätta tillfällig diagnostik med minsta generella fix; diagnostiken får inte permanent döljas som en påstådd lösning.
