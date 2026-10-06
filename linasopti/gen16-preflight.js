@@ -1,6 +1,6 @@
 (function(global){
 'use strict';
-const KEY='lina_gen16_engine_verify_v0406';
+const KEY='lina_gen16_engine_verify_v0407';
 async function run(){
  const E=global.LinaGen16Engine;if(!E?.verify)throw Error('Gen16 Engine saknas');
  const r=await E.verify();if(r.status!=='PASS')throw Error('Gen16 Engine verify FAIL: '+r.failed.join(', '));
