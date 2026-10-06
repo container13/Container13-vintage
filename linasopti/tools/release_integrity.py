@@ -23,6 +23,14 @@ else:
     check("current_state_readable", current_state.get("schema")=="LINA-CURRENT-STATE-1", current_state.get("schema","missing schema"))
     check("current_state_release", current_state.get("release")==release, str(current_state.get("release"))+" / "+release)
     check("chat_bootstrap_contract", current_state.get("bootstrap",{}).get("triggerPhrase")=="Läs Linas manual", "single new-chat trigger")
+    cp=current_state.get("workCheckpoint",{})
+    cp_status=cp.get("status")
+    check("work_checkpoint_status", cp_status in ("IDLE","IN_PROGRESS","UNVERIFIED"), str(cp_status))
+    if cp_status in ("IN_PROGRESS","UNVERIFIED"):
+        plan=cp.get("plan",[])
+        check("work_checkpoint_resumable", bool(cp.get("goal") and cp.get("targetRelease") and cp.get("lastSafeRelease") and cp.get("lastSafeCommit") and cp.get("resumeInstruction") and plan), "active checkpoint has goal/target/safe anchor/plan/resume")
+    else:
+        check("work_checkpoint_resumable", bool(cp.get("lastSafeRelease") and cp.get("lastSafeCommit")), "idle checkpoint has safe anchor")
 index=read("index.html"); app=read("app.js"); gate=read("release-gate.js")
 tokens=re.findall(r"[?&]v=([0-9]+(?:\.[0-9]+){2})",index)
 check("index_cache_tokens", bool(tokens) and all(x==cache for x in tokens), str(sorted(set(tokens))))
