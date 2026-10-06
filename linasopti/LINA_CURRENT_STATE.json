@@ -16,11 +16,11 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PASS_V0.4.19"
+    "releaseIntegrity": "PASS_V0.4.21"
   },
   "currentWork": {
-    "completed": "Bootstrap for chat changes: LINA_SYSTEM_MANUAL.md is the single entry point and LINA_CURRENT_STATE.json carries only current working state.",
-    "next": "Verify exact V0.4.21 repository state and Release Integrity; then close checkpoint only on PASS.",
+    "completed": "V0.4.21 crash-safe chat handoff/work checkpoint implemented and Release Integrity PASS.",
+    "next": "Run a deliberate new-chat recovery test: user writes only 'Läs Linas manual'; verify the new chat reconstructs the current state without help.",
     "blocked": false
   },
   "bootstrap": {
@@ -28,7 +28,7 @@
     "instruction": "Read LINA_SYSTEM_MANUAL.md and follow its New Chat Bootstrap. Do not ask the user to reconstruct prior context already stored in the repository."
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
+    "status": "IDLE",
     "targetRelease": "V0.4.21",
     "goal": "Build crash-safe chat handoff/work checkpoint.",
     "plan": [
@@ -55,17 +55,17 @@
       {
         "id": 5,
         "task": "Read back exact repo state and verify Release Integrity on final commit",
-        "status": "NEXT"
+        "status": "DONE"
       },
       {
         "id": 6,
         "task": "Mark checkpoint IDLE only after verification",
-        "status": "PENDING"
+        "status": "DONE"
       }
     ],
-    "lastSafeRelease": "V0.4.20",
-    "lastSafeCommit": "9973786070f237e02e2bbcf44db39e4463b0d206",
-    "resumeInstruction": "Verify repository truth first. Resume from the first non-DONE step. Never assume a partially written step completed.",
-    "verifiedThrough": "V0.4.20 Release Integrity PASS"
+    "lastSafeRelease": "V0.4.21",
+    "lastSafeCommit": "ec190a6dad074e03cef05e685eea991c6a5699d9",
+    "resumeInstruction": "No interrupted work. Follow currentWork.next or the user's new explicit priority.",
+    "verifiedThrough": "V0.4.21 Release Integrity PASS on exact implementation/state commit"
   }
 }
