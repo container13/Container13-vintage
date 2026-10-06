@@ -465,3 +465,14 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Ingen `r2`, `hotfix`, query-token eller annan ändring får publiceras under ett redan använt versionsnummer.
 - Ny ändring => höj `version.js` och alla aktiva cachetokens konsekvent före deploy.
 - Releasekontrollen ska stoppa publicering om ändrade Lina-filer förekommer utan nytt versionsnummer.
+
+## 19. SYNTHETIC FIXTURE VALIDITY GATE — permanent från V0.3.94
+- Ett syntetiskt test får inte användas som release-/research-gate förrän testfixturens egna premisser har verifierats oberoende av den produktionsfunktion som testas.
+- För varje boundary-test ska fixture-generatorn eller en separat oracle explicit verifiera relationerna som testnamnet påstår, t.ex. `priorMaxClose < testClose <= priorMaxHigh`, innan signalens förväntade utfall kontrolleras.
+- Testet ska skilja på **fixture validity** och **system under test**. En ogiltig fixture ska rapporteras som `FIXTURE_INVALID`, inte som produktionslogikens FAIL.
+- Positivt fall, negativt fall och relevanta gränsfall ska konstrueras från beräknade referensnivåer när det är möjligt, inte från handvalda tal som råkar antas ligga på rätt sida om gränsen.
+- Syntetiska tester och syntax/semantikkontroller ska köras mot exakt den fil som ska publiceras före browser/live-verifiering. Browsern får inte vara första testmiljö för deterministiskt testbar logik.
+- Om en syntetisk gate stoppar release ska först avgöras om felet ligger i fixture/oracle eller i system under test. Produktionslogik/runnerspec får inte ändras för att få ett felkonstruerat test att passera.
+- En fixture-fix efter preregistrering får endast ändra testdata/oracle när den låsta produktionssemantiken är bevisat oförändrad; annars krävs ny metodprövning/runnerspec.
+- Regeln gäller alla framtida generationer och återanvändbara release-gates.
+
