@@ -1,3 +1,5 @@
+> **STATUS:** PROJEKTHISTORIK. Versions- och releasepåståenden nedan beskriver respektive historiskt skede och är inte aktuell runtime-sanning. Aktuell release kommer från `version.js`; operativ väg finns i [LINA_SYSTEM_MANUAL.md](LINA_SYSTEM_MANUAL.md).
+
 # LINA – PROJECT HISTORY
 
 ## Målbild
