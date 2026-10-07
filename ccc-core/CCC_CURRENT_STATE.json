@@ -8,8 +8,8 @@
   "release": {
     "currentVerified": "2.10.170",
     "previousVerified": "2.10.169",
-    "candidate": null,
-    "integrity": "PASS_LIVE_REAL_IPHONE"
+    "candidate": "2.10.171",
+    "integrity": "PENDING_RUNTIME_VERIFICATION"
   },
   "rules": {
     "master": "CCC_MASTER_RULES.md",
@@ -22,43 +22,43 @@
   },
   "pausedWork": {
     "vinted": {
-      "status": "PAUSED",
-      "note": "Local prototype only. Desired Vinted description includes details/wear, style, size, fit; hashtags are hidden in CCC UI but appended to copied description. Practical image target: 9."
+      "status": "ACTIVE_CANDIDATE",
+      "note": "Vinted UI candidate 2.10.171: List It-inspired flow with CCC styling, 1–9 images, sv/en selector and right-side copy icons. AI/Worker intentionally not connected yet."
     }
   },
   "currentWork": {
-    "completed": "v2.10.170 source/read-back verified and real iPhone confirmed live.",
-    "next": "Resume CCC feature work under CCC_MASTER_RULES; Vinted remains paused.",
+    "completed": "Vinted UI candidate 2.10.171 source implementation.",
+    "next": "Verify deployed 2.10.171 on real iPhone: Dashboard > Mer > Vinted, image picker 1–9, language selector, result layout and right-side copy action.",
     "blocked": false
   },
   "workCheckpoint": {
-    "status": "IDLE",
-    "targetRelease": "2.10.170",
-    "goal": "Install and verify LinaSopti-derived CCC operating discipline before further feature work.",
+    "status": "IN_PROGRESS",
+    "targetRelease": "2.10.171",
+    "goal": "Verify first List It-inspired CCC Vinted UI candidate before connecting AI.",
     "plan": [
       {
         "id": 1,
-        "task": "Create CCC master rules, release checklist, current state and handoff",
+        "task": "Create separate Vinted module and Dashboard > Mer entry",
         "status": "DONE"
       },
       {
         "id": 2,
-        "task": "Link rules from CCC README and bump version",
-        "status": "DONE"
+        "task": "GitHub exact readback/static verification",
+        "status": "IN_PROGRESS"
       },
       {
         "id": 3,
-        "task": "GitHub read-back and integrity verification",
-        "status": "DONE"
+        "task": "Real iPhone UI verification",
+        "status": "PENDING"
       },
       {
         "id": 4,
-        "task": "Verify deployed/runtime v2.10.170 and promote CURRENT/PREVIOUS",
-        "status": "DONE"
+        "task": "Connect Vinted Product Intelligence/AI after UI approval",
+        "status": "PENDING"
       }
     ],
-    "lastSafeRelease": "2.10.169",
-    "resumeInstruction": "Read CCC_MASTER_RULES.md, CCC_CURRENT_STATE.json and CCC_RELEASE_CHECKLIST.md, then start the next requested CCC task. Vinted remains paused.",
+    "lastSafeRelease": "2.10.170",
+    "resumeInstruction": "Verify 2.10.171 Vinted UI on real iPhone. Do not promote until user confirms. Existing Vision Worker remains unchanged.",
     "verifiedThrough": "2.10.170 live on real iPhone"
   }
 }
