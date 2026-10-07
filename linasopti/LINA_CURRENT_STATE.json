@@ -21,7 +21,7 @@
   },
   "currentWork": {
     "completed": "V0.4.34 controlled multi-commit test in progress. Real iPhone: state-only commit produced no status change; index.html commit produced Queued; deliberately incomplete release commits produced visible Failed as expected.",
-    "next": "Verify coherent V0.4.34 final commit through Integrity/Pages and observe Building/Updating/Success.",
+    "next": "Implement V0.4.35 sticky newest-relevant-chain deploy status root fix.",
     "blocked": false
   },
   "bootstrap": {
@@ -34,33 +34,28 @@
   },
   "workCheckpoint": {
     "status": "IN_PROGRESS",
-    "targetRelease": "V0.4.34",
-    "goal": "Controlled multi-commit test of immediate first-commit detection with a harmless UI change.",
+    "targetRelease": "V0.4.35",
+    "goal": "Make deploy status sticky to the newest relevant Lina release chain so it cannot fall back to the previously loaded release Success between commits.",
     "plan": [
       {
         "id": 1,
-        "task": "Open checkpoint as first Lina commit and observe V0.4.33 login status",
-        "status": "DONE"
+        "task": "Replace branch-head-only deploy status with newest relevant chain selection",
+        "status": "PENDING"
       },
       {
         "id": 2,
-        "task": "Apply harmless UI change in separate commit",
-        "status": "DONE"
+        "task": "Bump V0.4.35 coherently",
+        "status": "PENDING"
       },
       {
         "id": 3,
-        "task": "Complete V0.4.34 release files in separate commits",
-        "status": "DONE"
-      },
-      {
-        "id": 4,
-        "task": "Verify Integrity/Pages and real-iPhone sequence",
+        "task": "Verify Worker source/readback, Integrity/Pages and real-iPhone multi-commit behavior",
         "status": "PENDING"
       }
     ],
     "lastSafeRelease": "V0.4.33",
     "lastSafeCommit": "d71ab4893c7715b899e3c6f1c1463c95c055fb87",
-    "resumeInstruction": "V0.4.34 coherent release state now written. Verify Integrity/Pages and real-iPhone final sequence; no research reruns.",
+    "resumeInstruction": "V0.4.35 root fix in progress. Preserve V0.4.34 observations as test evidence; no research reruns.",
     "verifiedThrough": "V0.4.33: Integrity #95 PASS; Pages #3626 PASS; user observed Building then Success on real iPhone. Exact 1% login-logo change verified in repo."
   }
 }
