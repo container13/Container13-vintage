@@ -684,9 +684,44 @@ const CCCImageViewer={
 };
 CCCImageViewer.install();
 
+// Lightweight live version watcher. Only version.js is fetched, and only while CCC is visible.
+const CCCVersionWatcher={
+  intervalMs:2000,timer:null,last:window.CCC_VERSION||"",
+  async check(){
+    if(document.hidden)return;
+    try{
+      const url=new URL("./version.js",import.meta.url);
+      url.searchParams.set("_ccc_vcheck",Date.now().toString());
+      const response=await fetch(url.href,{cache:"no-store"});
+      if(!response.ok)return;
+      const source=await response.text();
+      const match=source.match(/CCC_VERSION\s*=\s*["']([^"']+)["']/);
+      const next=match?.[1]?.trim();
+      if(!next||next===this.last)return;
+      this.last=next;
+      document.querySelectorAll(".js-ccc-version,.ccc-global-version").forEach(el=>{
+        el.textContent=`v${next}`;
+        el.setAttribute("aria-label",`CCC version ${next}`);
+      });
+      document.dispatchEvent(new CustomEvent("ccc:version-available",{detail:{version:next}}));
+    }catch(_){}
+  },
+  start(){
+    if(this.timer)return;
+    this.check();
+    this.timer=setInterval(()=>this.check(),this.intervalMs);
+  },
+  stop(){if(this.timer){clearInterval(this.timer);this.timer=null;}},
+  install(){
+    document.addEventListener("visibilitychange",()=>document.hidden?this.stop():this.start());
+    if(!document.hidden)this.start();
+  }
+};
+CCCVersionWatcher.install();
+
 window.CCC_CORE={
   applyTheme,setProfileMenu,setLogoutDialog,header:CCCHeader,footer:CCCFooter,
-  swipe:CCCSwipe,press:CCCPress,help:CCCHelp,imageViewer:CCCImageViewer,
+  swipe:CCCSwipe,press:CCCPress,help:CCCHelp,imageViewer:CCCImageViewer,versionWatcher:CCCVersionWatcher,
   navigation:{back:dispatchCCCBackOnce,dashboard:navigateCCCDashboardOnce}
 };
 CCCHelp.install();
