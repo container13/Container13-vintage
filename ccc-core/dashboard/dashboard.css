@@ -654,3 +654,6 @@ body{min-height:100dvh}
    Modul-CSS får aldrig definiera --ccc-header-height. */
 
 /* CCC cache stamp: v2.8.49 */
+
+/* CCC v2.10.171 – fyra val under Mer på mobil. */
+@media(max-width:480px){#moreView .primary-actions{grid-template-rows:repeat(4,minmax(0,1fr));gap:9px}#moreView .action-card{padding-block:10px}#moreView .action-copy strong{font-size:21px}#moreView .action-copy small{font-size:13px}.ccc-action-card--vinted .action-icon,.ccc-action-card--vinted strong{color:#16835b}}
