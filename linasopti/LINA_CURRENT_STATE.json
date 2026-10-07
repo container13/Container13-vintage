@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.22",
+  "release": "V0.4.23",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -16,12 +16,12 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PASS_V0.4.22_REPO",
+    "releaseIntegrity": "PASS_V0.4.23_REPO",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
-    "completed": "V0.4.22 automation-first support diagnostics implemented: status/diagnostics now use the existing verified /runtime-report → GitHub receipt chain first, with manual copy/download only as fallback.",
-    "next": "V0.4.23 in progress: automatic support snapshot plus dashboard status-order containment.",
+    "completed": "V0.4.23 removes the user-as-transport test flow: automatic verified support snapshot runs after bootstrap, and status-order no longer moves generation status ahead of Dashboard.",
+    "next": "Observe next real V0.4.23 startup; ChatGPT should inspect the automatically written LINA_AUTO_SUPPORT report in GitHub instead of asking the user to copy, export or screenshot diagnostics.",
     "blocked": false
   },
   "bootstrap": {
@@ -33,7 +33,7 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
+    "status": "IDLE",
     "targetRelease": "V0.4.23",
     "goal": "Remove user-as-transport support flow and keep historical generation status out of the dashboard action area.",
     "plan": [
@@ -45,27 +45,27 @@
       {
         "id": 2,
         "task": "Make support report automatic after successful startup/login and keep Export as optional manual trigger",
-        "status": "NEXT"
+        "status": "DONE"
       },
       {
         "id": 3,
         "task": "Scope generation status ordering to research/generation views, never dashboard",
-        "status": "PENDING"
+        "status": "DONE"
       },
       {
         "id": 4,
         "task": "Bump V0.4.23 coherently and verify release gate/readback",
-        "status": "PENDING"
+        "status": "DONE"
       },
       {
         "id": 5,
         "task": "Close checkpoint after verification",
-        "status": "PENDING"
+        "status": "DONE"
       }
     ],
-    "lastSafeRelease": "V0.4.22",
-    "lastSafeCommit": "85628c9bd94984b196bcb29247c31773d045a303",
-    "resumeInstruction": "Resume first non-DONE step; do not touch or rerun frozen research.",
-    "verifiedThrough": "V0.4.22 repo readback PASS"
+    "lastSafeRelease": "V0.4.23",
+    "lastSafeCommit": "4a648f3c19b984cae19b60176dac84557c458906",
+    "resumeInstruction": "No interrupted work. On next startup, inspect automatic GitHub support report directly.",
+    "verifiedThrough": "V0.4.23 repo readback PASS: version/cache/assets/gate aligned, Gen16 historical authorization preserved, auto-support hook and dashboard guard present."
   }
 }
