@@ -8,7 +8,7 @@
   "release": {
     "currentVerified": "2.10.176",
     "previousVerified": "2.10.170",
-    "candidate": "2.10.177",
+    "candidate": "2.10.178",
     "integrity": "PENDING_RUNTIME_VERIFICATION"
   },
   "rules": {
@@ -27,36 +27,41 @@
     }
   },
   "currentWork": {
-    "completed": "2.10.177 Vinted photo-flow candidate: separate sequential iPhone camera input and multi-select album input, shared 1-9 listing/analysis image set, numbered thumbnails/removal, sv/en retained. AI remains intentionally disconnected.",
-    "next": "Real iPhone verify Mer > Vinted, Ta foto sequentially, album selection, max 9, remove thumbnail, language toggle and layout. Do not judge AI yet.",
+    "completed": "2.10.178 rebuilds Vinted mobile presentation: non-overlapping compact header, 3x3 photo grid on phone, compact camera/album controls, controls hidden at 9/9, tighter sections, Vinted asset cache stamps aligned to 2.10.178. 1-9 photo behavior from 177 retained.",
+    "next": "Verify 2.10.178 on real iPhone visually and functionally. Confirm header clean, 3x3 grid compact, add controls absent at 9/9, camera/album work when below 9.",
     "blocked": false
   },
   "workCheckpoint": {
     "status": "IN_PROGRESS",
-    "targetRelease": "2.10.177",
+    "targetRelease": "2.10.178",
     "plan": [
       {
         "id": 1,
-        "task": "Inspect existing Vinted UI/spec from verified 2.10.176",
+        "task": "Use screenshot evidence to identify Vinted mobile layout problems",
         "status": "DONE"
       },
       {
         "id": 2,
-        "task": "Implement separate sequential camera and album flow, max 9",
+        "task": "Rebuild compact header/photo grid/actions",
         "status": "DONE"
       },
       {
         "id": 3,
-        "task": "GitHub exact readback/static verification",
-        "status": "IN_PROGRESS"
+        "task": "Align Vinted cache stamps",
+        "status": "DONE"
       },
       {
         "id": 4,
-        "task": "Real iPhone verify Vinted photo flow and layout",
+        "task": "GitHub exact readback",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "id": 5,
+        "task": "Real iPhone verify Vinted layout/photo flow",
         "status": "PENDING"
       }
     ],
-    "resumeInstruction": "Verify 2.10.177 Vinted photo flow on real iPhone. AI is still demo by design."
+    "resumeInstruction": "Verify 2.10.178 Vinted on real iPhone. Do not promote until layout and photo controls are confirmed."
   },
   "lastSafeRelease": "2.10.176"
 }
