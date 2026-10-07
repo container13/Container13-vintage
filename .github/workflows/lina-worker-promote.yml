@@ -2,6 +2,11 @@ name: Promote verified Lina Worker
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - ccc-demo-public-test
+    paths:
+      - 'linasopti/worker/WORKER_PENDING_RUNTIME_REPORT.js'
 
 permissions:
   contents: write
