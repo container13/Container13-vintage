@@ -2578,6 +2578,7 @@ async function handleGen9Data(url, env, request) {
   return json({ok:errors.length===0,schema:'LINA-GEN9-RAW-DATA-1',workerDataRevision:'GEN9-DATA-01',requestedRange:[from,to],data,provenance,errors,adjustmentStatus:'PROVIDER_ADJUSTED_OHLC_REQUIRES_VERIFICATION',calendarVerified:false,corporateActionsVerified:false,researchStarted:false,tradeEnabled:false},errors.length?502:200,request);
 }
 
+// deploy-status-auto-promote-v1
 async function handleDeployStatus(request) {
   if (request.method !== "GET") return json({ok:false,status:"UNKNOWN"},405,request);
   try {
