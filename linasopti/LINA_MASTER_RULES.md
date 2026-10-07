@@ -560,3 +560,13 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - Manuell kopiering, filhämtning och skärmbilder är reservväg när den automatiska verifierade kedjan faktiskt har stoppat, inte normal arbetsgång.
 - Före ny support-/diagnostiktransport ska befintliga endpoints och synkvägar inventeras och återanvändas; bygg inte en parallell kedja utan verifierat behov.
 - UI ska visa tydligt om rapporten är verifierat sparad, inklusive GitHub-sökväg och SHA-256-kvitto, eller tydligt STOPPAD med reservväg.
+
+
+## Permanent korsprojektregel — CCC-återföring V0.4.38
+- **STOP RULE:** om verkligheten motsäger planen eller en fix inte ändrar beteendet, stoppa patchandet och inventera faktisk kedja före nästa ändring.
+- **ONE OWNER PER BEHAVIOR:** inventera konkurrerande/legacy handlers, syncvägar och endpoints före ny implementation; en funktion ska ha en tydlig auktoritativ ägare.
+- **GENERAL IDEMPOTENCE:** retry/dubbeltryck/reload/resume får inte skapa dubbla writes, actions, evidence eller state transitions.
+- **SCHEMA + MIGRATION:** permanent föränderlig state ska ha explicit schema/version och avsiktlig migration.
+- **NAVIGATION ≠ DESTRUCTION:** tillbaka/navigation får inte implicit rensa pågående arbete; reset/delete är separata handlingar.
+- **GESTURE/EVENT INVENTORY:** touch/pointer/click/focus-problem inventeras som en hel eventyta före patch; verklig klient är facit.
+- **CURRENT/PREVIOUS PROMOTION:** PENDING/kandidat får bli CURRENT först efter obligatorisk runtime/verklig-klient-verifiering. PREVIOUS flyttas först vid lyckad promotion.
