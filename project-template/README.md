@@ -9,6 +9,8 @@ Golden template for new Container13 projects.
 4. Add project-specific rules below the shared standard; never weaken the shared safety rules silently.
 5. Install/adapt the release-integrity workflow at repository .github/workflows/ when the project is ready for CI.
 
+Before new mechanisms are built, search the repository-level `solutions/` library for already verified solutions.
+
 Shared truth lives in this template. Project-specific manuals may add stricter rules.
 
 Core flow:
