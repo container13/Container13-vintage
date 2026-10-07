@@ -188,6 +188,7 @@
     // Headern ska alltid använda samma auktoritativa mognadsmodell som Generation Engine, även på Dashboard.
     try{window.LinaGenerationEngine?.updateMaturityHeader?.()}catch(e){console.warn('Robotmognad kunde inte renderas:',e)}
     registerRoutes();window.LinaRouter.start();
+    setTimeout(()=>window.LinaStatusExport?.saveVerified?.('LINA_AUTO_SUPPORT',window.LinaStatusExport.fullDiagnostics).catch(e=>console.warn('Support snapshot:',e)),0);
     // Gen11 final-render gate: verify only after authoritative bootstrap + final route render.
     setTimeout(async()=>{
       const box=()=>document.querySelector('[data-gen11-preflight]');
