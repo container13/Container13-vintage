@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.23",
+  "release": "V0.4.24",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -16,12 +16,12 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PASS_V0.4.23_REPO",
+    "releaseIntegrity": "PASS_V0.4.24_REPO",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
-    "completed": "V0.4.23 removes the user-as-transport test flow: automatic verified support snapshot runs after bootstrap, and status-order no longer moves generation status ahead of Dashboard.",
-    "next": "V0.4.24 in progress: remove refresh-triggered programmatic login autofocus.",
+    "completed": "V0.4.24 removes programmatic login autofocus on locked startup/refresh, preserving restoreLoginTop for user-initiated field focus. Real V0.4.23 iPhone refresh jump was the trigger.",
+    "next": "Wait for V0.4.24 live deploy, then real-iPhone refresh behavior is the only remaining verification.",
     "blocked": false
   },
   "bootstrap": {
@@ -33,7 +33,7 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
+    "status": "IDLE",
     "targetRelease": "V0.4.24",
     "goal": "Fix real-iPhone refresh login jump by removing programmatic login-field autofocus while preserving the verified top-scroll guard for user-initiated focus.",
     "plan": [
@@ -45,27 +45,27 @@
       {
         "id": 2,
         "task": "Remove programmatic login autofocus on locked startup/refresh",
-        "status": "NEXT"
+        "status": "DONE"
       },
       {
         "id": 3,
         "task": "Bump V0.4.24 version/cache/assets/release gate",
-        "status": "PENDING"
+        "status": "DONE"
       },
       {
         "id": 4,
         "task": "Repo readback and verify frozen research unchanged",
-        "status": "PENDING"
+        "status": "DONE"
       },
       {
         "id": 5,
         "task": "Close checkpoint",
-        "status": "PENDING"
+        "status": "DONE"
       }
     ],
-    "lastSafeRelease": "V0.4.23",
-    "lastSafeCommit": "11b38d4af72a2647c81352f307704ee888d4c66f",
-    "resumeInstruction": "Resume first non-DONE step. Do not touch frozen research.",
-    "verifiedThrough": "V0.4.23 live on real iPhone; refresh login jump reproduced by user."
+    "lastSafeRelease": "V0.4.24",
+    "lastSafeCommit": "465ad28a74a722170a52f7d182a64baa9dbf7859",
+    "resumeInstruction": "No interrupted work. Next verification is real-iPhone refresh on live V0.4.24.",
+    "verifiedThrough": "V0.4.24 repo readback PASS: no startup autofocus; user-focus top guard retained; version/cache/assets/gate aligned; Gen16 historical authorization unchanged."
   }
 }
