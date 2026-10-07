@@ -8,7 +8,7 @@
   "release": {
     "currentVerified": "2.10.170",
     "previousVerified": "2.10.169",
-    "candidate": "2.10.171",
+    "candidate": "2.10.172",
     "integrity": "PENDING_RUNTIME_VERIFICATION"
   },
   "rules": {
@@ -27,38 +27,38 @@
     }
   },
   "currentWork": {
-    "completed": "Vinted UI candidate 2.10.171 source implementation.",
-    "next": "Verify deployed 2.10.171 on real iPhone: Dashboard > Mer > Vinted, image picker 1–9, language selector, result layout and right-side copy action.",
+    "completed": "2.10.171 reached live but failed real-iPhone Dashboard > Mer click. Root cause: Core press-delay captured the button before Dashboard's view handler. 2.10.172 removes press-delay ownership from More.",
+    "next": "Verify 2.10.172 live on real iPhone: Dashboard > Mer opens, then Vinted opens.",
     "blocked": false
   },
   "workCheckpoint": {
     "status": "IN_PROGRESS",
-    "targetRelease": "2.10.171",
+    "targetRelease": "2.10.172",
     "goal": "Verify first List It-inspired CCC Vinted UI candidate before connecting AI.",
     "plan": [
       {
         "id": 1,
-        "task": "Create separate Vinted module and Dashboard > Mer entry",
+        "task": "Reproduce/trace 2.10.171 Mer regression",
         "status": "DONE"
       },
       {
         "id": 2,
-        "task": "GitHub exact readback/static verification",
-        "status": "IN_PROGRESS"
+        "task": "Remove Core press-delay ownership from Dashboard More",
+        "status": "DONE"
       },
       {
         "id": 3,
-        "task": "Real iPhone UI verification",
-        "status": "PENDING"
+        "task": "GitHub readback/static verification",
+        "status": "IN_PROGRESS"
       },
       {
         "id": 4,
-        "task": "Connect Vinted Product Intelligence/AI after UI approval",
+        "task": "Real iPhone verify Mer then Vinted",
         "status": "PENDING"
       }
     ],
     "lastSafeRelease": "2.10.170",
-    "resumeInstruction": "Verify 2.10.171 Vinted UI on real iPhone. Do not promote until user confirms. Existing Vision Worker remains unchanged.",
+    "resumeInstruction": "Verify 2.10.172 on real iPhone. Do not promote until Dashboard > Mer and Mer > Vinted both work.",
     "verifiedThrough": "2.10.170 live on real iPhone"
   }
 }
