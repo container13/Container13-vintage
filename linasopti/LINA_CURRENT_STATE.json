@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.29",
+  "release": "V0.4.30",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -16,12 +16,12 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PASS_V0.4.29",
+    "releaseIntegrity": "PENDING_V0.4.30",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
-    "completed": "V0.4.29 restores safe automatic release polling every 5 seconds using the published version.js, not GitHub Actions API. A newer live release triggers one automatic reload; network failures keep the current loaded release at Success ✓ instead of endless Waiting. The 82x82 login logo and iPhone login behavior remain preserved.",
-    "next": "V0.4.29 is the verified clean base. On the next runtime release, leave the client untouched and verify that the 5-second published-version poll detects and reloads the new live release automatically.",
+    "completed": "V0.4.30 is a minimal visible runtime release used to prove V0.4.29 automatic live-version detection. Login version line now reads Clean Core · V0.4.30; no research, Trade/Forward, login geometry, logo size, or polling logic changed.",
+    "next": "Do not manually refresh the real client. Verify V0.4.29 detects V0.4.30 after Pages is live and automatically reloads to V0.4.30.",
     "blocked": false
   },
   "bootstrap": {
@@ -33,13 +33,34 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "IDLE",
-    "targetRelease": "V0.4.29",
-    "goal": "No interrupted work. V0.4.29 is verified live and is the current safe baseline.",
-    "plan": [],
+    "status": "IN_PROGRESS",
+    "targetRelease": "V0.4.30",
+    "goal": "Prove automatic 5-second live-version detection/reload on the real client using a minimal visible runtime release.",
+    "plan": [
+      {
+        "id": 1,
+        "task": "Make minimal visible login version-line change",
+        "status": "DONE"
+      },
+      {
+        "id": 2,
+        "task": "Commit V0.4.30 atomically",
+        "status": "DONE"
+      },
+      {
+        "id": 3,
+        "task": "Verify Release Integrity and Pages deployment",
+        "status": "PENDING"
+      },
+      {
+        "id": 4,
+        "task": "Verify real client auto-reloads without manual refresh",
+        "status": "PENDING"
+      }
+    ],
     "lastSafeRelease": "V0.4.29",
     "lastSafeCommit": "1f53669d7cc79e7bfb4002f738914f6046e4d7b3",
-    "resumeInstruction": "Start from V0.4.29. Do not rerun Gen8–Gen16. Trade/Forward remain OFF. The next runtime release must also serve as the real-client proof of automatic 5-second live-version detection/reload.",
-    "verifiedThrough": "V0.4.29: Release Integrity #76 PASS, Pages #3604 PASS, user confirmed live. Safe auto-version polling every 5 seconds is installed; 82x82 login logo and verified iPhone login behavior preserved."
+    "resumeInstruction": "Verify V0.4.30 Actions, then wait for real-client automatic reload. User must not manually refresh.",
+    "verifiedThrough": "V0.4.29 verified live; Gen8–Gen16 frozen; Trade/Forward OFF; 82x82 logo and iPhone login behavior preserved."
   }
 }
