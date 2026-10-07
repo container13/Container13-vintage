@@ -8,8 +8,8 @@
   "release": {
     "currentVerified": "2.10.170",
     "previousVerified": "2.10.169",
-    "candidate": "2.10.174",
-    "integrity": "PENDING_RUNTIME_VERIFICATION"
+    "candidate": "2.10.175",
+    "integrity": "PENDING_RUNTIME_DIAGNOSIS"
   },
   "rules": {
     "master": "CCC_MASTER_RULES.md",
@@ -27,43 +27,43 @@
     }
   },
   "currentWork": {
-    "completed": "2.10.173 failed real-iPhone Mer test. Source-chain inventory found Dashboard HTML still loaded dashboard.js?v=2.9.3, dashboard.css?v=2.9.3, core.js?v=2.10.132 and other stale cache stamps while version.js reported the new release. 2.10.174 aligns Dashboard runtime asset cache stamps.",
-    "next": "Verify 2.10.174 on real iPhone after the Dashboard page itself loads 174: Dashboard > Mer must open; then Mer > Vinted.",
+    "completed": "2.10.174 failed real-iPhone Mer test. 2.10.175 is diagnostic only: visible runtime probe on Mer click reports whether Dashboard handler fires and whether home/more hidden state changes.",
+    "next": "On real iPhone 2.10.175 tap Mer once and report the exact black diagnostic text, or report that no black diagnostic appears.",
     "blocked": false
   },
   "workCheckpoint": {
     "status": "IN_PROGRESS",
-    "targetRelease": "2.10.174",
+    "targetRelease": "2.10.175",
     "goal": "Verify first List It-inspired CCC Vinted UI candidate before connecting AI.",
     "plan": [
       {
         "id": 1,
-        "task": "STOP and inventory actual Dashboard runtime chain",
+        "task": "Inventory click/init/view/cache chain",
         "status": "DONE"
       },
       {
         "id": 2,
-        "task": "Identify stale Dashboard runtime asset cache stamps",
+        "task": "Add visible iPhone runtime probe to Mer handler",
         "status": "DONE"
       },
       {
         "id": 3,
-        "task": "Align Dashboard JS/CSS/Core/PWA cache stamps to 2.10.174",
-        "status": "DONE"
-      },
-      {
-        "id": 4,
-        "task": "GitHub exact readback/static verification",
+        "task": "GitHub exact readback",
         "status": "IN_PROGRESS"
       },
       {
+        "id": 4,
+        "task": "Real iPhone tap Mer and capture diagnostic result",
+        "status": "PENDING"
+      },
+      {
         "id": 5,
-        "task": "Real iPhone verify Dashboard > Mer > Vinted",
+        "task": "Fix only the proven failing layer",
         "status": "PENDING"
       }
     ],
     "lastSafeRelease": "2.10.170",
-    "resumeInstruction": "Verify 2.10.174 on real iPhone. Version display alone is not runtime proof; test Dashboard > Mer > Vinted.",
+    "resumeInstruction": "On 2.10.175 tap Mer once. If no black probe appears, handler/runtime path is failing. If probe appears, use its home/more hidden values to diagnose rendering. Do not patch before this evidence.",
     "verifiedThrough": "2.10.170 live on real iPhone"
   }
 }
