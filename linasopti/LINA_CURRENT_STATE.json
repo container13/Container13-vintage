@@ -21,7 +21,7 @@
   },
   "currentWork": {
     "completed": "V0.4.31 PASS. Release Integrity #80 and Pages #3608 succeeded. Real client automatically detected the published release: Updating flashed, then V0.4.31 loaded and showed Success ✓ without manual refresh.",
-    "next": "Permanent deploy-status function is active. On a future release, verify that Ny uppdatering pågår… is visible during the build window when observed; automatic published-version reload is already real-client verified.",
+    "next": "Build V0.4.32 commit-aware deploy status; keep V0.4.31 as last safe release until verified.",
     "blocked": false
   },
   "bootstrap": {
@@ -33,9 +33,9 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "IDLE",
-    "targetRelease": "V0.4.31",
-    "goal": "Permanent safe deploy-status UI while preserving automatic published-version reload.",
+    "status": "IN_PROGRESS",
+    "targetRelease": "V0.4.32",
+    "goal": "Show working status from first new commit through build/update until published success.",
     "plan": [
       {
         "id": 1,
