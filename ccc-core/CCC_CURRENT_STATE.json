@@ -8,8 +8,8 @@
   "release": {
     "currentVerified": "2.10.180",
     "previousVerified": "2.10.176",
-    "candidate": null,
-    "integrity": "PASS_USER_IPHONE_PINCH_ZOOM"
+    "candidate": "2.10.181",
+    "integrity": "PENDING_RUNTIME_VERIFICATION"
   },
   "rules": {
     "master": "CCC_MASTER_RULES.md",
@@ -28,14 +28,30 @@
   },
   "currentWork": {
     "completed": "2.10.180 central multi-touch pinch zoom block confirmed working by user on iPhone. Existing Vinted visual design retained.",
-    "next": "Continue CCC Vinted workflow from verified 2.10.180; assess remaining layout and functionality issues.",
+    "next": "Verify Vinted real Vision Worker call on iPhone, success, uncertainty, error and 1–9 photo flows. AI analyzes first 3 photos; never claim full 9-photo analysis.",
     "blocked": false
   },
   "workCheckpoint": {
-    "status": "IDLE",
-    "targetRelease": null,
-    "plan": [],
-    "resumeInstruction": "Start from verified 2.10.180. Pinch zoom is disabled on iPhone. Preserve Vinted styling and confirmed behaviors."
+    "status": "IN_PROGRESS",
+    "targetRelease": "2.10.181",
+    "plan": [
+      {
+        "id": 1,
+        "task": "Connect Vinted to existing CCC Vision AI with strict uncertainty gate",
+        "status": "DONE"
+      },
+      {
+        "id": 2,
+        "task": "GitHub readback and static checks",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "id": 3,
+        "task": "Verify on real iPhone",
+        "status": "PENDING"
+      }
+    ],
+    "resumeInstruction": "Verify candidate 2.10.181 on iPhone before promoting; 2.10.180 remains safe."
   },
   "lastSafeRelease": "2.10.180"
 }
