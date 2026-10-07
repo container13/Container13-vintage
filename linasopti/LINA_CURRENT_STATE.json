@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.24",
+  "release": "V0.4.25",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -16,12 +16,12 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PASS_V0.4.24_REPO",
+    "releaseIntegrity": "PENDING_V0.4.25_REPO_READBACK",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
-    "completed": "V0.4.24 removes programmatic login autofocus on locked startup/refresh, preserving restoreLoginTop for user-initiated field focus. Real V0.4.23 iPhone refresh jump was the trigger.",
-    "next": "Wait for V0.4.24 live deploy, then real-iPhone refresh behavior is the only remaining verification.",
+    "completed": "V0.4.25 compacts the login gate, removes redundant password instruction text, and limits visible GitHub Actions state to Queued / Waiting / Building / Success / Failed. V0.4.24 iPhone top-scroll guard is preserved.",
+    "next": "Repo readback V0.4.25, then wait for live deploy. No manual diagnostic transport required.",
     "blocked": false
   },
   "bootstrap": {
@@ -34,38 +34,33 @@
   },
   "workCheckpoint": {
     "status": "IDLE",
-    "targetRelease": "V0.4.24",
-    "goal": "Fix real-iPhone refresh login jump by removing programmatic login-field autofocus while preserving the verified top-scroll guard for user-initiated focus.",
+    "targetRelease": "V0.4.25",
+    "goal": "Compact login UI and reduce visible Actions status to simple human-facing states without touching V0.4.24 iPhone login behavior or frozen research.",
     "plan": [
       {
         "id": 1,
-        "task": "Persist checkpoint",
+        "task": "Compact login gate and remove redundant instruction",
         "status": "DONE"
       },
       {
         "id": 2,
-        "task": "Remove programmatic login autofocus on locked startup/refresh",
+        "task": "Simplify Actions status to Queued / Waiting / Building / Success / Failed",
         "status": "DONE"
       },
       {
         "id": 3,
-        "task": "Bump V0.4.24 version/cache/assets/release gate",
+        "task": "Bump V0.4.25 version/cache/release gate",
         "status": "DONE"
       },
       {
         "id": 4,
         "task": "Repo readback and verify frozen research unchanged",
-        "status": "DONE"
-      },
-      {
-        "id": 5,
-        "task": "Close checkpoint",
-        "status": "DONE"
+        "status": "PENDING"
       }
     ],
     "lastSafeRelease": "V0.4.24",
     "lastSafeCommit": "465ad28a74a722170a52f7d182a64baa9dbf7859",
-    "resumeInstruction": "No interrupted work. Next verification is real-iPhone refresh on live V0.4.24.",
-    "verifiedThrough": "V0.4.24 repo readback PASS: no startup autofocus; user-focus top guard retained; version/cache/assets/gate aligned; Gen16 historical authorization unchanged."
+    "resumeInstruction": "Finish V0.4.25 repo readback only; do not alter frozen research.",
+    "verifiedThrough": "V0.4.24"
   }
 }
