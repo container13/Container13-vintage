@@ -648,6 +648,10 @@ const CCCImageViewer={
     this.timer=setTimeout(()=>{const s=this.source;if(!s||this.moved)return;this.open(s);this.timer=null;},this.holdMs);
   },
   install(){
+    // iPhone/iPad: blockera flerfingersgest innan Safari kan starta nypzoom.
+    // Enfingers-scroll, tryck och CCC:s långtryck lämnas orörda.
+    document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault();},{capture:true,passive:false});
+    document.addEventListener("touchmove",e=>{if(e.touches.length>1)e.preventDefault();},{capture:true,passive:false});
     // Touch är primär väg på mobil. Pointer finns som fallback för pen/mus och desktop.
     document.addEventListener("touchstart",e=>{
       const o=document.querySelector("#cccImageViewer");if(o&&!o.hidden)return;
