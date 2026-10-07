@@ -8,8 +8,8 @@
   "release": {
     "currentVerified": "2.10.176",
     "previousVerified": "2.10.170",
-    "candidate": "2.10.176",
-    "integrity": "PASS_REAL_IPHONE"
+    "candidate": "2.10.177",
+    "integrity": "PENDING_RUNTIME_VERIFICATION"
   },
   "rules": {
     "master": "CCC_MASTER_RULES.md",
@@ -27,15 +27,36 @@
     }
   },
   "currentWork": {
-    "completed": "2.10.176 verified on real iPhone: Dashboard > Mer now replaces Dashboard correctly. Root cause was CSS specificity: older mobile #homeView display:grid!important overrode hidden. Core now makes hidden authoritative.",
-    "next": "Continue Vinted flow verification and implementation from the verified 2.10.176 base.",
+    "completed": "2.10.177 Vinted photo-flow candidate: separate sequential iPhone camera input and multi-select album input, shared 1-9 listing/analysis image set, numbered thumbnails/removal, sv/en retained. AI remains intentionally disconnected.",
+    "next": "Real iPhone verify Mer > Vinted, Ta foto sequentially, album selection, max 9, remove thumbnail, language toggle and layout. Do not judge AI yet.",
     "blocked": false
   },
   "workCheckpoint": {
-    "status": "IDLE",
-    "targetRelease": "2.10.176",
-    "plan": [],
-    "resumeInstruction": "Resume from verified CCC 2.10.176. Dashboard > Mer fix is complete. Continue with Vinted."
+    "status": "IN_PROGRESS",
+    "targetRelease": "2.10.177",
+    "plan": [
+      {
+        "id": 1,
+        "task": "Inspect existing Vinted UI/spec from verified 2.10.176",
+        "status": "DONE"
+      },
+      {
+        "id": 2,
+        "task": "Implement separate sequential camera and album flow, max 9",
+        "status": "DONE"
+      },
+      {
+        "id": 3,
+        "task": "GitHub exact readback/static verification",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "id": 4,
+        "task": "Real iPhone verify Vinted photo flow and layout",
+        "status": "PENDING"
+      }
+    ],
+    "resumeInstruction": "Verify 2.10.177 Vinted photo flow on real iPhone. AI is still demo by design."
   },
   "lastSafeRelease": "2.10.176"
 }
