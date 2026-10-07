@@ -21,7 +21,7 @@
   },
   "currentWork": {
     "completed": "V0.4.33 PASS. Login logo increased exactly 1% (82px to 82.82px). Corrected Release Integrity #95 and Pages #3626 succeeded. Real iPhone showed Building then Success. Early first-commit spinner was not observed, so that specific transition remains unverified.",
-    "next": "Fix/verify immediate first-commit detection so spinner starts before queued/building; preserve proven Building and Success behavior.",
+    "next": "Controlled V0.4.34 multi-commit test to observe exactly when login commit-status spinner starts.",
     "blocked": false
   },
   "bootstrap": {
@@ -33,29 +33,34 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "IDLE",
-    "targetRelease": "V0.4.33",
-    "goal": "Increase locked login logo exactly 1% and use this genuine release to verify commit-aware status sequence.",
+    "status": "IN_PROGRESS",
+    "targetRelease": "V0.4.34",
+    "goal": "Controlled multi-commit test of immediate first-commit detection with a harmless UI change.",
     "plan": [
       {
         "id": 1,
-        "task": "Increase locked login logo exactly 1%",
+        "task": "Open checkpoint as first Lina commit and observe V0.4.33 login status",
         "status": "DONE"
       },
       {
         "id": 2,
-        "task": "Bump V0.4.33 version/cache/release gate and CURRENT_STATE coherently",
-        "status": "DONE"
+        "task": "Apply harmless UI change in separate commit",
+        "status": "PENDING"
       },
       {
         "id": 3,
-        "task": "Verify repo, Actions/Pages and real-client status sequence",
-        "status": "DONE"
+        "task": "Complete V0.4.34 release files in separate commits",
+        "status": "PENDING"
+      },
+      {
+        "id": 4,
+        "task": "Verify Integrity/Pages and real-iPhone sequence",
+        "status": "PENDING"
       }
     ],
     "lastSafeRelease": "V0.4.33",
     "lastSafeCommit": "d71ab4893c7715b899e3c6f1c1463c95c055fb87",
-    "resumeInstruction": "V0.4.33 is safe base. Building and Success are real-iPhone verified. Immediate first-commit spinner remains unverified; Gen8–Gen16 frozen, Trade/Forward OFF.",
+    "resumeInstruction": "Controlled V0.4.34 multi-commit status test. Resume first non-DONE step; no research reruns.",
     "verifiedThrough": "V0.4.33: Integrity #95 PASS; Pages #3626 PASS; user observed Building then Success on real iPhone. Exact 1% login-logo change verified in repo."
   }
 }
