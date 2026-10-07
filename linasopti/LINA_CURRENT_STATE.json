@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.28",
+  "release": "V0.4.29",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -16,12 +16,12 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PENDING_V0.4.28",
+    "releaseIntegrity": "PENDING_V0.4.29",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
-    "completed": "V0.4.28 restores the login Lina logo to its pre-compact 82x82 px size while preserving the compact login layout and V0.4.27 deterministic Success status.",
-    "next": "Verify V0.4.28 Release Integrity and Pages deployment, then visually confirm the restored login logo size.",
+    "completed": "V0.4.29 restores safe automatic release polling every 5 seconds using the published version.js, not GitHub Actions API. A newer live release triggers one automatic reload; network failures keep the current loaded release at Success ✓ instead of endless Waiting. The 82x82 login logo and iPhone login behavior remain preserved.",
+    "next": "Verify V0.4.29 Release Integrity and Pages deployment, then confirm the login page self-updates to new live releases without manual refresh.",
     "blocked": false
   },
   "bootstrap": {
@@ -34,33 +34,38 @@
   },
   "workCheckpoint": {
     "status": "IN_PROGRESS",
-    "targetRelease": "V0.4.28",
-    "goal": "Restore the login logo to its exact pre-compact size without changing the compact login layout or frozen research.",
+    "targetRelease": "V0.4.29",
+    "goal": "Restore safe automatic live-version polling without reintroducing endless Waiting.",
     "plan": [
       {
         "id": 1,
-        "task": "Recover exact pre-compact logo size",
+        "task": "Poll published version.js every 5 seconds with cache bypass",
         "status": "DONE"
       },
       {
         "id": 2,
-        "task": "Restore login logo to 82x82 px",
+        "task": "Auto-reload once when a newer live release is detected",
         "status": "DONE"
       },
       {
         "id": 3,
-        "task": "Commit release files atomically",
+        "task": "Keep Success on transient network failures",
         "status": "DONE"
       },
       {
         "id": 4,
+        "task": "Commit release files atomically",
+        "status": "DONE"
+      },
+      {
+        "id": 5,
         "task": "Verify Release Integrity and Pages deployment",
         "status": "PENDING"
       }
     ],
-    "lastSafeRelease": "V0.4.27",
-    "lastSafeCommit": "acabafb998bee8bbab3640d0e1f0c5f1e4ad0c6a",
-    "resumeInstruction": "Verify V0.4.28 Actions. No manual diagnostic transport required.",
-    "verifiedThrough": "Exact historical login logo size recovered as 82x82 px; compact login layout otherwise unchanged; Gen8–16 frozen; Handel/Forward OFF."
+    "lastSafeRelease": "V0.4.28",
+    "lastSafeCommit": "5faabcf21ddd313cb5f2949a0a0a608fd317c30a",
+    "resumeInstruction": "Verify V0.4.29 Actions. No manual diagnostic transport required.",
+    "verifiedThrough": "V0.4.28 Pages/Integrity succeeded through automatic state chain; Gen8–16 frozen; Handel/Forward OFF."
   }
 }
