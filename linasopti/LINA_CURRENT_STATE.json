@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.32",
+  "release": "V0.4.33",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -16,12 +16,12 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PASS_V0.4.32",
+    "releaseIntegrity": "PENDING_V0.4.33",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
-    "completed": "V0.4.32 PASS. Release Integrity #88 and Pages #3619 succeeded; user confirmed V0.4.32 live on real iPhone. Commit-aware login status is now the active baseline.",
-    "next": "Increase login logo exactly 1% in V0.4.33 and use the genuine release as the real commit-status sequence test.",
+    "completed": "V0.4.33 code written. First Integrity run #94 failed because version/index/gate were committed before CURRENT_STATE was advanced to V0.4.33; this is a release-order failure, not research/runtime failure.",
+    "next": "Re-run integrity through corrected CURRENT_STATE commit, then verify Pages and real iPhone status. Also retain finding that commit spinner did not start early enough.",
     "blocked": false
   },
   "bootstrap": {
@@ -35,17 +35,17 @@
   "workCheckpoint": {
     "status": "IN_PROGRESS",
     "targetRelease": "V0.4.33",
-    "goal": "Increase only the locked login logo by exactly 1% and verify the V0.4.32 commit-aware status sequence during this genuine release.",
+    "goal": "Increase locked login logo exactly 1% and use this genuine release to verify commit-aware status sequence.",
     "plan": [
       {
         "id": 1,
         "task": "Increase locked login logo exactly 1%",
-        "status": "PENDING"
+        "status": "DONE"
       },
       {
         "id": 2,
-        "task": "Bump V0.4.33 version/cache/release gate",
-        "status": "PENDING"
+        "task": "Bump V0.4.33 version/cache/release gate and CURRENT_STATE coherently",
+        "status": "DONE"
       },
       {
         "id": 3,
@@ -55,7 +55,7 @@
     ],
     "lastSafeRelease": "V0.4.32",
     "lastSafeCommit": "d36123fe914145e47f3017c1713229606a6d7d60",
-    "resumeInstruction": "Resume first non-DONE V0.4.33 step after verifying branch head. Gen8–Gen16 frozen; Trade/Forward OFF.",
+    "resumeInstruction": "V0.4.33 correction in progress. Verify corrected Integrity/Pages; do not rerun research. Commit-status early spinner still needs verification/fix.",
     "verifiedThrough": "V0.4.32: Release Integrity #88 PASS; Pages #3619 PASS; user confirmed V0.4.32 live on real iPhone."
   }
 }
