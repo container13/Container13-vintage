@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.36",
+  "release": "V0.4.37",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -16,12 +16,12 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PENDING_V0.4.36",
+    "releaseIntegrity": "PENDING_V0.4.37",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
-    "completed": "V0.4.36 source written: deploy-status v4 checks deploy-relevant branch head before Actions registration while preserving V0.4.35 newest-active-chain logic. Automatic Worker promotion caused a safe 409 during sequential release writes; files were re-read and resumed without overwrite.",
-    "next": "Verify V0.4.36 Integrity/Pages and then run immediate-detection live probe.",
+    "completed": "V0.4.37 source prepared: login deploy-status polling tightened from 5s to 1s to make the pre-Actions COMMIT window observable while preserving V0.4.36 deploy-status v4 logic.",
+    "next": "Verify V0.4.37 Integrity/Pages, then run real-iPhone immediate COMMIT detection probe.",
     "blocked": false
   },
   "bootstrap": {
@@ -34,28 +34,28 @@
   },
   "workCheckpoint": {
     "status": "IN_PROGRESS",
-    "targetRelease": "V0.4.36",
-    "goal": "Preserve V0.4.35 active-chain behavior while detecting a new deploy-relevant commit before Actions registration delay.",
+    "targetRelease": "V0.4.37",
+    "goal": "Verify immediate deploy-relevant commit visibility before Actions registration using 1s login polling.",
     "plan": [
       {
         "id": 1,
-        "task": "Add deploy-relevant branch-head pre-Actions COMMIT detection",
+        "task": "Tighten login deploy-status polling 5s -> 1s",
         "status": "DONE"
       },
       {
         "id": 2,
-        "task": "Bump V0.4.36 coherently",
+        "task": "Bump V0.4.37 coherently",
         "status": "DONE"
       },
       {
         "id": 3,
-        "task": "Verify repo/Actions and real-iPhone immediate detection",
+        "task": "Verify Integrity/Pages and real-iPhone COMMIT -> Building -> Success",
         "status": "PENDING"
       }
     ],
-    "lastSafeRelease": "V0.4.35",
-    "lastSafeCommit": "b24588e722b865a4b1db6843b9f9928cade0a755",
-    "resumeInstruction": "V0.4.36 files aligned after safe conflict recovery. Verify Actions/Pages and real-iPhone immediate detection.",
-    "verifiedThrough": "V0.4.35 real iPhone: delayed detection, then Building -> Success without observed mid-build fallback."
+    "lastSafeRelease": "V0.4.36",
+    "lastSafeCommit": "6550798a8c3562804c85efa11ed996797a8600ef",
+    "resumeInstruction": "Verify V0.4.37 Actions/Pages, then real-iPhone immediate COMMIT detection. No research reruns.",
+    "verifiedThrough": "V0.4.36 real iPhone: automatic Building -> Success verified; COMMIT phase not observed with 5s polling."
   }
 }
