@@ -16,12 +16,12 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PENDING_V0.4.33",
+    "releaseIntegrity": "PASS_V0.4.33",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
-    "completed": "V0.4.33 code written. First Integrity run #94 failed because version/index/gate were committed before CURRENT_STATE was advanced to V0.4.33; this is a release-order failure, not research/runtime failure.",
-    "next": "Re-run integrity through corrected CURRENT_STATE commit, then verify Pages and real iPhone status. Also retain finding that commit spinner did not start early enough.",
+    "completed": "V0.4.33 PASS. Login logo increased exactly 1% (82px to 82.82px). Corrected Release Integrity #95 and Pages #3626 succeeded. Real iPhone showed Building then Success. Early first-commit spinner was not observed, so that specific transition remains unverified.",
+    "next": "Fix/verify immediate first-commit detection so spinner starts before queued/building; preserve proven Building and Success behavior.",
     "blocked": false
   },
   "bootstrap": {
@@ -33,7 +33,7 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
+    "status": "IDLE",
     "targetRelease": "V0.4.33",
     "goal": "Increase locked login logo exactly 1% and use this genuine release to verify commit-aware status sequence.",
     "plan": [
@@ -50,12 +50,12 @@
       {
         "id": 3,
         "task": "Verify repo, Actions/Pages and real-client status sequence",
-        "status": "PENDING"
+        "status": "DONE"
       }
     ],
-    "lastSafeRelease": "V0.4.32",
-    "lastSafeCommit": "d36123fe914145e47f3017c1713229606a6d7d60",
-    "resumeInstruction": "V0.4.33 correction in progress. Verify corrected Integrity/Pages; do not rerun research. Commit-status early spinner still needs verification/fix.",
-    "verifiedThrough": "V0.4.32: Release Integrity #88 PASS; Pages #3619 PASS; user confirmed V0.4.32 live on real iPhone."
+    "lastSafeRelease": "V0.4.33",
+    "lastSafeCommit": "d71ab4893c7715b899e3c6f1c1463c95c055fb87",
+    "resumeInstruction": "V0.4.33 is safe base. Building and Success are real-iPhone verified. Immediate first-commit spinner remains unverified; Gen8–Gen16 frozen, Trade/Forward OFF.",
+    "verifiedThrough": "V0.4.33: Integrity #95 PASS; Pages #3626 PASS; user observed Building then Success on real iPhone. Exact 1% login-logo change verified in repo."
   }
 }
