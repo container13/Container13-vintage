@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.30",
+  "release": "V0.4.31",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -16,12 +16,12 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PENDING_V0.4.30",
+    "releaseIntegrity": "PENDING_V0.4.31",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
-    "completed": "V0.4.30 is a minimal visible runtime release used to prove V0.4.29 automatic live-version detection. Login version line now reads Clean Core · V0.4.30; no research, Trade/Forward, login geometry, logo size, or polling logic changed.",
-    "next": "Do not manually refresh the real client. Verify V0.4.29 detects V0.4.30 after Pages is live and automatically reloads to V0.4.30.",
+    "completed": "V0.4.30 automatic live-version reload PASS on real iPhone. Worker deploy-status proxy verified through Release Integrity #79 and Pages #3607.",
+    "next": "Verify V0.4.31. Real client should automatically move from V0.4.30 to V0.4.31; future builds should show Ny uppdatering pågår… while server status is BUILDING.",
     "blocked": false
   },
   "bootstrap": {
@@ -34,33 +34,33 @@
   },
   "workCheckpoint": {
     "status": "IN_PROGRESS",
-    "targetRelease": "V0.4.30",
-    "goal": "Prove automatic 5-second live-version detection/reload on the real client using a minimal visible runtime release.",
+    "targetRelease": "V0.4.31",
+    "goal": "Permanent safe deploy-status UI while preserving automatic published-version reload.",
     "plan": [
       {
         "id": 1,
-        "task": "Make minimal visible login version-line change",
+        "task": "Verify Worker deploy-status proxy",
         "status": "DONE"
       },
       {
         "id": 2,
-        "task": "Commit V0.4.30 atomically",
+        "task": "Connect login status to Worker proxy",
         "status": "DONE"
       },
       {
         "id": 3,
-        "task": "Verify Release Integrity and Pages deployment",
-        "status": "PENDING"
+        "task": "Preserve 5-second published-version auto-reload",
+        "status": "DONE"
       },
       {
         "id": 4,
-        "task": "Verify real client auto-reloads without manual refresh",
+        "task": "Verify Release Integrity, Pages and real-client behavior",
         "status": "PENDING"
       }
     ],
-    "lastSafeRelease": "V0.4.29",
-    "lastSafeCommit": "1f53669d7cc79e7bfb4002f738914f6046e4d7b3",
-    "resumeInstruction": "Verify V0.4.30 Actions, then wait for real-client automatic reload. User must not manually refresh.",
-    "verifiedThrough": "V0.4.29 verified live; Gen8–Gen16 frozen; Trade/Forward OFF; 82x82 logo and iPhone login behavior preserved."
+    "lastSafeRelease": "V0.4.30",
+    "lastSafeCommit": "c3854460fac45c43cfe970abc46d6a70f0e81995",
+    "resumeInstruction": "Verify V0.4.31 Actions and untouched real-client auto-update. Gen8–Gen16 frozen; Trade/Forward OFF.",
+    "verifiedThrough": "V0.4.30 Release Integrity #78 PASS, Pages #3606 PASS, real iPhone auto-update PASS; Worker deploy-status proxy commit 314bb8d8 verified by Release Integrity #79 and Pages #3607."
   }
 }
