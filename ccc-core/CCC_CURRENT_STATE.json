@@ -1,0 +1,58 @@
+{
+  "schema": "CCC-CURRENT-STATE-1",
+  "project": "Container13 CCC",
+  "repo": "container13/Container13-vintage",
+  "branch": "ccc-demo-public-test",
+  "appRoot": "ccc-core/",
+  "status": "ACTIVE",
+  "release": {
+    "currentVerified": "2.10.169",
+    "previousVerified": "UNKNOWN_NOT_RECONSTRUCTED",
+    "candidate": "2.10.170",
+    "integrity": "PENDING"
+  },
+  "rules": {
+    "master": "CCC_MASTER_RULES.md",
+    "releaseChecklist": "CCC_RELEASE_CHECKLIST.md",
+    "handoff": "CCC_HANDOFF_CURRENT.md",
+    "changedFilesOnly": true,
+    "githubReadbackRequired": true,
+    "realRuntimeRequiredForPass": true,
+    "rootVersionJsLocked": true
+  },
+  "pausedWork": {
+    "vinted": {
+      "status": "PAUSED",
+      "note": "Local prototype only. Desired Vinted description includes details/wear, style, size, fit; hashtags are hidden in CCC UI but appended to copied description. Practical image target: 9."
+    }
+  },
+  "currentWork": {
+    "completed": "Transferable LinaSopti operating rules mapped into CCC documentation/state.",
+    "next": "Verify this rules/state release from GitHub and then use it as the bootstrap for all further CCC work.",
+    "blocked": false
+  },
+  "workCheckpoint": {
+    "status": "IN_PROGRESS",
+    "targetRelease": "2.10.170",
+    "goal": "Install and verify LinaSopti-derived CCC operating discipline before further feature work.",
+    "plan": [
+      {
+        "id": 1,
+        "task": "Create CCC master rules, release checklist, current state and handoff",
+        "status": "DONE"
+      },
+      {
+        "id": 2,
+        "task": "Link rules from CCC README and bump version",
+        "status": "PENDING"
+      },
+      {
+        "id": 3,
+        "task": "GitHub read-back and integrity verification",
+        "status": "PENDING"
+      }
+    ],
+    "lastSafeRelease": "2.10.169",
+    "resumeInstruction": "Finish README/version integration, read back all changed files, then mark 2.10.170 PASS only for documentation/static integrity. Runtime feature behavior remains unchanged."
+  }
+}
