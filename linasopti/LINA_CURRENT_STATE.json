@@ -21,7 +21,7 @@
   },
   "currentWork": {
     "completed": "V0.4.32 PASS. Release Integrity #88 and Pages #3619 succeeded; user confirmed V0.4.32 live on real iPhone. Commit-aware login status is now the active baseline.",
-    "next": "Use the next genuine Lina commit to verify the full visible sequence from new commit through Queued/Building/Updating to Success ✓.",
+    "next": "Increase login logo exactly 1% in V0.4.33 and use the genuine release as the real commit-status sequence test.",
     "blocked": false
   },
   "bootstrap": {
@@ -33,34 +33,29 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "IDLE",
-    "targetRelease": "V0.4.32",
-    "goal": "Show working status from first new commit through build/update until published success.",
+    "status": "IN_PROGRESS",
+    "targetRelease": "V0.4.33",
+    "goal": "Increase only the locked login logo by exactly 1% and verify the V0.4.32 commit-aware status sequence during this genuine release.",
     "plan": [
       {
         "id": 1,
-        "task": "Extend server deploy-status with branch-head commit/queued detection",
-        "status": "DONE"
+        "task": "Increase locked login logo exactly 1%",
+        "status": "PENDING"
       },
       {
         "id": 2,
-        "task": "Map COMMIT/QUEUED/BUILDING/FAILED/SUCCESS safely in login status",
-        "status": "DONE"
+        "task": "Bump V0.4.33 version/cache/release gate",
+        "status": "PENDING"
       },
       {
         "id": 3,
-        "task": "Bump V0.4.32 version/cache/release gate without touching frozen research",
-        "status": "DONE"
-      },
-      {
-        "id": 4,
-        "task": "Verify repo readback, Actions/Pages and real-client transition",
-        "status": "DONE"
+        "task": "Verify repo, Actions/Pages and real-client status sequence",
+        "status": "PENDING"
       }
     ],
     "lastSafeRelease": "V0.4.32",
     "lastSafeCommit": "d36123fe914145e47f3017c1713229606a6d7d60",
-    "resumeInstruction": "V0.4.32 is safe base. On next genuine commit observe commit-aware status sequence. Gen8–Gen16 frozen; Trade/Forward OFF.",
+    "resumeInstruction": "Resume first non-DONE V0.4.33 step after verifying branch head. Gen8–Gen16 frozen; Trade/Forward OFF.",
     "verifiedThrough": "V0.4.32: Release Integrity #88 PASS; Pages #3619 PASS; user confirmed V0.4.32 live on real iPhone."
   }
 }
