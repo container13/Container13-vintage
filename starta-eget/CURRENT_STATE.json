@@ -1,0 +1,23 @@
+{
+  "schema": "LIGHT-PROJECT-STATE-1",
+  "project": "Starta eget",
+  "status": "EXPLORING",
+  "currentFocus": "Undersöka AB och en låg-risk sidoverksamhet utan att stressa fram ett beslut.",
+  "knownContext": [
+    "Fast anställning finns kvar som huvudsyssla.",
+    "Grundschemat ger mycket ledig tid.",
+    "AI-stödd produkt- och apputveckling är ett möjligt nytt affärsspår.",
+    "Snickeriarbete och extraarbete inom mark/grävning är befintliga sidospår som kan vara relevanta för framtida bolag.",
+    "Projektmallen och solutions-biblioteket kan användas som metodstöd."
+  ],
+  "openQuestions": [
+    "Arbetsgivarens regler om bisyssla, konkurrens och immateriella rättigheter.",
+    "Lämplig verksamhetsbeskrivning och om flera verksamhetsgrenar bör ligga i samma AB.",
+    "F-skatt, moms, försäkring och avtal för de faktiska uppdragen.",
+    "Optimal hantering av lön, kvarhållen vinst och framtida utdelning utifrån aktuella regler.",
+    "Om och hur privat arbetsutrymme kan hyras ut till ett framtida AB på korrekt marknadsmässigt sätt.",
+    "Vilket externt kundproblem som är bäst som första betalda AI-/digitaliseringsuppdrag."
+  ],
+  "nextStep": "PAUSED_BY_USER",
+  "lastUpdated": "2026-10-07"
+}
