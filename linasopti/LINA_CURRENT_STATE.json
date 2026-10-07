@@ -21,7 +21,7 @@
   },
   "currentWork": {
     "completed": "V0.4.34 multi-commit test reproduced stale fallback: state-only no change; index commit Queued; incomplete release Failed; coherent release could fall back to V0.4.33 Success between V0.4.34 statuses. Root cause: deploy-status followed branch head instead of newest active relevant Actions chain.",
-    "next": "Verify V0.4.35 relevant-chain Worker fix through Integrity/Pages and then repeat a controlled multi-commit observation on real iPhone.",
+    "next": "Implement V0.4.36 immediate deploy-relevant commit detection.",
     "blocked": false
   },
   "bootstrap": {
@@ -34,28 +34,28 @@
   },
   "workCheckpoint": {
     "status": "IN_PROGRESS",
-    "targetRelease": "V0.4.35",
-    "goal": "Make deploy status sticky to the newest relevant Lina release chain so it cannot fall back to the previously loaded release Success between commits.",
+    "targetRelease": "V0.4.36",
+    "goal": "Preserve V0.4.35 active-chain behavior while detecting a new deploy-relevant commit before Actions registration delay.",
     "plan": [
       {
         "id": 1,
-        "task": "Replace branch-head-only deploy status with newest relevant chain selection",
-        "status": "DONE"
+        "task": "Add deploy-relevant branch-head pre-Actions COMMIT detection",
+        "status": "PENDING"
       },
       {
         "id": 2,
-        "task": "Bump V0.4.35 coherently",
-        "status": "DONE"
+        "task": "Bump V0.4.36 coherently",
+        "status": "PENDING"
       },
       {
         "id": 3,
-        "task": "Verify Worker source/readback, Integrity/Pages and real-iPhone multi-commit behavior",
+        "task": "Verify repo/Actions and real-iPhone immediate detection",
         "status": "PENDING"
       }
     ],
-    "lastSafeRelease": "V0.4.33",
-    "lastSafeCommit": "d71ab4893c7715b899e3c6f1c1463c95c055fb87",
-    "resumeInstruction": "V0.4.35 source and release files aligned. Verify Integrity/Pages and actual Worker/runtime behavior before closing checkpoint.",
-    "verifiedThrough": "V0.4.33: Integrity #95 PASS; Pages #3626 PASS; user observed Building then Success on real iPhone. Exact 1% login-logo change verified in repo."
+    "lastSafeRelease": "V0.4.35",
+    "lastSafeCommit": "b24588e722b865a4b1db6843b9f9928cade0a755",
+    "resumeInstruction": "V0.4.36 immediate detection fix in progress. Preserve V0.4.35 active-chain behavior; no research reruns.",
+    "verifiedThrough": "V0.4.35 real iPhone: delayed detection, then Building -> Success without observed mid-build fallback."
   }
 }
