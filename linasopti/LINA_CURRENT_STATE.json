@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.35",
+  "release": "V0.4.36",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -16,12 +16,12 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PENDING_V0.4.35",
+    "releaseIntegrity": "PENDING_V0.4.36",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
-    "completed": "V0.4.34 multi-commit test reproduced stale fallback: state-only no change; index commit Queued; incomplete release Failed; coherent release could fall back to V0.4.33 Success between V0.4.34 statuses. Root cause: deploy-status followed branch head instead of newest active relevant Actions chain.",
-    "next": "Implement V0.4.36 immediate deploy-relevant commit detection.",
+    "completed": "V0.4.36 source written: deploy-status v4 checks deploy-relevant branch head before Actions registration while preserving V0.4.35 newest-active-chain logic. Automatic Worker promotion caused a safe 409 during sequential release writes; files were re-read and resumed without overwrite.",
+    "next": "Verify V0.4.36 Integrity/Pages and then run immediate-detection live probe.",
     "blocked": false
   },
   "bootstrap": {
@@ -40,12 +40,12 @@
       {
         "id": 1,
         "task": "Add deploy-relevant branch-head pre-Actions COMMIT detection",
-        "status": "PENDING"
+        "status": "DONE"
       },
       {
         "id": 2,
         "task": "Bump V0.4.36 coherently",
-        "status": "PENDING"
+        "status": "DONE"
       },
       {
         "id": 3,
@@ -55,7 +55,7 @@
     ],
     "lastSafeRelease": "V0.4.35",
     "lastSafeCommit": "b24588e722b865a4b1db6843b9f9928cade0a755",
-    "resumeInstruction": "V0.4.36 immediate detection fix in progress. Preserve V0.4.35 active-chain behavior; no research reruns.",
+    "resumeInstruction": "V0.4.36 files aligned after safe conflict recovery. Verify Actions/Pages and real-iPhone immediate detection.",
     "verifiedThrough": "V0.4.35 real iPhone: delayed detection, then Building -> Success without observed mid-build fallback."
   }
 }
