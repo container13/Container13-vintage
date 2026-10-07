@@ -6,10 +6,10 @@
   "appRoot": "ccc-core/",
   "status": "ACTIVE",
   "release": {
-    "currentVerified": "2.10.169",
-    "previousVerified": "UNKNOWN_NOT_RECONSTRUCTED",
-    "candidate": "2.10.170",
-    "integrity": "PENDING"
+    "currentVerified": "2.10.170",
+    "previousVerified": "2.10.169",
+    "candidate": null,
+    "integrity": "PASS_LIVE_REAL_IPHONE"
   },
   "rules": {
     "master": "CCC_MASTER_RULES.md",
@@ -27,12 +27,12 @@
     }
   },
   "currentWork": {
-    "completed": "CCC master rules, release checklist, current state, handoff, README integration and v2.10.170 source read-back are complete.",
-    "next": "Verify v2.10.170 is actually live on the deployed CCC. Only then promote CURRENT 2.10.169 -> PREVIOUS and candidate 2.10.170 -> CURRENT.",
+    "completed": "v2.10.170 source/read-back verified and real iPhone confirmed live.",
+    "next": "Resume CCC feature work under CCC_MASTER_RULES; Vinted remains paused.",
     "blocked": false
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
+    "status": "IDLE",
     "targetRelease": "2.10.170",
     "goal": "Install and verify LinaSopti-derived CCC operating discipline before further feature work.",
     "plan": [
@@ -54,10 +54,11 @@
       {
         "id": 4,
         "task": "Verify deployed/runtime v2.10.170 and promote CURRENT/PREVIOUS",
-        "status": "PENDING"
+        "status": "DONE"
       }
     ],
     "lastSafeRelease": "2.10.169",
-    "resumeInstruction": "Verify deployed CCC reports v2.10.170. If PASS, promote 2.10.169 to PREVIOUS, 2.10.170 to CURRENT, set integrity PASS and checkpoint IDLE. Do not mark PASS from source alone."
+    "resumeInstruction": "Read CCC_MASTER_RULES.md, CCC_CURRENT_STATE.json and CCC_RELEASE_CHECKLIST.md, then start the next requested CCC task. Vinted remains paused.",
+    "verifiedThrough": "2.10.170 live on real iPhone"
   }
 }
