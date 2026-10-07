@@ -1,0 +1,28 @@
+{
+  "schema": "PROJECT-CURRENT-STATE-1",
+  "project": "PROJECT_NAME",
+  "repository": "OWNER/REPOSITORY",
+  "branch": "BRANCH",
+  "projectRoot": "PROJECT_ROOT/",
+  "riskClass": "LOW",
+  "release": {
+    "previousVerified": null,
+    "currentVerified": null,
+    "candidate": "0.1.0",
+    "integrity": "PENDING"
+  },
+  "workCheckpoint": {
+    "status": "IDLE",
+    "targetRelease": null,
+    "goal": null,
+    "plan": [],
+    "lastSafeRelease": null,
+    "resumeInstruction": "Read the project standard, master rules, current state and checklist before starting work."
+  },
+  "currentWork": {
+    "completed": "Project created from Project Template v1.",
+    "next": "Define project-specific baseline and first task.",
+    "blocked": false
+  },
+  "pausedWork": {}
+}
