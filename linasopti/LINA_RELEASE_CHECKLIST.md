@@ -707,3 +707,13 @@ Historical/frozen research version strings are excluded from this current-releas
 - [ ] Positivt och negativt gränsfall bevisar att input faktiskt ligger på avsedd sida om relevant tröskel.
 - [ ] Deterministiska fixture-tester körs/verifieras före deploy; browser/produktion är inte första testmiljö.
 - [ ] Fixture-fix ändrar inte låst forskningsspec/hypotes när rotorsaken endast är testdata.
+
+
+## CCC cross-project gates — V0.4.38+
+- [ ] STOP RULE: om evidens motsäger planen har patchandet stoppats och faktisk kedja inventerats.
+- [ ] ONE OWNER PER BEHAVIOR: inga konkurrerande legacy handlers/syncvägar/endpoints lämnas som oavsiktliga parallella ägare.
+- [ ] GENERAL IDEMPOTENCE: retry/dubbeltryck/reload/resume ger högst ett avsett resultat.
+- [ ] SCHEMA/MIGRATION: ändrad persistent datastruktur har explicit kompatibilitet/migrering.
+- [ ] NAVIGATION ≠ DESTRUCTION: normal navigation kan inte rensa pågående arbete.
+- [ ] EVENT INVENTORY: ändrad touch/pointer/click/focus-logik har inventerats mot konkurrerande handlers.
+- [ ] CURRENT/PREVIOUS: kandidat promoveras först efter obligatorisk runtime/verklig-klient-verifiering; rollbackpunkten flyttas inte av PENDING/FAIL.
