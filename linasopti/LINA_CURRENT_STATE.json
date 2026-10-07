@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.37",
+  "release": "V0.4.38",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -16,12 +16,12 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PENDING_V0.4.37",
+    "releaseIntegrity": "PENDING_V0.4.38",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
-    "completed": "V0.4.37 source prepared: login deploy-status polling tightened from 5s to 1s to make the pre-Actions COMMIT window observable while preserving V0.4.36 deploy-status v4 logic.",
-    "next": "Verify V0.4.37 Integrity/Pages, then run real-iPhone immediate COMMIT detection probe.",
+    "completed": "V0.4.38 source prepared: transferable CCC safeguards added to Lina manual, MASTER RULES and RELEASE CHECKLIST.",
+    "next": "Verify GitHub readback/deploy/live V0.4.38 before promotion; no research reruns.",
     "blocked": false
   },
   "bootstrap": {
@@ -34,28 +34,27 @@
   },
   "workCheckpoint": {
     "status": "IN_PROGRESS",
-    "targetRelease": "V0.4.37",
-    "goal": "Verify immediate deploy-relevant commit visibility before Actions registration using 1s login polling.",
+    "targetRelease": "V0.4.38",
+    "goal": "Backport generic CCC safeguards into Lina operating discipline.",
     "plan": [
       {
         "id": 1,
-        "task": "Tighten login deploy-status polling 5s -> 1s",
+        "task": "Add CCC-derived permanent rules to manual and MASTER RULES",
         "status": "DONE"
       },
       {
         "id": 2,
-        "task": "Bump V0.4.37 coherently",
+        "task": "Add executable/checklist gates and bump V0.4.38",
         "status": "DONE"
       },
       {
         "id": 3,
-        "task": "Verify Integrity/Pages and real-iPhone COMMIT -> Building -> Success",
+        "task": "GitHub readback and verify live V0.4.38",
         "status": "PENDING"
       }
     ],
-    "lastSafeRelease": "V0.4.36",
-    "lastSafeCommit": "6550798a8c3562804c85efa11ed996797a8600ef",
-    "resumeInstruction": "Verify V0.4.37 Actions/Pages, then real-iPhone immediate COMMIT detection. No research reruns.",
-    "verifiedThrough": "V0.4.36 real iPhone: automatic Building -> Success verified; COMMIT phase not observed with 5s polling."
+    "lastSafeRelease": "V0.4.37",
+    "lastSafeCommit": null,
+    "resumeInstruction": "Verify V0.4.38 repo readback and live runtime. Do not rerun research; Handel/Forward remain OFF."
   }
 }
