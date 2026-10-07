@@ -6,10 +6,10 @@
   "appRoot": "ccc-core/",
   "status": "ACTIVE",
   "release": {
-    "currentVerified": "2.10.170",
-    "previousVerified": "2.10.169",
+    "currentVerified": "2.10.176",
+    "previousVerified": "2.10.170",
     "candidate": "2.10.176",
-    "integrity": "PENDING_RUNTIME_VERIFICATION"
+    "integrity": "PASS_REAL_IPHONE"
   },
   "rules": {
     "master": "CCC_MASTER_RULES.md",
@@ -27,48 +27,15 @@
     }
   },
   "currentWork": {
-    "completed": "2.10.175 real-iPhone probe proved click handler fires and sets home hidden=true / more hidden=false while home remains rendered. Root cause traced to Core mobile CSS: #homeView display:grid!important outranked .ccc-module-home[hidden]. 2.10.176 makes hidden authoritative and removes probe.",
-    "next": "Verify 2.10.176 real iPhone: Dashboard > Mer must replace Dashboard instead of stacking below it; then open Vinted.",
+    "completed": "2.10.176 verified on real iPhone: Dashboard > Mer now replaces Dashboard correctly. Root cause was CSS specificity: older mobile #homeView display:grid!important overrode hidden. Core now makes hidden authoritative.",
+    "next": "Continue Vinted flow verification and implementation from the verified 2.10.176 base.",
     "blocked": false
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
+    "status": "IDLE",
     "targetRelease": "2.10.176",
-    "goal": "Verify first List It-inspired CCC Vinted UI candidate before connecting AI.",
-    "plan": [
-      {
-        "id": 1,
-        "task": "Capture real-iPhone runtime evidence",
-        "status": "DONE"
-      },
-      {
-        "id": 2,
-        "task": "Trace CSS specificity conflict",
-        "status": "DONE"
-      },
-      {
-        "id": 3,
-        "task": "Make hidden authoritative for CCC workspace views",
-        "status": "DONE"
-      },
-      {
-        "id": 4,
-        "task": "Remove diagnostic probe",
-        "status": "DONE"
-      },
-      {
-        "id": 5,
-        "task": "GitHub exact readback",
-        "status": "IN_PROGRESS"
-      },
-      {
-        "id": 6,
-        "task": "Real iPhone verify Dashboard > Mer > Vinted",
-        "status": "PENDING"
-      }
-    ],
-    "lastSafeRelease": "2.10.170",
-    "resumeInstruction": "Verify 2.10.176 on real iPhone: Mer must replace Dashboard, not render beneath it. Then test Vinted. Promote only after confirmation.",
-    "verifiedThrough": "2.10.170 live on real iPhone"
-  }
+    "plan": [],
+    "resumeInstruction": "Resume from verified CCC 2.10.176. Dashboard > Mer fix is complete. Continue with Vinted."
+  },
+  "lastSafeRelease": "2.10.176"
 }
