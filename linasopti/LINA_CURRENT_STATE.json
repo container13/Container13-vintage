@@ -21,7 +21,7 @@
   },
   "currentWork": {
     "completed": "V0.4.22 automation-first support diagnostics implemented: status/diagnostics now use the existing verified /runtime-report → GitHub receipt chain first, with manual copy/download only as fallback.",
-    "next": "Test V0.4.22 on iPhone: tap Export once and confirm a verified GitHub report is saved automatically.",
+    "next": "V0.4.23 in progress: automatic support snapshot plus dashboard status-order containment.",
     "blocked": false
   },
   "bootstrap": {
@@ -33,44 +33,39 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "IDLE",
-    "targetRelease": "V0.4.22",
-    "goal": "Reduce manual Lina support work by connecting the existing status/diagnostics collector to the existing verified /runtime-report → GitHub chain.",
+    "status": "IN_PROGRESS",
+    "targetRelease": "V0.4.23",
+    "goal": "Remove user-as-transport support flow and keep historical generation status out of the dashboard action area.",
     "plan": [
       {
         "id": 1,
-        "task": "Persist IN_PROGRESS checkpoint before implementation",
+        "task": "Persist checkpoint",
         "status": "DONE"
       },
       {
         "id": 2,
-        "task": "Add verified GitHub runtime-report save path to status/diagnostics export with manual copy only as fallback",
-        "status": "DONE"
+        "task": "Make support report automatic after successful startup/login and keep Export as optional manual trigger",
+        "status": "NEXT"
       },
       {
         "id": 3,
-        "task": "Bump release/cache coherently to V0.4.22 and update active asset tokens",
-        "status": "DONE"
+        "task": "Scope generation status ordering to research/generation views, never dashboard",
+        "status": "PENDING"
       },
       {
         "id": 4,
-        "task": "Document automation-first support rule and update current state",
-        "status": "DONE"
+        "task": "Bump V0.4.23 coherently and verify release gate/readback",
+        "status": "PENDING"
       },
       {
         "id": 5,
-        "task": "Repo readback and Release Integrity verification",
-        "status": "DONE"
-      },
-      {
-        "id": 6,
-        "task": "Mark checkpoint IDLE only after verification",
-        "status": "DONE"
+        "task": "Close checkpoint after verification",
+        "status": "PENDING"
       }
     ],
     "lastSafeRelease": "V0.4.22",
-    "lastSafeCommit": "fafe4a21d3ad7283c650e8a558791593787231a7",
-    "resumeInstruction": "No interrupted work. Next: real-iPhone automatic report test.",
-    "verifiedThrough": "V0.4.22 repo readback PASS."
+    "lastSafeCommit": "85628c9bd94984b196bcb29247c31773d045a303",
+    "resumeInstruction": "Resume first non-DONE step; do not touch or rerun frozen research.",
+    "verifiedThrough": "V0.4.22 repo readback PASS"
   }
 }
