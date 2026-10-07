@@ -16,12 +16,12 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PENDING_V0.4.31",
+    "releaseIntegrity": "PASS_V0.4.31",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
-    "completed": "V0.4.30 automatic live-version reload PASS on real iPhone. Worker deploy-status proxy verified through Release Integrity #79 and Pages #3607.",
-    "next": "Verify V0.4.31. Real client should automatically move from V0.4.30 to V0.4.31; future builds should show Ny uppdatering pågår… while server status is BUILDING.",
+    "completed": "V0.4.31 PASS. Release Integrity #80 and Pages #3608 succeeded. Real client automatically detected the published release: Updating flashed, then V0.4.31 loaded and showed Success ✓ without manual refresh.",
+    "next": "Permanent deploy-status function is active. On a future release, verify that Ny uppdatering pågår… is visible during the build window when observed; automatic published-version reload is already real-client verified.",
     "blocked": false
   },
   "bootstrap": {
@@ -33,7 +33,7 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
+    "status": "IDLE",
     "targetRelease": "V0.4.31",
     "goal": "Permanent safe deploy-status UI while preserving automatic published-version reload.",
     "plan": [
@@ -55,12 +55,12 @@
       {
         "id": 4,
         "task": "Verify Release Integrity, Pages and real-client behavior",
-        "status": "PENDING"
+        "status": "DONE"
       }
     ],
-    "lastSafeRelease": "V0.4.30",
-    "lastSafeCommit": "c3854460fac45c43cfe970abc46d6a70f0e81995",
-    "resumeInstruction": "Verify V0.4.31 Actions and untouched real-client auto-update. Gen8–Gen16 frozen; Trade/Forward OFF.",
-    "verifiedThrough": "V0.4.30 Release Integrity #78 PASS, Pages #3606 PASS, real iPhone auto-update PASS; Worker deploy-status proxy commit 314bb8d8 verified by Release Integrity #79 and Pages #3607."
+    "lastSafeRelease": "V0.4.31",
+    "lastSafeCommit": "f7bdd2b3c7dc8e1694c5e6a78765ad09fbc49908",
+    "resumeInstruction": "V0.4.31 is the safe base. Gen8–Gen16 remain frozen; Trade/Forward OFF. Preserve server-backed deploy status and automatic published-version reload.",
+    "verifiedThrough": "V0.4.31: Release Integrity #80 PASS; Pages #3608 PASS; user confirmed untouched real-client transition where Updating flashed, V0.4.31 loaded automatically, then Success ✓."
   }
 }
