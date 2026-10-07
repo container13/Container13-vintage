@@ -16,12 +16,12 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PENDING_V0.4.25_REPO_READBACK",
+    "releaseIntegrity": "PASS_V0.4.25_REPO",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
     "completed": "V0.4.25 compacts the login gate, removes redundant password instruction text, and limits visible GitHub Actions state to Queued / Waiting / Building / Success / Failed. V0.4.24 iPhone top-scroll guard is preserved.",
-    "next": "Repo readback V0.4.25, then wait for live deploy. No manual diagnostic transport required.",
+    "next": "Wait for V0.4.25 live deploy. Then normal use can verify the compact login and simple Actions labels; no diagnostic screenshot/copy is required.",
     "blocked": false
   },
   "bootstrap": {
@@ -55,12 +55,12 @@
       {
         "id": 4,
         "task": "Repo readback and verify frozen research unchanged",
-        "status": "PENDING"
+        "status": "DONE"
       }
     ],
-    "lastSafeRelease": "V0.4.24",
+    "lastSafeRelease": "V0.4.25",
     "lastSafeCommit": "465ad28a74a722170a52f7d182a64baa9dbf7859",
-    "resumeInstruction": "Finish V0.4.25 repo readback only; do not alter frozen research.",
-    "verifiedThrough": "V0.4.24"
+    "resumeInstruction": "No interrupted work. Wait for V0.4.25 live deploy; user does not need to transport diagnostics manually.",
+    "verifiedThrough": "V0.4.25 repo readback PASS: compact login present; redundant password instruction absent; visible Actions labels limited to Queued/Waiting/Building/Success/Failed; V0.4.24 restoreLoginTop retained; no programmatic autofocus; Gen8–16 frozen; Handel/Forward OFF."
   }
 }
