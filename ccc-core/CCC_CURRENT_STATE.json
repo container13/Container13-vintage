@@ -6,10 +6,10 @@
   "appRoot": "ccc-core/",
   "status": "ACTIVE",
   "release": {
-    "currentVerified": "2.10.176",
-    "previousVerified": "2.10.170",
-    "candidate": "2.10.178",
-    "integrity": "PENDING_RUNTIME_VERIFICATION"
+    "currentVerified": "2.10.180",
+    "previousVerified": "2.10.176",
+    "candidate": null,
+    "integrity": "PASS_USER_IPHONE_PINCH_ZOOM"
   },
   "rules": {
     "master": "CCC_MASTER_RULES.md",
@@ -22,46 +22,20 @@
   },
   "pausedWork": {
     "vinted": {
-      "status": "ACTIVE_CANDIDATE",
+      "status": "ACTIVE",
       "note": "Vinted UI candidate 2.10.171: List It-inspired flow with CCC styling, 1–9 images, sv/en selector and right-side copy icons. AI/Worker intentionally not connected yet."
     }
   },
   "currentWork": {
-    "completed": "2.10.178 rebuilds Vinted mobile presentation: non-overlapping compact header, 3x3 photo grid on phone, compact camera/album controls, controls hidden at 9/9, tighter sections, Vinted asset cache stamps aligned to 2.10.178. 1-9 photo behavior from 177 retained.",
-    "next": "Verify 2.10.178 on real iPhone visually and functionally. Confirm header clean, 3x3 grid compact, add controls absent at 9/9, camera/album work when below 9.",
+    "completed": "2.10.180 central multi-touch pinch zoom block confirmed working by user on iPhone. Existing Vinted visual design retained.",
+    "next": "Continue CCC Vinted workflow from verified 2.10.180; assess remaining layout and functionality issues.",
     "blocked": false
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
-    "targetRelease": "2.10.178",
-    "plan": [
-      {
-        "id": 1,
-        "task": "Use screenshot evidence to identify Vinted mobile layout problems",
-        "status": "DONE"
-      },
-      {
-        "id": 2,
-        "task": "Rebuild compact header/photo grid/actions",
-        "status": "DONE"
-      },
-      {
-        "id": 3,
-        "task": "Align Vinted cache stamps",
-        "status": "DONE"
-      },
-      {
-        "id": 4,
-        "task": "GitHub exact readback",
-        "status": "IN_PROGRESS"
-      },
-      {
-        "id": 5,
-        "task": "Real iPhone verify Vinted layout/photo flow",
-        "status": "PENDING"
-      }
-    ],
-    "resumeInstruction": "Verify 2.10.178 Vinted on real iPhone. Do not promote until layout and photo controls are confirmed."
+    "status": "IDLE",
+    "targetRelease": null,
+    "plan": [],
+    "resumeInstruction": "Start from verified 2.10.180. Pinch zoom is disabled on iPhone. Preserve Vinted styling and confirmed behaviors."
   },
-  "lastSafeRelease": "2.10.176"
+  "lastSafeRelease": "2.10.180"
 }
