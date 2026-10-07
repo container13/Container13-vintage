@@ -29,3 +29,14 @@ Container13 fungerar som första referensimplementation.
 - Destruktiva funktioner som Börja om hålls separata från Tillbaka.
 - Vision är pilotmodul för detta mönster; kommande moduler ska kunna följa samma princip.
 - Vid varje release ska `ccc-core/version.js` uppdateras och cache-bumpen i berörda modulfiler verifieras.
+
+## Permanent arbetshandbok från v2.10.170
+
+Innan CCC ändras ska följande läsas i ordning:
+
+1. `CCC_MASTER_RULES.md`
+2. `CCC_CURRENT_STATE.json`
+3. `CCC_RELEASE_CHECKLIST.md`
+4. `CCC_HANDOFF_CURRENT.md` vid ny chatt/överlämning.
+
+Grundprincip: verifiera faktisk source/runtime/storage/deploy-kedja före ändring. En commit är inte en verifierad release. CURRENT/PREVIOUS flyttas endast efter verifiering, och koduppdateringar rapporteras som ändrade filer בלבד.
