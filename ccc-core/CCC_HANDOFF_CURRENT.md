@@ -25,3 +25,11 @@ This file is the human-readable entry point for continuing CCC in a new chat.
 
 ## Core lesson
 Verify reality, not assumptions: inspect the actual source/runtime/storage/deploy chain before modifying it. A commit is not a release and source code is not proof of real-device behavior.
+
+
+## Verified continuation — 2026-10-08
+- Current verified release: **2.10.180**; previous verified baseline: **2.10.176**.
+- User confirmed on real iPhone that pinch zoom is gone after central multitouch prevention in `ccc-core/core.js`.
+- Keep pinch zoom disabled in CCC views. Preserve the improved Vinted-inspired layout; do not restore earlier cluttered layout.
+- `ccc-core/version.js` is the CCC version authority.
+- Work checkpoint is IDLE. Continue with Vinted workflow improvements from 2.10.180, after inspecting live source and verifying each change.
