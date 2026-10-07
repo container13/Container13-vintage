@@ -39,4 +39,4 @@ Innan CCC ändras ska följande läsas i ordning:
 3. `CCC_RELEASE_CHECKLIST.md`
 4. `CCC_HANDOFF_CURRENT.md` vid ny chatt/överlämning.
 
-Grundprincip: verifiera faktisk source/runtime/storage/deploy-kedja före ändring. En commit är inte en verifierad release. CURRENT/PREVIOUS flyttas endast efter verifiering, och koduppdateringar rapporteras som ändrade filer בלבד.
+Grundprincip: verifiera faktisk source/runtime/storage/deploy-kedja före ändring. En commit är inte en verifierad release. CURRENT/PREVIOUS flyttas endast efter verifiering, och koduppdateringar rapporteras som ändrade filer.
