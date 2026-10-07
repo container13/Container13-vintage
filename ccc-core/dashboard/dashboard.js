@@ -156,7 +156,24 @@ function showView(view){
   dashboardMain?.scrollTo?.({top:0,left:0,behavior:"instant"});
   imagesGrid?.scrollTo?.({top:0,left:0,behavior:"instant"});
 }
-moreBtn?.addEventListener("click",()=>showView("more"));
+function showDashboardRuntimeProbe(message){
+  let probe=document.getElementById("cccDashboardRuntimeProbe");
+  if(!probe){
+    probe=document.createElement("div");
+    probe.id="cccDashboardRuntimeProbe";
+    probe.setAttribute("role","status");
+    probe.style.cssText="position:fixed;top:max(8px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:2147483647;padding:9px 13px;border-radius:12px;background:#111;color:#fff;font:700 13px/1.2 system-ui;box-shadow:0 4px 18px rgba(0,0,0,.35);pointer-events:none";
+    document.body.appendChild(probe);
+  }
+  probe.textContent=message;
+  clearTimeout(showDashboardRuntimeProbe.timer);
+  showDashboardRuntimeProbe.timer=setTimeout(()=>probe.remove(),3500);
+}
+moreBtn?.addEventListener("click",()=>{
+  showDashboardRuntimeProbe("MER: klick mottaget");
+  showView("more");
+  requestAnimationFrame(()=>showDashboardRuntimeProbe(`MER: home hidden=${homeView.hidden} · more hidden=${moreView.hidden}`));
+});
 addImagesBtn?.addEventListener("click",()=>{ window.location.href="../vision/index.html"; });
 backBtn?.addEventListener("click",()=>showView("home"));
 backFromImagesBtn?.addEventListener("click",()=>showView("home"));
