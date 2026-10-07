@@ -1,0 +1,40 @@
+# PROJECT RELEASE CHECKLIST
+
+## Before change
+- [ ] Release standard, master rules and current state read.
+- [ ] Existing IN_PROGRESS/UNVERIFIED checkpoint handled.
+- [ ] Actual affected source/config inspected.
+- [ ] Competing/legacy implementations inventoried where relevant.
+- [ ] Risk classified LOW / MEDIUM / HIGH.
+- [ ] Rollback point known for MEDIUM/HIGH.
+
+## During change
+- [ ] Smallest coherent change.
+- [ ] One owner per behavior.
+- [ ] Retry/double tap/reload/resume is idempotent where relevant.
+- [ ] Persistent schema change has version/migration.
+- [ ] Navigation cannot accidentally destroy state.
+- [ ] State-changing actions have visible feedback.
+- [ ] No secrets committed.
+- [ ] Runtime change bumps single version source.
+
+## Static/readback
+- [ ] Syntax/structure checks PASS.
+- [ ] Required project files exist.
+- [ ] State JSON parses and release fields are coherent.
+- [ ] GitHub exact readback PASS.
+- [ ] Changed files only.
+
+## Runtime gates
+- [ ] LOW: static/readback sufficient unless behavior changed.
+- [ ] MEDIUM: deployed version + smoke test PASS.
+- [ ] HIGH: deploy + smoke + required real-device/human/domain gate PASS.
+- [ ] No silent failure observed.
+- [ ] Intended effect verified, not merely deployment.
+
+## Promotion
+- [ ] Candidate has passed all required gates.
+- [ ] Old CURRENT -> PREVIOUS.
+- [ ] Candidate -> CURRENT.
+- [ ] Checkpoint -> IDLE.
+- [ ] Current state records what was actually verified.
