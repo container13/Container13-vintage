@@ -208,3 +208,11 @@ body.locked .gate input{margin:6px 0 9px;padding:12px 13px}
 body.locked .gate .primary{padding:12px 16px}
 body.locked #loginMsg{min-height:18px;margin-top:6px;font-size:.85rem}
 @media (pointer:coarse) and (max-width:760px){body.locked .gate{padding-top:14px}body.locked .gate-card{padding:16px 18px}body.locked .gate-card .logo{width:56px;height:56px}}
+
+
+/* V0.4.26 · tiny activity indicator for GitHub deploy states. */
+body.locked #loginDeployStatus{display:flex;align-items:center;justify-content:center;gap:7px}
+.deploy-spinner{width:10px;height:10px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:linaDeploySpin .8s linear infinite}
+.deploy-spinner[hidden]{display:none}
+@keyframes linaDeploySpin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.deploy-spinner{animation-duration:1.8s}}
