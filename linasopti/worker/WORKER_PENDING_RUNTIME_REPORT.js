@@ -2578,6 +2578,23 @@ async function handleGen9Data(url, env, request) {
   return json({ok:errors.length===0,schema:'LINA-GEN9-RAW-DATA-1',workerDataRevision:'GEN9-DATA-01',requestedRange:[from,to],data,provenance,errors,adjustmentStatus:'PROVIDER_ADJUSTED_OHLC_REQUIRES_VERIFICATION',calendarVerified:false,corporateActionsVerified:false,researchStarted:false,tradeEnabled:false},errors.length?502:200,request);
 }
 
+async function handleDeployStatus(request) {
+  if (request.method !== "GET") return json({ok:false,status:"UNKNOWN"},405,request);
+  try {
+    const api = "https://api.github.com/repos/container13/Container13-vintage/actions/runs?branch=ccc-demo-public-test&per_page=20";
+    const r = await fetch(api,{headers:{"Accept":"application/vnd.github+json","User-Agent":"Linas-Opti-Deploy-Status"},cache:"no-store"});
+    if (!r.ok) throw Error("status");
+    const runs=(await r.json()).workflow_runs||[];
+    const pages=runs.find(x=>x.name==="pages build and deployment");
+    const integrity=runs.find(x=>x.name==="Lina Release Integrity");
+    const active=[pages,integrity].filter(Boolean).some(x=>x.status!=="completed");
+    const failed=[pages,integrity].filter(Boolean).some(x=>x.status==="completed"&&!["success","cancelled","skipped"].includes(x.conclusion));
+    return json({ok:true,status:active?"BUILDING":failed?"FAILED":"SUCCESS"},200,request);
+  } catch (_) {
+    return json({ok:false,status:"UNKNOWN"},200,request);
+  }
+}
+
 export default {
 
   async fetch(request, env) {
@@ -2599,6 +2616,8 @@ export default {
     const preUrl = new URL(request.url);
 
 
+
+    if (preUrl.pathname === "/deploy-status") return handleDeployStatus(request);
 
     if (preUrl.pathname === "/auth-check") {
 
