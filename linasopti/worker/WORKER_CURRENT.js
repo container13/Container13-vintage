@@ -2578,14 +2578,19 @@ async function handleGen9Data(url, env, request) {
   return json({ok:errors.length===0,schema:'LINA-GEN9-RAW-DATA-1',workerDataRevision:'GEN9-DATA-01',requestedRange:[from,to],data,provenance,errors,adjustmentStatus:'PROVIDER_ADJUSTED_OHLC_REQUIRES_VERIFICATION',calendarVerified:false,corporateActionsVerified:false,researchStarted:false,tradeEnabled:false},errors.length?502:200,request);
 }
 
-// deploy-status-relevant-chain-v3
+// deploy-status-relevant-chain-v4
 async function handleDeployStatus(request) {
   if (request.method !== "GET") return json({ok:false,status:"UNKNOWN"},405,request);
   try {
     const headers={"Accept":"application/vnd.github+json","User-Agent":"Linas-Opti-Deploy-Status"};
-    const runsRes=await fetch("https://api.github.com/repos/container13/Container13-vintage/actions/runs?branch=ccc-demo-public-test&per_page=50",{headers,cache:"no-store"});
-    if(!runsRes.ok)throw Error("status");
-    const runs=(await runsRes.json()).workflow_runs||[];
+    const [branchRes,runsRes]=await Promise.all([
+      fetch("https://api.github.com/repos/container13/Container13-vintage/branches/ccc-demo-public-test",{headers,cache:"no-store"}),
+      fetch("https://api.github.com/repos/container13/Container13-vintage/actions/runs?branch=ccc-demo-public-test&per_page=50",{headers,cache:"no-store"})
+    ]);
+    if(!branchRes.ok||!runsRes.ok)throw Error("status");
+    const branch=await branchRes.json(),runs=(await runsRes.json()).workflow_runs||[];
+    const head=branch?.commit||{},headSha=head?.sha||null,headMsg=head?.commit?.message||"";
+    const deployRelevant=!headMsg.startsWith("Lina state:")&&!headMsg.startsWith("Lina checkpoint:")&&!headMsg.startsWith("Promote verified Lina Worker archive");
     const relevant=runs.filter(x=>x.name==="pages build and deployment"||x.name==="Lina Release Integrity");
     if(!relevant.length)return json({ok:true,status:"UNKNOWN"},200,request);
     const groups=new Map();
@@ -2597,6 +2602,9 @@ async function handleDeployStatus(request) {
       groups.set(run.head_sha,g);
     }
     const chains=[...groups.values()].sort((a,b)=>b.created-a.created);
+    if(headSha&&deployRelevant&&!groups.has(headSha)){
+      return json({ok:true,status:"COMMIT",headSha,pages:null,integrity:null},200,request);
+    }
     const active=chains.find(g=>g.runs.some(x=>x.status!=="completed"));
     const chain=active||chains[0];
     if(!chain)return json({ok:true,status:"UNKNOWN"},200,request);
