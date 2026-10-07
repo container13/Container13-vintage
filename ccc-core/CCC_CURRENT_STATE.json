@@ -8,7 +8,7 @@
   "release": {
     "currentVerified": "2.10.170",
     "previousVerified": "2.10.169",
-    "candidate": "2.10.172",
+    "candidate": "2.10.173",
     "integrity": "PENDING_RUNTIME_VERIFICATION"
   },
   "rules": {
@@ -27,38 +27,38 @@
     }
   },
   "currentWork": {
-    "completed": "2.10.171 reached live but failed real-iPhone Dashboard > Mer click. Root cause: Core press-delay captured the button before Dashboard's view handler. 2.10.172 removes press-delay ownership from More.",
-    "next": "Verify 2.10.172 live on real iPhone: Dashboard > Mer opens, then Vinted opens.",
+    "completed": "2.10.173 adds a Core-level 2-second watcher that fetches only ccc-core/version.js with no-store/cache-bust while the app is visible; pauses in background. Includes the pending 2.10.172 More-click fix.",
+    "next": "Verify 2.10.173 live on real iPhone: Dashboard > Mer works, Vinted opens, and displayed CCC version can update without manual refresh.",
     "blocked": false
   },
   "workCheckpoint": {
     "status": "IN_PROGRESS",
-    "targetRelease": "2.10.172",
+    "targetRelease": "2.10.173",
     "goal": "Verify first List It-inspired CCC Vinted UI candidate before connecting AI.",
     "plan": [
       {
         "id": 1,
-        "task": "Reproduce/trace 2.10.171 Mer regression",
+        "task": "Fix Dashboard > Mer ownership regression from 2.10.171",
         "status": "DONE"
       },
       {
         "id": 2,
-        "task": "Remove Core press-delay ownership from Dashboard More",
+        "task": "Add lightweight version.js watcher every 2 seconds while visible",
         "status": "DONE"
       },
       {
         "id": 3,
-        "task": "GitHub readback/static verification",
+        "task": "GitHub exact readback/static verification",
         "status": "IN_PROGRESS"
       },
       {
         "id": 4,
-        "task": "Real iPhone verify Mer then Vinted",
+        "task": "Real iPhone verify Mer, Vinted and live version display",
         "status": "PENDING"
       }
     ],
     "lastSafeRelease": "2.10.170",
-    "resumeInstruction": "Verify 2.10.172 on real iPhone. Do not promote until Dashboard > Mer and Mer > Vinted both work.",
+    "resumeInstruction": "Verify 2.10.173 on real iPhone. Do not promote until Mer, Vinted and version watcher behavior are confirmed.",
     "verifiedThrough": "2.10.170 live on real iPhone"
   }
 }
