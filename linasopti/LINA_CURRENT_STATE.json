@@ -21,7 +21,7 @@
   },
   "currentWork": {
     "completed": "V0.4.23 removes the user-as-transport test flow: automatic verified support snapshot runs after bootstrap, and status-order no longer moves generation status ahead of Dashboard.",
-    "next": "Observe next real V0.4.23 startup; ChatGPT should inspect the automatically written LINA_AUTO_SUPPORT report in GitHub instead of asking the user to copy, export or screenshot diagnostics.",
+    "next": "V0.4.24 in progress: remove refresh-triggered programmatic login autofocus.",
     "blocked": false
   },
   "bootstrap": {
@@ -33,9 +33,9 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "IDLE",
-    "targetRelease": "V0.4.23",
-    "goal": "Remove user-as-transport support flow and keep historical generation status out of the dashboard action area.",
+    "status": "IN_PROGRESS",
+    "targetRelease": "V0.4.24",
+    "goal": "Fix real-iPhone refresh login jump by removing programmatic login-field autofocus while preserving the verified top-scroll guard for user-initiated focus.",
     "plan": [
       {
         "id": 1,
@@ -44,28 +44,28 @@
       },
       {
         "id": 2,
-        "task": "Make support report automatic after successful startup/login and keep Export as optional manual trigger",
-        "status": "DONE"
+        "task": "Remove programmatic login autofocus on locked startup/refresh",
+        "status": "NEXT"
       },
       {
         "id": 3,
-        "task": "Scope generation status ordering to research/generation views, never dashboard",
-        "status": "DONE"
+        "task": "Bump V0.4.24 version/cache/assets/release gate",
+        "status": "PENDING"
       },
       {
         "id": 4,
-        "task": "Bump V0.4.23 coherently and verify release gate/readback",
-        "status": "DONE"
+        "task": "Repo readback and verify frozen research unchanged",
+        "status": "PENDING"
       },
       {
         "id": 5,
-        "task": "Close checkpoint after verification",
-        "status": "DONE"
+        "task": "Close checkpoint",
+        "status": "PENDING"
       }
     ],
     "lastSafeRelease": "V0.4.23",
-    "lastSafeCommit": "4a648f3c19b984cae19b60176dac84557c458906",
-    "resumeInstruction": "No interrupted work. On next startup, inspect automatic GitHub support report directly.",
-    "verifiedThrough": "V0.4.23 repo readback PASS: version/cache/assets/gate aligned, Gen16 historical authorization preserved, auto-support hook and dashboard guard present."
+    "lastSafeCommit": "11b38d4af72a2647c81352f307704ee888d4c66f",
+    "resumeInstruction": "Resume first non-DONE step. Do not touch frozen research.",
+    "verifiedThrough": "V0.4.23 live on real iPhone; refresh login jump reproduced by user."
   }
 }
