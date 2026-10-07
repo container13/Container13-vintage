@@ -7,14 +7,13 @@ albumPicker.onchange=()=>{addFiles(albumPicker.files);albumPicker.value=""};
 document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{lang=b.dataset.lang;document.querySelectorAll("[data-lang]").forEach(x=>x.classList.toggle("active",x===b))});
 function makeRows(data){
   const f=data?.fields||{};
-  // CCC rule: never fill product details when the model reports uncertainty.
-  if(data?.confidence!=="Säker")return [];
+  // Vision reports overall confidence, not per-field certainty. Display only explicit non-unknown values as reviewable suggestions, never as verified facts.
   const labels=lang==="sv-SE"
     ? [["TITEL","title"],["BESKRIVNING","description"],["KATEGORI","category"],["MÄRKE","brand"],["STORLEK","size"],["FÄRG","color"],["SÄSONG","season"],["TILLVERKARE","manufacturer"]]
     : [["TITLE","title"],["DESCRIPTION","description"],["CATEGORY","category"],["BRAND","brand"],["SIZE","size"],["COLOUR","color"],["SEASON","season"],["MANUFACTURER","manufacturer"]];
   return labels.flatMap(([label,key])=>{
     const value=typeof f[key]==="string"?f[key].trim():"";
-    if(!value||/^(okänd|unknown|ej säker|not sure|n\/a|kontrollera)/i.test(value))return [];
+    if(!value||/\b(okänd|okänt|unknown|osäker|osäkert|uncertain|ej säker|not sure|n\/a|kontrollera|kan inte avgöra|cannot determine|möjligen|possibly)\b/i.test(value))return [];
     return [[label,value,"REVIEW"]];
   });
 }
@@ -33,7 +32,7 @@ analyze.onclick=async()=>{
       return;
     }
     renderFields(rows);result.hidden=false;
-    analysisStatus.textContent=lang==="sv-SE"?"AI-förslag – kontrollera varje uppgift före publicering.":"AI suggestions – verify each detail before publishing.";
+    analysisStatus.textContent=lang==="sv-SE"?"AI-förslag, inte verifierade fakta. Kontrollera varje uppgift före publicering.":"AI suggestions – verify each detail before publishing.";
     result.scrollIntoView({behavior:"smooth",block:"start"});
   }catch(e){analysisStatus.textContent="Analysen misslyckades: "+(e?.message||"Okänt fel");}
   finally{busy=false;analyze.textContent="Analysera bilder";draw();}
