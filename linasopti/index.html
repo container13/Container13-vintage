@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="sv"><head>
-  <!-- deploy-touch: V0.4.33 2026-10-07 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f4f7fb"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><title>Linas Opti · Clean Core</title><script src="version.js?v=0.4.33"></script><link rel="stylesheet" href="style.css?v=0.4.33"><script src="theme.js?v=0.4.33"></script><script>(async()=>{try{const u='version.js?release_check='+Date.now(),t=await (await fetch(u,{cache:'no-store'})).text(),m=t.match(/RELEASE='(V[^']+)'/),live=m&&m[1],loaded=window.LinaVersion?.release;if(live&&loaded&&live!==loaded){const k='lina_release_reload_'+live;if(sessionStorage.getItem(k)!=='1'){sessionStorage.setItem(k,'1');location.replace(location.pathname+'?release='+encodeURIComponent(live)+'&t='+Date.now()+location.hash)}}}catch(e){}})();</script></head>
+  <!-- deploy-touch: V0.4.34 2026-10-07 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f4f7fb"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><title>Linas Opti · Clean Core</title><script src="version.js?v=0.4.34"></script><link rel="stylesheet" href="style.css?v=0.4.34"><script src="theme.js?v=0.4.34"></script><script>(async()=>{try{const u='version.js?release_check='+Date.now(),t=await (await fetch(u,{cache:'no-store'})).text(),m=t.match(/RELEASE='(V[^']+)'/),live=m&&m[1],loaded=window.LinaVersion?.release;if(live&&loaded&&live!==loaded){const k='lina_release_reload_'+live;if(sessionStorage.getItem(k)!=='1'){sessionStorage.setItem(k,'1');location.replace(location.pathname+'?release='+encodeURIComponent(live)+'&t='+Date.now()+location.hash)}}}catch(e){}})();</script></head>
 <body class="locked">
 <!-- V0.4.34 multi-commit status probe: harmless client marker -->
 <div id="loginGate" class="gate"><form id="loginForm" class="gate-card"><button id="loginRefreshLina" type="button" aria-label="Uppdatera Lina till senaste version" title="Uppdatera Lina" style="appearance:none;border:0;background:transparent;padding:0;cursor:pointer"><img src="lina-circle.png" alt="Uppdatera Lina" class="logo"></button><h1>Linas Opti</h1><div class="version">Clean Core · <span data-lina-version>—</span></div><div id="loginDeployStatus" class="login-msg" aria-live="polite"><span id="loginDeploySpinner" class="deploy-spinner" aria-hidden="true"></span><span id="loginDeployText">Waiting</span></div><input id="loginCode" name="lina_one_time_code_0470" type="password" inputmode="text" autocomplete="one-time-code" autocapitalize="off" autocorrect="off" spellcheck="false" value="" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" placeholder="Lösenkod"><button id="loginEnter" class="primary" type="submit">Öppna Linas Opti</button><div id="loginMsg" class="login-msg" aria-live="polite"></div></form></div>
@@ -86,7 +86,7 @@
     }
   });
 
-  // V0.4.33 measured iOS focus-scroll fix: login is top-anchored at scrollY=0.
+  // V0.4.34 measured iOS focus-scroll fix: login is top-anchored at scrollY=0.
   // Real-device trace proved Safari had already moved the document to scrollY=92 before input-sync.
   // Neutralize only that document scroll; do not alter card geometry, viewport height or positioning mode.
   function restoreLoginTop(){
@@ -104,7 +104,7 @@
     setTimeout(restoreLoginTop,100);
   });
 
-  // V0.4.33 diagnostics only: capture real iOS geometry around the first typed character without changing layout.
+  // V0.4.34 diagnostics only: capture real iOS geometry around the first typed character without changing layout.
   let firstInputTraceDone=false;
   function captureLoginGeometry(stage){
     const card=form.getBoundingClientRect(),field=input.getBoundingClientRect();
@@ -117,7 +117,7 @@
     requestAnimationFrame(()=>trace.push(captureLoginGeometry('input-raf')));
     setTimeout(()=>{
       trace.push(captureLoginGeometry('input-100ms'));
-      const report={schema:'LINA-LOGIN-FIRST-INPUT-TRACE-1',version:'V0.4.33',trace,capturedAt:new Date().toISOString()}; sessionStorage.setItem('lina_login_first_input_trace_v0415',JSON.stringify(report)); sessionStorage.setItem('lina_login_trace_pending_v0415',JSON.stringify(report));
+      const report={schema:'LINA-LOGIN-FIRST-INPUT-TRACE-1',version:'V0.4.34',trace,capturedAt:new Date().toISOString()}; sessionStorage.setItem('lina_login_first_input_trace_v0415',JSON.stringify(report)); sessionStorage.setItem('lina_login_trace_pending_v0415',JSON.stringify(report));
     },100);
   });
 
@@ -170,93 +170,93 @@
   if(sessionStorage.getItem('linasopti_unlocked')==='1')open();
 })();
 </script>
-<script defer src="state.js?v=0.4.33"></script>
-<script defer src="api.js?v=0.4.33"></script>
-<script defer src="router.js?v=0.4.33"></script>
-<script defer src="g2-engine.js?v=0.4.33"></script>
-<script defer src="g2.js?v=0.4.33"></script>
-<script defer src="broker-gate-engine.js?v=0.4.33"></script>
-<script defer src="broker-gate.js?v=0.4.33"></script>
-<script defer src="g2-forward-engine.js?v=0.4.33"></script>
-<script defer src="g2-forward.js?v=0.4.33"></script>
-<script defer src="archive-data.js?v=0.4.33"></script>
-<script defer src="archive.js?v=0.4.33"></script>
-<script defer src="g3-engine.js?v=0.4.33"></script>
-<script defer src="g3.js?v=0.4.33"></script>
-<script defer src="g3-forward-engine.js?v=0.4.33"></script>
-<script defer src="g3-forward.js?v=0.4.33"></script>
-<script defer src="g4-engine.js?v=0.4.33"></script>
-<script defer src="g4.js?v=0.4.33"></script>
-<script defer src="g5-engine.js?v=0.4.33"></script>
-<script defer src="g5.js?v=0.4.33"></script>
-<script defer src="g6-engine.js?v=0.4.33"></script>
-<script defer src="g6.js?v=0.4.33"></script>
-<script defer src="forward-center.js?v=0.4.33"></script>
-<script defer src="github-sync.js?v=0.4.33"></script>
-<script defer src="evidence-sync.js?v=0.4.33"></script>
-<script src="generation-state-recovery.js?v=0.4.33"></script>
-<script defer src="export-status.js?v=0.4.33"></script>
-<script defer src="screenshot.js?v=0.4.33"></script>
-<script defer src="g7-g12-data.js?v=0.4.33"></script>
-<script defer src="g7-g12-engine.js?v=0.4.33"></script>
-<script defer src="g7-g12.js?v=0.4.33"></script>
-<script defer src="gen2-engine.js?v=0.4.33"></script>
-<script defer src="gen2-lab.js?v=0.4.33"></script>
-<script defer src="gen3-engine.js?v=0.4.33"></script>
-<script defer src="gen3.js?v=0.4.33"></script>
-<script defer src="gen4-engine.js?v=0.4.33"></script>
-<script defer src="gen4.js?v=0.4.33"></script>
-<script defer src="gen5-generation-engine.js?v=0.4.33"></script>
-<script defer src="gen6-generation-engine.js?v=0.4.33"></script>
-<script defer src="gen7-generation-engine.js?v=0.4.33"></script>
-<script defer src="gen8-generation-engine.js?v=0.4.33"></script>
-<script defer src="gen9-generation-engine.js?v=0.4.33"></script>
-<script defer src="gen9-workflow.js?v=0.4.33"></script>
-<script defer src="gen9-data-check.js?v=0.4.33"></script><script defer src="gen9-raw-compare.js?v=0.4.33"></script><script defer src="gen9-raw.js?v=0.4.33"></script><script defer src="gen9-adjustment-diagnostic.js?v=0.4.33"></script>
-<script defer src="gen10-generation-engine.js?v=0.4.33"></script>
-<script defer src="gen10-workflow-core.js?v=0.4.33"></script>
-<script defer src="gen10-workflow-data.js?v=0.4.33"></script>
-<script defer src="gen10-research.js?v=0.4.33"></script>
-<script defer src="gen10-workflow.js?v=0.4.33"></script>
-<script defer src="gen11-generation-engine.js?v=0.4.33"></script>
-<script defer src="gen11-preflight.js?v=0.4.33"></script>
-<script defer src="gen11-workflow-core.js?v=0.4.33"></script>
-<script defer src="gen11-workflow-data.js?v=0.4.33"></script>
-<script defer src="gen11-research.js?v=0.4.33"></script>
-<script defer src="gen11-workflow.js?v=0.4.33"></script>
-<script defer src="generation-engine.js?v=0.4.33"></script>
-<script defer src="gen12-generation-engine.js?v=0.4.33"></script>
-<script defer src="gen12-preflight.js?v=0.4.33"></script>
-<script defer src="gen12-workflow-core.js?v=0.4.33"></script>
-<script defer src="gen12-workflow-data.js?v=0.4.33"></script>
-<script defer src="gen12-research.js?v=0.4.33"></script>
-<script defer src="gen12-workflow.js?v=0.4.33"></script>
-<script defer src="gen13-generation-engine.js?v=0.4.33"></script>
-<script defer src="gen13-preflight.js?v=0.4.33"></script>
-<script defer src="gen13-workflow-core.js?v=0.4.33"></script>
-<script defer src="gen13-workflow-data.js?v=0.4.33"></script>
-<script defer src="gen13-research.js?v=0.4.33"></script>
-<script defer src="gen13-workflow.js?v=0.4.33"></script>
-<script defer src="gen14-generation-engine.js?v=0.4.33"></script>
-<script defer src="gen14-preflight.js?v=0.4.33"></script>
-<script defer src="gen14-workflow-core.js?v=0.4.33"></script>
-<script defer src="gen14-workflow-data.js?v=0.4.33"></script>
-<script defer src="gen14-research.js?v=0.4.33"></script>
-<script defer src="gen14-workflow.js?v=0.4.33"></script>
-<script defer src="status-order.js?v=0.4.33"></script>
-<script defer src="gen15-generation-engine.js?v=0.4.33"></script>
-<script defer src="gen15-preflight.js?v=0.4.33"></script>
-<script defer src="gen15-workflow-core.js?v=0.4.33"></script>
-<script defer src="gen15-workflow-data.js?v=0.4.33"></script>
-<script defer src="gen15-research.js?v=0.4.33"></script>
-<script defer src="gen15-workflow.js?v=0.4.33"></script>
-<script defer src="gen16-generation-engine.js?v=0.4.33"></script>
-<script defer src="gen16-workflow-core.js?v=0.4.33"></script>
-<script defer src="gen16-workflow-data.js?v=0.4.33"></script>
-<script defer src="gen16-research.js?v=0.4.33"></script>
-<script defer src="gen16-workflow.js?v=0.4.33"></script>
+<script defer src="state.js?v=0.4.34"></script>
+<script defer src="api.js?v=0.4.34"></script>
+<script defer src="router.js?v=0.4.34"></script>
+<script defer src="g2-engine.js?v=0.4.34"></script>
+<script defer src="g2.js?v=0.4.34"></script>
+<script defer src="broker-gate-engine.js?v=0.4.34"></script>
+<script defer src="broker-gate.js?v=0.4.34"></script>
+<script defer src="g2-forward-engine.js?v=0.4.34"></script>
+<script defer src="g2-forward.js?v=0.4.34"></script>
+<script defer src="archive-data.js?v=0.4.34"></script>
+<script defer src="archive.js?v=0.4.34"></script>
+<script defer src="g3-engine.js?v=0.4.34"></script>
+<script defer src="g3.js?v=0.4.34"></script>
+<script defer src="g3-forward-engine.js?v=0.4.34"></script>
+<script defer src="g3-forward.js?v=0.4.34"></script>
+<script defer src="g4-engine.js?v=0.4.34"></script>
+<script defer src="g4.js?v=0.4.34"></script>
+<script defer src="g5-engine.js?v=0.4.34"></script>
+<script defer src="g5.js?v=0.4.34"></script>
+<script defer src="g6-engine.js?v=0.4.34"></script>
+<script defer src="g6.js?v=0.4.34"></script>
+<script defer src="forward-center.js?v=0.4.34"></script>
+<script defer src="github-sync.js?v=0.4.34"></script>
+<script defer src="evidence-sync.js?v=0.4.34"></script>
+<script src="generation-state-recovery.js?v=0.4.34"></script>
+<script defer src="export-status.js?v=0.4.34"></script>
+<script defer src="screenshot.js?v=0.4.34"></script>
+<script defer src="g7-g12-data.js?v=0.4.34"></script>
+<script defer src="g7-g12-engine.js?v=0.4.34"></script>
+<script defer src="g7-g12.js?v=0.4.34"></script>
+<script defer src="gen2-engine.js?v=0.4.34"></script>
+<script defer src="gen2-lab.js?v=0.4.34"></script>
+<script defer src="gen3-engine.js?v=0.4.34"></script>
+<script defer src="gen3.js?v=0.4.34"></script>
+<script defer src="gen4-engine.js?v=0.4.34"></script>
+<script defer src="gen4.js?v=0.4.34"></script>
+<script defer src="gen5-generation-engine.js?v=0.4.34"></script>
+<script defer src="gen6-generation-engine.js?v=0.4.34"></script>
+<script defer src="gen7-generation-engine.js?v=0.4.34"></script>
+<script defer src="gen8-generation-engine.js?v=0.4.34"></script>
+<script defer src="gen9-generation-engine.js?v=0.4.34"></script>
+<script defer src="gen9-workflow.js?v=0.4.34"></script>
+<script defer src="gen9-data-check.js?v=0.4.34"></script><script defer src="gen9-raw-compare.js?v=0.4.34"></script><script defer src="gen9-raw.js?v=0.4.34"></script><script defer src="gen9-adjustment-diagnostic.js?v=0.4.34"></script>
+<script defer src="gen10-generation-engine.js?v=0.4.34"></script>
+<script defer src="gen10-workflow-core.js?v=0.4.34"></script>
+<script defer src="gen10-workflow-data.js?v=0.4.34"></script>
+<script defer src="gen10-research.js?v=0.4.34"></script>
+<script defer src="gen10-workflow.js?v=0.4.34"></script>
+<script defer src="gen11-generation-engine.js?v=0.4.34"></script>
+<script defer src="gen11-preflight.js?v=0.4.34"></script>
+<script defer src="gen11-workflow-core.js?v=0.4.34"></script>
+<script defer src="gen11-workflow-data.js?v=0.4.34"></script>
+<script defer src="gen11-research.js?v=0.4.34"></script>
+<script defer src="gen11-workflow.js?v=0.4.34"></script>
+<script defer src="generation-engine.js?v=0.4.34"></script>
+<script defer src="gen12-generation-engine.js?v=0.4.34"></script>
+<script defer src="gen12-preflight.js?v=0.4.34"></script>
+<script defer src="gen12-workflow-core.js?v=0.4.34"></script>
+<script defer src="gen12-workflow-data.js?v=0.4.34"></script>
+<script defer src="gen12-research.js?v=0.4.34"></script>
+<script defer src="gen12-workflow.js?v=0.4.34"></script>
+<script defer src="gen13-generation-engine.js?v=0.4.34"></script>
+<script defer src="gen13-preflight.js?v=0.4.34"></script>
+<script defer src="gen13-workflow-core.js?v=0.4.34"></script>
+<script defer src="gen13-workflow-data.js?v=0.4.34"></script>
+<script defer src="gen13-research.js?v=0.4.34"></script>
+<script defer src="gen13-workflow.js?v=0.4.34"></script>
+<script defer src="gen14-generation-engine.js?v=0.4.34"></script>
+<script defer src="gen14-preflight.js?v=0.4.34"></script>
+<script defer src="gen14-workflow-core.js?v=0.4.34"></script>
+<script defer src="gen14-workflow-data.js?v=0.4.34"></script>
+<script defer src="gen14-research.js?v=0.4.34"></script>
+<script defer src="gen14-workflow.js?v=0.4.34"></script>
+<script defer src="status-order.js?v=0.4.34"></script>
+<script defer src="gen15-generation-engine.js?v=0.4.34"></script>
+<script defer src="gen15-preflight.js?v=0.4.34"></script>
+<script defer src="gen15-workflow-core.js?v=0.4.34"></script>
+<script defer src="gen15-workflow-data.js?v=0.4.34"></script>
+<script defer src="gen15-research.js?v=0.4.34"></script>
+<script defer src="gen15-workflow.js?v=0.4.34"></script>
+<script defer src="gen16-generation-engine.js?v=0.4.34"></script>
+<script defer src="gen16-workflow-core.js?v=0.4.34"></script>
+<script defer src="gen16-workflow-data.js?v=0.4.34"></script>
+<script defer src="gen16-research.js?v=0.4.34"></script>
+<script defer src="gen16-workflow.js?v=0.4.34"></script>
 
-<script defer src="gen16-preflight.js?v=0.4.33"></script>
-<script defer src="release-gate.js?v=0.4.33"></script>
-<script defer src="app.js?v=0.4.33"></script>
+<script defer src="gen16-preflight.js?v=0.4.34"></script>
+<script defer src="release-gate.js?v=0.4.34"></script>
+<script defer src="app.js?v=0.4.34"></script>
 </body></html>
