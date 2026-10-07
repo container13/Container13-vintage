@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.25",
+  "release": "V0.4.26",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -16,12 +16,12 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PASS_V0.4.25_REPO",
+    "releaseIntegrity": "PASS_V0.4.26_REPO",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
-    "completed": "V0.4.25 compacts the login gate, removes redundant password instruction text, and limits visible GitHub Actions state to Queued / Waiting / Building / Success / Failed. V0.4.24 iPhone top-scroll guard is preserved.",
-    "next": "Wait for V0.4.25 live deploy. Then normal use can verify the compact login and simple Actions labels; no diagnostic screenshot/copy is required.",
+    "completed": "V0.4.26 corrects login deploy status: cancelled/skipped/neutral superseded Pages runs no longer appear as Failed, transient API errors show Waiting, and Queued/Waiting/Building show a small activity spinner. V0.4.24 iPhone top-scroll behavior remains preserved.",
+    "next": "Wait for V0.4.26 live deploy. No manual diagnostic transport is required.",
     "blocked": false
   },
   "bootstrap": {
@@ -34,22 +34,22 @@
   },
   "workCheckpoint": {
     "status": "IDLE",
-    "targetRelease": "V0.4.25",
-    "goal": "Compact login UI and reduce visible Actions status to simple human-facing states without touching V0.4.24 iPhone login behavior or frozen research.",
+    "targetRelease": "V0.4.26",
+    "goal": "Accurate simple deploy status plus activity indicator without touching frozen research or iPhone login behavior.",
     "plan": [
       {
         "id": 1,
-        "task": "Compact login gate and remove redundant instruction",
+        "task": "Correct cancelled/superseded deploy handling",
         "status": "DONE"
       },
       {
         "id": 2,
-        "task": "Simplify Actions status to Queued / Waiting / Building / Success / Failed",
+        "task": "Add activity spinner for Queued / Waiting / Building",
         "status": "DONE"
       },
       {
         "id": 3,
-        "task": "Bump V0.4.25 version/cache/release gate",
+        "task": "Bump V0.4.26 version/cache/release gate",
         "status": "DONE"
       },
       {
@@ -58,9 +58,9 @@
         "status": "DONE"
       }
     ],
-    "lastSafeRelease": "V0.4.25",
-    "lastSafeCommit": "465ad28a74a722170a52f7d182a64baa9dbf7859",
-    "resumeInstruction": "No interrupted work. Wait for V0.4.25 live deploy; user does not need to transport diagnostics manually.",
-    "verifiedThrough": "V0.4.25 repo readback PASS: compact login present; redundant password instruction absent; visible Actions labels limited to Queued/Waiting/Building/Success/Failed; V0.4.24 restoreLoginTop retained; no programmatic autofocus; Gen8–16 frozen; Handel/Forward OFF."
+    "lastSafeRelease": "V0.4.26",
+    "lastSafeCommit": "PENDING_FINAL_STATE_COMMIT",
+    "resumeInstruction": "No interrupted work. Wait for V0.4.26 live deploy; user does not need to transport diagnostics manually.",
+    "verifiedThrough": "V0.4.26 repo readback PASS: activity spinner present for working states; cancelled/skipped/neutral and transient API errors do not show false Failed; actual unsuccessful completed Pages run still shows Failed; V0.4.24 restoreLoginTop retained; Gen8–16 frozen; Handel/Forward OFF."
   }
 }
