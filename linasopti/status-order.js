@@ -6,6 +6,8 @@ function generationOf(el){
 }
 function apply(){
  const root=document.querySelector('#view');if(!root)return;
+ const route=window.LinaRouter?.current?.()||location.hash.replace(/^#/,'')||'dashboard';
+ if(route==='dashboard')return;
  const gens=[...root.children].filter(el=>generationOf(el)>=0).sort((a,b)=>generationOf(b)-generationOf(a));
  if(!gens.length)return;
  const top=gens[0];root.prepend(top);
