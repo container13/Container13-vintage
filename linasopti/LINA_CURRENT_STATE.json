@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.31",
+  "release": "V0.4.32",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -16,12 +16,12 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PASS_V0.4.31",
+    "releaseIntegrity": "PENDING_V0.4.32",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
-    "completed": "V0.4.31 PASS. Release Integrity #80 and Pages #3608 succeeded. Real client automatically detected the published release: Updating flashed, then V0.4.31 loaded and showed Success ✓ without manual refresh.",
-    "next": "Build V0.4.32 commit-aware deploy status; keep V0.4.31 as last safe release until verified.",
+    "completed": "V0.4.32 implementation written: server commit/queue/build detection plus login spinner mapping; V0.4.31 remains last verified safe release.",
+    "next": "Verify V0.4.32 repo readback, Release Integrity/Pages, then real iPhone status transition.",
     "blocked": false
   },
   "bootstrap": {
@@ -39,28 +39,28 @@
     "plan": [
       {
         "id": 1,
-        "task": "Verify Worker deploy-status proxy",
+        "task": "Extend server deploy-status with branch-head commit/queued detection",
         "status": "DONE"
       },
       {
         "id": 2,
-        "task": "Connect login status to Worker proxy",
+        "task": "Map COMMIT/QUEUED/BUILDING/FAILED/SUCCESS safely in login status",
         "status": "DONE"
       },
       {
         "id": 3,
-        "task": "Preserve 5-second published-version auto-reload",
+        "task": "Bump V0.4.32 version/cache/release gate without touching frozen research",
         "status": "DONE"
       },
       {
         "id": 4,
-        "task": "Verify Release Integrity, Pages and real-client behavior",
-        "status": "DONE"
+        "task": "Verify repo readback, Actions/Pages and real-client transition",
+        "status": "PENDING"
       }
     ],
     "lastSafeRelease": "V0.4.31",
     "lastSafeCommit": "f7bdd2b3c7dc8e1694c5e6a78765ad09fbc49908",
-    "resumeInstruction": "V0.4.31 is the safe base. Gen8–Gen16 remain frozen; Trade/Forward OFF. Preserve server-backed deploy status and automatic published-version reload.",
+    "resumeInstruction": "Verify V0.4.32 Actions/Pages and real-client status sequence. Gen8–Gen16 frozen; Trade/Forward OFF.",
     "verifiedThrough": "V0.4.31: Release Integrity #80 PASS; Pages #3608 PASS; user confirmed untouched real-client transition where Updating flashed, V0.4.31 loaded automatically, then Success ✓."
   }
 }
