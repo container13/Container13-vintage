@@ -8,7 +8,7 @@
   "release": {
     "currentVerified": "2.10.170",
     "previousVerified": "2.10.169",
-    "candidate": "2.10.173",
+    "candidate": "2.10.174",
     "integrity": "PENDING_RUNTIME_VERIFICATION"
   },
   "rules": {
@@ -27,38 +27,43 @@
     }
   },
   "currentWork": {
-    "completed": "2.10.173 adds a Core-level 2-second watcher that fetches only ccc-core/version.js with no-store/cache-bust while the app is visible; pauses in background. Includes the pending 2.10.172 More-click fix.",
-    "next": "Verify 2.10.173 live on real iPhone: Dashboard > Mer works, Vinted opens, and displayed CCC version can update without manual refresh.",
+    "completed": "2.10.173 failed real-iPhone Mer test. Source-chain inventory found Dashboard HTML still loaded dashboard.js?v=2.9.3, dashboard.css?v=2.9.3, core.js?v=2.10.132 and other stale cache stamps while version.js reported the new release. 2.10.174 aligns Dashboard runtime asset cache stamps.",
+    "next": "Verify 2.10.174 on real iPhone after the Dashboard page itself loads 174: Dashboard > Mer must open; then Mer > Vinted.",
     "blocked": false
   },
   "workCheckpoint": {
     "status": "IN_PROGRESS",
-    "targetRelease": "2.10.173",
+    "targetRelease": "2.10.174",
     "goal": "Verify first List It-inspired CCC Vinted UI candidate before connecting AI.",
     "plan": [
       {
         "id": 1,
-        "task": "Fix Dashboard > Mer ownership regression from 2.10.171",
+        "task": "STOP and inventory actual Dashboard runtime chain",
         "status": "DONE"
       },
       {
         "id": 2,
-        "task": "Add lightweight version.js watcher every 2 seconds while visible",
+        "task": "Identify stale Dashboard runtime asset cache stamps",
         "status": "DONE"
       },
       {
         "id": 3,
+        "task": "Align Dashboard JS/CSS/Core/PWA cache stamps to 2.10.174",
+        "status": "DONE"
+      },
+      {
+        "id": 4,
         "task": "GitHub exact readback/static verification",
         "status": "IN_PROGRESS"
       },
       {
-        "id": 4,
-        "task": "Real iPhone verify Mer, Vinted and live version display",
+        "id": 5,
+        "task": "Real iPhone verify Dashboard > Mer > Vinted",
         "status": "PENDING"
       }
     ],
     "lastSafeRelease": "2.10.170",
-    "resumeInstruction": "Verify 2.10.173 on real iPhone. Do not promote until Mer, Vinted and version watcher behavior are confirmed.",
+    "resumeInstruction": "Verify 2.10.174 on real iPhone. Version display alone is not runtime proof; test Dashboard > Mer > Vinted.",
     "verifiedThrough": "2.10.170 live on real iPhone"
   }
 }
