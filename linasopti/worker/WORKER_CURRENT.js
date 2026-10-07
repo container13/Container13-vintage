@@ -1293,11 +1293,13 @@ async function githubWriteForward(env,state,sha) {
 
 
 
+  const stateText=JSON.stringify(state,null,2)+"\n";
+  const stateSha256=await sha256Hex(stateText);
   const payload = {
 
     message:`Lina Forward state ${new Date().toISOString()}`,
 
-    content:b64encode(JSON.stringify(state,null,2)+"\n"),
+    content:b64encode(stateText),
 
     branch:cfg.branch
 
@@ -1919,6 +1921,7 @@ async function githubWriteAppState(env,state,sha) {
 
 
 
+  body.receipt=await verifyGithubBlobReceipt(cfg,cfg.path,stateSha256,body?.content?.sha||null);
   return body;
 
 }
@@ -2132,12 +2135,23 @@ async function handleEvidenceRead(request,env) {
   if(request.method!=="GET")return json({ok:false,error:"Method not allowed"},405,request);
   try{
     const url=new URL(request.url),name=safeEvidenceName(url.searchParams.get("name")),date=String(url.searchParams.get("date")||"");
-    if(!/^\d{4}-\d{2}-\d{2}$/.test(date))throw new Error("Ogiltigt evidence-datum");
-    const path=`linasopti/evidence/${date}/${name}`,cfg=githubConfig(env);
+    const cfg=githubConfig(env);let path="";
+    if(date){
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(date))throw new Error("Ogiltigt evidence-datum");
+      path=`linasopti/evidence/${date}/${name}`;
+    }else{
+      const treeApi=`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/git/trees/${encodeURIComponent(cfg.branch)}?recursive=1`;
+      const tr=await fetch(treeApi,{headers:githubHeaders(cfg)}),tree=await tr.json();
+      if(!tr.ok)throw new Error(tree?.message||`GitHub evidence tree HTTP ${tr.status}`);
+      const suffix="/"+name,matches=(tree?.tree||[]).filter(x=>x?.type==="blob"&&String(x.path||"").startsWith("linasopti/evidence/")&&String(x.path||"").endsWith(suffix));
+      if(matches.length===0)return json({ok:false,error:"Evidence saknas"},404,request);
+      if(matches.length!==1)throw new Error("Evidence-namn är tvetydigt över datum: "+name);
+      path=matches[0].path;
+    }
     const api=`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${path.split("/").map(encodeURIComponent).join("/")}?ref=${encodeURIComponent(cfg.branch)}`;
-    const r=await fetch(api,{headers:githubHeaders(cfg)}),body=await r.json();
-    if(r.status===404)return json({ok:false,error:"Evidence saknas"},404,request);
-    if(!r.ok)throw new Error(body?.message||`GitHub evidence read HTTP ${r.status}`);
+    const rr=await fetch(api,{headers:githubHeaders(cfg)}),body=await rr.json();
+    if(rr.status===404)return json({ok:false,error:"Evidence saknas"},404,request);
+    if(!rr.ok)throw new Error(body?.message||`GitHub evidence read HTTP ${rr.status}`);
     const br=await fetch(`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/git/blobs/${encodeURIComponent(body.sha)}`,{headers:githubHeaders(cfg)}),blob=await br.json();
     if(!br.ok)throw new Error(blob?.message||`GitHub evidence blob HTTP ${br.status}`);
     if(blob?.encoding!=="base64"||typeof blob?.content!=="string")throw new Error("Evidence blob saknar base64-innehåll");
@@ -2564,6 +2578,24 @@ async function handleGen9Data(url, env, request) {
   return json({ok:errors.length===0,schema:'LINA-GEN9-RAW-DATA-1',workerDataRevision:'GEN9-DATA-01',requestedRange:[from,to],data,provenance,errors,adjustmentStatus:'PROVIDER_ADJUSTED_OHLC_REQUIRES_VERIFICATION',calendarVerified:false,corporateActionsVerified:false,researchStarted:false,tradeEnabled:false},errors.length?502:200,request);
 }
 
+// deploy-status-auto-promote-v1
+async function handleDeployStatus(request) {
+  if (request.method !== "GET") return json({ok:false,status:"UNKNOWN"},405,request);
+  try {
+    const api = "https://api.github.com/repos/container13/Container13-vintage/actions/runs?branch=ccc-demo-public-test&per_page=20";
+    const r = await fetch(api,{headers:{"Accept":"application/vnd.github+json","User-Agent":"Linas-Opti-Deploy-Status"},cache:"no-store"});
+    if (!r.ok) throw Error("status");
+    const runs=(await r.json()).workflow_runs||[];
+    const pages=runs.find(x=>x.name==="pages build and deployment");
+    const integrity=runs.find(x=>x.name==="Lina Release Integrity");
+    const active=[pages,integrity].filter(Boolean).some(x=>x.status!=="completed");
+    const failed=[pages,integrity].filter(Boolean).some(x=>x.status==="completed"&&!["success","cancelled","skipped"].includes(x.conclusion));
+    return json({ok:true,status:active?"BUILDING":failed?"FAILED":"SUCCESS"},200,request);
+  } catch (_) {
+    return json({ok:false,status:"UNKNOWN"},200,request);
+  }
+}
+
 export default {
 
   async fetch(request, env) {
@@ -2585,6 +2617,8 @@ export default {
     const preUrl = new URL(request.url);
 
 
+
+    if (preUrl.pathname === "/deploy-status") return handleDeployStatus(request);
 
     if (preUrl.pathname === "/auth-check") {
 
