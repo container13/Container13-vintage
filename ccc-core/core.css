@@ -1935,3 +1935,11 @@ input,textarea,[contenteditable="true"],[contenteditable="plaintext-only"]{
   -webkit-user-drag:none!important;
 }
 html.ccc-image-viewer-open,html.ccc-image-viewer-open body{overflow:hidden!important}
+
+/* CCC v2.10.176 — hidden is authoritative for workspace views.
+   Must outrank older mobile #homeView display:grid!important rules. */
+.dashboard-view[hidden],
+.ccc-module-home[hidden],
+#homeView[hidden],
+#visionStartHome[hidden],
+#startView[hidden]{display:none!important}
