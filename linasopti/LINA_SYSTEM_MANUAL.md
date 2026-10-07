@@ -193,7 +193,19 @@ På sikt bör status hämtas via en verifierad server/Worker-väg om direkt klie
 13. Spara generell lärdom som regel och maskintest när möjligt.
 14. Först därefter nästa beroende steg.
 
-## 18. Det som inte får antas
+## 18. Korsprojektlärdomar från CCC
+
+Följande generella regler har återförts från CCC och gäller även Lina:
+
+- **STOP RULE:** om faktisk runtime/state motsäger planen eller en fix inte ändrar beteendet, stoppa patchandet. Inventera verklig source → runtime/storage → deploy → klient-kedja innan nästa ändring.
+- **ONE OWNER PER BEHAVIOR:** innan ny handler, syncväg, endpoint eller fix införs ska konkurrerande/legacy implementationer inventeras. En funktion ska ha en tydlig auktoritativ ägare.
+- **GENERAL IDEMPOTENCE:** retry, dubbeltryck, reload eller återupptagning får inte skapa dubbla writes, evidens, state transitions eller actions. Detta gäller utöver researchens immutable-idempotens.
+- **SCHEMA + MIGRATION:** permanent app/state-data som kan utvecklas ska ha explicit schema/version och avsiktlig migrering; persistenta identiteter får inte ändras genom versionsbump.
+- **NAVIGATION ≠ DESTRUCTION:** tillbaka/navigation får aldrig implicit rensa eller återställa pågående arbete. Reset/delete är separata explicita handlingar.
+- **GESTURE/EVENT INVENTORY:** vid UI-problem med touch/pointer/click/focus ska hela konkurrerande eventytan inventeras före patch; verklig klient är facit.
+- **CURRENT/PREVIOUS PROMOTION:** kandidat/PENDING blir CURRENT först efter obligatorisk runtime/verklig-klient-verifiering. Föregående verifierad CURRENT blir PREVIOUS först vid promotion; misslyckad kandidat får inte flytta rollbackpunkten.
+
+## 19. Det som inte får antas
 
 - Att grön deploy betyder fungerande klient.
 - Att GitHub-write betyder live.
