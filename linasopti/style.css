@@ -200,14 +200,14 @@ html[data-theme="dark"] button:disabled{color:#8391a5!important}
 
 /* V0.4.25 · compact login gate; human-facing Actions status only. */
 body.locked .gate-card{width:min(100%,350px);padding:20px 22px;border-radius:18px}
-body.locked .gate-card .logo{width:82px;height:82px}
+body.locked .gate-card .logo{width:82.82px;height:82.82px}
 body.locked .gate h1{margin:7px 0 1px;font-size:1.55rem}
 body.locked .gate .version{line-height:1.2}
 body.locked #loginDeployStatus{min-height:18px;margin:7px 0 2px;font-size:.82rem;font-weight:700}
 body.locked .gate input{margin:6px 0 9px;padding:12px 13px}
 body.locked .gate .primary{padding:12px 16px}
 body.locked #loginMsg{min-height:18px;margin-top:6px;font-size:.85rem}
-@media (pointer:coarse) and (max-width:760px){body.locked .gate{padding-top:14px}body.locked .gate-card{padding:16px 18px}body.locked .gate-card .logo{width:82px;height:82px}}
+@media (pointer:coarse) and (max-width:760px){body.locked .gate{padding-top:14px}body.locked .gate-card{padding:16px 18px}body.locked .gate-card .logo{width:82.82px;height:82.82px}}
 
 
 /* V0.4.26 · tiny activity indicator for GitHub deploy states. */
