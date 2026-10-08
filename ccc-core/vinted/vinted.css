@@ -83,3 +83,10 @@ button:disabled{opacity:.48;cursor:not-allowed}
 #listingLanguageNote.is-working::before{content:"";display:inline-block;width:12px;height:12px;margin-right:9px;border:2px solid var(--v-gold);border-right-color:transparent;border-radius:50%;animation:v-spin .7s linear infinite}
 @keyframes v-spin{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){.v-photo-action,.v-analyze,.v-copy,.v-edit,.v-tag-pill,.v-listing-tools button,.v-listing-language button,.v-tag-heading button,.v-tag-add button,.v-back{transition:none}.v-analyze.is-working::after,#listingLanguageNote.is-working::before{animation:none}}
+
+/* v2.10.192: keep listing modal within iPhone safe viewport */
+.v-listing-dialog{position:fixed;inset:0;margin:auto;max-height:min(88dvh,calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 32px));display:flex;flex-direction:column;overflow:hidden}
+.v-listing-dialog:not([open]){display:none}
+.v-listing-top,.v-listing-language,#listingLanguageNote,.v-listing-feedback{flex-shrink:0}
+.v-listing-body{flex:1;min-height:0;max-height:none;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+@media(max-width:600px){.v-listing-dialog{width:calc(100vw - 24px);max-height:min(84dvh,calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 28px));border-radius:18px}}
