@@ -96,7 +96,14 @@ export default {
       const schema = { type: "object", additionalProperties: false, required: ["title","description","details"], properties: { title:{type:"string"},description:{type:"string"},details:{type:"string"} } };
       const tone=["neutral","selling","max"].includes(body.style)?body.style:"selling";
       const recent=Array.isArray(body.recent)?body.recent.slice(-8).map(x=>String(x).slice(0,160)):[];
-      const instruction=rewrite?("Rewrite the reviewed clothing listing in "+(body.language==="en"?"English":"Swedish")+". Tone "+tone+": neutral is concise and factual, selling is attractive and natural, max is genuinely bold and creative with a strong distinctive title. Avoid generic slogans and repeated sentence openings. Never invent condition, fit, era, material, authenticity, rarity or measurements. Keep factual detail lines. Avoid wording from recent listings: "+JSON.stringify(recent)+". Return JSON only."):"Translate this reviewed Swedish vintage clothing listing into natural, clear English. Preserve all facts exactly, do not invent condition, era, material or measurements. Keep details as translated key-value lines. Return JSON only.";
+      const instruction=rewrite?(
+        "You are writing a secondhand clothing listing in "+(body.language==="en"?"English":"Swedish")+". Rewrite title AND description, not just swap a few words. Style="+tone+". "+
+        "NEUTRAL: plain factual headline and 1-2 restrained factual sentences, no hype. "+
+        "SELLING: distinctive searchable headline and a warm, engaging 2-3 sentence description; explain the appeal of the garment without generic praise. "+
+        "MAX: clearly more expressive editorial fashion voice: punchy original headline, an energetic hook and vivid but grounded description (3-4 sentences); create desirability through verified visual features and styling ideas framed as suggestions, never claims. The result MUST feel substantially different from neutral and selling, not a minor paraphrase. No fabricated rarity, quality, condition, fit, vintage age, provenance, measurements or other product facts. "+
+        "Avoid repeating the brand and color across sentences. Do not use the same sentence opening as recent listings. Avoid generic filler like timeless piece, perfect for every wardrobe, must-have, statement piece. "+
+        "Keep details exactly factual in key-value format, no extra details. Never invent facts. Recent listing openings to avoid: "+JSON.stringify(recent)+". Return JSON only."
+      ):"Translate this reviewed Swedish vintage clothing listing into natural, clear English. Preserve all facts exactly, do not invent condition, era, material or measurements. Keep details as translated key-value lines. Return JSON only.";
       const response = await fetch("https://api.openai.com/v1/responses", {
         method:"POST",headers:{"Authorization":"Bearer "+env.OPENAI_API_KEY,"Content-Type":"application/json"},
         body:JSON.stringify({model:env.OPENAI_MODEL||"gpt-5.6-terra",store:false,reasoning:{effort:"low"},
