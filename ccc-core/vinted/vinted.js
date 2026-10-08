@@ -69,7 +69,7 @@ analyze.onclick=async()=>{
     analysisStatus.textContent=lang==="sv-SE"?"AI-förslag, inte verifierade fakta. Kontrollera varje uppgift före publicering.":"AI suggestions – verify each detail before publishing.";
     requestAnimationFrame(()=>window.scrollTo({top:0,behavior:"instant"}));
   }catch(e){analysisStatus.textContent="Analysen misslyckades: "+(e?.message||"Okänt fel");}
-  finally{busy=false;analyze.classList.remove("is-working");analyze.textContent="Analysera bilder";draw();}
+  finally{busy=false;analyze.classList.remove("is-working");analyze.textContent="✦ Analysera och skapa annons";draw();}
 };
 addEventListener("pagehide",()=>items.forEach(item=>URL.revokeObjectURL(item.url)),{once:true});draw();
 
