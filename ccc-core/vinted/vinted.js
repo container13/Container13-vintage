@@ -196,23 +196,28 @@ let tagBank=DEFAULT_BANK.slice(),selectedTags=[],tagsInitialized=false;
 try{const saved=JSON.parse(localStorage.getItem("ccc-vinted-tags")||"null");if(Array.isArray(saved))tagBank=[...new Set([...tagBank,...saved])];}catch{}
 function suggestTags(){
  const p=listingParts(),v=(p.title+" "+p.description+" "+p.details).toLowerCase();
- const out=[];
- const add=(t)=>{if(!out.includes(t))out.push(t)};
- if(/\blee\b/.test(v))add("lee");
- if(/\blevi['’]?s\b/.test(v))add("levis");
- if(/\badidas\b/.test(v))add("adidas");
- if(/\bnike\b/.test(v))add("nike");
- if(/jeans|denim/.test(v)){add("denim");if(/jeans/.test(v))add("jeans")}
- if(/jacka|jacket/.test(v))add("jacka");
+ const en=listingLanguage==="en",out=[];
+ const add=(sv,english=sv)=>{const tag=en?english:sv;if(!out.includes(tag))out.push(tag)};
+ if(/\\blee\\b/.test(v))add("lee");
+ if(/\\blevi['’]?s\\b/.test(v))add("levis");
+ if(/\\badidas\\b/.test(v))add("adidas");
+ if(/\\bnike\\b/.test(v))add("nike");
+ if(/jeans|denim/.test(v)){add("jeans");add("denim");add("denimjeans")}
+ if(/jacka|jacket/.test(v))add("jacka","jacket");
  if(/hoodie|huvtröja/.test(v))add("hoodie");
- if(/skjorta|shirt/.test(v))add("skjorta");
- if(/ljusblå/.test(v))add("ljusblå");
- else if(/\bblå\b/.test(v))add("blå");
- if(/\bsvart\b/.test(v))add("svart");
- if(/\bvintage\b/.test(v))add("vintage");
- if(/\bretro\b/.test(v))add("retro");
- if(/\by2k\b/.test(v))add("y2k");
- return out.slice(0,8);
+ if(/skjorta|shirt/.test(v))add("skjorta","shirt");
+ if(/ljusblå|light blue/.test(v))add("ljusblå","lightblue");
+ else if(/\\bblå\\b|\\bblue\\b/.test(v))add("blå","blue");
+ if(/\\bsvart\\b|\\bblack\\b/.test(v))add("svart","black");
+ if(/\\bvintage\\b/.test(v))add("vintage");
+ if(/\\bretro\\b/.test(v))add("retro");
+ if(/\\by2k\\b/.test(v))add("y2k");
+ if(/raka ben|rak passform|straight legs|straight cut|straight fit/.test(v))add("rakajeans","straightlegjeans");
+ if(/uppvikta benslut|turned-up hems|turn up hem|cuffed hems/.test(v))add("uppviktabenslut","cuffedjeans");
+ if(/femfick|five-pocket/.test(v))add("femfickor","fivepocketjeans");
+ if(/tvättad|washed|blekt|faded/.test(v))add("tvättaddenim","washeddenim");
+ if(/\\bjeans\\b/.test(v)){add("jeansstil","denimstyle");add("jeansmode","denimfashion")}
+ return out.slice(0,12);
 }
 const cleanTag=s=>s.trim().replace(/^#+/,"").toLowerCase().replace(/[^a-z0-9åäö_]/g,"");
 const listingDialog=document.getElementById("listingDialog"),listingPreview=document.getElementById("listingPreview");
@@ -298,10 +303,10 @@ async function ensureTranslation(){
 }
 
 document.querySelectorAll("[data-listing-style]").forEach(b=>b.onclick=()=>{listingStyle=b.dataset.listingStyle;document.querySelectorAll("[data-listing-style]").forEach(x=>{x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b));});ensureRewrite();});
-document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;document.querySelectorAll("[data-listing-lang]").forEach(x=>{x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b));});ensureRewrite();});
+document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;refreshAiTagSuggestions();renderTags();document.querySelectorAll("[data-listing-lang]").forEach(x=>{x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b));});ensureRewrite();});
 copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
-  refreshAiTagSuggestions();selectedTags=[...new Set(tagBank.map(cleanTag).filter(Boolean))];tagsInitialized=true;aiTagToggle.checked=false;
+  refreshAiTagSuggestions();selectedTags=[...aiSuggestedTags];tagsInitialized=true;aiTagToggle.checked=true;
   rewrittenListing=null;rewriteKey="";renderTags();copyListingStatus.textContent="";
   listingDialog.showModal();document.querySelector(".v-listing-body").scrollTop=0;listingDialog.scrollTop=0;ensureRewrite();
 };
