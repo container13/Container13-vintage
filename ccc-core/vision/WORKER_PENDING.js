@@ -97,20 +97,21 @@ export default {
       const tone=["neutral","selling","max"].includes(body.style)?body.style:"selling";
       const recent=Array.isArray(body.recent)?body.recent.slice(-8).map(x=>String(x).slice(0,160)):[];
       const styleGuide={
-        neutral:"Write only 1-2 short factual sentences. No praise, hooks, outfit ideas, metaphors or selling adjectives. Single paragraph.",
-        selling:"Write a natural Swedish resale listing with warmth, personality and genuine appeal. Open with a short inviting hook, then 2-3 fluid sentences about VERIFIED garment details. Mention an optional outfit idea only when it fits naturally. No stiff marketing language, repetitive facts or empty superlatives. Approximately 45-75 words.",
-        max:"Write an energetic, distinctive fashion resale pitch. Start with a punchy confident hook about the garment, NOT a styling suggestion. Follow with 3-5 lively, varied sentences highlighting VERIFIED details and why the look stands out. End with one optional creative styling idea. Approximately 65-100 words; never shorter or weaker than SELLING. Sound bold and human, not like a catalogue. A tasteful emoji is optional."
+        neutral:"Neutral is a concise, matter-of-fact classified ad. Exactly 1-3 factual sentences, no hooks, styling advice or sales pitch.",
+        selling:"SELLING must feel like a sharp independent vintage seller wrote it, not a catalogue. Write 3-5 compact sentences (roughly 45-70 words). Lead with the garment's strongest REAL distinguishing visual characteristic, make the actual cut/wash/details desirable through precise language, and finish confidently. Conversational, specific, stylish and natural; no generic 'easy to match' claims or bland outfit suggestions.",
+        max:"MAX is a distinct, bolder editorial streetwear voice, NOT a padded SELLING text. Write 4-6 punchy sentences (roughly 60-90 words). Open with a confident, memorable line rooted in the garment's actual look; use stronger rhythm, contrasting sentence lengths and sharper vocabulary. Convey aesthetic attitude without pretending the garment is rare, vintage, premium or in any particular condition. No obligatory styling tip, no fake hype, no exclamation-mark overload."
       };
       const instruction=rewrite?(
-        "Write a Vinted listing in "+(body.language==="en"?"English":"Swedish")+". Requested style: "+tone+". "+
+        "Create ONE ready-to-copy Vinted listing in "+(body.language==="en"?"idiomatic English":"idiomatic contemporary Swedish")+". Tone: "+tone+". "+
         styleGuide[tone]+" "+
-        "The title must contain searchable brand, garment type and color when provided. "+
-        "Avoid stock phrases: karaktär i varje söm, tydlig detalj, rena linjer, garderoben, välbalanserad silhuett, genomtänkta detaljer, ett starkt val, redo att ta plats, låt plagget spela huvudrollen. "+
-        "Do not repeat the title or list the same garment features twice. Use clear, idiomatic, contemporary language. "+
-        "PRODUCT FACTS must come strictly from supplied title, description and details. Never invent condition, era, fit, fabric, authenticity, rarity, measurements, decorative stitching or provenance. Outfit suggestions are ideas, never product facts. "+
-        "Keep details as supplied key-value lines, translate labels as appropriate, and never add new attributes. "+
-        "Vary wording and avoid these recent listing openings: "+JSON.stringify(recent)+". Return JSON only."
-      ):"Translate this reviewed Swedish vintage clothing listing into natural, clear English. Preserve all facts exactly, do not invent condition, era, material or measurements. Keep details as translated key-value lines. Return JSON only.";
+        "TITLE: concise and searchable: brand + item type + color + one verified distinctive detail when available. "+
+        "DESCRIPTION: write about THIS garment, not generic fashion. Prioritize concrete verified visual details. Distinct styles must differ strongly in voice, opening, rhythm and ambition. "+
+        "BAN ALL CLICHES AND FILLER, including: lättmatchad, vardagens alla planer, fina tillsammans med, klassisk och tidlös, fungerar till allt, ett självklart val, den där känslan, garderoben, rena linjer, tydlig detalj, karaktär i varje söm, avslappnad känsla, streetlook, redo att ta plats, lättburen, ger outfiten, håller looken skarp, perfekt till, ett par med attityd, den här gör jobbet. "+
+        "No repetitive feature lists in prose, no duplicated opening formulas. No forced styling advice. Avoid generic adjectives unless backed by a visible feature. "+
+        "FACT SAFETY: use ONLY facts supported by supplied title, description and details. Do not invent wear, age, condition, measurements, fit, fabric, rarity, authenticity, construction or styling features. Distinguish a washed appearance from actual wear. "+
+        "DETAILS: preserve only provided key-value facts; never add new fields. "+
+        "Avoid these recent openings: "+JSON.stringify(recent)+". Return JSON only."
+      ):"Translate this reviewed Swedish clothing listing into fluent natural English. Preserve every fact exactly, do not invent condition, era, material or measurements. Keep details as translated key-value lines. Return JSON only.";
       const generate=async(extra="")=>{
         const response=await fetch("https://api.openai.com/v1/responses",{
           method:"POST",headers:{"Authorization":"Bearer "+env.OPENAI_API_KEY,"Content-Type":"application/json"},
