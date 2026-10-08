@@ -19,8 +19,24 @@ async fetch(request,env){
   const token=request.headers.get("Authorization")||"";
   if(!env.VINTED_TEST_TOKEN||token!=="Bearer "+env.VINTED_TEST_TOKEN)return new Response("Unauthorized",{status:401});
   if(!env.OPENAI_API_KEY)return new Response("AI secret missing",{status:503});
+  // Optional manual garment facts for editorial review, isolated from production.
+  let items = fixtures;
+  const body = await request.text();
+  if (body.trim()) {
+    let payload;
+    try { payload = JSON.parse(body); }
+    catch { return new Response("Invalid JSON", {status:400}); }
+    if (!payload || !Array.isArray(payload.items) || payload.items.length < 1 || payload.items.length > 4)
+      return new Response("Expected 1 to 4 items", {status:400});
+    items = [];
+    for (const item of payload.items) {
+      if (!item || ["title","description","details"].some(k => typeof item[k] !== "string" || !item[k].trim() || item[k].length > 1500))
+        return new Response("Invalid item fields", {status:400});
+      items.push({id:"real-" + (items.length+1),title:item.title,description:item.description,details:item.details});
+    }
+  }
   const output=[];
-  for(const item of fixtures){
+  for(const item of items){
     const samples={};
     for(const [style,guide] of Object.entries(styles)){
       try{
