@@ -87,6 +87,24 @@ export default {
 
     let body;
     try { body = await request.json(); } catch { return json({ error: "Ogiltig förfrågan." }, 400, origin); }
+    if (body?.action === "translate_listing") {
+      const title = typeof body.title === "string" ? body.title.slice(0, 300) : "";
+      const description = typeof body.description === "string" ? body.description.slice(0, 3000) : "";
+      const details = typeof body.details === "string" ? body.details.slice(0, 1800) : "";
+      if (!title && !description) return json({ error: "Annonstext saknas." }, 400, origin);
+      const schema = { type: "object", additionalProperties: false, required: ["title","description","details"], properties: { title:{type:"string"},description:{type:"string"},details:{type:"string"} } };
+      const response = await fetch("https://api.openai.com/v1/responses", {
+        method:"POST",headers:{"Authorization":"Bearer "+env.OPENAI_API_KEY,"Content-Type":"application/json"},
+        body:JSON.stringify({model:env.OPENAI_MODEL||"gpt-5.6-terra",store:false,reasoning:{effort:"low"},
+          input:[{role:"user",content:[{type:"input_text",text:"Translate this reviewed Swedish vintage clothing listing into natural, clear English. Preserve all facts exactly, do not invent condition, era, material or measurements. Keep details as translated key-value lines. Return JSON only.\n"+JSON.stringify({title,description,details})}]}],
+          text:{format:{type:"json_schema",name:"listing_translation",strict:true,schema}}})
+      });
+      const data=await response.json().catch(()=>({}));
+      if(!response.ok)return json({error:"Engelsk text kunde inte skapas."},502,origin);
+      const output=data.output_text||(data.output||[]).flatMap(item=>item?.content||[]).find(part=>part?.type==="output_text")?.text;
+      try {const translated=JSON.parse(output);return json({translation:translated},200,origin);}
+      catch{return json({error:"Engelsk text kunde inte tolkas."},502,origin);}
+    }
     const images = Array.isArray(body?.images) ? body.images.slice(0, 3) : [];
     if (!images.length || images.some(v => typeof v !== "string" || !v.startsWith("data:image/"))) {
       return json({ error: "En till tre bilder krävs." }, 400, origin);
