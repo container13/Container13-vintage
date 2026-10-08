@@ -96,3 +96,10 @@ button:disabled{opacity:.48;cursor:not-allowed}
 .v-listing-language button.active{background:var(--v-gold);color:#171108;border-color:var(--v-gold);font-weight:850;box-shadow:0 3px 12px rgba(201,155,57,.25)}
 .v-listing-language button.active::before{content:'✓ ';font-weight:900}
 .v-listing-language button:not(.active){background:transparent;box-shadow:none}
+
+/* 2.10.194: CCC outlined language controls */
+.v-listing-language{background:transparent;gap:10px;padding:0;margin:14px 18px 0}
+.v-listing-language button{border:2px solid var(--v-border);border-radius:12px;background:var(--v-bg);color:var(--v-text);min-height:50px;font-weight:750}
+.v-listing-language button:not(.active){border-color:var(--v-muted);background:var(--v-bg);color:var(--v-text);opacity:.82}
+.v-listing-language button.active{border:2px solid var(--v-gold);background:color-mix(in srgb,var(--v-gold) 17%,var(--v-card));color:var(--v-text);box-shadow:0 0 0 2px color-mix(in srgb,var(--v-gold) 25%,transparent),inset 0 0 0 1px var(--v-gold);opacity:1}
+.v-listing-language button:active{transform:scale(.96)}
