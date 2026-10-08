@@ -50,5 +50,20 @@ jobs:
             const old=execFileSync('git',['show','HEAD^:ccc-core/version.js'],{encoding:'utf8'}).match(/const CCC_VERSION = "([0-9]+\.[0-9]+\.[0-9]+)"/)?.[1];
             assert.notEqual(version,old,'Version number was not changed');
           }
+          // Negative controls: intentionally bad fixture values must fail without touching app files.
+          const validateFixture = ({versionToken, cacheToken, duplicate=false}) => {
+            assert.ok(/^\\d+\\.\\d+\\.\\d+$/.test(versionToken),'Invalid version format');
+            assert.equal(cacheToken,versionToken,'Version/cache mismatch');
+            assert.equal(duplicate,false,'Duplicate active engine');
+          };
+          validateFixture({versionToken:version,cacheToken:version});
+          for (const fixture of [
+            {versionToken:version,cacheToken:'0.0.0'},
+            {versionToken:'broken',cacheToken:'broken'},
+            {versionToken:version,cacheToken:version,duplicate:true}
+          ]) {
+            assert.throws(()=>validateFixture(fixture),'Negative fixture incorrectly passed');
+          }
+          console.log('CCC negative fixtures PASS: mismatched cache, invalid version and duplicate engine rejected');
           console.log('CCC static release guard PASS; deployment and real-device verification still required');
           NODE
