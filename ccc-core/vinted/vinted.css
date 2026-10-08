@@ -29,3 +29,12 @@
 .v-dialog-actions{display:flex;gap:10px;justify-content:flex-end}
 .v-dialog-actions button{padding:12px 20px;border-radius:10px;border:1px solid var(--v-border);background:var(--v-bg)}
 #editSave{background:var(--v-gold);color:#171108;border-color:var(--v-gold);font-weight:800}
+
+/* 2.10.184: quieter results and higher editor */
+.v-fields{border:0;background:transparent;border-radius:0;overflow:visible}
+.v-field{border:0;padding:13px 6px 15px;gap:10px}
+.v-field+.v-field{margin-top:5px}
+.v-edit-dialog{position:fixed;inset:0 0 auto 0;margin:max(90px,calc(env(safe-area-inset-top) + 32px)) auto 0;max-height:calc(100dvh - 120px);overflow:auto}
+.v-edit-dialog::backdrop{background:rgba(0,0,0,.91);backdrop-filter:blur(5px)}
+.v-edit-dialog textarea{font-family:inherit;font-size:16px;line-height:1.45}
+@media(max-height:550px){.v-edit-dialog{margin-top:12px;max-height:calc(100dvh - 24px)}.v-edit-dialog textarea{min-height:72px;max-height:22dvh}}
