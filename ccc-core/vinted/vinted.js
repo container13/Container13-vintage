@@ -66,14 +66,14 @@ const reviewTrack=document.createElement("div");
 reviewTrack.className="v-review-track";
 reviewStage.replaceChildren(reviewTrack);
 reviewTrack.append(fields);
-function reviewPages(){return Math.ceil(fields.querySelectorAll(".v-field").length/2);}
+function reviewPages(){return Math.ceil(fields.querySelectorAll(".v-field").length/4);}
 function renderReviewPages(){
   const rows=[...fields.querySelectorAll(".v-field")];
   reviewTrack.replaceChildren();
-  for(let i=0;i<rows.length;i+=2){
+  for(let i=0;i<rows.length;i+=4){
     const page=document.createElement("section");page.className="v-review-page";
-    page.setAttribute("aria-label","Produktuppgifter "+(i+1)+"–"+Math.min(i+2,rows.length));
-    rows.slice(i,i+2).forEach(row=>{row.hidden=false;row.removeAttribute("aria-hidden");page.append(row);});
+    page.setAttribute("aria-label","Produktuppgifter "+(i+1)+"–"+Math.min(i+4,rows.length));
+    rows.slice(i,i+4).forEach(row=>{row.hidden=false;row.removeAttribute("aria-hidden");page.append(row);});
     reviewTrack.append(page);
   }
   reviewTrack.style.width=(reviewPages()*100)+"%";
