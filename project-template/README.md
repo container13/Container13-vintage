@@ -15,3 +15,6 @@ Shared truth lives in this template. Project-specific manuals may add stricter r
 
 Core flow:
 CHANGE -> STATIC CHECK -> COMMIT -> READBACK -> DEPLOY -> SMOKE TEST -> REAL DEVICE when required -> PROMOTE CURRENT -> PREVIOUS
+
+## Existing projects and shared rules
+The shared standard is `PROJECT_RELEASE_STANDARD.md`; it applies to **CCC, LinaSopti, and all other Container13 projects**. Project-specific manuals remain authoritative for stricter project/domain safeguards. Apply at the next planned change, without bulk redeploys or rewriting locked evidence. Use the shared anti-shortcut checklist; do not create a second project template or parallel rulebook.
