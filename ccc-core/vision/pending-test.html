@@ -5,9 +5,9 @@
 <p><small>Välj en bild av ett plagg. Analysen skickas till ccc-vision-pending-test och kan medföra API-kostnad. Använd inga privata eller känsliga bilder.</small></p>
 <input id="photo" type="file" accept="image/*"><p><button id="run" disabled>Testa AI-analys</button></p>
 <p id="status" role="status">Välj en bild för att börja.</p><pre id="output" hidden></pre>
-<script src="vision-ai-config.js?v=2.10.186"></script>
+<script src="vision-ai-config.js?v=2.10.185"></script>
 <script>window.CCC_VISION_AI_CONFIG.endpoint="https://ccc-vision-pending-test.mangaj73.workers.dev";</script>
-<script src="vision-ai.js?v=2.10.186"></script>
+<script src="vision-ai.js?v=2.10.185"></script>
 <script>
 const file=document.getElementById("photo"),button=document.getElementById("run"),status=document.getElementById("status"),output=document.getElementById("output");
 file.onchange=()=>{button.disabled=!file.files.length;status.textContent=button.disabled?"Välj en bild.":"Redo att testa."};
