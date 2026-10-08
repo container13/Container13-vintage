@@ -67,7 +67,7 @@ analyze.onclick=async()=>{
     }
     renderFields(rows);result.hidden=false;
     analysisStatus.textContent=lang==="sv-SE"?"AI-förslag, inte verifierade fakta. Kontrollera varje uppgift före publicering.":"AI suggestions – verify each detail before publishing.";
-    result.scrollIntoView({behavior:"smooth",block:"start"});
+    requestAnimationFrame(()=>{const header=document.querySelector(".v-head");const top=analyze.getBoundingClientRect().top+window.scrollY-(header?.getBoundingClientRect().height||0)-16;window.scrollTo({top:Math.max(0,top),behavior:"smooth"});});
   }catch(e){analysisStatus.textContent="Analysen misslyckades: "+(e?.message||"Okänt fel");}
   finally{busy=false;analyze.classList.remove("is-working");analyze.textContent="Analysera bilder";draw();}
 };
