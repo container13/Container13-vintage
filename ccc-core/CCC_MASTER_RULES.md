@@ -72,3 +72,6 @@ If evidence contradicts the plan, stop adding patches. Inventory the real implem
 - Stop when a required step cannot be verified; do not compensate with optimistic wording or extra patches.
 - Existing MASTER RULES take precedence over historical V2 drafts and stale handoffs. Historical documents must be clearly marked SUPERSEDED.
 - The CI release guard is mandatory. Do not bypass, disable, or weaken it to make a release green; fix the underlying inconsistency.
+
+## Shared standard reference
+Follow `../project-template/PROJECT_RELEASE_STANDARD.md` as the cross-project baseline, in addition to these stricter CCC-specific rules. Do not copy the standard into another competing CCC rulebook.
