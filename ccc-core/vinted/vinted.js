@@ -101,13 +101,33 @@ function makeVintedListing(){
     [/\b00-tal|2000/i,["y2k"]]
   ];
   for(const [pattern,list] of rules)if(pattern.test(words))list.forEach(addTag);
-  return [title,description,details.join("\n"),[...tags].join(" ")].filter(Boolean).join("\n\n");
+  return [title,description,details.join("\n"),selectedTags.map(t=>"#"+t).join(" ")].filter(Boolean).join("\n\n");
 }
-const copyListing=document.getElementById("copyListing"),copyListingStatus=document.getElementById("copyListingStatus");
+const DEFAULT_BANK="y2k gorpcore archive subversive punk rock cyber grunge drip gorp retro unique rare og casual drain baggy cybery2k bottoms flared wide loose alt rap skate affliction carhartt diesel black jeans vintage secondhand playboy carti playboicarti pinterest cybercore washed vamp cowboy oldschool workwear archivefashion cargopants asaprocky rockstar yvl softcore revival skeleton classic gunna thug slime coutore jessepinkman szeroka religion truereligion edhardy krzyz luzne distressed maisonmargiela rickowens flower outdoorstyle outdoor hiking granola granolagirl hike swag levis bootcut cowboys".split(" ");
+let tagBank=DEFAULT_BANK.slice(),selectedTags=[];
+try{const saved=JSON.parse(localStorage.getItem("ccc-vinted-tags")||"null");if(Array.isArray(saved))tagBank=[...new Set([...tagBank,...saved])];}catch{}
+const cleanTag=s=>s.trim().replace(/^#+/,"").toLowerCase().replace(/[^a-z0-9åäö_]/g,"");
 const listingDialog=document.getElementById("listingDialog"),listingPreview=document.getElementById("listingPreview");
+const copyListingStatus=document.getElementById("copyListingStatus");
+function renderTags(){
+  const selected=document.getElementById("selectedTags"),bank=document.getElementById("bankTags");
+  selected.replaceChildren();bank.replaceChildren();
+  function button(tag,active){const b=document.createElement("button");b.type="button";b.className="v-tag-pill";b.textContent="#"+tag+(active?" ×":" +");b.onclick=()=>{selectedTags=active?selectedTags.filter(x=>x!==tag):[...selectedTags,tag];renderTags();};return b;}
+  selectedTags.forEach(tag=>selected.append(button(tag,true)));
+  tagBank.forEach(tag=>bank.append(button(tag,selectedTags.includes(tag))));
+  listingPreview.textContent=makeVintedListing();
+}
+document.getElementById("tagAddForm").onsubmit=e=>{
+ e.preventDefault();const input=document.getElementById("tagInput"),tag=cleanTag(input.value);input.value="";
+ if(!tag)return;if(!tagBank.includes(tag)){tagBank.push(tag);try{localStorage.setItem("ccc-vinted-tags",JSON.stringify(tagBank));}catch{}}
+ if(!selectedTags.includes(tag))selectedTags.push(tag);renderTags();
+};
+document.getElementById("tagBankToggle").onclick=()=>{const node=document.getElementById("tagBank");node.hidden=!node.hidden;document.getElementById("tagBankToggle").textContent=node.hidden?"Visa min hashtagbank":"Dölj hashtagbanken";};
+const copyListing=document.getElementById("copyListing");
 copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
-  listingPreview.textContent=content;copyListingStatus.textContent="";
+  if(!selectedTags.length){const words=[...approvedFields.values()].map(f=>f()).join(" ").toLowerCase();if(words.includes("levis")||words.includes("levi"))selectedTags.push("levis");if(words.includes("jeansjacka"))selectedTags.push("jeansjacka","denimjacket");if(words.includes("denim"))selectedTags.push("denim");}
+  renderTags();copyListingStatus.textContent="";
   listingDialog.showModal();
 };
 document.getElementById("listingClose").onclick=()=>listingDialog.close();
