@@ -53,3 +53,5 @@
 .v-listing-body{overflow-y:auto;max-height:calc(100dvh - 190px);padding:20px 18px}
 .v-listing-preview{white-space:pre-wrap;overflow-wrap:anywhere;font-size:15px;line-height:1.65;user-select:text}
 .v-listing-feedback{min-height:22px;padding:0 18px 12px;margin:0;color:var(--v-green);font-size:13px;font-weight:700}
+
+.v-tag-editor{border-top:1px solid var(--v-border);margin-top:18px;padding-top:15px}.v-tag-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}.v-tag-heading button{border:0;background:transparent;color:var(--v-gold);font-weight:700}.v-tag-pills{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}.v-tag-pill{border:1px solid var(--v-border);border-radius:99px;background:var(--v-bg);padding:7px 10px;font-size:12px}.v-tag-add{display:flex;gap:8px}.v-tag-add input{min-width:0;flex:1;padding:10px;border:1px solid var(--v-border);border-radius:9px;background:var(--v-bg);color:var(--v-text);font-size:16px}.v-tag-add button{border:0;border-radius:9px;padding:10px;background:var(--v-gold);color:#171108;font-weight:700}#tagBank[hidden]{display:none}
