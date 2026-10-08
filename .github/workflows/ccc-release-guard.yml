@@ -1,0 +1,54 @@
+name: CCC release guard
+on:
+  push:
+    branches: [ccc-demo-public-test]
+    paths:
+      - 'ccc-core/**'
+      - '.github/workflows/ccc-release-guard.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate CCC version and active Vinted integration
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          import {execFileSync} from 'node:child_process';
+          const read = p => fs.readFileSync(p,'utf8');
+          const version = read('ccc-core/version.js').match(/const CCC_VERSION = "([0-9]+\.[0-9]+\.[0-9]+)"/)?.[1];
+          assert.ok(version,'Missing canonical CCC_VERSION');
+          const html = read('ccc-core/vinted/index.html');
+          const js = read('ccc-core/vinted/vinted.js');
+          const worker = read('ccc-core/vision/WORKER_PENDING.js');
+          assert.ok(html.includes('../version.js?v='+version),'Vinted must load version.js with current CCC version');
+          assert.ok(html.includes('vinted.js?v='+version),'Vinted JS cache key must match CCC version');
+          assert.ok(js.includes('action:"rewrite_listing"'),'Missing active rewrite action');
+          assert.ok(js.includes('ccc-vision-pending-test.mangaj73.workers.dev'),'Active Vinted endpoint changed: review deploy path');
+          assert.ok(worker.includes('body?.action === "translate_listing" || body?.action === "rewrite_listing"'),'Worker rewrite contract missing');
+          for (const legacy of ['v2TestMode','V2_TOKEN_STORAGE_KEY','getV2Styles(','WORKER_V2_ISOLATED_TEST']) {
+            assert.ok(!js.includes(legacy),'Duplicate V2 runtime detected: '+legacy);
+          }
+          for(const p of ['ccc-core/vinted/vinted.js','ccc-core/vision/WORKER_PENDING.js']) {
+            execFileSync('node',['--check',p],{stdio:'inherit'});
+          }
+          const changed=execFileSync('git',['diff','--name-only','HEAD^','HEAD'],{encoding:'utf8'}).trim().split('\n');
+          const uiChanged=changed.some(p=>/^ccc-core\/vinted\/(vinted\.js|index\.html|vinted\.css)$/.test(p));
+          if(uiChanged) {
+            assert.ok(changed.includes('ccc-core/version.js'),'Vinted UI changes require CCC version bump in same commit');
+            const old=execFileSync('git',['show','HEAD^:ccc-core/version.js'],{encoding:'utf8'}).match(/const CCC_VERSION = "([0-9]+\.[0-9]+\.[0-9]+)"/)?.[1];
+            assert.notEqual(version,old,'Version number was not changed');
+          }
+          console.log('CCC static release guard PASS; deployment and real-device verification still required');
+          NODE
