@@ -157,7 +157,7 @@ async function ensureTranslation(){
  }catch(e){if(requestId!==translationRequest)return;document.getElementById("listingLanguageNote").classList.remove("is-working");document.getElementById("listingLanguageNote").textContent="Kunde inte skapa engelsk annonstext. Försök välja språk igen.";listingPreview.textContent="";}
 }
 
-document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;document.querySelectorAll("[data-listing-lang]").forEach(x=>x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b));});ensureTranslation();});
+document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;document.querySelectorAll("[data-listing-lang]").forEach(x=>{x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b));});ensureTranslation();});
 copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
   if(!tagsInitialized){selectedTags=tagBank.slice();tagsInitialized=true;}
