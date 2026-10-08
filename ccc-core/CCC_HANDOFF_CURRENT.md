@@ -33,3 +33,14 @@ Verify reality, not assumptions: inspect the actual source/runtime/storage/deplo
 - Keep pinch zoom disabled in CCC views. Preserve the improved Vinted-inspired layout; do not restore earlier cluttered layout.
 - `ccc-core/version.js` is the CCC version authority.
 - Work checkpoint is IDLE. Continue with Vinted workflow improvements from 2.10.180, after inspecting live source and verifying each change.
+
+
+## Current Vinted correction — 2026-10-08
+- Prior Vinted PAUSED statements and 2.10.169/180 baselines above are **historical**; do not treat them as current.
+- `ccc-core/version.js` was updated to **2.10.217**. This is a **committed candidate**, not automatically a verified real-device PASS.
+- Active Vinted UI: `ccc-core/vinted/vinted.js`; one rewrite endpoint: `https://ccc-vision-pending-test.mangaj73.workers.dev/`; source `ccc-core/vision/WORKER_PENDING.js`.
+- Neutral/Säljande/Maxad prompts were updated in the existing PENDING Worker. V2 token routing and duplicate V2 Worker source/deploy workflow were removed.
+- Backup branch before changes: `backup-vinted-before-unified-engine-20261008`.
+- PENDING: final GitHub Pages deploy confirmation, real same-garment AI comparison of three styles, iPhone Safari smoke test, and state reconciliation. Do not claim verified until these pass.
+- `CCC_CURRENT_STATE.json` currently contains older Vision 2.10.185 checkpoint. Preserve its earlier evidence and reconcile only after real verification; never overwrite verified history with guesses.
+- No duplicate engine, no extra test token, no bypass of release checks. Historical V2 handoff is marked SUPERSEDED.
