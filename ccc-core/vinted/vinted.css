@@ -103,3 +103,11 @@ button:disabled{opacity:.48;cursor:not-allowed}
 .v-listing-language button:not(.active){border-color:var(--v-muted);background:var(--v-bg);color:var(--v-text);opacity:.82}
 .v-listing-language button.active{border:2px solid var(--v-gold);background:color-mix(in srgb,var(--v-gold) 17%,var(--v-card));color:var(--v-text);box-shadow:0 0 0 2px color-mix(in srgb,var(--v-gold) 25%,transparent),inset 0 0 0 1px var(--v-gold);opacity:1}
 .v-listing-language button:active{transform:scale(.96)}
+
+/* v2.10.199 - CCC sales tone selector */
+.v-style-label{margin:14px 18px 7px;color:var(--v-muted);font-size:12px;font-weight:800;letter-spacing:.09em}
+.v-listing-style{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 18px 8px}
+.v-listing-style button{min-width:0;min-height:46px;border:2px solid var(--v-muted);border-radius:12px;background:var(--v-bg);color:var(--v-text);font-size:13px;font-weight:750;padding:7px 3px;opacity:.85}
+.v-listing-style button.active{border-color:var(--v-gold);background:color-mix(in srgb,var(--v-gold) 17%,var(--v-card));box-shadow:0 0 0 2px color-mix(in srgb,var(--v-gold) 25%,transparent);opacity:1}
+.v-listing-style button.active::before{content:"✓ ";color:var(--v-gold)}
+.v-listing-style button:active{transform:scale(.96)}
