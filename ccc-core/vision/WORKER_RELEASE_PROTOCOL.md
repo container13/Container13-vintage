@@ -25,3 +25,6 @@ GitHub Actions `.github/workflows/ccc-vision-pending-check.yml` runs on changes 
 
 ## Isolated candidate deployment
 `.github/workflows/ccc-vision-pending-deploy.yml` automatically deploys WORKER_PENDING.js to the separate Cloudflare script `ccc-vision-pending-test` on candidate changes. It uses the existing CCC-scoped GitHub deployment credentials but does not copy production Worker secrets. A successful test deployment is not an AI runtime PASS. Keep `ccc-vision-api` production and its source `cloudflare-worker.js` unchanged until verified promotion.
+
+## Real-image candidate test (2026-10-08)
+User tested `ccc-core/vision/pending-test.html` against `ccc-vision-pending-test` with a jeans jacket image. Response `schemaPass: true`, model `gpt-5.6-terra`, eight `fieldEvidence` entries, meaningful evidence and next-photo suggestions. Brand confidence medium; size and season unknown with blank values. This verifies the candidate AI response for one image only, not full Vinted iPhone integration. Production remains unchanged. Do not promote app release 2.10.185 until the real iPhone Vinted UI is checked.
