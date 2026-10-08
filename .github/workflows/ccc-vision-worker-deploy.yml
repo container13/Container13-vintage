@@ -1,0 +1,42 @@
+name: Deploy CCC Vision Worker
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ccc-demo-public-test]
+    paths:
+      - 'ccc-core/vision/cloudflare-worker.js'
+      - 'ccc-core/vision/wrangler.jsonc'
+      - '.github/workflows/ccc-vision-worker-deploy.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ccc-vision-worker-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate Worker JavaScript
+        run: node --check ccc-core/vision/cloudflare-worker.js
+      - name: Require dedicated Cloudflare credentials
+        env:
+          CF_API_TOKEN: ${{ secrets.CCC_CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CCC_CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          test -n "$CF_API_TOKEN" || { echo "Missing CCC_CLOUDFLARE_API_TOKEN"; exit 1; }
+          test -n "$CF_ACCOUNT_ID" || { echo "Missing CCC_CLOUDFLARE_ACCOUNT_ID"; exit 1; }
+      - name: Deploy to CCC Vision only
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CCC_CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CCC_CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: ccc-core/vision
+          command: deploy
