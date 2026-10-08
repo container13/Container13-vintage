@@ -96,15 +96,16 @@ export default {
       const schema = { type: "object", additionalProperties: false, required: ["title","description","details"], properties: { title:{type:"string"},description:{type:"string"},details:{type:"string"} } };
       const tone=["neutral","selling","max"].includes(body.style)?body.style:"selling";
       const recent=Array.isArray(body.recent)?body.recent.slice(-8).map(x=>String(x).slice(0,160)):[];
+      // One shared engine; three genuinely different editorial voices.
       const styleGuide={
-        neutral:"Neutral is a concise, matter-of-fact classified ad. One or two factual sentences, no hooks, styling advice or sales pitch.",
-        selling:"Write as a skilled human seller. Use only as many sentences as add useful information, typically one to three. Open with a specific verified garment feature. Use natural confident Swedish and concrete details rather than vague feelings. Delete any sentence that merely rephrases an earlier fact. Avoid styling advice.",
-        max:"Write in a bolder, direct streetwear voice with one to three punchy sentences, as short as the verified facts allow. Distinct from selling, but grounded entirely in verified garment features. Avoid metaphors, abstract slogans, fashion poetry and invented hype. Stronger voice must come from sharper wording, never added length."
+        neutral:"NEUTRAL: A factual, compact Swedish classified ad. 1-2 short sentences. Start with brand and garment type, then observable color, shape and details. No persuasion, opinions, enthusiasm, or styling suggestions. Do not pad.",
+        selling:"SÄLJANDE: A natural, personable Vinted seller, not a catalogue. 2-3 fluent sentences only if facts justify them. Start with the most appealing VERIFIED detail, describe the piece conversationally and warmly, and make it easy to picture. Use a little personality but no generic compliments, stock phrases, invented use cases or duplicate details. This should sound clearly more inviting than NEUTRAL.",
+        max:"MAXAD: A lively secondhand seller with confident, distinctive Swedish voice. Use a punchy, natural opening grounded in the garment's most recognizable VERIFIED detail; follow with short varied sentences and a little attitude. Clearly more expressive and energetic than SÄLJANDE, without hype, exclamation spam, all caps, streetwear clichés, slogans, metaphors or invented desirability. 2-3 sentences maximum; if few facts exist, keep it shorter."
       };
       const examples={
-        neutral:"EXAMPLE (denim; illustration only): Ljusblå jeans från Lee med raka ben och uppvikta benslut.",
-        selling:"EXAMPLE (denim; illustration only): Ljusblå Lee-jeans med snygg, ljus tvätt och raka ben. De uppvikta bensluten ger modellen en tydlig avslutning, medan femficksdesignen håller uttrycket klassiskt.",
-        max:"EXAMPLE (denim; illustration only): Ljusblå Lee-denim med rejält uttryck. Rak modell, ljus tvätt och uppvikta benslut. Inga krusiduller – det är detaljerna som gör skillnaden."
+        neutral:"TONE EXAMPLE ONLY (never copy facts): Ljusblå Lee-jeans med raka ben, fem fickor och uppvikta benslut.",
+        selling:"TONE EXAMPLE ONLY (never copy facts): Lee-jeans i ljusblå denim med en fin tvättad look. De raka benen och uppvikta bensluten sätter formen, med klassiska fem fickor.",
+        max:"TONE EXAMPLE ONLY (never copy facts): Lee i ljusblå denim – här är det den tvättade looken som tar plats. Raka ben, fem fickor och uppvikta benslut ger ett tydligt uttryck."
       };
       const categoryHints="For jackets emphasize actual shape, closure and visible panels; for knitwear emphasize verified knit pattern, neckline and color; for shoes emphasize visible shape, sole and color; for jeans emphasize verified wash, leg shape and hems. Never transfer facts from examples to a different item.";
       const instruction=rewrite?(
