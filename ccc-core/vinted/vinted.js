@@ -147,17 +147,45 @@ const copyListing=document.getElementById("copyListing");
 let listingLanguage="sv",listingStyle="selling";
 let rewrittenListing=null,rewriteKey="",rewriteRequest=0;
 const recentCopy=(()=>{try{return JSON.parse(localStorage.getItem("ccc-vinted-recent-copy")||"[]")}catch{return []}})();
+
+const v2TestMode=new URLSearchParams(location.search).get("v2test")==="1";
+let v2Token="",v2CacheKey="",v2Styles=null;
+async function getV2Styles(parts){
+ const key=JSON.stringify(parts);
+ if(v2CacheKey===key&&v2Styles)return v2Styles;
+ if(!v2Token){const entered=prompt("V2-testnyckel (sparas bara under denna sidvisning):");if(!entered)throw Error("V2-testet avbröts");v2Token=entered.trim();}
+ const response=await fetch("https://ccc-vinted-v2-test.mangaj73.workers.dev/",{
+  method:"POST",headers:{"Authorization":"Bearer "+v2Token,"Content-Type":"application/json"},
+  body:JSON.stringify({items:[parts]})
+ });
+ if(!response.ok){if(response.status===401)v2Token="";throw Error("V2 HTTP "+response.status);}
+ const data=await response.json();
+ if(data.results?.[0]?.fixture!=="real-1")throw Error("V2 fick inte plaggets uppgifter");
+ const styles=data.results[0].styles;
+ for(const style of ["neutral","selling","max"]){
+  if(!styles?.[style]?.description||styles[style].error)throw Error("V2 saknar "+style);
+ }
+ v2CacheKey=key;v2Styles=styles;return styles;
+}
+
 async function ensureRewrite(){
  const parts=listingParts(),key=JSON.stringify({parts,listingStyle,listingLanguage});
  if(rewriteKey===key&&rewrittenListing){updateListingPreview();return;}
  const id=++rewriteRequest;rewrittenListing=null;updateListingPreview();
  const note=document.getElementById("listingLanguageNote");note.textContent="Skriver annonstext med AI…";note.classList.add("is-working");
  try{
-  const response=await fetch(TRANSLATION_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"rewrite_listing",...parts,style:listingStyle,language:listingLanguage,recent:recentCopy})});
-  const data=await response.json();
-  if(!response.ok||!data.listing?.description)throw Error(data.error||"AI-omskrivning misslyckades");
+  let listing;
+  if(v2TestMode&&listingLanguage==="sv"){
+    const styles=await getV2Styles(parts);
+    listing=styles[listingStyle];
+  }else{
+    const response=await fetch(TRANSLATION_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"rewrite_listing",...parts,style:listingStyle,language:listingLanguage,recent:recentCopy})});
+    const data=await response.json();
+    if(!response.ok||!data.listing?.description)throw Error(data.error||"AI-omskrivning misslyckades");
+    listing=data.listing;
+  }
   if(id!==rewriteRequest)return;
-  rewrittenListing=data.listing;rewriteKey=key;updateListingPreview();
+  rewrittenListing=listing;rewriteKey=key;updateListingPreview();
  }catch(e){if(id!==rewriteRequest)return;note.classList.remove("is-working");updateListingPreview(true);note.textContent="AI-omskrivningen misslyckades: "+String(e.message||"okänt fel").slice(0,180)+". Ingen annonstext visas förrän AI fungerar.";}
 }
 let translatedListing=null,translationKey="",translationRequest=0;
@@ -212,41 +240,3 @@ document.getElementById("listingCopy").onclick=async()=>{
 listingDialog.addEventListener("click",e=>{if(e.target===listingDialog)listingDialog.close();});
 
 
-/* Isolated V2 editorial preview. Explicit opt-in via ?v2test=1.
-   Test token is entered at runtime and never persisted or included in the bundle.
-   Existing rewrite, copy and publishing flows remain untouched. */
-if(new URLSearchParams(location.search).get("v2test")==="1"){
-  const panel=document.createElement("section");
-  panel.className="v-card";
-  panel.style.marginTop="16px";
-  panel.innerHTML='<h2>V2 – test av annonstexter</h2><p>Jämför tre nya AI-stilar. Påverkar inte din vanliga annons.</p><button type="button" id="v2PreviewRun">Jämför V2-texter</button><pre id="v2PreviewResult" style="white-space:pre-wrap;overflow-wrap:anywhere"></pre>';
-  const anchor=document.getElementById("copyListing");
-  (anchor?.closest("section")||document.querySelector("main")||document.body).append(panel);
-  panel.querySelector("#v2PreviewRun").onclick=async()=>{
-    const target=panel.querySelector("#v2PreviewResult");
-    const parts=listingParts();
-    if(!parts.title.trim()||!parts.description.trim()){
-      target.textContent="Granska först ett plagg så att titel och beskrivning finns.";return;
-    }
-    const token=prompt("Ange V2-testnyckeln (sparas inte):");
-    if(!token)return;
-    target.textContent="V2 skapar tre texter…";
-    const button=panel.querySelector("#v2PreviewRun");button.disabled=true;
-    try{
-      const response=await fetch("https://ccc-vinted-v2-test.mangaj73.workers.dev/",{
-        method:"POST",
-        headers:{"Authorization":"Bearer "+token.trim(),"Content-Type":"application/json"},
-        body:JSON.stringify({items:[parts]})
-      });
-      if(!response.ok)throw Error("HTTP "+response.status);
-      const data=await response.json();
-      const styles=data.results?.[0]?.styles;
-      if(data.results?.[0]?.fixture!=="real-1"||!styles)throw Error("Fel testdata returnerades");
-      target.textContent=["neutral","selling","max"].map(key=>{
-        const item=styles[key];
-        return key.toUpperCase()+"\\n"+(item?.error||[item?.title,item?.description,item?.details].filter(Boolean).join("\\n"));
-      }).join("\\n\\n──────────\\n\\n");
-    }catch(error){target.textContent="V2-testet misslyckades: "+String(error.message||error);}
-    finally{button.disabled=false;}
-  };
-}
