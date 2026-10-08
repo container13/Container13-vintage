@@ -98,8 +98,8 @@ export default {
       const recent=Array.isArray(body.recent)?body.recent.slice(-8).map(x=>String(x).slice(0,160)):[];
       const styleGuide={
         neutral:"Neutral is a concise, matter-of-fact classified ad. Exactly 1-3 factual sentences, no hooks, styling advice or sales pitch.",
-        selling:"SELLING must feel like a sharp independent vintage seller wrote it, not a catalogue. Write 3-5 compact sentences (roughly 45-70 words). Lead with the garment's strongest REAL distinguishing visual characteristic, make the actual cut/wash/details desirable through precise language, and finish confidently. Conversational, specific, stylish and natural; no generic 'easy to match' claims or bland outfit suggestions.",
-        max:"MAX is a distinct, bolder editorial streetwear voice, NOT a padded SELLING text. Write 4-6 punchy sentences (roughly 60-90 words). Open with a confident, memorable line rooted in the garment's actual look; use stronger rhythm, contrasting sentence lengths and sharper vocabulary. Convey aesthetic attitude without pretending the garment is rare, vintage, premium or in any particular condition. No obligatory styling tip, no fake hype, no exclamation-mark overload."
+        selling:"Write as a skilled human seller. Use 3-4 concise sentences and about 35-55 words. Open with a specific verified garment feature. Use natural confident Swedish and concrete details rather than vague feelings. Avoid styling advice.",
+        max:"Write in a bolder, direct streetwear voice with 3-5 punchy sentences and about 45-65 words. Distinct from selling, but grounded entirely in verified garment features. Avoid metaphors, abstract slogans, fashion poetry and invented hype."
       };
       const instruction=rewrite?(
         "Create ONE ready-to-copy Vinted listing in "+(body.language==="en"?"idiomatic English":"idiomatic contemporary Swedish")+". Tone: "+tone+". "+
@@ -107,7 +107,7 @@ export default {
         "TITLE: concise and searchable: brand + item type + color + one verified distinctive detail when available. "+
         "DESCRIPTION: write about THIS garment, not generic fashion. Prioritize concrete verified visual details. Distinct styles must differ strongly in voice, opening, rhythm and ambition. "+
         "BAN ALL CLICHES AND FILLER, including: lättmatchad, vardagens alla planer, fina tillsammans med, klassisk och tidlös, fungerar till allt, ett självklart val, den där känslan, garderoben, rena linjer, tydlig detalj, karaktär i varje söm, avslappnad känsla, streetlook, redo att ta plats, lättburen, ger outfiten, håller looken skarp, perfekt till, ett par med attityd, den här gör jobbet. "+
-        "No repetitive feature lists in prose, no duplicated opening formulas. No forced styling advice. Avoid generic adjectives unless backed by a visible feature. "+
+        "Never use abstract fashion metaphors or filler such as valt sin egen väg, utan onödiga omvägar, rätt mängd denimkänsla or sätter tonen. No repetitive feature lists or forced styling advice. Be direct and specific. "+
         "FACT SAFETY: use ONLY facts supported by supplied title, description and details. Do not invent wear, age, condition, measurements, fit, fabric, rarity, authenticity, construction or styling features. Distinguish a washed appearance from actual wear. "+
         "DETAILS: preserve only provided key-value facts; never add new fields. "+
         "Avoid these recent openings: "+JSON.stringify(recent)+". Return JSON only."
