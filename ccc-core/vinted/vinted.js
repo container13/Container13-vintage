@@ -83,22 +83,36 @@ function makeVintedListing(){
   const addTag=(tag)=>tags.add("#"+tag);
   const rules=[
     [/\blevi['’]?s\b/i,["levis"]],
-    [/jeansjacka|denimjacka|denim jacket/i,["jeansjacka","denimjacket"]],
-    [/\bdenim\b/i,["denim"]],
+    [/jeansjacka|denimjacka|denim jacket/i,["jeansjacka","denimjacket","denimfashion"]],
+    [/\bdenim\b|jeansjacka|denimjacka/i,["denim"]],
     [/\bvintage\b/i,["vintage"]],
     [/\bretro\b/i,["retro"]],
-    [/\bsvart\b/i,["svart"]],
-    [/\bblå|blue\b/i,["blue"]],
+    [/\bsvart\b|mörk krage/i,["svart"]],
+    [/\bblå|blue\b/i,["blue","bluejeans"]],
     [/\badidas\b/i,["adidas"]],
     [/\bnike\b/i,["nike"]],
-    [/\bjacka\b/i,["jacket"]]
+    [/\bjacka\b|jeansjacka/i,["jacket"]],
+    [/\bjeans\b/i,["jeans"]],
+    [/\btröja\b/i,["sweater"]],
+    [/\bskjorta\b/i,["shirt"]],
+    [/\bhoodie\b|huvtröja/i,["hoodie"]],
+    [/\bskinn\b|läder/i,["leather"]],
+    [/\b90-tal|1990/i,["90s"]],
+    [/\b00-tal|2000/i,["y2k"]]
   ];
   for(const [pattern,list] of rules)if(pattern.test(words))list.forEach(addTag);
   return [title,description,details.join("\n"),[...tags].join(" ")].filter(Boolean).join("\n\n");
 }
 const copyListing=document.getElementById("copyListing"),copyListingStatus=document.getElementById("copyListingStatus");
-copyListing.onclick=async()=>{
- const text=makeVintedListing();if(!text)return;
- try{await navigator.clipboard.writeText(text);copyListingStatus.textContent="Kopierat ✓";}
- catch{copyListingStatus.textContent="Kunde inte kopiera. Försök igen.";}
+const listingDialog=document.getElementById("listingDialog"),listingPreview=document.getElementById("listingPreview");
+copyListing.onclick=()=>{
+  const content=makeVintedListing();if(!content)return;
+  listingPreview.textContent=content;copyListingStatus.textContent="";
+  listingDialog.showModal();
 };
+document.getElementById("listingClose").onclick=()=>listingDialog.close();
+document.getElementById("listingCopy").onclick=async()=>{
+  try{await navigator.clipboard.writeText(makeVintedListing());copyListingStatus.textContent="Kopierat ✓";}
+  catch{copyListingStatus.textContent="Kunde inte kopiera. Försök igen.";}
+};
+listingDialog.addEventListener("click",e=>{if(e.target===listingDialog)listingDialog.close();});
