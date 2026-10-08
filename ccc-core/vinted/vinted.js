@@ -17,7 +17,34 @@ function makeRows(data){
     return [[label,value,"REVIEW"]];
   });
 }
-function renderFields(rows){fields.replaceChildren();rows.forEach(([label,value,status])=>{const row=document.createElement("div");row.className="v-field";row.innerHTML='<div class="v-field-main"><div class="v-label"><span>'+label+'</span><span class="v-status">'+(status==="UNKNOWN"?(lang==="sv-SE"?"Kontrollera":"Check"):(lang==="sv-SE"?"Förslag":"Suggestion"))+'</span></div><div class="v-value"></div></div><button class="v-copy" type="button" aria-label="Kopiera"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg></button>';row.querySelector(".v-value").textContent=value;const copy=row.querySelector(".v-copy");copy.onclick=async()=>{try{await navigator.clipboard.writeText(value);copy.classList.add("copied");setTimeout(()=>copy.classList.remove("copied"),900)}catch{}};fields.append(row)})}
+const editDialog=document.getElementById("editDialog"),editInput=document.getElementById("editInput"),editHeading=document.getElementById("editHeading");
+let activeEdit=null;
+function closeEdit(){editDialog.close();activeEdit=null;}
+document.getElementById("editCancel").onclick=closeEdit;
+editDialog.addEventListener("cancel",()=>{activeEdit=null;});
+document.getElementById("editForm").onsubmit=e=>{
+  e.preventDefault();
+  if(!activeEdit)return;
+  const value=editInput.value.trim();
+  activeEdit.valueNode.textContent=value;
+  activeEdit.statusNode.textContent=lang==="sv-SE"?"Redigerad":"Edited";
+  activeEdit.copy.dataset.value=value;
+  closeEdit();
+};
+function renderFields(rows){
+  fields.replaceChildren();
+  rows.forEach(([label,value,status])=>{
+    const row=document.createElement("div");row.className="v-field";
+    row.innerHTML='<div class="v-field-main"><div class="v-label"><span></span><span class="v-status"></span></div><div class="v-value"></div></div><div class="v-field-actions"><button class="v-edit" type="button" aria-label="Redigera"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L9 17l-4 1 1-4Z"/></svg></button><button class="v-copy" type="button" aria-label="Kopiera"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg></button></div>';
+    row.querySelector(".v-label span").textContent=label;
+    const statusNode=row.querySelector(".v-status"),valueNode=row.querySelector(".v-value"),copy=row.querySelector(".v-copy");
+    statusNode.textContent=status==="UNKNOWN"?(lang==="sv-SE"?"Kontrollera":"Check"):(lang==="sv-SE"?"Förslag":"Suggestion");
+    valueNode.textContent=value;copy.dataset.value=value;
+    row.querySelector(".v-edit").onclick=()=>{activeEdit={valueNode,statusNode,copy};editHeading.textContent=(lang==="sv-SE"?"Redigera ":"Edit ")+label;editInput.value=valueNode.textContent;editDialog.showModal();editInput.focus();};
+    copy.onclick=async()=>{try{await navigator.clipboard.writeText(copy.dataset.value);copy.classList.add("copied");setTimeout(()=>copy.classList.remove("copied"),900)}catch{}};
+    fields.append(row);
+  });
+}
 analyze.onclick=async()=>{
   if(busy||!items.length)return;
   busy=true;draw();result.hidden=true;fields.replaceChildren();
