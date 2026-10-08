@@ -4,10 +4,10 @@
 <meta name="theme-color" content="#f7f7f9"><meta name="color-scheme" content="light dark">
 <title>CCC Vinted</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-<link rel="stylesheet" href="../core.css?v=2.10.185"><link rel="stylesheet" href="vinted.css?v=2.10.185">
+<link rel="stylesheet" href="../core.css?v=2.10.186"><link rel="stylesheet" href="vinted.css?v=2.10.186">
 </head><body>
 <header class="v-head">
-  <a href="../dashboard/index.html?v=2.10.185" class="v-back" aria-label="Tillbaka">‹</a>
+  <a href="../dashboard/index.html?v=2.10.186" class="v-back" aria-label="Tillbaka">‹</a>
   <div class="v-head-title"><b>VINTED</b><span>CCC</span></div>
   <span class="js-ccc-version v-version"></span>
 </header>
@@ -32,8 +32,8 @@
 <button id="analyze" class="v-analyze" type="button" disabled>Analysera bilder</button>
 <section id="result" class="v-result" hidden>
 <div class="v-result-head"><div><span>DIN ANNONS</span><h2>Kontrollera och kopiera</h2></div><small>Tryck på symbolen till höger</small></div>
-<div id="fields" class="v-fields"></div><button id="copyListing" class="v-analyze" type="button">▢ Kopiera Vinted-annons</button><p id="copyListingStatus" class="v-note" role="status" aria-live="polite"></p>
+<div id="fields" class="v-fields"></div><button id="copyListing" class="v-analyze v-preview-open" type="button">Se annonstext</button>
 </section>
-</main><dialog id="editDialog" class="v-edit-dialog" aria-labelledby="editHeading"><form id="editForm" method="dialog"><h2 id="editHeading">Redigera</h2><textarea id="editInput" rows="5" aria-label="Ändra text"></textarea><div class="v-dialog-actions"><button id="editCancel" type="button">Avbryt</button><button id="editSave" type="submit">Spara</button></div></form></dialog>
-<script src="../vision/vision-ai-config.js?v=2.10.185"></script><script src="../vision/vision-ai.js?v=2.10.185"></script><script src="../version.js?v=2.10.185"></script><script src="vinted.js?v=2.10.185-listing1"></script>
+</main><dialog id="listingDialog" class="v-listing-dialog" aria-labelledby="listingHeading"><div class="v-listing-top"><h2 id="listingHeading">Förhandsgranska annons</h2><div class="v-listing-tools"><button id="listingCopy" type="button" aria-label="Kopiera hela annonstexten" title="Kopiera annonstext">▢</button><button id="listingClose" type="button" aria-label="Stäng" title="Stäng">×</button></div></div><div class="v-listing-body"><div id="listingPreview" class="v-listing-preview"></div></div><p id="copyListingStatus" class="v-listing-feedback" role="status" aria-live="polite"></p></dialog><dialog id="editDialog" class="v-edit-dialog" aria-labelledby="editHeading"><form id="editForm" method="dialog"><h2 id="editHeading">Redigera</h2><textarea id="editInput" rows="5" aria-label="Ändra text"></textarea><div class="v-dialog-actions"><button id="editCancel" type="button">Avbryt</button><button id="editSave" type="submit">Spara</button></div></form></dialog>
+<script src="../vision/vision-ai-config.js?v=2.10.186"></script><script src="../vision/vision-ai.js?v=2.10.186"></script><script src="../version.js?v=2.10.186"></script><script src="vinted.js?v=2.10.186-listing1"></script>
 </body></html>
