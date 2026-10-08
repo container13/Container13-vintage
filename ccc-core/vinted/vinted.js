@@ -132,9 +132,10 @@ const copyListingStatus=document.getElementById("copyListingStatus");
 function renderTags(){
   const selected=document.getElementById("selectedTags"),bank=document.getElementById("bankTags");
   selected.replaceChildren();bank.replaceChildren();
-  function button(tag,active){const b=document.createElement("button");b.type="button";b.className="v-tag-pill"+(active?" is-selected":"");b.setAttribute("aria-pressed",String(active));b.textContent="#"+tag+(active?" ×":" +");b.onclick=()=>{if(active&&!confirm("Vill du ta bort #"+tag+" från annonsen?"))return;selectedTags=active?selectedTags.filter(x=>x!==tag):[...selectedTags,tag];renderTags();};return b;}
+  function button(tag,active){const b=document.createElement("button");b.type="button";b.className="v-tag-pill"+(active?" is-selected":"");b.setAttribute("role","checkbox");b.setAttribute("aria-checked",String(active));b.textContent=(active?"☑ ":"☐ ")+"#"+tag;b.onclick=()=>{selectedTags=active?selectedTags.filter(x=>x!==tag):[...selectedTags,tag];renderTags();};return b;}
   selectedTags.forEach(tag=>selected.append(button(tag,true)));
   tagBank.forEach(tag=>bank.append(button(tag,selectedTags.includes(tag))));
+  const suggestions=document.getElementById("suggestedTags");if(suggestions){suggestions.replaceChildren();suggestTags().forEach(tag=>suggestions.append(button(tag,selectedTags.includes(tag))));}
   updateListingPreview();
 }
 document.getElementById("tagAddForm").onsubmit=e=>{
@@ -200,7 +201,7 @@ document.querySelectorAll("[data-listing-style]").forEach(b=>b.onclick=()=>{list
 document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;document.querySelectorAll("[data-listing-lang]").forEach(x=>{x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b));});ensureRewrite();});
 copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
-  selectedTags=[...new Set(tagBank.map(cleanTag).filter(Boolean))];tagsInitialized=true;
+  selectedTags=[];tagsInitialized=true;
   rewrittenListing=null;rewriteKey="";renderTags();copyListingStatus.textContent="";
   listingDialog.showModal();document.querySelector(".v-listing-body").scrollTop=0;listingDialog.scrollTop=0;ensureRewrite();
 };
