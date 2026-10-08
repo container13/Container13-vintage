@@ -1,6 +1,6 @@
 const MAX=9,cameraPicker=document.getElementById("cameraPicker"),albumPicker=document.getElementById("albumPicker"),photos=document.getElementById("photos"),cameraAdd=document.getElementById("cameraAdd"),albumAdd=document.getElementById("albumAdd"),count=document.getElementById("count"),analyze=document.getElementById("analyze"),result=document.getElementById("result"),fields=document.getElementById("fields");let items=[],lang="sv-SE",busy=false;const approvedFields=new Map();const analysisStatus=document.getElementById("analysisStatus");
 function draw(){photos.replaceChildren();items.forEach((item,i)=>{const d=document.createElement("div");d.className="v-photo";d.innerHTML='<img alt="Bild '+(i+1)+'"><span class="v-photo-number">'+(i+1)+'</span><button type="button" aria-label="Ta bort bild">×</button>';d.querySelector("img").src=item.url;d.querySelector("button").onclick=()=>{URL.revokeObjectURL(item.url);items.splice(i,1);draw()};photos.append(d)});count.textContent=items.length+" / "+MAX;analyze.disabled=!items.length||busy;const full=items.length>=MAX;cameraAdd.disabled=full;albumAdd.disabled=full;document.querySelector(".v-photo-actions")?.classList.toggle("is-full",full)}
-function addFiles(files){selectedTags=[];result.hidden=true;fields.replaceChildren();approvedFields.clear();analysisStatus.textContent="";for(const file of [...(files||[])]){if(items.length>=MAX)break;if(file.type.startsWith("image/"))items.push({file,url:URL.createObjectURL(file)})}draw()}
+function addFiles(files){selectedTags=[];tagsInitialized=false;result.hidden=true;fields.replaceChildren();approvedFields.clear();analysisStatus.textContent="";for(const file of [...(files||[])]){if(items.length>=MAX)break;if(file.type.startsWith("image/"))items.push({file,url:URL.createObjectURL(file)})}draw()}
 cameraAdd.onclick=()=>cameraPicker.click();albumAdd.onclick=()=>albumPicker.click();
 cameraPicker.onchange=()=>{addFiles(cameraPicker.files);cameraPicker.value=""};
 albumPicker.onchange=()=>{addFiles(albumPicker.files);albumPicker.value=""};
@@ -104,7 +104,7 @@ function makeVintedListing(){
   return [title,description,details.join("\n"),selectedTags.map(t=>"#"+t).join(" ")].filter(Boolean).join("\n\n");
 }
 const DEFAULT_BANK="y2k gorpcore archive subversive punk rock cyber grunge drip gorp retro unique rare og casual drain baggy cybery2k bottoms flared wide loose alt rap skate affliction carhartt diesel black jeans vintage secondhand playboy carti playboicarti pinterest cybercore washed vamp cowboy oldschool workwear archivefashion cargopants asaprocky rockstar yvl softcore revival skeleton classic gunna thug slime coutore jessepinkman szeroka religion truereligion edhardy krzyz luzne distressed maisonmargiela rickowens flower outdoorstyle outdoor hiking granola granolagirl hike swag levis bootcut cowboys".split(" ");
-let tagBank=DEFAULT_BANK.slice(),selectedTags=[];
+let tagBank=DEFAULT_BANK.slice(),selectedTags=[],tagsInitialized=false;
 try{const saved=JSON.parse(localStorage.getItem("ccc-vinted-tags")||"null");if(Array.isArray(saved))tagBank=[...new Set([...tagBank,...saved])];}catch{}
 const cleanTag=s=>s.trim().replace(/^#+/,"").toLowerCase().replace(/[^a-z0-9åäö_]/g,"");
 const listingDialog=document.getElementById("listingDialog"),listingPreview=document.getElementById("listingPreview");
@@ -129,7 +129,7 @@ function updateListingPreview(){listingPreview.textContent=makeVintedListing();d
 document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;document.querySelectorAll("[data-listing-lang]").forEach(x=>x.classList.toggle("active",x===b));updateListingPreview();});
 copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
-  if(!selectedTags.length)selectedTags=tagBank.slice();
+  if(!tagsInitialized){selectedTags=tagBank.slice();tagsInitialized=true;}
   renderTags();copyListingStatus.textContent="";
   listingDialog.showModal();
 };
