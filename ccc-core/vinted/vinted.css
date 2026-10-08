@@ -240,3 +240,11 @@ button:disabled{opacity:.48;cursor:not-allowed}
  .v-review-stage .v-review-page .v-value{-webkit-line-clamp:2;line-clamp:2;font-size:13px}
  .v-review-stage .v-review-page .v-evidence{-webkit-line-clamp:1;line-clamp:1;font-size:10px}
 }
+
+/* v2.10.226: viewport-sized swipe pages, no horizontal overflow */
+.v-review-stage{width:100%;min-width:0;max-width:100%;overflow:hidden}
+.v-review-stage .v-review-track{width:100%;min-width:0;max-width:100%;flex:none}
+.v-review-stage .v-review-page{box-sizing:border-box;flex:0 0 100%;width:100%;max-width:100%;min-width:0;overflow:hidden}
+.v-review-stage .v-review-page .v-field{max-width:100%;min-width:0}
+.v-review-stage .v-review-page .v-field-main{max-width:100%;min-width:0}
+.v-review-stage .v-review-page .v-value,.v-review-stage .v-review-page .v-evidence{max-width:100%;overflow-wrap:anywhere}
