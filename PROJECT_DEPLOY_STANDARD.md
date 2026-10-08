@@ -38,3 +38,6 @@ Applies to future projects with automated deployments. Adapt file names and depl
 ## Adoption
 - This file is the reusable standard, not proof that all existing projects already implement it.
 - Apply changes project by project, preserving each project's verified baseline and release rules.
+
+## UI configuration troubleshooting lesson (2026-10-08)
+When a Create/Save button is disabled, inspect all required fields and dropdown choices before assuming a permissions or platform fault. In OpenAI API key creation, an unselected expiration option kept Create secret key disabled; choosing an explicit option enabled it. The selected expiration is a user security decision, not a universal recommendation. Never request, display or commit API key values. Verify each configuration step before proceeding.
