@@ -101,13 +101,19 @@ export default {
         selling:"Write as a skilled human seller. Use 3-4 concise sentences and about 35-55 words. Open with a specific verified garment feature. Use natural confident Swedish and concrete details rather than vague feelings. Avoid styling advice.",
         max:"Write in a bolder, direct streetwear voice with 3-5 punchy sentences and about 45-65 words. Distinct from selling, but grounded entirely in verified garment features. Avoid metaphors, abstract slogans, fashion poetry and invented hype."
       };
+      const examples={
+        neutral:"EXAMPLE (denim; illustration only): Ljusblå jeans från Lee med raka ben och uppvikta benslut.",
+        selling:"EXAMPLE (denim; illustration only): Ljusblå Lee-jeans med snygg, ljus tvätt och raka ben. De uppvikta bensluten ger modellen en tydlig avslutning, medan femficksdesignen håller uttrycket klassiskt.",
+        max:"EXAMPLE (denim; illustration only): Ljusblå Lee-denim med rejält uttryck. Rak modell, ljus tvätt och uppvikta benslut. Inga krusiduller – det är detaljerna som gör skillnaden."
+      };
+      const categoryHints="For jackets emphasize actual shape, closure and visible panels; for knitwear emphasize verified knit pattern, neckline and color; for shoes emphasize visible shape, sole and color; for jeans emphasize verified wash, leg shape and hems. Never transfer facts from examples to a different item.";
       const instruction=rewrite?(
         "Create ONE ready-to-copy Vinted listing in "+(body.language==="en"?"idiomatic English":"idiomatic contemporary Swedish")+". Tone: "+tone+". "+
-        styleGuide[tone]+" "+
+        styleGuide[tone]+" "+examples[tone]+" "+categoryHints+" "+
         "TITLE: concise and searchable: brand + item type + color + one verified distinctive detail when available. "+
         "DESCRIPTION: write about THIS garment, not generic fashion. Prioritize concrete verified visual details. Distinct styles must differ strongly in voice, opening, rhythm and ambition. "+
-        "BAN ALL CLICHES AND FILLER, including: lättmatchad, vardagens alla planer, fina tillsammans med, klassisk och tidlös, fungerar till allt, ett självklart val, den där känslan, garderoben, rena linjer, tydlig detalj, karaktär i varje söm, avslappnad känsla, streetlook, redo att ta plats, lättburen, ger outfiten, håller looken skarp, perfekt till, ett par med attityd, den här gör jobbet. "+
-        "Never use abstract fashion metaphors or filler such as valt sin egen väg, utan onödiga omvägar, rätt mängd denimkänsla or sätter tonen. No repetitive feature lists or forced styling advice. Be direct and specific. "+
+        "Avoid generic cliches and advertising filler. "+
+        "No artificial metaphors or feature repetition. Never write bureaucratic phrases such as enligt angiven tillverkare, en konkret jeansmodell, välkänd femfickskonstruktion. Be direct and specific. "+
         "FACT SAFETY: use ONLY facts supported by supplied title, description and details. Do not invent wear, age, condition, measurements, fit, fabric, rarity, authenticity, construction or styling features. Distinguish a washed appearance from actual wear. "+
         "DETAILS: preserve only provided key-value facts; never add new fields. "+
         "Avoid these recent openings: "+JSON.stringify(recent)+". Return JSON only."
