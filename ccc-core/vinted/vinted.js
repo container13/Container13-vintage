@@ -198,7 +198,7 @@ document.querySelectorAll("[data-listing-style]").forEach(b=>b.onclick=()=>{list
 document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;document.querySelectorAll("[data-listing-lang]").forEach(x=>{x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b));});ensureRewrite();});
 copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
-  selectedTags=suggestTags();tagsInitialized=true;
+  selectedTags=tagBank.slice();tagsInitialized=true;
   rewrittenListing=null;rewriteKey="";renderTags();copyListingStatus.textContent="";
   listingDialog.showModal();document.querySelector(".v-listing-body").scrollTop=0;listingDialog.scrollTop=0;ensureRewrite();
 };
