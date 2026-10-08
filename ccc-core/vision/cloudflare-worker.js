@@ -5,7 +5,7 @@
 const PRODUCT_SCHEMA = {
   type: "object",
   additionalProperties: false,
-  required: ["label", "summaryTitle", "summaryBrand", "summarySeason", "confidence", "priceSuggestion", "fact", "fields"],
+  required: ["label", "summaryTitle", "summaryBrand", "summarySeason", "confidence", "priceSuggestion", "fact", "fields", "fieldEvidence"],
   properties: {
     label: { type: "string" },
     summaryTitle: { type: "string" },
@@ -14,6 +14,7 @@ const PRODUCT_SCHEMA = {
     confidence: { type: "string", enum: ["Säker", "Ganska säker", "Lite osäker"] },
     priceSuggestion: { type: "integer", minimum: 0, maximum: 50000 },
     fact: { type: "string" },
+    fieldEvidence: { type: "object", additionalProperties: false, required: ["title","description","category","brand","size","color","season","manufacturer"], properties: Object.fromEntries(["title","description","category","brand","size","color","season","manufacturer"].map(key => [key, { type:"object", additionalProperties:false, required:["confidence","evidence","nextPhoto"], properties:{ confidence:{type:"string",enum:["high","medium","low","unknown"]}, evidence:{type:"string"}, nextPhoto:{type:"string"} } }])) },
     fields: {
       type: "object",
       additionalProperties: false,
@@ -46,6 +47,8 @@ Regler:
 - Beskrivningen ska vara på svenska, kort och säljbar men saklig. Ingen uppgift om slitage/skick. "Nyskick" läggs endast till manuellt av användaren senare.
 - priceSuggestion ska vara 0 tills CCC har en separat prislogik med tillräckligt underlag.
 - fields.price ska alltid vara tom sträng.
+- fieldEvidence: bedöm varje fält separat. high endast vid tydligt synligt bildbevis, medium för rimlig tolkning, low vid svagt stöd och unknown om det saknas stöd. evidence beskriver kort vad i bilden som stöder uppgiften, aldrig påhittade detaljer. nextPhoto föreslår en specifik kompletterande detaljbild endast om den kan minska osäkerheten, annars tom sträng.
+- Vid low eller unknown: lämna det motsvarande fields-värdet tomt. Ange aldrig en osäker gissning som faktum.
 - Svara endast enligt JSON-schemat.`;
 
 function allowedOrigin(request, env) {
