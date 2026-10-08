@@ -67,6 +67,18 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
+  // Vinted test assets must not be served from the root SW's stale
+  // cache-first/ignoreSearch path. Preserve the rest of the site's caching.
+  if (url.pathname.startsWith('/ccc-core/vinted/')) {
+    event.respondWith(
+      fetch(request, { cache: 'no-store' }).catch(async () => {
+        const cached = await caches.match(request);
+        return cached || Response.error();
+      })
+    );
+    return;
+  }
+
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request, { cache: 'no-store' })
