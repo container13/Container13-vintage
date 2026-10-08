@@ -38,3 +38,13 @@
 - [ ] Candidate -> CURRENT.
 - [ ] Checkpoint -> IDLE.
 - [ ] Current state records what was actually verified.
+
+## Anti-shortcut checks for every project
+- [ ] Searched active implementation and `solutions/` before designing anything new.
+- [ ] One owner per user-facing behavior; any duplicate mechanism has an approved sunset plan.
+- [ ] Exact runtime endpoint, deployment workflow and source file identified.
+- [ ] Version and relevant browser cache keys are coherent for the changed runtime.
+- [ ] Final commit deployment checked; cancelled/older runs do not count.
+- [ ] Evidence stage reported precisely; device/AI/business outcome never inferred from CI success.
+- [ ] Handoff/state reconciled or clearly marked UNVERIFIED; historical notes marked superseded.
+- [ ] CI guard tested with a known failure; required-check enforcement confirmed separately.
