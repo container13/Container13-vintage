@@ -255,10 +255,14 @@ document.getElementById("tagBankToggle").onclick=()=>{const node=document.getEle
 const copyListing=document.getElementById("copyListing");
 let listingLanguage="sv",listingStyle="selling";
 let rewrittenListing=null,rewriteKey="",rewriteRequest=0;
+const listingVariants=new Map();
+function neutralVariant(parts){return {title:parts.title,description:parts.description,details:parts.details};}
 const recentCopy=(()=>{try{return JSON.parse(localStorage.getItem("ccc-vinted-recent-copy")||"[]")}catch{return []}})();
 
 async function ensureRewrite(){
  const parts=listingParts(),key=JSON.stringify({parts,listingStyle,listingLanguage});
+ if(listingVariants.has(key)){++rewriteRequest;rewrittenListing=listingVariants.get(key);rewriteKey=key;updateListingPreview();return;}
+ if(listingStyle==="neutral"&&listingLanguage==="sv"){++rewriteRequest;rewrittenListing=neutralVariant(parts);rewriteKey=key;listingVariants.set(key,rewrittenListing);updateListingPreview();return;}
  if(rewriteKey===key&&rewrittenListing){updateListingPreview();return;}
  const id=++rewriteRequest;rewrittenListing=null;updateListingPreview();
  const note=document.getElementById("listingLanguageNote");note.textContent="Skriver annonstext med AI…";note.classList.add("is-working");
@@ -267,7 +271,7 @@ async function ensureRewrite(){
   const data=await response.json();
   if(!response.ok||!data.listing?.description)throw Error(data.error||"AI-omskrivning misslyckades");
   if(id!==rewriteRequest)return;
-  rewrittenListing=data.listing;rewriteKey=key;updateListingPreview();
+  rewrittenListing=data.listing;rewriteKey=key;listingVariants.set(key,data.listing);updateListingPreview();
  }catch(e){if(id!==rewriteRequest)return;note.classList.remove("is-working");updateListingPreview(true);note.textContent="AI-omskrivningen misslyckades: "+String(e.message||"okänt fel").slice(0,180)+". Ingen annonstext visas förrän AI fungerar.";}
 }
 let translatedListing=null,translationKey="",translationRequest=0;
@@ -311,7 +315,7 @@ document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listi
 copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
   refreshAiTagSuggestions();selectedTags=[...aiSuggestedTags];tagsInitialized=true;aiTagToggle.checked=true;
-  rewrittenListing=null;rewriteKey="";renderTags();copyListingStatus.textContent="";
+  renderTags();copyListingStatus.textContent="";
   listingDialog.showModal();document.querySelector(".v-listing-body").scrollTop=0;listingDialog.scrollTop=0;ensureRewrite();
 };
 document.getElementById("listingClose").onclick=()=>listingDialog.close();
