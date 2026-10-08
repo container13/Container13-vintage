@@ -251,3 +251,13 @@ button:disabled{opacity:.48;cursor:not-allowed}
 
 /* Vinted listing preferences, 2.10.234 */
 .v-head-right{display:flex;align-items:center;gap:9px;min-width:0}.v-head-brand{display:flex;flex-direction:column;align-items:flex-end;gap:2px}.v-settings-gear{width:40px;height:40px;flex:none;display:grid;place-items:center;border:1px solid var(--v-border);border-radius:12px;background:var(--v-card);color:var(--v-gold);font-size:24px;cursor:pointer}.v-preferences-dialog{width:min(92vw,410px)}.v-preferences{display:grid;gap:12px}.v-preferences-head{display:flex;justify-content:space-between;align-items:center;gap:12px}.v-preferences-head h2{margin:0;font-size:20px}.v-preferences-head button{background:transparent;color:var(--v-text);border:1px solid var(--v-border);border-radius:9px;font-size:24px;width:40px;height:40px}.v-preferences label{font-size:14px;font-weight:750}.v-preferences select{width:100%;padding:12px;border:1px solid var(--v-border);border-radius:10px;background:var(--v-bg);color:var(--v-text);font:inherit}.v-preferences p{font-size:12px;line-height:1.4;color:var(--v-muted);margin:4px 0 0}
+
+/* 2.10.235: compact dashboard-family header; centered logo and version */
+.v-ccc-head{grid-template-columns:44px minmax(0,1fr) 44px;grid-template-rows:60px 20px;height:calc(106px + env(safe-area-inset-top));padding:calc(env(safe-area-inset-top) + 5px) 16px 7px;gap:2px 6px;align-items:center}
+.v-ccc-head .v-back{grid-column:1;grid-row:1;justify-self:center;align-self:center}
+.v-ccc-head .v-ccc-logo{grid-column:2;grid-row:1;justify-self:center;align-self:center;min-width:0}
+.v-ccc-head .v-head-right{grid-column:3;grid-row:1;justify-self:center;align-self:center;display:flex;flex-direction:row}
+.v-ccc-head .v-settings-gear{width:42px;height:42px;border-radius:50%;font-size:23px;background:var(--v-card)}
+.v-ccc-head .v-head-section{grid-column:1/-1;grid-row:2;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--v-gold);font-size:10px;font-weight:850;letter-spacing:.19em;line-height:1}
+.v-ccc-head .v-head-dot{height:6px;width:6px;background:var(--v-gold);border-radius:50%}
+.v-ccc-head .v-head-section .v-version{font-size:10px;letter-spacing:0;font-weight:600;margin-left:5px}
