@@ -177,7 +177,7 @@ document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listi
 copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
   if(!tagsInitialized){selectedTags=tagBank.slice();tagsInitialized=true;}
-  renderTags();copyListingStatus.textContent="";
+  rewrittenListing=null;rewriteKey="";renderTags();copyListingStatus.textContent="";
   listingDialog.showModal();document.querySelector(".v-listing-body").scrollTop=0;listingDialog.scrollTop=0;ensureRewrite();
 };
 document.getElementById("listingClose").onclick=()=>listingDialog.close();
