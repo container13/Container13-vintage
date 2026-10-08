@@ -1,0 +1,46 @@
+name: Deploy CCC Vision PENDING test
+
+on:
+  push:
+    branches: [ccc-demo-public-test]
+    paths:
+      - 'ccc-core/vision/WORKER_PENDING.js'
+      - '.github/workflows/ccc-vision-pending-deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ccc-vision-pending-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate candidate syntax
+        run: node --check ccc-core/vision/WORKER_PENDING.js
+      - name: Check dedicated Cloudflare credentials
+        env:
+          CF_API_TOKEN: ${{ secrets.CCC_CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CCC_CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          test -n "$CF_API_TOKEN" || { echo "Missing CCC Cloudflare token"; exit 1; }
+          test -n "$CF_ACCOUNT_ID" || { echo "Missing CCC Cloudflare account"; exit 1; }
+      - name: Deploy isolated candidate Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CCC_CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CCC_CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: ccc-core/vision
+          command: deploy WORKER_PENDING.js --name ccc-vision-pending-test --compatibility-date 2026-10-08
+      - name: Explain candidate limits
+        run: |
+          echo "PENDING deployed under ccc-vision-pending-test; production ccc-vision-api untouched."
+          echo "This job does not copy production OPENAI_API_KEY secret into test Worker."
+          echo "No live AI runtime PASS or promotion is implied."
