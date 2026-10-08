@@ -60,6 +60,7 @@
         confidence: clean(product.confidence, "Lite osäker"),
         priceSuggestion: Number.isFinite(rawPrice) ? rawPrice : 0,
         fact: clean(product.fact),
+        fieldEvidence: product.fieldEvidence && typeof product.fieldEvidence === "object" ? product.fieldEvidence : {},
         fields: {
           title: clean(fields.title, clean(product.summaryTitle)),
           category: clean(fields.category),
