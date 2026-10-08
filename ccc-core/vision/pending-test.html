@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>CCC Vision – isolerat AI-test</title>
+<style>body{font:16px system-ui;background:#15191f;color:#f5f5f5;max-width:680px;margin:0 auto;padding:20px}h1{font-size:1.4rem}button,input{font:inherit}button{padding:12px 18px;margin:12px 0;background:#f1c54a;color:#161616;border:0;border-radius:9px}button:disabled{opacity:.45}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#252b32;padding:14px;border-radius:10px}small{color:#c6ccd2}.warning{color:#f4ca71}</style></head>
+<body><h1>CCC Vision – PENDING AI-test</h1><p class="warning">Endast test-Worker. Publicerar inga objekt och ändrar inte produktions-Workern.</p>
+<p><small>Välj en bild av ett plagg. Analysen skickas till ccc-vision-pending-test och kan medföra API-kostnad. Använd inga privata eller känsliga bilder.</small></p>
+<input id="photo" type="file" accept="image/*"><p><button id="run" disabled>Testa AI-analys</button></p>
+<p id="status" role="status">Välj en bild för att börja.</p><pre id="output" hidden></pre>
+<script src="vision-ai-config.js?v=2.10.186"></script>
+<script>window.CCC_VISION_AI_CONFIG.endpoint="https://ccc-vision-pending-test.mangaj73.workers.dev";</script>
+<script src="vision-ai.js?v=2.10.186"></script>
+<script>
+const file=document.getElementById("photo"),button=document.getElementById("run"),status=document.getElementById("status"),output=document.getElementById("output");
+file.onchange=()=>{button.disabled=!file.files.length;status.textContent=button.disabled?"Välj en bild.":"Redo att testa."};
+button.onclick=async()=>{
+ button.disabled=true;output.hidden=true;status.textContent="Analyserar via separat test-Worker…";
+ try{
+  const response=await window.CCC_VISION_AI.analyze([file.files[0]]);
+  const data=response.result||{}, evidence=data.fieldEvidence||{};
+  const expected=["title","description","category","brand","size","color","season","manufacturer"];
+  const valid=expected.every(key=>evidence[key]&&["high","medium","low","unknown"].includes(evidence[key].confidence)&&typeof evidence[key].evidence==="string"&&typeof evidence[key].nextPhoto==="string");
+  status.textContent=valid?"AI-anrop klart – fältbevis finns. Granska innehållet manuellt.":"AI svarade, men fullständiga fältbevis saknas. INTE GODKÄND.";
+  output.textContent=JSON.stringify({schemaPass:valid,fields:data.fields||{},fieldEvidence:evidence,model:response.model||""},null,2);
+  output.hidden=false;
+ }catch(e){status.textContent="AI-test MISSLYCKADES: "+(e.message||"Okänt fel");}
+ finally{button.disabled=!file.files.length;}
+};
+</script></body></html>
