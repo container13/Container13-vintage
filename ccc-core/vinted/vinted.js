@@ -138,7 +138,7 @@ async function ensureRewrite(){
   if(!response.ok||!data.listing?.description)throw Error(data.error||"AI-omskrivning misslyckades");
   if(id!==rewriteRequest)return;
   rewrittenListing=data.listing;rewriteKey=key;updateListingPreview();
- }catch(e){if(id!==rewriteRequest)return;note.classList.remove("is-working");note.textContent="AI-omskrivningen är inte tillgänglig ännu. Visar originaltext.";updateListingPreview(true);}
+ }catch(e){if(id!==rewriteRequest)return;note.classList.remove("is-working");updateListingPreview(true);note.textContent="AI-omskrivningen misslyckades: "+String(e.message||"okänt fel").slice(0,180)+". Ingen annonstext visas förrän AI fungerar.";}
 }
 let translatedListing=null,translationKey="",translationRequest=0;
 const TRANSLATION_ENDPOINT="https://ccc-vision-pending-test.mangaj73.workers.dev";
@@ -155,7 +155,7 @@ function updateListingPreview(fallback=false){
   listingPreview.textContent=[rewrittenListing.title,rewrittenListing.description,rewrittenListing.details,tags].filter(Boolean).join("\n\n");
   note.classList.remove("is-working");note.textContent="";return;
  }
- if(fallback){listingPreview.textContent=makeVintedListing();return;}
+ if(fallback){listingPreview.textContent="";return;}
  listingPreview.textContent="";note.textContent="Skriver annonstext med AI…";
 }
 async function ensureTranslation(){
@@ -182,7 +182,7 @@ copyListing.onclick=()=>{
 };
 document.getElementById("listingClose").onclick=()=>listingDialog.close();
 document.getElementById("listingCopy").onclick=async()=>{
-  if(!listingPreview.textContent.trim()){copyListingStatus.textContent="Ingen färdig annonstext att kopiera.";return;}
+  if(!rewrittenListing||!listingPreview.textContent.trim()){copyListingStatus.textContent="Ingen AI-annons klar att kopiera.";return;}
   try{await navigator.clipboard.writeText(listingPreview.textContent);copyListingStatus.textContent="Kopierat ✓";if(rewrittenListing){recentCopy.push(rewrittenListing.title+" "+rewrittenListing.description.slice(0,120));if(recentCopy.length>8)recentCopy.splice(0,recentCopy.length-8);try{localStorage.setItem("ccc-vinted-recent-copy",JSON.stringify(recentCopy))}catch{}}const b=document.getElementById("listingCopy");b.classList.add("is-copied");b.textContent="✓";setTimeout(()=>{b.classList.remove("is-copied");b.textContent="▢";},1300);}
   catch{copyListingStatus.textContent="Kunde inte kopiera. Försök igen.";}
 };
