@@ -11,12 +11,12 @@ function makeRows(data){
   const labels=lang==="sv-SE"
     ? [["TITEL","title"],["BESKRIVNING","description"],["KATEGORI","category"],["MÄRKE","brand"],["STORLEK","size"],["FÄRG","color"],["SÄSONG","season"],["TILLVERKARE","manufacturer"]]
     : [["TITLE","title"],["DESCRIPTION","description"],["CATEGORY","category"],["BRAND","brand"],["SIZE","size"],["COLOUR","color"],["SEASON","season"],["MANUFACTURER","manufacturer"]];
-  return labels.flatMap(([label,key])=>{
+  return labels.map(([label,key])=>{
     const value=typeof f[key]==="string"?f[key].trim():"";
-    if(!value||/\b(okänd|okänt|unknown|osäker|osäkert|uncertain|ej säker|not sure|n\/a|kontrollera|kan inte avgöra|cannot determine|möjligen|possibly)\b/i.test(value))return [];
+    if(!value||/\b(okänd|okänt|unknown|osäker|osäkert|uncertain|ej säker|not sure|n\/a|kontrollera|kan inte avgöra|cannot determine|möjligen|possibly)\b/i.test(value))return [label,"","UNKNOWN",null];
     const meta=evidence[key];
-    if(meta && !["high","medium"].includes(meta.confidence))return [];
-    return [[label,value,"REVIEW",meta||null]];
+    if(meta && !["high","medium"].includes(meta.confidence))return [label,"","UNKNOWN",null];
+    return [label,value,"REVIEW",meta||null];
   });
 }
 const editDialog=document.getElementById("editDialog"),editInput=document.getElementById("editInput"),editHeading=document.getElementById("editHeading");
@@ -31,6 +31,7 @@ document.getElementById("editForm").onsubmit=e=>{
   activeEdit.valueNode.textContent=value;
   activeEdit.statusNode.textContent=lang==="sv-SE"?"Redigerad":"Edited";
   activeEdit.copy.dataset.value=value;
+  rewrittenListing=null;rewriteKey="";
   closeEdit();
 };
 function renderFields(rows){
@@ -54,6 +55,50 @@ function renderFields(rows){
     fields.append(row);
   });
 }
+// Review uses the existing CCC swipe physics when CCC_CORE is available.
+// The review stage is fixed-height: never scroll the entire review vertically.
+const reviewDialog=document.getElementById("reviewDialog");
+const reviewStage=document.getElementById("reviewStage");
+const reviewDots=document.getElementById("reviewDots");
+const reviewPosition=document.getElementById("reviewPosition");
+let reviewIndex=0,reviewTouch=null;
+function showReviewField(index){
+  const rows=[...fields.querySelectorAll(".v-field")];
+  if(!rows.length)return;
+  reviewIndex=Math.max(0,Math.min(rows.length-1,index));
+  rows.forEach((row,i)=>{row.hidden=i!==reviewIndex;row.setAttribute("aria-hidden",String(i!==reviewIndex));});
+  reviewPosition.textContent=(reviewIndex+1)+" / "+rows.length;
+  reviewDots.replaceChildren();
+  rows.forEach((row,i)=>{
+    const b=document.createElement("button");b.type="button";b.className=i===reviewIndex?"active":"";
+    b.setAttribute("aria-label","Visa "+row.querySelector(".v-label span")?.textContent);
+    b.setAttribute("aria-current",i===reviewIndex?"step":"false");
+    b.onclick=()=>showReviewField(i);reviewDots.append(b);
+  });
+}
+function openReviewDialog(){showReviewField(0);if(!reviewDialog.open)reviewDialog.showModal();}
+document.getElementById("openReview").onclick=openReviewDialog;
+document.getElementById("reviewBack").onclick=()=>reviewDialog.close();
+document.getElementById("reviewProposal").onclick=()=>{reviewDialog.close();copyListing.click();};
+reviewStage.addEventListener("touchstart",e=>{
+  if(e.touches.length!==1||e.target.closest("input,textarea,button")){reviewTouch=null;return;}
+  reviewTouch={x:e.touches[0].clientX,y:e.touches[0].clientY};
+},{passive:true});
+reviewStage.addEventListener("touchend",e=>{
+  if(!reviewTouch||!e.changedTouches.length)return;
+  const dx=e.changedTouches[0].clientX-reviewTouch.x,dy=e.changedTouches[0].clientY-reviewTouch.y;
+  const swipe=window.CCC_CORE?.swipe;
+  const horizontal=swipe?.isHorizontal?swipe.isHorizontal(dx,dy):Math.abs(dx)>24&&Math.abs(dx)>Math.abs(dy)*1.25;
+  const commit=swipe?.shouldCommit?swipe.shouldCommit(dx,reviewStage.clientWidth):Math.abs(dx)>Math.max(72,reviewStage.clientWidth*.24);
+  if(horizontal&&commit)showReviewField(reviewIndex+(dx<0?1:-1));
+  reviewTouch=null;
+},{passive:true});
+reviewStage.addEventListener("touchcancel",()=>{reviewTouch=null;},{passive:true});
+reviewStage.addEventListener("keydown",e=>{
+ if(e.target.closest("input,textarea"))return;
+ if(e.key==="ArrowLeft"||e.key==="ArrowRight"){e.preventDefault();showReviewField(reviewIndex+(e.key==="ArrowRight"?1:-1));}
+});
+
 analyze.onclick=async()=>{
   if(busy||!items.length)return;
   busy=true;analyze.classList.add("is-working");draw();result.hidden=true;fields.replaceChildren();approvedFields.clear();
@@ -63,11 +108,11 @@ analyze.onclick=async()=>{
     if(!ai?.configured?.())throw new Error("Vision är inte konfigurerad.");
     const response=await ai.analyze(items.slice(0,3).map(x=>x.file));
     const rows=makeRows(response.result);
-    if(!rows.length){
+    if(!rows.some(row=>row[1])){
       analysisStatus.textContent=lang==="sv-SE"?"Analysen är inte tillräckligt säker. Inga produktuppgifter visas.":"Analysis is uncertain. No product details shown.";
       return;
     }
-    renderFields(rows);result.hidden=false;
+    renderFields(rows);result.hidden=false;openReviewDialog();
     analysisStatus.textContent=lang==="sv-SE"?"AI-förslag, inte verifierade fakta. Kontrollera varje uppgift före publicering.":"AI suggestions – verify each detail before publishing.";
     requestAnimationFrame(()=>window.scrollTo({top:0,behavior:"instant"}));
   }catch(e){analysisStatus.textContent="Analysen misslyckades: "+(e?.message||"Okänt fel");}
