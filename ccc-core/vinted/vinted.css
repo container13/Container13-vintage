@@ -60,3 +60,26 @@
 
 /* 2.10.189: one scroll surface throughout the modal */
 .v-listing-dialog{overscroll-behavior:contain}.v-listing-body{overflow-y:auto;overscroll-behavior:contain;min-height:0;scrollbar-gutter:stable}.v-listing-dialog .v-tag-editor{display:block}
+
+/* CCC Vinted visual feedback v2.10.191 */
+.v-main{padding-top:22px}
+.v-intro h1{font-weight:850;letter-spacing:-.045em}
+.v-card,.v-result{box-shadow:0 8px 28px rgba(0,0,0,.045)}
+.v-photo-action,.v-analyze,.v-copy,.v-edit,.v-tag-pill,.v-listing-tools button,.v-listing-language button,.v-tag-heading button,.v-tag-add button,.v-back{transition:transform .13s ease,background-color .16s ease,border-color .16s ease,box-shadow .16s ease,opacity .16s ease;cursor:pointer;touch-action:manipulation}
+button:not(:disabled):active,.v-back:active{transform:scale(.965);filter:brightness(1.1)}
+button:focus-visible,.v-back:focus-visible{outline:3px solid var(--v-gold);outline-offset:3px}
+button:disabled{opacity:.48;cursor:not-allowed}
+.v-analyze:not(:disabled){box-shadow:0 5px 18px rgba(201,155,57,.18)}
+.v-photo-action:hover,.v-tag-pill:hover,.v-listing-tools button:hover{border-color:var(--v-gold)}
+.v-listing-language button.active{box-shadow:0 2px 9px rgba(0,0,0,.18)}
+.v-tag-pill.is-selected{background:color-mix(in srgb,var(--v-gold) 19%,var(--v-card));border-color:var(--v-gold);font-weight:750}
+.v-tag-pill.is-selected:hover{background:color-mix(in srgb,var(--v-gold) 29%,var(--v-card))}
+.v-listing-feedback:not(:empty),#analysisStatus:not(:empty){transition:opacity .18s ease}
+.v-listing-dialog{box-shadow:0 25px 90px rgba(0,0,0,.5)}
+.v-listing-top{background:var(--v-card)}
+.v-listing-tools button.is-copied{background:var(--v-green);border-color:var(--v-green);color:white}
+.v-analyze.is-working{position:relative;pointer-events:none}
+.v-analyze.is-working::after{content:"";display:inline-block;vertical-align:middle;width:14px;height:14px;margin-left:10px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:v-spin .7s linear infinite}
+#listingLanguageNote.is-working::before{content:"";display:inline-block;width:12px;height:12px;margin-right:9px;border:2px solid var(--v-gold);border-right-color:transparent;border-radius:50%;animation:v-spin .7s linear infinite}
+@keyframes v-spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.v-photo-action,.v-analyze,.v-copy,.v-edit,.v-tag-pill,.v-listing-tools button,.v-listing-language button,.v-tag-heading button,.v-tag-add button,.v-back{transition:none}.v-analyze.is-working::after,#listingLanguageNote.is-working::before{animation:none}}
