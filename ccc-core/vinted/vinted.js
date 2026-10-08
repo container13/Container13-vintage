@@ -198,6 +198,9 @@ function suggestTags(){
  const p=listingParts(),v=(p.title+" "+p.description+" "+p.details).toLowerCase();
  const en=listingLanguage==="en",out=[];
  const add=(sv,english=sv)=>{const tag=en?english:sv;if(!out.includes(tag))out.push(tag)};
+ // Container13 secondhand context; vintage only when the garment is identified as vintage.
+ add("secondhand");
+ if(/vintage|årtionde|decade|1990|1980|1970|90-tal|80-tal|70-tal/i.test(v))add("vintage");
  if(/\\blee\\b/.test(v))add("lee");
  if(/\\blevi['’]?s\\b/.test(v))add("levis");
  if(/\\badidas\\b/.test(v))add("adidas");
@@ -209,7 +212,7 @@ function suggestTags(){
  if(/ljusblå|light blue/.test(v))add("ljusblå","lightblue");
  else if(/\\bblå\\b|\\bblue\\b/.test(v))add("blå","blue");
  if(/\\bsvart\\b|\\bblack\\b/.test(v))add("svart","black");
- if(/\\bvintage\\b/.test(v))add("vintage");
+
  if(/\\bretro\\b/.test(v))add("retro");
  if(/\\by2k\\b/.test(v))add("y2k");
  if(/raka ben|rak passform|straight legs|straight cut|straight fit/.test(v))add("rakajeans","straightlegjeans");
