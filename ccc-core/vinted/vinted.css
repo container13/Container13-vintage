@@ -157,3 +157,8 @@ button:disabled{opacity:.48;cursor:not-allowed}
 
 /* 2.10.208 */
 .v-tag-count{font-size:12px;font-weight:700;color:var(--v-muted);margin:10px 16px 4px}
+
+/* 2.10.210: prominent primary proposal action */
+#copyListing.v-preview-primary{display:flex!important;width:100%!important;min-height:58px!important;align-items:center;justify-content:center;gap:12px;margin:10px 0 14px!important;padding:14px 18px!important;background:#e2b85c!important;color:#211a0b!important;border:1px solid #e2b85c!important;border-radius:14px!important;font-size:17px!important;font-weight:850!important;box-shadow:0 3px 14px rgba(226,184,92,.18)!important}
+#copyListing.v-preview-primary span{font-size:22px;font-weight:600}
+#copyListing.v-preview-primary:active{transform:scale(.985)}
