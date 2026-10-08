@@ -172,7 +172,9 @@ function updateListingPreview(fallback=false){
  const note=document.getElementById("listingLanguageNote");
  const tags=selectedTags.map(t=>"#"+t).join(" ");
  if(rewrittenListing){
-  listingPreview.textContent=[rewrittenListing.title,rewrittenListing.description,rewrittenListing.details,tags].filter(Boolean).join("\n\n");
+  const detailLabels={Brand:"Märke",Category:"Kategori",Size:"Storlek",Color:"Färg",Season:"Säsong",Manufacturer:"Tillverkare"};
+ const details=listingLanguage==="sv"?rewrittenListing.details.split("\n").map(line=>line.replace(/^(Brand|Category|Size|Color|Season|Manufacturer):/,key=>detailLabels[key.slice(0,-1)]+":")).join("\n"):rewrittenListing.details;
+ listingPreview.textContent=[rewrittenListing.title,rewrittenListing.description,details,tags].filter(Boolean).join("\n\n");
   note.classList.remove("is-working");note.textContent="";return;
  }
  if(fallback){listingPreview.textContent="";return;}
@@ -203,7 +205,7 @@ copyListing.onclick=()=>{
 document.getElementById("listingClose").onclick=()=>listingDialog.close();
 document.getElementById("listingCopy").onclick=async()=>{
   if(!rewrittenListing||!listingPreview.textContent.trim()){copyListingStatus.textContent="Ingen AI-annons klar att kopiera.";return;}
-  try{await navigator.clipboard.writeText(listingPreview.textContent);copyListingStatus.textContent="Kopierat ✓";if(rewrittenListing){recentCopy.push(rewrittenListing.title+" "+rewrittenListing.description.slice(0,120));if(recentCopy.length>8)recentCopy.splice(0,recentCopy.length-8);try{localStorage.setItem("ccc-vinted-recent-copy",JSON.stringify(recentCopy))}catch{}}const b=document.getElementById("listingCopy");b.classList.add("is-copied");b.textContent="✓";setTimeout(()=>{b.classList.remove("is-copied");b.textContent="▢";},1300);}
+  try{await navigator.clipboard.writeText(listingPreview.textContent);copyListingStatus.textContent="Kopierat ✓";if(rewrittenListing){recentCopy.push(rewrittenListing.title+" "+rewrittenListing.description.slice(0,120));if(recentCopy.length>8)recentCopy.splice(0,recentCopy.length-8);try{localStorage.setItem("ccc-vinted-recent-copy",JSON.stringify(recentCopy))}catch{}}const b=document.getElementById("listingCopy");b.classList.add("is-copied");b.textContent="✓";setTimeout(()=>{b.classList.remove("is-copied");b.textContent="⧉";},1300);}
   catch{copyListingStatus.textContent="Kunde inte kopiera. Försök igen.";}
 };
 listingDialog.addEventListener("click",e=>{if(e.target===listingDialog)listingDialog.close();});
