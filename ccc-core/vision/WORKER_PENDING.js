@@ -111,17 +111,40 @@ export default {
         "Keep details as supplied key-value lines, translate labels as appropriate, and never add new attributes. "+
         "Vary wording and avoid these recent listing openings: "+JSON.stringify(recent)+". Return JSON only."
       ):"Translate this reviewed Swedish vintage clothing listing into natural, clear English. Preserve all facts exactly, do not invent condition, era, material or measurements. Keep details as translated key-value lines. Return JSON only.";
-      const response = await fetch("https://api.openai.com/v1/responses", {
-        method:"POST",headers:{"Authorization":"Bearer "+env.OPENAI_API_KEY,"Content-Type":"application/json"},
-        body:JSON.stringify({model:env.OPENAI_MODEL||"gpt-5.6-terra",store:false,reasoning:{effort:"low"},
-          input:[{role:"user",content:[{type:"input_text",text:instruction+"\n"+JSON.stringify({title,description,details})}]}],
-          text:{format:{type:"json_schema",name:"listing_translation",strict:true,schema}}})
-      });
-      const data=await response.json().catch(()=>({}));
-      if(!response.ok)return json({error:"Engelsk text kunde inte skapas."},502,origin);
-      const output=data.output_text||(data.output||[]).flatMap(item=>item?.content||[]).find(part=>part?.type==="output_text")?.text;
-      try {const translated=JSON.parse(output);return json(rewrite?{listing:translated}:{translation:translated},200,origin);}
-      catch{return json({error:"Engelsk text kunde inte tolkas."},502,origin);}
+      const generate=async(extra="")=>{
+        const response=await fetch("https://api.openai.com/v1/responses",{
+          method:"POST",headers:{"Authorization":"Bearer "+env.OPENAI_API_KEY,"Content-Type":"application/json"},
+          body:JSON.stringify({model:env.OPENAI_MODEL||"gpt-5.6-terra",store:false,reasoning:{effort:"low"},
+            input:[{role:"user",content:[{type:"input_text",text:instruction+"\\n"+JSON.stringify({title,description,details})+(extra?"\\nREVISION REQUIRED: "+extra:"")}]}],
+            text:{format:{type:"json_schema",name:"listing_translation",strict:true,schema}}})
+        });
+        const data=await response.json().catch(()=>({}));
+        if(!response.ok)throw Error("AI kunde inte skriva annonstexten.");
+        const output=data.output_text||(data.output||[]).flatMap(item=>item?.content||[]).find(part=>part?.type==="output_text")?.text;
+        return JSON.parse(output);
+      };
+      const validate=(item)=>{
+        if(!rewrite)return "";
+        const d=String(item?.description||""),t=String(item?.title||"");
+        const source=(title+" "+description+" "+details).toLowerCase();
+        if(!d.trim()||!t.trim())return "Both title and description must be present.";
+        const unsupported=[["sliten","slit"],["knappgylf","knappgylf"],["kontrastsöm","kontrastsöm"],["nyskick","nyskick"],["oanvänd","oanvänd"],["äkta vintage","äkta vintage"]];
+        for(const [term,stem] of unsupported){if((t+" "+d).toLowerCase().includes(term)&&!source.includes(stem))return "Do not invent garment properties: "+term;}
+        const words=d.trim().split(/\\s+/).length;
+        if(tone==="max"&&words<55)return "MAX must have at least 65 words, a compelling opening and substantial personality.";
+        if(tone==="selling"&&words<35)return "SELLING must have at least 45 words of engaging natural language.";
+        if(tone==="neutral"&&words>65)return "NEUTRAL must be concise and strictly factual.";
+        if(tone!=="neutral"&&/karaktär i varje söm|redo att ta plats|ett starkt val|den där självklara|alltid funkar/i.test(d))return "Remove generic advertising cliches.";
+        return "";
+      };
+      try{
+        let generated=await generate();
+        let issue=validate(generated);
+        if(issue){generated=await generate(issue+" Rewrite completely. Keep all facts grounded in the input.");issue=validate(generated);}
+        if(issue)return json({error:"AI-texten klarade inte kvalitetskontrollen. Försök igen."},422,origin);
+        return json(rewrite?{listing:generated}:{translation:generated},200,origin);
+      }catch{return json({error:"AI kunde inte skapa en godkänd annonstext."},502,origin);}
+
     }
     const images = Array.isArray(body?.images) ? body.images.slice(0, 3) : [];
     if (!images.length || images.some(v => typeof v !== "string" || !v.startsWith("data:image/"))) {
