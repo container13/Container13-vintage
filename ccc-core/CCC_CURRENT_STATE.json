@@ -8,8 +8,8 @@
   "release": {
     "currentVerified": "2.10.184",
     "previousVerified": "2.10.180",
-    "candidate": null,
-    "integrity": "PASS_USER_IPHONE_EDIT_MODAL"
+    "candidate": "2.10.185",
+    "integrity": "PENDING_RUNTIME_VERIFICATION"
   },
   "rules": {
     "master": "CCC_MASTER_RULES.md",
@@ -27,15 +27,36 @@
     }
   },
   "currentWork": {
-    "completed": "User verified Vinted 2.10.184 editor popup and Save/Cancel on iPhone.",
-    "next": "Continue Vinted workflow, preserving pinch zoom lock and editor.",
+    "completed": "Added per-field confidence, visual evidence and targeted next-photo suggestions in Vision Worker schema; preserved legacy normalization and Vinted display.",
+    "next": "Confirm deployed Vision Worker actually uses updated schema, then test analysis on iPhone and verify evidence and no invented facts.",
     "blocked": false
   },
   "workCheckpoint": {
-    "status": "IDLE",
-    "targetRelease": null,
-    "plan": [],
-    "resumeInstruction": "Continue from verified 2.10.184."
+    "status": "IN_PROGRESS",
+    "targetRelease": "2.10.185",
+    "plan": [
+      {
+        "id": 1,
+        "task": "Worker field-level evidence schema",
+        "status": "DONE"
+      },
+      {
+        "id": 2,
+        "task": "Backward-compatible normalization and Vinted display",
+        "status": "DONE"
+      },
+      {
+        "id": 3,
+        "task": "GitHub readback and static verification",
+        "status": "PENDING"
+      },
+      {
+        "id": 4,
+        "task": "Worker deployment and real iPhone analysis",
+        "status": "PENDING"
+      }
+    ],
+    "resumeInstruction": "Do not promote 2.10.185 until Worker deployment and real-device analysis are verified; 2.10.184 remains safe baseline."
   },
   "lastSafeRelease": "2.10.184"
 }
