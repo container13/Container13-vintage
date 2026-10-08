@@ -171,6 +171,7 @@ function listingParts(){
 function updateListingPreview(fallback=false){
  const note=document.getElementById("listingLanguageNote");
  const tags=selectedTags.map(t=>"#"+t).join(" ");
+ const tagSummary=document.getElementById("listingTagCount");if(tagSummary)tagSummary.textContent=selectedTags.length+" hashtags ingår i kopian";
  if(rewrittenListing){
   const detailLabels={Brand:"Märke",Category:"Kategori",Size:"Storlek",Color:"Färg",Season:"Säsong",Manufacturer:"Tillverkare"};
  const details=listingLanguage==="sv"?rewrittenListing.details.split("\n").map(line=>line.replace(/^(Brand|Category|Size|Color|Season|Manufacturer):/,key=>detailLabels[key.slice(0,-1)]+":")).join("\n"):rewrittenListing.details;
@@ -198,7 +199,7 @@ document.querySelectorAll("[data-listing-style]").forEach(b=>b.onclick=()=>{list
 document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;document.querySelectorAll("[data-listing-lang]").forEach(x=>{x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b));});ensureRewrite();});
 copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
-  selectedTags=tagBank.slice();tagsInitialized=true;
+  selectedTags=[...new Set(tagBank.map(cleanTag).filter(Boolean))];tagsInitialized=true;
   rewrittenListing=null;rewriteKey="";renderTags();copyListingStatus.textContent="";
   listingDialog.showModal();document.querySelector(".v-listing-body").scrollTop=0;listingDialog.scrollTop=0;ensureRewrite();
 };
