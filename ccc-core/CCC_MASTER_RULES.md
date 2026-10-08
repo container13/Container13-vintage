@@ -60,3 +60,15 @@ Permanent working rules for Container13 CCC.
 
 ## 10. Stop rule
 If evidence contradicts the plan, stop adding patches. Inventory the real implementation and state chain first, then choose one fix.
+
+## 11. Anti-shortcut and single-engine rule (2026-10-08)
+- Existing solution first: search active source, endpoint, workflows and prior fixes before designing any new module, Worker, test mode, token or UI.
+- CCC Vinted has ONE user-facing listing rewrite path: `ccc-core/vinted/vinted.js` -> `ccc-vision-pending-test` -> `ccc-core/vision/WORKER_PENDING.js` until a verified, explicitly approved promotion. The PENDING Worker is not the production Vision Worker.
+- A Git branch/commit provides rollback history; do not create duplicate live test engines for ordinary iteration. Exceptions require an explicit documented need and retirement plan.
+- No additional test token for normal CCC Vinted usage. Never expose API secrets in browser, GitHub or logs.
+- When changing listing styles, preserve user-selected language, original garment facts, hashtags, images and existing review flow. No invented garment attributes.
+- A release must include version bump AND Vinted asset cache-key bump when Vinted UI changes. Never call a release live before GitHub Pages deploy completes.
+- Distinguish: CODE COMMITTED / STATIC PASS / DEPLOYED / REAL AI PASS / IPHONE PASS. Report only evidenced levels, with a link or commit ID.
+- Stop when a required step cannot be verified; do not compensate with optimistic wording or extra patches.
+- Existing MASTER RULES take precedence over historical V2 drafts and stale handoffs. Historical documents must be clearly marked SUPERSEDED.
+- The CI release guard is mandatory. Do not bypass, disable, or weaken it to make a release green; fix the underlying inconsistency.
