@@ -154,3 +154,6 @@ button:disabled{opacity:.48;cursor:not-allowed}
 .v-tag-editor[open]>summary{border-bottom:1px solid var(--v-border)}
 .v-tag-editor .v-tag-heading,.v-tag-editor .v-tag-pills,.v-tag-editor .v-tag-add,.v-tag-editor #tagBank{margin-left:12px;margin-right:12px}
 .v-tag-editor .v-tag-add{margin-bottom:12px}
+
+/* 2.10.208 */
+.v-tag-count{font-size:12px;font-weight:700;color:var(--v-muted);margin:10px 16px 4px}
