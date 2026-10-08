@@ -43,3 +43,14 @@ Only one deployment/promotion chain for the same project should be authoritative
 ## Learning loop
 FIX -> ROOT CAUSE -> GENERAL LESSON -> PERMANENT RULE/CHECK -> VERIFY.
 A general lesson discovered in any project should be proposed back to this template.
+
+## Cross-project anti-shortcut contract — 2026-10-08
+- The project template is the canonical **shared** standard for all Container13 projects. Project-specific MASTER RULES add stricter constraints; do not fork or duplicate the shared standard in every module.
+- **Inspect before inventing:** trace the real source -> state -> endpoint -> deploy -> client path and search existing code plus `solutions/` before adding a second Worker, test environment, token, handler or UI.
+- **One owner, one user flow:** reuse the current test environment and engine for ordinary iteration. An exception requires a written purpose, owner, end date/retirement condition and a rollback plan.
+- **No shortcut releases:** plan/checkpoint -> backup/rollback point -> smallest change -> syntax/static check -> GitHub exact readback -> correct version/cache keys -> final-commit deploy -> real behavior verification -> promotion.
+- **Evidence labels are mandatory:** COMMITTED, STATIC PASS, DEPLOYED, RUNTIME PASS and DEVICE PASS are distinct. Do not claim later stages from earlier-stage evidence.
+- **Never claim CI blocks promotion unless branch protection or a required deployment gate actually enforces it.** A green workflow by itself is only a check.
+- **Handoff and state must agree with reality:** mark superseded instructions historical, preserve verified evidence, and do not advance CURRENT on an unverified change.
+- **Automatic guard where practical:** validate version source, cache keys, unique active implementation, syntax, secrets and deployment wiring. Test guard failures intentionally before treating a new guard as reliable.
+- **Scope:** apply this shared standard to all active projects at their next change; do not mass-edit or redeploy unrelated projects just to copy text. Keep specialized safety rules, especially frozen Lina research, intact.
