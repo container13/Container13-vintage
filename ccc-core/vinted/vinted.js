@@ -1,6 +1,6 @@
 const MAX=9,cameraPicker=document.getElementById("cameraPicker"),albumPicker=document.getElementById("albumPicker"),photos=document.getElementById("photos"),cameraAdd=document.getElementById("cameraAdd"),albumAdd=document.getElementById("albumAdd"),count=document.getElementById("count"),analyze=document.getElementById("analyze"),result=document.getElementById("result"),fields=document.getElementById("fields");let items=[],lang="sv-SE",busy=false;const approvedFields=new Map();const analysisStatus=document.getElementById("analysisStatus");
 function draw(){photos.replaceChildren();items.forEach((item,i)=>{const d=document.createElement("div");d.className="v-photo";d.innerHTML='<img alt="Bild '+(i+1)+'"><span class="v-photo-number">'+(i+1)+'</span><button type="button" aria-label="Ta bort bild">×</button>';d.querySelector("img").src=item.url;d.querySelector("button").onclick=()=>{URL.revokeObjectURL(item.url);items.splice(i,1);draw()};photos.append(d)});count.textContent=items.length+" / "+MAX;analyze.disabled=!items.length||busy;const full=items.length>=MAX;cameraAdd.disabled=full;albumAdd.disabled=full;document.querySelector(".v-photo-actions")?.classList.toggle("is-full",full)}
-function addFiles(files){result.hidden=true;fields.replaceChildren();approvedFields.clear();analysisStatus.textContent="";for(const file of [...(files||[])]){if(items.length>=MAX)break;if(file.type.startsWith("image/"))items.push({file,url:URL.createObjectURL(file)})}draw()}
+function addFiles(files){selectedTags=[];result.hidden=true;fields.replaceChildren();approvedFields.clear();analysisStatus.textContent="";for(const file of [...(files||[])]){if(items.length>=MAX)break;if(file.type.startsWith("image/"))items.push({file,url:URL.createObjectURL(file)})}draw()}
 cameraAdd.onclick=()=>cameraPicker.click();albumAdd.onclick=()=>albumPicker.click();
 cameraPicker.onchange=()=>{addFiles(cameraPicker.files);cameraPicker.value=""};
 albumPicker.onchange=()=>{addFiles(albumPicker.files);albumPicker.value=""};
@@ -126,7 +126,7 @@ document.getElementById("tagBankToggle").onclick=()=>{const node=document.getEle
 const copyListing=document.getElementById("copyListing");
 copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
-  if(!selectedTags.length){const words=[...approvedFields.values()].map(f=>f()).join(" ").toLowerCase();if(words.includes("levis")||words.includes("levi"))selectedTags.push("levis");if(words.includes("jeansjacka"))selectedTags.push("jeansjacka","denimjacket");if(words.includes("denim"))selectedTags.push("denim");}
+  if(!selectedTags.length)selectedTags=tagBank.slice();
   renderTags();copyListingStatus.textContent="";
   listingDialog.showModal();
 };
