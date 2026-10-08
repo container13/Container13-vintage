@@ -97,12 +97,12 @@ export default {
       const tone=["neutral","selling","max"].includes(body.style)?body.style:"selling";
       const recent=Array.isArray(body.recent)?body.recent.slice(-8).map(x=>String(x).slice(0,160)):[];
       const instruction=rewrite?(
-        "You are writing a secondhand clothing listing in "+(body.language==="en"?"English":"Swedish")+". Rewrite title AND description, not just swap a few words. Style="+tone+". "+
-        "NEUTRAL: plain factual headline and 1-2 restrained factual sentences, no hype. "+
-        "SELLING: distinctive searchable headline and a warm, engaging 2-3 sentence description; explain the appeal of the garment without generic praise. "+
-        "MAX: clearly more expressive editorial fashion voice: punchy original headline, an energetic hook and vivid but grounded description (3-4 sentences); create desirability through verified visual features and styling ideas framed as suggestions, never claims. The result MUST feel substantially different from neutral and selling, not a minor paraphrase. No fabricated rarity, quality, condition, fit, vintage age, provenance, measurements or other product facts. "+
-        "Avoid repeating the brand and color across sentences. Do not use the same sentence opening as recent listings. Avoid generic filler like timeless piece, perfect for every wardrobe, must-have, statement piece. "+
-        "Keep details exactly factual in key-value format, no extra details. Never invent facts. Recent listing openings to avoid: "+JSON.stringify(recent)+". Return JSON only."
+        "Write a Vinted clothing listing in "+(body.language==="en"?"English":"Swedish")+". Tone "+tone+". Facts ONLY from input; do not infer vintage age, condition, fit, material or authenticity. "+
+        "NEUTRAL: 1-2 factual sentences, straightforward product title, no styling advice. "+
+        "SELLING: appealing Vinted title with searchable brand garment type and color; 2-3 conversational sentences focused on why the verified design is appealing. One optional styling suggestion. "+
+        "MAX: NOT a longer selling version. Write like a lively, confident fashion resale seller. Title MUST be distinctly more magnetic and specific while keeping brand, garment type and color searchable. Start description with a short punchy hook (not repeating title), then 2-3 energetic, varied sentences celebrating VERIFIED design details; at most one imaginative styling suggestion, explicitly a suggestion rather than a product fact. No clichés or artificial scarcity. MAX and SELLING should sound noticeably different in rhythm, structure and vocabulary. "+
+        "Avoid recycling sentences, especially 'style with sneakers', 'timeless', 'perfect for', and openings from these recently used ads: "+JSON.stringify(recent)+". "+
+        "No new concrete claims. Keep factual details in key-value lines exactly; use Swedish labels Märke, Kategori, Storlek, Färg, Säsong, Tillverkare when Swedish and English labels otherwise. Return JSON only."
       ):"Translate this reviewed Swedish vintage clothing listing into natural, clear English. Preserve all facts exactly, do not invent condition, era, material or measurements. Keep details as translated key-value lines. Return JSON only.";
       const response = await fetch("https://api.openai.com/v1/responses", {
         method:"POST",headers:{"Authorization":"Bearer "+env.OPENAI_API_KEY,"Content-Type":"application/json"},
