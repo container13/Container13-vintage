@@ -126,24 +126,21 @@ export default {
       const validate=(item)=>{
         if(!rewrite)return "";
         const d=String(item?.description||""),t=String(item?.title||"");
-        const source=(title+" "+description+" "+details).toLowerCase();
-        if(!d.trim()||!t.trim())return "Both title and description must be present.";
-        const unsupported=[["sliten","slit"],["knappgylf","knappgylf"],["kontrastsöm","kontrastsöm"],["nyskick","nyskick"],["oanvänd","oanvänd"],["äkta vintage","äkta vintage"]];
-        for(const [term,stem] of unsupported){if((t+" "+d).toLowerCase().includes(term)&&!source.includes(stem))return "Do not invent garment properties: "+term;}
-        const words=d.trim().split(/\\s+/).length;
-        if(tone==="max"&&words<55)return "MAX must have at least 65 words, a compelling opening and substantial personality.";
-        if(tone==="selling"&&words<35)return "SELLING must have at least 45 words of engaging natural language.";
-        if(tone==="neutral"&&words>65)return "NEUTRAL must be concise and strictly factual.";
-        if(tone!=="neutral"&&/karaktär i varje söm|redo att ta plats|ett starkt val|den där självklara|alltid funkar/i.test(d))return "Remove generic advertising cliches.";
+        if(!d.trim()||!t.trim())return "Title and description must be present.";
+        const source=(title+" "+description+" "+JSON.stringify(details)).toLowerCase();
+        const output=(t+" "+d).toLowerCase();
+        for(const term of ["knappgylf","kontrastsöm","nyskick","oanvänd"])if(output.includes(term)&&!source.includes(term))return "Unverified product detail: "+term;
         return "";
       };
       try{
-        let generated=await generate();
-        let issue=validate(generated);
-        if(issue){generated=await generate(issue+" Rewrite completely. Keep all facts grounded in the input.");issue=validate(generated);}
-        if(issue)return json({error:"AI-texten klarade inte kvalitetskontrollen. Försök igen."},422,origin);
-        return json(rewrite?{listing:generated}:{translation:generated},200,origin);
-      }catch{return json({error:"AI kunde inte skapa en godkänd annonstext."},502,origin);}
+        const first=await generate();
+        const issue=validate(first);
+        if(!issue)return json(rewrite?{listing:first}:{translation:first},200,origin);
+        let improved;
+        try{improved=await generate(issue+" Remove unsupported facts and write naturally.");}catch{}
+        if(improved&&!validate(improved))return json(rewrite?{listing:improved}:{translation:improved},200,origin);
+        return json({error:"AI-texten innehåller en osäker uppgift. Försök igen."},422,origin);
+      }catch{return json({error:"AI kunde inte skapa annonstexten. Försök igen."},502,origin);}
 
     }
     const images = Array.isArray(body?.images) ? body.images.slice(0, 3) : [];
