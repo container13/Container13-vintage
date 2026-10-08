@@ -261,3 +261,10 @@ button:disabled{opacity:.48;cursor:not-allowed}
 .v-ccc-head .v-head-section{grid-column:1/-1;grid-row:2;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--v-gold);font-size:10px;font-weight:850;letter-spacing:.19em;line-height:1}
 .v-ccc-head .v-head-dot{height:6px;width:6px;background:var(--v-gold);border-radius:50%}
 .v-ccc-head .v-head-section .v-version{font-size:10px;letter-spacing:0;font-weight:600;margin-left:5px}
+
+/* 2.10.236: match Dashboard logo/version + separate module kicker */
+.v-ccc-head{grid-template-rows:82px 25px;height:calc(135px + env(safe-area-inset-top));padding-bottom:10px;row-gap:6px}
+.v-ccc-head .v-ccc-logo{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;align-self:center}
+.v-ccc-head .v-logo-version{display:block;position:relative;z-index:2;font-size:11px;font-weight:750;letter-spacing:.03em;color:var(--v-muted);line-height:1.2;margin-top:0}
+.v-ccc-head .v-head-section{font-size:12px;letter-spacing:.23em;gap:10px;align-self:end}
+.v-ccc-head .v-head-dot{width:7px;height:7px;box-shadow:0 0 10px color-mix(in srgb,var(--v-gold) 50%,transparent)}
