@@ -90,3 +90,9 @@ button:disabled{opacity:.48;cursor:not-allowed}
 .v-listing-top,.v-listing-language,#listingLanguageNote,.v-listing-feedback{flex-shrink:0}
 .v-listing-body{flex:1;min-height:0;max-height:none;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 @media(max-width:600px){.v-listing-dialog{width:calc(100vw - 24px);max-height:min(84dvh,calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 28px));border-radius:18px}}
+
+/* 2.10.193: explicit two-way selected language state */
+.v-listing-language button{min-height:48px;font-weight:650;color:var(--v-muted);border:2px solid transparent}
+.v-listing-language button.active{background:var(--v-gold);color:#171108;border-color:var(--v-gold);font-weight:850;box-shadow:0 3px 12px rgba(201,155,57,.25)}
+.v-listing-language button.active::before{content:'✓ ';font-weight:900}
+.v-listing-language button:not(.active){background:transparent;box-shadow:none}
