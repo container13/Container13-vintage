@@ -198,6 +198,7 @@ function suggestTags(){
  const p=listingParts(),v=(p.title+" "+p.description+" "+p.details).toLowerCase();
  const en=listingLanguage==="en",out=[];
  const add=(sv,english=sv)=>{const tag=en?english:sv;if(!out.includes(tag))out.push(tag)};
+ add("container13");
  // Container13 secondhand context; vintage only when the garment is identified as vintage.
  add("secondhand");
  if(/vintage|årtionde|decade|1990|1980|1970|90-tal|80-tal|70-tal/i.test(v))add("vintage");
