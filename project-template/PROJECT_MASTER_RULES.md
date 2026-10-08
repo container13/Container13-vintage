@@ -23,3 +23,9 @@ Candidate remains PENDING until all gates required by its risk class pass. Only 
 
 ## Project-specific additions
 Add stricter project rules here. Never silently weaken the shared standard.
+
+## Shared anti-shortcut rules
+- Follow `PROJECT_RELEASE_STANDARD.md` § Cross-project anti-shortcut contract before changing any active project.
+- Existing verified implementation first; do not create a second test engine, login, token, deploy chain or handler without an explicit reason and retirement plan.
+- Document actual evidence and outstanding gates; never call COMMITTED/DEPLOYED a real-device PASS.
+- A project-specific CI workflow is advisory until its enforcement as a required check is verified.
