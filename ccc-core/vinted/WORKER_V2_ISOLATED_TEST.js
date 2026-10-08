@@ -15,6 +15,10 @@ const fixtures=[
 ];
 export default {
 async fetch(request,env){
+  const origin=request.headers.get("Origin")||"";
+  const allowed=["https://container13.se","https://www.container13.se"].includes(origin);
+  const cors=allowed?{"Access-Control-Allow-Origin":origin,"Access-Control-Allow-Headers":"Authorization, Content-Type","Access-Control-Allow-Methods":"POST, OPTIONS","Vary":"Origin"}:{};
+  if(request.method==="OPTIONS")return new Response(null,{status:allowed?204:403,headers:cors});
   if(request.method!=="POST")return new Response("Not found",{status:404});
   const token=request.headers.get("Authorization")||"";
   if(!env.VINTED_TEST_TOKEN||token!=="Bearer "+env.VINTED_TEST_TOKEN)return new Response("Unauthorized",{status:401});
@@ -50,6 +54,6 @@ async fetch(request,env){
     }
     output.push({fixture:item.id,styles:samples});
   }
-  return new Response(JSON.stringify({status:"review_required",results:output}),{headers:{"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store"}});
+  return new Response(JSON.stringify({status:"review_required",results:output}),{headers:{"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store",...cors}});
 }
 };
