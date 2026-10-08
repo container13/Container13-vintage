@@ -82,19 +82,19 @@ function makeVintedListing(){
   const tags=new Set();
   const addTag=(tag)=>tags.add("#"+tag);
   const rules=[
-    [/\\blevi['’]?s\\b/i,["levis"]],
+    [/\blevi['’]?s\b/i,["levis"]],
     [/jeansjacka|denimjacka|denim jacket/i,["jeansjacka","denimjacket"]],
-    [/\\bdenim\\b/i,["denim"]],
-    [/\\bvintage\\b/i,["vintage"]],
-    [/\\bretro\\b/i,["retro"]],
-    [/\\bsvart\\b/i,["svart"]],
-    [/\\bblå|blue\\b/i,["blue"]],
-    [/\\badidas\\b/i,["adidas"]],
-    [/\\bnike\\b/i,["nike"]],
-    [/\\bjacka\\b/i,["jacket"]]
+    [/\bdenim\b/i,["denim"]],
+    [/\bvintage\b/i,["vintage"]],
+    [/\bretro\b/i,["retro"]],
+    [/\bsvart\b/i,["svart"]],
+    [/\bblå|blue\b/i,["blue"]],
+    [/\badidas\b/i,["adidas"]],
+    [/\bnike\b/i,["nike"]],
+    [/\bjacka\b/i,["jacket"]]
   ];
   for(const [pattern,list] of rules)if(pattern.test(words))list.forEach(addTag);
-  return [title,description,details.join("\\n"),[...tags].join(" ")].filter(Boolean).join("\\n\\n");
+  return [title,description,details.join("\n"),[...tags].join(" ")].filter(Boolean).join("\n\n");
 }
 const copyListing=document.getElementById("copyListing"),copyListingStatus=document.getElementById("copyListingStatus");
 copyListing.onclick=async()=>{
