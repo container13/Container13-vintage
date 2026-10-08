@@ -22,3 +22,6 @@ No automatic rotation may mark an unverified candidate as CURRENT. If a deploy o
 
 ## Implemented PENDING validation
 GitHub Actions `.github/workflows/ccc-vision-pending-check.yml` runs on changes to WORKER_PENDING.js or the validation workflow. It performs a Node syntax check and static contract checks. It does not deploy or prove live behavior. A green validation check must not trigger CURRENT/PREVIOUS rotation. Production workflow remains separate.
+
+## Isolated candidate deployment
+`.github/workflows/ccc-vision-pending-deploy.yml` automatically deploys WORKER_PENDING.js to the separate Cloudflare script `ccc-vision-pending-test` on candidate changes. It uses the existing CCC-scoped GitHub deployment credentials but does not copy production Worker secrets. A successful test deployment is not an AI runtime PASS. Keep `ccc-vision-api` production and its source `cloudflare-worker.js` unchanged until verified promotion.
