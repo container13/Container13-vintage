@@ -125,11 +125,20 @@ document.getElementById("tagAddForm").onsubmit=e=>{
 document.getElementById("tagBankToggle").onclick=()=>{const node=document.getElementById("tagBank");node.hidden=!node.hidden;document.getElementById("tagBankToggle").textContent=node.hidden?"Visa min hashtagbank":"Dölj hashtagbanken";};
 const copyListing=document.getElementById("copyListing");
 let listingLanguage="sv",listingStyle="selling";
-function styleListing(text,english){
- if(listingStyle==="neutral"||!text)return text;
- const parts=text.split("\n\n");if(parts.length<2)return text;
- const addition=english?(listingStyle==="max"?"Give your outfit a distinctive look with this piece. Easy to style for a personal everyday outfit.":"A versatile piece to style your own way."):(listingStyle==="max"?"Ge din outfit en personlig stil med det här plagget! Kombinera det med dina favoriter för en egen look.":"Ett lättmatchat plagg som passar många olika stilar.");
- parts.splice(2,0,addition);return parts.join("\n\n");
+let rewrittenListing=null,rewriteKey="",rewriteRequest=0;
+const recentCopy=(()=>{try{return JSON.parse(localStorage.getItem("ccc-vinted-recent-copy")||"[]")}catch{return []}})();
+async function ensureRewrite(){
+ const parts=listingParts(),key=JSON.stringify({parts,listingStyle,listingLanguage});
+ if(rewriteKey===key&&rewrittenListing){updateListingPreview();return;}
+ const id=++rewriteRequest;rewrittenListing=null;updateListingPreview();
+ const note=document.getElementById("listingLanguageNote");note.textContent="Skriver annonstext med AI…";note.classList.add("is-working");
+ try{
+  const response=await fetch(TRANSLATION_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"rewrite_listing",...parts,style:listingStyle,language:listingLanguage,recent:recentCopy})});
+  const data=await response.json();
+  if(!response.ok||!data.listing?.description)throw Error(data.error||"AI-omskrivning misslyckades");
+  if(id!==rewriteRequest)return;
+  rewrittenListing=data.listing;rewriteKey=key;updateListingPreview();
+ }catch(e){if(id!==rewriteRequest)return;note.classList.remove("is-working");note.textContent="AI-omskrivningen är inte tillgänglig ännu. Visar originaltext.";updateListingPreview(true);}
 }
 let translatedListing=null,translationKey="",translationRequest=0;
 const TRANSLATION_ENDPOINT="https://ccc-vision-pending-test.mangaj73.workers.dev";
@@ -139,15 +148,15 @@ function listingParts(){
  const entries=[["Brand","MÄRKE","BRAND"],["Category","KATEGORI","CATEGORY"],["Size","STORLEK","SIZE"],["Color","FÄRG","COLOUR"],["Season","SÄSONG","SEASON"],["Manufacturer","TILLVERKARE","MANUFACTURER"]];
  return {title,description,details:entries.map(([label,sv,en])=>{const value=get(sv,en);return value?label+": "+value:"";}).filter(Boolean).join("\n")};
 }
-function updateListingPreview(){
- const note=document.getElementById("listingLanguageNote");note.classList.toggle("is-working",listingLanguage!=="sv"&&!translatedListing);
- const swedish=makeVintedListing();
+function updateListingPreview(fallback=false){
+ const note=document.getElementById("listingLanguageNote");
  const tags=selectedTags.map(t=>"#"+t).join(" ");
- if(listingLanguage==="sv"){listingPreview.textContent=styleListing(swedish,false);note.textContent="";return;}
- if(!translatedListing){listingPreview.textContent="";note.textContent="Skapar engelsk annonstext…";return;}
- const english=[translatedListing.title,translatedListing.description,translatedListing.details].filter(Boolean).join("\n\n");
- listingPreview.textContent=styleListing(english,true)+(tags?"\n\n"+tags:"");
- note.textContent="";
+ if(rewrittenListing){
+  listingPreview.textContent=[rewrittenListing.title,rewrittenListing.description,rewrittenListing.details,tags].filter(Boolean).join("\n\n");
+  note.classList.remove("is-working");note.textContent="";return;
+ }
+ if(fallback){listingPreview.textContent=makeVintedListing();return;}
+ listingPreview.textContent="";note.textContent="Skriver annonstext med AI…";
 }
 async function ensureTranslation(){
  if(listingLanguage==="sv"){updateListingPreview();return;}
@@ -163,18 +172,18 @@ async function ensureTranslation(){
  }catch(e){if(requestId!==translationRequest)return;document.getElementById("listingLanguageNote").classList.remove("is-working");document.getElementById("listingLanguageNote").textContent="Kunde inte skapa engelsk annonstext. Försök välja språk igen.";listingPreview.textContent="";}
 }
 
-document.querySelectorAll("[data-listing-style]").forEach(b=>b.onclick=()=>{listingStyle=b.dataset.listingStyle;document.querySelectorAll("[data-listing-style]").forEach(x=>{x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b));});updateListingPreview();});
-document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;document.querySelectorAll("[data-listing-lang]").forEach(x=>{x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b));});ensureTranslation();});
+document.querySelectorAll("[data-listing-style]").forEach(b=>b.onclick=()=>{listingStyle=b.dataset.listingStyle;document.querySelectorAll("[data-listing-style]").forEach(x=>{x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b));});ensureRewrite();});
+document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;document.querySelectorAll("[data-listing-lang]").forEach(x=>{x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b));});ensureRewrite();});
 copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
   if(!tagsInitialized){selectedTags=tagBank.slice();tagsInitialized=true;}
   renderTags();copyListingStatus.textContent="";
-  listingDialog.showModal();document.querySelector(".v-listing-body").scrollTop=0;listingDialog.scrollTop=0;ensureTranslation();
+  listingDialog.showModal();document.querySelector(".v-listing-body").scrollTop=0;listingDialog.scrollTop=0;ensureRewrite();
 };
 document.getElementById("listingClose").onclick=()=>listingDialog.close();
 document.getElementById("listingCopy").onclick=async()=>{
   if(!listingPreview.textContent.trim()){copyListingStatus.textContent="Ingen färdig annonstext att kopiera.";return;}
-  try{await navigator.clipboard.writeText(listingPreview.textContent);copyListingStatus.textContent="Kopierat ✓";const b=document.getElementById("listingCopy");b.classList.add("is-copied");b.textContent="✓";setTimeout(()=>{b.classList.remove("is-copied");b.textContent="▢";},1300);}
+  try{await navigator.clipboard.writeText(listingPreview.textContent);copyListingStatus.textContent="Kopierat ✓";if(rewrittenListing){recentCopy.push(rewrittenListing.title+" "+rewrittenListing.description.slice(0,120));if(recentCopy.length>8)recentCopy.splice(0,recentCopy.length-8);try{localStorage.setItem("ccc-vinted-recent-copy",JSON.stringify(recentCopy))}catch{}}const b=document.getElementById("listingCopy");b.classList.add("is-copied");b.textContent="✓";setTimeout(()=>{b.classList.remove("is-copied");b.textContent="▢";},1300);}
   catch{copyListingStatus.textContent="Kunde inte kopiera. Försök igen.";}
 };
 listingDialog.addEventListener("click",e=>{if(e.target===listingDialog)listingDialog.close();});
