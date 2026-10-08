@@ -52,7 +52,7 @@ jobs:
           }
           // Negative controls: intentionally bad fixture values must fail without touching app files.
           const validateFixture = ({versionToken, cacheToken, duplicate=false}) => {
-            assert.ok(/^\\d+\\.\\d+\\.\\d+$/.test(versionToken),'Invalid version format');
+            assert.ok(new RegExp('^[0-9]+[.][0-9]+[.][0-9]+$').test(versionToken),'Invalid version format');
             assert.equal(cacheToken,versionToken,'Version/cache mismatch');
             assert.equal(duplicate,false,'Duplicate active engine');
           };
