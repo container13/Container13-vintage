@@ -31,3 +31,6 @@ User tested `ccc-core/vision/pending-test.html` against `ccc-vision-pending-test
 
 ## Listing-quality candidate change (2026-10-08)
 Updated only `WORKER_PENDING.js` to produce more specific Swedish listing titles/descriptions from visible evidence, without inventing material, model, condition, price, year or season. Added response-side fail-closed blanking of low/unknown field values and season summary; price remains disabled. Await GitHub check/deploy and new real-image test before promotion. Production untouched.
+
+## Real-image regression after listing-quality update (2026-10-08)
+User tested same jeans jacket in isolated PENDING page. Response `schemaPass:true`, model `gpt-5.6-terra`. Title `Levi's jeansjacka i mörkblå denim med svart krage`; richer visual description; brand/title medium with requested close-up; size, season, manufacturer unknown and corresponding fields blank; price blank. Candidate real-image PASS for schema and cautious listing behavior on this sample. This does NOT establish full integration or production promotion. Note medium-confidence brand appears in title and must remain explicitly reviewable.
