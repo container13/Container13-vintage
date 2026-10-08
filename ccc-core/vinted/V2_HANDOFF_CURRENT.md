@@ -1,3 +1,15 @@
+# SUPERSEDED — historical V2 experiment (2026-10-08)
+
+This is historical context only. **DO NOT use this file as the current handoff.**
+
+The user chose to continue with the existing CCC Vinted engine rather than maintain duplicate V2 testing. The V2 test Worker source, V2 deploy workflow, token prompt and V2 UI route were removed from the active branch. The old V2 draft and fixture script remain historical and must not be treated as active runtime.
+
+Current instructions: `../CCC_MASTER_RULES.md`, `../CCC_RELEASE_CHECKLIST.md`, `../CCC_CURRENT_STATE.json`, `../CCC_HANDOFF_CURRENT.md`.
+
+Prior notes retained for history below:
+
+---
+
 # CCC Vinted V2 — handoff 2026-10-08
 
 ## Locked live baseline
