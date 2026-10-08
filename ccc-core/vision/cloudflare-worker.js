@@ -1,3 +1,4 @@
+// CCC Vision deploy trigger: 2026-10-08; no runtime logic changed.
 // CCC Vision – Cloudflare Worker (serverdel)
 // Lägg OPENAI_API_KEY som en Worker Secret. Lägg aldrig nyckeln i webbsidan/GitHub-koden.
 // Valfritt: OPENAI_MODEL (standard gpt-5.6-terra) och ALLOWED_ORIGINS kommaseparerat.
