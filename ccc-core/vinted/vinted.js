@@ -125,16 +125,48 @@ document.getElementById("tagAddForm").onsubmit=e=>{
 document.getElementById("tagBankToggle").onclick=()=>{const node=document.getElementById("tagBank");node.hidden=!node.hidden;document.getElementById("tagBankToggle").textContent=node.hidden?"Visa min hashtagbank":"Dölj hashtagbanken";};
 const copyListing=document.getElementById("copyListing");
 let listingLanguage="both";
-function updateListingPreview(){listingPreview.textContent=makeVintedListing();document.getElementById("listingLanguageNote").textContent=listingLanguage==="sv"?"":"Engelsk annonstext kräver separat AI-generering. Tills dess visas originaltexten.";}
-document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;document.querySelectorAll("[data-listing-lang]").forEach(x=>x.classList.toggle("active",x===b));updateListingPreview();});
+let translatedListing=null,translationKey="",translationRequest=0;
+const TRANSLATION_ENDPOINT="https://ccc-vision-pending-test.mangaj73.workers.dev";
+function listingParts(){
+ const get=(sv,en)=>approvedFields.get(lang==="sv-SE"?sv:en)?.()||"";
+ const title=get("TITEL","TITLE"),description=get("BESKRIVNING","DESCRIPTION");
+ const entries=[["Brand","MÄRKE","BRAND"],["Category","KATEGORI","CATEGORY"],["Size","STORLEK","SIZE"],["Color","FÄRG","COLOUR"],["Season","SÄSONG","SEASON"],["Manufacturer","TILLVERKARE","MANUFACTURER"]];
+ return {title,description,details:entries.map(([label,sv,en])=>{const value=get(sv,en);return value?label+": "+value:"";}).filter(Boolean).join("\n")};
+}
+function updateListingPreview(){
+ const note=document.getElementById("listingLanguageNote");
+ const swedish=makeVintedListing();
+ const tags=selectedTags.map(t=>"#"+t).join(" ");
+ if(listingLanguage==="sv"){listingPreview.textContent=swedish;note.textContent="";return;}
+ if(!translatedListing){listingPreview.textContent="";note.textContent="Skapar engelsk annonstext…";return;}
+ const english=[translatedListing.title,translatedListing.description,translatedListing.details].filter(Boolean).join("\n\n");
+ listingPreview.textContent=listingLanguage==="both"?[swedish.replace(/\n\n#[^\n]*$/,""),"English",english,tags].filter(Boolean).join("\n\n"):[english,tags].filter(Boolean).join("\n\n");
+ note.textContent="";
+}
+async function ensureTranslation(){
+ if(listingLanguage==="sv"){updateListingPreview();return;}
+ const parts=listingParts(),key=JSON.stringify(parts);
+ if(translatedListing&&translationKey===key){updateListingPreview();return;}
+ const requestId=++translationRequest;translatedListing=null;updateListingPreview();
+ try{
+   const response=await fetch(TRANSLATION_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"translate_listing",...parts})});
+   const data=await response.json();
+   if(!response.ok||!data.translation?.description)throw Error(data.error||"Ingen översättning");
+   if(requestId!==translationRequest)return;
+   translatedListing=data.translation;translationKey=key;updateListingPreview();
+ }catch(e){if(requestId!==translationRequest)return;document.getElementById("listingLanguageNote").textContent="Kunde inte skapa engelsk annonstext. Försök välja språk igen.";listingPreview.textContent="";}
+}
+
+document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;document.querySelectorAll("[data-listing-lang]").forEach(x=>x.classList.toggle("active",x===b));ensureTranslation();});
 copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
   if(!tagsInitialized){selectedTags=tagBank.slice();tagsInitialized=true;}
   renderTags();copyListingStatus.textContent="";
-  listingDialog.showModal();
+  listingDialog.showModal();ensureTranslation();
 };
 document.getElementById("listingClose").onclick=()=>listingDialog.close();
 document.getElementById("listingCopy").onclick=async()=>{
+  if(!listingPreview.textContent.trim()){copyListingStatus.textContent="Ingen färdig annonstext att kopiera.";return;}
   try{await navigator.clipboard.writeText(listingPreview.textContent);copyListingStatus.textContent="Kopierat ✓";}
   catch{copyListingStatus.textContent="Kunde inte kopiera. Försök igen.";}
 };
