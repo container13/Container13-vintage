@@ -210,3 +210,43 @@ document.getElementById("listingCopy").onclick=async()=>{
   catch{copyListingStatus.textContent="Kunde inte kopiera. Försök igen.";}
 };
 listingDialog.addEventListener("click",e=>{if(e.target===listingDialog)listingDialog.close();});
+
+
+/* Isolated V2 editorial preview. Explicit opt-in via ?v2test=1.
+   Test token is entered at runtime and never persisted or included in the bundle.
+   Existing rewrite, copy and publishing flows remain untouched. */
+if(new URLSearchParams(location.search).get("v2test")==="1"){
+  const panel=document.createElement("section");
+  panel.className="v-card";
+  panel.style.marginTop="16px";
+  panel.innerHTML='<h2>V2 – test av annonstexter</h2><p>Jämför tre nya AI-stilar. Påverkar inte din vanliga annons.</p><button type="button" id="v2PreviewRun">Jämför V2-texter</button><pre id="v2PreviewResult" style="white-space:pre-wrap;overflow-wrap:anywhere"></pre>';
+  const anchor=document.getElementById("copyListing");
+  (anchor?.closest("section")||document.querySelector("main")||document.body).append(panel);
+  panel.querySelector("#v2PreviewRun").onclick=async()=>{
+    const target=panel.querySelector("#v2PreviewResult");
+    const parts=listingParts();
+    if(!parts.title.trim()||!parts.description.trim()){
+      target.textContent="Granska först ett plagg så att titel och beskrivning finns.";return;
+    }
+    const token=prompt("Ange V2-testnyckeln (sparas inte):");
+    if(!token)return;
+    target.textContent="V2 skapar tre texter…";
+    const button=panel.querySelector("#v2PreviewRun");button.disabled=true;
+    try{
+      const response=await fetch("https://ccc-vinted-v2-test.mangaj73.workers.dev/",{
+        method:"POST",
+        headers:{"Authorization":"Bearer "+token.trim(),"Content-Type":"application/json"},
+        body:JSON.stringify({items:[parts]})
+      });
+      if(!response.ok)throw Error("HTTP "+response.status);
+      const data=await response.json();
+      const styles=data.results?.[0]?.styles;
+      if(data.results?.[0]?.fixture!=="real-1"||!styles)throw Error("Fel testdata returnerades");
+      target.textContent=["neutral","selling","max"].map(key=>{
+        const item=styles[key];
+        return key.toUpperCase()+"\\n"+(item?.error||[item?.title,item?.description,item?.details].filter(Boolean).join("\\n"));
+      }).join("\\n\\n──────────\\n\\n");
+    }catch(error){target.textContent="V2-testet misslyckades: "+String(error.message||error);}
+    finally{button.disabled=false;}
+  };
+}
