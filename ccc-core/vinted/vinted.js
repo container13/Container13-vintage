@@ -70,7 +70,8 @@ function reviewPages(){return reviewTrack.querySelectorAll(":scope > .v-review-p
 function renderReviewPages(){
   // Rows have been moved out of #fields into pages after the first render.
   // Reuse them when reopening review instead of losing the product fields.
-  const rows=[...reviewTrack.querySelectorAll(".v-field")];
+  const freshRows=[...fields.querySelectorAll(".v-field")];
+  const rows=freshRows.length?freshRows:[...reviewTrack.querySelectorAll(".v-field")];
   reviewTrack.replaceChildren();
   for(let i=0;i<rows.length;i+=4){
     const page=document.createElement("section");page.className="v-review-page";
