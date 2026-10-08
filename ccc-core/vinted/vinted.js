@@ -149,16 +149,30 @@ let rewrittenListing=null,rewriteKey="",rewriteRequest=0;
 const recentCopy=(()=>{try{return JSON.parse(localStorage.getItem("ccc-vinted-recent-copy")||"[]")}catch{return []}})();
 
 const v2TestMode=new URLSearchParams(location.search).get("v2test")==="1";
+const V2_TOKEN_STORAGE_KEY="ccc-vinted-v2-test-token";
 let v2Token="",v2CacheKey="",v2Styles=null;
+try{v2Token=localStorage.getItem(V2_TOKEN_STORAGE_KEY)||"";}catch{}
+function askV2Token(){
+ const entered=prompt("Ange V2-testnyckeln (lämna tomt för att avbryta):");
+ if(!entered?.trim())return false;
+ v2Token=entered.trim();
+ if(confirm("Vill du komma ihåg V2-testnyckeln på den här enheten för kommande tester?")){
+  try{localStorage.setItem(V2_TOKEN_STORAGE_KEY,v2Token);}catch{alert("Nyckeln kunde inte sparas i webbläsaren.");}
+ }else{
+  try{localStorage.removeItem(V2_TOKEN_STORAGE_KEY);}catch{}
+ }
+ return true;
+}
+
 async function getV2Styles(parts){
  const key=JSON.stringify(parts);
  if(v2CacheKey===key&&v2Styles)return v2Styles;
- if(!v2Token){const entered=prompt("V2-testnyckel (sparas bara under denna sidvisning):");if(!entered)throw Error("V2-testet avbröts");v2Token=entered.trim();}
+ if(!v2Token&&!askV2Token())throw Error("V2-testet avbröts");
  const response=await fetch("https://ccc-vinted-v2-test.mangaj73.workers.dev/",{
   method:"POST",headers:{"Authorization":"Bearer "+v2Token,"Content-Type":"application/json"},
   body:JSON.stringify({items:[parts]})
  });
- if(!response.ok){if(response.status===401)v2Token="";throw Error("V2 HTTP "+response.status);}
+ if(!response.ok){if(response.status===401){v2Token="";try{localStorage.removeItem(V2_TOKEN_STORAGE_KEY);}catch{}}throw Error("V2 HTTP "+response.status);}
  const data=await response.json();
  if(data.results?.[0]?.fixture!=="real-1")throw Error("V2 fick inte plaggets uppgifter");
  const styles=data.results[0].styles;
