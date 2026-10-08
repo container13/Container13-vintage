@@ -41,3 +41,15 @@
 
 /* 2.10.185: unobtrusive image-evidence notes */
 .v-evidence{margin-top:6px;font-size:11px;line-height:1.4;color:var(--v-muted)}
+
+/* 2.10.186: preview before copying */
+.v-preview-open{margin-top:18px;cursor:pointer}
+.v-listing-dialog{width:min(94vw,620px);max-height:calc(100dvh - 36px);padding:0;border:1px solid var(--v-border);border-radius:18px;background:var(--v-card);color:var(--v-text);box-shadow:0 22px 75px #0008;overflow:hidden}
+.v-listing-dialog::backdrop{background:rgba(0,0,0,.72);backdrop-filter:blur(3px)}
+.v-listing-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid var(--v-border)}
+.v-listing-top h2{font-size:18px;margin:0;line-height:1.2}
+.v-listing-tools{display:flex;gap:8px;flex-shrink:0}
+.v-listing-tools button{width:40px;height:40px;display:grid;place-items:center;border:1px solid var(--v-border);border-radius:10px;background:var(--v-bg);font-size:25px;cursor:pointer}
+.v-listing-body{overflow-y:auto;max-height:calc(100dvh - 190px);padding:20px 18px}
+.v-listing-preview{white-space:pre-wrap;overflow-wrap:anywhere;font-size:15px;line-height:1.65;user-select:text}
+.v-listing-feedback{min-height:22px;padding:0 18px 12px;margin:0;color:var(--v-green);font-size:13px;font-weight:700}
