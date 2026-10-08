@@ -40,3 +40,13 @@ Use for every CCC code release.
 - [ ] Set workCheckpoint=IDLE.
 - [ ] Record what was verified and the next task in CCC_CURRENT_STATE.json.
 - [ ] Report CHANGED FILES ONLY.
+
+## Required Vinted-specific gate
+- [ ] Check the actual Vinted rewrite endpoint and its deployed Worker source; never infer it from a filename.
+- [ ] Verify only one active rewrite path; no V2 mode, extra token or shadow Worker in the user-facing app.
+- [ ] If Vinted UI code changes, update `ccc-core/version.js` and `ccc-core/vinted/index.html` asset cache keys in the same release.
+- [ ] Confirm Pages deployment completed successfully for the FINAL commit (not an earlier cancelled run).
+- [ ] Check real AI output for Neutral, Säljande and Maxad with the SAME garment; compare differences and factual accuracy.
+- [ ] Confirm iPhone Safari rendering, copy buttons, preserved hashtag bank and no duplicate generated listing.
+- [ ] Never claim quality PASS based only on HTTP 405/OPTIONS, syntax checks or Worker deployment.
+- [ ] If any check is unverified, mark it PENDING and tell the user exactly which check remains.
