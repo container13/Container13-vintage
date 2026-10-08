@@ -61,43 +61,77 @@ const reviewDialog=document.getElementById("reviewDialog");
 const reviewStage=document.getElementById("reviewStage");
 const reviewDots=document.getElementById("reviewDots");
 const reviewPosition=document.getElementById("reviewPosition");
-let reviewIndex=0,reviewTouch=null;
-function showReviewField(index){
+let reviewIndex=0,reviewTouch=null,reviewAnimating=false;
+const reviewTrack=document.createElement("div");
+reviewTrack.className="v-review-track";
+reviewStage.replaceChildren(reviewTrack);
+reviewTrack.append(fields);
+function reviewPages(){return Math.ceil(fields.querySelectorAll(".v-field").length/2);}
+function renderReviewPages(){
   const rows=[...fields.querySelectorAll(".v-field")];
-  if(!rows.length)return;
-  reviewIndex=Math.max(0,Math.min(rows.length-1,index));
-  rows.forEach((row,i)=>{row.hidden=i!==reviewIndex;row.setAttribute("aria-hidden",String(i!==reviewIndex));});
-  reviewPosition.textContent=(reviewIndex+1)+" / "+rows.length;
+  reviewTrack.replaceChildren();
+  for(let i=0;i<rows.length;i+=2){
+    const page=document.createElement("section");page.className="v-review-page";
+    page.setAttribute("aria-label","Produktuppgifter "+(i+1)+"–"+Math.min(i+2,rows.length));
+    rows.slice(i,i+2).forEach(row=>{row.hidden=false;row.removeAttribute("aria-hidden");page.append(row);});
+    reviewTrack.append(page);
+  }
+  reviewTrack.style.width=(reviewPages()*100)+"%";
+  reviewTrack.querySelectorAll(".v-review-page").forEach(p=>p.style.width=(100/reviewPages())+"%");
+}
+function reviewOffset(index){return -index*reviewStage.clientWidth;}
+function showReviewField(index,{animate=true}={}){
+  const pages=reviewPages();if(!pages)return;
+  reviewIndex=Math.max(0,Math.min(pages-1,index));
+  reviewTrack.style.transition=animate?(window.CCC_CORE?.swipe?.transition?.()||"transform 580ms cubic-bezier(.20,.58,.16,1)"):"none";
+  reviewTrack.style.transform="translate3d("+reviewOffset(reviewIndex)+"px,0,0)";
+  reviewPosition.textContent=(reviewIndex+1)+" / "+pages;
   reviewDots.replaceChildren();
-  rows.forEach((row,i)=>{
+  for(let i=0;i<pages;i++){
     const b=document.createElement("button");b.type="button";b.className=i===reviewIndex?"active":"";
-    b.setAttribute("aria-label","Visa "+row.querySelector(".v-label span")?.textContent);
+    b.setAttribute("aria-label","Visa sida "+(i+1));
     b.setAttribute("aria-current",i===reviewIndex?"step":"false");
     b.onclick=()=>showReviewField(i);reviewDots.append(b);
-  });
+  }
 }
-function openReviewDialog(){showReviewField(0);if(!reviewDialog.open)reviewDialog.showModal();}
+function openReviewDialog(){renderReviewPages();if(!reviewDialog.open)reviewDialog.showModal();requestAnimationFrame(()=>showReviewField(0,{animate:false}));}
 document.getElementById("openReview").onclick=openReviewDialog;
 document.getElementById("reviewBack").onclick=()=>reviewDialog.close();
 document.getElementById("reviewProposal").onclick=()=>{reviewDialog.close();copyListing.click();};
 reviewStage.addEventListener("touchstart",e=>{
-  if(e.touches.length!==1||e.target.closest("input,textarea,button")){reviewTouch=null;return;}
-  reviewTouch={x:e.touches[0].clientX,y:e.touches[0].clientY};
+ if(e.touches.length!==1||e.target.closest("input,textarea,button")){reviewTouch=null;return;}
+ reviewTouch={x:e.touches[0].clientX,y:e.touches[0].clientY,dx:0,active:false};
+ reviewTrack.style.transition="none";
 },{passive:true});
-reviewStage.addEventListener("touchend",e=>{
-  if(!reviewTouch||!e.changedTouches.length)return;
-  const dx=e.changedTouches[0].clientX-reviewTouch.x,dy=e.changedTouches[0].clientY-reviewTouch.y;
-  const swipe=window.CCC_CORE?.swipe;
-  const horizontal=swipe?.isHorizontal?swipe.isHorizontal(dx,dy):Math.abs(dx)>24&&Math.abs(dx)>Math.abs(dy)*1.25;
-  const commit=swipe?.shouldCommit?swipe.shouldCommit(dx,reviewStage.clientWidth):Math.abs(dx)>Math.max(72,reviewStage.clientWidth*.24);
-  if(horizontal&&commit)showReviewField(reviewIndex+(dx<0?1:-1));
-  reviewTouch=null;
+reviewStage.addEventListener("touchmove",e=>{
+ if(!reviewTouch||e.touches.length!==1)return;
+ const dx=e.touches[0].clientX-reviewTouch.x,dy=e.touches[0].clientY-reviewTouch.y;
+ const swipe=window.CCC_CORE?.swipe;
+ if(!reviewTouch.active){
+   if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>12){reviewTouch=null;showReviewField(reviewIndex,{animate:true});return;}
+   if(!(swipe?.isHorizontal?swipe.isHorizontal(dx,dy):Math.abs(dx)>12&&Math.abs(dx)>Math.abs(dy)*1.25))return;
+   reviewTouch.active=true;
+ }
+ if(e.cancelable)e.preventDefault();
+ reviewTouch.dx=dx;
+ const atEdge=(reviewIndex===0&&dx>0)||(reviewIndex===reviewPages()-1&&dx<0);
+ const shift=swipe?.offset?swipe.offset(dx,reviewStage.clientWidth,{atEdge}):dx*(atEdge?.24:1);
+ reviewTrack.style.transform="translate3d("+(reviewOffset(reviewIndex)+shift)+"px,0,0)";
+},{passive:false});
+reviewStage.addEventListener("touchend",()=>{
+ if(!reviewTouch)return;
+ const dx=reviewTouch.dx,active=reviewTouch.active;
+ reviewTouch=null;
+ const swipe=window.CCC_CORE?.swipe;
+ const commit=swipe?.shouldCommit?swipe.shouldCommit(dx,reviewStage.clientWidth):Math.abs(dx)>Math.max(72,reviewStage.clientWidth*.24);
+ showReviewField(reviewIndex+(active&&commit?(dx<0?1:-1):0));
 },{passive:true});
-reviewStage.addEventListener("touchcancel",()=>{reviewTouch=null;},{passive:true});
+reviewStage.addEventListener("touchcancel",()=>{reviewTouch=null;showReviewField(reviewIndex);},{passive:true});
 reviewStage.addEventListener("keydown",e=>{
  if(e.target.closest("input,textarea"))return;
  if(e.key==="ArrowLeft"||e.key==="ArrowRight"){e.preventDefault();showReviewField(reviewIndex+(e.key==="ArrowRight"?1:-1));}
 });
+window.addEventListener("resize",()=>{if(reviewDialog.open)showReviewField(reviewIndex,{animate:false});});
 
 analyze.onclick=async()=>{
   if(busy||!items.length)return;
