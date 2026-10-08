@@ -1,0 +1,61 @@
+name: Deploy CCC Vinted V2 isolated test
+
+on:
+  push:
+    branches: [ccc-demo-public-test]
+    paths:
+      - 'ccc-core/vinted/WORKER_V2_ISOLATED_TEST.js'
+      - '.github/workflows/ccc-vinted-v2-test-deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ccc-vinted-v2-isolated-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate isolated Worker syntax
+        run: node --check ccc-core/vinted/WORKER_V2_ISOLATED_TEST.js
+      - name: Check dedicated Cloudflare deploy credentials
+        env:
+          CF_API_TOKEN: ${{ secrets.CCC_CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CCC_CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          test -n "$CF_API_TOKEN" || { echo "::error::Missing CCC Cloudflare deploy token"; exit 1; }
+          test -n "$CF_ACCOUNT_ID" || { echo "::error::Missing CCC Cloudflare account ID"; exit 1; }
+      - name: Deploy isolated Vinted V2 Worker only
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CCC_CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CCC_CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: ccc-core/vinted
+          command: deploy WORKER_V2_ISOLATED_TEST.js --name ccc-vinted-v2-test --compatibility-date 2026-10-08
+      - name: Verify unauthorized requests are rejected
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://ccc-vinted-v2-test.mangaj73.workers.dev/"
+          status=""
+          for attempt in 1 2 3 4 5; do
+            status=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 -X POST -H 'Content-Type: application/json' -d '{}' "$URL" || true)
+            if [ "$status" = "401" ]; then break; fi
+            echo "Attempt $attempt: HTTP $status"
+            sleep 5
+          done
+          test "$status" = "401" || { echo "::error::Expected unauthorized POST 401; got $status"; exit 1; }
+          echo "Isolated test Worker auth boundary PASS. AI generation NOT tested."
+      - name: Explain manual secret setup
+        run: |
+          echo "Set OPENAI_API_KEY and VINTED_TEST_TOKEN as Cloudflare secrets on ccc-vinted-v2-test."
+          echo "Cloudflare Worker secrets are not inherited from other Workers."
+          echo "Never store either secret in repository files or workflow logs."
+          echo "No AI sample or editorial quality PASS implied."
