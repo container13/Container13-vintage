@@ -28,3 +28,6 @@ GitHub Actions `.github/workflows/ccc-vision-pending-check.yml` runs on changes 
 
 ## Real-image candidate test (2026-10-08)
 User tested `ccc-core/vision/pending-test.html` against `ccc-vision-pending-test` with a jeans jacket image. Response `schemaPass: true`, model `gpt-5.6-terra`, eight `fieldEvidence` entries, meaningful evidence and next-photo suggestions. Brand confidence medium; size and season unknown with blank values. This verifies the candidate AI response for one image only, not full Vinted iPhone integration. Production remains unchanged. Do not promote app release 2.10.185 until the real iPhone Vinted UI is checked.
+
+## Listing-quality candidate change (2026-10-08)
+Updated only `WORKER_PENDING.js` to produce more specific Swedish listing titles/descriptions from visible evidence, without inventing material, model, condition, price, year or season. Added response-side fail-closed blanking of low/unknown field values and season summary; price remains disabled. Await GitHub check/deploy and new real-image test before promotion. Production untouched.
