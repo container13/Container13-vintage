@@ -28,7 +28,7 @@
   },
   "currentWork": {
     "completed": "Added per-field confidence, visual evidence and targeted next-photo suggestions in Vision Worker schema; preserved legacy normalization and Vinted display.",
-    "next": "Confirm deployed Vision Worker actually uses updated schema, then test analysis on iPhone and verify evidence and no invented facts.",
+    "next": "Configure CCC_CLOUDFLARE_API_TOKEN and CCC_CLOUDFLARE_ACCOUNT_ID GitHub Actions secrets; verify workflow deploy succeeds, then test live Vision response on iPhone. Existing OPENAI_API_KEY Worker secret must remain untouched.",
     "blocked": false
   },
   "workCheckpoint": {
@@ -53,6 +53,16 @@
       {
         "id": 4,
         "task": "Worker deployment and real iPhone analysis",
+        "status": "PENDING"
+      },
+      {
+        "id": 5,
+        "task": "Dedicated GitHub Actions Cloudflare deploy workflow and pinned Wrangler entrypoint",
+        "status": "DONE"
+      },
+      {
+        "id": 6,
+        "task": "Configure dedicated GitHub Actions Cloudflare secrets and confirm deployment",
         "status": "PENDING"
       }
     ],
