@@ -39,6 +39,11 @@ jobs:
           accountId: ${{ secrets.CCC_CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: ccc-core/vision
           command: deploy WORKER_PENDING.js --name ccc-vision-pending-test --compatibility-date 2026-10-08
+      - name: Explain required translation secret
+        run: |
+          echo "PENDING translation requires its own OPENAI_API_KEY secret in Cloudflare Worker settings."
+          echo "GitHub deploy credentials do not grant OpenAI access."
+          echo "Do not report bilingual AI as ready until a real translation POST passes."
       - name: Smoke test isolated Worker HTTP contract
         shell: bash
         run: |
@@ -59,3 +64,4 @@ jobs:
           echo "PENDING deployed under ccc-vision-pending-test; production ccc-vision-api untouched."
           echo "This job does not copy production OPENAI_API_KEY secret into test Worker."
           echo "No live AI runtime PASS or promotion is implied."
+          echo "Translation cannot be declared ready without a configured PENDING OPENAI_API_KEY and a successful translation test."
