@@ -570,3 +570,7 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 - **NAVIGATION ≠ DESTRUCTION:** tillbaka/navigation får inte implicit rensa pågående arbete; reset/delete är separata handlingar.
 - **GESTURE/EVENT INVENTORY:** touch/pointer/click/focus-problem inventeras som en hel eventyta före patch; verklig klient är facit.
 - **CURRENT/PREVIOUS PROMOTION:** PENDING/kandidat får bli CURRENT först efter obligatorisk runtime/verklig-klient-verifiering. PREVIOUS flyttas först vid lyckad promotion.
+
+
+## Gemensam projektstandard (2026-10-08)
+Den gemensamma basen finns i `../project-template/PROJECT_RELEASE_STANDARD.md`, inklusive regler om att kontrollera befintlig lösning före ny motor, verifiera slutlig driftsättning och aldrig kalla kodändring för funktionstest. Linas striktare regler om fryst research, evidens, Handel/Forward och återupptagning har alltid företräde. Denna hänvisning ändrar inte forskningsstate, release eller låsta generationer.
