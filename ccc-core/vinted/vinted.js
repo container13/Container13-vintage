@@ -124,7 +124,7 @@ document.getElementById("tagAddForm").onsubmit=e=>{
 };
 document.getElementById("tagBankToggle").onclick=()=>{const node=document.getElementById("tagBank");node.hidden=!node.hidden;document.getElementById("tagBankToggle").textContent=node.hidden?"Visa min hashtagbank":"Dölj hashtagbanken";};
 const copyListing=document.getElementById("copyListing");
-let listingLanguage="both";
+let listingLanguage="sv";
 let translatedListing=null,translationKey="",translationRequest=0;
 const TRANSLATION_ENDPOINT="https://ccc-vision-pending-test.mangaj73.workers.dev";
 function listingParts(){
@@ -140,7 +140,7 @@ function updateListingPreview(){
  if(listingLanguage==="sv"){listingPreview.textContent=swedish;note.textContent="";return;}
  if(!translatedListing){listingPreview.textContent="";note.textContent="Skapar engelsk annonstext…";return;}
  const english=[translatedListing.title,translatedListing.description,translatedListing.details].filter(Boolean).join("\n\n");
- listingPreview.textContent=listingLanguage==="both"?[swedish.replace(/\n\n#[^\n]*$/,""),"English",english,tags].filter(Boolean).join("\n\n"):[english,tags].filter(Boolean).join("\n\n");
+ listingPreview.textContent=[english,tags].filter(Boolean).join("\n\n");
  note.textContent="";
 }
 async function ensureTranslation(){
@@ -157,7 +157,7 @@ async function ensureTranslation(){
  }catch(e){if(requestId!==translationRequest)return;document.getElementById("listingLanguageNote").classList.remove("is-working");document.getElementById("listingLanguageNote").textContent="Kunde inte skapa engelsk annonstext. Försök välja språk igen.";listingPreview.textContent="";}
 }
 
-document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;document.querySelectorAll("[data-listing-lang]").forEach(x=>x.classList.toggle("active",x===b));ensureTranslation();});
+document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;document.querySelectorAll("[data-listing-lang]").forEach(x=>x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b));});ensureTranslation();});
 copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
   if(!tagsInitialized){selectedTags=tagBank.slice();tagsInitialized=true;}
