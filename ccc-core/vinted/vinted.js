@@ -40,7 +40,7 @@ function renderFields(rows){
     const statusNode=row.querySelector(".v-status"),valueNode=row.querySelector(".v-value"),copy=row.querySelector(".v-copy");
     statusNode.textContent=status==="UNKNOWN"?(lang==="sv-SE"?"Kontrollera":"Check"):(lang==="sv-SE"?"Förslag":"Suggestion");
     valueNode.textContent=value;copy.dataset.value=value;
-    row.querySelector(".v-edit").onclick=()=>{activeEdit={valueNode,statusNode,copy};editHeading.textContent=(lang==="sv-SE"?"Redigera ":"Edit ")+label;editInput.value=valueNode.textContent;editDialog.showModal();editInput.focus();};
+    row.querySelector(".v-edit").onclick=()=>{activeEdit={valueNode,statusNode,copy};editHeading.textContent=(lang==="sv-SE"?"Redigera ":"Edit ")+label;editInput.value=valueNode.textContent;editDialog.showModal();};
     copy.onclick=async()=>{try{await navigator.clipboard.writeText(copy.dataset.value);copy.classList.add("copied");setTimeout(()=>copy.classList.remove("copied"),900)}catch{}};
     fields.append(row);
   });
