@@ -253,7 +253,16 @@ document.getElementById("tagAddForm").onsubmit=e=>{
 };
 document.getElementById("tagBankToggle").onclick=()=>{const node=document.getElementById("tagBank");node.hidden=!node.hidden;document.getElementById("tagBankToggle").textContent=node.hidden?"Visa min hashtagbank":"Dölj hashtagbanken";};
 const copyListing=document.getElementById("copyListing");
+const VINTED_PREFS_KEY="ccc-vinted-listing-preferences";
+function readListingPreferences(){try{const p=JSON.parse(localStorage.getItem(VINTED_PREFS_KEY)||"{}");return {language:["sv","en"].includes(p.language)?p.language:"sv",style:["neutral","selling","max"].includes(p.style)?p.style:"selling"};}catch{return {language:"sv",style:"selling"};}}
 let listingLanguage="sv",listingStyle="selling";
+const preferencesDialog=document.getElementById("vintedSettingsDialog"),defaultLanguage=document.getElementById("vintedDefaultLanguage"),defaultStyle=document.getElementById("vintedDefaultStyle");
+function saveListingPreferences(){try{localStorage.setItem(VINTED_PREFS_KEY,JSON.stringify({language:defaultLanguage.value,style:defaultStyle.value}));}catch{}}
+function applyListingPreferences(){const p=readListingPreferences();listingLanguage=p.language;listingStyle=p.style;defaultLanguage.value=p.language;defaultStyle.value=p.style;document.querySelectorAll("[data-listing-lang]").forEach(b=>{const active=b.dataset.listingLang===listingLanguage;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active));});document.querySelectorAll("[data-listing-style]").forEach(b=>{const active=b.dataset.listingStyle===listingStyle;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active));});}
+document.getElementById("vintedSettingsOpen").onclick=()=>{defaultLanguage.value=readListingPreferences().language;defaultStyle.value=readListingPreferences().style;preferencesDialog.showModal();};
+document.getElementById("vintedSettingsClose").onclick=()=>preferencesDialog.close();
+defaultLanguage.onchange=saveListingPreferences;defaultStyle.onchange=saveListingPreferences;
+applyListingPreferences();
 let rewrittenListing=null,rewriteKey="",rewriteRequest=0;
 const listingVariants=new Map();
 function neutralVariant(parts){return {title:parts.title,description:parts.description,details:parts.details};}
@@ -314,7 +323,7 @@ document.querySelectorAll("[data-listing-style]").forEach(b=>b.onclick=()=>{list
 document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;refreshAiTagSuggestions();renderTags();document.querySelectorAll("[data-listing-lang]").forEach(x=>{x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b));});ensureRewrite();});
 copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
-  refreshAiTagSuggestions();selectedTags=[...aiSuggestedTags];tagsInitialized=true;aiTagToggle.checked=true;
+  applyListingPreferences();refreshAiTagSuggestions();selectedTags=[...aiSuggestedTags];tagsInitialized=true;aiTagToggle.checked=true;
   renderTags();copyListingStatus.textContent="";
   listingDialog.showModal();document.querySelector(".v-listing-body").scrollTop=0;listingDialog.scrollTop=0;ensureRewrite();
 };
