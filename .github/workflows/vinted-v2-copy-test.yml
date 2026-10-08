@@ -1,0 +1,41 @@
+name: Vinted V2 isolated copy test
+on:
+  push:
+    branches: [ccc-demo-public-test]
+    paths:
+      - 'ccc-core/vinted/copy-engine-v2-test.mjs'
+      - '.github/workflows/vinted-v2-copy-test.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  copy-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check AI key is configured
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "::error::OPENAI_API_KEY repository secret is missing. No AI test performed."
+            exit 1
+          fi
+      - name: Generate 12 isolated listing samples
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
+        run: |
+          node ccc-core/vinted/copy-engine-v2-test.mjs | tee vinted-v2-results.txt
+      - name: Upload samples for editorial review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vinted-v2-samples
+          path: vinted-v2-results.txt
+          if-no-files-found: ignore
+          retention-days: 7
