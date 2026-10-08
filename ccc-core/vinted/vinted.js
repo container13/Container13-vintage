@@ -112,10 +112,10 @@ const copyListingStatus=document.getElementById("copyListingStatus");
 function renderTags(){
   const selected=document.getElementById("selectedTags"),bank=document.getElementById("bankTags");
   selected.replaceChildren();bank.replaceChildren();
-  function button(tag,active){const b=document.createElement("button");b.type="button";b.className="v-tag-pill";b.textContent="#"+tag+(active?" ×":" +");b.onclick=()=>{selectedTags=active?selectedTags.filter(x=>x!==tag):[...selectedTags,tag];renderTags();};return b;}
+  function button(tag,active){const b=document.createElement("button");b.type="button";b.className="v-tag-pill";b.textContent="#"+tag+(active?" ×":" +");b.onclick=()=>{if(active&&!confirm("Vill du ta bort #"+tag+" från annonsen?"))return;selectedTags=active?selectedTags.filter(x=>x!==tag):[...selectedTags,tag];renderTags();};return b;}
   selectedTags.forEach(tag=>selected.append(button(tag,true)));
   tagBank.forEach(tag=>bank.append(button(tag,selectedTags.includes(tag))));
-  listingPreview.textContent=makeVintedListing();
+  updateListingPreview();
 }
 document.getElementById("tagAddForm").onsubmit=e=>{
  e.preventDefault();const input=document.getElementById("tagInput"),tag=cleanTag(input.value);input.value="";
@@ -124,6 +124,9 @@ document.getElementById("tagAddForm").onsubmit=e=>{
 };
 document.getElementById("tagBankToggle").onclick=()=>{const node=document.getElementById("tagBank");node.hidden=!node.hidden;document.getElementById("tagBankToggle").textContent=node.hidden?"Visa min hashtagbank":"Dölj hashtagbanken";};
 const copyListing=document.getElementById("copyListing");
+let listingLanguage="both";
+function updateListingPreview(){listingPreview.textContent=makeVintedListing();document.getElementById("listingLanguageNote").textContent=listingLanguage==="sv"?"":"Engelsk annonstext kräver separat AI-generering. Tills dess visas originaltexten.";}
+document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;document.querySelectorAll("[data-listing-lang]").forEach(x=>x.classList.toggle("active",x===b));updateListingPreview();});
 copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
   if(!selectedTags.length)selectedTags=tagBank.slice();
@@ -132,7 +135,7 @@ copyListing.onclick=()=>{
 };
 document.getElementById("listingClose").onclick=()=>listingDialog.close();
 document.getElementById("listingCopy").onclick=async()=>{
-  try{await navigator.clipboard.writeText(makeVintedListing());copyListingStatus.textContent="Kopierat ✓";}
+  try{await navigator.clipboard.writeText(listingPreview.textContent);copyListingStatus.textContent="Kopierat ✓";}
   catch{copyListingStatus.textContent="Kunde inte kopiera. Försök igen.";}
 };
 listingDialog.addEventListener("click",e=>{if(e.target===listingDialog)listingDialog.close();});
