@@ -76,13 +76,18 @@ function renderReviewPages(){
     rows.slice(i,i+4).forEach(row=>{row.hidden=false;row.removeAttribute("aria-hidden");page.append(row);});
     reviewTrack.append(page);
   }
-  // The track stays exactly one viewport wide; each page occupies that width.\n  // Scaling the track itself made every page overflow the iPhone viewport.\n  reviewTrack.style.width="100%";\n  reviewTrack.querySelectorAll(".v-review-page").forEach(p=>{p.style.width="100%";p.style.flex="0 0 100%";});
+  // Each slide is exactly one stage wide; the track itself remains stage-sized.
+  reviewTrack.style.width="100%";
+  reviewTrack.querySelectorAll(".v-review-page").forEach(p=>{
+    p.style.width="100%";
+    p.style.flex="0 0 100%";
+  });
 }
 function reviewOffset(index){return -index*reviewStage.clientWidth;}
 function showReviewField(index,{animate=true}={}){
   const pages=reviewPages();if(!pages)return;
   reviewIndex=Math.max(0,Math.min(pages-1,index));
-  reviewTrack.style.transition=animate?(window.CCC_CORE?.swipe?.transition?.()||"transform 580ms cubic-bezier(.20,.58,.16,1)"):"none";
+  reviewTrack.style.transition=animate?"transform 320ms cubic-bezier(.22,.68,.18,1)":"none";
   reviewTrack.style.transform="translate3d("+reviewOffset(reviewIndex)+"px,0,0)";
   reviewPosition.textContent=(reviewIndex+1)+" / "+pages;
   reviewDots.replaceChildren();
@@ -122,7 +127,7 @@ reviewStage.addEventListener("touchend",()=>{
  const dx=reviewTouch.dx,active=reviewTouch.active;
  reviewTouch=null;
  const swipe=window.CCC_CORE?.swipe;
- const commit=swipe?.shouldCommit?swipe.shouldCommit(dx,reviewStage.clientWidth):Math.abs(dx)>Math.max(72,reviewStage.clientWidth*.24);
+ const commit=Math.abs(dx)>Math.max(48,reviewStage.clientWidth*.16);
  showReviewField(reviewIndex+(active&&commit?(dx<0?1:-1):0));
 },{passive:true});
 reviewStage.addEventListener("touchcancel",()=>{reviewTouch=null;showReviewField(reviewIndex);},{passive:true});
