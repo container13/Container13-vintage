@@ -97,9 +97,9 @@ export default {
       const tone=["neutral","selling","max"].includes(body.style)?body.style:"selling";
       const recent=Array.isArray(body.recent)?body.recent.slice(-8).map(x=>String(x).slice(0,160)):[];
       const styleGuide={
-        neutral:"Neutral is a concise, matter-of-fact classified ad. Exactly 1-3 factual sentences, no hooks, styling advice or sales pitch.",
-        selling:"Write as a skilled human seller. Use 3-4 concise sentences and about 35-55 words. Open with a specific verified garment feature. Use natural confident Swedish and concrete details rather than vague feelings. Avoid styling advice.",
-        max:"Write in a bolder, direct streetwear voice with 3-5 punchy sentences and about 45-65 words. Distinct from selling, but grounded entirely in verified garment features. Avoid metaphors, abstract slogans, fashion poetry and invented hype."
+        neutral:"Neutral is a concise, matter-of-fact classified ad. One or two factual sentences, no hooks, styling advice or sales pitch.",
+        selling:"Write as a skilled human seller. Use only as many sentences as add useful information, typically one to three. Open with a specific verified garment feature. Use natural confident Swedish and concrete details rather than vague feelings. Delete any sentence that merely rephrases an earlier fact. Avoid styling advice.",
+        max:"Write in a bolder, direct streetwear voice with one to three punchy sentences, as short as the verified facts allow. Distinct from selling, but grounded entirely in verified garment features. Avoid metaphors, abstract slogans, fashion poetry and invented hype. Stronger voice must come from sharper wording, never added length."
       };
       const examples={
         neutral:"EXAMPLE (denim; illustration only): Ljusblå jeans från Lee med raka ben och uppvikta benslut.",
@@ -112,7 +112,7 @@ export default {
         styleGuide[tone]+" "+examples[tone]+" "+categoryHints+" "+
         "TITLE: concise and searchable: brand + item type + color + one verified distinctive detail when available. "+
         "DESCRIPTION: write about THIS garment, not generic fashion. Prioritize concrete verified visual details. Distinct styles must differ strongly in voice, opening, rhythm and ambition. "+
-        "Avoid generic cliches and advertising filler. "+
+        "Before returning, silently review each sentence: does it add a new verified product fact or a genuinely useful buyer-facing description? If not, delete it. Remove repeated attributes, unsupported evaluations and decorative closing lines. Concise is better than padded. Avoid generic cliches and advertising filler. "+
         "No artificial metaphors or feature repetition. Never write bureaucratic phrases such as enligt angiven tillverkare, en konkret jeansmodell, välkänd femfickskonstruktion. Be direct and specific. "+
         "FACT SAFETY: use ONLY facts supported by supplied title, description and details. Do not invent wear, age, condition, measurements, fit, fabric, rarity, authenticity, construction or styling features. Distinguish a washed appearance from actual wear. "+
         "DETAILS: preserve only provided key-value facts; never add new fields. "+
