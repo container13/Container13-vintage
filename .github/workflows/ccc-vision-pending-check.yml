@@ -1,0 +1,44 @@
+name: Validate CCC Vision PENDING
+
+on:
+  push:
+    branches: [ccc-demo-public-test]
+    paths:
+      - 'ccc-core/vision/WORKER_PENDING.js'
+      - '.github/workflows/ccc-vision-pending-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check candidate
+        run: node --check ccc-core/vision/WORKER_PENDING.js
+      - name: Validate required Vision response contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          const source = fs.readFileSync('ccc-core/vision/WORKER_PENDING.js', 'utf8');
+          for (const name of ['PRODUCT_SCHEMA', 'fieldEvidence', 'nextPhoto', 'confidence', 'evidence', 'OPENAI_API_KEY', 'store: false']) {
+            assert.ok(source.includes(name), 'Missing Vision contract token: ' + name);
+          }
+          assert.ok(source.includes('export default'), 'Missing Worker entrypoint');
+          console.log('CCC Vision candidate static contract PASS; no deployment or runtime claim');
+          NODE
+      - name: Confirm production entrypoint is separate
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s ccc-core/vision/cloudflare-worker.js
+          test -s ccc-core/vision/WORKER_PENDING.js
+          echo 'PENDING checked only. Production Worker and archives unchanged.'
