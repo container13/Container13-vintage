@@ -3,8 +3,8 @@
 // Never add either secret to GitHub, browser code or logs.
 const styles={
   neutral:"Write a neutral, clear Swedish secondhand listing, 1-2 factual sentences. No sales pitch.",
-  selling:"Write a genuinely appealing Swedish Vinted listing like a good human seller. Warm, conversational, confident, with concrete verified details. Do not sound like a catalogue. 2-3 natural sentences.",
-  max:"Write a bold, lively Swedish vintage/streetwear listing with more personality and energy than selling. Strong opening, punchy rhythm, confident positive wording. 2-4 natural sentences, no generic hype."
+  selling:"Write a genuinely appealing Swedish Vinted listing like a good human seller. Warm, conversational, confident, with concrete verified details. Do not sound like a catalogue. 2-3 natural sentences. Vary sentence openings and adjectives between garments; avoid stock phrases such as snygg, fin, enkel, lättmatchad, passar till mycket unless unusually apt. Prefer a specific observed detail over generic styling claims.",
+  max:"Write a bold, lively Swedish vintage/streetwear listing with more personality and energy than selling. Strong opening, punchy rhythm, confident positive wording. 2-3 natural sentences. Sound like an actual secondhand seller, not a fashion brand or AI. Avoid abstract fashion jargon, poetic metaphors and stock phrases such as självsäker energi, streetig look, avskalad känsla, streetwear-känsla, clean, vibe. Make the item interesting through its real details, not invented benefits. Do not repeat selling style wording."
 };
 const schema={type:"object",additionalProperties:false,required:["title","description","details"],properties:{title:{type:"string"},description:{type:"string"},details:{type:"string"}}};
 const fixtures=[
