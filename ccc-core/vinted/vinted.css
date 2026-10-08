@@ -111,3 +111,24 @@ button:disabled{opacity:.48;cursor:not-allowed}
 .v-listing-style button.active{border-color:var(--v-gold);background:color-mix(in srgb,var(--v-gold) 17%,var(--v-card));box-shadow:0 0 0 2px color-mix(in srgb,var(--v-gold) 25%,transparent);opacity:1}
 .v-listing-style button.active::before{content:"✓ ";color:var(--v-gold)}
 .v-listing-style button:active{transform:scale(.96)}
+
+/* v2.10.204 mobile-first layout refresh; retain all existing controls */
+.v-main{max-width:720px;margin:auto;padding:18px 16px 42px}
+.v-intro{margin:0 0 18px}.v-intro h1{font-size:clamp(27px,7vw,38px);line-height:1.12;margin:4px 0 5px;letter-spacing:-.045em}.v-intro p{margin:0;color:var(--v-muted);font-size:14px}
+.v-card{border-radius:20px;padding:16px;margin-bottom:12px}
+.v-card-head{margin-bottom:12px}.v-card-head strong{font-size:18px}.v-card-head #count{font-size:13px;padding:5px 10px;border-radius:999px;background:var(--v-bg)}
+.v-photos{gap:7px}.v-photo{border-radius:12px;overflow:hidden}
+.v-photo-actions{gap:9px;margin-top:12px}.v-photo-action{min-height:68px;padding:10px;border-radius:12px;display:grid;grid-template-columns:26px 1fr;grid-template-rows:auto auto;column-gap:8px;align-content:center;text-align:left}
+.v-photo-action span{grid-row:1/3;align-self:center;font-size:24px}.v-photo-action b{font-size:13px}.v-photo-action small{font-size:11px;opacity:.72}
+#photoNote{margin:11px 0 0;font-size:12px}
+#analysisStatus:empty{display:none}
+#analyze{margin:12px 0 16px;min-height:56px;border-radius:14px;font-size:16px}
+.v-result{padding:15px;border-radius:18px;margin-top:0}
+.v-result-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.v-result-head h2{font-size:19px;margin:3px 0 0;line-height:1.2}
+.v-result-head small{display:none}
+.v-result-head span{font-size:10px;letter-spacing:.1em}
+.v-preview-open{width:auto!important;min-height:42px!important;padding:10px 14px!important;margin:0!important;border-radius:11px!important;font-size:13px!important;white-space:nowrap;box-shadow:none!important}
+.v-fields{gap:9px}
+.v-listing-dialog{border-radius:19px}
+@media(max-width:420px){.v-main{padding-left:12px;padding-right:12px}.v-card{padding:13px}.v-photo-action{padding:9px 7px}.v-photo-action small{font-size:10px}}
