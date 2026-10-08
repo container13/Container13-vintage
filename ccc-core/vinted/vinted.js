@@ -54,7 +54,7 @@ function renderFields(rows){
 }
 analyze.onclick=async()=>{
   if(busy||!items.length)return;
-  busy=true;draw();result.hidden=true;fields.replaceChildren();approvedFields.clear();
+  busy=true;analyze.classList.add("is-working");draw();result.hidden=true;fields.replaceChildren();approvedFields.clear();
   analyze.textContent="Analyserar…";analysisStatus.textContent="Analyserar bilder. Vänta…";
   try{
     const ai=window.CCC_VISION_AI;
@@ -69,7 +69,7 @@ analyze.onclick=async()=>{
     analysisStatus.textContent=lang==="sv-SE"?"AI-förslag, inte verifierade fakta. Kontrollera varje uppgift före publicering.":"AI suggestions – verify each detail before publishing.";
     result.scrollIntoView({behavior:"smooth",block:"start"});
   }catch(e){analysisStatus.textContent="Analysen misslyckades: "+(e?.message||"Okänt fel");}
-  finally{busy=false;analyze.textContent="Analysera bilder";draw();}
+  finally{busy=false;analyze.classList.remove("is-working");analyze.textContent="Analysera bilder";draw();}
 };
 addEventListener("pagehide",()=>items.forEach(item=>URL.revokeObjectURL(item.url)),{once:true});draw();
 
@@ -112,7 +112,7 @@ const copyListingStatus=document.getElementById("copyListingStatus");
 function renderTags(){
   const selected=document.getElementById("selectedTags"),bank=document.getElementById("bankTags");
   selected.replaceChildren();bank.replaceChildren();
-  function button(tag,active){const b=document.createElement("button");b.type="button";b.className="v-tag-pill";b.textContent="#"+tag+(active?" ×":" +");b.onclick=()=>{if(active&&!confirm("Vill du ta bort #"+tag+" från annonsen?"))return;selectedTags=active?selectedTags.filter(x=>x!==tag):[...selectedTags,tag];renderTags();};return b;}
+  function button(tag,active){const b=document.createElement("button");b.type="button";b.className="v-tag-pill"+(active?" is-selected":"");b.setAttribute("aria-pressed",String(active));b.textContent="#"+tag+(active?" ×":" +");b.onclick=()=>{if(active&&!confirm("Vill du ta bort #"+tag+" från annonsen?"))return;selectedTags=active?selectedTags.filter(x=>x!==tag):[...selectedTags,tag];renderTags();};return b;}
   selectedTags.forEach(tag=>selected.append(button(tag,true)));
   tagBank.forEach(tag=>bank.append(button(tag,selectedTags.includes(tag))));
   updateListingPreview();
@@ -134,7 +134,7 @@ function listingParts(){
  return {title,description,details:entries.map(([label,sv,en])=>{const value=get(sv,en);return value?label+": "+value:"";}).filter(Boolean).join("\n")};
 }
 function updateListingPreview(){
- const note=document.getElementById("listingLanguageNote");
+ const note=document.getElementById("listingLanguageNote");note.classList.toggle("is-working",listingLanguage!=="sv"&&!translatedListing);
  const swedish=makeVintedListing();
  const tags=selectedTags.map(t=>"#"+t).join(" ");
  if(listingLanguage==="sv"){listingPreview.textContent=swedish;note.textContent="";return;}
@@ -154,7 +154,7 @@ async function ensureTranslation(){
    if(!response.ok||!data.translation?.description)throw Error(data.error||"Ingen översättning");
    if(requestId!==translationRequest)return;
    translatedListing=data.translation;translationKey=key;updateListingPreview();
- }catch(e){if(requestId!==translationRequest)return;document.getElementById("listingLanguageNote").textContent="Kunde inte skapa engelsk annonstext. Försök välja språk igen.";listingPreview.textContent="";}
+ }catch(e){if(requestId!==translationRequest)return;document.getElementById("listingLanguageNote").classList.remove("is-working");document.getElementById("listingLanguageNote").textContent="Kunde inte skapa engelsk annonstext. Försök välja språk igen.";listingPreview.textContent="";}
 }
 
 document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;document.querySelectorAll("[data-listing-lang]").forEach(x=>x.classList.toggle("active",x===b));ensureTranslation();});
@@ -167,7 +167,7 @@ copyListing.onclick=()=>{
 document.getElementById("listingClose").onclick=()=>listingDialog.close();
 document.getElementById("listingCopy").onclick=async()=>{
   if(!listingPreview.textContent.trim()){copyListingStatus.textContent="Ingen färdig annonstext att kopiera.";return;}
-  try{await navigator.clipboard.writeText(listingPreview.textContent);copyListingStatus.textContent="Kopierat ✓";}
+  try{await navigator.clipboard.writeText(listingPreview.textContent);copyListingStatus.textContent="Kopierat ✓";const b=document.getElementById("listingCopy");b.classList.add("is-copied");b.textContent="✓";setTimeout(()=>{b.classList.remove("is-copied");b.textContent="▢";},1300);}
   catch{copyListingStatus.textContent="Kunde inte kopiera. Försök igen.";}
 };
 listingDialog.addEventListener("click",e=>{if(e.target===listingDialog)listingDialog.close();});
