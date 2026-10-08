@@ -76,8 +76,7 @@ function renderReviewPages(){
     rows.slice(i,i+4).forEach(row=>{row.hidden=false;row.removeAttribute("aria-hidden");page.append(row);});
     reviewTrack.append(page);
   }
-  reviewTrack.style.width=(reviewPages()*100)+"%";
-  reviewTrack.querySelectorAll(".v-review-page").forEach(p=>p.style.width=(100/reviewPages())+"%");
+  // The track stays exactly one viewport wide; each page occupies that width.\n  // Scaling the track itself made every page overflow the iPhone viewport.\n  reviewTrack.style.width="100%";\n  reviewTrack.querySelectorAll(".v-review-page").forEach(p=>{p.style.width="100%";p.style.flex="0 0 100%";});
 }
 function reviewOffset(index){return -index*reviewStage.clientWidth;}
 function showReviewField(index,{animate=true}={}){
