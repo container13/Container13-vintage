@@ -39,4 +39,4 @@ jobs:
           apiToken: ${{ secrets.CCC_CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CCC_CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: ccc-core/vision
-          command: deploy
+          command: deploy cloudflare-worker.js --name ccc-vision-api --compatibility-date 2026-10-08
