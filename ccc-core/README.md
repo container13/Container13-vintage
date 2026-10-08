@@ -40,3 +40,11 @@ Innan CCC ändras ska följande läsas i ordning:
 4. `CCC_HANDOFF_CURRENT.md` vid ny chatt/överlämning.
 
 Grundprincip: verifiera faktisk source/runtime/storage/deploy-kedja före ändring. En commit är inte en verifierad release. CURRENT/PREVIOUS flyttas endast efter verifiering, och koduppdateringar rapporteras som ändrade filer.
+
+## Gemensam header och logotyp – Vinted och övriga CCC-moduler
+
+- Vinted ska använda CCC:s befintliga gemensamma header och samma CCC-logotyp som övriga CCC-vyer.
+- Logotypen ska ha **exakt samma placering, storlek och utseende** som i de övriga CCC-vyerna; återanvänd befintlig header/komponent och tillgångar, skapa inte en egen Vinted-variant.
+- **VINTED** är modulens namn; CCC-logotypen visar plattformens identitet.
+- Undvik extra CCC-loggor på knappar, inne i annonser eller på andra ställen i Vinted-vyn.
+- Detta är ett **beslutat designkrav**, ännu inte en verifierad kodändring. Vid implementation: inspektera först vilken header och logotyp övriga CCC-vyer faktiskt använder.
