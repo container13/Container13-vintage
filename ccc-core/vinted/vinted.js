@@ -66,9 +66,11 @@ const reviewTrack=document.createElement("div");
 reviewTrack.className="v-review-track";
 reviewStage.replaceChildren(reviewTrack);
 reviewTrack.append(fields);
-function reviewPages(){return Math.ceil(fields.querySelectorAll(".v-field").length/4);}
+function reviewPages(){return reviewTrack.querySelectorAll(":scope > .v-review-page").length;}
 function renderReviewPages(){
-  const rows=[...fields.querySelectorAll(".v-field")];
+  // Rows have been moved out of #fields into pages after the first render.
+  // Reuse them when reopening review instead of losing the product fields.
+  const rows=[...reviewTrack.querySelectorAll(".v-field")];
   reviewTrack.replaceChildren();
   for(let i=0;i<rows.length;i+=4){
     const page=document.createElement("section");page.className="v-review-page";
