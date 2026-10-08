@@ -1,6 +1,6 @@
-const MAX=9,cameraPicker=document.getElementById("cameraPicker"),albumPicker=document.getElementById("albumPicker"),photos=document.getElementById("photos"),cameraAdd=document.getElementById("cameraAdd"),albumAdd=document.getElementById("albumAdd"),count=document.getElementById("count"),analyze=document.getElementById("analyze"),result=document.getElementById("result"),fields=document.getElementById("fields");let items=[],lang="sv-SE",busy=false;const analysisStatus=document.getElementById("analysisStatus");
+const MAX=9,cameraPicker=document.getElementById("cameraPicker"),albumPicker=document.getElementById("albumPicker"),photos=document.getElementById("photos"),cameraAdd=document.getElementById("cameraAdd"),albumAdd=document.getElementById("albumAdd"),count=document.getElementById("count"),analyze=document.getElementById("analyze"),result=document.getElementById("result"),fields=document.getElementById("fields");let items=[],lang="sv-SE",busy=false;const approvedFields=new Map();const analysisStatus=document.getElementById("analysisStatus");
 function draw(){photos.replaceChildren();items.forEach((item,i)=>{const d=document.createElement("div");d.className="v-photo";d.innerHTML='<img alt="Bild '+(i+1)+'"><span class="v-photo-number">'+(i+1)+'</span><button type="button" aria-label="Ta bort bild">×</button>';d.querySelector("img").src=item.url;d.querySelector("button").onclick=()=>{URL.revokeObjectURL(item.url);items.splice(i,1);draw()};photos.append(d)});count.textContent=items.length+" / "+MAX;analyze.disabled=!items.length||busy;const full=items.length>=MAX;cameraAdd.disabled=full;albumAdd.disabled=full;document.querySelector(".v-photo-actions")?.classList.toggle("is-full",full)}
-function addFiles(files){result.hidden=true;fields.replaceChildren();analysisStatus.textContent="";for(const file of [...(files||[])]){if(items.length>=MAX)break;if(file.type.startsWith("image/"))items.push({file,url:URL.createObjectURL(file)})}draw()}
+function addFiles(files){result.hidden=true;fields.replaceChildren();approvedFields.clear();analysisStatus.textContent="";for(const file of [...(files||[])]){if(items.length>=MAX)break;if(file.type.startsWith("image/"))items.push({file,url:URL.createObjectURL(file)})}draw()}
 cameraAdd.onclick=()=>cameraPicker.click();albumAdd.onclick=()=>albumPicker.click();
 cameraPicker.onchange=()=>{addFiles(cameraPicker.files);cameraPicker.value=""};
 albumPicker.onchange=()=>{addFiles(albumPicker.files);albumPicker.value=""};
@@ -34,14 +34,14 @@ document.getElementById("editForm").onsubmit=e=>{
   closeEdit();
 };
 function renderFields(rows){
-  fields.replaceChildren();
+  fields.replaceChildren();approvedFields.clear();
   rows.forEach(([label,value,status,meta])=>{
     const row=document.createElement("div");row.className="v-field";
     row.innerHTML='<div class="v-field-main"><div class="v-label"><span></span><span class="v-status"></span></div><div class="v-value"></div></div><div class="v-field-actions"><button class="v-edit" type="button" aria-label="Redigera"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L9 17l-4 1 1-4Z"/></svg></button><button class="v-copy" type="button" aria-label="Kopiera"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg></button></div>';
     row.querySelector(".v-label span").textContent=label;
     const statusNode=row.querySelector(".v-status"),valueNode=row.querySelector(".v-value"),copy=row.querySelector(".v-copy");
     statusNode.textContent=status==="UNKNOWN"?(lang==="sv-SE"?"Kontrollera":"Check"):(lang==="sv-SE"?"Förslag":"Suggestion");
-    valueNode.textContent=value;copy.dataset.value=value;
+    valueNode.textContent=value;copy.dataset.value=value;approvedFields.set(label,()=>valueNode.textContent.trim());
     if(meta){
       statusNode.textContent=meta.confidence==="high"?(lang==="sv-SE"?"Tydligt bildstöd":"Clear evidence"):(lang==="sv-SE"?"Tolka och kontrollera":"Check interpretation");
       const detail=[meta.evidence,meta.nextPhoto?(lang==="sv-SE"?"Komplettera med bild: ":"Add photo: ")+meta.nextPhoto:""].filter(Boolean).join(" · ");
@@ -54,7 +54,7 @@ function renderFields(rows){
 }
 analyze.onclick=async()=>{
   if(busy||!items.length)return;
-  busy=true;draw();result.hidden=true;fields.replaceChildren();
+  busy=true;draw();result.hidden=true;fields.replaceChildren();approvedFields.clear();
   analyze.textContent="Analyserar…";analysisStatus.textContent="Analyserar bilder. Vänta…";
   try{
     const ai=window.CCC_VISION_AI;
@@ -72,3 +72,33 @@ analyze.onclick=async()=>{
   finally{busy=false;analyze.textContent="Analysera bilder";draw();}
 };
 addEventListener("pagehide",()=>items.forEach(item=>URL.revokeObjectURL(item.url)),{once:true});draw();
+
+function makeVintedListing(){
+  const get=(sv,en)=>approvedFields.get(lang==="sv-SE"?sv:en)?.()||"";
+  const title=get("TITEL","TITLE"),description=get("BESKRIVNING","DESCRIPTION");
+  const entries=[["Märke","BRAND","MÄRKE"],["Kategori","CATEGORY","KATEGORI"],["Storlek","SIZE","STORLEK"],["Färg","COLOUR","FÄRG"],["Säsong","SEASON","SÄSONG"],["Tillverkare","MANUFACTURER","TILLVERKARE"]];
+  const details=entries.map(([name,en,sv])=>{const value=get(sv,en);return value?name+": "+value:""}).filter(Boolean);
+  const words=[title,description,...details].join(" ").toLocaleLowerCase("sv-SE");
+  const tags=new Set();
+  const addTag=(tag)=>tags.add("#"+tag);
+  const rules=[
+    [/\\blevi['’]?s\\b/i,["levis"]],
+    [/jeansjacka|denimjacka|denim jacket/i,["jeansjacka","denimjacket"]],
+    [/\\bdenim\\b/i,["denim"]],
+    [/\\bvintage\\b/i,["vintage"]],
+    [/\\bretro\\b/i,["retro"]],
+    [/\\bsvart\\b/i,["svart"]],
+    [/\\bblå|blue\\b/i,["blue"]],
+    [/\\badidas\\b/i,["adidas"]],
+    [/\\bnike\\b/i,["nike"]],
+    [/\\bjacka\\b/i,["jacket"]]
+  ];
+  for(const [pattern,list] of rules)if(pattern.test(words))list.forEach(addTag);
+  return [title,description,details.join("\\n"),[...tags].join(" ")].filter(Boolean).join("\\n\\n");
+}
+const copyListing=document.getElementById("copyListing"),copyListingStatus=document.getElementById("copyListingStatus");
+copyListing.onclick=async()=>{
+ const text=makeVintedListing();if(!text)return;
+ try{await navigator.clipboard.writeText(text);copyListingStatus.textContent="Kopierat ✓";}
+ catch{copyListingStatus.textContent="Kunde inte kopiera. Försök igen.";}
+};
