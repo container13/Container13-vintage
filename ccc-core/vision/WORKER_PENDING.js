@@ -41,12 +41,12 @@ Analysera endast det som rimligen kan utläsas ur 1–3 bilder av SAMMA plagg.
 Målet är ett kort, användbart produktförslag – inte en lång expertutredning.
 
 Regler:
-- Var försiktig med exakta år/säsonger. Skriv "Troligen ..." när du inte är säker.
+- Ange år eller säsong endast när det finns konkret bildstöd, exempelvis en läsbar produktetikett eller tydlig identifierbar säsongsdetalj. Annars ska fields.season och summarySeason vara tomma. Skriv aldrig "Troligen året runt" eller generella säsongsantaganden.
 - Hitta aldrig på storlek, årtal, spelarnamn eller modellbeteckning. Lämna tomt eller skriv att det behöver kontrolleras.
 - Om ett lag, märke, sponsor eller tillverkare syns tydligt: använd det.
 - För fotbollströjor: identifiera klubb/landslag, tillverkare, sponsor och möjlig säsong när bildbeviset räcker.
 - "fact" får vara en enda kort relevant "Visste du?"-uppgift, endast när den är rimligt säker. Annars tom sträng.
-- Beskrivningen ska vara på svenska, kort och säljbar men saklig. Ingen uppgift om slitage/skick. "Nyskick" läggs endast till manuellt av användaren senare.
+- Skriv en informativ, attraktiv och sökbar svensk annonstitel: tydligt avläst märke om säkerhetsnivån är high/medium, plaggtyp, synlig färg och särskiljande detaljer. Använd etablerade modeord (t.ex. trucker, denim, sherpa) endast när modellen/materialet faktiskt kan styrkas av bilden. Inga osäkra märken eller modellnamn i titeln.\n- Beskrivningen ska vara på svenska, säljbar och saklig med observerbara detaljer som snitt, krage, materialstruktur, knäppning, fickor och färg. Upprepa inte samma mening flera gånger. Ingen gissning om skick, slitage, äkthet eller material som inte syns. "Nyskick" läggs endast till manuellt av användaren senare.\n- Skick ska inte AI-bedömas eller uppges utan manuell kontroll; prisförslag förblir avstängt tills separat verifierad prislogik finns.
 - priceSuggestion ska vara 0 tills CCC har en separat prislogik med tillräckligt underlag.
 - fields.price ska alltid vara tom sträng.
 - fieldEvidence: bedöm varje fält separat. high endast vid tydligt synligt bildbevis, medium för rimlig tolkning, low vid svagt stöd och unknown om det saknas stöd. evidence beskriver kort vad i bilden som stöder uppgiften, aldrig påhittade detaljer. nextPhoto föreslår en specifik kompletterande detaljbild endast om den kan minska osäkerheten, annars tom sträng.
@@ -130,6 +130,14 @@ export default {
 
     try {
       const result = JSON.parse(outputText);
+      // Fail closed: uncertain field suggestions must never reach the UI as facts.
+      for (const key of ["title","description","category","brand","size","color","season","manufacturer"]) {
+        const confidence = result?.fieldEvidence?.[key]?.confidence;
+        if (!["high","medium"].includes(confidence)) result.fields[key] = "";
+      }
+      if (!["high","medium"].includes(result?.fieldEvidence?.season?.confidence)) result.summarySeason = "";
+      result.priceSuggestion = 0;
+      result.fields.price = "";
       return json({ result, usage: data.usage || null, model: data.model || env.OPENAI_MODEL || "" }, 200, origin);
     } catch {
       return json({ error: "AI-svaret kunde inte läsas." }, 502, origin);
