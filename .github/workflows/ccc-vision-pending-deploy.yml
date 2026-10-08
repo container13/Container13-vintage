@@ -39,6 +39,21 @@ jobs:
           accountId: ${{ secrets.CCC_CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: ccc-core/vision
           command: deploy WORKER_PENDING.js --name ccc-vision-pending-test --compatibility-date 2026-10-08
+      - name: Smoke test isolated Worker HTTP contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://ccc-vision-pending-test.mangaj73.workers.dev/"
+          for attempt in 1 2 3 4 5; do
+            status=$(curl -sS -o /tmp/ccc-vision-get.txt -w '%{http_code}' --max-time 15 "$URL" || true)
+            if [ "$status" = "405" ]; then break; fi
+            echo "GET attempt $attempt returned $status; retrying"
+            sleep 5
+          done
+          test "$status" = "405" || { echo "Expected GET 405, got $status"; exit 1; }
+          options=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 -X OPTIONS -H 'Origin: https://container13.se' "$URL")
+          test "$options" = "204" || { echo "Expected OPTIONS 204, got $options"; exit 1; }
+          echo "Isolated Worker HTTP smoke test PASS (GET 405, OPTIONS 204). AI not tested."
       - name: Explain candidate limits
         run: |
           echo "PENDING deployed under ccc-vision-pending-test; production ccc-vision-api untouched."
