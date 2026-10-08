@@ -162,7 +162,7 @@ copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
   if(!tagsInitialized){selectedTags=tagBank.slice();tagsInitialized=true;}
   renderTags();copyListingStatus.textContent="";
-  listingDialog.showModal();ensureTranslation();
+  listingDialog.showModal();document.querySelector(".v-listing-body").scrollTop=0;listingDialog.scrollTop=0;ensureTranslation();
 };
 document.getElementById("listingClose").onclick=()=>listingDialog.close();
 document.getElementById("listingCopy").onclick=async()=>{
