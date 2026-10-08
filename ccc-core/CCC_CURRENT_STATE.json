@@ -6,10 +6,10 @@
   "appRoot": "ccc-core/",
   "status": "ACTIVE",
   "release": {
-    "currentVerified": "2.10.180",
-    "previousVerified": "2.10.176",
-    "candidate": "2.10.184",
-    "integrity": "PENDING_RUNTIME_VERIFICATION"
+    "currentVerified": "2.10.184",
+    "previousVerified": "2.10.180",
+    "candidate": null,
+    "integrity": "PASS_USER_IPHONE_EDIT_MODAL"
   },
   "rules": {
     "master": "CCC_MASTER_RULES.md",
@@ -27,31 +27,15 @@
     }
   },
   "currentWork": {
-    "completed": "2.10.180 central multi-touch pinch zoom block confirmed working by user on iPhone. Existing Vinted visual design retained.",
-    "next": "Verify higher edit popup, stronger backdrop, no keyboard autofocus and no field separators on iPhone; preserve zoom lock.",
+    "completed": "User verified Vinted 2.10.184 editor popup and Save/Cancel on iPhone.",
+    "next": "Continue Vinted workflow, preserving pinch zoom lock and editor.",
     "blocked": false
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
-    "targetRelease": "2.10.184",
-    "plan": [
-      {
-        "id": 1,
-        "task": "Update Vinted popup positioning, backdrop and field spacing",
-        "status": "DONE"
-      },
-      {
-        "id": 2,
-        "task": "GitHub readback",
-        "status": "DONE"
-      },
-      {
-        "id": 3,
-        "task": "Real iPhone visual verification",
-        "status": "PENDING"
-      }
-    ],
-    "resumeInstruction": "Test 2.10.184 on iPhone before marking PASS; 2.10.180 remains last fully verified baseline."
+    "status": "IDLE",
+    "targetRelease": null,
+    "plan": [],
+    "resumeInstruction": "Continue from verified 2.10.184."
   },
-  "lastSafeRelease": "2.10.180"
+  "lastSafeRelease": "2.10.184"
 }
