@@ -8,7 +8,7 @@
   "release": {
     "currentVerified": "2.10.180",
     "previousVerified": "2.10.176",
-    "candidate": "2.10.182",
+    "candidate": "2.10.183",
     "integrity": "PENDING_RUNTIME_VERIFICATION"
   },
   "rules": {
@@ -28,16 +28,16 @@
   },
   "currentWork": {
     "completed": "2.10.180 central multi-touch pinch zoom block confirmed working by user on iPhone. Existing Vinted visual design retained.",
-    "next": "Verify Vinted 2.10.182 displays explicit non-unknown Vision fields as unverified suggestions on real iPhone; per-field confidence not available.",
+    "next": "Test Vinted edit pencil modal on real iPhone: save, cancel, copy edited text and keyboard positioning; preserve no-pinch-zoom.",
     "blocked": false
   },
   "workCheckpoint": {
     "status": "IN_PROGRESS",
-    "targetRelease": "2.10.182",
+    "targetRelease": "2.10.183",
     "plan": [
       {
         "id": 1,
-        "task": "Remove global confidence gate, filter explicit uncertainty, label outputs unverified",
+        "task": "Edit modal, pencil and styling committed",
         "status": "DONE"
       },
       {
@@ -47,11 +47,11 @@
       },
       {
         "id": 3,
-        "task": "iPhone runtime test",
+        "task": "Real iPhone edit test",
         "status": "PENDING"
       }
     ],
-    "resumeInstruction": "Test 2.10.182 on iPhone before promotion. 2.10.180 remains verified safe release."
+    "resumeInstruction": "Verify 2.10.183 Vinted edit modal on iPhone; do not promote until runtime PASS."
   },
   "lastSafeRelease": "2.10.180"
 }
