@@ -19,3 +19,6 @@ The existing workflow .github/workflows/ccc-vision-worker-deploy.yml currently d
 6. Verify GitHub readback, Actions deploy, Cloudflare live behavior, then record commit/version.
 
 No automatic rotation may mark an unverified candidate as CURRENT. If a deploy or runtime test fails, stop and preserve CURRENT/PREVIOUS.
+
+## Implemented PENDING validation
+GitHub Actions `.github/workflows/ccc-vision-pending-check.yml` runs on changes to WORKER_PENDING.js or the validation workflow. It performs a Node syntax check and static contract checks. It does not deploy or prove live behavior. A green validation check must not trigger CURRENT/PREVIOUS rotation. Production workflow remains separate.
