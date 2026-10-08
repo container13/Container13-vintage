@@ -264,8 +264,9 @@ function listingParts(){
 }
 function updateListingPreview(fallback=false){
  const note=document.getElementById("listingLanguageNote");
- const tags=selectedTags.map(t=>"#"+t).join(" ");
- const tagSummary=document.getElementById("listingTagCount");if(tagSummary)tagSummary.textContent=selectedTags.length+" hashtags ingår i kopian";
+ const effectiveTags=aiTagToggle.checked?selectedTags.filter(t=>aiSuggestedTags.includes(t)):selectedTags;
+ const tags=effectiveTags.map(t=>"#"+t).join(" ");
+ const tagSummary=document.getElementById("listingTagCount");if(tagSummary)tagSummary.textContent=effectiveTags.length+" hashtags ingår i kopian";
  if(rewrittenListing){
   const detailLabels={Brand:"Märke",Category:"Kategori",Size:"Storlek",Color:"Färg",Season:"Säsong",Manufacturer:"Tillverkare"};
  const details=listingLanguage==="sv"?rewrittenListing.details.split("\n").map(line=>line.replace(/^(Brand|Category|Size|Color|Season|Manufacturer):/,key=>detailLabels[key.slice(0,-1)]+":")).join("\n"):rewrittenListing.details;
