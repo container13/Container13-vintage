@@ -199,3 +199,17 @@ button:disabled{opacity:.48;cursor:not-allowed}
 .v-ai-filter{display:flex;align-items:center;gap:10px;margin:12px 16px 8px;font-size:13px;color:var(--v-text);font-weight:650}
 .v-ai-filter input{width:22px;height:22px;accent-color:var(--v-gold);flex-shrink:0}
 @media(max-height:580px){.v-review-dialog{gap:5px}.v-review-stage .v-fields{padding:10px}.v-review-stage .v-value{font-size:15px;-webkit-line-clamp:4;line-clamp:4}.v-review-stage .v-evidence{-webkit-line-clamp:2;line-clamp:2;margin-top:5px}#reviewProposal{min-height:44px}}
+
+/* v2.10.223: two complete fields per moving card, CCC finger-follow swipe */
+.v-review-stage{display:block;overflow:hidden;touch-action:pan-y}
+.v-review-track{height:100%;display:flex;will-change:transform;transform:translate3d(0,0,0)}
+.v-review-page{flex:0 0 auto;height:100%;min-width:0;background:var(--v-card);border:1px solid var(--v-border);border-radius:18px;padding:12px;display:flex;flex-direction:column;gap:5px;overflow:hidden}
+.v-review-page .v-field{height:auto;flex:1 1 0;min-height:0;padding:6px 2px;display:flex;flex-direction:column;gap:4px;border:0;margin:0}
+.v-review-page .v-field+.v-field{margin:0;border-top:1px solid var(--v-border);padding-top:12px}
+.v-review-page .v-field-main{flex:1;min-height:0;overflow:hidden}
+.v-review-page .v-label{font-size:11px;gap:6px;margin-bottom:6px}
+.v-review-page .v-value{font-size:clamp(15px,4vw,19px);line-height:1.27;-webkit-line-clamp:4;line-clamp:4}
+.v-review-page .v-evidence{font-size:11px;margin-top:6px;-webkit-line-clamp:2;line-clamp:2}
+.v-review-page .v-field-actions{gap:10px;flex-shrink:0}
+.v-review-page .v-edit,.v-review-page .v-copy{height:36px;min-height:36px;width:40px}
+@media(max-height:660px){.v-review-page{padding:8px}.v-review-page .v-field{padding:2px}.v-review-page .v-label{margin-bottom:3px}.v-review-page .v-value{-webkit-line-clamp:3;line-clamp:3;font-size:14px}.v-review-page .v-evidence{-webkit-line-clamp:1;line-clamp:1;margin-top:3px}.v-review-page .v-field-actions{height:32px}.v-review-page .v-edit,.v-review-page .v-copy{height:32px;min-height:32px}}
