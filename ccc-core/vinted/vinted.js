@@ -310,7 +310,7 @@ document.getElementById("vintedSettingsOpen").onclick=()=>{defaultLanguage.value
 document.getElementById("vintedSettingsClose").onclick=()=>preferencesDialog.close();
 defaultLanguage.onchange=saveListingPreferences;defaultStyle.onchange=saveListingPreferences;
 applyListingPreferences();
-let rewrittenListing=null,rewriteKey="",rewriteRequest=0;
+let rewrittenListing=null,rewriteKey="",rewriteRequest=0,pendingRewriteKey="";
 const listingVariants=new Map();
 function neutralVariant(parts){return {title:parts.title,description:parts.description,details:parts.details};}
 const recentCopy=(()=>{try{return JSON.parse(localStorage.getItem("ccc-vinted-recent-copy")||"[]")}catch{return []}})();
@@ -320,7 +320,8 @@ async function ensureRewrite(){
  if(listingVariants.has(key)){++rewriteRequest;rewrittenListing=listingVariants.get(key);rewriteKey=key;updateListingPreview();return;}
  if(listingStyle==="neutral"&&listingLanguage==="sv"){++rewriteRequest;rewrittenListing=neutralVariant(parts);rewriteKey=key;listingVariants.set(key,rewrittenListing);updateListingPreview();return;}
  if(rewriteKey===key&&rewrittenListing){updateListingPreview();return;}
- const id=++rewriteRequest;rewrittenListing=null;updateListingPreview();
+ if(pendingRewriteKey===key)return;
+ const id=++rewriteRequest;pendingRewriteKey=key;rewrittenListing=null;updateListingPreview();
  const note=document.getElementById("listingLanguageNote");note.textContent="Skriver annonstext med AI…";note.classList.add("is-working");
  try{
   const response=await fetch(TRANSLATION_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"rewrite_listing",...parts,style:listingStyle,language:listingLanguage,recent:recentCopy})});
@@ -329,6 +330,7 @@ async function ensureRewrite(){
   if(id!==rewriteRequest)return;
   rewrittenListing=data.listing;rewriteKey=key;listingVariants.set(key,data.listing);updateListingPreview();
  }catch(e){if(id!==rewriteRequest)return;note.classList.remove("is-working");updateListingPreview(true);note.textContent="AI-omskrivningen misslyckades: "+String(e.message||"okänt fel").slice(0,180)+". Ingen annonstext visas förrän AI fungerar.";}
+ finally{if(pendingRewriteKey===key)pendingRewriteKey="";}
 }
 let translatedListing=null,translationKey="",translationRequest=0;
 const TRANSLATION_ENDPOINT="https://ccc-vision-pending-test.mangaj73.workers.dev";
