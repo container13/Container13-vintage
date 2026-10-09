@@ -713,3 +713,10 @@ body{min-height:100dvh}
 #moreView.ccc-more-dashboard nav.primary-actions.ccc-more-cards>a.action-card .action-copy small{font-size:clamp(13px,1.1vw,16px)!important;line-height:1.35!important;max-width:26ch!important}
 #moreView.ccc-more-dashboard nav.primary-actions.ccc-more-cards>a.action-card .action-arrow{display:none!important}
 }
+
+/* 2.10.247: remove desktop More background panel, leave individual cards intact. */
+@media(min-width:700px){
+#moreView.ccc-more-dashboard,#moreView.ccc-more-dashboard nav.primary-actions.ccc-more-cards{background:transparent!important;background-image:none!important;box-shadow:none!important;border:0!important;border-radius:0!important}
+#moreView.ccc-more-dashboard{padding:0!important}
+#moreView.ccc-more-dashboard nav.primary-actions.ccc-more-cards{padding:0!important}
+}
