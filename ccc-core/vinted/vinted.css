@@ -318,3 +318,11 @@ button:disabled{opacity:.48;cursor:not-allowed}
 .v-review-stage .v-review-page .v-field{min-width:0!important}
 .v-review-dots,#reviewDots,#reviewPosition{display:none!important}
 }
+
+/* 2.10.250: use available desktop width for two-column product review. */
+@media(min-width:900px) and (pointer:fine){
+.v-review-dialog{box-sizing:border-box!important;width:min(94vw,1280px)!important;max-width:1280px!important;padding-left:24px!important;padding-right:24px!important}
+.v-review-stage .v-review-track{gap:20px!important}
+.v-review-stage .v-review-track>.v-review-page{padding:18px 22px!important}
+.v-review-stage .v-review-page .v-field{column-gap:16px!important}
+}
