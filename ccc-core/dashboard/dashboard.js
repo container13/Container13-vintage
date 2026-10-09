@@ -150,6 +150,7 @@ function showView(view){
   imagesView.hidden=view!=="images";
   imageDetailView.hidden=view!=="detail";
   moreView.hidden=view!=="more";
+  if(backBtn) backBtn.hidden=view!=="more";
   cameraSessionView.hidden=view!=="camera";
 
   // Varje vy börjar rent högst upp. Intern scroll i Mina bilder återställs också.
