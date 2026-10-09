@@ -309,3 +309,12 @@ button:disabled{opacity:.48;cursor:not-allowed}
 .v-review-stage .v-review-page .v-field-main:focus-visible{outline:2px solid var(--v-gold);outline-offset:-2px;border-radius:7px}
 .v-review-stage .v-review-page .v-field-main:focus:not(:focus-visible){outline:none}
 .v-review-stage .v-review-page .v-field-main:active{outline:none}
+
+/* 2.10.249: desktop review presents both four-field pages side by side. Mobile swipe unchanged. */
+@media (min-width:900px) and (pointer:fine){
+.v-review-stage{overflow:visible!important}
+.v-review-stage .v-review-track{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important;transform:none!important;transition:none!important;width:100%!important;height:100%!important}
+.v-review-stage .v-review-track>.v-review-page{box-sizing:border-box!important;flex:none!important;width:100%!important;min-width:0!important;max-width:none!important;height:100%!important}
+.v-review-stage .v-review-page .v-field{min-width:0!important}
+.v-review-dots,#reviewDots,#reviewPosition{display:none!important}
+}
