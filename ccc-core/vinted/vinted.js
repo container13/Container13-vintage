@@ -56,9 +56,6 @@ function renderFields(rows){
     mainTextArea.setAttribute("role","button");mainTextArea.setAttribute("tabindex","0");mainTextArea.setAttribute("aria-label","Redigera "+label);
     mainTextArea.onclick=openFieldEditor;
     mainTextArea.onkeydown=e=>{if(e.target===mainTextArea&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openFieldEditor();}};
-    valueNode.setAttribute("role","button");valueNode.setAttribute("tabindex","0");valueNode.setAttribute("aria-label","Redigera "+label);
-    
-    valueNode.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openFieldEditor();}};
     copy.onclick=async()=>{try{await navigator.clipboard.writeText(copy.dataset.value);copy.classList.add("copied");setTimeout(()=>copy.classList.remove("copied"),900)}catch{}};
     fields.append(row);
   });
@@ -137,9 +134,10 @@ reviewStage.addEventListener("touchend",()=>{
  if(!reviewTouch)return;
  const dx=reviewTouch.dx,active=reviewTouch.active;
  reviewTouch=null;
+ if(!active){reviewTrack.style.transition="";return;} // Preserve native click/tap on text.
  const swipe=window.CCC_CORE?.swipe;
  const commit=Math.abs(dx)>Math.max(48,reviewStage.clientWidth*.16);
- showReviewField(reviewIndex+(active&&commit?(dx<0?1:-1):0));
+ showReviewField(reviewIndex+(commit?(dx<0?1:-1):0));
 },{passive:true});
 reviewStage.addEventListener("touchcancel",()=>{reviewTouch=null;showReviewField(reviewIndex);},{passive:true});
 reviewStage.addEventListener("keydown",e=>{
