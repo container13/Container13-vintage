@@ -408,3 +408,15 @@ transform:translateY(-3px)!important;box-shadow:0 14px 28px rgba(25,32,52,.16)!i
 #reviewProposal{min-height:52px!important}
 .v-review-dots{display:none!important}
 }
+
+/* 2.10.263: review pagination 3 + 5, larger mobile values, preserve desktop grid. */
+@media(max-width:899px), (pointer:coarse){
+ .v-review-stage .v-review-page .v-value{font-size:clamp(18px,4.8vw,23px);line-height:1.33}
+ .v-review-stage .v-review-page .v-evidence{font-size:clamp(11px,3vw,13px);line-height:1.35}
+ .v-review-stage .v-review-page .v-label{font-size:clamp(11px,3vw,13px)}
+ .v-review-stage .v-review-page .v-field{min-height:0}
+}
+@media(min-width:900px) and (pointer:fine){
+ .v-review-stage .v-review-track>.v-review-page{grid-template-rows:repeat(5,minmax(0,1fr))!important}
+ .v-review-stage .v-review-track>.v-review-page:first-child{grid-template-rows:repeat(3,minmax(0,1fr))!important}
+}

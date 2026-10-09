@@ -105,11 +105,13 @@ function renderReviewPages(){
   const freshRows=[...fields.querySelectorAll(".v-field")];
   const rows=freshRows.length?freshRows:[...reviewTrack.querySelectorAll(".v-field")];
   reviewTrack.replaceChildren();
-  for(let i=0;i<rows.length;i+=4){
+  for(let i=0;i<rows.length;){
+    const count=i===0?3:5;
     const page=document.createElement("section");page.className="v-review-page";
-    page.setAttribute("aria-label","Produktuppgifter "+(i+1)+"–"+Math.min(i+4,rows.length));
-    rows.slice(i,i+4).forEach(row=>{row.hidden=false;row.removeAttribute("aria-hidden");page.append(row);});
+    page.setAttribute("aria-label","Produktuppgifter "+(i+1)+"–"+Math.min(i+count,rows.length));
+    rows.slice(i,i+count).forEach(row=>{row.hidden=false;row.removeAttribute("aria-hidden");page.append(row);});
     reviewTrack.append(page);
+    i+=count;
   }
   // Each slide is exactly one stage wide; the track itself remains stage-sized.
   reviewTrack.style.width="100%";
