@@ -299,3 +299,13 @@ button:disabled{opacity:.48;cursor:not-allowed}
 .v-field .v-field-main{cursor:pointer;touch-action:manipulation}
 .v-field .v-field-main:focus-visible{outline:2px solid var(--v-gold);outline-offset:3px;border-radius:8px}
 .v-field .v-field-main:active .v-value{color:var(--v-gold)}
+
+/* 2.10.245: compact edit focus and vertical action rail in four-field review. */
+.v-review-stage .v-review-page .v-field{grid-template-columns:minmax(0,1fr) 40px;column-gap:8px}
+.v-review-stage .v-review-page .v-field-main{min-width:0;width:100%;align-self:center;justify-content:center}
+.v-review-stage .v-review-page .v-field-actions{width:40px;min-width:40px;max-width:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;align-self:center;gap:3px;height:auto}
+.v-review-stage .v-review-page .v-edit,.v-review-stage .v-review-page .v-copy{box-sizing:border-box;flex:0 0 38px;width:38px;min-width:38px;height:38px;min-height:38px;padding:5px}
+.v-review-stage .v-review-page .v-field-actions input[type="checkbox"]{flex:none;margin:5px auto;max-width:28px;max-height:28px}
+.v-review-stage .v-review-page .v-field-main:focus-visible{outline:2px solid var(--v-gold);outline-offset:-2px;border-radius:7px}
+.v-review-stage .v-review-page .v-field-main:focus:not(:focus-visible){outline:none}
+.v-review-stage .v-review-page .v-field-main:active{outline:none}
