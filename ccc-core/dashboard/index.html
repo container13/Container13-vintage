@@ -10,8 +10,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>CCC Arbetsyta v2.9.3</title>
 <script>try{const t=localStorage.getItem("ccc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-<link rel="stylesheet" href="dashboard.css?v=2.10.176">
-<link rel="stylesheet" href="../core.css?v=2.10.176">
+<link rel="stylesheet" href="dashboard.css?v=2.10.237">
+<link rel="stylesheet" href="../core.css?v=2.10.237">
 </head>
 <body data-ccc-header-back="false" data-ccc-header-settings="false">
 <div class="app-shell ccc-app-shell">
@@ -21,6 +21,7 @@
       <span class="brand-word ccc-brand-word"><span>C</span><span class="ccc-brand-middle">C</span><span>C</span></span>
     </a>
 
+    <button id="backBtn" class="back-button ccc-header-back-more" type="button" aria-label="Tillbaka till Dashboard" hidden>‹</button>
     <div class="header-actions ccc-header-actions">
       <button id="themeBtn" class="icon-button ccc-icon-button" type="button" aria-label="Växla tema" aria-pressed="false">
         <svg class="icon icon-theme ccc-icon ccc-icon-theme" viewBox="0 0 24 24" aria-hidden="true">
@@ -181,12 +182,11 @@
 
     <section id="moreView" class="dashboard-view" aria-labelledby="moreTitle" hidden>
       <div class="subview-heading">
-        <button id="backBtn" class="back-button" type="button" aria-label="Tillbaka">‹</button>
         <div><h1 id="moreTitle">Mer</h1><p>Välj nästa steg</p></div>
       </div>
 
       <nav class="primary-actions ccc-action-grid" aria-label="Fler val">
-        <a class="action-card action-neutral ccc-action-card--vinted" href="../vinted/index.html?v=2.10.176">
+        <a class="action-card action-neutral ccc-action-card--vinted" href="../vinted/index.html?v=2.10.237">
           <span class="action-icon" aria-hidden="true">V</span>
           <span class="action-copy"><strong>Vinted</strong><small>Skapa annons från 1–9 bilder</small></span>
           <span class="action-arrow" aria-hidden="true">›</span>
@@ -222,9 +222,9 @@
   </div>
 </div>
 
-<script src="../version.js?v=2.10.176"></script>
-<script type="module" src="dashboard.js?v=2.10.176"></script>
-<script type="module" src="../core.js?v=2.10.176"></script>
-<script src="../pwa.js?v=2.10.176" defer></script>
+<script src="../version.js?v=2.10.237"></script>
+<script type="module" src="dashboard.js?v=2.10.237"></script>
+<script type="module" src="../core.js?v=2.10.237"></script>
+<script src="../pwa.js?v=2.10.237" defer></script>
 </body>
 </html>
