@@ -326,3 +326,15 @@ button:disabled{opacity:.48;cursor:not-allowed}
 .v-review-stage .v-review-track>.v-review-page{padding:18px 22px!important}
 .v-review-stage .v-review-page .v-field{column-gap:16px!important}
 }
+
+/* 2.10.251: desktop review typography and compact content-first rows. Mobile unchanged. */
+@media (min-width:900px) and (pointer:fine){
+.v-review-stage .v-review-track>.v-review-page{padding:12px 18px!important}
+.v-review-stage .v-review-page .v-field{align-items:center!important;padding:14px 8px!important;min-height:0!important;gap:18px!important}
+.v-review-stage .v-review-page .v-field-main{width:100%!important;min-width:0!important;align-self:center!important}
+.v-review-stage .v-review-page .v-value{font-size:19px!important;line-height:1.28!important;font-weight:700!important;-webkit-line-clamp:4!important;line-clamp:4!important}
+.v-review-stage .v-review-page .v-evidence{font-size:13px!important;line-height:1.4!important;margin-top:7px!important;-webkit-line-clamp:3!important;line-clamp:3!important}
+.v-review-stage .v-review-page .v-field-label{font-size:13px!important;letter-spacing:.05em!important}
+.v-review-stage .v-review-page .v-field-actions{gap:12px!important;align-self:center!important}
+.v-review-stage .v-review-page .v-field-actions button{min-width:34px!important;min-height:34px!important}
+}
