@@ -275,32 +275,36 @@ function refreshAiTagSuggestions(){
   }
 }
 function renderTags(){
-  const selected=document.getElementById("selectedTags"),bank=document.getElementById("bankTags");
-  selected.replaceChildren();bank.replaceChildren();
-  function button(tag,active){const b=document.createElement("button");b.type="button";b.className="v-tag-pill"+(active?" is-selected":"");b.setAttribute("aria-pressed",String(active));b.textContent="#"+tag+(active?" ×":" +");b.onclick=()=>{if(active&&!confirm("Vill du ta bort #"+tag+" från annonsen?"))return;selectedTags=active?selectedTags.filter(x=>x!==tag):[...selectedTags,tag];renderTags();};return b;}
-  const visibleTags=aiTagToggle.checked?aiSuggestedTags:tagBank;
-  selectedTags.filter(tag=>visibleTags.includes(tag)).forEach(tag=>selected.append(button(tag,true)));
-  visibleTags.forEach(tag=>bank.append(button(tag,selectedTags.includes(tag))));
-  updateListingPreview();
+ const display=document.getElementById("listingHashtags"),bank=document.getElementById("bankTags");
+ display.textContent=selectedTags.map(tag=>"#"+tag).join(" ");
+ bank.replaceChildren();
+ tagBank.forEach(tag=>{
+  const button=document.createElement("button");button.type="button";button.className="v-tag-pill";
+  button.textContent="#"+tag+" ×";button.title="Radera #"+tag+" från hashtagbanken";
+  button.onclick=()=>{
+   if(!confirm("Vill du verkligen radera #"+tag+" från hashtagbanken?"))return;
+   tagBank=tagBank.filter(t=>t!==tag);selectedTags=selectedTags.filter(t=>t!==tag);
+   try{localStorage.setItem("ccc-vinted-tags",JSON.stringify(tagBank));}catch{}
+   renderTags();
+  };
+  bank.append(button);
+ });
+ updateListingPreview();
 }
 const aiTagToggle=document.getElementById("useAiTags");
-function syncTagBankVisibility(){
- const editor=document.querySelector(".v-tag-editor");
- const bank=document.getElementById("tagBank");
- const toggle=document.getElementById("tagBankToggle");
- if(!aiTagToggle.checked){
-  editor.open=true;bank.hidden=false;toggle.textContent="Dölj hashtagbanken";
- }else{
-  bank.hidden=true;toggle.textContent="Visa min hashtagbank";
- }
-}
-aiTagToggle.onchange=()=>{selectedTags=[...(aiTagToggle.checked?aiSuggestedTags:tagBank)];syncTagBankVisibility();renderTags();};
+aiTagToggle.onchange=()=>{selectedTags=[...(aiTagToggle.checked?aiSuggestedTags:tagBank)];renderTags();};
+const tagEditorDialog=document.getElementById("tagEditorDialog");
+document.getElementById("tagEditorOpen").onclick=()=>tagEditorDialog.showModal();
+document.getElementById("tagEditorClose").onclick=()=>tagEditorDialog.close();
+tagEditorDialog.addEventListener("click",e=>{if(e.target===tagEditorDialog)tagEditorDialog.close();});
 document.getElementById("tagAddForm").onsubmit=e=>{
  e.preventDefault();const input=document.getElementById("tagInput"),tag=cleanTag(input.value);input.value="";
- if(!tag)return;if(!tagBank.includes(tag)){tagBank.push(tag);try{localStorage.setItem("ccc-vinted-tags",JSON.stringify(tagBank));}catch{}}
- if(!selectedTags.includes(tag))selectedTags.push(tag);renderTags();
+ if(!tag)return;
+ if(!tagBank.includes(tag))tagBank.push(tag);
+ try{localStorage.setItem("ccc-vinted-tags",JSON.stringify(tagBank));}catch{}
+ if(!aiTagToggle.checked&&!selectedTags.includes(tag))selectedTags.push(tag);
+ renderTags();
 };
-document.getElementById("tagBankToggle").onclick=()=>{const node=document.getElementById("tagBank");node.hidden=!node.hidden;document.getElementById("tagBankToggle").textContent=node.hidden?"Visa min hashtagbank":"Dölj hashtagbanken";};
 const copyListing=document.getElementById("copyListing");
 const VINTED_PREFS_KEY="ccc-vinted-listing-preferences";
 function readListingPreferences(){try{const p=JSON.parse(localStorage.getItem(VINTED_PREFS_KEY)||"{}");return {language:["sv","en"].includes(p.language)?p.language:"en",style:["neutral","selling","max"].includes(p.style)?p.style:"selling"};}catch{return {language:"en",style:"selling"};}}
@@ -351,7 +355,7 @@ function updateListingPreview(fallback=false){
  if(rewrittenListing){
   const detailLabels={Brand:"Märke",Category:"Kategori",Size:"Storlek",Color:"Färg",Season:"Säsong",Manufacturer:"Tillverkare"};
  const details=listingLanguage==="sv"?rewrittenListing.details.split("\n").map(line=>line.replace(/^(Brand|Category|Size|Color|Season|Manufacturer):/,key=>detailLabels[key.slice(0,-1)]+":")).join("\n"):rewrittenListing.details;
- listingPreview.textContent=[rewrittenListing.title,rewrittenListing.description,details,tags].filter(Boolean).join("\n\n");
+ listingPreview.textContent=[rewrittenListing.title,rewrittenListing.description,details].filter(Boolean).join("\n\n");
   note.classList.remove("is-working");note.textContent="";return;
  }
  if(fallback){listingPreview.textContent="";return;}
@@ -377,14 +381,13 @@ copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
   applyListingPreferences();refreshAiTagSuggestions();
   if(!tagsInitialized){selectedTags=[...(aiTagToggle.checked?aiSuggestedTags:tagBank)];tagsInitialized=true;}
-  syncTagBankVisibility();
   renderTags();copyListingStatus.textContent="";
   listingDialog.showModal();document.querySelector(".v-listing-body").scrollTop=0;listingDialog.scrollTop=0;ensureRewrite();
 };
 document.getElementById("listingClose").onclick=()=>listingDialog.close();
 document.getElementById("listingCopy").onclick=async()=>{
   if(!rewrittenListing||!listingPreview.textContent.trim()){copyListingStatus.textContent="Ingen annonstext klar att kopiera.";return;}
-  try{await navigator.clipboard.writeText(listingPreview.textContent);copyListingStatus.textContent="Kopierat ✓";if(rewrittenListing){recentCopy.push(rewrittenListing.title+" "+rewrittenListing.description.slice(0,120));if(recentCopy.length>8)recentCopy.splice(0,recentCopy.length-8);try{localStorage.setItem("ccc-vinted-recent-copy",JSON.stringify(recentCopy))}catch{}}const b=document.getElementById("listingCopy");b.classList.add("is-copied");b.textContent="✓";setTimeout(()=>{b.classList.remove("is-copied");b.textContent="⧉";},1300);}
+  try{await navigator.clipboard.writeText([listingPreview.textContent,selectedTags.map(t=>"#"+t).join(" ")].filter(Boolean).join("\n\n"));copyListingStatus.textContent="Kopierat ✓";if(rewrittenListing){recentCopy.push(rewrittenListing.title+" "+rewrittenListing.description.slice(0,120));if(recentCopy.length>8)recentCopy.splice(0,recentCopy.length-8);try{localStorage.setItem("ccc-vinted-recent-copy",JSON.stringify(recentCopy))}catch{}}const b=document.getElementById("listingCopy");b.classList.add("is-copied");b.textContent="✓";setTimeout(()=>{b.classList.remove("is-copied");b.textContent="⧉";},1300);}
   catch{copyListingStatus.textContent="Kunde inte kopiera. Försök igen.";}
 };
 listingDialog.addEventListener("click",e=>{if(e.target===listingDialog)listingDialog.close();});
