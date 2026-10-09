@@ -289,3 +289,8 @@ button:disabled{opacity:.48;cursor:not-allowed}
 .v-analyze{min-height:56px;border-radius:17px;box-shadow:0 5px 20px rgba(212,167,75,.13)}
 .v-analyze:disabled{opacity:1;background:color-mix(in srgb,var(--v-gold) 35%,var(--v-card));color:var(--v-muted);box-shadow:none;cursor:not-allowed}
 @media(max-width:380px){.v-photo-action{grid-template-columns:38px minmax(0,1fr);padding:8px 6px;gap:2px 6px}.v-photo-action>.v-photo-action-icon{width:36px;height:36px;font-size:21px}}
+
+/* 2.10.242: product values are direct edit targets. */
+.v-field .v-value[role="button"]{cursor:pointer;border-radius:8px;touch-action:manipulation}
+.v-field .v-value[role="button"]:focus-visible{outline:2px solid var(--v-gold);outline-offset:4px}
+.v-field .v-value[role="button"]:active{color:var(--v-gold)}

@@ -50,7 +50,11 @@ function renderFields(rows){
       const detail=[meta.evidence,meta.nextPhoto?(lang==="sv-SE"?"Komplettera med bild: ":"Add photo: ")+meta.nextPhoto:""].filter(Boolean).join(" · ");
       if(detail){const hint=document.createElement("div");hint.className="v-evidence";hint.textContent=detail;row.querySelector(".v-field-main").append(hint);}
     }
-    row.querySelector(".v-edit").onclick=()=>{activeEdit={valueNode,statusNode,copy};editHeading.textContent=(lang==="sv-SE"?"Redigera ":"Edit ")+label;editInput.value=valueNode.textContent;editDialog.showModal();};
+    const openFieldEditor=()=>{activeEdit={valueNode,statusNode,copy};editHeading.textContent=(lang==="sv-SE"?"Redigera ":"Edit ")+label;editInput.value=valueNode.textContent;editDialog.showModal();};
+    row.querySelector(".v-edit").onclick=openFieldEditor;
+    valueNode.setAttribute("role","button");valueNode.setAttribute("tabindex","0");valueNode.setAttribute("aria-label","Redigera "+label);
+    valueNode.onclick=openFieldEditor;
+    valueNode.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openFieldEditor();}};
     copy.onclick=async()=>{try{await navigator.clipboard.writeText(copy.dataset.value);copy.classList.add("copied");setTimeout(()=>copy.classList.remove("copied"),900)}catch{}};
     fields.append(row);
   });
@@ -254,8 +258,8 @@ document.getElementById("tagAddForm").onsubmit=e=>{
 document.getElementById("tagBankToggle").onclick=()=>{const node=document.getElementById("tagBank");node.hidden=!node.hidden;document.getElementById("tagBankToggle").textContent=node.hidden?"Visa min hashtagbank":"Dölj hashtagbanken";};
 const copyListing=document.getElementById("copyListing");
 const VINTED_PREFS_KEY="ccc-vinted-listing-preferences";
-function readListingPreferences(){try{const p=JSON.parse(localStorage.getItem(VINTED_PREFS_KEY)||"{}");return {language:["sv","en"].includes(p.language)?p.language:"sv",style:["neutral","selling","max"].includes(p.style)?p.style:"selling"};}catch{return {language:"sv",style:"selling"};}}
-let listingLanguage="sv",listingStyle="selling";
+function readListingPreferences(){try{const p=JSON.parse(localStorage.getItem(VINTED_PREFS_KEY)||"{}");return {language:["sv","en"].includes(p.language)?p.language:"en",style:["neutral","selling","max"].includes(p.style)?p.style:"selling"};}catch{return {language:"en",style:"selling"};}}
+let listingLanguage="en",listingStyle="selling";
 const preferencesDialog=document.getElementById("vintedSettingsDialog"),defaultLanguage=document.getElementById("vintedDefaultLanguage"),defaultStyle=document.getElementById("vintedDefaultStyle");
 function saveListingPreferences(){try{localStorage.setItem(VINTED_PREFS_KEY,JSON.stringify({language:defaultLanguage.value,style:defaultStyle.value}));}catch{}}
 function applyListingPreferences(){const p=readListingPreferences();listingLanguage=p.language;listingStyle=p.style;defaultLanguage.value=p.language;defaultStyle.value=p.style;document.querySelectorAll("[data-listing-lang]").forEach(b=>{const active=b.dataset.listingLang===listingLanguage;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active));});document.querySelectorAll("[data-listing-style]").forEach(b=>{const active=b.dataset.listingStyle===listingStyle;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active));});}
