@@ -315,22 +315,16 @@ const listingVariants=new Map();
 function neutralVariant(parts){return {title:parts.title,description:parts.description,details:parts.details};}
 const recentCopy=(()=>{try{return JSON.parse(localStorage.getItem("ccc-vinted-recent-copy")||"[]")}catch{return []}})();
 
-async function ensureRewrite(){
+function ensureRewrite(){
  const parts=listingParts(),key=JSON.stringify({parts,listingStyle,listingLanguage});
- if(listingVariants.has(key)){++rewriteRequest;rewrittenListing=listingVariants.get(key);rewriteKey=key;updateListingPreview();return;}
- if(listingStyle==="neutral"&&listingLanguage==="sv"){++rewriteRequest;rewrittenListing=neutralVariant(parts);rewriteKey=key;listingVariants.set(key,rewrittenListing);updateListingPreview();return;}
- if(rewriteKey===key&&rewrittenListing){updateListingPreview();return;}
- if(pendingRewriteKey===key)return;
- const id=++rewriteRequest;pendingRewriteKey=key;rewrittenListing=null;updateListingPreview();
- const note=document.getElementById("listingLanguageNote");note.textContent="Skriver annonstext med AI…";note.classList.add("is-working");
- try{
-  const response=await fetch(TRANSLATION_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"rewrite_listing",...parts,style:listingStyle,language:listingLanguage,recent:recentCopy})});
-  const data=await response.json();
-  if(!response.ok||!data.listing?.description)throw Error(data.error||"AI-omskrivning misslyckades");
-  if(id!==rewriteRequest)return;
-  rewrittenListing=data.listing;rewriteKey=key;listingVariants.set(key,data.listing);updateListingPreview();
- }catch(e){if(id!==rewriteRequest)return;note.classList.remove("is-working");updateListingPreview(true);note.textContent="AI-omskrivningen misslyckades: "+String(e.message||"okänt fel").slice(0,180)+". Ingen annonstext visas förrän AI fungerar.";}
- finally{if(pendingRewriteKey===key)pendingRewriteKey="";}
+ if(listingVariants.has(key)){rewrittenListing=listingVariants.get(key);rewriteKey=key;updateListingPreview();return;}
+ // Vision's reviewed text is authoritative. No second AI call to rewrite it.
+ // Styles only affect safe presentation, never introduce garment claims.
+ const description=parts.description.trim();
+ const suffix=listingLanguage==="en"?"Message me if you have any questions.":"Hör gärna av dig om du har frågor.";
+ const styled=listingStyle==="neutral"||!description?description:description+"\\n\\n"+suffix;
+ rewrittenListing={title:parts.title,description:styled,details:parts.details};
+ rewriteKey=key;listingVariants.set(key,rewrittenListing);updateListingPreview();
 }
 let translatedListing=null,translationKey="",translationRequest=0;
 const TRANSLATION_ENDPOINT="https://ccc-vision-pending-test.mangaj73.workers.dev";
@@ -352,7 +346,7 @@ function updateListingPreview(fallback=false){
   note.classList.remove("is-working");note.textContent="";return;
  }
  if(fallback){listingPreview.textContent="";return;}
- listingPreview.textContent="";note.textContent="Skriver annonstext med AI…";
+ listingPreview.textContent="";note.textContent="Förbereder annons…";
 }
 async function ensureTranslation(){
  if(listingLanguage==="sv"){updateListingPreview();return;}
@@ -380,7 +374,7 @@ copyListing.onclick=()=>{
 };
 document.getElementById("listingClose").onclick=()=>listingDialog.close();
 document.getElementById("listingCopy").onclick=async()=>{
-  if(!rewrittenListing||!listingPreview.textContent.trim()){copyListingStatus.textContent="Ingen AI-annons klar att kopiera.";return;}
+  if(!rewrittenListing||!listingPreview.textContent.trim()){copyListingStatus.textContent="Ingen annonstext klar att kopiera.";return;}
   try{await navigator.clipboard.writeText(listingPreview.textContent);copyListingStatus.textContent="Kopierat ✓";if(rewrittenListing){recentCopy.push(rewrittenListing.title+" "+rewrittenListing.description.slice(0,120));if(recentCopy.length>8)recentCopy.splice(0,recentCopy.length-8);try{localStorage.setItem("ccc-vinted-recent-copy",JSON.stringify(recentCopy))}catch{}}const b=document.getElementById("listingCopy");b.classList.add("is-copied");b.textContent="✓";setTimeout(()=>{b.classList.remove("is-copied");b.textContent="⧉";},1300);}
   catch{copyListingStatus.textContent="Kunde inte kopiera. Försök igen.";}
 };
