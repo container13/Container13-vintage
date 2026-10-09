@@ -436,3 +436,6 @@ transform:translateY(-3px)!important;box-shadow:0 14px 28px rgba(25,32,52,.16)!i
 .v-analysis-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;background:var(--v-card);border:1px solid var(--v-border);border-radius:14px;padding:14px;margin:14px 0}
 .v-analysis-options label{display:flex;flex-direction:column;gap:7px;color:var(--v-muted);font-size:12px;font-weight:750}
 .v-analysis-options select{min-width:0;width:100%;padding:11px 8px;border-radius:9px;border:1px solid var(--v-border);background:var(--v-bg);color:var(--v-text);font-size:16px;font-weight:700}
+
+/* Touch copy confirmation must not retain a yellow hover/focus ring. */
+@media(hover:none){.v-listing-tools button:hover:not(.is-copied){border-color:var(--v-border)}#listingCopy:focus:not(:focus-visible){outline:none;box-shadow:none}}

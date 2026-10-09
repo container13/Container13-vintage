@@ -1,5 +1,5 @@
 (() => {
-  const CCC_VERSION = "2.10.266";
+  const CCC_VERSION = "2.10.267";
   window.CCC_VERSION = CCC_VERSION;
   function applyVersion(){
     document.querySelectorAll(".js-ccc-version").forEach(el=>el.textContent=`v${CCC_VERSION}`);

@@ -392,7 +392,7 @@ copyListing.onclick=()=>{
 document.getElementById("listingClose").onclick=()=>listingDialog.close();
 document.getElementById("listingCopy").onclick=async()=>{
   if(!rewrittenListing||!listingPreview.textContent.trim()){copyListingStatus.textContent="Ingen annonstext klar att kopiera.";return;}
-  try{await navigator.clipboard.writeText([listingPreview.textContent,selectedTags.map(t=>"#"+t).join(" ")].filter(Boolean).join("\n\n"));copyListingStatus.textContent="Kopierat ✓";if(rewrittenListing){recentCopy.push(rewrittenListing.title+" "+rewrittenListing.description.slice(0,120));if(recentCopy.length>8)recentCopy.splice(0,recentCopy.length-8);try{localStorage.setItem("ccc-vinted-recent-copy",JSON.stringify(recentCopy))}catch{}}const b=document.getElementById("listingCopy");b.classList.add("is-copied");b.textContent="✓";setTimeout(()=>{b.classList.remove("is-copied");b.textContent="⧉";},1300);}
+  try{await navigator.clipboard.writeText([listingPreview.textContent,selectedTags.map(t=>"#"+t).join(" ")].filter(Boolean).join("\n\n"));copyListingStatus.textContent="Kopierat ✓";if(rewrittenListing){recentCopy.push(rewrittenListing.title+" "+rewrittenListing.description.slice(0,120));if(recentCopy.length>8)recentCopy.splice(0,recentCopy.length-8);try{localStorage.setItem("ccc-vinted-recent-copy",JSON.stringify(recentCopy))}catch{}}const b=document.getElementById("listingCopy");b.classList.add("is-copied");b.textContent="✓";b.blur();setTimeout(()=>{b.classList.remove("is-copied");b.textContent="⧉";},1300);}
   catch{copyListingStatus.textContent="Kunde inte kopiera. Försök igen.";}
 };
 listingDialog.addEventListener("click",e=>{if(e.target===listingDialog)listingDialog.close();});
