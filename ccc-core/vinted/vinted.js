@@ -315,6 +315,13 @@ const listingVariants=new Map();
 function neutralVariant(parts){return {title:parts.title,description:parts.description,details:parts.details};}
 const recentCopy=(()=>{try{return JSON.parse(localStorage.getItem("ccc-vinted-recent-copy")||"[]")}catch{return []}})();
 
+// Explicit opt-in AI rewriting is retained for future UI, never run automatically.
+async function rewriteListingOnDemand(parts,style,language){
+ const response=await fetch(TRANSLATION_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"rewrite_listing",...parts,style,language,recent:recentCopy})});
+ const data=await response.json();
+ if(!response.ok||!data.listing?.description)throw Error(data.error||"AI-omskrivning misslyckades");
+ return data.listing;
+}
 function ensureRewrite(){
  const parts=listingParts(),key=JSON.stringify({parts,listingStyle,listingLanguage});
  if(listingVariants.has(key)){rewrittenListing=listingVariants.get(key);rewriteKey=key;updateListingPreview();return;}

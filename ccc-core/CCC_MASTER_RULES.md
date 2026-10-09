@@ -75,3 +75,9 @@ If evidence contradicts the plan, stop adding patches. Inventory the real implem
 
 ## Shared standard reference
 Follow `../project-template/PROJECT_RELEASE_STANDARD.md` as the cross-project baseline, in addition to these stricter CCC-specific rules. Do not copy the standard into another competing CCC rulebook.
+
+## 12. Atomic release prerequisite (2026-10-09)
+- Read the actual CI release guard before editing. Treat guard requirements as preconditions, not post-release discoveries.
+- Related UI, cache keys and canonical version must land in ONE atomic commit; never sequential per-file commits for a guarded release.
+- Keep existing checks enabled and unchanged unless a reviewed contract change is necessary.
+- Validate commit shape and GitHub readback before declaring CODE COMMITTED; verify CI and Pages before declaring DEPLOYED.
