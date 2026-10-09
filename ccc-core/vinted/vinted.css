@@ -356,3 +356,14 @@ button:disabled{opacity:.48;cursor:not-allowed}
 .v-review-stage .v-review-page .v-field-actions button{width:36px!important;height:36px!important;min-height:36px!important;min-width:36px!important}
 .v-review-stage .v-review-page .v-field-main{cursor:pointer!important}
 }
+
+/* 2.10.253: wide desktop 4 columns x 2 rows, preserve tablet 2 x 4. */
+@media (min-width:1400px) and (pointer:fine){
+.v-review-dialog{width:min(97vw,1760px)!important;max-width:1760px!important}
+.v-review-stage .v-review-track{grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+.v-review-stage .v-review-track>.v-review-page{display:contents!important}
+.v-review-stage .v-review-page .v-field{padding:14px 13px!important;gap:7px!important;grid-template-columns:minmax(0,1fr) 36px!important;min-width:0!important}
+.v-review-stage .v-review-page .v-field-actions{width:36px!important;min-width:36px!important;max-width:36px!important}
+.v-review-stage .v-review-page .v-value{font-size:17px!important;-webkit-line-clamp:4!important;line-clamp:4!important}
+.v-review-stage .v-review-page .v-evidence{font-size:12px!important}
+}
