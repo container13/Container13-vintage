@@ -54,3 +54,11 @@ A general lesson discovered in any project should be proposed back to this templ
 - **Handoff and state must agree with reality:** mark superseded instructions historical, preserve verified evidence, and do not advance CURRENT on an unverified change.
 - **Automatic guard where practical:** validate version source, cache keys, unique active implementation, syntax, secrets and deployment wiring. Test guard failures intentionally before treating a new guard as reliable.
 - **Scope:** apply this shared standard to all active projects at their next change; do not mass-edit or redeploy unrelated projects just to copy text. Keep specialized safety rules, especially frozen Lina research, intact.
+
+## Cross-project safe retry policy — 2026-10-09
+- Applies to every project and workflow using this shared standard, not just CCC.
+- If a tool, API, GitHub, CI or deployment operation fails transiently, inspect the actual result before retrying; a write may have succeeded despite an error.
+- Retry safe and idempotent operations automatically, using smaller separate calls when useful and current state plus compare-and-swap / expected SHA for writes.
+- Do not bypass safety controls, authorization, branch protection, release guards or locked project state. Never force a write just to overcome a failed retry.
+- Stop and ask the user only when the result remains ambiguous, retries are blocked, risk increases, or explicit approval is needed.
+- Report only verified outcomes. Do not routinely require the user to say 'try again' for recoverable failures.
