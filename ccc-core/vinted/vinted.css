@@ -452,3 +452,9 @@ transform:translateY(-3px)!important;box-shadow:0 14px 28px rgba(25,32,52,.16)!i
 .v-review-stage .v-review-track>.v-review-page:first-child>.v-field{min-height:0!important;height:100%!important}
 .v-review-stage .v-review-track>.v-review-page:first-child>.v-field:nth-child(2) .v-value{-webkit-line-clamp:9!important;line-clamp:9!important}
 }
+
+/* 2.10.271: mobile page 1 really uses a grid (legacy flex made row ratios inert). */
+@media(max-width:899px), (pointer:coarse){
+.v-review-stage .v-review-track>.v-review-page:first-child{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr) minmax(0,3fr) minmax(0,1fr)!important;align-content:stretch!important}
+.v-review-stage .v-review-track>.v-review-page:first-child>.v-field{flex:none!important;min-height:0!important;height:100%!important;box-sizing:border-box!important}
+}
