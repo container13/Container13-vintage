@@ -1,6 +1,6 @@
 const MAX=9,cameraPicker=document.getElementById("cameraPicker"),albumPicker=document.getElementById("albumPicker"),photos=document.getElementById("photos"),cameraAdd=document.getElementById("cameraAdd"),albumAdd=document.getElementById("albumAdd"),count=document.getElementById("count"),analyze=document.getElementById("analyze"),result=document.getElementById("result"),fields=document.getElementById("fields");let items=[],lang="sv-SE",busy=false;const approvedFields=new Map();const analysisStatus=document.getElementById("analysisStatus");
 function draw(){photos.replaceChildren();items.forEach((item,i)=>{const d=document.createElement("div");d.className="v-photo";d.innerHTML='<img alt="Bild '+(i+1)+'"><span class="v-photo-number">'+(i+1)+'</span><button type="button" aria-label="Ta bort bild">×</button>';d.querySelector("img").src=item.url;d.querySelector("button").onclick=()=>{URL.revokeObjectURL(item.url);items.splice(i,1);draw()};photos.append(d)});count.textContent=items.length+" / "+MAX;analyze.disabled=!items.length||busy;const full=items.length>=MAX;cameraAdd.disabled=full;albumAdd.disabled=full;document.querySelector(".v-photo-actions")?.classList.toggle("is-full",full)}
-function addFiles(files){selectedTags=[];tagsInitialized=false;result.hidden=true;fields.replaceChildren();approvedFields.clear();analysisStatus.textContent="";for(const file of [...(files||[])]){if(items.length>=MAX)break;if(file.type.startsWith("image/"))items.push({file,url:URL.createObjectURL(file)})}draw()}
+function addFiles(files){listingVariants.clear();try{sessionStorage.removeItem("ccc-vinted-session-variants-v1")}catch{}selectedTags=[];tagsInitialized=false;result.hidden=true;fields.replaceChildren();approvedFields.clear();analysisStatus.textContent="";for(const file of [...(files||[])]){if(items.length>=MAX)break;if(file.type.startsWith("image/"))items.push({file,url:URL.createObjectURL(file)})}draw()}
 cameraAdd.onclick=()=>cameraPicker.click();albumAdd.onclick=()=>albumPicker.click();
 cameraPicker.onchange=()=>{addFiles(cameraPicker.files);cameraPicker.value=""};
 albumPicker.onchange=()=>{addFiles(albumPicker.files);albumPicker.value=""};
@@ -333,16 +333,35 @@ async function rewriteListingOnDemand(parts,style,language){
  if(!response.ok||!data.listing?.description)throw Error(data.error||"AI-omskrivning misslyckades");
  return data.listing;
 }
-function ensureRewrite(){
- const parts=listingParts(),key=JSON.stringify({parts,listingStyle,listingLanguage});
- if(listingVariants.has(key)){rewrittenListing=listingVariants.get(key);rewriteKey=key;updateListingPreview();return;}
- // Vision's reviewed text is authoritative. No second AI call to rewrite it.
- // Styles only affect safe presentation, never introduce garment claims.
- const description=parts.description.trim();
- const suffix=listingLanguage==="en"?"Message me if you have any questions.":"Hör gärna av dig om du har frågor.";
- const styled=listingStyle==="neutral"||!description?description:description+"\n\n"+suffix;
- rewrittenListing={title:parts.title,description:styled,details:parts.details};
- rewriteKey=key;listingVariants.set(key,rewrittenListing);updateListingPreview();
+function listingCacheKey(){return JSON.stringify({parts:listingParts(),listingStyle,listingLanguage});}
+const SESSION_VARIANTS_KEY="ccc-vinted-session-variants-v1";
+function rememberVariant(key,value){
+ listingVariants.set(key,value);
+ try{const saved=JSON.parse(sessionStorage.getItem(SESSION_VARIANTS_KEY)||"{}");saved[key]=value;const entries=Object.entries(saved).slice(-24);sessionStorage.setItem(SESSION_VARIANTS_KEY,JSON.stringify(Object.fromEntries(entries)));}catch{}
+}
+function recallVariant(key){
+ if(listingVariants.has(key))return listingVariants.get(key);
+ try{const saved=JSON.parse(sessionStorage.getItem(SESSION_VARIANTS_KEY)||"{}");if(saved[key]?.description){listingVariants.set(key,saved[key]);return saved[key];}}catch{}
+ return null;
+}
+async function ensureRewrite(){
+ const parts=listingParts(),key=listingCacheKey();
+ const cached=recallVariant(key);
+ if(cached){++rewriteRequest;document.getElementById("listingCopy").disabled=false;rewrittenListing=cached;rewriteKey=key;updateListingPreview();return;}
+ const requestId=++rewriteRequest;
+ rewrittenListing=null;rewriteKey="";updateListingPreview();
+ const note=document.getElementById("listingLanguageNote"),copy=document.getElementById("listingCopy");
+ note.textContent="Skapar annons med AI…";note.classList.add("is-working");copy.disabled=true;
+ try{
+  const listing=await rewriteListingOnDemand(parts,listingStyle,listingLanguage);
+  rememberVariant(key,listing);
+  if(requestId!==rewriteRequest)return;
+  rewrittenListing=listing;rewriteKey=key;updateListingPreview();
+ }catch(error){
+  if(requestId!==rewriteRequest)return;
+  note.classList.remove("is-working");note.textContent="AI-anropet misslyckades. Välj stilen igen för att försöka på nytt.";
+  listingPreview.textContent="";copyListingStatus.textContent=error?.message||"Kunde inte skapa annons.";
+ }finally{if(requestId===rewriteRequest)copy.disabled=false;}
 }
 let translatedListing=null,translationKey="",translationRequest=0;
 const TRANSLATION_ENDPOINT="https://ccc-vision-pending-test.mangaj73.workers.dev";
@@ -380,8 +399,8 @@ async function ensureTranslation(){
  }catch(e){if(requestId!==translationRequest)return;document.getElementById("listingLanguageNote").classList.remove("is-working");document.getElementById("listingLanguageNote").textContent="Kunde inte skapa engelsk annonstext. Försök välja språk igen.";listingPreview.textContent="";}
 }
 
-document.querySelectorAll("[data-listing-style]").forEach(b=>b.onclick=()=>{listingStyle=b.dataset.listingStyle;document.querySelectorAll("[data-listing-style]").forEach(x=>{x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b));});ensureRewrite();});
-document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;refreshAiTagSuggestions();renderTags();document.querySelectorAll("[data-listing-lang]").forEach(x=>{x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b));});ensureRewrite();});
+document.querySelectorAll("[data-listing-style]").forEach(b=>b.onclick=()=>{listingStyle=b.dataset.listingStyle;copyListingStatus.textContent="";document.querySelectorAll("[data-listing-style]").forEach(x=>{x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b));});ensureRewrite();});
+document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;copyListingStatus.textContent="";refreshAiTagSuggestions();renderTags();document.querySelectorAll("[data-listing-lang]").forEach(x=>{x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b));});ensureRewrite();});
 copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
   applyListingPreferences();refreshAiTagSuggestions();
