@@ -52,8 +52,12 @@ function renderFields(rows){
     }
     const openFieldEditor=()=>{activeEdit={valueNode,statusNode,copy};editHeading.textContent=(lang==="sv-SE"?"Redigera ":"Edit ")+label;editInput.value=valueNode.textContent;editDialog.showModal();};
     row.querySelector(".v-edit").onclick=openFieldEditor;
+    const mainTextArea=row.querySelector(".v-field-main");
+    mainTextArea.setAttribute("role","button");mainTextArea.setAttribute("tabindex","0");mainTextArea.setAttribute("aria-label","Redigera "+label);
+    mainTextArea.onclick=openFieldEditor;
+    mainTextArea.onkeydown=e=>{if(e.target===mainTextArea&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openFieldEditor();}};
     valueNode.setAttribute("role","button");valueNode.setAttribute("tabindex","0");valueNode.setAttribute("aria-label","Redigera "+label);
-    valueNode.onclick=openFieldEditor;
+    
     valueNode.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openFieldEditor();}};
     copy.onclick=async()=>{try{await navigator.clipboard.writeText(copy.dataset.value);copy.classList.add("copied");setTimeout(()=>copy.classList.remove("copied"),900)}catch{}};
     fields.append(row);

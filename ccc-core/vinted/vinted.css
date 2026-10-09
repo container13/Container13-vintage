@@ -294,3 +294,8 @@ button:disabled{opacity:.48;cursor:not-allowed}
 .v-field .v-value[role="button"]{cursor:pointer;border-radius:8px;touch-action:manipulation}
 .v-field .v-value[role="button"]:focus-visible{outline:2px solid var(--v-gold);outline-offset:4px}
 .v-field .v-value[role="button"]:active{color:var(--v-gold)}
+
+/* 2.10.243: the complete text area (label, value and evidence) edits the field. */
+.v-field .v-field-main{cursor:pointer;touch-action:manipulation}
+.v-field .v-field-main:focus-visible{outline:2px solid var(--v-gold);outline-offset:3px;border-radius:8px}
+.v-field .v-field-main:active .v-value{color:var(--v-gold)}
