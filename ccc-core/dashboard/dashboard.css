@@ -701,3 +701,15 @@ body{min-height:100dvh}
 #moreView.ccc-more-dashboard .ccc-more-cards .action-copy strong{font-size:clamp(21px,2vw,27px);line-height:1.15}
 #moreView.ccc-more-dashboard .ccc-more-cards .action-copy small{font-size:clamp(13px,1.2vw,16px)}
 }
+
+/* 2.10.246: explicit desktop More 2x2, isolated from global 3-column Dashboard rules. */
+@media (min-width:700px){
+#moreView.ccc-more-dashboard{width:min(92vw,850px)!important;max-width:850px!important;margin-inline:auto}
+#moreView.ccc-more-dashboard nav.primary-actions.ccc-more-cards{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(200px,auto))!important;gap:18px!important;width:100%!important}
+#moreView.ccc-more-dashboard nav.primary-actions.ccc-more-cards>a.action-card{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;min-width:0!important;width:100%!important;height:100%!important;min-height:200px!important;padding:20px 16px!important;text-align:center!important;gap:12px!important;border-radius:25px!important}
+#moreView.ccc-more-dashboard nav.primary-actions.ccc-more-cards>a.action-card .action-icon{flex:none!important;width:76px!important;height:76px!important;font-size:37px!important}
+#moreView.ccc-more-dashboard nav.primary-actions.ccc-more-cards>a.action-card .action-copy{width:100%!important;min-width:0!important;display:flex!important;flex-direction:column!important;align-items:center!important;gap:6px!important;overflow-wrap:normal!important;word-break:normal!important}
+#moreView.ccc-more-dashboard nav.primary-actions.ccc-more-cards>a.action-card .action-copy strong{font-size:clamp(21px,2vw,28px)!important;line-height:1.2!important;white-space:normal!important}
+#moreView.ccc-more-dashboard nav.primary-actions.ccc-more-cards>a.action-card .action-copy small{font-size:clamp(13px,1.1vw,16px)!important;line-height:1.35!important;max-width:26ch!important}
+#moreView.ccc-more-dashboard nav.primary-actions.ccc-more-cards>a.action-card .action-arrow{display:none!important}
+}
