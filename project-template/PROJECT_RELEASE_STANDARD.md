@@ -62,3 +62,10 @@ A general lesson discovered in any project should be proposed back to this templ
 - Do not bypass safety controls, authorization, branch protection, release guards or locked project state. Never force a write just to overcome a failed retry.
 - Stop and ask the user only when the result remains ambiguous, retries are blocked, risk increases, or explicit approval is needed.
 - Report only verified outcomes. Do not routinely require the user to say 'try again' for recoverable failures.
+
+## Cross-project root-cause-first UI fixes — 2026-10-09
+- Before changing layout, inspect the actual DOM structure, layout mode (flex/grid/block), selector specificity, media queries, cascade order and existing !important overrides. A grid-row setting on a flex container has no effect.
+- Prefer correcting the owning rule or removing obsolete overrides rather than appending another conflicting CSS override. When a narrowly scoped override is unavoidable, explain why and plan consolidation.
+- Verify the intended effect in the relevant viewport/device; a successful commit, cache bump or static source check is not visual proof.
+- If the user reports no change after a fix, stop repeating parameter tweaks. Recheck the diagnosis, deployed assets and computed layout before another release.
+- Record the root cause, failed assumption and preventive check in the shared learning loop.
