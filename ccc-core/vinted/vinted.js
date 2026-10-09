@@ -188,6 +188,9 @@ analyze.onclick=async()=>{
       return;
     }
     renderFields(rows);result.hidden=false;openReviewDialog();
+    // Start the first listing rewrite while the user reviews the fields.
+    // This shares the same cache/key as the preview, avoiding a second request.
+    void ensureRewrite();
     if(!analysisStatus.textContent.includes("translation unavailable"))analysisStatus.textContent=lang==="sv-SE"?"AI-förslag, inte verifierade fakta. Kontrollera varje uppgift före publicering.":"AI suggestions – verify each detail before publishing.";
     requestAnimationFrame(()=>window.scrollTo({top:0,behavior:"instant"}));
   }catch(e){analysisStatus.textContent="Analysen misslyckades: "+(e?.message||"Okänt fel");}
@@ -279,7 +282,17 @@ function renderTags(){
   updateListingPreview();
 }
 const aiTagToggle=document.getElementById("useAiTags");
-aiTagToggle.onchange=()=>{renderTags();};
+function syncTagBankVisibility(){
+ const editor=document.querySelector(".v-tag-editor");
+ const bank=document.getElementById("tagBank");
+ const toggle=document.getElementById("tagBankToggle");
+ if(!aiTagToggle.checked){
+  editor.open=true;bank.hidden=false;toggle.textContent="Dölj hashtagbanken";
+ }else{
+  bank.hidden=true;toggle.textContent="Visa min hashtagbank";
+ }
+}
+aiTagToggle.onchange=()=>{syncTagBankVisibility();renderTags();};
 document.getElementById("tagAddForm").onsubmit=e=>{
  e.preventDefault();const input=document.getElementById("tagInput"),tag=cleanTag(input.value);input.value="";
  if(!tag)return;if(!tagBank.includes(tag)){tagBank.push(tag);try{localStorage.setItem("ccc-vinted-tags",JSON.stringify(tagBank));}catch{}}
@@ -357,7 +370,9 @@ document.querySelectorAll("[data-listing-style]").forEach(b=>b.onclick=()=>{list
 document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listingLanguage=b.dataset.listingLang;refreshAiTagSuggestions();renderTags();document.querySelectorAll("[data-listing-lang]").forEach(x=>{x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b));});ensureRewrite();});
 copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
-  applyListingPreferences();refreshAiTagSuggestions();selectedTags=[...aiSuggestedTags];tagsInitialized=true;aiTagToggle.checked=true;
+  applyListingPreferences();refreshAiTagSuggestions();
+  if(!tagsInitialized){selectedTags=[...aiSuggestedTags];tagsInitialized=true;}
+  syncTagBankVisibility();
   renderTags();copyListingStatus.textContent="";
   listingDialog.showModal();document.querySelector(".v-listing-body").scrollTop=0;listingDialog.scrollTop=0;ensureRewrite();
 };
