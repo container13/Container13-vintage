@@ -19,6 +19,33 @@ function makeRows(data){
     return [label,value,"REVIEW",meta||null];
   });
 }
+// Translate only the existing Vision facts. Never create or infer missing fields.
+async function reviewRowsForLanguage(rows){
+ if(lang!=="en-US")return rows;
+ const keys=["title","description","category","brand","size","color","season","manufacturer"];
+ const original=rows.map(r=>r[1]);
+ const payload={title:original[0]||"",description:original[1]||"",details:rows.slice(2).map((r,i)=>r[1]?keys[i+2]+": "+r[1]:"").filter(Boolean).join("\\n")};
+ if(!payload.title&&!payload.description&&!payload.details)return rows;
+ try{
+  const response=await fetch("https://ccc-vision-pending-test.mangaj73.workers.dev",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"translate_listing",...payload})});
+  const data=await response.json();
+  if(!response.ok||!data.translation)throw Error("Translation unavailable");
+  const t=data.translation;
+  const translated={title:t.title,description:t.description};
+  for(const line of String(t.details||"").split("\\n")){
+   const match=line.match(/^([a-z]+):\\s*(.*)$/i);
+   if(match&&keys.includes(match[1].toLowerCase()))translated[match[1].toLowerCase()]=match[2];
+  }
+  return rows.map((r,i)=>{
+   if(!original[i])return r;
+   const value=String(translated[keys[i]]||"").trim();
+   return value?[r[0],value,r[2],r[3]]:r;
+  });
+ }catch(e){
+  analysisStatus.textContent="English translation unavailable; original Vision wording is shown. No second image analysis was run.";
+  return rows;
+ }
+}
 const editDialog=document.getElementById("editDialog"),editInput=document.getElementById("editInput"),editHeading=document.getElementById("editHeading");
 let activeEdit=null;
 function closeEdit(){editDialog.close();activeEdit=null;}
@@ -154,13 +181,14 @@ analyze.onclick=async()=>{
     const ai=window.CCC_VISION_AI;
     if(!ai?.configured?.())throw new Error("Vision är inte konfigurerad.");
     const response=await ai.analyze(items.slice(0,3).map(x=>x.file));
-    const rows=makeRows(response.result);
+    lang=readListingPreferences().language==="en"?"en-US":"sv-SE";
+    const rows=await reviewRowsForLanguage(makeRows(response.result));
     if(!rows.some(row=>row[1])){
       analysisStatus.textContent=lang==="sv-SE"?"Analysen är inte tillräckligt säker. Inga produktuppgifter visas.":"Analysis is uncertain. No product details shown.";
       return;
     }
     renderFields(rows);result.hidden=false;openReviewDialog();
-    analysisStatus.textContent=lang==="sv-SE"?"AI-förslag, inte verifierade fakta. Kontrollera varje uppgift före publicering.":"AI suggestions – verify each detail before publishing.";
+    if(!analysisStatus.textContent.includes("translation unavailable"))analysisStatus.textContent=lang==="sv-SE"?"AI-förslag, inte verifierade fakta. Kontrollera varje uppgift före publicering.":"AI suggestions – verify each detail before publishing.";
     requestAnimationFrame(()=>window.scrollTo({top:0,behavior:"instant"}));
   }catch(e){analysisStatus.textContent="Analysen misslyckades: "+(e?.message||"Okänt fel");}
   finally{busy=false;analyze.classList.remove("is-working");analyze.textContent="✦ Analysera och skapa annons";draw();}
