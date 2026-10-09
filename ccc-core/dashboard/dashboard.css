@@ -661,3 +661,20 @@ body{min-height:100dvh}
 /* 2.10.237: Back action in the shared header, not beside the More title. */
 .ccc-header .ccc-header-back-more{position:absolute;left:22px;bottom:18px;z-index:3;width:48px;height:48px;margin:0;border-radius:50%;display:grid;place-items:center}
 .ccc-header .ccc-header-back-more[hidden]{display:none!important}
+
+/* 2.10.238: More adopts the Dashboard's centered heading and vibrant cards. */
+#moreView.ccc-more-dashboard .ccc-more-heading{justify-content:center;text-align:center;margin:8px 2px 20px}
+#moreView.ccc-more-dashboard .ccc-more-heading h1{font-size:clamp(30px,8vw,42px)}
+#moreView.ccc-more-dashboard .ccc-more-heading p{font-size:clamp(16px,4.3vw,21px)}
+#moreView.ccc-more-dashboard .ccc-more-cards{display:grid;grid-template-columns:1fr;grid-template-rows:none;gap:12px}
+#moreView.ccc-more-dashboard .ccc-more-cards .action-card{min-height:136px;padding:18px 20px;grid-template-columns:76px minmax(0,1fr) auto;gap:16px;border-radius:25px;transition:transform .16s ease,filter .16s ease}
+#moreView.ccc-more-dashboard .ccc-more-cards .action-card:active{transform:scale(.985)}
+#moreView.ccc-more-dashboard .ccc-more-cards .action-icon{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font-size:36px;font-weight:800;line-height:1;border:1px solid var(--more-accent);color:white;background:radial-gradient(circle at 32% 23%,color-mix(in srgb,var(--more-accent) 80%,white),var(--more-accent) 70%,color-mix(in srgb,var(--more-accent) 60%,black));box-shadow:0 0 0 4px color-mix(in srgb,var(--more-accent) 12%,transparent),0 0 21px color-mix(in srgb,var(--more-accent) 60%,transparent)}
+#moreView.ccc-more-dashboard .ccc-more-cards .action-copy strong{font-size:clamp(22px,5.8vw,30px);color:var(--ccc-text)}
+#moreView.ccc-more-dashboard .ccc-more-cards .action-copy small{font-size:clamp(13px,3.8vw,17px);line-height:1.35}
+#moreView.ccc-more-dashboard .ccc-more-card--vinted{--more-accent:#168c65;background:linear-gradient(115deg,rgba(14,91,65,.24),var(--ccc-surface) 83%)}
+#moreView.ccc-more-dashboard .ccc-more-card--store{--more-accent:#d9a64a;background:linear-gradient(115deg,rgba(126,93,28,.24),var(--ccc-surface) 83%)}
+#moreView.ccc-more-dashboard .ccc-more-card--marketing{--more-accent:#9b6fe0;background:linear-gradient(115deg,rgba(94,52,139,.23),var(--ccc-surface) 83%)}
+#moreView.ccc-more-dashboard .ccc-more-card--stats{--more-accent:#36a7c8;background:linear-gradient(115deg,rgba(27,110,141,.24),var(--ccc-surface) 83%)}
+@media(min-width:700px){#moreView.ccc-more-dashboard .ccc-more-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){#moreView.ccc-more-dashboard .ccc-more-cards{grid-template-rows:none;gap:12px}#moreView.ccc-more-dashboard .ccc-more-cards .action-card{min-height:132px;padding:16px 15px;grid-template-columns:70px minmax(0,1fr) auto;gap:12px}#moreView.ccc-more-dashboard .ccc-more-cards .action-icon{width:66px;height:66px;font-size:32px}}
