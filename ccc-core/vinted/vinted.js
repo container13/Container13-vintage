@@ -24,7 +24,7 @@ async function reviewRowsForLanguage(rows){
  if(lang!=="en-US")return rows;
  const keys=["title","description","category","brand","size","color","season","manufacturer"];
  const original=rows.map(r=>r[1]);
- const payload={title:original[0]||"",description:original[1]||"",details:rows.slice(2).map((r,i)=>r[1]?keys[i+2]+": "+r[1]:"").filter(Boolean).join("\\n")};
+ const payload={title:original[0]||"",description:original[1]||"",details:rows.slice(2).map((r,i)=>r[1]?keys[i+2]+": "+r[1]:"").filter(Boolean).join("\n")};
  if(!payload.title&&!payload.description&&!payload.details)return rows;
  try{
   const response=await fetch("https://ccc-vision-pending-test.mangaj73.workers.dev",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"translate_listing",...payload})});
@@ -32,8 +32,8 @@ async function reviewRowsForLanguage(rows){
   if(!response.ok||!data.translation)throw Error("Translation unavailable");
   const t=data.translation;
   const translated={title:t.title,description:t.description};
-  for(const line of String(t.details||"").split("\\n")){
-   const match=line.match(/^([a-z]+):\\s*(.*)$/i);
+  for(const line of String(t.details||"").split("\n")){
+   const match=line.match(/^([a-z]+):\s*(.*)$/i);
    if(match&&keys.includes(match[1].toLowerCase()))translated[match[1].toLowerCase()]=match[2];
   }
   return rows.map((r,i)=>{
