@@ -367,3 +367,33 @@ button:disabled{opacity:.48;cursor:not-allowed}
 .v-review-stage .v-review-page .v-value{font-size:17px!important;-webkit-line-clamp:4!important;line-clamp:4!important}
 .v-review-stage .v-review-page .v-evidence{font-size:12px!important}
 }
+
+/* 2.10.254: compact readable review cards; align content at the top. */
+@media (min-width:900px) and (pointer:fine){
+.v-review-stage .v-review-page .v-field{align-items:start!important}
+.v-review-stage .v-review-page .v-field-main{justify-content:flex-start!important;align-self:start!important;overflow:hidden!important}
+.v-review-stage .v-review-page .v-field-actions{align-self:start!important;justify-content:flex-start!important}
+.v-review-stage .v-review-page .v-label{font-size:12px!important;line-height:1.25!important;margin-bottom:5px!important}
+.v-review-stage .v-review-page .v-value{font-size:clamp(16px,1.18vw,20px)!important;line-height:1.32!important}
+.v-review-stage .v-review-page .v-evidence{font-size:12px!important;line-height:1.45!important}
+}
+@media (min-width:1400px) and (pointer:fine){
+.v-review-dialog{width:min(96vw,1600px)!important;max-width:1600px!important}
+.v-review-stage .v-review-track{grid-template-rows:repeat(2,minmax(0,190px))!important;align-content:center!important;gap:16px!important}
+.v-review-stage .v-review-page .v-field{height:190px!important;min-height:0!important;padding:18px 16px!important;grid-template-columns:minmax(0,1fr) 40px!important;gap:12px!important;border-radius:20px!important;background:linear-gradient(135deg,color-mix(in srgb,var(--v-gold) 5%,var(--v-card)),var(--v-card) 60%)!important}
+.v-review-stage .v-review-page .v-field-actions{width:40px!important;min-width:40px!important;max-width:40px!important}
+.v-review-stage .v-review-page .v-field-actions button{width:38px!important;height:38px!important}
+.v-review-stage .v-review-page .v-value{font-size:17px!important}
+}
+@media (hover:hover) and (pointer:fine){
+.v-photo-action,.v-back,.v-settings-gear,.v-review-top button,#reviewProposal,.v-review-open,.v-edit,.v-copy,.v-review-stage .v-review-page .v-field,.v-main button{
+transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,filter .18s ease!important
+}
+.v-photo-action:hover,.v-back:hover,.v-settings-gear:hover,.v-review-top button:hover,#reviewProposal:hover,.v-review-open:hover,.v-main button:hover{
+transform:translateY(-3px)!important;box-shadow:0 14px 28px rgba(25,32,52,.16)!important;filter:brightness(1.035)
+}
+.v-review-stage .v-review-page .v-field:hover{transform:translateY(-3px)!important;box-shadow:0 14px 28px rgba(25,32,52,.13)!important;border-color:color-mix(in srgb,var(--v-gold) 42%,var(--v-border))!important}
+.v-review-stage .v-review-page .v-field-main:hover{cursor:pointer!important}
+.v-photo-action:active,.v-back:active,.v-settings-gear:active,.v-review-top button:active,#reviewProposal:active,.v-review-open:active,.v-main button:active{transform:scale(.975)!important}
+}
+@media (prefers-reduced-motion:reduce){.v-review-stage .v-review-page .v-field,.v-main button,.v-photo-action{transition:none!important}}
