@@ -315,7 +315,12 @@ function applyListingPreferences(){const p=readListingPreferences();listingLangu
 document.getElementById("vintedSettingsOpen").onclick=()=>{defaultLanguage.value=readListingPreferences().language;defaultStyle.value=readListingPreferences().style;preferencesDialog.showModal();};
 document.getElementById("vintedSettingsClose").onclick=()=>preferencesDialog.close();
 defaultLanguage.onchange=saveListingPreferences;defaultStyle.onchange=saveListingPreferences;
-applyListingPreferences();
+const analysisLanguage=document.getElementById("analysisLanguage"),analysisStyle=document.getElementById("analysisStyle");
+function syncAnalysisOptions(){const p=readListingPreferences();analysisLanguage.value=p.language;analysisStyle.value=p.style;}
+function saveAnalysisOptions(){defaultLanguage.value=analysisLanguage.value;defaultStyle.value=analysisStyle.value;saveListingPreferences();applyListingPreferences();}
+analysisLanguage.onchange=saveAnalysisOptions;analysisStyle.onchange=saveAnalysisOptions;
+defaultLanguage.addEventListener("change",syncAnalysisOptions);defaultStyle.addEventListener("change",syncAnalysisOptions);
+applyListingPreferences();syncAnalysisOptions();
 let rewrittenListing=null,rewriteKey="",rewriteRequest=0,pendingRewriteKey="";
 const listingVariants=new Map();
 function neutralVariant(parts){return {title:parts.title,description:parts.description,details:parts.details};}
