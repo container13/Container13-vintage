@@ -657,3 +657,7 @@ body{min-height:100dvh}
 
 /* CCC v2.10.171 – fyra val under Mer på mobil. */
 @media(max-width:480px){#moreView .primary-actions{grid-template-rows:repeat(4,minmax(0,1fr));gap:9px}#moreView .action-card{padding-block:10px}#moreView .action-copy strong{font-size:21px}#moreView .action-copy small{font-size:13px}.ccc-action-card--vinted .action-icon,.ccc-action-card--vinted strong{color:#16835b}}
+
+/* 2.10.237: Back action in the shared header, not beside the More title. */
+.ccc-header .ccc-header-back-more{position:absolute;left:22px;bottom:18px;z-index:3;width:48px;height:48px;margin:0;border-radius:50%;display:grid;place-items:center}
+.ccc-header .ccc-header-back-more[hidden]{display:none!important}
