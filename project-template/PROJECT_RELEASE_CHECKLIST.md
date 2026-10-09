@@ -48,3 +48,11 @@
 - [ ] Evidence stage reported precisely; device/AI/business outcome never inferred from CI success.
 - [ ] Handoff/state reconciled or clearly marked UNVERIFIED; historical notes marked superseded.
 - [ ] CI guard tested with a known failure; required-check enforcement confirmed separately.
+
+## CCC design parity gate (mandatory for any CCC UI change)
+- [ ] Compared changed view with canonical Dashboard and shared CCC shell.
+- [ ] Shared tokens/components reused for typography, colors, spacing, headers, cards, controls, icons and navigation.
+- [ ] Hover, pressed, focus, and disabled feedback matches Dashboard where applicable.
+- [ ] Mobile and desktop layouts checked for proportions, content alignment, density, overflow and readable type.
+- [ ] Any intentional deviation documented; no unreviewed local CSS override.
+- [ ] Visual parity confirmed with rendered evidence before marking UI VERIFIED.

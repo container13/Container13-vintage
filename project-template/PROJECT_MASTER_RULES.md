@@ -29,3 +29,11 @@ Add stricter project rules here. Never silently weaken the shared standard.
 - Existing verified implementation first; do not create a second test engine, login, token, deploy chain or handler without an explicit reason and retirement plan.
 - Document actual evidence and outstanding gates; never call COMMITTED/DEPLOYED a real-device PASS.
 - A project-specific CI workflow is advisory until its enforcement as a required check is verified.
+
+## Mandatory CCC design system (all CCC modules and views)
+- Dashboard and the shared CCC shell are the canonical visual and interaction reference, not optional inspiration.
+- All CCC views must reuse shared design tokens and components for header/brand/version, colors/themes, typography, spacing, cards, buttons, icons, help, settings, navigation, hover/focus/pressed feedback and responsive behavior.
+- Before modifying any CCC screen, inspect the corresponding canonical Dashboard/shared-shell implementation and compare mobile and desktop layouts. Prefer shared styles/components; do not append a new local override for a pattern that already exists.
+- A module-specific variation is permitted only when the workflow requires it; record the reason and keep shared look, interaction and accessibility.
+- Review mobile and wide desktop for readable content density, consistent alignment, no oversized empty cards, no clipping or unintended scrolling, and matching hover/pressed motion.
+- Treat mismatched CCC styling or interactions as a release-blocking defect. Do not declare visual parity without actual rendered client evidence.
