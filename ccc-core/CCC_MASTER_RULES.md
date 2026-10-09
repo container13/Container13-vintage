@@ -81,3 +81,10 @@ Follow `../project-template/PROJECT_RELEASE_STANDARD.md` as the cross-project ba
 - Related UI, cache keys and canonical version must land in ONE atomic commit; never sequential per-file commits for a guarded release.
 - Keep existing checks enabled and unchanged unless a reviewed contract change is necessary.
 - Validate commit shape and GitHub readback before declaring CODE COMMITTED; verify CI and Pages before declaring DEPLOYED.
+
+## 13. Safe retry before asking user (2026-10-09)
+- On a transient tool/API failure, first inspect whether the requested operation already succeeded; never blindly duplicate writes.
+- Retry the same safe operation in smaller, separate calls when appropriate, using current branch state and expected SHA for writes.
+- Do not bypass safety controls, authorization requirements, CI guards, or use force updates to make a retry pass.
+- Stop and ask the user only when retries remain blocked, the operation is ambiguous or unsafe, or new authorization is required.
+- Report verified outcomes rather than requiring the user to say 'try again' after a recoverable transient failure.
