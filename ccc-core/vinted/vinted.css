@@ -445,3 +445,10 @@ transform:translateY(-3px)!important;box-shadow:0 14px 28px rgba(25,32,52,.16)!i
 .v-review-stage .v-review-track>.v-review-page:first-child>.v-field{height:100%!important}
 .v-review-stage .v-review-track>.v-review-page:first-child>.v-field:nth-child(2) .v-value{-webkit-line-clamp:7!important;line-clamp:7!important}
 }
+
+/* 2.10.270: mobile review page 1 — compact title/category, prioritize description. */
+@media(max-width:899px), (pointer:coarse){
+.v-review-stage .v-review-track>.v-review-page:first-child{grid-template-rows:minmax(0,.55fr) minmax(0,1.9fr) minmax(0,.55fr)!important}
+.v-review-stage .v-review-track>.v-review-page:first-child>.v-field{min-height:0!important;height:100%!important}
+.v-review-stage .v-review-track>.v-review-page:first-child>.v-field:nth-child(2) .v-value{-webkit-line-clamp:9!important;line-clamp:9!important}
+}
