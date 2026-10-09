@@ -340,7 +340,7 @@ function ensureRewrite(){
  // Styles only affect safe presentation, never introduce garment claims.
  const description=parts.description.trim();
  const suffix=listingLanguage==="en"?"Message me if you have any questions.":"Hör gärna av dig om du har frågor.";
- const styled=listingStyle==="neutral"||!description?description:description+"\\n\\n"+suffix;
+ const styled=listingStyle==="neutral"||!description?description:description+"\n\n"+suffix;
  rewrittenListing={title:parts.title,description:styled,details:parts.details};
  rewriteKey=key;listingVariants.set(key,rewrittenListing);updateListingPreview();
 }
@@ -387,7 +387,7 @@ copyListing.onclick=()=>{
   applyListingPreferences();refreshAiTagSuggestions();
   if(!tagsInitialized){selectedTags=[...(aiTagToggle.checked?aiSuggestedTags:tagBank)];tagsInitialized=true;}
   renderTags();copyListingStatus.textContent="";
-  listingDialog.showModal();document.querySelector(".v-listing-body").scrollTop=0;listingDialog.scrollTop=0;ensureRewrite();
+  listingDialog.showModal();document.getElementById("listingHeading").focus({preventScroll:true});document.querySelector(".v-listing-body").scrollTop=0;listingDialog.scrollTop=0;ensureRewrite();
 };
 document.getElementById("listingClose").onclick=()=>listingDialog.close();
 document.getElementById("listingCopy").onclick=async()=>{
