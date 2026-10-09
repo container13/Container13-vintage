@@ -439,3 +439,9 @@ transform:translateY(-3px)!important;box-shadow:0 14px 28px rgba(25,32,52,.16)!i
 
 /* Touch copy confirmation must not retain a yellow hover/focus ring. */
 @media(hover:none){.v-listing-tools button:hover:not(.is-copied){border-color:var(--v-border)}#listingCopy:focus:not(:focus-visible){outline:none;box-shadow:none}}
+
+@media(max-width:899px), (pointer:coarse){
+.v-review-stage .v-review-track>.v-review-page:first-child{grid-template-rows:minmax(0,.78fr) minmax(0,1.44fr) minmax(0,.78fr)!important}
+.v-review-stage .v-review-track>.v-review-page:first-child>.v-field{height:100%!important}
+.v-review-stage .v-review-track>.v-review-page:first-child>.v-field:nth-child(2) .v-value{-webkit-line-clamp:7!important;line-clamp:7!important}
+}
