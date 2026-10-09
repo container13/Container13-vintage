@@ -292,7 +292,7 @@ function syncTagBankVisibility(){
   bank.hidden=true;toggle.textContent="Visa min hashtagbank";
  }
 }
-aiTagToggle.onchange=()=>{syncTagBankVisibility();renderTags();};
+aiTagToggle.onchange=()=>{selectedTags=[...(aiTagToggle.checked?aiSuggestedTags:tagBank)];syncTagBankVisibility();renderTags();};
 document.getElementById("tagAddForm").onsubmit=e=>{
  e.preventDefault();const input=document.getElementById("tagInput"),tag=cleanTag(input.value);input.value="";
  if(!tag)return;if(!tagBank.includes(tag)){tagBank.push(tag);try{localStorage.setItem("ccc-vinted-tags",JSON.stringify(tagBank));}catch{}}
@@ -343,7 +343,7 @@ function listingParts(){
 }
 function updateListingPreview(fallback=false){
  const note=document.getElementById("listingLanguageNote");
- const effectiveTags=aiTagToggle.checked?selectedTags.filter(t=>aiSuggestedTags.includes(t)):selectedTags;
+ const effectiveTags=selectedTags;
  const tags=effectiveTags.map(t=>"#"+t).join(" ");
  const tagSummary=document.getElementById("listingTagCount");if(tagSummary)tagSummary.textContent=effectiveTags.length+" hashtags ingår i kopian";
  if(rewrittenListing){
@@ -374,7 +374,7 @@ document.querySelectorAll("[data-listing-lang]").forEach(b=>b.onclick=()=>{listi
 copyListing.onclick=()=>{
   const content=makeVintedListing();if(!content)return;
   applyListingPreferences();refreshAiTagSuggestions();
-  if(!tagsInitialized){selectedTags=[...aiSuggestedTags];tagsInitialized=true;}
+  if(!tagsInitialized){selectedTags=[...(aiTagToggle.checked?aiSuggestedTags:tagBank)];tagsInitialized=true;}
   syncTagBankVisibility();
   renderTags();copyListingStatus.textContent="";
   listingDialog.showModal();document.querySelector(".v-listing-body").scrollTop=0;listingDialog.scrollTop=0;ensureRewrite();
