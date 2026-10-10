@@ -87,6 +87,41 @@ export default {
 
     let body;
     try { body = await request.json(); } catch { return json({ error: "Ogiltig förfrågan." }, 400, origin); }
+    // Experimental batch endpoint: opt-in only. Existing rewrite_listing remains unchanged.
+    if (body?.action === "rewrite_listing_batch_test") {
+      const title=typeof body.title==="string"?body.title.slice(0,300):"";
+      const description=typeof body.description==="string"?body.description.slice(0,3000):"";
+      const details=typeof body.details==="string"?body.details.slice(0,1800):"";
+      if(!title&&!description)return json({error:"Annonstext saknas."},400,origin);
+      const listingSchema={type:"object",additionalProperties:false,required:["title","description","details"],properties:{title:{type:"string"},description:{type:"string"},details:{type:"string"}}};
+      const schema={type:"object",additionalProperties:false,required:["sv","en"],properties:Object.fromEntries(["sv","en"].map(language=>[language,{type:"object",additionalProperties:false,required:["neutral","selling","max"],properties:Object.fromEntries(["neutral","selling","max"].map(style=>[style,listingSchema]))}]))};
+      const instructions=[
+        "Create SIX distinct Vinted listings from the exact SAME reviewed product facts: Swedish and English, each Neutral, Selling, Max.",
+        "Neutral: factual and brief, no persuasion. Selling: warm and appealing, varied 3-5 sentences when facts support it. Max: energetic, memorable, 4-7 sentences only if supported; otherwise shorter. Make the three voices clearly different.",
+        "Write idiomatic Swedish for sv and idiomatic English for en. Titles must be concise and searchable.",
+        "FACT SAFETY: only supplied facts. Never invent brand, condition, era, size, fit, material, rarity, measurements, authenticity, wear or construction. Styling ideas may be suggestions, never product claims.",
+        "Preserve only provided detail keys and values in all six variants, translating labels when appropriate. Do not introduce extra details.",
+        "Avoid generic filler, invented scarcity and repeated features. Return strict JSON matching schema."
+      ].join(" ");
+      const started=Date.now();
+      try{
+        const response=await fetch("https://api.openai.com/v1/responses",{
+          method:"POST",headers:{"Authorization":"Bearer "+env.OPENAI_API_KEY,"Content-Type":"application/json"},
+          body:JSON.stringify({model:env.OPENAI_MODEL||"gpt-5.6-terra",store:false,reasoning:{effort:"low"},
+            input:[{role:"user",content:[{type:"input_text",text:instructions+"\\n"+JSON.stringify({title,description,details})}]}],
+            text:{format:{type:"json_schema",name:"vinted_six_variants_test",strict:true,schema}}})
+        });
+        const data=await response.json().catch(()=>({}));
+        if(!response.ok)return json({error:"Batchgenerering misslyckades."},502,origin);
+        const output=data.output_text||(data.output||[]).flatMap(item=>item?.content||[]).find(part=>part?.type==="output_text")?.text;
+        const variants=JSON.parse(output);
+        for(const language of ["sv","en"])for(const style of ["neutral","selling","max"]){
+          const item=variants?.[language]?.[style];
+          if(!item||!String(item.title||"").trim()||!String(item.description||"").trim()||typeof item.details!=="string")throw Error("Incomplete batch");
+        }
+        return json({variants,metrics:{elapsedMs:Date.now()-started,inputTokens:data.usage?.input_tokens??null,outputTokens:data.usage?.output_tokens??null}},200,origin);
+      }catch{return json({error:"Batchtestet kunde inte slutföras."},502,origin);}
+    }
     if (body?.action === "translate_listing" || body?.action === "rewrite_listing") {
       const rewrite=body.action==="rewrite_listing";
       const title = typeof body.title === "string" ? body.title.slice(0, 300) : "";
