@@ -38,3 +38,10 @@ Status: DESIGN / HIGH RISK. Reuse the existing Supabase project only after check
 - Test duplicate taps/retries, abandoned upload, invalid file, revoked invite, slug collision, expired token and cross-album isolation.
 - Test iPhone Safari, Android and desktop; verify actual deployment separately from GitHub commit.
 - Preserve Micke50 and avoid production schema/storage changes until reviewed.
+
+## Time-limited guest uploads - agreed policy
+- Album is unlisted and available to anyone holding its high-entropy share link/QR; the link is a bearer capability, not owner/admin access. Support revocation/rotation and abuse controls. Human-readable slugs alone are insufficient access secrets.
+- Persist upload_opens_at and upload_closes_at as UTC instants, plus IANA event_timezone. Party/wedding defaults to a 24-hour window starting at the owner's specified event start. Trip/fishing/holiday runs from specified start through 24 hours after specified end.
+- Owner can close early via authorized operation. Album stays readable after close, subject to separately decided retention/privacy policies. Payment upgrade never automatically reopens uploads.
+- Backend checks both quota and server time on reservation AND finalization; reject late finalizations, revoke or expire pending upload grants and clean orphaned objects. Idempotent retries cannot bypass closure.
+- Display a local-time close date/time and countdown; daylight-saving changes must be handled using event timezone, not fixed client offsets. Test simultaneous uploads across closing boundary and revoked link behavior.
