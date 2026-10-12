@@ -21,6 +21,7 @@ This library is intentionally lightweight. Do not document every change.
 | Solution | Status | Search terms | Proven in |
 |---|---|---|---|
 | [release-state-machine](release-state-machine/README.md) | VERIFIED | current previous pending promotion rollback release | CCC |
+| [github-binary-upload](github-binary-upload/README.md) | VERIFIED | image jpg png binary base64 blob tree commit upload | Container13 test |
 | [github-readback](github-readback/README.md) | VERIFIED | github write readback sha commit verify | CCC, Lina |
 | [checkpoint-resume](checkpoint-resume/README.md) | VERIFIED | resume checkpoint crash recovery handoff state | CCC, Lina |
 | [worker-source-chain](worker-source-chain/README.md) | VERIFIED | worker pending current previous deploy source wrangler | Lina |

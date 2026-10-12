@@ -69,3 +69,9 @@ A general lesson discovered in any project should be proposed back to this templ
 - Verify the intended effect in the relevant viewport/device; a successful commit, cache bump or static source check is not visual proof.
 - If the user reports no change after a fix, stop repeating parameter tweaks. Recheck the diagnosis, deployed assets and computed layout before another release.
 - Record the root cause, failed assumption and preventive check in the shared learning loop.
+
+## Cross-project binary asset delivery — 2026-10-12
+- For generated JPG/PNG or other binary assets, reuse the VERIFIED `solutions/github-binary-upload/` method: Base64 `create_blob` -> tree -> commit -> safe branch ref update -> exact path/SHA readback -> client visual check where relevant.
+- Renaming a text/HTML file to an image extension is not a binary conversion. Do not assume text-only fetch can read binary assets.
+- Conduct experiments in a named `test/<test-name>/` folder, with README and recorded outcome, before changing production assets.
+- Use existing release/checkpoint discipline; an asset commit alone is not proof of live deployment. Verify size/API limits for new file types or large payloads.
