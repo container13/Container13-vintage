@@ -11,3 +11,6 @@ remember/index.html är en fristående UI-prototyp kopierad från test/micke50-p
 
 ## Nästa steg
 Verifiera faktisk deploy/UI och mobil; inventera befintlig backend innan registrering. Auth, kvoter och betalningar är HIGH-risk. Håll COMMITTED, DEPLOYED, RUNTIME PASS och DEVICE PASS åtskilda. Fortsätt från första ej verifierade steg, aldrig genom att återuppfinna ett parallellt system.
+
+## Backendinventering och nästa kontroll
+Micke50 har Supabase Storage och en separat admin Edge Function; dessa får inte användas som gemensam oskyddad fler-album-backend. Se BACKEND_ARCHITECTURE.md för ett föreslaget separat albumregister, ägarautentisering, skyddad gästdelning, atomisk kvot och betalningsflöde. Detta är en designkandidat, inte implementerat. Nästa steg: bekräfta faktisk hosting/testmiljö och Supabase-åtkomst, besluta albumens synlighet, därefter bygg och verifiera en isolerad migration med RLS och uppladdningsreservationer. Live- och enhetstest saknas fortfarande.
