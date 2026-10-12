@@ -26,32 +26,20 @@ Deno.serve(async (req) => {
   const { data: userData, error: userError } = await auth.auth.getUser(token);
   if (userError || !userData.user) return respond({ error: "Invalid session" }, 401);
   const admin = clients.privileged;
-  const { data: role, error: roleError } = await admin.schema("remember").from("webmasters")
-    .select("user_id").eq("user_id", userData.user.id).maybeSingle();
-  if (roleError) return respond({ error: "Role lookup unavailable" }, 503);
-  if (!role) return respond({ error: "Forbidden" }, 403);
+  const { data: gate, error: gateError } = await admin.rpc("remember_webmaster_read", {
+    p_actor: userData.user.id, p_action: "role_check",
+  });
+  if (gateError) return respond({ error: "Role lookup unavailable" }, 503);
+  if (!gate?.authorized) return respond({ error: "Forbidden" }, 403);
   let input: Record<string, unknown>;
   try { input = await req.json(); } catch { return respond({ error: "Invalid JSON" }, 400); }
-  if (input.action === "installation_status") {
-    const tables = ["schema_migrations", "albums", "webmasters", "schedule_audit", "album_photos"];
-    const checks = [];
-    for (const table of tables) {
-      const { error } = await admin.schema("remember").from(table).select("*", { head: true, count: "exact" }).limit(0);
-      checks.push({ name: table, status: error ? "unavailable" : "reachable" });
-    }
-    const { data: versions, error: versionError } = await admin.schema("remember")
-      .from("schema_migrations").select("version").order("version", { ascending: false }).limit(1);
-    const version = !versionError && versions?.length ? versions[0].version : null;
-    const ready = checks.every(c => c.status === "reachable") && version === 1;
-    return respond({ ready, schemaVersion: version, expectedVersion: 1, checks,
-      note: "Connectivity and table presence only; permissions, policies, storage and uploads need separate verification." });
-  }
-  if (input.action === "list") {
-    const { data, error } = await admin.schema("remember").from("albums")
-      .select("id,slug,title,event_timezone,default_opens_at,default_closes_at,override_opens_at,override_closes_at,forced_closed,revision")
-      .order("created_at", { ascending: false }).limit(100);
-    if (error) return respond({ error: "Unable to list albums" }, 503);
-    return respond({ albums: data });
+  if (input.action === "installation_status" || input.action === "list") {
+    const { data, error } = await admin.rpc("remember_webmaster_read", {
+      p_actor: userData.user.id, p_action: input.action,
+    });
+    if (error) return respond({ error: "Remember gateway unavailable" }, 503);
+    if (!data?.authorized) return respond({ error: "Forbidden" }, 403);
+    return respond(data);
   }
   // Writes intentionally disabled until a reviewed transactional RPC is deployed.
   // Never perform schedule update and audit as separate unprotected HTTP writes.
