@@ -20,6 +20,8 @@ with objects as (
    not exists(select 1 from objects where has_table_privilege('authenticated',oid,'SELECT'))
  union all select 'RPC exists',
    to_regprocedure('public.remember_webmaster_read(uuid,text)') is not null
+ union all select 'RPC is security definer',
+   coalesce((select prosecdef from pg_catalog.pg_proc where oid=to_regprocedure('public.remember_webmaster_read(uuid,text)')),false)
  union all select 'anon cannot execute RPC',
    not coalesce(has_function_privilege('anon',to_regprocedure('public.remember_webmaster_read(uuid,text)'),'EXECUTE'),false)
  union all select 'authenticated cannot execute RPC',
@@ -27,7 +29,7 @@ with objects as (
  union all select 'service_role can execute RPC',
    coalesce(has_function_privilege('service_role',to_regprocedure('public.remember_webmaster_read(uuid,text)'),'EXECUTE'),false)
  union all select 'schema version 1 installed',
-   to_regclass('remember.schema_migrations') is not null
+   exists(select 1 from remember.schema_migrations where version=1)
 )
 select test,pass from checks order by test;
 -- Version row must be checked separately once schema_migrations exists:

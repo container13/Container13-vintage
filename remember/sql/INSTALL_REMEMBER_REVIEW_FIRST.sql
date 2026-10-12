@@ -101,7 +101,7 @@ returns jsonb language plpgsql security definer set search_path = ''
 as $fn$
 declare v_version integer; v_albums jsonb;
 begin
-  if p_actor is null or p_action not in ('role_check','installation_status','list') then
+  if p_actor is null or (p_action is null or p_action not in ('role_check','installation_status','list')) then
     raise exception 'Invalid request' using errcode = '22023';
   end if;
   if not exists(select 1 from remember.webmasters where user_id = p_actor) then
@@ -123,5 +123,4 @@ $fn$;
 revoke all on function public.remember_webmaster_read(uuid,text) from public, anon, authenticated;
 grant execute on function public.remember_webmaster_read(uuid,text) to service_role;
 commit;
-
 
