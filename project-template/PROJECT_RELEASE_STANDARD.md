@@ -89,3 +89,9 @@ A general lesson discovered in any project should be proposed back to this templ
 - Retry automatically and quietly, without asking the user to repeat the command or posting routine progress/error messages in chat. Use bounded retries, safe idempotent operations, smaller calls and expected-SHA checks for writes.
 - Never blindly repeat non-idempotent actions, payments, destructive operations or unverified writes. Never bypass security or authorization controls.
 - If repeated attempts remain blocked, results conflict or approval is needed, stop and report the verified state and blocker clearly. Never claim success without readback.
+
+## Proactive chat handoff across projects
+- During lengthy project conversations, proactively suggest moving to a new chat before context loss becomes likely. No exact remaining-chat-capacity meter is available; never claim a precise threshold or guaranteed advance warning.
+- Before suggesting the switch, reconcile and save the project's current state, decisions, completed work, outstanding verification and next step in the canonical GitHub state/handoff documents where access and authorization allow.
+- Verify saved files with exact GitHub readback. If saving fails, explicitly say what is not persisted and give a concise manual handoff instead.
+- The next chat should resume from the canonical project documents after checking actual branch, deploy and runtime, without relying on the old conversation alone.
