@@ -1,11 +1,12 @@
-# Testyta
+# Testverkstad
 
-Den här mappen används för ofarliga tekniska tester av filöverföring, GitHub och projektmallen.
+Varje nytt test får en egen namngiven undermapp i `test/`. Bevara äldre tester för spårbarhet. Testerna får aldrig skriva över produktionsfiler.
 
-- Testfiler ska ligga under `test/` och får inte ersätta produktionsfiler.
-- Dokumentera testresultat och skilj på GitHub-verifiering och verklig webbläsartestning.
-- Ta inte bort testhistorik utan uttryckligt beslut.
+## Tester
+- `bildoverforing/` – automatisk överföring av nya binära JPG-filer till GitHub.
 
-## Första testet
+## Tidigare tester
+- `testbild.png` – första minimala PNG-filen.
+- `testbild-stor.jpg` – återanvändning av en befintlig JPG-blob utan att ändra originalfilen.
 
-`testbild.png`: en minimal PNG (1 × 1 pixel), skapad för att kontrollera att en riktig binär bildfil kan skrivas via GitHub Blob API och kopplas till repot.
+Verifiera GitHub-innehåll och fil-SHA efter varje skrivning. GitHub-verifiering och webbläsarverifiering är skilda steg.
