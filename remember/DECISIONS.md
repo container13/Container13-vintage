@@ -33,3 +33,10 @@
 - Agaren kan stanga uppladdningen tidigare. UI visar nar uppladdningen stanger, med relevant tidszon.
 - Servern avgor tidsgransen; en uppladdning maste vara slutford och godkand inom fonstret. Uppgradering oppnar inte automatiskt ett stangt tidsfonster.
 - Detaljer kring forlanga/ateroppna fonstret, radering, moderering och lagringstid beslutas fore produktion.
+
+## Webmaster control of upload windows
+- The Container13 webmaster can securely edit upload opening and closing times for any album, including after creation.
+- Webmaster can extend, shorten, immediately close, reopen, and restore an album's default schedule. Changes do not change the share URL, QR code or existing photos.
+- Album owner supplies initial event dates. Webmaster overrides are authoritative, independently of payment plan.
+- Webmaster access requires separate strong authentication and server-side role checks. Log who changed what and when. Changes take effect on server immediately.
+- This is an agreed requirement, not yet implemented.

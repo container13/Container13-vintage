@@ -45,3 +45,10 @@ Status: DESIGN / HIGH RISK. Reuse the existing Supabase project only after check
 - Owner can close early via authorized operation. Album stays readable after close, subject to separately decided retention/privacy policies. Payment upgrade never automatically reopens uploads.
 - Backend checks both quota and server time on reservation AND finalization; reject late finalizations, revoke or expire pending upload grants and clean orphaned objects. Idempotent retries cannot bypass closure.
 - Display a local-time close date/time and countdown; daylight-saving changes must be handled using event timezone, not fixed client offsets. Test simultaneous uploads across closing boundary and revoked link behavior.
+
+## Webmaster schedule administration
+- Add a dedicated webmaster/admin role, enforced server-side, with least-privilege access. Never authorize admin through public link, client-side flag, shared PIN or service-role key in the browser.
+- Store default event schedule separately from effective upload window and optional webmaster override so reset is unambiguous.
+- Admin can change UTC opens/closes instants, close now, reopen or reset to defaults. Validate ordering, timezone and concurrent edits; changes must be audited with actor, old/new values and timestamp.
+- Server checks effective window on reservation and finalization. A schedule change must invalidate previously issued permissions when appropriate; never allow stale upload authorization to bypass a close.
+- Test immediate closure, reopening, crossing midnight/DST, concurrent uploads, and owner versus webmaster permissions before release.
