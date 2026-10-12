@@ -1,6 +1,6 @@
 // Remember webmaster API candidate. NOT DEPLOYED.
 // Requires a separate verified Supabase environment and reviewed migration.
-import { createClient } from "npm:@supabase/supabase-js@2";
+import { rememberClients } from "../_shared/remember-supabase.ts";
 
 const cors = {
   "Access-Control-Allow-Origin": Deno.env.get("REMEMBER_ALLOWED_ORIGIN") || "https://container13.se",
@@ -19,15 +19,13 @@ Deno.serve(async (req) => {
   if (origin && origin !== cors["Access-Control-Allow-Origin"]) return respond({ error: "Origin not allowed" }, 403);
   const authHeader = req.headers.get("authorization") || "";
   if (!authHeader.startsWith("Bearer ")) return respond({ error: "Authentication required" }, 401);
-  const url = Deno.env.get("SUPABASE_URL");
-  const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
-  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-  if (!url || !anonKey || !serviceKey) return respond({ error: "Service not configured" }, 503);
-  const auth = createClient(url, anonKey, { auth: { persistSession: false, autoRefreshToken: false } });
+  const clients = rememberClients(Deno.env.get);
+  if (!clients) return respond({ error: "Service not configured" }, 503);
+  const auth = clients.identity;
   const token = authHeader.slice(7);
   const { data: userData, error: userError } = await auth.auth.getUser(token);
   if (userError || !userData.user) return respond({ error: "Invalid session" }, 401);
-  const admin = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
+  const admin = clients.privileged;
   const { data: role, error: roleError } = await admin.schema("remember").from("webmasters")
     .select("user_id").eq("user_id", userData.user.id).maybeSingle();
   if (roleError) return respond({ error: "Role lookup unavailable" }, 503);

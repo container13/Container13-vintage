@@ -29,3 +29,6 @@ Added remember/sql/001_schema_DRAFT.sql and SECURE_BACKEND_NEXT.md. Neither is d
 
 ## Serverfunktion kandidat
 supabase/functions/remember-webmaster/index.ts har förberetts som en separat, EJ DEPLOYAD kandidat. Den verifierar Supabase-session och webmasterroll före listning; skrivåtgärder är medvetet blockerade tills atomisk databastransaktion och audit finns. Ingen isolerad Supabase-testmiljö kunde verifieras i repositoryt. Micke50 är orört.
+
+## Supabase-portabilitet
+Remember-webmaster använder gemensam serveradapter supabase/functions/_shared/remember-supabase.ts. remember/SUPABASE_PORTABILITY.md beskriver byte av projekt via miljöinställningar. Kod endast COMMITTED-kandidat, inte driftsatt. Flytt av befintliga data kräver separat migration.

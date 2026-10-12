@@ -26,8 +26,8 @@
     "resumeInstruction": "Läs project-template/PROJECT_RELEASE_STANDARD.md, PROJECT_MASTER_RULES.md, PROJECT_RELEASE_CHECKLIST.md och remember/README.md, DECISIONS.md, IDEBANK.md, PROJECT_CURRENT_STATE.json och PROJECT_HANDOFF_CURRENT.md. Kontrollera GitHub, deploy och verklig klient innan nästa steg."
   },
   "currentWork": {
-    "completed": "Remember webmasterdemo, isolerad SQL-draft och separat autentiserad serverfunktionskandidat för albumlistning finns i GitHub. Inget deployat eller migrerat; Micke50 orört.",
-    "next": "Bekräfta säker separat Supabase-testmiljö och credentials utan att dela hemligheter; testa schema och RLS, bygg atomisk schema-RPC för webmasterändringar och deploya därefter endast Remember-funktionen.",
+    "completed": "Remember UI/webmasterdemo, SQL-draft och separat read-only serverfunktionskandidat; gemensam serveradapter för utbytbar Supabase-anslutning. Inget deployat/migrerat. Micke50 orört.",
+    "next": "Verifiera Supabase-testprojekt, testa adapter och SQL/RLS, bygg installations-/migrationskontroller, därefter säkra tidsändringar med transaktionslogg.",
     "blocked": false
   },
   "pausedWork": {
