@@ -32,3 +32,6 @@ supabase/functions/remember-webmaster/index.ts har förberetts som en separat, E
 
 ## Supabase-portabilitet
 Remember-webmaster använder gemensam serveradapter supabase/functions/_shared/remember-supabase.ts. remember/SUPABASE_PORTABILITY.md beskriver byte av projekt via miljöinställningar. Kod endast COMMITTED-kandidat, inte driftsatt. Flytt av befintliga data kräver separat migration.
+
+## Installationskontroll (kodkandidat)
+Ny skyddad installation_status i Remember-webmasterfunktionen, schema-versionmarkör 002_version_marker_DRAFT.sql och INSTALLATION_CHECK.md. Endast GitHub-kod, ingen migration eller deploy. Kontroll av tabeller/version ersätter inte RLS- och säkerhetstester.
