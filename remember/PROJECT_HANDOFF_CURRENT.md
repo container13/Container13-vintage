@@ -23,3 +23,6 @@ Webmaster has secure, server-enforced authority to edit any album's upload windo
 
 ## Webmasterpanel prototyp
 remember/webmaster.html är en fristående responsiv DEMO med tre påhittade album, statusfilter, tidsredigering, stäng/öppna och lokal ändringshistorik. Ingen inloggning, riktig albumdata, beständig lagring eller backend finns i denna vy. Nästa steg är säker serverauth/rollstyrning och verifierad backend; aldrig exponera riktiga administratörsåtgärder via demon.
+
+## Backend draft checkpoint
+Added remember/sql/001_schema_DRAFT.sql and SECURE_BACKEND_NEXT.md. Neither is deployed/executed. Dedicated schema with default-deny RLS and webmaster audit is only a candidate; review in isolated test project before API/auth and real UI data. Do not connect webmaster demo to production directly.

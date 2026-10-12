@@ -23,3 +23,6 @@ DRAFT / UI-prototyp. Formuläret ger endast lokal förhandsgranskning; ingen ver
 - Verifiera flera oberoende album och verkliga enheter innan release.
 
 Originalet ../micke50/ och tidigare test/ är orörda referenser, inte en gemensam osäker backend för flera kunder.
+
+## Backend implementation candidate
+See SECURE_BACKEND_NEXT.md and sql/001_schema_DRAFT.sql. Both are design artifacts only: migration not executed, authentication/API not live. Do not run against Micke50 production.
