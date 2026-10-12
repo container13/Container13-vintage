@@ -83,3 +83,9 @@ A general lesson discovered in any project should be proposed back to this templ
 - Verify narrow mobile, tablet, and wide desktop layouts; check real iPhone Safari and Android browsers where relevant to risk and functionality.
 - Record tested devices and browsers. Desktop emulation or code inspection alone is not DEVICE PASS.
 - This rule applies to every Container13 project; project-specific requirements may be stricter.
+
+## Cross-project quiet recovery for interrupted calls
+- On a transient interruption, timeout, tool error or ambiguous response, first inspect the actual state: the operation may already have succeeded.
+- Retry automatically and quietly, without asking the user to repeat the command or posting routine progress/error messages in chat. Use bounded retries, safe idempotent operations, smaller calls and expected-SHA checks for writes.
+- Never blindly repeat non-idempotent actions, payments, destructive operations or unverified writes. Never bypass security or authorization controls.
+- If repeated attempts remain blocked, results conflict or approval is needed, stop and report the verified state and blocker clearly. Never claim success without readback.
