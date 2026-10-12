@@ -37,3 +37,6 @@ Add stricter project rules here. Never silently weaken the shared standard.
 - A module-specific variation is permitted only when the workflow requires it; record the reason and keep shared look, interaction and accessibility.
 - Review mobile and wide desktop for readable content density, consistent alignment, no oversized empty cards, no clipping or unintended scrolling, and matching hover/pressed motion.
 - Treat mismatched CCC styling or interactions as a release-blocking defect. Do not declare visual parity without actual rendered client evidence.
+
+## Copy-ready text (all projects)
+Whenever proposing an exact value, command, URL, filename, prompt, setting, or text that the user should enter or paste elsewhere, provide a directly adjacent copy control (copy icon/button) for that exact value. Keep the copied value clean: no explanatory prose, quotation marks, or extra whitespace. For multiple values, provide a separate copy control for each. Use the platform's real copy action, not a decorative icon. If interactive copying is unavailable, give a clearly delimited copyable code span/block and state the limitation. Applies across CCC, LinaSopti, Remember, and future projects.

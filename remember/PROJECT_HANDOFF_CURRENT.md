@@ -35,3 +35,6 @@ Remember-webmaster använder gemensam serveradapter supabase/functions/_shared/r
 
 ## Installationskontroll (kodkandidat)
 Ny skyddad installation_status i Remember-webmasterfunktionen, schema-versionmarkör 002_version_marker_DRAFT.sql och INSTALLATION_CHECK.md. Endast GitHub-kod, ingen migration eller deploy. Kontroll av tabeller/version ersätter inte RLS- och säkerhetstester.
+
+## Gemensam kopieringsregel
+Projektmallen kräver kopieringssymbol med fungerande kopiering direkt efter varje föreslaget värde eller text som användaren ska klistra in på annan plats. Regeln gäller alla projekt, inte bara Remember.
