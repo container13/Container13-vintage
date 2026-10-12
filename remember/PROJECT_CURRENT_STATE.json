@@ -1,0 +1,37 @@
+{
+  "schema": "PROJECT-CURRENT-STATE-1",
+  "project": "Container13 Remember – gemensamma album",
+  "repository": "container13/Container13-vintage",
+  "branch": "ccc-demo-public-test",
+  "projectRoot": "remember/",
+  "riskClass": "MEDIUM",
+  "release": {
+    "previousVerified": null,
+    "currentVerified": null,
+    "candidate": "0.1.0",
+    "integrity": "PENDING"
+  },
+  "workCheckpoint": {
+    "status": "UNVERIFIED",
+    "targetRelease": "0.1.0",
+    "goal": "Bygg säker återanvändbar albumtjänst från Micke50",
+    "plan": [
+      "UI-prototyp",
+      "Backend och autentisering",
+      "Atomisk 10-bildersgräns",
+      "Betaluppgradering",
+      "End-to-end-verifiering"
+    ],
+    "lastSafeRelease": null,
+    "resumeInstruction": "Läs project-template/PROJECT_RELEASE_STANDARD.md, PROJECT_MASTER_RULES.md, PROJECT_RELEASE_CHECKLIST.md och remember/README.md, DECISIONS.md, IDEBANK.md, PROJECT_CURRENT_STATE.json och PROJECT_HANDOFF_CURRENT.md. Kontrollera GitHub, deploy och verklig klient innan nästa steg."
+  },
+  "currentWork": {
+    "completed": "Remember-prototyp och projektdokumentation skapad från isolerad UI-prototyp; Micke50-originalet orört.",
+    "next": "Verifiera /remember/ på mobil och desktop, därefter inventera backend och välja säker registreringsarkitektur.",
+    "blocked": false
+  },
+  "pausedWork": {
+    "fotobok": "Parkerad idé; inte i första releasen."
+  },
+  "publicUrl": "https://container13.se/remember/"
+}
