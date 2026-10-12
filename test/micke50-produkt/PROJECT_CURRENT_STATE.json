@@ -1,0 +1,36 @@
+{
+  "schema": "PROJECT-CURRENT-STATE-1",
+  "project": "Gemensamma album – fiskeresa pilot",
+  "repository": "container13/Container13-vintage",
+  "branch": "ccc-demo-public-test",
+  "projectRoot": "test/micke50-produkt/",
+  "riskClass": "MEDIUM",
+  "release": {
+    "previousVerified": null,
+    "currentVerified": null,
+    "candidate": "0.1.0",
+    "integrity": "PENDING"
+  },
+  "workCheckpoint": {
+    "status": "UNVERIFIED",
+    "targetRelease": "0.1.0",
+    "goal": "Bygg säker återanvändbar albumtjänst från Micke50",
+    "plan": [
+      "UI-prototyp",
+      "Backend och autentisering",
+      "Atomisk 10-bildersgräns",
+      "Betaluppgradering",
+      "End-to-end-verifiering"
+    ],
+    "lastSafeRelease": null,
+    "resumeInstruction": "Läs project-template och detta projekts README; kontrollera GitHub, backend och live klient innan nästa steg."
+  },
+  "currentWork": {
+    "completed": "UI-prototyp skapad; originalet micke50/ är oförändrat.",
+    "next": "Verifiera UI på mobil och desktop; besluta backend innan autentisering och lagring.",
+    "blocked": false
+  },
+  "pausedWork": {
+    "fotobok": "Parkerad idé; inte i första releasen."
+  }
+}
