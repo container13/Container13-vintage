@@ -31,3 +31,10 @@ Kontrollen läser endast lokala källfiler och verifierar förväntade tabeller,
 
 **Viktig integrationsrisk:** `remember` är inte exponerat i PostgREST enligt schemadraftens säkerhetsriktlinjer, men nuvarande Supabase JS-anrop använder `.schema("remember")`. De anropen kan misslyckas även med service role. Granska en säker serverbaserad åtkomstväg (exempelvis granskade RPC-funktioner med snäva rättigheter) innan driftsättning. Exponera inte schemat bara för att få en grön installationsstatus.
 
+
+## Kontroll före första installationen (2026-10)
+Separat Supabase-projekt `container13-remember` i Stockholm har skapats. Användaren har med SQL Editor verifierat att schemat `remember` inte finns (0 rader). Detta bevisar inte att övriga inställningar är rätt eller att schemautkasten är runtime-testade.
+
+Kör INTE schemautkasten innan slutgranskning av databasåtkomst och bootstrap. `003_harden_default_privileges_DRAFT.sql` återkallar schema- och tabellrättigheter, inklusive framtida standardrättigheter för tabeller som skapas av rollen `postgres`. `004_verify_installation_READ_ONLY.sql` är en skrivskyddad efterkontroll. Default-privileges är rollspecifika och måste utökas om annan migrationsroll används.
+
+Installationsordning efter godkännande: 001 schema, 002 versionsmarkör, 003 privilegier, därefter 004 verifiering. Alla körs endast i separat Remember-projekt. Ingen Micke50-ändring. Projektet har ännu ingen säker serverbaserad SQL/RPC-väg för `remember`; detta är fortfarande en blockerare för Edge Function-runtime.
