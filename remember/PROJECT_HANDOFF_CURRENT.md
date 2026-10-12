@@ -26,3 +26,6 @@ remember/webmaster.html är en fristående responsiv DEMO med tre påhittade alb
 
 ## Backend draft checkpoint
 Added remember/sql/001_schema_DRAFT.sql and SECURE_BACKEND_NEXT.md. Neither is deployed/executed. Dedicated schema with default-deny RLS and webmaster audit is only a candidate; review in isolated test project before API/auth and real UI data. Do not connect webmaster demo to production directly.
+
+## Serverfunktion kandidat
+supabase/functions/remember-webmaster/index.ts har förberetts som en separat, EJ DEPLOYAD kandidat. Den verifierar Supabase-session och webmasterroll före listning; skrivåtgärder är medvetet blockerade tills atomisk databastransaktion och audit finns. Ingen isolerad Supabase-testmiljö kunde verifieras i repositoryt. Micke50 är orört.
