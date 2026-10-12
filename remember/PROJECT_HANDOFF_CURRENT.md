@@ -20,3 +20,6 @@ Alla med en delningslank eller QR kan delta under oppet fonster. Fest och brollo
 
 ## Webmaster schedule requirement
 Webmaster has secure, server-enforced authority to edit any album's upload window, close/reopen it and restore defaults after creation. Keep audit log and separate owner defaults from webmaster overrides. This is documented only; not implemented or deployed.
+
+## Webmasterpanel prototyp
+remember/webmaster.html är en fristående responsiv DEMO med tre påhittade album, statusfilter, tidsredigering, stäng/öppna och lokal ändringshistorik. Ingen inloggning, riktig albumdata, beständig lagring eller backend finns i denna vy. Nästa steg är säker serverauth/rollstyrning och verifierad backend; aldrig exponera riktiga administratörsåtgärder via demon.

@@ -26,8 +26,8 @@
     "resumeInstruction": "Läs project-template/PROJECT_RELEASE_STANDARD.md, PROJECT_MASTER_RULES.md, PROJECT_RELEASE_CHECKLIST.md och remember/README.md, DECISIONS.md, IDEBANK.md, PROJECT_CURRENT_STATE.json och PROJECT_HANDOFF_CURRENT.md. Kontrollera GitHub, deploy och verklig klient innan nästa steg."
   },
   "currentWork": {
-    "completed": "Remember-prototyp och projektdokumentation skapad från isolerad UI-prototyp; Micke50-originalet orört.",
-    "next": "Verifiera /remember/ på mobil och desktop, därefter inventera backend och välja säker registreringsarkitektur.",
+    "completed": "Remember UI-prototyp med datumfält samt fristående webmasterdemo med exempelalbum och lokal tidsredigering; GitHub-kod, ej serverfunktion. Micke50 orört.",
+    "next": "Verifiera verklig deploy och enhetslayout för Remember och webmasterdemo. Bygg därefter isolerad Supabase-schema/RLS och stark webmasterautentisering i säker testmiljö.",
     "blocked": false
   },
   "pausedWork": {
