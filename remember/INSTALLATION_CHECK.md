@@ -16,3 +16,18 @@ Svarsfält: `ready`, `schemaVersion`, `expectedVersion`, `checks` och `note`. `r
 6. Kör `installation_status`, verifiera schemaversion och tabellåtkomst. Testa dessutom RLS, storage, migrering, rollback och enheter innan produktion.
 
 Ingen migration körs automatiskt av webbläsaren eller denna kontroll. Byte av Supabase-konto kräver ny installation och konfiguration. Befintliga album/bilder flyttas inte automatiskt.
+
+## Statisk förkontroll utan Supabase-konto
+
+Kör från repositoryts rot:
+
+```bash
+node remember/scripts/check-installation.mjs
+```
+
+Kontrollen läser endast lokala källfiler och verifierar förväntade tabeller, RLS-deklarationer, versionsmarkör, serverautentisering, rollkontroll, skyddad installationsstatus och att skrivning är avstängd. Den behöver inga API-nycklar och gör inga nätverksanrop eller databasändringar.
+
+**Begränsning:** PASS innebär enbart att källkodens förväntade mönster finns. Det bevisar inte att SQL fungerar i PostgreSQL, att RLS är säker, att API-funktionen kan anropa ett oexponerat schema eller att Supabase-miljön är rätt konfigurerad. Sådana tester kräver en separat verifierad testmiljö.
+
+**Viktig integrationsrisk:** `remember` är inte exponerat i PostgREST enligt schemadraftens säkerhetsriktlinjer, men nuvarande Supabase JS-anrop använder `.schema("remember")`. De anropen kan misslyckas även med service role. Granska en säker serverbaserad åtkomstväg (exempelvis granskade RPC-funktioner med snäva rättigheter) innan driftsättning. Exponera inte schemat bara för att få en grön installationsstatus.
+

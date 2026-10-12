@@ -26,8 +26,8 @@
     "resumeInstruction": "Läs project-template/PROJECT_RELEASE_STANDARD.md, PROJECT_MASTER_RULES.md, PROJECT_RELEASE_CHECKLIST.md och remember/README.md, DECISIONS.md, IDEBANK.md, PROJECT_CURRENT_STATE.json och PROJECT_HANDOFF_CURRENT.md. Kontrollera GitHub, deploy och verklig klient innan nästa steg."
   },
   "currentWork": {
-    "completed": "Remember UI, webmasterdemo, SQL-schemadraft, portabel Supabase-serveradapter och skyddad installation_status-kod samt versionsmarkör. Allt endast GitHub-kandidat; ej installerat eller driftsatt. Micke50 orört.",
-    "next": "Verifiera separat Supabase-testprojekt, granska/testa migrationsutkast och schemaexponering, deploya Remember separat, kontrollera autentisering och installation_status samt RLS och mobila klienter.",
+    "completed": "Remember UI, webmasterdemo, SQL-drafts, portabel serveradapter, installation_status och read-only statisk preflight-kandidat. Ingen Supabase-installation eller deployment; Micke50 orört.",
+    "next": "Kör statisk preflight i riktig Node-miljö, verifiera separat Supabase-testprojekt och lös schemaåtkomst utan att öppna remember-schema brett; därefter säker runtime/RLS-testning.",
     "blocked": false
   },
   "pausedWork": {
