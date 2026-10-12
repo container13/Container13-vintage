@@ -41,3 +41,8 @@ Installationsordning efter godkännande: 001 schema, 002 versionsmarkör, 003 pr
 
 ## Privat schema via RPC (kodkandidat)
 SQL-utkastet 005_private_webmaster_gateway_DRAFT.sql definierar en snävt begränsad read-only RPC i public, med EXECUTE endast för service_role och webmasterkontroll inne i funktionen. Edge Function verifierar först användarens JWT och anropar sedan RPC via servernyckel. Schemat remember behöver inte exponeras. Observera att installation_status i denna första RPC-kandidat bara kontrollerar versionsmarkören, inte tabellnärvaro eller RLS. Testa nekad åtkomst för anon/authenticated och falsk webmasteridentitet innan driftsättning. Ingen SQL har installerats.
+
+## Granskning av behörigheter före installation
+Ny `006_security_verification_READ_ONLY.sql` ger en kontrolltabell över schemaåtkomst, RLS på fem tabeller och EXECUTE-rättigheter för webmaster-RPC. Den ska köras först **efter** att installationen är utförd. Alla kontroller måste ge true, och schemaversionens faktiska rad ska kontrolleras separat. Ett grönt resultat är inte en penetrationstestning.
+
+**Risk kvar:** `security definer`-funktionen tar `p_actor` från en server med `service_role`. Den kan inte användas som fristående säkerhetsgräns mot en komprometterad service-nyckel. Service-nyckeln får aldrig lämna Edge Function. JWT måste alltid verifieras innan RPC-anropet, och tester ska bevisa att anon/authenticated inte kan anropa RPC direkt. Även avsaknad av bootstrap för första webmaster är blockerande för komplett runtime-test. Installera inte från GitHub-kandidaten utan att dessa villkor granskas.
