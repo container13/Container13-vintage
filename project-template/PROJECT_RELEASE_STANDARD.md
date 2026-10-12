@@ -75,3 +75,11 @@ A general lesson discovered in any project should be proposed back to this templ
 - Renaming a text/HTML file to an image extension is not a binary conversion. Do not assume text-only fetch can read binary assets.
 - Conduct experiments in a named `test/<test-name>/` folder, with README and recorded outcome, before changing production assets.
 - Use existing release/checkpoint discipline; an asset commit alone is not proof of live deployment. Verify size/API limits for new file types or large payloads.
+
+## Cross-project multi-device baseline
+- All new and modified web interfaces must be responsive for phones, tablets, and desktop from the first iteration. Consider portrait and landscape where relevant.
+- Support touch, mouse, and keyboard, including usable control sizes, focus states, readable text, and accessibility zoom.
+- Avoid clipped content, unintended horizontal scrolling, and fixed-width layouts that break on smaller screens.
+- Verify narrow mobile, tablet, and wide desktop layouts; check real iPhone Safari and Android browsers where relevant to risk and functionality.
+- Record tested devices and browsers. Desktop emulation or code inspection alone is not DEVICE PASS.
+- This rule applies to every Container13 project; project-specific requirements may be stricter.

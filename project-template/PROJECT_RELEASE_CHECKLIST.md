@@ -56,3 +56,10 @@
 - [ ] Mobile and desktop layouts checked for proportions, content alignment, density, overflow and readable type.
 - [ ] Any intentional deviation documented; no unreviewed local CSS override.
 - [ ] Visual parity confirmed with rendered evidence before marking UI VERIFIED.
+
+## Multi-device release gate - all web projects
+- [ ] Mobile, tablet, and desktop layouts reviewed; relevant orientations considered.
+- [ ] No clipped content, unwanted horizontal scroll, or inaccessible controls.
+- [ ] Touch, mouse, keyboard, focus states, and readable text verified as applicable.
+- [ ] Navigation, forms, images, uploads, and status feedback usable across target devices.
+- [ ] Actual device/browser evidence recorded where needed; untested combinations identified, with no unsupported DEVICE PASS.
