@@ -65,3 +65,8 @@
 - **Säkerhetsgolv kvarstår:** servern ska validera albumbehörighet, tidsfönster, bildtyp och kvot; privata objekt, ingen service-role-nyckel i klienten; grundläggande samtidighetsskydd så 10-bildersgränsen inte kan kringgås. Ett fel får inte tyst rapporteras som lyckad uppladdning eller frigöra en plats med risk för kvarlämnat objekt.
 - Tidigare dokument som beskriver avancerad återupptagning som blockerande V1-krav ska läsas mot detta senare beslut. Review-only-kandidater är inte godkända för driftsättning enbart genom denna förenkling.
 - **Arbetsregel:** Läs `remember/DECISIONS.md` och kontrollera senaste beslut innan varje nytt implementationssteg. Vid motstridiga äldre krav: följ senaste uttryckliga beslut och uppdatera handoff, i stället för att återinföra överkurs.
+
+
+## Beslut 2026-10-14 — Ett godkännande räcker
+- I den inbäddade gästkameran ska **Godkänn valda** direkt starta serveruppladdning av de valda bilderna. Ingen extra **Publicera godkända bilder**-knapp och ingen extra bekräftelsedialog.
+- Visa förlopp och serverbekräftelse. Vid fel: behåll ej bekräftade bilder i aktuell flik och visa **Försök ladda upp igen**. Ingen avancerad automatisk återupptagning.
