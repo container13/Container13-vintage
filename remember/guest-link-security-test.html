@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>Remember test</title></head>
+<body><h1>Remember – behörighetstest</h1><p>Testar inloggning mot ett obefintligt album. Ingen delningslänk ska skapas.</p><button id="run" disabled>Kör test</button><pre id="status">Kontrollerar inloggning…</pre><a href="./login.html">Tillbaka</a>
+<script type="module">
+const status=document.getElementById('status'),button=document.getElementById('run');
+const project='https://wykvztfmfbboxiqvuvwr.supabase.co';
+const publicKey='sb_publishable_qOSBb7U6TGnPQ8ypyYRLGg_GtYrraoG';
+let client;
+try {
+ const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
+ client=createClient(project,publicKey,{auth:{storage:sessionStorage,storageKey:'container13-remember-test-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,flowType:'implicit'}});
+ const {data}=await client.auth.getSession();
+ status.textContent=data.session?'Inloggning hittad. Redo.':'Ingen inloggning i denna flik. Logga in via Remember.';
+ button.disabled=!data.session;
+} catch {status.textContent='Kunde inte kontrollera inloggningen.'}
+button.onclick=async()=>{
+ button.disabled=true;status.textContent='Testar…';
+ try{
+ const {data}=await client.auth.getSession();
+ if(!data.session){status.textContent='Session saknas.';return}
+ const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),12000);
+ let response;
+ try{response=await fetch(project+'/functions/v1/remember-guest-link-webmaster',{method:'POST',headers:{'Content-Type':'application/json',apikey:publicKey,Authorization:'Bearer '+data.session.access_token},body:JSON.stringify({action:'issue',albumId:'00000000-0000-4000-8000-000000000000'}),signal:controller.signal})}finally{clearTimeout(timer)}
+ status.textContent=response.status===403?'GODKÄNT: obefintligt album nekades (403).':response.status===401?'Session avvisad (401).':response.status===503?'Serverfel (503).':'HTTP '+response.status+' – behöver granskas.';
+ }catch{status.textContent='Nätverksfel eller timeout.'}finally{button.disabled=false}
+};
+</script></body></html>
