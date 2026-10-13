@@ -48,3 +48,11 @@
 - Delivery order: all original photos as ZIP, selected photos, then PDF album.
 - Authorize every export request server-side. Keep storage private; never expose unrestricted permanent object URLs.
 - This is an approved requirement, not a deployed feature. Retention and abuse controls remain to be designed.
+
+## Beslut: beställare, QR-gäster och webmaster (2026-10-13)
+- Album-beställaren anger sin e-postadress vid skapandet. Adressen används för orderbekräftelse och albuminformation, inte som ett krav för gäster.
+- E-postinmatning är inte samma sak som verifierad e-post. Beställarens skyddade albumadministration kräver en separat verifieringsmekanism.
+- QR-kod och delningslänk öppnar gästalbumet utan inloggning, registrering eller krav på e-post. Åtkomst kräver giltig, serverkontrollerad, återkallelig gästtoken.
+- Webmaster har separat lösenordsinloggning och serverkontrollerad behörighet.
+- Startsidan är en gemensam ingång; beställningsflödet får inte förväxlas med webmasterpanelen.
+- Inget här innebär att e-postutskick, QR-kodsgenerering eller albumregistrering är aktiverade.
