@@ -8,12 +8,12 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.0",
+    "candidate": "0.1.1",
     "integrity": "PENDING"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.0",
+    "targetRelease": "0.1.1",
     "goal": "Bygg säker återanvändbar albumtjänst från Micke50",
     "plan": [
       "UI-prototyp",
@@ -26,10 +26,10 @@
     "resumeInstruction": "Läs project-template/PROJECT_RELEASE_STANDARD.md, PROJECT_MASTER_RULES.md, PROJECT_RELEASE_CHECKLIST.md och remember/README.md, DECISIONS.md, IDEBANK.md, PROJECT_CURRENT_STATE.json och PROJECT_HANDOFF_CURRENT.md. Kontrollera GitHub, deploy och verklig klient innan nästa steg. Database baseline is now installed; see databaseEvidence. Never replay installation without checking actual database state."
   },
   "currentWork": {
-    "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. Edge Function/runtime not deployed or verified. Remember Edge Function deployed; two unauthenticated/invalid-token tests returned 401. First-webmaster SQL candidate saved and read back, not executed. Further real tests: GET 405, allowed OPTIONS 204 with exact CORS headers, disallowed Origin POST 403. Read-only database RPC assertions PASS: 3 forged-actor actions, null actor, invalid action and actual anon/authenticated denial.",
-    "next": "User must choose: configure existing/custom SMTP to keep selected holmen.com identity, or explicitly choose organization-member email for temporary test. Then build functional login/callback, review redirect allowlist and obtain approval for auth configuration and invitation; verify non-webmaster 403 before role grant.",
+    "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. At baseline stage Edge Function was not yet deployed (superseded by apiEvidence). Remember Edge Function deployed; two unauthenticated/invalid-token tests returned 401. First-webmaster SQL candidate saved and read back, not executed. Further real tests: GET 405, allowed OPTIONS 204 with exact CORS headers, disallowed Origin POST 403. Read-only database RPC assertions PASS: 3 forged-actor actions, null actor, invalid action and actual anon/authenticated denial. Login callback remember/login.html committed, syntax checked and exactly read back; Pages run 38327872987 success for aebc2ed9934637d25b128fbe56668bf139cd5a92. Live desktop page loaded and client initialized.",
+    "next": "Await action-time approval to save Site URL https://container13.se/remember/login.html and the same exact redirect allowlist entry. Then send the user-authorized test account invite to nilsmagnusalvin@gmail.com and obtain real session; first verify HTTP 403 without webmaster role. No role SQL approved or executed.",
     "blocked": true,
-    "blocker": "Requested test email mangaj73@gmail.com is not a member of Container13-Remember organization. Actual team list contains only nilsmagnusalvin@gmail.com. Custom SMTP remains off; auth callback and redirect configuration also pending. No email sent, no role grant."
+    "blocker": "Auth return URL change prepared but not saved, awaiting security-setting approval. Test user invitation not yet sent."
   },
   "pausedWork": {
     "fotobok": "Parkerad idé; inte i första releasen."
@@ -126,10 +126,24 @@
     "source": "Supabase Authentication > Emails > SMTP Settings",
     "defaultSmtpRestriction": "Only project organization member email addresses; official docs reviewed https://supabase.com/docs/guides/auth/auth-smtp",
     "invitationSent": false,
-    "requestedTestEmail": "mangaj73@gmail.com",
+    "requestedTestEmail": "nilsmagnusalvin@gmail.com",
     "organizationMembersVerified": [
       "nilsmagnusalvin@gmail.com"
     ],
-    "requestedTestEmailEligibleForDefaultSmtp": false
+    "requestedTestEmailEligibleForDefaultSmtp": true
+  },
+  "loginEvidence": {
+    "candidate": "0.1.1",
+    "file": "remember/login.html",
+    "commit": "aebc2ed9934637d25b128fbe56668bf139cd5a92",
+    "pagesRun": 38327872987,
+    "deployment": "success",
+    "liveUrl": "https://container13.se/remember/login.html",
+    "desktopSmoke": "PASS: page loaded; SDK initialized; signed-out form enabled",
+    "authenticatedCallback": "UNVERIFIED",
+    "deviceTests": "NOT PERFORMED",
+    "serviceSecretsInClient": false,
+    "publicKeyOnly": true,
+    "redirectConfigurationSaved": false
   }
 }
