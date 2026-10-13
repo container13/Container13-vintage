@@ -18,7 +18,7 @@ main{max-width:720px}.panel{margin-top:24px}button:disabled{opacity:.55;cursor:w
 <p class="muted" id="timeNote"></p><p class="muted">Fest/bröllop: 24 timmar från start. Resa/fiske: till 24 timmar efter slut. Standardgräns: 10 bilder.</p>
 <div class="actions"><button id="createButton" type="submit">Skapa testalbum</button></div></form>
 <p id="createResult" role="status" aria-live="polite"></p></section>
-<p class="muted">Separat Remember-testmiljö. Albumändringar och bilduppladdning är inte aktiverade.</p><p class="version">Inloggningskandidat 0.1.7</p>
+<p class="muted">Separat Remember-testmiljö. Albumändringar och bilduppladdning är inte aktiverade.</p><p class="version">Inloggningskandidat 0.1.8</p>
 <script type="module">
 const $=id=>document.getElementById(id);
 let client=null,session=null,busy=false,creationAllowed=false;
@@ -75,6 +75,10 @@ try{
  history.replaceState(null,'',location.pathname);
  if(error)throw error;
  showSession(data.session);
+ if(data.session && !location.hash.includes('access_token') && !location.hash.includes('type=recovery')){
+   location.replace('./dashboard.html');
+   throw new Error('redirecting');
+ }
  message(data.session?'Inloggningen är klar.':'Ange e-post och lösenord. Har kontot inget lösenord ännu? Använd mejllänk som reserv.');
  lock(false);
  client.auth.onAuthStateChange((event,next)=>{
