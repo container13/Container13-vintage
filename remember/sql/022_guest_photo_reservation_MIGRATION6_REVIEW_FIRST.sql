@@ -33,7 +33,10 @@ BEGIN
  SELECT * INTO v_existing FROM remember.album_photos
  WHERE album_id=v_album.id AND idempotency_key=p_request_id;
  IF FOUND THEN
-   RETURN jsonb_build_object('accepted',v_existing.state IN ('reserved','uploading','ready') AND (v_existing.state='ready' OR v_existing.reservation_expires_at>now()),
+   IF v_existing.state='reserved' AND v_existing.reservation_expires_at<=now() THEN
+     UPDATE remember.album_photos SET state='failed' WHERE id=v_existing.id;
+   END IF;
+   RETURN jsonb_build_object('accepted',v_existing.state='ready' OR (v_existing.state IN ('reserved','uploading') AND v_existing.reservation_expires_at>now()),
      'reason','existing','photoId',v_existing.id);
  END IF;
 
