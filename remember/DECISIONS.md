@@ -97,3 +97,8 @@
 - Befintliga äldre gästlänkar utan krypterad kopia kan inte återskapas. Byte till ny länk kräver en tydlig bekräftelse om att gamla länkar och QR-koder slutar fungera. Inget automatiskt byte.
 - Ny gästlänk krypteras server-side med AES-GCM (HKDF från Supabase service-role-secret) och förvaras i en privat RLS-skyddad vault, åtkomlig via service-only RPC med webmaster/albumägarbehörighet. Varning: byte av underliggande service-role-secret kan göra lagrade länkar oläsbara; framtida dedikerad krypteringsnyckel rekommenderas innan bred lansering.
 - WM-9.4 är committad, Edge Function remember-share-manager ACTIVE v1. Test på iPhone samt verkligt länkbyte återstår; gamla länken har inte roterats.
+
+
+## WM-9.5 — Bekräftelse vid kopiering
+- Kopieringsknappen ändras till ✓ Kopierad! efter lyckad urklippsskrivning och återställs efter 2,5 sekunder; fel visas om urklippsskrivningen misslyckas.
+- Gästläge verifierat med två iPhone-skärmbilder: öppnas privat utan inloggning och visar två foton senaste först. Gästuppladdning återstår att testa.
