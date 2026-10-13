@@ -56,3 +56,12 @@
 - Webmaster har separat lösenordsinloggning och serverkontrollerad behörighet.
 - Startsidan är en gemensam ingång; beställningsflödet får inte förväxlas med webmasterpanelen.
 - Inget här innebär att e-postutskick, QR-kodsgenerering eller albumregistrering är aktiverade.
+
+
+## BESLUT 2026-10-13 — Håll Remember V1 enkelt (bekräftat av användaren)
+- **Prioritet:** Få en riktig bild uppladdad och synlig i rätt album, sedan testa flera bilder. Bygg inte omfattande återhämtningssystem innan grundflödet fungerar.
+- V1 ska ha: privat albumåtkomst via giltig länk/behörighet; max 10 bilder för gratisalbum; exakt SHA-256-dubblettskydd inom samma album; tydlig uppladdningsbekräftelse och begripligt fel vid avbrott, med möjlighet att försöka igen manuellt.
+- **Inte V1-krav:** avancerad automatisk återupptagning, komplex återställnings-/reconciliationmotor, perceptuell bildlikhetsanalys eller att täcka varje hypotetiskt nätverksfel. Dessa är framtida förbättringar vid påvisat behov.
+- **Säkerhetsgolv kvarstår:** servern ska validera albumbehörighet, tidsfönster, bildtyp och kvot; privata objekt, ingen service-role-nyckel i klienten; grundläggande samtidighetsskydd så 10-bildersgränsen inte kan kringgås. Ett fel får inte tyst rapporteras som lyckad uppladdning eller frigöra en plats med risk för kvarlämnat objekt.
+- Tidigare dokument som beskriver avancerad återupptagning som blockerande V1-krav ska läsas mot detta senare beslut. Review-only-kandidater är inte godkända för driftsättning enbart genom denna förenkling.
+- **Arbetsregel:** Läs `remember/DECISIONS.md` och kontrollera senaste beslut innan varje nytt implementationssteg. Vid motstridiga äldre krav: följ senaste uttryckliga beslut och uppdatera handoff, i stället för att återinföra överkurs.
