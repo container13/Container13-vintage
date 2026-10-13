@@ -127,3 +127,12 @@ Efter ändringen av rotens `sw.js` (commit `235372a9fb990ae1e77f5680e5cc937698dd
 - Verklig Supabase SQL-transaktion med migration 6 + privat bucket + migration 7 + migration 8 kördes inom `BEGIN; ... ROLLBACK;` och gav `dry_run_version=8`, `claim_exists=true`, `test_bucket=1`.
 - Separat read-only kontroll EFTER rollback: schema=5, bucket=0, foton=0. Ingen migration/bucket installerad permanent.
 - **Återstår:** runtime-/HTTP-granskning av Edge Function, deployment och verklig bilduppladdning samt bildvisning. Ingen PASS för komplett flöde.
+
+
+### Verklig Supabase-installation och Edge Function 2026-10-13
+- Projektidentitet verifierad: `wykvztfmfbboxiqvuvwr` = `container13-remember`, ACTIVE_HEALTHY.
+- Via Supabase apply_migration installerades migration 6 (reservation), privat bucket, migration 7 (upload transitions), migration 8 (albumunik SHA-256-claim). Alla fyra returnerade success.
+- Efterkontroll: schemaVersion=8, albums=1, photo_rows=0, active_guest_links=1, bucket.public=false, anon/authenticated EXECUTE på claim=false, service_role=true, legacy begin_upload service_role=false.
+- Edge Function `remember-photo-upload` driftsatt ACTIVE version 1 med verify_jwt=false och egen gästtokenkontroll via service-only RPC. Deployerad källa: `remember/deploy/remember-photo-upload_REVIEW_ONLY.ts` (filnamnet är historiskt och bör uppdateras först efter verifierat E2E). Ingen gästtoken exponerad i loggen.
+- **ÄNNU EJ VERIFIERAT:** verklig multipart HTTP-uppladdning från gäst, korrekt bildvisning från privat storage, kvot/dubblett/felhantering i runtime. Kalla inte Remember V1 PASS eller färdigt.
+- Nästa steg: testa verklig uppladdning med användarens befintliga gästlänk via klienten; bygg/anslut behörig bildlista och privat bildvisning om den ännu saknas. Håll V1 enkel enligt DECISIONS.
