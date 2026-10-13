@@ -15,28 +15,24 @@ Deno.serve(async req=>{
  const owner=uuid(input.albumId),guest=typeof input.token==="string"&&/^[A-Za-z0-9_-]{43}$/.test(input.token);
  if(owner===guest)return reply({error:"Invalid authorization"},400);
  const db=createClient(url,key,{auth:{persistSession:false,autoRefreshToken:false}});
- let albumId:string;
+ let actorId:string|null=null,tokenHash:string|null=null;
  if(owner){
   const bearer=req.headers.get("authorization")||"";
   if(!/^Bearer [^ ]+$/.test(bearer))return reply({error:"Login required"},401);
   const {data:user,error:userError}=await db.auth.getUser(bearer.slice(7));
   if(userError||!user.user)return reply({error:"Invalid session"},401);
-  const {data:role,error:roleError}=await db.schema("remember").from("webmasters").select("user_id").eq("user_id",user.user.id).maybeSingle();
-  if(roleError)return reply({error:"Authorization unavailable"},503);
-  if(!role)return reply({error:"Forbidden"},403);
-  albumId=input.albumId as string;
+  actorId=user.user.id;
  }else{
   const digest=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(input.token as string));
-  const {data:link,error:linkError}=await db.schema("remember").from("guest_links").select("album_id").eq("token_sha256","\\x"+hex(new Uint8Array(digest))).is("revoked_at",null).maybeSingle();
-  if(linkError)return reply({error:"Authorization unavailable"},503);
-  if(!link)return reply({error:"Invalid link"},403);
-  albumId=link.album_id;
+  tokenHash="\\x"+hex(new Uint8Array(digest));
  }
- const {data:photos,error:photosError}=await db.schema("remember").from("album_photos").select("id,object_key,created_at").eq("album_id",albumId).eq("state","ready").order("created_at",{ascending:false}).order("id",{ascending:false}).limit(100);
- if(photosError)return reply({error:"Gallery unavailable"},503);
- const paths=(photos||[]).map(p=>p.object_key);
+ const {data:result,error:galleryError}=await db.rpc("remember_photo_gallery_read",{p_actor:actorId,p_album_id:owner?input.albumId:null,p_token_hash:tokenHash});
+ if(galleryError)return reply({error:"Gallery unavailable"},503);
+ if(!result?.authorized)return reply({error:"Forbidden"},403);
+ const photos=result.photos||[];
+ const paths=photos.map((p:{objectKey:string})=>p.objectKey);
  if(!paths.length)return reply({ok:true,photos:[]});
  const {data:urls,error:urlsError}=await db.storage.from("remember-private-photos").createSignedUrls(paths,120);
  if(urlsError||!urls)return reply({error:"Image access unavailable"},503);
- return reply({ok:true,photos:(photos||[]).map((p,i)=>({id:p.id,createdAt:p.created_at,url:urls[i]?.signedUrl||null})).filter(p=>p.url)});
+ return reply({ok:true,photos:photos.map((p:{id:string,createdAt:string},i:number)=>({id:p.id,createdAt:p.createdAt,url:urls[i]?.signedUrl||null})).filter(p=>p.url)});
 });
