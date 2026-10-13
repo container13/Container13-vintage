@@ -87,7 +87,15 @@ Deno.serve(async req => {
   const { error: storeError } = await db.storage.from(BUCKET).upload(keyPath, bytes, {
     contentType: detected, cacheControl: "private, max-age=0", upsert: false
   });
-  if (storeError) return reply({ error: "Storage failed" }, 503);
+  if (storeError) {
+    // An upload error can still leave an object behind. Inspect storage before
+    // releasing the reservation; otherwise keep it pending for reconciliation.
+    const { data: uncertain } = await db.storage.from(BUCKET).download(keyPath);
+    if (!uncertain) {
+      await db.rpc("remember_photo_fail_upload", { p_photo_id: photoId });
+    }
+    return reply({ error: "Storage failed" }, 503);
+  }
   // Do not mark ready until stored bytes have been read back and checked.
   const { data: stored, error: readError } = await db.storage.from(BUCKET).download(keyPath);
   if (readError || !stored) return reply({ error: "Verification pending" }, 503);
