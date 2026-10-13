@@ -10,6 +10,7 @@ Golden template for new Container13 projects.
 5. Install/adapt the release-integrity workflow at repository .github/workflows/ when the project is ready for CI.
 
 Before new mechanisms are built, search the repository-level `solutions/` library for already verified solutions.
+Also consult [`CONTAINER13_SYSTEM_LIBRARY.md`](CONTAINER13_SYSTEM_LIBRARY.md) for cross-project components **and integrations**. Required decision sequence: search existing code and catalog → verify implementation/test status → reuse or adapt safely → build new only if needed. Register reusable work with source path, dependencies, access model and verification status; never record credentials. Do not assume catalog entries are already production-ready.
 
 Shared truth lives in this template. Project-specific manuals may add stricter rules.
 
