@@ -4,6 +4,7 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 const ORIGIN = Deno.env.get("REMEMBER_ALLOWED_ORIGIN") || "https://container13.se";
 const BUCKET = "remember-private-photos";
 const MAX_BYTES = 2 * 1024 * 1024;
+const MAX_REQUEST_BYTES = MAX_BYTES + 8192;
 const headers = {
   "Access-Control-Allow-Origin": ORIGIN,
   "Access-Control-Allow-Methods": "POST, OPTIONS",
@@ -17,6 +18,27 @@ function reply(value: unknown, status = 200) {
 function hex(bytes: Uint8Array) {
   return Array.from(bytes, b => b.toString(16).padStart(2, "0")).join("");
 }
+async function readBounded(req: Request): Promise<Uint8Array> {
+  if (!req.body) throw new Error("empty");
+  const reader = req.body.getReader();
+  const parts: Uint8Array[] = [];
+  let total = 0;
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      total += value.byteLength;
+      if (total > MAX_REQUEST_BYTES) throw new Error("too_large");
+      parts.push(value);
+    }
+  } finally {
+    await reader.cancel().catch(() => {});
+  }
+  const result = new Uint8Array(total);
+  let offset = 0;
+  for (const part of parts) { result.set(part, offset); offset += part.byteLength; }
+  return result;
+}
 function signature(bytes: Uint8Array): string | null {
   if (bytes.length >= 3 && bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255) return "image/jpeg";
   if (bytes.length >= 8 && [137,80,78,71,13,10,26,10].every((b,i) => bytes[i] === b)) return "image/png";
@@ -29,12 +51,20 @@ Deno.serve(async req => {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers });
   if (req.method !== "POST") return reply({ error: "Method not allowed" }, 405);
   const length = Number(req.headers.get("content-length") || 0);
-  if (length > MAX_BYTES + 8192) return reply({ error: "Too large" }, 413);
+  if (length > MAX_REQUEST_BYTES) return reply({ error: "Too large" }, 413);
   const url = Deno.env.get("SUPABASE_URL");
   const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   if (!url || !key) return reply({ error: "Unavailable" }, 503);
   let form: FormData;
-  try { form = await req.formData(); } catch { return reply({ error: "Invalid multipart body" }, 400); }
+  try {
+    const body = await readBounded(req);
+    const contentType = req.headers.get("content-type") || "";
+    if (!/^multipart\/form-data;\s*boundary=/i.test(contentType)) return reply({ error: "Invalid content type" }, 415);
+    form = await new Response(body, { headers: { "content-type": contentType } }).formData();
+  } catch (error) {
+    if (error instanceof Error && error.message === "too_large") return reply({ error: "Too large" }, 413);
+    return reply({ error: "Invalid multipart body" }, 400);
+  }
   const token = form.get("token"), requestId = form.get("requestId"), file = form.get("file");
   if (typeof token !== "string" || !/^[A-Za-z0-9_-]{43}$/.test(token) ||
       typeof requestId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestId) ||
