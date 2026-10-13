@@ -26,10 +26,9 @@
     "resumeInstruction": "Läs project-template/PROJECT_RELEASE_STANDARD.md, PROJECT_MASTER_RULES.md, PROJECT_RELEASE_CHECKLIST.md och remember/README.md, DECISIONS.md, IDEBANK.md, PROJECT_CURRENT_STATE.json och PROJECT_HANDOFF_CURRENT.md. Kontrollera GitHub, deploy och verklig klient innan nästa steg. Database baseline is now installed; see databaseEvidence. Never replay installation without checking actual database state."
   },
   "currentWork": {
-    "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. At baseline stage Edge Function was not yet deployed (superseded by apiEvidence). Remember Edge Function deployed; two unauthenticated/invalid-token tests returned 401. First-webmaster SQL candidate saved and read back, not executed. Further real tests: GET 405, allowed OPTIONS 204 with exact CORS headers, disallowed Origin POST 403. Read-only database RPC assertions PASS: 3 forged-actor actions, null actor, invalid action and actual anon/authenticated denial. Login callback remember/login.html committed, syntax checked and exactly read back; Pages run 38327872987 success for aebc2ed9934637d25b128fbe56668bf139cd5a92. Live desktop page loaded and client initialized. User-approved Site URL and exact allowlist saved and read back. Authorized invite sent to nilsmagnusalvin@gmail.com; account Overview confirms invited_at and confirmation_sent_at 2026-10-13T00:36:49.507638Z; confirmed_at and last sign-in empty. Real user reported authenticated non-webmaster 403; Supabase account email-confirmed and last sign-in independently observed at 02:38. Approved 009 test webmaster grant executed: Success. Exact membership readback confirms single Gmail user, confirmed=true and granted_at 00:41:38 UTC. All 3 authorized RPC actions verified via service_role: authorized=true, ready=true version1, list []. Real authenticated webmaster installation_status USER PASS: exact user-reported success with schema version 1. Separate real authenticated album-list USER PASS: Webmasteråtkomst godkänd. Scoped read-only authentication/API flow now tested, not a complete product release. Explicit mobile no-page-pinch rule added to shared templates; Remember index, webmaster demo and login use one shared gesture guard plus restricted viewport. Mobile runtime verification pending. Candidate 0.1.2 live login desktop smoke PASS; Pages deployment checked. No real mobile pinch PASS claimed. User approved real mobile pinch fix; exact device/browser unspecified. Prepared migration2 album-creation RPC, rollback test script and review guide; SQL not executed.",
-    "next": "Await approval of migration 010 and disposable rollback tests 011 in dedicated Remember test project. Then verify SQL, cleanup/version2/permissions and concurrency before enabling API/UI creation. Existing read auth flow remains verified.",
-    "blocked": true,
-    "blocker": "Album-creation SQL and transactional test writes require explicit approval."
+    "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. At baseline stage Edge Function was not yet deployed (superseded by apiEvidence). Remember Edge Function deployed; two unauthenticated/invalid-token tests returned 401. First-webmaster SQL candidate saved and read back, not executed. Further real tests: GET 405, allowed OPTIONS 204 with exact CORS headers, disallowed Origin POST 403. Read-only database RPC assertions PASS: 3 forged-actor actions, null actor, invalid action and actual anon/authenticated denial. Login callback remember/login.html committed, syntax checked and exactly read back; Pages run 38327872987 success for aebc2ed9934637d25b128fbe56668bf139cd5a92. Live desktop page loaded and client initialized. User-approved Site URL and exact allowlist saved and read back. Authorized invite sent to nilsmagnusalvin@gmail.com; account Overview confirms invited_at and confirmation_sent_at 2026-10-13T00:36:49.507638Z; confirmed_at and last sign-in empty. Real user reported authenticated non-webmaster 403; Supabase account email-confirmed and last sign-in independently observed at 02:38. Approved 009 test webmaster grant executed: Success. Exact membership readback confirms single Gmail user, confirmed=true and granted_at 00:41:38 UTC. All 3 authorized RPC actions verified via service_role: authorized=true, ready=true version1, list []. Real authenticated webmaster installation_status USER PASS: exact user-reported success with schema version 1. Separate real authenticated album-list USER PASS: Webmasteråtkomst godkänd. Scoped read-only authentication/API flow now tested, not a complete product release. Explicit mobile no-page-pinch rule added to shared templates; Remember index, webmaster demo and login use one shared gesture guard plus restricted viewport. Mobile runtime verification pending. Candidate 0.1.2 live login desktop smoke PASS; Pages deployment checked. No real mobile pinch PASS claimed. User approved real mobile pinch fix; exact device/browser unspecified. Prepared migration2 album-creation RPC, rollback test script and review guide; SQL not executed. Approved migration2 installed; 011 and supplemental 012 transaction assertions PASS. Cleanup readback totalAlbums=0 and test IDs absent. Create RPC service-only privileges PASS; read readiness version2 true; baseline 006 rechecked 12/12 true.",
+    "next": "User confirms existing login installation_status now reports schemaVersion2. Test real concurrent creation requests in disposable environment before enabling creation. Then extend existing Remember API with strict input validation/JWT-derived actor and connect bounded pilot create UI; deployment is a new security-sensitive write path requiring approval. No production sharing/storage/quota enforcement yet.",
+    "blocked": false
   },
   "pausedWork": {
     "fotobok": "Parkerad idé; inte i första releasen."
@@ -47,7 +46,7 @@
     "securityVerificationFile": "remember/sql/006_security_verification_READ_ONLY.sql",
     "securityChecksPassed": 12,
     "securityChecksTotal": 12,
-    "highestSchemaVersion": 1,
+    "highestSchemaVersion": 2,
     "scope": "Structural database evidence only; no API/Edge Function/storage/device/runtime PASS.",
     "supersededIncorrectProjectRef": "wykvztfmfbboxiquvuwr",
     "rpcRuntimeTests": {
@@ -90,6 +89,30 @@
         }
       },
       "scope": "Actual read-only SQL RPC execution; authorized HTTP browser request still pending."
+    },
+    "migration2": {
+      "file": "remember/sql/010_create_album_REVIEW_FIRST.sql",
+      "approved": true,
+      "installationResult": "Success. No rows returned",
+      "rollbackTests011": "PASS: Album creation transaction assertions true",
+      "rollbackTests012": "PASS: Trip/fishing/timezone/type/party-end assertions true",
+      "cleanup": {
+        "totalAlbums": 0,
+        "testIdsAbsent": true
+      },
+      "createRpcPrivileges": {
+        "anonDenied": true,
+        "authenticatedDenied": true,
+        "serviceAllowed": true
+      },
+      "readInstallationStatus": {
+        "ready": true,
+        "authorized": true,
+        "schemaVersion": 2,
+        "expectedVersion": 2
+      },
+      "security006AfterMigration": "12/12 true; baseline version1 row remains, highest version separately verified as2",
+      "concurrentTwoClientTest": "NOT PERFORMED"
     }
   },
   "apiEvidence": {
@@ -239,8 +262,8 @@
     "migration": "remember/sql/010_create_album_REVIEW_FIRST.sql",
     "tests": "remember/sql/011_create_album_ROLLBACK_TEST.sql",
     "review": "remember/ALBUM_CREATION_REVIEW.md",
-    "installed": false,
-    "runtimeVerified": false,
+    "installed": true,
+    "runtimeVerified": "DB transaction assertions PASS; HTTP/UI creation and 2-client concurrency NOT VERIFIED",
     "schemaVersionCandidate": 2,
     "apiWriteEnabled": false
   }
