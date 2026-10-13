@@ -29,3 +29,10 @@ Status: specification only; upload endpoint and end-to-end tests NOT yet impleme
 - Compute a stable SHA-256 content digest over canonical upload bytes after client-side normalization/compression. Persist and enforce album-scoped uniqueness on the server, including concurrent requests; never rely solely on client comparison.
 - Avoid false claims: exact-byte deduplication cannot reliably detect crops, edits or recompression differences. Decide separately whether perceptual similarity should be supported.
 - Test repeat selection, renamed identical file, same file in two albums, concurrent duplicate submissions, retry after interruption, and no extra slot consumed.
+
+## V1 decision — 2026-10-13 (approved)
+- Use **exact SHA-256 content deduplication only**. No perceptual hashing, similarity warnings, AI image comparisons, or blocking of photos merely because they look alike.
+- Two photos taken seconds apart, even if nearly identical, must remain independently uploadable.
+- Crops, zoomed screenshots, and edited/re-encoded versions count as distinct if their canonical uploaded bytes differ.
+- Show a simple duplicate notice only when identical canonical image bytes already exist in the same album. Never silently replace an existing photo.
+- Keep computation lightweight and avoid unnecessary server processing. This decision supersedes any earlier optional perceptual comparison proposals.
