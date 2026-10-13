@@ -18,3 +18,9 @@ remember/login.html includes the bounded pilot form, hidden until the authentica
 Syntax and mocked validation tests PASS. Real creation API/UI tests and device test still pending. Approve deployment only after concurrency/cleanup PASS; server deployment introduces a new HTTP write path. Reuse the existing function and shared adapter. No service key in client, no Micke50 changes.
 
 After approved deployment: verify version header, no-session/invalid-session denial, input errors and a real authorized create+retry with explicit test-album scope. Capture actual row count/title/time/owner and browser list response. Mobile pinch preference remains enforced. No public guest link, storage upload, schedule editing, payment or true upload-quota enforcement yet.
+
+## Faktisk verifiering 2026-10-13 (ersätter äldre ej-kört/ej-driftsatt-status)
+
+Användaren godkände test013/014/015 och villkorad API-deployment. Två färdigladdade SQL Editor-anslutningar visade samtidigt Running. A PID34280 gav created=true; B PID34281 gav created=false för samma album-ID a2c13000-0000-4000-8000-000000000040. Avgränsad städning genomförd; separat/efterföljande readback totalAlbums=0,testAlbumCount=0. Ett tidigare varv kontrollerades och städades före den tydligt överlappande körningen.
+
+Remember-webmaster0.1.3 driftsatt i samma separata testprojekt efter godkända DB-resultat. Deployerad kodeditor matchade kandidatbundlen exakt. Faktiskt create_album utan användarsession gav401 Authentication required, x-remember-version0.1.3. Klient0.1.3 är publicerad; form visas först efter verifierad auth/roll och serverns createAlbum capability. Verklig auktoriserad HTTP/UI-skapning, retry och mobilform återstår; ingen komplett produktrelease verifierad. Schema2 och auth-testrollen kvarstår. Micke50 orört. Se PROJECT_CURRENT_STATE för nästa steg.
