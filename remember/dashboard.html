@@ -47,7 +47,7 @@ async function gateway(action){
     }else{
       const heading=document.createElement('h3');heading.textContent='Dina album ('+body.albums.length+')';$('albums').append(heading);
       for(const album of body.albums){
-        const p=document.createElement('p');p.textContent=album.title||'Album utan namn';$('albums').append(p);
+        const a=document.createElement('a');a.textContent=album.title||'Album utan namn';a.href='./album-admin.html?id='+encodeURIComponent(album.id);a.style.color='#d9e7a4';a.style.display='block';a.style.margin='12px 0';$('albums').append(a);
       }
     }
   }
