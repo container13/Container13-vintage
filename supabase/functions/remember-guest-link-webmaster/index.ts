@@ -22,7 +22,11 @@ const base64url = (bytes: Uint8Array) => btoa(String.fromCharCode(...bytes))
   .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
 
 Deno.serve(async req => {
-  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
+  if (req.method === "OPTIONS") {
+    const preflightOrigin = req.headers.get("origin");
+    if (preflightOrigin && preflightOrigin !== origin) return reply({ error: "Forbidden" }, 403);
+    return new Response(null, { status: 204, headers: cors });
+  }
   if (req.method !== "POST") return reply({ error: "Method not allowed" }, 405);
   const requestOrigin = req.headers.get("origin");
   if (requestOrigin && requestOrigin !== origin) return reply({ error: "Forbidden" }, 403);
@@ -36,8 +40,21 @@ Deno.serve(async req => {
   let input: Record<string, unknown>;
   try {
     if (Number(req.headers.get("content-length") || 0) > 2048) return reply({ error: "Too large" }, 413);
-    const raw = await req.text();
-    if (new TextEncoder().encode(raw).byteLength > 2048) return reply({ error: "Too large" }, 413);
+    if (!req.body) return reply({ error: "Missing body" }, 400);
+    const reader = req.body.getReader();
+    const parts: Uint8Array[] = [];
+    let bytes = 0;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      bytes += value.byteLength;
+      if (bytes > 2048) { await reader.cancel(); return reply({ error: "Too large" }, 413); }
+      parts.push(value);
+    }
+    const payload = new Uint8Array(bytes);
+    let position = 0;
+    for (const part of parts) { payload.set(part, position); position += part.byteLength; }
+    const raw = new TextDecoder("utf-8", { fatal: true }).decode(payload);
     const parsed = JSON.parse(raw);
     if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw Error();
     input = parsed;
