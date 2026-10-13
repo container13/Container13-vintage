@@ -24,28 +24,31 @@ Deno.serve(async req=>{
  const {data:identity,error:identityError}=await db.auth.getUser(bearer.slice(7));
  if(identityError||!identity.user)return reply({error:"Invalid login"},401);
  const actor=identity.user.id;
- const {data:existing,error:readError}=await db.rpc("remember_guest_link_vault_read",{p_actor:actor,p_album:album});
+ const {data:owned,error:ownerError}=await db.schema("remember").from("albums").select("id").eq("id",album).eq("owner_user_id",actor).maybeSingle();
+ if(ownerError)return reply({error:"Could not verify ownership"},503);
+ if(!owned)return reply({error:"Forbidden"},403);
+ const {data:vault,error:readError}=await db.schema("remember").from("guest_link_vault").select("ciphertext").eq("album_id",album).maybeSingle();
  if(readError)return reply({error:"Link storage unavailable"},503);
- // A null vault entry does not prove authorization. Check ownership and webmaster role server-side.
- const {data:authorization,error:authorizationError}=await db.rpc("remember_photo_gallery_read",{p_actor:actor,p_album_id:album,p_token_hash:null});
- if(authorizationError||!authorization?.authorized)return reply({error:"Forbidden"},403);
+ const existing=vault?.ciphertext||null;
  const encryptionKey=await keyFromSecret(secret);
  if(input.action==="get"){
   if(!existing)return reply({ok:true,available:false,needsReplacement:true});
   try{
    const token=await unseal(encryptionKey,existing,album);
    const digest=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(token));
-   const {data:link}=await db.rpc("remember_guest_link_matches",{p_album:album,p_token_hash:"\\x"+hex(new Uint8Array(digest))});
-   if(link!==true)return reply({ok:true,available:false,needsReplacement:true});
+   const {data:link,error:linkError}=await db.schema("remember").from("guest_links").select("album_id").eq("album_id",album).eq("token_sha256","\\x"+hex(new Uint8Array(digest))).is("revoked_at",null).maybeSingle();
+   if(linkError||!link)return reply({ok:true,available:false,needsReplacement:true});
    return reply({ok:true,available:true,token});
   }catch{return reply({ok:true,available:false,needsReplacement:true});}
  }
  const token=b64(crypto.getRandomValues(new Uint8Array(32)));
  const digest=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(token));
- const {data:written,error:writeError}=await db.rpc("remember_webmaster_guest_link_write",{p_actor:actor,p_album:album,p_action:"rotate",p_token_hash:"\\x"+hex(new Uint8Array(digest))});
- if(writeError||!written?.success)return reply({error:"Could not replace link"},409);
+ const {data:oldLink,error:oldError}=await db.schema("remember").from("guest_links").select("album_id").eq("album_id",album).maybeSingle();
+ if(oldError)return reply({error:"Link lookup failed"},503);
+ const {error:writeError}=oldLink?await db.schema("remember").from("guest_links").update({token_sha256:"\\x"+hex(new Uint8Array(digest)),created_by:actor,created_at:new Date().toISOString(),rotated_at:new Date().toISOString(),revoked_at:null}).eq("album_id",album):await db.schema("remember").from("guest_links").insert({album_id:album,token_sha256:"\\x"+hex(new Uint8Array(digest)),created_by:actor});
+ if(writeError)return reply({error:"Could not replace link"},503);
  const cipher=await seal(encryptionKey,token,album);
- const {data:saved,error:saveError}=await db.rpc("remember_guest_link_vault_save",{p_actor:actor,p_album:album,p_ciphertext:cipher});
- if(saveError||saved!==true)return reply({error:"New link created but could not be stored; contact webmaster",token},503);
+ const {error:saveError}=await db.schema("remember").from("guest_link_vault").upsert({album_id:album,ciphertext:cipher},{onConflict:"album_id"});
+ if(saveError)return reply({error:"New link created but could not be stored; contact support",token},503);
  return reply({ok:true,available:true,token,replaced:true});
 });
