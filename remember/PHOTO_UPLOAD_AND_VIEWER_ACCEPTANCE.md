@@ -21,3 +21,11 @@ Status: specification only; upload endpoint and end-to-end tests NOT yet impleme
 1. Secure backend upload + real-photo verification.
 2. Viewer port and improved gestures.
 3. Device testing and user approval.
+
+## Duplicate image protection (approved)
+- Within the same album, reject a second upload of identical image content with a friendly Swedish message: "Den här bilden finns redan i albumet." Do not consume another quota slot or show a duplicate in gallery.
+- Different albums may contain the same image.
+- Distinguish transport idempotency (retrying the same upload request) from content deduplication (choosing the same photo in a new request).
+- Compute a stable SHA-256 content digest over canonical upload bytes after client-side normalization/compression. Persist and enforce album-scoped uniqueness on the server, including concurrent requests; never rely solely on client comparison.
+- Avoid false claims: exact-byte deduplication cannot reliably detect crops, edits or recompression differences. Decide separately whether perceptual similarity should be supported.
+- Test repeat selection, renamed identical file, same file in two albums, concurrent duplicate submissions, retry after interruption, and no extra slot consumed.
