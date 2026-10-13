@@ -1,6 +1,6 @@
 # Remember – installationskontroll
 
-Status: kodförberedelse, ej driftsatt eller testad mot Supabase.
+Status: databasgrund installerad i separat testprojekt 2026-10-13; strukturell säkerhetskontroll PASS. Edge Function/webbdrift ej verifierad. Historiska avsnitt nedan beskriver tidigare kodkandidater.
 
 ## Funktion
 Den skyddade Remember-webmasterfunktionen har åtgärden `installation_status`. Efter verifierad Supabase-inloggning och kontroll av webmasterrollen kontrollerar den åtkomst till fem Remember-tabeller samt högsta registrerade schemaversion (förväntad version 1).
@@ -46,3 +46,27 @@ SQL-utkastet 005_private_webmaster_gateway_DRAFT.sql definierar en snävt begrä
 Ny `006_security_verification_READ_ONLY.sql` ger en kontrolltabell över schemaåtkomst, RLS på fem tabeller och EXECUTE-rättigheter för webmaster-RPC. Den ska köras först **efter** att installationen är utförd. Alla kontroller måste ge true, och schemaversionens faktiska rad ska kontrolleras separat. Ett grönt resultat är inte en penetrationstestning.
 
 **Risk kvar:** `security definer`-funktionen tar `p_actor` från en server med `service_role`. Den kan inte användas som fristående säkerhetsgräns mot en komprometterad service-nyckel. Service-nyckeln får aldrig lämna Edge Function. JWT måste alltid verifieras innan RPC-anropet, och tester ska bevisa att anon/authenticated inte kan anropa RPC direkt. Även avsaknad av bootstrap för första webmaster är blockerande för komplett runtime-test. Installera inte från GitHub-kandidaten utan att dessa villkor granskas.
+
+## Faktisk installation och verifiering – 2026-10-13 (ersätter tidigare installationsstatus)
+
+- Användaren godkände installationen efter projekt- och SQL-granskning.
+- Verifierat i Supabase General Settings: organisation `Container13-Remember`, projekt `container13-remember`, projektref `wykvztfmfbboxiqvuvwr`, Stockholm `eu-north-1`. Överlämningens `wykvztfmfbboxiquvuwr` var felaktig och ska inte användas.
+- Före installation: remember saknades i schemalistan, public saknade Remember-RPC. Micke50 öppnades eller ändrades inte.
+- INSTALL_REMEMBER_REVIEW_FIRST.sql, blob `921bb4e86ccc9daa916dfca1af63099b34f566d5`, kördes i SQL Editor: `Success. No rows returned`.
+- Statisk Node-preflight: 20/20 PASS (endast källkod).
+- 006_security_verification_READ_ONLY.sql kördes: 12 rader, alla `true`:
+  - remember schema exists
+  - anon cannot use remember schema
+  - authenticated cannot use remember schema
+  - five required tables with RLS enabled
+  - anon cannot SELECT any remember table
+  - authenticated cannot SELECT any remember table
+  - RPC exists
+  - RPC is security definer
+  - anon cannot execute RPC
+  - authenticated cannot execute RPC
+  - service_role can execute RPC
+  - schema version 1 installed
+- Separat SELECT av högsta schema_migrations.version gav exakt `1`.
+- Dessa resultat är strukturell databasverifiering, inte HTTP/Edge Function-, penetration-, storage-, kvot- eller enhetstest. Skrivåtgärder är fortsatt avstängda i serverkandidaten. Webmaster-bootstrap och serverdeploy återstår.
+- Installationen består av separata transaktioner. Återkör inte för att felsöka runtime; inspektera först verkligt databasläge. Inga befintliga data raderades.
