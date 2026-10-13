@@ -1,7 +1,7 @@
 // Container13 development tools. Enable explicitly with ?dev=1; disable with ?dev=0.
 const key='container13-dev-tools';
 const qs=new URLSearchParams(location.search);
-if(qs.get('dev')==='1')sessionStorage.setItem(key,'1');
+if(qs.get('dev')==='1'||location.pathname.endsWith('/remember/dashboard.html'))sessionStorage.setItem(key,'1');
 if(qs.get('dev')==='0')sessionStorage.removeItem(key);
 if(sessionStorage.getItem(key)==='1'){
  const style=document.createElement('style');
