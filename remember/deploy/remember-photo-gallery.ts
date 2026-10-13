@@ -26,10 +26,20 @@ Deno.serve(async req=>{
   const digest=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(input.token as string));
   tokenHash="\\x"+hex(new Uint8Array(digest));
  }
- const {data:result,error:galleryError}=await db.rpc("remember_photo_gallery_read",{p_actor:actorId,p_album_id:owner?input.albumId:null,p_token_hash:tokenHash});
- if(galleryError)return reply({error:"Gallery unavailable"},503);
- if(!result?.authorized)return reply({error:"Forbidden"},403);
- const photos=result.photos||[];
+ let photos:{id:string,objectKey:string,createdAt:string}[]=[];
+ if(owner){
+  const {data:owned,error:ownerError}=await db.schema("remember").from("albums").select("id").eq("id",input.albumId).eq("owner_user_id",actorId).maybeSingle();
+  if(ownerError)return reply({error:"Authorization unavailable"},503);
+  if(!owned)return reply({error:"Forbidden"},403);
+  const {data:rows,error:photoError}=await db.schema("remember").from("album_photos").select("id,object_key,created_at").eq("album_id",owned.id).eq("state","ready").order("created_at",{ascending:false}).order("id",{ascending:false}).limit(100);
+  if(photoError)return reply({error:"Gallery unavailable"},503);
+  photos=(rows||[]).map(p=>({id:p.id,objectKey:p.object_key,createdAt:p.created_at}));
+ }else{
+  const {data:result,error:galleryError}=await db.rpc("remember_photo_gallery_read",{p_actor:null,p_album_id:null,p_token_hash:tokenHash});
+  if(galleryError)return reply({error:"Gallery unavailable"},503);
+  if(!result?.authorized)return reply({error:"Forbidden"},403);
+  photos=result.photos||[];
+ }
  const paths=photos.map((p:{objectKey:string})=>p.objectKey);
  if(!paths.length)return reply({ok:true,photos:[]});
  const {data:urls,error:urlsError}=await db.storage.from("remember-private-photos").createSignedUrls(paths,120);
