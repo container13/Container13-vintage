@@ -33,13 +33,18 @@ BEGIN
  SELECT * INTO v_existing FROM remember.album_photos
  WHERE album_id=v_album.id AND idempotency_key=p_request_id;
  IF FOUND THEN
-   RETURN jsonb_build_object('accepted',v_existing.state IN ('reserved','uploading','ready'),
+   RETURN jsonb_build_object('accepted',v_existing.state IN ('reserved','uploading','ready') AND (v_existing.state='ready' OR v_existing.reservation_expires_at>now()),
      'reason','existing','photoId',v_existing.id);
  END IF;
 
  IF v_album.forced_closed OR now()<COALESCE(v_album.override_opens_at,v_album.default_opens_at)
  OR now()>=COALESCE(v_album.override_closes_at,v_album.default_closes_at)
  THEN RETURN jsonb_build_object('accepted',false,'reason','closed'); END IF;
+
+ -- Reclaim abandoned reservations only; never reclaim an upload already in progress.
+ UPDATE remember.album_photos SET state='failed'
+ WHERE album_id=v_album.id AND state='reserved'
+   AND reservation_expires_at<=now();
 
  SELECT count(*) INTO v_used FROM remember.album_photos
  WHERE album_id=v_album.id AND state IN ('reserved','uploading','ready');
