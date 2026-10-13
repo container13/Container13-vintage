@@ -123,3 +123,9 @@
 - E-postadress verifieras genom personlig tidsbegränsad länk innan albumet skapas/aktiveras på servern.
 - Efter aktivering ska ägaren vara inloggad och komma till sitt album. Återkommande ägare kan logga in med e-postlänk; lösenord är frivilligt.
 - Aktiveringslänk kan begäras igen. Ingen dubbelregistrering vid återbesök. Bygg först ett säkert och begripligt registreringssteg; automatisk albumskapning efter verifiering kräver separat serverimplementering och test.
+
+
+## R-1.0 / S-1.0 — Första registreringsvyerna
+- remember/index.html förenklad kundstartsida, remember/register.html formulär för albumutkast + e-postlänk via Supabase OTP, remember/activate.html verifierar session och skickar vidare till Dashboard.
+- Utkast lagras enbart i sessionStorage på enheten. Album skapas **inte** automatiskt ännu; säker server-side skapning och återhämtning av utkast mellan enheter återstår. E-postleverans och redirect URL i Supabase Auth måste verifieras innan externt test.
+- Gamla gästvyn, befintliga album och länkar är inte ändrade av detta steg. Versionsetiketter S-1.0 och R-1.0.
