@@ -17,4 +17,18 @@ document.querySelectorAll('.choice').forEach(b=>b.addEventListener('click',()=>{
 $('photo').addEventListener('change',()=>{if(imageUrl){URL.revokeObjectURL(imageUrl);imageUrl=null}const file=$('photo').files[0];if(!file){$('hero').textContent='🎣 Din startbild visas här';return}if(!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>8*1024*1024){$('message').textContent='Välj JPG, PNG eller WebP under 8 MB.';$('photo').value='';return}imageUrl=URL.createObjectURL(file);const img=document.createElement('img');img.src=imageUrl;img.alt='Vald startbild';$('hero').replaceChildren(img);$('message').textContent='Startbilden visas endast på denna enhet.'});
 $('form').addEventListener('submit',e=>{e.preventDefault();if(!$('form').reportValidity()||!schedule())return;preview();$('message').textContent='Förhandsgranskningen är klar. Ingen registrering eller publicering har skett ännu.';document.querySelector('.grid').scrollIntoView({behavior:'smooth',block:'start'})});
 $('reset').addEventListener('click',()=>{[$('name').value,$('welcome').value]=defaults[type];$('owner').value='';$('email').value='';$('photo').value='';$('eventStart').value='';$('eventEnd').value='';if(imageUrl)URL.revokeObjectURL(imageUrl);imageUrl=null;$('hero').textContent='🎣 Din startbild visas här';$('message').textContent='Exemplet är återställt.';preview()});preview();
+</script><script type="module">
+try {
+  const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
+  const client=createClient('https://wykvztfmfbboxiqvuvwr.supabase.co','sb_publishable_qOSBb7U6TGnPQ8ypyYRLGg_GtYrraoG',{auth:{storage:localStorage,storageKey:'container13-remember-auth-v2',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+  const {data,error}=await client.auth.getUser();
+  if(!error&&data.user){
+    const {data:sessionData}=await client.auth.getSession();
+    if(sessionData.session){
+      const response=await fetch('https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-webmaster',{method:'POST',headers:{'Content-Type':'application/json',apikey:'sb_publishable_qOSBb7U6TGnPQ8ypyYRLGg_GtYrraoG',Authorization:'Bearer '+sessionData.session.access_token},body:JSON.stringify({action:'installation_status'})});
+      const body=await response.json().catch(()=>({}));
+      if(response.ok&&body.authorized===true)location.replace('./dashboard.html');
+    }
+  }
+}catch(e){/* Public album creation preview remains available when offline or signed out. */}
 </script></body></html>
