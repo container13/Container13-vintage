@@ -26,10 +26,10 @@
     "resumeInstruction": "Läs project-template/PROJECT_RELEASE_STANDARD.md, PROJECT_MASTER_RULES.md, PROJECT_RELEASE_CHECKLIST.md och remember/README.md, DECISIONS.md, IDEBANK.md, PROJECT_CURRENT_STATE.json och PROJECT_HANDOFF_CURRENT.md. Kontrollera GitHub, deploy och verklig klient innan nästa steg. Database baseline is now installed; see databaseEvidence. Never replay installation without checking actual database state."
   },
   "currentWork": {
-    "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. At baseline stage Edge Function was not yet deployed (superseded by apiEvidence). Remember Edge Function deployed; two unauthenticated/invalid-token tests returned 401. First-webmaster SQL candidate saved and read back, not executed. Further real tests: GET 405, allowed OPTIONS 204 with exact CORS headers, disallowed Origin POST 403. Read-only database RPC assertions PASS: 3 forged-actor actions, null actor, invalid action and actual anon/authenticated denial. Login callback remember/login.html committed, syntax checked and exactly read back; Pages run 38327872987 success for aebc2ed9934637d25b128fbe56668bf139cd5a92. Live desktop page loaded and client initialized. User-approved Site URL and exact allowlist saved and read back. Authorized invite sent to nilsmagnusalvin@gmail.com; account Overview confirms invited_at and confirmation_sent_at 2026-10-13T00:36:49.507638Z; confirmed_at and last sign-in empty. Real user reported authenticated non-webmaster 403; Supabase account email-confirmed and last sign-in independently observed at 02:38.",
-    "next": "Await explicit approval of 009_test_webmaster_REVIEW_FIRST.sql to grant exact confirmed Gmail test user the Remember webmaster role in test project. Then independently read membership and run authorized RPC; user tests authorized HTTP status and album list. Never execute Holmen candidate 007 as part of Gmail test.",
+    "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. At baseline stage Edge Function was not yet deployed (superseded by apiEvidence). Remember Edge Function deployed; two unauthenticated/invalid-token tests returned 401. First-webmaster SQL candidate saved and read back, not executed. Further real tests: GET 405, allowed OPTIONS 204 with exact CORS headers, disallowed Origin POST 403. Read-only database RPC assertions PASS: 3 forged-actor actions, null actor, invalid action and actual anon/authenticated denial. Login callback remember/login.html committed, syntax checked and exactly read back; Pages run 38327872987 success for aebc2ed9934637d25b128fbe56668bf139cd5a92. Live desktop page loaded and client initialized. User-approved Site URL and exact allowlist saved and read back. Authorized invite sent to nilsmagnusalvin@gmail.com; account Overview confirms invited_at and confirmation_sent_at 2026-10-13T00:36:49.507638Z; confirmed_at and last sign-in empty. Real user reported authenticated non-webmaster 403; Supabase account email-confirmed and last sign-in independently observed at 02:38. Approved 009 test webmaster grant executed: Success. Exact membership readback confirms single Gmail user, confirmed=true and granted_at 00:41:38 UTC. All 3 authorized RPC actions verified via service_role: authorized=true, ready=true version1, list [].",
+    "next": "User clicks Kontrollera webmasteråtkomst and Visa album in already authenticated Remember login page. Collect authorized HTTP result; if success, record scoped read-only auth/API runtime gate. No schedule writes/uploads/production release implied. Do not rerun 009 or Holmen 007.",
     "blocked": true,
-    "blocker": "Exact Gmail test-account role grant prepared, not approved or executed."
+    "blocker": "Awaiting real browser authorized HTTP test after role grant."
   },
   "pausedWork": {
     "fotobok": "Parkerad idé; inte i första releasen."
@@ -64,6 +64,32 @@
         "authenticated actual RPC invocation raises insufficient_privilege"
       ],
       "scope": "Database role switching in SQL Editor, not end-to-end authenticated HTTP."
+    },
+    "authorizedRpcTests": {
+      "verifiedOn": "2026-10-13",
+      "role": "service_role",
+      "actorId": "75b71f6c-97b7-4de1-ad14-292b4af4e1fa",
+      "membershipReadback": {
+        "rows": 1,
+        "email": "nilsmagnusalvin@gmail.com",
+        "emailConfirmed": true
+      },
+      "results": {
+        "role_check": {
+          "authorized": true
+        },
+        "installation_status": {
+          "ready": true,
+          "authorized": true,
+          "schemaVersion": 1,
+          "expectedVersion": 1
+        },
+        "list": {
+          "albums": [],
+          "authorized": true
+        }
+      },
+      "scope": "Actual read-only SQL RPC execution; authorized HTTP browser request still pending."
     }
   },
   "apiEvidence": {
@@ -118,13 +144,18 @@
         "evidence": "User reported actual browser result on 2026-10-13 02:39; Supabase independently shows confirmed email and last sign-in at 02:38. No authenticated success yet."
       }
     ],
-    "limitations": "No authenticated user session tested; 403 role denial, authorized list/status, CORS external browser and device tests outstanding."
+    "limitations": "Real authenticated non-webmaster 403 user-tested and account confirmed; authorized HTTP after role grant pending. Device/upload/storage/schedule-write tests outstanding."
   },
   "webmasterBootstrap": {
     "email": "magnus.johansson@holmen.com",
     "candidate": "remember/sql/007_first_webmaster_REVIEW_FIRST.sql",
     "executed": false,
-    "invitationSent": false
+    "invitationSent": false,
+    "testRole": {
+      "email": "nilsmagnusalvin@gmail.com",
+      "executed": true,
+      "candidate": "remember/sql/009_test_webmaster_REVIEW_FIRST.sql"
+    }
   },
   "emailEvidence": {
     "verifiedOn": "2026-10-13",
@@ -163,9 +194,11 @@
     "confirmationSentAt": "2026-10-13T00:36:49.507638Z",
     "emailConfirmed": true,
     "lastSignedIn": null,
-    "webmasterGranted": false,
+    "webmasterGranted": true,
     "confirmedAtObserved": "2026-10-13 02:38 Europe/Stockholm",
     "lastSignedInObserved": "2026-10-13 02:38 Europe/Stockholm",
-    "roleGrantCandidate": "remember/sql/009_test_webmaster_REVIEW_FIRST.sql"
+    "roleGrantCandidate": "remember/sql/009_test_webmaster_REVIEW_FIRST.sql",
+    "grantedAt": "2026-10-13T00:41:38.182985Z",
+    "roleGrantSql": "remember/sql/009_test_webmaster_REVIEW_FIRST.sql"
   }
 }
