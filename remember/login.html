@@ -9,7 +9,7 @@ main{max-width:720px}.panel{margin-top:24px}button:disabled{opacity:.55;cursor:w
 <h1>Logga in</h1><p>Logga in direkt på datorn eller mobilen med e-post och lösenord. Mejllänk finns kvar som reserv.</p>
 <section class="panel"><form id="login"><label for="email">E-postadress</label><input id="email" type="email" autocomplete="email" required maxlength="254"><label for="password">Lösenord</label><input id="password" type="password" autocomplete="current-password" minlength="6"><div class="actions"><button id="send" type="submit" disabled>Logga in</button><button id="resetPassword" type="button" class="secondary" disabled>Skapa eller återställ lösenord</button><button id="magic" type="button" class="secondary" disabled>Skicka mejllänk i stället</button></div></form>
 <p id="feedback" class="status" role="status" aria-live="polite">Förbereder inloggningen…</p></section>
-<section class="panel" id="account" hidden><h2>Din anslutning</h2><p id="identity"></p><p>Webmasterbehörigheten kontrolleras på servern. Ett verifierat konto får inte automatiskt administratörsbehörighet.</p><div id="setPasswordArea"><label for="newPassword">Välj lösenord för framtida inloggningar</label><input id="newPassword" type="password" autocomplete="new-password" minlength="12" placeholder="Minst 12 tecken"><div class="actions"><button id="savePassword" type="button">Spara lösenord</button></div><p id="passwordResult" role="status" aria-live="polite"></p></div><div class="actions"><button id="check" type="button">Kontrollera webmasteråtkomst</button><button id="list" type="button" class="secondary">Visa album</button><button id="logout" type="button" class="secondary">Logga ut</button></div><p id="result" role="status" aria-live="polite"></p><div id="albums" role="status" aria-live="polite"></div></section>
+<section class="panel" id="account" hidden><h2>Din anslutning</h2><p id="identity"></p><p>Webmasterbehörigheten kontrolleras på servern. Ett verifierat konto får inte automatiskt administratörsbehörighet.</p><details id="setPasswordArea"><summary>Byt eller återställ lösenord</summary><label for="newPassword">Ange ett nytt lösenord</label><input id="newPassword" type="password" autocomplete="new-password" minlength="12" placeholder="Minst 12 tecken"><div class="actions"><button id="savePassword" type="button">Spara lösenord</button></div><p id="passwordResult" role="status" aria-live="polite"></p></details><div class="actions"><button id="check" type="button">Kontrollera webmasteråtkomst</button><button id="list" type="button" class="secondary">Visa album</button><button id="logout" type="button" class="secondary">Logga ut</button></div><p id="result" role="status" aria-live="polite"></p><div id="albums" role="status" aria-live="polite"></div></section>
 <section class="panel" id="creation" hidden><h2>Skapa ett testalbum</h2><p>Albumet sparas i Remember-testmiljön. Gästlänk och bilduppladdning kommer senare.</p>
 <form id="createForm"><label for="albumTitle">Albumets namn</label><input id="albumTitle" required maxlength="100">
 <label for="eventType">Upplevelse</label><select id="eventType"><option value="fishing">Fiskeresa</option><option value="trip">Resa</option><option value="party">Fest</option><option value="wedding">Bröllop</option></select>
@@ -84,7 +84,8 @@ try{
  client.auth.onAuthStateChange((event,next)=>{
    showSession(next);
    if(event==='PASSWORD_RECOVERY' && next){
-     message('Återställningslänken är godkänd. Välj nu ditt nya lösenord under Din anslutning.');
+     message('Återställningslänken är godkänd. Ange ditt nya lösenord under Din anslutning.');
+     $('setPasswordArea').open=true;
      $('newPassword').focus();
    }
  });
