@@ -77,3 +77,9 @@ Kameraprototypen förbättrades före den hade en naturlig ingång i albumet. En
 - **Mina album** är vanlig albumägarvy. **Webmasterpanel** är separat administrativ vy. Ingen blandning av systemdiagnostik, webbmasterkontroller och ägarens vardagsflöde.
 - Vid migration av befintliga prototyper: kartlägg befintliga Edge Functions, SQL/RLS och faktiska rättigheter innan ändring. Försvaga inte befintliga kontroller, radera inte album och rotera inte gästlänkar. Märk implementation som **ej klar** tills backend och UI båda verifierats.
 - Tidigare Remember-dashboard använde `remember-webmaster` för albumlistning och albumskapande. Den är därför en **webmasterprototyp**, inte ett verifierat albumägarflöde. Kalla den inte färdig vanlig ägardashboard innan separat ägarauktorisering är implementerad och testad.
+
+
+## Bekräftelse före oåterkalleliga åtgärder
+- Kräv uttrycklig bekräftelse med tydligt val **Avbryt** före borttagning av en bild, rensning av en fotosession och publicering/uppladdning av bilder. Ange antal bilder när flera påverkas.
+- **Godkänn valda** betyder enbart lokal granskning/urval och får aldrig automatiskt betyda publicering. **Publicera** är en separat, bekräftad åtgärd.
+- Samma skydd gäller alla Remember-roller och framtida albumvyer. Bekräftelse i UI ersätter inte serverns behörighetskontroller.
