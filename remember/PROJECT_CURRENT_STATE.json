@@ -26,7 +26,7 @@
     "resumeInstruction": "Läs project-template/PROJECT_RELEASE_STANDARD.md, PROJECT_MASTER_RULES.md, PROJECT_RELEASE_CHECKLIST.md och remember/README.md, DECISIONS.md, IDEBANK.md, PROJECT_CURRENT_STATE.json och PROJECT_HANDOFF_CURRENT.md. Kontrollera GitHub, deploy och verklig klient innan nästa steg. Database baseline is now installed; see databaseEvidence. Never replay installation without checking actual database state."
   },
   "currentWork": {
-    "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. Edge Function/runtime not deployed or verified. Remember Edge Function deployed; two unauthenticated/invalid-token tests returned 401. First-webmaster SQL candidate saved and read back, not executed.",
+    "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. Edge Function/runtime not deployed or verified. Remember Edge Function deployed; two unauthenticated/invalid-token tests returned 401. First-webmaster SQL candidate saved and read back, not executed. Further real tests: GET 405, allowed OPTIONS 204 with exact CORS headers, disallowed Origin POST 403. Read-only database RPC assertions PASS: 3 forged-actor actions, null actor, invalid action and actual anon/authenticated denial.",
     "next": "Build/review functional Remember auth callback/login before any account invitation. Supabase Site URL is still http://localhost:3000 with no redirect allowlist. After reviewed callback + configuration, obtain explicit permission to send account invitation to selected webmaster email; verify actual account identity/email then obtain explicit SQL role-grant approval. Test non-webmaster 403 before grant and authorized status/list after grant.",
     "blocked": true,
     "blocker": "Auth callback absent; default redirect localhost:3000. No account invitation sent, no webmaster grant executed."
@@ -49,7 +49,22 @@
     "securityChecksTotal": 12,
     "highestSchemaVersion": 1,
     "scope": "Structural database evidence only; no API/Edge Function/storage/device/runtime PASS.",
-    "supersededIncorrectProjectRef": "wykvztfmfbboxiquvuwr"
+    "supersededIncorrectProjectRef": "wykvztfmfbboxiquvuwr",
+    "rpcRuntimeTests": {
+      "file": "remember/sql/008_rpc_role_tests_READ_ONLY.sql",
+      "result": "PASS (assertion block completed; SELECT pass true)",
+      "transaction": "BEGIN READ ONLY; ROLLBACK",
+      "checks": [
+        "service_role with forged actor: role_check returns authorized=false",
+        "service_role with forged actor: installation_status returns authorized=false",
+        "service_role with forged actor: list returns authorized=false",
+        "null actor raises SQLSTATE 22023",
+        "invalid action raises SQLSTATE 22023",
+        "anon actual RPC invocation raises insufficient_privilege",
+        "authenticated actual RPC invocation raises insufficient_privilege"
+      ],
+      "scope": "Database role switching in SQL Editor, not end-to-end authenticated HTTP."
+    }
   },
   "apiEvidence": {
     "verifiedOn": "2026-10-13",
@@ -71,6 +86,29 @@
         "body": {
           "code": "UNAUTHORIZED_INVALID_JWT_FORMAT",
           "message": "Invalid JWT"
+        }
+      },
+      {
+        "request": "GET without user Authorization (dashboard test tool)",
+        "status": 405,
+        "body": {
+          "error": "Method not allowed"
+        }
+      },
+      {
+        "request": "OPTIONS Origin https://container13.se (dashboard test tool)",
+        "status": 204,
+        "headers": {
+          "access-control-allow-origin": "https://container13.se",
+          "access-control-allow-methods": "POST, OPTIONS",
+          "access-control-allow-headers": "authorization, apikey, content-type"
+        }
+      },
+      {
+        "request": "POST installation_status Origin https://example.invalid (dashboard test tool)",
+        "status": 403,
+        "body": {
+          "error": "Origin not allowed"
         }
       }
     ],
