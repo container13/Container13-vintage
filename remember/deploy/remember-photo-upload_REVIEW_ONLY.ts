@@ -84,7 +84,7 @@ Deno.serve(async req => {
   // Digest the exact canonical upload bytes, not the original camera file.
   const contentDigest = new Uint8Array(await crypto.subtle.digest("SHA-256", bytes));
   const { data: started, error: startError } = await db.rpc("remember_photo_claim_upload", {
-    p_photo_id: photoId, p_content_sha256: "\\\\x" + hex(contentDigest)
+    p_photo_id: photoId, p_content_sha256: "\\x" + hex(contentDigest)
   });
   if (startError) return reply({ error: "Upload not started" }, 503);
   if (!started?.accepted || typeof started.objectKey !== "string") {
