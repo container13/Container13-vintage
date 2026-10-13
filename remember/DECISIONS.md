@@ -40,3 +40,11 @@
 - Album owner supplies initial event dates. Webmaster overrides are authoritative, independently of payment plan.
 - Webmaster access requires separate strong authentication and server-side role checks. Log who changed what and when. Changes take effect on server immediately.
 - This is an agreed requirement, not yet implemented.
+
+## Album downloads - agreed 2026-10-13
+- Anyone holding an active, valid, non-revoked album share link can download album photos without signing in.
+- Authenticated, server-authorized webmasters can download photos from every album without a guest token.
+- Downloads remain available when the upload window closes; revoked links lose access.
+- Delivery order: all original photos as ZIP, selected photos, then PDF album.
+- Authorize every export request server-side. Keep storage private; never expose unrestricted permanent object URLs.
+- This is an approved requirement, not a deployed feature. Retention and abuse controls remain to be designed.
