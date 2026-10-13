@@ -16,7 +16,7 @@ create function public.remember_webmaster_guest_link_write(
 as $fn$
 declare v_album remember.albums%rowtype; v_count integer;
 begin
- if p_actor is null or p_album is null or p_action not in ('issue','rotate','revoke')
+ if p_actor is null or p_album is null or p_action is null or p_action not in ('issue','rotate','revoke')
    or (p_action in ('issue','rotate') and
        (p_token_hash is null or octet_length(p_token_hash)<>32))
    or (p_action='revoke' and p_token_hash is not null) then
@@ -43,6 +43,7 @@ begin
  else
    update remember.guest_links set revoked_at=now() where album_id=p_album and revoked_at is null;
    get diagnostics v_count=row_count;
+   if v_count<>1 then return jsonb_build_object('authorized',true,'success',false,'reason','already_revoked_or_missing'); end if;
  end if;
  return jsonb_build_object('authorized',true,'success',true,'action',p_action);
 end $fn$;
