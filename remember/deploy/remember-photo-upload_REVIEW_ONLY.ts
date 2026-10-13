@@ -1,5 +1,6 @@
 // Remember photo upload Edge Function - REVIEW ONLY, NOT DEPLOYED.
-// Requires private bucket, migrations 6 and 7, and an explicit security review.
+// Requires private bucket, migrations 6, 7 and 8, and an explicit security review.
+// Retry/reconciliation and full E2E remain incomplete. DO NOT DEPLOY.
 import { createClient } from "npm:@supabase/supabase-js@2";
 const ORIGIN = Deno.env.get("REMEMBER_ALLOWED_ORIGIN") || "https://container13.se";
 const BUCKET = "remember-private-photos";
@@ -80,8 +81,15 @@ Deno.serve(async req => {
   if (reserveError) return reply({ error: "Unavailable" }, 503);
   if (!reservation?.accepted || reservation.reason === "existing") return reply({ error: "Reservation denied", reason: reservation?.reason || "denied" }, 409);
   const photoId = reservation.photoId;
-  const { data: started, error: startError } = await db.rpc("remember_photo_begin_upload", { p_photo_id: photoId });
-  if (startError || !started?.accepted || typeof started.objectKey !== "string") return reply({ error: "Upload not started" }, 409);
+  // Digest the exact canonical upload bytes, not the original camera file.
+  const contentDigest = new Uint8Array(await crypto.subtle.digest("SHA-256", bytes));
+  const { data: started, error: startError } = await db.rpc("remember_photo_claim_upload", {
+    p_photo_id: photoId, p_content_sha256: "\\\\x" + hex(contentDigest)
+  });
+  if (startError) return reply({ error: "Upload not started" }, 503);
+  if (!started?.accepted || typeof started.objectKey !== "string") {
+    return reply({ error: started?.reason === "duplicate" ? "Den här bilden finns redan i albumet." : "Upload not started", reason: started?.reason || "denied" }, 409);
+  }
   const keyPath = started.objectKey;
   // Private storage; service-role upload, never a client-signed public URL.
   const { error: storeError } = await db.storage.from(BUCKET).upload(keyPath, bytes, {
