@@ -78,7 +78,7 @@ A general lesson discovered in any project should be proposed back to this templ
 
 ## Cross-project multi-device baseline
 - All new and modified web interfaces must be responsive for phones, tablets, and desktop from the first iteration. Consider portrait and landscape where relevant.
-- Support touch, mouse, and keyboard, including usable control sizes, focus states, readable text, and accessibility zoom.
+- Support touch, mouse, and keyboard, including usable control sizes, focus states, readable text and OS text-size support. Apply the mobile page-zoom policy below.
 - Avoid clipped content, unintended horizontal scrolling, and fixed-width layouts that break on smaller screens.
 - Verify narrow mobile, tablet, and wide desktop layouts; check real iPhone Safari and Android browsers where relevant to risk and functionality.
 - Record tested devices and browsers. Desktop emulation or code inspection alone is not DEVICE PASS.
@@ -95,3 +95,12 @@ A general lesson discovered in any project should be proposed back to this templ
 - Before suggesting the switch, reconcile and save the project's current state, decisions, completed work, outstanding verification and next step in the canonical GitHub state/handoff documents where access and authorization allow.
 - Verify saved files with exact GitHub readback. If saving fails, explicitly say what is not persisted and give a concise manual handoff instead.
 - The next chat should resume from the canonical project documents after checking actual branch, deploy and runtime, without relying on the old conversation alone.
+
+## Mobile page zoom — explicit user rule (2026-10-13)
+- Default for every project's mobile views: no page pinch-zoom, either in or out. This includes login, dashboards, forms, previews and admin views.
+- Zoom is permitted only when the user specifically requests it, for example inside an image viewer. Enable image-only zoom in that explicit viewer; never enable page zoom as a side effect.
+- Use one shared owner: project-template/mobile-view-policy.js, together with viewport initial-scale=1, maximum-scale=1 and user-scalable=no. The guard handles cancelable multi-touch and Safari gesture events; ordinary single-touch scrolling and inputs remain untouched.
+- data-image-zoom="true" is an opt-in hook only for an explicitly requested image viewer with its own image-only zoom controller. Do not add it speculatively.
+- Preserve readable typography and OS text-size support. This explicit preference supersedes earlier template guidance to enable accessibility page pinch-zoom by default.
+- Verify real mobile behavior. Document any untested browser/device; do not claim success from source patterns alone.
+- Apply to active projects on their next relevant change. Do not redeploy unrelated projects just to copy this rule.

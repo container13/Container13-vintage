@@ -63,3 +63,10 @@
 - [ ] Touch, mouse, keyboard, focus states, and readable text verified as applicable.
 - [ ] Navigation, forms, images, uploads, and status feedback usable across target devices.
 - [ ] Actual device/browser evidence recorded where needed; untested combinations identified, with no unsupported DEVICE PASS.
+
+## Mobile page-zoom gate — mandatory (2026-10-13)
+- [ ] Mobile views cannot pinch-zoom the entire page in or out.
+- [ ] Viewport restriction AND shared touch/gesture guard applied; do not rely on viewport alone on iPhone Safari.
+- [ ] One-finger scrolling, text entry, controls and keyboard remain usable.
+- [ ] Image zoom is enabled only after an explicit user request; an opted-in image viewer zooms its image, never the entire page.
+- [ ] Real iPhone Safari/Android pinch behavior tested where relevant; code/desktop inspection does not count as DEVICE PASS.

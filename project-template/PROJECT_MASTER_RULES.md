@@ -40,3 +40,12 @@ Add stricter project rules here. Never silently weaken the shared standard.
 
 ## Copy-ready text (all projects)
 Whenever proposing an exact value, command, URL, filename, prompt, setting, or text that the user should enter or paste elsewhere, provide a directly adjacent copy control (copy icon/button) for that exact value. Keep the copied value clean: no explanatory prose, quotation marks, or extra whitespace. For multiple values, provide a separate copy control for each. Use the platform's real copy action, not a decorative icon. If interactive copying is unavailable, give a clearly delimited copyable code span/block and state the limitation. Applies across CCC, LinaSopti, Remember, and future projects.
+
+## Mobile page zoom — explicit user rule (2026-10-13)
+- Default for every project's mobile views: no page pinch-zoom, either in or out. This includes login, dashboards, forms, previews and admin views.
+- Zoom is permitted only when the user specifically requests it, for example inside an image viewer. Enable image-only zoom in that explicit viewer; never enable page zoom as a side effect.
+- Use one shared owner: project-template/mobile-view-policy.js, together with viewport initial-scale=1, maximum-scale=1 and user-scalable=no. The guard handles cancelable multi-touch and Safari gesture events; ordinary single-touch scrolling and inputs remain untouched.
+- data-image-zoom="true" is an opt-in hook only for an explicitly requested image viewer with its own image-only zoom controller. Do not add it speculatively.
+- Preserve readable typography and OS text-size support. This explicit preference supersedes earlier template guidance to enable accessibility page pinch-zoom by default.
+- Verify real mobile behavior. Document any untested browser/device; do not claim success from source patterns alone.
+- Apply to active projects on their next relevant change. Do not redeploy unrelated projects just to copy this rule.
