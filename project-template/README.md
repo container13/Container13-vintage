@@ -21,3 +21,6 @@ The shared standard is `PROJECT_RELEASE_STANDARD.md`; it applies to **CCC, LinaS
 
 ## Copy-ready input rule
 The shared MASTER RULES require an actual adjacent copy action for every proposed value/text the user needs to enter in another app or site. This applies to every project built from this template.
+
+## Authenticated entry rule (all projects)
+When an existing valid session is detected, do not show the login form or password setup screen. Automatically route the user to the authenticated dashboard. Login is shown only when authentication is needed. Keep account/password management inside authenticated settings, not on the default landing page. Never claim authentication is valid from cached UI state alone; verify the session and server-side permissions. Prevent redirect loops and do not reveal protected content before authorization.
