@@ -22,23 +22,24 @@ else try{
 }catch{title.textContent='Kunde inte öppna albumet';status.textContent='Anslutningen misslyckades. Försök igen senare.'}
 const cameraHost=document.getElementById('cameraHost'),cameraFrame=document.getElementById('cameraFrame'),ownerFeedback=document.getElementById('ownerFeedback'),ownerRetry=document.getElementById('ownerRetry');
 let ownerApprovedFiles=[],ownerUploading=false;
-function albumGuestToken(){
- const raw=(document.getElementById('guestLink').value||localStorage.getItem('remember-guest-link-'+id)||'').trim();
- if(/^[A-Za-z0-9_-]{43}$/.test(raw))return raw;
- try{const u=new URL(raw);if(u.origin!==location.origin||!u.pathname.endsWith('/remember/album.html'))return '';const t=new URLSearchParams(u.hash.slice(1)).get('token')||'';return /^[A-Za-z0-9_-]{43}$/.test(t)?t:'';}catch{return '';}
+async function webmasterSession(){
+ const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
+ const client=createClient('https://wykvztfmfbboxiqvuvwr.supabase.co','sb_publishable_qOSBb7U6TGnPQ8ypyYRLGg_GtYrraoG',{auth:{storage:localStorage,storageKey:'container13-remember-auth-v2',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+ const {data,error}=await client.auth.getSession();
+ if(error||!data.session)throw Error('Din inloggning har gått ut. Logga in igen.');
+ return data.session.access_token;
 }
 async function uploadOwnerFiles(){
  if(ownerUploading||!ownerApprovedFiles.length)return;
- const token=albumGuestToken();
- if(!token){ownerFeedback.textContent='För uppladdning behövs albumets gästlänk. Öppna Delning och QR-kod och klistra in din befintliga gästlänk. Tryck sedan Försök ladda upp igen.';ownerRetry.hidden=false;return;}
- ownerUploading=true;ownerRetry.hidden=true;document.getElementById('ownerCamera').disabled=true;document.getElementById('ownerFiles').disabled=true;
+  ownerUploading=true;ownerRetry.hidden=true;document.getElementById('ownerCamera').disabled=true;document.getElementById('ownerFiles').disabled=true;
  let completed=0;
  try{
+  const accessToken=await webmasterSession();
   for(const file of ownerApprovedFiles){
    ownerFeedback.textContent='Laddar upp bild '+(completed+1)+' av '+ownerApprovedFiles.length+'…';
    const prepared=await prepareRememberUpload(file);
-   const form=new FormData();form.set('token',token);form.set('requestId',crypto.randomUUID());form.set('file',prepared.file);
-   const response=await fetch('https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-photo-upload',{method:'POST',body:form,cache:'no-store'});
+   const form=new FormData();form.set('albumId',id);form.set('requestId',crypto.randomUUID());form.set('file',prepared.file);
+   const response=await fetch('https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-photo-upload',{method:'POST',headers:{Authorization:'Bearer '+accessToken},body:form,cache:'no-store'});
    const data=await response.json().catch(()=>({}));
    if(!response.ok||data.ok!==true)throw Error(data.error||'Servern svarade HTTP '+response.status);
    completed++;
