@@ -57,6 +57,10 @@ REVOKE ALL ON FUNCTION public.remember_photo_claim_upload(uuid,bytea)
  FROM PUBLIC,anon,authenticated;
 GRANT EXECUTE ON FUNCTION public.remember_photo_claim_upload(uuid,bytea) TO service_role;
 
+-- Migration 7's legacy begin_upload lacks a digest. Remove its service-role
+-- execute privilege so the digest claim is the only supported start path.
+REVOKE EXECUTE ON FUNCTION public.remember_photo_begin_upload(uuid) FROM service_role;
+
 -- The privileged server must set the digest BEFORE storage upload, atomically
 -- with the reserved->uploading transition. A unique violation means the same
 -- canonical bytes are already uploading/ready in that album; do not upload.
