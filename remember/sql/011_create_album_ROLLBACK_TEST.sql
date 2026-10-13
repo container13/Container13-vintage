@@ -12,14 +12,14 @@ begin
  end if;
  execute 'set local role service_role';
  r:=public.remember_webmaster_create_album(actor,request_id,'Remember transaction test','party','2026-10-24T12:00:00Z',null,'Europe/Stockholm');
- if r->>'authorized'<>'true' or r->>'created'<>'true' or r#>>'{album,photo_limit}'<>'10' then
+ if (r->>'authorized') is distinct from 'true' or (r->>'created') is distinct from 'true' or (r#>>'{album,photo_limit}') is distinct from '10' then
    raise exception 'FAIL first creation/default quota';
  end if;
  if (r#>>'{album,default_closes_at}')::timestamptz <> '2026-10-25T12:00:00Z'::timestamptz then
    raise exception 'FAIL absolute 24-hour window across DST';
  end if;
  r:=public.remember_webmaster_create_album(actor,request_id,'Remember transaction test','party','2026-10-24T12:00:00Z',null,'Europe/Stockholm');
- if r->>'created'<>'false' then raise exception 'FAIL duplicate retry'; end if;
+ if (r->>'created') is distinct from 'false' then raise exception 'FAIL duplicate retry'; end if;
  begin
    perform public.remember_webmaster_create_album(actor,request_id,'Different title','party','2026-10-24T12:00:00Z',null,'Europe/Stockholm');
    raise exception 'FAIL changed-data retry accepted';
