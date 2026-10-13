@@ -43,8 +43,25 @@ BEGIN
  RETURN jsonb_build_object('accepted',true);
 END $fn$;
 
+-- Only release a failed transfer after the privileged server verified
+-- that its private storage object is absent (or was successfully removed).
+CREATE FUNCTION public.remember_photo_fail_upload(p_photo_id uuid)
+RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path=''
+AS $fn$
+DECLARE v_photo remember.album_photos%ROWTYPE;
+BEGIN
+ IF p_photo_id IS NULL THEN RETURN jsonb_build_object('accepted',false); END IF;
+ SELECT * INTO v_photo FROM remember.album_photos WHERE id=p_photo_id FOR UPDATE;
+ IF NOT FOUND OR v_photo.state NOT IN ('reserved','uploading')
+ THEN RETURN jsonb_build_object('accepted',false); END IF;
+ UPDATE remember.album_photos SET state='failed' WHERE id=p_photo_id;
+ RETURN jsonb_build_object('accepted',true);
+END $fn$;
+
 REVOKE ALL ON FUNCTION public.remember_photo_begin_upload(uuid) FROM PUBLIC,anon,authenticated;
 REVOKE ALL ON FUNCTION public.remember_photo_complete_upload(uuid,bytea) FROM PUBLIC,anon,authenticated;
+REVOKE ALL ON FUNCTION public.remember_photo_fail_upload(uuid) FROM PUBLIC,anon,authenticated;
+GRANT EXECUTE ON FUNCTION public.remember_photo_fail_upload(uuid) TO service_role;
 GRANT EXECUTE ON FUNCTION public.remember_photo_begin_upload(uuid) TO service_role;
 GRANT EXECUTE ON FUNCTION public.remember_photo_complete_upload(uuid,bytea) TO service_role;
 INSERT INTO remember.schema_migrations(version,description)
