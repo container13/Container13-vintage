@@ -38,3 +38,9 @@ Inventera faktisk schema-2-tabellstruktur och nuvarande Edge Function innan migr
 - has_table_privilege('anon',..., 'SELECT')=false; authenticated SELECT=false.
 - Detta är en användarvisad SQL-verifiering, inte ett oberoende backend-test. Ingen publik endpoint, tokenutfärdning eller gästuppladdning är deployad.
 - Nästa implementation: säker serverstyrd utfärdning/rotation av token, explicit roll- och albumkontroll, sedan separata negativa tester före aktivering.
+
+## Verifierad migration 4 (användarens Supabase SQL Editor, 2026-10-13)
+- version=4, albums=1, links=0, rpc_exists=true.
+- anon_execute=false, authenticated_execute=false, service_execute=true.
+- Bevis: användarens skärmbild på post-install-fråga; ännu inte ett runtime-test av JWT/roll/ägarskap.
+- Edge Function remember-guest-link-webmaster är endast GitHub-kandidat, INTE deployad eller verifierad. Publik gäståtkomst fortsatt avstängd.
