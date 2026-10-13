@@ -33,3 +33,10 @@ Före ny funktion, integration, UI-komponent eller säkerhetslösning: kontrolle
 - Status: idé / specificerad / implementerad / verifierad / återanvändbar
 
 **Nästa inventering:** identifiera CCC:s exakta kamerakod och jämför med Micke50 och Remember innan kameraläget byggs in.
+
+## Gemensam kameramodul — beslut 2026-10-13
+Mål: förbättrad återanvändbar kamera för Remember, CCC och framtida Container13-appar. Remember är pilot; ändra inte CCC eller Micke50 utan separat godkännande.
+
+Funktionskontrakt: helskärmskamera, automatisk start där behörighet tillåter, kontinuerliga foton, bildräknare, centrerad avtryckare, kamerans egen tvåfingerszoom där webbläsaren stöder den, aldrig sidzoom, granskning/urval och fortsatt fotografering utan bildförlust. Kamerakärna och bildgranskning ska vara separata från uppladdning och albumkvoter. Hantera iOS Safari, nekad behörighet, kamerabyte, minnesstädning och tillgänglighet.
+
+Status: remember/camera-session-test.html är en isolerad prototyp, ännu INTE en gemensam modul. CCC:s exakta kamerakod är INTE identifierad eller återanvänd. Nästa steg: inventera CCC-källan, extrahera komponent med tydligt API, anslut Remember via adapter och testa på iPhone innan komponenten märks återanvändbar.
