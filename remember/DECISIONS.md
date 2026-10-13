@@ -79,3 +79,8 @@
 
 ## Beslut 2026-10-14 — Webmaster laddar upp med egen inloggning
 - I webmasterläge används verifierad Supabase-session + album-ID, aldrig krav på att ange gästlänk. Servern verifierar användaridentitet och webmasterroll innan bildreservation och färdigmarkering. Gästläget använder fortsatt giltig gästtoken. Bildkvot, tidsfönster, privat lagring och SHA-256-dubblettskydd gäller båda.
+
+
+## Beslut 2026-10-14 — Levande bildgalleri
+- Albumet visar alla sparade bilder med senaste överst, automatiskt efter uppladdning och med regelbunden uppdatering utan manuell omladdning. Gäller både webmaster- och gästläge.
+- Privat lagring kvarstår: servern verifierar webmaster-JWT eller giltig gästtoken och returnerar kortlivade signerade bildadresser. Ingen publik bucket.
