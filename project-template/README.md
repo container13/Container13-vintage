@@ -24,3 +24,6 @@ The shared MASTER RULES require an actual adjacent copy action for every propose
 
 ## Authenticated entry rule (all projects)
 When an existing valid session is detected, do not show the login form or password setup screen. Automatically route the user to the authenticated dashboard. Login is shown only when authentication is needed. Keep account/password management inside authenticated settings, not on the default landing page. Never claim authentication is valid from cached UI state alone; verify the session and server-side permissions. Prevent redirect loops and do not reveal protected content before authorization.
+
+## QR-code guest access (all projects)
+A valid QR-code guest link must open its intended guest resource directly, without an account, password or webmaster login. The QR URL carries a scoped, unguessable guest access token; validate it server-side on every protected request, honor expiry/revocation and never grant administrator privileges. Invalid or revoked links show a clear guest-access error, not an administrator login prompt. QR access does not bypass the guest token's permissions.
