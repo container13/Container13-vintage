@@ -10,13 +10,21 @@ main{max-width:720px}.panel{margin-top:24px}button:disabled{opacity:.55;cursor:w
 <section class="panel"><form id="login"><label for="email">E-postadress</label><input id="email" type="email" autocomplete="email" required maxlength="254"><div class="actions"><button id="send" type="submit" disabled>Skicka inloggningslänk</button></div></form>
 <p id="feedback" class="status" role="status" aria-live="polite">Förbereder inloggningen…</p></section>
 <section class="panel" id="account" hidden><h2>Din anslutning</h2><p id="identity"></p><p>Webmasterbehörigheten kontrolleras på servern. Ett verifierat konto får inte automatiskt administratörsbehörighet.</p><div class="actions"><button id="check" type="button">Kontrollera webmasteråtkomst</button><button id="list" type="button" class="secondary">Visa album</button><button id="logout" type="button" class="secondary">Logga ut</button></div><p id="result" role="status" aria-live="polite"></p><div id="albums"></div></section>
-<p class="muted">Separat Remember-testmiljö. Albumändringar och bilduppladdning är inte aktiverade.</p><p class="version">Inloggningskandidat 0.1.2</p>
+<section class="panel" id="creation" hidden><h2>Skapa ett testalbum</h2><p>Albumet sparas i Remember-testmiljön. Gästlänk och bilduppladdning kommer senare.</p>
+<form id="createForm"><label for="albumTitle">Albumets namn</label><input id="albumTitle" required maxlength="100">
+<label for="eventType">Upplevelse</label><select id="eventType"><option value="fishing">Fiskeresa</option><option value="trip">Resa</option><option value="party">Fest</option><option value="wedding">Bröllop</option></select>
+<label for="startsAt">Startdatum och tid</label><input id="startsAt" type="datetime-local" required>
+<div id="tripEnd"><label for="endsAt">Resan slutar</label><input id="endsAt" type="datetime-local" required></div>
+<p class="muted" id="timeNote"></p><p class="muted">Fest/bröllop: 24 timmar från start. Resa/fiske: till 24 timmar efter slut. Standardgräns: 10 bilder.</p>
+<div class="actions"><button id="createButton" type="submit">Skapa testalbum</button></div></form>
+<p id="createResult" role="status" aria-live="polite"></p></section>
+<p class="muted">Separat Remember-testmiljö. Albumändringar och bilduppladdning är inte aktiverade.</p><p class="version">Inloggningskandidat 0.1.3</p>
 <script type="module">
 const $=id=>document.getElementById(id);
-let client=null,session=null,busy=false;
+let client=null,session=null,busy=false,creationAllowed=false;
 function message(text){$('feedback').textContent=text}
 function lock(value){busy=value;document.querySelectorAll('button').forEach(b=>b.disabled=value)}
-function showSession(value){session=value;$('account').hidden=!value;$('login').hidden=!!value;$('identity').textContent=value?'Inloggad som '+value.user.email:'';$('result').textContent='';$('albums').replaceChildren()}
+function showSession(value){const identityChanged=session?.user?.id!==value?.user?.id;session=value;if(identityChanged){creationAllowed=false;$('creation').hidden=true;}$('account').hidden=!value;$('login').hidden=!!value;$('identity').textContent=value?'Inloggad som '+value.user.email:'';$('result').textContent='';$('albums').replaceChildren()}
 async function gateway(action){
  if(busy||!client)return;lock(true);$('result').textContent='Kontrollerar åtkomst…';
  try{
@@ -24,10 +32,11 @@ async function gateway(action){
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
   let response;try{response=await fetch('https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-webmaster',{method:'POST',headers:{'Content-Type':'application/json',apikey:PUBLIC_KEY,Authorization:'Bearer '+data.session.access_token},body:JSON.stringify({action}),signal:controller.signal})}finally{clearTimeout(timer)}
   const body=await response.json().catch(()=>({}));
-  if(response.status===403){$('result').textContent='403 – kontot saknar webmasterbehörighet.';return}
+  if(response.status===403){creationAllowed=false;$('creation').hidden=true;$('result').textContent='403 – kontot saknar webmasterbehörighet.';return}
   if(response.status===401){$('result').textContent='401 – sessionen kunde inte verifieras. Logga in igen.';return}
   if(!response.ok){$('result').textContent='Kontrollen misslyckades (HTTP '+response.status+'). Försök igen senare.';return}
   if(!body.authorized){$('result').textContent='Åtkomst nekad.';return}
+  creationAllowed=body.capabilities?.createAlbum===true;$('creation').hidden=!creationAllowed;if(creationAllowed)restoreDraft();
   $('result').textContent=action==='installation_status'?'Webmasteråtkomst godkänd. Schemaversion: '+body.schemaVersion+'.':'Webmasteråtkomst godkänd.';
   $('albums').replaceChildren();
   if(action==='list')for(const a of body.albums||[]){const p=document.createElement('p');p.textContent=a.title;$('albums').append(p)}
@@ -53,4 +62,59 @@ $('login').addEventListener('submit',async e=>{
 });
 $('check').onclick=()=>gateway('installation_status');$('list').onclick=()=>gateway('list');
 $('logout').onclick=async()=>{if(busy||!client)return;lock(true);try{const {error}=await client.auth.signOut({scope:'local'});if(error)throw error;showSession(null);message('Du är utloggad.')}catch{message('Utloggningen misslyckades. Försök igen.')}finally{lock(false)}};
+
+const draftKey='container13-remember-create-draft-v1';
+const localTimezone=Intl.DateTimeFormat().resolvedOptions().timeZone||'Europe/Stockholm';
+$('timeNote').textContent='Tider anges i din enhets tidszon: '+localTimezone+'.';
+function eventFields(){
+ const party=['party','wedding'].includes($('eventType').value);
+ $('tripEnd').hidden=party;$('endsAt').required=!party;
+}
+$('eventType').onchange=eventFields;eventFields();
+function freezeDraft(value){
+ $('createForm').querySelectorAll('input,select').forEach(e=>e.disabled=value);
+ $('createButton').textContent=value?'Försök igen med samma album':'Skapa testalbum';
+}
+function restoreDraft(){
+ try{const d=JSON.parse(sessionStorage.getItem(draftKey)||'null');
+ if(d&&session&&d.actor===session.user.id){
+ $('albumTitle').value=d.payload.title;$('eventType').value=d.payload.eventType;eventFields();
+ const localValue=iso=>{const date=new Date(iso);return new Date(date.getTime()-date.getTimezoneOffset()*60000).toISOString().slice(0,16)};
+ $('startsAt').value=localValue(d.payload.startsAt);$('endsAt').value=d.payload.endsAt?localValue(d.payload.endsAt):'';
+ $('timeNote').textContent='Sparat albumförsök. Tidszon: '+d.payload.timezone+'.';freezeDraft(true);$('createResult').textContent='Ett tidigare försök väntar. Försök igen med samma album för att undvika dubbletter.'}
+ }catch{sessionStorage.removeItem(draftKey)}
+}
+$('createForm').addEventListener('submit',async event=>{
+ event.preventDefault();if(busy||!client||!session||!creationAllowed)return;
+ let draft;
+ try{draft=JSON.parse(sessionStorage.getItem(draftKey)||'null')}catch{sessionStorage.removeItem(draftKey)}
+ if(draft&&draft.actor!==session.user.id){$('createResult').textContent='Ett annat kontos albumförsök finns i den här fliken. Slutför det med rätt konto.';return}
+ if(!draft){
+  if(!$('createForm').reportValidity())return;
+  const starts=new Date($('startsAt').value),party=['party','wedding'].includes($('eventType').value);
+  const ends=party?null:new Date($('endsAt').value);
+  if(!Number.isFinite(+starts)||(!party&&(!Number.isFinite(+ends)||ends<starts))){$('createResult').textContent='Kontrollera start- och sluttid.';return}
+  draft={actor:session.user.id,payload:{action:'create_album',requestId:crypto.randomUUID(),title:$('albumTitle').value.trim(),eventType:$('eventType').value,startsAt:starts.toISOString(),endsAt:ends?ends.toISOString():null,timezone:localTimezone}};
+  try{sessionStorage.setItem(draftKey,JSON.stringify(draft))}catch{$('createResult').textContent='Albumförsöket kunde inte sparas säkert i fliken. Försök i en vanlig webbläsarflik.';return}
+ }
+ lock(true);freezeDraft(true);$('createResult').textContent='Skapar album…';
+ try{
+  const {data,error}=await client.auth.getSession();if(error||!data.session)throw new Error('session');
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
+  let response;try{response=await fetch('https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-webmaster',{method:'POST',headers:{'Content-Type':'application/json',apikey:PUBLIC_KEY,Authorization:'Bearer '+data.session.access_token},body:JSON.stringify(draft.payload),signal:controller.signal})}finally{clearTimeout(timer)}
+  const body=await response.json().catch(()=>({}));
+  if(response.ok&&body.authorized&&body.album?.id===draft.payload.requestId){
+   sessionStorage.removeItem(draftKey);freezeDraft(false);
+   $('createResult').textContent='Album sparat: '+body.album.title+'.'+(body.created?'':' Det tidigare försöket återanvändes.');
+   $('createForm').reset();eventFields();
+  }else if(response.status===400||response.status===409){
+   sessionStorage.removeItem(draftKey);freezeDraft(false);
+   $('createResult').textContent='Albumet kunde inte skapas med dessa uppgifter (HTTP '+response.status+'). Kontrollera uppgifterna.';
+  }else if(response.status===403){
+   $('createResult').textContent='Åtkomst nekad. Albumförsöket behålls för kontroll med rätt konto.';
+  }else{$('createResult').textContent='Albumets resultat är osäkert. Försök igen med samma album (HTTP '+response.status+').'}
+ }catch{$('createResult').textContent='Anslutningen avbröts. Försöket är sparat; försök igen med samma album.'}
+ finally{lock(false)}
+});
+
 </script></main></body></html>

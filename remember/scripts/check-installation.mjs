@@ -24,7 +24,7 @@ const checks = [
   ['RPC service-only grant', gateway.includes('grant execute on function public.remember_webmaster_read(uuid,text) to service_role')],
   ['RPC denies anon', gateway.includes('revoke all on function public.remember_webmaster_read(uuid,text) from public, anon, authenticated')],
   ['SQL RLS verification', security.includes('five required tables with RLS enabled')],
-  ['write endpoints disabled', api.includes('Schedule editing is not enabled yet')],
+  ['schedule editing disabled', api.includes('Schedule editing is not enabled yet')],
   ['service key server-only', adapter.includes('SUPABASE_SERVICE_ROLE_KEY')],
 ];
 for (const [name, ok] of checks) console.log(`${ok ? 'PASS' : 'FAIL'} ${name}`);
