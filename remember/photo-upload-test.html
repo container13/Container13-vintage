@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>Remember – bilduppladdning</title>
+<style>body{font:16px system-ui;margin:24px auto;max-width:560px;padding:0 16px}label{display:block;margin:18px 0 8px}input,button{font:inherit;max-width:100%}input[type=text]{box-sizing:border-box;width:100%;padding:12px}button{padding:12px 20px;margin-top:18px}#status{white-space:pre-wrap;overflow-wrap:anywhere}</style></head>
+<body><h1>Remember – ladda upp bild</h1><p>Testvy. Uppladdning aktiveras först när serverfunktionen och databasen är installerade.</p>
+<label for="token">Gästtoken</label><input id="token" type="text" autocomplete="off" spellcheck="false">
+<label for="photo">Välj bild</label><input id="photo" type="file" accept="image/jpeg,image/png,image/webp">
+<p><button id="send" type="button">Komprimera och ladda upp</button></p><p id="status" role="status" aria-live="polite"></p>
+<script type="module">
+import { prepareRememberUpload } from "./upload-prepare.js";
+const $ = id => document.getElementById(id);
+const endpoint = "https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-photo-upload";
+$("send").onclick = async () => {
+  const token = $("token").value.trim(), file = $("photo").files?.[0];
+  if (!/^[A-Za-z0-9_-]{43}$/.test(token)) { $("status").textContent = "Ange en giltig gästtoken."; return; }
+  if (!file) { $("status").textContent = "Välj en bild."; return; }
+  $("send").disabled = true;
+  try {
+    $("status").textContent = "Komprimerar bilden…";
+    const result = await prepareRememberUpload(file);
+    $("status").textContent = "Bild klar: " + Math.round(result.uploadBytes/1024) + " KB (minskning " + result.savingsPercent + " %). Skickar…";
+    const form = new FormData();
+    form.set("token",token);
+    form.set("requestId",crypto.randomUUID());
+    form.set("file",result.file);
+    const response = await fetch(endpoint,{method:"POST",body:form,cache:"no-store"});
+    const data = await response.json().catch(()=>({}));
+    if (!response.ok || !data.ok) throw new Error(data.error || "Serverfunktionen är ännu inte aktiverad ("+response.status+").");
+    $("status").textContent = "Bilden är sparad! Foto-ID: "+data.photoId;
+  } catch (error) {
+    $("status").textContent = "Inte uppladdad: "+(error instanceof Error?error.message:"Okänt fel");
+  } finally { $("send").disabled=false; }
+};
+</script></body></html>
