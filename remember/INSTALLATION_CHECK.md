@@ -70,3 +70,17 @@ Ny `006_security_verification_READ_ONLY.sql` ger en kontrolltabell över schema�
 - Separat SELECT av högsta schema_migrations.version gav exakt `1`.
 - Dessa resultat är strukturell databasverifiering, inte HTTP/Edge Function-, penetration-, storage-, kvot- eller enhetstest. Skrivåtgärder är fortsatt avstängda i serverkandidaten. Webmaster-bootstrap och serverdeploy återstår.
 - Installationen består av separata transaktioner. Återkör inte för att felsöka runtime; inspektera först verkligt databasläge. Inga befintliga data raderades.
+
+## Verifierat nuläge 2026-10-13 02:46 (ersätter äldre ej-installerat/ej-driftsatt-status)
+
+- Separat testprojekt: container13-remember, ref wykvztfmfbboxiqvuvwr, organisation Container13-Remember. Micke50 orört.
+- Basdatabas installerad med godkännande; 006 strukturell kontroll 12/12 true; högsta version 1. Faktiska skrivskyddade RPC-rolltester PASS (008).
+- remember-webmaster driftsatt från kanonisk serveradapter/handler. HTTP-negativtester: 401 utan session, 401 ogiltig JWT, GET 405, OPTIONS 204 med snäv CORS, otillåtet Origin POST 403.
+- remember/login.html kandidat 0.1.1 är live. Godkänd Site URL och exakt allowlist https://container13.se/remember/login.html sparade. Inga wildcard-returadresser.
+- Användaren valde nilsmagnusalvin@gmail.com som testkonto. Inbjudan skickad, e-post och inloggning bekräftade i Supabase. Verifierat UID 75b71f6c-97b7-4de1-ad14-292b4af4e1fa.
+- Före roll: verklig användare rapporterade HTTP 403, kontot saknar webmasterbehörighet.
+- Separat godkänd 009_test_webmaster_REVIEW_FIRST.sql körd. En medlemsrad exakt återläst. Rollen saknar automatisk utgångstid. 007 för Holmen-adressen har INTE körts.
+- Auktoriserad RPC testad via service_role: role_check authorized=true; installation_status ready=true, schemaVersion=1; list authorized=true, albums=[].
+- Verkliga webbtester rapporterade av användaren: installationsstatus “Webmasteråtkomst godkänd (schemaversion: 1.)”; Visa album “Webmasteråtkomst godkänd.” Detta är USER PASS för det begränsade läsflödet; det senare HTTP-innehållet fångades inte oberoende.
+- Resultaten är inte verifiering av komplett Remember-drift. Inga riktiga album, lagring/uppladdning, atomisk 10-bildersgräns, tidsändringar, betalning eller verifierad enhetsmatris ännu. Full release förblir PENDING/UNVERIFIED.
+- Fortsätt från nästa albumlivscykelsteg med befintlig auth/RPC. Kör aldrig om basinstallation eller rolltilldelning blint. Se PROJECT_CURRENT_STATE.json för aktuell evidens.
