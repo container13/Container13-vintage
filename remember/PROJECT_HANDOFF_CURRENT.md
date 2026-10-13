@@ -95,3 +95,12 @@ Remember-webmaster0.1.3 driftsatt i samma separata testprojekt efter godkända D
 
 ### Användarverifiering — kameraknapp och cache (2026-10-13)
 Efter ändringen av rotens `sw.js` (commit `235372a9fb990ae1e77f5680e5cc937698ddf8e2`) rapporterade användaren uttryckligen: **"nu syns ta bort markerade"**. Detta är USER PASS för att den uppdaterade knappen visas i Remember på användarens enhet. Orsakssambandet till service-worker-ändringen är sannolikt men inte isolerat bevisat; fullständig regressionskontroll av CCC, SW-aktivering och säker albumuppladdning återstår. Markera inte kameran eller Remember som helhet CURRENT/PASS på denna grund.
+
+
+### Säker uppladdning — faktisk READ-ONLY preflight 2026-10-13
+- Direkt i Supabase-projekt `wykvztfmfbboxiqvuvwr`: schemaVersion=5, album_count=1, photo_rows=0, bucket `remember-private-photos` saknas. Inga skrivningar utförda.
+- Aktiva Edge Functions: `remember-webmaster`, `remember-guest-link-webmaster`, `remember-guest-metadata`; `remember-photo-upload` saknas.
+- Källkandidater: `remember/sql/022_guest_photo_reservation_MIGRATION6_REVIEW_FIRST.sql`, `024_private_photo_bucket_REVIEW_FIRST.sql`, `025_photo_upload_transitions_MIGRATION7_REVIEW_FIRST.sql`, `remember/deploy/remember-photo-upload_REVIEW_ONLY.ts`. Dessa är INTE installerade/deployade.
+- Säkerhetsgrind: nuvarande kandidat saknar komplett serververkställd albumunik SHA-256-dubblettkontroll, verifierad idempotent återhämtning/reconciliation och komplett mobil/E2E-test. Ändra inte produktionsdata eller installera kandidaterna före granskning och godkännande.
+- `remember/album.html` har befintlig enbilds-HTTP-uppladdningsknapp som riktar sig till ännu icke-deployad funktion; kamerans godkända flerbildsresultat är fortfarande enbart lokala. `remember/album-admin.html` har också enbart lokal granskning.
+- Nästa steg: slutför säkerhetsgranskad migrations- och endpointdesign, testa med avgränsade transaktioner och säker lagring; därefter koppla kamerans markerade bilder via en återupptagbar kö med explicit publiceringsbekräftelse. Befintligt album och token ska bevaras.
