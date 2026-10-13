@@ -67,3 +67,13 @@ När utvecklaren trycker på 📸 öppnas en förhandsvisning med separata val: 
 
 ### Konkret avvikelse: Remember-kameran
 Kameraprototypen förbättrades före den hade en naturlig ingång i albumet. En senare länk från albumet till testsidan räcker inte som färdigt flöde: kamerabilderna måste kunna granskas, överföras till albumets uppladdning och bevaras när man återgår. Visa tydligt om backend-uppladdningen inte är aktiverad. Status: **inkoppling påbörjad, ej färdig/verifierad**.
+
+
+## Obligatorisk rollseparation: tjänsteadministratör, albumägare, gäst (2026-10-13)
+- **Webmaster** administrerar Remember-tjänsten och systemfunktioner via separat skyddad webmasterpanel. Webmasterrollen ger **inte** automatiskt tillgång till privata album eller deras bilder.
+- **Albumägare** är en vanlig inloggad användare som får skapa och hantera **sina egna** album, använda kamera, välja bilder och hantera delning utan webmasterbehörighet. Kontrollera ägarskap per album på servern.
+- **Gäst** får via giltig, icke återkallad albumlänk använda endast de gästfunktioner som albumets tidsfönster och behörigheter tillåter, utan inloggning.
+- Rollkontroll och ägarskap måste ske i serverns auktorisering/RLS; att dölja UI är aldrig säkerhetskontroll. Ingen global läsrätt till album enbart för att användaren är webmaster.
+- **Mina album** är vanlig albumägarvy. **Webmasterpanel** är separat administrativ vy. Ingen blandning av systemdiagnostik, webbmasterkontroller och ägarens vardagsflöde.
+- Vid migration av befintliga prototyper: kartlägg befintliga Edge Functions, SQL/RLS och faktiska rättigheter innan ändring. Försvaga inte befintliga kontroller, radera inte album och rotera inte gästlänkar. Märk implementation som **ej klar** tills backend och UI båda verifierats.
+- Tidigare Remember-dashboard använde `remember-webmaster` för albumlistning och albumskapande. Den är därför en **webmasterprototyp**, inte ett verifierat albumägarflöde. Kalla den inte färdig vanlig ägardashboard innan separat ägarauktorisering är implementerad och testad.
