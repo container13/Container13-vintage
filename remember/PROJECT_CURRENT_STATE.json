@@ -26,10 +26,9 @@
     "resumeInstruction": "Läs project-template/PROJECT_RELEASE_STANDARD.md, PROJECT_MASTER_RULES.md, PROJECT_RELEASE_CHECKLIST.md och remember/README.md, DECISIONS.md, IDEBANK.md, PROJECT_CURRENT_STATE.json och PROJECT_HANDOFF_CURRENT.md. Kontrollera GitHub, deploy och verklig klient innan nästa steg. Database baseline is now installed; see databaseEvidence. Never replay installation without checking actual database state."
   },
   "currentWork": {
-    "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. At baseline stage Edge Function was not yet deployed (superseded by apiEvidence). Remember Edge Function deployed; two unauthenticated/invalid-token tests returned 401. First-webmaster SQL candidate saved and read back, not executed. Further real tests: GET 405, allowed OPTIONS 204 with exact CORS headers, disallowed Origin POST 403. Read-only database RPC assertions PASS: 3 forged-actor actions, null actor, invalid action and actual anon/authenticated denial. Login callback remember/login.html committed, syntax checked and exactly read back; Pages run 38327872987 success for aebc2ed9934637d25b128fbe56668bf139cd5a92. Live desktop page loaded and client initialized. User-approved Site URL and exact allowlist saved and read back. Authorized invite sent to nilsmagnusalvin@gmail.com; account Overview confirms invited_at and confirmation_sent_at 2026-10-13T00:36:49.507638Z; confirmed_at and last sign-in empty. Real user reported authenticated non-webmaster 403; Supabase account email-confirmed and last sign-in independently observed at 02:38. Approved 009 test webmaster grant executed: Success. Exact membership readback confirms single Gmail user, confirmed=true and granted_at 00:41:38 UTC. All 3 authorized RPC actions verified via service_role: authorized=true, ready=true version1, list []. Real authenticated webmaster installation_status USER PASS: exact user-reported success with schema version 1.",
-    "next": "User clicks Visa album and reports actual response; expected authorized=true with empty album list (0 database albums). Then reconcile scoped read-only auth/API results; do not promote entire Remember product or infer device/storage/upload PASS.",
-    "blocked": true,
-    "blocker": "Awaiting separate authorized browser album-list test."
+    "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. At baseline stage Edge Function was not yet deployed (superseded by apiEvidence). Remember Edge Function deployed; two unauthenticated/invalid-token tests returned 401. First-webmaster SQL candidate saved and read back, not executed. Further real tests: GET 405, allowed OPTIONS 204 with exact CORS headers, disallowed Origin POST 403. Read-only database RPC assertions PASS: 3 forged-actor actions, null actor, invalid action and actual anon/authenticated denial. Login callback remember/login.html committed, syntax checked and exactly read back; Pages run 38327872987 success for aebc2ed9934637d25b128fbe56668bf139cd5a92. Live desktop page loaded and client initialized. User-approved Site URL and exact allowlist saved and read back. Authorized invite sent to nilsmagnusalvin@gmail.com; account Overview confirms invited_at and confirmation_sent_at 2026-10-13T00:36:49.507638Z; confirmed_at and last sign-in empty. Real user reported authenticated non-webmaster 403; Supabase account email-confirmed and last sign-in independently observed at 02:38. Approved 009 test webmaster grant executed: Success. Exact membership readback confirms single Gmail user, confirmed=true and granted_at 00:41:38 UTC. All 3 authorized RPC actions verified via service_role: authorized=true, ready=true version1, list []. Real authenticated webmaster installation_status USER PASS: exact user-reported success with schema version 1. Separate real authenticated album-list USER PASS: Webmasteråtkomst godkänd. Scoped read-only authentication/API flow now tested, not a complete product release.",
+    "next": "Design/review the next smallest album lifecycle step: secure album creation and transactional audit/schedule writes with explicit SQL approval, then storage and atomic photo quota. Preserve existing verified auth/RPC path; no baseline/role replay. Confirm intended pilot workflow before expanding scope.",
+    "blocked": false
   },
   "pausedWork": {
     "fotobok": "Parkerad idé; inte i första releasen."
@@ -148,9 +147,15 @@
         "result": "Webmasteråtkomst godkänd (schemaversion: 1.)",
         "status": "AUTHORIZED_STATUS_USER_PASS",
         "evidence": "Exact user-reported live browser text on 2026-10-13 02:45 Europe/Stockholm; HTTP status not independently captured."
+      },
+      {
+        "request": "Real authenticated webmaster clicks Visa album",
+        "result": "Webmasteråtkomst godkänd.",
+        "evidence": "User reported same success message without schema-version parenthesis on 2026-10-13 02:46 Europe/Stockholm. Database independently returned albums=[]; HTTP payload not independently captured."
       }
     ],
-    "limitations": "Authorized installation_status user-tested PASS. Authorized HTTP list still pending. Device/browser identity not recorded; schedule/storage/upload/end-to-end album lifecycle unverified."
+    "limitations": "No populated-album HTTP payload independently captured; no device identity/browser recorded. Schedule writes, storage/uploads, atomic photo quota, payments and full album lifecycle unverified.",
+    "scopedRuntimeStatus": "USER PASS: email-link login, authenticated non-webmaster 403, authorized installation_status version1 and authorized album-list message. Database role/runtime assertions independently PASS."
   },
   "webmasterBootstrap": {
     "email": "magnus.johansson@holmen.com",
@@ -193,7 +198,8 @@
     "allowedRedirectUrls": [
       "https://container13.se/remember/login.html"
     ],
-    "authorizedInstallationStatus": "USER PASS: Webmasteråtkomst godkänd, schemaVersion 1"
+    "authorizedInstallationStatus": "USER PASS: Webmasteråtkomst godkänd, schemaVersion 1",
+    "authorizedList": "USER PASS: Webmasteråtkomst godkänd.; DB albums=[]"
   },
   "testAccount": {
     "email": "nilsmagnusalvin@gmail.com",
@@ -207,5 +213,6 @@
     "roleGrantCandidate": "remember/sql/009_test_webmaster_REVIEW_FIRST.sql",
     "grantedAt": "2026-10-13T00:41:38.182985Z",
     "roleGrantSql": "remember/sql/009_test_webmaster_REVIEW_FIRST.sql"
-  }
+  },
+  "verificationScope": "Database installed; source saved; deployed login/API; scoped read-only auth/list/status USER PASS. Product remains PENDING and UNVERIFIED for full album lifecycle."
 }
