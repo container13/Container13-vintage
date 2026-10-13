@@ -44,6 +44,10 @@ BEGIN
   SET state='uploading',content_sha256=p_content_sha256
   WHERE id=v_photo.id;
  EXCEPTION WHEN unique_violation THEN
+  -- The unique-index conflict rolled back the claim subtransaction.
+  -- This reservation never reached storage: release its unused quota slot.
+  UPDATE remember.album_photos SET state='failed'
+  WHERE id=v_photo.id AND state='reserved';
   RETURN jsonb_build_object('accepted',false,'reason','duplicate');
  END;
  RETURN jsonb_build_object('accepted',true,'reason','claimed',
