@@ -1,0 +1,12 @@
+{
+  "name": "Container13 Remember",
+  "short_name": "Remember",
+  "description": "Dela minnen och bilder i privata album",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#10231f",
+  "theme_color": "#10231f",
+  "lang": "sv",
+  "orientation": "any"
+}
