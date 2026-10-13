@@ -29,7 +29,7 @@
     "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. Edge Function/runtime not deployed or verified. Remember Edge Function deployed; two unauthenticated/invalid-token tests returned 401. First-webmaster SQL candidate saved and read back, not executed. Further real tests: GET 405, allowed OPTIONS 204 with exact CORS headers, disallowed Origin POST 403. Read-only database RPC assertions PASS: 3 forged-actor actions, null actor, invalid action and actual anon/authenticated denial.",
     "next": "User must choose: configure existing/custom SMTP to keep selected holmen.com identity, or explicitly choose organization-member email for temporary test. Then build functional login/callback, review redirect allowlist and obtain approval for auth configuration and invitation; verify non-webmaster 403 before role grant.",
     "blocked": true,
-    "blocker": "No auth callback; Site URL localhost:3000, no redirect allowlist. Custom SMTP verified OFF. Supabase default SMTP only delivers to organization member emails; selected holmen.com address is not the observed organization member email. No invite sent and no auth account or role created."
+    "blocker": "Requested test email mangaj73@gmail.com is not a member of Container13-Remember organization. Actual team list contains only nilsmagnusalvin@gmail.com. Custom SMTP remains off; auth callback and redirect configuration also pending. No email sent, no role grant."
   },
   "pausedWork": {
     "fotobok": "Parkerad idé; inte i första releasen."
@@ -125,6 +125,11 @@
     "customSmtpEnabled": false,
     "source": "Supabase Authentication > Emails > SMTP Settings",
     "defaultSmtpRestriction": "Only project organization member email addresses; official docs reviewed https://supabase.com/docs/guides/auth/auth-smtp",
-    "invitationSent": false
+    "invitationSent": false,
+    "requestedTestEmail": "mangaj73@gmail.com",
+    "organizationMembersVerified": [
+      "nilsmagnusalvin@gmail.com"
+    ],
+    "requestedTestEmailEligibleForDefaultSmtp": false
   }
 }
