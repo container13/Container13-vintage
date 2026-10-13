@@ -141,3 +141,11 @@ Efter ändringen av rotens `sw.js` (commit `235372a9fb990ae1e77f5680e5cc937698dd
 ### Kameraflöde förenklat 2026-10-14
 - Enligt användarbeslut har gästalbumets kamera nu ett enda godkännande: **Godkänn valda** skickar godkända bilder direkt till servern. Extra publiceringsknapp/bekräftelse borttagen. Retryknapp visas endast efter fel.
 - GitHub commit `01f7cff` återläst PASS. Ingen runtime- eller mobilverifiering ännu; begär verkligt test i befintligt album. Backend uppladdningsfunktion ACTIVE men E2E och privat bildvisning ej verifierade.
+
+
+### Webmasteruppladdning 2026-10-14
+- SQL migration 9 `remember/sql/027_webmaster_photo_upload_MIGRATION9.sql` installerad. Endast service_role får anropa webmaster-reserve/complete; behörighet verifieras i RPC mot `remember.webmasters`.
+- Edge Function `remember-photo-upload` v2 ACTIVE: exakt en av gästtoken eller webmaster albumId + giltig Bearer-session; serververifiering med `auth.getUser`, kvot/tid/digest kontrolleras av RPC.
+- `remember/album-admin.html` använder nu befintlig inloggad session, inte gästlänk, för både kamerabilder och filval. GitHub commit `d69a834` återläst PASS.
+- Efterkontroll: schema=9, album=1, bilder=0, anon execute på reserve=false, authenticated execute på complete=false, service_role reserve=true.
+- **E2E-bilduppladdning fortfarande inte verifierad på iPhone.** Nästa steg: en testbild i webmasterläge; granska serverresultat, sedan privat bildvisning.
