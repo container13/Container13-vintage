@@ -84,3 +84,9 @@
 ## Beslut 2026-10-14 — Levande bildgalleri
 - Albumet visar alla sparade bilder med senaste överst, automatiskt efter uppladdning och med regelbunden uppdatering utan manuell omladdning. Gäller både webmaster- och gästläge.
 - Privat lagring kvarstår: servern verifierar webmaster-JWT eller giltig gästtoken och returnerar kortlivade signerade bildadresser. Ingen publik bucket.
+
+
+## Verifiering 2026-10-14 — Gästflöde
+- Gästsidans kamerauppladdning uppdaterar bildgalleriet omedelbart efter lyckad serverbekräftelse. Föråldrad varning om att uppladdning ej verifierats och extra bekräftelsedialog vid filval är borttagna.
+- Databasens read-only negativa behörighetstest: ogiltig gästtoken och saknad autentisering ger `authorized:false`; anon/authenticated saknar direkt EXECUTE på privata gallerifunktionen. Två bilder är `ready` och en aktiv gästlänk finns.
+- **Återstår:** verkligt test av gästlänk och uppladdning i utloggad mobil. Inga gästtokens ska hämtas ur databasen eller läggas i GitHub.
