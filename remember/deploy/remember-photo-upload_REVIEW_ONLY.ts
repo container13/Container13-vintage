@@ -90,8 +90,15 @@ Deno.serve(async req => {
   if (storeError) {
     // An upload error can still leave an object behind. Inspect storage before
     // releasing the reservation; otherwise keep it pending for reconciliation.
-    const { data: uncertain } = await db.storage.from(BUCKET).download(keyPath);
-    if (!uncertain) {
+    const { data: objects, error: listError } = await db.storage.from(BUCKET)
+      .list(keyPath.substring(0, keyPath.lastIndexOf("/")), {
+        search: keyPath.substring(keyPath.lastIndexOf("/") + 1),
+        limit: 100
+      });
+    // An inaccessible bucket is NOT proof that the object is missing.
+    // Leave the reservation in 'uploading' if listing fails.
+    if (!listError && objects && !objects.some(item =>
+      item.name === keyPath.substring(keyPath.lastIndexOf("/") + 1))) {
       await db.rpc("remember_photo_fail_upload", { p_photo_id: photoId });
     }
     return reply({ error: "Storage failed" }, 503);
