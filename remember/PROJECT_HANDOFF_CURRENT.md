@@ -118,3 +118,12 @@ Efter ändringen av rotens `sw.js` (commit `235372a9fb990ae1e77f5680e5cc937698dd
 - `remember/album.html` uppdaterad: kamerans lokalt godkända bilder kan nu väljas för **Publicera godkända bilder**, med explicit confirm, sekventiell prepare/upload och räknare. Bekräftat sparade tas bort från den lokala kön; ej bekräftade finns kvar för manuellt nytt försök så länge sidan är öppen. Ingen permanent kö eller automatisk återupptagning.
 - Källkod i GitHub återläst PASS (`31416c8`); inte testad i webbläsare. `remember-photo-upload` är fortfarande inte deployad och därför kan verklig bilduppladdning inte lyckas ännu. Den nya UI-knappen får INTE kallas fungerande liveuppladdning.
 - Nästa steg: säker serveruppladdning enligt senaste V1-beslut och ett verkligt test med en bild. Befintligt album/token orörda.
+
+
+### SQL-installationsprov med ROLLBACK 2026-10-13
+- Senaste beslut läst i `remember/DECISIONS.md`: håll V1 enkel, testa riktig bild först.
+- Read-only före: schema=5, album=1, foton=0, aktiva gästlänkar=1, öppna album=1, bildgräns 10.
+- Migration 8 uppdaterad så att service_role inte kan använda äldre `remember_photo_begin_upload(uuid)` utan digest; GitHub commit `ba44c06` och readback PASS.
+- Verklig Supabase SQL-transaktion med migration 6 + privat bucket + migration 7 + migration 8 kördes inom `BEGIN; ... ROLLBACK;` och gav `dry_run_version=8`, `claim_exists=true`, `test_bucket=1`.
+- Separat read-only kontroll EFTER rollback: schema=5, bucket=0, foton=0. Ingen migration/bucket installerad permanent.
+- **Återstår:** runtime-/HTTP-granskning av Edge Function, deployment och verklig bilduppladdning samt bildvisning. Ingen PASS för komplett flöde.
