@@ -91,3 +91,7 @@ Remember-webmaster0.1.3 driftsatt i samma separata testprojekt efter godkända D
 5. Uppdatera `PROJECT_CURRENT_STATE.json` med enbart återläst, verifierad aktuell evidens efter teknisk inventering. Historiska migreringsuppgifter får inte skrivas över som om de aldrig skett.
 
 **Risk:** HIGH för auth, data, uppladdning, service worker och releasekedja. GitHub-dokumentationsändring ensam är LOW. Nuvarande projektstatus: UNVERIFIED, inte CURRENT.
+
+
+### Användarverifiering — kameraknapp och cache (2026-10-13)
+Efter ändringen av rotens `sw.js` (commit `235372a9fb990ae1e77f5680e5cc937698ddf8e2`) rapporterade användaren uttryckligen: **"nu syns ta bort markerade"**. Detta är USER PASS för att den uppdaterade knappen visas i Remember på användarens enhet. Orsakssambandet till service-worker-ändringen är sannolikt men inte isolerat bevisat; fullständig regressionskontroll av CCC, SW-aktivering och säker albumuppladdning återstår. Markera inte kameran eller Remember som helhet CURRENT/PASS på denna grund.
