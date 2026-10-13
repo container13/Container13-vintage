@@ -40,3 +40,12 @@ Mål: förbättrad återanvändbar kamera för Remember, CCC och framtida Contai
 Funktionskontrakt: helskärmskamera, automatisk start där behörighet tillåter, kontinuerliga foton, bildräknare, centrerad avtryckare, kamerans egen tvåfingerszoom där webbläsaren stöder den, aldrig sidzoom, granskning/urval och fortsatt fotografering utan bildförlust. Kamerakärna och bildgranskning ska vara separata från uppladdning och albumkvoter. Hantera iOS Safari, nekad behörighet, kamerabyte, minnesstädning och tillgänglighet.
 
 Status: remember/camera-session-test.html är en isolerad prototyp, ännu INTE en gemensam modul. CCC:s exakta kamerakod är INTE identifierad eller återanvänd. Nästa steg: inventera CCC-källan, extrahera komponent med tydligt API, anslut Remember via adapter och testa på iPhone innan komponenten märks återanvändbar.
+
+
+## Utvecklingsverktyg för PWA — beslut 2026-10-13
+- Endast i explicit utvecklingsläge (inte publikt/vanliga gäster): knapparna **↻ Uppdatera** och **📸 Fånga hela vyn**.
+- Uppdatera: begär uppdatering av eventuell service worker och ladda om sidan. Varna för osparade ändringar innan omladdning.
+- Fånga hela vyn: skapa nedladdningsbar PNG av den aktiva sidans hela scrollbara innehåll, inte bara synlig viewport. Ge filen begripligt namn med vy och tidpunkt. Visa förhandsvisning och möjlighet att spara/dela.
+- Hantera scrollcontainrar, fixed/sticky-element, långa sidor, mobilskärm och mörkt tema utan att duplicera fasta element eller förstöra layouten. Maskera känslig information, token och lösenord; fånga inte andra flikar eller systemgränssnitt.
+- Teknisk begränsning: webbläsare ger inte webbsidor generell åtkomst till native full-page screenshot. DOM-rendering kan missa cross-origin-bilder, canvas/video/kameraflöden och inbäddat innehåll. Visa tydlig varning vid ofullständig bild; påstå inte pixelperfekt skärmdump.
+- Status: krav dokumenterade. Uppdatera-knapp finns i remember/index.html men är ännu inte dev-only. Helvy-PNG ännu inte implementerad eller verifierad. Bygg och verifiera verktygen som gemensam modul före utrullning.
