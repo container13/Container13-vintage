@@ -90,3 +90,10 @@
 - Gästsidans kamerauppladdning uppdaterar bildgalleriet omedelbart efter lyckad serverbekräftelse. Föråldrad varning om att uppladdning ej verifierats och extra bekräftelsedialog vid filval är borttagna.
 - Databasens read-only negativa behörighetstest: ogiltig gästtoken och saknad autentisering ger `authorized:false`; anon/authenticated saknar direkt EXECUTE på privata gallerifunktionen. Två bilder är `ready` och en aktiv gästlänk finns.
 - **Återstår:** verkligt test av gästlänk och uppladdning i utloggad mobil. Inga gästtokens ska hämtas ur databasen eller läggas i GitHub.
+
+
+## Beslut 2026-10-14 — WM-9.4 gästlänk och QR
+- Webmastervyn visar automatiskt QR-kod och kopierbar gästlänk när den krypterade serverkopian finns. Inga manuella tokenfält.
+- Befintliga äldre gästlänkar utan krypterad kopia kan inte återskapas. Byte till ny länk kräver en tydlig bekräftelse om att gamla länkar och QR-koder slutar fungera. Inget automatiskt byte.
+- Ny gästlänk krypteras server-side med AES-GCM (HKDF från Supabase service-role-secret) och förvaras i en privat RLS-skyddad vault, åtkomlig via service-only RPC med webmaster/albumägarbehörighet. Varning: byte av underliggande service-role-secret kan göra lagrade länkar oläsbara; framtida dedikerad krypteringsnyckel rekommenderas innan bred lansering.
+- WM-9.4 är committad, Edge Function remember-share-manager ACTIVE v1. Test på iPhone samt verkligt länkbyte återstår; gamla länken har inte roterats.
