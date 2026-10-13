@@ -84,3 +84,9 @@ Ny `006_security_verification_READ_ONLY.sql` ger en kontrolltabell över schema�
 - Verkliga webbtester rapporterade av användaren: installationsstatus “Webmasteråtkomst godkänd (schemaversion: 1.)”; Visa album “Webmasteråtkomst godkänd.” Detta är USER PASS för det begränsade läsflödet; det senare HTTP-innehållet fångades inte oberoende.
 - Resultaten är inte verifiering av komplett Remember-drift. Inga riktiga album, lagring/uppladdning, atomisk 10-bildersgräns, tidsändringar, betalning eller verifierad enhetsmatris ännu. Full release förblir PENDING/UNVERIFIED.
 - Fortsätt från nästa albumlivscykelsteg med befintlig auth/RPC. Kör aldrig om basinstallation eller rolltilldelning blint. Se PROJECT_CURRENT_STATE.json för aktuell evidens.
+
+## Faktiska resultat – migration 2, 2026-10-13
+
+Godkänd 010 installerad i container13-remember (wykvztfmfbboxiqvuvwr): Success. 011 assertions PASS; kompletterande 012 trip/fishing/timezone/type/party-end assertions PASS. Alla testskrivningar återställdes. Separat readback: total_albums=0, test-ID:n saknas, högsta schemaVersion=2. Nya create-RPC: anon/authenticated nekas, service_role tillåts. Läs-RPC installation_status: authorized=true, ready=true, schemaVersion=2, expectedVersion=2. Ursprunglig säkerhetskontroll006: åter 12/12 true (versionsrad1 finns kvar; högsta version2 kontrollerades separat).
+
+Detta är installerad och databasprovad funktion, inte verifierad HTTP/UI-albumskapning. Verklig samtidighet från två klienter, create-API/klient, storage, uppladdningskvot, gäståtkomst och schemaändringar/audit återstår. Befintlig läs-API är fortsatt driftsatt. Inga album/testdata finns kvar. Micke50 orört. Återkör inte migration010; den avvisar version>=2. Aktuell evidens finns i PROJECT_CURRENT_STATE.json.
