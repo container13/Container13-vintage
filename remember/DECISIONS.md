@@ -116,3 +116,10 @@
 - Befintliga gästlänkar roteras aldrig utan separat bekräftelse. Webbmastervyn kvarstår.
 - Edge functions remember-owner-manager ACTIVE v1, remember-share-manager ACTIVE v2, remember-photo-gallery ACTIVE v3. Ä-1.0 är committad och väntar på verkligt inloggat enhetstest. Inga bilder har raderats under utvecklingen.
 - Gammal experimentfunktion public.remember_owner_album_list(uuid) är SECURITY INVOKER och returnerar konstant tom lista; används inte av ägarvyn. Bör städas upp i en senare säkerhetsgranskad migration.
+
+
+## Beslut 2026-10-14 — Registrering och e-postaktivering
+- Ny albumägare börjar med albumuppgifter och e-postadress. Inget obligatoriskt lösenord vid första besöket.
+- E-postadress verifieras genom personlig tidsbegränsad länk innan albumet skapas/aktiveras på servern.
+- Efter aktivering ska ägaren vara inloggad och komma till sitt album. Återkommande ägare kan logga in med e-postlänk; lösenord är frivilligt.
+- Aktiveringslänk kan begäras igen. Ingen dubbelregistrering vid återbesök. Bygg först ett säkert och begripligt registreringssteg; automatisk albumskapning efter verifiering kräver separat serverimplementering och test.
