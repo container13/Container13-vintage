@@ -102,3 +102,9 @@
 ## WM-9.5 — Bekräftelse vid kopiering
 - Kopieringsknappen ändras till ✓ Kopierad! efter lyckad urklippsskrivning och återställs efter 2,5 sekunder; fel visas om urklippsskrivningen misslyckas.
 - Gästläge verifierat med två iPhone-skärmbilder: öppnas privat utan inloggning och visar två foton senaste först. Gästuppladdning återstår att testa.
+
+
+## G-1.1 — Ren mobil gästvy
+- Gästuppladdning verifierad i privat iPhone-flik: tredje bilden sparad och visas först i albumet.
+- Mobilvyn använder endast två huvudknappar (Ta foto, Lägg till bilder), automatiskt filval/uppladdning, kompakt feedback, galleri direkt under. Teknisk hjälpttext, synligt filinput och extra uppladdningsknapp tas bort; retry visas bara vid fel.
+- Gästversion G-1.1 visas tydligt. Webbvisning på iPhone återstår att verifiera.
