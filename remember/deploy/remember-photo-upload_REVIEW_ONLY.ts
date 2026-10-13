@@ -95,7 +95,7 @@ Deno.serve(async req => {
   const same = persisted.length === bytes.length &&
     persisted.every((value, i) => value === bytes[i]);
   if (!same) return reply({ error: "Verification failed" }, 503);
-  const { data: completed, error: completeError } = await db.rpc("remember_photo_complete_upload", { p_photo_id: photoId });
+  const { data: completed, error: completeError } = await db.rpc("remember_photo_complete_upload", { p_photo_id: photoId, p_token_hash: "\\x" + hex(digest) });
   if (completeError || !completed?.accepted) return reply({ error: "Completion pending" }, 503);
   return reply({ ok: true, photoId, bytes: persisted.length });
 });
