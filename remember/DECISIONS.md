@@ -70,3 +70,8 @@
 ## Beslut 2026-10-14 — Ett godkännande räcker
 - I den inbäddade gästkameran ska **Godkänn valda** direkt starta serveruppladdning av de valda bilderna. Ingen extra **Publicera godkända bilder**-knapp och ingen extra bekräftelsedialog.
 - Visa förlopp och serverbekräftelse. Vid fel: behåll ej bekräftade bilder i aktuell flik och visa **Försök ladda upp igen**. Ingen avancerad automatisk återupptagning.
+
+
+## Beslut 2026-10-14 — Tydlig lägesidentitet
+- Albumets webmastervy och gästvy ska alltid ha en tydlig, färgmässigt skild lägesrubrik högst upp: **🛠 WEBMASTERLÄGE** respektive **👥 GÄSTLÄGE**.
+- Lägesidentiteten får inte enbart ligga i brödtext eller bero på användarens förståelse av URL:en. Webmaster ska ha synlig återväg till Dashboard.
