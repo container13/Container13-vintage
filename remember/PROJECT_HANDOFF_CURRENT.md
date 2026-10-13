@@ -136,3 +136,8 @@ Efter ändringen av rotens `sw.js` (commit `235372a9fb990ae1e77f5680e5cc937698dd
 - Edge Function `remember-photo-upload` driftsatt ACTIVE version 1 med verify_jwt=false och egen gästtokenkontroll via service-only RPC. Deployerad källa: `remember/deploy/remember-photo-upload_REVIEW_ONLY.ts` (filnamnet är historiskt och bör uppdateras först efter verifierat E2E). Ingen gästtoken exponerad i loggen.
 - **ÄNNU EJ VERIFIERAT:** verklig multipart HTTP-uppladdning från gäst, korrekt bildvisning från privat storage, kvot/dubblett/felhantering i runtime. Kalla inte Remember V1 PASS eller färdigt.
 - Nästa steg: testa verklig uppladdning med användarens befintliga gästlänk via klienten; bygg/anslut behörig bildlista och privat bildvisning om den ännu saknas. Håll V1 enkel enligt DECISIONS.
+
+
+### Kameraflöde förenklat 2026-10-14
+- Enligt användarbeslut har gästalbumets kamera nu ett enda godkännande: **Godkänn valda** skickar godkända bilder direkt till servern. Extra publiceringsknapp/bekräftelse borttagen. Retryknapp visas endast efter fel.
+- GitHub commit `01f7cff` återläst PASS. Ingen runtime- eller mobilverifiering ännu; begär verkligt test i befintligt album. Backend uppladdningsfunktion ACTIVE men E2E och privat bildvisning ej verifierade.
