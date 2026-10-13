@@ -27,3 +27,6 @@ When an existing valid session is detected, do not show the login form or passwo
 
 ## QR-code guest access (all projects)
 A valid QR-code guest link must open its intended guest resource directly, without an account, password or webmaster login. The QR URL carries a scoped, unguessable guest access token; validate it server-side on every protected request, honor expiry/revocation and never grant administrator privileges. Invalid or revoked links show a clear guest-access error, not an administrator login prompt. QR access does not bypass the guest token's permissions.
+
+## Album ordering identity and guest access
+For projects offering shared albums, the album purchaser enters an email address during album creation for confirmation and album-related communication. Collecting an email does not itself verify ownership or grant administrator access. Album owner management must require a separately verified, scoped mechanism (for example, a single-use email link). QR-code guests must not be asked to enter email, create an account, or log in to view an album permitted by their valid guest token. Webmaster authentication is separate from both roles.
