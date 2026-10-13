@@ -108,3 +108,11 @@
 - Gästuppladdning verifierad i privat iPhone-flik: tredje bilden sparad och visas först i albumet.
 - Mobilvyn använder endast två huvudknappar (Ta foto, Lägg till bilder), automatiskt filval/uppladdning, kompakt feedback, galleri direkt under. Teknisk hjälpttext, synligt filinput och extra uppladdningsknapp tas bort; retry visas bara vid fel.
 - Gästversion G-1.1 visas tydligt. Webbvisning på iPhone återstår att verifiera.
+
+
+## Ä-1.0 — Albumägarens hantering (2026-10-14)
+- Separat ägarvy remember/owner.html. Dashboard visar egna album via serverns owner-manager, oberoende av webmasterroll. Ägaren kan visa och kopiera gästlänk/QR samt permanent radera enskilda bilder efter uttrycklig bekräftelse.
+- Servern verifierar Supabase JWT och albums.owner_user_id innan listning/radering/delning. Gäster får inte åtkomst till ägarverktygen. Radering tar bort privat lagringsobjekt och därefter album_photos-raden. Ingen albumradering i Ä-1.0.
+- Befintliga gästlänkar roteras aldrig utan separat bekräftelse. Webbmastervyn kvarstår.
+- Edge functions remember-owner-manager ACTIVE v1, remember-share-manager ACTIVE v2, remember-photo-gallery ACTIVE v3. Ä-1.0 är committad och väntar på verkligt inloggat enhetstest. Inga bilder har raderats under utvecklingen.
+- Gammal experimentfunktion public.remember_owner_album_list(uuid) är SECURITY INVOKER och returnerar konstant tom lista; används inte av ägarvyn. Bör städas upp i en senare säkerhetsgranskad migration.
