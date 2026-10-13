@@ -27,9 +27,9 @@
   },
   "currentWork": {
     "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. Edge Function/runtime not deployed or verified. Remember Edge Function deployed; two unauthenticated/invalid-token tests returned 401. First-webmaster SQL candidate saved and read back, not executed. Further real tests: GET 405, allowed OPTIONS 204 with exact CORS headers, disallowed Origin POST 403. Read-only database RPC assertions PASS: 3 forged-actor actions, null actor, invalid action and actual anon/authenticated denial.",
-    "next": "Build/review functional Remember auth callback/login before any account invitation. Supabase Site URL is still http://localhost:3000 with no redirect allowlist. After reviewed callback + configuration, obtain explicit permission to send account invitation to selected webmaster email; verify actual account identity/email then obtain explicit SQL role-grant approval. Test non-webmaster 403 before grant and authorized status/list after grant.",
+    "next": "User must choose: configure existing/custom SMTP to keep selected holmen.com identity, or explicitly choose organization-member email for temporary test. Then build functional login/callback, review redirect allowlist and obtain approval for auth configuration and invitation; verify non-webmaster 403 before role grant.",
     "blocked": true,
-    "blocker": "Auth callback absent; default redirect localhost:3000. No account invitation sent, no webmaster grant executed."
+    "blocker": "No auth callback; Site URL localhost:3000, no redirect allowlist. Custom SMTP verified OFF. Supabase default SMTP only delivers to organization member emails; selected holmen.com address is not the observed organization member email. No invite sent and no auth account or role created."
   },
   "pausedWork": {
     "fotobok": "Parkerad idé; inte i första releasen."
@@ -118,6 +118,13 @@
     "email": "magnus.johansson@holmen.com",
     "candidate": "remember/sql/007_first_webmaster_REVIEW_FIRST.sql",
     "executed": false,
+    "invitationSent": false
+  },
+  "emailEvidence": {
+    "verifiedOn": "2026-10-13",
+    "customSmtpEnabled": false,
+    "source": "Supabase Authentication > Emails > SMTP Settings",
+    "defaultSmtpRestriction": "Only project organization member email addresses; official docs reviewed https://supabase.com/docs/guides/auth/auth-smtp",
     "invitationSent": false
   }
 }
