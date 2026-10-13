@@ -1,0 +1,22 @@
+<!doctype html><html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="referrer" content="no-referrer"><title>Remember – hantera album</title><style>body{font:16px/1.5 system-ui;background:#10231f;color:#f6f3e9;margin:0;padding:30px 18px}main{max-width:640px;margin:auto}a{color:#d9e7a4}button{font:inherit;padding:12px;border-radius:10px;background:#d9e7a4;border:0}p{overflow-wrap:anywhere}</style></head><body><main><p><a href="./dashboard.html">← Dashboard</a></p><h1 id="title">Öppnar album…</h1><p id="status" role="status">Kontrollerar webmasteråtkomst.</p><p id="detail"></p></main><script type="module">
+const title=document.getElementById('title'),status=document.getElementById('status'),detail=document.getElementById('detail');
+const id=new URLSearchParams(location.search).get('id');
+if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id||'')){title.textContent='Ogiltigt album';status.textContent='Album-ID saknas.';}
+else try{
+ const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
+ const url='https://wykvztfmfbboxiqvuvwr.supabase.co',key='sb_publishable_qOSBb7U6TGnPQ8ypyYRLGg_GtYrraoG';
+ const client=createClient(url,key,{auth:{storage:localStorage,storageKey:'container13-remember-auth-v2',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+ const {data,error}=await client.auth.getSession();
+ if(error||!data.session){location.replace('./login.html');}
+ else {
+  const response=await fetch(url+'/functions/v1/remember-webmaster',{method:'POST',headers:{'Content-Type':'application/json',apikey:key,Authorization:'Bearer '+data.session.access_token},body:JSON.stringify({action:'list'}),cache:'no-store'});
+  const body=await response.json();
+  if(!response.ok||body.authorized!==true){title.textContent='Åtkomst nekad';status.textContent='Du saknar webmasterbehörighet.';}
+  else {
+   const album=Array.isArray(body.albums)?body.albums.find(a=>a.id===id):null;
+   if(!album){title.textContent='Albumet hittades inte';status.textContent='Albumet finns inte i din behöriga albumlista.';}
+   else {title.textContent=album.title||'Album';status.textContent='Albumet är öppnat i webmasterläge.';detail.textContent='Bildhantering och delning ansluts härnäst. Befintlig gästlänk ändras inte.';}
+  }
+ }
+}catch{title.textContent='Kunde inte öppna albumet';status.textContent='Anslutningen misslyckades. Försök igen senare.'}
+</script></body></html>
