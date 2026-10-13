@@ -111,3 +111,10 @@ Efter ändringen av rotens `sw.js` (commit `235372a9fb990ae1e77f5680e5cc937698dd
 - Review-only endpoint `remember/deploy/remember-photo-upload_REVIEW_ONLY.ts` beräknar SHA-256 på uppladdningsbytes och anropar claim-RPC. Bytea-hexkodning korrigerad och återläst.
 - **BLOCKER innan deployment:** nuvarande `remember_guest_photo_reserve` returnerar `reason=existing` och endpoint avvisar varje retry; efter timeout/avbruten lagring saknas fullständig storage-aware reconciliation. Felsäkra retry med samma requestId måste återläsa state och verifiera objektet utan dubbel lagring/kvot. Nuvarande duplicate-index hanterar inte ersättning efter permanent lagringsfel förrän objektets frånvaro bekräftats. Testa race, avbruten uppladdning, samma requestId, annan requestId/samma bytes, återkallad token, stängt fönster och kvot 10/11 innan drift.
 - Inga Supabase-migrationer eller Edge Function-deployments utförda i detta steg. Album och delningslänkar oförändrade. Status: KODKANDIDAT, EJ TESTAD I RUNTIME.
+
+
+### V1 enkelt kameraflöde (2026-10-13)
+- Beslut i `remember/DECISIONS.md` styr: riktig bild först, inga avancerade auto-retry-system i V1.
+- `remember/album.html` uppdaterad: kamerans lokalt godkända bilder kan nu väljas för **Publicera godkända bilder**, med explicit confirm, sekventiell prepare/upload och räknare. Bekräftat sparade tas bort från den lokala kön; ej bekräftade finns kvar för manuellt nytt försök så länge sidan är öppen. Ingen permanent kö eller automatisk återupptagning.
+- Källkod i GitHub återläst PASS (`31416c8`); inte testad i webbläsare. `remember-photo-upload` är fortfarande inte deployad och därför kan verklig bilduppladdning inte lyckas ännu. Den nya UI-knappen får INTE kallas fungerande liveuppladdning.
+- Nästa steg: säker serveruppladdning enligt senaste V1-beslut och ett verkligt test med en bild. Befintligt album/token orörda.
