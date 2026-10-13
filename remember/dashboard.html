@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="referrer" content="no-referrer"><meta name="theme-color" content="#10231f"><title>Remember – Dashboard</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color-scheme:dark;background:#10231f;color:#f6f3e9}*{box-sizing:border-box}body{margin:0}main{max-width:1100px;margin:auto;padding:24px 18px 70px}header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:30px}a{color:#d9e7a4}h1{font-size:clamp(30px,5vw,46px);margin:0 0 8px}p{line-height:1.5;color:#cbded2}.badge{display:inline-block;border:1px solid #8fbc9c;border-radius:99px;padding:6px 12px;color:#d9e7a4;font-size:13px}.notice{border-left:4px solid #d9e7a4;background:#263e32;border-radius:8px;padding:14px 18px;margin:24px 0}.layout{display:grid;grid-template-columns:minmax(240px,1fr) minmax(0,1.4fr);gap:20px}.panel{border:1px solid #406454;background:#19352d;border-radius:20px;padding:22px;min-width:0}.list{display:grid;gap:10px}.album{width:100%;background:#153025;border:1px solid #527b69;color:inherit;text-align:left;border-radius:12px;padding:14px;cursor:pointer}.album[aria-current=true]{outline:2px solid #d9e7a4}.album strong{display:block}.muted{color:#bdd0c2;font-size:13px}label{display:block;margin:15px 0 7px;font-weight:650}input,select{width:100%;min-width:0;padding:12px;background:#0c2119;color:#fff;border:1px solid #7da18e;border-radius:10px;font:inherit}.dates{display:grid;grid-template-columns:1fr 1fr;gap:12px}button{font:inherit;font-weight:750;border:0;border-radius:11px;padding:12px 15px;background:#d9e7a4;color:#10231f;cursor:pointer}button.secondary{background:transparent;color:#d9e7a4;border:1px solid #8aaf94}button:focus-visible,input:focus-visible{outline:3px solid #d9e7a4;outline-offset:3px}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.status{min-height:24px}.detail{padding:14px;border:1px solid #456b58;border-radius:12px;margin-top:14px}.detail p{margin:6px 0}.hidden{display:none!important}@media(max-width:760px){.layout{grid-template-columns:1fr}.dates{grid-template-columns:1fr}.panel{padding:18px}main{padding:18px 14px 60px}}
+
+main{max-width:720px}.panel{margin-top:24px}button:disabled{opacity:.55;cursor:wait}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}.actions button{min-height:46px}.brand{font-weight:800}.version{font-size:12px;color:#bdd0c2}
+</style><script src="../project-template/mobile-view-policy.js?v=1"></script></head><body><main>
+<header><div class="brand">✦ CONTAINER13 <span class="muted">remember.</span></div><a href="./">Till Remember</a></header>
+<h1>Remember – Dashboard</h1><p>Dina album och din webmasteråtkomst på ett ställe.</p>
+<section class="panel" id="loginPanel" hidden><form id="login"><label for="email">E-postadress</label><input id="email" type="email" autocomplete="email" required maxlength="254"><label for="password">Lösenord</label><input id="password" type="password" autocomplete="current-password" minlength="6"><div class="actions"><button id="send" type="submit" disabled>Logga in</button><button id="resetPassword" type="button" class="secondary" disabled>Skapa eller återställ lösenord</button><button id="magic" type="button" class="secondary" disabled>Skicka mejllänk i stället</button></div></form>
+<p id="feedback" class="status" role="status" aria-live="polite">Förbereder inloggningen…</p></section>
+<section class="panel" id="account" hidden><h2>Din anslutning</h2><p id="identity"></p><p>Webmasterbehörigheten kontrolleras på servern. Ett verifierat konto får inte automatiskt administratörsbehörighet.</p><div id="setPasswordArea"><label for="newPassword">Välj lösenord för framtida inloggningar</label><input id="newPassword" type="password" autocomplete="new-password" minlength="12" placeholder="Minst 12 tecken"><div class="actions"><button id="savePassword" type="button">Spara lösenord</button></div><p id="passwordResult" role="status" aria-live="polite"></p></div><div class="actions"><button id="check" type="button">Kontrollera webmasteråtkomst</button><button id="list" type="button" class="secondary">Visa album</button><button id="logout" type="button" class="secondary">Logga ut</button></div><p id="result" role="status" aria-live="polite"></p><div id="albums" role="status" aria-live="polite"></div></section>
+<section class="panel" id="creation" hidden><h2>Skapa ett testalbum</h2><p>Albumet sparas i Remember-testmiljön. Gästlänk och bilduppladdning kommer senare.</p>
+<form id="createForm"><label for="albumTitle">Albumets namn</label><input id="albumTitle" required maxlength="100">
+<label for="eventType">Upplevelse</label><select id="eventType"><option value="fishing">Fiskeresa</option><option value="trip">Resa</option><option value="party">Fest</option><option value="wedding">Bröllop</option></select>
+<label for="startsAt">Startdatum och tid</label><input id="startsAt" type="datetime-local" required>
+<div id="tripEnd"><label for="endsAt">Resan slutar</label><input id="endsAt" type="datetime-local" required></div>
+<p class="muted" id="timeNote"></p><p class="muted">Fest/bröllop: 24 timmar från start. Resa/fiske: till 24 timmar efter slut. Standardgräns: 10 bilder.</p>
+<div class="actions"><button id="createButton" type="submit">Skapa testalbum</button></div></form>
+<p id="createResult" role="status" aria-live="polite"></p></section>
+<p class="muted">Separat Remember-testmiljö. Albumändringar och bilduppladdning är inte aktiverade.</p><p class="version">Dashboard 0.1.8</p>
+<script type="module">
+const $=id=>document.getElementById(id);
+let client=null,session=null,busy=false,creationAllowed=false;
+function message(text){$('feedback').textContent=text}
+function lock(value){busy=value;document.querySelectorAll('button').forEach(b=>b.disabled=value)}
+function showSession(value){const identityChanged=session?.user?.id!==value?.user?.id;session=value;if(identityChanged){creationAllowed=false;$('creation').hidden=true;}$('account').hidden=!value;$('loginPanel').hidden=true;$('login').hidden=true;$('identity').textContent=value?'Inloggad som '+value.user.email:'';$('result').textContent='';$('albums').replaceChildren()}
+async function gateway(action){
+ if(busy||!client)return;lock(true);$('result').textContent='Kontrollerar åtkomst…';
+ try{
+  const {data,error}=await client.auth.getSession();if(error||!data.session){showSession(null);message('Logga in igen.');return}
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
+  let response;try{response=await fetch('https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-webmaster',{method:'POST',headers:{'Content-Type':'application/json',apikey:PUBLIC_KEY,Authorization:'Bearer '+data.session.access_token},body:JSON.stringify({action}),signal:controller.signal})}finally{clearTimeout(timer)}
+  const body=await response.json().catch(()=>({}));
+  if(response.status===403){creationAllowed=false;$('creation').hidden=true;$('result').textContent='403 – kontot saknar webmasterbehörighet.';return}
+  if(response.status===401){$('result').textContent='401 – sessionen kunde inte verifieras. Logga in igen.';return}
+  if(!response.ok){$('result').textContent='Kontrollen misslyckades (HTTP '+response.status+'). Försök igen senare.';return}
+  if(!body.authorized){$('result').textContent='Åtkomst nekad.';return}
+  creationAllowed=body.capabilities?.createAlbum===true;$('creation').hidden=!creationAllowed;if(creationAllowed)restoreDraft();
+  $('result').textContent=action==='installation_status'?'Webmasteråtkomst godkänd. Schemaversion: '+body.schemaVersion+'.':'Webmasteråtkomst godkänd.';
+  if(action==='list'){
+    $('albums').replaceChildren();
+    if(!Array.isArray(body.albums)){
+      $('albums').textContent='Servern skickade ingen albumlista. Det är ett svarsfel som behöver åtgärdas.';
+    }else if(body.albums.length===0){
+      $('albums').textContent='Servern returnerade 0 album för detta konto. Skapa inte ett nytt album.';
+    }else{
+      const heading=document.createElement('h3');heading.textContent='Dina album ('+body.albums.length+')';$('albums').append(heading);
+      for(const album of body.albums){
+        const p=document.createElement('p');p.textContent=album.title||'Album utan namn';$('albums').append(p);
+      }
+    }
+  }
+ }catch{ $('result').textContent='Anslutningen misslyckades. Försök igen.' }finally{lock(false)}
+}
+const PUBLIC_KEY='sb_publishable_qOSBb7U6TGnPQ8ypyYRLGg_GtYrraoG';
+try{
+ const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
+ client=createClient('https://wykvztfmfbboxiqvuvwr.supabase.co',PUBLIC_KEY,{auth:{storage:localStorage,storageKey:'container13-remember-auth-v2',persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'}});
+ // One-time migration of the previously authenticated tab session.
+ // The old value contains auth tokens; never print it or send it elsewhere.
+ if (!localStorage.getItem('container13-remember-auth-v2')) {
+   try {
+     const old = sessionStorage.getItem('container13-remember-test-auth');
+     if (old) {
+       const parsed = JSON.parse(old);
+       if (parsed?.access_token && parsed?.refresh_token) {
+         const migrated = await client.auth.setSession({access_token:parsed.access_token,refresh_token:parsed.refresh_token});
+         if (!migrated.error && migrated.data.session) sessionStorage.removeItem('container13-remember-test-auth');
+       }
+     }
+   } catch { /* Old session cannot be migrated; normal sign-in remains available. */ }
+ }
+ const {data,error}=await client.auth.getSession();
+ history.replaceState(null,'',location.pathname);
+ if(error)throw error;
+ showSession(data.session);
+ if(!data.session){location.replace('./login.html');throw new Error('redirecting');}
+ message(data.session?'Inloggningen är klar.':'Ange e-post och lösenord. Har kontot inget lösenord ännu? Använd mejllänk som reserv.');
+ lock(false);
+ client.auth.onAuthStateChange((event,next)=>{
+   showSession(next);
+   if(event==='PASSWORD_RECOVERY' && next){
+     message('Återställningslänken är godkänd. Välj nu ditt nya lösenord under Din anslutning.');
+     $('newPassword').focus();
+   }
+ });
+}catch{history.replaceState(null,'',location.pathname);message('Inloggningen kunde inte startas. Ladda om sidan.');lock(true)}
+$('login').addEventListener('submit',async e=>{
+ e.preventDefault();if(busy||!client||!$('login').reportValidity())return;
+ if(!$('password').value){message('Ange lösenord, eller välj mejllänk som reserv.');return;}
+ lock(true);message('Loggar in…');
+ try{const {error}=await client.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});$('password').value='';message(error?'Inloggningen misslyckades. Kontrollera e-post och lösenord.':'Du är inloggad.');}
+ catch{message('Anslutningen misslyckades. Försök igen.')}finally{lock(false)}
+});
+$('resetPassword').onclick=async()=>{
+ if(busy||!client||!$('email').reportValidity())return;
+ lock(true);message('Begär lösenordslänk…');
+ try {
+   const {error}=await client.auth.resetPasswordForEmail($('email').value.trim(),{
+     redirectTo:'https://container13.se/remember/login.html'
+   });
+   message(error?'Kunde inte skicka lösenordslänk. Kontrollera att Supabase tillåter återställningsmejl och att adressen är godkänd.':'Om kontot finns skickas en lösenordslänk. Öppna mejlet på datorn och välj sedan nytt lösenord här.');
+ }catch{message('Anslutningen misslyckades. Försök igen.')}
+ finally{lock(false)}
+};
+$('magic').onclick=async()=>{
+ if(busy||!client||!$('email').reportValidity())return;
+ lock(true);message('Skickar mejllänk…');
+ try{const {error}=await client.auth.signInWithOtp({email:$('email').value.trim(),options:{shouldCreateUser:false,emailRedirectTo:'https://container13.se/remember/login.html'}});
+ message(error?'Mejllänken kunde inte skickas.':'Om kontot finns har en inloggningslänk skickats.');}
+ catch{message('Anslutningen misslyckades.')}finally{lock(false)}
+};
+$('savePassword').onclick=async()=>{
+ if(busy||!client||!session)return;
+ const password=$('newPassword').value;
+ if(password.length<12){$('passwordResult').textContent='Ange minst 12 tecken.';return;}
+ lock(true);$('passwordResult').textContent='Sparar lösenord…';
+ try {
+   const {error}=await client.auth.updateUser({password});
+   $('newPassword').value='';
+   $('passwordResult').textContent=error?'Kunde inte spara lösenord. Du kan behöva logga in igen.':'Lösenordet är sparat. Nästa gång kan du logga in direkt på datorn.';
+ }catch{$('passwordResult').textContent='Kunde inte nå inloggningstjänsten.'}
+ finally{lock(false)}
+};
+$('check').onclick=()=>gateway('installation_status');$('list').onclick=()=>gateway('list');
+$('logout').onclick=async()=>{if(busy||!client)return;lock(true);try{const {error}=await client.auth.signOut({scope:'local'});if(error)throw error;showSession(null);location.replace('./login.html');message('Du är utloggad.')}catch{message('Utloggningen misslyckades. Försök igen.')}finally{lock(false)}};
+
+const draftKey='container13-remember-create-draft-v1';
+const localTimezone=Intl.DateTimeFormat().resolvedOptions().timeZone||'Europe/Stockholm';
+$('timeNote').textContent='Tider anges i din enhets tidszon: '+localTimezone+'.';
+function eventFields(){
+ const party=['party','wedding'].includes($('eventType').value);
+ $('tripEnd').hidden=party;$('endsAt').required=!party;
+}
+$('eventType').onchange=eventFields;eventFields();
+function freezeDraft(value){
+ $('createForm').querySelectorAll('input,select').forEach(e=>e.disabled=value);
+ $('createButton').textContent=value?'Försök igen med samma album':'Skapa testalbum';
+}
+function restoreDraft(){
+ try{const d=JSON.parse(sessionStorage.getItem(draftKey)||'null');
+ if(d&&session&&d.actor===session.user.id){
+ $('albumTitle').value=d.payload.title;$('eventType').value=d.payload.eventType;eventFields();
+ const localValue=iso=>{const date=new Date(iso);return new Date(date.getTime()-date.getTimezoneOffset()*60000).toISOString().slice(0,16)};
+ $('startsAt').value=localValue(d.payload.startsAt);$('endsAt').value=d.payload.endsAt?localValue(d.payload.endsAt):'';
+ $('timeNote').textContent='Sparat albumförsök. Tidszon: '+d.payload.timezone+'.';freezeDraft(true);$('createResult').textContent='Ett tidigare försök väntar. Försök igen med samma album för att undvika dubbletter.'}
+ }catch{sessionStorage.removeItem(draftKey)}
+}
+$('createForm').addEventListener('submit',async event=>{
+ event.preventDefault();if(busy||!client||!session||!creationAllowed)return;
+ let draft;
+ try{draft=JSON.parse(sessionStorage.getItem(draftKey)||'null')}catch{sessionStorage.removeItem(draftKey)}
+ if(draft&&draft.actor!==session.user.id){$('createResult').textContent='Ett annat kontos albumförsök finns i den här fliken. Slutför det med rätt konto.';return}
+ if(!draft){
+  if(!$('createForm').reportValidity())return;
+  const starts=new Date($('startsAt').value),party=['party','wedding'].includes($('eventType').value);
+  const ends=party?null:new Date($('endsAt').value);
+  if(!Number.isFinite(+starts)||(!party&&(!Number.isFinite(+ends)||ends<starts))){$('createResult').textContent='Kontrollera start- och sluttid.';return}
+  draft={actor:session.user.id,payload:{action:'create_album',requestId:crypto.randomUUID(),title:$('albumTitle').value.trim(),eventType:$('eventType').value,startsAt:starts.toISOString(),endsAt:ends?ends.toISOString():null,timezone:localTimezone}};
+  try{sessionStorage.setItem(draftKey,JSON.stringify(draft))}catch{$('createResult').textContent='Albumförsöket kunde inte sparas säkert i fliken. Försök i en vanlig webbläsarflik.';return}
+ }
+ lock(true);freezeDraft(true);$('createResult').textContent='Skapar album…';
+ try{
+  const {data,error}=await client.auth.getSession();if(error||!data.session)throw new Error('session');
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
+  let response;try{response=await fetch('https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-webmaster',{method:'POST',headers:{'Content-Type':'application/json',apikey:PUBLIC_KEY,Authorization:'Bearer '+data.session.access_token},body:JSON.stringify(draft.payload),signal:controller.signal})}finally{clearTimeout(timer)}
+  const body=await response.json().catch(()=>({}));
+  if(response.ok&&body.authorized&&body.album?.id===draft.payload.requestId){
+   sessionStorage.removeItem(draftKey);freezeDraft(false);
+   $('createResult').textContent='Album sparat: '+body.album.title+'.'+(body.created?'':' Det tidigare försöket återanvändes.');
+   $('createForm').reset();eventFields();
+  }else if(response.status===400||response.status===409){
+   sessionStorage.removeItem(draftKey);freezeDraft(false);
+   $('createResult').textContent='Albumet kunde inte skapas med dessa uppgifter (HTTP '+response.status+'). Kontrollera uppgifterna.';
+  }else if(response.status===403){
+   $('createResult').textContent='Åtkomst nekad. Albumförsöket behålls för kontroll med rätt konto.';
+  }else{$('createResult').textContent='Albumets resultat är osäkert. Försök igen med samma album (HTTP '+response.status+').'}
+ }catch{$('createResult').textContent='Anslutningen avbröts. Försöket är sparat; försök igen med samma album.'}
+ finally{lock(false)}
+});
+
+</script></main></body></html>
