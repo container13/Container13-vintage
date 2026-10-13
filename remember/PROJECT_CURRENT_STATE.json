@@ -26,10 +26,10 @@
     "resumeInstruction": "Läs project-template/PROJECT_RELEASE_STANDARD.md, PROJECT_MASTER_RULES.md, PROJECT_RELEASE_CHECKLIST.md och remember/README.md, DECISIONS.md, IDEBANK.md, PROJECT_CURRENT_STATE.json och PROJECT_HANDOFF_CURRENT.md. Kontrollera GitHub, deploy och verklig klient innan nästa steg. Database baseline is now installed; see databaseEvidence. Never replay installation without checking actual database state."
   },
   "currentWork": {
-    "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. At baseline stage Edge Function was not yet deployed (superseded by apiEvidence). Remember Edge Function deployed; two unauthenticated/invalid-token tests returned 401. First-webmaster SQL candidate saved and read back, not executed. Further real tests: GET 405, allowed OPTIONS 204 with exact CORS headers, disallowed Origin POST 403. Read-only database RPC assertions PASS: 3 forged-actor actions, null actor, invalid action and actual anon/authenticated denial. Login callback remember/login.html committed, syntax checked and exactly read back; Pages run 38327872987 success for aebc2ed9934637d25b128fbe56668bf139cd5a92. Live desktop page loaded and client initialized. User-approved Site URL and exact allowlist saved and read back. Authorized invite sent to nilsmagnusalvin@gmail.com; account Overview confirms invited_at and confirmation_sent_at 2026-10-13T00:36:49.507638Z; confirmed_at and last sign-in empty.",
-    "next": "User opens Supabase invitation from nilsmagnusalvin@gmail.com inbox and lands on Remember login.html. Test 'Kontrollera webmasteråtkomst' should return 403 for this authenticated non-webmaster; collect actual result and verify confirmed account in Supabase. Do not grant role yet. Holmen remains original webmaster identity; Gmail is only selected test identity unless user explicitly changes role target. Role SQL requires fresh explicit approval.",
+    "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. At baseline stage Edge Function was not yet deployed (superseded by apiEvidence). Remember Edge Function deployed; two unauthenticated/invalid-token tests returned 401. First-webmaster SQL candidate saved and read back, not executed. Further real tests: GET 405, allowed OPTIONS 204 with exact CORS headers, disallowed Origin POST 403. Read-only database RPC assertions PASS: 3 forged-actor actions, null actor, invalid action and actual anon/authenticated denial. Login callback remember/login.html committed, syntax checked and exactly read back; Pages run 38327872987 success for aebc2ed9934637d25b128fbe56668bf139cd5a92. Live desktop page loaded and client initialized. User-approved Site URL and exact allowlist saved and read back. Authorized invite sent to nilsmagnusalvin@gmail.com; account Overview confirms invited_at and confirmation_sent_at 2026-10-13T00:36:49.507638Z; confirmed_at and last sign-in empty. Real user reported authenticated non-webmaster 403; Supabase account email-confirmed and last sign-in independently observed at 02:38.",
+    "next": "Await explicit approval of 009_test_webmaster_REVIEW_FIRST.sql to grant exact confirmed Gmail test user the Remember webmaster role in test project. Then independently read membership and run authorized RPC; user tests authorized HTTP status and album list. Never execute Holmen candidate 007 as part of Gmail test.",
     "blocked": true,
-    "blocker": "Awaiting user email verification and actual session; no webmaster role grant."
+    "blocker": "Exact Gmail test-account role grant prepared, not approved or executed."
   },
   "pausedWork": {
     "fotobok": "Parkerad idé; inte i första releasen."
@@ -110,6 +110,12 @@
         "body": {
           "error": "Origin not allowed"
         }
+      },
+      {
+        "request": "Real user login via invitation; click Kontrollera webmasteråtkomst",
+        "status": 403,
+        "bodyMessage": "kontot saknar webmasterbehörighet",
+        "evidence": "User reported actual browser result on 2026-10-13 02:39; Supabase independently shows confirmed email and last sign-in at 02:38. No authenticated success yet."
       }
     ],
     "limitations": "No authenticated user session tested; 403 role denial, authorized list/status, CORS external browser and device tests outstanding."
@@ -141,7 +147,7 @@
     "deployment": "success",
     "liveUrl": "https://container13.se/remember/login.html",
     "desktopSmoke": "PASS: page loaded; SDK initialized; signed-out form enabled",
-    "authenticatedCallback": "UNVERIFIED",
+    "authenticatedCallback": "User confirmed login and actual 403; Supabase confirmed account email/sign-in.",
     "deviceTests": "NOT PERFORMED",
     "serviceSecretsInClient": false,
     "publicKeyOnly": true,
@@ -155,8 +161,11 @@
     "email": "nilsmagnusalvin@gmail.com",
     "userId": "75b71f6c-97b7-4de1-ad14-292b4af4e1fa",
     "confirmationSentAt": "2026-10-13T00:36:49.507638Z",
-    "emailConfirmed": false,
+    "emailConfirmed": true,
     "lastSignedIn": null,
-    "webmasterGranted": false
+    "webmasterGranted": false,
+    "confirmedAtObserved": "2026-10-13 02:38 Europe/Stockholm",
+    "lastSignedInObserved": "2026-10-13 02:38 Europe/Stockholm",
+    "roleGrantCandidate": "remember/sql/009_test_webmaster_REVIEW_FIRST.sql"
   }
 }
