@@ -23,15 +23,31 @@
       "End-to-end-verifiering"
     ],
     "lastSafeRelease": null,
-    "resumeInstruction": "Läs project-template/PROJECT_RELEASE_STANDARD.md, PROJECT_MASTER_RULES.md, PROJECT_RELEASE_CHECKLIST.md och remember/README.md, DECISIONS.md, IDEBANK.md, PROJECT_CURRENT_STATE.json och PROJECT_HANDOFF_CURRENT.md. Kontrollera GitHub, deploy och verklig klient innan nästa steg."
+    "resumeInstruction": "Läs project-template/PROJECT_RELEASE_STANDARD.md, PROJECT_MASTER_RULES.md, PROJECT_RELEASE_CHECKLIST.md och remember/README.md, DECISIONS.md, IDEBANK.md, PROJECT_CURRENT_STATE.json och PROJECT_HANDOFF_CURRENT.md. Kontrollera GitHub, deploy och verklig klient innan nästa steg. Database baseline is now installed; see databaseEvidence. Never replay installation without checking actual database state."
   },
   "currentWork": {
-    "completed": "Remember UI, webmasterdemo, SQL-drafts, portabel serveradapter, installation_status och read-only statisk preflight-kandidat. Ingen Supabase-installation eller deployment; Micke50 orört.",
-    "next": "Kör statisk preflight i riktig Node-miljö, verifiera separat Supabase-testprojekt och lös schemaåtkomst utan att öppna remember-schema brett; därefter säker runtime/RLS-testning.",
+    "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. Edge Function/runtime not deployed or verified.",
+    "next": "Review secure bootstrap for first webmaster, deploy separate Remember Edge Function and verify JWT/401/403 and RPC runtime. Storage/upload quota/device tests remain outstanding. Do not reinstall baseline.",
     "blocked": false
   },
   "pausedWork": {
     "fotobok": "Parkerad idé; inte i första releasen."
   },
-  "publicUrl": "https://container13.se/remember/"
+  "publicUrl": "https://container13.se/remember/",
+  "databaseEvidence": {
+    "verifiedOn": "2026-10-13",
+    "organization": "Container13-Remember",
+    "projectName": "container13-remember",
+    "projectRef": "wykvztfmfbboxiqvuvwr",
+    "region": "eu-north-1",
+    "installationFile": "remember/sql/INSTALL_REMEMBER_REVIEW_FIRST.sql",
+    "installationBlobSha": "921bb4e86ccc9daa916dfca1af63099b34f566d5",
+    "installationResult": "Success. No rows returned",
+    "securityVerificationFile": "remember/sql/006_security_verification_READ_ONLY.sql",
+    "securityChecksPassed": 12,
+    "securityChecksTotal": 12,
+    "highestSchemaVersion": 1,
+    "scope": "Structural database evidence only; no API/Edge Function/storage/device/runtime PASS.",
+    "supersededIncorrectProjectRef": "wykvztfmfbboxiquvuwr"
+  }
 }
