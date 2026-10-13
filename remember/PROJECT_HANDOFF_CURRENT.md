@@ -64,3 +64,30 @@ Detta är installerad och databasprovad funktion, inte verifierad HTTP/UI-albums
 Användaren godkände test013/014/015 och villkorad API-deployment. Två färdigladdade SQL Editor-anslutningar visade samtidigt Running. A PID34280 gav created=true; B PID34281 gav created=false för samma album-ID a2c13000-0000-4000-8000-000000000040. Avgränsad städning genomförd; separat/efterföljande readback totalAlbums=0,testAlbumCount=0. Ett tidigare varv kontrollerades och städades före den tydligt överlappande körningen.
 
 Remember-webmaster0.1.3 driftsatt i samma separata testprojekt efter godkända DB-resultat. Deployerad kodeditor matchade kandidatbundlen exakt. Faktiskt create_album utan användarsession gav401 Authentication required, x-remember-version0.1.3. Klient0.1.3 är publicerad; form visas först efter verifierad auth/roll och serverns createAlbum capability. Verklig auktoriserad HTTP/UI-skapning, retry och mobilform återstår; ingen komplett produktrelease verifierad. Schema2 och auth-testrollen kvarstår. Micke50 orört. Se PROJECT_CURRENT_STATE för nästa steg.
+
+
+## AKTUELL HANDOFF — 2026-10-13 kväll (ersätter äldre "Nästa steg" ovan)
+
+**Källstatus:** dokument- och GitHub-kodinventering, INTE ny live-/Supabase-verifiering. Äldre avsnitt ovan är historiska checkpoints. `PROJECT_CURRENT_STATE.json` är föråldrad för den senare utvecklingen och får inte användas som ensam aktuell status. Ingen CURRENT/PASS-promotion utan verklig verifiering.
+
+### Beslut som ska bevaras
+- Remember är pilot för en **ny, förbättrad och framtida gemensam kamera**. Vi beslutade uttryckligen att inte kopiera CCC:s gamla kamera som färdig lösning. Kamerakärna/granskning ska vara separerade från uppladdning.
+- Webmaster ska, efter säker serverbaserad behörighetskontroll och tydlig information till användare, kunna administrera och hämta bilder från **alla** album. Albumägare hanterar egna album; gäster får endast tokenbaserad åtkomst. Detta senare användarbeslut ersätter motsägande formuleringar i `project-template/CONTAINER13_SYSTEM_LIBRARY.md`; dokumentkonflikten återstår att rätta i kanoniskt bibliotek.
+- Behåll befintliga album (bl.a. **Bergeforsen 2026**), länkar och foton. Ändra inte Micke50 eller CCC oavsiktligt. Mobil sidnypzoom av, uttryckligen tillåten bildzoom endast i bildvisare.
+- Radering, sessionsrensning och faktisk publicering kräver separat bekräftelse. `Godkänn valda` betyder inte publicering.
+
+### Kodläget vid GitHub-inventering
+- `remember/camera-session-test.html` är kamerans prototyp med granskning. Knappen **Ta bort markerade** har ersatt **Ta bort senaste** i grenens kod. Detta är **inte verifierat i live-UI**: användaren såg fortfarande den gamla knappen även efter Remember-uppdatering.
+- `remember/album-admin.html` och `remember/album.html` bäddar in kameran med versionsparameter `?embedded=1&v=b5bfe3d` efter tidigare cachefelsökning. Parametern är inte bevis för att live-klienten hämtar korrekt innehåll.
+- Kamera/granskning har ännu inte verifierad serveruppladdning till album; `remember/deploy/remember-photo-upload_REVIEW_ONLY.ts` är en kandidat, inte bevisat deployad. Markera aldrig fotosession som publicerad utan backend-bekräftelse.
+- `remember/dashboard.html` är inte verifierad vanlig albumägarvy; den bygger på äldre webmaster-gateway. Faktisk rollseparation kräver servergranskning.
+- Remember har egen uppdateringsknapp men uppdateringskedjan är **inte verifierad**. Granska rotens `sw.js`, dess registrering/scope, `ignoreSearch:true`-cacheuppslag, eventuella root-PWA-styrningar, assetversioner, GitHub Pages och den faktiskt körda iframe-versionen innan ytterligare cachepatchar. Ändra inte CCC:s root-service-worker utan konsekvensanalys.
+
+### Nästa säkra arbetsordning
+1. Läs gemensam standard, solutions, denna handoff och berörda Remember-specifikationer; jämför med faktiskt repo och live innan kodändring.
+2. Kartlägg exakt aktiv uppdaterings-/service-worker-/iframe-kedja och förklara varför användaren såg gammal kamera. Ingen ny spekulativ cacheparameter.
+3. Säkerställ korrekt dokumentation av det nya kamerabeslutet och webmasterbehörigheten i kanoniska regler utan att försvaga befintlig backend/RLS.
+4. Koppla och verifiera den nya kamerans valda bilder till **säker** albumuppladdning, inklusive serverkvot, privata objekt, bekräftelse, idempotens och mobiltest. Ingen osäker genväg för att få knappen att fungera.
+5. Uppdatera `PROJECT_CURRENT_STATE.json` med enbart återläst, verifierad aktuell evidens efter teknisk inventering. Historiska migreringsuppgifter får inte skrivas över som om de aldrig skett.
+
+**Risk:** HIGH för auth, data, uppladdning, service worker och releasekedja. GitHub-dokumentationsändring ensam är LOW. Nuvarande projektstatus: UNVERIFIED, inte CURRENT.
