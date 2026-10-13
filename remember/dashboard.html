@@ -10,7 +10,7 @@ main{max-width:720px}.panel{margin-top:24px}details{border-top:1px solid #456b58
 <section class="panel" id="loginPanel" hidden><form id="login"><label for="email">E-postadress</label><input id="email" type="email" autocomplete="email" required maxlength="254"><label for="password">Lösenord</label><input id="password" type="password" autocomplete="current-password" minlength="6"><div class="actions"><button id="send" type="submit" disabled>Logga in</button><button id="resetPassword" type="button" class="secondary" disabled>Skapa eller återställ lösenord</button><button id="magic" type="button" class="secondary" disabled>Skicka mejllänk i stället</button></div></form>
 <p id="feedback" class="status" role="status" aria-live="polite">Förbereder inloggningen…</p></section>
 <section class="panel" id="account" hidden><h2>Dina album</h2><p id="identity" class="muted"></p><p id="result" role="status" aria-live="polite"></p><div id="albums" role="status" aria-live="polite"></div><details><summary>Konto och tekniska kontroller</summary><p>Webmasterbehörigheten kontrolleras på servern.</p><div id="setPasswordArea" hidden><label for="newPassword">Välj lösenord för framtida inloggningar</label><input id="newPassword" type="password" autocomplete="new-password" minlength="12" placeholder="Minst 12 tecken"><div class="actions"><button id="savePassword" type="button">Spara lösenord</button></div><p id="passwordResult" role="status" aria-live="polite"></p></div><div class="actions"><button id="check" type="button">Kontrollera webmasteråtkomst</button><button id="list" type="button" class="secondary">Visa album</button><button id="logout" type="button" class="secondary">Logga ut</button></div></details></section>
-<section class="panel" id="creation" hidden><details><summary>+ Skapa nytt album</summary><p>Albumet sparas i Remember. Bilduppladdning är ännu inte verifierad.</p>
+<section class="panel" id="ownerPanel" hidden><h2>Hantera mina album</h2><p class="muted">Dela gästlänk och QR-kod eller radera bilder i dina egna album.</p><div id="ownerAlbums"></div></section><section class="panel" id="creation" hidden><details><summary>+ Skapa nytt album</summary><p>Albumet sparas i Remember. Bilduppladdning är ännu inte verifierad.</p>
 <form id="createForm"><label for="albumTitle">Albumets namn</label><input id="albumTitle" required maxlength="100">
 <label for="eventType">Upplevelse</label><select id="eventType"><option value="fishing">Fiskeresa</option><option value="trip">Resa</option><option value="party">Fest</option><option value="wedding">Bröllop</option></select>
 <label for="startsAt">Startdatum och tid</label><input id="startsAt" type="datetime-local" required>
@@ -18,13 +18,22 @@ main{max-width:720px}.panel{margin-top:24px}details{border-top:1px solid #456b58
 <p class="muted" id="timeNote"></p><p class="muted">Fest/bröllop: 24 timmar från start. Resa/fiske: till 24 timmar efter slut. Standardgräns: 10 bilder.</p>
 <div class="actions"><button id="createButton" type="submit">Skapa testalbum</button></div></form>
 <p id="createResult" role="status" aria-live="polite"></p></details></section>
-<p class="muted">Bilduppladdning till servern är ännu inte verifierad.</p><p class="version">Dashboard 0.1.9</p>
+<p class="muted">Bilduppladdning till servern är ännu inte verifierad.</p><p class="version">Dashboard 0.1.10</p>
 <script type="module">
 const $=id=>document.getElementById(id);
 let client=null,session=null,busy=false,creationAllowed=false;
 function message(text){$('feedback').textContent=text}
 function lock(value){busy=value;document.querySelectorAll('button').forEach(b=>b.disabled=value)}
 function showSession(value){const identityChanged=session?.user?.id!==value?.user?.id;session=value;if(identityChanged){creationAllowed=false;$('creation').hidden=true;}$('account').hidden=!value;$('loginPanel').hidden=true;$('login').hidden=true;$('identity').textContent=value?'Inloggad som '+value.user.email:'';$('result').textContent='';$('albums').replaceChildren()}
+async function loadOwnedAlbums(){
+ if(!client)return;
+ try{const {data}=await client.auth.getSession();if(!data.session)return;
+ const response=await fetch('https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-owner-manager',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+data.session.access_token},body:JSON.stringify({action:'list'}),cache:'no-store'});
+ const body=await response.json();if(!response.ok||!body.ok)throw Error();
+ const panel=$('ownerPanel'),list=$('ownerAlbums');list.replaceChildren();panel.hidden=!body.albums.length;
+ for(const album of body.albums){const a=document.createElement('a');a.href='./owner.html?id='+encodeURIComponent(album.id)+'&v=a10';a.textContent='⚙ Hantera '+album.title;a.style.display='block';a.style.margin='12px 0';list.append(a);}
+ }catch{$('ownerPanel').hidden=true;}
+}
 async function gateway(action){
  if(busy||!client)return;lock(true);$('result').textContent='Kontrollerar åtkomst…';
  try{
@@ -32,13 +41,13 @@ async function gateway(action){
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
   let response;try{response=await fetch('https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-webmaster',{method:'POST',headers:{'Content-Type':'application/json',apikey:PUBLIC_KEY,Authorization:'Bearer '+data.session.access_token},body:JSON.stringify({action}),signal:controller.signal})}finally{clearTimeout(timer)}
   const body=await response.json().catch(()=>({}));
-  if(response.status===403){creationAllowed=false;$('creation').hidden=true;$('result').textContent='403 – kontot saknar webmasterbehörighet.';return}
+  if(response.status===403){void loadOwnedAlbums();creationAllowed=false;$('creation').hidden=true;$('result').textContent='403 – kontot saknar webmasterbehörighet.';return}
   if(response.status===401){$('result').textContent='401 – sessionen kunde inte verifieras. Logga in igen.';return}
   if(!response.ok){$('result').textContent='Kontrollen misslyckades (HTTP '+response.status+'). Försök igen senare.';return}
   if(!body.authorized){$('result').textContent='Åtkomst nekad.';return}
   creationAllowed=body.capabilities?.createAlbum===true;$('creation').hidden=!creationAllowed;if(creationAllowed)restoreDraft();
   $('result').textContent=action==='installation_status'?'Webmasteråtkomst godkänd. Schemaversion: '+body.schemaVersion+'.':'Webmasteråtkomst godkänd.';
-  if(action==='list'){
+  if(action==='list'){void loadOwnedAlbums();
     $('albums').replaceChildren();
     if(!Array.isArray(body.albums)){
       $('albums').textContent='Servern skickade ingen albumlista. Det är ett svarsfel som behöver åtgärdas.';
