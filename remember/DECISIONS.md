@@ -75,3 +75,7 @@
 ## Beslut 2026-10-14 — Tydlig lägesidentitet
 - Albumets webmastervy och gästvy ska alltid ha en tydlig, färgmässigt skild lägesrubrik högst upp: **🛠 WEBMASTERLÄGE** respektive **👥 GÄSTLÄGE**.
 - Lägesidentiteten får inte enbart ligga i brödtext eller bero på användarens förståelse av URL:en. Webmaster ska ha synlig återväg till Dashboard.
+
+
+## Beslut 2026-10-14 — Webmaster laddar upp med egen inloggning
+- I webmasterläge används verifierad Supabase-session + album-ID, aldrig krav på att ange gästlänk. Servern verifierar användaridentitet och webmasterroll innan bildreservation och färdigmarkering. Gästläget använder fortsatt giltig gästtoken. Bildkvot, tidsfönster, privat lagring och SHA-256-dubblettskydd gäller båda.
