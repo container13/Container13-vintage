@@ -26,10 +26,10 @@
     "resumeInstruction": "Läs project-template/PROJECT_RELEASE_STANDARD.md, PROJECT_MASTER_RULES.md, PROJECT_RELEASE_CHECKLIST.md och remember/README.md, DECISIONS.md, IDEBANK.md, PROJECT_CURRENT_STATE.json och PROJECT_HANDOFF_CURRENT.md. Kontrollera GitHub, deploy och verklig klient innan nästa steg. Database baseline is now installed; see databaseEvidence. Never replay installation without checking actual database state."
   },
   "currentWork": {
-    "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. At baseline stage Edge Function was not yet deployed (superseded by apiEvidence). Remember Edge Function deployed; two unauthenticated/invalid-token tests returned 401. First-webmaster SQL candidate saved and read back, not executed. Further real tests: GET 405, allowed OPTIONS 204 with exact CORS headers, disallowed Origin POST 403. Read-only database RPC assertions PASS: 3 forged-actor actions, null actor, invalid action and actual anon/authenticated denial. Login callback remember/login.html committed, syntax checked and exactly read back; Pages run 38327872987 success for aebc2ed9934637d25b128fbe56668bf139cd5a92. Live desktop page loaded and client initialized.",
-    "next": "Await action-time approval to save Site URL https://container13.se/remember/login.html and the same exact redirect allowlist entry. Then send the user-authorized test account invite to nilsmagnusalvin@gmail.com and obtain real session; first verify HTTP 403 without webmaster role. No role SQL approved or executed.",
+    "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. At baseline stage Edge Function was not yet deployed (superseded by apiEvidence). Remember Edge Function deployed; two unauthenticated/invalid-token tests returned 401. First-webmaster SQL candidate saved and read back, not executed. Further real tests: GET 405, allowed OPTIONS 204 with exact CORS headers, disallowed Origin POST 403. Read-only database RPC assertions PASS: 3 forged-actor actions, null actor, invalid action and actual anon/authenticated denial. Login callback remember/login.html committed, syntax checked and exactly read back; Pages run 38327872987 success for aebc2ed9934637d25b128fbe56668bf139cd5a92. Live desktop page loaded and client initialized. User-approved Site URL and exact allowlist saved and read back. Authorized invite sent to nilsmagnusalvin@gmail.com; account Overview confirms invited_at and confirmation_sent_at 2026-10-13T00:36:49.507638Z; confirmed_at and last sign-in empty.",
+    "next": "User opens Supabase invitation from nilsmagnusalvin@gmail.com inbox and lands on Remember login.html. Test 'Kontrollera webmasteråtkomst' should return 403 for this authenticated non-webmaster; collect actual result and verify confirmed account in Supabase. Do not grant role yet. Holmen remains original webmaster identity; Gmail is only selected test identity unless user explicitly changes role target. Role SQL requires fresh explicit approval.",
     "blocked": true,
-    "blocker": "Auth return URL change prepared but not saved, awaiting security-setting approval. Test user invitation not yet sent."
+    "blocker": "Awaiting user email verification and actual session; no webmaster role grant."
   },
   "pausedWork": {
     "fotobok": "Parkerad idé; inte i första releasen."
@@ -125,12 +125,13 @@
     "customSmtpEnabled": false,
     "source": "Supabase Authentication > Emails > SMTP Settings",
     "defaultSmtpRestriction": "Only project organization member email addresses; official docs reviewed https://supabase.com/docs/guides/auth/auth-smtp",
-    "invitationSent": false,
+    "invitationSent": true,
     "requestedTestEmail": "nilsmagnusalvin@gmail.com",
     "organizationMembersVerified": [
       "nilsmagnusalvin@gmail.com"
     ],
-    "requestedTestEmailEligibleForDefaultSmtp": true
+    "requestedTestEmailEligibleForDefaultSmtp": true,
+    "invitedAt": "2026-10-13T00:36:49.507638Z"
   },
   "loginEvidence": {
     "candidate": "0.1.1",
@@ -144,6 +145,18 @@
     "deviceTests": "NOT PERFORMED",
     "serviceSecretsInClient": false,
     "publicKeyOnly": true,
-    "redirectConfigurationSaved": false
+    "redirectConfigurationSaved": true,
+    "siteUrl": "https://container13.se/remember/login.html",
+    "allowedRedirectUrls": [
+      "https://container13.se/remember/login.html"
+    ]
+  },
+  "testAccount": {
+    "email": "nilsmagnusalvin@gmail.com",
+    "userId": "75b71f6c-97b7-4de1-ad14-292b4af4e1fa",
+    "confirmationSentAt": "2026-10-13T00:36:49.507638Z",
+    "emailConfirmed": false,
+    "lastSignedIn": null,
+    "webmasterGranted": false
   }
 }
