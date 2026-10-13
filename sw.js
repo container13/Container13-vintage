@@ -67,6 +67,20 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
+  // Remember uses a separate release path. Always request its documents and
+  // assets from the network so an older cached camera/module cannot win over
+  // a newly deployed version. Offline fallback is exact-URL only: never serve
+  // an obsolete resource by ignoring its version query string.
+  if (url.pathname.startsWith('/remember/') || url.pathname === '/project-template/container13-camera-session.js') {
+    event.respondWith(
+      fetch(request, { cache: 'no-store' }).catch(async () => {
+        const cached = await caches.match(request);
+        return cached || Response.error();
+      })
+    );
+    return;
+  }
+
   // Vinted test assets must not be served from the root SW's stale
   // cache-first/ignoreSearch path. Preserve the rest of the site's caching.
   if (url.pathname.startsWith('/ccc-core/vinted/')) {
