@@ -29,3 +29,12 @@ Status: DESIGN / NOT DEPLOYED. Denna specifikation aktiverar ingen publik åtkom
 
 ## Nästa säkra implementation
 Inventera faktisk schema-2-tabellstruktur och nuvarande Edge Function innan migration för tokenhash eller publik endpoint skrivs. Dokumentera exakta SQL-ändringar och rollback; kör inte migration utan granskning. Inga verkliga delningslänkar ska visas förrän serverkontrollerna är på plats.
+
+## Verifierad installation 2026-10-13 (användarens Supabase SQL Editor)
+- Schema migration max(version)=3.
+- remember.albums COUNT(*)=1, befintligt testalbum bevarat.
+- remember.guest_links COUNT(*)=0.
+- RLS relrowsecurity=true.
+- has_table_privilege('anon',..., 'SELECT')=false; authenticated SELECT=false.
+- Detta är en användarvisad SQL-verifiering, inte ett oberoende backend-test. Ingen publik endpoint, tokenutfärdning eller gästuppladdning är deployad.
+- Nästa implementation: säker serverstyrd utfärdning/rotation av token, explicit roll- och albumkontroll, sedan separata negativa tester före aktivering.
