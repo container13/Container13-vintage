@@ -52,3 +52,18 @@ Status: remember/camera-session-test.html är en isolerad prototyp, ännu INTE e
 
 ### Delning av helsidesskärmdump (2026-10-13)
 När utvecklaren trycker på 📸 öppnas en förhandsvisning med separata val: **Kopiera bild** till urklipp (Clipboard API med PNG där webbläsaren tillåter), **Dela…** via systemets delningsruta (Web Share API med PNG-fil; iOS kan då erbjuda AirDrop), och **Spara PNG** som reserv. AirDrop är ett val i iOS-delningen, inte en funktion webbappen kan starta direkt. Om bildkopiering eller fildelning saknar webbläsarstöd visas tydlig information och Spara PNG. Kräv aktivt användartryck och hantera tillståndsfel. Ingen automatisk extern överföring. Status: krav specificerade, ännu ej implementerade.
+
+
+## Obligatorisk regel: användbar funktion från rätt ingång (lärdom 2026-10-13)
+**Ingen funktion är färdig bara för att dess kod eller testsida fungerar.** Den ska gå att hitta och slutföra från användarens naturliga väg i appen.
+
+1. **Börja med användarresan:** dokumentera var användaren befinner sig, vilken tydlig knapp/åtgärd som startar funktionen, vad som händer under arbetet, hur man kommer tillbaka och vad som räknas som färdigt resultat. Anpassa för mobil/dator och roller (webmaster/gäst).
+2. **Inga föräldralösa funktioner:** en isolerad prototyp eller test-URL är aldrig en ersättning för en synlig ingång i ordinarie navigation. Bygg och testa integrationen innan detaljpolering.
+3. **Återanvänd först:** inventera faktiskt fungerande kod från CCC, Micke50, Remember och systembiblioteket. Kontrollera hela kedjan och säkerhetskrav, inte bara en komponent.
+4. **Kontrollera hela flödet:** start → funktion → granskning/bekräftelse → spara/publicera → återgång. Inga brutna länkar, förlorade bilder eller knappar som lovar mer än de gör. Behåll originalfunktioner oförändrade om inte ändring uttryckligen godkänts.
+5. **Skilj statusnivåer:** specificerad → prototyp → inkopplad → funktionellt testad → deploy verifierad → användarverifierad. Ange alltid ärligt vilken nivå som är uppnådd. GitHub-commit är inte samma sak som färdig deploy.
+6. **Acceptanstest utan guidning:** kan en ny användare hitta funktionen, förstå den och slutföra uppgiften utan separat testlänk eller förklaring från utvecklaren? Om nej: inte klart.
+7. **Arbetsordning:** prioritera synlig ingång och fungerande helhet före extra animationer, zoomdetaljer och kosmetik. Förbättra först när grundflödet är användbart.
+
+### Konkret avvikelse: Remember-kameran
+Kameraprototypen förbättrades före den hade en naturlig ingång i albumet. En senare länk från albumet till testsidan räcker inte som färdigt flöde: kamerabilderna måste kunna granskas, överföras till albumets uppladdning och bevaras när man återgår. Visa tydligt om backend-uppladdningen inte är aktiverad. Status: **inkoppling påbörjad, ej färdig/verifierad**.
