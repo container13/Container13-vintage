@@ -27,8 +27,9 @@
   },
   "currentWork": {
     "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. Edge Function/runtime not deployed or verified.",
-    "next": "Review secure bootstrap for first webmaster, deploy separate Remember Edge Function and verify JWT/401/403 and RPC runtime. Storage/upload quota/device tests remain outstanding. Do not reinstall baseline.",
-    "blocked": false
+    "next": "Remember Edge Function prepared in Supabase editor using a deployment bundle of canonical shared adapter plus handler. Not deployed. Await exact webmaster email and approval to deploy service-role-backed read-only endpoint; no auth user or webmaster role created. Then test real JWT 401/403 and authorized read runtime.",
+    "blocked": true,
+    "blocker": "First webmaster identity not specified; deployment security approval pending."
   },
   "pausedWork": {
     "fotobok": "Parkerad idé; inte i första releasen."
