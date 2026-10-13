@@ -9,7 +9,7 @@ main{max-width:720px}.panel{margin-top:24px}button:disabled{opacity:.55;cursor:w
 <h1>Logga in</h1><p>Logga in direkt på datorn eller mobilen med e-post och lösenord. Mejllänk finns kvar som reserv.</p>
 <section class="panel"><form id="login"><label for="email">E-postadress</label><input id="email" type="email" autocomplete="email" required maxlength="254"><label for="password">Lösenord</label><input id="password" type="password" autocomplete="current-password" minlength="6"><div class="actions"><button id="send" type="submit" disabled>Logga in</button><button id="resetPassword" type="button" class="secondary" disabled>Skapa eller återställ lösenord</button><button id="magic" type="button" class="secondary" disabled>Skicka mejllänk i stället</button></div></form>
 <p id="feedback" class="status" role="status" aria-live="polite">Förbereder inloggningen…</p></section>
-<section class="panel" id="account" hidden><h2>Din anslutning</h2><p id="identity"></p><p>Webmasterbehörigheten kontrolleras på servern. Ett verifierat konto får inte automatiskt administratörsbehörighet.</p><div id="setPasswordArea"><label for="newPassword">Välj lösenord för framtida inloggningar</label><input id="newPassword" type="password" autocomplete="new-password" minlength="12" placeholder="Minst 12 tecken"><div class="actions"><button id="savePassword" type="button">Spara lösenord</button></div><p id="passwordResult" role="status" aria-live="polite"></p></div><div class="actions"><button id="check" type="button">Kontrollera webmasteråtkomst</button><button id="list" type="button" class="secondary">Visa album</button><button id="logout" type="button" class="secondary">Logga ut</button></div><p id="result" role="status" aria-live="polite"></p><div id="albums"></div></section>
+<section class="panel" id="account" hidden><h2>Din anslutning</h2><p id="identity"></p><p>Webmasterbehörigheten kontrolleras på servern. Ett verifierat konto får inte automatiskt administratörsbehörighet.</p><div id="setPasswordArea"><label for="newPassword">Välj lösenord för framtida inloggningar</label><input id="newPassword" type="password" autocomplete="new-password" minlength="12" placeholder="Minst 12 tecken"><div class="actions"><button id="savePassword" type="button">Spara lösenord</button></div><p id="passwordResult" role="status" aria-live="polite"></p></div><div class="actions"><button id="check" type="button">Kontrollera webmasteråtkomst</button><button id="list" type="button" class="secondary">Visa album</button><button id="logout" type="button" class="secondary">Logga ut</button></div><p id="result" role="status" aria-live="polite"></p><div id="albums" role="status" aria-live="polite"></div></section>
 <section class="panel" id="creation" hidden><h2>Skapa ett testalbum</h2><p>Albumet sparas i Remember-testmiljön. Gästlänk och bilduppladdning kommer senare.</p>
 <form id="createForm"><label for="albumTitle">Albumets namn</label><input id="albumTitle" required maxlength="100">
 <label for="eventType">Upplevelse</label><select id="eventType"><option value="fishing">Fiskeresa</option><option value="trip">Resa</option><option value="party">Fest</option><option value="wedding">Bröllop</option></select>
@@ -18,7 +18,7 @@ main{max-width:720px}.panel{margin-top:24px}button:disabled{opacity:.55;cursor:w
 <p class="muted" id="timeNote"></p><p class="muted">Fest/bröllop: 24 timmar från start. Resa/fiske: till 24 timmar efter slut. Standardgräns: 10 bilder.</p>
 <div class="actions"><button id="createButton" type="submit">Skapa testalbum</button></div></form>
 <p id="createResult" role="status" aria-live="polite"></p></section>
-<p class="muted">Separat Remember-testmiljö. Albumändringar och bilduppladdning är inte aktiverade.</p><p class="version">Inloggningskandidat 0.1.6</p>
+<p class="muted">Separat Remember-testmiljö. Albumändringar och bilduppladdning är inte aktiverade.</p><p class="version">Inloggningskandidat 0.1.7</p>
 <script type="module">
 const $=id=>document.getElementById(id);
 let client=null,session=null,busy=false,creationAllowed=false;
@@ -38,8 +38,19 @@ async function gateway(action){
   if(!body.authorized){$('result').textContent='Åtkomst nekad.';return}
   creationAllowed=body.capabilities?.createAlbum===true;$('creation').hidden=!creationAllowed;if(creationAllowed)restoreDraft();
   $('result').textContent=action==='installation_status'?'Webmasteråtkomst godkänd. Schemaversion: '+body.schemaVersion+'.':'Webmasteråtkomst godkänd.';
-  $('albums').replaceChildren();
-  if(action==='list')for(const a of body.albums||[]){const p=document.createElement('p');p.textContent=a.title;$('albums').append(p)}
+  if(action==='list'){
+    $('albums').replaceChildren();
+    if(!Array.isArray(body.albums)){
+      $('albums').textContent='Servern skickade ingen albumlista. Det är ett svarsfel som behöver åtgärdas.';
+    }else if(body.albums.length===0){
+      $('albums').textContent='Servern returnerade 0 album för detta konto. Skapa inte ett nytt album.';
+    }else{
+      const heading=document.createElement('h3');heading.textContent='Dina album ('+body.albums.length+')';$('albums').append(heading);
+      for(const album of body.albums){
+        const p=document.createElement('p');p.textContent=album.title||'Album utan namn';$('albums').append(p);
+      }
+    }
+  }
  }catch{ $('result').textContent='Anslutningen misslyckades. Försök igen.' }finally{lock(false)}
 }
 const PUBLIC_KEY='sb_publishable_qOSBb7U6TGnPQ8ypyYRLGg_GtYrraoG';
