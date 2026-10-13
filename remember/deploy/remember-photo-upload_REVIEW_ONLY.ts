@@ -9,7 +9,7 @@ const MAX_REQUEST_BYTES = MAX_BYTES + 8192;
 const headers = {
   "Access-Control-Allow-Origin": ORIGIN,
   "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "content-type, apikey",
+  "Access-Control-Allow-Headers": "content-type, apikey, authorization",
   "Cache-Control": "no-store",
   "Vary": "Origin",
 };
@@ -66,18 +66,30 @@ Deno.serve(async req => {
     if (error instanceof Error && error.message === "too_large") return reply({ error: "Too large" }, 413);
     return reply({ error: "Invalid multipart body" }, 400);
   }
-  const token = form.get("token"), requestId = form.get("requestId"), file = form.get("file");
-  if (typeof token !== "string" || !/^[A-Za-z0-9_-]{43}$/.test(token) ||
-      typeof requestId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestId) ||
+  const token = form.get("token"), albumId = form.get("albumId"), requestId = form.get("requestId"), file = form.get("file");
+  const ownerMode = typeof albumId === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(albumId);
+  const guestMode = typeof token === "string" && /^[A-Za-z0-9_-]{43}$/.test(token);
+  if (ownerMode === guestMode) return reply({ error: "Choose exactly one upload authorization" }, 400);
+  if (typeof requestId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestId) ||
       !(file instanceof File) || file.size < 32 || file.size > MAX_BYTES) return reply({ error: "Invalid upload" }, 400);
   const bytes = new Uint8Array(await file.arrayBuffer());
   const detected = signature(bytes);
   if (!detected || detected !== file.type) return reply({ error: "Invalid image type" }, 415);
-  const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(token)));
   const db = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
-  const { data: reservation, error: reserveError } = await db.rpc("remember_guest_photo_reserve", {
-    p_token_hash: "\\x" + hex(digest), p_request_id: requestId
-  });
+  let actorId: string | null = null;
+  let digest: Uint8Array | null = null;
+  if (ownerMode) {
+    const bearer = req.headers.get("authorization") || "";
+    if (!/^Bearer [^ ]+$/.test(bearer)) return reply({ error: "Webmaster login required" }, 401);
+    const { data: identity, error: identityError } = await db.auth.getUser(bearer.slice(7));
+    if (identityError || !identity.user) return reply({ error: "Invalid webmaster login" }, 401);
+    actorId = identity.user.id;
+  } else {
+    digest = new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(token as string)));
+  }
+  const { data: reservation, error: reserveError } = ownerMode
+    ? await db.rpc("remember_webmaster_photo_reserve", { p_actor: actorId, p_album_id: albumId, p_request_id: requestId })
+    : await db.rpc("remember_guest_photo_reserve", { p_token_hash: "\\x" + hex(digest!), p_request_id: requestId });
   if (reserveError) return reply({ error: "Unavailable" }, 503);
   if (!reservation?.accepted || reservation.reason === "existing") return reply({ error: "Reservation denied", reason: reservation?.reason || "denied" }, 409);
   const photoId = reservation.photoId;
@@ -118,7 +130,9 @@ Deno.serve(async req => {
   const same = persisted.length === bytes.length &&
     persisted.every((value, i) => value === bytes[i]);
   if (!same) return reply({ error: "Verification failed" }, 503);
-  const { data: completed, error: completeError } = await db.rpc("remember_photo_complete_upload", { p_photo_id: photoId, p_token_hash: "\\x" + hex(digest) });
+  const { data: completed, error: completeError } = ownerMode
+    ? await db.rpc("remember_webmaster_photo_complete", { p_actor: actorId, p_photo_id: photoId })
+    : await db.rpc("remember_photo_complete_upload", { p_photo_id: photoId, p_token_hash: "\\x" + hex(digest!) });
   if (completeError || !completed?.accepted) return reply({ error: "Completion pending" }, 503);
   return reply({ ok: true, photoId, bytes: persisted.length });
 });
