@@ -26,10 +26,10 @@
     "resumeInstruction": "Läs project-template/PROJECT_RELEASE_STANDARD.md, PROJECT_MASTER_RULES.md, PROJECT_RELEASE_CHECKLIST.md och remember/README.md, DECISIONS.md, IDEBANK.md, PROJECT_CURRENT_STATE.json och PROJECT_HANDOFF_CURRENT.md. Kontrollera GitHub, deploy och verklig klient innan nästa steg. Database baseline is now installed; see databaseEvidence. Never replay installation without checking actual database state."
   },
   "currentWork": {
-    "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. Edge Function/runtime not deployed or verified.",
-    "next": "Remember Edge Function prepared in Supabase editor using a deployment bundle of canonical shared adapter plus handler. Not deployed. Await exact webmaster email and approval to deploy service-role-backed read-only endpoint; no auth user or webmaster role created. Then test real JWT 401/403 and authorized read runtime.",
+    "completed": "Remember SQL baseline installed with user approval in dedicated container13-remember (wykvztfmfbboxiqvuvwr). SQL Editor returned Success. 006 security verification: 12/12 true. Highest schema version separately verified as 1. Static source preflight 20/20 PASS. Micke50 untouched. Edge Function/runtime not deployed or verified. Remember Edge Function deployed; two unauthenticated/invalid-token tests returned 401. First-webmaster SQL candidate saved and read back, not executed.",
+    "next": "Build/review functional Remember auth callback/login before any account invitation. Supabase Site URL is still http://localhost:3000 with no redirect allowlist. After reviewed callback + configuration, obtain explicit permission to send account invitation to selected webmaster email; verify actual account identity/email then obtain explicit SQL role-grant approval. Test non-webmaster 403 before grant and authorized status/list after grant.",
     "blocked": true,
-    "blocker": "First webmaster identity not specified; deployment security approval pending."
+    "blocker": "Auth callback absent; default redirect localhost:3000. No account invitation sent, no webmaster grant executed."
   },
   "pausedWork": {
     "fotobok": "Parkerad idé; inte i första releasen."
@@ -50,5 +50,36 @@
     "highestSchemaVersion": 1,
     "scope": "Structural database evidence only; no API/Edge Function/storage/device/runtime PASS.",
     "supersededIncorrectProjectRef": "wykvztfmfbboxiquvuwr"
+  },
+  "apiEvidence": {
+    "verifiedOn": "2026-10-13",
+    "function": "remember-webmaster",
+    "projectRef": "wykvztfmfbboxiqvuvwr",
+    "deployment": "DEPLOYED via Supabase dashboard using canonical adapter + handler bundle",
+    "legacyJwtVerification": true,
+    "tests": [
+      {
+        "request": "POST installation_status without Authorization",
+        "status": 401,
+        "body": {
+          "error": "Authentication required"
+        }
+      },
+      {
+        "request": "POST installation_status with deliberately malformed JWT",
+        "status": 401,
+        "body": {
+          "code": "UNAUTHORIZED_INVALID_JWT_FORMAT",
+          "message": "Invalid JWT"
+        }
+      }
+    ],
+    "limitations": "No authenticated user session tested; 403 role denial, authorized list/status, CORS external browser and device tests outstanding."
+  },
+  "webmasterBootstrap": {
+    "email": "magnus.johansson@holmen.com",
+    "candidate": "remember/sql/007_first_webmaster_REVIEW_FIRST.sql",
+    "executed": false,
+    "invitationSent": false
   }
 }
