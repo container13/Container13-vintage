@@ -168,3 +168,10 @@
 - Alla exempelbilder använder enhetlig bildram med object-fit:cover så inga tomma sidofält uppstår vid olika bildproportioner.
 - Bröllopsbildens källa bytt igen till ett bredare bröllopsmotiv. Säkerställ på fysisk iPhone att ansikten är synliga och inte kapas; detta är ännu inte visuellt verifierat.
 - Övriga delar av fotoboken och registreringen lämnas oförändrade.
+
+
+## R-1.2 — Uppladdningstid 1–28 dagar
+- Registreringen frågar inte längre efter albumtyp eller separat slutdatum.
+- Ägaren väljer startdatum/tid och uppladdningstid i rullista med 1–28 dagar, förvalt 1 dag.
+- Draft i sessionStorage sparar title, starts, days och email. Denna ändring gäller registreringsgränssnittet; serverns tidsfönster och automatisk albumskapning efter e-postverifiering är ännu inte kopplade till detta val.
+- Tidigare kategoribaserade tidsfönster gäller befintliga album tills separat migrering har beslutats.
