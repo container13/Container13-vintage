@@ -188,3 +188,9 @@
 - Ägarens album hämtas direkt via remember-owner-manager/list utan webmasterkontroll; webbmasterstatus och äldre teknisk albumlista döljs i standardvyn.
 - Mobil design anpassad till Remember: serifrubrik, diskret avsändare och klickbara albumkort. Webmasterfunktionerna är kvar i separat teknisk sektion och behörighetskontroller kvar på servern.
 - Nytt album efter aktiveringslänk från Outlook är ännu inte bekräftat. Om e-postlänken öppnas i en annan webbläsarkontext finns inte lokalt onboardingutkast och albumskapning kan utebli; måste rättas separat.
+
+
+## Dashboard 0.1.14 — Ägarvy utan webmasterknappar
+- Kontosektionen heter Kontoinställningar. Webmasterknapparna döljs från den vanliga vyn men serverbehörigheterna är oförändrade.
+- Ägaralbum visas som klickbara kort. Tomt albumläge har tydlig text och länk till register.html för nytt album.
+- Styling av CTA och mobilkort förbättrad. GitHub-innehåll återläst och verifierat; visuell kontroll på iPhone samt verkligt Outlook-aktiveringsflöde återstår.
