@@ -26,10 +26,10 @@
     "resumeInstruction": "Read WORK_HANDOFF_2026-10-14.md latest checkpoint and BACKGROUND_VERIFICATION_0.1.20.md. Verify actual HEAD and public bytes. Never replay database installation or rotate guest links. Physical iPhone acceptance and full authenticated E2E remain distinct gates."
   },
   "currentWork": {
-    "completed": "Resend installed/authenticated. Domain container13.se created and read back, eu-west-1, sending enabled, receiving disabled, tracking disabled, verification not_started. Exact DNS records displayed and saved. User chose GitHub in secure Cloudflare sign-in. OAuth screen asks only read-only email addresses, not repository access. Authorize click auto-review rejected; no grant or DNS update performed. Supabase SMTP unchanged and no key/test email created.",
-    "next": "Ask explicit approval for Cloudflare to read GitHub email addresses, then resume existing OAuth tab. Do not retry denied grant before explicit approval. Continue DNS, provider verification, SMTP and real auth delivery.",
-    "blocked": true,
-    "blocker": "Auto-review rejected Cloudflare email OAuth access grant; explicit approval needed."
+    "completed": "Four public DNS values match exact provider records; Resend domain and all records verified. User saved custom SMTP; fresh Supabase page confirms enabled and stored password. Key name confirmed by Resend list. Historical Cloudflare OAuth blocker superseded by manual DNS setup. UI remains0.1.23.",
+    "next": "User requests a login link in Remember; inspect Auth and Resend delivery evidence, confirm inbox receipt and successful login. Do not request or persist the link/code/key.",
+    "blocked": false,
+    "blocker": null
   },
   "pausedWork": {
     "fotobok": "Parkerad idé; inte i första releasen."
@@ -356,7 +356,7 @@
     "scope": "Counts and deployment metadata only; not an authenticated end-to-end test. Earlier databaseEvidence is historical."
   },
   "mailSetup": {
-    "status": "DOMAIN_CREATED_AWAITING_DNS_ACCESS",
+    "status": "SMTP_CONFIGURED_DELIVERY_UNVERIFIED",
     "provider": "Resend Free candidate",
     "domain": "container13.se",
     "dnsProvider": "Cloudflare (public NS verified)",
@@ -365,13 +365,13 @@
       "host": "smtp.resend.com",
       "port": 465,
       "username": "resend",
-      "credential": "Resend send-only key; not yet created or stored"
+      "credential": "User created and stored key directly; value never obtained or persisted by agent"
     },
     "senderName": "Container13 Remember",
     "senderEmailCandidate": "noreply@container13.se",
     "resendConnection": "Installed and authenticated; actual list/create/get domain calls succeeded",
-    "next": "User explicitly approves Cloudflare read-only access to GitHub email addresses, or chooses another login method. Resume same browser tab/auth flow, then configure exact DNS records, verify domain, configure SMTP and test intended auth delivery.",
-    "blocker": "Cloudflare GitHub sign-in paused at read-only email OAuth grant; automatic approval review rejected Authorize Cloudflare. Await explicit user approval; no DNS records applied.",
+    "next": "User requests a login link in Remember; inspect Auth and Resend delivery evidence, confirm inbox receipt and successful login. Do not request or persist the link/code/key.",
+    "blocker": null,
     "incident": {
       "observed": "2026-10-14 15:45 Europe/Stockholm",
       "endpoint": "/otp",
@@ -381,7 +381,7 @@
     },
     "domainId": "db880ddc-dfdf-4f9b-9162-eabb096d1782",
     "region": "eu-west-1",
-    "domainVerificationStatus": "not_started",
+    "domainVerificationStatus": "verified",
     "openTracking": false,
     "clickTracking": false,
     "receivingEnabled": false,
@@ -411,6 +411,10 @@
         "value": "send.forge.rmta.net",
         "ttl": "Auto"
       }
-    ]
+    ],
+    "apiKeyName": "Remember Supabase SMTP",
+    "apiKeyScopeVerification": "List confirms name only; permission/domain restriction not exposed by connector",
+    "smtpReadback": "2026-10-14 17:28 Europe/Stockholm: enabled after reload; smtp.resend.com:465; sender name Container13 Remember; interval60; stored password hidden; Save changes disabled. Sender address/username redacted by browser.",
+    "deliveryVerified": false
   }
 }
