@@ -214,3 +214,6 @@
 
 ## S-1.10 — En enda huvudadress
 - Enda adress användaren ska behöva minnas: https://container13.se/remember/. Startsidan kontrollerar befintlig Supabase-session med samma auth storage key som dashboard och skickar redan inloggade direkt till dashboard.html. Utloggade ser välkomstsidan. Interna ägar-/albumadresser är inte något användaren ska behöva hålla reda på. Commit 6df5dc0. Verkligt mobiltest återstår.
+
+## Inloggning 0.1.9 — Synligt aktivt konto och kontobyte
+- När användaren väljer 'Jag har redan ett konto' får login.html inte automatiskt omdirigera vid befintlig session. Visa aktiv e-postadress och Logga ut samt Öppna Mina album. Därmed kan användaren uttryckligen byta konto utan att konton eller album ändras. Endast uttrycklig ?continue=1 tillåter automatisk redirect på login.html. Huvudadressen /remember/ fortsätter automatiskt till dashboard för inloggad användare. Commit dd50bd6; verkligt iPhone-test återstår.
