@@ -56,6 +56,31 @@ header .brand .muted{display:none}
 .panel#loginPanel #feedback{margin:18px 0 0}
 .panel#loginPanel input{padding-left:16px}
 @media(max-width:390px){header{margin-bottom:33px}.panel#loginPanel{padding:23px 17px}}
+
+/* v0.1.15 — locked reference layout; presentation-only, auth code unchanged */
+:root{color-scheme:dark}
+main{width:min(100%,490px);padding:clamp(18px,4vw,26px) 24px calc(26px + env(safe-area-inset-bottom))}
+header{padding-top:clamp(80px,12vh,132px);margin-bottom:0!important}
+header .brand{margin:0!important}
+header .brand::before{content:"▧";font-size:55px;line-height:1.1;margin:0 0 9px}
+header .brand::after{font-size:clamp(56px,14vw,77px);letter-spacing:-.052em;line-height:1.04}
+header a{top:4px;right:0;font-size:12px}
+.brand-tagline{font-size:12px;letter-spacing:.20em;margin:11px 0 20px;text-transform:uppercase}
+.brand-tagline::before,.brand-tagline::after{content:"────";letter-spacing:0;margin:0 10px;opacity:.7}
+.brand-subtitle{font-size:clamp(17px,4.6vw,20px);max-width:340px;margin:0 auto 36px;line-height:1.38;text-shadow:0 2px 10px #000a}
+.panel#loginPanel{padding:29px 20px 25px;border-radius:27px;background:linear-gradient(145deg,#4d4134dd,#3b3328e8);border:1px solid #ffffff70;box-shadow:0 22px 55px #0008;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.panel#loginPanel h1{font-size:clamp(29px,7.7vw,37px);font-weight:750;letter-spacing:-.045em;margin-bottom:9px}
+.panel#loginPanel>.login-subtitle{font-size:15px;margin-bottom:28px}
+#loginPanel label{font-size:14px;margin-bottom:10px}
+#loginPanel input{min-height:55px;background:#faf8f5;border-radius:15px;color:#24231f}
+#loginPanel .actions{gap:13px;margin-top:21px}
+#loginPanel button{min-height:57px;border-radius:15px;font-size:16px}
+#magic{background:#174b3c;border:2px solid #6d9b80;box-shadow:0 5px 14px #0003}
+#choosePassword{background:#ffffff0a;border:2px solid #ffffffc9}
+#loginPanel #feedback{font-size:12px;color:#ded4c5;margin-top:23px}
+.version{padding-top:50px;text-shadow:0 2px 10px #000a}
+@media(max-height:740px){header{padding-top:55px}.brand-subtitle{margin-bottom:20px}.panel#loginPanel{padding-top:21px;padding-bottom:19px}.version{padding-top:18px}}
+@media(max-width:370px){main{padding-left:17px;padding-right:17px}.brand-tagline::before,.brand-tagline::after{content:"──"}}
 </style><script src="../project-template/mobile-view-policy.js?v=2"></script><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js"></script></head><body><main>
 <header><div class="brand">✦ CONTAINER13 <span class="muted">remember.</span></div><a href="./">Till Remember</a></header><p class="brand-tagline">— CONTAINER13 —</p><p class="brand-subtitle">Samla och dela dina<br>viktigaste ögonblick.</p><section class="panel" id="loginPanel"><h1>Välkommen tillbaka</h1><p class="login-subtitle">Välj hur du vill logga in på Remember.</p><form id="login"><label for="email">E-postadress</label><input id="email" type="email" autocomplete="email" required maxlength="254" placeholder="din@epost.se"><div class="actions" id="methods"><button id="magic" type="button" disabled>✉ Logga in med mejllänk</button><button id="choosePassword" type="button" class="secondary" disabled>Logga in med lösenord</button></div><div id="passwordStep" hidden><label for="password">Lösenord</label><input id="password" type="password" autocomplete="current-password" minlength="6"><div class="actions"><button id="send" type="submit" disabled>Logga in</button><button id="resetPassword" type="button" class="secondary" disabled>Skapa eller återställ lösenord via mejl</button><button id="backMethods" type="button" class="secondary">← Välj annat sätt</button></div></div></form><p id="feedback" class="status" role="status" aria-live="polite">Förbereder inloggningen…</p></section>
 <section class="panel" id="account" hidden><h2>Din anslutning</h2><p id="identity"></p><p>Webmasterbehörigheten kontrolleras på servern. Ett verifierat konto får inte automatiskt administratörsbehörighet.</p><details id="setPasswordArea"><summary>Byt eller återställ lösenord</summary><label for="newPassword">Ange ett nytt lösenord</label><input id="newPassword" type="password" autocomplete="new-password" minlength="12" placeholder="Minst 12 tecken"><div class="actions"><button id="savePassword" type="button">Spara lösenord</button></div><p id="passwordResult" role="status" aria-live="polite"></p></details><div class="actions"><a href="./dashboard.html" style="display:inline-flex;align-items:center;background:#d9e7a4;color:#10231f;border-radius:11px;padding:12px 15px;text-decoration:none;font-weight:750">Öppna Mina album</a><button id="check" type="button">Kontrollera webmasteråtkomst</button><button id="list" type="button" class="secondary">Visa album</button><button id="logout" type="button" class="secondary">Logga ut</button></div><p id="result" role="status" aria-live="polite"></p><div id="albums" role="status" aria-live="polite"></div></section>
@@ -67,7 +92,7 @@ header .brand .muted{display:none}
 <p class="muted" id="timeNote"></p><p class="muted">Fest/bröllop: 24 timmar från start. Resa/fiske: till 24 timmar efter slut. Standardgräns: 10 bilder.</p>
 <div class="actions"><button id="createButton" type="submit">Skapa testalbum</button></div></form>
 <p id="createResult" role="status" aria-live="polite"></p></section>
-<p class="version">Inloggning 0.1.14</p>
+<p class="version">Inloggning 0.1.15</p>
 <script type="module">
 const $=id=>document.getElementById(id);
 let client=null,session=null,busy=false,creationAllowed=false;
