@@ -3,7 +3,7 @@
 Gemensam albumtjänst under varumärket Container13. Arbetsnamn Remember, tänkt publik adress https://container13.se/remember/. Första pilot: fiskeresa.
 
 ## Status
-UI 0.1.20 är publicerad med fem lokala godkända bakgrunder. Inloggning, registrering, ägar-/gästalbum, privat bilduppladdning och QR-delning finns i aktuella källor och backend; verifieringsnivå varierar. Detta ersätter den äldre prototypbeskrivningen. Se PROJECT_CURRENT_STATE.json, senaste checkpoint i WORK_HANDOFF_2026-10-14.md och BACKGROUND_VERIFICATION_0.1.20.md för exakt evidens. Komplett produkt är fortsatt PENDING/UNVERIFIED; betalning och per-album-teman ingår inte i denna ändring.
+UI 0.1.21 är kandidat för förenklad albumöversikt, gemensam högupplöst godkänd bakgrund och serverstyrd webmaster-synlighet. Se senaste handoff för publiceringsstatus. Inloggning, registrering, ägar-/gästalbum, privat bilduppladdning och QR-delning finns i aktuella källor och backend; verifieringsnivå varierar. Detta ersätter den äldre prototypbeskrivningen. Se PROJECT_CURRENT_STATE.json, senaste checkpoint i WORK_HANDOFF_2026-10-14.md och BACKGROUND_VERIFICATION_0.1.20.md för exakt evidens. Komplett produkt är fortsatt PENDING/UNVERIFIED; betalning och per-album-teman ingår inte i denna ändring.
 
 ## Läsordning
 1. ../project-template/PROJECT_RELEASE_STANDARD.md

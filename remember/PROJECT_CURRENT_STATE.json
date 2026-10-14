@@ -8,13 +8,13 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.20",
+    "candidate": "0.1.21",
     "integrity": "PENDING"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.20",
-    "goal": "Approved five-background integration and concrete UI fixes",
+    "targetRelease": "0.1.21",
+    "goal": "Compact owner UI, sharper approved backdrop, server-gated webmaster visibility",
     "plan": [
       "UI-prototyp",
       "Backend och autentisering",
@@ -26,8 +26,8 @@
     "resumeInstruction": "Read WORK_HANDOFF_2026-10-14.md latest checkpoint and BACKGROUND_VERIFICATION_0.1.20.md. Verify actual HEAD and public bytes. Never replay database installation or rotate guest links. Physical iPhone acceptance and full authenticated E2E remain distinct gates."
   },
   "currentWork": {
-    "completed": "Five original WebP files extracted without re-encoding. Shared view mapping; old login background removed; warm panels/contrast and missing CTA styling corrected. Dashboard list failure/retry, registration initialization guard and direct owner upload entry tested with intercepted fixture APIs. 21 layout fixtures rendered in Chromium153; no horizontal overflow. Supabase read-only preflight: ACTIVE_HEALTHY, schema10, albums2, readyPhotos3, private bucket. No backend writes. Exact GitHub readback of all17 changed paths PASS. Pages38568594091 success for732369e7. All5 live WebPs200/image-webp, bytes identical to ZIP and image decode PASS. All6 HTML+CSS live bytes identical. Actual live desktop Chrome: login0.1.20 background visible and SDK ready, registration SDK ready and correct background, invalid guest album denied. Actual HTTP: owner-manager and gallery without login401; invalid guest metadata found=false.",
-    "next": "Physical iPhone Safari visual/gesture acceptance and authenticated real album/QR regression. Then continue existing product backlog; per-album themes need separate backend/design verification.",
+    "completed": "Compact Dashboard: one album heading, no duplicated help text, account details folded. Removed all effective backdrop blur in shared shell. Existing approved1536px login image reused across shell views: four low-resolution motifs retained but not displayed. New shared read-only server-confirmed webmaster visibility on login/dashboard, fail closed for403, errors and delayed old-session responses. No backend changes.21 viewport fixtures and eight role fixtures plus existing flow regression PASS.",
+    "next": "Publish0.1.21, exact readback/live byte check and signed-out smoke; then user real ordinary-account and webmaster-account check, physical iPhone visual acceptance.",
     "blocked": false,
     "blocker": null
   },
@@ -331,18 +331,12 @@
     }
   },
   "frontendRelease": {
-    "version": "0.1.20",
-    "rollbackCommit": "d1a9576114b81ed51de1c7a5e26996a91eafa786",
+    "version": "0.1.21",
+    "rollbackCommit": "f991abefed08d2d71e7014577d11a520a424e5f2",
     "scopeRiskClass": "MEDIUM",
-    "stage": "DEPLOYED + SCOPED RUNTIME PASS",
-    "deviceStatus": "UNVERIFIED; responsive viewport rendering is not physical DEVICE PASS",
-    "liveStatus": "PASS: exact public bytes for 5 WebPs and 7 runtime files; Pages38568594091 success; live Chrome desktop login and registration initialized; invalid guest link denied",
-    "runtimeCommit": "732369e79e6c5071af3288e1bed4b4bc030cf210",
-    "pagesRun": {
-      "id": 38568594091,
-      "conclusion": "success"
-    },
-    "exactGitHubReadback": true
+    "stage": "STATIC / FIXTURE PASS",
+    "liveStatus": "PENDING",
+    "deviceStatus": "Physical iPhone and real authenticated role regression pending"
   },
   "latestReadOnlyBackendPreflight": {
     "date": "2026-10-14",
