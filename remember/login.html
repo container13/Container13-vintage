@@ -26,6 +26,25 @@ button.secondary{background:transparent;color:#174b3c;border:1px solid #527c69}
 footer a{color:#fff}.version{color:#eee2d0}
 #feedback{color:#174b3c}
 @media(max-width:760px){main{padding-top:38px}form,.panel{padding:22px 18px}}
+
+/* Login visual fidelity pass 0.1.12: remove nested-card appearance and rebalance mobile layout. */
+body{background:radial-gradient(ellipse 60% 40% at 85% 11%,#f1c58c88 0%,transparent 100%),radial-gradient(ellipse 70% 45% at 5% 20%,#7b956c88 0%,transparent 100%),linear-gradient(168deg,#1d392f 0%,#526d50 28%,#c1a784 52%,#f2e6d5 78%,#f7f1e9 100%);background-attachment:fixed}
+main{max-width:480px;padding:28px 20px calc(40px + env(safe-area-inset-bottom))}
+header{margin-bottom:38px;align-items:center}
+header .brand{font-size:clamp(16px,4.4vw,21px);white-space:nowrap}
+header .brand .muted{font-size:inherit;letter-spacing:0;text-transform:none;color:#f4e9da}
+header a{font-size:14px;white-space:nowrap}
+h1{font-size:clamp(33px,8.4vw,42px);line-height:1.1;letter-spacing:-.045em;margin-bottom:13px}
+main>p:first-of-type{font-size:15px;line-height:1.45;margin:0 0 26px;color:#fff2e4}
+main>.panel:first-of-type{background:#faf5ebf4;border:1px solid #fff9efb5;padding:22px 20px 17px;border-radius:23px;box-shadow:0 16px 42px #132b2340}
+#login{padding:0;border:0;box-shadow:none;background:transparent;backdrop-filter:none}
+#login label{margin:0 0 8px;font-size:15px}
+#login input{min-height:51px}
+#login .actions{margin-top:18px;gap:11px}
+#login .actions button{min-height:52px;font-size:15px;padding:12px}
+#feedback{margin:15px 0 0;min-height:0;font-size:13px;line-height:1.4;color:#375d4d}
+.version{margin-top:14px;font-size:11px;color:#f6ede0}
+@media(max-width:390px){main{padding-inline:16px}header{gap:6px}header .brand{font-size:15px}header a{font-size:12px}main>.panel:first-of-type{padding:19px 16px}}
 </style><script src="../project-template/mobile-view-policy.js?v=2"></script><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js"></script></head><body><main>
 <header><div class="brand">✦ CONTAINER13 <span class="muted">remember.</span></div><a href="./">Till Remember</a></header>
 <h1>Välkommen tillbaka</h1><p>Välj hur du vill logga in på Remember.</p><section class="panel"><form id="login"><label for="email">E-postadress</label><input id="email" type="email" autocomplete="email" required maxlength="254" placeholder="din@epost.se"><div class="actions" id="methods"><button id="magic" type="button" disabled>✉ Logga in med mejllänk</button><button id="choosePassword" type="button" class="secondary" disabled>Logga in med lösenord</button></div><div id="passwordStep" hidden><label for="password">Lösenord</label><input id="password" type="password" autocomplete="current-password" minlength="6"><div class="actions"><button id="send" type="submit" disabled>Logga in</button><button id="resetPassword" type="button" class="secondary" disabled>Skapa eller återställ lösenord via mejl</button><button id="backMethods" type="button" class="secondary">← Välj annat sätt</button></div></div></form><p id="feedback" class="status" role="status" aria-live="polite">Förbereder inloggningen…</p></section>
@@ -38,7 +57,7 @@ footer a{color:#fff}.version{color:#eee2d0}
 <p class="muted" id="timeNote"></p><p class="muted">Fest/bröllop: 24 timmar från start. Resa/fiske: till 24 timmar efter slut. Standardgräns: 10 bilder.</p>
 <div class="actions"><button id="createButton" type="submit">Skapa testalbum</button></div></form>
 <p id="createResult" role="status" aria-live="polite"></p></section>
-<p class="version">Inloggning 0.1.11</p>
+<p class="version">Inloggning 0.1.12</p>
 <script type="module">
 const $=id=>document.getElementById(id);
 let client=null,session=null,busy=false,creationAllowed=false;
