@@ -4,11 +4,9 @@
 :root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color-scheme:dark;background:#10231f;color:#f6f3e9}*{box-sizing:border-box}body{margin:0}main{max-width:1100px;margin:auto;padding:24px 18px 70px}header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:30px}a{color:#d9e7a4}h1{font-size:clamp(30px,5vw,46px);margin:0 0 8px}p{line-height:1.5;color:#cbded2}.badge{display:inline-block;border:1px solid #8fbc9c;border-radius:99px;padding:6px 12px;color:#d9e7a4;font-size:13px}.notice{border-left:4px solid #d9e7a4;background:#263e32;border-radius:8px;padding:14px 18px;margin:24px 0}.layout{display:grid;grid-template-columns:minmax(240px,1fr) minmax(0,1.4fr);gap:20px}.panel{border:1px solid #406454;background:#19352d;border-radius:20px;padding:22px;min-width:0}.list{display:grid;gap:10px}.album{width:100%;background:#153025;border:1px solid #527b69;color:inherit;text-align:left;border-radius:12px;padding:14px;cursor:pointer}.album[aria-current=true]{outline:2px solid #d9e7a4}.album strong{display:block}.muted{color:#bdd0c2;font-size:13px}label{display:block;margin:15px 0 7px;font-weight:650}input,select{width:100%;min-width:0;padding:12px;background:#0c2119;color:#fff;border:1px solid #7da18e;border-radius:10px;font:inherit}.dates{display:grid;grid-template-columns:1fr 1fr;gap:12px}button{font:inherit;font-weight:750;border:0;border-radius:11px;padding:12px 15px;background:#d9e7a4;color:#10231f;cursor:pointer}button.secondary{background:transparent;color:#d9e7a4;border:1px solid #8aaf94}button:focus-visible,input:focus-visible{outline:3px solid #d9e7a4;outline-offset:3px}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.status{min-height:24px}.detail{padding:14px;border:1px solid #456b58;border-radius:12px;margin-top:14px}.detail p{margin:6px 0}.hidden{display:none!important}@media(max-width:760px){.layout{grid-template-columns:1fr}.dates{grid-template-columns:1fr}.panel{padding:18px}main{padding:18px 14px 60px}}
 
 main{max-width:720px}.panel{margin-top:24px}button:disabled{opacity:.55;cursor:wait}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}.actions button{min-height:46px}.brand{font-weight:800}.version{font-size:12px;color:#bdd0c2}
-</style><script src="../project-template/mobile-view-policy.js?v=2"></script><meta name="remember-mobile-policy" content="M-1.1"></head><body><main>
+main{max-width:480px;padding-top:34px}header{margin-bottom:42px}.panel{border-radius:24px;padding:25px 22px;background:#19352d}h1{font-size:38px}.actions{display:grid;grid-template-columns:1fr}.actions button{width:100%;text-align:center}#login .actions{gap:12px}#login .actions button{min-height:54px}#login label{margin-top:12px}#passwordStep{margin-top:18px}#feedback{font-size:14px}#account .actions{display:flex}#account .actions button{width:auto}#creation{display:none!important}</style><script src="../project-template/mobile-view-policy.js?v=2"></script><meta name="remember-mobile-policy" content="M-1.1"></head><body><main>
 <header><div class="brand">✦ CONTAINER13 <span class="muted">remember.</span></div><a href="./">Till Remember</a></header>
-<h1>Logga in</h1><p>Logga in direkt på datorn eller mobilen med e-post och lösenord. Mejllänk finns kvar som reserv.</p>
-<section class="panel"><form id="login"><label for="email">E-postadress</label><input id="email" type="email" autocomplete="email" required maxlength="254"><label for="password">Lösenord</label><input id="password" type="password" autocomplete="current-password" minlength="6"><div class="actions"><button id="send" type="submit" disabled>Logga in</button><button id="resetPassword" type="button" class="secondary" disabled>Skapa eller återställ lösenord</button><button id="magic" type="button" class="secondary" disabled>Skicka mejllänk i stället</button></div></form>
-<p id="feedback" class="status" role="status" aria-live="polite">Förbereder inloggningen…</p></section>
+<h1>Välkommen tillbaka</h1><p>Välj hur du vill logga in på Remember.</p><section class="panel"><form id="login"><label for="email">E-postadress</label><input id="email" type="email" autocomplete="email" required maxlength="254" placeholder="din@epost.se"><div class="actions" id="methods"><button id="magic" type="button" disabled>✉ Logga in med mejllänk</button><button id="choosePassword" type="button" class="secondary" disabled>Logga in med lösenord</button></div><div id="passwordStep" hidden><label for="password">Lösenord</label><input id="password" type="password" autocomplete="current-password" minlength="6"><div class="actions"><button id="send" type="submit" disabled>Logga in</button><button id="resetPassword" type="button" class="secondary" disabled>Skapa eller återställ lösenord via mejl</button><button id="backMethods" type="button" class="secondary">← Välj annat sätt</button></div></div></form><p id="feedback" class="status" role="status" aria-live="polite">Förbereder inloggningen…</p></section>
 <section class="panel" id="account" hidden><h2>Din anslutning</h2><p id="identity"></p><p>Webmasterbehörigheten kontrolleras på servern. Ett verifierat konto får inte automatiskt administratörsbehörighet.</p><details id="setPasswordArea"><summary>Byt eller återställ lösenord</summary><label for="newPassword">Ange ett nytt lösenord</label><input id="newPassword" type="password" autocomplete="new-password" minlength="12" placeholder="Minst 12 tecken"><div class="actions"><button id="savePassword" type="button">Spara lösenord</button></div><p id="passwordResult" role="status" aria-live="polite"></p></details><div class="actions"><a href="./dashboard.html" style="display:inline-flex;align-items:center;background:#d9e7a4;color:#10231f;border-radius:11px;padding:12px 15px;text-decoration:none;font-weight:750">Öppna Mina album</a><button id="check" type="button">Kontrollera webmasteråtkomst</button><button id="list" type="button" class="secondary">Visa album</button><button id="logout" type="button" class="secondary">Logga ut</button></div><p id="result" role="status" aria-live="polite"></p><div id="albums" role="status" aria-live="polite"></div></section>
 <section class="panel" id="creation" hidden><h2>Skapa ett testalbum</h2><p>Albumet sparas i Remember-testmiljön. Gästlänk och bilduppladdning kommer senare.</p>
 <form id="createForm"><label for="albumTitle">Albumets namn</label><input id="albumTitle" required maxlength="100">
@@ -18,7 +16,7 @@ main{max-width:720px}.panel{margin-top:24px}button:disabled{opacity:.55;cursor:w
 <p class="muted" id="timeNote"></p><p class="muted">Fest/bröllop: 24 timmar från start. Resa/fiske: till 24 timmar efter slut. Standardgräns: 10 bilder.</p>
 <div class="actions"><button id="createButton" type="submit">Skapa testalbum</button></div></form>
 <p id="createResult" role="status" aria-live="polite"></p></section>
-<p class="muted">Separat Remember-testmiljö. Albumändringar och bilduppladdning är inte aktiverade.</p><p class="version">Inloggningskandidat 0.1.9</p>
+<p class="version">Inloggning 0.1.10</p>
 <script type="module">
 const $=id=>document.getElementById(id);
 let client=null,session=null,busy=false,creationAllowed=false;
@@ -79,7 +77,7 @@ try{
    location.replace('./dashboard.html');
    throw new Error('redirecting');
  }
- message(data.session?'Du är redan inloggad. Kontrollera kontot ovan, välj Logga ut om du vill använda ett annat konto, eller öppna Mina album.':'Ange e-post och lösenord. Har kontot inget lösenord ännu? Använd mejllänk som reserv.');
+ message(data.session?'Du är redan inloggad. Välj Mina album eller Logga ut för att byta konto.':'Ange din e-postadress och välj inloggningssätt.');
  lock(false);
  client.auth.onAuthStateChange((event,next)=>{
    showSession(next);
@@ -90,11 +88,11 @@ try{
    }
  });
 }catch{history.replaceState(null,'',location.pathname);message('Inloggningen kunde inte startas. Ladda om sidan.');lock(true)}
-$('login').addEventListener('submit',async e=>{
+$('choosePassword').onclick=()=>{if(!$('email').reportValidity())return;$('methods').hidden=true;$('passwordStep').hidden=false;$('password').focus();message('Ange lösenord. Har du inget ännu? Välj Skapa eller återställ lösenord via mejl.');};$('backMethods').onclick=()=>{$('passwordStep').hidden=true;$('methods').hidden=false;$('password').value='';message('Välj inloggningssätt.');};$('login').addEventListener('submit',async e=>{
  e.preventDefault();if(busy||!client||!$('login').reportValidity())return;
- if(!$('password').value){message('Ange lösenord, eller välj mejllänk som reserv.');return;}
+ if($('passwordStep').hidden||!$('password').value){message('Ange lösenord eller välj mejllänk.');return;}
  lock(true);message('Loggar in…');
- try{const {error}=await client.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});$('password').value='';message(error?'Inloggningen misslyckades. Kontrollera e-post och lösenord.':'Du är inloggad.');}
+ try{const {error}=await client.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});$('password').value='';message(error?'Kunde inte logga in. Kontrollera lösenordet. Saknar du lösenord kan du skapa ett via mejllänk nedan.':'Du är inloggad.');if(!error)location.replace('./dashboard.html');}
  catch{message('Anslutningen misslyckades. Försök igen.')}finally{lock(false)}
 });
 $('resetPassword').onclick=async()=>{
@@ -104,7 +102,7 @@ $('resetPassword').onclick=async()=>{
    const {error}=await client.auth.resetPasswordForEmail($('email').value.trim(),{
      redirectTo:'https://container13.se/remember/login.html'
    });
-   message(error?'Kunde inte skicka lösenordslänk. Kontrollera att Supabase tillåter återställningsmejl och att adressen är godkänd.':'Om kontot finns skickas en lösenordslänk. Öppna mejlet på datorn och välj sedan nytt lösenord här.');
+   message(error?'Kunde inte skicka länken. Försök igen senare.':'Om kontot finns skickas en säker länk för att skapa eller återställa lösenordet.');
  }catch{message('Anslutningen misslyckades. Försök igen.')}
  finally{lock(false)}
 };
@@ -112,7 +110,7 @@ $('magic').onclick=async()=>{
  if(busy||!client||!$('email').reportValidity())return;
  lock(true);message('Skickar mejllänk…');
  try{const {error}=await client.auth.signInWithOtp({email:$('email').value.trim(),options:{shouldCreateUser:false,emailRedirectTo:'https://container13.se/remember/login.html'}});
- message(error?'Mejllänken kunde inte skickas.':'Om kontot finns har en inloggningslänk skickats.');}
+ message(error?'Mejllänken kunde inte skickas. Försök igen senare.':'Om kontot finns har en inloggningslänk skickats till adressen.');}
  catch{message('Anslutningen misslyckades.')}finally{lock(false)}
 };
 $('savePassword').onclick=async()=>{
@@ -128,7 +126,7 @@ $('savePassword').onclick=async()=>{
  finally{lock(false)}
 };
 $('check').onclick=()=>gateway('installation_status');$('list').onclick=()=>gateway('list');
-$('logout').onclick=async()=>{if(busy||!client)return;lock(true);try{const {error}=await client.auth.signOut({scope:'local'});if(error)throw error;showSession(null);message('Du är utloggad.')}catch{message('Utloggningen misslyckades. Försök igen.')}finally{lock(false)}};
+$('logout').onclick=async()=>{if(busy||!client)return;lock(true);try{const {error}=await client.auth.signOut({scope:'local'});if(error)throw error;showSession(null);message('Du är utloggad. Ange e-postadress för att logga in.')}catch{message('Utloggningen misslyckades. Försök igen.')}finally{lock(false)}};
 
 const draftKey='container13-remember-create-draft-v1';
 const localTimezone=Intl.DateTimeFormat().resolvedOptions().timeZone||'Europe/Stockholm';
