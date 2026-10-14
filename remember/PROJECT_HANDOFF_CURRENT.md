@@ -149,3 +149,13 @@ Efter ändringen av rotens `sw.js` (commit `235372a9fb990ae1e77f5680e5cc937698dd
 - `remember/album-admin.html` använder nu befintlig inloggad session, inte gästlänk, för både kamerabilder och filval. GitHub commit `d69a834` återläst PASS.
 - Efterkontroll: schema=9, album=1, bilder=0, anon execute på reserve=false, authenticated execute på complete=false, service_role reserve=true.
 - **E2E-bilduppladdning fortfarande inte verifierad på iPhone.** Nästa steg: en testbild i webmasterläge; granska serverresultat, sedan privat bildvisning.
+
+
+## LATEST HANDOFF — 2026-10-14 — Remember login redesign (supersedes older next-step directives for this work)
+- User approved a previously generated login mockup as the target design. The actual deployed login through reported version 0.1.12 did NOT match it; user reported no meaningful visible improvement. **Design NOT approved in production.**
+- Target visual elements described from the approved mockup: warm photographic background with sunlight/depth, elegant logo, dark semi-transparent compact login panel, balanced spacing and mobile proportions. Previous implementation had flat/gradient background, oversized pale/double-framed form and too much empty space.
+- Explicit user decision: restart visual implementation FROM the approved sketch, as closely as feasible; treat approved mockup as binding visual specification, not general inspiration. Preserve all real login functionality and fields. Do not add speculative functionality. Focus ONLY on login until actual iPhone screenshot has been compared side-by-side with the reference and user approves. No further illustrative proposals requested.
+- Reference asset: previously shared in chat; **not yet verified saved in repository**. Identify and store exact approved image with user authorization before claiming parity; do not substitute an invented reconstruction as exact reference.
+- Status: prior assistant reported login 0.1.12 committed/published and user observed no difference. This checkpoint records conversation/user evidence, NOT independently verified branch/deploy/runtime. Inspect current source and deployments before editing. Do not claim a new redesign has been implemented.
+- Next action: retrieve the approved image/reference, inspect current login HTML/CSS and live state, implement faithful photographic layout without touching authentication, verify deployment and actual iPhone rendering against reference, then request user acceptance.
+- Cross-project requirement: update shared project templates with mandatory handoff/readback and approved-design-fidelity rules so short resume commands work reliably. Do not overwrite more recent verified backend/photo-upload work documented elsewhere in this handoff.
