@@ -211,3 +211,6 @@
 ## Ä-1.1 — Stilren ägarvy (2026-10-14)
 - remember/owner.html omgjord med mörkgrön albumdesign, delning och uppladdningsingång, tydligt tomt album, helskärmsbild och kvarvarande serverstyrd radering med bekräftelse. Version Ä-1.1, commit 9c513fbe. Verkligt mobiltest återstår.
 - Galleriet gav tidigare 503 när service_role saknade SELECT på remember.album_photos. Migration remember_gallery_service_role_select_fix genomförd och has_table_privilege verifierad true. Verkligt API-/mobiltest återstår.
+
+## S-1.10 — En enda huvudadress
+- Enda adress användaren ska behöva minnas: https://container13.se/remember/. Startsidan kontrollerar befintlig Supabase-session med samma auth storage key som dashboard och skickar redan inloggade direkt till dashboard.html. Utloggade ser välkomstsidan. Interna ägar-/albumadresser är inte något användaren ska behöva hålla reda på. Commit 6df5dc0. Verkligt mobiltest återstår.
