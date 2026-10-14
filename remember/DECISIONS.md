@@ -201,3 +201,5 @@
 - Migration remember_service_role_schema_usage: GRANT USAGE ON SCHEMA remember TO service_role.
 - Efter migration verifierades schema_access=true och table_access=true för pending_album_registrations.
 - Verkligt registrerings- och Outlook-aktiveringstest återstår; inga påståenden om levererat mejl eller skapat album utan verifiering.
+
+- 2026-10-14: PostgREST HEAD mot pending_album_registrations svarade 406 efter schema-USAGE-fix. Migration remember_postgrest_schema_exposure satte authenticator pgrst.db_schemas till public, graphql_public, remember och skickade NOTIFY pgrst reload config. Bekräftat via pg_roles. E2E-test återstår.
