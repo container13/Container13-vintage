@@ -7,8 +7,6 @@
  const fingerprint=doc=>{
   // Compare original static markup, not live input values or DOM mutations.
   const parts=[doc.title,...Array.from(doc.querySelectorAll('style,script:not([src]),link[rel="stylesheet"]')).map(n=>n.textContent||n.getAttribute('href')||'')];
-  const body=doc.body?.cloneNode(true);
-  if(body){body.querySelectorAll('script,style,input,textarea,select').forEach(n=>n.remove());parts.push(body.textContent.replace(/\s+/g,' ').trim());}
   return parts.join('\n');
  };
  const baseline=()=>{initial=fingerprint(document)};
