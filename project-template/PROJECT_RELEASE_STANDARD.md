@@ -104,3 +104,10 @@ A general lesson discovered in any project should be proposed back to this templ
 - Preserve readable typography and OS text-size support. This explicit preference supersedes earlier template guidance to enable accessibility page pinch-zoom by default.
 - Verify real mobile behavior. Document any untested browser/device; do not claim success from source patterns alone.
 - Apply to active projects on their next relevant change. Do not redeploy unrelated projects just to copy this rule.
+
+## Mandatory session handoff and approved-design fidelity (2026-10-14)
+- Short resume commands such as "Fortsätt CCC", "Fortsätt Container13" and "Fortsätt Remember" must trigger reading the relevant canonical GitHub handoff and current-state files, then verifying branch/deployment/runtime before continuing. Never require the user to retell a session when its state can be retrieved.
+- At every meaningful checkpoint and before a chat switch, persist latest user decisions, exact current task, completed changes, latest commit/version, unverified work, blockers and one concrete next action. Read back the saved files. Do not let older handoff entries override newer dated checkpoints.
+- Approved visual mockups are acceptance specifications, not loose inspiration. Save the actual approved reference asset in the repository when available and authorized, with its path and approval status; otherwise explicitly record that the asset is missing. Never assert pixel-perfect equivalence without rendered side-by-side verification on the target device.
+- Preserve existing features and fields during visual redesign. Document and request approval for deviations. Never mark a redesign approved merely because CSS was committed or a deployment succeeded.
+- If handoff cannot be persisted or verified, tell the user explicitly before changing chats.
