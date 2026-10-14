@@ -162,3 +162,9 @@
 - Mörkt color-scheme gör datum-/tidskontroller tydligare på iPhone; formulärfält har minsta textstorlek 16 px och bättre avstånd.
 - Huvudknappen heter Skapa album, men det faktiska första steget skickar fortfarande endast en e-postaktiveringslänk. Automatisk albumskapning efter verifiering är ännu inte färdig.
 - Gemensam nypzoomspärr kvar; kod verifierad i GitHub, visuell kontroll på fysisk iPhone återstår.
+
+
+## S-1.9 — Samma bildyta på alla fyra uppslag
+- Alla exempelbilder använder enhetlig bildram med object-fit:cover så inga tomma sidofält uppstår vid olika bildproportioner.
+- Bröllopsbildens källa bytt igen till ett bredare bröllopsmotiv. Säkerställ på fysisk iPhone att ansikten är synliga och inte kapas; detta är ännu inte visuellt verifierat.
+- Övriga delar av fotoboken och registreringen lämnas oförändrade.
