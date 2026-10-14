@@ -1,4 +1,4 @@
-/* Container13 Remember shared design foundation v0.1.21
+/* Container13 Remember shared design foundation v0.1.22
    Presentation only: no authentication, album or guest logic. */
 :root {
   --remember-ink:#f9f3e8;
@@ -90,8 +90,20 @@ body.remember-shell[data-remember-view="albums"] #account > details {border:0;ma
 body.remember-shell[data-remember-view="albums"] #account > details[open] {background:var(--remember-panel);border-radius:14px;padding:14px}
 body.remember-shell[data-remember-view="albums"] #ownerPanel {margin-top:0;padding:16px}
 body.remember-shell[data-remember-view="albums"] #ownerAlbums a {padding:13px;min-height:52px;margin:0 0 10px!important}
-body.remember-shell[data-remember-view="albums"] header {margin-bottom:18px}
-body.remember-shell[data-remember-view="albums"] main > h1 {margin-bottom:16px}
+body.remember-shell[data-remember-view="albums"] header {display:block;position:relative;margin-bottom:16px;padding:15px 44px 0;text-align:center}
+body.remember-shell[data-remember-view="albums"] header .brand {font:500 clamp(42px,8vw,56px)/1.08 Georgia,serif;letter-spacing:-.045em;color:#fff7e9}
+body.remember-shell[data-remember-view="albums"] header .brand .muted {font:500 10px/1.5 system-ui;letter-spacing:.16em;color:#ecd4ae;margin-top:7px}
+body.remember-shell[data-remember-view="albums"] header::after {content:"";display:block;width:58px;height:1px;margin:19px auto 0;background:linear-gradient(90deg,transparent,#e9c596,transparent)}
+body.remember-shell[data-remember-view="albums"] .remember-home {position:absolute;right:0;top:8px;display:grid;place-items:center;width:42px;height:42px;border:1px solid #e9c59666;border-radius:50%;background:#33271bc2;color:#f9eddb;text-decoration:none}
+body.remember-shell[data-remember-view="albums"] .remember-home:hover {background:#584230;transform:translateY(-1px)}
+body.remember-shell[data-remember-view="albums"] main > h1 {margin:0 0 13px;text-align:center;font:500 clamp(24px,4vw,30px)/1.2 Georgia,serif;letter-spacing:-.02em}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child {text-align:center}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child > summary {display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:8px 16px;border:1px solid #e9c59666;border-radius:100px;background:#33271bba;color:#f1dfc5;font:600 13px/1.2 system-ui;list-style:none}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child > summary::-webkit-details-marker {display:none}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child > summary::before {content:"+";font:400 17px/1 Georgia,serif}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child[open] > summary::before {content:"−"}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child[open] {text-align:left}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child > summary:hover {background:#584230}
 body.remember-shell #webmasterTools {margin-top:18px;border-top:1px solid var(--remember-outline);padding-top:14px}
 body.remember-shell[data-remember-view="login"] #loginPanel,
 body.remember-shell[data-remember-view="login"] .panel {backdrop-filter:none;-webkit-backdrop-filter:none}

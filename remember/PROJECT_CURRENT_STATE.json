@@ -8,13 +8,13 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.21",
+    "candidate": "0.1.22",
     "integrity": "PENDING"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.21",
-    "goal": "Compact owner UI, sharper approved backdrop, server-gated webmaster visibility",
+    "targetRelease": "0.1.22",
+    "goal": "Refine Dashboard top identity without adding information",
     "plan": [
       "UI-prototyp",
       "Backend och autentisering",
@@ -26,8 +26,8 @@
     "resumeInstruction": "Read WORK_HANDOFF_2026-10-14.md latest checkpoint and BACKGROUND_VERIFICATION_0.1.20.md. Verify actual HEAD and public bytes. Never replay database installation or rotate guest links. Physical iPhone acceptance and full authenticated E2E remain distinct gates."
   },
   "currentWork": {
-    "completed": "Compact Dashboard: one album heading, no duplicated help text, account details folded. Removed all effective backdrop blur in shared shell. Existing approved1536px login image reused across shell views: four low-resolution motifs retained but not displayed. New shared read-only server-confirmed webmaster visibility on login/dashboard, fail closed for403, errors and delayed old-session responses. No backend changes.21 viewport fixtures and eight role fixtures plus existing flow regression PASS. Exact GitHub readback14 files PASS; Pages38571568443 success; actual signed-out live Chrome login0.1.21 ready/adminHidden=true/backdropFilter=none. Eight runtime files public byte match PASS.",
-    "next": "User reloads current page0.1.21 and checks compact Dashboard/sharper shared image, and no webmaster text with ordinary account. Real webmaster UI/role regression and physical iPhone acceptance remain pending.",
+    "completed": "Dashboard top redesigned with centered larger serif Remember brand, small byline, warm divider, quieter centered album title, accessible home icon link and styled collapsible Konto pill. No new copy, illustrations or behaviors. All page scripts and role helper unchanged.21 viewport states rendered without horizontal overflow.",
+    "next": "Publish0.1.22, verify exact files and deployment, user reloads Dashboard to judge actual top layout.",
     "blocked": false,
     "blocker": null
   },
@@ -331,17 +331,12 @@
     }
   },
   "frontendRelease": {
-    "version": "0.1.21",
-    "rollbackCommit": "f991abefed08d2d71e7014577d11a520a424e5f2",
+    "version": "0.1.22",
+    "rollbackCommit": "f07a309222b73fb713a4dea349bfe8832518a6ae",
     "scopeRiskClass": "MEDIUM",
-    "stage": "DEPLOYED + SIGNED-OUT SMOKE PASS",
-    "liveStatus": "PASS: eight runtime files exact public bytes, actual Chrome login0.1.21 ready with no backdrop blur and webmaster tools hidden; authenticated role checks only fixture-tested",
-    "deviceStatus": "Physical iPhone and real authenticated role regression pending",
-    "runtimeCommit": "9002051bc7aa7ea36a514c2eac80cb315fd02d66",
-    "pagesRun": {
-      "id": 38571568443,
-      "conclusion": "success"
-    }
+    "stage": "STATIC / RENDER PASS",
+    "liveStatus": "PENDING",
+    "deviceStatus": "User visual acceptance pending"
   },
   "latestReadOnlyBackendPreflight": {
     "date": "2026-10-14",
