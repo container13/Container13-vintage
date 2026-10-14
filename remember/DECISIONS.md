@@ -203,3 +203,5 @@
 - Verkligt registrerings- och Outlook-aktiveringstest återstår; inga påståenden om levererat mejl eller skapat album utan verifiering.
 
 - 2026-10-14: PostgREST HEAD mot pending_album_registrations svarade 406 efter schema-USAGE-fix. Migration remember_postgrest_schema_exposure satte authenticator pgrst.db_schemas till public, graphql_public, remember och skickade NOTIFY pgrst reload config. Bekräftat via pg_roles. E2E-test återstår.
+
+- 2026-10-14: Efter att remember exponerats gav PostgREST 404 vid HEAD och INSERT mot pending_album_registrations. Migration remember_pending_table_schema_cache_refresh uppdaterade tabellkommentar för att initiera schema-cache-refresh; verifierad kommentar i DB. API-anrop och verklig registrering ännu ej verifierade. Ingen frontendändring.
