@@ -217,3 +217,6 @@
 
 ## Inloggning 0.1.9 — Synligt aktivt konto och kontobyte
 - När användaren väljer 'Jag har redan ett konto' får login.html inte automatiskt omdirigera vid befintlig session. Visa aktiv e-postadress och Logga ut samt Öppna Mina album. Därmed kan användaren uttryckligen byta konto utan att konton eller album ändras. Endast uttrycklig ?continue=1 tillåter automatisk redirect på login.html. Huvudadressen /remember/ fortsätter automatiskt till dashboard för inloggad användare. Commit dd50bd6; verkligt iPhone-test återstår.
+
+## Inloggning 0.1.10 — E-post först, två val
+- login.html har ett e-postfält och två primära val: mejllänk eller lösenord. Lösenordsfältet visas endast vid valt lösenordsflöde. Vid misslyckad lösenordsinloggning erbjuds lösenordsskapande/återställning via mejl utan kontouppräkning. Föråldrad testmiljötext borttagen. Commit 313e1444. Mobiltest och kontroll av hidden-styling återstår; vidare patchförsök blockerades av verktygets säkerhetskontroll.
