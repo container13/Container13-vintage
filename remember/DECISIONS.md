@@ -129,3 +129,10 @@
 - remember/index.html förenklad kundstartsida, remember/register.html formulär för albumutkast + e-postlänk via Supabase OTP, remember/activate.html verifierar session och skickar vidare till Dashboard.
 - Utkast lagras enbart i sessionStorage på enheten. Album skapas **inte** automatiskt ännu; säker server-side skapning och återhämtning av utkast mellan enheter återstår. E-postleverans och redirect URL i Supabase Auth måste verifieras innan externt test.
 - Gamla gästvyn, befintliga album och länkar är inte ändrade av detta steg. Versionsetiketter S-1.0 och R-1.0.
+
+
+## S-1.1 — Remember-varumärke och välkomstbok
+- Startsidan profileras som 'Remember.' med 'by Container13' under, inte 'hosted by'.
+- Mobil och desktop: fyra exempelbilder i en fotobok som bläddrar automatiskt var fjärde sekund med sidvändningsanimation; användaren kan svepa eller trycka föregående/nästa.
+- Fast footer med 'Kom igång med e-post' till registreringsflödet, gratisgräns och inloggningslänk.
+- Respektera minskad rörelse i systeminställningarna; bilderna är externa referensbilder som bör ersättas med egna licensgranskade bilder inför lansering. Enhetstest av animation och layout återstår.
