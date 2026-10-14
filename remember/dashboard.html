@@ -30,8 +30,8 @@ async function loadOwnedAlbums(){
  try{const {data}=await client.auth.getSession();if(!data.session)return;
  const response=await fetch('https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-owner-manager',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+data.session.access_token},body:JSON.stringify({action:'list'}),cache:'no-store'});
  const body=await response.json();if(!response.ok||!body.ok)throw Error();
- const panel=$('ownerPanel'),list=$('ownerAlbums');list.replaceChildren();panel.hidden=!body.albums.length;
- for(const album of body.albums){const a=document.createElement('a');a.href='./owner.html?id='+encodeURIComponent(album.id)+'&v=a10';a.textContent='⚙ Hantera '+album.title;a.style.display='block';a.style.margin='12px 0';list.append(a);}
+ const panel=$('ownerPanel'),list=$('ownerAlbums');list.replaceChildren();panel.hidden=false;
+ for(const album of body.albums){const a=document.createElement('a');a.href='./owner.html?id='+encodeURIComponent(album.id)+'&v=a10';a.textContent=album.title+' →';a.style.display='block';a.style.margin='12px 0';list.append(a);}
  }catch{$('ownerPanel').hidden=true;}
 }
 async function gateway(action){
