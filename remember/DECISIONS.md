@@ -136,3 +136,9 @@
 - Mobil och desktop: fyra exempelbilder i en fotobok som bläddrar automatiskt var fjärde sekund med sidvändningsanimation; användaren kan svepa eller trycka föregående/nästa.
 - Fast footer med 'Kom igång med e-post' till registreringsflödet, gratisgräns och inloggningslänk.
 - Respektera minskad rörelse i systeminställningarna; bilderna är externa referensbilder som bör ersättas med egna licensgranskade bilder inför lansering. Enhetstest av animation och layout återstår.
+
+
+## S-1.2 — Stilrenare välkomstbok
+- Minskad bokhöjd och färre instruktionstexter i mobilvyn.
+- Fotoboken har två överlappande papperssidor: nästa foto läggs på undre sidan före vändningen, så det syns medan den gamla sidan vänds bort.
+- Verifierat genom återläsning från GitHub. Visuellt test på iPhone återstår.
