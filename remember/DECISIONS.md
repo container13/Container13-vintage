@@ -207,3 +207,7 @@
 - 2026-10-14: Efter att remember exponerats gav PostgREST 404 vid HEAD och INSERT mot pending_album_registrations. Migration remember_pending_table_schema_cache_refresh uppdaterade tabellkommentar för att initiera schema-cache-refresh; verifierad kommentar i DB. API-anrop och verklig registrering ännu ej verifierade. Ingen frontendändring.
 
 - 2026-10-14: Verklig aktiveringslänk verifierade användaren och läste pending registration (200), men album SELECT/INSERT gav 403. Migration remember_service_role_albums_permissions gav SELECT och INSERT på remember.albums till service_role; båda verifierades true. Nytt verkligt aktiveringstest återstår; använd befintlig verifierad session, skicka inte om mejl i onödan.
+
+## Ä-1.1 — Stilren ägarvy (2026-10-14)
+- remember/owner.html omgjord med mörkgrön albumdesign, delning och uppladdningsingång, tydligt tomt album, helskärmsbild och kvarvarande serverstyrd radering med bekräftelse. Version Ä-1.1, commit 9c513fbe. Verkligt mobiltest återstår.
+- Galleriet gav tidigare 503 när service_role saknade SELECT på remember.album_photos. Migration remember_gallery_service_role_select_fix genomförd och has_table_privilege verifierad true. Verkligt API-/mobiltest återstår.
