@@ -4,7 +4,29 @@
 :root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color-scheme:dark;background:#10231f;color:#f6f3e9}*{box-sizing:border-box}body{margin:0}main{max-width:1100px;margin:auto;padding:24px 18px 70px}header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:30px}a{color:#d9e7a4}h1{font-size:clamp(30px,5vw,46px);margin:0 0 8px}p{line-height:1.5;color:#cbded2}.badge{display:inline-block;border:1px solid #8fbc9c;border-radius:99px;padding:6px 12px;color:#d9e7a4;font-size:13px}.notice{border-left:4px solid #d9e7a4;background:#263e32;border-radius:8px;padding:14px 18px;margin:24px 0}.layout{display:grid;grid-template-columns:minmax(240px,1fr) minmax(0,1.4fr);gap:20px}.panel{border:1px solid #406454;background:#19352d;border-radius:20px;padding:22px;min-width:0}.list{display:grid;gap:10px}.album{width:100%;background:#153025;border:1px solid #527b69;color:inherit;text-align:left;border-radius:12px;padding:14px;cursor:pointer}.album[aria-current=true]{outline:2px solid #d9e7a4}.album strong{display:block}.muted{color:#bdd0c2;font-size:13px}label{display:block;margin:15px 0 7px;font-weight:650}input,select{width:100%;min-width:0;padding:12px;background:#0c2119;color:#fff;border:1px solid #7da18e;border-radius:10px;font:inherit}.dates{display:grid;grid-template-columns:1fr 1fr;gap:12px}button{font:inherit;font-weight:750;border:0;border-radius:11px;padding:12px 15px;background:#d9e7a4;color:#10231f;cursor:pointer}button.secondary{background:transparent;color:#d9e7a4;border:1px solid #8aaf94}button:focus-visible,input:focus-visible{outline:3px solid #d9e7a4;outline-offset:3px}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.status{min-height:24px}.detail{padding:14px;border:1px solid #456b58;border-radius:12px;margin-top:14px}.detail p{margin:6px 0}.hidden{display:none!important}@media(max-width:760px){.layout{grid-template-columns:1fr}.dates{grid-template-columns:1fr}.panel{padding:18px}main{padding:18px 14px 60px}}
 
 main{max-width:720px}.panel{margin-top:24px}details{border-top:1px solid #456b58;margin-top:18px;padding-top:16px}summary{cursor:pointer;font-weight:700}[hidden]{display:none!important}button:disabled{opacity:.55;cursor:wait}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}.actions button{min-height:46px}.brand{font-weight:800}.version{font-size:12px;color:#bdd0c2}
-.brand{font:500 28px Georgia,serif;letter-spacing:-.035em}.brand .muted{font:11px system-ui;letter-spacing:.08em;color:#d9e7a4}h1{font:500 clamp(36px,9vw,52px) Georgia,serif;letter-spacing:-.035em}.panel{margin-top:16px}#account{padding:18px}#account h2{font:500 22px Georgia,serif;margin:0 0 6px}#identity{margin:0}#ownerPanel h2{font:500 28px Georgia,serif;margin:0 0 8px}#ownerAlbums a{display:block!important;padding:16px;border-radius:12px;border:1px solid #527b69;background:#102820;color:#f6f3e9;text-decoration:none;font-weight:700}#account details{margin-top:12px}#account summary{font-size:13px;color:#a9bcae}@media(max-width:760px){header{flex-wrap:nowrap}main{padding-top:28px}}\n.newAlbum{display:inline-block;padding:13px 18px;border-radius:12px;background:#d9e7a4;color:#10231f;text-decoration:none;font-weight:750}#ownerPanel{margin-top:16px}#ownerAlbums a{margin:10px 0!important}header{margin-bottom:26px}@media(max-width:760px){#account{padding:16px}#ownerPanel{padding:22px}}\n</style><script src="../project-template/mobile-view-policy.js?v=2"></script><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js"></script></head><body><main>
+.brand{font:500 28px Georgia,serif;letter-spacing:-.035em}.brand .muted{font:11px system-ui;letter-spacing:.08em;color:#d9e7a4}h1{font:500 clamp(36px,9vw,52px) Georgia,serif;letter-spacing:-.035em}.panel{margin-top:16px}#account{padding:18px}#account h2{font:500 22px Georgia,serif;margin:0 0 6px}#identity{margin:0}#ownerPanel h2{font:500 28px Georgia,serif;margin:0 0 8px}#ownerAlbums a{display:block!important;padding:16px;border-radius:12px;border:1px solid #527b69;background:#102820;color:#f6f3e9;text-decoration:none;font-weight:700}#account details{margin-top:12px}#account summary{font-size:13px;color:#a9bcae}@media(max-width:760px){header{flex-wrap:nowrap}main{padding-top:28px}}\n.newAlbum{display:inline-block;padding:13px 18px;border-radius:12px;background:#d9e7a4;color:#10231f;text-decoration:none;font-weight:750}#ownerPanel{margin-top:16px}#ownerAlbums a{margin:10px 0!important}header{margin-bottom:26px}@media(max-width:760px){#account{padding:16px}#ownerPanel{padding:22px}}\n
+/* Remember warm identity — dashboard design 0.1.15. No behavioral changes. */
+:root{color-scheme:light;background:#f5eee3;color:#17382d}
+body{color:#17382d;background:radial-gradient(ellipse at 86% 0%,#d9b07c 0,transparent 35%),linear-gradient(165deg,#1b3c31 0%,#47624e 20%,#e9d9c0 43%,#f7f0e6 72%);min-height:100dvh;background-attachment:fixed}
+main{padding-top:35px}
+header .brand{color:#fff;text-shadow:0 2px 12px #10282088}
+header .brand .muted{color:#f0dfb8}
+header a{color:#fff}
+h1{color:#fff;text-shadow:0 2px 16px #17382d55}
+main>p:not(.version){color:#fff2de}
+.panel{background:#faf5edf2;color:#17382d;border:1px solid #ffffffa6;border-radius:24px;box-shadow:0 16px 38px #112a2430;backdrop-filter:blur(12px)}
+.panel h2,#ownerPanel h2,#account h2{color:#17382d}
+.panel p,.panel .muted,#identity{color:#526b5e}
+#ownerAlbums a{background:#fffdf9;color:#17382d;border:1px solid #d4d1c6;border-radius:15px;box-shadow:0 5px 14px #17382d12;min-height:68px;display:flex!important;align-items:center}
+.newAlbum,button,button:not(.secondary){background:#174b3c;color:#fff;border-radius:13px}
+button.secondary{background:transparent;color:#174b3c;border:1px solid #759787}
+input,select{background:#fffdf9;color:#17382d;border:1px solid #c6c5b9;border-radius:12px;min-height:50px}
+label{color:#17382d}
+#account details{border-top:1px solid #d8d5c9}
+#account summary{color:#526b5e}
+.version{color:#526b5e}
+@media(max-width:760px){main{padding:32px 16px 70px}h1{font-size:clamp(34px,9vw,45px)}#ownerPanel{padding:20px}}
+</style><script src="../project-template/mobile-view-policy.js?v=2"></script><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js"></script></head><body><main>
 <header><div class="brand">Remember. <span class="muted">by Container13</span></div><a href="./">Till Remember</a></header>
 <h1>Mina album</h1><p>Öppna ett album för att fotografera, lägga till bilder eller hantera delning.</p>
 <section class="panel" id="loginPanel" hidden><form id="login"><label for="email">E-postadress</label><input id="email" type="email" autocomplete="email" required maxlength="254"><label for="password">Lösenord</label><input id="password" type="password" autocomplete="current-password" minlength="6"><div class="actions"><button id="send" type="submit" disabled>Logga in</button><button id="resetPassword" type="button" class="secondary" disabled>Skapa eller återställ lösenord</button><button id="magic" type="button" class="secondary" disabled>Skicka mejllänk i stället</button></div></form>
@@ -18,7 +40,7 @@ main{max-width:720px}.panel{margin-top:24px}details{border-top:1px solid #456b58
 <p class="muted" id="timeNote"></p><p class="muted">Fest/bröllop: 24 timmar från start. Resa/fiske: till 24 timmar efter slut. Standardgräns: 10 bilder.</p>
 <div class="actions"><button id="createButton" type="submit">Skapa testalbum</button></div></form>
 <p id="createResult" role="status" aria-live="polite"></p></details></section>
-<p class="version">Dashboard 0.1.14</p>
+<p class="version">Dashboard 0.1.15</p>
 <script type="module">
 const $=id=>document.getElementById(id);
 let client=null,session=null,busy=false,creationAllowed=false;
