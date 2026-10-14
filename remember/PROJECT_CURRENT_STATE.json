@@ -26,10 +26,10 @@
     "resumeInstruction": "Read WORK_HANDOFF_2026-10-14.md latest checkpoint and BACKGROUND_VERIFICATION_0.1.20.md. Verify actual HEAD and public bytes. Never replay database installation or rotate guest links. Physical iPhone acceptance and full authenticated E2E remain distinct gates."
   },
   "currentWork": {
-    "completed": "Mail failure diagnosed from actual Auth logs: over_email_send_rate_limit429 at15:45. Public DNS NS Cloudflare, root MX smtp.rzone.de verified. Resend SMTP docs/pricing reviewed; connector discovered and suggested; exact nonsecret SMTP config prepared. No SMTP/DNS changes, secret keys or test emails. Existing UI0.1.23 still live.",
-    "next": "User installs/connects Resend, then resume domain verification and actual SMTP setup. Get exact DNS values from provider; preserve root receiving MX; actual outbound mail success is required before calling setup complete.",
+    "completed": "Resend installed/authenticated. Domain container13.se created and read back, eu-west-1, sending enabled, receiving disabled, tracking disabled, verification not_started. Exact DNS records displayed and saved. User chose GitHub in secure Cloudflare sign-in. OAuth screen asks only read-only email addresses, not repository access. Authorize click auto-review rejected; no grant or DNS update performed. Supabase SMTP unchanged and no key/test email created.",
+    "next": "Ask explicit approval for Cloudflare to read GitHub email addresses, then resume existing OAuth tab. Do not retry denied grant before explicit approval. Continue DNS, provider verification, SMTP and real auth delivery.",
     "blocked": true,
-    "blocker": "Required Resend connection not installed/connected; DNS account access and Supabase SMTP control still needed."
+    "blocker": "Auto-review rejected Cloudflare email OAuth access grant; explicit approval needed."
   },
   "pausedWork": {
     "fotobok": "Parkerad idé; inte i första releasen."
@@ -356,7 +356,7 @@
     "scope": "Counts and deployment metadata only; not an authenticated end-to-end test. Earlier databaseEvidence is historical."
   },
   "mailSetup": {
-    "status": "PREPARED_NOT_CONFIGURED",
+    "status": "DOMAIN_CREATED_AWAITING_DNS_ACCESS",
     "provider": "Resend Free candidate",
     "domain": "container13.se",
     "dnsProvider": "Cloudflare (public NS verified)",
@@ -369,15 +369,48 @@
     },
     "senderName": "Container13 Remember",
     "senderEmailCandidate": "noreply@container13.se",
-    "resendConnection": "Suggested; not installed/connected at last confirmed check",
-    "next": "User installs/connects Resend. Then verify sending domain with exact provider-issued DNS records, configure Supabase SMTP, inspect send limits and verify requested auth flow. No paid subscription or overages enabled.",
-    "blocker": "No authenticated Resend/DNS access; Supabase MCP has no Auth SMTP configuration capability. Actual server settings unchanged.",
+    "resendConnection": "Installed and authenticated; actual list/create/get domain calls succeeded",
+    "next": "User explicitly approves Cloudflare read-only access to GitHub email addresses, or chooses another login method. Resume same browser tab/auth flow, then configure exact DNS records, verify domain, configure SMTP and test intended auth delivery.",
+    "blocker": "Cloudflare GitHub sign-in paused at read-only email OAuth grant; automatic approval review rejected Authorize Cloudflare. Await explicit user approval; no DNS records applied.",
     "incident": {
       "observed": "2026-10-14 15:45 Europe/Stockholm",
       "endpoint": "/otp",
       "httpStatus": 429,
       "errorCode": "over_email_send_rate_limit",
       "scope": "Actual auth logs, not inferred from generic UI message"
-    }
+    },
+    "domainId": "db880ddc-dfdf-4f9b-9162-eabb096d1782",
+    "region": "eu-west-1",
+    "domainVerificationStatus": "not_started",
+    "openTracking": false,
+    "clickTracking": false,
+    "receivingEnabled": false,
+    "dnsRecords": [
+      {
+        "type": "TXT",
+        "name": "resend._domainkey",
+        "value": "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC993THJY34QTlLQwewmIQqeLVew96RPdozsCRZ0WbKecbmM7s2/MlkMiPXB4Owu8tj0sehYD39vnVUehhQ0iusk1m1I0SYg9zXbN0999oYlPz8l/akfT8c+oSHg5/FmMF5+br9ygHz1sJCcUNRRmCkXSosWHXkWXJc7X1g//CwwQIDAQAB",
+        "ttl": "Auto"
+      },
+      {
+        "type": "MX",
+        "name": "send",
+        "value": "feedback-smtp.eu-west-1.amazonses.com",
+        "priority": 10,
+        "ttl": "Auto"
+      },
+      {
+        "type": "TXT",
+        "name": "send",
+        "value": "v=spf1 include:amazonses.com ~all",
+        "ttl": "Auto"
+      },
+      {
+        "type": "CNAME",
+        "name": "rsend",
+        "value": "send.forge.rmta.net",
+        "ttl": "Auto"
+      }
+    ]
   }
 }
