@@ -182,3 +182,9 @@
 - Servern validerar JWT mot Supabase Auth och kräver verifierad e-post, kontrollerar intervall och skriver remember.albums.default_opens_at samt default_closes_at = start + days x 24 timmar; photo_limit=10. Återförsök med samma requestId är idempotenta och ägarbundna.
 - Uppladdningens befintliga serverkontroller ska använda albumets lagrade öppnings-/stängningstider; befintliga album och webbmasteröverstyrningar ändras inte.
 - Onboardingutkast lagras i localStorage för att klara e-postlänk i ny flik i samma webbläsare, men inte på annan enhet/webbläsare. Aktivering leder till owner.html?id=albumId efter lyckat skapande. Inget test med verklig e-postlänk eller ny bild genomfört ännu.
+
+
+## Dashboard 0.1.12 — Renodlad ägarvy
+- Ägarens album hämtas direkt via remember-owner-manager/list utan webmasterkontroll; webbmasterstatus och äldre teknisk albumlista döljs i standardvyn.
+- Mobil design anpassad till Remember: serifrubrik, diskret avsändare och klickbara albumkort. Webmasterfunktionerna är kvar i separat teknisk sektion och behörighetskontroller kvar på servern.
+- Nytt album efter aktiveringslänk från Outlook är ännu inte bekräftat. Om e-postlänken öppnas i en annan webbläsarkontext finns inte lokalt onboardingutkast och albumskapning kan utebli; måste rättas separat.
