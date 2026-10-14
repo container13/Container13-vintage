@@ -175,3 +175,10 @@
 - Ägaren väljer startdatum/tid och uppladdningstid i rullista med 1–28 dagar, förvalt 1 dag.
 - Draft i sessionStorage sparar title, starts, days och email. Denna ändring gäller registreringsgränssnittet; serverns tidsfönster och automatisk albumskapning efter e-postverifiering är ännu inte kopplade till detta val.
 - Tidigare kategoribaserade tidsfönster gäller befintliga album tills separat migrering har beslutats.
+
+
+## R-1.3 / A-1.2 — Ägarskapat album och serverstyrd tidsgräns
+- Efter verifierad e-post anropar activate.html den autentiserade remember-owner-manager v2 med en stabil requestId, titel, starttid (UTC), tidszon och days (heltal 1–28).
+- Servern validerar JWT mot Supabase Auth och kräver verifierad e-post, kontrollerar intervall och skriver remember.albums.default_opens_at samt default_closes_at = start + days x 24 timmar; photo_limit=10. Återförsök med samma requestId är idempotenta och ägarbundna.
+- Uppladdningens befintliga serverkontroller ska använda albumets lagrade öppnings-/stängningstider; befintliga album och webbmasteröverstyrningar ändras inte.
+- Onboardingutkast lagras i localStorage för att klara e-postlänk i ny flik i samma webbläsare, men inte på annan enhet/webbläsare. Aktivering leder till owner.html?id=albumId efter lyckat skapande. Inget test med verklig e-postlänk eller ny bild genomfört ännu.
