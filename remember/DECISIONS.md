@@ -148,3 +148,10 @@
 - Alla åtta kontrollerade HTML-vyer i remember/ (index, register, login, dashboard, owner, album, activate, album-admin) laddar den gemensamma project-template/mobile-view-policy.js?v=2.
 - Mobilvyer får inte nypzoomas; avsiktliga bildvisare kan opta in via data-image-zoom=true och hanterar enbart bildens zoom.
 - Varje vy märks med remember-mobile-policy M-1.1 och startsidan med S-1.6. Samtliga åtta filer återlästa och verifierade i GitHub. Verkligt test på iPhone återstår.
+
+
+## S-1.7 — Ny fiskebild och renare nedre del
+- Fiskeresor använder ett Unsplash-foto av flugfiske vid soluppgång (Samantha Deleo); bildens licens behöver fortsatt bedömas inför slutlig lansering.
+- Automatisk intervall ändrat från 6,5 till 3,25 sekunder; sidvändning kvar på 1,7 sekunder.
+- Under fotoboken finns inte längre en separat knapp; 'Så här fungerar det' ligger diskret ovanför huvudknappen i den förenklade nederdelen utan avskiljande linje och färgblock.
+- Inloggningslänken och gratisinformationen är nedtonade; registreringsknappen är huvudfokus. Test på iPhone återstår.
