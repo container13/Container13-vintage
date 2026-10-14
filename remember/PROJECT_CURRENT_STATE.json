@@ -26,8 +26,8 @@
     "resumeInstruction": "Read WORK_HANDOFF_2026-10-14.md latest checkpoint and BACKGROUND_VERIFICATION_0.1.20.md. Verify actual HEAD and public bytes. Never replay database installation or rotate guest links. Physical iPhone acceptance and full authenticated E2E remain distinct gates."
   },
   "currentWork": {
-    "completed": "Dashboard top redesigned with centered larger serif Remember brand, small byline, warm divider, quieter centered album title, accessible home icon link and styled collapsible Konto pill. No new copy, illustrations or behaviors. All page scripts and role helper unchanged.21 viewport states rendered without horizontal overflow. Extra320px inspection found brand/home overlap in0.1.22; fixed font clamp scaling in0.1.23.28 final fixture states PASS.",
-    "next": "Publish0.1.23, exact readback and deployed byte smoke; user reloads actual Dashboard for visual acceptance.",
+    "completed": "Dashboard top redesigned with centered larger serif Remember brand, small byline, warm divider, quieter centered album title, accessible home icon link and styled collapsible Konto pill. No new copy, illustrations or behaviors. All page scripts and role helper unchanged.21 viewport states rendered without horizontal overflow. Extra320px inspection found brand/home overlap in0.1.22; fixed font clamp scaling in0.1.23.28 final fixture states PASS. Exact GitHub readback12 files PASS. Pages38573323203 success for1e4b4119. Public Dashboard/CSS/login bytes match; actual Chrome login0.1.23 ready with adminHidden=true.",
+    "next": "User reloads current Dashboard0.1.23 to review refined header on actual device. Keep full release PENDING until remaining authenticated/device gates pass.",
     "blocked": false,
     "blocker": null
   },
@@ -334,9 +334,14 @@
     "version": "0.1.23",
     "rollbackCommit": "f07a309222b73fb713a4dea349bfe8832518a6ae",
     "scopeRiskClass": "MEDIUM",
-    "stage": "STATIC / RENDER PASS",
-    "liveStatus": "PENDING",
-    "deviceStatus": "User visual acceptance pending"
+    "stage": "DEPLOYED + SIGNED-OUT SMOKE PASS",
+    "liveStatus": "PASS: exact Dashboard/CSS/login public bytes; live Chrome login0.1.23 initialized/admin hidden. Actual authenticated header visual acceptance pending.",
+    "deviceStatus": "User visual acceptance pending",
+    "runtimeCommit": "1e4b4119ccb65202ee4cf0a6c4d0a177eba886ff",
+    "pagesRun": {
+      "id": 38573323203,
+      "conclusion": "success"
+    }
   },
   "latestReadOnlyBackendPreflight": {
     "date": "2026-10-14",
