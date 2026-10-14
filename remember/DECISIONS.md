@@ -142,3 +142,9 @@
 - Minskad bokhöjd och färre instruktionstexter i mobilvyn.
 - Fotoboken har två överlappande papperssidor: nästa foto läggs på undre sidan före vändningen, så det syns medan den gamla sidan vänds bort.
 - Verifierat genom återläsning från GitHub. Visuellt test på iPhone återstår.
+
+
+## M-1.1 — Global mobilpolicy i Remember (2026-10-14)
+- Alla åtta kontrollerade HTML-vyer i remember/ (index, register, login, dashboard, owner, album, activate, album-admin) laddar den gemensamma project-template/mobile-view-policy.js?v=2.
+- Mobilvyer får inte nypzoomas; avsiktliga bildvisare kan opta in via data-image-zoom=true och hanterar enbart bildens zoom.
+- Varje vy märks med remember-mobile-policy M-1.1 och startsidan med S-1.6. Samtliga åtta filer återlästa och verifierade i GitHub. Verkligt test på iPhone återstår.
