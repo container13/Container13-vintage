@@ -26,10 +26,10 @@
     "resumeInstruction": "Read WORK_HANDOFF_2026-10-14.md latest checkpoint and BACKGROUND_VERIFICATION_0.1.20.md. Verify actual HEAD and public bytes. Never replay database installation or rotate guest links. Physical iPhone acceptance and full authenticated E2E remain distinct gates."
   },
   "currentWork": {
-    "completed": "Dashboard top redesigned with centered larger serif Remember brand, small byline, warm divider, quieter centered album title, accessible home icon link and styled collapsible Konto pill. No new copy, illustrations or behaviors. All page scripts and role helper unchanged.21 viewport states rendered without horizontal overflow. Extra320px inspection found brand/home overlap in0.1.22; fixed font clamp scaling in0.1.23.28 final fixture states PASS. Exact GitHub readback12 files PASS. Pages38573323203 success for1e4b4119. Public Dashboard/CSS/login bytes match; actual Chrome login0.1.23 ready with adminHidden=true.",
-    "next": "User reloads current Dashboard0.1.23 to review refined header on actual device. Keep full release PENDING until remaining authenticated/device gates pass.",
-    "blocked": false,
-    "blocker": null
+    "completed": "Mail failure diagnosed from actual Auth logs: over_email_send_rate_limit429 at15:45. Public DNS NS Cloudflare, root MX smtp.rzone.de verified. Resend SMTP docs/pricing reviewed; connector discovered and suggested; exact nonsecret SMTP config prepared. No SMTP/DNS changes, secret keys or test emails. Existing UI0.1.23 still live.",
+    "next": "User installs/connects Resend, then resume domain verification and actual SMTP setup. Get exact DNS values from provider; preserve root receiving MX; actual outbound mail success is required before calling setup complete.",
+    "blocked": true,
+    "blocker": "Required Resend connection not installed/connected; DNS account access and Supabase SMTP control still needed."
   },
   "pausedWork": {
     "fotobok": "Parkerad idé; inte i första releasen."
@@ -354,5 +354,30 @@
     "edgeFunctionsActive": 8,
     "writesPerformed": false,
     "scope": "Counts and deployment metadata only; not an authenticated end-to-end test. Earlier databaseEvidence is historical."
+  },
+  "mailSetup": {
+    "status": "PREPARED_NOT_CONFIGURED",
+    "provider": "Resend Free candidate",
+    "domain": "container13.se",
+    "dnsProvider": "Cloudflare (public NS verified)",
+    "existingRootMx": "5 smtp.rzone.de.",
+    "smtp": {
+      "host": "smtp.resend.com",
+      "port": 465,
+      "username": "resend",
+      "credential": "Resend send-only key; not yet created or stored"
+    },
+    "senderName": "Container13 Remember",
+    "senderEmailCandidate": "noreply@container13.se",
+    "resendConnection": "Suggested; not installed/connected at last confirmed check",
+    "next": "User installs/connects Resend. Then verify sending domain with exact provider-issued DNS records, configure Supabase SMTP, inspect send limits and verify requested auth flow. No paid subscription or overages enabled.",
+    "blocker": "No authenticated Resend/DNS access; Supabase MCP has no Auth SMTP configuration capability. Actual server settings unchanged.",
+    "incident": {
+      "observed": "2026-10-14 15:45 Europe/Stockholm",
+      "endpoint": "/otp",
+      "httpStatus": 429,
+      "errorCode": "over_email_send_rate_limit",
+      "scope": "Actual auth logs, not inferred from generic UI message"
+    }
   }
 }

@@ -1,0 +1,9 @@
+# Remember transactional auth mail setup
+
+
+## Latest task — Auth mail setup — 2026-10-14
+User authorized fixing email delivery after actual login-link failures. Auth logs at15:45:18/26 Europe/Stockholm show HTTP429 over_email_send_rate_limit on/otp. Not a visual/header regression.
+Read-only public DNS: NS lucy.ns.cloudflare.com / zod.ns.cloudflare.com, root MX5 smtp.rzone.de. Existing incoming email must stay on the current MX; add only exact Resend-issued sending/authentication records after provider domain registration. Do not replace root MX or guess DKIM/SPF contents.
+Resend SMTP selected as free-plan candidate; official docs https://resend.com/docs/send-with-supabase-smtp confirmed host smtp.resend.com, port465, username resend, API key as server-side password, verified sender domain prerequisite. Sender candidate noreply@container13.se, name Container13 Remember. Official pricing currently shows Free daily cap100; not unlimited email. No payment/overages authorized or enabled. Avoid open/click tracking on auth links.
+Available Supabase connector cannot change Auth SMTP config. Resend connector found but not installed/connected; installation/connection suggested. Cloudflare connector search returned none. Setup is PREPARED, NOT CONFIGURED, NOT MAIL PASS. Do not claim connection or mail success. No credentials obtained, DNS/SMTP changes or test messages performed. UI remains0.1.23; documentation-only changes do not bump runtime version.
+Next concrete action: user installs/connects Resend; confirm actual connection, inspect account/domain, create/verify sender with provider-issued DNS records, configure SMTP via supported native integration or permitted UI, then request/test intended recipient's auth flow and verify delivery. Never request secret API keys/passwords in chat. Resume existing task after connection; do not ask user to repeat goal or reinstall DB.
