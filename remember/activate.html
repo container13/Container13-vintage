@@ -1,4 +1,29 @@
-<!doctype html><html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="referrer" content="no-referrer"><title>Remember – Aktivera</title><style>body{margin:0;background:#10231f;color:#f6f3e9;font:16px/1.5 system-ui}main{max-width:560px;margin:auto;padding:35px 18px}a{color:#d9e7a4}h1{font-size:32px}p{color:#cbded2}</style><script src="../project-template/mobile-view-policy.js?v=2"></script><meta name="remember-mobile-policy" content="M-1.1"></head><body><main><h1>Aktiverar Remember…</h1><p id="status" role="status">Kontrollerar din e-postlänk.</p><p><a href="./register.html">Tillbaka till registrering</a></p></main><script type="module">
-const status=document.getElementById('status');
-try{const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');const client=createClient('https://wykvztfmfbboxiqvuvwr.supabase.co','sb_publishable_qOSBb7U6TGnPQ8ypyYRLGg_GtYrraoG',{auth:{storage:localStorage,storageKey:'container13-remember-auth-v2',persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'}});const {data,error}=await client.auth.getSession();if(error||!data.session)throw Error('Länken kunde inte verifieras. Begär en ny aktiveringslänk.');history.replaceState(null,'',location.pathname);const draft=JSON.parse(sessionStorage.getItem('remember-owner-onboarding-v1')||'null');if(draft?.title){status.textContent='✓ E-postadressen är verifierad. Ditt album är ännu inte skapat. Vi fortsätter i Mina album.';}else{status.textContent='✓ Du är inloggad. Öppnar dina album.';}setTimeout(()=>location.replace('./dashboard.html'),1200);}catch(e){history.replaceState(null,'',location.pathname);status.textContent=e.message||'Aktiveringen misslyckades.';}
+<!doctype html><html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="referrer" content="no-referrer"><title>Remember – Aktivera A-1.1</title><style>body{margin:0;background:#10231f;color:#f6f3e9;font:16px/1.5 system-ui}main{max-width:560px;margin:auto;padding:35px 18px}a{color:#d9e7a4}h1{font-size:32px}p{color:#cbded2}</style><script src="../project-template/mobile-view-policy.js?v=2"></script><meta name="remember-mobile-policy" content="M-1.1"></head><body><main><h1>Aktiverar Remember…</h1><p id="status" role="status">Kontrollerar din e-postlänk.</p><p><a href="./register.html">Tillbaka till registrering</a></p></main><script type="module">
+const status=document.getElementById('status'),key='remember-owner-onboarding-v1',requestKey='remember-owner-create-request-v1';
+const api='https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-owner-manager';
+const publicKey='sb_publishable_qOSBb7U6TGnPQ8ypyYRLGg_GtYrraoG';
+try{
+ const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
+ const client=createClient('https://wykvztfmfbboxiqvuvwr.supabase.co',publicKey,{auth:{storage:localStorage,storageKey:'container13-remember-auth-v2',persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'}});
+ const {data,error}=await client.auth.getSession();
+ if(error||!data.session)throw Error('Länken kunde inte verifieras. Begär en ny aktiveringslänk.');
+ history.replaceState(null,'',location.pathname);
+ const draft=JSON.parse(sessionStorage.getItem(key)||'null');
+ if(!draft?.title){status.textContent='✓ Inloggad. Öppnar dina album.';setTimeout(()=>location.replace('./dashboard.html'),1100);}
+ else{
+   if(data.session.user.email?.toLowerCase()!==String(draft.email).trim().toLowerCase())throw Error('E-postkontot matchar inte albumets beställare.');
+   const days=Number(draft.days),start=new Date(draft.starts);
+   if(!Number.isInteger(days)||days<1||days>28||!Number.isFinite(start.getTime()))throw Error('Albumets datum eller uppladdningstid är ogiltig. Gå tillbaka till registreringen.');
+   const saved=JSON.parse(sessionStorage.getItem(requestKey)||'null');
+   const requestId=saved?.email===draft.email&&saved?.title===draft.title&&saved?.starts===draft.starts&&saved?.days===draft.days?saved.requestId:crypto.randomUUID();
+   sessionStorage.setItem(requestKey,JSON.stringify({...draft,requestId}));
+   status.textContent='E-postadressen är verifierad. Skapar ditt album…';
+   const response=await fetch(api,{method:'POST',headers:{'Content-Type':'application/json',apikey:publicKey,Authorization:'Bearer '+data.session.access_token},body:JSON.stringify({action:'create',requestId,title:draft.title,startsAt:start.toISOString(),days,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'Europe/Stockholm'})});
+   const result=await response.json().catch(()=>({}));
+   if(!response.ok||!result.ok||result.album?.id!==requestId)throw Error('Albumet kunde inte skapas just nu. Öppna aktiveringslänken igen för att försöka med samma album.');
+   sessionStorage.removeItem(key);sessionStorage.removeItem(requestKey);
+   status.textContent='✓ Albumet är skapat. Öppnar ditt album…';
+   setTimeout(()=>location.replace('./owner.html?id='+encodeURIComponent(requestId)),1100);
+ }
+}catch(e){history.replaceState(null,'',location.pathname);status.textContent=e.message||'Aktiveringen misslyckades.';}
 </script></body></html>
