@@ -155,3 +155,10 @@
 - Automatisk intervall ändrat från 6,5 till 3,25 sekunder; sidvändning kvar på 1,7 sekunder.
 - Under fotoboken finns inte längre en separat knapp; 'Så här fungerar det' ligger diskret ovanför huvudknappen i den förenklade nederdelen utan avskiljande linje och färgblock.
 - Inloggningslänken och gratisinformationen är nedtonade; registreringsknappen är huvudfokus. Test på iPhone återstår.
+
+
+## R-1.1 — Mobil registreringsdesign
+- Registreringssidan får samma Remember./by Container13-identitet som startsidan, kompakt centrerad rubrik och ett samlat formulärkort.
+- Mörkt color-scheme gör datum-/tidskontroller tydligare på iPhone; formulärfält har minsta textstorlek 16 px och bättre avstånd.
+- Huvudknappen heter Skapa album, men det faktiska första steget skickar fortfarande endast en e-postaktiveringslänk. Automatisk albumskapning efter verifiering är ännu inte färdig.
+- Gemensam nypzoomspärr kvar; kod verifierad i GitHub, visuell kontroll på fysisk iPhone återstår.
