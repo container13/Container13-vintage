@@ -8,3 +8,7 @@ Webmaster tools are default-hidden on login and Dashboard and revealed only afte
 Tests:21 rendered fixture states at mobile/tablet/desktop, no overflow; eight role fixtures across both pages (403,503,200, delayed positive response after logout); regression of login choices, album retry, account folding, owner QR/upload navigation, legacy-link protection, invalid guest link, registration initialization/error and portrait/landscape overflow. STATIC/FIXTURE PASS; publication and live check pending. Real ordinary/webmaster authenticated tests and physical-device acceptance still pending. No real data or links changed.
 
 Rollback: f991abefed08d2d71e7014577d11a520a424e5f2. Overall release remains PENDING. Documentation-only evidence commits do not bump runtime version.
+
+
+### Publication evidence0.1.21
+Runtime commit9002051bc7aa7ea36a514c2eac80cb315fd02d66; exact GitHub readback14 files PASS; Pages38571568443 success. All eight runtime files (six HTML, CSS, shared role helper) served exact bytes. Actual live Chrome login shows0.1.21, SDK ready, effective backdrop-filter:none and adminHidden:true. Anonymous live smoke only; authenticated ordinary/master cases are fixture PASS, not actual user-session PASS. User must reload the existing page to review compact/sharper Dashboard0.1.21 and ordinary-account role visibility. No new link or credential required. Physical-device and full product acceptance remain UNVERIFIED.
