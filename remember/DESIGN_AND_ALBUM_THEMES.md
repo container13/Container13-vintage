@@ -23,3 +23,6 @@
 - Varje faktisk kodändring ska få nytt versionsnummer.
 
 Status: Detta dokument låser beslutade krav. Det innebär INTE att UI, bildfiler, databas eller publicering är genomförda.
+
+
+Implementation candidate0.1.20: exact background/view mapping and verification limits are in BACKGROUND_VERIFICATION_0.1.20.md. Per-album themes remain out of this change.

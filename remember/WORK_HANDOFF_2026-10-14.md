@@ -36,3 +36,9 @@
 
 ## Överlämningsregel
 Vid nytt chattbyte: läs detta dokument, DESIGN_AND_ALBUM_THEMES, aktuell state, faktiska källfiler och senaste commits. Fortsätt från verifierad status, inte från antaganden. Dokumentera varje betydande beslut, implementering, test och kvarstående fel i GitHub.
+
+
+## Latest checkpoint — 2026-10-14 — UI 0.1.20 (supersedes older next-step directives)
+User authorized exact five-image upload/mapping and subsequently a broader concrete improvement review. Candidate0.1.20 prepared with original WebP assets, shared background mapping and warm legible panels. Existing profile is the Dashboard details section; its open state uses profil.webp. No new illustration or theme/database implementation. Old login Unsplash background removed; welcome-book photos are content and preserved.
+Concrete fixes: broken CTA CSS from literal backslash-n; silent album-list error→visible retry; registration waits for initialization; owner upload goes directly to existing guest link, without automatic replacement. Auth/API permissions, camera, quota, album storage and QR generation are preserved.
+Source/fixture tests PASS; publication/readback still pending at this checkpoint. See BACKGROUND_VERIFICATION_0.1.20.md for exact assets, tested viewport/fixture scope and remaining device/E2E gates. Actual Supabase preflight is schema10,2 albums,3 ready photos and private bucket, superseding earlier counts only; no backend writes. Full release remains PENDING/UNVERIFIED.

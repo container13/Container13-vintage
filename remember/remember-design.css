@@ -1,4 +1,4 @@
-/* Container13 Remember shared design foundation v0.1.17
+/* Container13 Remember shared design foundation v0.1.20
    Presentation only: no authentication, album or guest logic. */
 :root {
   --remember-ink:#f9f3e8;
@@ -10,19 +10,24 @@
   --remember-content:1080px;
 }
 html { background-color:#332c26; }
+body.remember-shell[data-remember-view="login"] {--remember-background:url("./assets/backgrounds/inloggning.webp")}
+body.remember-shell[data-remember-view="albums"] {--remember-background:url("./assets/backgrounds/mina-album.webp")}
+body.remember-shell[data-remember-view="create"] {--remember-background:url("./assets/backgrounds/skapa-album.webp")}
+body.remember-shell[data-remember-view="memories"] {--remember-background:url("./assets/backgrounds/titta-pa-minnen.webp")}
+/* Settings already live in Dashboard; use the profile motif while open. */
+body.remember-shell[data-remember-view="albums"]:has(#account > details[open]),
+body.remember-shell[data-remember-view="login"]:has(#setPasswordArea[open]) {--remember-background:url("./assets/backgrounds/profil.webp")}
 body.remember-shell {
   color:var(--remember-ink);
   min-height:100svh;
   background-color:#332c26;
-  background-image:linear-gradient(160deg,rgba(20,25,21,.56),rgba(55,39,28,.64)),
-    var(--remember-background,linear-gradient(135deg,#54473b,#292d26));
-  background-position:center;
-  background-size:cover;
-  background-attachment:scroll;
+  background-image:none;
+  isolation:isolate;
 }
 body.remember-shell::before {
-  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:radial-gradient(ellipse at 78% 14%,rgba(255,193,126,.18),transparent 54%);
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background:linear-gradient(160deg,rgba(35,25,18,.34),rgba(35,25,18,.58)),
+    var(--remember-background,linear-gradient(135deg,#54473b,#292d26)) center/cover no-repeat;
 }
 body.remember-shell > main {position:relative;z-index:1}
 body.remember-shell .panel,
@@ -41,7 +46,7 @@ body.remember-shell select {max-width:100%}
 body.remember-shell button {min-height:44px}
 body.remember-shell a {color:#e7e9bd}
 @media(max-width:767px) {
- body.remember-shell {background-position:center top}
+ body.remember-shell::before {background-position:center top}
  body.remember-shell main {padding-inline:clamp(14px,4vw,22px)}
  body.remember-shell .panel {padding:clamp(14px,4vw,20px)}
 }
@@ -56,3 +61,29 @@ body.remember-shell a {color:#e7e9bd}
    scroll-behavior:auto!important;animation-duration:.01ms!important;
  }
 }
+
+/* Reuse the shared warm panel on existing forms; leave viewer/camera layers alone. */
+body.remember-shell[data-remember-view="create"] #start,
+body.remember-shell[data-remember-view="memories"] main {
+ background:var(--remember-panel);border:1px solid var(--remember-outline);
+ border-radius:var(--remember-radius);box-shadow:0 12px 35px #0004;
+ backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+body.remember-shell[data-remember-view="memories"] {max-width:none;margin:0;padding:16px}
+body.remember-shell[data-remember-view="memories"] main {width:100%;max-width:850px;margin:0 auto;padding:18px;box-sizing:border-box}
+body.remember-shell .panel, body.remember-shell #start,
+body.remember-shell .panel h2,body.remember-shell #ownerPanel h2,
+body.remember-shell #account h2,body.remember-shell label {color:var(--remember-ink)}
+body.remember-shell .panel p,body.remember-shell .panel .muted,
+body.remember-shell #identity,body.remember-shell #account summary,
+body.remember-shell .fieldhint,body.remember-shell .version,
+body.remember-shell .intro,body.remember-shell #feedback {color:var(--remember-muted)}
+body.remember-shell button.secondary {color:var(--remember-ink);border-color:var(--remember-outline)}
+body.remember-shell #ownerAlbums a {background:rgba(44,33,24,.68);color:var(--remember-ink);border-color:var(--remember-outline)}
+body.remember-shell[data-remember-view="create"] main {max-width:480px}
+body.remember-shell[data-remember-view="login"] main {max-width:560px}
+body.remember-shell[data-remember-view="albums"] header .brand .muted {display:block;margin-top:4px}
+body.remember-shell .newAlbum {display:inline-block;padding:13px 18px;background:var(--remember-forest);color:#fff;text-decoration:none;border-radius:12px;font-weight:750}
+body.remember-shell .gallery,body.remember-shell .photo-card {background:rgba(44,33,24,.68);border-color:var(--remember-outline)}
+body.remember-shell :is(button,a,input,select,summary):focus-visible {outline:3px solid #f6d69f;outline-offset:3px}
+body.remember-shell h1,body.remember-shell #identity {overflow-wrap:anywhere}
