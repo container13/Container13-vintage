@@ -26,8 +26,8 @@
     "resumeInstruction": "Read WORK_HANDOFF_2026-10-14.md latest checkpoint and BACKGROUND_VERIFICATION_0.1.20.md. Verify actual HEAD and public bytes. Never replay database installation or rotate guest links. Physical iPhone acceptance and full authenticated E2E remain distinct gates."
   },
   "currentWork": {
-    "completed": "Five original WebP files extracted without re-encoding. Shared view mapping; old login background removed; warm panels/contrast and missing CTA styling corrected. Dashboard list failure/retry, registration initialization guard and direct owner upload entry tested with intercepted fixture APIs. 21 layout fixtures rendered in Chromium153; no horizontal overflow. Supabase read-only preflight: ACTIVE_HEALTHY, schema10, albums2, readyPhotos3, private bucket. No backend writes.",
-    "next": "Publish candidate and verify exact GitHub/live bytes plus live anonymous smoke. Then physical iPhone visual/gesture acceptance and real authenticated album/QR regression.",
+    "completed": "Five original WebP files extracted without re-encoding. Shared view mapping; old login background removed; warm panels/contrast and missing CTA styling corrected. Dashboard list failure/retry, registration initialization guard and direct owner upload entry tested with intercepted fixture APIs. 21 layout fixtures rendered in Chromium153; no horizontal overflow. Supabase read-only preflight: ACTIVE_HEALTHY, schema10, albums2, readyPhotos3, private bucket. No backend writes. Exact GitHub readback of all17 changed paths PASS. Pages38568594091 success for732369e7. All5 live WebPs200/image-webp, bytes identical to ZIP and image decode PASS. All6 HTML+CSS live bytes identical. Actual live desktop Chrome: login0.1.20 background visible and SDK ready, registration SDK ready and correct background, invalid guest album denied. Actual HTTP: owner-manager and gallery without login401; invalid guest metadata found=false.",
+    "next": "Physical iPhone Safari visual/gesture acceptance and authenticated real album/QR regression. Then continue existing product backlog; per-album themes need separate backend/design verification.",
     "blocked": false,
     "blocker": null
   },
@@ -334,9 +334,15 @@
     "version": "0.1.20",
     "rollbackCommit": "d1a9576114b81ed51de1c7a5e26996a91eafa786",
     "scopeRiskClass": "MEDIUM",
-    "stage": "STATIC PASS",
+    "stage": "DEPLOYED + SCOPED RUNTIME PASS",
     "deviceStatus": "UNVERIFIED; responsive viewport rendering is not physical DEVICE PASS",
-    "liveStatus": "PENDING"
+    "liveStatus": "PASS: exact public bytes for 5 WebPs and 7 runtime files; Pages38568594091 success; live Chrome desktop login and registration initialized; invalid guest link denied",
+    "runtimeCommit": "732369e79e6c5071af3288e1bed4b4bc030cf210",
+    "pagesRun": {
+      "id": 38568594091,
+      "conclusion": "success"
+    },
+    "exactGitHubReadback": true
   },
   "latestReadOnlyBackendPreflight": {
     "date": "2026-10-14",

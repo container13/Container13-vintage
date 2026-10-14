@@ -42,3 +42,15 @@ Vid nytt chattbyte: läs detta dokument, DESIGN_AND_ALBUM_THEMES, aktuell state,
 User authorized exact five-image upload/mapping and subsequently a broader concrete improvement review. Candidate0.1.20 prepared with original WebP assets, shared background mapping and warm legible panels. Existing profile is the Dashboard details section; its open state uses profil.webp. No new illustration or theme/database implementation. Old login Unsplash background removed; welcome-book photos are content and preserved.
 Concrete fixes: broken CTA CSS from literal backslash-n; silent album-list error→visible retry; registration waits for initialization; owner upload goes directly to existing guest link, without automatic replacement. Auth/API permissions, camera, quota, album storage and QR generation are preserved.
 Source/fixture tests PASS; publication/readback still pending at this checkpoint. See BACKGROUND_VERIFICATION_0.1.20.md for exact assets, tested viewport/fixture scope and remaining device/E2E gates. Actual Supabase preflight is schema10,2 albums,3 ready photos and private bucket, superseding earlier counts only; no backend writes. Full release remains PENDING/UNVERIFIED.
+
+
+## Publication evidence — 2026-10-14
+- Runtime commit: `732369e79e6c5071af3288e1bed4b4bc030cf210` on `ccc-demo-public-test`.
+- Exact GitHub readback PASS for all17 paths (5 binary assets +12 text files). Tree matched local expected tree exactly. Ref updated with expected SHA, no force.
+- Pages run `38568594091`: completed/success for the runtime commit.
+- All5 public assets: HTTP200, image/webp, decoded as valid WebP, exact original bytes. All6 HTML files +shared CSS also match public bytes exactly.
+- Actual Chrome desktop at container13.se: login0.1.20, correct photographic background visible, SDK initializes/enables login controls, no horizontal overflow. Registration correct background, controls and SDK initialization PASS. Album with no guest token shows denial and hides upload.
+- Actual HTTP negative regression: owner-manager/list without session401; photo-gallery without session401; guest-metadata invalid token200/found=false. No privileged bypass and no test writes.
+- Responsive mobile/tablet checks are the21 local rendered fixtures listed above, not live physical-device PASS. Additional live testing through local headless networking was unavailable; cloud Chrome desktop provided actual client evidence.
+- Authenticated live album/QR/upload regression and physical iPhone/Android remain UNVERIFIED. Overall product stays PENDING; this is a scoped deployed UI improvement.
+- Documentation-only verification updates do not change version0.1.20.

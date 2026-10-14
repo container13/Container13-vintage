@@ -1,6 +1,6 @@
 # Remember – installationskontroll
 
-Status: databasgrund installerad i separat testprojekt 2026-10-13; strukturell säkerhetskontroll PASS. Edge Function/webbdrift ej verifierad. Historiska avsnitt nedan beskriver tidigare kodkandidater.
+Senaste skrivskyddade kontroll 2026-10-14: container13-remember ACTIVE_HEALTHY, schemaversion10,2 album,3 färdiga bilder, privat bildbucket och8 aktiva Edge Functions. UI0.1.20 är publicerad med verifierade originalbakgrunder och begränsat live-smoketest. Detta är inte ett komplett installations-/säkerhets-/E2E-PASS. Historiska avsnitt nedan beskriver tidigare installationer; följ aktuell PROJECT_CURRENT_STATE och senaste handoff, kör aldrig om installationen blint.
 
 ## Funktion
 Den skyddade Remember-webmasterfunktionen har åtgärden `installation_status`. Efter verifierad Supabase-inloggning och kontroll av webmasterrollen kontrollerar den åtkomst till fem Remember-tabeller samt högsta registrerade schemaversion (förväntad version 1).
