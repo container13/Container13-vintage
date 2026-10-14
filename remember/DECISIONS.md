@@ -194,3 +194,10 @@
 - Kontosektionen heter Kontoinställningar. Webmasterknapparna döljs från den vanliga vyn men serverbehörigheterna är oförändrade.
 - Ägaralbum visas som klickbara kort. Tomt albumläge har tydlig text och länk till register.html för nytt album.
 - Styling av CTA och mobilkort förbättrad. GitHub-innehåll återläst och verifierat; visuell kontroll på iPhone samt verkligt Outlook-aktiveringsflöde återstår.
+
+
+## Supabase — behörighetsfix 2026-10-14
+- Registrering via remember-onboarding svarade 503. Diagnos: service_role saknade USAGE på schemat remember, trots tabellrättigheter.
+- Migration remember_service_role_schema_usage: GRANT USAGE ON SCHEMA remember TO service_role.
+- Efter migration verifierades schema_access=true och table_access=true för pending_album_registrations.
+- Verkligt registrerings- och Outlook-aktiveringstest återstår; inga påståenden om levererat mejl eller skapat album utan verifiering.
