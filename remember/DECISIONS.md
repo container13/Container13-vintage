@@ -205,3 +205,5 @@
 - 2026-10-14: PostgREST HEAD mot pending_album_registrations svarade 406 efter schema-USAGE-fix. Migration remember_postgrest_schema_exposure satte authenticator pgrst.db_schemas till public, graphql_public, remember och skickade NOTIFY pgrst reload config. Bekräftat via pg_roles. E2E-test återstår.
 
 - 2026-10-14: Efter att remember exponerats gav PostgREST 404 vid HEAD och INSERT mot pending_album_registrations. Migration remember_pending_table_schema_cache_refresh uppdaterade tabellkommentar för att initiera schema-cache-refresh; verifierad kommentar i DB. API-anrop och verklig registrering ännu ej verifierade. Ingen frontendändring.
+
+- 2026-10-14: Verklig aktiveringslänk verifierade användaren och läste pending registration (200), men album SELECT/INSERT gav 403. Migration remember_service_role_albums_permissions gav SELECT och INSERT på remember.albums till service_role; båda verifierades true. Nytt verkligt aktiveringstest återstår; använd befintlig verifierad session, skicka inte om mejl i onödan.
