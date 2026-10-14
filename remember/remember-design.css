@@ -1,4 +1,4 @@
-/* Container13 Remember shared design foundation v0.1.22
+/* Container13 Remember shared design foundation v0.1.23
    Presentation only: no authentication, album or guest logic. */
 :root {
   --remember-ink:#f9f3e8;
@@ -91,7 +91,7 @@ body.remember-shell[data-remember-view="albums"] #account > details[open] {backg
 body.remember-shell[data-remember-view="albums"] #ownerPanel {margin-top:0;padding:16px}
 body.remember-shell[data-remember-view="albums"] #ownerAlbums a {padding:13px;min-height:52px;margin:0 0 10px!important}
 body.remember-shell[data-remember-view="albums"] header {display:block;position:relative;margin-bottom:16px;padding:15px 44px 0;text-align:center}
-body.remember-shell[data-remember-view="albums"] header .brand {font:500 clamp(42px,8vw,56px)/1.08 Georgia,serif;letter-spacing:-.045em;color:#fff7e9}
+body.remember-shell[data-remember-view="albums"] header .brand {font:500 clamp(32px,10.5vw,56px)/1.08 Georgia,serif;letter-spacing:-.045em;color:#fff7e9}
 body.remember-shell[data-remember-view="albums"] header .brand .muted {font:500 10px/1.5 system-ui;letter-spacing:.16em;color:#ecd4ae;margin-top:7px}
 body.remember-shell[data-remember-view="albums"] header::after {content:"";display:block;width:58px;height:1px;margin:19px auto 0;background:linear-gradient(90deg,transparent,#e9c596,transparent)}
 body.remember-shell[data-remember-view="albums"] .remember-home {position:absolute;right:0;top:8px;display:grid;place-items:center;width:42px;height:42px;border:1px solid #e9c59666;border-radius:50%;background:#33271bc2;color:#f9eddb;text-decoration:none}

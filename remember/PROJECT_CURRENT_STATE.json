@@ -8,12 +8,12 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.22",
+    "candidate": "0.1.23",
     "integrity": "PENDING"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.22",
+    "targetRelease": "0.1.23",
     "goal": "Refine Dashboard top identity without adding information",
     "plan": [
       "UI-prototyp",
@@ -26,8 +26,8 @@
     "resumeInstruction": "Read WORK_HANDOFF_2026-10-14.md latest checkpoint and BACKGROUND_VERIFICATION_0.1.20.md. Verify actual HEAD and public bytes. Never replay database installation or rotate guest links. Physical iPhone acceptance and full authenticated E2E remain distinct gates."
   },
   "currentWork": {
-    "completed": "Dashboard top redesigned with centered larger serif Remember brand, small byline, warm divider, quieter centered album title, accessible home icon link and styled collapsible Konto pill. No new copy, illustrations or behaviors. All page scripts and role helper unchanged.21 viewport states rendered without horizontal overflow.",
-    "next": "Publish0.1.22, verify exact files and deployment, user reloads Dashboard to judge actual top layout.",
+    "completed": "Dashboard top redesigned with centered larger serif Remember brand, small byline, warm divider, quieter centered album title, accessible home icon link and styled collapsible Konto pill. No new copy, illustrations or behaviors. All page scripts and role helper unchanged.21 viewport states rendered without horizontal overflow. Extra320px inspection found brand/home overlap in0.1.22; fixed font clamp scaling in0.1.23.28 final fixture states PASS.",
+    "next": "Publish0.1.23, exact readback and deployed byte smoke; user reloads actual Dashboard for visual acceptance.",
     "blocked": false,
     "blocker": null
   },
@@ -331,7 +331,7 @@
     }
   },
   "frontendRelease": {
-    "version": "0.1.22",
+    "version": "0.1.23",
     "rollbackCommit": "f07a309222b73fb713a4dea349bfe8832518a6ae",
     "scopeRiskClass": "MEDIUM",
     "stage": "STATIC / RENDER PASS",

@@ -6,3 +6,7 @@ User supplied actual Dashboard0.1.21 screenshot and says top looks visually dull
 21 fixture render states at390×844,820×1180,1440×900 PASS, no horizontal overflow; Dashboard script exact equality PASS; git diff --check PASS. Publication/readback pending at checkpoint. Actual authenticated Dashboard appearance and physical iPhone acceptance remain user gate; source fixtures are not DEVICE PASS. Full product remains PENDING.
 
 Documentation-only evidence changes do not bump runtime version.
+
+
+## Final header candidate0.1.23 — 2026-10-14
+Extra320px rendering found0.1.22 brand/home overlap: fixed minimum font42px exceeded reserved header space.0.1.23 scales brand32px–56px with viewport width. Final28 rendered fixture states across320×568,390×844,820×1180,1440×900 PASS with no horizontal overflow; narrow Dashboard visually inspected with clear logo/home separation. Page scripts and role helper unchanged.0.1.22 runtime commit72b993279e5cb6d1657bd6bd280624e6d512053a is superseded for this header.0.1.23 readback/deploy/live pending at checkpoint. Actual user visual/device acceptance remains pending; no full release promotion.
