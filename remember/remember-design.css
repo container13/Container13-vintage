@@ -131,3 +131,16 @@ body.remember-shell[data-remember-view="login"] .panel {backdrop-filter:none;-we
   -webkit-overflow-scrolling:touch;
  }
 }
+
+/* Shared iPhone full-bleed rule: backdrop extends under status bar; controls stay safe. */
+@supports (padding-top:env(safe-area-inset-top)) {
+ body.remember-shell::before {
+  top:calc(-1 * env(safe-area-inset-top, 0px));
+ }
+ @media(max-width:767px) {
+  body.remember-shell:not([data-remember-view="albums"]) > main {
+   padding-top:max(22px, env(safe-area-inset-top, 0px));
+   padding-bottom:max(22px, env(safe-area-inset-bottom, 0px));
+  }
+ }
+}
