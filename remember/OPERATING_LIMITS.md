@@ -64,15 +64,15 @@ Read-only SQL i Remember-projektet:
 
 Aktuell total trafik, MAU, Edge-anrop och fullständig mailkvotförbrukning är **inte uppmätta** här. Okänt får inte visas som noll. Bildernas möjliga antal kan inte garanteras utifrån 1 GB: storlekar varierar och andra filer/rensningsrester kan förbruka utrymme.
 
-## Webmaster – beslutad riktning, ännu inte implementerad
+## Fristående driftpanel – beslut 2026-10-15 09:56, ännu inte implementerad
 
-Lägg en hopfälld **Drift och kapacitet** under befintlig serververifierad Webmaster-del. Vanliga konton ska varken se denna del eller kunna hämta privata driftdata.
+Driftpanelen ska vara fristående från Remember, med egen kod, version och publicering. Den kan samla driftstatus för Remember, CCC och andra projekt. Detta ersätter tidigare förslag om att bygga in driftpanelen i Remember. Remember behåller sin albumadministration: album, åtkomst och tidsfönster. Ingen driftpanelskod eller mätlogik ska läggas i Remember-klienten.
 
 Visa använt / gräns / återstår, period, källa och senaste hämtning för bildlagring, databas, mail/dygn och månad, trafik, MAU och Edge-anrop. Visa album/bildantal separat från leverantörskvoter. Visa Okänt eller Senast hämtat vid API-fel, inte en grön nolla. Uppdatera på begäran, inte vid varje bildvisning.
 
 Föreslagen visuell varning: 70 % information, 85 % planera åtgärd, 95 % brådskande. Dessa är interna rekommendationer, inte leverantörens faktiska spärrnivåer. Inga automatiska köp, raderingar eller mailutskick.
 
-Återanvänd befintlig remember-webmaster serverauktorisering per anrop. Läs inte service_role, Resend API-nyckel eller Management-token i webbläsaren. Leverantörernas faktureringsdata ska hämtas server-side med minsta möjliga behörighet och cache. Appens lokala räknare är inte en ersättning för leverantörens samlade kvoter. Ingen ny token, databasfunktion eller endpoint är skapad i denna dokumentändring.
+Driftpanelen börjar med enbart läsåtkomst och serververifierad behörighet per anrop. Återanvänd granskade åtkomstregler där lämpligt, men koppla inte driftpanelens klient eller publicering till Remember. Fel i driftpanelen ska inte blockera Remember. Läs inte service_role, Resend API-nyckel eller Management-token i webbläsaren. Leverantörernas faktureringsdata ska hämtas server-side med minsta möjliga behörighet och cache. Appens lokala räknare är inte en ersättning för leverantörens samlade kvoter. Ingen ny token, databasfunktion eller endpoint är skapad i denna dokumentändring.
 
 ## Underhåll och överlämning
 

@@ -220,3 +220,7 @@
 
 ## Inloggning 0.1.10 — E-post först, två val
 - login.html har ett e-postfält och två primära val: mejllänk eller lösenord. Lösenordsfältet visas endast vid valt lösenordsflöde. Vid misslyckad lösenordsinloggning erbjuds lösenordsskapande/återställning via mejl utan kontouppräkning. Föråldrad testmiljötext borttagen. Commit 313e1444. Mobiltest och kontroll av hidden-styling återstår; vidare patchförsök blockerades av verktygets säkerhetskontroll.
+
+
+## Approved decision — 2026-10-15 09:56 Europe/Stockholm
+User confirms standalone operations panel, separate from Remember: own code/version/deployment, read-only protected service connections, potentially shared across Remember/CCC/other projects. Remember keeps album/access/window administration. Supersedes embedded capacity panel proposal. No implementation or new credential/hosting setup performed. Primary purpose: obvious service/quota/configuration checks before code debugging.

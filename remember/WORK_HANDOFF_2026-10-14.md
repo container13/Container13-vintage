@@ -103,3 +103,7 @@ Status SMTP_CONFIGURED_DELIVERY_UNVERIFIED: no real mail delivery or login succe
 Read [OPERATING_LIMITS.md](./OPERATING_LIMITS.md) at handoff and before quota/hosting/upload decisions. Official Free limits verified; snapshot3 objects/794834bytes, physical DB11867827bytes. Billing counters remain unknown. Webmaster capacity panel specified, NOT implemented; reuse existing server authorization, never expose provider keys. Runtime remains0.1.23, docs-only. Auth mail delivered09:27; user confirmed inbox and successful link login. Overall product remains PENDING with earlier device/E2E gates.
 
 User clarification09:41: primary purpose is troubleshooting: check service availability, paused projects, quotas/rate limits, album windows and actual error before code changes. Capacity charts are secondary. See OPERATING_LIMITS.md troubleshooting-first checklist.
+
+
+## Approved decision — 2026-10-15 09:56 Europe/Stockholm
+User confirms standalone operations panel, separate from Remember: own code/version/deployment, read-only protected service connections, potentially shared across Remember/CCC/other projects. Remember keeps album/access/window administration. Supersedes embedded capacity panel proposal. No implementation or new credential/hosting setup performed. Primary purpose: obvious service/quota/configuration checks before code debugging.

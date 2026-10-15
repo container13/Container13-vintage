@@ -27,7 +27,7 @@
   },
   "currentWork": {
     "completed": "Mail delivery/login USER PASS; operating limits researched and capacity snapshot measured read-only, documented in OPERATING_LIMITS.md. Runtime unchanged0.1.23.",
-    "next": "Implement server-authorized webmaster capacity panel using existing authorization, with timestamped provider measurements; never expose API credentials.",
+    "next": "Separate operations panel: own code, version and deployment; read-only protected service integrations. Remember retains album administration. No panel implementation yet.",
     "blocked": false,
     "blocker": null
   },
@@ -421,7 +421,7 @@
   "operatingLimits": {
     "document": "remember/OPERATING_LIMITS.md",
     "checkedAt": "2026-10-15",
-    "status": "DOCUMENTED_WEBMASTER_METRICS_NOT_IMPLEMENTED",
+    "status": "DOCUMENTED_STANDALONE_OPERATIONS_PANEL_DECIDED_NOT_IMPLEMENTED",
     "storageObjectBytes": 794834,
     "storageObjects": 3,
     "databasePhysicalBytes": 11867827,
@@ -432,6 +432,6 @@
       "MAU",
       "Edge invocation usage"
     ],
-    "next": "Implement server-authorized webmaster capacity panel using existing authorization, with timestamped provider measurements; never expose API credentials."
+    "next": "Separate operations panel: own code, version and deployment; read-only protected service integrations. Remember retains album administration. No panel implementation yet."
   }
 }
