@@ -26,8 +26,8 @@
     "resumeInstruction": "Read WORK_HANDOFF_2026-10-14.md latest checkpoint and BACKGROUND_VERIFICATION_0.1.20.md. Verify actual HEAD and public bytes. Never replay database installation or rotate guest links. Physical iPhone acceptance and full authenticated E2E remain distinct gates."
   },
   "currentWork": {
-    "completed": "Four public DNS values match exact provider records; Resend domain and all records verified. User saved custom SMTP; fresh Supabase page confirms enabled and stored password. Key name confirmed by Resend list. Historical Cloudflare OAuth blocker superseded by manual DNS setup. UI remains0.1.23.",
-    "next": "User requests a login link in Remember; inspect Auth and Resend delivery evidence, confirm inbox receipt and successful login. Do not request or persist the link/code/key.",
+    "completed": "Mail delivery/login USER PASS; operating limits researched and capacity snapshot measured read-only, documented in OPERATING_LIMITS.md. Runtime unchanged0.1.23.",
+    "next": "Implement server-authorized webmaster capacity panel using existing authorization, with timestamped provider measurements; never expose API credentials.",
     "blocked": false,
     "blocker": null
   },
@@ -356,7 +356,7 @@
     "scope": "Counts and deployment metadata only; not an authenticated end-to-end test. Earlier databaseEvidence is historical."
   },
   "mailSetup": {
-    "status": "SMTP_CONFIGURED_DELIVERY_UNVERIFIED",
+    "status": "USER_CONFIRMED_EMAIL_LOGIN_PASS",
     "provider": "Resend Free candidate",
     "domain": "container13.se",
     "dnsProvider": "Cloudflare (public NS verified)",
@@ -415,6 +415,23 @@
     "apiKeyName": "Remember Supabase SMTP",
     "apiKeyScopeVerification": "List confirms name only; permission/domain restriction not exposed by connector",
     "smtpReadback": "2026-10-14 17:28 Europe/Stockholm: enabled after reload; smtp.resend.com:465; sender name Container13 Remember; interval60; stored password hidden; Save changes disabled. Sender address/username redacted by browser.",
-    "deliveryVerified": false
+    "deliveryVerified": true,
+    "loginEvidence": "2026-10-15: Resend delivered auth mail at09:27:12 Europe/Stockholm; user confirmed inbox09:33 and link authenticated correct account09:36. No secret link captured."
+  },
+  "operatingLimits": {
+    "document": "remember/OPERATING_LIMITS.md",
+    "checkedAt": "2026-10-15",
+    "status": "DOCUMENTED_WEBMASTER_METRICS_NOT_IMPLEMENTED",
+    "storageObjectBytes": 794834,
+    "storageObjects": 3,
+    "databasePhysicalBytes": 11867827,
+    "unknown": [
+      "current hourly auth email cap",
+      "billing-period usage",
+      "traffic",
+      "MAU",
+      "Edge invocation usage"
+    ],
+    "next": "Implement server-authorized webmaster capacity panel using existing authorization, with timestamped provider measurements; never expose API credentials."
   }
 }

@@ -26,3 +26,7 @@ Originalet ../micke50/ och tidigare test/ är orörda referenser, inte en gemens
 
 ## Historical baseline candidates (do not reinstall)
 See SECURE_BACKEND_NEXT.md and sql/001_schema_DRAFT.sql. These describe the original baseline, not current installation status. Read the latest state/handoff before any backend operation. Do not replay against Remember or Micke50 production.
+
+
+## Capacity checkpoint — 2026-10-15
+Read [OPERATING_LIMITS.md](./OPERATING_LIMITS.md) at handoff and before quota/hosting/upload decisions. Official Free limits verified; snapshot3 objects/794834bytes, physical DB11867827bytes. Billing counters remain unknown. Webmaster capacity panel specified, NOT implemented; reuse existing server authorization, never expose provider keys. Runtime remains0.1.23, docs-only. Auth mail delivered09:27; user confirmed inbox and successful link login. Overall product remains PENDING with earlier device/E2E gates.
