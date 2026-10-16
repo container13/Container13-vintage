@@ -1,6 +1,7 @@
 /* Remember startup/resume update check: network-first, preserve unfinished forms. */
 (()=>{'use strict';
  const CHECK_MS=5*60*1000;
+ const runningRelease=document.querySelector('meta[name="remember-release"]')?.content||'';
  const path=location.pathname;
  const safePage=/\/(?:index|login|register|activate|owner|dashboard|album|album-admin)\.html$/.test(path)||path.endsWith('/remember/');
  let initial='',dirty=false,checking=false,queued=false;
@@ -26,6 +27,10 @@
    if(!response.ok||!response.headers.get('content-type')?.includes('text/html'))return;
    const latest=new DOMParser().parseFromString(await response.text(),'text/html');
    if(fingerprint(latest)!==initial){queued=true;apply();}
+   else if(runningRelease){
+    const releaseResponse=await fetch('./release.json?check='+Date.now(),{cache:'no-store',credentials:'same-origin'});
+    if(releaseResponse.ok){const manifest=await releaseResponse.json();if(manifest.release&&manifest.release!==runningRelease){queued=true;apply();}}
+   }
    else {
     // Detect a changed shared stylesheet even when its URL was not bumped.
     const links=[...document.querySelectorAll('link[rel="stylesheet"]')];
