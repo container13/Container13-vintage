@@ -40,3 +40,13 @@ E. Bygg kvotstatus, blockerade försök, ägaraviseringar och mail-deduplicering
 F. Integrera en funktion i taget med OFF som standard; verifiera testläge, staging, GitHub release/deploy, iPhone och återställning. Inga oavsiktliga ändringar i 0.1.75-gester.
 
 Öppet att besluta: exakta paketgränser/priser, gratisalbumets bildretention, e-postretention, regler för moderering efter att en bild redan publicerats, och betalflöde. Dessa är INTE implementerade.
+
+## Teknisk inventering (read-only, 2026-10-16)
+- Supabase-tabellerna ligger i schemat remember och har RLS aktiverat.
+- remember.albums har owner_user_id, photo_limit (standard 10), uppladdningstider, overrides och forced_closed.
+- remember.album_photos har states reserved, uploading, ready, failed, deleted. Moderering kräver separat granskad statusmodell och databasändring.
+- Aktiva Edge Functions finns för uppladdning, galleri, gästmetadata och ägarhantering. Ingen ny modul har driftsatts.
+- Uppladdningsfunktionen använder reservations-RPC, privat lagring och kontroll av lagrade bytes före färdigmarkering. Dess gamla kommentar om att inte vara driftsatt motsäger status ACTIVE och bör granskas.
+- Galleriet ger signerade bildlänkar med 120 sekunders giltighet. Moderering måste kontrolleras i både ägar- och gästflödet. Redan utfärdade länkar kan fortsätta fungera en kort stund.
+- Gästmetadata lämnar endast found, title och uploadsOpen. Bildräknare behöver ett nytt begränsat serverkontrakt.
+- Nästa steg: läs definitioner av RPC och policyer i remember samt lagringspolicyer. Utforma bakåtkompatibla tabeller och feature flags med OFF som standard. Ingen databasändring eller release gjord.
