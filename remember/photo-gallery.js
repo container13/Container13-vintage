@@ -1,21 +1,23 @@
 const ENDPOINT='https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-photo-gallery';
 export function mountRememberGallery({container,auth}) {
- container.innerHTML='<h2>Albumets bilder</h2><p class="remember-gallery-status" role="status">Hämtar bilder…</p><div class="remember-gallery-grid"></div><div class="remember-gallery-viewer" hidden><button type="button" aria-label="Stäng bild">✕ Stäng</button><img alt="Albumfoto"></div>';
+ container.innerHTML='<h2>Albumets bilder</h2><p class="remember-gallery-status" role="status">Hämtar bilder…</p><div class="remember-gallery-grid"></div><div class="remember-gallery-viewer" hidden><button type="button" aria-label="Stäng bild">✕ Stäng</button><button type="button" class="remember-crop-button" aria-label="Spara bildutsnitt">📷</button><img alt="Albumfoto"></div>';
  const styleId='remember-photo-gesture-style';
  if(!document.getElementById(styleId)){
   const style=document.createElement('style');style.id=styleId;
-  style.textContent='.remember-gallery-viewer:not([hidden]){touch-action:none;overflow:hidden;overscroll-behavior:contain}.remember-gallery-viewer img{pointer-events:none;user-select:none;-webkit-user-drag:none;touch-action:none;transition:transform .25s ease,opacity .25s ease}.remember-gallery-viewer img.dragging{transition:none}.remember-gallery-viewer img.incoming-photo{position:absolute;inset:0;margin:auto;max-width:96vw;max-height:88dvh;object-fit:contain;transition:transform .32s cubic-bezier(.2,.75,.25,1);z-index:0}.remember-gallery-viewer button{z-index:2}';document.head.append(style);
+  style.textContent='.remember-gallery-viewer:not([hidden]){touch-action:none;overflow:hidden;overscroll-behavior:contain}.remember-gallery-viewer img{pointer-events:none;user-select:none;-webkit-user-drag:none;touch-action:none;transition:transform .25s ease,opacity .25s ease}.remember-gallery-viewer img.dragging{transition:none}.remember-gallery-viewer img.incoming-photo{position:absolute;inset:0;margin:auto;max-width:96vw;max-height:88dvh;object-fit:contain;transition:transform .32s cubic-bezier(.2,.75,.25,1);z-index:0}.remember-gallery-viewer button{z-index:2}.remember-gallery-viewer .remember-crop-button{position:absolute;top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);right:16px;width:52px;height:52px;border-radius:50%;background:#e8d4aa;color:#173a2d;font-size:24px;box-shadow:0 5px 20px #0008}.remember-gallery-viewer.controls-hidden button{opacity:0;pointer-events:none}';document.head.append(style);
  }
  const status=container.querySelector('.remember-gallery-status'),grid=container.querySelector('.remember-gallery-grid'),viewer=container.querySelector('.remember-gallery-viewer'),large=viewer.querySelector('img');
  // Shared Micke50-style viewer: vertical swipe, 8x pinch/pan, 3s reset.
  const closeButton=viewer.querySelector('button');
- let photos=[],pos=0,gesture='none',startX=0,startY=0,zoomStartDistance=1,zoomStartX=0,zoomStartY=0,zoomHold=false,zoomTimer=null,zoomMoved=false,swipeLocked=false,mouseDown=false;
+ let photos=[],pos=0,gesture='none',startX=0,startY=0,zoomStartDistance=1,zoomStartX=0,zoomStartY=0,zoomHold=false,zoomTimer=null,zoomMoved=false,swipeLocked=false,mouseDown=false,scale=1,panX=0,panY=0,pinchBase=1,panBaseX=0,panBaseY=0,panStartX=0,panStartY=0,lastTap=0,controlsTimer=null;
  const midpoint=t=>({x:(t[0].clientX+t[1].clientX)/2,y:(t[0].clientY+t[1].clientY)/2});
  const gap=t=>Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
  const clearZoom=()=>{clearTimeout(zoomTimer);zoomTimer=null;zoomHold=false};
- function resetDrag(){gesture='none';large.classList.remove('dragging');large.style.transform='translate3d(0,0,0) scale(1)';large.style.opacity='1'}
- function show(i){if(!photos.length)return;clearZoom();pos=(i+photos.length)%photos.length;large.style.transition='none';resetDrag();large.src=photos[pos].url;viewer.hidden=false;viewer.setAttribute('aria-label','Bild '+(pos+1)+' av '+photos.length);requestAnimationFrame(()=>{large.style.transition=''})}
- function close(){clearZoom();viewer.hidden=true;large.removeAttribute('src');resetDrag();document.body.style.overflow=''}
+ const render=()=>{large.style.transform='translate3d('+panX+'px,'+panY+'px,0) scale('+scale+')';large.style.opacity='1'};
+ const controls=()=>{viewer.classList.remove('controls-hidden');clearTimeout(controlsTimer);controlsTimer=setTimeout(()=>{if(!viewer.hidden)viewer.classList.add('controls-hidden')},2800)};
+ function resetDrag(){gesture='none';scale=1;panX=panY=0;large.classList.remove('dragging');render()}
+ function show(i){if(!photos.length)return;clearZoom();pos=(i+photos.length)%photos.length;large.style.transition='none';resetDrag();large.src=photos[pos].url;viewer.hidden=false;viewer.setAttribute('aria-label','Bild '+(pos+1)+' av '+photos.length);controls();requestAnimationFrame(()=>{large.style.transition=''})}
+ function close(){clearZoom();clearTimeout(controlsTimer);viewer.hidden=true;large.removeAttribute('src');resetDrag();document.body.style.overflow=''}
  closeButton.onclick=close;
  viewer.onclick=e=>{if(e.target===viewer)close()};
  function finishSwipe(dx,dy){
