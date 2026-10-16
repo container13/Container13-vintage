@@ -372,3 +372,33 @@ body.remember-shell[data-remember-view="memories"] #needsReplace button{backgrou
  body.remember-shell[data-remember-view="memories"] .share-background-tools,
  body.remember-shell[data-remember-view="memories"] .share-device-note{display:none!important}
 }
+
+/* R-1.2: unify the sharing dialog footer with the warm photographic poster */
+body.remember-shell[data-remember-view="memories"] .remember-share-dialog{
+ background:#29271f;color:#fff7e8;
+}
+body.remember-shell[data-remember-view="memories"] .share-tools{
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:9px;padding:14px 18px 5px;
+ background:linear-gradient(180deg,#29271f,#24251f);
+}
+body.remember-shell[data-remember-view="memories"] .share-tools button{
+ width:100%;min-width:0;min-height:46px;
+ padding:9px 5px;border-radius:12px;
+ background:rgba(224,232,178,.95);color:#17392e;
+ font-size:clamp(11px,3vw,13px);font-weight:750;
+ white-space:nowrap;
+}
+body.remember-shell[data-remember-view="memories"] .share-background-tools{
+ justify-content:center;align-items:center;
+ padding:2px 14px 14px;
+ background:#24251f;
+}
+body.remember-shell[data-remember-view="memories"] .share-background-tools button{
+ color:#e4e9c6;font-size:13px;font-weight:650;
+ padding:7px 10px;text-underline-offset:3px;
+}
+body.remember-shell[data-remember-view="memories"] .share-device-note{display:none!important}
+@media print{
+ body.remember-shell[data-remember-view="memories"] .remember-share-dialog{background:white!important}
+}
