@@ -2,8 +2,50 @@ const ENDPOINT='https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-p
 export function mountRememberGallery({container,auth}) {
  container.innerHTML='<h2>Albumets bilder</h2><p class="remember-gallery-status" role="status">Hämtar bilder…</p><div class="remember-gallery-grid"></div><div class="remember-gallery-viewer" hidden><button type="button" aria-label="Stäng bild">✕ Stäng</button><img alt="Albumfoto"></div>';
  const status=container.querySelector('.remember-gallery-status'),grid=container.querySelector('.remember-gallery-grid'),viewer=container.querySelector('.remember-gallery-viewer'),large=viewer.querySelector('img');
- viewer.querySelector('button').onclick=()=>{viewer.hidden=true;large.removeAttribute('src');};
- viewer.onclick=e=>{if(e.target===viewer)viewer.querySelector('button').click();};
+ // Shared Micke50-style viewer: vertical swipe, 8x pinch/pan, 3s reset.
+ const closeButton=viewer.querySelector('button');
+ let photos=[],pos=0,gesture='none',startX=0,startY=0,zoomStartDistance=1,zoomStartX=0,zoomStartY=0,zoomHold=false,zoomTimer=null,zoomMoved=false,swipeLocked=false,mouseDown=false;
+ const midpoint=t=>({x:(t[0].clientX+t[1].clientX)/2,y:(t[0].clientY+t[1].clientY)/2});
+ const gap=t=>Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
+ const clearZoom=()=>{clearTimeout(zoomTimer);zoomTimer=null;zoomHold=false};
+ function resetDrag(){gesture='none';large.classList.remove('dragging');large.style.transform='translate3d(0,0,0) scale(1)';large.style.opacity='1'}
+ function show(i){if(!photos.length)return;clearZoom();pos=(i+photos.length)%photos.length;large.style.transition='none';resetDrag();large.src=photos[pos].url;viewer.hidden=false;viewer.setAttribute('aria-label','Bild '+(pos+1)+' av '+photos.length);requestAnimationFrame(()=>{large.style.transition=''})}
+ function close(){clearZoom();viewer.hidden=true;large.removeAttribute('src');resetDrag();document.body.style.overflow=''}
+ closeButton.onclick=close;
+ viewer.onclick=e=>{if(e.target===viewer)close()};
+ function finishSwipe(dx,dy){
+  large.classList.remove('dragging');
+  if(Math.abs(dy)<65||Math.abs(dy)<=Math.abs(dx)*1.2||photos.length<2){resetDrag();return}
+  swipeLocked=true;clearZoom();
+  const dir=dy<0?1:-1,next=(pos+dir+photos.length)%photos.length;
+  const incoming=document.createElement('img');incoming.className='incoming-photo';incoming.alt='';incoming.src=photos[next].url;
+  incoming.style.transform='translate3d(0,'+(dir*100)+'vh,0)';viewer.append(incoming);
+  large.style.transition='transform .32s cubic-bezier(.2,.75,.25,1),opacity .32s ease';
+  large.style.transform='translate3d(0,'+(-dir*100)+'vh,0)';large.style.opacity='.45';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{incoming.style.transform='translate3d(0,0,0)'}));
+  setTimeout(()=>{incoming.remove();if(!viewer.hidden)show(next);swipeLocked=false},340);
+ }
+ viewer.addEventListener('touchstart',e=>{
+  if(e.target.closest('button')||swipeLocked)return;
+  if(zoomHold&&e.touches.length===1){e.preventDefault();clearZoom();resetDrag();return}
+  if(e.touches.length>=2){clearZoom();e.preventDefault();gesture='zoom';const m=midpoint(e.touches);zoomStartX=m.x;zoomStartY=m.y;zoomStartDistance=Math.max(1,gap(e.touches));zoomMoved=false;large.classList.add('dragging')}
+  else if(e.touches.length===1&&gesture==='none'){gesture='swipe';startX=e.touches[0].clientX;startY=e.touches[0].clientY;large.classList.add('dragging')}
+ },{passive:false});
+ viewer.addEventListener('touchmove',e=>{
+  if(gesture==='zoom'&&e.touches.length>=2){e.preventDefault();const m=midpoint(e.touches),scale=Math.max(1,Math.min(8,gap(e.touches)/zoomStartDistance));zoomMoved=true;large.style.transform='translate3d('+(m.x-zoomStartX)+'px,'+(m.y-zoomStartY)+'px,0) scale('+scale+')';large.style.opacity='1'}
+  else if(gesture==='swipe'&&e.touches.length===1){e.preventDefault();const dx=e.touches[0].clientX-startX,dy=e.touches[0].clientY-startY;large.style.transform='translate3d(0,'+(Math.abs(dy)>Math.abs(dx)?dy:0)+'px,0)';large.style.opacity=String(Math.max(.5,1-Math.abs(dy)/800))}
+ },{passive:false});
+ viewer.addEventListener('touchend',e=>{
+  if(gesture==='zoom'){if(e.touches.length<2){gesture='none';large.classList.remove('dragging');if(zoomMoved){zoomHold=true;clearTimeout(zoomTimer);zoomTimer=setTimeout(()=>{clearZoom();resetDrag()},3000)}else resetDrag()}return}
+  if(gesture==='swipe'&&e.touches.length===0){const t=e.changedTouches[0];gesture='none';if(t)finishSwipe(t.clientX-startX,t.clientY-startY);else resetDrag()}
+ },{passive:false});
+ viewer.addEventListener('touchcancel',resetDrag,{passive:true});
+ viewer.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.target.closest('button')||swipeLocked)return;mouseDown=true;startX=e.clientX;startY=e.clientY;large.classList.add('dragging')});
+ viewer.addEventListener('pointermove',e=>{if(!mouseDown||e.pointerType!=='mouse')return;const dx=e.clientX-startX,dy=e.clientY-startY;large.style.transform='translate3d(0,'+(Math.abs(dy)>Math.abs(dx)?dy:0)+'px,0)'});
+ viewer.addEventListener('pointerup',e=>{if(!mouseDown||e.pointerType!=='mouse')return;mouseDown=false;finishSwipe(e.clientX-startX,e.clientY-startY)});
+ viewer.addEventListener('pointercancel',()=>{mouseDown=false;resetDrag()});
+ const onKey=e=>{if(viewer.hidden)return;if(e.key==='Escape')close();else if(e.key==='ArrowDown')show(pos+1);else if(e.key==='ArrowUp')show(pos-1)};
+ document.addEventListener('keydown',onKey);
  let busy=false,stopped=false;
  async function refresh(){
   if(busy||stopped||document.hidden)return;
@@ -14,9 +56,9 @@ export function mountRememberGallery({container,auth}) {
    const response=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json',...(options.bearer?{Authorization:'Bearer '+options.bearer}:{})},body:JSON.stringify(options.token?{token:options.token}:{albumId:options.albumId}),cache:'no-store'});
    const data=await response.json().catch(()=>({}));
    if(!response.ok||!data.ok)throw Error(data.error||'Kunde inte hämta bilder');
-   const photos=data.photos||[];
+   photos=data.photos||[];
    const previous=grid.querySelectorAll('img').length;
-   grid.replaceChildren(...photos.map((p,i)=>{const img=document.createElement('img');img.src=p.url;img.alt='Albumfoto '+(i+1);img.loading=i<4?'eager':'lazy';img.onclick=()=>{large.src=p.url;viewer.hidden=false;};return img;}));
+   grid.replaceChildren(...photos.map((p,i)=>{const img=document.createElement('img');img.src=p.url;img.alt='Albumfoto '+(i+1);img.loading=i<4?'eager':'lazy';img.onclick=()=>{show(i);document.body.style.overflow='hidden';};return img;}));
    status.textContent=photos.length?photos.length+' bilder i albumet · senaste överst':'Inga bilder i albumet ännu.';
    if(photos.length>previous)container.dataset.lastAdded=String(Date.now());
   }catch(e){status.textContent='Kunde inte visa albumets bilder. '+(e instanceof Error?e.message:'Försök igen.');}
@@ -26,5 +68,5 @@ export function mountRememberGallery({container,auth}) {
  const onVisible=()=>{if(!document.hidden)void refresh();};
  document.addEventListener('visibilitychange',onVisible);
  void refresh();
- return {refresh,stop(){stopped=true;clearInterval(timer);document.removeEventListener('visibilitychange',onVisible);}};
+ return {refresh,stop(){stopped=true;clearInterval(timer);document.removeEventListener('visibilitychange',onVisible);document.removeEventListener('keydown',onKey);close();}};
 }
