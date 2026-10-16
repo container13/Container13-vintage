@@ -41,7 +41,7 @@ export function mountRememberGallery({container,auth}) {
   setTimeout(()=>{incoming.remove();if(!viewer.hidden)show(next);swipeLocked=false},340);
  }
  viewer.addEventListener('touchstart',e=>{
-  if(e.target.closest('button')||swipeLocked)return;
+  if(e.target.closest('button')||swipeLocked)return;clearZoom();
   
   if(e.touches.length>=2){clearZoom();e.preventDefault();gesture='zoom';pinchBase=scale;panBaseX=panX;panBaseY=panY;const m=midpoint(e.touches);zoomStartX=m.x;zoomStartY=m.y;zoomStartDistance=Math.max(1,gap(e.touches));zoomMoved=false;large.classList.add('dragging')}
   else if(e.touches.length===1&&gesture==='none'){gesture=scale>1.01?'pan':'swipe';startX=e.touches[0].clientX;startY=e.touches[0].clientY;panStartX=startX;panStartY=startY;panBaseX=panX;panBaseY=panY;large.classList.add('dragging')}
@@ -57,7 +57,7 @@ export function mountRememberGallery({container,auth}) {
   if(gesture==='swipe'&&e.touches.length===0){const t=e.changedTouches[0];gesture='none';if(t&&Math.abs(t.clientX-startX)<12&&Math.abs(t.clientY-startY)<12){const now=Date.now();if(now-lastTap<350){resetDrag();lastTap=0}else{lastTap=now;controls()}}else if(t)finishSwipe(t.clientX-startX,t.clientY-startY);else resetDrag()}
  },{passive:false});
  viewer.addEventListener('touchcancel',()=>{gesture='none';large.classList.remove('dragging');render();controls()},{passive:true});
- viewer.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.target.closest('button')||swipeLocked)return;mouseDown=true;startX=e.clientX;startY=e.clientY;panStartX=startX;panStartY=startY;panBaseX=panX;panBaseY=panY;gesture=scale>1.01?'pan':'swipe';large.classList.add('dragging')});
+ viewer.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.target.closest('button')||swipeLocked)return;clearZoom();mouseDown=true;startX=e.clientX;startY=e.clientY;panStartX=startX;panStartY=startY;panBaseX=panX;panBaseY=panY;gesture=scale>1.01?'pan':'swipe';large.classList.add('dragging')});
  viewer.addEventListener('pointermove',e=>{if(!mouseDown||e.pointerType!=='mouse')return;const dx=e.clientX-startX,dy=e.clientY-startY;if(gesture==='pan'){panX=panBaseX+dx;panY=panBaseY+dy;render()}else large.style.transform='translate3d(0,'+(Math.abs(dy)>Math.abs(dx)?dy:0)+'px,0)'});
  viewer.addEventListener('pointerup',e=>{if(!mouseDown||e.pointerType!=='mouse')return;mouseDown=false;if(gesture==='pan'){gesture='none';large.classList.remove('dragging');controls()}else finishSwipe(e.clientX-startX,e.clientY-startY)});
  viewer.addEventListener('pointercancel',()=>{mouseDown=false;resetDrag()});
