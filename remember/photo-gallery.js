@@ -8,7 +8,7 @@ export function mountRememberGallery({container,auth}) {
   style.textContent='.remember-gallery-viewer:not([hidden]){touch-action:none;overflow:hidden;overscroll-behavior:contain}.remember-gallery-viewer img{pointer-events:none;user-select:none;-webkit-user-drag:none;touch-action:none;transition:transform .25s ease,opacity .25s ease}.remember-gallery-viewer img.dragging{transition:none}.remember-gallery-viewer img.incoming-photo{position:absolute;inset:0;margin:auto;max-width:96vw;max-height:88dvh;object-fit:contain;transition:transform .32s cubic-bezier(.2,.75,.25,1);z-index:0}.remember-gallery-viewer button{z-index:2}.remember-gallery-viewer .remember-crop-button{position:absolute;top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);right:16px;width:52px;height:52px;border-radius:50%;background:#e8d4aa;color:#173a2d;font-size:24px;box-shadow:0 5px 20px #0008}.remember-gallery-viewer.controls-hidden button{opacity:0;pointer-events:none}';document.head.append(style);
  }
  const status=container.querySelector('.remember-gallery-status'),grid=container.querySelector('.remember-gallery-grid'),viewer=container.querySelector('.remember-gallery-viewer'),large=viewer.querySelector('img');
- // Shared Micke50-style viewer: vertical swipe, 8x pinch/pan, 3s reset.
+ // Shared viewer: vertical swipe, persistent 8x pinch/pan, constrained to image edges.
  const closeButton=viewer.querySelector('button');
  const cropButton=viewer.querySelector('.remember-crop-button');
  cropButton.onclick=async()=>{if(!photos[pos])return;cropButton.disabled=true;try{await shareRememberCrop(photos[pos].url,large,viewer)}catch(e){if(e?.name!=='AbortError')alert('Kunde inte skapa bildutdrag. Prova vanlig skärmdump.')}finally{cropButton.disabled=false;controls()}};
@@ -16,7 +16,8 @@ export function mountRememberGallery({container,auth}) {
  const midpoint=t=>({x:(t[0].clientX+t[1].clientX)/2,y:(t[0].clientY+t[1].clientY)/2});
  const gap=t=>Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
  const clearZoom=()=>{clearTimeout(zoomTimer);zoomTimer=null;zoomHold=false};
- const render=()=>{large.style.transform='translate3d('+panX+'px,'+panY+'px,0) scale('+scale+')';large.style.opacity='1'};
+ const clampPan=()=>{const w=large.offsetWidth*scale,h=large.offsetHeight*scale,vw=viewer.clientWidth,vh=viewer.clientHeight;const x=Math.max(0,(w-vw)/2),y=Math.max(0,(h-vh)/2);panX=Math.max(-x,Math.min(x,panX));panY=Math.max(-y,Math.min(y,panY))};
+ const render=()=>{clampPan();large.style.transform='translate3d('+panX+'px,'+panY+'px,0) scale('+scale+')';large.style.opacity='1'};
  const controls=()=>{viewer.classList.remove('controls-hidden');clearTimeout(controlsTimer);controlsTimer=setTimeout(()=>{if(!viewer.hidden)viewer.classList.add('controls-hidden')},2800)};
  function resetDrag(){gesture='none';scale=1;panX=panY=0;large.classList.remove('dragging');render()}
  function show(i){if(!photos.length)return;clearZoom();pos=(i+photos.length)%photos.length;large.style.transition='none';resetDrag();large.src=photos[pos].url;viewer.hidden=false;viewer.setAttribute('aria-label','Bild '+(pos+1)+' av '+photos.length);controls();requestAnimationFrame(()=>{large.style.transition=''})}
