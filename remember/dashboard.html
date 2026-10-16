@@ -74,6 +74,17 @@ body.is-webmaster #ownerPanel .newAlbum{display:block;text-align:center;backgrou
 body.is-webmaster #ownerPanel>p{margin:16px 0 0}
 body.is-webmaster #account{background:rgba(39,32,27,.72);border-color:#f1e2c488}
 @media(max-width:380px){.webmaster-workspace{padding:18px 15px}.workspace-symbol{flex-basis:46px;width:46px;height:46px}body.is-webmaster #webmasterTools .actions{grid-template-columns:1fr}}
+/* Verified webmaster album owner cards */
+.webmaster-albums-title{font:500 20px/1.25 Georgia,serif;color:#fff5df;margin:23px 0 12px}
+.webmaster-album-grid{display:grid;gap:12px}
+body.is-webmaster #webmasterTools .webmaster-album-card{display:block!important;text-decoration:none;color:#fff8ec!important;padding:17px 17px 15px;margin:0!important;border:1px solid #dfc89a75;border-radius:16px;background:linear-gradient(135deg,#254d40bb,#14362fdd);box-shadow:0 5px 18px #0002}
+.webmaster-album-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
+.webmaster-album-top strong{font:500 22px/1.2 Georgia,serif;overflow-wrap:anywhere}
+.webmaster-album-arrow{color:#efd2a0;font-size:24px}
+.webmaster-owner-label{display:block;font:700 10px/1.4 system-ui;letter-spacing:.17em;color:#dfc89a}
+.webmaster-owner-email{display:block;font:500 14px/1.5 system-ui;color:#fff7e7;overflow-wrap:anywhere;margin:4px 0 12px}
+.webmaster-album-id{display:block;border-top:1px solid #dfc89a40;padding-top:11px;font:11px/1.5 system-ui;color:#c9c5b9;overflow-wrap:anywhere}
+body.is-webmaster #webmasterTools .webmaster-album-card:focus-visible{outline:3px solid #efd2a0;outline-offset:3px}
 </style><link rel="stylesheet" href="./remember-design.css?v=0.1.69"><script src="../project-template/mobile-view-policy.js?v=2"></script><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js?v=0.1.69"></script><meta name="remember-release" content="remember-0.1.69"><script defer src="./remember-version.js?v=0.1.69"></script></head><body class="remember-shell" data-remember-view="albums"><main>
 <header><div class="brand">Remember. <span class="muted">by Container13</span></div><a class="remember-home" href="./" aria-label="Remember startsida"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7M5 9v11h14V9M9 20v-7h6v7"/></svg></a></header>
 <h1 id="dashboardTitle">Mina album</h1><p id="dashboardSubtitle" class="dashboard-subtitle" hidden>Hantera Remember och dina album</p>
@@ -143,9 +154,17 @@ async function gateway(action){
     }else if(body.albums.length===0){
       $('albums').textContent='Servern returnerade 0 album för detta konto. Skapa inte ett nytt album.';
     }else{
-      const heading=document.createElement('h3');heading.textContent='Dina album ('+body.albums.length+')';$('albums').append(heading);
+      const heading=document.createElement('h3');heading.className='webmaster-albums-title';heading.textContent='Albumöversikt · '+body.albums.length+' album';$('albums').append(heading);
+      const grid=document.createElement('div');grid.className='webmaster-album-grid';$('albums').append(grid);
       for(const album of body.albums){
-        const a=document.createElement('a');a.textContent=album.title||'Album utan namn';a.href='./album-admin.html?id='+encodeURIComponent(album.id)+'&v=wm95';a.style.color='#d9e7a4';a.style.display='block';a.style.margin='12px 0';$('albums').append(a);
+        const a=document.createElement('a');a.className='webmaster-album-card';a.href='./album-admin.html?id='+encodeURIComponent(album.id)+'&v=wm95';
+        const top=document.createElement('div');top.className='webmaster-album-top';
+        const title=document.createElement('strong');title.textContent=album.title||'Album utan namn';
+        const arrow=document.createElement('span');arrow.className='webmaster-album-arrow';arrow.textContent='↗';arrow.setAttribute('aria-hidden','true');top.append(title,arrow);
+        const label=document.createElement('span');label.className='webmaster-owner-label';label.textContent='ALBUMÄGARE';
+        const owner=document.createElement('span');owner.className='webmaster-owner-email';owner.textContent=album.owner_email||'E-postadress saknas';
+        const id=document.createElement('span');id.className='webmaster-album-id';id.textContent='Album-ID · '+String(album.id||'Okänt');
+        a.append(top,label,owner,id);grid.append(a);
       }
     }
   }
