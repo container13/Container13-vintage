@@ -39,7 +39,7 @@ export function mountRememberGallery({container,auth}) {
   else if(e.touches.length===1&&gesture==='none'){gesture=scale>1.01?'pan':'swipe';startX=e.touches[0].clientX;startY=e.touches[0].clientY;panStartX=startX;panStartY=startY;panBaseX=panX;panBaseY=panY;large.classList.add('dragging')}
  },{passive:false});
  viewer.addEventListener('touchmove',e=>{
-  if(gesture==='zoom'&&e.touches.length>=2){e.preventDefault();const m=midpoint(e.touches),scale=Math.max(1,Math.min(8,gap(e.touches)/zoomStartDistance));zoomMoved=true;large.style.transform='translate3d('+(m.x-zoomStartX)+'px,'+(m.y-zoomStartY)+'px,0) scale('+scale+')';large.style.opacity='1'}
+  if(gesture==='zoom'&&e.touches.length>=2){e.preventDefault();const m=midpoint(e.touches);scale=Math.max(1,Math.min(8,pinchBase*Math.pow(Math.max(.15,gap(e.touches)/zoomStartDistance),2.3)));panX=panBaseX+m.x-zoomStartX;panY=panBaseY+m.y-zoomStartY;render()}
   else if(gesture==='swipe'&&e.touches.length===1){e.preventDefault();const dx=e.touches[0].clientX-startX,dy=e.touches[0].clientY-startY;large.style.transform='translate3d(0,'+(Math.abs(dy)>Math.abs(dx)?dy:0)+'px,0)';large.style.opacity=String(Math.max(.5,1-Math.abs(dy)/800))}
  },{passive:false});
  viewer.addEventListener('touchend',e=>{
