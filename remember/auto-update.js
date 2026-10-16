@@ -13,10 +13,21 @@
  const blocked=()=>!safePage||dirty||document.visibilityState!=='visible'||!!document.querySelector('dialog[open]')||!!document.querySelector('[aria-busy="true"]')||!!document.querySelector('input:focus,textarea:focus,select:focus');
  function apply(){
   if(!queued||blocked())return;
-  // Safety hold: never auto-navigate an installed PWA during version mismatch.
-  // Manual reopening can pick up a new release without risking a reload loop.
-  queued=false;
-  document.documentElement.dataset.rememberUpdateAvailable='true';
+  let banner=document.getElementById('remember-update-banner');
+  if(!banner){
+   banner=document.createElement('div');banner.id='remember-update-banner';
+   banner.setAttribute('role','status');
+   banner.style.cssText='position:fixed;z-index:9998;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 42px);margin:auto;max-width:480px;background:#173b31;color:#fff8eb;border:1px solid #e4c899;border-radius:14px;padding:12px 14px;box-shadow:0 8px 30px #0007;font:14px system-ui;display:flex;align-items:center;justify-content:space-between;gap:12px';
+   const label=document.createElement('span');label.textContent='En ny version av Remember finns.';
+   const button=document.createElement('button');button.type='button';button.textContent='Uppdatera';
+   button.style.cssText='border:0;border-radius:10px;background:#e9d4aa;color:#1c3028;font:700 14px system-ui;padding:10px 12px;min-height:42px';
+   button.addEventListener('click',()=>{
+    const url=new URL(location.href);
+    url.searchParams.set('_remember_update',String(Date.now()));
+    location.replace(url.href);
+   });
+   banner.append(label,button);document.body.append(banner);
+  }
  }
  async function check(){
   if(checking||!navigator.onLine)return;checking=true;
