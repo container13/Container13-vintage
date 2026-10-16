@@ -34,7 +34,7 @@ export function mountRememberGallery({container,auth}) {
  }
  viewer.addEventListener('touchstart',e=>{
   if(e.target.closest('button')||swipeLocked)return;
-  if(zoomHold&&e.touches.length===1){e.preventDefault();clearZoom();resetDrag();return}
+  
   if(e.touches.length>=2){clearZoom();e.preventDefault();gesture='zoom';const m=midpoint(e.touches);zoomStartX=m.x;zoomStartY=m.y;zoomStartDistance=Math.max(1,gap(e.touches));zoomMoved=false;large.classList.add('dragging')}
   else if(e.touches.length===1&&gesture==='none'){gesture='swipe';startX=e.touches[0].clientX;startY=e.touches[0].clientY;large.classList.add('dragging')}
  },{passive:false});
