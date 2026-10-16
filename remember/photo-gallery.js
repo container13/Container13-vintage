@@ -19,6 +19,7 @@ export function mountRememberGallery({container,auth}) {
  const midpoint=t=>({x:(t[0].clientX+t[1].clientX)/2,y:(t[0].clientY+t[1].clientY)/2});
  const gap=t=>Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
  const clearZoom=()=>{clearTimeout(zoomTimer);zoomTimer=null;zoomHold=false};
+ const scheduleReset=()=>{clearZoom();if(scale<=1.01||viewer.hidden)return;zoomTimer=setTimeout(()=>{if(!viewer.hidden&&gesture==='none'&&!mouseDown&&scale>1.01)resetDrag()},3000)};
  const clampPan=()=>{const w=large.offsetWidth*scale,h=large.offsetHeight*scale,vw=viewer.clientWidth,vh=viewer.clientHeight;const x=Math.max(0,(w-vw)/2),y=Math.max(0,(h-vh)/2);panX=Math.max(-x,Math.min(x,panX));panY=Math.max(-y,Math.min(y,panY))};
  const render=()=>{clampPan();large.style.transform='translate3d('+panX+'px,'+panY+'px,0) scale('+scale+')';large.style.opacity='1';prepareCrop()};
  const controls=()=>{viewer.classList.remove('controls-hidden');clearTimeout(controlsTimer);controlsTimer=setTimeout(()=>{if(!viewer.hidden)viewer.classList.add('controls-hidden')},2800)};
