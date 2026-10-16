@@ -92,3 +92,10 @@
 - [ ] Safe deferral for dirty forms, uploads, camera, dialogs and transactions; pending updates resume automatically or via visible action.
 - [ ] Offline, interrupted rollout and repeated reload are safe; no cache-clear or reinstall required.
 - [ ] Production release ID and actual assets verified; old installed iPhone PWA cold-start and foreground test recorded.
+
+
+## Universal visible-version gate (all projects)
+- [ ] Every user-facing view displays the **running** release version at the bottom, including auth, guest, owner and admin routes.
+- [ ] Version footer is centrally owned and imported automatically on new views, with safe-area, modal, print and fullscreen behavior checked.
+- [ ] Running version matches the loaded code; newer server version is distinguished from the current one.
+- [ ] Release manifest/ID was updated atomically with relevant assets and production output checked.
