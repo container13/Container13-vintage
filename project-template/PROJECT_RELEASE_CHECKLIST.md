@@ -82,3 +82,13 @@
 - [ ] Recorded CODED / COMMITTED / DEPLOYED / DEVICE TESTED / USER APPROVED separately.
 - [ ] If two fixes failed for the same issue, stopped patching and recorded root cause and a fresh verification plan.
 - [ ] Updated the shared component register with owner, consumers, exceptions and test status.
+
+
+## Centralized update architecture gate — all web apps/PWAs (2026-10-16)
+- [ ] One canonical release manifest/ID and one shared update controller exist from first release.
+- [ ] Every user-facing entry page, deep link, auth, guest, owner and admin route imports the same bootstrap; inventory is current.
+- [ ] Checks run at cold launch, foreground/resume and reconnect, network-first without stale cache.
+- [ ] Detects new deployed release even when HTML/asset URLs are unchanged; loads a consistent asset set.
+- [ ] Safe deferral for dirty forms, uploads, camera, dialogs and transactions; pending updates resume automatically or via visible action.
+- [ ] Offline, interrupted rollout and repeated reload are safe; no cache-clear or reinstall required.
+- [ ] Production release ID and actual assets verified; old installed iPhone PWA cold-start and foreground test recorded.
