@@ -35,8 +35,8 @@ export function mountRememberGallery({container,auth}) {
  viewer.addEventListener('touchstart',e=>{
   if(e.target.closest('button')||swipeLocked)return;
   
-  if(e.touches.length>=2){clearZoom();e.preventDefault();gesture='zoom';const m=midpoint(e.touches);zoomStartX=m.x;zoomStartY=m.y;zoomStartDistance=Math.max(1,gap(e.touches));zoomMoved=false;large.classList.add('dragging')}
-  else if(e.touches.length===1&&gesture==='none'){gesture='swipe';startX=e.touches[0].clientX;startY=e.touches[0].clientY;large.classList.add('dragging')}
+  if(e.touches.length>=2){clearZoom();e.preventDefault();gesture='zoom';pinchBase=scale;panBaseX=panX;panBaseY=panY;const m=midpoint(e.touches);zoomStartX=m.x;zoomStartY=m.y;zoomStartDistance=Math.max(1,gap(e.touches));zoomMoved=false;large.classList.add('dragging')}
+  else if(e.touches.length===1&&gesture==='none'){gesture=scale>1.01?'pan':'swipe';startX=e.touches[0].clientX;startY=e.touches[0].clientY;panStartX=startX;panStartY=startY;panBaseX=panX;panBaseY=panY;large.classList.add('dragging')}
  },{passive:false});
  viewer.addEventListener('touchmove',e=>{
   if(gesture==='zoom'&&e.touches.length>=2){e.preventDefault();const m=midpoint(e.touches),scale=Math.max(1,Math.min(8,gap(e.touches)/zoomStartDistance));zoomMoved=true;large.style.transform='translate3d('+(m.x-zoomStartX)+'px,'+(m.y-zoomStartY)+'px,0) scale('+scale+')';large.style.opacity='1'}
