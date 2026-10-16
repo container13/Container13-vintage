@@ -188,3 +188,16 @@ body.remember-shell[data-remember-view="memories"] #retryUpload {grid-column:1/-
  body.remember-shell[data-remember-view="memories"] .tile-icon {width:34px;height:34px;font-size:18px}
  body.remember-shell[data-remember-view="memories"] .tile-arrow {font-size:22px}
 }
+
+/* Owner management layout 0.1.39 */
+body.remember-shell[data-remember-view="memories"] .owner-view-label {
+ margin:0 0 3px; color:#e4eac0; font-size:12px; font-weight:750;
+ letter-spacing:.11em; text-transform:uppercase;
+}
+body.remember-shell[data-remember-view="memories"] .actions .action-camera {grid-column:1}
+body.remember-shell[data-remember-view="memories"] .actions .action-upload {
+ grid-column:2;min-height:112px;
+}
+body.remember-shell[data-remember-view="memories"] .actions .action-share {
+ grid-column:1/-1;min-height:92px;
+}
