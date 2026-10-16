@@ -421,3 +421,76 @@ body.remember-shell[data-remember-view="memories"] .share-device-note{display:no
   scroll-padding-top:calc(env(safe-area-inset-top,0px) + 20px);
  }
 }
+
+/* Remember 0.1.48: compact album owner actions, gallery and settings */
+body.remember-shell[data-remember-view="memories"] .actions{
+ gap:9px!important;margin:14px 0!important;
+}
+body.remember-shell[data-remember-view="memories"] .actions .action-tile{
+ min-height:62px!important;height:auto!important;
+ padding:11px 13px!important;gap:9px!important;
+ border-radius:15px!important;
+ display:flex;align-items:center;
+}
+body.remember-shell[data-remember-view="memories"] .actions .action-share{
+ min-height:58px!important;
+}
+body.remember-shell[data-remember-view="memories"] .actions .tile-icon{
+ flex:0 0 30px!important;width:30px!important;height:30px!important;
+ font-size:17px!important;
+}
+body.remember-shell[data-remember-view="memories"] .actions .tile-copy{
+ min-width:0;flex:1;
+}
+body.remember-shell[data-remember-view="memories"] .actions .tile-copy strong{
+ font-size:clamp(13px,3.6vw,16px)!important;line-height:1.2!important;
+}
+body.remember-shell[data-remember-view="memories"] .actions .tile-copy small{
+ display:none!important;
+}
+body.remember-shell[data-remember-view="memories"] .actions .tile-arrow{
+ font-size:19px!important;
+}
+body.remember-shell[data-remember-view="memories"] .gallery{
+ margin-top:13px!important;padding:clamp(14px,4vw,20px)!important;
+}
+body.remember-shell[data-remember-view="memories"] .gallery h2{
+ font-size:clamp(23px,5vw,28px)!important;
+}
+body.remember-shell[data-remember-view="memories"] .gallery .muted{
+ font-size:12px!important;
+}
+body.remember-shell[data-remember-view="memories"] .photo-card{
+ position:relative;padding-bottom:0!important;overflow:hidden;
+}
+body.remember-shell[data-remember-view="memories"] .photo-card .photo-delete{
+ position:absolute;right:7px;top:7px;z-index:2;
+ display:grid;place-items:center;
+ width:42px;min-width:42px;min-height:42px;
+ margin:0!important;padding:0!important;
+ border-radius:50%!important;
+ background:rgba(33,30,26,.84)!important;
+ color:#fff!important;font-size:20px!important;
+ border:1px solid rgba(255,255,255,.55);
+}
+body.remember-shell[data-remember-view="memories"] .album-settings{
+ padding:0!important;overflow:hidden;
+}
+body.remember-shell[data-remember-view="memories"] .album-settings > summary{
+ cursor:pointer;padding:17px 19px;
+ font-size:16px;font-weight:700;
+}
+body.remember-shell[data-remember-view="memories"] .album-settings > :not(summary){
+ margin-left:17px;margin-right:17px;
+}
+body.remember-shell[data-remember-view="memories"] .album-settings > #settingsStatus{
+ margin-bottom:15px;
+}
+@media(max-width:370px){
+ body.remember-shell[data-remember-view="memories"] .actions .action-tile{
+  padding:9px 8px!important;gap:5px!important;
+ }
+ body.remember-shell[data-remember-view="memories"] .actions .tile-icon{
+  width:25px!important;flex-basis:25px!important;
+ }
+}
