@@ -62,3 +62,14 @@ Applies to **all projects**, including CCC, Remember, LinaSopti and future work.
 7. **Two-failure stop rule:** if the same defect persists after two attempted fixes, STOP incremental patches; perform and document root-cause analysis, shared-owner inventory, competing CSS/JS rules, deployed-version check and a targeted verification plan before the next fix.
 8. **Template register:** maintain a discoverable registry of canonical components, owners, consumer views, asset/version policy, exceptions and verification status; update it whenever a shared component changes.
 This gate must be completed before implementation and checked again before release. Record any exceptions explicitly; do not silently bypass it.
+
+
+## Centralized application update architecture — mandatory from project day one (2026-10-16)
+- Every new multi-page web app/PWA MUST have a single, project-wide update controller from its first runnable release. Do not build independent update checks in individual views.
+- Declare a canonical release identity (release manifest or version endpoint) with an immutable build/revision identifier and asset manifest; all app entry points and shared CSS/JS must resolve to that release. A human-facing version label alone is not proof of the deployed bytes.
+- Provide one shared bootstrap imported by **every user-facing entry page**, including authentication, registration, dashboards, owner/admin, guest, and deep links. Maintain an auditable consumer inventory. Exceptions require documentation.
+- On cold launch, foreground/resume, network restoration and a reasonable periodic interval, perform a network-first no-store release check; compare the deployed release ID, not only HTML markup or stylesheet URLs. Cache-bust navigation/assets or activate the new service-worker release as appropriate.
+- Respect user work: never force reload while forms are dirty, uploads/camera/transactions are active or a dialog is in progress. Queue a pending update and apply it at the next safe opportunity; provide a visible refresh option when needed. Do not silently abandon pending updates.
+- Handle offline and partial deployment safely: keep the current app usable, retry later, and only activate a consistent release. Avoid infinite reload loops and never require routine cache clearing/reinstallation.
+- Release gate: verify the actual production version/asset bytes, every entry route, installed iPhone PWA cold launch and resume, offline/online, pending-work deferral, and recovery from an old installed version. Report code/commit/deploy/device verification separately.
+- Project startup checklist MUST name the update controller, release manifest, consumer routes, deployment/cache policy and device test owner. Missing any of these blocks release approval.
