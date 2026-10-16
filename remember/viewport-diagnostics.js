@@ -26,6 +26,7 @@ function show(){
  const close=document.createElement('button');close.type='button';close.textContent='Stäng';close.style.cssText='padding:10px';close.onclick=()=>{panel.remove();panel=null};buttons.append(copy,close);panel.append(buttons);
  const pre=document.createElement('pre');pre.style.cssText='overflow:auto;flex:1;white-space:pre-wrap;word-break:break-word;margin:0';panel.append(pre);document.body.append(panel);update();
 }
+document.addEventListener('click',event=>{if(event.target.closest('#remember-open-viewport-diagnostics')){snap('opened-from-app');show()} });
 function defer(phase){requestAnimationFrame(()=>snap(phase))}
 snap('script-loaded');
 document.addEventListener('DOMContentLoaded',()=>{defer('dom-ready');if(new URLSearchParams(location.search).has('viewportDebug'))show()},{once:true});
