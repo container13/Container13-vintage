@@ -34,3 +34,7 @@ For projects offering shared albums, the album purchaser enters an email address
 
 ## Startup update check (all installed web apps / PWAs)
 Check the deployed version from the network on every page startup and every return to foreground, not only on a periodic timer. A new release must be fetched without requiring the user to remove/reinstall the PWA. Avoid stale navigation cache using a fresh request URL and verify the deployed bytes; don't treat a GitHub commit as proof of deployment. Do not block updates just because ordinary buttons are disabled. Defer reload while users are typing, uploading, or performing an in-flight operation; retry on the next safe activation. Continue offline with the existing version and retry once connected. Test actual installed iPhone PWA startup/resume behavior before declaring PASS.
+
+
+## Mandatory shared-foundation gate (all projects, 2026-10-16)
+Before implementing a fix, use the **Shared foundation first** gate in [PROJECT_MASTER_RULES.md](./PROJECT_MASTER_RULES.md), check the [PROJECT_RELEASE_CHECKLIST.md](./PROJECT_RELEASE_CHECKLIST.md) and consult the [shared component register](./SHARED_COMPONENT_REGISTER.md). Changes to a shared concern must originate in its canonical owner and be verified across affected views. After two unsuccessful attempts at the same defect, stop patching and diagnose the root cause. Track coded, committed, deployed and device-tested status independently.
