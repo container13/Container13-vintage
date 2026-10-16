@@ -321,3 +321,54 @@ body.remember-shell[data-remember-view="memories"] .tile-arrow{font-size:23px}
   background-position:center center;
  }
 }
+
+/* Owner sharing R-1.1: compact dialog and printable invitation */
+body.remember-shell[data-remember-view="memories"] .remember-share-dialog{
+ box-sizing:border-box;width:min(94vw,460px);max-width:460px;max-height:92dvh;
+ padding:0;border:1px solid rgba(255,255,255,.35);border-radius:23px;
+ background:#e9e0cd;color:#18362c;overflow:auto;box-shadow:0 22px 75px #0009;
+}
+body.remember-shell[data-remember-view="memories"] .remember-share-dialog::backdrop{background:rgba(9,15,12,.74);backdrop-filter:blur(6px)}
+body.remember-shell[data-remember-view="memories"] .share-poster{
+ position:relative;isolation:isolate;min-height:330px;padding:24px 20px 26px;
+ display:grid;place-items:center;text-align:center;color:#fff9eb;
+ background-image:linear-gradient(180deg,rgba(20,28,22,.63),rgba(26,28,20,.48)),var(--share-custom-image,none),var(--remember-background);
+ background-position:center;background-size:cover;
+}
+body.remember-shell[data-remember-view="memories"] .share-poster-content{width:100%;max-width:355px}
+body.remember-shell[data-remember-view="memories"] .share-poster h2{font-family:Georgia,serif;font-size:clamp(28px,7vw,40px);line-height:1.15;margin:26px 0 8px;overflow-wrap:anywhere}
+body.remember-shell[data-remember-view="memories"] .share-tagline{font-size:17px;font-weight:650;margin:0 0 20px}
+body.remember-shell[data-remember-view="memories"] #qr{display:inline-block;background:#fff;padding:12px;border-radius:9px;line-height:0;max-width:100%;box-sizing:border-box}
+body.remember-shell[data-remember-view="memories"] #qr svg{width:min(58vw,235px);height:auto;max-width:100%}
+body.remember-shell[data-remember-view="memories"] .share-scan{font-size:14px;margin:16px 0 0;font-weight:600}
+body.remember-shell[data-remember-view="memories"] .share-close{position:absolute;top:12px;right:12px;min-width:38px;min-height:38px;padding:6px;border-radius:50%;background:#13271fd9;color:white;font-size:18px}
+body.remember-shell[data-remember-view="memories"] .share-tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:15px 14px 8px}
+body.remember-shell[data-remember-view="memories"] .share-tools[hidden]{display:none}
+body.remember-shell[data-remember-view="memories"] .share-tools button{padding:12px 5px;font-size:13px;min-height:48px;background:#dce6ae;color:#1b392e;border-radius:12px}
+body.remember-shell[data-remember-view="memories"] .share-background-tools{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;padding:6px 12px}
+body.remember-shell[data-remember-view="memories"] .share-background-tools button{background:transparent;color:#214c3b;text-decoration:underline;font-size:13px;padding:8px}
+body.remember-shell[data-remember-view="memories"] .share-device-note{font-size:11px;color:#55685b;text-align:center;padding:0 15px 12px;margin:0}
+body.remember-shell[data-remember-view="memories"] #needsReplace button{background:#f9dfa1;color:#243729}
+@media print{
+ @page{size:A4;margin:0}
+ html,body,body.remember-shell[data-remember-view="memories"]{background:white!important;color:black!important}
+ body.remember-shell[data-remember-view="memories"]::before{display:none!important}
+ body.remember-shell[data-remember-view="memories"] > main,body.remember-shell[data-remember-view="memories"] > dialog:not(#share){display:none!important}
+ body.remember-shell[data-remember-view="memories"] .remember-share-dialog{
+  display:block!important;position:static!important;width:210mm!important;max-width:none!important;
+  height:297mm!important;max-height:none!important;margin:0!important;border:0!important;
+  border-radius:0!important;box-shadow:none!important;overflow:hidden!important;background:white!important;
+ }
+ body.remember-shell[data-remember-view="memories"] .share-poster{
+  box-sizing:border-box;height:297mm!important;min-height:0!important;padding:22mm!important;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
+ }
+ body.remember-shell[data-remember-view="memories"] .share-poster h2{font-size:38pt!important}
+ body.remember-shell[data-remember-view="memories"] .share-tagline{font-size:20pt!important}
+ body.remember-shell[data-remember-view="memories"] #qr svg{width:85mm!important}
+ body.remember-shell[data-remember-view="memories"] .share-scan{font-size:15pt!important}
+ body.remember-shell[data-remember-view="memories"] .share-close,
+ body.remember-shell[data-remember-view="memories"] .share-tools,
+ body.remember-shell[data-remember-view="memories"] .share-background-tools,
+ body.remember-shell[data-remember-view="memories"] .share-device-note{display:none!important}
+}
