@@ -13,6 +13,8 @@
  const blocked=()=>!safePage||dirty||document.visibilityState!=='visible'||!!document.querySelector('dialog[open]')||!!document.querySelector('[aria-busy="true"]')||!!document.querySelector('input:focus,textarea:focus,select:focus');
  const retryKey='remember-update-attempt-v2';
  let targetRelease='';
+ const versionOf=s=>String(s||'').match(/(\d+)\.(\d+)\.(\d+)$/)?.slice(1).map(Number)||[];
+ const newer=(candidate,current)=>{const a=versionOf(candidate),b=versionOf(current);if(a.length!==3||b.length!==3)return false;for(let i=0;i<3;i++){if(a[i]!==b[i])return a[i]>b[i]}return false;};
  function apply(){
   if(!queued||blocked()||!targetRelease)return;
   // A single automatic attempt for each target release, persisted across reloads.
@@ -49,10 +51,10 @@
    const response=await fetch(url,{cache:'no-store',credentials:'same-origin',redirect:'follow'});
    if(!response.ok||!response.headers.get('content-type')?.includes('text/html'))return;
    const latest=new DOMParser().parseFromString(await response.text(),'text/html');
-   if(fingerprint(latest)!==initial){targetRelease=latest.querySelector('meta[name="remember-release"]')?.content||'changed-'+String(latest.documentElement.outerHTML.length);if(targetRelease!==runningRelease){queued=true;apply();}}
+   if(fingerprint(latest)!==initial){targetRelease=latest.querySelector('meta[name="remember-release"]')?.content||'changed-'+String(latest.documentElement.outerHTML.length);if(newer(targetRelease,runningRelease)){queued=true;apply();}}
    else if(runningRelease){
     const releaseResponse=await fetch('./release.json?check='+Date.now(),{cache:'no-store',credentials:'same-origin'});
-    if(releaseResponse.ok){const manifest=await releaseResponse.json();if(manifest.release&&manifest.release!==runningRelease){targetRelease=manifest.release;queued=true;apply();}}
+    if(releaseResponse.ok){const manifest=await releaseResponse.json();if(newer(manifest.release,runningRelease)){targetRelease=manifest.release;queued=true;apply();}}
    }
    else {
     // Detect a changed shared stylesheet even when its URL was not bumped.
