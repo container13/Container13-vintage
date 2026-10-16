@@ -3,7 +3,7 @@
  const CHECK_MS=5*60*1000;
  const runningRelease=document.querySelector('meta[name="remember-release"]')?.content||'';
  const path=location.pathname;
- const safePage=/\/(?:index|login|register|activate|owner|dashboard|album|album-admin)\.html$/.test(path)||path.endsWith('/remember/');
+ const safePage=/\/(?:index|login|register|activate|owner|dashboard|album|album-admin|webmaster)\.html$/.test(path)||path.endsWith('/remember/');
  let initial='',dirty=false,checking=false,queued=false;
  const fingerprint=doc=>{
   const parts=[doc.title,...Array.from(doc.querySelectorAll('style,script,link[rel="stylesheet"]')).map(n=>n.getAttribute('src')||n.getAttribute('href')||n.textContent||'')];
