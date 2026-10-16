@@ -38,3 +38,7 @@ Check the deployed version from the network on every page startup and every retu
 
 ## Mandatory shared-foundation gate (all projects, 2026-10-16)
 Before implementing a fix, use the **Shared foundation first** gate in [PROJECT_MASTER_RULES.md](./PROJECT_MASTER_RULES.md), check the [PROJECT_RELEASE_CHECKLIST.md](./PROJECT_RELEASE_CHECKLIST.md) and consult the [shared component register](./SHARED_COMPONENT_REGISTER.md). Changes to a shared concern must originate in its canonical owner and be verified across affected views. After two unsuccessful attempts at the same defect, stop patching and diagnose the root cause. Track coded, committed, deployed and device-tested status independently.
+
+
+## Build update handling centrally from the beginning
+For every new web app/PWA, the first working version must include a shared updater, canonical release manifest/ID, asset/cache policy and explicit entry-route inventory. Apply the mandatory rules in [PROJECT_MASTER_RULES.md](./PROJECT_MASTER_RULES.md) and the release checks in [PROJECT_RELEASE_CHECKLIST.md](./PROJECT_RELEASE_CHECKLIST.md). Do not defer auto-update architecture until the app has many pages.
