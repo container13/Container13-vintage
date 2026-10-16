@@ -49,3 +49,16 @@ Whenever proposing an exact value, command, URL, filename, prompt, setting, or t
 - Preserve readable typography and OS text-size support. This explicit preference supersedes earlier template guidance to enable accessibility page pinch-zoom by default.
 - Verify real mobile behavior. Document any untested browser/device; do not claim success from source patterns alone.
 - Apply to active projects on their next relevant change. Do not redeploy unrelated projects just to copy this rule.
+
+
+## Shared foundation first — mandatory change gate (2026-10-16)
+Applies to **all projects**, including CCC, Remember, LinaSopti and future work. A shared design or behavior requirement is a contract, not a suggestion.
+1. **Scope first:** before editing, enumerate every affected view, component, breakpoint, theme and device context; inspect the actual imports and shared source of truth.
+2. **Single owner:** fix the shared component, design token, stylesheet or policy at its canonical location. A view-local override is allowed only with a documented reason and affected-view inventory.
+3. **Conflict cleanup:** inspect existing rules and specificity, remove/replace obsolete conflicting overrides instead of stacking more CSS or duplicated handlers.
+4. **Version parity:** check all consumers import the same intended release of the shared asset, and verify the published asset rather than only its repository commit.
+5. **Regression evidence:** verify the changed view and other affected views, including installed iPhone PWA startup/resume, safe areas, background, scrolling and interaction when applicable.
+6. **Truthful status:** distinguish CODED, COMMITTED, DEPLOYED, DEVICE TESTED and USER APPROVED. Never call a commit a verified fix.
+7. **Two-failure stop rule:** if the same defect persists after two attempted fixes, STOP incremental patches; perform and document root-cause analysis, shared-owner inventory, competing CSS/JS rules, deployed-version check and a targeted verification plan before the next fix.
+8. **Template register:** maintain a discoverable registry of canonical components, owners, consumer views, asset/version policy, exceptions and verification status; update it whenever a shared component changes.
+This gate must be completed before implementation and checked again before release. Record any exceptions explicitly; do not silently bypass it.
