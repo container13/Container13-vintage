@@ -1,0 +1,23 @@
+-- REVIEW ONLY: RUN EXCLUSIVELY IN AN ISOLATED TEST DATABASE.
+-- NEVER RUN IN REMEMBER PRODUCTION. ROLLBACK is defense in depth, not permission.
+-- Prerequisites: test database with Remember schema, reviewed atomic rotation RPC,
+-- dedicated synthetic owner and album, and a dedicated vault encryption key.
+-- Replace the synthetic UUIDs and token hashes with fixture-specific values.
+--
+-- 1. Snapshot the old hash and ciphertext for the synthetic album.
+-- 2. BEGIN; call the atomic RPC with synthetic new token hash + ciphertext;
+--    verify BOTH fields changed; ROLLBACK; verify BOTH returned to old values.
+-- 3. Inject a vault-write failure in the test DB (e.g. a test-only trigger
+--    raising an exception on remember.guest_link_vault). Call rotation inside
+--    a savepoint or separate transaction; catch the expected SQL exception.
+--    Verify guest_links.token_sha256 AND guest_link_vault.ciphertext still
+--    equal their original values after the failed transaction.
+-- 4. Repeat with concurrent calls for the same album. Verify serialization
+--    via SELECT ... FOR UPDATE and matching token hash/vault pair.
+-- 5. Verify unauthorized actor returns authorized:false with NO changes.
+-- 6. Verify direct anon/authenticated EXECUTE is denied.
+-- 7. Verify existing guest links still work before rotation, old token is
+--    denied after committed rotation, new token succeeds.
+--
+-- No test fixtures, credentials or live user IDs should be stored here.
+-- Expected status: NOT RUN until isolated DB provisioned and authorized.
