@@ -235,3 +235,11 @@ User confirms standalone operations panel, separate from Remember: own code/vers
 - En ny release måste verifieras i faktisk publicerad miljö och i installerad iPhone-PWA, inklusive uppgradering från gammal version, offline/online och djup-länkar.
 - **Release-gate:** ingen ny användarvy får godkännas om uppdateringsmotorn saknas; versions-ID och teststatus ska dokumenteras.
 - Huvudregler: `project-template/PROJECT_MASTER_RULES.md`, `PROJECT_RELEASE_CHECKLIST.md` och `SHARED_COMPONENT_REGISTER.md`.
+
+
+## Remember 0.1.52: background launch and universal version
+- User reproduction: iPhone installed PWA opens Mina album with a dark band below the background; swiping down or automatic scroll changes the painted viewport and band disappears. Root-cause hypothesis is initial visual-viewport geometry / iOS fixed-layer painting, not an image-size defect. **Not yet proven on-device**.
+- Replaced the dashboard's automatic pageshow scroll-to-top workaround with shared `remember-viewport.js` visualViewport/resize handling. Shared `remember-design.css` uses the measured viewport for the wallpaper and removes duplicate root wallpaper painting. This is a targeted mitigation awaiting real iPhone verification.
+- Central release identity: `remember/release.json` and embedded `remember-release` meta. Shared updater compares deployed release ID and can defer unsafe reloads. **Every new release must increment release.json and update the embedded running release IDs in the same rollout**.
+- Global version badge: `remember/remember-version.js`, required at the bottom of every production-facing view. It must show the **running version**, not the latest server version if this page has not updated.
+- Do not close the viewport issue or label DEVICE PASS without installed iPhone cold-launch/resume test and a screenshot.
