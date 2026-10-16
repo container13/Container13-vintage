@@ -1,10 +1,9 @@
 {
-  "version": "0.1.52",
-  "release": "remember-0.1.52",
+  "version": "0.1.53",
+  "release": "remember-0.1.53",
   "updated": "2026-10-16",
   "assets": [
     "remember-design.css",
-    "remember-viewport.js",
     "remember-version.js",
     "auto-update.js"
   ]
