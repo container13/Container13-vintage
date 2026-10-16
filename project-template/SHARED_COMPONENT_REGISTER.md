@@ -24,3 +24,10 @@ Purpose: canonical ownership, consumers, version policy, exceptions and verifica
 
 ## Current open issue
 Remember iPhone installed PWA occasionally exposes a dark bottom strip / inconsistent initial scroll. Earlier view-specific CSS patches did not resolve it. Shared foundation and consumer version parity were adjusted, but **not device verified**. Treat as OPEN; investigate real viewport, root/background rendering and deployed CSS rather than stacking further overrides.
+
+
+## Centralized update system — implementation contract
+- **Template requirement:** project-template/PROJECT_MASTER_RULES.md (centralized update architecture gate).
+- **Remember current controller:** remember/auto-update.js; consumer pages: index, login, register, activate, dashboard, owner, album, album-admin. The current HTML/CSS comparison is transitional; a canonical deployed release manifest and verified installed-PWA upgrade path remain **OPEN / NOT DEVICE VERIFIED**.
+- **New-project requirement:** one canonical release ID/manifest, one shared bootstrap imported by every user-facing entry route, a single cache strategy, safe pending updates and production/device verification.
+- **Maintenance rule:** when a new page is added, add it to the consumer inventory and updater integration in the same change; fail the release checklist otherwise.
