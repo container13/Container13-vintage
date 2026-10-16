@@ -70,3 +70,15 @@
 - [ ] One-finger scrolling, text entry, controls and keyboard remain usable.
 - [ ] Image zoom is enabled only after an explicit user request; an opted-in image viewer zooms its image, never the entire page.
 - [ ] Real iPhone Safari/Android pinch behavior tested where relevant; code/desktop inspection does not count as DEVICE PASS.
+
+
+## Shared foundation first — all-project mandatory gate (2026-10-16)
+- [ ] Listed every affected view, shared consumer, breakpoint and device context before editing.
+- [ ] Located the canonical shared owner and verified each consumer's import/path/version.
+- [ ] Changed the canonical implementation first; justified any view-specific exception in writing.
+- [ ] Removed/reconciled conflicting old CSS, event handlers and duplicate overrides rather than layering patches.
+- [ ] Checked version parity and actual deployed assets, not just GitHub commit status.
+- [ ] Tested representative affected views and regressions, including PWA safe-area, viewport, scroll and foreground resume where relevant.
+- [ ] Recorded CODED / COMMITTED / DEPLOYED / DEVICE TESTED / USER APPROVED separately.
+- [ ] If two fixes failed for the same issue, stopped patching and recorded root cause and a fresh verification plan.
+- [ ] Updated the shared component register with owner, consumers, exceptions and test status.
