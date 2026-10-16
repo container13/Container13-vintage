@@ -50,14 +50,39 @@ body.is-webmaster #webmasterTools .actions button{width:100%;min-width:0;font-si
 body.is-webmaster #ownerPanel{margin-top:0}
 body.remember-shell[data-remember-view="albums"] main{padding-bottom:max(110px,calc(env(safe-area-inset-bottom,0px) + 85px))}
 @media(max-width:390px){body.is-webmaster #webmasterTools .actions{grid-template-columns:1fr}}
+/* Webmaster workspace: one card for identity + existing real tools, no fake actions. */
+body.is-webmaster main{max-width:720px}
+body.is-webmaster #dashboardTitle{text-align:center;font-size:clamp(31px,8vw,42px);margin:2px 0 4px}
+.dashboard-subtitle{text-align:center;font-size:14px;letter-spacing:.02em;margin:0 0 22px;color:#f5e4cf}
+body.is-webmaster #account{margin:0 auto 18px;width:min(100%,480px)}
+.webmaster-workspace{margin:0 0 28px;padding:23px 21px 19px;border:1px solid #d6b983;border-radius:23px;background:linear-gradient(140deg,rgba(14,54,43,.96),rgba(17,46,38,.94));color:#fff8eb;box-shadow:0 15px 38px #0005}
+.workspace-top{display:flex;gap:16px;align-items:center}
+.workspace-symbol{display:grid;place-items:center;flex:0 0 54px;width:54px;height:54px;border-radius:50%;background:#d4bb8a30;color:#f0d4a3;font-size:29px}
+.workspace-top h2{font:500 clamp(30px,8vw,40px)/1.12 Georgia,serif;margin:5px 0}
+.workspace-top p{margin:3px 0 0;color:#eee0c9;font-size:14px}
+body.is-webmaster #webmasterTools{margin:18px 0 0;padding:0;border:0;border-top:1px solid #d9bf8a55;border-radius:0;background:transparent}
+body.is-webmaster #webmasterTools>summary{padding:15px 0 2px;font-size:15px;color:#f1d8a7}
+body.is-webmaster #webmasterTools .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+body.is-webmaster #webmasterTools .actions button{font-size:14px;min-height:48px;border-radius:12px;padding:11px}
+body.is-webmaster #webmasterTools button.secondary{color:#f6e3bc;border-color:#d7bb8888}
+body.is-webmaster #webmasterTools #result{color:#f1e1c7}
+body.is-webmaster #webmasterTools #albums a{color:#f5dfb5}
+body.is-webmaster .owned-albums-heading{font:500 clamp(29px,7vw,36px)/1.15 Georgia,serif;margin:0 0 16px;color:#fff8e9}
+body.is-webmaster #ownerPanel{background:rgba(33,28,25,.68);border-color:#f0e0c46b;box-shadow:0 14px 34px #0003;padding:18px}
+body.is-webmaster #ownerAlbums a{background:rgba(37,34,31,.65);color:#fff8ec;border:1px solid #f4e7d17d;min-height:72px;padding:20px;font-size:17px}
+body.is-webmaster #ownerPanel .newAlbum{display:block;text-align:center;background:#145744;color:#fff;border-radius:15px;padding:18px 12px;font-size:17px}
+body.is-webmaster #ownerPanel>p{margin:16px 0 0}
+body.is-webmaster #account{background:rgba(39,32,27,.72);border-color:#f1e2c488}
+@media(max-width:380px){.webmaster-workspace{padding:18px 15px}.workspace-symbol{flex-basis:46px;width:46px;height:46px}body.is-webmaster #webmasterTools .actions{grid-template-columns:1fr}}
 </style><link rel="stylesheet" href="./remember-design.css?v=0.1.68"><script src="../project-template/mobile-view-policy.js?v=2"></script><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js?v=0.1.68"></script><meta name="remember-release" content="remember-0.1.68"><script defer src="./remember-version.js?v=0.1.68"></script></head><body class="remember-shell" data-remember-view="albums"><main>
 <header><div class="brand">Remember. <span class="muted">by Container13</span></div><a class="remember-home" href="./" aria-label="Remember startsida"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7M5 9v11h14V9M9 20v-7h6v7"/></svg></a></header>
-<h1 id="dashboardTitle">Mina album</h1>
-<section id="webmasterIdentity" class="webmaster-identity" hidden aria-label="Webmasterarbetsyta"><div class="webmaster-eyebrow">CONTAINER13 · ADMINISTRATION</div><div class="webmaster-heading">Webmaster</div><p>Administration av Remember</p></section>
+<h1 id="dashboardTitle">Mina album</h1><p id="dashboardSubtitle" class="dashboard-subtitle" hidden>Hantera Remember och dina album</p>
+
 
 <section class="panel" id="loginPanel" hidden><form id="login"><label for="email">E-postadress</label><input id="email" type="email" autocomplete="email" required maxlength="254"><label for="password">Lösenord</label><input id="password" type="password" autocomplete="current-password" minlength="6"><div class="actions"><button id="send" type="submit" disabled>Logga in</button><button id="resetPassword" type="button" class="secondary" disabled>Skapa eller återställ lösenord</button><button id="magic" type="button" class="secondary" disabled>Skicka mejllänk i stället</button></div></form>
 <p id="feedback" class="status" role="status" aria-live="polite">Förbereder inloggningen…</p></section>
-<section class="panel" id="account" hidden><details><summary><span class="account-symbol" aria-hidden="true">♙</span><span>Mitt konto</span><span class="account-chevron" aria-hidden="true">⌄</span></summary><div class="account-body"><div class="account-profile"><span class="profile-icon" aria-hidden="true">♙</span><div><strong>Inloggat konto</strong><p id="identity" class="muted"></p></div></div><div id="setPasswordArea" hidden><label for="newPassword">Välj lösenord för framtida inloggningar</label><input id="newPassword" type="password" autocomplete="new-password" minlength="12" placeholder="Minst 12 tecken"><div class="actions"><button id="savePassword" type="button">Spara lösenord</button></div><p id="passwordResult" role="status" aria-live="polite"></p></div><div class="actions"><button id="logout" type="button" class="secondary">Logga ut <span aria-hidden="true">→</span></button></div></div></details><details id="webmasterTools" hidden><summary>Administrationsverktyg</summary><div class="actions"><button id="check" type="button" class="secondary">Kontrollera åtkomst</button><button id="list" type="button">Visa album</button></div><p id="result" role="status" aria-live="polite"></p><div id="albums" role="status" aria-live="polite"></div></details></section>
+<section class="panel" id="account" hidden><details><summary><span class="account-symbol" aria-hidden="true">♙</span><span>Mitt konto</span><span class="account-chevron" aria-hidden="true">⌄</span></summary><div class="account-body"><div class="account-profile"><span class="profile-icon" aria-hidden="true">♙</span><div><strong>Inloggat konto</strong><p id="identity" class="muted"></p></div></div><div id="setPasswordArea" hidden><label for="newPassword">Välj lösenord för framtida inloggningar</label><input id="newPassword" type="password" autocomplete="new-password" minlength="12" placeholder="Minst 12 tecken"><div class="actions"><button id="savePassword" type="button">Spara lösenord</button></div><p id="passwordResult" role="status" aria-live="polite"></p></div><div class="actions"><button id="logout" type="button" class="secondary">Logga ut <span aria-hidden="true">→</span></button></div></div></details></section>
+<section id="webmasterWorkspace" class="webmaster-workspace" hidden><div class="workspace-top"><span class="workspace-symbol" aria-hidden="true">⚙</span><div><div class="webmaster-eyebrow">CONTAINER13 · ADMINISTRATION</div><h2>Webmaster</h2><p>Administration av Remember</p></div></div><details id="webmasterTools" hidden><summary>Administrationsverktyg</summary><div class="actions"><button id="check" type="button" class="secondary">Kontrollera åtkomst</button><button id="list" type="button">Visa album</button></div><p id="result" role="status" aria-live="polite"></p><div id="albums" role="status" aria-live="polite"></div></details></section>
 <h2 id="ownedAlbumsHeading" class="owned-albums-heading" hidden>Mina album</h2><section class="panel" id="ownerPanel" hidden><div id="ownerAlbums" role="status" aria-live="polite"></div><p><a href="./register.html" class="newAlbum">+ Skapa nytt album</a></p></section><section class="panel" id="creation" hidden><details><summary>+ Skapa nytt album</summary><p>Albumet sparas i Remember. Bilduppladdning är ännu inte verifierad.</p>
 <form id="createForm"><label for="albumTitle">Albumets namn</label><input id="albumTitle" required maxlength="100">
 <label for="eventType">Upplevelse</label><select id="eventType"><option value="fishing">Fiskeresa</option><option value="trip">Resa</option><option value="party">Fest</option><option value="wedding">Bröllop</option></select>
@@ -74,14 +99,14 @@ let client=null,session=null,busy=false,creationAllowed=false,webmasterAllowed=f
 function message(text){$('feedback').textContent=text}
 function lock(value){busy=value;document.querySelectorAll('button').forEach(b=>b.disabled=value)}
 async function updateWebmaster(value){
- const revision=++roleRevision;webmasterAllowed=false;$('webmasterTools').hidden=true;$('webmasterIdentity').hidden=true;document.body.classList.remove('is-webmaster');$('ownedAlbumsHeading').hidden=true;$('dashboardTitle').textContent='Mina album';creationAllowed=false;$('creation').hidden=true;
+ const revision=++roleRevision;webmasterAllowed=false;$('webmasterTools').hidden=true;$('webmasterWorkspace').hidden=true;document.body.classList.remove('is-webmaster');$('ownedAlbumsHeading').hidden=true;$('dashboardTitle').textContent='Mina album';$('dashboardSubtitle').hidden=true;creationAllowed=false;$('creation').hidden=true;
  if(!value)return;
  const allowed=await checkRememberWebmaster(value);
  if(revision!==roleRevision)return;
  webmasterAllowed=allowed;$('webmasterTools').hidden=!allowed;
- $('webmasterIdentity').hidden=!allowed;
+ $('webmasterWorkspace').hidden=!allowed;
  document.body.classList.toggle('is-webmaster',allowed);$('ownedAlbumsHeading').hidden=!allowed;
- $('dashboardTitle').textContent=allowed?'Administration':'Mina album';
+ $('dashboardTitle').textContent=allowed?'Administration':'Mina album';$('dashboardSubtitle').hidden=!allowed;
 }
 function showSession(value){void updateWebmaster(value);const identityChanged=session?.user?.id!==value?.user?.id;session=value;if(identityChanged){creationAllowed=false;$('creation').hidden=true;}$('account').hidden=!value;$('loginPanel').hidden=true;$('login').hidden=true;$('identity').textContent=value?value.user.email:'';$('result').textContent='';$('albums').replaceChildren()}
 async function loadOwnedAlbums(){
