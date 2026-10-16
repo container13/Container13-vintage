@@ -1,4 +1,4 @@
-import {shareRememberCrop} from './photo-crop.js?v=0.1.72';
+import {prepareRememberCrop,sharePreparedRememberCrop} from './photo-crop.js?v=0.1.73';
 const ENDPOINT='https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-photo-gallery';
 export function mountRememberGallery({container,auth}) {
  container.innerHTML='<h2>Albumets bilder</h2><p class="remember-gallery-status" role="status">Hämtar bilder…</p><div class="remember-gallery-grid"></div><div class="remember-gallery-viewer" hidden><button type="button" aria-label="Stäng bild">✕ Stäng</button><button type="button" class="remember-crop-button" aria-label="Spara bildutsnitt">📷</button><img alt="Albumfoto"></div>';
@@ -11,17 +11,20 @@ export function mountRememberGallery({container,auth}) {
  // Shared viewer: vertical swipe, persistent 8x pinch/pan, constrained to image edges.
  const closeButton=viewer.querySelector('button');
  const cropButton=viewer.querySelector('.remember-crop-button');
- cropButton.onclick=async()=>{if(!photos[pos])return;cropButton.disabled=true;try{await shareRememberCrop(photos[pos].url,large,viewer)}catch(e){if(e?.name!=='AbortError')alert('Kunde inte skapa bildutdrag. Prova vanlig skärmdump.')}finally{cropButton.disabled=false;controls()}};
+ let preparedCrop=null,cropTimer=null,cropGeneration=0;
+ const prepareCrop=()=>{const generation=++cropGeneration;clearTimeout(cropTimer);preparedCrop=null;cropTimer=setTimeout(async()=>{if(viewer.hidden||!photos[pos])return;try{const file=await prepareRememberCrop(photos[pos].url,large,viewer);if(generation===cropGeneration)preparedCrop=file}catch(e){if(generation===cropGeneration)preparedCrop=null}},280)};
+ cropButton.onclick=()=>{if(!photos[pos])return;if(!preparedCrop){prepareCrop();alert('Bildutsnittet förbereds. Tryck på kameran igen om ett ögonblick.');return}try{const result=sharePreparedRememberCrop(preparedCrop);result?.catch?.(e=>{if(e?.name!=='AbortError')alert('Det gick inte att öppna bilddelning.')})}catch(e){alert('Det gick inte att öppna bilddelning.')}};
+
  let photos=[],pos=0,gesture='none',startX=0,startY=0,zoomStartDistance=1,zoomStartX=0,zoomStartY=0,zoomHold=false,zoomTimer=null,zoomMoved=false,swipeLocked=false,mouseDown=false,scale=1,panX=0,panY=0,pinchBase=1,panBaseX=0,panBaseY=0,panStartX=0,panStartY=0,lastTap=0,controlsTimer=null;
  const midpoint=t=>({x:(t[0].clientX+t[1].clientX)/2,y:(t[0].clientY+t[1].clientY)/2});
  const gap=t=>Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
  const clearZoom=()=>{clearTimeout(zoomTimer);zoomTimer=null;zoomHold=false};
  const clampPan=()=>{const w=large.offsetWidth*scale,h=large.offsetHeight*scale,vw=viewer.clientWidth,vh=viewer.clientHeight;const x=Math.max(0,(w-vw)/2),y=Math.max(0,(h-vh)/2);panX=Math.max(-x,Math.min(x,panX));panY=Math.max(-y,Math.min(y,panY))};
- const render=()=>{clampPan();large.style.transform='translate3d('+panX+'px,'+panY+'px,0) scale('+scale+')';large.style.opacity='1'};
+ const render=()=>{clampPan();large.style.transform='translate3d('+panX+'px,'+panY+'px,0) scale('+scale+')';large.style.opacity='1';prepareCrop()};
  const controls=()=>{viewer.classList.remove('controls-hidden');clearTimeout(controlsTimer);controlsTimer=setTimeout(()=>{if(!viewer.hidden)viewer.classList.add('controls-hidden')},2800)};
  function resetDrag(){gesture='none';scale=1;panX=panY=0;large.classList.remove('dragging');render()}
- function show(i){if(!photos.length)return;clearZoom();pos=(i+photos.length)%photos.length;large.style.transition='none';resetDrag();large.src=photos[pos].url;viewer.hidden=false;viewer.setAttribute('aria-label','Bild '+(pos+1)+' av '+photos.length);controls();requestAnimationFrame(()=>{large.style.transition=''})}
- function close(){clearZoom();clearTimeout(controlsTimer);viewer.hidden=true;large.removeAttribute('src');resetDrag();document.body.style.overflow=''}
+ function show(i){if(!photos.length)return;clearZoom();pos=(i+photos.length)%photos.length;large.style.transition='none';resetDrag();large.src=photos[pos].url;large.onload=prepareCrop;viewer.hidden=false;viewer.setAttribute('aria-label','Bild '+(pos+1)+' av '+photos.length);controls();requestAnimationFrame(()=>{large.style.transition=''})}
+ function close(){clearTimeout(cropTimer);cropGeneration++;preparedCrop=null;clearZoom();clearTimeout(controlsTimer);viewer.hidden=true;large.removeAttribute('src');resetDrag();document.body.style.overflow=''}
  closeButton.onclick=close;
  viewer.onclick=e=>{if(e.target===viewer)close()};
  function finishSwipe(dx,dy){
