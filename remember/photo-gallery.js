@@ -13,7 +13,7 @@ export function mountRememberGallery({container,auth}) {
  const cropButton=viewer.querySelector('.remember-crop-button');
  let preparedCrop=null,cropTimer=null,cropGeneration=0;
  const prepareCrop=()=>{const generation=++cropGeneration;clearTimeout(cropTimer);preparedCrop=null;cropTimer=setTimeout(async()=>{if(viewer.hidden||!photos[pos])return;try{const file=await prepareRememberCrop(photos[pos].url,large,viewer);if(generation===cropGeneration)preparedCrop=file}catch(e){if(generation===cropGeneration)preparedCrop=null}},280)};
- cropButton.onclick=()=>{if(!photos[pos])return;if(!preparedCrop){prepareCrop();alert('Bildutsnittet förbereds. Tryck på kameran igen om ett ögonblick.');return}try{const result=sharePreparedRememberCrop(preparedCrop);result?.catch?.(e=>{if(e?.name!=='AbortError')alert('Det gick inte att öppna bilddelning.')})}catch(e){alert('Det gick inte att öppna bilddelning.')}};
+ cropButton.onclick=()=>{if(!photos[pos])return;clearZoom();if(!preparedCrop){prepareCrop();alert('Bildutsnittet förbereds. Tryck på kameran igen om ett ögonblick.');return}try{const result=sharePreparedRememberCrop(preparedCrop);result?.catch?.(e=>{if(e?.name!=='AbortError')alert('Det gick inte att öppna bilddelning.')}).finally?.(()=>scheduleReset())}catch(e){alert('Det gick inte att öppna bilddelning.')}};
 
  let photos=[],pos=0,gesture='none',startX=0,startY=0,zoomStartDistance=1,zoomStartX=0,zoomStartY=0,zoomHold=false,zoomTimer=null,zoomMoved=false,swipeLocked=false,mouseDown=false,scale=1,panX=0,panY=0,pinchBase=1,panBaseX=0,panBaseY=0,panStartX=0,panStartY=0,lastTap=0,controlsTimer=null;
  const midpoint=t=>({x:(t[0].clientX+t[1].clientX)/2,y:(t[0].clientY+t[1].clientY)/2});
