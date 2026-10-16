@@ -281,3 +281,6 @@ Efter USER-feedback på 0.1.72: bilden gick att dra utanför visningsramen och k
 
 ### 2026-10-16 — 0.1.74: zoomåterställning och känslighet
 USER PASS på 0.1.73 för sparande till iPhone Bilder och begränsad bildpanorering. USER önskade 3 sekunder efter senaste fingerrörelse samt mindre känslig nypzoom. photo-gallery.js: pinch exponent 2.3→1.65, zoomreset efter 3000 ms vid avslutad touch-pan/pinch/muspan; ny beröring avbryter timer; kameraknapp avbryter timer under delningsmeny och schemalägger efteråt. Synkat nio HTML-vyer och release.json + remember-version.js till 0.1.74, återläst version och relevanta koddelar PASS. Ej USER PASS för 0.1.74 ännu.
+
+### 2026-10-16 — 0.1.75: mjukare vertikala bildsvep
+USER PASS på 0.1.74, men nästa bild upplevdes hoppa in för snabbt. photo-gallery.js: inkommande och utgående bild övergår nu på 450 ms med cubic-bezier(.22,1,.36,1) ease-out, animationens avslut flyttat till 480 ms. Ingen ändring av zoom, tresekunders återställning eller kameradelning. Nio HTML-vyer, remember-version.js och release.json synkade till 0.1.75; readback 11/11 PASS. Väntar USER PASS på mobilens svepkänsla.
