@@ -73,3 +73,10 @@ This gate must be completed before implementation and checked again before relea
 - Handle offline and partial deployment safely: keep the current app usable, retry later, and only activate a consistent release. Avoid infinite reload loops and never require routine cache clearing/reinstallation.
 - Release gate: verify the actual production version/asset bytes, every entry route, installed iPhone PWA cold launch and resume, offline/online, pending-work deferral, and recovery from an old installed version. Report code/commit/deploy/device verification separately.
 - Project startup checklist MUST name the update controller, release manifest, consumer routes, deployment/cache policy and device test owner. Missing any of these blocks release approval.
+
+
+## Visible version on every view — mandatory all projects (2026-10-16)
+- Every user-facing view, including login, onboarding, dashboards, detail pages, guest, owner and webmaster/admin, MUST show the current **deployed application version at the bottom**. The version comes from one central release identity, never independently hardcoded per view.
+- Provide one shared version/footer component at project inception and automatically include it in every new view. Respect safe-area insets, readability, full-screen media/dialogs and print mode; do not obscure interactive controls.
+- Update the canonical release manifest/ID for every release and ensure the visible version, running release and deployed manifest agree. Do not silently display the newest server version as though an old loaded page were already updated: label running vs available versions when they differ.
+- Verify on real mobile and desktop devices; new view/release is blocked if its footer is missing, misleading or obscures content. Diagnostic/test-only pages may be excluded with a documented reason.
