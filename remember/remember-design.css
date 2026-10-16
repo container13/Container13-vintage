@@ -9,7 +9,14 @@
   --remember-radius:18px;
   --remember-content:1080px;
 }
-html { background-color:#332c26; }
+/* Canonical root wallpaper: iOS PWA root canvas continues below its initial visual viewport. */
+html:has(body.remember-shell) {
+ background:#332c26 linear-gradient(160deg,rgba(35,25,18,.34),rgba(35,25,18,.58)),url("./assets/backgrounds/inloggning.webp");
+ background-size:cover;
+ background-position:center center;
+ background-repeat:no-repeat;
+ min-height:100%;
+}
 /* 0.1.21: small source motifs were visibly soft at phone DPR and cover scaling.
    Reuse the approved 1536px image across app views until sharper originals exist. */
 body.remember-shell {--remember-background:url("./assets/backgrounds/inloggning.webp")}
@@ -21,9 +28,10 @@ body.remember-shell {
   isolation:isolate;
 }
 body.remember-shell::before {
-  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
-  background:linear-gradient(160deg,rgba(35,25,18,.34),rgba(35,25,18,.58)),
-    var(--remember-background,linear-gradient(135deg,#54473b,#292d26)) center/cover no-repeat;
+ content:"";position:fixed;top:-160px;right:0;bottom:-160px;left:0;
+ pointer-events:none;z-index:-1;
+ background-image:linear-gradient(160deg,rgba(35,25,18,.34),rgba(35,25,18,.58)),var(--remember-background,linear-gradient(135deg,#54473b,#292d26));
+ background-position:center center;background-size:cover;background-repeat:no-repeat;
 }
 body.remember-shell > main {position:relative;z-index:1}
 body.remember-shell .panel,
@@ -42,7 +50,7 @@ body.remember-shell select {max-width:100%}
 body.remember-shell button {min-height:44px}
 body.remember-shell a {color:#e7e9bd}
 @media(max-width:767px) {
- body.remember-shell::before {background-position:center bottom}
+ body.remember-shell::before {background-position:center center}
  body.remember-shell main {padding-inline:clamp(14px,4vw,22px)}
  body.remember-shell .panel {padding:clamp(14px,4vw,20px)}
 }
@@ -453,75 +461,6 @@ body.remember-shell[data-remember-view="memories"] .album-settings > #settingsSt
 }
 
 
-/* Shared mobile viewport foundation 0.1.50 — ONE owner for shell geometry.
-   Do not lock the page to 100dvh: installed iOS PWAs can change their
-   visual viewport during startup, leaving an uncovered bottom band.
-   Keep normal document scrolling; only content dialogs own their scroll. */
-html:has(body.remember-shell){
- min-height:100%;
- background-color:#332c26;
- background-image:linear-gradient(160deg,rgba(35,25,18,.34),rgba(35,25,18,.58)),url("./assets/backgrounds/inloggning.webp");
- background-position:center center;
- background-size:cover;
- background-repeat:no-repeat;
-}
-body.remember-shell{
- height:auto;
- min-height:100vh;
- min-height:100dvh;
- overflow-x:hidden;
- overflow-y:auto;
- background:transparent;
-}
-body.remember-shell::before{
- position:fixed;
- inset:-120px 0;
- background-position:center center;
- background-size:cover;
-}
-@media(max-width:767px){
- html:has(body.remember-shell[data-remember-view="albums"]){
-  height:auto;overflow:visible;
- }
- body.remember-shell[data-remember-view="albums"]{
-  height:auto;min-height:100dvh;overflow-x:hidden;overflow-y:auto;
-  overscroll-behavior-y:auto;
- }
- body.remember-shell[data-remember-view="albums"] > main{
-  height:auto;max-height:none;min-height:100dvh;
-  overflow:visible;display:flex;flex-direction:column;
-  padding-top:calc(env(safe-area-inset-top,0px) + 20px);
-  padding-bottom:calc(env(safe-area-inset-bottom,0px) + 24px);
- }
- body.remember-shell[data-remember-view="albums"] #ownerPanel{
-  min-height:0;overflow:visible;
- }
-}
-
-/* 0.1.52 viewport root-cause mitigation: a single live viewport size is
-   maintained by remember-viewport.js. Remove duplicated wallpaper rendering
-   on the root element: one viewport backdrop, one background owner. */
-html:has(body.remember-shell){
- background-image:none;
- background-color:#332c26;
-}
-body.remember-shell::before{
- inset:0!important;
- top:0!important;
- bottom:auto!important;
- height:var(--remember-live-viewport,100dvh);
- min-height:100svh;
- background-position:center center!important;
- background-size:cover!important;
- transform:translateZ(0);
- -webkit-transform:translateZ(0);
-}
-@media(max-width:767px){
- body.remember-shell[data-remember-view="albums"]::before{
-  inset:0!important;
-  height:var(--remember-live-viewport,100dvh);
- }
-}
 /* Single, global version indicator; hidden while fullscreen dialogs are open. */
 #remember-global-version{
  position:fixed;z-index:30;
@@ -536,10 +475,27 @@ body.remember-shell::before{
 body:has(dialog[open]) #remember-global-version{display:none}
 body.remember-shell .version[hidden]{display:none!important}
 
-/* Owner/guest album views intentionally suppress ::before; retain wallpaper
-   on the root canvas for those views only. */
-html:has(body.remember-shell[data-remember-view="memories"]){
- background-image:linear-gradient(160deg,rgba(35,25,18,.34),rgba(35,25,18,.58)),url("./assets/backgrounds/inloggning.webp");
- background-size:cover;background-position:center;background-repeat:no-repeat;
+
+/* 0.1.53 canonical iOS PWA background geometry.
+   Overscan is deliberate: no viewport-height JS, 100dvh, or bottom:auto.
+   A single fixed backdrop is extended past BOTH edges, and the root
+   canvas has the same wallpaper as a fallback during iOS startup paint. */
+body.remember-shell::before,
+body.remember-shell[data-remember-view="albums"]::before {
+ position:fixed!important;
+ top:-160px!important;bottom:-160px!important;
+ left:0!important;right:0!important;
+ inset:-160px 0!important;
+ height:auto!important;min-height:0!important;
+ background-position:center center!important;
+ background-size:cover!important;
+ transform:none!important;-webkit-transform:none!important;
+}
+html:has(body.remember-shell[data-remember-view="albums"]){
+ height:auto!important;min-height:100%!important;
+ background-color:#332c26!important;
+ background-image:linear-gradient(160deg,rgba(35,25,18,.34),rgba(35,25,18,.58)),url("./assets/backgrounds/inloggning.webp")!important;
+ background-size:cover!important;background-position:center center!important;
+ background-repeat:no-repeat!important;
 }
 @media print{#remember-global-version{display:none!important}}
