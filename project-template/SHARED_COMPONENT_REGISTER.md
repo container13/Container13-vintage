@@ -31,3 +31,7 @@ Remember iPhone installed PWA occasionally exposes a dark bottom strip / inconsi
 - **Remember current controller:** remember/auto-update.js; consumer pages: index, login, register, activate, dashboard, owner, album, album-admin. The current HTML/CSS comparison is transitional; a canonical deployed release manifest and verified installed-PWA upgrade path remain **OPEN / NOT DEVICE VERIFIED**.
 - **New-project requirement:** one canonical release ID/manifest, one shared bootstrap imported by every user-facing entry route, a single cache strategy, safe pending updates and production/device verification.
 - **Maintenance rule:** when a new page is added, add it to the consumer inventory and updater integration in the same change; fail the release checklist otherwise.
+
+
+## Visible version ownership
+All projects: one centrally owned version/footer component per project, driven by its running release identity. Remember: `remember/remember-version.js`, `remember/release.json`, and `remember/remember-viewport.js`; all nine production-facing HTML routes must import these. Do not claim installed-device verification until tested.
