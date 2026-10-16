@@ -484,17 +484,3 @@ body.remember-shell .version[hidden]{display:none!important}
   }
 }
 @media print{#remember-global-version{display:none!important}}
-
-/* 0.1.61: stable wallpaper extent for installed iPhone PWA.
-   The large viewport is invariant while WebKit adjusts the visual viewport.
-   Apply equally to dashboard and owner; never move the content or intercept scrolling. */
-@supports (height:100lvh){
- @media(max-width:767px){
-  body.remember-shell[data-remember-view="albums"]::before,
-  body.remember-shell[data-remember-view="memories"]::before{
-   bottom:auto;
-   height:100lvh;
-   min-height:100lvh;
-  }
- }
-}
