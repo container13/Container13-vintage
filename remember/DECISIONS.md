@@ -246,3 +246,10 @@ User confirms standalone operations panel, separate from Remember: own code/vers
 
 ## Remember 0.1.53 background root-cause mitigation
 Confirmed on-device: v0.1.52 loaded but brown root background band remained at bottom on initial iPhone PWA paint; scrolling caused background to fill. Removed the 0.1.50 and 0.1.52 viewport-height CSS patches, disconnected `remember-viewport.js` from production entry points, and made the root canvas use the actual wallpaper with a fixed backdrop extending 160px beyond both viewport edges. Version bump across all nine user-facing views. **Not device verified; do not mark resolved until user confirms cold start and scroll.**
+
+## 2026-10-16 – iPhone installerad PWA: nedersta mörka remsan
+- **Reproducerat på riktig iPhone:** `screen.height=874`, `innerHeight=812`, skillnad 62 CSS-px; `env(safe-area-inset-bottom)` rapporterar 54 px i separat test. Remsan syns även efter kallstart och utan scroll.
+- **Isolerat test:** `remember/pwa-display-test.html` och egen manifest `pwa-display-test.webmanifest`, installerad som separat hemskärmsapp. Samma nedersta remsa trots `viewport-fit=cover` och `apple-mobile-web-app-status-bar-style=black-translucent`. Detta talar emot att dashboardens egna CSS-regler är grundorsaken.
+- **Extern möjlig förklaring:** WebKit bug 301994, https://bugs.webkit.org/show_bug.cgi?id=301994 . Matchningen har diskuterats men bör verifieras mot rapportens exakta miljö och aktuella status innan den anges som definitivt bevis.
+- **Beslut:** Sluta lägga på spekulativa CSS-höjdjusteringar. Behåll v0.1.57:s verifierat skarpa logotyp och övriga layout. Ta bort tillfälliga `Skärmmätning`-knappen och dess diagnostikskript från dashboarden; bevara separat testsida och underlag för framtida iOS/WebKit-uppföljning.
+- **Status:** Systemområdets bakgrund är inte löst. Ingen DEVICE PASS för heltäckande bakgrund; användaren har verifierat endast att logotypen är korrekt och att remsan kvarstår.
