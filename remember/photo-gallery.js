@@ -44,7 +44,8 @@ export function mountRememberGallery({container,auth}) {
   else if(gesture==='swipe'&&e.touches.length===1){e.preventDefault();const dx=e.touches[0].clientX-startX,dy=e.touches[0].clientY-startY;large.style.transform='translate3d(0,'+(Math.abs(dy)>Math.abs(dx)?dy:0)+'px,0)';large.style.opacity=String(Math.max(.5,1-Math.abs(dy)/800))}
  },{passive:false});
  viewer.addEventListener('touchend',e=>{
-  if(gesture==='zoom'){if(e.touches.length<2){gesture='none';large.classList.remove('dragging');if(zoomMoved){zoomHold=true;clearTimeout(zoomTimer);zoomTimer=setTimeout(()=>{clearZoom();resetDrag()},3000)}else resetDrag()}return}
+  if(gesture==='zoom'){if(e.touches.length===1){gesture='pan';panStartX=e.touches[0].clientX;panStartY=e.touches[0].clientY;panBaseX=panX;panBaseY=panY}else if(!e.touches.length){gesture='none';large.classList.remove('dragging');if(scale<=1.01)resetDrag();controls()}return}
+  if(gesture==='pan'&&!e.touches.length){gesture='none';large.classList.remove('dragging');controls();return}
   if(gesture==='swipe'&&e.touches.length===0){const t=e.changedTouches[0];gesture='none';if(t)finishSwipe(t.clientX-startX,t.clientY-startY);else resetDrag()}
  },{passive:false});
  viewer.addEventListener('touchcancel',resetDrag,{passive:true});
