@@ -8,12 +8,12 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.60",
-    "integrity": "UNVERIFIED_DEVICE_AND_DEPLOY"
+    "candidate": "0.1.62",
+    "integrity": "COMMITTED_NOT_DEVICE_VERIFIED"
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
-    "targetRelease": "0.1.60",
+    "status": "COMMITTED_DEVICE_PENDING",
+    "targetRelease": "0.1.62",
     "goal": "Reconcile Remember release documentation and investigate iOS 27 installed-PWA bottom background band without speculative CSS patches",
     "plan": [
       "Read shared project template and Remember decisions before changing code",
@@ -27,10 +27,10 @@
     "resumeInstruction": "Start with project-template/PROJECT_RELEASE_STANDARD.md, PROJECT_MASTER_RULES.md, PROJECT_RELEASE_CHECKLIST.md, SHARED_COMPONENT_REGISTER.md, remember/DECISIONS.md and this state. v0.1.60 is repository release identity, not a verified live/device PASS. iOS bottom band reproduced even in independent installed test PWA; do not add speculative CSS fixes. Consult remember/PROJECT_HANDOFF_CURRENT.md latest 2026-10-16 section and remember/OPERATING_LIMITS.md for service issues. Never rerun migrations or modify existing album data."
   },
   "currentWork": {
-    "completed": "Documentation reconciliation 2026-10-16: repository release.json identifies 0.1.60; iPhone screenshot of owner album displays 0.1.60. Shared camera embedded in owner in 0.1.59, fullscreen CSS adjusted in 0.1.60, still requires camera-on-device verification. Dark lower band reproduced on iPhone and independent installed PWA; unresolved.",
-    "next": "Hold iOS/WebKit bottom-band issue open, compare initial paint and movement in Mina album versus owner without speculative CSS. Verify camera fullscreen separately. Keep standalone operations panel decision parked until requested.",
-    "blocked": true,
-    "blocker": "No confirmed iOS 27/WebKit root cause or device-approved background fix. Deployed asset-byte integrity and end-to-end camera behavior unverified."
+    "completed": "Remember 0.1.62: owner QR code rendered as clickable link using the same existing shareUrl as the encoded QR. All nine user-facing HTML release markers and cache-busted shared assets aligned to 0.1.62; remember-version.js and release.json aligned. GitHub readback checked. Earlier camera and dashboard reload-loop USER PASS were on 0.1.60; 0.1.62 device regression still pending.",
+    "next": "User test on installed iPhone: open Dela album, tap QR code and confirm it opens guest album without login; scan QR from another device and confirm same destination; verify no reload loop and camera still works.",
+    "blocked": false,
+    "blocker": "Awaiting real-device acceptance for QR click, scan and cross-view regression. iOS bottom system band parked by user decision."
   },
   "pausedWork": {
     "fotobok": "Parkerad idé; inte i första releasen."
@@ -444,8 +444,8 @@
       "remember/PROJECT_HANDOFF_CURRENT.md",
       "user-observed installed iPhone behavior"
     ],
-    "releaseIdentity": "remember-0.1.60",
-    "status": "DOCS_UPDATED_NOT_RUNTIME_VERIFIED",
+    "releaseIdentity": "remember-0.1.62",
+    "status": "RELEASE_COMMITTED_DEVICE_PENDING",
     "historicalEvidencePreserved": true,
     "knownStaleHistoricalSections": "Older fields in this JSON and earlier handoff paragraphs describe past checkpoints and must not override workCheckpoint/currentWork or recent evidence.",
     "iosBackground": {
@@ -463,6 +463,11 @@
     "operationsPanel": {
       "decision": "separate standalone read-only operations panel, not coupled to Remember",
       "status": "NOT_IMPLEMENTED"
+    },
+    "qrClick": {
+      "version": "0.1.62",
+      "behavior": "Tap QR code in owner share dialog navigates to existing token-bearing guest album URL, matching scanned QR",
+      "status": "GITHUB_VERIFIED_DEVICE_PENDING"
     }
   }
 }
