@@ -207,3 +207,73 @@ body.remember-shell[data-remember-view="memories"] .album-settings h2{margin:0 0
 body.remember-shell[data-remember-view="memories"] .album-settings button{display:block;width:100%;margin:12px 0;min-height:52px;text-align:center;border-radius:14px}
 body.remember-shell[data-remember-view="memories"] #deleteAlbum{background:#f4d5c9;color:#6d211c}
 body.remember-shell[data-remember-view="memories"] #settingsStatus{overflow-wrap:anywhere}
+
+/* Dashboard 0.1.36 – account card, compact album overview, iPhone safe areas */
+body.remember-shell[data-remember-view="albums"] #account{margin:0 0 16px;flex:0 0 auto}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child{text-align:center}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child > summary{
+ display:inline-flex;align-items:center;justify-content:center;gap:10px;
+ min-height:49px;padding:11px 19px;border-radius:100px;
+ border:1px solid rgba(255,239,214,.48);background:rgba(45,35,28,.76);
+ box-shadow:0 7px 24px rgba(0,0,0,.16);color:#fff5e8;
+ font-size:15px;font-weight:700;cursor:pointer
+}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child > summary::before{content:none}
+body.remember-shell[data-remember-view="albums"] #account .account-symbol{font-size:21px;line-height:1}
+body.remember-shell[data-remember-view="albums"] #account .account-chevron{font-size:20px;line-height:1;transition:transform .2s ease}
+body.remember-shell[data-remember-view="albums"] #account details[open] .account-chevron{transform:rotate(180deg)}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child[open]{
+ text-align:left;padding:0;background:transparent;border:0
+}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child[open] > summary{display:flex;width:max-content;margin:0 auto 13px}
+body.remember-shell[data-remember-view="albums"] #account .account-body{
+ padding:19px;border:1px solid rgba(255,244,226,.45);border-radius:23px;
+ background:rgba(43,33,26,.8);box-shadow:0 12px 32px rgba(0,0,0,.22)
+}
+body.remember-shell[data-remember-view="albums"] #account .account-profile{display:flex;align-items:center;gap:13px;min-width:0}
+body.remember-shell[data-remember-view="albums"] #account .profile-icon{
+ width:48px;height:48px;flex:none;display:grid;place-items:center;border-radius:50%;
+ background:rgba(222,231,170,.17);border:1px solid rgba(222,231,170,.36);
+ color:#e6edb7;font-size:27px
+}
+body.remember-shell[data-remember-view="albums"] #account .account-profile > div{min-width:0}
+body.remember-shell[data-remember-view="albums"] #account .account-profile strong{
+ display:block;color:#fff5e8;font-size:15px;margin-bottom:5px
+}
+body.remember-shell[data-remember-view="albums"] #identity{
+ color:#eee2d0;font-size:13px;line-height:1.5;overflow-wrap:anywhere
+}
+body.remember-shell[data-remember-view="albums"] #account .account-body > .actions{
+ margin:18px 0 0;padding-top:15px;border-top:1px solid rgba(255,255,255,.17)
+}
+body.remember-shell[data-remember-view="albums"] #logout{
+ display:flex;align-items:center;justify-content:space-between;gap:18px;
+ width:100%;padding:13px 16px;border-radius:13px;background:rgba(255,255,255,.08);
+ border:1px solid rgba(255,255,255,.3);color:#fff3e1;font-size:15px
+}
+body.remember-shell[data-remember-view="albums"] #ownerPanel{
+ border-radius:24px;padding:20px;background:rgba(43,33,26,.72)
+}
+body.remember-shell[data-remember-view="albums"] #ownerAlbums a{
+ background:rgba(39,32,26,.65);border:1px solid rgba(255,248,233,.4);
+ border-radius:17px;padding:18px;min-height:62px;font-size:17px;
+ box-shadow:0 4px 16px rgba(0,0,0,.13)
+}
+body.remember-shell[data-remember-view="albums"] #ownerPanel .newAlbum{
+ display:block;text-align:center;padding:17px 14px;border-radius:17px;
+ background:#174b3c;color:#fff;font-size:17px
+}
+body.remember-shell[data-remember-view="albums"] .version{display:none}
+@media(max-width:767px){
+ html:has(body.remember-shell[data-remember-view="albums"]){background:#332c26}
+ body.remember-shell[data-remember-view="albums"]::before{
+  bottom:calc(-1 * env(safe-area-inset-bottom,0px));
+  background-position:center center
+ }
+ body.remember-shell[data-remember-view="albums"] > main{
+  padding-bottom:max(18px,env(safe-area-inset-bottom,0px));
+  overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch
+ }
+ body.remember-shell[data-remember-view="albums"] #ownerPanel{overflow:visible;flex-shrink:0}
+ body.remember-shell[data-remember-view="albums"] #account .account-body{padding:17px}
+}
