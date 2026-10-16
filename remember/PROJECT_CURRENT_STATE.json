@@ -8,8 +8,8 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.62",
-    "integrity": "COMMITTED_NOT_DEVICE_VERIFIED"
+    "candidate": "0.1.75",
+    "integrity": "GITHUB_READBACK_DEVICE_PENDING"
   },
   "workCheckpoint": {
     "status": "COMMITTED_DEVICE_PENDING",
@@ -27,10 +27,10 @@
     "resumeInstruction": "Start with project-template/PROJECT_RELEASE_STANDARD.md, PROJECT_MASTER_RULES.md, PROJECT_RELEASE_CHECKLIST.md, SHARED_COMPONENT_REGISTER.md, remember/DECISIONS.md and this state. v0.1.60 is repository release identity, not a verified live/device PASS. iOS bottom band reproduced even in independent installed test PWA; do not add speculative CSS fixes. Consult remember/PROJECT_HANDOFF_CURRENT.md latest 2026-10-16 section and remember/OPERATING_LIMITS.md for service issues. Never rerun migrations or modify existing album data."
   },
   "currentWork": {
-    "completed": "Remember 0.1.62: owner QR code rendered as clickable link using the same existing shareUrl as the encoded QR. All nine user-facing HTML release markers and cache-busted shared assets aligned to 0.1.62; remember-version.js and release.json aligned. GitHub readback checked. Earlier camera and dashboard reload-loop USER PASS were on 0.1.60; 0.1.62 device regression still pending.",
-    "next": "User test on installed iPhone: open Dela album, tap QR code and confirm it opens guest album without login; scan QR from another device and confirm same destination; verify no reload loop and camera still works.",
+    "completed": "Source inventory and GitHub review checkpoint saved at remember/security/REVIEW_CHECKPOINT_2026-10-16.md. Nine HTML entry pages carry 0.1.75 and import shared updater.",
+    "next": "Complete security authorization review before applying settings schema; verify 0.1.75 iPhone swipe.",
     "blocked": false,
-    "blocker": "Awaiting real-device acceptance for QR click, scan and cross-view regression. iOS bottom system band parked by user decision."
+    "blocker": "Security migration not executed; deployed RPC and storage policy review plus physical iPhone acceptance pending."
   },
   "pausedWork": {
     "fotobok": "Parkerad idé; inte i första releasen."
@@ -444,8 +444,8 @@
       "remember/PROJECT_HANDOFF_CURRENT.md",
       "user-observed installed iPhone behavior"
     ],
-    "releaseIdentity": "remember-0.1.62",
-    "status": "RELEASE_COMMITTED_DEVICE_PENDING",
+    "releaseIdentity": "remember-0.1.75",
+    "status": "SOURCE_REVIEW_DOCUMENTED_DEVICE_PENDING",
     "historicalEvidencePreserved": true,
     "knownStaleHistoricalSections": "Older fields in this JSON and earlier handoff paragraphs describe past checkpoints and must not override workCheckpoint/currentWork or recent evidence.",
     "iosBackground": {
@@ -468,6 +468,7 @@
       "version": "0.1.62",
       "behavior": "Tap QR code in owner share dialog navigates to existing token-bearing guest album URL, matching scanned QR",
       "status": "GITHUB_VERIFIED_DEVICE_PENDING"
-    }
+    },
+    "reviewDocument": "remember/security/REVIEW_CHECKPOINT_2026-10-16.md"
   }
 }
