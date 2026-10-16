@@ -1,0 +1,11 @@
+{
+  "id": "./pwa-display-test.html",
+  "name": "Remember Skärmtest",
+  "short_name": "Remember Test",
+  "start_url": "./pwa-display-test.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#332c26",
+  "theme_color": "#332c26",
+  "lang": "sv"
+}
