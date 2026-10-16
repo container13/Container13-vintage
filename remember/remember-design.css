@@ -497,3 +497,41 @@ body.remember-shell::before{
   min-height:0;overflow:visible;
  }
 }
+
+/* 0.1.52 viewport root-cause mitigation: a single live viewport size is
+   maintained by remember-viewport.js. Remove duplicated wallpaper rendering
+   on the root element: one viewport backdrop, one background owner. */
+html:has(body.remember-shell){
+ background-image:none;
+ background-color:#332c26;
+}
+body.remember-shell::before{
+ inset:0!important;
+ top:0!important;
+ bottom:auto!important;
+ height:var(--remember-live-viewport,100dvh);
+ min-height:100svh;
+ background-position:center center!important;
+ background-size:cover!important;
+ transform:translateZ(0);
+ -webkit-transform:translateZ(0);
+}
+@media(max-width:767px){
+ body.remember-shell[data-remember-view="albums"]::before{
+  inset:0!important;
+  height:var(--remember-live-viewport,100dvh);
+ }
+}
+/* Single, global version indicator; hidden while fullscreen dialogs are open. */
+#remember-global-version{
+ position:fixed;z-index:30;
+ left:50%;transform:translateX(-50%);
+ bottom:calc(env(safe-area-inset-bottom,0px) + 7px);
+ padding:3px 9px;border-radius:999px;
+ font:500 10px/1.4 system-ui,-apple-system,sans-serif;
+ letter-spacing:.025em;color:#fff8ed;
+ background:rgba(28,24,20,.72);
+ pointer-events:none;white-space:nowrap;
+}
+body:has(dialog[open]) #remember-global-version{display:none}
+body.remember-shell .version[hidden]{display:none!important}
