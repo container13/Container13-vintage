@@ -46,7 +46,7 @@ export function mountRememberGallery({container,auth}) {
  viewer.addEventListener('touchend',e=>{
   if(gesture==='zoom'){if(e.touches.length===1){gesture='pan';panStartX=e.touches[0].clientX;panStartY=e.touches[0].clientY;panBaseX=panX;panBaseY=panY}else if(!e.touches.length){gesture='none';large.classList.remove('dragging');if(scale<=1.01)resetDrag();controls()}return}
   if(gesture==='pan'&&!e.touches.length){gesture='none';large.classList.remove('dragging');controls();return}
-  if(gesture==='swipe'&&e.touches.length===0){const t=e.changedTouches[0];gesture='none';if(t)finishSwipe(t.clientX-startX,t.clientY-startY);else resetDrag()}
+  if(gesture==='swipe'&&e.touches.length===0){const t=e.changedTouches[0];gesture='none';if(t&&Math.abs(t.clientX-startX)<12&&Math.abs(t.clientY-startY)<12){const now=Date.now();if(now-lastTap<350){resetDrag();lastTap=0}else{lastTap=now;controls()}}else if(t)finishSwipe(t.clientX-startX,t.clientY-startY);else resetDrag()}
  },{passive:false});
  viewer.addEventListener('touchcancel',resetDrag,{passive:true});
  viewer.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.target.closest('button')||swipeLocked)return;mouseDown=true;startX=e.clientX;startY=e.clientY;large.classList.add('dragging')});
