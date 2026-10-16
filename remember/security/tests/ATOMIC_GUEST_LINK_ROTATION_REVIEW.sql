@@ -1,0 +1,58 @@
+-- REVIEW ONLY / DO NOT EXECUTE / DO NOT DEPLOY.
+-- Container13 Remember: atomic guest link rotation, proposal v1.
+-- Precondition: service-role-only RPC permissions and owner authorization in Edge Function.
+-- Caller must pass a validated actor ID, album ID, 32-byte token hash and
+-- already AES-GCM encrypted token vault ciphertext. Never pass plaintext token.
+-- The function's transaction is the unit of atomicity. Any SQL exception rolls
+-- back BOTH the link and vault changes. Do not swallow errors here.
+-- Caveat: a service_role caller can forge p_actor; keep this RPC service-only
+-- and validate the user's bearer token server-side before calling it.
+-- Review existing schema constraints/column defaults before execution.
+-- SECURITY DEFINER needs explicit owner, grants, search_path review.
+--
+-- create or replace function public.remember_guest_link_rotate_atomic(
+--   p_actor uuid, p_album uuid, p_token_hash bytea, p_ciphertext text
+-- ) returns jsonb
+-- language plpgsql security definer set search_path = ''
+-- as $fn$
+-- begin
+--   if p_actor is null or p_album is null
+--      or p_token_hash is null or octet_length(p_token_hash) <> 32
+--      or p_ciphertext is null or length(p_ciphertext) < 20
+--   then raise exception 'Invalid rotation request' using errcode='22023'; end if;
+--
+--   -- Serialize rotations for the same album and prove ownership.
+--   perform 1 from remember.albums
+--    where id=p_album and owner_user_id=p_actor for update;
+--   if not found then
+--     return jsonb_build_object('authorized',false);
+--   end if;
+--
+--   insert into remember.guest_links
+--     (album_id,token_sha256,created_by)
+--   values (p_album,p_token_hash,p_actor)
+--   on conflict (album_id) do update set
+--     token_sha256=excluded.token_sha256,
+--     created_by=excluded.created_by,
+--     created_at=now(),
+--     rotated_at=now(),
+--     revoked_at=null;
+--
+--   insert into remember.guest_link_vault(album_id,ciphertext)
+--   values(p_album,p_ciphertext)
+--   on conflict(album_id) do update set ciphertext=excluded.ciphertext;
+--
+--   return jsonb_build_object('authorized',true,'rotated',true);
+-- end;
+-- $fn$;
+--
+-- revoke all on function public.remember_guest_link_rotate_atomic(
+--   uuid,uuid,bytea,text) from public, anon, authenticated;
+-- grant execute on function public.remember_guest_link_rotate_atomic(
+--   uuid,uuid,bytea,text) to service_role;
+--
+-- BEFORE DEPLOY: test transaction rollback with injected vault failure,
+-- competing rotations, unauthorized actor, revoked/old token, token vault
+-- readback, and client access denied. Also review the existing indexes.
+-- Edge Function should generate token, encrypt it with a dedicated versioned
+-- vault key, call this RPC, and return token only after successful commit.
