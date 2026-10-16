@@ -402,3 +402,22 @@ body.remember-shell[data-remember-view="memories"] .share-device-note{display:no
 @media print{
  body.remember-shell[data-remember-view="memories"] .remember-share-dialog{background:white!important}
 }
+
+/* 0.1.47 iOS PWA viewport: avoid a blank strip when visual viewport changes on launch */
+@media(max-width:767px){
+ html:has(body.remember-shell[data-remember-view="albums"]){height:100%;background:#332c26}
+ body.remember-shell[data-remember-view="albums"]{
+  min-height:100svh;height:100dvh;
+ }
+ body.remember-shell[data-remember-view="albums"]::before{
+  position:fixed;
+  top:-100px!important;bottom:-100px!important;
+  left:0;right:0;
+  inset-block:-100px!important;
+  background-position:center center!important;
+ }
+ body.remember-shell[data-remember-view="albums"] > main{
+  padding-top:calc(env(safe-area-inset-top,0px) + 20px)!important;
+  scroll-padding-top:calc(env(safe-area-inset-top,0px) + 20px);
+ }
+}
