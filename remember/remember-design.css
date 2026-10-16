@@ -535,3 +535,11 @@ body.remember-shell::before{
 }
 body:has(dialog[open]) #remember-global-version{display:none}
 body.remember-shell .version[hidden]{display:none!important}
+
+/* Owner/guest album views intentionally suppress ::before; retain wallpaper
+   on the root canvas for those views only. */
+html:has(body.remember-shell[data-remember-view="memories"]){
+ background-image:linear-gradient(160deg,rgba(35,25,18,.34),rgba(35,25,18,.58)),url("./assets/backgrounds/inloggning.webp");
+ background-size:cover;background-position:center;background-repeat:no-repeat;
+}
+@media print{#remember-global-version{display:none!important}}
