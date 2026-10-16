@@ -1,3 +1,4 @@
+import {shareRememberCrop} from './photo-crop.js?v=0.1.72';
 const ENDPOINT='https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-photo-gallery';
 export function mountRememberGallery({container,auth}) {
  container.innerHTML='<h2>Albumets bilder</h2><p class="remember-gallery-status" role="status">Hämtar bilder…</p><div class="remember-gallery-grid"></div><div class="remember-gallery-viewer" hidden><button type="button" aria-label="Stäng bild">✕ Stäng</button><button type="button" class="remember-crop-button" aria-label="Spara bildutsnitt">📷</button><img alt="Albumfoto"></div>';
@@ -9,6 +10,8 @@ export function mountRememberGallery({container,auth}) {
  const status=container.querySelector('.remember-gallery-status'),grid=container.querySelector('.remember-gallery-grid'),viewer=container.querySelector('.remember-gallery-viewer'),large=viewer.querySelector('img');
  // Shared Micke50-style viewer: vertical swipe, 8x pinch/pan, 3s reset.
  const closeButton=viewer.querySelector('button');
+ const cropButton=viewer.querySelector('.remember-crop-button');
+ cropButton.onclick=async()=>{if(!photos[pos])return;cropButton.disabled=true;try{await shareRememberCrop(photos[pos].url,large,viewer)}catch(e){if(e?.name!=='AbortError')alert('Kunde inte skapa bildutdrag. Prova vanlig skärmdump.')}finally{cropButton.disabled=false;controls()}};
  let photos=[],pos=0,gesture='none',startX=0,startY=0,zoomStartDistance=1,zoomStartX=0,zoomStartY=0,zoomHold=false,zoomTimer=null,zoomMoved=false,swipeLocked=false,mouseDown=false,scale=1,panX=0,panY=0,pinchBase=1,panBaseX=0,panBaseY=0,panStartX=0,panStartY=0,lastTap=0,controlsTimer=null;
  const midpoint=t=>({x:(t[0].clientX+t[1].clientX)/2,y:(t[0].clientY+t[1].clientY)/2});
  const gap=t=>Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
@@ -48,7 +51,7 @@ export function mountRememberGallery({container,auth}) {
   if(gesture==='pan'&&!e.touches.length){gesture='none';large.classList.remove('dragging');controls();return}
   if(gesture==='swipe'&&e.touches.length===0){const t=e.changedTouches[0];gesture='none';if(t&&Math.abs(t.clientX-startX)<12&&Math.abs(t.clientY-startY)<12){const now=Date.now();if(now-lastTap<350){resetDrag();lastTap=0}else{lastTap=now;controls()}}else if(t)finishSwipe(t.clientX-startX,t.clientY-startY);else resetDrag()}
  },{passive:false});
- viewer.addEventListener('touchcancel',resetDrag,{passive:true});
+ viewer.addEventListener('touchcancel',()=>{gesture='none';large.classList.remove('dragging');render();controls()},{passive:true});
  viewer.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.target.closest('button')||swipeLocked)return;mouseDown=true;startX=e.clientX;startY=e.clientY;large.classList.add('dragging')});
  viewer.addEventListener('pointermove',e=>{if(!mouseDown||e.pointerType!=='mouse')return;const dx=e.clientX-startX,dy=e.clientY-startY;large.style.transform='translate3d(0,'+(Math.abs(dy)>Math.abs(dx)?dy:0)+'px,0)'});
  viewer.addEventListener('pointerup',e=>{if(!mouseDown||e.pointerType!=='mouse')return;mouseDown=false;finishSwipe(e.clientX-startX,e.clientY-startY)});
