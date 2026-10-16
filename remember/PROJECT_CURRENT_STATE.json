@@ -8,28 +8,29 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.23",
-    "integrity": "PENDING"
+    "candidate": "0.1.60",
+    "integrity": "UNVERIFIED_DEVICE_AND_DEPLOY"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.23",
-    "goal": "Refine Dashboard top identity without adding information",
+    "targetRelease": "0.1.60",
+    "goal": "Reconcile Remember release documentation and investigate iOS 27 installed-PWA bottom background band without speculative CSS patches",
     "plan": [
-      "UI-prototyp",
-      "Backend och autentisering",
-      "Atomisk 10-bildersgräns",
-      "Betaluppgradering",
-      "End-to-end-verifiering"
+      "Read shared project template and Remember decisions before changing code",
+      "Preserve the 2026-10-16 on-device measurements and independent installed-PWA reproduction",
+      "Do not repeat unsuccessful viewport/CSS height workarounds; isolate iOS/WebKit rendering behavior and verify any new hypothesis",
+      "Compare Mina album automatic background movement with owner album view after initial paint; desired behavior is no movement and no band",
+      "Verify deployed release and installed iPhone cold launch/resume before marking any fix DEVICE PASS",
+      "Resume owner multi-photo camera acceptance after v0.1.60 fullscreen layout change, without confusing it with background investigation"
     ],
     "lastSafeRelease": null,
-    "resumeInstruction": "Read WORK_HANDOFF_2026-10-14.md latest checkpoint and BACKGROUND_VERIFICATION_0.1.20.md. Verify actual HEAD and public bytes. Never replay database installation or rotate guest links. Physical iPhone acceptance and full authenticated E2E remain distinct gates."
+    "resumeInstruction": "Start with project-template/PROJECT_RELEASE_STANDARD.md, PROJECT_MASTER_RULES.md, PROJECT_RELEASE_CHECKLIST.md, SHARED_COMPONENT_REGISTER.md, remember/DECISIONS.md and this state. v0.1.60 is repository release identity, not a verified live/device PASS. iOS bottom band reproduced even in independent installed test PWA; do not add speculative CSS fixes. Consult remember/PROJECT_HANDOFF_CURRENT.md latest 2026-10-16 section and remember/OPERATING_LIMITS.md for service issues. Never rerun migrations or modify existing album data."
   },
   "currentWork": {
-    "completed": "Mail delivery/login USER PASS; operating limits researched and capacity snapshot measured read-only, documented in OPERATING_LIMITS.md. Runtime unchanged0.1.23.",
-    "next": "Separate operations panel: own code, version and deployment; read-only protected service integrations. Remember retains album administration. No panel implementation yet.",
-    "blocked": false,
-    "blocker": null
+    "completed": "Documentation reconciliation 2026-10-16: repository release.json identifies 0.1.60; iPhone screenshot of owner album displays 0.1.60. Shared camera embedded in owner in 0.1.59, fullscreen CSS adjusted in 0.1.60, still requires camera-on-device verification. Dark lower band reproduced on iPhone and independent installed PWA; unresolved.",
+    "next": "Hold iOS/WebKit bottom-band issue open, compare initial paint and movement in Mina album versus owner without speculative CSS. Verify camera fullscreen separately. Keep standalone operations panel decision parked until requested.",
+    "blocked": true,
+    "blocker": "No confirmed iOS 27/WebKit root cause or device-approved background fix. Deployed asset-byte integrity and end-to-end camera behavior unverified."
   },
   "pausedWork": {
     "fotobok": "Parkerad idé; inte i första releasen."
@@ -433,5 +434,35 @@
       "Edge invocation usage"
     ],
     "next": "Separate operations panel: own code, version and deployment; read-only protected service integrations. Remember retains album administration. No panel implementation yet."
+  },
+  "documentationReconciliation": {
+    "date": "2026-10-16",
+    "basis": [
+      "remember/release.json",
+      "remember/DECISIONS.md",
+      "remember/owner.html",
+      "remember/PROJECT_HANDOFF_CURRENT.md",
+      "user-observed installed iPhone behavior"
+    ],
+    "releaseIdentity": "remember-0.1.60",
+    "status": "DOCS_UPDATED_NOT_RUNTIME_VERIFIED",
+    "historicalEvidencePreserved": true,
+    "knownStaleHistoricalSections": "Older fields in this JSON and earlier handoff paragraphs describe past checkpoints and must not override workCheckpoint/currentWork or recent evidence.",
+    "iosBackground": {
+      "issue": "dark lower strip on installed iPhone PWA, with differing repaint/scroll behavior between Mina album and owner view",
+      "measurements": "screen.height 874, innerHeight 812, difference 62 CSS px; env safe-area-inset-bottom 54 px in isolated test",
+      "independentReproduction": "remember/pwa-display-test.html and separate manifest installed as standalone PWA",
+      "possibleCause": "iOS 27/WebKit viewport or fixed-layer rendering; WebKit bug 301994 possible but not proven",
+      "policy": "Do not add speculative CSS height/position patches; require targeted reproducible device evidence",
+      "status": "OPEN_NOT_DEVICE_PASS"
+    },
+    "camera": {
+      "ownerIntegration": "0.1.59 iframe multi-photo session; 0.1.60 fullscreen CSS",
+      "status": "COMMITTED_DEVICE_ACCEPTANCE_PENDING"
+    },
+    "operationsPanel": {
+      "decision": "separate standalone read-only operations panel, not coupled to Remember",
+      "status": "NOT_IMPLEMENTED"
+    }
   }
 }
