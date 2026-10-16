@@ -5,7 +5,7 @@
  const safePage=/\/(?:index|login|activate|owner|dashboard)\.html$/.test(path)||path.endsWith('/remember/');
  let initial='',dirty=false,checking=false,queued=false;
  const fingerprint=doc=>{
-  const parts=[doc.title,...Array.from(doc.querySelectorAll('style,script:not([src]),link[rel="stylesheet"]')).map(n=>n.textContent||n.getAttribute('href')||'')];
+  const parts=[doc.title,...Array.from(doc.querySelectorAll('style,script,link[rel="stylesheet"]')).map(n=>n.getAttribute('src')||n.getAttribute('href')||n.textContent||'')];
   return parts.join('\n');
  };
  const baseline=()=>{initial=fingerprint(document)};
@@ -33,6 +33,8 @@
  document.addEventListener('visibilitychange',()=>{if(!document.hidden){check();apply();}});
  window.addEventListener('pageshow',()=>{check();apply();});
  window.addEventListener('online',check);
+ document.addEventListener('close',()=>{queueMicrotask(apply)},{capture:true});
+ document.addEventListener('focusout',()=>{queueMicrotask(apply)},{capture:true});
  window.addEventListener('focus',()=>{check();apply();});
  setInterval(check,CHECK_MS);
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{baseline();check()},{once:true});
