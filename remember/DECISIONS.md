@@ -243,3 +243,6 @@ User confirms standalone operations panel, separate from Remember: own code/vers
 - Central release identity: `remember/release.json` and embedded `remember-release` meta. Shared updater compares deployed release ID and can defer unsafe reloads. **Every new release must increment release.json and update the embedded running release IDs in the same rollout**.
 - Global version badge: `remember/remember-version.js`, required at the bottom of every production-facing view. It must show the **running version**, not the latest server version if this page has not updated.
 - Do not close the viewport issue or label DEVICE PASS without installed iPhone cold-launch/resume test and a screenshot.
+
+## Remember 0.1.53 background root-cause mitigation
+Confirmed on-device: v0.1.52 loaded but brown root background band remained at bottom on initial iPhone PWA paint; scrolling caused background to fill. Removed the 0.1.50 and 0.1.52 viewport-height CSS patches, disconnected `remember-viewport.js` from production entry points, and made the root canvas use the actual wallpaper with a fixed backdrop extending 160px beyond both viewport edges. Version bump across all nine user-facing views. **Not device verified; do not mark resolved until user confirms cold start and scroll.**
