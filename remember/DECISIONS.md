@@ -224,3 +224,14 @@
 
 ## Approved decision — 2026-10-15 09:56 Europe/Stockholm
 User confirms standalone operations panel, separate from Remember: own code/version/deployment, read-only protected service connections, potentially shared across Remember/CCC/other projects. Remember keeps album/access/window administration. Supersedes embedded capacity panel proposal. No implementation or new credential/hosting setup performed. Primary purpose: obvious service/quota/configuration checks before code debugging.
+
+
+## Centraliserad versions- och uppdateringshantering (beslut 2026-10-16)
+- Gäller **hela Remember**, nuvarande och framtida vyer: startsida, inloggning, registrering, aktivering, dashboard, albumägare, gäster, albumadministration och framtida användarflöden.
+- **En gemensam uppdateringsmotor:** `remember/auto-update.js`. Nya vyer ska kopplas till den vid skapandet, inte i efterhand. Inga separata sidunika uppdateringslösningar.
+- **En gemensam versionskälla ska införas:** publicerad release-manifest/ID och tillhörande resursversioner, i stället för enbart HTML-jämförelse. Detta är ett kvarstående tekniskt arbete, inte redan verifierat.
+- Vid kallstart, återgång till förgrunden och återanslutning ska appen kontrollera en ny publicerad version utan att användaren behöver rensa cache eller installera om.
+- Säker omladdning: skydda osparade formulär, pågående uppladdning, kamera, dialoger och transaktioner; köa uppdatering tills det är säkert.
+- En ny release måste verifieras i faktisk publicerad miljö och i installerad iPhone-PWA, inklusive uppgradering från gammal version, offline/online och djup-länkar.
+- **Release-gate:** ingen ny användarvy får godkännas om uppdateringsmotorn saknas; versions-ID och teststatus ska dokumenteras.
+- Huvudregler: `project-template/PROJECT_MASTER_RULES.md`, `PROJECT_RELEASE_CHECKLIST.md` och `SHARED_COMPONENT_REGISTER.md`.
