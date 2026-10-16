@@ -23,15 +23,15 @@ Purpose: canonical ownership, consumers, version policy, exceptions and verifica
 - Repeated failure count; if >=2, root-cause report before another fix:
 
 ## Current open issue
-Remember iPhone installed PWA occasionally exposes a dark bottom strip / inconsistent initial scroll. Earlier view-specific CSS patches did not resolve it. Shared foundation and consumer version parity were adjusted, but **not device verified**. Treat as OPEN; investigate real viewport, root/background rendering and deployed CSS rather than stacking further overrides.
+Remember installed iPhone PWA consistently reproduces a dark bottom strip, including in an independent installed test PWA (2026-10-16: screen.height 874, innerHeight 812; separate safe-area bottom 54 CSS px). Mina album visibly repaints/repositions its background automatically; owner album requires a swipe. **Neither behavior is acceptable**: the desired shared behavior is a stationary correct background from first paint, without strip or jump. iOS 27/WebKit is a hypothesis, not a proven root cause. Two-plus speculative CSS attempts failed: **STOP further CSS-height patches**, preserve diagnostic test, investigate WebKit/viewport behavior and only propose a targeted fix with real-device evidence. See remember/DECISIONS.md and remember/PROJECT_HANDOFF_CURRENT.md latest sections. OPEN / NOT DEVICE PASS.
 
 
 ## Centralized update system — implementation contract
 - **Template requirement:** project-template/PROJECT_MASTER_RULES.md (centralized update architecture gate).
-- **Remember current controller:** remember/auto-update.js; consumer pages: index, login, register, activate, dashboard, owner, album, album-admin. The current HTML/CSS comparison is transitional; a canonical deployed release manifest and verified installed-PWA upgrade path remain **OPEN / NOT DEVICE VERIFIED**.
+- **Remember current controller:** remember/auto-update.js; consumer pages: index, login, register, activate, dashboard, owner, album, album-admin. remember/release.json and embedded running release IDs exist (repository candidate 0.1.60 as of 2026-10-16), but actual deployed asset-byte integrity and verified installed-PWA upgrade path remain **OPEN / NOT DEVICE VERIFIED**.
 - **New-project requirement:** one canonical release ID/manifest, one shared bootstrap imported by every user-facing entry route, a single cache strategy, safe pending updates and production/device verification.
 - **Maintenance rule:** when a new page is added, add it to the consumer inventory and updater integration in the same change; fail the release checklist otherwise.
 
 
 ## Visible version ownership
-All projects: one centrally owned version/footer component per project, driven by its running release identity. Remember: `remember/remember-version.js`, `remember/release.json`, and `remember/remember-viewport.js`; all nine production-facing HTML routes must import these. Do not claim installed-device verification until tested.
+All projects: one centrally owned version/footer component per project, driven by its running release identity. Remember: `remember/remember-version.js` and `remember/release.json` own version identity; all nine production-facing HTML routes must use the version footer. `remember/remember-viewport.js` was disconnected from production after failed viewport-height mitigations and is **not** a required version-footer import. Verify actual consumer imports before changing this register. Do not claim installed-device verification until tested.
