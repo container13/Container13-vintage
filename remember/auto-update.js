@@ -13,11 +13,10 @@
  const blocked=()=>!safePage||dirty||document.visibilityState!=='visible'||!!document.querySelector('dialog[open]')||!!document.querySelector('[aria-busy="true"]')||!!document.querySelector('input:focus,textarea:focus,select:focus');
  function apply(){
   if(!queued||blocked())return;
+  // Safety hold: never auto-navigate an installed PWA during version mismatch.
+  // Manual reopening can pick up a new release without risking a reload loop.
   queued=false;
-  // A fresh navigation URL avoids reloading the same cached PWA document.
-  const url=new URL(location.href);
-  url.searchParams.set('_remember_update',String(Date.now()));
-  location.replace(url.href);
+  document.documentElement.dataset.rememberUpdateAvailable='true';
  }
  async function check(){
   if(checking||!navigator.onLine)return;checking=true;
