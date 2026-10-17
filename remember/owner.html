@@ -4,6 +4,11 @@ const $=id=>document.getElementById(id),id=new URLSearchParams(location.search).
 let client,access='',shareUrl='',ownerEmail='',busy=false;
 function invitationText(){const album=$('title').textContent.trim();return (ownerEmail||'Albumägaren')+' vill dela albumet ”'+album+'” med dig.\n\nÖppna albumet för att se bilderna och dela dina egna minnen.\n'+shareUrl;}
 async function request(name,body){const {data,error}=await client.auth.getSession();if(error||!data.session)throw Error('Logga in igen.');access=data.session.access_token;const response=await fetch(endpoint+name,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+access},body:JSON.stringify(body),cache:'no-store'});const json=await response.json().catch(()=>({}));if(!response.ok||json.ok!==true)throw Error(json.error||'Serverfel '+response.status);return json;}
+let moderationTouchStart=null;
+$('viewer').addEventListener('touchstart',event=>{if(!testMode||!moderationViewerPhotos.length||event.touches.length!==1)return;moderationTouchStart=event.touches[0].clientX;},{passive:true});
+$('viewer').addEventListener('touchend',event=>{if(moderationTouchStart===null||!event.changedTouches.length)return;const distance=event.changedTouches[0].clientX-moderationTouchStart;moderationTouchStart=null;if(Math.abs(distance)>65)stepModerationPhoto(distance<0?1:-1);},{passive:true});
+$('viewer').addEventListener('close',()=>{moderationViewerPhotos=[];moderationTouchStart=null;});
+document.addEventListener('keydown',event=>{if(!testMode||!$('viewer').open||!moderationViewerPhotos.length)return;if(event.key==='ArrowLeft')stepModerationPhoto(-1);if(event.key==='ArrowRight')stepModerationPhoto(1);});
 let moderationViewerPhotos=[],moderationViewerIndex=0;
 function openModerationViewer(photos,index){moderationViewerPhotos=photos;moderationViewerIndex=index;showModerationPhoto();$('viewer').showModal();}
 function showModerationPhoto(){const photo=moderationViewerPhotos[moderationViewerIndex];if(!photo)return;$('fullPhoto').src=photo.url;$('fullPhoto').alt='Bild '+(moderationViewerIndex+1)+' av '+moderationViewerPhotos.length;}
