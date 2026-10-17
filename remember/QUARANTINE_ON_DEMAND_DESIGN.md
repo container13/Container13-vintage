@@ -133,3 +133,6 @@ Inspect deployed rejection/restore function and DB triggers for insertion points
 - Probe called `db.storage.from('remember-private-photos').remove([random_nonexistent_key])` (never referenced a real photo). Actual HTTP 200 response: `{ok:true,probe:'nonexistent-object-delete',errorCode:null,removedCount:0}`.
 - **PASS:** Supabase Storage remove is idempotent for a missing object in this project; a retry after Storage removal can proceed to database finalize.
 - Independent check: photos=4, claims=0, cron inactive. Full end-to-end quarantine deletion with a synthetic file still untested.
+
+## FINAL PASS: physical Storage deletion (2026-10-17)
+In Remember TEST only, created one synthetic expired rejected photo row and uploaded a unique four-byte JPEG fixture to the private photo Storage bucket. Verified the object existed before purge. Invoked the deployed quarantine purge v7 using the existing Vault-backed cron command. Observed HTTP 200 with `ok=true, removed=1, failed=0` at 14:06:48 UTC. Independent readback confirmed fixture Storage objects=0, fixture database rows=0, purge claims=0, hourly cron inactive, and all four original photos retained. Production was not touched. This completes the quarantine purge test series, including earlier 503-to-200 recovery and missing-object idempotence checks.
