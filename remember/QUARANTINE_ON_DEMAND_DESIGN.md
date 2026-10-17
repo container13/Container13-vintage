@@ -103,3 +103,8 @@ Inspect deployed rejection/restore function and DB triggers for insertion points
 - Deployed ACTIVE Edge Function `remember-photo-quarantine-purge` v7 with claim token passed to finalize and both release paths; independent readback confirms 3 claimToken references.
 - Direct DB readback: 0 outstanding claims. No production changes, no photo deletion.
 - IMPORTANT: 30-minute lease assumes workers do not legitimately process a single claim longer than 30 minutes. Stale workers can still attempt Storage remove; token check protects DB finalization but does not stop that Storage operation. Verify storage-delete idempotency and error handling, live HTTP retry and >50 batches before final PASS.
+
+## Eligible 50-item batches (2026-10-17)
+- Migration `remember_quarantine_eligible_batch_paging_v1` in Remember Test changes `public.remember_photo_quarantine_expired_read()` to select at most 50 **eligible** expired rejected ready photos, excluding actively claimed rows and allowing stale claims (>30 minutes) to re-enter. This avoids starvation when the oldest 50 are actively claimed.
+- Direct RPC readback returned empty eligible list (expected with zero rejected); independent photo count unchanged at 4.
+- Still NOT a verified >50-photo integration test. HTTP 503 and abrupt interruption end-to-end recovery also not yet proven. Production untouched.
