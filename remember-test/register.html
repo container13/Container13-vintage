@@ -1,11 +1,62 @@
-<!doctype html>
-<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="referrer" content="no-referrer"><meta name="robots" content="noindex,nofollow"><title>Remember TEST – Registrera</title>
-<style>body{font:16px system-ui;background:#1d2524;color:#fff;max-width:480px;margin:32px auto;padding:16px}h1{font-size:32px}.test{background:#ffc66b;color:#231b0e;padding:12px;border-radius:9px;font-weight:900}.panel{background:#29332f;border:1px solid #708477;border-radius:16px;padding:20px;margin-top:20px}label{display:block;margin:16px 0 6px}input{width:100%;box-sizing:border-box;padding:14px;font-size:16px;border-radius:8px;border:1px solid #999;background:#fff;color:#111}button{padding:12px;margin:12px 8px 0 0;background:#ffc66b;border:0;border-radius:9px;font-weight:bold}button:disabled{opacity:.6}a{color:#ffc66b}#status{white-space:pre-wrap;overflow-wrap:anywhere}</style></head>
-<body><div class="test">TESTMILJÖ – INTE ORIGINAL</div><h1>Skapa testkonto</h1><p>Endast Remember Test. Använd ett nytt testlösenord, aldrig lösenordet till originalet.</p>
-<div class="panel"><form id="form"><label for="email">E-postadress</label><input id="email" type="email" autocomplete="email" value="mangaj73@gmail.com" required><label for="password">Nytt testlösenord (minst 12 tecken)</label><input id="password" type="password" minlength="12" autocomplete="new-password" required><button id="submit" type="submit">Registrera i TEST</button></form><button id="copy" type="button">Kopiera rapport</button><p id="status" role="status">Laddar testklient…</p></div><p><a href="./login.html">Till TEST-inloggning</a></p>
-<script type="module">
-const ref='kauxrvshxgpbvptdwhog',key='sb_publishable_iLKTdBYdh2w5ALhEyFtW8A_V8Gujyam',status=document.getElementById('status'),button=document.getElementById('submit');let client;const say=s=>status.textContent=s;
-try{const sdk=await import('https://esm.sh/@supabase/supabase-js@2');client=sdk.createClient('https://'+ref+'.supabase.co',key,{auth:{storageKey:'container13-remember-test-register-v1',persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});say('Redo att skapa ett separat TEST-konto.')}catch(e){say('Kunde inte ladda testklienten.')}
-document.getElementById('form').onsubmit=async e=>{e.preventDefault();if(!client)return;button.disabled=true;const email=document.getElementById('email').value.trim(),password=document.getElementById('password').value;document.getElementById('password').value='';say('Begär registrering i TEST…');try{const {data,error}=await client.auth.signUp({email,password,options:{emailRedirectTo:'https://container13.se/remember-test/activate.html'}});say(error?'Registreringen kunde inte slutföras: '+error.message:'Registreringsbegäran mottagen i TEST. Kontrollera din e-post och klicka på aktiveringslänken. Ingen bekräftad inloggning ännu.')}catch(e){say('Nätverksfel vid registrering.')}finally{button.disabled=false}};
-document.getElementById('copy').onclick=async()=>{const t=['Remember TEST – registrering','Projekt: '+ref,'Tid: '+new Date().toLocaleString('sv-SE'),'Resultat: '+status.textContent].join('\n');try{await navigator.clipboard.writeText(t);say(status.textContent+'\nRapport kopierad.')}catch(e){say(status.textContent+'\nKopiering blockerad.')}};
+<!doctype html><html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="referrer" content="no-referrer"><meta name="theme-color" content="#332c26"><title>TEST – Remember – Skapa album</title><style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#10231f;color:#f6f3e9}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;overflow-x:hidden}
+body{background:#10231f;font-size:16px;line-height:1.45}
+main{width:min(100%,480px);margin:auto;padding:30px 22px calc(30px + env(safe-area-inset-bottom))}
+.brand{text-align:center;margin:0 0 25px}.brand strong{display:block;font:500 clamp(40px,11vw,57px)/1 Georgia,serif;letter-spacing:-.045em}.brand span{display:block;color:#d9e7a4;letter-spacing:.16em;font-size:11px;margin-top:5px}
+h1{text-align:center;font:500 clamp(27px,7vw,34px)/1.2 Georgia,serif;letter-spacing:-.02em;margin:0 0 10px}
+.intro{text-align:center;color:#b9c9be;font-size:14px;line-height:1.55;margin:0 auto 25px;max-width:330px}
+form{background:#19352d;border:1px solid #385a4d;border-radius:20px;padding:20px 17px 19px;box-shadow:0 14px 35px #07171035}
+label{display:block;margin:16px 0 7px;font-weight:650;font-size:14px;color:#f0f4e9}label:first-child{margin-top:0}
+input,select{display:block;width:100%;min-height:49px;padding:11px 13px;background:#102820;color:#f6f3e9;border:1px solid #587969;border-radius:10px;font:400 16px system-ui;-webkit-appearance:none;appearance:none}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%23d9e7a4' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-position:right 13px center;background-repeat:no-repeat;padding-right:42px}
+input[type=datetime-local]{color-scheme:dark;min-width:0}
+input:focus,select:focus{outline:2px solid #d9e7a4;outline-offset:2px}
+input::placeholder{color:#8da69a}
+.fieldhint{display:block;font-size:12px;line-height:1.4;color:#afc4b7;margin:8px 0 0}
+button{display:block;width:100%;margin-top:22px;padding:15px 12px;border:0;border-radius:11px;background:#d9e7a4;color:#10231f;font:750 16px system-ui;cursor:pointer}
+button:disabled{opacity:.6}
+#feedback{font-size:13px;text-align:center;color:#d9e7a4;min-height:1em;margin:12px 0 0}
+#sent{padding:15px 0;text-align:center;color:#cbded2}
+footer{text-align:center;margin-top:18px}footer a{color:#d9e7a4;text-decoration:underline;text-underline-offset:4px;font-size:13px}
+.version{font-size:10px;color:#8ca69a;margin-top:16px}
+[hidden]{display:none!important}
+@media(max-width:370px){main{padding:20px 15px 28px}form{padding:16px 14px}.brand{margin-bottom:18px}}
+
+/* Remember warm visual identity · design pass 1; existing form behavior unchanged */
+:root{color-scheme:light;background:#f4ede1;color:#17382d}
+body{color:#17382d;min-height:100dvh}
+main{position:relative;isolation:isolate}
+.brand{color:#fff;text-shadow:0 2px 16px #152c2599}
+.brand span,.brand .muted{color:#f0dfb8}
+h1{color:#fff;text-shadow:0 2px 18px #152c2577}
+.intro{color:#f9eee0}
+form,.panel{background:#faf5ebf2;color:#17382d;border:1px solid #ffffffa8;border-radius:24px;box-shadow:0 18px 46px #112a2440;backdrop-filter:blur(12px)}
+label{color:#17382d}
+input,select{background:#fffdf9;color:#17382d;border:1px solid #c6c5b9;border-radius:13px;min-height:52px}
+input[type=datetime-local]{color-scheme:light}
+input::placeholder{color:#777d77}
+select{background-color:#fffdf9}
+input:focus,select:focus,button:focus-visible{outline:3px solid #397d61;outline-offset:2px}
+.fieldhint,.muted{color:#546b5c}
+button,button:not(.secondary){background:#174b3c;color:#fff;border-radius:13px;min-height:52px}
+button.secondary{background:transparent;color:#174b3c;border:1px solid #527c69}
+footer a{color:#fff}.version{color:#eee2d0}
+#feedback{color:#174b3c}
+@media(max-width:760px){main{padding-top:38px}form,.panel{padding:22px 18px}}
+</style><script src="../project-template/mobile-view-policy.js?v=2"></script><meta name="remember-mobile-policy" content="M-1.1"><link rel="stylesheet" href="./remember-design.css?v=0.1.75"><script defer src="./auto-update.js?v=0.1.75"></script><meta name="remember-release" content="remember-0.1.75"><script defer src="./remember-version.js?v=0.1.75"></script></head><body class="remember-shell" data-remember-view="create"><div style="position:sticky;top:0;z-index:99999;background:#ffc66b;color:#251600;text-align:center;font:900 13px system-ui;padding:7px">REMEMBER TEST – INTE ORIGINAL</div><main><div class="brand"><strong>Remember.</strong><span>by Container13</span></div><h1>Skapa ert album</h1><p class="intro">Samla allas bilder på ett ställe.<br>10 bilder gratis · Inget lösenord behövs</p><form id="start"><label for="title">Albumets namn</label><input id="title" required maxlength="100" placeholder="Till exempel Midsommar 2027"><label for="starts">Startdatum och tid</label><input id="starts" type="datetime-local" required><label for="days">Uppladdningstid</label><select id="days" required><option value="1">1 dag</option><option value="2">2 dagar</option><option value="3">3 dagar</option><option value="4">4 dagar</option><option value="5">5 dagar</option><option value="6">6 dagar</option><option value="7">7 dagar</option><option value="8">8 dagar</option><option value="9">9 dagar</option><option value="10">10 dagar</option><option value="11">11 dagar</option><option value="12">12 dagar</option><option value="13">13 dagar</option><option value="14">14 dagar</option><option value="15">15 dagar</option><option value="16">16 dagar</option><option value="17">17 dagar</option><option value="18">18 dagar</option><option value="19">19 dagar</option><option value="20">20 dagar</option><option value="21">21 dagar</option><option value="22">22 dagar</option><option value="23">23 dagar</option><option value="24">24 dagar</option><option value="25">25 dagar</option><option value="26">26 dagar</option><option value="27">27 dagar</option><option value="28">28 dagar</option></select><span class="fieldhint">Bilder kan laddas upp från starttiden under vald period.</span><label for="email">Din e-postadress</label><input id="email" type="email" autocomplete="email" required maxlength="254" placeholder="namn@exempel.se"><span class="fieldhint">Vi skickar en aktiveringslänk till din e-post.</span><button id="send" type="submit" disabled>Skapa album →</button></form><p id="feedback" role="status" aria-live="polite"></p><div id="sent" hidden><p>Kontrollera din inkorg och skräppost. Öppna länken i valfri webbläsare för att fortsätta.</p><button id="resend" type="button">Skicka länken igen</button></div><footer><a href="./login.html">Har du redan ett konto? Logga in</a><p class="version">Registrering R-1.6 · Design 0.1.23 · utvecklingsversion</p></footer></main><script type="module">
+const $=id=>document.getElementById(id),draftKey='remember-owner-onboarding-v1';
+
+let client,busy=false;
+try{localStorage.removeItem(draftKey);}catch{}
+async function send(){if(busy||!client||!$('start').reportValidity())return;busy=true;$('send').disabled=true;$('resend').disabled=true;$('feedback').textContent='Skickar aktiveringslänk…';
+ try{const draft=Object.fromEntries(['title','starts','days','email'].map(k=>[k,$(k).value]));localStorage.setItem(draftKey,JSON.stringify(draft));
+ const startsAt=new Date(draft.starts).toISOString();
+ const response=await fetch('https://kauxrvshxgpbvptdwhog.supabase.co/functions/v1/remember-onboarding',{method:'POST',headers:{'Content-Type':'application/json',apikey:'sb_publishable_iLKTdBYdh2w5ALhEyFtW8A_V8Gujyam'},body:JSON.stringify({action:'stage',email:draft.email.trim(),title:draft.title.trim(),startsAt,days:Number(draft.days),timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'Europe/Stockholm'})});
+ const staged=await response.json().catch(()=>({}));if(!response.ok||!staged.ok)throw Error(staged.error||'Could not save album');
+ const {error}=await client.auth.signInWithOtp({email:draft.email.trim(),options:{shouldCreateUser:true,emailRedirectTo:'https://container13.se/remember-test/activate.html'}});
+ if(error)throw error;$('start').hidden=true;$('sent').hidden=false;$('feedback').textContent='✓ Om adressen kan ta emot mejl har vi skickat en aktiveringslänk.';
+ }catch(e){$('feedback').textContent='Kunde inte skicka länken. Försök igen om en stund.';}finally{busy=false;$('send').disabled=false;$('resend').disabled=false;}}
+$('start').onsubmit=e=>{e.preventDefault();void send();};$('resend').onclick=()=>{ $('start').hidden=false;$('sent').hidden=true;void send();};
+try{const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');client=createClient('https://kauxrvshxgpbvptdwhog.supabase.co','sb_publishable_iLKTdBYdh2w5ALhEyFtW8A_V8Gujyam',{auth:{storage:localStorage,storageKey:'container13-remember-test-auth-v1',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});$('send').disabled=false;}catch{$('feedback').textContent='Kunde inte starta anslutningen. Försök igen senare.';$('send').disabled=true;}
 </script></body></html>
