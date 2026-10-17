@@ -26,6 +26,7 @@ async function moderationAction(photo,decision){
   await request(fn,body);
   $('viewer').close();
   await refreshModeration();
+  await refresh();
  }catch(error){$('approvalStatus').textContent='Åtgärden misslyckades: '+error.message;}
  finally{moderationBusy=false;}
 }
@@ -36,12 +37,14 @@ function moderationButton(label,photo,decision){
 }
 async function refreshModeration(){
  
- const section=$('approvalSection');section.hidden=false;
+ const section=$('approvalSection');
  const status=$('approvalStatus');
  try{
   const result=await request('remember-photo-approval-queue',{albumId:id});
   moderationWritable=result.featureEnabled===true&&result.readOnly!==true;
   const photos=result.photos||[];
+  section.hidden=!result.featureEnabled&&!photos.length;
+  if(section.hidden)return;
   const pending=photos.filter(p=>p.decision==='pending'||p.decision===null);
   const rejected=photos.filter(p=>p.decision==='rejected');
   for(const [target,items] of [['approvalPhotos',pending],['quarantinePhotos',rejected]]){
@@ -57,8 +60,8 @@ async function refreshModeration(){
     grid.append(card);
    }
   }
-  status.textContent=result.readOnly?'Granskning i läsläge.':pending.length+' väntar på godkännande · '+rejected.length+' i karantän.';
- }catch(error){status.textContent='Kunde inte hämta granskningen: '+error.message;}
+  status.textContent=!result.featureEnabled?'Bildgodkännande är avstängt.':result.readOnly?'Granskning i läsläge.':pending.length+' väntar på godkännande · '+rejected.length+' i karantän.';
+ }catch(error){section.hidden=true;status.textContent='Kunde inte hämta granskningen: '+error.message;}
 }
 async function refresh(){if(busy)return;busy=true;try{const data=await request('remember-photo-gallery',{albumId:id});$('photos').replaceChildren();$('empty').hidden=data.photos.length!==0;for(const photo of data.photos){const card=document.createElement('div');card.className='photo-card';const img=document.createElement('img');img.src=photo.url;img.alt='Albumfoto';img.loading='lazy';img.onclick=()=>{$('fullPhoto').src=photo.url;$('viewer').showModal();};const button=document.createElement('button');button.textContent='🗑';button.className='photo-delete';button.setAttribute('aria-label','Radera bild');button.title='Radera bild';button.onclick=async()=>{if(!confirm('Radera bilden permanent från albumet? Detta kan inte ångras.'))return;button.disabled=true;try{await request('remember-owner-manager',{action:'deletePhoto',albumId:id,photoId:photo.id});$('photoStatus').textContent='✓ Bilden raderad.';await refreshAfterDelete();}catch(e){$('photoStatus').textContent=e.message;button.disabled=false;}};card.append(img,button);$('photos').append(card);}$('photoStatus').textContent=data.photos.length+' '+(data.photos.length===1?'bild':'bilder')+' i albumet';}catch(e){$('empty').hidden=true;$('photoStatus').textContent='Kunde inte hämta bilderna: '+e.message+' ';const retry=document.createElement('button');retry.textContent='Försök igen';retry.onclick=refresh;$('photoStatus').append(retry);}finally{busy=false;}}
 async function refreshAfterDelete(){busy=false;await refresh();}
