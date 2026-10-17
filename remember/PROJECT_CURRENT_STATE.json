@@ -487,10 +487,10 @@
     "copiedProductionData": false,
     "originalWritesPerformed": false,
     "securityCandidateApplied": false,
-    "next": "Read RECOVERY_CHECKPOINT.md; inspect interrupted simulation evidence and verify test Storage/database read-only before any rerun; never modify production.",
+    "next": "Do not rerun user-confirmed successful simulation. Review earlier HTTP 503 logs and remaining safeguards read-only; see RECOVERY_CHECKPOINT.md.",
     "edgeFunctionCountBasis": "Direct test-project function listing on 2026-10-17; initial 8 was historical",
     "recoveryAuditFunctionVersion": 12,
-    "recoverySimulationStatus": "UNVERIFIED_INTERRUPTED_RESULT",
+    "recoverySimulationStatus": "USER_REPORTED_PASS_SERVER_RESPONSE_BODY_NOT_RETRIEVED",
     "currentCheckpoint": "remember/RECOVERY_CHECKPOINT.md"
   }
 }
