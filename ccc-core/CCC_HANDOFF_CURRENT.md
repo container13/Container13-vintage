@@ -2,6 +2,9 @@
 
 This file is the human-readable entry point for continuing CCC in a new chat.
 
+## Gemensam kontinuitet
+Följ även `../project-template/CONTINUITY_PROTOCOL.md`. `CCC_CURRENT_STATE.json` är auktoritativ strukturerad status; denna handoff ger förklaring och historik. Om status och historisk text skiljer sig: kontrollera aktuell kod/deploy och korrigera statusen innan ändring. Dokumentera varje avslutat steg och läs tillbaka GitHub-commiten. Avbrutet test = UNVERIFIED tills resultatet fastställts.
+
 ## Bootstrap
 1. Read CCC_MASTER_RULES.md.
 2. Read CCC_CURRENT_STATE.json.
