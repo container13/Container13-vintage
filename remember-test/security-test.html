@@ -5,7 +5,7 @@
 <button id="load">1. Kontrollera inloggning och mina album</button><pre id="status" role="status">Inte kontrollerat.</pre>
 <section id="controls" hidden><label for="album">Ditt album</label><select id="album"></select><label for="setting">Inställning att testa</label><select id="setting"><option value="allow_reports">Tillåt rapportering</option><option value="require_verified_email">Kräv verifierad gäste-post</option><option value="require_photo_approval">Kräv bildgodkännande</option><option value="notify_reports">Avisera rapporter</option><option value="pause_new_slideshow_photos">Pausa nya bildspelsbilder</option></select>
 <p class="warn">Testet sparar en inställning i testdatabasen, men aktiverar inte någon global säkerhetsfunktion.</p><div class="row"><button id="off">2. Spara AV (false)</button><button id="on">2. Spara PÅ (true)</button></div><small>Varje klick får ett nytt begärande-ID. Ingen automatisk skrivning görs.</small></section>
-<section id="automated" hidden><h2>Automatiska HTTP-behörighetstester</h2><p>Tester som bara ska nekas. De använder din inloggning men gör inga giltiga inställningsändringar.</p><button id="run-negative">Kör säkra HTTP-tester</button><pre id="auto-result" role="status">Inte körda.</pre></section><pre id="result" role="status">Väntar på test.</pre></main>
+<section id="automated" hidden><h2>Automatiska HTTP-behörighetstester</h2><p>Tester som bara ska nekas. De använder din inloggning men gör inga giltiga inställningsändringar.</p><button id="run-negative">Kör säkra HTTP-tester</button><pre id="auto-result" role="status">Inte körda.</pre></section><section><h2>Gästkontroll (skrivskyddad)</h2><p>Öppna en gästlänk från Remember Test i ett privat fönster för fullständigt gästtest. Här kan du kontrollera länken utan uppladdning.</p><label for="guest-url">Testets gästlänk</label><input id="guest-url" type="url" placeholder="Klistra in delningslänken" style="width:100%;padding:13px"><button id="guest-check">Kontrollera gästlänk</button><pre id="guest-result" role="status">Inte kontrollerad.</pre></section><pre id="result" role="status">Väntar på test.</pre></main>
 <script type="module">
 const $=id=>document.getElementById(id),base='https://kauxrvshxgpbvptdwhog.supabase.co';
 const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
@@ -76,6 +76,26 @@ $('run-negative').onclick=async()=>{
   lines.push('Resultat: '+lines.filter(x=>x.startsWith('PASS')).length+'/'+cases.length+' godkända. Ingen giltig skrivning skickades.');
   show('auto-result',lines.join('\n'));
  }catch(e){show('auto-result','Testfel: '+String(e))}
+ finally{button.disabled=false}
+};
+
+
+$('guest-check').onclick=async()=>{
+ const output=$('guest-result'),button=$('guest-check');button.disabled=true;show('guest-result','Kontrollerar…');
+ try{
+  const url=new URL($('guest-url').value.trim());
+  if(url.origin!=='https://container13.se'||!url.pathname.startsWith('/remember-test/'))throw Error('Använd endast en länk från Remember Test.');
+  const token=url.searchParams.get('token')||url.searchParams.get('t');
+  if(!token||!/^[A-Za-z0-9_-]{43}$/.test(token))throw Error('Ingen giltig token i länken. Ingen begäran skickades.');
+  const headers={'Content-Type':'application/json','apikey':'sb_publishable_iLKTdBYdh2w5ALhEyFtW8A_V8Gujyam'};
+  const mres=await fetch(base+'/functions/v1/remember-guest-metadata',{method:'POST',headers,body:JSON.stringify({token}),cache:'no-store'});
+  const metadata=await mres.json();
+  const gres=await fetch(base+'/functions/v1/remember-photo-gallery',{method:'POST',headers,body:JSON.stringify({token}),cache:'no-store'});
+  const gallery=await gres.json();
+  const pass1=mres.ok&&metadata.found===true;
+  const pass2=gres.ok&&gallery.ok===true&&Array.isArray(gallery.photos);
+  show('guest-result',[(pass1?'PASS':'FAIL')+' – Gästmetadata (HTTP '+mres.status+')',(pass2?'PASS':'FAIL')+' – Gästgalleri (HTTP '+gres.status+')',pass2?'Bilder tillgängliga: '+gallery.photos.length:'Bildantal ej verifierat.','Inga ändringar eller uppladdningar utfördes.'].join('\n'));
+ }catch(e){show('guest-result','Kunde inte verifiera: '+String(e))}
  finally{button.disabled=false}
 };
 
