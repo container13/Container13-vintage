@@ -113,3 +113,9 @@ Inspect deployed rejection/restore function and DB triggers for insertion points
 - In Remember Test, used a transaction with a claim against an existing photo, simulated 31-minute-old claim, replaced its token, and invoked token-aware release using the old token. New token survived (`surviving_new_claim=1`): PASS.
 - ROLLBACK followed by independent readback: claims=0, photos=4. No image deleted.
 - This validates stale release isolation, **not** live Edge Function HTTP 503 retry or storage deletion. Those remain open for final integration PASS.
+
+## Live scheduled-path HTTP smoke test (2026-10-17)
+- Verified zero expired rejected images, then invoked the existing test cron command once manually through SQL without exposing its Vault secret. This exercises pg_net → deployed purge Edge Function v7.
+- Observed fresh `net._http_response`: HTTP 200 `{ok:true,removed:0,failed:0}`.
+- Independent post-check: 4 photos, 0 claims, cron active=false. PASS for empty-queue live HTTP execution.
+- Does NOT test HTTP 503 handling with an eligible photo or end-to-end deletion; keep final retry integration test open. Production untouched.
