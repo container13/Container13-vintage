@@ -16,7 +16,7 @@ const cameraHost=document.getElementById('cameraHost'),cameraFrame=document.getE
 async function uploadApprovedCameraFiles(){
  if(cameraUploading||!selectedCameraFiles.length)return;
  cameraUploading=true;sendCamera.hidden=true;document.getElementById('openCamera').disabled=true;
- let completed=0;
+ let completed=0,awaiting=0;
  try{
   for(const file of selectedCameraFiles){
    cameraUploadStatus.textContent='Laddar upp bild '+(completed+1)+' av '+selectedCameraFiles.length+'…';
@@ -25,10 +25,10 @@ async function uploadApprovedCameraFiles(){
    const response=await fetch('https://kauxrvshxgpbvptdwhog.supabase.co/functions/v1/remember-photo-upload',{method:'POST',body:form,cache:'no-store'});
    const data=await response.json().catch(()=>({}));
    if(!response.ok||data.ok!==true)throw Error(data.error||'Uppladdningen misslyckades (HTTP '+response.status+').');
-   completed++;
+   completed++;if(data.awaitingApproval)awaiting++;
   }
   selectedCameraFiles=[];cameraResults.textContent='';
-  cameraUploadStatus.textContent='✓ '+completed+' '+(completed===1?'bild sparad':'bilder sparade')+'!';void rememberGallery?.refresh();
+  cameraUploadStatus.textContent=awaiting?'✓ '+completed+' uppladdade. '+awaiting+' väntar på albumägarens godkännande.':'✓ '+completed+' '+(completed===1?'bild sparad':'bilder sparade')+'!';void rememberGallery?.refresh();
  }catch(e){
   selectedCameraFiles=selectedCameraFiles.slice(completed);
   cameraResults.textContent=selectedCameraFiles.length+' bilder väntar på nytt försök.';
@@ -50,7 +50,7 @@ choosePhotos.onclick=()=>{if(!fileUploading)photo.click();};
 photo.onchange=()=>{pendingFiles=Array.from(photo.files||[]).filter(f=>['image/jpeg','image/png','image/webp'].includes(f.type));if(pendingFiles.length)void uploadSelectedFiles();};
 async function uploadSelectedFiles(){
  if(fileUploading||!pendingFiles.length)return;
- fileUploading=true;send.hidden=true;choosePhotos.disabled=true;let completed=0;
+ fileUploading=true;send.hidden=true;choosePhotos.disabled=true;let completed=0,awaiting=0;
  try{
   for(const file of pendingFiles){
    uploadStatus.textContent='Laddar upp '+(completed+1)+' av '+pendingFiles.length+'…';
@@ -59,9 +59,9 @@ async function uploadSelectedFiles(){
    const response=await fetch('https://kauxrvshxgpbvptdwhog.supabase.co/functions/v1/remember-photo-upload',{method:'POST',body:form,cache:'no-store'});
    const data=await response.json().catch(()=>({}));
    if(!response.ok||data.ok!==true)throw Error(data.error||'Servern svarade HTTP '+response.status);
-   completed++;
+   completed++;if(data.awaitingApproval)awaiting++;
   }
-  pendingFiles=[];photo.value='';uploadStatus.textContent='✓ '+completed+' '+(completed===1?'bild sparad':'bilder sparade')+'!';void rememberGallery?.refresh();
+  pendingFiles=[];photo.value='';uploadStatus.textContent=awaiting?'✓ '+completed+' uppladdade. '+awaiting+' väntar på albumägarens godkännande.':'✓ '+completed+' '+(completed===1?'bild sparad':'bilder sparade')+'!';void rememberGallery?.refresh();
  }catch(e){pendingFiles=pendingFiles.slice(completed);uploadStatus.textContent=completed+' sparade. '+pendingFiles.length+' återstår. '+(e instanceof Error?e.message:'Uppladdningen misslyckades.');send.hidden=pendingFiles.length===0;void rememberGallery?.refresh();}
  finally{fileUploading=false;choosePhotos.disabled=false;}
 }
