@@ -90,3 +90,10 @@ Inspect deployed rejection/restore function and DB triggers for insertion points
 - Current claim count = 0 (healthy now), but if an Edge Function terminates after claim and before release/finalize, the claim **may become stranded**. Existing hourly retry cannot claim it again. This is a potential liveness defect, not a verified production incident.
 - **Do not auto-delete claims just by age without proving no in-flight worker**; require lease ownership/token or a bounded safe recovery protocol, and inspect deployed Edge Function cleanup behavior before modifying purge.
 - Status: RETRY/503 TEST NOT PASS; no destructive test performed, no claim removed, no production change.
+
+## Purge error-path patch deployed (2026-10-17)
+- Read deployed `remember-photo-quarantine-purge` v5 and verified failure path after `remember_photo_quarantine_finalize` did not release claim.
+- Deployed v6 in Remember Test: on finalize error or `{ok:false}`, attempt `remember_photo_quarantine_release` and log any release error. Existing authentication and 50-item batch limit unchanged.
+- Independently fetched deployed function: ACTIVE version 6 and patch text present (readback PASS).
+- **Remaining:** abrupt crash after claim and before release is not solved by this patch; HTTP 503 recovery and batch >50 remain untested. Do not claim full retry safety PASS.
+- Production untouched; no image deletion test performed.
