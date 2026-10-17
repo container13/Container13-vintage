@@ -97,3 +97,9 @@ Inspect deployed rejection/restore function and DB triggers for insertion points
 - Independently fetched deployed function: ACTIVE version 6 and patch text present (readback PASS).
 - **Remaining:** abrupt crash after claim and before release is not solved by this patch; HTTP 503 recovery and batch >50 remain untested. Do not claim full retry safety PASS.
 - Production untouched; no image deletion test performed.
+
+## Tokenized stale-claim recovery (2026-10-17)
+- Applied migration `remember_quarantine_tokenized_claim_lease_v1` in Remember Test only. Claims now carry UUID `claim_token`; claim RPC can replace claims older than 30 minutes with a fresh token. New finalize/release RPC overloads require matching token, preventing stale workers from finalizing or releasing another worker's claim. Old tokenless finalize/release RPC signatures had EXECUTE revoked from service_role.
+- Deployed ACTIVE Edge Function `remember-photo-quarantine-purge` v7 with claim token passed to finalize and both release paths; independent readback confirms 3 claimToken references.
+- Direct DB readback: 0 outstanding claims. No production changes, no photo deletion.
+- IMPORTANT: 30-minute lease assumes workers do not legitimately process a single claim longer than 30 minutes. Stale workers can still attempt Storage remove; token check protects DB finalization but does not stop that Storage operation. Verify storage-delete idempotency and error handling, live HTTP retry and >50 batches before final PASS.
