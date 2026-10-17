@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="robots" content="noindex,nofollow"><title>Remember Test – säkerhetsprov</title>
+<style>:root{font-family:system-ui;color-scheme:dark;background:#10231f;color:#f6f3e9}*{box-sizing:border-box}body{margin:0;padding:20px}main{max-width:570px;margin:auto}h1{font-size:24px}p{line-height:1.5}button{background:#dce7ae;color:#17251e;border:0;border-radius:10px;padding:13px 16px;font-weight:700;cursor:pointer}button:disabled{opacity:.4}select{width:100%;padding:13px;background:#243c33;color:white;border:1px solid #708d7e;border-radius:9px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#21382f;border-radius:10px;padding:14px;min-height:60px}.warn{color:#f8db91}label{display:block;margin:16px 0 6px}a{color:#dce7ae}.row{display:flex;gap:10px;flex-wrap:wrap}.row button{flex:1}small{color:#c9d5c8}</style></head>
+<body><main><p class="warn">ENDAST REMEMBER TEST – ORIGINAL BERÖRS INTE</p><h1>Säkerhetsprov</h1><p>Separat testsida för albumägare. Funktionernas globala läge är fortfarande OFF. Här kan du kontrollera inloggning, ägarskap och databasens ändringshistorik.</p><p><a href="./dashboard.html">Tillbaka till testpanelen</a></p>
+<button id="load">1. Kontrollera inloggning och mina album</button><pre id="status" role="status">Inte kontrollerat.</pre>
+<section id="controls" hidden><label for="album">Ditt album</label><select id="album"></select><label for="setting">Inställning att testa</label><select id="setting"><option value="allow_reports">Tillåt rapportering</option><option value="require_verified_email">Kräv verifierad gäste-post</option><option value="require_photo_approval">Kräv bildgodkännande</option><option value="notify_reports">Avisera rapporter</option><option value="pause_new_slideshow_photos">Pausa nya bildspelsbilder</option></select>
+<p class="warn">Testet sparar en inställning i testdatabasen, men aktiverar inte någon global säkerhetsfunktion.</p><div class="row"><button id="off">2. Spara AV (false)</button><button id="on">2. Spara PÅ (true)</button></div><small>Varje klick får ett nytt begärande-ID. Ingen automatisk skrivning görs.</small></section>
+<pre id="result" role="status">Väntar på test.</pre></main>
+<script type="module">
+const $=id=>document.getElementById(id),base='https://kauxrvshxgpbvptdwhog.supabase.co';
+const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
+const client=createClient(base,'sb_publishable_iLKTdBYdh2w5ALhEyFtW8A_V8Gujyam',{auth:{storage:localStorage,storageKey:'container13-remember-test-auth-v1',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+let current=null;
+const show=(id,v)=>$(id).textContent=v;
+$('load').onclick=async()=>{
+ $('controls').hidden=true;current=null;show('status','Kontrollerar…');
+ try{
+  const {data:{user},error}=await client.auth.getUser();
+  if(error||!user){show('status','Inte inloggad i Remember Test. Logga in via testappen först.');return}
+  const {data:albums,error:dbError}=await client.schema('remember').from('albums').select('id,name').eq('owner_user_id',user.id).limit(30);
+  if(dbError){show('status','Inloggad, men direkt albumläsning är spärrad ('+dbError.code+'). Testpanelen behöver en serverbaserad albumlista.');return}
+  if(!albums?.length){show('status','Inloggad, men inga ägda album hittades.');return}
+  current=user;$('album').replaceChildren(...albums.map(a=>{const o=document.createElement('option');o.value=a.id;o.textContent=a.name||a.id;return o}));
+  $('controls').hidden=false;show('status','Inloggad och '+albums.length+' ägt/ägda album hittades. Ingen ändring gjordes.');
+ }catch(e){show('status','Fel: '+String(e))}
+};
+async function write(enabled){
+ if(!current)return;
+ const btns=[$('on'),$('off')];btns.forEach(b=>b.disabled=true);
+ show('result','Skickar begäran…');
+ try{
+  const {data:{session}}=await client.auth.getSession();
+  if(!session){show('result','Sessionen saknas. Logga in på nytt.');return}
+  const response=await fetch(base+'/functions/v1/remember-security-settings',{
+   method:'POST',headers:{'Content-Type':'application/json','apikey':'sb_publishable_iLKTdBYdh2w5ALhEyFtW8A_V8Gujyam','Authorization':'Bearer '+session.access_token},
+   body:JSON.stringify({action:'set_album_setting',requestId:crypto.randomUUID(),albumId:$('album').value,setting:$('setting').value,enabled})
+  });
+  const body=await response.text();show('result','HTTP '+response.status+'\n'+body.slice(0,1500));
+ }catch(e){show('result','Anslutningsfel: '+String(e))}
+ finally{btns.forEach(b=>b.disabled=false)}
+}
+$('off').onclick=()=>write(false);$('on').onclick=()=>write(true);
+</script></body></html>
