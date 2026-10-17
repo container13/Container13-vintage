@@ -470,5 +470,23 @@
       "status": "GITHUB_VERIFIED_DEVICE_PENDING"
     },
     "reviewDocument": "remember/security/REVIEW_CHECKPOINT_2026-10-16.md"
+  },
+  "testEnvironment": {
+    "name": "remember-test",
+    "projectRef": "kauxrvshxgpbvptdwhog",
+    "organization": "Container13-Remember",
+    "region": "eu-north-1",
+    "checkedAt": "2026-10-17",
+    "status": "BACKEND_DEPLOYED_READBACK_PASS_FRONTEND_AUTH_E2E_PENDING",
+    "document": "remember/TEST_ENVIRONMENT.md",
+    "schemaVersion": 10,
+    "tableCount": 8,
+    "rpcCount": 16,
+    "edgeFunctionCount": 8,
+    "privateBuckets": 2,
+    "copiedProductionData": false,
+    "originalWritesPerformed": false,
+    "securityCandidateApplied": false,
+    "next": "Separate test frontend and Auth/SMTP setup, own approved test accounts and dummy images; preserve original project."
   }
 }
