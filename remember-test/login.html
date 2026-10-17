@@ -1,15 +1,311 @@
 <!doctype html>
-<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="robots" content="noindex,nofollow"><title>Remember TEST – Logga in</title>
-<style>body{font:16px system-ui;background:#1d2524;color:#fff;max-width:480px;margin:32px auto;padding:16px}h1{font-size:34px}.test{background:#ffc66b;color:#231b0e;padding:12px;border-radius:9px;font-weight:900}.panel{background:#29332f;border:1px solid #708477;border-radius:16px;padding:20px;margin-top:20px}label{display:block;margin:16px 0 6px}input{width:100%;box-sizing:border-box;padding:14px;font-size:16px;border-radius:8px;border:1px solid #999;background:#fff;color:#111}button{padding:12px;margin:12px 8px 0 0;background:#ffc66b;border:0;border-radius:9px;font-weight:bold}a{color:#ffc66b}#status{white-space:pre-wrap;overflow-wrap:anywhere}</style></head>
-<body><div class="test">TESTMILJÖ – INTE ORIGINAL</div><h1>Remember Test</h1><p>Separat testinloggning. Endast testkonton, aldrig originalets lösenord.</p><div class="panel"><p>Projekt: <code>kauxrvshxgpbvptdwhog</code></p>
-<form id="form"><label for="email">E-post för testkonto</label><input id="email" type="email" required autocomplete="username"><label for="password">Testkontots lösenord</label><input id="password" type="password" required autocomplete="current-password"><button type="submit">Logga in i TEST</button></form>
-<button id="check">Kontrollera session</button><button id="logout">Logga ut ur TEST</button><button id="copy">Kopiera rapport</button><p id="status" role="status">Testklienten laddas…</p></div><p><a href="./">Till TEST-start</a></p>
+<html lang="sv"><head><meta name="robots" content="noindex,nofollow"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="referrer" content="no-referrer"><meta name="theme-color" content="#332c26"><title>TEST – Remember – logga in</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:dark;color:#fff;background:#2d2c25}
+*{box-sizing:border-box}
+html{min-height:100%;background:#2d2c25}
+body{margin:0;min-height:100dvh;background:#332c26}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 85% 15%,#ffb76c4d,transparent 46%),linear-gradient(90deg,#1d241d33,transparent)}
+main{position:relative;z-index:1;width:min(100%,490px);margin:auto;min-height:100dvh;padding:22px 18px calc(24px + env(safe-area-inset-bottom));display:flex;flex-direction:column}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px}
+header .brand{font-size:0;font-weight:400}
+header .brand::before{content:"▧";display:block;text-align:center;font-size:43px;line-height:1.2;margin-top:34px;color:#fff}
+header .brand::after{content:"Remember";display:block;font:normal clamp(46px,12vw,66px)/1.15 Georgia,"Times New Roman",serif;letter-spacing:-.045em;text-align:center;color:#fff;text-shadow:0 3px 18px #0008}
+header .brand .muted{display:none}
+header a{color:#fff;text-decoration:none;font-size:13px;border:1px solid #ffffff85;border-radius:100px;padding:9px 12px;background:#0005;align-self:flex-start}
+header{display:block;position:relative;padding-top:15px}
+header a{position:absolute;right:0;top:8px}
+header .brand{margin-top:36px}
+header .brand::before{margin-top:28px}
+h1{font-size:clamp(29px,7.7vw,38px);line-height:1.1;letter-spacing:-.03em;text-align:center;margin:0 0 9px;color:#fff}
+h1+p{text-align:center;color:#f4eee6;font-size:15px;line-height:1.5;margin:0 0 25px}
+.panel{border:1px solid #fff7;border-radius:25px;background:#332d24d9;color:#fff;box-shadow:0 20px 46px #0006;backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);padding:22px 20px;margin:0}
+#login{border:0;background:none;box-shadow:none;padding:0;margin:0}
+label{display:block;font-size:14px;font-weight:650;margin:0 0 9px;color:#fff}
+input,select{width:100%;min-width:0;border-radius:13px;border:1px solid #ffffff88;background:#fff;color:#252923;min-height:52px;padding:12px 15px;font:inherit;font-size:16px}
+input::placeholder{color:#797d7a}
+.actions{display:grid;gap:12px;margin-top:16px}
+button{font:inherit;font-size:15px;font-weight:700;border-radius:13px;border:1px solid #3f9d7d;background:#114f3e;color:#fff;min-height:53px;padding:12px 14px;cursor:pointer}
+button.secondary{background:#ffffff12;color:#fff;border:1.5px solid #f3ede5}
+button:disabled{opacity:.6;cursor:wait}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #f2d7a1;outline-offset:3px}
+#feedback{font-size:13px;line-height:1.4;text-align:center;margin:17px 0 0;color:#f2e7d7;min-height:0}
+.version{color:#f4e9da;font-size:11px;text-align:center;margin-top:auto;padding-top:34px}
+.panel[hidden],[hidden]{display:none!important}
+#account,#creation{margin-top:22px}
+#account h2,#creation h2{font:normal 26px Georgia,serif}
+#account p,#creation p{color:#f2e7d7;line-height:1.5}
+#account details,#creation details{margin-top:16px}
+#account .actions a{color:#fff!important;background:#114f3e!important}
+#passwordStep{margin-top:18px}
+#passwordStep label{margin-top:12px}
+@media(min-width:700px){main{padding-top:32px}header .brand{margin-top:45px}h1{margin-top:0}}
+@media(max-height:750px){header .brand::before{margin-top:5px}h1{margin-top:0}.version{padding-top:20px}}
+
+/* v0.1.14 — approved composition: welcome copy inside glass panel */
+header{margin-bottom:45px}
+header .brand::after{margin-bottom:0}
+header .brand::before{content:"▧";font-size:36px}
+header .brand{position:relative}
+header .brand .muted{display:none}
+.brand-tagline{text-align:center;font-size:13px;letter-spacing:.25em;margin:5px 0 12px;color:#efe1cb}
+.brand-subtitle{text-align:center;max-width:260px;margin:0 auto;color:#f6eee4;font-size:17px;line-height:1.4}
+.panel#loginPanel{padding:27px 20px 22px;background:#302b22c9;border:1px solid #ffffff69}
+.panel#loginPanel h1{margin:0 0 10px}
+.panel#loginPanel>.login-subtitle{text-align:center;margin:0 0 23px;color:#f3ece2;font-size:14px}
+.panel#loginPanel #feedback{margin:18px 0 0}
+.panel#loginPanel input{padding-left:16px}
+@media(max-width:390px){header{margin-bottom:33px}.panel#loginPanel{padding:23px 17px}}
+
+/* v0.1.18 — reference-proportions correction; auth logic untouched */
+main{width:min(100%,440px);padding:18px 24px calc(22px + env(safe-area-inset-bottom))}
+header{padding-top:clamp(55px,8vh,92px);margin-bottom:0!important}
+header .brand{margin:0!important}
+header .brand::before{font-size:42px;line-height:1;margin:0 0 9px}
+header .brand::after{font-size:clamp(49px,12vw,65px);letter-spacing:-.045em;line-height:1.08}
+header a{top:0;right:0}
+.brand-tagline{font-size:11px;letter-spacing:.18em;margin:8px 0 15px}
+.brand-tagline::before,.brand-tagline::after{content:"───";margin:0 10px;opacity:.65}
+.brand-subtitle{font-size:clamp(15px,4vw,18px);max-width:280px;margin:0 auto 27px;line-height:1.35;text-shadow:0 2px 10px #000a}
+.panel#loginPanel{padding:22px 18px 18px;border-radius:23px;background:#4b4033ce;border:1px solid #ffffff70;box-shadow:0 16px 40px #0007;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.panel#loginPanel h1{font-size:clamp(25px,6.6vw,32px);font-weight:720;letter-spacing:-.035em;margin-bottom:7px}
+.panel#loginPanel>.login-subtitle{font-size:13px;margin-bottom:20px}
+#loginPanel label{font-size:13px;margin-bottom:7px}
+#loginPanel input{min-height:47px;background:#faf8f5;border-radius:12px;color:#24231f;padding:10px 13px}
+#loginPanel .actions{gap:10px;margin-top:15px}
+#loginPanel button{min-height:49px;border-radius:12px;font-size:14px}
+#magic{background:#174b3c;border:1.5px solid #6d9b80}
+#choosePassword{background:#ffffff0a;border:1.5px solid #ffffffc9}
+#loginPanel #feedback{font-size:11px;color:#ded4c5;margin-top:17px}
+.version{padding-top:24px;text-shadow:0 2px 10px #000a}
+@media(max-height:740px){header{padding-top:28px}.brand-subtitle{margin-bottom:17px}.panel#loginPanel{padding-top:17px;padding-bottom:16px}.version{padding-top:12px}}
+@media(max-width:370px){main{padding-left:17px;padding-right:17px}.brand-tagline::before,.brand-tagline::after{content:"──"}}
+body.password-mode header,body.password-mode .brand-tagline,body.password-mode .brand-subtitle,body.password-mode #account,body.password-mode #loginPanel,body.password-mode #creation{display:none!important}body.password-mode main{min-height:100dvh;display:flex;justify-content:center}body.password-mode #passwordView{display:block!important;max-width:520px;width:100%;margin:20px auto;padding:26px 22px}#passwordView h2{font:normal 32px Georgia,serif;margin:0 0 12px}#passwordView #setPasswordArea{display:block!important;margin:0;border:0;padding:0}#passwordView #setPasswordArea summary{display:none}#passwordView #setPasswordArea label{display:block;margin:15px 0 7px}#passwordView #setPasswordArea input[type=password],#passwordView #setPasswordArea input[type=text]{width:100%}#passwordView #setPasswordArea label:has(#showNewPasswords){display:flex;align-items:center;gap:10px}#passwordView #showNewPasswords{width:20px!important;height:20px!important;accent-color:#d9e7a4}#passwordView #passwordSuccess[hidden]{display:none}body.password-mode .version{display:none}
+#passwordSuccess h3{font-size:24px;margin:8px 0 10px}#passwordSuccess p{line-height:1.5;margin:12px 0}#passwordSuccess .password-success-link{display:block;text-align:center;background:#114f3e;border:1px solid #5eab8d;color:white;border-radius:12px;padding:15px 12px;font-weight:700;text-decoration:none;margin:18px 0}#passwordSuccess .password-app-hint{padding-top:15px;border-top:1px solid #ffffff50;font-size:14px;color:#f4eadc}
+.password-input-wrap{position:relative}.password-input-wrap input{padding-right:66px!important}.password-input-wrap .password-eye{position:absolute;right:7px;top:50%;transform:translateY(-50%);width:46px;height:44px;min-height:44px;border:0;background:transparent;color:#24342f;font-size:24px;border-radius:10px;padding:0;display:grid;place-items:center}.password-input-wrap .password-eye:focus-visible{outline:2px solid #a36d28}.password-input-wrap .password-eye svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}#passwordView #savePassword{margin-top:14px}#passwordView #savePassword:disabled{opacity:.5;cursor:not-allowed}
+/* 0.1.27: keep password visibility control compact and prevent inherited input styles. */
+#passwordView label:has(#showNewPasswords){display:flex!important;align-items:center!important;gap:12px!important;margin:16px 0!important;line-height:1.3}
+#passwordView #showNewPasswords{appearance:auto!important;-webkit-appearance:checkbox!important;display:inline-block!important;width:19px!important;height:19px!important;min-height:0!important;max-height:19px!important;padding:0!important;margin:0!important;border:0!important;border-radius:3px!important;background:transparent!important;box-shadow:none!important;flex:0 0 19px!important;vertical-align:middle}
+ .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+</style><link rel="stylesheet" href="./remember-design.css?v=0.1.75"><script src="../project-template/mobile-view-policy.js?v=2"></script><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js?v=0.1.75"></script><meta name="remember-release" content="remember-0.1.75"><script defer src="./remember-version.js?v=0.1.75"></script></head><body class="remember-shell" data-remember-view="login"><div style="position:sticky;top:0;z-index:99999;background:#ffc66b;color:#251600;text-align:center;font:900 13px system-ui;padding:7px">REMEMBER TEST – INTE ORIGINAL</div><main>
+<header><div class="brand">✦ CONTAINER13 <span class="muted">remember.</span></div><a href="./">Till Remember</a></header><p class="brand-tagline">— CONTAINER13 —</p><p class="brand-subtitle">Samla och dela dina<br>viktigaste ögonblick.</p><div style="display:flex;justify-content:center;margin:8px 0 14px;position:relative;z-index:5"><button id="remember-open-viewport-diagnostics" type="button" style="background:#203b32;color:#f5f4e8;border:1px solid #90a79c;border-radius:10px;padding:10px 14px;font-size:13px;cursor:pointer">Skärmmätning</button></div><section class="panel" id="loginPanel"><h1>Välkommen tillbaka</h1><p class="login-subtitle">Välj hur du vill logga in på Remember.</p><form id="login"><label for="email">E-postadress</label><input id="email" type="email" autocomplete="off" autocapitalize="none" spellcheck="false" required maxlength="254" placeholder="din@epost.se" aria-describedby="emailHint"><span id="emailHint" class="sr-only">Skriv din e-postadress. Webbläsaren kan erbjuda sparade adresser.</span><div class="actions" id="methods"><button id="magic" type="button" disabled>✉ Logga in med mejllänk</button><button id="choosePassword" type="button" class="secondary" disabled>Logga in med lösenord</button></div><div id="passwordStep" hidden><label for="password">Lösenord</label><span id="passwordMount"></span><div class="actions"><button id="send" type="submit" disabled>Logga in</button><button id="resetPassword" type="button" class="secondary" disabled>Skapa eller återställ lösenord via mejl</button><button id="backMethods" type="button" class="secondary">← Välj annat sätt</button></div></div></form><p id="feedback" class="status" role="status" aria-live="polite">Förbereder inloggningen…</p></section>
+<section class="panel" id="account" hidden><h2>Ditt konto</h2><p id="identity"></p><button id="openPasswordView" type="button" class="secondary">Byt eller återställ lösenord</button><details id="setPasswordArea" hidden><summary>Byt eller återställ lösenord</summary><label for="newPassword">Nytt lösenord</label><div class="password-input-wrap"><input id="newPassword" type="password" autocomplete="new-password" minlength="12" placeholder="Minst 12 tecken"><button id="toggleNewPassword" class="password-eye" type="button" aria-label="Visa nytt lösenord" aria-pressed="false" title="Visa lösenord">◉</button></div><label for="confirmPassword">Bekräfta nytt lösenord</label><div class="password-input-wrap"><input id="confirmPassword" type="password" autocomplete="new-password" minlength="12" placeholder="Upprepa lösenordet"><button id="toggleConfirmPassword" class="password-eye" type="button" aria-label="Visa bekräftat lösenord" aria-pressed="false" title="Visa lösenord">◉</button></div><div class="actions"><button id="savePassword" type="button">Spara lösenord</button></div><p id="passwordResult" role="status" aria-live="polite"></p></details><div class="actions"><a href="./dashboard.html" style="display:inline-flex;align-items:center;background:#d9e7a4;color:#10231f;border-radius:11px;padding:12px 15px;text-decoration:none;font-weight:750">Öppna Mina album</a><button id="logout" type="button" class="secondary">Logga ut</button></div><details id="webmasterTools" hidden><summary>Webmaster</summary><div class="actions"><button id="check" type="button">Kontrollera webmasteråtkomst</button><button id="list" type="button" class="secondary">Visa album</button></div><p id="result" role="status" aria-live="polite"></p><div id="albums" role="status" aria-live="polite"></div></details></section>
+<section class="panel" id="passwordView" hidden><h2>Välj ett nytt lösenord</h2><p>Ange och bekräfta ditt nya lösenord.</p><div id="passwordFormSlot"></div><div id="passwordSuccess" hidden role="status" aria-live="polite"><h3>Lösenordet är sparat!</h3><p>Du kan fortsätta till Mina album här i webbläsaren.</p><a class="password-success-link" href="./dashboard.html">Fortsätt till Mina album</a><p class="password-app-hint">Startade du återställningen från Remember på hemskärmen? Gå tillbaka till webbappen och logga in där med ditt nya lösenord om du inte redan är inloggad.</p></div><button id="cancelPasswordView" type="button" class="secondary">Tillbaka till mitt konto</button></section>
+<section class="panel" id="creation" hidden><h2>Skapa ett testalbum</h2><p>Albumet sparas i Remember-testmiljön. Gästlänk och bilduppladdning kommer senare.</p>
+<form id="createForm"><label for="albumTitle">Albumets namn</label><input id="albumTitle" required maxlength="100">
+<label for="eventType">Upplevelse</label><select id="eventType"><option value="fishing">Fiskeresa</option><option value="trip">Resa</option><option value="party">Fest</option><option value="wedding">Bröllop</option></select>
+<label for="startsAt">Startdatum och tid</label><input id="startsAt" type="datetime-local" required>
+<div id="tripEnd"><label for="endsAt">Resan slutar</label><input id="endsAt" type="datetime-local" required></div>
+<p class="muted" id="timeNote"></p><p class="muted">Fest/bröllop: 24 timmar från start. Resa/fiske: till 24 timmar efter slut. Standardgräns: 10 bilder.</p>
+<div class="actions"><button id="createButton" type="submit">Skapa testalbum</button></div></form>
+<p id="createResult" role="status" aria-live="polite"></p></section>
+<p class="version">Inloggning 0.1.34</p>
 <script type="module">
-const ref='kauxrvshxgpbvptdwhog',key='sb_publishable_iLKTdBYdh2w5ALhEyFtW8A_V8Gujyam',storageKey='container13-remember-test-auth-v1',status=document.getElementById('status');
-let client;const say=s=>status.textContent=s;
-try{const sdk=await import('https://esm.sh/@supabase/supabase-js@2');client=sdk.createClient('https://'+ref+'.supabase.co',key,{auth:{storage:localStorage,storageKey,persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});say('TEST-klient klar. Ingen inloggning gjord.')}catch(e){say('Kunde inte initiera TEST-klienten.')}
-document.getElementById('form').addEventListener('submit',async e=>{e.preventDefault();if(!client)return;const email=document.getElementById('email').value.trim(),password=document.getElementById('password').value;document.getElementById('password').value='';say('Kontrollerar TEST-konto…');try{const {data,error}=await client.auth.signInWithPassword({email,password});say(error?'TEST-inloggning nekad: '+error.message:data.session?'Inloggad i TEST.':'Ingen TEST-session.')}catch(e){say('Nätverksfel vid TEST-inloggning.')}});
-document.getElementById('check').onclick=async()=>{if(!client)return;const {data,error}=await client.auth.getSession();say(error?'TEST-session kunde inte läsas.':data.session?'TEST-session finns.':'Ingen TEST-session.')};
-document.getElementById('logout').onclick=async()=>{if(!client)return;const {error}=await client.auth.signOut({scope:'local'});say(error?'Utloggning misslyckades.':'Utloggad ur TEST.')};
-document.getElementById('copy').onclick=async()=>{const report=['Remember TEST','Projekt: '+ref,'Sida: '+location.href,'Tid: '+new Date().toLocaleString('sv-SE'),'Resultat: '+status.textContent].join('\n');try{await navigator.clipboard.writeText(report);say(status.textContent+'\nRapport kopierad.')}catch(e){say(status.textContent+'\nKopiering blockerad.')}};
-</script></body></html>
+import { checkRememberWebmaster } from "./remember-account-access.js?v=0.1.21";
+const $=id=>document.getElementById(id);
+const recoveryLinkRequested=new URLSearchParams(location.hash.slice(1)).get('type')==='recovery';
+let recoveryEventSeen=false;
+function openPasswordView(){
+ if(!session)return;
+ $('passwordFormSlot').appendChild($('setPasswordArea'));
+ $('setPasswordArea').hidden=false;$('setPasswordArea').open=true;
+ $('passwordSuccess').hidden=true;$('passwordFormSlot').hidden=false;
+ document.body.classList.add('password-mode');
+ // No automatic focus: prevents iOS Safari autofill suggestions before user interaction.
+}
+function closePasswordView(){
+ document.body.classList.remove('password-mode');
+ $('setPasswordArea').open=false;$('setPasswordArea').hidden=true;
+ $('openPasswordView').insertAdjacentElement('afterend',$('setPasswordArea'));
+}
+function showRecoveryForm(){openPasswordView();}
+let client=null,session=null,busy=false,creationAllowed=false,webmasterAllowed=false,roleRevision=0;
+function message(text){$('feedback').textContent=text}
+function lock(value){busy=value;document.querySelectorAll('button').forEach(b=>b.disabled=value)}
+async function updateWebmaster(value){
+ const revision=++roleRevision;webmasterAllowed=false;$('webmasterTools').hidden=true;creationAllowed=false;$('creation').hidden=true;
+ if(!value)return;
+ const allowed=await checkRememberWebmaster(value);
+ if(revision!==roleRevision)return;
+ webmasterAllowed=allowed;$('webmasterTools').hidden=!allowed;
+}
+function showSession(value){if(!value&&document.body.classList.contains('password-mode'))closePasswordView();void updateWebmaster(value);const identityChanged=session?.user?.id!==value?.user?.id;session=value;if(identityChanged){creationAllowed=false;$('creation').hidden=true;}$('account').hidden=!value;$('loginPanel').hidden=!!value;$('login').hidden=!!value;$('identity').textContent=value?'Inloggad som '+value.user.email:'';$('result').textContent='';$('albums').replaceChildren()}
+async function gateway(action){
+ if(busy||!client||!webmasterAllowed)return;const revision=roleRevision;lock(true);$('result').textContent='Kontrollerar åtkomst…';
+ try{
+  const {data,error}=await client.auth.getSession();if(error||!data.session){showSession(null);message('Logga in igen.');return}
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
+  let response;try{response=await fetch('https://kauxrvshxgpbvptdwhog.supabase.co/functions/v1/remember-webmaster',{method:'POST',headers:{'Content-Type':'application/json',apikey:PUBLIC_KEY,Authorization:'Bearer '+data.session.access_token},body:JSON.stringify({action}),signal:controller.signal})}finally{clearTimeout(timer)}
+  const body=await response.json().catch(()=>({}));
+  if(revision!==roleRevision)return;
+  if(response.status===403){creationAllowed=false;$('creation').hidden=true;$('result').textContent='403 – kontot saknar webmasterbehörighet.';return}
+  if(response.status===401){$('result').textContent='401 – sessionen kunde inte verifieras. Logga in igen.';return}
+  if(!response.ok){$('result').textContent='Kontrollen misslyckades (HTTP '+response.status+'). Försök igen senare.';return}
+  if(!body.authorized){$('result').textContent='Åtkomst nekad.';return}
+  creationAllowed=body.capabilities?.createAlbum===true;$('creation').hidden=!creationAllowed;if(creationAllowed)restoreDraft();
+  $('result').textContent=action==='installation_status'?'Webmasteråtkomst godkänd. Schemaversion: '+body.schemaVersion+'.':'Webmasteråtkomst godkänd.';
+  if(action==='list'){
+    $('albums').replaceChildren();
+    if(!Array.isArray(body.albums)){
+      $('albums').textContent='Servern skickade ingen albumlista. Det är ett svarsfel som behöver åtgärdas.';
+    }else if(body.albums.length===0){
+      $('albums').textContent='Servern returnerade 0 album för detta konto. Skapa inte ett nytt album.';
+    }else{
+      const heading=document.createElement('h3');heading.textContent='Dina album ('+body.albums.length+')';$('albums').append(heading);
+      for(const album of body.albums){
+        const p=document.createElement('p');p.textContent=album.title||'Album utan namn';$('albums').append(p);
+      }
+    }
+  }
+ }catch{ $('result').textContent='Anslutningen misslyckades. Försök igen.' }finally{lock(false)}
+}
+const PUBLIC_KEY='sb_publishable_iLKTdBYdh2w5ALhEyFtW8A_V8Gujyam';
+try{
+ const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
+ client=createClient('https://kauxrvshxgpbvptdwhog.supabase.co',PUBLIC_KEY,{auth:{storage:localStorage,storageKey:'container13-remember-test-auth-v1',persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'}});
+ // One-time migration of the previously authenticated tab session.
+ // The old value contains auth tokens; never print it or send it elsewhere.
+ if (!localStorage.getItem('container13-remember-test-auth-v1')) {
+   try {
+     const old = sessionStorage.getItem('container13-remember-test-flow');
+     if (old) {
+       const parsed = JSON.parse(old);
+       if (parsed?.access_token && parsed?.refresh_token) {
+         const migrated = await client.auth.setSession({access_token:parsed.access_token,refresh_token:parsed.refresh_token});
+         if (!migrated.error && migrated.data.session) sessionStorage.removeItem('container13-remember-test-flow');
+       }
+     }
+   } catch { /* Old session cannot be migrated; normal sign-in remains available. */ }
+ }
+ client.auth.onAuthStateChange((event,next)=>{
+   showSession(next);
+   if(event==='PASSWORD_RECOVERY' && next){
+     recoveryEventSeen=true;
+     showRecoveryForm();
+   }
+ });
+ const {data,error}=await client.auth.getSession();
+ if(error)throw error;
+ // Preserve recovery URL until the authenticated recovery form has been selected.
+ showSession(data.session);
+ if(data.session && recoveryLinkRequested && !recoveryEventSeen)showRecoveryForm();
+ history.replaceState(null,'',location.pathname);
+ if(data.session && !recoveryLinkRequested && !recoveryEventSeen){
+   location.replace('./dashboard.html');
+   throw new Error('redirecting');
+ }
+ if(!recoveryEventSeen && !(data.session && recoveryLinkRequested))message(data.session?'Du är redan inloggad. Välj Mina album eller Logga ut för att byta konto.':'Ange din e-postadress och välj inloggningssätt.');
+ lock(false);
+}catch{history.replaceState(null,'',location.pathname);message('Inloggningen kunde inte startas. Ladda om sidan.');lock(true)}
+// Password input is absent at startup to avoid iOS/Chrome password-provider prompts.
+// Create it only after the visitor explicitly chooses password login.
+function ensurePasswordInput(){
+ let field=$('password');if(field)return field;
+ field=document.createElement('input');field.id='password';field.type='password';field.autocomplete='current-password';field.minLength=6;
+ $('passwordMount').replaceChildren(field);return field;
+}
+function discardPasswordInput(){const field=$('password');if(field)field.remove();}
+$('choosePassword').onclick=()=>{if(!$('email').reportValidity())return;$('methods').hidden=true;$('passwordStep').hidden=false;ensurePasswordInput();message('Ange lösenord. Har du inget ännu? Välj Skapa eller återställ lösenord via mejl.');};$('backMethods').onclick=()=>{$('passwordStep').hidden=true;$('methods').hidden=false;discardPasswordInput();message('Välj inloggningssätt.');};$('login').addEventListener('submit',async e=>{
+ e.preventDefault();if(busy||!client||!$('login').reportValidity())return;
+ if($('passwordStep').hidden||!$('password').value){message('Ange lösenord eller välj mejllänk.');return;}
+ lock(true);message('Loggar in…');
+ try{const {error}=await client.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});$('password').value='';message(error?'Kunde inte logga in. Kontrollera lösenordet. Saknar du lösenord kan du skapa ett via mejllänk nedan.':'Du är inloggad.');if(!error)location.replace('./dashboard.html');}
+ catch{message('Anslutningen misslyckades. Försök igen.')}finally{lock(false)}
+});
+$('resetPassword').onclick=async()=>{
+ if(busy||!client||!$('email').reportValidity())return;
+ lock(true);message('Begär lösenordslänk…');
+ try {
+   const {error}=await client.auth.resetPasswordForEmail($('email').value.trim(),{
+     redirectTo:'https://container13.se/remember-test/login.html'
+   });
+   message(error?'Kunde inte skicka länken. Försök igen senare.':'Om kontot finns skickas en säker länk för att skapa eller återställa lösenordet.');
+ }catch{message('Anslutningen misslyckades. Försök igen.')}
+ finally{lock(false)}
+};
+$('magic').onclick=async()=>{
+ if(busy||!client||!$('email').reportValidity())return;
+ lock(true);message('Skickar mejllänk…');
+ try{const {error}=await client.auth.signInWithOtp({email:$('email').value.trim(),options:{shouldCreateUser:false,emailRedirectTo:'https://container13.se/remember-test/login.html'}});
+ message(error?'Mejllänken kunde inte skickas. Försök igen senare.':'Om kontot finns har en inloggningslänk skickats till adressen.');}
+ catch{message('Anslutningen misslyckades.')}finally{lock(false)}
+};
+$('openPasswordView').onclick=openPasswordView;
+$('cancelPasswordView').onclick=closePasswordView;
+const eyeIcon=(visible)=>visible?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 5.4A10.7 10.7 0 0 1 12 5c5.2 0 9 7 9 7a15.4 15.4 0 0 1-3.3 3.8M6.1 6.1C3.9 7.7 3 12 3 12s3.8 7 9 7c1.4 0 2.7-.4 3.9-1.1"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.8-7 10-7 10 7 10 7-3.8 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>';
+function setEye(id,field,visible){const btn=$(id);$(field).type=visible?'text':'password';btn.setAttribute('aria-pressed',String(visible));btn.setAttribute('aria-label',(visible?'Dölj':'Visa')+' lösenord');btn.innerHTML=eyeIcon(visible);}
+for(const [id,field] of [['toggleNewPassword','newPassword'],['toggleConfirmPassword','confirmPassword']]){setEye(id,field,false);$(id).onclick=()=>setEye(id,field,$(field).type==='password');}
+function validateNewPassword(){const a=$('newPassword').value,b=$('confirmPassword').value;const valid=a.length>=12&&a===b;$('savePassword').disabled=busy||!valid;return valid;}
+$('newPassword').addEventListener('input',validateNewPassword);$('confirmPassword').addEventListener('input',validateNewPassword);
+validateNewPassword();
+$('savePassword').onclick=async()=>{
+ if(busy||!client||!session||!validateNewPassword())return;
+ const password=$('newPassword').value;
+ if(password!==$('confirmPassword').value){$('passwordResult').textContent='Lösenorden stämmer inte överens.';return;}
+ if(password.length<12){$('passwordResult').textContent='Ange minst 12 tecken.';return;}
+ lock(true);$('passwordResult').textContent='Sparar lösenord…';
+ try {
+   const {error}=await client.auth.updateUser({password});
+   if(error){const code=error.code||'';const status=error.status||0;$('passwordResult').textContent=code==='same_password'?'Det här är redan ditt nuvarande lösenord. Välj ett annat om du vill byta.':code==='reauthentication_needed'?'Av säkerhetsskäl behöver du verifiera din inloggning på nytt innan du kan ändra lösenordet.':code==='weak_password'?'Lösenordet uppfyller inte säkerhetskraven. Välj ett starkare lösenord.':status===401||status===403?'Din inloggning behöver förnyas innan lösenordet kan ändras.':'Lösenordet kunde inte sparas (felkod: '+(code||status||'okänd')+'). Försök igen senare.';}
+   else{$('newPassword').value='';$('confirmPassword').value='';setEye('toggleNewPassword','newPassword',false);setEye('toggleConfirmPassword','confirmPassword',false);$('setPasswordArea').open=false;$('passwordFormSlot').hidden=true;$('passwordSuccess').hidden=false;$('passwordResult').textContent='Ditt nya lösenord har sparats.';message('Ditt nya lösenord har sparats.');validateNewPassword();}
+ }catch{$('passwordResult').textContent='Kunde inte nå inloggningstjänsten.'}
+ finally{lock(false)}
+};
+$('check').onclick=()=>gateway('installation_status');$('list').onclick=()=>gateway('list');
+$('logout').onclick=async()=>{if(busy||!client)return;lock(true);try{const {error}=await client.auth.signOut({scope:'local'});if(error)throw error;showSession(null);message('Du är utloggad. Ange e-postadress för att logga in.')}catch{message('Utloggningen misslyckades. Försök igen.')}finally{lock(false)}};
+
+const draftKey='container13-remember-create-draft-v1';
+const localTimezone=Intl.DateTimeFormat().resolvedOptions().timeZone||'Europe/Stockholm';
+$('timeNote').textContent='Tider anges i din enhets tidszon: '+localTimezone+'.';
+function eventFields(){
+ const party=['party','wedding'].includes($('eventType').value);
+ $('tripEnd').hidden=party;$('endsAt').required=!party;
+}
+$('eventType').onchange=eventFields;eventFields();
+function freezeDraft(value){
+ $('createForm').querySelectorAll('input,select').forEach(e=>e.disabled=value);
+ $('createButton').textContent=value?'Försök igen med samma album':'Skapa testalbum';
+}
+function restoreDraft(){
+ try{const d=JSON.parse(sessionStorage.getItem(draftKey)||'null');
+ if(d&&session&&d.actor===session.user.id){
+ $('albumTitle').value=d.payload.title;$('eventType').value=d.payload.eventType;eventFields();
+ const localValue=iso=>{const date=new Date(iso);return new Date(date.getTime()-date.getTimezoneOffset()*60000).toISOString().slice(0,16)};
+ $('startsAt').value=localValue(d.payload.startsAt);$('endsAt').value=d.payload.endsAt?localValue(d.payload.endsAt):'';
+ $('timeNote').textContent='Sparat albumförsök. Tidszon: '+d.payload.timezone+'.';freezeDraft(true);$('createResult').textContent='Ett tidigare försök väntar. Försök igen med samma album för att undvika dubbletter.'}
+ }catch{sessionStorage.removeItem(draftKey)}
+}
+$('createForm').addEventListener('submit',async event=>{
+ event.preventDefault();if(busy||!client||!session||!creationAllowed)return;
+ let draft;
+ try{draft=JSON.parse(sessionStorage.getItem(draftKey)||'null')}catch{sessionStorage.removeItem(draftKey)}
+ if(draft&&draft.actor!==session.user.id){$('createResult').textContent='Ett annat kontos albumförsök finns i den här fliken. Slutför det med rätt konto.';return}
+ if(!draft){
+  if(!$('createForm').reportValidity())return;
+  const starts=new Date($('startsAt').value),party=['party','wedding'].includes($('eventType').value);
+  const ends=party?null:new Date($('endsAt').value);
+  if(!Number.isFinite(+starts)||(!party&&(!Number.isFinite(+ends)||ends<starts))){$('createResult').textContent='Kontrollera start- och sluttid.';return}
+  draft={actor:session.user.id,payload:{action:'create_album',requestId:crypto.randomUUID(),title:$('albumTitle').value.trim(),eventType:$('eventType').value,startsAt:starts.toISOString(),endsAt:ends?ends.toISOString():null,timezone:localTimezone}};
+  try{sessionStorage.setItem(draftKey,JSON.stringify(draft))}catch{$('createResult').textContent='Albumförsöket kunde inte sparas säkert i fliken. Försök i en vanlig webbläsarflik.';return}
+ }
+ lock(true);freezeDraft(true);$('createResult').textContent='Skapar album…';
+ try{
+  const {data,error}=await client.auth.getSession();if(error||!data.session)throw new Error('session');
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
+  let response;try{response=await fetch('https://kauxrvshxgpbvptdwhog.supabase.co/functions/v1/remember-webmaster',{method:'POST',headers:{'Content-Type':'application/json',apikey:PUBLIC_KEY,Authorization:'Bearer '+data.session.access_token},body:JSON.stringify(draft.payload),signal:controller.signal})}finally{clearTimeout(timer)}
+  const body=await response.json().catch(()=>({}));
+  if(response.ok&&body.authorized&&body.album?.id===draft.payload.requestId){
+   sessionStorage.removeItem(draftKey);freezeDraft(false);
+   $('createResult').textContent='Album sparat: '+body.album.title+'.'+(body.created?'':' Det tidigare försöket återanvändes.');
+   $('createForm').reset();eventFields();
+  }else if(response.status===400||response.status===409){
+   sessionStorage.removeItem(draftKey);freezeDraft(false);
+   $('createResult').textContent='Albumet kunde inte skapas med dessa uppgifter (HTTP '+response.status+'). Kontrollera uppgifterna.';
+  }else if(response.status===403){
+   $('createResult').textContent='Åtkomst nekad. Albumförsöket behålls för kontroll med rätt konto.';
+  }else{$('createResult').textContent='Albumets resultat är osäkert. Försök igen med samma album (HTTP '+response.status+').'}
+ }catch{$('createResult').textContent='Anslutningen avbröts. Försöket är sparat; försök igen med samma album.'}
+ finally{lock(false)}
+});
+
+</script></main><script type="module" src="../project-template/container13-dev-tools.js"></script></body></html>
