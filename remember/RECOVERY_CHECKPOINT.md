@@ -23,3 +23,9 @@ HANDOFF RULE: After every completed step update this checkpoint with exact resul
 - Edge request logs: HTTP 200 at 13:14:34, preceded by HTTP 503 responses at 13:11-13:14. A 200 alone does not prove simulation PASS or identify response payload; simulation outcome remains UNVERIFIED.
 - No writes to Supabase, no production changes, no rerun of simulation in this check.
 - NEXT: inspect detailed function execution logs or preserved response for 13:14:34 and determine whether simulated recovery passed; only then consider controlled rerun if evidence remains insufficient.
+
+## User confirmation 2026-10-17
+- User explicitly recalls that the previously interrupted simulation **succeeded**. Record outcome as USER-REPORTED PASS, not as independently verified response-body PASS.
+- Corroborating read-only evidence: final request HTTP 200 and no remaining fixture/recovery claim; this supports a clean end state but does not establish the response body or exact simulation branch.
+- Do NOT rerun this simulation merely because the previous chat ended. Further investigation is optional and should focus on the preceding 503 errors, without changing production or deleting data.
+- NEXT: review the 503 cause through existing logs and confirm any unresolved safeguards; do not repeat the successful simulation by default.
