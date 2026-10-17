@@ -4,6 +4,30 @@ const $=id=>document.getElementById(id),id=new URLSearchParams(location.search).
 let client,access='',shareUrl='',ownerEmail='',busy=false;
 function invitationText(){const album=$('title').textContent.trim();return (ownerEmail||'Albumägaren')+' vill dela albumet ”'+album+'” med dig.\n\nÖppna albumet för att se bilderna och dela dina egna minnen.\n'+shareUrl;}
 async function request(name,body){const {data,error}=await client.auth.getSession();if(error||!data.session)throw Error('Logga in igen.');access=data.session.access_token;const response=await fetch(endpoint+name,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+access},body:JSON.stringify(body),cache:'no-store'});const json=await response.json().catch(()=>({}));if(!response.ok||json.ok!==true)throw Error(json.error||'Serverfel '+response.status);return json;}
+async function refreshModeration(){
+ if(!testMode)return;
+ const section=$('approvalSection');section.hidden=false;
+ const status=$('approvalStatus');
+ try{
+  const result=await request('remember-photo-approval-queue',{albumId:id});
+  const photos=result.photos||[];
+  const pending=photos.filter(p=>p.decision==='pending'||p.decision===null);
+  const rejected=photos.filter(p=>p.decision==='rejected');
+  for(const [target,items] of [['approvalPhotos',pending],['quarantinePhotos',rejected]]){
+   const grid=$(target);grid.replaceChildren();
+   if(!items.length){const empty=document.createElement('p');empty.textContent='Inga bilder just nu.';grid.append(empty);}
+   for(const photo of items){
+    const card=document.createElement('div');card.className='photo-card';
+    const img=document.createElement('img');img.src=photo.url;img.alt='Bild att granska';img.loading='lazy';
+    img.onclick=()=>{$('fullPhoto').src=photo.url;$('viewer').showModal();};
+    card.append(img);
+    if(photo.decision==='rejected'){const time=document.createElement('p');time.textContent=photo.expiresAt?'Raderas '+new Date(photo.expiresAt).toLocaleString('sv-SE'):'Karantän';card.append(time);}
+    grid.append(card);
+   }
+  }
+  status.textContent=result.readOnly?'Granskning i läsläge.':pending.length+' väntar på godkännande · '+rejected.length+' i karantän.';
+ }catch(error){status.textContent='Kunde inte hämta granskningen: '+error.message;}
+}
 async function refresh(){if(busy)return;busy=true;try{const data=await request('remember-photo-gallery',{albumId:id});$('photos').replaceChildren();$('empty').hidden=data.photos.length!==0;for(const photo of data.photos){const card=document.createElement('div');card.className='photo-card';const img=document.createElement('img');img.src=photo.url;img.alt='Albumfoto';img.loading='lazy';img.onclick=()=>{$('fullPhoto').src=photo.url;$('viewer').showModal();};const button=document.createElement('button');button.textContent='🗑';button.className='photo-delete';button.setAttribute('aria-label','Radera bild');button.title='Radera bild';button.onclick=async()=>{if(!confirm('Radera bilden permanent från albumet? Detta kan inte ångras.'))return;button.disabled=true;try{await request('remember-owner-manager',{action:'deletePhoto',albumId:id,photoId:photo.id});$('photoStatus').textContent='✓ Bilden raderad.';await refreshAfterDelete();}catch(e){$('photoStatus').textContent=e.message;button.disabled=false;}};card.append(img,button);$('photos').append(card);}$('photoStatus').textContent=data.photos.length+' '+(data.photos.length===1?'bild':'bilder')+' i albumet';}catch(e){$('empty').hidden=true;$('photoStatus').textContent='Kunde inte hämta bilderna: '+e.message+' ';const retry=document.createElement('button');retry.textContent='Försök igen';retry.onclick=refresh;$('photoStatus').append(retry);}finally{busy=false;}}
 async function refreshAfterDelete(){busy=false;await refresh();}
 async function showShare(){shareUrl='';$('shareTools').hidden=true;const data=await request('remember-share-manager',{action:'get',albumId:id});$('shareReady').hidden=true;$('needsReplace').hidden=true;if(!data.available){$('shareStatus').textContent='Den äldre länken kan inte visas automatiskt.';$('needsReplace').hidden=false;return;}shareUrl=new URL('./album.html',location.href).href+'#token='+data.token;$('shareHeading').textContent=$('title').textContent;const {default:QRCode}=await import('https://esm.sh/qrcode@1.5.4');$('qr').href=shareUrl;$('qr').innerHTML=await QRCode.toString(shareUrl,{type:'svg',margin:2,width:270});$('shareReady').hidden=false;$('shareTools').hidden=false;$('shareStatus').textContent='';}
