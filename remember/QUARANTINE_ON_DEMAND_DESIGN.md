@@ -77,3 +77,9 @@ Inspect deployed rejection/restore function and DB triggers for insertion points
 - **Deployed behavior is demand-controlled HOURLY, not exact 72-hour one-shot.** When rejected queue is nonempty, existing hourly purge function checks 72-hour eligibility. When empty, no hourly purge runs.
 - Pending approval is not rejected quarantine and does not activate the purge job. No image deletion in these tests. Production unchanged.
 - Remaining hardening: concurrent queue changes/reconciliation, HTTP 503 visibility and retry guarantees, 50+ batch continuation, restore-path transaction test. Do not claim those PASS yet.
+
+## Concurrency hardening 2026-10-17
+- Confirmed queue FK `photo_id` and `album_id` use ON DELETE CASCADE, so deleting a photo should remove queue row and invoke queue DELETE trigger (actual deletion flow not tested).
+- Applied migration `remember_quarantine_scheduler_serialize_v1`: added transaction-scoped advisory lock `pg_catalog.pg_advisory_xact_lock(130013,72001)` before state refresh and cron toggle, serializing trigger-driven reconciliations.
+- Transaction test with rejected image: rejected_count=1 and cron active=true; ROLLBACK. Independent readback cron active=false: PASS.
+- True parallel-session concurrency test still NOT performed; advisory lock reduces race risk but is not proof of full concurrency safety. No production changes.
