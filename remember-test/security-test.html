@@ -5,7 +5,7 @@
 <button id="load">1. Kontrollera inloggning och mina album</button><pre id="status" role="status">Inte kontrollerat.</pre>
 <section id="controls" hidden><label for="album">Ditt album</label><select id="album"></select><label for="setting">Inställning att testa</label><select id="setting"><option value="allow_reports">Tillåt rapportering</option><option value="require_verified_email">Kräv verifierad gäste-post</option><option value="require_photo_approval">Kräv bildgodkännande</option><option value="notify_reports">Avisera rapporter</option><option value="pause_new_slideshow_photos">Pausa nya bildspelsbilder</option></select>
 <p class="warn">Testet sparar en inställning i testdatabasen, men aktiverar inte någon global säkerhetsfunktion.</p><div class="row"><button id="off">2. Spara AV (false)</button><button id="on">2. Spara PÅ (true)</button></div><small>Varje klick får ett nytt begärande-ID. Ingen automatisk skrivning görs.</small></section>
-<pre id="result" role="status">Väntar på test.</pre></main>
+<section id="automated" hidden><h2>Automatiska HTTP-behörighetstester</h2><p>Tester som bara ska nekas. De använder din inloggning men gör inga giltiga inställningsändringar.</p><button id="run-negative">Kör säkra HTTP-tester</button><pre id="auto-result" role="status">Inte körda.</pre></section><pre id="result" role="status">Väntar på test.</pre></main>
 <script type="module">
 const $=id=>document.getElementById(id),base='https://kauxrvshxgpbvptdwhog.supabase.co';
 const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
@@ -13,7 +13,7 @@ const client=createClient(base,'sb_publishable_iLKTdBYdh2w5ALhEyFtW8A_V8Gujyam',
 let current=null;
 const show=(id,v)=>$(id).textContent=v;
 $('load').onclick=async()=>{
- $('controls').hidden=true;current=null;show('status','Kontrollerar…');
+ $('controls').hidden=true;$('automated').hidden=true;current=null;show('status','Kontrollerar…');
  try{
   const {data:{user},error}=await client.auth.getUser();
   if(error||!user){show('status','Inte inloggad i Remember Test. Logga in via testappen först.');return}
@@ -28,7 +28,7 @@ $('load').onclick=async()=>{
   const albums=body.albums;
   if(!albums.length){show('status','Inloggad, men inga ägda album hittades.');return}
   current=user;$('album').replaceChildren(...albums.map(a=>{const o=document.createElement('option');o.value=a.id;o.textContent=a.title||a.id;return o}));
-  $('controls').hidden=false;show('status','Inloggad och '+albums.length+' ägt/ägda album hittades. Ingen ändring gjordes.');
+  $('controls').hidden=false;$('automated').hidden=false;show('status','Inloggad och '+albums.length+' ägt/ägda album hittades. Ingen ändring gjordes.');
  }catch(e){show('status','Fel: '+String(e))}
 };
 async function write(enabled){
@@ -46,5 +46,38 @@ async function write(enabled){
  }catch(e){show('result','Anslutningsfel: '+String(e))}
  finally{btns.forEach(b=>b.disabled=false)}
 }
+
+const securityUrl=base+'/functions/v1/remember-security-settings';
+$('run-negative').onclick=async()=>{
+ const button=$('run-negative');button.disabled=true;
+ const lines=[];show('auto-result','Kör tester…');
+ try{
+  const {data:{session}}=await client.auth.getSession();
+  if(!session){show('auto-result','Ingen inloggad session.');return}
+  const albumId=$('album').value;
+  const valid={action:'set_album_setting',requestId:crypto.randomUUID(),albumId,setting:'allow_reports',enabled:false};
+  const cases=[
+   {name:'Utan Authorization',token:null,body:valid,expect:[401,403]},
+   {name:'Ogiltig bearer-token',token:'not-a-real-jwt',body:valid,expect:[401,403]},
+   {name:'Ogiltig inställning',token:session.access_token,body:{...valid,setting:'not_allowed'},expect:[400]},
+   {name:'Ogiltigt album-ID',token:session.access_token,body:{...valid,albumId:'not-a-uuid'},expect:[400]},
+   {name:'Annat album (ej ägt)',token:session.access_token,body:{...valid,albumId:'00000000-0000-4000-8000-000000000001'},expect:[403]}
+  ];
+  for(const item of cases){
+   try{
+    const headers={'Content-Type':'application/json','apikey':'sb_publishable_iLKTdBYdh2w5ALhEyFtW8A_V8Gujyam'};
+    if(item.token!==null)headers.Authorization='Bearer '+item.token;
+    const res=await fetch(securityUrl,{method:'POST',headers,body:JSON.stringify(item.body),cache:'no-store'});
+    const pass=item.expect.includes(res.status);
+    lines.push((pass?'PASS':'FAIL')+' – '+item.name+' (HTTP '+res.status+')');
+   }catch(e){lines.push('KAN EJ TESTAS – '+item.name+' ('+String(e)+')')}
+   show('auto-result',lines.join('\\n'));
+  }
+  lines.push('Resultat: '+lines.filter(x=>x.startsWith('PASS')).length+'/'+cases.length+' godkända. Ingen giltig skrivning skickades.');
+  show('auto-result',lines.join('\\n'));
+ }catch(e){show('auto-result','Testfel: '+String(e))}
+ finally{button.disabled=false}
+};
+
 $('off').onclick=()=>write(false);$('on').onclick=()=>write(true);
 </script></body></html>
