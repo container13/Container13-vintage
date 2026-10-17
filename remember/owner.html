@@ -31,6 +31,7 @@ async function refreshModeration(){
  const status=$('approvalStatus');
  try{
   const result=await request('remember-photo-approval-queue',{albumId:id});
+  moderationWritable=result.featureEnabled===true&&result.readOnly!==true;
   const photos=result.photos||[];
   const pending=photos.filter(p=>p.decision==='pending'||p.decision===null);
   const rejected=photos.filter(p=>p.decision==='rejected');
@@ -42,6 +43,7 @@ async function refreshModeration(){
     const img=document.createElement('img');img.src=photo.url;img.alt='Bild att granska';img.loading='lazy';
     img.onclick=()=>{$('fullPhoto').src=photo.url;$('viewer').showModal();};
     card.append(img);
+    if(moderationWritable){const controls=document.createElement('div');controls.style.cssText='display:flex;flex-wrap:wrap;gap:6px';if(photo.decision==='rejected'){controls.append(moderationButton('Återställ',photo,'restore'));}else{controls.append(moderationButton('Godkänn',photo,'approved'),moderationButton('Neka',photo,'rejected'));}card.append(controls);}
     if(photo.decision==='rejected'){const time=document.createElement('p');time.textContent=photo.expiresAt?'Raderas '+new Date(photo.expiresAt).toLocaleString('sv-SE'):'Karantän';card.append(time);}
     grid.append(card);
    }
