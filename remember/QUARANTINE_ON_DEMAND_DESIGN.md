@@ -52,3 +52,11 @@ Inspect deployed rejection/restore function and DB triggers for insertion points
 - EXECUTE/table access revoked from public/anon/authenticated; refresh derives values from deployed read-only preview.
 - Verified state row: `rejected_count=0`, `next_expiry=NULL`, refreshed timestamp present. PASS for empty queue.
 - This is passive state only. No trigger, one-shot scheduling, retry mechanism, or cron replacement deployed yet. Existing hourly cron must remain active.
+
+## Implementation checkpoint — queue trigger installed (2026-10-17)
+- Applied test-only migration `remember_quarantine_scheduler_queue_trigger_v1`.
+- Installed statement-level AFTER INSERT / UPDATE OF decision, decided_at / DELETE trigger `remember_quarantine_scheduler_queue_changed` on `remember.photo_approval_queue`.
+- Trigger invokes private `remember.refresh_quarantine_scheduler_state()` via a SECURITY DEFINER trigger function with empty search_path; EXECUTE revoked from public/anon/authenticated.
+- Verified pg_trigger reports exactly the new trigger, enabled (`tgenabled='O'`). Readback: scheduler state rejected_count=0, next_expiry=NULL; queue still 1 approved.
+- **NOT YET TESTED:** actual rejected->restored transition, trigger execution on a queue mutation, timing/retry behavior. Trigger installation PASS, end-to-end functionality not yet PASS.
+- No image deletions, no production changes, no cron switch-over. Existing hourly cron remains active.
