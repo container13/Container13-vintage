@@ -141,3 +141,27 @@ Radera **inte** Storage-bilder, buckets, Edge Functions, databas eller projekt f
 - Användaren har uttryckligen godkänt **exakt vad** som ska raderas efter att ha sett resultatet av inventeringen.
 
 **Nästa säkra åtgärd:** få läsbehörighet till Micke50s **rätta** Supabase-projekt och komplettera ej verifierade punkter. Gör endast read-only inventering. Ändra inte Remember-projektet.
+
+
+## 9. Direktkontroll 2026-10-17 — Supabase-anslutning och bildarkiv
+
+**Resultat: ingen fungerande administrativ direktåtkomst till Micke50 via den nuvarande Supabase-anslutningen.** Detta skiljer sig från fungerande läsåtkomst till Storage via webbappens publika API.
+
+| Kontroll | Verifierat resultat |
+| --- | --- |
+| Supabase `get_project(qcchvqahibbbpijhtwsh)` | Nekad: `MCP error -32600: You do not have permission to perform this action` |
+| Supabase `list_projects` | Returnerar endast `container13-remember`, ref `wykvztfmfbboxiqvuvwr`. Micke50 finns inte med. |
+| Supabase `list_edge_functions(qcchvqahibbbpijhtwsh)` | Samma behörighetsfel. Inte bevis för att funktioner saknas. |
+| Projektnamn, region, databastabeller och projektkonfiguration | Fortfarande ej verifierade; administrativ åtkomst saknas. |
+| Storage-listning via webbappens befintliga publishable key | Fungerar direkt mot Micke50s Storage-API. Ingen GitHub-lista används som bildinventering. |
+| Bucket `Micke50bilder` | 68 filobjekt, inga undermappar i den kompletta rotlistningen. Listning med sidstorlek 1000 avslutades efter första sidan med 68 poster. |
+| Sammanlagd originalstorlek | 151 884 976 byte (cirka 152 MB). |
+| Jämförelse mot `Micke50_alla_bilder.zip` | EXAKT MATCH: samma 68 filnamn, samma byteantal per fil och varje ZIP-fils MD5 matchar motsvarande objekts ETag (32 hextecken). |
+| ZIP-integritet | Godkänd CRC-kontroll för hela ZIP-filen. |
+| Bucket-konfiguration, policies och andra buckets | Ej verifierade genom administrativ inventering. Den läsbara objektlistan ersätter inte projektinventering. |
+
+Denna färska kontroll ersätter tidigare uppgifter i avsnitt 2 och 7 om att bildarkivet endast var uppgivet och saknade aktuell bucket-motkontroll. Arkivet har nu jämförts direkt mot Storage. Den tidigare hämtningen av 68 bilder gav inte i sig administrativ projektåtkomst.
+
+**Ingenting i Supabase har ändrats eller raderats.** Endast läsanrop gjordes. Inga hemligheter eller nyckelvärden sparas i dokumentet.
+
+**Kvar före säker avveckling:** ordna läsåtkomst till rätt projekt för inventering/export av databas, Auth, policies, bucket-konfiguration och driftsatta funktioner. Bildbackupen är verifierad, men är inte en fullständig projektbackup. Ingen radering eller frigörande av Supabase-plats har utförts.
