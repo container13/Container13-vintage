@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Remember Test">
+<meta name="theme-color" content="#332c26">
+<link rel="manifest" href="./pwa-display-test.webmanifest">
+<title>TEST – Remember – fristående skärmtest</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#332c26;color:#fff;font:16px system-ui}
+body{min-height:100svh}
+.wallpaper{position:fixed;inset:0;background:linear-gradient(160deg,rgba(35,25,18,.34),rgba(35,25,18,.58)),url("./assets/backgrounds/inloggning.webp") center/cover no-repeat;z-index:0}
+main{position:relative;z-index:1;padding:calc(env(safe-area-inset-top,0px) + 18px) 22px calc(env(safe-area-inset-bottom,0px) + 20px);text-align:center}
+h1{font:48px Georgia,serif;margin:45px 0 6px}p{line-height:1.5}.card{margin:35px auto;padding:18px;border-radius:15px;background:#241c18bb;border:1px solid #ffffff77;max-width:400px}
+footer{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);left:0;right:0;text-align:center;z-index:2;background:#241c18bb;padding:8px}
+</style></head><body>
+<div class="wallpaper"></div><main><h1>Remember.</h1><p>Separat skärmtest – påverkar inte dina album</p><div class="card"><strong>Test av iPhones helskärmsyta</strong><p>Jämför om fotografiet fortsätter ända ned bakom hemindikatorn.</p><p id="metrics">Mäter…</p></div></main>
+<footer>Remember skärmtest · separat installation</footer>
+<script>function measure(){document.getElementById('metrics').textContent='Webbyta '+innerHeight+' px · skärm '+screen.height+' px · safe-area botten '+getComputedStyle(document.querySelector('main')).paddingBottom}addEventListener('pageshow',measure);measure()</script>
+</body></html>
