@@ -60,3 +60,10 @@ Inspect deployed rejection/restore function and DB triggers for insertion points
 - Verified pg_trigger reports exactly the new trigger, enabled (`tgenabled='O'`). Readback: scheduler state rejected_count=0, next_expiry=NULL; queue still 1 approved.
 - **NOT YET TESTED:** actual rejected->restored transition, trigger execution on a queue mutation, timing/retry behavior. Trigger installation PASS, end-to-end functionality not yet PASS.
 - No image deletions, no production changes, no cron switch-over. Existing hourly cron remains active.
+
+## Transactional trigger test 2026-10-17 — PASS
+- Ran `BEGIN; UPDATE remember.photo_approval_queue SET decision='rejected',decided_at=now() WHERE decision='approved'; SELECT rejected_count,next_expiry IS NOT NULL FROM remember.quarantine_scheduler_state; ROLLBACK;` in Remember Test.
+- Within transaction trigger recomputed `rejected_count=1`, next expiry present: PASS.
+- After rollback, independent read returned `rejected_count=0`, `next_expiry=NULL`: rollback PASS.
+- Test did not invoke purge or commit a rejection. Additional queue count read was blocked; do not claim it was independently verified.
+- Scheduler execution, retries, and disabling hourly cron are still NOT implemented.
