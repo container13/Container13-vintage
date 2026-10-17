@@ -83,3 +83,10 @@ Inspect deployed rejection/restore function and DB triggers for insertion points
 - Applied migration `remember_quarantine_scheduler_serialize_v1`: added transaction-scoped advisory lock `pg_catalog.pg_advisory_xact_lock(130013,72001)` before state refresh and cron toggle, serializing trigger-driven reconciliations.
 - Transaction test with rejected image: rejected_count=1 and cron active=true; ROLLBACK. Independent readback cron active=false: PASS.
 - True parallel-session concurrency test still NOT performed; advisory lock reduces race risk but is not proof of full concurrency safety. No production changes.
+
+## Retry safety review — unresolved issue (2026-10-17)
+- Verified `public.remember_photo_quarantine_claim` inserts a durable row into `remember.photo_quarantine_purge_claims` with `ON CONFLICT DO NOTHING`; an existing claim prevents later attempts from claiming the same photo.
+- Verified `public.remember_photo_quarantine_release` removes the claim explicitly; claim table contains `photo_id` and `claimed_at`, no automatic lease/expiry evident in the inspected schema.
+- Current claim count = 0 (healthy now), but if an Edge Function terminates after claim and before release/finalize, the claim **may become stranded**. Existing hourly retry cannot claim it again. This is a potential liveness defect, not a verified production incident.
+- **Do not auto-delete claims just by age without proving no in-flight worker**; require lease ownership/token or a bounded safe recovery protocol, and inspect deployed Edge Function cleanup behavior before modifying purge.
+- Status: RETRY/503 TEST NOT PASS; no destructive test performed, no claim removed, no production change.
