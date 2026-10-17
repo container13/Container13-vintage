@@ -23,7 +23,7 @@ const respond = (status: number, data: unknown) =>
   new Response(JSON.stringify(data), { status, headers });
 const isUuid = (v: unknown): v is string =>
   typeof v === "string" &&
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
 
 Deno.serve(async (request) => {
   const origin = request.headers.get("origin");
