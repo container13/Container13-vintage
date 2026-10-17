@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="referrer" content="no-referrer"><meta name="robots" content="noindex,nofollow"><title>Remember TEST – Aktivering</title>
+<style>body{font:16px system-ui;background:#1d2524;color:#fff;max-width:480px;margin:32px auto;padding:16px}.test{background:#ffc66b;color:#231b0e;padding:12px;border-radius:9px;font-weight:900}.panel{background:#29332f;border:1px solid #708477;border-radius:16px;padding:20px;margin-top:20px}button{padding:12px;margin:12px 8px 0 0;background:#ffc66b;border:0;border-radius:9px;font-weight:bold}a{color:#ffc66b}#status{white-space:pre-wrap;overflow-wrap:anywhere}</style></head>
+<body><div class="test">TESTMILJÖ – INTE ORIGINAL</div><h1>Aktivera testkonto</h1><div class="panel"><p id="status" role="status">Kontrollerar aktiveringslänken…</p><button id="copy">Kopiera rapport</button></div><p><a href="./login.html">Till TEST-inloggning</a></p>
+<script type="module">
+const ref='kauxrvshxgpbvptdwhog',key='sb_publishable_iLKTdBYdh2w5ALhEyFtW8A_V8Gujyam',status=document.getElementById('status');const say=s=>status.textContent=s;
+try{
+ const sdk=await import('https://esm.sh/@supabase/supabase-js@2');
+ const client=sdk.createClient('https://'+ref+'.supabase.co',key,{auth:{storageKey:'container13-remember-test-auth-v1',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+ const url=new URL(location.href),code=url.searchParams.get('code'),tokenHash=url.searchParams.get('token_hash'),type=url.searchParams.get('type'),fragment=new URLSearchParams(location.hash.slice(1));
+ let error=null,ok=false;
+ if(code){const r=await client.auth.exchangeCodeForSession(code);error=r.error;ok=!!r.data?.session;}
+ else if(tokenHash&&type==='signup'){const r=await client.auth.verifyOtp({token_hash:tokenHash,type:'signup'});error=r.error;ok=!!r.data?.user;}
+ else if(fragment.has('access_token')&&fragment.has('refresh_token')){const r=await client.auth.setSession({access_token:fragment.get('access_token'),refresh_token:fragment.get('refresh_token')});error=r.error;ok=!!r.data?.session;}
+ else if(url.searchParams.has('error')||fragment.has('error')){error={message:url.searchParams.get('error_description')||fragment.get('error_description')||'Aktiveringslänken nekades.'};}
+ else{say('Ingen aktiveringskod hittades. Öppna länken i ditt testmejl.');}
+ if(code||tokenHash||fragment.has('access_token')||error){history.replaceState(null,'',location.pathname);say(error?'Aktivering misslyckades i TEST: '+error.message:ok?'TEST-kontot har aktiverats. Gå vidare till TEST-inloggning.':'Aktiveringen kunde inte verifieras.');}
+}catch(e){history.replaceState(null,'',location.pathname);say('Kunde inte verifiera aktiveringen. Kontrollera nätverk eller försök med en ny länk.')}
+document.getElementById('copy').onclick=async()=>{const t=['Remember TEST – aktivering','Projekt: '+ref,'Tid: '+new Date().toLocaleString('sv-SE'),'Resultat: '+status.textContent].join('\n');try{await navigator.clipboard.writeText(t);say(status.textContent+'\nRapport kopierad.')}catch(e){say(status.textContent+'\nKopiering blockerad.')}};
+</script></body></html>
