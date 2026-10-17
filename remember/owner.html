@@ -4,6 +4,10 @@ const $=id=>document.getElementById(id),id=new URLSearchParams(location.search).
 let client,access='',shareUrl='',ownerEmail='',busy=false;
 function invitationText(){const album=$('title').textContent.trim();return (ownerEmail||'Albumägaren')+' vill dela albumet ”'+album+'” med dig.\n\nÖppna albumet för att se bilderna och dela dina egna minnen.\n'+shareUrl;}
 async function request(name,body){const {data,error}=await client.auth.getSession();if(error||!data.session)throw Error('Logga in igen.');access=data.session.access_token;const response=await fetch(endpoint+name,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+access},body:JSON.stringify(body),cache:'no-store'});const json=await response.json().catch(()=>({}));if(!response.ok||json.ok!==true)throw Error(json.error||'Serverfel '+response.status);return json;}
+let moderationViewerPhotos=[],moderationViewerIndex=0;
+function openModerationViewer(photos,index){moderationViewerPhotos=photos;moderationViewerIndex=index;showModerationPhoto();$('viewer').showModal();}
+function showModerationPhoto(){const photo=moderationViewerPhotos[moderationViewerIndex];if(!photo)return;$('fullPhoto').src=photo.url;$('fullPhoto').alt='Bild '+(moderationViewerIndex+1)+' av '+moderationViewerPhotos.length;}
+function stepModerationPhoto(delta){if(!$('viewer').open||!moderationViewerPhotos.length)return;moderationViewerIndex=Math.max(0,Math.min(moderationViewerPhotos.length-1,moderationViewerIndex+delta));showModerationPhoto();}
 let moderationWritable=false,moderationBusy=false;
 async function moderationAction(photo,decision){
  if(!testMode||!moderationWritable||moderationBusy)return;
@@ -41,7 +45,7 @@ async function refreshModeration(){
    for(const photo of items){
     const card=document.createElement('div');card.className='photo-card';
     const img=document.createElement('img');img.src=photo.url;img.alt='Bild att granska';img.loading='lazy';
-    img.onclick=()=>{$('fullPhoto').src=photo.url;$('viewer').showModal();};
+    img.onclick=()=>openModerationViewer(items,items.indexOf(photo));
     card.append(img);
     if(moderationWritable){const controls=document.createElement('div');controls.style.cssText='display:flex;flex-wrap:wrap;gap:6px';if(photo.decision==='rejected'){controls.append(moderationButton('Återställ',photo,'restore'));}else{controls.append(moderationButton('Godkänn',photo,'approved'),moderationButton('Neka',photo,'rejected'));}card.append(controls);}
     if(photo.decision==='rejected'){const time=document.createElement('p');time.textContent=photo.expiresAt?'Raderas '+new Date(photo.expiresAt).toLocaleString('sv-SE'):'Karantän';card.append(time);}
