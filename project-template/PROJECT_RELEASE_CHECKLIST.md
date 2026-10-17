@@ -1,5 +1,10 @@
 # PROJECT RELEASE CHECKLIST
 
+## Continuity (mandatory for all projects)
+- [ ] Read CONTINUITY_PROTOCOL.md and the project's authoritative current checkpoint.
+- [ ] Confirm actual environment/project IDs, branch, deployed version and last verified step.
+- [ ] If a previous test was interrupted, inspect evidence before retrying.
+
 ## Before change
 - [ ] Release standard, master rules and current state read.
 - [ ] Existing IN_PROGRESS/UNVERIFIED checkpoint handled.
