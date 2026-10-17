@@ -29,3 +29,10 @@ HANDOFF RULE: After every completed step update this checkpoint with exact resul
 - Corroborating read-only evidence: final request HTTP 200 and no remaining fixture/recovery claim; this supports a clean end state but does not establish the response body or exact simulation branch.
 - Do NOT rerun this simulation merely because the previous chat ended. Further investigation is optional and should focus on the preceding 503 errors, without changing production or deleting data.
 - NEXT: review the 503 cause through existing logs and confirm any unresolved safeguards; do not repeat the successful simulation by default.
+
+## Read-only follow-up: 503 and scheduled purge (2026-10-17)
+- Audit function logs show five HTTP 503 responses from 13:11:19 to 13:14:10 and HTTP 200 at 13:14:34. Logs reviewed do not expose response bodies or prove the root cause; classify cause UNKNOWN, not resolved.
+- Test project has an ACTIVE cron job (jobid 1, `0 * * * *`) calling `remember-photo-quarantine-purge`. It is separate from the stale-upload recovery audit. Earlier broad statements that all automatic cleanup is disabled were inaccurate for this quarantine job.
+- Deployed quarantine purge v5 requires a secret header, reads expired photos, claims each, removes the Storage object, then finalizes database deletion; it can actually delete eligible test photos. No job or function configuration changed in this review.
+- Current test photo states: `ready`=4, other states=0. Current Storage object count was 4 at prior read. No quarantined photos observed.
+- NEXT: inspect eligibility SQL and job execution history before any schedule/configuration change; do not disable a legitimate purge without reviewing expected lifecycle. Preserve production unchanged.
