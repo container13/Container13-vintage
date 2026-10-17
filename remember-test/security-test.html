@@ -71,10 +71,10 @@ $('run-negative').onclick=async()=>{
     const pass=item.expect.includes(res.status);
     lines.push((pass?'PASS':'FAIL')+' – '+item.name+' (HTTP '+res.status+')');
    }catch(e){lines.push('KAN EJ TESTAS – '+item.name+' ('+String(e)+')')}
-   show('auto-result',lines.join('\\n'));
+   show('auto-result',lines.join('\n'));
   }
   lines.push('Resultat: '+lines.filter(x=>x.startsWith('PASS')).length+'/'+cases.length+' godkända. Ingen giltig skrivning skickades.');
-  show('auto-result',lines.join('\\n'));
+  show('auto-result',lines.join('\n'));
  }catch(e){show('auto-result','Testfel: '+String(e))}
  finally{button.disabled=false}
 };
