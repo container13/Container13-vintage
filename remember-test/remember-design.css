@@ -1,0 +1,486 @@
+/* Container13 Remember shared design foundation v0.1.23
+   Presentation only: no authentication, album or guest logic. */
+:root {
+  --remember-ink:#f9f3e8;
+  --remember-muted:#e8ddcc;
+  --remember-forest:#174b3c;
+  --remember-panel:rgba(53,43,33,.77);
+  --remember-outline:rgba(255,255,255,.34);
+  --remember-radius:18px;
+  --remember-content:1080px;
+}
+/* Shared backdrop: one photographic layer on the root canvas.
+   The iOS system region outside the layout viewport is not DOM paintable. */
+html:has(body.remember-shell) {
+  background:#332c26;
+  min-height:100%;
+}
+/* 0.1.21: small source motifs were visibly soft at phone DPR and cover scaling.
+   Reuse the approved 1536px image across app views until sharper originals exist. */
+body.remember-shell {--remember-background:url("../remember/assets/backgrounds/inloggning.webp")}
+body.remember-shell {
+  color:var(--remember-ink);
+  min-height:100svh;
+  background-color:#332c26;
+  background-image:none;
+  isolation:isolate;
+}
+body.remember-shell::before {
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  background:linear-gradient(160deg,rgba(35,25,18,.34),rgba(35,25,18,.58)),
+    var(--remember-background,linear-gradient(135deg,#54473b,#292d26)) center/cover no-repeat;
+}
+body.remember-shell > main {position:relative;z-index:1}
+body.remember-shell .panel,
+body.remember-shell .remember-panel {
+  background:var(--remember-panel);
+  border:1px solid var(--remember-outline);
+  border-radius:var(--remember-radius);
+  box-shadow:0 12px 35px rgba(0,0,0,.23);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+}
+body.remember-shell h1 {font-size:clamp(1.65rem,3vw,2.25rem);line-height:1.16}
+body.remember-shell button,
+body.remember-shell input,
+body.remember-shell select {max-width:100%}
+body.remember-shell button {min-height:44px}
+body.remember-shell a {color:#e7e9bd}
+@media(max-width:767px) {
+ body.remember-shell::before {background-position:center center}
+ body.remember-shell main {padding-inline:clamp(14px,4vw,22px)}
+ body.remember-shell .panel {padding:clamp(14px,4vw,20px)}
+}
+@media(min-width:768px) and (max-width:1199px) {
+ body.remember-shell main {max-width:900px;margin-inline:auto}
+}
+@media(min-width:1200px) {
+ body.remember-shell main {max-width:var(--remember-content);margin-inline:auto}
+}
+@media(prefers-reduced-motion:reduce) {
+ body.remember-shell *,body.remember-shell *::before,body.remember-shell *::after {
+   scroll-behavior:auto!important;animation-duration:.01ms!important;
+ }
+}
+
+/* Reuse the shared warm panel on existing forms; leave viewer/camera layers alone. */
+body.remember-shell[data-remember-view="create"] #start,
+body.remember-shell[data-remember-view="memories"] main {
+ background:var(--remember-panel);border:1px solid var(--remember-outline);
+ border-radius:var(--remember-radius);box-shadow:0 12px 35px #0004;
+ backdrop-filter:none;-webkit-backdrop-filter:none;
+}
+body.remember-shell[data-remember-view="memories"] {max-width:none;margin:0;padding:16px}
+body.remember-shell[data-remember-view="memories"] main {width:100%;max-width:850px;margin:0 auto;padding:18px;box-sizing:border-box}
+body.remember-shell .panel, body.remember-shell #start,
+body.remember-shell .panel h2,body.remember-shell #ownerPanel h2,
+body.remember-shell #account h2,body.remember-shell label {color:var(--remember-ink)}
+body.remember-shell .panel p,body.remember-shell .panel .muted,
+body.remember-shell #identity,body.remember-shell #account summary,
+body.remember-shell .fieldhint,body.remember-shell .version,
+body.remember-shell .intro,body.remember-shell #feedback {color:var(--remember-muted)}
+body.remember-shell button.secondary {color:var(--remember-ink);border-color:var(--remember-outline)}
+body.remember-shell #ownerAlbums a {background:rgba(44,33,24,.68);color:var(--remember-ink);border-color:var(--remember-outline)}
+body.remember-shell[data-remember-view="create"] main {max-width:480px}
+body.remember-shell[data-remember-view="login"] main {max-width:560px}
+body.remember-shell[data-remember-view="albums"] header .brand .muted {display:block;margin-top:4px}
+body.remember-shell .newAlbum {display:inline-block;padding:13px 18px;background:var(--remember-forest);color:#fff;text-decoration:none;border-radius:12px;font-weight:750}
+body.remember-shell .gallery,body.remember-shell .photo-card {background:rgba(44,33,24,.68);border-color:var(--remember-outline)}
+body.remember-shell :is(button,a,input,select,summary):focus-visible {outline:3px solid #f6d69f;outline-offset:3px}
+body.remember-shell h1,body.remember-shell #identity {overflow-wrap:anywhere}
+
+/* Compact album overview: content first; account and admin details stay folded. */
+body.remember-shell[data-remember-view="albums"] #account {background:transparent;border:0;box-shadow:none;padding:0;margin:0 0 14px}
+body.remember-shell[data-remember-view="albums"] #account > details {border:0;margin:0;padding:0}
+body.remember-shell[data-remember-view="albums"] #account > details[open] {background:var(--remember-panel);border-radius:14px;padding:14px}
+body.remember-shell[data-remember-view="albums"] #ownerPanel {margin-top:0;padding:16px}
+body.remember-shell[data-remember-view="albums"] #ownerAlbums a {padding:13px;min-height:52px;margin:0 0 10px!important}
+body.remember-shell[data-remember-view="albums"] header {display:block;position:relative;margin-bottom:16px;padding:15px 44px 0;text-align:center}
+body.remember-shell[data-remember-view="albums"] header .brand {font:500 clamp(32px,10.5vw,56px)/1.08 Georgia,serif;letter-spacing:-.045em;color:#fff7e9}
+body.remember-shell[data-remember-view="albums"] header .brand .muted {font:500 10px/1.5 system-ui;letter-spacing:.16em;color:#ecd4ae;margin-top:7px}
+body.remember-shell[data-remember-view="albums"] header::after {content:"";display:block;width:58px;height:1px;margin:19px auto 0;background:linear-gradient(90deg,transparent,#e9c596,transparent)}
+body.remember-shell[data-remember-view="albums"] .remember-home {position:absolute;right:0;top:8px;display:grid;place-items:center;width:42px;height:42px;border:1px solid #e9c59666;border-radius:50%;background:#33271bc2;color:#f9eddb;text-decoration:none}
+body.remember-shell[data-remember-view="albums"] .remember-home:hover {background:#584230;transform:translateY(-1px)}
+body.remember-shell[data-remember-view="albums"] main > h1 {margin:0 0 13px;text-align:center;font:500 clamp(24px,4vw,30px)/1.2 Georgia,serif;letter-spacing:-.02em}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child {text-align:center}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child > summary {display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:8px 16px;border:1px solid #e9c59666;border-radius:100px;background:#33271bba;color:#f1dfc5;font:600 13px/1.2 system-ui;list-style:none}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child > summary::-webkit-details-marker {display:none}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child > summary::before {content:"+";font:400 17px/1 Georgia,serif}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child[open] > summary::before {content:"−"}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child[open] {text-align:left}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child > summary:hover {background:#584230}
+body.remember-shell #webmasterTools {margin-top:18px;border-top:1px solid var(--remember-outline);padding-top:14px}
+body.remember-shell[data-remember-view="login"] #loginPanel,
+body.remember-shell[data-remember-view="login"] .panel {backdrop-filter:none;-webkit-backdrop-filter:none}
+
+/* Shared iPhone full-bleed rule: backdrop extends under status bar; controls stay safe. */
+@supports (padding-top:env(safe-area-inset-top)) {
+ body.remember-shell::before {
+  top:calc(-1 * env(safe-area-inset-top, 0px));
+ }
+ @media(max-width:767px) {
+  body.remember-shell:not([data-remember-view="albums"]) > main {
+   padding-top:max(22px, env(safe-area-inset-top, 0px));
+   padding-bottom:max(22px, env(safe-area-inset-bottom, 0px));
+  }
+ }
+}
+
+/* Owner album v0.1.37: calm, balanced, full-width action tiles. */
+body.remember-shell[data-remember-view="memories"] {padding:0;min-height:100dvh}
+body.remember-shell[data-remember-view="memories"] main {
+ background:transparent;border:0;box-shadow:none;max-width:760px;
+ padding:calc(env(safe-area-inset-top,0px) + 22px) clamp(18px,5vw,32px) calc(36px + env(safe-area-inset-bottom,0px));
+}
+body.remember-shell[data-remember-view="memories"] main > a {display:inline-block;margin:0 0 20px;color:#fff4df;font-size:15px;text-underline-offset:4px}
+body.remember-shell[data-remember-view="memories"] h1 {font-family:Georgia,serif;font-weight:600;font-size:clamp(38px,9vw,58px);letter-spacing:-.035em;margin:0 0 9px}
+body.remember-shell[data-remember-view="memories"] #status {font-size:16px;color:#f0e8dc;margin:0 0 24px}
+body.remember-shell[data-remember-view="memories"] .actions {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:20px 0 22px}
+body.remember-shell[data-remember-view="memories"] .actions .action-tile {
+ display:flex;align-items:center;gap:10px;min-width:0;min-height:112px;
+ padding:16px 12px;border:1px solid #ffffff1f;border-radius:22px;
+ background:#17483d;color:#fff;text-align:left;
+ box-shadow:0 9px 26px #0003;transition:transform .15s ease,filter .15s ease;
+}
+body.remember-shell[data-remember-view="memories"] .actions .action-tile:active {transform:scale(.985)}
+body.remember-shell[data-remember-view="memories"] .actions .action-share {background:#e1e9a9;color:#16392f}
+body.remember-shell[data-remember-view="memories"] .actions .action-upload {grid-column:1/-1;min-height:92px}
+body.remember-shell[data-remember-view="memories"] .tile-icon {flex:none;display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:#ffffff24;font-size:23px}
+body.remember-shell[data-remember-view="memories"] .action-share .tile-icon {background:#183d3020}
+body.remember-shell[data-remember-view="memories"] .tile-copy {display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
+body.remember-shell[data-remember-view="memories"] .tile-copy strong {font-size:clamp(15px,4vw,20px);line-height:1.2;letter-spacing:-.02em}
+body.remember-shell[data-remember-view="memories"] .tile-copy small {font-size:clamp(12px,3.1vw,14px);font-weight:500;line-height:1.35;opacity:.9}
+body.remember-shell[data-remember-view="memories"] .tile-arrow {font-size:28px;font-weight:400;line-height:1;opacity:.8}
+body.remember-shell[data-remember-view="memories"] .gallery {
+ background:rgba(39,31,24,.68);border:1px solid #ffffff75;border-radius:24px;
+ padding:clamp(20px,5vw,30px);margin-top:20px;box-shadow:0 12px 35px #0003;
+}
+body.remember-shell[data-remember-view="memories"] .gallery h2 {font-family:Georgia,serif;font-size:clamp(25px,6vw,34px);font-weight:600;margin:0 0 5px}
+body.remember-shell[data-remember-view="memories"] .gallery .muted {font-size:14px;margin:0;color:#e3d8ca}
+body.remember-shell[data-remember-view="memories"] .empty {padding:45px 8px 35px}
+body.remember-shell[data-remember-view="memories"] .empty .symbol {font-size:66px;color:#f6f0e5;line-height:1}
+body.remember-shell[data-remember-view="memories"] .empty h3 {font-size:clamp(20px,5vw,26px);line-height:1.3;margin:20px 0 9px}
+body.remember-shell[data-remember-view="memories"] .empty p {font-size:15px;line-height:1.5;max-width:300px;margin:auto;color:#e5d9c9}
+body.remember-shell[data-remember-view="memories"] #uploadStatus:empty {display:none}
+body.remember-shell[data-remember-view="memories"] #uploadStatus {grid-column:1/-1;margin:0;font-size:14px}
+body.remember-shell[data-remember-view="memories"] #retryUpload {grid-column:1/-1}
+@media(max-width:360px) {
+ body.remember-shell[data-remember-view="memories"] .actions .action-tile {padding:12px 9px;gap:7px}
+ body.remember-shell[data-remember-view="memories"] .tile-icon {width:34px;height:34px;font-size:18px}
+ body.remember-shell[data-remember-view="memories"] .tile-arrow {font-size:22px}
+}
+
+/* Owner management layout 0.1.39 */
+body.remember-shell[data-remember-view="memories"] .owner-view-label {
+ margin:0 0 3px; color:#e4eac0; font-size:12px; font-weight:750;
+ letter-spacing:.11em; text-transform:uppercase;
+}
+body.remember-shell[data-remember-view="memories"] .actions .action-camera {grid-column:1}
+body.remember-shell[data-remember-view="memories"] .actions .action-upload {
+ grid-column:2;min-height:112px;
+}
+body.remember-shell[data-remember-view="memories"] .actions .action-share {
+ grid-column:1/-1;min-height:92px;
+}
+
+body.remember-shell[data-remember-view="memories"] .album-settings{margin-top:22px;padding:22px;border:1px solid rgba(245,240,220,.35);border-radius:24px;background:rgba(18,36,30,.7)}
+body.remember-shell[data-remember-view="memories"] .album-settings h2{margin:0 0 8px}
+body.remember-shell[data-remember-view="memories"] .album-settings button{display:block;width:100%;margin:12px 0;min-height:52px;text-align:center;border-radius:14px}
+body.remember-shell[data-remember-view="memories"] #deleteAlbum{background:#f4d5c9;color:#6d211c}
+body.remember-shell[data-remember-view="memories"] #settingsStatus{overflow-wrap:anywhere}
+
+/* Dashboard 0.1.36 – account card, compact album overview, iPhone safe areas */
+body.remember-shell[data-remember-view="albums"] #account{margin:0 0 16px;flex:0 0 auto}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child{text-align:center}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child > summary{
+ display:inline-flex;align-items:center;justify-content:center;gap:10px;
+ min-height:49px;padding:11px 19px;border-radius:100px;
+ border:1px solid rgba(255,239,214,.48);background:rgba(45,35,28,.76);
+ box-shadow:0 7px 24px rgba(0,0,0,.16);color:#fff5e8;
+ font-size:15px;font-weight:700;cursor:pointer
+}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child > summary::before{content:none}
+body.remember-shell[data-remember-view="albums"] #account .account-symbol{font-size:21px;line-height:1}
+body.remember-shell[data-remember-view="albums"] #account .account-chevron{font-size:20px;line-height:1;transition:transform .2s ease}
+body.remember-shell[data-remember-view="albums"] #account details[open] .account-chevron{transform:rotate(180deg)}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child[open]{
+ text-align:left;padding:0;background:transparent;border:0
+}
+body.remember-shell[data-remember-view="albums"] #account > details:first-child[open] > summary{display:flex;width:max-content;margin:0 auto 13px}
+body.remember-shell[data-remember-view="albums"] #account .account-body{
+ padding:19px;border:1px solid rgba(255,244,226,.45);border-radius:23px;
+ background:rgba(43,33,26,.8);box-shadow:0 12px 32px rgba(0,0,0,.22)
+}
+body.remember-shell[data-remember-view="albums"] #account .account-profile{display:flex;align-items:center;gap:13px;min-width:0}
+body.remember-shell[data-remember-view="albums"] #account .profile-icon{
+ width:48px;height:48px;flex:none;display:grid;place-items:center;border-radius:50%;
+ background:rgba(222,231,170,.17);border:1px solid rgba(222,231,170,.36);
+ color:#e6edb7;font-size:27px
+}
+body.remember-shell[data-remember-view="albums"] #account .account-profile > div{min-width:0}
+body.remember-shell[data-remember-view="albums"] #account .account-profile strong{
+ display:block;color:#fff5e8;font-size:15px;margin-bottom:5px
+}
+body.remember-shell[data-remember-view="albums"] #identity{
+ color:#eee2d0;font-size:13px;line-height:1.5;overflow-wrap:anywhere
+}
+body.remember-shell[data-remember-view="albums"] #account .account-body > .actions{
+ margin:18px 0 0;padding-top:15px;border-top:1px solid rgba(255,255,255,.17)
+}
+body.remember-shell[data-remember-view="albums"] #logout{
+ display:flex;align-items:center;justify-content:space-between;gap:18px;
+ width:100%;padding:13px 16px;border-radius:13px;background:rgba(255,255,255,.08);
+ border:1px solid rgba(255,255,255,.3);color:#fff3e1;font-size:15px
+}
+body.remember-shell[data-remember-view="albums"] #ownerPanel{
+ border-radius:24px;padding:20px;background:rgba(43,33,26,.72)
+}
+body.remember-shell[data-remember-view="albums"] #ownerAlbums a{
+ background:rgba(39,32,26,.65);border:1px solid rgba(255,248,233,.4);
+ border-radius:17px;padding:18px;min-height:62px;font-size:17px;
+ box-shadow:0 4px 16px rgba(0,0,0,.13)
+}
+body.remember-shell[data-remember-view="albums"] #ownerPanel .newAlbum{
+ display:block;text-align:center;padding:17px 14px;border-radius:17px;
+ background:#174b3c;color:#fff;font-size:17px
+}
+body.remember-shell[data-remember-view="albums"] .version{display:none}
+@media(max-width:767px){
+ html:has(body.remember-shell[data-remember-view="albums"]){background:#332c26}
+ 
+ body.remember-shell[data-remember-view="albums"] > main{
+  padding-bottom:max(18px,env(safe-area-inset-bottom,0px));
+  overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch
+ }
+ body.remember-shell[data-remember-view="albums"] #ownerPanel{overflow:visible;flex-shrink:0}
+ body.remember-shell[data-remember-view="albums"] #account .account-body{padding:17px}
+}
+
+/* Shared readability standard R-1.0: warm, soft contrast for all normal Remember views.
+   Excludes fullscreen media, camera and viewer content. */
+body.remember-shell:not([data-remember-view="viewer"]):not([data-remember-view="camera"])::before{
+ background-image:
+  linear-gradient(180deg,rgba(19,24,19,.62) 0%,rgba(25,27,21,.42) 27%,rgba(29,25,21,.28) 54%,rgba(26,22,19,.42) 100%),
+  var(--remember-background,linear-gradient(135deg,#54473b,#292d26));
+ background-size:cover;
+ background-position:center center;
+ background-repeat:no-repeat;
+}
+body.remember-shell:not([data-remember-view="viewer"]):not([data-remember-view="camera"]) :is(h1,h2){
+ text-shadow:0 2px 14px rgba(12,18,14,.38);
+}
+body.remember-shell[data-remember-view="memories"] main > .owner-view-label{
+ color:#f0e8c8;font-size:11px;letter-spacing:.1em;opacity:.88;
+ text-shadow:0 2px 10px rgba(0,0,0,.48);
+}
+body.remember-shell[data-remember-view="memories"] main > h1{
+ line-height:1.09;letter-spacing:-.038em;text-shadow:0 3px 20px rgba(9,15,12,.65);
+}
+body.remember-shell[data-remember-view="memories"] main > #status{
+ text-shadow:0 2px 12px rgba(10,15,12,.56);
+}
+body.remember-shell[data-remember-view="memories"] .actions .action-tile{
+ min-height:104px;padding:14px 11px;gap:8px;
+}
+body.remember-shell[data-remember-view="memories"] .actions .action-camera,
+body.remember-shell[data-remember-view="memories"] .actions .action-upload{min-height:104px}
+body.remember-shell[data-remember-view="memories"] .tile-copy strong{
+ font-size:clamp(14px,3.7vw,19px);
+}
+body.remember-shell[data-remember-view="memories"] .tile-copy small{
+ font-size:clamp(11px,2.85vw,13px);
+}
+body.remember-shell[data-remember-view="memories"] .tile-icon{
+ width:37px;height:37px;font-size:19px;
+}
+body.remember-shell[data-remember-view="memories"] .tile-arrow{font-size:23px}
+@media(max-width:767px){
+ body.remember-shell[data-remember-view="albums"]::before{
+  background-position:center center;
+ }
+}
+
+/* Owner sharing R-1.1: compact dialog and printable invitation */
+body.remember-shell[data-remember-view="memories"] .remember-share-dialog{
+ box-sizing:border-box;width:min(94vw,460px);max-width:460px;max-height:92dvh;
+ padding:0;border:1px solid rgba(255,255,255,.35);border-radius:23px;
+ background:#e9e0cd;color:#18362c;overflow:auto;box-shadow:0 22px 75px #0009;
+}
+body.remember-shell[data-remember-view="memories"] .remember-share-dialog::backdrop{background:rgba(9,15,12,.74);backdrop-filter:blur(6px)}
+body.remember-shell[data-remember-view="memories"] .share-poster{
+ position:relative;isolation:isolate;min-height:330px;padding:24px 20px 26px;
+ display:grid;place-items:center;text-align:center;color:#fff9eb;
+ background-image:linear-gradient(180deg,rgba(20,28,22,.63),rgba(26,28,20,.48)),var(--share-custom-image,none),var(--remember-background);
+ background-position:center;background-size:cover;
+}
+body.remember-shell[data-remember-view="memories"] .share-poster-content{width:100%;max-width:355px}
+body.remember-shell[data-remember-view="memories"] .share-poster h2{font-family:Georgia,serif;font-size:clamp(28px,7vw,40px);line-height:1.15;margin:26px 0 8px;overflow-wrap:anywhere}
+body.remember-shell[data-remember-view="memories"] .share-tagline{font-size:17px;font-weight:650;margin:0 0 20px}
+body.remember-shell[data-remember-view="memories"] #qr{display:inline-block;background:#fff;padding:12px;border-radius:9px;line-height:0;max-width:100%;box-sizing:border-box}
+body.remember-shell[data-remember-view="memories"] #qr svg{width:min(58vw,235px);height:auto;max-width:100%}
+body.remember-shell[data-remember-view="memories"] .share-scan{font-size:14px;margin:16px 0 0;font-weight:600}
+body.remember-shell[data-remember-view="memories"] .share-close{position:absolute;top:12px;right:12px;min-width:38px;min-height:38px;padding:6px;border-radius:50%;background:#13271fd9;color:white;font-size:18px}
+body.remember-shell[data-remember-view="memories"] .share-tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:15px 14px 8px}
+body.remember-shell[data-remember-view="memories"] .share-tools[hidden]{display:none}
+body.remember-shell[data-remember-view="memories"] .share-tools button{padding:12px 5px;font-size:13px;min-height:48px;background:#dce6ae;color:#1b392e;border-radius:12px}
+body.remember-shell[data-remember-view="memories"] .share-background-tools{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;padding:6px 12px}
+body.remember-shell[data-remember-view="memories"] .share-background-tools button{background:transparent;color:#214c3b;text-decoration:underline;font-size:13px;padding:8px}
+body.remember-shell[data-remember-view="memories"] .share-device-note{font-size:11px;color:#55685b;text-align:center;padding:0 15px 12px;margin:0}
+body.remember-shell[data-remember-view="memories"] #needsReplace button{background:#f9dfa1;color:#243729}
+@media print{
+ @page{size:A4;margin:0}
+ html,body,body.remember-shell[data-remember-view="memories"]{background:white!important;color:black!important}
+ body.remember-shell[data-remember-view="memories"]::before{display:none!important}
+ body.remember-shell[data-remember-view="memories"] > main,body.remember-shell[data-remember-view="memories"] > dialog:not(#share){display:none!important}
+ body.remember-shell[data-remember-view="memories"] .remember-share-dialog{
+  display:block!important;position:static!important;width:210mm!important;max-width:none!important;
+  height:297mm!important;max-height:none!important;margin:0!important;border:0!important;
+  border-radius:0!important;box-shadow:none!important;overflow:hidden!important;background:white!important;
+ }
+ body.remember-shell[data-remember-view="memories"] .share-poster{
+  box-sizing:border-box;height:297mm!important;min-height:0!important;padding:22mm!important;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
+ }
+ body.remember-shell[data-remember-view="memories"] .share-poster h2{font-size:38pt!important}
+ body.remember-shell[data-remember-view="memories"] .share-tagline{font-size:20pt!important}
+ body.remember-shell[data-remember-view="memories"] #qr svg{width:85mm!important}
+ body.remember-shell[data-remember-view="memories"] .share-scan{font-size:15pt!important}
+ body.remember-shell[data-remember-view="memories"] .share-close,
+ body.remember-shell[data-remember-view="memories"] .share-tools,
+ body.remember-shell[data-remember-view="memories"] .share-background-tools,
+ body.remember-shell[data-remember-view="memories"] .share-device-note{display:none!important}
+}
+
+/* R-1.2: unify the sharing dialog footer with the warm photographic poster */
+body.remember-shell[data-remember-view="memories"] .remember-share-dialog{
+ background:#29271f;color:#fff7e8;
+}
+body.remember-shell[data-remember-view="memories"] .share-tools{
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:9px;padding:14px 18px 5px;
+ background:linear-gradient(180deg,#29271f,#24251f);
+}
+body.remember-shell[data-remember-view="memories"] .share-tools button{
+ width:100%;min-width:0;min-height:46px;
+ padding:9px 5px;border-radius:12px;
+ background:rgba(224,232,178,.95);color:#17392e;
+ font-size:clamp(11px,3vw,13px);font-weight:750;
+ white-space:nowrap;
+}
+body.remember-shell[data-remember-view="memories"] .share-background-tools{
+ justify-content:center;align-items:center;
+ padding:2px 14px 14px;
+ background:#24251f;
+}
+body.remember-shell[data-remember-view="memories"] .share-background-tools button{
+ color:#e4e9c6;font-size:13px;font-weight:650;
+ padding:7px 10px;text-underline-offset:3px;
+}
+body.remember-shell[data-remember-view="memories"] .share-device-note{display:none!important}
+@media print{
+ body.remember-shell[data-remember-view="memories"] .remember-share-dialog{background:white!important}
+}
+
+/* Remember 0.1.48: compact album owner actions, gallery and settings */
+body.remember-shell[data-remember-view="memories"] .actions{
+ gap:9px!important;margin:14px 0!important;
+}
+body.remember-shell[data-remember-view="memories"] .actions .action-tile{
+ min-height:62px!important;height:auto!important;
+ padding:11px 13px!important;gap:9px!important;
+ border-radius:15px!important;
+ display:flex;align-items:center;
+}
+body.remember-shell[data-remember-view="memories"] .actions .action-share{
+ min-height:58px!important;
+}
+body.remember-shell[data-remember-view="memories"] .actions .tile-icon{
+ flex:0 0 30px!important;width:30px!important;height:30px!important;
+ font-size:17px!important;
+}
+body.remember-shell[data-remember-view="memories"] .actions .tile-copy{
+ min-width:0;flex:1;
+}
+body.remember-shell[data-remember-view="memories"] .actions .tile-copy strong{
+ font-size:clamp(13px,3.6vw,16px)!important;line-height:1.2!important;
+}
+body.remember-shell[data-remember-view="memories"] .actions .tile-copy small{
+ display:none!important;
+}
+body.remember-shell[data-remember-view="memories"] .actions .tile-arrow{
+ font-size:19px!important;
+}
+body.remember-shell[data-remember-view="memories"] .gallery{
+ margin-top:13px!important;padding:clamp(14px,4vw,20px)!important;
+}
+body.remember-shell[data-remember-view="memories"] .gallery h2{
+ font-size:clamp(23px,5vw,28px)!important;
+}
+body.remember-shell[data-remember-view="memories"] .gallery .muted{
+ font-size:12px!important;
+}
+body.remember-shell[data-remember-view="memories"] .photo-card{
+ position:relative;padding-bottom:0!important;overflow:hidden;
+}
+body.remember-shell[data-remember-view="memories"] .photo-card .photo-delete{
+ position:absolute;right:7px;top:7px;z-index:2;
+ display:grid;place-items:center;
+ width:42px;min-width:42px;min-height:42px;
+ margin:0!important;padding:0!important;
+ border-radius:50%!important;
+ background:rgba(33,30,26,.84)!important;
+ color:#fff!important;font-size:20px!important;
+ border:1px solid rgba(255,255,255,.55);
+}
+body.remember-shell[data-remember-view="memories"] .album-settings{
+ padding:0!important;overflow:hidden;
+}
+body.remember-shell[data-remember-view="memories"] .album-settings > summary{
+ cursor:pointer;padding:17px 19px;
+ font-size:16px;font-weight:700;
+}
+body.remember-shell[data-remember-view="memories"] .album-settings > :not(summary){
+ margin-left:17px;margin-right:17px;
+}
+body.remember-shell[data-remember-view="memories"] .album-settings > #settingsStatus{
+ margin-bottom:15px;
+}
+@media(max-width:370px){
+ body.remember-shell[data-remember-view="memories"] .actions .action-tile{
+  padding:9px 8px!important;gap:5px!important;
+ }
+ body.remember-shell[data-remember-view="memories"] .actions .tile-icon{
+  width:25px!important;flex-basis:25px!important;
+ }
+}
+
+
+/* Single, global version indicator; hidden while fullscreen dialogs are open. */
+#remember-global-version{
+ position:fixed;z-index:30;
+ left:50%;transform:translateX(-50%);
+ bottom:calc(env(safe-area-inset-bottom,0px) + 7px);
+ padding:3px 9px;border-radius:999px;
+ font:500 10px/1.4 system-ui,-apple-system,sans-serif;
+ letter-spacing:.025em;color:#fff8ed;
+ background:rgba(28,24,20,.72);
+ pointer-events:none;white-space:nowrap;
+}
+body:has(dialog[open]) #remember-global-version{display:none}
+body.remember-shell .version[hidden]{display:none!important}
+
+
+/* iPhone dashboard: keep branding below the status bar.
+   Avoid negative overscan and competing root wallpaper image layers. */
+@supports (padding-top:env(safe-area-inset-top)) {
+  @media(max-width:767px) {
+    body.remember-shell[data-remember-view="albums"] > main > header {
+      padding-top:max(15px, env(safe-area-inset-top, 0px));
+    }
+  }
+}
+@media print{#remember-global-version{display:none!important}}
