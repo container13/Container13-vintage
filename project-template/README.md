@@ -2,6 +2,8 @@
 
 Golden template for new Container13 projects.
 
+Start with CONTINUITY_PROTOCOL.md. PROJECT_CURRENT_STATE.json is the authoritative structured current status. Detailed evidence belongs in linked checkpoints, and handoff prose must agree with the structured state.
+
 ## Start a new project
 1. Copy this folder into the new project root.
 2. Replace PROJECT_NAME, PROJECT_ROOT and repository/branch placeholders in PROJECT_CURRENT_STATE.json.
