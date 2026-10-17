@@ -38,3 +38,11 @@ Inspect deployed rejection/restore function and DB triggers for insertion points
 - Both `pg_cron` and `pg_net` extensions are installed.
 - Decision RPC `public.remember_photo_approval_owner_decide` writes pending->approved/rejected; restore RPC `public.remember_photo_quarantine_restore` writes rejected->approved. Both are valid integration paths for an AFTER UPDATE trigger.
 - No scheduler SQL has been deployed; cron job 1 remains active. Next implementation must first validate scheduling semantics and reliable retry/response handling, then test without affecting real photos.
+
+## Implementation checkpoint 2026-10-17 — preview deployed, PASS
+- Test-only Supabase migration `remember_quarantine_scheduler_preview_v1` applied successfully.
+- Created `remember.quarantine_schedule_preview()` as SQL STABLE SECURITY INVOKER, read-only; revoked EXECUTE from PUBLIC, anon and authenticated.
+- Function derives rejected_count, earliest `decided_at + 72 hours`, and expired_count by joining approval queue with ready photos.
+- Verified direct execution result: rejected_count=0, next_expiry=NULL, expired_count=0 (PASS for current empty queue).
+- **NOT YET IMPLEMENTED:** automatic scheduling trigger, one-shot job, retry/result handling, and switching off hourly cron. Do not confuse preview PASS with full scheduler PASS.
+- Existing hourly cron remains enabled. Production unchanged.
