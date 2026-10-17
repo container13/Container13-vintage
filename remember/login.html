@@ -136,7 +136,7 @@ async function updateWebmaster(value){
  if(revision!==roleRevision)return;
  webmasterAllowed=allowed;$('webmasterTools').hidden=!allowed;
 }
-function showSession(value){if(!value&&document.body.classList.contains('password-mode'))closePasswordView();void updateWebmaster(value);const identityChanged=session?.user?.id!==value?.user?.id;session=value;if(identityChanged){creationAllowed=false;$('creation').hidden=true;}$('account').hidden=!value;$('loginPanel').hidden=!!value;$('login').hidden=!!value;$('identity').textContent=value?'Inloggad som '+value.user.email:'';$('result').textContent='';$('albums').replaceChildren()}
+function showSession(value){if(!value&&document.body.classList.contains('password-mode'))closePasswordView();void updateWebmaster(value);const identityChanged=session?.user?.id!==value?.user?.id;session=value;if(identityChanged){creationAllowed=false;$('creation').hidden=true;}$('account').hidden=!value;$('loginPanel').hidden=!!value;$('login').hidden=!!value||!$('entryChoices').hidden;$('identity').textContent=value?'Inloggad som '+value.user.email:'';$('result').textContent='';$('albums').replaceChildren()}
 async function gateway(action){
  if(busy||!client||!webmasterAllowed)return;const revision=roleRevision;lock(true);$('result').textContent='Kontrollerar åtkomst…';
  try{
