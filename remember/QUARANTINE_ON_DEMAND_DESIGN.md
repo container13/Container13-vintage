@@ -127,3 +127,9 @@ Inspect deployed rejection/restore function and DB triggers for insertion points
 - Restored EXECUTE grant, verified privilege, invoked the same command again; observed HTTP **200** `{"ok":true,"removed":0,"failed":0}` at 14:00:25 UTC.
 - Post-check: photos=4, claims=0, cron inactive, service-role grant restored. **PASS** for live list-RPC failure and subsequent recovery.
 - Scope caveat: this does not exercise a Storage.remove failure or successful deletion of a genuinely expired image; those are separate integration cases. Production unchanged.
+
+## Real Storage missing-object behavior probe (2026-10-17)
+- Deployed test-only Edge Function `remember-test-quarantine-storage-probe` v1 in Remember Test; authenticated with existing Vault-backed cron HTTP configuration without exposing secret. No production changes.
+- Probe called `db.storage.from('remember-private-photos').remove([random_nonexistent_key])` (never referenced a real photo). Actual HTTP 200 response: `{ok:true,probe:'nonexistent-object-delete',errorCode:null,removedCount:0}`.
+- **PASS:** Supabase Storage remove is idempotent for a missing object in this project; a retry after Storage removal can proceed to database finalize.
+- Independent check: photos=4, claims=0, cron inactive. Full end-to-end quarantine deletion with a synthetic file still untested.
