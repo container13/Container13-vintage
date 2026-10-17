@@ -36,3 +36,11 @@ HANDOFF RULE: After every completed step update this checkpoint with exact resul
 - Deployed quarantine purge v5 requires a secret header, reads expired photos, claims each, removes the Storage object, then finalizes database deletion; it can actually delete eligible test photos. No job or function configuration changed in this review.
 - Current test photo states: `ready`=4, other states=0. Current Storage object count was 4 at prior read. No quarantined photos observed.
 - NEXT: inspect eligibility SQL and job execution history before any schedule/configuration change; do not disable a legitimate purge without reviewing expected lifecycle. Preserve production unchanged.
+
+## Quarantine scheduling review 2026-10-17
+- Read-only inspected deployed public SQL RPC definitions `remember_photo_quarantine_expired_read`, `claim`, `finalize`, `release`, and `restore` in Remember Test.
+- Purge eligibility: approval queue `decision='rejected'`, `decided_at <= now()-72 hours`, matching photo `state='ready'`. Claim and finalize recheck eligibility. Restore before expiry changes decision to approved and refuses when purge claim exists.
+- Approval queue current counts: `approved=1`, `rejected=0`, pending=0; photo states `ready=4`.
+- Cron job 1 runs hourly even when no rejected photos. Recent pg_cron job executions show `succeeded` (SQL statement executed); this alone does not verify HTTP response or deletions.
+- Decision: user wants no active periodic purge when there is no quarantine/pending work. Do NOT disable existing cron yet: without a proven reactivation and crash-recovery mechanism, rejected photos could remain beyond 72 hours indefinitely.
+- NEXT implementation design: reliable scheduling/reconciliation triggered on reject/restore/approval, with persisted next expiry, idempotent purge and failure retry. Separate pending approvals from rejected quarantine. Verify with dummy test records, then switch off hourly cron; production unchanged.
