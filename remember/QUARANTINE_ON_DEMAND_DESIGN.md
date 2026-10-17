@@ -32,3 +32,9 @@ Status: DESIGN / NOT DEPLOYED. Production unchanged. Existing hourly cron remain
 
 ## Next implementation task
 Inspect deployed rejection/restore function and DB triggers for insertion points; choose exact scheduling primitive and retry persistence, then implement in a separate test-only migration with rollback. Do not deploy speculative SQL or deactivate job 1 prematurely.
+
+## Integration verification 2026-10-17
+- Direct pg_catalog read found **zero user-defined triggers** on `remember.photo_approval_queue` in Remember Test.
+- Both `pg_cron` and `pg_net` extensions are installed.
+- Decision RPC `public.remember_photo_approval_owner_decide` writes pending->approved/rejected; restore RPC `public.remember_photo_quarantine_restore` writes rejected->approved. Both are valid integration paths for an AFTER UPDATE trigger.
+- No scheduler SQL has been deployed; cron job 1 remains active. Next implementation must first validate scheduling semantics and reliable retry/response handling, then test without affecting real photos.
