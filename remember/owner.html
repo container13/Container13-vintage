@@ -4,6 +4,27 @@ const $=id=>document.getElementById(id),id=new URLSearchParams(location.search).
 let client,access='',shareUrl='',ownerEmail='',busy=false;
 function invitationText(){const album=$('title').textContent.trim();return (ownerEmail||'Albumägaren')+' vill dela albumet ”'+album+'” med dig.\n\nÖppna albumet för att se bilderna och dela dina egna minnen.\n'+shareUrl;}
 async function request(name,body){const {data,error}=await client.auth.getSession();if(error||!data.session)throw Error('Logga in igen.');access=data.session.access_token;const response=await fetch(endpoint+name,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+access},body:JSON.stringify(body),cache:'no-store'});const json=await response.json().catch(()=>({}));if(!response.ok||json.ok!==true)throw Error(json.error||'Serverfel '+response.status);return json;}
+let moderationWritable=false,moderationBusy=false;
+async function moderationAction(photo,decision){
+ if(!testMode||!moderationWritable||moderationBusy)return;
+ if(decision==='rejected'&&!confirm('Neka bilden? Den ligger kvar i karantän i högst 72 timmar.'))return;
+ moderationBusy=true;
+ $('approvalStatus').textContent='Sparar beslut…';
+ try{
+  const fn=decision==='restore'?'remember-photo-quarantine-restore':'remember-photo-approval-decision';
+  const body={albumId:id,photoId:photo.photoId};
+  if(decision!=='restore')body.decision=decision;
+  await request(fn,body);
+  $('viewer').close();
+  await refreshModeration();
+ }catch(error){$('approvalStatus').textContent='Åtgärden misslyckades: '+error.message;}
+ finally{moderationBusy=false;}
+}
+function moderationButton(label,photo,decision){
+ const button=document.createElement('button');button.type='button';button.textContent=label;
+ button.disabled=!moderationWritable;button.onclick=()=>moderationAction(photo,decision);
+ return button;
+}
 async function refreshModeration(){
  if(!testMode)return;
  const section=$('approvalSection');section.hidden=false;
