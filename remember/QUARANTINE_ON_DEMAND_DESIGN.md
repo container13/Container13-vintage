@@ -119,3 +119,11 @@ Inspect deployed rejection/restore function and DB triggers for insertion points
 - Observed fresh `net._http_response`: HTTP 200 `{ok:true,removed:0,failed:0}`.
 - Independent post-check: 4 photos, 0 claims, cron active=false. PASS for empty-queue live HTTP execution.
 - Does NOT test HTTP 503 handling with an eligible photo or end-to-end deletion; keep final retry integration test open. Production untouched.
+
+## Live v7 HTTP fault-and-recovery test (2026-10-17)
+- Remember Test only: confirmed zero eligible expired rejected photos and inactive hourly cron.
+- Temporarily REVOKEd `service_role` EXECUTE on `public.remember_photo_quarantine_expired_read()`; invoked the existing Vault-backed cron command manually.
+- Observed actual Edge Function v7 HTTP **503** `{"error":"Could not list expired photos"}` at 14:00:13 UTC.
+- Restored EXECUTE grant, verified privilege, invoked the same command again; observed HTTP **200** `{"ok":true,"removed":0,"failed":0}` at 14:00:25 UTC.
+- Post-check: photos=4, claims=0, cron inactive, service-role grant restored. **PASS** for live list-RPC failure and subsequent recovery.
+- Scope caveat: this does not exercise a Storage.remove failure or successful deletion of a genuinely expired image; those are separate integration cases. Production unchanged.
