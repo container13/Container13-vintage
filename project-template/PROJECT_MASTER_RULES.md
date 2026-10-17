@@ -2,6 +2,9 @@
 
 Status: ACTIVE. Shared rules come from PROJECT_RELEASE_STANDARD.md.
 
+## Continuity
+Follow CONTINUITY_PROTOCOL.md. PROJECT_CURRENT_STATE.json is the authoritative structured current status. Keep handoff prose consistent, link detailed evidence, verify documentation readback, and mark interrupted tests UNVERIFIED until checked.
+
 ## Before every change
 Read PROJECT_RELEASE_STANDARD.md, this file, PROJECT_CURRENT_STATE.json and the relevant checklist. If workCheckpoint is IN_PROGRESS or UNVERIFIED, verify reality and resume before unrelated work unless the user explicitly changes priority.
 
