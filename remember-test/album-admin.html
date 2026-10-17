@@ -1,0 +1,107 @@
+<!doctype html><html lang="sv"><head><meta name="robots" content="noindex,nofollow"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="referrer" content="no-referrer"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><title>TEST – Remember – hantera album</title><style>body{font:16px/1.5 system-ui;background:#10231f;color:#f6f3e9;margin:0;padding:30px 18px}main{max-width:640px;margin:auto}a{color:#d9e7a4}input{font:inherit;box-sizing:border-box;width:100%;padding:12px;margin:10px 0;border-radius:10px}#qr{background:white;display:inline-block;margin:12px 0}#qr svg{display:block;max-width:75vw;height:auto}button{font:inherit;padding:12px;border-radius:10px;background:#d9e7a4;border:0}p{overflow-wrap:anywhere}[hidden]{display:none!important}.primary-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}.primary-actions button{min-height:70px;font-weight:750;font-size:17px;cursor:pointer}.secondary{background:#19352d;color:#f6f3e9;border:1px solid #527b69}details{border-top:1px solid #527b69;padding-top:18px;margin-top:22px}summary{cursor:pointer;font-weight:700}#cameraFrame{width:100%;height:75dvh;border:0;background:#10231f}#cameraHost{position:fixed;inset:0;z-index:9999;margin:0;background:#10231f;display:flex;flex-direction:column}#cameraHost[hidden]{display:none!important}#closeCamera{flex:none;border-radius:0;min-height:48px;text-align:left}#cameraFrame{flex:1;height:auto;min-height:0;width:100%;border:0} @media(max-width:420px){.primary-actions{grid-template-columns:1fr}}.mode-banner{position:sticky;top:0;z-index:20;background:#ffe29a;color:#33210a;border:3px solid #d28b20;border-radius:12px;padding:13px 16px;margin-bottom:20px;font-size:18px;font-weight:900;box-shadow:0 5px 18px #0005}.mode-banner small{display:block;font-size:13px;font-weight:650}.remember-gallery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}.remember-gallery-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer}.remember-gallery-viewer{position:fixed;inset:0;z-index:10000;background:#000e;display:flex;align-items:center;justify-content:center;padding:14px}.remember-gallery-viewer[hidden]{display:none}.remember-gallery-viewer img{max-width:96vw;max-height:88dvh;object-fit:contain}.remember-gallery-viewer button{position:absolute;top:14px;right:14px;z-index:1;background:#d9e7a4;color:#10231f;border:0;border-radius:8px;padding:10px}@media(min-width:650px){.remember-gallery-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}</style><script src="../project-template/mobile-view-policy.js?v=2"></script><meta name="remember-mobile-policy" content="M-1.1"><link rel="stylesheet" href="./remember-design.css?v=0.1.75"><script defer src="./auto-update.js?v=0.1.75"></script><meta name="remember-release" content="remember-0.1.75"><script defer src="./remember-version.js?v=0.1.75"></script></head><body class="remember-shell" data-remember-view="memories"><div style="position:sticky;top:0;z-index:99999;background:#ffc66b;color:#251600;text-align:center;font:900 13px system-ui;padding:7px">REMEMBER TEST – INTE ORIGINAL</div><main><div class="mode-banner" role="status">🛠 WEBMASTERLÄGE<small>Administration – inte gästvyn · Version WM-9.5 · Design 0.1.23</small></div><p><a href="./dashboard.html">← Dashboard</a></p><h1 id="title">Öppnar album…</h1><p id="status" role="status">Kontrollerar webmasteråtkomst.</p><p id="detail"></p><section id="albumActions" hidden><div class="primary-actions"><button id="ownerCamera" type="button">📷 Ta foto</button><button id="ownerFiles" class="secondary" type="button">🖼️ Lägg till bilder</button></div><div id="ownerFeedback" role="status" aria-live="polite"></div><button id="ownerRetry" type="button" hidden>Försök ladda upp igen</button><div id="cameraHost" hidden><button id="closeCamera" type="button">← Tillbaka till albumet</button><iframe id="cameraFrame" title="Remember kamera" allow="camera"></iframe></div><div id="fileHost" hidden><input id="ownerFileInput" type="file" accept="image/*" multiple><p id="fileFeedback"></p></div></section><section id="rememberGallery" hidden></section><section id="sharing" hidden><details id="sharingDetails"><summary>Delning och QR-kod</summary><h2>Gästlänk</h2><p id="shareStatus" role="status">Hämtar albumets gästlänk…</p><div id="shareReady" hidden><p id="shareLinkText"></p><div id="qr"></div><p><button id="copyGuest" type="button">📋 Kopiera gästlänk</button></p></div><div id="shareReplaceBox" hidden><p>Albumet har en äldre gästlänk som inte går att återskapa. Du kan ersätta den med en ny som därefter visas automatiskt på dina enheter. <strong>Gamla länkar och QR-koder slutar då fungera.</strong></p><button id="replaceGuest" type="button">Skapa ny gästlänk</button></div></details></section></main><script type="module">
+import { prepareRememberUpload } from './upload-prepare.js';
+import { mountRememberGallery } from './photo-gallery.js?v=0.1.75';
+const title=document.getElementById('title'),status=document.getElementById('status'),detail=document.getElementById('detail');
+const id=new URLSearchParams(location.search).get('id');
+if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id||'')){title.textContent='Ogiltigt album';status.textContent='Album-ID saknas.';}
+else try{
+ const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
+ const url='https://kauxrvshxgpbvptdwhog.supabase.co',key='sb_publishable_iLKTdBYdh2w5ALhEyFtW8A_V8Gujyam';
+ const client=createClient(url,key,{auth:{storage:localStorage,storageKey:'container13-remember-test-auth-v1',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+ const {data,error}=await client.auth.getSession();
+ if(error||!data.session){location.replace('./login.html');}
+ else {
+  const response=await fetch(url+'/functions/v1/remember-webmaster',{method:'POST',headers:{'Content-Type':'application/json',apikey:key,Authorization:'Bearer '+data.session.access_token},body:JSON.stringify({action:'list'}),cache:'no-store'});
+  const body=await response.json();
+  if(!response.ok||body.authorized!==true){title.textContent='Åtkomst nekad';status.textContent='Du saknar webmasterbehörighet.';}
+  else {
+   const album=Array.isArray(body.albums)?body.albums.find(a=>a.id===id):null;
+   if(!album){title.textContent='Albumet hittades inte';status.textContent='Albumet finns inte i din behöriga albumlista.';}
+   else {title.textContent=album.title||'Album';status.textContent='Albumet är öppnat i webmasterläge.';detail.textContent='Välj vad du vill göra i albumet.';document.getElementById('albumActions').hidden=false;document.getElementById('sharing').hidden=false;}
+  }
+ }
+}catch{title.textContent='Kunde inte öppna albumet';status.textContent='Anslutningen misslyckades. Försök igen senare.'}
+const rememberGallery=mountRememberGallery({container:document.getElementById('rememberGallery'),auth:async()=>({albumId:id,bearer:await webmasterSession()})});
+document.getElementById('rememberGallery').hidden=false;
+const cameraHost=document.getElementById('cameraHost'),cameraFrame=document.getElementById('cameraFrame'),ownerFeedback=document.getElementById('ownerFeedback'),ownerRetry=document.getElementById('ownerRetry');
+let ownerApprovedFiles=[],ownerUploading=false;
+async function webmasterSession(){
+ const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
+ const client=createClient('https://kauxrvshxgpbvptdwhog.supabase.co','sb_publishable_iLKTdBYdh2w5ALhEyFtW8A_V8Gujyam',{auth:{storage:localStorage,storageKey:'container13-remember-test-auth-v1',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+ const {data,error}=await client.auth.getSession();
+ if(error||!data.session)throw Error('Din inloggning har gått ut. Logga in igen.');
+ return data.session.access_token;
+}
+async function uploadOwnerFiles(){
+ if(ownerUploading||!ownerApprovedFiles.length)return;
+  ownerFeedback.textContent='Kontrollerar webmasterinloggning…';ownerUploading=true;ownerRetry.hidden=true;document.getElementById('ownerCamera').disabled=true;document.getElementById('ownerFiles').disabled=true;
+ let completed=0;
+ try{
+  const accessToken=await webmasterSession();
+  for(const file of ownerApprovedFiles){
+   ownerFeedback.textContent='Laddar upp bild '+(completed+1)+' av '+ownerApprovedFiles.length+'…';
+   const prepared=await prepareRememberUpload(file);
+   const form=new FormData();form.set('albumId',id);form.set('requestId',crypto.randomUUID());form.set('file',prepared.file);
+   const response=await fetch('https://kauxrvshxgpbvptdwhog.supabase.co/functions/v1/remember-photo-upload',{method:'POST',headers:{Authorization:'Bearer '+accessToken},body:form,cache:'no-store'});
+   const data=await response.json().catch(()=>({}));
+   if(!response.ok||data.ok!==true)throw Error(data.error||'Servern svarade HTTP '+response.status);
+   completed++;
+  }
+  ownerApprovedFiles=[];ownerFeedback.textContent=completed+' bilder sparade i albumet!';void rememberGallery.refresh();
+ }catch(e){ownerApprovedFiles=ownerApprovedFiles.slice(completed);ownerFeedback.textContent=completed+' bilder sparade. '+ownerApprovedFiles.length+' återstår. '+(e instanceof Error?e.message:'Uppladdningen misslyckades.');ownerRetry.hidden=ownerApprovedFiles.length===0;}
+ finally{ownerUploading=false;document.getElementById('ownerCamera').disabled=false;document.getElementById('ownerFiles').disabled=false;}
+}
+ownerRetry.onclick=uploadOwnerFiles;
+document.getElementById('ownerCamera').onclick=()=>{document.getElementById('fileHost').hidden=true;cameraHost.hidden=false;document.getElementById('ownerCamera').hidden=true;cameraFrame.src='./camera-session-test.html?embedded=1&v=01f7cff';};
+document.getElementById('closeCamera').onclick=()=>{cameraFrame.src='about:blank';cameraHost.hidden=true;document.getElementById('ownerCamera').hidden=false;};
+document.getElementById('ownerFiles').onclick=()=>{document.getElementById('fileHost').hidden=false;document.getElementById('ownerFileInput').click();};
+document.getElementById('ownerFileInput').onchange=e=>{if(ownerUploading)return;ownerApprovedFiles=Array.from(e.target.files||[]).filter(f=>/^image\/(jpeg|png|webp)$/.test(f.type));document.getElementById('fileFeedback').textContent=ownerApprovedFiles.length+' bilder valda.';if(ownerApprovedFiles.length)void uploadOwnerFiles();};
+window.addEventListener('message',e=>{
+ if(e.origin!==location.origin||e.source!==cameraFrame.contentWindow||e.data?.type!=='remember-camera-approved'||!Array.isArray(e.data.files)||ownerUploading)return;
+ ownerApprovedFiles=e.data.files.filter(f=>f instanceof Blob).map((f,i)=>new File([f],'remember-foto-'+(i+1)+'.jpg',{type:'image/jpeg'}));
+ document.getElementById('closeCamera').click();
+ if(ownerApprovedFiles.length)void uploadOwnerFiles();
+});
+const sharingDetails=document.getElementById('sharingDetails'),shareStatus=document.getElementById('shareStatus'),shareReady=document.getElementById('shareReady'),shareReplaceBox=document.getElementById('shareReplaceBox'),shareLinkText=document.getElementById('shareLinkText'),qr=document.getElementById('qr'),copy=document.getElementById('copyGuest');
+let shareUrl='',shareBusy=false;
+async function shareRequest(action){
+ const token=await webmasterSession();
+ const response=await fetch('https://kauxrvshxgpbvptdwhog.supabase.co/functions/v1/remember-share-manager',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+token},body:JSON.stringify({action,albumId:id}),cache:'no-store'});
+ const body=await response.json().catch(()=>({}));
+ if(!response.ok||body.ok!==true)throw Error(body.error||'Kunde inte hämta gästlänken.');
+ return body;
+}
+async function displayShare(token){
+ shareUrl=new URL('./album.html',location.href).href+'#token='+token;
+ const {default:QRCode}=await import('https://esm.sh/qrcode@1.5.4');
+ qr.innerHTML=await QRCode.toString(shareUrl,{type:'svg',margin:2,width:280,errorCorrectionLevel:'M'});
+ shareLinkText.textContent=shareUrl;shareReady.hidden=false;shareReplaceBox.hidden=true;shareStatus.textContent='Gästlänk och QR-kod klara. Gäster behöver inte logga in.';
+}
+async function loadShare(){
+ if(shareBusy)return;shareBusy=true;shareStatus.textContent='Hämtar gästlänken…';shareReady.hidden=true;shareReplaceBox.hidden=true;
+ try{const data=await shareRequest('get');if(data.available)await displayShare(data.token);else{shareStatus.textContent='En äldre gästlänk finns. Den kan inte läsas tillbaka från servern.';shareReplaceBox.hidden=false;}}
+ catch(e){shareStatus.textContent=e instanceof Error?e.message:'Kunde inte hämta gästlänken.';}
+ finally{shareBusy=false;}
+}
+sharingDetails.addEventListener('toggle',()=>{if(sharingDetails.open)void loadShare();});
+document.getElementById('replaceGuest').onclick=async()=>{
+ if(shareBusy)return;
+ if(!confirm('En ny gästlänk ersätter den gamla. Tidigare utdelade länkar och QR-koder slutar fungera. Vill du fortsätta?'))return;
+ shareBusy=true;shareStatus.textContent='Skapar ny gästlänk…';
+ try{const data=await shareRequest('replace');await displayShare(data.token);}
+ catch(e){shareStatus.textContent=e instanceof Error?e.message:'Kunde inte skapa länken.';shareReplaceBox.hidden=false;}
+ finally{shareBusy=false;}
+};
+let copyResetTimer;
+copy.onclick=async()=>{
+ if(!shareUrl)return;
+ try{
+  await navigator.clipboard.writeText(shareUrl);
+  copy.textContent='✓ Kopierad!';
+  copy.setAttribute('aria-label','Gästlänken kopierad');
+  shareStatus.textContent='Gästlänken kopierad till urklipp.';
+  clearTimeout(copyResetTimer);
+  copyResetTimer=setTimeout(()=>{copy.textContent='📋 Kopiera gästlänk';copy.setAttribute('aria-label','Kopiera gästlänk');},2500);
+ }catch{copy.textContent='Kunde inte kopiera';shareStatus.textContent='Kopiering misslyckades.';}
+};
+</script></body></html>
