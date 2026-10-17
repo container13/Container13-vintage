@@ -67,3 +67,13 @@ Inspect deployed rejection/restore function and DB triggers for insertion points
 - After rollback, independent read returned `rejected_count=0`, `next_expiry=NULL`: rollback PASS.
 - Test did not invoke purge or commit a rejection. Additional queue count read was blocked; do not claim it was independently verified.
 - Scheduler execution, retries, and disabling hourly cron are still NOT implemented.
+
+## Deployed test-only demand-controlled hourly cron (2026-10-17)
+- Migration `remember_quarantine_scheduler_toggle_on_queue_v1` replaced trigger function to refresh scheduler state and call `cron.alter_job(job_id => matching postgres-owned named job, active => rejected_count > 0)`; aborts transaction if named cron job is missing.
+- Transactional test with 1 rejected: `rejected_count=1`, cron active=true. ROLLBACK.
+- Transactional test with empty rejected queue: `rejected_count=0`, cron active=false. ROLLBACK.
+- Explicitly disabled cron job 1 because queue is empty; independent readback confirmed active=false.
+- Tested rejected update FROM inactive job: cron active=true inside transaction; ROLLBACK and independent readback confirmed active=false.
+- **Deployed behavior is demand-controlled HOURLY, not exact 72-hour one-shot.** When rejected queue is nonempty, existing hourly purge function checks 72-hour eligibility. When empty, no hourly purge runs.
+- Pending approval is not rejected quarantine and does not activate the purge job. No image deletion in these tests. Production unchanged.
+- Remaining hardening: concurrent queue changes/reconciliation, HTTP 503 visibility and retry guarantees, 50+ batch continuation, restore-path transaction test. Do not claim those PASS yet.
