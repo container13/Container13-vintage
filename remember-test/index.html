@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#492619">
+<title>Remember TEST – isoleringskontroll</title>
+<style>
+:root{font-family:system-ui,-apple-system,sans-serif;color-scheme:dark;background:#1d2524;color:#f8f6ef}*{box-sizing:border-box}body{margin:0;min-height:100dvh;padding:clamp(18px,5vw,48px)}main{max-width:660px;margin:auto}h1{font-size:clamp(32px,7vw,52px);margin:12px 0}.test{display:inline-block;background:#ffc66b;color:#27190b;font-weight:900;letter-spacing:.12em;border-radius:7px;padding:10px 18px}.panel{border:1px solid #65746c;border-radius:16px;background:#29332f;padding:22px;margin:24px 0}p{line-height:1.6}code{overflow-wrap:anywhere}button{border:0;background:#ffc66b;color:#261d11;border-radius:9px;padding:12px 18px;font-weight:700;font-size:16px}button:focus-visible{outline:3px solid white;outline-offset:3px}.muted{color:#d2d8d0}#result{white-space:pre-wrap;overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main>
+<strong class="test">TESTMILJÖ – INTE ORIGINAL</strong>
+<h1>Remember Test</h1>
+<p>Separat teknisk kontrollsida. Ingen inloggning, uppladdning, albumhantering eller PWA är aktiverad här ännu.</p>
+<div class="panel">
+<p><strong>Projekt:</strong> <code>remember-test</code></p>
+<p><strong>Supabase-ID:</strong> <code>kauxrvshxgpbvptdwhog</code></p>
+<p><strong>Inloggningslagring:</strong> ingen; inga produktionssessioner läses</p>
+<p><strong>Service Worker:</strong> registreras inte av denna sida</p>
+<button id="check" type="button">Kontrollera testanslutning</button>
+<p id="result" role="status" aria-live="polite">Inte kontrollerad.</p>
+</div>
+<p class="muted">Detta är steg 1. En fullständig separat klient byggs först efter kontroll av samtliga autentiserings-, uppdaterings- och uppladdningsvägar.</p>
+</main>
+<script>
+'use strict';
+const PROJECT='kauxrvshxgpbvptdwhog';
+const KEY='sb_publishable_iLKTdBYdh2w5ALhEyFtW8A_V8Gujyam';
+const result=document.getElementById('result');
+document.getElementById('check').addEventListener('click',async()=>{
+ result.textContent='Kontrollerar testprojektet…';
+ try{
+  const url='https://'+PROJECT+'.supabase.co/auth/v1/health';
+  const response=await fetch(url,{headers:{apikey:KEY},cache:'no-store',credentials:'omit',redirect:'error'});
+  const text=await response.text();
+  result.textContent=response.ok?'TEST API svarar: HTTP '+response.status+'. Ingen session eller produktionsdata använd.':'TEST API svarade HTTP '+response.status+'. Kontrollera konfiguration före fortsättning.';
+ }catch(error){result.textContent='Kunde inte nå TEST API. Kontrollera nätverk/CORS. Ingen ändring utförd.';}
+});
+</script>
+</body>
+</html>
