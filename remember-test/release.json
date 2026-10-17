@@ -1,0 +1,10 @@
+{
+  "version": "0.1.75",
+  "release": "remember-0.1.75",
+  "updated": "2026-10-16",
+  "assets": [
+    "remember-design.css",
+    "remember-version.js",
+    "auto-update.js"
+  ]
+}
