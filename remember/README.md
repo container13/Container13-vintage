@@ -1,5 +1,8 @@
 # Container13 Remember
 
+> **Aktuell återstart för Remember Test / avbruten återställningssimulering:** Läs [RECOVERY_CHECKPOINT.md](RECOVERY_CHECKPOINT.md) före andra statusfiler. Äldre installationssiffror och utvecklingsplaner är historiska och får inte användas som aktuell teststatus.
+
+
 Gemensam albumtjänst under varumärket Container13. Arbetsnamn Remember, tänkt publik adress https://container13.se/remember/. Första pilot: fiskeresa.
 
 ## Status
