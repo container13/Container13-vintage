@@ -105,7 +105,7 @@ import { checkRememberWebmaster } from "./remember-account-access.js?v=0.1.21";
 const $=id=>document.getElementById(id);
 const recoveryParams=new URLSearchParams(location.hash.slice(1));
 const recoveryQuery=new URLSearchParams(location.search);
-const recoveryLinkRequested=recoveryParams.get('type')==='recovery'||recoveryQuery.get('type')==='recovery'||(recoveryQuery.has('code')&&sessionStorage.getItem('remember-password-reset-pending')==='1');
+const recoveryLinkRequested=recoveryParams.get('type')==='recovery'||recoveryQuery.get('type')==='recovery'||recoveryQuery.get('password_recovery')==='1'||(recoveryQuery.has('code')&&sessionStorage.getItem('remember-password-reset-pending')==='1');
 let recoveryEventSeen=false;
 function openPasswordView(){
  if(!session)return;
@@ -181,7 +181,7 @@ try{
  }
  client.auth.onAuthStateChange((event,next)=>{
    showSession(next);
-   if(event==='PASSWORD_RECOVERY' && next){
+   if(next && (event==='PASSWORD_RECOVERY'||(recoveryLinkRequested&&event==='SIGNED_IN'))){
      recoveryEventSeen=true;
      showRecoveryForm();
    }
@@ -191,7 +191,6 @@ try{
  // Preserve recovery URL until the authenticated recovery form has been selected.
  showSession(data.session);
  if(data.session && recoveryLinkRequested && !recoveryEventSeen)showRecoveryForm();
- history.replaceState(null,'',location.pathname);
  if(data.session && !recoveryLinkRequested && !recoveryEventSeen){
    location.replace('./dashboard.html');
    throw new Error('redirecting');
@@ -219,7 +218,7 @@ $('resetPassword').onclick=async()=>{
  lock(true);message('Begär lösenordslänk…');
  try {
    const {error}=await client.auth.resetPasswordForEmail($('email').value.trim(),{
-     redirectTo:'https://container13.se/remember/login.html'
+     redirectTo:'https://container13.se/remember/login.html?password_recovery=1'
    });
    if(!error)sessionStorage.setItem('remember-password-reset-pending','1');
    message(error?'Kunde inte skicka länken. Försök igen senare.':'Om kontot finns skickas en säker länk för att skapa eller återställa lösenordet.');
