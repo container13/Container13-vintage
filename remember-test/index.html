@@ -22,6 +22,9 @@
 <p><strong>Inloggningslagring:</strong> ingen; inga produktionssessioner läses</p>
 <p><strong>Service Worker:</strong> registreras inte av denna sida</p>
 <button id="check" type="button">Kontrollera testanslutning</button>
+<button id="copyResult" type="button">Kopiera testresultat</button>
+<button id="copyReport" type="button">Kopiera sidrapport</button>
+<p id="copyFeedback" role="status" aria-live="polite"></p>
 <p id="result" role="status" aria-live="polite">Inte kontrollerad.</p>
 </div>
 <p class="muted">Detta är steg 1. En fullständig separat klient byggs först efter kontroll av samtliga autentiserings-, uppdaterings- och uppladdningsvägar.</p>
@@ -31,8 +34,21 @@
 const PROJECT='kauxrvshxgpbvptdwhog';
 const KEY='sb_publishable_iLKTdBYdh2w5ALhEyFtW8A_V8Gujyam';
 const result=document.getElementById('result');
+let lastChecked='Inte kontrollerad';
+function report(full){return [
+ 'Remember TEST – teknisk rapport',
+ 'Projekt: remember-test',
+ 'Supabase-ID: '+PROJECT,
+ 'Kontrolltid: '+lastChecked,
+ 'Resultat: '+result.textContent,
+ ...(full?['Sidadress: '+location.href,'Inloggningslagring: ingen','Service Worker: registreras inte av testsidan','Anslutning: testprojektet, inte originalet']:[])
+].join('\\n');}
+async function copyReport(full){const content=report(full),feedback=document.getElementById('copyFeedback');try{await navigator.clipboard.writeText(content);feedback.textContent=full?'Sidrapport kopierad.':'Testresultat kopierat.';}catch(e){const t=document.createElement('textarea');t.value=content;t.style.cssText='position:fixed;left:8px;top:8px;width:80%;height:120px;z-index:9999';document.body.appendChild(t);t.focus();t.select();feedback.textContent='Automatisk kopiering blockerades. Rapporten är markerad – kopiera med Ctrl+C eller Cmd+C.';}}
+document.getElementById('copyResult').addEventListener('click',()=>copyReport(false));
+document.getElementById('copyReport').addEventListener('click',()=>copyReport(true));
 document.getElementById('check').addEventListener('click',async()=>{
  result.textContent='Kontrollerar testprojektet…';
+ lastChecked=new Date().toLocaleString('sv-SE',{dateStyle:'short',timeStyle:'medium'});
  try{
   const url='https://'+PROJECT+'.supabase.co/auth/v1/health';
   const response=await fetch(url,{headers:{apikey:KEY},cache:'no-store',credentials:'omit',redirect:'error'});
