@@ -46,3 +46,9 @@ Inspect deployed rejection/restore function and DB triggers for insertion points
 - Verified direct execution result: rejected_count=0, next_expiry=NULL, expired_count=0 (PASS for current empty queue).
 - **NOT YET IMPLEMENTED:** automatic scheduling trigger, one-shot job, retry/result handling, and switching off hourly cron. Do not confuse preview PASS with full scheduler PASS.
 - Existing hourly cron remains enabled. Production unchanged.
+
+## Implementation checkpoint — scheduler state (2026-10-17)
+- Applied test-only migration `remember_quarantine_scheduler_state_v1`: private singleton table `remember.quarantine_scheduler_state` and internal `remember.refresh_quarantine_scheduler_state()`.
+- EXECUTE/table access revoked from public/anon/authenticated; refresh derives values from deployed read-only preview.
+- Verified state row: `rejected_count=0`, `next_expiry=NULL`, refreshed timestamp present. PASS for empty queue.
+- This is passive state only. No trigger, one-shot scheduling, retry mechanism, or cron replacement deployed yet. Existing hourly cron must remain active.
