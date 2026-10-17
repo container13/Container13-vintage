@@ -103,7 +103,9 @@ body.password-mode header,body.password-mode .brand-tagline,body.password-mode .
 <script type="module">
 import { checkRememberWebmaster } from "./remember-account-access.js?v=0.1.21";
 const $=id=>document.getElementById(id);
-const recoveryLinkRequested=new URLSearchParams(location.hash.slice(1)).get('type')==='recovery';
+const recoveryParams=new URLSearchParams(location.hash.slice(1));
+const recoveryQuery=new URLSearchParams(location.search);
+const recoveryLinkRequested=recoveryParams.get('type')==='recovery'||recoveryQuery.get('type')==='recovery'||(recoveryQuery.has('code')&&sessionStorage.getItem('remember-password-reset-pending')==='1');
 let recoveryEventSeen=false;
 function openPasswordView(){
  if(!session)return;
@@ -118,7 +120,7 @@ function closePasswordView(){
  $('setPasswordArea').open=false;$('setPasswordArea').hidden=true;
  $('openPasswordView').insertAdjacentElement('afterend',$('setPasswordArea'));
 }
-function showRecoveryForm(){openPasswordView();}
+function showRecoveryForm(){openPasswordView();sessionStorage.removeItem('remember-password-reset-pending');}
 let client=null,session=null,busy=false,creationAllowed=false,webmasterAllowed=false,roleRevision=0;
 function message(text){$('feedback').textContent=text}
 function lock(value){busy=value;document.querySelectorAll('button').forEach(b=>b.disabled=value)}
@@ -219,6 +221,7 @@ $('resetPassword').onclick=async()=>{
    const {error}=await client.auth.resetPasswordForEmail($('email').value.trim(),{
      redirectTo:'https://container13.se/remember/login.html'
    });
+   if(!error)sessionStorage.setItem('remember-password-reset-pending','1');
    message(error?'Kunde inte skicka länken. Försök igen senare.':'Om kontot finns skickas en säker länk för att skapa eller återställa lösenordet.');
  }catch{message('Anslutningen misslyckades. Försök igen.')}
  finally{lock(false)}
