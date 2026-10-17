@@ -108,3 +108,8 @@ Inspect deployed rejection/restore function and DB triggers for insertion points
 - Migration `remember_quarantine_eligible_batch_paging_v1` in Remember Test changes `public.remember_photo_quarantine_expired_read()` to select at most 50 **eligible** expired rejected ready photos, excluding actively claimed rows and allowing stale claims (>30 minutes) to re-enter. This avoids starvation when the oldest 50 are actively claimed.
 - Direct RPC readback returned empty eligible list (expected with zero rejected); independent photo count unchanged at 4.
 - Still NOT a verified >50-photo integration test. HTTP 503 and abrupt interruption end-to-end recovery also not yet proven. Production untouched.
+
+## Stale-token recovery transaction test (2026-10-17)
+- In Remember Test, used a transaction with a claim against an existing photo, simulated 31-minute-old claim, replaced its token, and invoked token-aware release using the old token. New token survived (`surviving_new_claim=1`): PASS.
+- ROLLBACK followed by independent readback: claims=0, photos=4. No image deleted.
+- This validates stale release isolation, **not** live Edge Function HTTP 503 retry or storage deletion. Those remain open for final integration PASS.
