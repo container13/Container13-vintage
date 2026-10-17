@@ -1,5 +1,8 @@
 # Aktuella filer och historik
 
+> **Gemensam kontinuitetsregel:** Följ även [`../project-template/CONTINUITY_PROTOCOL.md`](../project-template/CONTINUITY_PROTOCOL.md). `LINA_CURRENT_STATE.json` är auktoritativ strukturerad status. Systemmanualen beskriver arbetssättet och handoff är historik. Vid konflikt: kontrollera verklig release/runtime före ändring; avbrutet test är UNVERIFIED tills bevis finns. Respektera frysta generationer och avstängd Handel/Forward.
+
+
 **Börja här:** [LINA_SYSTEM_MANUAL.md](LINA_SYSTEM_MANUAL.md) är den sammanhållna operativa manualen och dokumentkartan. Aktuell release läses alltid från `version.js`; äldre versionsrubriker i README/handoff/arkitekturdokument är historik.
 
 Aktuella projektfiler ligger i denna mapp. [Äldre handoff- och Worker-filer finns i historikarkivet](history/legacy/README.md). [Genomförd rensningslista](LINA_CLEANUP_PROPOSAL.md).
