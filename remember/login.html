@@ -249,7 +249,7 @@ $('savePassword').onclick=async()=>{
  try {
    const {error}=await client.auth.updateUser({password});
    if(error){const code=error.code||'';const status=error.status||0;$('passwordResult').textContent=code==='same_password'?'Det här är redan ditt nuvarande lösenord. Välj ett annat om du vill byta.':code==='reauthentication_needed'?'Av säkerhetsskäl behöver du verifiera din inloggning på nytt innan du kan ändra lösenordet.':code==='weak_password'?'Lösenordet uppfyller inte säkerhetskraven. Välj ett starkare lösenord.':status===401||status===403?'Din inloggning behöver förnyas innan lösenordet kan ändras.':'Lösenordet kunde inte sparas (felkod: '+(code||status||'okänd')+'). Försök igen senare.';}
-   else{$('newPassword').value='';$('confirmPassword').value='';setEye('toggleNewPassword','newPassword',false);setEye('toggleConfirmPassword','confirmPassword',false);$('setPasswordArea').open=false;$('passwordFormSlot').hidden=true;$('passwordSuccess').hidden=false;$('passwordResult').textContent='Ditt nya lösenord har sparats.';message('Ditt nya lösenord har sparats.');validateNewPassword();}
+   else{$('newPassword').value='';$('confirmPassword').value='';setEye('toggleNewPassword','newPassword',false);setEye('toggleConfirmPassword','confirmPassword',false);$('setPasswordArea').open=false;$('passwordFormSlot').hidden=true;$('passwordSuccess').hidden=false;$('passwordResult').textContent='Ditt nya lösenord har sparats.';message('Ditt nya lösenord har sparats. Du är inloggad. Öppnar Mina album…');validateNewPassword();sessionStorage.removeItem('remember-password-reset-pending');location.replace('./dashboard.html');}
  }catch{$('passwordResult').textContent='Kunde inte nå inloggningstjänsten.'}
  finally{lock(false)}
 };
