@@ -8,8 +8,8 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.96",
-    "integrity": "GITHUB_READBACK_PENDING_IPHONE_PASS"
+    "candidate": "0.1.97",
+    "integrity": "GITHUB_READBACK_PENDING_IPHONE_AUTHENTICATED_CREATE_TEST"
   },
   "workCheckpoint": {
     "status": "READY",
@@ -23,8 +23,8 @@
     "resumeInstruction": "Read remember/START_HERE.md first; historical handoff is reference only."
   },
   "currentWork": {
-    "completed": "v0.1.96: Dashboard structural cleanup. Removed redundant Administration title in webmaster mode, compacted real webmaster tools and album cards, kept all-albums separate from owned albums, moved album IDs out of visual cards into link title, hid duplicate webmaster album-creation form while keeping primary create-album link. No backend changes.",
-    "next": "iPhone verify webmaster dashboard, list albums, own albums and one create-album entry; continue other views design polish. Moderation 5m–72h pending.",
+    "completed": "v0.1.97: new compact album creation hero. For verified logged-in users, email field and login prompt are hidden; existing onboarding stage+complete backend flow creates album using active session without sending another activation email. Logged-out flow unchanged.",
+    "next": "iPhone verify logged-in create flow (no email field, creates album in owned list), logged-out email+login link still visible. Potential stage/complete retry behavior to validate.",
     "blocked": false,
     "blocker": null
   },
