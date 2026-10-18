@@ -8,8 +8,8 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.88",
-    "integrity": "GITHUB_DOCS_READBACK_DEVICE_PASS_0.1.87"
+    "candidate": "0.1.89",
+    "integrity": "GITHUB_READBACK_DEVICE_PENDING"
   },
   "workCheckpoint": {
     "status": "READY",
@@ -23,8 +23,8 @@
     "resumeInstruction": "Read remember/START_HERE.md first; historical handoff is reference only."
   },
   "currentWork": {
-    "completed": "2026-10-18: webmaster gallery authorized on server; v0.1.87 image-frame pinch zoom accepted on iPhone; Safari login persistence issue caused by Private Browsing and resolved in normal tab.",
-    "next": "Webmaster-configurable moderation expiry 5 min–72 h for development testing; remove visible session diagnostic; complete owner/guest camera tests.",
+    "completed": "v0.1.89: webmaster album administration adds guest-mode navigation using real guest link and return link; owner button is navigation to existing admin owner-like actions, not authorization impersonation.",
+    "next": "Verify v0.1.89 role switch on iPhone; build true owner-view preview with proper server-side permission boundary; implement configurable moderation expiration.",
     "blocked": false,
     "blocker": null
   },
