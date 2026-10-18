@@ -102,3 +102,8 @@ Säg: **”Fortsätt Remember. Läs remember/START_HERE.md och aktuell projektst
 - Återinför StPageFlip på startsidan efter 0.1.118 återställning, men med explicit höjd på foto (sidans höjd minus 48 px bildtext) så att den stora beige tomytan inte uppstår när StPageFlip skriver över sidans display.
 - Separata kompletterande bilder finns på varje baksida. Baksidesbilderna motvänds i CSS för att motverka 3D-motorns spegling under bladrotation. Detta är en hypotes som måste testas på iPhone; inte verifierat i mobilruntime.
 - Bladvändning 1000 ms, visning cirka 1800 ms, övriga startsidan bibehållen. CURRENT/PREVIOUS ej uppgraderade före användarens PASS.
+
+## 0.1.120 – bladens fysiska baksidor
+- 0.1.119 underkänd av användaren: samma motiv visas på bladens fram- och baksida.
+- Varje främre blad får nu en egen bakåtvänd bildyta med kompletterande motiv, CSS rotateY(180deg) och backface-visibility:hidden. De separata sidorna med kompletterande motiv behålls.
+- Ändringen är en riktad hypotes för StPageFlips 3D-återgivning; faktiskt utfall på iPhone är ännu INTE verifierat. Ingen rollback, startsidans övriga design oförändrad.
