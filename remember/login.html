@@ -208,9 +208,9 @@ try{
 function ensurePasswordInput(){
  let field=$('password');if(field)return field;
  field=document.createElement('input');field.id='password';field.type='password';field.autocomplete='current-password';field.minLength=6;
- $('passwordMount').replaceChildren(field);return field;
+ const wrap=document.createElement('div');wrap.className='password-input-wrap';const eye=document.createElement('button');eye.id='toggleLoginPassword';eye.type='button';eye.className='password-eye';eye.setAttribute('aria-label','Visa lösenord');eye.setAttribute('aria-pressed','false');eye.textContent='◉';wrap.append(field,eye);$('passwordMount').replaceChildren(wrap);eye.onclick=()=>setEye('toggleLoginPassword','password',field.type==='password');setEye('toggleLoginPassword','password',false);return field;
 }
-function discardPasswordInput(){const field=$('password');if(field)field.remove();}
+function discardPasswordInput(){const wrap=$('passwordMount');wrap.replaceChildren();}
 $('choosePassword').onclick=()=>{if(!$('email').reportValidity())return;$('methods').hidden=true;$('passwordStep').hidden=false;ensurePasswordInput();message('Ange lösenord. Har du inget ännu? Välj Skapa eller återställ lösenord via mejl.');};$('backMethods').onclick=()=>{$('passwordStep').hidden=true;$('methods').hidden=false;discardPasswordInput();message('Välj inloggningssätt.');};$('login').addEventListener('submit',async e=>{
  e.preventDefault();if(busy||!client||!$('login').reportValidity())return;
  if($('passwordStep').hidden||!$('password').value){message('Ange lösenord eller välj mejllänk.');return;}
