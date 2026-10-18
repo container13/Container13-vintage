@@ -8,7 +8,7 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.105",
+    "candidate": "0.1.106",
     "integrity": "GITHUB_READBACK_PENDING_IPHONE_LAYOUT_PASS"
   },
   "workCheckpoint": {
@@ -27,7 +27,7 @@
     "next": "Physical iPhone Safari test: no scrolling on landing, both actions visible; login header proportions.",
     "blocked": false,
     "blocker": null,
-    "landingPage": "v0.1.105 new approved design committed; iPhone runtime verification pending"
+    "landingPage": "v0.1.106 repaired JS syntax error in book pages; device verification pending"
   },
   "pausedWork": {
     "fotobok": "Parkerad idé; inte i första releasen."
