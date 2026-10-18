@@ -8,12 +8,12 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.113",
-    "integrity": "CANDIDATE_UNVERIFIED; LANDING_DOTS_AND_VERSION_BADGE_REMOVED_PENDING_IPHONE_PASS"
+    "candidate": "0.1.114",
+    "integrity": "PROTOTYPE_BRANCH_ONLY; STPAGEFLIP_CDN_RUNTIME_UNVERIFIED; IPHONE_PASS_PENDING"
   },
   "workCheckpoint": {
     "status": "READY",
-    "targetRelease": "0.1.113",
+    "targetRelease": "0.1.114",
     "goal": "Continue active Remember development from remember/START_HERE.md",
     "plan": [
       "Read START_HERE.md and current code before work",
@@ -554,9 +554,9 @@
   },
   "bookEngineResearch": {
     "date": "2026-10-18",
-    "recommended": "StPageFlip isolated prototype",
-    "alternative": "Turn.js",
-    "status": "RESEARCH_ONLY_NOT_IMPLEMENTED",
-    "requirement": "Natural finger-driven page curl, consistent paper, restrained shadows, iPhone Safari test"
+    "prototype": "remember/book-prototype.html",
+    "engine": "page-flip@2.0.7 StPageFlip",
+    "status": "ISOLATED_PROTOTYPE_NOT_DEPLOYED_NOT_RUNTIME_VERIFIED",
+    "next": "Verify CDN module loads and iPhone Safari drag/flip, shadow, portrait, paper palette; no main landing replacement"
   }
 }
