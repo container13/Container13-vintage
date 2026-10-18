@@ -484,3 +484,26 @@ body.remember-shell .version[hidden]{display:none!important}
   }
 }
 @media print{#remember-global-version{display:none!important}}
+
+
+/* v0.1.94 — unified, compact content hierarchy across Remember.
+   Preserve the floating release version managed by remember-version.js. */
+body.remember-shell main {--remember-content-gap:14px}
+body.remember-shell .panel,
+body.remember-shell .remember-panel {border-radius:20px}
+body.remember-shell .panel h1,
+body.remember-shell .remember-panel h1 {line-height:1.13;letter-spacing:-.025em}
+body.remember-shell .actions {gap:10px}
+body.remember-shell .actions button {border-radius:13px}
+body.remember-shell .version {font-size:11px!important;opacity:.65;text-align:center;letter-spacing:.02em}
+body.remember-shell[data-remember-view="login"] .brand-tagline {display:none}
+body.remember-shell[data-remember-view="login"] .brand-subtitle {margin:6px auto 16px;font-size:clamp(17px,4.3vw,24px);line-height:1.3}
+body.remember-shell[data-remember-view="login"] .login-subtitle {display:none}
+body.remember-shell[data-remember-view="albums"] #dashboardSubtitle {display:none!important}
+body.remember-shell[data-remember-view="memories"] .owner-view-label {font-size:12px;letter-spacing:.06em;opacity:.78;margin:12px 0 3px}
+body.remember-shell[data-remember-view="memories"] .action-tile .tile-copy small {display:none}
+@media(max-width:767px){
+ body.remember-shell .panel,body.remember-shell .remember-panel {padding:clamp(15px,4vw,20px)}
+ body.remember-shell h1 {margin-block:10px 15px}
+ body.remember-shell[data-remember-view="memories"] .action-tile {min-height:56px}
+}
