@@ -2,18 +2,18 @@
   "schema": "PROJECT-CURRENT-STATE-1",
   "project": "Container13 Remember – gemensamma album",
   "repository": "container13/Container13-vintage",
-  "branch": "ccc-demo-public-test",
+  "branch": "remember-development",
   "projectRoot": "remember/",
   "riskClass": "HIGH",
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.108",
-    "integrity": "CI_PASS_BACKUP_UPLOAD_PASS_RESTORE_UNTESTED_DEVICE_UNVERIFIED"
+    "candidate": "0.1.110",
+    "integrity": "CANDIDATE_UNVERIFIED; PERMANENT_ARCHIVE_BRANCH_READBACK_PASS_0.1.109; IPHONE_PASS_PENDING"
   },
   "workCheckpoint": {
     "status": "READY",
-    "targetRelease": "0.1.88",
+    "targetRelease": "0.1.110",
     "goal": "Continue active Remember development from remember/START_HERE.md",
     "plan": [
       "Read START_HERE.md and current code before work",
@@ -498,5 +498,26 @@
     "changeRequires": "explicit_project_owner_decision",
     "authoritativeSummary": "remember/START_HERE.md",
     "verifiedAt": "2026-10-18"
+  },
+  "rememberBranchProtection": {
+    "dedicatedBranch": "remember-development",
+    "sharedBranch": "ccc-demo-public-test",
+    "decision": "Protect Remember branch only; do NOT activate branch protection on shared branch",
+    "status": "RULE_CREATED_CONFIRMED_BY_GITHUB_UI_2026-10-18",
+    "requiredCheck": "preserve-and-check",
+    "note": "Remember remains under remember/ in the shared repo. GitHub Pages currently publishes from shared branch; dedicated branch is not yet live or deployment source. Do not change deployment until reviewed. Pull request checks must target remember-development and the workflow must be available there.",
+    "branch": "remember-development",
+    "checks": "Pull request required, approvals disabled, status check required (as configured in UI)",
+    "evidence": "GitHub Settings Branches screenshot shows 'Branch protection rule created' and exactly one matching branch",
+    "limitations": "Enforcement against bypass/direct pushes not independently tested; admin bypass allowed per UI settings. Shared branch remains outside this rule.",
+    "deployment": "Live Remember still publishes from ccc-demo-public-test; branch migration pending.",
+    "snapshotPR": "https://github.com/container13/Container13-vintage/pull/1",
+    "snapshotStatus": "MERGED_PUSH_ARCHIVE_REF_READBACK_PASS_2026-10-18"
+  },
+  "releasePromotion": {
+    "process": "remember/RELEASE_PROMOTION.md",
+    "currentAndPrevious": "UNSET_PENDING_IPHONE_AND_DEPLOY_VERIFICATION",
+    "candidate": "0.1.110",
+    "note": "Release process docs changed; no runtime/device promotion implied"
   }
 }
