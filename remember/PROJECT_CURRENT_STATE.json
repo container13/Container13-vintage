@@ -8,7 +8,7 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.94",
+    "candidate": "0.1.95",
     "integrity": "GITHUB_READBACK_PENDING_IPHONE_PASS"
   },
   "workCheckpoint": {
@@ -23,8 +23,8 @@
     "resumeInstruction": "Read remember/START_HERE.md first; historical handoff is reference only."
   },
   "currentWork": {
-    "completed": "v0.1.94: shared compact visual hierarchy for login, registration, dashboard, owner and both album views; removed obsolete internal version labels, preserved global release version footer; functionality unchanged.",
-    "next": "Review visual results on iPhone across login/dashboard/owner/guest/webmaster; continue view-by-view polish; moderation expiry setting pending.",
+    "completed": "v0.1.95: moved global version indicator from fixed overlay into page flow, compacted creation form and dashboard webmaster panel via shared design CSS. Based on iPhone screenshots from webmaster account; no auth or album logic changes.",
+    "next": "iPhone confirm version no longer overlays forms and dashboard/registration spacing; continue holistic design audit including webmaster context across navigation.",
     "blocked": false,
     "blocker": null
   },
