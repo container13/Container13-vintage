@@ -5,16 +5,15 @@
  function mount(version){
   if(!document.getElementById('remember-global-version-style')){
    const style=document.createElement('style');style.id='remember-global-version-style';
-   style.textContent='#remember-global-version{position:relative!important;z-index:2;display:table;margin:16px auto calc(18px + env(safe-area-inset-bottom,0px));padding:3px 9px;border-radius:999px;font:500 10px/1.4 system-ui,-apple-system,sans-serif;letter-spacing:.025em;color:#fff8ed;background:rgba(28,24,20,.72);pointer-events:none;white-space:nowrap}body:has(dialog[open]) #remember-global-version{display:none}.version[hidden]{display:none!important}';document.head.append(style);
+   style.textContent='#remember-global-version{position:relative!important;z-index:2;display:table;margin:16px auto calc(18px + env(safe-area-inset-bottom,0px));padding:3px 9px;border-radius:999px;font:500 10px/1.4 system-ui,-apple-system,sans-serif;letter-spacing:.025em;color:#fff8ed;background:rgba(28,24,20,.72);pointer-events:none;white-space:nowrap}body:has(dialog[open]) #remember-global-version{display:none}body:has(.book) #remember-global-version{position:fixed!important;left:auto!important;right:10px!important;bottom:calc(4px + env(safe-area-inset-bottom,0px))!important;margin:0!important;z-index:5!important;background:rgba(28,24,20,.45)!important}.version[hidden]{display:none!important}';document.head.append(style);
   }
   if(!document.body)return;
   document.querySelectorAll('.version').forEach(n=>{n.hidden=true});
   let el=document.getElementById('remember-global-version');
-  if(!el){el=document.createElement('div');el.id='remember-global-version';el.setAttribute('aria-label','Remember versionsnummer');(document.querySelector('main')||document.body).append(el)}
+  if(!el){el=document.createElement('div');el.id='remember-global-version';el.setAttribute('aria-label','Remember versionsnummer');document.body.append(el)}
   el.textContent='Remember · v'+version;
  }
  function start(){
-  if(location.pathname.replace(/\/+$/,'').endsWith('/remember')||location.pathname.endsWith('/remember/index.html'))return;
   mount(running);
   fetch('./release.json?check='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(data=>{if(data&&/^\d+\.\d+\.\d+$/.test(data.version)&&data.version!==running){const el=document.getElementById('remember-global-version');if(el)el.textContent='Remember · v'+running+' · uppdatering finns'}}).catch(()=>{});
  }
