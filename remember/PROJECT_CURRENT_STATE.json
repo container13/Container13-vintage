@@ -8,29 +8,25 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.87",
-    "integrity": "GITHUB_READBACK_DEVICE_PENDING"
+    "candidate": "0.1.88",
+    "integrity": "GITHUB_DOCS_READBACK_DEVICE_PASS_0.1.87"
   },
   "workCheckpoint": {
-    "status": "COMMITTED_DEVICE_PENDING",
-    "targetRelease": "0.1.62",
-    "goal": "Reconcile Remember release documentation and investigate iOS 27 installed-PWA bottom background band without speculative CSS patches",
+    "status": "READY",
+    "targetRelease": "0.1.88",
+    "goal": "Continue active Remember development from remember/START_HERE.md",
     "plan": [
-      "Read shared project template and Remember decisions before changing code",
-      "Preserve the 2026-10-16 on-device measurements and independent installed-PWA reproduction",
-      "Do not repeat unsuccessful viewport/CSS height workarounds; isolate iOS/WebKit rendering behavior and verify any new hypothesis",
-      "Compare Mina album automatic background movement with owner album view after initial paint; desired behavior is no movement and no band",
-      "Verify deployed release and installed iPhone cold launch/resume before marking any fix DEVICE PASS",
-      "Resume owner multi-photo camera acceptance after v0.1.60 fullscreen layout change, without confusing it with background investigation"
+      "Read START_HERE.md and current code before work",
+      "Keep one shared implementation per behavior",
+      "Bump version on every change and distinguish commit/deploy/device verification"
     ],
-    "lastSafeRelease": null,
-    "resumeInstruction": "Start with project-template/PROJECT_RELEASE_STANDARD.md, PROJECT_MASTER_RULES.md, PROJECT_RELEASE_CHECKLIST.md, SHARED_COMPONENT_REGISTER.md, remember/DECISIONS.md and this state. v0.1.60 is repository release identity, not a verified live/device PASS. iOS bottom band reproduced even in independent installed test PWA; do not add speculative CSS fixes. Consult remember/PROJECT_HANDOFF_CURRENT.md latest 2026-10-16 section and remember/OPERATING_LIMITS.md for service issues. Never rerun migrations or modify existing album data."
+    "resumeInstruction": "Read remember/START_HERE.md first; historical handoff is reference only."
   },
   "currentWork": {
-    "completed": "Source inventory and GitHub review checkpoint saved at remember/security/REVIEW_CHECKPOINT_2026-10-16.md. Nine HTML entry pages carry 0.1.75 and import shared updater.",
-    "next": "Complete security authorization review before applying settings schema; verify 0.1.75 iPhone swipe.",
+    "completed": "2026-10-18: webmaster gallery authorized on server; v0.1.87 image-frame pinch zoom accepted on iPhone; Safari login persistence issue caused by Private Browsing and resolved in normal tab.",
+    "next": "Webmaster-configurable moderation expiry 5 min–72 h for development testing; remove visible session diagnostic; complete owner/guest camera tests.",
     "blocked": false,
-    "blocker": "Security migration not executed; deployed RPC and storage policy review plus physical iPhone acceptance pending."
+    "blocker": null
   },
   "pausedWork": {
     "fotobok": "Parkerad idé; inte i första releasen."
@@ -492,5 +488,14 @@
     "recoveryAuditFunctionVersion": 12,
     "recoverySimulationStatus": "USER_REPORTED_PASS_SERVER_RESPONSE_BODY_NOT_RETRIEVED",
     "currentCheckpoint": "remember/RECOVERY_CHECKPOINT.md"
+  },
+  "projectMode": {
+    "status": "ACTIVE_DEVELOPMENT",
+    "launched": false,
+    "customerData": false,
+    "dataClassification": "development_and_test_material",
+    "changeRequires": "explicit_project_owner_decision",
+    "authoritativeSummary": "remember/START_HERE.md",
+    "verifiedAt": "2026-10-18"
   }
 }
