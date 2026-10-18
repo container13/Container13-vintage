@@ -547,9 +547,16 @@
   },
   "landingFeedback": {
     "version": "0.1.112",
-    "request": "Remove pagination dots below photo book and visible version label from landing page",
+    "request": "Remove pagination dots below book; keep version visible but move outside book to discreet bottom-right",
     "fixCandidate": "0.1.113",
-    "scope": "Landing page only; version remains in metadata and other views",
+    "scope": "Landing dots removed; badge retained and positioned bottom-right; engine research documented, no engine replacement yet",
     "devicePass": false
+  },
+  "bookEngineResearch": {
+    "date": "2026-10-18",
+    "recommended": "StPageFlip isolated prototype",
+    "alternative": "Turn.js",
+    "status": "RESEARCH_ONLY_NOT_IMPLEMENTED",
+    "requirement": "Natural finger-driven page curl, consistent paper, restrained shadows, iPhone Safari test"
   }
 }
