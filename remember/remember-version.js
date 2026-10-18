@@ -1,6 +1,6 @@
 /* One release badge for all Remember user-facing views. */
 (()=>{'use strict';
- const fallback='0.1.88';
+ const fallback='0.1.89';
  const running=document.querySelector('meta[name="remember-release"]')?.content?.replace(/^remember-/,'')||fallback;
  function mount(version){
   if(!document.getElementById('remember-global-version-style')){
