@@ -97,3 +97,8 @@ Säg: **”Fortsätt Remember. Läs remember/START_HERE.md och aktuell projektst
 - Motorn laddas externt från jsDelivr. Om modulen inte laddas visas en statisk första sida i stället för tomt utrymme.
 - Ändringen ligger ENDAST i kandidatgren/PR tills iPhone Safari och release-säkerhet kontrollerats. CURRENT/PREVIOUS null. Prototypen book-prototype.html finns kvar för jämförelse.
 - Testa iPhone: layout utan klippning, automatisk sidvändning, manuell touch, återstart efter paus, modalpaus, rättvända baksidor, version och återhämtning vid CDN-fel.
+
+## 0.1.118 – återställning efter iPhone-fel
+- Användarens skärmbild av 0.1.117 visar mycket stor tom beige yta under foto och samma motiv på bladets baksida. Denna integration är UNDERKÄND.
+- Återställ startsidans bokkod från verifierat 0.1.116-arkiv. Behåll prototypen separat; inför inte StPageFlip igen förrän mobilgeometri och riktiga separata baksidor testats.
+- 0.1.118 är återställningskandidat, ej nytt visuellt godkännande. CURRENT/PREVIOUS förblir null.
