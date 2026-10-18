@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
       - name: Preserve previous commit before checking candidate
         env:
           BEFORE: ${{ github.event.before }}
@@ -20,7 +20,7 @@ jobs:
         run: |
           set -euo pipefail
           if [[ "${{ github.event_name }}" != "push" || "$BEFORE" =~ ^0+$ ]]; then exit 0; fi
-          git cat-file -e "$BEFORE^{commit}"
+          git cat-file -e "$BEFORE^{commit}" # full history also handles multi-commit pushes
           TAG="remember/snapshot-${BEFORE:0:12}"
           if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then exit 0; fi
           git tag "$TAG" "$BEFORE"
