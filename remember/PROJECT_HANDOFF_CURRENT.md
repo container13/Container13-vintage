@@ -1,3 +1,9 @@
+# AKTUELL STARTPUNKT: [START_HERE.md](START_HERE.md)
+
+**AKTIV UTVECKLING, INTE LANSERAD.** Den här filen är en historisk arbetslogg och innehåller äldre uppgifter som inte längre beskriver nuläget. Läs START_HERE.md och PROJECT_CURRENT_STATE.json först. Ny information ska inte läggas som ytterligare en lång historiksektion här om den hör hemma i den korta statusen.
+
+---
+
 # Remember – aktuell överlämning
 
 ## Starta här
