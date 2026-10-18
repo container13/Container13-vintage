@@ -168,7 +168,7 @@ async function gateway(action){
 }
 const PUBLIC_KEY='sb_publishable_qOSBb7U6TGnPQ8ypyYRLGg_GtYrraoG';
 try{
- const {createRememberAuth,restoreRememberSession}=await import('./remember-auth.js?v=0.1.83');
+ const {createRememberAuth,restoreRememberSession,markRememberAuthDiagnostic}=await import('./remember-auth.js?v=0.1.84');
  client=await createRememberAuth({detectSessionInUrl:true});
  // One-time migration of the previously authenticated tab session.
  // The old value contains auth tokens; never print it or send it elsewhere.
@@ -184,7 +184,7 @@ try{
      }
    } catch { /* Old session cannot be migrated; normal sign-in remains available. */ }
  }
- client.auth.onAuthStateChange((event,next)=>{
+ client.auth.onAuthStateChange((event,next)=>{if(next)markRememberAuthDiagnostic();
    showSession(next);
    if(next && (event==='PASSWORD_RECOVERY'||(recoveryLinkRequested&&event==='SIGNED_IN'))){
      recoveryEventSeen=true;
@@ -195,6 +195,7 @@ try{
  if(error)throw error;
  // Preserve recovery URL until the authenticated recovery form has been selected.
  showSession(data.session);
+ if(data.session)markRememberAuthDiagnostic();
  if(data.session && recoveryLinkRequested && !recoveryEventSeen)showRecoveryForm();
  if(data.session && !recoveryLinkRequested && !recoveryEventSeen){
    location.replace('./dashboard.html');
