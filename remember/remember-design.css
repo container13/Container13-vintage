@@ -547,3 +547,14 @@ body.remember-shell[data-remember-view="albums"].is-webmaster #webmasterTools .w
 body.remember-shell[data-remember-view="albums"].is-webmaster #creation{display:none!important}
 body.remember-shell[data-remember-view="albums"].is-webmaster #ownerPanel{padding:14px!important}
 body.remember-shell[data-remember-view="albums"].is-webmaster #ownerPanel .newAlbum{min-height:46px!important}
+
+/* v0.1.97 — create album: compact warm hero, not a second splash screen. */
+body.remember-shell[data-remember-view="create"] .create-hero{max-width:480px;margin:0 auto 18px;padding:12px 14px 14px;text-align:center;border-radius:20px;background:rgba(21,51,40,.72);border:1px solid rgba(245,228,185,.48);box-shadow:0 10px 28px rgba(0,0,0,.16);backdrop-filter:blur(8px)}
+body.remember-shell[data-remember-view="create"] .create-hero-brand{color:#ead9b5;font-size:13px;letter-spacing:.06em;font-weight:700;margin-bottom:7px}
+body.remember-shell[data-remember-view="create"] .create-hero-brand span{font-size:10px;opacity:.83;letter-spacing:.1em}
+body.remember-shell[data-remember-view="create"] .create-hero h1{font:500 clamp(31px,8vw,40px)/1.12 Georgia,serif!important;color:#fff3dd!important;margin:0 0 8px!important}
+body.remember-shell[data-remember-view="create"] .create-hero .intro{font-size:13px!important;line-height:1.4!important;color:#f5ead7!important;margin:0!important}
+body.remember-shell[data-remember-view="create"] .create-hero .create-free{color:#d9e7a4}
+body.remember-shell[data-remember-view="create"] #emailSection[hidden],body.remember-shell[data-remember-view="create"] #loginLink[hidden]{display:none!important}
+body.remember-shell[data-remember-view="create"] #sent a{color:#d9e7a4;font-weight:750}
+body.remember-shell[data-remember-view="create"] footer{margin-top:14px}
