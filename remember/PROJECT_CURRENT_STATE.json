@@ -8,12 +8,12 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.109",
-    "integrity": "PR_CHECK_PENDING_AFTER_VERSION_SYNC; AUTOMATIC_PERMANENT_SNAPSHOT_UNVERIFIED"
+    "candidate": "0.1.110",
+    "integrity": "CANDIDATE_UNVERIFIED; PERMANENT_ARCHIVE_BRANCH_READBACK_PASS_0.1.109; IPHONE_PASS_PENDING"
   },
   "workCheckpoint": {
     "status": "READY",
-    "targetRelease": "0.1.88",
+    "targetRelease": "0.1.110",
     "goal": "Continue active Remember development from remember/START_HERE.md",
     "plan": [
       "Read START_HERE.md and current code before work",
@@ -512,6 +512,12 @@
     "limitations": "Enforcement against bypass/direct pushes not independently tested; admin bypass allowed per UI settings. Shared branch remains outside this rule.",
     "deployment": "Live Remember still publishes from ccc-demo-public-test; branch migration pending.",
     "snapshotPR": "https://github.com/container13/Container13-vintage/pull/1",
-    "snapshotStatus": "DRAFT_PENDING_PUSH_RUNTIME_PASS"
+    "snapshotStatus": "MERGED_PUSH_ARCHIVE_REF_READBACK_PASS_2026-10-18"
+  },
+  "releasePromotion": {
+    "process": "remember/RELEASE_PROMOTION.md",
+    "currentAndPrevious": "UNSET_PENDING_IPHONE_AND_DEPLOY_VERIFICATION",
+    "candidate": "0.1.110",
+    "note": "Release process docs changed; no runtime/device promotion implied"
   }
 }
