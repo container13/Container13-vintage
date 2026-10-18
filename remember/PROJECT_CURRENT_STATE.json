@@ -8,12 +8,12 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.115",
-    "integrity": "CANDIDATE_UNVERIFIED; AUTO_FLIP_AND_BACKFACE_PROTOTYPE_NEEDS_IPHONE_PASS"
+    "candidate": "0.1.116",
+    "integrity": "CANDIDATE_UNVERIFIED; USER_APPROVED_BOOK_EXCEPT_PAGE_TURN_SPEED; 1000MS_PENDING_IPHONE_PASS"
   },
   "workCheckpoint": {
     "status": "READY",
-    "targetRelease": "0.1.115",
+    "targetRelease": "0.1.116",
     "goal": "Continue active Remember development from remember/START_HERE.md",
     "plan": [
       "Read START_HERE.md and current code before work",
@@ -560,11 +560,12 @@
     "next": "Verify CDN module loads and iPhone Safari drag/flip, shadow, portrait, paper palette; no main landing replacement",
     "autoplay": {
       "stillMs": 1800,
-      "flipMs": 680,
+      "flipMs": 1000,
       "corner": "random top/bottom",
       "manualPauseMs": 4500
     },
     "backfaces": "alternating complementary photos, no reverse text",
-    "caveat": "StPageFlip public API exposes top/bottom corner, not arbitrary point along edge; images are external Unsplash and may need verification"
+    "caveat": "StPageFlip public API exposes top/bottom corner, not arbitrary point along edge; images are external Unsplash and may need verification",
+    "userFeedback": "0.1.115 looks good except page turn too fast at 680ms; proposed 1000ms, awaiting user approval"
   }
 }
