@@ -8,12 +8,12 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.111",
-    "integrity": "CANDIDATE_UNVERIFIED; IPHONE_FEEDBACK_0.1.110_FUNCTIONAL_BUT_VISUAL_AND_SPEED_REJECTED; 0.1.111_PR_CI_PENDING"
+    "candidate": "0.1.112",
+    "integrity": "CANDIDATE_UNVERIFIED; USER_REPORTED_LINGERING_LEFT_EDGE_SHADOW_AFTER_PAGE_TURN_0.1.111; FIX_PENDING_IPHONE_PASS"
   },
   "workCheckpoint": {
     "status": "READY",
-    "targetRelease": "0.1.111",
+    "targetRelease": "0.1.112",
     "goal": "Continue active Remember development from remember/START_HERE.md",
     "plan": [
       "Read START_HERE.md and current code before work",
@@ -535,6 +535,14 @@
       "paper back palette harmonized with page front",
       "book decorative backing paper matched"
     ],
-    "verifiedOnDevice": false
+    "verifiedOnDevice": false,
+    "latestReport": {
+      "version": "0.1.111",
+      "issue": "Under-page left edge darkens for about one second after page turn",
+      "suspectedCause": "CSS .book:has(.paper.turn) #under shadow",
+      "fixCandidate": "0.1.112",
+      "change": "Remove conditional shadow rule; preserve baseline paper shading",
+      "devicePass": false
+    }
   }
 }
