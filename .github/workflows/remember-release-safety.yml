@@ -37,7 +37,7 @@ jobs:
           errors=[]
           if release.get('candidate') != version: errors.append('Candidate must match release.json')
           if manifest.get('release') != 'remember-'+version: errors.append('Manifest release identity mismatch')
-          if not re.fullmatch(r'\\d+\\.\\d+\\.\\d+',version): errors.append('Invalid semantic version')
+          if not re.fullmatch(r'\d+\.\d+\.\d+',version): errors.append('Invalid semantic version')
           for name in ('currentVerified','previousVerified'):
               value=release.get(name)
               if value is not None and not isinstance(value,(dict,str)): errors.append(name+' has invalid type')
