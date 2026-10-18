@@ -30,8 +30,12 @@ Senast uppdaterad: 2026-10-18. **Detta är den korta ingången**, inte en fullst
 - `remember-release-safety.yml` bevarar 90-dagars rollback-artifact och testar isolerad återläsning samt SHA256. Befintliga manuella rollback-grenar kontrolleras.
 - Föreslagen förbättring på `remember/automatic-snapshots-01109`: skapa separat permanent `remember/archive-<commit-SHA>` för varje push, utan force update, med fjärr-readback. **Inte verifierat i Actions förrän PR har slagits ihop och ett push-test är grönt.**
 - `remember/safety-baseline-2026-10-18` är en manuellt skapad säkerhetsgren, inte godkänd CURRENT.
-- `CURRENT` och `PREVIOUS` är ännu inte godkända; `candidate=0.1.109`. Fotoboken kräver separat iPhone PASS före promotion.
+- `CURRENT` och `PREVIOUS` är ännu inte godkända; `candidate=0.1.110`. Fotoboken kräver separat iPhone PASS före promotion.
 - Viktigt: GitHub Actions-token kan sakna behörighet att skapa refs; vid röd kontroll granska Actions-tokenens `contents: write` och branch-/repository-regler. Inga automatiska snapshots får påstås fungera före lyckat push-test.
+
+## CURRENT/PREVIOUS
+- Läs `RELEASE_PROMOTION.md` före promotion eller rollback. Grön CI räcker inte: verifierad deploy och uttryckligt iPhone PASS krävs. CURRENT och PREVIOUS förblir null tills detta är uppfyllt.
+- Arkivgren för 0.1.109 skapades och dess release.json lästes tillbaka från GitHub. Skydd mot att flytta/radera arkivgrenen saknas ännu.
 
 ## Nästa arbete
 - Bildgranskning: bygg webmasterstyrd tidsgräns **5 minuter–72 timmar** för snabbtest; 72 timmar standard. Säkerställ att serverns rensning faktiskt körs inom testintervallet. Detta är **önskat, inte färdigimplementerat**.
