@@ -2,14 +2,14 @@
   "schema": "PROJECT-CURRENT-STATE-1",
   "project": "Container13 Remember – gemensamma album",
   "repository": "container13/Container13-vintage",
-  "branch": "ccc-demo-public-test",
+  "branch": "remember-development",
   "projectRoot": "remember/",
   "riskClass": "HIGH",
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.108",
-    "integrity": "CI_PASS_BACKUP_UPLOAD_PASS_RESTORE_UNTESTED_DEVICE_UNVERIFIED"
+    "candidate": "0.1.109",
+    "integrity": "PR_CHECK_PENDING_AFTER_VERSION_SYNC; AUTOMATIC_PERMANENT_SNAPSHOT_UNVERIFIED"
   },
   "workCheckpoint": {
     "status": "READY",
@@ -510,6 +510,8 @@
     "checks": "Pull request required, approvals disabled, status check required (as configured in UI)",
     "evidence": "GitHub Settings Branches screenshot shows 'Branch protection rule created' and exactly one matching branch",
     "limitations": "Enforcement against bypass/direct pushes not independently tested; admin bypass allowed per UI settings. Shared branch remains outside this rule.",
-    "deployment": "Live Remember still publishes from ccc-demo-public-test; branch migration pending."
+    "deployment": "Live Remember still publishes from ccc-demo-public-test; branch migration pending.",
+    "snapshotPR": "https://github.com/container13/Container13-vintage/pull/1",
+    "snapshotStatus": "DRAFT_PENDING_PUSH_RUNTIME_PASS"
   }
 }
