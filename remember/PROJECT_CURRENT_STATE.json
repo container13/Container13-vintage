@@ -8,7 +8,7 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.92",
+    "candidate": "0.1.93",
     "integrity": "GITHUB_READBACK_PENDING_IPHONE_PASS"
   },
   "workCheckpoint": {
@@ -23,8 +23,8 @@
     "resumeInstruction": "Read remember/START_HERE.md first; historical handoff is reference only."
   },
   "currentWork": {
-    "completed": "v0.1.92: centered compact shared role-switcher component on webmaster, owner-preview and guest views; two buttons above mode banner. Owner preview is not owner authorization impersonation.",
-    "next": "iPhone verify two compact centered buttons in each of three modes, guest-to-owner and guest-to-webmaster navigation. Configurable moderation 5 minutes to 72 hours still pending.",
+    "completed": "v0.1.93: redesigned album header in webmaster/owner preview/guest, album title inside same tasteful panel; removed redundant status/version text; compact centered two role buttons share one CSS source.",
+    "next": "iPhone visually approve header and switching. Real owner permissions preview remains separate. Configurable moderation expiration remains planned.",
     "blocked": false,
     "blocker": null
   },
