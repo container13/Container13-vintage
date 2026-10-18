@@ -23,7 +23,17 @@ jobs:
             }
             echo "Rollback branch present: $ref"
           done
-          echo "::notice::Automatic tag creation is disabled: GitHub rejected tag pushes. Snapshots are preserved as separate branches; automated backup remains UNVERIFIED."
+          echo "::notice::Branch snapshots verified. Each push also uploads a 90-day rollback artifact; permanent automatic Git ref snapshots remain unavailable."
+      - name: Upload immutable rollback bundle
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: remember-rollback-${{ github.sha }}
+          path: |
+            remember/
+            .github/workflows/remember-release-safety.yml
+          retention-days: 90
+          if-no-files-found: error
       - name: Validate release consistency
         run: |
           python3 - <<'PY'
