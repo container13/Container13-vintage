@@ -193,9 +193,9 @@ try{
  if(restored.state==='restore-failed'||restored.state==='storage-unavailable')throw Error('Sessionen kunde inte återställas.');
  showSession(restored.session);
  if(!restored.session){location.replace('./login.html');throw new Error('redirecting');}
- message(data.session?'Inloggningen är klar.':'Logga in för att fortsätta.');
+ message(restored.session?'Inloggningen är klar.':'Logga in för att fortsätta.');
  lock(false);
- if(data.session)void loadOwnedAlbums();
+ if(restored.session)void loadOwnedAlbums();
  client.auth.onAuthStateChange((event,next)=>{
    showSession(next);
    if(event==='PASSWORD_RECOVERY' && next){
