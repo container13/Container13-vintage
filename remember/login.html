@@ -168,8 +168,8 @@ async function gateway(action){
 }
 const PUBLIC_KEY='sb_publishable_qOSBb7U6TGnPQ8ypyYRLGg_GtYrraoG';
 try{
- const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
- client=createClient('https://wykvztfmfbboxiqvuvwr.supabase.co',PUBLIC_KEY,{auth:{storage:localStorage,storageKey:'container13-remember-auth-v2',persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'}});
+ const {createRememberAuth,restoreRememberSession}=await import('./remember-auth.js?v=0.1.83');
+ client=await createRememberAuth({detectSessionInUrl:true});
  // One-time migration of the previously authenticated tab session.
  // The old value contains auth tokens; never print it or send it elsewhere.
  if (!localStorage.getItem('container13-remember-auth-v2')) {
