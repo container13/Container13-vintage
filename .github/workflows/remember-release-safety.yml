@@ -1,10 +1,10 @@
 name: Remember release safety
 on:
   push:
-    branches: [ccc-demo-public-test]
+    branches: [remember-development]
     paths: ['remember/**', '.github/workflows/remember-release-safety.yml']
   pull_request:
-    branches: [ccc-demo-public-test]
+    branches: [remember-development]
   workflow_dispatch:
 permissions:
   contents: read
