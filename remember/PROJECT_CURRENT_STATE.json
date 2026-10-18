@@ -8,8 +8,8 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.99",
-    "integrity": "GITHUB_READBACK_PENDING_IPHONE_UI_PASS"
+    "candidate": "0.1.100",
+    "integrity": "GITHUB_READBACK_PENDING_IPHONE_LAYOUT_PASS"
   },
   "workCheckpoint": {
     "status": "READY",
@@ -23,8 +23,8 @@
     "resumeInstruction": "Read remember/START_HERE.md first; historical handoff is reference only."
   },
   "currentWork": {
-    "completed": "v0.1.99: login button clearly styled on landing and album creation; create action says Fortsätt med e-post when logged out, Skapa album when logged in; logged-in login link hidden.",
-    "next": "Verify Safari appearance and logged-out email activation / logged-in direct owner redirect.",
+    "completed": "v0.1.100: reduced login hero whitespace; landing uses dynamic viewport height with compact responsive photo book and both calls to action in one screen.",
+    "next": "Physical iPhone Safari test: no scrolling on landing, both actions visible; login header proportions.",
     "blocked": false,
     "blocker": null
   },
