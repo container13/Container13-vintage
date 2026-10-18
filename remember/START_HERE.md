@@ -30,7 +30,7 @@ Senast uppdaterad: 2026-10-18. **Detta är den korta ingången**, inte en fullst
 - `remember-release-safety.yml` bevarar 90-dagars rollback-artifact och testar isolerad återläsning samt SHA256. Befintliga manuella rollback-grenar kontrolleras.
 - Föreslagen förbättring på `remember/automatic-snapshots-01109`: skapa separat permanent `remember/archive-<commit-SHA>` för varje push, utan force update, med fjärr-readback. **Inte verifierat i Actions förrän PR har slagits ihop och ett push-test är grönt.**
 - `remember/safety-baseline-2026-10-18` är en manuellt skapad säkerhetsgren, inte godkänd CURRENT.
-- `CURRENT` och `PREVIOUS` är ännu inte godkända; `candidate=0.1.112`. Fotoboken kräver separat iPhone PASS före promotion.
+- `CURRENT` och `PREVIOUS` är ännu inte godkända; `candidate=0.1.113`. Fotoboken kräver separat iPhone PASS före promotion.
 - Viktigt: GitHub Actions-token kan sakna behörighet att skapa refs; vid röd kontroll granska Actions-tokenens `contents: write` och branch-/repository-regler. Inga automatiska snapshots får påstås fungera före lyckat push-test.
 
 ## CURRENT/PREVIOUS
@@ -57,9 +57,14 @@ Säg: **”Fortsätt Remember. Läs remember/START_HERE.md och aktuell projektst
 
 ## iPhone feedback 2026-10-18 (0.1.110)
 - User confirmed page turning works but rejected quality: too slow between pages; underlying sheets appear to alternate between two colors.
-- Candidate 0.1.112 shortens animation 1350→720 ms and auto interval 4600→2900 ms, harmonizes paper back and decorative paper palette. Requires fresh iPhone visual PASS; do not promote CURRENT.
+- Candidate 0.1.113 shortens animation 1350→720 ms and auto interval 4600→2900 ms, harmonizes paper back and decorative paper palette. Requires fresh iPhone visual PASS; do not promote CURRENT.
 
-## Fotobok 0.1.112 – skuggfix (iPhone-test väntar)
+## Fotobok 0.1.113 – skuggfix (iPhone-test väntar)
 - Feedback på 0.1.111: bladet under blir mörkare vid vänsterkanten cirka 1 sekund efter sidvändning.
 - Trolig orsak: tillfällig CSS-regel `.book:has(.paper.turn) #under` med extra inset-skugga.
-- Kandidat 0.1.112 tar bort den extra regeln och behåller normal skuggning. Ej verifierad i Safari; CURRENT/PREVIOUS förblir null.
+- Kandidat 0.1.113 tar bort den extra regeln och behåller normal skuggning. Ej verifierad i Safari; CURRENT/PREVIOUS förblir null.
+
+## Startsida 0.1.113 – förenkling
+- Användaren vill ta bort prickarna under fotoboken och den synliga versionsetiketten på startsidan.
+- Sidprickarna tas bort inklusive JS-uppdatering; versionsetiketten visas inte på /remember/ eller /remember/index.html, men versionsuppgifter bevaras i release.json och meta-taggar och övriga vyer.
+- Kandidat 0.1.113 kräver iPhone-test; CURRENT/PREVIOUS förblir null.
