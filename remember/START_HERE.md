@@ -107,3 +107,8 @@ Säg: **”Fortsätt Remember. Läs remember/START_HERE.md och aktuell projektst
 - 0.1.119 underkänd av användaren: samma motiv visas på bladens fram- och baksida.
 - Varje främre blad får nu en egen bakåtvänd bildyta med kompletterande motiv, CSS rotateY(180deg) och backface-visibility:hidden. De separata sidorna med kompletterande motiv behålls.
 - Ändringen är en riktad hypotes för StPageFlips 3D-återgivning; faktiskt utfall på iPhone är ännu INTE verifierat. Ingen rollback, startsidans övriga design oförändrad.
+
+## 0.1.121 – sidornas fram-/baksidor
+- 0.1.120 underkänd på iPhone: baksidan återgav samma motiv och tänkt baksidesmotiv dök upp som ny framsida.
+- Tar bort alla fyra extra flip-physical-back-lager och deras 3D-CSS. Behåller ordnade, separata HTML-sidor (fram/bak i följd) för StPageFlips interna bladmodell. Hypotes; kräver faktisk iPhone-PASS.
+- **Obligatorisk visuell leveransregel:** Efter varje publicerad ändring som användaren behöver kontrollera manuellt ska svaret innehålla klickbar GitHub Actions-länk (https://github.com/container13/Container13-vintage/actions), direktlänk till testad sida, versionsnummer och vad som ska kontrolleras. Länka till exakt workflow-körning när tillgänglig. GitHub CI är inte visuell iPhone-PASS.
