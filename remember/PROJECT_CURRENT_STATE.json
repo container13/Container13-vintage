@@ -8,12 +8,12 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.114",
-    "integrity": "PROTOTYPE_BRANCH_ONLY; STPAGEFLIP_CDN_RUNTIME_UNVERIFIED; IPHONE_PASS_PENDING"
+    "candidate": "0.1.115",
+    "integrity": "CANDIDATE_UNVERIFIED; AUTO_FLIP_AND_BACKFACE_PROTOTYPE_NEEDS_IPHONE_PASS"
   },
   "workCheckpoint": {
     "status": "READY",
-    "targetRelease": "0.1.114",
+    "targetRelease": "0.1.115",
     "goal": "Continue active Remember development from remember/START_HERE.md",
     "plan": [
       "Read START_HERE.md and current code before work",
@@ -556,7 +556,15 @@
     "date": "2026-10-18",
     "prototype": "remember/book-prototype.html",
     "engine": "page-flip@2.0.7 StPageFlip",
-    "status": "ISOLATED_PROTOTYPE_NOT_DEPLOYED_NOT_RUNTIME_VERIFIED",
-    "next": "Verify CDN module loads and iPhone Safari drag/flip, shadow, portrait, paper palette; no main landing replacement"
+    "status": "AUTO_FLIP_BACKFACES_IMPLEMENTED_UNVERIFIED",
+    "next": "Verify CDN module loads and iPhone Safari drag/flip, shadow, portrait, paper palette; no main landing replacement",
+    "autoplay": {
+      "stillMs": 1800,
+      "flipMs": 680,
+      "corner": "random top/bottom",
+      "manualPauseMs": 4500
+    },
+    "backfaces": "alternating complementary photos, no reverse text",
+    "caveat": "StPageFlip public API exposes top/bottom corner, not arbitrary point along edge; images are external Unsplash and may need verification"
   }
 }
