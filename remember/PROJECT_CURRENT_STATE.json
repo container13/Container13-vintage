@@ -9,7 +9,7 @@
     "previousVerified": null,
     "currentVerified": null,
     "candidate": "0.1.108",
-    "integrity": "GITHUB_COMMITTED_PENDING_DEVICE_VERIFICATION"
+    "integrity": "CI_PASS_BACKUP_UPLOAD_PASS_RESTORE_UNTESTED_DEVICE_UNVERIFIED"
   },
   "workCheckpoint": {
     "status": "READY",
