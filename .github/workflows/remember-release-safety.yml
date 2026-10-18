@@ -1,0 +1,51 @@
+name: Remember release safety
+on:
+  push:
+    branches: [ccc-demo-public-test]
+    paths: ['remember/**', '.github/workflows/remember-release-safety.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  preserve-and-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Preserve previous commit before checking candidate
+        env:
+          BEFORE: ${{ github.event.before }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" != "push" || "$BEFORE" =~ ^0+$ ]]; then exit 0; fi
+          git cat-file -e "$BEFORE^{commit}"
+          TAG="remember/snapshot-${BEFORE:0:12}"
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then exit 0; fi
+          git tag "$TAG" "$BEFORE"
+          git push origin "refs/tags/$TAG"
+      - name: Validate release consistency
+        run: |
+          python3 - <<'PY'
+          import json,pathlib,re,sys
+          root=pathlib.Path('remember')
+          state=json.loads((root/'PROJECT_CURRENT_STATE.json').read_text())
+          manifest=json.loads((root/'release.json').read_text())
+          release=state['release']
+          version=manifest['version']
+          errors=[]
+          if release.get('candidate') != version: errors.append('Candidate must match release.json')
+          if manifest.get('release') != 'remember-'+version: errors.append('Manifest release identity mismatch')
+          if not re.fullmatch(r'\\d+\\.\\d+\\.\\d+',version): errors.append('Invalid semantic version')
+          for name in ('currentVerified','previousVerified'):
+              value=release.get(name)
+              if value is not None and not isinstance(value,(dict,str)): errors.append(name+' has invalid type')
+          index=(root/'index.html').read_text()
+          if 'remember-'+version not in index: errors.append('Landing page release identity mismatch')
+          if version not in (root/'remember-version.js').read_text(): errors.append('Shared version fallback mismatch')
+          if errors:
+              print('RELEASE SAFETY FAILED: '+'; '.join(errors))
+              sys.exit(1)
+          print('Release consistency PASS; verified CURRENT/PREVIOUS are not invented.')
+          PY
