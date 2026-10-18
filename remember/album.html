@@ -12,7 +12,14 @@ else try{
 }catch{title.textContent='Kunde inte öppna albumet';status.textContent='Försök igen om en stund.'}
 const rememberGallery=/^[A-Za-z0-9_-]{43}$/.test(token)?mountRememberGallery({container:document.getElementById('rememberGallery'),auth:async()=>({token})}):null;
 if(rememberGallery)document.getElementById('rememberGallery').hidden=false;
-const cameraHost=document.getElementById('cameraHost'),cameraFrame=document.getElementById('cameraFrame'),cameraResults=document.getElementById('cameraResults');let selectedCameraFiles=[];document.getElementById('openCamera').onclick=()=>{cameraHost.hidden=false;document.getElementById('openCamera').hidden=true;cameraFrame.src='./camera-session-test.html?embedded=1&v=01f7cff';};document.getElementById('closeCamera').onclick=()=>{cameraFrame.src='about:blank';cameraHost.hidden=true;document.getElementById('openCamera').hidden=false;};const sendCamera=document.getElementById('sendCamera'),cameraUploadStatus=document.getElementById('cameraUploadStatus');let cameraUploading=false;
+const cameraHost=document.getElementById('cameraHost'),cameraFrame=document.getElementById('cameraFrame'),cameraResults=document.getElementById('cameraResults');let selectedCameraFiles=[];
+const {mountRememberCamera}=await import('./remember-camera-controller.js?v=0.1.82');
+mountRememberCamera({
+ host:cameraHost,frame:cameraFrame,openButton:document.getElementById('openCamera'),closeButton:document.getElementById('closeCamera'),
+ canOpen:()=>!cameraUploading,
+ onApproved:files=>{if(cameraUploading)return;selectedCameraFiles=files;cameraResults.textContent='';if(files.length)void uploadApprovedCameraFiles();}
+});
+const sendCamera=document.getElementById('sendCamera'),cameraUploadStatus=document.getElementById('cameraUploadStatus');let cameraUploading=false;
 async function uploadApprovedCameraFiles(){
  if(cameraUploading||!selectedCameraFiles.length)return;
  cameraUploading=true;sendCamera.hidden=true;document.getElementById('openCamera').disabled=true;
@@ -37,14 +44,6 @@ async function uploadApprovedCameraFiles(){
  }finally{cameraUploading=false;document.getElementById('openCamera').disabled=false;}
 }
 sendCamera.onclick=uploadApprovedCameraFiles;
-window.addEventListener('message',e=>{
- if(e.origin===location.origin&&e.source===cameraFrame.contentWindow&&e.data?.type==='remember-camera-permission-denied'){document.getElementById('closeCamera').click();return;}
- if(e.origin!==location.origin||e.source!==cameraFrame.contentWindow||e.data?.type!=='remember-camera-approved'||!Array.isArray(e.data.files)||cameraUploading)return;
- selectedCameraFiles=e.data.files.filter(f=>f instanceof Blob).map((f,i)=>new File([f],'remember-foto-'+(i+1)+'.jpg',{type:'image/jpeg'}));
- cameraResults.textContent='';
- document.getElementById('closeCamera').click();
- if(selectedCameraFiles.length)void uploadApprovedCameraFiles();
-});
 const send=document.getElementById('send'),photo=document.getElementById('photo'),uploadStatus=document.getElementById('uploadStatus'),choosePhotos=document.getElementById('choosePhotos');
 let pendingFiles=[],fileUploading=false;
 choosePhotos.onclick=()=>{if(!fileUploading)photo.click();};
