@@ -110,7 +110,7 @@ let client=null,session=null,busy=false,creationAllowed=false,webmasterAllowed=f
 function message(text){$('feedback').textContent=text}
 function lock(value){busy=value;document.querySelectorAll('button').forEach(b=>b.disabled=value)}
 async function updateWebmaster(value){
- const revision=++roleRevision;webmasterAllowed=false;$('webmasterTools').hidden=true;$('webmasterWorkspace').hidden=true;document.body.classList.remove('is-webmaster');$('ownedAlbumsHeading').hidden=true;$('dashboardTitle').textContent='Mina album';$('dashboardSubtitle').hidden=true;creationAllowed=false;$('creation').hidden=true;
+ const revision=++roleRevision;webmasterAllowed=false;$('webmasterTools').hidden=true;$('webmasterWorkspace').hidden=true;document.body.classList.remove('is-webmaster');$('ownedAlbumsHeading').hidden=true;$('dashboardTitle').textContent='Mina album';$('dashboardTitle').hidden=false;$('dashboardSubtitle').hidden=true;creationAllowed=false;$('creation').hidden=true;
  if(!value)return;
  const allowed=await checkRememberWebmaster(value);
  if(revision!==roleRevision)return;
