@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>Remember – sidvändningstest 0.1.117</title>
+<title>Remember – sidvändningstest 0.1.118</title>
 <style>
 :root{color-scheme:dark;font-family:system-ui,-apple-system,sans-serif;background:#10271e;color:#f3f0e8}
 *{box-sizing:border-box}body{margin:0;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 12px;gap:18px;background:radial-gradient(ellipse at 50% 30%,#34513a,#10271e 75%)}
@@ -52,7 +52,7 @@ try{
  host.addEventListener('touchstart',()=>{paused=true;clearTimeout(timer)},{passive:true});
  host.addEventListener('touchend',()=>{clearTimeout(timer);timer=setTimeout(()=>{paused=false;schedule()},4500)},{passive:true});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)clearTimeout(timer);else if(!paused)schedule()});
- status.textContent='Automatisk bläddring · max 1,8 s stillbild · test 0.1.117';schedule();
+ status.textContent='Automatisk bläddring · max 1,8 s stillbild · test 0.1.118';schedule();
 }catch(error){status.textContent='Kunde inte ladda testmotorn. Kontrollera nätverket och prova igen.';console.error('Remember page-flip prototype',error)}
 </script>
 </body></html>
