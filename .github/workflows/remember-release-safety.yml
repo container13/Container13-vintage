@@ -25,7 +25,7 @@ jobs:
             }
             echo "Rollback branch present: $ref"
           done
-          echo "::notice::Branch snapshots verified. Each push also uploads a 90-day rollback artifact; permanent automatic Git ref snapshots remain unavailable."
+          echo "::notice::Branch snapshots verified. Each push also uploads a 90-day rollback artifact; automatic permanent Git snapshots are checked on push after this workflow is merged."
       - name: Preserve permanent immutable Git snapshot for this push
         if: github.event_name == 'push'
         env:
