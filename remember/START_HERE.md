@@ -10,7 +10,7 @@ Senast uppdaterad: 2026-10-18. **Detta är den korta ingången**, inte en fullst
 1. Läs **denna fil** och `PROJECT_CURRENT_STATE.json` (fältet `projectMode` och aktuell release). Läs sedan berörd kod.
 2. Läs vid behov `../project-template/PROJECT_MASTER_RULES.md`, `PROJECT_RELEASE_STANDARD.md`, `SHARED_COMPONENT_REGISTER.md`, `DECISIONS.md` och `OPERATING_LIMITS.md`. Öppna **inte** 50 000 teckens historik för ett enkelt ärende.
 3. Kontrollera verklig GitHub-branch, Supabase-projekt och versionsparitet; använd aktuell kod som sanning när gamla handoffs motsäger den.
-4. Sök grundorsak, återanvänd gemensamma moduler, gör en sammanhängande ändring. **Varje ändring = nytt versionsnummer**, även dokumentationsändringar enligt projektägarens regel. Synka manifest, versionskälla och nio HTML-ingångar.
+4. Sök grundorsak, återanvänd gemensamma moduler, gör en sammanhängande ändring. **Varje ändring = nytt versionsnummer**, även dokumentationsändringar enligt projektägarens regel. Synka manifest, versionskälla och samtliga faktiska HTML-ingångar. Vid 0.1.109 har sju HTML-ingångar identifierats och synkats (index, login, dashboard, album, webmaster, owner, register); tidigare dokumenterad uppgift om nio är inte verifierad.
 5. Läs tillbaka GitHub och skilj alltid **COMMITTED**, **DEPLOYED**, **RUNTIME PASS** och **IPHONE PASS**. Be om ett avgränsat iPhone-test när det behövs.
 
 ## Miljöer
@@ -24,6 +24,18 @@ Senast uppdaterad: 2026-10-18. **Detta är den korta ingången**, inte en fullst
 - Gemensam bildvisare klipper nypzoom till bildens ursprungliga ruta: **v0.1.87 iPhone PASS**.
 - Inloggningens försvinnande efter Safari-omstart löstes genom att lämna privat surfning.
 - Versionsdokumentationen kan innehålla äldre checkpoints: kontrollera före åtgärd.
+
+## Release-säkerhet (2026-10-18)
+- Utvecklingsgren: `remember-development`; skyddad med pull request och obligatorisk statuskontroll `preserve-and-check` enligt användarens GitHub-skärmbilder. GitHub-regeln är skapad; kontrollera fortsatt faktisk enforcement vid PR.
+- `remember-release-safety.yml` bevarar 90-dagars rollback-artifact och testar isolerad återläsning samt SHA256. Befintliga manuella rollback-grenar kontrolleras.
+- Föreslagen förbättring på `remember/automatic-snapshots-01109`: skapa separat permanent `remember/archive-<commit-SHA>` för varje push, utan force update, med fjärr-readback. **Inte verifierat i Actions förrän PR har slagits ihop och ett push-test är grönt.**
+- `remember/safety-baseline-2026-10-18` är en manuellt skapad säkerhetsgren, inte godkänd CURRENT.
+- `CURRENT` och `PREVIOUS` är ännu inte godkända; `candidate=0.1.110`. Fotoboken kräver separat iPhone PASS före promotion.
+- Viktigt: GitHub Actions-token kan sakna behörighet att skapa refs; vid röd kontroll granska Actions-tokenens `contents: write` och branch-/repository-regler. Inga automatiska snapshots får påstås fungera före lyckat push-test.
+
+## CURRENT/PREVIOUS
+- Läs `RELEASE_PROMOTION.md` före promotion eller rollback. Grön CI räcker inte: verifierad deploy och uttryckligt iPhone PASS krävs. CURRENT och PREVIOUS förblir null tills detta är uppfyllt.
+- Arkivgren för 0.1.109 skapades och dess release.json lästes tillbaka från GitHub. Skydd mot att flytta/radera arkivgrenen saknas ännu.
 
 ## Nästa arbete
 - Bildgranskning: bygg webmasterstyrd tidsgräns **5 minuter–72 timmar** för snabbtest; 72 timmar standard. Säkerställ att serverns rensning faktiskt körs inom testintervallet. Detta är **önskat, inte färdigimplementerat**.
