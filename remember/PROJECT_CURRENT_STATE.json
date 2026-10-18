@@ -8,8 +8,8 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.106",
-    "integrity": "GITHUB_READBACK_PENDING_IPHONE_LAYOUT_PASS"
+    "candidate": "0.1.108",
+    "integrity": "GITHUB_COMMITTED_PENDING_DEVICE_VERIFICATION"
   },
   "workCheckpoint": {
     "status": "READY",
