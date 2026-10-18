@@ -38,6 +38,7 @@ async function uploadApprovedCameraFiles(){
 }
 sendCamera.onclick=uploadApprovedCameraFiles;
 window.addEventListener('message',e=>{
+ if(e.origin===location.origin&&e.source===cameraFrame.contentWindow&&e.data?.type==='remember-camera-permission-denied'){document.getElementById('closeCamera').click();return;}
  if(e.origin!==location.origin||e.source!==cameraFrame.contentWindow||e.data?.type!=='remember-camera-approved'||!Array.isArray(e.data.files)||cameraUploading)return;
  selectedCameraFiles=e.data.files.filter(f=>f instanceof Blob).map((f,i)=>new File([f],'remember-foto-'+(i+1)+'.jpg',{type:'image/jpeg'}));
  cameraResults.textContent='';
