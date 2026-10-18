@@ -92,16 +92,11 @@ async function uploadOwnerFiles(){
   $('retryUpload').hidden=!pendingOwnerFiles.length;
  }finally{ownerUploading=false;$('upload').disabled=false;}
 }
-const ownerCameraHost=$('ownerCameraHost'),ownerCameraFrame=$('ownerCameraFrame');
-$('ownerCameraButton').onclick=()=>{if(ownerUploading)return;ownerCameraHost.hidden=false;ownerCameraFrame.src='./camera-session-test.html?embedded=1&v=01f7cff';$('ownerCameraButton').hidden=true;};
-$('ownerCloseCamera').onclick=()=>{ownerCameraFrame.src='about:blank';ownerCameraHost.hidden=true;$('ownerCameraButton').hidden=false;};
-window.addEventListener('message',event=>{
- if(event.origin!==location.origin||event.source!==ownerCameraFrame.contentWindow||event.data?.type!=='remember-camera-approved'||!Array.isArray(event.data.files)||ownerUploading)return;
- const files=event.data.files.filter(file=>file instanceof Blob).map((blob,index)=>new File([blob],'remember-foto-'+(index+1)+'.jpg',{type:'image/jpeg'}));
- if(!files.length){$('uploadStatus').textContent='Välj minst en bild för uppladdning.';return;}
- pendingOwnerFiles=files;
- $('ownerCloseCamera').click();
- void uploadOwnerFiles();
+const {mountRememberCamera}=await import('./remember-camera-controller.js?v=0.1.82');
+mountRememberCamera({
+ host:$('ownerCameraHost'),frame:$('ownerCameraFrame'),openButton:$('ownerCameraButton'),closeButton:$('ownerCloseCamera'),
+ canOpen:()=>!ownerUploading,
+ onApproved:files=>{if(ownerUploading)return;if(!files.length){$('uploadStatus').textContent='Välj minst en bild för uppladdning.';return;}pendingOwnerFiles=files;void uploadOwnerFiles();}
 });
 $('upload').onclick=()=>{if(!ownerUploading)$('ownerFiles').click();};
 $('ownerFiles').onchange=e=>{pendingOwnerFiles=Array.from(e.target.files||[]).filter(f=>['image/jpeg','image/png','image/webp'].includes(f.type));if(pendingOwnerFiles.length)void uploadOwnerFiles();};
