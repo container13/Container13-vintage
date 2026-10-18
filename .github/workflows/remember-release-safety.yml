@@ -3,6 +3,8 @@ on:
   push:
     branches: [ccc-demo-public-test]
     paths: ['remember/**', '.github/workflows/remember-release-safety.yml']
+  pull_request:
+    branches: [ccc-demo-public-test]
   workflow_dispatch:
 permissions:
   contents: read
