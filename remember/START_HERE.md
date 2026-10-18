@@ -66,5 +66,11 @@ Säg: **”Fortsätt Remember. Läs remember/START_HERE.md och aktuell projektst
 
 ## Startsida 0.1.113 – förenkling
 - Användaren vill ta bort prickarna under fotoboken och den synliga versionsetiketten på startsidan.
-- Sidprickarna tas bort inklusive JS-uppdatering; versionsetiketten visas inte på /remember/ eller /remember/index.html, men versionsuppgifter bevaras i release.json och meta-taggar och övriga vyer.
+- Sidprickarna tas bort inklusive JS-uppdatering; versionsetiketten visas diskret längst ned till höger på startsidan, utanför fotoboken; versionsuppgifter bevaras även i release.json och meta-taggar.
 - Kandidat 0.1.113 kräver iPhone-test; CURRENT/PREVIOUS förblir null.
+
+## Sidvändning – teknisk utvärdering 2026-10-18
+- Nuvarande CSS-lösning roterar en enda .paper 178 grader, byter innehåll efter timer och använder en separat under-sida. Den saknar fysisk bladkrökning och fingerföljning.
+- Undersökt StPageFlip (https://github.com/Nodlik/StPageFlip): HTML-sidor, mjuka/hårda blad, portrait, touchdrag, flippingTime och maxShadowOpacity. Rekommenderas som prototyp i separat gren, inte som obeprövad live-ersättning.
+- Alternativ Turn.js (https://www.turnjs.com/), med jQuery-beroende. Ingen motor installerad ännu.
+- Testkrav före byte: iPhone Safari, portrait, enhetlig pappersfärg, skuggor utan eftersläpning, inga sidglapp, minskad rörelse, offline/fallback och bibehållen storlek/layout. CURRENT förblir null.
