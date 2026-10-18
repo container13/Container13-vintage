@@ -498,5 +498,13 @@
     "changeRequires": "explicit_project_owner_decision",
     "authoritativeSummary": "remember/START_HERE.md",
     "verifiedAt": "2026-10-18"
+  },
+  "rememberBranchProtection": {
+    "dedicatedBranch": "remember-development",
+    "sharedBranch": "ccc-demo-public-test",
+    "decision": "Protect Remember branch only; do NOT activate branch protection on shared branch",
+    "status": "BRANCH_CREATED_RULE_NOT_YET_CONFIGURED",
+    "requiredCheck": "preserve-and-check",
+    "note": "Remember remains under remember/ in the shared repo. GitHub Pages currently publishes from shared branch; dedicated branch is not yet live or deployment source. Do not change deployment until reviewed. Pull request checks must target remember-development and the workflow must be available there."
   }
 }
