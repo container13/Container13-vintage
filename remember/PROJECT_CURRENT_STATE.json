@@ -8,7 +8,7 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.91",
+    "candidate": "0.1.92",
     "integrity": "GITHUB_READBACK_PENDING_IPHONE_PASS"
   },
   "workCheckpoint": {
@@ -23,8 +23,8 @@
     "resumeInstruction": "Read remember/START_HERE.md first; historical handoff is reference only."
   },
   "currentWork": {
-    "completed": "v0.1.91: guest mode return link now uses explicit webmasterReturn album ID query param, rather than fragile sessionStorage; iPhone guest mode v0.1.90 confirmed, return link missing.",
-    "next": "iPhone verify guest-to-webmaster return link; owner view remains admin shortcut, not true impersonation; moderation expiry still planned.",
+    "completed": "v0.1.92: centered compact shared role-switcher component on webmaster, owner-preview and guest views; two buttons above mode banner. Owner preview is not owner authorization impersonation.",
+    "next": "iPhone verify two compact centered buttons in each of three modes, guest-to-owner and guest-to-webmaster navigation. Configurable moderation 5 minutes to 72 hours still pending.",
     "blocked": false,
     "blocker": null
   },
