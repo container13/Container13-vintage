@@ -30,7 +30,7 @@ Senast uppdaterad: 2026-10-18. **Detta är den korta ingången**, inte en fullst
 - `remember-release-safety.yml` bevarar 90-dagars rollback-artifact och testar isolerad återläsning samt SHA256. Befintliga manuella rollback-grenar kontrolleras.
 - Föreslagen förbättring på `remember/automatic-snapshots-01109`: skapa separat permanent `remember/archive-<commit-SHA>` för varje push, utan force update, med fjärr-readback. **Inte verifierat i Actions förrän PR har slagits ihop och ett push-test är grönt.**
 - `remember/safety-baseline-2026-10-18` är en manuellt skapad säkerhetsgren, inte godkänd CURRENT.
-- `CURRENT` och `PREVIOUS` är ännu inte godkända; `candidate=0.1.115`. Fotoboken kräver separat iPhone PASS före promotion.
+- `CURRENT` och `PREVIOUS` är ännu inte godkända; `candidate=0.1.116`. Fotoboken kräver separat iPhone PASS före promotion.
 - Viktigt: GitHub Actions-token kan sakna behörighet att skapa refs; vid röd kontroll granska Actions-tokenens `contents: write` och branch-/repository-regler. Inga automatiska snapshots får påstås fungera före lyckat push-test.
 
 ## CURRENT/PREVIOUS
@@ -57,17 +57,17 @@ Säg: **”Fortsätt Remember. Läs remember/START_HERE.md och aktuell projektst
 
 ## iPhone feedback 2026-10-18 (0.1.110)
 - User confirmed page turning works but rejected quality: too slow between pages; underlying sheets appear to alternate between two colors.
-- Candidate 0.1.115 shortens animation 1350→720 ms and auto interval 4600→2900 ms, harmonizes paper back and decorative paper palette. Requires fresh iPhone visual PASS; do not promote CURRENT.
+- Candidate 0.1.116 shortens animation 1350→720 ms and auto interval 4600→2900 ms, harmonizes paper back and decorative paper palette. Requires fresh iPhone visual PASS; do not promote CURRENT.
 
-## Fotobok 0.1.115 – skuggfix (iPhone-test väntar)
+## Fotobok 0.1.116 – skuggfix (iPhone-test väntar)
 - Feedback på 0.1.111: bladet under blir mörkare vid vänsterkanten cirka 1 sekund efter sidvändning.
 - Trolig orsak: tillfällig CSS-regel `.book:has(.paper.turn) #under` med extra inset-skugga.
-- Kandidat 0.1.115 tar bort den extra regeln och behåller normal skuggning. Ej verifierad i Safari; CURRENT/PREVIOUS förblir null.
+- Kandidat 0.1.116 tar bort den extra regeln och behåller normal skuggning. Ej verifierad i Safari; CURRENT/PREVIOUS förblir null.
 
-## Startsida 0.1.115 – förenkling
+## Startsida 0.1.116 – förenkling
 - Användaren vill ta bort prickarna under fotoboken och den synliga versionsetiketten på startsidan.
 - Sidprickarna tas bort inklusive JS-uppdatering; versionsetiketten visas diskret längst ned till höger på startsidan, utanför fotoboken; versionsuppgifter bevaras även i release.json och meta-taggar.
-- Kandidat 0.1.115 kräver iPhone-test; CURRENT/PREVIOUS förblir null.
+- Kandidat 0.1.116 kräver iPhone-test; CURRENT/PREVIOUS förblir null.
 
 ## Sidvändning – teknisk utvärdering 2026-10-18
 - Nuvarande CSS-lösning roterar en enda .paper 178 grader, byter innehåll efter timer och använder en separat under-sida. Den saknar fysisk bladkrökning och fingerföljning.
@@ -75,13 +75,18 @@ Säg: **”Fortsätt Remember. Läs remember/START_HERE.md och aktuell projektst
 - Alternativ Turn.js (https://www.turnjs.com/), med jQuery-beroende. Ingen motor installerad ännu.
 - Testkrav före byte: iPhone Safari, portrait, enhetlig pappersfärg, skuggor utan eftersläpning, inga sidglapp, minskad rörelse, offline/fallback och bibehållen storlek/layout. CURRENT förblir null.
 
-## Prototyp 0.1.115 – naturlig sidvändning
+## Prototyp 0.1.116 – naturlig sidvändning
 - Isolerad sida: `remember/book-prototype.html`, StPageFlip via jsDelivr `page-flip@2.0.7`, ingen ändring av den riktiga startsidans fotobok.
 - Prototypen behöver kontrolleras i iPhone Safari; extern modul, CSP/nätverk och användning har inte runtime-verifierats. Ingen automatisk publicering.
 - Jämför fingerdrag, papperskrökning, skugga och sidbyte med den befintliga lösningen. CURRENT/PREVIOUS null.
 
-## Prototyp 0.1.115 – automatiska blad och baksidor
+## Prototyp 0.1.116 – automatiska blad och baksidor
 - Varannan sida har ett kompletterande, dämpat fotomotiv utan text på baksidan, inte spegelvänd framsida.
 - Auto: 1 800 ms stillbild och 680 ms bläddring; slump mellan övre/nedre ytterhörn. Biblioteket stöder inte valfri punkt längs kanten via dokumenterat flipNext-gränssnitt.
 - Manuell bläddring pausar auto ca 4,5 s. Vid sista sidan återgår prototypen till första sidan med flip(0); behöver iPhone-verifiering för omstartens estetik.
 - Inga ändringar av ordinarie sidvändning. Externa bild-URL:er och CDN kräver visuell test. CURRENT/PREVIOUS null.
+
+## Prototyp 0.1.116 – hastighet
+- Användaren tycker att 0.1.115 ser bra ut men att 680 ms sidvändning är för snabb.
+- Ändrat enbart prototypens sidvändning till 1000 ms och synkroniserat auto-timer; stillbild 1800 ms oförändrad.
+- Kräver användarens iPhone-PASS innan fotoboken kan godkännas och införas på startsidan.
