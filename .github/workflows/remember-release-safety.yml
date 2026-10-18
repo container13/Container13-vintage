@@ -34,6 +34,39 @@ jobs:
             .github/workflows/remember-release-safety.yml
           retention-days: 90
           if-no-files-found: error
+      - name: Restore archive in isolated temporary directory
+        if: github.event_name == 'push'
+        uses: actions/download-artifact@v4
+        with:
+          name: remember-rollback-${{ github.sha }}
+          path: ${{ runner.temp }}/remember-restore-test
+      - name: Verify restored files match original
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,os,pathlib,sys
+          base=pathlib.Path(os.environ['RUNNER_TEMP'])/'remember-restore-test'
+          source=pathlib.Path('remember')
+          restored=base/'remember'
+          if not restored.is_dir():
+              print('::error::Restored remember directory is missing')
+              sys.exit(1)
+          files=[p for p in source.rglob('*') if p.is_file() and '.git' not in p.parts]
+          mismatches=[]
+          for p in files:
+              other=restored/p.relative_to(source)
+              if not other.is_file() or hashlib.sha256(p.read_bytes()).digest()!=hashlib.sha256(other.read_bytes()).digest():
+                  mismatches.append(str(p))
+          workflow=pathlib.Path('.github/workflows/remember-release-safety.yml')
+          recovered=base/workflow
+          if not recovered.is_file() or workflow.read_bytes()!=recovered.read_bytes():
+              mismatches.append(str(workflow))
+          if mismatches:
+              print('::error::Rollback archive mismatch: '+', '.join(mismatches[:20]))
+              sys.exit(1)
+          print(f'RESTORE PASS: {len(files)} Remember files and workflow verified byte-for-byte in isolated directory')
+          PY
       - name: Validate release consistency
         run: |
           python3 - <<'PY'
