@@ -8,8 +8,8 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.98",
-    "integrity": "GITHUB_READBACK_PENDING_IPHONE_CREATE_FLOW"
+    "candidate": "0.1.99",
+    "integrity": "GITHUB_READBACK_PENDING_IPHONE_UI_PASS"
   },
   "workCheckpoint": {
     "status": "READY",
@@ -23,8 +23,8 @@
     "resumeInstruction": "Read remember/START_HERE.md first; historical handoff is reference only."
   },
   "currentWork": {
-    "completed": "v0.1.98: create-album back link returns logged-in user to dashboard and guest to start; authenticated successful create redirects directly to owner.html?id=<new album ID>. v0.1.97 email bypass remains.",
-    "next": "iPhone test authenticated album creation and automatic owner redirect; test back navigation both authenticated and logged-out; check no duplicate creation.",
+    "completed": "v0.1.99: login button clearly styled on landing and album creation; create action says Fortsätt med e-post when logged out, Skapa album when logged in; logged-in login link hidden.",
+    "next": "Verify Safari appearance and logged-out email activation / logged-in direct owner redirect.",
     "blocked": false,
     "blocker": null
   },
