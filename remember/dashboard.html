@@ -85,7 +85,7 @@ body.is-webmaster #webmasterTools .webmaster-album-card{display:block!important;
 .webmaster-owner-email{display:block;font:500 14px/1.5 system-ui;color:#fff7e7;overflow-wrap:anywhere;margin:4px 0 12px}
 .webmaster-album-id{display:block;border-top:1px solid #dfc89a40;padding-top:11px;font:11px/1.5 system-ui;color:#c9c5b9;overflow-wrap:anywhere}
 body.is-webmaster #webmasterTools .webmaster-album-card:focus-visible{outline:3px solid #efd2a0;outline-offset:3px}
-</style><link rel="stylesheet" href="./remember-design.css?v=0.1.95"><script src="../project-template/mobile-view-policy.js?v=2"></script><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js?v=0.1.95"></script><meta name="remember-release" content="remember-0.1.95"><script defer src="./remember-version.js?v=0.1.95"></script></head><body class="remember-shell" data-remember-view="albums"><main>
+</style><link rel="stylesheet" href="./remember-design.css?v=0.1.96"><script src="../project-template/mobile-view-policy.js?v=2"></script><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js?v=0.1.96"></script><meta name="remember-release" content="remember-0.1.96"><script defer src="./remember-version.js?v=0.1.96"></script></head><body class="remember-shell" data-remember-view="albums"><main>
 <header><div class="brand">Remember. <span class="muted">by Container13</span></div><a class="remember-home" href="./" aria-label="Remember startsida"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7M5 9v11h14V9M9 20v-7h6v7"/></svg></a></header>
 <h1 id="dashboardTitle">Mina album</h1><p id="dashboardSubtitle" class="dashboard-subtitle" hidden>Hantera Remember och dina album</p>
 
@@ -117,7 +117,7 @@ async function updateWebmaster(value){
  webmasterAllowed=allowed;$('webmasterTools').hidden=!allowed;
  $('webmasterWorkspace').hidden=!allowed;
  document.body.classList.toggle('is-webmaster',allowed);$('ownedAlbumsHeading').hidden=!allowed;
- $('dashboardTitle').textContent=allowed?'Administration':'Mina album';$('dashboardSubtitle').hidden=!allowed;
+ $('dashboardTitle').textContent='Mina album';$('dashboardTitle').hidden=allowed;$('dashboardSubtitle').hidden=true;
 }
 function showSession(value){void updateWebmaster(value);const identityChanged=session?.user?.id!==value?.user?.id;session=value;if(identityChanged){creationAllowed=false;$('creation').hidden=true;}$('account').hidden=!value;$('loginPanel').hidden=true;$('login').hidden=true;$('identity').textContent=value?value.user.email:'';$('result').textContent='';$('albums').replaceChildren()}
 async function loadOwnedAlbums(){
@@ -146,7 +146,7 @@ async function gateway(action){
   if(!response.ok){$('result').textContent='Kontrollen misslyckades (HTTP '+response.status+'). Försök igen senare.';return}
   if(!body.authorized){$('result').textContent='Åtkomst nekad.';return}
   creationAllowed=body.capabilities?.createAlbum===true;$('creation').hidden=!creationAllowed;if(creationAllowed)restoreDraft();
-  $('result').textContent=action==='installation_status'?'Webmasteråtkomst godkänd. Schemaversion: '+body.schemaVersion+'.':'Webmasteråtkomst godkänd.';
+  $('result').textContent=action==='installation_status'?'Åtkomst godkänd.':'Webmasteråtkomst godkänd.';
   if(action==='list'){void loadOwnedAlbums();
     $('albums').replaceChildren();
     if(!Array.isArray(body.albums)){
@@ -154,17 +154,17 @@ async function gateway(action){
     }else if(body.albums.length===0){
       $('albums').textContent='Servern returnerade 0 album för detta konto. Skapa inte ett nytt album.';
     }else{
-      const heading=document.createElement('h3');heading.className='webmaster-albums-title';heading.textContent='Albumöversikt · '+body.albums.length+' album';$('albums').append(heading);
+      const heading=document.createElement('h3');heading.className='webmaster-albums-title';heading.textContent='Alla album · '+body.albums.length;$('albums').append(heading);
       const grid=document.createElement('div');grid.className='webmaster-album-grid';$('albums').append(grid);
       for(const album of body.albums){
         const a=document.createElement('a');a.className='webmaster-album-card';a.href='./album-admin.html?id='+encodeURIComponent(album.id)+'&v=wm95';
         const top=document.createElement('div');top.className='webmaster-album-top';
         const title=document.createElement('strong');title.textContent=album.title||'Album utan namn';
         const arrow=document.createElement('span');arrow.className='webmaster-album-arrow';arrow.textContent='↗';arrow.setAttribute('aria-hidden','true');top.append(title,arrow);
-        const label=document.createElement('span');label.className='webmaster-owner-label';label.textContent='ALBUMÄGARE';
+        
         const owner=document.createElement('span');owner.className='webmaster-owner-email';owner.textContent=album.owner_email||'E-postadress saknas';
-        const id=document.createElement('span');id.className='webmaster-album-id';id.textContent='Album-ID · '+String(album.id||'Okänt');
-        a.append(top,label,owner,id);grid.append(a);
+        a.title='Album-ID: '+String(album.id||'Okänt');
+        a.append(top,owner);grid.append(a);
       }
     }
   }
