@@ -97,3 +97,8 @@ Säg: **”Fortsätt Remember. Läs remember/START_HERE.md och aktuell projektst
 - Motorn laddas externt från jsDelivr. Om modulen inte laddas visas en statisk första sida i stället för tomt utrymme.
 - Ändringen ligger ENDAST i kandidatgren/PR tills iPhone Safari och release-säkerhet kontrollerats. CURRENT/PREVIOUS null. Prototypen book-prototype.html finns kvar för jämförelse.
 - Testa iPhone: layout utan klippning, automatisk sidvändning, manuell touch, återstart efter paus, modalpaus, rättvända baksidor, version och återhämtning vid CDN-fel.
+
+## 0.1.119 – iPhone-fix av ny fotobok
+- Återinför StPageFlip på startsidan efter 0.1.118 återställning, men med explicit höjd på foto (sidans höjd minus 48 px bildtext) så att den stora beige tomytan inte uppstår när StPageFlip skriver över sidans display.
+- Separata kompletterande bilder finns på varje baksida. Baksidesbilderna motvänds i CSS för att motverka 3D-motorns spegling under bladrotation. Detta är en hypotes som måste testas på iPhone; inte verifierat i mobilruntime.
+- Bladvändning 1000 ms, visning cirka 1800 ms, övriga startsidan bibehållen. CURRENT/PREVIOUS ej uppgraderade före användarens PASS.
