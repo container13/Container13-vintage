@@ -8,12 +8,12 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.110",
-    "integrity": "CANDIDATE_UNVERIFIED; PERMANENT_ARCHIVE_BRANCH_READBACK_PASS_0.1.109; IPHONE_PASS_PENDING"
+    "candidate": "0.1.111",
+    "integrity": "CANDIDATE_UNVERIFIED; IPHONE_FEEDBACK_0.1.110_FUNCTIONAL_BUT_VISUAL_AND_SPEED_REJECTED; 0.1.111_PR_CI_PENDING"
   },
   "workCheckpoint": {
     "status": "READY",
-    "targetRelease": "0.1.110",
+    "targetRelease": "0.1.111",
     "goal": "Continue active Remember development from remember/START_HERE.md",
     "plan": [
       "Read START_HERE.md and current code before work",
@@ -519,5 +519,22 @@
     "currentAndPrevious": "UNSET_PENDING_IPHONE_AND_DEPLOY_VERIFICATION",
     "candidate": "0.1.110",
     "note": "Release process docs changed; no runtime/device promotion implied"
+  },
+  "bookTurnFeedback": {
+    "version": "0.1.110",
+    "device": "iPhone",
+    "result": "FUNCTIONAL_BUT_NOT_ACCEPTED",
+    "issues": [
+      "too much time between pages",
+      "back pages seem to alternate between two colors"
+    ],
+    "fixCandidate": "0.1.111",
+    "changes": [
+      "turn animation 1350ms to 720ms",
+      "auto turn interval 4600ms to 2900ms",
+      "paper back palette harmonized with page front",
+      "book decorative backing paper matched"
+    ],
+    "verifiedOnDevice": false
   }
 }
