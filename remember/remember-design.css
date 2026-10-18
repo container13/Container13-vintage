@@ -558,3 +558,7 @@ body.remember-shell[data-remember-view="create"] .create-hero .create-free{color
 body.remember-shell[data-remember-view="create"] #emailSection[hidden],body.remember-shell[data-remember-view="create"] #loginLink[hidden]{display:none!important}
 body.remember-shell[data-remember-view="create"] #sent a{color:#d9e7a4;font-weight:750}
 body.remember-shell[data-remember-view="create"] footer{margin-top:14px}
+
+/* v0.1.98 — understated return navigation on album creation */
+body.remember-shell[data-remember-view="create"] .create-back{display:inline-flex;align-items:center;gap:6px;margin:0 0 12px;padding:8px 12px;border-radius:999px;color:#fff5e3;background:rgba(20,49,39,.64);border:1px solid rgba(246,225,183,.44);text-decoration:none;font-size:13px;font-weight:650;backdrop-filter:blur(7px)}
+body.remember-shell[data-remember-view="create"] .create-back:focus-visible{outline:3px solid #d9e7a4;outline-offset:2px}
