@@ -507,3 +507,23 @@ body.remember-shell[data-remember-view="memories"] .action-tile .tile-copy small
  body.remember-shell h1 {margin-block:10px 15px}
  body.remember-shell[data-remember-view="memories"] .action-tile {min-height:56px}
 }
+
+/* v0.1.95 — mobile spacing and clearer visual hierarchy. */
+body.remember-shell[data-remember-view="create"] main {padding-top:16px!important}
+body.remember-shell[data-remember-view="create"] .brand {margin-bottom:13px!important}
+body.remember-shell[data-remember-view="create"] .brand strong {font-size:clamp(34px,9vw,44px)!important}
+body.remember-shell[data-remember-view="create"] h1 {margin-bottom:6px!important}
+body.remember-shell[data-remember-view="create"] .intro {margin-bottom:14px!important;line-height:1.4}
+body.remember-shell[data-remember-view="create"] form {padding:17px 16px!important}
+body.remember-shell[data-remember-view="create"] form label {margin:12px 0 5px!important}
+body.remember-shell[data-remember-view="create"] form input,
+body.remember-shell[data-remember-view="create"] form select {min-height:48px!important;padding:10px 13px!important}
+body.remember-shell[data-remember-view="albums"] #webmasterWorkspace .webmaster-eyebrow,
+body.remember-shell[data-remember-view="albums"] #webmasterWorkspace .workspace-top p {display:none!important}
+body.remember-shell[data-remember-view="albums"] #webmasterWorkspace .workspace-top {padding:0!important;gap:12px!important}
+body.remember-shell[data-remember-view="albums"] #webmasterWorkspace {padding:16px 18px!important}
+body.remember-shell[data-remember-view="albums"] #webmasterWorkspace h2 {font-size:clamp(26px,6vw,33px)!important;margin:0!important}
+body.remember-shell[data-remember-view="albums"] #webmasterWorkspace .workspace-symbol {font-size:28px!important}
+body.remember-shell[data-remember-view="albums"] #dashboardTitle {margin-bottom:10px!important}
+body.remember-shell[data-remember-view="albums"] #ownedAlbumsHeading {margin:20px 0 10px!important}
+body.remember-shell[data-remember-view="albums"] #ownerPanel {padding:16px!important}
