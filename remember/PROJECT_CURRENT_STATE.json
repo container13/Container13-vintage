@@ -8,7 +8,7 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.90",
+    "candidate": "0.1.91",
     "integrity": "GITHUB_READBACK_PENDING_IPHONE_PASS"
   },
   "workCheckpoint": {
@@ -23,8 +23,8 @@
     "resumeInstruction": "Read remember/START_HERE.md first; historical handoff is reference only."
   },
   "currentWork": {
-    "completed": "v0.1.90: remember-share-manager v3 deployed; webmaster may retrieve existing guest token after server-side role check; replace remains owner-only. Role switching guest view and return link present in v0.1.89.",
-    "next": "iPhone verify guest mode and return link; owner impersonation remains future work. Moderation expiry 5 minutes to 72 hours still planned.",
+    "completed": "v0.1.91: guest mode return link now uses explicit webmasterReturn album ID query param, rather than fragile sessionStorage; iPhone guest mode v0.1.90 confirmed, return link missing.",
+    "next": "iPhone verify guest-to-webmaster return link; owner view remains admin shortcut, not true impersonation; moderation expiry still planned.",
     "blocked": false,
     "blocker": null
   },
