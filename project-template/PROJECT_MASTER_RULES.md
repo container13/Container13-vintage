@@ -2,6 +2,9 @@
 
 Status: ACTIVE. Shared rules come from PROJECT_RELEASE_STANDARD.md.
 
+## Project lifecycle – mandatory
+At the beginning of each development session, read the project's short START_HERE or equivalent and structured projectMode status. Treat ACTIVE_DEVELOPMENT as a development/test product even when the backend uses live URLs. Do not imply real customers or launch without evidence. Only the project owner can approve lifecycle changes. Keep the short start page current and move older detail to history; do not make developers read the full handoff for routine changes.
+
 ## Continuity
 Follow CONTINUITY_PROTOCOL.md. PROJECT_CURRENT_STATE.json is the authoritative structured current status. Keep handoff prose consistent, link detailed evidence, verify documentation readback, and mark interrupted tests UNVERIFIED until checked.
 
