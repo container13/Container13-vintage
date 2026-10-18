@@ -8,12 +8,12 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.112",
-    "integrity": "CANDIDATE_UNVERIFIED; USER_REPORTED_LINGERING_LEFT_EDGE_SHADOW_AFTER_PAGE_TURN_0.1.111; FIX_PENDING_IPHONE_PASS"
+    "candidate": "0.1.113",
+    "integrity": "CANDIDATE_UNVERIFIED; LANDING_DOTS_AND_VERSION_BADGE_REMOVED_PENDING_IPHONE_PASS"
   },
   "workCheckpoint": {
     "status": "READY",
-    "targetRelease": "0.1.112",
+    "targetRelease": "0.1.113",
     "goal": "Continue active Remember development from remember/START_HERE.md",
     "plan": [
       "Read START_HERE.md and current code before work",
@@ -544,5 +544,12 @@
       "change": "Remove conditional shadow rule; preserve baseline paper shading",
       "devicePass": false
     }
+  },
+  "landingFeedback": {
+    "version": "0.1.112",
+    "request": "Remove pagination dots below photo book and visible version label from landing page",
+    "fixCandidate": "0.1.113",
+    "scope": "Landing page only; version remains in metadata and other views",
+    "devicePass": false
   }
 }
