@@ -1,6 +1,6 @@
 /* One release badge for all Remember user-facing views. */
 (()=>{'use strict';
- const fallback='0.1.112';
+ const fallback='0.1.113';
  const running=document.querySelector('meta[name="remember-release"]')?.content?.replace(/^remember-/,'')||fallback;
  function mount(version){
   if(!document.getElementById('remember-global-version-style')){
@@ -14,6 +14,7 @@
   el.textContent='Remember · v'+version;
  }
  function start(){
+  if(location.pathname.replace(/\/+$/,'').endsWith('/remember')||location.pathname.endsWith('/remember/index.html'))return;
   mount(running);
   fetch('./release.json?check='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(data=>{if(data&&/^\d+\.\d+\.\d+$/.test(data.version)&&data.version!==running){const el=document.getElementById('remember-global-version');if(el)el.textContent='Remember · v'+running+' · uppdatering finns'}}).catch(()=>{});
  }
