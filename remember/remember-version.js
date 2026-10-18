@@ -10,7 +10,7 @@
   if(!document.body)return;
   document.querySelectorAll('.version').forEach(n=>{n.hidden=true});
   let el=document.getElementById('remember-global-version');
-  if(!el){el=document.createElement('div');el.id='remember-global-version';el.setAttribute('aria-label','Remember versionsnummer');document.querySelector('main')?.append(el) || document.body.append(el)}
+  if(!el){el=document.createElement('div');el.id='remember-global-version';el.setAttribute('aria-label','Remember versionsnummer');(document.querySelector('main')||document.body).append(el)}
   el.textContent='Remember · v'+version;
  }
  function start(){
