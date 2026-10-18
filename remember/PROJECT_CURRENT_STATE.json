@@ -8,7 +8,7 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.93",
+    "candidate": "0.1.94",
     "integrity": "GITHUB_READBACK_PENDING_IPHONE_PASS"
   },
   "workCheckpoint": {
@@ -23,8 +23,8 @@
     "resumeInstruction": "Read remember/START_HERE.md first; historical handoff is reference only."
   },
   "currentWork": {
-    "completed": "v0.1.93: redesigned album header in webmaster/owner preview/guest, album title inside same tasteful panel; removed redundant status/version text; compact centered two role buttons share one CSS source.",
-    "next": "iPhone visually approve header and switching. Real owner permissions preview remains separate. Configurable moderation expiration remains planned.",
+    "completed": "v0.1.94: shared compact visual hierarchy for login, registration, dashboard, owner and both album views; removed obsolete internal version labels, preserved global release version footer; functionality unchanged.",
+    "next": "Review visual results on iPhone across login/dashboard/owner/guest/webmaster; continue view-by-view polish; moderation expiry setting pending.",
     "blocked": false,
     "blocker": null
   },
