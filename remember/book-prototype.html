@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>Remember – sidvändningstest 0.1.114</title>
+<title>Remember – sidvändningstest 0.1.115</title>
 <style>
 :root{color-scheme:dark;font-family:system-ui,-apple-system,sans-serif;background:#10271e;color:#f3f0e8}
 *{box-sizing:border-box}body{margin:0;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 12px;gap:18px;background:radial-gradient(ellipse at 50% 30%,#34513a,#10271e 75%)}
@@ -14,7 +14,7 @@ h1{font:400 clamp(36px,9vw,64px) Georgia,serif;margin:0}.note{max-width:540px;te
 .page{background:#e8dec9;color:#302a22;border:1px solid #c9bda7;overflow:hidden;display:flex;flex-direction:column;padding:10px}
 .page img{width:100%;height:83%;object-fit:cover;border-radius:4px}
 .page .caption{font:600 16px/1.4 system-ui;text-align:center;padding:8px 3px}
-.page.offer{align-items:center;justify-content:center;gap:20px;text-align:center;padding:22px;background:#e8dec9;color:#234437}
+.page.backface img{filter:saturate(.75) brightness(1.06)}.page.backface .caption{visibility:hidden}.page.offer{align-items:center;justify-content:center;gap:20px;text-align:center;padding:22px;background:#e8dec9;color:#234437}
 .page.offer strong{font:400 35px Georgia,serif}
 .controls{display:flex;gap:12px}.controls button{border:1px solid #8ca793;border-radius:12px;background:#254b37;color:white;font-size:16px;padding:12px 18px;cursor:pointer}
 small{color:#bdcabc;text-align:center}
@@ -22,13 +22,16 @@ small{color:#bdcabc;text-align:center}
 </head>
 <body>
 <h1>Remember.</h1>
-<p class="note">Separat prototyp för naturlig sidvändning. Dra i ett hörn eller svep över boken. Den här sidan ersätter inte startsidan.</p>
+<p class="note">Test av naturlig automatisk sidvändning med kompletterande motiv på bladens baksidor. Du kan också bläddra själv.</p>
 <div id="stage"><div id="book">
-<div class="page"><img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&q=80" alt="Fest"><div class="caption">Fester & födelsedagar</div></div>
-<div class="page"><img src="https://images.unsplash.com/photo-1597956959732-9b8cb12f8960?w=800&q=80" alt="Fisketur"><div class="caption">Fiskeresor</div></div>
-<div class="page"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80" alt="Vandring"><div class="caption">Resor & äventyr</div></div>
-<div class="page"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80" alt="Bröllop"><div class="caption">Bröllop</div></div>
-<div class="page offer"><strong>10 bilder gratis</strong><span>Gäster behöver inget konto</span><span>Era minnen, tillsammans ♡</span></div>
+<div class="page"><img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&amp;q=80" alt="Fester & födelsedagar"><div class="caption">Fester & födelsedagar</div></div>
+<div class="page backface"><img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&amp;q=80" alt="Festljus"><div class="caption"></div></div>
+<div class="page"><img src="https://images.unsplash.com/photo-1597956959732-9b8cb12f8960?w=800&amp;q=80" alt="Fiskeresor"><div class="caption">Fiskeresor</div></div>
+<div class="page backface"><img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800&amp;q=80" alt="Vatten & stillhet"><div class="caption"></div></div>
+<div class="page"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&amp;q=80" alt="Resor & äventyr"><div class="caption">Resor & äventyr</div></div>
+<div class="page backface"><img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&amp;q=80" alt="Skog & natur"><div class="caption"></div></div>
+<div class="page"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&amp;q=80" alt="Bröllop"><div class="caption">Bröllop</div></div>
+<div class="page backface"><img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&amp;q=80" alt="Blommor & detaljer"><div class="caption"></div></div><div class="page offer"><strong>10 bilder gratis</strong><span>Gäster behöver inget konto</span><span>Era minnen, tillsammans ♡</span></div>
 </div></div>
 <div class="controls"><button id="prev" type="button">← Föregående</button><button id="next" type="button">Nästa →</button></div>
 <small id="status" role="status">Laddar sidvändningsmotor…</small>
@@ -37,11 +40,19 @@ const status=document.getElementById('status');
 try{
  const {PageFlip}=await import('https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.module.js');
  const host=document.getElementById('book');
- const flip=new PageFlip(host,{width:320,height:400,size:'stretch',minWidth:240,maxWidth:460,minHeight:300,maxHeight:575,drawShadow:true,maxShadowOpacity:0.18,flippingTime:900,usePortrait:true,startZIndex:0,autoSize:true,showCover:false,mobileScrollSupport:false,swipeDistance:25,clickEventForward:false});
+ const flip=new PageFlip(host,{width:320,height:400,size:'stretch',minWidth:240,maxWidth:460,minHeight:300,maxHeight:575,drawShadow:true,maxShadowOpacity:0.14,flippingTime:680,usePortrait:true,startZIndex:0,autoSize:true,showCover:false,mobileScrollSupport:false,swipeDistance:25,clickEventForward:false});
  flip.loadFromHTML(host.querySelectorAll('.page'));
- document.getElementById('prev').addEventListener('click',()=>flip.flipPrev());
- document.getElementById('next').addEventListener('click',()=>flip.flipNext());
- status.textContent='Testmotor laddad · prototyp 0.1.114';
+ const DISPLAY_MS=1800, TURN_MS=680;let timer=null,paused=false;
+ const randomCorner=()=>Math.random()<.5?'top':'bottom';
+ function nextAuto(){if(paused)return;const state=flip.getCurrentPageIndex();if(state>=flip.getPageCount()-1){flip.flip(0,randomCorner())}else{flip.flipNext(randomCorner())}schedule()}
+ function schedule(){clearTimeout(timer);if(!paused&&!document.hidden&&!matchMedia('(prefers-reduced-motion: reduce)').matches)timer=setTimeout(nextAuto,DISPLAY_MS+TURN_MS)}
+ function userFlip(delta){paused=true;clearTimeout(timer);if(delta<0)flip.flipPrev(randomCorner());else flip.flipNext(randomCorner());clearTimeout(timer);timer=setTimeout(()=>{paused=false;schedule()},4500)}
+ document.getElementById('prev').addEventListener('click',()=>userFlip(-1));
+ document.getElementById('next').addEventListener('click',()=>userFlip(1));
+ host.addEventListener('touchstart',()=>{paused=true;clearTimeout(timer)},{passive:true});
+ host.addEventListener('touchend',()=>{clearTimeout(timer);timer=setTimeout(()=>{paused=false;schedule()},4500)},{passive:true});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)clearTimeout(timer);else if(!paused)schedule()});
+ status.textContent='Automatisk bläddring · max 1,8 s stillbild · test 0.1.115';schedule();
 }catch(error){status.textContent='Kunde inte ladda testmotorn. Kontrollera nätverket och prova igen.';console.error('Remember page-flip prototype',error)}
 </script>
 </body></html>
