@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="referrer" content="no-referrer"><meta name="theme-color" content="#332c26"><title>Remember E.51 test</title>
+<style>
+:root{font-family:system-ui,-apple-system,sans-serif;color:#faf7ee;background:#0c231c;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{min-height:100svh;min-height:100dvh;background:radial-gradient(ellipse at 90% 8%,#39502c65,transparent 43%),radial-gradient(ellipse at 4% 58%,#345a3966,transparent 42%),#0c231c;display:flex;flex-direction:column}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.25;background:radial-gradient(ellipse at 5% 5%,#7a9c58,transparent 23%),radial-gradient(ellipse at 98% 36%,#d2a15c,transparent 27%);filter:blur(35px)}
+main{position:relative;z-index:1;flex:1;min-height:0;width:min(100%,600px);margin:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(8px,2svh,20px) 14px 0;gap:clamp(10px,1.7svh,19px)}
+.identity{text-align:center}.identity h1{font:400 clamp(54px,13.6vw,90px)/.99 Georgia,serif;letter-spacing:-.055em;margin:0;white-space:nowrap}.identity .by{font-size:clamp(13px,3.5vw,18px);font-weight:600;letter-spacing:.16em;color:#dceca9;margin-top:6px}
+.tagline{font-size:clamp(16px,4.1vw,22px);line-height:1.38;font-weight:500;text-align:center;color:#e6e8df;margin:0}
+.book{position:relative;flex:0 1 auto;width:min(96%,47svh,430px);aspect-ratio:1/1.08;min-height:0;perspective:1200px;filter:drop-shadow(0 16px 17px #0009);touch-action:pan-y;margin:5px 0}
+.book:before,.book:after{content:"";position:absolute;inset:12px -7px 8px 7px;background:#e8dec9;border-radius:11px;transform:rotate(5deg);box-shadow:0 5px 15px #0005}.book:after{transform:rotate(-5deg);inset:12px 7px 8px -7px}
+.paper{position:absolute;inset:0;z-index:1;background:#e8dec9;padding:clamp(9px,2vw,13px);border-radius:9px 18px 18px 9px;box-shadow:inset 5px 0 10px #0002,1px 3px 0 #b8a98d;backface-visibility:hidden;transform-origin:left center;transition:transform .72s cubic-bezier(.3,.04,.22,1);display:flex;flex-direction:column;overflow:visible}
+.paper.turn{transform:rotateY(-178deg)}.paper{will-change:transform;transform-style:preserve-3d;overflow:visible;isolation:isolate}.paper:before{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;border-radius:inherit;background:linear-gradient(90deg,rgba(40,26,10,.23),transparent 15%,rgba(255,255,255,.09) 60%,rgba(40,26,10,.12));opacity:.55;transition:opacity .7s}.paper.turn:before{opacity:.95}.paper:after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(100deg,#ddd2bd,#e8dec9 30%,#e8dec9 74%,#d5c8b2);transform:rotateY(180deg) translateZ(1px);backface-visibility:hidden;box-shadow:inset -16px 0 26px #4635214a,0 4px 15px #0005}.paper .photo,.paper .caption,.paper .offer{backface-visibility:hidden;transform:translateZ(2px)}.book.is-turning:after{filter:blur(1px);opacity:.65}.paper .photo img{pointer-events:none}.book.is-turning{pointer-events:none}.photo{flex:1;min-height:0;overflow:hidden;border-radius:4px 10px 5px 4px;background:#315446}.photo img{width:100%;height:100%;object-fit:cover;display:block}.caption{font:italic clamp(18px,4.6vw,25px)/1.2 Georgia,serif;color:#264538;text-align:center;padding:10px 0 3px}
+.paper .offer{display:none;flex:1;align-items:center;justify-content:center;flex-direction:column;gap:12px;text-align:center;color:#204a39;background:linear-gradient(145deg,#e7e4ce,#d6e5b2);border-radius:8px;padding:20px}.paper .offer strong{font:400 clamp(30px,8vw,47px) Georgia,serif}.paper .offer span{font-size:clamp(16px,4vw,22px)}.paper.is-offer .photo,.paper.is-offer .caption{display:none}.paper.is-offer .offer{display:flex}
+.dots{display:flex;gap:9px;justify-content:center;align-items:center;height:12px}.dots i{width:7px;height:7px;border-radius:50%;background:#627b6a}.dots i.active{width:9px;height:9px;background:#dceca9}
+footer{position:relative;z-index:2;width:min(100%,600px);margin:0 auto;padding:8px 18px max(16px,env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:clamp(10px,1.5svh,17px)}
+footer .how{align-self:center;padding:8px 17px;border:1px solid #698b75;border-radius:99px;background:#18382cba;color:#dceca9;font:600 clamp(14px,3.8vw,18px) system-ui;cursor:pointer}
+footer a{display:flex;align-items:center;justify-content:center;text-align:center;text-decoration:none;min-height:clamp(46px,6.6svh,66px);border-radius:15px;font-weight:800;font-size:clamp(16px,4.3vw,22px)}
+footer .cta{background:#dceca9;color:#10251e}footer .login{border:1px solid #6d9380;background:#174737;color:#faf7ee}
+.version{position:fixed;bottom:calc(3px + env(safe-area-inset-bottom));right:8px;color:#a6b7aa;font-size:10px;pointer-events:none}
+.infoOverlay{position:fixed;inset:0;z-index:20;background:#071611dd;display:grid;place-items:center;padding:18px}.infoOverlay[hidden]{display:none}.infoPanel{width:min(100%,450px);max-height:85svh;overflow:auto;background:#19352d;border:1px solid #537563;border-radius:18px;padding:20px;box-shadow:0 15px 50px #0009}.infoPanel h2{margin:0 0 10px}.infoPanel p{color:#d3dfd6}.infoPanel ol{padding-left:22px;line-height:1.7}.infoPanel button{background:#dceca9;color:#10231f;border:0;border-radius:10px;padding:10px 17px;font:700 15px system-ui}.infoPanel .preview{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:16px 0}.infoPanel .preview div{background:#10231f;border:1px solid #476958;border-radius:9px;padding:13px 5px;text-align:center;font-size:12px}.infoPanel .preview strong{display:block;font-size:21px;margin-bottom:5px}
+@media(max-height:730px){main{gap:7px;padding-top:5px}.identity h1{font-size:clamp(46px,11vw,68px)}.tagline{font-size:14px}.book{width:min(85%,39svh,330px)}footer{gap:7px;padding-top:3px}footer a{min-height:43px}footer .how{padding:5px 12px}}
+@media(max-height:590px){.book{width:min(72%,32svh,260px)}.identity h1{font-size:42px}.tagline{font-size:12px}main{gap:4px}footer a{min-height:37px;font-size:14px}}
+@media(prefers-reduced-motion:reduce){.paper{transition:none}}
+#remember-global-version{position:fixed!important;left:auto!important;right:10px!important;bottom:calc(2px + env(safe-area-inset-bottom))!important;margin:0!important;font-size:9px!important;opacity:.75!important;background:transparent!important}
+/* 0.1.121: isolated landing flip engine styling, preserving surrounding design */
+.book.flip-shell{width:min(96%,47svh,430px);height:auto;aspect-ratio:1/1.08;perspective:none;filter:drop-shadow(0 14px 15px #0008);overflow:visible;touch-action:pan-y}
+.book.flip-shell:before,.book.flip-shell:after{display:none}
+#flip-pages{width:100%;height:100%}
+.flip-page{background:#e8dec9;color:#264538;border:1px solid #c9bda7;border-radius:7px;display:flex;flex-direction:column;padding:clamp(8px,2vw,12px);overflow:hidden}
+.flip-page[hidden]{display:none!important}
+ .flip-page img{display:block;width:100%;height:calc(100% - 48px);max-height:calc(100% - 48px);min-height:0;object-fit:cover;border-radius:4px 9px 5px 4px;pointer-events:none}
+.flip-caption{height:48px;max-height:48px;overflow:hidden;font:italic clamp(18px,4.6vw,25px)/1.2 Georgia,serif;text-align:center;padding:10px 0 3px;min-height:38px}
+
+.flip-back img{filter:saturate(.75) brightness(1.06)}.flip-back .flip-caption{visibility:hidden}
+.flip-offer{align-items:center;justify-content:center;gap:12px;text-align:center;padding:20px;background:linear-gradient(145deg,#e7e4ce,#d6e5b2)}
+.flip-offer strong{font:400 clamp(30px,8vw,47px) Georgia,serif}.flip-offer span{font-size:clamp(16px,4vw,22px)}
+.book.flip-shell{width:min(94vw,53svh,540px)!important;max-width:540px!important;overflow:hidden!important;border-radius:9px 17px 17px 9px}
+@media(max-height:730px){.book.flip-shell{width:min(91vw,47svh,460px)!important}}
+@media(max-height:590px){.book.flip-shell{width:min(82vw,38svh,350px)!important}}
+/* E.51: subtle curved corner anticipation; no new spread or page engine */
+.book.flip-shell{position:relative}
+.book.flip-shell:after{content:"";position:absolute;right:0;bottom:0;width:0;height:0;z-index:8;pointer-events:none;border-radius:100% 0 0 0;background:radial-gradient(ellipse at 100% 100%,#e7dbc2 5%,#c8b99c 55%,#85745d 100%);box-shadow:-5px -5px 13px #0003;opacity:0;transform:translate(0,0) rotate(0);transform-origin:100% 100%;transition:width .32s ease,height .32s ease,opacity .18s ease,transform .32s ease}
+.book.flip-shell.curl-anticipate:after{width:clamp(18px,8%,38px);height:clamp(20px,9%,42px);opacity:1;transform:rotate(-8deg)}
+.book.flip-shell.curl-anticipate #flip-pages{border-bottom-right-radius:30px}
+@media(prefers-reduced-motion:reduce){.book.flip-shell:after{transition:none}}
+
+/* E.51 experimental: render full two-page engine width and mask its left half */
+.book.flip-shell{overflow:hidden!important}
+#flip-pages{width:200%!important;height:100%!important;transform:translateX(-50%);}
+
+.flip-offer{position:relative;background:linear-gradient(140deg,#f5eedb,#d6c5a3);color:#294c3b;border:1px solid #bda77e;gap:13px}.flip-offer:before{content:"";position:absolute;inset:12px;border:1px solid #a98f60;border-radius:4px;pointer-events:none}.offer-kicker{font:600 11px system-ui;letter-spacing:.24em;color:#866f49}.offer-number{font:400 clamp(80px,22vw,130px)/1 Georgia,serif;color:#315340}.offer-heading{font:italic clamp(29px,8vw,45px) Georgia,serif}.offer-quote{font:italic clamp(14px,3.5vw,19px) Georgia,serif;max-width:220px}.offer-small{font-size:12px;color:#70634f}.flip-offer.flip-back{background:linear-gradient(145deg,#345745,#102c23);color:#f3ead6}.flip-back .offer-mark{font:45px Georgia,serif;color:#d6c18b}.flip-back .offer-brand{font:400 clamp(37px,10vw,58px) Georgia,serif}.flip-back .offer-message{font:italic 17px Georgia,serif;color:#e5d8b8}.flip-back .offer-copyright{font:12px system-ui;letter-spacing:.15em;color:#c9b995}
+.offer-heading-free{font:italic 400 clamp(37px,9.4vw,56px)/1.15 Georgia,serif;letter-spacing:-.045em;margin:22px 0 7px}.offer-disclaimer{font:500 clamp(11px,2.8vw,14px)/1.35 system-ui;color:#6c644f;margin-top:5px}.flip-offer:not(.flip-back){gap:18px;padding:clamp(18px,5vw,32px)}
+
+/* E.51: offer front visual treatment only. */
+.flip-offer:not(.flip-back){background:radial-gradient(ellipse at 50% 30%,#fff9e9 0%,transparent 60%),linear-gradient(160deg,#f0e5cd 0%,#e0d0b1 100%);padding:clamp(24px,6vw,40px) clamp(20px,5vw,36px);gap:clamp(13px,3vh,24px);justify-content:center}
+.flip-offer:not(.flip-back):before{inset:11px;border:1px solid #ad9060;border-radius:5px}
+.flip-offer:not(.flip-back):after{content:"";position:absolute;inset:17px;border:1px solid #d9c6a1;border-radius:3px;pointer-events:none}
+.flip-offer .offer-kicker{font:600 clamp(10px,2.5vw,13px)/1.2 system-ui;letter-spacing:.28em;color:#846b43}
+.flip-offer .offer-heading-free{font:italic 400 clamp(38px,10vw,58px)/1.07 Georgia,serif;letter-spacing:-.055em;color:#294a38;margin:0}
+.flip-offer .offer-quote{font:italic clamp(17px,4vw,23px)/1.45 Georgia,serif;max-width:260px;color:#37503d}
+.flip-offer .offer-small{font:500 clamp(12px,3vw,16px)/1.5 system-ui;max-width:255px;color:#6b624f}
+.flip-offer .offer-flourish{font:400 clamp(39px,10vw,61px)/1 Georgia,serif;color:#9c8154;margin-top:clamp(5px,1.6vh,14px)}
+</style><script src="../project-template/mobile-view-policy.js?v=2"></script><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js?v=0.1.108"></script><meta name="remember-release" content="remember-E.51-test"><script defer src="./remember-version.js?v=0.1.108"></script></head>
+<body><main><div class="identity"><h1>Remember.</h1><div class="by">by Container13</div></div><p class="tagline">Ögonblick värda att minnas.<br>Alla era bilder. Ett gemensamt album.</p>
+<div class="book flip-shell" id="book" aria-label="Fotobok med automatisk och manuell sidvändning"><div id="flip-pages"><div class="flip-page flip-back flip-padding" aria-hidden="true" style="background:#e8dec9"></div><div class="flip-page"><img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&amp;q=80" alt="Fester & födelsedagar"><div class="flip-caption">Fester & födelsedagar</div></div><div class="flip-page flip-back"><img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&amp;q=80" alt="Festljus"><div class="flip-caption"></div></div><div class="flip-page"><img src="https://images.unsplash.com/photo-1597956959732-9b8cb12f8960?w=800&amp;q=80" alt="Fiskeresor"><div class="flip-caption">Fiskeresor</div></div><div class="flip-page flip-back"><img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800&amp;q=80" alt="Vatten & stillhet"><div class="flip-caption"></div></div><div class="flip-page"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&amp;q=80" alt="Resor & äventyr"><div class="flip-caption">Resor & äventyr</div></div><div class="flip-page flip-back"><img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&amp;q=80" alt="Skog & natur"><div class="flip-caption"></div></div><div class="flip-page"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&amp;q=80" alt="Bröllop"><div class="flip-caption">Bröllop</div></div><div class="flip-page flip-back"><img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&amp;q=80" alt="Blommor & detaljer"><div class="flip-caption"></div></div><div class="flip-page flip-offer"><div class="offer-kicker">✦ REMEMBER ✦</div><div class="offer-heading offer-heading-free">Testa gratis</div><div class="offer-quote">De finaste minnena är de vi delar.</div><div class="offer-small">Skapa ert första album och samla minnen tillsammans.</div><div class="offer-flourish" aria-hidden="true">❧</div></div><div class="flip-page flip-offer flip-back" aria-label="Baksida erbjudande"><div class="offer-mark">✧</div><div class="offer-brand">Remember.</div><div class="offer-message">Ögonblick att bevara</div><div class="offer-copyright">© Container13</div></div></div></div>
+</main>
+<footer><button type="button" class="how" id="info" aria-label="Så här fungerar det" aria-haspopup="dialog">Så här fungerar det <span aria-hidden="true">↗</span></button><a class="cta" href="./register.html">Kom igång med e-post →</a><a class="login" href="./login.html?mode=login">Jag har redan ett konto <span aria-hidden="true">→</span></a></footer><div class="infoOverlay" id="infoOverlay" hidden><section class="infoPanel" role="dialog" aria-modal="true" aria-labelledby="infoTitle"><h2 id="infoTitle">Så fungerar Remember</h2><p>Skapa ett album för era gemensamma ögonblick. Alla som får gästlänken kan bidra med bilder under albumets uppladdningstid.</p><div class="preview"><div><strong>✉</strong>Aktivera via e-post</div><div><strong>▦</strong>Dela länk eller QR</div><div><strong>▧</strong>Samla bilder</div></div><ol><li>Skapa album och verifiera din e-post.</li><li>Dela gästlänken eller QR-koden.</li><li>Gästerna laddar upp bilder utan konto.</li></ol><p>De första 10 bilderna är gratis. Exempelvyerna ovan är förenklade illustrationer, inte skärmdumpar.</p><button id="closeInfo" type="button">Stäng</button></section></div>
+<script type="module">
+const overlay=document.getElementById('infoOverlay'),book=document.getElementById('book');
+const info=document.getElementById('info'),closeInfo=document.getElementById('closeInfo');
+let timer=null,resumeTimer=null,flip=null,interacting=false;
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function stop(){clearTimeout(timer);clearTimeout(resumeTimer);book.classList.remove('curl-anticipate')}
+function schedule(delay=2800){clearTimeout(timer);if(!flip||reduced||interacting||!overlay.hidden||document.hidden)return;timer=setTimeout(autoFlip,delay)}
+function autoFlip(){if(!flip||interacting||!overlay.hidden||document.hidden)return;book.classList.add('curl-anticipate');timer=setTimeout(()=>{book.classList.remove('curl-anticipate');if(!flip||interacting||!overlay.hidden||document.hidden)return;const corner='bottom';if(flip.getCurrentPageIndex()>=flip.getPageCount()-2){flip.flipNext(corner);setTimeout(()=>{if(flip&&!interacting&&overlay.hidden&&!document.hidden){flip.turnToPage(1)}},1470);schedule(1500)}else{flip.flipNext(corner);schedule()}},360)}
+function pauseForTouch(){interacting=true;stop()}
+function resumeAfterTouch(){clearTimeout(resumeTimer);resumeTimer=setTimeout(()=>{interacting=false;schedule()},4500)}
+info.addEventListener('click',()=>{overlay.hidden=false;stop();closeInfo.focus()});
+function dismiss(){overlay.hidden=true;interacting=false;schedule();info.focus()}
+closeInfo.addEventListener('click',dismiss);
+overlay.addEventListener('click',e=>{if(e.target===overlay)dismiss()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)dismiss()});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else schedule()});
+book.addEventListener('touchstart',pauseForTouch,{passive:true});book.addEventListener('touchend',resumeAfterTouch,{passive:true});book.addEventListener('touchcancel',resumeAfterTouch,{passive:true});
+book.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse')pauseForTouch()});
+book.addEventListener('pointerup',e=>{if(e.pointerType==='mouse')resumeAfterTouch()});
+try{
+ const {PageFlip}=await import('https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.module.js');
+ const host=document.getElementById('flip-pages');
+ const w=Math.round(book.getBoundingClientRect().width);flip=new PageFlip(host,{width:w,height:Math.round(w*1.08),size:'fixed',drawShadow:true,maxShadowOpacity:.42,flippingTime:1450,usePortrait:false,autoSize:false,showCover:false,mobileScrollSupport:false,swipeDistance:25,clickEventForward:false});
+ const firstPage=host.querySelector('.flip-page:not(.flip-padding)');const wrapPage=firstPage.cloneNode(true);wrapPage.classList.add('flip-wrap');host.appendChild(wrapPage);flip.loadFromHTML(host.querySelectorAll('.flip-page'));flip.turnToPage(1);
+ // E.51 diagnostic: force native spread pairing, clip viewport to right leaf only.
+ const diagnostic=document.createElement('small');diagnostic.textContent='E.51 · test av inbyggd sidparning (landscape)';diagnostic.style.cssText='position:fixed;bottom:6px;left:8px;color:#e6ebdd;font:11px system-ui;z-index:20';document.body.appendChild(diagnostic);
+ // StPageFlip treats consecutive HTML pages as the front and reverse faces of a sheet. No extra 3D backface layers.
+ schedule();
+}catch(error){console.error('Remember landing flip engine unavailable',error);book.setAttribute('aria-label','Fotoboken kunde inte laddas');const host=document.getElementById('flip-pages');host.querySelectorAll('.flip-page').forEach((page,i)=>{page.hidden=i!==0});host.style.display='block';}
+</script><script type="module">try{const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');const c=createClient('https://wykvztfmfbboxiqvuvwr.supabase.co','sb_publishable_qOSBb7U6TGnPQ8ypyYRLGg_GtYrraoG',{auth:{storage:localStorage,storageKey:'container13-remember-auth-v2',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});const {data,error}=await c.auth.getSession();if(!error&&data.session){location.replace('./dashboard.html');}}catch(e){console.warn('Remember session check unavailable',e)}</script></body></html>
