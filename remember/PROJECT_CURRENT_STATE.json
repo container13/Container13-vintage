@@ -8,26 +8,26 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.137",
-    "integrity": "CANDIDATE_COMMITTED; MANUAL_PAGE_FLIP_USER_DEVICE_PASS_2026-10-20; FULL_APP_RELEASE_GATES_UNVERIFIED; CURRENT_PREVIOUS_NOT_PROMOTED"
+    "candidate": "0.1.138",
+    "integrity": "LOGIN_INITIALIZATION_FIX_PENDING_COMMIT_DEPLOY_DEVICE; 0.1.137_MANUAL_FLIP_DEVICE_PASS_PRESERVED; CURRENT_PREVIOUS_NOT_PROMOTED"
   },
   "workCheckpoint": {
-    "status": "READY",
-    "targetRelease": "0.1.137",
-    "goal": "Continue Remember from user-approved manual photobook interaction",
+    "status": "UNVERIFIED",
+    "targetRelease": "0.1.138",
+    "goal": "Fix direct password login initialization without changing photobook behavior",
     "plan": [
-      "Preserve StPageFlip 2.0.7 manual start and halfway completion approved by user on iPhone",
-      "Verify full deployed release, remaining workflows and risk-class gates before promotion",
-      "Keep CURRENT/PREVIOUS unchanged until verified promotion"
+      "Move eyeIcon initializer before mode=login calls ensurePasswordInput/setEye",
+      "Verify exact GitHub readback, deployment and iPhone password login",
+      "Preserve photobook logic; no CURRENT/PREVIOUS promotion"
     ],
-    "resumeInstruction": "Read START_HERE.md, release standard, and actual branch/runtime. Do not mistake photobook PASS for full app release approval."
+    "resumeInstruction": "Verify 0.1.138 deployment and direct login initialization; do not infer authenticated login PASS from static checks."
   },
   "currentWork": {
-    "completed": "2026-10-20: User confirmed manual photobook page turning works in v0.1.137: edge-start plus halfway-release completion. Earlier 0.1.128-0.1.136 attempts failed. Root cause was PageFlip release/completion logic, not touch sensitivity.",
-    "next": "Preserve working manual flip; verify deploy/version and full release gates before assigning CURRENT/PREVIOUS. Audit internal StPageFlip API override before any library upgrade.",
+    "completed": "2026-10-20: Identified direct login startup ReferenceError: mode=login calls ensurePasswordInput -> setEye before const eyeIcon initialization. Candidate 0.1.138 moves icon initializer before call and synchronizes fallback version.",
+    "next": "Verify final commit Actions/deploy and user iPhone password login; confirm version placement expectation separately.",
     "blocked": false,
     "blocker": null,
-    "landingPage": "v0.1.137 manual photobook flip USER DEVICE PASS only; full app verification pending."
+    "landingPage": "Manual page-flip logic unchanged from user-approved 0.1.137."
   },
   "pausedWork": {
     "fotobok": "Manual page-turning approved on iPhone at 0.1.137; preserve. Other photobook visuals and complete app release gates are separate."

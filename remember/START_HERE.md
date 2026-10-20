@@ -1,5 +1,5 @@
 # Remember – START HÄR (aktuell arbetsstatus)
-Senast uppdaterad: 2026-10-18. **Detta är den korta ingången**, inte en fullständig historik.
+Senast uppdaterad: 2026-10-20. **Detta är den korta ingången**, inte en fullständig historik.
 
 ## Projektläge – obligatorisk utgångspunkt
 **AKTIV UTVECKLING / TEST. INTE LANSERAD.** Album och bilder som används nu är utvecklings- och testmaterial, inte kunddata. Att webbplats och Supabase använder driftsatta adresser betyder **inte** att produkten är lanserad. Ändra aldrig projektläget till PILOT/LANSERAD utan uttryckligt beslut från projektägaren.
@@ -112,3 +112,6 @@ Säg: **”Fortsätt Remember. Läs remember/START_HERE.md och aktuell projektst
 - 0.1.120 underkänd på iPhone: baksidan återgav samma motiv och tänkt baksidesmotiv dök upp som ny framsida.
 - Tar bort alla fyra extra flip-physical-back-lager och deras 3D-CSS. Behåller ordnade, separata HTML-sidor (fram/bak i följd) för StPageFlips interna bladmodell. Hypotes; kräver faktisk iPhone-PASS.
 - **Obligatorisk visuell leveransregel:** Efter varje publicerad ändring som användaren behöver kontrollera manuellt ska svaret innehålla klickbar GitHub Actions-länk (https://github.com/container13/Container13-vintage/actions), direktlänk till testad sida, versionsnummer och vad som ska kontrolleras. Länka till exakt workflow-körning när tillgänglig. GitHub CI är inte visuell iPhone-PASS.
+
+## Aktuell kontrollpunkt 2026-10-20 — 0.1.138
+Detta avsnitt ersätter äldre nuläges-/kandidatuppgifter ovan. Aktiv gren är ccc-demo-public-test. Kandidat 0.1.138 rättar direktinloggning (?mode=login): setEye använde const eyeIcon före initiering och avbröt skriptet innan auth-init/felhantering. Ikonens initiering flyttas före första anropet. Gemensam reservversion synkas från 0.1.133. Fotobokens sidvändningslogik är oförändrad från användargodkända 0.1.137. GitHub/Actions/deploy och iPhone-inloggning ska verifieras separat; CURRENT/PREVIOUS förblir null. Säkerhetsgren remember/safety-checkpoint-2026-10-20-0137 ska behållas. GitHub-grenstädning är pausad: raderingsfunktion/körmiljö saknas; inga grenar raderade. Gamla fotoboksexperiment får enligt projektägaren raderas efter beroendekontroll utan nya arkiv; skydda andra projekt och nödvändiga refs.
