@@ -111,7 +111,27 @@ footer .cta{background:#dceca9;color:#10251e}footer .login{border:1px solid #6d9
 .flip-offer:not(.flip-back) .offer-bottom{align-self:end;padding-bottom:clamp(17px,3vh,29px);gap:clamp(8px,1.6vh,13px)}
 #remember-global-version{position:static!important;align-self:flex-end!important;display:block!important;margin:2px 0 0 auto!important;padding:0!important;background:transparent!important;opacity:.7!important;font-size:9px!important;z-index:2!important}
 footer{padding-bottom:max(12px,env(safe-area-inset-bottom,0px))}
-</style><script src="../project-template/mobile-view-policy.js?v=2"></script><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js?v=0.1.123"></script><meta name="remember-release" content="remember-0.1.124"><script defer src="./remember-version.js?v=0.1.124"></script></head>
+
+/* 0.1.125: single-screen landing, responsive to Safari and standalone viewport. */
+html,body{height:100%;min-height:0;overflow:hidden}
+body{height:100svh;height:100dvh;min-height:0;overflow:hidden}
+main{flex:1 1 auto;min-height:0;justify-content:space-evenly;padding-top:max(8px,env(safe-area-inset-top,0px));padding-bottom:4px;gap:clamp(4px,1svh,12px)}
+.identity,.tagline,.dots{flex-shrink:0}
+.book.flip-shell{flex:0 1 auto!important;width:min(94vw,43dvh,540px)!important;max-width:540px!important}
+footer{flex:0 0 auto;gap:clamp(6px,1svh,12px);padding-top:4px;padding-bottom:max(6px,env(safe-area-inset-bottom,0px))}
+footer a{min-height:clamp(40px,5.5dvh,60px)}
+#remember-global-version{font-size:9px!important;margin:0 0 0 auto!important}
+@media(max-height:750px){
+ .identity h1{font-size:clamp(44px,11vw,72px)}
+ .identity .by{margin-top:2px}
+ .tagline{font-size:clamp(12px,3.4vw,17px);line-height:1.25}
+ .book.flip-shell{width:min(90vw,38dvh,440px)!important}
+ main{gap:4px}
+ footer{gap:5px}
+ footer a{min-height:39px}
+}
+@media(min-width:700px) and (min-height:850px){.book.flip-shell{width:min(54dvh,500px)!important}}
+</style><script src="../project-template/mobile-view-policy.js?v=2"></script><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js?v=0.1.123"></script><meta name="remember-release" content="remember-0.1.125"><script defer src="./remember-version.js?v=0.1.125"></script></head>
 <body><main><div class="identity"><h1>Remember.</h1><div class="by">by Container13</div></div><p class="tagline">Ögonblick värda att minnas.<br>Alla era bilder. Ett gemensamt album.</p>
 <div class="book flip-shell" id="book" aria-label="Fotobok med automatisk och manuell sidvändning"><div id="flip-pages"><div class="flip-page flip-back flip-padding" aria-hidden="true" style="background:#e8dec9"></div><div class="flip-page"><img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&amp;q=80" alt="Fester & födelsedagar"><div class="flip-caption">Fester & födelsedagar</div></div><div class="flip-page flip-back"><img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&amp;q=80" alt="Festljus"><div class="flip-caption"></div></div><div class="flip-page"><img src="https://images.unsplash.com/photo-1597956959732-9b8cb12f8960?w=800&amp;q=80" alt="Fiskeresor"><div class="flip-caption">Fiskeresor</div></div><div class="flip-page flip-back"><img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800&amp;q=80" alt="Vatten & stillhet"><div class="flip-caption"></div></div><div class="flip-page"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&amp;q=80" alt="Resor & äventyr"><div class="flip-caption">Resor & äventyr</div></div><div class="flip-page flip-back"><img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&amp;q=80" alt="Skog & natur"><div class="flip-caption"></div></div><div class="flip-page"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&amp;q=80" alt="Bröllop"><div class="flip-caption">Bröllop</div></div><div class="flip-page flip-back"><img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&amp;q=80" alt="Blommor & detaljer"><div class="flip-caption"></div></div><div class="flip-page flip-offer"><div class="offer-kicker">REMEMBER</div><div class="offer-center"><div class="offer-heading offer-heading-free">Alla minnen<br>förtjänar en plats.</div><div class="offer-rule" aria-hidden="true"></div><div class="offer-quote">De finaste ögonblicken är de vi delar.</div></div><div class="offer-bottom"><div class="offer-bottom-symbol" aria-hidden="true">✧</div><div class="offer-small">Skapa ert album gratis</div></div></div><div class="flip-page flip-offer flip-back" aria-label="Baksida erbjudande"><div class="offer-back-monogram" aria-hidden="true">R</div><div class="offer-back-caption">Remember.</div></div></div></div>
 </main>
