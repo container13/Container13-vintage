@@ -2,35 +2,35 @@
   "schema": "PROJECT-CURRENT-STATE-1",
   "project": "Container13 Remember – gemensamma album",
   "repository": "container13/Container13-vintage",
-  "branch": "remember-development",
+  "branch": "ccc-demo-public-test",
   "projectRoot": "remember/",
   "riskClass": "HIGH",
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.121",
-    "integrity": "CANDIDATE_UNVERIFIED; DUPLICATE_BACKFACE_LAYERS_REMOVED_PENDING_IPHONE_PASS"
+    "candidate": "0.1.137",
+    "integrity": "CANDIDATE_COMMITTED; MANUAL_PAGE_FLIP_USER_DEVICE_PASS_2026-10-20; FULL_APP_RELEASE_GATES_UNVERIFIED; CURRENT_PREVIOUS_NOT_PROMOTED"
   },
   "workCheckpoint": {
     "status": "READY",
-    "targetRelease": "0.1.121",
-    "goal": "Continue active Remember development from remember/START_HERE.md",
+    "targetRelease": "0.1.137",
+    "goal": "Continue Remember from user-approved manual photobook interaction",
     "plan": [
-      "Read START_HERE.md and current code before work",
-      "Keep one shared implementation per behavior",
-      "Bump version on every change and distinguish commit/deploy/device verification"
+      "Preserve StPageFlip 2.0.7 manual start and halfway completion approved by user on iPhone",
+      "Verify full deployed release, remaining workflows and risk-class gates before promotion",
+      "Keep CURRENT/PREVIOUS unchanged until verified promotion"
     ],
-    "resumeInstruction": "Read remember/START_HERE.md first; historical handoff is reference only."
+    "resumeInstruction": "Read START_HERE.md, release standard, and actual branch/runtime. Do not mistake photobook PASS for full app release approval."
   },
   "currentWork": {
-    "completed": "v0.1.100: reduced login hero whitespace; landing uses dynamic viewport height with compact responsive photo book and both calls to action in one screen.",
-    "next": "Physical iPhone Safari test: no scrolling on landing, both actions visible; login header proportions.",
+    "completed": "2026-10-20: User confirmed manual photobook page turning works in v0.1.137: edge-start plus halfway-release completion. Earlier 0.1.128-0.1.136 attempts failed. Root cause was PageFlip release/completion logic, not touch sensitivity.",
+    "next": "Preserve working manual flip; verify deploy/version and full release gates before assigning CURRENT/PREVIOUS. Audit internal StPageFlip API override before any library upgrade.",
     "blocked": false,
     "blocker": null,
-    "landingPage": "v0.1.106 repaired JS syntax error in book pages; device verification pending"
+    "landingPage": "v0.1.137 manual photobook flip USER DEVICE PASS only; full app verification pending."
   },
   "pausedWork": {
-    "fotobok": "Parkerad idé; inte i första releasen."
+    "fotobok": "Manual page-turning approved on iPhone at 0.1.137; preserve. Other photobook visuals and complete app release gates are separate."
   },
   "publicUrl": "https://container13.se/remember/",
   "databaseEvidence": {
