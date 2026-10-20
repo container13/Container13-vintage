@@ -1,10 +1,21 @@
 {
-  "version": "0.1.138",
-  "release": "remember-0.1.138",
+  "version": "0.1.139",
+  "release": "remember-0.1.139",
   "updated": "2026-10-20",
   "assets": [
     "remember-design.css",
     "remember-version.js",
     "auto-update.js"
+  ],
+  "entrypoints": [
+    "index.html",
+    "login.html",
+    "register.html",
+    "activate.html",
+    "dashboard.html",
+    "owner.html",
+    "album.html",
+    "album-admin.html",
+    "webmaster.html"
   ]
 }

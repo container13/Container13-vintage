@@ -8,26 +8,25 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.138",
-    "integrity": "LOGIN_INITIALIZATION_FIX_PENDING_COMMIT_DEPLOY_DEVICE; 0.1.137_MANUAL_FLIP_DEVICE_PASS_PRESERVED; CURRENT_PREVIOUS_NOT_PROMOTED"
+    "candidate": "0.1.139",
+    "integrity": "0.1.138_LOGIN_AND_REOPEN_USER_IPHONE_PASS; 0.1.139_ENTRYPOINT_VERSION_FIX_PENDING_DEPLOY_DEVICE; CURRENT_PREVIOUS_NOT_PROMOTED"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.138",
-    "goal": "Fix direct password login initialization without changing photobook behavior",
+    "targetRelease": "0.1.139",
+    "goal": "Synchronize all nine release-bearing entrypoints and prevent repeated stale version labeling",
     "plan": [
-      "Move eyeIcon initializer before mode=login calls ensurePasswordInput/setEye",
-      "Verify exact GitHub readback, deployment and iPhone password login",
-      "Preserve photobook logic; no CURRENT/PREVIOUS promotion"
+      "Sync album-admin and activate with seven other release-bearing pages",
+      "Verify exact readback and final commit release-safety/Pages",
+      "User reopens same webmaster album; banner gone and version 0.1.139"
     ],
-    "resumeInstruction": "Verify 0.1.138 deployment and direct login initialization; do not infer authenticated login PASS from static checks."
+    "resumeInstruction": "Read CHECKLIST.md; do not treat 0.1.138 login PASS as 0.1.139 update DEVICE PASS."
   },
   "currentWork": {
-    "completed": "2026-10-20: Identified direct login startup ReferenceError: mode=login calls ensurePasswordInput -> setEye before const eyeIcon initialization. Candidate 0.1.138 moves icon initializer before call and synchronizes fallback version.",
-    "next": "Verify final commit Actions/deploy and user iPhone password login; confirm version placement expectation separately.",
+    "completed": "0.1.138 login and continued login after PWA reopen confirmed by user on iPhone 2026-10-20. Album-admin still labeled 0.1.105; activate 0.1.106. Corrected inventory from seven to nine release-bearing pages; added manifest inventory and CI parity guard.",
+    "next": "Verify 0.1.139 deployment and same album-admin reopen: no update warning, visible running version. Preserve photobook.",
     "blocked": false,
-    "blocker": null,
-    "landingPage": "Manual page-flip logic unchanged from user-approved 0.1.137."
+    "blocker": null
   },
   "pausedWork": {
     "fotobok": "Manual page-turning approved on iPhone at 0.1.137; preserve. Other photobook visuals and complete app release gates are separate."
@@ -575,5 +574,28 @@
     },
     "safety": "External CDN; static first-page fallback; main landing not yet deployed",
     "devicePass": false
+  },
+  "loginVerification": {
+    "version": "0.1.138",
+    "date": "2026-10-20",
+    "device": "user iPhone / installed web app",
+    "passwordLogin": "USER_REPORTED_PASS",
+    "sessionAfterCloseReopen": "USER_REPORTED_PASS",
+    "evidence": "User: Bättre nu, inloggad; Japp, ff inloggad."
+  },
+  "releaseEntrypoints": {
+    "pages": [
+      "index.html",
+      "login.html",
+      "register.html",
+      "activate.html",
+      "dashboard.html",
+      "owner.html",
+      "album.html",
+      "album-admin.html",
+      "webmaster.html"
+    ],
+    "cameraException": "camera-session-test.html is an embedded active camera flow without release bootstrap; integration must protect camera activity and needs separate review.",
+    "diagnosticPages": "Other *test/prototype pages are not part of the nine release-bearing entries; not promoted or deleted."
   }
 }

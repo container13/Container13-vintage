@@ -89,6 +89,14 @@ jobs:
           index=(root/'index.html').read_text()
           if 'remember-'+version not in index: errors.append('Landing page release identity mismatch')
           if version not in (root/'remember-version.js').read_text(): errors.append('Shared version fallback mismatch')
+          entrypoints=('index.html','login.html','register.html','activate.html','dashboard.html','owner.html','album.html','album-admin.html','webmaster.html')
+          if manifest.get('entrypoints') != list(entrypoints): errors.append('Manifest entrypoint inventory mismatch')
+          for name in entrypoints:
+              html=(root/name).read_text()
+              if f'name="remember-release" content="remember-{version}"' not in html: errors.append(name+': running release mismatch')
+              for asset in ('remember-version.js','auto-update.js'):
+                  if f'./{asset}?v={version}' not in html: errors.append(name+': '+asset+' cache key mismatch')
+
           if errors:
               print('RELEASE SAFETY FAILED: '+'; '.join(errors))
               sys.exit(1)
