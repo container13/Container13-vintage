@@ -214,7 +214,7 @@ book.addEventListener('touchend',e=>{
  const current=flip.getCurrentPageIndex();
  if(dx<0){wrapPending=current>=flip.getPageCount()-4;flip.flipNext('bottom')}
  else {wrapPending=false;flip.flipPrev('bottom')}
- remainingAuto=2640;
+ resumeAfterTouch(e);
 }, {capture:true,passive:true});
 book.addEventListener('touchstart',pauseForTouch,{passive:true});book.addEventListener('touchend',resumeAfterTouch,{passive:true});book.addEventListener('touchcancel',resumeAfterTouch,{passive:true});
 book.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse')pauseForTouch()});
