@@ -113,7 +113,7 @@ footer .cta{background:#dceca9;color:#10251e}footer .login{border:1px solid #6d9
 footer{padding-bottom:max(12px,env(safe-area-inset-bottom,0px))}
 
 /* 0.1.126: lock landing overscroll while preserving book touch handling. */
-html,body{overscroll-behavior-y:none;touch-action:pan-x}
+html,body{overscroll-behavior-y:none}
 body{overscroll-behavior-y:none}
 /* 0.1.125: single-screen landing, responsive to Safari and standalone viewport. */
 html,body{height:100%;min-height:0;overflow:hidden}
@@ -199,4 +199,4 @@ try{
  // StPageFlip treats consecutive HTML pages as the front and reverse faces of a sheet. No extra 3D backface layers.
  schedule();
 }catch(error){console.error('Remember landing flip engine unavailable',error);book.setAttribute('aria-label','Fotoboken kunde inte laddas');const host=document.getElementById('flip-pages');host.querySelectorAll('.flip-page').forEach((page,i)=>{page.hidden=i!==0});host.style.display='block';}
-</script><script type="module">try{const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');const c=createClient('https://wykvztfmfbboxiqvuvwr.supabase.co','sb_publishable_qOSBb7U6TGnPQ8ypyYRLGg_GtYrraoG',{auth:{storage:localStorage,storageKey:'container13-remember-auth-v2',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});const {data,error}=await c.auth.getSession();if(!error&&data.session){location.replace('./dashboard.html');}}catch(e){console.warn('Remember session check unavailable',e)}</script></body></html>
+</script><script type="module">try{const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');const c=createClient('https://wykvztfmfbboxiqvuvwr.supabase.co','sb_publishable_qOSBb7U6TGnPQ8ypyYRLGg_GtYrraoG',{auth:{storage:localStorage,storageKey:'container13-remember-auth-v2',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});const {data,error}=await c.auth.getSession();if(!error&&data.session){location.replace('./dashboard.html');}}catch(e){console.warn('Remember session check unavailable',e)}</script><script>/* Prevent iOS rubber-band on the landing only; leave book and open info dialog interactive. */document.addEventListener('touchmove',function(e){if(!document.getElementById('infoOverlay')?.hidden)return;if(e.target.closest('#book'))return;e.preventDefault()},{passive:false});</script></body></html>
