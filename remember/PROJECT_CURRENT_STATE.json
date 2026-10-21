@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.145",
-    "integrity": "FRISOK_NEWEST_FIRST_CANDIDATE_DEVICE_PENDING"
+    "candidate": "0.1.146",
+    "integrity": "SCHEDULE_BUTTON_LABELS_AND_UNSAVED_PREVIEW_DEVICE_PENDING"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.145",
-    "goal": "Frisök and newest created first in catalog sorting dropdown",
+    "targetRelease": "0.1.146",
+    "goal": "Explicit extend versus reopen timing and unsaved close preview",
     "resumeInstruction": "Verify dashboard on iPhone; full catalog over 100 and count/storage/created sorting require separately reviewed backend change. No database permission granted."
   },
   "currentWork": {
-    "completed": "Frisök labels; single explicit sort dropdown defaults to existing server creation-desc order. Legacy sort preference migrated; no backend change.",
-    "next": "Verify iPhone Frisök and newest-first dropdown; complete backend catalog still pending.",
+    "completed": "Dynamic extend/reopen labels, timing basis note, unsaved deadline preview; forced closure preserved.",
+    "next": "Check expired/active labels on iPhone. Schedule backend remains review-only pending separate approval.",
     "blocked": false,
     "blocker": null
   },
@@ -613,7 +613,7 @@
     ]
   },
   "adminSettings": {
-    "frontendVersion": "0.1.142",
+    "frontendVersion": "0.1.146",
     "backendStatus": "REVIEW_ONLY_NOT_INSTALLED",
     "originalProject": "wykvztfmfbboxiqvuvwr",
     "testProject": "kauxrvshxgpbvptdwhog",
@@ -621,6 +621,6 @@
     "capability": "albumSettings",
     "fallback": "existing list fields rendered; all save controls disabled; no gallery fetch at startup",
     "rollback": "4699064c56acb735214d5e820ab790e2ed25511a",
-    "verification": "Local Node syntax, jsdom lazy-gallery/settings controls and mocked Edge guards PASS; SQL semantic/runtime and device tests not performed"
+    "verification": "0.1.146 Node/jsdom PASS: expired/future/exact boundary/7d, draft deadline preview, repeated extension, forced closure retained, no save on extension click, disabled backend fallback. SQL/runtime/device pending."
   }
 }

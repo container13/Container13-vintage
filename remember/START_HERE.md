@@ -138,3 +138,6 @@ Webmasterrubrik Användarnas album. Albumkorten prioriteras; sökning/filter/sor
 
 ## Aktuell kontrollpunkt 0.1.145 — 2026-10-21
 Frisök som sökfältets etikett och platshållare. En sorteringsmeny med Senast skapade album först som förval; bevarar befintlig list-RPC:s created_at DESC-ordning utan påhittade tidsstämplar. Äldst först vänder mottagen lista. Övriga val har uttrycklig ordning i samma meny. Äldre sparat alfabetiskt standardval migreras till senaste; nya explicita sorteringsval sparas med catalogPreferences:2. Statusfilter kvar i rullgardinsmeny. Rensa återställer senaste först. 100-gränsen kvarstår, inga backendändringar. iPhone-PASS väntar; CURRENT/PREVIOUS oförändrade.
+
+## Aktuell kontrollpunkt 0.1.146 — 2026-10-21
+Webmastertider: framtida vald sluttid ger Förläng 24 timmar/7 dagar från den tiden; passerad sluttid ger Öppna igen i 24 timmar/7 dagar från nu. Ny sluttid i albumets tidszon visas uttryckligen som inte sparad. Upprepade klick förlänger valt utkast. Manuell stängning bevaras och förklaras; inget öppnas automatiskt av tidsknappen. Backend/sparande fortfarande avstängt i originalprojektet; detta är frontendförberedelse, inte godkännande att installera databas/API. iPhone-PASS återstår. Fotobokslogik och CURRENT/PREVIOUS oförändrade.
