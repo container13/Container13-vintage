@@ -1,6 +1,8 @@
 # Remember upload lifecycle — implementation contract (not deployed)
 
-Status: design checkpoint only. Migration 6 is NOT installed. No guest uploads or storage are enabled.
+**Aktuell verifiering 2026-10-21:** äldre implementeringsstatus nedan är historisk. Uppladdning är installerad; se [UPLOAD_VERIFICATION_2026-10-21.md](UPLOAD_VERIFICATION_2026-10-21.md) för verkliga SQL-/Node-resultat och kvarvarande retry-luckor. Kraven nedan är fortsatt specifikation, inte fullständigt PASS.
+
+Historisk status: design checkpoint only. Migration 6 is NOT installed. No guest uploads or storage are enabled.
 
 ## States
 - reserved: a server-locked quota slot, expires after 15 minutes if no upload starts.

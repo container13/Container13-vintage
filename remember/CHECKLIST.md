@@ -1,5 +1,5 @@
 # Remember — gemensam checklista
-Uppdaterad 2026-10-21. Kandidat 0.1.156. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
+Uppdaterad 2026-10-21. Kandidat 0.1.157. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
 
 - [x] Manuell fotobok: 0.1.137, användarens iPhone-PASS.
 - [x] Säkerhetsgren 0.1.137 på 8a592bb8b7b767a54df595e5e7d5d5d2eb10cd7f verifierad.
@@ -93,7 +93,17 @@ Separat testinloggning/lösenordsåterställning är inte längre ett krav för 
 
 ## Användartest efter 0.1.155 — dokumenterat i 0.1.156
 - [x] Användaren 2026-10-21: ”Har testat allt både som albumägare och gäst, verkar fungera.” Ägar-/gästflöden noterade som användarrapporterad PASS efter rättningen. Exakta delsteg och nätverkssvar har inte redovisats; äldre detaljrutor är historiska och bockas inte automatiskt av.
-- [ ] Nästa avgränsade test: Webmaster öppnar ett stängt album i 24 timmar, sparar, lämnar och öppnar albumets inställningar igen; sluttiden ska vara kvar. Ingen upprepad bred ägar-/gästrunda behövs.
+- [x] Webmasterförlängning/spara/lämna/återöppna: användaren förtydligar 2026-10-21 att detta redan är testat, liksom ägar-/gästflödena. Begär inte samma test igen.
 - [ ] Fulla releasegrindar och CURRENT/PREVIOUS kvarstår separat.
 
 0.1.156 dokumenterar testresultatet och synkroniserar versionsmetadata enligt projektregeln; ingen ändring av funktionslogik eller backend.
+
+## Uppladdningsgranskning — 0.1.157, 2026-10-21
+- [x] Aktuell Edge v3 exakt matchad mot arkiverad källa; installerade RPC/index/grants lästa direkt.
+- [x] SQL/ROLLBACK: standard 10; bild 11 stoppas för gäst och ägare; mixed reserved/uploading/ready räknas; dubbletter mot uploading/ready släpper oanvänd slot; samma digest i annat album tillåts.
+- [x] Testfixturer helt återställda: 2 album/10 foton med identiska raddigests, 10 Storage-objekt, 0 kvarvarande testalbum.
+- [x] Automatiskt reproducerat återförsöksluckan i fyra klientvägar och Edge. Detta betyder hittat fel, inte godkänd avbrottshantering.
+- [ ] Nästa kodarbete: sammanhängande klient/server-rättning för stabilt request-ID, canonical bytes, status/replay/resume och Storage-verifiering.
+- [ ] Positiva avbrottstester efter rättning; samtidiga sista-platsen-/replay-anrop samt avgränsat fysiskt iPhone-avbrottstest.
+
+Detaljer och testkommandon: UPLOAD_VERIFICATION_2026-10-21.md. Tidigare generella önskemål om ägar-/gäst-/tidstest är ersatta av användarens bekräftelse ovan; specifika nya avbrottsfall är separata. Inga funktionella ändringar i denna checkpoint.

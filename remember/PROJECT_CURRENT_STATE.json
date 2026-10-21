@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.156",
-    "integrity": "OWNER_GUEST_USER_REPORTED_PASS_WEBMASTER_TIME_READBACK_PENDING"
+    "candidate": "0.1.157",
+    "integrity": "UPLOAD_QUOTA_DEDUP_SQL_PASS_RETRY_GAPS_REPRODUCED"
   },
   "workCheckpoint": {
-    "status": "OWNER_GUEST_USER_REPORTED_PASS",
-    "targetRelease": "0.1.156",
-    "goal": "Record user acceptance and finish webmaster time-save verification",
-    "resumeInstruction": "User reports all tested album-owner and guest flows work after 0.1.155. Do not repeat the broad tests. Next obtain explicit webmaster extension/save/reopen readback result. This documentation checkpoint changes no application behavior; CURRENT/PREVIOUS remain unset."
+    "status": "UPLOAD_REVIEW_COMPLETE_RETRY_FIX_PENDING",
+    "targetRelease": "0.1.157",
+    "goal": "Fix verified upload retry gaps after completed quota/dedup audit",
+    "resumeInstruction": "User confirmed time extension/save/reopen and owner/guest testing already done. Do not request again. Read UPLOAD_VERIFICATION_2026-10-21.md. Quota/dedup SQL assertions pass; four client paths generate new IDs on retry and live Edge v3 rejects existing. Plan one end-to-end idempotent retry fix, not a frontend-only retry loop. No backend/runtime changes made in audit."
   },
   "currentWork": {
-    "completed": "Root cause verified: role preview retains admin and ignored is_active; actual owner list omitted it. Added visible inactive notice and skipped gallery/owner tools for inactive owner views. Actual owner-manager v5 exact readback. Five DOM scenarios and Edge projection/auth checks PASS. User subsequently reports all tested owner and guest flows work.",
-    "next": "Webmaster: reopen a closed album for 24 hours, save, leave and reopen settings, confirm persisted deadline. Exact individual owner/guest test steps and HTTP traces were not supplied; full release gates remain separate.",
+    "completed": "User-reported webmaster time save/reopen and owner/guest PASS recorded. Live upload v3 exact archived-source comparison; installed RPC/index/grant review; 7 successful SQL assertions + 2 known-gap characterizations in rolled-back fixtures; 8 mocked Edge assertions and 7 retry gap reproductions. Existing 2 albums/10 photos and row digests unchanged; Storage count 10.",
+    "next": "Build and review one coherent retry/status/resume correction with stable per-file request IDs and canonical bytes, authorized server replay plus Storage verification; then test interruption and concurrency. Details in UPLOAD_VERIFICATION_2026-10-21.md.",
     "blocked": false,
     "blocker": null
   },
@@ -658,7 +658,13 @@
     "fallback": "existing list fields rendered; all save controls disabled; no gallery fetch at startup",
     "rollback": "4699064c56acb735214d5e820ab790e2ed25511a",
     "verification": "Original-development SQL rollback/grants/readback PASS; six Edge exact readback PASS; real user HTTP/iPhone pending.",
-    "installation": "remember/development-installed/2026-10-21-controls/README.md"
+    "installation": "remember/development-installed/2026-10-21-controls/README.md",
+    "deviceVerification": {
+      "date": "2026-10-21",
+      "status": "USER_REPORTED_PASS_TIME_EXTENSION_SAVE_REOPEN",
+      "quote": "Det är testat redan, liksom att det fungerar som albumägare och gästläge",
+      "independentlyCapturedHTTP": false
+    }
   },
   "albumActivation": {
     "frontendVersion": "0.1.148",
@@ -699,7 +705,7 @@
     "sqlTests": "PASS",
     "edgeReadback": "EXACT_PASS",
     "authenticatedHTTP": "PENDING_USER_SESSION",
-    "device": "OWNER_GUEST_USER_REPORTED_PASS_WEBMASTER_TIME_READBACK_PENDING",
+    "device": "USER_REPORTED_PASS_OWNER_GUEST_AND_WEBMASTER_TIME_SAVE_REOPEN",
     "document": "remember/development-installed/2026-10-21-controls/README.md"
   },
   "ownerInactiveFeedback": {
@@ -718,5 +724,21 @@
       "quote": "Har testat allt både som albumägare och gäst, verkar fungera. Nästa steg?",
       "scope": "User-reported owner and guest flows; exact substeps, webmaster schedule save/readback and network traces not supplied."
     }
+  },
+  "uploadVerification": {
+    "date": "2026-10-21",
+    "reviewedVersion": "0.1.156",
+    "reviewedCommit": "c2a92d5543859bc5adda883dc37ab4a0db0138ac",
+    "projectRef": "wykvztfmfbboxiqvuvwr",
+    "liveEdgeVersion": 3,
+    "liveEdgeMatchesArchivedSource": true,
+    "quota": "SQL_ROLLBACK_PASS_10_DEFAULT_11TH_BLOCKED_GUEST_OWNER",
+    "deduplication": "SQL_ROLLBACK_PASS_SAME_ALBUM_NO_EXTRA_SLOT_DIFFERENT_ALBUM_ALLOWED",
+    "retry": "KNOWN_GAPS_REPRODUCED_NOT_FIXED",
+    "testMode": "ACTUAL_SQL_IN_ROLLED_BACK_FIXTURES_PLUS_MOCKED_EDGE_AND_PAGE_FUNCTIONS",
+    "concurrentHTTP": "NOT_TESTED",
+    "physicalNetworkInterruption": "NOT_TESTED",
+    "existingDataUnchanged": true,
+    "report": "remember/UPLOAD_VERIFICATION_2026-10-21.md"
   }
 }
