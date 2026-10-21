@@ -1,5 +1,5 @@
 # Remember — gemensam checklista
-Uppdaterad 2026-10-21. Kandidat 0.1.159. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
+Uppdaterad 2026-10-21. Kandidat 0.1.160. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
 
 - [x] Manuell fotobok: 0.1.137, användarens iPhone-PASS.
 - [x] Säkerhetsgren 0.1.137 på 8a592bb8b7b767a54df595e5e7d5d5d2eb10cd7f verifierad.
@@ -119,3 +119,10 @@ Detaljer och testkommandon: UPLOAD_VERIFICATION_2026-10-21.md. Tidigare generell
 - [x] Installerad service-only rättning, aktivt album/kvot/dubblett/ID-replay kvar; SQL/Edge exakt readback.
 - [x] 14 SQL/ROLLBACK samt 29 mocktester PASS; inga befintliga rader/objekt ändrade.
 - [ ] Slutcommitens publicering kontrolleras efter push; användaren provar samma väntande bild ONLINE först. Därefter avgränsat avbrottstest.
+
+## Galleri 0.1.160
+- [x] .159 webmasterretry användarrapporterad PASS: ”Nu funkade det”, skärmbilder visar 1 sparad bild och 7 i albumet.
+- [x] Godkänd gemensam mörk panel och varmvita miniatyrramar; CSS-only.
+- [x] 8 Chromium-fixturfall: 320/390/768/1280 för admin/gäst, rätt kolumner, ingen overflow, helskärm oförändrad; mobilrender granskad.
+- [ ] Slutcommitens CI/publicering kontrolleras efter push.
+- [ ] Visuell iPhone-acceptans för inramningen. Tidigare fungerande funktioner ska inte testas om i en bred runda.
