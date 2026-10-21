@@ -46,3 +46,6 @@ All projects: one centrally owned version/footer component per project, driven b
 
 ## Remember webmaster administration — 0.1.141
 Canonical settings UI: remember/webmaster-album-settings.js, consumed by album-admin.html only in webmaster mode. Canonical presentation: admin-* selectors in remember-design.css; affected album-admin imports CSS 0.1.141. Existing photo-gallery.js stays canonical and loads/mounts only on explicit Visa bilder in webmaster mode. Owner preview keeps eager gallery. Existing popup/camera/upload handlers are secondary tools, not duplicated. Backend candidates are review-only; new capability albumSettings defaults false. DOM/date/UTC/mock-Edge tests PASS; SQL/runtime/device checks pending. No changes to other apps.
+
+## Remember webmaster visual polish — 0.1.142
+Owner: existing admin-* block in remember-design.css, edited in place; album-admin loads CSS 0.1.142. Grid min-content track sizing and native date-value alignment constrained without clipping. Settings module localizes Europe/Stockholm and omits duplicate same-zone note; date conversions untouched. Secondary tools share one scoped rule; owner/guest tools are outside #adminExtraTools. iPhone visual PASS pending. Database permission remains pending.

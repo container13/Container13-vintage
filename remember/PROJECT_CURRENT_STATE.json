@@ -8,25 +8,25 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.141",
-    "integrity": "ADMINISTRATION_FIRST_UI_CANDIDATE; BACKEND_SETTINGS_REVIEW_ONLY_NOT_INSTALLED; CURRENT_PREVIOUS_NOT_PROMOTED"
+    "candidate": "0.1.142",
+    "integrity": "WEBMASTER_VISUAL_POLISH_CANDIDATE; SETTINGS_BACKEND_NOT_INSTALLED_PENDING_APPROVAL; CURRENT_PREVIOUS_NOT_PROMOTED"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.141",
-    "goal": "Administration-first webmaster album view; separately approved schedule backend",
+    "targetRelease": "0.1.142",
+    "goal": "Compact webmaster administration layout and contain iPhone datetime controls",
     "plan": [
-      "Publish overview and collapsed secondary tools with lazy gallery",
-      "Read-only actual schedule; editing capability false until backend installation approved",
-      "Review migration, test-only transaction/HTTP checks, then separately approved original rollout"
+      "Constrain grid tracks, cards and native datetime controls without clipping",
+      "Compact spacing, localized timezone labels and secondary tool styling",
+      "Check final deploy and user iPhone layout; backend approval remains pending"
     ],
-    "resumeInstruction": "Read WEBMASTER_SETTINGS_REVIEW.md. Do not install migration/deploy Edge or change album times before separate owner approval. Popup 0.1.140 was shown, but user did not explicitly approve popup QR/copy/close."
+    "resumeInstruction": "Verify iPhone date fields stay inside cards and tools share muted styling. Do not install schedule backend before separate user approval."
   },
   "currentWork": {
-    "completed": "User wants webmaster settings before camera/uploads/QR/gallery. Backend verified read-only: schedule fields and schedule_audit exist; remember-webmaster v2 explicitly returns 501 for schedule writes. 0.1.141 frontend reorders administration, hides secondary tools, lazily mounts gallery. Review-only RPC+Edge candidates prepared; no Supabase writes performed.",
-    "next": "User reviews 0.1.141 layout and approves installing/testing schedule RPC in remember-test then controlled original rollout only after PASS.",
-    "blocked": true,
-    "blocker": "Separate database installation approval required by project handover. Frontend read-only fallback works with existing API."
+    "completed": "0.1.141 user screenshots show desired administration structure but datetime fields extend beyond card content, repeated raw timezone and over-emphasized camera tool. 0.1.142 adjusts owning CSS and timezone labels only; no schedule/auth/gallery/photobook changes.",
+    "next": "User checks compact cards, contained dates, Swedish-time label and uniform secondary tools. Separate backend installation approval is still pending.",
+    "blocked": false,
+    "blocker": null
   },
   "pausedWork": {
     "fotobok": "Manual page-turning approved on iPhone at 0.1.137; preserve. Other photobook visuals and complete app release gates are separate."
@@ -618,7 +618,7 @@
     ]
   },
   "adminSettings": {
-    "frontendVersion": "0.1.141",
+    "frontendVersion": "0.1.142",
     "backendStatus": "REVIEW_ONLY_NOT_INSTALLED",
     "originalProject": "wykvztfmfbboxiqvuvwr",
     "testProject": "kauxrvshxgpbvptdwhog",
