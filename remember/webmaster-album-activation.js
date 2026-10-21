@@ -1,41 +1,99 @@
-// Separate webmaster-only album access control. Capability is false until backend rollout.
-export function mountWebmasterAlbumActivation({host,album,enabled,request,confirmDisable=message=>window.confirm(message)}){
- let current=null,saving=false;
- host.hidden=false;
- host.innerHTML=`<section class="admin-overview"><h2>Albumets åtkomst</h2><form><fieldset disabled><legend class="sr-only">Aktivera eller stäng av album</legend><label class="admin-closed"><input name="active" type="checkbox"> Album aktivt</label><p data-activation-description>Avstängt album blockerar gästernas visning och all ny uppladdning. Bilderna behålls. Webmaster kan administrera albumet.</p><label>Skäl till avstängning (valfritt)<textarea name="reason" rows="2" maxlength="500"></textarea></label><p class="admin-settings-status">Skälet visas endast för webmaster.</p><button type="submit">Spara albumstatus</button></fieldset></form><p data-activation-feedback class="admin-settings-status" role="status" aria-live="polite"></p></section>`;
- const form=host.querySelector('form'),fields=form.querySelector('fieldset'),feedback=host.querySelector('[data-activation-feedback]');
- function render(){
-  const known=current&&typeof current.is_active==='boolean';
-  fields.disabled=!enabled||!known||saving;
-  form.elements.active.indeterminate=!known;
-  form.elements.active.checked=known?current.is_active:false;
-  form.elements.reason.value=known?current.activation_reason||'':'';
-  form.elements.reason.disabled=!known||current.is_active;
+// One confirmation dialog and independent switches outside each album link.
+export function createWebmasterAlbumActivation({document:doc=document,request,onChanged=()=>{},canUse=()=>false,focusFallback=()=>null}){
+ const win=doc.defaultView;
+ const dialog=doc.createElement('dialog');dialog.className='album-activation-dialog';
+ dialog.setAttribute('aria-labelledby','albumActivationTitle');
+ dialog.innerHTML=`<div class="activation-dialog-heading"><h2 id="albumActivationTitle"></h2><button type="button" data-close aria-label="Stäng">✕</button></div><p data-description></p><form><label data-reason-label>Skäl till avstängning (valfritt)<textarea name="reason" maxlength="500" rows="3"></textarea><span>Visas endast för webmaster.</span></label><p data-feedback role="status" aria-live="polite"></p><div class="activation-dialog-actions"><button type="button" data-cancel>Avbryt</button><button type="submit" data-confirm></button></div></form>`;
+ doc.body.append(dialog);
+ const q=s=>dialog.querySelector(s),form=q('form');
+ let selected=null,generation=0,scroll=0,bodyStyle=null;
+ function usable(){return canUse()===true;}
+ function validate(data,id){
+  const a=data?.album;
+  if(!a||a.id!==id||typeof a.is_active!=='boolean'||typeof a.revision!=='string'||!/^\d+$/.test(a.revision))throw Error('Albumstatus kunde inte verifieras.');
+  return a;
  }
- function setCurrent(data){
-  if(!data?.album||data.album.id!==album.id||typeof data.album.is_active!=='boolean'||typeof data.album.revision!=='string')throw Error('Albumstatus kunde inte verifieras.');
-  current=data.album;
-  // Keep the shared schedule revision/status synchronized by re-reading it after a change.
-  host.dispatchEvent(new CustomEvent('remember-album-activation',{bubbles:true,detail:{is_active:current.is_active}}));
-  render();
+ function controls(){
+  const saving=selected?.saving===true;
+  q('[data-close]').disabled=saving;q('[data-cancel]').disabled=saving;
+  q('[data-confirm]').disabled=!selected?.current||selected.loading||saving||!usable()||selected.current.is_active===selected.target;
+  form.elements.reason.disabled=selected?.loading||saving;
+  dialog.setAttribute('aria-busy',String(!!selected?.loading||saving));
  }
- async function refresh(){setCurrent(await request({action:'album_activation',albumId:album.id}));}
- render();
- if(!enabled)feedback.textContent='Avstängning är inte aktiverad ännu. Albumets status kan inte hämtas här.';
- else void refresh().then(()=>{feedback.textContent=current.is_active?'Albumet är aktivt.':'Albumet är avstängt.';}).catch(e=>{enabled=false;render();feedback.textContent=e.message;});
- form.elements.active.addEventListener('change',()=>{
-  form.elements.reason.disabled=form.elements.active.checked;
-  feedback.textContent=form.elements.active.checked?'Inte sparat. Återaktivering behåller tidigare sluttid och eventuell tillfällig uppladdningsstängning.':'Inte sparat. Avstängning stoppar nya bildhämtningar och uppladdningar. Redan hämtade bilder kan finnas kvar.';
+ function close(){if(!selected?.saving&&dialog.open)dialog.close();}
+ q('[data-close]').onclick=close;q('[data-cancel]').onclick=close;
+ dialog.addEventListener('cancel',event=>{if(selected?.saving)event.preventDefault();});
+ dialog.addEventListener('click',event=>{
+  if(event.target!==dialog||selected?.saving)return;
+  const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)close();
  });
+ dialog.addEventListener('close',()=>{
+  const previous=selected;selected=null;generation++;
+  if(bodyStyle){Object.assign(doc.body.style,bodyStyle);bodyStyle=null;win.scrollTo(0,scroll);}
+  const target=[...doc.querySelectorAll('[data-album-switch]')].find(el=>el.dataset.albumSwitch===previous?.id&&!el.disabled)||focusFallback();
+  target?.focus({preventScroll:true});
+ });
+ async function open(album,button,target){
+  if(!usable()||selected||typeof album.is_active!=='boolean'||target===album.is_active)return;
+  const seq=++generation;
+  selected={id:album.id,target,current:null,loading:true,saving:false};
+  q('#albumActivationTitle').textContent=(target?'Återaktivera ':'Stäng av ')+(album.title||'albumet')+'?';
+  q('[data-description]').textContent=target?'Albumets tidigare sluttid och tillfälliga uppladdningsstängning behålls.':'Gäster kan inte längre hämta bilder eller ladda upp. Bilderna behålls. Redan hämtade eller sparade bilder kan finnas kvar.';
+  q('[data-reason-label]').hidden=target;
+  form.elements.reason.value='';
+  q('[data-confirm]').textContent=target?'Återaktivera album':'Stäng av album';
+  q('[data-feedback]').textContent='Hämtar aktuell albumstatus…';
+  scroll=win.scrollY;bodyStyle={position:doc.body.style.position,top:doc.body.style.top,width:doc.body.style.width};
+  doc.body.style.position='fixed';doc.body.style.top=-scroll+'px';doc.body.style.width='100%';
+  controls();dialog.showModal();
+  try{
+   const current=validate(await request({action:'album_activation',albumId:album.id}),album.id);
+   if(seq!==generation||!selected||!usable())return;
+   selected.current=current;onChanged(current);
+   q('[data-feedback]').textContent=current.is_active===target?'Albumet har redan denna status. Inget behöver sparas.':'Ändringen sparas när du bekräftar.';
+   if(!target)form.elements.reason.value=current.activation_reason||'';
+  }catch(e){if(seq===generation&&selected)q('[data-feedback]').textContent=e.message+' Stäng och försök igen.';}
+  finally{if(seq===generation&&selected){selected.loading=false;controls();}}
+ }
  form.addEventListener('submit',async event=>{
-  event.preventDefault();if(!enabled||!current||saving||!form.reportValidity())return;
-  const active=form.elements.active.checked,reason=active?'':form.elements.reason.value.trim();
-  if(active===current.is_active&&reason===(current.activation_reason||'')){feedback.textContent='Inga ändringar att spara.';return;}
-  if(!active&&current.is_active&&!await confirmDisable('Stänga av albumet? Gäster kan inte längre hämta bilder eller ladda upp. Bilderna behålls.'))return;
-  saving=true;fields.disabled=true;form.setAttribute('aria-busy','true');feedback.textContent='Sparar albumstatus…';
-  try{setCurrent(await request({action:'save_album_activation',albumId:album.id,expectedRevision:current.revision,active,reason}));feedback.textContent=current.is_active?'Albumet är återaktiverat. Tidigare tider och inställningar är oförändrade.':'Albumet är avstängt. Bilderna behålls.';}
-  catch(e){try{await refresh();feedback.textContent=e.message+' Aktuell status har hämtats. Kontrollera innan du försöker igen.';}catch{enabled=false;feedback.textContent='Sparresultatet är osäkert. Öppna albumet igen för att verifiera status.';}}
-  finally{saving=false;form.removeAttribute('aria-busy');render();}
+  event.preventDefault();const operation=selected;
+  if(!operation||operation.loading||operation.saving||!operation.current||!usable()||operation.current.is_active===operation.target||!form.reportValidity())return;
+  const seq=generation;operation.saving=true;controls();q('[data-feedback]').textContent='Sparar albumstatus…';
+  try{
+   const current=validate(await request({action:'save_album_activation',albumId:operation.id,expectedRevision:operation.current.revision,active:operation.target,reason:operation.target?'':form.elements.reason.value.trim()}),operation.id);
+   if(seq!==generation||!selected||!usable())return;
+   if(current.is_active!==operation.target)throw Error('Den önskade statusen kunde inte bekräftas.');
+   onChanged(current);operation.saving=false;dialog.close();
+  }catch(e){
+   if(seq!==generation||!selected)return;
+   operation.current=null;
+   try{
+    const current=validate(await request({action:'album_activation',albumId:operation.id}),operation.id);
+    if(seq!==generation||!selected||!usable())return;
+    operation.current=current;onChanged(current);
+    q('[data-feedback]').textContent=e.message+' Aktuell status har hämtats. Kontrollera innan du försöker igen.';
+   }catch{if(seq===generation&&selected)q('[data-feedback]').textContent='Sparresultatet är osäkert. Stäng och uppdatera albumlistan innan nytt försök.';}
+  }finally{if(seq===generation&&selected){operation.saving=false;controls();}}
  });
- return {refresh};
+ function mountSwitch({host,album,enabled}){
+  const known=typeof album.is_active==='boolean';
+  const label=doc.createElement('span');label.className='album-switch-label';label.textContent=known?(album.is_active?'Aktivt':'Avstängt'):'Status saknas';
+  const button=doc.createElement('button');button.type='button';button.className='album-status-switch';button.dataset.albumSwitch=album.id;
+  button.dataset.state=known?(album.is_active?'on':'off'):'unknown';
+  button.setAttribute('role','switch');button.setAttribute('aria-checked',String(known&&album.is_active));
+  button.setAttribute('aria-label','Album aktivt: '+(album.title||'Album')+(known?'':'. Status kan inte hämtas ännu.'));
+  button.setAttribute('aria-describedby','catalogActivationNotice');button.disabled=!enabled||!known||!usable();
+  const thumb=doc.createElement('span');thumb.className='album-switch-thumb';thumb.setAttribute('aria-hidden','true');button.append(thumb);
+  let down=null,suppressUntil=0;
+  button.addEventListener('pointerdown',event=>{if(button.disabled||event.isPrimary===false)return;down={x:event.clientX,y:event.clientY};button.setPointerCapture?.(event.pointerId);});
+  button.addEventListener('pointercancel',()=>{down=null;});
+  button.addEventListener('pointerup',event=>{
+   if(!down||button.disabled)return;const dx=event.clientX-down.x,dy=event.clientY-down.y;down=null;
+   if(Math.abs(dx)>=12&&Math.abs(dx)>Math.abs(dy)){suppressUntil=Date.now()+500;event.preventDefault();void open(album,button,dx>0);}
+  });
+  button.onclick=event=>{if(button.disabled)return;if(event.detail&&Date.now()<suppressUntil)return;void open(album,button,!album.is_active);};
+  host.append(label,button);return button;
+ }
+ function reset(){generation++;if(selected)selected.saving=false;if(dialog.open)dialog.close();else selected=null;}
+ return {mountSwitch,reset,isBusy:()=>!!selected};
 }

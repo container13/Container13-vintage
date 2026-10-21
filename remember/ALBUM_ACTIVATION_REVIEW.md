@@ -36,3 +36,6 @@ PASS lokalt: DOM för capability-off/okänd status, bekräftelse/avbruten bekrä
 
 ## Kompletterad modereringskontroll
 Även ägarens approval-queue, approval-decision och quarantine-restore går via befintliga SQL-funktioner och får inaktivitetskontroll i samma granskningsskript. Deras installerade grants saknar service_role; inga grants utökas i denna ändring. Bevara detta felläge snarare än att öppna en annan funktion som bieffekt. Testa att dessa vägar inte kan läcka förhandsvisningslänkar för avstängda album. Avstängningen raderar inga bilder; befintlig karantän-/retentionspolicy ändras inte.
+
+## UI ersatt av 0.1.148
+Det stora formuläret i album-admin är borttaget. En controller i webmaster-album-activation.js används enbart av dashboard: varje albumkort får en separat switch, med en gemensam dialog för explicit bekräftelse/valfritt skäl. Reglagets status visas bara om is_active är ett verkligt booleskt serverfält; annars neutral/spärrad. Capability albumActivation krävs även om fältet finns. Före bekräftelse görs album_activation-read; expectedRevision tas från det svaret. Ingen gissad aktiv status, ingen optimistisk statusändring och inget sparande vid drag/tryck utan bekräftelse. Aktör/session kontrolleras på nytt av dashboard och server. Befintliga SQL/Edge-kandidater och behovet av separat testinstallationstillstånd är oförändrade.

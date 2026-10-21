@@ -8,20 +8,20 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.147",
-    "integrity": "ALBUM_ACTIVATION_FRONTEND_PREPARED_BACKEND_NOT_INSTALLED"
+    "candidate": "0.1.148",
+    "integrity": "CARD_ACTIVATION_SWITCHES_CANDIDATE_BACKEND_STILL_DISABLED"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.147",
-    "goal": "Webmaster album activation with reviewed enforcement",
-    "resumeInstruction": "Read ALBUM_ACTIVATION_REVIEW.md. Await separate approval for test-only schema/API installation; no database or Edge writes performed. Do not advertise usable activation before enforcement tested. Schedule backend remains separately pending."
+    "targetRelease": "0.1.148",
+    "goal": "Per-album card switches in Webmaster, compact confirmation dialog",
+    "resumeInstruction": "Verify 0.1.148 iPhone card switches and removed album-admin activation panel. Activation backend remains NOT INSTALLED; separate database test installation approval has not been given."
   },
   "currentWork": {
-    "completed": "Album activation UI with explicit save/private reason/confirmation; capability off and unknown state fallback. Concrete server SQL, six Edge candidates and exact before sources prepared; read-only actual backend inventory and local parser/DOM/mock tests PASS.",
-    "next": "Obtain separate approval for remember-test installation, run DB privilege/audit/concurrency/HTTP tests, then separately approve original rollout after PASS.",
-    "blocked": true,
-    "blocker": "User handover requires separate database approval. Backend not installed; UI control disabled."
+    "completed": "Webmaster album cards have independent switches with click/drag confirmation, private reason, fresh revision read, confirmed update and conflict readback. Large album-admin activation panel removed. Backend capability remains false.",
+    "next": "User iPhone visual acceptance; activation backend test installation remains pending separate approval.",
+    "blocked": false,
+    "blocker": null
   },
   "pausedWork": {
     "fotobok": "Manual page-turning approved on iPhone at 0.1.137; preserve. Other photobook visuals and complete app release gates are separate."
@@ -624,7 +624,7 @@
     "verification": "0.1.146 Node/jsdom PASS: expired/future/exact boundary/7d, draft deadline preview, repeated extension, forced closure retained, no save on extension click, disabled backend fallback. SQL/runtime/device pending."
   },
   "albumActivation": {
-    "frontendVersion": "0.1.147",
+    "frontendVersion": "0.1.148",
     "backendStatus": "REVIEW_ONLY_NOT_INSTALLED",
     "capability": "albumActivation",
     "review": "remember/ALBUM_ACTIVATION_REVIEW.md",
@@ -633,6 +633,7 @@
     "limitations": [
       "Existing signed URLs and cached/saved photos cannot be recalled",
       "Real SQL/schema/concurrency/authenticated HTTP verification pending"
-    ]
+    ],
+    "ui": "Per-card switch + one native confirmation dialog in dashboard; unknown state disabled without capability/is_active"
   }
 }
