@@ -1,3 +1,5 @@
+> 0.1.154 / 2026-10-21: projektägaren har godkänt införande i ordinarie Remember som utvecklingsmiljö. Nu INSTALLERAT där, SQL/Edge-readback PASS; användarens iPhone/HTTP återstår. Äldre original-NOT-INSTALLED-text nedan är historik. Se [installationsprotokoll](development-installed/2026-10-21-controls/README.md).
+
 > Senaste läge 2026-10-21 / 0.1.151: testinstallation av både albumstatus och tider är godkänd och genomförd. SQL/samtidiga SQL-sessioner/gäst-HTTP PASS; inloggad HTTP och iPhone PENDING. Originalbackend NOT INSTALLED. Äldre text nedan är granskningshistorik. Se [verifieringsprotokoll](test-installed/2026-10-21-settings-activation/README.md).
 
 # Album aktivt — konkret granskningsunderlag 0.1.147

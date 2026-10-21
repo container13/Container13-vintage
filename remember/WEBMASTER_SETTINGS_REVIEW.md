@@ -1,3 +1,5 @@
+> 0.1.154 / 2026-10-21: projektägaren har godkänt införande i ordinarie Remember som utvecklingsmiljö. Nu INSTALLERAT där, SQL/Edge-readback PASS; användarens iPhone/HTTP återstår. Äldre original-NOT-INSTALLED-text nedan är historik. Se [installationsprotokoll](development-installed/2026-10-21-controls/README.md).
+
 > Senaste läge 2026-10-21 / 0.1.151: installation och tester godkända i remember-test. Testbackend installerad; SQL/samtidiga SQL-sessioner/gäst-HTTP PASS. Inloggad HTTP och iPhone PENDING. Originalbackend NOT INSTALLED. Äldre ”NOT INSTALLED/inte godkänd”-text nedan beskriver historiskt läge. Se [verifieringsprotokoll](test-installed/2026-10-21-settings-activation/README.md).
 
 # Remember — webmastertider: granskningsunderlag

@@ -1,5 +1,5 @@
 # Remember — gemensam checklista
-Uppdaterad 2026-10-21. Kandidat 0.1.153. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
+Uppdaterad 2026-10-21. Kandidat 0.1.154. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
 
 - [x] Manuell fotobok: 0.1.137, användarens iPhone-PASS.
 - [x] Säkerhetsgren 0.1.137 på 8a592bb8b7b767a54df595e5e7d5d5d2eb10cd7f verifierad.
@@ -74,3 +74,12 @@ Detaljer: test-installed/2026-10-21-settings-activation/README.md. CURRENT/PREVI
 - [x] Faktisk ogiltig-token-redirect till rätt TEST login verifierad utan kontoändring.
 - [ ] Användaren begär mejlet och bekräftar leverans/lösenordsbyte.
 - [ ] Därefter inloggat album-/tidstest på iPhone. Se TEST_ADMIN.md.
+
+## Ordinarie Remember utvecklingsmiljö — 0.1.154
+- [x] Projektägaren godkänner införande i ordinarie Remember, som är utvecklingsmiljön.
+- [x] Verkliga före-källor/schema/ACL sparade i separat säkerhetsgren och återlästa.
+- [x] Aktivering och tider installerade; sex Edge-källor exakt återlästa, båda capabilities aktiva.
+- [x] SQL-transaktioner/rollback/grants och befintliga album-/fotodigests PASS: 2 album/10 bilder oförändrade.
+- [ ] Befintlig inloggad användare testar reglage samt tidsändring/spara/återläsning i vanliga Remember på iPhone.
+- [ ] Fulla releasegrindar/promotion. CURRENT/PREVIOUS oförändrade.
+Separat testinloggning/lösenordsåterställning är inte längre ett krav för aktuellt uppdrag. Detaljer: development-installed/2026-10-21-controls/README.md.

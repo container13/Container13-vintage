@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.153",
-    "integrity": "TEST_PASSWORD_RESET_UI_PASS_USER_EMAIL_RECOVERY_PENDING"
+    "candidate": "0.1.154",
+    "integrity": "REMEMBER_DEVELOPMENT_CONTROLS_BACKEND_DEPLOYED_SQL_PASS_DEVICE_PENDING"
   },
   "workCheckpoint": {
-    "status": "TEST_RECOVERY_UI_READY_USER_ACTION_PENDING",
-    "targetRelease": "0.1.153",
-    "goal": "Enable forgotten-password recovery for existing remember-test account",
-    "resumeInstruction": "Open remember/test-admin.html. User clicks Glömt lösenord with test email. Link returns to existing remember-test/login.html. User chooses password there, then returns to test-admin.html to sign in. Never request passwords/tokens in chat. Mail delivery, password change and authenticated album tests pending. Original backend unchanged."
+    "status": "DEVELOPMENT_BACKEND_DEPLOYED_DEVICE_PENDING",
+    "targetRelease": "0.1.154",
+    "goal": "Use ordinary Remember development environment for album activation and times",
+    "resumeInstruction": "User authorized original Remember development installation, now complete. Use normal dashboard.html -> Webmaster with existing login. Read development-installed/2026-10-21-controls/README.md. Next iPhone activation/time save/readback; no need for separate test login/password reset. CURRENT/PREVIOUS unchanged."
   },
   "currentWork": {
-    "completed": "Added explicit Glömt lösenord to isolated test-admin. Reuses existing TEST recovery handler and fixed redirect; DOM/Chromium mocked request/recovery-save/cooldown/error tests PASS. Actual invalid-token redirect probe reaches correct TEST login. No real email/password/account writes performed.",
-    "next": "User requests recovery email, saves a new password in existing test recovery page, then logs into test-admin and verifies album switches/time save/readback on iPhone.",
+    "completed": "Installed original DEVELOPMENT schema + six Edge functions from original baselines. Transaction tests/readbacks PASS; 2 albums/10 photos and their prior row digests preserved. Both capabilities enabled in ordinary Remember.",
+    "next": "User verifies existing Webmaster switches and time save/readback in ordinary Remember on iPhone. Record actual acceptance; full release gates still pending.",
     "blocked": false,
     "blocker": null
   },
@@ -510,7 +510,7 @@
       "iPhone": "PENDING",
       "purpose": "Test settings/activation only; retire by explicit decision after acceptance/porting",
       "passwordRecovery": {
-        "status": "UI_TESTS_PASS_MAIL_AND_USER_PASSWORD_CHANGE_PENDING",
+        "status": "OPTIONAL_DIAGNOSTIC_ONLY_NO_LONGER_REQUIRED_FOR_CURRENT_TASK",
         "redirect": "https://container13.se/remember-test/login.html",
         "originalAuthChanged": false,
         "automaticSend": false
@@ -524,7 +524,9 @@
     "dataClassification": "development_and_test_material",
     "changeRequires": "explicit_project_owner_decision",
     "authoritativeSummary": "remember/START_HERE.md",
-    "verifiedAt": "2026-10-18"
+    "verifiedAt": "2026-10-18",
+    "ordinaryRememberEnvironment": "DEVELOPMENT_CONFIRMED_BY_PROJECT_OWNER_2026-10-21",
+    "acceptanceEnvironment": "Ordinary Remember dashboard and album-admin; separate remember-test login not required for this task"
   },
   "rememberBranchProtection": {
     "dedicatedBranch": "remember-development",
@@ -648,18 +650,19 @@
   },
   "adminSettings": {
     "frontendVersion": "0.1.146",
-    "backendStatus": "TEST_INSTALLED_ORIGINAL_NOT_INSTALLED",
+    "backendStatus": "REMEMBER_DEVELOPMENT_INSTALLED",
     "originalProject": "wykvztfmfbboxiqvuvwr",
     "testProject": "kauxrvshxgpbvptdwhog",
     "review": "remember/WEBMASTER_SETTINGS_REVIEW.md",
     "capability": "albumSettings",
     "fallback": "existing list fields rendered; all save controls disabled; no gallery fetch at startup",
     "rollback": "4699064c56acb735214d5e820ab790e2ed25511a",
-    "verification": "Test SQL transaction/concurrency and guest HTTP PASS; authenticated HTTP/device pending. See remember/test-installed/2026-10-21-settings-activation/README.md"
+    "verification": "Original-development SQL rollback/grants/readback PASS; six Edge exact readback PASS; real user HTTP/iPhone pending.",
+    "installation": "remember/development-installed/2026-10-21-controls/README.md"
   },
   "albumActivation": {
     "frontendVersion": "0.1.148",
-    "backendStatus": "TEST_INSTALLED_ORIGINAL_NOT_INSTALLED",
+    "backendStatus": "REMEMBER_DEVELOPMENT_INSTALLED",
     "capability": "albumActivation",
     "review": "remember/ALBUM_ACTIVATION_REVIEW.md",
     "supabaseWritesPerformed": true,
@@ -669,8 +672,8 @@
       "Authenticated HTTP, HTTP concurrency, audit fault injection and iPhone verification pending"
     ],
     "ui": "Per-card switch + one native confirmation dialog in dashboard; unknown state disabled without capability/is_active",
-    "writeScope": "Approved remember-test only",
-    "evidence": "remember/test-installed/2026-10-21-settings-activation/README.md"
+    "writeScope": "Explicitly approved ordinary Remember DEVELOPMENT project, 2026-10-21",
+    "evidence": "remember/development-installed/2026-10-21-controls/README.md"
   },
   "appIcon": {
     "design": 6,
@@ -679,5 +682,24 @@
     "deviceStatus": "PENDING",
     "oldInstalledIconMayBeCached": true,
     "strokeAdjustment": "Slightly bolder at user request"
+  },
+  "developmentControls": {
+    "installed": true,
+    "projectRef": "wykvztfmfbboxiqvuvwr",
+    "version": "0.1.154",
+    "backupBranch": "remember/development-checkpoint-2026-10-21-before-controls",
+    "backupCommit": "843aa45f09995986a525993463ed6b3945433903",
+    "countsAfter": {
+      "users": 3,
+      "webmasters": 1,
+      "albums": 2,
+      "photos": 10
+    },
+    "existingRowsUnchanged": true,
+    "sqlTests": "PASS",
+    "edgeReadback": "EXACT_PASS",
+    "authenticatedHTTP": "PENDING_USER_SESSION",
+    "device": "PENDING",
+    "document": "remember/development-installed/2026-10-21-controls/README.md"
   }
 }
