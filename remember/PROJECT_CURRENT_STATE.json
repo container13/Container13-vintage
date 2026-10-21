@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.143",
-    "integrity": "DASHBOARD_TABS_CANDIDATE_BACKEND_CATALOG_LIMIT_EXPLICIT"
+    "candidate": "0.1.144",
+    "integrity": "CATALOG_FILTER_DIALOG_CANDIDATE_DEVICE_PENDING"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.143",
-    "goal": "Separate own albums and webmaster catalog",
+    "targetRelease": "0.1.144",
+    "goal": "Album cards first, modal catalog filters",
     "resumeInstruction": "Verify dashboard on iPhone; full catalog over 100 and count/storage/created sorting require separately reviewed backend change. No database permission granted."
   },
   "currentWork": {
-    "completed": "Separate tabs, automatic role check, own albums unchanged; webmaster search/status/title-owner-close sort/page10 persisted per account.",
-    "next": "Verify device and prepare separately approved backend for complete catalog and created/count/storage sorting.",
+    "completed": "0.1.144 compact catalog toolbar and native filter dialog, active summary/reset, paging hidden for one page.",
+    "next": "Verify iPhone dialog open/close/scroll and filters. Full backend catalog support remains pending.",
     "blocked": false,
     "blocker": null
   },

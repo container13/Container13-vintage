@@ -132,3 +132,6 @@ Webmastervyn putsad efter iPhone-skärmbilder: gridspår minmax(0,1fr), kort/for
 
 ## Aktuell kontrollpunkt 0.1.143 — 2026-10-21
 Dashboard har separata Mina album/Webmaster-vyer. Endast webmaster har sökning, statusfilter, sortering och sidor om 10 album. Val sparas per konto. Rollkontroll sker automatiskt, diagnostik är sekundär. Befintlig API begränsar listan till 100 och saknar created_at/photo_count/storage_bytes: dessa sorteringsval är avstängda och vid 100 visas uttrycklig varning om ofullständig lista. Filtrering/sortering sker före sidindelning i hela mottagna listan, inte hela databasen. Fullständig serverlistning och nya mätvärden återstår som separat backendarbete; inga databas-/Edgeändringar utförda. iPhonekontroll återstår. Fotobokslogik oförändrad; CURRENT/PREVIOUS oförändrade.
+
+## Aktuell kontrollpunkt 0.1.144 — 2026-10-21
+Webmasterrubrik Användarnas album. Albumkorten prioriteras; sökning/filter/sortering flyttade till native modal dialog med scrollås, fokusåtergång och stängknapp. Aktivt urval sammanfattas med Rensa i listvyn. Sidnavigering dold vid en sida. Mina album och backend oförändrade; API-begränsningar från 0.1.143 kvarstår. GitHub/publicering och iPhone-PASS separata. CURRENT/PREVIOUS oförändrade.
