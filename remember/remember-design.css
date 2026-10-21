@@ -562,3 +562,49 @@ body.remember-shell[data-remember-view="create"] footer{margin-top:14px}
 /* v0.1.98 — understated return navigation on album creation */
 body.remember-shell[data-remember-view="create"] .create-back{display:inline-flex;align-items:center;gap:6px;margin:0 0 12px;padding:8px 12px;border-radius:999px;color:#fff5e3;background:rgba(20,49,39,.64);border:1px solid rgba(246,225,183,.44);text-decoration:none;font-size:13px;font-weight:650;backdrop-filter:blur(7px)}
 body.remember-shell[data-remember-view="create"] .create-back:focus-visible{outline:3px solid #d9e7a4;outline-offset:2px}
+
+/* Webmaster reserve sharing: same Remember palette, separate from owner poster. */
+body.remember-shell[data-remember-view="memories"] .remember-admin-share-trigger{
+ display:block;margin:8px 0 18px auto;padding:10px 15px;min-height:44px;
+ font-size:14px;font-weight:650;background:rgba(23,59,47,.8);color:var(--remember-ink);
+ border:1px solid var(--remember-outline);border-radius:12px;cursor:pointer;
+}
+body.remember-shell .remember-admin-share-dialog{
+ box-sizing:border-box;width:min(460px,calc(100vw - 28px));max-width:460px;
+ max-height:calc(100dvh - 32px);padding:0;border:1px solid var(--remember-outline);
+ border-radius:22px;background:#203b31;color:var(--remember-ink);
+ box-shadow:0 24px 80px #0007;overflow-y:auto;overscroll-behavior:contain;
+}
+body.remember-shell .remember-admin-share-dialog::backdrop{
+ background:rgba(9,15,12,.76);backdrop-filter:blur(5px);
+}
+body.remember-shell .remember-admin-share-header{
+ position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;
+ gap:12px;padding:16px 18px;background:#203b31;border-bottom:1px solid var(--remember-outline);
+}
+body.remember-shell .remember-admin-share-header h2{
+ margin:0;font:500 clamp(22px,5.8vw,28px)/1.15 Georgia,serif;color:#f6e9cc;
+}
+body.remember-shell .remember-admin-share-header button{
+ flex:none;min-height:44px;margin:0;padding:8px 13px;font-size:14px;border-radius:11px;cursor:pointer;
+}
+body.remember-shell .remember-admin-share-content{padding:2px 22px max(20px,env(safe-area-inset-bottom,0px))}
+body.remember-shell .remember-admin-share-note{color:var(--remember-muted);font-size:14px;line-height:1.5}
+body.remember-shell .remember-admin-share-dialog #shareStatus{font-size:14px;line-height:1.5}
+body.remember-shell .remember-admin-share-dialog #shareReady{text-align:center}
+body.remember-shell .remember-admin-share-dialog #qr{
+ display:block;box-sizing:border-box;background:white;width:min(100%,280px);margin:20px auto;
+ padding:8px;border-radius:14px;
+}
+body.remember-shell .remember-admin-share-dialog #qr svg{display:block;width:100%;max-width:100%;height:auto}
+body.remember-shell .remember-admin-share-dialog #copyGuest{
+ display:block;width:100%;min-height:48px;margin:0;padding:12px 14px;border-radius:12px;
+ background:#d9e7a4;color:#173b31;font-size:16px;font-weight:700;cursor:pointer;
+}
+body.remember-shell .remember-admin-share-link{
+ margin:16px 0 0;padding:12px 0 0;border-top:1px solid var(--remember-outline);text-align:left;
+}
+body.remember-shell .remember-admin-share-link summary{padding:6px 0;min-height:32px;font-size:14px;cursor:pointer}
+body.remember-shell .remember-admin-share-link #shareLinkText{
+ font-size:12px;line-height:1.6;overflow-wrap:anywhere;user-select:text;
+}

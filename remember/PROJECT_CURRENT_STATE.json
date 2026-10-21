@@ -8,23 +8,23 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.139",
-    "integrity": "0.1.138_LOGIN_AND_REOPEN_USER_IPHONE_PASS; 0.1.139_ENTRYPOINT_VERSION_FIX_PENDING_DEPLOY_DEVICE; CURRENT_PREVIOUS_NOT_PROMOTED"
+    "candidate": "0.1.140",
+    "integrity": "0.1.139_UPDATE_AND_VIEWER_USER_IPHONE_PASS; GUEST_LINK_USER_REPORTED_PASS; 0.1.140_POPUP_DEVICE_PENDING; CURRENT_PREVIOUS_NOT_PROMOTED"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.139",
-    "goal": "Synchronize all nine release-bearing entrypoints and prevent repeated stale version labeling",
+    "targetRelease": "0.1.140",
+    "goal": "Webmaster reserve sharing in an on-demand popup",
     "plan": [
-      "Sync album-admin and activate with seven other release-bearing pages",
-      "Verify exact readback and final commit release-safety/Pages",
-      "User reopens same webmaster album; banner gone and version 0.1.139"
+      "Preserve existing share get/copy/replace handlers and owner flow",
+      "Verify popup DOM behavior, version parity, readback and final deployment",
+      "User checks webmaster popup on iPhone"
     ],
-    "resumeInstruction": "Read CHECKLIST.md; do not treat 0.1.138 login PASS as 0.1.139 update DEVICE PASS."
+    "resumeInstruction": "Read CHECKLIST.md; test popup open/QR/copy/show-link/close on iPhone. Album time extension is separate pending work; no database changes authorized here."
   },
   "currentWork": {
-    "completed": "0.1.138 login and continued login after PWA reopen confirmed by user on iPhone 2026-10-20. Album-admin still labeled 0.1.105; activate 0.1.106. Corrected inventory from seven to nine release-bearing pages; added manifest inventory and CI parity guard.",
-    "next": "Verify 0.1.139 deployment and same album-admin reopen: no update warning, visible running version. Preserve photobook.",
+    "completed": "User confirms 0.1.139 updater issue resolved, owner and guest album views, fullscreen vertical swipe, image pinch/pan/3-second idle reset, scroll return, save to iPhone Photos. 2026-10-21: user reports all available guest-link actions work. Webcam/upload in closed album not independently demonstrated. Candidate 0.1.140 moves webmaster sharing to on-demand popup using same link and existing handlers.",
+    "next": "Verify 0.1.140 popup UI on iPhone, then inspect existing backend support for album upload-time extension separately.",
     "blocked": false,
     "blocker": null
   },
@@ -597,5 +597,24 @@
     ],
     "cameraException": "camera-session-test.html is an embedded active camera flow without release bootstrap; integration must protect camera activity and needs separate review.",
     "diagnosticPages": "Other *test/prototype pages are not part of the nine release-bearing entries; not promoted or deleted."
+  },
+  "deviceVerification139": {
+    "status": "USER_REPORTED_PASS",
+    "date": "2026-10-21",
+    "device": "user iPhone PWA",
+    "checks": [
+      "update warning cleared",
+      "owner/guest view and six album photos",
+      "fullscreen open and vertical swipe",
+      "pinch/pan and 3-second idle reset",
+      "close preserves album scroll",
+      "save to Photos",
+      "guest-link available actions"
+    ],
+    "limitations": [
+      "Guest album was closed for upload; successful guest upload in this round not proven",
+      "Double tap reset explicitly not required by user; do not add or test it as a requirement",
+      "Full app CURRENT/PREVIOUS gates remain incomplete"
+    ]
   }
 }

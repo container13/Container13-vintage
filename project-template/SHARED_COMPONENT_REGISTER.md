@@ -35,3 +35,11 @@ Remember installed iPhone PWA consistently reproduces a dark bottom strip, inclu
 
 ## Visible version ownership
 All projects: one centrally owned version/footer component per project, driven by its running release identity. Remember: `remember/remember-version.js` and `remember/release.json` own version identity; all nine production-facing HTML routes must use the version footer. `remember/remember-viewport.js` was disconnected from production after failed viewport-height mitigations and is **not** a required version-footer import. Verify actual consumer imports before changing this register. Do not claim installed-device verification until tested.
+
+## Remember webmaster sharing — 0.1.140 (2026-10-21)
+- Owner: remember/album-admin.html reuses existing loadShare/displayShare/shareRequest/copy handlers; no new backend or link-generation owner.
+- Styles: remember/remember-design.css, scoped remember-admin-share-* rules. Only album-admin imports updated CSS key 0.1.140; new selectors have no effect on older consumers.
+- Consumers: webmaster album; owner preview retains inline details and owner.html retains its existing poster dialog.
+- Purpose: reserve sharing on explicit user request; QR/copy are modal, raw URL collapsed. Read on open only. No change to links, gallery, photobook, auth, or schedule.
+- Verification: JavaScript syntax checked; DOM fixture tests and deployment recorded in current checkpoint; iPhone popup acceptance pending.
+- User correction: Remember image viewer resets after 3 seconds idle; double-tap reset is not a current Remember requirement (2026-10-20 user instruction supersedes older template baseline).
