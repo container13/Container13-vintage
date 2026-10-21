@@ -1,0 +1,57 @@
+{
+  "rpcs": [
+    {
+      "name": "remember_guest_photo_reserve",
+      "acl": [
+        "postgres=X/postgres",
+        "service_role=X/postgres"
+      ]
+    },
+    {
+      "name": "remember_photo_claim_upload",
+      "acl": [
+        "postgres=X/postgres",
+        "service_role=X/postgres"
+      ]
+    },
+    {
+      "name": "remember_photo_complete_upload",
+      "acl": [
+        "postgres=X/postgres",
+        "service_role=X/postgres"
+      ]
+    },
+    {
+      "name": "remember_photo_fail_upload",
+      "acl": [
+        "postgres=X/postgres",
+        "service_role=X/postgres"
+      ]
+    },
+    {
+      "name": "remember_webmaster_photo_complete",
+      "acl": [
+        "postgres=X/postgres",
+        "service_role=X/postgres"
+      ]
+    },
+    {
+      "name": "remember_webmaster_photo_reserve",
+      "acl": [
+        "postgres=X/postgres",
+        "service_role=X/postgres"
+      ]
+    }
+  ],
+  "baseline": {
+    "albums": 2,
+    "photos": 10,
+    "objects": 10,
+    "albumDigest": "cccec37e02ececbfd752aaa7926062dd",
+    "photoDigest": "fba1dd505acc953a9d3ce5e0a19c5d74"
+  },
+  "existingNewRPC": null,
+  "edgeVersion": 3,
+  "verify_jwt": false,
+  "appCommit": "eb5edd6149c8c73829e15da74c8e6efa5b6606a7"
+}
