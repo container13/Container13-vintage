@@ -43,3 +43,6 @@ All projects: one centrally owned version/footer component per project, driven b
 - Purpose: reserve sharing on explicit user request; QR/copy are modal, raw URL collapsed. Read on open only. No change to links, gallery, photobook, auth, or schedule.
 - Verification: JavaScript syntax checked; DOM fixture tests and deployment recorded in current checkpoint; iPhone popup acceptance pending.
 - User correction: Remember image viewer resets after 3 seconds idle; double-tap reset is not a current Remember requirement (2026-10-20 user instruction supersedes older template baseline).
+
+## Remember webmaster administration — 0.1.141
+Canonical settings UI: remember/webmaster-album-settings.js, consumed by album-admin.html only in webmaster mode. Canonical presentation: admin-* selectors in remember-design.css; affected album-admin imports CSS 0.1.141. Existing photo-gallery.js stays canonical and loads/mounts only on explicit Visa bilder in webmaster mode. Owner preview keeps eager gallery. Existing popup/camera/upload handlers are secondary tools, not duplicated. Backend candidates are review-only; new capability albumSettings defaults false. DOM/date/UTC/mock-Edge tests PASS; SQL/runtime/device checks pending. No changes to other apps.

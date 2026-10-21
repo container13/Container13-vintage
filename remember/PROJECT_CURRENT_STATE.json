@@ -8,25 +8,25 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.140",
-    "integrity": "0.1.139_UPDATE_AND_VIEWER_USER_IPHONE_PASS; GUEST_LINK_USER_REPORTED_PASS; 0.1.140_POPUP_DEVICE_PENDING; CURRENT_PREVIOUS_NOT_PROMOTED"
+    "candidate": "0.1.141",
+    "integrity": "ADMINISTRATION_FIRST_UI_CANDIDATE; BACKEND_SETTINGS_REVIEW_ONLY_NOT_INSTALLED; CURRENT_PREVIOUS_NOT_PROMOTED"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.140",
-    "goal": "Webmaster reserve sharing in an on-demand popup",
+    "targetRelease": "0.1.141",
+    "goal": "Administration-first webmaster album view; separately approved schedule backend",
     "plan": [
-      "Preserve existing share get/copy/replace handlers and owner flow",
-      "Verify popup DOM behavior, version parity, readback and final deployment",
-      "User checks webmaster popup on iPhone"
+      "Publish overview and collapsed secondary tools with lazy gallery",
+      "Read-only actual schedule; editing capability false until backend installation approved",
+      "Review migration, test-only transaction/HTTP checks, then separately approved original rollout"
     ],
-    "resumeInstruction": "Read CHECKLIST.md; test popup open/QR/copy/show-link/close on iPhone. Album time extension is separate pending work; no database changes authorized here."
+    "resumeInstruction": "Read WEBMASTER_SETTINGS_REVIEW.md. Do not install migration/deploy Edge or change album times before separate owner approval. Popup 0.1.140 was shown, but user did not explicitly approve popup QR/copy/close."
   },
   "currentWork": {
-    "completed": "User confirms 0.1.139 updater issue resolved, owner and guest album views, fullscreen vertical swipe, image pinch/pan/3-second idle reset, scroll return, save to iPhone Photos. 2026-10-21: user reports all available guest-link actions work. Webcam/upload in closed album not independently demonstrated. Candidate 0.1.140 moves webmaster sharing to on-demand popup using same link and existing handlers.",
-    "next": "Verify 0.1.140 popup UI on iPhone, then inspect existing backend support for album upload-time extension separately.",
-    "blocked": false,
-    "blocker": null
+    "completed": "User wants webmaster settings before camera/uploads/QR/gallery. Backend verified read-only: schedule fields and schedule_audit exist; remember-webmaster v2 explicitly returns 501 for schedule writes. 0.1.141 frontend reorders administration, hides secondary tools, lazily mounts gallery. Review-only RPC+Edge candidates prepared; no Supabase writes performed.",
+    "next": "User reviews 0.1.141 layout and approves installing/testing schedule RPC in remember-test then controlled original rollout only after PASS.",
+    "blocked": true,
+    "blocker": "Separate database installation approval required by project handover. Frontend read-only fallback works with existing API."
   },
   "pausedWork": {
     "fotobok": "Manual page-turning approved on iPhone at 0.1.137; preserve. Other photobook visuals and complete app release gates are separate."
@@ -616,5 +616,16 @@
       "Double tap reset explicitly not required by user; do not add or test it as a requirement",
       "Full app CURRENT/PREVIOUS gates remain incomplete"
     ]
+  },
+  "adminSettings": {
+    "frontendVersion": "0.1.141",
+    "backendStatus": "REVIEW_ONLY_NOT_INSTALLED",
+    "originalProject": "wykvztfmfbboxiqvuvwr",
+    "testProject": "kauxrvshxgpbvptdwhog",
+    "review": "remember/WEBMASTER_SETTINGS_REVIEW.md",
+    "capability": "albumSettings",
+    "fallback": "existing list fields rendered; all save controls disabled; no gallery fetch at startup",
+    "rollback": "4699064c56acb735214d5e820ab790e2ed25511a",
+    "verification": "Local Node syntax, jsdom lazy-gallery/settings controls and mocked Edge guards PASS; SQL semantic/runtime and device tests not performed"
   }
 }
