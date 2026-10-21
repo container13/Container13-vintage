@@ -9,17 +9,17 @@
     "previousVerified": null,
     "currentVerified": null,
     "candidate": "0.1.158",
-    "integrity": "UPLOAD_RETRY_CODE_TESTED_INSTALL_PENDING"
+    "integrity": "UPLOAD_RETRY_BACKEND_INSTALLED_SQL_MOCK_PASS_DEVICE_PENDING"
   },
   "workCheckpoint": {
-    "status": "UPLOAD_RETRY_INSTALL_PENDING",
+    "status": "UPLOAD_RETRY_DEVICE_PENDING",
     "targetRelease": "0.1.158",
     "goal": "Deploy tested stable-ID upload retry",
-    "resumeInstruction": "29 mocked recovery tests and five owner-view tests plus prospective SQL/ROLLBACK PASS. Backup branch remember/upload-retry-checkpoint-2026-10-21-0157 at 64d0c8541ca41a7bdd80581a254268187f94f57f read back. Install additive service-only migration and new upload Edge, read back, publish this frontend; do not repeat accepted owner/guest/time tests. See UPLOAD_RETRY_0.1.158.md."
+    "resumeInstruction": "Backend installed: new service-only RPC exact source/grants and Edge v4 exact source. 29 mock recovery + five owner DOM + eight actual installed SQL/ROLLBACK PASS. Data digests unchanged (2 albums/10 photos/10 objects), security advisors unchanged. Frontend .158 is ready for shared-branch publication; verify final commit Actions/Pages/live version, then request only one physical iPhone interruption test. Existing owner/guest/time tests remain accepted. See UPLOAD_RETRY_0.1.158.md."
   },
   "currentWork": {
-    "completed": "Built stable per-file ID/canonical bytes with 3 bounded attempts; authorized replay/complete RPC, immutable Storage readback and no timeout quota release. All prospective tests PASS; not yet installed.",
-    "next": "Install additive RPC and exact Edge source, verify SQL/data counts and security advisors; publish 0.1.158; request only targeted physical network interruption test.",
+    "completed": "Stable request UUID/canonical bytes in all four upload paths. 29 mock recovery, five owner-view and eight installed SQL/ROLLBACK assertions PASS. New service-only RPC exact source/grants; actual upload Edge v4 exact source. Existing six RPC definitions/ACLs and 2 albums/10 photos unchanged. Security advisors unchanged.",
+    "next": "Verify final shared-branch CI/Pages and live .158; targeted physical iPhone upload/network interruption/retry, exactly one saved image. Actual simultaneous HTTP quota race and app-termination queue persistence are not verified/implemented.",
     "blocked": false,
     "blocker": null
   },
@@ -734,11 +734,34 @@
     "liveEdgeMatchesArchivedSource": true,
     "quota": "SQL_ROLLBACK_PASS_10_DEFAULT_11TH_BLOCKED_GUEST_OWNER",
     "deduplication": "SQL_ROLLBACK_PASS_SAME_ALBUM_NO_EXTRA_SLOT_DIFFERENT_ALBUM_ALLOWED",
-    "retry": "KNOWN_GAPS_REPRODUCED_NOT_FIXED",
+    "retry": "FIXED_IN_0.1.158_SQL_MOCK_PASS_DEVICE_PENDING",
     "testMode": "ACTUAL_SQL_IN_ROLLED_BACK_FIXTURES_PLUS_MOCKED_EDGE_AND_PAGE_FUNCTIONS",
     "concurrentHTTP": "NOT_TESTED",
     "physicalNetworkInterruption": "NOT_TESTED",
     "existingDataUnchanged": true,
     "report": "remember/UPLOAD_VERIFICATION_2026-10-21.md"
+  },
+  "uploadRetry": {
+    "version": "0.1.158",
+    "status": "BACKEND_INSTALLED_FRONTEND_PUBLISH_AND_DEVICE_VERIFY_PENDING",
+    "projectRef": "wykvztfmfbboxiqvuvwr",
+    "migration": {
+      "name": "remember_upload_retry",
+      "version": "20261021153930"
+    },
+    "edgeVersion": 4,
+    "rpcReadback": "EXACT_BODY_AND_SERVICE_ONLY_ACL_PASS",
+    "edgeReadback": "EXACT_SOURCE_PASS_VERIFY_JWT_PRESERVED_FALSE",
+    "sqlRollback": "8_PASS",
+    "mockTests": "29_PASS",
+    "ownerDOM": "5_PASS",
+    "securityAdvisors": "UNCHANGED_FROM_BASELINE",
+    "backupBranch": "remember/upload-retry-checkpoint-2026-10-21-0157",
+    "backupCommit": "64d0c8541ca41a7bdd80581a254268187f94f57f",
+    "existingDataUnchanged": true,
+    "queuePersistence": "IN_MEMORY_ONLY",
+    "physicalInterruption": "PENDING",
+    "concurrentHTTP": "NOT_TESTED",
+    "report": "remember/UPLOAD_RETRY_0.1.158.md"
   }
 }

@@ -1,6 +1,6 @@
 # Remember upload retry 0.1.158
 
-Status: CODE TESTED, INSTALL/PUBLISH PENDING. Ordinary Remember DEVELOPMENT, wykvztfmfbboxiqvuvwr.
+Status: BACKEND INSTALLED + EXACT READBACK + SQL/MOCK PASS. Frontend publication and physical-device verification are separate gates. Ordinary Remember DEVELOPMENT, wykvztfmfbboxiqvuvwr.
 
 Shared uploader retains request UUID and prepared bytes for the same File+album; automatic network/408/429/500/502/503/504 retries bounded to 3 attempts (45s per transfer, 1s/2s waits), then manual retry retains identity. Permanent denial/duplicate/limit never retries. Queue remains in memory, not across page reload/app termination.
 
@@ -12,6 +12,8 @@ Tests: node remember/tests/upload-retry.cjs: 29 PASS (mocked network/Storage, ac
 
 Backup: remember/upload-retry-checkpoint-2026-10-21-0157, commit 64d0c8541ca41a7bdd80581a254268187f94f57f; actual before-source/RPC/ACL/counts. Rollback selectively restores .157 frontend + Edge v3; new unused service-only RPC may remain, no database drops needed. .137 safety reference preserved. No existing album/photo rows changed in prospective tests (2 albums, 10 photos, 10 Storage objects; identical digests, zero fixtures).
 
-Next: install/readback RPC and Edge, rerun actual SQL tests with ROLLBACK, compare advisors, publish and verify version. Then targeted iPhone interruption/retry test only. CURRENT/PREVIOUS null.
+Installation 2026-10-21: migration registered 20261021153930 / remember_upload_retry. Actual new RPC prosrc exactly equals committed function body; anon/authenticated execute denied, service_role allowed; search_path empty. Upload Edge v4 exactly equals deploy/remember-photo-upload.ts, verify_jwt=false preserved. Eight SQL tests rerun after install with ROLLBACK: PASS. Six legacy RPC definitions and ACLs unchanged. Counts/digests after install equal before (2 albums/10 photos/10 Storage objects, no test albums). Security advisor findings unchanged (10 intended server-only RLS-without-policy INFO; existing rls_auto_enable anon/authenticated warnings and leaked-password warning). No unrelated permissions changed. References below provide remediation, not an assertion these existing findings were fixed.\n\nNext: verify final shared-branch commit Actions/Pages and actual .158; targeted iPhone interruption/retry test only. Live concurrent quota HTTP and positive real-account end-to-end traces not captured. No real image uploaded in these automated tests. CURRENT/PREVIOUS null.
 
 Docs consulted 2026-10-21: https://supabase.com/docs/guides/storage/uploads/standard-uploads (upsert=false/AlreadyExists/concurrency); https://supabase.com/changelog (.md fetch unavailable; HTML checked; no relevant change to pinned JS2.118.0 upload/readback API identified). CLI 2.121.0 generated 20261021143400_remember_upload_retry.sql before scratch reset; same filename/source retained.
+
+Existing advisor references: https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy ; https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable ; https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable ; https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection .

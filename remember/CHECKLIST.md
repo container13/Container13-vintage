@@ -110,5 +110,5 @@ Detaljer och testkommandon: UPLOAD_VERIFICATION_2026-10-21.md. Tidigare generell
 
 ## Återförsök 0.1.158
 - [x] Klient/server-rättning och före-säkerhetsgren; 29 återhämtningsmocktester, 5 ägarvyer och 8 prospektiva SQL/ROLLBACK-assertioner PASS.
-- [ ] Installation och exakt readback RPC/Edge; slutlig SQL/ROLLBACK och raddigests; publicering.
+- [x] Installation och exakt readback RPC/Edge; slutlig SQL/ROLLBACK, gamla RPC-källor/ACL, raddigests och oförändrade säkerhetsråd.\n- [ ] Slutcommitens CI/Pages och faktiskt publicerad .158 kontrolleras efter push.
 - [ ] Avgränsat fysiskt iPhone-avbrottstest. Ingen omtestning av redan godkända ägar-/gäst-/tidsflöden.
