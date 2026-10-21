@@ -1,5 +1,5 @@
 # Remember — gemensam checklista
-Uppdaterad 2026-10-21. Kandidat 0.1.150. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
+Uppdaterad 2026-10-21. Kandidat 0.1.151. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
 
 - [x] Manuell fotobok: 0.1.137, användarens iPhone-PASS.
 - [x] Säkerhetsgren 0.1.137 på 8a592bb8b7b767a54df595e5e7d5d5d2eb10cd7f verifierad.
@@ -47,3 +47,16 @@ iOS-systemremsan är accepterad tills vidare och ska inte få nya spekulativa CS
 - [ ] 0.1.149 iPhone: vald appikon nr 6 på hemskärmen. Befintlig installerad ikon kan vara cachad; webbpublicering är inte DEVICE PASS.
 
 - [ ] 0.1.150 iPhone: lite fetare ikon nr 6 på hemskärmen; installerad ikon kan vara cachad.
+
+## Testbackend 2026-10-21
+- [x] Projektägarens godkännande: tider och aktivering i remember-test.
+- [x] Före-snapshot i separat säkerhetsgren; migration och sex Edge-källor installerade/återlästa i test.
+- [x] SQL-transaktioner, revision/retry/grants och separata samtidiga SQL-sessioner PASS.
+- [x] Gäst-HTTP: avstängt blockerar, samma länk fungerar efter återaktivering.
+- [x] Tillfälligt testalbum/bild/Storage/audit städat; baslinjeräkning återläst.
+- [ ] Autentiserad HTTP som test-webmaster, ägare och icke-webmaster.
+- [ ] iPhone för reglage och tider i avskild testfrontend.
+- [ ] Auditfel/rollback och verklig HTTP-samtidighet.
+- [ ] Granskad originalportning och separat godkännande före originalwrites.
+
+Detaljer: test-installed/2026-10-21-settings-activation/README.md. CURRENT/PREVIOUS oförändrade.

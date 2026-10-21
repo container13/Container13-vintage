@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.150",
-    "integrity": "BOLDER_ICON_6_CANDIDATE_DEVICE_PENDING"
+    "candidate": "0.1.151",
+    "integrity": "TEST_BACKEND_INSTALLED_SQL_AND_GUEST_HTTP_PASS_AUTH_HTTP_DEVICE_PENDING"
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
-    "targetRelease": "0.1.150",
-    "goal": "Slightly bolder selected app icon 6",
-    "resumeInstruction": "Verify iPhone home-screen icon. Manifest identity/start_url/scope unchanged. Album activation backend remains NOT INSTALLED and needs separate approval."
+    "status": "TEST_BACKEND_PARTIALLY_VERIFIED",
+    "targetRelease": "0.1.151",
+    "goal": "Verify album settings and activation in remember-test only",
+    "resumeInstruction": "Read test-installed/2026-10-21-settings-activation/README.md. Installation approved and complete in TEST only. Next: isolated authenticated test frontend with existing account; no original writes or promotion."
   },
   "currentWork": {
-    "completed": "User-requested bolder icon6 exported to PNG180/192/512; versioned icon and manifest references updated. No functional changes.",
-    "next": "Check public icon bytes and iPhone icon; activation backend remains pending separate approval.",
+    "completed": "Test-only migration and six Edge deploys with exact readback. Transaction and separate-session concurrency tests PASS; stable guest HTTP disable/reactivate PASS. Disposable fixture/storage fully cleaned; baseline 1 user/1 webmaster/1 album/4 photos restored.",
+    "next": "Authenticated TEST HTTP and iPhone acceptance using existing test account, then original porting review and separate approval.",
     "blocked": false,
     "blocker": null
   },
@@ -467,7 +467,7 @@
     "projectRef": "kauxrvshxgpbvptdwhog",
     "organization": "Container13-Remember",
     "region": "eu-north-1",
-    "checkedAt": "2026-10-17",
+    "checkedAt": "2026-10-21",
     "status": "TEST_RECOVERY_VERIFICATION_PENDING",
     "document": "remember/TEST_ENVIRONMENT.md",
     "schemaVersion": 10,
@@ -482,7 +482,24 @@
     "edgeFunctionCountBasis": "Direct test-project function listing on 2026-10-17; initial 8 was historical",
     "recoveryAuditFunctionVersion": 12,
     "recoverySimulationStatus": "USER_REPORTED_PASS_SERVER_RESPONSE_BODY_NOT_RETRIEVED",
-    "currentCheckpoint": "remember/RECOVERY_CHECKPOINT.md"
+    "currentCheckpoint": "remember/test-installed/2026-10-21-settings-activation/README.md",
+    "albumSettingsAndActivation": {
+      "status": "INSTALLED_PARTIAL_RUNTIME_PASS",
+      "approved": true,
+      "migration": "20261021101712_remember_test_album_settings_activation",
+      "baselineAfterCleanup": {
+        "users": 1,
+        "webmasters": 1,
+        "albums": 1,
+        "photos": 4
+      },
+      "originalWritesPerformed": false,
+      "sqlTransactions": "PASS",
+      "separateSQLSessions": "PASS",
+      "guestHTTP": "PASS",
+      "authenticatedHTTP": "PENDING",
+      "device": "PENDING"
+    }
   },
   "projectMode": {
     "status": "ACTIVE_DEVELOPMENT",
@@ -614,27 +631,29 @@
   },
   "adminSettings": {
     "frontendVersion": "0.1.146",
-    "backendStatus": "REVIEW_ONLY_NOT_INSTALLED",
+    "backendStatus": "TEST_INSTALLED_ORIGINAL_NOT_INSTALLED",
     "originalProject": "wykvztfmfbboxiqvuvwr",
     "testProject": "kauxrvshxgpbvptdwhog",
     "review": "remember/WEBMASTER_SETTINGS_REVIEW.md",
     "capability": "albumSettings",
     "fallback": "existing list fields rendered; all save controls disabled; no gallery fetch at startup",
     "rollback": "4699064c56acb735214d5e820ab790e2ed25511a",
-    "verification": "0.1.146 Node/jsdom PASS: expired/future/exact boundary/7d, draft deadline preview, repeated extension, forced closure retained, no save on extension click, disabled backend fallback. SQL/runtime/device pending."
+    "verification": "Test SQL transaction/concurrency and guest HTTP PASS; authenticated HTTP/device pending. See remember/test-installed/2026-10-21-settings-activation/README.md"
   },
   "albumActivation": {
     "frontendVersion": "0.1.148",
-    "backendStatus": "REVIEW_ONLY_NOT_INSTALLED",
+    "backendStatus": "TEST_INSTALLED_ORIGINAL_NOT_INSTALLED",
     "capability": "albumActivation",
     "review": "remember/ALBUM_ACTIVATION_REVIEW.md",
-    "supabaseWritesPerformed": false,
+    "supabaseWritesPerformed": true,
     "deviceStatus": "PENDING",
     "limitations": [
       "Existing signed URLs and cached/saved photos cannot be recalled",
-      "Real SQL/schema/concurrency/authenticated HTTP verification pending"
+      "Authenticated HTTP, HTTP concurrency, audit fault injection and iPhone verification pending"
     ],
-    "ui": "Per-card switch + one native confirmation dialog in dashboard; unknown state disabled without capability/is_active"
+    "ui": "Per-card switch + one native confirmation dialog in dashboard; unknown state disabled without capability/is_active",
+    "writeScope": "Approved remember-test only",
+    "evidence": "remember/test-installed/2026-10-21-settings-activation/README.md"
   },
   "appIcon": {
     "design": 6,

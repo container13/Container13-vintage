@@ -1,3 +1,5 @@
+> Senaste läge 2026-10-21 / 0.1.151: installation och tester godkända i remember-test. Testbackend installerad; SQL/samtidiga SQL-sessioner/gäst-HTTP PASS. Inloggad HTTP och iPhone PENDING. Originalbackend NOT INSTALLED. Äldre ”NOT INSTALLED/inte godkänd”-text nedan beskriver historiskt läge. Se [verifieringsprotokoll](test-installed/2026-10-21-settings-activation/README.md).
+
 # Remember Test — isolerad Supabase-kopia
 
 Verifierad: 2026-10-17. Status: BACKEND DEPLOYED / READBACK PASS / begränsad negativ HTTP-smoke PASS. Inte komplett E2E eller färdig mobiltestmiljö.

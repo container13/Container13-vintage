@@ -153,3 +153,6 @@ Projektägaren valde appikon nr 6: svepande handskrivet R i cremevitt på skogsg
 
 ## Aktuell kontrollpunkt 0.1.150 — 2026-10-21
 Appikon nr 6 har fått något fetare linjer enligt användarens önskemål. Ny versionerad PNG180/192/512 och synkroniserade manifest-/ikonreferenser. Den valda formen och färgskalan behålls. Inga beteende-, backend- eller fotoboksändringar. CURRENT/PREVIOUS oförändrade. Faktisk ikon på iPhone kräver separat kontroll.
+
+## Aktuell kontrollpunkt 0.1.151 — 2026-10-21
+Projektägaren godkände testinstallation av albumstatus och tider. Installerat ENDAST i remember-test, med bevarade modererings-/återställningsskydd. SQL-transaktioner, oberoende samtidiga SQL-sessioner och stabila gäst-HTTP-test PASS. Sex Edge-källor exakt återlästa. Disponibelt testalbum/foto/Storage/audit städat; baseline 1 användare/1 webmaster/1 album/4 foton återläst. Inloggad HTTP, separat testfrontend och iPhone återstår. Se test-installed/2026-10-21-settings-activation/README.md för faktisk evidens, före-snapshot, migrations-ID och återstående grindar. Originalet är fortsatt NOT INSTALLED och kräver separat beslut. Fotobok och övrig frontendlogik oförändrade; CURRENT/PREVIOUS fortsatt null.

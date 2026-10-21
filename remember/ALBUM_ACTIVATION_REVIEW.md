@@ -1,3 +1,5 @@
+> Senaste läge 2026-10-21 / 0.1.151: testinstallation av både albumstatus och tider är godkänd och genomförd. SQL/samtidiga SQL-sessioner/gäst-HTTP PASS; inloggad HTTP och iPhone PENDING. Originalbackend NOT INSTALLED. Äldre text nedan är granskningshistorik. Se [verifieringsprotokoll](test-installed/2026-10-21-settings-activation/README.md).
+
 # Album aktivt — konkret granskningsunderlag 0.1.147
 2026-10-21. **Frontendförberedelse. Backend NOT INSTALLED. Inga Supabase-skrivningar.**
 
