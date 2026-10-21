@@ -1,5 +1,5 @@
 # Remember — gemensam checklista
-Uppdaterad 2026-10-21. Kandidat 0.1.154. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
+Uppdaterad 2026-10-21. Kandidat 0.1.155. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
 
 - [x] Manuell fotobok: 0.1.137, användarens iPhone-PASS.
 - [x] Säkerhetsgren 0.1.137 på 8a592bb8b7b767a54df595e5e7d5d5d2eb10cd7f verifierad.
@@ -83,3 +83,10 @@ Detaljer: test-installed/2026-10-21-settings-activation/README.md. CURRENT/PREVI
 - [ ] Befintlig inloggad användare testar reglage samt tidsändring/spara/återläsning i vanliga Remember på iPhone.
 - [ ] Fulla releasegrindar/promotion. CURRENT/PREVIOUS oförändrade.
 Separat testinloggning/lösenordsåterställning är inte längre ett krav för aktuellt uppdrag. Detaljer: development-installed/2026-10-21-controls/README.md.
+
+## Ägarvy vid avstängning — 0.1.155
+- [x] Användaren stänger av album; DB bekräftar false/revision2.
+- [x] Rotorsak till saknad ägarstatus hittad och rättad i både adminförhandsvisning och riktig owner-vy/list-API.
+- [x] Fem DOM-scenarier samt Edge projection/owner-filter/auth PASS; owner-manager v5 exakt återläst.
+- [ ] Användarens iPhone-omtest: avstängningsmeddelande och inga ägarverktyg/bilder i Albumägare.
+- [ ] Återaktivera via Webmaster och verifiera återställd ägarvy; gästlänk och tidssparande fortsatt separata tester.

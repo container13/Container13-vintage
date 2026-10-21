@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.154",
-    "integrity": "REMEMBER_DEVELOPMENT_CONTROLS_BACKEND_DEPLOYED_SQL_PASS_DEVICE_PENDING"
+    "candidate": "0.1.155",
+    "integrity": "INACTIVE_OWNER_VIEW_FIX_STATIC_PASS_DEVICE_RETEST_PENDING"
   },
   "workCheckpoint": {
-    "status": "DEVELOPMENT_BACKEND_DEPLOYED_DEVICE_PENDING",
-    "targetRelease": "0.1.154",
-    "goal": "Use ordinary Remember development environment for album activation and times",
-    "resumeInstruction": "User authorized original Remember development installation, now complete. Use normal dashboard.html -> Webmaster with existing login. Read development-installed/2026-10-21-controls/README.md. Next iPhone activation/time save/readback; no need for separate test login/password reset. CURRENT/PREVIOUS unchanged."
+    "status": "OWNER_VIEW_FIX_DEVICE_PENDING",
+    "targetRelease": "0.1.155",
+    "goal": "Display inactive state in owner preview and actual owner view",
+    "resumeInstruction": "User successfully deactivated album (DB false/revision2) but owner preview failed to reflect it. 0.1.155 adds notice/hides owner content and list is_active. User should reopen same still-inactive album via Albumägare, then verify Webmaster reactivation. No automatic album state changes."
   },
   "currentWork": {
-    "completed": "Installed original DEVELOPMENT schema + six Edge functions from original baselines. Transaction tests/readbacks PASS; 2 albums/10 photos and their prior row digests preserved. Both capabilities enabled in ordinary Remember.",
-    "next": "User verifies existing Webmaster switches and time save/readback in ordinary Remember on iPhone. Record actual acceptance; full release gates still pending.",
+    "completed": "Root cause verified: role preview retains admin and ignored is_active; actual owner list omitted it. Added visible inactive notice and skipped gallery/owner tools for inactive owner views. Actual owner-manager v5 exact readback. Five DOM scenarios and Edge projection/auth checks PASS.",
+    "next": "User iPhone retest of same inactive album in Albumägare, then reactivate via Webmaster and confirm owner view returns. Guest-link and time-save/readback tests remain pending.",
     "blocked": false,
     "blocker": null
   },
@@ -686,7 +686,7 @@
   "developmentControls": {
     "installed": true,
     "projectRef": "wykvztfmfbboxiqvuvwr",
-    "version": "0.1.154",
+    "version": "0.1.155",
     "backupBranch": "remember/development-checkpoint-2026-10-21-before-controls",
     "backupCommit": "843aa45f09995986a525993463ed6b3945433903",
     "countsAfter": {
@@ -699,7 +699,18 @@
     "sqlTests": "PASS",
     "edgeReadback": "EXACT_PASS",
     "authenticatedHTTP": "PENDING_USER_SESSION",
-    "device": "PENDING",
+    "device": "PARTIAL_USER_REPORT_ACTIVATION_SAVED_OWNER_VIEW_FAILED_FIX_PENDING",
     "document": "remember/development-installed/2026-10-21-controls/README.md"
+  },
+  "ownerInactiveFeedback": {
+    "date": "2026-10-21",
+    "reportedVersion": "0.1.154",
+    "activationSaved": "DB_CONFIRMED_FALSE_REVISION_2",
+    "ownerPreview": "USER_REPORTED_FAIL",
+    "fixVersion": "0.1.155",
+    "staticTests": "PASS_FIVE_VIEW_CASES_PLUS_EDGE_OWNER_FILTER",
+    "deviceRetest": "PENDING",
+    "albumStateChangedByAssistant": false,
+    "document": "remember/development-installed/2026-10-21-owner-status/README.md"
   }
 }

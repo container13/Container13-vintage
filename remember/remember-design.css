@@ -675,3 +675,8 @@ body.remember-shell .album-activation-dialog [data-confirm]{background:#d9e7a4;c
 body.remember-shell .album-activation-dialog [data-feedback]{font-size:12px}
 body.remember-shell .album-activation-dialog button:disabled{opacity:.55;cursor:default}
 @media(prefers-reduced-motion:reduce){body.remember-shell .album-switch-thumb{transition:none}}
+
+/* Album access is separate from the upload period; private reasons are never shown. */
+body.remember-shell .album-inactive-notice{margin:18px 0;padding:18px;border:1px solid #e6c98e;border-radius:16px;background:#3c3024;color:#fff4db;font:500 16px/1.55 system-ui;overflow-wrap:anywhere}
+body.remember-shell .album-inactive-notice strong{display:block;font-weight:750}
+body.remember-shell .album-inactive-notice p{margin:8px 0 0;color:inherit}
