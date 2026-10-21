@@ -1,5 +1,5 @@
 # Remember — gemensam checklista
-Uppdaterad 2026-10-21. Kandidat 0.1.157. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
+Uppdaterad 2026-10-21. Kandidat 0.1.158. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
 
 - [x] Manuell fotobok: 0.1.137, användarens iPhone-PASS.
 - [x] Säkerhetsgren 0.1.137 på 8a592bb8b7b767a54df595e5e7d5d5d2eb10cd7f verifierad.
@@ -107,3 +107,8 @@ Separat testinloggning/lösenordsåterställning är inte längre ett krav för 
 - [ ] Positiva avbrottstester efter rättning; samtidiga sista-platsen-/replay-anrop samt avgränsat fysiskt iPhone-avbrottstest.
 
 Detaljer och testkommandon: UPLOAD_VERIFICATION_2026-10-21.md. Tidigare generella önskemål om ägar-/gäst-/tidstest är ersatta av användarens bekräftelse ovan; specifika nya avbrottsfall är separata. Inga funktionella ändringar i denna checkpoint.
+
+## Återförsök 0.1.158
+- [x] Klient/server-rättning och före-säkerhetsgren; 29 återhämtningsmocktester, 5 ägarvyer och 8 prospektiva SQL/ROLLBACK-assertioner PASS.
+- [ ] Installation och exakt readback RPC/Edge; slutlig SQL/ROLLBACK och raddigests; publicering.
+- [ ] Avgränsat fysiskt iPhone-avbrottstest. Ingen omtestning av redan godkända ägar-/gäst-/tidsflöden.

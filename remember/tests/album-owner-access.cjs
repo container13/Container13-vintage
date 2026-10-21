@@ -21,6 +21,7 @@ const aid='11111111-1111-4111-8111-111111111111';
    if(spec.includes('supabase-js'))exports={createClient:()=>client};
    else if(spec.includes('remember-auth'))exports={createRememberAuth:async()=>client,restoreRememberSession:async()=>({session,before:{marker:'mock',authRecord:'mock',tabMarker:'mock'}})};
    else if(spec.includes('upload-prepare'))exports={prepareRememberUpload:()=>{throw Error('No upload expected')}};
+   else if(spec.includes('upload-session'))exports={createRememberUploader:()=>()=>{throw Error('No upload expected')}};
    else if(spec.includes('remember-role-switcher'))exports={rememberRoleSwitcherCSS:'',mountRememberRoleSwitcher:({host})=>{host.textContent='Webmaster / Albumägare / Gäst';}};
    else if(spec.includes('webmaster-album-settings'))exports={mountWebmasterAlbumSettings:()=>{settingsMounts++;}};
    else if(spec.includes('photo-gallery'))exports={mountRememberGallery:()=>{galleryMounts++;return {refresh:async()=>{}};}};

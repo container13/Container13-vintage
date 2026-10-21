@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.157",
-    "integrity": "UPLOAD_QUOTA_DEDUP_SQL_PASS_RETRY_GAPS_REPRODUCED"
+    "candidate": "0.1.158",
+    "integrity": "UPLOAD_RETRY_CODE_TESTED_INSTALL_PENDING"
   },
   "workCheckpoint": {
-    "status": "UPLOAD_REVIEW_COMPLETE_RETRY_FIX_PENDING",
-    "targetRelease": "0.1.157",
-    "goal": "Fix verified upload retry gaps after completed quota/dedup audit",
-    "resumeInstruction": "User confirmed time extension/save/reopen and owner/guest testing already done. Do not request again. Read UPLOAD_VERIFICATION_2026-10-21.md. Quota/dedup SQL assertions pass; four client paths generate new IDs on retry and live Edge v3 rejects existing. Plan one end-to-end idempotent retry fix, not a frontend-only retry loop. No backend/runtime changes made in audit."
+    "status": "UPLOAD_RETRY_INSTALL_PENDING",
+    "targetRelease": "0.1.158",
+    "goal": "Deploy tested stable-ID upload retry",
+    "resumeInstruction": "29 mocked recovery tests and five owner-view tests plus prospective SQL/ROLLBACK PASS. Backup branch remember/upload-retry-checkpoint-2026-10-21-0157 at 64d0c8541ca41a7bdd80581a254268187f94f57f read back. Install additive service-only migration and new upload Edge, read back, publish this frontend; do not repeat accepted owner/guest/time tests. See UPLOAD_RETRY_0.1.158.md."
   },
   "currentWork": {
-    "completed": "User-reported webmaster time save/reopen and owner/guest PASS recorded. Live upload v3 exact archived-source comparison; installed RPC/index/grant review; 7 successful SQL assertions + 2 known-gap characterizations in rolled-back fixtures; 8 mocked Edge assertions and 7 retry gap reproductions. Existing 2 albums/10 photos and row digests unchanged; Storage count 10.",
-    "next": "Build and review one coherent retry/status/resume correction with stable per-file request IDs and canonical bytes, authorized server replay plus Storage verification; then test interruption and concurrency. Details in UPLOAD_VERIFICATION_2026-10-21.md.",
+    "completed": "Built stable per-file ID/canonical bytes with 3 bounded attempts; authorized replay/complete RPC, immutable Storage readback and no timeout quota release. All prospective tests PASS; not yet installed.",
+    "next": "Install additive RPC and exact Edge source, verify SQL/data counts and security advisors; publish 0.1.158; request only targeted physical network interruption test.",
     "blocked": false,
     "blocker": null
   },
