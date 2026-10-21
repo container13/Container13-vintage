@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.148",
-    "integrity": "CARD_ACTIVATION_SWITCHES_CANDIDATE_BACKEND_STILL_DISABLED"
+    "candidate": "0.1.149",
+    "integrity": "SELECTED_ICON_6_CANDIDATE_DEVICE_PENDING"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.148",
-    "goal": "Per-album card switches in Webmaster, compact confirmation dialog",
-    "resumeInstruction": "Verify 0.1.148 iPhone card switches and removed album-admin activation panel. Activation backend remains NOT INSTALLED; separate database test installation approval has not been given."
+    "targetRelease": "0.1.149",
+    "goal": "Install selected Remember app icon number 6",
+    "resumeInstruction": "Verify iPhone home-screen icon. Manifest identity/start_url/scope unchanged. Album activation backend remains NOT INSTALLED and needs separate approval."
   },
   "currentWork": {
-    "completed": "Webmaster album cards have independent switches with click/drag confirmation, private reason, fresh revision read, confirmed update and conflict readback. Large album-admin activation panel removed. Backend capability remains false.",
-    "next": "User iPhone visual acceptance; activation backend test installation remains pending separate approval.",
+    "completed": "Selected icon 6 exported to opaque PNG180/192/512; all nine entries link manifest/apple-touch/favicon; manifest icons added without changing app identity.",
+    "next": "Check public icon bytes and iPhone icon; activation backend remains pending separate approval.",
     "blocked": false,
     "blocker": null
   },
@@ -635,5 +635,12 @@
       "Real SQL/schema/concurrency/authenticated HTTP verification pending"
     ],
     "ui": "Per-card switch + one native confirmation dialog in dashboard; unknown state disabled without capability/is_active"
+  },
+  "appIcon": {
+    "design": 6,
+    "version": "0.1.149",
+    "directory": "remember/assets/icons/",
+    "deviceStatus": "PENDING",
+    "oldInstalledIconMayBeCached": true
   }
 }
