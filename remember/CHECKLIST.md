@@ -1,5 +1,5 @@
 # Remember — gemensam checklista
-Uppdaterad 2026-10-21. Kandidat 0.1.151. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
+Uppdaterad 2026-10-21. Kandidat 0.1.152. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
 
 - [x] Manuell fotobok: 0.1.137, användarens iPhone-PASS.
 - [x] Säkerhetsgren 0.1.137 på 8a592bb8b7b767a54df595e5e7d5d5d2eb10cd7f verifierad.
@@ -60,3 +60,10 @@ iOS-systemremsan är accepterad tills vidare och ska inte få nya spekulativa CS
 - [ ] Granskad originalportning och separat godkännande före originalwrites.
 
 Detaljer: test-installed/2026-10-21-settings-activation/README.md. CURRENT/PREVIOUS oförändrade.
+
+## Separat testfrontend 0.1.152
+- [x] test-admin.html med fast testbackend och egen sessionsnyckel, samma controllers som originalvyn.
+- [x] DOM-/Chromiummock: inloggningsfel, aktivering, tidsutkast/sparande, konfliktåterläsning, draftskydd och utloggning.
+- [x] 360/390/768/1280 px list-/tidslayout utan horisontell överströmning; skärmbild granskad.
+- [ ] Verklig testkontoinloggning och autentiserad HTTP på publicerad testsida.
+- [ ] iPhone: reglage, sparade tider och återläsning. Se TEST_ADMIN.md.

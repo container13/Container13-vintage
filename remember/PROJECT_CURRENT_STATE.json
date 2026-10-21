@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.151",
-    "integrity": "TEST_BACKEND_INSTALLED_SQL_AND_GUEST_HTTP_PASS_AUTH_HTTP_DEVICE_PENDING"
+    "candidate": "0.1.152",
+    "integrity": "ISOLATED_TEST_ADMIN_UI_STATIC_PASS_AUTH_HTTP_DEVICE_PENDING"
   },
   "workCheckpoint": {
-    "status": "TEST_BACKEND_PARTIALLY_VERIFIED",
-    "targetRelease": "0.1.151",
-    "goal": "Verify album settings and activation in remember-test only",
-    "resumeInstruction": "Read test-installed/2026-10-21-settings-activation/README.md. Installation approved and complete in TEST only. Next: isolated authenticated test frontend with existing account; no original writes or promotion."
+    "status": "TEST_UI_STATIC_PASS_DEVICE_PENDING",
+    "targetRelease": "0.1.152",
+    "goal": "Isolated test frontend for album activation and upload times",
+    "resumeInstruction": "Read TEST_ADMIN.md. Open https://container13.se/remember/test-admin.html and use existing remember-test account. Controllers reused; original API/session remain separate. Authenticated HTTP/iPhone pending; no original backend installation."
   },
   "currentWork": {
-    "completed": "Test-only migration and six Edge deploys with exact readback. Transaction and separate-session concurrency tests PASS; stable guest HTTP disable/reactivate PASS. Disposable fixture/storage fully cleaned; baseline 1 user/1 webmaster/1 album/4 photos restored.",
-    "next": "Authenticated TEST HTTP and iPhone acceptance using existing test account, then original porting review and separate approval.",
+    "completed": "Isolated test-admin frontend with fixed test URL, separate auth storage, existing activation/settings controllers, unsaved draft guard, fresh-read locking and readable failures. Mock DOM/Chromium interactions and 360/390/768/1280 list/settings layout PASS. Existing confirmed test webmaster has password configured; no account/DB/Edge changes.",
+    "next": "User logs into test-admin.html using existing remember-test account and verifies switches/time save/readback on iPhone. Then complete remaining real HTTP and original-porting review.",
     "blocked": false,
     "blocker": null
   },
@@ -482,7 +482,7 @@
     "edgeFunctionCountBasis": "Direct test-project function listing on 2026-10-17; initial 8 was historical",
     "recoveryAuditFunctionVersion": 12,
     "recoverySimulationStatus": "USER_REPORTED_PASS_SERVER_RESPONSE_BODY_NOT_RETRIEVED",
-    "currentCheckpoint": "remember/test-installed/2026-10-21-settings-activation/README.md",
+    "currentCheckpoint": "remember/TEST_ADMIN.md",
     "albumSettingsAndActivation": {
       "status": "INSTALLED_PARTIAL_RUNTIME_PASS",
       "approved": true,
@@ -499,6 +499,16 @@
       "guestHTTP": "PASS",
       "authenticatedHTTP": "PENDING",
       "device": "PENDING"
+    },
+    "testAdmin": {
+      "version": "0.1.152",
+      "url": "https://container13.se/remember/test-admin.html",
+      "storageKey": "container13-remember-test-admin-auth-v1",
+      "fixedProjectRef": "kauxrvshxgpbvptdwhog",
+      "staticTests": "DOM_AND_CHROMIUM_MOCK_PASS",
+      "authenticatedHTTP": "PENDING",
+      "iPhone": "PENDING",
+      "purpose": "Test settings/activation only; retire by explicit decision after acceptance/porting"
     }
   },
   "projectMode": {
@@ -608,7 +618,8 @@
       "webmaster.html"
     ],
     "cameraException": "camera-session-test.html is an embedded active camera flow without release bootstrap; integration must protect camera activity and needs separate review.",
-    "diagnosticPages": "Other *test/prototype pages are not part of the nine release-bearing entries; not promoted or deleted."
+    "diagnosticPages": "Other *test/prototype pages are not part of the nine release-bearing entries; not promoted or deleted.",
+    "testAdminException": "test-admin.html is an isolated diagnostic test frontend with its own explicit version; no production updater or PWA manifest. Not one of the nine normal entrypoints."
   },
   "deviceVerification139": {
     "status": "USER_REPORTED_PASS",
