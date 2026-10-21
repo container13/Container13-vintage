@@ -1,6 +1,6 @@
 // Isolated TEST frontend. No production configuration or user-selectable backend.
-import {createWebmasterAlbumActivation} from './webmaster-album-activation.js?v=0.1.152';
-import {mountWebmasterAlbumSettings,uploadStatus} from './webmaster-album-settings.js?v=0.1.152';
+import {createWebmasterAlbumActivation} from './webmaster-album-activation.js?v=0.1.153';
+import {mountWebmasterAlbumSettings,uploadStatus} from './webmaster-album-settings.js?v=0.1.153';
 
 export const TEST_URL='https://kauxrvshxgpbvptdwhog.supabase.co';
 export const TEST_STORAGE_KEY='container13-remember-test-admin-auth-v1';
@@ -87,6 +87,34 @@ export async function mountTestAdmin({createClient,document:doc=document,fetch:s
   lockedAccount('');actor=id;if(!id){feedback('Logga in med ditt befintliga testkonto.');return;}
   $('testLogin').hidden=true;$('testAccount').hidden=false;$('testIdentity').textContent=session.user.email||'Testkonto';await loadAlbums();
  }
+
+ // Use the existing test recovery handler, with its own test-project session.
+ const resetRedirect='https://container13.se/remember-test/login.html';
+ let resetSending=false,resetUntil=0,resetTimer=null;
+ function resetControls(){
+  const remaining=Math.max(0,Math.ceil((resetUntil-Date.now())/1000));
+  $('testResetPassword').disabled=resetSending||remaining>0;
+  $('testResetPassword').textContent=remaining?'Skicka ny länk om '+remaining+' s':'Glömt lösenord?';
+  if(!remaining&&resetTimer){doc.defaultView.clearInterval(resetTimer);resetTimer=null;}
+ }
+ $('testResetPassword').onclick=async()=>{
+  const fieldset=$('testLoginForm').querySelector('fieldset');
+  if(fieldset.disabled||resetSending||Date.now()<resetUntil||!$('testEmail').reportValidity())return;
+  resetSending=true;fieldset.disabled=true;feedback('Begär återställningsmejl för testkontot…');
+  try{
+   const {error}=await client.auth.resetPasswordForEmail($('testEmail').value.trim(),{redirectTo:resetRedirect});
+   if(error){
+    feedback(error.status===429?'För många mejlförsök. Vänta en stund och försök igen.':'Återställningsmejlet kunde inte begäras. Försök igen om en stund.');
+   }else{
+    feedback('Om testkontot finns skickas en återställningslänk. Öppna mejlet och välj ett nytt lösenord. Återvänd sedan hit och logga in med det nya lösenordet. Kontrollera även skräpposten.');
+   }
+  }catch{
+   feedback('Resultatet är osäkert eftersom anslutningen avbröts. Kontrollera inkorgen innan du begär ett nytt mejl.');
+  }finally{
+   $('testPassword').value='';resetSending=false;fieldset.disabled=false;resetUntil=Date.now()+60000;resetControls();
+   resetTimer=doc.defaultView.setInterval(resetControls,1000);
+  }
+ };
  $('testLoginForm').addEventListener('submit',async event=>{
   event.preventDefault();const fieldset=$('testLoginForm').querySelector('fieldset');if(fieldset.disabled)return;
   fieldset.disabled=true;feedback('Loggar in i testmiljön…');

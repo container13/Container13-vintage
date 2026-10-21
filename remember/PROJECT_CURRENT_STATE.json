@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.152",
-    "integrity": "ISOLATED_TEST_ADMIN_UI_STATIC_PASS_AUTH_HTTP_DEVICE_PENDING"
+    "candidate": "0.1.153",
+    "integrity": "TEST_PASSWORD_RESET_UI_PASS_USER_EMAIL_RECOVERY_PENDING"
   },
   "workCheckpoint": {
-    "status": "TEST_UI_STATIC_PASS_DEVICE_PENDING",
-    "targetRelease": "0.1.152",
-    "goal": "Isolated test frontend for album activation and upload times",
-    "resumeInstruction": "Read TEST_ADMIN.md. Open https://container13.se/remember/test-admin.html and use existing remember-test account. Controllers reused; original API/session remain separate. Authenticated HTTP/iPhone pending; no original backend installation."
+    "status": "TEST_RECOVERY_UI_READY_USER_ACTION_PENDING",
+    "targetRelease": "0.1.153",
+    "goal": "Enable forgotten-password recovery for existing remember-test account",
+    "resumeInstruction": "Open remember/test-admin.html. User clicks Glömt lösenord with test email. Link returns to existing remember-test/login.html. User chooses password there, then returns to test-admin.html to sign in. Never request passwords/tokens in chat. Mail delivery, password change and authenticated album tests pending. Original backend unchanged."
   },
   "currentWork": {
-    "completed": "Isolated test-admin frontend with fixed test URL, separate auth storage, existing activation/settings controllers, unsaved draft guard, fresh-read locking and readable failures. Mock DOM/Chromium interactions and 360/390/768/1280 list/settings layout PASS. Existing confirmed test webmaster has password configured; no account/DB/Edge changes.",
-    "next": "User logs into test-admin.html using existing remember-test account and verifies switches/time save/readback on iPhone. Then complete remaining real HTTP and original-porting review.",
+    "completed": "Added explicit Glömt lösenord to isolated test-admin. Reuses existing TEST recovery handler and fixed redirect; DOM/Chromium mocked request/recovery-save/cooldown/error tests PASS. Actual invalid-token redirect probe reaches correct TEST login. No real email/password/account writes performed.",
+    "next": "User requests recovery email, saves a new password in existing test recovery page, then logs into test-admin and verifies album switches/time save/readback on iPhone.",
     "blocked": false,
     "blocker": null
   },
@@ -501,14 +501,20 @@
       "device": "PENDING"
     },
     "testAdmin": {
-      "version": "0.1.152",
+      "version": "0.1.153",
       "url": "https://container13.se/remember/test-admin.html",
       "storageKey": "container13-remember-test-admin-auth-v1",
       "fixedProjectRef": "kauxrvshxgpbvptdwhog",
       "staticTests": "DOM_AND_CHROMIUM_MOCK_PASS",
       "authenticatedHTTP": "PENDING",
       "iPhone": "PENDING",
-      "purpose": "Test settings/activation only; retire by explicit decision after acceptance/porting"
+      "purpose": "Test settings/activation only; retire by explicit decision after acceptance/porting",
+      "passwordRecovery": {
+        "status": "UI_TESTS_PASS_MAIL_AND_USER_PASSWORD_CHANGE_PENDING",
+        "redirect": "https://container13.se/remember-test/login.html",
+        "originalAuthChanged": false,
+        "automaticSend": false
+      }
     }
   },
   "projectMode": {

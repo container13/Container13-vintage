@@ -1,5 +1,5 @@
 # Remember — gemensam checklista
-Uppdaterad 2026-10-21. Kandidat 0.1.152. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
+Uppdaterad 2026-10-21. Kandidat 0.1.153. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
 
 - [x] Manuell fotobok: 0.1.137, användarens iPhone-PASS.
 - [x] Säkerhetsgren 0.1.137 på 8a592bb8b7b767a54df595e5e7d5d5d2eb10cd7f verifierad.
@@ -67,3 +67,10 @@ Detaljer: test-installed/2026-10-21-settings-activation/README.md. CURRENT/PREVI
 - [x] 360/390/768/1280 px list-/tidslayout utan horisontell överströmning; skärmbild granskad.
 - [ ] Verklig testkontoinloggning och autentiserad HTTP på publicerad testsida.
 - [ ] iPhone: reglage, sparade tider och återläsning. Se TEST_ADMIN.md.
+
+## Glömt lösenord i test 0.1.153
+- [x] Explicit knapp, testprojektets Auth och befintlig testrecovery återanvänds.
+- [x] DOM/Chromium mock: e-postvalidering, dubbeltrycksskydd, 60s spärr, fel, recoveryform/spara utan riktiga utskick eller lösenordsändringar.
+- [x] Faktisk ogiltig-token-redirect till rätt TEST login verifierad utan kontoändring.
+- [ ] Användaren begär mejlet och bekräftar leverans/lösenordsbyte.
+- [ ] Därefter inloggat album-/tidstest på iPhone. Se TEST_ADMIN.md.

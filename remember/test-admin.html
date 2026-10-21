@@ -1,19 +1,19 @@
 <!doctype html>
-<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="referrer" content="no-referrer"><meta name="robots" content="noindex,nofollow"><meta name="remember-release" content="remember-0.1.152"><title>Remember – test av albuminställningar</title>
-<link rel="stylesheet" href="./remember-design.css?v=0.1.152"><link rel="stylesheet" href="./test-admin.css?v=0.1.152"><script src="../project-template/mobile-view-policy.js?v=2"></script></head>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="referrer" content="no-referrer"><meta name="robots" content="noindex,nofollow"><meta name="remember-release" content="remember-0.1.153"><title>Remember – test av albuminställningar</title>
+<link rel="stylesheet" href="./remember-design.css?v=0.1.153"><link rel="stylesheet" href="./test-admin.css?v=0.1.153"><script src="../project-template/mobile-view-policy.js?v=2"></script></head>
 <body class="remember-shell remember-test-admin"><main>
 <header class="test-banner"><strong>Remember · TESTMILJÖ</strong><p>Albumreglage och tider. Ändringar gäller endast testalbum.</p></header>
-<section id="testLogin" class="test-panel"><h1>Logga in i testmiljön</h1><p>Använd ditt befintliga konto i remember-test. Konton i vanliga Remember är separata.</p><form id="testLoginForm"><fieldset disabled><label for="testEmail">E-postadress</label><input id="testEmail" name="email" type="email" autocomplete="username" inputmode="email" required><label for="testPassword">Lösenord</label><input id="testPassword" name="password" type="password" autocomplete="current-password" required><button type="submit">Logga in i testmiljön</button></fieldset></form></section>
+<section id="testLogin" class="test-panel"><h1>Logga in i testmiljön</h1><p>Använd ditt befintliga konto i remember-test. Konton i vanliga Remember är separata.</p><form id="testLoginForm"><fieldset disabled><label for="testEmail">E-postadress</label><input id="testEmail" name="email" type="email" autocomplete="username" inputmode="email" required><label for="testPassword">Lösenord</label><input id="testPassword" name="password" type="password" autocomplete="current-password" required><button type="submit">Logga in i testmiljön</button><button id="testResetPassword" type="button" class="secondary">Glömt lösenord?</button></fieldset></form></section>
 <section id="testAccount" class="test-panel" hidden><p>Inloggad som <strong id="testIdentity"></strong></p><div class="test-actions"><button type="button" id="testReload">Uppdatera album</button><button type="button" id="testLogout" class="secondary">Logga ut från test</button></div></section>
 <p id="testFeedback" role="status" aria-live="polite">Förbereder testinloggningen…</p>
 <section id="webmasterTools" class="test-panel" hidden><h1>Testalbum</h1><p id="catalogActivationNotice">Reglaget ändrar albumets åtkomst efter bekräftelse. Öppna albumet för att ändra tider.</p><div id="testAlbumList"></div></section>
 <section id="testDetails" hidden><button type="button" id="testBack" class="secondary">← Testalbum</button><h1 id="testAlbumTitle"></h1><div id="testSettings"></div></section>
-<footer>Remember test · v0.1.152</footer></main>
+<footer>Remember test · v0.1.153</footer></main>
 <script type="module">
 let dependencyTimer;
 try {
  const [{mountTestAdmin},{createClient}]=await Promise.race([Promise.all([
-  import('./test-admin.js?v=0.1.152'),import('https://esm.sh/@supabase/supabase-js@2.118.0')
+  import('./test-admin.js?v=0.1.153'),import('https://esm.sh/@supabase/supabase-js@2.118.0')
  ]),new Promise((_,reject)=>{dependencyTimer=setTimeout(()=>reject(Error('timeout')),20000);})]);
  clearTimeout(dependencyTimer);
  await mountTestAdmin({createClient});

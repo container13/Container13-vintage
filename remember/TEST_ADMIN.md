@@ -1,5 +1,19 @@
 # Remember – separat testvy för albuminställningar
-2026-10-21. Kandidat **0.1.152**. Endast remember-test.
+2026-10-21. Kandidat **0.1.153**. Endast remember-test.
+
+## Lösenordsåterställning 0.1.153 — 2026-10-21
+Användaren har glömt testkontots lösenord och har godkänt Glömt lösenord i testsidan.
+
+- Ange testkontots e-post i test-admin.html och välj **Glömt lösenord?**. Lösenordsfältet behöver inte fyllas i.
+- Endast detta uttryckliga klick anropar testprojektets Auth resetPasswordForEmail. Ingen automatisk begäran vid sidstart/inloggningsfel och inget mejl skickat av verktyg.
+- Fast redirect: **https://container13.se/remember-test/login.html**. Den befintliga teståterställningen återanvänds; ingen parallell lösenordsuppdaterare byggs i albumtestvyn.
+- Öppna mejllänken, välj samma nya lösenord två gånger (minst 12 tecken) och spara. Återvänd till https://container13.se/remember/test-admin.html och logga in med det nya lösenordet. Den äldre testloginens sessionsnyckel är separat från albumtestvyns; därför krävs en ny inloggning där.
+- E-postvalidering utan lösenord, begäran under pågående klick, 60 sekunders knappspärr, generisk bekräftelse utan kontouppräkning, 429 och okänt resultat vid nätavbrott testade i DOM. Ingen automatisk mejlretry.
+- Chromiumtest PASS: knappen anropar rätt testprojekt/returadress; mobil/desktop 360/390/768/1280 px utan horisontell överströmning. Befintlig remember-test/login.html öppnar password-mode vid recovery och updateUser anropas en gång efter explicit spara; detta test mockar Auth och ändrar inga lösenord.
+- Faktiskt icke-konsumerande HTTP-prov med en ogiltig påhittad token gav 303 från testets /auth/v1/verify till exakt befintlig testlogin med felindikering. Serverns redirectvalidering granskad i Supabase Auth-källan. Ingen Auth-URL-konfiguration ändrad.
+- **Faktisk mejlleverans och genomfört lösenordsbyte är PENDING** tills användaren själv begär/öppnar mejlet. Ingen riktig recoverytoken eller användarsession hämtas av assistenten.
+- Originalets Auth/Supabase/fotobok och remember-test/login.html-källan är oförändrade. Ingen kontoändring, schema-/Edge-installation eller SMTP-ändring i detta steg.
+- Rollback-bas före tillägget: 0a21a5038695bd4d17df97783ad2696683e313e7.
 
 ## Öppna
 https://container13.se/remember/test-admin.html
@@ -16,7 +30,7 @@ Logga in med befintligt konto i remember-test och dess lösenord. Kontot är sep
 ## En ägare per beteende
 Testsidan importerar samma `webmaster-album-activation.js` och `webmaster-album-settings.js` som ordinarie frontend. Inga kopior eller alternativa reglage-/förlängningsalgoritmer. Gemensam design-CSS återanvänds med en liten testspecifik layout. Befintliga controllers och fotobokens kod ändras inte.
 
-`test-admin.js` har en fast test-URL och egen auth-storage key `container13-remember-test-admin-auth-v1`. Den kan inte välja miljö via URL eller formulär. Ingen original-URL eller originalnyckel finns i testadapterkoden. Endast publicerbar nyckel ingår, aldrig service_role/hemlig nyckel. Serverns befintliga Auth/rollkontroll krävs för varje anrop. Tillåtna anrop är list/read/save för de två funktionerna. Ingen signup, mejlsändning, tokenrotation eller automatisk testdatasimulering.
+`test-admin.js` har en fast test-URL och egen auth-storage key `container13-remember-test-admin-auth-v1`. Den kan inte välja miljö via URL eller formulär. Ingen original-URL eller originalnyckel finns i testadapterkoden. Endast publicerbar nyckel ingår, aldrig service_role/hemlig nyckel. Serverns befintliga Auth/rollkontroll krävs för varje anrop. Tillåtna anrop är list/read/save för de två funktionerna. Ingen signup, automatisk mejlsändning, tokenrotation eller automatisk testdatasimulering.
 
 Inloggningen används endast i testsidan; den vanliga appens sessionsnyckel och inloggning påverkas inte. Inga sessioner/lösenord skrivs till diagnostik eller testprotokoll. Testsidan upptäcker inte sessioner från URL och skickar inte användaren vidare till originalets dashboard.
 
