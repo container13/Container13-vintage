@@ -135,3 +135,6 @@ Dashboard har separata Mina album/Webmaster-vyer. Endast webmaster har sökning,
 
 ## Aktuell kontrollpunkt 0.1.144 — 2026-10-21
 Webmasterrubrik Användarnas album. Albumkorten prioriteras; sökning/filter/sortering flyttade till native modal dialog med scrollås, fokusåtergång och stängknapp. Aktivt urval sammanfattas med Rensa i listvyn. Sidnavigering dold vid en sida. Mina album och backend oförändrade; API-begränsningar från 0.1.143 kvarstår. GitHub/publicering och iPhone-PASS separata. CURRENT/PREVIOUS oförändrade.
+
+## Aktuell kontrollpunkt 0.1.145 — 2026-10-21
+Frisök som sökfältets etikett och platshållare. En sorteringsmeny med Senast skapade album först som förval; bevarar befintlig list-RPC:s created_at DESC-ordning utan påhittade tidsstämplar. Äldst först vänder mottagen lista. Övriga val har uttrycklig ordning i samma meny. Äldre sparat alfabetiskt standardval migreras till senaste; nya explicita sorteringsval sparas med catalogPreferences:2. Statusfilter kvar i rullgardinsmeny. Rensa återställer senaste först. 100-gränsen kvarstår, inga backendändringar. iPhone-PASS väntar; CURRENT/PREVIOUS oförändrade.

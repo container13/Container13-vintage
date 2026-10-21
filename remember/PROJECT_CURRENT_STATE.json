@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.144",
-    "integrity": "CATALOG_FILTER_DIALOG_CANDIDATE_DEVICE_PENDING"
+    "candidate": "0.1.145",
+    "integrity": "FRISOK_NEWEST_FIRST_CANDIDATE_DEVICE_PENDING"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.144",
-    "goal": "Album cards first, modal catalog filters",
+    "targetRelease": "0.1.145",
+    "goal": "Frisök and newest created first in catalog sorting dropdown",
     "resumeInstruction": "Verify dashboard on iPhone; full catalog over 100 and count/storage/created sorting require separately reviewed backend change. No database permission granted."
   },
   "currentWork": {
-    "completed": "0.1.144 compact catalog toolbar and native filter dialog, active summary/reset, paging hidden for one page.",
-    "next": "Verify iPhone dialog open/close/scroll and filters. Full backend catalog support remains pending.",
+    "completed": "Frisök labels; single explicit sort dropdown defaults to existing server creation-desc order. Legacy sort preference migrated; no backend change.",
+    "next": "Verify iPhone Frisök and newest-first dropdown; complete backend catalog still pending.",
     "blocked": false,
     "blocker": null
   },

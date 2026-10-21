@@ -101,7 +101,7 @@ body.remember-shell #webmasterWorkspace .workspace-top h2{font-size:clamp(25px,6
 #showCatalogResults{width:100%;min-height:48px;margin-top:18px;background:#d9e7a4;color:#17382d}
 #catalogFilterDialog .catalog-controls label{color:#f6e9cc}
 .catalog-paging[hidden]{display:none!important}
-</style><link rel="stylesheet" href="./remember-design.css?v=0.1.100"><script src="../project-template/mobile-view-policy.js?v=2"></script><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js?v=0.1.144"></script><meta name="remember-release" content="remember-0.1.144"><script defer src="./remember-version.js?v=0.1.144"></script></head><body class="remember-shell" data-remember-view="albums"><main>
+</style><link rel="stylesheet" href="./remember-design.css?v=0.1.100"><script src="../project-template/mobile-view-policy.js?v=2"></script><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js?v=0.1.145"></script><meta name="remember-release" content="remember-0.1.145"><script defer src="./remember-version.js?v=0.1.145"></script></head><body class="remember-shell" data-remember-view="albums"><main>
 <header><div class="brand">Remember. <span class="muted">by Container13</span></div><a class="remember-home" href="./" aria-label="Remember startsida"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7M5 9v11h14V9M9 20v-7h6v7"/></svg></a></header>
 <h1 id="dashboardTitle">Mina album</h1><p id="dashboardSubtitle" class="dashboard-subtitle" hidden>Hantera Remember och dina album</p>
 
@@ -113,10 +113,9 @@ body.remember-shell #webmasterWorkspace .workspace-top h2{font-size:clamp(25px,6
 <section id="webmasterWorkspace" class="webmaster-workspace" hidden><div class="workspace-top"><span class="workspace-symbol" aria-hidden="true">⚙</span><div><div class="webmaster-eyebrow">CONTAINER13 · ADMINISTRATION</div><h2>Användarnas album</h2><p>Administration av Remember</p></div></div><div id="webmasterTools" hidden><div class="catalog-toolbar"><button id="openCatalogFilters" type="button" class="secondary" aria-haspopup="dialog">Sök, filtrera och sortera</button><p id="catalogSummary"></p><button id="clearCatalogFilters" type="button" class="secondary" hidden>Rensa</button></div>
 <dialog id="catalogFilterDialog" aria-labelledby="catalogFilterTitle"><div class="catalog-dialog-head"><h2 id="catalogFilterTitle">Sök och sortera album</h2><button id="closeCatalogFilters" type="button" aria-label="Stäng">✕</button></div>
 <div class="catalog-controls">
-<label>Sök album eller skapare<input id="catalogSearch" type="search" maxlength="200" placeholder="Albumnamn eller e-post"></label>
+<label>Frisök<input id="catalogSearch" type="search" maxlength="200" placeholder="Frisök"></label>
 <label>Uppladdning<select id="catalogStatus"><option value="all">Alla</option><option value="open">Öppna</option><option value="closed">Stängda</option></select></label>
-<label>Sortera efter<select id="catalogSort"><option value="title">Albumnamn</option><option value="owner_email">Skapare</option><option value="closes">Stängningsdatum</option><option value="created_at" disabled>Skapandedatum – kräver serverstöd</option><option value="photo_count" disabled>Bildantal – kräver serverstöd</option><option value="storage_bytes" disabled>Lagringsstorlek – kräver serverstöd</option></select></label>
-<label>Ordning<select id="catalogDirection"><option value="asc">Stigande</option><option value="desc">Fallande</option></select></label></div>
+<label>Sortering<select id="catalogSort"><option value="newest">Senast skapade album först</option><option value="oldest">Äldst skapade album först</option><option value="title">Albumnamn A–Ö</option><option value="title_desc">Albumnamn Ö–A</option><option value="owner_email">Skapare A–Ö</option><option value="owner_email_desc">Skapare Ö–A</option><option value="closes">Stänger tidigast</option><option value="closes_desc">Stänger senast</option><option value="photo_count" disabled>Bildantal – kräver serverstöd</option><option value="storage_bytes" disabled>Lagringsstorlek – kräver serverstöd</option></select></label></div>
 <button id="showCatalogResults" type="button">Visa album</button></dialog>
 <p id="catalogLimit" class="muted"></p><p id="result" role="status" aria-live="polite"></p><div id="albums" aria-live="polite"></div>
 <div class="catalog-paging"><button id="catalogPrev" type="button">Föregående</button><span id="catalogPage" role="status"></span><button id="catalogNext" type="button">Nästa</button></div>
@@ -135,14 +134,14 @@ import { checkRememberWebmaster } from "./remember-account-access.js?v=0.1.21";
 const $=id=>document.getElementById(id);
 let client=null,session=null,busy=false,creationAllowed=false,webmasterAllowed=false,roleRevision=0;
 let catalog=[],catalogLoaded=false;
-let dashboardUI={tab:'own',search:'',status:'all',sort:'title',direction:'asc',page:1};
+let dashboardUI={tab:'own',search:'',status:'all',sort:'newest',catalogPreferences:2,page:1};
 function persistDashboard(){try{if(session)localStorage.setItem('remember-dashboard-ui-'+session.user.id,JSON.stringify(dashboardUI));}catch{}}
 function restoreDashboard(value){
- dashboardUI={tab:'own',search:'',status:'all',sort:'title',direction:'asc',page:1};
+ dashboardUI={tab:'own',search:'',status:'all',sort:'newest',catalogPreferences:2,page:1};
  try{const s=JSON.parse(localStorage.getItem('remember-dashboard-ui-'+value.user.id)||'null');if(s){
- dashboardUI={tab:s.tab==='wm'?'wm':'own',search:String(s.search||'').slice(0,200),status:['all','open','closed'].includes(s.status)?s.status:'all',sort:['title','owner_email','closes'].includes(s.sort)?s.sort:'title',direction:s.direction==='desc'?'desc':'asc',page:Number.isSafeInteger(s.page)&&s.page>0?s.page:1};
+ dashboardUI={tab:s.tab==='wm'?'wm':'own',search:String(s.search||'').slice(0,200),status:['all','open','closed'].includes(s.status)?s.status:'all',sort:s.catalogPreferences===2&&['newest','oldest','title','title_desc','owner_email','owner_email_desc','closes','closes_desc'].includes(s.sort)?s.sort:'newest',catalogPreferences:2,page:Number.isSafeInteger(s.page)&&s.page>0?s.page:1};
  }}catch{}
- $('catalogSearch').value=dashboardUI.search;$('catalogStatus').value=dashboardUI.status;$('catalogSort').value=dashboardUI.sort;$('catalogDirection').value=dashboardUI.direction;
+ $('catalogSearch').value=dashboardUI.search;$('catalogStatus').value=dashboardUI.status;$('catalogSort').value=dashboardUI.sort;
 }
 function selectDashboard(tab){
  dashboardUI.tab=webmasterAllowed&&tab==='wm'?'wm':'own';
@@ -156,8 +155,14 @@ function albumOpen(a,now){return !a.forced_closed&&Date.parse(a.override_opens_a
 function renderCatalog(){
  const now=Date.now(),term=dashboardUI.search.trim().toLocaleLowerCase('sv');
  let rows=catalog.filter(a=>(!term||(String(a.title||'')+' '+String(a.owner_email||'')).toLocaleLowerCase('sv').includes(term))&&(dashboardUI.status==='all'||albumOpen(a,now)===(dashboardUI.status==='open')));
- const value=a=>dashboardUI.sort==='closes'?Date.parse(a.override_closes_at||a.default_closes_at):String(a[dashboardUI.sort]||'');
- rows.sort((a,b)=>{let x=value(a),y=value(b);let n=typeof x==='number'?(Number.isFinite(x)?x:0)-(Number.isFinite(y)?y:0):x.localeCompare(y,'sv',{numeric:true,sensitivity:'base'});return (dashboardUI.direction==='desc'?-n:n)||String(a.id).localeCompare(String(b.id));});
+ // The existing list RPC returns created_at DESC. Preserve that order for newest;
+ // no timestamps are inferred from UUIDs, titles or upload dates.
+ if(dashboardUI.sort==='oldest')rows.reverse();
+ else if(dashboardUI.sort!=='newest'){
+  const descending=dashboardUI.sort.endsWith('_desc'),key=dashboardUI.sort.replace(/_desc$/,'');
+  const value=a=>key==='closes'?Date.parse(a.override_closes_at||a.default_closes_at):String(a[key]||'');
+  rows.sort((a,b)=>{const x=value(a),y=value(b),n=typeof x==='number'?(Number.isFinite(x)?x:0)-(Number.isFinite(y)?y:0):x.localeCompare(y,'sv',{numeric:true,sensitivity:'base'});return (descending?-n:n)||String(a.id).localeCompare(String(b.id));});
+ }
  const pages=Math.max(1,Math.ceil(rows.length/10));dashboardUI.page=Math.min(dashboardUI.page,pages);persistDashboard();
  $('albums').replaceChildren();
  const heading=document.createElement('h3');heading.className='webmaster-albums-title';heading.textContent=rows.length+' album'+(term||dashboardUI.status!=='all'?' matchar':'');$('albums').append(heading);
@@ -169,7 +174,7 @@ function renderCatalog(){
  const status=document.createElement('span');status.className='muted';status.textContent=albumOpen(album,now)?'Öppet för uppladdning':'Stängt för uppladdning';a.append(top,owner,status);grid.append(a);
  }
  document.querySelector('.catalog-paging').hidden=pages<=1;
- const summary=[];if(term)summary.push('Sök: '+dashboardUI.search.trim());if(dashboardUI.status!=='all')summary.push(dashboardUI.status==='open'?'Öppna':'Stängda');if(dashboardUI.sort!=='title'||dashboardUI.direction!=='asc')summary.push($('catalogSort').selectedOptions[0].textContent+', '+(dashboardUI.direction==='asc'?'stigande':'fallande'));
+ const summary=[];if(term)summary.push('Sök: '+dashboardUI.search.trim());if(dashboardUI.status!=='all')summary.push(dashboardUI.status==='open'?'Öppna':'Stängda');if(dashboardUI.sort!=='newest')summary.push($('catalogSort').selectedOptions[0].textContent);
  $('catalogSummary').textContent=summary.join(' · ');$('catalogSummary').hidden=!summary.length;$('clearCatalogFilters').hidden=!summary.length;
  $('catalogPage').textContent='Sida '+dashboardUI.page+' av '+pages;
  $('catalogPrev').disabled=busy||dashboardUI.page<=1;$('catalogNext').disabled=busy||dashboardUI.page>=pages;
@@ -191,11 +196,11 @@ catalogDialog.addEventListener('close',()=>{
 });
 catalogDialog.addEventListener('click',event=>{if(event.target===catalogDialog){const r=catalogDialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)closeCatalogFilters();}});
 $('clearCatalogFilters').onclick=()=>{
- Object.assign(dashboardUI,{search:'',status:'all',sort:'title',direction:'asc',page:1});
- $('catalogSearch').value='';$('catalogStatus').value='all';$('catalogSort').value='title';$('catalogDirection').value='asc';renderCatalog();
+ Object.assign(dashboardUI,{search:'',status:'all',sort:'newest',catalogPreferences:2,page:1});
+ $('catalogSearch').value='';$('catalogStatus').value='all';$('catalogSort').value='newest';renderCatalog();
 };
 $('ownTab').onclick=()=>selectDashboard('own');$('wmTab').onclick=()=>selectDashboard('wm');
-for(const [id,key] of [['catalogSearch','search'],['catalogStatus','status'],['catalogSort','sort'],['catalogDirection','direction']])$(id).addEventListener(id==='catalogSearch'?'input':'change',()=>{dashboardUI[key]=$(id).value;dashboardUI.page=1;renderCatalog();});
+for(const [id,key] of [['catalogSearch','search'],['catalogStatus','status'],['catalogSort','sort']])$(id).addEventListener(id==='catalogSearch'?'input':'change',()=>{dashboardUI[key]=$(id).value;dashboardUI.page=1;renderCatalog();});
 $('catalogPrev').onclick=()=>{dashboardUI.page--;renderCatalog();};$('catalogNext').onclick=()=>{dashboardUI.page++;renderCatalog();};
 function message(text){$('feedback').textContent=text}
 function lock(value){busy=value;document.querySelectorAll('button').forEach(b=>b.disabled=value);if(!value&&catalogLoaded)renderCatalog()}
