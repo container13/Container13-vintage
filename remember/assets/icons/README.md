@@ -8,3 +8,6 @@ Bildgenerering användes för att isolera det valda motivet till en kvadrat med 
 - 192px och 512px: manifestets purpose:any. Inga förbakade rundade hörn; operativsystemet formar ikonen.
 - Version i filnamnet undviker återanvändning av en gammal resursadress. Befintliga installerade iPhone-genvägar kan behålla sin gamla ikon; faktisk uppdatering på enheten är inte verifierad.
 - Alla nio releaseingångar länkar till samma manifest/ikoner. Appnamn, start_url, scope och display har inte ändrats. Inga andra projekts ikoner har berörts.
+
+## 0.1.150 — något fetare linjer
+Användaren valde en måttlig ökning av linjevikten. Inbyggd bildredigering med instruktion att öka cirka 20 procent och bevara form, lutning, placering, färger och marginaler; ImageMagick användes för storleksexport. PNG180/192/512 är opaka. Tidigare 0.1.149-filer behålls som återställningsunderlag. iPhone-PASS återstår.

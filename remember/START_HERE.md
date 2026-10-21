@@ -150,3 +150,6 @@ Aktiveringsreglage flyttade till varje albumkort i Webmasterlistan, utanför nav
 
 ## Aktuell kontrollpunkt 0.1.149 — 2026-10-21
 Projektägaren valde appikon nr 6: svepande handskrivet R i cremevitt på skogsgrönt. Versionerade opaka PNG-filer under assets/icons/ (180/192/512px), apple-touch-icon och favicon på nio releaseingångar samt icons i befintligt manifest. Inga appidentitets-, start_url-, scope- eller displayändringar. Tidigare manifest saknade icons och HTML saknade ikonreferenser. Publicering/bytes och faktisk hemskärmsikon på iPhone är separata verifieringar; iOS kan behålla tidigare ikon. Fotobokslogik/backend/aktiveringsreglage oförändrade. CURRENT/PREVIOUS fortsatt oförändrade.
+
+## Aktuell kontrollpunkt 0.1.150 — 2026-10-21
+Appikon nr 6 har fått något fetare linjer enligt användarens önskemål. Ny versionerad PNG180/192/512 och synkroniserade manifest-/ikonreferenser. Den valda formen och färgskalan behålls. Inga beteende-, backend- eller fotoboksändringar. CURRENT/PREVIOUS oförändrade. Faktisk ikon på iPhone kräver separat kontroll.

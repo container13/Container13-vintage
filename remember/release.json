@@ -1,6 +1,6 @@
 {
-  "version": "0.1.149",
-  "release": "remember-0.1.149",
+  "version": "0.1.150",
+  "release": "remember-0.1.150",
   "updated": "2026-10-21",
   "assets": [
     "remember-design.css",
@@ -9,9 +9,9 @@
     "webmaster-album-settings.js",
     "webmaster-album-activation.js",
     "manifest.webmanifest",
-    "assets/icons/remember-6-180-v0.1.149.png",
-    "assets/icons/remember-6-192-v0.1.149.png",
-    "assets/icons/remember-6-512-v0.1.149.png"
+    "assets/icons/remember-6-180-v0.1.150.png",
+    "assets/icons/remember-6-192-v0.1.150.png",
+    "assets/icons/remember-6-512-v0.1.150.png"
   ],
   "entrypoints": [
     "index.html",

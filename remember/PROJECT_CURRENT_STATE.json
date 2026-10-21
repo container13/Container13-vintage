@@ -8,17 +8,17 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.149",
-    "integrity": "SELECTED_ICON_6_CANDIDATE_DEVICE_PENDING"
+    "candidate": "0.1.150",
+    "integrity": "BOLDER_ICON_6_CANDIDATE_DEVICE_PENDING"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.149",
-    "goal": "Install selected Remember app icon number 6",
+    "targetRelease": "0.1.150",
+    "goal": "Slightly bolder selected app icon 6",
     "resumeInstruction": "Verify iPhone home-screen icon. Manifest identity/start_url/scope unchanged. Album activation backend remains NOT INSTALLED and needs separate approval."
   },
   "currentWork": {
-    "completed": "Selected icon 6 exported to opaque PNG180/192/512; all nine entries link manifest/apple-touch/favicon; manifest icons added without changing app identity.",
+    "completed": "User-requested bolder icon6 exported to PNG180/192/512; versioned icon and manifest references updated. No functional changes.",
     "next": "Check public icon bytes and iPhone icon; activation backend remains pending separate approval.",
     "blocked": false,
     "blocker": null
@@ -638,9 +638,10 @@
   },
   "appIcon": {
     "design": 6,
-    "version": "0.1.149",
+    "version": "0.1.150",
     "directory": "remember/assets/icons/",
     "deviceStatus": "PENDING",
-    "oldInstalledIconMayBeCached": true
+    "oldInstalledIconMayBeCached": true,
+    "strokeAdjustment": "Slightly bolder at user request"
   }
 }
