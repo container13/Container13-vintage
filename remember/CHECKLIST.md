@@ -1,5 +1,5 @@
 # Remember — gemensam checklista
-Uppdaterad 2026-10-21. Kandidat 0.1.158. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
+Uppdaterad 2026-10-21. Kandidat 0.1.159. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
 
 - [x] Manuell fotobok: 0.1.137, användarens iPhone-PASS.
 - [x] Säkerhetsgren 0.1.137 på 8a592bb8b7b767a54df595e5e7d5d5d2eb10cd7f verifierad.
@@ -112,3 +112,10 @@ Detaljer och testkommandon: UPLOAD_VERIFICATION_2026-10-21.md. Tidigare generell
 - [x] Klient/server-rättning och före-säkerhetsgren; 29 återhämtningsmocktester, 5 ägarvyer och 8 prospektiva SQL/ROLLBACK-assertioner PASS.
 - [x] Installation och exakt readback RPC/Edge; slutlig SQL/ROLLBACK, gamla RPC-källor/ACL, raddigests och oförändrade säkerhetsråd.\n- [ ] Slutcommitens CI/Pages och faktiskt publicerad .158 kontrolleras efter push.
 - [ ] Avgränsat fysiskt iPhone-avbrottstest. Ingen omtestning av redan godkända ägar-/gäst-/tidsflöden.
+
+## Webmasteruppladdning 0.1.159
+- [x] .158 användartest registrerat FAIL: generisk servernekning i webmasterverktyg efter nätåterkomst.
+- [x] Rotorsak reproducerad: verklig verifierad webmaster i annans album nekas owner-only.
+- [x] Installerad service-only rättning, aktivt album/kvot/dubblett/ID-replay kvar; SQL/Edge exakt readback.
+- [x] 14 SQL/ROLLBACK samt 29 mocktester PASS; inga befintliga rader/objekt ändrade.
+- [ ] Slutcommitens publicering kontrolleras efter push; användaren provar samma väntande bild ONLINE först. Därefter avgränsat avbrottstest.

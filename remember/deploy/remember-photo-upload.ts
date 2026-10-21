@@ -1,4 +1,4 @@
-// Remember upload 0.1.158: authenticated replay, immutable Storage, no deletion.
+// Remember upload 0.1.159: authenticated replay, immutable Storage, no deletion.
 import { createClient } from "npm:@supabase/supabase-js@2.118.0";
 const ORIGIN = Deno.env.get("REMEMBER_ALLOWED_ORIGIN") || "https://container13.se";
 const BUCKET = "remember-private-photos";
@@ -9,7 +9,7 @@ const headers = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers": "content-type, apikey, authorization",
   "Cache-Control": "no-store",
-  "X-Remember-Version": "0.1.158",
+  "X-Remember-Version": "0.1.159",
   "Vary": "Origin",
 };
 function reply(value: unknown, status = 200) {
@@ -95,7 +95,8 @@ Deno.serve(async req => {
     const message = reason === "duplicate" ? "Den här bilden finns redan i albumet."
       : reason === "album_inactive" ? "Albumet är tillfälligt avstängt."
       : reason === "closed" ? "Uppladdningen är stängd för albumet."
-      : reason === "limit" ? "Albumet har nått sin bildgräns." : "Uppladdningen kunde inte godkännas.";
+      : reason === "limit" ? "Albumet har nått sin bildgräns."
+      : reason === "forbidden" ? "Du saknar behörighet att ladda upp i det här albumet." : "Uppladdningen kunde inte godkännas.";
     return reply({error:message,reason}, ["invalid","forbidden","album_inactive","closed"].includes(reason) ? 403 : 409);
   }
   const { data: started, error: startError } = await db.rpc("remember_photo_upload_request", {...args,p_action:"prepare"});

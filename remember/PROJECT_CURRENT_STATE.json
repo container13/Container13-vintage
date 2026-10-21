@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.158",
-    "integrity": "UPLOAD_RETRY_BACKEND_INSTALLED_SQL_MOCK_PASS_DEVICE_PENDING"
+    "candidate": "0.1.159",
+    "integrity": "WEBMASTER_UPLOAD_AUTH_FIX_SQL_PASS_DEVICE_RETEST_PENDING"
   },
   "workCheckpoint": {
-    "status": "UPLOAD_RETRY_DEVICE_PENDING",
-    "targetRelease": "0.1.158",
-    "goal": "Deploy tested stable-ID upload retry",
-    "resumeInstruction": "Backend installed: new service-only RPC exact source/grants and Edge v4 exact source. 29 mock recovery + five owner DOM + eight actual installed SQL/ROLLBACK PASS. Data digests unchanged (2 albums/10 photos/10 objects), security advisors unchanged. Frontend .158 is ready for shared-branch publication; verify final commit Actions/Pages/live version, then request only one physical iPhone interruption test. Existing owner/guest/time tests remain accepted. See UPLOAD_RETRY_0.1.158.md."
+    "status": "WEBMASTER_UPLOAD_DEVICE_RETEST_PENDING",
+    "targetRelease": "0.1.159",
+    "goal": "Verify upload after correcting webmaster/non-owner denial",
+    "resumeInstruction": "User .158 airplane-mode test failed with generic denial in webmaster tools. Reproduced actual verified webmaster on existing non-owned album returning forbidden, no photo writes. Fixed new replay RPC with confirmed/not-deleted/not-banned webmaster membership; separate admin allocation preserves quota and legacy owner-only RPC. Installed SQL exact source/grants and Edge v5 exact source. 14 SQL/ROLLBACK and 29 mock tests PASS; counts/digests and security advisors unchanged. Verify final commit publication then user clicks same retry button ONLINE first; do not ask broad owner/guest/time tests again."
   },
   "currentWork": {
-    "completed": "Stable request UUID/canonical bytes in all four upload paths. 29 mock recovery, five owner-view and eight installed SQL/ROLLBACK assertions PASS. New service-only RPC exact source/grants; actual upload Edge v4 exact source. Existing six RPC definitions/ACLs and 2 albums/10 photos unchanged. Security advisors unchanged.",
-    "next": "Verify final shared-branch CI/Pages and live .158; targeted physical iPhone upload/network interruption/retry, exactly one saved image. Actual simultaneous HTTP quota race and app-termination queue persistence are not verified/implemented.",
+    "completed": "Diagnosed role failure, not transient network timeout. Webmaster non-owner before=forbidden reproduced. Verified webmaster support added to replay RPC and tested on disposable non-owned albums. Existing owner/guest/dedup/quota/replay tests pass. Installed migration/Edge and read back exact source. Existing albums/photos unchanged.",
+    "next": "Verify .159 public deploy; user retries pending photo online on same webmaster page. Once successful, scope any further airplane-mode test to this upload flow only.",
     "blocked": false,
     "blocker": null
   },
@@ -742,17 +742,17 @@
     "report": "remember/UPLOAD_VERIFICATION_2026-10-21.md"
   },
   "uploadRetry": {
-    "version": "0.1.158",
-    "status": "BACKEND_INSTALLED_FRONTEND_PUBLISH_AND_DEVICE_VERIFY_PENDING",
+    "version": "0.1.159",
+    "status": "WEBMASTER_AUTH_FIXED_DEVICE_RETEST_PENDING",
     "projectRef": "wykvztfmfbboxiqvuvwr",
     "migration": {
-      "name": "remember_upload_retry",
-      "version": "20261021153930"
+      "name": "remember_webmaster_upload_authorization",
+      "version": "20261021195149"
     },
-    "edgeVersion": 4,
+    "edgeVersion": 5,
     "rpcReadback": "EXACT_BODY_AND_SERVICE_ONLY_ACL_PASS",
     "edgeReadback": "EXACT_SOURCE_PASS_VERIFY_JWT_PRESERVED_FALSE",
-    "sqlRollback": "8_PASS",
+    "sqlRollback": "14_PASS_INCLUDING_VERIFIED_WEBMASTER_NONOWNER",
     "mockTests": "29_PASS",
     "ownerDOM": "5_PASS",
     "securityAdvisors": "UNCHANGED_FROM_BASELINE",
@@ -760,8 +760,17 @@
     "backupCommit": "64d0c8541ca41a7bdd80581a254268187f94f57f",
     "existingDataUnchanged": true,
     "queuePersistence": "IN_MEMORY_ONLY",
-    "physicalInterruption": "PENDING",
+    "physicalInterruption": "USER_REPORTED_FAIL_0.1.158_WEBMASTER_FORBIDDEN_FIXED_0.1.159_RETEST_PENDING",
     "concurrentHTTP": "NOT_TESTED",
-    "report": "remember/UPLOAD_RETRY_0.1.158.md"
+    "report": "remember/WEBMASTER_UPLOAD_FIX_0.1.159.md",
+    "webmasterBug": {
+      "reportedVersion": "0.1.158",
+      "userImage": "IMG_3895.jpeg",
+      "observedText": "0 bilder sparade. 1 återstår. Uppladdningen kunde inte godkännas.",
+      "rootCause": "Verified webmaster was not album owner; replay RPC and legacy reserve allowed owner only. Earlier tests did not include this actual role.",
+      "before": "ACTUAL_SQL_FORBIDDEN_REPRODUCED",
+      "fixVersion": "0.1.159",
+      "userRetest": "PENDING"
+    }
   }
 }
