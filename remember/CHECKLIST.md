@@ -1,5 +1,5 @@
 # Remember — gemensam checklista
-Uppdaterad 2026-10-21. Kandidat 0.1.155. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
+Uppdaterad 2026-10-21. Kandidat 0.1.156. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
 
 - [x] Manuell fotobok: 0.1.137, användarens iPhone-PASS.
 - [x] Säkerhetsgren 0.1.137 på 8a592bb8b7b767a54df595e5e7d5d5d2eb10cd7f verifierad.
@@ -90,3 +90,10 @@ Separat testinloggning/lösenordsåterställning är inte längre ett krav för 
 - [x] Fem DOM-scenarier samt Edge projection/owner-filter/auth PASS; owner-manager v5 exakt återläst.
 - [ ] Användarens iPhone-omtest: avstängningsmeddelande och inga ägarverktyg/bilder i Albumägare.
 - [ ] Återaktivera via Webmaster och verifiera återställd ägarvy; gästlänk och tidssparande fortsatt separata tester.
+
+## Användartest efter 0.1.155 — dokumenterat i 0.1.156
+- [x] Användaren 2026-10-21: ”Har testat allt både som albumägare och gäst, verkar fungera.” Ägar-/gästflöden noterade som användarrapporterad PASS efter rättningen. Exakta delsteg och nätverkssvar har inte redovisats; äldre detaljrutor är historiska och bockas inte automatiskt av.
+- [ ] Nästa avgränsade test: Webmaster öppnar ett stängt album i 24 timmar, sparar, lämnar och öppnar albumets inställningar igen; sluttiden ska vara kvar. Ingen upprepad bred ägar-/gästrunda behövs.
+- [ ] Fulla releasegrindar och CURRENT/PREVIOUS kvarstår separat.
+
+0.1.156 dokumenterar testresultatet och synkroniserar versionsmetadata enligt projektregeln; ingen ändring av funktionslogik eller backend.

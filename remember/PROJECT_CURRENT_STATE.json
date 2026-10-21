@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.155",
-    "integrity": "INACTIVE_OWNER_VIEW_FIX_STATIC_PASS_DEVICE_RETEST_PENDING"
+    "candidate": "0.1.156",
+    "integrity": "OWNER_GUEST_USER_REPORTED_PASS_WEBMASTER_TIME_READBACK_PENDING"
   },
   "workCheckpoint": {
-    "status": "OWNER_VIEW_FIX_DEVICE_PENDING",
-    "targetRelease": "0.1.155",
-    "goal": "Display inactive state in owner preview and actual owner view",
-    "resumeInstruction": "User successfully deactivated album (DB false/revision2) but owner preview failed to reflect it. 0.1.155 adds notice/hides owner content and list is_active. User should reopen same still-inactive album via Albumägare, then verify Webmaster reactivation. No automatic album state changes."
+    "status": "OWNER_GUEST_USER_REPORTED_PASS",
+    "targetRelease": "0.1.156",
+    "goal": "Record user acceptance and finish webmaster time-save verification",
+    "resumeInstruction": "User reports all tested album-owner and guest flows work after 0.1.155. Do not repeat the broad tests. Next obtain explicit webmaster extension/save/reopen readback result. This documentation checkpoint changes no application behavior; CURRENT/PREVIOUS remain unset."
   },
   "currentWork": {
-    "completed": "Root cause verified: role preview retains admin and ignored is_active; actual owner list omitted it. Added visible inactive notice and skipped gallery/owner tools for inactive owner views. Actual owner-manager v5 exact readback. Five DOM scenarios and Edge projection/auth checks PASS.",
-    "next": "User iPhone retest of same inactive album in Albumägare, then reactivate via Webmaster and confirm owner view returns. Guest-link and time-save/readback tests remain pending.",
+    "completed": "Root cause verified: role preview retains admin and ignored is_active; actual owner list omitted it. Added visible inactive notice and skipped gallery/owner tools for inactive owner views. Actual owner-manager v5 exact readback. Five DOM scenarios and Edge projection/auth checks PASS. User subsequently reports all tested owner and guest flows work.",
+    "next": "Webmaster: reopen a closed album for 24 hours, save, leave and reopen settings, confirm persisted deadline. Exact individual owner/guest test steps and HTTP traces were not supplied; full release gates remain separate.",
     "blocked": false,
     "blocker": null
   },
@@ -699,7 +699,7 @@
     "sqlTests": "PASS",
     "edgeReadback": "EXACT_PASS",
     "authenticatedHTTP": "PENDING_USER_SESSION",
-    "device": "PARTIAL_USER_REPORT_ACTIVATION_SAVED_OWNER_VIEW_FAILED_FIX_PENDING",
+    "device": "OWNER_GUEST_USER_REPORTED_PASS_WEBMASTER_TIME_READBACK_PENDING",
     "document": "remember/development-installed/2026-10-21-controls/README.md"
   },
   "ownerInactiveFeedback": {
@@ -709,8 +709,14 @@
     "ownerPreview": "USER_REPORTED_FAIL",
     "fixVersion": "0.1.155",
     "staticTests": "PASS_FIVE_VIEW_CASES_PLUS_EDGE_OWNER_FILTER",
-    "deviceRetest": "PENDING",
+    "deviceRetest": "USER_REPORTED_PASS_OWNER_GUEST_FLOWS_NO_INDIVIDUAL_TRACE",
     "albumStateChangedByAssistant": false,
-    "document": "remember/development-installed/2026-10-21-owner-status/README.md"
+    "document": "remember/development-installed/2026-10-21-owner-status/README.md",
+    "latestUserReport": {
+      "date": "2026-10-21",
+      "testedCodeVersion": "0.1.155",
+      "quote": "Har testat allt både som albumägare och gäst, verkar fungera. Nästa steg?",
+      "scope": "User-reported owner and guest flows; exact substeps, webmaster schedule save/readback and network traces not supplied."
+    }
   }
 }
