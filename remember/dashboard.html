@@ -101,7 +101,7 @@ body.remember-shell #webmasterWorkspace .workspace-top h2{font-size:clamp(25px,6
 #showCatalogResults{width:100%;min-height:48px;margin-top:18px;background:#d9e7a4;color:#17382d}
 #catalogFilterDialog .catalog-controls label{color:#f6e9cc}
 .catalog-paging[hidden]{display:none!important}
-</style><link rel="stylesheet" href="./remember-design.css?v=0.1.100"><script src="../project-template/mobile-view-policy.js?v=2"></script><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js?v=0.1.146"></script><meta name="remember-release" content="remember-0.1.146"><script defer src="./remember-version.js?v=0.1.146"></script></head><body class="remember-shell" data-remember-view="albums"><main>
+</style><link rel="stylesheet" href="./remember-design.css?v=0.1.100"><script src="../project-template/mobile-view-policy.js?v=2"></script><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js?v=0.1.147"></script><meta name="remember-release" content="remember-0.1.147"><script defer src="./remember-version.js?v=0.1.147"></script></head><body class="remember-shell" data-remember-view="albums"><main>
 <header><div class="brand">Remember. <span class="muted">by Container13</span></div><a class="remember-home" href="./" aria-label="Remember startsida"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7M5 9v11h14V9M9 20v-7h6v7"/></svg></a></header>
 <h1 id="dashboardTitle">Mina album</h1><p id="dashboardSubtitle" class="dashboard-subtitle" hidden>Hantera Remember och dina album</p>
 
@@ -151,7 +151,7 @@ function selectDashboard(tab){
  $('ownTab').setAttribute('aria-pressed',String(!wm));$('wmTab').setAttribute('aria-pressed',String(wm));
  persistDashboard();if(wm&&catalogLoaded)renderCatalog();if(wm&&!catalogLoaded&&!busy)void gateway('list');
 }
-function albumOpen(a,now){return !a.forced_closed&&Date.parse(a.override_opens_at||a.default_opens_at)<=now&&Date.parse(a.override_closes_at||a.default_closes_at)>now;}
+function albumOpen(a,now){return a.is_active!==false&&!a.forced_closed&&Date.parse(a.override_opens_at||a.default_opens_at)<=now&&Date.parse(a.override_closes_at||a.default_closes_at)>now;}
 function renderCatalog(){
  const now=Date.now(),term=dashboardUI.search.trim().toLocaleLowerCase('sv');
  let rows=catalog.filter(a=>(!term||(String(a.title||'')+' '+String(a.owner_email||'')).toLocaleLowerCase('sv').includes(term))&&(dashboardUI.status==='all'||albumOpen(a,now)===(dashboardUI.status==='open')));
@@ -171,7 +171,7 @@ function renderCatalog(){
  const a=document.createElement('a');a.className='webmaster-album-card';a.href='./album-admin.html?id='+encodeURIComponent(album.id)+'&v=wm143';
  const top=document.createElement('div');top.className='webmaster-album-top';const title=document.createElement('strong');title.textContent=album.title||'Album utan namn';const arrow=document.createElement('span');arrow.textContent='↗';arrow.setAttribute('aria-hidden','true');top.append(title,arrow);
  const owner=document.createElement('span');owner.className='webmaster-owner-email';owner.textContent=album.owner_email||'E-postadress saknas';
- const status=document.createElement('span');status.className='muted';status.textContent=albumOpen(album,now)?'Öppet för uppladdning':'Stängt för uppladdning';a.append(top,owner,status);grid.append(a);
+ const status=document.createElement('span');status.className='muted';status.textContent=album.is_active===false?'Avstängt':(album.is_active===true?'Aktivt · ':'')+(albumOpen(album,now)?'Öppet för uppladdning':'Stängt för uppladdning');a.append(top,owner,status);grid.append(a);
  }
  document.querySelector('.catalog-paging').hidden=pages<=1;
  const summary=[];if(term)summary.push('Sök: '+dashboardUI.search.trim());if(dashboardUI.status!=='all')summary.push(dashboardUI.status==='open'?'Öppna':'Stängda');if(dashboardUI.sort!=='newest')summary.push($('catalogSort').selectedOptions[0].textContent);

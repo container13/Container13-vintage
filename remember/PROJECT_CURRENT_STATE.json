@@ -8,20 +8,20 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.146",
-    "integrity": "SCHEDULE_BUTTON_LABELS_AND_UNSAVED_PREVIEW_DEVICE_PENDING"
+    "candidate": "0.1.147",
+    "integrity": "ALBUM_ACTIVATION_FRONTEND_PREPARED_BACKEND_NOT_INSTALLED"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.146",
-    "goal": "Explicit extend versus reopen timing and unsaved close preview",
-    "resumeInstruction": "Verify dashboard on iPhone; full catalog over 100 and count/storage/created sorting require separately reviewed backend change. No database permission granted."
+    "targetRelease": "0.1.147",
+    "goal": "Webmaster album activation with reviewed enforcement",
+    "resumeInstruction": "Read ALBUM_ACTIVATION_REVIEW.md. Await separate approval for test-only schema/API installation; no database or Edge writes performed. Do not advertise usable activation before enforcement tested. Schedule backend remains separately pending."
   },
   "currentWork": {
-    "completed": "Dynamic extend/reopen labels, timing basis note, unsaved deadline preview; forced closure preserved.",
-    "next": "Check expired/active labels on iPhone. Schedule backend remains review-only pending separate approval.",
-    "blocked": false,
-    "blocker": null
+    "completed": "Album activation UI with explicit save/private reason/confirmation; capability off and unknown state fallback. Concrete server SQL, six Edge candidates and exact before sources prepared; read-only actual backend inventory and local parser/DOM/mock tests PASS.",
+    "next": "Obtain separate approval for remember-test installation, run DB privilege/audit/concurrency/HTTP tests, then separately approve original rollout after PASS.",
+    "blocked": true,
+    "blocker": "User handover requires separate database approval. Backend not installed; UI control disabled."
   },
   "pausedWork": {
     "fotobok": "Manual page-turning approved on iPhone at 0.1.137; preserve. Other photobook visuals and complete app release gates are separate."
@@ -622,5 +622,17 @@
     "fallback": "existing list fields rendered; all save controls disabled; no gallery fetch at startup",
     "rollback": "4699064c56acb735214d5e820ab790e2ed25511a",
     "verification": "0.1.146 Node/jsdom PASS: expired/future/exact boundary/7d, draft deadline preview, repeated extension, forced closure retained, no save on extension click, disabled backend fallback. SQL/runtime/device pending."
+  },
+  "albumActivation": {
+    "frontendVersion": "0.1.147",
+    "backendStatus": "REVIEW_ONLY_NOT_INSTALLED",
+    "capability": "albumActivation",
+    "review": "remember/ALBUM_ACTIVATION_REVIEW.md",
+    "supabaseWritesPerformed": false,
+    "deviceStatus": "PENDING",
+    "limitations": [
+      "Existing signed URLs and cached/saved photos cannot be recalled",
+      "Real SQL/schema/concurrency/authenticated HTTP verification pending"
+    ]
   }
 }

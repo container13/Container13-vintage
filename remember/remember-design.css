@@ -644,3 +644,15 @@ body.remember-shell #adminExtraTools .primary-actions button{min-height:44px;fon
 body.remember-shell #adminExtraTools .remember-admin-share-trigger{width:100%;margin:10px 0 0}
 body.remember-shell #adminExtraTools :is(#showAdminGallery,#ownerCamera,#ownerFiles,#openAdminShare){box-sizing:border-box;min-height:44px;border:1px solid var(--remember-outline);border-radius:12px;padding:10px 13px;font:600 14px/1.4 system-ui;background:#193b30;color:var(--remember-ink);text-align:center;cursor:pointer}
 body.remember-shell .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* Webmaster-only album activation; capability-gated until server enforcement exists. */
+body.remember-shell #adminActivation{margin:16px 0;min-width:0}
+body.remember-shell #adminActivation h2{font:500 clamp(23px,5.5vw,28px)/1.2 Georgia,serif;color:#f6e9cc;margin:0 0 13px}
+body.remember-shell #adminActivation fieldset{min-width:0;min-inline-size:0;margin:0;padding:0;border:0}
+body.remember-shell #adminActivation .admin-closed{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:650;margin:12px 0}
+body.remember-shell #adminActivation input[type="checkbox"]{width:22px;min-width:22px;height:22px;margin:0;accent-color:#d9e7a4}
+body.remember-shell #adminActivation label{display:block;margin:12px 0 6px;font-size:14px}
+body.remember-shell #adminActivation textarea{box-sizing:border-box;width:100%;min-width:0;border:1px solid #c9bda4;border-radius:12px;padding:10px;font:16px/1.4 system-ui;background:#faf6ed;color:#233b30;resize:vertical}
+body.remember-shell #adminActivation p{font-size:13px;line-height:1.5}
+body.remember-shell #adminActivation button{min-height:46px;width:100%;border-radius:12px;font-weight:650}
+body.remember-shell #adminActivation fieldset:disabled{opacity:.65}

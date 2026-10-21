@@ -1,0 +1,38 @@
+# Album aktivt — konkret granskningsunderlag 0.1.147
+2026-10-21. **Frontendförberedelse. Backend NOT INSTALLED. Inga Supabase-skrivningar.**
+
+## Beslut och beteende
+Webmaster får Album aktivt, valfritt privat skäl och Spara albumstatus. Avstängning bekräftas. Spara sker bara efter uttryckligt tryck, aldrig när checkboxen ändras. Tidsschema, forced_closed, bilder och gästtoken bevaras. Återaktivering förlänger inte tiden. Inaktivt album visas i webmasterlistan som Avstängt; inloggad ägare ser fortfarande albumet i sin lista men får inte hämta galleriet eller ändra/radera album/bilder. Webmaster kan granska bilder och återaktivera, men ingen kan ladda upp under avstängningen.
+
+Separat capability albumActivation. Utan capability är reglage/sparande avstängda och status visas som okänd; vi påstår inte att albumet är aktivt eller avstängt. Nuvarande API saknar funktionen. Även tidsändringar är fortfarande avstängda.
+
+## Faktiskt verifierat underlag
+Originalprojekt wykvztfmfbboxiqvuvwr och remember-test kauxrvshxgpbvptdwhog finns och är ACTIVE_HEALTHY. Original remember-webmaster v2, gallery v4, upload v2, guest-metadata v1, owner-manager v3, share-manager v3. Läsningar av installerade SQL-funktioner och dessa Edge-källor den 21 oktober 2026. Ingen is_active-kolumn finns ännu. Inga remember/storage policies registrerade; RPC-grants är huvudsakligen server-only och service-anropen används av Edge. Ingen ändring av befintliga grants avses.
+Observerat: owner-gallery går direkt mot album_photos med service-roll och måste därför få en egen spärr; enbart gästens SQL-gallerispärr räcker inte.
+
+## Filer och installation (inte utförd)
+1. ALBUM_ACTIVATION_REVIEW.sql: kandidatschema och RPC-spärrar, granska diff mot aktuella definitioner. Generera final migration med Supabase CLI, inte påhittat tidsfilnamn. Skriptet är ännu ett granskningsskript, inte en installerad migrering.
+2. album-activation-before-rpcs.sql: exakta definitioner för de tretton berörda SQL-funktionerna före ändringen. Grants bevaras genom CREATE OR REPLACE. Nya admin-RPC:n ges endast till service_role, och kontrollerar webmaster samt bekräftat/ej spärrat/ej raderat auth-konto. Aktören kommer enbart från Edge auth.getUser.
+3. Edge *_WITH_ACTIVATION.ts för remember-webmaster, remember-guest-metadata, remember-photo-gallery, remember-photo-upload, remember-owner-manager och remember-share-manager. Före-källorna ligger bredvid. Behåll aktuellt verify_jwt per endpoint; ändra inte CORS eller authmodell. Kandidaternas supabase-js är låst till 2.118.0 (npm registry verifierat 2026-10-21). Före-källorna bevarar installerade @2-importer. Versionsbytet kräver runtimekontroll i testprojektet.
+4. Installera och testa endast remember-test efter separat godkännande. Detta paket annonserar endast albumActivation, inte albumSettings. Tidsschemats tidigare kandidater installeras inte som bieffekt.
+5. Läs tillbaka schema/funktioner/grants/Edge exakt och kör advisors. Kör ALBUM_ACTIVATION_TRANSACTION_TESTS.sql i en transaktion med befintligt godkänt testkonto. ROLLBACK och separat readback är obligatoriska; inga auth-konton skapas/raderas av testet.
+6. Två samtidiga anslutningar: reservation/claim/complete låser album före foto; avstängning låser album. Verifiera att bara operationer som passerat spärren före avstängningen kan bli klara innan avstängningen returnerar. Ingen ready-övergång efter bekräftad avstängning. Granska cleanup av in-flight objekt som lagrats men inte blir ready; inga automatiska raderingar i detta paket.
+7. HTTP med godkända testidentiteter: 401 utan session, 403 ägare/icke-webmaster vid statusändring, 400 okända fält/felaktiga värden, 409 stale revision, korrekt read/save/idempotens. Gästmetadata ger endast generiskt avstängningsmeddelande, inga bilder/titel/skäl. Gästgalleri + gäst/ägarupload + ägargalleri/rename/delete/share blockeras på direkta API-anrop. Webmastergalleri/admin fungerar. Befintlig länk fungerar igen efter återaktivering; tidigare sluttid och forced_closed är exakt oförändrade.
+8. Negativa tester för RPC med anon/authenticated, privat skäl via owner/list/metadata, ogiltiga/revokerade tokens, galen album-id/annat album, två admins med samma revision, audit rollback vid fel.
+9. Test-only frontend mot testprojekt krävs för autentiserad helkedja; ändra inte den nuvarande webbplatsens projekt för att testa. Efter dokumenterat PASS: separat kontrollerad originalinstallation och iPhone-PASS. Ingen CURRENT/PREVIOUS-promovering här.
+
+## Datamodell
+is_active NOT NULL DEFAULT true på albums håller befintligt beteende vid installation. Privat skäl ligger i separat tabell, inte i albums, eftersom andra servicevägar kan läsa albumfält. Ny audittabell lagrar före/efter, aktör och tid i samma transaktion. Audit behåller album-ID även om albumet senare raderas; ingen FK-cascade raderar bevis. State-tabellen har FK cascade för ordinarie borttagning efter återaktivering. RLS aktiveras, inga klientpolicies/grants på de nya tabellerna. Revision är gemensam med tidsinställningarna; en ändring gör andra gamla formulär stale. Exakt retry ger ingen extra audit. Ingen tokenrotation.
+
+## Stoppets praktiska gräns
+Galleriet utfärdar idag signerade bildlänkar med 120 sekunders giltighet. Avstängning hindrar nya utlämningar men återkallar inte redan signerade länkar. Cache kan ge längre synlighet; lova inte en hård tvåminutersgräns. Redan hämtade/sparade bilder kan inte tas tillbaka. In-flight gallerisvar som redan auktoriserats kan också avslutas. Strikt spärr på varje bildhämtning kräver en kontrollerande bildproxy och en separat genomgång av cache/egress; ingår inte i denna första spärr.
+Ingen radering av bilder eller globala nyckelbyten används som avstängningsmetod.
+
+## Återställning
+Git-baslinje d6fae437e5c6171ed7c26970b8f610f684dbe628 och före-källor finns. Skapa dessutom säkerhetsref på verklig HEAD före godkänd originalinstallation. Frontend kan återställas utan dataförlust, men ta inte bort serverns spärrar medan album är avstängda. Vid fel: stäng nya skrivmöjligheten (capability false), behåll befintligt is_active och spärrarna, använd explicit godkänd admin-RPC för selektiv återaktivering vid behov. Återställ före-SQL/Edge endast efter inventering och godkänd plan; annars kan avstängda album bli åtkomliga igen. Radera inte audit/state eller bilder som rollback.
+
+## Verifieringsstatus
+PASS lokalt: DOM för capability-off/okänd status, bekräftelse/avbruten bekräftelse, inget sparande vid checkboxändring, privat text som värde, explicit save med revision, återaktivering utan tidsfält och konflikt-readback. Alla sex Edge-kandidater transpilerar; mockade 401/403/400/409, metadata inactive, gäst/ägargalleri nekas före signering, ägarändring/delning/uppladdning nekas. PostgreSQL-parser kontrollerar både SQL och PL/pgSQL inklusive transaktionstesterna. Schema- och funktionssemantik är INTE runtime-PASS före testinstallation. Samtidighet, in-flight storage cleanup, advisors, riktiga HTTP-identiteter, originaldrift och iPhone återstår.
+
+## Kompletterad modereringskontroll
+Även ägarens approval-queue, approval-decision och quarantine-restore går via befintliga SQL-funktioner och får inaktivitetskontroll i samma granskningsskript. Deras installerade grants saknar service_role; inga grants utökas i denna ändring. Bevara detta felläge snarare än att öppna en annan funktion som bieffekt. Testa att dessa vägar inte kan läcka förhandsvisningslänkar för avstängda album. Avstängningen raderar inga bilder; befintlig karantän-/retentionspolicy ändras inte.

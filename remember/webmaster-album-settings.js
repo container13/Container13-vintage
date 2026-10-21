@@ -1,7 +1,7 @@
 export function uploadStatus(album,now=Date.now()){
  const opens=Date.parse(album.override_opens_at||album.default_opens_at);
  const closes=Date.parse(album.override_closes_at||album.default_closes_at);
- return album.forced_closed?'Tillfälligt stängt':!Number.isFinite(opens)||!Number.isFinite(closes)?'Tid saknas':now<opens?'Öppnar senare':now>=closes?'Stängt för uppladdning':'Öppet för uppladdning';
+ return album.is_active===false?'Albumet är avstängt':album.forced_closed?'Tillfälligt stängt':!Number.isFinite(opens)||!Number.isFinite(closes)?'Tid saknas':now<opens?'Öppnar senare':now>=closes?'Stängt för uppladdning':'Öppet för uppladdning';
 }
 export function localInput(iso){const d=new Date(iso);return Number.isFinite(+d)?new Date(+d-d.getTimezoneOffset()*60000).toISOString().slice(0,16):'';}
 export function inputUTC(value){const d=new Date(value);if(!value||!Number.isFinite(+d)||localInput(d.toISOString())!==value)throw Error('Kontrollera datum och klockslag.');return d.toISOString();}

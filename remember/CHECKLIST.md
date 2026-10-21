@@ -1,5 +1,5 @@
 # Remember — gemensam checklista
-Uppdaterad 2026-10-21. Kandidat 0.1.146. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
+Uppdaterad 2026-10-21. Kandidat 0.1.147. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
 
 - [x] Manuell fotobok: 0.1.137, användarens iPhone-PASS.
 - [x] Säkerhetsgren 0.1.137 på 8a592bb8b7b767a54df595e5e7d5d5d2eb10cd7f verifierad.
@@ -37,3 +37,7 @@ iOS-systemremsan är accepterad tills vidare och ska inte få nya spekulativa CS
 - [ ] 0.1.145 iPhone: Frisök, senaste skapade album först som förval, sorteringsmeny och Rensa återställer förvalet.
 
 - [ ] 0.1.146 iPhone: Förläng för framtida sluttid, Öppna igen för passerad sluttid och tydlig beräkningsgrund. Ny sluttid före sparande testas först när backend aktiverats separat.
+
+- [x] 0.1.147: Album aktivt UI och backendkandidater; lokala DOM-/Edge-mocktester och SQL/PLpgSQL-parser PASS. Ingen backendinstallation.
+- [ ] Separat godkännande för remember-test: albumavstängningens schema, API och runtime-/samtidighetstest.
+- [ ] Originalinstallation först efter test-PASS och separat godkännande; därefter iPhone-PASS för avstängning/återaktivering.
