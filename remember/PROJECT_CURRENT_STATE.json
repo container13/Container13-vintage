@@ -8,23 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.142",
-    "integrity": "WEBMASTER_VISUAL_POLISH_CANDIDATE; SETTINGS_BACKEND_NOT_INSTALLED_PENDING_APPROVAL; CURRENT_PREVIOUS_NOT_PROMOTED"
+    "candidate": "0.1.143",
+    "integrity": "DASHBOARD_TABS_CANDIDATE_BACKEND_CATALOG_LIMIT_EXPLICIT"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.142",
-    "goal": "Compact webmaster administration layout and contain iPhone datetime controls",
-    "plan": [
-      "Constrain grid tracks, cards and native datetime controls without clipping",
-      "Compact spacing, localized timezone labels and secondary tool styling",
-      "Check final deploy and user iPhone layout; backend approval remains pending"
-    ],
-    "resumeInstruction": "Verify iPhone date fields stay inside cards and tools share muted styling. Do not install schedule backend before separate user approval."
+    "targetRelease": "0.1.143",
+    "goal": "Separate own albums and webmaster catalog",
+    "resumeInstruction": "Verify dashboard on iPhone; full catalog over 100 and count/storage/created sorting require separately reviewed backend change. No database permission granted."
   },
   "currentWork": {
-    "completed": "0.1.141 user screenshots show desired administration structure but datetime fields extend beyond card content, repeated raw timezone and over-emphasized camera tool. 0.1.142 adjusts owning CSS and timezone labels only; no schedule/auth/gallery/photobook changes.",
-    "next": "User checks compact cards, contained dates, Swedish-time label and uniform secondary tools. Separate backend installation approval is still pending.",
+    "completed": "Separate tabs, automatic role check, own albums unchanged; webmaster search/status/title-owner-close sort/page10 persisted per account.",
+    "next": "Verify device and prepare separately approved backend for complete catalog and created/count/storage sorting.",
     "blocked": false,
     "blocker": null
   },

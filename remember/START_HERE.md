@@ -128,3 +128,7 @@ Webmaster visar albumöversikt och tider först. Kamera, uppladdning och delning
 
 ## Aktuell kontrollpunkt 0.1.142 — 2026-10-21
 Webmastervyn putsad efter iPhone-skärmbilder: gridspår minmax(0,1fr), kort/formulär/fält får explicita min/max-storlekar och native datumvärde vänsterställs. Ingen klippning eller ny viewport-hack. Översikten är kompaktare, Europe/Stockholm visas som Svensk tid; enhetens tidszon förtydligas bara om den skiljer sig från albumets. Alla fyra huvudverktyg under Fler verktyg har samma diskreta stil. Spärrstatus kortad. Inga backend-, datumkonverterings-, galleri-, fotoboks- eller behörighetsändringar. iPhone-utseende kräver ny kontroll. Separat tillstånd för databas-/Edge-installation har ännu inte lämnats; sparande förblir avstängt. CURRENT/PREVIOUS oförändrade.
+
+
+## Aktuell kontrollpunkt 0.1.143 — 2026-10-21
+Dashboard har separata Mina album/Webmaster-vyer. Endast webmaster har sökning, statusfilter, sortering och sidor om 10 album. Val sparas per konto. Rollkontroll sker automatiskt, diagnostik är sekundär. Befintlig API begränsar listan till 100 och saknar created_at/photo_count/storage_bytes: dessa sorteringsval är avstängda och vid 100 visas uttrycklig varning om ofullständig lista. Filtrering/sortering sker före sidindelning i hela mottagna listan, inte hela databasen. Fullständig serverlistning och nya mätvärden återstår som separat backendarbete; inga databas-/Edgeändringar utförda. iPhonekontroll återstår. Fotobokslogik oförändrad; CURRENT/PREVIOUS oförändrade.

@@ -85,7 +85,11 @@ body.is-webmaster #webmasterTools .webmaster-album-card{display:block!important;
 .webmaster-owner-email{display:block;font:500 14px/1.5 system-ui;color:#fff7e7;overflow-wrap:anywhere;margin:4px 0 12px}
 .webmaster-album-id{display:block;border-top:1px solid #dfc89a40;padding-top:11px;font:11px/1.5 system-ui;color:#c9c5b9;overflow-wrap:anywhere}
 body.is-webmaster #webmasterTools .webmaster-album-card:focus-visible{outline:3px solid #efd2a0;outline-offset:3px}
-</style><link rel="stylesheet" href="./remember-design.css?v=0.1.100"><script src="../project-template/mobile-view-policy.js?v=2"></script><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js?v=0.1.142"></script><meta name="remember-release" content="remember-0.1.142"><script defer src="./remember-version.js?v=0.1.142"></script></head><body class="remember-shell" data-remember-view="albums"><main>
+/* Dashboard views: only one album collection is visible at a time. */
+.dashboard-tabs{display:flex;gap:8px;margin:12px 0 20px}.dashboard-tabs button{flex:1;min-width:0;min-height:46px;border:1px solid #d7bb8888;background:#193b30;color:#fff7e7}.dashboard-tabs button[aria-pressed="true"]{background:#d9e7a4;color:#17382d}
+.catalog-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}.catalog-controls label{color:#f6e9cc;font-size:13px;margin:8px 0;min-width:0}.catalog-controls label:first-child{grid-column:1/-1}.catalog-controls input,.catalog-controls select{font-size:16px;min-width:0;max-width:100%;margin-top:6px}
+.catalog-paging{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:18px 0}.catalog-paging button{min-height:44px;padding:10px;font-size:13px}.catalog-paging span{font-size:12px;text-align:center}.catalog-paging button:disabled{cursor:default}
+</style><link rel="stylesheet" href="./remember-design.css?v=0.1.100"><script src="../project-template/mobile-view-policy.js?v=2"></script><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js?v=0.1.143"></script><meta name="remember-release" content="remember-0.1.143"><script defer src="./remember-version.js?v=0.1.143"></script></head><body class="remember-shell" data-remember-view="albums"><main>
 <header><div class="brand">Remember. <span class="muted">by Container13</span></div><a class="remember-home" href="./" aria-label="Remember startsida"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7M5 9v11h14V9M9 20v-7h6v7"/></svg></a></header>
 <h1 id="dashboardTitle">Mina album</h1><p id="dashboardSubtitle" class="dashboard-subtitle" hidden>Hantera Remember och dina album</p>
 
@@ -93,7 +97,15 @@ body.is-webmaster #webmasterTools .webmaster-album-card:focus-visible{outline:3p
 <section class="panel" id="loginPanel" hidden><form id="login"><label for="email">E-postadress</label><input id="email" type="email" autocomplete="email" required maxlength="254"><label for="password">Lösenord</label><input id="password" type="password" autocomplete="current-password" minlength="6"><div class="actions"><button id="send" type="submit" disabled>Logga in</button><button id="resetPassword" type="button" class="secondary" disabled>Skapa eller återställ lösenord</button><button id="magic" type="button" class="secondary" disabled>Skicka mejllänk i stället</button></div></form>
 <p id="feedback" class="status" role="status" aria-live="polite">Förbereder inloggningen…</p></section>
 <section class="panel" id="account" hidden><details><summary><span class="account-symbol" aria-hidden="true">♙</span><span>Mitt konto</span><span class="account-chevron" aria-hidden="true">⌄</span></summary><div class="account-body"><div class="account-profile"><span class="profile-icon" aria-hidden="true">♙</span><div><strong>Inloggat konto</strong><p id="identity" class="muted"></p></div></div><div id="setPasswordArea" hidden><label for="newPassword">Välj lösenord för framtida inloggningar</label><input id="newPassword" type="password" autocomplete="new-password" minlength="12" placeholder="Minst 12 tecken"><div class="actions"><button id="savePassword" type="button">Spara lösenord</button></div><p id="passwordResult" role="status" aria-live="polite"></p></div><div class="actions"><button id="logout" type="button" class="secondary">Logga ut <span aria-hidden="true">→</span></button></div></div></details></section>
-<section id="webmasterWorkspace" class="webmaster-workspace" hidden><div class="workspace-top"><span class="workspace-symbol" aria-hidden="true">⚙</span><div><div class="webmaster-eyebrow">CONTAINER13 · ADMINISTRATION</div><h2>Webmaster</h2><p>Administration av Remember</p></div></div><details id="webmasterTools" hidden><summary>Administrationsverktyg</summary><div class="actions"><button id="check" type="button" class="secondary">Kontrollera åtkomst</button><button id="list" type="button">Visa album</button></div><p id="result" role="status" aria-live="polite"></p><div id="albums" role="status" aria-live="polite"></div></details></section>
+<nav id="dashboardTabs" class="dashboard-tabs" aria-label="Albumvyer" hidden><button id="ownTab" type="button" aria-pressed="true">Mina album</button><button id="wmTab" type="button" aria-pressed="false">Webmaster</button></nav>
+<section id="webmasterWorkspace" class="webmaster-workspace" hidden><div class="workspace-top"><span class="workspace-symbol" aria-hidden="true">⚙</span><div><div class="webmaster-eyebrow">CONTAINER13 · ADMINISTRATION</div><h2>Webmaster</h2><p>Administration av Remember</p></div></div><div id="webmasterTools" hidden><div class="catalog-controls">
+<label>Sök album eller skapare<input id="catalogSearch" type="search" maxlength="200" placeholder="Albumnamn eller e-post"></label>
+<label>Uppladdning<select id="catalogStatus"><option value="all">Alla</option><option value="open">Öppna</option><option value="closed">Stängda</option></select></label>
+<label>Sortera efter<select id="catalogSort"><option value="title">Albumnamn</option><option value="owner_email">Skapare</option><option value="closes">Stängningsdatum</option><option value="created_at" disabled>Skapandedatum – kräver serverstöd</option><option value="photo_count" disabled>Bildantal – kräver serverstöd</option><option value="storage_bytes" disabled>Lagringsstorlek – kräver serverstöd</option></select></label>
+<label>Ordning<select id="catalogDirection"><option value="asc">Stigande</option><option value="desc">Fallande</option></select></label></div>
+<p id="catalogLimit" class="muted"></p><p id="result" role="status" aria-live="polite"></p><div id="albums" aria-live="polite"></div>
+<div class="catalog-paging"><button id="catalogPrev" type="button">Föregående</button><span id="catalogPage" role="status"></span><button id="catalogNext" type="button">Nästa</button></div>
+<details><summary>Diagnostik</summary><div class="actions"><button id="check" type="button" class="secondary">Kontrollera åtkomst</button><button id="list" type="button" class="secondary">Uppdatera album</button></div></details></div></section>
 <h2 id="ownedAlbumsHeading" class="owned-albums-heading" hidden>Mina album</h2><section class="panel" id="ownerPanel" hidden><div id="ownerAlbums" role="status" aria-live="polite"></div><p><a href="./register.html" class="newAlbum">+ Skapa nytt album</a></p></section><section class="panel" id="creation" hidden><details><summary>+ Skapa nytt album</summary><p>Albumet sparas i Remember. Bilduppladdning är ännu inte verifierad.</p>
 <form id="createForm"><label for="albumTitle">Albumets namn</label><input id="albumTitle" required maxlength="100">
 <label for="eventType">Upplevelse</label><select id="eventType"><option value="fishing">Fiskeresa</option><option value="trip">Resa</option><option value="party">Fest</option><option value="wedding">Bröllop</option></select>
@@ -107,28 +119,69 @@ body.is-webmaster #webmasterTools .webmaster-album-card:focus-visible{outline:3p
 import { checkRememberWebmaster } from "./remember-account-access.js?v=0.1.21";
 const $=id=>document.getElementById(id);
 let client=null,session=null,busy=false,creationAllowed=false,webmasterAllowed=false,roleRevision=0;
+let catalog=[],catalogLoaded=false;
+let dashboardUI={tab:'own',search:'',status:'all',sort:'title',direction:'asc',page:1};
+function persistDashboard(){try{if(session)localStorage.setItem('remember-dashboard-ui-'+session.user.id,JSON.stringify(dashboardUI));}catch{}}
+function restoreDashboard(value){
+ dashboardUI={tab:'own',search:'',status:'all',sort:'title',direction:'asc',page:1};
+ try{const s=JSON.parse(localStorage.getItem('remember-dashboard-ui-'+value.user.id)||'null');if(s){
+ dashboardUI={tab:s.tab==='wm'?'wm':'own',search:String(s.search||'').slice(0,200),status:['all','open','closed'].includes(s.status)?s.status:'all',sort:['title','owner_email','closes'].includes(s.sort)?s.sort:'title',direction:s.direction==='desc'?'desc':'asc',page:Number.isSafeInteger(s.page)&&s.page>0?s.page:1};
+ }}catch{}
+ $('catalogSearch').value=dashboardUI.search;$('catalogStatus').value=dashboardUI.status;$('catalogSort').value=dashboardUI.sort;$('catalogDirection').value=dashboardUI.direction;
+}
+function selectDashboard(tab){
+ dashboardUI.tab=webmasterAllowed&&tab==='wm'?'wm':'own';
+ const wm=dashboardUI.tab==='wm';
+ $('webmasterWorkspace').hidden=!wm;$('ownerPanel').hidden=wm||!session;
+ $('ownedAlbumsHeading').hidden=true;$('dashboardTitle').hidden=webmasterAllowed;
+ $('ownTab').setAttribute('aria-pressed',String(!wm));$('wmTab').setAttribute('aria-pressed',String(wm));
+ persistDashboard();if(wm&&catalogLoaded)renderCatalog();if(wm&&!catalogLoaded&&!busy)void gateway('list');
+}
+function albumOpen(a,now){return !a.forced_closed&&Date.parse(a.override_opens_at||a.default_opens_at)<=now&&Date.parse(a.override_closes_at||a.default_closes_at)>now;}
+function renderCatalog(){
+ const now=Date.now(),term=dashboardUI.search.trim().toLocaleLowerCase('sv');
+ let rows=catalog.filter(a=>(!term||(String(a.title||'')+' '+String(a.owner_email||'')).toLocaleLowerCase('sv').includes(term))&&(dashboardUI.status==='all'||albumOpen(a,now)===(dashboardUI.status==='open')));
+ const value=a=>dashboardUI.sort==='closes'?Date.parse(a.override_closes_at||a.default_closes_at):String(a[dashboardUI.sort]||'');
+ rows.sort((a,b)=>{let x=value(a),y=value(b);let n=typeof x==='number'?(Number.isFinite(x)?x:0)-(Number.isFinite(y)?y:0):x.localeCompare(y,'sv',{numeric:true,sensitivity:'base'});return (dashboardUI.direction==='desc'?-n:n)||String(a.id).localeCompare(String(b.id));});
+ const pages=Math.max(1,Math.ceil(rows.length/10));dashboardUI.page=Math.min(dashboardUI.page,pages);persistDashboard();
+ $('albums').replaceChildren();
+ const heading=document.createElement('h3');heading.className='webmaster-albums-title';heading.textContent=rows.length+' album'+(term||dashboardUI.status!=='all'?' matchar':'');$('albums').append(heading);
+ const grid=document.createElement('div');grid.className='webmaster-album-grid';$('albums').append(grid);
+ for(const album of rows.slice((dashboardUI.page-1)*10,dashboardUI.page*10)){
+ const a=document.createElement('a');a.className='webmaster-album-card';a.href='./album-admin.html?id='+encodeURIComponent(album.id)+'&v=wm143';
+ const top=document.createElement('div');top.className='webmaster-album-top';const title=document.createElement('strong');title.textContent=album.title||'Album utan namn';const arrow=document.createElement('span');arrow.textContent='↗';arrow.setAttribute('aria-hidden','true');top.append(title,arrow);
+ const owner=document.createElement('span');owner.className='webmaster-owner-email';owner.textContent=album.owner_email||'E-postadress saknas';
+ const status=document.createElement('span');status.className='muted';status.textContent=albumOpen(album,now)?'Öppet för uppladdning':'Stängt för uppladdning';a.append(top,owner,status);grid.append(a);
+ }
+ $('catalogPage').textContent='Sida '+dashboardUI.page+' av '+pages;
+ $('catalogPrev').disabled=busy||dashboardUI.page<=1;$('catalogNext').disabled=busy||dashboardUI.page>=pages;
+ $('catalogLimit').textContent=catalog.length>=100?'Servern lämnar högst 100 album. Sökning och sortering gäller dessa; ytterligare album kan finnas.':'';
+}
+$('ownTab').onclick=()=>selectDashboard('own');$('wmTab').onclick=()=>selectDashboard('wm');
+for(const [id,key] of [['catalogSearch','search'],['catalogStatus','status'],['catalogSort','sort'],['catalogDirection','direction']])$(id).addEventListener(id==='catalogSearch'?'input':'change',()=>{dashboardUI[key]=$(id).value;dashboardUI.page=1;renderCatalog();});
+$('catalogPrev').onclick=()=>{dashboardUI.page--;renderCatalog();};$('catalogNext').onclick=()=>{dashboardUI.page++;renderCatalog();};
 function message(text){$('feedback').textContent=text}
-function lock(value){busy=value;document.querySelectorAll('button').forEach(b=>b.disabled=value)}
+function lock(value){busy=value;document.querySelectorAll('button').forEach(b=>b.disabled=value);if(!value&&catalogLoaded)renderCatalog()}
 async function updateWebmaster(value){
  const revision=++roleRevision;webmasterAllowed=false;$('webmasterTools').hidden=true;$('webmasterWorkspace').hidden=true;document.body.classList.remove('is-webmaster');$('ownedAlbumsHeading').hidden=true;$('dashboardTitle').textContent='Mina album';$('dashboardTitle').hidden=false;$('dashboardSubtitle').hidden=true;creationAllowed=false;$('creation').hidden=true;
- if(!value)return;
+ if(!value){$('dashboardTabs').hidden=true;return;}
  const allowed=await checkRememberWebmaster(value);
  if(revision!==roleRevision)return;
  webmasterAllowed=allowed;$('webmasterTools').hidden=!allowed;
  $('webmasterWorkspace').hidden=!allowed;
- document.body.classList.toggle('is-webmaster',allowed);$('ownedAlbumsHeading').hidden=!allowed;
- $('dashboardTitle').textContent='Mina album';$('dashboardTitle').hidden=allowed;$('dashboardSubtitle').hidden=true;
+ document.body.classList.toggle('is-webmaster',allowed);$('dashboardTabs').hidden=!allowed;
+ $('dashboardTitle').textContent='Mina album';$('dashboardTitle').hidden=allowed;$('dashboardSubtitle').hidden=true;selectDashboard(dashboardUI.tab);
 }
-function showSession(value){void updateWebmaster(value);const identityChanged=session?.user?.id!==value?.user?.id;session=value;if(identityChanged){creationAllowed=false;$('creation').hidden=true;}$('account').hidden=!value;$('loginPanel').hidden=true;$('login').hidden=true;$('identity').textContent=value?value.user.email:'';$('result').textContent='';$('albums').replaceChildren()}
+function showSession(value){const identityChanged=session?.user?.id!==value?.user?.id;session=value;if(identityChanged){catalog=[];catalogLoaded=false;if(value)restoreDashboard(value);}void updateWebmaster(value);if(identityChanged){creationAllowed=false;$('creation').hidden=true;}$('account').hidden=!value;$('loginPanel').hidden=true;$('login').hidden=true;$('identity').textContent=value?value.user.email:'';if(identityChanged){$('result').textContent='';$('albums').replaceChildren();}}
 async function loadOwnedAlbums(){
  if(!client)return;
  try{const {data}=await client.auth.getSession();if(!data.session)return;
  const response=await fetch('https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-owner-manager',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+data.session.access_token},body:JSON.stringify({action:'list'}),cache:'no-store'});
- const body=await response.json();if(!response.ok||!body.ok)throw Error();
- const panel=$('ownerPanel'),list=$('ownerAlbums');list.replaceChildren();panel.hidden=false;
+ const body=await response.json();if(session?.user?.id!==data.session.user.id)return;if(!response.ok||!body.ok)throw Error();
+ const panel=$('ownerPanel'),list=$('ownerAlbums');list.replaceChildren();panel.hidden=dashboardUI.tab==='wm';
  if(!body.albums.length){list.textContent='Du har inga album ännu. Skapa ditt första album nedan.';}for(const album of body.albums){const a=document.createElement('a');a.href='./owner.html?id='+encodeURIComponent(album.id)+'&v=a10';a.textContent=album.title+' →';a.style.display='block';a.style.margin='12px 0';list.append(a);}
  }catch{
-  $('ownerPanel').hidden=false;$('ownerAlbums').textContent='Kunde inte hämta dina album. ';
+  $('ownerPanel').hidden=dashboardUI.tab==='wm';$('ownerAlbums').textContent='Kunde inte hämta dina album. ';
   const retry=document.createElement('button');retry.type='button';retry.textContent='Försök igen';
   retry.onclick=()=>{retry.disabled=true;void loadOwnedAlbums();};$('ownerAlbums').append(retry);
  }
@@ -145,30 +198,13 @@ async function gateway(action){
   if(response.status===401){$('result').textContent='401 – sessionen kunde inte verifieras. Logga in igen.';return}
   if(!response.ok){$('result').textContent='Kontrollen misslyckades (HTTP '+response.status+'). Försök igen senare.';return}
   if(!body.authorized){$('result').textContent='Åtkomst nekad.';return}
-  creationAllowed=body.capabilities?.createAlbum===true;$('creation').hidden=!creationAllowed;if(creationAllowed)restoreDraft();
+  creationAllowed=body.capabilities?.createAlbum===true;$('creation').hidden=!creationAllowed;
   $('result').textContent=action==='installation_status'?'Åtkomst godkänd.':'Webmasteråtkomst godkänd.';
-  if(action==='list'){void loadOwnedAlbums();
-    $('albums').replaceChildren();
-    if(!Array.isArray(body.albums)){
-      $('albums').textContent='Servern skickade ingen albumlista. Det är ett svarsfel som behöver åtgärdas.';
-    }else if(body.albums.length===0){
-      $('albums').textContent='Servern returnerade 0 album för detta konto. Skapa inte ett nytt album.';
-    }else{
-      const heading=document.createElement('h3');heading.className='webmaster-albums-title';heading.textContent='Alla album · '+body.albums.length;$('albums').append(heading);
-      const grid=document.createElement('div');grid.className='webmaster-album-grid';$('albums').append(grid);
-      for(const album of body.albums){
-        const a=document.createElement('a');a.className='webmaster-album-card';a.href='./album-admin.html?id='+encodeURIComponent(album.id)+'&v=wm95';
-        const top=document.createElement('div');top.className='webmaster-album-top';
-        const title=document.createElement('strong');title.textContent=album.title||'Album utan namn';
-        const arrow=document.createElement('span');arrow.className='webmaster-album-arrow';arrow.textContent='↗';arrow.setAttribute('aria-hidden','true');top.append(title,arrow);
-        
-        const owner=document.createElement('span');owner.className='webmaster-owner-email';owner.textContent=album.owner_email||'E-postadress saknas';
-        a.title='Album-ID: '+String(album.id||'Okänt');
-        a.append(top,owner);grid.append(a);
-      }
-    }
+  if(action==='list'){
+   if(!Array.isArray(body.albums))throw Error('Invalid album list');
+   catalog=body.albums;catalogLoaded=true;$('result').textContent='';renderCatalog();
   }
- }catch{ $('result').textContent='Anslutningen misslyckades. Försök igen.' }finally{lock(false)}
+ }catch{ $('result').textContent='Kunde inte hämta uppgifterna. Försök med Uppdatera album under Diagnostik.' }finally{lock(false)}
 }
 const PUBLIC_KEY='sb_publishable_qOSBb7U6TGnPQ8ypyYRLGg_GtYrraoG';
 try{
