@@ -1,5 +1,5 @@
 # Remember — gemensam checklista
-Uppdaterad 2026-10-22. Kandidat 0.1.163 (gästnivåer installerade i .162, slutlig karantäntext rättad i .163). Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
+Uppdaterad 2026-10-22. Kandidat 0.1.165 (gästnivåer installerade; tydligt granskningsval, Testa gratis). Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
 
 - [x] Manuell fotobok: 0.1.137, användarens iPhone-PASS.
 - [x] Säkerhetsgren 0.1.137 på 8a592bb8b7b767a54df595e5e7d5d5d2eb10cd7f verifierad.
@@ -151,3 +151,15 @@ Detaljer och testkommandon: UPLOAD_VERIFICATION_2026-10-21.md. Tidigare generell
 - [x] .162 slutcommitens release safety/Pages och alla nio live-entrypoints/release/version exakt verifierade.
 - [x] .163: ytterligare HTML-löfte om automatisk 72h-radering borttaget; ingen serverändring.
 - [ ] .163: slutlig CI/publicering och användarens riktade granskningstest.
+
+## Tydligt granskningsval 0.1.165
+- [x] Två synliga radioval, förklaringar och befintligt open-förval; samma servervärden.
+- [x] Fem DOM-fall: öppet/granskat, byt tillbaka till öppet, inloggad skapare, fel behåller val; request-ID/aktivering bevarade.
+- [x] Chromium 320/390/1280: båda val synliga, ingen overflow, tryck på etikett och tangentbordsval PASS; mobilrender granskad.
+- [ ] Slutlig publicering och användarens tydlighetstest på iPhone. Funktionellt granskningsflöde fortfarande separat väntande.
+
+## Gratisnivå upp till 50 bilder — glöm inte
+- [x] Projektägarens påminnelse registrerad 2026-10-22; tidigare diskussion 2026-10-19 återfunnen.
+- [ ] Jämför original och komprimerade riktiga mobilbilder för avsedda fotoboksstorlekar/utsnitt.
+- [ ] Utvärdera preliminärt 2400px/80–85% och lagringskostnad för upp till50 bilder.
+- [ ] Fastställ nivå/kvalitet och inför därefter kontrollerat; inte implementerat i .165.

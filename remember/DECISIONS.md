@@ -270,3 +270,9 @@ Confirmed on-device: v0.1.52 loaded but brown root background band remained at b
 
 ## 2026-10-22 — Publik gratisformulering
 Projektägaren förtydligar att Remember ska säga **”Testa gratis”**, inte marknadsföra ”10 bilder gratis”. Använd denna formulering i registreringsrubrik, erbjudande och publik information. Den befintliga tekniska gratisgränsen är fortfarande 10 bilder; kvot/status i albumadministrationen är sakinformation och ändras inte av textbeslutet. Detta beslut ersätter äldre instruktioner om att skylta med antalet gratisbilder.
+
+## 2026-10-22 — Gratisnivå upp till 50 bilder: följ upp, tappa inte bort
+Projektägaren påminner uttryckligen om tidigare diskussion från 2026-10-19: **upp till 50 gratisbilder per album**, komprimerade med tillräcklig kvalitet för fotobok. Tidigare preliminära värden var cirka 2400 px längsta sida och JPEG-kvalitet 80–85 %. Frågan parkerades då startsidan skulle färdigställas. Detta ska finnas kvar som en prioriterad uppföljningspunkt; det är inte ett verifierat kvalitetslöfte eller en redan installerad 50-bildersnivå. Nästa steg är jämförelse med riktiga mobilbilder, fotoboksstorlek/utsnitt och lagringskostnad innan komprimering och nivå fastställs. Äldre 10-gräns får inte förväxlas med slutlig framtida gratisnivå. Publik text fortsatt **Testa gratis**. Ingen kvot-/databasändring i .165.
+
+## 2026-10-22 — Tydligt val av bildgranskning
+Projektägaren upplevde rullgardinsmenyn Gästläge som tvetydig. Vid skapande visas därför alltid båda alternativen som radioval: **Visa bilder direkt** eller **Jag vill granska bilderna först**, med förklarande text. Valet ska synas utan att öppna en meny. Befintligt förval open och servervärden open/reviewed behålls.

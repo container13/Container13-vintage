@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.164",
+    "candidate": "0.1.165",
     "integrity": "GUEST_MODES_INSTALLED_CLOUD_SQL_ACL_HTTP_PASS_DEVICE_PENDING"
   },
   "workCheckpoint": {
     "status": "GUEST_MODES_INSTALLED_DEVICE_PENDING",
-    "targetRelease": "0.1.164",
+    "targetRelease": "0.1.165",
     "goal": "Open and reviewed guest modes at album creation",
-    "resumeInstruction": "User approved database installation on 2026-10-22. Read guest-modes-candidate/INSTALLATION_2026-10-22.md. Migration 20261022054607 installed in ordinary Remember, actual cloud ROLLBACK PASS, four function bodies exact, anon/authenticated direct RPC denied, two Edge exact readback (onboarding v2/guest metadata v3), 5 negative/public HTTP cases PASS. Existing data unchanged. Verify final commit CI/Pages/live bytes then targeted user iPhone test: new reviewed album, guest upload hidden until owner approves. No repeated permission needed. Logged-in guests/personal invitations deferred. CURRENT/PREVIOUS unset. .162 published and CI/live exact PASS at 8fe2d25d54c30b5a7278a744f78083f1758a345e. Final 0.1.163 removes one remaining HTML 72h purge promise; no backend change. Public copy .164 uses Testa gratis instead of marketing 10 free photos; quota unchanged. See DECISIONS.md. No broad retest needed for copy."
+    "resumeInstruction": "User approved database installation on 2026-10-22. Read guest-modes-candidate/INSTALLATION_2026-10-22.md. Migration 20261022054607 installed in ordinary Remember, actual cloud ROLLBACK PASS, four function bodies exact, anon/authenticated direct RPC denied, two Edge exact readback (onboarding v2/guest metadata v3), 5 negative/public HTTP cases PASS. Existing data unchanged. Verify final commit CI/Pages/live bytes then targeted user iPhone test: new reviewed album, guest upload hidden until owner approves. No repeated permission needed. Logged-in guests/personal invitations deferred. CURRENT/PREVIOUS unset. .162 published and CI/live exact PASS at 8fe2d25d54c30b5a7278a744f78083f1758a345e. Final 0.1.163 removes one remaining HTML 72h purge promise; no backend change. Public copy .164 uses Testa gratis instead of marketing 10 free photos; quota unchanged. See DECISIONS.md. No broad retest needed for copy. User found the review dropdown ambiguous. .165 uses two visible native radios; test selected open/reviewed payload through existing onboarding. Remember queued evaluation of up to 50 free images with photobook-suitable compression (preliminary 2400px / quality80–85%, not installed). See DECISIONS and CHECKLIST; do not treat old 10-photo quota as final product plan."
   },
   "currentWork": {
-    "completed": "Approved guest-mode database installed; actual SQL rollback, source/ACL readback and deployed Edge HTTP checks pass. Reviewed frontend ready for shared publication; existing albums open and original data preserved.",
-    "next": "Verify final publication and targeted mobile acceptance of new open/reviewed creation and owner approval.",
+    "completed": "Guest-mode backend installed and public Testa gratis copy preserved. Registration now presents both review options as visible radio cards. Free-tier proposal up to50 images and quality/cost validation recorded explicitly.",
+    "next": "Verify .165 publication/clear iPhone choice and pending reviewed-album acceptance; later compare compressed real images for photobook quality and evaluate 50-photo free tier.",
     "blocked": false,
     "blocker": null
   },
@@ -888,7 +888,15 @@
     "backupCommit": "a33cef3996f63235a2426c3f537d1f6943e69bb7",
     "approvedSourceCommit": "dddc9b3729337c0a86563b1f5905954b64d4d47a",
     "securityAdvisors": "UNCHANGED",
-    "copyFixVersion": "0.1.163"
+    "copyFixVersion": "0.1.163",
+    "choiceUI": {
+      "version": "0.1.165",
+      "type": "two visible native radio options",
+      "default": "open",
+      "domCases": 5,
+      "device": "PENDING",
+      "chromium": "THREE_LAYOUT_CASES_320_390_1280_NATIVE_LABEL_KEYBOARD_PASS"
+    }
   },
   "publicTrialCopy": {
     "version": "0.1.164",
@@ -900,5 +908,18 @@
       "landing information"
     ],
     "quotaChanged": false
+  },
+  "freeTierInvestigation": {
+    "targetPhotos": 50,
+    "status": "PROPOSAL_TO_EVALUATE_NOT_INSTALLED",
+    "lastUserReminder": "2026-10-22",
+    "qualityGoal": "Compression suitable for photobook use; validate real images and intended print sizes/crops",
+    "preliminaryOnly": {
+      "longestSidePixels": 2400,
+      "jpegQuality": "80–85%"
+    },
+    "next": "Compare originals/compressed image quality and storage cost before selecting final settings and changing quota",
+    "currentQuotaChanged": false,
+    "publicWording": "Testa gratis"
   }
 }
