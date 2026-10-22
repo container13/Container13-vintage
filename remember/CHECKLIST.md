@@ -1,5 +1,5 @@
 # Remember — gemensam checklista
-Uppdaterad 2026-10-22. Kandidat 0.1.162 (backend installerad; slutpublicering verifieras separat). Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
+Uppdaterad 2026-10-22. Kandidat 0.1.163 (gästnivåer installerade i .162, slutlig karantäntext rättad i .163). Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
 
 - [x] Manuell fotobok: 0.1.137, användarens iPhone-PASS.
 - [x] Säkerhetsgren 0.1.137 på 8a592bb8b7b767a54df595e5e7d5d5d2eb10cd7f verifierad.
@@ -147,3 +147,7 @@ Detaljer och testkommandon: UPLOAD_VERIFICATION_2026-10-21.md. Tidigare generell
 - [x] Installerad migration 20261022054607, verklig cloud-ROLLBACK, faktisk nekad anon/authenticated, oförändrade säkerhetsråd och exakt SQL/Edge-readback. Fem HTTP-fall PASS. Befintliga album/bilder/utkast/inställningar bevarade.
 - [ ] CI/Pages/livefiler efter kontrollerad publicering.
 - [ ] Avgränsat iPhone-test av nytt öppet/granskat album och godkännande. Ingen bred omtestning av redan accepterade flöden.
+
+- [x] .162 slutcommitens release safety/Pages och alla nio live-entrypoints/release/version exakt verifierade.
+- [x] .163: ytterligare HTML-löfte om automatisk 72h-radering borttaget; ingen serverändring.
+- [ ] .163: slutlig CI/publicering och användarens riktade granskningstest.

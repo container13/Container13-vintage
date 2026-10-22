@@ -26,6 +26,6 @@ async function registration({logged=false,mode='open',fail=false}={}){
 (async()=>{await registration();await registration({mode:'reviewed'});await registration({mode:'reviewed',logged:true});await registration({mode:'reviewed',fail:true});
  // Activation must carry the staged ID when available and retain cross-device fallback.
  const activation=fs.readFileSync(path.join(root,'activate.html'),'utf8');assert(activation.includes('requestId:registration.requestId'));assert(activation.includes('registration?.requestId'));
- const owner=fs.readFileSync(path.join(root,'owner.html'),'utf8');assert(!owner.includes('Raderas \'')&&!owner.includes('högst 72 timmar'));
+ const owner=fs.readFileSync(path.join(root,'owner.html'),'utf8');assert(!owner.includes('Raderas \'')&&!owner.includes('högst 72 timmar')&&!owner.toLowerCase().includes('raderas efter 72 timmar'));
  console.log('4 registration DOM cases + activation contract and accurate quarantine copy PASS.');
 })().catch(e=>{console.error(e);process.exitCode=1;});

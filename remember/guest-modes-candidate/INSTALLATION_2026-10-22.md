@@ -49,3 +49,6 @@ Frontendens funktionskod är samma som godkänd kandidat; denna commit uppdatera
 Nästa användartest: skapa ett granskat album i vanliga Remember, öppna dess gästlänk och ladda upp en bild. Gästen får väntemeddelande; bilden ska inte synas i gästgalleriet. Godkänn som faktisk albumägare i owner.html under granskningen och kontrollera gästgalleriet igen. Öppet läge ska fortsatt visa bilder direkt. Befintliga album behöver inte ändras för testet.
 
 Inloggade gäster, egna gästraderingar, personliga inbjudningar och automatisk 72h-rensning ingår inte. Även ägarens egna nya uppladdningar går genom kön i granskat album. Autentiserad HTTP-/iPhone-acceptans och HTTP-samtidighet är inte utförda. CURRENT/PREVIOUS fortfarande null.
+
+## Publiceringskontroll och textkorrigering
+.162 slutcommit 8fe2d25d54c30b5a7278a744f78083f1758a345e: release safety 39730278783 success, Pages 39730278396 success. Alla nio HTML-entrypoints samt release.json/remember-version.js exakt lika GitHub vid live-readback. Ett ytterligare gammalt HTML-stycke om automatisk 72h-radering upptäcktes vid slutkontroll; .163 korrigerar endast detta och versionsmetadata/status. Backend fortsatt samma installerade migration och Edge-källor .162. Inga fler databasändringar. .163 CI/live kontrolleras efter push; iPhone-PASS fortfarande väntande.
