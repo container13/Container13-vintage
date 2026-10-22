@@ -276,3 +276,7 @@ Projektägaren påminner uttryckligen om tidigare diskussion från 2026-10-19: *
 
 ## 2026-10-22 — Tydligt val av bildgranskning
 Projektägaren upplevde rullgardinsmenyn Gästläge som tvetydig. Vid skapande visas därför alltid båda alternativen som radioval: **Visa bilder direkt** eller **Jag vill granska bilderna först**, med förklarande text. Valet ska synas utan att öppna en meny. Befintligt förval open och servervärden open/reviewed behålls.
+
+
+## Beslut och kontrollpunkt0.1.168 —2026-10-22
+Projektägaren väljer **30 bilder i mobilkvalitet** för gratisalbum. Detta ersätter det tidigare preliminära50-bildersförslaget och kravet att gratisbilder ska dimensioneras för tryck. Marknadsföringen behåller **Testa gratis**. Information vid albumskapande och på startsidans informationsruta: uppgradering förbättrar inte redan uppladdade bilder; original måste laddas upp på nytt för högre kvalitet. Högupplöst betaluppladdning är ännu inte implementerad. Aktiv1920px mobilkomprimering behålls. SQL-default och båda skapande-RPC:er synkas; tidigare standardgräns10 höjs till30, specialgränser bevaras. Se free-tier-30/README.md för verifiering/återställning. CURRENT/PREVIOUS oförändrade. iPhonekontroll av texten återstår.

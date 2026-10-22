@@ -101,7 +101,7 @@ body.remember-shell #webmasterWorkspace .workspace-top h2{font-size:clamp(25px,6
 #showCatalogResults{width:100%;min-height:48px;margin-top:18px;background:#d9e7a4;color:#17382d}
 #catalogFilterDialog .catalog-controls label{color:#f6e9cc}
 .catalog-paging[hidden]{display:none!important}
-</style><link rel="stylesheet" href="./remember-design.css?v=0.1.167"><script src="../project-template/mobile-view-policy.js?v=2"></script><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js?v=0.1.167"></script><meta name="remember-release" content="remember-0.1.167"><script defer src="./remember-version.js?v=0.1.167"></script><link rel="manifest" href="./manifest.webmanifest?v=0.1.167"><link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/remember-6-180-v0.1.150.png"><link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/remember-6-192-v0.1.150.png"></head><body class="remember-shell" data-remember-view="albums"><main>
+</style><link rel="stylesheet" href="./remember-design.css?v=0.1.168"><script src="../project-template/mobile-view-policy.js?v=2"></script><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js?v=0.1.168"></script><meta name="remember-release" content="remember-0.1.168"><script defer src="./remember-version.js?v=0.1.168"></script><link rel="manifest" href="./manifest.webmanifest?v=0.1.168"><link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/remember-6-180-v0.1.150.png"><link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/remember-6-192-v0.1.150.png"></head><body class="remember-shell" data-remember-view="albums"><main>
 <header><div class="brand">Remember. <span class="muted">by Container13</span></div><a class="remember-home" href="./" aria-label="Remember startsida"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7M5 9v11h14V9M9 20v-7h6v7"/></svg></a></header>
 <h1 id="dashboardTitle">Mina album</h1><p id="dashboardSubtitle" class="dashboard-subtitle" hidden>Hantera Remember och dina album</p>
 
@@ -125,7 +125,7 @@ body.remember-shell #webmasterWorkspace .workspace-top h2{font-size:clamp(25px,6
 <label for="eventType">Upplevelse</label><select id="eventType"><option value="fishing">Fiskeresa</option><option value="trip">Resa</option><option value="party">Fest</option><option value="wedding">Bröllop</option></select>
 <label for="startsAt">Startdatum och tid</label><input id="startsAt" type="datetime-local" required>
 <div id="tripEnd"><label for="endsAt">Resan slutar</label><input id="endsAt" type="datetime-local" required></div>
-<p class="muted" id="timeNote"></p><p class="muted">Fest/bröllop: 24 timmar från start. Resa/fiske: till 24 timmar efter slut. Standardgräns: 10 bilder.</p>
+<p class="muted" id="timeNote"></p><p class="muted">Fest/bröllop: 24 timmar från start. Resa/fiske: till 24 timmar efter slut. Gratisalbum: upp till 30 bilder i mobilkvalitet.</p>
 <div class="actions"><button id="createButton" type="submit">Skapa testalbum</button></div></form>
 <p id="createResult" role="status" aria-live="polite"></p></details></section>
 <p class="version">Remember</p>
@@ -398,3 +398,4 @@ $('createForm').addEventListener('submit',async event=>{
 });
 
 </script></main><script type="module" src="../project-template/container13-dev-tools.js"></script></body></html>
+

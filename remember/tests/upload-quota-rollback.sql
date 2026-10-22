@@ -16,8 +16,8 @@ BEGIN
  SELECT v,'upload-review-'||v::text,'DISPOSABLE UPLOAD REVIEW',actor,now()-interval '1 hour',now()+interval '1 day'
  FROM unnest(ARRAY[a,b,c]) AS ids(v);
  INSERT INTO remember.guest_links(album_id,token_sha256,created_by) VALUES(a,tok,actor);
- IF (SELECT photo_limit FROM remember.albums WHERE id=a)<>10 THEN RAISE EXCEPTION 'Default quota is not 10'; END IF;
- FOR i IN 1..10 LOOP
+ IF (SELECT photo_limit FROM remember.albums WHERE id=a)<>30 THEN RAISE EXCEPTION 'Default quota is not 30'; END IF;
+ FOR i IN 1..30 LOOP
    r:=public.remember_guest_photo_reserve(tok,gen_random_uuid());
    IF r->>'accepted' IS DISTINCT FROM 'true' THEN RAISE EXCEPTION 'Reservation % rejected: %',i,r; END IF;
    IF i=1 THEN first_id:=(r->>'photoId')::uuid; END IF;
@@ -31,17 +31,17 @@ BEGIN
  r:=public.remember_photo_complete_upload(second_id,tok);
  IF r->>'accepted' IS DISTINCT FROM 'true' THEN RAISE EXCEPTION 'Complete failed'; END IF;
  r:=public.remember_guest_photo_reserve(tok,gen_random_uuid());
- IF r->>'reason' IS DISTINCT FROM 'limit' THEN RAISE EXCEPTION 'Guest 11th accepted: %',r; END IF;
+ IF r->>'reason' IS DISTINCT FROM 'limit' THEN RAISE EXCEPTION 'Guest 31st accepted: %',r; END IF;
  r:=public.remember_webmaster_photo_reserve(actor,a,gen_random_uuid());
- IF r->>'reason' IS DISTINCT FROM 'limit' THEN RAISE EXCEPTION 'Owner 11th accepted: %',r; END IF;
- INSERT INTO upload_review_results VALUES('default 10; guest + owner 11th blocked with mixed counted states','PASS');
+ IF r->>'reason' IS DISTINCT FROM 'limit' THEN RAISE EXCEPTION 'Owner 31st accepted: %',r; END IF;
+ INSERT INTO upload_review_results VALUES('default 30; guest + owner 31st blocked with mixed counted states','PASS');
  -- Expire only an unstarted reservation; the next reservation can use that slot.
  UPDATE remember.album_photos SET reservation_expires_at=now()-interval '1 minute'
  WHERE id=(SELECT id FROM remember.album_photos WHERE album_id=a AND state='reserved' LIMIT 1);
  r:=public.remember_guest_photo_reserve(tok,gen_random_uuid());
  IF r->>'accepted' IS DISTINCT FROM 'true' THEN RAISE EXCEPTION 'Expired unused slot not reclaimed'; END IF;
  SELECT count(*) INTO n FROM remember.album_photos WHERE album_id=a AND state IN ('reserved','uploading','ready');
- IF n<>10 THEN RAISE EXCEPTION 'Wrong counted quota after expiry'; END IF;
+ IF n<>30 THEN RAISE EXCEPTION 'Wrong counted quota after expiry'; END IF;
  INSERT INTO upload_review_results VALUES('expired reserved slot reclaimed without exceeding quota','PASS');
  UPDATE remember.album_photos SET reservation_expires_at=now()-interval '1 minute' WHERE id=first_id;
  r:=public.remember_guest_photo_reserve(tok,gen_random_uuid());
@@ -97,3 +97,4 @@ BEGIN
 END $test$;
 SELECT test,result FROM upload_review_results ORDER BY test;
 ROLLBACK;
+

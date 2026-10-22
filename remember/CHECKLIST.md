@@ -177,3 +177,10 @@ Detaljer och testkommandon: UPLOAD_VERIFICATION_2026-10-21.md. Tidigare generell
 - [ ] Slutlig CI/Pages/livekontroll.
 - [ ] Riktiga mobiloriginal, avsedda fotoboksstorlekar och kvalitets-/volymbedömning. Ingen generell fotobokskvalitets-PASS.
 - [ ] Verklig plan/användning/kostnad och därefter kontrollerat beslut om50-bildersnivå.
+
+
+## Beslut och kontrollpunkt0.1.168 —2026-10-22
+Projektägaren väljer **30 bilder i mobilkvalitet** för gratisalbum. Detta ersätter det tidigare preliminära50-bildersförslaget och kravet att gratisbilder ska dimensioneras för tryck. Marknadsföringen behåller **Testa gratis**. Information vid albumskapande och på startsidans informationsruta: uppgradering förbättrar inte redan uppladdade bilder; original måste laddas upp på nytt för högre kvalitet. Högupplöst betaluppladdning är ännu inte implementerad. Aktiv1920px mobilkomprimering behålls. SQL-default och båda skapande-RPC:er synkas; tidigare standardgräns10 höjs till30, specialgränser bevaras. Se free-tier-30/README.md för verifiering/återställning. CURRENT/PREVIOUS oförändrade. iPhonekontroll av texten återstår.
+- [x] Installerad30-gräns:30 tillåts,31 nekas gäst/ägare/webmaster, retry tar ingen extra plats; öppen/granskad registrering och skapande verifierade i SQL-rollback.
+- [x] Exakt funktions-readback och bevarade service-only ACL; befintliga13 bildrader/13 objekt oförändrade.
+- [ ] iPhone: läs informationen vid Skapa album och Så fungerar Remember.

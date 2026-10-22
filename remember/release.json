@@ -1,6 +1,6 @@
 {
-  "version": "0.1.167",
-  "release": "remember-0.1.167",
+  "version": "0.1.168",
+  "release": "remember-0.1.168",
   "updated": "2026-10-22",
   "assets": [
     "remember-design.css",
@@ -29,3 +29,4 @@
     "webmaster.html"
   ]
 }
+

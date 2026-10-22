@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.167",
-    "integrity": "GUEST_MODES_INSTALLED_CLOUD_SQL_ACL_HTTP_PASS_DEVICE_PENDING"
+    "candidate": "0.1.168",
+    "integrity": "MOBILE30_INSTALLED_SQL_READBACK_PASS_DEVICE_PENDING"
   },
   "workCheckpoint": {
-    "status": "PHOTO_QUALITY_COMPARISON_READY_REAL_IMAGES_PENDING",
-    "targetRelease": "0.1.167",
-    "goal": "Evaluate photobook-suitable compression before up-to50 free images",
-    "resumeInstruction": "Read PHOTO_QUALITY_REVIEW_0.1.167.md. Real active uploader uses existing1920px/600KiB-target WebP/JPEG preparer. Diagnostic image-compress-test.html compares original, unchanged current code and2400px JPEG82/85 locally without uploads/login. Actual Chromium canvas fixture tests PASS incl geometry, no upscale, malformed input, detail pan, downloads, zero image network requests and320/390/1280 layout. Verify CI/live .167; user selects real mobile originals for visual/size assessment. No quality/device PASS or quota/server changes. Preserve pending reviewed-album acceptance and .166 trash visual acceptance; do not repeat broad verified flows."
+    "status": "MOBILE30_INSTALLED_RELEASE_PENDING",
+    "targetRelease": "0.1.168",
+    "goal": "30 free mobile-quality images; clear upgrade limitation",
+    "resumeInstruction": "Read free-tier-30/README.md. User replaced the preliminary50-photo/print-quality direction with30 photos for mobile/digital viewing. SQL migration20261022112631 installed in ordinary Remember; default and both creation RPCs use30. Four former10-limit albums raised;13 photo rows and13 objects unchanged byte-for-byte metadata hashes. Installed actual RPC rollback tests pass30/31 and retry/ACL/modes. Verify GitHub/CI/live .168 and scoped iPhone visual acceptance. Existing1920px mobile compression remains unchanged. Do not promise high-resolution upgrade is implemented. CURRENT/PREVIOUS remain null."
   },
   "currentWork": {
-    "completed": "Built local image-quality comparison using actual current preparer and two2400px JPEG candidates. Geometry/UI/privacy/error tests pass with controlled fixtures; production uploader unchanged.",
-    "next": "User compares real mobile originals and intended photobook size/crops; evaluate volume and actual service plan before selecting compression and50-image quota.",
+    "completed": "Installed30-photo mobile trial quota and prepared clear trial/upgrade copy. Backend actual SQL rollback tests and exact function/ACL readback PASS.",
+    "next": "Verify .168 release CI/live and iPhone trial text; reviewed-album acceptance remains pending.",
     "blocked": false,
     "blocker": null
   },
@@ -922,16 +922,16 @@
     "quotaChanged": false
   },
   "freeTierInvestigation": {
-    "targetPhotos": 50,
-    "status": "LOCAL_COMPARISON_READY_REAL_IMAGE_AND_COST_TESTS_PENDING",
+    "targetPhotos": 30,
+    "status": "SUPERSEDED_BY_APPROVED_MOBILE30_2026-10-22",
     "lastUserReminder": "2026-10-22",
     "qualityGoal": "Compression suitable for photobook use; validate real images and intended print sizes/crops",
     "preliminaryOnly": {
       "longestSidePixels": 2400,
       "jpegQuality": "80–85%"
     },
-    "next": "Compare originals/compressed image quality and storage cost before selecting final settings and changing quota",
-    "currentQuotaChanged": false,
+    "next": "Previous print-quality/50-photo proposals are historical; follow freeTier.",
+    "currentQuotaChanged": true,
     "publicWording": "Testa gratis",
     "comparison": {
       "version": "0.1.167",
@@ -943,5 +943,30 @@
       "realPhotoQuality": "PENDING",
       "physicalDevice": "PENDING"
     }
+  },
+  "freeTier": {
+    "version": "0.1.168",
+    "approvedOn": "2026-10-22",
+    "photos": 30,
+    "quality": "mobile/digital",
+    "longestSidePixels": 1920,
+    "compressionChanged": false,
+    "softTargetBytes": 614400,
+    "serverMaxBytes": 2097152,
+    "publicWording": "Testa gratis",
+    "upgradeDisclosure": "En uppgradering förbättrar inte redan uppladdade bilder. För högre kvalitet måste originalbilderna laddas upp på nytt.",
+    "highResolutionUpgradeImplemented": false,
+    "migration": {
+      "version": "20261022112631",
+      "name": "remember_free_mobile_30_0168"
+    },
+    "existingTrialAlbumsRaised": 4,
+    "photosUnchanged": 13,
+    "objectsUnchanged": 13,
+    "sqlRollback": "PASS_DEFAULT_CREATION_BOTH_MODES_30_31_GUEST_OWNER_WEBMASTER_RETRY_ACL",
+    "rpcReadback": "TWO_EXACT_BODIES_ACL_UNCHANGED",
+    "securityAdvisors": "UNCHANGED_EXCLUDING_OBSERVED_AT",
+    "device": "PENDING",
+    "report": "remember/free-tier-30/README.md"
   }
 }

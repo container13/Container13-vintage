@@ -44,7 +44,7 @@ GitHub Pages villkor begränsar användning för kommersiell SaaS och kommersiel
 
 ## Remember-regler och Auth
 
-- Gratisalbumens standard är 10 bilder. Det är en produktregel, inte Supabases lagringskvot. Betalning/uppgraderingar är inte färdig verifierad funktionalitet.
+- Gratisalbumens standard är 30 bilder i mobilkvalitet (beslut 2026-10-22, version 0.1.168). Det är en produktregel, inte Supabases lagringskvot. Betalning/uppgraderingar är inte färdig verifierad funktionalitet.
 - Fest/bröllop har standardfönster 24 timmar från start; resa/fiske till 24 timmar efter slut. Ändringsbara fönster ska följa faktiska serverregler.
 - Bildförberedelsen accepterar JPEG/PNG/WebP, högst 10 MiB original, längsta sida 1920 pixlar och mål cirka 600 KiB. Målet är inte en garanterad filstorlek. Upload-kandidaten har separat servergräns 2 MiB. Kandidatkod är inte i sig bevis för driftsatta regler; verifiera aktiv funktion och bucket före löfte till användare.
 - SMTP sparades med minst 60 sekunder mellan mail till samma användare. Supabase har också en separat projektgräns per timme. UI angav 30/timme vid aktivering; det aktuella sparade timvärdet är ännu inte återläst. Anta därför inte att 100 mail kan skickas samtidigt.
@@ -90,3 +90,7 @@ Driftpanelen börjar med enbart läsåtkomst och serververifierad behörighet pe
 - https://supabase.com/docs/guides/auth/rate-limits
 - https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits
 - Faktiska källor: image-compress.js, deploy/remember-photo-upload_REVIEW_ONLY.ts och befintlig albumlogik. Driftsstatus följer PROJECT_CURRENT_STATE.json, inte filnamn eller kandidaters kommentarer.
+
+
+## Gratisnivå 0.1.168
+30 bilder per album; tidigare standardalbum med gräns10 höjs till30, specialgränser bevaras. Befintliga bilder kodas inte om. Aktiv mobilförberedelse behålls: längsta sida1920px, ingen uppskalning, WebP/JPEG, mjukt mål600KiB; inte en garanterad filstorlek. Serverns2MiB-gräns behålls. En uppgradering förbättrar inte tidigare uppladdningar; original måste laddas upp på nytt. Högupplöst betaluppladdning är inte implementerad av denna ändring.
