@@ -169,3 +169,11 @@ Detaljer och testkommandon: UPLOAD_VERIFICATION_2026-10-21.md. Tidigare generell
 - [x] 5 DOM-fall: bekräfta/avbryt/fel/gäst/antal och bibehållen osparad sluttid; ikonens tillgängliga namn kontrollerat.
 - [x] 6 Chromium-fixturer admin/gäst 320/390/1280, 44x44 hörnläge, ingen extra bildkortshöjd, gäst utan kontroll och bildvisare PASS; mobilrender granskad.
 - [ ] Slutlig CI/publicering och iPhone-visuell acceptans. Inga befintliga bilder raderade som test.
+
+## Bildkvalitetsjämförelse 0.1.167
+- [x] Faktisk aktiv komprimeringsväg läst:1920px,600KiB mål, WebP/JPEG, kvalitetsgolv0.68.
+- [x] Lokal original/dagens/JPEG82/JPEG85-jämförelse förberedd; förstoring, filstorlek och50×bilddata.
+- [x] Verklig Chromium-canvas, skalning/ingen förstoring/typer/fel/detaljpan/nedladdningar/ingen bildnätverkstrafik och tre skärmstorlekar PASS; syntetiska fixturer.
+- [ ] Slutlig CI/Pages/livekontroll.
+- [ ] Riktiga mobiloriginal, avsedda fotoboksstorlekar och kvalitets-/volymbedömning. Ingen generell fotobokskvalitets-PASS.
+- [ ] Verklig plan/användning/kostnad och därefter kontrollerat beslut om50-bildersnivå.

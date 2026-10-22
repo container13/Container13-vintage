@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.166",
+    "candidate": "0.1.167",
     "integrity": "GUEST_MODES_INSTALLED_CLOUD_SQL_ACL_HTTP_PASS_DEVICE_PENDING"
   },
   "workCheckpoint": {
-    "status": "GUEST_MODES_INSTALLED_DEVICE_PENDING",
-    "targetRelease": "0.1.166",
-    "goal": "Open and reviewed guest modes at album creation",
-    "resumeInstruction": "User approved database installation on 2026-10-22. Read guest-modes-candidate/INSTALLATION_2026-10-22.md. Migration 20261022054607 installed in ordinary Remember, actual cloud ROLLBACK PASS, four function bodies exact, anon/authenticated direct RPC denied, two Edge exact readback (onboarding v2/guest metadata v3), 5 negative/public HTTP cases PASS. Existing data unchanged. Verify final commit CI/Pages/live bytes then targeted user iPhone test: new reviewed album, guest upload hidden until owner approves. No repeated permission needed. Logged-in guests/personal invitations deferred. CURRENT/PREVIOUS unset. .162 published and CI/live exact PASS at 8fe2d25d54c30b5a7278a744f78083f1758a345e. Final 0.1.163 removes one remaining HTML 72h purge promise; no backend change. Public copy .164 uses Testa gratis instead of marketing 10 free photos; quota unchanged. See DECISIONS.md. No broad retest needed for copy. User found the review dropdown ambiguous. .165 uses two visible native radios; test selected open/reviewed payload through existing onboarding. Remember queued evaluation of up to 50 free images with photobook-suitable compression (preliminary 2400px / quality80–85%, not installed). See DECISIONS and CHECKLIST; do not treat old 10-photo quota as final product plan. .166 delivers previously missed corner trash icon (shared gallery and real owner), existing confirmation/server delete preserved; no guest trash. 5 DOM and 6 Chromium fixtures PASS, device visual acceptance pending. Keep 50-photo/photobook quality investigation and reviewed-album acceptance queued."
+    "status": "PHOTO_QUALITY_COMPARISON_READY_REAL_IMAGES_PENDING",
+    "targetRelease": "0.1.167",
+    "goal": "Evaluate photobook-suitable compression before up-to50 free images",
+    "resumeInstruction": "Read PHOTO_QUALITY_REVIEW_0.1.167.md. Real active uploader uses existing1920px/600KiB-target WebP/JPEG preparer. Diagnostic image-compress-test.html compares original, unchanged current code and2400px JPEG82/85 locally without uploads/login. Actual Chromium canvas fixture tests PASS incl geometry, no upscale, malformed input, detail pan, downloads, zero image network requests and320/390/1280 layout. Verify CI/live .167; user selects real mobile originals for visual/size assessment. No quality/device PASS or quota/server changes. Preserve pending reviewed-album acceptance and .166 trash visual acceptance; do not repeat broad verified flows."
   },
   "currentWork": {
-    "completed": "Corner trash icon replaces below-image delete button in managed shared gallery; actual owner uses same icon/44px target. Existing confirmation, authorization and viewer behavior preserved; five DOM/six Chromium fixtures PASS.",
-    "next": "Verify .166 publication and user visual acceptance. Keep reviewed-album device workflow and up-to50 photobook-quality/cost comparison as separate pending work.",
+    "completed": "Built local image-quality comparison using actual current preparer and two2400px JPEG candidates. Geometry/UI/privacy/error tests pass with controlled fixtures; production uploader unchanged.",
+    "next": "User compares real mobile originals and intended photobook size/crops; evaluate volume and actual service plan before selecting compression and50-image quota.",
     "blocked": false,
     "blocker": null
   },
@@ -627,7 +627,8 @@
     ],
     "cameraException": "camera-session-test.html is an embedded active camera flow without release bootstrap; integration must protect camera activity and needs separate review.",
     "diagnosticPages": "Other *test/prototype pages are not part of the nine release-bearing entries; not promoted or deleted.",
-    "testAdminException": "test-admin.html is an isolated diagnostic test frontend with its own explicit version; no production updater or PWA manifest. Not one of the nine normal entrypoints."
+    "testAdminException": "test-admin.html is an isolated diagnostic test frontend with its own explicit version; no production updater or PWA manifest. Not one of the nine normal entrypoints.",
+    "imageQualityException": "image-compress-test.html is a diagnostic local-photo tool with explicit version; no updater/auth/manifest; selected files never uploaded. Not one of nine normal release entrypoints."
   },
   "deviceVerification139": {
     "status": "USER_REPORTED_PASS",
@@ -922,7 +923,7 @@
   },
   "freeTierInvestigation": {
     "targetPhotos": 50,
-    "status": "PROPOSAL_TO_EVALUATE_NOT_INSTALLED",
+    "status": "LOCAL_COMPARISON_READY_REAL_IMAGE_AND_COST_TESTS_PENDING",
     "lastUserReminder": "2026-10-22",
     "qualityGoal": "Compression suitable for photobook use; validate real images and intended print sizes/crops",
     "preliminaryOnly": {
@@ -931,6 +932,16 @@
     },
     "next": "Compare originals/compressed image quality and storage cost before selecting final settings and changing quota",
     "currentQuotaChanged": false,
-    "publicWording": "Testa gratis"
+    "publicWording": "Testa gratis",
+    "comparison": {
+      "version": "0.1.167",
+      "url": "https://container13.se/remember/image-compress-test.html",
+      "sourceReport": "remember/PHOTO_QUALITY_REVIEW_0.1.167.md",
+      "productionCodeChanged": false,
+      "uploadedImages": false,
+      "fixtureTests": "CHROMIUM_CANVAS_GEOMETRY_PRIVACY_UI_ERROR_PASS",
+      "realPhotoQuality": "PENDING",
+      "physicalDevice": "PENDING"
+    }
   }
 }
