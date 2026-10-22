@@ -2,26 +2,26 @@
   "schema": "PROJECT-CURRENT-STATE-1",
   "project": "Container13 Remember – gemensamma album",
   "repository": "container13/Container13-vintage",
-  "branch": "remember/guest-modes-0162",
+  "branch": "ccc-demo-public-test",
   "projectRoot": "remember/",
   "riskClass": "HIGH",
   "release": {
     "previousVerified": null,
     "currentVerified": null,
     "candidate": "0.1.162",
-    "integrity": "ISOLATED_TEST_PASS_NOT_INSTALLED_NOT_PUBLISHED_PENDING_DATABASE_APPROVAL"
+    "integrity": "GUEST_MODES_INSTALLED_CLOUD_SQL_ACL_HTTP_PASS_DEVICE_PENDING"
   },
   "workCheckpoint": {
-    "status": "GUEST_MODES_REVIEW_READY_NOT_INSTALLED",
+    "status": "GUEST_MODES_INSTALLED_DEVICE_PENDING",
     "targetRelease": "0.1.162",
     "goal": "Open and reviewed guest modes at album creation",
-    "resumeInstruction": "Candidate branch remember/guest-modes-0162. Read guest-modes-candidate/README.md. Local PGlite actual PL/pgSQL tests, 22 Edge mocks, 4 registration DOM, 3 guest DOM and 3 Chromium layouts PASS. Shared publishing branch and original Supabase unchanged (.161). User handoff requires separate database approval; ask only for prepared SQL installation. After approval run baseline/backup, SQL, actual cloud ROLLBACK/ACL/advisors, deploy two Edge candidates with verify_jwt=false preserved, read back, then publish same reviewed frontend to shared branch with expected head lease and CI/live checks. No logged-in guests or personal invitations in this phase."
+    "resumeInstruction": "User approved database installation on 2026-10-22. Read guest-modes-candidate/INSTALLATION_2026-10-22.md. Migration 20261022054607 installed in ordinary Remember, actual cloud ROLLBACK PASS, four function bodies exact, anon/authenticated direct RPC denied, two Edge exact readback (onboarding v2/guest metadata v3), 5 negative/public HTTP cases PASS. Existing data unchanged. Verify final commit CI/Pages/live bytes then targeted user iPhone test: new reviewed album, guest upload hidden until owner approves. No repeated permission needed. Logged-in guests/personal invitations deferred. CURRENT/PREVIOUS unset."
   },
   "currentWork": {
-    "completed": "Prepared .162 open/reviewed creation choice, atomic server completion preserving selection through email activation, existing approval queue and guest visibility enforcement, guest pending messages, accurate quarantine wording. All tests isolated; no original database mutations.",
-    "next": "Project-owner approval for documented database installation, then controlled installation/deployment/publication and targeted mobile acceptance.",
-    "blocked": true,
-    "blocker": "Separate database approval required by project-owner handoff, installation candidate ready."
+    "completed": "Approved guest-mode database installed; actual SQL rollback, source/ACL readback and deployed Edge HTTP checks pass. Reviewed frontend ready for shared publication; existing albums open and original data preserved.",
+    "next": "Verify final publication and targeted mobile acceptance of new open/reviewed creation and owner approval.",
+    "blocked": false,
+    "blocker": null
   },
   "pausedWork": {
     "fotobok": "Manual page-turning approved on iPhone at 0.1.137; preserve. Other photobook visuals and complete app release gates are separate."
@@ -829,7 +829,7 @@
   "publishingBranch": "ccc-demo-public-test",
   "guestModes": {
     "version": "0.1.162",
-    "status": "REVIEW_READY_NOT_INSTALLED",
+    "status": "BACKEND_INSTALLED_DEVICE_PENDING",
     "implementedCandidates": [
       "open",
       "reviewed"
@@ -841,8 +841,8 @@
     ],
     "existingAlbums": "Default open; legacy security flags/settings preserved",
     "newSQL": "remember/guest-modes-candidate/INSTALL_REVIEW_FIRST.sql",
-    "report": "remember/guest-modes-candidate/README.md",
-    "backendChangesPerformed": false,
+    "report": "remember/guest-modes-candidate/INSTALLATION_2026-10-22.md",
+    "backendChangesPerformed": true,
     "device": "NOT_TESTED",
     "localTests": {
       "database": "PGLITE_ACTUAL_SQL_PASS_INCLUDING_ATOMIC_FAILURE_ROLLBACK",
@@ -855,11 +855,38 @@
         1280
       ]
     },
-    "liveVersion": "0.1.161",
+    "liveVersion": "CHECK_AFTER_PUBLISH",
     "limitations": [
-      "No real cloud SQL installation or new authenticated HTTP test yet",
+      "New authenticated guest/owner HTTP workflow and iPhone acceptance pending",
       "No concurrent HTTP test",
-      "Existing 72h automatic quarantine deletion is not installed in ordinary Remember; misleading frontend promises removed in candidate"
-    ]
+      "72h automatic quarantine deletion is not installed; UI makes no such promise"
+    ],
+    "approved": true,
+    "approvedOn": "2026-10-22",
+    "migration": {
+      "name": "remember_album_guest_modes_0162",
+      "version": "20261022054607"
+    },
+    "cloudSQL": "ROLLBACK_PASS_OPEN_REVIEWED_REPLAY_QUEUE_GUEST_VISIBILITY_METADATA",
+    "functionReadback": "FOUR_EXACT_BODIES",
+    "rpcAuthorization": "SERVICE_ONLY_GRANTS_AND_ACTUAL_ANON_AUTHENTICATED_DENIAL_PASS",
+    "edges": {
+      "onboarding": {
+        "version": 2,
+        "source": "EXACT_PASS",
+        "verify_jwt": false
+      },
+      "guestMetadata": {
+        "version": 3,
+        "source": "EXACT_PASS",
+        "verify_jwt": false
+      }
+    },
+    "http": "FIVE_CASES_PASS_401_403_400_UNKNOWN_GUEST_200_VERSION_0.1.162",
+    "existingDataUnchanged": true,
+    "backupBranch": "remember/before-guest-modes-2026-10-22-0161",
+    "backupCommit": "a33cef3996f63235a2426c3f537d1f6943e69bb7",
+    "approvedSourceCommit": "dddc9b3729337c0a86563b1f5905954b64d4d47a",
+    "securityAdvisors": "UNCHANGED"
   }
 }

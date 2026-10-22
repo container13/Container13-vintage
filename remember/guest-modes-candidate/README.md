@@ -1,6 +1,6 @@
 # Gästnivåer — kandidat 0.1.162
-2026-10-22. **BYGGT OCH LOKALT TESTAT. INTE INSTALLERAT ELLER PUBLICERAT.**
-Ordinarie Remember är fortsatt utvecklingsmiljö på .161. Supabase: wykvztfmfbboxiqvuvwr.
+2026-10-22. **GODKÄND BACKEND INSTALLERAD; IPHONE-VERIFIERING ÅTERSTÅR.**
+Ordinarie Remember är fortsatt utvecklingsmiljö. Se INSTALLATION_2026-10-22.md för verklig migration, SQL-/HTTP-verifiering och återställningsunderlag. Avsnitten om förberedelser nedan beskriver det godkända förslaget före installation. Supabase: wykvztfmfbboxiqvuvwr.
 
 ## Beslut och innehåll
 Albumägaren väljer vid registrering:
@@ -55,7 +55,7 @@ NODE_PATH="$PWD/remember/guest-modes-candidate/node_modules" node --experimental
 ```
 
 ## Separat installationsgodkännande
-Projektägarens överlämning kräver: ”Gör inga databasändringar eller destruktiva åtgärder utan separat kontroll och godkännande.” Därför är allt förberett i separat gren, utan skrivning till Supabase eller publiceringsgrenen.
+Projektägarens överlämning kräver: ”Gör inga databasändringar eller destruktiva åtgärder utan separat kontroll och godkännande.” Förslaget sparades därför först i separat gren. Projektägaren har därefter uttryckligen godkänt installationen; underlag och resultat finns i INSTALLATION_2026-10-22.md.
 
 Efter godkännande:
 1. Kontrollera färsk Git-HEAD/release, schema, installerade två Edge-källor och baslinje med antal/raddigests. Bevara före-commit och aktuella källor; before/ är lästa källor från 2026-10-22, inte en full databasbackup.

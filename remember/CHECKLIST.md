@@ -1,5 +1,5 @@
 # Remember — gemensam checklista
-Uppdaterad 2026-10-22. Kandidat 0.1.162 (förslagsgren; publicerad .161). Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
+Uppdaterad 2026-10-22. Kandidat 0.1.162 (backend installerad; slutpublicering verifieras separat). Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
 
 - [x] Manuell fotobok: 0.1.137, användarens iPhone-PASS.
 - [x] Säkerhetsgren 0.1.137 på 8a592bb8b7b767a54df595e5e7d5d5d2eb10cd7f verifierad.
@@ -143,7 +143,7 @@ Detaljer och testkommandon: UPLOAD_VERIFICATION_2026-10-21.md. Tidigare generell
 - [x] Lokalt faktiska SQL-funktioner/trigger i isolerat PGlite PASS inklusive två lägen, behörigheter, godkännande/synlighet, metadata, återförsök och felrollback.
 - [x] 22 Edge-mockfall, 4 registrerings-DOM, 3 gäst-DOM och 3 Chromium-layouter PASS; mobilrender granskad.
 - [x] Befintlig granskning OFF och avsaknad av cron.job konstaterad; inga vanliga Remember-data ändrade.
-- [ ] Separat databasgodkännande enligt överlämningen.
-- [ ] Installerad SQL, cloud-ROLLBACK, ACL-/säkerhetskontroll och exakt Edge-readback.
+- [x] Separat databasgodkännande: projektägaren ”Godkänner”, 2026-10-22.
+- [x] Installerad migration 20261022054607, verklig cloud-ROLLBACK, faktisk nekad anon/authenticated, oförändrade säkerhetsråd och exakt SQL/Edge-readback. Fem HTTP-fall PASS. Befintliga album/bilder/utkast/inställningar bevarade.
 - [ ] CI/Pages/livefiler efter kontrollerad publicering.
 - [ ] Avgränsat iPhone-test av nytt öppet/granskat album och godkännande. Ingen bred omtestning av redan accepterade flöden.
