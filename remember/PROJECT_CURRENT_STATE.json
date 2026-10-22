@@ -2,26 +2,26 @@
   "schema": "PROJECT-CURRENT-STATE-1",
   "project": "Container13 Remember – gemensamma album",
   "repository": "container13/Container13-vintage",
-  "branch": "ccc-demo-public-test",
+  "branch": "remember/guest-modes-0162",
   "projectRoot": "remember/",
   "riskClass": "HIGH",
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.161",
-    "integrity": "PHOTO_DELETION_EDGE_DOM_SQL_CHROMIUM_PASS_DEVICE_PENDING"
+    "candidate": "0.1.162",
+    "integrity": "ISOLATED_TEST_PASS_NOT_INSTALLED_NOT_PUBLISHED_PENDING_DATABASE_APPROVAL"
   },
   "workCheckpoint": {
-    "status": "PHOTO_DELETION_DEVICE_PENDING",
-    "targetRelease": "0.1.161",
-    "goal": "Photo deletion for verified webmaster and album owner",
-    "resumeInstruction": "Read PHOTO_DELETION_0.1.161.md. User approved .160 framing ('Blev tip top!'). Shared admin/owner-preview gallery now offers confirmed deletion; actual owner.html existing delete retained. owner-manager v6 exact readback. 17 Edge mock, 5 deletion DOM, 5 owner view, 4 Chromium fixtures and real SQL ROLLBACK PASS. No existing photo deleted by assistant. Verify final GitHub/CI/Pages/live bytes, then user tests one disposable photo in each required role; do not repeat accepted broad flows."
+    "status": "GUEST_MODES_REVIEW_READY_NOT_INSTALLED",
+    "targetRelease": "0.1.162",
+    "goal": "Open and reviewed guest modes at album creation",
+    "resumeInstruction": "Candidate branch remember/guest-modes-0162. Read guest-modes-candidate/README.md. Local PGlite actual PL/pgSQL tests, 22 Edge mocks, 4 registration DOM, 3 guest DOM and 3 Chromium layouts PASS. Shared publishing branch and original Supabase unchanged (.161). User handoff requires separate database approval; ask only for prepared SQL installation. After approval run baseline/backup, SQL, actual cloud ROLLBACK/ACL/advisors, deploy two Edge candidates with verify_jwt=false preserved, read back, then publish same reviewed frontend to shared branch with expected head lease and CI/live checks. No logged-in guests or personal invitations in this phase."
   },
   "currentWork": {
-    "completed": "Confirmed deletion UI in managed gallery, server-authorized owner/webmaster deletion, retained deleted upload identity blocks replay; authoritative photo count update preserves unsaved schedule fields. No SQL/schema changes.",
-    "next": "Verify publication and targeted user deletion acceptance; CURRENT/PREVIOUS remain unset.",
-    "blocked": false,
-    "blocker": null
+    "completed": "Prepared .162 open/reviewed creation choice, atomic server completion preserving selection through email activation, existing approval queue and guest visibility enforcement, guest pending messages, accurate quarantine wording. All tests isolated; no original database mutations.",
+    "next": "Project-owner approval for documented database installation, then controlled installation/deployment/publication and targeted mobile acceptance.",
+    "blocked": true,
+    "blocker": "Separate database approval required by project-owner handoff, installation candidate ready."
   },
   "pausedWork": {
     "fotobok": "Manual page-turning approved on iPhone at 0.1.137; preserve. Other photobook visuals and complete app release gates are separate."
@@ -825,5 +825,41 @@
     "authenticatedDeleteHTTP": "NOT_PERFORMED_NO_EXISTING_USER_PHOTOS_DELETED",
     "device": "PENDING",
     "report": "remember/PHOTO_DELETION_0.1.161.md"
+  },
+  "publishingBranch": "ccc-demo-public-test",
+  "guestModes": {
+    "version": "0.1.162",
+    "status": "REVIEW_READY_NOT_INSTALLED",
+    "implementedCandidates": [
+      "open",
+      "reviewed"
+    ],
+    "deferred": [
+      "logged-in guests",
+      "guest self-deletion",
+      "personal invitations"
+    ],
+    "existingAlbums": "Default open; legacy security flags/settings preserved",
+    "newSQL": "remember/guest-modes-candidate/INSTALL_REVIEW_FIRST.sql",
+    "report": "remember/guest-modes-candidate/README.md",
+    "backendChangesPerformed": false,
+    "device": "NOT_TESTED",
+    "localTests": {
+      "database": "PGLITE_ACTUAL_SQL_PASS_INCLUDING_ATOMIC_FAILURE_ROLLBACK",
+      "onboardingEdgeMocks": 22,
+      "registrationDOM": 4,
+      "guestDOM": 3,
+      "chromiumWidths": [
+        320,
+        390,
+        1280
+      ]
+    },
+    "liveVersion": "0.1.161",
+    "limitations": [
+      "No real cloud SQL installation or new authenticated HTTP test yet",
+      "No concurrent HTTP test",
+      "Existing 72h automatic quarantine deletion is not installed in ordinary Remember; misleading frontend promises removed in candidate"
+    ]
   }
 }

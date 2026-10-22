@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "description": "Isolated guest-mode candidate tests; no production dependency",
+  "devDependencies": {
+    "@electric-sql/pglite": "0.3.14",
+    "jsdom": "26.1.0"
+  }
+}
