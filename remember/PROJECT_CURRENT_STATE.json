@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.160",
-    "integrity": "GALLERY_FRAMING_CHROMIUM_LAYOUT_PASS_DEVICE_VISUAL_PENDING"
+    "candidate": "0.1.161",
+    "integrity": "PHOTO_DELETION_EDGE_DOM_SQL_CHROMIUM_PASS_DEVICE_PENDING"
   },
   "workCheckpoint": {
-    "status": "GALLERY_FRAMING_DEVICE_VISUAL_PENDING",
-    "targetRelease": "0.1.160",
-    "goal": "Approved gallery panel and warm photo frames",
-    "resumeInstruction": "User approved common dark translucent gallery panel, warm-white frames and subtle shadows. CSS only with scoped #rememberGallery rules, no viewer/photobook/upload logic edits. Chromium fixture 320/390/768/1280 on admin and guest galleries PASS (8 cases), two mobile/three desktop columns, no overflow, fullscreen open/close and no frame on fullscreen image. Verify final commit CI/Pages/live .160 then visual acceptance on user iPhone. Prior webmaster upload retry user confirmed success with screenshots, do not request same test again."
+    "status": "PHOTO_DELETION_DEVICE_PENDING",
+    "targetRelease": "0.1.161",
+    "goal": "Photo deletion for verified webmaster and album owner",
+    "resumeInstruction": "Read PHOTO_DELETION_0.1.161.md. User approved .160 framing ('Blev tip top!'). Shared admin/owner-preview gallery now offers confirmed deletion; actual owner.html existing delete retained. owner-manager v6 exact readback. 17 Edge mock, 5 deletion DOM, 5 owner view, 4 Chromium fixtures and real SQL ROLLBACK PASS. No existing photo deleted by assistant. Verify final GitHub/CI/Pages/live bytes, then user tests one disposable photo in each required role; do not repeat accepted broad flows."
   },
   "currentWork": {
-    "completed": "Shared gallery CSS panel, 5px warm-white thumbnail borders and soft shadows. Verified 8 actual Chromium layout/overlay fixture cases; inspected mobile screenshot. Recorded user-confirmed webmaster upload success after .159.",
-    "next": "Verify publication and user visual acceptance of framed gallery on iPhone; preserve already working upload and viewer flows.",
+    "completed": "Confirmed deletion UI in managed gallery, server-authorized owner/webmaster deletion, retained deleted upload identity blocks replay; authoritative photo count update preserves unsaved schedule fields. No SQL/schema changes.",
+    "next": "Verify publication and targeted user deletion acceptance; CURRENT/PREVIOUS remain unset.",
     "blocked": false,
     "blocker": null
   },
@@ -794,8 +794,36 @@
       1280
     ],
     "viewer": "FULL_VIEWPORT_OPEN_CLOSE_PASS_NO_THUMBNAIL_FRAME_IN_FULLSCREEN",
-    "physicalVisualAcceptance": "PENDING",
+    "physicalVisualAcceptance": "USER_REPORTED_PASS_2026-10-22",
     "logicChanges": false,
-    "report": "remember/GALLERY_FRAMING_0.1.160.md"
+    "report": "remember/GALLERY_FRAMING_0.1.160.md",
+    "userEvidence": "Blev tip top!; IMG_3898/IMG_3899/IMG_3900 show .160 framed gallery"
+  },
+  "photoDeletion": {
+    "version": "0.1.161",
+    "projectRef": "wykvztfmfbboxiqvuvwr",
+    "edgeFunction": "remember-owner-manager",
+    "edgeVersion": 6,
+    "edgeReadback": "EXACT_SOURCE_PASS_VERIFY_JWT_FALSE_PRESERVED_BODY_GETUSER_REQUIRED",
+    "backupBranch": "remember/before-photo-delete-2026-10-22-0160",
+    "backupCommit": "9ddacccf39b7feca3938d72d8b30dd731f81bf21",
+    "tests": {
+      "edgeMock": 17,
+      "deletionDOM": 5,
+      "ownerViewDOM": 5,
+      "chromium": 4,
+      "sql": "ACTUAL_ROLLBACK_PASS_QUOTA_AND_REPLAY",
+      "http": "UNAUTHENTICATED_401_X_VERSION_0.1.161"
+    },
+    "securityAdvisors": "UNCHANGED_EXCLUDING_OBSERVED_AT",
+    "existingDataUnchanged": true,
+    "counts": {
+      "albums": 2,
+      "photoRows": 11,
+      "storageObjects": 11
+    },
+    "authenticatedDeleteHTTP": "NOT_PERFORMED_NO_EXISTING_USER_PHOTOS_DELETED",
+    "device": "PENDING",
+    "report": "remember/PHOTO_DELETION_0.1.161.md"
   }
 }

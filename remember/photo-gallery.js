@@ -1,6 +1,6 @@
 import {prepareRememberCrop,sharePreparedRememberCrop} from './photo-crop.js?v=0.1.73';
 const ENDPOINT='https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-photo-gallery';
-export function mountRememberGallery({container,auth}) {
+export function mountRememberGallery({container,auth,onDelete}) {
  container.innerHTML='<h2>Albumets bilder</h2><p class="remember-gallery-status" role="status">Hämtar bilder…</p><div class="remember-gallery-grid"></div><div class="remember-gallery-viewer" hidden><button type="button" aria-label="Stäng bild">✕ Stäng</button><button type="button" class="remember-crop-button" aria-label="Spara bildutsnitt">📷</button><div class="remember-gallery-image-frame"><img alt="Albumfoto"></div></div>';
  const styleId='remember-photo-gesture-style';
  if(!document.getElementById(styleId)){
@@ -63,9 +63,34 @@ export function mountRememberGallery({container,auth}) {
  viewer.addEventListener('pointercancel',()=>{mouseDown=false;resetDrag()});
  const onKey=e=>{if(viewer.hidden)return;if(e.key==='Escape')close();else if(e.key==='ArrowDown')show(pos+1);else if(e.key==='ArrowUp')show(pos-1)};
  document.addEventListener('keydown',onKey);
- let busy=false,stopped=false;
+ let busy=false,stopped=false,deleting=false,deleteEpoch=0;
+
+ function countText(){return photos.length?photos.length+' bilder i albumet · senaste överst':'Inga bilder i albumet ännu.';}
+ function renderPhotos(){
+  grid.replaceChildren(...photos.map((p,i)=>{
+   const img=document.createElement('img');img.src=p.url;img.alt='Albumfoto '+(i+1);img.loading=i<4?'eager':'lazy';
+   img.onclick=()=>{if(deleting)return;show(i);document.body.style.overflow='hidden';};
+   if(typeof onDelete!=='function')return img;
+   const card=document.createElement('div');card.className='remember-gallery-card';
+   const button=document.createElement('button');button.type='button';button.className='remember-gallery-delete';
+   button.textContent='Ta bort';button.setAttribute('aria-label','Ta bort bild '+(i+1));button.disabled=deleting;
+   button.onclick=async()=>{
+    if(deleting||stopped||!confirm('Ta bort den här bilden permanent från albumet? Det går inte att ångra.'))return;
+    deleting=true;deleteEpoch++;status.textContent='Tar bort bilden…';
+    grid.querySelectorAll('.remember-gallery-delete').forEach(b=>{b.disabled=true;});
+    try{
+     await onDelete(p.id);photos=photos.filter(photo=>photo.id!==p.id);renderPhotos();
+     status.textContent='Bilden har tagits bort. '+countText();
+    }catch(e){status.textContent='Kunde inte ta bort bilden. '+(e instanceof Error?e.message:'Försök igen.');}
+    finally{deleting=false;grid.querySelectorAll('.remember-gallery-delete').forEach(b=>{b.disabled=false;});}
+   };
+   card.append(img,button);return card;
+  }));
+ }
+
  async function refresh(){
-  if(busy||stopped||document.hidden)return;
+  if(busy||stopped||deleting||document.hidden)return;
+  const epoch=deleteEpoch;
   busy=true;
   try{
    const options=await auth();
@@ -73,12 +98,12 @@ export function mountRememberGallery({container,auth}) {
    const response=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json',...(options.bearer?{Authorization:'Bearer '+options.bearer}:{})},body:JSON.stringify(options.token?{token:options.token}:{albumId:options.albumId}),cache:'no-store'});
    const data=await response.json().catch(()=>({}));
    if(!response.ok||!data.ok)throw Error(data.error||'Kunde inte hämta bilder');
+   if(epoch!==deleteEpoch)return;
    photos=data.photos||[];
    const previous=grid.querySelectorAll('img').length;
-   grid.replaceChildren(...photos.map((p,i)=>{const img=document.createElement('img');img.src=p.url;img.alt='Albumfoto '+(i+1);img.loading=i<4?'eager':'lazy';img.onclick=()=>{show(i);document.body.style.overflow='hidden';};return img;}));
-   status.textContent=photos.length?photos.length+' bilder i albumet · senaste överst':'Inga bilder i albumet ännu.';
+   renderPhotos();status.textContent=countText();
    if(photos.length>previous)container.dataset.lastAdded=String(Date.now());
-  }catch(e){status.textContent='Kunde inte visa albumets bilder. '+(e instanceof Error?e.message:'Försök igen.');}
+  }catch(e){if(epoch!==deleteEpoch)return;status.textContent='Kunde inte visa albumets bilder. '+(e instanceof Error?e.message:'Försök igen.');}
   finally{busy=false;}
  }
  const timer=setInterval(refresh,30000);

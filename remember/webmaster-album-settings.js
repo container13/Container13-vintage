@@ -60,5 +60,10 @@ export function mountWebmasterAlbumSettings({host,album,enabled,request}){
   catch(e){feedback.textContent=e.message+' Hämtar aktuella tider…';try{await refresh();feedback.textContent=e.message+' Aktuella tider har hämtats. Kontrollera innan du försöker igen.';}catch{enabled=false;feedback.textContent='Sparresultatet är osäkert. Öppna albumet igen för att hämta aktuella tider.';}}
   finally{saving=false;form.removeAttribute('aria-busy');render();}
  });
- return {refresh};
+ function updatePhotoCount(count){
+  if(!Number.isInteger(count)||count<0||!Number.isInteger(current.photo_limit))return;
+  current={...current,photo_count:count};q('[data-count-row]').hidden=false;
+  q('[data-count]').textContent=count+' / '+current.photo_limit;
+ }
+ return {refresh,updatePhotoCount};
 }

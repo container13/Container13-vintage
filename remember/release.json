@@ -1,7 +1,7 @@
 {
-  "version": "0.1.160",
-  "release": "remember-0.1.160",
-  "updated": "2026-10-21",
+  "version": "0.1.161",
+  "release": "remember-0.1.161",
+  "updated": "2026-10-22",
   "assets": [
     "remember-design.css",
     "remember-version.js",
@@ -14,7 +14,8 @@
     "assets/icons/remember-6-512-v0.1.150.png",
     "upload-session.js",
     "upload-prepare.js",
-    "image-compress.js"
+    "image-compress.js",
+    "photo-gallery.js"
   ],
   "entrypoints": [
     "index.html",

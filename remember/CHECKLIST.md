@@ -1,5 +1,5 @@
 # Remember — gemensam checklista
-Uppdaterad 2026-10-21. Kandidat 0.1.160. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
+Uppdaterad 2026-10-22. Kandidat 0.1.161. Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
 
 - [x] Manuell fotobok: 0.1.137, användarens iPhone-PASS.
 - [x] Säkerhetsgren 0.1.137 på 8a592bb8b7b767a54df595e5e7d5d5d2eb10cd7f verifierad.
@@ -125,4 +125,14 @@ Detaljer och testkommandon: UPLOAD_VERIFICATION_2026-10-21.md. Tidigare generell
 - [x] Godkänd gemensam mörk panel och varmvita miniatyrramar; CSS-only.
 - [x] 8 Chromium-fixturfall: 320/390/768/1280 för admin/gäst, rätt kolumner, ingen overflow, helskärm oförändrad; mobilrender granskad.
 - [ ] Slutcommitens CI/publicering kontrolleras efter push.
-- [ ] Visuell iPhone-acceptans för inramningen. Tidigare fungerande funktioner ska inte testas om i en bred runda.
+- [x] Visuell iPhone-acceptans .160: ”Blev tip top!”, 2026-10-22. Tidigare fungerande funktioner ska inte testas om i en bred runda.
+
+## Bildradering 0.1.161
+- [x] Verifierad .160-säkerhetsgren före ändring och tidigare installerad Edge-källa exakt bevarad.
+- [x] Bekräftad radering i webmaster-/ägarförhandsvisning; faktisk ägares befintliga radering återanvänd.
+- [x] Serverkontroll av session, ägare/webmaster, album/foto och servervalt Storageobjekt. Gäst får ingen radering.
+- [x] 17 Edge-mocktester, 5 raderings-DOM, 5 ägarvyer och 4 Chromium-fixturer PASS.
+- [x] Faktiskt SQL/ROLLBACK-test: frigjord kvot, gammalt uppladdnings-ID blockerat, raderad identitet kvar.
+- [x] owner-manager v6 exakt återläst, obehörig HTTP 401; oförändrade befintliga rader/objekt och säkerhetsråd.
+- [ ] Slutcommitens CI/Pages och faktiska publicering verifieras efter push.
+- [ ] Riktat iPhone-test: avbryt och bekräfta radering av en bild som får tas bort, som webmaster respektive faktisk albumägare; foto och antal rätt efter återöppning.

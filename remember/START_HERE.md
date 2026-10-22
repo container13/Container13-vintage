@@ -1,5 +1,5 @@
 # Remember – START HÄR (aktuell arbetsstatus)
-Senast uppdaterad: 2026-10-20. **Detta är den korta ingången**, inte en fullständig historik.
+Senast uppdaterad: 2026-10-22. **Detta är den korta ingången**, inte en fullständig historik.
 
 ## Projektläge – obligatorisk utgångspunkt
 **AKTIV UTVECKLING / TEST. INTE LANSERAD.** Album och bilder som används nu är utvecklings- och testmaterial, inte kunddata. Att webbplats och Supabase använder driftsatta adresser betyder **inte** att produkten är lanserad. Ändra aldrig projektläget till PILOT/LANSERAD utan uttryckligt beslut från projektägaren.
@@ -183,3 +183,6 @@ Användarens .158-avbrottstest misslyckades i webmastervyn. Rotorsaken var behö
 
 ## Kontrollpunkt 0.1.160 — 2026-10-21
 Användaren bekräftar att webmasteruppladdningen efter .159 fungerar (1 sparad bild, 7 i albumet enligt skärmbilder). Nästa godkända ändring är galleriets inramning: gemensam mörk panel, varmvit tunn ram och diskret skugga på varje miniatyr. CSS-only i delat galleri; två mobilkolumner, tre på bred vy. 8 Chromium-fixturfall 320/390/768/1280 PASS inkl. helskärmsöppning/stängning; mobilskärmbild granskad. Se GALLERY_FRAMING_0.1.160.md. Efter push kontrolleras publicering; fysisk visuell acceptans återstår. Gör inte om redan godkänt uppladdnings-/roll-/tidstest. CURRENT/PREVIOUS null.
+
+## Kontrollpunkt 0.1.161 — 2026-10-22
+Användaren godkänner .160-inramningen: ”Blev tip top!”. Delade webmaster-/ägarförhandsvisningens galleri saknade radering; riktiga owner.html hade redan en egen papperskorg. Nu visas Ta bort med permanent bekräftelse i hanterat galleri, aldrig för gäst. Befintlig owner-manager utökad endast för deletePhoto: verifierat webmastermedlemskap eller faktiskt albumägande; servervalt objekt; tombstone blockerar gammalt uppladdningsåterförsök och frigör kvot. Installerad v6 exakt återläst; övriga ägaråtgärder oförändrade. 17 Edge-mock, 5 raderings-DOM, 5 ägarvyer, 4 Chromium-fall samt SQL/ROLLBACK PASS. Befintliga 2 album/11 fotorader/11 Storageobjekt oförändrade; inga befintliga bilder raderade av assistenten. Se PHOTO_DELETION_0.1.161.md för underlag, återställningsgren och begränsningar. Efter publicering återstår riktat användartest med en bild som får raderas; redan godkända flöden behöver inte upprepas. CURRENT/PREVIOUS null.

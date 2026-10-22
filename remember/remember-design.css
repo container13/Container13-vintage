@@ -694,7 +694,8 @@ body.remember-shell #rememberGallery>.remember-gallery-grid{
  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
  gap:12px;margin:18px 0 0;
 }
-body.remember-shell #rememberGallery>.remember-gallery-grid>img{
+body.remember-shell #rememberGallery>.remember-gallery-grid>img,
+body.remember-shell #rememberGallery>.remember-gallery-grid>.remember-gallery-card>img{
  display:block;box-sizing:border-box;width:100%;min-width:0;
  aspect-ratio:1;object-fit:cover;border:5px solid #f4ecdf;border-radius:12px;
  background:#f4ecdf;box-shadow:0 3px 10px rgba(0,0,0,.24);cursor:pointer;
@@ -702,3 +703,11 @@ body.remember-shell #rememberGallery>.remember-gallery-grid>img{
 @media(min-width:650px){
  body.remember-shell #rememberGallery>.remember-gallery-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 }
+
+/* 0.1.161: explicit photo management, separate from opening the image. */
+body.remember-shell #rememberGallery .remember-gallery-card{min-width:0;display:flex;flex-direction:column;align-items:stretch;gap:7px}
+body.remember-shell #rememberGallery .remember-gallery-delete{
+ align-self:flex-end;min-height:44px;padding:7px 13px;border:1px solid rgba(244,236,223,.42);
+ border-radius:12px;background:rgba(53,37,28,.9);color:#f4ecdf;font:600 13px/1.4 system-ui;cursor:pointer;
+}
+body.remember-shell #rememberGallery .remember-gallery-delete:disabled{opacity:.55;cursor:default}
