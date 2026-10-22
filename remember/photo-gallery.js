@@ -73,8 +73,9 @@ export function mountRememberGallery({container,auth,onDelete}) {
    if(typeof onDelete!=='function')return img;
    const card=document.createElement('div');card.className='remember-gallery-card';
    const button=document.createElement('button');button.type='button';button.className='remember-gallery-delete';
-   button.textContent='Ta bort';button.setAttribute('aria-label','Ta bort bild '+(i+1));button.disabled=deleting;
-   button.onclick=async()=>{
+   button.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 6h18M9 6V4h6v2M5 6l1 14h12l1-14M10 10v6M14 10v6"/></svg>';button.title='Ta bort bild';button.setAttribute('aria-label','Ta bort bild '+(i+1));button.disabled=deleting;
+   button.onclick=async event=>{
+    event.stopPropagation();
     if(deleting||stopped||!confirm('Ta bort den här bilden permanent från albumet? Det går inte att ångra.'))return;
     deleting=true;deleteEpoch++;status.textContent='Tar bort bilden…';
     grid.querySelectorAll('.remember-gallery-delete').forEach(b=>{b.disabled=true;});

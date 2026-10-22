@@ -12,7 +12,7 @@ async function scenario({managed=true,cancel=false,fail=false}={}){
  const gallery=module.namespace.mountRememberGallery({container:doc.getElementById('gallery'),auth:async()=>({token:'mock-only'}),onDelete:managed?async id=>{deletes++;assert.equal(id,'one');if(fail)throw Error('Storage unavailable');}:undefined});
  for(let i=0;i<5;i++)await new Promise(r=>setTimeout(r,0));
  assert.equal(doc.querySelectorAll('.remember-gallery-delete').length,managed?2:0);
- if(managed){doc.querySelector('.remember-gallery-delete').click();for(let i=0;i<5;i++)await new Promise(r=>setTimeout(r,0));assert.equal(confirmation,1);assert.equal(deletes,cancel?0:1);assert.equal(doc.querySelectorAll('.remember-gallery-grid img').length,cancel||fail?2:1);assert(doc.querySelector('.remember-gallery-viewer').hidden);if(fail)assert(doc.querySelector('.remember-gallery-status').textContent.includes('Storage unavailable'));}
+ if(managed){const trash=doc.querySelector('.remember-gallery-delete');assert(trash.querySelector('svg[aria-hidden="true"]'));assert(trash.getAttribute('aria-label').includes('Ta bort bild'));assert.equal(trash.textContent,'');trash.click();for(let i=0;i<5;i++)await new Promise(r=>setTimeout(r,0));assert.equal(confirmation,1);assert.equal(deletes,cancel?0:1);assert.equal(doc.querySelectorAll('.remember-gallery-grid img').length,cancel||fail?2:1);assert(doc.querySelector('.remember-gallery-viewer').hidden);if(fail)assert(doc.querySelector('.remember-gallery-status').textContent.includes('Storage unavailable'));}
  else{doc.querySelector('.remember-gallery-grid img').click();assert(!doc.querySelector('.remember-gallery-viewer').hidden);}
  gallery.stop();dom.window.close();console.log('PASS gallery',JSON.stringify({managed,cancel,fail}));passed++;
 }

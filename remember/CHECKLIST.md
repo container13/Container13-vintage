@@ -1,5 +1,5 @@
 # Remember — gemensam checklista
-Uppdaterad 2026-10-22. Kandidat 0.1.165 (gästnivåer installerade; tydligt granskningsval, Testa gratis). Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
+Uppdaterad 2026-10-22. Kandidat 0.1.166 (hörnpapperskorg, tydligt granskningsval, Testa gratis). Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
 
 - [x] Manuell fotobok: 0.1.137, användarens iPhone-PASS.
 - [x] Säkerhetsgren 0.1.137 på 8a592bb8b7b767a54df595e5e7d5d5d2eb10cd7f verifierad.
@@ -163,3 +163,9 @@ Detaljer och testkommandon: UPLOAD_VERIFICATION_2026-10-21.md. Tidigare generell
 - [ ] Jämför original och komprimerade riktiga mobilbilder för avsedda fotoboksstorlekar/utsnitt.
 - [ ] Utvärdera preliminärt 2400px/80–85% och lagringskostnad för upp till50 bilder.
 - [ ] Fastställ nivå/kvalitet och inför därefter kontrollerat; inte implementerat i .165.
+
+## Papperskorg i bildhörnet 0.1.166
+- [x] Hörnknapp i delat galleri; samma SVG i faktisk ägarvy, 44px tryckyta, befintlig bekräftelse/behörighet.
+- [x] 5 DOM-fall: bekräfta/avbryt/fel/gäst/antal och bibehållen osparad sluttid; ikonens tillgängliga namn kontrollerat.
+- [x] 6 Chromium-fixturer admin/gäst 320/390/1280, 44x44 hörnläge, ingen extra bildkortshöjd, gäst utan kontroll och bildvisare PASS; mobilrender granskad.
+- [ ] Slutlig CI/publicering och iPhone-visuell acceptans. Inga befintliga bilder raderade som test.

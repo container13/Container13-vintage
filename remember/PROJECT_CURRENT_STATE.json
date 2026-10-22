@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.165",
+    "candidate": "0.1.166",
     "integrity": "GUEST_MODES_INSTALLED_CLOUD_SQL_ACL_HTTP_PASS_DEVICE_PENDING"
   },
   "workCheckpoint": {
     "status": "GUEST_MODES_INSTALLED_DEVICE_PENDING",
-    "targetRelease": "0.1.165",
+    "targetRelease": "0.1.166",
     "goal": "Open and reviewed guest modes at album creation",
-    "resumeInstruction": "User approved database installation on 2026-10-22. Read guest-modes-candidate/INSTALLATION_2026-10-22.md. Migration 20261022054607 installed in ordinary Remember, actual cloud ROLLBACK PASS, four function bodies exact, anon/authenticated direct RPC denied, two Edge exact readback (onboarding v2/guest metadata v3), 5 negative/public HTTP cases PASS. Existing data unchanged. Verify final commit CI/Pages/live bytes then targeted user iPhone test: new reviewed album, guest upload hidden until owner approves. No repeated permission needed. Logged-in guests/personal invitations deferred. CURRENT/PREVIOUS unset. .162 published and CI/live exact PASS at 8fe2d25d54c30b5a7278a744f78083f1758a345e. Final 0.1.163 removes one remaining HTML 72h purge promise; no backend change. Public copy .164 uses Testa gratis instead of marketing 10 free photos; quota unchanged. See DECISIONS.md. No broad retest needed for copy. User found the review dropdown ambiguous. .165 uses two visible native radios; test selected open/reviewed payload through existing onboarding. Remember queued evaluation of up to 50 free images with photobook-suitable compression (preliminary 2400px / quality80–85%, not installed). See DECISIONS and CHECKLIST; do not treat old 10-photo quota as final product plan."
+    "resumeInstruction": "User approved database installation on 2026-10-22. Read guest-modes-candidate/INSTALLATION_2026-10-22.md. Migration 20261022054607 installed in ordinary Remember, actual cloud ROLLBACK PASS, four function bodies exact, anon/authenticated direct RPC denied, two Edge exact readback (onboarding v2/guest metadata v3), 5 negative/public HTTP cases PASS. Existing data unchanged. Verify final commit CI/Pages/live bytes then targeted user iPhone test: new reviewed album, guest upload hidden until owner approves. No repeated permission needed. Logged-in guests/personal invitations deferred. CURRENT/PREVIOUS unset. .162 published and CI/live exact PASS at 8fe2d25d54c30b5a7278a744f78083f1758a345e. Final 0.1.163 removes one remaining HTML 72h purge promise; no backend change. Public copy .164 uses Testa gratis instead of marketing 10 free photos; quota unchanged. See DECISIONS.md. No broad retest needed for copy. User found the review dropdown ambiguous. .165 uses two visible native radios; test selected open/reviewed payload through existing onboarding. Remember queued evaluation of up to 50 free images with photobook-suitable compression (preliminary 2400px / quality80–85%, not installed). See DECISIONS and CHECKLIST; do not treat old 10-photo quota as final product plan. .166 delivers previously missed corner trash icon (shared gallery and real owner), existing confirmation/server delete preserved; no guest trash. 5 DOM and 6 Chromium fixtures PASS, device visual acceptance pending. Keep 50-photo/photobook quality investigation and reviewed-album acceptance queued."
   },
   "currentWork": {
-    "completed": "Guest-mode backend installed and public Testa gratis copy preserved. Registration now presents both review options as visible radio cards. Free-tier proposal up to50 images and quality/cost validation recorded explicitly.",
-    "next": "Verify .165 publication/clear iPhone choice and pending reviewed-album acceptance; later compare compressed real images for photobook quality and evaluate 50-photo free tier.",
+    "completed": "Corner trash icon replaces below-image delete button in managed shared gallery; actual owner uses same icon/44px target. Existing confirmation, authorization and viewer behavior preserved; five DOM/six Chromium fixtures PASS.",
+    "next": "Verify .166 publication and user visual acceptance. Keep reviewed-album device workflow and up-to50 photobook-quality/cost comparison as separate pending work.",
     "blocked": false,
     "blocker": null
   },
@@ -824,7 +824,18 @@
     },
     "authenticatedDeleteHTTP": "NOT_PERFORMED_NO_EXISTING_USER_PHOTOS_DELETED",
     "device": "PENDING",
-    "report": "remember/PHOTO_DELETION_0.1.161.md"
+    "report": "remember/PHOTO_DELETION_0.1.161.md",
+    "cornerUI": {
+      "version": "0.1.166",
+      "position": "top right",
+      "icon": "SVG trash",
+      "touchSizePixels": 44,
+      "insetPixels": 8,
+      "dom": "FIVE_CASES_PASS",
+      "chromium": "SIX_FIXTURES_ADMIN_GUEST_320_390_1280_PASS",
+      "device": "PENDING",
+      "serverChanged": false
+    }
   },
   "publishingBranch": "ccc-demo-public-test",
   "guestModes": {
