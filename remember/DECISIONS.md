@@ -267,3 +267,6 @@ Confirmed on-device: v0.1.52 loaded but brown root background band remained at b
 - Release-ID, samtliga nio HTML-ingångar, delade resurser och versionsvisning måste hållas synkroniserade. Manifest ska inte annonseras innan tillhörande vyer är färdiga. Enbart GitHub readback är inte deploy- eller iPhone-godkännande.
 - iPhone-evidens: Safari 0.1.67 medan PWA 0.1.66; därefter PWA 0.1.68 med felaktig uppdateringsvarning när release.json ännu var 0.1.67. Rättning gjord i kod och versionsparitet 0.1.68; slutligt iPhone-test saknas.
 - Full händelse- och testlogg finns i `remember/PROJECT_HANDOFF_CURRENT.md`, avsnitt `2026-10-16 kl. 11:42`.
+
+## 2026-10-22 — Publik gratisformulering
+Projektägaren förtydligar att Remember ska säga **”Testa gratis”**, inte marknadsföra ”10 bilder gratis”. Använd denna formulering i registreringsrubrik, erbjudande och publik information. Den befintliga tekniska gratisgränsen är fortfarande 10 bilder; kvot/status i albumadministrationen är sakinformation och ändras inte av textbeslutet. Detta beslut ersätter äldre instruktioner om att skylta med antalet gratisbilder.

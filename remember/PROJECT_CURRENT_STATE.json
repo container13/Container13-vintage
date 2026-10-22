@@ -8,14 +8,14 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.163",
+    "candidate": "0.1.164",
     "integrity": "GUEST_MODES_INSTALLED_CLOUD_SQL_ACL_HTTP_PASS_DEVICE_PENDING"
   },
   "workCheckpoint": {
     "status": "GUEST_MODES_INSTALLED_DEVICE_PENDING",
-    "targetRelease": "0.1.163",
+    "targetRelease": "0.1.164",
     "goal": "Open and reviewed guest modes at album creation",
-    "resumeInstruction": "User approved database installation on 2026-10-22. Read guest-modes-candidate/INSTALLATION_2026-10-22.md. Migration 20261022054607 installed in ordinary Remember, actual cloud ROLLBACK PASS, four function bodies exact, anon/authenticated direct RPC denied, two Edge exact readback (onboarding v2/guest metadata v3), 5 negative/public HTTP cases PASS. Existing data unchanged. Verify final commit CI/Pages/live bytes then targeted user iPhone test: new reviewed album, guest upload hidden until owner approves. No repeated permission needed. Logged-in guests/personal invitations deferred. CURRENT/PREVIOUS unset. .162 published and CI/live exact PASS at 8fe2d25d54c30b5a7278a744f78083f1758a345e. Final 0.1.163 removes one remaining HTML 72h purge promise; no backend change."
+    "resumeInstruction": "User approved database installation on 2026-10-22. Read guest-modes-candidate/INSTALLATION_2026-10-22.md. Migration 20261022054607 installed in ordinary Remember, actual cloud ROLLBACK PASS, four function bodies exact, anon/authenticated direct RPC denied, two Edge exact readback (onboarding v2/guest metadata v3), 5 negative/public HTTP cases PASS. Existing data unchanged. Verify final commit CI/Pages/live bytes then targeted user iPhone test: new reviewed album, guest upload hidden until owner approves. No repeated permission needed. Logged-in guests/personal invitations deferred. CURRENT/PREVIOUS unset. .162 published and CI/live exact PASS at 8fe2d25d54c30b5a7278a744f78083f1758a345e. Final 0.1.163 removes one remaining HTML 72h purge promise; no backend change. Public copy .164 uses Testa gratis instead of marketing 10 free photos; quota unchanged. See DECISIONS.md. No broad retest needed for copy."
   },
   "currentWork": {
     "completed": "Approved guest-mode database installed; actual SQL rollback, source/ACL readback and deployed Edge HTTP checks pass. Reviewed frontend ready for shared publication; existing albums open and original data preserved.",
@@ -889,5 +889,16 @@
     "approvedSourceCommit": "dddc9b3729337c0a86563b1f5905954b64d4d47a",
     "securityAdvisors": "UNCHANGED",
     "copyFixVersion": "0.1.163"
+  },
+  "publicTrialCopy": {
+    "version": "0.1.164",
+    "date": "2026-10-22",
+    "wording": "Testa gratis",
+    "scope": [
+      "register subtitle",
+      "landing offer",
+      "landing information"
+    ],
+    "quotaChanged": false
   }
 }

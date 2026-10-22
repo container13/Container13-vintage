@@ -195,3 +195,6 @@ Projektägaren svarade ”Godkänner” på den konkreta SQL-installationen och 
 
 ## Slutlig textkorrigering 0.1.163 — 2026-10-22
 .162 publicerad på 8fe2d25d54c30b5a7278a744f78083f1758a345e: release safety och Pages success samt alla nio live-entrypoints/release/version exakt verifierade. Slutkontrollen hittade ytterligare ett gammalt HTML-stycke i ägarvyn om 72h-radering. .163 ersätter detta med korrekt information om karantän, återställning och manuell permanent radering. Ingen backendändring. Riktat nytt granskningsflöde på iPhone återstår; CURRENT/PREVIOUS null.
+
+## Textkorrigering 0.1.164 — 2026-10-22
+Projektägaren påminner om publik formulering **Testa gratis** i stället för **10 bilder gratis**. Registreringssidans underrad samt startsidans erbjudande/info är rättade. Beslutet sparat i DECISIONS.md så att det inte tappas igen. Ingen kvot-, databas-, formulär- eller fotobokslogik ändrad. Alla nio entrypoints och versionsmetadata .164. Gällande granskningsfunktion från .162/.163 är installerad; dess riktade iPhone-test väntar fortfarande. CURRENT/PREVIOUS null.
