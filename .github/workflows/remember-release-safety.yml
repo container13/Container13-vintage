@@ -87,17 +87,8 @@ jobs:
                   sys.exit('RELEASE FAILED: version must increase for runtime changes')
           print('Version bump guard PASS')
           PY
-      - name: Verify negative release fixtures
-        run: |
-          python3 - <<'PY'
-          import re
-          from pathlib import Path
-          script=Path('remember/scripts/sync-release.py').read_text()
-          assert 'version drift' in script
-          assert not re.fullmatch(r'\\d+\\.\\d+\\.\\d+','invalid')
-          assert 'remember-0.1.176'!='remember-0.1.175'
-          print('Negative fixtures PASS')
-          PY
+      - name: Run release sync regression tests
+        run: python3 remember/scripts/test_sync_release.py
       - name: Validate release consistency
         run: |
           python3 - <<'PY'

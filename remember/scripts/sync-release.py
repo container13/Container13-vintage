@@ -10,13 +10,26 @@ def replacements(text,version):
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--write',action='store_true',help='Update derived release identities from release.json')
+    parser.add_argument('--bump',action='store_true',help='Increment patch version and synchronize all release identities before commit')
     args=parser.parse_args()
     manifest=json.loads((ROOT/'release.json').read_text())
     version=manifest['version']
+    if args.bump:
+        parts=list(map(int,version.split('.')))
+        parts[-1]+=1
+        version='.'.join(map(str,parts))
+        manifest['version']=version
+        manifest['release']='remember-'+version
+        (ROOT/'release.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\\n')
+        args.write=True
     if not re.fullmatch(r'\d+\.\d+\.\d+',version): raise SystemExit('Invalid version')
     errors=[]
     if manifest.get('release')!='remember-'+version: errors.append('release.json identity mismatch')
     state=json.loads((ROOT/'PROJECT_CURRENT_STATE.json').read_text())
+    if args.write:
+        state['release']['candidate']=version
+        state.setdefault('workCheckpoint',{})['targetRelease']=version
+        (ROOT/'PROJECT_CURRENT_STATE.json').write_text(json.dumps(state,ensure_ascii=False,indent=2)+'\\n')
     if state['release'].get('candidate')!=version: errors.append('PROJECT_CURRENT_STATE.json release.candidate mismatch')
     if state.get('workCheckpoint',{}).get('targetRelease')!=version: errors.append('PROJECT_CURRENT_STATE.json workCheckpoint.targetRelease mismatch')
     for name in HTML:

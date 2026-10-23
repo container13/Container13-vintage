@@ -1,3 +1,6 @@
+## 2026-10-23 – release preflight 0.1.177
+- Behåller GitHub Pages 'Deploy from a branch' och ändrar inte publiceringsinställningarna. Infört lokalt preflight-kommando som höjer patchversionen och synkroniserar nio HTML-sidor, release.json, JS-fallback och statusfil före atomär commit. Riktiga negativa tester kontrollerar att versionsdrift upptäcks. GitHub Actions är efterhandskontroll; inte teknisk publiceringsspärr.
+
 ## 2026-10-23 – Release guard 0.1.176
 - Added canonical version sync/check script (remember/scripts/sync-release.py). GitHub Actions rejects drift and runtime edits without a version bump. Negative test fixtures check rejection of mismatched versions. Atomic commit includes all nine HTML entrypoints, fallback, manifest, state and handoff. Release is NOT accepted until CI and Pages green; Safari test pending.
 - GitHub Pages default publishing is independent of this safety workflow: without branch protection or gated deployment configuration, a red safety job cannot technically prevent Pages publication. Enable required status check/controlled deployment separately.
@@ -12,7 +15,7 @@
 - Direktinloggad albumägare använder nu samma `mountRememberGallery` som gäst/webmaster, inklusive vertikal bildsvepning och separat papperskorg via `remember-owner-manager`. Granskningsdialogen behålls separat. GitHub commit 05750eb. iPhone-test och Actions-resultat ännu inte verifierade.
 
 # Remember – aktuell överlämning
-Senast uppdaterad: 2026-10-23. Dokumentationsrelease: **0.1.176**.
+Senast uppdaterad: 2026-10-23. Dokumentationsrelease: **0.1.177**.
 **Läs denna fil först vid ”Fortsätt Remember”.** Den ersätts med senaste läget; den ska inte växa som en arbetslogg. Äldre versioner finns i Git-historiken.
 
 ## Projekt och miljö
