@@ -1,3 +1,6 @@
+## 2026-10-23 – owner thumbnail grid 0.1.174
+- Korrigerade CSS för direktinloggad albumägares gemensamma galleri: 2-kolumners miniatyrer, bildkort och överlagrad papperskorg. Det gemensamma svepet är oförändrat. Verifiering i mobil och Actions återstår.
+
 ## 2026-10-23 – owner gallery unified (0.1.173)
 - Direktinloggad albumägare använder nu samma `mountRememberGallery` som gäst/webmaster, inklusive vertikal bildsvepning och separat papperskorg via `remember-owner-manager`. Granskningsdialogen behålls separat. GitHub commit 05750eb. iPhone-test och Actions-resultat ännu inte verifierade.
 
