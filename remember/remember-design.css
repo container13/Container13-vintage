@@ -743,3 +743,26 @@ body.remember-shell .admin-tools>summary{padding:16px 0}
 body.remember-shell #adminExtraTools{padding-bottom:15px}
 body.remember-shell #adminExtraTools :is(#showAdminGallery,#ownerCamera,#ownerFiles,#openAdminShare){min-height:46px;background:#1c4336;color:#fff7e9;border-color:#b2c3b255}
 @media(max-width:380px){body.remember-shell .admin-times .admin-extend button{font-size:12px}}
+
+
+/* 0.1.184: compact album administration header and overview (visual only). */
+body.remember-shell .remember-album-heading{margin:12px 0 8px!important;padding:17px 17px 18px!important;border-radius:19px!important}
+body.remember-shell .remember-album-heading .mode-banner{position:static!important;display:inline-flex!important;align-items:center;justify-content:center;width:auto!important;margin:0 auto 7px!important;padding:4px 11px!important;border:1px solid #d6bc82a0!important;border-radius:999px!important;background:#142e26aa!important;color:#f4e1b8!important;box-shadow:none!important;font-size:11px!important;font-weight:750!important;letter-spacing:.13em!important}
+body.remember-shell .remember-album-heading h1{font-size:clamp(28px,7.8vw,39px)!important;line-height:1.15!important;margin:2px 0!important;overflow-wrap:anywhere}
+body.remember-shell .remember-album-heading+p{margin:8px 0 13px!important;font-size:13px!important}
+body.remember-shell .remember-album-heading+p a{text-decoration:none!important;border-bottom:1px solid #e4dbbf80;padding-bottom:2px}
+body.remember-shell .admin-overview{padding:17px 17px 15px!important;margin-bottom:13px!important}
+body.remember-shell .admin-overview h2{font-size:clamp(23px,5.4vw,29px)!important;margin-bottom:15px!important}
+body.remember-shell .admin-overview dl{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:13px 11px!important}
+body.remember-shell .admin-overview dl>div{min-width:0;gap:3px!important}
+body.remember-shell .admin-overview dl>div:first-child{grid-column:1/-1;padding-bottom:11px;border-bottom:1px solid #ffffff25}
+body.remember-shell .admin-overview dl>div:last-child{grid-column:1/-1;padding-top:9px;border-top:1px solid #ffffff25}
+body.remember-shell .admin-overview dt{font-size:11px!important;letter-spacing:.02em}
+body.remember-shell .admin-overview dd{font-size:14px!important;line-height:1.35!important;font-weight:650!important}
+body.remember-shell .admin-overview [data-status]{color:#e4edc5}
+body.remember-shell .admin-overview [data-count]{font-size:19px!important;color:#f7e9c6}
+body.remember-shell .admin-overview [data-zone]{font-size:12px!important;font-weight:500!important;color:#e2d8c8}
+body.remember-shell #roleSwitcher{margin:8px 0 12px!important;padding:9px!important}
+body.remember-shell #roleSwitcher .role-switch-actions{gap:8px!important}
+body.remember-shell #roleSwitcher button{min-height:43px!important;padding:8px 9px!important;font-size:12px!important}
+@media(max-width:360px){body.remember-shell .admin-overview dl{gap:11px 7px!important}body.remember-shell .admin-overview dd{font-size:12px!important}}

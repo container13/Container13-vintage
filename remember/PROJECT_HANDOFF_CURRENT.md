@@ -1,3 +1,6 @@
+## 2026-10-23 – 0.1.184 compact album header and overview
+- Shared CSS only: smaller webmaster badge, shorter album heading preserving prominent title, tighter Dashboard link, two-column compact overview with owner full-width, subtle upload status, larger image count, small timezone. Shared role-switch button spacing refined. Cache keys refreshed for all nine views. No auth, behavior, gallery or photobook changes. Await Actions/Pages and iPhone visual acceptance.
+
 ## 2026-10-23 – 0.1.183 webmaster album visual polish
 - Shared remember-design.css updates: dark high-contrast save button, compact date fields and extension actions, accessible toggle, tidier tool group. Refreshed stylesheet cache keys to release 0.1.183 across views. CSS-only, no behavior/auth/DB changes. Pending CI/Pages and iPhone acceptance.
 
