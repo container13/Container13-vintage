@@ -1,3 +1,6 @@
+## 2026-10-23 – owner gallery unified (0.1.173)
+- Direktinloggad albumägare använder nu samma `mountRememberGallery` som gäst/webmaster, inklusive vertikal bildsvepning och separat papperskorg via `remember-owner-manager`. Granskningsdialogen behålls separat. GitHub commit 05750eb. iPhone-test och Actions-resultat ännu inte verifierade.
+
 # Remember – aktuell överlämning
 Senast uppdaterad: 2026-10-23. Dokumentationsrelease: **0.1.172**.
 **Läs denna fil först vid ”Fortsätt Remember”.** Den ersätts med senaste läget; den ska inte växa som en arbetslogg. Äldre versioner finns i Git-historiken.
