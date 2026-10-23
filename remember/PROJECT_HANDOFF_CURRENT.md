@@ -1,3 +1,6 @@
+## 2026-10-23 – gemensamt bildsvep 0.1.179
+- Shared photo-gallery.js: 50 % av viewer-höjd krävs för att byta foto. Släpp före halvvägs ger animerad återgång 380 ms; efter halvvägs mjukare sidbyte 680 ms. Samma beteende i gäst, albumägare och webmaster. Pinch/pan och fotobokens motor oförändrade. iPhone-test och Actions-verifiering kvarstår.
+
 ## 2026-10-23 – 0.1.178 preflight-korrigering
 - Rättade escapning av radslut i sync-release.py:s --bump/--write-läge. Ingen runtime-logik ändrad. Invändar CI och Pages.
 
@@ -18,7 +21,7 @@
 - Direktinloggad albumägare använder nu samma `mountRememberGallery` som gäst/webmaster, inklusive vertikal bildsvepning och separat papperskorg via `remember-owner-manager`. Granskningsdialogen behålls separat. GitHub commit 05750eb. iPhone-test och Actions-resultat ännu inte verifierade.
 
 # Remember – aktuell överlämning
-Senast uppdaterad: 2026-10-23. Dokumentationsrelease: **0.1.178**.
+Senast uppdaterad: 2026-10-23. Dokumentationsrelease: **0.1.179**.
 **Läs denna fil först vid ”Fortsätt Remember”.** Den ersätts med senaste läget; den ska inte växa som en arbetslogg. Äldre versioner finns i Git-historiken.
 
 ## Projekt och miljö

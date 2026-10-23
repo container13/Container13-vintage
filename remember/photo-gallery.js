@@ -1,11 +1,11 @@
 import {prepareRememberCrop,sharePreparedRememberCrop} from './photo-crop.js?v=0.1.73';
-const ENDPOINT='https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-photo-gallery';
+// Shared photo viewer gesture policy for guest, owner and webmaster.\nconst SWIPE_SETTLE_MS=680;\nconst SWIPE_RETURN_MS=380;\nconst SWIPE_THRESHOLD_RATIO=.5;\nconst ENDPOINT='https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-photo-gallery';
 export function mountRememberGallery({container,auth,onDelete}) {
  container.innerHTML='<h2>Albumets bilder</h2><p class="remember-gallery-status" role="status">Hämtar bilder…</p><div class="remember-gallery-grid"></div><div class="remember-gallery-viewer" hidden><button type="button" aria-label="Stäng bild">✕ Stäng</button><button type="button" class="remember-crop-button" aria-label="Spara bildutsnitt">📷</button><div class="remember-gallery-image-frame"><img alt="Albumfoto"></div></div>';
  const styleId='remember-photo-gesture-style';
  if(!document.getElementById(styleId)){
   const style=document.createElement('style');style.id=styleId;
-  style.textContent='.remember-gallery-viewer:not([hidden]){position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;z-index:2147483000!important;background:rgba(0,0,0,.96)!important;touch-action:none!important;overscroll-behavior:contain!important}.remember-gallery-image-frame{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);overflow:hidden;max-width:96vw;max-height:88dvh;line-height:0;isolation:isolate}.remember-gallery-image-frame>img{display:block;max-width:96vw;max-height:88dvh;object-fit:contain;transform-origin:center center}.remember-gallery-viewer:not([hidden]){touch-action:none;overflow:hidden;overscroll-behavior:contain}.remember-gallery-viewer img{pointer-events:none;user-select:none;-webkit-user-drag:none;touch-action:none;transition:transform .25s ease,opacity .25s ease}.remember-gallery-viewer img.dragging{transition:none}.remember-gallery-viewer img.incoming-photo{position:absolute;inset:0;margin:auto;max-width:96vw;max-height:88dvh;object-fit:contain;transition:transform .45s cubic-bezier(.22,1,.36,1);z-index:0}.remember-gallery-viewer button{z-index:2}.remember-gallery-viewer .remember-crop-button{position:absolute;top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);right:16px;width:52px;height:52px;border-radius:50%;background:#e8d4aa;color:#173a2d;font-size:24px;box-shadow:0 5px 20px #0008}.remember-gallery-viewer.controls-hidden button{opacity:0;pointer-events:none}';document.head.append(style);
+  style.textContent='.remember-gallery-viewer:not([hidden]){position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;z-index:2147483000!important;background:rgba(0,0,0,.96)!important;touch-action:none!important;overscroll-behavior:contain!important}.remember-gallery-image-frame{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);overflow:hidden;max-width:96vw;max-height:88dvh;line-height:0;isolation:isolate}.remember-gallery-image-frame>img{display:block;max-width:96vw;max-height:88dvh;object-fit:contain;transform-origin:center center}.remember-gallery-viewer:not([hidden]){touch-action:none;overflow:hidden;overscroll-behavior:contain}.remember-gallery-viewer img{pointer-events:none;user-select:none;-webkit-user-drag:none;touch-action:none;transition:transform .25s ease,opacity .25s ease}.remember-gallery-viewer img.dragging{transition:none}.remember-gallery-viewer img.incoming-photo{position:absolute;inset:0;margin:auto;max-width:96vw;max-height:88dvh;object-fit:contain;transition:transform .68s cubic-bezier(.22,1,.36,1);z-index:0}.remember-gallery-viewer button{z-index:2}.remember-gallery-viewer .remember-crop-button{position:absolute;top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);right:16px;width:52px;height:52px;border-radius:50%;background:#e8d4aa;color:#173a2d;font-size:24px;box-shadow:0 5px 20px #0008}.remember-gallery-viewer.controls-hidden button{opacity:0;pointer-events:none}';document.head.append(style);
  }
  const status=container.querySelector('.remember-gallery-status'),grid=container.querySelector('.remember-gallery-grid'),viewer=container.querySelector('.remember-gallery-viewer'),frame=viewer.querySelector('.remember-gallery-image-frame'),large=frame.querySelector('img');
  // Keep the fullscreen viewer outside owner/admin layout and stacking contexts.
@@ -31,17 +31,26 @@ export function mountRememberGallery({container,auth,onDelete}) {
  function close(){clearTimeout(cropTimer);cropGeneration++;preparedCrop=null;clearZoom();clearTimeout(controlsTimer);viewer.hidden=true;large.removeAttribute('src');resetDrag();document.body.style.overflow='';document.documentElement.style.overflow=''}
  closeButton.onclick=close;
  viewer.onclick=e=>{if(e.target===viewer)close()};
- function finishSwipe(dx,dy){
+ function returnSwipe(){
+  // Release before halfway: animate the SAME photo back, without resetting zoom state.
   large.classList.remove('dragging');
-  if(Math.abs(dy)<65||Math.abs(dy)<=Math.abs(dx)*1.2||photos.length<2){resetDrag();return}
-  swipeLocked=true;clearZoom();
+  large.style.transition='transform '+SWIPE_RETURN_MS+'ms cubic-bezier(.22,1,.36,1),opacity '+SWIPE_RETURN_MS+'ms ease';
+  large.style.transform='translate3d(0,0,0)';large.style.opacity='1';
+  setTimeout(()=>{if(!viewer.hidden&&!swipeLocked&&gesture==='none'&&scale<=1.01)large.style.transition=''},SWIPE_RETURN_MS+30);
+ }
+ function finishSwipe(dx,dy){
+  if(Math.abs(dy)<=Math.abs(dx)*1.2||photos.length<2){returnSwipe();return}
+  // Match the approved photobook behavior: distance, not flick velocity.
+  const threshold=viewer.clientHeight*SWIPE_THRESHOLD_RATIO;
+  if(Math.abs(dy)<threshold){returnSwipe();return}
+  swipeLocked=true;clearZoom();large.classList.remove('dragging');
   const dir=dy<0?1:-1,next=(pos+dir+photos.length)%photos.length;
   const incoming=document.createElement('img');incoming.className='incoming-photo';incoming.alt='';incoming.src=photos[next].url;
   incoming.style.transform='translate3d(0,'+(dir*100)+'vh,0)';frame.append(incoming);
-  large.style.transition='transform .45s cubic-bezier(.22,1,.36,1),opacity .45s ease';
+  large.style.transition='transform '+SWIPE_SETTLE_MS+'ms cubic-bezier(.22,1,.36,1),opacity '+SWIPE_SETTLE_MS+'ms ease';
   large.style.transform='translate3d(0,'+(-dir*100)+'vh,0)';large.style.opacity='.45';
   requestAnimationFrame(()=>requestAnimationFrame(()=>{incoming.style.transform='translate3d(0,0,0)'}));
-  setTimeout(()=>{incoming.remove();if(!viewer.hidden)show(next);swipeLocked=false},480);
+  setTimeout(()=>{incoming.remove();if(!viewer.hidden)show(next);swipeLocked=false},SWIPE_SETTLE_MS+40);
  }
  viewer.addEventListener('touchstart',e=>{
   if(e.target.closest('button')||swipeLocked)return;clearZoom();
@@ -59,11 +68,11 @@ export function mountRememberGallery({container,auth,onDelete}) {
   if(gesture==='pan'&&!e.touches.length){gesture='none';large.classList.remove('dragging');controls();scheduleReset();return}
   if(gesture==='swipe'&&e.touches.length===0){const t=e.changedTouches[0];gesture='none';if(t&&Math.abs(t.clientX-startX)<12&&Math.abs(t.clientY-startY)<12){const now=Date.now();if(now-lastTap<350){resetDrag();lastTap=0}else{lastTap=now;controls()}}else if(t)finishSwipe(t.clientX-startX,t.clientY-startY);else resetDrag()}
  },{passive:false});
- viewer.addEventListener('touchcancel',()=>{gesture='none';large.classList.remove('dragging');render();controls();scheduleReset()},{passive:true});
+ viewer.addEventListener('touchcancel',()=>{gesture='none';returnSwipe();controls();scheduleReset()},{passive:true});
  viewer.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.target.closest('button')||swipeLocked)return;clearZoom();mouseDown=true;startX=e.clientX;startY=e.clientY;panStartX=startX;panStartY=startY;panBaseX=panX;panBaseY=panY;gesture=scale>1.01?'pan':'swipe';large.classList.add('dragging')});
  viewer.addEventListener('pointermove',e=>{if(!mouseDown||e.pointerType!=='mouse')return;const dx=e.clientX-startX,dy=e.clientY-startY;if(gesture==='pan'){panX=panBaseX+dx;panY=panBaseY+dy;render()}else large.style.transform='translate3d(0,'+(Math.abs(dy)>Math.abs(dx)?dy:0)+'px,0)'});
- viewer.addEventListener('pointerup',e=>{if(!mouseDown||e.pointerType!=='mouse')return;mouseDown=false;if(gesture==='pan'){gesture='none';large.classList.remove('dragging');controls();scheduleReset()}else finishSwipe(e.clientX-startX,e.clientY-startY)});
- viewer.addEventListener('pointercancel',()=>{mouseDown=false;resetDrag()});
+ viewer.addEventListener('pointerup',e=>{if(!mouseDown||e.pointerType!=='mouse')return;mouseDown=false;if(gesture==='pan'){gesture='none';large.classList.remove('dragging');controls();scheduleReset()}else{gesture='none';finishSwipe(e.clientX-startX,e.clientY-startY)}});
+ viewer.addEventListener('pointercancel',()=>{mouseDown=false;gesture='none';returnSwipe()});
  const onKey=e=>{if(viewer.hidden)return;if(e.key==='Escape')close();else if(e.key==='ArrowDown')show(pos+1);else if(e.key==='ArrowUp')show(pos-1)};
  document.addEventListener('keydown',onKey);
  let busy=false,stopped=false,deleting=false,deleteEpoch=0;
