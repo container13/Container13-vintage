@@ -8,14 +8,14 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.185",
+    "candidate": "0.1.186",
     "integrity": "RELEASE_GUARD_PENDING_CI"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.185",
-    "goal": "Show contextual open and close dates, optional edit controls",
-    "resumeInstruction": "Check CI/Pages and iPhone tests for date labels, editing and saving."
+    "targetRelease": "0.1.186",
+    "goal": "Webmaster-configurable simultaneous free album quota (30 images), with server-side atomic enforcement and paid-album exclusion",
+    "resumeInstruction": "Verify CI/Pages, webmaster quota read/save, existing album preservation, owner free quota enforcement, delete/recreate and paid exclusion."
   },
   "currentWork": {
     "completed": "Mobile30 .168 installed and documented; Pages39771164981 success independently read2026-10-23. .169 replaces long contradictory start documents with one short handoff and continuation policy; no functional/backend changes.",

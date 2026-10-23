@@ -776,3 +776,13 @@ body.remember-shell .admin-times [data-edit-times]{min-height:38px;padding:7px 1
 body.remember-shell .admin-times [data-date-fields]{margin:8px 0 12px;padding:12px;border:1px solid #ffffff24;border-radius:12px;background:#10291f66}
 body.remember-shell .admin-times [data-date-fields][hidden]{display:none!important}
 body.remember-shell .admin-times [data-date-fields] label{display:block;margin:4px 0 11px}
+
+/* 0.1.186: webmaster free-album quota */
+body.remember-shell .free-quota-settings{margin:14px 0 20px;padding:16px;border:1px solid #d9c7a77d;border-radius:15px;background:#152e27}
+body.remember-shell .free-quota-settings h3{margin:0 0 8px;font:500 21px Georgia,serif;color:#fff3db}
+body.remember-shell .free-quota-settings p{margin:6px 0 12px;color:#e2d7c3;font-size:13px}
+body.remember-shell .free-quota-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+body.remember-shell .free-quota-controls button{min-height:40px;padding:8px 13px;border-radius:10px;background:#24513e;color:#fff7e6;border:1px solid #e5d2ae6e}
+body.remember-shell .free-quota-controls input{width:68px;min-height:40px;text-align:center;border-radius:10px;background:#fff8ea;color:#17382d;font-weight:750}
+body.remember-shell .free-quota-controls #freeQuotaSave{background:#165b42;font-weight:750}
+body.remember-shell .free-quota-controls button:disabled{opacity:.45}
