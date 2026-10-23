@@ -32,7 +32,11 @@ Deno.serve(async req=>{
  const existing=vault?.ciphertext||null;
  const encryptionKey=await keyFromSecret(secret);
  if(input.action==="get"){
-  if(!existing)return reply({ok:true,available:false,needsReplacement:true});
+  if(!existing){
+   const {data:prior,error:priorError}=await db.schema("remember").from("guest_links").select("album_id").eq("album_id",album).maybeSingle();
+   if(priorError)return reply({error:"Link lookup failed"},503);
+   return reply({ok:true,available:false,needsReplacement:!!prior,neverCreated:!prior});
+  }
   try{
    const token=await unseal(encryptionKey,existing,album);
    const digest=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(token));
