@@ -1,6 +1,6 @@
 # Linas Opti — aktuell löpande överlämning
 
-Uppdaterad: 2026-10-23. Aktuell dokumentationsrelease: **V0.4.39**. GitHub Integrity och Pages: **SUCCESS** för commit `4b5a547c8a37f66d278b4e87a5b87cff7a457839`. Live-byteverifiering och iPhone-test: **UNVERIFIED**.
+Uppdaterad: 2026-10-23. Senaste kodkandidat: **V0.4.40** (PENDING; ingen device-PASS). Föregående dokumentationsrelease: **V0.4.39**. GitHub Integrity och Pages: **SUCCESS** för commit `4b5a547c8a37f66d278b4e87a5b87cff7a457839`. Live-byteverifiering och iPhone-test: **UNVERIFIED**.
 
 ## Start här
 Vid ”Fortsätt Linas Opti” eller ”Läs Linas manual”: läs denna fil, `LINA_CURRENT_STATE.json`, `version.js`, `LINA_SYSTEM_MANUAL.md`, `LINA_MASTER_RULES.md` och relevant releasechecklista. Kontrollera verklig branch/head, Actions, publicerad release och Worker innan nästa ingrepp. Begär inte manuell överlämning om repo innehåller den.
@@ -23,3 +23,9 @@ Vid ”Fortsätt Linas Opti” eller ”Läs Linas manual”: läs denna fil, `L
 
 ## Löpande rutin
 Håll denna fil kort och ersätt nuläget, inte bygg på med arbetslogg. Efter varje meningsfullt steg och före längre steg: spara version/commit, vad som är klart och verifierat, hinder och ett nästa steg. Vid avbrott: IN_PROGRESS/UNVERIFIED. Läs tillbaka exakt GitHub-innehåll före påståendet SPARAD. Historik finns i Git, äldre handoffs i historikfilen. Följ `../project-template/CONTINUITY_PROTOCOL.md`; projektets egna hårdare regler gäller.
+
+## V0.4.40 – pågående kontroll (2026-10-23)
+- En enda releasekontroll i index.html på start, pageshow, foreground och återanslutning; tidigare dubblerad tidig kontroll borttagen. Uppskjutning vid fokuserade formulärfält och markerade pågående arbeten. Ingen automatisk omstart om samma release redan provats i sessionen.
+- Central körande versionsetikett i sidfot. `version.js`, index cachetokens och release-gate uppdaterade till V0.4.40.
+- **Ännu ej verifierat:** slutcommitens Integrity/Pages, faktiska live-bytes, iPhone installerad PWA och formulär-/arbetsflödesregression. Mobilzoomskydd lämnas orört tills separat inventering och device-test; det får inte slentrianmässigt införas.
+- **Nästa steg:** kontrollera sista Integrity och Pages; verifiera live och be användaren testa installerad iPhone. Handel/Forward OFF; frysta Gen8–Gen16 orörda.
