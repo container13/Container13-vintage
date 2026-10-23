@@ -1,0 +1,50 @@
+name: Remember gated Pages deployment
+# SAFETY: Manual only until repository Settings > Pages > Build and deployment
+# Source is changed to GitHub Actions. Do not enable workflow_run until
+# deployment parity is verified; the existing branch Pages publisher remains active.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: remember-pages-gated
+  cancel-in-progress: false
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ccc-demo-public-test
+          fetch-depth: 2
+      - name: Verify release consistency
+        run: python3 remember/scripts/sync-release.py
+      - name: Verify runtime release identity
+        run: |
+          python3 - <<'PY'
+          import json,pathlib
+          root=pathlib.Path('remember')
+          version=json.loads((root/'release.json').read_text())['version']
+          state=json.loads((root/'PROJECT_CURRENT_STATE.json').read_text())
+          assert state['release']['candidate']==version
+          assert 'remember-'+version in (root/'index.html').read_text()
+          print('DEPLOY GATE PASS',version)
+          PY
+  deploy:
+    needs: validate
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ccc-demo-public-test
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4
