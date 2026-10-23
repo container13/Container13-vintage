@@ -574,3 +574,12 @@ A persisted research checkpoint must survive asynchronous evidence/GitHub sync. 
 
 ## Gemensam projektstandard (2026-10-08)
 Den gemensamma basen finns i `../project-template/PROJECT_RELEASE_STANDARD.md`, inklusive regler om att kontrollera befintlig lösning före ny motor, verifiera slutlig driftsättning och aldrig kalla kodändring för funktionstest. Linas striktare regler om fryst research, evidens, Handel/Forward och återupptagning har alltid företräde. Denna hänvisning ändrar inte forskningsstate, release eller låsta generationer.
+
+
+## V0.4.39 – löpande GitHub-handoff och projektmallskontrakt
+- Följ ../project-template/CONTINUITY_PROTOCOL.md och gemensamma PROJECT_MASTER_RULES / PROJECT_RELEASE_STANDARD / PROJECT_RELEASE_CHECKLIST; Linas striktare regler och frysta forskningsresultat går före.
+- Efter varje meningsfullt arbetssteg, test eller publicering och före längre steg: uppdatera LINA_HANDOFF_CURRENT.md och LINA_CURRENT_STATE.json, skriv faktisk evidens och ett konkret nästa steg. Verifiera GitHub-write med exakt readback. Ingen chattbaserad checkpoint ersätter GitHub.
+- Vid avbrott markera IN_PROGRESS eller UNVERIFIED. En dokumentationscommit, grön CI, Pages-deploy och iPhone-PASS är skilda verifieringsnivåer.
+- Vid 'Fortsätt Linas Opti' läs aktuellt state och handoff direkt, verifiera branch/live och återuppta första ofärdiga steg.
+- Sök ../solutions/ och ../project-template/CONTAINER13_SYSTEM_LIBRARY.md före nya mekanismer. Återanvänd verifierad ägare, undvik parallella handlers. Två misslyckade fixar kräver stopp och rotorsaksanalys.
+- Inventera central uppdateringscontroller, versionsfot och mobilpolicy vid separat teknisk kontroll; ingen spekulativ refaktorering eller forskningsrerun.
