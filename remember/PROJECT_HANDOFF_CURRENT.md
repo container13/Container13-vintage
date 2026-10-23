@@ -1,3 +1,6 @@
+## 2026-10-23 – 0.1.191 compact album owner dropdown
+- 0.1.190 CI/Pages PASS. Replaced tall owner cards and filter with native mobile-friendly select listing unique owners from existing authorized album catalog. Selecting an owner loads server-verified free quota; existing fallback exact-email search retained. No Supabase changes. Candidate awaiting CI/Pages and mobile test.
+
 ## 2026-10-23 – 0.1.190 album-owner picker
 - Webmaster quota UI now derives selectable distinct owner emails from the existing authorized webmaster album catalog. No new Supabase endpoint or user-directory permissions. Existing exact-email lookup remains for users without albums. No album or quota mutations. Candidate pending CI, Pages and UI validation. Album list counts may include paid albums and are labeled as total albums, while server lookup gives authoritative free count.
 
