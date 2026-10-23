@@ -1,5 +1,5 @@
 # Remember – aktuell överlämning
-Senast uppdaterad: 2026-10-23. Dokumentationsrelease: **0.1.169**.
+Senast uppdaterad: 2026-10-23. Dokumentationsrelease: **0.1.171**.
 **Läs denna fil först vid ”Fortsätt Remember”.** Den ersätts med senaste läget; den ska inte växa som en arbetslogg. Äldre versioner finns i Git-historiken.
 
 ## Projekt och miljö
@@ -54,3 +54,6 @@ Projektägaren2026-10-23: inför samma enkla löpande överlämning i **alla pro
 - Deployed remember-share-manager edge function version 5, adding neverCreated when no guest_links row exists.
 - Updated album-admin.html to show first-time Create guest link with no rotation warning, and clearer guest preview missing-link message.
 - No guest links, albums, or photos modified in database. Await iPhone end-to-end test; CURRENT/PREVIOUS not approved.
+
+## 0.1.171 – bildvisare
+Helskärmslager och bakgrundslås för albumägarens och gästens bildvisare. Papperskorg och sveplogik oförändrade. Kräver iPhone-verifiering och gröna Actions-kontroller.
