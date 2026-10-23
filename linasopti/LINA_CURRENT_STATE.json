@@ -16,12 +16,14 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PENDING_V0.4.39",
-    "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
+    "releaseIntegrity": "PASS_V0.4.39_COMMIT_4b5a547c8",
+    "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21",
+    "pagesDeploy": "PASS_V0.4.39_COMMIT_4b5a547c8",
+    "liveAssetReadback": "UNVERIFIED_NETWORK_ACCESS"
   },
   "currentWork": {
-    "completed": "V0.4.38 source prepared: transferable CCC safeguards added to Lina manual, MASTER RULES and RELEASE CHECKLIST.",
-    "next": "Verify V0.4.39 Actions, Pages and live; then audit updater/footer/mobile read-only.",
+    "completed": "V0.4.39 handoff, template safeguards, integrity and Pages PASS; read-only PWA code audit completed.",
+    "next": "Verify live served assets, then scope safe updater/footer/mobile-policy changes as separate release; no device PASS assumed.",
     "blocked": false
   },
   "bootstrap": {
@@ -33,7 +35,7 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
+    "status": "UNVERIFIED",
     "targetRelease": "V0.4.39",
     "goal": "Adopt continuous GitHub handoff and project-template safeguards without touching frozen research",
     "plan": [
@@ -55,11 +57,11 @@
       {
         "id": 4,
         "task": "GitHub exact readback, Actions, Pages and live version verification",
-        "status": "NEXT"
+        "status": "UNVERIFIED_LIVE"
       }
     ],
     "lastSafeRelease": "V0.4.38",
     "lastSafeCommit": "fad61639815ac3cf9835f2c6fa48b5b28ab0f000",
-    "resumeInstruction": "Finish V0.4.39 continuity release from first unfinished checkpoint step. No research reruns; Handel/Forward OFF."
+    "resumeInstruction": "V0.4.39 CI/Pages PASS. Verify live assets when accessible, then plan separate updater/footer/mobile changes after existing-owner audit. No research reruns; Handel/Forward OFF."
   }
 }
