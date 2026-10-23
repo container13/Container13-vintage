@@ -1,3 +1,6 @@
+## 2026-10-23 – 0.1.195 newest album owner preselection
+- Owner dropdown preselects the most recently NEW album owner, derived from existing server-sorted newest-first album catalog by tracking each owner's oldest appearance. Loads selected user's server-verified free quota automatically. Explicit manual selection is preserved during the session. No Supabase changes. Candidate awaiting CI/Pages and mobile verification.
+
 ## 2026-10-23 – 0.1.194 compact dropdown alignment
 - Owner dropdown now displays only email (no album count in options). Quota dropdown narrowed to 62px; both native selects have equal 52px height and open on direct tap. No database changes or quota mutations. Candidate awaiting CI/Pages and mobile verification.
 

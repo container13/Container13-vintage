@@ -8,13 +8,13 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.194",
+    "candidate": "0.1.195",
     "integrity": "RELEASE_GUARD_PENDING_CI"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.194",
-    "goal": "Equal-height native selects, narrower quota and email-only owner options",
+    "targetRelease": "0.1.195",
+    "goal": "Preselect newest first-time album owner without overriding manual selection",
     "resumeInstruction": "Verify CI and Pages; test webmaster search/save/reset, 3 vs 2 free album quotas, paid exclusion, concurrent registration and unauthorized access."
   },
   "currentWork": {
