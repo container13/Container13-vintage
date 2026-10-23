@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.38",
+  "release": "V0.4.39",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -16,12 +16,12 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PENDING_V0.4.38_REPAIR",
+    "releaseIntegrity": "PENDING_V0.4.39",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
     "completed": "V0.4.38 source prepared: transferable CCC safeguards added to Lina manual, MASTER RULES and RELEASE CHECKLIST.",
-    "next": "Verify GitHub readback/deploy/live V0.4.38 before promotion; no research reruns.",
+    "next": "Verify V0.4.39 Actions, Pages and live; then audit updater/footer/mobile read-only.",
     "blocked": false
   },
   "bootstrap": {
@@ -45,17 +45,17 @@
       {
         "id": 2,
         "task": "Create concise current handoff and update Lina rules/manual/checklist",
-        "status": "NEXT"
+        "status": "DONE"
       },
       {
         "id": 3,
         "task": "Align V0.4.39 version/cache/release gate and static integrity",
-        "status": "PENDING"
+        "status": "DONE"
       },
       {
         "id": 4,
         "task": "GitHub exact readback, Actions, Pages and live version verification",
-        "status": "PENDING"
+        "status": "NEXT"
       }
     ],
     "lastSafeRelease": "V0.4.38",
