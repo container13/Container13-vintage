@@ -717,3 +717,12 @@ Historical/frozen research version strings are excluded from this current-releas
 - [ ] NAVIGATION ≠ DESTRUCTION: normal navigation kan inte rensa pågående arbete.
 - [ ] EVENT INVENTORY: ändrad touch/pointer/click/focus-logik har inventerats mot konkurrerande handlers.
 - [ ] CURRENT/PREVIOUS: kandidat promoveras först efter obligatorisk runtime/verklig-klient-verifiering; rollbackpunkten flyttas inte av PENDING/FAIL.
+
+
+## V0.4.39 – löpande handoff och mallgrind
+- [ ] Före längre steg och efter meningsfullt steg: uppdatera LINA_HANDOFF_CURRENT.md och LINA_CURRENT_STATE.json, verifiera GitHub readback.
+- [ ] Skilj COMMITTED, STATIC PASS, DEPLOYED, RUNTIME PASS, DEVICE PASS och USER APPROVED.
+- [ ] Kontrollera ../solutions/ och gemensamt systembibliotek innan ny mekanism; en ägare per beteende.
+- [ ] Stoppa spekulativa patchar efter två misslyckade försök; dokumentera rotorsak.
+- [ ] Kontrollera aktuell slutcommit, versionskedja, cache, Actions och Pages; en grön workflow är inte automatiskt en blockerande gate.
+- [ ] Versionsfot, central updater och mobilpolicy inventeras separat utan att störa fryst forskning.
