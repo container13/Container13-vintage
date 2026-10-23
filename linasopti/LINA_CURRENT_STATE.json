@@ -34,27 +34,32 @@
   },
   "workCheckpoint": {
     "status": "IN_PROGRESS",
-    "targetRelease": "V0.4.38",
-    "goal": "Backport generic CCC safeguards into Lina operating discipline.",
+    "targetRelease": "V0.4.39",
+    "goal": "Adopt continuous GitHub handoff and project-template safeguards without touching frozen research",
     "plan": [
       {
         "id": 1,
-        "task": "Add CCC-derived permanent rules to manual and MASTER RULES",
+        "task": "Preserve historical handoff separately",
         "status": "DONE"
       },
       {
         "id": 2,
-        "task": "Add executable/checklist gates and bump V0.4.38",
-        "status": "DONE"
+        "task": "Create concise current handoff and update Lina rules/manual/checklist",
+        "status": "NEXT"
       },
       {
         "id": 3,
-        "task": "GitHub readback and verify live V0.4.38",
+        "task": "Align V0.4.39 version/cache/release gate and static integrity",
+        "status": "PENDING"
+      },
+      {
+        "id": 4,
+        "task": "GitHub exact readback, Actions, Pages and live version verification",
         "status": "PENDING"
       }
     ],
-    "lastSafeRelease": "V0.4.37",
-    "lastSafeCommit": "4ecd25580beeef8bba4a88c1d0f11e0d50a78c6a",
-    "resumeInstruction": "Verify V0.4.38 repo readback and live runtime. Do not rerun research; Handel/Forward remain OFF."
+    "lastSafeRelease": "V0.4.38",
+    "lastSafeCommit": "fad61639815ac3cf9835f2c6fa48b5b28ab0f000",
+    "resumeInstruction": "Finish V0.4.39 continuity release from first unfinished checkpoint step. No research reruns; Handel/Forward OFF."
   }
 }
