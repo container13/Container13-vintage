@@ -1,3 +1,6 @@
+## 2026-10-23 – 0.1.190 album-owner picker
+- Webmaster quota UI now derives selectable distinct owner emails from the existing authorized webmaster album catalog. No new Supabase endpoint or user-directory permissions. Existing exact-email lookup remains for users without albums. No album or quota mutations. Candidate pending CI, Pages and UI validation. Album list counts may include paid albums and are labeled as total albums, while server lookup gives authoritative free count.
+
 ## 2026-10-23 – 0.1.189 release guard repair
 - 0.1.188 hotfix failed version bump guard (runtime changed without release.json). Following mandatory rule every runtime change bumps version, 0.1.189 synchronizes all HTML and gallery cache keys. Await CI and Pages verification.
 
