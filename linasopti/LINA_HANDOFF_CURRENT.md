@@ -1,6 +1,6 @@
 # Linas Opti — aktuell löpande överlämning
 
-Uppdaterad: 2026-10-23. Dokumentationsrelease under arbete: **V0.4.39**. Status: **IN_PROGRESS / ej slutverifierad**.
+Uppdaterad: 2026-10-23. Aktuell dokumentationsrelease: **V0.4.39**. GitHub Integrity och Pages: **SUCCESS** för commit `4b5a547c8a37f66d278b4e87a5b87cff7a457839`. Live-byteverifiering och iPhone-test: **UNVERIFIED**.
 
 ## Start här
 Vid ”Fortsätt Linas Opti” eller ”Läs Linas manual”: läs denna fil, `LINA_CURRENT_STATE.json`, `version.js`, `LINA_SYSTEM_MANUAL.md`, `LINA_MASTER_RULES.md` och relevant releasechecklista. Kontrollera verklig branch/head, Actions, publicerad release och Worker innan nästa ingrepp. Begär inte manuell överlämning om repo innehåller den.
@@ -17,9 +17,9 @@ Vid ”Fortsätt Linas Opti” eller ”Läs Linas manual”: läs denna fil, `L
 - **Inte genomfört:** separat teknisk inventering av central PWA-updater, versionsfot på alla vyer, mobil zoompolicy och faktisk iPhone-beteende. Inga sådana kodändringar görs i V0.4.39.
 
 ## Nästa konkreta steg
-1. Färdigställ V0.4.39 version.js, index-cachetokens, release-gate och CURRENT_STATE; verifiera statisk integritet och slutcommitens Pages.
-2. Läs tillbaka denna handoff och state från GitHub; kontrollera faktisk publicerad V0.4.39. Markera ej DEVICE PASS utan riktigt iPhone-test.
-3. Därefter: **read-only teknisk inventering** av updater/versionsfot/mobilpolicy. Planera eventuell separat kodrelease endast om verklig lucka hittas.
+1. Kontrollera faktiska live-bytes för `version.js` och `index.html` när nätåtkomst till webbplatsen fungerar; Pages SUCCESS är redan verifierat, men extern livehämtning misslyckades.
+2. Riktad teknisk inventering 2026-10-23 (read-only): `index.html` har nätbaserad releasekontroll vid första sidladdning och manuell Uppdatera-knapp; `pageshow` används för deploystatus, inte för en ny releasekontroll. Ingen `visibilitychange`-releasekontroll identifierad. Den befintliga reloaden kontrollerar inte pågående formulär/arbete. `data-lina-version` finns på login och i header, men ingen central sidfot hittades. Viewport anger `initial-scale=1,viewport-fit=cover` utan mallens `maximum-scale=1,user-scalable=no` eller gemensam touchpolicy. Dessa är kodobservationer, inte enhetstest.
+3. Nästa kodrelease först efter separat inventering av befintliga uppdaterings-/touchägare och avstämning av skydd för osparat arbete. Gen8–Gen16, Worker, Handel och Forward förblir orörda.
 
 ## Löpande rutin
 Håll denna fil kort och ersätt nuläget, inte bygg på med arbetslogg. Efter varje meningsfullt steg och före längre steg: spara version/commit, vad som är klart och verifierat, hinder och ett nästa steg. Vid avbrott: IN_PROGRESS/UNVERIFIED. Läs tillbaka exakt GitHub-innehåll före påståendet SPARAD. Historik finns i Git, äldre handoffs i historikfilen. Följ `../project-template/CONTINUITY_PROTOCOL.md`; projektets egna hårdare regler gäller.
