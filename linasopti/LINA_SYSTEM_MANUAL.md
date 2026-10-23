@@ -221,3 +221,10 @@ Följande generella regler har återförts från CCC och gäller även Lina:
 ---
 
 **Underhållsregel:** Manualen ska uppdateras när systemarkitektur eller permanent arbetsprocess ändras. Detaljerad incidenthistorik hör i MASTER RULES/handoff; manualen ska hållas sammanhängande och användbar från noll.
+
+
+## V0.4.39 – obligatorisk löpande överlämning
+Följ ../project-template/CONTINUITY_PROTOCOL.md och gemensam release-standard. LINA_HANDOFF_CURRENT.md är kort aktuell överlämning, medan LINA_CURRENT_STATE.json är strukturerat state. Äldre handoffs ligger i LINA_HANDOFF_HISTORY_THROUGH_2026-10-23.md.
+Före långa/riskfyllda steg: spara IN_PROGRESS-plan med senaste säkra version och commit. Efter varje meningsfull ändring, test och deploy: uppdatera handoff/state med faktisk evidens, återstående hinder och exakt nästa steg. Läs tillbaka GitHub-innehållet efter skrivning. Vid avbrott: UNVERIFIED, aldrig gissat PASS. Ren checkpointjournalföring behöver inte egen runtime-version.
+Vid 'Fortsätt Linas Opti' eller 'Läs Linas manual': läs aktuell handoff/state, verifiera branch, Actions, deploy och live-version och fortsätt första ofärdiga steg. Be inte användaren återberätta dokumenterat arbete.
+Sök före ny mekanism i ../solutions/ och ../project-template/CONTAINER13_SYSTEM_LIBRARY.md. Efter två misslyckade fixförsök: stoppa patchandet och dokumentera rotorsak. Utred updater, versionsfot och mobilpolicy separat före kodändring. Fryst forskning och Handel/Forward AV förblir orörda.
