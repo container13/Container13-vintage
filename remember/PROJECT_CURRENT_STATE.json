@@ -8,14 +8,14 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.184",
+    "candidate": "0.1.185",
     "integrity": "RELEASE_GUARD_PENDING_CI"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.184",
-    "goal": "Compact webmaster album heading and overview while preserving title hierarchy",
-    "resumeInstruction": "Verify GitHub Actions and Pages for 0.1.184; iPhone visual acceptance of album heading and overview."
+    "targetRelease": "0.1.185",
+    "goal": "Show contextual open and close dates, optional edit controls",
+    "resumeInstruction": "Check CI/Pages and iPhone tests for date labels, editing and saving."
   },
   "currentWork": {
     "completed": "Mobile30 .168 installed and documented; Pages39771164981 success independently read2026-10-23. .169 replaces long contradictory start documents with one short handoff and continuation policy; no functional/backend changes.",

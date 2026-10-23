@@ -1,3 +1,6 @@
+## 2026-10-23 – 0.1.185 date summary
+- Contextual labels Öppnades/Öppnar and Stängdes/Stänger; compact two-column date display; edit fields toggle via Ändra tider. Preserves existing extension, saving, and forced-close controls. Pending CI/Pages and iPhone acceptance.
+
 ## 2026-10-23 – 0.1.184 compact album header and overview
 - Shared CSS only: smaller webmaster badge, shorter album heading preserving prominent title, tighter Dashboard link, two-column compact overview with owner full-width, subtle upload status, larger image count, small timezone. Shared role-switch button spacing refined. Cache keys refreshed for all nine views. No auth, behavior, gallery or photobook changes. Await Actions/Pages and iPhone visual acceptance.
 

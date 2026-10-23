@@ -12,8 +12,10 @@ export function timeZoneLabel(zone){return zone==='Europe/Stockholm'?'Svensk tid
 export function mountWebmasterAlbumSettings({host,album,enabled,request}){
  let current=album,saving=false;
  host.hidden=false;
- host.innerHTML=`<section class="admin-overview"><h2>Albumöversikt</h2><dl><div><dt>Albumägare</dt><dd data-owner></dd></div><div><dt>Uppladdning</dt><dd data-status></dd></div><div data-count-row hidden><dt>Bilder / bildgräns</dt><dd data-count></dd></div><div><dt>Tidszon</dt><dd data-zone></dd></div></dl></section><section class="admin-times"><h2>Tider och åtkomst</h2><p data-window></p><form data-time-form><fieldset><legend class="sr-only">Ändra uppladdningsperiod</legend><label>Öppnar<input name="opens" type="datetime-local" required></label><label>Stänger<input name="closes" type="datetime-local" required></label><p class="admin-time-zone"></p><div class="admin-extend"><button type="button" data-hours="24" class="secondary">Förläng 24 timmar</button><button type="button" data-hours="168" class="secondary">Förläng 7 dagar</button></div><p class="admin-settings-status" data-extension-note></p><p class="admin-settings-status" data-close-preview role="status" aria-live="polite" hidden></p><label class="admin-closed"><input name="closed" type="checkbox"> Tillfälligt stängd för uppladdning</label><button type="submit">Spara ändringar</button></fieldset></form><p class="admin-settings-status" data-settings-feedback role="status" aria-live="polite"></p></section>`;
+ host.innerHTML=`<section class="admin-overview"><h2>Albumöversikt</h2><dl><div><dt>Albumägare</dt><dd data-owner></dd></div><div><dt>Uppladdning</dt><dd data-status></dd></div><div data-count-row hidden><dt>Bilder / bildgräns</dt><dd data-count></dd></div><div><dt>Tidszon</dt><dd data-zone></dd></div></dl></section><section class="admin-times"><h2>Tider och åtkomst</h2><div class="admin-date-summary"><div><span data-open-label></span><strong data-open-date></strong></div><div><span data-close-label></span><strong data-close-date></strong></div></div><button type="button" data-edit-times aria-expanded="false">Ändra tider</button><form data-time-form><fieldset><legend class="sr-only">Ändra uppladdningsperiod</legend><div data-date-fields hidden><label>Öppningstid<input name="opens" type="datetime-local" required></label><label>Stängningstid<input name="closes" type="datetime-local" required></label></div><p class="admin-time-zone"></p><div class="admin-extend"><button type="button" data-hours="24" class="secondary">Förläng 24 timmar</button><button type="button" data-hours="168" class="secondary">Förläng 7 dagar</button></div><p class="admin-settings-status" data-extension-note></p><p class="admin-settings-status" data-close-preview role="status" aria-live="polite" hidden></p><label class="admin-closed"><input name="closed" type="checkbox"> Tillfälligt stängd för uppladdning</label><button type="submit">Spara ändringar</button></fieldset></form><p class="admin-settings-status" data-settings-feedback role="status" aria-live="polite"></p></section>`;
  const q=s=>host.querySelector(s),form=q('form'),fieldset=q('fieldset'),feedback=q('[data-settings-feedback]');
+ const edit=q('[data-edit-times]'),fields=q('[data-date-fields]');
+ edit.onclick=()=>{fields.hidden=!fields.hidden;edit.setAttribute('aria-expanded',String(!fields.hidden));edit.textContent=fields.hidden?'Ändra tider':'Dölj tidsfält';};
  const date=iso=>new Intl.DateTimeFormat('sv-SE',{dateStyle:'medium',timeStyle:'short',timeZone:current.event_timezone||'Europe/Stockholm'}).format(new Date(iso));
  function updateDraftPreview(){
   const closesValue=form.elements.closes.value,opensValue=form.elements.opens.value;
@@ -35,12 +37,16 @@ export function mountWebmasterAlbumSettings({host,album,enabled,request}){
   q('[data-owner]').textContent=current.owner_email||'Uppgift saknas';q('[data-status]').textContent=uploadStatus(current);
   q('[data-zone]').textContent=timeZoneLabel(current.event_timezone);
   const opens=current.override_opens_at||current.default_opens_at,closes=current.override_closes_at||current.default_closes_at;
-  q('[data-window]').textContent=opens&&closes?date(opens)+' – '+date(closes):'Uppladdningstider saknas.';
+  const now=Date.now(),start=Date.parse(opens),end=Date.parse(closes);
+  q('[data-open-label]').textContent=Number.isFinite(start)&&start<=now?'Öppnades':'Öppnar';
+  q('[data-close-label]').textContent=Number.isFinite(end)&&end<=now?'Stängdes':'Stänger';
+  q('[data-open-date]').textContent=Number.isFinite(start)?date(opens):'Tid saknas';
+  q('[data-close-date]').textContent=Number.isFinite(end)?date(closes):'Tid saknas';
   form.elements.opens.value=localInput(opens);form.elements.closes.value=localInput(closes);form.elements.closed.checked=!!current.forced_closed;
   const deviceZone=Intl.DateTimeFormat().resolvedOptions().timeZone;
   q('.admin-time-zone').textContent=deviceZone===current.event_timezone?'':'Ändringsfälten visas i '+timeZoneLabel(deviceZone)+'.';
   if(Number.isInteger(current.photo_limit)&&Number.isInteger(current.photo_count)){q('[data-count-row]').hidden=false;q('[data-count]').textContent=current.photo_count+' / '+current.photo_limit;}
-  fieldset.disabled=!enabled||saving;updateDraftPreview();
+  fieldset.disabled=!enabled||saving;edit.disabled=!enabled||saving;updateDraftPreview();
  }
  render();if(!enabled)feedback.textContent='Tidsändringar är inte aktiverade ännu.';
  form.addEventListener('input',updateDraftPreview);form.addEventListener('change',updateDraftPreview);form.addEventListener('focusin',updateDraftPreview);

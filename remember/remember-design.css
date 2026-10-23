@@ -766,3 +766,13 @@ body.remember-shell #roleSwitcher{margin:8px 0 12px!important;padding:9px!import
 body.remember-shell #roleSwitcher .role-switch-actions{gap:8px!important}
 body.remember-shell #roleSwitcher button{min-height:43px!important;padding:8px 9px!important;font-size:12px!important}
 @media(max-width:360px){body.remember-shell .admin-overview dl{gap:11px 7px!important}body.remember-shell .admin-overview dd{font-size:12px!important}}
+
+/* 0.1.185: contextual date labels and collapsible editing */
+body.remember-shell .admin-times .admin-date-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:12px 0 14px;padding:15px 0;border-top:1px solid #ffffff25;border-bottom:1px solid #ffffff25}
+body.remember-shell .admin-date-summary>div{display:grid;gap:5px;min-width:0}
+body.remember-shell .admin-date-summary span{font-size:12px;color:#e0d6c5;font-weight:650}
+body.remember-shell .admin-date-summary strong{font-size:clamp(13px,3.3vw,16px);line-height:1.4;color:#fff3d9;overflow-wrap:anywhere}
+body.remember-shell .admin-times [data-edit-times]{min-height:38px;padding:7px 13px;margin:0 0 8px;background:#214739;color:#f5e8cc;border:1px solid #e1d1b270;border-radius:10px;font-size:12px;font-weight:700}
+body.remember-shell .admin-times [data-date-fields]{margin:8px 0 12px;padding:12px;border:1px solid #ffffff24;border-radius:12px;background:#10291f66}
+body.remember-shell .admin-times [data-date-fields][hidden]{display:none!important}
+body.remember-shell .admin-times [data-date-fields] label{display:block;margin:4px 0 11px}
