@@ -1,3 +1,9 @@
+# Aktuell kontinuitetsregel — 0.1.169, 2026-10-23
+- [x] En kort aktuell överlämning: [PROJECT_HANDOFF_CURRENT.md](PROJECT_HANDOFF_CURRENT.md). START_HERE/README pekar dit.
+- [ ] Vid varje arbetssteg: spara senaste uppgift/resultat/pågående/hinder/nästa steg i samma fil på GitHub och läs tillbaka; före längre steg sparas IN_PROGRESS.
+- [ ] Samma rutin införs stegvis i alla andra projekt och projektmallen; inte genomfört här.
+- Tidigare daterade kontrollpunkter nedan är historik. Senaste överlämning/strukturerade fält gäller; ingen automatisk omtestning eller promotion.
+
 # Remember — gemensam checklista
 Uppdaterad 2026-10-22. Kandidat 0.1.166 (hörnpapperskorg, tydligt granskningsval, Testa gratis). Bock betyder faktiskt underlag; historiska PASS har sin angivna version. CURRENT/PREVIOUS är inte godkända.
 

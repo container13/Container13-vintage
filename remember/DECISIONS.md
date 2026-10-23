@@ -266,7 +266,7 @@ Confirmed on-device: v0.1.52 loaded but brown root background band remained at b
 - Installerad iPhone-PWA ska kontrollera ny release vid öppning, återkomst och återanslutning; aldrig behöva ominstalleras rutinmässigt. Automatisk uppdatering får göras **högst en gång per ny målrelease** och aldrig avbryta formulär, kamera, uppladdning eller transaktion. Om säker uppdatering inte lyckas: stoppa loop och visa manuellt alternativ. Ett äldre manifest får aldrig tolkas som nyare release.
 - Release-ID, samtliga nio HTML-ingångar, delade resurser och versionsvisning måste hållas synkroniserade. Manifest ska inte annonseras innan tillhörande vyer är färdiga. Enbart GitHub readback är inte deploy- eller iPhone-godkännande.
 - iPhone-evidens: Safari 0.1.67 medan PWA 0.1.66; därefter PWA 0.1.68 med felaktig uppdateringsvarning när release.json ännu var 0.1.67. Rättning gjord i kod och versionsparitet 0.1.68; slutligt iPhone-test saknas.
-- Full händelse- och testlogg finns i `remember/PROJECT_HANDOFF_CURRENT.md`, avsnitt `2026-10-16 kl. 11:42`.
+- Full händelse- och testlogg finns i `remember/PROJECT_HANDOFF_HISTORY_THROUGH_2026-10-23.md`, avsnitt `2026-10-16 kl. 11:42`.
 
 ## 2026-10-22 — Publik gratisformulering
 Projektägaren förtydligar att Remember ska säga **”Testa gratis”**, inte marknadsföra ”10 bilder gratis”. Använd denna formulering i registreringsrubrik, erbjudande och publik information. Den befintliga tekniska gratisgränsen är fortfarande 10 bilder; kvot/status i albumadministrationen är sakinformation och ändras inte av textbeslutet. Detta beslut ersätter äldre instruktioner om att skylta med antalet gratisbilder.
@@ -280,3 +280,7 @@ Projektägaren upplevde rullgardinsmenyn Gästläge som tvetydig. Vid skapande v
 
 ## Beslut och kontrollpunkt0.1.168 —2026-10-22
 Projektägaren väljer **30 bilder i mobilkvalitet** för gratisalbum. Detta ersätter det tidigare preliminära50-bildersförslaget och kravet att gratisbilder ska dimensioneras för tryck. Marknadsföringen behåller **Testa gratis**. Information vid albumskapande och på startsidans informationsruta: uppgradering förbättrar inte redan uppladdade bilder; original måste laddas upp på nytt för högre kvalitet. Högupplöst betaluppladdning är ännu inte implementerad. Aktiv1920px mobilkomprimering behålls. SQL-default och båda skapande-RPC:er synkas; tidigare standardgräns10 höjs till30, specialgränser bevaras. Se free-tier-30/README.md för verifiering/återställning. CURRENT/PREVIOUS oförändrade. iPhonekontroll av texten återstår.
+
+
+## 2026-10-23 — Löpande enkel överlämning
+Projektägaren beslutar att samma korta fil `PROJECT_HANDOFF_CURRENT.md` ska ersättas med senaste arbetsläget efter varje uppdatering och före längre arbetssteg, sparas på GitHub och läsas tillbaka. Ingen ny teknisk automatik krävs. Befintligt kontinuitetsprotokoll och releasegrindar gäller fortsatt. Tidigare lång logg bevaras i PROJECT_HANDOFF_HISTORY_THROUGH_2026-10-23.md och i Git-historiken. START_HERE/README länkar till aktuell överlämning. Alla projekt och projektmallen ska få samma rutin stegvis; endast Remember införs nu. Separat teståterställningscheckpoint behålls; användarrapporterat godkända tester ska inte köras om bara på grund av chattbyte.

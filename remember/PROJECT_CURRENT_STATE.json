@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.168",
-    "integrity": "MOBILE30_INSTALLED_SQL_READBACK_PASS_DEVICE_PENDING"
+    "candidate": "0.1.169",
+    "integrity": "CONTINUOUS_HANDOFF_DOCS_PENDING_READBACK"
   },
   "workCheckpoint": {
-    "status": "MOBILE30_INSTALLED_RELEASE_PENDING",
-    "targetRelease": "0.1.168",
-    "goal": "30 free mobile-quality images; clear upgrade limitation",
-    "resumeInstruction": "Read free-tier-30/README.md. User replaced the preliminary50-photo/print-quality direction with30 photos for mobile/digital viewing. SQL migration20261022112631 installed in ordinary Remember; default and both creation RPCs use30. Four former10-limit albums raised;13 photo rows and13 objects unchanged byte-for-byte metadata hashes. Installed actual RPC rollback tests pass30/31 and retry/ACL/modes. Verify GitHub/CI/live .168 and scoped iPhone visual acceptance. Existing1920px mobile compression remains unchanged. Do not promise high-resolution upgrade is implemented. CURRENT/PREVIOUS remain null."
+    "status": "UNVERIFIED",
+    "targetRelease": "0.1.169",
+    "goal": "Short continuously saved GitHub handoff; rollout elsewhere deferred",
+    "resumeInstruction": "Read PROJECT_HANDOFF_CURRENT.md first. Verify this documentation/version commit and its CI; then scoped pending iPhone acceptance of mobile30 wording, corner trash and review choice/flow. Do not repeat accepted broad tests. No backend changes in .169. Carry forward deferred all-project/template rollout."
   },
   "currentWork": {
-    "completed": "Installed30-photo mobile trial quota and prepared clear trial/upgrade copy. Backend actual SQL rollback tests and exact function/ACL readback PASS.",
-    "next": "Verify .168 release CI/live and iPhone trial text; reviewed-album acceptance remains pending.",
+    "completed": "Mobile30 .168 installed and documented; Pages39771164981 success independently read2026-10-23. .169 replaces long contradictory start documents with one short handoff and continuation policy; no functional/backend changes.",
+    "next": "Verify .169 GitHub readback/CI; then scoped pending iPhone acceptance.",
     "blocked": false,
     "blocker": null
   },
@@ -546,7 +546,7 @@
   "releasePromotion": {
     "process": "remember/RELEASE_PROMOTION.md",
     "currentAndPrevious": "UNSET_PENDING_IPHONE_AND_DEPLOY_VERIFICATION",
-    "candidate": "0.1.110",
+    "candidate": "0.1.169",
     "note": "Release process docs changed; no runtime/device promotion implied"
   },
   "bookTurnFeedback": {
@@ -968,5 +968,22 @@
     "securityAdvisors": "UNCHANGED_EXCLUDING_OBSERVED_AT",
     "device": "PENDING",
     "report": "remember/free-tier-30/README.md"
+  },
+  "handoff": {
+    "path": "remember/PROJECT_HANDOFF_CURRENT.md",
+    "updated": "2026-10-23",
+    "policy": "Replace latest state after every change, meaningful test/deploy and before long/risky steps; commit and exact-readback on GitHub. No background automation.",
+    "entrypoint": "remember/START_HERE.md",
+    "deferredRollout": {
+      "scope": "All projects and project-template",
+      "authorization": "User 2026-10-23; gradual rollout, Remember only now",
+      "status": "PENDING"
+    }
+  },
+  "historicalCurrentWorkBeforeContinuity": {
+    "completed": "Installed30-photo mobile trial quota and prepared clear trial/upgrade copy. Backend actual SQL rollback tests and exact function/ACL readback PASS.",
+    "next": "Verify .168 release CI/live and iPhone trial text; reviewed-album acceptance remains pending.",
+    "blocked": false,
+    "blocker": null
   }
 }
