@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.39",
+  "release": "V0.4.40",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -16,14 +16,14 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PASS_V0.4.39_COMMIT_4b5a547c8",
+    "releaseIntegrity": "PENDING_V0.4.40",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21",
     "pagesDeploy": "PASS_V0.4.39_COMMIT_4b5a547c8",
     "liveAssetReadback": "UNVERIFIED_NETWORK_ACCESS"
   },
   "currentWork": {
-    "completed": "V0.4.39 handoff, template safeguards, integrity and Pages PASS; read-only PWA code audit completed.",
-    "next": "Verify live served assets, then scope safe updater/footer/mobile-policy changes as separate release; no device PASS assumed.",
+    "completed": "V0.4.40 source committed: single startup/resume/reconnect release checker with edit deferral, running-version footer; research untouched.",
+    "next": "Verify final GitHub Integrity and Pages, inspect live assets and test installed iPhone PWA; mobile zoom policy deferred until separate device-safe audit.",
     "blocked": false
   },
   "bootstrap": {
@@ -44,19 +44,19 @@
       {
         "id": 1,
         "task": "Inventory updater/footer/mobile and verify baseline",
-        "status": "IN_PROGRESS"
+        "status": "DONE"
       },
       {
         "id": 2,
         "task": "Implement minimal shared behavior with version bump",
-        "status": "PENDING"
+        "status": "DONE"
       },
       {
         "id": 3,
         "task": "Readback, integrity, Pages and device verification",
-        "status": "PENDING"
+        "status": "NEXT"
       }
     ],
-    "resumeInstruction": "Inspect existing owner first. No research reruns. Trade and Forward OFF."
+    "resumeInstruction": "V0.4.40 release sources committed, Integrity/Pages/device still pending. Verify before promoting; no research rerun."
   }
 }
