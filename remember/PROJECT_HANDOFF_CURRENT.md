@@ -1,3 +1,6 @@
+## 2026-10-23 – 0.1.181 mobile gallery gesture and controls
+- iPhone screenshot showed swipe threshold too long and close/crop buttons clipped at right edge. Reduced swipe threshold from 50% to 25% of viewer height. Viewer used width:100vw together with padding:14px and inherited content-box, making fullscreen layout wider than viewport; enforce border-box and max-width and explicitly position controls within safe areas. Same shared gallery for all roles; photo book unchanged. Await CI/Pages and iPhone acceptance.
+
 ## 2026-10-23 – 0.1.180 photo gallery hotfix
 - Root cause: four literal \\n sequences in initial comment of photo-gallery.js commented out SWIPE_SETTLE_MS, SWIPE_RETURN_MS, SWIPE_THRESHOLD_RATIO and ENDPOINT. Replaced with real newlines. Reviewed 28 active HTML/JS files for same declaration pattern; only gallery affected. Added regression guard in release safety workflow. Candidate UNVERIFIED pending Actions/Pages and iPhone tests; no database or photobook changes.
 

@@ -8,14 +8,14 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.180",
+    "candidate": "0.1.181",
     "integrity": "RELEASE_GUARD_PENDING_CI"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.180",
-    "goal": "Repair escaped newlines in photo gallery declarations and add static regression guard",
-    "resumeInstruction": "Verify GitHub Actions and Pages for 0.1.180; iPhone test photo gallery as webmaster, owner and guest; do not promote until device PASS."
+    "targetRelease": "0.1.181",
+    "goal": "Reduce gallery swipe threshold and keep fullscreen controls within mobile viewport",
+    "resumeInstruction": "Verify CI/Pages for 0.1.181 and iPhone test swipe and top/bottom buttons in webmaster, owner and guest."
   },
   "currentWork": {
     "completed": "Mobile30 .168 installed and documented; Pages39771164981 success independently read2026-10-23. .169 replaces long contradictory start documents with one short handoff and continuation policy; no functional/backend changes.",
