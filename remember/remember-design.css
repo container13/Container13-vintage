@@ -720,3 +720,26 @@ body.remember-shell #rememberGallery .remember-gallery-delete svg,
 body.remember-shell[data-remember-view="memories"] .photo-card .photo-delete svg{display:block;width:20px;height:20px;pointer-events:none}
 body.remember-shell #rememberGallery .remember-gallery-delete:disabled,
 body.remember-shell[data-remember-view="memories"] .photo-card .photo-delete:disabled{opacity:.55;cursor:default}
+
+
+/* 0.1.183: polished shared webmaster album controls; presentation only. */
+body.remember-shell .admin-times{padding:clamp(18px,4vw,25px)}
+body.remember-shell .admin-times h2{margin-bottom:18px!important}
+body.remember-shell .admin-times [data-window]{color:#e8ddcc;font-size:13px;letter-spacing:.01em;margin:0 0 17px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,.16)}
+body.remember-shell .admin-times label:not(.admin-closed){font-size:13px;font-weight:700;color:#f7ead4;margin:14px 0 8px}
+body.remember-shell .admin-times input[type="datetime-local"]{min-height:54px;border-radius:13px;padding:12px 13px;background:#f8f3e9;border-color:#d9c9aa;color:#1b4033;font-weight:650;box-shadow:0 2px 8px #0002}
+body.remember-shell .admin-times .admin-extend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:20px 0 7px}
+body.remember-shell .admin-times .admin-extend button{min-width:0;min-height:44px;padding:9px 7px;font-size:13px;font-weight:650;background:#20483b;color:#f9f3e8;border:1px solid #91ad9c80;box-shadow:none}
+body.remember-shell .admin-times .admin-closed{display:flex;align-items:center;gap:13px;margin:20px 0 17px;padding:12px 0;border-top:1px solid #ffffff20;border-bottom:1px solid #ffffff20;font-size:13px;font-weight:650}
+body.remember-shell .admin-times .admin-closed input[type="checkbox"]{appearance:none;-webkit-appearance:none;position:relative;flex:none;width:48px;min-width:48px;height:28px;margin:0;border:1px solid #b5c4b5;border-radius:18px;background:#777d73;cursor:pointer;transition:background .18s}
+body.remember-shell .admin-times .admin-closed input[type="checkbox"]::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff9ef;box-shadow:0 1px 4px #0005;transition:transform .18s}
+body.remember-shell .admin-times .admin-closed input[type="checkbox"]:checked{background:#d9e7a4;border-color:#d9e7a4}
+body.remember-shell .admin-times .admin-closed input[type="checkbox"]:checked::after{transform:translateX(20px);background:#173b30}
+body.remember-shell .admin-times .admin-closed input[type="checkbox"]:focus-visible{outline:3px solid #f4d49b;outline-offset:3px}
+body.remember-shell .admin-times button[type="submit"]{width:100%;min-height:54px;margin-top:3px;background:#193f33!important;color:#fff8e9!important;border:1px solid #aec4ae!important;font-size:15px;font-weight:750;box-shadow:0 5px 15px #0003}
+body.remember-shell .admin-times button[type="submit"]:disabled{opacity:.58}
+body.remember-shell .admin-tools{margin:16px 0;padding:0 18px}
+body.remember-shell .admin-tools>summary{padding:16px 0}
+body.remember-shell #adminExtraTools{padding-bottom:15px}
+body.remember-shell #adminExtraTools :is(#showAdminGallery,#ownerCamera,#ownerFiles,#openAdminShare){min-height:46px;background:#1c4336;color:#fff7e9;border-color:#b2c3b255}
+@media(max-width:380px){body.remember-shell .admin-times .admin-extend button{font-size:12px}}

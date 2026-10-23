@@ -1,3 +1,6 @@
+## 2026-10-23 – 0.1.183 webmaster album visual polish
+- Shared remember-design.css updates: dark high-contrast save button, compact date fields and extension actions, accessible toggle, tidier tool group. Refreshed stylesheet cache keys to release 0.1.183 across views. CSS-only, no behavior/auth/DB changes. Pending CI/Pages and iPhone acceptance.
+
 ## 2026-10-23 – 0.1.182 stale photo-gallery cache hotfix
 - iPhone screenshot unchanged after 0.1.181 despite successful CI/Pages. Root cause: owner.html, album.html and album-admin.html imported photo-gallery.js?v=0.1.179, bypassing updated module. Bumped all three import cache keys to 0.1.182 and added release guard to ensure cache keys match manifest. 0.1.181 gallery swipe and control changes preserved. Pending CI/Pages and iPhone validation.
 
