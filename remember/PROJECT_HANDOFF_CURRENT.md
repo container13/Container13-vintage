@@ -46,3 +46,11 @@ Projektägaren2026-10-23: inför samma enkla löpande överlämning i **alla pro
 - Separat teståterställning är pausad, inte ett nytt jobb: simuleringen är USER-REPORTED PASS; kör inte om den enbart på grund av chattbyte. Testets befintliga karantän-cron får inte ändras utan kontroll av återaktivering och explicit uppdrag.
 - Separat Remember Test/återställning: RECOVERY_CHECKPOINT.md; tillämpa inte testprojektets återställningsinstruktioner på ordinarie Remember.
 - Skydda andra projekt på den gemensamma grenen, befintliga bilder och godkända funktioner. Minsta ändring=ny version; rapportera COMMITTED, DEPLOYED, RUNTIME PASS och DEVICE PASS separat.
+
+
+## 2026-10-23 – Guest link first-time fix (0.1.170)
+- Verified Halloween 2026 and Bruket med granskning had no guest_links or vault entries; Bruket utan granskning had both.
+- Root cause: get returned needsReplacement for missing link regardless of first-time vs lost link; UI always warned about older link, and guest preview could not open without token.
+- Deployed remember-share-manager edge function version 5, adding neverCreated when no guest_links row exists.
+- Updated album-admin.html to show first-time Create guest link with no rotation warning, and clearer guest preview missing-link message.
+- No guest links, albums, or photos modified in database. Await iPhone end-to-end test; CURRENT/PREVIOUS not approved.
