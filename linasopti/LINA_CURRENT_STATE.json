@@ -35,33 +35,28 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
-    "targetRelease": "V0.4.39",
-    "goal": "Adopt continuous GitHub handoff and project-template safeguards without touching frozen research",
+    "status": "IN_PROGRESS",
+    "targetRelease": "V0.4.40",
+    "goal": "Safe PWA update on resume, footer and mobile policy after existing-owner inventory",
+    "lastSafeRelease": "V0.4.39",
+    "lastSafeCommit": "4b5a547c8a37f66d278b4e87a5b87cff7a457839",
     "plan": [
       {
         "id": 1,
-        "task": "Preserve historical handoff separately",
-        "status": "DONE"
+        "task": "Inventory updater/footer/mobile and verify baseline",
+        "status": "IN_PROGRESS"
       },
       {
         "id": 2,
-        "task": "Create concise current handoff and update Lina rules/manual/checklist",
-        "status": "DONE"
+        "task": "Implement minimal shared behavior with version bump",
+        "status": "PENDING"
       },
       {
         "id": 3,
-        "task": "Align V0.4.39 version/cache/release gate and static integrity",
-        "status": "DONE"
-      },
-      {
-        "id": 4,
-        "task": "GitHub exact readback, Actions, Pages and live version verification",
-        "status": "UNVERIFIED_LIVE"
+        "task": "Readback, integrity, Pages and device verification",
+        "status": "PENDING"
       }
     ],
-    "lastSafeRelease": "V0.4.38",
-    "lastSafeCommit": "fad61639815ac3cf9835f2c6fa48b5b28ab0f000",
-    "resumeInstruction": "V0.4.39 CI/Pages PASS. Verify live assets when accessible, then plan separate updater/footer/mobile changes after existing-owner audit. No research reruns; Handel/Forward OFF."
+    "resumeInstruction": "Inspect existing owner first. No research reruns. Trade and Forward OFF."
   }
 }
