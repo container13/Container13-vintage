@@ -1,3 +1,6 @@
+## 2026-10-23 – versionssynkronisering 0.1.175
+- Atomär release: synkroniserade release.json, nio ingångssidors remember-release och cache keys för auto-update.js/remember-version.js, gemensam fallback och PROJECT_CURRENT_STATE.json. Ändringen löser konstaterad release-drift; inväntar GitHub Actions safety PASS och mobilkontroll. Ingen ändring av fotobok eller bilddata.
+
 ## 2026-10-23 – owner thumbnail grid 0.1.174
 - Korrigerade CSS för direktinloggad albumägares gemensamma galleri: 2-kolumners miniatyrer, bildkort och överlagrad papperskorg. Det gemensamma svepet är oförändrat. Verifiering i mobil och Actions återstår.
 
