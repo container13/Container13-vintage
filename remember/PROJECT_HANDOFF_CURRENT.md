@@ -1,3 +1,6 @@
+## 2026-10-23 – 0.1.192 compact inline owner quota
+- Condensed webmaster individual quota UI into one mobile-friendly row: album-owner dropdown left, numeric max free albums right, compact save/reset beneath. Numeric input disabled until a user is resolved. Existing backend authorization and quotas unchanged. Candidate awaiting CI, Pages and mobile verification.
+
 ## 2026-10-23 – 0.1.191 compact album owner dropdown
 - 0.1.190 CI/Pages PASS. Replaced tall owner cards and filter with native mobile-friendly select listing unique owners from existing authorized album catalog. Selecting an owner loads server-verified free quota; existing fallback exact-email search retained. No Supabase changes. Candidate awaiting CI/Pages and mobile test.
 
