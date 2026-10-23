@@ -8,14 +8,14 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.181",
+    "candidate": "0.1.182",
     "integrity": "RELEASE_GUARD_PENDING_CI"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.181",
-    "goal": "Reduce gallery swipe threshold and keep fullscreen controls within mobile viewport",
-    "resumeInstruction": "Verify CI/Pages for 0.1.181 and iPhone test swipe and top/bottom buttons in webmaster, owner and guest."
+    "targetRelease": "0.1.182",
+    "goal": "Bust stale photo gallery cache in all three roles",
+    "resumeInstruction": "Verify 0.1.182 CI/Pages and test iPhone viewer controls/swipe; ensure gallery module query matches release."
   },
   "currentWork": {
     "completed": "Mobile30 .168 installed and documented; Pages39771164981 success independently read2026-10-23. .169 replaces long contradictory start documents with one short handoff and continuation policy; no functional/backend changes.",

@@ -1,3 +1,6 @@
+## 2026-10-23 – 0.1.182 stale photo-gallery cache hotfix
+- iPhone screenshot unchanged after 0.1.181 despite successful CI/Pages. Root cause: owner.html, album.html and album-admin.html imported photo-gallery.js?v=0.1.179, bypassing updated module. Bumped all three import cache keys to 0.1.182 and added release guard to ensure cache keys match manifest. 0.1.181 gallery swipe and control changes preserved. Pending CI/Pages and iPhone validation.
+
 ## 2026-10-23 – 0.1.181 mobile gallery gesture and controls
 - iPhone screenshot showed swipe threshold too long and close/crop buttons clipped at right edge. Reduced swipe threshold from 50% to 25% of viewer height. Viewer used width:100vw together with padding:14px and inherited content-box, making fullscreen layout wider than viewport; enforce border-box and max-width and explicitly position controls within safe areas. Same shared gallery for all roles; photo book unchanged. Await CI/Pages and iPhone acceptance.
 

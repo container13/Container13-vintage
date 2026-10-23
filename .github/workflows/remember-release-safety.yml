@@ -98,6 +98,18 @@ jobs:
                   raise SystemExit('RELEASE FAILED: '+name+' missing active declaration')
           print('Photo gallery declarations PASS')
           PY
+      - name: Check photo gallery import cache keys
+        run: |
+          python3 - <<'PY'
+          import json,pathlib,sys
+          root=pathlib.Path('remember')
+          version=json.loads((root/'release.json').read_text())['version']
+          for name in ('owner.html','album.html','album-admin.html'):
+              html=(root/name).read_text()
+              if 'photo-gallery.js?v='+version not in html:
+                  sys.exit('RELEASE FAILED: stale photo gallery import in '+name)
+          print('Photo gallery cache keys PASS')
+          PY
       - name: Run release sync regression tests
         run: python3 remember/scripts/test_sync_release.py
       - name: Validate release consistency
