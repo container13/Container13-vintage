@@ -8,12 +8,12 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.188",
+    "candidate": "0.1.189",
     "integrity": "RELEASE_GUARD_PENDING_CI"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.188",
+    "targetRelease": "0.1.189",
     "goal": "Individual free-album overrides by email in authenticated webmaster dashboard",
     "resumeInstruction": "Verify CI and Pages; test webmaster search/save/reset, 3 vs 2 free album quotas, paid exclusion, concurrent registration and unauthorized access."
   },

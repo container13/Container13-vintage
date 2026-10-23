@@ -1,3 +1,6 @@
+## 2026-10-23 – 0.1.189 release guard repair
+- 0.1.188 hotfix failed version bump guard (runtime changed without release.json). Following mandatory rule every runtime change bumps version, 0.1.189 synchronizes all HTML and gallery cache keys. Await CI and Pages verification.
+
 ## 2026-10-23 – 0.1.188 CI hotfix
 - Release Safety failed because gallery imports remained at 0.1.187 after version bump. Corrected all three to 0.1.188 without changing gallery logic or incrementing release number (same unreleased candidate). Reverify CI and Pages.
 
