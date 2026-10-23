@@ -1,3 +1,6 @@
+## 2026-10-23 – 0.1.187 gallery cache-key CI fix
+- Diagnosed 0.1.186 GitHub Actions failure at Check photo gallery import cache keys. Guest/owner/webmaster imports still used 0.1.182. Synced all three to 0.1.187 and release metadata/cache keys across nine HTML entrypoints. No photo-gallery engine or Supabase changes. Candidate UNVERIFIED pending CI, Pages and device tests. Next: verify release safety and global quota, then implement individual overrides.
+
 ## 2026-10-23 – 0.1.186 free-album quota
 - Installed Supabase migration remember_free_album_quota_webmaster_20261023: remember.albums.plan_type (free default/paid reserved), remember.global_settings.free_album_limit (initial 2), webmaster-only RPC read/write, and atomic free-quota check in remember_complete_album_registration using per-owner advisory lock. Existing albums preserved. Deployed remember-webmaster Edge Function v4 and remember-onboarding v3. Webmaster dashboard provides minus/plus/input/save. Paid albums excluded by plan_type; no payment feature implemented. **CI/Pages, webmaster save and user E2E tests pending.**
 
