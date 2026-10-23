@@ -16,7 +16,7 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PENDING_V0.4.38",
+    "releaseIntegrity": "PENDING_V0.4.38_REPAIR",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21"
   },
   "currentWork": {
@@ -54,7 +54,7 @@
       }
     ],
     "lastSafeRelease": "V0.4.37",
-    "lastSafeCommit": null,
+    "lastSafeCommit": "4ecd25580beeef8bba4a88c1d0f11e0d50a78c6a",
     "resumeInstruction": "Verify V0.4.38 repo readback and live runtime. Do not rerun research; Handel/Forward remain OFF."
   }
 }
