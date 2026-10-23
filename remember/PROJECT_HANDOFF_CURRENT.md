@@ -1,3 +1,6 @@
+## 2026-10-23 – 0.1.180 photo gallery hotfix
+- Root cause: four literal \\n sequences in initial comment of photo-gallery.js commented out SWIPE_SETTLE_MS, SWIPE_RETURN_MS, SWIPE_THRESHOLD_RATIO and ENDPOINT. Replaced with real newlines. Reviewed 28 active HTML/JS files for same declaration pattern; only gallery affected. Added regression guard in release safety workflow. Candidate UNVERIFIED pending Actions/Pages and iPhone tests; no database or photobook changes.
+
 ## 2026-10-23 – gemensamt bildsvep 0.1.179
 - Shared photo-gallery.js: 50 % av viewer-höjd krävs för att byta foto. Släpp före halvvägs ger animerad återgång 380 ms; efter halvvägs mjukare sidbyte 680 ms. Samma beteende i gäst, albumägare och webmaster. Pinch/pan och fotobokens motor oförändrade. iPhone-test och Actions-verifiering kvarstår.
 

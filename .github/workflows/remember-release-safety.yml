@@ -87,6 +87,17 @@ jobs:
                   sys.exit('RELEASE FAILED: version must increase for runtime changes')
           print('Version bump guard PASS')
           PY
+      - name: Check photo gallery declarations not swallowed by comment
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('remember/photo-gallery.js').read_text()
+          required=('SWIPE_SETTLE_MS','SWIPE_RETURN_MS','SWIPE_THRESHOLD_RATIO','ENDPOINT')
+          for name in required:
+              if not any(line.lstrip().startswith('const '+name+'=') for line in s.splitlines()):
+                  raise SystemExit('RELEASE FAILED: '+name+' missing active declaration')
+          print('Photo gallery declarations PASS')
+          PY
       - name: Run release sync regression tests
         run: python3 remember/scripts/test_sync_release.py
       - name: Validate release consistency

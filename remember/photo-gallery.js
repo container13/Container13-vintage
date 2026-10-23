@@ -1,5 +1,9 @@
 import {prepareRememberCrop,sharePreparedRememberCrop} from './photo-crop.js?v=0.1.73';
-// Shared photo viewer gesture policy for guest, owner and webmaster.\nconst SWIPE_SETTLE_MS=680;\nconst SWIPE_RETURN_MS=380;\nconst SWIPE_THRESHOLD_RATIO=.5;\nconst ENDPOINT='https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-photo-gallery';
+// Shared photo viewer gesture policy for guest, owner and webmaster.
+const SWIPE_SETTLE_MS=680;
+const SWIPE_RETURN_MS=380;
+const SWIPE_THRESHOLD_RATIO=.5;
+const ENDPOINT='https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-photo-gallery';
 export function mountRememberGallery({container,auth,onDelete}) {
  container.innerHTML='<h2>Albumets bilder</h2><p class="remember-gallery-status" role="status">Hämtar bilder…</p><div class="remember-gallery-grid"></div><div class="remember-gallery-viewer" hidden><button type="button" aria-label="Stäng bild">✕ Stäng</button><button type="button" class="remember-crop-button" aria-label="Spara bildutsnitt">📷</button><div class="remember-gallery-image-frame"><img alt="Albumfoto"></div></div>';
  const styleId='remember-photo-gesture-style';
