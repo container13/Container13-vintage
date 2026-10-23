@@ -20,7 +20,7 @@ def main():
         version='.'.join(map(str,parts))
         manifest['version']=version
         manifest['release']='remember-'+version
-        (ROOT/'release.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\\n')
+        (ROOT/'release.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
         args.write=True
     if not re.fullmatch(r'\d+\.\d+\.\d+',version): raise SystemExit('Invalid version')
     errors=[]
@@ -29,7 +29,7 @@ def main():
     if args.write:
         state['release']['candidate']=version
         state.setdefault('workCheckpoint',{})['targetRelease']=version
-        (ROOT/'PROJECT_CURRENT_STATE.json').write_text(json.dumps(state,ensure_ascii=False,indent=2)+'\\n')
+        (ROOT/'PROJECT_CURRENT_STATE.json').write_text(json.dumps(state,ensure_ascii=False,indent=2)+'\n')
     if state['release'].get('candidate')!=version: errors.append('PROJECT_CURRENT_STATE.json release.candidate mismatch')
     if state.get('workCheckpoint',{}).get('targetRelease')!=version: errors.append('PROJECT_CURRENT_STATE.json workCheckpoint.targetRelease mismatch')
     for name in HTML:

@@ -8,12 +8,12 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.177",
+    "candidate": "0.1.178",
     "integrity": "RELEASE_GUARD_PENDING_CI"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.177",
+    "targetRelease": "0.1.178",
     "goal": "Verify pre-commit release bump and negative test fixtures",
     "resumeInstruction": "Read PROJECT_HANDOFF_CURRENT.md first. Verify this documentation/version commit and its CI; then scoped pending iPhone acceptance of mobile30 wording, corner trash and review choice/flow. Do not repeat accepted broad tests. No backend changes in .169. Carry forward deferred all-project/template rollout."
   },

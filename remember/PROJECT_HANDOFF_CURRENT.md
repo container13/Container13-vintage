@@ -1,3 +1,6 @@
+## 2026-10-23 – 0.1.178 preflight-korrigering
+- Rättade escapning av radslut i sync-release.py:s --bump/--write-läge. Ingen runtime-logik ändrad. Invändar CI och Pages.
+
 ## 2026-10-23 – release preflight 0.1.177
 - Behåller GitHub Pages 'Deploy from a branch' och ändrar inte publiceringsinställningarna. Infört lokalt preflight-kommando som höjer patchversionen och synkroniserar nio HTML-sidor, release.json, JS-fallback och statusfil före atomär commit. Riktiga negativa tester kontrollerar att versionsdrift upptäcks. GitHub Actions är efterhandskontroll; inte teknisk publiceringsspärr.
 
@@ -15,7 +18,7 @@
 - Direktinloggad albumägare använder nu samma `mountRememberGallery` som gäst/webmaster, inklusive vertikal bildsvepning och separat papperskorg via `remember-owner-manager`. Granskningsdialogen behålls separat. GitHub commit 05750eb. iPhone-test och Actions-resultat ännu inte verifierade.
 
 # Remember – aktuell överlämning
-Senast uppdaterad: 2026-10-23. Dokumentationsrelease: **0.1.177**.
+Senast uppdaterad: 2026-10-23. Dokumentationsrelease: **0.1.178**.
 **Läs denna fil först vid ”Fortsätt Remember”.** Den ersätts med senaste läget; den ska inte växa som en arbetslogg. Äldre versioner finns i Git-historiken.
 
 ## Projekt och miljö
