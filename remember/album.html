@@ -3,7 +3,7 @@ import {mountRememberRoleSwitcher,rememberRoleSwitcherCSS} from './remember-role
 const switchStyle=document.createElement('style');switchStyle.textContent=rememberRoleSwitcherCSS;document.head.append(switchStyle);
 import { createRememberUploader } from './upload-session.js?v=0.1.159';
 const uploadRememberFile=createRememberUploader();
-import { mountRememberGallery } from "./photo-gallery.js?v=0.1.187";
+import { mountRememberGallery } from "./photo-gallery.js?v=0.1.188";
 const title=document.getElementById('title'),status=document.getElementById('status');
 const query=new URLSearchParams(location.search);
 const webmasterReturnId=query.get('webmasterReturn');

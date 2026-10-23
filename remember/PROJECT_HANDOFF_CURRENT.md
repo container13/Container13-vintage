@@ -1,3 +1,6 @@
+## 2026-10-23 – 0.1.188 CI hotfix
+- Release Safety failed because gallery imports remained at 0.1.187 after version bump. Corrected all three to 0.1.188 without changing gallery logic or incrementing release number (same unreleased candidate). Reverify CI and Pages.
+
 ## 2026-10-23 – 0.1.188 individual free album limits
 - 0.1.187 release safety and Pages PASS. Production migration remember_individual_free_album_limits_0188 applied: private per-user quota table, webmaster-only lookup/set/reset RPC, atomic album creation honors override before global limit. Production remember-webmaster Edge Function deployed v5 with authenticated lookup/save/reset actions. Dashboard includes email search, count, effective quota, save and reset. No existing albums changed. Candidate UNVERIFIED pending CI/Pages and functional authorization tests. Previous 0.1.187 remains known CI PASS.
 

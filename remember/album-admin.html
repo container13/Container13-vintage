@@ -36,7 +36,7 @@ async function showGallery(){
  if(rememberGallery){host.hidden=!host.hidden;button.textContent=host.hidden?'Visa bilder':'Dölj bilder';return;}
  galleryLoading=true;button.disabled=true;button.textContent='Hämtar bilder…';
  try{
-  const {mountRememberGallery}=await import('./photo-gallery.js?v=0.1.187');
+  const {mountRememberGallery}=await import('./photo-gallery.js?v=0.1.188');
   rememberGallery=mountRememberGallery({container:host,auth:async()=>({albumId:id,bearer:await webmasterSession()}),onDelete:deleteGalleryPhoto});
   host.hidden=false;button.textContent='Dölj bilder';
  }catch{button.textContent='Försök visa bilder igen';}
