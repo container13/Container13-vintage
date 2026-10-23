@@ -1,3 +1,6 @@
+## 2026-10-23 – 0.1.193 dropdown 0–9
+- Changed webmaster individual quota input to native select 0–9, with narrow right-hand column, wide owner selector, and client-side 0–9 validation. No Supabase schema/function changes; existing server maximum remains unchanged for backward compatibility. Release candidate pending CI/Pages and mobile verification.
+
 ## 2026-10-23 – 0.1.192 compact inline owner quota
 - Condensed webmaster individual quota UI into one mobile-friendly row: album-owner dropdown left, numeric max free albums right, compact save/reset beneath. Numeric input disabled until a user is resolved. Existing backend authorization and quotas unchanged. Candidate awaiting CI, Pages and mobile verification.
 
