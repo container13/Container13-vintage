@@ -69,6 +69,35 @@ jobs:
               sys.exit(1)
           print(f'RESTORE PASS: {len(files)} Remember files and workflow verified byte-for-byte in isolated directory')
           PY
+      - name: Check canonical release synchronization
+        run: python3 remember/scripts/sync-release.py
+      - name: Enforce version bump on runtime changes
+        if: github.event_name == 'push'
+        run: |
+          python3 - <<'PY'
+          import json,subprocess,sys
+          files=subprocess.check_output(['git','diff','--name-only','HEAD^','HEAD'],text=True).splitlines()
+          runtime=[p for p in files if p.startswith('remember/') and not p.endswith('.md') and not p.endswith('.json') and not p.endswith('.py')]
+          if runtime:
+              if 'remember/release.json' not in files:
+                  sys.exit('RELEASE FAILED: runtime changed without release.json')
+              old=json.loads(subprocess.check_output(['git','show','HEAD^:remember/release.json'],text=True))['version']
+              new=json.load(open('remember/release.json'))['version']
+              if tuple(map(int,new.split('.')))<=tuple(map(int,old.split('.'))):
+                  sys.exit('RELEASE FAILED: version must increase for runtime changes')
+          print('Version bump guard PASS')
+          PY
+      - name: Verify negative release fixtures
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          script=Path('remember/scripts/sync-release.py').read_text()
+          assert 'version drift' in script
+          assert not re.fullmatch(r'\\d+\\.\\d+\\.\\d+','invalid')
+          assert 'remember-0.1.176'!='remember-0.1.175'
+          print('Negative fixtures PASS')
+          PY
       - name: Validate release consistency
         run: |
           python3 - <<'PY'

@@ -1,3 +1,7 @@
+## 2026-10-23 – Release guard 0.1.176
+- Added canonical version sync/check script (remember/scripts/sync-release.py). GitHub Actions rejects drift and runtime edits without a version bump. Negative test fixtures check rejection of mismatched versions. Atomic commit includes all nine HTML entrypoints, fallback, manifest, state and handoff. Release is NOT accepted until CI and Pages green; Safari test pending.
+- GitHub Pages default publishing is independent of this safety workflow: without branch protection or gated deployment configuration, a red safety job cannot technically prevent Pages publication. Enable required status check/controlled deployment separately.
+
 ## 2026-10-23 – versionssynkronisering 0.1.175
 - Atomär release: synkroniserade release.json, nio ingångssidors remember-release och cache keys för auto-update.js/remember-version.js, gemensam fallback och PROJECT_CURRENT_STATE.json. Ändringen löser konstaterad release-drift; inväntar GitHub Actions safety PASS och mobilkontroll. Ingen ändring av fotobok eller bilddata.
 
@@ -8,7 +12,7 @@
 - Direktinloggad albumägare använder nu samma `mountRememberGallery` som gäst/webmaster, inklusive vertikal bildsvepning och separat papperskorg via `remember-owner-manager`. Granskningsdialogen behålls separat. GitHub commit 05750eb. iPhone-test och Actions-resultat ännu inte verifierade.
 
 # Remember – aktuell överlämning
-Senast uppdaterad: 2026-10-23. Dokumentationsrelease: **0.1.172**.
+Senast uppdaterad: 2026-10-23. Dokumentationsrelease: **0.1.176**.
 **Läs denna fil först vid ”Fortsätt Remember”.** Den ersätts med senaste läget; den ska inte växa som en arbetslogg. Äldre versioner finns i Git-historiken.
 
 ## Projekt och miljö

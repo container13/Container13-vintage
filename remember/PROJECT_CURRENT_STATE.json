@@ -8,18 +8,18 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.175",
-    "integrity": "RELEASE_CONSISTENCY_PENDING_CI"
+    "candidate": "0.1.176",
+    "integrity": "RELEASE_GUARD_PENDING_CI"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.175",
-    "goal": "Verify consistent release metadata and updater across all nine entrypoints",
+    "targetRelease": "0.1.176",
+    "goal": "Automate canonical release synchronization and enforce version bump in CI",
     "resumeInstruction": "Read PROJECT_HANDOFF_CURRENT.md first. Verify this documentation/version commit and its CI; then scoped pending iPhone acceptance of mobile30 wording, corner trash and review choice/flow. Do not repeat accepted broad tests. No backend changes in .169. Carry forward deferred all-project/template rollout."
   },
   "currentWork": {
     "completed": "Mobile30 .168 installed and documented; Pages39771164981 success independently read2026-10-23. .169 replaces long contradictory start documents with one short handoff and continuation policy; no functional/backend changes.",
-    "next": "Confirm Remember release safety CI green; verify Safari no longer shows false update banner",
+    "next": "Verify release guard CI and Pages; require green safety before accepting release",
     "blocked": false,
     "blocker": null
   },
