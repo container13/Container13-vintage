@@ -8,14 +8,14 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.187",
+    "candidate": "0.1.188",
     "integrity": "RELEASE_GUARD_PENDING_CI"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.187",
-    "goal": "Fix photo-gallery import cache keys after 0.1.186 CI failure; preserve free quota functionality",
-    "resumeInstruction": "Verify 0.1.187 release safety and Pages; then test global free quota before individual overrides."
+    "targetRelease": "0.1.188",
+    "goal": "Individual free-album overrides by email in authenticated webmaster dashboard",
+    "resumeInstruction": "Verify CI and Pages; test webmaster search/save/reset, 3 vs 2 free album quotas, paid exclusion, concurrent registration and unauthorized access."
   },
   "currentWork": {
     "completed": "Mobile30 .168 installed and documented; Pages39771164981 success independently read2026-10-23. .169 replaces long contradictory start documents with one short handoff and continuation policy; no functional/backend changes.",

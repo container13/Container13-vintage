@@ -1,3 +1,6 @@
+## 2026-10-23 – 0.1.188 individual free album limits
+- 0.1.187 release safety and Pages PASS. Production migration remember_individual_free_album_limits_0188 applied: private per-user quota table, webmaster-only lookup/set/reset RPC, atomic album creation honors override before global limit. Production remember-webmaster Edge Function deployed v5 with authenticated lookup/save/reset actions. Dashboard includes email search, count, effective quota, save and reset. No existing albums changed. Candidate UNVERIFIED pending CI/Pages and functional authorization tests. Previous 0.1.187 remains known CI PASS.
+
 ## 2026-10-23 – 0.1.187 gallery cache-key CI fix
 - Diagnosed 0.1.186 GitHub Actions failure at Check photo gallery import cache keys. Guest/owner/webmaster imports still used 0.1.182. Synced all three to 0.1.187 and release metadata/cache keys across nine HTML entrypoints. No photo-gallery engine or Supabase changes. Candidate UNVERIFIED pending CI, Pages and device tests. Next: verify release safety and global quota, then implement individual overrides.
 

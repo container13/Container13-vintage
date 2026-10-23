@@ -101,7 +101,7 @@ body.remember-shell #webmasterWorkspace .workspace-top h2{font-size:clamp(25px,6
 #showCatalogResults{width:100%;min-height:48px;margin-top:18px;background:#d9e7a4;color:#17382d}
 #catalogFilterDialog .catalog-controls label{color:#f6e9cc}
 .catalog-paging[hidden]{display:none!important}
-</style><link rel="stylesheet" href="./remember-design.css?v=0.1.187"><script src="../project-template/mobile-view-policy.js?v=2"></script><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js?v=0.1.187"></script><meta name="remember-release" content="remember-0.1.187"><script defer src="./remember-version.js?v=0.1.187"></script><link rel="manifest" href="./manifest.webmanifest?v=0.1.171"><link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/remember-6-180-v0.1.150.png"><link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/remember-6-192-v0.1.150.png"></head><body class="remember-shell" data-remember-view="albums"><main>
+</style><link rel="stylesheet" href="./remember-design.css?v=0.1.188"><script src="../project-template/mobile-view-policy.js?v=2"></script><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta name="remember-mobile-policy" content="M-1.1"><script defer src="./auto-update.js?v=0.1.188"></script><meta name="remember-release" content="remember-0.1.188"><script defer src="./remember-version.js?v=0.1.188"></script><link rel="manifest" href="./manifest.webmanifest?v=0.1.171"><link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/remember-6-180-v0.1.150.png"><link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/remember-6-192-v0.1.150.png"></head><body class="remember-shell" data-remember-view="albums"><main>
 <header><div class="brand">Remember. <span class="muted">by Container13</span></div><a class="remember-home" href="./" aria-label="Remember startsida"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7M5 9v11h14V9M9 20v-7h6v7"/></svg></a></header>
 <h1 id="dashboardTitle">Mina album</h1><p id="dashboardSubtitle" class="dashboard-subtitle" hidden>Hantera Remember och dina album</p>
 
@@ -110,7 +110,7 @@ body.remember-shell #webmasterWorkspace .workspace-top h2{font-size:clamp(25px,6
 <p id="feedback" class="status" role="status" aria-live="polite">Förbereder inloggningen…</p></section>
 <section class="panel" id="account" hidden><details><summary><span class="account-symbol" aria-hidden="true">♙</span><span>Mitt konto</span><span class="account-chevron" aria-hidden="true">⌄</span></summary><div class="account-body"><div class="account-profile"><span class="profile-icon" aria-hidden="true">♙</span><div><strong>Inloggat konto</strong><p id="identity" class="muted"></p></div></div><div id="setPasswordArea" hidden><label for="newPassword">Välj lösenord för framtida inloggningar</label><input id="newPassword" type="password" autocomplete="new-password" minlength="12" placeholder="Minst 12 tecken"><div class="actions"><button id="savePassword" type="button">Spara lösenord</button></div><p id="passwordResult" role="status" aria-live="polite"></p></div><div class="actions"><button id="logout" type="button" class="secondary">Logga ut <span aria-hidden="true">→</span></button></div></div></details></section>
 <nav id="dashboardTabs" class="dashboard-tabs" aria-label="Albumvyer" hidden><button id="ownTab" type="button" aria-pressed="true">Mina album</button><button id="wmTab" type="button" aria-pressed="false">Webmaster</button></nav>
-<section id="webmasterWorkspace" class="webmaster-workspace" hidden><div class="workspace-top"><span class="workspace-symbol" aria-hidden="true">⚙</span><div><div class="webmaster-eyebrow">CONTAINER13 · ADMINISTRATION</div><h2>Användarnas album</h2><p>Administration av Remember</p></div></div><div id="webmasterTools" hidden><section class="free-quota-settings" aria-labelledby="freeQuotaHeading"><h3 id="freeQuotaHeading">Gratisalbum per användare</h3><p>Gäller endast gratisalbum med 30 bilder. Köpta album räknas inte.</p><div class="free-quota-controls"><button id="freeQuotaMinus" type="button" aria-label="Minska gränsen">−</button><input id="freeQuotaValue" type="number" min="0" max="1000" step="1" inputmode="numeric" aria-label="Max antal gratisalbum" disabled><button id="freeQuotaPlus" type="button" aria-label="Öka gränsen">+</button><button id="freeQuotaSave" type="button" disabled>Spara gräns</button></div><p id="freeQuotaFeedback" role="status" aria-live="polite">Hämtar inställningen…</p></section><div class="catalog-toolbar"><button id="openCatalogFilters" type="button" class="secondary" aria-haspopup="dialog">Sök, filtrera och sortera</button><p id="catalogSummary"></p><button id="clearCatalogFilters" type="button" class="secondary" hidden>Rensa</button></div>
+<section id="webmasterWorkspace" class="webmaster-workspace" hidden><div class="workspace-top"><span class="workspace-symbol" aria-hidden="true">⚙</span><div><div class="webmaster-eyebrow">CONTAINER13 · ADMINISTRATION</div><h2>Användarnas album</h2><p>Administration av Remember</p></div></div><div id="webmasterTools" hidden><section class="free-quota-settings" aria-labelledby="freeQuotaHeading"><h3 id="freeQuotaHeading">Gratisalbum per användare</h3><p>Gäller endast gratisalbum med 30 bilder. Köpta album räknas inte.</p><div class="free-quota-controls"><button id="freeQuotaMinus" type="button" aria-label="Minska gränsen">−</button><input id="freeQuotaValue" type="number" min="0" max="1000" step="1" inputmode="numeric" aria-label="Max antal gratisalbum" disabled><button id="freeQuotaPlus" type="button" aria-label="Öka gränsen">+</button><button id="freeQuotaSave" type="button" disabled>Spara gräns</button></div><p id="freeQuotaFeedback" role="status" aria-live="polite">Hämtar inställningen…</p></section><section class="free-quota-settings" aria-labelledby="userQuotaHeading"><h3 id="userQuotaHeading">Individuell gräns för gratisalbum</h3><p>Sök en registrerad användare med exakt e-postadress. En individuell gräns gäller före standardgränsen.</p><label for="userQuotaEmail">Användarens e-postadress</label><input id="userQuotaEmail" type="email" maxlength="320" autocomplete="off" placeholder="namn@exempel.se"><button id="userQuotaSearch" type="button">Sök användare</button><div id="userQuotaDetails" hidden><p id="userQuotaInfo"></p><label for="userQuotaValue">Max antal gratisalbum för användaren</label><div class="free-quota-controls"><button id="userQuotaMinus" type="button" aria-label="Minska individuell gräns">−</button><input id="userQuotaValue" type="number" min="0" max="1000" step="1" inputmode="numeric"><button id="userQuotaPlus" type="button" aria-label="Öka individuell gräns">+</button><button id="userQuotaSave" type="button">Spara individuell gräns</button></div><button id="userQuotaReset" class="secondary" type="button">Återställ standardgräns</button></div><p id="userQuotaFeedback" role="status" aria-live="polite"></p></section><div class="catalog-toolbar"><button id="openCatalogFilters" type="button" class="secondary" aria-haspopup="dialog">Sök, filtrera och sortera</button><p id="catalogSummary"></p><button id="clearCatalogFilters" type="button" class="secondary" hidden>Rensa</button></div>
 <dialog id="catalogFilterDialog" aria-labelledby="catalogFilterTitle"><div class="catalog-dialog-head"><h2 id="catalogFilterTitle">Sök och sortera album</h2><button id="closeCatalogFilters" type="button" aria-label="Stäng">✕</button></div>
 <div class="catalog-controls">
 <label>Frisök<input id="catalogSearch" type="search" maxlength="200" placeholder="Frisök"></label>
@@ -181,6 +181,45 @@ $('freeQuotaSave').onclick=async()=>{
  catch(e){$('freeQuotaFeedback').textContent=e.message+' Kontrollera inställningen innan du försöker igen.';quotaLoaded=false;}
  finally{quotaBusy=false;quotaButtons();if(!quotaLoaded)void loadQuota();}
 };
+let selectedQuotaUser=null,userQuotaBusy=false;
+async function userQuotaRequest(action,email,limit){
+ const actor=session?.user?.id;
+ if(!actor||!webmasterAllowed)throw Error('Webmasterbehörighet saknas.');
+ const {data,error}=await client.auth.getSession();
+ if(error||!data.session||data.session.user.id!==actor)throw Error('Logga in igen.');
+ const response=await fetch('https://wykvztfmfbboxiqvuvwr.supabase.co/functions/v1/remember-webmaster',{method:'POST',headers:{'Content-Type':'application/json',apikey:PUBLIC_KEY,Authorization:'Bearer '+data.session.access_token},body:JSON.stringify(action==='save_user_free_album_limit'?{action,email,limit}:{action,email}),cache:'no-store'});
+ const body=await response.json().catch(()=>({}));
+ if(!response.ok||!body.authorized)throw Error('Kunde inte hämta eller spara användargränsen.');
+ if(session?.user?.id!==actor||!webmasterAllowed)throw Error('Kontot har ändrats.');
+ return body;
+}
+function renderUserQuota(data){
+ selectedQuotaUser=data.found?data:null;
+ $('userQuotaDetails').hidden=!data.found;
+ if(!data.found){$('userQuotaFeedback').textContent='Ingen registrerad användare hittades.';return;}
+ $('userQuotaValue').value=String(data.effectiveLimit);
+ $('userQuotaInfo').textContent=data.email+' · '+data.freeCount+' gratisalbum · Standard '+data.defaultLimit+' · '+(data.overrideLimit===null?'Ingen individuell gräns':'Individuell gräns '+data.overrideLimit);
+ $('userQuotaFeedback').textContent='Gällande gräns: '+data.effectiveLimit+' gratisalbum.';
+}
+async function updateUserQuota(action){
+ if(userQuotaBusy||!webmasterAllowed)return;
+ const email=$('userQuotaEmail').value.trim();
+ if(!email||!$('userQuotaEmail').checkValidity()){$('userQuotaFeedback').textContent='Ange en giltig e-postadress.';return;}
+ if(action!=='user_free_album_limit'&&(!selectedQuotaUser||selectedQuotaUser.email.toLowerCase()!==email.toLowerCase()))return;
+ const limit=Number($('userQuotaValue').value);
+ if(action==='save_user_free_album_limit'&&(!Number.isInteger(limit)||limit<0||limit>1000)){$('userQuotaFeedback').textContent='Ange ett heltal mellan 0 och 1000.';return;}
+ userQuotaBusy=true;$('userQuotaSearch').disabled=true;$('userQuotaSave').disabled=true;$('userQuotaReset').disabled=true;
+ $('userQuotaFeedback').textContent='Bearbetar…';
+ try{const result=await userQuotaRequest(action,email,limit);renderUserQuota(result);}
+ catch(e){selectedQuotaUser=null;$('userQuotaDetails').hidden=true;$('userQuotaFeedback').textContent=e.message;}
+ finally{userQuotaBusy=false;$('userQuotaSearch').disabled=false;$('userQuotaSave').disabled=false;$('userQuotaReset').disabled=false;}
+}
+$('userQuotaEmail').oninput=()=>{selectedQuotaUser=null;$('userQuotaDetails').hidden=true;$('userQuotaFeedback').textContent='';};
+$('userQuotaSearch').onclick=()=>void updateUserQuota('user_free_album_limit');
+$('userQuotaSave').onclick=()=>void updateUserQuota('save_user_free_album_limit');
+$('userQuotaReset').onclick=()=>void updateUserQuota('reset_user_free_album_limit');
+$('userQuotaMinus').onclick=()=>{$('userQuotaValue').value=String(Math.max(0,Number($('userQuotaValue').value)-1));};
+$('userQuotaPlus').onclick=()=>{$('userQuotaValue').value=String(Math.min(1000,Number($('userQuotaValue').value)+1));};
 function selectDashboard(tab){
  dashboardUI.tab=webmasterAllowed&&tab==='wm'?'wm':'own';
  const wm=dashboardUI.tab==='wm';
