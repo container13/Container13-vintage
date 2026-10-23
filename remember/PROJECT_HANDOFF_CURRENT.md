@@ -1,3 +1,6 @@
+## 2026-10-23 – 0.1.194 compact dropdown alignment
+- Owner dropdown now displays only email (no album count in options). Quota dropdown narrowed to 62px; both native selects have equal 52px height and open on direct tap. No database changes or quota mutations. Candidate awaiting CI/Pages and mobile verification.
+
 ## 2026-10-23 – 0.1.193 dropdown 0–9
 - Changed webmaster individual quota input to native select 0–9, with narrow right-hand column, wide owner selector, and client-side 0–9 validation. No Supabase schema/function changes; existing server maximum remains unchanged for backward compatibility. Release candidate pending CI/Pages and mobile verification.
 
