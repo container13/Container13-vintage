@@ -1,3 +1,7 @@
+## 2026-10-24 – 0.1.202 screenshot detail corrections
+- Removed manually inserted duplicate version label; existing global version display retained. Removed overlapping decorative image icon from album title field. Tightened vertical gap between primary CTA and 'eller'/login while preserving one unified card. No auth, database, quota, or photobook engine changes.
+- Pending CI/Pages and mobile visual check. Follow-up free-album quota verification and configurable global/per-user photo limits.
+
 ## 2026-10-24 – 0.1.201 iPhone screenshot visual corrections
 - Removed decorative guest-choice glyphs; retained native radio inputs and labels. Removed overlapping email icon, tightened radio rows and quality disclosure. Wrapped form and login footer in one shared card with an internal 'eller' separator. Moved version label below card away from Safari toolbar. No backend or photobook engine changes.
 - Await CI/Pages and iPhone visual verification. Follow-up: free-album quota tests and configurable global/per-user photo limits.
