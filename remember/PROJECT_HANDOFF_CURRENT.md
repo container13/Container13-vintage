@@ -1,3 +1,7 @@
+## 2026-10-24 – 0.1.198 compact create album fields
+- Create album form: reduced name field height, grouped start datetime and upload duration side by side with responsive layout, tightened header and form spacing. Preserved existing native datetime and duration controls, validation, guest review selection and onboarding behavior. No Supabase changes.
+- Follow-up: verify free album quotas and implement configurable global/per-owner photo limits (default 30). Candidate pending CI/Pages and mobile screenshot.
+
 ## 2026-10-24 – 0.1.197 offer leaf overlap fix
 - Based on 0.1.196 mobile screenshot, moved flower into separate upper area, headline and quote below it, CTA toward bottom. Landing CSS only; footer and approved photobook engine unchanged.
 - Pending: release safety, Pages, mobile visual check. Follow-up: test free-album quotas and implement global/per-user photo quota settings.

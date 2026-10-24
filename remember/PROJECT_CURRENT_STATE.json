@@ -8,13 +8,13 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.197",
+    "candidate": "0.1.198",
     "integrity": "RELEASE_GUARD_PENDING_CI"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.197",
-    "goal": "Offer leaf hierarchy: flower above headline, quote and CTA without overlap; next test album limits and configurable photo quotas",
+    "targetRelease": "0.1.198",
+    "goal": "Compact create album title, datetime and duration fields; pending free album tests and photo quota settings",
     "resumeInstruction": "Verify CI and Pages; test webmaster search/save/reset, 3 vs 2 free album quotas, paid exclusion, concurrent registration and unauthorized access."
   },
   "currentWork": {
