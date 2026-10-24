@@ -8,13 +8,13 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.200",
+    "candidate": "0.1.201",
     "integrity": "RELEASE_GUARD_PENDING_CI"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.200",
-    "goal": "Implement approved create-album visual mockup with icon fields, guest cards, image quality banner and joined footer; preserve functionality",
+    "targetRelease": "0.1.201",
+    "goal": "iPhone screenshot fixes: email icon collision, guest radio choices, one unified form/login card, slimmer disclosure and safe version placement",
     "resumeInstruction": "Verify CI and Pages; test webmaster search/save/reset, 3 vs 2 free album quotas, paid exclusion, concurrent registration and unauthorized access."
   },
   "currentWork": {

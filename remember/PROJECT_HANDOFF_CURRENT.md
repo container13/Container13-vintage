@@ -1,3 +1,7 @@
+## 2026-10-24 – 0.1.201 iPhone screenshot visual corrections
+- Removed decorative guest-choice glyphs; retained native radio inputs and labels. Removed overlapping email icon, tightened radio rows and quality disclosure. Wrapped form and login footer in one shared card with an internal 'eller' separator. Moved version label below card away from Safari toolbar. No backend or photobook engine changes.
+- Await CI/Pages and iPhone visual verification. Follow-up: free-album quota tests and configurable global/per-user photo limits.
+
 ## 2026-10-24 – 0.1.200 approved create-album visual redesign
 - Implemented approved mockup in register.html: refined hero, warm translucent form, icon-decorated name/email inputs, aligned date/duration, subtle info divider, compact illustrated guest review choices, dark green 30-photo disclosure and joined login footer. Native inputs, radio state, date prefill, submit/auth and backend untouched. No database changes.
 - Pending: CI/Pages, mobile screenshots, iOS datetime picker, review radios, quality disclosure, logged-in and logged-out states; check long emails and small screens. Follow-up free album quota tests and configurable photo limits.
