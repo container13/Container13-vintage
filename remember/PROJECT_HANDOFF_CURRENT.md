@@ -1,3 +1,7 @@
+## 2026-10-24 – 0.1.196 landing offer and footer visual refinement
+- Adjusted offer-leaf quote and center group spacing to avoid the bottom decorative border; refined CTA and footer buttons. Landing CSS only: no flip engine, database, album or quota mutations.
+- Pending next: test default and per-user free-album limits; add webmaster-configurable free photo counts, global and per-user, retaining 30 as default. Verify 0.1.196 CI/Pages and screenshot before approval.
+
 ## 2026-10-23 – 0.1.195 newest album owner preselection
 - Owner dropdown preselects the most recently NEW album owner, derived from existing server-sorted newest-first album catalog by tracking each owner's oldest appearance. Loads selected user's server-verified free quota automatically. Explicit manual selection is preserved during the session. No Supabase changes. Candidate awaiting CI/Pages and mobile verification.
 
