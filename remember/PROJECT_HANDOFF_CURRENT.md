@@ -1,3 +1,8 @@
+## 2026-10-24 – 0.1.199 create album form refinement
+- Native datetime-local prefilled from the user's device local clock once on page open, preserving later manual edits. Guest-review choices and email field compacted; photo-quality details placed in accessible expandable disclosure with 30-photo headline always visible; login/footer spacing tightened. No changes to creation flow, auth, backend or photo-book engine.
+- Verify mobile date rendering and interaction, native datetime picker, review choice, details disclosure, logged-in and guest views. Pending CI/Pages and user approval.
+- Follow-up unchanged: verify default/per-owner free-album quotas and implement configurable global/per-owner photo limits (30 default).
+
 ## 2026-10-24 – 0.1.198 compact create album fields
 - Create album form: reduced name field height, grouped start datetime and upload duration side by side with responsive layout, tightened header and form spacing. Preserved existing native datetime and duration controls, validation, guest review selection and onboarding behavior. No Supabase changes.
 - Follow-up: verify free album quotas and implement configurable global/per-owner photo limits (default 30). Candidate pending CI/Pages and mobile screenshot.
