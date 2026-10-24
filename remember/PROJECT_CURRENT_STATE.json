@@ -8,13 +8,13 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.199",
+    "candidate": "0.1.200",
     "integrity": "RELEASE_GUARD_PENDING_CI"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.199",
-    "goal": "Create form: prefill current local date/time, compact guest mode, email and footer, accessible photo quality disclosure. Pending quota tests and configurable photo limits.",
+    "targetRelease": "0.1.200",
+    "goal": "Implement approved create-album visual mockup with icon fields, guest cards, image quality banner and joined footer; preserve functionality",
     "resumeInstruction": "Verify CI and Pages; test webmaster search/save/reset, 3 vs 2 free album quotas, paid exclusion, concurrent registration and unauthorized access."
   },
   "currentWork": {

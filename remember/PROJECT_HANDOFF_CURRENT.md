@@ -1,3 +1,7 @@
+## 2026-10-24 – 0.1.200 approved create-album visual redesign
+- Implemented approved mockup in register.html: refined hero, warm translucent form, icon-decorated name/email inputs, aligned date/duration, subtle info divider, compact illustrated guest review choices, dark green 30-photo disclosure and joined login footer. Native inputs, radio state, date prefill, submit/auth and backend untouched. No database changes.
+- Pending: CI/Pages, mobile screenshots, iOS datetime picker, review radios, quality disclosure, logged-in and logged-out states; check long emails and small screens. Follow-up free album quota tests and configurable photo limits.
+
 ## 2026-10-24 – 0.1.199 create album form refinement
 - Native datetime-local prefilled from the user's device local clock once on page open, preserving later manual edits. Guest-review choices and email field compacted; photo-quality details placed in accessible expandable disclosure with 30-photo headline always visible; login/footer spacing tightened. No changes to creation flow, auth, backend or photo-book engine.
 - Verify mobile date rendering and interaction, native datetime picker, review choice, details disclosure, logged-in and guest views. Pending CI/Pages and user approval.
