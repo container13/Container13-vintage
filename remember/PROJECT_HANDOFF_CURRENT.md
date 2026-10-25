@@ -1,3 +1,8 @@
+## 2026-10-25 – iPhone navigation and info dialog correction (UNVERIFIED)
+- login.html: aligned '← Tillbaka' top-left, matching register.html; destination unchanged.
+- index.html: shortened info dialog, removed redundant symbol explanation, changed overlay to flex centering, constrained scroll area and reset panel scrollTop on open; focused heading without scrolling.
+- iPhone screenshot had shown dialog initially scrolled to bottom with title clipped. Needs iPhone confirmation and CI/Pages. 0.1.203 still incomplete/version synchronization blocked for album.html; no new version bump was applied, contrary to project versioning rule. CURRENT/PREVIOUS not approved.
+
 ## 2026-10-25 – navigation and information copy (UNVERIFIED)
 - Updated login.html navigation label from 'Till Remember' to '← Tillbaka' (same ./ destination).
 - Updated index.html 'Så fungerar Remember' to explain new-user email activation, owner moderation choice, open guest uploads and photobook; clarified illustration disclaimer. Kept free 30-photo quality and upgrade disclosure.
