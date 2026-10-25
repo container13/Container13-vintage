@@ -1,3 +1,8 @@
+## 2026-10-25 – navigation and information copy (UNVERIFIED)
+- Updated login.html navigation label from 'Till Remember' to '← Tillbaka' (same ./ destination).
+- Updated index.html 'Så fungerar Remember' to explain new-user email activation, owner moderation choice, open guest uploads and photobook; clarified illustration disclaimer. Kept free 30-photo quality and upgrade disclosure.
+- IMPORTANT: Changes committed without a new version bump. 0.1.203 remains an unverified/incomplete release; album.html version synchronization was previously blocked. Do not mark CURRENT/PREVIOUS or approved. Next: resolve version integrity, CI/Pages, then iPhone test.
+
 ## 2026-10-25 – 0.1.203 login method cleanup
 - Removed obsolete `backMethods` button and click handler from login.html; preserved signup, password login and recovery. Candidate awaiting CI/Pages and iPhone verification. CURRENT/PREVIOUS remain null.
 - Next: free-album quota tests, then configurable free-photo limits.
