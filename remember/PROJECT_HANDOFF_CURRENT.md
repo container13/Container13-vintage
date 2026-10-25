@@ -1,3 +1,7 @@
+## 2026-10-25 – 0.1.203 login method cleanup
+- Removed obsolete `backMethods` button and click handler from login.html; preserved signup, password login and recovery. Candidate awaiting CI/Pages and iPhone verification. CURRENT/PREVIOUS remain null.
+- Next: free-album quota tests, then configurable free-photo limits.
+
 ## 2026-10-24 – 0.1.202 screenshot detail corrections
 - Removed manually inserted duplicate version label; existing global version display retained. Removed overlapping decorative image icon from album title field. Tightened vertical gap between primary CTA and 'eller'/login while preserving one unified card. No auth, database, quota, or photobook engine changes.
 - Pending CI/Pages and mobile visual check. Follow-up free-album quota verification and configurable global/per-user photo limits.
