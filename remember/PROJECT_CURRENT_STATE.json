@@ -8,14 +8,14 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.202",
+    "candidate": "0.1.203",
     "integrity": "RELEASE_GUARD_PENDING_CI"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.202",
-    "goal": "Three iPhone fixes: remove duplicate manual version, reduce CTA-to-login gap, eliminate overlapping title icon",
-    "resumeInstruction": "Verify CI and Pages; test webmaster search/save/reset, 3 vs 2 free album quotas, paid exclusion, concurrent registration and unauthorized access."
+    "targetRelease": "0.1.203",
+    "goal": "Remove obsolete login method back button",
+    "resumeInstruction": "Verify CI, Pages and iPhone auth flows; then free-album quota tests."
   },
   "currentWork": {
     "completed": "Mobile30 .168 installed and documented; Pages39771164981 success independently read2026-10-23. .169 replaces long contradictory start documents with one short handoff and continuation policy; no functional/backend changes.",
