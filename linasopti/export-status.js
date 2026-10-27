@@ -18,7 +18,7 @@ function collect(){
 }
 function fullDiagnostics(){const x=collect();x.schema='LINA-FULL-DIAGNOSTICS-2';x.syncDiagnostics=window.LinaEvidence?.diagnostics?.()||null;return x}
 function showExportStatus(message,text,name,type='text/plain;charset=utf-8'){
- let box=document.getElementById('lina-export-receipt');if(!box){box=document.createElement('div');box.id='lina-export-receipt';box.setAttribute('role','status');box.style.cssText='position:fixed;bottom:max(16px,env(safe-area-inset-bottom));left:16px;right:16px;z-index:10000;background:#fff;border:1px solid #8795a9;padding:14px;border-radius:12px;box-shadow:0 4px 20px #0002;max-height:55vh;overflow:auto';document.body.appendChild(box)}
+ let box=document.getElementById('lina-export-receipt');if(!box){box=document.createElement('div');box.id='lina-export-receipt';box.setAttribute('role','status');box.style.cssText='position:fixed;bottom:max(16px,env(safe-area-inset-bottom));left:16px;right:16px;z-index:10000;background:#182537;color:#f2f6fc;border:1px solid #61748e;overflow-wrap:anywhere;white-space:pre-line;padding:14px;border-radius:12px;box-shadow:0 4px 20px #0002;max-height:55vh;overflow:auto';document.body.appendChild(box)}
  box.replaceChildren();const msg=document.createElement('div');msg.textContent=message;box.appendChild(msg);
  if(text!==undefined){
   const actions=document.createElement('div');actions.style.cssText='display:flex;gap:8px;flex-wrap:wrap;margin-top:10px';box.appendChild(actions);
@@ -51,17 +51,17 @@ async function saveRuntimeReport(name,report){
  if(!r.ok||!j.ok||j.verified!==true||j.receipt?.schema!=='LINA-GITHUB-COMMIT-RECEIPT-1')throw new Error(j.error||'Runtime-report saknar verifierat GitHub-kvitto');
  return j;
 }
-async function saveVerified(prefix,makeObject){
+async function saveVerified(prefix,makeObject,options={}){
  const report=makeObject(),name=String(prefix||'LINA_SUPPORT').toUpperCase().replace(/[^A-Z0-9_-]/g,'_').slice(0,80);
  try{
-  showExportStatus('Sparar verifierad rapport till GitHub…');
+  if(!options.silent)showExportStatus('Sparar verifierad rapport till GitHub…');
   const j=await saveRuntimeReport(name,report);
   const summary='✓ Verifierad rapport sparad i GitHub\\n'+j.path+'\\nSHA-256 '+j.receipt.contentSha256+'\\nCommit '+(j.commit||'—');
-  showExportStatus(summary,JSON.stringify(report,null,2),null,'application/json;charset=utf-8');
+  if(!options.silent)showExportStatus(summary,JSON.stringify(report,null,2),null,'application/json;charset=utf-8');
   return j;
  }catch(e){
   const text=JSON.stringify(report,null,2),file=`${name}_${safeDate()}.json`;
-  showExportStatus('Automatisk GitHub-rapport stoppades: '+String(e.message||e)+' · reservväg: kopiera eller hämta filen.',text,file,'application/json;charset=utf-8');
+  if(!options.silent)showExportStatus('Automatisk GitHub-rapport stoppades: '+String(e.message||e)+' · reservväg: kopiera eller hämta filen.',text,file,'application/json;charset=utf-8');
   throw e;
  }
 }
