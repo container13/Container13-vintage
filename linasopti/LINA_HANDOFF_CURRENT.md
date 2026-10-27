@@ -143,3 +143,9 @@ Håll denna fil kort och ersätt nuläget, inte bygg på med arbetslogg. Efter v
 - `GEN9_FOUR_ANOMALIES_INDEPENDENT_2026-10-05.json` reports four large Alpaca comparison outliers (NVDA/TSLA) independently supporting Yahoo candidate rather than Alpaca. Not blanket vendor validation.
 - `GEN9_DATASET_GATE_2026-10-05.json` says PASSED with scope RESEARCH_DATA_INPUT, not proof of complete corporate-action/point-in-time correctness. Do not conflate.
 - Main remaining question: variable adjustment factors within 2020–2024 and correctness of total-return interpretation, plus independent source and Worker receipts. No dataset rewrite, rerun or trading.
+
+## 2026-10-27 – in-period dividends and legacy blocker recovered (read-only)
+- `evidence/LINA_GEN9_DATA_AUDIT_V2.json` (same source SHA) lists in-period dividends: MU14, FDX20, LUV10, C20, QCOM20, BAC20, GM11, NVDA20; SHOP1 split, TSLA2 splits, NVDA2 splits. Internal dividend-factor errors <=4.22e-7 in that audit. These verify internal arithmetic, NOT completeness or point-in-time economic correctness.
+- Critically its status `BLOCKED_ADJUSTMENT_BASIS_MISMATCH`: Yahoo quote OHLC are not necessarily unadjusted exchange prices; FDX issuer nominal dividend $1.38 versus provider $1.112006 on 2024-12-09, ratio ~0.8058 consistent with later 2026 spinoff retro-adjustment. Historical vendor corporate-action chain must be distinguished from real ex-date cash dividend.
+- Later Gen9 research separately closed AMD and NOW cash-dividend absence for 2020-24 (not all corporate actions). Earlier audit text that PYPL future dividend chain unverified is superseded by later targeted reconstruction; retain chronological provenance.
+- Do not call the entire Gen16 historical point-in-time validity VERIFIED. No source data or frozen results changed. Next examine source fields and synthetic total-return accounting around in-period ex-dividend days without rerunning.
