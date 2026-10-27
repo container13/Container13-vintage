@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.43",
+  "release": "V0.4.44",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -16,16 +16,17 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "UNVERIFIED_V0.4.43",
+    "releaseIntegrity": "UNVERIFIED_V0.4.44",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21",
     "pagesDeploy": "PASS_V0.4.39_COMMIT_4b5a547c8",
-    "liveAssetReadback": "UNVERIFIED_V0.4.43",
+    "liveAssetReadback": "UNVERIFIED_V0.4.44",
     "dashboardOrdering": "PASS_IPHONE_V0.4.42"
   },
   "currentWork": {
-    "completed": "V0.4.43 compact dashboard: newest generation shown; older generations collapsible in descending order; historical data preserved.",
-    "next": "Verify Actions/Pages and real iPhone rendering, especially expand/collapse and dynamic ordering.",
-    "blocked": false
+    "completed": "Gen17 unlocked proposal documented at LINA_GEN17_PLAN_PROPOSAL.md. No plan lock, runnerspec, research, trade or Forward.",
+    "next": "Read immutable Gen16 summary and fold receipts; refine exact single-variable Gen17 protocol for explicit approval.",
+    "blocked": true,
+    "blocker": "Immutable Gen16 summary not accessible from current tools; do not infer fold metrics."
   },
   "bootstrap": {
     "triggerPhrase": "Läs Linas manual",
