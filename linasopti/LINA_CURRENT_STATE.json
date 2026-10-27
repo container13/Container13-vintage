@@ -24,7 +24,7 @@
   },
   "currentWork": {
     "completed": "Gen16 summary, dataset and 8 fold JSON verified from GitHub; all fold schema/spec/variant/year fields match, Git blob SHAs recorded. Recursive branch tree truncated=false; only Gen17 draft exists (no Gen17 runnerspec/evidence). V0.4.45 Integrity/Pages PASS and iPhone Dashboard screenshot verified; Worker archive promotion read-only.",
-    "next": "Read-only inventory for genuinely distinct market-state hypothesis or independent data, including Gen9-16; stop if no novel preregistrable single change. No plan lock or research.",
+    "next": "Audit whether G2/G3 forward snapshots are truly independent or duplicate through shared engine; check status of historical forward evidence and evaluate priority against Gen17. No research or Forward opening.",
     "blocked": false,
     "blocker": null,
     "recoveryRunbook": "LINA_RESEARCH_EVIDENCE_RECOVERY.md",
@@ -39,7 +39,8 @@
       "Review Gen17 one-change hypothesis for scientific validity and require explicit user approval before plan lock/research",
       "Do not reuse Gen10/Gen12 breadth gate as Gen17 or tune its threshold from observed folds; investigate genuinely distinct hypothesis only"
     ],
-    "gen17RegimeInventory": "PRIOR-ART STOP 2026-10-27: Gen10 already used SMA180 breadth tiers for risk; Gen12 BREADTH_50_GATE already skipped all entries below 8/16 above SMA180. Proposed Gen17 breadth rule is duplicate and superseded; no threshold retune/rescue. Frozen data evidence is manifest only, not full raw OHLC. Novel independent regime input UNVERIFIED."
+    "gen17RegimeInventory": "PRIOR-ART STOP 2026-10-27: Gen10 already used SMA180 breadth tiers for risk; Gen12 BREADTH_50_GATE already skipped all entries below 8/16 above SMA180. Proposed Gen17 breadth rule is duplicate and superseded; no threshold retune/rescue. Frozen data evidence is manifest only, not full raw OHLC. Novel independent regime input UNVERIFIED.",
+    "strategyAudit20261027": "Major recovered project context: historical G2/G3 REAL FORWARD track exists independently of Gen8-16 candidate pipeline. LINA_FORWARD_EVIDENCE_PHASE_V0228 says prioritize new Real Forward evidence over more historical variants, milestones 60/120/250 closed trades per model. GitHub linasopti/data/forward-state.json exported 2026-10-27 07:47Z, marketDate 2026-10-26, G2 and G3 each n=3, P/L -457.121, 1 open, PF 0.5553; both snapshots identical, not evidence of independent diversification. G2 already has SPY200 market regime in params, Gen9 also proposed SMA180 breadth gate (<5/16), Gen10 graded breadth, Gen12 8/16 gate. G2/G3 forward snapshot is not a Gen17 authorization; research.forward OFF refers new generation gate, must distinguish from historical tracking. Forward data read-only, no refresh performed."
   },
   "bootstrap": {
     "triggerPhrase": "Läs Linas manual",
