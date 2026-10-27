@@ -1,5 +1,13 @@
 # Linas Opti — aktuell löpande överlämning
 
+## Återfunnen chatt och Gen16-dataintegritet – 2026-10-27 (NYTT)
+- Originaltext från användaruppladdade `chatt28okt.txt` arkiverad med återläst innehåll: `linasopti/history/LINA_CHAT_28OKT_RECOVERED_VERBATIM.txt`. Denna fil är historiskt källmaterial, inte nytt forskningsbevis.
+- Kondenserad historik: `linasopti/LINA_RECOVERED_CHAT_2026-10-28.md`; detaljer om Gen14–16:s 2022-affärer, tidskoncentration, Gen16-portföljbokföring, exekveringsregler och tekniska begränsningar. Originalet har företräde vid oenighet om ordalydelsen.
+- Gen16 dataintegritet granskad read-only: `linasopti/LINA_GEN16_DATA_INTEGRITY_AUDIT_2026-10-27.md`. Fryst DATA-evidens är ett manifest med SHA256-referens, inte OHLC-rådata. `SOURCE_gen9-data.json` hittades men GitHub-connectorn gav tomt textinnehåll; oberoende bytebaserad SHA256 **UNVERIFIED**. Detta bevisar inte att rådatafilen är tom.
+- **Exakt nästa uppgift:** verifiera råfilens exakta bytes/SHA256 read-only, därefter dataproveniens och Worker-receipts; kontrollera sedan historisk G2/G3 Forward-evidens. Inga reruns, inga förändringar av fryst evidens, Handel/Forward AV, Gen17 DRAFT_ONLY.
+- **Öppet:** synkronisera `LINA_CURRENT_STATE.json`, läs tillbaka båda filerna. Allt innehåll från uppladdad chatt är nu arkiverat; påståenden är inte självständigt verifierade förrän jämförda med evidens.
+
+
 Uppdaterad: 2026-10-27. Runtime: **V0.4.45**. GitHub Integrity + Pages PASS för commit `33da9e506b5ca8126923d36a624b3e19a6653d4b`; iPhone-skärmbild visar V0.4.45 Dashboard. Full live-byteverifiering och Worker-receipts **UNVERIFIED**.
 
 ## Gen17 - viktig korrigering: breddfilter redan testat
