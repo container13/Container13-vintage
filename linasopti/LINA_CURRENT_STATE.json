@@ -16,20 +16,20 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "UNVERIFIED_V0.4.45",
+    "releaseIntegrity": "PASS_GITHUB_ACTIONS_V0.4.45_COMMIT_33da9e506b5ca8126923d36a624b3e19a6653d4b",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21",
-    "pagesDeploy": "PASS_V0.4.39_COMMIT_4b5a547c8",
-    "liveAssetReadback": "UNVERIFIED_V0.4.45",
-    "dashboardOrdering": "PASS_IPHONE_V0.4.42"
+    "pagesDeploy": "PASS_GITHUB_PAGES_V0.4.45_COMMIT_33da9e506b5ca8126923d36a624b3e19a6653d4b",
+    "liveAssetReadback": "PARTIAL_IPHONE_SCREENSHOT_V0.4.45_FULL_BYTE_READBACK_UNVERIFIED",
+    "dashboardOrdering": "PASS_IPHONE_SCREENSHOT_V0.4.45_DASHBOARD"
   },
   "currentWork": {
-    "completed": "Gen16 immutable GitHub directory and summary located via recursive branch tree; 8 fold JSON files and dataset evidence opened; summary confirms NO_CANDIDATE. Recovery method documented.",
-    "next": "Validate immutable fold result hashes/receipts if accessible, then refine Gen17 one-variable proposal for explicit approval; do not start research.",
+    "completed": "V0.4.45 Integrity+Pages PASS at commit 33da9e506b5c; user iPhone screenshot confirms Dashboard/version, GitHub/State/Evidence status labels and Trade OFF. Worker CURRENT/PENDING blob identical, PREVIOUS preserved, promotion audit-only. Gen16 summary, dataset and 8 folds parsed from GitHub with matching schema/spec/variant/year.",
+    "next": "Independently verify immutable Worker evidence receipts/content SHA256 when reachable; then review Gen17 proposal for explicit approval. Do not rerun frozen research.",
     "blocked": false,
     "blocker": null,
     "recoveryRunbook": "LINA_RESEARCH_EVIDENCE_RECOVERY.md",
     "evidencePath": "linasopti/evidence/2026-10-06/",
-    "evidenceValidation": "GITHUB_FILES_READ_JSON_OK; WORKER_RECEIPTS_AND_FOLD_HASHES_NOT_YET_VERIFIED"
+    "evidenceValidation": "GITHUB_10_FILES_READ_SCHEMA_SPEC_FOLD_KEYS_PASS; GIT_BLOB_SHA_RECORDED; WORKER_RECEIPT_AND_PAYLOAD_SHA256_UNVERIFIED"
   },
   "bootstrap": {
     "triggerPhrase": "Läs Linas manual",
@@ -40,11 +40,11 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
+    "status": "IDLE",
     "targetRelease": "V0.4.45",
     "goal": "Repair continuity, version discipline and unsafe Worker promotion automation without touching frozen research",
-    "lastSafeRelease": "V0.4.44",
-    "lastSafeCommit": "0c9ca09a2b08923b3e70b07fd006b594a76be95b",
+    "lastSafeRelease": "V0.4.45",
+    "lastSafeCommit": "33da9e506b5ca8126923d36a624b3e19a6653d4b",
     "plan": [
       {
         "id": 1,
@@ -69,9 +69,9 @@
       {
         "id": 5,
         "task": "Verify actual live runtime/device before declaring release PASS",
-        "status": "NEXT"
+        "status": "DONE"
       }
     ],
-    "resumeInstruction": "Verify V0.4.45 CI and device before declaring PASS. Worker promotion audit-only."
+    "resumeInstruction": "V0.4.45 GitHub Integrity+Pages PASS, Dashboard screenshot verified. Full live byte/Worker receipt verification remains open, but no pending code change. Next read-only receipt check and Gen17 draft review; never rerun research."
   }
 }
