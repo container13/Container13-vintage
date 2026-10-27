@@ -505,3 +505,8 @@ Nedanstående är en kravskiss med kända svar, inte genomförda tester. Föruts
 8. **Rättvis kontroll:** om ingen tidig exit triggar och alla ingångar/antaganden är lika, ska kontrollens och variantens affärsloggar och equity vara identiska.
 
 Kravskissen ska översättas till verifierade syntetiska tester och executable Release Gate före eventuell research. Ingen kod eller något test har körts. Gen17 DRAFT_ONLY, Handel/ny Forward AV; inget planlås eller research utan uttryckligt godkännande.
+
+## 2026-10-27 – riktad inventering av händelseväg
+- Skrivskyddad textsökning efter corporate-action, cash-dividend, split_ratio, ex-date, /dividends och /splits i `api.js`, `archive-data.js`, `g7-g12-data.js`, `worker.js`, konfigurerad `WORKER_PENDING_RUNTIME_REPORT.js` och `gen9-data-check.js` gav inga träffar. Det är ett begränsat fil- och ordurval, inte bevis för att hela systemet eller live-miljön saknar en sådan väg.
+- Råprisvägen fungerar för ett litet prov. Alpaca dokumenterar separat corporate-actions-API, men någon befintlig Lina-route eller behörighet till det är ännu inte verifierad. Ingen endpoint för händelser har anropats, ingen ny Worker eller research startats.
+- Nästa: formulera ett säkert read-only diagnostikprov via redan tillgänglig infrastruktur om möjligt. Skilj utebliven behörighet/fel från faktisk frånvaro av händelse och visa aldrig nycklar. Gen17 DRAFT_ONLY; Handel/ny Forward AV.
