@@ -2,6 +2,9 @@
 
 Uppdaterad: 2026-10-27. Runtime: **V0.4.45**. GitHub Integrity + Pages PASS för commit `33da9e506b5ca8126923d36a624b3e19a6653d4b`; iPhone-skärmbild visar V0.4.45 Dashboard. Full live-byteverifiering och Worker-receipts **UNVERIFIED**.
 
+## Gen17 - inventering av marknadsregimdata
+Gen16 motor använder redan individuell SMA180 och breakout på föregående 50 sessioners högsta high; next-open, 12-sessioners exit och 16 OHLC-symboler. Låst spec anger inget separat benchmark-index. Möjligt ENDA nytt inträdesfilter: marknadsbredd = andel av 16 aktier med stängning över SMA180 på föregående dag. Ingen tröskel beslutad, ingen grid eller research. Risker: urvalsbias i fast universum, färre affärer, koncentration kvar. Nästa: read-only kontroll av datakontrakt/tidigare regimmetoder, sedan exakt preregistrerad plan för mänskligt godkännande. Gen17 DRAFT_ONLY, Handel/Forward AV.
+
 ## Gen17 - 2022 trade-diagnos och vald inriktning
 Användaren föredrar att Lina står utanför ogynnsamma marknadslägen. Gen16 2022 fold-filer lästa read-only: CONTROL 18 affärer (2 vinst, 16 förlust), P/L -5229.75; BREAKOUT 13 (1 vinst, 12 förlust), P/L -4133.07. Alla 31 affärer avslutades TIME_12, men det är inte bevisad förlustorsak. Gen17 nytt DRAFT-förslag: exakt en framåtblicksfri marknadsregimgrind för nya long-inträden; ingen samtidig ändring av exit/sizing. Exakt grind, datakälla, tröskel, kontroll, gates och oberoende validering återstår. Gen17 EJ LÅST/EJ STARTAD. Nästa: read-only inventering av befintliga regimdata och sedan exakt plan för uttryckligt godkännande. Handel/Forward AV.
 
