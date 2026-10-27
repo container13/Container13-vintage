@@ -58,3 +58,11 @@ Håll denna fil kort och ersätt nuläget, inte bygg på med arbetslogg. Efter v
 - Rotorsak: ChatGPT-container saknar DNS även till container13.se; GitHub-kodsökning missade icke-default-branch och vi gissade bort datumkatalogen. GitHub REST rekursivt filträd på `ccc-demo-public-test` visade verkliga filer i `linasopti/evidence/2026-10-06/`.
 - Gen16 summary, datasetbevis och alla åtta fold-filer lästa från GitHub. Summary `NO_CANDIDATE`; båda varianter missar koncentration och minFoldPf. Full Worker-receipt/hashkontroll återstår. Se `LINA_RESEARCH_EVIDENCE_RECOVERY.md` för exakt metod och siffror.
 - Nästa steg: komplettera evidensvalidering och precisera Gen17-förslaget för uttryckligt godkännande. Ingen rerun; Handel/Forward AV; V0.4.44 oförändrad.
+
+## 2026-10-27 – säkerhetsrevision och V0.4.45 kandidat
+- Upptäckt: `workCheckpoint` låg kvar UNVERIFIED för V0.4.43. Historisk enhetsverifiering har inte uppfunnits eller markerats PASS. Ny checkpoint skrevs före ändringarna.
+- Worker-arkiv: `WORKER_CURRENT.js` och `WORKER_PENDING_RUNTIME_REPORT.js` hade identisk GitHub-blob SHA `c9e6f8fdd0d94089c79ae63f3d0aed4e55adb4f9`; PREVIOUS hade separat SHA `697733883aa9c5f7f43c904042ca1b63140e3ffd`. Inga Worker-arkiv eller forskningsresultat ändrades.
+- Kritisk åtgärd: `.github/workflows/lina-worker-promote.yml` ändrad till read-only audit (contents:read), ingen `cp`, `git push` eller automatisk CURRENT/PREVIOUS-rotation. En framtida promotion kräver separat bevisad deploy/runtime/klientgrind och explicit godkännande; tills dess avsiktligt spärrad.
+- Gemensam `project-template/CONTINUITY_PROTOCOL.md` uppdaterad med rotorsakskontroll, rekursiv GitHub-trädsökning, PENDING/CURRENT/PREVIOUS-gate, checkpoint och version/CI-grind.
+- V0.4.45 i `version.js` och cachetokens i `index.html`. COMMITTED men CI/Pages/live bytes/iPhone fortfarande UNVERIFIED. Inte godkänd runtime-release. Gen17 DRAFT_ONLY, Gen8–16 frysta, Handel/Forward AV.
+- Nästa: kontrollera Actions/Pages, därefter faktisk runtime och iPhone. Om ingen klientverifiering finns: behåll UNVERIFIED, promota inte Worker.
