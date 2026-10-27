@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.41",
+  "release": "V0.4.43",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -16,14 +16,15 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PENDING_V0.4.41",
+    "releaseIntegrity": "UNVERIFIED_V0.4.43",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21",
     "pagesDeploy": "PASS_V0.4.39_COMMIT_4b5a547c8",
-    "liveAssetReadback": "UNVERIFIED_V0.4.41"
+    "liveAssetReadback": "UNVERIFIED_V0.4.43",
+    "dashboardOrdering": "PASS_IPHONE_V0.4.42"
   },
   "currentWork": {
-    "completed": "V0.4.41 source fix: dark readable diagnostic receipt, long-text wrapping and silent automatic support report; manual export remains visible.",
-    "next": "Verify GitHub Integrity, Pages, live assets and iPhone UI; no research rerun.",
+    "completed": "V0.4.43 compact dashboard: newest generation shown; older generations collapsible in descending order; historical data preserved.",
+    "next": "Verify Actions/Pages and real iPhone rendering, especially expand/collapse and dynamic ordering.",
     "blocked": false
   },
   "bootstrap": {
@@ -36,8 +37,8 @@
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "V0.4.41",
-    "goal": "Fix diagnostic popup readability and suppress unsolicited automatic report popup",
+    "targetRelease": "V0.4.43",
+    "goal": "Compact older completed generations without hiding newest or actionable issues",
     "lastSafeRelease": "V0.4.39",
     "lastSafeCommit": "4b5a547c8a37f66d278b4e87a5b87cff7a457839",
     "plan": [
@@ -57,6 +58,6 @@
         "status": "NEXT"
       }
     ],
-    "resumeInstruction": "Verify V0.4.41 deploy and real iPhone before promoting; research unchanged."
+    "resumeInstruction": "Verify V0.4.43 in iPhone; no research rerun."
   }
 }
