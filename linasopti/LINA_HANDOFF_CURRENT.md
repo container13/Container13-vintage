@@ -1,5 +1,9 @@
 # Linas Opti — aktuell löpande överlämning
 
+## Gen16 RAW SHA256 PASS – nytt
+Originalfilen SOURCE_gen9-data.json läst via Git blob; 8 446 807 bytes, SHA256 cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c matchar låst Gen16-manifest exakt. Bevis: `LINA_GEN16_SHA256_VERIFICATION_2026-10-27.md`. Datakvalitet/justeringar/bolagshändelser fortsatt UNVERIFIED. Nästa: read-only kontroll av råa/justerade OHLC och Gen16-kod; ingen rerun, Handel/Forward AV.
+
+
 ## Återfunnen chatt och Gen16-dataintegritet – 2026-10-27 (NYTT)
 - Originaltext från användaruppladdade `chatt28okt.txt` arkiverad med återläst innehåll: `linasopti/history/LINA_CHAT_28OKT_RECOVERED_VERBATIM.txt`. Denna fil är historiskt källmaterial, inte nytt forskningsbevis.
 - Kondenserad historik: `linasopti/LINA_RECOVERED_CHAT_2026-10-28.md`; detaljer om Gen14–16:s 2022-affärer, tidskoncentration, Gen16-portföljbokföring, exekveringsregler och tekniska begränsningar. Originalet har företräde vid oenighet om ordalydelsen.
