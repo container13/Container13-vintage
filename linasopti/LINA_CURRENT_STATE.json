@@ -24,7 +24,7 @@
   },
   "currentWork": {
     "completed": "Gen16 summary, dataset and 8 fold JSON verified from GitHub; all fold schema/spec/variant/year fields match, Git blob SHAs recorded. Recursive branch tree truncated=false; only Gen17 draft exists (no Gen17 runnerspec/evidence). V0.4.45 Integrity/Pages PASS and iPhone Dashboard screenshot verified; Worker archive promotion read-only.",
-    "next": "Read-only inspect 2022 frozen trade/event records for failure mechanisms; no ex-post tuning, no reruns or trading.",
+    "next": "Read-only inspect 2022 adverse entry-to-exit price movement versus 0.1% per-side synthetic costs and signal timing; no reruns or tuning.",
     "blocked": false,
     "blocker": null,
     "recoveryRunbook": "LINA_RESEARCH_EVIDENCE_RECOVERY.md",
@@ -72,7 +72,8 @@
     "gen9DigestLineage20261027": "Distinct SHA256: Yahoo candidate cb84e436..., historical Alpaca SIP adjustment=raw archive 7fccc87b... (bytes not located), Alpaca adjustment=all raw provider response d77ac62c... and normalized response 154a6419.... Comparison verifiedForResearch=false, REVIEW_REQUIRED_NO_AUTOMATIC_APPROVAL; adjustment diagnostic DIAGNOSTIC_ONLY_NO_APPROVAL. Oct5 dataset gate PASSED only RESEARCH_DATA_INPUT; single-use research authorization not full economic price-basis validation.",
     "gen16AnnualFoldRiskSemantics20261027": "Gen16 simulate resets $100k cash/equity each annual fold, summarize calculates fold drawdown vs fold peak, aggregate DD = min of four annual DDs. This is worst within-fold DD, NOT continuous 2021-24 portfolio max DD; summed fold P/L not compounded CAGR. Adjusted OHLC, fractional shares, no dividend cash ledger. No engine changes.",
     "gen16ConcentrationGate20261027": "Concentration is maximum across 4 annual folds of top symbol share of gross positive trade profits (NOT invested capital). CONTROL annual 13.7%,66.3%,17.4%,22.0%; BREAKOUT 21.1%,100%,16.6%,12.7%. 2022 BREAKOUT only winning trade FDX ~+$60 ->100% of tiny gross profits; CONTROL 2022 BAC ~+$152 of ~$229 gross profits, despite BAC net negative. Both concentration and worst-fold PF fail, NO_CANDIDATE unchanged.",
-    "gen16StressFold20261027": "Read-only frozen fold reports: 2022 CONTROL 18 trades 2 winners -$5229.75 PF .041934; BREAKOUT 13 trades 1 winner -$4133.07 PF .014205. Post-hoc excluding 2022 (diagnostic only, NOT eligibility): CONTROL 302 trades +$17393.34 pooled PF1.5574; BREAKOUT 245 trades +$20019.08 PF1.9547. 2022 gross-loss shares 14.89%/16.66%; gross-profit shares 0.469%/0.145%. NO_CANDIDATE unchanged."
+    "gen16StressFold20261027": "Read-only frozen fold reports: 2022 CONTROL 18 trades 2 winners -$5229.75 PF .041934; BREAKOUT 13 trades 1 winner -$4133.07 PF .014205. Post-hoc excluding 2022 (diagnostic only, NOT eligibility): CONTROL 302 trades +$17393.34 pooled PF1.5574; BREAKOUT 245 trades +$20019.08 PF1.9547. 2022 gross-loss shares 14.89%/16.66%; gross-profit shares 0.469%/0.145%. NO_CANDIDATE unchanged.",
+    "gen16TradeEvents2022Audit20261027": "Frozen 2022 trades read-only: CONTROL 18/18 TIME_12, BREAKOUT 13/13 TIME_12; no trend/stop exits. CONTROL 18 ENTRY and 27 SKIP:SYMBOL_OPEN; BREAKOUT 13 ENTRY and 9 SKIP:SYMBOL_OPEN. Losses across multiple months/symbols, not single anomaly. End fold equity $94770.2534/$95866.9259 on independent $100k accounts. No alternate exit effectiveness inferred."
   },
   "bootstrap": {
     "triggerPhrase": "Läs Linas manual",
