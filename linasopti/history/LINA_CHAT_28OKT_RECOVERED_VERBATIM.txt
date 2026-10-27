@@ -1,0 +1,292 @@
+
+Läser in äldre meddelanden…
+Fortsätt
+Nu har jag kommit ner på enskilda affärer från 2022 i de frysta filerna för Gen14 och Gen16.
+
+Det finns ett tydligt exempel på varför året blev så svårt: flera köp gjordes efter uppgångssignaler, men aktierna föll kraftigt under innehavstiden.
+
+I Gen16 ser vi bland annat:
+
+GM: köp 5 januari, försäljning 21 januari, cirka −660.
+
+NVDA: köp 30 mars, försäljning 14 april, cirka −868.
+
+TSLA: köp 30 mars, försäljning 14 april, cirka −343.
+
+De här tre affärerna är simulerade, inte verkliga börsorder. De visar däremot konkret hur en breakout-strategi kunde hamna fel när en kortvarig uppgång inte höll i sig.
+
+Jag går vidare med hela affärslistan för att se om förlusterna dominerades av ett fåtal aktier eller om de var brett spridda.
+
+Resultatet: 2022-problemet var brett spritt
+Jag har nu summerat de enskilda affärerna i fyra frysta testvarianter.
+
+Modell
+
+Affärer
+
+Vinnare
+
+Förlorare
+
+Nettoresultat
+
+Gen14 kontroll
+
+18
+
+2
+
+16
+
+−5 230
+
+Gen14 bekräftelse
+
+11
+
+3
+
+8
+
+−3 203
+
+Gen15 trendbaserad exit
+
+18
+
+1
+
+17
+
+−4 814
+
+Gen16 ny breakout
+
+13
+
+1
+
+12
+
+−4 133
+
+Resultaten är separata simuleringar på överlappande historiska data och får inte summeras som oberoende förluster.
+
+Det mest avslöjande är Gen14:s kontrollmodell. Förlusterna var spridda över bland annat Nvidia, Citigroup, General Motors, Southwest Airlines, Bank of America och Micron. Ingen enskild aktie förklarade hela problemet.
+
+Gen16 reducerade antalet affärer från 18 till 13 jämfört med Gen14:s kontroll, men 12 av 13 affärer förlorade fortfarande pengar.
+
+Det visar varför vi hittills inte lyckats lösa problemet genom att ändra inträdesfilter eller exitregler.
+
+En viktig skillnad
+Gen14:s bekräftelsevariant minskade förlusten med ungefär 2 027 jämfört med sin kontroll, men den klarade fortfarande inte robusthetskraven. Färre förlustaffärer är inte samma sak som en tillräckligt stabil strategi.
+
+Min slutsats från originalaffärerna är att 2022 var ett systematiskt svårt år för just dessa trend- och breakoutmodeller, inte bara ett problem med en enskild aktie.
+
+Det bevisar däremot inte att alla tänkbara strategier skulle ha misslyckats. Det visar gränserna för den strategiarkitektur vi faktiskt har undersökt.
+
+Nästa värdefulla forskningssteg är att undersöka när under 2022 förlusterna uppstod, hur signalerna grupperades i tiden och om positionerna var samtidiga. Det skulle ge oss bättre förståelse för den verkliga portföljrisken utan att starta ett enda nytt backtest.
+
+Allt arbete hittills är fortsatt skrivskyddat. Inga frysta resultat eller handelsinställningar har ändrats.
+
+Kör
+Nu ser vi när Lina förlorade pengar under 2022
+Jag har analyserat affärsdatumen, förlusterna och överlappande positioner direkt ur de frysta Gen14–Gen16-filerna.
+
+Det tydligaste fyndet är att förlusterna kom i flera vågor, särskilt i början och slutet av 2022. Dessutom öppnades flera positioner samtidigt, vilket gjorde att olika aktier kunde förlora pengar under samma marknadsrörelse.
+
+Gen16 – resultat efter inträdesmånad 2022
+
+-1,4 tn
+-900
+-450
+0
+450
+Jan
+Mar
+Apr
+Jun
+Jul
+Okt
+Nov
+Dec
+Jan: Simulerat nettoresultat −1 tn
+Mar: Simulerat nettoresultat −1,2 tn
+Apr: Simulerat nettoresultat −329
+Jun: Simulerat nettoresultat 60
+Jul: Simulerat nettoresultat −179
+Okt: Simulerat nettoresultat −156
+Nov: Simulerat nettoresultat −116
+Dec: Simulerat nettoresultat −1,2 tn
+Resultatet är grupperat efter månaden då affären öppnades, inte då den stängdes. Månader utan affärer visas inte.
+Tre tydliga förlustperioder i Gen16 var januari, mars och december. De står tillsammans för cirka 3 413 av modellens totala förlust på 4 133.
+
+Det innebär att ungefär 83 % av nettotappet kan kopplas till affärer som öppnades under just dessa tre månader.
+
+Viktig upptäckt: Lina tog flera förluster samtidigt
+I december 2022 öppnade Gen16 fyra positioner inom två handelsdagar:
+
+Aktie
+
+Köpt
+
+Såld
+
+Resultat
+
+LUV
+
+1 dec
+
+16 dec
+
+−320
+
+SHOP
+
+2 dec
+
+19 dec
+
+−542
+
+NFLX
+
+2 dec
+
+19 dec
+
+−249
+
+NVDA
+
+2 dec
+
+19 dec
+
+−89
+
+Totalt
+
+−1 200
+
+Det sammanlagda investerade beloppet för dessa fyra positioner var cirka 14 773 i modellens beräkningsvaluta. Under perioden fanns som mest fyra samtidiga öppna positioner.
+
+Även Gen14:s kontrollmodell hade fyra samtidiga positioner i december, med i stort sett samma aktier och förlustmönster.
+
+Vad detta avslöjar
+Vi har nu belägg för att flera olika aktier kan ge samma förlustvåg, trots att positionerna är fördelade mellan olika bolag.
+
+Det är en viktig skillnad mellan spridning över aktier och spridning över oberoende risker. Fyra aktier behöver inte ge fyra oberoende riskkällor.
+
+Det finns dessutom en teknisk reservation: de äldre modellerna saknar verifierad gemensam portföljhantering. De frysta affärslistorna visar överlappande positioner, men bevisar inte att en verklig handelsmotor skulle ha kunnat öppna exakt samma positioner med hänsyn till kontanter, riskgränser och orderutförande.
+
+Min slutsats: Nästa säkerhets- och forskningsgranskning bör handla om hur Lina hanterar samtidiga signaler och sammanlagd exponering, inte om att optimera ännu ett köpfilter mot 2022.
+
+Vi har hittills bara analyserat befintligt material. Ingen ny strategi har körts, ingen fryst evidens har ändrats och Handel är fortsatt AV.
+
+Fortsätt
+Nytt fynd: Gen16 har mer portföljkontroll än de äldre generationerna
+När jag granskade Gen16:s detaljerade händelselogg hittade jag något viktigt som nyanserar vår tidigare bedömning.
+
+Gen16 registrerar faktiskt kontanter, portföljvärde och antal öppna positioner dag för dag. Den har också händelser för signaler som avvisas när samma aktie redan finns i portföljen.
+
+Det betyder att vi inte kan säga att alla generationer saknar gemensam portföljhantering. Begränsningen actualSharedPortfolio: false som vi hittade i de äldre Gen6–Gen8-rapporterna får inte automatiskt överföras till Gen16.
+
+Det här är positivt: vi har redan mer avancerad portföljlogik i den senare forskningen än vad den första genomgången visade.
+
+Hur stor var den samtidiga risken i Gen16?
+Jag har räknat fram detta från de 251 dagliga portföljposterna för 2022.
+
+Max öppna positioner
+
+4
+2 december 2022
+Högsta aktieexponering
+
+15,4 %
+Av portföljvärdet
+Avvisade dubbelsignaler
+
+9
+Aktien redan öppen
+Portföljvärde vid årets slut
+
+95 867
+Startvärde 100 000
+Det här förändrar en del av vår problembild.
+
+Gen16:s svaga 2022 berodde inte på att hela kapitalet var investerat. Den maximala observerade exponeringen var bara omkring 15,4 %. Trots detta gav nästan alla affärer förlust.
+
+Det antyder att huvudproblemet i just den här modellen var signalernas kvalitet och träffsäkerhet under svåra marknadsförhållanden, snarare än överdriven total kapitalexponering.
+
+Men vi behöver fortfarande granska om portföljmotorn korrekt hanterar köpordning, kontantbegränsningar, handelsavgifter, prisgap och samtidig risk. En daglig kontantlogg är ett starkt tecken på portföljbokföring, inte i sig ett bevis på realistiskt orderutförande.
+
+Nästa kontroll bör därför vara att granska själva Gen16-motorns exekveringsregler mot dessa sparade affärer. Det kan avslöja om de historiska resultaten är för optimistiska eller för pessimistiska utan att vi kör om forskningen.
+
+Ingen kod eller fryst evidens har ändrats. Handel är fortsatt AV.
+
+Fortsätt gräv
+Ny kodgranskning: Gen16:s köp- och säljregler
+Jag har nu läst själva simuleringsmotorn, inte bara resultaten.
+
+Det finns flera bra skydd inbyggda. Gen16 använder föregående dags signal och köper på nästa dags öppningskurs. Den sorterar samtidiga signaler efter styrka, hindrar dubbla positioner i samma aktie och begränsar antalet öppna positioner till åtta.
+
+Koden tar även hänsyn till tillgängliga kontanter och använder ett kostnadspåslag på 0,1 % vid köp respektive avdrag på 0,1 % vid försäljning.
+
+Men jag har hittat två viktiga begränsningar som påverkar hur vi ska tolka resultaten.
+
+För det första används ett fast procentuellt kostnadspåslag, inte en separat modell för courtage, valutaväxling, spread, orderdjup och varierande slippage.
+
+För det andra sker Gen16:s ordinarie försäljning på stängningskursen efter tolv handelssessioner. Det är en bestämd tidsbaserad exit, inte en skyddande stop-loss. Därför kan modellen fortsätta hålla en fallande aktie fram till den planerade försäljningen.
+
+En kontroll som faktiskt gick bra
+Jag jämförde även Gen16:s sparade affärsresultat med portföljens kontantsaldo och slutvärde för 2022.
+
+Kontroll
+
+Resultat
+
+Affärernas sammanlagda P/L mot slutvärdet
+
+Stämmer
+
+Negativt kontantsaldo
+
+Inga dagar
+
+Maximalt antal öppna positioner
+
+4
+
+Alla positioner stängda vid årets slut
+
+Ja
+
+Försäljningar enligt 12-sessionersregeln
+
+13 av 13
+
+Även kontrollvarianten klarade motsvarande avstämning.
+
+Detta är en god indikation på att Gen16:s grundläggande portföljbokföring är konsekvent i de sparade resultaten för 2022. Det bevisar däremot inte att marknadsdata, fyllnadskurser eller handelskostnader är realistiska.
+
+Min uppdaterade bedömning
+Jag skulle nu dela upp Linas problem i två kategorier:
+
+Forskningsproblem: Strategierna visar fortfarande svag stabilitet, särskilt under 2022. Vi har inte bevisat någon robust handelsfördel.
+
+Tekniska verifieringsproblem: Vi behöver kontrollera datakällornas reproducerbarhet, orderutförandets realism och hur den frysta Forward-historiken skyddas mot förändringar.
+
+Det är viktigt att inte blanda ihop dessa. En tekniskt korrekt motor kan fortfarande handla en olönsam strategi, och en lönsam historisk simulering kan fortfarande bygga på orealistiska antaganden.
+
+Min nästa prioritet är dataintegriteten: att spåra vilka historiska kurser Gen16 faktiskt använde, om de kan återskapas exakt och om evidensens hashvärden verkligen skyddar det underliggande datamaterialet.
+
+Jag har fortfarande inte ändrat några filer, kört om forskning eller aktiverat handel.
+
+Fortsätt
+Anslutningen bröts. Väntar på hela svaret
+
+
+
+-1,4 tn
