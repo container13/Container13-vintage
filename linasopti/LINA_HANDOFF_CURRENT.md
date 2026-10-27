@@ -34,3 +34,8 @@ Håll denna fil kort och ersätt nuläget, inte bygg på med arbetslogg. Efter v
 - Rotorsak: app.js startar LINA_AUTO_SUPPORT automatiskt; export-status.js visade alltid kvittopopup, med vit bakgrund och otillräcklig textkontrast.
 - Ändring: automatiskt stödrapportflöde kör fortsatt men tyst; manuell export behåller kvitto. Popup får mörk bakgrund, tydlig text och radbrytning av långa sökvägar.
 - Status: kodskrivning utförd; Integrity/Pages/live/iPhone UNVERIFIED tills separat kontroll. Handel/Forward OFF; fryst forskning orörd.
+
+## V0.4.42 – dashboardordning (2026-10-27)
+- Central status-order.js sorterar dashboard: stopp/blockering överst, sedan lägesbild och systemstatus, därefter generationskort i fallande nummerordning.
+- Dynamiska kort sorteras via MutationObserver. Handel/Forward och fryst forskning orörda.
+- GitHub-kod sparad; Actions/Pages och iPhone för V0.4.42 ännu ej verifierade.
