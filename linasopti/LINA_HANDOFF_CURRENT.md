@@ -1,6 +1,14 @@
 # Linas Opti — aktuell löpande överlämning
 
-Uppdaterad: 2026-10-23. Senaste kodkandidat: **V0.4.40** (PENDING; ingen device-PASS). Föregående dokumentationsrelease: **V0.4.39**. GitHub Integrity och Pages: **SUCCESS** för commit `4b5a547c8a37f66d278b4e87a5b87cff7a457839`. Live-byteverifiering och iPhone-test: **UNVERIFIED**.
+Uppdaterad 2026-10-27. Aktuell release V0.4.45. Integrity och Pages PASS på commit 33da9e506b5ca8126923d36a624b3e19a6653d4b; iPhone Dashboard/version verifierad med skärmbild. Full live-byteverifiering och Worker-evidenskvitton är UNVERIFIED.
+
+## Aktuellt nuläge och nästa steg
+- Gen8–16 frysta; Gen16 NO_CANDIDATE; Handel/Forward AV. Gen17 DRAFT_ONLY, ingen runnerspec eller forskningsstart.
+- Gen16 summary, dataset och åtta fold-filer lästa via GitHubs fullständiga filträd på ccc-demo-public-test i linasopti/evidence/2026-10-06/. Alla fold-identiteter och spec-SHA matchar. Worker receipt och payload SHA-256 ej verifierade.
+- CURRENT och PENDING har samma GitHub-blob, PREVIOUS är separat. Worker promotion är read-only audit, ingen automatisk rotation.
+- Gen17-planen behöver ny hypotesprövning: 2022 hade kandidaten 13 affärer, PF 0.014205 och koncentration 100 procent. Riskfördelning ensam löser inte lågt antal affärer eller svag PF.
+- NÄSTA: verifiera separata kvitton read-only om åtkomst finns; förregistrera en försvarbar Gen17-hypotes och be om uttryckligt godkännande före planlås/forskning.
+- Efter varje meningsfullt steg och före långa steg: uppdatera denna handoff OCH LINA_CURRENT_STATE.json, skriv till GitHub, läs tillbaka båda. Håll denna fil kort; äldre logg finns i Git.
 
 ## Start här
 Vid ”Fortsätt Linas Opti” eller ”Läs Linas manual”: läs denna fil, `LINA_CURRENT_STATE.json`, `version.js`, `LINA_SYSTEM_MANUAL.md`, `LINA_MASTER_RULES.md` och relevant releasechecklista. Kontrollera verklig branch/head, Actions, publicerad release och Worker innan nästa ingrepp. Begär inte manuell överlämning om repo innehåller den.
