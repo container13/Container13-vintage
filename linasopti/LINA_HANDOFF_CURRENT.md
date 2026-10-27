@@ -1,14 +1,21 @@
 # Linas Opti — aktuell löpande överlämning
 
-Uppdaterad 2026-10-27. Aktuell release V0.4.45. Integrity och Pages PASS på commit 33da9e506b5ca8126923d36a624b3e19a6653d4b; iPhone Dashboard/version verifierad med skärmbild. Full live-byteverifiering och Worker-evidenskvitton är UNVERIFIED.
+Uppdaterad: 2026-10-27. Runtime: **V0.4.45**. GitHub Integrity + Pages PASS för commit `33da9e506b5ca8126923d36a624b3e19a6653d4b`; iPhone-skärmbild visar V0.4.45 Dashboard. Full live-byteverifiering och Worker-receipts **UNVERIFIED**.
 
-## Aktuellt nuläge och nästa steg
-- Gen8–16 frysta; Gen16 NO_CANDIDATE; Handel/Forward AV. Gen17 DRAFT_ONLY, ingen runnerspec eller forskningsstart.
-- Gen16 summary, dataset och åtta fold-filer lästa via GitHubs fullständiga filträd på ccc-demo-public-test i linasopti/evidence/2026-10-06/. Alla fold-identiteter och spec-SHA matchar. Worker receipt och payload SHA-256 ej verifierade.
-- CURRENT och PENDING har samma GitHub-blob, PREVIOUS är separat. Worker promotion är read-only audit, ingen automatisk rotation.
-- Gen17-planen behöver ny hypotesprövning: 2022 hade kandidaten 13 affärer, PF 0.014205 och koncentration 100 procent. Riskfördelning ensam löser inte lågt antal affärer eller svag PF.
-- NÄSTA: verifiera separata kvitton read-only om åtkomst finns; förregistrera en försvarbar Gen17-hypotes och be om uttryckligt godkännande före planlås/forskning.
-- Efter varje meningsfullt steg och före långa steg: uppdatera denna handoff OCH LINA_CURRENT_STATE.json, skriv till GitHub, läs tillbaka båda. Håll denna fil kort; äldre logg finns i Git.
+## Nuläge, beslut och kvarstående uppgifter
+- Gen8–16 frysta, Gen16 NO_CANDIDATE, Handel/Forward AV. Gen17 endast DRAFT_ONLY, ingen runnerspec eller forskningsstart.
+- Gen16: tio GitHub-JSON-filer (summary, dataset, åtta folds) lästa från `linasopti/evidence/2026-10-06/`; schema/spec/år/variant matchar. Worker-receipt och content SHA-256 ej separat verifierade.
+- Gen17: koncentrationsmedveten positionsrisk är en *hypotes*, inte beslutad plan. Kandidatens 2022-fold: 13 affärer, PF 0.014205, koncentration 100 %. Enbart riskfördelning löser inte affärsbrist eller dålig PF. Kräv en enda förregistrerad ändring, framtida oberoende verifiering och användarens uttryckliga godkännande före planlås/start.
+- Worker: CURRENT/PENDING identisk GitHub-blob; PREVIOUS separat. Promotion-workflow read-only, ingen automatisk rotation.
+- **Öppen dokumentstädning:** denna handoff har äldre kronologiska avsnitt efter aktuellt nuläge. Flytta vid separat kontrollerat steg till historikfil; behåll aktuell handoff kort och säkerställ ingen historik går förlorad.
+- **Öppet löfte:** efter varje arbetssteg dokumentera även användarbeslut, föreslagna men ej beslutade förbättringar, assistentlöften, kvarstående småfixar, risker och exakt nästa åtgärd – inte bara tekniska ändringar. Synkronisera `LINA_HANDOFF_CURRENT.md` och `LINA_CURRENT_STATE.json` och läs tillbaka båda.
+- **Nästa saksteg:** sök read-only verifierbara Worker-kvitton/hash; granska Gen17-hypotesens vetenskapliga giltighet. Ingen forskning eller handel.
+
+## Start i ny chatt
+Vid ”Läs Linas manual” eller ”Fortsätt Linas Opti”: läs `LINA_SYSTEM_MANUAL.md`, `LINA_MASTER_RULES.md`, denna handoff, `LINA_CURRENT_STATE.json`, `version.js` och releasechecklistan. Kontrollera branch/head, Actions och publicerad version. Fortsätt från checkpoint/`currentWork.next` utan att be användaren återberätta.
+
+## Löpande regel
+Spara nuläge **före** längre/riskfyllda steg och **efter varje** meningsfullt arbetssteg. Bevara alla ännu ej utförda löften och beslut i handoff/checkpoint. GitHub-write måste följas av readback. Ren operativ journalföring ändrar inte runtime-version. Historik finns i Git och `LINA_HANDOFF_HISTORY_THROUGH_2026-10-23.md`.
 
 ## Start här
 Vid ”Fortsätt Linas Opti” eller ”Läs Linas manual”: läs denna fil, `LINA_CURRENT_STATE.json`, `version.js`, `LINA_SYSTEM_MANUAL.md`, `LINA_MASTER_RULES.md` och relevant releasechecklista. Kontrollera verklig branch/head, Actions, publicerad release och Worker innan nästa ingrepp. Begär inte manuell överlämning om repo innehåller den.
