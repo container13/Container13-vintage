@@ -115,3 +115,10 @@ Håll denna fil kort och ersätt nuläget, inte bygg på med arbetslogg. Efter v
 - Nästa: kontrollera Actions/Pages, därefter faktisk runtime och iPhone. Om ingen klientverifiering finns: behåll UNVERIFIED, promota inte Worker.
 
 - CI-diagnos: första V0.4.45 Integrity-run FAIL eftersom `release-gate.js` hade `REQUIRED_RELEASE/REQUIRED_CACHE` kvar på V0.4.40. Rotorsak identifierad i Actions-loggen; korrigerad till V0.4.45 i commit `0f76edb124ffee2268667cff89ccd7f5d3d09dcc`. Ny Integrity/Pages efter denna commit måste kontrolleras; ingen PASS antagen.
+
+## 2026-10-27 – komplettering från avbruten chatt (ännu ej oberoende omräknad)
+- Tidigare chatt rapporterade riktad kontroll av sex aktiers justeringsfaktorer i bevarad Gen9-fil: SHOP och TSLA faktor 1, NVDA ungefär 0,3–0,7 % avvikelse, PYPL cirka 0,98897, FDX cirka 0,885–0,966 och QCOM cirka 0,862–0,963. Inga faktorhopp över 2 % mellan intilliggande handelsdagar rapporterades för dessa sex.
+- Exempel rapporterat för 2024-06-10 (rå close → justerad close): NVDA 121,79→121,44; PYPL 67,09→66,35; FDX 204,45→194,41; SHOP 63,01→63,01.
+- Dessa siffror är återförda från användarens chattutdrag, INTE självständigt återverifierade i detta steg. Faktor 1 för SHOP/TSLA bevisar inte frånvaro av splitjustering i leverantörens OHLC.
+- Öppen forskningsfråga: tidskausalitet och eventuell look-ahead från efterhandsjusterade priser; konstant multiplikator kan lämna relativa signaler invarianta men påverkan på bokföring/exekvering måste kontrolleras.
+- Nästa: verifiera med riktade, begränsade läsningar och befintlig kod/evidens; ingen stor råfil i chatt utan förvarning. Informera användaren före stora inläsningar och föreslå ny chatt i tid. Ingen rerun, Handel/Forward AV.
