@@ -66,3 +66,5 @@ Håll denna fil kort och ersätt nuläget, inte bygg på med arbetslogg. Efter v
 - Gemensam `project-template/CONTINUITY_PROTOCOL.md` uppdaterad med rotorsakskontroll, rekursiv GitHub-trädsökning, PENDING/CURRENT/PREVIOUS-gate, checkpoint och version/CI-grind.
 - V0.4.45 i `version.js` och cachetokens i `index.html`. COMMITTED men CI/Pages/live bytes/iPhone fortfarande UNVERIFIED. Inte godkänd runtime-release. Gen17 DRAFT_ONLY, Gen8–16 frysta, Handel/Forward AV.
 - Nästa: kontrollera Actions/Pages, därefter faktisk runtime och iPhone. Om ingen klientverifiering finns: behåll UNVERIFIED, promota inte Worker.
+
+- CI-diagnos: första V0.4.45 Integrity-run FAIL eftersom `release-gate.js` hade `REQUIRED_RELEASE/REQUIRED_CACHE` kvar på V0.4.40. Rotorsak identifierad i Actions-loggen; korrigerad till V0.4.45 i commit `0f76edb124ffee2268667cff89ccd7f5d3d09dcc`. Ny Integrity/Pages efter denna commit måste kontrolleras; ingen PASS antagen.
