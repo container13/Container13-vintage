@@ -24,7 +24,7 @@
   },
   "currentWork": {
     "completed": "Gen16 summary, dataset and 8 fold JSON verified from GitHub; all fold schema/spec/variant/year fields match, Git blob SHAs recorded. Recursive branch tree truncated=false; only Gen17 draft exists (no Gen17 runnerspec/evidence). V0.4.45 Integrity/Pages PASS and iPhone Dashboard screenshot verified; Worker archive promotion read-only.",
-    "next": "Read-only check historical GitHub objects/archived artifacts for exact raw daily OHLC on overlapping trade entry and exit dates; avoid assuming archived hash means accessible bytes, no rerun.",
+    "next": "Look for historical Git tree/commit evidence of archived raw bars; distinguish SHA256 file content from Git blob SHA. Do not rerun frozen research or alter OHLC rules.",
     "blocked": false,
     "blocker": null,
     "recoveryRunbook": "LINA_RESEARCH_EVIDENCE_RECOVERY.md",
@@ -64,7 +64,8 @@
     "gen16DividendPnlAttribution20261027": "Frozen 115-event subset: CONTROL 20/320 overlap trades synthetic P/L +1396.89 USD, BREAKOUT 18/258 +1611.53 USD; 7 overlap trades |P/L|<50. Do NOT add nominal dividends to synthetic adjusted-price qty (basis mismatch/double count). Raw OHLC + split-aware cash ledger needed for valid comparison; not performed.",
     "yahooDividendReturnFormula20261027": "Verified method: Yahoo prior-date factor 1-D/Pprev gives ex-date adjusted return Pnew/(Pprev-D)-1, not standard cash-dividend return (Pnew+D)/Pprev-1. Independent Ian Gow 2025 CRSP comparison corroborates. 38 frozen Gen16 overlap trades exposed; precise per-trade impact not quantified. No rerun.",
     "gen9ArchivedAlpacaDiagnostic20261027": "Archived 2026-10-04 Alpaca SIP 20128-bar raw and four-adjustment-mode diagnostics found. All mode 78306 numeric OHLC differences but only 4 >=$10; split 9214, dividend 24737, spinoff 28261 >=$10; raw 28915. Snapshots store summaries/outliers, not full matched raw OHLC, so no per-trade cash-ledger reconciliation possible from these alone.",
-    "gmArchivedRawBar20261027": "Archived GM 2023-06-05 Yahoo adjusted o33.3387878/c33.02911 vs Yahoo raw o34.45000076/c34.13000107 and Alpaca SIP raw o34.45/h34.49/c34.13. Yahoo raw high34.45 differs Alpaca high34.49; 78 same-provider 5min bars corroborate Alpaca high. Full Alpaca raw archive referenced by SHA7fccc87b... not present in current branch tree. Single day insufficient for trade P/L."
+    "gmArchivedRawBar20261027": "Archived GM 2023-06-05 Yahoo adjusted o33.3387878/c33.02911 vs Yahoo raw o34.45000076/c34.13000107 and Alpaca SIP raw o34.45/h34.49/c34.13. Yahoo raw high34.45 differs Alpaca high34.49; 78 same-provider 5min bars corroborate Alpaca high. Full Alpaca raw archive referenced by SHA7fccc87b... not present in current branch tree. Single day insufficient for trade P/L.",
+    "gmBarMethodAndRawArchive20261027": "Existing GM methodology review: Alpaca daily bar and minute bar trade-condition rules can differ; GM daily open34.45 vs first regular 5min open34.49 not proven error. Twelve GM high34.375 < open34.45000076 fails Lina OHLC invariant, vendor root cause open, support question prepared not sent. Full Alpaca raw archive absent current branch tree; exact path commit history and ALPACA commit search returned no hits, not proof unavailable elsewhere."
   },
   "bootstrap": {
     "triggerPhrase": "Läs Linas manual",
