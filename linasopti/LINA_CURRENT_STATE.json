@@ -24,14 +24,20 @@
   },
   "currentWork": {
     "completed": "Gen16 summary, dataset and 8 fold JSON verified from GitHub; all fold schema/spec/variant/year fields match, Git blob SHAs recorded. Recursive branch tree truncated=false; only Gen17 draft exists (no Gen17 runnerspec/evidence). V0.4.45 Integrity/Pages PASS and iPhone Dashboard screenshot verified; Worker archive promotion read-only.",
-    "next": "Continue read-only Gen16 receipt SHA verification if possible; critically review Gen17 one-change hypothesis and seek explicit approval. Update handoff and state after each meaningful step.",
+    "next": "Read-only Worker receipt/hash investigation and Gen17 hypothesis review; keep DRAFT_ONLY. Separately clean up long handoff history. Persist all decisions/promises in handoff and state.",
     "blocked": false,
     "blocker": null,
     "recoveryRunbook": "LINA_RESEARCH_EVIDENCE_RECOVERY.md",
     "evidencePath": "linasopti/evidence/2026-10-06/",
     "evidenceValidation": "GITHUB_10_FILES_SCHEMA_SPEC_FOLD_MATCH_PASS; TREE_COMPLETE; GIT_BLOB_SHA_RECORDED; WORKER_RECEIPT_AND_CONTENT_SHA256_UNVERIFIED",
     "gen17Review": "DRAFT_ONLY; NO_RUNNERSPEC_OR_EVIDENCE; 2022 candidate 13 trades PF 0.014205 concentration 1; concentration allocation alone insufficient to resolve poor PF and sample scarcity.",
-    "handoffSync": "UPDATED_2026-10-27_GITHUB_READBACK_PENDING"
+    "handoffSync": "BOTH_FILES_GITHUB_READBACK_REQUIRED_AFTER_EACH_STEP",
+    "pendingCommitments": [
+      "Move historical chronological sections from LINA_HANDOFF_CURRENT.md to history with no information loss (separate controlled task)",
+      "After each step record decisions, assistant promises, unimplemented improvements, risks and precise next action in both handoff and state",
+      "Verify Worker evidence receipt/content SHA256 read-only if accessible; keep UNVERIFIED otherwise",
+      "Review Gen17 one-change hypothesis for scientific validity and require explicit user approval before plan lock/research"
+    ]
   },
   "bootstrap": {
     "triggerPhrase": "Läs Linas manual",
