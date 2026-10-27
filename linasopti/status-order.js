@@ -17,10 +17,10 @@ function apply(){
    // An actionable STOPPAD/BLOCKERAD status is promoted above the introduction.
    const priority=[...root.children].filter(el=>generationOf(el)<0 && /STOPPAD|BLOCKERAD/.test(el.textContent||'') && !el.classList.contains('hero') && !el.classList.contains('grid'));
    let anchor=null;
-   for(const el of priority){root.insertBefore(el,root.firstChild);anchor=el}
+   for(const el of priority){if(root.firstChild!==el)root.insertBefore(el,root.firstChild);anchor=el}
    const introduction=[...root.children].filter(el=>el.classList?.contains('crumb')||el.classList?.contains('hero')||el.classList?.contains('system-health'));
-   for(const el of introduction){if(anchor)anchor.insertAdjacentElement('afterend',el);else root.insertBefore(el,root.firstChild);anchor=el}
-   for(const el of gens){if(anchor)anchor.insertAdjacentElement('afterend',el);else root.insertBefore(el,root.firstChild);anchor=el}
+   for(const el of introduction){if(anchor && anchor.nextElementSibling!==el)anchor.insertAdjacentElement('afterend',el);else if(root.firstChild!==el)root.insertBefore(el,root.firstChild);anchor=el}
+   for(const el of gens){if(anchor && anchor.nextElementSibling!==el)anchor.insertAdjacentElement('afterend',el);else if(root.firstChild!==el)root.insertBefore(el,root.firstChild);anchor=el}
   }else{
    const top=gens[0];root.prepend(top);
    const gate=root.querySelector(':scope > [data-release-gate]');if(gate)top.insertAdjacentElement('afterend',gate);
