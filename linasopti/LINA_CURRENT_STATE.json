@@ -24,7 +24,7 @@
   },
   "currentWork": {
     "completed": "Gen16 summary, dataset and 8 fold JSON verified from GitHub; all fold schema/spec/variant/year fields match, Git blob SHAs recorded. Recursive branch tree truncated=false; only Gen17 draft exists (no Gen17 runnerspec/evidence). V0.4.45 Integrity/Pages PASS and iPhone Dashboard screenshot verified; Worker archive promotion read-only.",
-    "next": "Audit historical split/dividend factor provenance and point-in-time interpretation with bounded evidence; Worker receipts. No rerun.",
+    "next": "Examine within-2020-24 variable dividend factors and total-return implications using bounded source evidence, then Worker receipts; no rerun or trading.",
     "blocked": false,
     "blocker": null,
     "recoveryRunbook": "LINA_RESEARCH_EVIDENCE_RECOVERY.md",
@@ -56,7 +56,8 @@
     "gen16AdjustmentAudit": "2026-10-27: Gen16 motor consumes adjusted o/h/l/c directly and does no corporate-action correction. Older Gen9 evidence confirms NYSE calendar; PYPL post-2024 dividend factor reconstructed, FDX vendor-precision unresolved, AMD/NOW cash-dividend absence only, GM OHLC case open. SHA256 data integrity PASS but point-in-time corporate-action correctness and independent OHLC verification UNVERIFIED.",
     "corporateActionDetail20261027": "Recovered from interrupted chat; UNVERIFIED independent recalculation: SHOP/TSLA factor 1; NVDA small adjustment; PYPL ~0.98897; FDX ~0.885-0.966; QCOM ~0.862-0.963; no >2% adjacent factor jumps in six symbols. Example 2024-06-10 NVDA 121.79→121.44, PYPL 67.09→66.35, FDX 204.45→194.41, SHOP 63.01→63.01. Investigate point-in-time bias and accounting; no rerun.",
     "gen16EngineAudit20261027": "Source-verified: signal uses adjusted close/SMA180, prior adjusted high/close breakout, adjusted return volatility; execution uses adjusted next-open and adjusted close, fractional shares, implicit total-return-like accounting; no explicit dividend/split ledger. Constant per-symbol factor mathematically invariant under fractional sizing, varying factors not. Entry before same-day exits may restrict cash. Actual trade impact UNVERIFIED.",
-    "gen16EventAudit20261027": "READ_ONLY all eight frozen folds: SKIP SYMBOL_OPEN 1500, POSITION_CAP 133, NO_CASH 0; 60 POSITION_CAP same date as a close exit, 92 SYMBOL_OPEN same symbol exit date. Entry OPEN before exit CLOSE is chronologically correct; no bug established. No rerun."
+    "gen16EventAudit20261027": "READ_ONLY all eight frozen folds: SKIP SYMBOL_OPEN 1500, POSITION_CAP 133, NO_CASH 0; 60 POSITION_CAP same date as a close exit, 92 SYMBOL_OPEN same symbol exit date. Entry OPEN before exit CLOSE is chronologically correct; no bug established. No rerun.",
+    "gen9CorporateActionEvidenceReuse20261027": "Read-only Gen9 evidence: PYPL post-2024 dividends numerically reconstruct ~0.988971 factor; FDX 2026 spin-off CRSP method supported but exact vendor factor unresolved; NYSE calendar verified 1258 dates x16; four Alpaca outliers supported Yahoo candidate. Dataset gate PASSED scope research input only, not universal point-in-time verification."
   },
   "bootstrap": {
     "triggerPhrase": "Läs Linas manual",
