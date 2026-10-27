@@ -24,7 +24,7 @@
   },
   "currentWork": {
     "completed": "Gen16 summary, dataset and 8 fold JSON verified from GitHub; all fold schema/spec/variant/year fields match, Git blob SHAs recorded. Recursive branch tree truncated=false; only Gen17 draft exists (no Gen17 runnerspec/evidence). V0.4.45 Integrity/Pages PASS and iPhone Dashboard screenshot verified; Worker archive promotion read-only.",
-    "next": "Read-only audit provenance of adjusted OHLC and exact source/vendor split/dividend basis; do not recompute frozen research or mix nominal dividend with adjusted qty.",
+    "next": "Find matched raw executable bars and event dates from existing small archived diagnostic reports; quantify carefully without rerunning research or loading 8.4 MB source file.",
     "blocked": false,
     "blocker": null,
     "recoveryRunbook": "LINA_RESEARCH_EVIDENCE_RECOVERY.md",
@@ -61,7 +61,8 @@
     "gen9InPeriodDividendAudit20261027": "Source audit: MU14 FDX20 LUV10 C20 QCOM20 BAC20 GM11 NVDA20 dividend events; SHOP1 TSLA2 NVDA2 splits. Factor arithmetic errors <=4.22e-7 but audit BLOCKED_ADJUSTMENT_BASIS_MISMATCH; FDX 2024 nominal $1.38 vs provider adjusted $1.112006. Not complete point-in-time verification.",
     "gen16DividendTradeOverlap20261027": "Read-only 2024 GM: CONTROL 2024-02-22..03-08 crosses ex-date 02-29; CONTROL 11-25..12-11 crosses 12-06; PRICE_CHANNEL_BREAKOUT 11-26..12-12 crosses 12-06. Synthetic adjusted-price accounting no separate dividend credit; actual P/L impact unquantified. Not full universe.",
     "gen16DividendEventJoin20261027": "Read-only 115 issuer-reconciled dividend events for GM,C,MU,LUV,BAC,QCOM,NVDA joined to all eight frozen folds. Trade crossings: CONTROL 7/0/3/10 (2021-24)=20, BREAKOUT 5/0/5/8=18, total 38. FDX and other events not included; no error or P/L discrepancy established.",
-    "gen16DividendPnlAttribution20261027": "Frozen 115-event subset: CONTROL 20/320 overlap trades synthetic P/L +1396.89 USD, BREAKOUT 18/258 +1611.53 USD; 7 overlap trades |P/L|<50. Do NOT add nominal dividends to synthetic adjusted-price qty (basis mismatch/double count). Raw OHLC + split-aware cash ledger needed for valid comparison; not performed."
+    "gen16DividendPnlAttribution20261027": "Frozen 115-event subset: CONTROL 20/320 overlap trades synthetic P/L +1396.89 USD, BREAKOUT 18/258 +1611.53 USD; 7 overlap trades |P/L|<50. Do NOT add nominal dividends to synthetic adjusted-price qty (basis mismatch/double count). Raw OHLC + split-aware cash ledger needed for valid comparison; not performed.",
+    "yahooDividendReturnFormula20261027": "Verified method: Yahoo prior-date factor 1-D/Pprev gives ex-date adjusted return Pnew/(Pprev-D)-1, not standard cash-dividend return (Pnew+D)/Pprev-1. Independent Ian Gow 2025 CRSP comparison corroborates. 38 frozen Gen16 overlap trades exposed; precise per-trade impact not quantified. No rerun."
   },
   "bootstrap": {
     "triggerPhrase": "Läs Linas manual",
