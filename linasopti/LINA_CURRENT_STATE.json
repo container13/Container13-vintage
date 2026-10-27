@@ -24,7 +24,7 @@
   },
   "currentWork": {
     "completed": "Gen16 summary, dataset and 8 fold JSON verified from GitHub; all fold schema/spec/variant/year fields match, Git blob SHAs recorded. Recursive branch tree truncated=false; only Gen17 draft exists (no Gen17 runnerspec/evidence). V0.4.45 Integrity/Pages PASS and iPhone Dashboard screenshot verified; Worker archive promotion read-only.",
-    "next": "Extend read-only trade/ex-date joins to full issuer-verified dividend event list, then assess adjusted versus raw execution with bounded evidence; no rerun.",
+    "next": "Read-only assess synthetic adjusted-price versus raw-price + dividend economics, especially ex-date overlap; distinguish source coverage and vendor precision. No rerun.",
     "blocked": false,
     "blocker": null,
     "recoveryRunbook": "LINA_RESEARCH_EVIDENCE_RECOVERY.md",
@@ -59,7 +59,8 @@
     "gen16EventAudit20261027": "READ_ONLY all eight frozen folds: SKIP SYMBOL_OPEN 1500, POSITION_CAP 133, NO_CASH 0; 60 POSITION_CAP same date as a close exit, 92 SYMBOL_OPEN same symbol exit date. Entry OPEN before exit CLOSE is chronologically correct; no bug established. No rerun.",
     "gen9CorporateActionEvidenceReuse20261027": "Read-only Gen9 evidence: PYPL post-2024 dividends numerically reconstruct ~0.988971 factor; FDX 2026 spin-off CRSP method supported but exact vendor factor unresolved; NYSE calendar verified 1258 dates x16; four Alpaca outliers supported Yahoo candidate. Dataset gate PASSED scope research input only, not universal point-in-time verification.",
     "gen9InPeriodDividendAudit20261027": "Source audit: MU14 FDX20 LUV10 C20 QCOM20 BAC20 GM11 NVDA20 dividend events; SHOP1 TSLA2 NVDA2 splits. Factor arithmetic errors <=4.22e-7 but audit BLOCKED_ADJUSTMENT_BASIS_MISMATCH; FDX 2024 nominal $1.38 vs provider adjusted $1.112006. Not complete point-in-time verification.",
-    "gen16DividendTradeOverlap20261027": "Read-only 2024 GM: CONTROL 2024-02-22..03-08 crosses ex-date 02-29; CONTROL 11-25..12-11 crosses 12-06; PRICE_CHANNEL_BREAKOUT 11-26..12-12 crosses 12-06. Synthetic adjusted-price accounting no separate dividend credit; actual P/L impact unquantified. Not full universe."
+    "gen16DividendTradeOverlap20261027": "Read-only 2024 GM: CONTROL 2024-02-22..03-08 crosses ex-date 02-29; CONTROL 11-25..12-11 crosses 12-06; PRICE_CHANNEL_BREAKOUT 11-26..12-12 crosses 12-06. Synthetic adjusted-price accounting no separate dividend credit; actual P/L impact unquantified. Not full universe.",
+    "gen16DividendEventJoin20261027": "Read-only 115 issuer-reconciled dividend events for GM,C,MU,LUV,BAC,QCOM,NVDA joined to all eight frozen folds. Trade crossings: CONTROL 7/0/3/10 (2021-24)=20, BREAKOUT 5/0/5/8=18, total 38. FDX and other events not included; no error or P/L discrepancy established."
   },
   "bootstrap": {
     "triggerPhrase": "Läs Linas manual",
