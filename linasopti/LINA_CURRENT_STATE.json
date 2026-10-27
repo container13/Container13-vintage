@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.40",
+  "release": "V0.4.41",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -16,14 +16,14 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "PENDING_V0.4.40",
+    "releaseIntegrity": "PENDING_V0.4.41",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21",
     "pagesDeploy": "PASS_V0.4.39_COMMIT_4b5a547c8",
-    "liveAssetReadback": "UNVERIFIED_NETWORK_ACCESS"
+    "liveAssetReadback": "UNVERIFIED_V0.4.41"
   },
   "currentWork": {
-    "completed": "V0.4.40 source committed: single startup/resume/reconnect release checker with edit deferral, running-version footer; research untouched.",
-    "next": "Verify final GitHub Integrity and Pages, inspect live assets and test installed iPhone PWA; mobile zoom policy deferred until separate device-safe audit.",
+    "completed": "V0.4.41 source fix: dark readable diagnostic receipt, long-text wrapping and silent automatic support report; manual export remains visible.",
+    "next": "Verify GitHub Integrity, Pages, live assets and iPhone UI; no research rerun.",
     "blocked": false
   },
   "bootstrap": {
@@ -35,28 +35,28 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
-    "targetRelease": "V0.4.40",
-    "goal": "Safe PWA update on resume, footer and mobile policy after existing-owner inventory",
+    "status": "UNVERIFIED",
+    "targetRelease": "V0.4.41",
+    "goal": "Fix diagnostic popup readability and suppress unsolicited automatic report popup",
     "lastSafeRelease": "V0.4.39",
     "lastSafeCommit": "4b5a547c8a37f66d278b4e87a5b87cff7a457839",
     "plan": [
       {
         "id": 1,
-        "task": "Inventory updater/footer/mobile and verify baseline",
+        "task": "Identify automatic popup source",
         "status": "DONE"
       },
       {
         "id": 2,
-        "task": "Implement minimal shared behavior with version bump",
+        "task": "Apply targeted UI and silent-auto fix",
         "status": "DONE"
       },
       {
         "id": 3,
-        "task": "Readback, integrity, Pages and device verification",
+        "task": "Verify deploy and iPhone",
         "status": "NEXT"
       }
     ],
-    "resumeInstruction": "V0.4.40 release sources committed, Integrity/Pages/device still pending. Verify before promoting; no research rerun."
+    "resumeInstruction": "Verify V0.4.41 deploy and real iPhone before promoting; research unchanged."
   }
 }
