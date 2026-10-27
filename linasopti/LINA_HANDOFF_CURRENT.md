@@ -2,6 +2,9 @@
 
 Uppdaterad: 2026-10-27. Runtime: **V0.4.45**. GitHub Integrity + Pages PASS för commit `33da9e506b5ca8126923d36a624b3e19a6653d4b`; iPhone-skärmbild visar V0.4.45 Dashboard. Full live-byteverifiering och Worker-receipts **UNVERIFIED**.
 
+## Gen17 - viktig korrigering: breddfilter redan testat
+Gen10 låst GRADED använder SMA180-bredd i 16 aktier (0-4/5-7/8-16) för exponering. Gen12 låst BREADTH_50_GATE stoppar alla nya inträden när färre än 8/16 ligger över SMA180. Föreslaget Gen17-breddfilter är alltså INTE en ny idé och får inte köras, tröskeljusteras eller räddas. Tidigare utkast nedan är historik och ersatta av denna STOPP-notering. Fryst Gen16 DATA-evidens är bara manifest, inte OHLC-rådata. Nästa: skrivskyddad inventering av genuint ny regimhypotes och oberoende data; stoppa om ingen försvarbar enskild ändring finns. Gen17 DRAFT_ONLY, Handel/Forward AV.
+
 ## Gen17 - inventering av marknadsregimdata
 Gen16 motor använder redan individuell SMA180 och breakout på föregående 50 sessioners högsta high; next-open, 12-sessioners exit och 16 OHLC-symboler. Låst spec anger inget separat benchmark-index. Möjligt ENDA nytt inträdesfilter: marknadsbredd = andel av 16 aktier med stängning över SMA180 på föregående dag. Ingen tröskel beslutad, ingen grid eller research. Risker: urvalsbias i fast universum, färre affärer, koncentration kvar. Nästa: read-only kontroll av datakontrakt/tidigare regimmetoder, sedan exakt preregistrerad plan för mänskligt godkännande. Gen17 DRAFT_ONLY, Handel/Forward AV.
 
