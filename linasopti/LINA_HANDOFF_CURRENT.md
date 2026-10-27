@@ -53,3 +53,8 @@ Håll denna fil kort och ersätt nuläget, inte bygg på med arbetslogg. Efter v
 - Ny operativ runbook: `LINA_RESEARCH_EVIDENCE_RECOVERY.md`. **Läs den före nästa generationsplan**. Dokumenterar read-only `GET /app-state` → `state.entries['lina_generation_engine_v0273'].value` → `.gen16`, samt `GET /evidence-read?name=…`, receipt/SHA-kontroll och faktiskt GitHub-path. Anropa inte `bootstrap/syncAll/put/recoverFinalStateFromImmutableEvidence` för enbart inspektion.
 - Dashboard är korrekt plats för Gen16. Tidigare hänvisningar till Forskning/Generation Engine var fel. Föreslå inte ny exportfunktion innan befintliga synk-/evidensvägar prövats.
 - Källkod verifierad; Worker-svar, faktisk evidence-path och exakta Gen16-mått fortsatt UNVERIFIED. Gen17 DRAFT_ONLY, Handel/Forward AV, ingen rerun. Nästa steg: read-only Worker GET eller faktiskt GitHub-path och verifiera summary + åtta folds.
+
+## 2026-10-27 – Gen16-evidens återfunnen, blockering löst
+- Rotorsak: ChatGPT-container saknar DNS även till container13.se; GitHub-kodsökning missade icke-default-branch och vi gissade bort datumkatalogen. GitHub REST rekursivt filträd på `ccc-demo-public-test` visade verkliga filer i `linasopti/evidence/2026-10-06/`.
+- Gen16 summary, datasetbevis och alla åtta fold-filer lästa från GitHub. Summary `NO_CANDIDATE`; båda varianter missar koncentration och minFoldPf. Full Worker-receipt/hashkontroll återstår. Se `LINA_RESEARCH_EVIDENCE_RECOVERY.md` för exakt metod och siffror.
+- Nästa steg: komplettera evidensvalidering och precisera Gen17-förslaget för uttryckligt godkännande. Ingen rerun; Handel/Forward AV; V0.4.44 oförändrad.
