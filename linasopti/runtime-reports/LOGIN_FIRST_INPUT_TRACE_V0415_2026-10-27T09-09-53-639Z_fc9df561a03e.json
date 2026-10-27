@@ -1,0 +1,46 @@
+{
+  "schema": "LINA-LOGIN-FIRST-INPUT-TRACE-1",
+  "version": "V0.4.42",
+  "trace": [
+    {
+      "stage": "input-sync",
+      "at": 5061,
+      "scrollY": 0,
+      "innerH": 805,
+      "cardTop": 14,
+      "cardBottom": 346,
+      "cardHeight": 332,
+      "inputTop": 204,
+      "inputBottom": 252,
+      "inputHeight": 48,
+      "active": "loginCode"
+    },
+    {
+      "stage": "input-raf",
+      "at": 5063,
+      "scrollY": 0,
+      "innerH": 805,
+      "cardTop": 14,
+      "cardBottom": 346,
+      "cardHeight": 332,
+      "inputTop": 204,
+      "inputBottom": 252,
+      "inputHeight": 48,
+      "active": "loginCode"
+    },
+    {
+      "stage": "input-100ms",
+      "at": 5161,
+      "scrollY": 0,
+      "innerH": 812,
+      "cardTop": 14,
+      "cardBottom": 346,
+      "cardHeight": 332,
+      "inputTop": 204,
+      "inputBottom": 252,
+      "inputHeight": 48,
+      "active": "loginCode"
+    }
+  ],
+  "capturedAt": "2026-10-27T09:09:51.399Z"
+}
