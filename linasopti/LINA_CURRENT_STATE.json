@@ -23,11 +23,13 @@
     "dashboardOrdering": "PASS_IPHONE_V0.4.42"
   },
   "currentWork": {
-    "completed": "Gen17 unlocked proposal documented at LINA_GEN17_PLAN_PROPOSAL.md. No plan lock, runnerspec, research, trade or Forward.",
-    "next": "Follow LINA_RESEARCH_EVIDENCE_RECOVERY.md: read-only GET /app-state then /evidence-read, verify Gen16 summary + 8 folds and receipt SHA before Gen17 approval.",
-    "blocked": true,
-    "blocker": "Worker GET response and actual immutable Gen16 GitHub path not yet accessible/verified from this environment; do not infer metrics.",
-    "recoveryRunbook": "LINA_RESEARCH_EVIDENCE_RECOVERY.md"
+    "completed": "Gen16 immutable GitHub directory and summary located via recursive branch tree; 8 fold JSON files and dataset evidence opened; summary confirms NO_CANDIDATE. Recovery method documented.",
+    "next": "Validate immutable fold result hashes/receipts if accessible, then refine Gen17 one-variable proposal for explicit approval; do not start research.",
+    "blocked": false,
+    "blocker": null,
+    "recoveryRunbook": "LINA_RESEARCH_EVIDENCE_RECOVERY.md",
+    "evidencePath": "linasopti/evidence/2026-10-06/",
+    "evidenceValidation": "GITHUB_FILES_READ_JSON_OK; WORKER_RECEIPTS_AND_FOLD_HASHES_NOT_YET_VERIFIED"
   },
   "bootstrap": {
     "triggerPhrase": "Läs Linas manual",
