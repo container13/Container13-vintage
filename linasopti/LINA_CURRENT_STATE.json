@@ -40,28 +40,38 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
-    "targetRelease": "V0.4.43",
-    "goal": "Compact older completed generations without hiding newest or actionable issues",
-    "lastSafeRelease": "V0.4.39",
-    "lastSafeCommit": "4b5a547c8a37f66d278b4e87a5b87cff7a457839",
+    "status": "IN_PROGRESS",
+    "targetRelease": "V0.4.45",
+    "goal": "Repair continuity, version discipline and unsafe Worker promotion automation without touching frozen research",
+    "lastSafeRelease": "V0.4.44",
+    "lastSafeCommit": "0c9ca09a2b08923b3e70b07fd006b594a76be95b",
     "plan": [
       {
         "id": 1,
-        "task": "Identify automatic popup source",
+        "task": "Verify Worker CURRENT/PREVIOUS/PENDING and actual deployment configuration",
         "status": "DONE"
       },
       {
         "id": 2,
-        "task": "Apply targeted UI and silent-auto fix",
-        "status": "DONE"
+        "task": "Prevent unverified automatic promotion and preserve archives",
+        "status": "NEXT"
       },
       {
         "id": 3,
-        "task": "Verify deploy and iPhone",
+        "task": "Update shared continuity rules and Lina handoff",
+        "status": "NEXT"
+      },
+      {
+        "id": 4,
+        "task": "Bump release metadata and validate repository readback and CI",
+        "status": "NEXT"
+      },
+      {
+        "id": 5,
+        "task": "Verify actual live runtime/device before declaring release PASS",
         "status": "NEXT"
       }
     ],
-    "resumeInstruction": "Verify V0.4.43 in iPhone; no research rerun."
+    "resumeInstruction": "Do not rerun research or rotate Worker archives. Verify actual branch and CI; finish pending checks. Old V0.4.43 iPhone check remains unverified."
   }
 }
