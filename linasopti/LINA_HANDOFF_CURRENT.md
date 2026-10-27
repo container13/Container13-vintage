@@ -1,5 +1,13 @@
 # Linas Opti — aktuell löpande överlämning
 
+## 2026-10-27 – Gen16 prisjusteringar, återfunnen tidigare evidens
+- Read-only kodkontroll: gen16-generation-engine.js normalize/signalAt/simulate använder r.o/r.h/r.l/r.c från SOURCE_gen9-data.json direkt för SMA180, breakout, next-open, P/L och equity; separata raw-fält används inte. Motorn utför ingen egen korrigering för split/utdelning.
+- Tidigare Gen9-revisioner återfunna: NYSE-kalender 2020–2024 verifierad för alla 16 symboler (1258 datum), men källa har fortfarande calendarVerified=false; skilj bevis från flaggstatus. FDX spin-off CRSP-metod styrkt på standardnivå men exakt Yahoo-factor ännu olöst; PYPL faktor ~0.9889711 rekonstruerad med fyra utdelningar efter 2024; AMD/NOW inga kontantutdelningar under målperioden verifierade, inte samtliga corporate actions; GM OHLC-leverantörsavvikelse öppen. Gen9 corporate-action evidence PARTIAL_EXTERNAL_VERIFICATION och tidigare oberoende Alpaca-linje kvalificerad men full jämförelse ej styrkt.
+- VIKTIGT: bakåtjustering för bolagshändelser 2025–2026 innebär möjlig point-in-time/look-ahead-metodrisk för simulering 2020–2024. En *konstant* faktor per symbol över hela folden kan lämna relativa signaler invarianta men ändra kontantberäknade notional/qty och utfallsvalidering; varierande faktorer kring händelser är större risk. Kräver eventnivå-granskning, ej automatisk slutsats om fel.
+- Bevarad SHA256 PASS gäller byteidentitet, INTE pris-/corporate-action-riktighet, OHLC punkt-i-tid-giltighet eller oberoende leverantörsvalidering. Gen16 förblir NO_CANDIDATE; Gen8–16 immutable, Gen17 DRAFT_ONLY, Handel/Forward OFF, inga simuleringar körda.
+- Nästa: skrivskyddad eventnivå jämförelse av bevarad raw/adjusted OHLC kring SHOP/NVDA/TSLA splitar och utdelningsdatum, särskilt rader som ändrar signalkriterier, samt Worker-receipts; dokumentera metodrisk innan eventuell ny forskningsplan.
+
+
 ## Gen16 RAW SHA256 PASS – nytt
 Originalfilen SOURCE_gen9-data.json läst via Git blob; 8 446 807 bytes, SHA256 cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c matchar låst Gen16-manifest exakt. Bevis: `LINA_GEN16_SHA256_VERIFICATION_2026-10-27.md`. Datakvalitet/justeringar/bolagshändelser fortsatt UNVERIFIED. Nästa: read-only kontroll av råa/justerade OHLC och Gen16-kod; ingen rerun, Handel/Forward AV.
 
