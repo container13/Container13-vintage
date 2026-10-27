@@ -24,7 +24,7 @@
   },
   "currentWork": {
     "completed": "Gen16 summary, dataset and 8 fold JSON verified from GitHub; all fold schema/spec/variant/year fields match, Git blob SHAs recorded. Recursive branch tree truncated=false; only Gen17 draft exists (no Gen17 runnerspec/evidence). V0.4.45 Integrity/Pages PASS and iPhone Dashboard screenshot verified; Worker archive promotion read-only.",
-    "next": "Read-only investigate adjusted versus raw OHLC near splits/dividends and Gen16 engine field use, then Worker receipts and historical G2/G3 Forward. No rerun.",
+    "next": "Read-only compare saved raw/adjusted OHLC around SHOP/NVDA/TSLA splits and dividend dates; then Worker receipts and historical G2/G3. No rerun.",
     "blocked": false,
     "blocker": null,
     "recoveryRunbook": "LINA_RESEARCH_EVIDENCE_RECOVERY.md",
@@ -52,7 +52,8 @@
       "keyFindings": "Gen14-16 2022 trade distribution, clustered December losses, Gen16 daily portfolio accounting/execution review; manifest-only DATA evidence; SOURCE_gen9-data.json content readback unavailable, exact-byte SHA256 UNVERIFIED",
       "constraints": "Gen8-16 frozen; Gen17 DRAFT_ONLY; trade/forward OFF; no rerun"
     },
-    "gen16RawDataIntegrity": "PASS 2026-10-27: GitHub fetch_blob returned 8446807 bytes for SOURCE_gen9-data.json; independently calculated SHA256 cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c matches frozen Gen16 manifest and Gen9 gate. Data quality/corporate action flags remain UNVERIFIED. See LINA_GEN16_SHA256_VERIFICATION_2026-10-27.md."
+    "gen16RawDataIntegrity": "PASS 2026-10-27: GitHub fetch_blob returned 8446807 bytes for SOURCE_gen9-data.json; independently calculated SHA256 cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c matches frozen Gen16 manifest and Gen9 gate. Data quality/corporate action flags remain UNVERIFIED. See LINA_GEN16_SHA256_VERIFICATION_2026-10-27.md.",
+    "gen16AdjustmentAudit": "2026-10-27: Gen16 motor consumes adjusted o/h/l/c directly and does no corporate-action correction. Older Gen9 evidence confirms NYSE calendar; PYPL post-2024 dividend factor reconstructed, FDX vendor-precision unresolved, AMD/NOW cash-dividend absence only, GM OHLC case open. SHA256 data integrity PASS but point-in-time corporate-action correctness and independent OHLC verification UNVERIFIED."
   },
   "bootstrap": {
     "triggerPhrase": "Läs Linas manual",
@@ -95,6 +96,6 @@
         "status": "DONE"
       }
     ],
-    "resumeInstruction": "Recovered historical transcript archived and linked; Gen16 data integrity audit documented. Resume read-only SOURCE_gen9-data.json exact-byte SHA256 verification; then provenance/Worker receipts/G2-G3. Trade/Forward OFF, Gen17 DRAFT_ONLY."
+    "resumeInstruction": "Continue read-only event-level raw versus adjusted OHLC and engine causal-time audit, then Worker receipts and historical G2/G3. Never rerun or unlock gates."
   }
 }
