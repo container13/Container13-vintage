@@ -235,3 +235,8 @@ Håll denna fil kort och ersätt nuläget, inte bygg på med arbetslogg. Efter v
 - CONTROL 18 trades: price-only P/L -5103.146053392626, modeled costs 126.60052739105446, final P/L -5229.7465807836725; costs 2.4208% of loss. 16/18 price-only negative; 2 positive; 0 trades switched from positive before costs to negative after costs.
 - BREAKOUT 13 trades: price-only P/L -4044.1623312571674, modeled costs 88.91179375892534, final P/L -4133.074125016086; costs 2.1512% of loss. 12/13 price-only negative; 1 positive; 0 sign flips due to costs.
 - Thus modeled transaction costs cannot explain the 2022 collapse. This remains SYNTHETIC adjusted-OHLC price-only decomposition, not raw historical execution/slippage/real corporate-action accounting. No locked artifacts, runtime, gates or trading changed.
+
+## 2026-10-27 – Gen16 execution ordering audit (read-only)
+- Direct source inspection `gen16-generation-engine.js`: each day evaluates prior-day signals, processes all new entries before same-day TIME_12 or fold-boundary exits, then marks equity. Positions due to close still occupy slots and their sale proceeds are unavailable for that day's entries. This is a deterministic execution-order convention, not a proven bug or proven explanation of poor 2022 results.
+- 2022 archived event counts show SYMBOL_OPEN skips, not POSITION_CAP/NO_CASH skips, so do not claim this ordering demonstrably caused missed 2022 trades. Same-symbol reentry on scheduled exit day could be affected, but event-level matching is required.
+- Next read-only task: match skipped signal dates/symbols to scheduled exit dates in frozen 2022 folds; distinguish counterfactual execution from observed evidence. No rerun, no parameter change, no trade/Forward activation.
