@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.44",
+  "release": "V0.4.45",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -16,10 +16,10 @@
   "verified": {
     "loginFix": "PASS_REAL_IPHONE_V0.4.13",
     "recovery": "PASS_LIVE_V0.4.06",
-    "releaseIntegrity": "UNVERIFIED_V0.4.44",
+    "releaseIntegrity": "UNVERIFIED_V0.4.45",
     "newChatBootstrap": "PASS_REAL_SEPARATE_CHAT_V0.4.21",
     "pagesDeploy": "PASS_V0.4.39_COMMIT_4b5a547c8",
-    "liveAssetReadback": "UNVERIFIED_V0.4.44",
+    "liveAssetReadback": "UNVERIFIED_V0.4.45",
     "dashboardOrdering": "PASS_IPHONE_V0.4.42"
   },
   "currentWork": {
@@ -40,7 +40,7 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
+    "status": "UNVERIFIED",
     "targetRelease": "V0.4.45",
     "goal": "Repair continuity, version discipline and unsafe Worker promotion automation without touching frozen research",
     "lastSafeRelease": "V0.4.44",
@@ -54,17 +54,17 @@
       {
         "id": 2,
         "task": "Prevent unverified automatic promotion and preserve archives",
-        "status": "NEXT"
+        "status": "DONE"
       },
       {
         "id": 3,
         "task": "Update shared continuity rules and Lina handoff",
-        "status": "NEXT"
+        "status": "DONE"
       },
       {
         "id": 4,
         "task": "Bump release metadata and validate repository readback and CI",
-        "status": "NEXT"
+        "status": "DONE"
       },
       {
         "id": 5,
@@ -72,6 +72,6 @@
         "status": "NEXT"
       }
     ],
-    "resumeInstruction": "Do not rerun research or rotate Worker archives. Verify actual branch and CI; finish pending checks. Old V0.4.43 iPhone check remains unverified."
+    "resumeInstruction": "Verify V0.4.45 CI and device before declaring PASS. Worker promotion audit-only."
   }
 }
