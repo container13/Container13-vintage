@@ -298,3 +298,9 @@ Original SOURCE_gen9-data.json blob 5ac082c346db53fabccb9ab5009bb99527f764e1 par
 
 ## 2026-10-27 – 2023 boundary contribution, read-only
 - Re-read frozen 2023 folds: CONTROL 87 trades, fold P/L +7143.072383318075; 7 boundary trades P/L -915.83335033196 (about -12.82% of net fold P/L). BREAKOUT 72 trades, fold P/L +7390.413624225469; 8 boundary trades P/L -785.04064001013 (about -10.62% of net fold P/L). Negative boundary-trade P/L is an observed component, NOT causal boundary-rule impact or a permissible counterfactual. 2022 had zero boundary exits. No rerun, no evidence edits. Worker receipt verification remains UNVERIFIED.
+
+## 2026-10-27 – latest read-only Gen16 audit before chat change
+- Frozen 2023 fold trades checked: CONTROL 7 FOLD_BOUNDARY exits all losing, boundary gross loss 915.8333503319582 USD; non-boundary subset PF 2.0788965348468835 versus official fold PF 1.851844828550969. BREAKOUT 8 boundary exits (2 positive), boundary gross profit 9.961190008341692 and gross loss 795.0018300184745 USD; non-boundary subset PF 2.8191290883600497 versus official 2.397275429305218. These are descriptive subsets, NOT alternative simulation/counterfactual. 2022 has no boundary exits and remains weak.
+- Engine readback confirms prior-day signals, next-day adjusted-open entry, then same-day adjusted-close exit at fold end, including entry and exit on 2023-12-29 for AMD. No new engine defect proven.
+- Worker evidence-read code requires receipt schema LINA-GITHUB-COMMIT-RECEIPT-1 and SHA256(content)==receipt.contentSha256. Actual Worker receipt not fetched: UNVERIFIED. Do not invoke POST, bootstrap, sync or recovery functions in read-only work.
+- Next: targeted historic adjusted-price and cash-dividend causal audit; then actual Worker GET receipt verification. Gen8-16 frozen, Gen16 NO_CANDIDATE, Gen17 DRAFT_ONLY; trading/Forward OFF. No rerun, no frozen evidence edits. Runtime V0.4.45 unchanged.
