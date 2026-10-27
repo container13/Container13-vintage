@@ -1,4 +1,4 @@
-name: Promote verified Lina Worker
+name: Audit Lina Worker candidate (no automatic promotion)
 
 on:
   workflow_dispatch:
@@ -9,36 +9,25 @@ on:
       - 'linasopti/worker/WORKER_PENDING_RUNTIME_REPORT.js'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  promote:
+  audit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ccc-demo-public-test
-      - name: Verify candidate and rotate archive
+      - name: Validate candidate and preserve verified archives
         shell: bash
         run: |
           set -euo pipefail
           cd linasopti/worker
           test -s WORKER_CURRENT.js
+          test -s WORKER_PREVIOUS.js
           test -s WORKER_PENDING_RUNTIME_REPORT.js
           grep -q 'runtime-report-v0321' WORKER_PENDING_RUNTIME_REPORT.js
-          cp WORKER_CURRENT.js WORKER_PREVIOUS.js
-          cp WORKER_PENDING_RUNTIME_REPORT.js WORKER_CURRENT.js
-          cmp -s WORKER_CURRENT.js WORKER_PENDING_RUNTIME_REPORT.js
-      - name: Commit verified archive rotation
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add linasopti/worker/WORKER_CURRENT.js linasopti/worker/WORKER_PREVIOUS.js
-          if git diff --cached --quiet; then
-            echo "No archive changes to commit."
-            exit 0
-          fi
-          git commit -m "Promote verified Lina Worker archive"
-          git push origin HEAD:ccc-demo-public-test
+          node --check WORKER_PENDING_RUNTIME_REPORT.js
+          echo 'AUDIT_ONLY: no CURRENT/PREVIOUS rotation.'
+          echo 'A candidate can be promoted only after independently evidenced deploy + runtime/client verification.'
+          echo 'The archive promotion procedure must be separately approved and verified; this job never writes.'
