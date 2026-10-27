@@ -43,3 +43,8 @@ Håll denna fil kort och ersätt nuläget, inte bygg på med arbetslogg. Efter v
 ## V0.4.43 – kompakt dashboard (2026-10-27)
 - Visar senaste generationen Gen16 direkt; Gen15–Gen11 i expanderbar historik i fallande ordning. Fel/blockeringar och systemstatus förblir överst. Forskning/evidens och Handel/Forward oförändrade.
 - V0.4.42 visuell iPhone-PASS för ordning. V0.4.43 GitHub-sparad; Actions/Pages/iPhone ännu ej verifierade.
+
+## V0.4.44 – Gen17 planförslag, ingen research-start (2026-10-27)
+- Ny fil `LINA_GEN17_PLAN_PROPOSAL.md` är DRAFT_ONLY. Gen13–Gen16 runnerspecar inventerade; Gen16 immutable summary/receipts kunde inte verifieras via tillgänglig anslutning.
+- Gen17 ännu EJ GODKÄND, EJ LÅST, EJ STARTAD. Handel/Forward AV. Nästa steg: auktoritativ summary/fold-evidens och exakt envariabelplan för mänskligt godkännande.
+- Version 0.4.44 är dokumentationsrelease; CI/Pages/live ej verifierade.
