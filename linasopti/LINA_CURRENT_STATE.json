@@ -24,7 +24,7 @@
   },
   "currentWork": {
     "completed": "Gen16 summary, dataset and 8 fold JSON verified from GitHub; all fold schema/spec/variant/year fields match, Git blob SHAs recorded. Recursive branch tree truncated=false; only Gen17 draft exists (no Gen17 runnerspec/evidence). V0.4.45 Integrity/Pages PASS and iPhone Dashboard screenshot verified; Worker archive promotion read-only.",
-    "next": "Inspect read-only workflow definitions for upload-artifact and any releases with archived raw price data; do not rerun Gen16 or activate trading.",
+    "next": "Trace archived Alpaca raw archive SHA256 and references in small historical evidence files, identify original storage/transfer route; no rerun, no trading.",
     "blocked": false,
     "blocker": null,
     "recoveryRunbook": "LINA_RESEARCH_EVIDENCE_RECOVERY.md",
@@ -67,7 +67,8 @@
     "gmArchivedRawBar20261027": "Archived GM 2023-06-05 Yahoo adjusted o33.3387878/c33.02911 vs Yahoo raw o34.45000076/c34.13000107 and Alpaca SIP raw o34.45/h34.49/c34.13. Yahoo raw high34.45 differs Alpaca high34.49; 78 same-provider 5min bars corroborate Alpaca high. Full Alpaca raw archive referenced by SHA7fccc87b... not present in current branch tree. Single day insufficient for trade P/L.",
     "gmBarMethodAndRawArchive20261027": "Existing GM methodology review: Alpaca daily bar and minute bar trade-condition rules can differ; GM daily open34.45 vs first regular 5min open34.49 not proven error. Twelve GM high34.375 < open34.45000076 fails Lina OHLC invariant, vendor root cause open, support question prepared not sent. Full Alpaca raw archive absent current branch tree; exact path commit history and ALPACA commit search returned no hits, not proof unavailable elsewhere.",
     "gen9RawCrossBranchSearch20261027": "Checked active, main, ccc-development, Oct8 backup, Aug14 backup trees. Original 8,446,807-byte SOURCE_gen9-data.json same blob 5ac082... in active and Oct8 backup. No full Alpaca raw archive found in these trees; both known candidate archive paths have zero commits in path history. 100 branch entries examined via first page only; archive existence elsewhere unresolved.",
-    "gen9ActionsArtifacts20261027": "2026-10-04 GitHub Actions 156 runs (two pages), mostly Pages plus Promote verified Lina Worker. 5 sampled successful runs Oct4/Oct7 returned zero available artifacts. Repository-wide artifact inventory endpoint not allowed by connector; cannot claim exhaustive absence. GitHub standard retention 90d configurable."
+    "gen9ActionsArtifacts20261027": "2026-10-04 GitHub Actions 156 runs (two pages), mostly Pages plus Promote verified Lina Worker. 5 sampled successful runs Oct4/Oct7 returned zero available artifacts. Repository-wide artifact inventory endpoint not allowed by connector; cannot claim exhaustive absence. GitHub standard retention 90d configurable.",
+    "gen9WorkflowArtifactAudit20261027": "All 10 current branch GitHub workflow YAML inspected: no Lina workflow uploads artifacts; Remember rollback uploads remember/ only (90d), Vinted test uploads text only (7d). GitHub releases list empty. Archived Alpaca raw archive not recoverable from evidenced current workflows/releases; historical workflows or other storage not excluded."
   },
   "bootstrap": {
     "triggerPhrase": "Läs Linas manual",
