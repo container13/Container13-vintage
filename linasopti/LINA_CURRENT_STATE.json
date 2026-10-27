@@ -24,9 +24,10 @@
   },
   "currentWork": {
     "completed": "Gen17 unlocked proposal documented at LINA_GEN17_PLAN_PROPOSAL.md. No plan lock, runnerspec, research, trade or Forward.",
-    "next": "Read immutable Gen16 summary and fold receipts; refine exact single-variable Gen17 protocol for explicit approval.",
+    "next": "Follow LINA_RESEARCH_EVIDENCE_RECOVERY.md: read-only GET /app-state then /evidence-read, verify Gen16 summary + 8 folds and receipt SHA before Gen17 approval.",
     "blocked": true,
-    "blocker": "Immutable Gen16 summary not accessible from current tools; do not infer fold metrics."
+    "blocker": "Worker GET response and actual immutable Gen16 GitHub path not yet accessible/verified from this environment; do not infer metrics.",
+    "recoveryRunbook": "LINA_RESEARCH_EVIDENCE_RECOVERY.md"
   },
   "bootstrap": {
     "triggerPhrase": "Läs Linas manual",
