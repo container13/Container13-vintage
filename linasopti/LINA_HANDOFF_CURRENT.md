@@ -39,3 +39,7 @@ Håll denna fil kort och ersätt nuläget, inte bygg på med arbetslogg. Efter v
 - Central status-order.js sorterar dashboard: stopp/blockering överst, sedan lägesbild och systemstatus, därefter generationskort i fallande nummerordning.
 - Dynamiska kort sorteras via MutationObserver. Handel/Forward och fryst forskning orörda.
 - GitHub-kod sparad; Actions/Pages och iPhone för V0.4.42 ännu ej verifierade.
+
+## V0.4.43 – kompakt dashboard (2026-10-27)
+- Visar senaste generationen Gen16 direkt; Gen15–Gen11 i expanderbar historik i fallande ordning. Fel/blockeringar och systemstatus förblir överst. Forskning/evidens och Handel/Forward oförändrade.
+- V0.4.42 visuell iPhone-PASS för ordning. V0.4.43 GitHub-sparad; Actions/Pages/iPhone ännu ej verifierade.
