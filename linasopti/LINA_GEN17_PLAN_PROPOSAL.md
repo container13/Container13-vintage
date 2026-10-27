@@ -29,3 +29,10 @@ Gen8–Gen16 är permanent frysta och får inte köras om eller modifieras. Inge
 
 ## Öppen blockerare
 Gen16:s immutable summary gick inte att läsa via tillgänglig anslutning i denna session. Inga exakta historiska resultat har därför antagits.
+
+## Gen17 ny riktning - diagnos 2026-10-27 (DRAFT_ONLY)
+- Användarens mål: Lina ska kunna stå utanför marknadslägen där hennes long-only breakoutmodell saknar gynnsamma förutsättningar; inte nödvändigtvis tjäna pengar i varje regim.
+- Read-only 2022 Gen16 fold trade-listor: CONTROL 18 affärer, 2 vinnare, 16 förlorare, P/L -5229.75; PRICE_CHANNEL_BREAKOUT 13 affärer, 1 vinnare, 12 förlorare, P/L -4133.07. Samtliga affärer i båda fold-filerna har exitReason TIME_12. Det visar inte kausal orsak till förlusterna.
+- Föreslagen ny forskningsfråga: kan en ENDA, på förhand definierad och endast historiskt tillgänglig marknadsregimgrind blockera nya long-inträden när marknadsmiljön inte stöder breakout? Ingen förändring av exit, sizing, instrument, kostnader eller andra signaler samtidigt.
+- Exakt regimvariabel, tröskel, datatillgänglighet, referenskontroll, gates och framtida oberoende verifieringsfönster är INTE valda eller godkända. 2021-2024 är observerade data; ingen retroaktiv holdout. Undvik 2022-specifik överanpassning. Behåll koncentrationsgrinden separat, en regimgrind garanterar inte koncentrationslösning.
+- Ingen planlåsning, runnerspec, körning, Forward eller handel. Mänskligt godkännande av exakt plan krävs först.
