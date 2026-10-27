@@ -491,3 +491,17 @@ Original SOURCE_gen9-data.json blob 5ac082c346db53fabccb9ab5009bb99527f764e1 par
 - Repo-inventeringen hittade tidigare Gen9-underlag, bland annat `LINA_GEN9_CORPORATE_ACTION_EVIDENCE.json`, med status PARTIAL_EXTERNAL_VERIFICATION och `corporateActionsVerified:false` för 2020–2024. Senare separat underlag stängde frågan om frånvaro av kontantutdelningar för AMD/NOW under det begränsade historiska intervallet, men inte alla andra händelser.
 - Dessa filer är historisk evidens, inte en verifierad automatisk framtida händelsekälla. Tidigare textsökning hittade ingen corporate-actions-route i den undersökta Worker-filen; det bevisar inte att hela systemet saknar en annan väg. Alpaca beskriver ett separat API men Linas aktuella åtkomst, fält och rättigheter är UNVERIFIED. Ingen sådan endpoint har anropats, ingen kod eller forskning ändrats.
 - Nästa: dokumentera exakta syntetiska kontrollfall och förväntade utfall, tydligt som specifikation – inte som genomförda tester. Gen17 DRAFT_ONLY; Handel/ny Forward AV.
+
+## 2026-10-27 – Gen17 föreslagna syntetiska kontrollfall (EJ KÖRDA)
+Nedanstående är en kravskiss med kända svar, inte genomförda tester. Förutsätt noll avgifter om inget annat anges; följande utdelningsexempel är en förenklad modell för amerikanska aktier vars verkliga rättighetsregler måste verifieras.
+
+1. **Split 2:1:** 10 aktier med inköpsreferens 100 dollar blir 20 aktier med referens 50 dollar. Om råkursen samtidigt är 50 är värdet fortfarande 1 000 dollar och 5 %-gränsen är 47,50 dollar. Ingen falsk förlustexit.
+2. **Utdelning:** 10 aktier ägda före ex-dagen, 1 dollar/aktie, ger 10 dollar i fordran. Försäljning vid ex-dagens öppning tar inte bort fordran; köp vid samma öppning ger inte rätt till den i detta exempel. På betalningsdagen flyttas exakt 10 dollar från fordran till kassa en gång; fordran räknas i equity men inte som köpbar kassa före betalning. Skatt och avvikande händelsetyper måste specificeras.
+3. **Gap efter säljsignal:** entry 100, stängning 95 ger signal, nästa öppning 90. Försäljning sker enligt modellen vid 90, inte 95; 0,1 % säljkostnad ger 89,91 per aktie. Ingen försäljning vid signalstängningen och ingen garanti om 5 % maxförlust.
+4. **Tidsprioritet:** signal på dag 11 säljs vid dag 12:s öppning. Utan sådan tidigare signal stänger tidsregeln på dag 12:s close; sista perioddagens close har företräde framför ny signal och ingen kurs efter periodslut används.
+5. **Kapacitet:** markerade exits genomförs före nya köp samma öppning och frigör kassa/plats; exakt återinträdesregel måste definieras och båda portföljerna använder samma ordning.
+6. **Saknad data:** oklar bolagshändelse, motstridig kvot, saknad prisbar eller ofullständig paginering ger BLOCKERAD, aldrig gissat nollvärde.
+7. **Tidsläckage:** en snapshot hämtad efter beslutet är inte bevis för vad som var känt före beslut; senare justering får inte tyst ändra redan fryst signalunderlag.
+8. **Rättvis kontroll:** om ingen tidig exit triggar och alla ingångar/antaganden är lika, ska kontrollens och variantens affärsloggar och equity vara identiska.
+
+Kravskissen ska översättas till verifierade syntetiska tester och executable Release Gate före eventuell research. Ingen kod eller något test har körts. Gen17 DRAFT_ONLY, Handel/ny Forward AV; inget planlås eller research utan uttryckligt godkännande.
