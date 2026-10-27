@@ -2,6 +2,9 @@
 
 Uppdaterad: 2026-10-27. Runtime: **V0.4.45**. GitHub Integrity + Pages PASS för commit `33da9e506b5ca8126923d36a624b3e19a6653d4b`; iPhone-skärmbild visar V0.4.45 Dashboard. Full live-byteverifiering och Worker-receipts **UNVERIFIED**.
 
+## Gen17 - 2022 trade-diagnos och vald inriktning
+Användaren föredrar att Lina står utanför ogynnsamma marknadslägen. Gen16 2022 fold-filer lästa read-only: CONTROL 18 affärer (2 vinst, 16 förlust), P/L -5229.75; BREAKOUT 13 (1 vinst, 12 förlust), P/L -4133.07. Alla 31 affärer avslutades TIME_12, men det är inte bevisad förlustorsak. Gen17 nytt DRAFT-förslag: exakt en framåtblicksfri marknadsregimgrind för nya long-inträden; ingen samtidig ändring av exit/sizing. Exakt grind, datakälla, tröskel, kontroll, gates och oberoende validering återstår. Gen17 EJ LÅST/EJ STARTAD. Nästa: read-only inventering av befintliga regimdata och sedan exakt plan för uttryckligt godkännande. Handel/Forward AV.
+
 ## Gen17 - granskning 2026-10-27
 Gen16 summary verifierad via GitHub. Kontroll PF 1.3318, koncentration 66.29 procent, sämsta fold PF 0.0419. Breakout PF 1.6313, koncentration 100 procent, sämsta fold PF 0.0142. Båda NO_CANDIDATE. Worker-kvitton ej verifierade. Riskfördelning ensam löser inte svaga 2022-resultat med 13 affärer. Gen17 är DRAFT_ONLY. Nästa steg: mänskligt beslut om en förregistrerad hypotes; ingen plan låst, ingen forskning startad.
 
