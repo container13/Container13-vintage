@@ -14,3 +14,10 @@ Applies to every Container13 development project and every new chat.
 10. For any new project, inventory dependencies, connectors and permissions early and record tested access and fallback routes before development.
 
 If a project lacks a checkpoint, create one before substantive new work. Status claims must be evidence-based.
+
+## Mandatory root-cause and promotion gate (2026-10-27)
+11. Before proposing a workaround, inventory the existing implementation, previous working solution, project rules, exact branch/head, deployment source and external dependencies. Classify the failing layer (assistant environment/DNS, repository search, service API, runtime, storage or client) using reproducible evidence. A failed search on a non-default branch is not evidence of missing files: inspect the recursive Git tree with `truncated=false` and fetch exact paths.
+12. Do not ask for screenshots, exports or new UI until existing read-only connector/API/GitHub routes have been investigated. Record symptom, root cause, minimum fix, verification and remaining unknowns. After two failed fixes, stop and re-evaluate the hypothesis.
+13. Treat CURRENT/PREVIOUS/PENDING as evidence-backed states, not file names. A candidate must not replace CURRENT or rotate PREVIOUS before independently verified deployment and actual runtime/client checks. CI must not auto-promote on a source push; an archive rotation requires an explicit promotion gate and proof.
+14. Before any multi-step change, write an IN_PROGRESS/UNVERIFIED checkpoint and verify its readback. Separate COMMITTED, DEPLOYED, RUNTIME and DEVICE status. Never close an older UNVERIFIED checkpoint by assumption.
+15. Respect each project's release/version discipline for code, documentation, workflows and config. Pure checkpoint journaling is exempt only when that project's rules explicitly permit it. Verify version-source, cache tokens, CI and deployed bytes before claiming release PASS.
