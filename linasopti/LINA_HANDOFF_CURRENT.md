@@ -275,3 +275,11 @@ Original SOURCE_gen9-data.json blob 5ac082c346db53fabccb9ab5009bb99527f764e1 par
 - Dessa poster bevisar överlapp med utdelningsdatum, inte en bokföringsbugg eller storleken på eventuell resultatavvikelse. Inget råprisbaserat kontantutdelningsledger eller kontrafaktiskt utfall beräknat.
 - Äldre Gen9 GM-metadata bekräftar fortsatt olöst leverantörsavvikelse för 2023-06-05; PYPL:s efterperiodjustering är tidigare numeriskt rekonstruerad men innebär inte i sig Gen16-signalbugg.
 - Nästa: read-only kontroll av justeringsfaktorernas ex-datum och signalernas tidskausalitet, därefter Worker-kvitton. Ingen rerun, inga ändringar i immutable evidence. Gen17 DRAFT_ONLY, Handel/Forward AV.
+
+## 2026-10-27 – fördjupad inventering mot dubbelarbete (read-only)
+- GitHub branch-tree `ccc-demo-public-test` komplett (`truncated=false`). Tidigare runbook `LINA_RESEARCH_EVIDENCE_RECOVERY.md` beskriver redan rätt evidenssökvägar, GET-only-metod och Worker-begränsning. Ny export-/återställningsfunktion vore dubbelarbete.
+- `LINA_GEN16_SHA256_VERIFICATION_2026-10-27.md` bekräftar redan SHA256 PASS för exakt ursprungskälla; upprepa inte full storfilshämtning för samma identitetsfråga.
+- `LINA_GEN17_PLAN_PROPOSAL.md` innehåller historiska förslag om riskfördelning och SMA180-bredd men markerar dem SUPERSEDED: Gen10 breddnivåer, Gen12 <8/16-regel, historiska G2 SPY200. INGEN Gen17-plan godkänd; upprepa inte eller optimera om dessa familjer.
+- `LINA_RESEARCH_REVIEW_G2_G12_V0227.md` visar G5 kombinerad stress FAIL, även om G6 och G7–G12 senare gav PASS. Behåll båda i utvärderingen. G2/G3 historisk Real Forward är separat från Gen17-behörighet.
+- Senaste GM-affärsgranskningen är dokumenterad; överlapp med utdelning är inte kausal felbevisning. Ingen kontantutdelningsledger eller prisomräknad P/L ännu.
+- Återstående distinkta frågor: justeringsfaktorernas kausala tidsåtkomst och effekter på signaler, oberoende pris-/bolagshändelseverifiering, Worker evidence receipts och verklig Real Forward-utveckling. Ingen rerun, inga ändringar i fryst evidens, Handel/ny Forward AV.
