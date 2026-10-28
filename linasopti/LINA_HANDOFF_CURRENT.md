@@ -774,3 +774,10 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 - Isolerad kod `linasopti/ci-corporate-actions/corporate_probe_v4_candidate.mjs` skapad commit `e65e3518d784c6311082c078b6830de7152e58a0`; wrapper runt V3.1-klassificering med extra krav på icke-tomt `id` och för forward split icke-tomt `cusip`. Saknad identitet blir `incomplete`, medan V3.1:s datum-/talsäkerhet behålls.
 - Syntetiska fixturetests utökade commit `7dd3ecda019b966613ea1c7bcab4c6463d7aa85e`. GitHub Actions run `40757047573`, job `123058650178` är COMPLETED SUCCESS. Stegen `Run isolated Miniflare test (network blocked)` och `Run isolated documented schema fixture check` båda SUCCESS. Logg: `PASS synthetic fixtures: documented V3.1 missing ID/CUSIP gap; stricter candidate contract; no provider calls`.
 - Omfattning: V4-kandidaten är **bara en separat klassificeringsfunktion**, ej inkopplad i V3.1-transport eller Workers produktionskod. V3.1 lämnas helt oförändrad. Ingen autentisk leverantörsrespons, inget PIT-bevis eller forskningslås. NO-GO produktion; Gen17 DRAFT_ONLY, Handel/ny Forward AV.
+
+
+## 2026-10-28 – V4 flersides-fixtures verifierade PASS
+- Retry med mindre GitHub-skrivning lyckades, commit `7e75dd05e0f8e9ba11f1bac5c489c248c93f23f1`; `schema-fixtures-test.mjs` utökad med två sidors syntetiska data, giltiga och ofullständiga händelser, ofullständig paginering, upprepad token och felaktigt schema. Exakt commit-readback PASS.
+- GitHub Actions `40757562055`, job `123060464622` COMPLETED SUCCESS, både Miniflare och schema-fixture-steg SUCCESS. Detta verifierar den separata V4 offline-funktionen `inspectV4Pages`, inte en nätverkstransport eller live-Alpaca.
+- Arbetslärdom: vid säkerhetsblockerad skrivning försök igen med mindre, begränsad ändring; bekräfta efteråt faktisk GitHub-commit och CI.
+- Ingen produktionsdeploy, ingen riktig Alpaca-förfrågan, ingen Gen17-forskning. Gen17 DRAFT_ONLY; Handel/Forward AV.
