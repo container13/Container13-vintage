@@ -784,3 +784,6 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 
 
 2026-10-28 V4 offline-transport: commit 81a99e24 integrates V4 aggregate with existing V2 authentication and pagination. Fixture commit bd44a788 checks two synthetic pages and incomplete events. GitHub Actions run 40757796489, job 123061290598, both tests SUCCESS. V3.1 and production Worker untouched. Still no live Alpaca/PIT proof; Gen17 DRAFT_ONLY, trading and new Forward OFF.
+
+
+2026-10-28: V4 genom faktisk Worker-router i isolerad Miniflare PASS. Testprogram uppdaterat i commit 460a7d578a55db7237d9a5103d033a2eab17364b; temporärt injicerad route använder corporateProbeV4 och syntetisk split med id/cusip. GitHub Actions run 40758010388 job 123062026243 COMPLETED SUCCESS; både Miniflare-test och schema-fixture-test SUCCESS. Detta är inte produktionsdeployment eller autentisk Alpaca/PIT-certifiering. V3.1 oförändrad, Gen17 DRAFT_ONLY, Handel och Forward AV. Nästa steg: kontrollera V4 negativa fall ytterligare och sammanställa definitiv isolerad diagnostikgrind.
