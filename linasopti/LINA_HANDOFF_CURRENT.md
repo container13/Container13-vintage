@@ -793,3 +793,6 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 
 
 2026-10-28 – Live Alpaca gate: Isolated V4 mock CI PASS (run 40758388233). Existing GitHub CI has no live credentials, outbound network disabled, so entitlement/schema/PIT not verified. Production branch must not change. Next: determine a separate credentials-safe read-only execution route before any authenticated AAPL corporate-actions probe. No real call approved yet; Gen17 DRAFT_ONLY, trade and new Forward OFF.
+
+
+2026-10-28 – Existing Cloudflare Worker reuse: verified production wrangler config in linasopti/worker/wrangler.jsonc: linas-opti-api, main WORKER_PENDING_RUNTIME_REPORT.js, keep_vars true. Original source SHA c9e6f8fdd0d94089c79ae63f3d0aed4e55adb4f9 same source as isolated V4 CI. No permanent extra environment needed. Detailed release gate in ci-corporate-actions/PRODUCTION_REUSE_RELEASE_GATE.md commit ad9cec2b3c787e6f9223729f8378980d7ba8c52b. CURRENT_STATE commit 35a9d7bd24a24c74d930768f0aa12c63584295ee. Next: prepare fully versioned integration and run exact release gates before any production-branch push; Cloudflare auto-deploy risk. NO deployment or live Alpaca call this step. Gen17 DRAFT_ONLY, Handel and new Forward OFF.
