@@ -27,7 +27,7 @@ jobs:
       - name: Run isolated documented schema fixture check
         run: node linasopti/ci-corporate-actions/schema-fixtures-test.mjs
       - name: Check V4 candidate bundle
-        run: node linasopti/ci-corporate-actions/build-v4-release-candidate.mjs
+        run: bash linasopti/ci-corporate-actions/cloudflare-prebuild.sh
       - name: Test exact bundled Worker offline
         run: node linasopti/ci-corporate-actions/miniflare-test.mjs
       - name: Wrangler staging SHA check
