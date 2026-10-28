@@ -34,3 +34,23 @@ export async function inspectV4Pages(pages){
  if(expected!==null)return {ok:false,error:'TRUNCATED'};
  return {ok:true,complete:true,counts,semanticCheck:'STRUCTURAL_ONLY_NOT_POINT_IN_TIME'};
 }
+
+import {corporateProbe as transportV2} from './corporate_probe.mjs';
+// Isolated offline candidate; calls upstream only through authenticated V2 transport.
+export async function corporateProbeV4(request,env,upstreamFetch=fetch){
+ const pages=[];
+ const guarded=async (url,init)=>{
+  const res=await upstreamFetch(url,init);
+  if(res.ok){
+   try{pages.push(await res.clone().json());}
+   catch{return new Response('invalid payload',{status:502});}
+  }
+  return res;
+ };
+ const result=await transportV2(request,env,guarded);
+ if(!result.ok)return result;
+ const inspected=await inspectV4Pages(pages);
+ if(!inspected.ok)return Response.json({ok:false,error:'V4_'+inspected.error},{status:502});
+ const base=await result.json();
+ return Response.json({...base,classification:inspected,semanticCheck:'STRUCTURAL_ONLY_NOT_POINT_IN_TIME'},{headers:{'cache-control':'no-store'}});
+}
