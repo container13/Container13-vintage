@@ -817,3 +817,6 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 
 
 2026-10-28 V0.4.46 deploy contract: `ci-corporate-actions/V046_DEPLOY_CONTRACT.md` commit 7b47fa9f readback PASS. CI 40762475090 proved temporary staged Worker byte-identical to tested bundle, but Wrangler production main still points to unchanged Worker source. Explicit actual entrypoint integration, full release integrity, drift/rollback verification and human deploy decision remain; NO-GO production, V0.4.45 still live, Gen17 DRAFT_ONLY, trade/Forward OFF. CURRENT_STATE update attempt blocked; source document and HANDOFF serve as verified record.
+
+
+2026-10-28 – V0.4.46 isolated Wrangler source wiring: `worker/wrangler.jsonc` main now points to generated `../ci-corporate-actions/.candidate-build/WORKER_V4_RELEASE_CANDIDATE.js` only on isolated branch, commit 7211d511. Staging test updated e8e03a10 and CI run 40762905796: fixtures/build/exact Miniflare/Wrangler-byte matching PASS; release integrity FAIL expected while canonical live V0.4.45. CRITICAL: generated bundle is not in repository, so Cloudflare build must have an explicit verified pre-build before this config can ever be merged or deployed. Never merge config alone. CURRENT_STATE updated commit c7f26c5f. No production changes or Alpaca calls, Gen17 DRAFT_ONLY, trading/Forward OFF.
