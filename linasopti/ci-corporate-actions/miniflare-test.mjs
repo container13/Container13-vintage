@@ -18,6 +18,13 @@ intercept({error:'rate limit'},429);
 intercept({corporate_actions:{forward_splits:'wrong type',cash_dividends:[]},next_page_token:null});
 intercept({corporate_actions:{forward_splits:[],cash_dividends:[]},next_page_token:'A'});
 intercept({corporate_actions:{forward_splits:[],cash_dividends:[]},next_page_token:'A'},200,'A');
+intercept({corporate_actions:{forward_splits:[{id:'S2',symbol:'AAPL',process_date:'2020-08-31',ex_date:'2020-08-31',old_rate:1,new_rate:4}],cash_dividends:[]},next_page_token:null});
+intercept({corporate_actions:{forward_splits:[{id:'S3',cusip:'037833100',symbol:'OTHER',process_date:'2020-08-31',ex_date:'2020-08-31',old_rate:1,new_rate:4}],cash_dividends:[]},next_page_token:null});
+intercept({corporate_actions:{forward_splits:[],cash_dividends:[]},next_page_token:'B'});
+intercept({corporate_actions:{forward_splits:[],cash_dividends:[]},next_page_token:'C'},200,'B');
+intercept({corporate_actions:{forward_splits:[],cash_dividends:[]},next_page_token:'D'},200,'C');
+intercept({corporate_actions:{forward_splits:[],cash_dividends:[]},next_page_token:'E'},200,'D');
+intercept({corporate_actions:{forward_splits:[],cash_dividends:[]},next_page_token:'F'},200,'E');
 const mf=new Miniflare({modules:true,script:compiled.outputFiles[0].text,fetchMock:mock,bindings:{LINA_LOGIN_CODE:'TEST_ONLY',APCA_API_KEY_ID:'FAKE',APCA_API_SECRET_KEY:'FAKE'}});
 const url='http://localhost:8787/corporate-actions-diagnostic';
 try {
@@ -32,6 +39,9 @@ try {
  const rate=await mf.dispatchFetch(url,{method:'POST',headers:auth});assert.equal(rate.status,502);assert.equal((await rate.json()).providerStatus,429);
  const malformed=await mf.dispatchFetch(url,{method:'POST',headers:auth});assert.equal(malformed.status,502);
  const looping=await mf.dispatchFetch(url,{method:'POST',headers:auth});assert.equal(looping.status,502);assert.equal((await looping.json()).error,'PAGINATION_INVALID');
+ const incomplete=await mf.dispatchFetch(url,{method:'POST',headers:auth});assert.equal(incomplete.status,200);assert.equal((await incomplete.json()).classification.counts.incomplete.forward_splits,1);
+ const invalid=await mf.dispatchFetch(url,{method:'POST',headers:auth});assert.equal(invalid.status,502);assert.equal((await invalid.json()).error,'V4_INVALID_EVENT');
+ const limit=await mf.dispatchFetch(url,{method:'POST',headers:auth});assert.equal(limit.status,502);assert.equal((await limit.json()).error,'PAGINATION_LIMIT');
  const health=await mf.dispatchFetch('http://localhost:8787/health');assert.equal(health.status,200);assert.equal((await health.json()).tradingEnabled,false);
  const preflight=await mf.dispatchFetch(url,{method:'OPTIONS',headers:{Origin:'https://container13.se','Access-Control-Request-Method':'POST','Access-Control-Request-Headers':'X-Lina-Login-Code'}});
  assert.equal(preflight.status,204);assert.equal(preflight.headers.get('Access-Control-Allow-Origin'),'https://container13.se');
@@ -49,5 +59,5 @@ try {
    if(body!==null)assert.ok(!body.includes('FAKE')&&!body.includes('TEST_ONLY'));
  }
  mock.assertNoPendingInterceptors();
- console.log('PASS V4 actual router: zero Alpaca calls on unauthorized requests; isolated actual-router Miniflare: auth, method, split, health, rate-limit, malformed schema, pagination token loop, offline');
+ console.log('PASS V4 additional negative cases: incomplete, invalid, page limit; actual router: zero Alpaca calls on unauthorized requests; isolated actual-router Miniflare: auth, method, split, health, rate-limit, malformed schema, pagination token loop, offline');
 } finally {await mf.dispose();}
