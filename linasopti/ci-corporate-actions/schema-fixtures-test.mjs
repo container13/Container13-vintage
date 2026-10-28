@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {classifyEvent} from './corporate_probe_v3_1.mjs';
-import {classifyEventV4} from './corporate_probe_v4_candidate.mjs';
+import {classifyEventV4,inspectV4Pages} from './corporate_probe_v4_candidate.mjs';
 const event={id:'sample-id',symbol:'AAPL',cusip:'037833100',process_date:'2020-08-31',ex_date:'2020-08-31',old_rate:1,new_rate:4};
 const missingId={...event};delete missingId.id;
 const missingCusip={...event};delete missingCusip.cusip;
@@ -22,3 +22,13 @@ const dividend={id:'dividend-1',symbol:'AAPL',process_date:'2020-08-31',ex_date:
 assert.equal(classifyEventV4('cash_dividends',dividend).status,'validated');
 assert.equal(classifyEventV4('cash_dividends',{...dividend,id:''}).status,'incomplete');
 console.log('PASS synthetic fixtures: documented V3.1 missing ID/CUSIP gap; stricter candidate contract; no provider calls');
+
+const pageOne={corporate_actions:{forward_splits:[event,missingId],cash_dividends:[dividend]},next_page_token:'NEXT'};
+const pageTwo={corporate_actions:{forward_splits:[missingCusip],cash_dividends:[]},next_page_token:null};
+const aggregate=await inspectV4Pages([pageOne,pageTwo]);
+assert.equal(aggregate.ok,true);
+assert.deepEqual(aggregate.counts,{validated:{forward_splits:1,cash_dividends:1},incomplete:{forward_splits:2,cash_dividends:0}});
+assert.equal((await inspectV4Pages([pageOne])).error,'TRUNCATED');
+assert.equal((await inspectV4Pages([pageOne,{...pageTwo,next_page_token:'NEXT'}])).error,'TOKEN');
+assert.equal((await inspectV4Pages([{...pageTwo,corporate_actions:{forward_splits:'bad'}}])).error,'SCHEMA');
+console.log('PASS V4 multipage fixtures');
