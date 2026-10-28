@@ -25,7 +25,7 @@ intercept({corporate_actions:{forward_splits:[],cash_dividends:[]},next_page_tok
 intercept({corporate_actions:{forward_splits:[],cash_dividends:[]},next_page_token:'D'},200,'C');
 intercept({corporate_actions:{forward_splits:[],cash_dividends:[]},next_page_token:'E'},200,'D');
 intercept({corporate_actions:{forward_splits:[],cash_dividends:[]},next_page_token:'F'},200,'E');
-const mf=new Miniflare({modules:true,script:compiled.outputFiles[0].text,fetchMock:mock,bindings:{LINA_LOGIN_CODE:'TEST_ONLY',APCA_API_KEY_ID:'FAKE',APCA_API_SECRET_KEY:'FAKE'}});
+const mf=new Miniflare({modules:true,script:await readFile(new URL('./.candidate-build/WORKER_V4_RELEASE_CANDIDATE.js',import.meta.url),'utf8'),fetchMock:mock,bindings:{LINA_LOGIN_CODE:'TEST_ONLY',APCA_API_KEY_ID:'FAKE',APCA_API_SECRET_KEY:'FAKE'}});
 const url='http://localhost:8787/corporate-actions-diagnostic';
 try {
  const denied=await mf.dispatchFetch(url,{method:'POST',headers:{'X-Lina-Login-Code':'wrong'}});assert.equal(denied.status,401);
