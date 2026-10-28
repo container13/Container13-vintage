@@ -29,6 +29,13 @@ try {
  const malformed=await mf.dispatchFetch(url,{method:'POST',headers:auth});assert.equal(malformed.status,502);
  const looping=await mf.dispatchFetch(url,{method:'POST',headers:auth});assert.equal(looping.status,502);assert.equal((await looping.json()).error,'PAGINATION_INVALID');
  const health=await mf.dispatchFetch('http://localhost:8787/health');assert.equal(health.status,200);assert.equal((await health.json()).tradingEnabled,false);
+ const preflight=await mf.dispatchFetch(url,{method:'OPTIONS',headers:{Origin:'https://container13.se','Access-Control-Request-Method':'POST','Access-Control-Request-Headers':'X-Lina-Login-Code'}});
+ assert.equal(preflight.status,204);assert.equal(preflight.headers.get('Access-Control-Allow-Origin'),'https://container13.se');
+ const forbiddenPreflight=await mf.dispatchFetch(url,{method:'OPTIONS',headers:{Origin:'https://untrusted.example','Access-Control-Request-Method':'POST'}});
+ assert.notEqual(forbiddenPreflight.headers.get('Access-Control-Allow-Origin'),'https://untrusted.example');
+ const corsProbe=await mf.dispatchFetch(url,{method:'POST',headers:{'X-Lina-Login-Code':'wrong',Origin:'https://container13.se'}});
+ assert.equal(corsProbe.status,401);
+ assert.equal(corsProbe.headers.get('Access-Control-Allow-Origin'),'https://container13.se','Diagnostic POST response must preserve Worker CORS');
  mock.assertNoPendingInterceptors();
  console.log('PASS isolated actual-router Miniflare: auth, method, split, health, rate-limit, malformed schema, pagination token loop, offline');
 } finally {await mf.dispose();}
