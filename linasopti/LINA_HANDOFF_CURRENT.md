@@ -799,3 +799,6 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 
 
 2026-10-28 – V4 releasecandidate build-only PASS: ci-corporate-actions/build-v4-release-candidate.mjs (commit 52159f5c) produces a bundled Worker artifact only inside isolated CI. Workflow updated commit 024680fc. GitHub Actions run 40759304087: Miniflare PASS, fixture PASS, candidate bundle build PASS. Planned release V0.4.46 NOT activated, version.js unchanged. CURRENT_STATE updated commit 72c8449a. No production branch push/deploy, no live Alpaca request. Next: exact final bundle runtime regression, then full release checklist, explicit separate production decision. Gen17 DRAFT_ONLY; Handel/new Forward OFF.
+
+
+2026-10-28 – Exact bundled V4 Worker now tested PASS. Commit 2c6014fd724ad9a17b57b862f84b9c258b3afe36 changes Miniflare to run actual generated .candidate-build/WORKER_V4_RELEASE_CANDIDATE.js. GitHub Actions run 40760704845 job 123071528940 fixture, build and exact-bundle offline runtime all SUCCESS. CURRENT_STATE commit 778934bed51137092401587809a8743f7d6c8d5d. No production deploy or live Alpaca. Still requires full versioned release checklist and controlled production approval. Gen17 DRAFT_ONLY, trade and new Forward OFF.
