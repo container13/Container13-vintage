@@ -823,3 +823,6 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 
 
 2026-10-28 Cloudflare prebuild: added isolated `linasopti/ci-corporate-actions/cloudflare-prebuild.sh` commit 79a3e70870af02779f7c59ffe6339e12cfd2d511. It installs esbuild, generates V4 bundle and verifies Wrangler target bytes without deployment. CI workflow update to execute this exact command was BLOCKED; the new script has NOT been CI-verified and Cloudflare dashboard build configuration has NOT been verified/changed. No production release. V0.4.45 live, V0.4.46 candidate, Gen17 DRAFT_ONLY, Handel/Forward OFF.
+
+
+2026-10-28 Cloudflare prebuild retry: workflow switched to `cloudflare-prebuild.sh` commit 2f4cc380. CI run 40763491051 found that npm install of esbuild alone removed Miniflare; fixed prebuild dependencies commit 0332af1a to install esbuild+miniflare together. GitHub Actions run 40763603946: fixture PASS, V4 prebuild PASS, exact-bundle Miniflare PASS, Wrangler staging SHA PASS. Static release integrity FAIL still expected for unreleased V0.4.46. CURRENT_STATE commit 71ecb2a7. Cloudflare dashboard build command not yet configured/verified; do not deploy. Production V0.4.45, Gen17 DRAFT_ONLY, Handel/Forward OFF.
