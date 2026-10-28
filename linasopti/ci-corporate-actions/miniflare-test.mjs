@@ -23,6 +23,10 @@ const url='http://localhost:8787/corporate-actions-diagnostic';
 try {
  const denied=await mf.dispatchFetch(url,{method:'POST',headers:{'X-Lina-Login-Code':'wrong'}});assert.equal(denied.status,401);
  const method=await mf.dispatchFetch(url,{method:'GET',headers:{'X-Lina-Login-Code':'TEST_ONLY'}});assert.equal(method.status,405);
+ const pendingBefore=mock.pendingInterceptors().length;
+ const deniedAgain=await mf.dispatchFetch(url,{method:'POST',headers:{'X-Lina-Login-Code':'wrong'}});assert.equal(deniedAgain.status,401);
+ const missingAgain=await mf.dispatchFetch(url,{method:'POST'});assert.equal(missingAgain.status,401);
+ assert.equal(mock.pendingInterceptors().length,pendingBefore,'Unauthorized requests must not consume Alpaca interceptors');
  const passed=await mf.dispatchFetch(url,{method:'POST',headers:{'X-Lina-Login-Code':'TEST_ONLY'}});assert.equal(passed.status,200);const data=await passed.json();assert.equal(data.validated.forward_splits,1);assert.equal(data.complete,true);
  const auth={'X-Lina-Login-Code':'TEST_ONLY'};
  const rate=await mf.dispatchFetch(url,{method:'POST',headers:auth});assert.equal(rate.status,502);assert.equal((await rate.json()).providerStatus,429);
@@ -45,5 +49,5 @@ try {
    if(body!==null)assert.ok(!body.includes('FAKE')&&!body.includes('TEST_ONLY'));
  }
  mock.assertNoPendingInterceptors();
- console.log('PASS isolated actual-router Miniflare: auth, method, split, health, rate-limit, malformed schema, pagination token loop, offline');
+ console.log('PASS zero Alpaca calls on unauthorized requests; isolated actual-router Miniflare: auth, method, split, health, rate-limit, malformed schema, pagination token loop, offline');
 } finally {await mf.dispose();}
