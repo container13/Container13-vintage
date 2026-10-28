@@ -820,3 +820,6 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 
 
 2026-10-28 – V0.4.46 isolated Wrangler source wiring: `worker/wrangler.jsonc` main now points to generated `../ci-corporate-actions/.candidate-build/WORKER_V4_RELEASE_CANDIDATE.js` only on isolated branch, commit 7211d511. Staging test updated e8e03a10 and CI run 40762905796: fixtures/build/exact Miniflare/Wrangler-byte matching PASS; release integrity FAIL expected while canonical live V0.4.45. CRITICAL: generated bundle is not in repository, so Cloudflare build must have an explicit verified pre-build before this config can ever be merged or deployed. Never merge config alone. CURRENT_STATE updated commit c7f26c5f. No production changes or Alpaca calls, Gen17 DRAFT_ONLY, trading/Forward OFF.
+
+
+2026-10-28 Cloudflare prebuild: added isolated `linasopti/ci-corporate-actions/cloudflare-prebuild.sh` commit 79a3e70870af02779f7c59ffe6339e12cfd2d511. It installs esbuild, generates V4 bundle and verifies Wrangler target bytes without deployment. CI workflow update to execute this exact command was BLOCKED; the new script has NOT been CI-verified and Cloudflare dashboard build configuration has NOT been verified/changed. No production release. V0.4.45 live, V0.4.46 candidate, Gen17 DRAFT_ONLY, Handel/Forward OFF.
