@@ -814,3 +814,6 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 
 
 2026-10-28 – Wrangler staging verification: isolated script `ci-corporate-actions/verify-wrangler-staging.mjs` copies the exact CI-tested V4 bundle to a temporary `wrangler-stage/WORKER_PENDING_RUNTIME_REPORT.js` and compares SHA-256 bytes. GitHub Actions run 40762475090: fixtures, bundle, exact-bundle Miniflare and staging SHA ALL PASS; static release integrity FAIL remains because candidate V0.4.46 is not live V0.4.45. No production source was overwritten and no deploy occurred. CURRENT_STATE updated commit d218eece. Next: deployment packaging contract and final release decision; do not claim production GO. Gen17 DRAFT_ONLY, Handel/Forward OFF.
+
+
+2026-10-28 V0.4.46 deploy contract: `ci-corporate-actions/V046_DEPLOY_CONTRACT.md` commit 7b47fa9f readback PASS. CI 40762475090 proved temporary staged Worker byte-identical to tested bundle, but Wrangler production main still points to unchanged Worker source. Explicit actual entrypoint integration, full release integrity, drift/rollback verification and human deploy decision remain; NO-GO production, V0.4.45 still live, Gen17 DRAFT_ONLY, trade/Forward OFF. CURRENT_STATE update attempt blocked; source document and HANDOFF serve as verified record.
