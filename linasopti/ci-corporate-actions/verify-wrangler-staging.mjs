@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {readFile,mkdir,copyFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {join} from 'node:path';
+const root=new URL('./.candidate-build/',import.meta.url);
+const source=new URL('WORKER_V4_RELEASE_CANDIDATE.js',root);
+const dest=new URL('wrangler-stage/',root);
+await mkdir(dest,{recursive:true});
+const config=JSON.parse((await readFile(new URL('../worker/wrangler.jsonc',import.meta.url),'utf8')).replace(/^\s*\/\/.*$/gm,''));
+assert.equal(config.main,'./WORKER_PENDING_RUNTIME_REPORT.js');
+await copyFile(source,new URL('WORKER_PENDING_RUNTIME_REPORT.js',dest));
+const a=await readFile(source),b=await readFile(new URL('WORKER_PENDING_RUNTIME_REPORT.js',dest));
+const hash=x=>createHash('sha256').update(x).digest('hex');
+assert.equal(hash(a),hash(b));
+assert.ok(b.toString().includes('/corporate-actions-diagnostic'));
+console.log('PASS isolated Wrangler staging SHA256 identical; no production overwrite or deploy:',hash(a));
