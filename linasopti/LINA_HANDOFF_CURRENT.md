@@ -592,3 +592,72 @@ Kravskissen ska översättas till verifierade syntetiska tester och executable R
 - Ett separat lokalt utkast gör ett fast read-only-anrop till Alpacas `/v1/corporate-actions` för AAPL 2020, `forward_split,cash_dividend`, `data_quality=all`, gräns 100. Utkastet kräver POST och befintlig `X-Lina-Login-Code`, använder APCA-nycklar endast server-side och ger antal/fältnamn, pagineringsindikator samt sanerade fel utan att återge leverantörens råsvar eller nycklar. Detta är inte någon generell proxy.
 - Fristående Node-tester med mockad data passerade: fel metod, fel inloggning utan upstream-anrop, fast leverantör/GET, syntetiska antal, sanerat 403-fel, okänt schema och indikering av nästa sida. Dessa är enhetstester av utkastet, inte ett test av den integrerade Workern eller verkliga Alpaca. Dokumentationen beskriver `corporate_actions` och typerna `forward_splits`/`cash_dividends`: https://docs.alpaca.markets/us/v1.1/reference/corporateactions-1 . Full faktisk respons, händelsevärden, sidor och kontoåtkomst är fortfarande overifierade. Utkastets strikta typnycklar kan behöva justeras mot dokumenterat schema; det ska stoppa säkert vid oväntat svar.
 - Lokala scratch-filer `lina_corporate_probe.mjs` och `lina_corporate_probe_test.mjs` är tillfälliga, inte GitHub-säkrad produktkod och inte någon release. Nästa: verifiera schemat/ända sidorna och kända split-/utdelningsvärden, samt säker anropsväg genom befintlig Lina-inloggning. Integrera först efter kontroll av faktisk Worker-bas och fullständiga tester. Ingen Worker-kod har ändrats, ingen riktig Alpaca-förfrågan, planlåsning, forskning eller ny Forward har startats. Eftersom även dokumentationspushar deployar befintlig Worker kan denna commit orsaka automatisk oförändrad kod-deploy.
+
+## ÖVERLÄMNING TILL NY CHATT – 2026-10-28
+
+**Status: PAUSAD för chattbyte.** Senaste commit före detta avslut: `2e9d1ad1851a3e643c0dc5485486fdd82facd401`. App-runtime V0.4.45. Läs först MASTER RULES, SYSTEM MANUAL, CURRENT STATE och denna senaste handoff; gör inte om avslutade granskningar utan ny motsägande evidens.
+
+### Vad som är löst och verifierat
+- Lina och CCC Vision syns på samma Cloudflare-konto. CCC-tokenens visade policy är account-wide Workers Scripts Edit, men den behövs inte för Linas redan befintliga automatiska deployväg.
+- **Lina har redan Cloudflare Workers Builds:** repo `container13/Container13-vintage`, gren `ccc-demo-public-test`, rot `/linasopti/worker`, deploy `npx wrangler deploy`, include watch `*`, egen Workers Builds-token. `wrangler.jsonc` anger main `WORKER_PENDING_RUNTIME_REPORT.js`, Worker `linas-opti-api`, `keep_vars:true`.
+- **Även dokumentationspushar startar builds/deploy.** Build `810c7ff1` från commit `568329d7` visade Uploaded/Deployed för Lina. Cloudflare-version ID är inte Git-SHA. Ingen byte-för-byte livebundle verifierad. Tidigare påstående att ingen deploy skett var fel; automatisk deploy skedde utan manuell start.
+- Senaste live-health via terminal curl: ok, Alpaca konfigurerat, tradingEnabled false, Worker-version `0.58.8 + evidence-sync-v0235 + alpaca-history-v02 + twelve-history-v02 + runtime-report-v0321`. Health är inte bevis för Forward-status eller corporate-actions-behörighet.
+
+### Vad som återstår
+- Ingen autentiserad riktig förfrågan till Alpacas corporate-actions-API har ännu gjorts. Den tidigare live-rutten `/corporate-actions` gav 404. Den visar inte något om Alpacas kontoåtkomst.
+- Ett **fristående lokalt utkast** har testats med mocks. Det är INTE integrerad Worker-kod och INTE deployat. Testerna täckte metod/auth, fast upstream, syntetiskt svarsformat, sanerat 403 och pagineringsindikator. Det gör ännu inte full pagination och kontrollerar inte faktiska kvoter/belopp eller point-in-time.
+- Nästa: kontrollera dokumenterat komplett schema (även tomma/andra typ-arrayer), avgränsad paginering, kända split-/utdelningsvärden och en säker anropsväg via befintlig Lina-inloggning. Hemligheter ska inte efterfrågas i chatten. Testa sedan den faktiskt integrerade Workern och releasekraven innan avsiktlig koddeploy. Eftersom GitHub push automatiskt deployar ska ofärdig Worker-kod inte läggas på aktiva källsökvägen.
+- Gen8–16 frysta; Gen16 NO_CANDIDATE; Gen17 DRAFT_ONLY. Ingen planlåsning, forskningskörning eller aktivering utan uttryckligt användargodkännande. Handel och ny Forward AV. Användarens senaste Kör avsåg att förbereda diagnostiken.
+- Spara varje viktigt konstaterande i både CURRENT_STATE och HANDOFF, helst en atomär commit för färre builds, och verifiera exakt GitHub-readback före fortsättning. Varna före stora inläsningar/kontextrisk. Uppdatera inte fryst evidens.
+
+### Bevarat lokalt utkast – endast referens, EJ PRODUKTIONSKOD
+Följande källtext sparas här för att nästa chatt inte ska behöva återskapa lokalt arbete om scratch försvinner. Det är en arbetskopia med kända begränsningar ovan, inte validerad release, inte händelsebevis och inget tillstånd att köra forskning.
+
+#### lina_corporate_probe.mjs
+```javascript
+// Draft local diagnostic; not deployed. Fixed historical examples only.
+export async function corporateProbe(request, env, upstreamFetch = fetch) {
+  const reply = (body, status) => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json', 'cache-control': 'no-store' } });
+  if (request.method !== 'POST') return reply({ok:false, error:'METHOD_NOT_ALLOWED'}, 405);
+  if (!env.LINA_LOGIN_CODE) return reply({ok:false, error:'AUTH_NOT_CONFIGURED'}, 503);
+  if (request.headers.get('X-Lina-Login-Code') !== env.LINA_LOGIN_CODE) return reply({ok:false, error:'UNAUTHORIZED'}, 401);
+  if (!env.APCA_API_KEY_ID || !env.APCA_API_SECRET_KEY) return reply({ok:false, error:'PROVIDER_NOT_CONFIGURED'}, 503);
+  const url = new URL('https://data.alpaca.markets/v1/corporate-actions');
+  for (const [k,v] of Object.entries({symbols:'AAPL',types:'forward_split,cash_dividend',start:'2020-01-01',end:'2020-12-31',data_quality:'all',limit:'100'})) url.searchParams.set(k,v);
+  let response;
+  try { response = await upstreamFetch(url.toString(), {method:'GET',headers:{'APCA-API-KEY-ID':env.APCA_API_KEY_ID,'APCA-API-SECRET-KEY':env.APCA_API_SECRET_KEY,Accept:'application/json'},signal:AbortSignal.timeout(15000)}); }
+  catch { return reply({ok:false, error:'UPSTREAM_UNREACHABLE'}, 502); }
+  if (!response.ok) return reply({ok:false, error:'UPSTREAM_HTTP', providerStatus:response.status}, 502);
+  let payload;
+  try { payload = await response.json(); } catch { return reply({ok:false,error:'UPSTREAM_INVALID_JSON',providerStatus:response.status},502); }
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return reply({ok:false,error:'UPSTREAM_UNKNOWN_SCHEMA'},502);
+  const actions=payload.corporate_actions;
+  if (!actions || typeof actions !== 'object' || Array.isArray(actions)) return reply({ok:false,error:'UPSTREAM_UNKNOWN_SCHEMA',topLevelKeys:Object.keys(payload).sort()},502);
+  const types={};
+  for (const [type,rows] of Object.entries(actions)) {
+    if (!['forward_splits','cash_dividends'].includes(type) || !Array.isArray(rows)) return reply({ok:false,error:'UPSTREAM_UNKNOWN_SCHEMA'},502);
+    types[type]={count:rows.length,fields:[...new Set(rows.flatMap(x=>x && typeof x==='object' && !Array.isArray(x) ? Object.keys(x) : []))].sort()};
+  }
+  return reply({ok:true,providerStatus:response.status,types,nextPagePresent:!!payload.next_page_token,warning:'A response does not prove completeness or point-in-time availability.'},200);
+}
+
+```
+
+#### lina_corporate_probe_test.mjs
+```javascript
+import assert from 'node:assert/strict';
+import { corporateProbe } from './lina_corporate_probe.mjs';
+const env={LINA_LOGIN_CODE:'test-login',APCA_API_KEY_ID:'fake-id',APCA_API_SECRET_KEY:'fake-secret'};
+const req=(method='POST',auth='test-login')=>new Request('https://example.invalid/probe',{method,headers:{'X-Lina-Login-Code':auth}});
+let calls=0;
+const upstream=async (url,init)=>{calls++; assert.equal(new URL(url).hostname,'data.alpaca.markets'); assert.equal(new URL(url).searchParams.get('symbols'),'AAPL'); assert.equal(init.method,'GET'); return Response.json({corporate_actions:{forward_splits:[{symbol:'AAPL',new_rate:4,old_rate:1}],cash_dividends:[{symbol:'AAPL',amount:0.2}]},next_page_token:null});};
+assert.equal((await corporateProbe(req('GET'),env,upstream)).status,405);
+assert.equal((await corporateProbe(req('POST','bad'),env,upstream)).status,401);
+assert.equal(calls,0);
+let ok=await corporateProbe(req(),env,upstream); let data=await ok.json(); assert.equal(ok.status,200); assert.equal(data.types.forward_splits.count,1); assert.equal(data.types.cash_dividends.count,1); assert.equal(calls,1);
+let err=await corporateProbe(req(),env,async()=>new Response('fake-secret', {status:403})); let txt=await err.text(); assert.equal(err.status,502); assert.ok(txt.includes('403')); assert.ok(!txt.includes('fake-secret'));
+let unknown=await corporateProbe(req(),env,async()=>Response.json({unexpected:[]})); assert.equal(unknown.status,502);
+let paged=await corporateProbe(req(),env,async()=>Response.json({corporate_actions:{forward_splits:[]},next_page_token:'cursor'})); assert.equal((await paged.json()).nextPagePresent,true);
+console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema and pagination indicator');
+
+```
