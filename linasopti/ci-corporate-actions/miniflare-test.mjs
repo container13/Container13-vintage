@@ -36,6 +36,14 @@ try {
  const corsProbe=await mf.dispatchFetch(url,{method:'POST',headers:{'X-Lina-Login-Code':'wrong',Origin:'https://container13.se'}});
  assert.equal(corsProbe.status,401);
  assert.equal(corsProbe.headers.get('Access-Control-Allow-Origin'),'https://container13.se','Diagnostic POST response must preserve Worker CORS');
+ const noCode=await mf.dispatchFetch(url,{method:'POST'});assert.equal(noCode.status,401);
+ const noCodeText=await noCode.text();assert.ok(!noCodeText.includes('FAKE')&&!noCodeText.includes('TEST_ONLY'));
+ const badOrigin=await mf.dispatchFetch(url,{method:'POST',headers:{Origin:'https://untrusted.example','X-Lina-Login-Code':'wrong'}});assert.equal(badOrigin.status,401);
+ assert.notEqual(badOrigin.headers.get('Access-Control-Allow-Origin'),'https://untrusted.example');
+ for(const response of [rate,malformed,looping,corsProbe,badOrigin]){
+   const body=response.bodyUsed?null:await response.text();
+   if(body!==null)assert.ok(!body.includes('FAKE')&&!body.includes('TEST_ONLY'));
+ }
  mock.assertNoPendingInterceptors();
  console.log('PASS isolated actual-router Miniflare: auth, method, split, health, rate-limit, malformed schema, pagination token loop, offline');
 } finally {await mf.dispose();}
