@@ -781,3 +781,6 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 - GitHub Actions `40757562055`, job `123060464622` COMPLETED SUCCESS, både Miniflare och schema-fixture-steg SUCCESS. Detta verifierar den separata V4 offline-funktionen `inspectV4Pages`, inte en nätverkstransport eller live-Alpaca.
 - Arbetslärdom: vid säkerhetsblockerad skrivning försök igen med mindre, begränsad ändring; bekräfta efteråt faktisk GitHub-commit och CI.
 - Ingen produktionsdeploy, ingen riktig Alpaca-förfrågan, ingen Gen17-forskning. Gen17 DRAFT_ONLY; Handel/Forward AV.
+
+
+2026-10-28 V4 offline-transport: commit 81a99e24 integrates V4 aggregate with existing V2 authentication and pagination. Fixture commit bd44a788 checks two synthetic pages and incomplete events. GitHub Actions run 40757796489, job 123061290598, both tests SUCCESS. V3.1 and production Worker untouched. Still no live Alpaca/PIT proof; Gen17 DRAFT_ONLY, trading and new Forward OFF.
