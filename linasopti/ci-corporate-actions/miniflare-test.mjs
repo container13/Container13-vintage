@@ -6,11 +6,11 @@ const original = await readFile(new URL('../worker/WORKER_PENDING_RUNTIME_REPORT
 const marker = '    if (preUrl.pathname === "/deploy-status") return handleDeployStatus(request);';
 assert.equal(original.split(marker).length,2);
 const injected = '    if (preUrl.pathname === "/corporate-actions-diagnostic") { const response=await corporateProbeV3(request,env); const headers=new Headers(response.headers); for(const [key,value] of Object.entries(corsHeaders(request))) headers.set(key,value); return new Response(response.body,{status:response.status,headers}); }\n';
-const entry = 'import { corporateProbeV3 } from "./corporate_probe_v3_1.mjs";\n' + original.replace(marker,injected+marker);
+const entry = 'import { corporateProbeV4 as corporateProbeV3 } from "./corporate_probe_v4_candidate.mjs";\n' + original.replace(marker,injected+marker);
 const compiled=await build({stdin:{contents:entry,resolveDir:new URL('.',import.meta.url).pathname,sourcefile:'isolated-entry.mjs',loader:'js'},bundle:true,write:false,format:'esm',platform:'browser',target:'es2022'});
 const mock=createFetchMock();mock.disableNetConnect();
 const query=new URLSearchParams({symbols:'AAPL',types:'forward_split,cash_dividend',start:'2020-01-01',end:'2020-12-31',data_quality:'all',limit:'100'}).toString();
-const events={corporate_actions:{forward_splits:[{symbol:'AAPL',process_date:'2020-08-31',ex_date:'2020-08-31',old_rate:1,new_rate:4}],cash_dividends:[]},next_page_token:null};
+const events={corporate_actions:{forward_splits:[{id:'S1',cusip:'037833100',symbol:'AAPL',process_date:'2020-08-31',ex_date:'2020-08-31',old_rate:1,new_rate:4}],cash_dividends:[]},next_page_token:null};
 const route=(token)=>'/v1/corporate-actions?'+query+(token?'&page_token='+token:'');
 const intercept=(body,status=200,token)=>mock.get('https://data.alpaca.markets').intercept({method:'GET',path:route(token)}).reply(status,body);
 intercept(events);
@@ -27,7 +27,7 @@ try {
  const deniedAgain=await mf.dispatchFetch(url,{method:'POST',headers:{'X-Lina-Login-Code':'wrong'}});assert.equal(deniedAgain.status,401);
  const missingAgain=await mf.dispatchFetch(url,{method:'POST'});assert.equal(missingAgain.status,401);
  assert.equal(mock.pendingInterceptors().length,pendingBefore,'Unauthorized requests must not consume Alpaca interceptors');
- const passed=await mf.dispatchFetch(url,{method:'POST',headers:{'X-Lina-Login-Code':'TEST_ONLY'}});assert.equal(passed.status,200);const data=await passed.json();assert.equal(data.validated.forward_splits,1);assert.equal(data.complete,true);
+ const passed=await mf.dispatchFetch(url,{method:'POST',headers:{'X-Lina-Login-Code':'TEST_ONLY'}});assert.equal(passed.status,200);const data=await passed.json();assert.equal(data.classification.counts.validated.forward_splits,1);assert.equal(data.complete,true);
  const auth={'X-Lina-Login-Code':'TEST_ONLY'};
  const rate=await mf.dispatchFetch(url,{method:'POST',headers:auth});assert.equal(rate.status,502);assert.equal((await rate.json()).providerStatus,429);
  const malformed=await mf.dispatchFetch(url,{method:'POST',headers:auth});assert.equal(malformed.status,502);
@@ -49,5 +49,5 @@ try {
    if(body!==null)assert.ok(!body.includes('FAKE')&&!body.includes('TEST_ONLY'));
  }
  mock.assertNoPendingInterceptors();
- console.log('PASS zero Alpaca calls on unauthorized requests; isolated actual-router Miniflare: auth, method, split, health, rate-limit, malformed schema, pagination token loop, offline');
+ console.log('PASS V4 actual router: zero Alpaca calls on unauthorized requests; isolated actual-router Miniflare: auth, method, split, health, rate-limit, malformed schema, pagination token loop, offline');
 } finally {await mf.dispose();}
