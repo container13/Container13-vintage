@@ -11,7 +11,7 @@ const compiled=await build({stdin:{contents:entry,resolveDir:new URL('.',import.
 const mock=createFetchMock();mock.disableNetConnect();
 const query=new URLSearchParams({symbols:'AAPL',types:'forward_split,cash_dividend',start:'2020-01-01',end:'2020-12-31',data_quality:'all',limit:'100'}).toString();
 mock.get('https://data.alpaca.markets').intercept({method:'GET',path:'/v1/corporate-actions?'+query}).reply(200,{corporate_actions:{forward_splits:[{symbol:'AAPL',process_date:'2020-08-31',ex_date:'2020-08-31',old_rate:1,new_rate:4}],cash_dividends:[]},next_page_token:null});
-const mf=new Miniflare({modules:true,script:compiled.outputFiles[0].text,fetchMock,bindings:{LINA_LOGIN_CODE:'TEST_ONLY',APCA_API_KEY_ID:'FAKE',APCA_API_SECRET_KEY:'FAKE'}});
+const mf=new Miniflare({modules:true,script:compiled.outputFiles[0].text,fetchMock:mock,bindings:{LINA_LOGIN_CODE:'TEST_ONLY',APCA_API_KEY_ID:'FAKE',APCA_API_SECRET_KEY:'FAKE'}});
 const url='http://localhost:8787/corporate-actions-diagnostic';
 try {
  const denied=await mf.dispatchFetch(url,{method:'POST',headers:{'X-Lina-Login-Code':'wrong'}});assert.equal(denied.status,401);
