@@ -26,3 +26,11 @@ Nästa: kontrollera GitHub Actions körningssidan för denna branch och samla jo
 - Lokal originalfil `corporate_probe_v3_1.mjs` SHA-256 `b134f2f54a6fe140217c008bd31ef1891a4a0e3b977a4cbe1907943b686f59ef`, Git blob `42ed77d5878030e3ef3b641d2afbbdfe0ffbd1d6`. Den isolerade GitHub-filens blob SHA var `aabede4a872e8aed9d0c234db53cad8aad92ce79`. **De är inte byte-identiska**; filöverföring till CI är en implementation med förenklad/överförd källkod. Ett CI-PASS skulle därför inte ensamt validera den tidigare exakta lokala V3.1-versionen.
 - Nästa obligatoriska grind: synligt workflow run/job log-kvitto, därefter byte-identitet eller explicit granskad diff mellan lokal V3.1 och CI-version, samt verkligt integrationsupplägg för full Worker-router. Får inte mergeas/deployas till produktionsgrenen.
 - Gen8–16 frysta, Gen16 NO_CANDIDATE, Gen17 DRAFT_ONLY; handel och ny Forward AV, inga riktiga Alpaca-anrop.
+
+
+## 2026-10-28 – Originalfiler byte-identiska på isolerad testgren
+- V3.1 lokalt original `/mnt/data/lina_diagnostic/corporate_probe_v3_1.mjs` Git blob `42ed77d5878030e3ef3b641d2afbbdfe0ffbd1d6`; GitHub-testgrenens V3.1 efter commit `a89fa3d1ff64cc3b40c91f8228cd8b4021feecaa` lästes på exakt commit och gav **samma blob-SHA: PASS**.
+- V2 lokalt original `/mnt/data/lina_diagnostic/corporate_probe.mjs` Git blob `51a957fab9185c4a7970a0387cfe0aa26c670443`; GitHub-testgrenens V2 vid commit `d3420947cf5597318f7cd17a4370cd33b09241c2` lästes exakt och gav **samma blob-SHA: PASS**.
+- Nuvarande Miniflare-testprogram använder således rätt lokala V2 och V3.1-källfiler på testgrenen, men **ingen GitHub Actions-jobblogg är verifierad ännu**. GitHub-verktygets commit-workflow-lookup filtrerar PR-körningar och är inte tillräcklig kontroll av push-workflows. Även vanlig commit-status har varit tom.
+- Ingen production-Worker eller releasegrind har ändrats; inget verkligt Alpaca-anrop har gjorts. Testgrenens CI kan endast räknas PASS när jobblogg bevisar exakt körning. Kvar att granska: om runtime-testet använder original Worker-router eller bara en wrapper. Ingen merge till produktionsgrenen.
+- Gen8–16 frysta, Gen16 NO_CANDIDATE, Gen17 DRAFT_ONLY, Handel och ny Forward AV.
