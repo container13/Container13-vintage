@@ -802,3 +802,6 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 
 
 2026-10-28 – Exact bundled V4 Worker now tested PASS. Commit 2c6014fd724ad9a17b57b862f84b9c258b3afe36 changes Miniflare to run actual generated .candidate-build/WORKER_V4_RELEASE_CANDIDATE.js. GitHub Actions run 40760704845 job 123071528940 fixture, build and exact-bundle offline runtime all SUCCESS. CURRENT_STATE commit 778934bed51137092401587809a8743f7d6c8d5d. No production deploy or live Alpaca. Still requires full versioned release checklist and controlled production approval. Gen17 DRAFT_ONLY, trade and new Forward OFF.
+
+
+2026-10-28 V0.4.46 prerelease checklist reviewed. CI 40760704845 exact-bundle offline PASS. version.js remains V0.4.45; no production deployment. Pending release gates: version/cache integrity, actual deploy-source integration, live and UI checks, rollback. NO-GO production; Gen17 DRAFT_ONLY; trading/Forward OFF.
