@@ -805,3 +805,6 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 
 
 2026-10-28 V0.4.46 prerelease checklist reviewed. CI 40760704845 exact-bundle offline PASS. version.js remains V0.4.45; no production deployment. Pending release gates: version/cache integrity, actual deploy-source integration, live and UI checks, rollback. NO-GO production; Gen17 DRAFT_ONLY; trading/Forward OFF.
+
+
+2026-10-28 V0.4.46 isolation: CURRENT_STATE synced 8ea77458; version.js staged 0b03b3d6; 94 index asset cache tokens staged cafb944e; release-gate metadata ab8e16cb. Isolated workflow integrity run 40761355837: fixtures/build/exact bundled Miniflare PASS but full release integrity FAIL: old CURRENT_STATE.release V0.4.45, obsolete PAUSED checkpoint and old release gate. Checkpoint now IN_PROGRESS target V0.4.46 in commit 9b6d23f2; canonical release purposely remains V0.4.45 until genuine live verification, so full release-integrity gate remains blocked by design. Do NOT fake release state to obtain PASS. No production deploy, no live Alpaca, Gen17 DRAFT_ONLY, Handel/Forward OFF. Next: prepare deployment preflight and explicit release decision; do not modify frozen research.
