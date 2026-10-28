@@ -787,3 +787,6 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 
 
 2026-10-28: V4 genom faktisk Worker-router i isolerad Miniflare PASS. Testprogram uppdaterat i commit 460a7d578a55db7237d9a5103d033a2eab17364b; temporärt injicerad route använder corporateProbeV4 och syntetisk split med id/cusip. GitHub Actions run 40758010388 job 123062026243 COMPLETED SUCCESS; både Miniflare-test och schema-fixture-test SUCCESS. Detta är inte produktionsdeployment eller autentisk Alpaca/PIT-certifiering. V3.1 oförändrad, Gen17 DRAFT_ONLY, Handel och Forward AV. Nästa steg: kontrollera V4 negativa fall ytterligare och sammanställa definitiv isolerad diagnostikgrind.
+
+
+2026-10-28 V4 negative-case CI: run 40758388233 PASS, commit 093e99dc. Tests cover incomplete split, invalid symbol, pagination limit, earlier auth/CORS. Offline only; production unchanged, Gen17 DRAFT_ONLY, trading/Forward OFF.
