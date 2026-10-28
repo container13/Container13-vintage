@@ -1,0 +1,23 @@
+name: Lina Corporate Actions isolated Miniflare CI
+on:
+  push:
+    branches:
+      - lina-corporate-actions-ci-isolated
+    paths:
+      - '.github/workflows/lina-corporate-actions-isolated.yml'
+      - 'linasopti/ci-corporate-actions/**'
+jobs:
+  offline-worker-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated test dependencies only
+        run: npm install --no-save --ignore-scripts miniflare esbuild
+      - name: Run offline Miniflare integration test
+        run: node linasopti/ci-corporate-actions/miniflare-test.mjs
