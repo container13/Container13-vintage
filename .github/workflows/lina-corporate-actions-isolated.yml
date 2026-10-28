@@ -24,3 +24,5 @@ jobs:
         run: npm install --no-save --no-package-lock --ignore-scripts miniflare esbuild
       - name: Run isolated Miniflare test (network blocked)
         run: node linasopti/ci-corporate-actions/miniflare-test.mjs
+      - name: Run isolated documented schema fixture check
+        run: node linasopti/ci-corporate-actions/schema-fixtures-test.mjs
