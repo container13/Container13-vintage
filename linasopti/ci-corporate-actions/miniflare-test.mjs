@@ -1,12 +1,12 @@
 import assert from 'node:assert/strict';
 import { build } from 'esbuild';
 import { Miniflare, createFetchMock } from 'miniflare';
-const entry=`import base from "../worker/WORKER_PENDING_RUNTIME_REPORT.js";
-import { corporateProbeV3 } from "./corporate_probe_v3_1.mjs";
-export default { async fetch(request,env,ctx) {
- if(new URL(request.url).pathname==="/corporate-actions-diagnostic") return corporateProbeV3(request,env);
- return base.fetch(request,env,ctx);
-}};`;
+import { readFile } from 'node:fs/promises';
+const original = await readFile(new URL('../worker/WORKER_PENDING_RUNTIME_REPORT.js',import.meta.url),'utf8');
+const marker = '    if (preUrl.pathname === "/deploy-status") return handleDeployStatus(request);';
+assert.equal(original.split(marker).length,2);
+const injected = '    if (preUrl.pathname === "/corporate-actions-diagnostic") return corporateProbeV3(request,env);\n';
+const entry = 'import { corporateProbeV3 } from "./corporate_probe_v3_1.mjs";\n' + original.replace(marker,injected+marker);
 const compiled=await build({stdin:{contents:entry,resolveDir:new URL('.',import.meta.url).pathname,sourcefile:'isolated-entry.mjs',loader:'js'},bundle:true,write:false,format:'esm',platform:'browser',target:'es2022'});
 const mock=createFetchMock();mock.disableNetConnect();
 const query=new URLSearchParams({symbols:'AAPL',types:'forward_split,cash_dividend',start:'2020-01-01',end:'2020-12-31',data_quality:'all',limit:'100'}).toString();
