@@ -6,6 +6,8 @@ on:
     paths:
       - '.github/workflows/lina-corporate-actions-isolated.yml'
       - 'linasopti/ci-corporate-actions/**'
+      - 'linasopti/version.js'
+      - 'linasopti/index.html'
   workflow_dispatch:
 permissions:
   contents: read
@@ -28,3 +30,5 @@ jobs:
         run: node linasopti/ci-corporate-actions/build-v4-release-candidate.mjs
       - name: Test exact bundled Worker offline
         run: node linasopti/ci-corporate-actions/miniflare-test.mjs
+      - name: Static V046 release integrity gate
+        run: python3 linasopti/tools/release_integrity.py
