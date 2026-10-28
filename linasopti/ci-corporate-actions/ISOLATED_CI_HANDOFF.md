@@ -18,3 +18,11 @@ VIKTIGA BEGRÄNSNINGAR:
 5. Gen8–16 frysta, Gen16 NO_CANDIDATE; Gen17 DRAFT_ONLY. Handel och ny Forward AV.
 
 Nästa: kontrollera GitHub Actions körningssidan för denna branch och samla jobbkvitto/logg. Om workflow aldrig startade, gör en ny testgren-commit (utan att ändra produktion). Vid PASS kan vi gå vidare till strikt full Worker router-integrations- och säkerhetsgate; annars åtgärda testhärvan på isolerad gren.
+
+
+## 2026-10-28 – CI-trigger förbättrad, resultat fortsatt OBEKRÄFTAT
+- Workflow ändrad **endast i isolerad gren** via commit `9ec9cac19862f29aa89a7a8e76fc1530a6e2005f`: installerar nu testberoenden i `linasopti/ci-corporate-actions`, tillåter manuell `workflow_dispatch`, begränsar körning till isolerad gren, har bara `contents: read` och inget deploy-kommando eller kopplade hemligheter. Exakt GitHub-readback PASS.
+- Nya commitens combined statuses och PR-filterbaserade workflow-run lookup returnerar båda tomma listor. Detta är **inte** kvitto på att push-körningen har misslyckats, lyckats eller ens startat. Ingen Actions-logg har kunnat hämtas med tillgängliga verktyg.
+- Lokal originalfil `corporate_probe_v3_1.mjs` SHA-256 `b134f2f54a6fe140217c008bd31ef1891a4a0e3b977a4cbe1907943b686f59ef`, Git blob `42ed77d5878030e3ef3b641d2afbbdfe0ffbd1d6`. Den isolerade GitHub-filens blob SHA var `aabede4a872e8aed9d0c234db53cad8aad92ce79`. **De är inte byte-identiska**; filöverföring till CI är en implementation med förenklad/överförd källkod. Ett CI-PASS skulle därför inte ensamt validera den tidigare exakta lokala V3.1-versionen.
+- Nästa obligatoriska grind: synligt workflow run/job log-kvitto, därefter byte-identitet eller explicit granskad diff mellan lokal V3.1 och CI-version, samt verkligt integrationsupplägg för full Worker-router. Får inte mergeas/deployas till produktionsgrenen.
+- Gen8–16 frysta, Gen16 NO_CANDIDATE, Gen17 DRAFT_ONLY; handel och ny Forward AV, inga riktiga Alpaca-anrop.
