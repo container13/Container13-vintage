@@ -6,18 +6,21 @@ on:
     paths:
       - '.github/workflows/lina-corporate-actions-isolated.yml'
       - 'linasopti/ci-corporate-actions/**'
+  workflow_dispatch:
+permissions:
+  contents: read
 jobs:
   offline-worker-test:
+    if: github.ref == 'refs/heads/lina-corporate-actions-ci-isolated'
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Install isolated test dependencies only
-        run: npm install --no-save --ignore-scripts miniflare esbuild
-      - name: Run offline Miniflare integration test
+      - name: Install test-only dependencies (no scripts)
+        working-directory: linasopti/ci-corporate-actions
+        run: npm install --no-save --no-package-lock --ignore-scripts miniflare esbuild
+      - name: Run isolated Miniflare test (network blocked)
         run: node linasopti/ci-corporate-actions/miniflare-test.mjs
