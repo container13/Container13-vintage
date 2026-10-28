@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {classifyEvent} from './corporate_probe_v3_1.mjs';
-import {classifyEventV4,inspectV4Pages} from './corporate_probe_v4_candidate.mjs';
+import {classifyEventV4,inspectV4Pages,corporateProbeV4} from './corporate_probe_v4_candidate.mjs';
 const event={id:'sample-id',symbol:'AAPL',cusip:'037833100',process_date:'2020-08-31',ex_date:'2020-08-31',old_rate:1,new_rate:4};
 const missingId={...event};delete missingId.id;
 const missingCusip={...event};delete missingCusip.cusip;
@@ -32,3 +32,12 @@ assert.equal((await inspectV4Pages([pageOne])).error,'TRUNCATED');
 assert.equal((await inspectV4Pages([pageOne,{...pageTwo,next_page_token:'NEXT'}])).error,'TOKEN');
 assert.equal((await inspectV4Pages([{...pageTwo,corporate_actions:{forward_splits:'bad'}}])).error,'SCHEMA');
 console.log('PASS V4 multipage fixtures');
+
+let calls=0;
+const req=new Request('https://test.invalid/diagnostic',{method:'POST',headers:{'X-Lina-Login-Code':'T'}});
+const env={LINA_LOGIN_CODE:'T',APCA_API_KEY_ID:'K',APCA_API_SECRET_KEY:'S'};
+const resp=await corporateProbeV4(req,env,async ()=>Response.json(++calls===1?pageOne:pageTwo));
+assert.equal(resp.status,200);
+assert.equal(calls,2);
+assert.equal((await resp.json()).classification.counts.incomplete.forward_splits,2);
+console.log('PASS V4 complete response across two pages');
