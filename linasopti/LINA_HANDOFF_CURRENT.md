@@ -790,3 +790,6 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 
 
 2026-10-28 V4 negative-case CI: run 40758388233 PASS, commit 093e99dc. Tests cover incomplete split, invalid symbol, pagination limit, earlier auth/CORS. Offline only; production unchanged, Gen17 DRAFT_ONLY, trading/Forward OFF.
+
+
+2026-10-28 – Live Alpaca gate: Isolated V4 mock CI PASS (run 40758388233). Existing GitHub CI has no live credentials, outbound network disabled, so entitlement/schema/PIT not verified. Production branch must not change. Next: determine a separate credentials-safe read-only execution route before any authenticated AAPL corporate-actions probe. No real call approved yet; Gen17 DRAFT_ONLY, trade and new Forward OFF.
