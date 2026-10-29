@@ -21,7 +21,8 @@ jobs:
           receipts=[]
           for symbol,checks in events.items():
               q=urllib.parse.urlencode({"symbols":symbol,"timeframe":"1Day","feed":"sip","adjustment":"raw","start":"2020-01-01","end":"2024-12-31"})
-              with urllib.request.urlopen(base+"?"+q,timeout=90) as response: obj=json.load(response)
+              req=urllib.request.Request(base+"?"+q,headers={"User-Agent":"Lina-Gen17-16-raw-audit/1","Accept":"application/json"})
+              with urllib.request.urlopen(req,timeout=90) as response: obj=json.load(response)
               if obj.get("ok") is not True or obj.get("adjustment")!="raw" or obj.get("feed")!="sip":raise RuntimeError(symbol+" invalid metadata")
               rows=obj["rows"]; dates=[x["t"][:10] for x in rows]
               for day,factor in checks:
