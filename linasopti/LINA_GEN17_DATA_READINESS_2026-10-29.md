@@ -45,3 +45,10 @@ ALFRED official documentation supports historical real-time periods and vintages
 - Direct container download and Python requests both failed (network/name resolution). Web fetch reported redirect to https://cdn-api.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv and inability to access that destination. Direct web fetch of redirected URL also failed. NO original CSV bytes acquired, NO row audit and NO SHA-256 calculated. Do not claim dataset verified.
 - Third-party copies located, but intentionally NOT substituted as authoritative source. Next safe action: fetch exact original Cboe CSV in a network-enabled environment or obtain verifiable Cboe-origin artifact, preserve byte hash and capture retrieval metadata, then validate 2020–2024 date coverage/duplicates/missing sessions and conservative availability lag before any research.
 - Gen17 stays DRAFT_ONLY/BLOCKED_DATA. No strategy backtest, production deployment, trading or Forward.
+
+
+## 2026-10-29 – user-supplied VIX_History.csv byte audit
+- User supplied CSV file, not independently downloaded by assistant. File size 474247 bytes; SHA256 b0d2e90197b4b5403fd689fc580eb2506f07c867f0115034810c7218fc986b7f. Filename VIX_History.csv. CSV header DATE,OPEN,HIGH,LOW,CLOSE.
+- 9304 rows, chronological 1990-01-02 through 2026-10-28. Zero malformed dates, duplicate dates, empty cells, weekends, invalid/nonpositive numeric OHLC.
+- 2020:253 rows, 2021:252, 2022:256, 2023:257, 2024:259; total 1277. Zero OHLC high/low consistency violations in 2020-2024. Whole file contains 47 OHLC high/low violations, all outside target 2020-2024 period; investigate if older dates ever used.
+- Important: byte hash authenticates this supplied snapshot only, not independent Cboe provenance or historical as-of availability. Exchange calendar completeness, publication/receipt timestamp, redistribution/license and point-in-time vintages remain unverified. NO research or backtest authorized. Gen17 DRAFT_ONLY/BLOCKED_DATA pending these gates.
