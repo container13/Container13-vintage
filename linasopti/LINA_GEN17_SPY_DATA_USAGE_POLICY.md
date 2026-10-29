@@ -14,6 +14,6 @@ Research rules:
 - Do not trade at a close used to compute that same signal.
 - 2020-2024 has been inspected and is not an untouched holdout.
 
-Remaining gates: dividend CI outcome, independent ex-dividend verification, historical as-of availability, provider entitlement and data rights, reproducible snapshot hashes, previous Gen10/12 research review, explicit approval before Gen17 experiments.
+Remaining gates: Alpaca corporate-action event feed reconciliation, historical as-of availability, provider entitlement and data rights, reproducible raw-data snapshots, previous Gen10/12 research review, explicit approval before Gen17 experiments.
 
 No production deployment authorized.
