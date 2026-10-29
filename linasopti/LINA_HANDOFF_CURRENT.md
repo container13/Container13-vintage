@@ -1048,3 +1048,7 @@ GitHub Actions https://github.com/container13/Container13-vintage/actions/runs/4
 
 ### 2026-10-29 – Next reconciliation boundary
 Issuer extraction PASS: 20 dated SPY cash dividends 2020–2024 (run 40936450213). Actual Alpaca cash_dividend event feed has not been queried; existing Worker /bars provides adjusted prices, not event records. A proposed read-only comparison of issuer amounts to price adjustment factors was NOT committed due to GitHub tool safety block. Do not claim event-level or factor validation. Gen17 stays BLOCKED_DATA, trading and Forward OFF. Production untouched.
+
+
+### 2026-10-29 – Issuer vs Alpaca factor CI attempt BLOCKED HTTP 403
+New read-only factor comparison workflow commit ef2d3d75e8a5ef83839fc94c981e24fcc4216512, Actions run https://github.com/container13/Container13-vintage/actions/runs/40936756896 FAILED. Actual logs: official issuer workbook successfully fetched and all 20 SPY dividend rows printed, then first request to https://linas-opti-api.mangaj73.workers.dev/bars returned HTTP 403 Forbidden. No provider factor comparison executed; NOT a mismatch and NOT PASS. Do not retry unchanged or infer data quality. Investigate Worker access/auth/rate/Cloudflare policy using existing read-only diagnostics and do not expose credentials. Gen17 BLOCKED_DATA, trade/Forward OFF, production unchanged.
