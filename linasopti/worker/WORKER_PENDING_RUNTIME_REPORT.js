@@ -2794,6 +2794,19 @@ export default {
 
 
     if (url.pathname === "/bars") {
+      // Gen17 isolated security candidate. No production deployment authorized.
+      if (!env.LINA_LOGIN_CODE) return json({ok:false,error:"Lina login is not configured"},503,request);
+      if (request.headers.get("X-Lina-Login-Code") !== env.LINA_LOGIN_CODE) return json({ok:false,error:"Unauthorized"},401,request);
+      const barSymbols = (url.searchParams.get("symbols") || "").toUpperCase().replace(/\s/g,"");
+      const barStart = url.searchParams.get("start") || "";
+      const barEnd = url.searchParams.get("end") || "";
+      if (!/^[A-Z]{1,8}(,[A-Z]{1,8}){0,4}$/.test(barSymbols) ||
+          !/^20\d{2}-\d{2}-\d{2}$/.test(barStart) ||
+          !/^20\d{2}-\d{2}-\d{2}$/.test(barEnd) ||
+          barStart > barEnd ||
+          (Date.parse(barEnd) - Date.parse(barStart)) > 6 * 366 * 86400000) {
+        return json({ok:false,error:"Invalid scoped bars request"},400,request);
+      }
 
       const feed = url.searchParams.get("feed") || "iex";
       const adjustment = url.searchParams.get("adjustment") || "raw";
