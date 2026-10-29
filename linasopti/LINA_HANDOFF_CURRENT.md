@@ -886,3 +886,7 @@ Official ALFRED/FRED documentation confirms historical vintages and real-time ob
 
 ## 2026-10-29 – Gen17 named ALFRED/FRED candidate screen
 Verified FRED documentation: VIXCLS is a daily VIX close series and T10Y2Y a daily Treasury 10y–2y spread; ALFRED API supports vintage queries. Neither candidate's 2020–2024 vintage payload, exact historical availability cutoff, missingness or licensing is verified. VIXCLS first to audit; do not infer same-day availability from observation date; enforce proven cutoff or predeclared conservative lag. Notes and URLs in LINA_GEN17_DATA_READINESS_2026-10-29.md (commit 46894098); CURRENT_STATE checkpoint commit 562a2a93. No backtest, deployment, trading or Forward. Gen17 DRAFT_ONLY/BLOCKED_DATA.
+
+
+## 2026-10-29 – VIXCLS official-source data gate
+Cboe official site documents historical VIX daily closes 1990–present, but no actual historical rows or hashes retrieved. FRED VIXCLS daily close is Cboe-sourced and carries licensing notes. ALFRED observation/vintage endpoints require registered API key; date-level vintage cannot prove exact pre-entry publication time. Need payload, missingness/hash, rights, historical as-of cutoff or conservative predeclared lag. Detailed sources and audit in LINA_GEN17_DATA_READINESS_2026-10-29.md commit 56b620fe; CURRENT_STATE commit 3f459f50. Gen17 DRAFT_ONLY/BLOCKED_DATA; no backtest, no production changes, trade/Forward OFF.
