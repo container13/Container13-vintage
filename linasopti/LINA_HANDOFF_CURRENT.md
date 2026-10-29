@@ -856,3 +856,6 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 
 
 2026-10-29 V046 packaging milestone: GitHub Actions run 40902669506 completed SUCCESS with Miniflare exact bundle, Wrangler SHA, `npx --yes wrangler@4 deploy --dry-run` from linasopti/worker, and candidate gate all PASS. Workflow commit 58aa09ec, CURRENT_STATE commit 95781761. Production branch still 8b9eda07. This was dry-run only: no deploy, no Cloudflare Build command changes, no Alpaca call. V0.4.45 remains live, V0.4.46 candidate; Gen17 DRAFT_ONLY, Handel/Forward OFF. Next gate: production release integrity compatibility and narrowly scoped rollback/release authorization.
+
+
+2026-10-29 – Retry succeeded: source gate in `linasopti/tools/release_integrity.py` updated on isolated branch commit 8069eb89 to accept only existing reviewed original Worker or committed V046 Worker, requiring V0.4.46 metadata and diagnostic route for V046. CURRENT_STATE commit 359c8fe7. Canonical live release remains V0.4.45, so full production gate must remain blocked until actual verified release; no production changes, Gen17 DRAFT_ONLY, trading and new Forward OFF.
