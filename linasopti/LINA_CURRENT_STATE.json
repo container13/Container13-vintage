@@ -231,15 +231,9 @@
     "externalSourceScreen": {
       "date": "2026-10-29",
       "status": "DOCUMENTATION_ONLY_NO_DATA_VERIFIED",
-      "preferredCandidate": "ALFRED real-time economic data vintages",
-      "rationale": "ALFRED supports historical realtime periods and vintage observations; candidate series, availability timing, frequency and fit to Gen17 are unverified",
-      "alternatives": "Alpaca stock bars adjustment/asof symbol mapping does not by itself prove historical observation release timestamps",
-      "next": "Identify one specific ALFRED series, retrieve documented release/vintage schedule, check 2020-2024 coverage and as-of cutoff; no research authorization",
-      "sources": [
-        "https://fred.stlouisfed.org/docs/api/fred/realtime_period.html",
-        "https://fred.stlouisfed.org/docs/api/fred/series_observations.html",
-        "https://docs.alpaca.markets/us/reference/stockbars"
-      ]
+      "preferredCandidate": "ALFRED historical vintages",
+      "next": "Verify specific series and point-in-time release cutoff; no research authorized",
+      "reference": "LINA_GEN17_DATA_READINESS_2026-10-29.md"
     }
   }
 }
