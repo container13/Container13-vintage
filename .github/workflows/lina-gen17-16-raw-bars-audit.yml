@@ -1,0 +1,53 @@
+name: Lina Gen17 16-symbol SIP raw OHLC audit (read-only)
+on:
+  push:
+    branches: [lina-corporate-actions-ci-isolated]
+    paths: ['.github/workflows/lina-gen17-16-raw-bars-audit.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  raw-bars:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Audit all 16 symbols against existing 1258-session SPY baseline
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import urllib.request,urllib.parse,json,hashlib,datetime,math,time
+          BASE="https://linas-opti-api.mangaj73.workers.dev/bars"
+          SYMBOLS="AMD SHOP ADBE MU FDX TSLA LUV NFLX C NOW QCOM BAC GM DDOG PYPL NVDA".split()
+          expected=None
+          summary=[]
+          for symbol in SYMBOLS:
+              q=urllib.parse.urlencode({"symbols":symbol,"timeframe":"1Day","feed":"sip","adjustment":"raw","start":"2020-01-01","end":"2024-12-31"})
+              req=urllib.request.Request(BASE+"?"+q,headers={"User-Agent":"Lina-Gen17-16-raw-audit/1","Accept":"application/json"})
+              with urllib.request.urlopen(req,timeout=90) as resp:
+                  payload=resp.read(16000000)
+                  if resp.status!=200:raise RuntimeError(f"{symbol} HTTP {resp.status}")
+              obj=json.loads(payload)
+              rows=obj.get("rows")
+              if not obj.get("ok") or obj.get("feed")!="sip" or obj.get("adjustment")!="raw" or obj.get("timeframe")!="1Day" or not isinstance(rows,list):
+                  raise RuntimeError(f"{symbol} metadata/schema mismatch")
+              if obj.get("rowCount")!=len(rows) or len(rows)!=1258:raise RuntimeError(f"{symbol} unexpected rows {len(rows)}")
+              dates=[]
+              for x in rows:
+                  if x.get("symbol")!=symbol:raise RuntimeError(f"{symbol} symbol mismatch")
+                  d=datetime.date.fromisoformat(x["t"][:10])
+                  if d.year<2020 or d.year>2024:raise RuntimeError(f"{symbol} date out of scope")
+                  dates.append(d.isoformat())
+                  o,h,l,c,v=(x.get(k) for k in ("o","h","l","c","v"))
+                  if not all(isinstance(z,(int,float)) and math.isfinite(z) for z in (o,h,l,c,v)) or not (0<l<=min(o,c)<=max(o,c)<=h and v>=0):
+                      raise RuntimeError(f"{symbol} invalid OHLCV {d}")
+              if dates!=sorted(set(dates)):raise RuntimeError(f"{symbol} duplicate/unsorted dates")
+              if expected is None:expected=dates
+              elif dates!=expected:raise RuntimeError(f"{symbol} misaligned dates")
+              digest=hashlib.sha256(json.dumps(rows,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+              receipt={"symbol":symbol,"count":len(rows),"first":dates[0],"last":dates[-1],"canonicalRowsSha256":digest,"workerDataRevision":obj.get("workerDataRevision"),"source":obj.get("source"),"feed":"sip","adjustment":"raw"}
+              summary.append(receipt)
+              print("PASS_SYMBOL",json.dumps(receipt,sort_keys=True),flush=True)
+          assert len(summary)==16
+          print("PASS_16_RAW_BAR_CONTRACT",json.dumps({"symbols":16,"sessionsPerSymbol":1258,"aligned":True,"retrievedUtc":datetime.datetime.now(datetime.timezone.utc).isoformat(),"receipts":summary},sort_keys=True))
+          print("LIMIT: Worker claims raw; no independent vendor/raw basis, issuer split/dividend completeness, point-in-time, licensing or research approval. No backtest.")
+          PY
