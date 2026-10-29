@@ -872,3 +872,9 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 - Inget oberoende historiskt marknadsindex, point-in-time observationsserie eller as-of medlemskapsdata identifierades i det granskade repo-trädet och specifikationerna. Det bevisar inte att data saknas externt.
 - Gen17 datastatus BLOCKED_DATA, livscykel DRAFT_ONLY. Saknas: oberoende tidsstämplad marknadsserie; as-of medlemskap; källa/version/hash; justeringspolicy och bolagshändelsers historiska publicerings-/mottagningstid; förregistrerat framtida valideringsfönster.
 - Nästa: verifiera möjlig extern datakälla och dess point-in-time kontrakt innan en enda ny hypotes föreslås. Ingen backtest, runnerspec, planlås, handel, Forward, produktionsgren eller Cloudflare ändrad.
+
+
+### 2026-10-29 – extern datakällescreening (enbart dokumentation)
+- ALFRED/FRED:s officiella API stöder real-time-perioder, historiska vintages och observationer som var kända vid historiska datum. Lovande för punkt-i-tid-kontroll, men INGEN specifik serie, dataåtkomst, frekvens, releaseklockslag eller Gen17-relevans är ännu verifierad. Källor: https://fred.stlouisfed.org/docs/api/fred/realtime_period.html och https://fred.stlouisfed.org/docs/api/fred/series_observations.html
+- Alpaca stock bars har adjustment och `asof` för symbolidentitet; det är INTE bevis för historisk publiceringstid för marknadstillstånd eller corporate actions. Källa: https://docs.alpaca.markets/us/reference/stockbars
+- Prioriterad nästa verifiering: välj en specifik ALFRED-serie, kontrollera historisk vintagetäckning 2020–2024, tillgänglighet före varje signal och om frekvensen duger. Ingen extern data hämtad, inget nytt strategiförslag, ingen backtest. Gen17 fortsatt DRAFT_ONLY/BLOCKED_DATA.
