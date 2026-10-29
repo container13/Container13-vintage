@@ -234,6 +234,18 @@
       "preferredCandidate": "ALFRED historical vintages",
       "next": "Verify specific series and point-in-time release cutoff; no research authorized",
       "reference": "LINA_GEN17_DATA_READINESS_2026-10-29.md"
+    },
+    "namedSeriesScreen": {
+      "date": "2026-10-29",
+      "status": "UNVERIFIED_DATA",
+      "candidates": [
+        "VIXCLS daily close",
+        "T10Y2Y daily yield spread"
+      ],
+      "preferredForNextAudit": "VIXCLS",
+      "blocker": "Historical observation publication/receipt timestamps, vintage coverage, lag policy and license not verified",
+      "sourceDocument": "LINA_GEN17_DATA_READINESS_2026-10-29.md",
+      "researchAuthorized": false
     }
   }
 }
