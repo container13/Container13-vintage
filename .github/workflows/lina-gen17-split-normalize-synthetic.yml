@@ -1,0 +1,40 @@
+name: Lina Gen17 split-normalized indicators synthetic
+on:
+  push:
+    branches: [lina-corporate-actions-ci-isolated]
+    paths: ['.github/workflows/lina-gen17-split-normalize-synthetic.yml','linasopti/gen17-split-normalize.DRAFT.js']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check split-adjusted indicator continuity without future event use
+        run: |
+          node <<'JS'
+          const assert=require('node:assert/strict');
+          const {normalizeToSession}=require('./linasopti/gen17-split-normalize.DRAFT.js');
+          const rows=[
+            {d:'2020-08-28',o:500,h:510,l:490,c:500,v:100},
+            {d:'2020-08-31',o:100,h:102,l:98,c:100,v:500},
+            {d:'2022-08-24',o:300,h:306,l:294,c:300,v:100},
+            {d:'2022-08-25',o:100,h:102,l:98,c:100,v:300}
+          ];
+          const before=normalizeToSession('TSLA',rows,'2020-08-28');
+          assert.equal(before.length,1);
+          assert.equal(before[0].c,500); // future splits cannot alter this vintage
+          const first=normalizeToSession('TSLA',rows,'2020-08-31');
+          assert.equal(first[0].c,100);
+          assert.equal(first[1].c,100);
+          const both=normalizeToSession('TSLA',rows,'2022-08-25');
+          assert.ok(Math.abs(both[0].c-500/15)<1e-12);
+          assert.ok(Math.abs(both[1].c-100/3)<1e-12);
+          assert.equal(both[2].c,100);
+          assert.equal(both[3].c,100);
+          assert.equal(both[0].v,1500);
+          assert.equal(rows[0].c,500);
+          assert.throws(()=>normalizeToSession('TSLA',[rows[1],rows[0]],'2022-08-25'),/SPLIT_DATE_ORDER/);
+          console.log('PASS_SPLIT_ASOF_SESSION_SYNTHETIC');
+          JS
