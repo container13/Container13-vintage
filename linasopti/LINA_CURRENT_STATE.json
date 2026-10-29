@@ -213,5 +213,20 @@
       }
     ],
     "resumeInstruction": "Static integrity must remain blocked on current_state_release while V0.4.46 is unshipped: CURRENT_STATE.release must remain V0.4.45 until verified actual live release. Complete release gates and deploy authorization separately. Do not change currentState.release merely to make CI green. Trade and Forward OFF."
+  },
+  "gen17DataInventory": {
+    "date": "2026-10-29",
+    "status": "BLOCKED_DATA",
+    "lifecycle": "DRAFT_ONLY",
+    "scope": "Repository read-only tree and Gen9 proposal plus Gen10-16 locked runnerspecs",
+    "finding": "Gen9 proposal breadth 5/16; Gen10 graded breadth; Gen12 8/16 breadth. Gen11 sector cap, Gen13 ranking, Gen14 persistence, Gen15 trend exit, Gen16 high channel. No independent market regime index or point-in-time membership dataset identified in inspected repository tree/specs; absence outside repo not established.",
+    "missing": [
+      "Independent market-state time series and historical point-in-time observation availability",
+      "As-of universe membership and provenance/version/hash",
+      "Corporate action adjustment and historical publication/receipt timestamps",
+      "Predeclared independent future validation window"
+    ],
+    "next": "Do not backtest. Obtain independently sourced, timestamped market series and verify point-in-time contract before proposing one new Gen17 rule.",
+    "researchAuthorized": false
   }
 }
