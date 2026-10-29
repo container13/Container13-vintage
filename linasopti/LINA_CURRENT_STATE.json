@@ -246,6 +246,19 @@
       "blocker": "Historical observation publication/receipt timestamps, vintage coverage, lag policy and license not verified",
       "sourceDocument": "LINA_GEN17_DATA_READINESS_2026-10-29.md",
       "researchAuthorized": false
+    },
+    "vixOfficialSourceAudit": {
+      "date": "2026-10-29",
+      "status": "DOCUMENTED_SOURCE_NO_VERIFIED_PAYLOAD",
+      "coverageClaim": "Cboe publishes historical daily VIX closes 1990-present; actual 2020-2024 rows not fetched",
+      "blockers": [
+        "API key needed for ALFRED vintage queries",
+        "Exact historical release timestamp vs next-open trade not proven",
+        "No immutable 2020-2024 payload/hash/missingness audit",
+        "Data reuse/license review"
+      ],
+      "next": "Obtain historical dataset and date-level vintages; predeclare conservative lag or prove availability; no research",
+      "readiness": "BLOCKED_DATA"
     }
   }
 }
