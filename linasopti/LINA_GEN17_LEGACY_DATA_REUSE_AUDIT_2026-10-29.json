@@ -1,0 +1,28 @@
+{
+  "schema": "LINA-GEN17-LEGACY-DATA-REUSE-AUDIT-1",
+  "date": "2026-10-29",
+  "source": "linasopti/evidence/LINA_GEN9_DATA_AUDIT_V2.json",
+  "sourceSha256": "cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c",
+  "legacyStatus": "BLOCKED_ADJUSTMENT_BASIS_MISMATCH",
+  "calendar": {
+    "symbols": 16,
+    "expectedRowsPerSymbol": 1258,
+    "failures": [],
+    "status": "PASS_REUSED"
+  },
+  "corporateActions": {
+    "recordedDividends": 135,
+    "recordedSplits": 5,
+    "maxInternalDividendFactorError": 4.217157172359265e-7,
+    "status": "INTERNAL_ARITHMETIC_ONLY"
+  },
+  "outstanding": {
+    "vendorAdjustmentBasis": "BLOCKED_ADJUSTMENT_BASIS_MISMATCH",
+    "pointInTime": "NOT_VERIFIED",
+    "issuerCompleteness": "NOT_VERIFIED",
+    "tradingAuthorization": false
+  },
+  "researchAuthorized": false,
+  "tradeEnabled": false,
+  "forwardEnabled": false
+}
