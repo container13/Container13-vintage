@@ -12,7 +12,7 @@ assert.ok(html.includes('?v=0.4.46')&&!html.includes('?v=0.4.45'));
 assert.ok(gate.includes("REQUIRED_RELEASE='V0.4.46'")&&gate.includes("REQUIRED_CACHE='0.4.46'"));
 assert.equal(state.release,'V0.4.45','Never claim candidate is live');
 assert.equal(state.workCheckpoint.targetRelease,'V0.4.46');
-assert.equal(wrangler.main,'../ci-corporate-actions/.candidate-build/WORKER_V4_RELEASE_CANDIDATE.js');
+assert.equal(wrangler.main,'./WORKER_V046_PREBUNDLED.js');
 assert.equal(artifact,await get('../worker/'+wrangler.main));
 assert.ok(artifact.includes('/corporate-actions-diagnostic'));
 console.log('PASS V0.4.46 candidate-stage gate; live state V0.4.45 preserved; NOT production release');
