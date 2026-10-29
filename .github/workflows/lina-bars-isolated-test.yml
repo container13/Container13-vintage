@@ -1,0 +1,23 @@
+name: Lina bars isolated contract test
+on:
+  push:
+    branches:
+      - lina-corporate-actions-ci-isolated
+    paths:
+      - 'linasopti/worker/test_bars_isolated.mjs'
+      - 'linasopti/worker/WORKER_PENDING_RUNTIME_REPORT.js'
+      - '.github/workflows/lina-bars-isolated-test.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  bars-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Mocked Alpaca bars contract tests
+        run: node --experimental-default-type=module linasopti/worker/test_bars_isolated.mjs
