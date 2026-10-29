@@ -416,6 +416,15 @@
         "limitations": "No Alpaca credentials available in local runtime; no authenticated data obtained. Historical daily bar timestamp is day start, not publication timestamp. Adjusted bars may incorporate future corporate actions.",
         "next": "Use authorized read-only Alpaca connection to fetch/preserve immutable raw SPY data, check access, completeness and source rights",
         "gen17Blocked": true
+      },
+      "acquisitionPreflight": {
+        "status": "SCRIPT_COMMITTED_AUTH_BLOCKED_NO_DATA",
+        "path": "linasopti/tools/audit_spy_bars.py",
+        "commit": "ffcc8d39a15d892c0d52dbcb2e9ce7b062913521",
+        "credentialsAvailable": false,
+        "actualApiRequest": false,
+        "actualSPYBars": false,
+        "next": "Execute read-only preflight only in authorized credential-enabled environment; review output before strategy research"
       }
     }
   }
