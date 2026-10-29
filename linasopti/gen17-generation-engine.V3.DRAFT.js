@@ -39,8 +39,27 @@ function summarize(trades,equity){
  let peak=SPEC.capital,dd=0;for(const e of equity){peak=Math.max(peak,e.value);dd=Math.min(dd,e.value/peak-1)}
  return{n:trades.length,pl:gp-gl,grossProfit:gp,grossLoss:gl,pf:gl?gp/gl:gp?null:null,pfKind:gl?'FINITE':gp?'NO_LOSSES':'NO_TRADES_OR_FLAT',dd,maxSymbolGrossProfitShare:gp?Math.max(...Object.values(by))/gp:null};
 }
+function assertSplitSafeSimulation(input,start,end){
+ // Fail closed: V3 is not authorized to simulate raw price histories that span a split.
+ // Checking the whole input window (including warmup) avoids unadjusted indicators
+ // silently mixing pre/post split scales. A later engine must implement a verified
+ // split ledger and share-quantity accounting before this restriction is relaxed.
+ const splitEvents=[
+  ['SHOP','2022-06-29',10],
+  ['TSLA','2020-08-31',5],
+  ['TSLA','2022-08-25',3],
+  ['NVDA','2021-07-20',4],
+  ['NVDA','2024-06-10',10]
+ ];
+ for(const [symbol,day] of splitEvents){
+  const rows=input[symbol];
+  if(Array.isArray(rows)&&rows.some(r=>r.d<=day)&&rows.some(r=>r.d>=day)&&day<=end)
+   throw Error('SPLIT_LEDGER_REQUIRED: '+symbol+' '+day+' x'+splitEvents.find(e=>e[0]===symbol&&e[1]===day)[2]);
+ }
+}
 function simulate(input,variant,start,end){
  if(!SPEC.variants.includes(variant)||start>end||end>SPEC.historyHardStop)throw Error('CONTRACT: fel variant eller datagräns');
+ assertSplitSafeSimulation(input,start,end);
  const {by,dates}=normalize(input,end),first=dates.findIndex(d=>d>=start),last=dates.length-1;if(first<181||first>last)throw Error('DATA: otillräcklig uppvärmning eller tom fold');
  let cash=SPEC.capital,previousEquity=SPEC.capital,positions=[];const trades=[],equity=[],events=[];
  for(let i=first;i<=last;i++){
