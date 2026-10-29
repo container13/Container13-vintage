@@ -835,3 +835,6 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 
 
 2026-10-29 V046 release package checkpoint: verified production head 8b9eda07b3f46f4cc5171de05313f977457d6c77 (unchanged), isolated base 0469ae771c700a5f438057823f30702f382e7bc5. Cloudflare Build command None; root /linasopti/worker, deploy npx wrangler deploy, watch *. For future coordinated release: include V4 bundle builder, compatible Wrangler main, CI tests, version/cache/release gate, backup and rollback; avoid enabling build command alone. Static release integrity still NO-GO for not-yet-live V0.4.46. No prod change, Gen17 DRAFT_ONLY, trade/Forward OFF.
+
+
+2026-10-29 V046 candidate-stage check CI 40897973762: fixtures, bundle, Miniflare, Wrangler SHA, new candidate integrity PASS. Full production release integrity remains FAIL intentionally for live V0.4.45. CURRENT_STATE commit 665fe30f. No production deploy, Gen17 DRAFT_ONLY, trading/Forward OFF.
