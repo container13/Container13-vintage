@@ -865,3 +865,10 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 
 
 2026-10-29 Gen17 data readiness: documented prior art and historical availability gates in `LINA_GEN17_DATA_READINESS_2026-10-29.md` (commit c1c2a69f, readback PASS). Gen10 graded breadth and Gen12 8/16 breadth gate cannot be recycled. Gen16's 16-symbol data do not verify independent market-state input; Alpaca V4 structural tests do not prove historical publication times. Inventory novel point-in-time input next, stop BLOCKED_DATA if unavailable; do not lock plan/run research. CURRENT_STATE updated commit 21144c9c. V0.4.45 production, no deploy, Gen17 DRAFT_ONLY, trading/Forward OFF.
+
+
+## 2026-10-29 – Gen17 riktad inventering, BLOCKED_DATA inom DRAFT_ONLY
+- GitHub-träd och Gen9-planförslag samt låsta Gen10–16-runnerspecs kontrollerade utan forskning. Gen9 föreslog 5/16-breddstopp; Gen10 graderad SMA180-bredd; Gen12 8/16-breddstopp. Gen11 sektortak, Gen13 signalrangordning, Gen14 två signaler, Gen15 trendexit, Gen16 high-kanal. Dessa får inte återlanseras som nya Gen17-resultat.
+- Inget oberoende historiskt marknadsindex, point-in-time observationsserie eller as-of medlemskapsdata identifierades i det granskade repo-trädet och specifikationerna. Det bevisar inte att data saknas externt.
+- Gen17 datastatus BLOCKED_DATA, livscykel DRAFT_ONLY. Saknas: oberoende tidsstämplad marknadsserie; as-of medlemskap; källa/version/hash; justeringspolicy och bolagshändelsers historiska publicerings-/mottagningstid; förregistrerat framtida valideringsfönster.
+- Nästa: verifiera möjlig extern datakälla och dess point-in-time kontrakt innan en enda ny hypotes föreslås. Ingen backtest, runnerspec, planlås, handel, Forward, produktionsgren eller Cloudflare ändrad.
