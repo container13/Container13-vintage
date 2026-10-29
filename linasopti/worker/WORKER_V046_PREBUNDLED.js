@@ -1352,6 +1352,21 @@ var v4_candidate_entry_default = {
       );
     }
     if (url.pathname === "/bars") {
+      // Isolated candidate: require existing Lina authentication before upstream requests.
+      if (!env.LINA_LOGIN_CODE) return json({ok:false,error:"Lina login is not configured"},503,request);
+      if (request.headers.get("X-Lina-Login-Code") !== env.LINA_LOGIN_CODE) return json({ok:false,error:"Unauthorized"},401,request);
+      const scopedSymbols = (url.searchParams.get("symbols") || "").toUpperCase().replace(/\s/g,"");
+      const scopedStart = url.searchParams.get("start") || "";
+      const scopedEnd = url.searchParams.get("end") || "";
+      if (!/^[A-Z]{1,8}(,[A-Z]{1,8}){0,4}$/.test(scopedSymbols) ||
+          !/^20\d{2}-\d{2}-\d{2}$/.test(scopedStart) ||
+          !/^20\d{2}-\d{2}-\d{2}$/.test(scopedEnd) ||
+          scopedStart > scopedEnd ||
+          !Number.isFinite(Date.parse(scopedStart)) ||
+          !Number.isFinite(Date.parse(scopedEnd)) ||
+          Date.parse(scopedEnd) - Date.parse(scopedStart) > 6 * 366 * 86400000) {
+        return json({ok:false,error:"Invalid scoped bars request"},400,request);
+      }
       const feed = url.searchParams.get("feed") || "iex";
       const adjustment = url.searchParams.get("adjustment") || "raw";
       if (!["iex", "sip"].includes(feed) || !["raw", "split", "dividend", "spin-off", "all"].includes(adjustment)) {
