@@ -1,0 +1,46 @@
+name: Lina SPY exact XNYS calendar audit
+on:
+  push:
+    branches: [lina-corporate-actions-ci-isolated]
+    paths: ['.github/workflows/lina-spy-calendar-audit.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  calendar-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install independent exchange calendar
+        run: python -m pip install 'exchange-calendars==4.11.1'
+      - name: Compare every SPY bar with XNYS sessions
+        shell: bash
+        run: |
+          python - <<'PY'
+          import datetime as dt, hashlib, json, urllib.request
+          import exchange_calendars as xc
+          url='https://linas-opti-api.mangaj73.workers.dev/bars?symbols=SPY&timeframe=1Day&feed=sip&adjustment=raw&start=2020-01-01&end=2024-12-31'
+          with urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':'Lina-SPY-calendar-audit/1'}),timeout=90) as response:
+              raw=response.read(12000000)
+              print('HTTP',response.status,'response_bytes',len(raw),'sha256',hashlib.sha256(raw).hexdigest())
+          d=json.loads(raw)
+          if not (d.get('ok') and d.get('feed')=='sip' and d.get('adjustment')=='raw'):
+              raise SystemExit('FAIL: metadata')
+          bars=d.get('rows',[])
+          # Daily US stock bar timestamps can be midnight UTC or UTC 05:00/04:00; inspect date without altering ordering.
+          observed=[dt.date.fromisoformat(row['t'][:10]) for row in bars]
+          if len(observed)!=len(set(observed)):raise SystemExit('FAIL: duplicate dates')
+          cal=xc.get_calendar('XNYS')
+          expected=[x.date() for x in cal.sessions_in_range('2020-01-01','2024-12-31')]
+          missing=sorted(set(expected)-set(observed))
+          extra=sorted(set(observed)-set(expected))
+          print('expected_XNYS_sessions',len(expected),'observed_SPY_bars',len(observed))
+          print('missing_count',len(missing),'missing_first_25',[str(x) for x in missing[:25]])
+          print('extra_count',len(extra),'extra_first_25',[str(x) for x in extra[:25]])
+          if missing or extra:raise SystemExit('FAIL: XNYS calendar mismatch')
+          print('PASS: exact XNYS 2020-2024 date match')
+          print('LIMIT: dividends, price adjustment, rights and point-in-time availability not tested')
+          PY
