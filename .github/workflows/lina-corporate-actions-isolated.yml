@@ -41,5 +41,14 @@ jobs:
           path: linasopti/ci-corporate-actions/.candidate-build/WORKER_V4_RELEASE_CANDIDATE.js
           if-no-files-found: error
           retention-days: 30
+      - name: Commit exact tested Worker on isolated branch
+        if: github.ref == 'refs/heads/lina-corporate-actions-ci-isolated'
+        run: |
+          cp linasopti/ci-corporate-actions/.candidate-build/WORKER_V4_RELEASE_CANDIDATE.js linasopti/worker/WORKER_V046_PREBUNDLED.js
+          git add -f linasopti/worker/WORKER_V046_PREBUNDLED.js
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Store tested V046 Worker on isolated branch'
+            git push origin HEAD:lina-corporate-actions-ci-isolated
+          fi
       - name: Confirm deployment remains blocked
         run: echo 'Candidate-only PASS. Production release integrity is separate and remains required before deploy.'
