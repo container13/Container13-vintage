@@ -1004,3 +1004,7 @@ Screenshot confirms green GitHub Actions `Lina SPY exact XNYS calendar audit 2`,
 
 ### 2026-10-29 – SPY provider dividend adjustment consistency audit created
 Created `.github/workflows/lina-spy-adjustment-audit.yml` commit `03fe27a8da8aa1100c7fd8a8d68f86812b5a50c2`, isolated branch. Read-only live Worker GET `/bars` SPY SIP daily 2020–2024 for `raw`, `split`, `dividend`, `all`; compare matching dates, plausible row counts, finite closes, raw=split and dividend=all (SPY no splits expected 2020–2024), and nontrivial raw-vs-dividend differences. Logs only response hashes and counts, not full licensed prices. **CI result not yet observed**. This is provider-internal consistency, not independent dividend-event/amount verification, exact adjustment formula, point-in-time or redistribution license approval. Gen17 DRAFT_ONLY/BLOCKED_DATA; no production deployment, trading or Forward.
+
+
+### 2026-10-29 – Gen17 SPY historical data usage safeguards saved
+Added `linasopti/LINA_GEN17_SPY_DATA_USAGE_POLICY.md` at commit `98fab42f2d00b6b5d5a1fa5fbeda7cc3708f6adc`. It records that raw price trend/volatility is price-only, dividends can distort raw returns, retrospectively dividend-adjusted prices are not proven point-in-time, use completed sessions and conservative two-session lag, 2020–2024 not untouched holdout, and remaining verification gates. Dividend-adjustment CI outcome still unknown. Gen17 DRAFT_ONLY/BLOCKED_DATA; trading/Forward OFF.
