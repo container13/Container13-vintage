@@ -1,0 +1,41 @@
+name: Lina Gen17 five split boundaries (read-only)
+on:
+  push:
+    branches: [lina-corporate-actions-ci-isolated]
+    paths: ['.github/workflows/lina-gen17-split-boundary-audit.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  split-boundaries:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check known split dates against Alpaca SIP raw OHLC
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import urllib.request,urllib.parse,json,datetime,math
+          base="https://linas-opti-api.mangaj73.workers.dev/bars"
+          events={"SHOP":[("2022-06-29",10)],"TSLA":[("2020-08-31",5),("2022-08-25",3)],"NVDA":[("2021-07-20",4),("2024-06-10",10)]}
+          receipts=[]
+          for symbol,checks in events.items():
+              q=urllib.parse.urlencode({"symbols":symbol,"timeframe":"1Day","feed":"sip","adjustment":"raw","start":"2020-01-01","end":"2024-12-31"})
+              with urllib.request.urlopen(base+"?"+q,timeout=90) as response: obj=json.load(response)
+              if obj.get("ok") is not True or obj.get("adjustment")!="raw" or obj.get("feed")!="sip":raise RuntimeError(symbol+" invalid metadata")
+              rows=obj["rows"]; dates=[x["t"][:10] for x in rows]
+              for day,factor in checks:
+                  if day not in dates:raise RuntimeError(symbol+" missing event date "+day)
+                  i=dates.index(day)
+                  if i<1:raise RuntimeError(symbol+" missing prior session")
+                  prior,after=rows[i-1],rows[i]
+                  observed=prior["c"]/after["o"]
+                  # 25% tolerance is a sanity check only, not proof of split terms or execution.
+                  within=abs(observed/factor-1)<=0.25
+                  rec={"symbol":symbol,"exDate":day,"expectedForwardSplit":factor,"priorDate":dates[i-1],"priorClose":prior["c"],"exDateOpen":after["o"],"observedPriorCloseOverExOpen":observed,"within25Pct":within}
+                  print("SPLIT_BOUNDARY",json.dumps(rec,sort_keys=True),flush=True)
+                  receipts.append(rec)
+                  if not within:raise RuntimeError("SPLIT_BOUNDARY_OUTSIDE_TOLERANCE "+symbol+" "+day)
+          if len(receipts)!=5:raise RuntimeError("EXPECTED_FIVE_EVENTS")
+          print("PASS_FIVE_SPLIT_BOUNDARIES",json.dumps({"events":receipts,"scope":"raw OHLC boundary sanity only; issuer split ratios and point-in-time economic treatment still need independent confirmation"},sort_keys=True))
+          PY
