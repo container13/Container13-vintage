@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+const get=async p=>readFile(new URL(p,import.meta.url),'utf8');
+const version=await get('../version.js');
+const html=await get('../index.html');
+const gate=await get('../release-gate.js');
+const state=JSON.parse(await get('../LINA_CURRENT_STATE.json'));
+const wrangler=JSON.parse(await get('../worker/wrangler.jsonc'));
+const artifact=await get('./.candidate-build/WORKER_V4_RELEASE_CANDIDATE.js');
+assert.ok(version.includes("RELEASE='V0.4.46'")&&version.includes("CACHE='0.4.46'"));
+assert.ok(html.includes('?v=0.4.46')&&!html.includes('?v=0.4.45'));
+assert.ok(gate.includes("REQUIRED_RELEASE='V0.4.46'")&&gate.includes("REQUIRED_CACHE='0.4.46'"));
+assert.equal(state.release,'V0.4.45','Never claim candidate is live');
+assert.equal(state.workCheckpoint.targetRelease,'V0.4.46');
+assert.equal(wrangler.main,'../ci-corporate-actions/.candidate-build/WORKER_V4_RELEASE_CANDIDATE.js');
+assert.equal(artifact,await get('../worker/'+wrangler.main));
+assert.ok(artifact.includes('/corporate-actions-diagnostic'));
+console.log('PASS V0.4.46 candidate-stage gate; live state V0.4.45 preserved; NOT production release');
