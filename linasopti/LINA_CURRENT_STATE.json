@@ -376,6 +376,14 @@
         ],
         "next": "Seek authoritative Cboe close dissemination timing and applicable usage rights; retain immutable source snapshots",
         "gen17Blocked": true
+      },
+      "vendorTimingEvidence": {
+        "status": "TWO_DISTINCT_CBOE_PRODUCT_DELIVERY_WINDOWS_DOCUMENTED_NOT_PUBLIC_CSV",
+        "eodCalculationInputs": "Same-day 16:35–19:00 ET, proprietary product",
+        "mainChannelEod": "Shortly after next equity trading day 09:30 ET, proprietary product",
+        "publicCsv": "Updated daily; no explicit intraday publication SLA established",
+        "next": "Select licensed timestamped feed or request written Cboe public CSV release and internal-use permission",
+        "gen17Blocked": true
       }
     }
   }
