@@ -1044,3 +1044,7 @@ Updated `.github/workflows/lina-spy-issuer-distribution-audit.yml` on isolated b
 
 ### 2026-10-29 – Issuer SPY 2020–2024 exact dividend extraction PASS
 GitHub Actions https://github.com/container13/Container13-vintage/actions/runs/40936450213 SUCCESS, issuer XLSX SHA256 6b65cbf956b5d25705d08470006a0e97e6a7d2a0d5cfd08b63f6f79783b06320. Exactly 20 SPY events extracted from official State Street workbook: 2020-03-20 1.405559; 2020-06-19 1.366242; 2020-09-18 1.339224; 2020-12-18 1.580000; 2021-03-19 1.277788; 2021-06-18 1.375875; 2021-09-17 1.428117; 2021-12-17 1.636431; 2022-03-18 1.366009; 2022-06-17 1.576871; 2022-09-16 1.596398; 2022-12-16 1.781400; 2023-03-17 1.506204; 2023-06-16 1.638367; 2023-09-15 1.583169; 2023-12-15 1.906073; 2024-03-15 1.594937; 2024-06-21 1.759024; 2024-09-20 1.745531; 2024-12-20 1.965548 USD/share. Source extraction PASS, NOT Alpaca event reconciliation, PIT or license PASS. Gen17 DRAFT_ONLY/BLOCKED_DATA, trade/Forward OFF, production unchanged.
+
+
+### 2026-10-29 – Next reconciliation boundary
+Issuer extraction PASS: 20 dated SPY cash dividends 2020–2024 (run 40936450213). Actual Alpaca cash_dividend event feed has not been queried; existing Worker /bars provides adjusted prices, not event records. A proposed read-only comparison of issuer amounts to price adjustment factors was NOT committed due to GitHub tool safety block. Do not claim event-level or factor validation. Gen17 stays BLOCKED_DATA, trading and Forward OFF. Production untouched.
