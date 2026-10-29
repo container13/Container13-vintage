@@ -847,3 +847,6 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 
 
 2026-10-29 – Prebundled V0.4.46 Worker option selected for continued isolated preparation: commit exact generated/tested JS as versioned Worker source, verify SHA-256 and Miniflare directly on committed bytes, point Wrangler to that committed file and leave Cloudflare Build command None. This avoids the untracked/generated prebuild bootstrap problem, but is NOT implemented or authorized for production. Need scoped file review, non-weakening release-integrity entrypoint update, full candidate/rollback checks. Detail `ci-corporate-actions/PREBUNDLED_WORKER_RELEASE_PATH.md` commit d1b8d446; CURRENT_STATE commit bc562586. V0.4.45 production, Gen17 DRAFT_ONLY, trading/Forward OFF.
+
+
+2026-10-29 – V0.4.46 exact Worker compiled artifact saved as GitHub Actions artifact `lina-v046-tested-worker` (retention 30 days), CI run 40899505690 SUCCESS: build, Miniflare exact bytes, candidate gate, upload-artifact all PASS. Workflow commit 951baa95; CURRENT_STATE commit 0fde926f. NOTE: GitHub Actions artifact is NOT an in-repo versioned JS file. Permanent tracked Worker + hash readback and Wrangler dry-run packaging remain open. No production or Cloudflare changes, V0.4.45 remains live, Gen17 DRAFT_ONLY, Handel/Forward OFF.
