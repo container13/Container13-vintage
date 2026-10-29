@@ -290,7 +290,7 @@
     },
     "vixCalendarAudit": {
       "date": "2026-10-29",
-      "status": "QUARANTINED_CALENDAR_MISMATCH",
+      "status": "HOLIDAY_MISMATCH_CONFIRMED_FRED_VALUES_AGREE_SAMPLED",
       "referenceCalendar": "exchange_calendars 4.13.1 XNYS",
       "expectedSessions2020to2024": 1258,
       "actualRows": 1277,
@@ -304,7 +304,22 @@
         "2024": 7
       },
       "caution": "VIX Cboe session calendar and independent source values must be checked before labeling values invalid; do not merely drop holiday rows",
-      "researchAuthorized": false
+      "researchAuthorized": false,
+      "fredCrossCheck": {
+        "date": "2026-10-29",
+        "sampleMatches": [
+          {
+            "date": "2024-07-04",
+            "close": 12.26
+          },
+          {
+            "date": "2024-11-28",
+            "close": 13.9
+          }
+        ],
+        "conclusion": "Non-XNYS dates also appear in FRED VIXCLS; mismatch does not establish CSV corruption; source independence and point-in-time availability unverified",
+        "source": "https://fred.stlouisfed.org/data/VIXCLS"
+      }
     }
   }
 }
