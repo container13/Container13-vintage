@@ -1,0 +1,53 @@
+name: Lina SPY issuer distribution audit (read-only)
+on:
+  push:
+    paths:
+      - '.github/workflows/lina-spy-issuer-distribution-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  issuer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Fetch official XLSX and extract SPY 2020-2024 (no credentials)
+        run: |
+          python3 - <<'PY'
+          import urllib.request,hashlib,io,zipfile,xml.etree.ElementTree as ET,re,datetime,collections
+          url='https://www.ssga.com/library-content/products/fund-data/etfs/us/spdr-etf-historical-distributions.xlsx'
+          req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 Lina-issuer-research/1'})
+          with urllib.request.urlopen(req,timeout=45) as response:
+              body=response.read(15000000)
+              print('HTTP',response.status,'bytes',len(body),'SHA256',hashlib.sha256(body).hexdigest())
+          if not body.startswith(b'PK'): raise SystemExit('FAIL not XLSX')
+          z=zipfile.ZipFile(io.BytesIO(body))
+          ns={'m':'http://schemas.openxmlformats.org/spreadsheetml/2006/main'}
+          shared=[]
+          if 'xl/sharedStrings.xml' in z.namelist():
+              root=ET.fromstring(z.read('xl/sharedStrings.xml'))
+              shared=[''.join(t.text or '' for t in si.findall('.//m:t',ns)) for si in root.findall('m:si',ns)]
+          def decode(c):
+              typ=c.get('t')
+              if typ=='inlineStr':return ''.join(t.text or '' for t in c.findall('.//m:t',ns))
+              v=c.find('m:v',ns)
+              if v is None:return ''
+              return shared[int(v.text)] if typ=='s' else v.text or ''
+          def colnum(ref):
+              n=0
+              for ch in re.match('[A-Z]+',ref).group():n=n*26+ord(ch)-64
+              return n-1
+          rows=[]
+          for fn in sorted(x for x in z.namelist() if re.fullmatch(r'xl/worksheets/sheet[0-9]+\.xml',x)):
+              root=ET.fromstring(z.read(fn))
+              for row in root.findall('.//m:sheetData/m:row',ns):
+                  cells={colnum(c.get('r')):decode(c).strip() for c in row.findall('m:c',ns)}
+                  if cells:rows.append((fn,cells))
+          print('workbook_nonempty_rows',len(rows))
+          for fn,cells in rows[:5]:print('sample_headers',fn,list(cells.items())[:12])
+          hits=[(fn,cells) for fn,cells in rows if any(v.strip().upper()=='SPY' for v in cells.values())]
+          print('spy_rows_all_years',len(hits))
+          for fn,cells in hits[:4]:print('spy_row_sample',fn,list(cells.items())[:12])
+          if not hits:raise SystemExit('FAIL SPY rows not found; inspect workbook schema')
+          print('PASS issuer workbook downloaded and SPY rows found; historical 2020-2024 parsing and Alpaca event reconciliation NOT YET VERIFIED')
+          PY
