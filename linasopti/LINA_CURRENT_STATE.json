@@ -364,6 +364,18 @@
         "script": "linasopti/tools/audit_vix_lag.py",
         "remaining": "Timestamped source availability and data usage rights unverified; 0 ordering violations does not prove actual historical availability",
         "gen17StillBlocked": true
+      },
+      "releaseAndLicenseReview": {
+        "status": "SOURCE_TIMING_AND_LICENSE_STILL_UNVERIFIED",
+        "alfred": "Vintage dates are date-resolution and FRED may ingest within one business day; not guaranteed Cboe close publication timestamps",
+        "license": "Public VIX history and contracted Cboe historical data may have different applicable terms; no blanket clearance or prohibition",
+        "sources": [
+          "https://alfred.stlouisfed.org/help",
+          "https://fred.stlouisfed.org/docs/api/fred/series_vintagedates.html",
+          "https://www.cboe.com/tradable_products/vix/vix_historical_data"
+        ],
+        "next": "Seek authoritative Cboe close dissemination timing and applicable usage rights; retain immutable source snapshots",
+        "gen17Blocked": true
       }
     }
   }
