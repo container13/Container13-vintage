@@ -32,6 +32,9 @@ jobs:
         run: node linasopti/ci-corporate-actions/miniflare-test.mjs
       - name: Wrangler staging SHA check
         run: node linasopti/ci-corporate-actions/verify-wrangler-staging.mjs
+      - name: Wrangler packaging dry-run (no deploy)
+        working-directory: linasopti/worker
+        run: npx --yes wrangler@4 deploy --dry-run --outdir ../ci-corporate-actions/.candidate-build/wrangler-dryrun
       - name: Check isolated V046 candidate gate
         run: node linasopti/ci-corporate-actions/check-v046-candidate.mjs
       - name: Archive tested V046 Worker bundle
