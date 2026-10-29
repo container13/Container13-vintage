@@ -401,7 +401,22 @@
         "2021-2024 previously observed, not holdout"
       ],
       "next": "Audit read-only Alpaca SPY bars source/entitlement and freeze data contract before any candidate rule",
-      "gen17Blocked": true
+      "gen17Blocked": true,
+      "alpacaBarsApi": {
+        "status": "OFFICIAL_API_CONTRACT_VERIFIED_AUTH_NOT_TESTED",
+        "endpoint": "GET https://data.alpaca.markets/v2/stocks/SPY/bars",
+        "params": {
+          "timeframe": "1Day",
+          "start": "2020-01-01",
+          "end": "2024-12-31",
+          "feed": "sip",
+          "adjustment": "raw",
+          "limit": 10000
+        },
+        "limitations": "No Alpaca credentials available in local runtime; no authenticated data obtained. Historical daily bar timestamp is day start, not publication timestamp. Adjusted bars may incorporate future corporate actions.",
+        "next": "Use authorized read-only Alpaca connection to fetch/preserve immutable raw SPY data, check access, completeness and source rights",
+        "gen17Blocked": true
+      }
     }
   }
 }
