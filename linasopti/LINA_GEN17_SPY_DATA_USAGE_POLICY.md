@@ -6,6 +6,8 @@ Verified by user screenshots: live SPY SIP/raw access, 2020-2024 history sanity 
 
 Dividend adjustment audit PASS (run 40934258148). Independent State Street SPY dividend-factor comparison PASS for 20/20 ex-dates in 2020-2024 (run 40937080764). Alpaca corporate-action event records and point-in-time availability remain unverified.
 
+Point-in-time decision: use raw SPY closes for price-only research until historical as-of availability of adjusted prices is demonstrated. Do not calculate historical Gen17 signals from today's dividend-adjusted backfill. A two-completed-session execution lag prevents same-close execution but does not by itself remove future dividend adjustments. Keep price-only metrics distinct from total-return performance. No backtest or live trading authorized by this policy.
+
 Research rules:
 - Raw closes may support a price-only trend signal, not a total-return claim.
 - Raw close-to-close volatility includes ex-dividend price gaps; validate their effect.
