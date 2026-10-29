@@ -9,3 +9,8 @@ For the isolated V4 candidate, the proposed build command relative to the observ
 Next human/dashboard check: Worker linas-opti-api -> Settings -> Build: inspect Build command, Root directory, Deploy command, Production branch. Never save a changed build command until explicitly approving a production release, because future pushes could automatically deploy. Confirm rollback and version integrity before release.
 
 NO-GO for deploying. V0.4.45 live; V0.4.46 isolated candidate. Gen17 DRAFT_ONLY, trading and new Forward OFF.
+
+## Dashboard screenshot confirmed 2026-10-29
+User screenshot of linas-opti-api Production > Settings > Builds confirms: Git repository container13/Container13-vintage; branch ccc-demo-public-test; Disable builds OFF; Build command **None**; Deploy command `npx wrangler deploy`; root `/linasopti/worker`; Include paths `*`; build variables/secrets none configured in the Builds section. No dashboard changes were made.
+
+Proposed command `bash ../ci-corporate-actions/cloudflare-prebuild.sh` resolves correctly relative to `/linasopti/worker` but has not been configured in Cloudflare. WARNING: build command alone is insufficient while production branch lacks the V4 build script and Wrangler entrypoint change; saving it now would break automatic production deploy. Keep NO-GO until a coordinated, complete and rollback-safe release.
