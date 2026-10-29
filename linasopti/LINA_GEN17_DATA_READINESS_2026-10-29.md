@@ -20,3 +20,7 @@ Corporate-action adjustment correctness is a DATA-INTEGRITY gate for any histori
 5. Only after this inventory propose ONE distinct, economically motivated Gen17 change, a single locked comparator and pre-registered forward validation window; obtain explicit approval before PLAN_LOCKED.
 
 No new live Alpaca call, no V4 deployment, no Gen8–16 reruns, no trading/Forward. Production V0.4.45 remains unchanged.
+
+
+## External data source screen – 2026-10-29
+ALFRED official documentation supports historical real-time periods and vintages: https://fred.stlouisfed.org/docs/api/fred/realtime_period.html and https://fred.stlouisfed.org/docs/api/fred/series_observations.html . Candidate only; no specific series, timing or 2020–2024 coverage verified. Alpaca historical bars have adjustment and asof symbol mapping, not historical release-time proof: https://docs.alpaca.markets/us/reference/stockbars . Next verify one named ALFRED series, vintage coverage, observation release cutoff and daily suitability. No data fetched or research run. Gen17 remains DRAFT_ONLY / BLOCKED_DATA.
