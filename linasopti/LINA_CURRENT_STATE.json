@@ -341,6 +341,19 @@
         "sourceCsvRows2020to2024": 1277,
         "reason": "FRED CSV retrieval blocked by container DNS and web CSV content type",
         "next": "Obtain FRED VIXCLS CSV, run comparator, inspect mismatches; preserve source SHA and audit output"
+      },
+      "fredReconciliation": {
+        "status": "PASS_FULL_OVERLAP",
+        "sharedDates": 1288,
+        "exactCloseMatches": 1288,
+        "mismatches": 0,
+        "fredDatesMissingFromCboe": 0,
+        "fredPeriod": "2021-10-28..2026-10-28",
+        "years2022to2024": "772/772 matches including all 19 non-XNYS dates",
+        "fredSha256": "32d7b9af8261e82b82292e9c211f02fd11ca6cea2f1280a176a596eca51fec05",
+        "cboeSha256": "b0d2e90197b4b5403fd689fc580eb2506f07c867f0115034810c7218fc986b7f",
+        "remaining": "2020 and 2021 through Oct 27 not covered; historical point-in-time release clock and license unverified",
+        "strategyAuthorized": false
       }
     }
   }
