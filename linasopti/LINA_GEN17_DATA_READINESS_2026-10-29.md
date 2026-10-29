@@ -24,3 +24,10 @@ No new live Alpaca call, no V4 deployment, no Gen8–16 reruns, no trading/Forwa
 
 ## External data source screen – 2026-10-29
 ALFRED official documentation supports historical real-time periods and vintages: https://fred.stlouisfed.org/docs/api/fred/realtime_period.html and https://fred.stlouisfed.org/docs/api/fred/series_observations.html . Candidate only; no specific series, timing or 2020–2024 coverage verified. Alpaca historical bars have adjustment and asof symbol mapping, not historical release-time proof: https://docs.alpaca.markets/us/reference/stockbars . Next verify one named ALFRED series, vintage coverage, observation release cutoff and daily suitability. No data fetched or research run. Gen17 remains DRAFT_ONLY / BLOCKED_DATA.
+
+
+## 2026-10-29 – named FRED series screening (documentation only)
+- VIXCLS: CBOE VIX daily close, a directly relevant independent equity-volatility series; FRED page https://fred.stlouisfed.org/series/VIXCLS/ . FRED example shows a previous day's close updated next morning; observation date is not verified availability timestamp for Gen17 next-open execution. Copyright/licensing must be reviewed.
+- T10Y2Y: US Treasury 10y minus 2y daily interest-rate spread, an independent macro regime candidate; https://fred.stlouisfed.org/series/T10Y2Y/ . Published FRED daily update is not evidence of exact historical as-of timestamps.
+- ALFRED API provides vintage dates and realtime observation queries: https://fred.stlouisfed.org/docs/api/fred/series_vintagedates.html and https://fred.stlouisfed.org/docs/api/fred/series_observations.html . API documentation is not actual verified vintage coverage for either named series.
+- Gate still missing: retrieve 2020-2024 vintages for chosen series; prove signal-day publication timing or apply predeclared safe lag; inspect missing days, licensing, data provenance and immutable hash; then independently pre-register hypothesis and validation. No historical series payload acquired, no backtest. Gen17 remains DRAFT_ONLY/BLOCKED_DATA.
