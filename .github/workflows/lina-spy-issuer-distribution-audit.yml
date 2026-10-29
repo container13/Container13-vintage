@@ -47,6 +47,15 @@ jobs:
           for fn,cells in rows[:5]:print('sample_headers',fn,list(cells.items())[:12])
           hits=[(fn,cells) for fn,cells in rows if any(v.strip().upper()=='SPY' for v in cells.values())]
           print('spy_rows_all_years',len(hits))
+          events=[]
+          for fn,c in hits:
+              try: ex=datetime.datetime.strptime(c[3],'%m/%d/%Y').date()
+              except (KeyError,ValueError): continue
+              if 2020<=ex.year<=2024: events.append((ex,c.get(6,'')))
+          print('SPY_2020_2024_EVENTS',len(events))
+          for ex,div in sorted(events): print('SPY_DIVIDEND',ex.isoformat(),div)
+          if len(events)!=20: raise SystemExit('FAIL expected 20 events')
+          print('PASS issuer event count; Alpaca match not checked')
           for fn,cells in hits[:4]:print('spy_row_sample',fn,list(cells.items())[:12])
           if not hits:raise SystemExit('FAIL SPY rows not found; inspect workbook schema')
           print('PASS issuer workbook downloaded and SPY rows found; historical 2020-2024 parsing and Alpaca event reconciliation NOT YET VERIFIED')
