@@ -859,3 +859,6 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 
 
 2026-10-29 – Retry succeeded: source gate in `linasopti/tools/release_integrity.py` updated on isolated branch commit 8069eb89 to accept only existing reviewed original Worker or committed V046 Worker, requiring V0.4.46 metadata and diagnostic route for V046. CURRENT_STATE commit 359c8fe7. Canonical live release remains V0.4.45, so full production gate must remain blocked until actual verified release; no production changes, Gen17 DRAFT_ONLY, trading and new Forward OFF.
+
+
+2026-10-29 – Verified V0.4.46 guard separation in CI run 40914379118: Wrangler dry-run PASS, candidate gate PASS; full `release_integrity.py` deliberately FAILS on exactly `current_state_release` (live V0.4.45 vs candidate V0.4.46), and worker_source_explicit PASS. Negative assertion step PASS. Workflow commit d66d0c51; CURRENT_STATE commit 9c7a7c3f. No production deploy or Cloudflare change, Gen17 DRAFT_ONLY, trading/Forward OFF.
