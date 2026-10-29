@@ -290,7 +290,7 @@
     },
     "vixCalendarAudit": {
       "date": "2026-10-29",
-      "status": "HOLIDAY_MISMATCH_CONFIRMED_FRED_VALUES_AGREE_SAMPLED",
+      "status": "CROSS_MARKET_CALENDAR_DIFFERENCE_CONFIRMED_ONE_HOLIDAY",
       "referenceCalendar": "exchange_calendars 4.13.1 XNYS",
       "expectedSessions2020to2024": 1258,
       "actualRows": 1277,
@@ -319,6 +319,14 @@
         ],
         "conclusion": "Non-XNYS dates also appear in FRED VIXCLS; mismatch does not establish CSV corruption; source independence and point-in-time availability unverified",
         "source": "https://fred.stlouisfed.org/data/VIXCLS"
+      },
+      "primaryCboeEvidence": {
+        "verifiedDate": "2024-07-04",
+        "finding": "Cboe published SPX/VIX/XSP global trading session on NYSE holiday July 4 2024 ending 11:30 ET; no regular or curb session",
+        "source": "https://cdn.cboe.com/resources/schedule_update/2024/Cboe-Holiday-Reminder-Modified-Trading-Hours-on-Wednesday-July-3-and-Thursday-July-4-2024.pdf",
+        "scope": "Supports cross-market date semantics, not full 19-date or timestamp validation",
+        "next": "Keep Cboe VIX observation calendar distinct from NYSE stock execution calendar; audit all 19 and point-in-time cutoff",
+        "researchAuthorized": false
       }
     }
   }
