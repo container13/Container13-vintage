@@ -1,0 +1,63 @@
+name: Lina SPY 2020-2024 history audit
+on:
+  push:
+    branches:
+      - lina-corporate-actions-ci-isolated
+    paths:
+      - '.github/workflows/lina-spy-history-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  spy-history:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read-only SPY SIP raw history audit
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import urllib.request, urllib.error, json, hashlib, datetime, collections
+          base="https://linas-opti-api.mangaj73.workers.dev"
+          path="/bars?symbols=SPY&timeframe=1Day&feed=sip&adjustment=raw&start=2020-01-01&end=2024-12-31"
+          request=urllib.request.Request(base+path,headers={"User-Agent":"Lina-Gen17-SPY-history-audit/1"})
+          try:
+              with urllib.request.urlopen(request,timeout=90) as response:
+                  status=response.status
+                  raw=response.read(12000000)
+          except urllib.error.HTTPError as error:
+              print("BLOCKED: HTTP",error.code)
+              raise SystemExit(1)
+          except Exception as error:
+              print("BLOCKED:",type(error).__name__,str(error)[:160])
+              raise SystemExit(1)
+          print("HTTP:",status,"response_bytes:",len(raw),"response_sha256:",hashlib.sha256(raw).hexdigest())
+          data=json.loads(raw)
+          rows=data.get("rows",[])
+          print("source:",data.get("source"),"revision:",data.get("workerDataRevision"),"feed:",data.get("feed"),"adjustment:",data.get("adjustment"))
+          print("rowCount:",data.get("rowCount"),"pages:",data.get("pages"))
+          if not (data.get("ok") and data.get("feed")=="sip" and data.get("adjustment")=="raw" and data.get("timeframe")=="1Day"):
+              raise SystemExit("FAIL: metadata mismatch")
+          if len(rows)!=data.get("rowCount") or len(rows)<1200 or len(rows)>1350:
+              raise SystemExit("FAIL: implausible row count")
+          dates=[]
+          for row in rows:
+              if row.get("symbol")!="SPY":
+                  raise SystemExit("FAIL: unexpected symbol")
+              date=datetime.date.fromisoformat(row["t"][:10])
+              dates.append(date)
+              o,h,l,c,v=[row[k] for k in ("o","h","l","c","v")]
+              if not (0<l<=min(o,c)<=max(o,c)<=h and v>=0):
+                  raise SystemExit("FAIL: OHLCV invariant")
+          if dates!=sorted(dates) or len(set(dates))!=len(dates):
+              raise SystemExit("FAIL: ordering/duplicate dates")
+          if not (dates[0].year==2020 and dates[-1].year==2024):
+              raise SystemExit("FAIL: year coverage")
+          byyear=collections.Counter(d.year for d in dates)
+          print("first:",dates[0],"last:",dates[-1],"years:",dict(sorted(byyear.items())))
+          for year in range(2020,2025):
+              if not 240<=byyear[year]<=260:
+                  raise SystemExit("FAIL: year "+str(year)+" session count out of expected range")
+          print("PASS: 2020-2024 SPY SIP raw, 5-year row/date/OHLCV sanity audit")
+          print("LIMIT: NOT an exchange-calendar exact-match, point-in-time release, dividend-adjustment, or redistribution-rights audit")
+          PY
