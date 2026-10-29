@@ -427,5 +427,6 @@
         "next": "Execute read-only preflight only in authorized credential-enabled environment; review output before strategy research"
       }
     }
-  }
+  },
+  "gen17SpyAlpacaExistingWorkerAudit20261029": "Read-only source review: /bars with Alpaca SIP raw 1Day, pagination already present in BOTH ccc-demo-public-test and isolated Worker source. Prior 2026-10-27 /health HTTP200 alpacaConfigured:true. 2026-10-29 live access attempts failed due to execution-environment DNS/web restrictions; NOT evidence of outage. No SPY bytes acquired or authenticated test. Existing /bars route appears unauthenticated; review licensing/access controls. Data Readiness commit 8accb116d4996b51081dec00fd2f0a3ff741c7af. Gen17 DRAFT_ONLY/BLOCKED_DATA; no production/trading/Forward changes."
 }
