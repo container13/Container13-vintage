@@ -946,3 +946,11 @@ Official Alpaca `GET /v2/stocks/SPY/bars` supports timeframe=1Day, feed=sip/iex,
 
 ## 2026-10-29 – SPY read-only acquisition preflight ready; auth missing
 Added `linasopti/tools/audit_spy_bars.py` commit ffcc8d39: read-only Alpaca SPY daily bars 2020–2024, SIP/raw, pagination, schema/order/duplicate checks, canonical SHA256 and retrieval UTC report; output path must be empty. Container has neither APCA_API_KEY_ID nor APCA_API_SECRET_KEY. NO authenticated request made, NO SPY payload obtained; no assertion of account entitlement or as-of availability. Data Readiness commit aed1c4cb; CURRENT_STATE commit 7bee9276. Next: run read-only preflight in authorized credential-bearing environment, review historical corporate actions, rights and timing; no Gen17 engine or backtest before gates. DRAFT_ONLY/BLOCKED_DATA; production/Forward/trading untouched.
+
+
+### 2026-10-29 – SPY/Alpaca existing Worker route (verified; no live data)
+- **Do not reinvent:** `/bars` route in `linasopti/worker/WORKER_PENDING_RUNTIME_REPORT.js` already calls Alpaca multi-symbol historical stock bars, accepts SPY/1Day/sip/raw/start/end and handles pagination. Verified same source in production branch `ccc-demo-public-test` and isolated branch.
+- Prior 2026-10-27 `/health` HTTP 200, `alpacaConfigured:true` recorded in CURRENT_STATE. Today 2026-10-29 attempts to connect from current tools failed DNS/web access; **NOT evidence of outage** and NOT a live SPY response.
+- Existing `/bars` GET route appears not login-gated. Before larger historical data exposure, verify licensing/access controls; avoid sharing keys or uncontrolled broad queries.
+- **Next action:** from authorized reachable environment, GET `/health`, then narrowly scoped `/bars?symbols=SPY&timeframe=1Day&feed=sip&adjustment=raw&start=2020-01-01&end=2025-01-01`; preserve response+SHA, validate dates/coverage/adjustment and point-in-time assumptions. No SPY dataset yet. Gen17 DRAFT_ONLY/BLOCKED_DATA. Trading/Forward OFF. Production unchanged.
+- Saved Data Readiness commit `8accb116d4996b51081dec00fd2f0a3ff741c7af`, Current State commit `4b43dcae1e9a33a04865164d8ffb386a83652ed2`.
