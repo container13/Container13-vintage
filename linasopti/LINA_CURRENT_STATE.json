@@ -287,6 +287,24 @@
         "license review"
       ],
       "researchAuthorized": false
+    },
+    "vixCalendarAudit": {
+      "date": "2026-10-29",
+      "status": "QUARANTINED_CALENDAR_MISMATCH",
+      "referenceCalendar": "exchange_calendars 4.13.1 XNYS",
+      "expectedSessions2020to2024": 1258,
+      "actualRows": 1277,
+      "extraNonXNYSSessionDates": 19,
+      "missingXNYSSessions": 0,
+      "extraByYear": {
+        "2020": 0,
+        "2021": 0,
+        "2022": 5,
+        "2023": 7,
+        "2024": 7
+      },
+      "caution": "VIX Cboe session calendar and independent source values must be checked before labeling values invalid; do not merely drop holiday rows",
+      "researchAuthorized": false
     }
   }
 }
