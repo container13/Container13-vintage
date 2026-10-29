@@ -1,0 +1,48 @@
+name: Lina Gen17 split portfolio integration synthetic
+on:
+  push:
+    branches: [lina-corporate-actions-ci-isolated]
+    paths: ['.github/workflows/lina-gen17-split-portfolio-integration.yml','linasopti/gen17-split-portfolio-integration.DRAFT.js']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify split-aware portfolio value and exit
+        run: |
+          node <<'JS'
+          const assert=require('node:assert/strict');
+          const {applyDay,value}=require('./linasopti/gen17-split-portfolio-integration.DRAFT.js');
+          const tests=[
+            ['SHOP','2022-06-29',10],
+            ['TSLA','2020-08-31',5],
+            ['TSLA','2022-08-25',3],
+            ['NVDA','2021-07-20',4],
+            ['NVDA','2024-06-10',10]
+          ];
+          for(const [symbol,date,ratio] of tests){
+            const before=[{s:symbol,qty:10,entryPrice:100}];
+            const oldValue=value(before,{[symbol]:100});
+            const {positions,events}=applyDay(before,date);
+            assert.equal(events.length,1);
+            assert.equal(positions[0].qty,10*ratio);
+            assert.equal(positions[0].entryPrice,100/ratio);
+            assert.ok(Math.abs(value(positions,{[symbol]:100/ratio})-oldValue)<1e-9);
+            const exitCash=positions[0].qty*(100/ratio);
+            const pnl=exitCash-10*100;
+            assert.ok(Math.abs(pnl)<1e-9);
+            assert.throws(()=>applyDay(positions,date),/SPLIT_DUPLICATE/);
+            assert.equal(before[0].qty,10);
+            console.log('PASS_PORTFOLIO_SPLIT',symbol,date,ratio);
+          }
+          const two=applyDay([{s:'TSLA',qty:10,entryPrice:100}], '2020-08-31').positions;
+          const later=applyDay(two,'2022-08-25').positions;
+          assert.equal(later[0].qty,150);
+          assert.ok(Math.abs(later[0].entryPrice-100/15)<1e-12);
+          assert.ok(Math.abs(value(later,{TSLA:100/15})-1000)<1e-9);
+          console.log('PASS_SEQUENTIAL_SPLITS');
+          console.log('PASS_SYNTHETIC_PORTFOLIO_INTEGRATION');
+          JS
