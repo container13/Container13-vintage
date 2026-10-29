@@ -1,0 +1,61 @@
+{
+  "schema": "LINA-GEN17-SPLIT-BOUNDARY-RECEIPT-1",
+  "runId": 40958756035,
+  "jobId": 123745685278,
+  "status": "PASS_5_OF_5_BOUNDARY_SANITY",
+  "events": [
+    {
+      "exDate": "2022-06-29",
+      "exDateOpen": 34.4,
+      "expectedForwardSplit": 10,
+      "observedPriorCloseOverExOpen": 10.181976744186047,
+      "priorClose": 350.26,
+      "priorDate": "2022-06-28",
+      "symbol": "SHOP",
+      "within25Pct": true
+    },
+    {
+      "exDate": "2020-08-31",
+      "exDateOpen": 444.61,
+      "expectedForwardSplit": 5,
+      "observedPriorCloseOverExOpen": 4.978295584894627,
+      "priorClose": 2213.4,
+      "priorDate": "2020-08-28",
+      "symbol": "TSLA",
+      "within25Pct": true
+    },
+    {
+      "exDate": "2022-08-25",
+      "exDateOpen": 302.36,
+      "expectedForwardSplit": 3,
+      "observedPriorCloseOverExOpen": 2.9477774837941526,
+      "priorClose": 891.29,
+      "priorDate": "2022-08-24",
+      "symbol": "TSLA",
+      "within25Pct": true
+    },
+    {
+      "exDate": "2021-07-20",
+      "exDateOpen": 187.3,
+      "expectedForwardSplit": 4,
+      "observedPriorCloseOverExOpen": 4.010624666310732,
+      "priorClose": 751.19,
+      "priorDate": "2021-07-19",
+      "symbol": "NVDA",
+      "within25Pct": true
+    },
+    {
+      "exDate": "2024-06-10",
+      "exDateOpen": 120.37,
+      "expectedForwardSplit": 10,
+      "observedPriorCloseOverExOpen": 10.043033978566088,
+      "priorClose": 1208.88,
+      "priorDate": "2024-06-07",
+      "symbol": "NVDA",
+      "within25Pct": true
+    }
+  ],
+  "scope": "Adjacent raw price sanity check, not issuer event completeness or split-adjusted portfolio accounting",
+  "tradeEnabled": false,
+  "forwardEnabled": false
+}
