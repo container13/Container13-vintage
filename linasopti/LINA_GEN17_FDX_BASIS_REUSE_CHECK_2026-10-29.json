@@ -1,0 +1,25 @@
+{
+  "schema": "LINA-GEN17-FDX-BASIS-REUSE-1",
+  "date": "2026-10-29",
+  "scope": "READ_ONLY_LEGACY_EVIDENCE",
+  "symbol": "FDX",
+  "source": "linasopti/evidence/LINA_GEN9_DATA_AUDIT_V2.json",
+  "sourceFileSha256": "cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c",
+  "eventsChecked": 20,
+  "datesMatch": true,
+  "nominalAmountsMatch": false,
+  "providerToIssuerRatioRange": [
+    0.8058013333333333,
+    0.8058017391304348
+  ],
+  "ratioSpread": 4.057971015880568e-7,
+  "example": {
+    "date": "2024-12-09",
+    "providerAmount": 1.112006,
+    "issuerNominalUSD": 1.38
+  },
+  "conclusion": "FDX provider dividend figures are not nominal issuer cash amounts; ratio is tightly clustered but causal attribution to later spinoff is not independently proven. Existing issuer-date reconciliation is reusable; FDX economic price/share basis remains BLOCKED.",
+  "noResearch": true,
+  "tradeEnabled": false,
+  "forwardEnabled": false
+}
