@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import worker from "./WORKER_PENDING_RUNTIME_REPORT.js";
+import worker from "./WORKER_V046_PREBUNDLED.js";
 
 const env = {LINA_LOGIN_CODE:"local-test-code",APCA_API_KEY_ID:"mock",APCA_API_SECRET_KEY:"mock"};
 const endpoint = "https://test.invalid/bars";
