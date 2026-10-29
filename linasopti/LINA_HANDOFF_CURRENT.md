@@ -862,3 +862,6 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 
 
 2026-10-29 – Verified V0.4.46 guard separation in CI run 40914379118: Wrangler dry-run PASS, candidate gate PASS; full `release_integrity.py` deliberately FAILS on exactly `current_state_release` (live V0.4.45 vs candidate V0.4.46), and worker_source_explicit PASS. Negative assertion step PASS. Workflow commit d66d0c51; CURRENT_STATE commit 9c7a7c3f. No production deploy or Cloudflare change, Gen17 DRAFT_ONLY, trading/Forward OFF.
+
+
+2026-10-29 Gen17 data readiness: documented prior art and historical availability gates in `LINA_GEN17_DATA_READINESS_2026-10-29.md` (commit c1c2a69f, readback PASS). Gen10 graded breadth and Gen12 8/16 breadth gate cannot be recycled. Gen16's 16-symbol data do not verify independent market-state input; Alpaca V4 structural tests do not prove historical publication times. Inventory novel point-in-time input next, stop BLOCKED_DATA if unavailable; do not lock plan/run research. CURRENT_STATE updated commit 21144c9c. V0.4.45 production, no deploy, Gen17 DRAFT_ONLY, trading/Forward OFF.
