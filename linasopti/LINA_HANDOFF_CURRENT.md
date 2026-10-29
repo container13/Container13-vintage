@@ -838,3 +838,6 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 
 
 2026-10-29 V046 candidate-stage check CI 40897973762: fixtures, bundle, Miniflare, Wrangler SHA, new candidate integrity PASS. Full production release integrity remains FAIL intentionally for live V0.4.45. CURRENT_STATE commit 665fe30f. No production deploy, Gen17 DRAFT_ONLY, trading/Forward OFF.
+
+
+2026-10-29 – V0.4.46 candidate pipeline separated from the full production release gate. Workflow commit 39efadf75d9f24d4aabe79e8260bbde28cdcfd7b runs schema, build/prebuild, exact compiled Worker Miniflare, Wrangler SHA and candidate release gate; CI run 40898363839 all 5 technical steps PASS. Production `release_integrity.py` unchanged and still applies on ccc-demo-public-test via `lina-release-integrity.yml`; isolated CI no longer misreports intentional not-live mismatch as candidate failure. CURRENT_STATE commit d62eebabe75d5d113981079fbc878eb4a6fa6e06. No production deploy or real Alpaca call. V0.4.45 production, V0.4.46 staged. Gen17 DRAFT_ONLY, trading/new Forward OFF.
