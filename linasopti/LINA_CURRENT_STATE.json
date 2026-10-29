@@ -327,6 +327,13 @@
         "scope": "Supports cross-market date semantics, not full 19-date or timestamp validation",
         "next": "Keep Cboe VIX observation calendar distinct from NYSE stock execution calendar; audit all 19 and point-in-time cutoff",
         "researchAuthorized": false
+      },
+      "productCalendarDistinction": {
+        "date": "2026-10-29",
+        "status": "SPOT_OPTIONS_FUTURES_CALENDARS_DISTINGUISHED",
+        "evidence": "Cboe Rule 5.1 and VIX index methodology distinguish spot index calculation from options/futures trading",
+        "next": "Reconcile 19 holiday dates against spot VIX schedule, audit release-time lag and complete FRED close crossmatch",
+        "researchAuthorized": false
       }
     }
   }
