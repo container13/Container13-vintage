@@ -894,3 +894,7 @@ Cboe official site documents historical VIX daily closes 1990–present, but no 
 
 ## 2026-10-29 – VIX original CSV retrieval blocked (verified checkpoint)
 Attempted official Cboe VIX_History.csv via container downloader, Python requests and web: CDN DNS/network failed; web redirect to cdn-api.cboe.com inaccessible. No original bytes, row audit or SHA256 obtained. Third-party dataset not substituted. Source and exact blocker in LINA_GEN17_DATA_READINESS_2026-10-29.md commit 620de4ab; CURRENT_STATE commit 0f3e63f0. Next obtain Cboe original CSV in accessible network context and verify byte hash and 2020–2024 dates before point-in-time timing audit. Gen17 DRAFT_ONLY/BLOCKED_DATA; trade/Forward OFF; no production changes.
+
+
+## 2026-10-29 – uploaded VIX CSV audited; source acquisition blocker resolved for byte analysis
+User supplied VIX_History.csv, 474247 bytes, SHA256 b0d2e90197b4b5403fd689fc580eb2506f07c867f0115034810c7218fc986b7f. 9304 sorted unique trading-date rows 1990-01-02 to 2026-10-28. 2020-2024: 253/252/256/257/259 = 1277 rows, no empty/nonnumeric/nonpositive data or OHLC violations in target period. 47 OHLC violations in older/outside-target rows. SHA proves identity of uploaded bytes, NOT independent Cboe authenticity or as-of release timing. Calendar completeness and licensing not yet audited. Detailed audit: LINA_GEN17_DATA_READINESS_2026-10-29.md commit d4cba20f; CURRENT_STATE commit 9e119adf. Gen17 DRAFT_ONLY/BLOCKED_DATA, no backtest, trading/Forward OFF, production unchanged.
