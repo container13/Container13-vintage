@@ -354,6 +354,16 @@
         "cboeSha256": "b0d2e90197b4b5403fd689fc580eb2506f07c867f0115034810c7218fc986b7f",
         "remaining": "2020 and 2021 through Oct 27 not covered; historical point-in-time release clock and license unverified",
         "strategyAuthorized": false
+      },
+      "availabilityLagStressTest": {
+        "status": "RESEARCH_ONLY_TWO_COMPLETED_XNYS_SESSIONS_NOT_APPROVED",
+        "period": "2022-2024",
+        "xnysSessions": 753,
+        "mappedSessions": 751,
+        "calendarOrderViolations": 0,
+        "script": "linasopti/tools/audit_vix_lag.py",
+        "remaining": "Timestamped source availability and data usage rights unverified; 0 ordering violations does not prove actual historical availability",
+        "gen17StillBlocked": true
       }
     }
   }
