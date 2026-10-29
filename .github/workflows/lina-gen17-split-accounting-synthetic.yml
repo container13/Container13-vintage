@@ -1,0 +1,33 @@
+name: Lina Gen17 split accounting synthetic (read-only)
+on:
+  push:
+    branches: [lina-corporate-actions-ci-isolated]
+    paths: ['.github/workflows/lina-gen17-split-accounting-synthetic.yml','linasopti/gen17-split-accounting.DRAFT.js']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify all five split events and fail-closed behavior
+        run: |
+          node <<'JS'
+          const assert=require('node:assert/strict');
+          const {events,apply}=require('./linasopti/gen17-split-accounting.DRAFT.js');
+          assert.equal(events.length,5);
+          for(const event of events){
+            const initial={s:event.symbol,qty:10,entryPrice:100};
+            const after=apply(initial,event);
+            assert.equal(after.qty,10*event.ratio);
+            assert.equal(after.entryPrice,100/event.ratio);
+            assert.ok(Math.abs(after.qty*after.entryPrice-1000)<1e-9);
+            assert.equal(initial.qty,10);
+            assert.throws(()=>apply(after,event),/SPLIT_DUPLICATE/);
+            assert.throws(()=>apply({...initial,s:'OTHER'},event),/SPLIT_SYMBOL_MISMATCH/);
+            console.log('PASS_SPLIT_SYNTHETIC',event.symbol,event.date,event.ratio);
+          }
+          assert.throws(()=>apply({s:'SHOP',qty:0,entryPrice:100},events[0]),/SPLIT_INVALID_POSITION/);
+          console.log('PASS_FIVE_SYNTHETIC_SPLITS');
+          JS
