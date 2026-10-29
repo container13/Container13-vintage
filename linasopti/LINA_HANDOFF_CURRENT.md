@@ -960,3 +960,7 @@ Added `linasopti/tools/audit_spy_bars.py` commit ffcc8d39: read-only Alpaca SPY 
 - Verified source-level: existing GET `/bars` has no visible per-route login; external Cloudflare Access/WAF status unverified. Broad symbols/dates, up to 100 pages x 10000 bars, no visible rate limiting. Upstream error text may be reflected. Normalized OHLCV response loses original raw payload/receipt evidence; date-only end uses `23:59:59Z`.
 - Next: review access controls and scope limits in isolated branch, capture authenticated SPY raw provenance using a trusted reachable environment, only then assess Gen17. Do not deploy unapproved changes. No live SPY bars fetched. Trading/Forward OFF; Gen17 DRAFT_ONLY/BLOCKED_DATA.
 - Readiness commit `30d0c942ba857f05c709eaca2ad009fe89e516c2`; State commit `7c7d38ff1dbfb2d9f991d9b21214760b640cd00c`.
+
+
+### 2026-10-29 – Isolated Alpaca bars candidate checkpoint
+Worker commit `ff2205bbde631d2b403008d4dce4992d1c74c3e8` adds login-header validation and scoped symbol/date inputs to `/bars` on isolated branch only. Structural source readback PASS 4/4, not runtime test. Before promotion check existing callers, auth compatibility, pagination and rate limits. No live SPY dataset. No production deployment; trading and Forward OFF; Gen17 DRAFT_ONLY/BLOCKED_DATA. Data Readiness commit `9cb350512d77873568ca757e382d1500ea3010ea`, Current State commit `07ccb47f2e13d107d756b5e5af50e21a3f369a02`.
