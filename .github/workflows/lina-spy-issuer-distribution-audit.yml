@@ -56,6 +56,31 @@ jobs:
           for ex,div in sorted(events): print('SPY_DIVIDEND',ex.isoformat(),div)
           if len(events)!=20: raise SystemExit('FAIL expected 20 events')
           print('PASS issuer event count; Alpaca match not checked')
+          import json,urllib.parse
+          prices={}
+          for mode in ('raw','dividend'):
+              params=urllib.parse.urlencode(dict(symbols='SPY',timeframe='1Day',feed='sip',adjustment=mode,start='2020-01-01',end='2025-01-03'))
+              with urllib.request.urlopen('https://linas-opti-api.mangaj73.workers.dev/bars?'+params,timeout=60) as response:
+                  data=json.load(response)
+              if not data.get('ok'):raise SystemExit('FAIL provider response')
+              prices[mode]={x['t'][:10]:float(x['c']) for x in data['rows']}
+          dates=sorted(set(prices['raw']) & set(prices['dividend']))
+          failures=[]
+          for ex,amount in events:
+              date=ex.isoformat()
+              prior=[d for d in dates if d<date]
+              if not prior or date not in dates:failures.append(date);continue
+              previous=prior[-1]
+              ratio_before=prices['dividend'][previous]/prices['raw'][previous]
+              ratio_after=prices['dividend'][date]/prices['raw'][date]
+              observed=ratio_before/ratio_after
+              expected=1-float(amount)/prices['raw'][previous]
+              error=abs(observed-expected)
+              print('FACTOR_CHECK',date,'error',round(error,8))
+              if error>0.0005:failures.append(date)
+          print('FACTOR_FAILURES',failures)
+          if failures:raise SystemExit('FAIL factor checks')
+          print('PASS issuer dividends vs provider factors; event API and PIT not checked')
           for fn,cells in hits[:4]:print('spy_row_sample',fn,list(cells.items())[:12])
           if not hits:raise SystemExit('FAIL SPY rows not found; inspect workbook schema')
           print('PASS issuer workbook downloaded and SPY rows found; historical 2020-2024 parsing and Alpaca event reconciliation NOT YET VERIFIED')
