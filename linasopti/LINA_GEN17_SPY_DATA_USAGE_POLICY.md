@@ -4,7 +4,7 @@ Status: DRAFT_ONLY / BLOCKED_DATA. Trading and Forward OFF.
 
 Verified by user screenshots: live SPY SIP/raw access, 2020-2024 history sanity and exact XNYS session calendar PASS.
 
-Dividend adjustment workflow: result NOT confirmed.
+Dividend adjustment audit PASS (run 40934258148). Independent State Street SPY dividend-factor comparison PASS for 20/20 ex-dates in 2020-2024 (run 40937080764). Alpaca corporate-action event records and point-in-time availability remain unverified.
 
 Research rules:
 - Raw closes may support a price-only trend signal, not a total-return claim.
