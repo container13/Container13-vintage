@@ -890,3 +890,7 @@ Verified FRED documentation: VIXCLS is a daily VIX close series and T10Y2Y a dai
 
 ## 2026-10-29 – VIXCLS official-source data gate
 Cboe official site documents historical VIX daily closes 1990–present, but no actual historical rows or hashes retrieved. FRED VIXCLS daily close is Cboe-sourced and carries licensing notes. ALFRED observation/vintage endpoints require registered API key; date-level vintage cannot prove exact pre-entry publication time. Need payload, missingness/hash, rights, historical as-of cutoff or conservative predeclared lag. Detailed sources and audit in LINA_GEN17_DATA_READINESS_2026-10-29.md commit 56b620fe; CURRENT_STATE commit 3f459f50. Gen17 DRAFT_ONLY/BLOCKED_DATA; no backtest, no production changes, trade/Forward OFF.
+
+
+## 2026-10-29 – VIX original CSV retrieval blocked (verified checkpoint)
+Attempted official Cboe VIX_History.csv via container downloader, Python requests and web: CDN DNS/network failed; web redirect to cdn-api.cboe.com inaccessible. No original bytes, row audit or SHA256 obtained. Third-party dataset not substituted. Source and exact blocker in LINA_GEN17_DATA_READINESS_2026-10-29.md commit 620de4ab; CURRENT_STATE commit 0f3e63f0. Next obtain Cboe original CSV in accessible network context and verify byte hash and 2020–2024 dates before point-in-time timing audit. Gen17 DRAFT_ONLY/BLOCKED_DATA; trade/Forward OFF; no production changes.
