@@ -262,16 +262,30 @@
     },
     "vixCsvAcquisition": {
       "date": "2026-10-29",
-      "status": "BLOCKED_NETWORK_ORIGIN_CSV_NOT_FETCHED",
-      "attempts": [
-        "container.download original Cboe CDN failed",
-        "container Python requests DNS failed",
-        "web Cboe CDN redirects to inaccessible cdn-api.cboe.com"
+      "status": "USER_UPLOADED_CSV_BYTES_AUDITED_NOT_POINT_IN_TIME_VERIFIED",
+      "source": "user-upload VIX_History.csv",
+      "bytes": 474247,
+      "sha256": "b0d2e90197b4b5403fd689fc580eb2506f07c867f0115034810c7218fc986b7f",
+      "rows": 9304,
+      "dateRange": [
+        "1990-01-02",
+        "2026-10-28"
       ],
-      "originalUrl": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv",
-      "sha256": null,
-      "rowsVerified": false,
-      "next": "Obtain exact original Cboe CSV bytes in accessible network context; hash and audit before research",
+      "targetYearRows": {
+        "2020": 253,
+        "2021": 252,
+        "2022": 256,
+        "2023": 257,
+        "2024": 259
+      },
+      "targetOHLCViolations": 0,
+      "fullFileOHLCViolations": 47,
+      "remaining": [
+        "independent provenance",
+        "exchange calendar completeness",
+        "historical availability timestamps or conservative lag",
+        "license review"
+      ],
       "researchAuthorized": false
     }
   }
