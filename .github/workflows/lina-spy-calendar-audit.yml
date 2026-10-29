@@ -15,7 +15,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install independent exchange calendar
-        run: python -m pip install 'exchange-calendars==4.11.1'
+        run: python -m pip install 'exchange-calendars>=4.5,<5'
       - name: Compare every SPY bar with XNYS sessions
         shell: bash
         run: |
@@ -33,6 +33,7 @@ jobs:
           # Daily US stock bar timestamps can be midnight UTC or UTC 05:00/04:00; inspect date without altering ordering.
           observed=[dt.date.fromisoformat(row['t'][:10]) for row in bars]
           if len(observed)!=len(set(observed)):raise SystemExit('FAIL: duplicate dates')
+          print('exchange_calendars_version',getattr(xc,'__version__','unknown'))
           cal=xc.get_calendar('XNYS')
           expected=[x.date() for x in cal.sessions_in_range('2020-01-01','2024-12-31')]
           missing=sorted(set(expected)-set(observed))
