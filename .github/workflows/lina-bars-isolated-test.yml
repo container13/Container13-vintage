@@ -6,6 +6,7 @@ on:
     paths:
       - 'linasopti/worker/test_bars_isolated.mjs'
       - 'linasopti/worker/WORKER_PENDING_RUNTIME_REPORT.js'
+      - 'linasopti/worker/WORKER_V046_PREBUNDLED.js'
       - '.github/workflows/lina-bars-isolated-test.yml'
   workflow_dispatch:
 permissions:
