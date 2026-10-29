@@ -436,5 +436,24 @@
   "gen17CorrectedDeployEntrypointCi20261029": "User screenshot confirms isolated GitHub Actions SUCCESS for corrected WORKER_V046_PREBUNDLED.js mocked contract tests, runs 2 and 3, both 11s. Handoff commit 6273e02bdac1f7102e78990b34d275008a0d3cac. Not a live Alpaca/SPY test. Gen17 DRAFT_ONLY/BLOCKED_DATA; production/trading/Forward unchanged.",
   "gen17LiveSpyNarrowProbe20261029": "User screenshot: GitHub Actions SUCCESS 6s for live read-only SPY SIP raw Worker probe (2024-12-27 to 2024-12-30), workflow commit 16b4deaf477fe0048006ee11c5cf29e48e996405. Probe checks HTTP200, valid JSON, rowCount>=1, feed=sip, adjustment=raw. Screenshot does not include row count, SHA or raw bars. Handoff commit 9c7894b36538e72a275346b4370aaa21a3af1b0b. Full 2020-24 provenance, session coverage, licensing and point-in-time availability unverified. Gen17 DRAFT_ONLY/BLOCKED_DATA; trading/Forward OFF.",
   "gen17SpyHistorySanity20201024": "User screenshot: GitHub Actions SUCCESS for live SPY SIP raw 1Day 2020–2024 sanity audit, 6s, workflow commit d4fb4f64760387693db4dac090383e32acd1cd75. Validates row count, per-year range, unique sorted dates, OHLCV bounds, metadata. Exact counts/SHA not shown; exact XNYS calendar, dividend treatment, publication timestamps, licensing still unverified. Handoff commit 1b1108d27965f74198c105f86c2961f30ac7abdb. Gen17 DRAFT_ONLY/BLOCKED_DATA; production/trading/Forward unchanged.",
-  "gen17SpyExactXnysCalendar20201029": "User screenshot GitHub Actions SUCCESS for Lina SPY exact XNYS calendar audit 2 (18s) after commit 5d9f2b9dfe278a05b9ebc6d8dd0ba6646df50839. 2020–2024 SPY SIP raw daily bar dates exactly match XNYS session calendar under test. Earlier run 1 failed; detailed cause unverified. Dividend/total-return handling, point-in-time data availability, license remain blocked. Gen17 DRAFT_ONLY/BLOCKED_DATA; trading/Forward OFF."
+  "gen17SpyExactXnysCalendar20201029": "User screenshot GitHub Actions SUCCESS for Lina SPY exact XNYS calendar audit 2 (18s) after commit 5d9f2b9dfe278a05b9ebc6d8dd0ba6646df50839. 2020–2024 SPY SIP raw daily bar dates exactly match XNYS session calendar under test. Earlier run 1 failed; detailed cause unverified. Dividend/total-return handling, point-in-time data availability, license remain blocked. Gen17 DRAFT_ONLY/BLOCKED_DATA; trading/Forward OFF.",
+  "gen17SpyDividendEvidence20261029": {
+    "status": "PASS_FACTOR_ONLY",
+    "issuerEvents": 20,
+    "period": "2020-2024",
+    "adjustmentAuditRun": 40934258148,
+    "issuerFactorRun": 40937080764,
+    "issuerXlsxSha256": "6b65cbf956b5d25705d08470006a0e97e6a7d2a0d5cfd08b63f6f79783b06320",
+    "remaining": [
+      "Alpaca corporate-action event records",
+      "historical point-in-time/as-of availability",
+      "data rights and provider entitlement",
+      "raw-data snapshot reproducibility",
+      "Gen10/12 research review"
+    ],
+    "gen17": "DRAFT_ONLY/BLOCKED_DATA",
+    "trading": "OFF",
+    "forward": "OFF",
+    "productionChanges": false
+  }
 }
