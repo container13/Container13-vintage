@@ -10,7 +10,7 @@ on:
       - 'linasopti/index.html'
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   offline-worker-test:
     if: github.ref == 'refs/heads/lina-corporate-actions-ci-isolated'
