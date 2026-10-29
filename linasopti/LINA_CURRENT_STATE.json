@@ -334,6 +334,13 @@
         "evidence": "Cboe Rule 5.1 and VIX index methodology distinguish spot index calculation from options/futures trading",
         "next": "Reconcile 19 holiday dates against spot VIX schedule, audit release-time lag and complete FRED close crossmatch",
         "researchAuthorized": false
+      },
+      "fredAuditPrepared": {
+        "status": "SCRIPT_COMMITTED_COMPARISON_NOT_EXECUTED",
+        "script": "linasopti/tools/audit_vix_fred.py",
+        "sourceCsvRows2020to2024": 1277,
+        "reason": "FRED CSV retrieval blocked by container DNS and web CSV content type",
+        "next": "Obtain FRED VIXCLS CSV, run comparator, inspect mismatches; preserve source SHA and audit output"
       }
     }
   }
