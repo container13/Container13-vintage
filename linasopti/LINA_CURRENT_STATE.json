@@ -385,6 +385,23 @@
         "next": "Select licensed timestamped feed or request written Cboe public CSV release and internal-use permission",
         "gen17Blocked": true
       }
+    },
+    "spyAlternativeInventory": {
+      "status": "READ_ONLY_NO_SPY_DATA_ACQUIRED",
+      "gen16Input": "16 aligned OHLC symbols, 1258 bars each, no independent SPY benchmark documented",
+      "priorArt": "Gen10 SMA180 graded breadth and Gen12 SMA180 breadth gate already frozen; do not recycle",
+      "candidates": [
+        "SPY 20-session realized volatility",
+        "SPY 200-session trend"
+      ],
+      "blockers": [
+        "Historical SPY data not verified in isolated input",
+        "Alpaca access and adjustment/as-of policy unverified",
+        "Availability timing and licensing unverified",
+        "2021-2024 previously observed, not holdout"
+      ],
+      "next": "Audit read-only Alpaca SPY bars source/entitlement and freeze data contract before any candidate rule",
+      "gen17Blocked": true
     }
   }
 }
