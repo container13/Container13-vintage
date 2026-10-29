@@ -1036,3 +1036,7 @@ Created `.github/workflows/lina-spy-issuer-distribution-audit.yml` on isolated b
 
 ### 2026-10-29 – Official issuer XLSX CI run PASS, source hash captured
 Run https://github.com/container13/Container13-vintage/actions/runs/40935938664 (job 123666380750) completed SUCCESS. Actual job log: HTTP 200, XLSX bytes=581216, SHA256=6b65cbf956b5d25705d08470006a0e97e6a7d2a0d5cfd08b63f6f79783b06320, workbook nonempty rows=13382, SPY rows across all years=136. Header fields FUND NAME, TICKER, CUSIP, EX-DATE, RECORD DATE, PAYABLE DATE, DIVIDEND ($), SHORT TERM CAPITAL GAIN ($), LONG TERM CAPITAL GAIN ($), FREQUENCY. SPY CUSIP 78462F103. This verifies download/schema only. 2020–2024 exact 20 events and Alpaca corporate-action event match NOT YET VERIFIED; PIT NOT VERIFIED. Gen17 DRAFT_ONLY/BLOCKED_DATA, trading and Forward OFF, no production changes.
+
+
+### 2026-10-29 – Issuer 2020–2024 extraction workflow committed; CI result pending
+Updated `.github/workflows/lina-spy-issuer-distribution-audit.yml` on isolated branch at commit `4b87b089955e44ba7b8492c76dac7ed89591f0f8`. It now parses official SPY ex-dates 2020–2024, prints each date and dividend amount, and asserts exactly 20 events. The update was accepted after earlier tool write blocks. At time of checkpoint, new Actions run not yet listed; no extraction PASS claimed. Previous issuer XLSX download PASS run 40935938664 remains valid. Alpaca corporate-action comparison and PIT availability remain OPEN; Gen17 DRAFT_ONLY/BLOCKED_DATA, trading/Forward OFF, production unchanged.
