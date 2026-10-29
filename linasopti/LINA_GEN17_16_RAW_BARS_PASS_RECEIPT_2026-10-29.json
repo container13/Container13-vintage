@@ -1,0 +1,191 @@
+{
+  "schema": "LINA-GEN17-16-RAW-BARS-RECEIPT-1",
+  "runId": 40958177312,
+  "jobId": 123743702105,
+  "commit": "5a93ddf342520c4dc43893f6f2c502f4ad2c1e3a",
+  "runConclusion": "success",
+  "result": "PASS_16_RAW_BAR_CONTRACT",
+  "rowsPerSymbol": 1258,
+  "symbols": [
+    {
+      "adjustment": "raw",
+      "canonicalRowsSha256": "20b2b8a8b79e23b0234180871dd465e5f4e98650562c5d28b1acf6aac6e9959e",
+      "count": 1258,
+      "feed": "sip",
+      "first": "2020-01-02",
+      "last": "2024-12-31",
+      "source": "Alpaca",
+      "symbol": "AMD",
+      "workerDataRevision": "ALPACA-HISTORY-02"
+    },
+    {
+      "adjustment": "raw",
+      "canonicalRowsSha256": "899c41d7faa5405e285e3d40c12a7660440b966e3ff6dfe90d6bfee8165fb8fa",
+      "count": 1258,
+      "feed": "sip",
+      "first": "2020-01-02",
+      "last": "2024-12-31",
+      "source": "Alpaca",
+      "symbol": "SHOP",
+      "workerDataRevision": "ALPACA-HISTORY-02"
+    },
+    {
+      "adjustment": "raw",
+      "canonicalRowsSha256": "97170d02e01eadc71dfae400681b6df44be79c8440385218ace5c0d70f3ce397",
+      "count": 1258,
+      "feed": "sip",
+      "first": "2020-01-02",
+      "last": "2024-12-31",
+      "source": "Alpaca",
+      "symbol": "ADBE",
+      "workerDataRevision": "ALPACA-HISTORY-02"
+    },
+    {
+      "adjustment": "raw",
+      "canonicalRowsSha256": "c11804994404df8162bb603cadf4fb24297ba1bdd08f879df9e7c87f96a98b90",
+      "count": 1258,
+      "feed": "sip",
+      "first": "2020-01-02",
+      "last": "2024-12-31",
+      "source": "Alpaca",
+      "symbol": "MU",
+      "workerDataRevision": "ALPACA-HISTORY-02"
+    },
+    {
+      "adjustment": "raw",
+      "canonicalRowsSha256": "b41d4f8c86467dca71c1a9cc052599c83713045394b07e13f16545d692011008",
+      "count": 1258,
+      "feed": "sip",
+      "first": "2020-01-02",
+      "last": "2024-12-31",
+      "source": "Alpaca",
+      "symbol": "FDX",
+      "workerDataRevision": "ALPACA-HISTORY-02"
+    },
+    {
+      "adjustment": "raw",
+      "canonicalRowsSha256": "98a67bd2183564bd12cef115e3284aad8368c7fa2055f26b54f44012777eade8",
+      "count": 1258,
+      "feed": "sip",
+      "first": "2020-01-02",
+      "last": "2024-12-31",
+      "source": "Alpaca",
+      "symbol": "TSLA",
+      "workerDataRevision": "ALPACA-HISTORY-02"
+    },
+    {
+      "adjustment": "raw",
+      "canonicalRowsSha256": "b3e952ae4924260819de5ea0adfb574fd726c706670c8f7174ef5191d5e25cd7",
+      "count": 1258,
+      "feed": "sip",
+      "first": "2020-01-02",
+      "last": "2024-12-31",
+      "source": "Alpaca",
+      "symbol": "LUV",
+      "workerDataRevision": "ALPACA-HISTORY-02"
+    },
+    {
+      "adjustment": "raw",
+      "canonicalRowsSha256": "6ac25f75d1cf6b8a6c832c1921e72abbf10cef7acf474b1045d3230ab457562b",
+      "count": 1258,
+      "feed": "sip",
+      "first": "2020-01-02",
+      "last": "2024-12-31",
+      "source": "Alpaca",
+      "symbol": "NFLX",
+      "workerDataRevision": "ALPACA-HISTORY-02"
+    },
+    {
+      "adjustment": "raw",
+      "canonicalRowsSha256": "d3e1ef86bb796b56d692347447f410ef6793c9b1338c7a00c99ed2651f2e97da",
+      "count": 1258,
+      "feed": "sip",
+      "first": "2020-01-02",
+      "last": "2024-12-31",
+      "source": "Alpaca",
+      "symbol": "C",
+      "workerDataRevision": "ALPACA-HISTORY-02"
+    },
+    {
+      "adjustment": "raw",
+      "canonicalRowsSha256": "77b997bb05bf503a360d3e6179875ca1176606fd0799fafd2a0a6876f1dc33c4",
+      "count": 1258,
+      "feed": "sip",
+      "first": "2020-01-02",
+      "last": "2024-12-31",
+      "source": "Alpaca",
+      "symbol": "NOW",
+      "workerDataRevision": "ALPACA-HISTORY-02"
+    },
+    {
+      "adjustment": "raw",
+      "canonicalRowsSha256": "f051fb703911eb8632ab60709c7f4d38ff3a86342c43a38411f45a3f68722f7d",
+      "count": 1258,
+      "feed": "sip",
+      "first": "2020-01-02",
+      "last": "2024-12-31",
+      "source": "Alpaca",
+      "symbol": "QCOM",
+      "workerDataRevision": "ALPACA-HISTORY-02"
+    },
+    {
+      "adjustment": "raw",
+      "canonicalRowsSha256": "ccc5ad6a9cdffe7e16679364daecbf1c5bdd3d2c3dc1a2848ea53dd3ff22946b",
+      "count": 1258,
+      "feed": "sip",
+      "first": "2020-01-02",
+      "last": "2024-12-31",
+      "source": "Alpaca",
+      "symbol": "BAC",
+      "workerDataRevision": "ALPACA-HISTORY-02"
+    },
+    {
+      "adjustment": "raw",
+      "canonicalRowsSha256": "17b09cd66f44739a6f12d1819b6263038c0c1ac9f9f1060f3e90340835cd945e",
+      "count": 1258,
+      "feed": "sip",
+      "first": "2020-01-02",
+      "last": "2024-12-31",
+      "source": "Alpaca",
+      "symbol": "GM",
+      "workerDataRevision": "ALPACA-HISTORY-02"
+    },
+    {
+      "adjustment": "raw",
+      "canonicalRowsSha256": "215c07b8b032f1b1b05f8637acc560e424d49597fb42264b9320aea8c5f20c3f",
+      "count": 1258,
+      "feed": "sip",
+      "first": "2020-01-02",
+      "last": "2024-12-31",
+      "source": "Alpaca",
+      "symbol": "DDOG",
+      "workerDataRevision": "ALPACA-HISTORY-02"
+    },
+    {
+      "adjustment": "raw",
+      "canonicalRowsSha256": "e9c00c8cffddc945098c898a7780977e77683d993cefd2dbbe6a0d7df3e36e59",
+      "count": 1258,
+      "feed": "sip",
+      "first": "2020-01-02",
+      "last": "2024-12-31",
+      "source": "Alpaca",
+      "symbol": "PYPL",
+      "workerDataRevision": "ALPACA-HISTORY-02"
+    },
+    {
+      "adjustment": "raw",
+      "canonicalRowsSha256": "d0faad3e52d3c9e6ac5991a5640a9505c09bf396bd19db71e938be573cef4009",
+      "count": 1258,
+      "feed": "sip",
+      "first": "2020-01-02",
+      "last": "2024-12-31",
+      "source": "Alpaca",
+      "symbol": "NVDA",
+      "workerDataRevision": "ALPACA-HISTORY-02"
+    }
+  ],
+  "scope": "Worker API Alpaca SIP adjustment=raw 2020-2024; aligned dates OHLCV invariants; does not certify independent vendor raw basis, splits/dividends, PIT, rights, research",
+  "tradeEnabled": false,
+  "forwardEnabled": false,
+  "backtests": false
+}
