@@ -59,8 +59,9 @@ jobs:
           import json,urllib.parse
           prices={}
           for mode in ('raw','dividend'):
-              params=urllib.parse.urlencode(dict(symbols='SPY',timeframe='1Day',feed='sip',adjustment=mode,start='2020-01-01',end='2025-01-03'))
-              with urllib.request.urlopen('https://linas-opti-api.mangaj73.workers.dev/bars?'+params,timeout=60) as response:
+              params=urllib.parse.urlencode(dict(symbols='SPY',timeframe='1Day',feed='sip',adjustment=mode,start='2020-01-01',end='2024-12-31'))
+              req=urllib.request.Request('https://linas-opti-api.mangaj73.workers.dev/bars?'+params,headers={'User-Agent':'Lina-SPY-adjustment-audit/1'})
+              with urllib.request.urlopen(req,timeout=90) as response:
                   data=json.load(response)
               if not data.get('ok'):raise SystemExit('FAIL provider response')
               prices[mode]={x['t'][:10]:float(x['c']) for x in data['rows']}
