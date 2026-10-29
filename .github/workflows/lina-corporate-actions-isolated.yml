@@ -34,5 +34,12 @@ jobs:
         run: node linasopti/ci-corporate-actions/verify-wrangler-staging.mjs
       - name: Check isolated V046 candidate gate
         run: node linasopti/ci-corporate-actions/check-v046-candidate.mjs
+      - name: Archive tested V046 Worker bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: lina-v046-tested-worker
+          path: linasopti/ci-corporate-actions/.candidate-build/WORKER_V4_RELEASE_CANDIDATE.js
+          if-no-files-found: error
+          retention-days: 30
       - name: Confirm deployment remains blocked
         run: echo 'Candidate-only PASS. Production release integrity is separate and remains required before deploy.'
