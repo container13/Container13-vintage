@@ -38,7 +38,13 @@ check("release_gate_current", ("REQUIRED_RELEASE='"+release+"'" in gate or 'REQU
 check("gen16_historical_auth", "approvedRelease==='V0.3.95'" in gate, "Gen16 research authorization remains V0.3.95")
 check("trade_label_off", "Handel AV" in index or "Handel AV" in app, "Handel AV label present")
 wrangler=read("worker/wrangler.jsonc")
-check("worker_source_explicit", 'WORKER_PENDING_RUNTIME_REPORT.js' in wrangler, "wrangler deploy source")
+main=json.loads(wrangler).get("main")
+approved={"./WORKER_PENDING_RUNTIME_REPORT.js","./WORKER_V046_PREBUNDLED.js"}
+source=ROOT/"worker"/str(main)
+valid=main in approved and source.is_file()
+if main=="./WORKER_V046_PREBUNDLED.js":
+    valid=valid and release=="V0.4.46" and "/corporate-actions-diagnostic" in source.read_text(encoding="utf-8")
+check("worker_source_explicit",valid,"verified worker "+str(main))
 gen8_summary=ROOT/"evidence/2026-09-29/LINAS_GEN8_RESEARCH_SUMMARY_2026-09-29.json"
 check("gen8_frozen_evidence", gen8_summary.exists() and gen8_summary.stat().st_size>0, "immutable Gen8 summary evidence present")
 for n in range(9,17):
