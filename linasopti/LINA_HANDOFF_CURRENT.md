@@ -882,3 +882,7 @@ console.log('PASS: method, auth, fixed provider, counts, sanitized error, schema
 
 ## 2026-10-29 – Gen17 external source screen
 Official ALFRED/FRED documentation confirms historical vintages and real-time observation periods. Specific series, point-in-time publication cutoff, 2020–2024 coverage and Gen17 relevance remain UNVERIFIED. Alpaca historical bars adjustment/asof symbol mapping does not establish release timestamps. Full notes: LINA_GEN17_DATA_READINESS_2026-10-29.md. Next: verify a named ALFRED series without backtest or new research. Gen17 DRAFT_ONLY/BLOCKED_DATA; trade/Forward OFF; production untouched. State checkpoint commit b10dc12a, data-readiness commit d8de642d.
+
+
+## 2026-10-29 – Gen17 named ALFRED/FRED candidate screen
+Verified FRED documentation: VIXCLS is a daily VIX close series and T10Y2Y a daily Treasury 10y–2y spread; ALFRED API supports vintage queries. Neither candidate's 2020–2024 vintage payload, exact historical availability cutoff, missingness or licensing is verified. VIXCLS first to audit; do not infer same-day availability from observation date; enforce proven cutoff or predeclared conservative lag. Notes and URLs in LINA_GEN17_DATA_READINESS_2026-10-29.md (commit 46894098); CURRENT_STATE checkpoint commit 562a2a93. No backtest, deployment, trading or Forward. Gen17 DRAFT_ONLY/BLOCKED_DATA.
