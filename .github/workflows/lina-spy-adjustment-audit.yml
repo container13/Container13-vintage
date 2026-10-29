@@ -1,0 +1,50 @@
+name: Lina SPY dividend-adjustment consistency audit
+on:
+  push:
+    branches: [lina-corporate-actions-ci-isolated]
+    paths: ['.github/workflows/lina-spy-adjustment-audit.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  adjustment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Compare raw split dividend and all adjustment modes
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json,urllib.request,urllib.parse,hashlib,math,statistics,datetime
+          base='https://linas-opti-api.mangaj73.workers.dev/bars'
+          series={}
+          for mode in ['raw','split','dividend','all']:
+              params=urllib.parse.urlencode({'symbols':'SPY','timeframe':'1Day','feed':'sip','adjustment':mode,'start':'2020-01-01','end':'2024-12-31'})
+              req=urllib.request.Request(base+'?'+params,headers={'User-Agent':'Lina-SPY-adjustment-audit/1'})
+              with urllib.request.urlopen(req,timeout=90) as r:
+                  body=r.read(12000000)
+                  print('mode',mode,'HTTP',r.status,'bytes',len(body),'sha256',hashlib.sha256(body).hexdigest())
+              d=json.loads(body)
+              if not d.get('ok') or d.get('adjustment')!=mode or d.get('feed')!='sip':
+                  raise SystemExit('FAIL metadata '+mode)
+              rows=d.get('rows',[])
+              if not 1200<=len(rows)<=1350:raise SystemExit('FAIL row count '+mode)
+              dates=[x['t'][:10] for x in rows]
+              if dates!=sorted(set(dates)):raise SystemExit('FAIL dates '+mode)
+              if any(not isinstance(x.get('c'),(float,int)) or not math.isfinite(x['c']) or x['c']<=0 for x in rows):
+                  raise SystemExit('FAIL close '+mode)
+              series[mode]={x['t'][:10]:x['c'] for x in rows}
+          dates=set(series['raw'])
+          if any(set(s)!=dates for s in series.values()):raise SystemExit('FAIL mode date mismatch')
+          # SPY has no split during this interval; Alpaca split-adjusted prices should match raw.
+          raw,split,div,all_=(series[k] for k in ['raw','split','dividend','all'])
+          split_mismatch=[d for d in dates if abs(raw[d]-split[d])>0.00001*raw[d]]
+          all_div_mismatch=[d for d in dates if abs(all_[d]-div[d])>0.00001*div[d]]
+          changed=sum(abs(raw[d]-div[d])>0.00001*raw[d] for d in dates)
+          print('sessions',len(dates),'raw_vs_split_mismatch',len(split_mismatch),'dividend_vs_all_mismatch',len(all_div_mismatch),'raw_vs_dividend_changed_sessions',changed)
+          print('raw_vs_split_first_mismatch',sorted(split_mismatch)[:10])
+          print('dividend_vs_all_first_mismatch',sorted(all_div_mismatch)[:10])
+          if split_mismatch or all_div_mismatch:raise SystemExit('FAIL unexpected split or all adjustment difference')
+          if changed<1000:raise SystemExit('FAIL dividend adjustment not evident')
+          print('PASS: provider adjustment-mode consistency; not a dividend-event or PIT audit')
+          PY
