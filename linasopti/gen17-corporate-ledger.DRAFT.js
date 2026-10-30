@@ -9,12 +9,14 @@ function step(state,day,orders=[],dividends=[]){
  if(!/^\d{4}-\d{2}-\d{2}$/.test(day)||state.day&&day<=state.day)throw Error('DAY_ORDER');
  let positions=state.positions.map(p=>({...p})),cash=state.cash;
  const entitlements=state.entitlements.map(e=>({...e})),paid=[...state.paid];
+ const knownIds=new Set(entitlements.map(e=>e.id));
  // Existing split adapter adjusts holdings at session open.
  positions=Split.applyDay(positions,day).positions;
  // Ex-date entitlement is based on holdings before today's trades.
  for(const d of dividends.filter(d=>d.exDate===day)){
   if(!(d.symbol&&d.id&&d.payDate>=day&&Number.isFinite(d.rate)&&d.rate>0))throw Error('INVALID_DIVIDEND');
-  if(entitlements.some(e=>e.id===d.id))throw Error('DUPLICATE_DIVIDEND');
+  if(knownIds.has(d.id))throw Error('DUPLICATE_DIVIDEND');
+  knownIds.add(d.id);
   const qty=positions.filter(p=>p.s===d.symbol).reduce((n,p)=>n+p.qty,0);
   entitlements.push({id:d.id,payDate:d.payDate,amount:qty*d.rate,qty});
  }
