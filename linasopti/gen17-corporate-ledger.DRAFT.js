@@ -5,8 +5,13 @@ function create(initialCash=0){
  if(!Number.isFinite(initialCash))throw Error('INVALID_CASH');
  return {cash:initialCash,positions:[],entitlements:[],paid:[],day:null};
 }
+function validDate(d){
+ if(typeof d!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(d))return false;
+ const t=Date.parse(d+'T00:00:00Z');
+ return Number.isFinite(t)&&new Date(t).toISOString().slice(0,10)===d;
+}
 function step(state,day,orders=[],dividends=[]){
- if(!/^\d{4}-\d{2}-\d{2}$/.test(day)||state.day&&day<=state.day)throw Error('DAY_ORDER');
+ if(!validDate(day)||state.day&&day<=state.day)throw Error('DAY_ORDER');
  let positions=state.positions.map(p=>({...p})),cash=state.cash;
  const entitlements=state.entitlements.map(e=>({...e})),paid=[...state.paid];
  const knownIds=new Set(entitlements.map(e=>e.id));
@@ -14,7 +19,7 @@ function step(state,day,orders=[],dividends=[]){
  positions=Split.applyDay(positions,day).positions;
  // Ex-date entitlement is based on holdings before today's trades.
  for(const d of dividends.filter(d=>d.exDate===day)){
-  if(!(d.symbol&&d.id&&d.payDate>=day&&Number.isFinite(d.rate)&&d.rate>0))throw Error('INVALID_DIVIDEND');
+  if(!(d.symbol&&d.id&&validDate(d.payDate)&&d.payDate>=day&&Number.isFinite(d.rate)&&d.rate>0))throw Error('INVALID_DIVIDEND');
   if(knownIds.has(d.id))throw Error('DUPLICATE_DIVIDEND');
   knownIds.add(d.id);
   const qty=positions.filter(p=>p.s===d.symbol).reduce((n,p)=>n+p.qty,0);
