@@ -2,7 +2,7 @@ name: Lina Gen17 split-normalized indicators synthetic
 on:
   push:
     branches: [lina-corporate-actions-ci-isolated]
-    paths: ['.github/workflows/lina-gen17-split-normalize-synthetic.yml','linasopti/gen17-split-normalize.DRAFT.js','linasopti/gen17-signal-position-integration.DRAFT.test.js','linasopti/gen17-dividend-accounting.DRAFT.test.js']
+    paths: ['.github/workflows/lina-gen17-split-normalize-synthetic.yml','linasopti/gen17-split-normalize.DRAFT.js','linasopti/gen17-signal-position-integration.DRAFT.test.js','linasopti/gen17-dividend-accounting.DRAFT.test.js','linasopti/gen17-dividend-position-integration.DRAFT.test.js']
   workflow_dispatch:
 permissions:
   contents: read
@@ -42,3 +42,5 @@ jobs:
         run: node linasopti/gen17-signal-position-integration.DRAFT.test.js
       - name: Check synthetic dividend entitlement and payment ledger
         run: node linasopti/gen17-dividend-accounting.DRAFT.test.js
+      - name: Check dividend position integration
+        run: node linasopti/gen17-dividend-position-integration.DRAFT.test.js
