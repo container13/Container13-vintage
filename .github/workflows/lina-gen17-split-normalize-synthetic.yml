@@ -2,7 +2,7 @@ name: Lina Gen17 split-normalized indicators synthetic
 on:
   push:
     branches: [lina-corporate-actions-ci-isolated]
-    paths: ['.github/workflows/lina-gen17-split-normalize-synthetic.yml','linasopti/gen17-split-normalize.DRAFT.js']
+    paths: ['.github/workflows/lina-gen17-split-normalize-synthetic.yml','linasopti/gen17-split-normalize.DRAFT.js','linasopti/gen17-signal-position-integration.DRAFT.test.js']
   workflow_dispatch:
 permissions:
   contents: read
@@ -38,3 +38,5 @@ jobs:
           assert.throws(()=>normalizeToSession('TSLA',[rows[1],rows[0]],'2022-08-25'),/SPLIT_DATE_ORDER/);
           console.log('PASS_SPLIT_ASOF_SESSION_SYNTHETIC');
           JS
+      - name: Check signal through split position and sell synthetic
+        run: node linasopti/gen17-signal-position-integration.DRAFT.test.js
