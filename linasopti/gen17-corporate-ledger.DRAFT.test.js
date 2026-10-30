@@ -14,4 +14,5 @@ s=step(s,'2022-09-01');assert.equal(s.cash,4330);
 assert.equal(s.paid.length,1);
 assert.throws(()=>step(s,'2022-09-01'),/DAY_ORDER/);
 assert.equal(s.entitlements[0].qty,10);
+let delayed=create(100);delayed=step(delayed,'2024-01-02',[{side:'buy',s:'SPY',qty:2,price:10}]);delayed=step(delayed,'2024-01-03',[],[{id:'weekend-pay',symbol:'SPY',exDate:'2024-01-03',payDate:'2024-01-06',rate:2}]);delayed=step(delayed,'2024-01-08');assert.equal(delayed.cash,84);assert.deepEqual(delayed.paid,['weekend-pay']);
 console.log('PASS_GEN17_SYNTHETIC_CORPORATE_LEDGER_CHAIN');
