@@ -1,0 +1,17 @@
+'use strict';
+const assert=require('node:assert/strict');
+const {create,step}=require('./gen17-corporate-ledger.DRAFT.js');
+let s=create(2000);
+s=step(s,'2020-08-28',[{side:'buy',s:'TSLA',qty:2,price:500}]);
+s=step(s,'2020-08-31');assert.equal(s.positions[0].qty,10);
+s=step(s,'2022-08-24',[],[{id:'div1',symbol:'TSLA',exDate:'2022-08-24',payDate:'2022-09-01',rate:3}]);
+assert.equal(s.entitlements[0].amount,30);
+s=step(s,'2022-08-25',[{side:'sell',s:'TSLA',qty:30,price:110}]);
+assert.equal(s.positions.length,0);
+assert.equal(s.cash,4300);
+s=step(s,'2022-08-31');assert.equal(s.cash,4300);
+s=step(s,'2022-09-01');assert.equal(s.cash,4330);
+assert.equal(s.paid.length,1);
+assert.throws(()=>step(s,'2022-09-01'),/DAY_ORDER/);
+assert.equal(s.entitlements[0].qty,10);
+console.log('PASS_GEN17_SYNTHETIC_CORPORATE_LEDGER_CHAIN');
