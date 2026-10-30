@@ -51,4 +51,8 @@ multi=step(multi,'2024-03-07');assert.equal(multi.cash,82);
 multi=step(multi,'2024-03-08');assert.equal(multi.cash,85);
 assert.deepEqual(multi.paid,['spy-march-a','spy-march-b']);
 multi=step(multi,'2024-03-11');assert.equal(multi.cash,85);
+// Reusing an event ID on a later ex-date is rejected.
+assert.throws(()=>step(multi,'2024-03-12',[],[
+ {id:'spy-march-a',symbol:'SPY',exDate:'2024-03-12',payDate:'2024-03-14',rate:1}
+]),/DUPLICATE_DIVIDEND/);
 console.log('PASS_GEN17_SYNTHETIC_CORPORATE_LEDGER_CHAIN');
