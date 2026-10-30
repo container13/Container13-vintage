@@ -55,4 +55,11 @@ multi=step(multi,'2024-03-11');assert.equal(multi.cash,85);
 assert.throws(()=>step(multi,'2024-03-12',[],[
  {id:'spy-march-a',symbol:'SPY',exDate:'2024-03-12',payDate:'2024-03-14',rate:1}
 ]),/DUPLICATE_DIVIDEND/);
+// A rejected batch must not mutate the caller's existing ledger.
+const beforeRejected=JSON.stringify(multi);
+assert.throws(()=>step(multi,'2024-03-12',[
+ {side:'buy',s:'SPY',qty:1,price:10},
+ {side:'sell',s:'SPY',qty:999,price:10}
+]),/INSUFFICIENT_SHARES/);
+assert.equal(JSON.stringify(multi),beforeRejected);
 console.log('PASS_GEN17_SYNTHETIC_CORPORATE_LEDGER_CHAIN');
