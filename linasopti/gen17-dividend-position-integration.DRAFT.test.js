@@ -20,7 +20,7 @@ positions=Portfolio.applyDay(positions,'2020-08-31').positions;
 assert.equal(positions[0].qty,10);
 positions=Portfolio.applyDay(positions,'2022-08-25').positions;
 assert.equal(positions[0].qty,30);
-assert.equal(positions[0].qty*positions[0].entryPrice,1000);
+assert.ok(Math.abs(positions[0].qty*positions[0].entryPrice-1000)<1e-9);
 assert.equal(Portfolio.value(positions,{TSLA:110}),3300);
 assert.equal(Split.events.filter(e=>e.symbol==='TSLA').length,2);
 console.log('PASS_GEN17_SYNTHETIC_DIVIDEND_POSITION_SPLIT_INTEGRATION');
