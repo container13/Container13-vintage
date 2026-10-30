@@ -62,4 +62,9 @@ assert.throws(()=>step(multi,'2024-03-12',[
  {side:'sell',s:'SPY',qty:999,price:10}
 ]),/INSUFFICIENT_SHARES/);
 assert.equal(JSON.stringify(multi),beforeRejected);
+// Calendar validation must reject impossible dates without mutating state.
+const dateSnapshot=JSON.stringify(multi);
+assert.throws(()=>step(multi,'2024-02-30'),/DAY_ORDER/);
+assert.throws(()=>step(multi,'2024-03-12',[],[{id:'bad-calendar',symbol:'SPY',exDate:'2024-03-12',payDate:'2024-02-30',rate:1}]),/INVALID_DIVIDEND/);
+assert.equal(JSON.stringify(multi),dateSnapshot);
 console.log('PASS_GEN17_SYNTHETIC_CORPORATE_LEDGER_CHAIN');
