@@ -23,22 +23,33 @@ function step(state,day,orders=[],dividends=[]){
   if(knownIds.has(d.id))throw Error('DUPLICATE_DIVIDEND');
   knownIds.add(d.id);
   const qty=positions.filter(p=>p.s===d.symbol).reduce((n,p)=>n+p.qty,0);
-  entitlements.push({id:d.id,payDate:d.payDate,amount:qty*d.rate,qty});
+  const amount=qty*d.rate;
+  if(!Number.isFinite(amount))throw Error('AMOUNT_OVERFLOW');
+  entitlements.push({id:d.id,payDate:d.payDate,amount,qty});
  }
  for(const o of orders){
   if(!(o.s&&Number.isFinite(o.qty)&&o.qty>0&&Number.isFinite(o.price)&&o.price>0&&['buy','sell'].includes(o.side)))throw Error('INVALID_ORDER');
   const i=positions.findIndex(p=>p.s===o.s);
   if(o.side==='buy'){
-   cash-=o.qty*o.price;
+   const tradeValue=o.qty*o.price;
+   if(!Number.isFinite(tradeValue)||!Number.isFinite(cash-tradeValue))throw Error('AMOUNT_OVERFLOW');
+   cash-=tradeValue;
    if(i<0)positions.push({s:o.s,qty:o.qty,entryPrice:o.price});
-   else {const p=positions[i];p.entryPrice=(p.qty*p.entryPrice+o.qty*o.price)/(p.qty+o.qty);p.qty+=o.qty;}
+   else {const p=positions[i];const qty=p.qty+o.qty,bookValue=p.qty*p.entryPrice+tradeValue;
+    if(!Number.isFinite(qty)||!Number.isFinite(bookValue)||!Number.isFinite(bookValue/qty))throw Error('AMOUNT_OVERFLOW');
+    p.entryPrice=bookValue/qty;p.qty=qty;}
   }else{
    if(i<0||positions[i].qty<o.qty)throw Error('INSUFFICIENT_SHARES');
-   cash+=o.qty*o.price;positions[i].qty-=o.qty;
+   const tradeValue=o.qty*o.price;
+   if(!Number.isFinite(tradeValue)||!Number.isFinite(cash+tradeValue))throw Error('AMOUNT_OVERFLOW');
+   cash+=tradeValue;positions[i].qty-=o.qty;
    if(positions[i].qty===0)positions.splice(i,1);
   }
  }
- for(const e of entitlements.filter(e=>e.payDate<=day&&!paid.includes(e.id))){cash+=e.amount;paid.push(e.id);}
+ for(const e of entitlements.filter(e=>e.payDate<=day&&!paid.includes(e.id))){
+  if(!Number.isFinite(e.amount)||!Number.isFinite(cash+e.amount))throw Error('AMOUNT_OVERFLOW');
+  cash+=e.amount;paid.push(e.id);
+}
  return {cash,positions,entitlements,paid,day};
 }
 module.exports=Object.freeze({create,step});
