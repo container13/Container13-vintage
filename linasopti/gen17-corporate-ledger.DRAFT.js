@@ -31,7 +31,7 @@ function step(state,day,orders=[],dividends=[]){
    if(positions[i].qty===0)positions.splice(i,1);
   }
  }
- for(const e of entitlements.filter(e=>e.payDate===day&&!paid.includes(e.id))){cash+=e.amount;paid.push(e.id);}
+ for(const e of entitlements.filter(e=>e.payDate<=day&&!paid.includes(e.id))){cash+=e.amount;paid.push(e.id);}
  return {cash,positions,entitlements,paid,day};
 }
 module.exports=Object.freeze({create,step});
