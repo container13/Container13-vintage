@@ -39,4 +39,16 @@ assert.throws(()=>step(exSell,'2024-02-08',[],[
 assert.throws(()=>step(exSell,'2024-02-08',[],[
  {id:'bad-date',symbol:'SPY',exDate:'2024-02-08',payDate:'2024-02-07',rate:1}
 ]),/INVALID_DIVIDEND/);
+// Two distributions for one symbol retain distinct entitlements and payment IDs.
+let multi=create(100);
+multi=step(multi,'2024-03-01',[{side:'buy',s:'SPY',qty:2,price:10}]);
+multi=step(multi,'2024-03-04',[],[
+ {id:'spy-march-a',symbol:'SPY',exDate:'2024-03-04',payDate:'2024-03-07',rate:1},
+ {id:'spy-march-b',symbol:'SPY',exDate:'2024-03-04',payDate:'2024-03-08',rate:1.5}
+]);
+assert.deepEqual(multi.entitlements.map(e=>e.amount),[2,3]);
+multi=step(multi,'2024-03-07');assert.equal(multi.cash,82);
+multi=step(multi,'2024-03-08');assert.equal(multi.cash,85);
+assert.deepEqual(multi.paid,['spy-march-a','spy-march-b']);
+multi=step(multi,'2024-03-11');assert.equal(multi.cash,85);
 console.log('PASS_GEN17_SYNTHETIC_CORPORATE_LEDGER_CHAIN');
