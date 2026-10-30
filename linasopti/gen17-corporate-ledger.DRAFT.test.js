@@ -26,4 +26,17 @@ exSell=step(exSell,'2024-02-02',[{side:'buy',s:'SPY',qty:2,price:10}]);
 exSell=step(exSell,'2024-02-05',[{side:'sell',s:'SPY',qty:2,price:11}],[{id:'ex-sell',symbol:'SPY',exDate:'2024-02-05',payDate:'2024-02-07',rate:2}]);
 assert.equal(exSell.entitlements[0].amount,4);
 exSell=step(exSell,'2024-02-07');assert.equal(exSell.cash,106);
+// Invalid trades must reject without mutating the previous state.
+const snapshot=JSON.stringify(exSell);
+assert.throws(()=>step(exSell,'2024-02-08',[{side:'sell',s:'SPY',qty:1,price:10}]),/INSUFFICIENT_SHARES/);
+assert.throws(()=>step(exSell,'2024-02-08',[{side:'buy',s:'SPY',qty:-1,price:10}]),/INVALID_ORDER/);
+assert.equal(JSON.stringify(exSell),snapshot);
+// Duplicate distribution IDs must not be accepted on the same ex-date.
+assert.throws(()=>step(exSell,'2024-02-08',[],[
+ {id:'duplicate',symbol:'SPY',exDate:'2024-02-08',payDate:'2024-02-09',rate:1},
+ {id:'duplicate',symbol:'SPY',exDate:'2024-02-08',payDate:'2024-02-09',rate:1}
+]),/DUPLICATE_DIVIDEND/);
+assert.throws(()=>step(exSell,'2024-02-08',[],[
+ {id:'bad-date',symbol:'SPY',exDate:'2024-02-08',payDate:'2024-02-07',rate:1}
+]),/INVALID_DIVIDEND/);
 console.log('PASS_GEN17_SYNTHETIC_CORPORATE_LEDGER_CHAIN');
