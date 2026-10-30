@@ -17,7 +17,7 @@ assert.equal(normalizeToSession('TSLA',rows,'2022-08-26')[0].c,500/15);
 let position={s:'TSLA',qty:2,entryPrice:500};
 for(const event of events.filter(e=>e.symbol==='TSLA')){
  position=apply(position,event);
- assert.equal(position.qty*position.entryPrice,1000);
+ assert.ok(Math.abs(position.qty*position.entryPrice-1000)<1e-9);
  assert.throws(()=>apply(position,event),/SPLIT_DUPLICATE/);
 }
 assert.equal(position.qty,30);
