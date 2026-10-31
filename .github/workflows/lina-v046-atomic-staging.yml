@@ -1,0 +1,38 @@
+name: Lina V046 atomic staging safety (no deploy)
+on:
+  push:
+    branches: [lina-v046-atomic-production-staging]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Static release integrity
+        run: python3 linasopti/tools/release_integrity.py
+      - name: Exact Worker and rollback
+        run: |
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path('linasopti')
+          w=root/'worker'
+          conf=json.loads((w/'wrangler.jsonc').read_text())
+          assert conf['name']=='linas-opti-api'
+          assert conf['main']=='./WORKER_V046_PREBUNDLED.js'
+          assert conf['keep_vars'] is True
+          assert hashlib.sha256((w/'WORKER_V046_PREBUNDLED.js').read_bytes()).hexdigest()=='798141badeda6f474e89a2df38fbabfa642c664bddfe5d3f22e7ecdb6015066a'
+          assert (w/'WORKER_PENDING_RUNTIME_REPORT.js').exists()
+          state=json.loads((root/'LINA_CURRENT_STATE.json').read_text())
+          assert state['release']=='V0.4.46'
+          assert state['research']['trade']=='OFF' and state['research']['forward']=='OFF'
+          assert state['research']['gen8Through16Frozen'] is True
+          assert state['verified']['pagesDeploy'].startswith('PENDING_')
+          print('PASS exact SHA, original rollback source, state and release')
+          PY
+      - name: Check original production ancestry
+        run: |
+          git merge-base --is-ancestor 8b9eda07b3f46f4cc5171de05313f977457d6c77 HEAD
+          git diff --name-only 8b9eda07b3f46f4cc5171de05313f977457d6c77 HEAD
