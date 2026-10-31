@@ -28,6 +28,8 @@ jobs:
         run: node linasopti/ci-corporate-actions/schema-fixtures-test.mjs
       - name: Check V4 candidate bundle
         run: bash linasopti/ci-corporate-actions/cloudflare-prebuild.sh
+      - name: Stage exact generated bundle for verification (isolated branch only)
+        run: cp linasopti/ci-corporate-actions/.candidate-build/WORKER_V4_RELEASE_CANDIDATE.js linasopti/worker/WORKER_V046_PREBUNDLED.js
       - name: Test exact bundled Worker offline
         run: node linasopti/ci-corporate-actions/miniflare-test.mjs
       - name: Wrangler staging SHA check
