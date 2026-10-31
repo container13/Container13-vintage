@@ -1,0 +1,47 @@
+name: Lina Gen17 corporate-actions API access probe (read-only)
+on:
+  push:
+    branches: [lina-corporate-actions-ci-isolated]
+    paths: ['.github/workflows/lina-gen17-corporate-actions-api-probe.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  corporate-actions-access:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Check authenticated narrow historical endpoint without exposing credentials or raw data
+        env:
+          APCA_KEY: ${{ secrets.APCA_API_KEY_ID }}
+          APCA_SECRET: ${{ secrets.APCA_API_SECRET_KEY }}
+        run: |
+          python3 - <<'PY'
+          import os,json,urllib.request,urllib.error,urllib.parse
+          key=os.environ.get('APCA_KEY','')
+          secret=os.environ.get('APCA_SECRET','')
+          if not key or not secret:
+              raise SystemExit('BLOCKED_CREDENTIALS: isolated Actions secrets not configured; no request sent')
+          q=urllib.parse.urlencode({'symbols':'SPY','types':'cash_dividend','start':'2024-01-01','end':'2024-12-31','limit':'100','data_quality':'complete'})
+          req=urllib.request.Request('https://data.alpaca.markets/v1/corporate-actions?'+q,headers={'APCA-API-KEY-ID':key,'APCA-API-SECRET-KEY':secret,'Accept':'application/json','User-Agent':'Lina-Gen17-CA-gate/1'})
+          try:
+              with urllib.request.urlopen(req,timeout=25) as resp:
+                  raw=resp.read(500000)
+                  status=resp.status
+          except urllib.error.HTTPError as exc:
+              print('BLOCKED_HTTP_STATUS',exc.code)
+              raise SystemExit(1)
+          except Exception as exc:
+              print('BLOCKED_NETWORK',type(exc).__name__)
+              raise SystemExit(1)
+          try: obj=json.loads(raw)
+          except ValueError:raise SystemExit('BLOCKED_NON_JSON')
+          if not isinstance(obj,dict):raise SystemExit('BLOCKED_SCHEMA')
+          print('HTTP_STATUS',status)
+          print('RESPONSE_KEYS',sorted(obj.keys()))
+          print('HAS_NEXT_PAGE',bool(obj.get('next_page_token')))
+          print('CA_COUNT',len(obj.get('corporate_actions',[])) if isinstance(obj.get('corporate_actions'),list) else 'unknown')
+          print('LIMIT: Access/schema only; no PIT proof, license clearance or historical runner approval.')
+          if status!=200:raise SystemExit('BLOCKED_STATUS')
+          print('PASS_CA_API_ACCESS_ONLY')
+          PY
