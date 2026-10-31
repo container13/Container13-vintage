@@ -80,4 +80,20 @@ assert.equal(JSON.stringify(funded),cashSnapshot);
 funded=step(funded,'2024-04-01',[{side:'buy',s:'SPY',qty:10,price:10}]);
 assert.equal(funded.cash,0);
 assert.throws(()=>step(funded,'2024-04-02',[{side:'buy',s:'SPY',qty:1,price:10}]),/INSUFFICIENT_CASH/);
+// A batch with enough cash for only its first order must be atomic.
+let batchCash=create(100);
+const batchCashBefore=JSON.stringify(batchCash);
+assert.throws(()=>step(batchCash,'2024-04-03',[
+ {side:'buy',s:'SPY',qty:6,price:10},
+ {side:'buy',s:'NVDA',qty:5,price:10}
+]),/INSUFFICIENT_CASH/);
+assert.equal(JSON.stringify(batchCash),batchCashBefore);
+// Same-day sale proceeds can fund a later buy in the explicitly ordered batch.
+batchCash=step(batchCash,'2024-04-03',[{side:'buy',s:'SPY',qty:10,price:10}]);
+batchCash=step(batchCash,'2024-04-04',[
+ {side:'sell',s:'SPY',qty:5,price:10},
+ {side:'buy',s:'NVDA',qty:5,price:10}
+]);
+assert.equal(batchCash.cash,0);
+assert.equal(batchCash.positions.find(p=>p.s==='NVDA').qty,5);
 console.log('PASS_GEN17_SYNTHETIC_CORPORATE_LEDGER_CHAIN');
