@@ -475,5 +475,27 @@
     "trading": "OFF",
     "forward": "OFF",
     "productionChanges": false
+  },
+  "gen17CorporateActionsApiDecision20261031": {
+    "status": "DOCUMENTED_UNVERIFIED_ACCESS",
+    "endpoint": "https://data.alpaca.markets/v1/corporate-actions",
+    "supportedRelevantTypes": [
+      "cash_dividend",
+      "forward_split",
+      "reverse_split"
+    ],
+    "query": "symbols,types,start,end,limit,page_token,data_quality",
+    "finding": "Newer endpoint exists; old announcements endpoint deprecated. Provider explicitly does not guarantee creation/ingestion time; historical event response alone does not establish point-in-time/as-of availability.",
+    "requiredNext": [
+      "Verify authenticated endpoint access in existing isolated CI without exposing secrets",
+      "Fetch bounded SPY/TSLA historical samples, capture raw response and SHA-256, paginate and reconcile against existing issuer events",
+      "Establish PIT evidence separately or keep PIT gate BLOCKED",
+      "Confirm contractual research/storage/redistribution rights before persisting bulk data",
+      "Complete remaining Gen10/12 review"
+    ],
+    "gen17": "DRAFT_ONLY/BLOCKED_DATA",
+    "trading": "OFF",
+    "forward": "OFF",
+    "productionChanges": false
   }
 }
