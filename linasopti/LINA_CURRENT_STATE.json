@@ -455,5 +455,25 @@
     "trading": "OFF",
     "forward": "OFF",
     "productionChanges": false
+  },
+  "gen17CorporateLedgerSynthetic20261031": {
+    "status": "SYNTHETIC_CI_PASS_ONLY",
+    "branch": "lina-corporate-actions-ci-isolated",
+    "latestRun": 41153245140,
+    "latestCommit": "b55ba52989b2b9eae59b873f000f8e945000ac6d",
+    "coverage": [
+      "date validation",
+      "dividend entitlement and payout",
+      "split chain",
+      "duplicate IDs",
+      "overflow guards",
+      "cash-only affordability",
+      "same-day ordered batch atomicity"
+    ],
+    "next": "Return to real corporate-action event feed, PIT/as-of availability, licensing and reproducible snapshots; avoid additional micro-tests unless gate-relevant",
+    "gen17": "DRAFT_ONLY/BLOCKED_DATA",
+    "trading": "OFF",
+    "forward": "OFF",
+    "productionChanges": false
   }
 }
