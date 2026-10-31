@@ -1,0 +1,33 @@
+name: Lina V046 exact cutover candidate (no deploy)
+on:
+  push:
+    branches: [lina-v046-cutover-candidate]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  release-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Static release integrity
+        run: python3 linasopti/tools/release_integrity.py
+      - name: Assert exact candidate and immutable source
+        run: |
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path('linasopti/worker')
+          config=json.loads((root/'wrangler.jsonc').read_text())
+          assert config['main']=='./WORKER_V046_PREBUNDLED.js'
+          assert config['name']=='linas-opti-api'
+          assert config['keep_vars'] is True
+          digest=hashlib.sha256((root/'WORKER_V046_PREBUNDLED.js').read_bytes()).hexdigest()
+          assert digest=='798141badeda6f474e89a2df38fbabfa642c664bddfe5d3f22e7ecdb6015066a'
+          assert (root/'WORKER_PENDING_RUNTIME_REPORT.js').is_file()
+          print('PASS pinned Worker, Wrangler source, original rollback file')
+          PY
+      - name: Verify no production deployment
+        run: |
+          test "$(git branch --show-current)" = "lina-v046-cutover-candidate"
+          git diff --exit-code
