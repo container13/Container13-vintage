@@ -49,9 +49,9 @@ worker_exists=bool(worker_path and worker_path.is_file())
 check("worker_source_explicit", worker_main in worker_candidates and worker_exists, "explicit allowlisted Worker entrypoint exists: "+worker_main)
 if worker_main=="./WORKER_V046_PREBUNDLED.js":
     # This SHA-256 is pinned to the tested isolated CI artifact, never computed from a moving branch.
-    reviewed_sha256="TO_BE_PINNED_FROM_TESTED_CI"
+    reviewed_sha256="798141badeda6f474e89a2df38fbabfa642c664bddfe5d3f22e7ecdb6015066a"
     actual_sha256=hashlib.sha256(worker_path.read_bytes()).hexdigest() if worker_exists else ""
-    check("worker_candidate_hash_pinned", reviewed_sha256!="TO_BE_PINNED_FROM_TESTED_CI" and actual_sha256==reviewed_sha256, "candidate SHA-256 pinned and matches")
+    check("worker_candidate_hash_pinned", actual_sha256==reviewed_sha256, "candidate SHA-256 pinned and matches")
 gen8_summary=ROOT/"evidence/2026-09-29/LINAS_GEN8_RESEARCH_SUMMARY_2026-09-29.json"
 check("gen8_frozen_evidence", gen8_summary.exists() and gen8_summary.stat().st_size>0, "immutable Gen8 summary evidence present")
 for n in range(9,17):
