@@ -72,4 +72,12 @@ const overflowSnapshot=JSON.stringify(multi);
 assert.throws(()=>step(multi,'2024-03-12',[{side:'buy',s:'HUGE',qty:1e308,price:1e308}]),/AMOUNT_OVERFLOW/);
 assert.throws(()=>step(multi,'2024-03-12',[],[{id:'huge-div',symbol:'SPY',exDate:'2024-03-12',payDate:'2024-03-13',rate:1e308}]),/AMOUNT_OVERFLOW/);
 assert.equal(JSON.stringify(multi),overflowSnapshot);
+// Cash-only mode rejects unfunded buys and preserves the prior ledger.
+let funded=create(100);
+const cashSnapshot=JSON.stringify(funded);
+assert.throws(()=>step(funded,'2024-04-01',[{side:'buy',s:'SPY',qty:11,price:10}]),/INSUFFICIENT_CASH/);
+assert.equal(JSON.stringify(funded),cashSnapshot);
+funded=step(funded,'2024-04-01',[{side:'buy',s:'SPY',qty:10,price:10}]);
+assert.equal(funded.cash,0);
+assert.throws(()=>step(funded,'2024-04-02',[{side:'buy',s:'SPY',qty:1,price:10}]),/INSUFFICIENT_CASH/);
 console.log('PASS_GEN17_SYNTHETIC_CORPORATE_LEDGER_CHAIN');
