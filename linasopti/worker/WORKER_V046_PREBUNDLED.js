@@ -1,4 +1,4 @@
-// corporate_probe.mjs
+// linasopti/ci-corporate-actions/corporate_probe.mjs
 var TYPES = ["forward_splits", "cash_dividends"];
 var BASE = "https://data.alpaca.markets/v1/corporate-actions";
 var reply = (body, status = 200) => new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json", "cache-control": "no-store" } });
@@ -49,7 +49,7 @@ async function corporateProbe(request, env, upstreamFetch = fetch) {
   return reply({ ok: false, error: "PAGINATION_LIMIT", pages }, 502);
 }
 
-// corporate_probe_v3_1.mjs
+// linasopti/ci-corporate-actions/corporate_probe_v3_1.mjs
 var date = (x) => typeof x === "string" && /^\d{4}-\d{2}-\d{2}$/.test(x) && !Number.isNaN(Date.parse(x + "T00:00:00Z")) && (/* @__PURE__ */ new Date(x + "T00:00:00Z")).toISOString().slice(0, 10) === x;
 var positive = (x) => typeof x === "number" && Number.isFinite(x) && x > 0 || typeof x === "string" && /^(?:\d+)(?:\.\d+)?$/.test(x) && Number(x) > 0 && Number.isFinite(Number(x));
 function classifyEvent(kind, e) {
@@ -62,7 +62,7 @@ function classifyEvent(kind, e) {
   return { status: "validated" };
 }
 
-// corporate_probe_v4_candidate.mjs
+// linasopti/ci-corporate-actions/corporate_probe_v4_candidate.mjs
 function classifyEventV4(kind, event) {
   const result = classifyEvent(kind, event);
   if (result.status !== "validated") return result;
@@ -123,7 +123,7 @@ async function corporateProbeV4(request, env, upstreamFetch = fetch) {
   return Response.json({ ...base, classification: inspected, semanticCheck: "STRUCTURAL_ONLY_NOT_POINT_IN_TIME" }, { headers: { "cache-control": "no-store" } });
 }
 
-// v4-candidate-entry.mjs
+// linasopti/ci-corporate-actions/v4-candidate-entry.mjs
 var ALLOWED_ORIGINS = /* @__PURE__ */ new Set([
   "https://container13.se",
   "https://www.container13.se"
@@ -1352,20 +1352,13 @@ var v4_candidate_entry_default = {
       );
     }
     if (url.pathname === "/bars") {
-      // Isolated candidate: require existing Lina authentication before upstream requests.
-      if (!env.LINA_LOGIN_CODE) return json({ok:false,error:"Lina login is not configured"},503,request);
-      if (request.headers.get("X-Lina-Login-Code") !== env.LINA_LOGIN_CODE) return json({ok:false,error:"Unauthorized"},401,request);
-      const scopedSymbols = (url.searchParams.get("symbols") || "").toUpperCase().replace(/\s/g,"");
-      const scopedStart = url.searchParams.get("start") || "";
-      const scopedEnd = url.searchParams.get("end") || "";
-      if (!/^[A-Z]{1,8}(,[A-Z]{1,8}){0,4}$/.test(scopedSymbols) ||
-          !/^20\d{2}-\d{2}-\d{2}$/.test(scopedStart) ||
-          !/^20\d{2}-\d{2}-\d{2}$/.test(scopedEnd) ||
-          scopedStart > scopedEnd ||
-          !Number.isFinite(Date.parse(scopedStart)) ||
-          !Number.isFinite(Date.parse(scopedEnd)) ||
-          Date.parse(scopedEnd) - Date.parse(scopedStart) > 6 * 366 * 86400000) {
-        return json({ok:false,error:"Invalid scoped bars request"},400,request);
+      if (!env.LINA_LOGIN_CODE) return json({ ok: false, error: "Lina login is not configured" }, 503, request);
+      if (request.headers.get("X-Lina-Login-Code") !== env.LINA_LOGIN_CODE) return json({ ok: false, error: "Unauthorized" }, 401, request);
+      const barSymbols = (url.searchParams.get("symbols") || "").toUpperCase().replace(/\s/g, "");
+      const barStart = url.searchParams.get("start") || "";
+      const barEnd = url.searchParams.get("end") || "";
+      if (!/^[A-Z]{1,8}(,[A-Z]{1,8}){0,4}$/.test(barSymbols) || !/^20\d{2}-\d{2}-\d{2}$/.test(barStart) || !/^20\d{2}-\d{2}-\d{2}$/.test(barEnd) || barStart > barEnd || Date.parse(barEnd) - Date.parse(barStart) > 6 * 366 * 864e5) {
+        return json({ ok: false, error: "Invalid scoped bars request" }, 400, request);
       }
       const feed = url.searchParams.get("feed") || "iex";
       const adjustment = url.searchParams.get("adjustment") || "raw";
