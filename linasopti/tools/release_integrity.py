@@ -25,8 +25,8 @@ else:
     check("chat_bootstrap_contract", current_state.get("bootstrap",{}).get("triggerPhrase")=="Läs Linas manual", "single new-chat trigger")
     cp=current_state.get("workCheckpoint",{})
     cp_status=cp.get("status")
-    check("work_checkpoint_status", cp_status in ("IDLE","IN_PROGRESS","UNVERIFIED"), str(cp_status))
-    if cp_status in ("IN_PROGRESS","UNVERIFIED"):
+    check("work_checkpoint_status", cp_status in ("IDLE","IN_PROGRESS","UNVERIFIED","PAUSED"), str(cp_status))
+    if cp_status in ("IN_PROGRESS","UNVERIFIED","PAUSED"):
         plan=cp.get("plan",[])
         check("work_checkpoint_resumable", bool(cp.get("goal") and cp.get("targetRelease") and cp.get("lastSafeRelease") and cp.get("lastSafeCommit") and cp.get("resumeInstruction") and plan), "active checkpoint has goal/target/safe anchor/plan/resume")
     else:
@@ -38,7 +38,20 @@ check("release_gate_current", ("REQUIRED_RELEASE='"+release+"'" in gate or 'REQU
 check("gen16_historical_auth", "approvedRelease==='V0.3.95'" in gate, "Gen16 research authorization remains V0.3.95")
 check("trade_label_off", "Handel AV" in index or "Handel AV" in app, "Handel AV label present")
 wrangler=read("worker/wrangler.jsonc")
-check("worker_source_explicit", 'WORKER_PENDING_RUNTIME_REPORT.js' in wrangler, "wrangler deploy source")
+# Candidate review is fail-closed: an explicit, known Worker source is mandatory.
+# The candidate file is accepted only when Wrangler points to its exact reviewed name.
+import hashlib
+worker_main_match=re.search(r'"main"\s*:\s*"([^"]+)"',wrangler)
+worker_main=worker_main_match.group(1) if worker_main_match else ""
+worker_candidates={"./WORKER_PENDING_RUNTIME_REPORT.js","./WORKER_V046_PREBUNDLED.js"}
+worker_path=(ROOT/"worker"/worker_main).resolve() if worker_main in worker_candidates else None
+worker_exists=bool(worker_path and worker_path.is_file())
+check("worker_source_explicit", worker_main in worker_candidates and worker_exists, "explicit allowlisted Worker entrypoint exists: "+worker_main)
+if worker_main=="./WORKER_V046_PREBUNDLED.js":
+    # This SHA-256 is pinned to the tested isolated CI artifact, never computed from a moving branch.
+    reviewed_sha256="798141badeda6f474e89a2df38fbabfa642c664bddfe5d3f22e7ecdb6015066a"
+    actual_sha256=hashlib.sha256(worker_path.read_bytes()).hexdigest() if worker_exists else ""
+    check("worker_candidate_hash_pinned", actual_sha256==reviewed_sha256, "candidate SHA-256 pinned and matches")
 gen8_summary=ROOT/"evidence/2026-09-29/LINAS_GEN8_RESEARCH_SUMMARY_2026-09-29.json"
 check("gen8_frozen_evidence", gen8_summary.exists() and gen8_summary.stat().st_size>0, "immutable Gen8 summary evidence present")
 for n in range(9,17):
