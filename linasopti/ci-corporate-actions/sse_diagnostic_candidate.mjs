@@ -21,9 +21,9 @@ export async function sseDiagnostic(request,env,upstreamFetch=fetch){
     const res=await upstreamFetch(endpoint.toString(),{headers:{"APCA-API-KEY-ID":env.APCA_API_KEY_ID,"APCA-API-SECRET-KEY":env.APCA_API_SECRET_KEY,"Accept":"text/event-stream"},signal:controller.signal});
     if(!res.ok)return reply({ok:false,error:"UPSTREAM_HTTP",providerStatus:res.status},502);
     if(!res.body)return reply({ok:false,error:"NO_STREAM_BODY"},502);
-    reader=res.body.getReader();const decoder=new TextDecoder();let buffer="",bytes=0,events=0,observedKeys=new Set(),eventIds=0,timestampKeys=new Set(),stopReason="EOF";
+    reader=res.body.getReader();const decoder=new TextDecoder();let buffer="",bytes=0,events=0,observedKeys=new Set(),eventIds=0,sseIds=0,sseEventTypes=new Set(),timestampKeys=new Set(),stopReason="EOF";
     const inspect=(block)=>{
-      const data=block.split(/\r?\n/).filter(line=>line.startsWith("data:")).map(line=>line.slice(5).trimStart()).join("\n");
+      const lines=block.split(/\r?\n/);\n      if(lines.some(line=>line.startsWith("id:")))sseIds++;\n      lines.filter(line=>line.startsWith("event:")).forEach(line=>sseEventTypes.add(line.slice(6).trim()));\n      const data=lines.filter(line=>line.startsWith("data:")).map(line=>line.slice(5).trimStart()).join("\n");
       if(!data)return;
       events++;
       try{const obj=JSON.parse(data);if(obj&&typeof obj==="object"&&!Array.isArray(obj)){
@@ -47,7 +47,7 @@ export async function sseDiagnostic(request,env,upstreamFetch=fetch){
       }
       if(stopReason==="EVENT_LIMIT")break;
     }
-    return reply({ok:true,day,providerStatus:res.status,events,bytes,observedEnvelopeKeys:[...observedKeys].sort(),eventIdFieldCount:eventIds,timestampLikeKeys:[...timestampKeys].sort(),stopReason,complete:stopReason==="EOF",pitVerified:false,warning:"A zero-event result or HTTP 200 does not establish retention or PIT availability."});
+    return reply({ok:true,day,providerStatus:res.status,events,bytes,observedEnvelopeKeys:[...observedKeys].sort(),eventIdFieldCount:eventIds,sseIdCount:sseIds,sseEventTypes:[...sseEventTypes].sort(),timestampLikeKeys:[...timestampKeys].sort(),stopReason,complete:stopReason==="EOF"&&events>0,pitVerified:false,warning:"A zero-event result or HTTP 200 does not establish retention or PIT availability."});
   }catch{return reply({ok:false,error:controller.signal.aborted?"TIME_LIMIT":"UPSTREAM_UNREACHABLE"},502)}
   finally{controller.abort();clearTimeout(timeout);if(reader)try{await reader.cancel()}catch{}}
 }
