@@ -33,6 +33,7 @@ function step(state,day,orders=[],dividends=[]){
   if(o.side==='buy'){
    const tradeValue=o.qty*o.price;
    if(!Number.isFinite(tradeValue)||!Number.isFinite(cash-tradeValue))throw Error('AMOUNT_OVERFLOW');
+   if(tradeValue>cash)throw Error('INSUFFICIENT_CASH');
    cash-=tradeValue;
    if(i<0)positions.push({s:o.s,qty:o.qty,entryPrice:o.price});
    else {const p=positions[i];const qty=p.qty+o.qty,bookValue=p.qty*p.entryPrice+tradeValue;
