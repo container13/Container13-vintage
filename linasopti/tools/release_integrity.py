@@ -25,8 +25,8 @@ else:
     check("chat_bootstrap_contract", current_state.get("bootstrap",{}).get("triggerPhrase")=="Läs Linas manual", "single new-chat trigger")
     cp=current_state.get("workCheckpoint",{})
     cp_status=cp.get("status")
-    check("work_checkpoint_status", cp_status in ("IDLE","IN_PROGRESS","UNVERIFIED"), str(cp_status))
-    if cp_status in ("IN_PROGRESS","UNVERIFIED"):
+    check("work_checkpoint_status", cp_status in ("IDLE","IN_PROGRESS","UNVERIFIED","PAUSED"), str(cp_status))
+    if cp_status in ("IN_PROGRESS","UNVERIFIED","PAUSED"):
         plan=cp.get("plan",[])
         check("work_checkpoint_resumable", bool(cp.get("goal") and cp.get("targetRelease") and cp.get("lastSafeRelease") and cp.get("lastSafeCommit") and cp.get("resumeInstruction") and plan), "active checkpoint has goal/target/safe anchor/plan/resume")
     else:
