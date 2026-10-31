@@ -1,0 +1,47 @@
+name: Lina V046 scoped release review (no deploy)
+on:
+  push:
+    branches: [lina-v046-scoped-release-review]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-worker-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Production baseline static integrity
+        run: python3 linasopti/tools/release_integrity.py
+      - name: Candidate Worker SHA-256 and identity gate
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, re, subprocess
+          root=Path('linasopti')
+          worker=root/'worker/WORKER_V046_PREBUNDLED.js'
+          expected='798141badeda6f474e89a2df38fbabfa642c664bddfe5d3f22e7ecdb6015066a'
+          assert hashlib.sha256(worker.read_bytes()).hexdigest()==expected, 'candidate SHA mismatch'
+          wrangler=root/'worker/wrangler.jsonc'
+          original=wrangler.read_text()
+          assert '"main": "./WORKER_PENDING_RUNTIME_REPORT.js"' in original
+          wrangler.write_text(original.replace('"main": "./WORKER_PENDING_RUNTIME_REPORT.js"','"main": "./WORKER_V046_PREBUNDLED.js"'))
+          try:
+              subprocess.run(['python3',str(root/'tools/release_integrity.py')],check=True)
+              original_worker=worker.read_bytes()
+              worker.write_bytes(original_worker+b'\n// deliberate CI-only tamper\n')
+              try:
+                  result=subprocess.run(['python3',str(root/'tools/release_integrity.py')],capture_output=True,text=True)
+                  assert result.returncode!=0 and 'worker_candidate_hash_pinned' in result.stdout, 'tamper was not blocked'
+              finally:
+                  worker.write_bytes(original_worker)
+              wrangler.write_text(original.replace('"main": "./WORKER_PENDING_RUNTIME_REPORT.js"','"main": "./WORKER_NOT_APPROVED.js"'))
+              result=subprocess.run(['python3',str(root/'tools/release_integrity.py')],capture_output=True,text=True)
+              assert result.returncode!=0 and 'worker_source_explicit' in result.stdout, 'unknown Worker entrypoint was not blocked'
+          finally:
+              wrangler.write_text(original)
+          print('PASS baseline, candidate hash, tamper rejection, unknown-entrypoint rejection; no deploy')
+          PY
+      - name: Confirm no production changes
+        run: |
+          test "$(git branch --show-current)" = "lina-v046-scoped-release-review"
+          git diff --exit-code
