@@ -1,8 +1,8 @@
 // Gen17 offline-only reducer. Event IDs do not prove ordering.
-const timestamp=/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,9})?(?:Z|[+-]\\d{2}:\\d{2})$/;
+const timestamp=/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?(?:Z|[+-]\d{2}:\d{2})$/;
 function timeKey(s){
  if(typeof s!=="string"||!timestamp.test(s))return null;
- const m=/^(.*?)(?:\\.(\\d{1,9}))?(Z|[+-]\\d{2}:\\d{2})$/.exec(s);
+ const m=/^(.*?)(?:\.(\d{1,9}))?(Z|[+-]\d{2}:\d{2})$/.exec(s);
  const ms=Date.parse(m[1]+m[3]);if(!Number.isFinite(ms))return null;
  return new Date(ms).toISOString().slice(0,19)+"."+(m[2]||"").padEnd(9,"0");
 }
