@@ -21,3 +21,6 @@ test("unconfirmed upstream EOF discards state",()=>{const r=inspect([frame("a",a
 test("malformed event discards otherwise valid state",()=>{const r=inspect([frame("a",a,"insert")+"data: {broken}\n\n"],{caId:ca,cutoff,upstreamComplete:true});assert.equal(r.state,null)});
 test("byte limit discards prior valid state",()=>{const r=inspect([frame("a",a,"insert"),"x".repeat(65537)],{caId:ca,cutoff,upstreamComplete:true});assert.equal(r.state,null)});
 test("complete bounded sample remains PIT unverified",()=>{const r=inspect([frame("a",a,"insert")],{caId:ca,cutoff,upstreamComplete:true});assert.equal(r.state.rate,"0.0956");assert.equal(r.pitVerified,false)});
+
+test("offset timestamp ordering remains UTC-normalized",()=>{const earlier="2026-09-16T02:00:00.000001+02:00";const later="2026-09-16T00:00:00.000002Z";const r=inspect([frame("b",later,"update")+frame("a",earlier,"insert")],{caId:ca,cutoff,upstreamComplete:true});assert.equal(r.invalidCount,0);assert.equal(r.applied,2);assert.equal(r.state.rate,"0.0956")});
+test("upstreamComplete never proves historical PIT coverage",()=>{const r=inspect([frame("a",a,"insert")],{caId:ca,cutoff,upstreamComplete:true});assert.equal(r.streamComplete,true);assert.equal(r.chainComplete,false);assert.equal(r.pitVerified,false)});
