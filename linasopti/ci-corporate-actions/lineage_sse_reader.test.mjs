@@ -15,3 +15,9 @@ test("update without insert is invalid",()=>assert.equal(inspect([frame("b",b,"u
 test("deduplicates event IDs",()=>assert.equal(inspect([frame("a",a,"insert").repeat(2)],{caId:ca,cutoff}).duplicateCount,1));
 test("chunks split inside frame",()=>{const f=frame("a",a,"insert");const r=inspect([f.slice(0,10),f.slice(10)],{caId:ca,cutoff});assert.equal(r.matchedEvents,1)});
 test("no claim of retention from empty complete stream",()=>{const r=inspect([""],{caId:ca,cutoff,upstreamComplete:true});assert.equal(r.pitVerified,false);assert.equal(r.chainComplete,false)});
+
+test("partial stream discards reconstructed state",()=>{const r=inspect([frame("a",a,"insert")+"data: unfinished"],{caId:ca,cutoff,upstreamComplete:true});assert.equal(r.state,null)});
+test("unconfirmed upstream EOF discards state",()=>{const r=inspect([frame("a",a,"insert")],{caId:ca,cutoff});assert.equal(r.state,null)});
+test("malformed event discards otherwise valid state",()=>{const r=inspect([frame("a",a,"insert")+"data: {broken}\n\n"],{caId:ca,cutoff,upstreamComplete:true});assert.equal(r.state,null)});
+test("byte limit discards prior valid state",()=>{const r=inspect([frame("a",a,"insert"),"x".repeat(65537)],{caId:ca,cutoff,upstreamComplete:true});assert.equal(r.state,null)});
+test("complete bounded sample remains PIT unverified",()=>{const r=inspect([frame("a",a,"insert")],{caId:ca,cutoff,upstreamComplete:true});assert.equal(r.state.rate,"0.0956");assert.equal(r.pitVerified,false)});
