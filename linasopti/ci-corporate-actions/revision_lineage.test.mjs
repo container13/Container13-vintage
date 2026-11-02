@@ -1,0 +1,16 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {reconstructLineage as run} from "./revision_lineage.mjs";
+const e=(id,at,action,rate,caId="jof")=>({event_id:id,at,action,ca:{id:caId,rate}});
+const a="2026-09-10T10:00:00Z",b="2026-09-16T00:01:26Z",c="2026-09-17T10:00:00Z";
+test("cutoff",()=>assert.equal(run([e("1",a,"insert","1"),e("2",b,"update","2")],"jof",a).state.rate,"1"));
+test("duplicate",()=>assert.equal(run([e("1",a,"insert","1"),e("1",a,"insert","1")],"jof",c).duplicateCount,1));
+test("delete",()=>assert.equal(run([e("1",a,"insert","1"),e("2",b,"delete")],"jof",c).state,null));
+test("missing insert",()=>assert.equal(run([e("2",b,"update","2")],"jof",c).invalidCount,1));
+test("ca filter",()=>assert.equal(run([e("1",a,"insert","1","other")],"jof",c).applied,0));
+test("same timestamp ambiguity",()=>assert.equal(run([e("2",a,"update","2"),e("1",a,"insert","1")],"jof",c).ambiguous,true));
+test("conflicting duplicate",()=>assert.equal(run([e("1",a,"insert","1"),e("1",a,"insert","9")],"jof",c).state,null));
+test("out of order",()=>assert.equal(run([e("2",b,"update","2"),e("1",a,"insert","1")],"jof",c).state.rate,"2"));
+test("update after delete",()=>assert.equal(run([e("1",a,"insert","1"),e("2",b,"delete"),e("3",c,"update","3")],"jof",c).invalidCount,1));
+test("bad input",()=>assert.throws(()=>run(null,"jof",c),/INVALID_INPUT/));
+test("PIT never verified",()=>assert.equal(run([e("1",a,"insert","1")],"jof",c).pitVerified,false));
