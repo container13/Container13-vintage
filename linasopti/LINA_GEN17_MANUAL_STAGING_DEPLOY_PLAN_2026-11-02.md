@@ -11,13 +11,13 @@ Verified on branch by GitHub readback:
 Manual dispatch discoverability:
 - GitHub Actions UI did not list manual-only deploy workflow on non-default branch.
 - Do not modify, use, or merge main.
-- Do not add a push-triggered live deployment. The existing workflow is manual-only.
+- Superseded by user-approved policy revision 2 (2026-11-02): a strictly guarded ONE-SHOT push-started staging publication is allowed on ccc-demo-public-test, pinned to the approved candidate SHA and unique deliberate start marker. Ordinary/subsequent pushes must not deploy. Disarm after execution and inspect outcome before retries. See LINA_GEN17_BRANCH_AND_DEPLOY_SAFETY_RULES.md. The existing workflow has not yet been changed.
 - GitHub workflow_dispatch REST/API normally requires workflow registered on default branch; do not assume direct API dispatch will work for branch-only workflow.
 - Safe fallback AFTER explicit deployment approval: a one-time local/ephemeral invocation of Wrangler with exact staging config and credentials, or another separately reviewed manual staging-only route. Do not store credentials in code or logs. Confirm Cloudflare permissions and isolated bindings before execution.
 - Existing Cloudflare secret presence and dry-run PASS do not prove live staging deploy permission.
 
 Preflight gate before live staging deploy:
-1. User explicitly authorizes the FIRST REAL DEPLOY to Worker linas-opti-gen17-sse-staging.
+1. SATISFIED in current session: user explicitly authorized FIRST REAL DEPLOY to linas-opti-gen17-sse-staging and approved policy revision 2. No repeated approval required for this same scope.
 2. Confirm branch ccc-demo-public-test and immutable commit SHA for candidate.
 3. Recheck staging name, entrypoint, vars/bindings/routes and absence of production resource references.
 4. Run tests and Wrangler dry-run against that exact SHA.
