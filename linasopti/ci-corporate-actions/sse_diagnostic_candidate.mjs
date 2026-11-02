@@ -23,7 +23,10 @@ export async function sseDiagnostic(request,env,upstreamFetch=fetch){
     if(!res.body)return reply({ok:false,error:"NO_STREAM_BODY"},502);
     reader=res.body.getReader();const decoder=new TextDecoder();let buffer="",bytes=0,events=0,observedKeys=new Set(),eventIds=0,sseIds=0,sseEventTypes=new Set(),timestampKeys=new Set(),stopReason="EOF";
     const inspect=(block)=>{
-      const lines=block.split(/\r?\n/);\n      if(lines.some(line=>line.startsWith("id:")))sseIds++;\n      lines.filter(line=>line.startsWith("event:")).forEach(line=>sseEventTypes.add(line.slice(6).trim()));\n      const data=lines.filter(line=>line.startsWith("data:")).map(line=>line.slice(5).trimStart()).join("\n");
+      const lines=block.split(/\r?\n/);
+      if(lines.some(line=>line.startsWith("id:")))sseIds++;
+      lines.filter(line=>line.startsWith("event:")).forEach(line=>sseEventTypes.add(line.slice(6).trim()));
+      const data=lines.filter(line=>line.startsWith("data:")).map(line=>line.slice(5).trimStart()).join("\n");
       if(!data)return;
       events++;
       try{const obj=JSON.parse(data);if(obj&&typeof obj==="object"&&!Array.isArray(obj)){
