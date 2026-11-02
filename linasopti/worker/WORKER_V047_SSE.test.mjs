@@ -1,0 +1,10 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import candidate from "./WORKER_V047_SSE.mjs";
+const env={LINA_LOGIN_CODE:"test-code",APCA_API_KEY_ID:"test-key",APCA_API_SECRET_KEY:"test-secret"};
+test("SSE route rejects unauthorized request before provider fetch",async()=>{const r=await candidate.fetch(new Request("https://example.test/corporate-actions-sse-diagnostic",{method:"POST",headers:{"content-type":"application/json","X-Lina-Login-Code":"wrong"},body:'{"day":"2020-08-31"}'}),env);assert.equal(r.status,401)});
+test("SSE route rejects invalid date before provider fetch",async()=>{const r=await candidate.fetch(new Request("https://example.test/corporate-actions-sse-diagnostic",{method:"POST",headers:{"content-type":"application/json","X-Lina-Login-Code":"test-code"},body:'{"day":"2020-13-01"}'}),env);assert.equal(r.status,400)});
+test("existing health route is delegated to unchanged Worker",async()=>{const r=await candidate.fetch(new Request("https://example.test/health"),env);assert.equal(r.status,200);const body=await r.json();assert.equal(body.tradingEnabled,false);assert.equal(body.service,"Linas Opti API")});
+test("unrecognized routes are delegated to unchanged Worker",async()=>{const r=await candidate.fetch(new Request("https://example.test/nonexistent-gen17-test"),env);assert.equal(r.status,404)});
+
+test("SSE OPTIONS and rejected POST preserve existing CORS",async()=>{const url="https://example.test/corporate-actions-sse-diagnostic";for(const origin of ["https://container13.se","https://untrusted.invalid"]){const headers={Origin:origin,"X-Lina-Login-Code":"wrong"};const pre=await candidate.fetch(new Request(url,{method:"OPTIONS",headers}),env);assert.equal(pre.status,204);const post=await candidate.fetch(new Request(url,{method:"POST",headers}),env);assert.equal(post.status,401);assert.equal(post.headers.get("Access-Control-Allow-Origin"),pre.headers.get("Access-Control-Allow-Origin"));assert.equal(post.headers.get("X-Lina-Diagnostic-Release"),"V0.4.47");}});

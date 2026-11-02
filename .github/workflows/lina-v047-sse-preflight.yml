@@ -1,0 +1,23 @@
+name: Lina V047 SSE exact integration preflight (NO DEPLOY)
+on:
+  push:
+    branches: [ccc-demo-public-test]
+    paths: ['linasopti/worker/WORKER_V047_SSE*', '.github/workflows/lina-v047-sse-preflight.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test linasopti/ci-corporate-actions/sse_diagnostic_candidate.test.mjs linasopti/worker/WORKER_V047_SSE.test.mjs
+      - name: Build exact intended config without deploying
+        working-directory: linasopti/worker
+        run: |
+          node --input-type=module -e 'import fs from "node:fs"; const c=JSON.parse(fs.readFileSync("wrangler.jsonc")); if(c.name!=="linas-opti-api"||c.keep_vars!==true)throw Error("config mismatch"); c.main="./WORKER_V047_SSE.mjs"; fs.writeFileSync("wrangler.v047-preflight.jsonc",JSON.stringify(c));'
+          npx --yes wrangler@4 deploy --dry-run --config wrangler.v047-preflight.jsonc --outdir /tmp/lina-v047
