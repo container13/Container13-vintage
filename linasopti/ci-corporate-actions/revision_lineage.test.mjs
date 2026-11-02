@@ -14,3 +14,7 @@ test("out of order",()=>assert.equal(run([e("2",b,"update","2"),e("1",a,"insert"
 test("update after delete",()=>assert.equal(run([e("1",a,"insert","1"),e("2",b,"delete"),e("3",c,"update","3")],"jof",c).invalidCount,1));
 test("bad input",()=>assert.throws(()=>run(null,"jof",c),/INVALID_INPUT/));
 test("PIT never verified",()=>assert.equal(run([e("1",a,"insert","1")],"jof",c).pitVerified,false));
+
+test("microsecond ordering within one millisecond",()=>{const r=run([e("2","2026-09-16T00:01:26.071247Z","update","2"),e("1","2026-09-16T00:01:26.045569Z","insert","1")],"jof",c);assert.equal(r.ambiguous,false);assert.equal(r.state.rate,"2")});
+test("microsecond cutoff excludes later event",()=>{const r=run([e("1","2026-09-16T00:01:26.045569Z","insert","1"),e("2","2026-09-16T00:01:26.071247Z","update","2")],"jof","2026-09-16T00:01:26.060000Z");assert.equal(r.state.rate,"1")});
+test("same microsecond remains ambiguous",()=>{const t="2026-09-16T00:01:26.045569Z";assert.equal(run([e("1",t,"insert","1"),e("2",t,"update","2")],"jof",c).ambiguous,true)});
