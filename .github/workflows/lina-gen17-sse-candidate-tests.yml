@@ -10,13 +10,14 @@ on:
       - 'linasopti/worker/WORKER_GEN17_SSE_CANDIDATE.test.mjs'
       - 'linasopti/worker/GEN17_STAGING_CONFIG.test.mjs'
       - 'linasopti/worker/wrangler.gen17-sse-staging.jsonc'
+      - 'linasopti/worker/WORKER_V046_PREBUNDLED.js'
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,3 +28,6 @@ jobs:
       - name: Isolated SSE tests (no credentials, no network)
         run: node --test linasopti/ci-corporate-actions/sse_diagnostic_candidate.test.mjs linasopti/worker/WORKER_GEN17_SSE_CANDIDATE.test.mjs linasopti/worker/GEN17_STAGING_CONFIG.test.mjs
 
+      - name: Wrangler staging bundle dry-run (no deployment or secrets)
+        working-directory: linasopti/worker
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.gen17-sse-staging.jsonc --outdir /tmp/lina-gen17-staging-bundle
