@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.47",
+  "release": "V0.4.48",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -150,25 +150,21 @@
   },
   "workCheckpoint": {
     "status": "IN_PROGRESS",
-    "goal": "Publish reviewed SSE integration in existing Lina test Worker",
-    "targetRelease": "V0.4.47",
+    "goal": "Publish authenticated Gen17 SSE UI under Tools and obtain bounded report",
+    "targetRelease": "V0.4.48",
     "lastSafeRelease": "V0.4.47",
     "lastSafeCommit": "f402dee9f14c0370a333cb81a4714e8c25ecad35",
     "plan": [
       {
-        "task": "Exact integration tests and dry-run",
+        "task": "Build and test UI resume/no-repeat behavior",
         "status": "DONE"
       },
       {
-        "task": "Switch tested entry and verify deploy/live",
-        "status": "DONE"
-      },
-      {
-        "task": "Authenticated bounded Alpaca SSE diagnostic",
+        "task": "Verify V048 deploy and authenticated bounded report",
         "status": "NEXT"
       }
     ],
-    "resumeInstruction": "V047 deployed and live verified in existing user TEST Worker linas-opti-api. Do not redeploy/repeat preparation. Next requires safe user-authenticated invocation of bounded SSE diagnostic; no login secret available to agent and no authenticated provider request performed. Do not ask secrets in chat or extract them from browser storage. Use existing secure auth/UI route or prepare an appropriate diagnostic UI. main forbidden; trade/Forward OFF, Gen17 PIT_UNVERIFIED.",
+    "resumeInstruction": "V048 adds Tools diagnostic UI using existing session and runtime-report receipts. Single fixed day 2020-08-31; no auto run. Save response before GitHub upload; retry upload only. Pending/uncertain invocation cannot repeat automatically. Next verify Pages and log in via secure browser UI, Tools > run SSE check. Never inspect login code storage. Trading/Forward OFF; no research.",
     "liveReceipt": {
       "commit": "f402dee9f14c0370a333cb81a4714e8c25ecad35",
       "cloudflareVersion": "2cd90419-2c96-49b5-9b5d-33941905c7ce",
