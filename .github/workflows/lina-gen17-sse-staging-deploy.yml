@@ -1,9 +1,7 @@
-name: Lina Gen17 SSE staging approved one-shot
+name: Lina Gen17 SSE staging (DISARMED after approved one-shot)
 
 on:
-  push:
-    branches: [ccc-demo-public-test]
-    paths: ['.github/workflows/lina-gen17-sse-staging-deploy.yml']
+  workflow_dispatch:
 
 permissions:
   contents: read
