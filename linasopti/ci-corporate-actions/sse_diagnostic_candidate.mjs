@@ -18,7 +18,7 @@ export async function sseDiagnostic(request,env,upstreamFetch=fetch){
   const timeout=setTimeout(()=>controller.abort(),9000);
   let reader;
   try{
-    const res=await upstreamFetch(endpoint.toString(),{headers:{"APCA-API-KEY-ID":env.APCA_API_KEY_ID,"APCA-API-SECRET-KEY":env.APCA_API_SECRET_KEY,"Accept":"text/event-stream"},signal:controller.signal});
+    const res=await Promise.race([upstreamFetch(endpoint.toString(),{headers:{"APCA-API-KEY-ID":env.APCA_API_KEY_ID,"APCA-API-SECRET-KEY":env.APCA_API_SECRET_KEY,"Accept":"text/event-stream"},signal:controller.signal}),new Promise((_,reject)=>controller.signal.addEventListener("abort",()=>reject(new Error("TIME_LIMIT")),{once:true}))]);
     if(!res.ok)return reply({ok:false,error:"UPSTREAM_HTTP",providerStatus:res.status},502);
     if(!res.body)return reply({ok:false,error:"NO_STREAM_BODY"},502);
     reader=res.body.getReader();const decoder=new TextDecoder();let buffer="",bytes=0,events=0,observedKeys=new Set(),eventIds=0,sseIds=0,sseEventTypes=new Set(),timestampKeys=new Set(),stopReason="EOF";
