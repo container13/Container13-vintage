@@ -164,7 +164,7 @@
         "status": "NEXT"
       }
     ],
-    "resumeInstruction": "V050 deployed; tests18 PASS, dry-run PASS, GitHub integrity/Pages/Workers checks SUCCESS, browser V050 verified. 09-16 sample report saved and read back; JOF 3/3 issuer field matches. No repeat of completed probes. Next design bounded insert/update/delete lineage verification by ca.id with correct emission-time cutoff, dedup event_id and verified retention/coverage. Current sample is update-only and truncated; cannot infer first availability or 2020-24 coverage. Trade/Forward OFF, Gen17 DRAFT_ONLY/PIT_UNVERIFIED; main untouched.",
+    "resumeInstruction": "Gen17 offline SSE lineage reducer + bounded parser committed and CI 29/29 PASS on ccc-demo-public-test at 033f1c0d; read-only and not Worker-wired. Existing 2026-09-16 JOF update-only samples and 2020-08-31 empty SSE already probed; DO NOT REPEAT. Next investigate original JOF insert and revision-chain evidence by ca.id, retention/coverage and emission cutoff. No PIT claim until independently verified. Trade/Forward OFF, Gen17 DRAFT_ONLY/PIT_UNVERIFIED. Never touch main.",
     "liveReceipt": {
       "commit": "f402dee9f14c0370a333cb81a4714e8c25ecad35",
       "cloudflareVersion": "2cd90419-2c96-49b5-9b5d-33941905c7ce",
@@ -228,6 +228,17 @@
       "allActions": "update",
       "emittedAt": "2026-09-16T00:01:26Z (each sample has distinct subsecond timestamp)",
       "conclusion": "at is SSE emission time per official schema, not issuer publication or proven first Alpaca availability. Update emissions six calendar dates after issuer release. Need original insert and mutation lineage to establish as-of provider state; latest snapshot cannot be backdated. Event limit means incomplete coverage.",
+      "pitVerified": false
+    },
+    "gen17LineageOffline": {
+      "status": "CI_PASS_OFFLINE_ONLY",
+      "commit": "033f1c0db741e8911841f8b2d59181d8068061ea",
+      "workflowRun": 41380123598,
+      "tests": "29/29 PASS",
+      "syntax": "PASS",
+      "wranglerDryRun": "PASS",
+      "scope": "Standalone revision_lineage and lineage_sse_reader; no live provider call or Worker route",
+      "nextBlocker": "Need provider evidence for original JOF insert and full ordered mutation chain for same ca.id, with demonstrated stream retention and complete coverage; bounded 20-event stream cannot establish PIT.",
       "pitVerified": false
     }
   }
