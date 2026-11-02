@@ -1,0 +1,55 @@
+name: Lina Gen17 SSE staging deploy (MANUAL ONLY)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lina-gen17-sse-staging-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/ccc-demo-public-test'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ccc-demo-public-test
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify target is ONLY isolated staging
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('linasopti/worker')
+          c=json.loads((p/'wrangler.gen17-sse-staging.jsonc').read_text())
+          assert c['name']=='linas-opti-gen17-sse-staging', 'Unexpected Worker name: abort'
+          assert c['main']=='./WORKER_GEN17_SSE_CANDIDATE.mjs', 'Unexpected entry: abort'
+          assert c.get('workers_dev') is True, 'Staging workers_dev required'
+          assert json.loads((p/'wrangler.jsonc').read_text())['name']=='linas-opti-api'
+          print('PASS staging-only target')
+          PY
+      - name: Isolated Gen17 candidate tests
+        run: node --test linasopti/ci-corporate-actions/sse_diagnostic_candidate.test.mjs linasopti/worker/WORKER_GEN17_SSE_CANDIDATE.test.mjs linasopti/worker/GEN17_STAGING_CONFIG.test.mjs
+      - name: Verify Cloudflare secrets available
+        env:
+          CF_API_TOKEN: ${{ secrets.CCC_CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CCC_CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          test -n "$CF_API_TOKEN" && test -n "$CF_ACCOUNT_ID"
+      - name: Deploy ONLY Gen17 SSE staging (explicit config)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CCC_CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CCC_CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: linasopti/worker
+          command: deploy --config wrangler.gen17-sse-staging.jsonc
