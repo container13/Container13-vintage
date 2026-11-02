@@ -241,5 +241,19 @@
       "nextBlocker": "Need provider evidence for original JOF insert and full ordered mutation chain for same ca.id, with demonstrated stream retention and complete coverage; bounded 20-event stream cannot establish PIT.",
       "pitVerified": false
     }
+  },
+  "gen17PriceAdjustmentProvenance20261102": {
+    "status": "READ_ONLY_SOURCE_AUDIT_COMPLETE_PIT_UNVERIFIED",
+    "frozenDataset": "SOURCE_gen9-data.json 16*1258=20128 bars 2020-01-02 through 2024-12-31; raw-byte SHA256 PASS run 41380909755; Yahoo OHLC scaled by adjustedClose/close; 11322 non-unit factor rows recorded in prior audit",
+    "provenFromExistingRepo": [
+      "PYPL historical candidate adjustment median 0.9889711061; archived reconstruction from four $0.14 distributions dated Nov 2025-Sep 2026 yields 0.9889710882; dates lie after 2024 historical stop. Numerical reconstruction, not actual Yahoo vintage at prior trade cutoff.",
+      "FDX 2026-06-01 spin-off to FDXF; CRSP when-issued adjustment formula documented; exact Yahoo input/precision unresolved.",
+      "Gen16 signalAt reads adjusted close SMA180, 50-bar prior adjusted high/close breakout, 20 log-returns; simulate trades at adjusted next open / adjusted close with fractional synthetic shares and no dividend cash ledger.",
+      "Prior frozen 115-event ledger joins 38 strategy-specific trade/event overlaps, not 38 proven trade errors; full raw OHLC paired with historical adjustment vintages not archived in available diagnostics.",
+      "A fixed positive multiplicative factor shared by all relevant bars of one symbol cancels within SMA/breakout/return indicators, whereas changing factors inside windows need separate scrutiny. Retrospective re-scaling alone is not proof of changed signal."
+    ],
+    "decision": "Existing dataset is integrity-verified, but price-basis economic accounting and point-in-time corporate-action availability are NOT verified; do not mark Gen17 PIT PASS.",
+    "next": "Read-only inspect original source metadata and archived events to assess factor as-of vintage; identify date-indexed factor changes inside indicator windows without rerunning research; if historic as-of snapshots absent, declare unresolved instead of generating invented history.",
+    "safeguards": "No new provider requests, no Gen8-16 reruns, no Worker/auth/secrets/engine edits; no Gen17 plan lock; Trade and Forward remain OFF."
   }
 }
