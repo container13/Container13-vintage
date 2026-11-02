@@ -164,7 +164,7 @@
         "status": "NEXT"
       }
     ],
-    "resumeInstruction": "V050 collect max3 allowlisted SSE event samples on fresh date 2026-09-16, save verified runtime-report. Original 09-15 report has counts/keynames only and is immutable. Compare sampled issuer fields against official sources and distinguish stream emission from first availability. at semantics verified in official Alpaca docs. Trade/Forward OFF; PIT_UNVERIFIED.",
+    "resumeInstruction": "V050 deployed; tests18 PASS, dry-run PASS, GitHub integrity/Pages/Workers checks SUCCESS, browser V050 verified. 09-16 sample report saved and read back; JOF 3/3 issuer field matches. No repeat of completed probes. Next design bounded insert/update/delete lineage verification by ca.id with correct emission-time cutoff, dedup event_id and verified retention/coverage. Current sample is update-only and truncated; cannot infer first availability or 2020-24 coverage. Trade/Forward OFF, Gen17 DRAFT_ONLY/PIT_UNVERIFIED; main untouched.",
     "liveReceipt": {
       "commit": "f402dee9f14c0370a333cb81a4714e8c25ecad35",
       "cloudflareVersion": "2cd90419-2c96-49b5-9b5d-33941905c7ce",
@@ -214,6 +214,21 @@
       "ca_id": "underlying corporate-action identity",
       "priorReport": "counts and key names ONLY; event-level comparison cannot be recovered from it",
       "samplePlan": "Separate SAMPLE report, default 2026-09-16, max3 allowlisted samples. Preserve prior reports; no research."
+    },
+    "sseSampleAudit": {
+      "reportPath": "linasopti/runtime-reports/GEN17_SSE_SAMPLE_20260916_2026-11-02T02-07-06-602Z_af7522b71714.json",
+      "reportBlob": "93cc3e030427f2758cddf4f107a0f7380bd9c246",
+      "day": "2026-09-16",
+      "events": 20,
+      "samples": 3,
+      "issuer": "JOF",
+      "issuerSource": "https://www.globenewswire.com/news-release/2026/09/10/3360001/0/en/japan-smaller-capitalization-fund-inc-announces-monthly-distributions-for-october-november-and-december-2026-under-its-level-distribution-plan.html",
+      "issuerPublished": "2026-09-10 16:30 ET",
+      "exactFields": "3/3 match symbol, ex-date, record-date, payable-date and rate; process_date semantics not issuer-verified",
+      "allActions": "update",
+      "emittedAt": "2026-09-16T00:01:26Z (each sample has distinct subsecond timestamp)",
+      "conclusion": "at is SSE emission time per official schema, not issuer publication or proven first Alpaca availability. Update emissions six calendar dates after issuer release. Need original insert and mutation lineage to establish as-of provider state; latest snapshot cannot be backdated. Event limit means incomplete coverage.",
+      "pitVerified": false
     }
   }
 }
