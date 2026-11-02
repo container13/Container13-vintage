@@ -37,3 +37,13 @@ Undersök hur en säker, branch-isolerad, manuellt godkänd staging deploy kan s
 - Var konkret, utför GitHub-arbete själv där det går, minimera klick och onödiga frågor.
 - Ett steg i taget vid Cloudflare UI; undvik upprepningar och main-diskussioner.
 - Överlämningar ska vara helt kopieringsbara med ett klick.
+
+
+## SENASTE NULÄGE – Work 2026-11-02, 02:39 CET (ersätter äldre nästa-steg)
+- Användaren godkände första staging-publiceringen och policyrevision 2 för engångspush. Efter upptäckt att dokumentationscommits fortfarande utlöste produktions-Workers Builds pausade användaren Disable builds och bekräftade sparat. Gör inga antaganden om tidigare utebliven produktionsdeploy: commit 3b8fb221 hade en lyckad produktions-build/version enligt GitHub-check.
+- Första Gen17 staging-publiceringen LYCKADES. Kandidat exakt 3b8fb2215009592f3079af0b5806213588e3cecb, startcommit 6ece7cac0b69e42156724dd0f5b0d6804a079bdc; run https://github.com/container13/Container13-vintage/actions/runs/41373559974, job 125048912559, SUCCESS.
+- 18/18 tester PASS, target guards PASS, dry-run PASS, credentials presence PASS. Logg: Uploaded och Deployed linas-opti-gen17-sse-staging; Cloudflare Version ID bf6cbfcc-8a41-41a7-b781-eb11c6520f0a. URL https://linas-opti-gen17-sse-staging.mangaj73.workers.dev.
+- Dry-run använde Wrangler 4.156.1; wrangler-action installerade 3.90.0 för deploy. Båda lyckades; ingen byteidentitet mellan dessa bundles intygas.
+- Push-start begränsades till exakt branch, before-SHA, unik commitmarkör och run_attempt 1; checkout låst till kandidat-SHA. Push-triggern togs bort i commit 9da63edcab17043e1637bca569b8243983ae4183 och exakt readback verifierades. Vanliga pushar kan inte starta nya staging-deployer.
+- Live GET /corporate-actions-sse-diagnostic svarade HTTP 405 med METHOD_NOT_ALLOWED, vilket styrker att nya routen svarar. Inget autentiserat SSE-/Alpaca-anrop utfört. Separata staging-secrets och providerbehörighet är ännu inte verifierade.
+- Nästa: verifiera staging-secrets säkert (aldrig hemliga värden i chat/logg), därefter bounded autentiserad diagnostik. Publiceringen ska INTE göras om. Gen17 DRAFT_ONLY/PIT_UNVERIFIED, Handel/Forward OFF, Gen8–16 frysta. main orörd.
