@@ -1,0 +1,33 @@
+{
+  "schema": "LINA-LOGIN-FIRST-INPUT-TRACE-1",
+  "version": "V0.4.44",
+  "trace": [
+    {
+      "stage": "input-sync",
+      "at": 38936,
+      "scrollY": 0,
+      "innerH": 936,
+      "cardTop": 20,
+      "cardBottom": 365,
+      "cardHeight": 345,
+      "inputTop": 219,
+      "inputBottom": 265,
+      "inputHeight": 46,
+      "active": "loginCode"
+    },
+    {
+      "stage": "input-100ms",
+      "at": 39036,
+      "scrollY": 0,
+      "innerH": 936,
+      "cardTop": 20,
+      "cardBottom": 365,
+      "cardHeight": 345,
+      "inputTop": 219,
+      "inputBottom": 265,
+      "inputHeight": 46,
+      "active": "loginCode"
+    }
+  ],
+  "capturedAt": "2026-11-02T01:55:27.844Z"
+}
