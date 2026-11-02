@@ -30,5 +30,7 @@ export function inspectLineageSse(chunks,{caId,cutoff,upstreamComplete=false}={}
  if(stopReason==="EOF")try{buffer+=decoder.decode()}catch{stopReason="INVALID_UTF8"}
  if(stopReason==="EOF"&&buffer.trim())stopReason="PARTIAL_FRAME";
  const lineage=reconstructLineage(frames,caId,cutoff);
- return {caId,cutoff,bytes,events,matchedEvents:frames.length,malformed,stopReason,streamComplete:upstreamComplete&&stopReason==="EOF"&&malformed===0, ...lineage,chainComplete:false,pitVerified:false,warning:"A bounded SSE window cannot establish historical retention or first availability."};
+ const evidenceUsable=stopReason==="EOF"&&malformed===0&&upstreamComplete;
+ if(!evidenceUsable)lineage.state=null;
+ return {caId,cutoff,bytes,events,matchedEvents:frames.length,malformed,stopReason,streamComplete:evidenceUsable, ...lineage,chainComplete:false,pitVerified:false,warning:"A bounded SSE window cannot establish historical retention or first availability."};
 }
