@@ -68,3 +68,13 @@ User corrected environment classification and authorized integration/publication
 - Metod: för ett känt ca.id, replay inom snävt emissionsfönster, samla alla meddelanden och filtrera lokalt per ca.id; event_id dedupliceras; sortera deterministiskt efter emissionsordning; insert skapar, update ersätter, delete inaktiverar. Cutoff får endast använda observerade emissioner senast vid cutoff. Saknad insert, trunkering, tidslucka eller oklara retentiongränser => PIT_UNVERIFIED. Ingen REST-current snapshot får bakdateras.
 - Nästa steg: inspektera befintlig SSE-diagnostikkod och begränsningar innan eventuellt nytt avgränsat providerprov. För att kunna intyga komplett kedja måste verktyget skilja EOF från EVENT_LIMIT/TIME_LIMIT och redovisa täckning och matchade ca.id. Nuvarande 20-event-cap kan inte i sig bevisa komplett kedja. Inget nytt provideranrop eller deploy genomfört i denna checkpoint.
 - Miljö: linas-opti-api är användarens TESTMILJÖ. Ingen extra staging. Gen17 DRAFT_ONLY/PIT_UNVERIFIED, trade/forward OFF, Gen8–16 frysta; endast ccc-demo-public-test.
+
+
+## Operativ checkpoint 2026-11-02 – offline SSE revisionskedja, CI verifierad
+
+- Endast gren `ccc-demo-public-test`. Runtime-release V0.4.50; ingen ändring av handelsmotor eller Forward.
+- Fristående offline-moduler `ci-corporate-actions/revision_lineage.mjs` och `ci-corporate-actions/lineage_sse_reader.mjs` med syntetiska testfiler. Ingen provideranslutning, inga hemligheter, ingen Worker-route.
+- Nanosekundsprecision i emissionscutoff, deduplicering per `event_id`, fail-closed vid lika tidsstämplar/konflikter, saknad insert, trasig JSON, trunkerad eller obekräftad ström, max 20 events/65536 bytes.
+- GitHub Actions `Lina Gen17 SSE Candidate Tests` run 41380123598 på commit `033f1c0db741e8911841f8b2d59181d8068061ea`: **29/29 PASS**, syntax PASS, befintliga SSE-tester PASS, Wrangler dry-run PASS. Release Integrity SUCCESS. Kontrollera alltid ny CI om senare ändringar görs.
+- KVARVARANDE BLOCKERARE: de tre tidigare JOF-samplen är `update`-händelser från 2026-09-16. Ursprungs-`insert`, full mutationskedja för samma `ca.id`, historisk SSE-retention och fullständig tidsmässig täckning är inte bevisade. 2020-08-31 och 2026-09-15/16 redan provade: upprepa inte dessa provideranrop. `at` är emissionsögonblick, inte issuer-annonsering eller garanterad första tillgänglighet. Inga PIT- eller backtestanspråk.
+- Gen17 fortsatt `DRAFT_ONLY / PIT_UNVERIFIED`, handel och Forward AV. Nästa steg är att utreda bevis för originalpost/revisionskedja utan att upprepa redan avslutade tester.
