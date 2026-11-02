@@ -149,38 +149,13 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "PAUSED",
-    "targetRelease": "V0.4.46",
-    "goal": "Validate V0.4.46 scoped Worker deployment and authenticated corporate-actions diagnostic, trading and Forward OFF",
-    "lastSafeRelease": "V0.4.45",
-    "lastSafeCommit": "33da9e506b5ca8126923d36a624b3e19a6653d4b",
-    "plan": [
-      {
-        "id": 1,
-        "task": "Verify Worker CURRENT/PREVIOUS/PENDING and actual deployment configuration",
-        "status": "DONE"
-      },
-      {
-        "id": 2,
-        "task": "Prevent unverified automatic promotion and preserve archives",
-        "status": "DONE"
-      },
-      {
-        "id": 3,
-        "task": "Update shared continuity rules and Lina handoff",
-        "status": "DONE"
-      },
-      {
-        "id": 4,
-        "task": "Bump release metadata and validate repository readback and CI",
-        "status": "DONE"
-      },
-      {
-        "id": 5,
-        "task": "Verify actual live runtime/device before declaring release PASS",
-        "status": "DONE"
-      }
-    ],
-    "resumeInstruction": "Read latest 2026-10-28 new-chat handoff including archived draft code. Deploy access mechanism resolved: Cloudflare Builds auto-deploys repo Worker on pushes, including docs. Finish diagnostic schema/pagination/known-event and authenticated invocation tests before intentional Worker changes. No plan lock/research/activation/new Forward without explicit user approval; trading off. Do not redo completed reviews. Save both files atomically and verify exact readback."
+    "status": "IN_PROGRESS",
+    "goal": "First approved Gen17 staging publication",
+    "candidateCommit": "3b8fb2215009592f3079af0b5806213588e3cecb",
+    "workflowRun": 41373559974,
+    "startCommit": "6ece7cac0b69e42156724dd0f5b0d6804a079bdc",
+    "disarmedCommit": "9da63edcab17043e1637bca569b8243983ae4183",
+    "productionBuilds": "USER_CONFIRMED_DISABLED_2026-11-02",
+    "resumeInstruction": "Inspect run 41373559974 before any retry. Push trigger already removed. Exact candidate 3b8fb2215009592f3079af0b5806213588e3cecb. Only staging allowed; no main/production deploy. Verify outcome and live staging. Trading/Forward OFF, Gen17 DRAFT_ONLY/PIT_UNVERIFIED."
   }
 }
