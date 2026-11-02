@@ -50,7 +50,7 @@ export async function sseDiagnostic(request,env,upstreamFetch=fetch){
       }
       if(stopReason==="EVENT_LIMIT")break;
     }
-    return reply({ok:true,day,providerStatus:res.status,events,bytes,observedEnvelopeKeys:[...observedKeys].sort(),eventIdFieldCount:eventIds,sseIdCount:sseIds,sseEventTypes:[...sseEventTypes].sort(),timestampLikeKeys:[...timestampKeys].sort(),stopReason,complete:stopReason==="EOF"&&events>0,pitVerified:false,warning:"A zero-event result or HTTP 200 does not establish retention or PIT availability."});
+    return reply({ok:true,day,providerStatus:res.status,events,bytes,observedEnvelopeKeys:[...observedKeys].sort(),eventIdFieldCount:eventIds,sseIdCount:sseIds,sseEventTypes:[...sseEventTypes].sort(),timestampLikeKeys:[...timestampKeys].sort(),stopReason,complete:stopReason==="EOF"&&events>0&&buffer.trim()==="",pitVerified:false,warning:"A zero-event result or HTTP 200 does not establish retention or PIT availability."});
   }catch{return reply({ok:false,error:controller.signal.aborted?"TIME_LIMIT":"UPSTREAM_UNREACHABLE"},502)}
   finally{controller.abort();clearTimeout(timeout);if(reader)try{await reader.cancel()}catch{}}
 }
