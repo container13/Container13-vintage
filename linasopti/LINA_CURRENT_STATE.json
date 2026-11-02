@@ -156,10 +156,11 @@
     "startCommit": "6ece7cac0b69e42156724dd0f5b0d6804a079bdc",
     "disarmedCommit": "9da63edcab17043e1637bca569b8243983ae4183",
     "productionBuilds": "USER_CONFIRMED_DISABLED_2026-11-02",
-    "resumeInstruction": "First staging publication complete. Push trigger removed and readback verified. Next verify separate staging secret names/configuration securely, then authorized bounded SSE diagnostic. No authenticated provider request performed here; PIT remains UNVERIFIED. Production builds user-confirmed disabled; main untouched. Note dry-run Wrangler4 vs deploy Wrangler3.90.0; no byte-identical bundle claim.",
+    "resumeInstruction": "Configure separate staging LINA_LOGIN_CODE, APCA_API_KEY_ID, APCA_API_SECRET_KEY securely in Cloudflare staging only. Never paste values in chat or copy production secrets via logs. Then bounded authenticated SSE diagnostic; deployment already complete, no redeploy needed for code. Trade/Forward OFF; PIT_UNVERIFIED.",
     "result": "STAGING_DEPLOY_SUCCESS",
     "cloudflareVersion": "bf6cbfcc-8a41-41a7-b781-eb11c6520f0a",
     "tests": "18/18 PASS; dry-run PASS; deploy PASS",
-    "liveCheck": "GET /corporate-actions-sse-diagnostic HTTP 405 METHOD_NOT_ALLOWED, 2026-11-02"
+    "liveCheck": "GET /corporate-actions-sse-diagnostic HTTP 405 METHOD_NOT_ALLOWED, 2026-11-02",
+    "stagingAuthCheck": "2026-11-02 unauthenticated POST returned HTTP 503 AUTH_NOT_CONFIGURED. LINA_LOGIN_CODE absent/empty in staging runtime. No provider request occurred; APCA secrets presence unknown."
   }
 }
