@@ -2,10 +2,10 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
 const read=(name)=>JSON.parse(readFileSync(new URL(name,import.meta.url),"utf8"));
-test("production Worker remains pinned to original V046 bundle",()=>{
+test("existing test Worker uses reviewed V047 SSE entry",()=>{
   const c=read("./wrangler.jsonc");
   assert.equal(c.name,"linas-opti-api");
-  assert.equal(c.main,"./WORKER_V046_PREBUNDLED.js");
+  assert.equal(c.main,"./WORKER_V047_SSE.mjs");
 });
 test("Gen17 staging Worker is separately named and has no routes or inherited vars",()=>{
   const c=read("./wrangler.gen17-sse-staging.jsonc");

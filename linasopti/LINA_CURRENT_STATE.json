@@ -1,6 +1,6 @@
 {
   "schema": "LINA-CURRENT-STATE-1",
-  "release": "V0.4.46",
+  "release": "V0.4.47",
   "project": "LinaSopti / Lina Clean Core",
   "repo": "container13/Container13-vintage",
   "branch": "ccc-demo-public-test",
@@ -149,19 +149,25 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "IDLE",
-    "goal": "First approved Gen17 staging publication",
-    "candidateCommit": "3b8fb2215009592f3079af0b5806213588e3cecb",
-    "workflowRun": 41373559974,
-    "startCommit": "6ece7cac0b69e42156724dd0f5b0d6804a079bdc",
-    "disarmedCommit": "9da63edcab17043e1637bca569b8243983ae4183",
-    "productionBuilds": "USER_CONFIRMED_DISABLED_2026-11-02",
-    "resumeInstruction": "Inspect exact linas-opti-api source/config and prepare scoped Gen17 diagnostic integration into user's existing test service. Extra staging is not required; do not request duplicate staging secrets. No code moved by environment correction. Branch ccc-demo-public-test ONLY, main forbidden, Trade/Forward OFF, Gen8-16 frozen, Gen17 DRAFT_ONLY/PIT_UNVERIFIED.",
-    "result": "STAGING_DEPLOY_SUCCESS",
-    "cloudflareVersion": "bf6cbfcc-8a41-41a7-b781-eb11c6520f0a",
-    "tests": "18/18 PASS; dry-run PASS; deploy PASS",
-    "liveCheck": "GET /corporate-actions-sse-diagnostic HTTP 405 METHOD_NOT_ALLOWED, 2026-11-02",
-    "stagingAuthCheck": "2026-11-02 unauthenticated POST returned HTTP 503 AUTH_NOT_CONFIGURED. LINA_LOGIN_CODE absent/empty in staging runtime. No provider request occurred; APCA secrets presence unknown.",
-    "environmentCorrection": "User clarified linas-opti-api is their TEST environment, not real production. Cloudflare Production is a platform label. User confirmed Workers Builds re-enabled. Docs pushes may deploy unchanged existing Worker."
+    "status": "IN_PROGRESS",
+    "goal": "Publish reviewed SSE integration in existing Lina test Worker",
+    "targetRelease": "V0.4.47",
+    "lastSafeRelease": "V0.4.46",
+    "lastSafeCommit": "3ce87363d1598c6c0834d9d8176ef96521dccb83",
+    "plan": [
+      {
+        "task": "Exact integration tests and dry-run",
+        "status": "DONE"
+      },
+      {
+        "task": "Switch tested entry and verify deploy/live",
+        "status": "NEXT"
+      },
+      {
+        "task": "Authenticated bounded Alpaca SSE diagnostic",
+        "status": "PENDING"
+      }
+    ],
+    "resumeInstruction": "Inspect deployment of WORKER_V047_SSE.mjs before retry. Preflight 41374374815 PASS. Existing linas-opti-api is user test environment and reuses existing secrets; keep_vars true. main forbidden. Trade/Forward OFF; Gen17 draft/PIT unverified."
   }
 }

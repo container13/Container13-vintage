@@ -43,7 +43,7 @@ wrangler=read("worker/wrangler.jsonc")
 import hashlib
 worker_main_match=re.search(r'"main"\s*:\s*"([^"]+)"',wrangler)
 worker_main=worker_main_match.group(1) if worker_main_match else ""
-worker_candidates={"./WORKER_PENDING_RUNTIME_REPORT.js","./WORKER_V046_PREBUNDLED.js"}
+worker_candidates={"./WORKER_PENDING_RUNTIME_REPORT.js","./WORKER_V046_PREBUNDLED.js","./WORKER_V047_SSE.mjs"}
 worker_path=(ROOT/"worker"/worker_main).resolve() if worker_main in worker_candidates else None
 worker_exists=bool(worker_path and worker_path.is_file())
 check("worker_source_explicit", worker_main in worker_candidates and worker_exists, "explicit allowlisted Worker entrypoint exists: "+worker_main)
@@ -52,6 +52,12 @@ if worker_main=="./WORKER_V046_PREBUNDLED.js":
     reviewed_sha256="798141badeda6f474e89a2df38fbabfa642c664bddfe5d3f22e7ecdb6015066a"
     actual_sha256=hashlib.sha256(worker_path.read_bytes()).hexdigest() if worker_exists else ""
     check("worker_candidate_hash_pinned", actual_sha256==reviewed_sha256, "candidate SHA-256 pinned and matches")
+if worker_main=="./WORKER_V047_SSE.mjs":
+    reviewed={
+      "worker/WORKER_V047_SSE.mjs":"80a25d7043292ced89b1b1c19e99cf7a89ac210a6eafe653895e7fe277451c64",
+      "worker/WORKER_V046_PREBUNDLED.js":"798141badeda6f474e89a2df38fbabfa642c664bddfe5d3f22e7ecdb6015066a",
+      "ci-corporate-actions/sse_diagnostic_candidate.mjs":"2262d61162a9e7c849a619590c9d1216861fe0c5a4347828f82c69e56dd52525"}
+    check("sse_reviewed_dependency_hashes",all(hashlib.sha256((ROOT/p).read_bytes()).hexdigest()==h for p,h in reviewed.items()),"exact preflight-tested dependency closure")
 gen8_summary=ROOT/"evidence/2026-09-29/LINAS_GEN8_RESEARCH_SUMMARY_2026-09-29.json"
 check("gen8_frozen_evidence", gen8_summary.exists() and gen8_summary.stat().st_size>0, "immutable Gen8 summary evidence present")
 for n in range(9,17):
@@ -66,3 +72,5 @@ check("meta_rule_present", "FIX → ROOT CAUSE" in rules, "permanent learning ru
 result={"schema":"LINA-STATIC-RELEASE-INTEGRITY-1","release":release,"cache":cache,"status":"FAIL" if fails else "PASS","failed":fails,"checks":checks}
 print(json.dumps(result,ensure_ascii=False,indent=2))
 sys.exit(1 if fails else 0)
+
+# V047 reviewed dependency closure; preserve original V046 hash gate above.
