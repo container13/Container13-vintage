@@ -156,11 +156,12 @@
     "startCommit": "6ece7cac0b69e42156724dd0f5b0d6804a079bdc",
     "disarmedCommit": "9da63edcab17043e1637bca569b8243983ae4183",
     "productionBuilds": "USER_CONFIRMED_DISABLED_2026-11-02",
-    "resumeInstruction": "Configure separate staging LINA_LOGIN_CODE, APCA_API_KEY_ID, APCA_API_SECRET_KEY securely in Cloudflare staging only. Never paste values in chat or copy production secrets via logs. Then bounded authenticated SSE diagnostic; deployment already complete, no redeploy needed for code. Trade/Forward OFF; PIT_UNVERIFIED.",
+    "resumeInstruction": "Inspect exact linas-opti-api source/config and prepare scoped Gen17 diagnostic integration into user's existing test service. Extra staging is not required; do not request duplicate staging secrets. No code moved by environment correction. Branch ccc-demo-public-test ONLY, main forbidden, Trade/Forward OFF, Gen8-16 frozen, Gen17 DRAFT_ONLY/PIT_UNVERIFIED.",
     "result": "STAGING_DEPLOY_SUCCESS",
     "cloudflareVersion": "bf6cbfcc-8a41-41a7-b781-eb11c6520f0a",
     "tests": "18/18 PASS; dry-run PASS; deploy PASS",
     "liveCheck": "GET /corporate-actions-sse-diagnostic HTTP 405 METHOD_NOT_ALLOWED, 2026-11-02",
-    "stagingAuthCheck": "2026-11-02 unauthenticated POST returned HTTP 503 AUTH_NOT_CONFIGURED. LINA_LOGIN_CODE absent/empty in staging runtime. No provider request occurred; APCA secrets presence unknown."
+    "stagingAuthCheck": "2026-11-02 unauthenticated POST returned HTTP 503 AUTH_NOT_CONFIGURED. LINA_LOGIN_CODE absent/empty in staging runtime. No provider request occurred; APCA secrets presence unknown.",
+    "environmentCorrection": "User clarified linas-opti-api is their TEST environment, not real production. Cloudflare Production is a platform label. User confirmed Workers Builds re-enabled. Docs pushes may deploy unchanged existing Worker."
   }
 }
