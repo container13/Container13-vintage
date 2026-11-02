@@ -1,0 +1,32 @@
+{
+  "schema": "LINA-GEN17-SSE-OBSERVATION-1",
+  "day": "2026-09-15",
+  "httpStatus": 200,
+  "response": {
+    "ok": true,
+    "day": "2026-09-15",
+    "providerStatus": 200,
+    "events": 20,
+    "bytes": 10729,
+    "observedEnvelopeKeys": [
+      "action",
+      "at",
+      "ca",
+      "event_id",
+      "event_type",
+      "region"
+    ],
+    "eventIdFieldCount": 20,
+    "sseIdCount": 0,
+    "sseEventTypes": [],
+    "timestampLikeKeys": [
+      "at"
+    ],
+    "stopReason": "EVENT_LIMIT",
+    "complete": false,
+    "pitVerified": false,
+    "warning": "A zero-event result or HTTP 200 does not establish retention or PIT availability."
+  },
+  "observedAt": "2026-11-02T02:00:47.110Z",
+  "pitVerified": false
+}
