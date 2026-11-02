@@ -17,3 +17,5 @@ test("caps bytes",async()=>{const r=await run(request(),env,async()=>response("x
 test("passes bounded date query and provider auth",async()=>{let u,h;await run(request(),env,async(url,opts)=>{u=new URL(url);h=opts.headers;return response("")});assert.equal(u.searchParams.get("since"),"2020-08-31T00:00:00Z");assert.equal(u.searchParams.get("until"),"2020-08-31T23:59:59Z");assert.equal(h["APCA-API-KEY-ID"],"test-key")});
 
 test("partial trailing SSE frame is never complete",async()=>{const payload='data: {"event_id":"one"}\\n\\ndata: {"event_id":"unfinished"}'.replaceAll("\\n","\n");const r=await run(request(),env,async()=>response(payload));assert.equal(r.data.events,1);assert.equal(r.data.complete,false)});
+
+test("hung upstream connect stops at timeout", {timeout:12000}, async()=>{const start=Date.now();const r=await run(request(),env,async()=>new Promise(()=>{}));assert.equal(r.status,502);assert.equal(r.data.error,"TIME_LIMIT");assert.ok(Date.now()-start>=8500);assert.ok(Date.now()-start<11500)});
