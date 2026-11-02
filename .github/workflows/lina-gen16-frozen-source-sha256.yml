@@ -1,0 +1,35 @@
+name: Lina Gen16 Frozen Source Read-only SHA256
+on:
+  push:
+    branches: [ccc-demo-public-test]
+    paths:
+      - '.github/workflows/lina-gen16-frozen-source-sha256.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify exact frozen source bytes (no secrets or network calls)
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd linasopti
+          test -f SOURCE_gen9-data.json
+          echo 'Frozen source SHA256 verification:'
+          printf '%s  %s\n' 'cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c' 'SOURCE_gen9-data.json' | sha256sum --check --status
+          echo 'SHA256_MATCH=PASS'
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('SOURCE_gen9-data.json')
+          data=json.loads(p.read_bytes())
+          print('JSON_PARSE=PASS')
+          print('ROOT_TYPE='+type(data).__name__)
+          print('BYTE_COUNT='+str(p.stat().st_size))
+          PY
