@@ -9,7 +9,7 @@ export async function sseDiagnostic(request,env,upstreamFetch=fetch){
   let input;
   try{input=await request.json()}catch{return reply({ok:false,error:"INVALID_JSON"},400)}
   const day=input?.day;
-  if(typeof day!=="string"||!/^(2020|2021|2022|2023|2024|2025|2026)-\d{2}-\d{2}$/.test(day)||new Date(day+"T00:00:00Z").toISOString().slice(0,10)!==day||day>new Date().toISOString().slice(0,10))return reply({ok:false,error:"INVALID_DAY"},400);
+  if(typeof day!=="string"||!/^(2020|2021|2022|2023|2024|2025|2026)-\d{2}-\d{2}$/.test(day)||(!Number.isFinite(Date.parse(day+"T00:00:00Z"))||new Date(day+"T00:00:00Z").toISOString().slice(0,10)!==day)||day>new Date().toISOString().slice(0,10))return reply({ok:false,error:"INVALID_DAY"},400);
   const endpoint=new URL("https://stream.data.alpaca.markets/v1beta1/events/corporate-actions");
   endpoint.searchParams.set("since",day+"T00:00:00Z");
   endpoint.searchParams.set("until",day+"T23:59:59Z");
