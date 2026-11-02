@@ -7,6 +7,8 @@ on:
       - 'linasopti/ci-corporate-actions/sse_diagnostic_candidate.test.mjs'
       - 'linasopti/ci-corporate-actions/revision_lineage.mjs'
       - 'linasopti/ci-corporate-actions/revision_lineage.test.mjs'
+      - 'linasopti/ci-corporate-actions/lineage_sse_reader.mjs'
+      - 'linasopti/ci-corporate-actions/lineage_sse_reader.test.mjs'
       - '.github/workflows/lina-gen17-sse-candidate-tests.yml'
       - 'linasopti/worker/WORKER_GEN17_SSE_CANDIDATE.mjs'
       - 'linasopti/worker/WORKER_GEN17_SSE_CANDIDATE.test.mjs'
@@ -29,11 +31,12 @@ jobs:
         run: |
           node --check linasopti/ci-corporate-actions/sse_diagnostic_candidate.mjs
           node --check linasopti/ci-corporate-actions/revision_lineage.mjs
+          node --check linasopti/ci-corporate-actions/lineage_sse_reader.mjs
       - name: Isolated SSE tests (no credentials, no network)
         run: node --test linasopti/ci-corporate-actions/sse_diagnostic_candidate.test.mjs linasopti/worker/WORKER_GEN17_SSE_CANDIDATE.test.mjs linasopti/worker/GEN17_STAGING_CONFIG.test.mjs
 
       - name: Gen17 revision lineage tests (offline, fail-closed)
-        run: node --test linasopti/ci-corporate-actions/revision_lineage.test.mjs
+        run: node --test linasopti/ci-corporate-actions/revision_lineage.test.mjs linasopti/ci-corporate-actions/lineage_sse_reader.test.mjs
 
       - name: Wrangler staging bundle dry-run (no deployment or secrets)
         working-directory: linasopti/worker
