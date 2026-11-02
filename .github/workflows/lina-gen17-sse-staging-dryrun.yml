@@ -1,0 +1,19 @@
+name: Lina Gen17 SSE Staging Dry Run
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate isolated staging configuration
+        run: node --test linasopti/worker/GEN17_STAGING_CONFIG.test.mjs
+      - name: Wrangler bundle validation only — no deployment, no credentials
+        working-directory: linasopti/worker
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.gen17-sse-staging.jsonc --outdir /tmp/lina-gen17-staging-bundle
