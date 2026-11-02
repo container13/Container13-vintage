@@ -14,3 +14,8 @@ Datum 2026-10-27. Utgår från uppladdad chatt28okt.txt; ingen rerun eller ändr
 
 ## Nästa exakta steg
 Skrivskyddad åtkomst till rådata via fungerande byte-/raw-blob-metod; beräkna SHA-256 av exakta bytes och jämför med `cb84e4...`. Kontrollera struktur och tidsstopp utan att omgenerera eller backtesta. Därefter spåra oberoende källa/proveniens (inklusive justerade kurser, tidsstämplar och survivorship) samt immutable Worker receipts och Forward-historik. Behåll Handel/Forward AV och Gen17 DRAFT_ONLY.
+
+## Uppföljning 2026-11-02 – oberoende SHA256-kontroll PASS
+- GitHub Actions run https://github.com/container13/Container13-vintage/actions/runs/41380909755, commit f7db2573490feee44a9804bf5dcc8f8cfc8d83b9, job 125071309077: SUCCESS.
+- Skrivskyddad checkout på ccc-demo-public-test; sha256sum --check --status jämförde faktiska bytes i linasopti/SOURCE_gen9-data.json mot cb84e436a0527b44262949994306dcb85eaf5f10ad88fc7906d443833cc6589c och Python json.loads verifierade JSON-parsning. Steget SUCCESS. Inga provideranrop eller backtest.
+- Tidigare bytebaserad SHA256-lucka är därmed STÄNGD för denna commit. Detta bevisar inte oberoende OHLCV-proveniens, split-/utdelningsjusteringarnas historiska tillgänglighet, survivorship eller Gen17 PIT. Fortsätt med justeringssemantik utan att köra om frysta generationer. Handel/Forward AV; Gen17 DRAFT_ONLY/PIT_UNVERIFIED.
