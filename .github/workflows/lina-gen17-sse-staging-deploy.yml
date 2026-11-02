@@ -1,7 +1,9 @@
-name: Lina Gen17 SSE staging deploy (MANUAL ONLY)
+name: Lina Gen17 SSE staging approved one-shot
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [ccc-demo-public-test]
+    paths: ['.github/workflows/lina-gen17-sse-staging-deploy.yml']
 
 permissions:
   contents: read
@@ -12,13 +14,18 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.ref == 'refs/heads/ccc-demo-public-test'
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/ccc-demo-public-test' &&
+      github.event.before == '3b8fb2215009592f3079af0b5806213588e3cecb' &&
+      github.event.head_commit.message == 'deploy(lina): approved Gen17 staging once 20261102-0240' &&
+      github.run_attempt == 1
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ccc-demo-public-test
+          ref: 3b8fb2215009592f3079af0b5806213588e3cecb
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -39,6 +46,9 @@ jobs:
           PY
       - name: Isolated Gen17 candidate tests
         run: node --test linasopti/ci-corporate-actions/sse_diagnostic_candidate.test.mjs linasopti/worker/WORKER_GEN17_SSE_CANDIDATE.test.mjs linasopti/worker/GEN17_STAGING_CONFIG.test.mjs
+      - name: Wrangler staging dry-run
+        working-directory: linasopti/worker
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.gen17-sse-staging.jsonc --outdir /tmp/gen17-staging-dryrun
       - name: Verify Cloudflare secrets available
         env:
           CF_API_TOKEN: ${{ secrets.CCC_CLOUDFLARE_API_TOKEN }}
