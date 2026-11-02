@@ -1,0 +1,46 @@
+name: Lina Gen17 staging readiness (NO DEPLOY)
+
+on:
+  push:
+    branches: [ccc-demo-public-test]
+    paths:
+      - '.github/workflows/lina-gen17-staging-readiness-no-deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    if: github.ref == 'refs/heads/ccc-demo-public-test'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify exact staging-only config and source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('linasopti/worker')
+          staging=json.loads((p/'wrangler.gen17-sse-staging.jsonc').read_text())
+          production=json.loads((p/'wrangler.jsonc').read_text())
+          assert staging['name']=='linas-opti-gen17-sse-staging'
+          assert staging['main']=='./WORKER_GEN17_SSE_CANDIDATE.mjs'
+          assert staging.get('workers_dev') is True
+          assert production['name']=='linas-opti-api'
+          assert (p/'WORKER_GEN17_SSE_CANDIDATE.mjs').is_file()
+          print('PASS: staging-only configuration; no deploy authorized')
+          PY
+      - name: Run existing Gen17 SSE tests
+        run: node --test linasopti/ci-corporate-actions/sse_diagnostic_candidate.test.mjs linasopti/worker/WORKER_GEN17_SSE_CANDIDATE.test.mjs linasopti/worker/GEN17_STAGING_CONFIG.test.mjs
+      - name: Wrangler staging dry-run ONLY
+        working-directory: linasopti/worker
+        run: npx --yes wrangler@4 deploy --dry-run --config wrangler.gen17-sse-staging.jsonc --outdir /tmp/lina-gen17-readiness
