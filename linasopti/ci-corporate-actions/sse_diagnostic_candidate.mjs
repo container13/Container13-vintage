@@ -1,4 +1,4 @@
-// Read-only candidate. NOT wired to production routes. No deployment.
+// V050 bounded read-only diagnostic, wired through reviewed V047 test-service wrapper.
 // POST /corporate-actions-sse-diagnostic; X-Lina-Login-Code required.
 const reply=(body,status=200)=>new Response(JSON.stringify(body),{status,headers:{"content-type":"application/json","cache-control":"no-store"}});
 export async function sseDiagnostic(request,env,upstreamFetch=fetch){
@@ -22,6 +22,11 @@ export async function sseDiagnostic(request,env,upstreamFetch=fetch){
     if(!res.ok)return reply({ok:false,error:"UPSTREAM_HTTP",providerStatus:res.status},502);
     if(!res.body)return reply({ok:false,error:"NO_STREAM_BODY"},502);
     reader=res.body.getReader();const decoder=new TextDecoder();let buffer="",bytes=0,events=0,observedKeys=new Set(),eventIds=0,sseIds=0,sseEventTypes=new Set(),timestampKeys=new Set(),stopReason="EOF";
+    const samples=[];
+    const text=(v,re)=>typeof v==="string"&&v.length<=120&&re.test(v)&&![env.LINA_LOGIN_CODE,env.APCA_API_KEY_ID,env.APCA_API_SECRET_KEY].some(secret=>secret&&v.includes(secret))?v:undefined;
+    const id=v=>text(v,/^[A-Za-z0-9._:-]+$/);
+    const date=v=>text(v,/^\d{4}-\d{2}-\d{2}$/);
+    const number=v=>(typeof v==="number"&&Number.isFinite(v))?v:text(v,/^-?\d+(\.\d+)?$/);
     const inspect=(block)=>{
       const lines=block.split(/\r?\n/);
       if(lines.some(line=>line.startsWith("id:")))sseIds++;
@@ -33,6 +38,13 @@ export async function sseDiagnostic(request,env,upstreamFetch=fetch){
         Object.keys(obj).forEach(k=>observedKeys.add(k));
         if(typeof obj.event_id==="string")eventIds++;
         Object.keys(obj).filter(k=>/time|date|at$|timestamp/i.test(k)).forEach(k=>timestampKeys.add(k));
+        if(samples.length<3){
+          const ca=obj.ca&&typeof obj.ca==="object"&&!Array.isArray(obj.ca)?obj.ca:{};
+          const fields={};
+          for(const k of ["ex_date","record_date","payable_date","process_date","declaration_date"])if(date(ca[k]))fields[k]=date(ca[k]);
+          for(const k of ["rate","old_rate","new_rate","cash_rate","stock_rate"])if(number(ca[k])!==undefined)fields[k]=number(ca[k]);
+          samples.push({event_id:id(obj.event_id),at:text(obj.at,/^\d{4}-\d{2}-\d{2}T[0-9:.]+(?:Z|[+-]\d{2}:\d{2})$/),action:["insert","update","delete"].includes(obj.action)?obj.action:undefined,event_type:id(obj.event_type),region:["us","non_us"].includes(obj.region)?obj.region:undefined,ca:{id:id(ca.id),symbol:text(ca.symbol,/^[A-Z0-9.^/-]{1,20}$/),...fields}});
+        }
       }}catch{ /* preserve count but no raw data */ }
     };
     while(true){
@@ -50,7 +62,7 @@ export async function sseDiagnostic(request,env,upstreamFetch=fetch){
       }
       if(stopReason==="EVENT_LIMIT")break;
     }
-    return reply({ok:true,day,providerStatus:res.status,events,bytes,observedEnvelopeKeys:[...observedKeys].sort(),eventIdFieldCount:eventIds,sseIdCount:sseIds,sseEventTypes:[...sseEventTypes].sort(),timestampLikeKeys:[...timestampKeys].sort(),stopReason,complete:stopReason==="EOF"&&events>0&&buffer.trim()==="",pitVerified:false,warning:"A zero-event result or HTTP 200 does not establish retention or PIT availability."});
+    return reply({ok:true,day,providerStatus:res.status,events,bytes,samples,sampleLimit:3,observedEnvelopeKeys:[...observedKeys].sort(),eventIdFieldCount:eventIds,sseIdCount:sseIds,sseEventTypes:[...sseEventTypes].sort(),timestampLikeKeys:[...timestampKeys].sort(),stopReason,complete:stopReason==="EOF"&&events>0&&buffer.trim()==="",pitVerified:false,warning:"A zero-event result or HTTP 200 does not establish retention or PIT availability."});
   }catch{return reply({ok:false,error:controller.signal.aborted?"TIME_LIMIT":"UPSTREAM_UNREACHABLE"},502)}
   finally{controller.abort();clearTimeout(timeout);if(reader)try{await reader.cancel()}catch{}}
 }

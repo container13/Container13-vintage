@@ -1,14 +1,14 @@
 (function(){
 'use strict';
-let day='2026-09-15';
-const key=()=> 'lina_gen17_sse_probe_'+day.replaceAll('-','')+'_v1';
-const name=()=> 'GEN17_SSE_DIAGNOSTIC_'+day.replaceAll('-','');
+let day='2026-09-16';
+const key=()=> 'lina_gen17_sse_probe_'+day.replaceAll('-','')+'_sample_v2';
+const name=()=> 'GEN17_SSE_SAMPLE_'+day.replaceAll('-','');
 let busy=false;
 const read=()=>{try{return JSON.parse(sessionStorage.getItem(key())||'null')}catch{return null}};
 const save=x=>sessionStorage.setItem(key(),JSON.stringify(x));
 function mount(root){
  const box=document.createElement('section');box.className='workspace';
- box.innerHTML='<h2>Gen17 · kontroll av bolagshändelser</h2><p>Kontrollerar en vald dag. Datumet gäller när strömhändelser skickades, inte ex-datum. Högst 20 händelser, 64 KiB och 9 sekunder. Ingen forskning eller handel startas.</p><label>Kontrolldag <input type="date" data-sse-day min="2020-01-01"></label><button class="back" data-sse-run>Kör SSE-kontroll och spara resultat</button><p role="status" data-sse-status></p><pre data-sse-result style="white-space:pre-wrap;overflow-wrap:anywhere"></pre>';
+ box.innerHTML='<h2>Gen17 · kontroll av bolagshändelser</h2><p>Kontrollerar en vald dag. Datumet gäller när strömhändelser skickades, inte ex-datum. Högst 20 händelser, 64 KiB och 9 sekunder. Högst tre händelser sparas med utvalda fält. Ingen forskning eller handel startas.</p><label>Kontrolldag <input type="date" data-sse-day min="2020-01-01"></label><button class="back" data-sse-run>Kör SSE-kontroll och spara resultat</button><p role="status" data-sse-status></p><pre data-sse-result style="white-space:pre-wrap;overflow-wrap:anywhere"></pre>';
  root.prepend(box);
  const button=box.querySelector('[data-sse-run]'),status=box.querySelector('[data-sse-status]'),out=box.querySelector('[data-sse-result]');
  const date=box.querySelector('[data-sse-day]');date.value=day;date.max=new Date().toISOString().slice(0,10);date.onchange=()=>{if(busy)return;day=date.value;render()};

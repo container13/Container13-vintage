@@ -56,7 +56,7 @@ if worker_main=="./WORKER_V047_SSE.mjs":
     reviewed={
       "worker/WORKER_V047_SSE.mjs":"80a25d7043292ced89b1b1c19e99cf7a89ac210a6eafe653895e7fe277451c64",
       "worker/WORKER_V046_PREBUNDLED.js":"798141badeda6f474e89a2df38fbabfa642c664bddfe5d3f22e7ecdb6015066a",
-      "ci-corporate-actions/sse_diagnostic_candidate.mjs":"2262d61162a9e7c849a619590c9d1216861fe0c5a4347828f82c69e56dd52525"}
+      "ci-corporate-actions/sse_diagnostic_candidate.mjs":"69b80454110188fafbec989b0a14b936938b620582fc2f66423ebb3f52e8a8cd"}
     check("sse_reviewed_dependency_hashes",all(hashlib.sha256((ROOT/p).read_bytes()).hexdigest()==h for p,h in reviewed.items()),"exact preflight-tested dependency closure")
 gen8_summary=ROOT/"evidence/2026-09-29/LINAS_GEN8_RESEARCH_SUMMARY_2026-09-29.json"
 check("gen8_frozen_evidence", gen8_summary.exists() and gen8_summary.stat().st_size>0, "immutable Gen8 summary evidence present")
