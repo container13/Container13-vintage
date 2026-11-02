@@ -149,13 +149,17 @@
     "realNewChatTestVerified": "Reconstructed current project state and next step in a separate chat without manual handoff."
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
+    "status": "IDLE",
     "goal": "First approved Gen17 staging publication",
     "candidateCommit": "3b8fb2215009592f3079af0b5806213588e3cecb",
     "workflowRun": 41373559974,
     "startCommit": "6ece7cac0b69e42156724dd0f5b0d6804a079bdc",
     "disarmedCommit": "9da63edcab17043e1637bca569b8243983ae4183",
     "productionBuilds": "USER_CONFIRMED_DISABLED_2026-11-02",
-    "resumeInstruction": "Inspect run 41373559974 before any retry. Push trigger already removed. Exact candidate 3b8fb2215009592f3079af0b5806213588e3cecb. Only staging allowed; no main/production deploy. Verify outcome and live staging. Trading/Forward OFF, Gen17 DRAFT_ONLY/PIT_UNVERIFIED."
+    "resumeInstruction": "First staging publication complete. Push trigger removed and readback verified. Next verify separate staging secret names/configuration securely, then authorized bounded SSE diagnostic. No authenticated provider request performed here; PIT remains UNVERIFIED. Production builds user-confirmed disabled; main untouched. Note dry-run Wrangler4 vs deploy Wrangler3.90.0; no byte-identical bundle claim.",
+    "result": "STAGING_DEPLOY_SUCCESS",
+    "cloudflareVersion": "bf6cbfcc-8a41-41a7-b781-eb11c6520f0a",
+    "tests": "18/18 PASS; dry-run PASS; deploy PASS",
+    "liveCheck": "GET /corporate-actions-sse-diagnostic HTTP 405 METHOD_NOT_ALLOWED, 2026-11-02"
   }
 }
