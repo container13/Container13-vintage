@@ -6,6 +6,8 @@ on:
       - 'linasopti/ci-corporate-actions/sse_diagnostic_candidate.mjs'
       - 'linasopti/ci-corporate-actions/sse_diagnostic_candidate.test.mjs'
       - '.github/workflows/lina-gen17-sse-candidate-tests.yml'
+      - 'linasopti/worker/WORKER_GEN17_SSE_CANDIDATE.mjs'
+      - 'linasopti/worker/WORKER_GEN17_SSE_CANDIDATE.test.mjs'
   workflow_dispatch:
 permissions:
   contents: read
@@ -21,4 +23,5 @@ jobs:
       - name: Syntax check
         run: node --check linasopti/ci-corporate-actions/sse_diagnostic_candidate.mjs
       - name: Isolated SSE tests (no credentials, no network)
-        run: node --test linasopti/ci-corporate-actions/sse_diagnostic_candidate.test.mjs
+        run: node --test linasopti/ci-corporate-actions/sse_diagnostic_candidate.test.mjs linasopti/worker/WORKER_GEN17_SSE_CANDIDATE.test.mjs
+
