@@ -1,0 +1,24 @@
+name: Lina Gen17 SSE Candidate Tests
+on:
+  push:
+    branches: [ccc-demo-public-test]
+    paths:
+      - 'linasopti/ci-corporate-actions/sse_diagnostic_candidate.mjs'
+      - 'linasopti/ci-corporate-actions/sse_diagnostic_candidate.test.mjs'
+      - '.github/workflows/lina-gen17-sse-candidate-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check
+        run: node --check linasopti/ci-corporate-actions/sse_diagnostic_candidate.mjs
+      - name: Isolated SSE tests (no credentials, no network)
+        run: node --test linasopti/ci-corporate-actions/sse_diagnostic_candidate.test.mjs
