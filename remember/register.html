@@ -164,14 +164,14 @@ function formatAlbumCreationError(message,isLoggedIn){
  const match=String(message||'').match(/free_album_limit_reached:(\d+):(\d+)/);
  if(match){
   const count=Number(match[1]),limit=Number(match[2]),remove=Math.max(1,count-limit+1);
-  return 'Albumgränsen är nådd\\nDu har '+count+' av '+limit+' tillåtna gratisalbum.\\nRadera '+remove+' album under Mina album för att skapa ett nytt.';
+  return 'Albumgränsen är nådd\nDu har '+count+' av '+limit+' tillåtna gratisalbum.\nRadera '+remove+' album under Mina album för att skapa ett nytt.';
  }
  if(message.includes('gränsen för gratisalbum')){
-  const count=Number(message.match(/Du har (\\d+) gratisalbum/)?.[1]);
-  const limit=Number(message.match(/din gräns är (\\d+)/)?.[1]);
+  const count=Number(message.match(/Du har (\d+) gratisalbum/)?.[1]);
+  const limit=Number(message.match(/din gräns är (\d+)/)?.[1]);
   if(Number.isFinite(count)&&Number.isFinite(limit)&&count>=limit){
    const remove=count-limit+1;
-   return 'Albumgränsen är nådd\\nDu har '+count+' av '+limit+' tillåtna gratisalbum.\\nRadera '+remove+' '+(remove===1?'album':'album')+' under Mina album för att skapa ett nytt.';
+   return 'Albumgränsen är nådd\nDu har '+count+' av '+limit+' tillåtna gratisalbum.\nRadera '+remove+' '+(remove===1?'album':'album')+' under Mina album för att skapa ett nytt.';
   }
   return message;
  }
