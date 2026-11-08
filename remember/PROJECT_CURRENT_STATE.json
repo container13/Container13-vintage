@@ -8,12 +8,12 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.203",
+    "candidate": "0.1.204",
     "integrity": "RELEASE_GUARD_PENDING_CI"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.203",
+    "targetRelease": "0.1.204",
     "goal": "Remove obsolete login method back button",
     "resumeInstruction": "Verify CI, Pages and iPhone auth flows; then free-album quota tests."
   },
