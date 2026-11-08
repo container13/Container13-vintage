@@ -167,6 +167,7 @@ function formatAlbumCreationError(message,isLoggedIn){
   return 'Du har nått gränsen för gratisalbum. Du har '+count+' album och din gräns är '+limit+'. För att skapa ett nytt album behöver du först radera minst '+remove+' '+(remove===1?'album':'album')+' under Mina album.';
  }
  if(message.includes('gränsen för gratisalbum'))return message;
+ if(message.includes('för många försök att skapa album'))return message;
  return isLoggedIn?'Kunde inte skapa albumet. Försök igen om en stund.':'Kunde inte skicka länken. Försök igen om en stund.';
 }
 async function send(){if(busy||!client||!$('start').reportValidity())return;busy=true;$('send').disabled=true;$('resend').disabled=true;$('feedback').textContent=loggedInSession?'Skapar album…':'Skickar aktiveringslänk…';
