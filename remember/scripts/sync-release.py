@@ -5,7 +5,7 @@ ROOT=pathlib.Path(__file__).resolve().parents[1]
 HTML=('index','login','register','activate','dashboard','owner','album','album-admin','webmaster')
 def replacements(text,version):
     text=re.sub(r'(name="remember-release" content="remember-)\d+\.\d+\.\d+(")',lambda m:m[1]+version+m[2],text)
-    text=re.sub(r'(\./(?:remember-version|auto-update)\.js\?v=)\d+\.\d+\.\d+',lambda m:m[1]+version,text)
+    text=re.sub(r'(\./(?:remember-version|auto-update|photo-gallery)\.js\?v=)\d+\.\d+\.\d+',lambda m:m[1]+version,text)
     return text
 def main():
     parser=argparse.ArgumentParser()
@@ -40,6 +40,10 @@ def main():
         if old!=new and not args.write: errors.append(name+'.html: version drift')
         for token in ('name="remember-release" content="remember-'+version+'"','./remember-version.js?v='+version,'./auto-update.js?v='+version):
             if token not in (new if args.write else old): errors.append(name+'.html: missing '+token)
+    for name in ('owner','album','album-admin'):
+        html=(ROOT/(name+'.html')).read_text()
+        if 'photo-gallery.js?v='+version not in html:
+            errors.append(name+'.html: photo gallery cache key mismatch')
     path=ROOT/'remember-version.js'
     old=path.read_text()
     new=re.sub(r"(const fallback=')\d+\.\d+\.\d+(')",lambda m:m[1]+version+m[2],old)
