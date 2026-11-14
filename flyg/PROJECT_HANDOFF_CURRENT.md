@@ -56,3 +56,8 @@ Personal flight search beginning with the Alps, extensible later to Thailand, Za
 - New pure `journey-engine.js` returns ELIGIBLE, REJECTED or UNKNOWN for supplied flight segments, checked baggage, two-person price and **verified** ground-transfer/hotel-arrival deadline. Connections via intermediate airports supported; origin must be ARN.
 - Added `tests/journey-engine.test.cjs` with 9 synthetic test cases. **Not yet executed**. GitHub exact readback PASS.
 - Evaluator is **not wired into UI** and does not retrieve schedules, prices or ground transport. No deployment/device test. Avoid claiming an end-to-end flight search.
+
+## Candidate 0.1.4 — hotel arrival time
+- Hotel-arrival cutoff now editable in 30-minute steps (00:00–23:30), default 22:00. Search summary prints HH:MM without adding :00.
+- Midnight/cross-date arrival requires an explicit local date and timezone in the later itinerary evaluator; current form only collects the time.
+- Source committed and readback verified; no runtime/device tests or deployment.
