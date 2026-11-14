@@ -1,11 +1,7 @@
-# Flyg – Alperna
+# Flyg
 
-**Status:** ACTIVE_DEVELOPMENT · candidate v0.1.0 · NOT DEPLOYED · UNVERIFIED.
+Candidate **0.1.8**, deployed preview: https://container13.se/flyg/
 
-**Repo:** `container13/Container13-vintage` · **branch:** `flyg-alperna-init` · **root:** `flyg/`.
+Canonical development branch: `flyg-alperna-init`, root `flyg/`. Public delivery: only flyg subtree copied to existing `ccc-demo-public-test` Pages branch.
 
-Read `PROJECT_CURRENT_STATE.json` first, then `PROJECT_HANDOFF_CURRENT.md`, `CONTINUITY_PROTOCOL.md`, `PROJECT_RELEASE_STANDARD.md`, `PROJECT_MASTER_RULES.md` and `PROJECT_RELEASE_CHECKLIST.md`. Check `solutions/` and shared component catalog before building. Do not modify other project directories or deploy without verified gates.
-
-**Next:** validate a flight-data provider's current availability, pricing, coverage and terms before connecting live results. No flight prices or availability are currently verified.
-
-**Prototype source:** `index.html`, `style.css`, `app.js` are committed on the isolated branch, not deployed. Flight data is not connected; UI/device behavior unverified. Release manifest/updater still required before deployment.
+Read PROJECT_CURRENT_STATE.json, latest handoff checkpoint and project rules. Icons committed, syntax/journey/SW harness PASS, HTTPS browser form PASS. Next: installed iPhone cold launch/offline/update test. No live flight data provider. Candidate remains unpromoted; do not infer DEVICE PASS.

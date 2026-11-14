@@ -90,3 +90,10 @@ Personal flight search beginning with the Alps, extensible later to Thailand, Za
 - Recent verified commits: worldwide headline `d2c574c506d453f88495610f263abc0c4e5e8b26`; optional PNG cache nonfatal SW `84dbe9d6ce7d5d9840f62efb4db7b441d189ba11`; canonical state checkpoint updated after these. The isolated branch head can advance; verify fresh head.
 - First unfinished task: upload exact four PNG binaries, verify paths/blob SHAs/sizes. Next: run JS tests, verify deployed HTTPS installability/offline/update and real installed iPhone behavior. No live flight provider selected. No claim of completed PWA or release.
 - User should only need a short resume instruction, not manually attach a second handoff. The generated icon archive exists in prior conversation; if Work cannot access it, report this specific limitation and request the existing archive rather than recreating a different icon.
+
+## Latest checkpoint — 2026-11-14 Work, v0.1.8 (supersedes pending icon notes above)
+- Attached globe icon is 180×180. Same image resized to 180/192/512/1024 PNG; larger sizes are upscaled, not new artwork. Four blobs committed and Git tree SHA/size verified.
+- Runtime commit a87b93b97dcfb687fad5f8fa92dbf4a108a0da32. Only flyg/ subtree published via existing ccc-demo-public-test Pages chain: bd4228563d216c1cf4b6f250309bb03a714fc7e7. No changes to other project files. URL https://container13.se/flyg/. Pages success and HTTPS browser form submit PASS.
+- Syntax PASS, nine synthetic journey cases PASS. SW mock harness PASS: complete shell, offline assets/navigation, release/API bypass, scoped cleanup, explicit activation. Local Chromium blocked by environment socket permissions; real browser offline/update and iPhone tests remain UNVERIFIED.
+- Added pwa.js and shared mobile-view-policy.js to offline shell; atomic install requires all shell files. Cache-first versioned shell; updater coordinates worker activation while respecting dirty forms.
+- iPhone: Safari -> Share -> Add to Home Screen -> launch globe icon. Then airplane-mode reopen test. Keep candidate unpromoted until actual device evidence; live prices/provider still absent.
