@@ -49,6 +49,7 @@ async function requestData(query){
  const data=await r.json();if(!r.ok||data.error)throw new Error(data.error||'SEARCH_FAILED');return data;
 }
 async function search(query,trigger=null){
+ if(query.stage==='outbound'||query.stage==='calendar')query={...query,excludeAirlines:excludedAirlines()};
  if(busy)return;
  if(!maxPrice.checkValidity()){status.textContent='Kontrollera maxpriset. Ange ett belopp i steg om 100 kr.';choices.open=true;maxPrice.reportValidity();maxPrice.focus();return;}
  const loading=query.stage==='returns'?'Hämtar hemresor…':query.stage==='details'?'Hämtar biljettvillkor…':query.stage==='calendar'?'Jämför avresedatum…':'Hämtar flyg…';
@@ -70,7 +71,7 @@ async function searchAll(query,previous=null){
  setBusy(true);let index=0,calls=0;const groupSize=calendar?1:3;
  try{
   for(;index<pending.length&&(!calendar||calls<8);index+=groupSize){const group=pending.slice(index,index+groupSize);calls++;status.textContent=`Söker ${group.join(', ')} · ${data.coverage.completed.length}/${requested.length} flygplatser klara…`;
-   try{const part=await requestData({...query,destination:group.join(',')});if(calendar)data.prices.push(...part.prices);else data.flights.push(...part.flights);data.coverage.completed.push(...group);}
+   try{const part=await requestData({...query,excludeAirlines:excludedAirlines(),destination:group.join(',')});if(calendar)data.prices.push(...part.prices);else data.flights.push(...part.flights);data.coverage.completed.push(...group);}
    catch(error){if(['APP_QUOTA_REACHED','FREE_QUOTA_UNAVAILABLE','ACCOUNT_HTTP_401'].includes(error.message)){data.stopReason=errors[error.message];break;}data.coverage.failed.push(...group);}
   }
   data.coverage.unsearched=pending.slice(index);
@@ -100,7 +101,7 @@ function render(data){
  const needBag=Number(document.getElementById('baggage').value)>0;
  const note=el('p',needBag?'Bagageavgifter visas när de finns. Vikt, båda kabinväskorna och exakt totalpris är ännu inte bekräftade.':'Kontrollera att valda kabinväskor är tillåtna tillsammans, med rätt vikt och mått.');note.className='muted';results.append(note);
  results.append(el('h3',needBag?'Bagagepris ej verifierat – billigaste prisuppgift först':'Billigaste prisuppgift först'));
- if(excludedAirlines().length)results.append(el('p','Bortvalda flygbolag: '+excludedAirlines().join(', ')+'. Kalenderpriser kan ännu inte filtreras efter flygbolag; detta sker när avgångarna visas. API-anrop sparas inte av detta filter.','muted'));
+ if(excludedAirlines().length)results.append(el('p','Bortvalda flygbolag: '+excludedAirlines().join(', ')+'. Flygbolagen utesluts hos dataleverantören för nya sökningar. Ändra valen och sök igen för nya kalenderpriser.','muted'));
  if(data.stage==='calendar'){
   results.append(el('p',`${data.context.nights} nätter. Kalenderpriser för två, tur och retur; flygtider och bagage kontrolleras efter datumval.`,'muted'));
   const affordable=withinBudget(data.prices);if(!affordable.length)results.append(el('p','Inga kalenderpriser inom maxpriset för de sökta flygplatserna.'));
