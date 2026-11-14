@@ -17,6 +17,10 @@ self.addEventListener('install',event=>event.waitUntil((async()=>{
  }));
  const cache=await caches.open(CACHE);
  await Promise.all(entries.map(([url,response])=>cache.put(url,response)));
+ // Rescue older cache-first installations after the entire new shell is validated.
+ // Only the known 0.1.24 legacy cache triggers automatic takeover.
+ const existing=await caches.keys();
+ if(existing.includes('flyg-shell-0.1.24'))await self.skipWaiting();
 })()));
 self.addEventListener('message',event=>{if(event.data?.type==='ACTIVATE_UPDATE')self.skipWaiting()});
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('flyg-shell-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
