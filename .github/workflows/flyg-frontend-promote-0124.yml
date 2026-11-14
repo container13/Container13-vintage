@@ -1,4 +1,4 @@
-name: Flyg scoped frontend promotion 0.1.26
+name: Flyg scoped frontend promotion 0.1.27
 on:
   push:
     branches: [flyg-alperna-init]
@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           fetch-depth: 0
-      # Release 0.1.26: verify the candidate before touching production.
+      # Release 0.1.27: verify the candidate before touching production.
       - name: Verify browser Worker PASS and release integrity
         run: |
           python3 - <<'PY'
@@ -24,9 +24,9 @@ jobs:
           b=json.load(open('flyg/server/browser-smoke-diagnostics.json'))
           assert b['browserHealth']=='PASS' and b['httpStatus']==200 and b['reportedVersion']=='0.1.24'
           r=json.load(open('flyg/release.json'))
-          assert r['release']=='0.1.26'
+          assert r['release']=='0.1.27'
           v=pathlib.Path('flyg/version.js').read_text()
-          assert "RELEASE='0.1.26'" in v
+          assert "RELEASE='0.1.27'" in v
           sw=pathlib.Path('flyg/sw.js').read_text()
           hashes=json.loads(re.search(r'const INTEGRITY=(\{[^;]+\});',sw).group(1))
           for key,digest in hashes.items():
@@ -56,7 +56,7 @@ jobs:
           git add -- flyg/
           if git diff --cached --quiet; then echo "Already up to date"; exit 0; fi
           if git diff --cached --name-only | grep -qv '^flyg/'; then echo 'Non-Flyg changes detected'; exit 1; fi
-          git commit -m "Flyg: promote verified server-compatible frontend 0.1.26"
+          git commit -m "Flyg: promote verified server-compatible frontend 0.1.27"
           git push origin HEAD:ccc-demo-public-test
       - name: Verify public version without provider search
         id: public
@@ -69,9 +69,9 @@ jobs:
             try:
               req=urllib.request.Request(url,headers={'Cache-Control':'no-cache'})
               with urllib.request.urlopen(req,timeout=12) as response:s=response.read().decode()
-              if "RELEASE='0.1.26'" in s:
-                print('PASS public version.js 0.1.26');break
-              print('Public CDN not yet 0.1.26')
+              if "RELEASE='0.1.27'" in s:
+                print('PASS public version.js 0.1.27');break
+              print('Public CDN not yet 0.1.27')
             except Exception as e:print('Public verification unavailable:',type(e).__name__)
             if i==7:raise SystemExit('Public version not verified')
             time.sleep(10)
