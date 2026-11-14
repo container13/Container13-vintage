@@ -29,7 +29,7 @@ test('flight allowlist drops tokens and raw fields; rejects nonnumeric prices',(
 });
 test('provider errors suppress payloads and redirects are forbidden',async()=>{
  let options;await assert.rejects(provider('search.json',{},'KEY',async(u,o)=>{options=o;return Response.json({error:'KEY RAW ERROR'});} ),/SEARCH_SOURCE_ERROR/);
- assert.equal(options.redirect,'error');
+ assert.equal(options.redirect,'manual');
 });
 test('public worker rejects other origins and disabled calls without provider I/O',async()=>{
  assert.equal((await worker.fetch(new Request('https://api.test/search',{method:'POST'}),{})).status,403);
@@ -53,4 +53,8 @@ test('failed provider request still consumes local reservation; no automatic ret
 });
 test('expired selection causes zero provider calls',async()=>{
  const store=storage();const gate=new SearchGate({storage:store},{FLYG_SERPAPI_KEY:'KEY'});const r=await gate.fetch(request({stage:'details',selection:'11111111-1111-1111-1111-111111111111'}));assert.equal(r.status,400);assert.match(await r.text(),/SELECTION_EXPIRED/);
+});
+
+test('Cloudflare-compatible fetch rejects redirect response without following key to another host',async()=>{
+ let calls=0;await assert.rejects(provider('account.json',{},'KEY',async(u,o)=>{calls++;if(o.redirect==='error')throw new TypeError('Unsupported redirect mode');assert.equal(o.redirect,'manual');return new Response(null,{status:302,headers:{Location:'https://untrusted.test'}});}),/ACCOUNT_HTTP_302/);assert.equal(calls,1);
 });

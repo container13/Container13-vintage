@@ -1,5 +1,5 @@
 /* Flyg runtime 0.1.11. Secrets and provider selection tokens stay server-side. */
-export const VERSION='0.1.13';
+export const VERSION='0.1.14';
 const ORIGIN='https://container13.se';
 const AIRPORTS=new Set('ZRH GVA INN SZG MXP LIN BGY TRN MUC LYS BSL VRN VCE BLQ STR VIE NCE GNB TSF TRS FDH GRZ KLU CGN LHR LGW STN'.split(' '));
 const TTL=30*60*1000;
@@ -44,7 +44,7 @@ export function normalizeBooking(data){
 export async function provider(path,params,key,fetcher=fetch){
  const url=new URL('https://serpapi.com/'+path);url.search=new URLSearchParams({...params,api_key:key});
  const phase=path==='account.json'?'ACCOUNT':'SEARCH';
- let r;try{r=await fetcher(url,{redirect:'error',signal:AbortSignal.timeout(25000),headers:{'Accept':'application/json','User-Agent':'Flyg/0.1.13 (+https://container13.se/flyg/)'}});}catch(error){const reason=/not allowed|blocked|restricted|forbidden/i.test(String(error?.message))?'ACCESS_DENIED':error?.name==='TimeoutError'?'TIMEOUT':'NETWORK';throw new SafeError(phase+'_'+reason,502);}
+ let r;try{r=await fetcher(url,{redirect:'manual',signal:AbortSignal.timeout(25000),headers:{'Accept':'application/json','User-Agent':'Flyg/0.1.14 (+https://container13.se/flyg/)'}});}catch(error){const reason=/not allowed|blocked|restricted|forbidden/i.test(String(error?.message))?'ACCESS_DENIED':error?.name==='TimeoutError'?'TIMEOUT':'NETWORK';throw new SafeError(phase+'_'+reason,502);}
  if(!r.ok)throw new SafeError((path==='account.json'?'ACCOUNT':'SEARCH')+'_HTTP_'+r.status,502);
  let data;try{data=await r.json();}catch{throw new SafeError(phase+'_INVALID_JSON',502);}
  if(data.error){const reason=/invalid.*api.*key|api.*key.*invalid/i.test(String(data.error))?'KEY_REJECTED':/run out|quota|limit/i.test(String(data.error))?'QUOTA':'SOURCE_ERROR';throw new SafeError(phase+'_'+reason,502);}
