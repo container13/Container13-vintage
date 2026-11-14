@@ -1,1 +1,1 @@
-{"version":"0.1.12","requested":"2026-11-14","attempt":2,"purpose":"Distinguish source HTTP denial and persist local reservation before account check; browser runtime verification required"}
+{"version":"0.1.12","requested":"2026-11-14","attempt":3,"purpose":"Fixed multi-key storage test fixture; runtime tests pass before deployment"}

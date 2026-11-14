@@ -35,7 +35,7 @@ test('public worker rejects other origins and disabled calls without provider I/
  assert.equal((await worker.fetch(new Request('https://api.test/search',{method:'POST'}),{})).status,403);
  const r=await worker.fetch(new Request('https://api.test/search',{method:'POST',headers:{Origin:'https://container13.se','Content-Type':'application/json'},body:JSON.stringify(input)}),{FLYG_ENABLED:'false'});assert.equal(r.status,503);
 });
-function storage(initial){let data=initial;return {async get(){return structuredClone(data);},async put(k,v){data=structuredClone(v);},get value(){return data;}};}
+function storage(initial){const entries=new Map([['state',initial]]);return {async get(k){return structuredClone(entries.get(k));},async put(k,v){entries.set(k,structuredClone(v));},get value(){return entries.get('state');}};}
 function request(value=input){return new Request('https://internal/search',{method:'POST',body:JSON.stringify(value)});}
 function data(){return {search_metadata:{status:'Success'},search_parameters:{departure_id:'ARN',arrival_id:'ZRH',outbound_date:input.outbound,return_date:input.return,adults:2,currency:'SEK'},best_flights:[{price:3680,flights:[{flight_number:'KL1214'}],departure_token:'opaque-token'}]};}
 test('concurrent identical queries use one provider search and persist quota before network',async()=>{
