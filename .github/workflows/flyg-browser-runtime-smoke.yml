@@ -1,0 +1,52 @@
+name: Flyg browser runtime smoke (no provider calls)
+on:
+  push:
+    branches: [flyg-alperna-init]
+    paths: ['.github/workflows/flyg-browser-runtime-smoke.yml']
+permissions:
+  contents: write
+jobs:
+  browser-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Install browser
+        run: |
+          python3 -m pip install --user playwright
+          python3 -m playwright install --with-deps chromium
+      - name: Probe Cloudflare health from real browser without searching
+        id: probe
+        continue-on-error: true
+        run: |
+          python3 - <<'PY'
+          import json
+          from playwright.sync_api import sync_playwright
+          result={'expectedVersion':'0.1.24','providerSearches':0,'browserHealth':'UNVERIFIED'}
+          try:
+            with sync_playwright() as p:
+              browser=p.chromium.launch(headless=True)
+              page=browser.new_page()
+              response=page.goto('https://flyg-search-api.mangaj73.workers.dev/health',wait_until='domcontentloaded',timeout=20000)
+              result['httpStatus']=response.status if response else None
+              try:
+                data=json.loads(page.locator('body').inner_text())
+                result['reportedVersion']=str(data.get('version',''))[:30]
+                result['browserHealth']='PASS' if response.status==200 and data.get('version')=='0.1.24' and data.get('enabled') is True and data.get('configured') is True else 'MISMATCH'
+              except Exception:result['browserHealth']='NON_JSON_RESPONSE'
+              browser.close()
+          except Exception as exc:
+            result['browserHealth']='BROWSER_ERROR'
+            result['errorType']=type(exc).__name__
+          with open('flyg/server/browser-smoke-diagnostics.json','w') as out:json.dump(result,out,indent=2)
+          print(json.dumps(result))
+          if result['browserHealth']!='PASS':raise SystemExit(1)
+          PY
+      - name: Persist browser smoke result
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          test -f flyg/server/browser-smoke-diagnostics.json || echo '{"browserHealth":"NOT_RUN"}' > flyg/server/browser-smoke-diagnostics.json
+          git add flyg/server/browser-smoke-diagnostics.json
+          git diff --cached --quiet || { git commit -m "Flyg: record browser runtime smoke"; git push origin HEAD:flyg-alperna-init; }
