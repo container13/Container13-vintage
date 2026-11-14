@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "verified": "2026-11-14",
+  "method": "User screenshot of signed-in Cloudflare Workers plans",
+  "plan": "Free",
+  "priceUSD": 0,
+  "currentPlanVisible": true,
+  "evidence": "IMG_4260.png supplied by account owner in this conversation",
+  "scope": "Existing Cloudflare account used for repository deployment; no plan upgrade authorized"
+}
