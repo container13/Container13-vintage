@@ -172,9 +172,15 @@ function render(data){
  if(excludedAirlines().length)results.append(el('p','Bortvalda flygbolag: '+excludedAirlines().join(', ')+'. Flygbolagen utesluts hos dataleverantören för nya sökningar. Ändra valen och sök igen för nya kalenderpriser.','muted'));
  if(data.stage==='calendar'){
   results.append(el('p',`${data.context.nights} nätter. Kalenderpriser för två, tur och retur; flygtider och bagage kontrolleras efter datumval.`,'muted'));
-  const affordable=withinBudget(data.prices);if(!affordable.length)results.append(el('p','Inga kalenderpriser inom maxpriset för de sökta flygplatserna.'));
+  const affordable=withinBudget(data.prices);
+  for(const row of affordable){const c=row.comparison;if(c?.status==='READY'&&c.returnFlights){const candidate=returnChoices(data,row,c.outbound,c.returnFlights)[0];if(candidate)c.returnFlight=candidate;}}
+  const group=row=>matchedTimesFit(data,row)?0:row.comparison?.status==='READY'?2:1;
+  affordable.sort((a,b)=>group(a)-group(b)||(group(a)===0?a.comparison.returnFlight.quotedPriceSEK-b.comparison.returnFlight.quotedPriceSEK:a.quotedPriceSEK-b.quotedPriceSEK));
+  if(!affordable.length)results.append(el('p','Inga kalenderpriser inom maxpriset för de sökta flygplatserna.'));
   if(affordable.some(row=>!row.comparison))results.append(button('Jämför tider för tre datum',()=>calendarTimes(data,comparisonBatch(affordable.filter(row=>!row.comparison)))));
+  let previousGroup=-1;
   for(const row of affordable){
+   const currentGroup=group(row);if(currentGroup!==previousGroup){results.append(el('h4',currentGroup===0?'Matchade flyg – billigaste visade pris först':currentGroup===1?'Fler datum – endast kalenderpris tills tider har hämtats':'Hämtade resor som inte klarar dina nuvarande val'));previousGroup=currentGroup;}
    const card=el('article',null,'flight-card');card.append(el('h3',`${row.outbound} → ${row.return}`),el('p',`${row.destination} · kalender från ${money(row.quotedPriceSEK)} för två`));
    const c=row.comparison;
    if(c?.status==='READY'&&c.returnFlights){const candidate=returnChoices(data,row,c.outbound,c.returnFlights)[0];if(candidate)c.returnFlight=candidate;}
