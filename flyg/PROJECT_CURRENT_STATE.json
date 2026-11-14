@@ -9,26 +9,26 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.9",
-    "integrity": "STATIC_PASS_DEPLOY_PENDING"
+    "candidate": "0.1.10",
+    "integrity": "SHA256_SHELL_VALIDATION_IMPLEMENTED; DEPLOY_PENDING"
   },
   "workCheckpoint": {
     "status": "IN_PROGRESS",
-    "targetRelease": "0.1.9",
-    "goal": "Verify installed app update from 0.1.8 to 0.1.9",
+    "targetRelease": "0.1.10",
+    "goal": "Recover installed 0.1.8 via fresh validated shell; verify iPhone update",
     "plan": [
-      "Open https://container13.se/flyg/ in iPhone Safari",
-      "Share -> Add to Home Screen; launch Flyg from globe icon",
-      "Reopen in airplane mode; confirm search form works",
-      "Verify safe update with modified form on next version"
+      "Deploy 0.1.10 only Flyg subtree",
+      "Verify HTTPS bytes and Pages success",
+      "User opens installed app online; Update should load 0.1.10",
+      "Keep device upgrade UNVERIFIED until screenshot"
     ],
     "lastSafeRelease": null,
     "resumeInstruction": "Read latest canonical checkpoint. iPhone 0.1.8 installation/offline PASS; verify update to 0.1.9 without reinstall. No live flight provider.",
     "rollbackCommit": "ff4244680ce148a22517c84e779141c1e0919db2"
   },
   "currentWork": {
-    "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired. User screenshots confirm installed iPhone v0.1.8 and airplane-mode form. Five update-controller VM tests PASS.",
-    "next": "Deploy 0.1.9 after automated update-controller checks; verify existing iPhone installation updates without reinstall.",
+    "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired. User screenshots confirm installed iPhone v0.1.8 and airplane-mode form. Five update-controller VM tests PASS. Update 0.1.9 failed on iPhone. Reproduced stale HTTP-cached version.js entering new SW cache. v0.1.10 install uses no-store plus build query and SHA-256 checks for all 14 shell resources before cache writes. Regression rejects corrupted rollout; all existing tests PASS.",
+    "next": "Verify deployed 0.1.10 assets then installed iPhone recovery. No reinstall/cache clear requested.",
     "blocked": false
   },
   "pausedWork": {},
@@ -38,8 +38,8 @@
       "url": "https://container13.se/flyg/",
       "sourceBranch": "ccc-demo-public-test",
       "scope": "Only flyg/ subtree; other project bytes unchanged",
-      "sourceCommit": "a87b93b97dcfb687fad5f8fa92dbf4a108a0da32",
-      "deploymentCommit": "bd4228563d216c1cf4b6f250309bb03a714fc7e7"
+      "sourceCommit": "452e6a458038294e3c3c427850daccef4ffcd8f0",
+      "deploymentCommit": "94bb5cad5ceccb9d4f4cb243dbf62a0a932b5d81"
     },
     "secrets": "NONE_COMMITTED"
   },
@@ -93,12 +93,12 @@
     "githubReadback": true,
     "syntax": "PASS",
     "ui": "HTTPS_BROWSER_FORM_SUBMIT_PASS",
-    "deployment": "PAGES_SUCCESS_bd4228563d216c1cf4b6f250309bb03a714fc7e7",
+    "deployment": "PAGES_SUCCESS_94bb5cad5ceccb9d4f4cb243dbf62a0a932b5d81",
     "device": "IPHONE_STANDALONE_AND_AIRPLANE_MODE_FORM_PASS_USER_SCREENSHOT_2026-11-14",
     "flightAPI": "NOT_CONNECTED",
     "engine": "9_SYNTHETIC_CASES_PASS",
     "tests": "JOURNEY_9_PASS; SW_MOCK_HARNESS_PASS",
-    "updateController": "5_VM_TESTS_PASS: clean reload, dirty deferral, offline, loop guard, worker activation. IPHONE_UPGRADE_PENDING",
+    "updateController": "0.1.9 DEVICE_FAIL; stale HTTP cache reproduction FAIL before fix, PASS after fix; five updater VM cases PASS",
     "pwa": "INSTALLED_IPHONE_OFFLINE_FORM_PASS; UPDATE_PENDING",
     "deployedAssets": "All 14 release assets fetched via HTTPS and byte-matched to committed local files; PASS 2026-11-14"
   },
