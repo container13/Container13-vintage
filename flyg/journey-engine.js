@@ -78,6 +78,13 @@ function resortArrival(flight,requirements){
 }
 // Date-based planning, not verification of lift opening, hotel or transfer availability.
 function skiTrip(outbound,returnFlight,requirements){
+ if(requirements.returnPlan==='auto'){
+  if(![requirements.breakfastEnd,requirements.earliestHotelDeparture,requirements.earliestCityDeparture||requirements.earliestHotelDeparture].every(value=>/^([01]\d|2[0-3]):[0-5]\d$/.test(value||'')))return {status:'UNKNOWN',reason:'Ange när en lugn frukost är klar.'};
+  const direct=skiTrip(outbound,returnFlight,{...requirements,returnPlan:'direct',earliestHotelDeparture:[requirements.earliestHotelDeparture,requirements.breakfastEnd].sort().at(-1)});
+  const city=skiTrip(outbound,returnFlight,{...requirements,returnPlan:'city'});
+  const selected=direct.status==='PLANNED'?direct:city.status==='PLANNED'?city:direct.status==='UNKNOWN'?direct:city.status==='UNKNOWN'?city:{status:'REJECTED',reason:'Varken direkt hemresa efter frukost eller sista stadsnatt klarar valda marginaler. '+direct.reason+' '+city.reason};
+  return {...selected,requestedReturnPlan:'auto',alternatives:{direct,city},preference:direct.status==='PLANNED'?'Direkt från skidorten efter lugn frukost.':city.status==='PLANNED'?'Sista stadsnatten gör hemresan möjlig med valda marginaler.':'Upplägget behöver ändras.'};
+ }
  const unknown=reason=>({status:'UNKNOWN',reason});
  const reject=(reason,extra={})=>({status:'REJECTED',reason,...extra});
  const ground=resortArrival(outbound,requirements);
@@ -92,7 +99,7 @@ function skiTrip(outbound,returnFlight,requirements){
  if(!['city','direct'].includes(requirements.returnPlan))return unknown('Välj upplägg för sista natten.');
  if([requirements.airportReturnMinutes,requirements.cityAirportMinutes].some(v=>!Number.isFinite(v)||v<0||v>360))return unknown('Kontrollera marginalerna för hemresan.');
  const clock=(date,time)=>/^\d\d:\d\d$/.test(time||'')?stamp(date+' '+time):NaN;
- const returnDate=back.departureLocal.slice(0,10),skiStart=clock(returnDate,requirements.skiStart),skiEnd=clock(returnDate,requirements.skiEnd),earliest=clock(returnDate,requirements.earliestHotelDeparture);
+ const returnDate=back.departureLocal.slice(0,10),skiStart=clock(returnDate,requirements.skiStart),skiEnd=clock(returnDate,requirements.skiEnd),earliest=clock(returnDate,requirements.returnPlan==='city'?(requirements.earliestCityDeparture||requirements.earliestHotelDeparture):requirements.earliestHotelDeparture);
  if(![skiStart,skiEnd,earliest].every(Number.isFinite)||skiStart>=skiEnd)return unknown('Kontrollera skidtid och tidigaste hotellavresa.');
  const format=t=>new Date(t).toISOString().slice(0,16).replace('T',' '),day=t=>new Date(t).toISOString().slice(0,10);
  let leave,hotelDeparture,city=null,cityArrival=null,lastFull;
@@ -112,11 +119,22 @@ function skiTrip(outbound,returnFlight,requirements){
  }
  const skiDates=[],firstSki=Date.parse(ground.hotelLocal.slice(0,10))+86400000;
  for(let t=firstSki;t<=Date.parse(lastFull)&&skiDates.length<32;t+=86400000)skiDates.push(day(t));
- const result={nights,skiDates,fullSkiDays:skiDates.length,returnPlan:requirements.returnPlan,leaveResortLocal:format(leave),hotelDepartureLocal:format(hotelDeparture),city,cityArrivalLocal:cityArrival===null?null:format(cityArrival),verification:'PLANNING_ASSUMPTIONS_ONLY'};
- if(day(hotelDeparture)!==returnDate||hotelDeparture<earliest)return reject(`Hemresan kräver hotellavresa ${format(hotelDeparture)}, före valt tidigast ${requirements.earliestHotelDeparture}.`,result);
+ const result={nights,skiDates,fullSkiDays:skiDates.length,requiredSkiDays:requirements.skiDays,returnPlan:requirements.returnPlan,leaveResortLocal:format(leave),hotelDepartureLocal:format(hotelDeparture),city,cityArrivalLocal:cityArrival===null?null:format(cityArrival),verification:'PLANNING_ASSUMPTIONS_ONLY'};
+ if(day(hotelDeparture)!==returnDate||hotelDeparture<earliest)return reject(`Hemresan kräver hotellavresa ${format(hotelDeparture)}, före valt tidigast ${requirements.returnPlan==='city'?(requirements.earliestCityDeparture||requirements.earliestHotelDeparture):requirements.earliestHotelDeparture}.`,result);
  if(skiDates.length<requirements.skiDays)return reject(`Resan ger ${skiDates.length} hela planerade skiddagar; minst ${requirements.skiDays} krävs.`,result);
  if(ground.status!=='ON_TIME')return reject('Ankomsten klarar inte vald middagstid.',result);
  return {status:'PLANNED',...result};
+}
+// Incremental estimates only: never claim a verified trip total from unknown hotel/ground/bag costs.
+function extraNightCost(option,baseline,requirements){
+ const unknown=reason=>({status:'UNKNOWN',reason});
+ if(!option||!baseline||!Number.isFinite(option.flightPrice)||!Number.isFinite(baseline.flightPrice))return unknown('En matchad grundresa behövs innan merkostnaden kan jämföras.');
+ if(option.nights!==baseline.nights+1)return unknown('Jämförelsen gäller en extra natt mot grundresan.');
+ const flightDifference=option.flightPrice-baseline.flightPrice;
+ const values=[requirements.hotelExtra,requirements.groundDifference,requirements.baggageDifference,requirements.otherExtra];
+ if(values.some(v=>typeof v!=='number'||!Number.isFinite(v))||!Number.isFinite(requirements.extraBudget)||requirements.extraBudget<0)return {...unknown('Hotell och övriga merkostnader behöver uppskattas. Flygskillnaden ensam är inte hela merkostnaden.'),flightDifference};
+ const extraCost=flightDifference+values.reduce((a,b)=>a+b,0);
+ return {status:extraCost<=requirements.extraBudget?'WITHIN_ESTIMATE':'OVER_ESTIMATE',extraCost,flightDifference,extraBudget:requirements.extraBudget,verification:'USER_COST_ESTIMATES_ONLY'};
 }
 function weekWindow(year,week,nights){
  if(!Number.isInteger(year)||year<2026||year>2100||!Number.isInteger(week)||week<1||!Number.isInteger(nights)||nights<1||nights>30)throw new RangeError('Ogiltig vecka eller antal nätter');
@@ -125,6 +143,6 @@ function weekWindow(year,week,nights){
  mon.setUTCDate(mon.getUTCDate()+(week-1)*7);const day=offset=>new Date(mon.getTime()+offset*86400000).toISOString().slice(0,10);
  return {from:day(-2),to:day(6),monday:day(0),firstReturn:day(-2+nights),nights};
 }
-return Object.freeze({evaluate,weekWindow,checkSchedule,resortArrival,skiTrip});
+return Object.freeze({evaluate,weekWindow,checkSchedule,resortArrival,skiTrip,extraNightCost});
 });
 
