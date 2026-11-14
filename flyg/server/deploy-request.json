@@ -1,1 +1,4 @@
-{"release":"0.1.22","reason":"Calendar accepts single airport only; reject groups before provider I/O; preserve all free guards"}
+{
+  "release": "0.1.24",
+  "reason": "Deploy isolated Flyg Worker: Norwegian DY+D8 exclusion and provider Free-only quota; mock CI green, no other services changed"
+}
