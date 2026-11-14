@@ -15,7 +15,7 @@
   "workCheckpoint": {
     "status": "UNVERIFIED",
     "targetRelease": "0.1.24",
-    "goal": "Screenshot confirms GitHub Actions Flyg resort static checks runs #2 and #3 green on flyg-alperna-init; runtime/deploy/device verification for candidate 0.1.24 still pending.",
+    "goal": "Candidate 0.1.24 committed to isolated branch, static tests and integrity generation passed in Actions; production Pages and Worker runtime deployment NOT VERIFIED.",
     "plan": [
       "Ski default19.9kg per person;20kg qualifies",
       "Separate cabin boot bag and personal item selected by default",
@@ -23,7 +23,7 @@
       "Source fee intervals translated and shown; eligibility and exact bag-inclusive total still UNKNOWN"
     ],
     "lastSafeRelease": null,
-    "resumeInstruction": "2026-11-14: Added manual workflow_dispatch input commit_candidate (default false) in .github/workflows/flyg-resort-static-check.yml commit 3b78ebf. New commit_candidate job requires test PASS, verifies exact branch SHA, runs offline prepare-release.mjs 0.1.24, checks hashes and commits only flyg/version.js, flyg/index.html, flyg/release.json, flyg/sw.js to isolated flyg-alperna-init; no deploy. IMPORTANT user must manually dispatch workflow with commit_candidate=true after this checkpoint commit; new push may automatically run tests but will NOT commit candidate. Inspect green run + resulting commit and SHA256 before publishing. No new CI result observed or runtime deployed.",
+    "resumeInstruction": "2026-11-14: Automated candidate commit has now run. Exact GitHub fetch readback confirms flyg/version.js RELEASE 0.1.24, flyg/release.json release 0.1.24 and flyg/sw.js CACHE flyg-shell-0.1.24. GitHub Actions generation uses SHA256 on all 16 SHELL assets. Candidate is COMMITTED/CI-based STATIC PASS, NOT DEPLOYED or DEVICE PASS. Existing public production branch is ccc-demo-public-test; must inspect existing Pages deployment chain and live Worker deployment before changing anything. Do not infer source branch automatically publishes; do not edit unrelated projects. No live SerpApi calls.",
     "rollbackCommit": "d2f8497540a04bc674a318084ab253b27df793d1"
   },
   "currentWork": {
