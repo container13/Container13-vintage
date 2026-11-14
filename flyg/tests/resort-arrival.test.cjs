@@ -1,5 +1,5 @@
 const {test}=require('node:test');const assert=require('node:assert/strict');
-const {resortArrival}=require('../journey-engine.js');
+const {resortArrival,skiTrip}=require('../journey-engine.js');
 const req={resort:'Cervinia',transport:'road',dinnerTarget:'20:00',hotelCutoff:'22:00',airportMinutes:60,roadBufferMinutes:30,checkinMinutes:30};
 const flight=(airport='MXP',time='15:00')=>({segments:[{destination:airport,arrivalLocal:'2027-03-14 '+time}]});
 test('landing plus baggage, published road time, margin and checkin yields dinner time',()=>{
