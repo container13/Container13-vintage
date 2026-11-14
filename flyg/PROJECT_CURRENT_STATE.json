@@ -9,24 +9,39 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.36",
-    "integrity": "18_PUBLISHED_ASSET_MANIFEST_HASHES_PASS; BROWSER_FLEXIBLE_STAY_COST_TOLERANCE_AND_BREAKFAST_PASS; IPHONE_PENDING"
+    "candidate": "0.1.37",
+    "integrity": "18_PUBLISHED_ASSET_MANIFEST_HASHES_PASS; BACKEND_AND_BROWSER_EMPTY_RESULTS_PASS; IPHONE_PENDING"
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
-    "targetRelease": "0.1.37",
-    "goal": "Diagnose FDH calendar SEARCH_SOURCE_ERROR; distinguish explicit no-results response from genuine source failure; preserve other airports",
-    "plan": [
-      "One bounded Free-only provider diagnostic for exact FDH4night query, sanitize error message without exposing credentials",
-      "Implement narrowly evidenced empty-result handling or explicit source-unsupported classification; do not turn arbitrary source errors into no flights",
-      "Cache explicit empty responses and keep successful airports; plain summary with technical details collapsed",
-      "Regression, existing Worker preserve-secret deployment, live exact-route/cache and frontend verification"
+    "status": "UNVERIFIED",
+    "targetRelease": "frontend0.1.37/backend0.1.37",
+    "goal": "FDH calendar empty result correctly distinguished from source failures; other airport results retained; installed device acceptance pending",
+    "completed": [
+      "User IMG_4279 root cause proven with one Free-only credential-safe diagnostic:provider statusSuccess/contextmatchtrue,error exactly Google Flights Calendar hasn't returned any results for this query.,no prices array",
+      "Diagnostic43598117287 PASS;175free searches observed before1bounded search;key never exposed",
+      "Only evidenced successful calendar empty message becomes prices[]/NO_RESULTS;wrongstatus,otherengine,conflictingprices,genuineerrors and contextmismatch still fail;no broad error masking",
+      "Live Worker0.1.37 enabled/configured;FDH4and5nights bothHTTP200/NO_RESULTS/0prices;each identical replaycachedtrue withsamefetchedAt/1800secondTTL",
+      "UI distinguishes checked-empty from failed;technical details collapsed for genuine failures; completed airport results retained",
+      "Unknown resort transfer now permits flight-time inspection explicitly labelled transfer missing;no whole-trip or budget compliance inferred from unknown transfer",
+      "Browser0.1.37 Ischgl test INN/MUC/ZRH/FDH:all4checked,FDH4/5emptyplainnote,43datecards,0errorpanels,3timedflightpairsinspectablewithunknowntransfer",
+      "91Node tests plus3dedicated diagnostic tests PASS;CI static/integrity/probe/backend deploy PASS;18published hashes PASS",
+      "Backend43598719873 SUCCESS;Pages43598724849 SUCCESS;same Worker/secrets/vars/globalDO/schema/cache preserved"
     ],
-    "resumeInstruction": "User IMG_4279:INN/MUC/ZRH completed,FDH4and5calendar SEARCH_SOURCE_ERROR. Generic provider.error discarded all distinctions. Need actual sanitized provider evidence; no assumption FDH unavailable. No key/account/plan changes."
+    "plan": [
+      "Installed iPhone0.1.37 repeat search acceptance pending;CURRENT/PREVIOUS not rotated",
+      "Source-backed transfers and full itinerary validation beyond Cervinia remain incomplete;timed flights with unknown transfer are inspectable,not approved whole trips",
+      "Actual baggage/ground/hotel costs still unknown;no all-in price or1000compliance inferred"
+    ],
+    "sourceCommit": "662b8894c098428ea1ffabdc246903b28372b7ca",
+    "deploymentCommit": "ecaccaec56138817974404e07e321e6cc3b0bdd4",
+    "backendRun": 43598719873,
+    "deploymentRun": 43598724849,
+    "rollbackCommit": "32f7936a0be39f236001f073c47a4024b149ad6b",
+    "resumeInstruction": "Continue from0.1.37 FDH no-result fix. Exact successful provider no-results message was misclassified asSEARCH_SOURCE_ERROR;now30mincachedempty,notfalsefailure. Live4/5night+replays and browserall4airports43cards PASS. Genuine errors remain errors;unknown transfers remain unverified. Device pending;CURRENT/PREVIOUS unchanged. All flexible-stay1000forTWO/breakfast preferences preserved."
   },
   "currentWork": {
-    "completed": "84 backend/journey/UI/week/SW/updater tests PASS; final static/integrityCI PASS\nUser rules replace fixed4night/defaultcity policy:3ski days sufficient,1extra night welcome even if total trip up toabout1000SEK more for two\nCalendar searches4and5night variants per airport,8calls/batch,per-variant completion/resume; toggling extra off skips pending longer queries without repeating finished work\nAutomatic return prefers direct resort transfer after calm breakfast09:00; otherwise evaluates city night. Explicitcity remains valid with late flight. Resort07:00/city05:00 earliest are editable planning assumptions, not hard08–12flight windows\nCost comparison uses matched baseline fare plus entered whole-trip hotel/ground/baggage/other differences for TWO; blanks stay UNKNOWN, signed savings allowed; no calendar-floor or all-in guarantee\nAt most3date pairs enriched, deliberately including base and extra variants; extra skiing is optional even if4whole days fit\nBrowser0.1.36 actual week11Cervinia35cards;extraoff17/on35 preserved; defaultauto chose direct after breakfast;explicitcity with later flight worked; restoredauto\nTemporary browser test only:hotel difference1200 and other0 produced906within1000 and1576over1000 against current matched baseline4182; all temporary amounts then cleared toUNKNOWN\nPages43594560066 SUCCESS;18published asset/manifest hashes PASS; only7publicFlyg runtimefiles changed; backend0.1.29,Free plan,secrets unchanged",
-    "next": "Installed iPhone0.1.36 acceptance pending;CURRENT/PREVIOUS unchanged\nActual hotel/ground/baggage/other prices remain unavailable; estimates never become verified all-in totals\nBroaden source-backed transfer coverage beyond Cervinia and validate selected transport/hotel endpoints before booking recommendations",
+    "completed": "User IMG_4279 root cause proven with one Free-only credential-safe diagnostic:provider statusSuccess/contextmatchtrue,error exactly Google Flights Calendar hasn't returned any results for this query.,no prices array\nDiagnostic43598117287 PASS;175free searches observed before1bounded search;key never exposed\nOnly evidenced successful calendar empty message becomes prices[]/NO_RESULTS;wrongstatus,otherengine,conflictingprices,genuineerrors and contextmismatch still fail;no broad error masking\nLive Worker0.1.37 enabled/configured;FDH4and5nights bothHTTP200/NO_RESULTS/0prices;each identical replaycachedtrue withsamefetchedAt/1800secondTTL\nUI distinguishes checked-empty from failed;technical details collapsed for genuine failures; completed airport results retained\nUnknown resort transfer now permits flight-time inspection explicitly labelled transfer missing;no whole-trip or budget compliance inferred from unknown transfer\nBrowser0.1.37 Ischgl test INN/MUC/ZRH/FDH:all4checked,FDH4/5emptyplainnote,43datecards,0errorpanels,3timedflightpairsinspectablewithunknowntransfer\n91Node tests plus3dedicated diagnostic tests PASS;CI static/integrity/probe/backend deploy PASS;18published hashes PASS\nBackend43598719873 SUCCESS;Pages43598724849 SUCCESS;same Worker/secrets/vars/globalDO/schema/cache preserved",
+    "next": "Installed iPhone0.1.37 repeat search acceptance pending;CURRENT/PREVIOUS not rotated\nSource-backed transfers and full itinerary validation beyond Cervinia remain incomplete;timed flights with unknown transfer are inspectable,not approved whole trips\nActual baggage/ground/hotel costs still unknown;no all-in price or1000compliance inferred",
     "blocked": false
   },
   "pausedWork": {},
@@ -35,9 +50,9 @@
     "deployment": {
       "url": "https://container13.se/flyg/",
       "sourceBranch": "ccc-demo-public-test",
-      "scope": "Only7Flyg runtime files;backend0.1.29 unchanged",
-      "sourceCommit": "796e2f5030643576312e7fb932221f6049b9aa50",
-      "deploymentCommit": "32f7936a0be39f236001f073c47a4024b149ad6b"
+      "scope": "Only4publicFlygfrontendtextfiles changed;isolated existingWorkerupdatedfromdevbranch",
+      "sourceCommit": "662b8894c098428ea1ffabdc246903b28372b7ca",
+      "deploymentCommit": "ecaccaec56138817974404e07e321e6cc3b0bdd4"
     },
     "secrets": "NONE_COMMITTED",
     "secretCollection": {
@@ -50,12 +65,12 @@
     "runtimeHosting": {
       "target": "flyg-search-api",
       "url": "https://flyg-search-api.mangaj73.workers.dev",
-      "version": "0.1.29",
-      "status": "DEPLOYED_ENABLED_GROUPED_SEARCH_AND_CACHE_PASS",
+      "version": "0.1.37",
+      "status": "DEPLOYED_ENABLED_FDH_EMPTY_AND_NEGATIVE_CACHE_PASS",
       "plan": "WORKERS_FREE_USER_SCREENSHOT_CONFIRMED",
-      "run": 43588143545,
-      "commit": "59888cb2c2d17deec067dae9ef747a28243f3af4",
-      "notes": "Same Worker, DO binding/global-v1/schema and secrets retained. Single deploy --keep-vars --var FLYG_ENABLED:true. Free-only guard unchanged."
+      "run": 43598719873,
+      "commit": "662b8894c098428ea1ffabdc246903b28372b7ca",
+      "notes": "Existing flyg-search-api only;keep-vars enabled=true,secret/DO/global-v1/schema retained. LiveHTTP200 empty4and5replayscachedtrue;historical lastFailure remains timestamped13:03,not a new failure."
     }
   },
   "searchDefaults": {
@@ -174,8 +189,8 @@
     "sourceCommitted": true,
     "githubReadback": true,
     "syntax": "PASS",
-    "ui": "BROWSER0.1.36_FLEXIBLE_DURATION_BREAKFAST_AND_INCREMENTAL_ESTIMATE_PASS",
-    "deployment": "PAGES_SUCCESS_43594560066",
+    "ui": "BROWSER0.1.37_CHECKED_EMPTY_AND_PARTIAL_RESULTS_PASS",
+    "deployment": "PAGES_SUCCESS_43598724849",
     "device": "User IMG_4277 confirms installed0.1.28 can now search after backend repair. Frontend0.1.31 installed-iPhone acceptance pending.",
     "flightAPI": {
       "status": "LIVE_PROOF_PASS",
@@ -199,7 +214,7 @@
     "tests": "JOURNEY_9_PASS; SW_MOCK_HARNESS_PASS",
     "updateController": "Browser existing0.1.11 shell auto-updated to0.1.14; installed iPhone0.1.14 not tested",
     "pwa": "PREVIOUS_IPHONE_INSTALL_OFFLINE_AND_0.1.10_UPGRADE_PASS; BROWSER_0.1.11_TO_0.1.14_UPGRADE_PASS; IPHONE_0.1.14_PENDING",
-    "deployedAssets": "0.1.36 all18 assets/manifest hashes match",
+    "deployedAssets": "0.1.37 all18 assets/manifest hashes match",
     "providerResearch": "2026-11-14 official eligibility, pricing and agreement checked; report flyg/FLIGHT_DATA_ACCESS.md",
     "probe": "probe-0.1.0: 5 mock guard tests PASS; missing key zero calls PASS",
     "fareDetails": {
@@ -378,6 +393,18 @@
       "pagesRun": 43594560066,
       "device": "IPHONE_PENDING",
       "costBoundary": "UNKNOWN_COMPONENTS_NEVER_ZERO;TEMPORARY1200HOTEL+OTHER0WERE_TEST_INPUTS_NOT_OBSERVED_PRICES"
+    },
+    "emptyCalendar": {
+      "version": "0.1.37",
+      "diagnosticRun": 43598117287,
+      "tests": "91_NODE_PASS;3_DEDICATED_DIAGNOSTIC_TESTS_PASS",
+      "live": "FDH4AND5_HTTP200_NO_RESULTS_0PRICES;REPLAYS_CACHED_TRUE_TTL1800",
+      "browser": "ISCHGL_INN_MUC_ZRH_FDH_ALL4_CHECKED_43CARDS_0ERRORPANELS;3UNKNOWN_TRANSFER_TIMED_PAIRS",
+      "deployedHashes": "18_OF18_PASS",
+      "backendRun": 43598719873,
+      "pagesRun": 43598724849,
+      "device": "IPHONE_PENDING",
+      "evidence": "flyg/evidence/fdh-calendar-2026-11-14.json"
     }
   },
   "airportCatalog": {

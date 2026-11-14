@@ -21,5 +21,67 @@
   "contextMatch": true,
   "pricesArrayPresent": false,
   "sanitizedError": "Google Flights Calendar hasn't returned any results for this query.",
-  "rootCause": "Provider no-result outcome was collapsed into SEARCH_SOURCE_ERROR; generic errors must remain errors."
+  "rootCause": "Provider no-result outcome was collapsed into SEARCH_SOURCE_ERROR; generic errors must remain errors.",
+  "runtimeProof": [
+    {
+      "nights": 4,
+      "http": 200,
+      "version": "0.1.37",
+      "cached": false,
+      "sourceStatus": "NO_RESULTS",
+      "prices": 0,
+      "error": null,
+      "fetchedAt": "2026-11-14T13:14:55.694Z",
+      "expiresAt": "2026-11-14T13:44:55.694Z"
+    },
+    {
+      "nights": 4,
+      "http": 200,
+      "version": "0.1.37",
+      "cached": true,
+      "sourceStatus": "NO_RESULTS",
+      "prices": 0,
+      "error": null,
+      "fetchedAt": "2026-11-14T13:14:55.694Z",
+      "expiresAt": "2026-11-14T13:44:55.694Z"
+    },
+    {
+      "nights": 5,
+      "http": 200,
+      "version": "0.1.37",
+      "cached": false,
+      "sourceStatus": "NO_RESULTS",
+      "prices": 0,
+      "error": null,
+      "fetchedAt": "2026-11-14T13:15:03.599Z",
+      "expiresAt": "2026-11-14T13:45:03.599Z"
+    },
+    {
+      "nights": 5,
+      "http": 200,
+      "version": "0.1.37",
+      "cached": true,
+      "sourceStatus": "NO_RESULTS",
+      "prices": 0,
+      "error": null,
+      "fetchedAt": "2026-11-14T13:15:03.599Z",
+      "expiresAt": "2026-11-14T13:45:03.599Z"
+    }
+  ],
+  "backendRun": 43598719873,
+  "pagesRun": 43598724849,
+  "browser": {
+    "version": "0.1.37",
+    "testResort": "Ischgl",
+    "checkedAirports": [
+      "INN",
+      "MUC",
+      "ZRH",
+      "FDH"
+    ],
+    "dateCards": 43,
+    "technicalErrorPanels": 0,
+    "unknownTransferTimedPairs": 3
+  },
+  "qualification": "No calendar price data is not proof that physical flights do not exist. Unknown ground transport remains unknown."
 }
