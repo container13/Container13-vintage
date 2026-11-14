@@ -22,5 +22,10 @@ jobs:
           node --check flyg/app.js
           node --check flyg/server/worker.mjs
           node --check flyg/server/worker.test.mjs
+          node --check flyg/tools/prepare-release.mjs
       - name: Worker regression tests (mocked provider, zero real API calls)
         run: node --test flyg/server/worker.test.mjs
+      - name: Candidate release SHA256 generation (no commit or deployment)
+        run: |
+          node flyg/tools/prepare-release.mjs 0.1.24
+          git diff --check
