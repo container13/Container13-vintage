@@ -36,7 +36,7 @@ jobs:
           node flyg/tools/prepare-release.mjs 0.1.24
           git diff --check
   commit_candidate:
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.commit_candidate == true && github.ref == 'refs/heads/flyg-alperna-init' }}
+    if: ${{ github.ref == 'refs/heads/flyg-alperna-init' && ((github.event_name == 'push' && !contains(github.event.head_commit.message, 'integrity-checked candidate')) || (github.event_name == 'workflow_dispatch' && inputs.commit_candidate == true)) }}
     needs: test
     runs-on: ubuntu-latest
     permissions:
