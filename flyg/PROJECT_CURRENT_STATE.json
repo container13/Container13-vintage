@@ -9,7 +9,7 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.0",
+    "candidate": "0.1.1",
     "integrity": "PENDING"
   },
   "workCheckpoint": {
@@ -26,8 +26,8 @@
     "resumeInstruction": "Read flyg/START_HERE.md, PROJECT_CURRENT_STATE.json and shared project rules. No live API or deployed release has been verified."
   },
   "currentWork": {
-    "completed": "Isolated branch created; shared template rules copied; initial flight search requirements documented. Global flight-search defaults and football exception documented. Prototype HTML/CSS/JS committed with profile switching and ISO-week dates; exact GitHub file readback PASS.",
-    "next": "Add canonical release manifest/updater and run syntax/interaction/device tests; do not deploy or promote yet.",
+    "completed": "Isolated branch created; shared template rules copied; initial flight search requirements documented. Global flight-search defaults and football exception documented. Prototype HTML/CSS/JS committed with profile switching and ISO-week dates; exact GitHub file readback PASS. Expanded Alpine airport selection to 23 candidates incl. ZRH/GVA; exact readback PASS.",
+    "next": "Validate route dates and transfer practicality via flight data provider; run syntax/device checks and implement release updater before deployment.",
     "blocked": false
   },
   "pausedWork": {},
@@ -76,5 +76,13 @@
     "deployment": "NOT_DEPLOYED",
     "device": "NOT_TESTED",
     "flightAPI": "NOT_CONNECTED"
+  },
+  "airportCatalog": {
+    "version": "2026-11-14",
+    "selectionMode": "all_relevant_airports",
+    "sourceStatus": "ROUTE_LIST_RESEARCH_ONLY",
+    "candidateCount": 23,
+    "directRouteRequirement": "Check nonstop ARN routes on the requested travel dates before suggesting an itinerary; do not assume every candidate has nonstop flights.",
+    "notes": "ZRH and GVA included; some airports are speculative nearby alternatives and must be filtered by live route coverage and realistic transfer time."
   }
 }
