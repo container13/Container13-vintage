@@ -26,7 +26,7 @@
     "resumeInstruction": "Read flyg/START_HERE.md, PROJECT_CURRENT_STATE.json and shared project rules. No live API or deployed release has been verified."
   },
   "currentWork": {
-    "completed": "Isolated branch created; shared template rules copied; initial flight search requirements documented.",
+    "completed": "Isolated branch created; shared template rules copied; initial flight search requirements documented. Global flight-search defaults and football exception documented.",
     "next": "Inventory existing solutions and confirm usable live flight API access before building runtime.",
     "blocked": false
   },
@@ -35,5 +35,37 @@
     "flightAPI": "UNSELECTED_UNVERIFIED",
     "deployment": "NOT_CONFIGURED",
     "secrets": "NONE_COMMITTED"
+  },
+  "searchDefaults": {
+    "departureAirports": [
+      "ARN"
+    ],
+    "travelers": 2,
+    "checkedBaggage": {
+      "required": true,
+      "perTraveler": true,
+      "weightKg": null
+    },
+    "profiles": {
+      "standard": {
+        "departureAirports": [
+          "ARN"
+        ],
+        "travelers": 2,
+        "checkedBaggageRequired": true
+      },
+      "footballEurope": {
+        "departureAirports": [
+          "ARN"
+        ],
+        "travelers": 2,
+        "checkedBaggageRequired": false,
+        "exampleDestinations": [
+          "Cologne",
+          "London"
+        ],
+        "note": "Baggage optional; do not assume a checked bag is required for football trips."
+      }
+    }
   }
 }
