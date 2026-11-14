@@ -13,9 +13,9 @@
     "integrity": "HTTPS_ALL_15_RELEASE_ASSETS_BYTE_MATCH_PASS; SW_15_SHELL_DIGESTS_PASS"
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
+    "status": "IN_PROGRESS",
     "targetRelease": "0.1.16",
-    "goal": "Editable default5000SEK max price in100SEK steps deployed/browser PASS; iPhone acceptance pending",
+    "goal": "Fix outgoing link: use provider-generated selected-itinerary Google Flights URL, remove generic q fallback",
     "plan": [
       "Default5000SEK total for two; min100,step100",
       "Local quote filter covers outbound/return/details without provider calls",
