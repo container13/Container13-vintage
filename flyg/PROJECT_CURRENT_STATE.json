@@ -13,23 +13,16 @@
     "integrity": "FRONTEND0.1.28_UNCHANGED; BACKEND0.1.29_DEPLOYED_RUNTIME_PASS; IPHONE_SEARCH_PENDING"
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
-    "targetRelease": "frontend0.1.28/backend0.1.29",
-    "goal": "INVALID_AIRLINES fixed and live grouped search/cache verified; installed-iPhone search acceptance pending",
-    "completed": [
-      "24 backend tests PASS locally and CI",
-      "Existing Worker0.1.29 deployed by43588143545 from59888cb2c2d17deec067dae9ef747a28243f3af4; enabled/configured true",
-      "Live ARN to TRN,MXP,BGY14–18March2027 excludes FR:10 offers;207 Free searches remaining at last check",
-      "Identical replay cached:true; same fetchedAt/results/quota; TTL1800seconds",
-      "Retired obsolete automatic0.1.24 candidate writer; syntax/backend check workflow now read-only"
-    ],
+    "status": "IN_PROGRESS",
+    "targetRelease": "frontend0.1.30/backend0.1.29",
+    "goal": "Hide outbound itineraries violating selected airport arrival and hotel deadline; wire existing journey owner to live results",
+    "evidence": "User IMG_4277 shows AF arrival23:00 and12h15 CDG wait despite hotel22:00. live-search render uses only budget/carrier filter; journey engine unused for schedule constraints.",
     "plan": [
-      "User opens installed0.1.28 PWA and repeats search; no reinstall",
-      "Baggage-inclusive totals and hotel transfer feasibility still unverified"
+      "Add pure schedule rejection to existing journey engine; no guessed transfer time",
+      "Apply live arrival/direct rules locally with immediate rerender; explain unknown transfer",
+      "Run targeted regression, publish changed Flyg files and verify actual deployed assets"
     ],
-    "resumeInstruction": "Read this checkpoint. Frontend remains0.1.28, backend0.1.29 live. INVALID_AIRLINES server path PASS and30min replay PASS. Do not repeat deployment/key setup. Await iPhone search acceptance, then continue broader requirements. CURRENT/PREVIOUS have not been rotated on server smoke alone.",
-    "rollbackCommit": "4808427fbb55308cdace51c49461949c4020b0b2",
-    "deploymentRun": 43588143545
+    "resumeInstruction": "Active repair; frontend candidate0.1.30. Preserve backend0.1.29 and30min cache. No CURRENT/PREVIOUS promotion until required client evidence."
   },
   "currentWork": {
     "completed": "24 backend tests PASS locally and CI\nExisting Worker0.1.29 deployed by43588143545 from59888cb2c2d17deec067dae9ef747a28243f3af4; enabled/configured true\nLive ARN to TRN,MXP,BGY14–18March2027 excludes FR:10 offers;207 Free searches remaining at last check\nIdentical replay cached:true; same fetchedAt/results/quota; TTL1800seconds\nRetired obsolete automatic0.1.24 candidate writer; syntax/backend check workflow now read-only",
