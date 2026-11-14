@@ -31,9 +31,11 @@ jobs:
           PY
           node --test flyg/server/worker.test.mjs
       - name: Deploy disabled isolated Worker
+        id: deploy_disabled
         working-directory: flyg/server
         run: npx --yes wrangler@4.45.0 deploy --config wrangler.jsonc
       - name: Inject existing provider secret server-side
+        id: inject_secret
         working-directory: flyg/server
         env:
           FLYG_SERPAPI_KEY: ${{ secrets.FLYG_SERPAPI_KEY }}
@@ -41,9 +43,11 @@ jobs:
           test -n "$FLYG_SERPAPI_KEY"
           printf '%s' "$FLYG_SERPAPI_KEY" | npx --yes wrangler@4.45.0 secret put FLYG_SERPAPI_KEY --config wrangler.jsonc
       - name: Enable isolated search with persistent quota guards
+        id: enable_search
         working-directory: flyg/server
         run: npx --yes wrangler@4.45.0 deploy --config wrangler.jsonc --var FLYG_ENABLED:true
       - name: Verify deployed Worker version without provider search
+        id: health
         run: |
           python3 - <<'PY'
           import json,time,urllib.request
@@ -70,10 +74,14 @@ jobs:
         env:
           DEPLOY_JOB_STATUS: ${{ job.status }}
           DEPLOY_COMMIT: ${{ github.sha }}
+          STEP_DEPLOY_DISABLED: ${{ steps.deploy_disabled.outcome }}
+          STEP_INJECT_SECRET: ${{ steps.inject_secret.outcome }}
+          STEP_ENABLE_SEARCH: ${{ steps.enable_search.outcome }}
+          STEP_HEALTH: ${{ steps.health.outcome }}
         run: |
           python3 - <<'PY'
           import json,os,urllib.request,urllib.error
-          report={'sourceCommit':os.environ['DEPLOY_COMMIT'],'jobStatus':os.environ['DEPLOY_JOB_STATUS'],'workerHealth':'UNVERIFIED'}
+          report={'sourceCommit':os.environ['DEPLOY_COMMIT'],'jobStatus':os.environ['DEPLOY_JOB_STATUS'],'steps':{'deployDisabled':os.environ['STEP_DEPLOY_DISABLED'],'injectSecret':os.environ['STEP_INJECT_SECRET'],'enableSearch':os.environ['STEP_ENABLE_SEARCH'],'health':os.environ['STEP_HEALTH']},'workerHealth':'UNVERIFIED'}
           try:
             with urllib.request.urlopen('https://flyg-search-api.mangaj73.workers.dev/health',timeout=10) as resp:
               data=json.load(resp)
