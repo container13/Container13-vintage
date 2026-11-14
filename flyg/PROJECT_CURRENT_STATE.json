@@ -15,25 +15,24 @@
   "workCheckpoint": {
     "status": "UNVERIFIED",
     "targetRelease": "0.1.10",
-    "goal": "Authoritative bag-inclusive fare unavailable: KLM booking access denied; no all-in price claim",
+    "goal": "Research complete: branded 23kg offers conditionally supported; exact KLM API bag-inclusive price remains unknown",
     "plan": [
-      "Observed KLM price scope proven for exact itinerary: 1840 one adult, 3680 two",
-      "Current API booking details confirm only carry-on; 23kg and extra cost remain unknown",
-      "Find authoritative baggage-inclusive fare/upgrade evidence before implementing all-in recommendations",
-      "Proof workflow now triggers only on explicit request.json change; code/docs edits do not consume searches"
+      "Use option-specific fare and baggage evidence when present; schema supports it but KLM response did not",
+      "Never treat bags or exclude_basic as checked23kg guarantee",
+      "Build protected zero-cost search with explicit unknown-baggage state; no all-in ranking for unknown fares"
     ],
     "lastSafeRelease": null,
-    "resumeInstruction": "Read current state. Server-side SerpApi Free proof PASS run 43559215595: 1 call, 11 results. Existing secret FLYG_SERPAPI_KEY usable only in Actions. Need fare scope/baggage proof and protected runtime backend; PWA 0.1.10 unchanged.",
+    "resumeInstruction": "Read latest FLIGHT_DATA_ACCESS.md and handoff. Existing key works; do not request it again. Manual Expedia Standard5680SEK for two with23kg verified; API base3680 only. Conditional branded-fare schema exists; no universal bag-inclusive path proven. Next protected zero-cost runtime implementation, PWA0.1.10 unchanged.",
     "rollbackCommit": "ff4244680ce148a22517c84e779141c1e0919db2"
   },
   "currentWork": {
     "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired. User screenshots confirm installed iPhone v0.1.8 and airplane-mode form. Five update-controller VM tests PASS. Update 0.1.9 failed on iPhone. Reproduced stale HTTP-cached version.js entering new SW cache. v0.1.10 install uses no-store plus build query and SHA-256 checks for all 14 shell resources before cache writes. Regression rejects corrupted rollout; all existing tests PASS. User confirms installed app now shows 0.1.10 after updating; recovery from 0.1.8 completed without reinstall. Provider discovery returned no relevant flight plugin. Reviewed Skyscanner, Duffel, Amadeus historical docs and Travelpayouts; no live API connected. Recurring zero-cost candidate SerpApi identified: official Free 250 monthly requests and flight-comparison use case documented. Google Flights scraping intermediary, not official Google API; no live probe yet. Limited trial-only services excluded. User screenshots confirm SerpApi Free account and successful Playground ARN-ZRH search for 2027-03-14/18 with two adults selected; exact total and checked bag weight not verified. Prepared probe-0.1.0 and five guard tests PASS; missing key sends zero requests. Live GitHub Actions run 43559215595 PASS: Free plan verified, 248 free searches before call, exactly one fresh ARN-ZRH search, 11 priced results. Key remained in Actions secret. Total-for-two/23kg/transfer still unverified. Details run 43559500002 PASS: cached base plus return and booking requests, quota 247->245. Pinned one-adult comparison run 43559664340 PASS, quota245->244, KLM1840 vs two-adult3680 on identical flights. Booking policies contain only 1 free carry-on. 23kg NOT VERIFIED.",
-    "next": "Need a permitted source returning the exact Standard fare/add-on price for both travelers. KLM official baggage rule alone does not validate the 3680 SEK quote. Do not build/claim full bag-inclusive comparison from current evidence.",
+    "next": "Implement protected zero-cost runtime search and per-offer baggage evidence/UNKNOWN fallback. Do not promise full bag-inclusive comparison or automatically apply manual Standard upgrade.",
     "blocked": true
   },
   "pausedWork": {},
   "dependencies": {
-    "flightAPI": "LIVE_FARES_PROVEN; TWO_ADULT_SCOPE_PROVEN_FOR_ONE_ITINERARY; 23KG_BAGGAGE_PRICE_UNVERIFIED; PWA_NOT_CONNECTED",
+    "flightAPI": "LIVE_BASE_FARES_PROVEN; CONDITIONAL_BRANDED_BAGGAGE_SCHEMA_DOCUMENTED; KLM_API_23KG_PRICE_UNKNOWN; PWA_NOT_CONNECTED",
     "deployment": {
       "url": "https://container13.se/flyg/",
       "sourceBranch": "ccc-demo-public-test",
@@ -137,7 +136,24 @@
       "baggage": "ONLY_CARRY_ON_CONFIRMED; 23KG_UNKNOWN",
       "freeSearchesRemainingObserved": 244
     },
-    "baggageInvestigation": "KLM official Standard/Flex rule confirms 1x23kg; exact itinerary fare unverified. KLM.se cloud browser Access Denied persisted after one reload, 2026-11-14. No booking or API calls made this turn."
+    "baggageInvestigation": {
+      "date": "2026-11-14",
+      "manualQuote": {
+        "source": "Expedia.se public review UI",
+        "adults": 2,
+        "currency": "SEK",
+        "total": 5680,
+        "fare": "Standard",
+        "checkedBagKgPerTraveler": 23,
+        "roundTrip": true,
+        "route": "ARN-ZRH",
+        "outbound": "2027-03-14",
+        "return": "2027-03-18",
+        "status": "MANUAL_OBSERVATION_NOT_API"
+      },
+      "api": "Booking-options schema can contain23kg fare brands; tested KLM quote did not. No universal checked-bag filter or specific Standard selector documented.",
+      "implementation": "NOT_IMPLEMENTED"
+    }
   },
   "airportCatalog": {
     "version": "2026-11-14",
