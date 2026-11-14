@@ -6,5 +6,24 @@ on:
       - 'flyg/**'
       - '.github/workflows/flyg-resort-static-check.yml'
   workflow_dispatch:
-    inputs:
-    
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JavaScript syntax
+        run: |
+          node --check flyg/live-search.js
+          node --check flyg/app.js
+          node --check flyg/server/worker.mjs
+          node --check flyg/server/worker.test.mjs
+          node --check flyg/tools/prepare-release.mjs
+      - name: Worker regression tests (mocked provider, zero real API calls)
+        run: node --test flyg/server/worker.test.mjs
+      - name: Verify whitespace (release hashes owned by candidate integrity guard)
+        run: git diff --check
