@@ -1,3 +1,15 @@
+# Senaste checkpoint — 14 november 2026 — kandidat 0.1.38 (EJ PUBLICERAD)
+
+**Detta ersätter 0.1.37 som utvecklingsfortsättning, men inte som publicerad version.** Publicerad frontend/backend är fortfarande 0.1.37. Installerad iPhone 0.1.37 saknar slutlig verifiering; CURRENT/PREVIOUS ej roterade.
+
+- På isolerade `flyg-alperna-init` utökades befintlig `resortArrival` till **St. Anton am Arlberg**: privat vägtransfer från INN 75 min, ZRH 135, MUC 195, FDH 100. Källa operatör: https://www.taxi-st-anton.at/most-driven-destinations/ . Värdena är **ESTIMATE_ONLY**, inte bokning, pris, realtid eller bekräftad transport. Se `TRANSFER_PLANNING.md`.
+- Cervinias sista-stadsnattmodell är nu uttryckligen Cervinia-specifik; St. Anton får **UNKNOWN** när stadsnatt saknar källbelagd transfer, inte falskt Milan/Turin-värde. Automatisk direkt hemresa efter lugn frukost fungerar i planeringsmodellen.
+- Kandidatens `version.js`, `release.json` och service-worker-cache/asset-SHA är förberedda för **0.1.38**. GitHub Actions `Flyg resort static checks` körning **43602282659 PASS** (93 testfall). Integritetskörning **43602282634**: versions-/SHA-steg PASS, **production drift FAIL för att 0.1.38 avsiktligt ännu ej publicerats**. Det är en releasegrind, inte ett verifierat appfel.
+- **Nästa steg:** säker Flyg-only-publicering enligt befintlig dokumenterad källa→publik-kedja, verifiera publicerade bytes och webbläsarflödet St. Anton med fyra flygplatser/UNKNOWN-stadsnatt, därefter iPhone. Ändra inte andra projekt. Ingen ny nyckel, betalplan eller andra Work-konton.
+- Bindande resekrav oförändrade: ARN, två personer, tre hela skiddagar, fyra grundnätter + frivillig femte natt, cirka **1 000 kr extra för hela resan för två** acceptabelt men inte ett krav; kostnader UNKNOWN tills verkligt eller användarinmatat underlag finns. Middag på skidorten första kvällen, lugn frukost vid direkt retur, frivillig sista stadsnatt.
+
+---
+
 # Överlämning till vanliga chatten — 14 november 2026
 
 **Detta avsnitt är senaste fortsättningspunkt och ersätter äldre status längre ned.**
