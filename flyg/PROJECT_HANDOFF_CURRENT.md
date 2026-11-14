@@ -66,3 +66,8 @@ Personal flight search beginning with the Alps, extensible later to Thailand, Za
 - Added release.json and a single auto-update.js owner imported by index.html. Network-first no-store checks on load, resume, focus, online and every 5 min. Defers automatic reload when form changed; prompts before manual reload; session guard prevents automatic loops.
 - No service worker or offline caching is installed. Updater behavior is **source only, not runtime/device verified**. Asset-byte manifest/integrity and deployment gates remain open.
 - Candidate v0.1.5, no deployment or release promotion.
+
+## Candidate 0.1.6 — PWA foundation
+- Added standalone manifest, SVG app icon, service worker (network-first shell, offline fallback), registration and Apple standalone metadata. Scoped to flyg/; flight API responses and release.json are not cached.
+- iOS-compatible PNG touch icon still needed. Installability, offline, update lifecycle and real iPhone PWA behavior are **not tested**; do not claim installable until verified on HTTPS.
+- Source committed/readback PASS, no deployment.
