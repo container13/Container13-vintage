@@ -11,6 +11,18 @@ test('bounded multi-airport searches accept valid groups and reject duplicates, 
  assert.equal(validate({...input,destination:'ZRH,GVA,INN'},now).destination,'ZRH,GVA,INN');
  for(const destination of ['ZRH,GVA,INN,TRN','ZRH,ZRH','ZRH,XXX','ZRH,','all'])assert.throws(()=>validate({...input,destination},now));
 });
+
+test('airline exclusions survive public-to-Durable-Object double validation',()=>{
+ const original={...input,excludeAirlines:['FR','D8','DY']};
+ const first=validate(original,now);
+ assert.equal(first.excludeAirlines,'D8,DY,FR');
+ const second=validate(first,now);
+ assert.equal(second.excludeAirlines,first.excludeAirlines);
+ assert.equal(validate({...input,excludeAirlines:[]},now).excludeAirlines,'');
+ assert.equal(validate({...input,excludeAirlines:''},now).excludeAirlines,'');
+ for(const invalid of [['FR','FR'],['ZZ'],['FR','ZZ'],'FR,FR','FR,ZZ','FR,','FR,,D8'])assert.throws(()=>validate({...input,excludeAirlines:invalid},now),/INVALID_AIRLINES/);
+});
+
 test('reject raw provider token injection; selection ids only',()=>{
  assert.throws(()=>validate({stage:'details',selection:'raw-provider-token'}));
  assert.deepEqual(validate({stage:'returns',selection:'11111111-1111-1111-1111-111111111111'}),{stage:'returns',selection:'11111111-1111-1111-1111-111111111111'});
