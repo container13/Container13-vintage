@@ -1,5 +1,5 @@
 /* Flyg runtime 0.1.11. Secrets and provider selection tokens stay server-side. */
-export const VERSION='0.1.17';
+export const VERSION='0.1.21';
 const ORIGIN='https://container13.se';
 const AIRPORTS=new Set('ZRH GVA INN SZG MXP LIN BGY TRN MUC LYS BSL VRN VCE BLQ STR VIE NCE GNB TSF TRS FDH GRZ KLU CGN LHR LGW STN'.split(' '));
 const TTL=30*60*1000;
@@ -12,11 +12,13 @@ export function validate(input,now=Date.now()){
   return {stage:input.stage,selection:input.selection};
  }
  const destinations=typeof input.destination==='string'?input.destination.split(','):[];
- if(input.stage!=='outbound'||destinations.length<1||destinations.length>3||new Set(destinations).size!==destinations.length||destinations.some(code=>!AIRPORTS.has(code)))throw new SafeError('INVALID_DESTINATION');
- const dates=[input.outbound,input.return];
+ if(!['outbound','calendar'].includes(input.stage)||destinations.length<1||destinations.length>3||new Set(destinations).size!==destinations.length||destinations.some(code=>!AIRPORTS.has(code)))throw new SafeError('INVALID_DESTINATION');
+ const calendar=input.stage==='calendar';
+ const dates=calendar?[input.from,input.to]:[input.outbound,input.return];
  if(!dates.every(s=>typeof s==='string'&&/^\d{4}-\d\d-\d\d$/.test(s)&&Number.isFinite(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s))throw new SafeError('INVALID_DATES');
  const start=Date.parse(dates[0]),end=Date.parse(dates[1]);
- if(start<Math.floor(now/86400000)*86400000||end<=start||end-start>30*86400000||end-now>365*86400000)throw new SafeError('INVALID_DATES');
+ if(start<Math.floor(now/86400000)*86400000||end<start||(!calendar&&end===start)||end-start>(calendar?8:30)*86400000||end-now>365*86400000||(calendar&&(!Number.isInteger(input.nights)||input.nights<1||input.nights>30||end+input.nights*86400000-now>365*86400000)))throw new SafeError('INVALID_DATES');
+ if(calendar)return {stage:'calendar',destination:input.destination,from:input.from,to:input.to,nights:input.nights,direct:input.direct===true};
  return {stage:'outbound',destination:input.destination,outbound:dates[0],return:dates[1],direct:input.direct===true};
 }
 export function freeAccount(data){
@@ -30,6 +32,11 @@ export function normalizeFlight(offer){
  if(!Array.isArray(offer.flights)||!offer.flights.length||price(offer.price)===null)return null;
  return {quotedPriceSEK:price(offer.price),priceScope:'PROVIDER_QUOTE_FOR_REQUESTED_TWO_ADULTS',type:short(offer.type),baggageStatus:'UNVERIFIED',hotelArrivalStatus:'UNVERIFIED',
   segments:offer.flights.slice(0,8).map(s=>({number:short(s.flight_number),airline:short(s.airline),origin:short(s.departure_airport?.id),destination:short(s.arrival_airport?.id),departureLocal:short(s.departure_airport?.time),arrivalLocal:short(s.arrival_airport?.time)}))};
+}
+export function normalizeCalendar(data,context){
+ if(!Array.isArray(data.prices))throw new SafeError('PROVIDER_UNAVAILABLE',502);
+ const validDate=s=>typeof s==='string'&&/^\d{4}-\d\d-\d\d$/.test(s)&&Number.isFinite(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s;
+ const seen=new Set();return data.prices.filter(row=>validDate(row.outbound_date)&&validDate(row.return_date)&&row.outbound_date>=context.from&&row.outbound_date<=context.to&&(Date.parse(row.return_date)-Date.parse(row.outbound_date))===context.nights*86400000&&price(row.price)!==null).sort((a,b)=>a.price-b.price).filter(row=>{if(seen.has(row.outbound_date))return false;seen.add(row.outbound_date);return true;}).map(row=>({outbound:row.outbound_date,return:row.return_date,quotedPriceSEK:row.price,destination:context.destination}));
 }
 export function normalizeBooking(data){
  const result=[];
@@ -89,7 +96,7 @@ export class SearchGate {
   if(saved.schema!==1)throw new SafeError('STATE_UNAVAILABLE',503);
   for(const k of ['records','cache'])for(const [id,v]of Object.entries(saved[k]))if(v.expires<=now)delete saved[k][id];
   let context=input,extra={};
-  if(input.stage!=='outbound'){
+  if(['returns','details'].includes(input.stage)){
    const selection=saved.records[input.selection];
    if(!selection||selection.nextStage!==input.stage)throw new SafeError('SELECTION_EXPIRED');
    context=selection.context;extra={[input.stage==='returns'?'departure_token':'booking_token']:selection.token};
@@ -106,11 +113,14 @@ export class SearchGate {
   const account=await provider('account.json',{},this.env.FLYG_SERPAPI_KEY);
   const remaining=freeAccount(account);
   const query={engine:'google_flights',departure_id:'ARN',arrival_id:context.destination,outbound_date:context.outbound,return_date:context.return,type:'1',adults:'2',currency:'SEK',hl:'en',gl:'se',stops:context.direct?'1':'0',no_cache:'false',sort_by:'2',...extra};
+  if(input.stage==='calendar'){query.engine='google_flights_calendar';delete query.outbound_date;delete query.return_date;delete query.sort_by;Object.assign(query,{date_range_start:context.from,date_range_end:context.to,round_trip_days:String(context.nights)});}
   const data=await provider('search.json',query,this.env.FLYG_SERPAPI_KEY);
   if(data.search_metadata?.status!=='Success')throw new SafeError('PROVIDER_UNAVAILABLE',502);
   if(input.stage==='outbound')for(const [key,value]of Object.entries({departure_id:'ARN',arrival_id:context.destination,outbound_date:context.outbound,return_date:context.return,adults:'2',currency:'SEK'}))if(String(data.search_parameters?.[key])!==value)throw new SafeError('PROVIDER_CONTEXT_MISMATCH',502);
+  if(input.stage==='calendar')for(const [key,value]of Object.entries({engine:'google_flights_calendar',departure_id:'ARN',arrival_id:context.destination,adults:'2',currency:'SEK',date_range_start:context.from,date_range_end:context.to,round_trip_days:String(context.nights)}))if(String(data.search_parameters?.[key])!==value)throw new SafeError('PROVIDER_CONTEXT_MISMATCH',502);
   const body={version:VERSION,stage:input.stage,context,adults:2,currency:'SEK',fetchedAt:new Date(now).toISOString(),expiresAt:new Date(now+TTL).toISOString(),cached:false,remainingAtLastCheck:remaining-1};
-  if(input.stage==='details')Object.assign(body,normalizeBooking(data),{selectedFlightUrl:selectedFlightUrl(data.search_metadata?.google_flights_url,this.env.FLYG_SERPAPI_KEY)});
+  if(input.stage==='calendar')body.prices=normalizeCalendar(data,context);
+  else if(input.stage==='details')Object.assign(body,normalizeBooking(data),{selectedFlightUrl:selectedFlightUrl(data.search_metadata?.google_flights_url,this.env.FLYG_SERPAPI_KEY)});
   else{
    body.flights=[];
    for(const offer of [...(data.best_flights||[]),...(data.other_flights||[])].sort((a,b)=>(price(a.price)??Infinity)-(price(b.price)??Infinity)).slice(0,30)){

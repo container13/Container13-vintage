@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import worker,{validate,freeAccount,normalizeBooking,normalizeFlight,provider,SearchGate,selectedFlightUrl} from './worker.mjs';
+import worker,{validate,freeAccount,normalizeBooking,normalizeFlight,provider,SearchGate,selectedFlightUrl,normalizeCalendar} from './worker.mjs';
 const input={stage:'outbound',destination:'ZRH',outbound:'2027-03-14',return:'2027-03-18'};
 const now=Date.parse('2026-11-14');
 test('fixed origin, two adults and allowed airport/date input',()=>{
@@ -72,4 +72,24 @@ test('selected itinerary link must be Google HTTPS with tfs; no generic search o
  const good='https://www.google.com/travel/flights/booking?tfs=opaque-itinerary&hl=sv';assert.equal(selectedFlightUrl(good),good);
  for(const url of ['https://www.google.com/travel/flights?q=ARN','https://evil.test/travel/flights?tfs=x','javascript:alert(1)','http://www.google.com/travel/flights?tfs=x','https://www.google.com/travel/flights?tfs=x&api_key=SECRET'])assert.equal(selectedFlightUrl(url,'SECRET'),null);
  assert.equal(selectedFlightUrl(undefined),null);
+});
+
+const cal={stage:'calendar',destination:'BGY',from:'2027-03-13',to:'2027-03-21',nights:4};
+test('calendar validation bounds dates, duration and destination; no quota bypass',()=>{
+ assert.equal(validate(cal,now).nights,4);
+ for(const patch of [{to:'2027-03-22'},{nights:0},{nights:4.5},{nights:31},{from:'2027-02-30'},{destination:'XXX'}])assert.throws(()=>validate({...cal,...patch},now));
+});
+test('calendar strips wrong duration, outside-window rows and secret fields; sorts prices',()=>{
+ const prices=[{outbound_date:'2027-03-13',return_date:'2027-03-17',price:2000,api_key:'PRIVATE'},{outbound_date:'2027-03-14',return_date:'2027-03-18',price:1808},{outbound_date:'2027-03-12',return_date:'2027-03-16',price:1},{outbound_date:'2027-03-15',return_date:'2027-03-20',price:2}];
+ assert.deepEqual(normalizeCalendar({prices},cal).map(x=>x.quotedPriceSEK),[1808,2000]);assert.ok(!JSON.stringify(normalizeCalendar({prices},cal)).includes('PRIVATE'));
+});
+test('calendar provider uses same persistent quota/cache, two adults SEK and exact date range',async()=>{
+ const store=storage();const gate=new SearchGate({storage:store},{FLYG_SERPAPI_KEY:'KEY'});const original=global.fetch;let searches=0;
+ global.fetch=async url=>{if(url.pathname==='/account.json')return Response.json({plan_id:'free',plan_monthly_price:0,plan_searches_left:99});searches++;const q=Object.fromEntries(url.searchParams);assert.equal(q.engine,'google_flights_calendar');assert.equal(q.adults,'2');assert.equal(q.currency,'SEK');assert.equal(q.round_trip_days,'4');assert.equal(q.outbound_date,undefined);assert.equal(store.value.monthUsed,1);return Response.json({search_metadata:{status:'Success'},search_parameters:q,prices:[{outbound_date:'2027-03-13',return_date:'2027-03-17',price:2000}]});};
+ try{const first=await (await gate.fetch(request(cal))).json();assert.equal(first.prices[0].outbound,'2027-03-13');const second=await (await gate.fetch(request(cal))).json();assert.equal(second.cached,true);assert.equal(searches,1);assert.ok(!JSON.stringify(first).includes('KEY'));}finally{global.fetch=original;}
+});
+test('calendar source mismatch fails closed and consumes reservation',async()=>{
+ const store=storage();const gate=new SearchGate({storage:store},{FLYG_SERPAPI_KEY:'KEY'});const original=global.fetch;
+ global.fetch=async url=>url.pathname==='/account.json'?Response.json({plan_id:'free',plan_monthly_price:0,plan_searches_left:99}):Response.json({search_metadata:{status:'Success'},search_parameters:{engine:'google_flights_calendar',departure_id:'ARN',arrival_id:'BGY',adults:'1',currency:'USD'},prices:[]});
+ try{const r=await gate.fetch(request(cal));assert.equal(r.status,502);assert.match(await r.text(),/PROVIDER_CONTEXT_MISMATCH/);assert.equal(store.value.monthUsed,1);}finally{global.fetch=original;}
 });
