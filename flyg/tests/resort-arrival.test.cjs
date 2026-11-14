@@ -29,3 +29,25 @@ test('cross-midnight resort arrival is late on next calendar date',()=>{
 test('airport and checkin allowances are visible editable planning inputs',()=>{
  const r=resortArrival(flight(),{...req,airportMinutes:90,checkinMinutes:45});assert.equal(r.readyLocal,'2027-03-14 20:01');assert.equal(r.status,'LATE');
 });
+
+
+test('St Anton private road estimates are source-backed for four listed airports and never verified',()=>{
+ const required={resort:'St. Anton am Arlberg',transport:'road',dinnerTarget:'20:00',hotelCutoff:'22:00',airportMinutes:60,roadBufferMinutes:30,checkinMinutes:30};
+ const examples={INN:75,ZRH:135,MUC:195,FDH:100};
+ for(const [destination,minutes] of Object.entries(examples)){
+  const arrival=resortArrival({segments:[{destination,arrivalLocal:'2027-03-14 12:00'}]},required);
+  assert.equal(arrival.roadMinutes,minutes,destination);
+  assert.equal(arrival.verification,'ESTIMATE_ONLY');
+  assert.match(arrival.source,/taxi-st-anton/);
+ }
+});
+test('St Anton unavailable airports, public transport and city-night routes remain unknown',()=>{
+ const required={resort:'St. Anton am Arlberg',transport:'road',dinnerTarget:'20:00',hotelCutoff:'22:00',airportMinutes:60,roadBufferMinutes:30,checkinMinutes:30};
+ assert.equal(resortArrival({segments:[{destination:'BGY',arrivalLocal:'2027-03-14 12:00'}]},required).status,'UNKNOWN');
+ assert.equal(resortArrival({segments:[{destination:'INN',arrivalLocal:'2027-03-14 12:00'}]},{...required,transport:'rail'}).status,'UNKNOWN');
+ const out={segments:[{origin:'ARN',destination:'INN',departureLocal:'2027-03-14 07:00',arrivalLocal:'2027-03-14 12:00'}]};
+ const back={segments:[{origin:'INN',destination:'ARN',departureLocal:'2027-03-18 14:00',arrivalLocal:'2027-03-18 18:00'}]};
+ const plan={...required,returnPlan:'city',maxNights:5,skiDays:3,skiStart:'09:00',skiEnd:'16:00',earliestHotelDeparture:'07:00',earliestCityDeparture:'05:00',airportReturnMinutes:120,cityAirportMinutes:90};
+ assert.equal(skiTrip(out,back,plan).status,'UNKNOWN');
+ assert.equal(skiTrip(out,back,{...plan,returnPlan:'auto',breakfastEnd:'09:00'}).returnPlan,'direct');
+});
