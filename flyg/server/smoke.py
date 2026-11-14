@@ -12,8 +12,8 @@ def main():
     print('Runtime endpoint:',url)
     config=json.load(open('flyg/server/smoke-request.json'))
     if config.get('mode')=='calendar':
-        assert health['version']=='0.1.21'
-        for destination in ['BGY','ZRH,GVA,INN']:
+        assert health['version']=='0.1.22'
+        for destination in ['BGY','ZRH']:
             PHASE='calendar'
             query={'stage':'calendar','destination':destination,'from':'2027-03-13','to':'2027-03-21','nights':4}
             req=urllib.request.Request(url+'/search',data=json.dumps(query).encode(),headers={'Origin':'https://container13.se','Content-Type':'application/json'})

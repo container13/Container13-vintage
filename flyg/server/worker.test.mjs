@@ -77,7 +77,7 @@ test('selected itinerary link must be Google HTTPS with tfs; no generic search o
 const cal={stage:'calendar',destination:'BGY',from:'2027-03-13',to:'2027-03-21',nights:4};
 test('calendar validation bounds dates, duration and destination; no quota bypass',()=>{
  assert.equal(validate(cal,now).nights,4);
- for(const patch of [{to:'2027-03-22'},{nights:0},{nights:4.5},{nights:31},{from:'2027-02-30'},{destination:'XXX'}])assert.throws(()=>validate({...cal,...patch},now));
+ for(const patch of [{destination:'ZRH,GVA'},{to:'2027-03-22'},{nights:0},{nights:4.5},{nights:31},{from:'2027-02-30'},{destination:'XXX'}])assert.throws(()=>validate({...cal,...patch},now));
 });
 test('calendar strips wrong duration, outside-window rows and secret fields; sorts prices',()=>{
  const prices=[{outbound_date:'2027-03-13',return_date:'2027-03-17',price:2000,api_key:'PRIVATE'},{outbound_date:'2027-03-14',return_date:'2027-03-18',price:1808},{outbound_date:'2027-03-12',return_date:'2027-03-16',price:1},{outbound_date:'2027-03-15',return_date:'2027-03-20',price:2}];

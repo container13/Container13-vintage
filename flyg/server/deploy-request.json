@@ -1,1 +1,1 @@
-{"release":"0.1.21","reason":"Week calendar with same free-only persistent quota and cache; no new secrets or paid services"}
+{"release":"0.1.22","reason":"Calendar accepts single airport only; reject groups before provider I/O; preserve all free guards"}

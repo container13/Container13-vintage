@@ -1,5 +1,5 @@
 /* Flyg runtime 0.1.11. Secrets and provider selection tokens stay server-side. */
-export const VERSION='0.1.21';
+export const VERSION='0.1.22';
 const ORIGIN='https://container13.se';
 const AIRPORTS=new Set('ZRH GVA INN SZG MXP LIN BGY TRN MUC LYS BSL VRN VCE BLQ STR VIE NCE GNB TSF TRS FDH GRZ KLU CGN LHR LGW STN'.split(' '));
 const TTL=30*60*1000;
@@ -14,6 +14,7 @@ export function validate(input,now=Date.now()){
  const destinations=typeof input.destination==='string'?input.destination.split(','):[];
  if(!['outbound','calendar'].includes(input.stage)||destinations.length<1||destinations.length>3||new Set(destinations).size!==destinations.length||destinations.some(code=>!AIRPORTS.has(code)))throw new SafeError('INVALID_DESTINATION');
  const calendar=input.stage==='calendar';
+ if(calendar&&destinations.length!==1)throw new SafeError('INVALID_DESTINATION');
  const dates=calendar?[input.from,input.to]:[input.outbound,input.return];
  if(!dates.every(s=>typeof s==='string'&&/^\d{4}-\d\d-\d\d$/.test(s)&&Number.isFinite(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s))throw new SafeError('INVALID_DATES');
  const start=Date.parse(dates[0]),end=Date.parse(dates[1]);
