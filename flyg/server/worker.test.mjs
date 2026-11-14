@@ -111,8 +111,10 @@ test('calendar source mismatch fails closed and consumes reservation',async()=>{
 test('airline exclusions are canonical and restricted to supported IATA codes',()=>{
  const a=validate({...input,excludeAirlines:['W6','FR','DY','D8']},now);
  assert.equal(a.excludeAirlines,'D8,DY,FR,W6');
+ assert.equal(validate({...input,excludeAirlines:'FR'},now).excludeAirlines,'FR');
+ assert.deepEqual(validate(a,now),a);
  assert.equal(validate({...input,excludeAirlines:[]},now).excludeAirlines,'');
- for(const excludeAirlines of [['XX'],['FR','FR'],'FR',['FR','UA']])assert.throws(()=>validate({...input,excludeAirlines},now),/INVALID_AIRLINES/);
+ for(const excludeAirlines of [['XX'],['FR','FR'],'FR,XX','FR,FR',null,{},['FR','UA']])assert.throws(()=>validate({...input,excludeAirlines},now),/INVALID_AIRLINES/);
  assert.equal(validate({stage:'calendar',destination:'INN',from:'2027-03-13',to:'2027-03-21',nights:4,excludeAirlines:['FR']},now).excludeAirlines,'FR');
 });
 

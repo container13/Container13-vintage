@@ -1,4 +1,5 @@
 {
-  "release": "0.1.24",
-  "reason": "Capture exact isolated Worker deploy step outcomes after 403 health; no changes to other services"
+  "release": "0.1.29",
+  "frontend": "0.1.28",
+  "reason": "Fix idempotent airline exclusions; existing enabled Worker only; preserve secrets, variables, DO cache and Free plan"
 }
