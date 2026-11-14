@@ -13,9 +13,9 @@
     "integrity": "HTTPS_ALL_15_RELEASE_ASSETS_BYTE_MATCH_PASS; SW_15_SHELL_DIGESTS_PASS"
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
+    "status": "IN_PROGRESS",
     "targetRelease": "0.1.15",
-    "goal": "Multi-airport0.1.15 deployed and browser PASS; installed iPhone acceptance pending",
+    "goal": "Add editable max quote5000SEK/two in100SEK steps, local filtering with no new provider calls",
     "plan": [
       "23 alp airports queried successfully in8 bounded groups",
       "94 returned offers verified ascending by quoted two-adult price",
