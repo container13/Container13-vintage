@@ -1,4 +1,4 @@
 {
   "release": "0.1.24",
-  "reason": "Diagnose isolated Worker 0.1.24 deploy with automatic sanitized status committed to branch; no user screenshots or provider searches"
+  "reason": "Capture exact isolated Worker deploy step outcomes after 403 health; no changes to other services"
 }
