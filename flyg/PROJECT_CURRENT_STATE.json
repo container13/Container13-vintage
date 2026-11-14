@@ -26,7 +26,7 @@
     "resumeInstruction": "Read flyg/START_HERE.md, PROJECT_CURRENT_STATE.json and shared project rules. No live API or deployed release has been verified."
   },
   "currentWork": {
-    "completed": "Isolated branch created; shared template rules copied; initial flight search requirements documented. Global flight-search defaults and football exception documented. Prototype HTML/CSS/JS committed with profile switching and ISO-week dates; exact GitHub file readback PASS. Expanded Alpine airport selection to 23 candidates incl. ZRH/GVA; exact readback PASS.",
+    "completed": "Isolated branch created; shared template rules copied; initial flight search requirements documented. Global flight-search defaults and football exception documented. Prototype HTML/CSS/JS committed with profile switching and ISO-week dates; exact GitHub file readback PASS. Expanded Alpine airport selection to 23 candidates incl. ZRH/GVA; exact readback PASS. Confirmed connecting flights allowed if arrival at hotel no later than 22:00 local; readback pending.",
     "next": "Validate route dates and transfer practicality via flight data provider; run syntax/device checks and implement release updater before deployment.",
     "blocked": false
   },
@@ -52,7 +52,20 @@
           "ARN"
         ],
         "travelers": 2,
-        "checkedBaggageRequired": true
+        "checkedBaggageRequired": true,
+        "connections": {
+          "nonstopPreferred": true,
+          "connectingFlightsAllowed": true,
+          "examples": [
+            "OSL",
+            "CPH",
+            "FRA"
+          ],
+          "maxHotelArrivalLocal": "22:00",
+          "arrivalConstraint": "Hotel check-in arrival, not airport touchdown; include immigration if applicable, baggage claim, transfer schedules, local timezone and buffer.",
+          "connectionPenalty": "Rank by hotel arrival, elapsed travel time and all-in price; do not exclude useful connections solely for having a stop.",
+          "unknownTransferPolicy": "Do not claim feasible until ground transport and hotel arrival are verified."
+        }
       },
       "footballEurope": {
         "departureAirports": [
