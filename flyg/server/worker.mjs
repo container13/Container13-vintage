@@ -111,7 +111,8 @@ export class SearchGate {
   if(saved.month!==month){saved.month=month;saved.monthUsed=0;}
   if(saved.hour!==hour){saved.hour=hour;saved.hourUsed=0;}
   // Global caps include failures, count before I/O, persist across deploy/restarts.
-  if(saved.monthUsed>=180||saved.hourUsed>=20)throw new SafeError('APP_QUOTA_REACHED',429);
+  // Provider Free plan is authoritative: freeAccount() checks remaining quota before every uncached search.
+  // No additional 180/month or 20/hour application caps; never accept a paid plan.
   if(Object.keys(saved.records).length>500)throw new SafeError('APP_BUSY',429);
   saved.monthUsed++;saved.hourUsed++;await this.storage.put('state',saved);
   const account=await provider('account.json',{},this.env.FLYG_SERPAPI_KEY);
