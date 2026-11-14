@@ -10,37 +10,37 @@
     "previousVerified": null,
     "currentVerified": null,
     "candidate": "0.1.38",
-    "integrity": "0.1.38_CANDIDATE_SOURCE_HASH_TESTS_PASS; PRODUCTION_DRIFT_EXPECTED; NOT_DEPLOYED_OR_DEVICE_VERIFIED"
+    "integrity": "PAGES_SUCCESS_43607156643; LIVE_CHROMIUM_PUBLIC_0.1.38_PASS_43607323882; IPHONE_PENDING; CURRENT_PREVIOUS_NOT_ROTATED"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "frontend candidate 0.1.38; published frontend/backend 0.1.37",
-    "goal": "Source-backed St Anton road planning, preserving strict UNKNOWN treatment for city night and all-in pricing",
+    "targetRelease": "frontend deployed/browser-verified 0.1.38; backend unchanged 0.1.37",
+    "goal": "St Anton road model deployed and browser-checked; iPhone installed PWA acceptance pending",
     "completed": [
-      "Read canonical handoff/state/rules and inspected existing journey-engine, 0.1.37 production checkpoint",
-      "Published St Anton taxi operator times: INN75/ZRH135/MUC195/FDH100 minutes; existing resortArrival owner extended as ESTIMATE_ONLY",
-      "City-night assumptions explicitly scoped to Cervinia: St Anton city-night remains UNKNOWN, not Italian city transfer",
-      "Added two regression tests, 0.1.38 version/manifest/SW shell hashes prepared and committed on isolated branch",
-      "GitHub Actions static/resort suite run43602282659 SUCCESS (93 test cases including two new St Anton cases)",
-      "Integrity run43602282634 asset SHA/version check SUCCESS; production drift stage FAIL because candidate is intentionally not deployed",
-      "No billing, provider calls, secret access, worker change or unrelated project edits"
+      "Published precisely four Flyg-only files (journey-engine.js,version.js,release.json,sw.js) using Git tree based on previous public commit; safe expected SHA ref update",
+      "Public branch commit e7d549fac1edc5031eda796b5e0920a446e66782; GitHub Pages run 43607156643 SUCCESS",
+      "GitHub Actions public Chromium run 43607323882 PASS: HTTPS page200, client version 0.1.38, release manifest 0.1.38, four St Anton road times INN75/ZRH135/MUC195/FDH100 ESTIMATE_ONLY, city night UNKNOWN, zero page errors, zero provider searches",
+      "Source 93 test suite PASS at development branch 9c67a1bf2513f43a3099463d0fb9e73b906deba3",
+      "Only private road estimates; not actual transfers, prices or all-in trip eligibility",
+      "No Worker deployment or secret/quota/billing change; other projects untouched"
     ],
     "plan": [
-      "Publish only Flyg subtree through established safe source->public process once runtime/browser verification can be done; do not bypass production drift gate",
-      "Verify published 0.1.38 manifest, real browser St Anton INN/ZRH/MUC/FDH and unknown city night; then installed iPhone acceptance",
-      "Existing 0.1.37 installed-iPhone gate remains unresolved; do not rotate CURRENT/PREVIOUS",
-      "Expand more resorts using independently sourced route times; no all-in total or extra night 1000SEK classification without all mandatory costs"
+      "Existing installed iPhone PWA open/resume 0.1.38 version and repeat flight search acceptance still needs user device evidence; no reinstall or cache wipe",
+      "Retest actual live matched pairs if quota permits while retaining explicit UNKNOWN costs and source-backed resort availability",
+      "Expand resort transfer coverage and whole-trip cost evidence; 3 ski days, optional fifth night and 1000 SEK total-for-two remain hard preferences",
+      "Promote CURRENT/PREVIOUS only after device acceptance"
     ],
-    "sourceCommit": "cba17c9da566e246fdd816323ccba3bcc2ef7496",
-    "deploymentCommit": "ecaccaec56138817974404e07e321e6cc3b0bdd4",
+    "sourceCommit": "9c67a1bf2513f43a3099463d0fb9e73b906deba3",
+    "deploymentCommit": "e7d549fac1edc5031eda796b5e0920a446e66782",
     "backendRun": 43598719873,
-    "deploymentRun": 43598724849,
-    "rollbackCommit": "662b8894c098428ea1ffabdc246903b28372b7ca",
-    "resumeInstruction": "0.1.38 candidate (unpublished) adds source-backed St Anton airport road estimates and preserves UNKNOWN city night; resort test run43602282659 PASS, asset hash/version stage PASS in43602282634 but expected production drift fail. Public0.1.37 unchanged. Next safe deploy Flyg-only and verify browser/device. 3 ski days, optional extra night ~1000 SEK total for two preserved."
+    "deploymentRun": 43607156643,
+    "browserRun": 43607323882,
+    "rollbackCommit": "ecaccaec56138817974404e07e321e6cc3b0bdd4",
+    "resumeInstruction": "Frontend 0.1.38 publicly deployed and browser VERIFIED; backend0.1.37 unchanged. Chromium run43607323882 verified 4 St Anton road estimates, city UNKNOWN and zero provider calls. Installed iPhone remains pending; do not rotate CURRENT/PREVIOUS. Preserve 3 skiing days, 4+optional5 nights if ~1000 SEK whole-trip increase for BOTH, calm breakfast and optional city night."
   },
   "currentWork": {
-    "completed": "0.1.38 St Anton road planning committed and regression suite PASS on flyg-alperna-init; source INN75 ZRH135 MUC195 FDH100; city-night UNKNOWN; candidate source only",
-    "next": "Flyg-only safe publish 0.1.38 + real browser tests + iPhone confirmation. Existing 0.1.37 device pending and CURRENT/PREVIOUS untouched",
+    "completed": "Frontend0.1.38 public e7d549f and Chromium PASS run43607323882. St Anton four operator road times and unknown city-night coverage; backend unchanged0.1.37.",
+    "next": "Installed iPhone 0.1.38 verification then advance sourced transfers/all-in cost evidence. No automatic archive promotion.",
     "blocked": false
   },
   "pausedWork": {},
@@ -49,9 +49,9 @@
     "deployment": {
       "url": "https://container13.se/flyg/",
       "sourceBranch": "ccc-demo-public-test",
-      "scope": "Only4publicFlygfrontendtextfiles changed;isolated existingWorkerupdatedfromdevbranch",
-      "sourceCommit": "662b8894c098428ea1ffabdc246903b28372b7ca",
-      "deploymentCommit": "ecaccaec56138817974404e07e321e6cc3b0bdd4"
+      "scope": "Only 4 Flyg frontend runtime files; 0.1.38 browser pass",
+      "sourceCommit": "9c67a1bf2513f43a3099463d0fb9e73b906deba3",
+      "deploymentCommit": "e7d549fac1edc5031eda796b5e0920a446e66782"
     },
     "secrets": "NONE_COMMITTED",
     "secretCollection": {
@@ -188,9 +188,9 @@
     "sourceCommitted": true,
     "githubReadback": true,
     "syntax": "PASS",
-    "ui": "BROWSER0.1.37_CHECKED_EMPTY_AND_PARTIAL_RESULTS_PASS",
-    "deployment": "PAGES_SUCCESS_43598724849",
-    "device": "User IMG_4277 confirms installed0.1.28 can now search after backend repair. Frontend0.1.31 installed-iPhone acceptance pending.",
+    "ui": "PUBLIC_CHROMIUM_0.1.38_PASS_43607323882",
+    "deployment": "PAGES_SUCCESS_43607156643",
+    "device": "Installed iPhone0.1.38 acceptance PENDING; previous older-device evidence must not be treated as this release",
     "flightAPI": {
       "status": "LIVE_PROOF_PASS",
       "runId": 43559215595,
@@ -213,7 +213,7 @@
     "tests": "JOURNEY_9_PASS; SW_MOCK_HARNESS_PASS",
     "updateController": "Browser existing0.1.11 shell auto-updated to0.1.14; installed iPhone0.1.14 not tested",
     "pwa": "PREVIOUS_IPHONE_INSTALL_OFFLINE_AND_0.1.10_UPGRADE_PASS; BROWSER_0.1.11_TO_0.1.14_UPGRADE_PASS; IPHONE_0.1.14_PENDING",
-    "deployedAssets": "0.1.37 all18 assets/manifest hashes match",
+    "deployedAssets": "PUBLISHED_0.1.38_BROWSER_MANIFEST_AND_CLIENT_VERSION_PASS; 4_PUBLISHED_FLYG_FILES_GIT_TREE_VERIFIED; IPHONE_PENDING",
     "providerResearch": "2026-11-14 official eligibility, pricing and agreement checked; report flyg/FLIGHT_DATA_ACCESS.md",
     "probe": "probe-0.1.0: 5 mock guard tests PASS; missing key zero calls PASS",
     "fareDetails": {
