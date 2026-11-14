@@ -55,11 +55,14 @@ function checkSchedule(flight,requirements){
 }
 // Published road journey estimates, not booked transfers or live traffic.
 const cerviniaRoad={TRN:{minutes:102,source:'https://cervinia.it/en/'},MXP:{minutes:136,source:'https://cervinia.it/en/'},LIN:{minutes:149,source:'https://cervinia.it/en/'},BGY:{minutes:170,source:'https://taxicervinia.com/en'}};
+// Operator-published PRIVATE road times; availability, winter traffic and hotel endpoint remain unverified.
+const stAntonRoad={INN:{minutes:75,source:'https://www.taxi-st-anton.at/most-driven-destinations/'},ZRH:{minutes:135,source:'https://www.taxi-st-anton.at/most-driven-destinations/'},MUC:{minutes:195,source:'https://www.taxi-st-anton.at/most-driven-destinations/'},FDH:{minutes:100,source:'https://www.taxi-st-anton.at/most-driven-destinations/'}};
+const resortRoad={'Cervinia':cerviniaRoad,'St. Anton am Arlberg':stAntonRoad};
 function resortArrival(flight,requirements){
  const unknown=reason=>({status:'UNKNOWN',reason});
- if(requirements.resort!=='Cervinia')return unknown('Källbelagd transfertid saknas för vald skidort.');
+ if(!resortRoad[requirements.resort])return unknown('Källbelagd transfertid saknas för vald skidort.');
  if(requirements.transport!=='road')return unknown('Kollektivtrafikens avgångar och byten behöver kontrolleras.');
- const last=flight?.segments?.at(-1),route=cerviniaRoad[last?.destination];
+ const last=flight?.segments?.at(-1),route=resortRoad[requirements.resort][last?.destination];
  if(!route)return unknown('Källbelagd transfertid saknas från ankomstflygplatsen.');
  const raw=last.arrivalLocal;
  if(typeof raw!=='string'||!/^\d{4}-\d\d-\d\d[ T]\d\d:\d\d$/.test(raw))return unknown('Lokal ankomsttid saknas.');
@@ -104,8 +107,8 @@ function skiTrip(outbound,returnFlight,requirements){
  const format=t=>new Date(t).toISOString().slice(0,16).replace('T',' '),day=t=>new Date(t).toISOString().slice(0,10);
  let leave,hotelDeparture,city=null,cityArrival=null,lastFull;
  if(requirements.returnPlan==='city'){
-  const routes={TRN:{name:'Turin',minutes:101},MXP:{name:'Milano',minutes:146},LIN:{name:'Milano',minutes:146},BGY:{name:'Milano',minutes:146}};
-  const route=routes[back.origin];if(!route)return unknown('Transfer till sista nattens stad saknar underlag.');
+  const cityRoad={'Cervinia':{TRN:{name:'Turin',minutes:101},MXP:{name:'Milano',minutes:146},LIN:{name:'Milano',minutes:146},BGY:{name:'Milano',minutes:146}}};
+  const route=cityRoad[requirements.resort]?.[back.origin];if(!route)return unknown('Transfer till sista nattens stad saknar underlag.');
   city=route.name;leave=skiEnd-86400000;
   cityArrival=leave+(route.minutes+requirements.roadBufferMinutes)*60000;
   const deadline=clock(day(leave),requirements.hotelCutoff);
