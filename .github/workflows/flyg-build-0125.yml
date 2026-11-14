@@ -1,4 +1,4 @@
-name: Flyg 0.1.27 error reporting build
+name: Flyg 0.1.27 PWA build and guarded promotion
 on:
   push:
     branches: [flyg-alperna-init]
@@ -18,7 +18,7 @@ jobs:
           v=root/'version.js'
           assert "RELEASE='0.1.26'" in v.read_text()
           v.write_text(v.read_text().replace("RELEASE='0.1.26'","RELEASE='0.1.27'"))
-          r=root/'release.json';data=json.loads(r.read_text());data['release']='0.1.27';data['status']='CANDIDATE_ERROR_REPORTING';r.write_text(json.dumps(data,indent=2,ensure_ascii=False)+'\n')
+          r=root/'release.json';data=json.loads(r.read_text());data['release']='0.1.27';data['status']='PENDING_PWA_NETWORK_FIRST';r.write_text(json.dumps(data,indent=2,ensure_ascii=False)+'\n')
           sw=root/'sw.js';source=sw.read_text();source=source.replace("flyg-shell-0.1.26","flyg-shell-0.1.27")
           assert "fetch(req,{cache:'no-store'})" in source, 'App shell must be network-first'
           assert "cache.match(req,{ignoreSearch:true})" in source, 'Offline fallback required'
@@ -40,3 +40,53 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add flyg/auto-update.js flyg/version.js flyg/release.json flyg/sw.js
           git diff --cached --quiet || { git commit -m "Flyg: build 0.1.27 with update activation fix"; git push origin HEAD:flyg-alperna-init; }
+
+      - name: Verify release integrity after build
+        run: |
+          python3 - <<'PY'
+          import json,re,hashlib,pathlib
+          root=pathlib.Path('flyg')
+          assert "RELEASE='0.1.27'" in (root/'version.js').read_text()
+          assert json.loads((root/'release.json').read_text())['release']=='0.1.27'
+          sw=(root/'sw.js').read_text()
+          assert "fetch(req,{cache:'no-store'})" in sw
+          hashes=json.loads(re.search(r'const INTEGRITY=(\{[^;]+\});',sw).group(1))
+          for key,digest in hashes.items():
+            p=root/('index.html' if key=='./' else key)
+            assert hashlib.sha256(p.read_bytes()).hexdigest()==digest,key
+          print('PASS release and asset integrity')
+          PY
+      - name: Promote verified Flyg assets only
+        run: |
+          set -euo pipefail
+          git fetch origin ccc-demo-public-test
+          git worktree add /tmp/flyg-public origin/ccc-demo-public-test
+          cd /tmp/flyg-public
+          git switch -c flyg-promote-0127-combined
+          assets=(index.html style.css app.js live-search.js selection-feedback.js journey-engine.js version.js auto-update.js pwa.js sw.js manifest.webmanifest release.json assets/flyg-icon-180.png assets/flyg-icon-192.png assets/flyg-icon-512.png assets/flyg-icon-1024.png)
+          for asset in "${assets[@]}"; do
+            mkdir -p "flyg/$(dirname "$asset")"
+            cp "$GITHUB_WORKSPACE/flyg/$asset" "flyg/$asset"
+          done
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- flyg/
+          if ! git diff --cached --quiet; then
+            git commit -m "Flyg: promote guarded PWA network-first release 0.1.27"
+            git push origin HEAD:ccc-demo-public-test
+          fi
+      - name: Verify public release without provider API calls
+        run: |
+          python3 - <<'PY'
+          import urllib.request,time
+          url='https://container13.se/flyg/version.js?_flyg_verify=0127'
+          for i in range(12):
+            try:
+              with urllib.request.urlopen(urllib.request.Request(url,headers={'Cache-Control':'no-cache'}),timeout=12) as r:
+                body=r.read().decode()
+              if "RELEASE='0.1.27'" in body:
+                print('PASS public 0.1.27');break
+            except Exception as exc: print('Public verification pending',type(exc).__name__)
+            if i==11: raise SystemExit('FAIL public release unverified')
+            time.sleep(10)
+          PY
