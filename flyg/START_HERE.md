@@ -1,9 +1,7 @@
-# Flyg
+# Flyg — current checkpoint2026-11-14
 
-Candidate **0.1.10**, deployed preview: https://container13.se/flyg/
+Public PWA https://container13.se/flyg/ runs0.1.10. Installed iPhone installation/offline0.1.8 and upgrade0.1.10 user-confirmed. No in-app livesearch yet.
 
-Canonical development branch: `flyg-alperna-init`, root `flyg/`. Public delivery: only flyg subtree copied to existing `ccc-demo-public-test` Pages branch.
+Canonical branch flyg-alperna-init. Read PROJECT_CURRENT_STATE.json and latest PROJECT_HANDOFF_CURRENT.md; historical pending-icon/update notes are superseded.
 
-Read PROJECT_CURRENT_STATE.json, latest handoff checkpoint and project rules. Icons committed, syntax/journey/SW harness PASS, HTTPS browser form PASS. iPhone 0.1.8 installation and offline form PASS. Next: existing-install update to 0.1.10. No live flight data provider. Candidate remains unpromoted; do not infer DEVICE PASS.
-
-Update to 0.1.9 failed on iPhone (reload retained 0.1.8). Current repair validates fresh SW shell bytes. Verify recovery to 0.1.10; do not claim upgrade PASS yet.
+Backend candidate0.1.11 in server/:12 mock tests PASS and exact GitHub readback PASS, NOT deployed. Hosting free-plan preflight returns HTTP403; Cloudflare dashboard logged out. Must verify Workers Free before deployment. Existing SerpApi Actions secret works: do not ask for key/account again. User requires0kr setup and ongoing. API base prices proven; checked23kg unknown for tested KLM API offer. Manual Expedia Standard5680SEK for2 with23kg verified, not automated.
