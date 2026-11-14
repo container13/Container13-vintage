@@ -1,0 +1,24 @@
+{
+  "release": "0.1.8",
+  "updated": "2026-11-14",
+  "entrypoints": [
+    "index.html"
+  ],
+  "assets": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "journey-engine.js",
+    "version.js",
+    "auto-update.js",
+    "pwa.js",
+    "sw.js",
+    "manifest.webmanifest",
+    "assets/flyg-icon-180.png",
+    "assets/flyg-icon-192.png",
+    "assets/flyg-icon-512.png",
+    "assets/flyg-icon-1024.png",
+    "../project-template/mobile-view-policy.js"
+  ],
+  "status": "CANDIDATE_PWA_TESTING"
+}

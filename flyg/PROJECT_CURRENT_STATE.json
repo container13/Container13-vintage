@@ -1,0 +1,106 @@
+{
+  "schema": "PROJECT-CURRENT-STATE-1",
+  "project": "Flyg – Alperna",
+  "repository": "container13/Container13-vintage",
+  "branch": "flyg-alperna-init",
+  "projectRoot": "flyg/",
+  "riskClass": "MEDIUM",
+  "projectMode": "ACTIVE_DEVELOPMENT",
+  "release": {
+    "previousVerified": null,
+    "currentVerified": null,
+    "candidate": "0.1.7",
+    "integrity": "PENDING"
+  },
+  "workCheckpoint": {
+    "status": "IN_PROGRESS",
+    "targetRelease": "0.1.7",
+    "goal": "Integrate attached flygikon(1).png, test PWA, establish HTTPS staging without affecting other projects",
+    "plan": [
+      "Use existing four PNG files (180,192,512,1024) and verified solutions/github-binary-upload workflow to commit exact binaries",
+      "Read back blob SHA, tree path and file size for each PNG; no substitute icon",
+      "Verify manifest, service worker and icon links on deployed HTTPS, run Node tests and test installed iPhone PWA",
+      "Keep candidate unpromoted until deploy/runtime/device evidence exists"
+    ],
+    "lastSafeRelease": null,
+    "resumeInstruction": "Read flyg/START_HERE.md, PROJECT_CURRENT_STATE.json and shared project rules. No live API or deployed release has been verified.",
+    "rollbackCommit": "ff4244680ce148a22517c84e779141c1e0919db2"
+  },
+  "currentWork": {
+    "completed": "Isolated branch created; shared template rules copied; initial flight search requirements documented. Global flight-search defaults and football exception documented. Prototype HTML/CSS/JS committed with profile switching and ISO-week dates; exact GitHub file readback PASS. Expanded Alpine airport selection to 23 candidates incl. ZRH/GVA; exact readback PASS. Confirmed connecting flights allowed if arrival at hotel no later than 22:00 local; readback pending. UI now exposes connection preference and hotel cutoff; readback PASS. Added pure journey-engine.js and 9 synthetic Node test cases; GitHub readback PASS, tests NOT EXECUTED. Hotel arrival cutoff selector now supports half-hour steps; GitHub readback PASS. Added one central release.json manifest and auto-update.js controller to index; GitHub readback PASS. Added manifest, SVG icon, service worker and registration for PWA; GitHub readback PASS. Wired chosen globe-and-airplane PNG paths into manifest, iPhone touch icon, service worker and release manifest. PNG binary assets prepared locally but not yet committed to GitHub. Updated index heading to worldwide flight travel (GitHub readback PASS). Service worker optional PNG cache no longer blocks install (GitHub readback PASS).",
+    "next": "In Work, open canonical state/handoff from GitHub; upload four original selected PNG assets to isolated branch, verify blob/tree/size, then PWA tests. No user re-upload requested unless Work cannot access the existing assets.",
+    "blocked": false
+  },
+  "pausedWork": {},
+  "dependencies": {
+    "flightAPI": "UNSELECTED_UNVERIFIED",
+    "deployment": "NOT_CONFIGURED",
+    "secrets": "NONE_COMMITTED"
+  },
+  "searchDefaults": {
+    "departureAirports": [
+      "ARN"
+    ],
+    "travelers": 2,
+    "checkedBaggage": {
+      "required": true,
+      "perTraveler": true,
+      "weightKg": null
+    },
+    "profiles": {
+      "standard": {
+        "departureAirports": [
+          "ARN"
+        ],
+        "travelers": 2,
+        "checkedBaggageRequired": true,
+        "connections": {
+          "nonstopPreferred": true,
+          "connectingFlightsAllowed": true,
+          "examples": [
+            "OSL",
+            "CPH",
+            "FRA"
+          ],
+          "maxHotelArrivalLocal": "22:00 (editable in 30-minute increments, 00:00–23:30)",
+          "arrivalConstraint": "Hotel check-in arrival, not airport touchdown; include immigration if applicable, baggage claim, transfer schedules, local timezone and buffer.",
+          "connectionPenalty": "Rank by hotel arrival, elapsed travel time and all-in price; do not exclude useful connections solely for having a stop.",
+          "unknownTransferPolicy": "Do not claim feasible until ground transport and hotel arrival are verified."
+        }
+      },
+      "footballEurope": {
+        "departureAirports": [
+          "ARN"
+        ],
+        "travelers": 2,
+        "checkedBaggageRequired": false,
+        "exampleDestinations": [
+          "Cologne",
+          "London"
+        ],
+        "note": "Baggage optional; do not assume a checked bag is required for football trips."
+      }
+    }
+  },
+  "verification": {
+    "sourceCommitted": true,
+    "githubReadback": true,
+    "syntax": "UNVERIFIED",
+    "ui": "SOURCE_READBACK_ONLY_NOT_RUNTIME_TESTED",
+    "deployment": "NOT_DEPLOYED",
+    "device": "NOT_TESTED",
+    "flightAPI": "NOT_CONNECTED",
+    "engine": "COMMITTED_READBACK_ONLY",
+    "tests": "NOT_EXECUTED",
+    "updateController": "COMMITTED_UNTESTED",
+    "pwa": "SOURCE_WIRED; PNG_BINARY_NOT_IN_GITHUB; NO_DEPLOY_OR_DEVICE_TEST"
+  },
+  "airportCatalog": {
+    "version": "2026-11-14",
+    "selectionMode": "all_relevant_airports",
+    "sourceStatus": "ROUTE_LIST_RESEARCH_ONLY",
+    "candidateCount": 23,
+    "directRouteRequirement": "Check nonstop ARN routes on the requested travel dates before suggesting an itinerary; do not assume every candidate has nonstop flights.",
+    "notes": "ZRH and GVA included; some airports are speculative nearby alternatives and must be filtered by live route coverage and realistic transfer time."
+  }
+}

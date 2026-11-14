@@ -1,0 +1,13 @@
+'use strict';const assert=require('node:assert/strict');const {evaluate}=require('../journey-engine.js');
+const base={flights:[{origin:'ARN',destination:'OSL',departure:'2027-03-15T10:00:00+01:00',arrival:'2027-03-15T11:00:00+01:00'},{origin:'OSL',destination:'ZRH',departure:'2027-03-15T12:00:00+01:00',arrival:'2027-03-15T14:30:00+01:00'}],groundTransfer:{verified:true,fromAirport:'ZRH',departure:'2027-03-15T15:30:00+01:00',hotelArrival:'2027-03-15T19:00:00+01:00'},baggage:{verified:true,kgPerPerson:23},totalPriceForTwoIncludingRequiredBaggage:5000};
+const req={allowConnections:true,checkedBagKg:23,hotelDeadline:'2027-03-15T22:00:00+01:00'};
+assert.equal(evaluate(base,req).status,'ELIGIBLE');
+assert.equal(evaluate(base,{...req,allowConnections:false}).status,'REJECTED');
+assert.equal(evaluate({...base,groundTransfer:{...base.groundTransfer,hotelArrival:'2027-03-15T22:01:00+01:00'}},req).status,'REJECTED');
+assert.equal(evaluate({...base,groundTransfer:undefined},req).status,'UNKNOWN');
+assert.equal(evaluate({...base,baggage:undefined},req).status,'UNKNOWN');
+assert.equal(evaluate({...base,baggage:{verified:true,kgPerPerson:20}},req).status,'REJECTED');
+assert.equal(evaluate({...base,totalPriceForTwoIncludingRequiredBaggage:undefined},req).status,'UNKNOWN');
+assert.equal(evaluate({...base,flights:[{...base.flights[0],origin:'CPH'},base.flights[1]]},req).status,'REJECTED');
+assert.equal(evaluate({...base,flights:[base.flights[0],{...base.flights[1],departure:'2027-03-15T10:30:00+01:00'}]},req).status,'REJECTED');
+console.log('journey-engine: 9 tests PASS (synthetic fixtures only)');
