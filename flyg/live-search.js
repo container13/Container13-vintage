@@ -5,6 +5,8 @@ const form=document.getElementById('liveForm'),results=document.getElementById('
 const airport=document.getElementById('liveAirport'),start=document.getElementById('liveOutbound'),end=document.getElementById('liveReturn');
 const maxPrice=document.getElementById('maxPrice');
 let busy=false,history=[],generation=0;
+const choices=document.getElementById('searchChoices');
+for(const id of ['searchForm','liveForm'])document.getElementById(id).addEventListener('invalid',()=>{choices.open=true;},true);
 maxPrice.addEventListener('input',()=>{if(maxPrice.checkValidity()&&history.length)render(history.at(-1));});
 const el=(tag,text,className)=>{const n=document.createElement(tag);if(text!=null)n.textContent=text;if(className)n.className=className;return n;};
 const money=v=>new Intl.NumberFormat('sv-SE',{style:'currency',currency:'SEK',maximumFractionDigits:0}).format(v);
@@ -24,14 +26,14 @@ async function requestData(query){
 }
 async function search(query,trigger=null){
  if(busy)return;
- if(!maxPrice.checkValidity()){status.textContent='Kontrollera maxpriset. Ange ett belopp i steg om 100 kr.';maxPrice.reportValidity();maxPrice.focus();return;}
+ if(!maxPrice.checkValidity()){status.textContent='Kontrollera maxpriset. Ange ett belopp i steg om 100 kr.';choices.open=true;maxPrice.reportValidity();maxPrice.focus();return;}
  const loading=query.stage==='returns'?'Hämtar hemresor…':query.stage==='details'?'Hämtar biljettvillkor…':'Hämtar flyg…';
  const action=window.FlygSelectionUI.begin(trigger,loading);
  if(!navigator.onLine){const message='Du är offline. Aktuella flyg behöver internet.';status.textContent=message;window.FlygSelectionUI.error(action,message);window.FlygSelectionUI.finish(action);if(!action)status.scrollIntoView({block:'center'});return;}
  setBusy(true);status.textContent=loading;const active=++generation;
  try{
   const data=await requestData(query);
-  if(active!==generation)return;history.push(data);if(!maxPrice.checkValidity()){status.textContent='Kontrollera maxpriset för att visa resultatet.';maxPrice.reportValidity();maxPrice.focus();return;}render(data);status.textContent=data.cached?'Tidigare hämtat resultat återanvänds.':'Flyguppgifter hämtade.';window.FlygSelectionUI.reveal(results);
+  if(active!==generation)return;history.push(data);if(!maxPrice.checkValidity()){status.textContent='Kontrollera maxpriset för att visa resultatet.';choices.open=true;maxPrice.reportValidity();maxPrice.focus();return;}render(data);status.textContent=data.cached?'Tidigare hämtat resultat återanvänds.':'Flyguppgifter hämtade.';window.FlygSelectionUI.reveal(results);
  }catch(e){const message=errors[e.message]||'Sökningen kunde inte slutföras. Dina tidigare resultat finns kvar. Försök igen senare.';status.textContent=message;window.FlygSelectionUI.error(action,message);if(!action)status.scrollIntoView({block:'center'});}
  finally{window.FlygSelectionUI.finish(action);setBusy(false);}
 }
@@ -45,7 +47,7 @@ async function searchAll(query){
    try{const part=await requestData({...query,destination:group.join(',')});data.flights.push(...part.flights);data.coverage.completed.push(...group);}
    catch(error){data.coverage.failed.push(...group);if(['APP_QUOTA_REACHED','FREE_QUOTA_UNAVAILABLE','ACCOUNT_HTTP_401'].includes(error.message)){data.coverage.unsearched=requested.slice(index+3);data.stopReason=errors[error.message];break;}}
   }
-  history.push(data);render(data);status.textContent=data.coverage.failed.length||data.coverage.unsearched.length?'Sökningen är delvis klar. Se vilka flygplatser som saknas i resultatet.':'Alla valda flygplatser har sökts. Billigast först.';
+  history.push(data);render(data);window.FlygSelectionUI.reveal(results);status.textContent=data.coverage.failed.length||data.coverage.unsearched.length?'Sökningen är delvis klar. Se vilka flygplatser som saknas i resultatet.':'Alla valda flygplatser har sökts. Billigast först.';
  }finally{setBusy(false);}
 }
 function baggageLabel(raw){
@@ -96,6 +98,6 @@ function render(data){
 }
 form.addEventListener('submit',e=>{e.preventDefault();if(busy)return;const nights=(Date.parse(end.value)-Date.parse(start.value))/86400000;const max=Number(document.getElementById('nights').value);
  if(!Number.isInteger(nights)||nights<1||nights>max){status.textContent=`Välj en resa med 1–${max} nätter enligt ditt sökunderlag.`;return;}
- history=[];const query={stage:'outbound',destination:airport.value,outbound:start.value,return:end.value,direct:document.getElementById('connections').value==='direct'};if(airport.value==='all')searchAll(query);else search(query);
+ choices.open=false;history=[];const query={stage:'outbound',destination:airport.value,outbound:start.value,return:end.value,direct:document.getElementById('connections').value==='direct'};if(airport.value==='all')searchAll(query);else search(query);
 });
 })();
