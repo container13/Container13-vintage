@@ -1,0 +1,16 @@
+{
+  "release": "0.1.5",
+  "updated": "2026-11-14",
+  "entrypoints": [
+    "index.html"
+  ],
+  "assets": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "journey-engine.js",
+    "version.js",
+    "auto-update.js"
+  ],
+  "status": "CANDIDATE_NOT_DEPLOYED"
+}
