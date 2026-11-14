@@ -13,9 +13,9 @@
     "integrity": "PAGES_SUCCESS; HTTPS_VERSION_0.1.9_PASS; DEVICE_UPDATE_PENDING"
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
+    "status": "IN_PROGRESS",
     "targetRelease": "0.1.9",
-    "goal": "Await iPhone installed-app update confirmation to 0.1.9",
+    "goal": "Diagnose iPhone update reload retaining 0.1.8; verify cache install freshness before repair",
     "plan": [
       "Open https://container13.se/flyg/ in iPhone Safari",
       "Share -> Add to Home Screen; launch Flyg from globe icon",
@@ -98,7 +98,7 @@
     "flightAPI": "NOT_CONNECTED",
     "engine": "9_SYNTHETIC_CASES_PASS",
     "tests": "JOURNEY_9_PASS; SW_MOCK_HARNESS_PASS",
-    "updateController": "5_VM_TESTS_PASS: clean reload, dirty deferral, offline, loop guard, worker activation. IPHONE_UPGRADE_PENDING",
+    "updateController": "DEVICE_FAIL: user Update reloads but retains old version; prior VM tests insufficient",
     "pwa": "INSTALLED_IPHONE_OFFLINE_FORM_PASS; UPDATE_PENDING",
     "deployedAssets": "All 14 release assets fetched via HTTPS and byte-matched to committed local files; PASS 2026-11-14"
   },
