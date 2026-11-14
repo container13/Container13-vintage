@@ -1,5 +1,5 @@
 {
-  "release": "0.1.24",
+  "release": "0.1.25",
   "updated": "2026-11-14",
   "entrypoints": [
     "index.html"
@@ -22,5 +22,5 @@
     "live-search.js",
     "selection-feedback.js"
   ],
-  "status": "CANDIDATE_LIVE_SEARCH_TESTING"
+  "status": "CANDIDATE_ERROR_REPORTING"
 }
