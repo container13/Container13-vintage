@@ -1,4 +1,4 @@
 {
   "release": "0.1.24",
-  "reason": "Deploy isolated Flyg Worker: Norwegian DY+D8 exclusion and provider Free-only quota; mock CI green, no other services changed"
+  "reason": "Deploy Worker 0.1.24 after aligning exported VERSION, test in guarded workflow; no other services"
 }
