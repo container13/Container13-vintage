@@ -1,5 +1,5 @@
 {
-  "release": "0.1.5",
+  "release": "0.1.6",
   "updated": "2026-11-14",
   "entrypoints": [
     "index.html"
@@ -10,7 +10,11 @@
     "app.js",
     "journey-engine.js",
     "version.js",
-    "auto-update.js"
+    "auto-update.js",
+    "pwa.js",
+    "sw.js",
+    "manifest.webmanifest",
+    "assets/flyg-icon.svg"
   ],
   "status": "CANDIDATE_NOT_DEPLOYED"
 }
