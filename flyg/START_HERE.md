@@ -1,5 +1,5 @@
-# Flyg current checkpoint2026-11-14
+# Flyg current checkpoint —2026-11-14 Work
 
-Public frontend0.1.20/backend17. Alperna selected in destination menu; all settings hidden in native Ändra sökval. Search/results remain visible. Other tropical destinations listed upcoming/disabled, not connected. Browser expand/edit/collapse/search and hidden invalid field recovery PASS. Pages43569684218 success; all16 asset hashes PASS. iPhone20 pending; no CURRENT promotion.
+Frontend0.1.28 unchanged; prior iPhone screenshot confirms installed version. Backend0.1.29 DEPLOYED/RUNTIME PASS. INVALID_AIRLINES double-validation fixed.24 tests PASS; live grouped TRN,MXP,BGY excludingFR returned10offers; identical replay uses30min cache,207Free remaining observed. Same Worker/secrets/DO/Free plan retained. Deploy43588143545 SUCCESS.
 
-User min19.9kg/person + separate boot cabin bag + personal item;5000SEK/two step100. Exact baggage price/eligibility/transfer UNKNOWN. Free only; no repeat key/plan setup. Read latest handoff/state.
+Next: repeat search in existing installed iPhone app; no reinstall. Device search acceptance pending; CURRENT/PREVIOUS unchanged. Baggage-inclusive prices/transfer feasibility UNKNOWN. Obsolete0.1.24 automatic candidate writer retired; canonical integrity guard retained. Read structured state and latest handoff.
