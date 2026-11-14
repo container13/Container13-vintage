@@ -10,10 +10,10 @@
     "previousVerified": null,
     "currentVerified": null,
     "candidate": "0.1.10",
-    "integrity": "SHA256_SHELL_VALIDATION_IMPLEMENTED; DEPLOY_PENDING"
+    "integrity": "HTTPS_ALL_14_ASSETS_BYTE_MATCH_PASS; EMBEDDED_SHA256_PASS"
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
+    "status": "UNVERIFIED",
     "targetRelease": "0.1.10",
     "goal": "Recover installed 0.1.8 via fresh validated shell; verify iPhone update",
     "plan": [
@@ -28,7 +28,7 @@
   },
   "currentWork": {
     "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired. User screenshots confirm installed iPhone v0.1.8 and airplane-mode form. Five update-controller VM tests PASS. Update 0.1.9 failed on iPhone. Reproduced stale HTTP-cached version.js entering new SW cache. v0.1.10 install uses no-store plus build query and SHA-256 checks for all 14 shell resources before cache writes. Regression rejects corrupted rollout; all existing tests PASS.",
-    "next": "Verify deployed 0.1.10 assets then installed iPhone recovery. No reinstall/cache clear requested.",
+    "next": "User opens existing Flyg online, taps Update; confirm 0.1.10. Do not reinstall or clear cache. Preserve failed 0.1.9 evidence.",
     "blocked": false
   },
   "pausedWork": {},
@@ -38,8 +38,8 @@
       "url": "https://container13.se/flyg/",
       "sourceBranch": "ccc-demo-public-test",
       "scope": "Only flyg/ subtree; other project bytes unchanged",
-      "sourceCommit": "452e6a458038294e3c3c427850daccef4ffcd8f0",
-      "deploymentCommit": "94bb5cad5ceccb9d4f4cb243dbf62a0a932b5d81"
+      "sourceCommit": "ad8c98a7b8dfc0b165756dc9dd7c2194de642115",
+      "deploymentCommit": "7b92b46285e1eabed8ea22bfc6386a064b8d7d30"
     },
     "secrets": "NONE_COMMITTED"
   },
@@ -93,14 +93,14 @@
     "githubReadback": true,
     "syntax": "PASS",
     "ui": "HTTPS_BROWSER_FORM_SUBMIT_PASS",
-    "deployment": "PAGES_SUCCESS_94bb5cad5ceccb9d4f4cb243dbf62a0a932b5d81",
-    "device": "IPHONE_STANDALONE_AND_AIRPLANE_MODE_FORM_PASS_USER_SCREENSHOT_2026-11-14",
+    "deployment": "PAGES_SUCCESS_7b92b46285e1eabed8ea22bfc6386a064b8d7d30",
+    "device": "0.1.8 INSTALL_OFFLINE_PASS; 0.1.9 UPDATE_FAIL; 0.1.10 RECOVERY_PENDING",
     "flightAPI": "NOT_CONNECTED",
     "engine": "9_SYNTHETIC_CASES_PASS",
     "tests": "JOURNEY_9_PASS; SW_MOCK_HARNESS_PASS",
     "updateController": "0.1.9 DEVICE_FAIL; stale HTTP cache reproduction FAIL before fix, PASS after fix; five updater VM cases PASS",
     "pwa": "INSTALLED_IPHONE_OFFLINE_FORM_PASS; UPDATE_PENDING",
-    "deployedAssets": "All 14 release assets fetched via HTTPS and byte-matched to committed local files; PASS 2026-11-14"
+    "deployedAssets": "0.1.10 all 14 HTTPS assets byte-match PASS; all embedded shell SHA-256 digests PASS"
   },
   "airportCatalog": {
     "version": "2026-11-14",
