@@ -9,24 +9,38 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.33",
-    "integrity": "18_PUBLISHED_ASSET_MANIFEST_HASHES_PASS; BROWSER_CALENDAR_MATCHED_TIMES_PASS; IPHONE_PENDING"
+    "candidate": "0.1.35",
+    "integrity": "18_PUBLISHED_ASSET_MANIFEST_HASHES_PASS; BROWSER_WHOLE_SKI_DAYS_RETURN_AND_PRICE_RANKING_PASS; IPHONE_PENDING"
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
-    "targetRelease": "0.1.34",
-    "goal": "Evaluate three whole skiing days and feasible rested return with last-city-night vs direct resort departure",
-    "plan": [
-      "Pure date-based itinerary model in canonical journey engine; use existing Cervinia road estimates and clearly editable planning assumptions",
-      "Apply hotel departure earliest07:00,airport allowance120min,city-airport90min and ski-day09–16 as assumptions, not booked schedules",
-      "Filter return choices and inline date comparisons with explicit reasons; reuse fetched return candidates when controls change",
-      "Regression, source/deploy readback, actual browser and device boundary"
+    "status": "UNVERIFIED",
+    "targetRelease": "frontend0.1.35/backend0.1.29",
+    "goal": "Cervinia planning: three whole skiing days, optional final city night, rested departure and matched fare comparison; device acceptance pending",
+    "completed": [
+      "72 backend/journey/UI/week/updater/SW tests PASS; final static/integrityCI PASS",
+      "Canonical journey-engine.skiTrip counts planned full ski dates and total nights through home arrival, including overnight return; does not verify lifts/weather/hotels",
+      "Default last city night after ski end16:00,earliest hotel departure07:00,airport120min,city-airport90min; all editable assumptions; alternative direct resort return",
+      "City planning Cervinia->Milano146min orTurin101min uses published reverse-direction drive estimate as explicit assumption, plus existing road margin; ground availability/prices unknown",
+      "Return candidates requiring too early departure, too few ski days or excess nights are rejected; calendar retains fetched alternatives and chooses later valid return locally on edits",
+      "Known matched quotes ranked first3462,4006,4182 in real week11Cervinia; remaining calendar floors separately grouped; no global all-in cheapest claim",
+      "Browser0.1.35:3planned ski dates + finalMilano night; earliest02:00 restores06:30return;07:00removes it;4skiDays0selectable;restore3/direct/city PASS with17cards preserved",
+      "Manual calendar->outbound->return->details carries same plan; Back3steps restores17datecards; cached replay observed",
+      "Pages43592210140 SUCCESS;18published hashes PASS; only7Flyg runtime files changed; backend0.1.29/Free/secrets unchanged"
     ],
-    "resumeInstruction": "User continues Flyg. Preserve61tests/time cards v33. Default trip preference last city night after skiing; first-nightcity fallback separate. Do not claim lifts, transfer booking, ground costs or baggage verified."
+    "plan": [
+      "Installed iPhone0.1.35 acceptance pending;CURRENT/PREVIOUS not rotated",
+      "Expand source-backed transfer coverage beyond Cervinia",
+      "Exact checked/cabin baggage and complete ground/hotel costs remain unknown; actual booked transport, hotel endpoints and lift schedules must be verified"
+    ],
+    "sourceCommit": "4ed9f7af3274c0998397d2de702652a9a82e1a77",
+    "deploymentCommit": "7813e4265fb2a9a007ac4e4f4fa34ac6199fe038",
+    "deploymentRun": 43592210140,
+    "rollbackCommit": "355519f6543a3cc50be4a4eb07fab1e7aaf51cfe",
+    "resumeInstruction": "Continue from0.1.35 whole-ski-day and return planning. User prioritizes evening dinner at ski resort,3full ski days,city night preferably last.72tests/18hashes/live browser PASS. New matched fare ranking separates known route quotes from unchecked calendar floors. Earliest hotel07:00 and all margins are editable assumptions,not operator facts. Cervinia road estimates only; no booked/price/lift guarantee. Device pending;CURRENT/PREVIOUS unchanged."
   },
   "currentWork": {
-    "completed": "61 backend/UI/journey/week/SW/updater tests PASS; CI static and integrity guards PASS\nCalendar feed itself only has dates/from-prices; retrieve outbound then return using opaque selection to show one matched trip\nSelected resort auto-enriches at most3distinct date pairs; maximum2provider-search requests per row; remaining dates on demand; Free guard and30min server cache unchanged\nCalendar from-price and displayed matched roundtrip price explicitly separate; outbound/return local times, stops, resort arrival estimate, expanded segments and chosen-trip action shown inline\nBrowser0.1.33 real week11Cervinia:17datecards retained;16–20March3410calendar/3414matched,06:10–11:45out/06:30–11:55back;14–18March3440calendar/3636matched;15–19March3440calendar/3462matched,06:00–10:30out/20:45–23:25back\nThird date chosen ->details context15–19March PASS; seller options absent in this actual source response, exact Google itinerary link present; no booking; Back restores17cards/matched times\nPages43591060305 SUCCESS;18published asset/manifest hashes PASS; only4Flyg runtime textfiles changed",
-    "next": "Installed iPhone0.1.33 acceptance pending\nRemaining: all-in baggage/transfer costs, real transfer availability, full ski-day and city-night validation\nSource may omit seller details; keep source quote distinct from confirmed seller price; no guaranteed fare",
+    "completed": "72 backend/journey/UI/week/updater/SW tests PASS; final static/integrityCI PASS\nCanonical journey-engine.skiTrip counts planned full ski dates and total nights through home arrival, including overnight return; does not verify lifts/weather/hotels\nDefault last city night after ski end16:00,earliest hotel departure07:00,airport120min,city-airport90min; all editable assumptions; alternative direct resort return\nCity planning Cervinia->Milano146min orTurin101min uses published reverse-direction drive estimate as explicit assumption, plus existing road margin; ground availability/prices unknown\nReturn candidates requiring too early departure, too few ski days or excess nights are rejected; calendar retains fetched alternatives and chooses later valid return locally on edits\nKnown matched quotes ranked first3462,4006,4182 in real week11Cervinia; remaining calendar floors separately grouped; no global all-in cheapest claim\nBrowser0.1.35:3planned ski dates + finalMilano night; earliest02:00 restores06:30return;07:00removes it;4skiDays0selectable;restore3/direct/city PASS with17cards preserved\nManual calendar->outbound->return->details carries same plan; Back3steps restores17datecards; cached replay observed\nPages43592210140 SUCCESS;18published hashes PASS; only7Flyg runtime files changed; backend0.1.29/Free/secrets unchanged",
+    "next": "Installed iPhone0.1.35 acceptance pending;CURRENT/PREVIOUS not rotated\nExpand source-backed transfer coverage beyond Cervinia\nExact checked/cabin baggage and complete ground/hotel costs remain unknown; actual booked transport, hotel endpoints and lift schedules must be verified",
     "blocked": false
   },
   "pausedWork": {},
@@ -35,9 +49,9 @@
     "deployment": {
       "url": "https://container13.se/flyg/",
       "sourceBranch": "ccc-demo-public-test",
-      "scope": "Only4Flyg runtime files changed; backend0.1.29 unchanged",
-      "sourceCommit": "d25d46525a09ba20532d92cacd631a17744dd852",
-      "deploymentCommit": "355519f6543a3cc50be4a4eb07fab1e7aaf51cfe"
+      "scope": "Only7Flyg runtime files;backend0.1.29 unchanged",
+      "sourceCommit": "4ed9f7af3274c0998397d2de702652a9a82e1a77",
+      "deploymentCommit": "7813e4265fb2a9a007ac4e4f4fa34ac6199fe038"
     },
     "secrets": "NONE_COMMITTED",
     "secretCollection": {
@@ -135,14 +149,26 @@
         "Cervinia LIN",
         "Cervinia BGY"
       ]
+    },
+    "skiReturnPlanning": {
+      "requiredWholeSkiDays": 3,
+      "returnPlan": "CITY_LAST_NIGHT_AFTER_SKIING",
+      "skiStartLocal": "09:00",
+      "skiEndLocal": "16:00",
+      "earliestHotelDepartureLocal": "07:00",
+      "airportReturnMinutes": 120,
+      "cityAirportMinutes": 90,
+      "verification": "EDITABLE_PLANNING_ASSUMPTIONS_ONLY",
+      "nightCount": "THROUGH_HOME_ARRIVAL_DATE_INCLUDING_OVERNIGHT_RETURN",
+      "matchedPriceOrder": "MATCHED_VALID_TRIPS_FIRST_ASCENDING_PRICE;UNCHECKED_CALENDAR_FLOORS_SEPARATE"
     }
   },
   "verification": {
     "sourceCommitted": true,
     "githubReadback": true,
     "syntax": "PASS",
-    "ui": "BROWSER0.1.33_CALENDAR_TIMES_AND_SELECTION_BACK_PASS",
-    "deployment": "PAGES_SUCCESS_43591060305",
+    "ui": "BROWSER0.1.35_SKI_DAYS_RETURN_PRICE_ORDER_AND_NAVIGATION_PASS",
+    "deployment": "PAGES_SUCCESS_43592210140",
     "device": "User IMG_4277 confirms installed0.1.28 can now search after backend repair. Frontend0.1.31 installed-iPhone acceptance pending.",
     "flightAPI": {
       "status": "LIVE_PROOF_PASS",
@@ -166,7 +192,7 @@
     "tests": "JOURNEY_9_PASS; SW_MOCK_HARNESS_PASS",
     "updateController": "Browser existing0.1.11 shell auto-updated to0.1.14; installed iPhone0.1.14 not tested",
     "pwa": "PREVIOUS_IPHONE_INSTALL_OFFLINE_AND_0.1.10_UPGRADE_PASS; BROWSER_0.1.11_TO_0.1.14_UPGRADE_PASS; IPHONE_0.1.14_PENDING",
-    "deployedAssets": "0.1.33 all18 assets/manifest hashes match",
+    "deployedAssets": "0.1.35 all18 assets/manifest hashes match",
     "providerResearch": "2026-11-14 official eligibility, pricing and agreement checked; report flyg/FLIGHT_DATA_ACCESS.md",
     "probe": "probe-0.1.0: 5 mock guard tests PASS; missing key zero calls PASS",
     "fareDetails": {
@@ -322,6 +348,20 @@
       "pagesRun": 43591060305,
       "device": "IPHONE_PENDING",
       "sellerBoundary": "15_19MATCHED_QUOTE3462;DETAILS_OPTIONS_EMPTY;EXACT_GOOGLE_LINK_PRESENT;NO_PURCHASE"
+    },
+    "skiTrip": {
+      "version": "0.1.35",
+      "tests": "72_PASS",
+      "browser": "3SKIDATES_FINALMILANO_NIGHT;EARLIEST02_RESTORES0630;07_REMOVES;4DAYS0SELECTABLE;17CARDS_BACK_PASS;MANUAL_FLOW_PLAN_CARRIED",
+      "matchedQuotesObserved": [
+        3462,
+        4006,
+        4182
+      ],
+      "deployedHashes": "18_OF18_PASS",
+      "pagesRun": 43592210140,
+      "device": "IPHONE_PENDING",
+      "limitations": "PLANNING_MODEL_NOT_BOOKED_TRANSPORT_HOTELS_OR_LIFT_VERIFICATION;GROUND_BAG_TOTAL_UNKNOWN"
     }
   },
   "airportCatalog": {
