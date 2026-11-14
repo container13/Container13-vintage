@@ -13,9 +13,9 @@
     "integrity": "ALL16_HTTPS_ASSETS_SHA256_MATCH"
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
-    "targetRelease": "0.1.20",
-    "goal": "Default Alperna destination menu; hide all editable search choices behind native details. Preserve field IDs/form owners and values. Tropical destinations listed upcoming, not falsely connected.",
+    "status": "IN_PROGRESS",
+    "targetRelease": "0.1.21",
+    "goal": "Visible ISO week+nights belowAlperna. Week calendar from previous Saturday through selectedSunday; fixed nights. Existing staged search drilldown, persistent free guards. Verify new calendar engine/group support before public UI.",
     "plan": [
       "Ski default19.9kg per person;20kg qualifies",
       "Separate cabin boot bag and personal item selected by default",
