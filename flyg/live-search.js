@@ -66,16 +66,16 @@ async function searchAll(query,previous=null){
  if(busy)return;if(!navigator.onLine){status.textContent='Du är offline. Aktuella flyg behöver internet.';return;}
  const calendar=query.stage==='calendar';
  const requested=previous?previous.coverage.requested:(regionSelect.value==='alps'&&resortCodes()?resortCodes():airport.value==='all'?[...airport.options].map(o=>o.value).filter(code=>code!=='all'):[airport.value]);
- const data=previous||{stage:query.stage,context:{...query,destination:airport.value==='all'?'alla relevanta flygplatser':airport.value},adults:2,currency:'SEK',flights:[],prices:[],resumeQuery:query,fetchedAt:new Date().toISOString(),coverage:{requested,completed:[],failed:[],unsearched:[...requested]}};
- const pending=[...data.coverage.unsearched];data.stopReason='';
+ const data=previous||{stage:query.stage,context:{...query,destination:airport.value==='all'?'alla relevanta flygplatser':airport.value},adults:2,currency:'SEK',flights:[],prices:[],resumeQuery:query,fetchedAt:new Date().toISOString(),coverage:{requested,completed:[],failed:[],unsearched:[...requested],failures:[]}};
+ const pending=[...data.coverage.unsearched];data.coverage.failures ||= [];data.stopReason='';
  setBusy(true);let index=0,calls=0;const groupSize=calendar?1:3;
  try{
   for(;index<pending.length&&(!calendar||calls<8);index+=groupSize){const group=pending.slice(index,index+groupSize);calls++;status.textContent=`Söker ${group.join(', ')} · ${data.coverage.completed.length}/${requested.length} flygplatser klara…`;
    try{const part=await requestData({...query,excludeAirlines:excludedAirlines(),destination:group.join(',')});if(calendar)data.prices.push(...part.prices);else data.flights.push(...part.flights);data.coverage.completed.push(...group);}
-   catch(error){if(['APP_QUOTA_REACHED','FREE_QUOTA_UNAVAILABLE','ACCOUNT_HTTP_401'].includes(error.message)){data.stopReason=errors[error.message];break;}data.coverage.failed.push(...group);}
+   catch(error){const code=String(error?.message||'UNKNOWN_ERROR').slice(0,80);data.coverage.failures.push({airports:[...group],code});if(['APP_QUOTA_REACHED','FREE_QUOTA_UNAVAILABLE','ACCOUNT_HTTP_401','ACCOUNT_HTTP_403','SEARCH_HTTP_403','SEARCH_HTTP_429','SEARCH_NOT_ENABLED','PROVIDER_UNAVAILABLE'].includes(code)){data.stopReason=(errors[code]||'Sökningen stoppades')+' (felkod '+code+'). Inga fler flygplatser söks automatiskt.';break;}data.coverage.failed.push(...group);}
   }
   data.coverage.unsearched=pending.slice(index);
-  if(!previous)history.push(data);render(data);window.FlygSelectionUI.reveal(results);status.textContent=data.coverage.failed.length||data.coverage.unsearched.length?'Delresultat. Återstående flygplatser visas nedan.':'Alla valda flygplatser har sökts. Billigast först.';
+  if(!previous)history.push(data);render(data);window.FlygSelectionUI.reveal(results);status.textContent=data.coverage.failed.length||data.coverage.unsearched.length?'Sökningen är inte färdig. Se felorsak och återstående flygplatser nedan.':'Alla valda flygplatser har sökts. Billigast först.';
  }finally{setBusy(false);}
 }
 function baggageLabel(raw){
@@ -96,7 +96,7 @@ function render(data){
  if(history.length>1)results.append(button('Tillbaka till föregående val',()=>{if(!busy){history.pop();render(history.at(-1));window.FlygSelectionUI.reveal(results);}}));
  results.append(el('p',`Maxpris ${money(ceiling)} totalt för två. Eventuellt okänt bagage tillkommer.`,'muted'));
  const h=history.find(x=>x.stage==='outbound');if(data.stage!=='outbound'&&h)results.append(el('p','Retur och villkor gäller den utresa du valt.','muted'));
- if(data.coverage){const c=data.coverage;results.append(el('p',`Sökta flygplatser: ${c.completed.join(', ')||'inga'}`,'muted'));if(c.failed.length)results.append(el('p',`Resultat saknas för: ${c.failed.join(', ')}.`));if(c.unsearched.length)results.append(el('p',`Inte sökta: ${c.unsearched.join(', ')}.`));if(data.stopReason)results.append(el('p',data.stopReason));if(c.unsearched.length&&data.resumeQuery)results.append(button('Fortsätt söka återstående flygplatser',()=>searchAll(data.resumeQuery,data)));}
+ if(data.coverage){const c=data.coverage;results.append(el('p',`Sökta flygplatser: ${c.completed.join(', ')||'inga'}`,'muted'));if(c.failed.length)results.append(el('p',`Sökningen misslyckades för: ${c.failed.join(', ')}.`));if(c.failures?.length)for(const failure of c.failures)results.append(el('p',`Fel vid ${failure.airports.join(', ')}: ${errors[failure.code]||'Okänt serverfel'} (kod ${failure.code}).`));if(c.unsearched.length)results.append(el('p',`Inte sökta: ${c.unsearched.join(', ')}.`));if(data.stopReason)results.append(el('p',data.stopReason));if(c.unsearched.length&&data.resumeQuery)results.append(button('Fortsätt söka återstående flygplatser',()=>searchAll(data.resumeQuery,data)));}
  results.append(el('p',baggageRequirements()));
  const needBag=Number(document.getElementById('baggage').value)>0;
  const note=el('p',needBag?'Bagageavgifter visas när de finns. Vikt, båda kabinväskorna och exakt totalpris är ännu inte bekräftade.':'Kontrollera att valda kabinväskor är tillåtna tillsammans, med rätt vikt och mått.');note.className='muted';results.append(note);
