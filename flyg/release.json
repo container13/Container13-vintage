@@ -1,5 +1,5 @@
 {
-  "release": "0.1.26",
+  "release": "0.1.27",
   "updated": "2026-11-14",
   "entrypoints": [
     "index.html"
@@ -22,5 +22,5 @@
     "live-search.js",
     "selection-feedback.js"
   ],
-  "status": "CANDIDATE_ERROR_REPORTING"
+  "status": "PENDING_PWA_NETWORK_FIRST"
 }
