@@ -43,5 +43,25 @@ jobs:
       - name: Enable isolated search with persistent quota guards
         working-directory: flyg/server
         run: npx --yes wrangler@4.45.0 deploy --config wrangler.jsonc --var FLYG_ENABLED:true
+      - name: Verify deployed Worker version without provider search
+        run: |
+          python3 - <<'PY'
+          import json,time,urllib.request
+          url='https://flyg-search-api.mangaj73.workers.dev/health'
+          last=None
+          for attempt in range(6):
+            try:
+              with urllib.request.urlopen(url,timeout=15) as resp:
+                data=json.load(resp)
+              assert data.get('version')=='0.1.24',f"Unexpected Worker version: {data.get('version')}"
+              assert data.get('enabled') is True,'Worker not enabled'
+              assert data.get('configured') is True,'Worker provider secret missing'
+              print('PASS isolated Worker 0.1.24 health (zero SerpApi calls)')
+              break
+            except Exception as exc:
+              last=exc
+              if attempt==5: raise RuntimeError('Worker health failed after deployment') from last
+              time.sleep(5)
+          PY
       - name: Record verification boundary
-        run: echo "Worker deployed; browser health and staged UI verification required separately"
+        run: echo "Worker 0.1.24 health verified; full staged UI and iPhone verification still required"
