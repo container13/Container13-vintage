@@ -1,0 +1,26 @@
+name: Flyg resort static checks
+on:
+  push:
+    branches: [flyg-alperna-init]
+    paths:
+      - 'flyg/**'
+      - '.github/workflows/flyg-resort-static-check.yml'
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JavaScript syntax
+        run: |
+          node --check flyg/live-search.js
+          node --check flyg/app.js
+          node --check flyg/server/worker.mjs
+          node --check flyg/server/worker.test.mjs
+      - name: Worker regression tests (mocked provider, zero real API calls)
+        run: node --test flyg/server/worker.test.mjs
