@@ -1,5 +1,5 @@
 /* Versioned static shell. Flight data and release checks always use the network. */
-const CACHE='flyg-shell-0.1.8';
+const CACHE='flyg-shell-0.1.9';
 const SHELL=['./','./index.html','./style.css','./app.js','./journey-engine.js','./version.js','./auto-update.js','./pwa.js','./manifest.webmanifest','../project-template/mobile-view-policy.js','./assets/flyg-icon-180.png','./assets/flyg-icon-192.png','./assets/flyg-icon-512.png','./assets/flyg-icon-1024.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL))));
 self.addEventListener('message',event=>{if(event.data?.type==='ACTIVATE_UPDATE')self.skipWaiting()});

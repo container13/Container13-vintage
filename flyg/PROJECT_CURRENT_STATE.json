@@ -9,32 +9,38 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.7",
-    "integrity": "PENDING"
+    "candidate": "0.1.9",
+    "integrity": "STATIC_PASS_DEPLOY_PENDING"
   },
   "workCheckpoint": {
     "status": "IN_PROGRESS",
-    "targetRelease": "0.1.7",
-    "goal": "Integrate attached flygikon(1).png, test PWA, establish HTTPS staging without affecting other projects",
+    "targetRelease": "0.1.9",
+    "goal": "Verify installed app update from 0.1.8 to 0.1.9",
     "plan": [
-      "Use existing four PNG files (180,192,512,1024) and verified solutions/github-binary-upload workflow to commit exact binaries",
-      "Read back blob SHA, tree path and file size for each PNG; no substitute icon",
-      "Verify manifest, service worker and icon links on deployed HTTPS, run Node tests and test installed iPhone PWA",
-      "Keep candidate unpromoted until deploy/runtime/device evidence exists"
+      "Open https://container13.se/flyg/ in iPhone Safari",
+      "Share -> Add to Home Screen; launch Flyg from globe icon",
+      "Reopen in airplane mode; confirm search form works",
+      "Verify safe update with modified form on next version"
     ],
     "lastSafeRelease": null,
-    "resumeInstruction": "Read flyg/START_HERE.md, PROJECT_CURRENT_STATE.json and shared project rules. No live API or deployed release has been verified.",
+    "resumeInstruction": "Read latest canonical checkpoint. iPhone 0.1.8 installation/offline PASS; verify update to 0.1.9 without reinstall. No live flight provider.",
     "rollbackCommit": "ff4244680ce148a22517c84e779141c1e0919db2"
   },
   "currentWork": {
-    "completed": "Isolated branch created; shared template rules copied; initial flight search requirements documented. Global flight-search defaults and football exception documented. Prototype HTML/CSS/JS committed with profile switching and ISO-week dates; exact GitHub file readback PASS. Expanded Alpine airport selection to 23 candidates incl. ZRH/GVA; exact readback PASS. Confirmed connecting flights allowed if arrival at hotel no later than 22:00 local; readback pending. UI now exposes connection preference and hotel cutoff; readback PASS. Added pure journey-engine.js and 9 synthetic Node test cases; GitHub readback PASS, tests NOT EXECUTED. Hotel arrival cutoff selector now supports half-hour steps; GitHub readback PASS. Added one central release.json manifest and auto-update.js controller to index; GitHub readback PASS. Added manifest, SVG icon, service worker and registration for PWA; GitHub readback PASS. Wired chosen globe-and-airplane PNG paths into manifest, iPhone touch icon, service worker and release manifest. PNG binary assets prepared locally but not yet committed to GitHub. Updated index heading to worldwide flight travel (GitHub readback PASS). Service worker optional PNG cache no longer blocks install (GitHub readback PASS).",
-    "next": "In Work, open canonical state/handoff from GitHub; upload four original selected PNG assets to isolated branch, verify blob/tree/size, then PWA tests. No user re-upload requested unless Work cannot access the existing assets.",
+    "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired. User screenshots confirm installed iPhone v0.1.8 and airplane-mode form. Five update-controller VM tests PASS.",
+    "next": "Deploy 0.1.9 after automated update-controller checks; verify existing iPhone installation updates without reinstall.",
     "blocked": false
   },
   "pausedWork": {},
   "dependencies": {
     "flightAPI": "UNSELECTED_UNVERIFIED",
-    "deployment": "NOT_CONFIGURED",
+    "deployment": {
+      "url": "https://container13.se/flyg/",
+      "sourceBranch": "ccc-demo-public-test",
+      "scope": "Only flyg/ subtree; other project bytes unchanged",
+      "sourceCommit": "a87b93b97dcfb687fad5f8fa92dbf4a108a0da32",
+      "deploymentCommit": "bd4228563d216c1cf4b6f250309bb03a714fc7e7"
+    },
     "secrets": "NONE_COMMITTED"
   },
   "searchDefaults": {
@@ -85,15 +91,16 @@
   "verification": {
     "sourceCommitted": true,
     "githubReadback": true,
-    "syntax": "UNVERIFIED",
-    "ui": "SOURCE_READBACK_ONLY_NOT_RUNTIME_TESTED",
-    "deployment": "NOT_DEPLOYED",
-    "device": "NOT_TESTED",
+    "syntax": "PASS",
+    "ui": "HTTPS_BROWSER_FORM_SUBMIT_PASS",
+    "deployment": "PAGES_SUCCESS_bd4228563d216c1cf4b6f250309bb03a714fc7e7",
+    "device": "IPHONE_STANDALONE_AND_AIRPLANE_MODE_FORM_PASS_USER_SCREENSHOT_2026-11-14",
     "flightAPI": "NOT_CONNECTED",
-    "engine": "COMMITTED_READBACK_ONLY",
-    "tests": "NOT_EXECUTED",
-    "updateController": "COMMITTED_UNTESTED",
-    "pwa": "SOURCE_WIRED; PNG_BINARY_NOT_IN_GITHUB; NO_DEPLOY_OR_DEVICE_TEST"
+    "engine": "9_SYNTHETIC_CASES_PASS",
+    "tests": "JOURNEY_9_PASS; SW_MOCK_HARNESS_PASS",
+    "updateController": "5_VM_TESTS_PASS: clean reload, dirty deferral, offline, loop guard, worker activation. IPHONE_UPGRADE_PENDING",
+    "pwa": "INSTALLED_IPHONE_OFFLINE_FORM_PASS; UPDATE_PENDING",
+    "deployedAssets": "All 14 release assets fetched via HTTPS and byte-matched to committed local files; PASS 2026-11-14"
   },
   "airportCatalog": {
     "version": "2026-11-14",
