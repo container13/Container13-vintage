@@ -3,7 +3,9 @@
 const API='https://flyg-search-api.mangaj73.workers.dev';
 const form=document.getElementById('liveForm'),results=document.getElementById('liveResults'),status=document.getElementById('liveStatus');
 const airport=document.getElementById('liveAirport'),start=document.getElementById('liveOutbound'),end=document.getElementById('liveReturn');
+const maxPrice=document.getElementById('maxPrice');
 let busy=false,history=[],generation=0;
+maxPrice.addEventListener('input',()=>{if(maxPrice.checkValidity()&&history.length)render(history.at(-1));});
 const el=(tag,text,className)=>{const n=document.createElement(tag);if(text!=null)n.textContent=text;if(className)n.className=className;return n;};
 const money=v=>new Intl.NumberFormat('sv-SE',{style:'currency',currency:'SEK',maximumFractionDigits:0}).format(v);
 function syncAirports(){const current=airport.value;airport.replaceChildren(...[...document.getElementById('destination').options].map(o=>o.cloneNode(true)));if([...airport.options].some(o=>o.value===current))airport.value=current;}
@@ -44,9 +46,13 @@ async function searchAll(query){
 }
 function segments(card,flight){for(const s of flight.segments){card.append(el('p',`${s.origin||'?'} → ${s.destination||'?'} · ${s.number||s.airline||'Flyg'}`),el('p',`${s.departureLocal||'?'} → ${s.arrivalLocal||'?'} (lokala tider)`,'muted'));}}
 function render(data){
+ const ceiling=Number(maxPrice.value);
+ if(!maxPrice.checkValidity())return;
+ const withinBudget=items=>items.filter(item=>Number.isFinite(item.quotedPriceSEK)&&item.quotedPriceSEK<=ceiling).sort((a,b)=>a.quotedPriceSEK-b.quotedPriceSEK);
  results.replaceChildren();const titles={outbound:'Välj utresa',returns:'Välj hemresa',details:'Biljettpris och villkor'};
  results.append(el('h3',titles[data.stage]),el('p',`ARN ↔ ${data.context.selectedDestination||data.context.destination} · ${data.context.outbound}–${data.context.return} · 2 vuxna`));
  if(history.length>1)results.append(button('Tillbaka till föregående val',()=>{if(!busy){history.pop();render(history.at(-1));}}));
+ results.append(el('p',`Maxpris ${money(ceiling)} totalt för två. Eventuellt okänt bagage tillkommer.`,'muted'));
  const h=history.find(x=>x.stage==='outbound');if(data.stage!=='outbound'&&h)results.append(el('p','Retur och villkor gäller den utresa du valt.','muted'));
  if(data.coverage){const c=data.coverage;results.append(el('p',`Sökta flygplatser: ${c.completed.join(', ')||'inga'}`,'muted'));if(c.failed.length)results.append(el('p',`Resultat saknas för: ${c.failed.join(', ')}.`));if(c.unsearched.length)results.append(el('p',`Inte sökta: ${c.unsearched.join(', ')}.`));if(data.stopReason)results.append(el('p',data.stopReason));}
  const needBag=Number(document.getElementById('baggage').value)>0;
@@ -54,13 +60,15 @@ function render(data){
  results.append(el('h3',needBag?'Bagagepris ej verifierat – billigaste prisuppgift först':'Billigaste prisuppgift först'));
  if(data.stage==='details'){
   if(!data.options.length)results.append(el('p','Inga säljarpriser kunde verifieras för det här valet. Öppna sökningen hos Google Flights.'));
-  for(const o of [...data.options].sort((a,b)=>a.quotedPriceSEK-b.quotedPriceSEK)){const card=el('article',null,'flight-card');card.append(el('h3',`${o.seller||'Säljare'}${o.fare?' · '+o.fare:''}`),el('p',`${money(o.quotedPriceSEK)} · prisuppgift för två, tur och retur`));
+  const affordable=withinBudget(data.options);if(data.options.length&&!affordable.length)results.append(el('p','Inga biljettpriser inom maxpriset. Höj beloppet för att visa fler, utan ny sökning.'));
+  for(const o of affordable){const card=el('article',null,'flight-card');card.append(el('h3',`${o.seller||'Säljare'}${o.fare?' · '+o.fare:''}`),el('p',`${money(o.quotedPriceSEK)} · prisuppgift för två, tur och retur`));
    if(o.baggagePolicies.length){card.append(el('p','Bagage enligt datakällan:'));const list=el('ul');o.baggagePolicies.forEach(p=>list.append(el('li',p)));card.append(list);}
    o.extensions.forEach(p=>card.append(el('p',p,'muted')));results.append(card);
   }
  }else{
   if(!data.flights.length)results.append(el('p','Inga flyg hittades för dessa datum. Prova en annan flygplats eller andra datum.'));
-  for(const f of [...data.flights].sort((a,b)=>a.quotedPriceSEK-b.quotedPriceSEK)){const card=el('article',null,'flight-card');segments(card,f);card.append(el('p',`${money(f.quotedPriceSEK)} · prisuppgift för två, tur och retur`),el('p',data.stage==='outbound'?'Preliminärt tills hemresan är vald.':'Kontrollera biljettvillkoren i nästa steg.','muted'));
+  const affordable=withinBudget(data.flights);if(data.flights.length)results.append(el('p',`Visar ${affordable.length} av ${data.flights.length} alternativ inom maxpriset.`));if(data.flights.length&&!affordable.length)results.append(el('p','Inga flyg inom maxpriset. Höj beloppet för att visa fler, utan ny sökning.'));
+  for(const f of affordable){const card=el('article',null,'flight-card');segments(card,f);card.append(el('p',`${money(f.quotedPriceSEK)} · prisuppgift för två, tur och retur`),el('p',data.stage==='outbound'?'Preliminärt tills hemresan är vald.':'Kontrollera biljettvillkoren i nästa steg.','muted'));
    if(f.selection)card.append(button(data.stage==='outbound'?'Välj utresa':'Visa biljettvillkor',()=>search({stage:data.stage==='outbound'?'returns':'details',selection:f.selection})));
    results.append(card);
   }
