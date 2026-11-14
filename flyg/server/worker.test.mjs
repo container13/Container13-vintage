@@ -28,7 +28,7 @@ test('flight allowlist drops tokens and raw fields; rejects nonnumeric prices',(
  assert.equal(normalizeFlight(offer).baggageStatus,'UNVERIFIED');assert.ok(!JSON.stringify(normalizeFlight(offer)).includes('SECRET-TOKEN'));assert.equal(normalizeFlight({...offer,price:'3680'}),null);
 });
 test('provider errors suppress payloads and redirects are forbidden',async()=>{
- let options;await assert.rejects(provider('search.json',{},'KEY',async(u,o)=>{options=o;return Response.json({error:'KEY RAW ERROR'});} ),/PROVIDER_UNAVAILABLE/);
+ let options;await assert.rejects(provider('search.json',{},'KEY',async(u,o)=>{options=o;return Response.json({error:'KEY RAW ERROR'});} ),/SEARCH_SOURCE_ERROR/);
  assert.equal(options.redirect,'error');
 });
 test('public worker rejects other origins and disabled calls without provider I/O',async()=>{

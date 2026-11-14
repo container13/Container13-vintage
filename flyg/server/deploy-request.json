@@ -1,1 +1,1 @@
-{"version":"0.1.12","requested":"2026-11-14","attempt":3,"purpose":"Fixed multi-key storage test fixture; runtime tests pass before deployment"}
+{"version":"0.1.13","requested":"2026-11-14","attempt":4,"purpose":"Diagnosis after two failed source requests: distinguish network/JSON/source/account failure without raw error content"}
