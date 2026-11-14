@@ -13,16 +13,17 @@
     "integrity": "PRODUCTION_AND_DEV_CRITICAL_BLOBS_EQUAL; DEVICE_UNVERIFIED"
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
+    "status": "BLOCKED_DEPLOY",
     "targetRelease": "0.1.28",
-    "goal": "Fix misleading hardcoded footer, reconcile 0.1.28 source/production critical assets, retire competing mutating workflows. No iPhone SW state evidence; device update remains unverified.",
+    "goal": "0.1.28 PWA confirmed installed by user screenshot. Search fails INVALID_AIRLINES due to double validation (array -> canonical CSV -> rejected as not array). Backend fix and regression test committed, not deployed.",
     "plan": [
-      "Verify GitHub Actions read-only candidate integrity and branch drift workflow result",
-      "Verify public HTTP delivery of 0.1.28 and 16 precache asset digests",
-      "Only after actual installed-iPhone confirmation mark CURRENT"
+      "Run Node regression suite for flyg/server/worker.test.mjs",
+      "Deploy ONLY flyg/server/worker.mjs to existing flyg-search-api Cloudflare Worker with existing secrets and durable object untouched; do not change FLYG_ENABLED or billing",
+      "Verify actual Worker request with excluded airline FR and grouped destinations; confirm no INVALID_AIRLINES",
+      "Check free quota and search result coverage before calling runtime PASS"
     ],
     "lastSafeRelease": null,
-    "resumeInstruction": "2026-11-14: production index.html now derives footer from window.ProjectVersion.release; both index.html and SW integrity hash changed. Critical 0.1.28 files index/version/release/sw copied verbatim from prod into dev; two legacy workflows replaced with read-only verification and disabled manual-only legacy. Do not bump version or overwrite production. User on Karon beach with iPhone, no Mac. Installed UI formerly showed hardcoded 0.1.24 so this number is not authoritative evidence of SW version. Need runtime evidence and workflow verification.",
+    "resumeInstruction": "2026-11-14 user screenshot confirms installed iPhone PWA footer 0.1.28; search screenshot shows INVALID_AIRLINES for TRN/MXP/BGY. Root cause in worker.mjs: public handler validate(array) normalizes excludeAirlines to CSV, SearchGate.run revalidates CSV and rejects. Fix on dev branch commit f1c0d676; regression tests commit 1ad3b698. NOT DEPLOYED; do not claim live fix. Worker endpoint flyg-search-api.mangaj73.workers.dev, wrangler.jsonc keep_vars true and FLYG_ENABLED false in config (dangerous if deploy overrides live true); deploy only with explicit preservation of existing live vars/secrets. No Cloudflare deployment tool currently connected.",
     "rollbackCommit": "8fdfcfdcfaba8b3e30a30eb50cf6c9b020ea83f9"
   },
   "currentWork": {
