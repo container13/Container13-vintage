@@ -93,3 +93,11 @@ test('calendar source mismatch fails closed and consumes reservation',async()=>{
  global.fetch=async url=>url.pathname==='/account.json'?Response.json({plan_id:'free',plan_monthly_price:0,plan_searches_left:99}):Response.json({search_metadata:{status:'Success'},search_parameters:{engine:'google_flights_calendar',departure_id:'ARN',arrival_id:'BGY',adults:'1',currency:'USD'},prices:[]});
  try{const r=await gate.fetch(request(cal));assert.equal(r.status,502);assert.match(await r.text(),/PROVIDER_CONTEXT_MISMATCH/);assert.equal(store.value.monthUsed,1);}finally{global.fetch=original;}
 });
+
+test('airline exclusions are canonical and restricted to supported IATA codes',()=>{
+ const a=validate({...input,excludeAirlines:['W6','FR']},now);
+ assert.equal(a.excludeAirlines,'FR,W6');
+ assert.equal(validate({...input,excludeAirlines:[]},now).excludeAirlines,'');
+ for(const excludeAirlines of [['XX'],['FR','FR'],'FR',['FR','UA']])assert.throws(()=>validate({...input,excludeAirlines},now),/INVALID_AIRLINES/);
+ assert.equal(validate({stage:'calendar',destination:'INN',from:'2027-03-13',to:'2027-03-21',nights:4,excludeAirlines:['FR']},now).excludeAirlines,'FR');
+});
