@@ -13,28 +13,16 @@
     "integrity": "18_PUBLISHED_ASSET_MANIFEST_HASHES_PASS; BROWSER_CALENDAR_MATCHED_TIMES_PASS; IPHONE_PENDING"
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
-    "targetRelease": "frontend0.1.33/backend0.1.29",
-    "goal": "Show matched outward/return times and itinerary-specific price in calendar date comparison; installed iPhone acceptance pending",
-    "completed": [
-      "61 backend/UI/journey/week/SW/updater tests PASS; CI static and integrity guards PASS",
-      "Calendar feed itself only has dates/from-prices; retrieve outbound then return using opaque selection to show one matched trip",
-      "Selected resort auto-enriches at most3distinct date pairs; maximum2provider-search requests per row; remaining dates on demand; Free guard and30min server cache unchanged",
-      "Calendar from-price and displayed matched roundtrip price explicitly separate; outbound/return local times, stops, resort arrival estimate, expanded segments and chosen-trip action shown inline",
-      "Browser0.1.33 real week11Cervinia:17datecards retained;16–20March3410calendar/3414matched,06:10–11:45out/06:30–11:55back;14–18March3440calendar/3636matched;15–19March3440calendar/3462matched,06:00–10:30out/20:45–23:25back",
-      "Third date chosen ->details context15–19March PASS; seller options absent in this actual source response, exact Google itinerary link present; no booking; Back restores17cards/matched times",
-      "Pages43591060305 SUCCESS;18published asset/manifest hashes PASS; only4Flyg runtime textfiles changed"
-    ],
+    "status": "IN_PROGRESS",
+    "targetRelease": "0.1.34",
+    "goal": "Evaluate three whole skiing days and feasible rested return with last-city-night vs direct resort departure",
     "plan": [
-      "Installed iPhone0.1.33 acceptance pending",
-      "Remaining: all-in baggage/transfer costs, real transfer availability, full ski-day and city-night validation",
-      "Source may omit seller details; keep source quote distinct from confirmed seller price; no guaranteed fare"
+      "Pure date-based itinerary model in canonical journey engine; use existing Cervinia road estimates and clearly editable planning assumptions",
+      "Apply hotel departure earliest07:00,airport allowance120min,city-airport90min and ski-day09–16 as assumptions, not booked schedules",
+      "Filter return choices and inline date comparisons with explicit reasons; reuse fetched return candidates when controls change",
+      "Regression, source/deploy readback, actual browser and device boundary"
     ],
-    "sourceCommit": "d25d46525a09ba20532d92cacd631a17744dd852",
-    "deploymentCommit": "355519f6543a3cc50be4a4eb07fab1e7aaf51cfe",
-    "deploymentRun": 43591060305,
-    "rollbackCommit": "f02fc969da44d2ead0530202dd74b56cc8cc18ed",
-    "resumeInstruction": "Continue from0.1.33 inline calendar times. User needs time comparison when price differs30SEK. Existing17date list stays; first3distinct date pairs enriched for selected resort, other rows manually. Matched outbound/return quote differs from calendar floor and is labelled. Real browser timings/Back PASS,61tests/18hashes PASS; device pending. Backend0.1.29 unchanged. CURRENT/PREVIOUS remain unrotated."
+    "resumeInstruction": "User continues Flyg. Preserve61tests/time cards v33. Default trip preference last city night after skiing; first-nightcity fallback separate. Do not claim lifts, transfer booking, ground costs or baggage verified."
   },
   "currentWork": {
     "completed": "61 backend/UI/journey/week/SW/updater tests PASS; CI static and integrity guards PASS\nCalendar feed itself only has dates/from-prices; retrieve outbound then return using opaque selection to show one matched trip\nSelected resort auto-enriches at most3distinct date pairs; maximum2provider-search requests per row; remaining dates on demand; Free guard and30min server cache unchanged\nCalendar from-price and displayed matched roundtrip price explicitly separate; outbound/return local times, stops, resort arrival estimate, expanded segments and chosen-trip action shown inline\nBrowser0.1.33 real week11Cervinia:17datecards retained;16–20March3410calendar/3414matched,06:10–11:45out/06:30–11:55back;14–18March3440calendar/3636matched;15–19March3440calendar/3462matched,06:00–10:30out/20:45–23:25back\nThird date chosen ->details context15–19March PASS; seller options absent in this actual source response, exact Google itinerary link present; no booking; Back restores17cards/matched times\nPages43591060305 SUCCESS;18published asset/manifest hashes PASS; only4Flyg runtime textfiles changed",
