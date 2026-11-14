@@ -113,3 +113,6 @@ Personal flight search beginning with the Alps, extensible later to Thailand, Za
 
 ## Latest acceptance — 2026-11-14
 User confirms existing installed iPhone app now displays 0.1.10 after Update. Recovery/upgrade PASS without reinstall. Initial installed 0.1.8 airplane-mode search form previously PASS. Dirty-form device upgrade and offline retest specifically on 0.1.10 remain untested. PWA task checkpoint IDLE; no live flight provider connected. Next development task: authorized real flight data, baggage-inclusive fares for two and booking links. No new runtime or publication in this documentation update.
+
+## Latest checkpoint — provider access investigation 2026-11-14
+See FLIGHT_DATA_ACCESS.md. No live provider connected. Official Skyscanner audience criteria exclude this personal app; Duffel services agreement restricts metasearch, so do not select it merely based on low search price. No credentials/accounts/costs activated. Current runtime remains 0.1.10. User decision/access required: interim outbound search hub vs authorized live-data provider. Do not imply links are in-app live results.
