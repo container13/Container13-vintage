@@ -9,24 +9,36 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.31",
-    "integrity": "ALL18_PUBLISHED_SHELL_AND_MANIFEST_HASHES_PASS; BROWSER0.1.31_FILTER_PASS; IPHONE0.1.31_PENDING"
+    "candidate": "0.1.32",
+    "integrity": "18_PUBLISHED_ASSET_MANIFEST_HASHES_PASS; BROWSER_RESORT_DINNER_PASS; IPHONE_PENDING"
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
-    "targetRelease": "0.1.32",
-    "goal": "Prioritize arrival at resort in time for dinner using sourced road transfer estimates, airport/baggage/check-in buffer; distinguish estimates from verified bookings",
-    "plan": [
-      "Cervinia road estimates from resort/operator; unknown routes remain unknown",
-      "Calculate ready-for-dinner time; default target20:00, current hard latest22:00 remains editable",
-      "Separate late resort arrivals/city-overnight fallback from main results",
-      "Verify canonical engine/UI, preserve existing provider/cache and publish only Flyg files"
+    "status": "UNVERIFIED",
+    "targetRelease": "frontend0.1.32/backend0.1.29",
+    "goal": "Cervinia arrival before dinner prioritized with sourced road estimates and explicit margins; actual iPhone acceptance pending",
+    "completed": [
+      "60 backend/journey/week/arrival/selection/updater/SW tests PASS",
+      "Same canonical journey-engine.resortArrival: Cervinia TRN102min,MXP136,LIN149 from official resort;BGY170 from operator; estimates not booked/verified",
+      "Planning allowances default60min airport/baggage+30road margin+30checkin, editable; dinner target20:00,hard hotel22:00",
+      "Main list requires timetable constraints and estimated dinner readiness; later arrivals optional collapsed reserves; unsupported transfer/public transit separate UNKNOWN",
+      "Browser0.1.32 actual grouped query3of10 primary;AF1130 landing11:45 ->estimated resort15:31,ready16:01",
+      "Browser target16:00 ->1offer;20:00 ->3;optional reserves2;public transport0primary/4unknown;restore3primary",
+      "Pages43590271969 SUCCESS;18 published asset/manifest hashes PASS; no backend, secrets, paid routing or unrelated project changes"
     ],
-    "resumeInstruction": "User prioritizes same-evening arrival at ski resort with dinner before sleep. City first-night is fallback only; preferred city night after skiing. No timetable/transfer availability or baggage inclusive price claim."
+    "plan": [
+      "Installed iPhone0.1.32 update and acceptance pending",
+      "Expand source-backed estimates to other resorts; actual dated transfer availability and complete baggage/ground costs remain unverified",
+      "Full three-ski-day and last-city-night itinerary remains a later end-to-end check; city-first fallback not a verified package"
+    ],
+    "sourceCommit": "12066815a600699ca1af6e070b06a4f42ab7274c",
+    "deploymentCommit": "f02fc969da44d2ead0530202dd74b56cc8cc18ed",
+    "deploymentRun": 43590271969,
+    "rollbackCommit": "51daa57ac981448690a0ee4713712d2b7afd4d8d",
+    "resumeInstruction": "Continue from0.1.32 resort dinner planning. User prioritizes direct resort first evening with relaxed dinner before sleep; first-night city fallback opt-in only, city night ideally after skiing. Cervinia sourced ROAD ESTIMATES ONLY, not verified/booked transfers. Main3of10 and input changes/browser/PWA/hash tests PASS. No CURRENT/PREVIOUS rotation from browser evidence alone."
   },
   "currentWork": {
-    "completed": "Existing journey-engine.checkSchedule owns live timetable rejection; no second journey engine\nOutbound airport deadline20:00 by default, strict hotel22:00 impossibility rejection, same-day arrival; direct-only enforced\nMax layover4h default, editable0.5–24h, applies both directions and updates on input without provider request\nBrowser real TRN,MXP,BGY14–18March2027 excludesFR:4of10 visible; screenshot AF1230 arrival23:00 hidden;AF1130 arrival11:45 first\nBrowser0.1.31 max layover1h ->1offer;4h ->4offers immediately; same fetched result\nAll backend/journey/schedule/week/selection/update/SW suites PASS;18 deployed asset/manifest hashes PASS\nPages43589293287 SUCCESS; sourcef26702aa/public51daa57a; no backend or unrelated project changes",
-    "next": "User opens existing installed PWA online; expect0.1.31 and repeat search\nRemaining: authoritative resort transfer/hotel arrival, baggage totals and whole ski-day verification; never claim timetable pass verifies all requirements",
+    "completed": "60 backend/journey/week/arrival/selection/updater/SW tests PASS\nSame canonical journey-engine.resortArrival: Cervinia TRN102min,MXP136,LIN149 from official resort;BGY170 from operator; estimates not booked/verified\nPlanning allowances default60min airport/baggage+30road margin+30checkin, editable; dinner target20:00,hard hotel22:00\nMain list requires timetable constraints and estimated dinner readiness; later arrivals optional collapsed reserves; unsupported transfer/public transit separate UNKNOWN\nBrowser0.1.32 actual grouped query3of10 primary;AF1130 landing11:45 ->estimated resort15:31,ready16:01\nBrowser target16:00 ->1offer;20:00 ->3;optional reserves2;public transport0primary/4unknown;restore3primary\nPages43590271969 SUCCESS;18 published asset/manifest hashes PASS; no backend, secrets, paid routing or unrelated project changes",
+    "next": "Installed iPhone0.1.32 update and acceptance pending\nExpand source-backed estimates to other resorts; actual dated transfer availability and complete baggage/ground costs remain unverified\nFull three-ski-day and last-city-night itinerary remains a later end-to-end check; city-first fallback not a verified package",
     "blocked": false
   },
   "pausedWork": {},
@@ -35,9 +47,9 @@
     "deployment": {
       "url": "https://container13.se/flyg/",
       "sourceBranch": "ccc-demo-public-test",
-      "scope": "Only6 flyg runtime files; other projects unchanged",
-      "sourceCommit": "f26702aadf4973ee85477da3988bb778b14126da",
-      "deploymentCommit": "51daa57ac981448690a0ee4713712d2b7afd4d8d"
+      "scope": "Only7 Flyg runtime text files changed; backend0.1.29 unchanged",
+      "sourceCommit": "12066815a600699ca1af6e070b06a4f42ab7274c",
+      "deploymentCommit": "f02fc969da44d2ead0530202dd74b56cc8cc18ed"
     },
     "secrets": "NONE_COMMITTED",
     "secretCollection": {
@@ -118,14 +130,31 @@
     "maxPriceStepSEK": 100,
     "maxPriceScope": "Displayed provider quote total for two; unverified baggage fees may be additional; no all-in assertion.",
     "maxLayoverHours": 4,
-    "airportArrivalCutoffLocal": "20:00"
+    "airportArrivalCutoffLocal": "20:00",
+    "resortArrival": {
+      "priority": "SAME_EVENING_RESORT_DINNER",
+      "dinnerTargetLocal": "20:00",
+      "hotelLatestLocal": "22:00",
+      "airportMinutes": 60,
+      "roadBufferMinutes": 30,
+      "checkinMinutes": 30,
+      "transport": "ROAD_ESTIMATE_ONLY",
+      "firstCityNight": "OPT_IN_FALLBACK_ONLY; EXTRA_NIGHTS_AND_TRANSFER_UNVERIFIED",
+      "preferredCityNight": "AFTER_SKIING",
+      "supportedEstimates": [
+        "Cervinia TRN",
+        "Cervinia MXP",
+        "Cervinia LIN",
+        "Cervinia BGY"
+      ]
+    }
   },
   "verification": {
     "sourceCommitted": true,
     "githubReadback": true,
     "syntax": "PASS",
-    "ui": "BROWSER_OUTBOUND_TO_RETURNS_HEADING_VISIBLE_AND_FOCUSED_PASS",
-    "deployment": "PAGES_SUCCESS_43569684218",
+    "ui": "BROWSER0.1.32_CERVINIA_DINNER_FILTER_PASS",
+    "deployment": "PAGES_SUCCESS_43590271969",
     "device": "User IMG_4277 confirms installed0.1.28 can now search after backend repair. Frontend0.1.31 installed-iPhone acceptance pending.",
     "flightAPI": {
       "status": "LIVE_PROOF_PASS",
@@ -149,7 +178,7 @@
     "tests": "JOURNEY_9_PASS; SW_MOCK_HARNESS_PASS",
     "updateController": "Browser existing0.1.11 shell auto-updated to0.1.14; installed iPhone0.1.14 not tested",
     "pwa": "PREVIOUS_IPHONE_INSTALL_OFFLINE_AND_0.1.10_UPGRADE_PASS; BROWSER_0.1.11_TO_0.1.14_UPGRADE_PASS; IPHONE_0.1.14_PENDING",
-    "deployedAssets": "0.1.20 all16 SHA256 match",
+    "deployedAssets": "0.1.32 all18 assets/manifest hashes match",
     "providerResearch": "2026-11-14 official eligibility, pricing and agreement checked; report flyg/FLIGHT_DATA_ACCESS.md",
     "probe": "probe-0.1.0: 5 mock guard tests PASS; missing key zero calls PASS",
     "fareDetails": {
@@ -285,6 +314,16 @@
       "pagesRun": 43589293287,
       "device": "IPHONE0.1.31_PENDING",
       "hotelTransfer": "UNKNOWN_NOT_INFERRED"
+    },
+    "resortArrival": {
+      "version": "0.1.32",
+      "tests": "60_PASS",
+      "browser": "3_PRIMARY; DINNER16:00_1_PRIMARY; OPTIONAL2RESERVES; PUBLIC0PRIMARY4UNKNOWN; RESTORE3",
+      "deployedHashes": "18_OF18_PASS",
+      "pagesRun": 43590271969,
+      "device": "IPHONE_PENDING",
+      "transfer": "PUBLISHED_ROAD_ESTIMATE_PLUS_EDITABLE_ASSUMPTIONS; NOT_VERIFIED_BOOKING",
+      "sourceDocument": "flyg/TRANSFER_PLANNING.md"
     }
   },
   "airportCatalog": {
