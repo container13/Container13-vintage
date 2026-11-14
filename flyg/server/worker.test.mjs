@@ -97,8 +97,8 @@ test('calendar source mismatch fails closed and consumes reservation',async()=>{
 });
 
 test('airline exclusions are canonical and restricted to supported IATA codes',()=>{
- const a=validate({...input,excludeAirlines:['W6','FR']},now);
- assert.equal(a.excludeAirlines,'FR,W6');
+ const a=validate({...input,excludeAirlines:['W6','FR','DY','D8']},now);
+ assert.equal(a.excludeAirlines,'D8,DY,FR,W6');
  assert.equal(validate({...input,excludeAirlines:[]},now).excludeAirlines,'');
  for(const excludeAirlines of [['XX'],['FR','FR'],'FR',['FR','UA']])assert.throws(()=>validate({...input,excludeAirlines},now),/INVALID_AIRLINES/);
  assert.equal(validate({stage:'calendar',destination:'INN',from:'2027-03-13',to:'2027-03-21',nights:4,excludeAirlines:['FR']},now).excludeAirlines,'FR');
@@ -110,4 +110,9 @@ test('provider search receives exclusions for direct and calendar searches',asyn
   global.fetch=async url=>{if(url.pathname==='/account.json')return Response.json({plan_id:'free',plan_monthly_price:0,plan_searches_left:25});const q=Object.fromEntries(url.searchParams);assert.equal(q.exclude_airlines,inputCase.excludeAirlines.join(','));if(inputCase.stage==='calendar')return Response.json({search_metadata:{status:'Success'},search_parameters:q,prices:[]});const d=data();d.search_parameters.arrival_id=inputCase.destination;return Response.json(d);};
   try{const r=await gate.fetch(request(inputCase));assert.equal(r.status,200);}finally{global.fetch=original;}
  }
+});
+
+test('Norwegian exclusion accepts both DY and D8 carrier codes',()=>{
+ const v=validate({...input,excludeAirlines:['D8','DY']},now);
+ assert.equal(v.excludeAirlines,'D8,DY');
 });
