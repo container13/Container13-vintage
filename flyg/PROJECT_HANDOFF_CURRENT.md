@@ -28,3 +28,8 @@ Personal flight search beginning with the Alps, extensible later to Thailand, Za
 - **Checked baggage is required for both travelers** for normal trips; bag weight is configurable and not globally fixed (Alps initial profile: at least 23 kg per person).
 - **Exception: football trips within Europe**, for example Cologne or London: checked baggage is **not required** by default. Offer cabin baggage/hand baggage and optionally checked baggage, with the true total price.
 - Treat these as shared defaults for future destinations, not only Alps. Football travel should be a separate editable search profile.
+
+## Candidate prototype progress — 2026-11-14
+- Added `index.html`, `style.css`, `app.js` on isolated branch. Mobile-first search form, skiing vs European football profile, ISO week date ranges, 2 travelers and ARN defaults; profile-dependent checked baggage; no invented flights.
+- Exact GitHub file readback PASS. No actual JS syntax/interaction or mobile-device test performed. No deployment and no provider access. Candidate remains UNVERIFIED.
+- Before any release: implement shared release manifest/updater, test syntax and UI, verify deployment and iPhone; use only an authorized flight data provider.
